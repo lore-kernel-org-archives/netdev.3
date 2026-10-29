@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793291415;
-	b=0wz5e5vxicdOb5cD9FKEvyUFzR+Eha2cuju9vJqO7IwWl1f8eobDaWe/pmWTz9b+6wTq
-	 OteazQRF0KTHKHC+8q8Jng0mNSVDVTFRGYPnQ6O/10TkMwLuSLDTzUuiXe8qNz61roF/s
-	 d5v0t/oKQ3VuTPk8HFR3JqYM79qlq+lCaS9EJOWWiHmyPz44FKviNLaNm5L1S/y9ZeCVS
-	 ujaszQ03Or2FNTGr/U+RHcrDclbBi+wtuolR8O3nWsZeM2YgXDa0VSBOIlwaVs0omrLju
-	 +jC8G5pdpcFBjGuJW4Mp/20cFGYKoyTJJQ4AnKqA4MdYr68tE51NGiqOECKbieXyjMg==
+	t=1793291413;
+	b=c8K8muxPBsnAza48tSd8y2WPqKxS4jm9BtesRLNqAPyJzfUMYLAUlIbH3L6uSgIUDCwk
+	 Y9X/GxY9CaNgMczi3bwP4+qPdRQ6rWsYTzW17HgR6o77iUgEWyYmrPntiNWAZvd4gO/1W
+	 iGCMIS9SIpxHN4CancdDgOXVjbqTb9sCI08iEio16vgXU4gmYsVaf+tL89r3rUCpxS+kP
+	 5VfPKhHVQwCmsKpAM20+ixi+Ksn5j3fQ2v0OKaMrobEeKTwsvS6XrM4iF7qi0EusUp25L
+	 0BFG5mwleasJSkAze2xwbHs6EA/v42s2oasAncoQL/YAvbRFLrRDzqd7Kk5iaycCheg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793291415;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793291413;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=PLt2EAzlaTKDNOPaD9JM/CvAsTFKXTYjF72tAbeUw5U=;
-	b=4SV2fpO8LY48/Pg4T62rUKwVMkG0V2x7KsGTQP55sXrKQ0ImiWGpoiWi1+E9Yr7nI/Nf
-	 6MclC4gQ7DNO4TvDFgC0fNhoSy10uDH85QY4r2CEfenHKcchSCDgWc4z81BjOpMGaj3sC
-	 7lplJRNY5E9SfdN6Zr0p64mleuqmgdtsnNZKbja0gTKrwD/pVeGQWBtME3AR0J32IsZrV
-	 DgUg4Ux3HL74Vac5UjcuLNvsbi7egTwQJJdIChqmlBjyGcY+qI0acqi3OoqICI7rBsiao
-	 8AGHcLx9okSdklV+S0lxBejUn2hhebZ7BLSE6GwjHjKywXInSWpCWtZyjsNBPE8nMeQ==
+	bh=E19BMPrjdlaYAFVXrSdWhXQYi/WuuCVsgVtT7xwTeXA=;
+	b=JEDGW5+WbVr+c8diZ+oZkrrJmurBgD0CAJuqc8PXR3UvHHmiNBICPGOH3X/xNCDC8u6y
+	 VLKzLZJWnhwTbyaOQxW+HK/gLcuKsJPmxAh4G7UxHQkQiZGTkWcYMCgNSc9LjamcWUY4/
+	 tHbkAbCpdHmHWyWk6oxlUFKoe1t9UD47LpdRWOzidDeDUcDAUMn9b5pheJY0QnNw8XejV
+	 P/75ubu8kYaELwmBZZL4Zgbt8vsvScvsoyMX1MBNP3j/df6mGqT7EIAEQdZuxvfYAWfpx
+	 3aa+O4kY5YTzOxZmtTPlUZgpfsiL8VmMfd7yTarHwfrlEUhmBh5YQ/qX/S8ZtvSmbaA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dyQUUzTT;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="J4wlMw/x";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E7060A262D
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 16:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B69260A2619;
+	Thu, 29 Oct 2026 16:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dyQUUzTT
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4750E1F01825;
-	Thu, 29 Oct 2026 16:30:14 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J4wlMw/x
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24F91F031F0;
+	Thu, 29 Oct 2026 16:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793291414;
-	bh=PLt2EAzlaTKDNOPaD9JM/CvAsTFKXTYjF72tAbeUw5U=;
+	s=k20260515; t=1793291412;
+	bh=E19BMPrjdlaYAFVXrSdWhXQYi/WuuCVsgVtT7xwTeXA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=dyQUUzTT/6xa6EMEgaQV6wGjJu+oBk1CVlzI0FgQb+lr7HEE+cfIQtt+C9mF/lDwj
-	 akQe1C4X4Y4tLvYGq5uv8ad1n46FykGfhlz99HHwME5RIqjROOBBc8539cby/GXp2I
-	 yaUhTotPXFfT2ddpc9S3BCro3LMuUrh9d0AE/q+/cUpopFsaJ0kLYRNPgFHsu7OLJL
-	 Ab87uACYfgcxaj2iS8TTaPZArl+ihEMIx2lIxXgQzfCzqe1s5LVkMZJj/bXWMm+k8O
-	 PocflK3t1UOFNZLzvc1HySBrXTpfbrimkBse3d4f0m/dbpVoLiq74FB1vuVuMTGNS+
-	 Y1NEXbkQbSJLA==
+	b=J4wlMw/xPOQ0Mm5M+Ny4lcPeswTPGc8uRrX+SqYgZls5LRL/BZRxw+H42jMprvIcD
+	 TUqIMzkMScG+ObtvSxkjFVnBLuFZ4nmPUJJbY4QmUMU9N804GXtacVowSeW5ttTAKJ
+	 /yUzXQ5f1qJ2dyD7S8DFLhCeIRBTkaOW+ipcI9prRya98onzPUS5pZmMrr6+haUsSy
+	 BErW3F6HsrFYoEQj5hy8gzBYaec+tB6kC5cZnsk7mC209sCEvNBxEehtdLeJtLKmpv
+	 7z23Hpdy59CSRcPwgQmfjqHyiDGbCUC33+Aq4FmdIHsCKAriTQFmB38CPcxX/d+yFM
+	 7V6AXZXIqO/kw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 401C73808223;
-	Thu, 29 Oct 2026 16:30:14 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA2C23808223;
+	Thu, 29 Oct 2026 16:30:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,36 +54,52 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] tun: drop batched packets while the device is down
+Subject: Re: [PATCH net v2 0/5] net: fix eth_type_trans() crashes on skbs
+ coming
+ from the stack
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179329141279.559085.15478130548672944710.git-patchwork-notify@kernel.org>
-Date: Thu, 29 Oct 2026 16:30:12 +0000
-References: <20261027101830.85327-1-shaw.leon@gmail.com>
-In-Reply-To: <20261027101830.85327-1-shaw.leon@gmail.com>
-To: Xiao Liang <shaw.leon@gmail.com>
-Cc: willemdebruijn.kernel@gmail.com, jasowangio@gmail.com,
- netdev@vger.kernel.org
+ <179329141129.559085.14393528345528530000.git-patchwork-notify@kernel.org>
+Date: Thu, 29 Oct 2026 16:30:11 +0000
+References: <20261028122703.2093730-1-edumazet@kernel.org>
+In-Reply-To: <20261028122703.2093730-1-edumazet@kernel.org>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ willemb@google.com, horms@kernel.org, netdev@vger.kernel.org,
+ bpf@vger.kernel.org, andrew+netdev@lunn.ch, aconole@redhat.com,
+ echaudro@redhat.com, i.maximets@ovn.org, jhs@mojatatu.com, jiri@resnulli.us,
+ dev@openvswitch.org, willemdebruijn.kernel@gmail.com, weir@nebusec.ai
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 27 Oct 2026 18:18:27 +0800 you wrote:
-> tun_sendmsg() handles TUN_MSG_PTR batches from vhost-net by calling
-> tun_xdp_one() instead of tun_get_user(). But this path does not check
-> IFF_UP, allowing packets from a guest to be injected into the host
-> receive path while the device is administratively down.
+On Wed, 28 Oct 2026 13:26:58 +0100 you wrote:
+> eth_type_trans() assumes ETH_HLEN bytes are present in skb->head.
+> NIC drivers always provide this, and they should keep using the fast
+> version, without an extra pskb_may_pull().
 > 
-> Check IFF_UP in tun_xdp_one() before running XDP or building an skb.
-> Drop the packet when the device is down, matching tun_get_user().
+> Devices looping skbs from their transmit path back to their receive
+> path get skbs built by the stack instead. tc actions (act_vlan pop_eth,
+> act_ife decode), BPF helpers (bpf_skb_change_head() before a redirect)
+> or OVS actions (pop_eth followed by pop_mpls/pop_nsh) can leave fewer
+> than ETH_HLEN bytes in the linear part, and eth_type_trans() then hits
+> the BUG() in __skb_pull().
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] tun: drop batched packets while the device is down
-    https://git.kernel.org/netdev/net/c/8f44631ba02a
+  - [net,v2,1/5] net: add eth_type_trans_careful()
+    https://git.kernel.org/netdev/net/c/2519a6fe7a8b
+  - [net,v2,2/5] loopback: use eth_type_trans_careful()
+    https://git.kernel.org/netdev/net/c/093a28998374
+  - [net,v2,3/5] net: use eth_type_trans_careful() in __dev_forward_skb2()
+    https://git.kernel.org/netdev/net/c/695e1408eb90
+  - [net,v2,4/5] openvswitch: use eth_type_trans_careful() in internal_dev_recv()
+    https://git.kernel.org/netdev/net/c/b55e5a0159c8
+  - [net,v2,5/5] net/sched: act_ife: do not consume the inner header on egress
+    https://git.kernel.org/netdev/net/c/498c631f9c6d
 
 You are awesome, thank you!
 -- 
