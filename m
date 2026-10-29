@@ -1,63 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793279456;
-	b=waHpvWwHBTWtRwpRv5izGglhtWxEgAhRcJzS88zuGZUNlRmJADbSUUEvNJv0Qsh6fS6u
-	 9maB3nVVGaDgoUGo8/LPGRmatE8l9Qg5ApBAigs3qzT34ZUV3ZSptzWTUoX+mOkidnWqK
-	 3iZUzxcqNVVLjWjAjceK7Xi6eV7XU7bIQjqXNqobVP9puzRkUYqh9yEo8AV3D/TNMId+y
-	 SG6aq71v1LjT5eoo/F0HuptnW7siJxO/oXdoIslEZ/LhxaS3DoUiQQDsubjT51y6OsGR8
-	 r1OuszTL/OPrfVSvO1e4zzf4JsoKYSJ1QK6/FJgNd7O5i7LPb2LQkiMX+cUTYR7ZorA==
+	t=1793279870;
+	b=Olg4CwiF1+yZWNhSGHpNYDyAzAbr0n1iocEfys8FgTfGNwk2+8QoqvdLF8pAmwtwPVXJ
+	 0JtEXxBrRIukJ43QP/yhEXWRzlDxal0yYmjC0CjqDGY7CBDI/AZESmM1YHo+lsia2gind
+	 EghrgluS+jfVRND4XZ9PHT9OBT+N8e/tibJi6e6Diya4Ik4QsPukFS04IgOroPXnALli/
+	 G8ybt6UEeksbM4uKbg0NEOCzb+SmWNHvo9ww5YD5ZOJh5B0va5pNSmh176MF6VnRKmCAt
+	 ftEGnSibIEJ05TDxv5zUJllSr5Uj2OQoYzagiiCyOsvU5F+cqo78O22NRgB7qcXDp0Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793279456;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=xEX+VUkqLlTdDV/lONb3Jp5n3X29i+nwYbi6eZJH5mk=;
-	b=4IDQN4MKCH5/sFBPXnDpZO1Vr/Adzu/sA26TCbQR83Gilky0E+R8y6/BrK7wcvUQVj+y
-	 Tnkr2PGDDoa/3u3fgLj+GhlQQWLAEWa9OwjxzwOWAR0dqtG3jZPpNAqodB+Iu7O7ZiJjN
-	 xvOvVAOtqlnnaX2tn1mJL9vQgSCNa7Tgee7L+dsx8YVLVWGYhNZElf//Hk4bIIzCvjVJr
-	 ilB+lS5MtrxekWfWxcoo3ufzmqhiTn2xor2zqsPFxtC/Tp8qgBkN3RRpypA3Vx14mvTsx
-	 DLcbX9Gw6Z1zXMB/eucHNWs/hJ+oMCQrEXq2f806tAgTJegSzMaFHlIUZCQryd11Rtw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793279870;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=itUwZZapIXdc7/hwn/6nDnWonFyRdq9JsQZSrTDk8M8=;
+	b=oKKQwYyXM163c2c8+VHsMzTvz9U8frXkoGiQuK5M/TneQdv+ya1NNufQq1Me2vVc20N5
+	 CVN+atV4KKlM9EIjTR6ANcdyWa0V+lqCRWU/hChrPe0u/b2O8qvX4kpokFCRcCVRl5j9v
+	 dMOrDBhmQJbnZPiSEGsQfypa6l3Z2Zylj4WvfpTxNvHCCBQB9lrEF3FrSVxZ4GzpqeV4A
+	 NTgL1PGKePHnjXvKyWVhoe+n9gnseUpvMmMgX4q+4FYCQ9Pm0xVvH1/3DdrrS0bOg9Qbk
+	 hfljyhFkfea078NU660DAYH0w0P5f7xUvt54mnVJ/Yu4o+QSBSgu1iEXqj6/5CHg1Rg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=zvTybEo+;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m7F+UgoA;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545C0606A321;
-	Thu, 29 Oct 2026 13:10:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 545C0606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20DD606A31C;
+	Thu, 29 Oct 2026 13:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=zvTybEo+
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=xEX+VUkqLlTdDV/lONb3Jp5n3X29i+nwYbi6eZJH5mk=; b=zvTybEo+UjTGt38a18tRwnzwB6
-	DT+YhzzZZEIj0vutoFd5RI6qXLSpj8+uihrnXiC0eJ/NZ8zIYnMtTK/kDCVH4ucYGyfNmyILmQXdU
-	lMCwewguiTZQ5TawgNEq3m5vAs+B0KKRhshzrxD12zSzxca2vV7Y/NhM7kChKW+ljhCs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xMPtn-00DFME-83; Thu, 29 Oct 2026 14:10:31 +0100
-Date: Thu, 29 Oct 2026 14:10:31 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Coia Prant <coiaprant@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-rockchip@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: pcs: xpcs: make supported_interfaces
- authoritative
-Message-ID: <8cd7eb4a-84ba-487a-b1f2-226d6fa02af0@lunn.ch>
-References: <20261029102728.3189359-2-coiaprant@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m7F+UgoA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEEB1F031E0;
+	Thu, 29 Oct 2026 13:17:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793279869;
+	bh=itUwZZapIXdc7/hwn/6nDnWonFyRdq9JsQZSrTDk8M8=;
+	h=From:Date:Subject:To:Cc;
+	b=m7F+UgoAfPTCwpe5Uoc1DgtiDBLVZSiVyGI2F/gKR9s5EHcoUa1huMRbg1ZoDVjRL
+	 O/zHFJXwM+Z9pcFp/A7yYgKBd7u7WMYbQA43ScDYKpxDMvYzgN+K3oDRFwLKzonu5t
+	 nWojq24tSbUCOfwWeC7Nmub9D6rZyO3hOfEgPPfH8JzoKDevV1T8b+Iw4jv6/44MgB
+	 wBAvueo5LCB5eb99rqVILG9w2IOHbni6o0+Co9yroI87Ty0EsQBLz3B9N3eSd5T+ez
+	 MTABBRsKw/rcM/pHmHtioZ4nDYgYl+mIeKAePOlOAlYnjBeDuQkpNlr1OtjgwxHSFJ
+	 hrZwwxId4BcNQ==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Thu, 29 Oct 2026 14:17:42 +0100
+Subject: [PATCH iproute2-net] mptcp: limits: fix JSON support
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,17 +52,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261029102728.3189359-2-coiaprant@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261029-mptcp-limits-json-v1-1-7ac73cdab054@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQrCMBAAv1L27EK6h1j9inho40a32CRktyKU/
+ t2ox2GY2UC5Ciucuw0qv0Qlpwb9oYPwGNOdUW6NgRz53tEJl2Kh4FMWMcVZc8LoXRho8sMxjtC
+ 6UjnK+/e8gJSaV2PCxAbXv9V1mjnYdwv7/gFnpJaVgwAAAA==
+X-Change-ID: 20261029-mptcp-limits-json-f60c82b687fa
+To: Stephen Hemminger <stephen@networkplumber.org>, 
+ David Ahern <dsahern@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1189; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=1g1/RtU5VAReTyQgFSshKePKUFWF2IjxyVXrYAuG4RA=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLIeu9dwP4s05pxySDjpgd2d21ce+s3nPPvhUEXr80XML
+ xpaP9zz6yhlYRDjYpAVU2SRbovMn/m8irfEy88CZg4rE8gQBi5OAZgIbxnDX7kdq+bnax3i/xb9
+ r8I+Y9GpLz+cJh473h5Xqp6rbS7y+C4jw951n4tMfmSohCTtPshvHhHWKHq8y9M7UPap478OV5N
+ 3HAA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-> +	/*
-> +	 * The RK3568 XPCS supports 1000BASE-X, SGMII and QSGMII.
-> +	 */
-> +	phy_interface_zero(xpcs->pcs.supported_interfaces);
-> +	__set_bit(PHY_INTERFACE_MODE_SGMII, xpcs->pcs.supported_interfaces);
+print_mptcp_limit() was trying to open a JSON sub-object and closing it,
+but no JSON object was actually created before.
 
-The comment and the code does not really match. Why not set the other
-two interface modes as well?
+Because of that, JSON support was working with the MPTCP limits:
 
-    Andrew
+  $ ip -j mptcp limits show
+  add_addr_accepted 0 subflows 2
+
+Create a plain object before calling print_mptcp_limit: an array is not
+needed here because all limits have a different name.
+
+After this modification, we now have:
+
+  $ ip -j mptcp limits show | jq
+  {
+    "add_addr_accepted": 0,
+    "subflows": 2
+  }
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+ ip/ipmptcp.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/ip/ipmptcp.c b/ip/ipmptcp.c
+index 02cf72ce..33906eb8 100644
+--- a/ip/ipmptcp.c
++++ b/ip/ipmptcp.c
+@@ -446,7 +446,9 @@ static int mptcp_limit_get_set(int argc, char **argv, int cmd)
+ 
+ 	ret = 0;
+ 	if (do_get) {
++		new_json_obj_plain(json);
+ 		ret = print_mptcp_limit(answer, stdout);
++		delete_json_obj_plain();
+ 		free(answer);
+ 	}
+ 
+
+---
+base-commit: d1341d07788e8148ce209107813861321a1fb690
+change-id: 20261029-mptcp-limits-json-f60c82b687fa
+
+Best regards,
+--  
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
