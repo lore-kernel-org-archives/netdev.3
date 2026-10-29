@@ -1,61 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793278844;
-	b=BbY5Xvrv/67dgP6qW5ovlCOXVfGwFiz0vihrqb7QlvgPY+Oqk/MMwNC3hwagtehK7lE3
-	 IHWpoCfQkjw2qQEvhhh2o7WML3y+NpCJdTuoyMQ4W+FJviTuT95/lQh3c4N4e/t6IWpgw
-	 9ZvR7kmsaHwCUlF9qbA2M6+Tc/E7WgGq8ivsxoVyaYzgqpCXiETxem8EJkHxjrG4ZK6v7
-	 3IU+0HrVl4unMJTTacy+SCUSPvGKUlb6jzDtYrDZwRCTJY4qGS/UoNuXBrFmPL83IUkDy
-	 nVP4GY2LiN4YDzUqyuTqdwyBXQ+zHPabECDsSqzlwnu2CA33hHQsLXzKzO1ZPJddiIg==
+	t=1793279456;
+	b=waHpvWwHBTWtRwpRv5izGglhtWxEgAhRcJzS88zuGZUNlRmJADbSUUEvNJv0Qsh6fS6u
+	 9maB3nVVGaDgoUGo8/LPGRmatE8l9Qg5ApBAigs3qzT34ZUV3ZSptzWTUoX+mOkidnWqK
+	 3iZUzxcqNVVLjWjAjceK7Xi6eV7XU7bIQjqXNqobVP9puzRkUYqh9yEo8AV3D/TNMId+y
+	 SG6aq71v1LjT5eoo/F0HuptnW7siJxO/oXdoIslEZ/LhxaS3DoUiQQDsubjT51y6OsGR8
+	 r1OuszTL/OPrfVSvO1e4zzf4JsoKYSJ1QK6/FJgNd7O5i7LPb2LQkiMX+cUTYR7ZorA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793278844;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=ZFxy9GtFL12rPAidw+29M+i4TMk6Yq8XwEtjbHmgAOTLdNV0Zhsq4Dt5Dx8yxG8TfIqE
-	 mPCLlHBPwbd6kRhJ62QqmHHHQTtAak+HeD/b8Q6GEQ+kCH5PG5lS+xEZ6aLFDLv/+rJge
-	 aIULafxKfCxaPLyIUrHuEBi6J6kQCfWDvyxn3HP++tW29Lyyt/eaKyY+Y2ETf5i0DQ9NV
-	 MwuyFaeBGu19IvED8ReecY4TURNRElT88KhlUFgbLSeManylq9ey16UIxYI+Dcs6ghNXd
-	 RwBL+j0O1aX8luTuTQAisyfhAJesD6H1KdEOkP8QqKloCAZ/5ZHq/68Q6SZQ2XoJumg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793279456;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=xEX+VUkqLlTdDV/lONb3Jp5n3X29i+nwYbi6eZJH5mk=;
+	b=4IDQN4MKCH5/sFBPXnDpZO1Vr/Adzu/sA26TCbQR83Gilky0E+R8y6/BrK7wcvUQVj+y
+	 Tnkr2PGDDoa/3u3fgLj+GhlQQWLAEWa9OwjxzwOWAR0dqtG3jZPpNAqodB+Iu7O7ZiJjN
+	 xvOvVAOtqlnnaX2tn1mJL9vQgSCNa7Tgee7L+dsx8YVLVWGYhNZElf//Hk4bIIzCvjVJr
+	 ilB+lS5MtrxekWfWxcoo3ufzmqhiTn2xor2zqsPFxtC/Tp8qgBkN3RRpypA3Vx14mvTsx
+	 DLcbX9Gw6Z1zXMB/eucHNWs/hJ+oMCQrEXq2f806tAgTJegSzMaFHlIUZCQryd11Rtw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MYEbjCGw;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=zvTybEo+;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A28606A320
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 13:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545C0606A321;
+	Thu, 29 Oct 2026 13:10:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 545C0606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MYEbjCGw
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996181F031E4;
-	Thu, 29 Oct 2026 13:00:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793278844;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MYEbjCGw9WWUDVH0xQDa/TG8wsxd9kUD+LFzRnxuH8pCUM4jlzXLIz+Ftsjfv4msl
-	 6vvJ3/cF79kKDtfyzdUYyV3DuG0oiPRabFmffE6x1n84roHTNtu44xskw7FMEkbiYb
-	 3UktIywSO4A00dbPvSNXO72w4qfhG+JUOhLrkgvPCG2mPYdfzNcR5UBVuj1sxnDwhk
-	 XRNPr7Kmpjy0u9FEHj3dZ1WgXIibcYE7pAOFQHwvATwCECB4Bmu7JmXchJsg4Q2njd
-	 9TfJtd60diBdzxoroqgn9r/Qvm5KLktXhST3VE/S/ZEY1eQnu6di7g3fActGkTddJZ
-	 xKQJAaTrQYMAQ==
-From: netdev-bot+sinfo@kernel.org
-To: shaos <shawnq1@163.com>
-Cc: jhs@mojatatu.com, Jiri Pirko <jiri@resnulli.us>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
-Subject: Re: [PATCH net] net/sched: act_csum: guard skb pull length overflow
-Date: Thu, 29 Oct 2026 13:00:43 +0000
-Message-ID: <179327884310.3327.9062445856146813053@kernel.org>
-In-Reply-To: <20261029125754.3835541-1-shawnq1@163.com>
-References: 
- <CAM0EoMnP3VkEV6fOAMdZ9ma9egUpV4AFfB+44k4VD7jx2dHPNA@mail.gmail.com>
- <20261029125754.3835541-1-shawnq1@163.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=zvTybEo+
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=xEX+VUkqLlTdDV/lONb3Jp5n3X29i+nwYbi6eZJH5mk=; b=zvTybEo+UjTGt38a18tRwnzwB6
+	DT+YhzzZZEIj0vutoFd5RI6qXLSpj8+uihrnXiC0eJ/NZ8zIYnMtTK/kDCVH4ucYGyfNmyILmQXdU
+	lMCwewguiTZQ5TawgNEq3m5vAs+B0KKRhshzrxD12zSzxca2vV7Y/NhM7kChKW+ljhCs=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xMPtn-00DFME-83; Thu, 29 Oct 2026 14:10:31 +0100
+Date: Thu, 29 Oct 2026 14:10:31 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Coia Prant <coiaprant@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] net: pcs: xpcs: make supported_interfaces
+ authoritative
+Message-ID: <8cd7eb4a-84ba-487a-b1f2-226d6fa02af0@lunn.ch>
+References: <20261029102728.3189359-2-coiaprant@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,21 +67,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261029102728.3189359-2-coiaprant@gmail.com>
 
-Hi!
+> +	/*
+> +	 * The RK3568 XPCS supports 1000BASE-X, SGMII and QSGMII.
+> +	 */
+> +	phy_interface_zero(xpcs->pcs.supported_interfaces);
+> +	__set_bit(PHY_INTERFACE_MODE_SGMII, xpcs->pcs.supported_interfaces);
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+The comment and the code does not really match. Why not set the other
+two interface modes as well?
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+    Andrew
