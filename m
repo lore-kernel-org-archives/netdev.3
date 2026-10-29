@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793232607;
-	b=feqGLE0CPi5DS99OVVfocgki7Sx/i9hfT9ZAPF+BFAD/LbTR40LY0oYrPuNHgfyuWH9I
-	 6ig03gyY+cytSF1KtQ0M+jqGRNEkxN0vGDRnuxZdRMJsLhtrBOP8peCqjNUkSTqnW7I9D
-	 dshZi0HlKww7Ua8jUBVuWSsEZr5jA7fYaBuSDi5KTX4TUuEbGlmpjBSW3She8oEcH0hBP
-	 uTufEENFv+6sqVJIfkzodrEgXJRD4QatTo6IQLLHtfd9/l0zxj1qgT9XFL4CIMhN53ocX
-	 wI06sS/DEXGhLZro7ayux3lWZpAKwvm4YhJlYFMq7w5CmVOJwzBStpW2+ADtALQE61Q==
+	t=1793233806;
+	b=T24wRCGLvyEOMTs8/QLH66zJqxXH541cKy0Umoxhvtq+Em+5PDVlYT6ftGUjMLdiShFM
+	 Q/22420l0pW4BNo6mkHl2quXMonz22VAUR3UEFGtvPg80NfVemKCZpunOUvJ6viJQU4uZ
+	 u7FLqImXegeHP++1kHcNsGmie2TiJjkqsNJVSNfS+Gv9/ZLEpInVHcglJAcEnoMewiPjd
+	 rTr2VMzjwm+xkA5ODlmxw4USTWTho20HA0WTm+tdyF9oM1YicGmADUQb81BS2hf0qZt11
+	 vdl9pT8taov2mpNckMYRi2KDlNE1qTO9ByDsbC8ZLySZijJ2imH/7+cuT6xR0XvY2hQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793232607;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793233806;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=3OfQ2QSCA9DJafXL9xcwhSxMAk4hs6Y1SWNeM5iir/s=;
-	b=fsVim/YjJ7iyPK2FMCru6BVx7Z8Dl4YO4VUOCwwKH9RYYmWOhR9N/ku5cTm5O9g1KQkX
-	 EmikJQlXiJS9vrNxa6a791E6AmU6iDIRwgC2TWNs60Bz8MvQH15b7t04UBIqyAQ4X+V9M
-	 0P46e+IoPrc6HQpo17EYgpvlT6g4qi5E3cwLT0qw+jG6QKyZvXHfUkXdHGkDIZT8H4FQy
-	 IUbVZOXndwl3DxTDExJQKBr8w/xHZZbG0XtzWYJE8ji/4Hds/kUglfVsIuJ2/ChakLHpl
-	 431+m24GV/rfzG23VpnwiRmxK4rul6KIgSnRF8XEbDLSp4tPR6dn7CbyQX5g2ZWOvTw==
+	bh=MkVJy2ABU9wEqzL8VVpQrhOuiMrCjjMBBCjmXmdQ99M=;
+	b=Mgqc3PEHLeLOhVUdDqLMjT8CwlQzLilGsjfSGh1JMxOpan14hJ4xZBnllmT6wipsK451
+	 5cxtVNRunt4NyLf70lPB69TlOnUV0g4GrHYzgzB9VqmiCJUSPFYex+ia5p5QEclnAVyO/
+	 2nPnpm2lPs4waSzhrBzBX3nyT/Ofi30nHwIz63ieiewp5d3d+xJvZ6CroroEEtYdjosdI
+	 wbgdITWDxDbZKD2hy6CsvQaRhYTV5p1Z4DCqxeKkBz2e1HsVE6YN5EOBRXU6JkYI63f0+
+	 Noa/WeDm8q/aXpLDXDZLYIMOsPlnRZifJvuJjjiSO//3H/zXkMOvUidZ1+4D4MGOJNQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GC9n5+AE;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OBQez1CV;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF337606A31A;
-	Thu, 29 Oct 2026 00:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC75606A31E
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 00:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GC9n5+AE
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F6B31F01825;
-	Thu, 29 Oct 2026 00:10:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OBQez1CV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71741F01825;
+	Thu, 29 Oct 2026 00:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793232606;
-	bh=3OfQ2QSCA9DJafXL9xcwhSxMAk4hs6Y1SWNeM5iir/s=;
+	s=k20260515; t=1793233805;
+	bh=MkVJy2ABU9wEqzL8VVpQrhOuiMrCjjMBBCjmXmdQ99M=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=GC9n5+AEcEImq2OnRRCiTvlvbuvBMi5fA8l/nxnEYh6VCoNh2XIWKNSRlkDLvPiKJ
-	 kAZnp3Zg6eX4Kxxc88631fotQ7N4XkyiYQP57eDZsq3oUMlfI20XNqllE7DDpdBzqF
-	 Hzdsdc1MEzR32PHBd8npAB+6c0WpmD4xjzhxVrHpF2d0FJ0fyUe0yru+eg8vTSl8dB
-	 CRXrpNo3t7QR9vUSpNuG0zJaQ0HeYAcotG98U3ck+C1ks7Upl66Dnjn/z27bocQeRV
-	 GUASe1l7Jf2TGnDsBiGd7Yf9lIuy+iLP0nG6RdmjYGbdhfJRsMrntPFDpWDt9NnDVG
-	 dGJUnkhe98F8Q==
+	b=OBQez1CVuwHlgOv27/+l3HztVUAJOtX9KsVcVJB1DLsnav+oFAxdNjWFZAeDWs6n5
+	 pPEZJMDIfOYaKfM+1/Hs7MNhklc3QikLPYkwM5zPivjTNfrNLKiG/vK90dawGMXDfM
+	 MCjItKtwo139cZ1c/S92PqP4f+DurJVLNBd/RE4ZTXAbU/4IBEXNrR4Om1NanP3/q2
+	 uaXwPkYRXDVrF0mQLvOd8c6XntnfGycq/FI9+YW/oW43JPaWNsgSQd5go4k5wk/qCT
+	 jDArQxyp3hsNPny9qCouMH3W9ywp78CwOixVM2U5KApfvgrdXusudzDFxM2nwRYA+8
+	 bAqmknRsaW2kw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 444B53AAFC4C;
-	Thu, 29 Oct 2026 00:10:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BE4FC3AAFC4C;
+	Thu, 29 Oct 2026 00:30:05 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,40 +54,39 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] tls: Honor O_NONBLOCK in tls_sw_splice_read()
+Subject: Re: [PATCH v2 net] ipv6: Protect multiple routes insertion by table
+ lock.
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179323260507.1489873.3011023044538122487.git-patchwork-notify@kernel.org>
-Date: Thu, 29 Oct 2026 00:10:05 +0000
-References: <20261027015215.605919-1-kuba@kernel.org>
-In-Reply-To: <20261027015215.605919-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- sd@queasysnail.net, john.fastabend@gmail.com, shuah@kernel.org,
- cel@kernel.org, linux-kselftest@vger.kernel.org
+ <179323380457.1497553.16735824787366357153.git-patchwork-notify@kernel.org>
+Date: Thu, 29 Oct 2026 00:30:04 +0000
+References: <20261027065247.2871134-1-kuniyu@google.com>
+In-Reply-To: <20261027065247.2871134-1-kuniyu@google.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ kuni1840@gmail.com, netdev@vger.kernel.org,
+ syzbot+751b587577d0ebca10f2@syzkaller.appspotmail.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 26 Oct 2026 18:52:13 -0700 you wrote:
-> Extract the O_NONBLOCK fix from Chuck's zero-len record series:
-> https://lore.kernel.org/20261019-tls-follow-on-v6-0-ab01c4ecca0c@kernel.org
+On Tue, 27 Oct 2026 06:52:45 +0000 you wrote:
+> syzbot reported the warning below. [0]
 > 
-> The first patch carries the fix. LLMs love to point out the missing
-> O_NONBLOCK as a risk for the zero-len record change so let's get
-> it out of the way before working on the zero-len record fix which
-> is more complex.
+> While call_fib6_multipath_entry_notifiers() is called locklessly,
+> fib6_siblings could be changed concurrently, leading to the
+> warning (and later null-ptr-deref).
+> 
+> Let's protect multiple routes insertion with tb6_lock.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/2] tls: Honor O_NONBLOCK in tls_sw_splice_read()
-    https://git.kernel.org/netdev/net/c/78ded647d43e
-  - [net,2/2] selftests: tls: Cover splice on a nonblocking socket
-    https://git.kernel.org/netdev/net/c/7c5d62eff700
+  - [v2,net] ipv6: Protect multiple routes insertion by table lock.
+    https://git.kernel.org/netdev/net/c/4c6fbb1fbafa
 
 You are awesome, thank you!
 -- 
