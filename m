@@ -1,61 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793269700;
-	b=cZqp4OJNXHsMCrB8j1W4lJOve3azRcOa4nCj9VM76ROcN/X/Ur+hPW+6v7aUgYwGwP2O
-	 bUrctYStqdTOcJsvCRkMKJFqIUogrmgtA2Z90A1FudIhRgzNoEdu0B/ZSpnWphJauk4G9
-	 AYPIiWE3lF4lhpEbvcdSX93M1eHj0RDIR7IRgSHSYByjB/MhDRFNNhH/kl8qOnsYF+j+K
-	 XJgKYLT9G2LuNXjzcJ4P8dJMXK/qF7yGx6ro7PZxzhsaMQnRr2FEMYU7G4WS/va22RV3a
-	 ypZ8hblLm6GUlf3NbkrbGZjkckvjAcy+PddvCGoAxUOS5oxwUsKgaFulZHP1+mtJGTw==
+	t=1793270055;
+	b=W55+gTvIGRz39l2PkNLsBEsXOuPoxtunJyoULRwsG+UB4kn4vE1DD4mJDB+YiKCkLXee
+	 xhr8DsE5Z8dV9Jz8xl4J+U2aOkpfFswjAlQ3cNmErMmSDenh9MeiHgV7x8ljy+djeA4TO
+	 fowP4RB2yVSM857WRd/CFrtaruId+K2PUYvXjDMUTSSDDuvpygi28P8aQMVwX7SiD6+xn
+	 6G2vzgEw3B7LFzyTd5wAwMSDzF77I6q3+za/TAJ8p486KM4IqJeltH/AAVkvGifnrKLnn
+	 6wKxKysrPxqAdWZTLPz7lemzF7ci9sIqg8F0vs60Z3Ab+NVYdZIRzbicN34y+u0B0dQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793269700;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=oGgcp45Z28OZUkne00IzmqyrvERg/7r7+ig1noWb8XM=;
-	b=jSINiFt6LgxxYhA1Yvx59rI1GGGUcqXvac23ROZYrBYHbXsyJyWR7IVXpiDsPSECGKo+
-	 NH2TH+PHrV3IwSx6Qyew9LjpJyp3cFLiOXJQl2rgwSaYD+mspezRjV+CHsFsddQeNJCWY
-	 yqtAuVv+oEe7p2tmdKiPUKtE4oA0Mm4JVymQq4OYfyHDhtJ8KHT8ZfBWGXq5mapIEvhHA
-	 favhD2ZUr+BFdEiOrfOk7No0dZVHsrpNlMehmdSSAgq8/+fb5F9CKH1lCwEdOOUWxNPm2
-	 xS70G8DDkbvEvxbhuSEC8gXg2fAA4u/y6NFREit4SYp7Aq2IDIE00DnOr9vrpNPJxsA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793270055;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Gm-Message-State:X-Gm-Gg:
+	 X-Received:X-Received:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=4Cm5Hj6AX2bOx9FeJjSt60AwCDFLiBSACiP27rlh8gU=;
+	b=0XGAQoCNHh8S92SCgvnmPXW/18wXt7KerDjrdmV/JL9npPSaJi2XiDYP13+mzZHQbG53
+	 8ml7ywELLmV0LMJVhXhLmeCTxi4/a5RlTgkCFvHfA+gL3XUdJoeMK1Vx3yI6WUioy5OHb
+	 lf4vSZ5f+M/bQoknFGEbBBEMmvS5xJ9JXECt6ltDcjdyFSggkAPuHCMMpRk108DETfT52
+	 uDr+4SUn1AUZH5MgTulwD36LIqs7PVGt9HYXzveoCxQ0KN/fQcihtPB/xXBNWyOG4nPVa
+	 GIR2GzAuhSSgMUuP735NPIwCxwdnjbBbNzMTEj9sy4U0iLhGWyCx8c9xrXUiA7dU41A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SxOO8QDe;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=C7pDxVqD;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=B0hnl31A;
+	arc=none smtp.remote-ip=205.220.168.131
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D686606A31A;
-	Thu, 29 Oct 2026 10:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E28B606A31C
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 10:34:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2E28B606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SxOO8QDe
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B324F1F01825;
-	Thu, 29 Oct 2026 10:28:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793269699;
-	bh=oGgcp45Z28OZUkne00IzmqyrvERg/7r7+ig1noWb8XM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=SxOO8QDe1Hb/nl715BtM7+3ZAz7wbQALhn2l0p6aJhTgdxAXccRjdIVI2nNxHgjAh
-	 M02TMHzB1rqSggcwM3PGppL4G8+Xiv+4lgVmQYKbKAasAHXepWcSvMb+AhqeM3S10s
-	 pRMTY2ID8Ro0RM575bu9GTqKYUsihWQONNmjtiQl55WheP0sEpubcuGaC6Ru9qARnY
-	 pdFtYvJ5Hj7J6d4oyAkWZKRkelqQ8KOqWNuR0vxWAW2E6cnegORfBYd0bG9Oa4iDbW
-	 D8FXC/Sj/ycjIwqfDJ/4uWhQcK25mCehK+urGWFE6fEn3IhGSxTO6TF7KkXCAA+1V/
-	 GM72ORz+TFgww==
-Subject: Re: [PATCH 1/2] net: atlantic: AQC113: Fix hw_packet_filter_set for
- l2 filter base index > 0
-From: netdev-bot+sashiko@kernel.org
-To: j@jannau.net
-Cc: sukhdeeps@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Thu, 29 Oct 2026 10:28:18 +0000
-Message-ID: <179326969826.3134.7069126444531845723@kernel.org>
-In-Reply-To: =?utf-8?q?=3C20261026-net-atlantic-aq113-apple-l2-filter-slots-?=
- =?utf-8?q?v1-1-d72e99b69583=40jannau=2Enet=3E?=
-References: =?utf-8?q?=3C20261026-net-atlantic-aq113-apple-l2-filter-slots-v?=
- =?utf-8?q?1-1-d72e99b69583=40jannau=2Enet=3E?=
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=C7pDxVqD;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=B0hnl31A
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69TA8VJj821239
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 10:34:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=4Cm5Hj6AX2bOx9FeJjSt60
+	AwCDFLiBSACiP27rlh8gU=; b=C7pDxVqDghSsiAGhH18CBuMUsJyLL5u85Q2NLM
+	YTvcT2ppmA83duhNwjGakLyIfjFHfcM9D4QYNl+bfsxLQDzlY/GHdJpa8gYQ0IQ3
+	OcTDb6NtFGQngG+LB5TocJsW9ieCiqMNAn39+QGrJ1qP5X5odHlrBxToUd960RTs
+	D/+7XT10OJVaDxqwqvsdTU9jcNQ7oE06J7zUJBoPWTDuJLxgXtWmioZNDeAJ4XEo
+	SGmWzdYAJY9v0Hv5GKQGN4Bif0Jg3MRIEHRn7Be8ppwjgwyrUoWd5Nwv+P7nqnrA
+	/BKfSYTCXT7+SNrDPPT3CH9JRzh4vG64Lrf580vf1dev+kIA==
+Received: from mail-vk1-f198.google.com (mail-vk1-f198.google.com [209.85.221.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hm44q82xc-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 10:34:14 +0000 (GMT)
+Received: by mail-vk1-f198.google.com with SMTP id 71dfb90a1353d-5eac42e83e0so516729e0c.2
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 03:34:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1793270053; x=1793874853; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=4Cm5Hj6AX2bOx9FeJjSt60AwCDFLiBSACiP27rlh8gU=;
+        b=B0hnl31Axo7uRbt9+iHBUpSyrmHHhzAzY41fsBgNWB14ZScKmJndzM/hka/zb9W8wQ
+         8meWRdXkxAr2vv5sEaKgvccXgd6RSaawAiVBZvMoWfurd1jG+tqDBrCQB6eUJ3SRXeNw
+         uqk9n6QnCswkaqoRrqZ7wt+iw7rv8rbRmSvxNZa3HC+GRx3bzo173QeWSqf/fiJgfff1
+         pV4V6B3GO26fv5TH4bDS0fO3Xd1C2bkJe6qwEJnk/nduCOT5hTXvSg7P5u47L7OdQk2n
+         vbfRouX+idKJSqqUxMh739S5Hx0WcNETHDtcuyy0LuEfx+kYE5qDQH8AiP7LzJGw0sf4
+         2LzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793270053; x=1793874853;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=4Cm5Hj6AX2bOx9FeJjSt60AwCDFLiBSACiP27rlh8gU=;
+        b=lIO0vaSSMDEBOoG/q1czN3Gtfy2Zm7F/zkOWoS+N/8eVka46+G3HKyHKcE/TW1D9WP
+         vpzpGPWptG87eZcpsBAmCSQtWqtLW+LJs5MPMQjk5ohLj4IiIPY/DPoqFKhsgCXxnTRk
+         UqRtFka3KOdmQRM8HpAEjpXNxf/R2V2UT+4hjX9bvzqiwb1lN1V3tH83hRm2yd+RcFEj
+         0T0ZFNpktA0Kdsux3eRnhEoKiawNTSO/QeaGqnRMRTeeiFfMlV/xBx8bA+9v+BXs9iyr
+         JmPW8pHVJYP5DcbHMgJpsAKn02Dcjeq1APi46lxIS5HKASF3lF1IoOBVt2DaLKhrbu70
+         DIJA==
+X-Gm-Message-State: AFq9FYK/lreeZOqqAl0ur2WVh+VOim7rxujro9XxNKq5InaZhPfz/t8J
+	Is1eXa0g7DfXZLyLBYcjgxKR9OIix0XGMbLjDncskHsADBXhbB5rrfTMV/K2uwqLXXfdSnqCp7F
+	X4IHkO+yXrz9RW4133IAAmwF5Ie51iEMESZ+lZ/DoqTsiCXUDXkGx/zgNVvU=
+X-Gm-Gg: AYBFou1FLcP45gnJkQqLpo3SfLK1EagULxxMqRcLwrr1TNGNqBNhuaq630xAhjNq5MB
+	Xp7ZJ37SkJP36hA9iRZOGowryZNOa8aY6jEjk/7Beo6B+iLmTN96IFzueXJhIn+Y7clWVSuh4N4
+	1Q7jHfFfAGYFK1wjFWr1bRn6Gb1yBv29scJ/9ImFvmfWtSbxJb4q7tM1WpUtGIKYA3w2zpgJSg2
+	Gb5OsrOk0dRSAZGS1DJGpCbXRx2ve7CqfeQPvpXySwCBZLIhlbEuQEfE/ewU6OWQRZmcNq/Ptou
+	qJum8phxt48umhefORq8K0LHsEepJFP7m/kUQNov/kVBi+aelwgx10lcwZpk61RvRfV3e7pd5lV
+	Tcl6ODmZmQHjR8hBFcgbCZzPOu8zHeFftlZkVHcX1M5Zs0y6EhrpIPD5CiCgAdXbLox0fox41tK
+	k6/px7k/heUrIBbCkJsUodDA==
+X-Received: by 2002:a05:6102:3e8e:b0:7cc:9d46:ac88 with SMTP id ada2fe7eead31-7d03a56c4d8mr2223876137.18.1793270053149;
+        Thu, 29 Oct 2026 03:34:13 -0700 (PDT)
+X-Received: by 2002:a05:6102:3e8e:b0:7cc:9d46:ac88 with SMTP id ada2fe7eead31-7d03a56c4d8mr2223860137.18.1793270052618;
+        Thu, 29 Oct 2026 03:34:12 -0700 (PDT)
+Received: from localhost (net-93-144-6-81.cust.dsl.teletu.it. [93.144.6.81])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ece13aasm31225069f8f.58.2026.10.29.03.34.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 03:34:10 -0700 (PDT)
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Subject: [PATCH net v5 0/3] net: stmmac: re-apply taprio offload in
+ __stmmac_open() and stmmac_resume()
+Date: Thu, 29 Oct 2026 11:33:54 +0100
+Message-Id: <20261029-stmmac-est-fixes-v5-0-85b830a795a9@oss.qualcomm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,133 +114,101 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3VNMQ7CMBD7SnUzV7UlAcrEP1CHkFxpJNJALlSgK
+ n/n1J3BlmzL9gpMyRPDuVoh0eLZx1mE3lVgJzPfCb0TDV3THVoBcg7BWCTOOPoPMbZ7rY/kTub
+ WNSC1Z6ItkNYVZsowiDl5zjF9t5tFbdH/xUVhg33fO2OVI6XGS2SuX2/zsDGEWgiGUsoPOiR7w
+ bwAAAA=
+X-Change-ID: 20261026-stmmac-est-fixes-13557ed8ab20
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Jose Abreu <Jose.Abreu@synopsys.com>,
+        James Hilliard <james.hilliard1@gmail.com>
+Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+        Rayagond Kokatanur <rayagond@vayavyalabs.com>
+X-Mailer: b4 0.14.3
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI5MDA0MCBTYWx0ZWRfX8EgwatIYxYBs
+ yDScB5D+aM+y5DpUokPmLFlUl0Pcpt7vVdCIlyqIw/OilVBPZkTW8AUhcihaeQlvCB7JYzzaQhy
+ jo63RtrSDzCLLvJkmu0XiX+bEhY3Q5c=
+X-Proofpoint-ORIG-GUID: inXQhbJrYj4Hw45ceutr4ZEsQ-_MlfNJ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI5MDA0MCBTYWx0ZWRfX5vJ/FD+AwVz/
+ 43S1pPVNh1SOohMFu4wW+BHD6dwVITdLi/8oH9V4H2dcJhzWEhVDui91MRCmDETeZ/riqOTU7dP
+ zK+ec/ara2O7Zo+KuTLQz13UR7G/QFIyEg8ZBDq6ZYlRATrkLnjLLmieYVPT6bKPH2E5/ULGnBU
+ p8njGYPrNiBBg1M7qe85Kjo/tmyhvivlnUDjCx9SFmZ8z1l6/w7D58XeaEDZBZSmbL7Fo/2xfOT
+ tr+ixqV5VsB/jclBTNszdVLR1ovGTX79C9RRo2O9IJ7r/nSSLSl8VA3U76YQsZ7JeSWYovCdpFy
+ IMpOgt/EiVt82sOSCuip2Y7nM/rYN/f/pMPhBjuNwcH7yMUQWC9NWZLjP9XlWdyyMDOSMOdk/Kv
+ BfUmJxm9RM1ULu1nP6Q3qDnSDNMrKpTBe3TSKW2dtql52rPzkYIwOyyWlzP34vN0NsZ6BifRt9U
+ ssYCkRYNZjhY9TrTSMA==
+X-Authority-Analysis: v=2.4 cv=CYmdd7rl c=1 sm=1 tr=0 ts=6ae32126 cx=c_pps
+ a=1Os3MKEOqt8YzSjcPV0cFA==:117 a=7fYLNvKHbgS61GKHX+yayQ==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=ZioezP_FgeoBEakR8UIA:9 a=QEXdDO2ut3YA:10
+ a=hhpmQAJR8DioWGSBphRh:22
+X-Proofpoint-GUID: inXQhbJrYj4Hw45ceutr4ZEsQ-_MlfNJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-29_03,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015 phishscore=0 impostorscore=0 adultscore=0
+ suspectscore=0 priorityscore=1501 spamscore=0 bulkscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610290040
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Reconfigure MTL_EST registers after sw reset in __stmmac_open().
+Remove priv->est->enable dependency in est_configure().
+Initialize est_lock at probe time.
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0
+Changes in v5:
+- Reconfigure preemption_class in stmmac_setup_est().
+- Bail out in stmmac_setup_est() if ptp is not enabled.
+- Link to v4: https://lore.kernel.org/r/20261026-stmmac-est-fixes-v4-0-999dac4de44f@oss.qualcomm.com
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Changes in v4:
+- Rebase on top of net main branch
 
-- [High] The fix is incomplete because the two functions use different
-  slot numbering.
+Changes in v3:
+- Guard priv->est.enable update using est_lock mutex.
+- Embed stmmac_est in stmmac_priv struct.
+- Rework locking in tc_taprio_configure().
+- Fix possible divided by zero crash in tc_taprio_configure().
+- Add missing reconfiguration during stmmac_resume().
+- Honor ptp error code in __stmmac_open() and stmmac_resume().
+- Link to v2: https://lore.kernel.org/r/20260829-stmmac-est-reapply-after-open-v2-1-5e5ccb185e92@oss.qualcomm.com
 
-Pre-existing issues:
-- [Medium] On the ATL2 path, hw_atl_b0_hw_packet_filter_set_int() still
-  stops at HW_ATL_B0_MAC_MAX (33), but the AQC113 L2 filter table has…
+Changes in v2:
+- Rename stmmac_est_reconfigure() in stmmac_setup_est().
+- Rely on stmmac_setup_est() in tc_taprio_configure().
+- Link to v1: https://lore.kernel.org/r/20260825-stmmac-est-reapply-after-open-v1-1-dfa80735e0a1@oss.qualcomm.com
 
---
+---
+Lorenzo Bianconi (3):
+      net: stmmac: initialize est_lock at probe time
+      net: stmmac: pass the desired EST enable state to est_configure()
+      net: stmmac: re-apply taprio offload in __stmmac_open() and stmmac_resume()
 
-net: atlantic: AQC113: Fix hw_packet_filter_set for l2 filter base index > 0
+ drivers/net/ethernet/stmicro/stmmac/hwif.h        |  2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h      |  1 +
+ drivers/net/ethernet/stmicro/stmmac/stmmac_est.c  | 61 ++++++++++++++-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_est.h  |  8 ++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 13 +++-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c  | 46 +++--------
+ drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c   | 94 ++++++++++++++---------
+ 7 files changed, 148 insertions(+), 77 deletions(-)
+---
+base-commit: d2bfe74a8fe219a86b86c1f126e1d722a5001790
+change-id: 20261026-stmmac-est-fixes-13557ed8ab20
 
-This adds a base_location argument to the B0 packet filter helper, now
-hw_atl_b0_hw_packet_filter_set_int(). With it, the unicast filter enable
-loop can start at a slot other than HW_ATL_B0_MAC_MIN.
-
-The ATL2 wrapper passes l2_filters_base_index + 1. On AQC113 parts with a
-non-zero base index, the loop then no longer touches the reserved firmware
-slots or the MAC address filter.
-
-> diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c
-> index 6c25ad264b19d..5c67edf8030c7 100644
-> --- a/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c
-> +++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c
-
-[ ... ]
-
-> @@ -1065,7 +1066,7 @@ int hw_atl_b0_hw_packet_filter_set(struct aq_hw_s *self,
->  	hw_atl_rpfl2broadcast_en_set(self, IS_FILTER_ENABLED(IFF_BROADCAST));
->  
->  
-> -	for (i = HW_ATL_B0_MAC_MIN; i < HW_ATL_B0_MAC_MAX; ++i)
-> +	for (i = base_location; i < HW_ATL_B0_MAC_MAX; ++i)
->  		hw_atl_rpfl2_uc_flr_en_set(self,
->  					   (cfg->is_mc_list_enabled &&
->  					    (i <= cfg->mc_list_count)) ?
-
-[Severity: High]
-Now that base_location can differ from HW_ATL_B0_MAC_MIN, is the
-i <= cfg->mc_list_count test still correct? Here i is an absolute slot
-number that starts at base_location. cfg->mc_list_count is just a count
-of entries.
-
-hw_atl2_hw_multicast_list_set() programs and enables entries at
-base_location + i, for i in 0..count-1:
-
-hw_atl2.c:hw_atl2_hw_multicast_list_set() {
-    u32 base_location = priv->l2_filters_base_index + 1;
-    ...
-		hw_atl_rpfl2_uc_flr_en_set(self, (cfg->is_mc_list_enabled),
-					   base_location + i);
-    ...
-}
-
-On the AQC113 with l2_filters_base_index = 9, base_location is 10:
-
-- With mc_list_count = 3, i <= 3 is false for every i >= 10. Slots
-  10..12 are disabled right after being enabled.
-
-- With mc_list_count = n >= 10, slots 10..n stay enabled. The last 9
-  programmed entries (n+1..n+9) are disabled.
-
-aq_nic_set_multicast_list() calls hw_multicast_list_set() and then
-hw_packet_filter_set() straight away:
-
-aq_nic_set_multicast_list()
-    hw_ops->hw_multicast_list_set()        /* enables slots 10.. */
-    aq_nic_set_packet_filter()
-        hw_atl2_hw_packet_filter_set()
-            hw_atl_b0_hw_packet_filter_set_int()   /* disables them */
-
-aq_nic_start() calls them in the same order. So this happens on every
-interface start and every rx-mode change.
-
-Unless ALLMULTI or PROMISC is set, hw_atl2_hw_new_rx_filter_promisc()
-programs the ART to drop frames that have no UC/ALLMC tag.
-
-Would that drop IPv6 solicited-node and all-nodes multicast, other joined
-multicast groups, and secondary unicast MACs such as macvlan?
-
-The commit message says the patch makes sure packet_filter_set:
-
-  "neither touches reserved firmware filters or disables filters configured
-  in hw_atl2.c."
-
-These are filters configured in hw_atl2.c. The second patch in the series
-does not seem to change this loop either.
-
-Would a relative test such as i < base_location + cfg->mc_list_count fix
-this? On B0, base_location == HW_ATL_B0_MAC_MIN, so behaviour there would
-not change.
-
-[Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch. The old
-loop had the same B0 upper bound, and the shifted slot layout came from
-6c1ca112a6e4.
-
-Should the upper bound still be HW_ATL_B0_MAC_MAX (33) when this runs for
-ATL2? The AQC113 L2 filter table has HW_ATL2_MAC_MAX (38) entries, and
-hw_atl2_hw_init_rx_path() walks all 38.
-
-With base_location = 10, a list of 24 or more entries makes
-hw_atl2_hw_multicast_list_set() enable slot 33 or higher. The bound later
-in the series is count <= l2_filter_count - 1.
-
-This loop never reaches slots 33..37. hw_atl2_hw_multicast_list_set() only
-rewrites the slots in the current list.
-
-The list can shrink, IFF_MULTICAST can be cleared, or the count can drop
-to 0, in which case aq_nic_set_multicast_list() skips
-hw_multicast_list_set(). In any of these cases, can the enable bits in
-slots 33..37 stay set? The NIC would then keep accepting frames for
-addresses that are no longer subscribed.
-
-The new helper only takes a start index. Could it also take an end or a
-count, for example bounded by priv->l2_filter_count?
-
+Best regards,
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261026-net-atlantic-aq113-apple-l2-filter-slots-v1-0-d72e99b69583%40jannau.net
+Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+
