@@ -1,94 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.97
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793253595;
-	b=W+ztinGz+YCUReFj//NvGf0zLyrgyhf8G0jJw99sM6Tf+ZxMzjYZeRf8zGNyY8kG2wZZ
-	 B+yHmPl/TffXDm7MXBAyragn8NsMp8qw9RQMk+OXExfGoLXXFxoimGlGIbdeA/TxyS/hJ
-	 FiiH8sEU4Hl3ZXVEdQl+4CvxpHc5q472GHE3pBybBcYMWtWSdC1zAxD5rmT6CvSiGu2I7
-	 S5K262JdRAsNeKxE9JyBNxXhQvDMyfLb82gYEARC2Aq+r9fq8WGKmVGRsGEKohMvg0faz
-	 4f6/e2uwQU062QIBH+ZyLCUyOXqmHQCon56FHwNC1SecT6kZEcbDSniRX/qRvsVqPcQ==
+	t=1793253993;
+	b=4FFXMOPw8O9hnRL0mZsy3TbEvWgM+FDAsUuM5fNQ519KhW6NDa5AifVo1q5z9g/z738E
+	 evSsvraVAu7CrqCW9ZCk80E0hMtyt9egxZDqTHdcvdETHIsHc8UI72FPSZq4pZ7eqVFy1
+	 KJDXFkb1/yMLJ3wlk8561q6BNYEDhCSQe3zJd87DkmLt3n+gnDkrEqkOZFWJ3ifD41JOW
+	 dacqy5vejhIecQSDlRkgGkViO3AZrirzgYKDNyMFkCItrXVP08qAZCcjGbIS9i3Wg7QNe
+	 7u/TjelawrCLtuJ2ZuXFTRTEGHyPFY0fM5dPXgT074SfJvq9PdXl0wCQRsbKVrXo6TA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793253595;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793253993;
 	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
-	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Received:X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:X-DetectorID-Processed:
-	 Content-Type;
-	bh=zu/YNQAtvN2GiLlgMWk6gDb09vVd5tKgNFyrsU6ybQE=;
-	b=4WwTFSEV0I8grePs6JUYKtKGavcFUXj90G5c5ObWTthMyJXyjtFiJk+xHMPSstmhRHp0
-	 JF2kT7jPlrEdltj2zXd4JMmdGKeSVvAFTSme3m3oaUeeM8HFT+EvvpfZFVOzewkaULxCx
-	 knpjyg8ORV2zD/Hx7OC/CbNKoQwsoU4uSYopIwLlOxTqJxL7CNq8CEiCFcreikrFT3mie
-	 wwAwx39hBOc4SKIRd7y4MXpCobM0oPRo7BqroVc6VTpPzPiUlkhj9uHW9/W0n68VFa86j
-	 0ogy2oBsWEouZkEWqez2wWvz7c+z8+eTASCxEn+1Z58RIVyFjI97k/jDiYZL7JMetog==
+	 X-Gm-Message-State:MIME-Version:X-Received:Date:
+	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
+	 Subject:From:To:Content-Type;
+	bh=T1kF2VKjyUzgUdkoi4y6yZVOWYKXz6GWaQQaQakuJzM=;
+	b=hN0nlIhKq8z+kU7HNPkWOeuckUZFt+kIWRXgwzEFRJ6TlfdRYqVl+7kooGPbYou1pftb
+	 AywR4SvwuIcrsNkMUz6ljbBwMBiWDnDf0/gEGQrjoJDC/TzrSROfbIqRdegLKIskFQzh0
+	 WiOAWYjSuKozopfCZklK21nAAF5ep3C2jyaYhxQxZRTFHxJnq/joKQcKSVGjijiF00mpD
+	 xHkypMX8B7Ddf6gab0DUcGo7XtI7WKNaP0PLpPTlSYHQSVmG8v44SX1XyLT8ilY4bMjeO
+	 NcseyPvAt+xw331BH/Ug4mIOIZBlOGDqsDUVy7dsy7duNDsouX8HhDpPjVCZo8XB4iA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=broadcom.com;
-	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=TYYVsz+c;
-	arc=none smtp.remote-ip=209.85.216.97
-Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
+	dmarc=fail header.from=syzkaller.appspotmail.com;
+	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	arc=none smtp.remote-ip=209.85.167.198
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB26606A31A
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 05:59:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5FB26606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=TYYVsz+c
-Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-3ab41538192so1304918a91.0
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 22:59:55 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E16A606A31A
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 06:06:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E16A606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4cc89e86e4dso2696932b6e.2
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 23:06:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793253595; x=1793858395;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zu/YNQAtvN2GiLlgMWk6gDb09vVd5tKgNFyrsU6ybQE=;
-        b=eRsn4GJqYBHlWwwjkB2MIENh7G3Ji1/XTNriwBNmkUNkT60LKRkNRBuhc0165aC6Ol
-         C5ArYlUeRx3oiRe1sxR6GM+Bb+51pPQpyu6TDYv0YbVBx6srDqy5GhuQe2we0teYaddd
-         qNcsiCSNxY7HneZ9Z9Um/hgdSBCl1HgpUKShbG7JVQFfTJJZCQ6hke1VM6zkw/yNQbyF
-         hqgxEPRd01qk8kQKmOUhCnAKuJI17YDRn53tsuogNn3U5Mk1hogu0u6xMMVziD0UUK7U
-         AfEUmHiSSpACBuuJSVl15wQIkjzkjIzJ0HoMH5IciPkIyfWr/m4Gf90Ft4s2e5tLVe5j
-         Z3OQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw4wvV9/qniMbwVgz5K2i6TmKC02iexA3DgsZfil/BQ1MT1Ag6UVh7Bro2HKkjFlHardk2Q7B8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKPS0z1bO8rislIRFddquwlmABK2lRZSsqEvm2nLquMsQmylM6/
-	Nm6Ogv2i7pqRVgDvcXwjO4NmODw8FM0Ffdzrksh9qBR1/wrwxrt7s7kIFlqSA6hgD9po3CAMyMQ
-	pdZZPRUZOcmh6QySnQz5Ulal8tlE3MCIPluOJZteAt+DvDCN+zLPTUSpuTqZDROJ/u1TPZyqPJo
-	pubArF84qLVLWkl3C2AcZm1xkqU23go953sBtWt1hKQhSh4+i/c9GYpRhN/eaQ68KaiD1S68Mof
-	UgB6Q11hMM=
-X-Gm-Gg: AYBFou3ksbp1IA39EhRLkpzE977HNATneN6GL1EIhU7fdyJz4plnFVv8Hdz0K67ONiV
-	BP4DEzc8v+CbR6InIomsKNnO51exsD4PGWgQyU9Ih4r9G5GY48JI05Jsj2csHX2Rq1wlqorUzG9
-	cSaug2+n+Ql7usi8c9c9BWgMnC+A7KbLLIllKG0IpVnQscAdL6OWu/TKBolNwu6Zc0LUKQUOa0f
-	UT8tjpiANzlYIjoKV9hO/E6dDFKp+iBnumN10WsI8rR5M9lgjQFR2ujZVS9xvt3SHwU/4zOzWWM
-	uMj7Mf2AZsZW/HVSV5dryRuAfBDgtsKapfwIXb2TWojNJvzihygNVsE35f1gTTF+agpUOWNP6vz
-	37OoTc5d/v2BhtxKLm12Tmpq+/PY8w9nM2KZAsaRANnHKmqk2WsH8hm0nLbGnLGYh17wdIuqfVH
-	dUfseKtEgH04p6t+ZDnTDtwDeZrrxIq5I5xfk=
-X-Received: by 2002:a17:90b:288a:b0:3ac:9706:7739 with SMTP id 98e67ed59e1d1-3ae5819e5afmr3682100a91.17.1793253594602;
-        Wed, 28 Oct 2026 22:59:54 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-23.dlp.protect.broadcom.com. [144.49.247.23])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae57ae6cb1sm1107219a91.4.2026.10.28.22.59.53
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 28 Oct 2026 22:59:54 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c37b2763f1bso187812266b.1
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 22:59:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1793253592; x=1793858392; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+        d=1e100.net; s=20260707; t=1793253992; x=1793858792;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=zu/YNQAtvN2GiLlgMWk6gDb09vVd5tKgNFyrsU6ybQE=;
-        b=TYYVsz+ck8WufWf4UAT428xCGIcB5ja4CpZQ96sEn/iFk5X+wGliQ7OBWv50oTIQ9a
-         UQgnmCafSY2TmIO1GC37bTvbJdBj6Pxwz/AeKK58kFMkYMe+8qRr4zOeWCKFjKCBRqUp
-         DHb0yIz0e3dlqW2DR9wHjJ+5nkLSg5YkqkdGo=
-X-Forwarded-Encrypted: i=1; AKwUvBzLi+vb3mBK+/uGQSRvv1ZVj/xLaCypcDwWQeSC7F64DJkeJa9YRz70UaC6rTNGZx1AIdmzvg8=@vger.kernel.org
-X-Received: by 2002:a17:907:868c:b0:c26:1648:a06b with SMTP id a640c23a62f3a-c49bdf5c1e6mr384888966b.38.1793253592395;
-        Wed, 28 Oct 2026 22:59:52 -0700 (PDT)
-X-Received: by 2002:a17:907:868c:b0:c26:1648:a06b with SMTP id
- a640c23a62f3a-c49bdf5c1e6mr384885366b.38.1793253591464; Wed, 28 Oct 2026
- 22:59:51 -0700 (PDT)
+        bh=T1kF2VKjyUzgUdkoi4y6yZVOWYKXz6GWaQQaQakuJzM=;
+        b=UHxfrxXxCeJabFEZdr5uD+NUwb+ZjGEv47wfBcFMn+MOaPeJOsj4/9cdrdpMv9cIaa
+         AJGNXlJmImDK5rgimUr4B17+BTs5+jcX3o/+7bRtQ64ou5BCGoKgzAs3O3SdxlbWm13Z
+         TbUwS8U/neANnOqEo2QrWT6cIM8+smzpatjhbJMXrfIvP0H2vTeog8svXQprcz79fo8J
+         vygrt0baoVEVNOW3gJRSvq41u+2qZcNu+wcyVjkgD6sCoQu7ach6Jk5zBph162VO8xi+
+         kBBu5tQ/Wgffn9hjsUwMY81ZzW64gxqiEnw3gx8Aoj7tVp1tej7zFN3ijncHvy6At31I
+         PlfA==
+X-Forwarded-Encrypted: i=1; AKwUvBx2rSltUQ9a16SOTr0K95uuwKc1RZk3K81icQ+sJ3/UOA24pmPsvJJDun2wGxfMKR+qV055DPI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIoRRMP2MsrcDvlOKOrcB5prRvgqbnef3xlvxyav+08XpJ1DkmA
+	rqrkROvYAu9gnvYRt97pUsHWjsvBxAPgBg9C8M4M//IUmlTHzpKmvoUgvJLeuAUIMeAH9agPMXr
+	ZZy+EVtksBM2zIT1k11LaOU60+Q8hvc8zJTmKSCxXBXFttFjZz8+J6py6Zqg=
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,145 +58,296 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261027234940.1267225-1-kuba@kernel.org>
-In-Reply-To: <20261027234940.1267225-1-kuba@kernel.org>
-From: Michael Chan <michael.chan@broadcom.com>
-Date: Wed, 28 Oct 2026 22:59:39 -0700
-X-Gm-Features: AclHuK_hvvVBJhxASauqZDPqt6KyvybdTMP8YQrJyBql3D88As866gH-hUPoeeU
-Message-ID: <CACKFLimhAH+1JT_ommiBoXfn7UDQ_bvO+jexrRRQNKxaAo1UMw@mail.gmail.com>
-Subject: Re: [PATCH net 0/5] eth: bnxt: fix Rx buffer leaks under OOM
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, 
-	pavan.chebbi@broadcom.com, hawk@kernel.org, john.fastabend@gmail.com, 
-	sdf@fomichev.me, eddie.wai@broadcom.com, brett.creeley@amd.com, 
-	ap420073@gmail.com, joe@dama.to, 
-	Andrew Gospodarek <andrew.gospodarek@broadcom.com>
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000611a9c065ef4638b"
-
---000000000000611a9c065ef4638b
+X-Received: by 2002:a05:6808:4fec:b0:4e6:6079:c33d with SMTP id
+ 5614622812f47-56382187468mr3050688b6e.10.1793253992039; Wed, 28 Oct 2026
+ 23:06:32 -0700 (PDT)
+Date: Wed, 28 Oct 2026 23:06:32 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ae2e268.f90c38ad.2dc092.0080.GAE@google.com>
+Subject: [syzbot] [net?] [usb?] WARNING: suspicious RCU usage in phy_detach_internal
+From: syzbot <syzbot+583f42a41879bb60de32@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 27, 2026 at 4:49=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> Commit bd3beb5c8691 ("eth: bnxt: disable rx-copybreak by default")
-> changed the defaults putting users on buggy(ier) driver paths.
->
-> Fix various ways bnxt may leak buffers under OOM. The first patch
-> fixes the real bug that was hit in production. Second patch fixes
-> an issue I hit while testing the first one. The next 3 patches
-> fix other Rx buffer leaks pointed out by an LLM during review.
+Hello,
 
-For the whole series:
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+syzbot found the following issue on:
 
-I've also asked Andy to review these patches since a number of them
-are related to XDP multi-buffer and XDP_REDIRECT.  Thanks.
+HEAD commit:    6b4b543fa187 Merge tag 'parisc-for-7.4-rc1' of git://git.k..
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=154321a5580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e675f1e23c1386c8
+dashboard link: https://syzkaller.appspot.com/bug?extid=583f42a41879bb60de32
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1629188d580000
 
---000000000000611a9c065ef4638b
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+AI-generated root cause summary:
+In phy_detach_internal(), dev->hwprov is accessed using rtnl_dereference(),
+which requires and asserts that the RTNL lock is held. However, network drivers
+can attach and detach PHY devices prior to net_device registration (such as
+during USB probe in asix/usbnet before register_netdev()), where RTNL is not
+held. When phylink_connect_phy() fails bringup and rolls back via phy_detach(),
+the absence of RTNL triggers a suspicious RCU usage warning. In a production
+kernel without lockdep, the pointer dereference proceeds safely and no memory
+corruption, leak, or denial of service occurs.
 
-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
-DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
-qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
-5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
-rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
-oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
-Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
-BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
-IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
-FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
-hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
-BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
-qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
-2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
-K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
-H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
-Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
-WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
-q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
-2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
-bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
-R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
-ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
-MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCD6qc4n
-A0Ddsyg5SL7BYX+u+oZycUOj0trKaj7llIHMGDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-CSqGSIb3DQEJBTEPFw0yNjEwMjkwNTU5NTJaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
-MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
-SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQA7foNsjbWZHCNqtPVBhR3kQkRM+CnufSa4H5ZXwJ5R
-zITqALls22tSmyAt+/GaImsgQyJUU71AMbsN7Oo4ubf4mVvADoHyt0VnkrjY4QSwi7tnrrwpZBe4
-t9Z1f1wvNsKZUijh4ls6oZ+OVILADguLEw0dQjjzRps59EGV+738Mes67kQmrMYRqBMmnG+meNxp
-mw9byMqvVXlD8UtqJvFZPfAyiWPQCH+BfQFUETXc0d1wcybJcVeBdztp+gWDWIntnEAUjAf/Cg/u
-DUmQndKEQ1f9W0sTZKQvGThOePSejo98fI1AillPAcYQykD+rpjJa4ZWcb4OE0Hp3WqnlvAD
---000000000000611a9c065ef4638b--
+full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=583f42a41879bb60de32
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+583f42a41879bb60de32@syzkaller.appspotmail.com
+
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+=============================
+WARNING: suspicious RCU usage
+syzkaller #0 Not tainted
+-----------------------------
+drivers/net/phy/phy_device.c:1831 suspicious rcu_dereference_protected() usage!
+
+other info that might help us debug this:
+
+
+rcu_scheduler_active = 2, debug_locks = 1
+locks held by kworker/1:2/1133: 5, last CPU#1:
+ #0: ffff888105ee2d48 ((wq_completion)usb_hub_wq){+.+.}-{0:0}, at: process_one_work+0x1461/0x1b10 kernel/workqueue.c:3470
+ #1: ffffc90002e3fd18 ((work_completion)(&hub->events)){+.+.}-{0:0}, at: process_one_work+0xa2c/0x1b10 kernel/workqueue.c:3471
+ #2: ffff88810b3d21d8 (&dev->mutex){....}-{4:4}, at: device_lock include/linux/device.h:1104 [inline]
+ #2: ffff88810b3d21d8 (&dev->mutex){....}-{4:4}, at: hub_event+0x1bb/0x4510 drivers/usb/core/hub.c:5917
+ #3: ffff8881135751d8 (&dev->mutex){....}-{4:4}, at: device_lock include/linux/device.h:1104 [inline]
+ #3: ffff8881135751d8 (&dev->mutex){....}-{4:4}, at: __device_attach+0x7e/0x4d0 drivers/base/dd.c:1073
+ #4: ffff888113fa31a0 (&dev->mutex){....}-{4:4}, at: device_lock include/linux/device.h:1104 [inline]
+ #4: ffff888113fa31a0 (&dev->mutex){....}-{4:4}, at: __device_attach+0x7e/0x4d0 drivers/base/dd.c:1073
+
+stack backtrace:
+CPU: 1 UID: 0 PID: 1133 Comm: kworker/1:2 Not tainted syzkaller #0 PREEMPT(lazy) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/07/2026
+Workqueue: usb_hub_wq hub_event
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ lockdep_rcu_suspicious.cold+0x4f/0xb2 kernel/locking/lockdep.c:6972
+ phy_detach_internal+0x6a5/0x830 drivers/net/phy/phy_device.c:1831
+ phylink_connect_phy drivers/net/phy/phylink.c:2452 [inline]
+ phylink_connect_phy+0x22e/0x2b0 drivers/net/phy/phylink.c:2436
+ ax88772_init_phy drivers/net/usb/asix_devices.c:714 [inline]
+ ax88772_bind+0xbb1/0x1520 drivers/net/usb/asix_devices.c:925
+ usbnet_probe+0xbb3/0x27e0 drivers/net/usb/usbnet.c:1812
+ usb_probe_interface+0x386/0x980 drivers/usb/core/driver.c:399
+ call_driver_probe drivers/base/dd.c:628 [inline]
+ really_probe+0x241/0xa60 drivers/base/dd.c:706
+ __driver_probe_device+0x210/0x460 drivers/base/dd.c:868
+ driver_probe_device+0x4a/0x140 drivers/base/dd.c:898
+ __device_attach_driver+0x1df/0x320 drivers/base/dd.c:1026
+ bus_for_each_drv+0x159/0x1e0 drivers/base/bus.c:503
+ __device_attach+0x1e4/0x4d0 drivers/base/dd.c:1098
+ device_initial_probe+0xaf/0xd0 drivers/base/dd.c:1153
+ bus_probe_device+0x64/0x160 drivers/base/bus.c:623
+ device_add+0x121d/0x1970 drivers/base/core.c:3776
+ usb_set_configuration+0xd97/0x1dc0 drivers/usb/core/message.c:2279
+ usb_generic_driver_probe+0xa1/0xe0 drivers/usb/core/generic.c:250
+ usb_probe_device+0xef/0x400 drivers/usb/core/driver.c:293
+ call_driver_probe drivers/base/dd.c:628 [inline]
+ really_probe+0x241/0xa60 drivers/base/dd.c:706
+ __driver_probe_device+0x210/0x460 drivers/base/dd.c:868
+ driver_probe_device+0x4a/0x140 drivers/base/dd.c:898
+ __device_attach_driver+0x1df/0x320 drivers/base/dd.c:1026
+ bus_for_each_drv+0x159/0x1e0 drivers/base/bus.c:503
+ __device_attach+0x1e4/0x4d0 drivers/base/dd.c:1098
+ device_initial_probe+0xaf/0xd0 drivers/base/dd.c:1153
+ bus_probe_device+0x64/0x160 drivers/base/bus.c:623
+ device_add+0x121d/0x1970 drivers/base/core.c:3776
+ usb_new_device.part.0+0xcc2/0x1686 drivers/usb/core/hub.c:2713
+ usb_new_device drivers/usb/core/hub.c:5838 [inline]
+ hub_port_connect drivers/usb/core/hub.c:5585 [inline]
+ hub_port_connect_change drivers/usb/core/hub.c:5725 [inline]
+ port_event drivers/usb/core/hub.c:5889 [inline]
+ hub_event.cold+0x51a/0xe9d drivers/usb/core/hub.c:5971
+ process_one_work+0xac7/0x1b10 kernel/workqueue.c:3495
+ process_scheduled_works kernel/workqueue.c:3578 [inline]
+ worker_thread+0x5ef/0xe50 kernel/workqueue.c:3659
+ kthread+0x373/0x450 kernel/kthread.c:436
+ ret_from_fork+0x69f/0xc90 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Could not connect PHY
+asix 7-1:0.188: probe with driver asix failed with error -22
+usb 7-1: USB disconnect, device number 2
+usb 7-1: new high-speed USB device number 3 using dummy_hcd
+usb 7-1: Using ep0 maxpacket: 32
+usb 7-1: New USB device found: idVendor=17ef, idProduct=7203, bcdDevice=2e.36
+usb 7-1: config 0 has an invalid interface number: 188 but max is 0
+usb 7-1: config 0 has no interface number 0
+usb 7-1: config 0 interface 188 altsetting 0 bulk endpoint 0x82 has invalid maxpacket 32
+usb 7-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+usb 7-1: Product: syz
+usb 7-1: Manufacturer: syz
+usb 7-1: SerialNumber: syz
+usb 7-1: config 0 descriptor??
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -32
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Error reading Medium Status register: ffffffe0
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable hardware MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to write reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to enable software MII access
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -71
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Could not connect PHY
+asix 7-1:0.188: probe with driver asix failed with error -110
+usb 7-1: USB disconnect, device number 3
+usb 7-1: new high-speed USB device number 4 using dummy_hcd
+usb 7-1: Using ep0 maxpacket: 32
+usb 7-1: New USB device found: idVendor=17ef, idProduct=7203, bcdDevice=2e.36
+usb 7-1: config 0 has an invalid interface number: 188 but max is 0
+usb 7-1: config 0 has no interface number 0
+usb 7-1: config 0 interface 188 altsetting 0 bulk endpoint 0x82 has invalid maxpacket 32
+usb 7-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+usb 7-1: Product: syz
+usb 7-1: Manufacturer: syz
+usb 7-1: SerialNumber: syz
+usb 7-1: config 0 descriptor??
+asix 7-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -32
+asix 7-1:0.188: probe with driver asix failed with error -32
+usb 1-1: USB disconnect, device number 4
+usb 1-1: new high-speed USB device number 5 using dummy_hcd
+usb 1-1: Using ep0 maxpacket: 32
+usb 1-1: New USB device found: idVendor=17ef, idProduct=7203, bcdDevice=2e.36
+usb 1-1: config 0 has an invalid interface number: 188 but max is 0
+usb 1-1: config 0 has no interface number 0
+usb 1-1: config 0 interface 188 altsetting 0 bulk endpoint 0x82 has invalid maxpacket 32
+usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+usb 1-1: Product: syz
+usb 1-1: Manufacturer: syz
+usb 1-1: SerialNumber: syz
+usb 1-1: config 0 descriptor??
+asix 1-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -32
+asix 1-1:0.188 (unnamed net_device) (uninitialized): Error reading Medium Status register: ffffffe0
+asix 1-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0000: -32
+asix 1-1:0.188 (unnamed net_device) (uninitialized): Failed to read reg index 0x0002: -32
+asix 1-1:0.188 (unnamed net_device) (uninitialized): Could not register MDIO bus (err -5)
+asix 1-1:0.188: probe with driver asix failed with error -5
+usb 1-1: USB disconnect, device number 5
+usb 1-1: new high-speed USB device number 6 using dummy_hcd
+usb 1-1: Using ep0 maxpacket: 32
+usb 1-1: New USB device found: idVendor=17ef, idProduct=7203, bcdDevice=2e.36
+usb 1-1: config 0 has an invalid interface number: 188 but max is 0
+usb 1-1: config 0 has no interface number 0
+usb 1-1: config 0 interface 188 altsetting 0 bulk endpoint 0x82 has invalid maxpacket 32
+usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+usb 1-1: Product: syz
+usb 1-1: Manufacturer: syz
+usb 1-1: SerialNumber: syz
+usb 1-1: config 0 descriptor??
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
