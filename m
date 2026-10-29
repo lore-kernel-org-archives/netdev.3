@@ -1,54 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.30
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793256394;
-	b=b4SrlDke1VjAjOlg1sc6rCYBwQtbns+s1yi4O2JSHip44ZgFwWzouE5fsk55n2MYBlmZ
-	 2v4Grbt/jcIajGCJtGQ+P3ugcIaFohWWr1s1c1DDfyTur5ly6effM3RS66R5xS2c8pbM7
-	 YTHJx2XVVIQpoMxC5xLSvaMFDdbgQpcgC7cpHWNxLaOPMF+kDWjgXvJ44/tG/PSCmvVxr
-	 kF9CH+0SC5WBMtp8o7b541X0xCHvjmHaANFQHzpAvWO1cWfMns+tddlC1dCmpIT1URiLy
-	 wnnOaOaqn5DFxaGvoRUhgRiG3ztQaMFvuXPWa8k7QnV33JMqj5vR5QcHKJm119quxqg==
+	t=1793256753;
+	b=RZ8tWDnfvOv2SFKxVtBYxNqwpP3lDrr51waETEGkjyeh2yBvScKeGPwOalRPbn6FKTtz
+	 RsKZln5ajqLXoISJggYDunxyNxBvtbz26ZfXAZJLW9MFYD7AvAC7scidUKTB1QTDgTOHc
+	 pZNQtoatYJzZfOtjZkdlSKjJdpYx0I194pEkYO6X2aFW0mFlQg1So1uxR+2YcxpCyM5aO
+	 KvMdxf07EqJ30d9yyUQeA5AkfbS7TAJvarmQySORGOsW2RxVMYdJRc2xrFNxQgfPuCzPy
+	 jD7R4I2rMSebtXUeetAVZ8sAYDoz4ikjYbS0mKFK4nPSyLxdAOPri3ClRctmmR35InA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793256394;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=EjVXytVtPdyf8nmMgK3CDP18MdmAEUR+jL88CL1mcLQ=;
-	b=FxFFV5XfZnT7A0iOodN+sKKFxyGFpfUUbXs8esRw/kRFimWscuDVX06w2dGDKp1/ZU6z
-	 rRJRpEGnGJHNeK0tq218Z7vATCb4vmO5DIoP15nwq1wIdJs32lpbFRYYS9bCxEuq9jdRH
-	 dQO4atlIDxBHIcQ2UDscmlZu96dV2ooS7RElTartfW+NKm/DvdGypdnQPuIf+nuA1LK6r
-	 F3YOTT5Vpo9n4pUuzY1XvKF6y7261qRHA7/Ggz/+h0/6m9c7gLOfyuwTTCLcI7ZT7REr6
-	 zXr8eRBPHX+jmtWJ5LW9DrD1tH2NUffG672/xpCpH/ZR95PAzRc6eDw4b1a6Ti4qz3w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793256753;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=vcihILDAFgcDCuhSue5WNeTEF7sScUqqUKJXvqpr+l0=;
+	b=ot8aqmnIliPtBAd9gyb2RRIkp0UJKOukQLzFjGc+OeXzXaNTA1G+l+LfeJaoZBDf138V
+	 ++yhBTUDP5oM6ZAxxFnLx/YxvuHAjniw40qs21LU5d+VvstAs7zhHdCUcpEiZowgePBZu
+	 y7Esy0bI2uJzA5tKW5QH1dXhqO1iRo0GM7Gdmr2vOtodzDeJtZ8uGgxqNtdQ3wI5LrLlV
+	 4ZLbjhQzWY7wxwNTsh5AVG9G7GIZa6Y8mEnKoVqwj00FboX8jqZ5IWPgxJ1pTG5A1TahY
+	 TqKnCj/rFiowqT3DsMjNZE0HrDGMVaS9/rlu9mwYYzB1IjN0Xd4BwvgNArNfMlgeRaA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j+KHWZ+d;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	arc=none smtp.remote-ip=95.215.58.30
+Received: from mta1.migadu.com (out-30.mta1.migadu.com [95.215.58.30])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFFFC606A31A
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 06:46:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j+KHWZ+d
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 610451F01825;
-	Thu, 29 Oct 2026 06:46:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793256393;
-	bh=EjVXytVtPdyf8nmMgK3CDP18MdmAEUR+jL88CL1mcLQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=j+KHWZ+dYHKbzmQLQoOsnam6P/45DXkAIfUmahGbrZ7lh+NQHEWMqBIBmt/VJSYXo
-	 0XI4JfUWyuqBTHT6XPBn9i8kTpkvCbN2lIU8R/mMGKnvWroboRKXOADjIzE3npafy9
-	 KPxsAbNd/8lHHyXdk2mTRp3N3XlqP6z/mePdUVQ6iI0qrMbm7NJxUKXWJWUpygTjzC
-	 fQBZ/j55lgT94Jv7KwXTMNeaPxF0G2huqzbhTazcW4Ksbj/Byr5rX4kTtl6Uga5ygN
-	 Mb0FbDsUzd+6bV4nn6yfE8G4mkTSmxjewesGILCsbcRrU146jDetSeH6J0I3LmhMoW
-	 GeW+OYTc3jprw==
-Date: Thu, 29 Oct 2026 08:46:28 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Cen Zhang <zzzccc427@gmail.com>
-Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
-	davem@davemloft.net, netdev@vger.kernel.org, baijiaju1990@gmail.com,
-	jjzuming@gmail.com
-Subject: Re: [PATCH ipsec] xfrm: keep the mode module pinned until
- destroy_state returns
-Message-ID: <20261029064628.GC28851@unreal>
-References: <pm-xfrm-core-objects-candidate-0003-v3-3f3e13b81234df0bb10f@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A5F606A31A
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 06:52:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4A5F606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=vcihILDAFgcDCuhSue5WNeTEF7sScUqqUKJXvqpr+l0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793256739; v=1; x=1793861539;
+ b=R19KnPYsPw8jj2qkg7t/SdlQ13ULp2eovF41diFFKQbTOE0Sp7/3EhRa8Ix1SFur98mfHZ+S
+ /gKYr2BMudxHm1i8HJn9beb9g5MCrXC+hCvBksteMuoP/R/ESPs2zt1aHmgjbfRDQSNLKPZmF+M
+ c/nL75x7cU2eP0ThiS0WZfLM=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 63eb0333a2af5555;
+	Thu, 29 Oct 2026 06:52:19 +0000
+X-Mizu-Trace-ID: 63eb0333a2af5555
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <5ae8a59a-93a1-4b51-85a6-17ccc07eda11@linux.dev>
+Date: Thu, 29 Oct 2026 14:52:08 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,151 +55,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <pm-xfrm-core-objects-candidate-0003-v3-3f3e13b81234df0bb10f@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] tcp: fix reordering addition overflow in MTU probing
+To: Eric Dumazet <edumazet@kernel.org>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Neal Cardwell <ncardwell@google.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ Kyle Zeng <kylebot@openai.com>, stable@vger.kernel.org,
+ Wyatt Feng <bronzed_45_vested@icloud.com>, Ren Wei <n05ec@lzu.edu.cn>
+References: <20261028160226.2170244-1-edumazet@kernel.org>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20261028160226.2170244-1-edumazet@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 29, 2026 at 11:19:11AM +0800, Cen Zhang wrote:
-> An IPTFS state keeps its mode module referenced while mode_data exists.
-> However, iptfs_destroy_state() drops that reference before returning to
-> xfrm_state_gc_destroy(), which has no reference covering the callback's
-> return path.
 
-This is a good example of why module dependencies should be handled through
-direct calls to functions exported with EXPORT_SYMBOL(), rather than through
-callbacks for inter-module communication.
+On 10/29/26 12:02 AM, Eric Dumazet wrote:
+> From: Kyle Zeng <kylebot@openai.com>
+>
+> Commit efb8763d7bbb ("net: ipv4: bound TCP reordering sysctl writes and
+> MTU probe sizes") widened size_needed and the MSS multiplication, but
+> tp->reordering + 1 is still evaluated as u32. RTAX_REORDERING accepts
+> an unrestricted u32, and tcp_init_metrics() can install U32_MAX.
+>
+> In that case the extra-data requirement becomes zero. A write queue
+> with probe_size - 1 data bytes and a FIN satisfies the sequence-space
+> check. The coalescing walk can pass the queue head to
+> tcp_skb_can_collapse(), and tcp_clone_payload() can produce an skb
+> whose advertised payload exceeds the data in its fragments. Local
+> delivery followed by TCP_ZEROCOPY_RECEIVE can then walk beyond the
+> fragment array. KASAN reports a slab-out-of-bounds read in
+> can_map_frag().
+>
+> Cast reordering before incrementing it so the arithmetic handles the
+> entire u32 metric range. For U32_MAX, the required size exceeds the
+> 32-bit queue and window limits, so the existing checks skip the probe.
+> The calculation is unchanged for all other reordering values.
+>
+> Fixes: efb8763d7bbb ("net: ipv4: bound TCP reordering sysctl writes and MTU probe sizes")
+> Cc: stable@vger.kernel.org
+> Cc: Wyatt Feng <bronzed_45_vested@icloud.com>
+> Cc: Ren Wei <n05ec@lzu.edu.cn>
+> Signed-off-by: Kyle Zeng <kylebot@openai.com>
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
 
-Thanks
 
-> 
-> With CONFIG_XFRM_IPTFS=m and module unloading enabled, deleting the last
-> IPTFS SA can overlap with ordinary module removal in this order:
-> 
->   XFRM GC worker                      rmmod xfrm_iptfs
->   iptfs_destroy_state()
->     free mode_data
->     module_put(owner)
->     <preempted>
->                                       delete_module()
->                                         xfrm_iptfs_fini()
->                                           unregister mode callbacks
->                                         free_module()
->     resume in freed module text
-> 
-> An unload started after the put can finish before the callback resumes.
-> GC invokes the callback outside an RCU read-side critical section, after
-> its grace period. The RCU waits in mode unregistration and module
-> freeing therefore do not protect the callback. The GC mutex only
-> serializes GC with device state flushes. Resuming the callback can cause
-> an instruction-fetch fault in the freed module text.
-> 
-> The Oops below was observed on an earlier kernel with scheduling probes
-> holding the worker in module_put() after the decrement until ordinary
-> rmmod completed. The fixture created and deleted the SA over
-> NETLINK_XFRM.
-> 
-> Take an additional reference to the already pinned owner before calling
-> destroy_state(), and release it in XFRM core after the callback returns.
-> Cache the owner before the call so releasing the extra reference does
-> not need to access the callback table after the callback has finished.
-> 
-> Oops report as below:
->     BUG: unable to handle page fault for address: ffffffffc0407455
->     #PF: supervisor instruction fetch in kernel mode
->     #PF: error_code(0x0010) - not-present page
->     PGD 80a9067 P4D 80a9067 PUD 80ab067 PMD 0 
->     Oops: Oops: 0010 [#1] SMP KASAN NOPTI
->     CPU: 3 UID: 0 PID: 53 Comm: kworker/3:1 Not tainted 7.2.0-rc5-pmb-xfrm-functional-v1+ #11 PREEMPT(lazy) 
->     Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
->     Workqueue: events xfrm_state_gc_task
->     RIP: 0010:0xffffffffc0407455
->     Code: Unable to access opcode bytes at 0xffffffffc040742b.
->     RSP: 0018:ffff8881013e7aa0 EFLAGS: 00010282
->     RAX: 0000000000000000 RBX: ffffffffc02199c0 RCX: ffffffff816fc84e
->     RDX: ffff8881013c0000 RSI: 0000000000000000 RDI: ffffffff86338344
->     RBP: ffff8881013e7ba8 R08: 0000000000000001 R09: 0000000000000001
->     R10: ffffffff893e0257 R11: ffff8881013c0000 R12: ffff888107e9ec00
->     R13: ffff888102b07980 R14: ffff888107412ec0 R15: ffff8881013e7ae0
->     FS:  0000000000000000(0000) GS:ffff8881fd929000(0000) knlGS:0000000000000000
->     CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->     CR2: ffffffffc040742b CR3: 00000000080a6006 CR4: 0000000000770ef0
->     PKRU: 55555554
->     Call Trace:
->      <TASK>
->      ? pmbd_gate_maybe+0x47/0x60
->      ? srso_alias_return_thunk+0x5/0xfbef5
->      ? srso_alias_return_thunk+0x5/0xfbef5
->      ? lock_is_held_type+0x8f/0x100
->      xfrm_state_gc_task+0x17e/0x790
->      ? lock_acquire+0x17b/0x2f0
->      ? __pfx_xfrm_state_gc_task+0x10/0x10
->      ? srso_alias_return_thunk+0x5/0xfbef5
->      ? lock_release+0xc8/0x280
->      ? srso_alias_return_thunk+0x5/0xfbef5
->      process_one_work+0x908/0x19c0
->      ? __pfx_process_one_work+0x10/0x10
->      ? srso_alias_return_thunk+0x5/0xfbef5
->      ? lock_is_held_type+0x8f/0x100
->      ? srso_alias_return_thunk+0x5/0xfbef5
->      worker_thread+0x65c/0xe40
->      ? srso_alias_return_thunk+0x5/0xfbef5
->      ? __kthread_parkme+0x175/0x220
->      ? srso_alias_return_thunk+0x5/0xfbef5
->      ? __pfx_worker_thread+0x10/0x10
->      kthread+0x34f/0x460
->      ? srso_alias_return_thunk+0x5/0xfbef5
->      ? __pfx_kthread+0x10/0x10
->      ret_from_fork+0x659/0x940
->      ? __pfx_ret_from_fork+0x10/0x10
->      ? srso_alias_return_thunk+0x5/0xfbef5
->      ? __switch_to+0x74f/0xf80
->      ? __pfx_kthread+0x10/0x10
->      ret_from_fork_asm+0x1a/0x30
->      </TASK>
->     Modules linked in: [last unloaded: xfrm_iptfs]
->     CR2: ffffffffc0407455
->     ---[ end trace 0000000000000000 ]---
->     RIP: 0010:0xffffffffc0407455
->     Code: Unable to access opcode bytes at 0xffffffffc040742b.
->     RSP: 0018:ffff8881013e7aa0 EFLAGS: 00010282
->     RAX: 0000000000000000 RBX: ffffffffc02199c0 RCX: ffffffff816fc84e
->     RDX: ffff8881013c0000 RSI: 0000000000000000 RDI: ffffffff86338344
->     RBP: ffff8881013e7ba8 R08: 0000000000000001 R09: 0000000000000001
->     R10: ffffffff893e0257 R11: ffff8881013c0000 R12: ffff888107e9ec00
->     R13: ffff888102b07980 R14: ffff888107412ec0 R15: ffff8881013e7ae0
->     FS:  0000000000000000(0000) GS:ffff8881fd929000(0000) knlGS:0000000000000000
->     CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->     CR2: ffffffffc040742b CR3: 00000000080a6006 CR4: 0000000000770ef0
->     PKRU: 55555554
->     Kernel panic - not syncing: Fatal exception
->     Kernel Offset: disabled
-> 
-> Fixes: 4b3faf610cc6 ("xfrm: iptfs: add new iptfs xfrm mode impl")
-> Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
-> Assisted-by: LLM
-> 
-> ---
->  net/xfrm/xfrm_state.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-> index 0555e5d796ed..45a52771796b 100644
-> --- a/net/xfrm/xfrm_state.c
-> +++ b/net/xfrm/xfrm_state.c
-> @@ -596,8 +596,14 @@ EXPORT_SYMBOL(xfrm_state_free);
->  static void xfrm_state_delete_tunnel(struct xfrm_state *x);
->  static void xfrm_state_gc_destroy(struct xfrm_state *x)
->  {
-> -	if (x->mode_cbs && x->mode_cbs->destroy_state)
-> +	if (x->mode_cbs && x->mode_cbs->destroy_state) {
-> +		struct module *owner = x->mode_cbs->owner;
-> +
-> +		/* The callback may drop the last module reference. */
-> +		__module_get(owner);
->  		x->mode_cbs->destroy_state(x);
-> +		module_put(owner);
-> +	}
->  	hrtimer_cancel(&x->mtimer);
->  	timer_delete_sync(&x->rtimer);
->  	kfree_sensitive(x->aead);
-> 
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+
+
