@@ -1,60 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793300107;
-	b=IomMKfbbriCJMCaFbin4X0aI5ZNeUx7A+l2oVZnSaLD7GZweDpd/gFuSat5BQquIkbEl
-	 Mo1Pfu2PTgRe8knHBuLZtipdLpi6b8cFu/uh3D50Yf9J/Qd1u691dYcWjWvZjvVVtabt0
-	 YQZqwUTixALJxeJ0bIwF+hQUNmD9rIjYx26O4+oLYzEZ0dQvxPPspgW04ss+Q+a0k34nK
-	 hbEzX8pz7hUwdt0Nuj6JK63+WCvSf1EnheDlbI8hI/eW+h+JW5t/dYpaE/LtGXl+v9CV/
-	 cJRtQE4+uIMbKDULOM00X1i1rDEsYyTQMDuLGlsm1i14rez3K4ikg6xvL10lLRYRWAw==
+	t=1793300131;
+	b=vhY6wD/8vnCR1F7txufj+L245I5jeMSX03HFDHp4ToPZCE6Uabfsd/jlfnMqLew6N9fK
+	 hgPPvxFLemUpSR08SJkVPj8s28OyBAgsnEeVebyB0PKusP7LwC6/SaJ8bV7csTa/1yfD8
+	 4Cf45+nW2mUDbUMhpZbOJT8qL1cK+WlgqJYnwwgqW5doW0mLa2MMm32hcIZLiaejIIhOY
+	 hxX2B9In+RMXMJ0RPkYMTIlka/8ZmwTtjaEYdyAXTX09G18PJ0+GhYofBweXYYL5taaQy
+	 +O8q+ZLi/4v3OnyxK7pfmLn02Wdxsa8t0BYeIipRNGXjhI2q8d9vcg5YEYGP0b88EkQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793300107;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=4fltM5gdImjF1crZCIEyXf23oKVvuU4SjhacIgA9m38=;
-	b=wLHa84QF43fm7fpyOtr9fI268buWrGQ0fewtk6MqrXEpB7fsMfSxps3sB91QnEVB+MDN
-	 8iznYqwtupHOoCDMcykpBIn07G5Nk2FXwK94jtxVd48V+N5+O0DnhHeZmwRE9QGoxeJCf
-	 Zrt3y3srQ1xJYILl0jZkRhYcsr5scZTdKWWUO+8uwRPRfXNirDjr4lEqUy4pFkRdgLIjn
-	 eNH40HtAhwAD/3A8Vfu+sSUUzCADKO6GvdhVSfnppWy/VyhVbEiZDvnTzCgMT0RpsA31r
-	 PHye8zoGD+AtO/F60K2piANbyFprFR/kqSomfMVSI2otDSB60yg3OaEhA5W6nllGIfA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793300131;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:Subject:Date:
+	 Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key;
+	bh=HHrvKgT/2K3LqufqQouf4HOOub42rH6TixN7nVjIiWI=;
+	b=ruzNmw1OK9Khxa74LkjRKtCW0+nLDB62JVO44sTihaXhrTyolqZR+ile9FfTacJH9pUR
+	 Pu5fX9maaLXssZUOPAtQrISwsntWIhzz07ZJCz/yXb3GQ5L0MVN3b/8vIjBtBrMYVd1lK
+	 MzFwTKzh3/a0yvrl4c1Dno6CN3NkiT7f3Z3lxlXxAi2SMHxEiJNLIUkOrREkWd1me7S3H
+	 Dr1snubLO0vTX18Tm2gyFM61sOScseoEExLqVAuWadefEFop3Y4HvZY3f2ffPzH90ePjJ
+	 jOmshmUJCC/+1pS34ykd5LVJ1NDLjcAIUUmx/idgp1NgkZiwQlbMKFw3Fy6xYiPKqRg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E9kR+B6z;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=l33wAZyU;
+	arc=none smtp.remote-ip=198.175.65.21
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF0C606A31C;
-	Thu, 29 Oct 2026 18:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76FD606A31C
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 18:55:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C76FD606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E9kR+B6z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C617E1F01825;
-	Thu, 29 Oct 2026 18:55:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793300106;
-	bh=4fltM5gdImjF1crZCIEyXf23oKVvuU4SjhacIgA9m38=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=E9kR+B6zd2TC56iOVx3LX/tayyHIrM5NuI2aKJ5/H4qRvNzBZBTEg5vvBBQdIWAOz
-	 xVqrQWXDdofchDu/3HVggZoiQv2YxNaBif6VpoCiB9FcYl73/xpZ+Ij5e2rTQ48MzI
-	 8xeLKMvlC8iOtrd34OfsLDTVoUtkQVgm4rX8eobo6m3YgR3f//9snSgIpYWn9zBtoJ
-	 J7Cq0shZ9AqQG2sH1RyzkKqoMfLaccSRN8+yBCmvNCi7xkeeobdEZ8iMtjIydw+L3x
-	 jI+Cqb7d1LLfIJ2QAWcLwjs7QRe2xtm6+mtbMK7blpOn98kW0TX7Cvh5jgESqC2GhT
-	 ecykRcT5hz+GQ==
-Subject: Re: [PATCH] netfilter: xt_policy: add NULL check for skb_dst() in
- output policy match
-From: netdev-bot+sashiko@kernel.org
-To: fangxy@xiaopeng.com
-Cc: pablo@netfilter.org, fw@strlen.de, phil@nwl.cc, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, liuwb@xiaopeng.com
-Date: Thu, 29 Oct 2026 18:55:05 +0000
-Message-ID: <179330010531.3134.10986246344071690394@kernel.org>
-In-Reply-To: <20261026125313.14810-1-fangxy@xiaopeng.com>
-References: <20261026125313.14810-1-fangxy@xiaopeng.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=l33wAZyU
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793300130; x=1824836130;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=9IFeJyzzRTdjZZaoVDPerD+tFpr/WPI7Q6Nnx12Saw4=;
+  b=l33wAZyUhvfzUrcuSfWCHIQgZGnFPlN8hzC3X+/SkHqHfcPoXbPezWz3
+   gvVRSyO2FvujaeGfS7JpLzY6iw5RJz6+swo0QN5vVZPOSvZuecp5oll3p
+   ESQoJ6mzRRg/XWvhP2+pOVcct1rk8Z8eUUmbLj7koMfMpuAWHcObw3sRo
+   2qqvd0jEHviREWFJcUwXnVOTskW8rsIPw+dM/H/itL2XvXV6BgcTdEkzo
+   eIcQ0EZvpwraWyJJPxgNpU32iWan+0r9Ymr7l/ZA/EBh/J5mMwd7fM7SV
+   ViPin7zZfaP1y0pC5VN5JY+lCNjp+Zsq9irJmKQQe0Sn9vQUQJYiB974J
+   A==;
+X-CSE-ConnectionGUID: LXHSsznyST2FnAl9FvPR5A==
+X-CSE-MsgGUID: zubiSocDSTCOSrTu8+Dj5Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11950"; a="2147527"
+X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
+   d="scan'208";a="2147527"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 11:55:29 -0700
+X-CSE-ConnectionGUID: 86H6f3mDR76aD4+yq0Ymqg==
+X-CSE-MsgGUID: busP35UQSju3l+yhAQDsmA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
+   d="scan'208";a="5348465"
+Received: from orcnseosdtjek.amr.corp.intel.com ([10.166.28.128])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 11:55:28 -0700
+From: Jacob Keller <jacob.e.keller@intel.com>
+Subject: [PATCH net 0/3] ice: E825: PHY restart fixes
+Date: Thu, 29 Oct 2026 11:55:00 -0700
+Message-Id: <20261029-jk-e825c-critical-timestamping-fixes-v1-0-72128d1dd928@intel.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,157 +75,111 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWN0Q6CMBAEf4Xcs5fQEkj1V4wPtSx4KJX0ijEh/
+ LtVH2c2md1IkQRKp2qjhJeoPGMBc6go3HwcwdIXJlvbztT2yNOd4WwbOCTJEvyDs8zQ7OdF4si
+ DvKHsYAbXNU3bw1BJLQm/oZTOFJHp8pe6XieE/D2gff8Ad36HSI0AAAA=
+X-Change-ID: 20261029-jk-e825c-critical-timestamping-fixes-8e1f86335de1
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Petr Oros <poros@redhat.com>, netdev@vger.kernel.org
+Cc: Grzegorz Nitka <grzegorz.nitka@intel.com>, 
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
+ Alexander Nowlin <alexander.nowlin@intel.com>, 
+ Tony Nguyen <anthony.l.nguyen@intel.com>, jacob.e.keller@intel.com, 
+ maciej.machnikowski@intel.com, przemyslaw.korba@intel.com, 
+ sergey.temerkhanov@intel.com, arkadiusz.kubalewski@intel.com, 
+ richardcochran@gmail.com, horms@kernel.org
+X-Mailer: b4 0.17-dev-67df5
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4262;
+ i=jacob.e.keller@intel.com; h=from:subject:message-id;
+ bh=9IFeJyzzRTdjZZaoVDPerD+tFpr/WPI7Q6Nnx12Saw4=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhqzH02ZMbpbz7PPWfhlx7ecE8z8KC7ZZP7E3iT48PdhQf
+ RbTZM3ejhIWBjEuBlkxRRYFh5CV140nhGm9cZaDmcPKBDKEgYtTACbiPYvhm2K4reT0QPl5ZWGL
+ ers2zHGTTNnU/LPo9o6j52VnpxmXMPz3nVC/ju3WatN2kU+7u68qswfdqjHxKbxhur3c/9iyBnE
+ eAA==
+X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
+ fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+This is a subset of the timestamp processing logic fixes that were
+previously posted at [1] and [2]. It focuses specifically on the E825 timer
+restart procedure, including three fixes which we have deemed the most
+critical for reaching customer deployments due to recently reported issues.
 
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 1
+First, the driver is modified to stop clearing the PHY_REG_TX_OFFSET_READY
+register. This register controls whether a captured timestamp will have its
+"valid" bit set. A timestamp captured while this register still increments
+the internal counter. However, since the valid bit is clear, reads of this
+timestamp will not trigger the internal counter decrement, leading to an
+off-by-one error in the hardware logic. Instead of clearing the offset
+ready register, disable timestamp requests purely in software and mark
+outstanding timestamps as stale to prevent reporting timestamps that should
+be considered valid.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Next, the E825 soft reset procedure is extended to sweep the timestamp
+memory region with reads before the soft reset is performed. Reading a
+timestamp triggers hardware side effects including automatically clearing
+the "valid" bit of the timestamp in the memory, and clearing the "ready"
+bit from the timestamp bitmap. The hardware soft reset register does reset
+the ready bitmap, but does not automatically clear the "valid" bits from
+the timestamps in the memory bank. Additionally, the hardware does not
+initialize the memory bank to zero at power on. The sweep ensures that
+the memory region will have all the valid bits cleared and the device will
+be in a consistent state after the soft reset. The sweep is performed as
+part of the soft reset because the reads could otherwise leave the internal
+counter in an off-by-one state. By always pairing the sweep with a soft
+reset, the memory region is cleared and the soft reset resets the ready
+bitmap and internal counter to a known good state.
 
-- [Medium] The commit message says the patch is defensive only ("No
-  reachable path that passes an skb with a NULL dst to…
-- [Low] The patch fixes a reachable NULL-pointer dereference in
-  match_policy_out() (net/netfilter/xt_policy.c) but has no Fixes: tag…
+Finally, the E825 timer restart procedure is extended to include performing
+a PHY soft reset. By performing a soft reset, the driver can be sure that
+the device is in a known good state at every link up. This also provides a
+mechanism to recover if any faulty logic still causes the internal
+timestamp counter to become out of sync. The system administrator can reset
+the link, triggering a PHY timer restart.
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but xt_realm has
-  the same unchecked skb_dst() dereference.
+These fixes originally came along with other changes to the driver
+timestamping logic flow, but have been separated as they are deemed the
+most critical for upcoming E825 deployments. The remaining changes from the
+original series continue to suffer from AI feedback pointing out potential
+race conditions. The link changes especially may need some deeper
+investigation to resolve. I appreciate the maintainers patience with this
+work including the multiple rounds on the original series and helping find
+a path forward.
 
---
+Link: [1] https://lore.kernel.org/netdev/710677e5-3668-4588-bd36-2d8f7fb692a9@intel.com/
+Link: [2] https://lore.kernel.org/netdev/20261027-reduction-v1-0-81237c67a361@intel.com/
 
-netfilter: xt_policy: add NULL check for skb_dst() in output policy match
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+---
+Changes:
+- The missing mutex_unlock() in the -ENODEV case has been fixed.
+- A small typo in the kdoc has been fixed.
 
-This commit adds a NULL check for skb_dst() in match_policy_out() before
-dst->xfrm is accessed. When no dst is attached, the function returns -1,
-the same as for a dst without XFRM state. The commit message says the
-change is defensive and that no reachable path is known.
+I've double checked this round through my own local sashiko instance 3
+times and didn't get any remaining reports after a few runs. I only have
+claude models, but hopefully there won't be any remaining complaints... :D
 
-> Code review identified the unchecked dereference. No reachable path
-> that passes an skb with a NULL dst to match_policy_out() has been
-> identified in current kernels.
+---
+Jacob Keller (3):
+      ice: E825: stop clearing PHY_REG_TX_OFFSET_READY
+      ice: E825: clear PHY_TSTAMP memory prior to soft reset
+      ice: E825: perform a soft reset when starting the PHY timer
 
-[Severity: Medium]
+ drivers/net/ethernet/intel/ice/ice_ptp.h    |   5 +-
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.h |   2 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.c    |  43 ++++++--
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 155 ++++++++++++++++------------
+ 4 files changed, 126 insertions(+), 79 deletions(-)
+---
+base-commit: 8f44631ba02afe9fff2f0a0fb66560ab19df87fd
+base-tree: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git main
+change-id: 20261029-jk-e825c-critical-timestamping-fixes-8e1f86335de1
 
-Is this statement accurate? There seems to be a reachable path through
-br_netfilter on a bridge port that has vlan_tunnel enabled.
+Best regards,
+--  
+Jacob Keller <jacob.e.keller@intel.com>
 
-net/bridge/br_vlan_tunnel.c:br_handle_egress_vlan_tunnel() {
-    ...
-	tunnel_id = READ_ONCE(vlan->tinfo.tunnel_id);
-	if (!tunnel_id || unlikely(!skb_vlan_tag_present(skb)))
-		return 0;
-
-	skb_dst_drop(skb);
-    ...
-	tunnel_dst = rcu_dereference(vlan->tinfo.tunnel_dst);
-	if (tunnel_dst && dst_hold_safe(&tunnel_dst->dst))
-		skb_dst_set(skb, &tunnel_dst->dst);
-
-	return 0;
-}
-
-This drops the fake rtable that br_nf_pre_routing_finish() attached. If
-tunnel_dst is NULL or dst_hold_safe() fails, the skb continues with no
-dst.
-
-The delete side runs under RTNL, and nothing orders it against the
-softirq reader:
-
-net/bridge/br_vlan_tunnel.c:vlan_tunnel_info_release() {
-    ...
-	WRITE_ONCE(vlan->tinfo.tunnel_id, 0);
-	RCU_INIT_POINTER(vlan->tinfo.tunnel_dst, NULL);
-	dst_release(&tdst->dst);
-}
-
-So a forwarder can read the old non-zero tunnel_id and then find
-tunnel_dst NULL, or holding a dst that dst_hold_safe() rejects. The skb
-then goes on like this:
-
-__br_forward()
-  br_handle_vlan()
-    br_handle_egress_vlan_tunnel()   <- dst dropped, none attached
-  NF_HOOK(NFPROTO_BRIDGE, NF_BR_FORWARD, ...)
-    br_nf_forward()
-      br_nf_forward_ip()
-        NF_HOOK(pf, NF_INET_FORWARD, ...)
-          ipt_do_table() / ip6t_do_table()
-            policy_mt()
-              match_policy_out()     <- dst == NULL
-
-br_nf_post_routing() does the same for POSTROUTING, and
-policy_mt_check_hooks() allows --dir out in both hooks.
-
-The trigger needs a VLAN-filtering bridge with a vlan_tunnel port,
-bridge-nf-call-iptables (or ip6tables) enabled, a "-m policy --dir out"
-rule in FORWARD or POSTROUTING, and a tunnel mapping delete racing with
-forwarded traffic. Given that, the pre-patch code would oops in softirq
-context.
-
-Could the commit message describe this path, so the change is not taken
-as purely defensive?
-
-> Reviewed-by: Weibin Liu <liuwb@xiaopeng.com>
-> Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
-
-[Severity: Low]
-
-Since the dereference looks reachable, should this patch carry a Fixes:
-tag and Cc: stable? Without them, stable tooling won't pick it up.
-
-The unchecked dst->xfrm dereference dates back to c4b885139203
-("[NETFILTER]: Add policy match").
-
-The behaviour of continuing with no dst after skb_dst_drop() in
-br_handle_egress_vlan_tunnel() came from 58e2071742e3 ("net: bridge: fix
-vlan tunnel dst null pointer dereference") and cfc579f9d89a ("net:
-bridge: fix vlan tunnel dst refcnt when egressing").
-
-Either one could be a candidate Fixes: target.
-
-> diff --git a/net/netfilter/xt_policy.c b/net/netfilter/xt_policy.c
-> index ff54e3a8581e1..6bbaf92f0cfc9 100644
-> --- a/net/netfilter/xt_policy.c
-> +++ b/net/netfilter/xt_policy.c
-> @@ -87,7 +87,7 @@ match_policy_out(const struct sk_buff *skb, const struct xt_policy_info *info,
->  	int strict = info->flags & XT_POLICY_MATCH_STRICT;
->  	int i, pos;
->  
-> -	if (dst->xfrm == NULL)
-> +	if (!dst || dst->xfrm == NULL)
->  		return -1;
-
-[Severity: High]
-
-This isn't a bug introduced by this patch, but realm_mt() in
-net/netfilter/xt_realm.c appears to have the same unchecked skb_dst()
-dereference:
-
-net/netfilter/xt_realm.c:realm_mt() {
-	const struct xt_realm_info *info = par->matchinfo;
-	const struct dst_entry *dst = skb_dst(skb);
-
-	return (info->id == (dst->tclassid & info->mask)) ^ info->invert;
-}
-
-realm_mt_reg registers it for NFPROTO_IPV4 in these hooks:
-
-	.hooks		= (1 << NF_INET_POST_ROUTING) | (1 << NF_INET_FORWARD) |
-			  (1 << NF_INET_LOCAL_OUT) | (1 << NF_INET_LOCAL_IN),
-
-Bridged IPv4 traffic reaches FORWARD through br_nf_forward_ip() and
-POSTROUTING through br_nf_post_routing(). The same
-br_handle_egress_vlan_tunnel() and vlan_tunnel_info_release() race
-described above can leave that skb with no dst.
-
-Would a "-m realm" rule in FORWARD or POSTROUTING then dereference
-NULL->tclassid in softirq context? This patch only covers
-match_policy_out(), not this sibling.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261026125313.14810-1-fangxy%40xiaopeng.com
