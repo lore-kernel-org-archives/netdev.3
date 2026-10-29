@@ -1,49 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793266806;
-	b=xolOurC1bpQ87Wz6Wob+lXugiIYGsBp/HBzItw7NfrG24Nz+NIAt9usI/0LPTFkSHH7H
-	 t1wyILpCT1B8DehaSWniZFGm6OBFrQb4yyQP3MsBcBtZZwWYEUoj91c8pzZETSwBIDfgu
-	 qRgdsXfoOjtgbWhmiHFqSXQm/3lXlU9oHriyj1i3Cg35jNMNjt318pMqxs9/7J6H0yhI0
-	 2uc3WsjscrbB8BQFVSNN6FHt3peAMi7DhkuE8JdZVm104S2QzykIrRH5EoRkNhcgrw2fb
-	 7Iefd4kXeB1b3XfTjpoUtvmd6aO6xTlgFhH8Gt6IHZI94sLDk56HVYBxN5paQ+n+3bQ==
+	t=1793267434;
+	b=rb46W/3r7EA8sZD+2tbQ9QrFl8v1awfdQPh0IwDQzWsQlZcXn9drf87AUqUUH86HXuwr
+	 yPA3t0McABF7V2CtqmOuapxmfPA3w3hTXMh+F/Jl6e/vX/2OYhqQ7fBxu+1fjHIbdGKLk
+	 vX+7cQxsRbZxneM9Y4h1POhJR1iMX6OPwYZYoHYpqHFXRxqIFb1Jzx72lvqvepiFBUQ1+
+	 tfv95g6d5Z9Qrh/CoOnj0aOj3pT443qOM8ZK2zMmcdg93EaG3e5dtN+J6ehoMyfyX+5QB
+	 yUZvxXGlsn1bIbjcYmg9uiu/vg3Dt6D2riQdzUAK0ISCWkkacMJnY8oHYFfM7EKRn/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793266806;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=3eAv1cEdy32yYM8r6enZ9YmdYV3ELmvkNNHj5rXV/6E=;
-	b=lE/Es+WCKkknrEysTJp3TXkfcyJ3fQie00X6mZH8pze5p1jWzNoXhsEaBrQpvVpKCi6Y
-	 o+feT4BMQ7nzoat6oirPhxHXDh/TkvBA/t5nI3X24R1C/2QUUhzgpZ2Kd3+b89n5GIXE7
-	 nxIUK9fzmFOQoNKNMWeOUDDvoHCXdd+CSFo+wI2634z6Q1bRLwoF+6Q9uWCEgZq0VyoVm
-	 /sEBMaDNfq6GYELJCwsCsmaS2i5GYb/Wch7aoqWn0BjDUfxzXj9EAHSOvk4lalZD/KaaF
-	 kDB3/eZ+oBekrl67HOJoNU4CSVpMVQGdxYKoeNvxJfIbBSpSoNXoxxABVTEVkFG8nZQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793267434;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=wlSDMq+Onl3G9IdYH55u+DZBDAOLa9ewzbFQlEUFQqc=;
+	b=zulbzSHcbWL6Rqyukq+8T563wPz/3V9REuxNGX0RwiY/KCSQ1pftZEhnsjJoellKjuue
+	 Brpe/WRBHg4Wi7bl9higvRw9W7FXGOEzFrMQFNFuiCkWFlHpRDha9oBuptQG8seJoQutn
+	 ZydyiFkEkhv/4ti24w6VBAXVPUXxhQL+yoK3TqGpk6giIoVR7aPdxGgr9fVbaAHsJ7bLg
+	 eX1FzvsYVprePcB1qYze8c+IE+wftsZXrG8aZovaDVP5sjl1do8O4IUazNZv7tA+z1VFT
+	 tlJrYxnL38T/4GjeSxNNDyDNmTTp923qeCH0Ed4Xyq4vZYkVHkwQOFjnwL5lJHcm7rg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dm7HLKwg;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fsLEvWhs;
+	arc=none smtp.remote-ip=74.125.229.9
+Received: from mail-dy2-f9.google.com (mail-dy2-f9.google.com [74.125.229.9])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A006606A31A;
-	Thu, 29 Oct 2026 09:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2C9606A31C
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 09:50:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1A2C9606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dm7HLKwg
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC151F01825;
-	Thu, 29 Oct 2026 09:40:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793266806;
-	bh=3eAv1cEdy32yYM8r6enZ9YmdYV3ELmvkNNHj5rXV/6E=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=dm7HLKwg3D6IephB+SDq+QcVxikrdJnWMIWS+JbRTSfoXSm860P4BjEIV0JVvVOwM
-	 hMua5vxWMBRQ2z+ydxHwYjgQL99fvyC4hBd4NI50tycIQ7xhTKYe6HrOa/t9xzgSkm
-	 I5wXVVXF5oA2CZCxlGgklYcp2P8fQBm/LhxRMZpHM/aCYOvVJLk93MjJjEOfqmJ+uQ
-	 w8M4wKsVx1ZZKEsT02gx0M4mcghRhXlvIWG8JqFg4pyHYuPXnbYTUupO4xVE51uCLt
-	 xQKngvQ9CXk0j2Y2bbx9w3VcTRI2r99ssB9QH05gliWALYjbbgB7MfXU2aAf6dJvDr
-	 S3d8w462QemUQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 073963AB1399;
-	Thu, 29 Oct 2026 09:40:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fsLEvWhs
+Received: by mail-dy2-f9.google.com with SMTP id 5a478bee46e88-34cbc588a31so1012873eec.1
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 02:50:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793267432; x=1793872232; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wlSDMq+Onl3G9IdYH55u+DZBDAOLa9ewzbFQlEUFQqc=;
+        b=fsLEvWhsLauaXv8IFmCQXSUEAwtnV8yS5qvAuJglzHLUhmGPhuNlLSrFRnq1xYYSXF
+         tpq/e5sTapHttdDlLZwQ++5LnC2FUKAJbTLz74WFlrr0ObZU6EcUKBPh5GFGgXQQrDXx
+         9ALoQAsZ/vyAiU1ZYniw8u7t0ksEYI8lvn456NyhGjneK5IQUOX2/KwPlmoPUjYq7Rve
+         xTBvZfYjG5P6fWFUgKVV2QeG1TqDFDQJD9YruvwMo3izHHjOT2WWGCpTUluzFYb8NlW/
+         8GhrWXTG+aNwEPPjnPsr5X/3cwCu5ZMVyoCV+Bs/5+ddlsRun2B6wORR8L9skm4rcnB1
+         7QDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793267432; x=1793872232;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wlSDMq+Onl3G9IdYH55u+DZBDAOLa9ewzbFQlEUFQqc=;
+        b=rkbP/1XbGvJXQoP+MyBCz8n6yWdU9FGG3Hmq6JXDipdBbyis+YVYW+MOFNSe3/1ZGu
+         ozmn3CB77hqIS5rDu0Ji9yWKqQCwiSNxrGU2wq5JSblHgsgR6EYF/eOqJ7WlVqfPNM+q
+         rEU65L78PCK90biYf4FUdCT8POIawsWgu+YrHZyKonMKo72D71o6+0rX0UQ8q1E4vN/H
+         2eLkA85SNNKIb3dLJWWDnIM0G49QRXY8uCY63Nw7Yw4tS4VPi0jpm84vcwfJaWWz08Ji
+         CN3mRW1/99hYEunUNrIIAENzKp5tb946WzsIDpVliXjZ/na+deMvIHQ4rRbwSDNZcLvB
+         mReQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwy5nRpsXTQZcpuXUgcilFS33RSqRlR9j4aDfSeqytP3Coc+b2Z7vdypJS2NqYWH3sWr/cIkXA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJFW+59+t7Ano1DBcE2o8pW5nwPijUDznmwrSqVCQW0wM/Tgji3
+	eQBoak2MTOBoRaHT1tlpjK2SwAA2F91xsyb58HSeWCxP4A41cIwXj0cS
+X-Gm-Gg: AYBFou0DpSsBr9NJ9wjRetZumPFpIOFlQZCjFYTsuGuBRZjy6YE+0JMxav6O9oPZETH
+	9v7ZMyK+S6x8O8635KbxZzpwOGOKZWRXSo3R8Eh6Kup7AzB2ngYPDsK6JOoeqlbyGZsSsVXSVAb
+	JzZ0EZ7vjvZi0UklDQMFRXR+RUY8/BKidWb3RcRw2H5BliNinNOBR7LyPtcsf4N3dubfr6qYYAQ
+	it/OenSukKY3fqYFHTqgt+EqynNYmBv3QBHdX67ofi7ql7WrM8bzs7Idla/WlOxC+5FemOMJOf3
+	SyawzXHVFD957389lsYgj5bHY2NFfOhz09rZdyJ2gMuv1pKBMytntZT0vKexRGsTdLeJbeDfown
+	DO76G7oVfiklH6CVPDVozSPKXTanvJGhF+hPO88kQomgXHC4RM2c6sN/NroAdPMlztSQ4EFrPY+
+	oW/29wmsIncVpkhIucuQNHUY46H0hRhzXHIYeUHZT+Zw1HRS5d745l+4QkxRSoBw9alTwPM5ktA
+	H5p5Ej2L5eogtccWsZvz+M3nyiWwS9qh3uptvJFAmbr9gqWCaxV6QsZgvgxmvMriOynZFOt0zq8
+	86AteqHpmdO14R2pHfh4o1i4fOo=
+X-Received: by 2002:a05:693c:881a:20b0:35e:f1a5:9ba6 with SMTP id 5a478bee46e88-36a202869c9mr7131516eec.5.1793267432214;
+        Thu, 29 Oct 2026 02:50:32 -0700 (PDT)
+Received: from server.lan ([168.138.199.194])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a239338e2sm18527707eec.18.2026.10.29.02.50.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 02:50:31 -0700 (PDT)
+From: Coia Prant <coiaprant@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Coia Prant <coiaprant@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: pcs: xpcs-rk: limit advertised interfaces
+Date: Thu, 29 Oct 2026 17:49:17 +0800
+Message-ID: <20261029094916.3127193-2-coiaprant@gmail.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -54,45 +103,41 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/mlx5: Only set num_doorbells on a fully
- initialized
- SF
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179326680482.1714515.15230223868854423149.git-patchwork-notify@kernel.org>
-Date: Thu, 29 Oct 2026 09:40:04 +0000
-References: <20261026084503.4122732-1-tariqt@nvidia.com>
-In-Reply-To: <20261026084503.4122732-1-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- cratiu@nvidia.com, dtatulea@nvidia.com, gal@nvidia.com, leon@kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, mbloch@nvidia.com,
- saeedm@nvidia.com, horms@kernel.org
 
-Hello:
+The RK3568 XPCS supports 1000BASE-X, SGMII and QSGMII, but the RK3568
+GMAC only implements SGMII, so only SGMII is advertised in
+supported_interfaces.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+The generic xpcs core fills the mask from the compat table, which
+includes 1000BASE-X, QSGMII and the higher-speed modes. Clearing it and
+setting only SGMII keeps phylink from validating interfaces that are
+not usable here.
 
-On Mon, 26 Oct 2026 10:45:03 +0200 you wrote:
-> From: Cosmin Ratiu <cratiu@nvidia.com>
-> 
-> The validation for the num_doorbells devlink param rejects values
-> greater than num_channels. For lightweight SFs, this ends up accessing
-> a NULL priv->eq_table, leading to a crash.
-> 
-> Fix that by rejecting setting num_doorbells on uninitialized SFs.
-> 
-> [...]
+1000BASE-X and QSGMII can be enabled later when a board actually wires
+them up.
 
-Here is the summary with links:
-  - [net] net/mlx5: Only set num_doorbells on a fully initialized SF
-    https://git.kernel.org/netdev/net/c/fa503935c2d6
+Signed-off-by: Coia Prant <coiaprant@gmail.com>
+---
+ drivers/net/pcs/pcs-xpcs-rk.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-You are awesome, thank you!
+diff --git a/drivers/net/pcs/pcs-xpcs-rk.c b/drivers/net/pcs/pcs-xpcs-rk.c
+index 6f0a110e32d2..cc11a70d624f 100644
+--- a/drivers/net/pcs/pcs-xpcs-rk.c
++++ b/drivers/net/pcs/pcs-xpcs-rk.c
+@@ -536,6 +536,12 @@ struct dw_xpcs *xpcs_rk_create(struct device *dev, struct device_node *pcs, int
+ 		return xpcs;
+ 	}
+ 
++	/*
++	 * The RK3568 XPCS supports 1000BASE-X, SGMII and QSGMII.
++	 */
++	phy_interface_zero(xpcs->pcs.supported_interfaces);
++	__set_bit(PHY_INTERFACE_MODE_SGMII, xpcs->pcs.supported_interfaces);
++
+ 	xpcs_config_eee_mult_fact(xpcs, pxpcs->eee_mult_fact);
+ 	put_device(&pdev->dev);
+ 	return xpcs;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.47.3
 
