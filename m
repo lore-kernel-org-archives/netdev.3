@@ -1,99 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793254943;
-	b=5NneuQcPcsPlCso3u4D4BzZ1FoiNdO1vZsg3/FNI4g6lIxRkeFGJ+ckzkiYJAzHwjz9X
-	 BAty2sM+9dTAfCHREYE5FwlAll5odNe8H9v5y9BJES21YKqPuS+8nuAAa3srEPRJyBmLA
-	 YPduIfZ1s/yKSvd1SmvRWRO2zVukxXbGn3BzdF/OFtBk6TrKr3mpJ0k1ckUeEXcBoZz17
-	 LB2Am2Hy5Aohq+MqmOK0i5ZvBf50xfB/JARuQq/7nX51oCykv54QV3t0hPcq8Zr0Sg6tX
-	 0NG91soIOEaSpwt/xXuMpqvccybf1T6AzNhOWR6e5CRn4JiY1FmnXFD03QZYmUFCQlw==
+	t=1793255045;
+	b=N88YINdu2L6Pzz2AYAnMrdK6UmvM36Flxb4C80WGaSxdZL3orDuT7h1ET3EPJ29jjZaN
+	 TowRu6eHq30dLlQ+dSEOEWLEe+HKwo6kNTIuE55mDRd0iBZG4PahsaxzYfsVkee5N3E2n
+	 CcGLa/DERbH6Q0P7i/QVidxIp7XMA/pBqL6sLFOVPingl8VGDPm3eI6n3uEt0LUZ4zdYN
+	 V5Ruq6HQRGQzmCL16DVQyVwuyAFMe80J6Kz9GcGHpIOnErCaVxAhmGee+LvGB9r17Nym/
+	 6YEuqh1CpCHbC2MOxahR9j4qIZP6Wt0BkZSU38ntE7z7kZrYxzBC7ImnnqtmkyelJXA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793254943;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=hbo7nQaUa/EkkUfMTIBslWqezjGArgpu55P/FDSfP00=;
-	b=SlVn+RA4tEEP6AcmssI8zhuyVPAfaJ05m4S1sAyCbu3Jlz4kEoVTfZ4tH4u2SobwoEFK
-	 UzATqDgMw8xvNxVQVM2bTuC82FQ5FBKkDzjNyhJbuPcLpBeW6IRX3U8W2SrE3dbhQOHHi
-	 uDZBEa5Rg1Jws5Adnsz63h5RPGtzRFVYtM++X6vUT4pkskR0P7DBh2cfkJyBTrlNsrblP
-	 oEQzjzsy6S1LoW4YKffppynBfRZbrwcGu2ireCJQVTGXpD7R3WZQpfKjz+JIgv7BDhDhp
-	 kzI925IWvUKxGdB4Txk774bPfzFyGxXpdKEAfCP6yl+qo8EjVVLuaBdKgr8K3konlhQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793255045;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=62zl3zv2d5JAkHiUi8pE4KR/NfZKfMMIyW7AuqAQ65k=;
+	b=t2MHKLw1tHkj/G5E6NpwEYXr/dzSP4Iee2V5DXGixGN0hFfQUO+pgoUuEXV0Sud9CbWS
+	 XTE9di4kn3MebTWceVfXClC+6kPJMKkv4cQ6ncd1+H4AKhtpQX0F3KDLqoM5EvbNpeHuJ
+	 nsNyVk7s9SDDmmfP4COppXlumVwV9KhlQK/gRuebc6D3bMRIZ86/zXlwZL9L31TRQ7DD1
+	 aZ7M00XBEOCzeAQy2Dhn1cizLIB/cSgYixJoUe7wn78B+957mv9Yg4a3HlymueFYXxGLF
+	 kTYG2JEXPq3SFjhHpT/yArzuHtZ2vKfRGpOzQ2FEQXiURWQmUK5VUBIBwdhOVtEQUaw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=czW06I39;
-	arc=none smtp.remote-ip=74.125.82.181
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mF4lIu+t;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40453606A31C
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 06:22:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40453606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2261606A31A;
+	Thu, 29 Oct 2026 06:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=czW06I39
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-33fb4680717so561711eec.1
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 23:22:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793254942; x=1793859742; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hbo7nQaUa/EkkUfMTIBslWqezjGArgpu55P/FDSfP00=;
-        b=czW06I39WAaqRuUvXHBaDZL79RltalM9VPne66lA88RZcj4wz9qay+eXxG2bV4U9mf
-         teWcrAk62lbFCH7KXzgikY8jcFx86EYSmprQa6qR8nFzPp7glA/nNS70Z7T74i52Kw5D
-         +cpE4qPgXg0VOLxX3KLMrOIqoJLYqZEVdYU965A6PkTa4p9O9MgJ5a/fZWGlG446Iw6Z
-         PvRzDrgpJD4hx44HEXUggRzYNk8BVaqrr0bDCPNaPByYAvAvcrk5rXK5GCSU1y+vh2o7
-         G76IQvg3vu3LTCxdYFBcXqllljOXtL7P8406NMQvvD+BDWd3Nf3t90ERIsxYzs8+fsYq
-         paTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793254942; x=1793859742;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hbo7nQaUa/EkkUfMTIBslWqezjGArgpu55P/FDSfP00=;
-        b=yZmz3qlvUSvaox9mIbX3QyqoQDJYY56dEo0A45DM+Ltjzt708NaL7UQZ90e6FMTMWG
-         O4Gq4mW1TZHY0vOnvv/sHPuP+DD7FEqldI5LBVx8qga0hKBKrRZVx0tjKBe34NM9eOas
-         glGwu3az8K1PVQM9IO5JNd7qsOsYdrGBtygXCapja8E3hDb048rfuCT/r2EiNrUVdYFg
-         09btIecW5yxWygzPhsV4xZsx4N7jH5vWgmpFoTirRUCpVF7/+csy2r2lJINPBuH+YN3/
-         0JAV7HpGAcHfwyUXl9ZfybqqPCK4GMZYGl/TWXVc9HaVtB8At02xj6SxkG0k2BeCI4N7
-         ioKw==
-X-Gm-Message-State: AFq9FYLkKDfl6Ndvo8iziXGn2OsWW+WM8jniYM497tQKlIhu3jidXnnZ
-	TDQql0fsCg0icq2eFrCF3rKhnm4qS9w58XIbmlCu9ioeXqH4x0gp5pgdx+SMnA==
-X-Gm-Gg: AYBFou0KQ5aeY+ZGhuw5EFl2GJjZK7snL2cxA+szFXbBvL8R7djEoUNnU9WiaXHLIxH
-	o2W9wsFbWWrl8shFyR0Yb2+2pfla3em4H1ln5s6SBlbjSXikW6sikRLLb79QtxcH9kZNhOBixNa
-	C81wIjRpCfs/AJtfYeDgqFcC1pW/qhLHFZ+NYJ/TLsiYaU+/mrkw6slXGsGEaOj4prGYi4pWEYa
-	7KcwHUlT7WmNkV/3Uj8kTMrJ3qtSGa2NAg18aoOpOzJ4Bzml562942njz6VpScSmxbaLtOO5gzg
-	GOIgRV3QU6SaLJUei+gfnZqOqxkEbxyNYCnzBhxLm6OG0pBh521Im2QlGkfl01PsIfaC6Swg002
-	a5TZurIIXkBDc2DWAgZFBg2r7Dnz5FE/V9xL3C8L5OgQH66yIfhtbIcnsc6EwppdQ7LS3cvsN1U
-	1F6kdn7J1sqj1IU1y3mH+JHWgjP6/zA8R5Cts+dQofB6xrePzZVTVoQuqVjzjSCXLtC3bduBpbY
-	vDAupDYjD9q5aXmxGnvuZfrQGRj2fDmaaRtGl40I4CmSQ0ijvC5pVnkZGTQMCudLyVTRPYsOrVS
-	gnl6QZVzyzQt4JDR/iUGv+jzUMM5XFN0hZuw9VdXNgDR8hmmL6JsfM8YYodVm43LZTlIZ3e+DlR
-	0sK02+73hfYqFARNvg1g02oNrlSuLfLycNPH6xIslwgEd4VvEUqjWV9a8i1i86vL8GaFmYOBbxg
-	==
-X-Received: by 2002:a05:693c:864c:20b0:36a:1819:4d0c with SMTP id 5a478bee46e88-36a2046c99amr7459938eec.41.1793254942061;
-        Wed, 28 Oct 2026 23:22:22 -0700 (PDT)
-Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a239a56e9sm13608255eec.27.2026.10.28.23.22.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 23:22:21 -0700 (PDT)
-From: Anil Kaushik <anilkaushikwireless@gmail.com>
-To: netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	XingWang Xiang <v3rdant.xiang@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	linux-kernel@vger.kernel.org,
-	Anil Kaushik <anilkaushikwireless@gmail.com>
-Subject: [PATCH net] genetlink: Reject joining multicast groups no family owns
-Date: Thu, 29 Oct 2026 06:22:14 +0000
-Message-Id: <20261029062214.3407223-1-anilkaushikwireless@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mF4lIu+t
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E6791F01825;
+	Thu, 29 Oct 2026 06:24:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793255044;
+	bh=62zl3zv2d5JAkHiUi8pE4KR/NfZKfMMIyW7AuqAQ65k=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=mF4lIu+tGM8htzhrd/5kvMqyF65tQpiuQ34e53o2G3K+UxilPphvpRhQKhkmmvDVe
+	 Jl+qu25/UYtV9GTQTv1wotIBgRz82g0V0f9HhEsV34eFNUdUyvpLWY8KoKee39i4S0
+	 n3HQ07ZfPw9QIQkTzL1wDesaN99GqcDdyr3qsjsq958Jc1PNVHTWswPol0SeLF+BUc
+	 lSc63C1OiCFLs1J+WEVtNaXNnPdMtCvOZb6qkIGQYrkM5dK9P5kLEWmPeXKFuDKeyO
+	 LW0OnaUSn3ebNL8qmx9v2HOyHNEhbNS/PA8oQOleDuwqf3c2A2MQVrm67B43+15jif
+	 1kxvd4LyJWDQA==
+Subject: Re: [PATCH net v4 2/2] selftests: net: packetdrill: add test for
+ negative sk_forward_alloc in tcp_wmem_schedule()
+From: netdev-bot+sashiko@kernel.org
+To: tavip@google.com
+Cc: edumazet@google.com, ncardwell@google.com, kuniyu@google.com,
+ davem@davemloft.net, dsahern@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ shuah@kernel.org, horms@kernel.org, willemb@google.com,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Thu, 29 Oct 2026 06:24:03 +0000
+Message-ID: <179325504311.3134.4521422682926617403@kernel.org>
+In-Reply-To: <20261026032216.1145201-3-tavip@google.com>
+References: <20261026032216.1145201-3-tavip@google.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,69 +65,209 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-genl_bind() checks the GENL_MCAST_CAP_* flags of a group only when a
-family owns it. For a group ID that no family owns, it returns 0, so any
-user can join it.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-A family registered later can get that ID, and the socket stays a member:
-nothing checks it again. An unprivileged user can join the free IDs, load
-a family module with CTRL_CMD_GETFAMILY, which calls request_module(),
-and then receive the notifications of a group with
-GENL_MCAST_CAP_NET_ADMIN or GENL_MCAST_CAP_SYS_ADMIN. For example the
-drop_monitor "events" group always gets ID 1, and is free until the
-drop_monitor module is loaded.
+Critical: 0 · High: 0 · Medium: 3 · Low: 0
 
-Fix by returning -ENOENT from genl_bind() when no family owns the group.
-Nothing is ever sent to such a group, so joining it has no use.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Found by the Sashiko review of the gtp multicast group fix. Tested as an
-unprivileged user who joins all free IDs, then loads gtp and
-drop_monitor:
+- [Medium] The REQUIRES_MEMCG check in ksft_runner.sh (lines 61-72) only
+  confirms that `+memory` can be written to the cgroup2 root…
+- [Medium] cleanup_memcg() in
+  tools/testing/selftests/net/packetdrill/ksft_runner.sh (lines 73-80)…
+- [Medium] Step 4 of tcp_wmem_schedule_negative_fwd_alloc.pkt (lines
+  98-101) depends on the two `echo 0 > memory.high` writes having…
 
-Before:
-  joins: ok=62 EPERM=2
-  gtp/gtp (ID 15): member
-  NET_DM/events (ID 1): member
+--
 
-After:
-  joins: ok=19 ENOENT=43 EPERM=2
-  gtp/gtp (ID 15): not member
-  NET_DM/events (ID 1): not member
+selftests: net: packetdrill: add test for negative sk_forward_alloc in tcp_wmem_schedule()
 
-Link: https://lore.kernel.org/netdev/179324692107.3134.14443689892607921337@kernel.org/
-Fixes: e03781879a0d ("drop_monitor: Require 'CAP_SYS_ADMIN' when joining "events" group")
-Signed-off-by: Anil Kaushik <anilkaushikwireless@gmail.com>
----
+This adds a packetdrill test that pushes sk_forward_alloc negative through
+tcp_collapse() while sk_wmem_queued is above tcp_wmem[0]. It then checks
+that a non-blocking write() under memcg pressure fails with EAGAIN. It also
+adds REQUIRES_PAGESIZE and REQUIRES_MEMCG directives to ksft_runner.sh. The
+REQUIRES_MEMCG directive enables the cgroup2 memory controller and installs
+an exit cleanup handler.
 
-Notes:
-    The gtp patch: https://lore.kernel.org/netdev/20261027130623.3136658-1-anilkaushikwireless@gmail.com/
+> diff --git a/tools/testing/selftests/net/packetdrill/ksft_runner.sh b/tools/testing/selftests/net/packetdrill/ksft_runner.sh
+> index 0a97d5ae34699..ba62f3840eb57 100755
+> --- a/tools/testing/selftests/net/packetdrill/ksft_runner.sh
+> +++ b/tools/testing/selftests/net/packetdrill/ksft_runner.sh
+> @@ -52,6 +52,34 @@ if [[ -n "${KSFT_MACHINE_SLOW}" ]]; then
 
- net/netlink/genetlink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+[ ... ]
 
-diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
-index 5cc1037d4917..f038f04ef4ea 100644
---- a/net/netlink/genetlink.c
-+++ b/net/netlink/genetlink.c
-@@ -1825,7 +1825,7 @@ static int genl_bind(struct net *net, int group)
- {
- 	const struct genl_family *family;
- 	unsigned int id;
--	int ret = 0;
-+	int ret = -ENOENT;
- 
- 	down_read(&cb_lock);
- 
-@@ -1841,6 +1841,7 @@ static int genl_bind(struct net *net, int group)
- 			continue;
- 
- 		grp = &family->mcgrps[i];
-+		ret = 0;
- 		if ((grp->flags & GENL_MCAST_CAP_NET_ADMIN) &&
- 		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
- 			ret = -EPERM;
+> +if grep -q -E '^--define=REQUIRES_MEMCG=' $script; then
+> +	cgroot=$(mount -t cgroup2 | head -1 | awk '{print $3}')
+> +	memcg_was_enabled=0
+> +	if [[ -n "$cgroot" ]] &&
+> +	   grep -qw memory "${cgroot}/cgroup.subtree_control" 2>/dev/null; then
+> +		memcg_was_enabled=1
+> +	fi
+> +	if [[ -z "$cgroot" ]] ||
+> +	   ! echo +memory > "${cgroot}/cgroup.subtree_control" 2>/dev/null; then
+> +		ktap_skip_all "requires cgroup2 memory controller"
+> +		exit "$KSFT_SKIP"
+> +	fi
+
+[Severity: Medium]
+Is this check enough to decide that the test can run? It confirms that the
+memory controller can be enabled at the root. It does not confirm that
+socket memory is charged to the memcg.
+
+If the kernel boots with cgroup.memory=nosocket, cgroup_memory_nosocket is
+set. In that case mem_cgroup_css_online() never increments
+memcg_sockets_enabled_key:
+
+mm/memcontrol.c:mem_cgroup_css_online() {
+    ...
+    if (memcg_on_dfl && !cgroup_memory_nosocket)
+        static_branch_inc(&memcg_sockets_enabled_key);
+    ...
+}
+
+mem_cgroup_sk_alloc() then returns early:
+
+    if (!mem_cgroup_sockets_enabled)
+        return;
+
+So the accepted socket gets no sk_memcg. The memory.high and memory.max
+writes in step 4 of tcp_wmem_schedule_negative_fwd_alloc.pkt then have no
+effect on it.
+
+On such a kernel, wouldn't the final write(4, ..., 16384) succeed, so the
+test reports FAIL instead of SKIP?
+
+> +	cleanup_memcg() {
+> +		rmdir "${cgroot}"/pkt_* 2>/dev/null || true
+> +		if [[ "$memcg_was_enabled" -eq 0 ]]; then
+> +			echo -memory > "${cgroot}/cgroup.subtree_control" \
+> +				2>/dev/null || true
+> +		fi
+> +	}
+> +	trap cleanup_memcg EXIT
+> +fi
+
+[Severity: Medium]
+Can this rmdir remove cgroups that this runner did not create? The glob
+matches every empty cgroup named pkt_* at the cgroup2 root. That root is
+shared with the host, because the runner only does unshare -n.
+
+Even a single run would delete an existing empty pkt_* cgroup on the host,
+along with its configured limits.
+
+When runners overlap, one runner's EXIT trap can also remove another test's
+pkt_${PPID}. One example is kselftest's run_many() starting tests with
+run_in_netns &. That cgroup is empty, and so removable, in two windows:
+
+  - between the mkdir and the cgroup.procs write in the .pkt init command
+  - after packetdrill moves itself back to its original cgroup following
+    accept()
+
+In either case, the step 4 writes to memory.high and memory.max would fail.
+
+Could the cleanup be limited to the pkt_<pid> cgroups created by this
+runner's children? The .pkt cleanup command already removes its own
+"${cgroot}/pkt_${PPID}".
+
+There is a similar question about memcg_was_enabled. It is sampled once,
+before +memory is written. If another runner or another user starts using
+the root memory controller while this test runs, the exit trap still writes
+-memory to the root cgroup.subtree_control.
+
+Is it intended to disable a shared controller based on that earlier
+snapshot? Any EBUSY from that write is also silently dropped by the
+|| true.
+
+> +
+>  ip_versions=$(grep -E '^--ip_version=' $script | cut -d '=' -f 2)
+>  if [[ -z $ip_versions ]]; then
+>  	ip_versions="ipv4 ipv6 ipv4-mapped-ipv6"
+> diff --git a/tools/testing/selftests/net/packetdrill/tcp_wmem_schedule_negative_fwd_alloc.pkt b/tools/testing/selftests/net/packetdrill/tcp_wmem_schedule_negative_fwd_alloc.pkt
+> new file mode 100644
+> index 0000000000000..e4d8d13144f0a
+> --- /dev/null
+> +++ b/tools/testing/selftests/net/packetdrill/tcp_wmem_schedule_negative_fwd_alloc.pkt
+> @@ -0,0 +1,116 @@
+
+[ ... ]
+
+> +`set -e
+> +./defaults.sh
+> +ip link set dev tun0 mtu 65535
+> +sysctl -q net.ipv4.tcp_rmem="4096 131072 6291456"
+> +sysctl -q net.ipv4.tcp_wmem="4096 16384 4194304"
+> +taskset -cp 0 $PPID >/dev/null 2>&1 || true
+> +cgroot=$(mount -t cgroup2 | head -1 | awk '{print $3}')
+> +[ -n "$cgroot" ]
+> +echo +memory > "${cgroot}/cgroup.subtree_control"
+> +rmdir "${cgroot}/pkt_${PPID}" 2>/dev/null || true
+> +mkdir "${cgroot}/pkt_${PPID}"
+> +echo 0 > "${cgroot}/pkt_${PPID}/memory.swap.max" 2>/dev/null || true
+> +echo $PPID > "${cgroot}/pkt_${PPID}/cgroup.procs"
+> +`
+
+[ ... ]
+
+> +// 4. Drain per-CPU memcg stock via memory.high=0, cap memory.max=0 (O_NONBLOCK
+> +//    avoids synchronous reclaim/OOM), and expect -EAGAIN on a 16 KB non-blocking
+> +//    write. Because copy (16 KB) minus sk_forward_alloc (<= -16.4 KB) exceeds
+> +//    PAGE_ALLOC_COSTLY_ORDER (32 KB), try_charge_memcg() fails without invoking
+> +//    the memcg OOM killer.
+> ++0.010 `cgroot=$(mount -t cgroup2 | head -1 | awk '{print $3}')
+> +echo 0 > "${cgroot}/pkt_${PPID}/memory.high"
+> +echo 0 > "${cgroot}/pkt_${PPID}/memory.high"
+> +printf 0 | dd of="${cgroot}/pkt_${PPID}/memory.max" oflag=nonblock status=none`
+> ++0.000 fcntl(4, F_SETFL, O_RDWR|O_NONBLOCK) = 0
+> ++0.000 write(4, ..., 16384) = -1 EAGAIN (Resource temporarily unavailable)
+
+[Severity: Medium]
+How reliably does this empty the memcg's per-CPU stock before the final
+write()?
+
+If any stock for this memcg is left on the CPU running write(),
+try_charge_memcg()->consume_stock() can cover the charge (about 9 pages)
+without checking memory.max:
+
+    if (nr_pages > MEMCG_CHARGE_BATCH ||
+        !local_trylock(&memcg_stock.lock))
+        return ret;
+
+Each memory.high write calls drain_all_stock() once. drain_all_stock()
+returns early if percpu_charge_mutex is contended. It also skips CPUs that
+already have FLUSHING_CACHED_CHARGE set, and it drains only the current CPU
+synchronously:
+
+    if (!mutex_trylock(&percpu_charge_mutex))
+        return;
+    ...
+            if (cpu == curcpu)
+                drain_local_memcg_stock(&memcg_st->work);
+            else
+                schedule_drain_work(cpu, &memcg_st->work);
+
+Remote CPUs are drained asynchronously, and nothing waits for them.
+
+The memory.max write uses oflag=nonblock. That makes memory_max_write()
+take the O_NONBLOCK path, which skips draining entirely:
+
+    if (of->file->f_flags & O_NONBLOCK)
+        goto out;
+
+The synchronous local drain only reaches the right CPU if the earlier
+taskset -cp 0 $PPID succeeded. A failure there is hidden by || true, for
+example when CPU 0 is not in the runner's cpuset.
+
+In those cases, could write() be served from leftover stock and succeed,
+making the test flaky?
+
+[ ... ]
+
 -- 
-2.25.1
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261026032216.1145201-1-tavip%40google.com
