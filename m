@@ -1,74 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793308601;
-	b=dmHtEcgAcxvyOdM33TpaA4OjB1bH05m0DaUPdWEArJw7NEGPHHooSpeXAfWgyHsHQxZs
-	 gfSkauJTGbbaql/IqzZWxhnyujiWpng8ZQMVjKfPslrr8JrLDA/IO4FVQGiBdFiyc0MZ3
-	 ISsciuYJCx+4JsTJNB0oCPdFGba2+prWkCSJZQ5uECqqKdc7UP1vUBGDnogtYxQ56YFbc
-	 IRy/MGCH0NmbjoS9dRWAgmLk41Bt+p20KwxWpD6f37PGOEcWxBZnVukUqmhJh401fbITT
-	 DwJZTXJAdyq3cxrRXglko2W5QD8sjCD+jcUKmoCXPVKuIqLlrXj6jhfmIoleqN0RrpA==
+	t=1793308598;
+	b=vKjmM0UdhtarZinA1cXD6ChosK+kx9Y+dJyJBCr2hPSBUqmJoUT/IGFVwHNmVypwf9Ds
+	 Xj+p8VQWW01N7U/tPhIGwuhXLgrU7ZWj7jfVNGxpyXfqa+PTFzLcrpusIJ6DcBB9WqiD3
+	 eLm/0JHrDlrnXvrL6UTyxLKatSidppDWukJE3nSCaOoJ608o+7TzmBC7WoSoQ6Xfa5geO
+	 mS6ng2Z6jEpMwbfHs0to3YniA5fsi9LSJingKSgrRZ+FhQsF78smJKtzfYV7kwLn/bdYo
+	 K76nUYGjj4sRsBeFGce2mw+9RfvlZMgCuNtKL7nmVgrOonTAc3g2FrPBwlsd3fKtVTw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793308601;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793308598;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=c4c2nOdbkSKpVO12N7+ZMENm5FqMe9Q2TS5BEIMNko4=;
-	b=X5g6DXsKBMfjE2wZtq5JSIr77VOEOJEmLCsH7jU+8xY15mXoRYOjjHmRMZ8dF+JX53zn
-	 C6H+WyRu2uUNcPV2oeoXsGIqy1OWiidsq1W8ZW9XWgZRQYbltYayv63Kg5j1HTCP3p5hJ
-	 BiXXAJ41gY3kCrzaQzqv2yJvlKImHFYQMRb/sKcsa/QmkTqvHEuSVBT3xoEZ/TSRdK1h9
-	 efbBMzQeBtsVsHW1V2jBDq7odxdMz13UvuHHahKLpX0SFCZ8c3wj+ilmXKclO3ax5tCMs
-	 gB6apPB40lIoV/y73/qt4e4uQII1Azt6+M1TyDXOmU1YDnHtFDFKKt8WJRAbjiYCbQg==
+	 X-Gm-Message-State:X-Received:Date:Mime-Version:X-Mailer:Message-ID:
+	 Subject:From:To:Cc:Content-Type;
+	bh=Y5VoJFAtzQN0hpAVbuuN4XlRwqKEISFijkslQlRcjg0=;
+	b=XwM0R96tzXNEfoj/FIFJjlE0tiIp62RcYQo8Ozr2/wADZTGPlSdu4Sq4tHIg3eV6o2f5
+	 qiQI45602jNx8SBWpNwuc++z665mCLaLiF+nS2wlXyyiS8no8zsl52FDRL/IukikA0huB
+	 9f/gU2bt8r2Ww1TCtZrKX6QIQQwcMekViNW92jgRklzVpbgkNbDV6cfo48xtcl6jZIlp7
+	 tGmLUloZUQ2ecgbJC4XgrN+FqCj2wjLdo9WnftIVxu+IH7sXacdnTmECzRPHyFK79NXX8
+	 PizgLc5k/SSDz07nPyJ910X7jmZcw5CKsqlLlxFQej2LnpFeTHbk7INWfRyI5tAy/lQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hPKpqtQi;
-	arc=none smtp.remote-ip=209.85.216.72
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="atZNhZ/U";
+	arc=none smtp.remote-ip=209.85.215.199
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48024606A323
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:16:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48024606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB18F606A31E
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:16:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EB18F606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hPKpqtQi
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3ae72da2f57so50401a91.1
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 14:16:41 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=atZNhZ/U
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cd8b299b05fso15453a12.0
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 14:16:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793308600; x=1793913400; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c4c2nOdbkSKpVO12N7+ZMENm5FqMe9Q2TS5BEIMNko4=;
-        b=hPKpqtQiQr5Mndc+Bml/2/+JkqvFNN0XrBEl+OVgvsuwxoSCXZ/O70tKIMCXItsVeM
-         f6wdWbFIEi6ymWbt1mM7JryfJCcJ5hrPQCoK3QU9NLAoHkHPIdjXiSvJz6n+DF5wj/aP
-         jikn4DWnD72yN7JsmZtE2ooZfk2THCrgwlp0u6LqODFD03HjpqUhXoofBlgsUVkbjkaG
-         DRSPd/GsM931N8kQ69Haa199TeD6eBYr6EWEV7MAAXgGnc+qpdA7QFiRwEX4MpxFHV0R
-         5yrT+IuMiR6B0CiVk6F1Qe6LTIh7DyYKfyzomhwTX/3lHy6SBKyrLXGaJ6QWziCVysEY
-         S9Hw==
+        d=google.com; s=20260707; t=1793308597; x=1793913397; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Y5VoJFAtzQN0hpAVbuuN4XlRwqKEISFijkslQlRcjg0=;
+        b=atZNhZ/UYenKl9MgfO5lr4mCFScIBwntXXKKbhvgKGtqlXwccK1D9P/lDkCrP+QSFT
+         Z9tJwyAKoSDWte1iCLZehkckSRknrdUTGW2HZWMO3JeiDPZeHEtwQKhr1A1xItiolSWb
+         GXAaXRwgOTAZz3w+5rrBqqlCfG9/8JpzYo2dHSdKZHnDpkZeXTunNviYQ8egscW+HomG
+         6J1VXxWr5XDX2+dtUz/6tHKcDyYcPBHaPdJcvUUqe6o2lCEVCp7pF7/mp9uU9ra+yb50
+         KjruQdYv7mrOzYXzcX0kQQM6UadQVyp4/9T/1k1qHPTSUaMdQz49khQWt9Yv2fZTqG8R
+         9OUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793308600; x=1793913400;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=c4c2nOdbkSKpVO12N7+ZMENm5FqMe9Q2TS5BEIMNko4=;
-        b=XlLuwdhrrP7W9WcYLWb+lZbiITqSvgQLtgxKQsrfJUeOYvjfiuF1QNapIl3sf7v3hy
-         xNDTVxvj0yusRUArSF57cCE3gmiiF00b4+hWPFlYvyc51+OuhousllJdUj8PW+vSFmkc
-         ON6B69fc8mVNdNxMk0fBCC5y4KBpXQu0gUDDyc0cg92g0iNntqfh7JMKLqRokn4PaMMX
-         +Eh+ZilcePOcU4s/vw5KFonTfsGIhWy37OYJ36gkohJdz6fcFHMll/r6k9Q9AUkRJUD6
-         wxDQsx7sQ/OwB9o+REUu4KxmSbBiJ3kec5dTYDrjX8BevtUNDIu4ByIBkEWz9YkhCLGJ
-         sM8A==
-X-Gm-Message-State: AFq9FYKKk9DBASx2kb9+C0LiKf9ChsEGdwOPYYKDz0+okYIe0FRJ3fho
-	JYzEgdxH/37nrKJ13oK2IuYdnRtsOk+sqElSTbqP+yCLDWg70UJJnu29DJsatPrIG8hNC2Usi0W
-	qCXIiEsSRY8sFHMCaYq+i7pX3tmrhwgrL1trPgN+j2t6183SDobQdC079ItE/Z3eMdcGAB/VuoZ
-	tFGvlEhYtdex63OGoAEK8689o1jyBr63G2kdK00sJC40qxp5bTMAU6HTuyxAAaIHU=
-X-Received: from pgly20.prod.google.com ([2002:a63:1814:0:b0:cd8:4bbf:f9e0])
+        d=1e100.net; s=20260707; t=1793308597; x=1793913397;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Y5VoJFAtzQN0hpAVbuuN4XlRwqKEISFijkslQlRcjg0=;
+        b=2vMGTbnekJd0OS25GAgvBVExJi131fwCZDPteZQnqtuR6KodIybJUhSof8LKVyt2OI
+         nPT40nKHqJCF8SDs5GjjYNhbZtmaZP7yp3sEGHk83vRyzk4qPuPUtsOL4vsVh2m6yFoS
+         ccHVxGBlbb3h+wSJL90QRiawH1jZ8kz3ziETxJO4p+d7k6rdl9Q6hvU+3OBHa8eGuEg5
+         cVia3tmwyByBtRPVuvlqQi9kTIFdH3VmFQhZcEDxPa/tc5HOneUgpt/qw2+1PbFPFiJb
+         pai0xEruP9gn+NG0h6Oo1hcagYEhaajH7t6wZ4W1XUbsh7JJYLIDwHZbE0bqyP2NePbV
+         V2ZQ==
+X-Gm-Message-State: AFq9FYIFDAC9ABqHM0EiIrRm61g91OPpn1azARSS8d77m2qst53z4Ekm
+	JCQndWwjwn8EN6NoSM+jZCmaRzY/yqDoYOwJ+5mMJwoTal9BkwYJ6J7IuqzqsdsWbd/BisV5j+H
+	HTUzHpOav4WhLlLzqGgCeirWe4/3QU4DLPZlp4YZuUJUDfrBkDyGCSnd1ijvqv1htiC8sZH85PZ
+	96O7y08RQEm6g/qitZH9fyYHzKHB4WDcOAQFgcw/cS0aqx36drqoXovcei76pEIuA=
+X-Received: from pfaq14.prod.google.com ([2002:a05:6a00:a88e:b0:89b:34dc:b094])
  (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:180d:b0:3ac:a204:aa27 with SMTP id 98e67ed59e1d1-3ae8985edbfmr146770a91.66.1793308600149;
- Thu, 29 Oct 2026 14:16:40 -0700 (PDT)
-Date: Thu, 29 Oct 2026 21:16:34 +0000
-In-Reply-To: <20261029211634.2232784-1-hramamurthy@google.com>
+ 2002:a05:6a21:3b44:b0:3e2:8f5b:8ba6 with SMTP id adf61e73a8af0-3e9286461e6mr403587637.2.1793308596954;
+ Thu, 29 Oct 2026 14:16:36 -0700 (PDT)
+Date: Thu, 29 Oct 2026 21:16:30 +0000
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,10 +76,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261029211634.2232784-1-hramamurthy@google.com>
 X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
-Message-ID: <20261029211634.2232784-5-hramamurthy@google.com>
-Subject: [PATCH net v4 4/4] gve: Fix link flap after ethtool ops
+Message-ID: <20261029211634.2232784-1-hramamurthy@google.com>
+Subject: [PATCH net v4 0/4] gve: Fixes for issues discovered via net selftests
+ and Sashiko
 From: Harshitha Ramamurthy <hramamurthy@google.com>
 To: netdev@vger.kernel.org
 Cc: joshwash@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch, 
@@ -95,162 +93,70 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Pin-yen Lin <treapking@google.com>
 
-When modifying device features via ethtool, GVE causes a short link-down
-after the ethtool command completes, which can break scripts that use
-the network interface right after the ethtool command.
+This patch series addresses several issues in the gve driver. All four of
+these fixes were either uncovered by running the net selftests or
+suggested by Sashiko in the previous version.
 
-This issue was discovered and actually triggered by the
-drivers/net/ping.py selftest. Modifying checksum offload features via
-ethtool caused a transient carrier drop ("Lost carrier", DHCP lease lost),
-causing the immediate ping invocation to fail.
+The series includes the following changes:
 
-Fix it by calling gve_turnup_and_check_status() in gve_queues_start()
-instead of deferring the link status update to the service task, so the
-carrier status is updated synchronously before returning to userspace.
-
-Take netdev_lock() around the link status update in gve_service_task(),
-so that it is serialized with the synchronous update. All other callers
-of gve_handle_link_status() already hold the instance lock.
-
-This change was tested using the DQO RDA queue format.
-
-Cc: stable@vger.kernel.org
-Fixes: 3b7cc73628ff ("gve: Use link status register to report link status")
-Signed-off-by: Pin-yen Lin <treapking@google.com>
-Reviewed-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
----
+- Patch 1 introduces a spinlock (stats_lock) to robustly synchronize stats
+  queries (including ndo_get_stats64 and queue stats) against queue
+  teardown and restart, preventing UAF and out-of-bounds reads. This was
+  discovered by the drivers/net/stats.py selftest.
+- Patch 2 fixes an issue where interface stats would go backwards when the
+  interface was brought down or its configuration was adjusted. This was
+  also discovered by the drivers/net/stats.py selftest.
+- Patch 3 ensures the driver falls back to the default minimum ring size if
+  the corresponding device option values are exposed as 0. This prevents
+  userspace from configuring unexpectedly small ring sizes. This was
+  discovered by the drivers/net/ring_reconfig.py selftest.
+- Patch 4 makes sure ethtool configuration modifications are done
+  synchronously before returning to the userspace. This was discovered by
+  the drivers/net/ping.py selftest.
 
 Changes in v4:
-- Take netdev_lock() around the link status update in
-  gve_service_task() to serialize it with gve_queues_start() (Sashiko)
+- Link to v3: https://lore.kernel.org/netdev/20261023204706.3112215-1-hramamurthy@google.com/
+- Patch 1: Clarify the commit message and change the Fixes tag (Sashiko)
+- Patch 2: Report the live XDP TX ring counters in the base stats and
+  take stats_lock around the priv->rx[idx] writes in
+  gve_rx_queue_start() (Sashiko)
+- Patch 4: Take netdev_lock() around the link status update in
+  gve_service_task() (Sashiko)
 
 Changes in v3:
-- Retitled from "gve: Make ethtool config changes synchronous"
-- Fix the Fixes tag
-- Refined the commit message
+- Link to v2: https://lore.kernel.org/netdev/20260425002450.163421-1-hramamurthy@google.com/
+- Protect all stats queries and queue lifecycle updates with a spinlock
+  (Sashiko)
+- Drop u64_stats_sync for the base stats and use the spinlock instead
+- Save base stats in gve_queues_mem_remove() and gve_rx_queue_stop()
+- Drop unused rx_dropped and tx_dropped accumulation in
+  gve_add_base_stats()
+- Fix the Fixes tag of patch 4
+- Refined the commit messages
+- Rebased to the latest net tree
 
- drivers/net/ethernet/google/gve/gve_main.c | 70 ++++++++++++----------
- 1 file changed, 39 insertions(+), 31 deletions(-)
+Changes in v2:
+- Add a NULL pointer check in gve_get_ring_err_stats() (Sashiko)
+- Use local variable to prevent inflates from u64_stats_fetch_retry()
+  (Sashiko)
+- Add u64_stats_fetch/begin to protect base stats (Sashiko)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index b5e2f39a903c..bc7d7c41948c 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -17,6 +17,7 @@
- #include <linux/sched.h>
- #include <linux/timer.h>
- #include <linux/workqueue.h>
-+#include <net/netdev_lock.h>
- #include <net/netdev_queues.h>
- #include <net/sch_generic.h>
- #include <net/xdp_sock_drv.h>
-@@ -1431,6 +1432,37 @@ static void gve_queues_stop(struct gve_priv *priv)
- 	gve_rx_stop_rings(priv, priv->rx_cfg.num_queues);
- }
- 
-+static void gve_handle_link_status(struct gve_priv *priv)
-+{
-+	bool link_up;
-+
-+	netdev_assert_locked(priv->dev);
-+
-+	if (!gve_get_napi_enabled(priv))
-+		return;
-+
-+	link_up = READ_ONCE(priv->link_up);
-+	if (link_up == netif_carrier_ok(priv->dev))
-+		return;
-+
-+	if (link_up) {
-+		netdev_info(priv->dev, "Device link is up.\n");
-+		netif_carrier_on(priv->dev);
-+	} else {
-+		netdev_info(priv->dev, "Device link is down.\n");
-+		netif_carrier_off(priv->dev);
-+	}
-+}
-+
-+static void gve_turnup_and_check_status(struct gve_priv *priv)
-+{
-+	const struct gve_ctrl_ops *ops = priv->ctrl_ops;
-+
-+	gve_turnup(priv);
-+	ops->report_link_status(priv);
-+	gve_handle_link_status(priv);
-+}
-+
- /* The passed-in queue memory is stored into priv and the queues are made live.
-  * No memory is allocated. Passed-in memory is freed on errors.
-  */
-@@ -1494,8 +1526,7 @@ static int gve_queues_start(struct gve_priv *priv,
- 			  round_jiffies(jiffies +
- 				msecs_to_jiffies(priv->stats_report_timer_period)));
- 
--	gve_turnup(priv);
--	queue_work(priv->gve_wq, &priv->service_task);
-+	gve_turnup_and_check_status(priv);
- 	priv->interface_up_cnt++;
- 	return 0;
- 
-@@ -1570,26 +1601,6 @@ static int gve_close(struct net_device *dev)
- 	return err;
- }
- 
--static void gve_handle_link_status(struct gve_priv *priv)
--{
--	bool link_up;
--
--	if (!gve_get_napi_enabled(priv))
--		return;
--
--	link_up = READ_ONCE(priv->link_up);
--	if (link_up == netif_carrier_ok(priv->dev))
--		return;
--
--	if (link_up) {
--		netdev_info(priv->dev, "Device link is up.\n");
--		netif_carrier_on(priv->dev);
--	} else {
--		netdev_info(priv->dev, "Device link is down.\n");
--		netif_carrier_off(priv->dev);
--	}
--}
--
- static int gve_configure_rings_xdp(struct gve_priv *priv,
- 				   u16 num_xdp_rings)
- {
-@@ -2064,15 +2075,6 @@ static void gve_turnup(struct gve_priv *priv)
- 	gve_set_napi_enabled(priv);
- }
- 
--static void gve_turnup_and_check_status(struct gve_priv *priv)
--{
--	const struct gve_ctrl_ops *ops = priv->ctrl_ops;
--
--	gve_turnup(priv);
--	ops->report_link_status(priv);
--	gve_handle_link_status(priv);
--}
--
- static struct gve_notify_block *gve_get_tx_notify_block(struct gve_priv *priv,
- 							unsigned int txqueue)
- {
-@@ -2406,8 +2408,14 @@ static void gve_service_task(struct work_struct *work)
- 	gve_handle_status(priv, status);
- 
- 	gve_handle_reset(priv);
-+
-+	/* Serialize with the synchronous link status updates, which all run
-+	 * under the netdev instance lock.
-+	 */
-+	netdev_lock(priv->dev);
- 	ops->report_link_status(priv);
- 	gve_handle_link_status(priv);
-+	netdev_unlock(priv->dev);
- }
- 
- static void gve_set_netdev_xdp_features(struct gve_priv *priv)
+Debarghya Kundu (1):
+  gve: Fix backward stats when interface goes down or configuration is
+    adjusted
+
+Pin-yen Lin (3):
+  gve: Fix race between stats query and queue reconfig
+  gve: Block invalid ring sizes when device options are 0
+  gve: Fix link flap after ethtool ops
+
+ drivers/net/ethernet/google/gve/gve.h        |   8 +
+ drivers/net/ethernet/google/gve/gve_adminq.c |   4 +-
+ drivers/net/ethernet/google/gve/gve_main.c   | 236 ++++++++++++++-----
+ 3 files changed, 191 insertions(+), 57 deletions(-)
+
+
+base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
 -- 
-2.56.0.313.g2479322e68-goog
+2.56.0.307.g5fe7bd680c-goog
 
