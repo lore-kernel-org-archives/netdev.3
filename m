@@ -1,101 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.42
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793308261;
-	b=udc3lucOrOqtvGET6+6uFjyudc32WpUAAlCc+BVsKbu5Yk7geQRWYDUpulqo7KmlIpS+
-	 PML4MdmLMhFQqxS+nqv80cuMZjAarbKKtc/9Eo6OT1sukKm01HMvhzKmQWp+F0Y3Rn767
-	 HrOQGrb3Ghgj834GTbq8/aG2TCDAurfWBiBOlEjmSPO05aJG299UY1HCXe0Zom5KLlLRB
-	 P9/KAxzfNAYRiZM5R7BB7SSg/MzMdy5lhEKY4AXBQDClpVkj4Hu3iHyhOs6XbvDlOcPWi
-	 p+cBEXXytzVo9wiB0o2AQm8TJPXtA+ssyiMt7gGotYjxE3CbiKe2O+lJk0prX8U7qaw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793308261;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.54
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793308272;
+	b=c5xFXwLoweG4C6veXm+uXF+h+LYJkh+h9YOm+0w+S+G4ZfqX7E+tHFEOVxQHpDtYrssQ
+	 wXpSOSBkfjnIQnPUXRk+ndKtCsPQndu9SnkHfFFmqMzcWN1Z0rl6VWPVzOOSycCFWEHq6
+	 cg7SbpQp0EEIsFCzJ9b6iNhJ50EIj2Ak3cBpsRJG3Hs3D6u6nnoxcCmNQZeXKZ2G9T1Cl
+	 DI5SafY9VIl7GYXVmnwDZ6pFyaJ1dp03eP0+4Fk1Is9g0Xn8kESALvi/iyR7u+KO7Yk0+
+	 yyT8niJbzD2sJyK+/qkiBy7P5mIPgluBmX2mmU90E/lahnVrXPBeT3t4+a01YF0q2kw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793308272;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=9osQKVV1wtsQAS7vDLfnrjRdubZ+d0or7yfUi9GRVJw=;
-	b=22GgmdVrIsEVS37Ue8Yp8dKbbZ5SiRpW0rRLDTGbjYvz51dfsC1Vxdn7iOmNx0jqxNTo
-	 YJPLKzYat8pZGmuKavG4JVSvdvxJLz/bpKT9DGaoPULXCkE9jYZyvsnKoXkyrGP7iw8vL
-	 PEkLJuhOum8L12ivl/9dhJASUZEvhz4MFha+MIQ3RrsKOiXzYZmZvjXRO7IhDO79ablWf
-	 XNZjFVhogIIq6ji7umlnvZlWPJVKaaV9IiHLtoV6rNwRK4E/xO6IAexbHH7X1iXZ245M0
-	 wYNsWAiKyPpPfZcMM8PofsDpHChmsc9dObdbnKacCzUcSmcxc1hcHBxpQtrQQwHMcMw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lPqUth3e;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.42
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=xzTZOWrqKv6fNEBwqt4RIGlP144euiJEy1QT6Ind6Eo=;
+	b=u/0xE0fcRo9eskxH5wjmC/4XSl4Yv1zeTYQ3zIpzsJMCTzurWixpZ8rg6TU3AHbtdJ9c
+	 rBifVqFAoRj0axuxHUwWvJX0F01dUMlleXbgyio1NQR9d0slNOFhLF7S1iTm0IozXdLtE
+	 cnSkwpC6HtIS2GjvtCU581hhlf16N+LTmiVfY1k4aFxrR0St/707YfDy9JCPgh2MknCJm
+	 9d0PTlG/7F4eISNsyXcHS91+jBg7TGYuVlXYu+H8VGGs1wpRg9tIEKvpCAZczI46/V+oh
+	 ABm6ZNs1VlCc5NPs1MPqkyC9Jt2nl4KarGcX42CaqYtSoFVT7OUuyb0543F3ye5aKBA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nuro.ai;
+	spf=pass smtp.mailfrom=nuro.ai;
+	dkim=pass header.d=nuro.ai header.i=@nuro.ai header.a=rsa-sha256 header.s=google header.b=a4urQiFo;
+	arc=none smtp.remote-ip=209.85.210.54
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1DEC606A31D
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:11:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C1DEC606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1CBA606A31A
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:11:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A1CBA606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nuro.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nuro.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lPqUth3e
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-8459fdb1e17so21839a34.2
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 14:11:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793308259; cv=none;
-        d=google.com; s=arc-20260327;
-        b=DWTT24BhMbt8lcb1LwFJXZAltFHWFEzI6K/5waean37qjqjwgEapisgGihk70OhSz7
-         WxXojUpRL4Wyw7+zSzSE+GAd9x1b8IYd2fd4XJ1oJGaMTdzkKtJv5ZwMjII4TMq/hpFe
-         LizlDagMlciG3TI9+mWP/Rwlw6wDANWMb+4EDskiXX3/ldU9D8WBQqbofErm/qgSTfXP
-         NzT+ouv7h4M7wsqE9Vf5L6lm11syG6g139tbiwrgKUpvjiJhD2FV2xd7e3toB4bgTtZO
-         Y4J6NCvvOC+lSPkLJHFwmi11Bdh32B76y7VHFh/SbOeYgWkpbje0gLrlQk8c4ab7eFeh
-         tIHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9osQKVV1wtsQAS7vDLfnrjRdubZ+d0or7yfUi9GRVJw=;
-        fh=nma0JkuurH+k9fQo1r1bDnASnUhWk57TxD2YLOXNngI=;
-        b=nwuexMq18HhneTFC2EJEBCT8k6t3RtkMPYu7vi0ZuBWj06LOb0lR3BuHwWMW/opHSS
-         uoSpS5yueMAv9v+VyREUcM9qimoiaRZ86zCHOThfsfxSH5y5fzOzcYVklHE0kETgdgNq
-         xvS/0vtUW/UE7b16bP7+cqxWQFEwGrtgFPj9j+Khr+VamSAQWPgXKc3B8neLihxXBwXE
-         uFNw04WXc6BIgwRhpfYEvcV4a8iCHxwxwCorS1bdrN7R3H3qaDa1Qghy2R59dh6zYRCh
-         SMLz7G5lNtl9kENRnCUmhJQ2sOLeDW/uMEyi6oCrsNrnTNKu5Tn7gyFjvVLZH3QRL55/
-         K4/g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=nuro.ai header.i=@nuro.ai header.a=rsa-sha256 header.s=google header.b=a4urQiFo
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-847ac7ccd85so66250a34.3
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 14:11:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793308259; x=1793913059; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9osQKVV1wtsQAS7vDLfnrjRdubZ+d0or7yfUi9GRVJw=;
-        b=lPqUth3eKO/Y0px5tRNis80GtDFfhKR/ac+GaCcUufT9DAd9jwjxOUq+6t80jkl3sB
-         aaENgRatOdAZgU8v4Ou73MS/OVSGwhYwU7e4Zp65EZD/6jZZyHcIMs/d+7FmUCTtgA84
-         Ekp0crgzhvlyTn62Q88wCJFWdG6YzPyz0mQBNl9Hc//hfO4Z29AdUe8Lmg21q4imaKml
-         5IMEzu6AJeUpNKT+Yd95pJNGJIf43zgfueg3GugoQEecW76U+MPLscTslg0FaO5QDiEu
-         Ia/eFGaTMp+p+70dXJyNhKiLNS6xHxmCVOLtfpydwHMz0KOXJshICjFYIW/QT87mRlo1
-         0gjw==
+        d=nuro.ai; s=google; t=1793308269; x=1793913069; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xzTZOWrqKv6fNEBwqt4RIGlP144euiJEy1QT6Ind6Eo=;
+        b=a4urQiFoVINK9O9VOI3lbcGVtqq/7F9FLOoHBPfOSD/usbAXLimX9QiG6ZluHBqVBa
+         EkKOk5r6E5GRzW7BVbU2iCKarQBtvRMHCaHfPY9hT/U1MVh+T094bBtSoPeQoO8+cbrw
+         ybcO7WPu8XFxFP239b+3hgqR1pUzpkvPedc1xgiTQyaxsBwrCbBocrD5/cg5sNCDUpNI
+         RLlWimnVWqDZBG2d+w7/skprg0t5DmXvuOKjtn0qi1k54L0dftPv+jyMwZXU4RCU8Qln
+         BvpbIqdZr+2KEHS7cXzpfFTd8ilHCyUkaZ6RNKkLBzntIrArnwEvzUHOMAmYmBw3lhVU
+         TAAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793308259; x=1793913059;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9osQKVV1wtsQAS7vDLfnrjRdubZ+d0or7yfUi9GRVJw=;
-        b=2OQY5YEcBEX3JjA0wyUt+13AJY9aZpuL/rIacXwYEF3iwof2xxxYLldauEOo6OYySh
-         VPrc/IW4qwFRt+gzQUDZsdPE4PhFD0ffu8oebwWgvBJLLSAd3JxTpGin1tq00Pi390mF
-         DZssuCzDN/a5nEl18NqrUKAgcH64B4DDVsPp+Trc+9E3fGLoLDTMVh2aladHl0hmwhc9
-         rQuisDUDmHMcbguwPz+HlIeIs1WAjkUKW5OFL/caSdRiqM+aamQNZYlDqj2nF9yyYW+G
-         HB+75MOros8s0Xvcj2ZKZzUNdtgxt7GRRHdHVR02FDWU6jAF8tqAnDQls2Hee8TKKL4i
-         UpLA==
-X-Forwarded-Encrypted: i=1; AKwUvBwsdGm/424ORf4fN9KSruorW2ARcu287FENTsZD7JkuhdQxI36zFrgngyVA7cp5XclUcmEctzA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKTMIfjGgtVeYyzmDyfXNYsIyM/t7ALw3dkxs/oVledqH6REGWE
-	BxoR9oN4Ioo3HSqNVbJz/bauHeIIT1Yb1aUbh7A2yB9S4Ty2mztoAn3TK4LlTi/sD0rXvb0GiAq
-	foIMSHs2f7WI7gGWc5+QSBc5+kbAqyovgjW1o0yU=
-X-Gm-Gg: AYBFou1KYxo0L4V8GdzvcGzTil2IbMaxHE8sdAXKz+12g98uOgKnMP0BxeK8gOjdtm3
-	o2vtmHjsIQfmdXGIEdMbqSjWHCm4Zxd7EK7uBYc4nC4t91PRlITB3RSkk5GdvSRPk5wDGDjsbrW
-	e1IBxSbFT4wb9H9N3eKV0KiqxBLTUUcadrXXywo3GuG2M1y1XRZoIbEcF7xYtDIJRTNQMgHsrQ/
-	fE3YDDs9vxoZNOvOMvKj8cnRoih0N+jeOkSQQv2FklWfM4IpAYsptEmQKhMBp0uYozXTileZ/Dh
-	XkIplhCLwrgw7DFZtoAK9qGfY0WBLR8esUshvoRynTMcgoeptwyINAjmn8CP+0cMJNQXenOOB8A
-	q1BtCcdvkX7gjQ2eTeODaMKsNzD/W36atGHoSjXwCiyiDVikgSgOAZkiT+xANSf1v5ehTEX/NeQ
-	==
-X-Received: by 2002:a05:6808:2219:b0:4bd:73d9:85c7 with SMTP id
- 5614622812f47-5640d62be8amr717746b6e.0.1793308259501; Thu, 29 Oct 2026
- 14:10:59 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1793308269; x=1793913069;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xzTZOWrqKv6fNEBwqt4RIGlP144euiJEy1QT6Ind6Eo=;
+        b=s6ubZjpnETIJ5wQ3QTJccGUwwJTkQMaj0KG/+IwuU1oGa/7Mss70AKZ8eB1xjTmipu
+         ojlJNCzyDeY4FMG6bwbsqx+saZXhOO+noOS4TVVbE6aEekWSHWCktCpELiJk3N2Ibd4r
+         YWrosLtr5ugE29mrhs/5QsZmp06S6c1ZIBpDRgFzO/sf3M1mOXACIzCc9qs/oHT2sFPA
+         hMhcmtbHApXa9CNv2FB+7tewGdWoNlZfsQp8cxWPT8MAJw+mvQfHXxtsCo0gSVqJE7zW
+         U4MEpMdI6B9JYZwrTRvj088wFNoTXJcfDeETaChQ+WP066apa8iugO7+yvJYDvi4koey
+         uOIQ==
+X-Forwarded-Encrypted: i=1; AKwUvByVr07bYQetdrjP5kKtoDevDZxXt/S1eS8m200aUfQwfQStJeJAvn+3Aebd9xkzTxXkn4XUR3U=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK95CA32sNa1lv3P4zSmv53A9mXJpG8m/Ie8PJiySxr0i+ku4nT
+	d4a/9p3DaW1RIjukpyCCTOEu8bcVWBpUjukfWp8X2Qt0yVByfVRZlRbSCaV7T3XVURk=
+X-Gm-Gg: AYBFou0Wd5xIgIByrVpHTUCZSJ04NofXgxASwfhPk5h/psJHj53o4jR7w7QCvdKfDsN
+	CGRAPtpYSIIH2OKjpx0rwO7NMyBb9uT0x6V/1jofcojH6Qb/Dfz+uC9dDaFo1dNNS25yJDTWAb7
+	M1jWN0o6SW5YkgJLK+OYitcAtHgBMPRmZXHFOBKWvZqaaDL6gpofPbiBql+fPFE4q2UeWadzdry
+	9MN+nxQaaqNzcZjtWZGkPgZjDSdjdSth/JqZbw5cW82LzgGZ6MaP2I/jI5i35Mgu1Rm5NElcvcj
+	u20ac9ao3wkjrp8Vug552rsZeiY/35gMlmVj/Fjf7rpsTClqZoDLQocDw6haYbpYns2vkvq8hiI
+	sMYBDe6D98LIKipR/hTFVpmxRyLYcVXGpByBUoHbDOb9MKF19aKD6eRN7FjLdVqlmJTmKhSu0sE
+	NIBq5c/X6PgAVPDTJbsjOcTOEKInhmcYi/2kcQLeSTVSooJgcZuRQ9DP2EaIJdGBdlNI9HeKv00
+	SHNYsp+h6zS5FjA59DDdk+/kwSOCrztm8nh1dOPLhzGL/W1NB7JOLZzFZKoXTVqQalmmSuDos/4
+	eoX1nzMv2DKhCnvpJnVEUuExIBFhWUAteWsxQ+r3P6aN+PKGDz52aO3/CBFhIdE=
+X-Received: by 2002:a05:6820:1381:b0:708:f388:af75 with SMTP id 006d021491bc7-714f24d6463mr371100eaf.46.1793308269535;
+        Thu, 29 Oct 2026 14:11:09 -0700 (PDT)
+Received: from jkain-desktop.corp.nuro.team ([64.124.43.154])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-85d351e77c8sm498519a34.2.2026.10.29.14.11.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 14:11:08 -0700 (PDT)
+From: Joseph Kain <jkain@nuro.ai>
+To: Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	netdev@vger.kernel.org
+Cc: Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Stanislav Fomichev <sdf.kernel@gmail.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Martin Karsten <mkarsten@uwaterloo.ca>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	linux-kernel@vger.kernel.org,
+	Joseph Kain <jkain@nuro.ai>
+Subject: [PATCH net v7] net: stop defer_count outliving the deferred-free list
+Date: Thu, 29 Oct 2026 14:11:01 -0700
+Message-ID: <20261029211101.2089535-1-jkain@nuro.ai>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,94 +106,94 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261021-netcons-fixes-v4-0-3857120c6340@gmail.com>
- <20261021-netcons-fixes-v4-3-3857120c6340@gmail.com> <auBrysA0RUkVlTOA@gmail.com>
-In-Reply-To: <auBrysA0RUkVlTOA@gmail.com>
-From: Gustavo Luiz Duarte <gustavold@gmail.com>
-Date: Thu, 29 Oct 2026 21:10:48 +0000
-X-Gm-Features: AclHuK_lhhdW3qGKBlVfZfDNDceq2jZZUkfDOPfDKThGEP0H147Qd10qhtEEAFA
-Message-ID: <CAGSyskX4mJJT=VTrS43pWG4UyoJur3hxQ56Qe9MMRL5-c2nnXA@mail.gmail.com>
-Subject: Re: [PATCH net v4 3/3] netconsole: recheck device registration after
- waiting for carrier
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Stephen Hemminger <stephen@networkplumber.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 27, 2026 at 9:19=E2=80=AFAM Breno Leitao <leitao@debian.org> wr=
-ote:
->
-> On Wed, Oct 21, 2026 at 03:19:07PM +0100, Gustavo Luiz Duarte wrote:
-> > netcons_netpoll_setup() drops RTNL while it waits for carrier when the
-> > device is not yet up. If the device is unregistered in that window, the
-> > NETDEV_UNREGISTER notifier runs before np->dev is set and has nothing
-> > to match.
-> >
-> > We might then end up setting up netpoll on a device that is being
-> > unregistered while holding a reference to it, stalling
-> > unregister_netdevice() in netdev_wait_allrefs_any().
-> >
-> > Add a check to confirm the device is still registered once we retake
-> > RTNL. Release the device reference and return -ENODEV otherwise.
-> >
-> > Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012-ne=
-tcons-fixes-v3-1-1aac85ed7665@gmail.com
-> > Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
-> > ---
-> >  drivers/net/netconsole.c | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> >
-> > diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-> > index be7eb632ee42..bd36ebd334aa 100644
-> > --- a/drivers/net/netconsole.c
-> > +++ b/drivers/net/netconsole.c
-> > @@ -534,6 +534,16 @@ static int netcons_netpoll_setup(struct netconsole=
-_target *nt)
-> >               rtnl_unlock();
-> >               netcons_wait_carrier(np, ndev);
-> >               rtnl_lock();
-> > +
-> > +             /* Check that ndev hasn't been unregistered when we relea=
-sed
-> > +              * the RTNL above.
-> > +              */
-> > +             if (ndev->reg_state !=3D NETREG_REGISTERED) {
-> > +                     np_err(np, "%s was unregistered while waiting for=
- carrier, aborting\n",
-> > +                            netcons_egress_dev(np, buf, sizeof(buf)));
-> > +                     err =3D -ENODEV;
-> > +                     goto put;
-> > +             }
-> >       }
->
-> I think there is a better way to do it, inside netcons_wait_carrier().
->
-> netcons_wait_carrier() loops waiting for the carrier, and exit if in
-> time_after(). I think it will be cleaner to exit there.
+After the llist conversion, rejected frees retain their counter
+increments. A producer racing the counter reset and list detach can
+also leave a count for an skb already drained. Deferred freeing can
+then remain disabled while the list is empty.
 
-Yes, I think it makes sense to bail out of netcons_wait_carrier() if
-we detect that the device is being unregistered. It doesn't replace
-the check under RTNL, though, since the device can still be
-unregistered after the loop exits and before we retake RTNL.
+Undo rejected reservations and subtract only the number of skbs
+drained. Allow admission up to the configured limit. Retain the
+halfway notification and also notify when the reserved count reaches
+the limit, covering reservations published after an earlier purge.
 
+Fixes: 844c9db7f7f5 ("net: use llist for sd->defer_list")
+Signed-off-by: Joseph Kain <jkain@nuro.ai>
+Assisted-by: LLM
+---
+For 6.18-7.1, apply the drain change inside each NUMA-node iteration
+of skb_defer_free_flush(), using sdn->defer_list and sdn->defer_count.
+Initialize n to zero for each node.
+---
+ net/core/dev.c    |  8 +++++++-
+ net/core/skbuff.c | 17 ++++++++++++++---
+ 2 files changed, 21 insertions(+), 4 deletions(-)
 
-> then netcons_wait_carrier() would return a bool, and you goto 'put' in
-> both case (ndev->reg_state !=3D NETREG_REGISTERED) or in the
-> time_after() exit.
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 18dc88990510..7843ef511d7e 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -6937,16 +6937,22 @@ static void __skb_defer_free_flush(struct skb_defer_node *sdn, int budget)
+ {
+ 	struct llist_node *free_list;
+ 	struct sk_buff *skb, *next;
++	long n = 0;
+ 
+ 	if (llist_empty(&sdn->defer_list))
+ 		return;
+-	atomic_long_set(&sdn->defer_count, 0);
+ 	free_list = llist_del_all(&sdn->defer_list);
+ 
+ 	llist_for_each_entry_safe(skb, next, free_list, ll_node) {
+ 		prefetch(next);
+ 		napi_consume_skb(skb, budget);
++		n++;
+ 	}
++	/* Subtract exactly what was drained. Never store an absolute value:
++	 * mixing one with the relative updates in skb_attempt_defer_free()
++	 * lets the counter go negative, and it is read as unsigned there.
++	 */
++	atomic_long_sub(n, &sdn->defer_count);
+ }
+ 
+ void skb_defer_node_flush(struct skb_defer_node *sdn)
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 4aea06d5167d..b1d3fd783283 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -7388,8 +7388,14 @@ nodefer:	kfree_skb_napi_cache(skb);
+ 	defer_max = READ_ONCE(net_hotdata.sysctl_skb_defer_max);
+ 	defer_count = atomic_long_inc_return(&sdn->defer_count);
+ 
+-	if (defer_count >= defer_max)
++	if (defer_count > defer_max) {
++		/* Undo the reservation. An llist_add() does not release one --
++		 * the skb stays charged until a flush subtracts the batch that
++		 * contains it -- so a rejected free must undo its own.
++		 */
++		atomic_long_dec(&sdn->defer_count);
+ 		goto nodefer;
++	}
+ 
+ 	llist_add(&skb->ll_node, &sdn->defer_list);
+ 
+@@ -7398,8 +7404,13 @@ nodefer:	kfree_skb_napi_cache(skb);
+ 		return;
+ 	}
+ 
+-	/* Send an IPI every time queue reaches half capacity. */
+-	kick = (defer_count - 1) == (defer_max >> 1);
++	/* Half capacity, plus the skb that fills the queue. Equality alone can
++	 * be consumed early -- if the producer holding the kick value publishes
++	 * first, its purge drains only that skb and the reservations published
++	 * after it match nothing -- which would leave a full queue with nothing
++	 * pending.
++	 */
++	kick = (defer_count - 1) == (defer_max >> 1) || defer_count == defer_max;
+ 
+ 	/* Make sure to trigger NET_RX_SOFTIRQ on the remote CPU
+ 	 * if we are unlucky enough (this seems very unlikely).
+-- 
+2.55.0
 
-Do we really need to check the return value of netcons_wait_carrier()?
-If it detected that the device is being unregistered, then
-(ndev->reg_state !=3D NETREG_REGISTERED) will still be true here, since
-reg_state never goes back to NETREG_REGISTERED, no?
-
-Or do you mean to fail netcons_netpoll_setup() not only when the
-device is being unregistered but also when the carrier times out? That
-would be a considerable behavior change, because then a slow link
-would fail netconsole completely instead of only losing the messages
-sent before the link comes up.
-
-I'll keep this patch as the fix for the missed NETDEV_UNREGISTER and
-add a separate patch to bail out of netcons_wait_carrier() early.
