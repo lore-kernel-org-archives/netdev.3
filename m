@@ -1,108 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793275234;
-	b=MfDga57nug5+BHE6G+L8MnbuSdKEv1w+h+KiSmHrz9y0+Zzv5qyqq69soFFRJ8/rIHIC
-	 qPq3SZciLXGFHd8TlzHT2XQgjvwUQzSFgNN+Jv15B+/bTXZLm2s6mmJxhXRyiHoyEXSt6
-	 6GP3WfVJs2qC8u5u/Vvjg0hZMF4ztafPvl5HMBiX9Cy1oR8gFrIcpkbR+aDD8VgRmN2Y6
-	 ERiGCzgqQICEcae718SPXM3SXbeuiojUFMUr/M9QlOGErV5pzqenTogBRBDgJJYkGo4aQ
-	 u5IEmVZadU2VZFJR80g50kzvSgBOVms3euokhrpAbEUAqZRMh3IBxqwJnypWSsvi3Uw==
+	t=1793275541;
+	b=ZwFei7a4/FwxMC3JKXEOiAdPY3uPglSmIRDakpKkGq3uzkPEhLyrlLILJpEXO+y92+og
+	 DHqUD7sj7ZW6PlE7Hq98MIGt6tCVgVlcgDbogW9+2GmdbN6b7ndF9bJTHUbHiqLXCKuWj
+	 tEZTwfjDTTFJQnSGJ1GPd555HaO7Cf28GZInBhiSaBzkQ3QhHR6/WfwdHdQHhmRIdlduF
+	 ww4BYyb4BVsWRO+hXUj6+fVN6YnjmBMyc0rMOf5q+Ooq0lS+9Q3BxfELY1VidbzMuRkws
+	 JPCaYHz/kaVXuIF5kTLhtGnrvC3JPraI/nIXPCQK8k9GKtsfMtPce/mDEZvuOGJIQVw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793275234;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=uiB5CX6SbDNNbgC0+8PGZVLff5sDTap/tEnkGLg1G00=;
-	b=a9lam84R08Ir02Pf/uVmx56E6AYwEo94PgKw0F/R7M/c8NiPLvzl+AEfidNcRNK9xMAE
-	 Q2PrPdemGiwRxDhnfHOuurywXocvOgE2tAuq5R0zWhK7F+EhU5O2CUgakka/DeBo99c/5
-	 ngVz7XaJn8EJBum/oSk2fHC59k4K2SzwHJIOdVY6sYrTs4QZY5r2bwjsCRIsLAZmgMsv4
-	 V3n8w/9SHcLHTpp/AjIpPxrVE20JpvTeD7Fbpa8lHx8Wro2GzVuaG1EIWCbQ//4/qDyaw
-	 vfqR/2QULEC10XshaRwfwQVRw45ihNAfYKxVwz0tgZytde9qSRuRbzdOWx+QVvWIkIA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793275541;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=m4q8IBv2Aq4VzMFmJ720i/Ha3K1G7dBBmg9TmL8Mktk=;
+	b=PCEfaB3BA4LEhJGI4f4678i3eUOPJoXTXugtI0M2SByJLF3xji7ksHWsu9b2w1hKi7s7
+	 2oiBmteo4pnLVNZsx2YuDOhBtKXpJmJN6u6hWnxVtDsIJxYeyrE4c7TsS476xtc7ot/cv
+	 HhqbTzqFrEWTV78iS28Kzl/hFa2HdraWZK+xaaUVJdWfav9mCgiI5QgnpHh8gVxUV7Cat
+	 nmZ3Rql+H1XObHyz3wwHyDr9g9QNIRWfmNxno9dlKcX0Zpb0L/5rki8US5YE/lcwOIscx
+	 Mdw4n/bHA40B708hTO3Jz/RobIu2zlQo+ttfP2g8sbNhKFQl7n014db9xDtY04LXTsw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bGf4jmD6;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=AP6Tac1H;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="G7W/lfVJ";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814BC606A31A
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 12:00:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 814BC606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6758606A31C;
+	Thu, 29 Oct 2026 12:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bGf4jmD6;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=AP6Tac1H
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793275232;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uiB5CX6SbDNNbgC0+8PGZVLff5sDTap/tEnkGLg1G00=;
-	b=bGf4jmD6g0KzB6Tk/05biQR+sIUODRA1h+GwcqKteCYSLmkwUvEHZf5+F7MU/B8Ia9vcdU
-	ClyL+dh2llB3W1Kt3W5tzHUe0BoT4JbeqgxhISeTnoVxfJOpMICGVEua0N4RrHTrK8/ch9
-	JAotkCIm8X8aqcEVnRmfZHCTXDYxDBU=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-20-l2FkgUtQNp-CNqvcnh2tBw-1; Thu, 29 Oct 2026 08:00:31 -0400
-X-MC-Unique: l2FkgUtQNp-CNqvcnh2tBw-1
-X-Mimecast-MFC-AGG-ID: l2FkgUtQNp-CNqvcnh2tBw_1793275230
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48b02d63407so1470395f8f.0
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 05:00:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793275230; x=1793880030; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uiB5CX6SbDNNbgC0+8PGZVLff5sDTap/tEnkGLg1G00=;
-        b=AP6Tac1H1jD9vbLbfALdUjM8bFhF5dSGnOl5OwWCZKCwT9ElRcZ40WkpUcSLmD9vSs
-         xy0o7BbqJem41pjc0Ncd0xbCfZvtl5v0zuPfvcIhh+swJW7IhAhcUhZyXO56QJZREnId
-         mlwOhaJ4XR0pinBxXKekCZFSFY2Nq/iFgZuR24RcrkWTSGLguL2CkZjSFgpW6bUgMWJW
-         Cbwz/6UEH9Ulry3BlX6IFV+rhYlvgL5EbwLAXoL/hoUKM7BDtoORt1WzmK/qIgsI1xt1
-         m4RHKqC6Wplq526UzwG6lQywztLWX3ys0xqcHgGuR7PDkjwpNJwN5p3r6rUtBHs3tauI
-         hiJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793275230; x=1793880030;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uiB5CX6SbDNNbgC0+8PGZVLff5sDTap/tEnkGLg1G00=;
-        b=CnT0JJwqaV1Ewib7juFdfe/oIWLZWfV2A9A1Nz86Y/3kRqQXGJ+kWZo40QqRLcfy7o
-         ChSHVMjgkYCG9qfpJNGHwAFRGJ0f+BIgNtpzLgjp4zm5rqA5zBQXkM61wfFxlMKbKDKH
-         Z/i8d4dUzz+ACjBYntw+mI6AOETREw/4ydg14xgR6X8xIEo5cLiJjNkAHLzzd0/Mz5v5
-         HY8kWswBKQCz9DMi1VEj7kDnOKXh8d3XW9d1rJKBsPje7DLLG3Dyvqzigpht10vYtmaq
-         876Y35fWKe5UlWmAOw+3+ICrEGnI1K5nKq+iUNktBTpRY6d9QEeQAkR4zRNomgW7KJ2/
-         Mppw==
-X-Forwarded-Encrypted: i=1; AKwUvBwVYh8L8Evi9xVTblFQXORcr+iRn8NEGNHxMQyzR6mMeYByVJsVwcNZ6iwswJ9Lk3k0GoGQmR4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLZWy/g5ygloSEewEqhO24oysKHokyTy7hXnnsD6DRW2B3SiQ2F
-	n9R7qCbc0r7V2Z3Wmmm4VYPk4Xjo0FTj8k+F50nVDig53JkDGGLqnJfBEnZcH66LN/WOdDM2YKz
-	q8jO+A5TOCRLguhP/sHPcnlErkgoxZcFaOaRS7QW/x4GlGF4CwUPSN1PU0A==
-X-Gm-Gg: AYBFou0nY7zgxbfr2VRYnbxn2nIzdxgo26abKWgLKxyZCMMcf1s8WIsRVu1erfGyZGC
-	rXDthleI58vEZ0EESXvZYc+B0I20dwiKGYb6Gut8oJtLqk5EkPBTV0/dPEsImfizZp/zk1YZMi4
-	xHussI2lItel3nX2Cdn6hR6OkVL2bmYEVraDQH7q6WVngTpBK1SGdnvmdp/JbayUeVl8jV3+u1w
-	M1CCsSQrw2Htvk0zETUBATVqPlsGAQ7Een8ecsbCy5FZppR2Cja2U+vfZfjrVkLuMZZ2FcVkud/
-	/HuIaxUF/eLZW7q5ElWVlM6YhgGHE/7vCwT/eCOhY98Ni1dGtr9WaFBVIrs6RuFhvVUWZBOCUjq
-	BeocLa3kht7y8bAnLVWQd5cBtYd10Zi6KaMOif8XF4c6FPCZZN/IEe3Fr7hq3cUdK/7PXO1S/eP
-	SqK1wtrZBbo2d/jvEwrJ0HUqAohwDGKkKJTMnLVQOJ6P2rp7k=
-X-Received: by 2002:a05:600c:4593:b0:4a7:76fa:87e9 with SMTP id 5b1f17b1804b1-4a966d361dcmr120368035e9.21.1793275229693;
-        Thu, 29 Oct 2026 05:00:29 -0700 (PDT)
-X-Received: by 2002:a05:600c:4593:b0:4a7:76fa:87e9 with SMTP id 5b1f17b1804b1-4a966d361dcmr120365055e9.21.1793275227533;
-        Thu, 29 Oct 2026 05:00:27 -0700 (PDT)
-Received: from [192.168.188.234] (ip174-129-192-82.pool-bba.aruba.it. [82.192.129.174])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ece5e4asm33255784f8f.59.2026.10.29.05.00.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Oct 2026 05:00:27 -0700 (PDT)
-Message-ID: <e291eaa8-c090-41a7-8e8e-9f86e58723b2@redhat.com>
-Date: Thu, 29 Oct 2026 13:00:25 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G7W/lfVJ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF1A71F031E3;
+	Thu, 29 Oct 2026 12:05:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793275540;
+	bh=m4q8IBv2Aq4VzMFmJ720i/Ha3K1G7dBBmg9TmL8Mktk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=G7W/lfVJ/mkmNevRshufHxdNZdkNn0oDfCjkBzcVmMdjqEghf4d5IuZo4rMKRsisa
+	 PEURw321EmWxCjd9H9Memh/0KSBVPBWNTcN+fJMVyBxJIiAoqXcJdqel5IqiH4lZ1P
+	 WSc61J6HOsm1jZlyPm3cvyIKnICn+6HRkrw99VbHPqAdjtZrfaBnhT7OgdIcpGSELR
+	 VT9F7kzHBv+/Vxa8eqxV3qHbZMNZtQr33E3AdMusJtjVb5+lcYEXiT+1bXorezcR9u
+	 SOqNFY0qrRGqwprdCX7CyRfo8ja8PB1Mp4VTZH0oQoj/pv7cxXoazRN2No9ppnIVXH
+	 NCVL3IMgfc3EQ==
+From: Jeff Layton <jlayton@kernel.org>
+Date: Thu, 29 Oct 2026 08:05:15 -0400
+Subject: [PATCH v2 2/6] NFSD: Apply per-export I/O modes to READ and WRITE
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,51 +52,236 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] mctp i3c: Fix locking in an error path
-To: Bart Van Assche <bvanassche@acm.org>, netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Leo Yang <leo.yang.sy0@gmail.com>, linux-kernel@vger.kernel.org,
- Leo Yang <Leo-Yang@quantatw.com>, Jeremy Kerr <jk@codeconstruct.com.au>,
- Matt Johnston <matt@codeconstruct.com.au>
-References: <58aab766b8ce35d1a7ff38880853cedaec244bf1.1793044759.git.bvanassche@acm.org>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <58aab766b8ce35d1a7ff38880853cedaec244bf1.1793044759.git.bvanassche@acm.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20261029-export-iomode-v2-2-fe8ec6251a36@kernel.org>
+References: <20261029-export-iomode-v2-0-fe8ec6251a36@kernel.org>
+In-Reply-To: <20261029-export-iomode-v2-0-fe8ec6251a36@kernel.org>
+To: Donald Hunter <donald.hunter@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Chuck Lever <cel@kernel.org>, 
+ NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, 
+ Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>
+Cc: Steve Dickson <steved@redhat.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Jeff Layton <jlayton@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7163; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=fV/ivDZtC7maqaposCIkh9QAgY/9cod0K9Scn0wTVDU=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBq4zaNsGyrVblnPod+WLVyBaSTr157cGgZ7V0at
+ 1lWX5rNu7GJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCauM2jQAKCRAADmhBGVaC
+ FRu8EAC9jAIDGiUFuhLqI08YBUK6POi5tJZBVcxU4MUULlLsFtgoNqiU6cWWBYi5HfiyQoO0Qgi
+ kMz5Em5nqQ/4gYNPRZ0nK26LlQIVzVXGUHdkVFECx4YtyA2F4rm5wjcw28Wzn3r4n075Lsu8v1B
+ D1hGbtzLrYhHQKTSKOAgreRdOqTDo7zqqFMG8XHsUj2FWFxIm46efv3TyKlbCoefZ1LuaNfDB/3
+ g85CozTIt3gZJRp7QDp0aYHmz4cZSpW4ZXU4C0rxBgne1jXBWfrM+th9F9xK7dnfIdeyivXC2yq
+ fLYDv5RU78nlq44Wn4EkMZrW/l+Ca++Xhp+3eVfjygPtCxagfGs8CocSZ4n6DeM5u24hFzPoiCy
+ mU27rv2FtQQ2Q0+eyRgO0vGGqUN2WH8tDwQQU83RF3vxuzVsqJXrbmwqB777ZtDHvGuXTAvpsWh
+ Wkx6Q8lb5Mqr77NPoTRDtmuQ/bmSkg4pJUbwbibnnmNDn4eqeZdulOfDrQ7IoOiDMYqWJymPbuQ
+ p5mObi8d7A+w0ResJxqQM2pBRcyfoVOmkqqKn1WyeQfd7u/EQxdcM75i0JioTzUdpjNFmmOxcvJ
+ YLy6OsyJwZ1adekXVWmT1nA6RHjBykZzhUP8JGiXGXyMWRT5dPPRy1owZnPpavP7jTGXR5wsUfH
+ v4LF6bI/odKWAOQ==
+X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
+ fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
 
-On 10/26/26 20:59, Bart Van Assche wrote:
-> If netdev_alloc_skb() fails, mctp_i3c_read() jumps to a label that
-> unlocks mi->lock although that mutex has not been locked yet. Fix this
-> by jumping to a label that only frees the skb. This bug has been
-> detected by the Clang thread-safety analyzer.
-> 
-> Cc: Leo Yang <Leo-Yang@quantatw.com>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: Jeremy Kerr <jk@codeconstruct.com.au>
-> Cc: Matt Johnston <matt@codeconstruct.com.au>
-> Cc: netdev@vger.kernel.org
-> Fixes: 2d2d4f60ed26 ("mctp i3c: fix MCTP I3C driver multi-thread issue")
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-> ---
->   drivers/net/mctp/mctp-i3c.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/mctp/mctp-i3c.c b/drivers/net/mctp/mctp-i3c.c
-> index 4e857dd5df64..59e7bf56fce3 100644
-> --- a/drivers/net/mctp/mctp-i3c.c
-> +++ b/drivers/net/mctp/mctp-i3c.c
-> @@ -112,7 +112,7 @@ static int mctp_i3c_read(struct mctp_i3c_device *mi)
->   	if (!skb) {
->   		stats->rx_dropped++;
->   		rc = -ENOMEM;
-> -		goto err;
-> +		goto free_skb;
+Resolve each export's effective I/O mode (explicit setting, else the
+global io_cache_read/write knob) in nfsd_iter_read and nfsd_vfs_write,
+and skip splice for reads on exports whose effective read mode is not
+buffered. Update the debugfs knob comments to match.
 
-Why the additional churn? Just return -ENOMEM, no point in freeing a NULL skb.
+That per-export check makes the coupling between the debugfs knobs
+unnecessary, and it defeats per-export settings, so drop it:
 
-/P
+- io_cache_read=dontcache/direct no longer sets disable-splice-read,
+  which kept read_io=buffered exports from ever using splice.
+- disable-splice-read=0 no longer resets io_cache_read to buffered.
+
+disable-splice-read is now only a global "never splice" override.
+
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+---
+ fs/nfsd/debugfs.c | 23 ++++++++---------------
+ fs/nfsd/nfs4xdr.c |  6 ++++--
+ fs/nfsd/vfs.c     | 39 ++++++++++++++++++++++++++++++++++++---
+ fs/nfsd/vfs.h     |  2 ++
+ 4 files changed, 50 insertions(+), 20 deletions(-)
+
+diff --git a/fs/nfsd/debugfs.c b/fs/nfsd/debugfs.c
+index 4af1e6b8b212..d48297e45d7d 100644
+--- a/fs/nfsd/debugfs.c
++++ b/fs/nfsd/debugfs.c
+@@ -16,6 +16,10 @@ static struct dentry *nfsd_top_dir __read_mostly;
+  * The default value of this setting is zero (page splicing is
+  * allowed). This setting takes immediate effect for all NFS
+  * versions, all exports, and in all NFSD net namespaces.
++ *
++ * Splice is used only on exports whose effective read I/O mode is
++ * buffered, so this setting is independent of io_cache_read and
++ * read_io=.
+  */
+ 
+ static int nfsd_dsr_get(void *data, u64 *val)
+@@ -27,12 +31,6 @@ static int nfsd_dsr_get(void *data, u64 *val)
+ static int nfsd_dsr_set(void *data, u64 val)
+ {
+ 	nfsd_disable_splice_read = (val > 0);
+-	if (!nfsd_disable_splice_read) {
+-		/*
+-		 * Must use buffered I/O if splice_read is enabled.
+-		 */
+-		nfsd_io_cache_read = NFSD_IO_BUFFERED;
+-	}
+ 	return 0;
+ }
+ 
+@@ -47,7 +45,8 @@ DEFINE_DEBUGFS_ATTRIBUTE(nfsd_dsr_fops, nfsd_dsr_get, nfsd_dsr_set, "%llu\n");
+  *   %2: NFS READ will use direct IO
+  *
+  * This setting takes immediate effect for all NFS versions,
+- * all exports, and in all NFSD net namespaces.
++ * all exports without an explicit read_io= setting, and in all
++ * NFSD net namespaces.
+  */
+ 
+ static int nfsd_io_cache_read_get(void *data, u64 *val)
+@@ -62,15 +61,8 @@ static int nfsd_io_cache_read_set(void *data, u64 val)
+ 
+ 	switch (val) {
+ 	case NFSD_IO_BUFFERED:
+-		nfsd_io_cache_read = NFSD_IO_BUFFERED;
+-		break;
+ 	case NFSD_IO_DONTCACHE:
+ 	case NFSD_IO_DIRECT:
+-		/*
+-		 * Must disable splice_read when enabling
+-		 * NFSD_IO_DONTCACHE.
+-		 */
+-		nfsd_disable_splice_read = true;
+ 		nfsd_io_cache_read = val;
+ 		break;
+ 	default:
+@@ -92,7 +84,8 @@ DEFINE_DEBUGFS_ATTRIBUTE(nfsd_io_cache_read_fops, nfsd_io_cache_read_get,
+  *   %1: NFS WRITE will use dontcache (buffered IO w/ dropbehind)
+  *
+  * This setting takes immediate effect for all NFS versions,
+- * all exports, and in all NFSD net namespaces.
++ * all exports without an explicit write_io= setting, and in all
++ * NFSD net namespaces.
+  */
+ 
+ static int nfsd_io_cache_write_get(void *data, u64 *val)
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index 4d983444604a..d4a88bef8444 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -5366,7 +5366,8 @@ nfsd4_encode_read(struct nfsd4_compoundres *resp, __be32 nfserr,
+ 	maxcount = min_t(unsigned long, read->rd_length,
+ 			 (xdr->buf->buflen - xdr->buf->len));
+ 
+-	if (file->f_op->splice_read && splice_ok)
++	if (file->f_op->splice_read && splice_ok &&
++	    nfsd_read_io_mode(read->rd_fhp->fh_export) == NFSD_IO_BUFFERED)
+ 		nfserr = nfsd4_encode_splice_read(resp, read, file, maxcount);
+ 	else
+ 		nfserr = nfsd4_encode_readv(resp, read, maxcount);
+@@ -6264,7 +6265,8 @@ nfsd4_encode_read_plus_data(struct nfsd4_compoundres *resp,
+ 	maxcount = min_t(unsigned long, read->rd_length,
+ 			 (xdr->buf->buflen - xdr->buf->len));
+ 
+-	if (file->f_op->splice_read && splice_ok)
++	if (file->f_op->splice_read && splice_ok &&
++	    nfsd_read_io_mode(read->rd_fhp->fh_export) == NFSD_IO_BUFFERED)
+ 		nfserr = nfsd4_encode_splice_read(resp, read, file, maxcount);
+ 	else
+ 		nfserr = nfsd4_encode_readv(resp, read, maxcount);
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index f59a55f89c88..779ad3a61172 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1266,6 +1266,38 @@ static bool nfsd_direct_read_ok(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	return true;
+ }
+ 
++/**
++ * nfsd_read_io_mode - effective NFS READ I/O mode for an export
++ * @exp: export being accessed
++ *
++ * An export without an explicit read_io= setting follows the global
++ * nfsd_io_cache_read knob.
++ *
++ * Returns one of NFSD_IO_BUFFERED, NFSD_IO_DONTCACHE, or NFSD_IO_DIRECT.
++ */
++int nfsd_read_io_mode(struct svc_export *exp)
++{
++	if (exp->ex_read_io == NFSD_IO_DEFAULT)
++		return nfsd_io_cache_read;
++	return exp->ex_read_io;
++}
++
++/**
++ * nfsd_write_io_mode - effective NFS WRITE I/O mode for an export
++ * @exp: export being accessed
++ *
++ * An export without an explicit write_io= setting follows the global
++ * nfsd_io_cache_write knob.
++ *
++ * Returns one of NFSD_IO_BUFFERED, NFSD_IO_DONTCACHE, or NFSD_IO_DIRECT.
++ */
++int nfsd_write_io_mode(struct svc_export *exp)
++{
++	if (exp->ex_write_io == NFSD_IO_DEFAULT)
++		return nfsd_io_cache_write;
++	return exp->ex_write_io;
++}
++
+ /**
+  * nfsd_iter_read - Perform a VFS read using an iterator
+  * @rqstp: RPC transaction context
+@@ -1300,7 +1332,7 @@ __be32 nfsd_iter_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 
+ 	init_sync_kiocb(&kiocb, file);
+ 
+-	switch (nfsd_io_cache_read) {
++	switch (nfsd_read_io_mode(fhp->fh_export)) {
+ 	case NFSD_IO_BUFFERED:
+ 		break;
+ 	case NFSD_IO_DIRECT:
+@@ -1654,7 +1686,7 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	if (verf)
+ 		nfsd_copy_write_verifier(verf, nn);
+ 
+-	switch (nfsd_io_cache_write) {
++	switch (nfsd_write_io_mode(exp)) {
+ 	case NFSD_IO_DIRECT:
+ 		host_err = nfsd_direct_write(rqstp, fhp, nf, nvecs,
+ 					     cnt, &kiocb);
+@@ -1761,7 +1793,8 @@ __be32 nfsd_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 		return err;
+ 
+ 	file = nf->nf_file;
+-	if (file->f_op->splice_read && nfsd_read_splice_ok(rqstp))
++	if (file->f_op->splice_read && nfsd_read_splice_ok(rqstp) &&
++	    nfsd_read_io_mode(fhp->fh_export) == NFSD_IO_BUFFERED)
+ 		err = nfsd_splice_read(rqstp, fhp, file, offset, count, eof);
+ 	else
+ 		err = nfsd_iter_read(rqstp, fhp, nf, offset, count, eof);
+diff --git a/fs/nfsd/vfs.h b/fs/nfsd/vfs.h
+index 1f05c83a3ea6..3cac25adf16b 100644
+--- a/fs/nfsd/vfs.h
++++ b/fs/nfsd/vfs.h
+@@ -184,6 +184,8 @@ __be32		nfsd_iter_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 				struct nfsd_file *nf, loff_t offset,
+ 				unsigned long *count, u32 *eof);
+ bool		nfsd_read_splice_ok(struct svc_rqst *rqstp);
++int		nfsd_read_io_mode(struct svc_export *exp);
++int		nfsd_write_io_mode(struct svc_export *exp);
+ __be32		nfsd_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 				loff_t offset, unsigned long *count,
+ 				u32 *eof);
+
+-- 
+2.56.0
 
