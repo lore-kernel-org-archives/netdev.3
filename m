@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793292085;
-	b=tY67g8wNgYkIcCgg6SBE05YPdm5zHmJB3ApEUVoHyyI5EWaoTQD0LJlOasVZJFwOtPWM
-	 fPnbvAs12EtQQNyr1gDTT34tjMga1AGc0znI+RsSGy2v2JzI5HycRksHvOv6ZgJV1CqFR
-	 LjhFHstJnmnG9Z+PciATq0G01XWvp/qDPlQxlex6+p185cnt1XWayTvhpX31/re/FIiZM
-	 HY+PLhttm8HkUqEzJG0GMOjIfxqBv8fAAgWER0AEfkdymduPdmvIWQh/Tjc96ckG3fqBd
-	 D+u74GrAgTpdsKX+ZZf7J4pPEuSrgIss4aUO8swdF4JaKy1v7v9YP679IZaKVwJ6uaQ==
+	t=1793292072;
+	b=Q6MSX8dXJEtHi1Rh5hB52Bmy/lFpl4K9BwwY5Aeqs/U21i4sdtv1xZO7oLnefAz29mFa
+	 9oBZk8juBGoAcHge4vRnHEGAw2e+/A5svvOHBpVk9+/hCjZShnrscLstYPYdS8zIU4zx/
+	 yC48rq8q6BQy51tVRc9JguVo+KDAc2YZRaya+bsKSSxe+ec6ho0NDhH5UiQAy1TmKZFi1
+	 pKDCQDPts8i5hmOhgb7lVZWktmXxX2SBMMQYEksFOlTfeoQ08tcmyiGjVVlrDbu6hV3nr
+	 12hC7NTvQYxtPF/eJsDAH6WYFB4qCOeuX5NnNlFqaTOOXPueJfmGSfUcnIOeh5hAbVA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793292085;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793292072;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=f4yalWXXSNIedpdmSjasV68YdTATiVUIW3zIVAq8TPY=;
-	b=I3t5ND2KGxRYBHr5wTgKj/unz0KwGfGbEuQnh6S8udS7FFRr/DbMzi8RFuZh1wE9AqGA
-	 KWvPMD8YmEDCtvpHhNoOEatlgwINMRhVWHKUTY/+eGf6rvhY6iH/YOf7rsRr3AirlygV7
-	 mY/gqOHTfPUYPk504J1vhdQWe49NKF5+YU+7tyJ1iAfWr+1adrnbXtN+3zhAWiCK7mkAH
-	 WAlmikQyYFin5GGIt5a5uQ0f79ZIG99gqxWh4oZG42YDbHxM6C4s+tjk1vW8Bkz3avqgj
-	 qXKXNokhcoLqz6cRE9pdP9RDrriR6sGryy9/zyx/wMonHEJLzeKmpvM2LQsmgIIj+AQ==
+	bh=vZbI+36cuLWKSblKMENitfEJ+yoA6aEpBQf4/oO9DlE=;
+	b=LtET9yDhOHr0PMYPGQMkHhw2l2a/D8NNfd+KCgYH0mhUgtJhEfClJm2OIrGi3RRsgdOT
+	 J+8n+xqBaBLcAwLoGBY6kqAg8Ok/RK4kPvFe6sjstq4m2d3YzYMtgkihAZ6PGMePk/Huc
+	 5N6uQYEei6Uo7pL0P0JSFnPWX6bn4u7MQ1NaqsgnhHiEYODY1NNyvDKebygHLxHkwCaEo
+	 6mroc6zkYEF3+TNGHLzwQ0oXbN+mltpzWJPdyM0i6QhmJy0wey+jPJnGhtMHEl8Xg1UN7
+	 ZJ5TSheaCAya4T5QmgWF2bjp+cONd4W1z/uYVWk8mUL9+dTmlq2HqNuOp4mP6MJ7Ywg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Hpw/Af1Y";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cCFxxLBM;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E77606A332;
-	Thu, 29 Oct 2026 16:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996B1606A31A;
+	Thu, 29 Oct 2026 16:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hpw/Af1Y
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420371F01825;
-	Thu, 29 Oct 2026 16:41:22 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cCFxxLBM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8672E1F01824;
+	Thu, 29 Oct 2026 16:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793292085;
-	bh=f4yalWXXSNIedpdmSjasV68YdTATiVUIW3zIVAq8TPY=;
+	s=k20260515; t=1793292072;
+	bh=vZbI+36cuLWKSblKMENitfEJ+yoA6aEpBQf4/oO9DlE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Hpw/Af1YvQCprQm7BHyhTSAWQVj1uoCXDgBOe8y5xbGp85vAWANjv6Scre3nWGYJ3
-	 OkniaTTRUsOu/J4s+WfD033BV/b8XTMvxpL2xeuHwfHDcPrOZrvqKKDozJ4pUJ0YgE
-	 2wMO54c+jBlfOEtMKMPAkMVchCHs4sQ2X+mUGFZSoSZFqIxUvR30zavdSfqvt8W9Ol
-	 p0uUnY/LzkBDkgK3/Z+zkLCrGGJztVSzWnAO07RElsmeOZBf2U6/aSeCEc3rqwIm1h
-	 cRYVogVIu7LtQs6qVXcq+7NvCVcBotDOMMywq3uerzhNCzw1Rme86+xthLatWliWod
-	 1jvg0nFBbh9fw==
+	b=cCFxxLBMp97ap//WtLS7w322xpRZpmLs68Q4jIBgA/FMQa/L4OcXOSJa/qMlYkQDd
+	 hbpbmqBQesfMi83aEbhOe9t0rNHSHIoWg8lH1bog9wq5Ftm0lpTlkADBu5zCrFCkMH
+	 Bxnk3cX8TQap035qjDI9iX7pOBdWyN8ki8e1UMce0OpUbKVEIlpzzDceZrwOScoJdZ
+	 Wjak97x8JGbcwVv7AyLpxv76z4rtU3uDbLI6BIkCtwthBAwsC3CVtC8yHqiIH/ImJr
+	 Yyfc5vN7Ga9y2uFjSBTk9jkR2yZTqkUEiECTmqHIvChMuryPM4bBGu/YH4ucHLZdql
+	 NInjk1oYdSO0g==
 From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 29 Oct 2026 17:41:00 +0100
-Subject: [PATCH v2 5/7] nstree: drop ns_tree_add_raw()
+Date: Thu, 29 Oct 2026 17:40:56 +0100
+Subject: [PATCH v2 1/7] lsm: always call the namespace_free hook
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -54,7 +54,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-work-security-namespace_free-v2-5-65591dbba7b3@kernel.org>
+Message-Id: <20261029-work-security-namespace_free-v2-1-65591dbba7b3@kernel.org>
 References: <20261029-work-security-namespace_free-v2-0-65591dbba7b3@kernel.org>
 In-Reply-To: <20261029-work-security-namespace_free-v2-0-65591dbba7b3@kernel.org>
 To: linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org
@@ -66,131 +66,70 @@ Cc: linux-security-module@vger.kernel.org,
  Linus Torvalds <torvalds@linux-foundation.org>, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>, stable@kernel.org
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4196; i=brauner@kernel.org;
- h=from:subject:message-id; bh=tj9kd7vELKufiPKwD+vHRyW4owW63ehZ7HlsaRDfc/w=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ9LpdfzbXx0A+FZd3R80z/PGRvFOvd73Ol64cCx/6jO
- 5ZKGnSrdpSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEwkcS/D/3qtnn81/qUlIeqL
- X8Y+uS/xd0mT3OUrvAbn5tTNmPTK5yLDP5163RVNUm5rfy9PmlTm97i77puFSFSPrOlu4X2+S2/
- 1cQIA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2360; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=C2BO3VYPrmNUuuCqz/uwcSrR57rLhf95j9OE/k19Z48=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ9Lpdft1C7ZEXXia0LJ08oeMv/l0UxtPXpLN1ApvBtS
+ s9ZnzAkd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEykSZzhnzWHtcub++/CXX8q
+ T2uauW9XfMhMpcCvdo0vK6yWaIRoBTP8j1b8c+nipab6Fbnn2TVXqDQ4/J/7QqHg77cs5u85Kpr
+ +XAA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-Now that ns_tree_add() doesn't allocate an id anymore it does the same
-thing as ns_tree_add_raw(). Switch the remaining ns_tree_add_raw() users
-over to ns_tree_add() and drop it. Rename __ns_tree_add_raw() to
-__ns_tree_add() while at it.
+security_namespace_free() returns early if ns->ns_security is NULL and
+skips the namespace_free hook. But ns->ns_security is only allocated if
+an LSM requests a namespace blob via lbs_ns and currently no LSM does.
+So the namespace_free hook is never called at all.
 
-No functional changes.
+Landlock only uses namespace_init and namespace_install so it doesn't
+care. But the bpf LSM attaches to every hook and a program attached to
+namespace_free never runs. We want to use it in systemd-nsresourced to
+get notified when a user namespace goes away. Right now it has to kprobe
+retire_userns_sysctls() for that.
+
+Note that a bpf program can't work around this. The size of the
+namespace blob is fixed at boot and the bpf LSM doesn't request one.
+And security_namespace_init() allocates the blob before the
+namespace_init hooks are called anyway.
+
+The check isn't needed. __ns_common_free() is only ever called after
+__ns_common_init() succeeded and security_namespace_init() only calls
+security_namespace_free() after the blob has been allocated. So if an
+LSM requests a namespace blob it is always there when the hook runs.
+Call the hook unconditionally like security_sb_free(),
+security_file_free() and security_bpf_map_free() do.
+
+The bpf LSM attaches programs to its bpf_lsm_*() stubs so fentry on the
+stubs shows what a bpf LSM program sees. Booted with lsm.debug, which
+prints "LSM: blob(ns) size 0", and created 100 user and uts namespaces:
+
+  bpftrace -e 'fentry:bpf_lsm_namespace_init { @init = count(); }
+               fentry:bpf_lsm_namespace_free { @free = count(); }' &
+  for i in $(seq 100); do unshare -Uu true; done
+
+  before: @init: 200 @free: 0
+  after:  @init: 200 @free: 200
 
 Fixes: f675d2e95569 ("lsm: add LSM blob and hooks for namespaces")
 Cc: <stable@kernel.org> # mainline only
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/namespace.c           |  4 ++--
- include/linux/nstree.h   | 13 ++-----------
- ipc/namespace.c          |  2 +-
- kernel/nstree.c          |  2 +-
- net/core/net_namespace.c |  2 +-
- 5 files changed, 7 insertions(+), 16 deletions(-)
+ security/security.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index f81d6a4bc3fe..2f9a1460b4ac 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -3296,7 +3296,7 @@ static struct mnt_namespace *create_new_namespace(struct path *path,
- 	}
- 
- 	new_ns->root = new_ns_root;
--	ns_tree_add_raw(new_ns);
-+	ns_tree_add(new_ns);
- 	return new_ns;
- }
- 
-@@ -4497,7 +4497,7 @@ struct mnt_namespace *copy_mnt_ns(u64 flags, struct mnt_namespace *ns,
- 				p = next_mnt(skip_mnt_tree(p), old);
- 		}
- 	}
--	ns_tree_add_raw(new_ns);
-+	ns_tree_add(new_ns);
- 	return new_ns;
- }
- 
-diff --git a/include/linux/nstree.h b/include/linux/nstree.h
-index 3293df17397d..eeed713804be 100644
---- a/include/linux/nstree.h
-+++ b/include/linux/nstree.h
-@@ -42,22 +42,13 @@ void ns_tree_node_del(struct ns_tree_node *node, struct ns_tree_root *root);
- 		struct uts_namespace *:    &(uts_ns_tree))
- 
- u64 __ns_tree_gen_id(struct ns_common *ns, u64 id);
--void __ns_tree_add_raw(struct ns_common *ns, struct ns_tree_root *ns_tree);
-+void __ns_tree_add(struct ns_common *ns, struct ns_tree_root *ns_tree);
- void __ns_tree_remove(struct ns_common *ns, struct ns_tree_root *ns_tree);
- struct ns_common *ns_tree_lookup_rcu(u64 ns_id, int ns_type);
- struct ns_common *__ns_tree_adjoined_rcu(struct ns_common *ns,
- 					 struct ns_tree_root *ns_tree,
- 					 bool previous);
- 
--/**
-- * ns_tree_add_raw - Add a namespace to a namespace
-- * @__ns: Namespace to add
-- *
-- * This function adds a namespace to the appropriate namespace tree
-- * without assigning a id.
-- */
--#define ns_tree_add_raw(__ns) __ns_tree_add_raw(to_ns_common(__ns), to_ns_tree(__ns))
--
- /**
-  * ns_tree_add - Add a namespace to a namespace tree
-  * @__ns: Namespace to add
-@@ -65,7 +56,7 @@ struct ns_common *__ns_tree_adjoined_rcu(struct ns_common *ns,
-  * This function adds a namespace to the appropriate namespace tree and
-  * list. The namespace must already have been assigned an id.
+diff --git a/security/security.c b/security/security.c
+index f6583d507395..1e76c097b28d 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -3412,9 +3412,6 @@ int security_namespace_init(struct ns_common *ns)
   */
--#define ns_tree_add(__ns) __ns_tree_add_raw(to_ns_common(__ns), to_ns_tree(__ns))
-+#define ns_tree_add(__ns) __ns_tree_add(to_ns_common(__ns), to_ns_tree(__ns))
- 
- /**
-  * ns_tree_remove - Remove a namespace from a namespace tree
-diff --git a/ipc/namespace.c b/ipc/namespace.c
-index 9084e0643017..b4fab86aee27 100644
---- a/ipc/namespace.c
-+++ b/ipc/namespace.c
-@@ -86,7 +86,7 @@ static struct ipc_namespace *create_ipc_ns(struct user_namespace *user_ns,
- 
- 	sem_init_ns(ns);
- 	shm_init_ns(ns);
--	ns_tree_add_raw(ns);
-+	ns_tree_add(ns);
- 
- 	return ns;
- 
-diff --git a/kernel/nstree.c b/kernel/nstree.c
-index 831f279d174a..94153dfddb3d 100644
---- a/kernel/nstree.c
-+++ b/kernel/nstree.c
-@@ -194,7 +194,7 @@ static int ns_cmp_owner(struct rb_node *a, const struct rb_node *b)
- 	return ns_id_cmp(node_to_ns_owner(a)->ns_id, node_to_ns_owner(b)->ns_id);
- }
- 
--void __ns_tree_add_raw(struct ns_common *ns, struct ns_tree_root *ns_tree)
-+void __ns_tree_add(struct ns_common *ns, struct ns_tree_root *ns_tree)
+ void security_namespace_free(struct ns_common *ns)
  {
- 	struct rb_node *node;
- 	const struct proc_ns_operations *ops = ns->ops;
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index ec4077b81389..54ba07eba003 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -447,7 +447,7 @@ static __net_init int setup_net(struct net *net)
- 	down_write(&net_rwsem);
- 	list_add_tail_rcu(&net->list, &net_namespace_list);
- 	up_write(&net_rwsem);
--	ns_tree_add_raw(net);
-+	ns_tree_add(net);
- out:
- 	return error;
+-	if (!ns->ns_security)
+-		return;
+-
+ 	call_void_hook(namespace_free, ns);
  
+ 	kfree(ns->ns_security);
 
 -- 
 2.53.0
