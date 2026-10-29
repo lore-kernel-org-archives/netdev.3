@@ -1,46 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793235217;
-	b=svZV0ZfJFiJsbaUar9KNwb0A2S7a/FWfcFVbRSqiY1++2s5SQtoioKngc7OYFMiL25mD
-	 0s2Z2rgj9LBubEOcLGbnpN64s8sABqycoMamcmpnupXlWPM9CmjG4I4RJ9hrup4z2VB1v
-	 vNe1Li/TiAVdIUCKHU/sb1RS2sKdWUzcdXZ+fBS1YBb70k0l7cI81XqjuHYLARcbISfrB
-	 f3N8X4sc+mcYJDqfpRXsvvw7shhNOFXizBfYGExG6rct1pBISZHcDMuDBfrBWTXlVZPOl
-	 cCfLV9Yu6yQKZLxC/wVM6Iv04DaZX6I4s6r4SMiEIJteA4TSwxF0TJJqi6cHrF/FkpA==
+	t=1793235218;
+	b=CcDXD0CQNXRdDiA8CGEWKmmW0yKyRpzF7nUzjCvGnruzllvZ0/D6iXahC2Gp08Jn3HTE
+	 Dr1qyW9znrAJrswVYQBo30iTpY0jG1K5a6Q4FYcJCTdfClY2A+8u7KcYrZWcu7K21Tuoy
+	 pd1heu7DnZB5q+VKBeqWx4BykaN2d0+Ra9LNoa2yVkL/L0EoDyLpbXn8Rc7kerOTgCk51
+	 Xe0T7Pc0aNGADf500r+ZRsx+wLpDz7I4If+3dD1eDkLAJLlMjvZZKJwWTsrEHzdbGqzdS
+	 S12MWIAwgHkMEZxioYbiRLesBndCeXeGuQmA2v4EWf++cUm4iq7lraOG29i4RkV1nzg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793235217;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793235218;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=FqRwHbmTCbmGJ8iS4OFIeGTzfrApt9eKXrcVHOlw5xs=;
-	b=DM21v+c9593blqa4U+IuJS/4/I8FUqf/b6p7oYFYR1iv2gdiCoMS1Tuz8JyZ445NwbdM
-	 vEsrcZ1hZk9HyJescAkVlJPKab4Htb02+f+R05Qxd1mMgQyBMP0MNZYxAS3OYTd/qKTLC
-	 HIbmGicJ62xeIAXa9ulbEzB1CdDYZn6A4BnLY/2QT7/wcVNYnrF/qReV+zK5nMWjVPgCs
-	 ICjjlYtgTnCf4pQA+UhaxmPr1B34UhV7qDGMXt38TlvmadUrZr6In8GqLtGgwg7gF3woN
-	 3xqEdDhwZt5m0fMYMxpijddQEBeHX3B8nXMX1qDuhT0v6xfGfPP0ZlsZWvuTuOGvcwQ==
+	bh=yvQgXBgwJOJW7neUTXl1bf0MSUF7feo6G5l+jEQFnKg=;
+	b=YSr4/wou4nW6In7l7A3V3JsJRmNWZgNx5P3idXIQZ5lseh5ZSd2PdESveR2iXtgBDeOA
+	 /YA23C2NPkv60V/7CHFjgKj7fAbIQfFuZUIGY9D/Y2v2WXz7vmOY8NwG81jmNaY9RA7Bu
+	 mm/ERIaI/2cC9m/xCPlD5nKabDajoU9stYk1/O74GdoaWt4IOeluf7g9XcblrrG5gmS7r
+	 KeFW8X3uPX4SJb+yYLrJ9/u6Cmn1+oP+BnFYvERX6kxVw5FU9O7zlRjpHNnmPqNqg2Jxc
+	 D7FGKv/6GmbYfmoVd/c+bJa6tln6RvEe6NQG6rlEV1OdEj2F/SNCpaTNCOPNeUviZEw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RncUpiKB;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y+k5En1+;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBEB606A31A
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 00:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4DB606A321
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 00:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RncUpiKB
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0F31F01825;
-	Thu, 29 Oct 2026 00:53:35 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y+k5En1+
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D851F01828;
+	Thu, 29 Oct 2026 00:53:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793235216;
-	bh=FqRwHbmTCbmGJ8iS4OFIeGTzfrApt9eKXrcVHOlw5xs=;
+	s=k20260515; t=1793235218;
+	bh=yvQgXBgwJOJW7neUTXl1bf0MSUF7feo6G5l+jEQFnKg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RncUpiKBcL/DoI7Q+BvOGdQ/s8yaYRk9j/HPeP0kKvPweShK8WeTE3ajKtrdKPtWe
-	 6yXb9n5aX1WIupOGs/xWTvvTpqlT8Bba8/vveDmKKIYeru+BL4Wy0ekSz2Jum6yiMI
-	 B9vzG+ZoXyzRFc0OuXPqr0zuwK6d943m1HpOw8iZCE6WF4amxu3B5nsMM6Kvh26OOk
-	 t9cxYkHnbvUcQm0c6e20ZUr8GxrOFeUtCqqUZ6iC5PPNP33empiLqdSwVWo1aczSSP
-	 hlL22xXi5698IRSx8irjBV5wG7CKQUwloGFrEWfY+t8fAW6j+XHyIwBrTAY0mhz/ep
-	 rzH/Q2n4WUtng==
-Subject: Re: [PATCH net 4/6] ice: E825: stop clearing PHY_REG_TX_OFFSET_READY
+	b=Y+k5En1+wzxMFCrERvbk43GhytaXyTVeZx8s7WtE8zi1SaDjXoW27tuJLz0smjdzu
+	 9EomvPKmyPnBORAK7e43mlxvL1gHg1emfjiCf0+LxqA9hZelqK/8peN5Zsn4paN/sw
+	 hQ2LXrvFCRXKZu0jh6DXB/d8vgIsKBoPDAZKmD28qjFkX5JIfOkWE2zBT5sO86UU45
+	 PY2Aa/VXjkZc6mx0AoKjVx+qngqedJY8r3DgVz+0flhDe0NQ8VQWlp2VekLRcbajoi
+	 O8R1anxOLAb7B8gS79BNEo9UL/Bx6ij+Di11jWcf0Y2Yh+1nV8vOwhnMnQRfNNSZJO
+	 xGdJb7KmsuB8A==
+Subject:
+ Re: [PATCH net 5/6] ice: E825: clear PHY_TSTAMP memory prior to soft reset
 From: netdev-bot+sashiko@kernel.org
 To: jacob.e.keller@intel.com
 Cc: przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
@@ -50,11 +51,11 @@ Cc: przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  anthony.l.nguyen@intel.com, maciej.machnikowski@intel.com,
  przemyslaw.korba@intel.com, sergey.temerkhanov@intel.com,
  arkadiusz.kubalewski@intel.com, richardcochran@gmail.com, horms@kernel.org
-Date: Thu, 29 Oct 2026 00:53:35 +0000
-Message-ID: <179323521502.3134.1640101944514020934@kernel.org>
-In-Reply-To: <20261027-reduction-v1-4-81237c67a361@intel.com>
-References: <20261027-reduction-v1-4-81237c67a361@intel.com>
-X-sashiko-severity: High
+Date: Thu, 29 Oct 2026 00:53:36 +0000
+Message-ID: <179323521668.3134.16925528364722533214@kernel.org>
+In-Reply-To: <20261027-reduction-v1-5-81237c67a361@intel.com>
+References: <20261027-reduction-v1-5-81237c67a361@intel.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -67,10 +68,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -78,84 +79,143 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] ice_ptp_port_phy_restart()
-  (drivers/net/ethernet/intel/ice/ice_ptp.c) now returns from the…
+- [Medium] In ice_ptp_phy_soft_reset_eth56g()
+  (drivers/net/ethernet/intel/ice/ice_ptp_hw.c), the patch adds an…
+- [Low] The new kdoc for ice_ptp_clear_tx_memory_status_eth56g() in
+  drivers/net/ethernet/intel/ice/ice_ptp_hw.c has a typo in the sentence…
 
 --
 
-ice: E825: stop clearing PHY_REG_TX_OFFSET_READY
+ice: E825: clear PHY_TSTAMP memory prior to soft reset
 
-On E825, ice_stop_phy_timer_eth56g() no longer clears
-PHY_REG_TX_OFFSET_READY. Clearing it left the hardware's outstanding Tx
-timestamp counter out of sync. New Tx timestamp requests are now blocked
-through the tracker's tx.disabled flag while the PHY is stopped or
-restarting. The patch also adds a tx->init check in
-ice_ptp_mark_tx_tracker_stale(), and changes the error messages in
-ice_ptp_port_phy_restart().
+This patch drops the E825 path that cleared Tx timestamp memory by writing
+PHY_REG_TX_MEMORY_STATUS. Instead, ice_ptp_phy_soft_reset_eth56g() now
+first reads every PHY_TSTAMP index for the port, then runs the soft reset,
+so stale valid bits are cleared and the internal counter is reset. The
+kdoc for ice_ptp_reset_ts_memory() and ice_ptp_phy_soft_reset_eth56g() is
+updated to match.
 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> index 2f8563eb6fb19..3ba6632bb1965 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-
-[ ... ]
-
-> @@ -1305,15 +1311,35 @@ ice_ptp_port_phy_restart(struct ice_ptp_port *ptp_port)
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+> index 07b55fbb88dde..5c63f88bbf48a 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
 
 [ ... ]
 
->  		break;
->  	default:
-> -		err = -ENODEV;
-> +		dev_dbg(ice_pf_to_dev(pf), "PTP failed to restart PHY port %u with unknown MAC type %d\n",
-> +			port, hw->mac_type);
-> +		return -ENODEV;
->  	}
+> @@ -1177,19 +1147,43 @@ static int ice_clear_ptp_tstamp_eth56g(struct ice_hw *hw, u8 port, u8 idx)
+>  }
 >  
->  	if (err)
-> -		dev_err(ice_pf_to_dev(pf), "PTP failed to set PHY port %d up, err %d\n",
-> -			port, err);
-> +		dev_err(ice_pf_to_dev(pf), "PTP failed to restart PHY port %u with err %pe; Timestamping not enabled; A link-toggle may recover.\n",
-> +			port, ERR_PTR(err));
+>  /**
+> - * ice_ptp_reset_ts_memory_eth56g - Clear all timestamps from the port block
+> + * ice_ptp_clear_tx_memory_status_eth56g - Reset one port's Tx timestamp memory
+>   * @hw: pointer to the HW struct
+
+[ ... ]
+
+> + * Due to interactions with an internal HW counter for the number of
+> + * outstanding Tx timestamps, this *must* not be called outside if the
+> + * ice_ptp_phy_soft_reset_eth56g() procedure. Otherwise, the internal counter
+> + * may become out of sync and prevent new timestamp interrupts.
+
+[Severity: Low]
+This isn't a bug, but there's a typo in this kdoc: "outside if the"
+should be "outside of the".
+
+[ ... ]
+
+> @@ -2303,6 +2298,20 @@ int ice_ptp_read_tx_hwtstamp_status_eth56g(struct ice_hw *hw, u32 *ts_status)
+
+[ ... ]
+
+> + * In the event that the driver fails to access the PHY during the completion
+> + * of the soft reset, (e.g. due to sideband queue message failures), the
+> + * device may be left in an inconsistent state. Such failures are expected to
+> + * be rare. Callers are responsible for checking the return of this function
+> + * and treating errors as indicating that the timestamping block of the PHY is
+> + * non-functional. Recovery may be possible by issuing another soft reset
+> + * after any transient access errors have abated.
+> + *
+>   * Return: 0 on success, or a negative error code on failure when
+>   *         reading or writing the PHY register.
+>   */
+> @@ -2311,6 +2320,8 @@ int ice_ptp_phy_soft_reset_eth56g(struct ice_hw *hw, u8 port)
+>  	u32 global_val;
+>  	int err;
 >  
->  	mutex_unlock(&ptp_port->ps_lock);
+> +	ice_ptp_clear_tx_memory_status_eth56g(hw, port);
+> +
+>  	err = ice_read_ptp_reg_eth56g(hw, port, PHY_REG_GLOBAL, &global_val);
+>  	if (err) {
+>  		ice_debug(hw, ICE_DBG_PTP, "Failed to read PHY_REG_GLOBAL for port %d, err %d\n",
 
-[Severity: High]
-Does this new return leave ptp_port->ps_lock held?
+[Severity: Medium]
+Suppose the sweep finishes, and then the ice_read_ptp_reg_eth56g() of
+PHY_REG_GLOBAL fails, or one of the three ice_write_ptp_reg_eth56g() calls
+to PHY_REG_GLOBAL fails. The function returns early and the soft reset bit
+is never toggled.
 
-ice_ptp_port_phy_restart() takes the mutex before the switch:
+The commit message says each read of a valid entry, including cold boot
+garbage, decrements the internal counter. Only the soft reset puts the
+counter back to zero.
 
-	mutex_lock(&ptp_port->ps_lock);
+Can this leave the counter underflowed, with no Tx timestamp interrupts?
+That is the condition this patch tries to prevent. Before this patch, a
+failed soft reset did no PHY_TSTAMP reads.
 
-	switch (hw->mac_type) {
+The commit message says recovery happens on a link reset:
 
-Before this patch, the default arm set err = -ENODEV and fell through to
-the mutex_unlock() at the end. The new return -ENODEV skips that unlock.
+  "Upon a link reset, the driver will re-sweep the timestamp indexes and
+  perform a fresh soft reset, clearing any inconsistency from the left
+  over failed state."
 
-After that, any ice_ptp_port_phy_stop() or ice_ptp_port_phy_restart() on
-the same port would block forever in mutex_lock(). That includes the
-ice_ptp_release() -> ice_ptp_port_phy_stop() teardown path.
+The new kdoc also says another soft reset may recover.
 
-The default arm in ice_ptp_port_phy_stop() still uses err = -ENODEV and
-reaches its unlock.
+Is there a code path that does this? The only caller of
+ice_ptp_phy_soft_reset_eth56g() is ice_ptp_init_phc_e825c(). That is
+reached only from ice_ptp_init_owner() and ice_ptp_rebuild_owner(), through
+ice_ptp_init_phc().
 
-The commit message only describes this hunk as a logging change:
+On a link change, ice_ptp_link_change()->ice_ptp_port_phy_restart() does
+this for E825:
 
-  "For the invalid MAC type path returning -ENODEV, skip this message and
-  log a dev_dbg that we failed with an unknown MAC type instead."
+	case ICE_MAC_GENERIC_3K_E825:
+		...
+		ice_ptp_mark_tx_tracker_stale(&ptp_port->tx);
 
-The current tree does not seem to hit this path at runtime.
-ice_ptp_init_port() rejects unknown MAC types before
-ice_ptp_reset_phy_timestamping() runs. However, the path becomes
-reachable if a MAC type is ever added to ice_ptp_init_port() but not
-here.
+		err = ice_start_phy_timer_eth56g(hw, port);
 
-The last patch in the series ("ice: skip reading Tx ready bitmap on
-ports with no timestamps") still has the same return with the lock held.
+This does not sweep and does not soft reset. Also, ice_ptp_link_change()
+returns early when pf->ptp.state != ICE_PTP_READY. That is the case after
+a failed init or rebuild.
 
-Could the default arm call mutex_unlock() before returning? Another
-option is to set err and jump to a label that skips the dev_err() but
-still unlocks.
+After a failed rebuild the state is ICE_PTP_ERROR, and later calls to
+ice_ptp_rebuild() exit here:
+
+	} else if (ptp->state != ICE_PTP_RESETTING) {
+		err = -EINVAL;
+		dev_err(ice_pf_to_dev(pf), "PTP was not initialized\n");
+		goto err;
+	}
+
+So ice_ptp_rebuild_owner() is never retried. It looks like only a driver
+reload would run the sweep and soft reset again.
+
+Separately, ice_ptp_init_phc_e825c() returns on the first port that fails:
+
+	for (int port = 0; port < hw->ptp.num_lports; port++) {
+		err = ice_ptp_phy_soft_reset_eth56g(hw, port);
+		if (err) {
+			...
+			return err;
+		}
+	}
+
+The ports after it are neither swept nor reset in that pass.
+
+Should the commit message and kdoc say a driver reload is needed? Or
+should a real retry be added, for example by checking PHY_REG_GLOBAL access
+before the sweep, or by retrying the reset when a failure happens after the
+sweep?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261027-reduction-v1-0-81237c67a361%40intel.com
