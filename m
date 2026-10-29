@@ -1,49 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793275544;
-	b=QnIb/LmwkObh1rFSDYW9Lv8Fwkjq3SgaGhCsNaQEmbW6GCMJCNo4x0Uk0ymP7ARugtEQ
-	 KzV/dlkxuTiiUrxmc/ALUo6f04Vk+lRpWJZEhwKgGC7trjoR0AX7b2Ael3+YvayLxAxxG
-	 8O/g0Si+mgSg1gQJiSAkHJ1RpsfaxCk4/HxVXQC9ar+AWtzowsTj2V1uFzf/kjnyPJk9c
-	 pSnJ7vcJor6YJfVQg5AikIrFOrlE8crg0RE7Kku2TYSCPUcEuYfQE3YfVsQJwtaGmJmty
-	 OaCtwPhesYXWqlgY7k+KCiDgkgSlp6XsSLn31+kg+rtQMRDZVPwFVs7NJz8mEdUCuHA==
+	t=1793275553;
+	b=vns06+8n/7OFN8w6vLM1jl6a1F2+PbkezzUgyhAgDobH/zYeY/5fyPMDvy969LJtcznq
+	 Gpom+8EZSc0s8xcHYn6c4QpQLIvvsVssHOU0OijV7kAo/exJLqy7H476eow+YIyTnEXz9
+	 PIY13sio1Sa+iy7NQlBwiSCHLtq9loqo11X++YXJsDLYJEaRYKGYmYC4Dqjtz4AAWQeOp
+	 89KG2UYjHnCXfJ8D1w+eLYmoxL48bN3eJfHSKAJAZgxw+wQeBk6zqpqFJjegURjhAkI0a
+	 pG8aX5/OoiGtvTYXA6RGz10XF3XcisO0kIWUAIQH2QYCFjONv+DptYkH0UrG47bEHSA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793275544;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793275553;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=F+lQnD/38r9bnKLLOD8uD3qWsojgr4qUo3iXjnb+j54=;
-	b=X6B4Dzbkv0u5hjKoTfuaeu1pt8eWsDWI2sQzWBgEqdZZwOv24DFkJTSVhKRNCGYWNT9e
-	 ZNKEAJ9sR8Xd/OYWAV2N+LniyK6837LT9Etn++zaxmSw0M5sPqy7OXPFBccIBa1MWUgxY
-	 puEgc9gfmTNPJdcMUDusJtB6ARrGKg1gO5YNMEjuwpUCTtbprJrXNrLTUqfw9K/uWBwY2
-	 RiqjbEsE76qXCo/bDzhp1eDKcRb+qM27MtMI4pDmKSmDIjiaLWj3F2FsVUzKAAUIuhT1j
-	 Wd7PLXQD9RWn6nefQpMJr7BJYdUcBKfeJUmY4tNqgq+Gozkf/sCbG0VV1i9C7CCqdGA==
+	bh=4iJ4lWXExv+RfGay5KC5PfyDalOA2jKNer9jnroQJeU=;
+	b=RvrEeq5tqlU/qZqtsPYsJYg50q5bpjjJSCYwjqLTgcxNOAdZTndHUABDkzxf18pLux1E
+	 it4WapZ/VIwwQ0DRtw/C8nYBpM4uayerjya/0ALJNKvXCqh9BeuR2M2/GCRhpBoXwHZlI
+	 zLFpjwWpF8rZdQdl/F+rr4V0BEQbiH1WHlavGFFVJk19eiM/T+ujPf2BixxVZRZpwMNHL
+	 ONPzVIAkTATNJgUVqnCW+e85QWl3pd8ChZnZb3HNrcWv9spl0frrgXvm1Hg284rX8XqtK
+	 1isUTP/HjBB3aSl1ieZTW5qF6kNJBgAfGKe8in4wPKBnXKw7ieG3JpOx48WwVYrFByQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SSqi2YTc;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iomdypTv;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F6C606A335;
-	Thu, 29 Oct 2026 12:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD79606A320;
+	Thu, 29 Oct 2026 12:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SSqi2YTc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591B51F031E3;
-	Thu, 29 Oct 2026 12:05:42 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iomdypTv
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 036321F031E5;
+	Thu, 29 Oct 2026 12:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793275544;
-	bh=F+lQnD/38r9bnKLLOD8uD3qWsojgr4qUo3iXjnb+j54=;
+	s=k20260515; t=1793275547;
+	bh=4iJ4lWXExv+RfGay5KC5PfyDalOA2jKNer9jnroQJeU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=SSqi2YTc+HyV6nIZrqxDqwvCrCtqjgQo1cI9uxFRB65r50CUmE2P/lO98RA70qzRG
-	 xYaLA4LKrUvXgowNFarJFxWKgaZYmIsZxL/lDv/Koeee7f+Jm8dtYiQxqyTifco7It
-	 pM1A2JdalcS7aQerwU8zS1aFBxAkwYknNNLxu0ef2w4GhOy+WDB0tO7NV/xqUa1nTz
-	 MDuVcQ6D2QejiuO/FieHbPLCytV+UTDMmuFn0zBIDdwyxAdZQ/FHG1rBCOV7KjdDqP
-	 wn4wvR8Env+w8c28nnFa7U8AyQNDXpg631Q0SxK86El1J3PnjAiSrOWxiPnXk9xu8Y
-	 cUeHFHo4vS5/w==
+	b=iomdypTvZQIMLWImvLyZSeMqZ7GRZcm6sOcC0S+HVjLCkjem9mnPplw2Yiuh/qXUS
+	 I4/w9yN69PHPShB5KMePUmhNj2il27fRTNtKj+xoPxB7bQfxwnkujFPTNB3tAWuQPw
+	 sJCtPMyl7DMJPoL0Ei9WDUFkQ3R393Z1BR91SbheN/jpb5ViC6lfmV7GV6DiWn5QSb
+	 L8kWkLyarFPduIZSFKieL7LUjXYaVFZZVfPNcVU2al5LavERHXPhA+g/0yuzEFJOVm
+	 DZUYeTetbiIvQY5k+pq2H2FSwY4Pv+CimIOJfq08GeK1vaMKNTx0dGKwQJaV2j+Ogt
+	 cDEzL4Xzs0K7w==
 From: Jeff Layton <jlayton@kernel.org>
-Date: Thu, 29 Oct 2026 08:05:17 -0400
-Subject: [PATCH v2 4/6] NFSD: Keep per-export statistics across export
- cache updates
+Date: Thu, 29 Oct 2026 08:05:19 -0400
+Subject: [PATCH v2 6/6] NFSD: Document how to choose an IO mode
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -55,7 +54,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-export-iomode-v2-4-fe8ec6251a36@kernel.org>
+Message-Id: <20261029-export-iomode-v2-6-fe8ec6251a36@kernel.org>
 References: <20261029-export-iomode-v2-0-fe8ec6251a36@kernel.org>
 In-Reply-To: <20261029-export-iomode-v2-0-fe8ec6251a36@kernel.org>
 To: Donald Hunter <donald.hunter@gmail.com>, 
@@ -71,426 +70,217 @@ Cc: Steve Dickson <steved@redhat.com>, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
  linux-doc@vger.kernel.org, Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=13126; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=Y/J5KhbzZ4N08UjcsRpwiVuamXQhdeRbCHCb9M1rCk4=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBq4zaOdeg8F073Gs0xg/7hhcaJUrZXZpBw9Mvpm
- GfAdKs4SrqJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCauM2jgAKCRAADmhBGVaC
- FbI4EAC1yLf2DOMJ3wwYdBARJrR4vadxkTuqKDb6H+3gZ3CJMEDEu8EY/008A2pvrkogiHFxFVe
- L94Wb9i7/LWh+BIPEQCLmZA298NZX1AfsKI8h8YBJSkaoxD4Tr4u5OgiMiKqkjhDd8/0XglZT+l
- Yh6w1OC0+35SzI1/k9JZMTIU9mNtTVfIe4rhzMDH4o+yEoCXh1MGx4ogOMYQ3CBCP2/ZYQatnnr
- BkMTBcCbK0pADqACHgZipd4n2YF5++/HNnGJG+UKmnB3Jh4ZZ75D7HQamxVnMgljf62gcT42RDh
- 9WtRdwt7oeW/zOhxMM32M+Iz9djTQ9UqLQZPgkw09xN87b0A1qMxvf2p3V/hgR4IsdIA+4WARX1
- kI5clQ8IRikp6Vm8YkEJixib6NsJcKMu1UGQsFEzDQ14gdoWZd5/sCN3gFv7Eh/kTQOAqjvwRPx
- UTZJB7iGFn7UEmuUrfhvWogt1uIDLl5WMqCC3NI/sUjlDzIs6ya6gHIBdImqGrptdirubHTd5qR
- uIhoUYC5Xy1sfSWOMWEfKpJPNwTCDUIlSPc/XmMbMfwjcFwNsrLQh/HReqgJ6ZGWxA4X4Y+Iojz
- n5E6Jtzj3YKnLJ4jWWJivIpDXthuxBJPp3bLqq7jLboQDlgISw8FS3OMiWE87U6VuITtYDFfbDB
- OCmlnZpZ83nR2rQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8695; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=yE2bCSOokjUEj1po9XIzO+SKll2jKyIeQhppobQc1QU=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBq4zaOIt1OzOAFIx/Tqkr6ypYGRqUreMaslU3lM
+ GFpIyumD6mJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCauM2jgAKCRAADmhBGVaC
+ FSs3EACteuSamD1oyvQMYQZKFltKnZtUenbce49ToZhHPsuMyqtfLbeGYw6DnhVkLLUWRIePDIZ
+ X44unaBBh39QFuozRrKcMbEHItSIV4FQN6Bh5zTdXdoa9lgaRJdEZ0I9i1aKsVCfV2VIloHrNVh
+ Y3o9Gp/DKg/CLBMUJPROUhPgkBq4It6J4GSml87ETqtsh1BE8f+lnxrRNYRM2m8Q9GaqIMbuBxg
+ sopi6fGSgQA0eAHp7PbK2R93zUr13O1N3nWAbl7kGvjJ1t3x1dCOxvYfkwS3bqRsBixrXMR+K2v
+ 1+nGD1wAQxy+U1LQQM5gGFN4SRtUb7rlFj9jOlM1aNPgh52brRGW7R8copo6qsnhnjUKBmi7Dt8
+ 0gSd4uNeq00HmuaHN3MiJ9aZRH55ROLgayvfrYhbzJcHkXUVEwLtSOzkUP0VI/XYv0Dc6WOpxOD
+ F/vlF9X4I7y7+XTaIFaeBaH7wyf0cSRzapaigm3TfIsmQdzfHkxEXLB5w1IdhsGfhj17m0uSWoM
+ MMayBj1hy5BcR6qdLCaa1LB0ZGo/r4XzyxqJGoWAYzvfTmA3T6hXY2HOntOP6bYHZeQLx3zay91
+ ksrsmePAJgvYM7K9Zt9QyvsgvOTnyStb58hUdd3DdqC3e7JlRcX+FqS8aJ3Z07xMCxy3KzpGmgB
+ IA2pzQXgChZAD7Q==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
 
-The counters in /proc/fs/nfsd/export_stats live in the export cache
-entry. mountd replaces an entry when it refreshes it, and a cache
-flush (exportfs -r) or an nfsd restart removes all of them, so the
-counters of an export restart at zero at unpredictable times. A tool
-that samples the counters over an interval then loses the traffic of
-the replaced entry.
+Admins have no guidance on when to pick buffered, dontcache, or direct
+IO for an export. Add a section that:
 
-Keep the statistics in a per-net table keyed on the export root and
-the client name. The root is identified by the st_dev and inode
-number that getattr reports, plus the inode generation. btrfs
-subvolumes share i_sb->s_dev and a snapshot root has the inode number
-and generation of its source, but getattr gives each subvolume its
-own st_dev.
-
-Every export cache entry for the same root and client takes a
-reference to the shared export_stats in svc_export_init() and drops
-it when the entry is freed. Keying on the inode instead of holding
-ex_path keeps unused statistics from pinning the exported mount.
-
-Statistics that no entry has used for an hour no longer match a
-lookup, since the dev_t of a vanished filesystem can be reused by
-another one. A delayed work item, queued when statistics become idle,
-frees them; net shutdown frees the rest.
-
-A replaced cache entry stays hashed until cache_clean() and would show
-the same shared counters as its replacement, so export_stats skips it.
+- explains why a low server page cache hit rate is normal (clients
+  cache their own re-reads)
+- lists the workload conditions that favor each IO mode
+- describes existing metrics to measure: per-export miss ratio from
+  export_stats vs. block device reads, workingset refault counters,
+  cachestat(2), reclaim cost (PSI, allocstall, compact_stall), and
+  client mountstats byte counters
+- notes that refault counters do not see dontcache or direct IO, so
+  measure while the export uses buffered IO
 
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- fs/nfsd/export.c | 236 +++++++++++++++++++++++++++++++++++++++++++++++--------
- fs/nfsd/export.h |  16 ++++
- fs/nfsd/netns.h  |   6 ++
- 3 files changed, 226 insertions(+), 32 deletions(-)
+ Documentation/filesystems/nfs/nfsd-io-modes.rst | 168 ++++++++++++++++++++++++
+ 1 file changed, 168 insertions(+)
 
-diff --git a/fs/nfsd/export.c b/fs/nfsd/export.c
-index a85aedc0c4c8..2b83f2836b0e 100644
---- a/fs/nfsd/export.c
-+++ b/fs/nfsd/export.c
-@@ -594,28 +594,198 @@ static void nfsd4_fslocs_free(struct nfsd4_fs_locations *fsloc)
- 	fsloc->locations = NULL;
- }
- 
--static int export_stats_init(struct export_stats *stats)
-+/* Drop export_stats that no export cache entry has used for this long */
-+#define EXPORT_STATS_IDLE_SECS	3600
+diff --git a/Documentation/filesystems/nfs/nfsd-io-modes.rst b/Documentation/filesystems/nfs/nfsd-io-modes.rst
+index 1ad30518c234..99da98430be1 100644
+--- a/Documentation/filesystems/nfs/nfsd-io-modes.rst
++++ b/Documentation/filesystems/nfs/nfsd-io-modes.rst
+@@ -283,3 +283,171 @@ Tracing:
+     segment that it could not invalidate. Only a filesystem that uses
+     iomap for direct IO emits it, and other fallbacks, such as ext4's
+     own, are not traced.
 +
-+static u64 export_stats_key(dev_t dev, u64 ino)
-+{
-+	return ((u64)dev << 32) ^ ino;
-+}
++CHOOSING AN NFSD IO MODE
++========================
 +
-+static bool export_stats_expired(const struct export_stats *stats,
-+				 time64_t now)
-+{
-+	return !stats->es_users &&
-+	       now - stats->es_idle_since > EXPORT_STATS_IDLE_SECS;
-+}
++The correct IO mode for an export depends on the workload of its
++clients. The most important question is this: does NFSD read the same
++data again before the page cache evicts it?
 +
-+/*
-+ * Expired statistics never match: once the filesystem is gone, its
-+ * dev_t can be reused by a different one.
-+ */
-+static struct export_stats *export_stats_find(struct nfsd_net *nn, dev_t dev,
-+					      u64 ino, u32 gen,
-+					      const char *client, time64_t now)
-+{
-+	struct export_stats *stats;
++NFS clients keep their own page cache. When a client reads the same
++data again, its own cache usually supplies the data. The READ request
++does not get to the server. Thus, the server page cache helps mostly
++in these conditions:
 +
-+	hash_for_each_possible(nn->export_stats_hash, stats, es_node,
-+			       export_stats_key(dev, ino))
-+		if (stats->es_dev == dev && stats->es_ino == ino &&
-+		    stats->es_gen == gen && !strcmp(stats->es_client, client) &&
-+		    !export_stats_expired(stats, now))
-+			return stats;
-+	return NULL;
-+}
++- Different clients read the same data.
++- A client reads data that a different client wrote recently.
++- A client reads data again after its own page cache evicted the data.
 +
-+static void export_stats_free(struct export_stats *stats)
- {
--	stats->start_time = ktime_get_seconds();
--	return percpu_counter_init_many(stats->counter, 0, GFP_KERNEL,
--					EXP_STATS_COUNTERS_NUM);
-+	percpu_counter_destroy_many(stats->counter, EXP_STATS_COUNTERS_NUM);
-+	kfree(stats->es_client);
-+	kfree(stats);
- }
- 
--static void export_stats_reset(struct export_stats *stats)
-+static void export_stats_queue_reap(struct nfsd_net *nn)
- {
-+	queue_delayed_work(system_dfl_wq, &nn->export_stats_reaper,
-+			   (EXPORT_STATS_IDLE_SECS + 1) * HZ);
-+}
++A low server page cache hit rate is thus normal. It does not by itself
++show that buffered IO is the wrong choice.
 +
-+/*
-+ * Free expired statistics. Re-arm while idle ones remain, because
-+ * export_stats_put() does not queue the work while it is pending.
-+ */
-+static void export_stats_reap(struct work_struct *work)
-+{
-+	struct nfsd_net *nn = container_of(to_delayed_work(work),
-+					   struct nfsd_net,
-+					   export_stats_reaper);
-+	time64_t now = ktime_get_seconds();
-+	struct export_stats *stats;
-+	struct hlist_node *tmp;
-+	HLIST_HEAD(expired);
-+	bool idle = false;
-+	int bkt;
++Use buffered IO for an export when:
 +
-+	spin_lock_bh(&nn->export_stats_lock);
-+	hash_for_each_safe(nn->export_stats_hash, bkt, tmp, stats, es_node) {
-+		if (export_stats_expired(stats, now)) {
-+			hash_del(&stats->es_node);
-+			hlist_add_head(&stats->es_node, &expired);
-+		} else if (!stats->es_users) {
-+			idle = true;
-+		}
-+	}
-+	if (idle)
-+		export_stats_queue_reap(nn);
-+	spin_unlock_bh(&nn->export_stats_lock);
++- The working set of the export fits in server memory.
++- Many clients read the same files.
++- Clients send small or misaligned WRITEs. The page cache collects
++  these WRITEs and writes them to storage in larger units.
 +
-+	hlist_for_each_entry_safe(stats, tmp, &expired, es_node) {
-+		hlist_del(&stats->es_node);
-+		export_stats_free(stats);
-+	}
-+}
++Use dontcache IO for an export when:
 +
-+/*
-+ * Return the statistics of the export root and client of @exp, with a
-+ * reference. Keying them on the root inode rather than on ex_path keeps
-+ * an unused export_stats from pinning the exported mount. Returns NULL
-+ * if getattr or memory allocation fails.
-+ */
-+static struct export_stats *export_stats_get(struct svc_export *exp)
-+{
-+	struct nfsd_net *nn = net_generic(exp->cd->net, nfsd_net_id);
-+	struct inode *inode = d_inode(exp->ex_path.dentry);
-+	const char *client = exp->ex_client->name;
-+	time64_t now = ktime_get_seconds();
-+	u32 gen = inode->i_generation;
-+	struct export_stats *stats, *new;
-+	struct kstat stat;
-+	dev_t dev;
-+	u64 ino;
++- Clients read or write most data only one time.
++- The working set of the export is much larger than server memory.
++- The data of the export causes the page cache to evict data of other
++  exports.
 +
-+	/*
-+	 * btrfs subvolumes share i_sb->s_dev, and a snapshot's root has the
-+	 * inode number and generation of its source. getattr reports a
-+	 * separate st_dev for each subvolume. The key is never shown to
-+	 * anyone, so skip the LSM check.
-+	 */
-+	if (vfs_getattr_nosec(&exp->ex_path, &stat, STATX_INO,
-+			      AT_STATX_DONT_SYNC))
-+		return NULL;
-+	dev = stat.dev;
-+	ino = stat.ino;
++If the underlying filesystem does not support dontcache, NFSD uses
++buffered IO instead. See NFSD DONTCACHE above.
 +
-+	spin_lock_bh(&nn->export_stats_lock);
-+	stats = export_stats_find(nn, dev, ino, gen, client, now);
-+	if (stats)
-+		stats->es_users++;
-+	spin_unlock_bh(&nn->export_stats_lock);
-+	if (stats)
-+		return stats;
++Use direct IO for an export when the conditions for dontcache are true,
++and also:
 +
-+	new = kzalloc_obj(*new);
-+	if (!new)
-+		return NULL;
-+	new->es_client = kstrdup(client, GFP_KERNEL);
-+	if (!new->es_client ||
-+	    percpu_counter_init_many(new->counter, 0, GFP_KERNEL,
-+				     EXP_STATS_COUNTERS_NUM)) {
-+		kfree(new->es_client);
-+		kfree(new);
-+		return NULL;
-+	}
-+	new->es_nn = nn;
-+	new->es_users = 1;
-+	new->es_dev = dev;
-+	new->es_ino = ino;
-+	new->es_gen = gen;
-+	new->start_time = now;
++- Clients send large, aligned READs and WRITEs.
++- Page reclaim uses a large quantity of CPU time, or makes IO stop.
 +
-+	spin_lock_bh(&nn->export_stats_lock);
-+	stats = export_stats_find(nn, dev, ino, gen, client, now);
- 	if (stats) {
--		int i;
-+		stats->es_users++;
-+	} else {
-+		hash_add(nn->export_stats_hash, &new->es_node,
-+			 export_stats_key(dev, ino));
-+		stats = new;
-+		new = NULL;
-+	}
-+	spin_unlock_bh(&nn->export_stats_lock);
- 
--		for (i = 0; i < EXP_STATS_COUNTERS_NUM; i++)
--			percpu_counter_set(&stats->counter[i], 0);
-+	if (new)
-+		export_stats_free(new);
-+	return stats;
-+}
++Change the IO mode of one export at a time. Compare the metrics below
++before and after each change.
 +
-+/* Called from an RCU callback */
-+static void export_stats_put(struct export_stats *stats)
-+{
-+	struct nfsd_net *nn;
++Metrics to monitor
++------------------
 +
-+	if (!stats)
-+		return;
-+	nn = stats->es_nn;
-+	spin_lock_bh(&nn->export_stats_lock);
-+	if (!--stats->es_users) {
-+		stats->es_idle_since = ktime_get_seconds();
-+		export_stats_queue_reap(nn);
- 	}
-+	spin_unlock_bh(&nn->export_stats_lock);
- }
- 
--static void export_stats_destroy(struct export_stats *stats)
-+static s64 export_stats_sum(struct export_stats *stats, int counter)
- {
--	if (stats)
--		percpu_counter_destroy_many(stats->counter,
--					    EXP_STATS_COUNTERS_NUM);
-+	return stats ? percpu_counter_sum_positive(&stats->counter[counter]) : 0;
-+}
++The metrics that follow can help you choose an IO mode. Measure them
++while the export uses buffered IO.
 +
-+static void export_stats_shutdown(struct nfsd_net *nn)
-+{
-+	struct export_stats *stats;
-+	struct hlist_node *tmp;
-+	int bkt;
++Miss ratio for each export
++~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+	/* Wait for svc_export_release() to drop its references */
-+	rcu_barrier();
-+	/* Only now, as those last puts can queue the reaper */
-+	cancel_delayed_work_sync(&nn->export_stats_reaper);
-+	hash_for_each_safe(nn->export_stats_hash, bkt, tmp, stats, es_node) {
-+		hash_del(&stats->es_node);
-+		if (WARN_ON_ONCE(stats->es_users))
-+			continue;
-+		export_stats_free(stats);
-+	}
- }
- 
- static void svc_export_release(struct rcu_head *rcu_head)
-@@ -624,8 +794,7 @@ static void svc_export_release(struct rcu_head *rcu_head)
- 			ex_rcu);
- 
- 	nfsd4_fslocs_free(&exp->ex_fslocs);
--	export_stats_destroy(exp->ex_stats);
--	kfree(exp->ex_stats);
-+	export_stats_put(exp->ex_stats);
- 	kfree(exp->ex_uuid);
- 	kfree(exp);
- }
-@@ -1497,15 +1666,15 @@ static int svc_export_show(struct seq_file *m,
- 	seq_putc(m, '\t');
- 	seq_escape(m, exp->ex_client->name, " \t\n\\");
- 	if (export_stats) {
--		struct percpu_counter *counter = exp->ex_stats->counter;
-+		struct export_stats *stats = exp->ex_stats;
- 
--		seq_printf(m, "\t%lld\n", exp->ex_stats->start_time);
-+		seq_printf(m, "\t%lld\n", stats ? stats->start_time : 0);
- 		seq_printf(m, "\tfh_stale: %lld\n",
--			   percpu_counter_sum_positive(&counter[EXP_STATS_FH_STALE]));
-+			   export_stats_sum(stats, EXP_STATS_FH_STALE));
- 		seq_printf(m, "\tio_read: %lld\n",
--			   percpu_counter_sum_positive(&counter[EXP_STATS_IO_READ]));
-+			   export_stats_sum(stats, EXP_STATS_IO_READ));
- 		seq_printf(m, "\tio_write: %lld\n",
--			   percpu_counter_sum_positive(&counter[EXP_STATS_IO_WRITE]));
-+			   export_stats_sum(stats, EXP_STATS_IO_WRITE));
- 		seq_putc(m, '\n');
- 		return 0;
- 	}
-@@ -1557,7 +1726,7 @@ static void svc_export_init(struct cache_head *cnew, struct cache_head *citem)
- 	new->ex_layout_types = 0;
- 	new->ex_uuid = NULL;
- 	new->cd = item->cd;
--	export_stats_reset(new->ex_stats);
-+	new->ex_stats = export_stats_get(new);
- }
- 
- static void export_update(struct cache_head *cnew, struct cache_head *citem)
-@@ -1596,18 +1765,8 @@ static struct cache_head *svc_export_alloc(void)
- 	if (!i)
- 		return NULL;
- 
--	i->ex_stats = kmalloc_obj(*(i->ex_stats));
--	if (!i->ex_stats) {
--		kfree(i);
--		return NULL;
--	}
--
--	if (export_stats_init(i->ex_stats)) {
--		kfree(i->ex_stats);
--		kfree(i);
--		return NULL;
--	}
--
-+	/* svc_export_init() attaches the shared statistics */
-+	i->ex_stats = NULL;
- 	return &i->h;
- }
- 
-@@ -2190,6 +2349,14 @@ static int e_show(struct seq_file *m, void *p)
- 
- 	if (cache_check_rcu(cd, &exp->h, NULL))
- 		return 0;
-+	/*
-+	 * sunrpc_cache_update() leaves a replaced entry hashed, with an
-+	 * expiry_time of zero, until cache_clean() removes it. It shares
-+	 * export_stats with its replacement, so showing it would count the
-+	 * same traffic twice.
-+	 */
-+	if (export_stats && !exp->h.expiry_time)
-+		return 0;
- 
- 	return svc_export_show(m, cd, cp);
- }
-@@ -2212,6 +2379,10 @@ nfsd_export_init(struct net *net)
- 
- 	dprintk("nfsd: initializing export module (net: %x).\n", net->ns.inum);
- 
-+	spin_lock_init(&nn->export_stats_lock);
-+	hash_init(nn->export_stats_hash);
-+	INIT_DELAYED_WORK(&nn->export_stats_reaper, export_stats_reap);
++``/proc/fs/nfsd/export_stats`` shows the number of bytes that NFSD read
++(``io_read``) and wrote (``io_write``) for each export and client. If the
++kernel has ``CONFIG_TASK_IO_ACCOUNTING``, it also shows the number of
++bytes that storage supplied for these READs (``io_read_storage``). This
++value includes the readahead that the READs started, and the filesystem
++metadata that they needed.
 +
- 	nn->svc_export_cache = cache_create_net(&svc_export_cache_template, net);
- 	if (IS_ERR(nn->svc_export_cache))
- 		return PTR_ERR(nn->svc_export_cache);
-@@ -2264,6 +2435,7 @@ nfsd_export_shutdown(struct net *net)
- 	cache_unregister_net(nn->svc_export_cache, net);
- 	cache_destroy_net(nn->svc_expkey_cache, net);
- 	cache_destroy_net(nn->svc_export_cache, net);
-+	export_stats_shutdown(nn);
- 	svcauth_unix_purge(net);
- 
- 	dprintk("nfsd: export shutdown complete (net: %x).\n", net->ns.inum);
-diff --git a/fs/nfsd/export.h b/fs/nfsd/export.h
-index 1c020b53fd74..b9306a360c19 100644
---- a/fs/nfsd/export.h
-+++ b/fs/nfsd/export.h
-@@ -11,6 +11,7 @@
- #include <linux/nfs4.h>
- 
- struct knfsd_fh;
-+struct nfsd_net;
- struct svc_fh;
- struct svc_rqst;
- 
-@@ -55,7 +56,22 @@ enum {
- 	EXP_STATS_COUNTERS_NUM
- };
- 
-+/*
-+ * Export cache entries are replaced when mountd refreshes them and are
-+ * removed by a cache flush. The statistics of an export outlive its
-+ * cache entries: every entry for the same export root and client shares
-+ * one export_stats, which stays in nn->export_stats_hash for a time
-+ * after its last entry is gone.
-+ */
- struct export_stats {
-+	struct hlist_node	es_node;
-+	struct nfsd_net		*es_nn;
-+	unsigned int		es_users;	/* under nn->export_stats_lock */
-+	time64_t		es_idle_since;
-+	dev_t			es_dev;
-+	u64			es_ino;
-+	u32			es_gen;
-+	char			*es_client;
- 	time64_t		start_time;
- 	struct percpu_counter	counter[EXP_STATS_COUNTERS_NUM];
- };
-diff --git a/fs/nfsd/netns.h b/fs/nfsd/netns.h
-index fa3545963902..66e8cfff238b 100644
---- a/fs/nfsd/netns.h
-+++ b/fs/nfsd/netns.h
-@@ -11,6 +11,7 @@
- #include <net/net_namespace.h>
- #include <net/netns/generic.h>
- #include <linux/filelock.h>
-+#include <linux/hashtable.h>
- #include <linux/nfs4.h>
- #include <linux/percpu_counter.h>
- #include <linux/percpu-refcount.h>
-@@ -77,6 +78,11 @@ struct nfsd_net {
- 	struct cache_detail *svc_expkey_cache;
- 	struct cache_detail *svc_export_cache;
- 
-+	/* per-export statistics, shared by export cache entries */
-+	spinlock_t export_stats_lock;
-+	DECLARE_HASHTABLE(export_stats_hash, 6);
-+	struct delayed_work export_stats_reaper;
++The kernel adds an export to ``export_stats`` when a client first uses
++it. The counters of an export continue when mountd refreshes the export
++or when ``exportfs -r`` flushes the export cache. They restart if the
++export stays out of the export cache for an hour. The start time shows
++when the counters started.
 +
- 	struct cache_detail *idtoname_cache;
- 	struct cache_detail *nametoid_cache;
- 
++Measure ``io_read`` and ``io_read_storage`` over the same interval. Then
++divide the increase of ``io_read_storage`` by the increase of
++``io_read``. This is the miss ratio of the export.
++
++- A ratio near 1 shows that storage supplies almost all data that NFSD
++  reads. The page cache gives little benefit. Dontcache or direct IO
++  can be a better choice.
++- A ratio much smaller than 1 shows that the page cache supplies a
++  large part of the data. Buffered IO is probably the correct choice.
++- A ratio larger than 1 shows that readahead reads data that clients
++  do not request, for example with small random READs.
++
++Without ``io_read_storage``, compare ``io_read`` with the number of bytes
++that the block device read. Field 3 of ``/sys/block/<dev>/stat`` shows
++the device reads in 512-byte sectors. You can also use iostat(1). This
++ratio is for all exports on the device. Local applications also cause
++device reads. Thus, this ratio is only an approximate value.
++
++Reads of recently evicted data
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++When page reclaim evicts a file page, the kernel records the eviction.
++If a task reads that page again soon, the kernel counts a refault.
++``/proc/vmstat`` shows these counters:
++
++- ``workingset_refault_file``: the number of file pages that the kernel
++  read again soon after their eviction.
++- ``workingset_activate_file``: the number of refaulted file pages that
++  the kernel identified as part of the working set.
++- ``pgsteal_kswapd`` and ``pgsteal_direct``: the number of pages that
++  page reclaim freed.
++
++Use these counters as follows:
++
++- The ``pgsteal`` counters increase quickly, but
++  ``workingset_refault_file`` stays near zero. This shows that clients
++  read most data only one time. To find the export that causes this,
++  use the miss ratio above or cachestat(2).
++- ``workingset_refault_file`` increases quickly. This shows that clients
++  read the data again, but the page cache is too small to keep it.
++  Set dontcache or direct IO on other exports that read data only one
++  time. This gives more page cache to this workload.
++
++These counters are for the full system, not for each export. Dontcache
++IO drops pages without a record of the eviction. Direct IO does not use
++the page cache. Thus, these counters do not include exports that use
++dontcache or direct IO.
++
++Page cache state of a file
++~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++The cachestat(2) system call shows the page cache state of a range in a
++file. It is available in Linux 6.5 and later. Its output includes:
++
++- ``nr_cache``: the number of pages in the page cache.
++- ``nr_dirty`` and ``nr_writeback``: the number of pages that wait for
++  writeback, or that are in writeback.
++- ``nr_evicted``: the number of pages that the kernel evicted.
++- ``nr_recently_evicted``: the number of evicted pages that would cause
++  a refault if a task read them now.
++
++Use cachestat(2) on the frequently used files of an export. This gives
++data for each export. Monitor ``nr_recently_evicted`` on the files of
++one export while a different export is busy. If the value increases,
++the busy export causes the page cache to evict useful data. Set
++dontcache or direct IO on the busy export.
++
++fincore(1) shows how much of a file is in the page cache.
++
++Cost of page reclaim
++~~~~~~~~~~~~~~~~~~~~
++
++Direct IO helps most when page reclaim uses much CPU time or makes IO
++stop. Monitor these metrics:
++
++- ``/proc/pressure/memory``: the "some" and "full" lines show the
++  percentage of time that tasks waited for memory.
++- ``allocstall_*`` and ``pgscan_direct`` in ``/proc/vmstat``: direct
++  reclaim activity.
++- ``compact_stall`` in ``/proc/vmstat``: memory compaction stalls.
++- The CPU time of the kswapd and kcompactd kernel threads.
++- ``Dirty`` and ``Writeback`` in ``/proc/meminfo``, for WRITE workloads.
++
++High values can occur while NFSD moves large quantities of data that
++clients use only one time. In this condition, direct IO can decrease
++the CPU load and make IO performance more constant.
++
++Client page cache
++~~~~~~~~~~~~~~~~~
++
++On a Linux NFS client, the ``bytes:`` line in ``/proc/self/mountstats``
++shows the bytes that applications read (field 1). It also shows the
++bytes that the client read from the server (field 5). mountstats(8) and
++nfsiostat(8) also show these values.
++
++Field 5 can be much smaller than field 1. This shows that the client
++page cache supplies most reads. In this condition, the server page
++cache keeps copies of data that the clients already have. If other
++clients do not read the same data, dontcache IO on the server can be a
++better choice.
 
 -- 
 2.56.0
