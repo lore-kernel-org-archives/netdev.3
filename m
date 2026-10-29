@@ -1,56 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.252
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793287374;
-	b=MARhQGdFvju7agZS4dgh+5ApDwwuL3RqXew03hYYoRI/cbVszvzVTjsJHqafFqi9H0zq
-	 G1sJJyy3O4JdO0tNV6VshwoXoPkYvAarzyBJHwatsBiewquCZ3S43TxKSnAkQTYzZgt3q
-	 TC3WdjM8RlM6P94Lc4U5FAteUTwOjs7tRUdJxJYJC2FPt/YMgAIWWJfqzTZeLTlOK6E6p
-	 6OpubkqUvNvBMT+LCjJ/6PhL+hANYTDR5ErabWSMzb/IhdhjS0xkypN+fWP17cghPJJW+
-	 xF1WhUWnjarX+MS7/UgfwXxK5lXNppB7pdbaTKaZS5ANOQi8ImdQLgrDI9FLBAVEoyA==
+	t=1793287597;
+	b=ds8Vf8UGBhz/5wTFjpf9MfgrYbpef9wcwaPf3FQMi2rtjG0c2pBS3ydfS+JaRKDeEIYu
+	 RtgJn3fM7LLqEFywJIsd/pF4BvmN8lveRlWNVRvY0RljGJHHZOSQIctAT/rfLtJNv3pXw
+	 2Ixo2CW95ZNDj8/q4IdnebG8OkHfRv75CbC5Ml1LSz25pWKjQ8QFSFVSuiaUT62WB7pun
+	 Eq0hnc0tyzF8T8+waAT1P8eiBeLZHyfudnLMLSI20drWihilErGO2MVt516qBQrpi1mWE
+	 not1NFP/0S03rwhf63DRI5HGKOZUsWBlhDd4M6XGy0wifRAEPiBIb39EVVk1culDr+w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793287374;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=RCUDrEpIT2IvdnVVG1nY06CRd9IuL0zGxbHUihdyeIE=;
-	b=DC4RuU+vOCHjEC28W2z6ODR/f3CY8QsaC3TGifNz/jzU1sCGj10Gqre7kVYEF0O2MLoL
-	 HJ7s7sbn+0FNYPKKpLBLKHfJEitwnDJViFbuMTKKQzHQQif3l0ocOklxF2IisdJ6B8H9f
-	 sUsvY46XLdHtYlbebJcrUDgnEXcJ7BJf/5pD8j3pdNaIyBmqqr6OhzXKNzpncBlUdm1ik
-	 KZQ4isCpcXjiVGVnqa5YcNn6kWz6k/dd4xsFRtSW1OtP2bO6DkSZFtSt/nkQ0T9GFJU0O
-	 sJwPJ8xWMqNOB0VpNA6QdrEhhlPXup2oh4kV+g37V5qfMYw9EoaSVt80DzZYSYY9jRg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793287597;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=8EclGczKs6ymPsNv0lkpXydKevS30Xy2NVZZW8G/dtE=;
+	b=AAj7u5uQ9SzREVl9PqDQeOg6fdUKnYu2s+NB+a0pgKeVrGl030ZOO9RqLjV8ZE2HYr16
+	 YJxfdwW1VudDBdt2pmPeynd+700ZxJ5Cq+SZ/dFfHMEQnG0q+ol8mp5hwyQn3CJUdfWPs
+	 JHdtD+nBshV9rBIw/LkA74sXersPOrkXzGqVNfhM8WkdQaNIznwP+AjdwT8g3KQhiUM4q
+	 ZTzfT8DzP1CozyBDbLGrFbbt6hXqvQ15NRihBtfQ13SjrLCI2Y9Sklyi8KQOhfiXq1Laj
+	 /6kP3049y8TIDzTcb56yPR2Vzn4WkIBcBZAuxnFctfQBIVANprMDfzsjn4w23k60idw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LV1soVb0;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=qq.com;
+	spf=pass smtp.mailfrom=qq.com;
+	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=v3wdtyBS;
+	arc=none smtp.remote-ip=162.62.57.252
+Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB98606A31C;
-	Thu, 29 Oct 2026 15:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F435606A31F
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 15:26:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F435606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LV1soVb0
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE971F01816;
-	Thu, 29 Oct 2026 15:22:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793287373;
-	bh=RCUDrEpIT2IvdnVVG1nY06CRd9IuL0zGxbHUihdyeIE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LV1soVb0Hs2V6u7fdVNsnMxE10JaRyW3dhLIRjh0Y+S8S+pmk0X08ee7xlJT2LiDp
-	 ai+M6gc3T3Zn6OBi8Si52kkYIZh/54CTHndMxWOW+u4m3n6oPPgEHuwYbfyKUOdkTU
-	 C+MSZ18UGFO/JHSL9qwr8C46Yd/HTTgr3m3bdShailGdX4KFwiqeUEoXxnOnOHFl9M
-	 LTnYqtzPmF3Y37p1RiMXd9Sp4S9TmdbGh77lilHFy4PwCd6Dk0g8YW6WLkZDrEzPQK
-	 BPI5FQ8yIWmzupPZI9Qfmgrjlc8BqSasFQgSr6KV/S/xVhclUbyKeYsTGq3EmpcBx/
-	 /Y266aJWHw+BQ==
-Date: Thu, 29 Oct 2026 15:22:49 +0000
-From: Simon Horman <horms@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: rosenp@gmail.com, netdev@vger.kernel.org, rafal@milecki.pl,
-	bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
-	pabeni@redhat.com, nbd@openwrt.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: bgmac: fix oversized RX frame check
-Message-ID: <20261029152249.GI257209@horms.kernel.org>
-References: <20261028011035.49201-1-rosenp@gmail.com>
- <179323634946.3134.7111348485490827533@kernel.org>
+	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=v3wdtyBS
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1793287590; bh=8EclGczKs6ymPsNv0lkpXydKevS30Xy2NVZZW8G/dtE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=v3wdtyBSMFN1ZE9qaF8xxyI4v9plv5MDJT4kegTlWgLu4Hp2Q6NyLT69sfLHl56li
+	 VelwM+RosNJFlvxVpvQIxIRQlYN2LZP2mcoPNn0y1JDY2cUy1/btu9zQfK6DRnDfXS
+	 0xADYdJLIVVxrSrmFc1ya2kiK4toeBIXcc9Yxujg=
+Received: from kernel-lab.tail5e91bb.ts.net ([2409:8950:57d:63:5510:213f:594e:6216])
+	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
+	id 69B10AB5; Thu, 29 Oct 2026 23:26:27 +0800
+X-QQ-mid: xmsmtpt1793287587t75nlgz3g
+Message-ID: <tencent_C2E4FE9B7C0A05615861782611715EAA9C0A@qq.com>
+X-QQ-XMAILINFO: Nte9/BsRzcszUN5uxJK1nMHBa0HlLiC2WrFDN+hdEoNFZ+qXlSNwZwxxIXOrDB
+	 77j7dbOlPl8+HX22HPHsIx2dyUvYfQBHGH5FT2jL5DcLrY6DC2lq7xE/r1q58XeGutj25/k2VsjU
+	 8Uzr/6uSoFelVtrsFVqY4gaVVtrypPSSTQbr7bxXkYtNW0GFrSvuU893brDPHbUy08LVwDG3jVTB
+	 ASCBdu+FD+I9qnnc9+J4+0qRDx/LpOhyewFeGF6uxWSg1phOh6/G6KMFkNv7QgqO1a3jLNroWYe6
+	 Kmr3BlLrCfnV2PDCmKv5p3kEd3VNxGwuZ0tCfaQsNLh/p3uQa8wqGBboPg9nHdTU44W8r6eX38aO
+	 P/tmoseSb8IaFy7hCJKjAzfF6CRIfoyXEJ7XoywJUPYoqHRCXJzWht5MDt1wicv02ubwQ5YmHbfW
+	 pcgdMLrtX0zV/Iq+a42M3eM2WVC5MT75r4h7yCiELNnc+Wo9mhT8wc9N7FgZ+jdZeqqju2/PYLpn
+	 cJkCVAm+Q/GOSeh+MGsQOCYg6yLvXn1q0Fr5JxAgzxdoy+BMmEBYas0CLr1Jqrlz+ya8qsr84GDk
+	 TScnbPPx39DOsQi3WAJHRN/FyN/Vhis49fmOW5qKehwcU03i62guwmWdB8LlmNkUud4S93l6Q0Nu
+	 jo2isTldF9OssVHsHHiSv29xdZTeW/SjolNNAzzLZfaiB0vQK1XVTQB8CtinXIgG5ZPgWyTpWSTa
+	 mWOJKn7piEqqv9JwN7LvkAlGf0IMB8r16KINg0xBYomMusV/UTVyrsPc1e4xRi2MbN/4AAuIbopT
+	 YKZLjb9glLi17v4Gm0K7NvR9sGdDqjdYG/0rs7NSIsJxjzRovsaaEK2GWMibUdOWphNpuUZeWhO8
+	 Cyx0xIO+sSXMNU8V5ZzX8akOqoe+heDVGCV+QS7s5p67MuJvV4lvDTIpw6LmA7lbuTyYIDYbOeQ7
+	 hXOzuzRdBBs3SGcJCLDlE7QyZRm5vtiA8mB5O0xMhX703fntHi8+m1RBwTIBnACs6GQ7g8K9ei9M
+	 nHGTk1nXrrlovwVfRHoMq600WSdD1rE1rksDKu251s3BUAN7x3sZq46CoKces8LlKG+itKdR4lki
+	 TQTHR20sv39WWLNkE=
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+From: Yingjie Wang <1075151112@qq.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	dsahern@kernel.org,
+	idosch@nvidia.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	rdunlap@infradead.org,
+	linux-doc@vger.kernel.org,
+	alexhenrie24@gmail.com
+Subject: [PATCH net v2] ipv6: bound temporary address regeneration advance
+Date: Thu, 29 Oct 2026 23:26:27 +0800
+X-OQ-MSGID: <20261029152627.1726299-1-1075151112@qq.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <tencent_F6E8C7CAC6D390C8E912EEE4FD9FE4333505@qq.com>
+References: <tencent_F6E8C7CAC6D390C8E912EEE4FD9FE4333505@qq.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -60,159 +90,231 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <179323634946.3134.7111348485490827533@kernel.org>
 
-On Thu, Oct 29, 2026 at 01:12:29AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 2 · Medium: 1 · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [High] The fix only tightens the upper bound of the RX length check in
->   bgmac_dma_rx_read() (drivers/net/ethernet/broadcom/bgmac.c).
-> - [High] bgmac_dma_rx_read() loses track of the RX descriptor ring when a
->   frame spans more than one descriptor, and a remote sender can then…
-> - [Medium] The commit message rests on the premise that 'a valid frame is
->   at most BGMAC_RX_MAX_FRAME_SIZE bytes long' (1536 including FCS).
-> 
-> --
-> 
-> net: bgmac: fix oversized RX frame check
-> 
-> This patch changes the RX length sanity check in bgmac_dma_rx_read(). The
-> length from the RX header is now compared against BGMAC_RX_MAX_FRAME_SIZE
-> instead of BGMAC_RX_ALLOC_SIZE. The intent is to drop frames with a
-> corrupted length instead of hitting skb_over_panic() in the following
-> skb_put().
-> 
-> > diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
-> > index b3a92ae95de30..6873c7bb7a141 100644
-> > --- a/drivers/net/ethernet/broadcom/bgmac.c
-> > +++ b/drivers/net/ethernet/broadcom/bgmac.c
-> > @@ -455,7 +455,7 @@ static int bgmac_dma_rx_read(struct bgmac *bgmac, struct bgmac_dma_ring *ring,
-> >  				break;
-> >  			}
-> >  
-> > -			if (len > BGMAC_RX_ALLOC_SIZE) {
-> > +			if (len > BGMAC_RX_MAX_FRAME_SIZE) {
-> 
-> [Severity: High]
-> 
-> Should this check also have a lower bound?
-> 
-> len is a u16 read directly from the RX header. A value of 0..3 passes both
-> the 0xdead/0xbeef poison check and this upper-bound check. Further down in
-> bgmac_dma_rx_read():
-> 
-> 	/* Omit CRC. */
-> 	len -= ETH_FCS_LEN;
-> 
-> 	skb = build_skb(buf, BGMAC_RX_ALLOC_SIZE);
-> 	...
-> 	skb_put(skb, BGMAC_RX_FRAME_OFFSET +
-> 		BGMAC_RX_BUF_OFFSET + len);
-> 
-> The subtraction wraps len to 65532..65535. skb_put() then asks for about
-> 64KiB, but build_skb() only provided
-> SKB_DATA_ALIGN(BGMAC_RX_BUF_SIZE + BGMAC_RX_BUF_OFFSET) bytes of linear
-> space. skb->tail ends up past skb->end, and skb_over_panic() calls BUG().
-> 
-> Isn't this the same "corrupted length leads to skb_over_panic()" case that
-> the commit message describes?
-> 
-> Lengths 4..17 also get through. They produce an skb shorter than an
-> Ethernet header, and eth_type_trans() then reads the header from bytes past
-> the end of the received data.
-> 
-> Would it work to also reject len < ETH_HLEN + ETH_FCS_LEN (or at least
-> len < ETH_FCS_LEN) in the same rx_length_errors branch?
+ipv6_get_regen_advance() combines regen_min_advance, regen_max_retry,
+dad_transmits and the neighbor retransmission time. The first three are
+signed sysctls, and the product is evaluated as int. Negative values or
+signed overflow can make the unsigned long result much larger than
+intended.
 
-The problem above does seem legit to me.
+The retransmission time can also be supplied by an on-link Router
+Advertisement. On an x86-64 HZ=1000 host with regen_min_advance=2,
+regen_max_retry=3 and dad_transmits=1, an RA Retrans Timer of
+1431654765 ms makes the old int product wrap to -3001. Division by HZ
+and addition of regen_min_advance then produce -1, which is returned as
+ULONG_MAX. This gives an on-link trigger on hosts that accept RAs and
+use temporary addresses without requiring a sysctl write.
 
-> 
-> [Severity: Medium]
-> 
-> The commit message says:
-> 
->     so a valid frame is at most BGMAC_RX_MAX_FRAME_SIZE bytes long.
-> 
-> Does this match the limits the driver sets elsewhere?
-> 
-> bgmac_chip_init() programs the MAC with:
-> 
-> 	bgmac_umac_write(bgmac, UMAC_MAX_FRAME_LEN, 32 + ETHER_MAX_LEN);
-> 
-> That allows 1550 bytes. bgmac_change_mtu() writes 32 + mtu, which goes up
-> to 1564. bgmac_enet_probe() also sets:
-> 
-> 	/* Omit FCS from max MTU size */
-> 	net_dev->max_mtu = BGMAC_RX_MAX_FRAME_SIZE - ETH_FCS_LEN;
-> 
-> This leaves out ETH_HLEN and any VLAN/DSA tag, so a frame at MTU 1532 is at
-> least 1550 bytes long.
-> 
-> With this patch, frames of 1537..1564 bytes that the MAC accepts are
-> dropped here. They are logged as "Found oversized packet ... DMA issue!" and
-> counted in rx_length_errors. Frames of 1537..1540 bytes, where only FCS bytes
-> went past the buffer, used to be delivered intact.
-> 
-> bgmac_change_mtu() also never updates net_dev->mtu. The MTU the stack sees
-> and the hardware limit can therefore drift apart.
-> 
-> Should UMAC_MAX_FRAME_LEN and max_mtu be derived from
-> BGMAC_RX_MAX_FRAME_SIZE, so the MAC never accepts a frame larger than one RX
-> buffer can hold?
-> 
-> [Severity: High]
-> 
-> Can a frame longer than one RX buffer put the ring out of sync here?
-> 
-> bgmac_dma_rx_setup_desc() sets up each descriptor with:
-> 
-> 	ctl1 |= BGMAC_RX_BUF_SIZE & BGMAC_DESC_CTL1_LEN;
-> 
-> That leaves room for 1536 frame bytes after the RX header. The MAC is
-> programmed to accept up to 1550 bytes, or 1564 after bgmac_change_mtu().
-> 
-> b43 uses the same Broadcom DMA engine, and its dma_rx() handles this case
-> explicitly:
-> 
-> 	if (unlikely(len + ring->frameoffset > ring->rx_buffersize)) {
-> 		/* The data did not fit into one descriptor buffer
-> 		 * and is split over multiple buffers.
-> 
-> b43 then recycles every slot the frame used, and brcmsmac chains
-> continuation buffers in a similar way. Only the first descriptor carries the
-> status header, and continuation data starts at offset 0 of the next buffer.
-> This split-descriptor behavior is inferred from those sibling drivers, not
-> from bgmac-specific documentation.
-> 
-> On the oversized path, bgmac_dma_rx_read() frees only the first buffer and
-> advances ring->start by one. The next iteration reads the continuation
-> descriptor as a new frame. Its rx->len and rx->flags are then frame bytes
-> 1536..1539, which is payload the sender chooses.
-> 
-> If those bytes decode to a len of 0..3, len -= ETH_FCS_LEN wraps and
-> skb_put() reaches skb_over_panic(). Other values produce frames built from
-> stale buffer contents.
-> 
-> With the default UMAC_MAX_FRAME_LEN, can a single 1544..1550 byte frame
-> from a LAN peer reach this panic?
-> 
-> For the fix to cover this, would it need to skip the continuation
-> descriptors (as b43 does), keep UMAC_MAX_FRAME_LEN within the buffer
-> capacity, and reject len < ETH_FCS_LEN?
+When ipv6_create_tempaddr() clamps the preferred lifetime, it adds age
+and one to this advance and stores it in a u32. The sum can wrap or be
+truncated to a short preferred lifetime. addrconf_verify_rtnl() then
+finds the new address due for regeneration and restarts its scan after
+creating another one. The temporary-address path has had no
+max_addresses check since commit 4b08a8f1bd8c ("ipv6: remove
+max_addresses check from ipv6_create_tempaddr"). In a baseline namespace
+test, setting dad_transmits=-1 and adding a temporary-address template
+with mngtmpaddr produced 2859 loopback addresses in two seconds.
 
-But the one above seem speculative.
+Reject negative values for all three sysctls with -EINVAL. Writes that
+used to succeed now fail validation; negative values have no useful
+meaning (negative regen_max_retry already disables temporary addresses
+on the first attempt). Keep zero valid. Use checked u64 arithmetic and
+div_u64() to calculate the advance, including values supplied by an RA,
+and cap it at U32_MAX. Compare the required preferred lifetime in u64
+before narrowing it to u32. Calculate the desync margin without an
+unsigned subtraction wrap on 32-bit builds. Clamp the effective maximum
+to that non-negative margin so a negative max_desync_factor cannot make
+the u32 comparison architecture-dependent.
 
+Tested on x86-64 KASAN:
+- negative writes to the three sysctls were rejected without changing
+  their values, and zero remained valid;
+- normal temporary-address setup and a case with writable
+  max_desync_factor=-1 each produced three IPv6 addresses;
+- with HZ=1000 and a one-second retransmission time,
+  regen_min_advance=0, regen_max_retry=2147483647 and dad_transmits=1
+  caused the baseline kernel to reach 2847 loopback addresses after
+  two seconds; the fixed kernel left two.
+
+Kernel selftests were not run.
+
+An i386 defconfig with CONFIG_IPV6=y and HZ=1000 built addrconf.o with
+W=1; nm -u showed no __udivdi3 reference.
+
+Fixes: f4bcbf360ac8 ("net: ipv6/addrconf: clamp preferred_lft to the minimum required")
+Signed-off-by: Yingjie Wang <1075151112@qq.com>
+---
+Changes in v2:
+- Reorder the declarations for the netdev reverse-Christmas-tree convention.
+- Use an intermediate variable to make the max_desync_factor calculation
+  easier to read, as requested by Paolo Abeni.
+- Clamp the effective max_desync_factor to a non-negative range so the u32
+  comparison has the same result on 32-bit and 64-bit builds.
+- Document the RA-supplied Retrans Timer trigger raised in review.
+
+Link: https://patchwork.kernel.org/project/netdevbpf/patch/tencent_F6E8C7CAC6D390C8E912EEE4FD9FE4333505@qq.com/
+
+ Documentation/networking/ip-sysctl.rst |  3 ++
+ net/ipv6/addrconf.c                    | 53 ++++++++++++++++++--------
+ 2 files changed, 41 insertions(+), 15 deletions(-)
+
+diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
+index d3523c9064a22..817cba10e1787 100644
+--- a/Documentation/networking/ip-sysctl.rst
++++ b/Documentation/networking/ip-sysctl.rst
+@@ -2874,6 +2874,7 @@ dad_transmits - INTEGER
+ 	The amount of Duplicate Address Detection probes to send.
+ 
+ 	Default: 1
++	Minimum: 0
+ 
+ forwarding - INTEGER
+ 	Configure interface-specific Host/Router behaviour.
+@@ -3025,12 +3026,14 @@ regen_min_advance - INTEGER
+ 	does not conform to RFC 8981.
+ 
+ 	Default: 2
++	Minimum: 0
+ 
+ regen_max_retry - INTEGER
+ 	Number of attempts before give up attempting to generate
+ 	valid temporary addresses.
+ 
+ 	Default: 5
++	Minimum: 0
+ 
+ max_addresses - INTEGER
+ 	Maximum number of autoconfigured addresses per interface.  Setting
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index c8c0dd04982d9..ff2a29c94bdfe 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -60,7 +60,9 @@
+ #endif
+ #include <linux/capability.h>
+ #include <linux/delay.h>
++#include <linux/math64.h>
+ #include <linux/notifier.h>
++#include <linux/overflow.h>
+ #include <linux/string.h>
+ #include <linux/hash.h>
+ 
+@@ -1376,10 +1378,19 @@ static void ipv6_del_addr(struct inet6_ifaddr *ifp)
+ 
+ static unsigned long ipv6_get_regen_advance(const struct inet6_dev *idev)
+ {
+-	return READ_ONCE(idev->cnf.regen_min_advance) +
+-		READ_ONCE(idev->cnf.regen_max_retry) *
+-		READ_ONCE(idev->cnf.dad_transmits) *
+-		max(NEIGH_VAR(idev->nd_parms, RETRANS_TIME), HZ/100) / HZ;
++	unsigned int retrans_time = max(NEIGH_VAR(idev->nd_parms,
++						 RETRANS_TIME), HZ / 100);
++	u32 min_advance = READ_ONCE(idev->cnf.regen_min_advance);
++	u32 retries = READ_ONCE(idev->cnf.regen_max_retry);
++	u32 dad = READ_ONCE(idev->cnf.dad_transmits);
++	u64 duration;
++
++	/* Preferred lifetimes are u32, so a larger advance cannot be used. */
++	if (check_mul_overflow((u64)retries * dad, (u64)retrans_time,
++			       &duration))
++		return U32_MAX;
++
++	return min_t(u64, (u64)min_advance + div_u64(duration, HZ), U32_MAX);
+ }
+ 
+ static int ipv6_create_tempaddr(struct inet6_ifaddr *ifp, bool block)
+@@ -1391,8 +1402,10 @@ static int ipv6_create_tempaddr(struct inet6_ifaddr *ifp, bool block)
+ 	u32 if_public_preferred_lft;
+ 	s32 cnf_temp_preferred_lft;
+ 	struct inet6_ifaddr *ift;
++	u32 desync_factor_limit;
+ 	struct ifa6_config cfg;
+ 	long max_desync_factor;
++	u64 min_preferred_lft;
+ 	struct in6_addr addr;
+ 	int ret = 0;
+ 
+@@ -1430,9 +1443,15 @@ static int ipv6_create_tempaddr(struct inet6_ifaddr *ifp, bool block)
+ 	 * idev->desync_factor if it's larger
+ 	 */
+ 	cnf_temp_preferred_lft = READ_ONCE(idev->cnf.temp_prefered_lft);
+-	max_desync_factor = min_t(long,
+-				  READ_ONCE(idev->cnf.max_desync_factor),
+-				  cnf_temp_preferred_lft - regen_advance);
++	desync_factor_limit = max_t(s32, cnf_temp_preferred_lft, 0);
++	if (regen_advance >= desync_factor_limit)
++		desync_factor_limit = 0;
++	else
++		desync_factor_limit -= regen_advance;
++
++	max_desync_factor = clamp_t(long,
++				    READ_ONCE(idev->cnf.max_desync_factor),
++				    0, desync_factor_limit);
+ 
+ 	if (unlikely(idev->desync_factor > max_desync_factor)) {
+ 		if (max_desync_factor > 0) {
+@@ -1485,15 +1504,16 @@ static int ipv6_create_tempaddr(struct inet6_ifaddr *ifp, bool block)
+ 	 * temporary addresses being generated.
+ 	 */
+ 	age = (now - tmp_tstamp + ADDRCONF_TIMER_FUZZ_MINUS) / HZ;
+-	if (cfg.preferred_lft <= regen_advance + age) {
+-		cfg.preferred_lft = regen_advance + age + 1;
+-		if (cfg.preferred_lft > cfg.valid_lft ||
+-		    cfg.preferred_lft > if_public_preferred_lft) {
++	min_preferred_lft = (u64)regen_advance + age + 1;
++	if (cfg.preferred_lft < min_preferred_lft) {
++		if (min_preferred_lft > cfg.valid_lft ||
++		    min_preferred_lft > if_public_preferred_lft) {
+ 			in6_ifa_put(ifp);
+ 			in6_dev_put(idev);
+ 			ret = -1;
+ 			goto out;
+ 		}
++		cfg.preferred_lft = min_preferred_lft;
+ 	}
+ 
+ 	cfg.ifa_flags = IFA_F_TEMPORARY;
+@@ -4705,7 +4725,7 @@ static void addrconf_verify_rtnl(struct net *net)
+ 
+ 				unsigned long regen_advance = ipv6_get_regen_advance(ifp->idev);
+ 
+-				if (age + regen_advance >= ifp->prefered_lft) {
++				if ((u64)age + regen_advance >= ifp->prefered_lft) {
+ 					struct inet6_ifaddr *ifpub = ifp->ifpub;
+ 					if (time_before(ifp->tstamp + ifp->prefered_lft * HZ, next))
+ 						next = ifp->tstamp + ifp->prefered_lft * HZ;
+@@ -6921,7 +6941,8 @@ static const struct ctl_table addrconf_sysctl[] = {
+ 		.data		= &ipv6_devconf.dad_transmits,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
+ 	},
+ 	{
+ 		.procname	= "router_solicitations",
+@@ -7001,14 +7022,16 @@ static const struct ctl_table addrconf_sysctl[] = {
+ 		.data           = &ipv6_devconf.regen_min_advance,
+ 		.maxlen         = sizeof(int),
+ 		.mode           = 0644,
+-		.proc_handler   = proc_dointvec,
++		.proc_handler   = proc_dointvec_minmax,
++		.extra1         = SYSCTL_ZERO,
+ 	},
+ 	{
+ 		.procname	= "regen_max_retry",
+ 		.data		= &ipv6_devconf.regen_max_retry,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
+ 	},
+ 	{
+ 		.procname	= "max_desync_factor",
+
+base-commit: d7314b51341c037973ce022f12c6009fd07b021e
 -- 
-pw-bot: changes-requested
+2.43.0
+
