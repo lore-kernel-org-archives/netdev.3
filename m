@@ -1,112 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793261288;
-	b=fdUx5bC/lMx6CkTfChvkH1TZa/I99i63FXUIQmEpz+AV0qwZg8RrvKNtqkmrIWViUYXX
-	 /+9rwLvQSclnPy9sO2CFkxk4ltYCmvMbqCvR42G+SKdbEB4uw9dX8uPdV4p7H8y4zotUz
-	 wou10li7rzxenvbg0fHJMeZ5rC2TZgdDA+SXH0ixr0U+6Jsm3a6TgrOa+2g3K6d36sLVA
-	 /Yv0uQePcGReQElj0e43qwJlvWGLpb7CrDB9y7NmY9gJQ+U56j7KGae8XC+ie+mlOCu79
-	 MycMnwMcW1dk2KYPcfPHqXwsaL1mMkLIBU/mpgJQLiExJ05XceHT3OpHAWVIk0wuS8A==
+	t=1793261303;
+	b=ZfNuOIJtCSprPp2JgaDuVnkm9LiYLsSG5xYivXbNDCoCFdU8pRorCTB6h80wSw9x06Fy
+	 gAIqVoEOCTbXKhYvLyvJgYGwisQpPFyacJaPTsIm2G4XV6Pf/ViaJRSe+kfyouykWwPE0
+	 DVzFSi4RVCFHbASrl6dqfplEZhIR8KVBQShfo5Lkh2fndkQ/oct/0tFuz1Hgw8Sv+SPxl
+	 vvgugs1iYwIObnuPKHIXvK+fzZgaI6lyBwGdNj7ZerWC7dR3Ce8EDz4wkZplxgJL9BDVb
+	 UX4Q8cQBKi8gWgCMcWN9YIfH595QYQQ7g9TOqgNQeEw1oRnRvLfHoFnHeaRO9nsz+iA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793261288;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793261303;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
 	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
 	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:X-Proofpoint-GUID:
-	 X-Authority-Analysis:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=2dGnBacEascwLV7PlpDA1yoO3iuD70WS8ruoY1ymrZk=;
-	b=E0Ao1nWRaYRxTJt1N+WG9gddePDtaRsArzPe7LphFZmlzmysosAPqXEhNZqBK6r5x21V
-	 VrVY+ROq/ZjVx7kfD5greEg5+M5aHPfzxYlp4cwK0EDDDSyUHtBRrtB1b+8zyZA3XrR28
-	 yAmgVxL09HO1Eam06qnB6Qx6FGyxKqrgBKo/0t1ILTGw1UyieHjDHPEqFhE1Tj5K2NS34
-	 vS/jEcNSe31Es99Axl3YfHIp3d24og/xVHuRFbgKLfWUnJAf7huNkWtqeOtcjyE2NraGn
-	 Cfq2sNWeMR3CfVLhEuLYS+AW1zEAlqe/10vIGgRwsz254/vj4Y40uWmA6OpxZQVU9uw==
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=eOuijn9PgMv6riyIyWWQRIh5Cc6DVi7OfQ5u48jI3VQ=;
+	b=Snxt6HUJiExxytdFva66Am/gHOJPJhHyrx8/asx90gKTqZmQMSFk7C70aF7iea5HsuO+
+	 sS0Otx2xZfi5Kv0OjpnvH68ZizjEBn7t6Fr12LJk6U2ABF4iuMD0cujK4HBNAK6b9i/+5
+	 uiAlU8VDEJGDum1VZq1tCIvjaojrlsFM4sDQsFXEKrO/mSlWTtMVs/SuSzk6wrSZ3XuNy
+	 gnwb9EylyFAXNofbs8XhEE7nwSlJTdj7Av2/11ecJ1IY9IrBeld7VKV9JWN53if3HR4wd
+	 9STaoNs+GQgA/ZhEuvAdaXn6+BIIIlmM+0p1TbeAC1aYCttEft6D6BOgmpclOSu8EHQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=aGzoY2lz;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=SiuOJP1F;
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=mV5QDOdV;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FE5606A321
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 08:08:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 75FE5606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F94A606A31D
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 08:08:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6F94A606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=aGzoY2lz;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=SiuOJP1F
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69T5HM432244876
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 08:08:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	2dGnBacEascwLV7PlpDA1yoO3iuD70WS8ruoY1ymrZk=; b=aGzoY2lzhLKgvZDS
-	wavnmCCaDeVdjFZRdROWQEq+yZyCqjXxo6IqpJHRcBg0fVDIejsA2VXy3BUUc1Ov
-	WEuxBpMNsbfnyns34QVDvSFWcakINl2K18rPbPsFHqtOZF9m8xa2Nuf92IeeN08h
-	LQld35e5J98OjSkUMblxn2NC2OTepzx17ODRt71p2IdBgj67buaWqbARLY1RUcZg
-	LNc75is+7ooCV/pTuo/6YNkY245hxPXq14FiAspIkPMNUIPLE6kKn/shHqbx1O4k
-	nFRDvZiDFkk01RinKZ8meXFI+NH2vNMESwzCQPBGn4yIHS5OD5GaOiPKxYtNhO6n
-	1l2zDg==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hky5s8q7a-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 08:08:07 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2ea71803effso19649495ad.3
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 01:08:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1793261286; x=1793866086; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2dGnBacEascwLV7PlpDA1yoO3iuD70WS8ruoY1ymrZk=;
-        b=SiuOJP1F8c194OafCX524DizHsokakQu1GnG3B8AwOnjYGyjGKzjinJDcyUWG7Ex0O
-         laDevBnRgA88Yr86hjgB4LKhTeOloQ3NyfoPHcHp4Sk1zWteG16M9udLhKAlBOdzp51h
-         5uYoJ7g8z25RynJe7DHgFYfWj+Fiogoxxe97OeQHpTaeQGGvmop5yv4X7J3Z2dzmTgwv
-         9lPHzJiiY7EyHEmde1plV6bViKAAXJcSKfMKvOo2NJTuCotmTMSJmKrGvsdNq+Z0HO52
-         kzQ7TyvxOL1txHzMynd6EsYmZBAvLhSrQIctBmPZjsfOJewGLZm1uO21rgmTMealKvbq
-         WsbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793261286; x=1793866086;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2dGnBacEascwLV7PlpDA1yoO3iuD70WS8ruoY1ymrZk=;
-        b=vOEGntPkAySmVkkC8FjNBKveGOJ+U9lKXyqI48gmjo1gsKzwfR0b8RJAqxEcPhbDwX
-         qFaGnRKKQ3P+2SOV8si816tQnxjCaLr2d7x2HklEP8F7k8sJAhqLTrXbqy+49POGm3dB
-         M/BsW5hgXbOtG++eO/tQGQFybYgRd3/fAuEcSZUUsRJpJ2kpLLGntYuZ1e53kZS2OaiS
-         Xs5cIeEe6zm2WYtDv8xhXgH9TilDEKFShBQdfDhV5MAwk5GLdM/MUz3kxaV/5NU02sZa
-         IvluYR3QhtbOnLqaB933pJBwbZYOAw7DT3nrWAOzxwNmlmSNaTcwib1z5t65AdDZeCMX
-         VSPw==
-X-Forwarded-Encrypted: i=1; AKwUvBypXySSmwS/UTy02M6jkADOMnvwFHDIOjnD/VK2TEpsIJjlU0DelF5q6eoPs2yy1YTkgYxEokU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIgW9oOQ1Vqm+24qJUOJBCUbeYyu6xOK99zVweBepT5UVS/BdAA
-	3w1Yigzxxv2/29zuoYk14i2Z0vTJfy5+UhZGUMhTJhy1XlMoRqBcTQiDtHro1RVxbvJ6fk5IqFc
-	dLVamAMliqI97TVnL82POOnFEygiegcVJMqhDUPtCtstrSStw/HgLppXeCWg=
-X-Gm-Gg: AYBFou2G9wiY8tCBQlumHNaEVCijMJxX/xuR3TYIYuHVGLUH1h6/RAcjmEBpsrCojbF
-	ltmaDVNxK56+30OY0kgQD7fdNtpzi/28urvnnOOQXxS8dYlt4RyKg5UKGyuL+DrDHGEGsTlN0YZ
-	+1LW4ma+YrO5uVIN2o6fYZrUTQsSJulEhAvIdSdd0/JQt97CN8xYSROGU/R6e37bazRNRenVCug
-	6pDgsq9y7FmEGOvatNFGhe6OYOant1KtlNEYE095dJI5V8y6fpWz/5sI+Epr5M46Lak2Ze1+KmW
-	H3qzsY16jpNKT/JVtwE3SIPz6ZZX5+mvy+lkGNlUqG9Pf9FbBfLukep5YuS4Kxx2GzvoiLYb29K
-	ryVnmzqQLZSQRvyyFn26CNMjxbHd1ho/xfi5q5EWAHPM/rl+r+/UyecEb7rEjm9HV3H9rR/Nb5B
-	6piELEjPnfnThTUfmPGq6UjV6q4gmRqDQ5Ob4uE7sg4HjT
-X-Received: by 2002:a17:902:d485:b0:2e9:401f:f0f4 with SMTP id d9443c01a7336-2eb003dcd00mr40685205ad.16.1793261286203;
-        Thu, 29 Oct 2026 01:08:06 -0700 (PDT)
-X-Received: by 2002:a17:902:d485:b0:2e9:401f:f0f4 with SMTP id d9443c01a7336-2eb003dcd00mr40684995ad.16.1793261285721;
-        Thu, 29 Oct 2026 01:08:05 -0700 (PDT)
-Received: from [10.133.33.227] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eae6c37539sm30068785ad.49.2026.10.29.01.08.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Oct 2026 01:08:04 -0700 (PDT)
-Message-ID: <b8f90e57-4aca-41ed-91e6-27fc072d98e9@oss.qualcomm.com>
-Date: Thu, 29 Oct 2026 16:07:59 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=mV5QDOdV
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 980441A138B;
+	Thu, 29 Oct 2026 08:08:18 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5C71160360;
+	Thu, 29 Oct 2026 08:08:18 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 046A1103290ED;
+	Thu, 29 Oct 2026 09:08:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793261297; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=eOuijn9PgMv6riyIyWWQRIh5Cc6DVi7OfQ5u48jI3VQ=;
+	b=mV5QDOdVzDfl4NIwYDrDcY1+KRvU/6S0qUUQfABjFDGmPmboTiIQtG/U0mLR6Hm9eamKcC
+	KufXt7HXmWRyDDQR/LsK9rBG/g6qGtLYjSQ0Fw4vkA0HGdi6tjfkLxgmxIgs+g2GibnUX0
+	1hFSBd9kwzVJxSxcDi950sVPJc/DjaUqIRI7m8BQBwZVMMMo/Wd7fGRNrV91dk1JBerhr1
+	dL9QsVmgfMcuRfLE7QFmzgtU2r/XUbH1igFjY+BftdQ1E24BggW2uVz5CCtK3BhVNlljY6
+	LgkWJ0W6Y9PUVF27wVXMFtZ5+Nw5qAnRcKi1HRkATNqws3atXh6DLb7Y/zEwWg==
+Message-ID: <a71e5698-1ab3-4032-8905-3ada901d799e@bootlin.com>
+Date: Thu, 29 Oct 2026 09:08:09 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -117,69 +63,85 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 3/3] net: qrtr: implement shutdown()
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev-bot+sashiko@kernel.org,
-        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-        horms@kernel.org, linux-arm-msm@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        tao.zhang1@oss.qualcomm.com, peter.chen@oss.qualcomm.com,
-        jeff.johnson@oss.qualcomm.com, konrad.dybcio@oss.qualcomm.com
-References: <20261016-qrtr-add-shutdown-v1-3-e1cc01ca5919@oss.qualcomm.com>
- <179248895481.3135.9231497728918795508@kernel.org>
- <20261021133531.55da7de5@kernel.org>
- <9f76467c-5b21-40a2-95b8-e91cf1e1b47c@oss.qualcomm.com>
- <at9XxF32WiKBEJQY@debian>
+Subject: Re: [PATCH net v4 1/3] net: stmmac: initialize est_lock at probe time
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Jose Abreu <Jose.Abreu@synopsys.com>,
+ James Hilliard <james.hilliard1@gmail.com>
+Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20261026-stmmac-est-fixes-v4-0-999dac4de44f@oss.qualcomm.com>
+ <20261026-stmmac-est-fixes-v4-1-999dac4de44f@oss.qualcomm.com>
 Content-Language: en-US
-From: Chunkai Deng <chunkai.deng@oss.qualcomm.com>
-In-Reply-To: <at9XxF32WiKBEJQY@debian>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20261026-stmmac-est-fixes-v4-1-999dac4de44f@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI5MDAzMSBTYWx0ZWRfXwXs9PN/osQID
- Tvwa1TwzgTADeM6yrukMLkT7X0CpDHh0CeKHKaOGf/DYnZnq92ceUdft1a5kKTTD/Zsmv7PZ/JZ
- H7J5WCiRmoQlUe3hBKiAI3G8QOggisN/jk1U2HqkS4V7Y8Igp4opLN3RVf8dJzR7bqMA40msPbG
- WOq+Db08CVdVhOiQKbrG/YgviaYbyRYUV/mYgCF+9sM0ADCvPckpXkEYPREb8ahf95gBppERNND
- YSUAMei6AcjYSTnk8BZRumaQnjXnn1Xohee4pcxgvRpJNnV1Ah+EcwiTPIXugFTKoy2cTWZxwOy
- v6fAeA1IuLENJIXM8D3/7NjhQI3ry1mN1UeJLc6MLxczHW8exzcI1SSQvmy6u5FUKQF7LAyRXRH
- UeFM2ckOOdR3PCFw7eYvYj09n/0dlp0btymS6ChnoWESYvcE3L3cb8tKkHhf/n39iJCQJJ85l7a
- n0ljHh8vvDX3RbdR3xA==
-X-Proofpoint-ORIG-GUID: dJ4NQbpBlQyJrE-hQUGPCYwlJMfhk0N3
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI5MDAzMSBTYWx0ZWRfX3FKXIEZ5iAd9
- hY8SqvLTSTVBnfIlE+dZy95HXRoN94WoEa7SJVgut63RY9JPo+IKe5/g8sWH95Uh7Zlt8R+e+Mh
- iKMN0QLSlnmRmiJtt/AjeainwXZDdmc=
-X-Proofpoint-GUID: dJ4NQbpBlQyJrE-hQUGPCYwlJMfhk0N3
-X-Authority-Analysis: v=2.4 cv=f/vdl+yM c=1 sm=1 tr=0 ts=6ae2fee7 cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
- a=OT3QJeMhKsL16cy7qL0A:9 a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10
- a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-29_02,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 priorityscore=1501 impostorscore=0
- malwarescore=0 bulkscore=0 spamscore=0 lowpriorityscore=0 phishscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
- definitions=main-2610290031
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thanks for pointing this out, you're right. That is actually what I had planned for the follow-up series. Since it is outside the scope of this one, I described it as "no way", which overstated it a bit. Thanks Chunkai Deng
+Hi,
 
-On 10/26/2026 9:53 PM, Manivannan Sadhasivam wrote:
+On 10/26/26 17:55, Lorenzo Bianconi wrote:
+> priv->est is allocated with devm_kzalloc() on the first TAPRIO REPLACE
+> and priv->est_lock is initialized in the same place, which ties the
+> validity of the lock to whether TAPRIO has ever been configured. The
+> lock is also never destroyed.
+> 
+> Initialize priv->est_lock in __stmmac_dvr_probe() next to priv->lock
+> and destroy it in stmmac_dvr_remove(). This keeps the lock valid for
+> the entire lifetime of the device, independent of the TAPRIO state,
+> and removes the lazy initialization from the TAPRIO configuration
+> path.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 
-> On Mon, Oct 26, 2026 at 06:23:18PM +0800, Chunkai Deng wrote:
->> Yeah, this is a known limitation and the commit message calls it out.
->>
->> The sender sleeps on flow->resume_tx, which hangs off the node and is
->> keyed by destination node/port, so the socket has no way to reach it.
-> It is fine to defer this fix as a follow-up patch, but I'm not buying the 'no
-> way to reach flow control' from shutdown() callback claim. Why can't you just
-> store the 'qtrt_tx_flow' pointer in qrtr_sock and dereference it in shutdown()
-> callback to wake up qrtr_tx_wait()?
->
-> Storing the pointer here is fine since all callers of qrtr_tx_wait() hold
-> lock_sock().
->
-> - Mani
->
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+
+Maxime
+
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 ++
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c   | 2 --
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index b20e5038eead..9e09e11cc35e 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -8204,6 +8204,7 @@ static int __stmmac_dvr_probe(struct device *device,
+>  	stmmac_napi_add(ndev);
+>  
+>  	mutex_init(&priv->lock);
+> +	mutex_init(&priv->est_lock);
+>  	rwlock_init(&priv->ptp_lock);
+>  
+>  	stmmac_fpe_init(priv);
+> @@ -8337,6 +8338,7 @@ void stmmac_dvr_remove(struct device *dev)
+>  
+>  	destroy_workqueue(priv->wq);
+>  	mutex_destroy(&priv->lock);
+> +	mutex_destroy(&priv->est_lock);
+>  	bitmap_free(priv->af_xdp_zc_qps);
+>  
+>  	pm_runtime_disable(dev);
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+> index e137fb9012d4..aea235a69105 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+> @@ -1028,8 +1028,6 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
+>  					 GFP_KERNEL);
+>  		if (!priv->est)
+>  			return -ENOMEM;
+> -
+> -		mutex_init(&priv->est_lock);
+>  	} else {
+>  		mutex_lock(&priv->est_lock);
+>  		memset(priv->est, 0, sizeof(*priv->est));
+> 
+
