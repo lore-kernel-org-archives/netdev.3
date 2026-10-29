@@ -1,99 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.178
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793236278;
-	b=3WJRk7h7GKULDzdb9pPpndjxHbvOW2DhxXTzWFFPYP+IZ1aP1qIk1jCAFxk5mF9i2CW2
-	 zjiIrFvaM47MW7w2akfWjHSgRhSSsGrFzmFY5U6vsxXJL6n+RV+6nKoFiqhZCSR3OAVyc
-	 BMRp6RrbkwhW+SKWD9r3csAWfzWgwxEO7Afl4N93FLhhn8xW/LT87zDjhHcvtplUO0jzJ
-	 DVXLk1NHln2fFTeCR9jhl/Py5fDamXshp+2hwSFCa7LCHpUmFn574ZLDc1G2arPlYzl/v
-	 V1qDEwcsVHu74GYbcC0LCTfoEvpeM0+cMir1tHPQfArmyNMYfeVa4RkaBk5IMiRg4NQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793236278;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=T8vrlnjARGiDjuRUwRWUbox4bHtSHamjWdpm50A3jNE=;
-	b=lv+9Xdwhl4t2vxugs6Jvqs3UGpBfeQGeYddm1XMzNQCnyEG7hgluNLZHQmNPQFyflLuF
-	 Ma8Z5lEuwh5tXa/4mS1NCWln37keyf9k/3pT7gf9B8qcWxYGuX3IF7/XyOTvyJIYxeTm8
-	 EkJVaxJy8TLU75d30zajC/2NqsJd1063ant4vkkX1zqX9+wdkDT15dAkUo9+blhSd8ann
-	 Aa2SKr/P3IJF9FBNUNbGVudYa6nyfgwhKMdGFOy233eWVV1r+KpAneT6VQrjFM1RyOri5
-	 Bge44oqPwdCHDL0lZpCxDcahMWdInvL3kCW9SEVkEBZTcikxBN3XoaIkoOS/dTxEJaA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=paul-moore.com;
-	spf=pass smtp.mailfrom=paul-moore.com;
-	dkim=pass header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=QFn0RApB;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.178
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793236351;
+	b=ds2QsN7gLAvUBekMDHyf+lv6fmhLkgcs3fUJRTx3/4Q3ZpglcmTyDpJ/5wgV+CcOtu1s
+	 P0+A+218xIYEhl1skkAjEkOex186pVni49VwbDesTAqD/8EGAhtggoCxp9Qzt+yFSGQyZ
+	 CkKv4wg/Q7+kMHOQhNBUEwR04HrwTWLxZVj/eFVBGj+WHtZe+f1A/ok3GKrpjI60+APbk
+	 XmIM2jY78YYE6qykfp5rxrMZ1Jch4A9Ja/fcN/WYuqhEwHzuEEnC22XEJQHqY7XBfu+wQ
+	 s/ffQh0RgjWZksOz/JKW0w7+lQaMMUAaY3j+chAWpTj4ZGpJ511dJ6lTz7WawNWU4eQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793236351;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=9CTtIlqvNtK0AFXqAebQGJPlIpZM/dz/lf9WSEWiNuE=;
+	b=0cSgwElQ4YYKxPFfhdyKU47Yn7Icu0gtmkSm9ZrZ4G7Br7z85xu1zQssXQpfpJPIz597
+	 mGyjdqjKShqiMWcAsvRJBhUj5+aJi+vT7jU4HGpwcN8+8qEeYFxrY9LD5G5mhNrl4I2bi
+	 aJmYIOgmfUj/sRRAucAUrqHARJj6qNhAME26RYb/fOhm83F3NmkZeG3esp6Qp+yvHGH/h
+	 uOL5q3aCAr0UXA8geWic1n+HPN8K8zcw72q+QezP5HkSZ59+2hsEIZXPDalL/IB3LPlDN
+	 oxU6AHuqu9zcS+jg5d7yjixBbPCG/dKOJqd6OglcVMx7vej473glYOCzv3ef/au1TTw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kYzVLNaU;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA96606A31A
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 01:11:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BCA96606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03225606A31A;
+	Thu, 29 Oct 2026 01:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=QFn0RApB
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-886e61fa30fso791289b3a.1
-        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 18:11:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793236277; cv=none;
-        d=google.com; s=arc-20260327;
-        b=l94k8/+56+IlKUnCe881urkdURed5SgTKKdIPn/CqtOAQWdHNXBwzoC1voWq+7zUlK
-         Nm78v9nslDFTr0FSfhA0EbPvuRXOzFvGduWIam9a0NlUZMlfGsKuLK3j+/nJuK42AkYE
-         KskWLBWDZB1hFOJ1SdsVDV9zXTJOTHlheSwecCMqa1ZFSW2rhTNRIpOoJ0dzUlrPhmm/
-         H0V6BYWM/Ijr7TiKtFsbQxgfsAyObbfk8nVexi+BCOrgUagg2UymaxNFkupifci19BHj
-         n0p9JorOzqXlAb9pJKhZ7BzxP1t8JQvXLuHDWOwkPVVqEmMZKBb18jX/TBp+TjN0SvoE
-         leIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=T8vrlnjARGiDjuRUwRWUbox4bHtSHamjWdpm50A3jNE=;
-        fh=hN+Y/wIkw7vLXNUUzap0GdKQQlEs7yQPeojl4/ZQBLQ=;
-        b=asrmwdXLfqC8ORRnRi5ZmmhZNEA7+BKh+sj9B2WOuB7kjHdxGc3gHDtCp9YuZJlhFp
-         h/mE2ps2TT5i5GrcSPzo8T5WLu73q7Yfwu4yIOmtbdJB/uXsYNybm+JMfBsTdMpqF0NB
-         c7dXNF51CaUfmvfQ9sxsx7QeGxI4IETty/Pt30i+UnZql68/Pzi+LuF9y2ftnmpBSbTD
-         yiZPOo8JyMpTdo3BFV0LTdU4sthGCoQVGL6PHB+7bGunRyU0PPBIO4bi0eluAN+nKZeA
-         /lMU/rKZ4LucEaIdl+f+W2GenWOSbkoro5WnfvHDD2XSGWn67t348TlhNeOoouwPbnR1
-         Rr0g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1793236277; x=1793841077; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=T8vrlnjARGiDjuRUwRWUbox4bHtSHamjWdpm50A3jNE=;
-        b=QFn0RApB/826lxN0LU222f/R+lapxjGz6ks3phdhGPowHtq/z2VmroSMeLTTjb9EjF
-         uiadR4Ik7VcZRxFCYn2EQNJ8kh2xOz3dmVXvF4UgI+PvdXKLCJVV7DJYXvrI+mG3Ow/G
-         BkxiRET922nuV0OfGkx5WEoAMh9EK41xLUPv5t4mmeQlRB/Hj/L8vOB7FdjwYm+/+Rz1
-         ZbQ3uAhOJY7fB/2SKI2fMP3FcNTXJBq9IdkoPcFaK1V8gqkiU3FUmJRsuCCbikMI106R
-         6ObyxD4tX6zTYoGj6f91vcHj4HAa6T9//0PQFNMmg+Y3tp+USNTf4Roeeyx7pzi3V0F/
-         DaCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793236277; x=1793841077;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=T8vrlnjARGiDjuRUwRWUbox4bHtSHamjWdpm50A3jNE=;
-        b=2OUSsBwsbJkdyaSciI/cyTdb+keRrmcWDDUu6Hst9vbt9e8uqMBI/nm/9DDzPukbug
-         Pl2qwFrL4Vt/1cWUQWNnr3DMVyZ0vC6+KWI5FhhkC8vM6j+mvDiAjXPl7ZL4tBLLr6Fo
-         WFJ+B2ImKTAAxOZ25TJ9EIG2ucIneHyvSKKYGVSzSl70aAqQ4ES58q1gIYyVSsmldHTn
-         k/V/glTAf7F8vnrMVeslcRK3GlAgXG9Xr2/p8nBvQ/p7UrQRyYXUnQZnpFcPtXs5rUiz
-         9v6btmL3DlrzN+lTEKBfy64ScCnOkZ3ZD3ijeGUbmi94C6jC29lpIdWwOI5Jz9N5H40z
-         mS8w==
-X-Gm-Message-State: AFq9FYL8lMbFdn8KwZMkynPmzlejsDxcV3zPgkt5uLr8f8t3xmaCvV6l
-	00Z4I+6SiuCNlUCrTJbpBMgm943KNauiudHRQkMQjW0PqQBZUwoIovp4dAOoej2omgf7Pl2wtLP
-	Y/FFkyUGl3Za9mFGiLms89SedrbvsxQ50glTbw0xRAmgTRgPtr21l/jNJ
-X-Gm-Gg: AYBFou2qwds9lqw2O08sdIHHw7tK0FLF4BlEr02JN1U1bmKnVUV1woNKyPi41W1IExD
-	Ii/fggHPPYTuaVceWn9Z3R0ggvZFOvPX4SdIIliKO88PZpXcl8tE82PNvKQCFBhAy8Ct3pi9LP0
-	8AJXsWbB1IFXBirqV+r0piBBsztLVS8xttKsum8rA4yjMKFkp2NL2lA8sHAN7o1tu8B6JxTQwZs
-	g+aA0loLwX/AHXZQxXj9NYzJ7gYJA5aCuO7ayyMVoO8aG/Nor+d//WC1YlSjo2F0ZTDzhIfv3F6
-	wyqiEIdwG2EDEghi58/7GYqjSjw1iOBLpMRuFIWfFX9jkxm7xmQpBuZlUKz5VW35ev+Sfbf4LM2
-	Dzr6OVk+IupqZ+WrakTt8MktOI+v8PCrq9mG6uvWzoEfkmr5Ha+Mgm8GbcSuHvVLY6W8B
-X-Received: by 2002:a05:6a21:3e0a:b0:3e0:e9f7:814c with SMTP id
- adf61e73a8af0-3e9023833fbmr2058685637.33.1793236277145; Wed, 28 Oct 2026
- 18:11:17 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kYzVLNaU
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1581F01825;
+	Thu, 29 Oct 2026 01:12:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793236350;
+	bh=9CTtIlqvNtK0AFXqAebQGJPlIpZM/dz/lf9WSEWiNuE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=kYzVLNaUx7xqMT4u8ofB54gP8AM/mzt8YJHJ1BoSK84ro4jKuaFuHNbOXKem9H5p2
+	 RmdY5trirkbrKsXcRAgUaumhe6MoKOfSKn13JREh9YCcNuuKhnwxQkZs3VYI/C64A+
+	 Z+lHChtvckdcEOBJ/USXg/MSeqjt+y7mk5t55gDWxHot4psw6VV7I4rR9zV2/46IKc
+	 M5herRs/AX/drN+02chPGFLxGS7nDqJyVldXej8ti5/nnuy6cc4kY3FYzB1KmdoLhP
+	 gfB0KgDxSyOXrjflF0CjDs0nnFjFTY8B6bb8U9Hewq3Kt9eEQO7u/QsQAWEXAdYgv6
+	 5ggEdkFaNaY0w==
+Subject: Re: [PATCH net v2] net: bgmac: fix oversized RX frame check
+From: netdev-bot+sashiko@kernel.org
+To: rosenp@gmail.com
+Cc: netdev@vger.kernel.org, rafal@milecki.pl,
+ bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ nbd@openwrt.org, linux-kernel@vger.kernel.org
+Date: Thu, 29 Oct 2026 01:12:29 +0000
+Message-ID: <179323634946.3134.7111348485490827533@kernel.org>
+In-Reply-To: <20261028011035.49201-1-rosenp@gmail.com>
+References: <20261028011035.49201-1-rosenp@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,87 +63,153 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <uOcTaW7-g5e97ng6BG_DcH5mlMnpw7KzU25SZjL69pkAVINTMiL26FryLAuYPSNowDo8qwfb9hm_I4dQ1BwpiRe62E-I2TyUkJZ_eBeuLoo=@proton.me>
-In-Reply-To: <uOcTaW7-g5e97ng6BG_DcH5mlMnpw7KzU25SZjL69pkAVINTMiL26FryLAuYPSNowDo8qwfb9hm_I4dQ1BwpiRe62E-I2TyUkJZ_eBeuLoo=@proton.me>
-From: Paul Moore <paul@paul-moore.com>
-Date: Wed, 28 Oct 2026 21:11:04 -0400
-X-Gm-Features: AclHuK_-Tt6aAk1Q9UVaRNEoFiyF4HEXUF2NG9jMAfN6nnbuCUnaax6L8izesW8
-Message-ID: <CAHC9VhSNfn1=Ln3NcMC1BzW4AQiZuDvTm+H5rkY1aKc-RcKHpw@mail.gmail.com>
-Subject: Re: [PATCH net v2] cipso_v4: fail the walk on malformed options
-To: omniameasunt@proton.me
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Qihang <q.h.hack.winter@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 27, 2026 at 7:16=E2=80=AFAM <omniameasunt@proton.me> wrote:
->
-> cipso_v4_get_actual_opt_len() walks a compacted IP option buffer with no
-> validation of the option it is standing on: it reads data[iter + 1]
-> without checking that the length byte is inside the buffer, it accepts a
-> zero length byte (spinning forever), and it never clamps the walked
-> offset to len, so the returned length can exceed the 40-byte MAX_IPOPTLEN
-> bound that every caller assumes.
->
-> After cipso_v4_delopt() memmove-compacts a socket's options, the bytes
-> past the compacted region are stale and attacker-controlled via
-> setsockopt(IP_OPTIONS).  An unprivileged user (CAP_NET_RAW in a user
-> namespace, CIPSO labeling configured) can trigger the walk with
-> connect(AF_UNSPEC), which reaches cipso_v4_sock_delattr() through the
-> SELinux NetLabel hook.  The poisoned optlen is later used in
-> do_ip_getsockopt(), where it causes
->
->   * an out-of-bounds read of the adjacent heap object copied back to
->     userspace (kernel pointer disclosure, KASLR defeat), and
->   * a stack buffer overflow when optlen exceeds the 60-byte scratch
->     buffer (return-address overwrite; exploitable for privilege
->     escalation on kernels built without stack protector).
->
-> The same helper is also called from cipso_v4_skbuff_delattr() when a
-> label is removed from output or forwarded packets; the option bytes there
-> have already been validated by ip_options_compile(), so the new checks
-> are defensive for that caller.
->
-> Fix the defects by making the walk fail with -EINVAL as soon as an
-> option header is truncated or malformed (length byte missing, zero, or
-> one) or an option would run past len.  cipso_v4_delopt() then drops the
-> socket's entire option set (reusing the existing branch that frees the
-> ip_options_rcu when CIPSO was the only option), and
-> cipso_v4_skbuff_delattr() leaves a malformed packet unchanged instead
-> of rewriting its header based on untrustworthy bytes.
->
-> Well-formed option streams are unaffected: a socket whose options
-> survive the compaction intact keeps them; only malformed streams now
-> lose all options instead of carrying a partially parsed set.
->
-> The function also compacted the option object in place while the
-> ip_options_rcu remained published.  Lockless readers such as
-> getsockopt(IP_OPTIONS), UDP sendmsg(), raw sendmsg(), and ping sendmsg()
-> copy the object under rcu_read_lock(), so they can observe a mixture of
-> old and new offsets or option bytes.  Build the compacted object in a
-> replacement ip_options_rcu, modify only the replacement, publish it with
-> rcu_assign_pointer(), and retire the old object with kfree_rcu().  If the
-> replacement cannot be allocated, leave the old object untouched and
-> return -ENOMEM.
->
-> Fixes: 014ab19a69c3 ("selinux: Set socket NetLabel based on connection en=
-dpoint")
-> Signed-off-by: Lucas Dupr=C3=A9--Rabinovici <omniameasunt@proton.me>
-> ---
-> Previous version:
-> https://lore.kernel.org/netdev/CBLsHx48w8Bn1k_Xg6kJFliLNkxLCqi8SnkifapxYY=
-pVtll4w-W_2JJePtbk9ssIS701IFJvi0Q2n5l-2GFFe8hNHU9Y_CgD_sdzcAbILVA=3D@proton=
-.me/
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Hi Lucas,
+Critical: 0 · High: 2 · Medium: 1 · Low: 0
 
-Thanks again for your help with this.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Qihang (added to the CC line) independently reported, and has been
-working on a fix for some of the issues Sashiko identified in your
-first patchset.  I expect that Qihang will be posting their patch
-publicly very soon, perhaps you can take a look once it is posted?  I
-suspect that basing your patch on top of Qihang's patch may simplify
-some things.
+- [High] The fix only tightens the upper bound of the RX length check in
+  bgmac_dma_rx_read() (drivers/net/ethernet/broadcom/bgmac.c).
+- [High] bgmac_dma_rx_read() loses track of the RX descriptor ring when a
+  frame spans more than one descriptor, and a remote sender can then…
+- [Medium] The commit message rests on the premise that 'a valid frame is
+  at most BGMAC_RX_MAX_FRAME_SIZE bytes long' (1536 including FCS).
 
---=20
-paul-moore.com
+--
+
+net: bgmac: fix oversized RX frame check
+
+This patch changes the RX length sanity check in bgmac_dma_rx_read(). The
+length from the RX header is now compared against BGMAC_RX_MAX_FRAME_SIZE
+instead of BGMAC_RX_ALLOC_SIZE. The intent is to drop frames with a
+corrupted length instead of hitting skb_over_panic() in the following
+skb_put().
+
+> diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
+> index b3a92ae95de30..6873c7bb7a141 100644
+> --- a/drivers/net/ethernet/broadcom/bgmac.c
+> +++ b/drivers/net/ethernet/broadcom/bgmac.c
+> @@ -455,7 +455,7 @@ static int bgmac_dma_rx_read(struct bgmac *bgmac, struct bgmac_dma_ring *ring,
+>  				break;
+>  			}
+>  
+> -			if (len > BGMAC_RX_ALLOC_SIZE) {
+> +			if (len > BGMAC_RX_MAX_FRAME_SIZE) {
+
+[Severity: High]
+
+Should this check also have a lower bound?
+
+len is a u16 read directly from the RX header. A value of 0..3 passes both
+the 0xdead/0xbeef poison check and this upper-bound check. Further down in
+bgmac_dma_rx_read():
+
+	/* Omit CRC. */
+	len -= ETH_FCS_LEN;
+
+	skb = build_skb(buf, BGMAC_RX_ALLOC_SIZE);
+	...
+	skb_put(skb, BGMAC_RX_FRAME_OFFSET +
+		BGMAC_RX_BUF_OFFSET + len);
+
+The subtraction wraps len to 65532..65535. skb_put() then asks for about
+64KiB, but build_skb() only provided
+SKB_DATA_ALIGN(BGMAC_RX_BUF_SIZE + BGMAC_RX_BUF_OFFSET) bytes of linear
+space. skb->tail ends up past skb->end, and skb_over_panic() calls BUG().
+
+Isn't this the same "corrupted length leads to skb_over_panic()" case that
+the commit message describes?
+
+Lengths 4..17 also get through. They produce an skb shorter than an
+Ethernet header, and eth_type_trans() then reads the header from bytes past
+the end of the received data.
+
+Would it work to also reject len < ETH_HLEN + ETH_FCS_LEN (or at least
+len < ETH_FCS_LEN) in the same rx_length_errors branch?
+
+[Severity: Medium]
+
+The commit message says:
+
+    so a valid frame is at most BGMAC_RX_MAX_FRAME_SIZE bytes long.
+
+Does this match the limits the driver sets elsewhere?
+
+bgmac_chip_init() programs the MAC with:
+
+	bgmac_umac_write(bgmac, UMAC_MAX_FRAME_LEN, 32 + ETHER_MAX_LEN);
+
+That allows 1550 bytes. bgmac_change_mtu() writes 32 + mtu, which goes up
+to 1564. bgmac_enet_probe() also sets:
+
+	/* Omit FCS from max MTU size */
+	net_dev->max_mtu = BGMAC_RX_MAX_FRAME_SIZE - ETH_FCS_LEN;
+
+This leaves out ETH_HLEN and any VLAN/DSA tag, so a frame at MTU 1532 is at
+least 1550 bytes long.
+
+With this patch, frames of 1537..1564 bytes that the MAC accepts are
+dropped here. They are logged as "Found oversized packet ... DMA issue!" and
+counted in rx_length_errors. Frames of 1537..1540 bytes, where only FCS bytes
+went past the buffer, used to be delivered intact.
+
+bgmac_change_mtu() also never updates net_dev->mtu. The MTU the stack sees
+and the hardware limit can therefore drift apart.
+
+Should UMAC_MAX_FRAME_LEN and max_mtu be derived from
+BGMAC_RX_MAX_FRAME_SIZE, so the MAC never accepts a frame larger than one RX
+buffer can hold?
+
+[Severity: High]
+
+Can a frame longer than one RX buffer put the ring out of sync here?
+
+bgmac_dma_rx_setup_desc() sets up each descriptor with:
+
+	ctl1 |= BGMAC_RX_BUF_SIZE & BGMAC_DESC_CTL1_LEN;
+
+That leaves room for 1536 frame bytes after the RX header. The MAC is
+programmed to accept up to 1550 bytes, or 1564 after bgmac_change_mtu().
+
+b43 uses the same Broadcom DMA engine, and its dma_rx() handles this case
+explicitly:
+
+	if (unlikely(len + ring->frameoffset > ring->rx_buffersize)) {
+		/* The data did not fit into one descriptor buffer
+		 * and is split over multiple buffers.
+
+b43 then recycles every slot the frame used, and brcmsmac chains
+continuation buffers in a similar way. Only the first descriptor carries the
+status header, and continuation data starts at offset 0 of the next buffer.
+This split-descriptor behavior is inferred from those sibling drivers, not
+from bgmac-specific documentation.
+
+On the oversized path, bgmac_dma_rx_read() frees only the first buffer and
+advances ring->start by one. The next iteration reads the continuation
+descriptor as a new frame. Its rx->len and rx->flags are then frame bytes
+1536..1539, which is payload the sender chooses.
+
+If those bytes decode to a len of 0..3, len -= ETH_FCS_LEN wraps and
+skb_put() reaches skb_over_panic(). Other values produce frames built from
+stale buffer contents.
+
+With the default UMAC_MAX_FRAME_LEN, can a single 1544..1550 byte frame
+from a LAN peer reach this panic?
+
+For the fix to cover this, would it need to skip the continuation
+descriptors (as b43 does), keep UMAC_MAX_FRAME_LEN within the buffer
+capacity, and reject len < ETH_FCS_LEN?
+
+>  				if (net_ratelimit())
+>  					netdev_err(bgmac->net_dev, "Found oversized packet at slot %d, DMA issue!\n",
+>  						   ring->start);
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028011035.49201-1-rosenp%40gmail.com
