@@ -1,108 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793283062;
-	b=mMnb5b1ciw6EAs3IS6Tx8BOM0xzIHhyV0+SJnX5b0mK9Hwd/PCRPjsBCOMvyQpgoBd4i
-	 xUTPxPfl0M09e13ChC4SWyABAbpqfqJ9l8eybRGgGfi7b6nuRQ8jeftbzSZ2/Q/6COrtv
-	 oDkB0hy5K1CEgtrtYvkw4ow2OKgm0GAMfpQPaxztdUPTeAsHsusGJiDZxjvFxb1s6N0zQ
-	 cvjC5eP7El2ySrR4PpzBMixtdlPA0BN4S1NtqqL78zaoikQBKtSr2P6WFohkUKzB6poLa
-	 1UgXao7GrXxp8+BGZi7HziZqAORfcLB1chrAf1ttpufofbh0X/Ytp+77sh0LWG0g+pA==
+	t=1793283236;
+	b=LS7/VHXNu0qe+5Iy0veqZrVtaepGbiaKBi5R+dIxtG9nstzCIpezoufwC/pxuF0DztfZ
+	 oavopkGMjvzEB/Ofy34WIsb6q8rmgAE1y2vfGXU1KDxdg3oIiGTmnudkShGFCzdGARZIU
+	 UEeh9+m5d1Em3Ip6IaUDFAPFserzkXhm9n99NT1IH2Wr61tymNcGyAsnKERFnDFzq1FYd
+	 QFE8gw2PU9EGPzlEdPwvhdS32g89MXDBsLqns/KMr8NouaZ26lXbm4fRGig6YLBy2h+/u
+	 sgD+s6urHnHbXmATVU45mTL105BMMhIvTmLt3fAKW+Q+oGdMmI7Z55OqtlrY93aisMA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793283062;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793283236;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=S2ezqz0ZqnFURyg+DrMUvl/ZxfvgKHi+fzqaASqkQZU=;
-	b=EMjqTbMqkJYEOMsU1VC9r4s4xlkgpKOXMa86GrphqM+phEwaVQEpkIl+7XchKiJVOD+D
-	 beLu1kaJ9kVekMFZP+jv/oALT/lZPvFeU6pTFw/C2c2HYCGFdTRIBN0h/ScKYcnbmc5pW
-	 cO4w8/2cW+DGNW5ieXn4nf4/cyd1jpokhsvYi5yqW6MfzT4j3Vvuff2SebCPWYQlbgakD
-	 xymPJt2awDZLPURoUXvUD7i0ZQ1G9Z3pHzHgVZrB69w+Z1FAKlAhmBSdAunw2RajBDkgF
-	 6Q2h2O4MTtoDKofrmd1Qpwwk+79EwM5RdfcGEFCQFIMNZVx9U8ZfiInSaaVTDBRFDdw==
+	bh=3r+oUtLtuj/VEdpEb4bPGrKTCpCHtCaw4EjdujKT3MA=;
+	b=YnZpqp1GdVfdZzq+CjUJDfgWha0txrWb3tYLawN/Y9xCuTvn4k9KcTtlTQJlEFF77YxU
+	 wwJ6/afCpDxGldO4ehtWFahht0gLnhIWtXzow55L7wpoP6n9IVOD7rnlzrfGFAgRrto4x
+	 jiBmX25Fy5x1xuBCIh7Uz38YWq1odTj881RaI93LGVO559bBVmwxvQUcqGzip8aR7KJ8W
+	 aG6LbWPn/J6v5IyqOcZO4sn8rPdQwGRU043b/QLCAI19wVxrspezN2PQ3DK+ygvNEdpJs
+	 3nlSZ+F8WULgHNxfdrlYvJayNctJJU6AG84JJY7L07A5/e7yGt6oytd+Glvo0FRcJ6A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IM6aY+Tl;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="YVx4oR/n";
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=f4tltNeF;
+	arc=none smtp.remote-ip=74.125.82.50
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33542606A31A
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 14:11:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33542606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3361606A32C
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 14:13:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3361606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IM6aY+Tl;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=YVx4oR/n
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793283061;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S2ezqz0ZqnFURyg+DrMUvl/ZxfvgKHi+fzqaASqkQZU=;
-	b=IM6aY+TlVfz0gRvwoblt04nLvxoKSzs/C2ZxVo2cBhusYcCq7YdCrKWBDM0I6RLtywB0iw
-	BrGriwaMcxCwcPr4i+z9ZPxnkihTmj3pNy21MBUqct0ERmubiFha0TPIMGBP4L6Ywoj4MV
-	JAjrjXUpMp0QFuIhfDgvsT0u9UgzLw4=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-43-U3UVp8KCOmKWRMPsCjwamg-1; Thu, 29 Oct 2026 10:10:59 -0400
-X-MC-Unique: U3UVp8KCOmKWRMPsCjwamg-1
-X-Mimecast-MFC-AGG-ID: U3UVp8KCOmKWRMPsCjwamg_1793283059
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c3f88d2ff28so169034966b.0
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 07:10:59 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=f4tltNeF
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1a8cc11ac42so837142c88.0
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 07:13:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793283058; x=1793887858; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20260707; t=1793283235; x=1793888035; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=S2ezqz0ZqnFURyg+DrMUvl/ZxfvgKHi+fzqaASqkQZU=;
-        b=YVx4oR/n0LHUGCyD0QM7wgcb8iHCMqf/Wz0vat/jFRU484OMwPMXnSxJT2Gkg/DwqQ
-         aRoQu+0v7/caPt36fb+qv5Ib0FznxcMDafDP04mcoB4aBKcKq0Imezy7KajrfNe5p8PJ
-         9BbPISUAphAIsFvLcLZsrInIrRTvO6MqV8KeemnhbumBPm/RDoFv4JV6cxfLacB4U8yo
-         I5nL8pQW4yHAwfLO6NDq+yWnwUArOaVlUP4ntEAUlge/4/fEjThoguAkV8MQ5Y0t5EwV
-         g0YzdLuNoxB1bCsAuHYJO7vVjO39uO/WNFfX72zE8D13OSXk/bJ7wJiJbYbO6M72utWU
-         q/4A==
+        bh=3r+oUtLtuj/VEdpEb4bPGrKTCpCHtCaw4EjdujKT3MA=;
+        b=f4tltNeFTKLnbUz5fjFCsuUFaUTE4hef8VkRvpIXiFKDI+Q+4y4RSyo2uDZaO4cFqS
+         hsX2K4LGItbsDAeTgBApvLi7AwGt4HD6ojALeFIrXlX0nSvztfjEyqHA2IH89+Ky2F9p
+         3tdARLW2Y/G2DTpZmFgXa2rTTRzRmZxzUl+1rFgB8sPVOHwlsCbm6jgfq0H2qb6c6R2d
+         isdQ9G/JcfhnYNrIkmftITH3EeFMIqEdIxtTFBeuDq1KcowgrZMxo7fNCZ836RU/iIjO
+         LOkkKQE7j4QvBAiK3GAFXIJF0cGfkHwvJRVTcZQD261r/+cI6bCH3IeFhnSTOwWtGpAo
+         K8cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793283058; x=1793887858;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=S2ezqz0ZqnFURyg+DrMUvl/ZxfvgKHi+fzqaASqkQZU=;
-        b=HvOifuMnEnIEhCfWT0xuG8loAw6jvC1dqbT+biBcr5LrUoN/7NPwAN48oqN3HEZMPy
-         GfdHF0/sZyZ95WBvMWqhEREBByK3Fg+F+qwIsXfxyPkVbWXFxWTEv/YVMS9FfRDM5RLV
-         lvhritbDMycfnP4FC27XdLJE5Ij5xCsKCLX552BCULKWZ9Q4tiOiv8nJrupVn4o2ABpw
-         eyP12QjgGyGjzwGEw+N5D37hhNhMRL/tBPMBWUcHBoz41sLPQHuVnMHm4Q5PuCe6Jnu3
-         961CSatHSCG8kP2JmM5rT3aKZ+lAnaHlhbf0j3R3jZJtKQP1Pd8ItUR2kPWQ23/v7Ow4
-         7lDQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy0QnEORB74GG6YflyUm1Yj5CEWwjylrk1qabqWs7ukAtQ0/+iOWX7ilx/qWztN70X69YgOuTA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLb4cKptN2Z29vMCiB16O2Rkqnhb4g9w/dO9UGxkAOojqc4YNAO
-	mEmljwfN1vYQRuE2qojNECOGCVXDksIMC8h5vtPBTNFiw+6AS0rjRymvtQXPSCCwP2As51OggOt
-	KQCnvBtYaXPmxG8XXLU8CllgwdUv+yo9NdhhsUh+IL0cPDO3ciH8yb2HH5Ve6Q1EzkQ==
-X-Gm-Gg: AYBFou0rW3VAaWhL6lpIO8U+z7FRYtuSfX9fNK6/FGUtYtNgqFB6Z30roynX0TWiYMC
-	2gTxGFVB/sD5w3kjDvqeA1RH6xfpFltqF3FPHtl2eSYD2TL3dP/xlQ2HeLW5Q78VU4X86SdfHRY
-	mfAfNmFlH0vJeDkPAlNNeRmcm9LyEp2wlNJzfakTp0VCIHCIRwCdGanSmg1so4RyWdx7HVA4IZ+
-	hO7vr34FAUwwTCHLzbQ6zCNw9CFPpqMdunTUWlJ04MFpc5m86btI7sAFuwJB/1UEw9v785FHfDx
-	JAm6C1hvaIZNDEntq1AY2j5qlCGc9nxXh6Y7YbMTlWRjlBP6cZaE0Z5y8mQB9MOq3rJRNSncuN3
-	mI5B9PAXC5I5wJL3TUlBNRS61d3EP6svYzIeUK0oVxnv0EV7BNmnoWMPdv+bZihhppCazuOmiLo
-	ERWumFUVTMx/UKbNsH1oB10u+p5M4Ha+5K0NuWAuqfbp9qd9Q=
-X-Received: by 2002:a17:906:eec5:b0:c2d:ca32:2176 with SMTP id a640c23a62f3a-c49bdf37849mr505713266b.8.1793283058561;
-        Thu, 29 Oct 2026 07:10:58 -0700 (PDT)
-X-Received: by 2002:a17:906:eec5:b0:c2d:ca32:2176 with SMTP id a640c23a62f3a-c49bdf37849mr505710166b.8.1793283058105;
-        Thu, 29 Oct 2026 07:10:58 -0700 (PDT)
-Received: from [192.168.188.234] (ip174-129-192-82.pool-bba.aruba.it. [82.192.129.174])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c46bd66e51fsm740498366b.64.2026.10.29.07.10.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Oct 2026 07:10:57 -0700 (PDT)
-Message-ID: <e0347015-0b0f-4a87-92ce-ea5e4868cf2a@redhat.com>
-Date: Thu, 29 Oct 2026 15:10:55 +0100
+        d=1e100.net; s=20260707; t=1793283235; x=1793888035;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3r+oUtLtuj/VEdpEb4bPGrKTCpCHtCaw4EjdujKT3MA=;
+        b=Am0orupgF1jaznpzHNxRscF4uAsmZtAE/6nX6G77NjZq+LQLO3FEPvzdCHNYJeswjj
+         T/OmV2Q88FwN5yCr1XGSpkyXqTtRYzFkF58M7gBblfvWC61CJ/mIwR+0J9jfCaEDYF/l
+         GlUVYgcMWsKQvIZFxzaULKuzIRgbW2o/1mTu64fjNhCVxqRp0C0g6oDf8fIInFq0UN0O
+         2yWK4AMBbQnA3LJO3/hUbkCOkjpKIJNtJF7UwlMfh/6L45VFZ7dO8kxXSJPsJKe/zkp4
+         vefi3ySCBvd2KTqyNQtckUcCSSiA590Ub+PmM85SOxjHBeIEPJsfnixmJNowaLqlE94s
+         OK+w==
+X-Forwarded-Encrypted: i=1; AKwUvBzUTgJYdN2jM4zPkpjQHdTjjeZiftX37ZdWPsfMidwcY20Vsbbn46ec+AM9zaOPpvlJASP2oDE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ2PpmIrd2GX4Pe9WmhYkxaF2/dvqW5KRu/TlQpWXieIAmBdV/9
+	RFyQMi4KVPbmQJUsUd2FpBSvZA/mRDdkRlhxfYXGfuk+EkeqwhEZjhPq
+X-Gm-Gg: AYBFou17BC6NDCfdSHHK4/mxgf9zPrAj3GKAubnHzFjPotOwh2siPK2So60YJJa+sRk
+	7ieiwdV2tiLOjldjA5vae6gx6ZdCl7Y46EtFrwkTMJ1YN4gDQ1Zise496w5o4R9HF+5KIdjCM8T
+	7lNG6C1B35dkWsswW1WPC2x7fWJhP/6wEo7Ex8d/ybmIWVgpBDa/OzQgC8ZNsz+i5VpQEz7jjB1
+	E6UgVstPJ2wEeTpB2euVPfL0PriQ7RurO9HfKI2y0t9gIsRPIOT4+By0Zl4JYHQZky35zOSCq8T
+	RtyHsMlVbeSIZ3BvYnAmJ0m62ShYc6yWzXuuVw0J/gVtiM1uzkxMn6Aex4Mw4PNwWLcjJqKwX/m
+	aSphMNJK++eikpl2VACky3o4EKHgndXF9cGkgNOg0O3ma/xSo4xRsPjdmZngW9cbecgGIJAlH2R
+	FoHhgs6HFbw1tFBJzfbTBxMU9r2W0HKozdJdpdJZnHp5DOyrpHHQjO/aziFejNQUT2OabKIn8BO
+	aVjwI+WYkhWB8+SDfiPIUGT0h9CaB0Q0IHM4JJ3wKOOH0cbOJmkvIOhWvENYC6kqJQJnbp3trPw
+	WM+j1rj1XKD0AeLE+Hl/eJNN64ZJBbsMDC77W/iIMFZtRHCAAHHBNQ==
+X-Received: by 2002:a05:7022:6b96:b0:19a:51da:f54f with SMTP id a92af1059eb24-1a6cd498fffmr10891624c88.14.1793283219708;
+        Thu, 29 Oct 2026 07:13:39 -0700 (PDT)
+Received: from [127.0.1.1] (67.216.200.102.16clouds.com. [67.216.200.102])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1a75d76814bsm15197319c88.10.2026.10.29.07.13.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2026 07:13:38 -0700 (PDT)
+From: Cheng Yongkang <teel4res@gmail.com>
+To:
+ Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ bridge@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject:
+ [PATCH net] net: bridge: mcast: validate the source limit before replace
+Date: Thu, 29 Oct 2026 07:12:20 -0700
+Message-ID: <179328314075.648427.9644307795980106759@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,84 +98,107 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 2/2] tipc: fix NULL pointer dereference in
- named_distribute()
-To: Tung Nguyen <tung.quang.nguyen@est.tech>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, edumazet@kernel.org,
- jmaloy@redhat.com, horms@kernel.org, tipc-discussion@lists.sourceforge.net,
- syzbot+64197f7577a09686ffdb@syzkaller.appspotmail.com
-References: <20261028033722.125477-1-tung.quang.nguyen@est.tech>
- <20261028033722.125477-3-tung.quang.nguyen@est.tech>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20261028033722.125477-3-tung.quang.nguyen@est.tech>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On 10/28/26 04:36, Tung Nguyen wrote:
-> +/**
-> + * tipc_nametb_insert_self_node_pub - insert publication of node's self address
-> + * @net: network namespace
-> + *
-> + * Return:
-> + * * 0          - Success
-> + * * -ENOBUFS   - No buffer space is available
-> + *
-> + */
-> +int tipc_nametb_insert_self_node_pub(struct net *net)
-> +{
-> +	struct name_table *nt = tipc_name_table(net);
-> +	struct tipc_net *tn = tipc_net(net);
-> +	struct tipc_socket_addr sk;
-> +	struct service_range *sr;
-> +	struct tipc_service *sc;
-> +	bool sc_created = false;
-> +	struct publication *p;
-> +	struct tipc_uaddr ua;
-> +	int err = 0;
-> +
-> +	sk.ref = 0;
-> +	sk.node = tn->node_addr;
-> +	tipc_uaddr(&ua, TIPC_SERVICE_RANGE, TIPC_CLUSTER_SCOPE,
-> +		   TIPC_NODE_STATE, tn->node_addr, tn->node_addr);
-> +	sc = tipc_service_find(net, &ua);
-> +	if (!sc) {
-> +		sc = tipc_service_create(net, &ua);
-> +		if (!sc)
-> +			return -ENOBUFS;
-> +		sc_created = true;
-> +	}
-> +
-> +	spin_lock_bh(&sc->lock);
-> +	sr = tipc_service_find_range(sc, &ua);
-> +	/* 1. tipc_net_finalize_work() is not scheduled because of namespace
-> +	 *    teardown.
-> +	 * 2. Or tipc_net_finalize() ---> tipc_nametbl_publish() has failed
-> +	 *    to insert node self address publication into nt->cluster_scope
-> +	 *    due to memory allocation failure.
-> +	 * 3. Or tipc_net_finalize() ---> tipc_nametbl_publish() has not
-> +	 *    executed yet.
-> +	 */
-> +	if (!sr) {
-> +		p = tipc_publ_create(&ua, &sk, tn->node_addr);
-> +		if (!p)
-> +			goto error;
-> +
-> +		if (!tipc_service_insert_publ(net, sc, p, &err)) {
-> +			kfree(p);
-> +			goto error;
-> +		}
-> +
-> +		list_add_tail(&p->binding_node, &nt->cluster_scope);
-> +		goto exit;
-> +error:
-> +		if (sc_created) {
+br_mdb_replace_group_srcs() marks every existing source for deletion and
+then re-adds the sources named by the NLM_F_REPLACE request.  The add loop
+checks PG_SRC_ENT_LIMIT before allocating each new source; if the
+transient source count reaches the limit, br_mdb_add_group_srcs() unwinds
+by deleting every source it processed, including the pre-existing sources
+it just refreshed.  The error path only clears BR_SGRP_F_DELETE and
+cannot restore those sources or their (S,G) entries.
 
-The above is a bit ugly. AFAICS you avoid the unneeded label `exit`
-moving this error path, label included, after the `return 0;` statement.
+A replace with E existing sources and N distinct request sources not
+already in the group fails at the limit if and only if E + N exceeds
+PG_SRC_ENT_LIMIT.  The rejected request currently leaves the group with
+one fewer source and removes that source's (S,G) entry:
 
-Also sashiko complains look legit.
+  before: (*,G) star_srcs=31, S present, (S,G) present
+  after rejected replace: star_srcs=30, S and (S,G) removed
 
-/P
+Count those new sources and reject the request with -ENOSPC before any
+source is marked deleted or added, so a rejected replace changes no
+state.  Valid replaces, including ones that transiently reach the limit,
+keep the same behavior.  Other add-loop failure paths are unchanged.
+
+Fixes: 61f2183512a7 ("bridge: mcast: Support replacement of MDB port group entries")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Cheng Yongkang <teel4res@gmail.com>
+---
+ net/bridge/br_mdb.c | 51 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 50 insertions(+), 1 deletion(-)
+
+diff --git a/net/bridge/br_mdb.c b/net/bridge/br_mdb.c
+index 0adcd15..f5b9df4 100644
+--- a/net/bridge/br_mdb.c
++++ b/net/bridge/br_mdb.c
+@@ -925,6 +925,24 @@ err_del_group_srcs:
+ 	return err;
+ }
+ 
++static bool br_mdb_src_addr_is_same(const struct br_ip *a,
++				    const struct br_ip *b)
++{
++	if (a->proto != b->proto)
++		return false;
++
++	switch (a->proto) {
++	case htons(ETH_P_IP):
++		return a->src.ip4 == b->src.ip4;
++#if IS_ENABLED(CONFIG_IPV6)
++	case htons(ETH_P_IPV6):
++		return ipv6_addr_equal(&a->src.ip6, &b->src.ip6);
++#endif
++	}
++
++	return false;
++}
++
+ static int br_mdb_replace_group_srcs(const struct br_mdb_config *cfg,
+ 				     struct net_bridge_port_group *pg,
+ 				     struct net_bridge_mcast *brmctx,
+@@ -932,7 +950,38 @@ static int br_mdb_replace_group_srcs(const struct br_mdb_config *cfg,
+ {
+ 	struct net_bridge_group_src *ent;
+ 	struct hlist_node *tmp;
+-	int err;
++	unsigned int num_new = 0;
++	int i, j, err;
++
++	/* Sources that already exist in the port group are refreshed, not
++	 * added, so only the request sources that are not in the group yet
++	 * consume a new entry.  All request sources are added before the
++	 * sources that are not part of the request are pruned, so the
++	 * transient source count can exceed PG_SRC_ENT_LIMIT even when the
++	 * resulting source list fits in it.  br_mdb_add_group_srcs() would
++	 * then fail with -ENOSPC and its unwind would delete every source it
++	 * processed, including the pre-existing ones it just refreshed,
++	 * which the error path below cannot restore.  Detect this case
++	 * upfront so that a rejected NLM_F_REPLACE changes no state.
++	 */
++	for (i = 0; i < cfg->num_src_entries; i++) {
++		struct br_ip *addr = &cfg->src_entries[i].addr;
++
++		if (br_multicast_find_group_src(pg, addr))
++			continue;
++
++		for (j = 0; j < i; j++)
++			if (br_mdb_src_addr_is_same(addr,
++						    &cfg->src_entries[j].addr))
++				break;
++		if (j == i)
++			num_new++;
++	}
++
++	if (pg->src_ents + num_new > PG_SRC_ENT_LIMIT) {
++		NL_SET_ERR_MSG_MOD(extack, "Failed to add new source entry");
++		return -ENOSPC;
++	}
+ 
+ 	hlist_for_each_entry(ent, &pg->src_list, node)
+ 		ent->flags |= BR_SGRP_F_DELETE;
+-- 
+2.34.1
 
