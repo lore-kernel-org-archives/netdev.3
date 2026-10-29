@@ -1,68 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.153
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793264592;
-	b=rvufgaSneax4aPwwseNsOxMOkBMuiV/VfWb+fObRTUERmx1iDR5UitshyRV56F48n6r7
-	 WezGOvEDNc8/rSQF9YD+0s7rbJg4hzl91hfyXFdf8wWL2iXRubml29AScrvoGO1K2oVOa
-	 GC/uyNpSP7SDxOZAWzfUMzK7CHNjAJJ1shkCFrpDCL/GGwiLUQUsxk8jQACbXd/DxyRg0
-	 8AncvRLQvqXLcEsicqRu8WSOM73r0tx05s7afNFSQASllJXTYdKBd5Tr78aCkseDs5EM4
-	 m2WmIEGRUg25CHxqh85/16lUDr8JUUfxU5IKdymKdVcXEi5icbmOsX9oOUMz1n/Nijw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793264592;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=UFZCpBIooBFicB0DvgSTv3ZMKgKfwRuEH73crPEA3VQ=;
-	b=WmLTxjHrhD24zHIx4mRmt3yV/eSWA/Wwvl2YROUaMtOiorCiWBV5X6zD5xFZoCYvJnXd
-	 mcrXIH36OX+jMz3saoVUnelbpeMyf+1wLrF1MA9MgnnbU5HA0Kjbytm/gm4+vtxlRlaNZ
-	 PUtPfz83yxTg+kMnq7xXn2qIOmuzGnc1x1QpN0D+ax4TJMjSDXgbJjguKXfSHg4DGl+DF
-	 D7PwrYUY0HXQDjVATYa1FximCjkeOgeg1Uf7Z/1W4FaVre9UcFqrPvJ4+0kEDRJ6wLhq9
-	 w9TSGGTUGI96Y/BDwhUWytbfuqDh/HtVpkis0QemepZ4/qNAOsRnsc986CaHULomNQA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kEPeHiBc;
-	arc=none smtp.remote-ip=95.215.58.153
-Received: from mta1.migadu.com (out-153.mta1.migadu.com [95.215.58.153])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.10
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793265053;
+	b=hXvmOy4LvdnLgFbwjs6gq7Pn/jnWoVsnsLDLN/fNhT9SxZoQiado73EfaZd2B6yz3q80
+	 jUtlMxhrnwMf64+lecA//bK/2bvJcJl3CchzOu6AZAAzPFSSsHQL5Oxe3HRp0wt0LFiZ5
+	 TvnwNX5/G/FdieRdmFNe0uS5vmBEJ0XxSKHajikCECMtQu74tHU6OMnEMIoD01iT7WJ0D
+	 D5klvFIXKhsrrl6aIbPHUvNuSwmvQUONZS+kG7PHsxHylq3IQiGlxFcptShAbOHAbOLQ1
+	 1KN1BbjHIEpAg2LSvfIKWkJzbGxWLaRTlfToe2QPeWOvbLbI+XT3VNOVmHe0BE1KiPg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793265053;
+	h=DMARC-Filter:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Content-Language:To:From:Subject:Cc:Content-Type:
+	 Content-Transfer-Encoding:X-ZohoMailClient;
+	bh=F6DWSfLtE1W+1C0pQQKBI9xMcUjOnxnYXDzXRNrRD/M=;
+	b=Ewg2D/E11V6Lj6Rz6J+29CUS8OlJ5tbmaKDH72cAO/7RdZSy3TtcZcV6kDVt+0rui8aC
+	 i4DtOXTAb2JwMeHmPAKZ8odbM0LHvERiiQVZ/jtCMHeDRX0ISzTS6g22EP/b7XpE9G9jj
+	 wr1Vs2c6VTd+WglM+lfTqxQ0D+OTuTHrr+s61r5tCabBpwptwPoB74PY5R85M7CIUjPwo
+	 96SFYu9MfEsD0TbflrfO33do8LPXk0Vb03PtibiUsdi1wMH0/p7uXyZbLNKurW4cVkEJ2
+	 mCCNzrVbljI+FnMvQIDpsWFw6AEmKrfgoCtqrkBCqobtU2wsPcIiVJdZ7tpDO0KKY9A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=boussejra.com;
+	spf=pass smtp.mailfrom=boussejra.com;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.10
+Received: from sender5-op-o10.zoho.com (sender5-op-o10.zoho.com [165.173.182.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFB8606A324
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 09:03:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3DFB8606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kEPeHiBc
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=MaoRXuZQ6JtSp1A0fSU4PHAxq4HR0lMZe1iC1l2Gt+U=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793264589; v=1; x=1793869389;
- b=kEPeHiBcFJ6MqLDvdk679musMJlanpqMTGX3dcejyW4Vsb3Stn63Pm1k3TIxv7ZLbNC1JnXd
- ABg0A/JtwajvqXjc2lo1tfdg3wyYzmi/u6sVEaxrwmPaqkny4qi0Vuw6lSQd3dYv2PG42it8dUl
- O02+X887Y2BXcEFXc9guNpSA=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta12.migadu.com with ESMTPS id 62a73de914bba6f0;
-	Thu, 29 Oct 2026 09:03:09 +0000
-X-Mizu-Trace-ID: 62a73de914bba6f0
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 29 Oct 2026 17:02:50 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Justin Iurman <justin.iurman@gmail.com>,
-	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Hangbin Liu <liuhangbin@kylinos.cn>
-Subject: Re: [PATCH 0/3] net: ioam6: makes IOAM insertion transparent to IPv6
- ECMP
-Message-ID: <auMLuvAuQZoOfAyc@fedora>
-References: <20261028-ipv6_ioam_ecmp-v1-0-9b6715b6f4c0@kylinos.cn>
- <auGryXdPv2mx0qlp@fedora>
- <20261028165812.1b40d1d4@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56685606A31A;
+	Thu, 29 Oct 2026 09:10:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 56685606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=boussejra.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=boussejra.com
+ARC-Seal: i=1; a=rsa-sha256; t=1793265046; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=EWl9mqwxlrEB3biAxPHkWeGzFfPcQGUTHaqKlxVynSIDpIv81pLjjWhZKxxO7zmHprOcfR4ulycbHpi37OLhb56qT6gssz4T6u3+I0dZNvFeskzp01mYXR/zAZmAJaJZmL/kIOaGnOC5ycgc7Opxee7fPTsM0M1Cl8BpJ9T4EsI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1793265046; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=F6DWSfLtE1W+1C0pQQKBI9xMcUjOnxnYXDzXRNrRD/M=; 
+	b=n0Ovo7hsQZug9icVG0q4BbDzJGPdcOypVOGOOsJxxzx9uX7HcLFHUvBLbbldO5e8Y/LMTUmYnjnMBeB/ygCYqh71fF/CRrICg5ufyC6GQ4IqPuH9qjyXfQNnkYVhT3zQVpV6zBdobh1RBcScCwaUachjOFDZu26Q3tasLxs34vE=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	spf=pass  smtp.mailfrom=amir@boussejra.com;
+	dmarc=pass header.from=<amir@boussejra.com>
+Received: by smtp.zohomail.com with SMTPS id 1793265044668760.2367521296013;
+	Thu, 29 Oct 2026 02:10:44 -0700 (PDT)
+Message-ID: <40fb2352-4859-4334-849b-f6a4229605a1@boussejra.com>
+Date: Thu, 29 Oct 2026 10:10:42 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,141 +53,58 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261028165812.1b40d1d4@kernel.org>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org
+From: Amir Boussejra <amir@boussejra.com>
+Subject: hv_netvsc: user-configured RSS indirection table is zeroed on MTU
+ change
+Cc: amir.boussejra@gatewatcher.com
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-Hi Jakub,
-On Wed, Oct 28, 2026 at 04:58:12PM -0700, Jakub Kicinski wrote:
-> On Wed, 28 Oct 2026 16:01:13 +0800 Hangbin Liu wrote:
-> > On Wed, Oct 28, 2026 at 01:45:28PM +0800, Hangbin Liu wrote:
-> > > This series makes IOAM insertion transparent to IPv6 ECMP, as required
-> > > by RFC 9486 (C2): a packet carrying IOAM options must be forwarded
-> > > along the same path as the identical packet without them.  
-> > 
-> > Sorry, forgot to add target repo "net". I will add it in next version.
-> 
-> CI bot says:
-> 
-> The new selftest added alongside this series (tools/testing/selftests/net/ioam6_ecmp.sh)
-> is failing in our CI on the "Transit input ECMP with/without IOAM" scenario:
-> 
->   TEST: Transit input ECMP with/without IOAM (diverged on seed 1: without IOAM via
->         link A, with IOAM via link B)   [FAIL]
->   TEST: Transit input ECMP with/without IOAM (seed 2..12)                [ OK ]
->   TEST: Encapsulating node re-lookup ECMP with/without IOAM (seed 1..12) [ OK ]
-> 
-> 11 of the 12 "transit input" seeds pass, and the whole "encapsulating node re-lookup"
-> scenario passes on all seeds, so this looks like an edge case in the Hop-by-Hop
-> nexthdr-recovery logic used for the policy-0 multipath hash, rather than a test
-> infra/flake issue. Could you take a look at whether the recovered "virtual" nexthdr
-> (or the padding/option-length walk used to compute it) is correct for all IOAM option
-> layouts/trace sizes, since one specific packet still ends up hashed to a different ECMP
-> sibling than the equivalent packet without IOAM?
+Hi,
 
-OK, after running the test 50 times on a debug kernel and over 70 times on a
-normal kernel, I've finally reproduced the issue and identified the root cause.
+On Azure/Hyper-V, any MTU change on an hv_netvsc interface silently zeroes a
+user-configured RSS indirection table, so all RX traffic lands on ring 0.
 
-The reason is the ping `-w` parameter. I originally thought it set the maximum
-wait time, but it actually keeps sending packets regardless of how many packets
-have been sent or received. Combined with `-i 0.2`, it sometimes sends 10 packets,
-which carry over into the seed 1 test and affect the result.
+Reproducer in our case (any multi-queue hv_netvsc NIC, ethtool and ip only):
 
-That's why the debug kernel case worked and the normal kernel failed in Jakub's
-environment, while it always passed in my laptop test environment.
+```
+  ethtool -X eth0 hkey $SOME_KEY equal 4
+     ethtool -x eth0             # See conf
+     ip link set eth0 mtu 1600     # must differ from the current MTU
+     ethtool -x eth0               # all zeros in indirection table
+```
 
-After removing the "-W 1 -w 2" parameters, I ran the test 200 times and all
-passed. I will post the fix in the next version.
+With the table left to the driver (ethtool -X eth0 default) the same MTU
+change is harmless: the table comes back correctly spread.
 
-TL;DR
---------------------
+Confirmed with kprobes on 6.12.90 - these all fire on the MTU write:
 
-Here are my testing steps. After reproducing the issue, I dumped the tc output
-and found 10 extra ICMPv6 echo requests.
+```
+     netvsc_change_mtu
+     netvsc_detach
+     rndis_filter_device_remove
+     netvsc_attach
+     rndis_filter_device_add
+```
 
-filter protocol ipv6 pref 1 flower chain 0
-filter protocol ipv6 pref 1 flower chain 0 handle 0x1
-  eth_type ipv6
-  ip_proto icmpv6
-  src_ip 2001:db8:1::2
-  icmp_type 128
-  skip_hw
-  not_in_hw
-        action order 1: gact action pass
-         random type none pass val 0
-         index 1 ref 1 bind 1 installed 0 sec
-        Action statistics:
-        Sent 1040 bytes 10 pkt (dropped 0, overlimits 0 requeues 0)
-        backlog 0b 0p requeues 0
+[`netvsc_change_mtu()`](https://github.com/torvalds/linux/blob/v6.12/drivers/net/hyperv/netvsc_drv.c#L1209)
 
-on gamma veth0 at the start of seed 1 testing, but *a0* is 0. This means some
-echo requests are still in flight during this window. I then captured traffic
-with tcpdump and confirmed those echo requests are present on gamma veth0:
+An MTU change re-creates the device:
+[detach](https://github.com/torvalds/linux/blob/v6.12/drivers/net/hyperv/netvsc_drv.c#L1233), 
+then
+[attach](https://github.com/torvalds/linux/blob/v6.12/drivers/net/hyperv/netvsc_drv.c#L1239).
 
-15:47:09.161066 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 1, length 64
-15:47:09.161083 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 2, length 64
-15:47:09.161086 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 3, length 64
-15:47:09.161088 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 4, length 64
-15:47:09.161091 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 5, length 64
-15:47:09.161093 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 6, length 64
-15:47:09.161095 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 7, length 64
-15:47:09.161097 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 8, length 64
-15:47:09.161100 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 9, length 64
-15:47:09.161102 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3254, seq 10, length 64
+The detach [frees the RSS indirection 
+table](https://github.com/torvalds/linux/blob/v6.12/drivers/net/hyperv/rndis_filter.c#L1622)
+(`rndis_filter_device_remove()`), and the attach
+[allocates it 
+zeroed](https://github.com/torvalds/linux/blob/v6.12/drivers/net/hyperv/rndis_filter.c#L1557)
+with `kcalloc()` and refills it only if
+[`(!netif_is_rxfh_configured(net))`](https://github.com/torvalds/linux/blob/v6.12/drivers/net/hyperv/rndis_filter.c#L1572)
+(`rndis_filter_device_add()`).
 
-The question is: where do these 10 packets come from, and why are they sent
-within this narrow window?
 
-We expect only 3 echo requests during the ECMP link warm-up, which does not
-match the tcpdump capture. The timestamps, however, show the traffic starts
-during the warm-up phase. The subsequent echo requests on veth1 are correctly
-sent as 3 packets with a 0.2s interval.
-
-15:47:09.221513 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3284, seq 1, length 64
-15:47:09.426247 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3284, seq 2, length 64
-15:47:09.633125 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3284, seq 3, length 64
-
-It looks like the skbs were held in the unresolved neighbour queue and flushed
-after receiving the NA, causing the packets to be delivered to gamma ingress later.
-
-Then I tried to send 1 packet on before the warm up.
-ip netns exec "$ns_alpha" ping -6 -q -c 1 -i 0.2 -W 1 -w 2 2001:db8:2:1::2  &> /dev/null
-
-Now the packet shows
-
-16:05:20.744986 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 1, length 64
-16:05:20.744987 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 2, length 64
-16:05:20.744988 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 3, length 64
-16:05:20.744988 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 4, length 64
-16:05:20.744989 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 5, length 64
-16:05:20.744990 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 6, length 64
-16:05:20.744990 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 7, length 64
-16:05:20.744991 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 8, length 64
-16:05:20.744992 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 9, length 64
-16:05:20.744992 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3765, seq 10, length 64
-16:05:20.744992 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3774, seq 1, length 64
-16:05:20.936373 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3774, seq 2, length 64
-16:05:21.137153 IP6 2001:db8:1::2 > 2001:db8:2:1::2: ICMP6, echo request, id 3774, seq 3, length 64
-
-The warm-up packets are correctly back to 3 with a 0.2s interval. However, the
-first `-c 1` ping still generates 10 packets. With set -x, it shows
-
-+ ip netns exec ns_alpha-nBg602 ping -6 -q -c 1 -i 0.2 -W 1 -w 2 2001:db8:2:1::2
-PING 2001:db8:2:1::2 (2001:db8:2:1::2) 56 data bytes
-
---- 2001:db8:2:1::2 ping statistics ---
-10 packets transmitted, 0 received, 100% packet loss, time 1865ms
-
-After checking, I finally got the answer:
-
--w deadline: Specify a timeout, in seconds, before ping exits regardless of
-how many packets have been sent or received.
-
-When `-w` is used, the `-c` packet count no longer acts as a hard limit. Ping
-keeps sending packets until either the expected number of replies are received
-or the timeout expires. In our case, the timeout was hit. All 10 packets
-(sent at a 0.2s interval within the 2s window) got deferred and surfaced
-during the seed 1 test, corrupting the result.
-
-Thanks
-Hangbin
