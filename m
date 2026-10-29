@@ -1,97 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.14
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793243134;
-	b=xMvjqeywChy6rd9mTisNmsoa7AhD0Ez0OA3jx8XnK1Mf4sZet/tmabkkH/eAk/PdJ/5M
-	 gV81KA05SLIDRXt2wq+RU6q6XdBogWQoHZTCio0X6sHfvZOryRf+nI1qffYgmsfa7zjDE
-	 BR5sH1y+tUEfTOfBe9J46miSEcUlEr+yR6xb8cxqvuUm1+6ukmIaXB1aeb0LKhWF9hqFQ
-	 igBwTsabtTtDWo2uuTAJTbyQA8/fdQux8RV3tBCibmnlo5i4xOhRyahwNvA8pNaze5pVK
-	 F0te7XBlE9gdrWM5g5LaIiTXXPIQyG23xZ0YN8xGB6X9eDQz7Xk02hpRdROFPcanrRQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793243134;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:
-	 X-MS-Exchange-AntiSpam-MessageData-1:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=MRqijniYrQeDOHzHUR2PC1La5p6LkZTKesHO2VLopj0=;
-	b=GBkgpbdafI1si0+v6LRWR26sbLXqjCNVVGfOf0gf/orWZ5Zyw3dQ3Jp0Z4o2sMLbHHWV
-	 6wJxcvI9qKf2OE3vWQDjHYF1oqKjz7vVyQqr7sDCdJLH/OP7IxF+5sa4JLJJZWwpU8Axp
-	 vD6aiFJXxXGh0b/cq5krnUi69ggGfvdwGZp7JLvcBQU1vSxiq79qbvU/9LS2v3CAKnb63
-	 OiiMqQAZkGbXYNL4IrCOqsy+0yrSRK5zzLkgHn5SJZpiavQVL/4Xvmo9GHPIb3o3Ykcn3
-	 KrVKEleTbfLaAoyMMrTTL0D6SovQI9+syPQNUatUcjd3pKSCJTUwPavxUYQl02u+tKg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=est.tech;
-	spf=pass smtp.mailfrom=est.tech;
-	dkim=pass header.d=est.tech header.i=@est.tech header.a=rsa-sha256 header.s=selector1 header.b=bEwjEf0N;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.14
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010014.outbound.protection.outlook.com [52.101.84.14])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.50
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793243484;
+	b=cFVao60d4iWjzOyw+hV3Q4EPyRjuQRwzCRMdYdgh/PaFb03aUotpwo1DDEupUD+5uEZY
+	 eC97cMRf/2utowdmLCyUyEbpZ4xR8/yOpTx3/29iTl70l2V4InitBpscSJsAzmaVkzvYm
+	 OJmLnTCrvBY3CVUE/NljfPcJIK0sZiJjMPIUA57r9aMhlT8SlIn1YXotsodJUKEFeJ+kn
+	 Gte4D0ayS4HHPeaBCdKW+i3zHpdutaTT8tQXpQGjpYZmje8MXx7icZzBz8unEkQi5peDe
+	 3IyJEZGWZUc7VkZsKNW8+lJVDJd//O73NFVIyfsd7sx8RiOcUjZonxt9s6XpYLeWtiA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793243484;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=sDis0WLx8KUE2I1kamC2CNbijidM52hUokuP0aR4tyA=;
+	b=rtoOePWzds04lsMXFvuJ4O4CZFh6pIgXtJxgNXKoQ48JTcTaR52decy0MRFPHCSk6aAB
+	 qmOCefjdFBrHh93QSv0UJe8bufNulmYTyPcswfrxnS2w76Kf/9qGpJN641YsxcbV7WgIP
+	 gg0uwvLcEWsRjRn9rSuCZ0fVvQi+LC3FP9LDhYvz/0gv1vjohlAfFqXylqBZJWncpV50G
+	 7TR22Tepge8GX//QWimB1UH+2IHUxaW3Lqzfl6ELxgAnZsByDHJtuMVX5DIL6sEIYTbK/
+	 SJqIXmiW403/F6Bhg/SDUGickZX0ERpOQG+IH854cDqmlDwdojHdeZJ2TDKqOVE1HPA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=smartx.com;
+	spf=pass smtp.mailfrom=smartx.com;
+	dkim=pass header.d=smartx-com.20260707.gappssmtp.com header.i=@smartx-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=gTQgqc7f;
+	arc=none smtp.remote-ip=74.125.82.50
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF8D606A321
-	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 03:05:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1CF8D606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0951606A31D
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 03:11:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E0951606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=est.tech header.i=@est.tech header.a=rsa-sha256 header.s=selector1 header.b=bEwjEf0N
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=J8hrCLhK2CLnz/4p0LCkN8toS4tHaATnnk2ae1KvWhMFsbdsV+JuWGaeYX+rxeXaAYfCpTjMYAXeGTTcBUJB/k2quNz4Haa4AOkn7sCqP781e4Kl17PwghB5v3R/fQ8wa9vVfzI5hLfBW/PwjvDp4pivMl6IhGta6LMaWoM4Kbsz1W2Xws28F9hWfUeRC6PSCa7GgdtfvnoNJGxJlwEjs18rmOx6a83epDt/S8Ge/OVjA0EvctU6OR/KqOHbGplGLpoVOiJJvxUi0crRqCKRwoxMblChgvokXx8BBwtjDl/0PncJ261n8yKk+x3brbhw5GlbI2/tNRNWH35rl9DUYg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MRqijniYrQeDOHzHUR2PC1La5p6LkZTKesHO2VLopj0=;
- b=Jn/lYruO49bFMb7TmuIdZHBmy4c3QMkdfHKtsxc7x/ZJK68s/a9JMA6BTkZKAChF1tAboXGzpXe/0khOQjW1U1xfk1aioeVdSNGerUHdT0muEWkD+mcO59vDLoYlIEzHCRL8fpnA4eZoDVAgcT8fQeZPNcOXBep4gnNLD1ucgRDqrT0BWCihTwk8zCXYaCaRriFbugJ9ZkLab/ef85kPJPLd+5tXlT/emGs16jekSXEZMOYp3zdmRm43PGzvruV/0F5WwJhxnql4zAsYbt2bE3n3QIH67rUmYgySpDbaGgoMB8Aky4VXKfye8r4ieXBOOFB4CAPlbueJd6YfqtB5Xw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
- dkim=pass header.d=est.tech; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MRqijniYrQeDOHzHUR2PC1La5p6LkZTKesHO2VLopj0=;
- b=bEwjEf0NT56aos5MKZKu3EefHVach+AR5dvP73DSq/VSADb5OxdqyaGkJgPfbQlXJwVUXrS4LbjWFBI++y0O3VpnaJG1s2xyaauk+SB3Q5GUo1A7frQZ6el73DK4acV7j1a07S5F6J5d1uyVOHD8CbSdoqNUPuSc51RQrE8hdUHtKFX57yV6WIogTdJiPNWTqUpItysOQaJj5RnAlVsW1H9CwpmxHjVCBHj++14QUKW37TdMOK1cDVaYblXDlVSr3QTJfw3jBHiAJYoDJo6oid7ObgZiQZr5vGY5bBNyA+VfE50q1snOmOqttHpUuBL1+3Rr39riTkHGBQ4m32ONxg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=est.tech;
-Received: from AM7P189MB1137.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:17e::23)
- by BESP189MB3243.EURP189.PROD.OUTLOOK.COM (2603:10a6:b10:e8::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.8; Thu, 29 Oct
- 2026 03:05:29 +0000
-Received: from AM7P189MB1137.EURP189.PROD.OUTLOOK.COM
- ([fe80::86f0:8ce1:a437:b2d5]) by AM7P189MB1137.EURP189.PROD.OUTLOOK.COM
- ([fe80::86f0:8ce1:a437:b2d5%4]) with mapi id 15.21.0546.021; Thu, 29 Oct 2026
- 03:05:29 +0000
-From: Tung Nguyen <tung.quang.nguyen@est.tech>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
+	dkim=pass (2048-bit key, unprotected) header.d=smartx-com.20260707.gappssmtp.com header.i=@smartx-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=gTQgqc7f
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-14fc585291cso1502134c88.1
+        for <netdev@vger.kernel.org>; Wed, 28 Oct 2026 20:11:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smartx-com.20260707.gappssmtp.com; s=20260707; t=1793243482; x=1793848282; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=sDis0WLx8KUE2I1kamC2CNbijidM52hUokuP0aR4tyA=;
+        b=gTQgqc7fe00z38xS5VGL17ODfWk/PlBu1jih7V9N5ixOOIh4suNWXgN1PLiPkzxYyF
+         Tj5/qsjjHD6FC5/PvMl06NBmfZ3VG73HPxA0eyYrakmgTH8JTSdNOXbqzcoVGBvP6OKF
+         +Br9NIZBdNisAFJmXMlzO11v6I6/eqTCKXnm0BOPfeU6wx9VVv3ohYiteBGouPAD8p9D
+         fF8VfgggBcpIqhP1nxJy6Lu04xwwpAH9jifgcptedlpc6It8WTUWiJ7LZq26bSWtxmxa
+         ks3Y2p6zCXc2kGkI363E0lJBSzkEhk8eo0Xau9J6aJIC1GQGSPhi7gTdrFsXhKy2ea8p
+         30OQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793243482; x=1793848282;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=sDis0WLx8KUE2I1kamC2CNbijidM52hUokuP0aR4tyA=;
+        b=KK6UeGmwz/7Qqt7XVihnmWoC/G23Z5YPGQlTrQxYnbN0R3kguWUblnxx50znqmaPA+
+         vVisWTBCImT2CtgM8g3rVMctD2RGtu1mnwx8ubSpNFVEQf131v87NzXqdAF0yKfVn6jJ
+         VNA8elWm6mNKaCRx9nd+30aDrgDTevGlOxLsqgMc8EcIl2YR+Wb18ufImpwXGVhkI2k4
+         RQq8VfgqiZ8CTomyladxhxuik03E72BJ///MnkQXWpGJTUFZNOV8I0L6wtHoMwXnyJi2
+         n5DDBDjlGt8TaoGrwgzyWdDWFBUGQQ79jAu86F0MpXGOgKUzrdb/7QE4Fu/lhnvUQBqM
+         btGg==
+X-Gm-Message-State: AFq9FYKJlioDZfC/7coUqAuXZwuvv/0eOJe66x9JQ6kk259RHGh2tx5I
+	NqV4o4XwK7EWLLFW6OATae8fHBZj1MKyrDdvV21gDjt1j0AaO410kAPT11gRC3ng1DuNd8NG59C
+	UsgooqrZbLL9DFJcDSNwaf7+Nbl7w1cQHwYYCpjRVzQOmvpMEGJFHTOAXYb0mt8CuYnHI6GRl
+X-Gm-Gg: AYBFou1ZuGNZCjMpSnraV6ePpwcl+t5zftRjG7Gs2B7Ycmp0GQguwD5jlAufHZc+pOR
+	Ik9UQ6dkj8oPoBGu8AmS6RCYnQVmjFAVwStOlDRhWvTSWYRpl9uQSGVOYYg1iA1619ukUIlAOc7
+	YTmkm0P4XtYYUaZTL7A/21IM4ElQ3eIpGpAm0QqsAwFuGgAbHCheFImIT4rioFcH8KwFwqoXx6q
+	elhVhqR+OSBZ00NZhvuAL3Z/ESuIB1UJLoSKu+c9hNzxttDPfuJU5D02cBdQW2H18ZjlOUeLeg2
+	6jZRlq4wEaZXyn3EmXejLRSUf9O/5NRaTxM1u/y4qysLraI8r+n0BgxBssLXUzbeyiqyYnUeSOu
+	SjizSQhJggR97Hw5KAMaU6q/PVlHXHUN5IaYUcLpiS97lxQfkWTectoe0rglhvbENcHvnPqyMrT
+	EVbRGffltzXVMDXkaGGf5z4Y4cWOOVkNyQ+BiJ9+YKgEgElOtHcqBZz7VSwNQXSrnl0o92PMZQa
+	rpIFLwsImGHfQ83uNYr0aWEHVH/Ht1BrBMHF5Eu9WIExXWUWpBbMywm5qUu47Ky/is9F6lJ9Qbh
+	u/3Z+XopEmlrPNuQVSe+lW+Whewwvvh9dhityC9DylZeT/c++tELFIUe9SW8VH9A
+X-Received: by 2002:a05:7022:c89:b0:184:329d:eced with SMTP id a92af1059eb24-1a6ce4ea23dmr5028701c88.25.1793243481131;
+        Wed, 28 Oct 2026 20:11:21 -0700 (PDT)
+Received: from localhost.localdomain ([179.255.112.163])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1a75f51bdebsm11705549c88.17.2026.10.28.20.11.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2026 20:11:20 -0700 (PDT)
+From: Wang Zhan <wang.zhan@smartx.com>
+To: netdev@vger.kernel.org,
+	Yingjie Wang <x-professor@outlook.com>
+Cc: Wang Zhan <wang.zhan@smartx.com>,
+	davem@davemloft.net,
 	edumazet@kernel.org,
+	kuba@kernel.org,
 	pabeni@redhat.com,
-	jmaloy@redhat.com,
 	horms@kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Jiakai Xu <xujiakai24@mails.ucas.ac.cn>
-Subject: [PATCH net v4] tipc: reject attaching bearer of different media to the same occupied device
-Date: Thu, 29 Oct 2026 10:04:48 +0700
-Message-ID: <20261029030522.8306-1-tung.quang.nguyen@est.tech>
-X-Mailer: git-send-email 2.53.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: JH0PR01CA0187.apcprd01.prod.exchangelabs.com
- (2603:1096:990:75::22) To AM7P189MB1137.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:20b:17e::23)
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 1/2] net: preserve rps_default_mask on failed writes
+Date: Thu, 29 Oct 2026 11:10:36 +0800
+Message-ID: <20261029031036.1133374-1-wang.zhan@smartx.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <7fc32d133404c078352f0b8fbcc80a67861bf2c3.1793199118.git.x-professor@outlook.com>
+References: <cover.1793199118.git.x-professor@outlook.com> <7fc32d133404c078352f0b8fbcc80a67861bf2c3.1793199118.git.x-professor@outlook.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,148 +105,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7P189MB1137:EE_|BESP189MB3243:EE_
-X-MS-Office365-Filtering-Correlation-Id: f84cc0d7-7fc9-4b1f-4019-08df35697d22
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|366016|376014|23010399003|261026140227099003|261009223027099003|261021121427099003|261022075727099003|261022105027099003|10067099003|56012099006|3023799007|261028144727099003|18002099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	klLCI4NJAptv+BCbKgsUgp3E7uS8TnXwRnSzR7pvuaN8bZD684tQukdZWRd9fAXQ3BUl0mJNDqvFxwGoT74q/OghjASqnvMBq36Syvwu3CA/54L86d4mlzExh7IwTkh7kr0JTttLaNvjFRWrt4anNSHqqhu90/cBMhhYEdfe2mzsQtUTMNGrRcHj6yZGAQmVo6rL4ivalS8lXXAGcP4xx2ueO183aqZ8YSwo7GFZ5vQ1wM7IyRj+qYN5sPRukiw1pbn26//jpmlyEAzGAeGnS+hyEI7NwYYMfdpIzrp+wTQ9dfDbCC4J9Pya9r2jYeOeT1w64r6BcbA7McIG6OQwUS5p6fm/4CTuYKMhRy84Uvba+bw66otEXCpNBQe5gZ3eH14ZQOls2++0YQBWGCkEzycSiNk8ADN0sczAakSruLoyx+XluGrNrb8CHd4SqmRafCCKLp/zxnTrWPv8Oo0GKyzKAGeE9bpcQDm9OgCFEWGgQFU/zHpKavU97SrXljXNKFjXdahcz6Dd5t8M60kUx8MnUqqzwgwQnYVdZNizVlwCSO3i+nsrVBq/2JvyvlRa3mSA+4q0o7sPxIGKfewcaz+WMeR5zfQWfP/z5dF4odpVJIenrdOW+u5zgMGeod3u
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7P189MB1137.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(376014)(23010399003)(261026140227099003)(261009223027099003)(261021121427099003)(261022075727099003)(261022105027099003)(10067099003)(56012099006)(3023799007)(261028144727099003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?TM+4lcm24mA/955SF7GFuOGESaAqeOVG67nJM3V1HRBW2lUOnnz0ACDxlv28?=
- =?us-ascii?Q?+X6SQr2RPN2cRvKi0K1XRwe5nXXEQH5Ji7zy1vAo0ESM0RNs9C0pZ+9kyqBz?=
- =?us-ascii?Q?s8RUoQYCe2kPQuqYgm+JkYbACBei2y02Cfyz6Jjf/D73b0kH81Daa/eJquzD?=
- =?us-ascii?Q?VdfFA/9QENBKGdD+mdzvVzKvX/eoAVLsBMSyMZsDw+ns+EOFNaLRGbXA3AFM?=
- =?us-ascii?Q?RLJu/9duRBD6854QeU8slXUmABdLjsv7ev9ymMhmTSu4rGFMdULuDJ5KdsJT?=
- =?us-ascii?Q?JMVH/SHerzCOisvQtDln0xs6KsYsie6CwBOJZt7nb2X3h3AsNEIaQo5d2ewV?=
- =?us-ascii?Q?MunZ8h5YBVW7Dvy7q/faGUXjn6UIcFY59buMvK7rNZWez9PC63K70PFXqgpM?=
- =?us-ascii?Q?orvwXF5DSNwNatIQ87f0nLbn1qbIKSicfxR5B9nlQYlgbnsJWZnaa2QvVMjB?=
- =?us-ascii?Q?fkZTXkViIkrUFDpD2irqHqby5go5RCl/SuxZkpDRhMK1gIJ6AH+vt5fgtDMz?=
- =?us-ascii?Q?9rFGBsar94sarZuJ1ctFCJVf41M94zophINi+o1DDpPPHqTWO9h8o/PvK7Ya?=
- =?us-ascii?Q?nO7f6yP3KLR1WwZW0fupK7TS2ff2GBhnwUZOh/Swla7otFCArCaOSTubX3zj?=
- =?us-ascii?Q?VMMVTqauXzun/wM/8Ls8rKRbMvBim2cH1umrcPtVi/zw6blojwZPWfKTqAqX?=
- =?us-ascii?Q?fu6WzxJU2QCy73YK7g6tSIkRRrZgROlHgiIoAIvNUlbmE6WCNO/Oo0qLbngw?=
- =?us-ascii?Q?v2jOuaArt5u0RQKuk9qD58/MZQ/KOrjaDtmdnTR8VJEU6OmVHYnym0YAsSBS?=
- =?us-ascii?Q?l3cH04ZXt51KZQ9NeLwFR5G6irvjw7Kb8YbSKZavPUko7U5LvNFMLkup+ibr?=
- =?us-ascii?Q?uTpYM+Fkv4GA9Sksh8RrT3yqzLH/UUvfWmSX0avJastszFCqHBGgf3gJEL4N?=
- =?us-ascii?Q?enJ6TvlhaUoDsUlttk+1xPo6nsVDQEva4Ez+9cxJsOa55cxYRgrL1r8FZw+I?=
- =?us-ascii?Q?+O/VnYwKMBJtwQJwxleK+KxVnXyIysCEyLZOrztI/ZPgPav77KojoUTeQQnf?=
- =?us-ascii?Q?EEc7OazM6jTiF/xnppIZ8fJ8AYb8Kn5XnfPVQ1bQ2rE+jsZ3QQTINk0VCK32?=
- =?us-ascii?Q?wf/uJZS6urNu2ANfMZzIdhv6DSpF/DX0ezxHTcfgND1FwwQ3cHgZxmsRJwmm?=
- =?us-ascii?Q?fo24cg5FFhubdhJcRMJsby8o9JuNXM9Be95T54odqR2K28RhOWRgiqUAsOMZ?=
- =?us-ascii?Q?smCZRE1DYofZwoV/Ew2X5qYLmEdbsDWlVfKTmoN1C9w13WJPRllVDHLwV0Ek?=
- =?us-ascii?Q?Hne124b8Wcy/N8xTcX6y0PZqwUYVIBmCumH8Iuf2/WrjlqM4pL+KD0W8j14u?=
- =?us-ascii?Q?DWpgIw0Q/sSwUSGDGFBLfW9q/QOSdnWTtXLixpRc0m5/jQn2x9JsPV/3YNnG?=
- =?us-ascii?Q?8nWapvvEQhVk5DjYD8Kd+hqtmUtTyKsXe+Wr6Sbv/0xhbmFQ4GsFXNLMeTUj?=
- =?us-ascii?Q?A7l8GtzIa8vtdyE13935mRn49qH68IbR6r65Z8hLoydDTz4vTuPj6XDyT4Ei?=
- =?us-ascii?Q?RKhn7a+Hf6ooUSDEoIh1GUfrDjnWpfg1OXnzTHpqopr27f21A2qo22hcYTBD?=
- =?us-ascii?Q?o0h5BckCiWwQMPmMJH0NF5Dr0krLXFULmPgheF58XSdUFm4Uoqxi9Dm/tCfq?=
- =?us-ascii?Q?q7mr/lclu7IiatPrwm78aLgq6CWH8i9s8JBGYmAKUMbUgrhnHF7ne5ocNfE7?=
- =?us-ascii?Q?THBkECTwF8OfSkHzM66TkZD0c3ke6X1LKZGXKQOzq0H6mhA5RL+wjnp7Ky7w?=
-X-MS-Exchange-AntiSpam-MessageData-1: FgpqdrIz2hRIraRUcFirEtWkw4JiKkeddho=
-X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-Network-Message-Id: f84cc0d7-7fc9-4b1f-4019-08df35697d22
-X-MS-Exchange-CrossTenant-AuthSource: AM7P189MB1137.EURP189.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 03:05:29.7767
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SQ8H829DpBCIajlP52CVAO5ZmcDvMER+Sm8aTxX+VZuKbRNdaGN14ewTxyLv93f3+BDZogS2ov4fP2+r5Oi2+sydAKEDWI1IBn+MHLMU1hw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BESP189MB3243
+Content-Transfer-Encoding: 8bit
 
-Currently, two bearers of different media types can be added to the
-same device (e.g., "eth:eth0" and "ib:eth0") via tipc command:
+On Wed, 28 Oct 2026 14:52:09 +0000 Yingjie Wang wrote:
+> @@ -105,27 +105,29 @@ static int rps_default_mask_sysctl(const struct ctl_table *table, int write,
+>  				   void *buffer, size_t *lenp, loff_t *ppos)
+>  {
+>  	struct net *net = (struct net *)table->data;
+> +	struct cpumask *new_mask = NULL;
+>  	struct cpumask *mask;
+>  	int err = 0;
+> 
+> +	if (write) {
+> +		new_mask = kzalloc(cpumask_size(), GFP_KERNEL);
+> +		if (!new_mask)
+> +			return -ENOMEM;
+> +	}
+> +
+>  	mutex_lock(&rps_default_mask_mutex);
+>  	mask = net->core.rps_default_mask;
+>  	if (write) {
+> -		if (!mask) {
+> -			mask = kzalloc(cpumask_size(), GFP_KERNEL);
+> -			net->core.rps_default_mask = mask;
+> -		}
+> -		err = -ENOMEM;
+> -		if (!mask)
+> -			goto done;
+> -
+> -		err = cpumask_parse(buffer, mask);
+> +		err = cpumask_parse(buffer, new_mask);
+>  		if (err)
+>  			goto done;
+> 
+> -		err = rps_cpumask_housekeeping(mask);
+> +		err = rps_cpumask_housekeeping(new_mask);
+> +		if (err)
+> +			goto done;
 
-tipc bearer enable media eth dev eth0
-tipc bearer enable media ib dev eth0
-
-For each command execution, tipc_enable_l2_media() is called:
-
-tipc_enable_l2_media()
- dev_get_by_name()
-  dev_hold()
-
-As a result, device->dev_refcnt is incremented twice, but the second
-bearer replaces the first one. This causes a leak in device->dev_refcnt.
-
-Fix this by rejecting a bearer with a different media type when the
-device is already occupied.
-
-Fixes: cb30a63384bc ("tipc: refactor function tipc_enable_bearer()")
-Reported-by: Jiakai Xu <xujiakai24@mails.ucas.ac.cn>
-Closes: http://lore.kernel.org/netdev/20260918013509.1853952-1-xujiakai24@mails.ucas.ac.cn/
-Signed-off-by: Tung Nguyen <tung.quang.nguyen@est.tech>
----
-v4: Handle alternative device name issue found by sashiko
-v3: https://lore.kernel.org/netdev/20261001134432.49481-1-tung.quang.nguyen@est.tech/
-v2: https://lore.kernel.org/netdev/20260924162016.1258485-1-tung.quang.nguyen@est.tech/
-v1: https://lore.kernel.org/netdev/20260923091057.375981-1-tung.quang.nguyen@est.tech/
-
- net/tipc/bearer.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
-
-diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
-index 774f68d1a2b3..60a6f4a3c0fb 100644
---- a/net/tipc/bearer.c
-+++ b/net/tipc/bearer.c
-@@ -287,17 +287,50 @@ static int tipc_enable_bearer(struct net *net, const char *name,
- 	bearer_id = MAX_BEARERS;
- 	i = MAX_BEARERS;
- 	while (i-- != 0) {
-+		struct net_device *dev;
-+
- 		b = rtnl_dereference(tn->bearer_list[i]);
- 		if (!b) {
- 			bearer_id = i;
- 			continue;
- 		}
- 		if (!strcmp(name, b->name)) {
-+duplicate:
- 			errstr = "already enabled";
- 			NL_SET_ERR_MSG(extack, "Already enabled");
- 			goto rejected;
- 		}
- 
-+		/* udp media can be used together with any media */
-+		if (b->media->type_id == TIPC_MEDIA_TYPE_UDP ||
-+		    m->type_id == TIPC_MEDIA_TYPE_UDP)
-+			goto priority;
-+
-+		dev = __dev_get_by_name(net, b_names.if_name);
-+
-+		if (!dev) {
-+			res = -ENODEV;
-+			errstr = "no device for the media";
-+			NL_SET_ERR_MSG(extack, "No device for the media");
-+			goto rejected;
-+		}
-+
-+		if (rtnl_dereference(b->media_ptr) == dev) {
-+			char *dev_name = strchr((const char *)b->name, ':') + 1;
-+
-+			/* Not allow altname of occupied device */
-+			if (strcmp(dev_name, b_names.if_name) &&
-+			    b->media->type_id == m->type_id)
-+				goto duplicate;
-+
-+			/* Not allow eth and ib to attach to the same device */
-+			errstr = "same dev for different media";
-+			NL_SET_ERR_MSG(extack,
-+				       "Same dev for different media");
-+			goto rejected;
-+		}
-+
-+priority:
- 		if (b->priority == prio &&
- 		    (++with_this_prio > 2)) {
- 			pr_warn("Bearer <%s>: already 2 bearers with priority %u\n",
--- 
-2.53.0
-
+Please consider parsing and validating new_mask before taking
+rps_default_mask_mutex. It remains private to this handler until published.
