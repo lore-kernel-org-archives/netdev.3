@@ -1,48 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793275553;
-	b=vns06+8n/7OFN8w6vLM1jl6a1F2+PbkezzUgyhAgDobH/zYeY/5fyPMDvy969LJtcznq
-	 Gpom+8EZSc0s8xcHYn6c4QpQLIvvsVssHOU0OijV7kAo/exJLqy7H476eow+YIyTnEXz9
-	 PIY13sio1Sa+iy7NQlBwiSCHLtq9loqo11X++YXJsDLYJEaRYKGYmYC4Dqjtz4AAWQeOp
-	 89KG2UYjHnCXfJ8D1w+eLYmoxL48bN3eJfHSKAJAZgxw+wQeBk6zqpqFJjegURjhAkI0a
-	 pG8aX5/OoiGtvTYXA6RGz10XF3XcisO0kIWUAIQH2QYCFjONv+DptYkH0UrG47bEHSA==
+	t=1793275779;
+	b=S9JT23bqiFUjLvFGA18qU485yUEejSSvBzMO74rjbh9WvaKA0lLuCyhedPhWm7+uLC1U
+	 McM+kaVnm9/w/9bPxiohXP4dNNZkT3Tg13ZBCbtDfV994zVFJawYe+l8HbzUXiReKnYNz
+	 cjkgAPiBSkdOG7bQT58QYyqjq3vE2Ih93aqejIv2AJ+30PpBK2C1FTRrmTuNRP2IZTCGP
+	 Kf8nsCzXtnD+SU6XuhiiUTmESOaxJievjmBlgGiZLuDCnGRxdaSraM+KmldT2kaLmM5t6
+	 iMBzZsGbkMb2DJW+0aInIV8zMLOdoKarTBetaE65rlA31AebJWOZwpUtsWN7jOELN4Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793275553;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=4iJ4lWXExv+RfGay5KC5PfyDalOA2jKNer9jnroQJeU=;
-	b=RvrEeq5tqlU/qZqtsPYsJYg50q5bpjjJSCYwjqLTgcxNOAdZTndHUABDkzxf18pLux1E
-	 it4WapZ/VIwwQ0DRtw/C8nYBpM4uayerjya/0ALJNKvXCqh9BeuR2M2/GCRhpBoXwHZlI
-	 zLFpjwWpF8rZdQdl/F+rr4V0BEQbiH1WHlavGFFVJk19eiM/T+ujPf2BixxVZRZpwMNHL
-	 ONPzVIAkTATNJgUVqnCW+e85QWl3pd8ChZnZb3HNrcWv9spl0frrgXvm1Hg284rX8XqtK
-	 1isUTP/HjBB3aSl1ieZTW5qF6kNJBgAfGKe8in4wPKBnXKw7ieG3JpOx48WwVYrFByQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793275779;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=/MiKP9fyeCAaFA13wlpLP5Q9RvZIGZFi3hjz454dnr8=;
+	b=lZi/SZjwnraNjskQcwmmrpM05m7L4E0iph6f+1u5c7zZTHS0Cz6yShsu4BbPJY7WIyRx
+	 1s7xF2Mod4DWbFrPv1J2zsDYp1YpvptCx+KB+fhfl8/ontVlasLb+QjsUkFjIlBDBHg5w
+	 QkOzxBjOjacRVvpTi8SsHJ7CxDCYn1gYAbE7XaaPNJPCs4GrFJa6DFx9OyQuB5hapl4Id
+	 5S4XuFT7hfg8bsg4zhP/xyVl2EwIyld9A1geeJ6sibZ71GhKEGRRwQe/29ZKn3nxpFqH2
+	 LgMmpWs86sRl9YZL6bgwSqn8IlgbMsWJYyFX3R0C1IMR0zRMArMfpW0CtUltzNIcTgg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iomdypTv;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=N5jlBlxs;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=VzPi2lyC;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD79606A320;
-	Thu, 29 Oct 2026 12:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34E0606A320
+	for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 12:09:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C34E0606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iomdypTv
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 036321F031E5;
-	Thu, 29 Oct 2026 12:05:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793275547;
-	bh=4iJ4lWXExv+RfGay5KC5PfyDalOA2jKNer9jnroQJeU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=iomdypTvZQIMLWImvLyZSeMqZ7GRZcm6sOcC0S+HVjLCkjem9mnPplw2Yiuh/qXUS
-	 I4/w9yN69PHPShB5KMePUmhNj2il27fRTNtKj+xoPxB7bQfxwnkujFPTNB3tAWuQPw
-	 sJCtPMyl7DMJPoL0Ei9WDUFkQ3R393Z1BR91SbheN/jpb5ViC6lfmV7GV6DiWn5QSb
-	 L8kWkLyarFPduIZSFKieL7LUjXYaVFZZVfPNcVU2al5LavERHXPhA+g/0yuzEFJOVm
-	 DZUYeTetbiIvQY5k+pq2H2FSwY4Pv+CimIOJfq08GeK1vaMKNTx0dGKwQJaV2j+Ogt
-	 cDEzL4Xzs0K7w==
-From: Jeff Layton <jlayton@kernel.org>
-Date: Thu, 29 Oct 2026 08:05:19 -0400
-Subject: [PATCH v2 6/6] NFSD: Document how to choose an IO mode
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=N5jlBlxs;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=VzPi2lyC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793275777;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/MiKP9fyeCAaFA13wlpLP5Q9RvZIGZFi3hjz454dnr8=;
+	b=N5jlBlxsn3C3dntKNHpktZZKy1nTyLpmBQFr86ZjVjlv747jjjcUfYtPLFWAdv6xK2vshv
+	vy73OY0g34JjSfrGH1keHmWvdX8wucFSGLwmbNBjZ0uKQYcPCKztksEt6VN9qgfzemiR9V
+	ZCffb2S5VX7HS5/SqWfNMvgvfscsCIo=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-620-U5b-8odkM2qR-1-tlQZGlw-1; Thu, 29 Oct 2026 08:09:36 -0400
+X-MC-Unique: U5b-8odkM2qR-1-tlQZGlw-1
+X-Mimecast-MFC-AGG-ID: U5b-8odkM2qR-1-tlQZGlw_1793275775
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a1e489f97fso21420935e9.0
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 05:09:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793275775; x=1793880575; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/MiKP9fyeCAaFA13wlpLP5Q9RvZIGZFi3hjz454dnr8=;
+        b=VzPi2lyC1gDfVNKIkL7/03RCEGjlS0zUU4zgmxAT61ShYkZ5/2DEQsTNv/1NEasox5
+         zUYkHqFQywwQ0EhHsL81xDuCjpl8qrL6e//KxpvtQntsZ4xbIVBSqcAnXSFgOMCDH5zr
+         tJ2y+PE9r57UwoNu/REswSMMlYFxNoCyjwCuG5oQEIWQrZbx+s6ekFA4OcXbaXibI/Ue
+         7gW7A6FvPknaWZr9T+9TfySlxRjIeUaC6ddat8s3CT4hHc2gP07thYUhsEzBJT/OzklO
+         5WWKzbmzzLn7a5KpMFAJiP0A9l99v+9goTAti2UWtI5oqS/loKs5Cr9BDYdaE+MAfgfz
+         tuYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793275775; x=1793880575;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/MiKP9fyeCAaFA13wlpLP5Q9RvZIGZFi3hjz454dnr8=;
+        b=ROu9yl8Nc4NLWY+q7/oOXd3JXDAeVan7g1KIuWRuf4Y1Zx69zZmij21AmhIZX8yUEL
+         BUTalhubqgLSho6Zot95lz+PGbwsHMURlRtPyW18m23R53SEXFFd0ioeMP24AXhfk43h
+         TV0BdXsX764fSu/TBcUVQj/D8EPV88lVC7pXXhX8Km9Mp5Q4yrsqpJJOoDrk6Ox9qgto
+         BScL33ZgGCtCfCNCXPneYSqH+jlNG0aNn1y7xr0ljG+Vw9/0E2bMT0Ge/+D5gzXjslW6
+         itI8SNw+B3dz8DgScCF46LDKKx0fEBEid0gR1qpyKSk0CqiQUyN/eMh757VU463YcENH
+         Wmyw==
+X-Forwarded-Encrypted: i=1; AKwUvBxdTu6Di2FJXqjvW6pouu2jka+4K2ytmbVVMYPI028OFG0mIzpVdX0jH53xX61d+sfkDpwFGys=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLgCPUX8XfoNXxQ44z6yQ+VSzqLxgzL3sw8S+VZ0E17n0G9Ol84
+	8IIXBIBHo41jkA0CggMcxfq+2VwUTSzhnfz2+K306e7NbsQi3sef5+E8QhFM9srXWSiXDMUGMut
+	f6ur7t4HqX7z8uvT61hseqN02s/8R8ufubVLVtYmmbnY3vEzQmGmLONVJGA==
+X-Gm-Gg: AYBFou14N5A5whiLJmS3BVc0as+v2SDoU8LL946Hdoh6/YW1C4e1xRemg83wEQTdHHx
+	A54g40zM8DYjtgrWO6u0HjdAvGsnU5eTWuDSkxmR9t1uXYAZuqzUa7m+wRmuXIrr3jSP38HsvVM
+	LvzxvaEQ8PCsI0Yps2pkDJvZZ1P4lwVFnWheD3sv3CKAQuiDcIphG36L/0M3yh/necqInywWxUd
+	CtQzXi+oBTcGiRMczo/1B45s94UrfE7Kj4hWvaAZeHqGQligj/2IEClk6lHLOFnQt9Qlj4Ek8Iq
+	5apyfL5piztX+fkgEOWv6yUFDAcD0neM2nYKcqENI3KQU0N9Tz/D5R4B9xhKDqUf0xDIxLGohpf
+	OdDW4To6MVUqRWXjkgyHuO561xKMVy7Kw4yC4MH2oxh4M42362VZMklitJpls+fOVhg5hDyLHqG
+	M3AuNHFsGQ0qaWrQTtqJP+Lr0o8vtHxqRejDr06s3RwFYxvvw=
+X-Received: by 2002:a05:600c:4e01:b0:4a2:190f:cf6a with SMTP id 5b1f17b1804b1-4a967ca03demr123795495e9.35.1793275774937;
+        Thu, 29 Oct 2026 05:09:34 -0700 (PDT)
+X-Received: by 2002:a05:600c:4e01:b0:4a2:190f:cf6a with SMTP id 5b1f17b1804b1-4a967ca03demr123794855e9.35.1793275774447;
+        Thu, 29 Oct 2026 05:09:34 -0700 (PDT)
+Received: from [192.168.188.234] (ip174-129-192-82.pool-bba.aruba.it. [82.192.129.174])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ab69b54742sm28654975e9.15.2026.10.29.05.09.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Oct 2026 05:09:34 -0700 (PDT)
+Message-ID: <d2cadc0f-f52f-4a89-99f5-4a5fb621e944@redhat.com>
+Date: Thu, 29 Oct 2026 13:09:32 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -52,236 +112,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] ipv6: bound temporary address regeneration advance
+To: Yingjie Wang <1075151112@qq.com>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ horms@kernel.org, dsahern@kernel.org, idosch@nvidia.com, corbet@lwn.net,
+ skhan@linuxfoundation.org, rdunlap@infradead.org, linux-doc@vger.kernel.org,
+ alexhenrie24@gmail.com
+References: <tencent_F6E8C7CAC6D390C8E912EEE4FD9FE4333505@qq.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <tencent_F6E8C7CAC6D390C8E912EEE4FD9FE4333505@qq.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261029-export-iomode-v2-6-fe8ec6251a36@kernel.org>
-References: <20261029-export-iomode-v2-0-fe8ec6251a36@kernel.org>
-In-Reply-To: <20261029-export-iomode-v2-0-fe8ec6251a36@kernel.org>
-To: Donald Hunter <donald.hunter@gmail.com>, 
- Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Chuck Lever <cel@kernel.org>, 
- NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, 
- Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Randy Dunlap <rdunlap@infradead.org>
-Cc: Steve Dickson <steved@redhat.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
- linux-doc@vger.kernel.org, Jeff Layton <jlayton@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8695; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=yE2bCSOokjUEj1po9XIzO+SKll2jKyIeQhppobQc1QU=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBq4zaOIt1OzOAFIx/Tqkr6ypYGRqUreMaslU3lM
- GFpIyumD6mJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCauM2jgAKCRAADmhBGVaC
- FSs3EACteuSamD1oyvQMYQZKFltKnZtUenbce49ToZhHPsuMyqtfLbeGYw6DnhVkLLUWRIePDIZ
- X44unaBBh39QFuozRrKcMbEHItSIV4FQN6Bh5zTdXdoa9lgaRJdEZ0I9i1aKsVCfV2VIloHrNVh
- Y3o9Gp/DKg/CLBMUJPROUhPgkBq4It6J4GSml87ETqtsh1BE8f+lnxrRNYRM2m8Q9GaqIMbuBxg
- sopi6fGSgQA0eAHp7PbK2R93zUr13O1N3nWAbl7kGvjJ1t3x1dCOxvYfkwS3bqRsBixrXMR+K2v
- 1+nGD1wAQxy+U1LQQM5gGFN4SRtUb7rlFj9jOlM1aNPgh52brRGW7R8copo6qsnhnjUKBmi7Dt8
- 0gSd4uNeq00HmuaHN3MiJ9aZRH55ROLgayvfrYhbzJcHkXUVEwLtSOzkUP0VI/XYv0Dc6WOpxOD
- F/vlF9X4I7y7+XTaIFaeBaH7wyf0cSRzapaigm3TfIsmQdzfHkxEXLB5w1IdhsGfhj17m0uSWoM
- MMayBj1hy5BcR6qdLCaa1LB0ZGo/r4XzyxqJGoWAYzvfTmA3T6hXY2HOntOP6bYHZeQLx3zay91
- ksrsmePAJgvYM7K9Zt9QyvsgvOTnyStb58hUdd3DdqC3e7JlRcX+FqS8aJ3Z07xMCxy3KzpGmgB
- IA2pzQXgChZAD7Q==
-X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
- fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
 
-Admins have no guidance on when to pick buffered, dontcache, or direct
-IO for an export. Add a section that:
+On 10/26/26 09:22, Yingjie Wang wrote:
+> @@ -1394,6 +1405,7 @@ static int ipv6_create_tempaddr(struct inet6_ifaddr *ifp, bool block)
+>   	struct ifa6_config cfg;
+>   	long max_desync_factor;
+>   	struct in6_addr addr;
+> +	u64 min_preferred_lft;
 
-- explains why a low server page cache hit rate is normal (clients
-  cache their own re-reads)
-- lists the workload conditions that favor each IO mode
-- describes existing metrics to measure: per-export miss ratio from
-  export_stats vs. block device reads, workingset refault counters,
-  cachestat(2), reclaim cost (PSI, allocstall, compact_stall), and
-  client mountstats byte counters
-- notes that refault counters do not see dontcache or direct IO, so
-  measure while the export uses buffered IO
+Minor nit: please fix the variable declaration order above.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
----
- Documentation/filesystems/nfs/nfsd-io-modes.rst | 168 ++++++++++++++++++++++++
- 1 file changed, 168 insertions(+)
+>   	int ret = 0;
+>   
+>   	write_lock_bh(&idev->lock);
+> @@ -1430,9 +1442,13 @@ static int ipv6_create_tempaddr(struct inet6_ifaddr *ifp, bool block)
+>   	 * idev->desync_factor if it's larger
+>   	 */
+>   	cnf_temp_preferred_lft = READ_ONCE(idev->cnf.temp_prefered_lft);
+> -	max_desync_factor = min_t(long,
+> -				  READ_ONCE(idev->cnf.max_desync_factor),
+> -				  cnf_temp_preferred_lft - regen_advance);
+> +	max_desync_factor = 0;
+> +	if (cnf_temp_preferred_lft > 0 &&
+> +	    regen_advance < cnf_temp_preferred_lft)
+> +		max_desync_factor =
+> +			min_t(long,
+> +			      READ_ONCE(idev->cnf.max_desync_factor),
+> +			      cnf_temp_preferred_lft - regen_advance);
 
-diff --git a/Documentation/filesystems/nfs/nfsd-io-modes.rst b/Documentation/filesystems/nfs/nfsd-io-modes.rst
-index 1ad30518c234..99da98430be1 100644
---- a/Documentation/filesystems/nfs/nfsd-io-modes.rst
-+++ b/Documentation/filesystems/nfs/nfsd-io-modes.rst
-@@ -283,3 +283,171 @@ Tracing:
-     segment that it could not invalidate. Only a filesystem that uses
-     iomap for direct IO emits it, and other fallbacks, such as ext4's
-     own, are not traced.
-+
-+CHOOSING AN NFSD IO MODE
-+========================
-+
-+The correct IO mode for an export depends on the workload of its
-+clients. The most important question is this: does NFSD read the same
-+data again before the page cache evicts it?
-+
-+NFS clients keep their own page cache. When a client reads the same
-+data again, its own cache usually supplies the data. The READ request
-+does not get to the server. Thus, the server page cache helps mostly
-+in these conditions:
-+
-+- Different clients read the same data.
-+- A client reads data that a different client wrote recently.
-+- A client reads data again after its own page cache evicted the data.
-+
-+A low server page cache hit rate is thus normal. It does not by itself
-+show that buffered IO is the wrong choice.
-+
-+Use buffered IO for an export when:
-+
-+- The working set of the export fits in server memory.
-+- Many clients read the same files.
-+- Clients send small or misaligned WRITEs. The page cache collects
-+  these WRITEs and writes them to storage in larger units.
-+
-+Use dontcache IO for an export when:
-+
-+- Clients read or write most data only one time.
-+- The working set of the export is much larger than server memory.
-+- The data of the export causes the page cache to evict data of other
-+  exports.
-+
-+If the underlying filesystem does not support dontcache, NFSD uses
-+buffered IO instead. See NFSD DONTCACHE above.
-+
-+Use direct IO for an export when the conditions for dontcache are true,
-+and also:
-+
-+- Clients send large, aligned READs and WRITEs.
-+- Page reclaim uses a large quantity of CPU time, or makes IO stop.
-+
-+Change the IO mode of one export at a time. Compare the metrics below
-+before and after each change.
-+
-+Metrics to monitor
-+------------------
-+
-+The metrics that follow can help you choose an IO mode. Measure them
-+while the export uses buffered IO.
-+
-+Miss ratio for each export
-+~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+``/proc/fs/nfsd/export_stats`` shows the number of bytes that NFSD read
-+(``io_read``) and wrote (``io_write``) for each export and client. If the
-+kernel has ``CONFIG_TASK_IO_ACCOUNTING``, it also shows the number of
-+bytes that storage supplied for these READs (``io_read_storage``). This
-+value includes the readahead that the READs started, and the filesystem
-+metadata that they needed.
-+
-+The kernel adds an export to ``export_stats`` when a client first uses
-+it. The counters of an export continue when mountd refreshes the export
-+or when ``exportfs -r`` flushes the export cache. They restart if the
-+export stays out of the export cache for an hour. The start time shows
-+when the counters started.
-+
-+Measure ``io_read`` and ``io_read_storage`` over the same interval. Then
-+divide the increase of ``io_read_storage`` by the increase of
-+``io_read``. This is the miss ratio of the export.
-+
-+- A ratio near 1 shows that storage supplies almost all data that NFSD
-+  reads. The page cache gives little benefit. Dontcache or direct IO
-+  can be a better choice.
-+- A ratio much smaller than 1 shows that the page cache supplies a
-+  large part of the data. Buffered IO is probably the correct choice.
-+- A ratio larger than 1 shows that readahead reads data that clients
-+  do not request, for example with small random READs.
-+
-+Without ``io_read_storage``, compare ``io_read`` with the number of bytes
-+that the block device read. Field 3 of ``/sys/block/<dev>/stat`` shows
-+the device reads in 512-byte sectors. You can also use iostat(1). This
-+ratio is for all exports on the device. Local applications also cause
-+device reads. Thus, this ratio is only an approximate value.
-+
-+Reads of recently evicted data
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+When page reclaim evicts a file page, the kernel records the eviction.
-+If a task reads that page again soon, the kernel counts a refault.
-+``/proc/vmstat`` shows these counters:
-+
-+- ``workingset_refault_file``: the number of file pages that the kernel
-+  read again soon after their eviction.
-+- ``workingset_activate_file``: the number of refaulted file pages that
-+  the kernel identified as part of the working set.
-+- ``pgsteal_kswapd`` and ``pgsteal_direct``: the number of pages that
-+  page reclaim freed.
-+
-+Use these counters as follows:
-+
-+- The ``pgsteal`` counters increase quickly, but
-+  ``workingset_refault_file`` stays near zero. This shows that clients
-+  read most data only one time. To find the export that causes this,
-+  use the miss ratio above or cachestat(2).
-+- ``workingset_refault_file`` increases quickly. This shows that clients
-+  read the data again, but the page cache is too small to keep it.
-+  Set dontcache or direct IO on other exports that read data only one
-+  time. This gives more page cache to this workload.
-+
-+These counters are for the full system, not for each export. Dontcache
-+IO drops pages without a record of the eviction. Direct IO does not use
-+the page cache. Thus, these counters do not include exports that use
-+dontcache or direct IO.
-+
-+Page cache state of a file
-+~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+The cachestat(2) system call shows the page cache state of a range in a
-+file. It is available in Linux 6.5 and later. Its output includes:
-+
-+- ``nr_cache``: the number of pages in the page cache.
-+- ``nr_dirty`` and ``nr_writeback``: the number of pages that wait for
-+  writeback, or that are in writeback.
-+- ``nr_evicted``: the number of pages that the kernel evicted.
-+- ``nr_recently_evicted``: the number of evicted pages that would cause
-+  a refault if a task read them now.
-+
-+Use cachestat(2) on the frequently used files of an export. This gives
-+data for each export. Monitor ``nr_recently_evicted`` on the files of
-+one export while a different export is busy. If the value increases,
-+the busy export causes the page cache to evict useful data. Set
-+dontcache or direct IO on the busy export.
-+
-+fincore(1) shows how much of a file is in the page cache.
-+
-+Cost of page reclaim
-+~~~~~~~~~~~~~~~~~~~~
-+
-+Direct IO helps most when page reclaim uses much CPU time or makes IO
-+stop. Monitor these metrics:
-+
-+- ``/proc/pressure/memory``: the "some" and "full" lines show the
-+  percentage of time that tasks waited for memory.
-+- ``allocstall_*`` and ``pgscan_direct`` in ``/proc/vmstat``: direct
-+  reclaim activity.
-+- ``compact_stall`` in ``/proc/vmstat``: memory compaction stalls.
-+- The CPU time of the kswapd and kcompactd kernel threads.
-+- ``Dirty`` and ``Writeback`` in ``/proc/meminfo``, for WRITE workloads.
-+
-+High values can occur while NFSD moves large quantities of data that
-+clients use only one time. In this condition, direct IO can decrease
-+the CPU load and make IO performance more constant.
-+
-+Client page cache
-+~~~~~~~~~~~~~~~~~
-+
-+On a Linux NFS client, the ``bytes:`` line in ``/proc/self/mountstats``
-+shows the bytes that applications read (field 1). It also shows the
-+bytes that the client read from the server (field 5). mountstats(8) and
-+nfsiostat(8) also show these values.
-+
-+Field 5 can be much smaller than field 1. This shows that the client
-+page cache supplies most reads. In this condition, the server page
-+cache keeps copies of data that the clients already have. If other
-+clients do not read the same data, dontcache IO on the server can be a
-+better choice.
+The above is quite ugly, you can probably make the statement more
+palatable using some additional variable to store the intermediate
+values.
 
--- 
-2.56.0
+/P
 
