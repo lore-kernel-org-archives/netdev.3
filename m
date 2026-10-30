@@ -1,89 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793384387;
-	b=tOK2Hxt5OZJqnCCIM06Fatap9UMxGDYtu42Y2P1V0WdpBNAM0OUP0LbWSZwqE2/36lbF
-	 cZvoVInjP7gTlWb6jU0U9B4gYGYE0HSkO5Ab0aUiP1pV3aQ0MUoQFYcf44fFVcDJ1njNP
-	 nbMEaqMUkhrodt+yMW56+HYW44amTSvg4X2u6ecWzVNkyXKHs3hHK2f3d+/cYBZxIPcbM
-	 MEmiDa2V8vxpkiEeojIbaLqFOWRIGWiSAJVoeMvvtf5JDts0UgvRxN/jg/UaraJJ6kDD8
-	 gnGisfGZhQQnDjN423jJ4fvkh6J0zHd4NSV/d/R2q9wKHjawqhN5sPXy/FWFS/kGs1A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793384387;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=t9k0BgLWrg0mUnaOFTvLZXWxj8nv9nzACn3VaTjGowg=;
-	b=tm9UcE9ueF6nKCARlLbix9ZQY3GLVoOPMMaDn3oNRkUQZV8qTUH1LFVre2GdboCLIfz1
-	 Hbi54qbZ+xBNMZolckRD2QxxBaBKffC7w+7ivl6uzGJIHHNwO97QykjNFMpo3Zdv7pBmB
-	 X+Ngxf7RyXrkuyiHLKLf+RErDhAmzIe56jzyerRyfKN0jT6c8Gg3nEyXRXM4UZ9p0MYH9
-	 h8d7zVYxdtyVmxw2ja3KTLjl8Rkd2YAZEHTTE+E0ARgUy4uXVeeaOYPAftpCGbZJOVBHG
-	 nxlAG2jT0YnLJL9vKb0DinOK7u/861hMPV0FT0GpR3SsUxU/jzQl3kawcBY9KZ4ETgA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="GUQgTEW/";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.179
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793384945;
+	b=34dZYppZuAkIFKzqFIciU/kgBsmLUWOObYhOKAY60syAZVyKTceJpE/HjSpdfnp/gKAU
+	 bYhSGU7CgHyVObq1Z9FSF0d+CPt8zcp44sLI5yuC86RtavB1ldCHlIP2wEbAVd/qsiuIH
+	 encQitiCxqdsLazm5zu4+CyodZl52qPCUc+ooRA3Psl470WdmcpBQ4olRs+7AnMOAz2It
+	 ktZz/2HhI+uvuabeyHX2axdkQYR2tXCBWSNy1MpFyWTocNyB+MbRIX+CTw4fqUAY1Uofi
+	 Go1J9JfikO0zNEaFrI7rVtU2nY2m/Vq10xuoU84/1OD5GtHbYVRAdZb3Kfi4RW8AaSA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793384945;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
+	bh=G+zB9GFJNAbBfR8ZwAc3PKnsy4EPqDAbHoDAUQPIrLM=;
+	b=18txxNS9tz7QVwmbuGOYfGkIGweG00xzZ8lzQJgDBECFRZhFcfszcX1kyPJyJa0HGcHz
+	 me1in12DhQAPqgIx1cwnAXD1kskLLqeYSMBV6T1OFvf2IPfLBxxi1K8OoNNk0ugHb5Kl/
+	 UOfCiYBquAcELsmUwcLIoxhM/kpNHZvcO+WTb9r4PB2zz2nkESLIlUHllDxYeglaZZzZK
+	 4sKQ8SZTeV1iYgdLupxWERp8dbA/Z3Fi9PRaP0OFLIPi5b17EDcQTzt85nv7k1/tf3Ka5
+	 sSDDpITfZ+ZDf/QiY5wIrPWYqdgdhc0l5XZIbokyc1J6iIB41tQJ+djChnUBdCN7OOQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w5JvoXMS;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.179
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F302606A31A;
-	Fri, 30 Oct 2026 18:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57730606A31A
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 18:29:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 57730606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GUQgTEW/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D351E1F000C1;
-	Fri, 30 Oct 2026 18:19:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793384387;
-	bh=t9k0BgLWrg0mUnaOFTvLZXWxj8nv9nzACn3VaTjGowg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GUQgTEW/T3UIswkAHLvn4oCvzwgBSpQxdyWQcY9WV9CIvLZjqNBcLb72+RvfvltfV
-	 tWQhVoH5G9sEFXejJkpQvfX3R2tTbHKbt3vFjZoFyv8oZ5HSIS0h/jQQsx0axMuO4g
-	 TxA1awu6asKWvsnoVD6+k5Dzq57ldWC8SkhjAixObYwjmARl03NJLnDIHjbFgjESk/
-	 C3I4bxi1vFVuc7qtV7gsiSVE4QSR6kInbi7l+B6sJDfuMhQ4YzTqllZQCVYsQBJXKo
-	 GHhm7najGasgVQrYJENzMvqpo0qtbJsUi41wQ7Wz7x7RnfSZ1CKX/JfMkxUHvgcE/W
-	 dBVEDTKFnqzWQ==
-Date: Fri, 30 Oct 2026 13:19:43 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Cunhao Lu <1579567540@qq.com>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>, linux-clk@vger.kernel.org,
-	Brian Masney <bmasney+clk@redhat.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	linux-gpio@vger.kernel.org, linux-usb@vger.kernel.org,
-	Zhang Rui <rui.zhang@intel.com>, Eric Dumazet <edumazet@kernel.org>,
-	Lee Jones <lee@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jerome Brunet <jbrunet+clk@baylibre.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jaehoon Chung <jh80.chung@samsung.com>,
-	David Wu <david.wu@rock-chips.com>,
-	Elaine Zhang <zhangqing@rock-chips.com>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Linus Walleij <linusw@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Jisheng Zhang <jszhang@kernel.org>, Ulf Hansson <ulfh@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	netdev@vger.kernel.org, Lukasz Luba <lukasz.luba@arm.com>,
-	linux-rockchip@lists.infradead.org, mfd@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Shawn Lin <shawn.lin@rock-chips.com>, linux-pm@vger.kernel.org,
-	linux-serial@vger.kernel.org, Andi Shyti <andi.shyti@kernel.org>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-phy@lists.infradead.org, Vinod Koul <vkoul@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>
-Subject: Re: [PATCH 25/27] dt-bindings: arm: rockchip: Add Forlinx OK3572-C
-Message-ID: <179338438342.1201325.14780731681186218967.robh@kernel.org>
-References: <20261022-add-board-ok3572-c-v1-0-0b0fd85a31ee@qq.com>
- <20261022-add-board-ok3572-c-v1-25-0b0fd85a31ee@qq.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w5JvoXMS
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cdab9e9761cso635695a12.2
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 11:29:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793384945; cv=none;
+        d=google.com; s=arc-20260327;
+        b=V37C5djCx6yYTWZvIgOmfMo722XgGeyzBr4XDgReaz7M7ZvWqMJ0KRPgdLMe8u0qsd
+         bRGeZfciV7NA8QxUf8ow+uVY1x+aqivsy0sRESJW1DLtxa2p5LDfF37w9pcACdCVVqyd
+         NJi4S36Iw9/s/e/hhx53w4O76eVXHXgqtmgjBspTyc+oA3obeOBrmbyNU9WNqE7V9rkA
+         b07oGYIQVvC/aA6P36cTtDQRMaFOyL1Nkciy0kijnCD4qbcqBpbO6ND/zVyS3MwfH++K
+         nMsRMKX9XxwCHoHr1Ba2UNq5GFw/h32Z9AxUn63THhaE0zEeKAnkXjbI/K8qy12iavk/
+         lwlA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=G+zB9GFJNAbBfR8ZwAc3PKnsy4EPqDAbHoDAUQPIrLM=;
+        fh=s3/y0cgyKC93uqiWqu1jjWz6I/lagqMr7M1QYuwlfWM=;
+        b=sPKZJYLQHyazkHdRHSZPrz7yTweHSDuT0uMHHXw2lps1m5DqmP3aT5tEOcFPk7PXCI
+         q0Zxz/1mK6BZyBRbuwdVRpKMB9KYiHSntrLPw3LbdK5QqsOtZAP5YnDazH1vcUO/yuYR
+         2uTkSZDuIIIIT0QKhZlYF+UN0Uz4WLagdVtLTglNJ6/vM0FKHDDwzY7TfJGmRGQ2Pzxa
+         osAIXvDIW1F81uiGUp4RbDE10qR3+1fce3WwGWJoNjkze9sBL/lCDi7lz4x2jKwNXXrB
+         S7YSaAh3wBhWtQDELxMQs5of0fjLhTwg+J5zxS3nma2bJBfCLF76Z1KPgTyAu5qoHvFH
+         W5vA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793384945; x=1793989745; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=G+zB9GFJNAbBfR8ZwAc3PKnsy4EPqDAbHoDAUQPIrLM=;
+        b=w5JvoXMSh/TEd2WwP3yaQwlzuSqw7AFZUNSnNwd9n46bQqcN3su6P662/8PKOd+fKo
+         aGqCnoS73ciUbzEuoPIYgsn3oFw7urCSbBdXmc0T8GvX4XVYAjx2WierNP57GkOTT3gB
+         dtExPf/dwVdG4A1Zaz7/r4C7xYxPbcLr+gQYLcHY8OchQOkKmWsH8XcV0i4EyLsqtuvw
+         ZY1uzQP5H4I4Nm1lkRd03ZCjIlauHwWjLChpOkB+n6sXvs2AmnXsSb72YWQyh2N5JQk2
+         hN/mMexAwF+gaG6kzKcCDBFzlkWxVpmkvGLTEZXPmBrMmZRnAE9HFetr/e9XQV5RTdng
+         9pBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793384945; x=1793989745;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=G+zB9GFJNAbBfR8ZwAc3PKnsy4EPqDAbHoDAUQPIrLM=;
+        b=uaZ1co13/wJckBta8STIXuzRPTTgPMvC1pTv60hozX+NImNFO0AsV/vo4c/LO+Y5/2
+         H8bK1xMdy4ZOEVrWjKEACO7958TWqCXEQzfDjEkSrJYD2tQg67ZfLM/rPjYSugGqV1jK
+         niq3mdBj6M37kJysWeYpQgBNmifpjrUzqEHi2IR8I8voNANvWytffy+JYfUAwsEaUPxF
+         ld8b0ziRQuQnKy3HdXMXw9fnsftJPW8KRiynOn9FncLqwoq2R+RG9eFXDBN87Xa/Z09Y
+         ovzvSMJ0ljXpMgqMyghxNyTsdqLCgjCsNY+hB0LXbzUITEzOvFhD5RuGiss/WbPYQVCd
+         dZ1g==
+X-Gm-Message-State: AFq9FYJ2dcqnNJ9yAqpCBo3Ok89CluuH2YO7cenyV/PMJnSUhbiBTBUJ
+	78sYrdT+rvNY24l37oiQ1HYiq7/lICFxzmdzpphr0HH6fTQSSuBscjeBdyHNuLgBCBRffpYjwhG
+	NBsItGS5xPBsIkCLPJ/KD1kIWEuiNMaohvF/3
+X-Gm-Gg: AYBFou0V1RSOhZSrFvKCPq7611M0B0whrmPJVJVdCoMEQ2dDVO5Dj/zsOPilwmJSrC1
+	ijdaRB2Pd763MjE8SIWUp9zeg1aj3yx988hr5LBieUU6sqPSPDeA/Ui24QL1oL+9Dwy+1cGCPrY
+	Y6Zib34rcS3C9nHIJvOrPMqi12RRauLVWJLnelS43yeUVCx/VmthsWg7uVPzumyqS1G/8oeWAep
+	rRUQKwkYT3FLmILlibdHhZnYz6oOcHXRVvenIsW+4ikMoI9iPRDQieaF2zHe0w+K31eIFeS91tO
+	iqFuP/FMFjegswjzDzYA9tRcPt6T3SOsCK4DsSmW+A1+UncGf1TKk1+AiMy52GxnihoYwmfB/9K
+	fChAF7d38EfNkaTVKm/xRho8aoxDGfhtwp1FZhTsM7+opYyV8OIco
+X-Received: by 2002:a05:6a21:a0c9:b0:3e1:6acc:5b08 with SMTP id
+ adf61e73a8af0-3e928a7a8ebmr2693665637.63.1793384944571; Fri, 30 Oct 2026
+ 11:29:04 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -93,20 +99,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261022-add-board-ok3572-c-v1-25-0b0fd85a31ee@qq.com>
+From: Zhineng Lim <limzhineng2@gmail.com>
+Date: Fri, 30 Oct 2026 11:28:52 -0700
+X-Gm-Features: AclHuK9RPfw7WSAJluk5rjupJCtEDCjvqcrlH4YBsuGyUAim6lTue7jo8RUktF8
+Message-ID: <CAOr6SmEW8ZLjMzqCWdQL3W0DKwZCVaRL+DbhrSEZu7SeZRiVpg@mail.gmail.com>
+Subject: Netdev devlink A/B firmware bank selection feature
+To: "jiri@resnulli.us" <jiri@resnulli.us>
+Cc: netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+Hi Jiri,
 
-On Thu, 22 Oct 2026 00:11:22 +0800, Cunhao Lu wrote:
-> The board uses the FET3572-C system-on-module and falls back to the
-> RK3572 SoC compatible.
-> 
-> Signed-off-by: Cunhao Lu <1579567540@qq.com>
-> ---
->  Documentation/devicetree/bindings/arm/rockchip.yaml | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
+I'm from the FBNIC team at Meta, working on firmware and drivers. I
+realized that devlink core currently lacks a feature for selecting
+which A/B bank to use to activate the firmware, i.e currently we just
+have "devlink dev reload pci/<bdf> action fw_activate" to activate a
+pending image, or reload a current image if none is pending.
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+I'm thinking of adding a feature that allows for A/B bank selection,
+something like:
 
+devlink dev reload pci/<bdf> action fw_activate bank active
+devlink dev reload pci/<bdf> action fw_activate bank inactive
+
+This will be useful if say we just activated a problematic image, and
+want to immediately roll back to the previous good one.
+
+Before I submit a series, some questions:
+1. Has this feature been proposed before? Were there objections or
+discussions I should read?
+2. Is extending fw_activate the right interface, or is there an
+existing mechanism already for what I'm trying to achieve?
+3. How should userspace discover bank-selection support, so explicit
+selection cannot silently fall back to ordinary activation on older
+kernels?
+
+Regards,
+Zinc Lim
