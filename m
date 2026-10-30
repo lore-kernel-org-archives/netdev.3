@@ -1,122 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793368463;
-	b=V9lcEXbcQKtVA0UThrMkpnTqEwgaUMvPjv+zPnV+YGZgNQr9tG4PrbdhT8x4tDbpgET4
-	 VSyIXXzLS7uHRhjjQaF84m5i/Z7zITE8nqAPcgSDOQKZb8lLH+xf6RlJMBGrubnUP1qs8
-	 EELpmIhzoAqfBIaqmKniirmgUeqo+XZAuItkyqrQCuIBVWMbW1MEayOjevz6V8jODfxZY
-	 qTQYxOV2a3cO3XrlvC1tEootl5da2ivMD1leBnych8DqZ4FOqDCeyKISEynHp4sv2NJ9A
-	 +X5pLpfGkB8nHGwKh1VuQo5lpsjZGq+eprEb+AR93hIK17NTfTRMEdRViYEaoT/V39w==
+	t=1793368548;
+	b=dWz2GXfUTPub3A1qLkOVkNkZhmFe5vXstOaHmPpM6bHfKWCs1hTFGTy3Ty2opz6les9D
+	 zKrGTIoZKRMUB+aQCgqGTzSRhlndR4mEqrc8tlQ9Jnz0R7hvsKfS/rAx6AjbJGME/mBV5
+	 Xqhd91h+ajKg1K0ShaVSmfR42sfyGg7G0Usxzjx5BYJCo7/EIgi7sYBzyNyVGPYgjNv+0
+	 p4PkFnOawncQn282db8sk0V4ETOSAh+Z+mMRCKuigWtZdFwEdnAVG3IrCNt6CGCMFmoSW
+	 mwYvRymC6BPl1gQYu1X/M61KAJuAo4wBB4V/1euTwziOI3tlqiSUIQ9f7yuNOI/m96w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793368463;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793368548;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=/hIuaSXC/8qKVAwXvaUJ1vLVQZIbwa7mDnRwYchKUok=;
-	b=fIctTZpsUagXbPqigATkUCSOggKLwjLLGj4ywjn2sLujnrIzFNZ+/uJtHSZYjOeCn8jz
-	 6uBTLN4ioL97s4SaKUhfBqDO3YSPm1PpSkg/Omz/jbrSFQ/qJA+Th3G7BZZOHsMSEB419
-	 e/5vNLCIzjhEMNfdvCm/mQfCnwcWv7l9wmXhiqHqp01OVdETbZz/tiHV8KM0OGLFEyep8
-	 6IgdWbU4NSJ5QPE1MjmTW9PT/KZatK0ieqKiCTIeUjJsvjo5bp4AC/4qV7uFyHV8EWfc1
-	 Nch3pUunOsetj5VMMU3vt61QWVL+YcmFiEys1H4PlSt1JJ6R+tF34ucOzBW0JhdwbGg==
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=UVNQuP3ondEntacxAyn3YMLLQbLDbNk3DgeuFYCFzxg=;
+	b=cf8CujBnY+XUUCYToqVDZ3t9O9JWZFliymAZKlRrWHqG/+MuRlbX6G0VSsMs39XGsuky
+	 MQp1WRJTRuLbl/aBVn1csU4+mfTPJAELbV2w+4ILsxyCutPdIjjOqn9lANfiWYfjZ8PYx
+	 T0M7gwCSqxPYMllois97FOidFaIRX/Dit4IrwVO0Dy5n0vFayImfSzIE+/VMqWrq1GWvA
+	 2vZ9TcU1HHV8ZA01Gb6Awx6QYGKUuUU32b6zIMJSaO/8g3ngihHoWPfDV3L5v/jWqHzoL
+	 SoQGNd0O3Rz8ILygXc6pr/nxRYmfVtLXOjVv5fj2F5MFgLbPyftiPIj4et7xMn8vL5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XWaM6t2o;
-	arc=none smtp.remote-ip=209.85.128.41
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UgtwSpk+;
+	arc=none smtp.remote-ip=209.85.222.52
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0261606A31C
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 13:54:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A0261606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DBD606A31A
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 13:55:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 95DBD606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XWaM6t2o
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a1fbd52ab6so5331215e9.0
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 06:54:22 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UgtwSpk+
+Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-9906870a9baso390798241.0
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 06:55:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793368461; x=1793973261; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/hIuaSXC/8qKVAwXvaUJ1vLVQZIbwa7mDnRwYchKUok=;
-        b=XWaM6t2olUZqZIxFriVejrYzehUyFljQN5E2CvGc2lNTgSVwJI5hIRBfuMBSzYJW1b
-         573FOamRVec1VCMzletpzIxN7E3qGFoLJjVRSWtq0Lg78fbMdn2eGoHbT9tpuw9eKDkb
-         hOI6+H/tt2KyetfMO7tK4BJUqLfd2n0gHAw6pZ2biqL5A1JuXRWsNqOeHLx+rByImhzv
-         RSfl6WCRNYCVJIXSK6BE78UHY+WWI6kJS+Q6a9blv1tMTv+RJoO0dI7kE9Lcm5F7Frgm
-         VeeaM21RYMDPzOqVzVtvdhncwp35WhxDJvWrR+HwCT+mVTFh8BL5Ke8mkmkbnyPnrd9h
-         LJ7g==
+        d=gmail.com; s=20260707; t=1793368546; x=1793973346; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=UVNQuP3ondEntacxAyn3YMLLQbLDbNk3DgeuFYCFzxg=;
+        b=UgtwSpk+Vszju5rSIWrcBMMpldmB+fO3mwRauUr12R80fzzKQp7e6NFOJ2goB2PZng
+         s61f8Nd1rfz8u553K4l+79O2zgZgkZpGYEyF/DgS/J1a7gxtJxOQKKYI0SkuYYj/lJc6
+         gpZV4c2q9zepLDwm5V9YYStrauNi89u7rb4ya7DUAWlhWvrCLl0AbunJKjJqfx+JWY6u
+         j1BAqaKZobPZlO7v61FwZ8UqPApvctjRHsUCw9oaxyRPjGFOFsNjjXQkqNOshbmjjX3q
+         JnCp53Am0vWZxV5h+aqLLXaonXznFraMCH5LhiFio3wXraKlHvPjSB9eCa6K/2CaE/1D
+         augg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793368461; x=1793973261;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793368546; x=1793973346;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/hIuaSXC/8qKVAwXvaUJ1vLVQZIbwa7mDnRwYchKUok=;
-        b=wc3WCAzZi6Fbq8oOL10iNzMzDUI1BK9vsyYIsTlT0J2i5qc3m7rwGJsZ62VzeK6eR8
-         /gKl9sqYfGyipIDnEIZ3/ATHVXu/T1/b4jnOvZIFQoUvz58N3jR2F+JRaQyrBU6/tSHQ
-         +YD9V0EA/MerA/BQ2MoJRry16nlAlAzIDkAjwD8PQwyuZPnPzWs07t0t+MGJetNrNG7d
-         EmlcpUzx8Fwtftek3KEAuQtyQT7i0awCMTpNTthWej6XQkHwvfcNgtheRaY5XcwExng3
-         pGDRXdf0SSjuLasJJ0n2U8uhoHEFZSnpFk1DxiruuGqXaH0kfsdkEczgE91g/cb33SkS
-         B+mQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzVhMay+2grd4KjptP37Yt088z6yPbAGPRaqDC0arRGp9dfbgMB5x3bHWZETbhTwHq1IOAXn1c=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIG6Krnp7AUX15vRzOgePOJJ9Waq/cnkGvNgMoZDg5z/cYvJ23O
-	LMSBylLk90QgNt2swNHH/gfFITk5KwASRZSzCu5A+jdt0LXm5T0WFZXv
-X-Gm-Gg: AYBFou3jF6OsUv2fAT2nB69zwEfEiuzE2ZLYhA2aJfoQsX937xqjLnJr9hf3uVN7GNc
-	m2QgyeQ0u/Zzy+b/lUAcYhnj9MmVQ8l9WqvuzSBWIdYKzfELt6GwvHf5fErOfGaqTvAR0k2fHwF
-	YzpT1stOfm4G5IqA4jdyG3rhZ+z/8RYM76rt6DqEBGHd4aM1q20rQ574N9Oeljq1/SB7TqcsM0D
-	Xe8Id30Qv7Zoj9KAgII1GEHIwV/kgj9k1sVryfuuVrwcn5HQ6Vgr7RhFyx5hoxaMrS5M0sPStNJ
-	V+pkR9ozbp4kqlP+pKNc022RALYVWkmFktGqSTixteltpNf9naJ1PkgRC7H/T72AmRhasSi6mHf
-	Ecq2vqQq0bAVee2ftRxe2T4iw/pedELbJw1r79yXZrC9cDKsCCb3IPJnTWMoylae8Q1+5MBr8IT
-	uzUheUzlaQF/2/ekqnHsffrQ9859bB/4O1PC+yYTp3zh4h6t8DT1ed2EhDZLcJuyuCjj9ldBif6
-	del3JgWxtq+G1pjqqPMTYXk7snmry8xd7oF5lxymQ2wi1+wtWT7r8nTl+WlObB0n5RNeHkRhWjl
-	trVPVjo7VpwVW1xwES3AvDmesqEMo7U2zeTiSdRF2ja6slwrFWt96S7Oojz7k1q/FfUOLq+q/sD
-	MhsO9hG7lSBBPYNw/62Ff8acw0aV/NfyySBr+0BrZvfCRUbsk6VjEOQG061QpDG3xQds=
-X-Received: by 2002:a05:600c:608c:b0:4a1:6c0c:ab93 with SMTP id 5b1f17b1804b1-4ac190497bamr46672575e9.28.1793368460933;
-        Fri, 30 Oct 2026 06:54:20 -0700 (PDT)
-Received: from localhost ([2c0f:3d00:6be:8900:ce5e:9212:ea4b:f30])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ac0950d533sm34613455e9.3.2026.10.30.06.54.19
+        bh=UVNQuP3ondEntacxAyn3YMLLQbLDbNk3DgeuFYCFzxg=;
+        b=UXmtXJ/xyOS0sH91TThIIQGTc0hRW8Heud4OhTonpFlz4oSEaqm+g237PRIoSRH7hz
+         Ix4HRympUzLvWbyG5YImVgGj/iQnlpS8H8M8QBsG9idxAshViaFHbuWtFoTcowE5AKsw
+         5KUeRB/e/dlZdtXDXiXfRUFf8p3KSOtjDKAAESr6V1TUgk/biSW//RihTdXht1P1wFgA
+         TwWFloggdyR0UE2ZtP2jLbqtRnJTfxxJeBqdOWK2NiwMmSzI4OnxspxGibA/SQBPotul
+         8llnxYcbsRbaOl+rXV29C39CXfhdsSue78An7nJ6iRZO03jPY9ZCj7KgKa8h7j1RgSiY
+         IWog==
+X-Forwarded-Encrypted: i=1; AKwUvBzhJ0+ByBdbxzMDLErfjSpudZNrAyizuibwXlmQh4HPCLxOLQjg/MGU6VGZ+qI9r82JpMn2ihw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJwBgwDcgsZezBrBW/qtg88+hToqBt6PG5abtlLCw6AeOBsRBJ/
+	snNZfce9mOtQXTaBjECc9GggviasTfelpA+tHjjsXpKzVvlVsLoXX4Ja
+X-Gm-Gg: AYBFou0rCosZXohG/4UIxS3ArzDLZeFE47LMl8vwvC6AIH40cwRlzE2zJWlVpnrtAqg
+	QNGejqfB+K1uxhEfPGTA/SsYvKS4C6dvp6TSp2NCCjMHsI7Y2Ymf9ri76zaCPO9Np7ZjkS91LI7
+	/oGpZzKFPdMi9nynCA5TQFa1k8LZw2pNpdcw5md/XVCbY9tNUMPUSNjHhZ1ld8uG3Lsr/JuEnVk
+	9yxyZS7oC7ILyxUa9lJz4X/qlVkphDQKV6wPCDjASHMgPC6U0+dLfC0rb3plAOWh1iStJJYCCok
+	lTdBIHCTbdYR916aZ7HNcgFvMvnSfaGie/9dc7yY1l338E4y9y7HWwt6g6xaftriYKmapXc2h2C
+	h2o2yXqh/QmxVtZVyoEZMcXWS2lI9cEM+eyuILdtSMG9b9irhtOoFAWHxkiK851g72jjxHu19Uf
+	J5vxX46M4sU6U1sqVA03ZcO0tafyQM/+EmfUoFaFKM/T2HIk7RMUxVuaXRoTIhgFm2Oaf/pGfy3
+	VLcHDkaIKXt+C0j8Rl5lke1FwsrDBneO/VI2NWGQ1NJFWooXsxEdWEut/x612S8ytwgJTA9oBx6
+	t02+awHZmGVGy+DuW1CMA4j4QyHn/wxWUj6KjhFBb50ZyZjeQ/172BgOLlbuQlGQu9eWE/1F6R5
+	E/FIkandBoJGrddU4ZvLOdpeA8FGzs7lDNLJRk5rfhP928pqxAHQ28A5rtdx2ILl4JBA5
+X-Received: by 2002:a05:6102:4191:b0:7cb:fd69:4155 with SMTP id ada2fe7eead31-7d0728b1448mr1236984137.5.1793368546552;
+        Fri, 30 Oct 2026 06:55:46 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-992ee509f58sm2642250241.12.2026.10.30.06.55.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 06:54:20 -0700 (PDT)
-Date: Fri, 30 Oct 2026 16:54:16 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: Alex Elder <elder@ieee.org>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, Frank.Li@oss.nxp.com,
-	Frank Li <Frank.Li@nxp.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>,
-	Karol Wachowski <karol.wachowski@linux.intel.com>,
-	Oded Gabbay <ogabbay@kernel.org>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Alex Elder <elder@kernel.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Guan-Yu Lin <guanyulin@google.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org, linux-hwmon@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev, netdev@vger.kernel.org,
-	imx@lists.linux.dev, Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 1/1] PM: runtime: change stub pm_runtime_get_if_active()
- return 1 when !CONFIG_PM
-Message-ID: <auShiOI6Hmla6XxR@stanley.mountain>
-References: <20261029163044.3062958-1-Frank.Li@oss.nxp.com>
- <auRb_r8ZSSU-eHZA@kekkonen.localdomain>
- <9207a52e-2d42-4e10-b777-2988e84d7dbe@ieee.org>
+        Fri, 30 Oct 2026 06:55:45 -0700 (PDT)
+Date: Fri, 30 Oct 2026 09:55:45 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Rongguang Wei <clementwei90@163.com>, 
+ netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com, 
+ jasowangio@gmail.com, 
+ andrew+netdev@lunn.ch, 
+ davem@davemloft.net, 
+ kuba@kernel.org, 
+ Rongguang Wei <weirongguang@kylinos.cn>
+Message-ID: <willemdebruijn.kernel.20231bc67675b@gmail.com>
+In-Reply-To: <20261030060043.94719-2-clementwei90@163.com>
+References: <20261030060043.94719-1-clementwei90@163.com>
+ <20261030060043.94719-2-clementwei90@163.com>
+Subject: Re: [PATCH net v9 1/2] tun: keep a kernel copy of the socket filter
+ program
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -126,48 +105,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9207a52e-2d42-4e10-b777-2988e84d7dbe@ieee.org>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 30, 2026 at 08:46:07AM -0500, Alex Elder wrote:
-> On 10/30/26 3:57 AM, Sakari Ailus wrote:
-> > Hi Frank,
-> > 
-> > Thanks for the patch.
-> > 
-> > On Thu, Oct 29, 2026 at 12:30:37PM -0400, Frank.Li@oss.nxp.com wrote:
-> > > From: Frank Li <Frank.Li@nxp.com>
-> > > 
-> > > When CONFIG_PM is not enabled, all devices runtime PM state should be
-> > > treated as active.
-> > > 
-> > > __pm_runtime_resume() returns 1 (called by pm_runtime_get()).
-> > > pm_runtime_get_if_active() is the try-and-get version of pm_runtime_get().
-> > > stub pm_runtime_active() also returns true. So pm_runtime_get_if_active()
-> > > should return the same value as the stub pm_runtime_get(), which is 1.
-> > 
-> > Shouldn't the same change be done to pm_runtime_get_if_in_use()? It's
-> > otherwise the same, except that it requires also the use count to be
-> > non-zero.
-> I think "yes."
+Rongguang Wei wrote:
+> From: Rongguang Wei <weirongguang@kylinos.cn>
 > 
-> I think the logic for !CONFIG_PM should basically pretend runtime
-> PM is enabled for all devices, and they're all ACTIVE and effectively
-> in use.
+> TUNATTACHFILTER copies only the sock_fprog header, so tun->fprog.filter
+> stays a pointer into the address space of the process that issued the
+> ioctl. tun_attach() reads it again whenever a queue is attached to the
+> persistent device later on.
 > 
-> That implies:
-> - disable_depth == 0, so usage accounting would (if enabled) be done
-> - runtime_status == RPM_ACTIVE (power is on, no delay)
-> - usage_count > 0
-> - runtime_error == 0
-> - Maybe ignore_children is false?
+> Rebuilding the filter from that pointer is not reliable. With the inverted
+> check below, a failure of the attach was not fatal: -EFAULT for an unmapped
+> address, -EINVAL for bytes that are not a valid classic BPF program, -EPERM
+> for a locked filter and -ENOMEM all ended up in "err = 0" for a new tfile,
+> so the queue was attached without a filter. And when the read succeeded,
+> the early return meant the queue was never published at all.
 > 
-> This might not be complete (and could be wrong!).
+> Keep the program in the kernel instead: tun->fprog_kern holds the
+> instructions, and each queue gets its own program built from it with the
+> new sk_attach_filter_kern(), the kernel memory counterpart of
+> sk_attach_filter(). The copy is freed when the filter is detached or
+> replaced and with the device, and tun->fprog is left untouched so
+> TUNGETFILTER keeps its uapi behaviour.
 > 
+> Also fix the inverted check, which made tun_attach() return early when
+> sk_attach_filter_kern() succeeded instead of when it failed. Neither change
+> works on its own: with only the kernel copy, every re-attach returns 0
+> without publishing the queue; with only the check fixed, a re-attach that
+> used to succeed without installing a filter would start to fail.
+> 
+> sk_attach_filter_kern() builds the program with bpf_prog_create(), which
+> does not keep an original program, so SO_GET_FILTER returns -EACCES and
+> sock_diag omits the filter for sockets that use it. tun sockets are not
+> exposed as file descriptors, so this is not user visible.
+> 
+> The header and the instructions are checked in tun_copy_filter() before
+> anything is replaced: a TUNATTACHFILTER that the classic verifier rejects
+> now fails early and leaves the previously attached filter in place.  The
+> instructions are verified with the new bpf_prog_validate_classic(), which
+> runs bpf_check_basics_ok() and bpf_check_classic() on the copied program.
+> That does not cover the s16 check in bpf_convert_filter() or the runtime
+> selection in bpf_prog_select_runtime(), so a program can still be refused
+> when it is built for a queue. Such a late failure does not replace the
+> saved program: the copy is committed to tun->fprog and tun->fprog_kern
+> only after tun_attach_filter() installed it on every queue. A queue that
+> already took the copy is rolled back, which leaves it without a filter,
+> because the program it ran before was already released; restoring it
+> would need an extra reference per queue.
+> 
+> The inverted check was discovered by manual code inspection first.
+> 
+> Fixes: 54f968d6efdb ("tuntap: move socket to tun_file")
+> Link: https://lore.kernel.org/netdev/179027275318.2160803.4185895144088175048@kernel.org/
 
-We could add this kind of information as a comment somewhere?
+nit: customary instead is to have a changelog with links to the previous
+     versions below the three-dash line.
 
-regards,
-dan carpenter
+> Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
+
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 
