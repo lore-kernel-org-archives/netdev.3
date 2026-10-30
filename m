@@ -1,67 +1,63 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793390337;
-	b=4O36e/9Jho4/jDBZyboWUsWPTtWezzpciMqsubJd/OcSZofGTCQGUlvAgvzq1mSZP2Ux
-	 STHYR4NDaOL2mNWTbTaOJgLqvJNKmYy0e3AQn+csgUYJ9j/vcA1ZGg+O6RAtytpVOk2z6
-	 BAc0OIscoHIYKEls1Je7PHJ6TT3kT91/op/j7Uxn1JpftnVPqHqpfZ1OraRbHj6fztUvX
-	 sSAYOaAjxWI7P8iAj0vhSbk2CnqN8I6DH13zF1QcOMnCLDwRolQFBi+l9nv8SqFC3lRX9
-	 RmoobjSrGQ6ioAp6xuG0MBLX3qoOKuIoCbXO4k3WxxDQMCf2AdtzjpYSr4Bhw0KFx6g==
+	t=1793390562;
+	b=Ym/tE2tCCxUN2G150stNBfz96/rbOULWROjZ3jetVGSVlOr6U+EocDKhipCJOGGwWOYu
+	 xQXI5xcNAh77XMAzw4XyEHyCOYQAL8Ujxgo4NstNGhip/gtj/Tl7fj3dsesh2Xxt3iZ6U
+	 ECPpswGKUldJT3ZdyIOCS+bqsS7isalvDfaeIg7jxfTKlZ3PR51uQD/rAFl4h/NLCQfR2
+	 1cvHhFVOOVGExm19UfuPw/ArhZQfHSyyCxfmDgjIA/kfwBsD57kgZMVdFgezOuXag0Pa8
+	 fChjaaBu+nv6rgoc9HIuAXEjfwhLseMDxBMzUyTVv+bVYFjag8VhwS67aHEl55hk1Gw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793390337;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793390562;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
 	 In-Reply-To;
-	bh=5qjG6i4xA6DIkXt/Q+KGqoEk/cGxbTWM/nESsvws66E=;
-	b=sWFPJqtSaplkK3Z/40U92lK/TeH01ZQu3M+wC3RDqTpMXkDvXysT4ZWEMt30/CItUFn5
-	 6etdhcjfydccLygy2+Skv/ehk3EEOh7uc26V8oo40wj5qnRiCOKy8i1fVuCtu13Elx4AU
-	 ENgtmKb/wuVoGwIxd3YoVMNB0lfuythlpzaostK6zFKDr0LSVvIH3prW0ctIkC6jfBvzN
-	 rzI6ai8k/rBHtWJ2EGc6UjCUTmTlWxzZA0IIitVeF3GyXS7ivJsWhqU+Rq0u3gTuHgD7O
-	 A+FEynlBXzSpLJ5E4nQFbMMXbZ8k42FMZbqGymvHePvpSAEMuzIaiBfIL0Fcu83kqsA==
+	bh=CdgjB3iMB/xpCXm7PRSva07wAj5gmWKOsYwxpue/r48=;
+	b=mNSlN8ldhvDlnyfZcAlFV7ANByTdeST9rYDgwfnVQrK2qaLlIEhbyT144bFF0Fdfg/ww
+	 9b/CSw2xY7WLUVpoOyynWLjo7ZYu15djQXwL/KhgrFikhPF1wA8+NWzBFrJZy5LWMneRS
+	 m9AnY0UquX2maLGWf+ftlDXlyLUxAWxmLWJffGsRhP9sdaWr883NLemfOWCldXivsOfRs
+	 e+XbDZ1Lbz553p3cGzUva9phrIJinMUs0utN0zOjsgJJu2yyIA1c+raE6offHquNh8YW1
+	 DGhH1ZOnC7azR2PtTUSMv45E18oHHERv1vJ+mIh9ZMRb/F3saczw2R/1mfwTEcXfZYg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=lunn.ch;
 	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=tF9I+H8b;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=nnvYecgQ;
 	arc=none smtp.remote-ip=156.67.10.101
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD21606A31A;
-	Fri, 30 Oct 2026 19:58:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2BD21606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D891A606A31A;
+	Fri, 30 Oct 2026 20:02:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D891A606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=tF9I+H8b
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=nnvYecgQ
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=5qjG6i4xA6DIkXt/Q+KGqoEk/cGxbTWM/nESsvws66E=; b=tF9I+H8bbSgAY2bbDjP4HqepXx
-	GKNBo50OqY33VXHTbynu4itMCmuk2ec/eEJCiD2Tty6O7EACb5j8O4zlkAnu+a+j4g2WeJE128qQK
-	QsYPnomF2nwvd6sWmI6cFPk4EE26Qa75VAoh4qWevfA2/XKSqIzl+1ewc26X8Pygl9Q0=;
+	bh=CdgjB3iMB/xpCXm7PRSva07wAj5gmWKOsYwxpue/r48=; b=nnvYecgQBjPgn7ZIxAbvE6MhR8
+	jaKDY1bguj0p8uWbaxpsbCCUBMj0m5XFVq5bkZ8CmnhNN8WsKg1XXK5cQRTx/3r1ae3dNSqRCTNtc
+	3qcYP2vfr6YmksJg689a7UiNps8aeXsiEhfngI+9gDKJoA2gjhpxx2DBqQljUNfNp2xY=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1xMskI-00DQZ1-3J; Fri, 30 Oct 2026 20:58:38 +0100
-Date: Fri, 30 Oct 2026 20:58:38 +0100
+	id 1xMso4-00DQaS-L0; Fri, 30 Oct 2026 21:02:32 +0100
+Date: Fri, 30 Oct 2026 21:02:32 +0100
 From: Andrew Lunn <andrew@lunn.ch>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Nicolai Buchwitz <nb@tipi-net.de>, netdev@vger.kernel.org,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	andrew+netdev@lunn.ch, horms@kernel.org, corbet@lwn.net,
-	skhan@linuxfoundation.org, rdunlap@infradead.org,
-	workflows@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH net] docs: netdev: try to force agents to disclose info
- for fixes
-Message-ID: <fda901f6-5ed9-4a58-8e8d-da36b2a61dfa@lunn.ch>
-References: <20261029153459.2257998-1-kuba@kernel.org>
- <9A74CA14-D4C0-4252-A3E7-256F9626B513@tipi-net.de>
- <CAMuHMdVJVxpX6OLVpE9K9CDY5q61A2rFGf7FpUjs7xpFwReEzA@mail.gmail.com>
- <20261030093418.2fbf0999@kernel.org>
- <20261030164758.GD2673734@killaraus.ideasonboard.com>
+To: YuanZhe Liu <25031212351@stu.xidian.edu.cn>
+Cc: Thangaraj Samynathan <Thangaraj.S@microchip.com>,
+	UNGLinuxDriver@microchip.com, netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Russell King <linux@armlinux.org.uk>,
+	Oleksij Rempel <o.rempel@pengutronix.de>, stable@vger.kernel.org,
+	Bin Yu <byu@xidian.edu.cn>, Cheng Wen <wencheng@xidian.edu.cn>
+Subject: Re: [PATCH net] net: usb: lan78xx: only stop phylink if the
+ interface is running
+Message-ID: <8bc84f9d-4c9a-41db-af34-28377cfb2b1b@lunn.ch>
+References: <20261029160204.2567-1-25031212351@stu.xidian.edu.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,19 +69,23 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261030164758.GD2673734@killaraus.ideasonboard.com>
+In-Reply-To: <20261029160204.2567-1-25031212351@stu.xidian.edu.cn>
 
-> Tweaking documentation in semi-random ways in the hope that some of the
-> changes will have an impact doesn't seem to be a good process,
-> especially if it's to work around defect of tools.
+On Fri, Oct 30, 2026 at 12:02:04AM +0800, YuanZhe Liu wrote:
+> lan78xx_disconnect() unconditionally calls phylink_stop(), but
+> phylink_start() is only called from lan78xx_open(). When the device is
+> unplugged before the interface has been brought up, the attached PHY is
+> still in PHY_READY and phy_stop() reports:
+> 
+>   called from state READY
+>   WARNING: drivers/net/phy/phy.c:1670 at phy_stop+0xad/0x380
+> 
+> The same warning is emitted after an ifup/ifdown cycle, where the PHY is
+> already in PHY_HALTED. Call phylink_stop() only when the network device is
+> running, which is when phylink_start() has been called.
+> 
+> Fixes: e110bc825897 ("net: usb: lan78xx: Convert to PHYLINK for improved PHY and MAC management")
 
-From the commit message...
+Why did you pick this commit?
 
-"LLM-driven-developers" are not including the info about discovery
-method we want to see in commit messages.
-
-It is not the tool which is the problem, it is the developers. This is
-in fact makes the tool better, it points out to the developer they are
-doing something wrong, not providing the information requested.
-
-      Andrew
+    Andrew
