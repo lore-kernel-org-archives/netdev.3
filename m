@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793402422;
-	b=hv4n8mMDvn3XhXipnYhkP3XonM7qp4KUjuDZJCV7A9++HvZQueuDeuV/XlOjTD3C9UP7
-	 se9Fdc3/8GLM/WOzYAGktNBtHjfLL5gtYq0YV+o2L2D6Yz2jrVGaVBV4jJuPDtTO6cV9I
-	 0WFiNtK0wxIb3AnFmSO0Sf/IKu2dPGTXR9PIUbFR0F4TcOhmgeq3tw/UBzXXkasWSsnX6
-	 wIhuRb/pZVleAHBh7NiD0iF4xQiAMuKU6n2a/YSJQXd5BFGmeF5GIfXNs6XDeYgNG6XJq
-	 7BKnTE4vJ40M4AmNVarAIhwpA5lXQWC9i7DkNzOEOLohDtFeot0FX+zG2KpnglYQiBg==
+	t=1793402419;
+	b=NfDBdZ1Dw15DM59Ct9a3hOqdqCBqcynhi84w+2farqDPGdvmRcB29aoJkbXYqpkGgETb
+	 KCVg2E2zH8gi3jN0HNtIjLKC64kjyZ1r/ttcu/DrEtXeuwoddauGwuAV6bnLZPmVFah76
+	 5N7WDaRjeLRUy9tvbl+ciB6QgD1/xSPVtLLthMxZX1n0aKg2npxbTfpxoljejxg8CMqmw
+	 uFON8+LC0BCpuCF2dGVqKUJ98IigCFjWaxdxV43Qe0lsSr42c0yQWFl1r/HDlw+OFW6XX
+	 UZsLIOd5nXEWCrUS3JNPqMuCwRpBd9bY+YfR1pgfLMimw+aFZpLprtKMNLPcWNvGuMA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793402422;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793402419;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=MWaX5dyd2Adm4zsMFXFtEklW6gVBSAQKnGqgpC3V5mE=;
-	b=oNXYPxaJmMVW5krJXLf7B1TnlU2LI7DSb8MJFf1A0q2YxSg9tWhZ6cqxw5/okGHwVvn5
-	 XhLFRCxOeCmQNp/8ckrnQvmZx7ZTJintVjdZrbqzLoXWrsEGXJY8hFmgruDOb5vO1izzE
-	 09/vBXhKSDVZJGHEnMZUUAe8ebG7XSv60klNgm8QdOlfF+VT8uMcJMiKnyGBDPfX/0k09
-	 q5dS3HYcFiZbQ4fj0uWjfGCNT9AuEWEjcaGiiCVoemrYvglo0x4MhcB28OiY2Ck1d9IzF
-	 xHlYsolp7YfwKO9gycUTfS8KthGlfdZ4TiQOIcEnPLwsFLvstQSBByaWPNg+5KXt2/w==
+	bh=rWLDs8Ll8VxxTdLnS0gplBN94ZDg4eVJMaUjV0A4+AI=;
+	b=S8CWwri02qdUImswuhE7VadFxnhrTZZQBo9A5eTFlwg6K3aBIjzFoqMs1nFp0ryIkIwv
+	 xpbvJyBGDtVTsqbzgK4EG9YvwxYDcngPPw9Gi6ssKi9Bp6Icxa3HSaE+CJ6PpGYf7XkAf
+	 SBywZjzXpAJUuR6EVZlKNx/wQYAgq03E8mFPWXSI6ExX564SHr9Q4Vnlvd0bk07etr7GS
+	 ZG4xR/q65YkBdmWLN4iBfm+K0Q5nzs+T0y39VyneVXqxaefTFxfrBUhSLu6+LbSoOm7mj
+	 sPB/cfNf8nYnf0ifLA/UblYwptWvayKjfgK4nmIOerhuJEkWkZwmtnSTS3zAitm47kg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FgIVu2a4;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HKS686O6;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C256E606A33F;
-	Fri, 30 Oct 2026 23:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66DD606A31C;
+	Fri, 30 Oct 2026 23:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FgIVu2a4
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48BE71F00A02;
-	Fri, 30 Oct 2026 23:20:21 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HKS686O6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF7E1F000C1;
+	Fri, 30 Oct 2026 23:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793402421;
-	bh=MWaX5dyd2Adm4zsMFXFtEklW6gVBSAQKnGqgpC3V5mE=;
+	s=k20260515; t=1793402418;
+	bh=rWLDs8Ll8VxxTdLnS0gplBN94ZDg4eVJMaUjV0A4+AI=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=FgIVu2a4FjAtstcm6wbUBEuvd/hn7qzmVRIHQeceWWLJkw4kSBzXiR8sZcN2H0eLA
-	 XqpeUcKTB0EhAwJ+gr2grqmFBYBvshra1CryuirkOnzN2I0UjNfSxFpBlIESy/EXIZ
-	 VEjWYi37DWKPDpk06DUSz6qSddMIYkuPVTA36wq5Wa0vxYkNvsFSR/JjhaEZLCZ4AN
-	 KkASyvfGaVlScP493aGWVbONYPhx/cZMlmPgbl8cKmuxQ35/YmHCeuP95d5wYLlxf/
-	 TUYWHhroRGyHWf/m8waw9lIMpN/bx6fG0iumj80VoTeA5VBxbbvLIWj9sIGqUmrGoN
-	 Yanajm2wP0AJA==
+	b=HKS686O6aVxjwGwm/TBGgJbMPlvd/bpz9AIv/c2tW35dgbg4JguP5ZzVDbnLSL7ZF
+	 hTVZkHaoGFzFr3wnRobPxrcLf4OK3Hejq9fQbX9Imb8X9U5L54jsO29tmpZ7AH961G
+	 /5TYigKLOqaYD4kI7HhgB4IDDjfo0zDOFxdOa1sSPujzpZcth3hps6pFHZapBiQ3nC
+	 r22dMHabrvqpKG7tL2by64vaDRDILJ0Zz+fJAceo4sjRYjJqPSMJAmkJ858MlrJSkH
+	 MiFrxuCLxIK+ZQaAqCOGV6XUC8H7TiciionPn77a4vLViK4TaeIrIz/1hJJNoUklkz
+	 AbTyn4QGhpEbQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 401F23800478;
-	Fri, 30 Oct 2026 23:20:21 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 402213800478;
+	Fri, 30 Oct 2026 23:20:18 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,38 +54,51 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] ptp: fix use-after-free in extts_fifo_show() reading
- tsevqs
- unlocked
+Subject: Re: [PATCH net v6 0/5] ptp: make virtual clock sampling and teardown
+ failure-safe
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179340241979.1826218.15128975775519489276.git-patchwork-notify@kernel.org>
-Date: Fri, 30 Oct 2026 23:20:19 +0000
-References: <20261026100535.68114-1-yuz08559@gmail.com>
-In-Reply-To: <20261026100535.68114-1-yuz08559@gmail.com>
-To: Yu Zhang <yuz08559@gmail.com>
-Cc: richardcochran@gmail.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+ <179340241708.1826218.11378651277022206414.git-patchwork-notify@kernel.org>
+Date: Fri, 30 Oct 2026 23:20:17 +0000
+References: <20261026-ptp-vclock-sampling-v6-0-e705612541f1@gmail.com>
+In-Reply-To: <20261026-ptp-vclock-sampling-v6-0-e705612541f1@gmail.com>
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: netdev@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
+ richardcochran@gmail.com, andrew+netdev@lunn.ch, yangbo.lu@nxp.com,
+ mlichvar@redhat.com, edumazet@kernel.org, davem@davemloft.net,
+ linux-kernel@vger.kernel.org, vadim.fedorenko@linux.dev
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 26 Oct 2026 20:05:35 +1000 you wrote:
-> extts_fifo_show() walks ptp->tsevqs with list_count_nodes() and then
-> list_first_entry() without holding ptp->tsevqs_lock, the spinlock that
-> "protects tsevqs from concurrent access". Every other accessor of the
-> list honours it: ptp_open() (list_add_tail), ptp_release() (list_del
-> followed by kfree of the per-fd queue), ptp_clock_release() and
-> ptp_clock_event() all take tsevqs_lock. extts_fifo_show() is the only
-> one that does not.
+On Mon, 26 Oct 2026 12:11:26 -0600 you wrote:
+> Fix virtual-clock sampling errors, registration rollback and parent
+> teardown in separate patches. Keep failed PHC reads out of the timecounter
+> and serialize extended samples with virtual-clock adjustments. Also
+> preserve the zero sentinel for packets without hardware timestamps.
+> 
+> Retain the existing cyclecounter mask, scaling and conversion windows.
+> Retry the first failed refresh promptly, then back off consecutive failures
+> while preserving regular two-second refresh attempts. Queue the first
+> refresh immediately after registration. Prolonged sampling gaps remain
+> subject to the existing half-wrap conversion window and full-wrap sampling
+> limit.
 > 
 > [...]
 
 Here is the summary with links:
-  - ptp: fix use-after-free in extts_fifo_show() reading tsevqs unlocked
-    https://git.kernel.org/netdev/net/c/603a0c40d414
+  - [net,v6,1/5] ptp: drain virtual clock sysfs operations before unregistering children
+    https://git.kernel.org/netdev/net/c/0e4a135aebc7
+  - [net,v6,2/5] ptp: unwind partially completed virtual clock creation
+    https://git.kernel.org/netdev/net/c/3dea778260e3
+  - [net,v6,3/5] ptp: vclock: propagate physical clock sampling errors
+    https://git.kernel.org/netdev/net/c/d1bdfdafd663
+  - [net,v6,4/5] ptp: vclock: serialize extended samples with counter updates
+    https://git.kernel.org/netdev/net/c/d3fcce5afe3b
+  - [net,v6,5/5] ptp: vclock: preserve missing hardware timestamps
+    https://git.kernel.org/netdev/net/c/63787dfd1b5a
 
 You are awesome, thank you!
 -- 
