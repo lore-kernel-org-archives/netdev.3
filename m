@@ -1,75 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793334712;
-	b=Oyx6BCmtLhPnlftIkYuLNupw1RlFsTa2caT/YbkOTGxWZEOi59kOX+qqLdNKzYDpp/p8
-	 Xq6dx0MQUzx9bZMKZF3x5tROo85HgN0QoOTEaUQUPQuHFIBL8Kdk7Q1DK/ls+q94ioVJ+
-	 RzKnXYmy91SlqjRJosPX7GTqzJvxBUphm98p3IIPp3owQCu1x2QmtJFGTkaHM/ItDQ0i3
-	 ubr5IRcyTtYPBCN6E+WVJh3FhbGypRzjOtwxFmNjzeKzHtHtDh+tg3BBhn4L4EnwUJ3hy
-	 43jj8tanI7qE8PmPmRRWOrDOeax/J5ENHHbvykvSRC6fAhbKW7Qjr3MqU8WIgRST1Gw==
+	t=1793334711;
+	b=qZtfpQFv2HrSzs2laEcfigrtwFr2nzslo8P7yKTHNoxetHwpRNotzb1yo43/fsD+aSYx
+	 QDFhM/3hlB0RvwyPuIdW8tMDP3iuSGXumLrkOPTh0xMaUQ5VyZfGIXd/M9FpZ0Ov9ZTWQ
+	 qwZTcTppYthOWxfSPrQfmc7s5e8HoLBmO1mE52gPXSLCLrMwHk4fPosin8d2PGlj34TpE
+	 hctcBWSb5h2nfz8vkZnY1iy+KLRWjxzE+P6ZrgNoL2BTIYC4H/pcPo8Bsqa+Vv+KRXyJf
+	 KrylxHt1d0PgokvQWVjedYLV9GwVhWU7S3Ro4zBOuOAKoaevVluewWw0hDzPWU065pg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793334712;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793334711;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=bMdKaLnci5rE3Vyxt1ztOm4nlJPbyxipNoi6qOdT6zs=;
-	b=GbjTkswY/hm9V2TqXHScCqs86y3O67RzeQyvuijpCPzgoU2L6WmczC9mo/2e142p5vNK
-	 7qW958hkKIXqD9NCrPs6ZAIbBdTmgilPLq93/kqJaNDnmWaZ+Ppu0V9reDgURj9ghBnXA
-	 Zg+xQvJqYXO6u6YnNqcxA+SWwStFXRhB2D890t5vxD02qcXHJ2lwHkL3DYLk2LPYXTbgS
-	 NuKUKX9RbQ/zUI43i0hMSWlu+xtnqw80eSWMxYwYoW9ene+lfvqPH39HACIPooAMPZato
-	 0C8wBeOv51Azmdg+kenyoUhJZzKYRR7bRYADRjirji9OXdc/W5y7fi4CjUqEqyC229Q==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=io8JORXoJvhQnQrjoZCgz8Xcl3owpfnw9TmdubvOgOw=;
+	b=PCEFCode7slbLnwX38eWErpQ7b1JBPaWbYRr8WI0Rg1URWgXn/QheHZU7pTH8c019n4B
+	 HEKMQtDkLY2caAzJ0DP5HwfKpKnQFozLRmT0XDU5huwOG0zrxCXPwRgG5r9x7J1h8rq3i
+	 5pftql2ZichvgsNQ0lT4A7a+AqBk4qH04wib5bwQY/sIHmnDsdupTHoNJTnIimLuQVFXh
+	 EUkUhUQP69APvNqtHUDaE7FzxUYkQY05NXU6Eh/+8vsJGmWO02g3npfQ1eQxbSnCXqNuu
+	 jXyxebDHGULn/g2iqPeLCsvtHWI+DaJLTbf8ygy68cBVzN23lVmsbex17SRHJij3A/Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--weiwan.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JdVCMErj;
-	arc=none smtp.remote-ip=209.85.214.198
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=CowTEKHI;
+	arc=none smtp.remote-ip=209.85.210.199
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593CD606A339
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 04:31:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 593CD606A339
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1AD606A31C
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 04:31:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A1AD606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--weiwan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JdVCMErj
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2e869e00005so5915475ad.2
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:31:52 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=CowTEKHI
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-88c768885b4so303008b3a.0
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:31:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793334712; x=1793939512; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bMdKaLnci5rE3Vyxt1ztOm4nlJPbyxipNoi6qOdT6zs=;
-        b=JdVCMErjF+4JfBwV8owjnae0AaqwdnF512qEm9m1iEtGtFSWg8l3O6IrJNSWb80veq
-         MC4Sw+oX8BcfqD29ZeDuqldB2IC0M3nfP6NyUFw3NLeEVKlpeux+CoUrSHR+KjvXfA1x
-         WBzvXZK33fVOfJDNPQ1nkguTbsTOz1/xEk81NpWcgxrmaiayGRUMPMJsSc9KQ2d8EjAk
-         hUAJ8Bp0DAMOWvjKB1Lyz6IFb11j/a662N7Pk/sbC93uY3iD+Yi2rIDJdQevUvzFpcYK
-         ZtEn02hE6EdRygHmDjUXwGEGj9Cu5nMdKBDGu3Xi1ZL9jXzaiiNRBXlWB9RYkYjScP/p
-         BRnA==
+        d=google.com; s=20260707; t=1793334710; x=1793939510; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=io8JORXoJvhQnQrjoZCgz8Xcl3owpfnw9TmdubvOgOw=;
+        b=CowTEKHI5sIJmXyky4r4dCX5ALZx+ZPyS2q31kY/7bqpb4J9Zz7Ughg5k72s0+J36w
+         Cq11T3mUm2547HQfWuIYeoKdMgvfsqLj1loT02IERNVfLsOvlUyEIGJPoSjLtz/JRX7N
+         astphQmvFEQ0DSlB4U5k1bB6sdv9PVwkREyxWZNWOzlHc+UdD2vOZDyrNwFlLKwx9hZH
+         2JN3wc9IU0MbqWs2Uni+n5f1Vz8q2hLiD3s0ysUdMMADtkES2SSsgeNXDH/t6SY4jKEY
+         XAXOF/1EV+LIQc1v5AHXwY7osxiEnRLSEFpHsTrgP7713lPIn/kCUcarlS6d/lwx/U2b
+         HZtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793334712; x=1793939512;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bMdKaLnci5rE3Vyxt1ztOm4nlJPbyxipNoi6qOdT6zs=;
-        b=G2VKYHAg5VH7MJKF+U1dy15GrsXCDwArUGmMxhJv62K6857JiyOkZVmuxgdRAdO5ey
-         QS3Nmd/eDgKQnkOunNY4aoYRKXcvYwGaMG6/TCFo/N96+NkWwLVphFvWaieXCsxW9KHQ
-         PdKVhFgn6qd2GTcTlEZqBudxGGOhYHQF/KJ/80P4m4Gf40FNEnScmR6gHhCR6VDrNhT3
-         0BvY5jWakZlTeTqOY+CU3N16w+oamaSSOzdsPUXjv5r7hrHfne3hnazPR7LqfStHFJW+
-         bduPeT5laLW1ZvMerIcqJfEH2ky9KqTCTrOjtwdLt+7jdA4zegMnI+9jsXvo4zwuztJk
-         4SDw==
-X-Forwarded-Encrypted: i=1; AKwUvBxXQ0EuZBa145M8Pb8GrAq1oYjKZTXUhWAkO6oKzyeJkHMkDuHn4utkt1kLaEKczkV3jHNxrsM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJPFRjUXe6JiK3JmDhYZxN5NER4Sk12aGSpTgrgBTdEy+B1fs7M
-	M186zETe8EzeLnwfxin6/FRqW4v4X1qnVqnB0fzBDPnM0znXew++48JcnL+kJ255d57P4HAdH2K
-	nYxDzGw==
-X-Received: from plkg13.prod.google.com ([2002:a17:903:19cd:b0:2e8:1f84:7c18])
- (user=weiwan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3c27:b0:2e9:460e:ca57
- with SMTP id d9443c01a7336-2eb36426e0bmr13063885ad.15.1793334711324; Thu, 29
- Oct 2026 21:31:51 -0700 (PDT)
-Date: Fri, 30 Oct 2026 04:31:45 +0000
-In-Reply-To: <20261030043145.2185700-1-weiwan@google.com>
+        d=1e100.net; s=20260707; t=1793334710; x=1793939510;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=io8JORXoJvhQnQrjoZCgz8Xcl3owpfnw9TmdubvOgOw=;
+        b=NvtFLsFb5kK4Ce1tKYbK7b50Cajf1Uly+moPWHozaCE8B+bX8gZsGhAZdiLt9gzdSd
+         nXpHSk+YLQkTkriOOjCfdc/gKj/FrXNReHErnQX0ba+mLtQbWk/2nlDueVlx3NmTKmRr
+         NvorfDMGbV/pbV8fhZ9cgrFWOr7H6wtWe+YwqlIR+7wLxkijXN8yGnn3s5bzt9y7AjnU
+         zYi3dH+EWhRazawqJB5b+XSnD3KraiTTMLuAfynhuGIGVI70rb38fHM/VE7M9/su89Ge
+         1ZxF14q5iEoek2rL60UwNbCon8NGNzQQgqwrQbCTlt2iOk9LLSx2A4xaWyXdVetyaxE8
+         OvOw==
+X-Forwarded-Encrypted: i=1; AKwUvBwITtOyE7+WElxWhpv3/LwFSbQfR+2BWExPo53sAQLb0SqtSaEvTfDish9dexQkmssP4ZTeFps=@vger.kernel.org
+X-Gm-Message-State: AFq9FYINnqQknuiw65YA1LknrLnXC+y/dKHhdLGTPwMXAbeIwMCm9lYK
+	H7TG5bx85Xjoiemb99N7RdMoMatPamVrkyCfGU6UEKiuyXr7/EYe9TQyAxjv/KMzJUvnbWvA1qJ
+	+pMKKiw==
+X-Received: from pfbdr6.prod.google.com ([2002:a05:6a00:4a86:b0:8a6:c8f0:ec6d])
+ (user=weiwan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2388:b0:899:13ee:1bd7
+ with SMTP id d2e1a72fcca58-8a9bf04faecmr1031284b3a.35.1793334709539; Thu, 29
+ Oct 2026 21:31:49 -0700 (PDT)
+Date: Fri, 30 Oct 2026 04:31:43 +0000
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,10 +76,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261030043145.2185700-1-weiwan@google.com>
 X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
-Message-ID: <20261030043145.2185700-3-weiwan@google.com>
-Subject: [PATCH net v2 2/2] selftests/net: psp: test bidirectional data transfer
+Message-ID: <20261030043145.2185700-1-weiwan@google.com>
+Subject: [PATCH net v2 0/2] net: psp: preserve SKB_EXT_PSP across packet scrubbing
 From: Wei Wang <weiwan@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>
@@ -92,55 +88,48 @@ Cc: Simon Horman <horms@kernel.org>, Jakub Sitnicki <jakub@cloudflare.com>,
 	bpf@vger.kernel.org, Wei Wang <weiwan@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-_data_basic_send() and _data_basic_send_netkit_psp_assoc() currently
-only verify unidirectional data transmission from the test socket to
-psp_responder. As a result, they do not exercise the receive path for
-PSP-encrypted TCP data segments arriving at the test socket (such as
-packets redirected across a netkit interface associated via dev-assoc,
-which relies on SKB_EXT_PSP surviving packet scrubbing).
+When a virtual interface such as netkit is associated with a PSP device
+in another network namespace via PSP_CMD_DEV_ASSOC, incoming PSP packets
+decapsulated on the physical device lose their SKB_EXT_PSP extension
+when scrubbed during redirection (e.g. skb_do_redirect() or
+netkit_xmit() calling skb_scrub_packet()). As a result,
+__psp_sk_rx_policy_check() rejects incoming PSP-encrypted TCP data
+segments at the socket layer.
 
-Use the existing "data echo" command in psp_responder to verify that the
-test socket can also receive PSP-encrypted data from the peer in both
-_data_basic_send() and _data_basic_send_netkit_psp_assoc().
+This gap slipped through the existing psp.py selftests because both
+_data_basic_send() and _data_basic_send_netkit_psp_assoc() only sent a
+unidirectional data stream from the test socket to psp_responder; the
+returning pure TCP ACKs had SKB_EXT_PSP stripped by skb_scrub_packet(),
+but were still accepted by __psp_sk_rx_policy_check() while peer_tx was
+unset.
 
-Signed-off-by: Wei Wang <weiwan@google.com>
----
- tools/testing/selftests/drivers/net/psp.py | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Patch 1 (originally from Jakub Sitnicki's BPF skb extension series [1])
+introduces skb_ext_scrub() to selectively preserve SKB_EXT_PSP during
+skb_scrub_packet().
 
-diff --git a/tools/testing/selftests/drivers/net/psp.py b/tools/testing/selftests/drivers/net/psp.py
-index 473500901879..e507951b440b 100755
---- a/tools/testing/selftests/drivers/net/psp.py
-+++ b/tools/testing/selftests/drivers/net/psp.py
-@@ -120,6 +120,12 @@ def _check_data_rx(cfg, exp_len):
-     ksft_eq(read_len, exp_len)
- 
- 
-+def _check_data_echo(cfg, s):
-+    _send_with_ack(cfg, b'data echo\0')
-+    s.settimeout(1.0)
-+    ksft_eq(s.recv(5), b'echo\0')
-+
-+
- def _check_data_outq(s, exp_len, force_wait=False):
-     outq = 0
-     for _ in range(10):
-@@ -478,6 +484,7 @@ def _data_basic_send(cfg, version, ipver):
- 
-     data_len = _send_careful(cfg, s, 100)
-     _check_data_rx(cfg, data_len)
-+    _check_data_echo(cfg, s)
-     _close_psp_conn(cfg, s)
- 
- 
-@@ -726,6 +733,7 @@ def _data_basic_send_netkit_psp_assoc(cfg, version, ipver):
- 
-         data_len = _send_careful(cfg, sock, 100)
-         _check_data_rx(cfg, data_len)
-+        _check_data_echo(cfg, sock)
-         _close_psp_conn(cfg, sock)
- 
- 
+Patch 2 updates the psp.py selftests to exercise bidirectional PSP data
+transfer using psp_responder's "data echo" command in both direct and
+netkit dev-assoc test cases.
+
+Changes in v2:
+- Patch 1: Replace the skb_ext_del() loop in skb_ext_scrub() with
+  skb_ext_reset() + skb_ext_add() (and a fast path when SKB_EXT_PSP is
+  the only extension in the skb_ext buffer) so shared skb_ext buffers
+  with refcounted extensions (SKB_EXT_SEC_PATH / SKB_EXT_MCTP) are not
+  left half-deleted; clear skb->decrypted if skb_ext_add() fails.
+- Patch 1: Make skb_ext_scrub() static in net/core/skbuff.c and drop
+  EXPORT_SYMBOL() / public header prototype.
+
+Link: https://lore.kernel.org/netdev/20260910-bpf-meta-inside-skb-ext-v2-3-0b21e42180b0@cloudflare.com/ [1]
+
+Wei Wang (2):
+  net: Make PSP skb extension survive packet scrubbing
+  selftests/net: psp: test bidirectional data transfer
+
+ net/core/skbuff.c                          | 31 ++++++++++++++++++++--
+ tools/testing/selftests/drivers/net/psp.py |  8 ++++++
+ 2 files changed, 37 insertions(+), 2 deletions(-)
+
 -- 
 2.56.0.317.g454f8302e1-goog
 
