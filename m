@@ -1,60 +1,123 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793349496;
-	b=G6nSfhZ0FgEynjDUbauWN6wg1+AI8SIrBh7jFlAFmEarilJM0eELJMwxFcX3gTdgDYg0
-	 vETDfdH759f+nGS6clEQ4ApRIXIGuryWJc5cL8GENfeNhFMrUGtetDuZ4wGSE0L9+4zin
-	 GsYbeTi19GMATJAruG1cGDsLfcv2WTYnGmh8lL7jLg5/C5xQ1Zy1aXGhn75KnvLncZwhi
-	 vWMjeq+TuG1YtsiKXIypoe6P9Jf9VVzBqfQHgsZLr6mFNAivLPWMt2MW+G0ny7pD/iRjL
-	 ZUos8CPr7UuInvToydq8KmIb0K2JHrarnV1lbXxyktBRre2jiFo3OlvpdAiiNIKlbsg==
+	t=1793349533;
+	b=SLs4PtNhyg+xm5Wz5NOOXjkz7tiBzhXKp5BJpWZEPPmOX6eBGArVsd30xlcm+HFqOEmt
+	 6hgHFmBJjCjiLG7eH0iLDhPOhbg68GcUNsBZLyEVqCUl5M4fLedDoazziFuKUGL424+3m
+	 +CAjoFXOmqJTpvZV0x8GaMByVNK81DB3mrR+8LHBqJaF0SfzhAGGmRnz+KM0l5HZXTHrN
+	 /OZDWsyHXbOZZ/gfymln9BMFGdw7Q/R+6hN+7QBhDSDANRUwApYd1+qRFExgGSbsiC+lr
+	 +5SvjYLNKzp9+L5hbTeBQaMMiy4Us/7+bDcpWdZkUJYM6uZYH7VF4xpBfkBjnnVXINw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793349496;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=YOHPnJk49GaVwy8trzGHGIzoqGw+LTmoBiHMTZYcgM8=;
-	b=2LxIZDolHlcTYXOQu8AvDqfGhaGw52GaajbAtFwxDNSvVUvb5A+Jmm8eHSurwOifEObb
-	 SL93xmEtd/l0gcBsmrkIeFUv4pT4+uWVrYL0NT4knunaZdHgeBMC/Haoh/ONyY2PNwLp0
-	 y/BSiTkM3nAC+YegEohdXiAocEP5CsSGSRTtW4ibi9cG2UsRbMKo/F6cJqiLXnccplFeC
-	 u4dkPTczzj8wlc2gNQvQbSweHpDbLi3k4s5aUmE8AP0sqhPqEXhiwO0Mw0qAgC/wmOvfB
-	 n7+DbAancSFw/3nGs8a8Xau+FjZ+QazS6CChtV6TusqJn7rnzcsIgBmWQ8+KQA54CYg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793349533;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
+	 To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=SMwk5Ye/bYPS4wNLtjuoo+6vOdmAzp9/klLAmSpZWgA=;
+	b=wwwpnOAvlpY3haRe9HrUXVbUf2Azp5eaSsPsvQXI3zmCjgoY02YBxWe8WEjwZzoWdc8e
+	 RH8hH8qTmeY19HIg9KVVWRbsXpcp2V7rVCNElhLyocjbj0F7QWiq6yM5czfbX4fM9xypk
+	 IZZR2dHNf211JS/f0AjQVZnqnbw67/qmr16t2kWo/dwUYz12YpwkCqDQd+JRLsyGrQP5e
+	 DJmTKznaAniRCdQn2gL0zxtM81ZGpCgXwclkGwICNBd38mLdUIoI0arQAmWQCJVbUrV42
+	 Y6KPKudvyRAosbAf5tUBsfNU9SlhFceHkZmi5f0XPN8TbSpszvPSHlvgyDL6bpO9nGg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P7Fz9ypy;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=kvDMF3W9;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b="O/PN4HeM";
+	arc=none smtp.remote-ip=205.220.180.131
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D67606A335;
-	Fri, 30 Oct 2026 08:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60443606A31F
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 08:38:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 60443606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P7Fz9ypy
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F111F000C1;
-	Fri, 30 Oct 2026 08:38:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793349495;
-	bh=YOHPnJk49GaVwy8trzGHGIzoqGw+LTmoBiHMTZYcgM8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=P7Fz9ypyWBztPdDLD9KdPyJyjfqBO/ftvh3VJXqPvnXy6/ycOpNAII/qLT4m6nCvY
-	 oIh3AGvFBLblCZPOcsni1GT4U3P+9bzXyhXbeWBhGjn2wsJhuxOdU3wEj1mcPjt46G
-	 Vo6Hki6qfobkqmUQjQTfRG0DVXPqghtfT9LoHvEsw2u3lRlHDPjI59nupGIYaiL5oC
-	 lMGVYj0BozdJykYXr5W6b5g+RuxjdTB4Ld8WDpvItOHWiBflIvGDapa4RRKTerHHNp
-	 +StGror1NL0i3hcAPi04BNxLGWnUZgdc6xIeUZqD55e+FWsJ0PXvNEwWvLliHqJRV5
-	 e/s0YHjYgNfOQ==
-Subject: Re: [PATCH net v2] mctp i2c: fix double free of midev on netdev
- register failure
-From: netdev-bot+sashiko@kernel.org
-To: kenny_hsieh@jabil.com
-Cc: netdev@vger.kernel.org, jk@codeconstruct.com.au, matt@codeconstruct.com.au,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Fri, 30 Oct 2026 08:38:14 +0000
-Message-ID: <179334949479.3134.2940952959452938540@kernel.org>
-In-Reply-To: <20261027053715.1623087-1-kenny_hsieh@jabil.com>
-References: <20261027053715.1623087-1-kenny_hsieh@jabil.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=kvDMF3W9;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=O/PN4HeM
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69U8F9JI3267865
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 08:38:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=SMwk5Ye/bYPS4wNLtjuoo+6v
+	OdmAzp9/klLAmSpZWgA=; b=kvDMF3W9l+sTSqDU+lhaXNONwEDOIOtO64ZpR0fV
+	HSk17FtTM1wXg0hbU4I9QcCj2R7xmYyIcW9PPmipGme4V/utBR4nOyhdpskrNq3M
+	ZqRQRHZInjnqDm1lEZ0Hy90ynGjL21AiVvYaIXrkkPPCYsDEwtTekddKQIVLsMwF
+	Ai/Y9pYvM82uCXuI8o2ujUg000vGZcIy2lfnRqq3DtH8j4zddI+feWxtVSpRNr0Z
+	lvIbRBdyYdI4nZ+UtFC/Pu/M53nToFaxtDeVLCUW5W3OMLuTBupz9lIlZbwVk5/r
+	u/Uq7iOtxLZOMIZ1vGQzHO7XVy2nIqzLgUAkKCqyWI4EJQ==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hme6qj29w-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 08:38:51 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93f20addba1so77774885a.1
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 01:38:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1793349531; x=1793954331; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=SMwk5Ye/bYPS4wNLtjuoo+6vOdmAzp9/klLAmSpZWgA=;
+        b=O/PN4HeMORs4BxL5FO7elV6228OZwcjNXg20U+rZS9NVLK5qeGLk6Z6WgcfKnSm/Sk
+         GnTB8dngzTl/ZG0xIwr3VYKXIm4sh+rN//0PcOnE2gHG7+mALihwsrz0pLnrv9h1b6nT
+         wbeuL5SyvTbY7SwEFixHLDQddR64CxNTv1CGqdnHz2+aT8d6u7ikM1+cKfOZZ3NJcDl8
+         hFuCA1aJzTnW9wn6mCfmKm802Rko4z7dpkCXPVYiVbzq+lmCXVVC9LBSYAN5117FHC5S
+         ipo+VPzMaiXr7aqrKIs3cy1IX80lK0cWOh49Ag57gMid0bOW4VDVECWbM1IJCij2ofEg
+         sgmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793349531; x=1793954331;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SMwk5Ye/bYPS4wNLtjuoo+6vOdmAzp9/klLAmSpZWgA=;
+        b=c/hlrq1+Kzpu3H+930wCp6QEJb4dFgOoeZnM74ULsFn9tQZIWuTnGVRyTkenqWQx0E
+         Y5xlpBLlznjiYTzFI+vtbuEWt9bXG8CTffa0nnjswcI46vKgvto104fskKVZfjg5QE6W
+         pzZ9BVdEzgBhl+oJJNXY2frD+X58ZGZQip7c/afCGN617QX3rpDiL041Ivw21fvSm9Yn
+         aglqOtDvTkC01IEewLnmAJsl59CbgFkdh75r9HZLsetr8nHHLxxtbpqNBO7o7Jgb4OK5
+         lToMcV7b/2e6DiEkdEvhz9EsgkfKm1urzwIm1wZpNJ2lz5rliN31HMVNdMXgGi1Porf6
+         gxMg==
+X-Forwarded-Encrypted: i=1; AKwUvByAgFMulZHQSMdz26RU0PIbYT7KEaHeeIks9SD5CF/PmwfqriLxqNtxvDuDu6AfDcCIMHxJTnA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLMDfGTKFZjn4G6/LumcsshEtdCUGIIQUFzXEsSWjLJlQcrxJeW
+	1azUYcko3AqXVVuVrrDIGTmEboLMGRAX9UH0EPbXDo1NIqzPXQHmpxErwNiJeiODsyC9aSfFSc6
+	u2haRu0oxXFQY00Wcg+n9zFh5hXUwv85xbpN488GHbU87HmOus40mJPa6bFo=
+X-Gm-Gg: AYBFou3W1pNbWbYSRzBcfBzuLwQ+U1y/20EDwc54kSEdgIrjeThxcIn2pCpA7WKXVQS
+	jRPEdG9rq0Tnm5XeNWkI6ZXcUxvnaVzqFbBwooeMdm4Y1p/qyUubt14sCH9RDZm3Y+QhEtXzx4f
+	B+Nho/RZUTIv5CKD86+P0KUSzZVOs4m/lfAykZHAZAY269fW5KFSZNxLh7mc2KHYOdErcOEz16E
+	aAvydFyyplqwgd4xTzQ0DRloPl3iN9qKjpwbl28qmQbeWMzmUcjJrHKQr6TYB1gPpvrgsGqGfQx
+	C9jsyDo+FXT+nBeb4TLfOoarvqVs9WVVLJKQbv8KeuD3A/33eXjLb3oCKHDynw61U0dFgwRDSF+
+	GHolVBlcFelRC9xuaq1ba0TwfgP/0REKAzgF7ZxN+lF5+SnILHVgeyS1UL1hviNsY+ly5PLp/to
+	m6TaMRL+8do5A8NKU8ibjjiA==
+X-Received: by 2002:a05:620a:8014:b0:939:733d:cbe0 with SMTP id af79cd13be357-9442158555emr265486085a.3.1793349530423;
+        Fri, 30 Oct 2026 01:38:50 -0700 (PDT)
+X-Received: by 2002:a05:620a:8014:b0:939:733d:cbe0 with SMTP id af79cd13be357-9442158555emr265483385a.3.1793349529805;
+        Fri, 30 Oct 2026 01:38:49 -0700 (PDT)
+Received: from localhost (net-93-144-6-81.cust.dsl.teletu.it. [93.144.6.81])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4abebe33e79sm32889715e9.2.2026.10.30.01.38.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2026 01:38:48 -0700 (PDT)
+Date: Fri, 30 Oct 2026 09:38:48 +0100
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+        edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+        ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+        john.fastabend@gmail.com, sdf@fomichev.me, Jose.Abreu@synopsys.com,
+        boon.leong.ong@intel.com, o.rempel@pengutronix.de,
+        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        bpf@vger.kernel.org
+Subject: Re: [PATCH net v2 1/6] net: stmmac: take ownership of saved RX state
+ at poll entry
+Message-ID: <auRXmDYaLRkls6ea@lore-desk>
+References: <20261027-stmmac-xdp-fixes-v2-1-10eae8a093a8@oss.qualcomm.com>
+ <179334662373.3134.1104093737847451563@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,207 +127,265 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="GwTlmuwKyHB3BHtS"
+Content-Disposition: inline
+In-Reply-To: <179334662373.3134.1104093737847451563@kernel.org>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDAzNCBTYWx0ZWRfX7M8c3h232jOz
+ 9NJbjtUOy476uAiQz4ugz0dds33fbRuVdwTyxHrw8s+NCOLeCiS+FnDUk2Y/2k2UiVdjJc4BW1i
+ 0UNZc1yUipDGMtDrg/bv/ityhSnbAtlVjn36mhI/Q0POv0xohxj01p/VO41L0FL4OrDgGc+WSuJ
+ wkg/HV8VtaZoyPDhptzZAzqy99EV4n+mWoeUIkhG6qPiL4wRtf3Cpm5vaggkTXMmn0cGaZP6cwr
+ v5Hs1RmXlclvB0jYpWv8eNAwGRWw6z6rSR2WwDkZQ8R3Xk9hwa6EaxZHObbbOzAF6J1UrnqiBah
+ qmtJE7kT9rssmmfcpyd84jGHbF5BgLJkwZBaTSqfEdyJ2bwr9UimqQnucIy8t9k2cMhYnKOLphS
+ D+OkL4SMBjfHuUEXByR2MaNwG3lukKlIcDAicPcNRZPN07eNiMPTCEnm7WtgV1WriFYbW50KFPj
+ /ulPnnDmUUola46VrVA==
+X-Proofpoint-ORIG-GUID: V40da0vAiuf6pWe3oAI9MrboYTvUynv6
+X-Authority-Analysis: v=2.4 cv=IeoSymqa c=1 sm=1 tr=0 ts=6ae4579b cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=7fYLNvKHbgS61GKHX+yayQ==:17
+ a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22 a=9R54UkLUAAAA:8
+ a=EUspDBNiAAAA:8 a=x-ypl-TzxbZATBLWrugA:9 a=QEXdDO2ut3YA:10
+ a=o3Dn75d1IjpRQCD25FcA:9 a=bTQJ7kPSJx9SKPbeHEYW:22 a=YTcpBFlVQWkNscrzJ_Dz:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDAzNCBTYWx0ZWRfX4qLgGzlzVoyB
+ NiHdCq1z7hnmbdnNUpAnK2Qfk937XKkfG0TF6Js7Zj2XaO+SuO3IYTSAIEOUFX79XR52KE7Yvy3
+ Yh6YhF2l1CNrf7eA8MKux3NvtD1OAVE=
+X-Proofpoint-GUID: V40da0vAiuf6pWe3oAI9MrboYTvUynv6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-30_03,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 suspectscore=0 adultscore=0 spamscore=0 lowpriorityscore=0
+ bulkscore=0 priorityscore=1501 malwarescore=0 impostorscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610300034
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+--GwTlmuwKyHB3BHtS
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Critical: 0 · High: 1 · Medium: 1 (1) · Low: 0
+> Thank you for your contribution! Sashiko AI review found more severe
+> issue(s) in other patches of this series. This mail is only an FYI, in ca=
+se
+> you want to address the nit picks below when you respin.
+>=20
+> Low priority / nit picks for your consideration:
+>=20
+> - [Low] The commit message gives the trigger as a saved partial packet
+>   completing "with a poll budget of one".
+>=20
+> Pre-existing issues:
+> - [High] In stmmac_rx(), if napi_build_skb() fails on a non-last
+>   descriptor, the code recycles the page, does rx_dropped++ and count++,=
+=E2=80=A6
+> - [High] On resume, the RX ring is handed back to the DMA without its
+>   buffers being refilled or their addresses rewritten, and this patch=E2=
+=80=A6
+>=20
+> --
+>=20
+> net: stmmac: take ownership of saved RX state at poll entry
+>=20
+> This patch makes stmmac_rx() and stmmac_rx_zc() take the saved
+> partial-frame state at poll entry, clear it right away, and save it again
+> only if the frame is still incomplete when the loop exits. The in-progress
+> flag is now tracked separately from the status of the last descriptor
+> read. The saved skb is also dropped in stmmac_reset_rx_queue() and
+> __free_dma_rx_desc_resources().
+>=20
+> > When a saved partial packet completes with a poll budget of one, the
+> > old loop can leave state_saved and state.skb pointing at an skb that
+> > has already been delivered or freed. The next poll then reuses that
+> > pointer, causing a use-after-free or double free.
+>=20
+> [Severity: Low]
+> Could the commit message say how a budget of one happens on a running
+> system?
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+I guess this comment is minor, I can amend it if I need to rebase.
 
-- [High] If register_netdevice() fails at the NETDEV_REGISTER notifier
-  stage, mctp_i2c_add_netdev() now hangs forever.
-- [Medium] Moving skb_queue_purge(&midev->tx_queue) to after
-  mctp_unregister_netdev() creates a circular wait with…
+>=20
+> With limit > 1, the old else branch cleared state_saved on the second loop
+> iteration. So the stale pointer only survives when limit =3D=3D 1. Normal
+> net_rx_action() polling passes the NAPI weight.
+>=20
+> stmmac_napi_poll_rx() passes its budget straight through:
+>=20
+>     work_done =3D stmmac_rx(priv, budget, chan);
+>=20
+> Busy polling can supply a budget of 1. In ep_eventpoll_ioctl(), EPIOCSPAR=
+AMS
+> only asks for CAP_NET_ADMIN above NAPI_POLL_WEIGHT:
+>=20
+>     if (epoll_params.busy_poll_budget > NAPI_POLL_WEIGHT &&
+>         !capable(CAP_NET_ADMIN))
+>             return -EPERM;
+>=20
+> SO_BUSY_POLL_BUDGET in sk_setsockopt() can also be lowered without
+> privilege.
+>=20
+> So an unprivileged local user who receives multi-descriptor frames can
+> reach the use-after-free. Would it be worth saying so in the changelog, so
+> stable reviewers can see this is a user-triggerable memory-safety fix?
+>=20
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/driver=
+s/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > index 9ded31150fbe6..fa7108919e90d 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>=20
+> [ ... ]
+>=20
+> > @@ -6041,10 +6051,8 @@ static int stmmac_rx(struct stmmac_priv *priv, i=
+nt limit, u32 queue)
+> >  		/* Remove FCS if needed */
+> >  		if (!fcs_stripped && pskb_trim(skb, len)) {
+> >  			dev_kfree_skb_any(skb);
+> > -			skb =3D NULL;
+> >  			rx_dropped++;
+> > -			count++;
+> > -			continue;
+> > +			goto next;
+> >  		}
+>=20
+> [Severity: High]
+> This is a pre-existing issue, but what happens in stmmac_rx() when
+> napi_build_skb() fails on a descriptor that is not the last one in the
+> frame?
 
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but
-  mctp_register_netdevice() (net/mctp/device.c) calls mctp_add_dev()…
+This issue has not been introduced by this patch and it needs to be fixed i=
+n a
+dedicated patch.
 
---
+>=20
+>     skb =3D napi_build_skb(page_address(buf->page),
+>                          rx_q->napi_skb_frag_size);
+>     if (!skb) {
+>             page_pool_recycle_direct(rx_q->page_pool,
+>                                      buf->page);
+>             buf->page =3D NULL;
+>             rx_dropped++;
+>             count++;
+>             goto drain_data;
+>     }
+>=20
+> error stays 0 and skb stays NULL, and drain_data jumps back to read_again
+> because rx_not_ls is set. The next descriptor of the same hardware frame
+> passes the error checks and takes the if (!skb) frame-start path. A new
+> skb is then built from only the tail of the frame.
+>=20
+> len still counts the dropped prefix, so the pskb_trim(skb, len) above does
+> nothing and the FCS is not removed. The trailing payload bytes are then
+> delivered as a standalone Ethernet frame.
+>=20
+> With Split Header active, stmmac_rx_buf1_len() returns 0 for any
+> descriptor after the first:
+>=20
+>     if (priv->sph_active && len)
+>             return 0;
+>=20
+> That leaves the rebuilt skb with no linear data, only the buf2 frag.
+> Wouldn't eth_type_trans() then hit the BUG() in __skb_pull()?
+>=20
+>     eth_type_trans()
+>       eth_skb_pull_mac()
+>         skb_pull_inline(skb, ETH_HLEN)
+>           __skb_pull()
+>             skb->len < skb->data_len -> BUG()
+>=20
+> If the stale page bytes look like a VLAN header, stmmac_rx_vlan() can hit
+> the same BUG() through skb_pull(skb, VLAN_HLEN).
+>=20
+> An on-link peer sending a frame that spans several descriptors, plus a
+> GFP_ATOMIC allocation failure, is enough to trigger this. With this patch,
+> the in_progress tracking also carries this skb =3D=3D NULL, error =3D=3D =
+0 state
+> across a poll boundary. Nothing else in the series seems to address it.
+>=20
+> Should the napi_build_skb() failure path set error =3D 1, so the rest of =
+the
+> frame is thrown away?
+>=20
+> [ ... ]
+>=20
+> > @@ -8421,6 +8430,9 @@ static void stmmac_reset_rx_queue(struct stmmac_p=
+riv *priv, u32 queue)
+> >  {
+> >  	struct stmmac_rx_queue *rx_q =3D &priv->dma_conf.rx_queue[queue];
+> > =20
+> > +	dev_kfree_skb_any(rx_q->state.skb);
+> > +	rx_q->state.skb =3D NULL;
+> > +	rx_q->state_saved =3D false;
+> >  	rx_q->cur_rx =3D 0;
+> >  	rx_q->dirty_rx =3D 0;
+> >  }
+>=20
+> [Severity: High]
+> This is a pre-existing issue, but this new free happens just before
+> stmmac_resume() re-arms the RX ring in place:
 
-mctp i2c: fix double free of midev on netdev register failure
+This issue has not been introduced by this patch and it needs to be fixed i=
+n a
+dedicated patch.
 
-This patch removes the ndo_uninit callback from mctp-i2c. midev is now
-freed only in the mctp_i2c_add_netdev() error path, and in
-mctp_i2c_unregister() after the netdev has been unregistered. A new helper,
-mctp_i2c_midev_detach(), drops mcli->sel's netdev reference before
-unregistering, and the tx thread now releases the bus lock itself.
+Regards,
+Lorenzo
 
-Closes: https://lore.kernel.org/netdev/179239912623.3135.11352652156626817288@kernel.org/
+>=20
+> stmmac_resume()
+>     stmmac_reset_queues_param()
+>         stmmac_reset_rx_queue()    <- frees state.skb, rewinds cur/dirty
+>     stmmac_free_tx_skbufs()
+>     stmmac_clear_descriptors()
+>         stmmac_clear_rx_descriptors()
+>             stmmac_init_rx_desc()  <- sets OWN only
+>     stmmac_hw_setup()
+>         stmmac_init_dma_engine()   <- restores the tail pointer
+>=20
+> No refill and no stmmac_set_desc_addr() runs before the DMA restarts. That
+> means two kinds of descriptors get re-armed with a bad buffer address:
+>=20
+>   - slots stmmac_rx() consumed whose refill failed. stmmac_rx_refill()
+>     uses GFP_ATOMIC and stops at the first page_pool_alloc_pages()
+>     failure, so buf->page is left NULL.
+>=20
+>   - descriptors the DMA wrote back after napi_disable() in
+>     stmmac_suspend() and before stmmac_stop_all_dma().
+>=20
+> On dwmac4/xgmac, write-back overwrites des0/des1, which hold the buffer
+> address in read format (dwmac4_wrback_get_rx_vlan_tci() reads des0 as the
+> VLAN tag). dwmac4_rd_init_rx_desc() only sets OWN/BUF1V/IOC in RDES3. The
+> DMA would then write to whatever status data is left in those words.
+>=20
+> On norm/enh descriptors, the old address stays in des2. The slots most
+> likely to have failed refill are the ones whose pages went into the saved
+> partial skb. The dev_kfree_skb_any() above now returns those pages, still
+> DMA-mapped, to the page_pool just before the hardware is re-armed to write
+> into them.
+>=20
+> Can this lead to DMA into pages the pool has already handed to another
+> descriptor or released?
+>=20
+> Also, if DMA completes into a slot with buf->page =3D=3D NULL, stmmac_rx()
+> calls page_address(NULL) and napi_build_skb() on it, which would oops.
+>=20
+> The commit message notes that "the RX buffer addresses are not
+> reprogrammed" on this path. Would a full fix need stmmac_resume() to
+> refill and reprogram every RX descriptor before setting OWN?
+>=20
+> --=20
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20261027-stmmac-xdp-fixes-v2-0-10eae8a093a8%40oss.qualcomm.com
 
-> diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
-> index b02476d338bbf..4f4c715b43cd7 100644
-> --- a/drivers/net/mctp/mctp-i2c.c
-> +++ b/drivers/net/mctp/mctp-i2c.c
+--GwTlmuwKyHB3BHtS
+Content-Type: application/pgp-signature; name=signature.asc
 
-[ ... ]
+-----BEGIN PGP SIGNATURE-----
 
-> @@ -711,7 +713,6 @@ static void mctp_i2c_release_flow(struct mctp_dev *mdev,
->  
->  static const struct net_device_ops mctp_i2c_ops = {
->  	.ndo_start_xmit = mctp_i2c_start_xmit,
-> -	.ndo_uninit = mctp_i2c_ndo_uninit,
->  	.ndo_open = mctp_i2c_ndo_open,
->  };
->  
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCauRXmAAKCRA6cBh0uS2t
+rNC5APwJ0r1A/1E3GxQ3pBn+CW8KtnycbSdAVH4ybEyCN8sjSQEA9LVEsM/6+ynf
+5roRrlhlgDObZ9LYdupLViYh6FkLcgQ=
+=C9fm
+-----END PGP SIGNATURE-----
 
-[Severity: High]
-Can removing .ndo_uninit turn the double free into a permanent hang when
-register_netdevice() fails at the NETDEV_REGISTER notifier stage?
-
-When a client has no sel yet, mctp_i2c_midev_init() selects the new midev.
-That takes a netdev reference before registration:
-
-    if (!mcli->sel)
-        __mctp_i2c_device_select(mcli, midev);   /* dev_hold(midev->ndev) */
-
-If a NETDEV_REGISTER notifier then fails, register_netdevice() unwinds the
-device itself:
-
-    ret = call_netdevice_notifiers(NETDEV_REGISTER, dev);
-    ...
-    if (ret) {
-        dev->needs_free_netdev = false;
-        unregister_netdevice_queue(dev, NULL);
-        goto out;
-    }
-
-After that, the rtnl_unlock() in mctp_register_netdev() waits for all
-references to go away:
-
-mctp_i2c_add_netdev()
-  mctp_register_netdev()
-    rtnl_lock()
-    mctp_register_netdevice()
-      register_netdevice()
-        unregister_netdevice_queue()   <- ndo_uninit used to run here
-    rtnl_unlock()
-      netdev_run_todo()
-        netdev_wait_allrefs_any()      <- waits on sel's dev_hold()
-
-Without ndo_uninit, sel's reference is only dropped by
-mctp_i2c_midev_free()->mctp_i2c_midev_detach() in the err: path of
-mctp_i2c_add_netdev(). That path runs only after mctp_register_netdev()
-returns. Does mctp_register_netdev() ever return in this case?
-
-The stuck thread also holds driver_clients_lock. Later calls to
-mctp_i2c_probe(), the remove path, and mctp_i2c_notify_add() would all
-block behind it.
-
-Possible triggers are an allocation failure in a protocol notifier (for
-example inetdev_init() in the IPv4 notifier) or fault injection while the
-first netdev on a client is being registered.
-
-This is the same register failure path the commit message says it fixes.
-The new comment above mctp_i2c_midev_detach() says mctp_i2c_midev_free()
-covers the failed register path, but that doesn't seem to hold for this
-case.
-
-Would keeping an ndo_uninit that calls only the idempotent
-mctp_i2c_midev_detach() avoid this?
-
-[ ... ]
-
-> @@ -782,6 +783,31 @@ static struct mctp_i2c_dev *mctp_i2c_midev_init(struct net_device *dev,
->  	return midev;
->  }
->  
-> +/* Removes midev from the parent i2c client, moving sel off midev.
-> + * mctp_i2c_unregister() needs this before unregister, as sel's netdev
-> + * reference would block it; mctp_i2c_midev_free() needs it for the failed
-> + * register path. A second call on the same midev does nothing.
-> + */
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but there is a related problem
-on the failed register path in the mctp core. mctp_register_netdevice()
-in net/mctp/device.c sets up the mctp_dev before calling
-register_netdevice():
-
-    mdev = mctp_add_dev(dev);
-    ...
-    return register_netdevice(dev);
-
-mctp_add_dev() takes a netdev reference:
-
-    refcount_set(&mdev->refs, 1);
-    dev_hold(dev);
-    mdev->dev = dev;
-
-register_netdevice() can fail before the NETDEV_REGISTER notifier, for
-example:
-
-  - dev_get_valid_name() returns -EEXIST for the fixed "mctpi2cN" name
-  - a NETDEV_POST_INIT notifier fails
-  - netdev_register_kobject() fails
-
-In those cases no NETDEV_UNREGISTER is sent, so mctp_unregister() never
-runs. Are the mctp_dev and its dev_hold() reference leaked here?
-
-mctp_i2c_add_netdev() then calls free_netdev() on the
-NETREG_UNINITIALIZED device. With CONFIG_NET_DEV_REFCNT_TRACKER, this
-would warn in ref_tracker_dir_exit() about the leaked reference.
-
-[ ... ]
-
-> @@ -827,23 +851,17 @@ static void mctp_i2c_unregister(struct mctp_i2c_dev *midev)
->  	spin_unlock_irqrestore(&midev->lock, flags);
->  	wait_for_completion(&midev->rx_done);
->  
-> +	/* Release sel's reference on the netdev, otherwise
-> +	 * mctp_unregister_netdev() blocks waiting for it.
-> +	 */
-> +	mctp_i2c_midev_detach(midev);
-> +
->  	mctp_unregister_netdev(midev->ndev);
-> -	/* midev has been freed now by mctp_i2c_ndo_uninit callback */
-> +	mctp_i2c_midev_free(midev);
->  
->  	free_netdev(midev->ndev);
->  }
-
-[Severity: Medium]
-With skb_queue_purge() now running after mctp_unregister_netdev(), can
-this wait forever when CONFIG_MCTP_FLOWS is enabled?
-
-mctp_i2c_unregister() stops the tx thread at its start. Until dev_close()
-runs inside unregister_netdev(), mctp_i2c_start_xmit() can still queue
-skbs to midev->tx_queue, and nothing drains them. Each queued skb's
-SKB_EXT_MCTP extension holds a reference on its mctp_sk_key.
-
-mctp_flow_prepare_output() reattaches a device whenever key->dev is NULL,
-without checking key->valid:
-
-    if (!key->dev)
-        mctp_dev_set_key(dev, key);
-
-Suppose __mctp_key_remove() removes the key between fragments in
-mctp_do_fragment_route(). That can happen through an early reply from the
-peer with the matching tag, or through expiry. The next fragment then
-binds the mdev, and so the netdev, to a key that is no longer on any
-list. That reference is dropped only by the final mctp_key_unref(), which
-needs the queued skbs to be freed first.
-
-The resulting dependency would be:
-
-mctp_i2c_unregister()
-  mctp_unregister_netdev()
-    unregister_netdev()
-      netdev_run_todo()
-        netdev_wait_allrefs_any()        <- waits on the key's mdev ref
-  mctp_i2c_midev_free()
-    skb_queue_purge(&midev->tx_queue)    <- would drop the key ref
-
-Before this patch the purge ran from ndo_uninit, after dev_close() and
-before the refcount wait.
-
-Should tx_queue be purged before the refcount wait in
-mctp_unregister_netdev()?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261027053715.1623087-1-kenny_hsieh%40jabil.com
+--GwTlmuwKyHB3BHtS--
