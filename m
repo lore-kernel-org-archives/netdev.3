@@ -1,51 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=101.71.155.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793352991;
-	b=i+xF/rhA+Nb2idEFkUhP28Iabw/S0zihFClKgZIXljo/aBCQ51/A9vD9vJ5SB1q9UCnU
-	 hdsWBAg8ZKDvzUz+LlT0SqBPTgFO/eBI/4q+XL7oMcAt0Q1LRje4bFP9vNebvQ9ZamtBV
-	 yO49QVtXxIXAZQTMV3rUzIuVo5bUc5Mvcj0sEWNWcx2zcaGfrS+HXvLhM4m0Iect6D/wg
-	 6dzBpbcU5GH/gzUqMOtPj6E2CafcIIt0JEa/ztf3t8Cpb/zUiBpQ8OfWhEglP04/B+ppd
-	 aRpVeXncQ/bXej1IzqBTzUkYF5X4qmAVVH4MX12UHdmmO/7Tda+a8ztSdBK+CV8r+Qw==
+	t=1793353198;
+	b=uDBZL1i+eMNMF5Lc6CT80MScVFA5W+XrChvRQpulHF0wlDNtdVKbPebOav7QEnuVKuvy
+	 4bZf55fivzHLPxmkFUX+oOS7UEN+SO8FeHmyAnLMnCaY58sLYuq83+0HJ8io0QRmsjR/m
+	 nGt6vND4ML9jo9gASxh4AGbWJ/9IyPubvL8FoOEjtG9KKAdYwW+IaLCJcTA149r0UZRGC
+	 btYwT6GlurMrZQgYg7x8LLGLp+S1aQcqTtf1SDl/3jqHr3sUUfx+WJ5xm/9LvfPbOwblK
+	 F3dFZY9iH9Y2QdJrvmZRjlZ11caUZldAst5b8T0XyKx6QHlQUtfBZ27UCCRutm0ficw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793352991;
-	h=DMARC-Filter:Received:From:Date:Message-ID:To:Cc:Subject:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version:X-HM-Tid:
-	 X-HM-MType:X-HM-Spam-Status:DKIM-Signature;
-	bh=oMmBa0NNo8veO6C4YZRvUwQefoEZxCtMA+jO+Kv/UwY=;
-	b=YbteDxjiB+MZAsPKihRkdv7fyJksiBELqscalTXzpOmuuEUeQfygcD8+AOuP+l8dg8ST
-	 jaso/dMgOCEVZjfDn4MG0+HXPJGa3kohQILyjQzK2buON2HmQdbNBcbhMVAvSe3t5DX+V
-	 ik0SZbMw5LaImVwAfZHGBtXlarlvStCrhesEPALSrx8BBDeBkBW3OG8hoNdey2Auc+Dek
-	 eqJGEUvvs+U5M2zlgzfYCX7tjqaybZQ8DtVqUuuJ8Wzj4HF1f8lKLSZXrh8va3O1K53Xy
-	 jlzjO1rEgFkl7hrDfswjhDZnUTv49Y9btBo14CZQAU6y2GWXhsSZVayqrsbr272nLBQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793353198;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	b=D4xYHx8jWAY+dnuTyIkHSDvC0aHQHtBZqZg89EZfnzSeYqrHnGdeok8/7aomg6EgTfla
+	 Ozj/RpwDaznxrC52nhI7n8I/CPsXHzwiiHwsOmZRMrzJkv0dNWKE3b+l7IJI8g9qx6TJV
+	 MWaRpnOmSUSJGRPZ+IAedg0bFN4eg2vh5R0MBli1avd9i/gmdkqT2kIy73SB9gfsltE5w
+	 Hk+aSXACmCKZee5M2Du5AYR90vwAvP4KBpnZZHpy0CH3YuaTeVdDbLlZLNLnze2pDNsqW
+	 bzCROBCdEKPD8xhQZwuFy3S2BpdRv3/PNqTITKQbYuSptux80LjIR7SxbA2G+QWVDVw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=stu.pku.edu.cn;
-	spf=pass smtp.mailfrom=stu.pku.edu.cn;
-	dkim=pass header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.a=rsa-sha256 header.s=default header.b=En6oBxQN;
-	arc=none smtp.remote-ip=101.71.155.101
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IvUVTiyE;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06895606A31A;
-	Fri, 30 Oct 2026 09:36:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06895606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stu.pku.edu.cn
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD26E606A320;
+	Fri, 30 Oct 2026 09:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.a=rsa-sha256 header.s=default header.b=En6oBxQN
-Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa (unknown [61.37.18.93])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 52eda3c1b;
-	Fri, 30 Oct 2026 17:36:15 +0800 (GMT+08:00)
-From: Yifan Zhang <yfzhang23@stu.pku.edu.cn>
-Date: Fri, 30 Oct 2026 17:36:14 +0800
-Message-ID: <179335297474.14852.9229658182764909973@stu.pku.edu.cn>
-To: linux-wpan@vger.kernel.org, netdev@vger.kernel.org
-Cc: alex.aring@gmail.com, stefan@datenfreihafen.org, miquel.raynal@bootlin.com,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, zihanx@nebusec.ai, stable@vger.kernel.org
-Subject: [PATCH net] mac802154: use pinned interface for beacon transmission
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IvUVTiyE
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951331F000C1;
+	Fri, 30 Oct 2026 09:39:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793353197;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=IvUVTiyEbFwIpZg2rvZGoJZJ2Os2PoUxfCfLH9wdmVgGnmQPjXhT4L15PMNweU6dy
+	 lYbT9gZFcFlikLv+zmqiVezJJQ2GTdqwf2aspaY8Alks4PLQBWxVN5EzRq+/vpXrxh
+	 RxDEc/egL11QCh23UPacGyIBgKMbywmpZJbTCXltY0IDLVf8TyA9fgEiZexmA9amiE
+	 DWMSFbID3WrUK80cpd9CnmDnzhmhT7Q9a/FV4CJSmg15x8MOpD8eCW+HnmFufKDLfB
+	 pK+5/6ve1FZJrgyLcB26IgMSTnNKs0M3RIIqCHd9DXjxK9BIfzmi/0Id26gkzA7DXs
+	 GzZznvqShADnA==
+From: netdev-bot+sinfo@kernel.org
+To: Yifan Zhang <yfzhang23@stu.pku.edu.cn>
+Cc: linux-wpan@vger.kernel.org, netdev@vger.kernel.org, alex.aring@gmail.com,
+ stefan@datenfreihafen.org, miquel.raynal@bootlin.com, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ zihanx@nebusec.ai, stable@vger.kernel.org
+Subject: 
+ Re: [PATCH net] mac802154: use pinned interface for beacon transmission
+Date: Fri, 30 Oct 2026 09:39:56 +0000
+Message-ID: <179335319608.3327.811462129554867448@kernel.org>
+In-Reply-To: <179335297474.14852.9229658182764909973@stu.pku.edu.cn>
+References: <179335297474.14852.9229658182764909973@stu.pku.edu.cn>
+Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -55,81 +64,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-HM-Tid: 0aa18c2ac47903a2kunm84d54b4c37185
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDGh9IVhpCHk8fTxpNHx9KSFYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlNSlVITFVKQ1VCSFlXWRYaDxIVHRRZQVlLVUtVS1VLWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=En6oBxQNvgEZLIjU5x325BX3vj1yTNMAMcPBbhnUQumawIEZjQwnAiAJ/4pbjn52HnXUNnPQtw43FbiW0KMu+jDf6MnJxTttHWzMam5I6FUYakl/NfIM4IOS58SQ7mHj7ItFj0fr1oGRJ8seZ1iGaeuuSlBDQy2zOf85DaTXz+A=; s=default; c=relaxed/relaxed; d=stu.pku.edu.cn; v=1;
-	bh=oMmBa0NNo8veO6C4YZRvUwQefoEZxCtMA+jO+Kv/UwY=;
-	h=date:mime-version:subject:message-id:from;
 
->From 1e3faf146431b4c28bdf0923fa54754c1f8d8902 Mon Sep 17 00:00:00 2001
-From: Yifan Zhang <yfzhang23@stu.pku.edu.cn>
-Date: Wed, 28 Oct 2026 17:18:59 +0800
-Subject: [PATCH net] mac802154: use pinned interface for beacon transmission
+Hi!
 
-mac802154_beacon_worker() looks up beacon_req under RCU and takes a
-reference on the selected interface's netdev before dropping the RCU read
-lock. It then passes the selected wpan_dev to
-mac802154_transmit_beacon().
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-mac802154_transmit_beacon() ignores that argument when choosing sdata and
-reads local->beacon_req again. If the beacon request switches to another
-interface between the two reads, the worker pins the old interface while
-the transmit path uses the new one. Removing the new interface can then
-free its netdev before ieee802154_mlme_tx_locked() dereferences it,
-causing a KASAN use-after-free.
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Derive sdata from the wpan_dev already selected and pinned by the worker.
-This also removes the redundant RCU lookup.
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-The reproducer hit the use-after-free on two separate v7.3 KASAN boots
-before this change and completed without a KASAN report in three runs
-afterward.
-
-Fixes: 5f26a690e8ef ("mac802154: fix netdev use-after-free in beacon worker")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yifan Zhang <yfzhang23@stu.pku.edu.cn>
----
- net/mac802154/scan.c | 13 +------------
- 1 file changed, 1 insertion(+), 12 deletions(-)
-
-diff --git a/net/mac802154/scan.c b/net/mac802154/scan.c
-index d393b1f..9f0e45b 100644
---- a/net/mac802154/scan.c
-+++ b/net/mac802154/scan.c
-@@ -353,7 +353,6 @@ int mac802154_process_beacon(struct ieee802154_local *loc=
-al,
- static int mac802154_transmit_beacon(struct ieee802154_local *local,
- 				     struct wpan_dev *wpan_dev)
- {
--	struct cfg802154_beacon_request *beacon_req;
- 	struct ieee802154_sub_if_data *sdata;
- 	struct sk_buff *skb;
- 	int ret;
-@@ -365,19 +364,9 @@ static int mac802154_transmit_beacon(struct ieee802154_l=
-ocal *local,
- 	if (!skb)
- 		return -ENOBUFS;
-=20
--	rcu_read_lock();
--	beacon_req =3D rcu_dereference(local->beacon_req);
--	if (unlikely(!beacon_req)) {
--		rcu_read_unlock();
--		kfree_skb(skb);
--		return -EINVAL;
--	}
--
--	sdata =3D IEEE802154_WPAN_DEV_TO_SUB_IF(beacon_req->wpan_dev);
-+	sdata =3D IEEE802154_WPAN_DEV_TO_SUB_IF(wpan_dev);
- 	skb->dev =3D sdata->dev;
-=20
--	rcu_read_unlock();
--
- 	ret =3D ieee802154_beacon_push(skb, &local->beacon);
- 	if (ret) {
- 		kfree_skb(skb);
---=20
-2.39.5 (Apple Git-154)
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
