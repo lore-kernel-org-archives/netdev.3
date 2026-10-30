@@ -1,55 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793377085;
-	b=E4rcz/85jlCWvPv4nWu1H9Ko3FnJCF3ZD8xbnOLjuwJJt1SPEMQjZWB7EYM2QmOfi8tc
-	 HlHFqcsM6kF+2mnxcbeX9QFYgpELsUvrwzt6a03n0hCSS+46UiyRRwHf8LNv67oKCzLOm
-	 jkAvC/U6R/5M3xunRQPuXoEFAkkwgu4fh3ffbMYvvRZF7HtMzF3xeBcb3gSeKEh+9DWSD
-	 aY69c9bRYwXpw8+B1yEMWDsxeCzzhVfPhICRL+csS8SqE/D9tA9HqQUf0sfwx9fZy3fp3
-	 wafdEnunj+GoMXq9VYSPvBiYasZgpDzuNbTI4o6eYwG4wCWd/1Hj9zXXPblD4vmrQMQ==
+	t=1793377263;
+	b=aI2CC3qkyWD+KrGVBE3yPKp3QwpMYqkKYj+f3vk8w7KaZ4vqBiSOxKFSfqoK1zzruXpL
+	 itt1/bZh7iK9oJ1cpjPPVyOmBscTYBY0I9Y8KKjh3z6fwRY/bBuohWbEFQAG3l8QEW19W
+	 XjVOace1fJ0TPe28IPCXZGBheUHs3iBKNk61DQwJUy0COVwqW8FkjUVVWiDbx+6qYAtiX
+	 IbXAf0DzN28oyWnW3PrryeC6uoRbLKdhz3bjDdit5Tl/W1LftjrGy5PQr8flLyaqKghec
+	 rBey9FH08DDZkcZe+zBlNGsaeeAK45A1EEXMuP7oSwyjnYv+x+zsX3A23R2WOZHIUJQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793377085;
-	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
-	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Mailer;
-	bh=ZDNHG8v8zk9WmJP9GH0iqpZHJN79nd4ttmjK0fCFWyk=;
-	b=g+oShhIcx4+U1ExFeVr5j6GsJYo/5175aWY+N0Qql8HHioXVHRwHEe3iC84M4dfssZda
-	 obYJcr917EMqxlx8qpQK2gz6Zg5gbf8u7+NRPVn+gQRKKkC8jFP8TDYs66i/b3FVd6OOU
-	 lkvemoU/loolHnqTI8unhr/CfvAuZl5x0EOfZ/eoGX4/i64ACe/9adlGB46m0abNEI9qz
-	 DmPAq0jZQF447eAu80uooril0wVtnabXyr1Px44juFCSIu7WFcAYsP6yymM0vRlMsXjCz
-	 YohpH8YBaKYFUXPqp0Z7xwbc+qQE9YZzTh+sMbj0g4yHl9vqfhYqGu9+Lvj9pjBAPeQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793377263;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
+	 References:Content-Transfer-Encoding:MIME-Version;
+	bh=zyOsXApbsMPDzz9xbQc9j82HAbVZYrZjlFKRD4aZyn8=;
+	b=iXXb0IM1idN94D/iSAHzdckZXAQmhEZ1IAJPzscQTVGLfPIzyM+M026fTfYxgY6vKeMy
+	 HpZH9Rye9Wq+p5c0Wano9X03WX+/oZa7rbKetYCYROD2yXVZHr0jM/wDpLf7Arb7SJtMA
+	 BnRWdYUIG66SsXyWkR4RdrwopwcG/9Z0W9pkrf0kE1+BZcc9Q63O3Rrpyz9E1SGuiALO6
+	 AkFm9WiZZDMB1ZbQoKuKzaerzdTGTLsKmTVZPFVFBg76dK2o+4l+L7vug0J9jRXe+r5iV
+	 WWTsM/ayAYm2IjVsP9caGeUZnIW8rod5/qVvAO6+64a+fFl6Q1A2IY5D4F+WQg+C/Tw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eWb9BuFd;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=I9CHq1vD;
+	arc=none smtp.remote-ip=209.85.216.41
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3F3606A31C;
-	Fri, 30 Oct 2026 16:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13128606A31C
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 16:21:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13128606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eWb9BuFd
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85BF71F000C1;
-	Fri, 30 Oct 2026 16:18:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793377084;
-	bh=ZDNHG8v8zk9WmJP9GH0iqpZHJN79nd4ttmjK0fCFWyk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=eWb9BuFdkxI1AoMZhA1RbZq7J/sUlQ18FiCmi5ShQw/WYHUb+y+CeSsSuuZqY26lW
-	 1/nv4TeLqKesyblsRXZpbD+xxPtpMZj5VfWLthnZjuelUmKZlEQu6WEnqvU/yEuZPG
-	 aJx/6bdO3sgrCSwaR2sTbIj1xu8miLdFRL6KAq72+SLi9OtLq3ycFHm/W1+MWoETdf
-	 BiZ2FQ8ok2GAmsmOv+By3+V63Vc88VU4ZRLqt/IvLJTXfIcpn8LAi97b1WifL7prbi
-	 9YPywOmhwxgnttRnNAMgV7KKwYeJOg7i6Zynast3R7X0DeM7v3UVU1gEpneK8Op02b
-	 N5ACo2z7m2LwA==
-From: Christian Brauner <brauner@kernel.org>
-To: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- kernel test robot <yi1.lai@intel.com>, stable@vger.kernel.org
-In-Reply-To: <20261030-work-nsfs-init_ns_tree-v1-1-7ec0adb47c54@kernel.org>
-References: <20261030-work-nsfs-init_ns_tree-v1-1-7ec0adb47c54@kernel.org>
-Subject: Re: [PATCH] ns: don't add init_ipc_ns and init_net without
- namespace support
-Message-Id: <20261030-labil-bergab-besetzen-9a2b7d8d71ac@brauner>
-Date: Fri, 30 Oct 2026 17:18:01 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=I9CHq1vD
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3adac5b29ebso597915a91.2
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 09:21:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793377262; x=1793982062; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zyOsXApbsMPDzz9xbQc9j82HAbVZYrZjlFKRD4aZyn8=;
+        b=I9CHq1vDLmpX5qnXoIUx7W4ASxXg58bg4CoxZea/IQTYf+7FRm2u6GrNy3Qn3j3nlg
+         UJxqEUcKYHBqkycHpSJcauvmDbezNNIllKp/XE3mSKVZ1zgOp2R3GynGHy595JJsgYXu
+         hE/0w2yfpfnz/FuJ4laOfNGSfBgSf3Af0drgGx+doom5rGA2n63qXsZfse1dFKmexB4d
+         To4Rf9D1Pj20zXCgKf3MXZM867DNGx+EYScp2mpe5vNh0rzFMQNTx1r4XQ6MSFSoTXFq
+         vYtAgD+txcxlyZvBVQxCZEP0gQXdtLXIV951fIg3IBC0ABpQSpyZudtRS+0isv9Jh83f
+         H3ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793377262; x=1793982062;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zyOsXApbsMPDzz9xbQc9j82HAbVZYrZjlFKRD4aZyn8=;
+        b=fl+MiiSWK9NcJBHkj8vgfTb2IWrtardmeo4hq84DTg9dKQ8cr6cBTcw6YpdoIXsI0a
+         k6L0WRvvfhkBhQ2x6QmSijjZjU0YegoWPMxv25K+14Fpg2/TvudvBdvE79C4iSmcY9n7
+         l5weq25x89yIM7mEEp0vCFzZMZ69CtZraNND31tfG7034VEid4u0K8YW1Z3UXR54m2Gg
+         0zsw+yhI11SGhnvSqTh3gAxQ2JqM/J+ePyMdewRp2nHbVAm7hDRc4CK4i1yhcQKxiQy7
+         pABZl4gbEz70smswEC40LfXRBrz83h+ZFRB+DZbrd01y25uUXS9+NdSVMXFbCRsjqeTe
+         QTXw==
+X-Forwarded-Encrypted: i=1; AKwUvBwNgeHcpveMslsL+55CfyLRpSDqFSSvOjGvQho3IYO7I91x7YL4jIA+0Bq3RFGdtXmgVppic1c=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJVWmV5CI+wo3/85iVCoSRYrj1W8aaRpHaGtB5SNWNZbVlUq32p
+	5y+wcSQn7+hGkzbHC1qTe5BD9HvOqtZKDAkwJ04lDOFVOSPk/6zdtF9n
+X-Gm-Gg: AYBFou0vqpfjuXbw9lQn0A33gHYZQDqct4qp6TD5rI1RDiWeaPEp4Qibaf5ZKVzNZjS
+	mRMoWmGUauxryEx/uImEZ8Rphqd4l07WKS5VPq7irTNkpIl/VKti33WWB8XpGSamlX75kOZrewB
+	4FDXiBc3LOGs4F5JeeHMFT3bLLHWHHCCFC1zdd0hGqifpjweiPrFoCxcw6OnyMiJ1yh4T7PFeu5
+	XE+uPfy3rcMrvdhXzeqIivpP2JausWQZ8dN9k4HIrnKBcqfmoH0TpUUhbZM4VSzna+2O+MHRHJH
+	ISxRTdcw39CSq/f4GoDyATFQo/68Cjo2TfCWT+J6u0yJOKu3oFLbJQnf6YMAHgbWxSvGti6Qz3k
+	1Mi7ThZODnMrLgvI7/fcKXW4cA1w2XUJ/Kz3iWNlAy6iR+cycFNS4qbihYm6HjuXo6sgnE88UOU
+	7kvH4XM4ThCmg5KAlLoGrnMobLaQqnD5041iMFsNC+t2QSMwZKqZVQmwU+dfzjne8GWhh2DIGwt
+	EO9mq8sbzeAMKpbQC/Du/+cdn2a3FTxDrbjyeAfAL6i/GEnXgxX5vgfx61UzCcFv1nS1bBWz7Pm
+	5i7CT8CWetdPU0G5jVKs0GsfNfmM7DYqTfNYgPnx/GrefKrQUGtj+ULkUd08U9ITNvysYPpwTjF
+	Nj5GFf+XFP51xzm/AP122KE55kTBAqIRIzA==
+X-Received: by 2002:a17:90b:1f92:b0:3ad:4a8b:c701 with SMTP id 98e67ed59e1d1-3ae897b51a8mr2370584a91.45.1793377262057;
+        Fri, 30 Oct 2026 09:21:02 -0700 (PDT)
+Received: from localhost ([153.61.198.255])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae880b1f71sm2113239a91.4.2026.10.30.09.21.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 30 Oct 2026 09:21:01 -0700 (PDT)
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 30 Oct 2026 16:21:00 +0000
+Message-Id: <DMIB6JXDLTPX.15EVLOCXRDOOO@gmail.com>
+Cc: "Willem de Bruijn" <willemb@google.com>, "Simon Horman"
+ <horms@kernel.org>, <netdev@vger.kernel.org>, <bpf@vger.kernel.org>, "David
+ Laight" <david.laight.linux@gmail.com>, "Willem de Bruijn"
+ <willemdebruijn.kernel@gmail.com>
+Subject: Re: [PATCH v2 net] udp: restore hlist_nulls for primary and
+ secondary hash tables
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Eric Dumazet" <edumazet@kernel.org>, "David S . Miller"
+ <davem@davemloft.net>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni"
+ <pabeni@redhat.com>
+In-Reply-To: <20261030122045.3035709-1-edumazet@kernel.org>
+References: <20261030122045.3035709-1-edumazet@kernel.org>
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,44 +105,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev-ce4c1
 
-On Fri, 30 Oct 2026 16:50:07 +0100, Christian Brauner wrote:
-> When CONFIG_IPC_NS or CONFIG_NET_NS are turned off we still add the
-> initial ipc and network namespace to the namespace trees. ipc_ns_init()
-> calls ns_tree_add(&init_ipc_ns) whenever CONFIG_SYSVIPC is set and
-> setup_net() calls ns_tree_add_raw() on init_net whenever CONFIG_NET is
-> set.
-> 
-> But without CONFIG_IPC_NS and CONFIG_NET_NS these aren't namespaces
-> userspace can do anything with. They don't have proc_ns_operations so
-> there's no /proc/<pid>/ns/{ipc,net} for them, nsfs_fh_to_dentry()
-> refuses them with -EOPNOTSUPP, and since ns->ops is NULL
-> __ns_tree_add_raw() doesn't add them to the owner list of init_user_ns
-> either. So they end up half registered. That's also not how we treat
-> any of the other namespace types. Without CONFIG_UTS_NS, CONFIG_PID_NS,
-> CONFIG_TIME_NS or CONFIG_USER_NS the initial namespace is never added
-> to the tree.
-> 
-> [...]
+On Fri, Oct 30, 2026 at 05:20 AM Eric Dumazet <edumazet@kernel.org> wrote:
+> @@ -3431,12 +3477,12 @@ static struct sock *bpf_iter_udp_batch(struct seq_file *seq)
+>  	for (; state->bucket <= udptable->mask; state->bucket++) {
+>  		struct udp_hslot *hslot2 = &udptable->hash2[state->bucket].hslot;
+>
+> -		if (hlist_empty(&hslot2->head))
+> +		if (hlist_nulls_empty(&hslot2->head))
+>  			goto next_bucket;
+>
+>  		spin_lock_bh(&hslot2->lock);
+> -		sk = hlist_entry_safe(hslot2->head.first, struct sock,
+> -				      __sk_common.skc_portaddr_node);
+> +		sk = hlist_nulls_entry_safe(hslot2->head.first, struct sock,
+> +					    __sk_common.skc_portaddr_node);
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
-
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
-
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] ns: don't add init_ipc_ns and init_net without namespace support
-      https://git.kernel.org/vfs/vfs/c/82f1c815aaef
-
+For bpf bits:
+Acked-by: Alexei Starovoitov <ast@kernel.org>
