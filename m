@@ -1,60 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793398067;
-	b=OIMfnX6bDdl6M0jr+qZ3y9/8biaQVhnwBwSrjj5hOSVs9vUYn8An2DAKmJbhHRW1c6JW
-	 qBxV2D619aUcpnGH4L7/nhsLsKFCpvWlTKo2ublSgTc/a1wl0lvU19r0Xdt7u11oS/69r
-	 3RzPv26L1+s2g/7xUkjJp/4TsmVVxkFUmsF+t0wUI6uGSde12a+ue/CiRa4CiKvb20sS5
-	 6tJm8LCLYJhiv8Gtsa+lDNtDDJZVsfilsmrFOk2taR/h1jPfGlDcdFdtobLP/WKYEStmW
-	 xOWu6jI6w3VmjBE48O8G769JaoSTPveFCwbprZ1LX+Jx+3wVi4G2FoDOX/sIJf4pLyw==
+	t=1793398087;
+	b=4Q/sgnLDQStLfBoO+Sri0gEftADsXcvKxqh7ExjFuVrG9wI1nv71jgN7Vt4SW0cJMXIA
+	 /qhxs6raE2FIaj+VbIsET2rBf9QYYTb5qfkfhxfomXvBXWsrGHVPSZLF9dltTNizGi2It
+	 VL7Mt/eA1LTCMuYPyrxBEKy6x8cnzHJvZaT9GykPrlMltFkUA4UnGbp14LUh0EhW5fv++
+	 71hhauJOL3/nxA4JWKnt90kkJvU9pHr+FursmJSDCa7I4gmfONaxrugh2R+Ck8DHQUWV7
+	 lrJlHUkoLSvI5c7f94Ym6s4685nhVkLB5HdptrfMALB+0tj2aCiXWI0BWRnPl2BL1aw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793398067;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=O6rbWDigYZwy4ez11pR5lpAnfy34Kwiy/oawBy9xKVI=;
-	b=vYvuFf5w5MwqQ7+/APeWxl/zl1qtp5muPs/biK0PCrHss2Wao4mllf0r2em8ZHZ1mkkS
-	 1lZfydpMdQMRaQT+3O0CKOAd1cvklNfaBRlWk0uwYQl0To5Gt8Eo6sy1YlX/WBcjAVNm0
-	 uTPfVwodBUB5nuFNp4ectnxdR5k2i+L154pqZk5rZTB+Ye2fl8AvFV87YqhrYI566XSqN
-	 wpySdKYAa4oE94P/WUP1J3qsMP1qz3GgWYorZHMRTllo78x7EVTZyqouFZe09pHObEo5O
-	 9KWo6R+S5w9nqXzzbBe5Jkj9ZAepM5YCK7p4FxWJwGa02OedoS8Lp+u/PCabsSX6SnQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793398087;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
+	 CC:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Originating-IP:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:
+	 X-Proofpoint-Virus-Version;
+	bh=E1Nwp6YDz6qZM2OTPwc4W8dECJoXWXtojx10dqTdLUY=;
+	b=zBcZ4P+pkQDuQln559aEQ/T+k1QQbxK39RoBGDtrXUkccVOQclegPV2+W0T7Z+aIobXy
+	 hUzmhS8kBEmQ37FBZsO6NqjEYaj7ZcDijIscu1L16d39CpLF+Cvy0LDsbnPkiRcu9KpO9
+	 OJ5Gsf/8wdTxBpnKDS3q2/Cl225geeUhgaK4MMuqvhndFpmj0fdHDQDQiRyWNJDbzv09x
+	 FwcgaazNK6U6YsoHTSq0ca/Y+y+Tn+9etjhEMD0DFaeKwgeGokx0IkIE/Ls2ZjzAOJGrE
+	 Gwd1dc8wTmq2s+f1O3Nll6uAHqmp///obK1oICadoq1Sc1tgrhQm9EOLUBVUT+QJhdw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=btuk9yZ1;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=meta.com;
+	spf=pass smtp.mailfrom=meta.com;
+	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=MMURQSq8;
+	arc=none smtp.remote-ip=67.231.145.42
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8720606A31A;
-	Fri, 30 Oct 2026 22:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C9A606A31A;
+	Fri, 30 Oct 2026 22:08:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 69C9A606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=btuk9yZ1
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB061F000C1;
-	Fri, 30 Oct 2026 22:07:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793398066;
-	bh=O6rbWDigYZwy4ez11pR5lpAnfy34Kwiy/oawBy9xKVI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=btuk9yZ1nNBmCgVPjsh7CLx9+WvtSC+FnMwN8Dpagy7CK6g4vKn6AWMD304OekPOo
-	 mmokEZMtoB7ixV/JK1AupnicJiEPUwaO5FfHKuNWICcQCmm/MyZm4QuT0k03ugoOPb
-	 wi7ynpdcCLxnuLqP/nLWFgS2ga/gxsTtf1BDNGxa87i/HE0uMeY8k0Qd2k1e0b8d4o
-	 61tOK4qgNvYNAMdxXWIAGp/U7Eg7pxl8txlOvEa64inVXIT7UTcwjMlp4arQVW4OP5
-	 xCMZ9pT3Vts+olezqIjL4cIVUvXyw3SeO9tUpsbIdMM63zZJysw+qRTwTL+O1Bv/l4
-	 FcND6cDtQLF0Q==
-Date: Fri, 30 Oct 2026 15:07:45 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Joas Antonio dos Santos <joasantonio108@gmail.com>
-Cc: Tung Quang Nguyen <tung.quang.nguyen@est.tech>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jon Maloy
- <jmaloy@redhat.com>, netdev@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v4] tipc: raise the minimum bearer MTU to fit tunnel
- and crypto overhead
-Message-ID: <20261030150745.50817de7@kernel.org>
-In-Reply-To: <179338105585.65961.17235832504055289741@gmail.com>
-References: <179322942644.17111.4355153262478871713@gmail.com>
-	<AM7P189MB1137B1760C380E81E5A3CD8AC66D2@AM7P189MB1137.EURP189.PROD.OUTLOOK.COM>
-	<179338105585.65961.17235832504055289741@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=MMURQSq8
+Received: from pps.filterd (m0109334.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69ULuFMB518247;
+	Fri, 30 Oct 2026 15:08:00 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pps82601-s2048-2026-q3; bh=E1Nwp6YDz6q
+	ZM2OTPwc4W8dECJoXWXtojx10dqTdLUY=; b=MMURQSq8xaDALKzGaFXVIpZ01Me
+	jXTOLs9+pzKmiH5IIlGWAJxRWt9gsO5AkNwfB1loKOYrQuwxvAnXQQF5XmoDz+94
+	Mh34hP4f1ZkIhUcnHtX37fpCJJNUA4jtHpkkqJXix9SnkKY2dTZISDcJZGYoE6O3
+	yGnUA/rUqMd17oggwh6FL01lgVDeJTDoHoH5R/V9BzeMKND8jLg+bYqkJYASKXJw
+	1RDNJwGJ81KqJ3RnWMH2NgYq9ftaSaKVxyUJS8dnDXPUDMVrMLq08EIp7WJIu2Y6
+	k76d6yCyZtrkBncUrmr+f7FpUIRVKID9TBIhBwgoWxi1UQk1c3nKrsDbqtg==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hn2wbrb5v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Fri, 30 Oct 2026 15:08:00 -0700 (PDT)
+Received: from localhost (2620:10d:c0a8:fe::f072) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Fri, 30 Oct
+ 2026 22:07:58 +0000
+Date: Fri, 30 Oct 2026 15:07:52 -0700
+From: Bobby Eshleman <bobbyeshleman@meta.com>
+To: <phind.uet@gmail.com>
+CC: Stefano Garzarella <sgarzare@redhat.com>,
+        "David S. Miller"
+	<davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>,
+        George Zhang <georgezhang@vmware.com>, Andy King
+	<acking@vmware.com>,
+        Dmitry Torokhov <dtor@vmware.com>, <virtualization@lists.linux.dev>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] vsock: reject negative tv_usec in
+ SO_VM_SOCKETS_CONNECT_TIMEOUT
+Message-ID: <auUVOP8G8f1PNYaG@devvm29614.prn0.facebook.com>
+References: <20261030064428.73930-1-phind.uet@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,22 +83,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261030064428.73930-1-phind.uet@gmail.com>
+X-Proofpoint-ORIG-GUID: 3XkDo1hC7pks_BabNDy6fDi1PuWXflUD
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDA4OCBTYWx0ZWRfX5CXmhdJQQsFq
+ kKgTnlOP7TDm+flCpVQSG5gwkopLjbcKchXNA7fn0mDv3VuFlGR55RhvhMo8IgAT9ZZkvO2Gkwu
+ oHbMzTVJdtSXQoa3Hmv2AHMThNL4DBs=
+X-Proofpoint-GUID: 3XkDo1hC7pks_BabNDy6fDi1PuWXflUD
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDA4OCBTYWx0ZWRfX4hoh0OtRbBJR
+ b98ZpvIEufRL1kfC8r8Pkv4epfrOquEtisQUXFkplaAcAcsvRNy51zG3kwc8lWBGHI6CnxEfwa4
+ Vijggm8IZzCmVyIBEqaX45C0btycXMRO+S23PEdt6YnGoD6Ly404N9pf/6SoJMWiDkMEdGjJbOM
+ fQwiszL7IYvk1ThcpVHErKKKQ3YCK3FV9BI1W2GJ1IIH4XbdGaCbSbjM/TYaL46b+1/RmKv1qZh
+ 3FZ4zi4cFbUT2FLVKfSXNZ4XcL8Nvkh49FnjU6QdaY6yjAhGX+lzTGuOrzUoedBv/LoKb2iMY85
+ Yzj4Am25Fyj+wJEr8TMAk4uCobe9vRhy3CwP8xyLNCONH5cwg+dQ9QFwoiJpCXXDS49brD53P+U
+ 9/0dU+w9odI1+z0h118iHbi7knxoRL1rVKQ3iDSF6RUkzAWbtBm91wXO6yp6qdjCz4elqfNyUgg
+ b1d8hECgc0JtxjD3l0w==
+X-Authority-Analysis: v=2.4 cv=PdNqFShd c=1 sm=1 tr=0 ts=6ae51540 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=crHB47gyY4rKiduisYu9:22 a=pGLkceISAAAA:8
+ a=VabnemYjAAAA:8 a=KYg8dRGmnzwnUi-rXPcA:9 a=CjuIK1q_8ugA:10
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-30_07,2026-10-21_02,2025-10-01_01
 
-On Fri, 30 Oct 2026 14:24:15 -0300 Joas Antonio dos Santos wrote:
-> The only items in that checkpatch run are about the Assisted-by trailer:
+On Fri, Oct 30, 2026 at 02:43:50PM +0800, phind.uet@gmail.com wrote:
+> From: Nguyen Dinh Phi <phind.uet@gmail.com>
 > 
->   WARNING: Non-standard signature: Assisted-by:
->   ERROR: Unrecognized email address: 'Claude:claude-opus-5-5'
+> The timeval validation checks tv_usec < USEC_PER_SEC but not
+> tv_usec >= 0, so a negative tv_usec makes the timeout computation
+> wrap into a bogus value, later tripping "schedule_timeout: wrong
+> timeout value" instead of being rejected.
 > 
-> That line is there on purpose: it discloses that an AI coding
-> assistant was used, in the "Assisted-by: AGENT:MODEL" form.  checkpatch
-> does not know the tag yet and parses its value as an email address.
-> There is nothing reported against the code or the rest of the commit
-> message.
+> Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+> 
+> Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
+> ---
+>  net/vmw_vsock/af_vsock.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> index d0508887a2fb..1d7d53542724 100644
+> --- a/net/vmw_vsock/af_vsock.c
+> +++ b/net/vmw_vsock/af_vsock.c
+> @@ -2156,7 +2156,8 @@ static int vsock_connectible_setsockopt(struct socket *sock,
+>  					     optname == SO_VM_SOCKETS_CONNECT_TIMEOUT_OLD);
+>  		if (err)
+>  			break;
+> -		if (tv.tv_sec >= 0 && tv.tv_usec < USEC_PER_SEC &&
+> +		if (tv.tv_sec >= 0 && tv.tv_usec >= 0 &&
+> +		    tv.tv_usec < USEC_PER_SEC &&
+>  		    tv.tv_sec < (MAX_SCHEDULE_TIMEOUT / HZ - 1)) {
+>  			vsk->connect_timeout = tv.tv_sec * HZ +
+>  				DIV_ROUND_UP((unsigned long)tv.tv_usec, (USEC_PER_SEC / HZ));
+> -- 
+> 2.43.0
+> 
 
-Hi dear bot,
+LGTM. Maybe we could think about adding some easy opt range tests into
+vsock_test in the future.
 
-The Assisted-by tags are deprecated.
-See commit 1e035297ffda ("docs: remove Assisted-by references")
+Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
