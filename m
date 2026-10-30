@@ -1,59 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793348756;
-	b=L0b/f/CANApkx/xAGJyHte110lq81SMZf16TU1HTi8ZxcdObh/1w+/zHvFaDbiapc2Ix
-	 k1wIiPzCxLjkdxWGW4cEX49zVwA0C6fKBxPaSGKbuDrSs4szCjWNrKu/124YQgB8wVgI/
-	 jeA51CpZrCJfJuMhpPCrmz44vA5diuNky3umXVTqzUZyw7fBFyYGi0kV2VOa3xtc/1yxb
-	 YBGaEb4pE+5KT4PU79WEI8+juvXqknP1nwlAHUWRS+/HHNxFnweJLUN9/njWS5xqUQY8h
-	 HLhfgNUJmxtfJz4r43M+h/51fvfapP4D2CEkBDaAiIVQOi+gHJpa6lKAFI1pLBy+dbw==
+	t=1793348767;
+	b=YY6+GAX0endys8xVAWlgFxEupY+VG/d5g+9PM2qemy4tJGWDZhorFC9FqZ1Eu1Jh6c4e
+	 I8yQW6JpoShYppGI2SlpvDWneXv/84KCC9+rcADuB9CGJUG2KILCu5mVjdD1kE5eDSBl5
+	 ZL4mHm4BNTruXDwlhNTbiP4GgovQWz0Ae+VCCk7Md4NQfYOHYUw530JNg+OuAoixRv5pm
+	 iSWkG1Tf4Usyf3ToIl4J3V+J2xzGvh1OqvRcOohU5HS/wwsWzsCN6Er9uxg2nqiA1iz5U
+	 Sw+aqX98KaEV7HH2atkOT692XWHen3+rs0+1mfuy1CdcBoWIWsPl69EDtSNHKGqRgnw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793348756;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=yyok/7kTqnmIKTiZKOdqHEMv9e2GxdKkMvuJpoDTbc4=;
-	b=J/IH217G7oLua13WUZDn3LPbPA1y1HJj8kRTOeK8V5C0ibWvTvixEym+FkiwNomjZVbx
-	 OMhcnlArImWDYBLjTXVFw0dd0Ik4SIhUuvXfVdCWCxVAsrvNqEkCNYwJzUf09atde4HS5
-	 aOX1W6LA54Kh6+Hj/SILtDeFfHOyXUeS9qn4INi5FnSjpA8K4a2z6O5WuwGpkMbBUULDx
-	 fawdAYsir7jPJsXLG9K6Yw74tCblt/yz0hL7dxFJ2tgcmK2sfv3bueRuBfnZcJl1tO2LL
-	 boTPhNyblyJfLzrrIEkxearsj+1lKp5eblmowLdbNWRhO237hFMh1xOxFCE+lYQ8OwA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793348767;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=aNXERptz7qTR+6t+3Qsay7S44BkYXF3Cv2liAKg/moM=;
+	b=O8WLOQ11bi+Kwf/NvFPHxjItbjdbJCTifmzL60Fg60vUe/bU6DyTsSWEZotij6P2Nnj0
+	 MDwN4FNgwrMv03NBFddTX4n3l83CX2VQOdLRrOD3fy9SF9eYzgmQjMd1omWcg6INxwHxg
+	 9MbLjxUHM/jivKGxz9XqEI+nfkprF5hhSADD6jeAxfrU0FO1TGJLPPy85+XkRKecJO31i
+	 SaOhu3XlxKt0QYbophkULopfZVCYynxBG6ZyWcop/A7VHLdk1O2FSNbhrNyWjzvkYnpvb
+	 Xr4FdFdwQ+y/gqh4KheqTpAN0TamTY8SD4zicYfmYDdPvJVPbV9XbZVUNEwSpQhO3aw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HTzGyBTm;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R6WFI+eF;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284B1606A31A;
-	Fri, 30 Oct 2026 08:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CF8606A332
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 08:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HTzGyBTm
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7BA61F000C1;
-	Fri, 30 Oct 2026 08:25:52 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R6WFI+eF
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E434D1F00A1F
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 08:26:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793348755;
-	bh=yyok/7kTqnmIKTiZKOdqHEMv9e2GxdKkMvuJpoDTbc4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HTzGyBTmW80MuUJ01VRc3CawL+cBO03XtXw0+oNf9fn26Cvgrl2tGbb0lC533FKMk
-	 E4uDS1yZ0yKu89xK6zU1GlR4ghOqoIBgTfbN7Hud5tKEiBUg8tfAvWM8dfRrydaKJA
-	 K1oMOk3fKeWxw+BDAlsjH+sgtaqdgrWfEN8gX4/KlNCn/KTWGJB5sStZjOQ7JCuEHD
-	 DX78heTEzsoK6rHr2L/OyFzrlwJ3m2xbXvd8zP7s618i/PttYuvQbKGOo92sBU1V3q
-	 T8rc+8Q/8bFVAkmug8th+C9T5YtrWAet3LxOP+n80EMiOijCn3JenihPn+sMYvAB9W
-	 +4sHsFO38Ly1Q==
-Date: Fri, 30 Oct 2026 08:25:50 +0000
-From: Simon Horman <horms@kernel.org>
-To: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-Cc: netdev@vger.kernel.org, saeedm@nvidia.com, leon@kernel.org,
-	tariqt@nvidia.com, mbloch@nvidia.com, borisp@nvidia.com,
-	witu@nvidia.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Subject: Re: [PATCH net v1] net/mlx5e: kTLS, Fix missing error unwind when
- enabling RX offload
-Message-ID: <20261030082550.GM257209@horms.kernel.org>
-References: <20261026095346.1212609-1-xuanqiang.luo@linux.dev>
- <20261029134019.GG257209@horms.kernel.org>
- <8a565dd0-f2a7-4d18-9df7-bcf1ed303a59@linux.dev>
+	s=k20260515; t=1793348761;
+	bh=aNXERptz7qTR+6t+3Qsay7S44BkYXF3Cv2liAKg/moM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=R6WFI+eFjQuCiLtMF6m/X2DqXL6K4cKlYw4jkM7/JLuUY/34IjcRjDW8EgXKUQ93J
+	 uFuP28d5QeKUEUQdT6vKfnFvzsGlX1yzxPg6CxiWQnr1iU/98P9xax32llM7ynUKpA
+	 8aYs8wgSetg/+j5O825YHGXA4zUlsxQ0ls3YDP+pC3/Pn8DTFr6W77+qZ9JlPk69av
+	 pDoc9RFM7f+APMqLN81e+ApLEO43BsKuhClMMmGq4JmavkH1uR3e7mu9hgJv+5UXNS
+	 oAVSp33TyZly90uP1yf0+mwf95+6BKNVjxIhuYKkfVqaf2JEEEpszW39DmJ4V+F3fg
+	 LejLFjVHZ7v2Q==
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-55e0090c580so124776b6e.3
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 01:26:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBykfEqapTEALfzs5YJZb05shAHUcxp5GAgsGigYQCv4QHlCCukE/fztb3mVMnvC4jJd5BfuXDA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI+sSfJkJQWPdk8IrcbAP9g6tFYIT1te82v7i8ld/80cn8rOwNb
+	kJSA+ZJ5qh9COiTwy/Y7HXMm4FowC7orDu/ZsAX3RpkDkiCDPNbpptJjKO57NGFvOz1SKL27e6K
+	Oo6HaeQ8tpaC8Nq0NHjM0bl8dupHDkVA=
+X-Received: by 2002:a05:6808:1303:b0:4f8:65de:7293 with SMTP id
+ 5614622812f47-5640dce8ea9mr1292336b6e.15.1793348761127; Fri, 30 Oct 2026
+ 01:26:01 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,109 +59,182 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8a565dd0-f2a7-4d18-9df7-bcf1ed303a59@linux.dev>
+References: <6ae4102e.9c6421ad.36baac.0005.GAE@google.com>
+In-Reply-To: <6ae4102e.9c6421ad.36baac.0005.GAE@google.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Fri, 30 Oct 2026 09:25:49 +0100
+X-Gmail-Original-Message-ID: <CAL4WiipBVMi_fiSQVUAFxqcPVc5jR2BswOwA2iNmGFYE_sbyRg@mail.gmail.com>
+X-Gm-Features: AclHuK_c5K2Xa_OvjKUPQHstmR8REIAhrM_26qFbqmZZXQiExz0QuCddT3LTrwQ
+Message-ID: <CAL4WiipBVMi_fiSQVUAFxqcPVc5jR2BswOwA2iNmGFYE_sbyRg@mail.gmail.com>
+Subject: Re: [syzbot] [net?] memory leak in build_skb
+To: syzbot <syzbot+a3f21220cbbb6e14ee2e@syzkaller.appspotmail.com>, 
+	Steffen Klassert <steffen.klassert@secunet.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, jasowangio@gmail.com, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com, 
+	willemdebruijn.kernel@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 30, 2026 at 10:08:31AM +0800, Xuanqiang Luo wrote:
-> On 2026/10/29 at 21:40 Simon Horman wrote:
-> > On Mon, Oct 26, 2026 at 06:53:46PM +0900, Xuanqiang Luo wrote:
-> > > From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-> > > 
-> > > Since commit abed42f9cd80 ("net/mlx5e: Conditionally create async
-> > > ICOSQ"), the async ICOSQ is only created when an XDP program is attached
-> > > or priv->ktls_rx_was_enabled is set. When TLS RX offload is enabled for
-> > > the first time, mlx5e_ktls_set_feature_rx() sets the flag and reopens
-> > > the channels so that they get the queue, but it ignores the return value
-> > > of mlx5e_safe_reopen_channels().
-> > > 
-> > > If the reopen fails, mlx5e_safe_switch_params() keeps the old channels,
-> > > which have no async ICOSQ, while NETIF_F_HW_TLS_RX is still reported as
-> > > enabled. The next offloaded RX connection then dereferences the NULL
-> > > c->async_icosq in post_rx_param_wqes(). Enabling the feature again does
-> > > not help, as the flag is already set and the reopen is skipped.
-> > > 
-> > > Propagate the error, clear the flag and destroy the accel TCP flow
-> > > tables again, so that the feature stays disabled and the next attempt
-> > > retries the reopen.
-> > > 
-> > > Fixes: abed42f9cd80 ("net/mlx5e: Conditionally create async ICOSQ")
-> > > Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-> > > ---
-> > > Found by code inspection while backporting commit abed42f9cd80 to a
-> > > downstream kernel. I do not have a crypto-enabled ConnectX NIC, so the
-> > > failure has not been reproduced and the fix is only compile-tested.
-> > > 
-> > > The crash itself is the one described in the changelog of abed42f9cd80
-> > > ("async ICOSQ allocation is not triggered, causing a NULL pointer
-> > > crash"). This patch only covers the case where the reopen that should
-> > > create the queue fails. ktls.c is also the only caller that ignores the
-> > > return value of mlx5e_safe_reopen_channels(); the callers in health.c
-> > > and reporter_tx.c check it.
-> > > 
-> > >   drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c | 6 +++++-
-> > >   1 file changed, 5 insertions(+), 1 deletion(-)
-> > 
-> > I agree that a minimal approach to addressing this problem is appropriate
-> > for net.
-> > 
-> > Reviewed-by: Simon Horman <horms@kernel.org>
-> 
-> Thanks for the review!
-> 
-> > 
-> > However, I do think the logic of this function is becoming somewhat
-> > convoluted and would benefit from:
-> > 
-> > 1. Handling error paths in conditionals while leaving
-> >     the main thread of execution unconditional.
-> > 
-> > 2. Use goto for unwind.
-> > 
-> > This is approach is complicated by the function needing to
-> > handle the enable condition. But at any rate, maybe a follow-up patch do do
-> > something like this would be worthwhile?
-> > 
-> > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c
-> > index 3cc1213c2f68..0f5dcd1b822e 100644
-> > --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c
-> > +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c
-> > @@ -137,19 +137,22 @@ int mlx5e_ktls_set_feature_rx(struct net_device *netdev, bool enable)
-> >   	mutex_lock(&priv->state_lock);
-> >   	if (enable) {
-> >   		err = mlx5e_accel_fs_tcp_create(priv->fs);
-> > -		if (!err && !priv->ktls_rx_was_enabled) {
-> > -			priv->ktls_rx_was_enabled = true;
-> > -			err = mlx5e_safe_reopen_channels(priv);
-> > -			if (err) {
-> > -				priv->ktls_rx_was_enabled = false;
-> > -				mlx5e_accel_fs_tcp_destroy(priv->fs);
-> > -			}
-> > +		if (err || priv->ktls_rx_was_enabled)
-> > +			goto out_unlock;
-> > +
-> > +		priv->ktls_rx_was_enabled = true;
-> > +		err = mlx5e_safe_reopen_channels(priv);
-> > +		if (err) {
-> > +			priv->ktls_rx_was_enabled = false;
-> > +			enable = false;
-> >   		}
-> > -	} else {
-> > -		mlx5e_accel_fs_tcp_destroy(priv->fs);
-> >   	}
-> > -	mutex_unlock(&priv->state_lock);
-> > +	if (!enable)
-> > +		mlx5e_accel_fs_tcp_destroy(priv->fs);
-> > +
-> > +out_unlock:
-> > +	mutex_unlock(&priv->state_lock);
-> >   	return err;
-> >   }
-> Thanks for the suggestion. Agreed, the nesting is getting hard to
-> follow. I'll send a cleanup along these lines to net-next once this
-> fix has made it there.
+Le ven. 30 oct. 2026 =C3=A0 04:34, syzbot
+<syzbot+a3f21220cbbb6e14ee2e@syzkaller.appspotmail.com> a =C3=A9crit :
+>
+> Hello,
+>
+> syzbot found the following issue on:
+>
+> HEAD commit:    65ba8f34ec88 Merge tag 'xtensa-20261027' of https://githu=
+b..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=3D1592353e58000=
+0
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=3Dfbf447a1375a1=
+948
+> dashboard link: https://syzkaller.appspot.com/bug?extid=3Da3f21220cbbb6e1=
+4ee2e
+> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for D=
+ebian) 2.44
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D142ee469580=
+000
+>
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/b4e738ce5f2b/dis=
+k-65ba8f34.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/1de9d1ecbbb6/vmlinu=
+x-65ba8f34.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/8a3d79b65181/b=
+zImage-65ba8f34.xz
+>
+> AI-generated root cause summary:
+> In IPsec IP-TFS (XFRM_MODE_IPTFS) processing, when inner packets (includi=
+ng the
+> reused outer skb) are parsed and added to a temporary local 'sublist' dur=
+ing
+> __input_process_payload(), any error encountering invalid header data or
+> truncated payload jumps to 'done:'. At 'done:', packets on 'sublist' are =
+neither
+> delivered nor freed, and the reused outer skb is neither placed in 'defer=
+' nor
+> freed by kfree_skb(), permanently leaking the sk_buff and its attached se=
+c_path
+> extension.
+>
+> full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=3Da3f2122=
+0cbbb6e14ee2e
+>
+> IMPORTANT: if you fix the issue, please add the following tag to the comm=
+it:
+> Reported-by: syzbot+a3f21220cbbb6e14ee2e@syzkaller.appspotmail.com
+>
+> 2026/10/28 09:56:01 executed programs: 5
+> BUG: memory leak
+> unreferenced object 0xffff888104c73c00 (size 240):
+>   comm "syz.0.17", pid 5970, jiffies 4294947974
+>   hex dump (first 32 bytes):
+>     90 38 1f 02 00 c9 ff ff 90 38 1f 02 00 c9 ff ff  .8.......8......
+>     00 00 6a 24 81 88 ff ff 00 00 00 00 00 00 00 00  ..j$............
+>   backtrace (crc 84fdfeb5):
+>     kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+>     slab_post_alloc_hook mm/slub.c:4733 [inline]
+>     slab_alloc_node mm/slub.c:5033 [inline]
+>     kmem_cache_alloc_noprof+0x35b/0x3e0 mm/slub.c:5047
+>     __build_skb net/core/skbuff.c:495 [inline]
+>     build_skb+0x25/0x120 net/core/skbuff.c:511
+>     __tun_build_skb drivers/net/tun.c:1631 [inline]
+>     tun_build_skb+0x489/0x770 drivers/net/tun.c:1726
+>     tun_get_user+0xd2e/0x2040 drivers/net/tun.c:1860
+>     tun_chr_write_iter+0x71/0x120 drivers/net/tun.c:2100
+>     new_sync_write fs/read_write.c:595 [inline]
+>     vfs_write+0x3ae/0x720 fs/read_write.c:687
+>     ksys_write+0xa5/0x170 fs/read_write.c:739
+>     do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+>     do_syscall_64+0xe9/0x530 arch/x86/entry/syscall_64.c:84
+>     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>
+> BUG: memory leak
+> unreferenced object 0xffff888104d139c0 (size 192):
+>   comm "syz.0.17", pid 5970, jiffies 4294947974
+>   hex dump (first 32 bytes):
+>     01 00 00 00 00 02 00 00 00 00 0b 00 00 00 00 00  ................
+>     80 9f 7b 24 81 88 ff ff 00 00 00 00 00 00 00 00  ..{$............
+>   backtrace (crc 420634a7):
+>     kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+>     slab_post_alloc_hook mm/slub.c:4733 [inline]
+>     slab_alloc_node mm/slub.c:5033 [inline]
+>     kmem_cache_alloc_noprof+0x35b/0x3e0 mm/slub.c:5047
+>     __skb_ext_alloc+0x1a/0x50 net/core/skbuff.c:7246
+>     skb_ext_add+0x1a6/0x280 net/core/skbuff.c:7350
+>     secpath_set+0x7c/0xc0 net/xfrm/xfrm_input.c:127
+>     xfrm_input+0x381/0x28a0 net/xfrm/xfrm_input.c:571
+>     vti_input+0xf4/0x160 net/ipv4/ip_vti.c:69
+>     xfrm4_esp_rcv+0x46/0xb0 net/ipv4/xfrm4_protocol.c:104
+>     ip_protocol_deliver_rcu+0x259/0x260 net/ipv4/ip_input.c:207
+>     ip_local_deliver_finish+0x115/0x1e0 net/ipv4/ip_input.c:241
+>     NF_HOOK include/linux/netfilter.h:325 [inline]
+>     NF_HOOK include/linux/netfilter.h:319 [inline]
+>     ip_local_deliver+0x97/0x140 net/ipv4/ip_input.c:262
+>     dst_input include/net/dst.h:481 [inline]
+>     ip_rcv_finish net/ipv4/ip_input.c:492 [inline]
+>     NF_HOOK include/linux/netfilter.h:325 [inline]
+>     NF_HOOK include/linux/netfilter.h:319 [inline]
+>     ip_rcv+0x212/0x230 net/ipv4/ip_input.c:612
+>     __netif_receive_skb_one_core+0xce/0x100 net/core/dev.c:6405
+>     __netif_receive_skb+0x1d/0x80 net/core/dev.c:6518
+>     netif_receive_skb_internal net/core/dev.c:6604 [inline]
+>     netif_receive_skb+0x49/0x200 net/core/dev.c:6663
+>     tun_rx_batched drivers/net/tun.c:1575 [inline]
+>     tun_get_user+0x1ccc/0x2040 drivers/net/tun.c:2053
+>     tun_chr_write_iter+0x71/0x120 drivers/net/tun.c:2100
+>
+> connection error: failed to recv *flatrpc.ExecutorMessageRawT: EOF
+>
+>
+> ---
+> This report is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+>
+> syzbot will keep track of this issue. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+>
+> If the report is already addressed, let syzbot know by replying with:
+> #syz fix: exact-commit-title
+>
+> If you want syzbot to run the reproducer, reply with:
+> #syz test: git://repo/address.git branch-or-commit-hash
+> If you attach or paste a git patch, syzbot will apply it before testing.
+>
+> If you want to overwrite report's subsystems, reply with:
+> #syz set subsystems: new-subsystem
+> (See the list of subsystem names on the web dashboard)
+>
+> If the report is a duplicate of another one, reply with:
+> #syz dup: exact-subject-of-another-report
+>
+> If you want to undo deduplication, reply with:
+> #syz undup
 
-Likewise, thanks.
+#syz test
 
-Just to be clear, the patch I provided informally in my previous email
-is compile tested only.
+diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+index 103cf7c5dbfb..0313a43aa8a9 100644
+--- a/net/xfrm/xfrm_iptfs.c
++++ b/net/xfrm/xfrm_iptfs.c
+@@ -1182,6 +1182,7 @@ static bool __input_process_payload(struct
+xfrm_state *x, u32 data,
+                /* this should not happen from the above code */
+                XFRM_INC_STATS(net, LINUX_MIB_XFRMINIPTFSERROR);
+
++done:
+        if (first_skb && first_iplen && !defer && !first_skb_partial) {
+                /* first_skb is queued b/c !defer and not partial */
+                if (pskb_trim(first_skb, first_iplen)) {
+@@ -1198,7 +1199,7 @@ static bool __input_process_payload(struct
+xfrm_state *x, u32 data,
+                if (xfrm_input(skb, 0, 0, -2))
+                        kfree_skb(skb);
+        }
+-done:
++
+        skb =3D skbseq->root_skb;
+        skb_abort_seq_read(skbseq);
