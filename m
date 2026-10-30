@@ -1,66 +1,63 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793369702;
-	b=ofaZlnrX8cOYw2jtIEbPXgdSqF39mIonRn1XuRifhiQdHtfujgH+PGIl3gV4d//M4RUs
-	 7rkHxuKaHUN4bdtYKmMJPaTUgQLr1o1U5XZhemvb6ZFrGan2GRpEbLBQyIZZPrYxLAv/K
-	 PjgBuWIclnpxkgDLG1iZbfTDZWLxs3rzFM1OxXImXBojFjNBfdfsL+G8DDDlVGHZX7FLZ
-	 ebq7nuzFma8xuq8/ZZDD/T5cs97cuEp5qp0h4P7ttzV0KToW+kjBXWc/qkR5X5RTx+/ec
-	 ELVItyqQ0VvLXWTnSjQlopJ0NK1/z/T3XAqQ15MvnG0Z4r8l/and3CRXMIfl3RnI11g==
+	t=1793369721;
+	b=PAnKrYNxgnwuAS9wYYPQJ4mKv7zMJPzAr2er3gbeNvW6eMiC8Ij2LD6CcGLuto2CoGDy
+	 iTw0HZzjfxBa8Jkd4KEXrD26IZ+TO4jc3pq0Hs1bOyC1keevMHKEonvn8Fs02EM5iSpGv
+	 ZdjoS0ebVH62AgIbi9TEaSGHIbx84j2Tgujip5oQcuSv63M9MbcNxb036S44xL8JT+x/A
+	 ME8EqxHSJGNaL82YWU3jgz0/ZRr10XbXd9NsTEoonMWqC5yC7bo58EemXfmqNH/2+hCkg
+	 VuaxeWXjHCnRTnpEwup2ezUUWT7nOWW+IA2m1g/1d3ZZiScEXnXm9pMs/ZOoVzzIM7g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793369702;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=3eew9hrd+oVNmH/bkvMrKCwA/OfNP3uRETS3XUKS9BU=;
-	b=OjUZYi+mBZ7s3/LBYUaFA7DLi2KJ2GccvWwgJzjgymUxfHCJPthbi8kCnycK0CrQgYAr
-	 iNodWfjUFLKQU9LP6eYpa+4qPkpsKM7ZsOjdiLtJ/kF8QhAopwWJ61OjNkf2acTrsI5cS
-	 fZ9MQHyXSHyZNmmdgut/QKDzsY+7j3qWjDM1f3GY39unrXGi2Vi96lBTQDDF0Nze1DB+t
-	 sOtLUDMvNld8jdEhQXR8RtB5p986KQ8FrA/ZLyHKRT69AvcOCpxfPmIMPtokpmH1adm2/
-	 sbDdeNf0zAnSGaJ374j/RDlC95VwTG0Ai77Qp1S7qT/MxXPnDY5G9HoSRzkr7tuyT2w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793369721;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=6o/wru8YGsBJ8nISiaIwKRCzFTUDQcQKEKhFrnSO15Q=;
+	b=s3jsZQJkZnzM4L0YG9HfsimFlS3oprlRJuUjPwbtELA+8ersyLIvWK/FniUx4KbbtuYX
+	 2Xih/Itcp0fhnLs5Tc3dVkCiy9ZPrOLVPTOmtjY7Qciev5lchmD41Q+HGfVHqMikwRqy1
+	 8TWtRrBskLJpXVbRGn2CZeuVLY87Um5BasTrxNE3XQyhT3KQip9mSapi2+Xk9gTQxvLj9
+	 KireQ9pGOOw1PU85jRhxV2pKkSk6FB+rpWDJ/21zZGxlEm968nflKtxRdZG08uBdfq/KP
+	 YNuLZTEWlaTML2PQqs15osZnDULPUgT+VF4sV+QhItWf6SEVx6fuuAa6WPk2RlJDUFg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gD37m2ZO;
+	dkim=pass header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=2ThaJ8qB;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5D8606A321;
-	Fri, 30 Oct 2026 14:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB8D606A320;
+	Fri, 30 Oct 2026 14:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gD37m2ZO
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0020A1F000C1;
-	Fri, 30 Oct 2026 14:14:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793369701;
-	bh=3eew9hrd+oVNmH/bkvMrKCwA/OfNP3uRETS3XUKS9BU=;
-	h=From:To:Cc:Subject:Date;
-	b=gD37m2ZO1kc8314Qi3kocejmmT6/rmqkvForZZNSjqa1BOxCedRclNIDhkKWHnwHi
-	 k/qDejczEyc3g7uuzgzUVm70NrksyE21qx4ON+gVWdbmBb1ZmgdsRyiLDUUUoJ8eBN
-	 1Ug0IVJREIbO0oUWd+Eq3Q/HOG4ehC6rV9W6VAzYw5qhGqrZGxfdZxmavPjaxFvlkk
-	 l6LefuPv+zIU5ZMjP0VyxMy+mbjuLeTMQOeUDzR2aibzt8Gx8DTuyahov8xIAsMsIQ
-	 CaGgSzwCKeOrcKNdX4jWjuWSTnXUB5Yrsc+FULwq2HfTuG4ZTDoJiQC2d1cA6R+rRp
-	 63tQYEymReR2A==
-From: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>
-To: Alexander Duyck <alexanderduyck@fb.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	kernel-team@meta.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key, unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=2ThaJ8qB
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841A61F000C1;
+	Fri, 30 Oct 2026 14:15:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1793369720;
+	bh=6o/wru8YGsBJ8nISiaIwKRCzFTUDQcQKEKhFrnSO15Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=2ThaJ8qBhraU6rDhRkC/D6TOscfYLnqxHXJG6QdzkJxpd7V+dj3zuwzSBw9XblvFY
+	 aC57fqDmqaCcYWSVA4Xxom0B/xj/62qrlM4aBxN6EKJMAmhr1M0QiIqgg5hy7Euhx3
+	 dhTKsaLu7JtgjBUcQCdAihs79tw4eSXLgrA3ipWw=
+Date: Fri, 30 Oct 2026 15:15:17 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: Paolo Abeni <pabeni@redhat.com>,
+	Gyutae Bae <gyutae.opensource@navercorp.com>,
+	stable@vger.kernel.org, Thomas Gleixner <tglx@kernel.org>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org
-Cc: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH net] eth: fbnic: Report the logical RX queue to XDP
-Date: Fri, 30 Oct 2026 15:14:50 +0100
-Message-ID: <20261030141452.1173282-1-bjorn@kernel.org>
-X-Mailer: git-send-email 2.56.0
+	Jakub Kicinski <kuba@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Minsu Jeon <minsu.jeon@navercorp.com>,
+	Jonghyeon Kim <jong-hyeon.kim@navercorp.com>,
+	Siwan Kim <siwan.kim@navercorp.com>,
+	Gyutae Bae <gyutae.bae@navercorp.com>
+Subject: Re: Backport request: Revert "softirq: Let ksoftirqd do its job"
+ (d15121be7485)
+Message-ID: <2026103018-gothic-sheath-5c34@gregkh>
+References: <20261029054200.97234-1-gyutae.opensource@navercorp.com>
+ <9024faed-854d-411d-96c1-7cefd4d68dc6@redhat.com>
+ <CAL+tcoAmq0WfSzo01xbAQ=g8OtE+GpJ5+RGs1G1SdNPdHx_eZg@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,45 +67,75 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAL+tcoAmq0WfSzo01xbAQ=g8OtE+GpJ5+RGs1G1SdNPdHx_eZg@mail.gmail.com>
 
-fbnic reports queue 0 to XDP on all RX queues. The XDP RX queue is
-registered with the header buffer queue index, which is always 0,
-instead of the completion queue index, which is the netdev queue id.
+On Fri, Oct 30, 2026 at 02:16:57PM +0800, Jason Xing wrote:
+> Hi Paolo,
+> 
+> On Thu, Oct 29, 2026 at 4:33 PM Paolo Abeni <pabeni@redhat.com> wrote:
+> >
+> > On 10/29/26 06:42, Gyutae Bae wrote:
+> > > Please backport the following upstream commit to 6.1.y and 5.15.y:
+> > >
+> > >    d15121be7485655129101f3960ae6add40204463
+> > >    Revert "softirq: Let ksoftirqd do its job"
+> > >
+> > > On a production 5.15 PREEMPT_NONE node, long-running overlayfs
+> > > getdents64() calls prevented ksoftirqd from running.  RPS IPIs
+> > > continued to arrive, but NET_RX processing on that CPU stalled for
+> > > up to about 3 seconds.  Over 15 days, the node logged about 1,000
+> > > bonding ARP monitor failovers, with no link-state changes recorded
+> > > during that period.  The failovers stopped after the workload was
+> > > removed.
+> > >
+> > > On a 5.15.27 PREEMPT_NONE test node, we used a livepatch to make
+> > > ksoftirqd_running() always return false.  This removes the same
+> > > softirq deferral checks as the revert on this build.  Under the same
+> > > load, we measured three 10-minute windows: before patching, with the
+> > > livepatch active, and after removing it.  The number of HTTP requests
+> > > taking more than 200 ms was 17, 0 and 11, respectively.  TCPTimeouts
+> > > increased by 25, 1 and 21.
+> > >
+> > > We verified with patch --dry-run that the revert applies cleanly
+> > > to v6.1.190 and v5.15.223.  Both already contain the related RCU
+> > > fix 1dd1eff161bd.  6.6.y and later already contain the revert.
+> > >
+> > > The original commit was intended to prevent user-task starvation
+> > > under a softirq flood.  The revert's changelog points to threaded
+> > > NAPI as an alternative, but it is disabled by default.
+> > >
+> > > The revert was merged in v6.5 without a Cc: stable tag.
+> > > Syzbot has also reported bisections to this revert [1].
+> > > Paolo, Thomas, Eric: I would appreciate your thoughts on whether
+> > > this revert is suitable for 6.1.y and 5.15.y.
+> > >
+> > > [1] https://lore.kernel.org/all/000000000000a249880603717c15@google.com/
+> > IMHO such change should not land to stable lightly. It's a behavioural
+> > change with subtle side effects. The threaded napi feature is disabled
+> 
+> Technically speaking, yes, it's actually not a bug but an optimization.
+> 
+> > by default for the same reason. Also the revert has some soft functional
+> > dependencies in napi threaded cleanup and improvements landed into v6.4,
+> > i.e. 6bb218b5a6e3f3c5e2e76faf8fc976f3f6f72496, likely more.
+> 
+> Maybe I have a slightly different thought on this: since I really
+> received/noticed there are not a few reports showing the 'issue' in
+> the older kernels. It's not easy for some people or company to upgrade
+> the stable kernel. I'm wondering if it's still possible to land it
+> with more careful consideration in the patch if Gyutae volunteers to
+> do so? Please feel free to reject the proposal :)
 
-Any XDP program that reads rx_queue_index gets 0 on every queue, so a
-program that uses the queue id uses the wrong queue. AF_XDP has the
-same problem: XSKMAP finds the wrong socket, and redirect to a socket
-on another queue fails.
+Given that 5.15.y is about to go end-of-life in a month, that's a
+non-starter.
 
-Triggered on fbnic hardware (50G, firmware 25.08.05-004) with AF_XDP
-zero-copy: sockets on queues other than 0 got no packets. With this
-fix, a socket on queue 43, and sockets on four queues at once, get
-their packets. On the QEMU model with two queues, a kprobe shows 0 and
-0 before the fix, and 0 and 1 after it.
+For 6.1.y, you better be planning how to move off of that _now_ given
+that you only have 1 more year before that is gone.  Anyone hitting this
+issue should be moving now as that gives you an incentive to do so :)
 
-Fixes: 894d4a4ea6cb ("eth: fbnic: move xdp_rxq_info_reg() to resource alloc")
-Signed-off-by: Björn Töpel <bjorn@kernel.org>
----
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+thanks,
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-index c572a0062e77..0bcee152d47c 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-@@ -2072,7 +2072,7 @@ static int fbnic_alloc_rx_qt_resources(struct fbnic_net *fbn,
- 
- 	fbnic_bdq_set_page_size(&qt->sub1, rx_page_size);
- 
--	err = xdp_rxq_info_reg(&qt->xdp_rxq, fbn->netdev, qt->sub0.q_idx,
-+	err = xdp_rxq_info_reg(&qt->xdp_rxq, fbn->netdev, qt->cmpl.q_idx,
- 			       nv->napi.napi_id);
- 	if (err)
- 		goto free_page_pools;
-
-base-commit: d8a4f4c59da52b7c31ae337243b8473a19a3f819
--- 
-2.56.0
-
+greg k-h
