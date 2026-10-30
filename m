@@ -1,51 +1,52 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.15
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793342827;
-	b=3WlwaFRwccVyFL7x5VVDpSY8+iJpxkHjb2R75jVL23W6emjPxFUqKCA57ZThPDakBFy+
-	 rPfGrsrgLwevLSdmpmB5TFQ/qvMzv8peCrCL6luMfaQwLaGgWbuBs1pywzEDJt7l8l6mh
-	 vrFaQf4clT4G3WQQeWXM3eKhnWScB7NJvc0z3rxiquVjQ0IOFm+uwy9+fh8irou1GqOEr
-	 0cj1qvnikInE86oxT3798XNCr1Q0F2pLliQVxKxlsF62w+7H+tEAUrQIvxndwVwS/NlBZ
-	 0gWgx8lhamw91QdaYkMVSaOQm0F6C+SZ5rj1RZPvVGm1L102gIQAMg3MG3db8GXQsPw==
+	t=1793342850;
+	b=PDdfXfCagyRGK/m9kRbp/TsAZgxlpLqpO8/Wnu0FTUjq5AQu40BkWKB3p4dAzwGezXxC
+	 2zHDaWOO/TkS4BmcsjKVAr0ffq/NpNpdxalUEtyf5lx5Xeg1hOjsNpNs2pE9wI98PT4Ni
+	 iyUeshA9wzP9l2ZUcRUj4HK31hjboJEUN4++hEAQhtmShqTBfKPASJl7S9On+ldYygi42
+	 kMUGr60eZa+eNye8Cyx6oI+olGum8nDsypW0PZHy9qNucUcb0fqrsyw/gXHAZ9ekE6/BR
+	 B6wPIOz+2rZtniRFMUfgimnG5uKHn7G+f/UkttMXEnCP3cK53UVK4zXYgpjqWwqTbQw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793342827;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793342850;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=ActI47yzI3V9YPR4LI6wlgEbQ+M6pe+vUeOdyRecz6E=;
-	b=Z9Shewqrq3GP+YPqwJFC+nUV1lgcD85CdZ9kc9LFfagp2SuLs8+Mk59Vb1OpD+B77b24
-	 aTeVRc0F0Asbj/I4lHkZgn4l2Bk9yKZdvMVb5xZF3SYGbYV4kHVhLhMw9zjmgaWsamI1s
-	 NppRLzWHvRJF+dXFX1/1FRmZGzVYjT2aoQMRX2fB7yK1H5XbPFfjjkNBINtiuU2ePkmxd
-	 2qs9Gpji8Sm0eik05QeOmQIEEllFaSVTUNJAZ0XRDnG2dYblfZuXcNdhQd7nyKQoZujoR
-	 Wom9U8dQXyNLJPwdRHX8Vh3L2EBUpN3Usecco5ds3JhJ/eYmaWhm6AO4q9uOPHDpf3A==
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=JCA4Dw39EpYKvErdSLs70whxYqhuqitv81R2HouAmv0=;
+	b=3Xhd0SSvtk3+Bx+UtdIGHRESVSsAuYQzHZcP6pz/HlrYdvMgEh+dXIcsskVYWiBQT5oC
+	 HNc8VSwX4O0flhxFGu945WKVHXQBj1v52pirKWfHUmrk1FZlABBPVX2PZ6zQNedMMMflJ
+	 ebuHXR9v50obMQEur9bIsmRS/TkMRieUJpXS/GSYV1FwOqzq9Rw4F1eXH31ZGxYSplrr/
+	 Us97p2sioR2J5flnblpcpLkMxMF0SxbBFunOTAgvvBAArjqTSbv88WxIcppDjKSrQ4FBx
+	 o7hI4p6U3eyGC9TdfHnjRcVGtdTi6MJzLIoy3iQ/wlP/XbfFNan/jQCTVIvmMrnJfOw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=ikuyo.dev;
 	spf=pass smtp.mailfrom=ikuyo.dev;
-	dkim=pass header.d=ikuyo.dev header.i=@ikuyo.dev header.a=rsa-sha256 header.s=s1 header.b=V1Kj1axR;
+	dkim=pass header.d=ikuyo.dev header.i=@ikuyo.dev header.a=rsa-sha256 header.s=s1 header.b=jiAAjAkm;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.15
 Received: from sender6-op-o15.zoho.com (sender6-op-o15.zoho.com [165.173.180.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2149606A31A;
-	Fri, 30 Oct 2026 06:47:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D2149606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6E7606A31C;
+	Fri, 30 Oct 2026 06:47:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7D6E7606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ikuyo.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ikuyo.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ikuyo.dev header.i=@ikuyo.dev header.a=rsa-sha256 header.s=s1 header.b=V1Kj1axR
-ARC-Seal: i=1; a=rsa-sha256; t=1793342810; cv=none; 
+	dkim=pass (2048-bit key, unprotected) header.d=ikuyo.dev header.i=@ikuyo.dev header.a=rsa-sha256 header.s=s1 header.b=jiAAjAkm
+ARC-Seal: i=1; a=rsa-sha256; t=1793342816; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=RQoKKSGTMcHcKejF5YVcP10g4Uuk+K11K/7ux1Dq6QQWT5DmYgWBNTm/bslIt87f7hJvnGdyvf/dbUv6/CIy5/B42D2TpA4eYB35eyc1yllfiYx+0kf98C+aNq8/QVf4rWYUZkST2MOyV7Tynty3cPiIapgGuNydkyRI7v+E2S0=
+	b=GGRWgvbk4z6EgpbonyBt1ER1tnhKNlOHaQjKmWsvrY3xD/gmKDuZpLka5/2zCfNppwbAQXUzmnMbYEPiaqLXoEVBgwL7bw5krDw/PnJEw7FAnD8yYIFkERTrNS4yF9LpmQusa4VAoWxMqvJUotQ+V82Lha4+D2ktXuERbkekgB8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1793342810; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=ActI47yzI3V9YPR4LI6wlgEbQ+M6pe+vUeOdyRecz6E=; 
-	b=GO4d3oNHMslYfBFUw2e4PZfl66WpNX15Mz3T0ujoVbyw5t+yWFYJHkZAPcaskpM8F1LxSSLnCduj5dSGpCJbSFGUvL1wNSt/qnGd1miEASuZQAWE0g//0DWvDAxkDBoLjUyvZ15pMDEXBrvdxngmyLrqQ8vRnxpG0W/g4P848H4=
+	t=1793342816; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=JCA4Dw39EpYKvErdSLs70whxYqhuqitv81R2HouAmv0=; 
+	b=SKIwpPpLd5Exjnq5ovDW+gwCtas7UncLK37DRRFQqyyDv2py12HV2O2mJ2SS2tzzs15oLlqnU9er+QdNfRQ5hug5xYSbUKFFM8QclwVX8fwT2662QD5H8jjv6JbZbUpJ7001GvJ2fPVi2IrhLhe/Tk6qz2fneipK6XKRs9JDsI8=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=ikuyo.dev;
 	spf=pass  smtp.mailfrom=eritque-arcus@ikuyo.dev;
 	dmarc=pass header.from=<eritque-arcus@ikuyo.dev>
-DKIM-Signature: a=rsa-sha256; b=V1Kj1axRMHat8VPGf2z/012jgrEhYhqpF8QOBNUjjHzMTt+e+BdGMDyBoXAODZr0gNFX/oNvRAsOZXZAQC2WioywrdHxZtXWd7zOuLLgxVmVPFMeWUDEs67NYMJXUfMdp1rEcIJwdj0RDJxRP0XYDWT04looSrzeptPflXyaSMumSGNzuio4xpNKcG3hNTIfvDD1goTrTgvgJa6PwFd2KT2rCvh9uQ2ntRAKssCFORNre2vff8L27pfCIMT1r9HRLODDl2xh2LQiM86O2rGYcRk0KSD0qf3gVUfpY93+RjFF8CiIZPk39qrSoj+T/A5Xim+1jfsSIKr1k5/mVNYD2w==; c=relaxed/relaxed; s=s1; d=ikuyo.dev; v=1; bh=ActI47yzI3V9YPR4LI6wlgEbQ+M6pe+vUeOdyRecz6E=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1793342808745704.1039460582357;
-	Thu, 29 Oct 2026 23:46:48 -0700 (PDT)
+DKIM-Signature: a=rsa-sha256; b=jiAAjAkmj+Lox98skzB62m/AloFYWSK2UZrcygALrRE887pBIsSwKDQ/G7PHwdmMxHR3DJzlOiQFpbbuhWljnlf8L5UbajNkLinlYSbrOHX2uzNLEQIoVmaSloyTn6J7hkXrqjc541VeUUt78MwNa+sqCnV8M3+ylWetSJYUsIlWukCft8oKbh3jl6O6PoI59fhxWhsQa6r7gAWUNQiSsC9LZAMM9inXtny6m/urItNXtt876Z17A9KDPIF5Y2dFmFzcAN9Rf6kQzLCOC7LyFXd6FEmv4BYMkettSsg9MbekOaxih7knXkOzCMcYyz3to+wPCcHYKIblto4h9ncdVg==; c=relaxed/relaxed; s=s1; d=ikuyo.dev; v=1; bh=JCA4Dw39EpYKvErdSLs70whxYqhuqitv81R2HouAmv0=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1793342812466154.35937773938758;
+	Thu, 29 Oct 2026 23:46:52 -0700 (PDT)
 From: Yiran Qiu <eritque-arcus@ikuyo.dev>
 To: Stefano Garzarella <sgarzare@redhat.com>
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
@@ -64,10 +65,12 @@ Cc: Stefan Hajnoczi <stefanha@redhat.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yiran Qiu <eritque-arcus@ikuyo.dev>
-Subject: [PATCH RFC net v2 0/3] vsock/virtio: don't let sockets send from another local CID
-Date: Fri, 30 Oct 2026 02:44:15 -0400
-Message-ID: <20261030064418.133349-1-eritque-arcus@ikuyo.dev>
+Subject: [PATCH RFC net v2 2/3] vsock/virtio: send credit updates only while connecting or connected
+Date: Fri, 30 Oct 2026 02:44:17 -0400
+Message-ID: <20261030064418.133349-3-eritque-arcus@ikuyo.dev>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261030064418.133349-1-eritque-arcus@ikuyo.dev>
+References: <20261030064418.133349-1-eritque-arcus@ikuyo.dev>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,62 +82,53 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The virtio transports send every packet from the transport's CID, so a
-socket bound to another local CID sends from another socket's address.
-Patch 1 refuses connect() on such a socket; patches 2 and 3 close two
-other ways a socket can send from another address or have its local
-CID changed.
+Once a socket has a transport, changing its buffer size
+(SO_VM_SOCKETS_BUFFER_*) sends a credit update in any state, from the
+transport's CID to whatever remote address the last connect() left
+behind.  So a socket bound to (guest CID, P) whose loopback connect()
+failed or was refused still sends as (VMADDR_CID_LOCAL, P).  If another
+process has a connection open from (VMADDR_CID_LOCAL, P) to the
+listener that connect() targeted, the socket the listener accepted for
+it takes the update's buf_alloc and fwd_cnt as its peer's, and can
+stall.
 
-I'm sending this as an RFC because one problem is still open.  Over
-vsock_loopback, a socket bound to (VMADDR_CID_LOCAL, P) sends from the
-same address as the children of a listener on (guest CID, P) -- or, on
-a host, on (VMADDR_CID_HOST, P) -- and vsock_check_source()
-(dee44f41f206) accepts packets from either one as coming from the
-peer.  So either one can shut down or stall the other's connections,
-including those of clients that never called bind().  Making
-vsock_loopback send from the bound CID would fix this and make patch 1
-unnecessary for loopback.  Would you prefer that, or these patches as
-they are?
+On a host without a guest->host transport, a socket whose loopback
+connect() failed can then connect() to VMADDR_CID_ANY with
+VMADDR_FLAG_TO_HOST.  That fails with ENODEV but leaves VMADDR_CID_ANY
+as the remote address, so the update reaches any loopback socket on
+that port.
 
-Changes in v2:
-- New approach.  v1 made bind() treat the same port on two local CIDs
-  as a conflict, but as the Sashiko review pointed out, its alias list
-  missed VMADDR_CID_HOST and did not handle guest->host transports
-  without a CID.  I reproduced both gaps.  v2 leaves bind() alone.
-- Patches 2 and 3 are new.
-- Only the virtio transports change, vsock_loopback included.  VMCI
-  picks its source context by route (a nested VMware guest reaches its
-  VMs from VMADDR_CID_HOST), and hv_sock has no CIDs.
-- v1: https://patch.msgid.link/20261028065231.655701-1-eritque-arcus@ikuyo.dev
+Only send the update while connecting or connected.  Now that connect()
+refuses a CID the transport does not own and leaves a failed socket in
+TCP_CLOSE, a socket in either state sends from its own address.
 
-I tested on net 4dca97647a3e (net/vmw_vsock is unchanged through
-5838f10563d5) under QEMU/KVM with vsock_loopback built in, in four
-setups: guests with vhost_vsock, with and without the virtio-vsock
-device; a guest with the device but no vhost_vsock; and a host with
-vhost_vsock and no virtio transport.  The table shows where each
-problem reproduces as the patches are applied one at a time ("no dev"
-is the guest without the device):
+Found by an LLM review of an unposted draft of this series.  On
+unmodified kernels, where the first connect() times out instead of
+being refused, a non-blocking send() on the accepted socket returns
+EAGAIN after the update; with this patch it succeeds, and vsock_test
+passes.  Drafted with Claude.
 
-                       base          +1            +1+2     +1+2+3
-  connect() reset      all           fixed         fixed    fixed
-  credit update stall  all           all           fixed    fixed
-  rebind to CID ANY    no dev, host  no dev, host  no dev   fixed
+Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+Signed-off-by: Yiran Qiu <eritque-arcus@ikuyo.dev>
+---
+ net/vmw_vsock/virtio_transport_common.c |  4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-vsock_test passes at every step, and no connect() that used to succeed
-is now refused.  I have not tested VMware, Hyper-V or nested setups,
-nor run with KASAN, and there is no vsock_test case yet; I can add one.
-
-The patch 1 problem was found with afb-afl, an LLM-driven audit
-pipeline, and this letter was drafted with Claude.
-
-Yiran Qiu (3):
-  vsock/virtio: refuse connect() from a CID the transport does not own
-  vsock/virtio: send credit updates only while connecting or connected
-  vsock/virtio: only update a socket's local CID to the transport's CID
-
- net/vmw_vsock/virtio_transport_common.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
-
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 8f524d073ae1..4d0511629044 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1098,7 +1098,9 @@ void virtio_transport_notify_buffer_size(struct vsock_sock *vsk, u64 *val)
+ 
+ 	vvs->buf_alloc = *val;
+ 
+-	virtio_transport_send_credit_update(vsk);
++	if (sk_vsock(vsk)->sk_state == TCP_ESTABLISHED ||
++	    sk_vsock(vsk)->sk_state == TCP_SYN_SENT)
++		virtio_transport_send_credit_update(vsk);
+ }
+ EXPORT_SYMBOL_GPL(virtio_transport_notify_buffer_size);
+ 
 -- 
 2.56.0
 
