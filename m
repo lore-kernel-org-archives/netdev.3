@@ -1,62 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793351029;
-	b=DVzRpU2huWOGCexFu8CB+SrqpHnOiYZYIgeWgLObBifKf1GIWenEKaY7KF2tK5K9fZ1/
-	 7Tf3k97kuC1Lhafs42TA/mS/b/2WUJ5N/kUkzWWw7puZGL7fhgWvLn8ElT2YhgBHXKIvW
-	 QZ1ZqxEJvLnpEQP8N9BWomCamG42Pl2diTfNkZ1XhZqFwX/A+9TIcIgHGlruUyygksK/h
-	 Fq+I6CwE4WSi4UP36gSoBWpGElTkxqZPvJJI77ttDj6G/SGJio9kCsm/FQsOc9ju9wTNH
-	 XCmIrMX4TsdUZkaHPH2do3cPXXC27LtPy+HLQKjv9z1iI/6PKGqFfSJw1mywA3hWNIw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793351029;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	b=I4zlSK1ZsRGvFuZUqF3mxItCaMUjOOUxSvqtwICL8IiWaiFxw60NSHPjmr+20xrbJ88P
-	 q1tMEmtT0uezvMhcJxt9PfMAzIpUUGicagvHAy2AcWsWVPmg9rm9jzv5q0bQrdabnzlAJ
-	 mUSjsdYxM7ZccyrlBnfVf+stlcDMhM9V+mn/w0q1BXB3ArBqJIuB93SKisd9yn6ESIF+s
-	 4cIr9n3O/IidZLQzUMA9B+s4rY52+H9jNSGg70arEbrJclapTlIyHRId/8miS06XtDjOY
-	 h6sYfE8/ddej8E1cbWEhvCq3h1+v+urhN0eplKy/tv3d8HTaQBOXf6WXQZ3XhJaP4ww==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jba3VDhQ;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.44
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793351752;
+	b=zhUnwTGjcF+mdTEmkcOij5Np1foaxyZ2d2NaWq3qwHfhYRiTWXmXtk5tdQcUyFnIIm0Y
+	 on/tqbI8UhDaaa5/dlULXKe80VEWnkY7xE2WtA9iyzxMbBQPigvcbEA85ZavYYnn8hPlM
+	 uIf06fKNBWCE1POjvlRCTEbiE4zGLYmE3nBvxdZg3RfMFTyS08WQaOSGROjT1B6x1VCRm
+	 3rIFYucqpQRMmI6E4igO2klrEszvM6WLfwHVtNR2mREr1PnjygpCDVoqJ+g3+LXLjNU1v
+	 hwNp8PCdMD83ygknyWzW2t4pu07BjPux282edHSh+eJI7VINzLCJO92SFH+ZjVvvhIQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793351752;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=ic0l6s4/vCSv2HTg51cnmOpg7vz5TShRFb99sP2LwP0=;
+	b=MPLWx5BlvZF4O6KJQ7t3owubJXnNWPRJzVs1cGjWNZyD/id/BXLhP7uyaGTRio/gjP3c
+	 X4O8iBp74FkScQYRdLbx7xnWr+fdIdILRRyCmSXHPtKdEfGya7wTdGIjx28/p4x7g4LIS
+	 TYH5DcvabcHvhkbXgBrF7JcKZmXJbuVY1eamMLG6yPYEGZmYbOhRhsgTsYxNgCPTrm2Ss
+	 2Di50aZ4CF2VIRN+jPJIjSIzDV2QkQGqfojVU4TRPu8iXGcrlZqqLIwSKd92OJz6ACGqW
+	 P+QILtvfTeJvuuOLHhOxypkgtpUeO/stCGqYsR54qwq7U65AyLRSmZQhJDo8dxyzCvw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qfLBsasI;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.44
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9200F606A31A;
-	Fri, 30 Oct 2026 09:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CBE7606A31D
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 09:15:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3CBE7606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Jba3VDhQ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78CEE1F00A18;
-	Fri, 30 Oct 2026 09:03:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793351029;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Jba3VDhQK8Azg35IwM/K/ULHd5IY8xLxA431JYRkLzJjnS4uz+dMmK3rKGjcZZbZT
-	 0ehkyIq0I1C9FP0r2x8u4lZwvNfaaqpGCfTP9veWoe3mZKEhEBwgSFhqtCQYHnu/aQ
-	 pOoVuiTf5uzi8GSmWG9cmL1jIhW9YIjdSHLqrS9Mj8gplaH0qanyfIKUmr6xu7wS2l
-	 CmBm70OOrxaXnX55iDA462Q6lECOhMfjNISDwr6e53/GVul+XtCynCYc/V4vWRWlbE
-	 30KFrU1Ci8iI4lDkngA0JixlAObuXQRyE603mr5eJchScKn3FRxDEy3WZSW8VraiDL
-	 effH+ecMfM9uw==
-From: netdev-bot+sinfo@kernel.org
-To: laixiangwu <laixiangwu@cmss.chinamobile.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- MD Danish Anwar <danishanwar@ti.com>, Roger Quadros <rogerq@kernel.org>,
- linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: ti: icssg-prueth-sr1: Fix device_node refcount leak
- in prueth_probe()
-Date: Fri, 30 Oct 2026 09:03:47 +0000
-Message-ID: <179335102798.3327.13730382084781364050@kernel.org>
-In-Reply-To: <20261030085851.2019-1-laixiangwu@cmss.chinamobile.com>
-References: <20261030085851.2019-1-laixiangwu@cmss.chinamobile.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qfLBsasI
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5be53e5fce1so523608e87.1
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 02:15:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793351750; cv=none;
+        d=google.com; s=arc-20260327;
+        b=KR2MRE1jWhmFv8ckaNgARNU8wR3aeLEdylM8JLs9lO24SgQ9cZuaPxkP1LJ4OCDy/4
+         pdfTp7e7Tdrrk/oWFfAKmR+bWLpoWyKCUSQU+LIgFUVHnh0ZO62a2ugLdkA+YaCiWfc7
+         NIc5JuwzhBv2cTuxgUP97Sg4PPD9t+D0rRPnq60PjUI4BREyvBHSmYy3gnP8KihMg4tY
+         FsQEroxgO+IQRPW6jy7M3Odw2VGwuTtyvd0D0tBKUKdncjXiy7mUhX1TiDnDhdGmQE2M
+         hZMt0CQx3sYQEcfUf1WN/O9Ykix8+eklWX5NTImT73boyQDRArC0oCb5NLCAjj9KZLBu
+         2SEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ic0l6s4/vCSv2HTg51cnmOpg7vz5TShRFb99sP2LwP0=;
+        fh=sV6U3VdpRX1J54OJeX2LQRgm4HfURvYJx5UQW9jTQds=;
+        b=WQSY0O/n3Eur1rJa/xzEtHZWgv6doVq0CBLQN7yuT0GBWlfvJPoclDjidGbb/yMvfn
+         h8NKous2+ee9LOI7Z80rdEcSs5vQCf+SLHeRApMIwPJGqr5YQtX0vJza87q5K2RpRNLQ
+         vmpUw2tIb4r2xUly53LbxZ+e1iHXZ3BcAtAmKm/v1BAhw2D+5G9/ndbFvjf2fOUWQxmZ
+         P5o5/RcLdoOJEQu6YxkljmHNSoyFiX3mr2+jS7BVbq5ZqVgDXkUFmfJWKXyYmZykc2Q/
+         jF6sE9aEnGO9SmFxcKoC/5sfNAVXeUmnxRuYZEVrqxKHDb3ToTkg5xbpniC+4rjd0A64
+         xqoQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793351750; x=1793956550; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ic0l6s4/vCSv2HTg51cnmOpg7vz5TShRFb99sP2LwP0=;
+        b=qfLBsasIj0ueC2Rm80cM4nkkefayvn27KbmgG9N1xFUzMEPOSqzCiMGte6z7f09SF4
+         QmWsSi62JZAp1RCu0wer6f6lUJX1sJ82VugRSHYhS8MY3FDXFsBB/dBcPf5cY78sljLS
+         29tbFUMSzh46Yk+v0t8EEiyT++a/3d1cuXI6gpTD/vwdTq6cONvNdeZsBWQTIt4qQPEI
+         g0jTMXVQjRwnlAANKJN6lmCYJaFnWZTIOD11otdk2g0iz/rbU7Jly1s8j0J00HNX/cyS
+         m4urrgVCOlPkuR9hRQpEhUNOot9aqiTcAYJL2bCL1P+kYfL3FhVAdBp+etp1DtqyniQW
+         vZnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793351750; x=1793956550;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ic0l6s4/vCSv2HTg51cnmOpg7vz5TShRFb99sP2LwP0=;
+        b=tORdSP9NQi+1AbkVlM0DdShdw8BPl4icKRDtL3lI10JNLrRFiF2H0oVJeANFzC62hC
+         YOG59vcoff4I+OojylA3qo1YB9vmQ+eo6PbObIMUqRKdfsO4Pv0KXpW9KE/8p4EvW528
+         C7Va85YLFDj23DXBtMF49EtNZ+Y6Kyvq/YSOztnI9KDY9OaGBn98ceI50B0jqVDK1fdF
+         XJtKq58MtIwiDfpWc6j+SWDGbooVA3yZMWq4pfAZOagciYUszRSC9+JuUdCmLvldkQqx
+         wedszBKexkaLCzTF8ztEU9t9IWwg+G/XvdVYO2RL135qyufRbW5baxvgdfNeZMOHygSb
+         423g==
+X-Gm-Message-State: AFq9FYI7oiZxWbw6NI6b/bRM1Vb1wbM8OixeeC2BDDlmI2s5Wdgh+sUC
+	DoLcrYlkIxSgVwva/R9XbYni6973LgWbFhPvRBmv9bL96/Wjy7Mq/CkhMdqCPrefCe5bOTA/weL
+	6jt3zfJDl8jEZlj5zJzD4p/nwM16aGOs=
+X-Gm-Gg: AYBFou3/WU88n5fY7WPZ6o7ILrlwXTzPLKswNCAa8E6moysqM4Pae6sPf822Ij/LV74
+	DKtJtvH5h4LnC78smvL2vwWjGRns/IfJjk0Wb/Qe+OmDtR5bALiKvT0HtTVZaZ77q65bup1p5nO
+	tuNNj8TXbJJETdwjqWcCH3mPMXxo/8tInn9AlKR8/OaOsit1X2kJ1i5UpX3OxSxWhNV2EOhaUVf
+	srxnIgu7cDXjhCPKWU1Nt4IL3Q68xdy0QCrOyYvpseDyv7Pr7AqR4OwCQIfwjba59YSAMneddGM
+	kUEJgZWxxk23V2WqJIJY2RP/NTF5Ef2Y0CGbCd2hr4W3rUcG6MBAOCOsDy46rjUBAB0Oygl045o
+	4CrPl6jssqyYcnkD0QThP377AVKfvYf2+Qo/3oORPlUB5mDnMeZ/lgrntOpVZDIaNYfgnRrv6J4
+	vYz+KgjA92+9mzxUmNDm1EAPPlemIdzHC9O+h21gYgpKal35ulVy0=
+X-Received: by 2002:a05:6512:15a8:b0:5bf:a352:9c25 with SMTP id
+ 2adb3069b0e04-5bfd95200c1mr558923e87.5.1793351749887; Fri, 30 Oct 2026
+ 02:15:49 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,29 +104,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <20261030023248.78802-1-testwrzwrz@gmail.com> <20261030023248.78802-2-testwrzwrz@gmail.com>
+ <CAL+tcoDUGqk-KfMBqdG4RBURHQc=9J+Ce7B7CZZWRN5yN7pRrw@mail.gmail.com> <20261030084017.16202-1-testwrzwrz@gmail.com>
+In-Reply-To: <20261030084017.16202-1-testwrzwrz@gmail.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Fri, 30 Oct 2026 17:15:11 +0800
+X-Gm-Features: AclHuK_tqEbHK_O2Qvnq3pma3G6-PFR5lcMFBxShPN1h2GTemzUuLTxLrhij11k
+Message-ID: <CAL+tcoBThTe7299eVU=tsUdi392dS9cioXX5RA5AKRsYAGbdVg@mail.gmail.com>
+Subject: Re: [PATCH net v4 1/2] xsk: defer software checksum until the skb is complete
+To: Rongzheng Wang <testwrzwrz@gmail.com>
+Cc: netdev@vger.kernel.org, Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
+	Magnus Karlsson <magnus.karlsson@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, stable@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi!
+On Fri, Oct 30, 2026 at 4:40=E2=80=AFPM Rongzheng Wang <testwrzwrz@gmail.co=
+m> wrote:
+>
+> Hi Jason,
+>
+> Thanks for the review. This was a timing race, not intentional: your v3
+> reply (the Reviewed-by plus the else-branch nit) arrived at 10:30, while
+> v4 was sent at 10:32 and had already been prepared without it. I should
+> have checked the thread before sending.
+>
+> I'll send a v5 as a new thread with the unnecessary else removed, exactly
+> as you suggested, and your Reviewed-by carried on patch 1. Patch 2 is
+> unchanged.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Thanks.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Since I'm not that familiar with the selftest, I would not comment on
+that one. I believe Maciej and Bjorn will give their opinions, so I
+highly recommend you to wait for their feedback on the selftest patch
+:)
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Thanks,
+Jason
