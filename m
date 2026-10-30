@@ -1,99 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.47
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793376336;
-	b=XyAUe2aGF5rhgXpBzbnU6xpXN/YtgosXFgXkNnjNXeFZWCKEeRujH+RhBe8EoS4eZvqX
-	 3V8f82pkEdUdFgB9LQkB65+6/AOLGWa0caeGk7YHOi6zqI1SK9iSiXtXpvSex6twheQoV
-	 o++89apQJzldneXKQE/Enz7+IuxcdxAz3OGCnVCmnR9lYxE6g95ARTjoXTTq5v7U7h/Bz
-	 9KxNiGbqa5YG0nnwbbWjWn79MNiQRoyONDNrDc0J1KB3peoAiBVssXqdGCQQ7maBL1wsA
-	 o3I00QbI0kobCfpkBCt5nTsCtr8lXugpMbZd/aaQ2iUTMmUt81wo6P9AihFNgN4xAuA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793376336;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:In-Reply-To:References:X-Mailer:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=UVN9g4RWdwp5/he8LF058qsOA18MIA0nq3SVY0VenDU=;
-	b=lqsB3Bsk86B45YlwLAJvU4x/SC85y8qngjX9wIgqcS1exAZauvjVLA+jFohYYWPIVHJ1
-	 yNJtZrWgOyX6k3cdJeY035ZF+yEcw7QpPWszePnXJTSpmvnne+Ppvj+AcJ2K+e4ir+sdS
-	 UdGi8JlLZ7E0N6emEjIGtdodxnvB/jhXX3a5Oedxpzpza64lfAUwrSTOXzDIp09Of1tC5
-	 AXPbyYHmxcsMK5gAkVcJ+rpktWrM/OcrhzKqdFb51jTaEqlgFGLEjX12SHzNtGcH3L9dK
-	 beh1qVnVN/6Ec79q5wEt0yLV0MeDB7+ZKHgaEs/rcoXH8r2lQTacr/+vEVE14T04d0A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="g/b6FOCz";
-	arc=none smtp.remote-ip=209.85.221.47
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.67
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793376418;
+	b=1ZrXJxkQYj0Zkqr0/D3zVvjxhGAlgHn8iFmRGyPchY4wBxiIx5NX4znucU3T8KMM+wJa
+	 A7aBWha7Xrrg0w7F/pgQgxso0h0A5WhaXQOKKHBFkik6D/KgTBIl88q5xansAN0btN0M1
+	 dhDeq3aTLVRc21y3HN1VKKUzjhekOlRuZu43lwDEDiYEnSyOB5Gdun1A+3NK/ONdJtojT
+	 85px5+HfG3xiDLRj/ygmCZr+uQZlT1VGTZ/Cxrw3u/KcqnmdIHS+ujYBLU76CwpqSO78i
+	 iUh94IWtxtbCPbMn9pgIDX/AyGw10bteYVIPcGAB5CcXAKoa6FrJKHUs2Js3Z92hHMA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793376418;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=kQGMDdLQSrlzIaZx/Kux8+psHtyGMJtJLZJRyaW9zmE=;
+	b=12JKRBO5xisZbu5t4yLz/gGjA9AI4xcJLryU6a1JM5GEom2l7r2m3JscfPg0MKJJhR7L
+	 JuRWzyWyn6FLY+wK/BLmYjUSeMt8F73cyGDIPW9t4vKvaGGgolxdhHH5Jlbj21O14czlg
+	 /c5xJBV+PRz88/LadKvU/9/25kfvYvKFRq0ek4bY+t+DyrY0R+1FnmHb94tGJGY0UjMLe
+	 wffTb7Bwd8c7vaWPj/9D1ODBOSQoSihahcwkqQoZuT624q8Zi+7bQ26Cd/Pxq7IyLTAEm
+	 qO/aMr3kLPqvsNI7OUm6OHhbwgqktfl82D148oGJ80plbixoYcz922B+8sP8iXDR49w==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=KPZLotvG;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.67
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013067.outbound.protection.outlook.com [40.107.201.67])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61624606A31F
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 16:05:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61624606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D7D606A31A;
+	Fri, 30 Oct 2026 16:06:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40D7D606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=g/b6FOCz
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-48e20edd106so740555f8f.1
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 09:05:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793376335; x=1793981135; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UVN9g4RWdwp5/he8LF058qsOA18MIA0nq3SVY0VenDU=;
-        b=g/b6FOCzOFlOpRQPAWM7QQdQwfA/v+03wjKewq/H51+O3q089hlqictJUYXPfi7F4t
-         fON86ko4exfQhOzHAkWFRwIZplM7VlN2tpOEkLMCOIThqhO0XVrMoGcXlIVpPT5+cdkc
-         sV3GACLdrhk3fr8IOW00299gkrCyhuG15mrAFWXCnMDnfjt6bAHRLiC5LLDxebhHn1fd
-         vuE28u2nYX55IGHqqO+55MqcAWtlefC5QB83vV0XJz3k/6d12b9W9QoZyagAJ6v3FKQB
-         HaTsvZCQ4UgcxryKdADU+XTi1uvu7lcSz8VrD1CKxf4pnYY2yhQJ61ZAJJgi6szEgZZI
-         idIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793376335; x=1793981135;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UVN9g4RWdwp5/he8LF058qsOA18MIA0nq3SVY0VenDU=;
-        b=Kz9j1rEKGL54e38qW5VedWfPPCbwSVAC11hEs657+5USVi35zSDxGdKehcBY9wFxfJ
-         OP3rqvEaqiiRYeaq51Li3lKJtTRqvwkuxfyCctvgsytVjCaJ3GFC4xbLNs8bTtU6ho91
-         RXfPHjVN7pjxcPOp6icBxlfElNXAE4+F+j7gsK585+VoyDFEZRr5mzsJLF0NhuZP/e9g
-         PU5+g2LrgZAKOSKCBKHuQFjsQJuYP8Kbf8JNSZ62wq2AE/2w4IE3qv8A98kSgarsfdve
-         Rw4yPCB4DdYl8myroxtc45NTF9uQn50tAO3b0zCks9lyfh5WGSjJsto6gQwaEp7fGkG6
-         AMfg==
-X-Gm-Message-State: AFq9FYKzvHM2SMDU3RIhudZ+PdDdXUcduU9eTLQWthHfQxfBaGzm/e0V
-	fI0LIkdlTH8lEfpXbIUVRucQpKI9ziMnA/M0bG1BbtGEylGzllIdCWwZ
-X-Gm-Gg: AYBFou3rE3H/JyYDOcg7Xp9xSMcZhU60Xme9XdhskP4Jhji1bkWNjLVcuMaTALnz5fS
-	gTPmU10MGV+Mr2V4tiWuBKHf12gOAdX6fJL1RxpOwmx791GRfqByNm51Eq+MFtfNiYj5L4EQGCf
-	snNmGwLI2hoa+f6Q19UIzq1hvxiYTecvJLoFNf0cEv9tZWwNjO1lJiBnYWVhoYkVBUHRKpM/8Ox
-	nIQcUWpv0FMAULmJ5ef36ZaCBDB3vhfuRxQumju9Jqykc4ULfnRlzuaut7ZCLuJykYU9wdI8XeG
-	odvDiHcnBU/u/9ERRr+koi06MxcUeNLRWtGU6eiMIMU6mvJCZgJoulWLQdaf8kDi4CEMv0Upz/q
-	gv04kXrB/sFt/7j3J64JxOk54hJ13DbIwAzl95vrVv/nm6/vr89mBqi39nLkmp6OpzXbN1S+I00
-	7SnpKL0E7KDILMfyiORzOcUyvUwM5AXkbGbbL/fe3i/wrWNwYITjvnuu0Y8VK2TbhCrFGfKvcPV
-	l3SRVN2N0KfoczW4RLVeTyG3fIbFRdD9NpvMx1pwrJ8faVz/HB/cfXx06sUerKf8xiiVLY51Q0v
-	68Nf+CAIP5uz0ORjXWLvOSBxNyyeTjxtNXcfwRjTx5ZBsRh/MmSi39NSbeLUXxMkT8xY1DDU0ud
-	T6WLCcXASYck=
-X-Received: by 2002:a05:6000:4284:b0:48e:3678:5112 with SMTP id ffacd0b85a97d-48e6e2ef7b0mr6204489f8f.21.1793376334674;
-        Fri, 30 Oct 2026 09:05:34 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b77f06sm3987846f8f.21.2026.10.30.09.05.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 09:05:33 -0700 (PDT)
-Date: Fri, 30 Oct 2026 16:05:32 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Zhou Qiuyue <n0ps1edzz@gmail.com>
-Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>, Ido Schimmel
- <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Hangbin Liu
- <hangbin.liu@linux.dev>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH net v2] ipv6: raw: fix use-after-free in
- rawv6_send_hdrinc()
-Message-ID: <20261030160532.4832d994@pumpkin>
-In-Reply-To: <20261026044808.613-1-n0ps1edzz@gmail.com>
-References: <20261026044808.613-1-n0ps1edzz@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=KPZLotvG
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=epkV6aJHRkG3KmN9h4NRAlurvx4QdY+jLqGJoUzeC905uuJqU2r746GfMxwyOkgQpryf5KS82TAAxBbPSZbPFiqTnRPNufUjGzaoIakweWw3cBUAbLnV/EknOEEX0IOrsS48nTXS9DP/z8u/RGgPYvwDxI4dEetoEInHN+ur0IRlfEMkICgxgyCLCWsjx6SNBHoRhWcyJPepZd3aT6Y89UZzMDgC2B0fhlvSF9WHLP3lsdt5TlMFx7efZedmgpHfv8RUz7ydREk7jRUG4zX4DDmoW2VTirAphRScDHS09Y7UUPECDdnhTRZFyZCC86TeZQztKXv3X/Bzjrdx8yBXIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kQGMDdLQSrlzIaZx/Kux8+psHtyGMJtJLZJRyaW9zmE=;
+ b=mIzTl7WbkjRsYHeqrdLEYZ9f8c9KBbMNzA7rg5j2eLivhkCdkj0yIUi7DphdgwB+8sCa8sdxvMO6gRFkpM/Uh09eHFHit3RPZUS4EUFS0WT+3+2084r7uNr+UgsPqfKisY5ERaTCQrOnzpOR9sEAHpxaiQUttbjp3OX+MSjnYAwLTsz0pex0062NGWLCpOZgujbQ+I57wLf/w4rsDNQWi0Df6C7nmn4U3h0+QJZoMeEKdrPHTAjQ15Xj3enKYE70SMh+LIKH7SBZ4P2cWGRP/MhLKMYApoFU3++8EXh/mORPo0Cpb05Q5LzFpVxjonGcI9o6pTq9fL9+DrohRXpo3Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kQGMDdLQSrlzIaZx/Kux8+psHtyGMJtJLZJRyaW9zmE=;
+ b=KPZLotvG1N2vvvELmbYHCkOf+naXyx/V4zFt8xwQg2XWkWjzmGaqU+0Zg2YsqBBhILaPhi8mL3BWuBGQJrY+D/GnBsspwiIjBeY3K/Yeohm0E19+hHfd+QR7vkZy7nz5/VLIUU2D2WHtz5lRnBy5+71gnnqO3leymiWr5rBYbSJyqBC/ZC+9PzJt4gYNZuAQfLVePeTULhYN6ze863jzJ9yQijv5PlpGNiEjPCJtoMKB55iw9tjIii2JkMfI2cd53AhYqs75A64l7HaezJwKpkOvrJJFAPQZhKiccaracoC/c/QzNh51KuarfHlzsaVheIXU+Yt4XPYUUc/nrYQz4w==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by CY8PR12MB7315.namprd12.prod.outlook.com (2603:10b6:930:51::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.10; Fri, 30 Oct
+ 2026 16:06:53 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0569.008; Fri, 30 Oct 2026
+ 16:06:53 +0000
+Date: Fri, 30 Oct 2026 18:06:43 +0200
+From: Ido Schimmel <idosch@nvidia.com>
+To: Yaroslav Dudkov <aroslavdudkov622@gmail.com>
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Wei Wang <weiwan@google.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] ipv6: ignore link state in gateway check
+Message-ID: <20261030160643.GA116970@shredder>
+References: <20261028152634.3355852-1-aroslavdudkov622@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261028152634.3355852-1-aroslavdudkov622@gmail.com>
+X-ClientProxiedBy: TL2P290CA0001.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:2::19) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,75 +99,210 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|CY8PR12MB7315:EE_
+X-MS-Office365-Filtering-Correlation-Id: 13263500-ed2d-4e22-3980-08df369fd061
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|23010399003|1800799024|18002099003|22082099003|10067099003|11063799006|56012099006|261021123027099003|261021121427099003|261021135927099003|261022075727099003|261022105027099003|261026121527099003|261026140227099003|261028144727099003|6133799003|261009223027099003;
+X-Microsoft-Antispam-Message-Info:
+	bLCdWFzQK0v/PU+DkTagyrRE73Ie9k1C4LHvdpkq6Dh2ujGYzrDdcl1T1AZzIZWozfWnnM+YH5rPKnFGQizLXGt+5YLOe4KweSnCSzAIFemVF2xhejrjdttXRYunN0sy25ihhJdU57BUYj4C8yLBwHU7K7Mgz98L+dGyoYqcB8M/GAP0NekaaAsoNTQLkv5+qT3Vp8zBG0nbC20VYDI582muU87HITHQAObSRR6NOIkCOjpDWaDdNwHButb9CnrlSATr55MDBXmJa8TOfZ6J3sQMcenjnTBA//F7b30qhuen2tJh1XsTNKWPkMHzWcXf57+hPJZKid/5UqSPxRnsJgz/D4Qvx3+1yHKh9vLb99t/tvLlIyGfmBjSk1a6wB/socCHlFjOrko8gkCb/BIeUXcIcr9nsw0eQhHP5lMhag0Ju3l+xGnkinRW0tMTLo7oe+zgBwbBUpuYbLxNX6hrnOoj9ovmGP5TGTGbyD25KXLMBLhVB3OIl0h44Q+/PcYPBVM8JzNFbg/eSUgW5/eIuxdUJvy4u/JmQIH/jYVqufC8+wDkhZ4A6xBKmcFQIlfjl4DfIXC6GbjA3BLG7ti+B55X9gUNXxHmlSF1NW1zt1xIVLDY7l+aR1RGtlbHRPK0B2/70GwipkJ69SUCQAKdlUPpMrUP9RRSbj802E+2J4E=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(1800799024)(18002099003)(22082099003)(10067099003)(11063799006)(56012099006)(261021123027099003)(261021121427099003)(261021135927099003)(261022075727099003)(261022105027099003)(261026121527099003)(261026140227099003)(261028144727099003)(6133799003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?uNI0xG0kCuJafj3NtopXN2UiBtKhFXFZ+aVM5agIjHjE9UztMDHhkkqvFudJ?=
+ =?us-ascii?Q?T9Z7+Qe1eymnMOoAFRwX55QSS6UwjPfEb6LmJ6if+TKHhLVF81sHqTq/bk/d?=
+ =?us-ascii?Q?KA7iS+gPDlHeoIHuWDbUXjUghv9gW7sHocm8iOBzwtfDbgsq1k4j0i1TfNwc?=
+ =?us-ascii?Q?2OgBO8Nd+4lANyh4c2ohgw+Kp75240YRC7EsV5wtp+XQaktGmzKprVovGnY5?=
+ =?us-ascii?Q?kXPRONgqpmvVFkzn7MuHRKKI7P7OsOO3MilQUg08ZJvBbjiHq89H328dy1EX?=
+ =?us-ascii?Q?oNIKmoTH09FuFoPpKOVKz/ItbX3EiiCehe8AQwI5hek0gg5gpp5/ikTYhc8y?=
+ =?us-ascii?Q?GDh+ZmExi0VVtEkkZAnKskvCoGCvE4OwkmaOD4K9wgrQy+3kMMpDe8O1HX0q?=
+ =?us-ascii?Q?cZi3bsVS46TqLugHhLqXNdJtWOeEsmoeHV5Kupupgci0obh0jt5+LeOq806p?=
+ =?us-ascii?Q?sl+EUZO7Qx+Y+E5zNr/NNdbhNqtUucOGB7IWTytFMBMf5WiBYBj49glb2cGG?=
+ =?us-ascii?Q?VB4Neu2OUplCCJHaiYFD/1WYxsXTa4k2EaKM7nXnfc3/WdmpJSSDAS6Db5sC?=
+ =?us-ascii?Q?kWEhKJfevXVRK3Ka4tf4bemiq0C8wF3/pfMZV4Kvfdin4nFUvxNuUrCIAp1X?=
+ =?us-ascii?Q?7Wve0+nUiQ4oc/u/Igmx6QUc/ri3O2w9mhDWAPJc0KeuD1kz2OP4bmElADh4?=
+ =?us-ascii?Q?4iES+4Q2knorMdIHOT0CCCZZlWkKW/lcRM7jqlwcyTl347zXfriE0Dy3ykl2?=
+ =?us-ascii?Q?P97o5SiOsZ8GWNuEQthE8WWQa2BGqTt44fKbZaNYLXxee0kMfNSUP2kwh8t3?=
+ =?us-ascii?Q?f47+LoNV9Ln7Qj1nsVt4Ef842ex/rPzHjZweyJI/mBAoeLMD5zc0cPv+0IBi?=
+ =?us-ascii?Q?eEroSTM18Qf1QAHlskD/0N6qKCANi4UqbH0S2WvPhBk7THeIQ1SiUEmeKgi5?=
+ =?us-ascii?Q?aTqpYWkqd8HrOkf1xsG/jDSMQSZbHP9uGrxjK/26QzL6UFC1bNnIQa7Ti/ha?=
+ =?us-ascii?Q?mzZUOeQEGxiNwUasbPErI5/BY/lUVw1G9X+BacY0sDAW5Z2tIvmvBvjfrn4i?=
+ =?us-ascii?Q?1+iXw40GyNAit4/APNKxSnPtTdhQbIEgOohMSej1BgxFzNv54FbCC1B0ATCz?=
+ =?us-ascii?Q?PUvLBuPSZkDfQdrufv0F/G5wczs0ZMTkgeICHBWX2tTgaXLbtic0qAvrGptQ?=
+ =?us-ascii?Q?eU0MHKePgyD4cvjn+/sa+GM2QHqO5r/M06MszyHh+0wH8oLREZiNokck9V1N?=
+ =?us-ascii?Q?sgh9SYcEIUenq5P9Ige5gysZO0SUaQPH1btgq1eYDk0d0r59WiKBUX9XzH6M?=
+ =?us-ascii?Q?pM7dRE61De2zwIHZWeigKebTP23zDGmuyAU0Tj0wuCxapzliixnBTk2hVgXf?=
+ =?us-ascii?Q?+8wt1IG2cV6zxipcs8u8ljhmqgR1ZdioEbDaAshbpUpyL6T8/d3VKZiKli5/?=
+ =?us-ascii?Q?5/IZ3PKWgfWcYzVIN7+0yyaO2hPMEsfJyvE1U4t5tweZRy73ye/qzZugVhf5?=
+ =?us-ascii?Q?5M5Gq7tp4xb+PleEOKV2X4M2IB+WO9LZ1/XBWUiB1AnKFOyOc89l6os0cKDt?=
+ =?us-ascii?Q?EW/5BKp30X9IV78mAG2BToPLuoKPA0zpoR/iaS/vTJFvLuiTFcTcl0wZaka5?=
+ =?us-ascii?Q?vuUpzj9z9O5HcS+uJ7QAYy+P6fjTMvVbwNJkx1VshZlbNsdEkol3ZNcCnDzK?=
+ =?us-ascii?Q?NilQV9d2gcE6VBSxexx6D40w/ZPZHSdywVhlhTBKU51DH1k1?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 13263500-ed2d-4e22-3980-08df369fd061
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 16:06:53.4668
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: C7z4PZd+m678kLMK2/87+jo+C1qZ13u5yDxnDS8EOENTbWMHwNbLI80aB1jvv4PIBSyIzKfsirxleGUi8w/gSA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7315
 
-On Mon, 26 Oct 2026 12:48:08 +0800
-Zhou Qiuyue <n0ps1edzz@gmail.com> wrote:
-
-> rawv6_send_hdrinc() caches the route before handing the skb to
-> l3mdev_ip6_out(). The VRF output path may replace skb->dst and release
-> the original route, leaving the cached pointer stale.
+On Wed, Oct 28, 2026 at 03:26:33PM +0000, Yaroslav Dudkov wrote:
+> IPv6 route cannot be added in table when all
+> following conditions are true:
+> - gateway is not link-local address
+> - ignore_routes_with_linkdown=1 on device
+> - nexthop has no carrier
+> - gateway is not present or covered by any route in table already
+> Also multipath routes addition is invalidated by kernel even
+> if only one of added nexthops satisfies all above conditions.
 > 
-> The function later dereferences that pointer for statistics accounting
-> and as the output device passed to NF_HOOK(). Its RCU read-side critical
-> section starts after l3mdev_ip6_out(), so it cannot prevent the old route
-> from being reclaimed in between.
-
-Doesn't it also pass the wrong rt->dst.dev value to NF_HOOK() ?
-
-> Reload the route from the current skb destination after
-> l3mdev_ip6_out() returns.
-
-Have you looked at just saving rt->rt6i_dev locally?
-The rcu free of the temporary rt_info is expensive.
-Last I looked it has to kmalloc() a little structure and later adds
-latency to the softint code.
-The thing is some applications can send a lot of packets through this path
-(and I mean upwards of 50000 per second).
-So even a kmalloc/kfree in this function would be better.
-
-That might even save the rcu_read_lock() being needed.
-
-David
-
+> Reproducer:
 > 
-> KASAN reports a slab-use-after-free in rawv6_sendmsg(), with the route
-> allocated by ip6_dst_alloc(), freed by dst_destroy() from rcu_core(), and
-> the related RCU callback queued from vrf_l3_out().
+>   ip netns add t
+>   ip -n t link add va type veth peer name vb
+>   ip -n t link set va up
+>   ip -n t addr add fd00::1/64 dev va nodad
+>   ip netns exec t sysctl -w \
+>     net.ipv6.conf.va.ignore_routes_with_linkdown=1
+>   ip -n t -6 route add 2001:db8::/64 via fd00::2 dev va
+>   # added
+>   ip -n t -6 route add 2001:db8::/64 table 100 via fd00::2 dev va
+>   # RTNETLINK answers: No route to host
+>   ip -n t -6 route show table all
+>   ip netns del t
 > 
-> Fixes: 4c1feac58e06 ("net: vrf: Flip IPv6 output path from FIB lookup hook to out hook")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zhou Qiuyue <n0ps1edzz@gmail.com>
+> Route should be added because:
+> - RT6_LOOKUP_F_IGNORE_LINKSTATE in commit d5d32e4b7668
+> ("net: ipv6: Do not consider link state for nexthop validation")
+> was added for this
+> - the same route is valid in main table (when no specifying table id
+> while adding route)
+> - fib6_nh_init() initializes nexthops with no carrier
+> - IPv4 already does this (fib_check_nh_v4_gw() ignores link state
+> using the FIB_LOOKUP_IGNORE_LINKSTATE flag)
+> 
+> Before commit b2c709cce682 ("ipv6: Convert gateway validation to
+> use fib6_info") rt6_lookup() was used for checking if nexthop is
+> valid, rt6_lookup called rt6_device_match() which does not check the
+> link state. After change rt6_lookup() to fib6_lookup()
+> find_match() under fib6_lookup() started to invalidate linkdown
+> devices, because RT6_LOOKUP_F_IGNORE_LINKSTATE is not passed to it.
+> 
+> Adding RT6_LOOKUP_F_IGNORE_LINKSTATE to flags for ip6_route_check_nh()
+> solves the problem. RT6_LOOKUP_F_IGNORE_LINKSTATE is already used
+> inside the first search ip6_nh_lookup_table() and fixes the
+> bug in second search fib6_lookup(). Also RT6_LOOKUP_F_IGNORE_LINKSTATE
+> isn't read inside fib6_select_path().
+> 
+> Fixes: b2c709cce682 ("ipv6: Convert gateway validation to use fib6_info")
+> Signed-off-by: Yaroslav Dudkov <aroslavdudkov622@gmail.com>
 > ---
-> Changes in v2:
-> - Rebased onto the current net tree at 7076f684d513.
-> - Regenerated the patch with git-format-patch so it applies cleanly.
-> - Corrected the Fixes tag to the commit that made the IPv6 VRF path reachable.
-> - Shortened the code comment and added the required recipients.
+> IPv4 example of this situation:
+>   ip netns add t
+>   ip -n t link add va type veth peer name vb
+>   ip -n t link set va up
+>   ip -n t addr add 192.168.0.1/24 dev va
+>   ip netns exec t sysctl -w \
+>     net.ipv4.conf.va.ignore_routes_with_linkdown=1
+>   ip -n t route add 192.0.2.0/24 table 100 via 192.168.0.2 dev va
+>   # added
+>   ip -n t route show table all
+>   ip netns del t
+
+Please turn this into a selftest so that it doesn't regress in the
+future. Something like [1] (vibe coded).
+
 > 
-> v1: https://lore.kernel.org/r/6adad51d.8fc0b0c9.1ec657.1868@mx.google.com
+> Also when adding RT6_LOOKUP_F_IGNORE_LINKSTATE to flags of
+> ip6_route_check_nh() makes adding this flag inside of
+> ip6_nh_lookup_table() unnecessary for this call, making another call in
+> ip6_route_check_nh_onlink() with flags=0 the only place where it is
+> needed.
+> ---
+>  net/ipv6/route.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Thank you to Hangbin Liu for reviewing v1 and pointing out the submission
-> issues.
-> 
->  net/ipv6/raw.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
-> index b965258cf..bdea82543 100644
-> --- a/net/ipv6/raw.c
-> +++ b/net/ipv6/raw.c
-> @@ -654,6 +654,9 @@ static int rawv6_send_hdrinc(struct sock *sk, struct msghdr *msg, int length,
->  	if (unlikely(!skb))
->  		return 0;
+> diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+> index 94e5ef1c4f83..95d7b5b10e51 100644
+> --- a/net/ipv6/route.c
+> +++ b/net/ipv6/route.c
+> @@ -3426,7 +3426,7 @@ static int ip6_route_check_nh(struct net *net,
+>  {
+>  	const struct in6_addr *gw_addr = &cfg->fc_gateway;
+>  	struct net_device *dev = _dev ? *_dev : NULL;
+> -	int flags = RT6_LOOKUP_F_IFACE;
+> +	int flags = RT6_LOOKUP_F_IFACE | RT6_LOOKUP_F_IGNORE_LINKSTATE;
+
+Maintain reverse xmas tree:
+
+https://docs.kernel.org/next/process/maintainer-netdev.html#local-variable-ordering-reverse-xmas-tree-rcs
+
+>  	struct fib6_result res = {};
+>  	int err = -EHOSTUNREACH;
 >  
-> +	/* l3mdev_ip6_out() may have replaced the skb dst. */
-> +	rt = dst_rt6_info(skb_dst(skb));
-> +
->  	/* Acquire rcu_read_lock() in case we need to use rt->rt6i_idev
->  	 * in the error path. Since skb has been freed, the dst could
->  	 * have been queued for deletion.
+> -- 
+> 2.54.0
 > 
-> base-commit: 7076f684d5132e6a6145e1da2fa74771ecd052e5
+
+[1]
+diff --git a/tools/testing/selftests/net/fib_tests.sh b/tools/testing/selftests/net/fib_tests.sh
+index 7c47d7fe250d..76f950eaef52 100755
+--- a/tools/testing/selftests/net/fib_tests.sh
++++ b/tools/testing/selftests/net/fib_tests.sh
+@@ -406,10 +406,48 @@ fib_carrier_unicast_test()
+ 	cleanup
+ }
+ 
++fib_carrier_gw_test()
++{
++	echo
++	echo "Gateway validation with carrier down"
++
++	setup
++
++	set -e
++	$NS_EXEC sysctl -qw net.ipv4.conf.dummy0.ignore_routes_with_linkdown=1
++	$NS_EXEC sysctl -qw net.ipv6.conf.dummy0.ignore_routes_with_linkdown=1
++	$IP link set dev dummy0 carrier off
++	sleep 1
++	set +e
++
++	$IP route add 203.0.113.0/25 via 198.51.100.2 dev dummy0
++	log_test $? 0 "IPv4 route in main table"
++	$IP -6 route add 2001:db8:10::/64 via 2001:db8:1::2 dev dummy0
++	log_test $? 0 "IPv6 route in main table"
++
++	$IP route add 203.0.113.0/25 table 100 via 198.51.100.2 dev dummy0
++	log_test $? 0 "IPv4 route in non-main table"
++	$IP -6 route add 2001:db8:10::/64 table 100 via 2001:db8:1::2 dev dummy0
++	log_test $? 0 "IPv6 route in non-main table"
++
++	$IP route add 203.0.113.128/25 table 100 via 198.51.100.2
++	log_test $? 0 "IPv4 route in non-main table without device"
++	$IP -6 route add 2001:db8:11::/64 table 100 via 2001:db8:1::2
++	log_test $? 0 "IPv6 route in non-main table without device"
++
++	$IP route show table 100 203.0.113.0/25 | grep -q "linkdown"
++	log_test $? 0 "IPv4 linkdown flag set"
++	$IP -6 route show table 100 2001:db8:10::/64 | grep -q "linkdown"
++	log_test $? 0 "IPv6 linkdown flag set"
++
++	cleanup
++}
++
+ fib_carrier_test()
+ {
+ 	fib_carrier_local_test
+ 	fib_carrier_unicast_test
++	fib_carrier_gw_test
+ }
+ 
+ fib_rp_filter_test()
 
