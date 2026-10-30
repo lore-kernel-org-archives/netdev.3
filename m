@@ -1,90 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793382862;
-	b=4l+hX+BntNUWdFxS+SARucmUSJJr5MMUJ1BQvnZ3Gp97HGdLy7CyxZulhTgvcFweK3MB
-	 rEEZ8xG7iIZA/YWq/zIyjys32no3uwxfJgWNV+xINXUdTPq4jpWFe31C7vlUpJdKMdkBS
-	 84Qj1upPYdTHtsAHTTZOqkfMDXBSFJdUonZbYAmSjxp4CBpCSzJRGDSUwOx/SBKfzXdsm
-	 sx+t+jIeOIqnKjzOM/oo3v4CMiKwgdx87oKLwd96GwuhFrpMTV7/0ERfoVBgjWgi5hrf3
-	 69i2oNULQF3eUvaMtFk8YmUkqjNGdxr+/88KC2H/WvN/U5edyNBxLOIXvCflNx/34Pg==
+	t=1793382886;
+	b=MpIRQD2ekmZ1JKZsCKmL0NAA3WzTU7T/kByUPnl0u3tvBAUhPeAoGbPdK1M4M1enY2wh
+	 n6n8I33VkRDa9rMrsc/cWF/xZ0fc7KGrp8FPzj+9andP6snvsituNhWzxERcBn92xMNtH
+	 oqGMqRj/bXHeho1ENx3Xlk7QRxqy3Bdbrk4MIO7oGREWm+A0V95vBrBp2Oht0yXoWN0Yl
+	 M7dV9lhXfoRhKcYwpjmYUvXYxZoFd22xY/pcQleucxu5lL3XqEztBb3T0CyNWY2WpHYx3
+	 tPlrfO73osPk9lDS1KWPLExqndNTibcnGojXmUgLEJZRwzO+p1hW5fkbXrI4jBVMFRQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793382862;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=ofYepfLWGmWwLQwuVQyBDsj69K2Ei2/q9XqZv+jRkos=;
-	b=PT0uhrF8t6NM+TQFpaaPszz+mkM2Axsjy6LbryMcrJg6mAoE1Usx2CROcu4TWodWYG7u
-	 ruHhZPBT09SisjeZOWGB0M7XqtSs7xt6KDnCP14ffWcNw66zCyR9jlBl3LDB6tOsrXPc4
-	 VT7K631FQfY8KTpLmRXUxCBnCAQ8QfQbbhw5bdhfsIOq4oZpNbaJ5wKBo1uf1Lu27h9ec
-	 J7dQ75exrLcDCI2eDOX82V6x1E2ZRkBvGxMVZGmRIDMwnLYXe5wSB86iu5Lhn9f7EfxB/
-	 zwWLDpgPY4E7w8gl49sO+8l3AiPDQNpjoLK6lAL87UaJ3fdsOJ1/bX/FnL9keddRBPA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793382886;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=3UfZG3+pcxBGzlDM7p3wxd7lWx3StudQV3isrWC7GYo=;
+	b=frJlxDDNumqId2Z9DJ/A33LzVDUYOYoYpKTpvFNe4OGBInLKJudjurhl6KHJFxgfMUzY
+	 pUay9muPjAvoHpDPBXks7LcOF3YTZMPHKJKgWPU1BKGnKk78Inz706gqFwzlIuE72uPcX
+	 6Xf9acOHGHd+irdmxRUlZ80C6deJ9sQCAsQI9xSk3jzG54mv87BbtEIY3UOdXfFKihxwZ
+	 saCCzZrWvXHl2j/nn5tmCmojUlOcDwyze9pAyqzPocEIdUbhV06KeeDP/esoZW7qRowQw
+	 pieIVCzZVJyS4DMV1sTFOBYNXNe2XZm54lH10gGNNXbR6480w1Xp7EwAFJmYxUliYeA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mTUwbBoX;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="Ed/AU9Ef";
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F168606A31A;
-	Fri, 30 Oct 2026 17:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8D7606A330
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 17:54:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C8D7606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mTUwbBoX
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CA51F00A18;
-	Fri, 30 Oct 2026 17:54:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793382861;
-	bh=ofYepfLWGmWwLQwuVQyBDsj69K2Ei2/q9XqZv+jRkos=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mTUwbBoX2F2BEoFWM1svESWoPutzqIVDXGy5rbc2beDz2TNMpie8iOSq/Jk9UoqMT
-	 vb28Lr4mQcYzMzgJZ/nRg+S1CjWFAZsAw7rdNVIdLourlHpWzxThwR+EWeyrtiCHzi
-	 veetsBeHMAUwwEPUFau84GaoJl2cwmNd2qqkv4mHu5yB6ckOWqNXMx6H9MPOGzIkA1
-	 jcrDtorzsFDc5l7baBuakCuQ5St7COgkLx+yfEjGtFYB9CebcoduvrFyXLFnrimGs6
-	 rrpVEUAOxK2FsVkHqAbKvLPU5kpj5dMuUODIh0ZhuTzLGGmZKLJweAkWy6YLLWYUex
-	 Ztl8mfTpXyZ2Q==
-Date: Fri, 30 Oct 2026 12:54:19 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Cunhao Lu <1579567540@qq.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	Jerome Brunet <jbrunet+clk@baylibre.com>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>, devicetree@vger.kernel.org,
-	Elaine Zhang <zhangqing@rock-chips.com>,
-	Jiri Slaby <jirislaby@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>, mfd@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-i2c@vger.kernel.org,
-	Richard Cochran <richardcochran@gmail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	linux-mmc@vger.kernel.org, Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	linux-gpio@vger.kernel.org, Vinod Koul <vkoul@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	linux-phy@lists.infradead.org,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>, linux-usb@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Bartosz Golaszewski <brgl@kernel.org>, Lee Jones <lee@kernel.org>,
-	netdev@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Stephen Boyd <sboyd@kernel.org>, David Wu <david.wu@rock-chips.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-rockchip@lists.infradead.org,
-	Jaehoon Chung <jh80.chung@samsung.com>, linux-pm@vger.kernel.org,
-	Brian Masney <bmasney+clk@redhat.com>,
-	Ulf Hansson <ulfh@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Linus Walleij <linusw@kernel.org>, linux-clk@vger.kernel.org,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Jisheng Zhang <jszhang@kernel.org>
-Subject: Re: [PATCH 13/27] dt-bindings: mmc: rockchip: Add RK3572 controllers
-Message-ID: <179338285864.1034428.5820071698056740457.robh@kernel.org>
-References: <20261022-add-board-ok3572-c-v1-0-0b0fd85a31ee@qq.com>
- <20261022-add-board-ok3572-c-v1-13-0b0fd85a31ee@qq.com>
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Ed/AU9Ef
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 76FABC49F66;
+	Fri, 30 Oct 2026 17:55:46 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6CDC0603C2;
+	Fri, 30 Oct 2026 17:54:43 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2DF2610328D09;
+	Fri, 30 Oct 2026 18:54:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793382878; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=3UfZG3+pcxBGzlDM7p3wxd7lWx3StudQV3isrWC7GYo=;
+	b=Ed/AU9EffaVtc40WEgAfXmqRJd0jQnDRTVE2wED7Hwrq55Rwh+eQG6ovoxUQLGR63U8fC6
+	mNRoZWfjywsPPSY81bOYrdXfKxGAA9raI1qMIBNFVwMrEcUK9vzBGfp1DzysTvSECPwCz4
+	Uyzksz2eyOXr6Y58PdOzc80JDSedjpZRhdT5lW9zWyJkACFylYsQdz8nusoPcqhL0H18tP
+	W7PDks3GpMiEzH8VoxZAnOzpeQUWfu2Rr8PdTRXGNNfXY8AZ5UKkXGbU9Ok933rdtsbQcH
+	DauqcFr9/QVIepsN9CTkMlA8Ks/hsLI98uQl8KpqOpD5omSg/BmlA7GazG2uGA==
+Message-ID: <701c6f7e-e715-4647-bddf-48a1485afbe2@bootlin.com>
+Date: Fri, 30 Oct 2026 18:54:32 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -94,20 +62,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261022-add-board-ok3572-c-v1-13-0b0fd85a31ee@qq.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] selftests: drv-net: pause: Skip support tests without
+ link autonegotiation
+To: Mohsin Bashir <mohsin.bashr@gmail.com>, netdev@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org
+References: <20261030173516.1002250-1-mohsin.bashr@gmail.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20261030173516.1002250-1-mohsin.bashr@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+Hi,
 
-On Thu, 22 Oct 2026 00:11:10 +0800, Cunhao Lu wrote:
-> Add the RK3572 SD and eMMC compatibles using the RK3576 fallbacks.
+On 10/30/26 18:35, Mohsin Bashir wrote:
+> From: Mohsin Bashir <hmohsin@meta.com>
 > 
-> Signed-off-by: Cunhao Lu <1579567540@qq.com>
+> Devices without link autonegotiation support may reject both link-setting
+> requests in pause_test_support(). On fbnic, all four variants then fail
+> in cleanup when the deferred restore of unchanged link settings returns
+> EOPNOTSUPP. Removing the restore alone would report PASS without running
+> any pause checks.
+> 
+> Fix this by calling require_link_autoneg() before pause_setup() to skip
+> the test when either interface lacks link autonegotiation support. This
+> also skips devices that support only forced link configuration.
+> 
+> The issue was observed in the fbnic CI/CD pipeline. It was reproduced and
+> the fix was tested on a local fbnic device.
+> 
+> Fixes: cbd8a536cd6d ("selftests: drv-net: Introduce a selftest for ethtool flow control")
+> Signed-off-by: Mohsin Bashir <hmohsin@meta.com>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 > ---
->  Documentation/devicetree/bindings/mmc/rockchip-dw-mshc.yaml   | 1 +
->  Documentation/devicetree/bindings/mmc/snps,dwcmshc-sdhci.yaml | 3 +++
->  2 files changed, 4 insertions(+)
+>  tools/testing/selftests/drivers/net/hw/pause.py | 1 +
+>  1 file changed, 1 insertion(+)
 > 
+> diff --git a/tools/testing/selftests/drivers/net/hw/pause.py b/tools/testing/selftests/drivers/net/hw/pause.py
+> index ca4a55e59c30..1537f88e0e77 100755
+> --- a/tools/testing/selftests/drivers/net/hw/pause.py
+> +++ b/tools/testing/selftests/drivers/net/hw/pause.py
+> @@ -466,6 +466,7 @@ def pause_test_support(cfg, pauseparams):
+>      supported fields.
+>      """
+>  
+> +    require_link_autoneg(cfg)
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+This helper checks if the remote supports aneg too, so it's too restrictive.
+
+The goal of this test is to check the local device's behaviour, without too
+much dependencies on the remote, so that we can at least have it test some of
+the local driver behaviour even when it's connected to a dumb remote or a switch.
+
+Maybe the sane thing to do is to allows the defer() calls in pause_setup() to
+fail silently with "fail=False" ?
+
+Or maybe a bit more clever, have a quick check to see if the device accepts
+an ethtool -s XXX command ? looks like fbnic will refuse all of'em as it
+doesn't have a .set_link_ksettings.
+
+Maxime
 
