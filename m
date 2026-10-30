@@ -1,63 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793346628;
-	b=a4fyy1gpl9P7/LWAi5DCsHYynWHuJ9OuwCLr4efjINFWCwqPyrR43oTXNxFxA1BvJ7T9
-	 GoXfWwumQiHcX5SI4TQ8zuuVwlYX3UlfV3b+X17HLTDgQqNEea2LcGFH9b6IW4OdB85rM
-	 Jef5GwjqWmQWUXZ9mhr1v70o8bnxb4XS5F55sHZrfEiVrADvnyhJYaC+S9AiOFnW5ZslP
-	 7zCcm7alaiZOt8xHAbTcNhwBEI7AwVyiHNfLNmn1sdkyn4Hj7nPFalvYYghJBQdwjnHWM
-	 XWDA9Ix9VOfx4nUkkojxd0d6ueTzYAcEdlBOcGZr+Tj3nF+Y+mP2jtjyIpDcHMserYQ==
+	t=1793346714;
+	b=ymyTSD/XaVXM0gRpQdHE71Vt/5GU3NDBlj0//iLMBrgpuYrw3HeWCOviyhkRYcoWLsnt
+	 HryAW2x8DNQvSc+cmGbYJEX7AWrQvHf4PahBPW3kXBOYyF2ptRw+r0xdh+ylLQxAUZpUY
+	 8jJQgB/D08e9OYYds1Jx0BJ64YrOdtklplbJq69M1H4CZGOgE3oVvIcTra2bG+fuJp4uV
+	 QlSvZLbinp25g1u4zbUy9m5Zz/X3hovoGgSip3cS4tIdQSO72nJZFxZdAIioquCvEz9vV
+	 Y+hCO6GJM+Z/GNTlJGc2DqIQdq4ypK05s9M8xson8Tv83pSGKCJuutxl9fxs87d880g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793346628;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=9QbTMCo8QhI3rZTi++6hxe83pTxoV8DQ3LgUnh1nOB0=;
-	b=1L9aMJYrWt/c31qESCBs+72mkIiUVGdEUTGtj2yfPypS36bUA+CMhVmlVGYnSRB3au/f
-	 P/yLV+iIYvLuDfbv826FRk9hXBor8NuQUiEJGXHizDQW4lB9FcCZL2l14SwFHcGodWVFm
-	 RuThVOsIDUCVJTe7podyg8kUQ1lvTa1oJhOCjUJBo8u0WaKkHYRK03REmGIWfcosHopCE
-	 9hp3d63ztXs9jw2mDlvp4WfvgqQQM2SPeJUM1Sz0wgQFr1AcNtdYEA+Jwv7ZUwFWrdUHj
-	 s9yIBRnvmA+mbxzal1TsHSbRlQOvQiWLrhXJs9AlTTMpMVS7GM6Vk3p4cZ5/l4gSNCA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793346714;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Gm-Message-State:X-Gm-Gg:
+	 X-Received:X-Received:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-GUID:X-Authority-Analysis:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=+2EtztaLud2IzUZ+lbv0E3lQlpb4tzuYE5ybIQ9MuL4=;
+	b=wMQFp2MdyLsTD/8dSIcTMkMxwNBKi5pX4SAe2qIaRwEQC44TSo0wf6CQlr+TZ4V0PASg
+	 WtlhMqzw+2+p6uTDKKPLMSDwd+GSOpqLhHrYpI/TxhS6nHtKOfAsqb+GvioL9UoMMidQU
+	 sDxYALGWDcax8tjQnWMehZ57HxKOlbhdHQMQt1JEr8ktq+dsr1kONgyp72P9sLdBXZVMb
+	 Ba2OJ/Nz+h14fkqpnQXIPzWNvpzyAj9p+BoAGuWJxF7/SjJpYj03rdoBcpbfrjtrgtJfj
+	 xnSpcoiJLxnDoweCclxKckSFejdSWVpsWJIrxhtqkP1Se2lWG6bORKAQ6VsTHRIYUmw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TScUShkf;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b="mVOQ+/5I";
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b="QA1D/Bph";
+	arc=none smtp.remote-ip=205.220.168.131
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F76606A31C;
-	Fri, 30 Oct 2026 07:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1396606A31A
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 07:51:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A1396606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TScUShkf
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578891F000C1;
-	Fri, 30 Oct 2026 07:50:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793346628;
-	bh=9QbTMCo8QhI3rZTi++6hxe83pTxoV8DQ3LgUnh1nOB0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=TScUShkfykqiD9fruEHDK0sEh8jbm5B7WTgEQ8H6cQ4rEyYIuTogngl5WuB375nrC
-	 8JcjKlKeVAKSji0gGkQDRY/XEL402GNBIpw1HnpBqrsVmHjPKU86yFyNrCn99AoBCt
-	 /Ft6RqIz37gKj8JVXzhLHSRfisml4bOD1V41Fz/+pKAE+0FJACEnrifDHgG3wJADrc
-	 6ba12dlO8vvJo83MG9S0GfEQnJOT/MR45xxQBSKljYhuhd0YndxQweSWXuornLaWh+
-	 VcdM4sZJbucCUAKL1CytYHeHSZMv7vx4AHEXHszgq9sApxZfxaPEr4LU8LJKEg6+q2
-	 jYFtX3uB49iIA==
-Subject: Re: [PATCH net v2 5/6] net: stmmac: fix VLAN tag stripping on short
- and non-linear RX frames
-From: netdev-bot+sashiko@kernel.org
-To: lorenzo.bianconi@oss.qualcomm.com
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
- daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, Jose.Abreu@synopsys.com, boon.leong.ong@intel.com,
- o.rempel@pengutronix.de, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
-Date: Fri, 30 Oct 2026 07:50:26 +0000
-Message-ID: <179334662692.3134.6357778981334990835@kernel.org>
-In-Reply-To: <20261027-stmmac-xdp-fixes-v2-5-10eae8a093a8@oss.qualcomm.com>
-References: <20261027-stmmac-xdp-fixes-v2-5-10eae8a093a8@oss.qualcomm.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=mVOQ+/5I;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=QA1D/Bph
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69U5F7bm725327
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 07:51:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=+2EtztaLud2IzUZ+lbv0E3
+	lQlpb4tzuYE5ybIQ9MuL4=; b=mVOQ+/5IkDmkp6mRBTEFtMCR0fwykXqEH6DXSG
+	a/lzP6FCFZVUzzW3sq2aSKs6yJysgxskMf+0uQ43XqZhSHlD7Hmtlz4olu1a1kI+
+	S8WKHRtDPNoevchr6J36gTnN4rjybRsjF43iP+Fyf93w1kMM4rq9IFm569jWQALG
+	pY8GXZuecObKzJ4mZmOEzpA1ECSUeQzju0sNo44fhqkPgzfhoulNVV/r+7Bec/4T
+	dIY1WfY177q5wsjEczDyNBldC4zgszibayH9be59GIkgpZTYvZ8MfOrD3KXN9aNK
+	5a8/kMDv6gzTwLpLpTZFLFUGOw2KYIVr1qDsV9FM1x5Cuu7Q==
+Received: from mail-dl1-f70.google.com (mail-dl1-f70.google.com [74.125.82.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hme6phttu-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 07:51:52 +0000 (GMT)
+Received: by mail-dl1-f70.google.com with SMTP id a92af1059eb24-189d17eca17so413057c88.1
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 00:51:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1793346712; x=1793951512; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=+2EtztaLud2IzUZ+lbv0E3lQlpb4tzuYE5ybIQ9MuL4=;
+        b=QA1D/BphWnOtecACxvVMVG9Q9AXhQzacZvWbE69v8R+ACZpGX0j96wos9Ncph/REvF
+         /riEaQAkVthHjmJ/BfxPZNPCg+mCYZ0etRIh/gy58XAQAz4OLlJ4OEPTWBt6ZTxw4VfS
+         qLB2v+/RkS3JbyOC4znC3oj+LzUZGWREXe61DRHyohc3/sa2kQZK6KBkqUD5pOz+pW0h
+         IOzfrlUmJ7Rg9yx4HFchOVe2VVdD3XjR0Ska99Qje/TDMrlGXNikfmTa4jxtKNwQKOd2
+         KJjttd1IlDyCdmlLkZEzPYrtM3imPwUUL/YXYNOX+hS5ftYkOWsL5qsr1WlDUTnjJdGp
+         N5yQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793346712; x=1793951512;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=+2EtztaLud2IzUZ+lbv0E3lQlpb4tzuYE5ybIQ9MuL4=;
+        b=ZUfCqpQKZ9+aQssQsEFm1fETa6VvxZKIvhLg3xCXS1k0yRIn8W+wPwKEqC1x0S4i0v
+         soh4If8cuqWWjJWGMNmrCmNnZUkrazTGu2XjpxxlD22YXZ8/O/Mk9Rk5e/bhLD/dmjIw
+         r0kuNpWEbPLJNjpSaoRK6e7YtVg8EpLDQniQ66CbFv8ZvTeV5DsnXMkgBmALvsKmSXCE
+         T1dt4+LdTyLFEzF/wcfdM1+MldWhx6+1GjlGzizLvhF2dUqib+DnJqTkYknFa40K7Ju9
+         QssgKYMFNCis/IzqQ3um44KHQsuGvqBkogwVk+lfDpChswmkKR3G2xScUHXSwyjUukmF
+         0l9w==
+X-Gm-Message-State: AFq9FYKKgnE9kPW6Q3Hjf8PsOHkwxShArZrMli8t7b1iuXawxmbYOVyg
+	r3j3o0Bxhpf8u93YtRjI5gtJnbJMfZqNXPQAmoTat6WZPC2hBbGRLA6LUnXz3ym2fTsbIMgxs/d
+	uMv0yjb0e5a+4fZh/3NZ7vf0N9+xIFMJLiCGdaERxN46hhsTBouer45hPFPU=
+X-Gm-Gg: AYBFou1eEwYuwZBROK9xYTUpxklh1zQkw5UKe5FKFoAwRou/iplBYnFvBy4d4H29wrc
+	+ZaxCRYMJqzPszWjNRPAPTIu9cLg6j4GCV9kkViz8IX8A5G7HZeLNVFvFJ7Adq+VruCz9C0cRTM
+	v61G/HsckVFfVkDcrXIFkUy9NVWs7vQrRHpfBbzUnOkg5NipRG4pel84peX3F3L4EId9ZRq1wU2
+	2r3ILNlMXDVxU0eUJM/sQl81l0HOp7SItYnol2QY1mXSCy2VSseia4Loz/nmtkPtz0AfNrtugBN
+	VOAJtmooxXgws83tDP5WdR7OjpVqZF6lIBgJKY9azVSE7LbbTaIEcP+hR6M6JXBJGwd6TMZFMpe
+	0PXTBl8V1qWNMadtTMLsWz2LruviuI9smgtXi5x9D1DTSOTf7/OJucGltiZQfI4Hbuq9iA89nTI
+	RqTXg8P4ro6Z7lw66DTCPzeXYy1JK6bkQ5
+X-Received: by 2002:a05:7022:b047:20b0:16d:dd5c:4261 with SMTP id a92af1059eb24-1ac5e6f4e87mr2276911c88.46.1793346711845;
+        Fri, 30 Oct 2026 00:51:51 -0700 (PDT)
+X-Received: by 2002:a05:7022:b047:20b0:16d:dd5c:4261 with SMTP id a92af1059eb24-1ac5e6f4e87mr2276864c88.46.1793346711105;
+        Fri, 30 Oct 2026 00:51:51 -0700 (PDT)
+Received: from alfred-sh01-lnx.ap.qualcomm.com (i-global052.qualcomm.com. [199.106.103.52])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac193b8179sm5670791c88.11.2026.10.30.00.51.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2026 00:51:50 -0700 (PDT)
+From: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
+Date: Fri, 30 Oct 2026 15:51:42 +0800
+Subject: [PATCH net-next v4] net: phy: aquantia: Add support for 5GbaseR
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,159 +112,146 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261030-aquantia-support-5gbaser-v4-1-7dfb0cf306de@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAI1M5GoC/43OSw7CIBAG4KsY1mIKlLa48h7GBY9pxShUoI3G9
+ O5iTVz52kzyZ2a+mRuKECxEtF7cUIDRRutdDuVygfReug6wNTkjWtCqEJRheR6kS1biOPS9Dwn
+ zTsmMYKhpTZQB0TYC5fU+QGsvM71FDhJ2cElo9+zEQR1Ap4f8mN3bmHy4zl+MZN74fXAkmGDOa
+ sOEUo1mfONjXOXpo/an0yqX+dpI//Vo9kpTN8JoSkrSfPDYyyMFFV88lr2WtIKVFefMFG+8aZr
+ u9scWVYMBAAA=
+X-Change-ID: 20260923-aquantia-support-5gbaser-e7271bde9f89
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>,
+        Hongmei Xu <hongmei.xu@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793346708; l=3950;
+ i=hongmei.xu@oss.qualcomm.com; s=20260917; h=from:subject:message-id;
+ bh=+MK+tPcBQCfj27wF095lR2jy4Qy+rnqWGg/co78Ru1g=;
+ b=tTKRTjuqNKcej3ryTbrkmweskkCPh7rJtoZOZ+HUlzOj7Qlnu8BCWDho5i17zt3G4Unj7UisL
+ DseNJM/CnI1ApwHRq1vJK+3eZ0mjOjKyGAkGzevUImA75aFJXKJG+WN
+X-Developer-Key: i=hongmei.xu@oss.qualcomm.com; a=ed25519;
+ pk=8J3IzbyuOOHSwLvktng8AEQIdStEQDAGNCSOlkASmk4=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDAzMSBTYWx0ZWRfX2hSD/mZUM4gT
+ ID08adQq/mXCyboYDX9TDt/bgfsPizt5y9jYTnpprZ3Bi1FswV16nXEVtig+aj/Tq/nSBLKzHSS
+ 55B/wc+oXbsxQ6+sc1EWdB7xETbgUYDD9KvsC8czKnFckp0Q9twq0XYsAQH2zQq/j+t11lFCKYK
+ KkSbz20r1R8fV8p3QrP98xRjxxeH8ToHZbgXZJCny5Z0x+MzFF6uPdAq/Ihg5L9dMU6a6xCCNXX
+ u+9HVHpsuMEl4wZnihjAV+7HWFQSh1KrILPeVS2/0yFpUFBrEHSJSVJN9cUS+m1U7gcnfVSCLBf
+ EAbe0Idkya1OazkPJrRjxDHTmCmdq8uabDPxGgUWflk0dutIF8Om0SE73hKJdAwfO1DK9/+SAKe
+ Umi6P3yVFA4uxAjb9t6ho8K0GiN6CFIdpHhhQTIcWq0skTDS4x+/K74jCvJE2mKddk1xJYoqmoh
+ APodLTmk/8soBCD5N2Q==
+X-Proofpoint-ORIG-GUID: amuAg4GCF_NbsLYdv1ZVYXNV8djBFshZ
+X-Proofpoint-GUID: amuAg4GCF_NbsLYdv1ZVYXNV8djBFshZ
+X-Authority-Analysis: v=2.4 cv=AJ83otAg c=1 sm=1 tr=0 ts=6ae44c98 cx=c_pps
+ a=SvEPeNj+VMjHSW//kvnxuw==:117 a=b9+bayejhc3NMeqCNyeLQQ==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
+ a=bC-a23v3AAAA:8 a=EUspDBNiAAAA:8 a=xUtIZhO9L1281Tkm8lsA:9 a=QEXdDO2ut3YA:10
+ a=Kq8ClHjjuc5pcCNDwlU0:22 a=FO4_E8m0qiDe52t0p3_H:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDAzMSBTYWx0ZWRfX5Fjgam4plhug
+ H5tvZ0EkXBR5F3A6CUTnzsaDS6MlZtw+eSr8+kFZExQAUlwTvLRhPmxyY//DB+W+yxXG8nC2JCQ
+ 9oeeb6EL0tWXFfLRCxg856cjnVAE3kc=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-10-30_02,2026-10-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 bulkscore=0 phishscore=0 malwarescore=0
+ lowpriorityscore=0 clxscore=1015 priorityscore=1501 suspectscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
+ definitions=main-2610300031
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Aquantia PHYs can operate with a 5G USX interface between the PHY
+and MAC, reported as interface type 12 in the PHYXS vendor interface
+status register (MDIO_PHYXS_VEND_IF_STATUS_TYPE_USX_5G).
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
+Without this change, aqr_gen1_read_status() falls through to the
+default case and sets phydev->link = false when the interface type
+is USX 5G, preventing 5G links from coming up.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Add the missing PHY_INTERFACE_MODE_5GBASER handling in three places:
 
-- [Medium] The commit message says the VLAN-pop code now moves the XDP
-  metadata written with bpf_xdp_adjust_meta() along with the MAC header,…
+- aqr_gen1_read_status(): map USX 5G interface type to
+  PHY_INTERFACE_MODE_5GBASER so the link is correctly reported
+- aqr_gen1_config_init(): accept PHY_INTERFACE_MODE_5GBASER as a
+  valid interface mode, otherwise the PHY is rejected with -ENODEV
+- aqr_gen2_get_rate_matching(): return RATE_MATCH_PAUSE for
+  PHY_INTERFACE_MODE_5GBASER, consistent with 10GBASER and 2500BASEX,
+  since the MAC-side interface runs at a fixed rate and the PHY handles
+  rate adaptation via pause frames
 
-Pre-existing issues:
-- [Low] priv->xstats.rx_dropped is a single device-wide unsigned long
-  (struct stmmac_extra_stats, common.h:240).
+Co-developed-by: Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
+Signed-off-by: Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
+Signed-off-by: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
+---
+Changes in v4:
+- Keep interface modes sorted by speed in aqr_gen1_config_init()
+- Keep rate matching conditions sorted by speed (10G, 5G, 2.5G)
+- Link to v3: https://patch.msgid.link/20261029-aquantia-support-5gbaser-v3-1-f1f9346553d0@oss.qualcomm.com
 
---
+Changes in v3:
+- Add git tree name net-next to the subject line. [PATCH net-next]
+- Add Co-developer
+- Link to v2: https://patch.msgid.link/20260923-aquantia-support-5gbaser-v2-1-4d789dc21418@oss.qualcomm.com
 
-net: stmmac: fix VLAN tag stripping on short and non-linear RX frames
+Changes in v2:
+- Fix the local variable assignment error in API: aqr_gen1_read_status,
+  should use interface rather than phydev->interface,
+  interface = PHY_INTERFACE_MODE_5GBASER.
+- Link to v1: https://patch.msgid.link/20260923-aquantia-support-5gbaser-v1-1-537d39bb8c35@oss.qualcomm.com
+---
+ drivers/net/phy/aquantia/aquantia_main.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-stmmac_rx_vlan() now pulls ETH_HLEN, and then VLAN_ETH_HLEN, into the
-linear area before it reads the VLAN header. It returns an error so that
-stmmac_rx() and stmmac_dispatch_skb_zc() drop malformed frames. When the
-tag is popped, it also moves any XDP metadata together with the MAC
-addresses.
+diff --git a/drivers/net/phy/aquantia/aquantia_main.c b/drivers/net/phy/aquantia/aquantia_main.c
+index e95d391a6dc2..dffc81b9eb52 100644
+--- a/drivers/net/phy/aquantia/aquantia_main.c
++++ b/drivers/net/phy/aquantia/aquantia_main.c
+@@ -49,6 +49,7 @@
+ #define MDIO_PHYXS_VEND_IF_STATUS_TYPE_RXAUI	7
+ #define MDIO_PHYXS_VEND_IF_STATUS_TYPE_OFF	9
+ #define MDIO_PHYXS_VEND_IF_STATUS_TYPE_OCSGMII	10
++#define MDIO_PHYXS_VEND_IF_STATUS_TYPE_USX_5G	12
+ 
+ #define MDIO_AN_VEND_PROV			0xc400
+ #define MDIO_AN_VEND_PROV_1000BASET_FULL	BIT(15)
+@@ -582,6 +583,9 @@ static int aqr_gen1_read_status(struct phy_device *phydev)
+ 	case MDIO_PHYXS_VEND_IF_STATUS_TYPE_RXAUI:
+ 		interface = PHY_INTERFACE_MODE_RXAUI;
+ 		break;
++	case MDIO_PHYXS_VEND_IF_STATUS_TYPE_USX_5G:
++		interface = PHY_INTERFACE_MODE_5GBASER;
++		break;
+ 	case MDIO_PHYXS_VEND_IF_STATUS_TYPE_OCSGMII:
+ 		interface = PHY_INTERFACE_MODE_2500BASEX;
+ 		break;
+@@ -782,6 +786,7 @@ static int aqr_gen1_config_init(struct phy_device *phydev)
+ 	    phydev->interface != PHY_INTERFACE_MODE_2500BASEX &&
+ 	    phydev->interface != PHY_INTERFACE_MODE_XGMII &&
+ 	    phydev->interface != PHY_INTERFACE_MODE_USXGMII &&
++	    phydev->interface != PHY_INTERFACE_MODE_5GBASER &&
+ 	    phydev->interface != PHY_INTERFACE_MODE_10G_QXGMII &&
+ 	    phydev->interface != PHY_INTERFACE_MODE_10GKR &&
+ 	    phydev->interface != PHY_INTERFACE_MODE_10GBASER &&
+@@ -1040,6 +1045,7 @@ static int aqr_gen2_get_rate_matching(struct phy_device *phydev,
+ 				      phy_interface_t iface)
+ {
+ 	if (iface == PHY_INTERFACE_MODE_10GBASER ||
++	    iface == PHY_INTERFACE_MODE_5GBASER ||
+ 	    iface == PHY_INTERFACE_MODE_2500BASEX)
+ 		return RATE_MATCH_PAUSE;
+ 	return RATE_MATCH_NONE;
 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index d9fc2464a160a..fb3b7174599e0 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -5102,22 +5102,35 @@ static netdev_features_t stmmac_features_check(struct sk_buff *skb,
+---
+base-commit: 944ae66642b726bd6b25ae71b1e9ff88a0e0bdb0
+change-id: 20260923-aquantia-support-5gbaser-e7271bde9f89
 
-[ ... ]
+Best regards,
+--  
+Hongmei Xu <hongmei.xu@oss.qualcomm.com>
 
-> +		__be16 vlan_proto = veth->h_vlan_proto;
-> +		u8 meta_len = skb_metadata_len(skb);
-> +		u16 vlanid;
-> +
->  		/* pop the vlan tag */
-> +		if (!pskb_may_pull(skb, VLAN_ETH_HLEN))
-> +			return -EINVAL;
-> +
-> +		veth = skb_vlan_eth_hdr(skb);
->  		vlanid = ntohs(veth->h_vlan_TCI);
-> -		memmove(skb->data + VLAN_HLEN, veth, ETH_ALEN * 2);
-> +		memmove(skb->data - meta_len + VLAN_HLEN,
-> +			skb->data - meta_len, meta_len + ETH_ALEN * 2);
-
-[Severity: Medium]
-The commit message says:
-
-  Also move the XDP metadata written with bpf_xdp_adjust_meta() together
-  with the MAC header when the tag is popped, so data_meta still points at
-  the metadata after eth_type_trans() anchors mac_header
-
-Does that hold for frames coming from stmmac_rx(), or only for the AF_XDP
-zero-copy path?
-
-On the page_pool path, the XDP buffer is set up with meta_valid set to
-true. However, the XDP_PASS skb is built without calling
-skb_metadata_set():
-
-stmmac_rx() {
-    ...
-	xdp_prepare_buff(&ctx.xdp, page_address(buf->page),
-			 buf->page_offset, buf1_len, true);
-    ...
-	head_pad_len = ctx.xdp.data - ctx.xdp.data_hard_start;
-	skb_reserve(skb, head_pad_len);
-	skb_put(skb, buf1_len);
-	skb_mark_for_recycle(skb);
-    ...
-}
-
-napi_build_skb() clears skb_shared_info up to dataref, and meta_len sits
-before dataref. So skb_metadata_len(skb) is always 0 here.
-
-On that path, this memmove() does the same MAC-address-only move as
-before. The metadata written by the XDP program stays where it was, and
-TC/BPF sees an empty data_meta range.
-
-The only skb_metadata_set() call in the driver appears to be in
-stmmac_construct_skb_zc():
-
-	if (metasize)
-		skb_metadata_set(skb, metasize);
-
-The last patch of the series does not seem to add another one either.
-
-The missing skb_metadata_set() in stmmac_rx() predates this patch. Still,
-the Fixes: tag points at 5fabb01207a2 ("net: stmmac: Add initial XDP
-support"), which is the page_pool path.
-
-Would it make sense to add something like
-skb_metadata_set(skb, ctx.xdp.data - ctx.xdp.data_meta) in stmmac_rx()?
-Alternatively, the commit message could say that the metadata handling
-only applies to the zero-copy path.
-
->  		skb_pull(skb, VLAN_HLEN);
->  		__vlan_hwaccel_put_tag(skb, vlan_proto, vlanid);
->  	}
-
-[ ... ]
-
-> @@ -5546,12 +5559,15 @@ static void stmmac_dispatch_skb_zc(struct stmmac_priv *priv, u32 queue,
->  	}
->  
->  	stmmac_get_rx_hwtstamp(priv, p, np, skb);
-> -	if (priv->hw->hw_vlan_en)
-> +	if (priv->hw->hw_vlan_en) {
->  		/* MAC level stripping. */
->  		stmmac_rx_hw_vlan(priv, priv->hw, p, skb);
-> -	else
-> -		/* Driver level stripping. */
-> -		stmmac_rx_vlan(priv->dev, skb);
-> +	} else if (stmmac_rx_vlan(priv->dev, skb)) {
-> +		dev_kfree_skb_any(skb);
-> +		priv->xstats.rx_dropped++;
-
-[Severity: Low]
-This is a pre-existing issue, not one introduced by this patch. Can
-updates to priv->xstats.rx_dropped get lost here?
-
-The counter is a single unsigned long in struct stmmac_extra_stats, shared
-by all queues. Several per-queue NAPI contexts update it with a plain
-read-modify-write:
-
-stmmac_dispatch_skb_zc():
-	priv->xstats.rx_dropped++;
-
-stmmac_rx_zc():
-	priv->xstats.rx_dropped += rx_dropped;
-
-stmmac_rx():
-	priv->xstats.rx_dropped += rx_dropped;
-
-With per-channel MSI or threaded NAPI, polls for different queues can run
-on different CPUs at the same time. stmmac_get_stats64() then reads the
-counter without any locking, so the reported rx_dropped value can be too
-low.
-
-This patch adds another writer that follows the existing pattern, and the
-new VLAN drops in stmmac_rx() go through the same shared update.
-
-> +		return;
-> +	}
-> +
->  	skb->protocol = eth_type_trans(skb, priv->dev);
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261027-stmmac-xdp-fixes-v2-0-10eae8a093a8%40oss.qualcomm.com
