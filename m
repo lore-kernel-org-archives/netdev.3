@@ -1,54 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793355340;
-	b=iWNMOO72s63NZiKNMgLAT0jVuklVH1PrwcZaaInFKvxyaFZTq7h7Tl36xJ12MdrAL+Ha
-	 788XvOkEkUL4R0YZkRCQnY7C6e0j+v9RsESnT0oSQObYB87OEK/GH6uFydfrY6kicsC7I
-	 E/468hpESFCZCCnpZQVyLzlyUjqr6oeP6dF1jS0kciEHBJGqTm2SaSsfnqJZligDvHZ9u
-	 WtluTJOv3Mt9DSmGcohB9mFQJwDryZtHikyMyPrsICXTdEhFRaqOYW30ixERINAosl72j
-	 sDWZ7wGPGh1ndy++EZW0g+bSYamOBj8we3sJbZvC6b2jQMcfhpJJX0T17LOvMMBr9hg==
+	t=1793355786;
+	b=OpYf/tXjlPXn0Ly0b8yBPbc8OHOG1hUK8hSMyz0GWOroYrrv4h5rVPQX88KH+YLhi5w7
+	 jOewLI01IIUhayW7xtEt1bPMo422GztqvBWmJnYyfHWeCbF5f+qCgBrg0HdGNp3hLJS/i
+	 oQre6bAmZzcj2kK0D30PzsPXYz7X5n/oROL0CfT1F6vNHjepdtjZOBUei4MTX5uQm3CBX
+	 XbfC8irb1swom+iRCNlEqsDn8ONfJS2ShymfubBODFWJRqpclJuHMpy+JfVbHUH70QZjs
+	 xdg7M1UQchV7F+Nb6baX6HXBLL4HPc/qqUREJCMTQTHwrk4yIi/SeZI7JDd6/2fdPqw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793355340;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=aa0b8U9AWDYiAQt4ZYGruRRnM7TUUsJIAn+bB9g1SLc=;
-	b=0h1+afJ2wBykUsj1O5bmU7fzE+l2OjNymwrcFNqis/HFP1CqGDJ2eIxO6oWV73ZACP9m
-	 BXKdU6B46OYlzbjrNewRLdAdwFq/l94JfxoxsXkGbFSV2ymZQpALrmFJfFepPJ0RMBxZ1
-	 ExSdgL84ekR4WCLKlpxiivk8Q9MvTeUmVlQKxYJ5LTooZ/sKnxopHZZKhKQySHDyh6FHc
-	 g1qL5NBWvxvfhq1zDld42vybSILUysU6i5A7edZ9NGfCW5ZrCpQQDTKBq3ppRUFAfRjhT
-	 1itRew34BPgy/dZbfDoPJdTGp+JY6xSyHtGIp44WQ+HIOqd50q18pN6De/0/0mzt0tQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793355786;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=MoAghpZzhMWka6buBPWIBz9Jz+B7Jbd30cQS0OP8bSY=;
+	b=jjQVTNyDA1c/9mva4JncV2JE2MNYF2LHaHc5r9y0XPbjJKey1dDfAMgAt/ZMWl9eDzYJ
+	 XSl9+O2Itgew0qeOBUv3M9JskRl3MAsieBsTycm5vaXfIU5USyRQBVdee3VG26V+deB+E
+	 PC9iQTjG3HmhpTG9hZ5wi6WHWpiR6sZpKqa/PhQk1clEs36ETmdcBDqWyf4sr3BEKkmI8
+	 CUwz5w/9EiMfetgP1ylBlw76/rNANMajYNPqqREMvLUqEF/k4OfBZaETuAkk7jvVx4rsn
+	 bf/CN6wLBJHRTBqQDMtSdshCu7QV8PtJMr0309iut5avM/H3zVAOt5ubs94agnk/uOA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OMyQfuIf;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=CL2Ou8qH;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DDA7606A322;
-	Fri, 30 Oct 2026 10:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687EE606A31C
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 10:23:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 687EE606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OMyQfuIf
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 603CC1F000C1;
-	Fri, 30 Oct 2026 10:15:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793355340;
-	bh=aa0b8U9AWDYiAQt4ZYGruRRnM7TUUsJIAn+bB9g1SLc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OMyQfuIffZNfdarTlHyo40+MakJOzydRykiIPccZT8mS3haA2z6sDSJ5o8BA9wat2
-	 Wy8UXE/wYttJcEmodR7NwZRyjcAdcW0hBRFeNQ0jw/hXXQc2zN6Ra8EgcSyJpIkImn
-	 v3wIEC4IHvUt7D9Zj5VwsdbRY8U6mQj2Sg3ODRaRy7duJRZ/JyeY7a2YWMSC/NCnk7
-	 JvEIgc0LEE9CSGWo0EiwJOre4HX/+awUJTSNEFduOztb4h5Com0yU0MIM+J71RFzSp
-	 /TXStSSFfOYOMsuarDBLAODYzUAzLU1HABV8xl2Le75smMm6Ka3Ht+H7pA5DMzcM08
-	 YeZqXEJT3XaMg==
-Date: Fri, 30 Oct 2026 10:15:35 +0000
-From: Simon Horman <horms@kernel.org>
-To: Prasad Koya <prasad@arista.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] macvlan: fix allmulti reference counting in passthru
- mode
-Message-ID: <20261030101535.GN257209@horms.kernel.org>
-References: <20261027024635.366900-1-prasad@arista.com>
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=CL2Ou8qH
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id A905B1A13BF;
+	Fri, 30 Oct 2026 10:23:02 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7BBF9603C2;
+	Fri, 30 Oct 2026 10:23:02 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D7AA9103287DA;
+	Fri, 30 Oct 2026 11:22:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793355781; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=MoAghpZzhMWka6buBPWIBz9Jz+B7Jbd30cQS0OP8bSY=;
+	b=CL2Ou8qHtleTe62SzBLW7vbfcRTy7bXMr0HJ/6B8Wso+cJjQ72BwU3zWfGXZtcUDYwRoL6
+	JGyGL1kdp5WYuhZRHsiOx+nDHt7k8ZXNQRU2ZAn4mtxUAFtRO2drnurQ7/XjafNVa+G3km
+	ykfVUmOmQ6GqOWw7N6mL4ETShxWpqRyNvDRckGSDYPRWrr19Li7+W/yjzQDHQukznxVGa3
+	Vp2uS3GDSteydhURZZkOQelGDjTKozhbSw4XmVLu/ugi8DhF4U6o9GvgjaQn40vL1TbJtA
+	5ZvKh4Pf57SJf5g1xaR6dTGa0Jg9h2lKlK2TtgqajLE4jDJUYMziIy7XexLKtg==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+	Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	thomas.petazzoni@bootlin.com,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH net] net: stmmac: Clear DMA errors for multi-channel interrupts
+Date: Fri, 30 Oct 2026 11:22:49 +0100
+Message-ID: <20261030102251.208929-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,276 +80,167 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261027024635.366900-1-prasad@arista.com>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Oct 26, 2026 at 07:46:35PM -0700, Prasad Koya wrote:
-> Enabling allmulticast on a down passthru macvlan, bringing it up,
-> then toggling allmulticast off and on can underflow the lower device's
-> allmulti reference count.
-> 
-> macvlan_change_rx_flags() only propagates IFF_ALLMULTI changes while
-> the macvlan is up. However, the passthru path in macvlan_open() skips
-> taking an allmulti reference when IFF_ALLMULTI is already set.
-> Clearing allmulticast after opening the device therefore decrements
-> a reference that was never taken. With no other allmulti users, the
-> unsigned counter wraps from zero to UINT_MAX. The next increment
-> fails with -EOVERFLOW and reports "allmulti touches roof".
-> 
+The Multi-MSI interrupt handler doesn't clear the DMA error interrupts,
+and this leads to interrupt storms when one of these interrupts starts
+firing :
 
-Hi Prasad,
+ - The RBU (rx buff unav) which triggers under high traffic load
 
-A Fixes tag should go here.
-(No blank line between it and your Signed-off-by line).
+   This triggers easily with iperf3 and small udp packets, and shows
+   when running the netpoll kselftest
 
-There is no need to repost just to address this.
-Replying with the Fixes tag should be sufficient.
+ - The RPS (rx process stop) which triggers when we stop the DMA RX.
 
-> Signed-off-by: Prasad Koya <prasad@arista.com>
-> ---
-> Reproducer:
-> 
->   #!/bin/bash
->   set -euo pipefail
-> 
->   ns=allmulti-test
->   host=am-veth0
->   peer=am-veth1
->   mv=am-mv0
-> 
->   cleanup()
->   {
->       ip netns del "$ns" 2>/dev/null || true
->   }
->   trap cleanup EXIT
-> 
->   ip netns add "$ns"
->   ip link add "$host" type veth peer name "$peer"
->   ip link set "$peer" netns "$ns"
-> 
->   ip link set "$host" up
->   ip -n "$ns" link set lo up
->   ip -n "$ns" link set "$peer" up
-> 
->   ip -n "$ns" link add link "$peer" name "$mv" type macvlan mode passthru
-> 
->   ip -n "$ns" link set dev "$mv" allmulticast on
->   ip -n "$ns" link set dev "$mv" up
->   ip -n "$ns" link set dev "$mv" allmulticast off
->   ip -n "$ns" link set dev "$mv" allmulticast on
-> 
->  drivers/net/macvlan.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-> index afad90b9222a..e20d587453d1 100644
-> --- a/drivers/net/macvlan.c
-> +++ b/drivers/net/macvlan.c
-> @@ -643,6 +643,14 @@ static int macvlan_open(struct net_device *dev)
->  			if (err < 0)
->  				goto out;
->  		}
-> +		if (dev->flags & IFF_ALLMULTI) {
-> +			err = dev_set_allmulti(lowerdev, 1);
-> +			if (err < 0) {
-> +				if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC))
-> +					dev_set_promiscuity(lowerdev, -1);
-> +				goto out;
-> +			}
-> +		}
->  		goto hash_add;
->  	}
->  
-> @@ -713,6 +721,8 @@ static int macvlan_stop(struct net_device *dev)
->  	dev_mc_unsync(lowerdev, dev);
->  
->  	if (macvlan_passthru(vlan->port)) {
-> +		if (dev->flags & IFF_ALLMULTI)
-> +			dev_set_allmulti(lowerdev, -1);
->  		if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC))
->  			dev_set_promiscuity(lowerdev, -1);
->  		goto hash_del;
-> 
-> base-commit: 7076f684d5132e6a6145e1da2fa74771ecd052e5
-> -- 
-> 2.43.0
-> 
+   This one shows when restarting the RX logic without doing a down/up
+   cycle, like when attaching an XDP program. The XSK kselftests
+   triggers it.
 
-I'm unsure if it matters, but the order of initialisation of multicast and
-promiscuity differs here from the non-pass-through case.
+Let's make sure we clear these interrupts for multi-MSI cases. It's
+already properly done for the single-chan interrupt, and for that
+introduce an "ERR" DMA dir, as we don't want to touch the RI/TI bits
+when handling these interrupts.
 
-Overall I think the approach you have taken here is appropriate
-as a minimal fix for net.
+To avoid duplication, the DMA TX error handling is factored out in a
+dedicated helper (in the same commit to ease backporting).
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Both of the above storms have been found on dwmac-motorcomm (YT8601),
+and are triggered by the xdp.py, xsk_reconfig.py, xdp_features.py,
+ring_reconfig.py and netpoll_basic kernel selftests.
 
+This seems to only affect dwmac4, there's no multi-msi mode on
+dwmac1000, and on dwxgmac these interrupts are masked as of today.
 
-But I do see that there is growing duplication of code in the
-pass-through and non-pass-through paths. And I believe that
-is due to the approach taken by the existing code of using
-goto to control flow (other than for cleanup in error paths).
+Fixes: 6ccf12ae111e ("net: stmmac: use interrupt mode INTM=1 for multi-MSI")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/common.h  |  1 +
+ .../net/ethernet/stmicro/stmmac/dwmac4_dma.h  |  5 ++
+ .../net/ethernet/stmicro/stmmac/dwmac4_lib.c  |  2 +
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 46 +++++++++++++------
+ 4 files changed, 40 insertions(+), 14 deletions(-)
 
-In the longer term I think it would be nice to address that.
-I took a stab at that. Perhaps I'm overthinking things.
-But, FWIIW, this is what I cam up with (compile tested only).
-
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index a48c9e662fe9..f2a3cf540e4e 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -631,24 +631,31 @@ static const struct header_ops macvlan_hard_header_ops = {
- 	.parse_protocol	= eth_header_parse_protocol,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
+index c74bc7c9750e..a972bee66504 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/common.h
++++ b/drivers/net/ethernet/stmicro/stmmac/common.h
+@@ -382,6 +382,7 @@ enum dma_irq_dir {
+ 	DMA_DIR_RX = 0x1,
+ 	DMA_DIR_TX = 0x2,
+ 	DMA_DIR_RXTX = 0x3,
++	DMA_DIR_ERR = 0x4,
  };
  
--static int macvlan_open(struct net_device *dev)
-+static int macvlan_should_set_promisc(struct net_device *dev)
- {
- 	struct macvlan_dev *vlan = netdev_priv(dev);
--	struct net_device *lowerdev = vlan->lowerdev;
--	int err;
+ enum request_irq_err {
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h
+index 43b036d4e95b..a7caac3c98e6 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h
+@@ -173,6 +173,11 @@ static inline u32 dma_chanx_base_addr(const struct dwmac4_addrs *addrs,
+ 					 DMA_CHAN_STATUS_TI | \
+ 					 DMA_CHAN_STATUS_MSK_COMMON)
  
--	if (macvlan_passthru(vlan->port)) {
--		if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC)) {
--			err = dev_set_promiscuity(lowerdev, 1);
--			if (err < 0)
--				goto out;
--		}
--		goto hash_add;
--	}
-+	if (macvlan_passthru(vlan->port))
-+		return !(vlan->flags & MACVLAN_FLAG_NOPROMISC);
++#define DMA_CHAN_STATUS_MSK_ERR		(DMA_CHAN_STATUS_AIS | \
++					 DMA_CHAN_STATUS_FBE | \
++					 DMA_CHAN_STATUS_RPS | \
++					 DMA_CHAN_STATUS_RBU)
 +
-+	return dev->flags & IFF_PROMISC;
-+}
-+
-+/* Initialise acceleration or add unicast address.
-+ * Skipped for pass-through ports.
-+ */
-+static int macvlan_init_vlan(struct net_device *dev)
+ int dwmac4_dma_reset(void __iomem *ioaddr);
+ void dwmac4_enable_dma_irq(struct stmmac_priv *priv, void __iomem *ioaddr,
+ 			   u32 chan, bool rx, bool tx);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
+index a0249715fafa..02aa1a3dd1e2 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
+@@ -150,6 +150,8 @@ int dwmac4_dma_interrupt(struct stmmac_priv *priv, void __iomem *ioaddr,
+ 		intr_status &= DMA_CHAN_STATUS_MSK_RX;
+ 	else if (dir == DMA_DIR_TX)
+ 		intr_status &= DMA_CHAN_STATUS_MSK_TX;
++	else if (dir == DMA_DIR_ERR)
++		intr_status &= DMA_CHAN_STATUS_MSK_ERR;
+ 
+ 	/* ABNORMAL interrupts */
+ 	if (unlikely(intr_status & DMA_CHAN_STATUS_AIS)) {
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 9ded31150fbe..2068b57df8d5 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3141,6 +3141,16 @@ static int stmmac_napi_check(struct stmmac_priv *priv, u32 chan, u32 dir)
+ 	return status;
+ }
+ 
++static void stmmac_dma_tx_error(struct stmmac_priv *priv, u32 chan, int status)
 +{
-+	struct macvlan_dev *vlan = netdev_priv(dev);
-+	struct net_device *lowerdev;
-+
-+	if (macvlan_passthru(vlan->port))
-+		return 0;
- 
--	err = -EADDRINUSE;
- 	if (macvlan_addr_busy(vlan->port, dev->dev_addr))
--		goto out;
-+		return -EADDRINUSE;
-+
-+	lowerdev = vlan->lowerdev;
- 
- 	/* Attempt to populate accel_priv which is used to offload the L2
- 	 * forwarding requests for unicast packets.
-@@ -661,40 +668,71 @@ static int macvlan_open(struct net_device *dev)
- 	 * populated we must add the unicast address to the lower device.
- 	 */
- 	if (IS_ERR_OR_NULL(vlan->accel_priv)) {
-+		int err;
-+
- 		vlan->accel_priv = NULL;
- 		err = dev_uc_add(lowerdev, dev->dev_addr);
- 		if (err < 0)
--			goto out;
-+			return err;
++	if (unlikely(status & tx_hard_error_bump_tc)) {
++		/* Try to bump up the dma threshold on this failure */
++		stmmac_bump_dma_threshold(priv, chan);
++	} else if (unlikely(status == tx_hard_error)) {
++		stmmac_tx_err(priv, chan);
 +	}
-+
-+	return 0;
 +}
 +
-+/* Clean up acceleration or remove unicast address.
-+ * Skipped for pass-through ports.
-+ */
-+static void macvlan_uninit_vlan(struct net_device *dev)
-+{
-+	struct macvlan_dev *vlan = netdev_priv(dev);
-+	struct net_device *lowerdev;
-+
-+	if (macvlan_passthru(vlan->port))
-+		return;
-+
-+	lowerdev = vlan->lowerdev;
-+
-+	if (vlan->accel_priv) {
-+		lowerdev->netdev_ops->ndo_dfwd_del_station(lowerdev,
-+							   vlan->accel_priv);
-+		vlan->accel_priv = NULL;
-+	} else {
-+		dev_uc_del(lowerdev, dev->dev_addr);
- 	}
+ /**
+  * stmmac_dma_interrupt - DMA ISR
+  * @priv: driver private structure
+@@ -3165,13 +3175,24 @@ static void stmmac_dma_interrupt(struct stmmac_priv *priv)
+ 		status[chan] = stmmac_napi_check(priv, chan,
+ 						 DMA_DIR_RXTX);
+ 
+-	for (chan = 0; chan < tx_channel_count; chan++) {
+-		if (unlikely(status[chan] & tx_hard_error_bump_tc)) {
+-			/* Try to bump up the dma threshold on this failure */
+-			stmmac_bump_dma_threshold(priv, chan);
+-		} else if (unlikely(status[chan] == tx_hard_error)) {
+-			stmmac_tx_err(priv, chan);
+-		}
++	for (chan = 0; chan < tx_channel_count; chan++)
++		stmmac_dma_tx_error(priv, chan, status[chan]);
 +}
 +
-+static int macvlan_open(struct net_device *dev)
++static void stmmac_dma_err_interrupt(struct stmmac_priv *priv)
 +{
-+	struct macvlan_dev *vlan = netdev_priv(dev);
-+	struct net_device *lowerdev;
-+	int err;
++	u8 tx_channel_count = priv->plat->tx_queues_to_use;
++	u8 channels_to_check = max(priv->plat->rx_queues_to_use,
++				   tx_channel_count);
++	int status;
++	u8 chan;
 +
-+	err = macvlan_init_vlan(dev);
-+	if (err)
-+		return err;
-+
-+	lowerdev = vlan->lowerdev;
- 
- 	if (dev->flags & IFF_ALLMULTI) {
- 		err = dev_set_allmulti(lowerdev, 1);
- 		if (err < 0)
--			goto del_unicast;
-+			goto uninit;
++	for (chan = 0; chan < channels_to_check; chan++) {
++		status = stmmac_dma_interrupt_status(priv, priv->ioaddr,
++						     &priv->xstats, chan,
++						     DMA_DIR_ERR);
++		if (chan < tx_channel_count)
++			stmmac_dma_tx_error(priv, chan, status);
  	}
- 
--	if (dev->flags & IFF_PROMISC) {
-+	if (macvlan_should_set_promisc(dev)) {
- 		err = dev_set_promiscuity(lowerdev, 1);
- 		if (err < 0)
- 			goto clear_multi;
- 	}
- 
--hash_add:
- 	macvlan_hash_add(vlan);
- 	return 0;
- 
- clear_multi:
- 	if (dev->flags & IFF_ALLMULTI)
- 		dev_set_allmulti(lowerdev, -1);
--del_unicast:
--	if (vlan->accel_priv) {
--		lowerdev->netdev_ops->ndo_dfwd_del_station(lowerdev,
--							   vlan->accel_priv);
--		vlan->accel_priv = NULL;
--	} else {
--		dev_uc_del(lowerdev, dev->dev_addr);
--	}
--out:
-+uninit:
-+	macvlan_uninit_vlan(dev);
- 	return err;
  }
  
-@@ -712,21 +750,15 @@ static int macvlan_stop(struct net_device *dev)
- 	dev_uc_unsync(lowerdev, dev);
- 	dev_mc_unsync(lowerdev, dev);
+@@ -6466,6 +6487,9 @@ static irqreturn_t stmmac_mac_interrupt(int irq, void *dev_id)
+ 	/* To handle Common interrupts */
+ 	stmmac_common_interrupt(priv);
  
--	if (macvlan_passthru(vlan->port)) {
--		if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC))
--			dev_set_promiscuity(lowerdev, -1);
--		goto hash_del;
--	}
++	if (priv->plat->core_type == DWMAC_CORE_GMAC4)
++		stmmac_dma_err_interrupt(priv);
++
+ 	return IRQ_HANDLED;
+ }
+ 
+@@ -6500,13 +6524,7 @@ static irqreturn_t stmmac_msi_intr_tx(int irq, void *data)
+ 		return IRQ_HANDLED;
+ 
+ 	status = stmmac_napi_check(priv, chan, DMA_DIR_TX);
 -
- 	if (dev->flags & IFF_ALLMULTI)
- 		dev_set_allmulti(lowerdev, -1);
+-	if (unlikely(status & tx_hard_error_bump_tc)) {
+-		/* Try to bump up the dma threshold on this failure */
+-		stmmac_bump_dma_threshold(priv, chan);
+-	} else if (unlikely(status == tx_hard_error)) {
+-		stmmac_tx_err(priv, chan);
+-	}
++	stmmac_dma_tx_error(priv, chan, status);
  
--	if (dev->flags & IFF_PROMISC)
-+	if (macvlan_should_set_promisc(dev))
- 		dev_set_promiscuity(lowerdev, -1);
- 
--	dev_uc_del(lowerdev, dev->dev_addr);
-+	if (!macvlan_passthru(vlan->port))
-+		dev_uc_del(lowerdev, dev->dev_addr);
- 
--hash_del:
- 	macvlan_hash_del(vlan, !dev->dismantle);
- 	return 0;
+ 	return IRQ_HANDLED;
  }
+-- 
+2.56.0
+
