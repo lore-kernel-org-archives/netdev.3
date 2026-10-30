@@ -1,107 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793334170;
-	b=tlnK4KitOsJWF3xyZZUnvl8q6CjL/NKFMluIvmSdHHplZ9zCZBPfvuHgKbbAHVcal2lN
-	 eeBdxdE0BPSKgOF/zPEY1jAAz9nJQWCOSuqHkq95FI1c9P7liRt5Hrf6Va76NYoK9oJ5X
-	 i42HWhTLRKdz4S1EZwKbCZPEX3r8nNkU/ViPoaN11A54zvkUS+DiTCyxMJyBknvoJJtBu
-	 JRX8sZApsqqdaNRYswOVmxNpIizaOF7yv7xnbfXuoI9FCkGU62u4PRLbxrNnHiKPW0XXj
-	 i3DkspW1tBfjEAzxcDMYy57g9gXD5I2k/2bRPVzCbdsBdXFARk5OBToF35SEiWid99Q==
+	t=1793334178;
+	b=UDHNMFaT+9aAFiGvfaZQI16Y7ijseTQIVaABOxERHFcbyhx5LkM5VbyU37kyWqJ9W/us
+	 9orBnZ3r3jVMMpLHMMhPhlWqr0jOhuyvJYfPGDaQb8XKRp5uVmQNZEUbf6morziTUOulU
+	 CYl2EN36e/ClDacwQOsqWe3xaNLFuXqRfRnuiLQmxdwCOmkTfzNWVmVV1BDx2QqTE81Cs
+	 vnGbzs/65sSQ8JhDoYIK3F/GvxwnWAWKAr0v15zbafmszMvqoen/wpjcuby92Y5hJFm7x
+	 SID6/LSprxOF0qy4a4ljDpCjMuLeUp4/qYokMRrHDjhDz3j4APoqv1B9aF+Gp64DXOw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793334170;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793334178;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=LKdcLwwbAs+9mk+2eST/kXpD7oMhNL5RH1/U+V8JfPQ=;
-	b=TRU7Lx7iF1Y2WL17NxZf+SPwZaTpO8WfxuK8QYaZkwh+d621z98GcYsl8rR3b96x8F+N
-	 Qc5eTBRyvMq5QWJ0xksmonX1xyre8VzmaL2HH1dSLDn7vn/spOtIR3Sf1VLdeYIDv7hP8
-	 j/HWJ0DFWXo+ZEqwXc8xF/oFZAa6cXp7EPZ03mnKvw0md890QG04u93x8c8t0kw1wjqoC
-	 cIbXS9BFVomaGVkRjmrGSz7zPNreqNj3iQecx2EgH+aYilSQ2YYCSCixOIVec8x1oXp7Y
-	 y4iba893NyF4BON0WU/k9LeFAg0XnIzFd1F2D6dT+IMbIY7atARxQcHJSG+nLbKV7yQ==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=GJHR2hSEQjDA7JEPW4kRvNrUrFju1iQ8fE/qcrxDnx4=;
+	b=nLpreuPvchkcSm0hq5dMxtMw6WwFve/e4y7Te/lJ5bXtd0GOp8XglX+08yBwj4t8FNg9
+	 sSqZRREnFpBV9iCFskhvUsjBln0K19nHPOTVHk/9NGQRzQ0aOhnQE0aWjcEuS501OthAn
+	 XTaGIlw8WBYgho8qshxRdclmDNPZzptiqP3xZDTJVATQZjGyuVdUoK3O6E/n/2JononAI
+	 GdxQc78x/DcRiMWg25TgYjSPnaEcw2Lg0/Pa/v9BNKlNiuEywzT9qBm/KYOYmYXwR3I5I
+	 3rqyeOSJAJNzTrK++adhuyx6156gWSQ7GZfhNQ3Fs2rA3vQ4uoo8forVrRhNkoNDicQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=jclark.com;
-	spf=pass smtp.mailfrom=jclark.com;
-	dkim=pass header.d=jclark-com.20260707.gappssmtp.com header.i=@jclark-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b="HH/5x1Hr";
-	arc=none smtp.remote-ip=209.85.210.181
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	dmarc=pass header.from=openai.com;
+	spf=pass smtp.mailfrom=openai.com;
+	dkim=pass header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=bbdaf1Oz;
+	arc=none smtp.remote-ip=209.85.161.44
+Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52092606A31A
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 04:22:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 52092606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jclark.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85300606A324
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 04:22:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 85300606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=jclark-com.20260707.gappssmtp.com header.i=@jclark-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=HH/5x1Hr
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8a06cc097c7so175345b3a.0
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:22:49 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=bbdaf1Oz
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-6aa9606ddadso224949eaf.0
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:22:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jclark-com.20260707.gappssmtp.com; s=20260707; t=1793334168; x=1793938968; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LKdcLwwbAs+9mk+2eST/kXpD7oMhNL5RH1/U+V8JfPQ=;
-        b=HH/5x1HrhcH5qVKNTrWXKdrNUXRlbO8WZvlnJiQZ6Fx0rvohU6rYUrSJQkzGO6QeUc
-         7fTNITiDKdO6icU/O019rN3nR/4MwvcPRi+PFz/hLc7tPy3FPmr/N23LooSsgiIPV1FS
-         RiSV+mXx4WI7ZYM9zpAdHibonCcG+QpGZbI6joPG7n/jY5vjGdBmLMUtA3ASztU3hicw
-         rFn3eyRjafNMpvhdCW4SssnA2zRnKKA76+ze+Xm5QvmKK2bFL0zshmi7UmTVPyS+We6q
-         FFMasastOJvC4EHLydNMSzaQk1WppOWzQU6Z/wncxO53NsjrXQ/gNO44L1oOGl9IEKza
-         V1iw==
+        d=openai.com; s=google; t=1793334177; x=1793938977; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=GJHR2hSEQjDA7JEPW4kRvNrUrFju1iQ8fE/qcrxDnx4=;
+        b=bbdaf1OzyfVIjziEcBKDEx0mtzA7kv0ty2w3AElpjlhAtv9H+B8D9hvQ5IpEb03FUF
+         vENlSRLccwoAnqBpQ0ladWXi1X9pUyWpAKXru2rUskhWdMqnF6ZYogH+3x5BYmpH1G9A
+         F9tPV/yJyNkbbToD+sX18Gtl/KplDDFziD7/Q=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793334168; x=1793938968;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LKdcLwwbAs+9mk+2eST/kXpD7oMhNL5RH1/U+V8JfPQ=;
-        b=ptBoepPk//EbB7kCwy6n3CB6QjxcebihotUg6oZDQnlqLGTYfhpf30js2EP52R9R2I
-         KCojxgCVkFgARTFNzPHA1iTT+3lO8r3NVs4Gt2Gm3tBU2N8QWxbpzUszEZRBjzOIxbxP
-         Hoon5ku/4R/5MGoBaYPH/9l2DZD11MPUaptHTa2C1zTjYTdVy5K8PIA/Z1+pNxgDEbeT
-         9OIZHpVSQPJ09DpR4VIBTsWK7IREf29JeFIjMm4qQ+JX5ncH0gbuHr9xo7FHd1b9e06Z
-         3EW4uhyV/LaoN/Dr8E+j158FJmeLEaLnjW8+eiJXWIXDlkaSUH0igoG5sa3m3qlc60WQ
-         6pCw==
-X-Forwarded-Encrypted: i=1; AKwUvByhrhTjZAY0wTHTrLlNtgUx8XtvEA9vhPR6yf78OyWJobMYEyDo6F09zmK047VLCQvmFKzW3vw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKVcgW3WZegCjVlSIxm6TOYTUOITDwswrQF1GnCYNDygnQv0+c8
-	otxax4iqswm4SbGp34kNKy+YXRztHZPp4nh/jOVZwDd7+gyNycVgTqLl5U3VKKJW0w==
-X-Gm-Gg: AYBFou1DWaZtsxLX7RoJvPHK1+7oFww/dsZWnBA+AlAjjOhIpTDohWflX1+JX/D43xH
-	/Y249wWIiUeJCMGF3x4NiRMBEslOXabLg/ApfgdMEqIHUrjYkMiT6svoov2iGNO1hLojYK/79Ym
-	gFQUk1ZIuiJy6CVtd+XzpHzYmkxNBow4Jilwf+odVeDt8e4QeDjr/vuveFgxBaETGYqduXNaNPU
-	7cGlgPfDU1F0Jjgh48Nt5t2pHp9vKGPUCkMmAQ3mVrowU/sMPeBzBL2m7aAnH5d3Hp8TarjgnFU
-	4VamGOprgo++kHnIOQL8spVzZh6/cF7+ZVx/XRVkRcm8mPgOX3R7wd2mrqUgvnzgPxVGIBXtFRE
-	ZT0JNkAvo1R991ivuqOCDxHZymqw7HGl8jFDQWgcuBbO3zL7QaIUos7RtVFnLBKvK0RFjniJP84
-	S5Iztk4cLCyS1pF1UDl3ZZcx6bwpUT8+9uPzXi42GsjbqP2PcUjzovODLxo0TCvjo8k4iSQTxQB
-	TJqHY0ld7TCbvKCIz87u3kF57w+4cCKJMRTC7xyjHQ3Fs0K6aZNBSshJFBzwYOq+wcvacntvjq8
-	MUi0x9BkpCbglLIkdSqKhb1gcEbnVLtPJXGFauxh89/CzbnG5JKAa+dzm6ccjN+2VmmoUIocOJb
-	AH5JUM3aC6kORI39R
-X-Received: by 2002:a05:6a00:a90:b0:89d:faf6:c69d with SMTP id d2e1a72fcca58-8a9c03b83e0mr969146b3a.58.1793334168419;
-        Thu, 29 Oct 2026 21:22:48 -0700 (PDT)
-Received: from cantal.lan ([58.136.77.93])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a9eff2995asm231084b3a.53.2026.10.29.21.22.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 21:22:47 -0700 (PDT)
-From: James Clark <jjc@jclark.com>
-To: Jacob Keller <jacob.e.keller@intel.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Martin Kaistra <martin.kaistra@linutronix.de>,
-	Grygorii Strashko <grygorii.strashko@ti.com>,
-	Aksh Garg <a-garg7@ti.com>,
+        d=1e100.net; s=20260707; t=1793334177; x=1793938977;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GJHR2hSEQjDA7JEPW4kRvNrUrFju1iQ8fE/qcrxDnx4=;
+        b=u8FsU/mkJlwbXhrSGhwr0Oy1zuIu+bsb709Xam3BLNVmco85w7NCbPKCMgRW731bbS
+         Ys3uHyiMKYmL3b1l3TLIf0LScv/wn2h3vk3mEG0t2bNOVm+PY3zGuzffgR6prHbgrff5
+         8DYqTTloR5/hMn07o8kOFpqkTdY0wOkKm6wUddF8JffnuxqtlH+2FO4Tz7v8qOxgE2mb
+         lvVKcgQqVePt19ikQtr/bX2dZhw6VaWQZHULhWRfp4aYXMTHSZTEi6+OF6vh7LDoTch9
+         tWy/WAqci0Yxf0KnwMna2gaII8dsI363UFIx7/1dDGBT2oCyhGc5hF/jvQMfG4y9uoUL
+         9tzg==
+X-Forwarded-Encrypted: i=1; AKwUvBzsTSc2Skpw4OI0wTNKK3OaFfWDWX3RCUO+/bdW6REFhQGRIgP+FASZ+RsJvpndC0WP0DCC+A8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLL73t5JVz1516q+wMox8v8H3dF1J1VuQ8ZDRyuvTC1E2a6J293
+	Kq4oxa/qprp5kk9li2r6zyQSpmwPBQFkLZV3Wu4EUyaprtIEcTkkoqPBf6W1u4ZtzvU=
+X-Gm-Gg: AYBFou2S/auMvn5ILGnfNZxWOgN9NiHm6IzWI/DbNF0VnAXnau6J6iSEEgpMsGmXTYm
+	XJDJfjfupaN36deOnXZAFQNUH81QYTrzzIyB2UYOztOG1MuwkirTYA16t99TUp0uyyX3V75TLEB
+	Dlv6+sQruvsaNkpQ/PbnEj/VHhXGobAzNKBsxhRScd5MHpaHJBWihZfYt+VHE/fOcqKLoxabFjz
+	u/vO19CAtu9YbxMIZB+cm3sCSGkh7kcpCHXZ4b3joPsGRSgJmthZS+TfA18jUALv/zgFy1AylMx
+	IytX2FuZ+q8VC1Fsn5i/gEM7MAsMUpknqlXXr58DzpQpR1zPIz8IbcwE5zFtBP61lD08H/Cewp2
+	owkgq6z277ub9PLtm7dX8zXLXBDQk21iXxFOAGW8gyRgvHUENYhoAYe5126sSlnb3XrAaC2OpSQ
+	dumezh9YBbhvi2t5LCy2TAjNYomJIOpiRGAE9wXaincjrKhn0IQZVhjSBgR/XpTO2UbHfhORQ8d
+	fbSc80ccicqPmVuiDb2Ph6pin/VPEMjjodcydSzH17UICjAHhbJCfFmwP5/wKeeZPBM001W6eKu
+	sJvN+duVevSb5eUGHw17TyjBAdtZfzFJw8luEmp50MrZDVCYqH4Qks7uEUERSx9/ngwYFZKzljz
+	DOOCugUzPo47NZpemt2KBwfsAX1zjDw==
+X-Received: by 2002:a05:6820:55d7:10b0:70a:598b:127c with SMTP id 006d021491bc7-714f29e7222mr536195eaf.45.1793334177541;
+        Thu, 29 Oct 2026 21:22:57 -0700 (PDT)
+Received: from com-75606.corp.openai.org ([199.47.143.5])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-714f2a818b9sm1094944eaf.1.2026.10.29.21.22.56
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 29 Oct 2026 21:22:57 -0700 (PDT)
+From: Kyle Zeng <kylebot@openai.com>
+To: mptcp@lists.linux.dev
+Cc: Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: ethernet: ti: am65-cpts: adjust perout genf following ptp changes
-Date: Fri, 30 Oct 2026 11:22:41 +0700
-Message-ID: <20261030042241.2736240-1-jjc@jclark.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <c139c5e2-c791-46a2-8e60-556aa6402e12@intel.com>
-References: <20261029135556.2508688-1-jjc@jclark.com> <c139c5e2-c791-46a2-8e60-556aa6402e12@intel.com>
+	linux-kernel@vger.kernel.org,
+	outbounddisclosures@openai.com
+Subject: [PATCH] mptcp: pm: kernel: use RCU to free endpoint listeners
+Date: Thu, 29 Oct 2026 21:22:55 -0700
+Message-ID: <20261030042255.74216-1-kylebot@openai.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -111,63 +95,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 10/29/26 22:57, Jacob Keller wrote:
-> Makes sense. My only concern is how long does it take to finish the
-> adjustment to fix the PPS? Could that impact the rate at which you can
-> perform frequency adjustments? In typical deployments, frequency
-> adjustments happen at every PTP sync event, which could be many times
-> per second.
+mptcp_pm_nl_create_listen_socket() starts the TCP listener directly
+instead of going through mptcp_listen(). It consequently misses setting
+SOCK_RCU_FREE on the parent MPTCP socket.
 
-Hi Jacob, thanks for taking a look at this.
+tcp_child_process() can invoke the listener's subflow_data_ready()
+callback without holding the MPTCP parent lock or a reference to the
+parent. An authenticated MP_JOIN racing with endpoint teardown can
+therefore access the parent after its last reference has been dropped.
+The ADD_ADDR error path can also close an already published listener.
 
-The register reads and writes happen over the SoC interconnect and so
-are fast: I timed clock_adjtime(ADJ_FREQUENCY) on a BeagleY-AI and each
-enabled GenF adds 0.84 us. I also tested with PTP sync events at 128
-syncs per second, and it worked fine.
+Set SOCK_RCU_FREE before __inet_listen_sk() publishes the TCP listener,
+matching mptcp_listen(). This protects the parent on every subsequent
+close path, including a failed endpoint addition.
 
-> Also, is there any loss inbetween when the correction comes to each GenF
-> that could still create (a much smaller) inaccuracy between them that
-> compounds over time with each frequency adjustment? Or does this updated
-> correction keep everything aligned by the next pulse?
+Fixes: 1729cf186d8a ("mptcp: create the listening socket for new port")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+---
+I have a reproducer for this issue and can share via DM
 
-There is an issue here with how the hardware works, which I think means
-that it is not possible to guarantee that the periodic output is
-absolutely in sync with the PHC in all situations. The hardware has two
-separate counters: a timestamp counter used by the PHC and a GenF
-counter used by the periodic output. Each of these has its own PPM
-counter used to apply frequency corrections. Each PPM counter is a
-down-counter: it loads the period from the PPM registers, counts down to
-zero, makes a one-tick adjustment in the direction set at that moment,
-and then loads the period again (as described for GenF in
-12.2.1.4.7.11.2 of the TRM). adjfine() just writes the PPM registers;
-the hardware does not give access to the PPM counters. The PPM counters
-are not in sync, so they can sample the frequency from their
-corresponding registers at different times, and the corrections applied
-to the timestamp and GenF counters can accordingly be different.
+ net/mptcp/pm_kernel.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-I tested that the hardware behaves consistently with the TRM. As before,
-the GENF0 output was looped back to EXTTS 0. Writing a constant
-frequency every 10 ms, there is no drift. But by writing a frequency
-that alternates between +0.1 and -0.1 ppm every 10 ms, I was able to
-produce a drift of 100 ns/s.
+diff --git a/net/mptcp/pm_kernel.c b/net/mptcp/pm_kernel.c
+index 1a7750813235..f7396628490e 100644
+--- a/net/mptcp/pm_kernel.c
++++ b/net/mptcp/pm_kernel.c
+@@ -906,6 +906,7 @@ static int mptcp_pm_nl_create_listen_socket(struct sock *sk,
+ 	 * old status is known (TCP_CLOSE).
+ 	 */
+ 	inet_sk_state_store(newsk, TCP_LISTEN);
++	sock_set_flag(newsk, SOCK_RCU_FREE);
+ 	lock_sock(ssk);
+ 	WRITE_ONCE(mptcp_subflow_ctx(ssk)->pm_listener, true);
+ 	err = __inet_listen_sk(ssk, backlog);
 
-But in practice, this does not seem to be a significant problem, at
-least on my particular board. I tested with ptp4l locked to a
-GPS-disciplined grandmaster, at 1, 16 and 128 syncs a second, for 60, 10
-and 5 minutes, and did not see any drift. I should mention though that
-this board's crystal is 10 ppm slow, so the adjustment is large and the
-PPM counter periods correspondingly short. The results might be worse on
-a board with a more accurate crystal.
-
-In any case, as far as I can see this is how the hardware is designed to
-work, and I think this patch makes it work as designed.
-
-> Obviously this is still better than what was happening before where the
-> corrections weren't even applied.
-
-Indeed.
-
-James
+base-commit: d89e1d186ec9271bf78e62771779e9fc03bf0fc3
+-- 
+2.56.0
