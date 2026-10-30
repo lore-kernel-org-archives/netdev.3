@@ -1,64 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793342982;
-	b=XsdmaZEj6XhM8nsnOnukGiix1JbDI2XbmBNiZVw7FI+iNuSvjOjsLCSE+hymxfAFTKnu
-	 hcEctHT2VeMStcrnuAGLDo3D9RZbN1pK/B/y1tmtIeVuLvo17es06l5iSQzvTcPvESa9D
-	 t788URvZe3HtIjkJ+CrG39fNtcKeWVzR4WWHAseX3R73or3GNA8NYEylRW4rC98m2INL8
-	 EwjJZIU3i5eXHMnyA+Rb1NXzKaUVPh06+5xNRMAGD5J4SaBaUnIZtGg1rYZbhWQixusKQ
-	 To7ZQ9GXpoyxmmwP4e5LxwlHJmzxb1568mX+YGuC045+qjoUSL4l17XKQfFCt1VBt6Q==
+	t=1793343181;
+	b=MZ9jPVK1v5MJBzTv8vdQ2gRbNlXzPLBcXQs5129410RMYCDghl9FOLIh1ihPWbfcrtmY
+	 0EJ0YFLJotexaRS+0DsefLNPYTs9jWG7dj3mdpaQVckeTrwyZgtuVtEEr0lOpzeIL0QAZ
+	 zc53DF9zV4BMl5oaQuEtjohzdTPYsFq4e7UamPyrsPmWD4PDWZeD+5F7pDWgaCPQlSMGr
+	 6v3crk0Nh+/SYjkrc5VcQtLvuENWsTiz1oed6AxBnr6p/H2WvMGC96ZGOyG7WYGkA7XgL
+	 C3l3oZmZF1wtmlH1oTD9Lbp0eXMe4QxpXTrKKmmzmA9O3adk9jtEFbZLdADxkg8bp9g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793342982;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=EySoFa/ZIZHCHIXeDpY/aJJ2gpzeqhU5J0/sqDK+bhVcitJ8tzx2eVLSNw1cqKJ5NAw5
-	 UfA557BJaX3vFUmZEI5VYK4ku9s+fhGvbmWpJwWIXc0Kku1wIeVbVEtioqHGkFJocl8Ic
-	 s3WbYLRYp1qARAp+g/OXW64LmHHYUNPRjxTzeDdPn+Mqg/RCf3EmLemCqHYyxNc43DDSC
-	 vrBod+CPlFgRLsiAJQ4CO1p35DUz8lKogVOa6acrYPpxaDCffC91cr3wIlIZrkCVs4CsS
-	 6cNWnGw49gPTKPuvY2MjdFsDF+mpqaJzYlUYezeHyGP+F5c614fC0cu9X46duyDzJUA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793343181;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=qXtTOic1CSe7iLEVcnI3wJflAV0GHEPp/NEkAFGsTr8=;
+	b=jbVi9pdhyHA1lZu+dL/KUFaf7jPC+4B+8hPURRlyg5VHybZrzelWG4zn1DgtKyYd844J
+	 Rp9JgSOWl3hXlHhh32eL9gONxSrlnhNCoJ72nomR5AvCdSe01tudO91rnvqHcfuGUhl36
+	 S72DJSvBxq1/0A0qNJioZJZRHKRu3L86SdYrT45WHgKM+VjuFKaYaARXuavH5Y8tsdiej
+	 w9kqroLNWrUmCGNY64xnrkEsxFDAD6Kzci5LZZcTC1B/QTbpSAQ8KYiZOhBzR11hTDs7e
+	 Fpm/owwlF0o/hXFkCsUdmRYfQlmysNADlgDYGaTngtcdS3wQ+hvw7vP0ni/9VpBIS2A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HgeKKIBA;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--starchang.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Jz3f5tt1;
+	arc=none smtp.remote-ip=209.85.210.200
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F739606A330;
-	Fri, 30 Oct 2026 06:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4A8606A31A
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 06:53:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F4A8606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--starchang.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HgeKKIBA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E231F00A16;
-	Fri, 30 Oct 2026 06:49:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793342982;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HgeKKIBAv4oAgyhSJMc/9Ghzasu+jgG+IWHLxryqLM794LV83Wkpd5hFsr9lwUrXc
-	 2SvZozjAICf3mL/PEyu8jR/g08uR9X47889ST49tkSZWL4E79Tk3slPa2yVMa7iY4H
-	 8yntpojO6js8sJ8/WZxyOVzPNig8FRZQCUQSqBS67V77m6g5aF9ImzZKeH1EgTXCE4
-	 HWdjkPPO83L9sTAspACK/SP/n6ZvRiMaVWyWa0Y9Dujaj3OO0G/GhEdlqLZUf8f3BY
-	 rJ3cWVWrUWYXfv3jMf4MeGY5HnKg6/vRLVkd5OBND6a6Bue6TtIsFXagLPnPCN9hSS
-	 TgaH2QolMzncQ==
-From: netdev-bot+sinfo@kernel.org
-To: phind.uet@gmail.com
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
- Bobby Eshleman <bobbyeshleman@meta.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, George Zhang <georgezhang@vmware.com>,
- Andy King <acking@vmware.com>, Dmitry Torokhov <dtor@vmware.com>,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: 
- Re: [PATCH] vsock: reject negative tv_usec in SO_VM_SOCKETS_CONNECT_TIMEOUT
-Date: Fri, 30 Oct 2026 06:49:41 +0000
-Message-ID: <179334298102.3327.1583406776463496240@kernel.org>
-In-Reply-To: <20261030064428.73930-1-phind.uet@gmail.com>
-References: <20261030064428.73930-1-phind.uet@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Jz3f5tt1
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8a05c820ecbso526354b3a.0
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 23:53:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793343180; x=1793947980; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qXtTOic1CSe7iLEVcnI3wJflAV0GHEPp/NEkAFGsTr8=;
+        b=Jz3f5tt1lHW+sWpdjFrp/X5c88hmABgX7JHsD7mDSt47kbWHamUxbvuWabR2amylU4
+         nkNf/8Y3zBaBkhXHHUWRxIo5MifNOVHrfNduzXa2/EbM3WZMA/slrw1ieeNGCn1GWHVr
+         ztwsHOUt2qfoWlJX3I/JmNDPzaU1Hh4rePYHpYsaI8noOYuxYGq5UmL36OuEU6/wEtmo
+         rIKbzHUtrYHRTN/t8jkTN+tsRSAjBduhj0GjhMXZ7nLrQTjQ8bOfDufhPIikR1Q8kDWV
+         OdGXW7iV5f4Kp3s0Eox69lhelltwncOSxY2acXtRLwf1xjwZ1Cp8StPU0+8eP5mlkice
+         EmjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793343180; x=1793947980;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=qXtTOic1CSe7iLEVcnI3wJflAV0GHEPp/NEkAFGsTr8=;
+        b=1kl6pMxe0IArxkOBmSk6A6WZ1DCBKaRooqNq2lA9VhtevMbbHx84G9h7ZgwAN3P8X9
+         pPO6GZeR5ZaXlXbPxBc5/Ki895wLRzioi7YsEJISYE8UBobC6nyWfox2E8PK4AF0UvPt
+         v8BYdSYsaRm5gqnFv7hf7g14S5krC93eMxi10qbb35366Cuyd2ulvRM2iLDgV85ARHAW
+         LNPBd3tjTCXFe+kJuyMnpMDgRxJUbtolo9pVQea66bNMuZep6kcN8GRcRIGhuz24JNpR
+         hDaQdBRzaoRlz0/G5W75ROSLZo2SwpWolhcq1GWvZD/pqHQCi8pfTYNN+SCvYEpAusgB
+         4RCg==
+X-Gm-Message-State: AFq9FYLTXUBVTDpqO2dEqeTfL6qc2CDsSBs4gGBDr/I3zp1Wrx/Zulbc
+	n4TusOeZ9ecEh3LZLyKBF5JZ2ZUe2ONl8kJ53PhkEYePUXU+kadP5nIXig0yDybAaFHMrF29mfb
+	hG7aqu6MxQOGyVXy2Sw==
+X-Received: from pfbkt3.prod.google.com ([2002:a05:6a00:4ba3:b0:8a0:2311:b0be])
+ (user=starchang job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:1f0b:b0:89e:779b:d0f with SMTP id d2e1a72fcca58-8a9beb69d8fmr1284653b3a.37.1793343180250;
+ Thu, 29 Oct 2026 23:53:00 -0700 (PDT)
+Date: Fri, 30 Oct 2026 06:52:58 +0000
+In-Reply-To: <65cf2338-7bb4-3151-f3b1-ef171bb5723b@ssi.bg>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,22 +76,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20261026150539.1357037-1-starchang@google.com>
+ <20261027015619.1745984-1-starchang@google.com> <5c1fe870-39ff-e83e-e479-0e1f0fed6a83@ssi.bg>
+ <20261028061644.2997812-1-starchang@google.com> <f631e178-d9ec-f335-9163-c44a9e6c58af@ssi.bg>
+ <20261030030715.604215-1-starchang@google.com>
+X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
+Message-ID: <20261030065258.818406-1-starchang@google.com>
+Subject: Re: [PATCH net v4] net: Fix Hole-196 vulnerability by dropping
+ unicast ARP/IP in L2 BMC
+From: Star Chang <starchang@google.com>
+To: ja@ssi.bg
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org, johannes@sipsolutions.net, johannes.berg@intel.com, 
+	linux-kernel@vger.kernel.org, wangroger@google.com, starchang@google.com
+Content-Type: text/plain; charset="utf-8"
 
-Hi!
+Hi Julian,
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Thank you! Your point is spot-on: in a shared-key Wi-Fi network, an attacker
+can simply broadcast a forged GARP reply (sip == tip == gateway_ip) to poison
+the gateway MAC for all peers. Giving GARP an exemption indeed leaves a door open.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+We verified the Android / mobile use case and confirmed that completely
+disallowing neighbor learning from L2 BMC is safe:
+- Gateway validation: Android relies on NUD (Neighbor Unreachability Detection)
+  unicast probes and unicast replies (PACKET_HOST), never on broadcast replies.
+- Wi-Fi Roaming: Roaming clients *send* GARP to notify the AP/switch; they do
+  not need to receive broadcast GARP.
+- Router failover: NUD naturally detects stale neighbor state and re-probes
+  via unicast, recovering within seconds.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+For v6, following your guidance:
+1. L2 BMC ARP Replies:
+   Drop all of them unconditionally (including GARP) with
+   SKB_DROP_REASON_UNICAST_IN_L2_MULTICAST.
+2. L2 BMC ARP Requests:
+   Process and send replies as usual, but suppress updating/creating neighbor
+   cache entries.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Does this match your vision for v6? If so, I will prepare the patch accordingly.
+
+Best regards,
+Star Chang
