@@ -1,76 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793342947;
-	b=AzaW87jziZl8dzCYaK+Ks85QEE/2QtNwalofa9NJgk9LCBBB9QPAslVBz/6W9oxSqj7Q
-	 0Qjis3dlJgbhbaVVfmVUowEo6ceqL3nFl8deXQkXNSXuMUa3fHwoo5lIYtkfxpfNqCBF3
-	 Quqx8WztHUKFXvlZnADGZmmzaXFKgzurDqilcvf6F3crkmsaqCGnjjodFUDI3YybxJ5xb
-	 LhsV4kBQlcttn8rw5gmegJU0DvpeWd+Dif1wjRm/e0mEkJ6o4k4orPopDfXCuITj/OhJ/
-	 eG2Fg8VqSAUTzPWQF7ohnxIPlE+oNNhLrvWrDsODHjQfnVF1V6caGaqQESVqcvVOJJA==
+	t=1793342982;
+	b=XsdmaZEj6XhM8nsnOnukGiix1JbDI2XbmBNiZVw7FI+iNuSvjOjsLCSE+hymxfAFTKnu
+	 hcEctHT2VeMStcrnuAGLDo3D9RZbN1pK/B/y1tmtIeVuLvo17es06l5iSQzvTcPvESa9D
+	 t788URvZe3HtIjkJ+CrG39fNtcKeWVzR4WWHAseX3R73or3GNA8NYEylRW4rC98m2INL8
+	 EwjJZIU3i5eXHMnyA+Rb1NXzKaUVPh06+5xNRMAGD5J4SaBaUnIZtGg1rYZbhWQixusKQ
+	 To7ZQ9GXpoyxmmwP4e5LxwlHJmzxb1568mX+YGuC045+qjoUSL4l17XKQfFCt1VBt6Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793342947;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=ihZJvFVo5qA9bHBSjqRZ6mMHlkTfcms3YLDhCt8pbv8=;
-	b=Ajn29h6hxu1/DMm6V5GTXb7bnb9XprYDEQuwu5sW4od/e6cIj/NmO4QQ6iEtELK64Jhg
-	 mmBHvXFTLONDK92zlMKHEv3CIOd/jj2M0/JbC9pRB0Dl/4DfpzvqGs0xoQdnlGGT7buhB
-	 tSP+WZyLZpTDXtbIEe0aGg0kuohE9ytaQbaimaNbAYdY/dxHod+QHAwhGXjGi/VtQa2ie
-	 L+BLlGMLX59YWOau6cCNLn0pUUfIQOcn3pZ5u7f0gvgffMd7WUfvOyFYBZ00MqdfNp0KQ
-	 +KgmfLrI/c4olgRIMry9XQMDsGRv7sMEfBMnsLI/NJQK8S4EIIMU0RrGEXJw3EctDpw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793342982;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	b=EySoFa/ZIZHCHIXeDpY/aJJ2gpzeqhU5J0/sqDK+bhVcitJ8tzx2eVLSNw1cqKJ5NAw5
+	 UfA557BJaX3vFUmZEI5VYK4ku9s+fhGvbmWpJwWIXc0Kku1wIeVbVEtioqHGkFJocl8Ic
+	 s3WbYLRYp1qARAp+g/OXW64LmHHYUNPRjxTzeDdPn+Mqg/RCf3EmLemCqHYyxNc43DDSC
+	 vrBod+CPlFgRLsiAJQ4CO1p35DUz8lKogVOa6acrYPpxaDCffC91cr3wIlIZrkCVs4CsS
+	 6cNWnGw49gPTKPuvY2MjdFsDF+mpqaJzYlUYezeHyGP+F5c614fC0cu9X46duyDzJUA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AvSaQaOS;
-	arc=none smtp.remote-ip=74.125.82.199
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HgeKKIBA;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA34606A321
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 06:49:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9EA34606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F739606A330;
+	Fri, 30 Oct 2026 06:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AvSaQaOS
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-3662e7a9299so1834054eec.1
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 23:49:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793342946; x=1793947746; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ihZJvFVo5qA9bHBSjqRZ6mMHlkTfcms3YLDhCt8pbv8=;
-        b=AvSaQaOSZCOjDhrd+clfjgDooA4JmUDAyaTu+YgkbqGjrLqMKAA+Q/0E3ZG3iHGl9f
-         PoZXL8AVr0fv/+zmZqXGmeqsEV1w2wdF+8h3PyNl4mxKY5L0HdGxRlrUNc9fPWJvFlD1
-         VWrnAPcnDY+brHFJNcx2mVEHiECZG3yq8jPPf7omfYSx5RTwDwB0qVzsyYuJvxzwhKUT
-         OZJunlFKbZY2NQFgr1S1qf4m3RYm9e0kUrIRzxajcumRL/rrnZdEEc4jl7hJS7VuYgEr
-         BDDpFqnIl+KTscZVSvq4r+POHR8C/a1lw7LMnNca3W3jZP3zbGAHFYW5dZup/OEnDw5g
-         b5Dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793342946; x=1793947746;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ihZJvFVo5qA9bHBSjqRZ6mMHlkTfcms3YLDhCt8pbv8=;
-        b=eE6E5Bp/qT8aaOJPJNnunVPexGZ+B77cRpvvsLuUou4dKWDgp+DmNfO1rvsguWmGsy
-         uGZkoy37yQRNG2SMmboKgflIbmOHDiSiLkYnFNuORpMsxwzPIWtIAItNahAbaJXlzqXR
-         BrvO8EjZji+rm9chMh7fr8IzCCZu31h7qZQka8fik8+a5Ul467bxWzat2jfpp4niOJpT
-         MAj+8l4vXjknDOrjszGJ2USjyHMGmLvdJDzNVw5whkFjv/jbB9eK7KeLZDcZJcOMyeie
-         Ni3l2FoSekmt0MjJopUvVffEfyrUdpMgj10x+L3nNeRL2Ei/mDGziqjuuFWB7rsCLbqg
-         PcDQ==
-X-Forwarded-Encrypted: i=1; AKwUvByGJKXAbPd183CygCUKV2cDWjl7hIEZqgKhDWKBbSJnr3b8R4Q0Ldo59rgTNB0dEBrvQV/d9Iw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLQ+7qJlkD1XlbMpNvSqFpCFj1Rp5EFVoR0XK0pm9UtRCyFzZBY
-	qvIFkv2tHwSuGqoyo+2l+xFF7/e6covdTo37p8EtqTqvX51yOIFhRIPGtyFHeXS4ighAbkyscLe
-	DWywioYYoPpfzrqTnICJUUiQ/dQ==
-X-Received: from dlbrj6.prod.google.com ([2002:a05:7022:f406:b0:1a8:2945:774e])
- (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:2606:b0:13b:4ab5:41d7 with SMTP id a92af1059eb24-1ac55f2d32bmr2370550c88.3.1793342945214;
- Thu, 29 Oct 2026 23:49:05 -0700 (PDT)
-Date: Fri, 30 Oct 2026 06:49:04 +0000
-In-Reply-To: <179324296598.34505.11070163314749859668@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HgeKKIBA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E231F00A16;
+	Fri, 30 Oct 2026 06:49:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793342982;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=HgeKKIBAv4oAgyhSJMc/9Ghzasu+jgG+IWHLxryqLM794LV83Wkpd5hFsr9lwUrXc
+	 2SvZozjAICf3mL/PEyu8jR/g08uR9X47889ST49tkSZWL4E79Tk3slPa2yVMa7iY4H
+	 8yntpojO6js8sJ8/WZxyOVzPNig8FRZQCUQSqBS67V77m6g5aF9ImzZKeH1EgTXCE4
+	 HWdjkPPO83L9sTAspACK/SP/n6ZvRiMaVWyWa0Y9Dujaj3OO0G/GhEdlqLZUf8f3BY
+	 rJ3cWVWrUWYXfv3jMf4MeGY5HnKg6/vRLVkd5OBND6a6Bue6TtIsFXagLPnPCN9hSS
+	 TgaH2QolMzncQ==
+From: netdev-bot+sinfo@kernel.org
+To: phind.uet@gmail.com
+Cc: Stefano Garzarella <sgarzare@redhat.com>,
+ Bobby Eshleman <bobbyeshleman@meta.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, George Zhang <georgezhang@vmware.com>,
+ Andy King <acking@vmware.com>, Dmitry Torokhov <dtor@vmware.com>,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: 
+ Re: [PATCH] vsock: reject negative tv_usec in SO_VM_SOCKETS_CONNECT_TIMEOUT
+Date: Fri, 30 Oct 2026 06:49:41 +0000
+Message-ID: <179334298102.3327.1583406776463496240@kernel.org>
+In-Reply-To: <20261030064428.73930-1-phind.uet@gmail.com>
+References: <20261030064428.73930-1-phind.uet@gmail.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,51 +67,22 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <179324296598.34505.11070163314749859668@gmail.com>
-X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
-Message-ID: <20261030064904.4149904-1-almasrymina@google.com>
-Subject: Re: [PATCH net] netdevsim: delete ports added after a failed reload
-From: Mina Almasry <almasrymina@google.com>
-To: Joas Antonio dos Santos <joasantonio108@gmail.com>
-Cc: Mina Almasry <almasrymina@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	syzbot+88435e204734072bf39a@syzkaller.appspotmail.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 
-On Wed, Oct 28, 2026 at 8:02=E2=80=AFPM Joas Antonio dos Santos
-<joasantonio108@gmail.com> wrote:
->
-> diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
-> index feb88cc..a871790 100644
-> --- a/drivers/net/netdevsim/dev.c
-> +++ b/drivers/net/netdevsim/dev.c
-> @@ -1697,8 +1697,13 @@ static void nsim_dev_reload_destroy(struct nsim_de=
-v *nsim_dev)
->  {
->         struct devlink *devlink =3D priv_to_devlink(nsim_dev);
->
-> -       if (devlink_is_reload_failed(devlink))
-> +       if (devlink_is_reload_failed(devlink)) {
-> +               /* The failed reload already tore everything down, but po=
-rts
-> +                * can still be added through new_port after that.
-> +                */
-> +               nsim_dev_port_del_all(nsim_dev);
->                 return;
-> +       }
+Hi!
 
-I prefer =C3=96mer's version for the reasons mentioned here:
-https://lore.kernel.org/netdev/20261030064245.4118081-1-almasrymina@google.=
-com/
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Either way, since this is a non-critical fix in netdevsim, it should
-target net-next once it reopens after the merge window:
-https://netdev.bots.linux.dev/net-next.html
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
---=20
-Thanks,
-Mina
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
