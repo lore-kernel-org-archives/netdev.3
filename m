@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.143.35
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.147.86
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793394090;
-	b=nkQ59BxDFv29pDArDLVkWmm0qcpgRQQ6bRFP7OUanhmWGFcVtZzQg882EFMMoD7wrShq
-	 ZHehSszuus7Ro97qJxDp5XSqyKjS/+NHQAc+LkrZRnryEQ89VhxCpJbQ/sogMf9+4DpzQ
-	 3mQXToBUVsn161SR5JSOX6ivnw0vSpQ0pZ5Upz+M6AFGsxgkf3ncpA71cllJF0uXsqlTR
-	 TNKYJmur62yAJe3bNWig9UFwn0jumYNwxk0KvAjqBp6Yoe+n1bBnn8pzUePSwLrED1in2
-	 CRFUMP+lP+lr5/8LOqiRbawNGp3WYM3gG8UKQQWbk9JL6+YiKAmiWkEgVnzot9GbIvA==
+	t=1793394094;
+	b=TyU4NewFySxjhiGAGdH4ARdN5X/K9xRcd9Mn/ywks3WeELB4AJEngqA7ScweUpRTTsbL
+	 GnFdCOdQ1MO2vTXKG98QDpGpC8mbTyDEnMLiIHMaMRAfxn+ueYytfWOYSl9iYYZSxXqUN
+	 LrLmQQrwuLtWYuV0oXBHfZcvzO/vzpdGze6Rkz9mk2gV29QJ1VKfdof79yKhNiu8KZHok
+	 54MMB3S3kNTZmFdSn1YZRxBYsm4oPru2duslTAWc/jkdihb9wEdUWmlJUBGn6B5AMIN3U
+	 tT98K1MBRKWgjlETstpeyjpJTPm8j41XaXgYRYC1Bc1wbPySBkYCXTg3soy8iQMMC/g==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793394090;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793394094;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
 	 Received:Received:Received:Received:From:Date:Subject:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:CC:
@@ -25,72 +25,72 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:X-HPE-SCL:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=lboqsmIAlA3b6834pdw231iO/gtmIEQpprll671Abto=;
-	b=1hkp/i0TQHzuenosePFf03sIO06vUGEVmVxBZ/JGjVln9RA6FwJgotDqxOyWZezYLfmO
-	 dFNP2U5JVnE13YjDggAH4MowUD9Wg67fkN3PMVouAUwFMXZ7WQqhhTDwOWrR88zJ5bUVv
-	 tyFTOC8DgY8p4lXeNPHdEwqE28TIdPKWzlgBeaFNg8K/LHxVXgKBFrYyc6BZLTcLH1ikv
-	 +b27GhtDhh02ubu57LBSwa8j9zxlQhV/I4xxebL0Xsl1UAhZpqimGyZml7ZvVBJSo5by1
-	 WjL3Yb4iWRmDPrrOZtvSwYpcgXePTHUKr0IJCOvBsxJf431V9jItekEnBwWrPDicuTw==
+	 X-Proofpoint-Spam-Info:X-Proofpoint-Spam-Details-Enc:
+	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
+	 X-HPE-SCL:X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=rrc0C/f0u2kGK9foscgQXAVwvl/68rTIsun8PigPDWA=;
+	b=UeSmsypmk9J4kIY5mC2AS9o6Ktt5b8k4dIUei1o9stBqhXL36aIojhyioOlkBA5hqF24
+	 3ZPrCPZVhCoPPSDO04O5blZXmSyPNEwS/sqOEsT7DVK2Xy5PgzFwA0YXHEh+KFQqKtF5/
+	 W1uU7NSb75d80e3F/w3+oC7/Xk1PDnvBL/uAs/l24oGp7y11OZuk0THyy4sWo6f9XUJvR
+	 Yz005of6pE+rmRhw4doFblzZUJ4aIcF4IHyVDkxYqc0Ol0FQoGlHFT5rZu0i8Kzkyuty3
+	 Oyf0rdp+8oGzNdGaLJhwAssBBcDdS/Y6coExP9mLLFG966D9pZkGQjABcveqHhZyuuQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=hpe.com;
 	spf=pass smtp.mailfrom=hpe.com;
-	dkim=pass header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=F1BpP7XM;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.143.35
-Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
+	dkim=pass header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=OpwERkWX;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.147.86
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9914606A323;
-	Fri, 30 Oct 2026 21:01:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9914606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D46660A2626;
+	Fri, 30 Oct 2026 21:01:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2D46660A2626
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=F1BpP7XM
-Received: from pps.filterd (m0150245.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69UKCeCE1185069;
-	Fri, 30 Oct 2026 21:00:59 GMT
+	dkim=pass (2048-bit key, unprotected) header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=OpwERkWX
+Received: from pps.filterd (m0134420.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69UHxho83237753;
+	Fri, 30 Oct 2026 21:01:03 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps0720; bh=lb
-	oqsmIAlA3b6834pdw231iO/gtmIEQpprll671Abto=; b=F1BpP7XMn3JyzLLBSy
-	A2bhPcPc2pGHPIAbRbJ47QfG5zjYSexoucE+7GyoRxJiqg+LRverAmGS7hgt4LN0
-	kwnZytAszmf7yz5R9ItwVahqKg8WBEtrdGxrItaa6/3TSB9DjXV9j+mHAgoDxceG
-	Y1vRVGnuz7qQFU6iNFDEV5+Ii9JykM12vOJd4SJAHX41GWbBnOar/ddNpTxYRUJs
-	HAh0oCrRSm/qbtAIp/LuOlIIse12dk83bhwmMctxTUCxaL8MJoFX7qnjvskLxupm
-	qIQjHZ3eldck6EEwYFKre68dy2Att33tBLnmPtWpvm98uQ6AWx1z7eHdWUpnszzN
-	XpFg==
+	:message-id:mime-version:references:subject:to; s=pps0720; bh=rr
+	c0C/f0u2kGK9foscgQXAVwvl/68rTIsun8PigPDWA=; b=OpwERkWXPBFCCmKKKW
+	AZSQm3dsT0s0Qb2r7EhfRPTWPnlHbCA4n6zjg4NnyPCOoZjMkmxfxIJwVp1/T2tw
+	mJoU2SP0H1IQNVvJXDs5xeYaLVD0RW1I9YWmrmWtG+jbf+1XLiFylGcIOai1oT5I
+	vU3yLULXQzV7cD1nu7x0dgRhII8DpffI7OLNKyLp+UZqhIzjcnw5Ob5iBrvjlW4A
+	htnC4YtGTKglThast/1oHDOjQvM1K6lE+bx7XEYKQOArHnDncPzBeVL2JnXyLZoB
+	4UXCy0l1Z1mdmmGHao/lL6HKyDQqpfQaCn3Wx1Ii4Krszog+Pl74C6LeFkyo57pa
+	c5RQ==
 Received: from p1lg14880.it.hpe.com (p1lg14880.it.hpe.com [16.230.97.201])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 4hn22wgds6-1
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 4hmw2jvkvt-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 30 Oct 2026 21:00:58 +0000 (GMT)
+	Fri, 30 Oct 2026 21:01:02 +0000 (GMT)
 Received: from p1wg14924.americas.hpqcorp.net (unknown [10.119.18.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by p1lg14880.it.hpe.com (Postfix) with ESMTPS id 6476E8014E0;
-	Fri, 30 Oct 2026 21:00:57 +0000 (UTC)
-Received: from p1wg14924.americas.hpqcorp.net (10.119.18.113) by
+	by p1lg14880.it.hpe.com (Postfix) with ESMTPS id B6903800EE7;
+	Fri, 30 Oct 2026 21:01:01 +0000 (UTC)
+Received: from p1wg14925.americas.hpqcorp.net (10.119.18.114) by
  p1wg14924.americas.hpqcorp.net (10.119.18.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Fri, 30 Oct 2026 09:00:54 -1200
-Received: from P1WG14918.americas.hpqcorp.net (16.230.19.121) by
- p1wg14924.americas.hpqcorp.net (10.119.18.113) with Microsoft SMTP Server
+ 15.2.2562.43; Fri, 30 Oct 2026 09:01:00 -1200
+Received: from p1wg14921.americas.hpqcorp.net (16.230.19.124) by
+ p1wg14925.americas.hpqcorp.net (10.119.18.114) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Fri, 30 Oct 2026 09:00:54 -1200
-Received: from CO1PR08CU001.outbound.protection.outlook.com (192.58.206.35) by
- edge.it.hpe.com (16.230.19.121) with Microsoft SMTP Server (version=TLS1_2,
+ 15.2.2562.43 via Frontend Transport; Fri, 30 Oct 2026 09:01:00 -1200
+Received: from BYAPR08CU003.outbound.protection.outlook.com (192.58.206.35) by
+ edge.it.hpe.com (16.230.19.124) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Fri, 30 Oct
- 2026 21:00:53 +0000
+ 2026 09:01:00 -1200
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ooeA8bST/zkbu6iRjqO0FDf7uyBPm89ouBWKjECMgcuXDRaC/E2+2ywAhJqiBycBTKKF8rfaoTlAesJi+Cbx3FJ7SkYE/tSW8+r81QMcoZGVyQUANYWObiDFCrjVeRo/mK9vuF+cn4UVi03b4t+X9YoORdbzpG2vBHwE+VhgTEsCYnGkuClS/To+8JN6bKsN51G2Pj/VNJDT4PsrTudoUikM6vu7zu5iDfCfMl34tu4XSnyM75bm6nK4EDMjh1ErObjxvfb89C3GUQzeWe0DVX44HwX67wzNnU0+Pxma5rRRrEPQa+XtjeUE83Zce4/j8H9bz623hbO3HeKTtj9Nvw==
+ b=uyb+jYccOVMN7kAVtKIYpCPoo/bvMXyaBnKlwp2YaWNugwpyXL5UarU+QDDiSGuu5Yi2Qf2iq180k6gyJxFrlZEYk9Ja9G+T25IDVdkQDRwzRCSNeSfxlNGC5RMoFGwOuc5xbBH8hyr77LOAophozzty21yioa0AjgceoHq4QFx1EHOE+lVX+/oFYzIKlnAubA7SqTdT8JVL9lFBGur8Jx94Q/1ZqEpgoyTTN8NDYbtf0Ahj0EWQ0wVcvoQ1n3+XLyJYxBFehhh+WnxGOCdnve0SlsCcYirQLjSB8Ot2Qbz1kAB6j1dXIko8j0ItxhaKsT1G7zvM6U/qulo9VP91Ug==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lboqsmIAlA3b6834pdw231iO/gtmIEQpprll671Abto=;
- b=PGkzus4qjNHRJGSnAl5JHTozqMXYJ4ntWo9mX7J80JE2q6qfYqXtw1gmY7XJHHXNuHraxA8WNyaSw7CZfe4HnVHk0k0JaFYd88zcpCxmHdv2kZP/HxPziyyFJ9aGoSt88/nhCiTLkMIUiDBSP8MPZsTisGVptplIyAc+sk7yzRxcYgWmRodWELx7S7TDiA/l7PmbE/aVBiruwi0Q8Bo2AHDK7NZyYzwLq6j/IODjjR9bWE4PQvYrhr9y3h5Kpm4ZntF+YcFZfSw6fVv8KyyHHwKNF9zuGNQJeFHMSwN5dNFwf2Z53IvL0thVYyswLnKphrIco/UXXxS0/T2BqLJkWw==
+ bh=rrc0C/f0u2kGK9foscgQXAVwvl/68rTIsun8PigPDWA=;
+ b=sDHjsUgM03DfXFDue8n5B2+9MxIF4VMIAv0PGeLyY6dlqH+Btqsv88d9QX2H8iZCsUr9GcgoqoIn8eOHW3+NOGGRWkUYJF4e2STaIG3fZ6nqsFdwmbo6x0Yfp0UcBk7raq1gSXN9CIjxqlGShfw4nYHFZshiKfC5IR+U8SCVKt8YCMQ9tiLjYMwJQZrofHYd377eRw6VK55OSj/slCbUpAoHCOqouMnWCSv/jUKhbsNUhLC5u5QWZ3sEqijLVRt5KviPapxlfVF+JJaXTW8OV3pckUu3ollEr18HQHaWumjNo2rMxt74sbERKPJVeb+Un8geLf9IxGWIsD5MZqOXTg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
  header.d=hpe.com; arc=none
@@ -100,17 +100,17 @@ Received: from DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:8:225::20)
  by IA4PR84MB951192.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:207:144::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.10; Fri, 30 Oct
- 2026 21:00:46 +0000
+ 2026 21:00:54 +0000
 Received: from DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
  ([fe80::d136:e75e:53c5:73d8]) by DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
  ([fe80::d136:e75e:53c5:73d8%6]) with mapi id 15.21.0569.008; Fri, 30 Oct 2026
- 21:00:46 +0000
+ 21:00:54 +0000
 From: Doug Ledford <doug.ledford@hpe.com>
-Date: Fri, 30 Oct 2026 13:59:10 -0700
-Subject: [PATCH 14/23] net: hpe: sl: add the sysfs interface
+Date: Fri, 30 Oct 2026 13:59:12 -0700
+Subject: [PATCH 16/23] net: hpe: ss1: add the Cassini core device layer
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261030-cxi-netdev-submission-v1-14-8c2c391cc283@hpe.com>
+Message-Id: <20261030-cxi-netdev-submission-v1-16-8c2c391cc283@hpe.com>
 References: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
 In-Reply-To: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
 To: Slingshot Open Source Team <slingshot-os-team@groups.ext.hpe.com>,
@@ -131,10 +131,12 @@ To: Slingshot Open Source Team <slingshot-os-team@groups.ext.hpe.com>,
 CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
         <linux-kbuild@vger.kernel.org>, Doug Ledford <doug.ledford@hpe.com>,
         "Sandeep
- Bhoot" <sandeep.bhoot@hpe.com>
+ Bhoot" <sandeep.bhoot@hpe.com>,
+        Iraimani P <iraimani.pavadai@hpe.com>,
+        "Mamila Santosh" <santosh-kumar.mamila@hpe.com>
 X-Mailer: b4 0.16.0
-X-ClientProxiedBy: DS7PR03CA0303.namprd03.prod.outlook.com
- (2603:10b6:8:2b::19) To DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
+X-ClientProxiedBy: DS1PR07CA0021.namprd07.prod.outlook.com
+ (2603:10b6:8:44d::8) To DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
  (2603:10b6:8:225::20)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -147,13303 +149,13514 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM4PR84MB3970:EE_|IA4PR84MB951192:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5e823927-571f-421e-7251-08df36c8dd6a
+X-MS-Office365-Filtering-Correlation-Id: 09d5ca2f-6842-4be9-742a-08df36c8e1f9
 X-LD-Processed: 105b2061-b669-4b31-92ac-24d304d195dc,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|6133799003|18002099003|22082099003|3023799007|921020|56012099006|261021121427099003|261028144727099003|261026121527099003|10067099003|261026140227099003|261022075727099003|261022105027099003|261021123027099003|261021135927099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info: VhY4kdjMfYOKEs/uXM8zGHYP5aCumkRy4AdG79BMDoZfoNxiDBje0tTK2zEzMSrbkSpXFszlqQ13HvmEV/NqMxQvKMgfuxWKthBdVwIH7rYp8qFcQlTdoUwWXxWyAJIvXxV5OlglCy5j6gpojn422vN73O8sX29tQjPH+y1SSKAJFZtVMm2YIiuhnAy/ZBXX+SJq69SOIb3est2+EwSFRS6HqmOcABMWK4S5fOd5dF3olQ9eMCsj2m1lHbsjlpMDZHeSsOkYNPI7G85+2Yc900SVDkRn2SM3MePw6sKMyXFoAclObPdddgL3ex4PBRHodnzp11aA49dghGN+06JtpDdVMp1v+XM2IYbLpvYMeuj+njl4GM/BFCHt3BMfCAqBsRE0dUsYnK6uM6mGREiXI6UB14CC6aIPf9L3eAH1FvgaYT0KtpH9CcO0vnQTRx//5+yYr++tsVuGP5haBXmiQoPaD0UGS3/LIi2sqxCFsCnakSBRP2oVQJhNI9N/0FlY381wIGN0aIBLeyi5ebuk4mxS7ZNv/XSdCUwz62qx/bekVDBL+UwSoWt2qTEaGH+lGWX1mBy1hHbQG6HGLa3q/V87ATB3fT2rYJDEGjFhrB6mGa2h6GZvxvFP4Y4jX6FOl9brduTi3ZE8wuN2+LLbl1dAnIf3fy+2zqlmVfDfWPkblaWiUbg4rOmTpttTn43S/xiJUB/qVpDHM5iDtNDMHg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(6133799003)(18002099003)(22082099003)(3023799007)(921020)(56012099006)(261021121427099003)(261028144727099003)(261026121527099003)(10067099003)(261026140227099003)(261022075727099003)(261022105027099003)(261021123027099003)(261021135927099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|6133799003|21046099003|18002099003|22082099003|3023799007|921020|56012099006|5023799004|261021121427099003|261026130827099003|261028144727099003|261026121527099003|261026135527099003|10067099003|261026140227099003|261021133027099003|261022115727099003|261022075727099003|261021130227099003|261022113327099003|261022105027099003|261021123027099003|261021135927099003|261009223327099003|261009223027099003|261009220027099003|261009221727099003|261009221227099003|260925022911599003|260925021311599003|260925021911599003;
+X-Microsoft-Antispam-Message-Info: rE/E4re2Ce+BGbihEN5yGcau05LlC+HB1XgRqabEFUcR2Mqh5jiFHpCarLjcqapnSmdV7cmIhcOFIhoxu/PLXGsvr1eF6fh6n299tq1ZJQT1irodWXSCOXCuGOWL9PYS5Swa0ky9vX7PpC6u3NrR61xRu1tp9Ayn/psgZWJXMK/3FJgJbRgU3D4hqM8cMme0ACfTpxkt9NlnTZ198fk0ipF3iuUpdcpiRsaBvoPEcmzFNt/528sOmVOCNSn61rOQ/3R9KGNajBORJng70vc9Zikep+FwX42HuhQw7EdljZBiC7ETuhLLKIoZYchx4b0LoKlEj9Tjs6esPyAOv9rOceC+VdIDD2+nDJznWVMiV2SKrqEIK/CVfV+5T7g9l1Exq5pBaaTz3v1O/GuptMnXfYdfZRQIKLx62/De3FoASh1YNFD+1mZb6mtA4puwo0TqKsm5RLVoaSsHoBZy26qmRYBgofbeKf0I7e79nkx5YqFAAuCBhhRXemOOwX49V60aSuUq41reP0nkKEwAdbkA3hboRCvVnXH9v6fthXulMJXRsseohDLL+Be1dDW1rUd18BIw5CMwC7arWQadhzrd2rHkEdWbi0MEwnbSiENlYuadTMkbt4Fl58nKirQvGncn1U3xJ68Vf6Et+o91OKY0nQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(6133799003)(21046099003)(18002099003)(22082099003)(3023799007)(921020)(56012099006)(5023799004)(261021121427099003)(261026130827099003)(261028144727099003)(261026121527099003)(261026135527099003)(10067099003)(261026140227099003)(261021133027099003)(261022115727099003)(261022075727099003)(261021130227099003)(261022113327099003)(261022105027099003)(261021123027099003)(261021135927099003)(261009223327099003)(261009223027099003)(261009220027099003)(261009221727099003)(261009221227099003)(260925022911599003)(260925021311599003)(260925021911599003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Z002WHZTOGJ1U3BmRTlEbkRzZklYN2xXL2hXM1l5SHRVT3RlazhwcGdDSjNn?=
- =?utf-8?B?RjhiZG12OU90QWo1RTNaT2RHNzUvZDhGUlErb3FzK0NFNGNqR015a3lwSkxa?=
- =?utf-8?B?K28zOWI2bmE4SGErY0RJOGM4Z05LdFdlREtHcDV1UkpTNGxQVkg1RCtqdVg3?=
- =?utf-8?B?RWc2eEdRdm9FMWZvRjQ3Wkh1SnBpRUl5YWxkYVg5MzAwQm02czBrOU1lTXdD?=
- =?utf-8?B?ZUo2Q1RtZzhEaTFtY3FZUzRKQThGTWhPUlc5ODBTZERZRmhrd2NTSE53K3NB?=
- =?utf-8?B?ejFKQUFZZEc3Y1VaU3lQejlNeGdhbmx1cmxxNkJpdzB3dnE4L3BNdFhtYkgr?=
- =?utf-8?B?TkNnT1NMK2FGL1hXc0wxN21oaHlWRUEwK25oWmJrMWs3ZVhvb25BY1VLeEpK?=
- =?utf-8?B?cWFDWjhoTFZGU284eDZBOUFEMGlUeUprU2g2ZmF5VDJjcVd3Z1NYT2ZMenFp?=
- =?utf-8?B?Y0owUVBnQXN2UG1SbkxRY05lS2E3VVhLaW9DdEJVK2lpQzhBcDhpQmZOUVU3?=
- =?utf-8?B?T1lKblU0aTNJQ3cyRE9SeWRXclJScGQybG1UeFo2MDgraWlRWm9vQnFNb3NO?=
- =?utf-8?B?dzNlSkxhMTFKS2pad0FzYTJ3RWxGc0hjYjA5YWJDbkFXc1ZmcG80US9XK1oz?=
- =?utf-8?B?NnpYZDdRRVF6Q21yTWFibzV1byswZUM0OFplQUI1aFh0NDR1RnM2NGorOTdQ?=
- =?utf-8?B?aEk3SFgyNmR5SE5mUi9hVDRqOGhuTW81RUxFN1BLQnVTSWFETHYvWmd2bzBF?=
- =?utf-8?B?NkV3S3lSd256WCtGdEhrOW10d3JoRENsNzlTYjlmc01VV1pqMTFKb25XYWVw?=
- =?utf-8?B?TW5rQmkrNk9qa1Bpdk9lVkFLLzE5dlR1VFc2VFJmQXJudVRzRFg4Y1BpalFM?=
- =?utf-8?B?OGloL1dndGgwTWhrNDk2OHZDbTgrdnpHZmI1U1J4RXlOMERrMjAwZnhVWXk1?=
- =?utf-8?B?MVgvd2Zyc0d0bEEwSFNkb1UrTHVJZWhTZnFXZmE5emVqM0JOcE52T3dhNUNm?=
- =?utf-8?B?dzVsUDdMbmdsT3hMcEhQSXp2eldycEdHZVovTzVqUnRlRnJWYkVTRjhHVnBX?=
- =?utf-8?B?SkFnYTVCdVI4NG15QkNjUER0QnJmRndiamNpdEt4RTNnNVp0SFRGNkYzV2ll?=
- =?utf-8?B?Zk15RVVyRS9pS3pqVHlpMFNoSDVHYkF2M2FMU3FlYzRQbG45Vk01YVhOSWpn?=
- =?utf-8?B?ZGN5UitvZzFkRWplUSsyWjg4NmxuUmlxUVRtSkRtZk5HblQ3WDF5amZRM0w0?=
- =?utf-8?B?TG5LdFVkVkwwaGdBQW9KZ3NTV3ZTTHNMUGhSYTdydWE3K2tJMTFvUWwxaFBK?=
- =?utf-8?B?MmZyQlNDUS9IUkViclRNejdaS3h5SS9ROVN3aUZMbFVmR2dwV3FneHA3Q3pT?=
- =?utf-8?B?d0dMSXZsc2x4M2VHZURyWFZaWXlJRUQzTTZCK0ZtTGJkT0NGL3RKR3NQR01W?=
- =?utf-8?B?eDE0VTltQWJ6cHN4ejB1bGx1VDg5YzJDbDVIcmRkQXhtWjVJZ2xZV09qSFlv?=
- =?utf-8?B?NG1BdW9aeUhuWnNObEtZU3drQllTaG5GQjF0c3NRU0Y0RzY4am1OMDVwKzFO?=
- =?utf-8?B?a3BMQVYxUmRaZ2xpMmpBZm91MFR2ZFpjaFFMaTJud3l5KzVHUDNtVXE2RkFt?=
- =?utf-8?B?N3VNUC8yRklUbVRvT09SaU9XNjE5VEVhTXZpZ05LQlkvVncvU1ZqRTZjV0lX?=
- =?utf-8?B?SDNwelpOMC9rdUpFVjRnNklRNmxvYTVoNUxDeUpYTXd1Q1VFSi8yc3ZvTGVP?=
- =?utf-8?B?dUlMNEU4ZG4yQVkwbFhZMXRpYmJIMEFZcGFWczQzNFYxcmlHN1oyOTBZYXB5?=
- =?utf-8?B?TEowcVEzTHJEU1NhcHdkSkhRT3ExWnI4YjhPK1BMa2xZS3BWbXd5THBBWWU0?=
- =?utf-8?B?ZkdrYURYVkZkRHJKWlNSMVZnYlpqY21JSU95YVkxTVlXdlNVRjdzK2dyQTFJ?=
- =?utf-8?B?cXFqb0lFd0o0aFZmMVJKM2ZPSGNCZWhuYm10dlFhZnBabVNtMmhHck5SWHBJ?=
- =?utf-8?B?b0tXbzBUZ2lxNDQzMXBhcmJNVk14WDJKVmZPdm1xTEd0Y1hUQmhmdHdOZVpQ?=
- =?utf-8?B?aUo2bk1JcGwrWnVJYlpkUE9hN0htR0hSNWpqVDZZTUhuUkJwQitHV2JFR29a?=
- =?utf-8?B?RldYalFZZUd6VGw5QUVnclQ4UTY3N2piWXFNMHY4bkh4YkNFZmpDY29uWit4?=
- =?utf-8?B?R2xpa0dGaVNPYzNJT1JURk1YWk0zc21xNmhRRXRZdHoreDFWSVZuZGgrL1d3?=
- =?utf-8?B?Y09JcU81cDhLcWxtaUttNExqUVRUc3lHWDdIejFDbVdlQ2txb2k5ZnNWTDY4?=
- =?utf-8?B?N3Z1dHYvaUR4R3Z6R0Z1M1R0VDBEWWk1WENqU1hUcnAxeE8zZElFdz09?=
-X-Exchange-RoutingPolicyChecked: natfP04c+MXDBX8QmkWAVzY6bYiBNYSHjcNcG/mmcTHw30hQfzK+E+qylPHe2ekqsfpKxTLuxJ54XgSZVHFeOSRztMl1R5kaoNod9FD77XxABgVAeX94xQHi39h2KFMWNkUagPwjcOw3li9WvLuurprlA7ZrOsVMaeXWpGAUdLw3MojGlbnV6SYxh3q26QseoSDrU1z4A+mUfXvlohXDCi47lK0iswm1HdW5OHK+XXyviohTBjgg4yTX25XcVJETJq/Oa2rQ991lpGfjb5ip7cnlReRHOEhWpef/UX1Yw521ntdqWxWoJmG8HxiwoggCl/74S2Yr5cM1yNUppI+eqQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e823927-571f-421e-7251-08df36c8dd6a
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TzVWdm10bW5SY0hQMyt1R2lIV1Z1eG02UVFZcEFPWTFyc3VJVVBSUE1NOTNl?=
+ =?utf-8?B?TE43cnJRTXo4MWwxOUVla080eWEzMFRkMTJ6a042anMrTm5VYWtySE84NjZn?=
+ =?utf-8?B?STIzeGJvTHhZQ2pSNVVxTzRaUGM5eDkrU0FPZndOZzVHZjY0UUMwZnlOZ1RQ?=
+ =?utf-8?B?Q1dFSGFxei9mSHBvcTJLSXBrSEttVjVmT0JaQ3lzQmpHOTY0ZjJyM3U2ZzNE?=
+ =?utf-8?B?WlY3TlFpMkJlaFdkQ3NseDZoQm1RY2ptY1FCLzBXRkdFOHJidzRtbm8xKy9t?=
+ =?utf-8?B?dEp0NzRpSHluNHlicCs5SVVhVUJwMFNmVzhRL1Z4dGhhTE1ZeHA1M0hqNlF5?=
+ =?utf-8?B?UmhkaDYvVTZMNjkraGRZYnp6RmRUOGJlSG5HdzBzS1VWVm83Y2V4TEVsZGtt?=
+ =?utf-8?B?SWh5bHFHZGFTa2xDOEdyRDlteXU3VWtpZGtzb3pKZVBISGVPVkVRb3FLYVZW?=
+ =?utf-8?B?dFl2ZVpvb0IwVXhVL2VHVXcvbWZOR05VSWlDNG9sN0tXVVA4cDJwazY2YUFz?=
+ =?utf-8?B?NC9KWHhzaXpTcTl0RHZFbDZxSGt1bnlxRmFzdmZjTVdsajVHZFp4QVF4VDlN?=
+ =?utf-8?B?NVg0YjN3L2N6OGZYdVN0Sk1Zc3lyMllEZVVaVVgrcHdKb04wTGF2WFltYlBp?=
+ =?utf-8?B?S2FMR0UwWFB3Q3lNWDNaNVFuaTBrYzJ0ZWVTaTd5MkJpSXh1SnpKYU55THhu?=
+ =?utf-8?B?T3ozRmZQL3lSSlFuWFdoNlZoYTk1cUdxeUpQWWRtbEJEd2RtajgrMTA0Mmoy?=
+ =?utf-8?B?cWdjTkpxUkhKMzc2M1lnTGk5RTVaUHlWSHlWRjl4S0NzMnJ4QWU5M2JBeTNZ?=
+ =?utf-8?B?TlNyVXBpU0cyd0pwcmtMQklmUTZ3a1MycmhaNnZFYnNFbEdWNkxWSDNGTE05?=
+ =?utf-8?B?blVPSERZcUp2M0UveERVUUxrcW1zQ25ncGJtWlF0ckRoZnBFdU5mWFUveEIy?=
+ =?utf-8?B?R28yOEFCTm55RnBia1FGZzZ0NThldnFPKzljWjZUcUJ1SGVlTVp3dUNJdFVK?=
+ =?utf-8?B?UTZGQXZIQ2NrSFBMV1pMVXlrSUFQZk1mdEZ5T1hWci90cFYrK0RvOE1pZ1NW?=
+ =?utf-8?B?VjBSbSs0K054VXZnZThiRWIrbzVvRllqSy9uK1VsNWhxMXFMZ2VIRWNyajZk?=
+ =?utf-8?B?aFNncHllY0dYYURCU0RQdWw0MVFtQW1yNGgwZEZzSVk3TUxyNWVkemF0VFZC?=
+ =?utf-8?B?RGd4ckhWNXlsYXQ0SUpmVmx3UWErdVRvMlRIMEFOSXgwSHE1c3pqMXhtVkkz?=
+ =?utf-8?B?SEtnV3BISFpabkJYM2l4STNCOXBHRGJoVkdTWk5pQVBic1VWZVA2Wlg0SFRC?=
+ =?utf-8?B?TWRMaGpVYi85RERlbGlCYno5QXpBcU41eSswbVZkN25ldGN3UlFoZkQ2bEVK?=
+ =?utf-8?B?QndHMFo2WTAzQjJkSWw0d1A1RzBKb2Zxdm8yYWZ4cnF4N2l5dE9KS3JMNE5V?=
+ =?utf-8?B?dXFqN2MwREdhMnRoM3hXWm05bWxMUGxuWXl2OHJvSkhiOW9jUE05V3VLQjFC?=
+ =?utf-8?B?T0wvSFpQSEJFK2xHVDRrUUpKNUFVRDZpVHUrYUVXTGROSy9HaDloaHozL2lD?=
+ =?utf-8?B?WXhPbUhMckEzU2dSLy82b0tRNlFzNjB2QlYvclFvTWRUdW5aNnMrRHIrTmNr?=
+ =?utf-8?B?eHFJYVB6eDVBYitGcjh0Umo0eGlkUEsrY1dRYythTXhTNXdrcmsyUHJTYXVJ?=
+ =?utf-8?B?T05iSHAwU3IvWlMvbEEwSUhWZHE5WUtocTlrMG0rbG1WbUVuN1FTU2gyM0E0?=
+ =?utf-8?B?MGtsSXBuRVNBUFVCQzBpZFBiOEsyM1d4Z2Y3djNZTjdtOWIzSXVsQmlaU3ly?=
+ =?utf-8?B?R2xrdldYdlhZc0pSNjVzeHF3KzRCRmFBaVpKRzljTVhCRmFCUGhBWjA4ak1H?=
+ =?utf-8?B?dDNHUkpXVU1vQjRRVTJNYlZhbUwwdHNUM280TXMrV2RNNmx6cm4rOHVmSkd6?=
+ =?utf-8?B?MzlZa3c4bnlqMzlQb2k0dFZlR2RoZU9kNkF2WURqeC9jUGp0ajdGMHAvYUtn?=
+ =?utf-8?B?QWFBT1BzV0hMRWpkdWgwT24ySXVOT3dKc1VrTGV4SEZYVWdFU3ZnV3ZiQ2hw?=
+ =?utf-8?B?L0dnek5rMkhkbUxYMFJia0hzMjAyNXljT1hUOWtqekd6VTZXS3U2bk1rSDll?=
+ =?utf-8?B?Qm5tVEZKS3hWSFRueGFIVEhXSnlVVmZRQjNqNWF3WGJqNS9iRFEwSFFpNEpQ?=
+ =?utf-8?B?YmtTZXZMbXV4eU45RVlkdEkxY0dnY252ZkdtT1BpTi80VGNQU2EvemVqc3VC?=
+ =?utf-8?B?Ty9PS2hJOXM2eXMvaGY1QzE2SlIrN2ovcTQ5WFIwWVVCSEFSMisrMFhvbUd2?=
+ =?utf-8?B?c3NJZThFb0Z4T29XRkhnSldDeUo0Z1g4WmZFbktReHBTU21hN1YxQT09?=
+X-Exchange-RoutingPolicyChecked: a9am+B5waoKl6o/DGJ0tF2smRMXGcSor2EPnHhwR29S44oaGtEKgeookZMnFgDgEFunW8saxYthYkZGgWhUHfrkPydV9J7lyZVzWzTwUJ9tsRozIyVpvAB9H1ITjrWqlRhE5pkp0Hl6URujqVRe9n28bb/NEQ6iuvfiiXiIOpkTm+uGaMSf26Ye22AwIO7VCmfncyeTwNSP/n/QVf0wamQvwvzsJIyerT5A75N5ofqCwP/5/op8IEkuNwjGvelFdCjFSUDs1BfU/Kgcd8+kt/VJ4wPaSQi8xzeoagpkbFknCBij1ZopnLNPEpQNGzLN9yQP2L8jkCDKiHxf5h2u4Cg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 09d5ca2f-6842-4be9-742a-08df36c8e1f9
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 21:00:46.2385
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 21:00:54.4212
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 105b2061-b669-4b31-92ac-24d304d195dc
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uATsWLPV7zDVw+GdFOrcbkKxvdAGVvgz9lgEAC0Ugg8tjIg7v4dDhNY5XZy9a62WntbTvoHQ6mDWf98qb2KxPg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: JZ3IKM9WjAM6BXJBVj+Y8QlNWbhY1egHIdEuXIexkPCKk0Zjq/0FkeU+cMPeoH8NdfiEUPepQnOhpYrPMsDc7w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR84MB951192
 X-OriginatorOrg: hpe.com
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfXysfFTSMivWPH
- n+dI+HcQxmyiKTsl2YOUYi/ExdrGflQzyilJsftvjziWHZye/u1Kl5eM2u+TzEr4zRfbVeRy7tG
- PvocUKP1fZl84EGl817tEM3t/BIMMIM=
-X-Proofpoint-GUID: 8aO4huqfHgT71_ZVZFYvKvcPXLZxQpr7
-X-Proofpoint-ORIG-GUID: 8aO4huqfHgT71_ZVZFYvKvcPXLZxQpr7
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfX6JstFzTntFOc
- XsSmxDZolnvrK7FLnJVcM0h19wgz03adtL4X1UP2ikqyQS2BtQUjD5hAKi9z0Hd0BrCZwF/Nm2s
- chOdNmCFEclPWBIMs4HHT/SniZhX349MovrHEPP1XxgdAn0sC1LJJPTvLA+qpmV8PSYLQDh7+hP
- w0SZcfXW+RYKyoVoC5YagLaWrGOEfTTEl2G/W5nUDJXR/gXrR+OyC0/WMUA+7x/Ka2SxaWEYpNU
- MUS09rSBSE0U0BnMmC5g678RNfP3bn7Cj47KxOGAE/wvaohwViQrRXuO7yIzjpjK5ZpNzkqCE2B
- 3SMNAbjjGsnPPuCSftRJUmr5Eqr4QDBkLlO/A+Q/YnyW8sLQKjjQAZzDSoGBECLdMF7mCvUIWt+
- Oczko/daWqd1UHa68psUxm25FwHeK/IvGX6XUndIM+UCa4NRtNVNULOifeuUBGbfbczaPJj8e+Q
- u8crxT2oljYbQczSw0A==
-X-Authority-Analysis: v=2.4 cv=JfUpPkKV c=1 sm=1 tr=0 ts=6ae5058a cx=c_pps
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfX6FrEh6I+2wwS
+ XgHbMGDdxKFCW97QuObxZkMKcFRVoRq/rsIuWTz+cRGZ9s2s6iK3C4S4jStrZXw2A+HxrCgG3IH
+ rkN6fM7bwR53tPWQnldNejL6TFk5g5g=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfX4aW28FRYQWJT
+ R2KvVI6m5/twAfIKV+3uUl++bOJuVIKa+Ps9/7ZHROM4mzxeBMgZxgVKfnuE7OYC2sxGHHeu4Tt
+ /rjeR0hNdJzqyGqIsC7QEITtbKeHKi35MlW8jlaI5zpp1Qc7zWU+2rsXtV78GVmY7RN9VXVmkqb
+ dDhyqQZvVlCGSgeGgf+xUKeXitE+Afh2zILnuV0h9ctfqxICK0NnZTlVuJ5LO9DBBdvue5efmSl
+ yEDS/Cy2Cs5OpHHD51EFUm6B8NYGS9kqjbPp86eQTS+RFUqhWCNa/2iXGO8P3vx5aVpGtuVU+nb
+ 1oV5trLLcmHESsEULFW77jDZgJ+WG31MhqHtbe5+8J58neMscAp1atFItL2bRZscIDTigPSJHVV
+ cvarFy9AkbHfU38LwIp5CfIAY1KzLrvCu02uWwAeC+FA5uLzNQJeNQibWzvx67ddk+CllZiOKgm
+ E7vxZCM1bHpjxC9VKOA==
+X-Authority-Analysis: v=2.4 cv=QOn91QLL c=1 sm=1 tr=0 ts=6ae5058e cx=c_pps
  a=A+SOMQ4XYIH4HgQ50p3F5Q==:117 a=A+SOMQ4XYIH4HgQ50p3F5Q==:17
  a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
  a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
  a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=gQcMVamqm3wCPoSYhaRC:22
- a=6XKncaru_qjgLvANlS_8:22 a=MvuuwTCpAAAA:8 a=Z7PFGMq4_24wirIJ3j0A:9
- a=zul3UiU5sbC5z5GV:21 a=QEXdDO2ut3YA:10
+ a=RtSn8ETxjE2H05FtM2s8:22 a=I0CVDw5ZAAAA:8 a=iGbCS3zQAAAA:8 a=MvuuwTCpAAAA:8
+ a=OYxYWkJugu8vdt9jpLYA:9 a=UKJKs2caTbgaU9aD:21 a=QEXdDO2ut3YA:10
+ a=O8hF6Hzn-FEA:10 a=oRZS8w7TM5j8Y1SnqK-S:22
+X-Proofpoint-GUID: 541nuRCe3tU9z1vCozWOT5vpnJbHZ-sh
+X-Proofpoint-ORIG-GUID: 541nuRCe3tU9z1vCozWOT5vpnJbHZ-sh
 X-HPE-SCL: -1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-10-30_06,2026-10-21_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 malwarescore=0 priorityscore=1501
- lowpriorityscore=0 bulkscore=0 phishscore=0 spamscore=0 suspectscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
- definitions=main-2610300083
+ malwarescore=0 bulkscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0
+ clxscore=1015 priorityscore=1501 impostorscore=0 spamscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610300083
 
-Add the sysfs interface for logical devices, link groups, links, LLR,
-MAC, media, SerDes, SBus and PMI.  The many small files follow the
-one-attribute-per-file sysfs rule.
+Add the PCI device core: probe and remove, device information, interrupt
+setup, cable and link handling and the debugfs interface.
 
-Known open issue (Sashiko L14, V2): the SL sysfs tree (about 378
-attributes) has no Documentation/ABI entries yet. The attribute
-documentation, including which attributes are stable interfaces and
-which belong in debugfs, is being prepared with the hardware engineers
-and will be part of V2.
+The private headers of the whole driver are added with this patch so
+that each later patch, which adds the sources of one layer, compiles
+on its own.
+
+Known limitation, deferred to V2: this patch carries SR-IOV
+virtual-function code (VF-to-PF mailbox requests, mailbox opcodes or VF
+resource handling) from an older, incomplete version of the Cassini
+SR-IOV support. V2 of this series will include the updated SR-IOV
+implementation, so issues in the VF paths should be ignored for now.
 
 checkpatch --strict (100 columns) still reports the following in this
 patch. They need coordination with the internal repositories this code
 is maintained in and will be fixed in V2:
-- WARNING: LONG_LINE (586), CONST_STRUCT (60), LONG_LINE_STRING (20)
-- CHECK: UNNECESSARY_PARENTHESES (63), BRACES (1)
+- ERROR: COMPLEX_MACRO (5), FLEXIBLE_ARRAY (4)
+- WARNING: LEADING_SPACE (47), SPDX_LICENSE_TAG (8), ENOTSUPP (6),
+  PREFER_DEFINED_ATTRIBUTE_MACRO (3), BLOCK_COMMENT_STYLE (2),
+  MACRO_ARG_UNUSED (2), RETURN_VOID (2), ALLOC_WITH_SIZEOF (1),
+  AVOID_BUG (1), BRACES (1), DEPRECATED_API (1), LONG_LINE (1),
+  LONG_LINE_COMMENT (1), STRCPY (1)
+- CHECK: UNCOMMENTED_DEFINITION (32), BRACES (15), COMPARISON_TO_NULL
+  (15), MACRO_ARG_PRECEDENCE (14), MACRO_ARG_REUSE (13), BIT_MACRO (5),
+  AVOID_EXTERNS (4), UNNECESSARY_PARENTHESES (4), OPEN_ENDED_LINE (3),
+  LINE_SPACING (1), PARENTHESIS_ALIGNMENT (1)
 
 Co-developed-by: Sandeep Bhoot <sandeep.bhoot@hpe.com>
 Signed-off-by: Sandeep Bhoot <sandeep.bhoot@hpe.com>
+Co-developed-by: Iraimani P <iraimani.pavadai@hpe.com>
+Signed-off-by: Iraimani P <iraimani.pavadai@hpe.com>
+Co-developed-by: Mamila Santosh <santosh-kumar.mamila@hpe.com>
+Signed-off-by: Mamila Santosh <santosh-kumar.mamila@hpe.com>
 Signed-off-by: Doug Ledford <doug.ledford@hpe.com>
 ---
- drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_ldev.c  |  410 ++++++
- drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp.c  |   98 ++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_lgrp_config.c   |  438 ++++++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_lgrp_policy.c   |   53 +
- drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link.c  |  830 +++++++++++
- .../net/ethernet/hpe/sl/sysfs/sl_sysfs_link_caps.c |  303 ++++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_link_config.c   |  388 +++++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_link_counters.c | 1498 ++++++++++++++++++++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_link_degrade.c  |  336 +++++
- .../net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec.c  |  148 ++
- .../hpe/sl/sysfs/sl_sysfs_link_fec_current.c       |  336 +++++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_down.c |  316 +++++
- .../hpe/sl/sysfs/sl_sysfs_link_fec_mon_check.c     |  195 +++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_up.c   |  299 ++++
- .../hpe/sl/sysfs/sl_sysfs_link_fec_up_check.c      |  137 ++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_link_pml_rec.c  |  193 +++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_link_policy.c   |  261 ++++
- drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr.c   |  221 +++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_llr_config.c    |  140 ++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_llr_counters.c  |  397 ++++++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_llr_loop_time.c |  221 +++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_llr_policy.c    |   74 +
- drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_mac.c   |  192 +++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_mac_counters.c  |  339 +++++
- drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_media.c | 1274 +++++++++++++++++
- .../hpe/sl/sysfs/sl_sysfs_media_counters.c         |  599 ++++++++
- drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi.c   |   80 ++
- .../net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi_rd.c    |  197 +++
- .../net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi_wr.c    |  220 +++
- drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus.c  |   89 ++
- .../net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi.c  |   80 ++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi_rd.c   |  244 ++++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi_wr.c   |  244 ++++
- .../net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_rd.c   |  197 +++
- .../net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_rst.c  |  105 ++
- .../net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_wr.c   |  197 +++
- .../net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes.c    |  302 ++++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_serdes_eye.c    |  197 +++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_serdes_lol.c    |  141 ++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_serdes_los.c    |  142 ++
- .../hpe/sl/sysfs/sl_sysfs_serdes_settings.c        |  506 +++++++
- .../ethernet/hpe/sl/sysfs/sl_sysfs_serdes_state.c  |  121 ++
- .../hpe/sl/sysfs/sl_sysfs_serdes_swizzle.c         |  126 ++
- 43 files changed, 12884 insertions(+)
+ drivers/net/ethernet/hpe/ss1/cass_cable.c          |  702 ++++
+ drivers/net/ethernet/hpe/ss1/cass_cable.h          |  157 +
+ drivers/net/ethernet/hpe/ss1/cass_core.c           | 1564 ++++++++
+ drivers/net/ethernet/hpe/ss1/cass_core.h           | 1472 ++++++++
+ drivers/net/ethernet/hpe/ss1/cass_dev_info.c       |   60 +
+ drivers/net/ethernet/hpe/ss1/cass_irq.c            |  210 ++
+ drivers/net/ethernet/hpe/ss1/cass_link.c           |  192 +
+ drivers/net/ethernet/hpe/ss1/cass_link_misc.c      |  159 +
+ drivers/net/ethernet/hpe/ss1/cass_p2p.h            |   69 +
+ drivers/net/ethernet/hpe/ss1/cass_rgroup.h         |   30 +
+ drivers/net/ethernet/hpe/ss1/cass_rx_tx_profile.h  |   15 +
+ drivers/net/ethernet/hpe/ss1/cass_sbl.h            |  581 +++
+ drivers/net/ethernet/hpe/ss1/cass_sl.h             |   95 +
+ drivers/net/ethernet/hpe/ss1/cass_sl_io.h          |   19 +
+ drivers/net/ethernet/hpe/ss1/cass_ss1_debugfs.c    |  824 +++++
+ drivers/net/ethernet/hpe/ss1/cass_ss1_debugfs.h    |   86 +
+ drivers/net/ethernet/hpe/ss1/cass_telem_tables.h   | 3874 ++++++++++++++++++++
+ drivers/net/ethernet/hpe/ss1/cass_trace.h          |   60 +
+ drivers/net/ethernet/hpe/ss1/cass_vf.h             |   59 +
+ drivers/net/ethernet/hpe/ss1/cass_vf_notif.h       |   34 +
+ drivers/net/ethernet/hpe/ss1/cuc_cxi.h             |  370 ++
+ drivers/net/ethernet/hpe/ss1/cxi_ac_entry_list.h   |   20 +
+ drivers/net/ethernet/hpe/ss1/cxi_aux_dev.h         |   14 +
+ drivers/net/ethernet/hpe/ss1/cxi_config.h          |  234 ++
+ drivers/net/ethernet/hpe/ss1/cxi_configuration.h   |  332 ++
+ drivers/net/ethernet/hpe/ss1/cxi_core.h            |  434 +++
+ drivers/net/ethernet/hpe/ss1/cxi_eth.h             |  352 ++
+ drivers/net/ethernet/hpe/ss1/cxi_eth_debugfs.h     |   26 +
+ drivers/net/ethernet/hpe/ss1/cxi_ethtool.h         |   26 +
+ drivers/net/ethernet/hpe/ss1/cxi_ethtool_names.h   |  110 +
+ drivers/net/ethernet/hpe/ss1/cxi_internal.h        |   39 +
+ drivers/net/ethernet/hpe/ss1/cxi_link.h            |   65 +
+ drivers/net/ethernet/hpe/ss1/cxi_qos_profiles.h    |  149 +
+ drivers/net/ethernet/hpe/ss1/cxi_rgroup.h          |   68 +
+ drivers/net/ethernet/hpe/ss1/cxi_rxtx_profile.h    |  135 +
+ .../net/ethernet/hpe/ss1/cxi_rxtx_profile_list.h   |   53 +
+ drivers/net/ethernet/hpe/ss1/cxi_vf_cmd.h          |   52 +
+ drivers/net/ethernet/hpe/ss1/pldm_cxi.h            |  374 ++
+ 38 files changed, 13115 insertions(+)
 
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_ldev.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_ldev.c
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_cable.c b/drivers/net/ethernet/hpe/ss1/cass_cable.c
 new file mode 100644
-index 000000000000..9aac5aa41404
+index 000000000000..a9008a839bd5
 --- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_ldev.c
-@@ -0,0 +1,410 @@
++++ b/drivers/net/ethernet/hpe/ss1/cass_cable.c
+@@ -0,0 +1,702 @@
 +// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
++/* Copyright 2021-2022,2025 Hewlett Packard Enterprise Development LP */
 +
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
++/* Cassini HSN cable support */
 +
-+#include <linux/hpe/sl/sl_media.h>
++#include <linux/hpe/sbl/sbl.h>
++#include "cass_core.h"
++#include "cass_cable.h"
 +
-+#include "sl.h"
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_module.h"
++static int cass_hdsh_get_format(struct cass_dev *hw, u8 *qsfp_format);
++static void cass_hdsh_get_media(struct cass_dev *hw,
++				struct sbl_media_attr *attr, u8 qsfp_format);
++static void cass_hdsh_get_info(struct cass_dev *hw,
++			       struct sbl_media_attr *attr, u8 qsfp_format);
++static void cass_hdsh_get_length(struct cass_dev *hw,
++				 struct sbl_media_attr *attr, u8 qsfp_format);
++static void cass_hdsh_get_vendor(struct cass_dev *hw,
++				 struct sbl_media_attr *attr, u8 qsfp_format);
++static int cass_link_headshell_down_no_media(struct cass_dev *hw, int reason);
 +
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static const char *sl_cable_type_str(u32 type)
++/**
++ * cass_is_cable_present() - Check if we have an HSN cable installed
++ *
++ * @hw: the device
++ *
++ * Return: 1 if cable present, else 0
++ */
++int cass_is_cable_present(struct cass_dev *hw)
 +{
-+	switch (type) {
-+	case SL_CABLE_TYPE_PEC:
-+		return "PEC";
-+	case SL_CABLE_TYPE_AOC:
-+		return "AOC";
-+	case SL_CABLE_TYPE_POC:
-+		return "POC";
-+	case SL_CABLE_TYPE_AEC:
-+		return "AEC";
-+	default:
-+		return "unknown";
-+	}
++	if (!HW_PLATFORM_ASIC(hw))
++		return 1;
++	return (hw->qsfp_eeprom_page_len != 0);
 +}
 +
-+static ssize_t mod_ver_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++/**
++ * cass_parse_heashell_data() - Read the QSFP EEPROM and parse into attr
++ *
++ * @hw: the device
++ * @attr: pointer to struct to initialize with cable information
++ * @qsfp_format: What spec this cable CSR space is organized according to.
++ *
++ * Return: 0 on success, negative errno on failure
++ */
++int cass_parse_heashell_data(struct cass_dev *hw, struct sbl_media_attr *attr,
++			     u8 *qsfp_format)
 +{
-+	struct sl_ctrl_ldev *ctrl_ldev;
++	int rc = 0;
 +
-+	ctrl_ldev = container_of(kobj, struct sl_ctrl_ldev, sl_info_kobj);
++	mutex_lock(&hw->qsfp_eeprom_lock);
 +
-+	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME,
-+		   "mod ver show (ldev = 0x%p, ver = v%s)", ctrl_ldev, sl_version_str_get());
-+
-+	return sysfs_emit(buf, "v%s\n", sl_version_str_get());
-+}
-+
-+static ssize_t mod_hash_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_ldev *ctrl_ldev;
-+
-+	ctrl_ldev = container_of(kobj, struct sl_ctrl_ldev, sl_info_kobj);
-+
-+	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME,
-+		   "mod hash show (ldev = 0x%p, hash = %s)", ctrl_ldev, sl_git_hash_str_get());
-+
-+	return sysfs_emit(buf, "%s\n", sl_git_hash_str_get());
-+}
-+
-+static struct kobj_attribute mod_ver  = __ATTR_RO(mod_ver);
-+static struct kobj_attribute mod_hash = __ATTR_RO(mod_hash);
-+
-+static struct attribute *ldev_attrs[] = {
-+	&mod_ver.attr,
-+	&mod_hash.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(ldev);
-+
-+static struct kobj_type sl_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = ldev_groups,
-+};
-+
-+static struct attribute *supported_cables_attrs[] = {
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(supported_cables);
-+
-+static struct kobj_type supported_cables_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = supported_cables_groups,
-+};
-+
-+static struct attribute *cable_types_attrs[] = {
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(cable_types);
-+
-+static struct kobj_type cable_types_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = cable_types_groups,
-+};
-+
-+static struct attribute *cable_vendors_attrs[] = {
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(cable_vendors);
-+
-+static struct kobj_type cable_vendors_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = cable_vendors_groups,
-+};
-+
-+static ssize_t length_cm_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_ldev_cable_hpe_pn_kobj *hpe_pn_kobj;
-+
-+	hpe_pn_kobj = container_of(kobj, struct sl_ctrl_ldev_cable_hpe_pn_kobj, kobj);
-+
-+	sl_log_dbg(hpe_pn_kobj->ctrl_ldev, LOG_BLOCK, LOG_NAME,
-+		   "length_cm show (ctrl_ldev = 0x%p, length_cm = %u)",
-+		   hpe_pn_kobj->ctrl_ldev, cable_db[hpe_pn_kobj->cable_idx].length_cm);
-+
-+	return sysfs_emit(buf, "%u\n", cable_db[hpe_pn_kobj->cable_idx].length_cm);
-+}
-+
-+static ssize_t max_speed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_ldev_cable_hpe_pn_kobj *hpe_pn_kobj;
-+
-+	hpe_pn_kobj = container_of(kobj, struct sl_ctrl_ldev_cable_hpe_pn_kobj, kobj);
-+
-+	sl_log_dbg(hpe_pn_kobj->ctrl_ldev, LOG_BLOCK, LOG_NAME,
-+		   "max_speed show (ctrl_ldev = 0x%p, max_speed = %s)",
-+		   hpe_pn_kobj->ctrl_ldev, sl_media_speed_str(cable_db[hpe_pn_kobj->cable_idx].max_speed));
-+
-+	return sysfs_emit(buf, "%s\n", sl_media_speed_str(cable_db[hpe_pn_kobj->cable_idx].max_speed));
-+}
-+
-+static struct kobj_attribute cable_hpe_pn_length_cm = __ATTR_RO(length_cm);
-+static struct kobj_attribute cable_hpe_pn_max_speed = __ATTR_RO(max_speed);
-+
-+static struct attribute *cable_hpe_pn_attrs[] = {
-+	&cable_hpe_pn_length_cm.attr,
-+	&cable_hpe_pn_max_speed.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(cable_hpe_pn);
-+
-+static struct kobj_type cable_hpe_pns_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = cable_hpe_pn_groups,
-+};
-+
-+static void sl_sysfs_cable_types_delete(struct sl_ctrl_ldev *ctrl_ldev, int type_idx)
-+{
-+	int k;
-+
-+	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "types delete");
-+
-+	for (k = 0; k < type_idx; ++k) {
-+		sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "types delete (type = %d)", k);
-+		kobject_put(&ctrl_ldev->cable_types_kobj[k]);
-+	}
-+}
-+
-+static int sl_sysfs_cable_types_create(struct sl_ctrl_ldev *ctrl_ldev)
-+{
-+	int type_idx;
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "types create");
-+
-+	for (type_idx = 0; type_idx < SL_CABLE_TYPES_NUM; ++type_idx) {
-+		sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "types create (type = %d)", type_idx);
-+		rtn = kobject_init_and_add(&ctrl_ldev->cable_types_kobj[type_idx],
-+					   &cable_types_info, &ctrl_ldev->supported_cables_kobj,
-+					   sl_cable_type_str(type_idx));
-+		if (rtn) {
-+			sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME,
-+				   "types create failed (type = %d) [%d]", type_idx, rtn);
-+			kobject_put(&ctrl_ldev->cable_types_kobj[type_idx]);
-+			sl_sysfs_cable_types_delete(ctrl_ldev, type_idx);
-+			return -ENOMEM;
-+		}
++	if (hw->qsfp_eeprom_page_len <= 0) {
++		cxidev_err(&hw->cdev,
++			   "Failed to parse headshell data. EEPROM data unavailable!\n");
++		rc = -EIO;
++		goto out_unlock;
 +	}
 +
-+	return 0;
++	/* Start by determining the cable format */
++	rc = cass_hdsh_get_format(hw, qsfp_format);
++	if (rc)
++		goto out_unlock;
++
++	/* Read out media type information and parse into attr */
++	cass_hdsh_get_media(hw, attr, *qsfp_format);
++
++	/* Read out the supported speed modes into attr */
++	cass_hdsh_get_info(hw, attr, *qsfp_format);
++
++	/* Read out media length information into attr */
++	cass_hdsh_get_length(hw, attr, *qsfp_format);
++
++	/* Read out vendor information and parse into attr */
++	cass_hdsh_get_vendor(hw, attr, *qsfp_format);
++
++ out_unlock:
++	mutex_unlock(&hw->qsfp_eeprom_lock);
++	return rc;
 +}
 +
-+static void sl_sysfs_cable_vendors_delete(struct sl_ctrl_ldev *ctrl_ldev, int type_idx, int vendor_idx)
++/**
++ * cass_hdsh_get_format() - Read the QSFP EEPROM and parse out the media format
++ *
++ * @hw: the device
++ * @qsfp_format: pointer to spec this cable CSR space is organized according to
++ *
++ * Return: 0 on success, negative errno on failure
++ */
++static int cass_hdsh_get_format(struct cass_dev *hw, u8 *qsfp_format)
 +{
-+	int k;
-+	int l;
-+
-+	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "vendors delete");
-+
-+	for (k = 0; k < type_idx; ++k) {
-+		for (l = 0; l < vendor_idx; ++l) {
-+			sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME,
-+				   "vendors delete (type = %d, vendor = %d)", k, l);
-+			kobject_put(&ctrl_ldev->cable_vendors_kobj[k][l]);
-+		}
-+	}
-+}
-+
-+static int sl_sysfs_cable_vendors_create(struct sl_ctrl_ldev *ctrl_ldev)
-+{
-+	int type_idx;
-+	int vendor_idx;
-+	int rtn;
-+	int x;
-+
-+	BUILD_BUG_ON((SL_MEDIA_VENDOR_AMPHENOL > 10) || (SL_CABLE_VENDORS_NUM > 10));
-+
-+	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "vendors create");
-+
-+	for (type_idx = 0; type_idx < SL_CABLE_TYPES_NUM; ++type_idx) {
-+		for (vendor_idx = 0; vendor_idx < SL_CABLE_VENDORS_NUM; ++vendor_idx) {
-+			sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME,
-+				   "vendors create (type = %d, vendor = %d)", type_idx, vendor_idx);
-+			rtn = kobject_init_and_add(&ctrl_ldev->cable_vendors_kobj[type_idx][vendor_idx],
-+						   &cable_vendors_info, &ctrl_ldev->cable_types_kobj[type_idx],
-+						   sl_media_vendor_str(vendor_idx + SL_MEDIA_VENDOR_TE));
-+			if (rtn) {
-+				sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME,
-+					   "vendors create failed (type = %d, vendor = %d) [%d]",
-+					   type_idx, vendor_idx, rtn);
-+				kobject_put(&ctrl_ldev->cable_vendors_kobj[type_idx][vendor_idx]);
-+				for (x = 0; x < vendor_idx; ++x) {
-+					sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME,
-+						   "vendors create delete (type = %d, vendor = %d)", type_idx, x);
-+					kobject_put(&ctrl_ldev->cable_vendors_kobj[type_idx][x]);
-+				}
-+				sl_sysfs_cable_vendors_delete(ctrl_ldev, type_idx, SL_CABLE_VENDORS_NUM);
-+				sl_sysfs_cable_types_delete(ctrl_ldev, SL_CABLE_TYPES_NUM);
-+				return -ENOMEM;
++	if (hw->qsfp_eeprom_page0[QSFP_IDENTIFIER_OFFSET] >= SFF8024_TYPE_QSFPDD) {
++		// What revision compliance do they claim
++		if (hw->qsfp_eeprom_page0[QSFP_REV_CMPL_OFFSET] < 0x27)
++			/* Very similar to CMIS 2.0, might need to distinguish
++			 *  someday?
++			 */
++			*qsfp_format = QDD_SFF8636;
++		else {
++			*qsfp_format = QDD_CMIS;
++			/* CMIS V3.0-V4.0 are mostly compatible.
++			 * Version-specific differences are handled in the code.
++			 */
++			/* allow CMIS v5.* */
++			if (hw->qsfp_eeprom_page0[QSFP_REV_CMPL_OFFSET] >= 0x60) {
++				cxidev_err(&hw->cdev,
++					   "Failed to parse headshell data. Bad CMIS rev (%d)!\n",
++					   hw->qsfp_eeprom_page0[QSFP_REV_CMPL_OFFSET]);
++				return -EMEDIUMTYPE;
 +			}
 +		}
-+	}
++	} else
++		// Treat anything else as SFF-8636 Format
++		*qsfp_format = QDD_SFF8636;
 +
 +	return 0;
 +}
 +
-+static void sl_sysfs_cable_db_delete(struct sl_ctrl_ldev *ctrl_ldev, int db_idx)
++/**
++ * cass_hdsh_get_media() - Read the QSFP EEPROM and parse out the media type
++ *
++ * @hw: the device
++ * @attr: pointer to struct to initialize with cable information
++ * @qsfp_format: What spec this cable CSR space is organized according to.
++ *
++ * Return: 0 on success, negative errno on failure
++ */
++static void cass_hdsh_get_media(struct cass_dev *hw,
++				struct sbl_media_attr *attr, u8 qsfp_format)
 +{
-+	int k;
++	u8 qsfp_media;
 +
-+	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "db delete");
++	if (qsfp_format == QDD_CMIS)
++		qsfp_media = hw->qsfp_eeprom_page0[CMIS_MEDIA_TYPE_OFFSET];
++	else /* QDD_SFF8636 */
++		qsfp_media = hw->qsfp_eeprom_page0[SFF8436_MEDIA_TYPE_OFFSET];
++	if (qsfp_media >= MEDIA_COPPER_UNEQ)
++		attr->media = SBL_LINK_MEDIA_ELECTRICAL;
++	else
++		attr->media = SBL_LINK_MEDIA_OPTICAL;
++}
 +
-+	for (k = 0; k < db_idx; ++k) {
-+		sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "db delete (idx = %d)", k);
-+		kobject_put(&ctrl_ldev->cable_hpe_pns_kobj[k].kobj);
++/**
++ * cass_hdsh_get_info() - Read the QSFP EEPROM and parse out the media info
++ *
++ * @hw: the device
++ * @attr: pointer to struct to initialize with cable information
++ * @qsfp_format: What spec this cable CSR space is organized according to.
++ *
++ * Return: 0 on success, negative errno on failure
++ */
++static void cass_hdsh_get_info(struct cass_dev *hw,
++			       struct sbl_media_attr *attr, u8 qsfp_format)
++{
++	if (attr->media == SBL_LINK_MEDIA_ELECTRICAL)
++		// For copper cables, we support all link modes
++		attr->info = SBL_MEDIA_INFO_SUPPORTS_BS_200G |
++			SBL_MEDIA_INFO_SUPPORTS_BJ_100G |
++			SBL_MEDIA_INFO_SUPPORTS_CD_100G |
++			SBL_MEDIA_INFO_SUPPORTS_CD_50G;
++	else {
++		if (qsfp_format == QDD_CMIS)
++			/* TODO - CMIS support is not immediately required */
++			return;
++		/* else: QDD_SFF8636 */
++		/* SFF8636 is not supported, so advertise all link mode
++		 *  are supported.
++		 */
++		attr->info = SBL_MEDIA_INFO_SUPPORTS_BS_200G |
++			SBL_MEDIA_INFO_SUPPORTS_BJ_100G |
++			SBL_MEDIA_INFO_SUPPORTS_CD_100G |
++			SBL_MEDIA_INFO_SUPPORTS_CD_50G;
 +	}
 +}
 +
-+static int sl_sysfs_cable_db_create(struct sl_ctrl_ldev *ctrl_ldev)
++/**
++ * cass_hdsh_get_length() - Read the QSFP EEPROM and parse out the media length
++ *
++ * @hw: the device
++ * @attr: pointer to struct to initialize with cable information
++ * @qsfp_format: What spec this cable CSR space is organized according to.
++ *
++ * Return: 0 on success, negative errno on failure
++ */
++static void cass_hdsh_get_length(struct cass_dev *hw,
++				 struct sbl_media_attr *attr, u8 qsfp_format)
 +{
-+	char hpe_pn[SL_MEDIA_HPE_PN_SIZE + SL_MEDIA_VENDOR_PN_SIZE];
-+	int  i;
-+	int  type_kobj_num;
-+	int  rtn;
++	u8 qsfp_length;
++	int mult, qsfp_length_mm;
 +
-+	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "db create");
-+
-+	for (i = 0; i < ARRAY_SIZE(cable_db); ++i) {
-+		sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "db create (idx = %d)", i);
-+		switch (cable_db[i].type) {
-+		case SL_MEDIA_TYPE_PEC:
-+			type_kobj_num = SL_CABLE_TYPE_PEC;
++	if (qsfp_format == QDD_CMIS) {
++		qsfp_length = hw->qsfp_eeprom_page0[CMIS_CABLE_LEN_OFFSET];
++		mult = (qsfp_length & 0xC0) >> 6;
++		qsfp_length &= 0x3F;
++		switch (mult) {
++		case 0:
++			attr->len = qsfp_length * 10;
 +			break;
-+		case SL_MEDIA_TYPE_AOC:
-+			type_kobj_num = SL_CABLE_TYPE_AOC;
++		case 1:
++			attr->len = qsfp_length * 100;
 +			break;
-+		case SL_MEDIA_TYPE_POC:
-+			type_kobj_num = SL_CABLE_TYPE_POC;
++		case 2:
++			attr->len = qsfp_length * 1000;
 +			break;
-+		case SL_MEDIA_TYPE_AEC:
-+			type_kobj_num = SL_CABLE_TYPE_AEC;
++		case 3:
++			attr->len = qsfp_length * 10000;
 +			break;
 +		default:
-+			sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME,
-+				   "unknown (type = %u)", cable_db[i].type);
-+			continue;
++			attr->len = 0;
++			break;
 +		}
-+		ctrl_ldev->cable_hpe_pns_kobj[i].ctrl_ldev = ctrl_ldev;
-+		ctrl_ldev->cable_hpe_pns_kobj[i].cable_idx = i;
-+		snprintf(hpe_pn, sizeof(hpe_pn), "%u_%s", cable_db[i].hpe_pn, cable_db[i].vendor_pn_str);
-+		rtn = kobject_init_and_add(&ctrl_ldev->cable_hpe_pns_kobj[i].kobj, &cable_hpe_pns_info,
-+					   &ctrl_ldev->cable_vendors_kobj[type_kobj_num][cable_db[i].vendor - SL_MEDIA_VENDOR_TE],
-+					   hpe_pn);
-+		if (rtn) {
-+			sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME,
-+				   "hpe_pn create failed (idx = %d, type = 0x%X %s, vendor = %u %s, len = %ucm, hpe_pn = %u) [%d]",
-+				   i, cable_db[i].type, sl_media_type_str(cable_db[i].type),
-+				   cable_db[i].vendor, sl_media_vendor_str(cable_db[i].vendor),
-+				   cable_db[i].length_cm, cable_db[i].hpe_pn, rtn);
-+			kobject_put(&ctrl_ldev->cable_hpe_pns_kobj[i].kobj);
-+			sl_sysfs_cable_db_delete(ctrl_ldev, i);
-+			sl_sysfs_cable_vendors_delete(ctrl_ldev, SL_CABLE_TYPES_NUM, SL_CABLE_VENDORS_NUM);
-+			sl_sysfs_cable_types_delete(ctrl_ldev, SL_CABLE_TYPES_NUM);
-+			return -ENOMEM;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int sl_sysfs_cable_info_create(struct sl_ctrl_ldev *ctrl_ldev)
-+{
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "cable info create (ldev = 0x%p)", ctrl_ldev);
-+
-+	rtn = kobject_init_and_add(&ctrl_ldev->supported_cables_kobj, &supported_cables_info,
-+				   ctrl_ldev->parent_kobj, "supported_cables");
-+	if (rtn) {
-+		sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME, "supported cables create failed [%d]", rtn);
-+		kobject_put(&ctrl_ldev->supported_cables_kobj);
-+		return -ENOMEM;
-+	}
-+
-+	rtn = sl_sysfs_cable_types_create(ctrl_ldev);
-+	if (rtn) {
-+		sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME, "cable types create failed [%d]", rtn);
-+		kobject_put(&ctrl_ldev->supported_cables_kobj);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_cable_vendors_create(ctrl_ldev);
-+	if (rtn) {
-+		sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME, "cable vendors create failed [%d]", rtn);
-+		kobject_put(&ctrl_ldev->supported_cables_kobj);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_cable_db_create(ctrl_ldev);
-+	if (rtn) {
-+		sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME, "cable db create failed [%d]", rtn);
-+		kobject_put(&ctrl_ldev->supported_cables_kobj);
-+		return rtn;
-+	}
-+
-+	return 0;
-+}
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_ldev_create(u8 ldev_num, struct kobject *parent)
-+{
-+#ifdef CONFIG_SYSFS
-+	int                 rtn;
-+	struct sl_ctrl_ldev *ctrl_ldev;
-+
-+	ctrl_ldev = sl_ctrl_ldev_get(ldev_num);
-+	if (!ctrl_ldev) {
-+		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "sysfs create ldev not found (ldev_num = %u)", ldev_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_ldev_kref_get_unless_zero(ctrl_ldev)) {
-+		sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME,
-+			   "kref_get_unless_zero failed (ldev = 0x%p)", ctrl_ldev);
-+		return -EBADRQC;
-+	}
-+
-+	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "ldev create (ldev = 0x%p)", ctrl_ldev);
-+
-+	if (ctrl_ldev->is_sysfs_ok) {
-+		rtn = 0;
-+		goto out;
-+	}
-+
-+	ctrl_ldev->parent_kobj = parent;
-+	ctrl_ldev->is_sysfs_ok = false;
-+
-+	rtn = kobject_init_and_add(&(ctrl_ldev->sl_info_kobj), &sl_info, ctrl_ldev->parent_kobj, "sl_info");
-+	if (rtn) {
-+		sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME, "sl_info create failed [%d]", rtn);
-+		kobject_put(&ctrl_ldev->sl_info_kobj);
-+		rtn = -ENOMEM;
-+		goto out;
-+	}
-+
-+	rtn = sl_sysfs_cable_info_create(ctrl_ldev);
-+	if (rtn) {
-+		sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME, "cable info create failed [%d]", rtn);
-+		kobject_put(&ctrl_ldev->sl_info_kobj);
-+		goto out;
-+	}
-+
-+	ctrl_ldev->is_sysfs_ok = true;
-+	rtn = 0;
-+
-+out:
-+	sl_ctrl_ldev_put(ctrl_ldev);
-+
-+	return rtn;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_ldev_delete(struct sl_ctrl_ldev *ctrl_ldev)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "ldev delete (ldev = 0x%p)", ctrl_ldev);
-+
-+	if (!ctrl_ldev->parent_kobj)
-+		return;
-+	if (!ctrl_ldev->is_sysfs_ok)
-+		return;
-+
-+	sl_sysfs_cable_db_delete(ctrl_ldev, ARRAY_SIZE(cable_db));
-+	sl_sysfs_cable_vendors_delete(ctrl_ldev, SL_CABLE_TYPES_NUM, SL_CABLE_VENDORS_NUM);
-+	sl_sysfs_cable_types_delete(ctrl_ldev, SL_CABLE_TYPES_NUM);
-+
-+	kobject_put(&ctrl_ldev->supported_cables_kobj);
-+	kobject_put(&ctrl_ldev->sl_info_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp.c
-new file mode 100644
-index 000000000000..f0533c8fd888
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp.c
-@@ -0,0 +1,98 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2023,2024,2025 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_core_link.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+int sl_sysfs_lgrp_create(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "lgrp create (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	if (!ctrl_lgrp->parent_kobj) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "lgrp create missing parent");
-+		return -EBADRQC;
-+	}
-+
-+	rtn = sl_sysfs_lgrp_config_create(ctrl_lgrp);
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "config create failed [%d]", rtn);
-+		return -ENOMEM;
-+	}
-+
-+	rtn = sl_sysfs_lgrp_policy_create(ctrl_lgrp);
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "policy create failed [%d]", rtn);
-+		goto out_config;
-+	}
-+
-+	rtn = sl_sysfs_serdes_create(ctrl_lgrp);
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "serdes create failed [%d]", rtn);
-+		goto out_policy;
-+	}
-+
-+	rtn = sl_sysfs_media_create(ctrl_lgrp);
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media create failed [%d]", rtn);
-+		goto out_serdes;
-+	}
-+
-+	rtn = sl_sysfs_pmi_create(ctrl_lgrp);
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi create failed [%d]", rtn);
-+		goto out_media;
-+	}
-+
-+	rtn = sl_sysfs_sbus_create(ctrl_lgrp);
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus create failed [%d]", rtn);
-+		goto out_pmi;
-+	}
-+
-+	rtn = sl_sysfs_sbus_pmi_create(ctrl_lgrp);
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi create failed [%d]", rtn);
-+		goto out_sbus;
-+	}
-+
-+	return 0;
-+
-+out_sbus:
-+	sl_sysfs_sbus_delete(ctrl_lgrp);
-+out_pmi:
-+	sl_sysfs_pmi_delete(ctrl_lgrp);
-+out_media:
-+	sl_sysfs_media_delete(ctrl_lgrp);
-+out_serdes:
-+	sl_sysfs_serdes_delete(ctrl_lgrp);
-+out_policy:
-+	sl_sysfs_lgrp_policy_delete(ctrl_lgrp);
-+out_config:
-+	sl_sysfs_lgrp_config_delete(ctrl_lgrp);
-+	return -ENOMEM;
-+}
-+
-+void sl_sysfs_lgrp_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "lgrp delete (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	if (!ctrl_lgrp->parent_kobj)
-+		return;
-+
-+	sl_sysfs_sbus_pmi_delete(ctrl_lgrp);
-+	sl_sysfs_sbus_delete(ctrl_lgrp);
-+	sl_sysfs_pmi_delete(ctrl_lgrp);
-+	sl_sysfs_media_delete(ctrl_lgrp);
-+	sl_sysfs_serdes_delete(ctrl_lgrp);
-+	sl_sysfs_lgrp_policy_delete(ctrl_lgrp);
-+	sl_sysfs_lgrp_config_delete(ctrl_lgrp);
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp_config.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp_config.c
-new file mode 100644
-index 000000000000..b2181e5114ee
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp_config.c
-@@ -0,0 +1,438 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+#include <linux/hpe/sl/sl_lgrp.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "data/sl_ctrl_data_lgrp.h"
-+#include "data/sl_ctrl_data_lgrp_trace.h"
-+
-+#define is_flag_set(_flags, _flag) ({              \
-+		typeof(_flags) __flags = (_flags); \
-+		typeof(_flag)  __flag  = (_flag);  \
-+						   \
-+		((__flags & __flag) == __flag);    \
-+})
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t mfs_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	u32                  mfs;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
-+
-+	rtn = sl_ctrl_data_lgrp_mfs_get(ctrl_lgrp, &mfs);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "mfs show (mfs = %u)", mfs);
-+
-+	return sysfs_emit(buf, "%u\n", mfs);
-+}
-+
-+static ssize_t furcation_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	u32                  furcation;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
-+
-+	rtn = sl_ctrl_data_lgrp_furcation_get(ctrl_lgrp, &furcation);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "furcation show (furcation = %u %s)",
-+		   furcation, sl_lgrp_furcation_str(furcation));
-+
-+	return sysfs_emit(buf, "%s\n", sl_lgrp_furcation_str(furcation));
-+}
-+
-+static ssize_t fec_mode_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	u32                  fec_mode;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
-+
-+	rtn = sl_ctrl_data_lgrp_fec_mode_get(ctrl_lgrp, &fec_mode);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "fec mode show (mode = %u %s)",
-+		   fec_mode, sl_lgrp_fec_mode_str(fec_mode));
-+
-+	return sysfs_emit(buf, "%s\n", sl_lgrp_fec_mode_str(fec_mode));
-+}
-+
-+static ssize_t tech_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	int                  idx;
-+	char                 output[50];
-+	u32                  tech_map;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
-+
-+	rtn = sl_ctrl_data_lgrp_tech_map_get(ctrl_lgrp, &tech_map);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "tech map show (map = 0x%X)", tech_map);
-+
-+	if (tech_map == 0)
-+		return sysfs_emit(buf, "none\n");
-+
-+	idx = 0;
-+	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CK_400G))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CK_400G));
-+	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CK_200G))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CK_200G));
-+	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CK_100G))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CK_100G));
-+	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_BS_200G))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_BS_200G));
-+	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CD_100G))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CD_100G));
-+	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CD_50G))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CD_50G));
-+	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_BJ_100G))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_BJ_100G));
-+	if (!idx)
-+		return sysfs_emit(buf, "none\n");
-+	output[idx - 1] = '\0';
-+
-+	return sysfs_emit(buf, "%s\n", output);
-+}
-+
-+static ssize_t fec_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	int                  idx;
-+	char                 output[20];
-+	u32                  fec_map;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
-+
-+	rtn = sl_ctrl_data_lgrp_fec_map_get(ctrl_lgrp, &fec_map);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "fec map show (map = 0x%X)", fec_map);
-+
-+	if (fec_map == 0)
-+		return sysfs_emit(buf, "none\n");
-+
-+	idx = 0;
-+	if (is_flag_set(fec_map, SL_LGRP_CONFIG_FEC_RS_LL))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_lgrp_config_fec_str(SL_LGRP_CONFIG_FEC_RS_LL));
-+	if (is_flag_set(fec_map, SL_LGRP_CONFIG_FEC_RS))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_lgrp_config_fec_str(SL_LGRP_CONFIG_FEC_RS));
-+	if (!idx)
-+		return sysfs_emit(buf, "none\n");
-+	output[idx - 1] = '\0';
-+
-+	return sysfs_emit(buf, "%s\n", output);
-+}
-+
-+static ssize_t link_type_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	u32                  options;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
-+
-+	rtn = sl_ctrl_data_lgrp_options_get(ctrl_lgrp, &options);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if (options & SL_LGRP_CONFIG_OPT_FABRIC)
-+		return sysfs_emit(buf, "fabric\n");
-+
-+	return sysfs_emit(buf, "edge\n");
-+}
-+
-+static ssize_t loopback_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	u32                  options;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
-+
-+	rtn = sl_ctrl_data_lgrp_options_get(ctrl_lgrp, &options);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "loopback show (options = 0x%X)", options);
-+
-+	if (options & SL_LGRP_CONFIG_OPT_SERDES_LOOPBACK_ENABLE)
-+		return sysfs_emit(buf, "enabled-serdes\n");
-+
-+	return sysfs_emit(buf, "disabled\n");
-+}
-+
-+static struct kobj_attribute lgrp_mfs       = __ATTR_RO(mfs);
-+static struct kobj_attribute lgrp_furcation = __ATTR_RO(furcation);
-+static struct kobj_attribute lgrp_fec_mode  = __ATTR_RO(fec_mode);
-+static struct kobj_attribute lgrp_tech_map  = __ATTR_RO(tech_map);
-+static struct kobj_attribute lgrp_fec_map   = __ATTR_RO(fec_map);
-+static struct kobj_attribute lgrp_link_type = __ATTR_RO(link_type);
-+static struct kobj_attribute lgrp_loopback  = __ATTR_RO(loopback);
-+
-+static ssize_t err_trace_enable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	bool                 is_err_trace_enabled;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
-+
-+	rtn = sl_ctrl_data_lgrp_is_err_trace_enabled(ctrl_lgrp, &is_err_trace_enabled);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "err trace enable show (is_err_trace_enabled = %u)", is_err_trace_enabled);
-+
-+	return sysfs_emit(buf, "%u\n", is_err_trace_enabled);
-+}
-+
-+static ssize_t err_trace_enable_store(struct kobject *kobj, struct kobj_attribute *kattr, const char *buf, size_t count)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	u8                   val;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
-+
-+	rtn = kstrtou8(buf, 0, &val);
-+	if (rtn) {
-+		sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+			   "err trace enable store failed [%d]", rtn);
-+		return rtn;
-+	}
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "err trace enable store (val = %u)", val);
-+
-+	rtn = sl_ctrl_data_lgrp_err_trace_enable_set(ctrl_lgrp, val);
-+	if (rtn) {
-+		sl_log_err_trace(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+				 "err trace enable store failed [%d]", rtn);
-+		return rtn;
-+	}
-+
-+	return count;
-+}
-+
-+static struct kobj_attribute lgrp_err_trace_enable = __ATTR_RW(err_trace_enable);
-+
-+static ssize_t warn_trace_enable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	bool                 is_warn_trace_enabled;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
-+
-+	rtn = sl_ctrl_data_lgrp_is_warn_trace_enabled(ctrl_lgrp, &is_warn_trace_enabled);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "warn trace enable show (is_warn_trace_enabled = %u)",
-+		   is_warn_trace_enabled);
-+
-+	return sysfs_emit(buf, "%u\n", is_warn_trace_enabled);
-+}
-+
-+static ssize_t warn_trace_enable_store(struct kobject *kobj, struct kobj_attribute *kattr,
-+				       const char *buf, size_t count)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	u8                   val;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
-+
-+	rtn = kstrtou8(buf, 0, &val);
-+	if (rtn) {
-+		sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+			   "warn trace enable store failed [%d]", rtn);
-+		return rtn;
-+	}
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "warn trace enable store (val = %u)", val);
-+
-+	rtn = sl_ctrl_data_lgrp_warn_trace_set(ctrl_lgrp, val);
-+	if (rtn) {
-+		sl_log_err_trace(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+				 "warn trace enable store failed [%d]", rtn);
-+		return rtn;
-+	}
-+
-+	return count;
-+}
-+
-+static struct kobj_attribute lgrp_warn_trace_enable = __ATTR_RW(warn_trace_enable);
-+
-+static ssize_t serdes_lane_io_trace_enable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	bool                 serdes_lane_io_trace;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
-+
-+	serdes_lane_io_trace = sl_ctrl_data_lgrp_is_serdes_lane_io_trace_enabled(ctrl_lgrp);
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "core init io trace enable show (serdes_lane_io_trace = %s)",
-+		   serdes_lane_io_trace ? "enabled" : "disabled");
-+
-+	return sysfs_emit(buf, "%u\n", serdes_lane_io_trace ? 1 : 0);
-+}
-+
-+static ssize_t serdes_lane_io_trace_enable_store(struct kobject *kobj, struct kobj_attribute *kattr,
-+						 const char *buf, size_t count)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	u8                   val;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
-+
-+	rtn = kstrtou8(buf, 0, &val);
-+	if (rtn) {
-+		sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+			   "core init io trace enable store failed [%d]", rtn);
-+		return rtn;
-+	}
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "core init io trace enable store (val = %u)", val);
-+
-+	rtn = sl_ctrl_data_lgrp_serdes_lane_io_trace_set(ctrl_lgrp, (val == 1) ? true : false);
-+	if (rtn) {
-+		sl_log_err_trace(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+				 "core init io trace enable store failed [%d]", rtn);
-+		return rtn;
-+	}
-+
-+	return count;
-+}
-+
-+static struct kobj_attribute lgrp_serdes_lane_io_trace_enable = __ATTR_RW(serdes_lane_io_trace_enable);
-+
-+static ssize_t fabric_link_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	u32                  options;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
-+
-+	rtn = sl_ctrl_data_lgrp_options_get(ctrl_lgrp, &options);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "fabric link show (fabric link = %s)",
-+		   (options & SL_LGRP_CONFIG_OPT_FABRIC) ? "enabled" : "disabled");
-+
-+	return sysfs_emit(buf, "%s\n",
-+			 (options & SL_LGRP_CONFIG_OPT_FABRIC) ? "enabled" : "disabled");
-+}
-+
-+static struct kobj_attribute lgrp_fabric_link = __ATTR_RO(fabric_link);
-+
-+static ssize_t r1_partner_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	u32                  options;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
-+
-+	rtn = sl_ctrl_data_lgrp_options_get(ctrl_lgrp, &options);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "r1 partner show (r1 partner = %s)",
-+		   (options & SL_LGRP_CONFIG_OPT_R1) ? "enabled" : "disabled");
-+
-+	return sysfs_emit(buf, "%s\n", (options & SL_LGRP_CONFIG_OPT_R1) ? "enabled" : "disabled");
-+}
-+
-+static struct kobj_attribute lgrp_r1_partner  = __ATTR_RO(r1_partner);
-+
-+static struct attribute *lgrp_config_attrs[] = {
-+	&lgrp_mfs.attr,
-+	&lgrp_furcation.attr,
-+	&lgrp_fec_mode.attr,
-+	&lgrp_tech_map.attr,
-+	&lgrp_fec_map.attr,
-+	&lgrp_link_type.attr,
-+	&lgrp_loopback.attr,
-+	&lgrp_err_trace_enable.attr,
-+	&lgrp_warn_trace_enable.attr,
-+	&lgrp_serdes_lane_io_trace_enable.attr,
-+	&lgrp_fabric_link.attr,
-+	&lgrp_r1_partner.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(lgrp_config);
-+
-+static struct kobj_type config_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = lgrp_config_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_lgrp_config_create(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "lgrp config create (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	rtn = kobject_init_and_add(&(ctrl_lgrp->config_kobj), &config_info, ctrl_lgrp->parent_kobj, "config");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "lgrp config create failed [%d]", rtn);
-+		kobject_put(&(ctrl_lgrp->config_kobj));
-+		return -ENOMEM;
-+	}
-+
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_lgrp_config_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "lgrp config delete (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	kobject_put(&(ctrl_lgrp->config_kobj));
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp_policy.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp_policy.c
-new file mode 100644
-index 000000000000..ccb9bf627ee4
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp_policy.c
-@@ -0,0 +1,53 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_core_link.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static struct attribute *lgrp_policy_attrs[] = {
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(lgrp_policy);
-+
-+static struct kobj_type policy_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = lgrp_policy_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_lgrp_policy_create(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "lgrp policy create (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	rtn = kobject_init_and_add(&(ctrl_lgrp->policy_kobj), &policy_info, ctrl_lgrp->parent_kobj, "policies");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "lgrp policy create failed [%d]", rtn);
-+		kobject_put(&(ctrl_lgrp->policy_kobj));
-+		return -ENOMEM;
-+	}
-+
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_lgrp_policy_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "lgrp policy delete (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	kobject_put(&(ctrl_lgrp->policy_kobj));
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link.c
-new file mode 100644
-index 000000000000..df0f51c5f77e
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link.c
-@@ -0,0 +1,830 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2023-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "data/sl_ctrl_data_link.h"
-+#include "sl_ctrl_link.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_core_link.h"
-+#include "sl_core_str.h"
-+#include "hw/sl_core_hw_an.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  state;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
-+
-+	rtn = sl_ctrl_data_link_state_get(ctrl_link, &state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "state show (link = 0x%p, state = %u %s)", ctrl_link, state, sl_link_state_str(state));
-+
-+	return sysfs_emit(buf, "%s\n", sl_link_state_str(state));
-+}
-+
-+static ssize_t speed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  state;
-+	u32                  speed;
-+	int		     rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
-+
-+	rtn = sl_ctrl_link_state_get_cmd(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+					 ctrl_link->ctrl_lgrp->num, ctrl_link->num, &state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	rtn = sl_core_link_speed_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+				     ctrl_link->ctrl_lgrp->num, ctrl_link->num, &speed);
-+	if (rtn == -ENOLINK)
-+		return sysfs_emit(buf, "no-link\n");
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "speed show (state = %u %s, speed = 0x%X %s)",
-+		   state, sl_link_state_str(state), speed, sl_lgrp_config_tech_str(speed));
-+
-+	if ((state != SL_LINK_STATE_UP) && (state != SL_LINK_STATE_UP_DOWN_REQ))
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	return sysfs_emit(buf, "%s\n", sl_lgrp_config_tech_str(speed));
-+}
-+
-+static ssize_t ccw_warn_limit_crossed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	bool                 is_limit_crossed;
-+	time64_t             limit_crossed_time;
-+	int		     rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
-+
-+	rtn = sl_core_link_ccw_warn_limit_crossed_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
-+						      ctrl_link->num, &is_limit_crossed, &limit_crossed_time);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "ccw warn limit crossed show (is_limit_crossed = %d %s)", is_limit_crossed,
-+		is_limit_crossed ? "yes" : "no");
-+
-+	return sysfs_emit(buf, "%s\n", is_limit_crossed ? "yes" : "no");
-+}
-+
-+static ssize_t ccw_warn_limit_last_crossed_time_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	bool                 is_limit_crossed;
-+	time64_t             limit_crossed_time;
-+	int		     rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
-+
-+	rtn = sl_core_link_ccw_warn_limit_crossed_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
-+						      ctrl_link->num, &is_limit_crossed, &limit_crossed_time);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "ccw warn limit last crossed time show (is_limit_crossed = 0x%X, time = %lld %ptTt %ptTd)",
-+		is_limit_crossed, limit_crossed_time, &limit_crossed_time, &limit_crossed_time);
-+
-+	if (!is_limit_crossed)
-+		return sysfs_emit(buf, "not-crossed\n");
-+
-+	return sysfs_emit(buf, "%ptTt %ptTd\n", &limit_crossed_time, &limit_crossed_time);
-+}
-+
-+static ssize_t ucw_warn_limit_crossed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	bool                 is_limit_crossed;
-+	time64_t             limit_crossed_time;
-+	int		     rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
-+
-+	rtn = sl_core_link_ucw_warn_limit_crossed_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
-+						      ctrl_link->num, &is_limit_crossed, &limit_crossed_time);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "ucw warn limit crossed show (is_limit_crossed = %d %s)", is_limit_crossed,
-+		is_limit_crossed ? "yes" : "no");
-+
-+	return sysfs_emit(buf, "%s\n", is_limit_crossed ? "yes" : "no");
-+}
-+
-+static ssize_t ucw_warn_limit_last_crossed_time_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	bool                 is_limit_crossed;
-+	time64_t             limit_crossed_time;
-+	int		     rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
-+
-+	rtn = sl_core_link_ucw_warn_limit_crossed_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
-+						      ctrl_link->num, &is_limit_crossed, &limit_crossed_time);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "ucw warn limit last crossed time show (is_limit_crossed = 0x%X, time = %lld %ptTt %ptTd)",
-+		is_limit_crossed, limit_crossed_time, &limit_crossed_time, &limit_crossed_time);
-+
-+	if (!is_limit_crossed)
-+		return sysfs_emit(buf, "not-crossed\n");
-+
-+	return sysfs_emit(buf, "%ptTt %ptTd\n", &limit_crossed_time, &limit_crossed_time);
-+}
-+
-+static ssize_t up_count_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  up_count;
-+	int		     rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
-+
-+	rtn = sl_ctrl_link_up_count_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
-+					ctrl_link->num, &up_count);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "up count show (up_count = %u)", up_count);
-+
-+	return sysfs_emit(buf, "%u\n", up_count);
-+}
-+
-+static ssize_t time_to_link_up_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	u32                  state;
-+	struct sl_ctrl_link *ctrl_link;
-+	s64                  attempt_time_ms;
-+	s64                  total_time_ms;
-+	s64                  up_time_ms;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
-+
-+	rtn = sl_ctrl_data_link_state_get(ctrl_link, &state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if ((state != SL_LINK_STATE_UP) && (state != SL_LINK_STATE_UP_DOWN_REQ))
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	rtn = sl_ctrl_link_up_clocks_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
-+					 ctrl_link->num, &attempt_time_ms, &total_time_ms, &up_time_ms);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "time to link up show (attempt_time = %lldms, total_time = %lldms)",
-+		   attempt_time_ms, total_time_ms);
-+
-+	return sysfs_emit(buf, "%lld\n", attempt_time_ms);
-+}
-+
-+static ssize_t total_time_to_link_up_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	u32                  state;
-+	struct sl_ctrl_link *ctrl_link;
-+	s64                  attempt_time_ms;
-+	s64                  total_time_ms;
-+	s64                  up_time_ms;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
-+
-+	rtn = sl_ctrl_data_link_state_get(ctrl_link, &state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if ((state != SL_LINK_STATE_UP) && (state != SL_LINK_STATE_UP_DOWN_REQ))
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	rtn = sl_ctrl_link_up_clocks_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
-+					 ctrl_link->num, &attempt_time_ms, &total_time_ms, &up_time_ms);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "total time to link up show (attempt_time = %lldms, total_time = %lldms)",
-+		   attempt_time_ms, total_time_ms);
-+
-+	return sysfs_emit(buf, "%lld\n", total_time_ms);
-+}
-+
-+static ssize_t up_time_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	u32                  state;
-+	struct sl_ctrl_link *ctrl_link;
-+	s64                  attempt_time_ms;
-+	s64                  total_time_ms;
-+	s64                  up_time_ms;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
-+
-+	rtn = sl_ctrl_data_link_state_get(ctrl_link, &state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if ((state != SL_LINK_STATE_UP) && (state != SL_LINK_STATE_UP_DOWN_REQ))
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	rtn = sl_ctrl_link_up_clocks_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
-+					 ctrl_link->num, &attempt_time_ms, &total_time_ms, &up_time_ms);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "up time show (up_time = %lldms)", up_time_ms);
-+
-+	return sysfs_emit(buf, "%lld\n", up_time_ms);
-+}
-+
-+static ssize_t lp_caps_state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	u32                  lp_caps_state;
-+	struct sl_ctrl_link *ctrl_link;
-+	int		     rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
-+
-+	rtn = sl_ctrl_link_an_lp_caps_state_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
-+						ctrl_link->num, &lp_caps_state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "an lp caps state show (lp_caps_state = %u %s)",
-+		   lp_caps_state, sl_link_an_lp_caps_state_str(lp_caps_state));
-+
-+	return sysfs_emit(buf, "%s\n", sl_link_an_lp_caps_state_str(lp_caps_state));
-+}
-+
-+static ssize_t last_autoneg_fail_cause_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  fail_cause;
-+	time64_t             fail_time;
-+	int		     rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
-+
-+	rtn = sl_ctrl_link_an_fail_cause_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
-+					     ctrl_link->num, &fail_cause, &fail_time);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "last autoneg fail casue show (cause = %u %s)",
-+		   fail_cause, sl_core_link_an_fail_cause_str(fail_cause));
-+
-+	if (fail_cause == SL_CORE_HW_AN_FAIL_CAUSE_NONE)
-+		return sysfs_emit(buf, "no-fail\n");
-+
-+	return sysfs_emit(buf, "%s\n", sl_core_link_an_fail_cause_str(fail_cause));
-+}
-+
-+static ssize_t last_autoneg_fail_time_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  fail_cause;
-+	time64_t             fail_time;
-+	int		     rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
-+
-+	rtn = sl_ctrl_link_an_fail_cause_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
-+					     ctrl_link->num, &fail_cause, &fail_time);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "last autoneg fail time show (cause = %u %s, time = %lld %ptTt %ptTd)",
-+		   fail_cause, sl_core_link_an_fail_cause_str(fail_cause), fail_time, &fail_time, &fail_time);
-+
-+	if (fail_cause == SL_CORE_HW_AN_FAIL_CAUSE_NONE)
-+		return sysfs_emit(buf, "no-fail\n");
-+
-+	return sysfs_emit(buf, "%ptTt %ptTd\n", &fail_time, &fail_time);
-+}
-+
-+static ssize_t info_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u64                  info_map;
-+	char                 info_map_str[900];
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
-+
-+	rtn = sl_ctrl_link_info_map_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+					ctrl_link->ctrl_lgrp->num, ctrl_link->num, &info_map);
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "info map show sl_ctrl_link_info_map_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "no-link\n");
-+	}
-+
-+	sl_core_info_map_str(info_map, info_map_str, sizeof(info_map_str));
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "info map show (info_map = 0x%llX %s)", info_map, info_map_str);
-+
-+	return sysfs_emit(buf, "%s\n", info_map_str);
-+}
-+
-+static struct kobj_attribute link_state                            = __ATTR_RO(state);
-+static struct kobj_attribute link_speed                            = __ATTR_RO(speed);
-+static struct kobj_attribute link_ccw_warn_limit_crossed           = __ATTR_RO(ccw_warn_limit_crossed);
-+static struct kobj_attribute link_ccw_warn_limit_last_crossed_time = __ATTR_RO(ccw_warn_limit_last_crossed_time);
-+static struct kobj_attribute link_ucw_warn_limit_crossed           = __ATTR_RO(ucw_warn_limit_crossed);
-+static struct kobj_attribute link_ucw_warn_limit_last_crossed_time = __ATTR_RO(ucw_warn_limit_last_crossed_time);
-+static struct kobj_attribute link_up_count                         = __ATTR_RO(up_count);
-+static struct kobj_attribute link_up_time_ms                       = __ATTR_RO(up_time_ms);
-+static struct kobj_attribute link_time_to_link_up_ms               = __ATTR_RO(time_to_link_up_ms);
-+static struct kobj_attribute link_total_time_to_link_up_ms         = __ATTR_RO(total_time_to_link_up_ms);
-+static struct kobj_attribute link_lp_caps_state                    = __ATTR_RO(lp_caps_state);
-+static struct kobj_attribute link_last_autoneg_fail_cause          = __ATTR_RO(last_autoneg_fail_cause);
-+static struct kobj_attribute link_last_autoneg_fail_time           = __ATTR_RO(last_autoneg_fail_time);
-+static struct kobj_attribute link_info_map                         = __ATTR_RO(info_map);
-+
-+static struct attribute *link_attrs[] = {
-+	&link_state.attr,
-+	&link_speed.attr,
-+	&link_ccw_warn_limit_crossed.attr,
-+	&link_ccw_warn_limit_last_crossed_time.attr,
-+	&link_ucw_warn_limit_crossed.attr,
-+	&link_ucw_warn_limit_last_crossed_time.attr,
-+	&link_up_count.attr,
-+	&link_up_time_ms.attr,
-+	&link_time_to_link_up_ms.attr,
-+	&link_total_time_to_link_up_ms.attr,
-+	&link_lp_caps_state.attr,
-+	&link_last_autoneg_fail_cause.attr,
-+	&link_last_autoneg_fail_time.attr,
-+	&link_info_map.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link);
-+
-+static struct kobj_type link_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_groups,
-+};
-+
-+static ssize_t last_down_cause_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u64                  down_cause_map;
-+	time64_t             down_time;
-+	char                 cause_str[SL_LINK_DOWN_CAUSE_STR_SIZE];
-+	int		     rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, last_down_kobj);
-+
-+	rtn = sl_core_link_last_down_cause_map_info_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
-+							ctrl_link->num, num, &down_cause_map, &down_time);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_link_down_cause_map_with_info_str(down_cause_map, cause_str, sizeof(cause_str));
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "last down cause show (num = %u, cause_map = 0x%llX %s)",
-+		   num, down_cause_map, cause_str);
-+
-+	return sysfs_emit(buf, "%s\n", cause_str);
-+}
-+
-+#define link_last_down_cause_map(_num)                                                                               \
-+	static inline ssize_t cause_map_##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
-+	{                                                                                                            \
-+		return last_down_cause_map_show(kobj, kattr, buf, (_num));                                           \
-+	}                                                                                                            \
-+	static struct kobj_attribute link_last_down_cause_map_##_num = __ATTR_RO(cause_map_##_num)
-+
-+link_last_down_cause_map(0);
-+link_last_down_cause_map(1);
-+link_last_down_cause_map(2);
-+link_last_down_cause_map(3);
-+link_last_down_cause_map(4);
-+link_last_down_cause_map(5);
-+link_last_down_cause_map(6);
-+link_last_down_cause_map(7);
-+link_last_down_cause_map(8);
-+link_last_down_cause_map(9);
-+
-+static ssize_t last_down_time_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u64                  down_cause_map;
-+	time64_t             down_time;
-+	int		     rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, last_down_kobj);
-+
-+	rtn = sl_core_link_last_down_cause_map_info_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
-+							ctrl_link->num, num, &down_cause_map, &down_time);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "last down time show (num = %u, cause_map = 0x%llX, time = %lld %ptTt %ptTd)",
-+		   num, down_cause_map, down_time, &down_time, &down_time);
-+
-+	if (down_cause_map == SL_LINK_DOWN_CAUSE_NONE)
-+		return sysfs_emit(buf, "none\n");
-+
-+	return sysfs_emit(buf, "%ptTt %ptTd\n", &down_time, &down_time);
-+}
-+
-+#define link_last_down_time(_num)                                                                               \
-+	static inline ssize_t time_##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
-+	{                                                                                                       \
-+		return last_down_time_show(kobj, kattr, buf, (_num));                                           \
-+	}                                                                                                       \
-+	static struct kobj_attribute link_last_down_time_##_num = __ATTR_RO(time_##_num)
-+
-+link_last_down_time(0);
-+link_last_down_time(1);
-+link_last_down_time(2);
-+link_last_down_time(3);
-+link_last_down_time(4);
-+link_last_down_time(5);
-+link_last_down_time(6);
-+link_last_down_time(7);
-+link_last_down_time(8);
-+link_last_down_time(9);
-+
-+static struct attribute *last_down_attrs[] = {
-+	&link_last_down_cause_map_0.attr,
-+	&link_last_down_time_0.attr,
-+	&link_last_down_cause_map_1.attr,
-+	&link_last_down_time_1.attr,
-+	&link_last_down_cause_map_2.attr,
-+	&link_last_down_time_2.attr,
-+	&link_last_down_cause_map_3.attr,
-+	&link_last_down_time_3.attr,
-+	&link_last_down_cause_map_4.attr,
-+	&link_last_down_time_4.attr,
-+	&link_last_down_cause_map_5.attr,
-+	&link_last_down_time_5.attr,
-+	&link_last_down_cause_map_6.attr,
-+	&link_last_down_time_6.attr,
-+	&link_last_down_cause_map_7.attr,
-+	&link_last_down_time_7.attr,
-+	&link_last_down_cause_map_8.attr,
-+	&link_last_down_time_8.attr,
-+	&link_last_down_cause_map_9.attr,
-+	&link_last_down_time_9.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(last_down);
-+
-+static struct kobj_type last_down = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = last_down_groups,
-+};
-+
-+static ssize_t last_up_fail_cause_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u64                  up_fail_cause_map;
-+	time64_t             up_fail_time;
-+	char                 cause_str[SL_LINK_UP_FAIL_CAUSE_STR_SIZE];
-+	int		     rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, last_up_fail_kobj);
-+	rtn = sl_core_link_last_up_fail_cause_map_info_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
-+							   ctrl_link->num, num, &up_fail_cause_map, &up_fail_time);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_link_down_cause_map_with_info_str(up_fail_cause_map, cause_str, sizeof(cause_str));
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "last up_fail cause show (num = %u, cause_map = 0x%llX %s)",
-+		   num, up_fail_cause_map, cause_str);
-+
-+	return sysfs_emit(buf, "%s\n", cause_str);
-+}
-+
-+#define link_last_up_fail_cause_map(_num)                                                                                    \
-+	static inline ssize_t up_fail_cause_map_##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
-+	{                                                                                                                    \
-+		return last_up_fail_cause_map_show(kobj, kattr, buf, (_num));                                                \
-+	}                                                                                                                    \
-+	static struct kobj_attribute link_last_up_fail_cause_map_##_num = __ATTR_RO(up_fail_cause_map_##_num)
-+
-+link_last_up_fail_cause_map(0);
-+link_last_up_fail_cause_map(1);
-+link_last_up_fail_cause_map(2);
-+link_last_up_fail_cause_map(3);
-+link_last_up_fail_cause_map(4);
-+link_last_up_fail_cause_map(5);
-+link_last_up_fail_cause_map(6);
-+link_last_up_fail_cause_map(7);
-+link_last_up_fail_cause_map(8);
-+link_last_up_fail_cause_map(9);
-+
-+static ssize_t last_up_fail_time_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u64                  up_fail_cause_map;
-+	time64_t             up_fail_time;
-+	int		     rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, last_up_fail_kobj);
-+	rtn = sl_core_link_last_up_fail_cause_map_info_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
-+							   ctrl_link->num, num, &up_fail_cause_map, &up_fail_time);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "last up_fail time show (num = %u, cause_map = 0x%llX, time = %lld %ptTt %ptTd)",
-+		   num, up_fail_cause_map, up_fail_time, &up_fail_time, &up_fail_time);
-+
-+	if (up_fail_cause_map == SL_LINK_DOWN_CAUSE_NONE)
-+		return sysfs_emit(buf, "none\n");
-+
-+	return sysfs_emit(buf, "%ptTt %ptTd\n", &up_fail_time, &up_fail_time);
-+}
-+
-+#define link_last_up_fail_time(_num)                                                                                    \
-+	static inline ssize_t up_fail_time_##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
-+	{                                                                                                               \
-+		return last_up_fail_time_show(kobj, kattr, buf, (_num));                                                \
-+	}                                                                                                               \
-+	static struct kobj_attribute link_last_up_fail_time_##_num = __ATTR_RO(up_fail_time_##_num)
-+
-+link_last_up_fail_time(0);
-+link_last_up_fail_time(1);
-+link_last_up_fail_time(2);
-+link_last_up_fail_time(3);
-+link_last_up_fail_time(4);
-+link_last_up_fail_time(5);
-+link_last_up_fail_time(6);
-+link_last_up_fail_time(7);
-+link_last_up_fail_time(8);
-+link_last_up_fail_time(9);
-+
-+static struct attribute *last_up_fail_attrs[] = {
-+	&link_last_up_fail_cause_map_0.attr,
-+	&link_last_up_fail_time_0.attr,
-+	&link_last_up_fail_cause_map_1.attr,
-+	&link_last_up_fail_time_1.attr,
-+	&link_last_up_fail_cause_map_2.attr,
-+	&link_last_up_fail_time_2.attr,
-+	&link_last_up_fail_cause_map_3.attr,
-+	&link_last_up_fail_time_3.attr,
-+	&link_last_up_fail_cause_map_4.attr,
-+	&link_last_up_fail_time_4.attr,
-+	&link_last_up_fail_cause_map_5.attr,
-+	&link_last_up_fail_time_5.attr,
-+	&link_last_up_fail_cause_map_6.attr,
-+	&link_last_up_fail_time_6.attr,
-+	&link_last_up_fail_cause_map_7.attr,
-+	&link_last_up_fail_time_7.attr,
-+	&link_last_up_fail_cause_map_8.attr,
-+	&link_last_up_fail_time_8.attr,
-+	&link_last_up_fail_cause_map_9.attr,
-+	&link_last_up_fail_time_9.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(last_up_fail);
-+
-+static struct kobj_type last_up_fail = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = last_up_fail_groups,
-+};
-+
-+static int sl_sysfs_link_last_up_fail_create(struct sl_ctrl_link *ctrl_link)
-+{
-+	int rtn;
-+
-+	rtn = kobject_init_and_add(&ctrl_link->last_up_fail_kobj,
-+				   &last_up_fail, &ctrl_link->kobj, "last_up_fail");
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "last up_fail create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&ctrl_link->last_up_fail_kobj);
-+		return rtn;
-+	}
-+
-+	return 0;
-+}
-+
-+static void sl_sysfs_link_last_up_fail_delete(struct sl_ctrl_link *ctrl_link)
-+{
-+	kobject_put(&ctrl_link->last_up_fail_kobj);
-+}
-+
-+static int sl_sysfs_link_last_down_create(struct sl_ctrl_link *ctrl_link)
-+{
-+	int rtn;
-+
-+	rtn = kobject_init_and_add(&ctrl_link->last_down_kobj,
-+				   &last_down, &ctrl_link->kobj, "last_down");
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "last down create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&ctrl_link->last_down_kobj);
-+		return rtn;
-+	}
-+
-+	return 0;
-+}
-+
-+static void sl_sysfs_link_last_down_delete(struct sl_ctrl_link *ctrl_link)
-+{
-+	kobject_put(&ctrl_link->last_down_kobj);
-+}
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_link_create(struct sl_ctrl_link *ctrl_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	int                  rtn;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link create (num = %u)", ctrl_link->num);
-+
-+	if (!ctrl_link->parent_kobj) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME, "link create missing parent");
-+		return -EBADRQC;
-+	}
-+
-+	core_link = sl_core_link_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+				     ctrl_link->ctrl_lgrp->num, ctrl_link->num);
-+	if (!core_link)
-+		return -ENODEV;
-+
-+	rtn = kobject_init_and_add(&ctrl_link->kobj, &link_info, ctrl_link->parent_kobj, "link");
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "link create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&ctrl_link->kobj);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_link_policy_create(ctrl_link);
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "sl_sysfs_link_policy_create failed [%d]", rtn);
-+		kobject_put(&ctrl_link->kobj);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_link_config_create(ctrl_link);
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "sl_sysfs_link_config_create failed [%d]", rtn);
-+		sl_sysfs_link_policy_delete(ctrl_link);
-+		kobject_put(&ctrl_link->kobj);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_link_degrade_create(core_link, &ctrl_link->kobj);
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "sl_sysfs_link_degrade_create failed [%d]", rtn);
-+		sl_sysfs_link_policy_delete(ctrl_link);
-+		sl_sysfs_link_config_delete(ctrl_link);
-+		kobject_put(&ctrl_link->kobj);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_link_pml_rec_create(core_link, &ctrl_link->kobj);
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME, "sl_sysfs_link_pml_rec_create failed [%d]", rtn);
-+		sl_sysfs_link_policy_delete(ctrl_link);
-+		sl_sysfs_link_config_delete(ctrl_link);
-+		sl_sysfs_link_degrade_delete(core_link);
-+		kobject_put(&ctrl_link->kobj);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_link_fec_create(ctrl_link);
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "sl_sysfs_link_fec_create failed [%d]", rtn);
-+		sl_sysfs_link_policy_delete(ctrl_link);
-+		sl_sysfs_link_config_delete(ctrl_link);
-+		sl_sysfs_link_degrade_delete(core_link);
-+		sl_sysfs_link_pml_rec_delete(core_link);
-+		kobject_put(&ctrl_link->kobj);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_link_caps_create(ctrl_link);
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "sl_sysfs_link_caps_create failed [%d]", rtn);
-+		sl_sysfs_link_policy_delete(ctrl_link);
-+		sl_sysfs_link_config_delete(ctrl_link);
-+		sl_sysfs_link_degrade_delete(core_link);
-+		sl_sysfs_link_pml_rec_delete(core_link);
-+		sl_sysfs_link_fec_delete(ctrl_link);
-+		kobject_put(&ctrl_link->kobj);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_link_counters_create(ctrl_link);
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "sl_sysfs_link_counters_create failed [%d]", rtn);
-+		sl_sysfs_link_policy_delete(ctrl_link);
-+		sl_sysfs_link_config_delete(ctrl_link);
-+		sl_sysfs_link_degrade_delete(core_link);
-+		sl_sysfs_link_pml_rec_delete(core_link);
-+		sl_sysfs_link_fec_delete(ctrl_link);
-+		sl_sysfs_link_caps_delete(ctrl_link);
-+		kobject_put(&ctrl_link->kobj);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_link_last_down_create(ctrl_link);
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "sl_sysfs_link_last_down_create failed [%d]", rtn);
-+		sl_sysfs_link_policy_delete(ctrl_link);
-+		sl_sysfs_link_config_delete(ctrl_link);
-+		sl_sysfs_link_degrade_delete(core_link);
-+		sl_sysfs_link_pml_rec_delete(core_link);
-+		sl_sysfs_link_fec_delete(ctrl_link);
-+		sl_sysfs_link_caps_delete(ctrl_link);
-+		sl_sysfs_link_counters_delete(ctrl_link);
-+		kobject_put(&ctrl_link->kobj);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_link_last_up_fail_create(ctrl_link);
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "sl_sysfs_link_last_up_fail_create failed [%d]", rtn);
-+		sl_sysfs_link_policy_delete(ctrl_link);
-+		sl_sysfs_link_config_delete(ctrl_link);
-+		sl_sysfs_link_degrade_delete(core_link);
-+		sl_sysfs_link_pml_rec_delete(core_link);
-+		sl_sysfs_link_fec_delete(ctrl_link);
-+		sl_sysfs_link_caps_delete(ctrl_link);
-+		sl_sysfs_link_counters_delete(ctrl_link);
-+		sl_sysfs_link_last_down_delete(ctrl_link);
-+		kobject_put(&ctrl_link->kobj);
-+		return rtn;
-+	}
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "link create (link_kobj = 0x%p)", &ctrl_link->kobj);
-+
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_link_delete(struct sl_ctrl_link *ctrl_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link delete (num = %u)", ctrl_link->num);
-+
-+	if (!ctrl_link->parent_kobj)
-+		return;
-+
-+	core_link = sl_core_link_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+				     ctrl_link->ctrl_lgrp->num, ctrl_link->num);
-+	if (!core_link)
-+		return;
-+
-+	sl_sysfs_link_policy_delete(ctrl_link);
-+	sl_sysfs_link_config_delete(ctrl_link);
-+	sl_sysfs_link_degrade_delete(core_link);
-+	sl_sysfs_link_pml_rec_delete(core_link);
-+	sl_sysfs_link_fec_delete(ctrl_link);
-+	sl_sysfs_link_caps_delete(ctrl_link);
-+	sl_sysfs_link_counters_delete(ctrl_link);
-+	sl_sysfs_link_last_down_delete(ctrl_link);
-+	sl_sysfs_link_last_up_fail_delete(ctrl_link);
-+	kobject_put(&ctrl_link->kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_caps.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_caps.c
-new file mode 100644
-index 000000000000..f52b34b31bd3
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_caps.c
-@@ -0,0 +1,303 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_link.h"
-+#include "sl_core_link.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t tech_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	struct sl_core_lgrp *core_lgrp;
-+	int                  idx;
-+	char                 output[80];
-+	u32                  tech_map;
-+	u32                  link_state;
-+	int		     rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, caps_kobj);
-+
-+	core_link = sl_core_link_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+				     ctrl_link->ctrl_lgrp->num, ctrl_link->num);
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = core_link->core_lgrp;
-+
-+	tech_map = core_lgrp->link_caps[core_link->num].tech_map;
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
-+		   "tech map show (link = 0x%p, map = 0x%X)", core_link, tech_map);
-+
-+	rtn = sl_core_link_state_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+				     ctrl_link->ctrl_lgrp->num, ctrl_link->num, &link_state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if ((tech_map == 0) ||
-+	    ((link_state != SL_CORE_LINK_STATE_UP) &&
-+		 (link_state != SL_CORE_LINK_STATE_GOING_UP) &&
-+		 (link_state != SL_CORE_LINK_STATE_AN)) ||
-+		!is_flag_set(core_link->config.flags, SL_LINK_CONFIG_OPT_AUTONEG_ENABLE))
-+		return sysfs_emit(buf, "none\n");
-+
-+	idx = 0;
-+	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CK_400G))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CK_400G));
-+	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CK_200G))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CK_200G));
-+	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CK_100G))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CK_100G));
-+	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_BS_200G))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_BS_200G));
-+	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CD_100G))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CD_100G));
-+	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CD_50G))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CD_50G));
-+	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_BJ_100G))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_BJ_100G));
-+	if (!idx)
-+		return sysfs_emit(buf, "none\n");
-+	output[idx - 1] = '\0';
-+
-+	return sysfs_emit(buf, "%s\n", output);
-+}
-+
-+static ssize_t pause_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	struct sl_core_lgrp *core_lgrp;
-+	int                  idx;
-+	char                 output[20];
-+	u32                  pause_map;
-+	u32                  link_state;
-+	int		     rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, caps_kobj);
-+
-+	core_link = sl_core_link_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+				     ctrl_link->ctrl_lgrp->num, ctrl_link->num);
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = core_link->core_lgrp;
-+
-+	pause_map = core_lgrp->link_caps[core_link->num].pause_map;
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
-+		   "pause map show (link = 0x%p, map = 0x%X)", core_link, pause_map);
-+
-+	rtn = sl_core_link_state_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+				     ctrl_link->ctrl_lgrp->num, ctrl_link->num, &link_state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if ((pause_map == 0) ||
-+	    ((link_state != SL_CORE_LINK_STATE_UP) &&
-+		 (link_state != SL_CORE_LINK_STATE_GOING_UP) &&
-+		 (link_state != SL_CORE_LINK_STATE_AN)) ||
-+		!is_flag_set(core_link->config.flags, SL_LINK_CONFIG_OPT_AUTONEG_ENABLE))
-+		return sysfs_emit(buf, "none\n");
-+
-+	idx = 0;
-+	if (is_flag_set(pause_map, SL_LINK_CONFIG_PAUSE_ASYM))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_pause_str(SL_LINK_CONFIG_PAUSE_ASYM));
-+	if (is_flag_set(pause_map, SL_LINK_CONFIG_PAUSE_SYM))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_pause_str(SL_LINK_CONFIG_PAUSE_SYM));
-+	if (!idx)
-+		return sysfs_emit(buf, "none\n");
-+	output[idx - 1] = '\0';
-+
-+	return sysfs_emit(buf, "%s\n", output);
-+}
-+
-+static ssize_t fec_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	struct sl_core_lgrp *core_lgrp;
-+	int                  idx;
-+	char                 output[20];
-+	u32                  fec_map;
-+	u32                  link_state;
-+	int		     rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, caps_kobj);
-+
-+	core_link = sl_core_link_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+				     ctrl_link->ctrl_lgrp->num, ctrl_link->num);
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = core_link->core_lgrp;
-+
-+	fec_map = core_lgrp->link_caps[core_link->num].fec_map;
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
-+		   "fec map show (link = 0x%p, map = 0x%X)", core_link, fec_map);
-+
-+	rtn = sl_core_link_state_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+				     ctrl_link->ctrl_lgrp->num, ctrl_link->num, &link_state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if ((fec_map == 0) ||
-+	    ((link_state != SL_CORE_LINK_STATE_UP) &&
-+		 (link_state != SL_CORE_LINK_STATE_GOING_UP) &&
-+		 (link_state != SL_CORE_LINK_STATE_AN)) ||
-+		!is_flag_set(core_link->config.flags, SL_LINK_CONFIG_OPT_AUTONEG_ENABLE))
-+		return sysfs_emit(buf, "none\n");
-+
-+	idx = 0;
-+	if (is_flag_set(fec_map, SL_LGRP_CONFIG_FEC_RS_LL))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_lgrp_config_fec_str(SL_LGRP_CONFIG_FEC_RS_LL));
-+	if (is_flag_set(fec_map, SL_LGRP_CONFIG_FEC_RS))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_lgrp_config_fec_str(SL_LGRP_CONFIG_FEC_RS));
-+	if (!idx)
-+		return sysfs_emit(buf, "none\n");
-+	output[idx - 1] = '\0';
-+
-+	return sysfs_emit(buf, "%s\n", output);
-+}
-+
-+static ssize_t hpe_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	struct sl_core_lgrp *core_lgrp;
-+	int                  idx;
-+	char                 output[80];
-+	u32                  hpe_map;
-+	u32                  link_state;
-+	int		     rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, caps_kobj);
-+
-+	core_link = sl_core_link_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+				     ctrl_link->ctrl_lgrp->num, ctrl_link->num);
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = core_link->core_lgrp;
-+
-+	hpe_map = core_lgrp->link_caps[core_link->num].hpe_map;
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
-+		   "hpe map show (link = 0x%p, map = 0x%X)", core_link, hpe_map);
-+
-+	rtn = sl_core_link_state_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+				     ctrl_link->ctrl_lgrp->num, ctrl_link->num, &link_state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if ((hpe_map == 0) ||
-+	    ((link_state != SL_CORE_LINK_STATE_UP) &&
-+		 (link_state != SL_CORE_LINK_STATE_GOING_UP) &&
-+		 (link_state != SL_CORE_LINK_STATE_AN)) ||
-+		!is_flag_set(core_link->config.flags, SL_LINK_CONFIG_OPT_AUTONEG_ENABLE))
-+		return sysfs_emit(buf, "none\n");
-+
-+	idx = 0;
-+	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_LINKTRAIN))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_LINKTRAIN));
-+	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_PRECODING))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_PRECODING));
-+	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_PCAL))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_PCAL));
-+	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_R3))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_R3));
-+	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_R2))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_R2));
-+	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_C3))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_R3));
-+	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_C2))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_R2));
-+	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_LLR))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_LLR));
-+	if (!idx)
-+		return sysfs_emit(buf, "none\n");
-+	output[idx - 1] = '\0';
-+
-+	return sysfs_emit(buf, "%s\n", output);
-+}
-+
-+static struct kobj_attribute tech_map  = __ATTR_RO(tech_map);
-+static struct kobj_attribute fec_map   = __ATTR_RO(fec_map);
-+static struct kobj_attribute pause_map = __ATTR_RO(pause_map);
-+static struct kobj_attribute hpe_map   = __ATTR_RO(hpe_map);
-+
-+static struct attribute *link_caps_attrs[] = {
-+	&tech_map.attr,
-+	&fec_map.attr,
-+	&pause_map.attr,
-+	&hpe_map.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_caps);
-+
-+static struct kobj_type link_caps = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_caps_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_link_caps_create(struct sl_ctrl_link *ctrl_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link caps create (num = %u)", ctrl_link->num);
-+
-+	rtn = kobject_init_and_add(&ctrl_link->caps_kobj, &link_caps, &ctrl_link->kobj, "caps");
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "link caps create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&ctrl_link->caps_kobj);
-+		return rtn;
-+	}
-+
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_link_caps_delete(struct sl_ctrl_link *ctrl_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link caps delete (num = %u)", ctrl_link->num);
-+
-+	kobject_put(&ctrl_link->caps_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_config.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_config.c
-new file mode 100644
-index 000000000000..a61072c56ca3
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_config.c
-@@ -0,0 +1,388 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "data/sl_ctrl_data_link.h"
-+#include "sl_ctrl_link.h"
-+#include "sl_core_link.h"
-+#include "data/sl_ctrl_data_link.h"
-+#include "sl_test_common.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t link_up_timeout_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  link_up_timeout_ms;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
-+
-+	rtn = sl_ctrl_data_link_up_timeout_ms_get(ctrl_link, &link_up_timeout_ms);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "link up timeout show (link_up_timeout = %ums)", link_up_timeout_ms);
-+
-+	return sysfs_emit(buf, "%u\n", link_up_timeout_ms);
-+}
-+
-+static ssize_t link_up_tries_max_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  link_up_tries_max;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
-+
-+	rtn = sl_ctrl_data_link_up_tries_max_get(ctrl_link, &link_up_tries_max);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "link up tries max show (link_up_tries_max = %d)", link_up_tries_max);
-+
-+	if (link_up_tries_max == SL_LINK_INFINITE_UP_TRIES)
-+		return sysfs_emit(buf, "infinite\n");
-+	else
-+		return sysfs_emit(buf, "%d\n", link_up_tries_max);
-+}
-+
-+static ssize_t fec_up_settle_wait_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  fec_up_settle_wait_ms;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
-+
-+	rtn = sl_ctrl_data_link_fec_up_settle_wait_ms_get(ctrl_link, &fec_up_settle_wait_ms);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "fec_up_settle_wait show (fec_up_settle_wait = %dms)", fec_up_settle_wait_ms);
-+
-+	return sysfs_emit(buf, "%d\n", fec_up_settle_wait_ms);
-+}
-+
-+static ssize_t fec_up_check_wait_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  fec_up_check_wait_ms;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
-+
-+	rtn = sl_ctrl_data_link_fec_up_check_wait_ms_get(ctrl_link, &fec_up_check_wait_ms);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "fec_up_check_wait show (fec_up_check_wait = %dms)", fec_up_check_wait_ms);
-+
-+	return sysfs_emit(buf, "%d\n", fec_up_check_wait_ms);
-+}
-+
-+static ssize_t fec_up_ucw_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	s32		     fec_up_ucw_limit;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
-+
-+	rtn = sl_ctrl_data_link_fec_up_ucw_limit_get(ctrl_link, &fec_up_ucw_limit);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "fec_up_ucw_limit show (fec_up_ucw_limit = %d)", fec_up_ucw_limit);
-+
-+	return sysfs_emit(buf, "%d\n", fec_up_ucw_limit);
-+}
-+
-+static ssize_t fec_up_ccw_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	s32		     fec_up_ccw_limit;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
-+
-+	rtn = sl_ctrl_data_link_fec_up_ccw_limit_get(ctrl_link, &fec_up_ccw_limit);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "fec_up_ccw_limit show (fec_up_ccw_limit = %d)", fec_up_ccw_limit);
-+
-+	return sysfs_emit(buf, "%d\n", fec_up_ccw_limit);
-+}
-+
-+static ssize_t lock_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  options;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
-+
-+	rtn = sl_ctrl_data_link_config_options_get(ctrl_link, &options);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "lock show (options = 0x%X)", options);
-+
-+	return sysfs_emit(buf, "%s\n", is_flag_set(options,
-+			 SL_LINK_CONFIG_OPT_LOCK) ? "enabled" : "disabled");
-+}
-+
-+static ssize_t pause_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	int                  idx;
-+	char                 output[20];
-+	u32                  pause_map;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
-+
-+	rtn = sl_ctrl_data_link_pause_map_get(ctrl_link, &pause_map);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "pause map show (link = 0x%p, map = 0x%X)", ctrl_link, pause_map);
-+
-+	if (pause_map == 0)
-+		return sysfs_emit(buf, "none\n");
-+
-+	idx = 0;
-+	if (is_flag_set(pause_map, SL_LINK_CONFIG_PAUSE_ASYM))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_pause_str(SL_LINK_CONFIG_PAUSE_ASYM));
-+	if (is_flag_set(pause_map, SL_LINK_CONFIG_PAUSE_SYM))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_pause_str(SL_LINK_CONFIG_PAUSE_SYM));
-+	if (!idx)
-+		return sysfs_emit(buf, "none\n");
-+	output[idx - 1] = '\0';
-+
-+	return sysfs_emit(buf, "%s\n", output);
-+}
-+
-+static ssize_t hpe_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	int                  idx;
-+	char                 output[80];
-+	u32                  hpe_map;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
-+
-+	rtn = sl_ctrl_data_link_hpe_map_get(ctrl_link, &hpe_map);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "hpe map show (link = 0x%p, map = 0x%X)", ctrl_link, hpe_map);
-+
-+	if (hpe_map == 0)
-+		return sysfs_emit(buf, "none\n");
-+
-+	idx = 0;
-+	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_LINKTRAIN))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_LINKTRAIN));
-+	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_PRECODING))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_PRECODING));
-+	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_PCAL))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_PCAL));
-+	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_R3))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_R3));
-+	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_R2))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_R2));
-+	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_C3))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_R3));
-+	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_C2))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_R2));
-+	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_LLR))
-+		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
-+			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_LLR));
-+	if (!idx)
-+		return sysfs_emit(buf, "none\n");
-+	output[idx - 1] = '\0';
-+
-+	return sysfs_emit(buf, "%s\n", output);
-+}
-+
-+static ssize_t autoneg_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  options;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
-+
-+	rtn = sl_ctrl_data_link_config_options_get(ctrl_link, &options);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "autoneg show (options = 0x%X)", options);
-+
-+	if (is_flag_set(options, SL_LINK_CONFIG_OPT_AUTONEG_ENABLE))
-+		return sysfs_emit(buf, "enabled\n");
-+
-+	if (is_flag_set(options, SL_LINK_CONFIG_OPT_AUTONEG_CONTINUOUS_ENABLE))
-+		return sysfs_emit(buf, "enabled-continuous\n");
-+
-+	return sysfs_emit(buf, "disabled\n");
-+}
-+
-+static ssize_t loopback_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  options;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
-+
-+	rtn = sl_ctrl_data_link_config_options_get(ctrl_link, &options);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "loopback show (options = 0x%X)", options);
-+
-+	if (is_flag_set(options, SL_LINK_CONFIG_OPT_HEADSHELL_LOOPBACK_ENABLE))
-+		return sysfs_emit(buf, "enabled-headshell\n");
-+
-+	if (is_flag_set(options, SL_LINK_CONFIG_OPT_REMOTE_LOOPBACK_ENABLE))
-+		return sysfs_emit(buf, "enabled-remote\n");
-+
-+	return sysfs_emit(buf, "disabled\n");
-+}
-+
-+static ssize_t auto_lane_degrade_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  options;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
-+
-+	rtn = sl_ctrl_data_link_config_options_get(ctrl_link, &options);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "auto lane degrade show (options = 0x%X)", options);
-+
-+	if (is_flag_set(options, SL_LINK_CONFIG_OPT_ALD_ENABLE))
-+		return sysfs_emit(buf, "enabled\n");
-+
-+	return sysfs_emit(buf, "disabled\n");
-+}
-+
-+static ssize_t pml_recovery_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  options;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
-+
-+	rtn = sl_ctrl_data_link_config_options_get(ctrl_link, &options);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "pml recovery show (options = 0x%X)", options);
-+
-+	if (is_flag_set(options, SL_LINK_CONFIG_OPT_PML_REC_ENABLE))
-+		return sysfs_emit(buf, "enabled\n");
-+
-+	return sysfs_emit(buf, "disabled\n");
-+}
-+
-+static struct kobj_attribute link_up_timeout_ms    = __ATTR_RO(link_up_timeout_ms);
-+static struct kobj_attribute link_up_tries_max_ms  = __ATTR_RO(link_up_tries_max);
-+static struct kobj_attribute fec_up_settle_wait_ms = __ATTR_RO(fec_up_settle_wait_ms);
-+static struct kobj_attribute fec_up_check_wait_ms  = __ATTR_RO(fec_up_check_wait_ms);
-+static struct kobj_attribute fec_up_ucw_limit      = __ATTR_RO(fec_up_ucw_limit);
-+static struct kobj_attribute fec_up_ccw_limit      = __ATTR_RO(fec_up_ccw_limit);
-+static struct kobj_attribute lock                  = __ATTR_RO(lock);
-+static struct kobj_attribute pause_map             = __ATTR_RO(pause_map);
-+static struct kobj_attribute hpe_map               = __ATTR_RO(hpe_map);
-+static struct kobj_attribute autoneg               = __ATTR_RO(autoneg);
-+static struct kobj_attribute loopback              = __ATTR_RO(loopback);
-+static struct kobj_attribute auto_lane_degrade     = __ATTR_RO(auto_lane_degrade);
-+static struct kobj_attribute pml_recovery          = __ATTR_RO(pml_recovery);
-+
-+static struct attribute *link_config_attrs[] = {
-+	&link_up_timeout_ms.attr,
-+	&link_up_tries_max_ms.attr,
-+	&fec_up_settle_wait_ms.attr,
-+	&fec_up_check_wait_ms.attr,
-+	&fec_up_ucw_limit.attr,
-+	&fec_up_ccw_limit.attr,
-+	&lock.attr,
-+	&pause_map.attr,
-+	&hpe_map.attr,
-+	&autoneg.attr,
-+	&loopback.attr,
-+	&auto_lane_degrade.attr,
-+	&pml_recovery.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_config);
-+
-+static struct kobj_type link_config = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_config_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_link_config_create(struct sl_ctrl_link *ctrl_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link config create (num = %u)", ctrl_link->num);
-+
-+	rtn = kobject_init_and_add(&ctrl_link->config_kobj, &link_config, &ctrl_link->kobj, "config");
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "link config create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&ctrl_link->config_kobj);
-+		return rtn;
-+	}
-+
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_link_config_delete(struct sl_ctrl_link *ctrl_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link config delete (num = %u)", ctrl_link->num);
-+
-+	kobject_put(&ctrl_link->config_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_counters.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_counters.c
-new file mode 100644
-index 000000000000..fdfb84636d0e
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_counters.c
-@@ -0,0 +1,1498 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2025,2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_link.h"
-+#include "sl_core_link.h"
-+#include "sl_ctrl_link_counters.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t link_up_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_UP_CMD, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link up cmd show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t link_up_retry_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_UP_RETRY, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link up retry show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t link_up_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_UP, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link up show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t link_up_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_UP_FAIL, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link up fail show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t link_down_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_DOWN_CMD, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link down cmd show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t link_down_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_DOWN, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link down show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t link_up_canceled_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_UP_CANCELED, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link up canceled show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t link_up_cancel_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_UP_CANCEL_CMD, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link up cancel cmd show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t link_reset_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_RESET_CMD, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link reset cmd show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t link_fault_async_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_FAULT_ASYNC, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link fault async show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t link_ccw_warn_crossed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_CCW_WARN_CROSSED, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link ccw warn crossed show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t link_ucw_warn_crossed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_UCW_WARN_CROSSED, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link ucw warn crossed show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t link_down_ccw_limit_crossed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_DOWN_CCW_LIMIT_CROSSED, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link down ccw limit crossed show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t link_down_ucw_limit_crossed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_DOWN_UCW_LIMIT_CROSSED, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link down ucw limit crossed show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t link_down_ccw_cause_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_DOWN_CCW_CAUSE, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link down ccw cause show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t link_down_ucw_cause_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_DOWN_UCW_CAUSE, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link down ucw cause show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t link_up_fail_ccw_limit_crossed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_UP_FAIL_CCW_LIMIT_CROSSED, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link up fail ccw limit crossed show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t link_up_fail_ucw_limit_crossed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_UP_FAIL_UCW_LIMIT_CROSSED, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link up fail ucw limit crossed show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t link_autoneg_np_retry_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_retry_count_get(ctrl_link, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link autoneg np retry show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t link_autoneg_attempt_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_HW_AN_ATTEMPT, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link autoneg attempt show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_ucw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_UCW, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause ucw show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_lf_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_LF, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause lf show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_rf_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_RF, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause rf show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_down_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_DOWN, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause down show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_up_tries_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_UP_TRIES, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause up tries show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_autoneg_nomatch_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_AUTONEG_NOMATCH, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause autoneg nomatch show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_autoneg_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_AUTONEG, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause autoneg show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_config_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_CONFIG, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause config show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_intr_enable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_INTR_ENABLE, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause intr enable show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_timeout_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_TIMEOUT, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause timeout show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_canceled_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_CANCELED, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause canceled show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_unsupported_cable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_UNSUPPORTED_CABLE, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause unsupported cable show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_command_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_COMMAND, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause command show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_downshift_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_DOWNSHIFT, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause downshift show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_llr_replay_max_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_LLR_REPLAY_MAX, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause llr replay max show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_upshift_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_UPSHIFT, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause upshift show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_autoneg_config_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_AUTONEG_CONFIG, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause autoneg config show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_pcs_fault_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_PCS_FAULT, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause pcs fault show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_serdes_pll_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_SERDES_PLL, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause serdes pll show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_serdes_config_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_SERDES_CONFIG, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause serdes config show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_serdes_signal_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_SERDES_SIGNAL, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause serdes signal show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_serdes_quality_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_SERDES_QUALITY, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause serdes quality show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_no_media_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_NO_MEDIA, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause no media show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_ccw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_CCW, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause ccw show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_hot_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_MEDIA_HOT, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause hot show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_warm_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_MEDIA_WARM, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause warm show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_intr_register_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_INTR_REGISTER, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause intr register show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_media_error_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_MEDIA_ERROR, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause media error show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_up_canceled_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_UP_CANCELED, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause up canceled show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_unsupported_speed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_UNSUPPORTED_SPEED, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause unsupported speed show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_ss200_cable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_SS200_CABLE, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause ss200 cable show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_tx_lol_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_TX_LOL, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause tx lol show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_rx_lol_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_RX_LOL, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause rx lol show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_tx_los_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_TX_LOS, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause tx los show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_rx_los_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_RX_LOS, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause rx los show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_lp_caps_serdes_link_up_fail_show(struct kobject *kobj,
-+							 struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_LP_CAPS_SERDES_LINK_UP_FAIL, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause lp caps serdes link up fail show (counter = %u)",
-+		   counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_lp_caps_not_complete_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_LP_CAPS_NOT_COMPLETE, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause lp caps not complete show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_not_complete_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_NOT_COMPLETE, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause not complete show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_test_caps_nomatch_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_TEST_CAPS_NOMATCH, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause test caps nomatch show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_serdes_link_up_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_SERDES_LINK_UP_FAIL, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause serdes link up fail show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_bp_store_state_bad_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_BP_STORE_STATE_BAD, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause bp store state bad show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_bp_store_lp_ability_not_set_show(struct kobject *kobj, struct kobj_attribute *kattr,
-+							 char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_BP_STORE_LP_ABILITY_NOT_SET, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause bp store lp ability not set show (counter = %u)",
-+		   counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_bp_store_state_error_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_BP_STORE_STATE_ERROR, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause bp store state error show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_bp_store_bp_not_set_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_BP_STORE_BP_NOT_SET, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause bp store bp not set show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_bp_send_intr_enable_fail_show(struct kobject *kobj, struct kobj_attribute *kattr,
-+						      char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_BP_SEND_INTR_ENABLE_FAIL, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause bp send intr enable fail show (counter = %u)",
-+		   counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_np_store_state_bad_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_NP_STORE_STATE_BAD, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause np store state bad show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_np_store_bp_set_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_NP_STORE_BP_SET, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause np store state bp set show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_np_check_state_bad_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_NP_CHECK_STATE_BAD, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause np check state bad show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_intr_state_invalid_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_INTR_STATE_INVALID, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause intr state invalid show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_intr_an_retry_np_send_fail_show(struct kobject *kobj, struct kobj_attribute *kattr,
-+							char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_INTR_AN_RETRY_NP_SEND_FAIL, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause intr an retry np send fail show (counter = %u)",
-+		   counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_intr_out_of_pages_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_INTR_OUT_OF_PAGES, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause intr out og pages show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_intr_np_send_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_INTR_NP_SEND_FAIL, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause intr np send fail show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_pages_decode_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_PAGES_DECODE_FAIL, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause pages decode fail show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_pages_decode_no_bp_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_PAGES_DECODE_NO_BP, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause pages decode no bp show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t an_cause_pages_decode_oui_invalid_show(struct kobject *kobj, struct kobj_attribute *kattr,
-+						      char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  counter;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
-+
-+	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_PAGES_DECODE_OUI_INVALID, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause pages decode oui invalid show (counter = %u)",
-+		   counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static struct kobj_attribute link_up_cmd                    = __ATTR_RO(link_up_cmd);
-+static struct kobj_attribute link_up_retry                  = __ATTR_RO(link_up_retry);
-+static struct kobj_attribute link_up                        = __ATTR_RO(link_up);
-+static struct kobj_attribute link_up_fail                   = __ATTR_RO(link_up_fail);
-+static struct kobj_attribute link_down_cmd                  = __ATTR_RO(link_down_cmd);
-+static struct kobj_attribute link_down                      = __ATTR_RO(link_down);
-+static struct kobj_attribute link_up_cancel_cmd             = __ATTR_RO(link_up_cancel_cmd);
-+static struct kobj_attribute link_up_canceled               = __ATTR_RO(link_up_canceled);
-+static struct kobj_attribute link_reset_cmd                 = __ATTR_RO(link_reset_cmd);
-+static struct kobj_attribute link_fault_async               = __ATTR_RO(link_fault_async);
-+static struct kobj_attribute link_ccw_warn_crossed          = __ATTR_RO(link_ccw_warn_crossed);
-+static struct kobj_attribute link_ucw_warn_crossed          = __ATTR_RO(link_ucw_warn_crossed);
-+static struct kobj_attribute link_down_ccw_limit_crossed    = __ATTR_RO(link_down_ccw_limit_crossed);
-+static struct kobj_attribute link_down_ucw_limit_crossed    = __ATTR_RO(link_down_ucw_limit_crossed);
-+static struct kobj_attribute link_down_ccw_cause            = __ATTR_RO(link_down_ccw_cause);
-+static struct kobj_attribute link_down_ucw_cause            = __ATTR_RO(link_down_ucw_cause);
-+static struct kobj_attribute link_up_fail_ccw_limit_crossed = __ATTR_RO(link_up_fail_ccw_limit_crossed);
-+static struct kobj_attribute link_up_fail_ucw_limit_crossed = __ATTR_RO(link_up_fail_ucw_limit_crossed);
-+static struct kobj_attribute link_autoneg_np_retry          = __ATTR_RO(link_autoneg_np_retry);
-+static struct kobj_attribute link_autoneg_attempt           = __ATTR_RO(link_autoneg_attempt);
-+
-+static struct kobj_attribute link_cause_ucw               = __ATTR_RO(cause_ucw);
-+static struct kobj_attribute link_cause_lf                = __ATTR_RO(cause_lf);
-+static struct kobj_attribute link_cause_rf                = __ATTR_RO(cause_rf);
-+static struct kobj_attribute link_cause_down              = __ATTR_RO(cause_down);
-+static struct kobj_attribute link_cause_up_tries          = __ATTR_RO(cause_up_tries);
-+static struct kobj_attribute link_cause_autoneg_nomatch   = __ATTR_RO(cause_autoneg_nomatch);
-+static struct kobj_attribute link_cause_autoneg           = __ATTR_RO(cause_autoneg);
-+static struct kobj_attribute link_cause_config            = __ATTR_RO(cause_config);
-+static struct kobj_attribute link_cause_intr_enable       = __ATTR_RO(cause_intr_enable);
-+static struct kobj_attribute link_cause_timeout           = __ATTR_RO(cause_timeout);
-+static struct kobj_attribute link_cause_canceled          = __ATTR_RO(cause_canceled);
-+static struct kobj_attribute link_cause_unsupported_cable = __ATTR_RO(cause_unsupported_cable);
-+static struct kobj_attribute link_cause_command           = __ATTR_RO(cause_command);
-+static struct kobj_attribute link_cause_downshift         = __ATTR_RO(cause_downshift);
-+static struct kobj_attribute link_cause_llr_replay_max    = __ATTR_RO(cause_llr_replay_max);
-+static struct kobj_attribute link_cause_upshift           = __ATTR_RO(cause_upshift);
-+static struct kobj_attribute link_cause_autoneg_config    = __ATTR_RO(cause_autoneg_config);
-+static struct kobj_attribute link_cause_pcs_fault         = __ATTR_RO(cause_pcs_fault);
-+static struct kobj_attribute link_cause_serdes_pll        = __ATTR_RO(cause_serdes_pll);
-+static struct kobj_attribute link_cause_serdes_config     = __ATTR_RO(cause_serdes_config);
-+static struct kobj_attribute link_cause_serdes_signal     = __ATTR_RO(cause_serdes_signal);
-+static struct kobj_attribute link_cause_serdes_quality    = __ATTR_RO(cause_serdes_quality);
-+static struct kobj_attribute link_cause_no_media          = __ATTR_RO(cause_no_media);
-+static struct kobj_attribute link_cause_ccw               = __ATTR_RO(cause_ccw);
-+static struct kobj_attribute link_cause_hot               = __ATTR_RO(cause_hot);
-+static struct kobj_attribute link_cause_warm              = __ATTR_RO(cause_warm);
-+static struct kobj_attribute link_cause_intr_register     = __ATTR_RO(cause_intr_register);
-+static struct kobj_attribute link_cause_media_error       = __ATTR_RO(cause_media_error);
-+static struct kobj_attribute link_cause_up_canceled       = __ATTR_RO(cause_up_canceled);
-+static struct kobj_attribute link_cause_unsupported_speed = __ATTR_RO(cause_unsupported_speed);
-+static struct kobj_attribute link_cause_ss200_cable       = __ATTR_RO(cause_ss200_cable);
-+static struct kobj_attribute link_cause_tx_lol            = __ATTR_RO(cause_tx_lol);
-+static struct kobj_attribute link_cause_rx_lol            = __ATTR_RO(cause_rx_lol);
-+static struct kobj_attribute link_cause_tx_los            = __ATTR_RO(cause_tx_los);
-+static struct kobj_attribute link_cause_rx_los            = __ATTR_RO(cause_rx_los);
-+
-+static struct kobj_attribute link_an_cause_lp_caps_serdes_link_up_fail =
-+			     __ATTR_RO(an_cause_lp_caps_serdes_link_up_fail);
-+static struct kobj_attribute link_an_cause_lp_caps_not_complete        = __ATTR_RO(an_cause_lp_caps_not_complete);
-+static struct kobj_attribute link_an_cause_not_complete                = __ATTR_RO(an_cause_not_complete);
-+static struct kobj_attribute link_an_cause_test_caps_nomatch           = __ATTR_RO(an_cause_test_caps_nomatch);
-+static struct kobj_attribute link_an_cause_serdes_link_up_fail         = __ATTR_RO(an_cause_serdes_link_up_fail);
-+static struct kobj_attribute link_an_cause_bp_store_state_bad          = __ATTR_RO(an_cause_bp_store_state_bad);
-+static struct kobj_attribute link_an_cause_bp_store_lp_ability_not_set =
-+			     __ATTR_RO(an_cause_bp_store_lp_ability_not_set);
-+static struct kobj_attribute link_an_cause_bp_store_state_error        = __ATTR_RO(an_cause_bp_store_state_error);
-+static struct kobj_attribute link_an_cause_bp_store_bp_not_set         = __ATTR_RO(an_cause_bp_store_bp_not_set);
-+static struct kobj_attribute link_an_cause_bp_send_intr_enable_fail    =
-+			     __ATTR_RO(an_cause_bp_send_intr_enable_fail);
-+static struct kobj_attribute link_an_cause_np_store_state_bad          = __ATTR_RO(an_cause_np_store_state_bad);
-+static struct kobj_attribute link_an_cause_np_store_bp_set             = __ATTR_RO(an_cause_np_store_bp_set);
-+static struct kobj_attribute link_an_cause_np_check_state_bad          = __ATTR_RO(an_cause_np_check_state_bad);
-+static struct kobj_attribute link_an_cause_intr_state_invalid          = __ATTR_RO(an_cause_intr_state_invalid);
-+static struct kobj_attribute link_an_cause_intr_an_retry_np_send_fail  =
-+			     __ATTR_RO(an_cause_intr_an_retry_np_send_fail);
-+static struct kobj_attribute link_an_cause_intr_out_of_pages           = __ATTR_RO(an_cause_intr_out_of_pages);
-+static struct kobj_attribute link_an_cause_intr_np_send_fail           = __ATTR_RO(an_cause_intr_np_send_fail);
-+static struct kobj_attribute link_an_cause_pages_decode_fail           = __ATTR_RO(an_cause_pages_decode_fail);
-+static struct kobj_attribute link_an_cause_pages_decode_no_bp          = __ATTR_RO(an_cause_pages_decode_no_bp);
-+static struct kobj_attribute link_an_cause_pages_decode_oui_invalid    =
-+			     __ATTR_RO(an_cause_pages_decode_oui_invalid);
-+
-+static struct attribute *link_counters_attrs[] = {
-+	&link_up_cmd.attr,
-+	&link_up_retry.attr,
-+	&link_up.attr,
-+	&link_up_fail.attr,
-+	&link_down_cmd.attr,
-+	&link_down.attr,
-+	&link_up_cancel_cmd.attr,
-+	&link_up_canceled.attr,
-+	&link_reset_cmd.attr,
-+	&link_fault_async.attr,
-+	&link_ccw_warn_crossed.attr,
-+	&link_ucw_warn_crossed.attr,
-+	&link_down_ccw_limit_crossed.attr,
-+	&link_down_ucw_limit_crossed.attr,
-+	&link_down_ccw_cause.attr,
-+	&link_down_ucw_cause.attr,
-+	&link_up_fail_ccw_limit_crossed.attr,
-+	&link_up_fail_ucw_limit_crossed.attr,
-+	&link_autoneg_np_retry.attr,
-+	&link_autoneg_attempt.attr,
-+	&link_cause_ucw.attr,
-+	&link_cause_lf.attr,
-+	&link_cause_rf.attr,
-+	&link_cause_down.attr,
-+	&link_cause_up_tries.attr,
-+	&link_cause_autoneg_nomatch.attr,
-+	&link_cause_autoneg.attr,
-+	&link_cause_config.attr,
-+	&link_cause_intr_enable.attr,
-+	&link_cause_timeout.attr,
-+	&link_cause_canceled.attr,
-+	&link_cause_unsupported_cable.attr,
-+	&link_cause_command.attr,
-+	&link_cause_downshift.attr,
-+	&link_cause_llr_replay_max.attr,
-+	&link_cause_upshift.attr,
-+	&link_cause_autoneg_config.attr,
-+	&link_cause_pcs_fault.attr,
-+	&link_cause_serdes_pll.attr,
-+	&link_cause_serdes_config.attr,
-+	&link_cause_serdes_signal.attr,
-+	&link_cause_serdes_quality.attr,
-+	&link_cause_no_media.attr,
-+	&link_cause_ccw.attr,
-+	&link_cause_hot.attr,
-+	&link_cause_warm.attr,
-+	&link_cause_intr_register.attr,
-+	&link_cause_media_error.attr,
-+	&link_cause_up_canceled.attr,
-+	&link_cause_unsupported_speed.attr,
-+	&link_cause_ss200_cable.attr,
-+	&link_cause_tx_lol.attr,
-+	&link_cause_rx_lol.attr,
-+	&link_cause_tx_los.attr,
-+	&link_cause_rx_los.attr,
-+	&link_an_cause_lp_caps_serdes_link_up_fail.attr,
-+	&link_an_cause_lp_caps_not_complete.attr,
-+	&link_an_cause_not_complete.attr,
-+	&link_an_cause_test_caps_nomatch.attr,
-+	&link_an_cause_serdes_link_up_fail.attr,
-+	&link_an_cause_bp_store_state_bad.attr,
-+	&link_an_cause_bp_store_lp_ability_not_set.attr,
-+	&link_an_cause_bp_store_state_error.attr,
-+	&link_an_cause_bp_store_bp_not_set.attr,
-+	&link_an_cause_bp_send_intr_enable_fail.attr,
-+	&link_an_cause_np_store_state_bad.attr,
-+	&link_an_cause_np_store_bp_set.attr,
-+	&link_an_cause_np_check_state_bad.attr,
-+	&link_an_cause_intr_state_invalid.attr,
-+	&link_an_cause_intr_an_retry_np_send_fail.attr,
-+	&link_an_cause_intr_out_of_pages.attr,
-+	&link_an_cause_intr_np_send_fail.attr,
-+	&link_an_cause_pages_decode_fail.attr,
-+	&link_an_cause_pages_decode_no_bp.attr,
-+	&link_an_cause_pages_decode_oui_invalid.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_counters);
-+
-+static struct kobj_type link_counters = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_counters_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_link_counters_create(struct sl_ctrl_link *ctrl_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link counters create");
-+
-+	rtn = kobject_init_and_add(&ctrl_link->counters_kobj, &link_counters, &ctrl_link->kobj, "counters");
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "link counters create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&ctrl_link->counters_kobj);
-+		return rtn;
-+	}
-+
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_link_counters_delete(struct sl_ctrl_link *ctrl_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link counters delete");
-+	kobject_put(&ctrl_link->counters_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_degrade.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_degrade.c
-new file mode 100644
-index 000000000000..3ba254a54560
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_degrade.c
-@@ -0,0 +1,336 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2025-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+#include <linux/types.h>
-+
-+#include "sl_log.h"
-+#include "data/sl_core_data_link.h"
-+
-+#include "sl_sysfs.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_core_link *core_link;
-+	u32                  link_state;
-+	int                  degrade_state;
-+
-+	core_link = container_of(kobj, struct sl_core_link, degrade_kobj);
-+
-+	rtn = sl_core_data_link_state_get(core_link, &link_state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if (link_state != SL_CORE_LINK_STATE_UP)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	rtn = sl_core_data_link_degrade_state_get(core_link, &degrade_state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "degrade state show (state = %u %s)",
-+		   degrade_state, sl_link_degrade_state_str(degrade_state));
-+
-+	return sysfs_emit(buf, "%s\n", sl_link_degrade_state_str(degrade_state));
-+}
-+
-+static ssize_t is_rx_degraded_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_core_link *core_link;
-+	bool                 is_rx_degraded;
-+	u32                  link_state;
-+
-+	core_link = container_of(kobj, struct sl_core_link, degrade_kobj);
-+
-+	rtn = sl_core_data_link_state_get(core_link, &link_state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if (link_state != SL_CORE_LINK_STATE_UP)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	rtn = sl_core_data_link_is_rx_degrade_get(core_link, &is_rx_degraded);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "is rx degraded show (is_rx_degraded = %s)",
-+		   is_rx_degraded ? "yes" : "no");
-+
-+	return sysfs_emit(buf, "%s\n", is_rx_degraded ? "yes" : "no");
-+}
-+
-+static ssize_t rx_degrade_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_core_link *core_link;
-+	u32                  link_state;
-+	u8                   rx_degrade_map;
-+	bool                 is_rx_degraded;
-+
-+	core_link = container_of(kobj, struct sl_core_link, degrade_kobj);
-+
-+	rtn = sl_core_data_link_state_get(core_link, &link_state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if (link_state != SL_CORE_LINK_STATE_UP)
-+		return sysfs_emit(buf, "--\n");
-+
-+	rtn = sl_core_data_link_is_rx_degrade_get(core_link, &is_rx_degraded);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if (!is_rx_degraded)
-+		return sysfs_emit(buf, "--\n");
-+
-+	rtn = sl_core_data_link_degrade_rx_degrade_map_get(core_link, &rx_degrade_map);
-+	if (rtn == -EBADRQC)
-+		return sysfs_emit(buf, "--\n");
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
-+		   "rx degrade lane map show (rx_degrade_map = 0x%X)", rx_degrade_map);
-+
-+	return sysfs_emit(buf, "0x%X\n", rx_degrade_map);
-+}
-+
-+static ssize_t rx_link_speed_gbps_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_core_link *core_link;
-+	u32                  link_state;
-+	u16                  link_speed;
-+	bool                 is_rx_degraded;
-+
-+	core_link = container_of(kobj, struct sl_core_link, degrade_kobj);
-+
-+	rtn = sl_core_data_link_state_get(core_link, &link_state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if (link_state != SL_CORE_LINK_STATE_UP)
-+		return sysfs_emit(buf, "--\n");
-+
-+	rtn = sl_core_data_link_is_rx_degrade_get(core_link, &is_rx_degraded);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if (!is_rx_degraded)
-+		return sysfs_emit(buf, "--\n");
-+
-+	rtn = sl_core_data_link_degrade_rx_link_speed_get(core_link, &link_speed);
-+	if (rtn == -EBADRQC)
-+		return sysfs_emit(buf, "--\n");
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
-+		   "rx degrade link speed gbps show (link_speed = %u)", link_speed);
-+
-+	return sysfs_emit(buf, "%u\n", link_speed);
-+}
-+
-+static ssize_t is_tx_degraded_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_core_link *core_link;
-+	bool                 is_tx_degraded;
-+	u32                  link_state;
-+
-+	core_link = container_of(kobj, struct sl_core_link, degrade_kobj);
-+
-+	rtn = sl_core_data_link_state_get(core_link, &link_state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if (link_state != SL_CORE_LINK_STATE_UP)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	rtn = sl_core_data_link_is_tx_degrade_get(core_link, &is_tx_degraded);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "is tx degraded show (degrade = %s)",
-+		   is_tx_degraded ? "yes" : "no");
-+
-+	return sysfs_emit(buf, "%s\n", is_tx_degraded ? "yes" : "no");
-+}
-+
-+static ssize_t tx_degrade_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_core_link *core_link;
-+	u32                  link_state;
-+	u8                   tx_degrade_map;
-+	bool                 is_tx_degraded;
-+
-+	core_link = container_of(kobj, struct sl_core_link, degrade_kobj);
-+
-+	rtn = sl_core_data_link_state_get(core_link, &link_state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if (link_state != SL_CORE_LINK_STATE_UP)
-+		return sysfs_emit(buf, "--\n");
-+
-+	rtn = sl_core_data_link_is_tx_degrade_get(core_link, &is_tx_degraded);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if (!is_tx_degraded)
-+		return sysfs_emit(buf, "--\n");
-+
-+	rtn = sl_core_data_link_degrade_tx_degrade_map_get(core_link, &tx_degrade_map);
-+	if (rtn == -EBADRQC)
-+		return sysfs_emit(buf, "--\n");
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
-+		   "tx degrade lane map show (tx_degrade_map = 0x%X)", tx_degrade_map);
-+
-+	return sysfs_emit(buf, "0x%X\n", tx_degrade_map);
-+}
-+
-+static ssize_t tx_link_speed_gbps_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_core_link *core_link;
-+	u32                  link_state;
-+	u16                  link_speed;
-+	bool                 is_tx_degraded;
-+
-+	core_link = container_of(kobj, struct sl_core_link, degrade_kobj);
-+
-+	rtn = sl_core_data_link_state_get(core_link, &link_state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if (link_state != SL_CORE_LINK_STATE_UP)
-+		return sysfs_emit(buf, "--\n");
-+
-+	rtn = sl_core_data_link_is_tx_degrade_get(core_link, &is_tx_degraded);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if (!is_tx_degraded)
-+		return sysfs_emit(buf, "--\n");
-+
-+	rtn = sl_core_data_link_degrade_tx_link_speed_get(core_link, &link_speed);
-+	if (rtn == -EBADRQC)
-+		return sysfs_emit(buf, "--\n");
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
-+		   "tx degrade link speed gbps show (link_speed = %u)", link_speed);
-+
-+	return sysfs_emit(buf, "%u\n", link_speed);
-+}
-+
-+static ssize_t is_recoverable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_core_link *core_link;
-+	u32                  link_state;
-+	bool                 is_tx_degraded;
-+	bool                 is_rx_degraded;
-+	bool                 is_recoverable;
-+
-+	core_link = container_of(kobj, struct sl_core_link, degrade_kobj);
-+
-+	rtn = sl_core_data_link_state_get(core_link, &link_state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if (link_state != SL_CORE_LINK_STATE_UP)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	rtn = sl_core_data_link_is_tx_degrade_get(core_link, &is_tx_degraded);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	rtn = sl_core_data_link_is_rx_degrade_get(core_link, &is_rx_degraded);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if (!is_rx_degraded && !is_tx_degraded)
-+		return sysfs_emit(buf, "--\n");
-+
-+	rtn = sl_core_data_link_degrade_is_recoverable_get(core_link, &is_recoverable);
-+	if (rtn == -EBADRQC)
-+		return sysfs_emit(buf, "inactive\n");
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
-+		   "is recoverable show (is_recoverable = %s)", is_recoverable ? "yes" : "no");
-+
-+	return sysfs_emit(buf, "%s\n", is_recoverable ? "yes" : "no");
-+}
-+
-+static struct kobj_attribute link_degrade_state              = __ATTR_RO(state);
-+static struct kobj_attribute link_is_rx_degraded             = __ATTR_RO(is_rx_degraded);
-+static struct kobj_attribute link_rx_degrade_lane_map        = __ATTR_RO(rx_degrade_map);
-+static struct kobj_attribute link_rx_degrade_link_speed_gbps = __ATTR_RO(rx_link_speed_gbps);
-+static struct kobj_attribute link_is_tx_degraded             = __ATTR_RO(is_tx_degraded);
-+static struct kobj_attribute link_tx_degrade_lane_map        = __ATTR_RO(tx_degrade_map);
-+static struct kobj_attribute link_tx_degrade_link_speed_gbps = __ATTR_RO(tx_link_speed_gbps);
-+static struct kobj_attribute link_is_recoverable             = __ATTR_RO(is_recoverable);
-+
-+static struct attribute *link_degrade_attrs[] = {
-+	&link_degrade_state.attr,
-+	&link_is_rx_degraded.attr,
-+	&link_rx_degrade_lane_map.attr,
-+	&link_rx_degrade_link_speed_gbps.attr,
-+	&link_is_tx_degraded.attr,
-+	&link_tx_degrade_lane_map.attr,
-+	&link_tx_degrade_link_speed_gbps.attr,
-+	&link_is_recoverable.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_degrade);
-+
-+static struct kobj_type link_degrade = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_degrade_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_link_degrade_create(struct sl_core_link *core_link, struct kobject *parent_kobj)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "link degrade create (num = %u)", core_link->num);
-+
-+	rtn = kobject_init_and_add(&core_link->degrade_kobj, &link_degrade, parent_kobj, "auto_lane_degrade");
-+	if (rtn) {
-+		sl_log_err(core_link, LOG_BLOCK, LOG_NAME,
-+			   "link degrade create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&core_link->degrade_kobj);
-+		return rtn;
-+	}
-+
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_link_degrade_delete(struct sl_core_link *core_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "link degrade delete (num = %u)", core_link->num);
-+
-+	kobject_put(&core_link->degrade_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec.c
-new file mode 100644
-index 000000000000..37edb89f8595
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec.c
-@@ -0,0 +1,148 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_core_link.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_link.h"
-+#include "sl_ctrl_link_fec.h"
-+#include "sl_sysfs_link_fec_current.h"
-+#include "sl_sysfs_link_fec_mon_check.h"
-+#include "sl_sysfs_link_fec_up_check.h"
-+#include "sl_sysfs_link_fec_up.h"
-+#include "sl_sysfs_link_fec_down.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t monitor_state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  state;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.kobj);
-+
-+	rtn = sl_ctrl_link_fec_mon_state_get(ctrl_link, &state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "monitor state show (link = 0x%p, state = %u, %s)", ctrl_link, state,
-+		   sl_ctrl_link_fec_mon_state_str(state));
-+
-+	return sysfs_emit(buf, "%s\n", sl_ctrl_link_fec_mon_state_str(state));
-+}
-+
-+static struct kobj_attribute fec_monitor_state = __ATTR_RO(monitor_state);
-+
-+static struct attribute *link_fec_attrs[] = {
-+	&fec_monitor_state.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_fec);
-+
-+static struct kobj_type link_fec = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_fec_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_link_fec_create(struct sl_ctrl_link *ctrl_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	int                  rtn;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link fec create (num = %u)", ctrl_link->num);
-+
-+	core_link = sl_core_link_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num, ctrl_link->num);
-+	if (!core_link)
-+		return -ENODEV;
-+
-+	rtn = kobject_init_and_add(&ctrl_link->fec.kobj, &link_fec, &ctrl_link->kobj, "fec");
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "link fec create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&ctrl_link->fec.kobj);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_link_fec_current_create(core_link, &ctrl_link->fec.kobj);
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "link fec current create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&ctrl_link->fec.kobj);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_link_fec_mon_check_create(ctrl_link);
-+	if (rtn) {
-+		sl_log_err(core_link, LOG_BLOCK, LOG_NAME, "fec mon check create failed [%d]", rtn);
-+		sl_sysfs_link_fec_current_delete(core_link);
-+		kobject_put(&ctrl_link->fec.kobj);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_link_fec_up_check_create(core_link, &ctrl_link->fec.kobj);
-+	if (rtn) {
-+		sl_log_err(core_link, LOG_BLOCK, LOG_NAME, "fec up check create failed [%d]", rtn);
-+		sl_sysfs_link_fec_current_delete(core_link);
-+		sl_sysfs_link_fec_mon_check_delete(ctrl_link);
-+		kobject_put(&ctrl_link->fec.kobj);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_link_fec_up_create(ctrl_link);
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "link fec up create kobject_init_and_add failed [%d]", rtn);
-+		sl_sysfs_link_fec_current_delete(core_link);
-+		sl_sysfs_link_fec_mon_check_delete(ctrl_link);
-+		sl_sysfs_link_fec_up_check_delete(core_link);
-+		kobject_put(&ctrl_link->fec.kobj);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_link_fec_down_create(ctrl_link);
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "link fec down create kobject_init_and_add failed [%d]", rtn);
-+		sl_sysfs_link_fec_current_delete(core_link);
-+		sl_sysfs_link_fec_mon_check_delete(ctrl_link);
-+		sl_sysfs_link_fec_up_check_delete(core_link);
-+		sl_sysfs_link_fec_up_delete(ctrl_link);
-+		kobject_put(&ctrl_link->fec.kobj);
-+		return rtn;
-+	}
-+
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_link_fec_delete(struct sl_ctrl_link *ctrl_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link fec delete (num = %u)", ctrl_link->num);
-+
-+	core_link = sl_core_link_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num, ctrl_link->num);
-+	if (!core_link)
-+		return;
-+
-+	sl_sysfs_link_fec_current_delete(core_link);
-+	sl_sysfs_link_fec_mon_check_delete(ctrl_link);
-+	sl_sysfs_link_fec_up_check_delete(core_link);
-+	sl_sysfs_link_fec_up_delete(ctrl_link);
-+	sl_sysfs_link_fec_down_delete(ctrl_link);
-+	kobject_put(&ctrl_link->fec.kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_current.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_current.c
-new file mode 100644
-index 000000000000..30514651d6fe
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_current.c
-@@ -0,0 +1,336 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_log.h"
-+#include "sl_core_link.h"
-+
-+#include "sl_sysfs_link_fec_current.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t ccw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	u64                  ccw;
-+	struct sl_core_link *core_link;
-+
-+	core_link = container_of(kobj, struct sl_core_link, fec.current_kobj);
-+
-+	rtn = sl_core_link_fec_ccw_get(core_link, &ccw);
-+	if (rtn == -ENOLINK) {
-+		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
-+				 "ccw show sl_core_link_fec_ccw_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "no-link\n");
-+	}
-+	if (rtn) {
-+		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
-+				 "ccw show sl_core_link_fec_ccw_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "io-error\n");
-+	}
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "ccw show (ccw = %llu)", ccw);
-+
-+	return sysfs_emit(buf, "%llu\n", ccw);
-+}
-+
-+static ssize_t ucw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	u64                  ucw;
-+	struct sl_core_link *core_link;
-+
-+	core_link = container_of(kobj, struct sl_core_link, fec.current_kobj);
-+
-+	rtn = sl_core_link_fec_ucw_get(core_link, &ucw);
-+	if (rtn == -ENOLINK) {
-+		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
-+				 "ucw show sl_core_link_fec_ucw_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "no-link\n");
-+	}
-+	if (rtn) {
-+		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
-+				 "ucw show sl_core_link_fec_ucw_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "io-error\n");
-+	}
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "ucw show (ucw = %llu)", ucw);
-+
-+	return sysfs_emit(buf, "%llu\n", ucw);
-+}
-+
-+static ssize_t gcw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int		     rtn;
-+	u64                  gcw;
-+	struct sl_core_link *core_link;
-+
-+	core_link = container_of(kobj, struct sl_core_link, fec.current_kobj);
-+
-+	rtn = sl_core_link_fec_gcw_get(core_link, &gcw);
-+	if (rtn == -ENOLINK) {
-+		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
-+				 "gcw show sl_core_link_fec_gcw_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "no-link\n");
-+	}
-+	if (rtn) {
-+		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
-+				 "gcw show sl_core_link_fec_gcw_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "io-error\n");
-+	}
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
-+		   "gcw show (link = 0x%p, gcw = %llu)", core_link, gcw);
-+
-+	return sysfs_emit(buf, "%llu\n", gcw);
-+}
-+
-+static struct kobj_attribute link_fec_ccw = __ATTR_RO(ccw);
-+static struct kobj_attribute link_fec_ucw = __ATTR_RO(ucw);
-+static struct kobj_attribute link_fec_gcw = __ATTR_RO(gcw);
-+
-+static struct attribute *link_fec_current_attrs[] = {
-+	&link_fec_ccw.attr,
-+	&link_fec_ucw.attr,
-+	&link_fec_gcw.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_fec_current);
-+
-+static struct kobj_type link_fec_current = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_fec_current_groups,
-+};
-+
-+static struct attribute *link_fec_current_lane_attrs[] = {
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_fec_current_lane);
-+
-+static struct kobj_type link_fec_current_lane = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_fec_current_lane_groups,
-+};
-+
-+static ssize_t link_fec_current_fecl_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
-+{
-+	int                            rtn;
-+	struct sl_core_link_fecl_kobj *fecl_kobj;
-+	struct sl_core_link           *core_link;
-+	u8                             fecl_num;
-+	u64                            fecl;
-+
-+	fecl_kobj = container_of(kobj, struct sl_core_link_fecl_kobj, kobj);
-+
-+	core_link = fecl_kobj->core_link;
-+
-+	fecl_num = ((4 * fecl_kobj->lane_num) + num);
-+
-+	rtn = sl_core_link_fec_lane_cntr_get(core_link, fecl_num, &fecl);
-+	if (rtn == -ENOLINK) {
-+		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
-+				 "current fecl show sl_core_link_fec_lane_cntr_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "no-link\n");
-+	}
-+	if (rtn) {
-+		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
-+				 "current fecl show sl_core_link_fec_lane_cntr_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "io-error\n");
-+	}
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "current fecl show (num = %u, lane_num = %u, fecl %u = %llu)",
-+		   num, fecl_kobj->lane_num, fecl_num, fecl);
-+
-+	return sysfs_emit(buf, "%llu\n", fecl);
-+}
-+
-+#define link_fec_current_fecl(_num)                                                                            \
-+	static inline ssize_t fecl##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
-+	{                                                                                                      \
-+		return link_fec_current_fecl_show(kobj, kattr, buf, (_num));                                   \
-+	}                                                                                                      \
-+	static struct kobj_attribute link_fecl##_num = __ATTR_RO(fecl##_num)
-+
-+static ssize_t link_fec_current_bin_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
-+{
-+	int                  rtn;
-+	struct sl_core_link *core_link;
-+	u64                  ccw_bin;
-+
-+	core_link = container_of(kobj, struct sl_core_link, fec.current_tail_kobj);
-+
-+	rtn = sl_core_link_fec_tail_cntr_get(core_link, num, &ccw_bin);
-+	if (rtn == -ENOLINK) {
-+		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
-+				 "current bin show sl_core_link_fec_tail_cntr_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "no-link\n");
-+	}
-+	if (rtn) {
-+		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
-+				 "current bin show sl_core_link_fec_tail_cntr_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "io-error\n");
-+	}
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "current bin show (bin %u = %llu)", num, ccw_bin);
-+
-+	return sysfs_emit(buf, "%llu\n", ccw_bin);
-+}
-+
-+#define link_fec_current_tail0(_num)                                                                    \
-+	static ssize_t bin0##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
-+	{                                                                                               \
-+		return link_fec_current_bin_show(kobj, kattr, buf, _num);                               \
-+	}                                                                                               \
-+	static struct kobj_attribute fec_bin0##_num = __ATTR_RO(bin0##_num)
-+
-+#define link_fec_current_tail(_num)                                                                           \
-+	static inline ssize_t bin##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
-+	{                                                                                                     \
-+		return link_fec_current_bin_show(kobj, kattr, buf, (_num));                                   \
-+	}                                                                                                     \
-+	static struct kobj_attribute fec_bin##_num = __ATTR_RO(bin##_num)
-+
-+link_fec_current_fecl(0);
-+link_fec_current_fecl(1);
-+link_fec_current_fecl(2);
-+link_fec_current_fecl(3);
-+
-+static struct attribute *link_fec_current_fecl_attrs[] = {
-+	&link_fecl0.attr,
-+	&link_fecl1.attr,
-+	&link_fecl2.attr,
-+	&link_fecl3.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_fec_current_fecl);
-+
-+static struct kobj_type link_fec_current_fecl = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_fec_current_fecl_groups,
-+};
-+
-+link_fec_current_tail0(0);
-+link_fec_current_tail0(1);
-+link_fec_current_tail0(2);
-+link_fec_current_tail0(3);
-+link_fec_current_tail0(4);
-+link_fec_current_tail0(5);
-+link_fec_current_tail0(6);
-+link_fec_current_tail0(7);
-+link_fec_current_tail0(8);
-+link_fec_current_tail0(9);
-+link_fec_current_tail(10);
-+link_fec_current_tail(11);
-+link_fec_current_tail(12);
-+link_fec_current_tail(13);
-+link_fec_current_tail(14);
-+
-+static struct attribute *link_fec_current_tail_attrs[] = {
-+	&fec_bin00.attr,
-+	&fec_bin01.attr,
-+	&fec_bin02.attr,
-+	&fec_bin03.attr,
-+	&fec_bin04.attr,
-+	&fec_bin05.attr,
-+	&fec_bin06.attr,
-+	&fec_bin07.attr,
-+	&fec_bin08.attr,
-+	&fec_bin09.attr,
-+	&fec_bin10.attr,
-+	&fec_bin11.attr,
-+	&fec_bin12.attr,
-+	&fec_bin13.attr,
-+	&fec_bin14.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_fec_current_tail);
-+
-+static struct kobj_type link_fec_current_tail = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_fec_current_tail_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_link_fec_current_create(struct sl_core_link *core_link, struct kobject *parent_kobj)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+	int x;
-+	int out;
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
-+		   "link fec current create (num = %u)", core_link->num);
-+
-+	rtn = kobject_init_and_add(&core_link->fec.current_kobj, &link_fec_current, parent_kobj, "current");
-+	if (rtn) {
-+		sl_log_err(core_link, LOG_BLOCK, LOG_NAME,
-+			   "link fec current create kobject_init_and_add failed [%d]", rtn);
-+		goto out_current;
-+	}
-+
-+	rtn = kobject_init_and_add(&core_link->fec.current_lane_kobj,
-+				   &link_fec_current_lane, &core_link->fec.current_kobj, "lane");
-+	if (rtn) {
-+		sl_log_err(core_link, LOG_BLOCK, LOG_NAME,
-+			   "link fec current lane create kobject_init_and_add failed [%d]", rtn);
-+		goto out_current_lane;
-+	}
-+	for (x = 0; x < SL_MAX_LANES; ++x) {
-+		rtn = kobject_init_and_add(&core_link->fec.current_fecl_kobjs[x].kobj,
-+					   &link_fec_current_fecl, &core_link->fec.current_lane_kobj, "%d", x);
-+		if (rtn) {
-+			sl_log_err(core_link, LOG_BLOCK, LOG_NAME,
-+				   "link fec current fecl create kobject_init_and_add failed [%d]", rtn);
-+			goto out_current_fecl;
-+		}
-+		core_link->fec.current_fecl_kobjs[x].core_link = core_link;
-+		core_link->fec.current_fecl_kobjs[x].lane_num = x;
-+	}
-+
-+	rtn = kobject_init_and_add(&core_link->fec.current_tail_kobj,
-+				   &link_fec_current_tail, &core_link->fec.current_kobj, "tail");
-+	if (rtn) {
-+		sl_log_err(core_link, LOG_BLOCK, LOG_NAME,
-+			   "link fec current tail create kobject_init_and_add failed [%d]", rtn);
-+		goto out_current_tail;
-+	}
-+
-+	return 0;
-+
-+out_current_tail:
-+	kobject_put(&core_link->fec.current_tail_kobj);
-+out_current_fecl:
-+	if (x < SL_MAX_LANES)
-+		kobject_put(&core_link->fec.current_fecl_kobjs[x].kobj);
-+	for (out = 0; out < x; ++out)
-+		kobject_put(&core_link->fec.current_fecl_kobjs[out].kobj);
-+out_current_lane:
-+	kobject_put(&core_link->fec.current_lane_kobj);
-+out_current:
-+	kobject_put(&core_link->fec.current_kobj);
-+
-+	return rtn;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_link_fec_current_delete(struct sl_core_link *core_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	int x;
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
-+		   "link fec current delete (link_num = %u)", core_link->num);
-+
-+	kobject_put(&core_link->fec.current_tail_kobj);
-+	for (x = 0; x < SL_MAX_LANES; ++x)
-+		kobject_put(&core_link->fec.current_fecl_kobjs[x].kobj);
-+	kobject_put(&core_link->fec.current_lane_kobj);
-+	kobject_put(&core_link->fec.current_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_down.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_down.c
-new file mode 100644
-index 000000000000..6962b2c678da
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_down.c
-@@ -0,0 +1,316 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_log.h"
-+#include "data/sl_ctrl_data_link.h"
-+
-+#include "sl_sysfs_link_fec_down.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t ccw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u64                  ccw;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.down_kobj);
-+
-+	rtn = sl_ctrl_data_link_fec_down_cache_ccw_cntr_get(ctrl_link, &ccw);
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "ccw show sl_ctrl_data_link_fec_down_cache_ccw_cntr_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "error\n");
-+	}
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "ccw show (link = 0x%p, ccw = %llu)", ctrl_link, ccw);
-+
-+	return sysfs_emit(buf, "%llu\n", ccw);
-+}
-+
-+static ssize_t ucw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u64                  ucw;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.down_kobj);
-+
-+	rtn = sl_ctrl_data_link_fec_down_cache_ucw_cntr_get(ctrl_link, &ucw);
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "ucw show sl_ctrl_data_link_fec_down_cache_ucw_cntr_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "error\n");
-+	}
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "ucw show (link = 0x%p, ucw = %llu)", ctrl_link, ucw);
-+
-+	return sysfs_emit(buf, "%llu\n", ucw);
-+}
-+
-+static ssize_t gcw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u64                  gcw;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.down_kobj);
-+
-+	rtn = sl_ctrl_data_link_fec_down_cache_gcw_cntr_get(ctrl_link, &gcw);
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "gcw show sl_ctrl_data_link_fec_down_cache_gcw_cntr_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "error\n");
-+	}
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "gcw show (link = 0x%p, gcw = %llu)", ctrl_link, gcw);
-+
-+	return sysfs_emit(buf, "%llu\n", gcw);
-+}
-+
-+static struct kobj_attribute link_fec_ccw = __ATTR_RO(ccw);
-+static struct kobj_attribute link_fec_ucw = __ATTR_RO(ucw);
-+static struct kobj_attribute link_fec_gcw = __ATTR_RO(gcw);
-+
-+static struct attribute *link_fec_down_attrs[] = {
-+	&link_fec_ccw.attr,
-+	&link_fec_ucw.attr,
-+	&link_fec_gcw.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_fec_down);
-+
-+static struct kobj_type link_fec_down = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_fec_down_groups,
-+};
-+
-+static struct attribute *link_fec_down_lane_attrs[] = {
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_fec_down_lane);
-+
-+static struct kobj_type link_fec_down_lane = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_fec_down_lane_groups,
-+};
-+
-+static ssize_t link_fec_down_fecl_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
-+{
-+	int                            rtn;
-+	struct sl_ctrl_link           *ctrl_link;
-+	struct sl_ctrl_link_fecl_kobj *fecl_kobj;
-+	u8                             fecl_num;
-+	u64                            lane_cntr;
-+
-+	fecl_kobj = container_of(kobj, struct sl_ctrl_link_fecl_kobj, kobj);
-+	ctrl_link = fecl_kobj->ctrl_link;
-+
-+	fecl_num = ((4 * fecl_kobj->lane_num) + num);
-+
-+	rtn = sl_ctrl_data_link_fec_down_cache_lane_cntr_get(ctrl_link, fecl_num, &lane_cntr);
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "current fecl show sl_ctrl_data_link_fec_down_cache_lane_cntr_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "error\n");
-+	}
-+
-+	sl_log_dbg(fecl_kobj->ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "current fecl show (link = 0x%p, num = %u, lane_num = %u, fecl %u = %llu)",
-+		ctrl_link, num, fecl_kobj->lane_num, fecl_num, lane_cntr);
-+
-+	return sysfs_emit(buf, "%llu\n", lane_cntr);
-+}
-+
-+#define link_fec_down_fecl(_num)                                                                               \
-+	static inline ssize_t fecl##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
-+	{                                                                                                      \
-+		return link_fec_down_fecl_show(kobj, kattr, buf, (_num));                                      \
-+	}                                                                                                      \
-+	static struct kobj_attribute link_fecl##_num = __ATTR_RO(fecl##_num)
-+
-+static ssize_t link_fec_down_bin_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u64                  tail_cntr;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.down_tail_kobj);
-+
-+	rtn = sl_ctrl_data_link_fec_down_cache_tail_cntr_get(ctrl_link, num, &tail_cntr);
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "down bin show sl_ctrl_data_link_fec_down_cache_tail_cntr_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "error\n");
-+	}
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "down bin show (link = 0x%p, bin %u = %llu)",
-+		ctrl_link, num, tail_cntr);
-+
-+	return sysfs_emit(buf, "%llu\n", tail_cntr);
-+}
-+
-+#define link_fec_down_tail0(_num)                                                                       \
-+	static ssize_t bin0##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
-+	{                                                                                               \
-+		return link_fec_down_bin_show(kobj, kattr, buf, _num);                                  \
-+	}                                                                                               \
-+	static struct kobj_attribute fec_bin0##_num = __ATTR_RO(bin0##_num)
-+
-+#define link_fec_down_tail(_num)                                                                              \
-+	static inline ssize_t bin##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
-+	{                                                                                                     \
-+		return link_fec_down_bin_show(kobj, kattr, buf, (_num));                                      \
-+	}                                                                                                     \
-+	static struct kobj_attribute fec_bin##_num = __ATTR_RO(bin##_num)
-+
-+link_fec_down_fecl(0);
-+link_fec_down_fecl(1);
-+link_fec_down_fecl(2);
-+link_fec_down_fecl(3);
-+
-+static struct attribute *link_fec_down_fecl_attrs[] = {
-+	&link_fecl0.attr,
-+	&link_fecl1.attr,
-+	&link_fecl2.attr,
-+	&link_fecl3.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_fec_down_fecl);
-+
-+static struct kobj_type link_fec_down_fecl = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_fec_down_fecl_groups,
-+};
-+
-+link_fec_down_tail0(0);
-+link_fec_down_tail0(1);
-+link_fec_down_tail0(2);
-+link_fec_down_tail0(3);
-+link_fec_down_tail0(4);
-+link_fec_down_tail0(5);
-+link_fec_down_tail0(6);
-+link_fec_down_tail0(7);
-+link_fec_down_tail0(8);
-+link_fec_down_tail0(9);
-+link_fec_down_tail(10);
-+link_fec_down_tail(11);
-+link_fec_down_tail(12);
-+link_fec_down_tail(13);
-+link_fec_down_tail(14);
-+
-+static struct attribute *link_fec_down_tail_attrs[] = {
-+	&fec_bin00.attr,
-+	&fec_bin01.attr,
-+	&fec_bin02.attr,
-+	&fec_bin03.attr,
-+	&fec_bin04.attr,
-+	&fec_bin05.attr,
-+	&fec_bin06.attr,
-+	&fec_bin07.attr,
-+	&fec_bin08.attr,
-+	&fec_bin09.attr,
-+	&fec_bin10.attr,
-+	&fec_bin11.attr,
-+	&fec_bin12.attr,
-+	&fec_bin13.attr,
-+	&fec_bin14.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_fec_down_tail);
-+
-+static struct kobj_type link_fec_down_tail = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_fec_down_tail_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_link_fec_down_create(struct sl_ctrl_link *ctrl_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+	int x;
-+	int out;
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "link fec down create (num = %u)", ctrl_link->num);
-+
-+	rtn = kobject_init_and_add(&ctrl_link->fec.down_kobj, &link_fec_down,
-+				   &ctrl_link->fec.kobj, "down");
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "link fec down create kobject_init_and_add failed [%d]", rtn);
-+		goto out_down;
-+	}
-+
-+	rtn = kobject_init_and_add(&ctrl_link->fec.down_lane_kobj,
-+				   &link_fec_down_lane, &ctrl_link->fec.down_kobj, "lane");
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "link fec down lane create kobject_init_and_add failed [%d]", rtn);
-+		goto out_down_lane;
-+	}
-+	for (x = 0; x < SL_MAX_LANES; ++x) {
-+		rtn = kobject_init_and_add(&ctrl_link->fec.down_fecl_kobjs[x].kobj,
-+					   &link_fec_down_fecl, &ctrl_link->fec.down_lane_kobj, "%d", x);
-+		if (rtn) {
-+			sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+				   "link fec down fecl create kobject_init_and_add failed [%d]", rtn);
-+			goto out_down_fecl;
-+		}
-+		ctrl_link->fec.down_fecl_kobjs[x].ctrl_link = ctrl_link;
-+		ctrl_link->fec.down_fecl_kobjs[x].lane_num = x;
-+	}
-+
-+	rtn = kobject_init_and_add(&ctrl_link->fec.down_tail_kobj,
-+				   &link_fec_down_tail, &ctrl_link->fec.down_kobj, "tail");
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "link fec down tail create kobject_init_and_add failed [%d]", rtn);
-+		goto out_down_tail;
-+	}
-+
-+	return 0;
-+
-+out_down_tail:
-+	kobject_put(&ctrl_link->fec.down_tail_kobj);
-+out_down_fecl:
-+	if (x < SL_MAX_LANES)
-+		kobject_put(&ctrl_link->fec.down_fecl_kobjs[x].kobj);
-+	for (out = 0; out < x; ++out)
-+		kobject_put(&ctrl_link->fec.down_fecl_kobjs[out].kobj);
-+out_down_lane:
-+	kobject_put(&ctrl_link->fec.down_lane_kobj);
-+out_down:
-+	kobject_put(&ctrl_link->fec.down_kobj);
-+
-+	return rtn;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_link_fec_down_delete(struct sl_ctrl_link *ctrl_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	int x;
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "link fec down delete (link_num = %u)", ctrl_link->num);
-+
-+	kobject_put(&ctrl_link->fec.down_tail_kobj);
-+	for (x = 0; x < SL_MAX_LANES; ++x)
-+		kobject_put(&ctrl_link->fec.down_fecl_kobjs[x].kobj);
-+	kobject_put(&ctrl_link->fec.down_lane_kobj);
-+	kobject_put(&ctrl_link->fec.down_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_mon_check.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_mon_check.c
-new file mode 100644
-index 000000000000..f989399518fc
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_mon_check.c
-@@ -0,0 +1,195 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_log.h"
-+#include "data/sl_ctrl_data_link.h"
-+
-+#include "sl_sysfs_link_fec_mon_check.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t ucw_down_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	s32                  ucw_down_limit;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.mon_check_kobj);
-+
-+	rtn = sl_ctrl_data_link_fec_mon_ucw_down_limit_get(ctrl_link, &ucw_down_limit);
-+	if (rtn == -EBADRQC) {
-+		sl_log_warn_trace(ctrl_link, LOG_BLOCK, LOG_NAME,
-+				  "ucw down limit show monitoring not enabled");
-+		return sysfs_emit(buf, "not-monitoring\n");
-+	}
-+	if (rtn) {
-+		sl_log_err_trace(ctrl_link, LOG_BLOCK, LOG_NAME, "fec_mon_ucw_down_limit_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "error\n");
-+	}
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "ucw down limit show (ucw_down_limit = %d)", ucw_down_limit);
-+
-+	if (ucw_down_limit == -1)
-+		return sysfs_emit(buf, "calculated\n");
-+
-+	return sysfs_emit(buf, "%d\n", ucw_down_limit);
-+}
-+
-+static ssize_t ucw_warn_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	s32                  ucw_warn_limit;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.mon_check_kobj);
-+
-+	rtn = sl_ctrl_data_link_fec_mon_ucw_warn_limit_get(ctrl_link, &ucw_warn_limit);
-+	if (rtn == -EBADRQC) {
-+		sl_log_warn_trace(ctrl_link, LOG_BLOCK, LOG_NAME,
-+				  "ucw warn limit show monitoring not enabled");
-+		return sysfs_emit(buf, "not-monitoring\n");
-+	}
-+	if (rtn) {
-+		sl_log_err_trace(ctrl_link, LOG_BLOCK, LOG_NAME, "fec_mon_ucw_warn_limit_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "error\n");
-+	}
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "ucw warn limit show (ucw_warn_limit = %d)", ucw_warn_limit);
-+
-+	if (ucw_warn_limit == -1)
-+		return sysfs_emit(buf, "calculated\n");
-+
-+	return sysfs_emit(buf, "%d\n", ucw_warn_limit);
-+}
-+
-+static ssize_t ccw_down_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	s32                  ccw_down_limit;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.mon_check_kobj);
-+
-+	rtn = sl_ctrl_data_link_fec_mon_ccw_down_limit_get(ctrl_link, &ccw_down_limit);
-+	if (rtn == -EBADRQC) {
-+		sl_log_warn_trace(ctrl_link, LOG_BLOCK, LOG_NAME,
-+				  "ccw down limit show monitoring not enabled");
-+		return sysfs_emit(buf, "not-monitoring\n");
-+	}
-+	if (rtn) {
-+		sl_log_err_trace(ctrl_link, LOG_BLOCK, LOG_NAME, "fec_mon_ccw_down_limit_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "error\n");
-+	}
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "fec_mon_ccw_down_limit show (ccw_down_limit = %d)", ccw_down_limit);
-+
-+	if (ccw_down_limit == -1)
-+		return sysfs_emit(buf, "calculated\n");
-+
-+	return sysfs_emit(buf, "%d\n", ccw_down_limit);
-+}
-+
-+static ssize_t ccw_warn_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	s32                  ccw_warn_limit;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.mon_check_kobj);
-+
-+	rtn = sl_ctrl_data_link_fec_mon_ccw_warn_limit_get(ctrl_link, &ccw_warn_limit);
-+	if (rtn == -EBADRQC) {
-+		sl_log_warn_trace(ctrl_link, LOG_BLOCK, LOG_NAME,
-+				  "ccw warn limit show monitoring not enabled");
-+		return sysfs_emit(buf, "not-monitoring\n");
-+	}
-+	if (rtn) {
-+		sl_log_err_trace(ctrl_link, LOG_BLOCK, LOG_NAME, "fec_mon_ccw_warn_limit_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "error\n");
-+	}
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "fec_mon_ccw_warn_limit show (ccw_warn_limit = %d)", ccw_warn_limit);
-+
-+	if (ccw_warn_limit == -1)
-+		return sysfs_emit(buf, "calculated\n");
-+
-+	return sysfs_emit(buf, "%d\n", ccw_warn_limit);
-+}
-+
-+static ssize_t period_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	s32                  period_ms;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.mon_check_kobj);
-+
-+	rtn = sl_ctrl_data_link_fec_mon_period_ms_get(ctrl_link, &period_ms);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "fec_mon_period_ms_show show (period_ms = %u)", period_ms);
-+
-+	return sysfs_emit(buf, "%u\n", period_ms);
-+}
-+
-+static struct kobj_attribute ucw_down_limit = __ATTR_RO(ucw_down_limit);
-+static struct kobj_attribute ucw_warn_limit = __ATTR_RO(ucw_warn_limit);
-+static struct kobj_attribute ccw_down_limit = __ATTR_RO(ccw_down_limit);
-+static struct kobj_attribute ccw_warn_limit = __ATTR_RO(ccw_warn_limit);
-+static struct kobj_attribute period_ms      = __ATTR_RO(period_ms);
-+
-+static struct attribute *link_fec_mon_check_attrs[] = {
-+	&ucw_down_limit.attr,
-+	&ucw_warn_limit.attr,
-+	&ccw_down_limit.attr,
-+	&ccw_warn_limit.attr,
-+	&period_ms.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_fec_mon_check);
-+
-+static struct kobj_type link_fec_mon_check = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_fec_mon_check_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_link_fec_mon_check_create(struct sl_ctrl_link *ctrl_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link fec mon check create (num = %u)", ctrl_link->num);
-+
-+	rtn = kobject_init_and_add(&ctrl_link->fec.mon_check_kobj, &link_fec_mon_check,
-+				   &ctrl_link->fec.kobj, "monitor_check");
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "link monitor check create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&ctrl_link->fec.mon_check_kobj);
-+		return rtn;
-+	}
-+
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_link_fec_mon_check_delete(struct sl_ctrl_link *ctrl_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link fec mon check delete (num = %u)", ctrl_link->num);
-+
-+	kobject_put(&ctrl_link->fec.mon_check_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_up.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_up.c
-new file mode 100644
-index 000000000000..ecf92c043e01
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_up.c
-@@ -0,0 +1,299 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_log.h"
-+#include "data/sl_ctrl_data_link.h"
-+
-+#include "sl_sysfs_link_fec_up.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t ccw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u64                  ccw;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.up_kobj);
-+
-+	rtn = sl_ctrl_data_link_fec_up_cache_ccw_cntr_get(ctrl_link, &ccw);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "ccw show (ccw = %llu)", ccw);
-+
-+	return sysfs_emit(buf, "%llu\n", ccw);
-+}
-+
-+static ssize_t ucw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u64                  ucw;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.up_kobj);
-+
-+	rtn = sl_ctrl_data_link_fec_up_cache_ucw_cntr_get(ctrl_link, &ucw);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "ucw show (ucw = %llu)", ucw);
-+
-+	return sysfs_emit(buf, "%llu\n", ucw);
-+}
-+
-+static ssize_t gcw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u64                  gcw;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.up_kobj);
-+
-+	rtn = sl_ctrl_data_link_fec_up_cache_gcw_cntr_get(ctrl_link, &gcw);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "gcw show (link = 0x%p, gcw = %llu)", ctrl_link, gcw);
-+
-+	return sysfs_emit(buf, "%llu\n", gcw);
-+}
-+
-+static struct kobj_attribute link_fec_ccw = __ATTR_RO(ccw);
-+static struct kobj_attribute link_fec_ucw = __ATTR_RO(ucw);
-+static struct kobj_attribute link_fec_gcw = __ATTR_RO(gcw);
-+
-+static struct attribute *link_fec_up_attrs[] = {
-+	&link_fec_ccw.attr,
-+	&link_fec_ucw.attr,
-+	&link_fec_gcw.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_fec_up);
-+
-+static struct kobj_type link_fec_up = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_fec_up_groups,
-+};
-+
-+static struct attribute *link_fec_up_lane_attrs[] = {
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_fec_up_lane);
-+
-+static struct kobj_type link_fec_up_lane = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_fec_up_lane_groups,
-+};
-+
-+static ssize_t link_fec_up_fecl_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
-+{
-+	int                            rtn;
-+	struct sl_ctrl_link           *ctrl_link;
-+	struct sl_ctrl_link_fecl_kobj *fecl_kobj;
-+	u8                             fecl_num;
-+	u64                            fecl;
-+
-+	fecl_kobj = container_of(kobj, struct sl_ctrl_link_fecl_kobj, kobj);
-+	ctrl_link = fecl_kobj->ctrl_link;
-+
-+	fecl_num = ((4 * fecl_kobj->lane_num) + num);
-+
-+	rtn = sl_ctrl_data_link_fec_up_cache_lane_cntr_get(ctrl_link, fecl_num, &fecl);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(fecl_kobj->ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "current fecl show (link = 0x%p, num = %u, lane_num = %u, fecl %u = %llu)",
-+		fecl_kobj->ctrl_link, num, fecl_kobj->lane_num, fecl_num, fecl);
-+
-+	return sysfs_emit(buf, "%llu\n", fecl);
-+}
-+
-+#define link_fec_up_fecl(_num)                                                                                 \
-+	static inline ssize_t fecl##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
-+	{                                                                                                      \
-+		return link_fec_up_fecl_show(kobj, kattr, buf, (_num));                                        \
-+	}                                                                                                      \
-+	static struct kobj_attribute link_fecl##_num = __ATTR_RO(fecl##_num)
-+
-+static ssize_t link_fec_up_bin_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u64                 tail_cntr;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.up_tail_kobj);
-+
-+	rtn = sl_ctrl_data_link_fec_up_cache_tail_cntr_get(ctrl_link, num, &tail_cntr);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "up bin show (link = 0x%p, bin %u = %llu)",
-+		ctrl_link, num, tail_cntr);
-+
-+	return sysfs_emit(buf, "%llu\n", tail_cntr);
-+}
-+
-+#define link_fec_up_tail0(_num)                                                                         \
-+	static ssize_t bin0##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
-+	{                                                                                               \
-+		return link_fec_up_bin_show(kobj, kattr, buf, _num);                                    \
-+	}                                                                                               \
-+	static struct kobj_attribute fec_bin0##_num = __ATTR_RO(bin0##_num)
-+
-+#define link_fec_up_tail(_num)                                                                                \
-+	static inline ssize_t bin##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
-+	{                                                                                                     \
-+		return link_fec_up_bin_show(kobj, kattr, buf, (_num));                                        \
-+	}                                                                                                     \
-+	static struct kobj_attribute fec_bin##_num = __ATTR_RO(bin##_num)
-+
-+link_fec_up_fecl(0);
-+link_fec_up_fecl(1);
-+link_fec_up_fecl(2);
-+link_fec_up_fecl(3);
-+
-+static struct attribute *link_fec_up_fecl_attrs[] = {
-+	&link_fecl0.attr,
-+	&link_fecl1.attr,
-+	&link_fecl2.attr,
-+	&link_fecl3.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_fec_up_fecl);
-+
-+static struct kobj_type link_fec_up_fecl = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_fec_up_fecl_groups,
-+};
-+
-+link_fec_up_tail0(0);
-+link_fec_up_tail0(1);
-+link_fec_up_tail0(2);
-+link_fec_up_tail0(3);
-+link_fec_up_tail0(4);
-+link_fec_up_tail0(5);
-+link_fec_up_tail0(6);
-+link_fec_up_tail0(7);
-+link_fec_up_tail0(8);
-+link_fec_up_tail0(9);
-+link_fec_up_tail(10);
-+link_fec_up_tail(11);
-+link_fec_up_tail(12);
-+link_fec_up_tail(13);
-+link_fec_up_tail(14);
-+
-+static struct attribute *link_fec_up_tail_attrs[] = {
-+	&fec_bin00.attr,
-+	&fec_bin01.attr,
-+	&fec_bin02.attr,
-+	&fec_bin03.attr,
-+	&fec_bin04.attr,
-+	&fec_bin05.attr,
-+	&fec_bin06.attr,
-+	&fec_bin07.attr,
-+	&fec_bin08.attr,
-+	&fec_bin09.attr,
-+	&fec_bin10.attr,
-+	&fec_bin11.attr,
-+	&fec_bin12.attr,
-+	&fec_bin13.attr,
-+	&fec_bin14.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_fec_up_tail);
-+
-+static struct kobj_type link_fec_up_tail = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_fec_up_tail_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_link_fec_up_create(struct sl_ctrl_link *ctrl_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+	int x;
-+	int out;
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "link fec up create (num = %u)", ctrl_link->num);
-+
-+	rtn = kobject_init_and_add(&ctrl_link->fec.up_kobj, &link_fec_up,
-+				   &ctrl_link->fec.kobj, "up");
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "link fec up create kobject_init_and_add failed [%d]", rtn);
-+		goto out_up;
-+	}
-+
-+	rtn = kobject_init_and_add(&ctrl_link->fec.up_lane_kobj,
-+				   &link_fec_up_lane, &ctrl_link->fec.up_kobj, "lane");
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "link fec up lane create kobject_init_and_add failed [%d]", rtn);
-+		goto out_up_lane;
-+	}
-+	for (x = 0; x < SL_MAX_LANES; ++x) {
-+		rtn = kobject_init_and_add(&ctrl_link->fec.up_fecl_kobjs[x].kobj,
-+					   &link_fec_up_fecl, &ctrl_link->fec.up_lane_kobj, "%d", x);
-+		if (rtn) {
-+			sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+				   "link fec up fecl create kobject_init_and_add failed [%d]", rtn);
-+			goto out_up_fecl;
-+		}
-+		ctrl_link->fec.up_fecl_kobjs[x].ctrl_link = ctrl_link;
-+		ctrl_link->fec.up_fecl_kobjs[x].lane_num = x;
-+	}
-+
-+	rtn = kobject_init_and_add(&ctrl_link->fec.up_tail_kobj,
-+				   &link_fec_up_tail, &ctrl_link->fec.up_kobj, "tail");
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "link fec up tail create kobject_init_and_add failed [%d]", rtn);
-+		goto out_up_tail;
-+	}
-+
-+	return 0;
-+
-+out_up_tail:
-+	kobject_put(&ctrl_link->fec.up_tail_kobj);
-+out_up_fecl:
-+	if (x < SL_MAX_LANES)
-+		kobject_put(&ctrl_link->fec.up_fecl_kobjs[x].kobj);
-+	for (out = 0; out < x; ++out)
-+		kobject_put(&ctrl_link->fec.up_fecl_kobjs[out].kobj);
-+out_up_lane:
-+	kobject_put(&ctrl_link->fec.up_lane_kobj);
-+out_up:
-+	kobject_put(&ctrl_link->fec.up_kobj);
-+
-+	return rtn;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_link_fec_up_delete(struct sl_ctrl_link *ctrl_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	int x;
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "link fec up delete (link_num = %u)", ctrl_link->num);
-+
-+	kobject_put(&ctrl_link->fec.up_tail_kobj);
-+	for (x = 0; x < SL_MAX_LANES; ++x)
-+		kobject_put(&ctrl_link->fec.up_fecl_kobjs[x].kobj);
-+	kobject_put(&ctrl_link->fec.up_lane_kobj);
-+	kobject_put(&ctrl_link->fec.up_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_up_check.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_up_check.c
-new file mode 100644
-index 000000000000..763dde6ca217
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_up_check.c
-@@ -0,0 +1,137 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2025-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_log.h"
-+#include "sl_core_link.h"
-+#include "data/sl_core_data_link.h"
-+
-+#include "sl_sysfs_link_fec_up_check.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t ucw_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_core_link *core_link;
-+	s32                  ucw_limit;
-+
-+	core_link = container_of(kobj, struct sl_core_link, fec.up_check_kobj);
-+
-+	rtn = sl_core_data_link_fec_up_ucw_limit_get(core_link, &ucw_limit);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
-+		   "fec_up_ucw_limit show (ucw_limit = %d)", ucw_limit);
-+
-+	return sysfs_emit(buf, "%d\n", ucw_limit);
-+}
-+
-+static ssize_t ccw_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_core_link *core_link;
-+	s32                  ccw_limit;
-+
-+	core_link = container_of(kobj, struct sl_core_link, fec.up_check_kobj);
-+
-+	rtn = sl_core_data_link_fec_up_ccw_limit_get(core_link, &ccw_limit);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
-+		   "fec_up_ccw_limit show (ccw_limit = %d)", ccw_limit);
-+
-+	return sysfs_emit(buf, "%d\n", ccw_limit);
-+}
-+
-+static ssize_t settle_wait_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_core_link *core_link;
-+	u32                  settle_wait_ms;
-+
-+	core_link = container_of(kobj, struct sl_core_link, fec.up_check_kobj);
-+
-+	rtn = sl_core_data_link_fec_up_settle_wait_ms_get(core_link, &settle_wait_ms);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
-+		   "settle_wait_ms show (settle_wait_ms = %u)", settle_wait_ms);
-+
-+	return sysfs_emit(buf, "%u\n", settle_wait_ms);
-+}
-+
-+static ssize_t check_wait_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_core_link *core_link;
-+	u32                  check_wait_ms;
-+
-+	core_link = container_of(kobj, struct sl_core_link, fec.up_check_kobj);
-+
-+	rtn = sl_core_data_link_fec_up_check_wait_ms_get(core_link, &check_wait_ms);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
-+		   "check_wait_ms show (check_wait_ms = %u)", check_wait_ms);
-+
-+	return sysfs_emit(buf, "%u\n", check_wait_ms);
-+}
-+
-+static struct kobj_attribute ucw_limit      = __ATTR_RO(ucw_limit);
-+static struct kobj_attribute ccw_limit      = __ATTR_RO(ccw_limit);
-+static struct kobj_attribute settle_wait_ms = __ATTR_RO(settle_wait_ms);
-+static struct kobj_attribute check_wait_ms  = __ATTR_RO(check_wait_ms);
-+
-+static struct attribute *link_fec_up_check_attrs[] = {
-+	&ucw_limit.attr,
-+	&ccw_limit.attr,
-+	&settle_wait_ms.attr,
-+	&check_wait_ms.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_fec_up_check);
-+
-+static struct kobj_type link_fec_up_check = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_fec_up_check_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_link_fec_up_check_create(struct sl_core_link *core_link, struct kobject *parent_kobj)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "link fec up check create (num = %u)", core_link->num);
-+
-+	rtn = kobject_init_and_add(&core_link->fec.up_check_kobj, &link_fec_up_check, parent_kobj, "up_check");
-+	if (rtn) {
-+		sl_log_err(core_link, LOG_BLOCK, LOG_NAME,
-+			   "link up_check create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&core_link->fec.up_check_kobj);
-+		return rtn;
-+	}
-+
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_link_fec_up_check_delete(struct sl_core_link *core_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "link fec up check delete (num = %u)", core_link->num);
-+
-+	kobject_put(&core_link->fec.up_check_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_pml_rec.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_pml_rec.c
-new file mode 100644
-index 000000000000..dc076274157d
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_pml_rec.c
-@@ -0,0 +1,193 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+#include <linux/types.h>
-+
-+#include "sl_log.h"
-+#include "data/sl_core_data_link.h"
-+
-+#include "sl_sysfs.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t pml_rec_attempts_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_core_link *core_link;
-+	int                  attempts;
-+	int		     rtn;
-+
-+	core_link = container_of(kobj, struct sl_core_link, pml_rec_kobj);
-+
-+	rtn = sl_core_data_link_pml_rec_attempts_get(core_link, &attempts);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "pml rec attempts show (attempts = %d)", attempts);
-+
-+	return sysfs_emit(buf, "%d\n", attempts);
-+}
-+
-+static ssize_t pml_rec_successes_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_core_link *core_link;
-+	int                  successes;
-+	int		     rtn;
-+
-+	core_link = container_of(kobj, struct sl_core_link, pml_rec_kobj);
-+
-+	rtn = sl_core_data_link_pml_rec_successes_get(core_link, &successes);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "pml rec successes show (successes = %d)", successes);
-+
-+	return sysfs_emit(buf, "%d\n", successes);
-+}
-+
-+static ssize_t pml_rec_link_fault_cause_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_core_link *core_link;
-+	int                  link_fault_cause;
-+	int		     rtn;
-+
-+	core_link = container_of(kobj, struct sl_core_link, pml_rec_kobj);
-+
-+	rtn = sl_core_data_link_pml_rec_link_fault_cause_get(core_link, &link_fault_cause);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "pml rec link_fault_cause show (link_fault_cause = %d)", link_fault_cause);
-+
-+	return sysfs_emit(buf, "%d\n", link_fault_cause);
-+}
-+
-+static ssize_t pml_rec_link_down_cause_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_core_link *core_link;
-+	int                  link_down_cause;
-+	int		     rtn;
-+
-+	core_link = container_of(kobj, struct sl_core_link, pml_rec_kobj);
-+
-+	rtn = sl_core_data_link_pml_rec_link_down_cause_get(core_link, &link_down_cause);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "pml rec link_down_cause show (link_down_cause = %d)", link_down_cause);
-+
-+	return sysfs_emit(buf, "%d\n", link_down_cause);
-+}
-+
-+static ssize_t pml_rec_link_fault_failed_cause_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_core_link *core_link;
-+	int                  link_fault_failed_cause;
-+	int		     rtn;
-+
-+	core_link = container_of(kobj, struct sl_core_link, pml_rec_kobj);
-+
-+	rtn = sl_core_data_link_pml_rec_link_fault_failed_cause_get(core_link, &link_fault_failed_cause);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "pml rec link_fault_failed_cause show (link_fault_failed_cause = %d)",
-+		   link_fault_failed_cause);
-+
-+	return sysfs_emit(buf, "%d\n", link_fault_failed_cause);
-+}
-+
-+static ssize_t pml_rec_link_down_failed_cause_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_core_link *core_link;
-+	int                  link_down_failed_cause;
-+	int		     rtn;
-+
-+	core_link = container_of(kobj, struct sl_core_link, pml_rec_kobj);
-+
-+	rtn = sl_core_data_link_pml_rec_link_down_failed_cause_get(core_link, &link_down_failed_cause);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "pml rec link_down_cause show (link_down_failed_cause = %d)",
-+		   link_down_failed_cause);
-+
-+	return sysfs_emit(buf, "%d\n", link_down_failed_cause);
-+}
-+
-+static ssize_t pml_rec_rate_limit_exceeded_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_core_link *core_link;
-+	int                  rate_limit_exceeded;
-+	int		     rtn;
-+
-+	core_link = container_of(kobj, struct sl_core_link, pml_rec_kobj);
-+
-+	rtn = sl_core_data_link_pml_rec_rate_limit_exceeded_get(core_link, &rate_limit_exceeded);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "pml rec rate_limit_exceeded show (rate_limit_exceeded = %d)",
-+		   rate_limit_exceeded);
-+
-+	return sysfs_emit(buf, "%d\n", rate_limit_exceeded);
-+}
-+
-+static struct kobj_attribute link_pml_rec_attempts                = __ATTR_RO(pml_rec_attempts);
-+static struct kobj_attribute link_pml_rec_successes               = __ATTR_RO(pml_rec_successes);
-+static struct kobj_attribute link_pml_rec_link_fault_cause        = __ATTR_RO(pml_rec_link_fault_cause);
-+static struct kobj_attribute link_pml_rec_link_down_cause         = __ATTR_RO(pml_rec_link_down_cause);
-+static struct kobj_attribute link_pml_rec_link_fault_failed_cause = __ATTR_RO(pml_rec_link_fault_failed_cause);
-+static struct kobj_attribute link_pml_rec_link_down_failed_cause  = __ATTR_RO(pml_rec_link_down_failed_cause);
-+static struct kobj_attribute link_pml_rec_rate_limit_exceeded     = __ATTR_RO(pml_rec_rate_limit_exceeded);
-+
-+static struct attribute *link_pml_rec_attrs[] = {
-+	&link_pml_rec_attempts.attr,
-+	&link_pml_rec_successes.attr,
-+	&link_pml_rec_link_fault_cause.attr,
-+	&link_pml_rec_link_down_cause.attr,
-+	&link_pml_rec_link_fault_failed_cause.attr,
-+	&link_pml_rec_link_down_failed_cause.attr,
-+	&link_pml_rec_rate_limit_exceeded.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_pml_rec);
-+
-+static struct kobj_type link_pml_rec = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_pml_rec_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_link_pml_rec_create(struct sl_core_link *core_link, struct kobject *parent_kobj)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "link pml rec create (num = %u)", core_link->num);
-+
-+	rtn = kobject_init_and_add(&core_link->pml_rec_kobj, &link_pml_rec, parent_kobj, "pml_recovery");
-+	if (rtn) {
-+		sl_log_err(core_link, LOG_BLOCK, LOG_NAME,
-+			   "link pml rec create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&core_link->pml_rec_kobj);
-+		return rtn;
-+	}
-+
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_link_pml_rec_delete(struct sl_core_link *core_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "link pml rec delete (num = %u)", core_link->num);
-+
-+	kobject_put(&core_link->pml_rec_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_policy.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_policy.c
-new file mode 100644
-index 000000000000..110486b5d274
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_policy.c
-@@ -0,0 +1,261 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "data/sl_ctrl_data_link.h"
-+#include "sl_ctrl_link.h"
-+#include "sl_test_common.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t fec_mon_period_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	s32                  fec_mon_period_ms;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
-+
-+	rtn = sl_ctrl_data_link_policy_fec_mon_period_ms_get(ctrl_link, &fec_mon_period_ms);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "fec_mon_period_ms show (fec_mon_period_ms = %d)", fec_mon_period_ms);
-+
-+	return sysfs_emit(buf, "%d\n", fec_mon_period_ms);
-+}
-+
-+static ssize_t fec_mon_ucw_down_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	s32                  fec_mon_ucw_down_limit;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
-+
-+	rtn = sl_ctrl_data_link_policy_fec_mon_ucw_down_limit_get(ctrl_link, &fec_mon_ucw_down_limit);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "fec_mon_ucw_down_limit show (fec_mon_ucw_down_limit = %d)", fec_mon_ucw_down_limit);
-+
-+	return sysfs_emit(buf, "%d\n", fec_mon_ucw_down_limit);
-+}
-+
-+static ssize_t fec_mon_ucw_warn_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	s32                  fec_mon_ucw_warn_limit;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
-+
-+	rtn = sl_ctrl_data_link_policy_fec_mon_ucw_warn_limit_get(ctrl_link, &fec_mon_ucw_warn_limit);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "fec_mon_ucw_warn_limit show (fec_mon_ucw_warn_limit = %d)", fec_mon_ucw_warn_limit);
-+
-+	return sysfs_emit(buf, "%d\n", fec_mon_ucw_warn_limit);
-+}
-+
-+static ssize_t fec_mon_ccw_down_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	s32                  fec_mon_ccw_down_limit;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
-+
-+	rtn = sl_ctrl_data_link_policy_fec_mon_ccw_down_limit_get(ctrl_link, &fec_mon_ccw_down_limit);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "fec_mon_ccw_down_limit show (fec_mon_ccw_down_limit = %d)", fec_mon_ccw_down_limit);
-+
-+	return sysfs_emit(buf, "%d\n", fec_mon_ccw_down_limit);
-+}
-+
-+static ssize_t fec_mon_ccw_warn_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	s32                  fec_mon_ccw_warn_limit;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
-+
-+	rtn = sl_ctrl_data_link_policy_fec_mon_ccw_warn_limit_get(ctrl_link, &fec_mon_ccw_warn_limit);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "fec_mon_ccw_warn_limit show (fec_mon_ccw_warn_limit = %d)", fec_mon_ccw_warn_limit);
-+
-+	return sysfs_emit(buf, "%d\n", fec_mon_ccw_warn_limit);
-+}
-+
-+static ssize_t lock_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  options;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
-+
-+	rtn = sl_ctrl_data_link_policy_options_get(ctrl_link, &options);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "link_policy_option_locked show (options = 0x%X)", options);
-+
-+	return sysfs_emit(buf, "%s\n", (options & SL_LINK_POLICY_OPT_LOCK) ? "enabled" : "disabled");
-+}
-+
-+static ssize_t keep_serdes_up_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  options;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
-+
-+	rtn = sl_ctrl_data_link_policy_options_get(ctrl_link, &options);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "link_policy_option_keep_serdes_up show (options = 0x%X)", options);
-+
-+	return sysfs_emit(buf, "%s\n",
-+			 (options & SL_LINK_POLICY_OPT_KEEP_SERDES_UP) ? "enabled" : "disabled");
-+}
-+
-+static ssize_t use_unsupported_cable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  options;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
-+
-+	rtn = sl_ctrl_data_link_policy_options_get(ctrl_link, &options);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "link_policy_option_use_unsupported_cable show (options = 0x%X)", options);
-+
-+	return sysfs_emit(buf, "%s\n",
-+			 (options & SL_LINK_POLICY_OPT_USE_UNSUPPORTED_CABLE) ? "enabled" : "disabled");
-+}
-+
-+static ssize_t use_supported_ss200_cable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  options;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
-+
-+	rtn = sl_ctrl_data_link_policy_options_get(ctrl_link, &options);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "link_policy_option_use_supported_ss200_cable show (options = 0x%X)", options);
-+
-+	return sysfs_emit(buf, "%s\n",
-+			 (options & SL_LINK_POLICY_OPT_USE_SUPPORTED_SS200_CABLE) ? "enabled" : "disabled");
-+}
-+
-+static ssize_t ignore_media_error_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  options;
-+
-+	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
-+
-+	rtn = sl_ctrl_data_link_policy_options_get(ctrl_link, &options);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
-+		   "link_policy_option_ignore_media_error show (options = %u)", options);
-+
-+	return sysfs_emit(buf, "%s\n",
-+			 (options & SL_LINK_POLICY_OPT_IGNORE_MEDIA_ERROR) ? "enabled" : "disabled");
-+}
-+
-+static struct kobj_attribute fec_mon_period_ms         = __ATTR_RO(fec_mon_period_ms);
-+static struct kobj_attribute fec_mon_ucw_down_limit    = __ATTR_RO(fec_mon_ucw_down_limit);
-+static struct kobj_attribute fec_mon_ucw_warn_limit    = __ATTR_RO(fec_mon_ucw_warn_limit);
-+static struct kobj_attribute fec_mon_ccw_down_limit    = __ATTR_RO(fec_mon_ccw_down_limit);
-+static struct kobj_attribute fec_mon_ccw_warn_limit    = __ATTR_RO(fec_mon_ccw_warn_limit);
-+static struct kobj_attribute lock                      = __ATTR_RO(lock);
-+static struct kobj_attribute keep_serdes_up            = __ATTR_RO(keep_serdes_up);
-+static struct kobj_attribute use_unsupported_cable     = __ATTR_RO(use_unsupported_cable);
-+static struct kobj_attribute use_supported_ss200_cable = __ATTR_RO(use_supported_ss200_cable);
-+static struct kobj_attribute ignore_media_error        = __ATTR_RO(ignore_media_error);
-+
-+static struct attribute *link_policy_attrs[] = {
-+	&fec_mon_period_ms.attr,
-+	&fec_mon_ucw_down_limit.attr,
-+	&fec_mon_ucw_warn_limit.attr,
-+	&fec_mon_ccw_down_limit.attr,
-+	&fec_mon_ccw_warn_limit.attr,
-+	&lock.attr,
-+	&keep_serdes_up.attr,
-+	&use_unsupported_cable.attr,
-+	&use_supported_ss200_cable.attr,
-+	&ignore_media_error.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(link_policy);
-+
-+static struct kobj_type link_policy = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = link_policy_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_link_policy_create(struct sl_ctrl_link *ctrl_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link policy create (num = %u)", ctrl_link->num);
-+
-+	rtn = kobject_init_and_add(&ctrl_link->policy_kobj, &link_policy, &ctrl_link->kobj, "policies");
-+	if (rtn) {
-+		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
-+			   "link policy create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&ctrl_link->policy_kobj);
-+		return rtn;
-+	}
-+
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_link_policy_delete(struct sl_ctrl_link *ctrl_link)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link config delete (num = %u)", ctrl_link->num);
-+
-+	kobject_put(&ctrl_link->policy_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr.c
-new file mode 100644
-index 000000000000..fd142ad85ea1
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr.c
-@@ -0,0 +1,221 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2023-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include <linux/hpe/sl/sl_llr.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_core_str.h"
-+#include "sl_ctrl_llr.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+
-+#include "data/sl_core_data_llr.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t last_fail_cause_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                 rtn;
-+	struct sl_core_llr *core_llr;
-+	u32                 llr_fail_cause;
-+	time64_t            llr_fail_time;
-+
-+	core_llr = container_of(kobj, struct sl_core_llr, kobj);
-+
-+	rtn = sl_core_data_llr_last_fail_cause_get(core_llr, &llr_fail_cause, &llr_fail_time);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME,
-+		   "last fail cause show (cause = %u %s)", llr_fail_cause, sl_core_llr_fail_cause_str(llr_fail_cause));
-+
-+	if (llr_fail_cause == SL_LLR_FAIL_CAUSE_NONE)
-+		return sysfs_emit(buf, "no-fail\n");
-+
-+	return sysfs_emit(buf, "%s\n", sl_core_llr_fail_cause_str(llr_fail_cause));
-+}
-+
-+static ssize_t last_fail_time_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                 rtn;
-+	struct sl_core_llr *core_llr;
-+	u32                 llr_fail_cause;
-+	time64_t            llr_fail_time;
-+
-+	core_llr = container_of(kobj, struct sl_core_llr, kobj);
-+
-+	rtn = sl_core_data_llr_last_fail_cause_get(core_llr, &llr_fail_cause, &llr_fail_time);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME,
-+		   "last fail time show (cause = %u %s, time = %lld %ptTt %ptTd)",
-+		   llr_fail_cause, sl_core_llr_fail_cause_str(llr_fail_cause),
-+		   llr_fail_time, &llr_fail_time, &llr_fail_time);
-+
-+	if (llr_fail_cause == SL_LLR_FAIL_CAUSE_NONE)
-+		return sysfs_emit(buf, "no-fail\n");
-+
-+	return sysfs_emit(buf, "%ptTt %ptTd\n", &llr_fail_time, &llr_fail_time);
-+}
-+
-+static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int rtn;
-+	struct sl_core_llr *core_llr;
-+	enum sl_core_llr_state core_llr_state;
-+	u32 llr_state;
-+
-+	core_llr = container_of(kobj, struct sl_core_llr, kobj);
-+
-+	rtn = sl_core_data_llr_state_get(core_llr, &core_llr_state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	llr_state = sl_ctrl_llr_state_from_core_llr_state(core_llr_state);
-+
-+	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME,
-+		   "state show (core_llr_state = %u %s, llr_state = %u %s)",
-+		   core_llr_state, sl_core_llr_state_str(core_llr_state),
-+		   llr_state, sl_llr_state_str(llr_state));
-+
-+	return sysfs_emit(buf, "%s\n", sl_llr_state_str(llr_state));
-+}
-+
-+static ssize_t info_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                 rtn;
-+	struct sl_core_llr *core_llr;
-+	u64                 info_map;
-+	char                info_map_str[900];
-+
-+	core_llr = container_of(kobj, struct sl_core_llr, kobj);
-+
-+	rtn = sl_core_data_llr_info_map_get(core_llr, &info_map);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_core_info_map_str(info_map, info_map_str, sizeof(info_map_str));
-+
-+	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME,
-+		   "info map show (info_map = 0x%llX %s)", info_map, info_map_str);
-+
-+	return sysfs_emit(buf, "%s\n", info_map_str);
-+}
-+
-+static struct kobj_attribute llr_state           = __ATTR_RO(state);
-+static struct kobj_attribute llr_last_fail_cause = __ATTR_RO(last_fail_cause);
-+static struct kobj_attribute llr_last_fail_time  = __ATTR_RO(last_fail_time);
-+static struct kobj_attribute llr_info_map        = __ATTR_RO(info_map);
-+
-+static struct attribute *llr_attrs[] = {
-+	&llr_state.attr,
-+	&llr_last_fail_cause.attr,
-+	&llr_last_fail_time.attr,
-+	&llr_info_map.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(llr);
-+
-+static struct kobj_type llr_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = llr_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_llr_create(struct sl_ctrl_llr *ctrl_llr)
-+{
-+#ifdef CONFIG_SYSFS
-+	int                 rtn;
-+	struct sl_core_llr *core_llr;
-+
-+	core_llr = sl_core_llr_get(ctrl_llr->ctrl_lgrp->ctrl_ldev->num,
-+				   ctrl_llr->ctrl_lgrp->num, ctrl_llr->num);
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr create (num = %u)", ctrl_llr->num);
-+
-+	if (!ctrl_llr->parent_kobj) {
-+		sl_log_err(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr create missing parent");
-+		return -EBADRQC;
-+	}
-+
-+	rtn = kobject_init_and_add(&core_llr->kobj, &llr_info, ctrl_llr->parent_kobj, "llr");
-+	if (rtn) {
-+		sl_log_err(ctrl_llr, LOG_BLOCK, LOG_NAME,
-+			   "llr create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&core_llr->kobj);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_llr_config_create(ctrl_llr, &core_llr->kobj);
-+	if (rtn) {
-+		sl_log_err(ctrl_llr, LOG_BLOCK, LOG_NAME,
-+			   "llr config create failed [%d]", rtn);
-+		kobject_put(&core_llr->kobj);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_llr_policy_create(core_llr, &core_llr->kobj);
-+	if (rtn) {
-+		sl_log_err(ctrl_llr, LOG_BLOCK, LOG_NAME,
-+			   "llr policy create failed [%d]", rtn);
-+		kobject_put(&core_llr->kobj);
-+		sl_sysfs_llr_config_delete(ctrl_llr);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_llr_loop_time_create(core_llr, &core_llr->kobj);
-+	if (rtn) {
-+		sl_log_err(ctrl_llr, LOG_BLOCK, LOG_NAME,
-+			   "llr loop time create failed [%d]", rtn);
-+		kobject_put(&core_llr->kobj);
-+		sl_sysfs_llr_config_delete(ctrl_llr);
-+		sl_sysfs_llr_policy_delete(core_llr);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_llr_counters_create(ctrl_llr, &core_llr->kobj);
-+	if (rtn) {
-+		sl_log_err(ctrl_llr, LOG_BLOCK, LOG_NAME, "sl_sysfs_llr_counters_create failed [%d]", rtn);
-+		kobject_put(&core_llr->kobj);
-+		sl_sysfs_llr_config_delete(ctrl_llr);
-+		sl_sysfs_llr_policy_delete(core_llr);
-+		sl_sysfs_llr_loop_time_delete(core_llr);
-+		return rtn;
-+	}
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME,
-+		   "llr create (llr_kobj = 0x%p)", &core_llr->kobj);
-+
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_llr_delete(struct sl_ctrl_llr *ctrl_llr)
-+{
-+#ifdef CONFIG_SYSFS
-+	struct sl_core_llr *core_llr;
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "delete (num = %u)", ctrl_llr->num);
-+
-+	if (!ctrl_llr->parent_kobj)
-+		return;
-+
-+	core_llr = sl_core_llr_get(ctrl_llr->ctrl_lgrp->ctrl_ldev->num,
-+				   ctrl_llr->ctrl_lgrp->num, ctrl_llr->num);
-+
-+	sl_sysfs_llr_counters_delete(ctrl_llr);
-+	sl_sysfs_llr_loop_time_delete(core_llr);
-+	sl_sysfs_llr_policy_delete(core_llr);
-+	sl_sysfs_llr_config_delete(ctrl_llr);
-+	kobject_put(&core_llr->kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_config.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_config.c
-new file mode 100644
-index 000000000000..0fde52d669ca
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_config.c
-@@ -0,0 +1,140 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+#include <linux/hpe/sl/sl_lgrp.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "data/sl_ctrl_data_llr.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t mode_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                 rtn;
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 mode;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, config_kobj);
-+
-+	rtn = sl_ctrl_data_llr_config_mode_get(ctrl_llr, &mode);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME,
-+		   "mode (mode = %u %s)",
-+		   mode, sl_lgrp_llr_mode_str(mode));
-+
-+	return sysfs_emit(buf, "%s\n", sl_lgrp_llr_mode_str(mode));
-+}
-+
-+static ssize_t setup_timeout_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                 rtn;
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 setup_timeout_ms;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, config_kobj);
-+
-+	rtn = sl_ctrl_data_llr_config_setup_timeout_ms_get(ctrl_llr, &setup_timeout_ms);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME,
-+		   "setup timeout show (setup_timeout = %ums)",
-+		   setup_timeout_ms);
-+
-+	return sysfs_emit(buf, "%u\n", setup_timeout_ms);
-+}
-+
-+static ssize_t start_timeout_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                 rtn;
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 start_timeout_ms;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, config_kobj);
-+
-+	rtn = sl_ctrl_data_llr_config_start_timeout_ms_get(ctrl_llr, &start_timeout_ms);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME,
-+		   "start timeout show (start_timeout = %ums)",
-+		   start_timeout_ms);
-+
-+	return sysfs_emit(buf, "%u\n", start_timeout_ms);
-+}
-+
-+static ssize_t link_down_behavior_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                 rtn;
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 link_dn_behavior;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, config_kobj);
-+
-+	rtn = sl_ctrl_data_llr_config_link_dn_behavior_get(ctrl_llr, &link_dn_behavior);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME,
-+		   "down behavior show (dn_behavior = %u %s)",
-+		   link_dn_behavior, sl_llr_link_dn_behavior_str(link_dn_behavior));
-+
-+	return sysfs_emit(buf, "%s\n", sl_llr_link_dn_behavior_str(link_dn_behavior));
-+}
-+
-+static struct kobj_attribute mode             = __ATTR_RO(mode);
-+static struct kobj_attribute setup_timeout_ms = __ATTR_RO(setup_timeout_ms);
-+static struct kobj_attribute start_timeout_ms = __ATTR_RO(start_timeout_ms);
-+static struct kobj_attribute dn_behavior      = __ATTR_RO(link_down_behavior);
-+
-+static struct attribute *llr_config_attrs[] = {
-+	&mode.attr,
-+	&setup_timeout_ms.attr,
-+	&start_timeout_ms.attr,
-+	&dn_behavior.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(llr_config);
-+
-+static struct kobj_type llr_config = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = llr_config_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_llr_config_create(struct sl_ctrl_llr *ctrl_llr, struct kobject *parent_kobj)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr config create (num = %u)", ctrl_llr->num);
-+
-+	rtn = kobject_init_and_add(&ctrl_llr->config_kobj, &llr_config, parent_kobj, "config");
-+	if (rtn) {
-+		sl_log_err(ctrl_llr, LOG_BLOCK, LOG_NAME,
-+			   "llr config create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&ctrl_llr->config_kobj);
-+		return rtn;
-+	}
-+
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_llr_config_delete(struct sl_ctrl_llr *ctrl_llr)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr config delete (num = %u)", ctrl_llr->num);
-+
-+	kobject_put(&ctrl_llr->config_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_counters.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_counters.c
-new file mode 100644
-index 000000000000..516f130c76ff
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_counters.c
-@@ -0,0 +1,397 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2025-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_sysfs.h"
-+#include "sl_log.h"
-+#include "sl_ctrl_llr.h"
-+#include "sl_ctrl_llr_counters.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t llr_setup_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 counter;
-+	u32                 rtn;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
-+
-+	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_SETUP_CMD, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr setup cmd show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t llr_setup_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 counter;
-+	u32                 rtn;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
-+
-+	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_SETUP, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr setup show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t llr_setup_timeout_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 counter;
-+	u32                 rtn;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
-+
-+	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_SETUP_TIMEOUT, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr setup timeout show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t llr_setup_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 counter;
-+	u32                 rtn;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
-+
-+	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_SETUP_FAIL, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr setup fail show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t llr_configured_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 counter;
-+	u32                 rtn;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
-+
-+	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_CONFIGURED, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr configured show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t llr_start_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 counter;
-+	u32                 rtn;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
-+
-+	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_START_CMD, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr start cmd show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t llr_running_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 counter;
-+	u32                 rtn;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
-+
-+	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_RUNNING, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr running show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t llr_start_timeout_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 counter;
-+	u32                 rtn;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
-+
-+	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_START_TIMEOUT, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr start timeout show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t llr_start_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 counter;
-+	u32                 rtn;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
-+
-+	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_START_FAIL, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr start fail show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t llr_stop_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 counter;
-+	u32                 rtn;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
-+
-+	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_STOP_CMD, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr stop cmd show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t llr_stop_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 counter;
-+	u32                 rtn;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
-+
-+	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_STOP_FAIL, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr stop fail show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_setup_config_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 counter;
-+	u32                 rtn;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
-+
-+	rtn = sl_ctrl_llr_cause_counter_get(ctrl_llr, LLR_CAUSE_SETUP_CONFIG, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr cause setup config show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_setup_intr_enable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 counter;
-+	u32                 rtn;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
-+
-+	rtn = sl_ctrl_llr_cause_counter_get(ctrl_llr, LLR_CAUSE_SETUP_INTR_ENABLE, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr cause setup intr enable show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_setup_timeout_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 counter;
-+	u32                 rtn;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
-+
-+	rtn = sl_ctrl_llr_cause_counter_get(ctrl_llr, LLR_CAUSE_SETUP_TIMEOUT, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr cause setup timeout show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_start_intr_enable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 counter;
-+	u32                 rtn;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
-+
-+	rtn = sl_ctrl_llr_cause_counter_get(ctrl_llr, LLR_CAUSE_START_INTR_ENABLE, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr cause start intr enable show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_start_timeout_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 counter;
-+	u32                 rtn;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
-+
-+	rtn = sl_ctrl_llr_cause_counter_get(ctrl_llr, LLR_CAUSE_START_TIMEOUT, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr cause start timeout show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_command_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 counter;
-+	u32                 rtn;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
-+
-+	rtn = sl_ctrl_llr_cause_counter_get(ctrl_llr, LLR_CAUSE_COMMAND, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr cause command show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_canceled_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u32                 counter;
-+	u32                 rtn;
-+
-+	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
-+
-+	rtn = sl_ctrl_llr_cause_counter_get(ctrl_llr, LLR_CAUSE_CANCELED, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr cause canceled show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static struct kobj_attribute llr_setup_cmd     = __ATTR_RO(llr_setup_cmd);
-+static struct kobj_attribute llr_setup         = __ATTR_RO(llr_setup);
-+static struct kobj_attribute llr_setup_timeout = __ATTR_RO(llr_setup_timeout);
-+static struct kobj_attribute llr_setup_fail    = __ATTR_RO(llr_setup_fail);
-+static struct kobj_attribute llr_configured    = __ATTR_RO(llr_configured);
-+static struct kobj_attribute llr_start_cmd     = __ATTR_RO(llr_start_cmd);
-+static struct kobj_attribute llr_running       = __ATTR_RO(llr_running);
-+static struct kobj_attribute llr_start_timeout = __ATTR_RO(llr_start_timeout);
-+static struct kobj_attribute llr_start_fail    = __ATTR_RO(llr_start_fail);
-+static struct kobj_attribute llr_stop_cmd      = __ATTR_RO(llr_stop_cmd);
-+static struct kobj_attribute llr_stop_fail     = __ATTR_RO(llr_stop_fail);
-+
-+static struct kobj_attribute llr_cause_setup_config      = __ATTR_RO(cause_setup_config);
-+static struct kobj_attribute llr_cause_setup_intr_enable = __ATTR_RO(cause_setup_intr_enable);
-+static struct kobj_attribute llr_cause_setup_timeout     = __ATTR_RO(cause_setup_timeout);
-+static struct kobj_attribute llr_cause_start_intr_enable = __ATTR_RO(cause_start_intr_enable);
-+static struct kobj_attribute llr_cause_start_timeout     = __ATTR_RO(cause_start_timeout);
-+static struct kobj_attribute llr_cause_command           = __ATTR_RO(cause_command);
-+static struct kobj_attribute llr_cause_canceled          = __ATTR_RO(cause_canceled);
-+
-+static struct attribute *llr_counters_attrs[] = {
-+	&llr_setup_cmd.attr,
-+	&llr_setup.attr,
-+	&llr_setup_timeout.attr,
-+	&llr_setup_fail.attr,
-+	&llr_configured.attr,
-+	&llr_start_cmd.attr,
-+	&llr_running.attr,
-+	&llr_start_timeout.attr,
-+	&llr_start_fail.attr,
-+	&llr_stop_cmd.attr,
-+	&llr_stop_fail.attr,
-+	&llr_cause_setup_config.attr,
-+	&llr_cause_setup_intr_enable.attr,
-+	&llr_cause_setup_timeout.attr,
-+	&llr_cause_start_intr_enable.attr,
-+	&llr_cause_start_timeout.attr,
-+	&llr_cause_command.attr,
-+	&llr_cause_canceled.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(llr_counters);
-+
-+static struct kobj_type llr_counters = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = llr_counters_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_llr_counters_create(struct sl_ctrl_llr *ctrl_llr, struct kobject *parent_kobj)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr counters create");
-+
-+	rtn = kobject_init_and_add(&ctrl_llr->counters_kobj, &llr_counters, parent_kobj, "counters");
-+	if (rtn) {
-+		sl_log_err(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr counters create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&ctrl_llr->counters_kobj);
-+		return rtn;
-+	}
-+
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_llr_counters_delete(struct sl_ctrl_llr *ctrl_llr)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr counters delete");
-+	kobject_put(&ctrl_llr->counters_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_loop_time.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_loop_time.c
-new file mode 100644
-index 000000000000..977bb176b454
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_loop_time.c
-@@ -0,0 +1,221 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_log.h"
-+#include "data/sl_core_data_llr.h"
-+
-+#include "sl_sysfs.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t llr_loop_time_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
-+{
-+	int                 rtn;
-+	struct sl_core_llr *core_llr;
-+	u64                 loop_time[SL_CORE_LLR_MAX_LOOP_TIME_COUNT];
-+
-+	core_llr = container_of(kobj, struct sl_core_llr, loop_time_kobj);
-+
-+	rtn = sl_core_data_llr_loop_time_get(core_llr, loop_time);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME,
-+		   "loop time show (loop_time[%u] = %lluns)", num, loop_time[num]);
-+
-+	return sysfs_emit(buf, "%llu\n", loop_time[num]);
-+}
-+
-+#define llr_loop_time(_num)                                                                                        \
-+	static inline ssize_t time_##_num##_ns_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
-+	{                                                                                                          \
-+		return llr_loop_time_show(kobj, kattr, buf, (_num));                                               \
-+	}                                                                                                          \
-+	static struct kobj_attribute llr_loop_time_##_num = __ATTR_RO(time_##_num##_ns)
-+
-+llr_loop_time(0);
-+llr_loop_time(1);
-+llr_loop_time(2);
-+llr_loop_time(3);
-+llr_loop_time(4);
-+llr_loop_time(5);
-+llr_loop_time(6);
-+llr_loop_time(7);
-+llr_loop_time(8);
-+llr_loop_time(9);
-+
-+#define sl_sysfs_llr_loop_time_file(_num)                                                       \
-+	do {                                                                                    \
-+		rtn = sysfs_create_file(&core_llr->loop_time_kobj, &llr_loop_time_##_num.attr); \
-+		if (rtn) {                                                                      \
-+			sl_log_err(core_llr, LOG_BLOCK, LOG_NAME,                               \
-+				"llr loop time create file failed [%d]", rtn);                  \
-+			goto out;                                                               \
-+		}                                                                               \
-+	} while (0)
-+
-+static ssize_t calc_ns_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                 rtn;
-+	struct sl_core_llr *core_llr;
-+	u64                 calculated_ns;
-+
-+	core_llr = container_of(kobj, struct sl_core_llr, loop_time_kobj);
-+
-+	rtn = sl_core_data_llr_loop_calculated_ns_get(core_llr, &calculated_ns);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME,
-+		   "calc show (calculated_ns = %lluns)", calculated_ns);
-+
-+	return sysfs_emit(buf, "%llu\n", calculated_ns);
-+}
-+
-+static ssize_t min_ns_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                 rtn;
-+	struct sl_core_llr *core_llr;
-+	u64                 min_ns;
-+
-+	core_llr = container_of(kobj, struct sl_core_llr, loop_time_kobj);
-+
-+	rtn = sl_core_data_llr_loop_min_ns_get(core_llr, &min_ns);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME,
-+		   "min show (min_ns = %lluns)", min_ns);
-+
-+	return sysfs_emit(buf, "%llu\n", min_ns);
-+}
-+
-+static ssize_t max_ns_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                 rtn;
-+	struct sl_core_llr *core_llr;
-+	u64                 max_ns;
-+
-+	core_llr = container_of(kobj, struct sl_core_llr, loop_time_kobj);
-+
-+	rtn = sl_core_data_llr_loop_max_ns_get(core_llr, &max_ns);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME,
-+		   "max show (max_ns = %lluns)", max_ns);
-+
-+	return sysfs_emit(buf, "%llu\n", max_ns);
-+}
-+
-+static ssize_t average_ns_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                 rtn;
-+	struct sl_core_llr *core_llr;
-+	u64                 average_ns;
-+
-+	core_llr = container_of(kobj, struct sl_core_llr, loop_time_kobj);
-+
-+	rtn = sl_core_data_llr_loop_average_ns_get(core_llr, &average_ns);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME,
-+		   "average show (average_ns = %lluns)", average_ns);
-+
-+	return sysfs_emit(buf, "%llu\n", average_ns);
-+}
-+
-+static struct kobj_attribute llr_loop_calc    = __ATTR_RO(calc_ns);
-+static struct kobj_attribute llr_loop_min     = __ATTR_RO(min_ns);
-+static struct kobj_attribute llr_loop_max     = __ATTR_RO(max_ns);
-+static struct kobj_attribute llr_loop_average = __ATTR_RO(average_ns);
-+
-+static struct attribute *llr_loop_time_attrs[] = {
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(llr_loop_time);
-+
-+static struct kobj_type llr_loop_time = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = llr_loop_time_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_llr_loop_time_create(struct sl_core_llr *core_llr, struct kobject *parent_kobj)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME, "llr loop time create (num = %u)", core_llr->num);
-+
-+	rtn = kobject_init_and_add(&core_llr->loop_time_kobj, &llr_loop_time, parent_kobj, "loop");
-+	if (rtn) {
-+		sl_log_err(core_llr, LOG_BLOCK, LOG_NAME,
-+			   "llr loop time create kobject_init_and_add failed [%d]", rtn);
-+		goto out;
-+	}
-+
-+	BUILD_BUG_ON(SL_CORE_LLR_MAX_LOOP_TIME_COUNT < 10);
-+
-+	sl_sysfs_llr_loop_time_file(0);
-+	sl_sysfs_llr_loop_time_file(1);
-+	sl_sysfs_llr_loop_time_file(2);
-+	sl_sysfs_llr_loop_time_file(3);
-+	sl_sysfs_llr_loop_time_file(4);
-+	sl_sysfs_llr_loop_time_file(5);
-+	sl_sysfs_llr_loop_time_file(6);
-+	sl_sysfs_llr_loop_time_file(7);
-+	sl_sysfs_llr_loop_time_file(8);
-+	sl_sysfs_llr_loop_time_file(9);
-+
-+	rtn = sysfs_create_file(&core_llr->loop_time_kobj, &llr_loop_calc.attr);
-+	if (rtn) {
-+		sl_log_err(core_llr, LOG_BLOCK, LOG_NAME,
-+			   "llr loop time create file failed [%d]", rtn);
-+		goto out;
-+	}
-+
-+	rtn = sysfs_create_file(&core_llr->loop_time_kobj, &llr_loop_min.attr);
-+	if (rtn) {
-+		sl_log_err(core_llr, LOG_BLOCK, LOG_NAME,
-+			   "llr loop time create file failed [%d]", rtn);
-+		goto out;
-+	}
-+
-+	rtn = sysfs_create_file(&core_llr->loop_time_kobj, &llr_loop_max.attr);
-+	if (rtn) {
-+		sl_log_err(core_llr, LOG_BLOCK, LOG_NAME,
-+			   "llr loop time create file failed [%d]", rtn);
-+		goto out;
-+	}
-+
-+	rtn = sysfs_create_file(&core_llr->loop_time_kobj, &llr_loop_average.attr);
-+	if (rtn) {
-+		sl_log_err(core_llr, LOG_BLOCK, LOG_NAME,
-+			   "llr loop time create file failed [%d]", rtn);
-+		goto out;
-+	}
-+
-+	return 0;
-+out:
-+	kobject_put(&core_llr->loop_time_kobj);
-+	return rtn;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_llr_loop_time_delete(struct sl_core_llr *core_llr)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME, "llr loop time delete (num = %u)", core_llr->num);
-+
-+	kobject_put(&core_llr->loop_time_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_policy.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_policy.c
-new file mode 100644
-index 000000000000..8b35765570c6
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_policy.c
-@@ -0,0 +1,74 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_log.h"
-+#include "data/sl_core_data_llr.h"
-+
-+#include "sl_sysfs.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t continuous_tries_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                 rtn;
-+	struct sl_core_llr *core_llr;
-+	u32                 options;
-+
-+	core_llr = container_of(kobj, struct sl_core_llr, policy_kobj);
-+
-+	rtn = sl_core_data_llr_policy_options_get(core_llr, &options);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	return sysfs_emit(buf, "%s\n",
-+		(options & SL_LLR_POLICY_OPT_CONTINUOUS_START_TRIES) ? "enabled" : "disabled");
-+}
-+
-+static struct kobj_attribute continuous_tries = __ATTR_RO(continuous_tries);
-+
-+static struct attribute *llr_policy_attrs[] = {
-+	&continuous_tries.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(llr_policy);
-+
-+static struct kobj_type llr_policy = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = llr_policy_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_llr_policy_create(struct sl_core_llr *core_llr, struct kobject *parent_kobj)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME, "llr policy create (num = %u)", core_llr->num);
-+
-+	rtn = kobject_init_and_add(&core_llr->policy_kobj, &llr_policy, parent_kobj, "policies");
-+	if (rtn) {
-+		sl_log_err(core_llr, LOG_BLOCK, LOG_NAME,
-+			   "llr policy create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&core_llr->policy_kobj);
-+		return rtn;
-+	}
-+
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_llr_policy_delete(struct sl_core_llr *core_llr)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME, "llr policy delete (num = %u)", core_llr->num);
-+
-+	kobject_put(&core_llr->policy_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_mac.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_mac.c
-new file mode 100644
-index 000000000000..5587398a98f9
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_mac.c
-@@ -0,0 +1,192 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2023-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include <linux/hpe/sl/sl_mac.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_mac.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_core_str.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t rx_state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u32                 state;
-+	int		    rtn;
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, kobj);
-+
-+	rtn = sl_ctrl_mac_rx_state_get(ctrl_mac->ctrl_lgrp->ctrl_ldev->num,
-+				       ctrl_mac->ctrl_lgrp->num, ctrl_mac->num, &state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME,
-+		   "rx state show (mac = 0x%p, state = %u)", ctrl_mac, state);
-+
-+	return sysfs_emit(buf, "%s\n", sl_mac_state_str(state));
-+}
-+
-+static ssize_t rx_last_start_result_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	int                 last_start_result;
-+	int                 rtn;
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, kobj);
-+
-+	rtn = sl_core_mac_rx_last_start_result_get(ctrl_mac->ctrl_lgrp->ctrl_ldev->num,
-+						   ctrl_mac->ctrl_lgrp->num, ctrl_mac->num, &last_start_result);
-+
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME,
-+		   "rx last start result show (mac = 0x%p, last_start_result = %d)", ctrl_mac, last_start_result);
-+
-+	return sysfs_emit(buf, "%d\n", last_start_result);
-+}
-+
-+static ssize_t tx_state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u32                 state;
-+	int		    rtn;
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, kobj);
-+
-+	rtn = sl_ctrl_mac_tx_state_get(ctrl_mac->ctrl_lgrp->ctrl_ldev->num,
-+				       ctrl_mac->ctrl_lgrp->num, ctrl_mac->num, &state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME,
-+		   "tx state show (mac = 0x%p, state = %u)", ctrl_mac, state);
-+
-+	return sysfs_emit(buf, "%s\n", sl_mac_state_str(state));
-+}
-+
-+static ssize_t tx_last_start_result_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	int                 last_start_result;
-+	int                 rtn;
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, kobj);
-+
-+	rtn = sl_core_mac_tx_last_start_result_get(ctrl_mac->ctrl_lgrp->ctrl_ldev->num,
-+						   ctrl_mac->ctrl_lgrp->num, ctrl_mac->num, &last_start_result);
-+
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME,
-+		   "tx last start result show (mac = 0x%p, last_start_result = %d)", ctrl_mac, last_start_result);
-+
-+	return sysfs_emit(buf, "%d\n", last_start_result);
-+}
-+
-+static ssize_t info_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                 rtn;
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u64                 info_map;
-+	char                info_map_str[900];
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, kobj);
-+
-+	rtn = sl_ctrl_mac_info_map_get(ctrl_mac->ctrl_lgrp->ctrl_ldev->num,
-+				       ctrl_mac->ctrl_lgrp->num, ctrl_mac->num, &info_map);
-+	if (rtn) {
-+		sl_log_err(ctrl_mac, LOG_BLOCK, LOG_NAME,
-+			   "info map show sl_ctrl_mac_info_map_get failed [%d]", rtn);
-+		return sysfs_emit(buf, "no-mac\n");
-+	}
-+
-+	sl_core_info_map_str(info_map, info_map_str, sizeof(info_map_str));
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME,
-+		   "info map show (info_map = 0x%llX %s)", info_map, info_map_str);
-+
-+	return sysfs_emit(buf, "%s\n", info_map_str);
-+}
-+
-+static struct kobj_attribute rx_state             = __ATTR_RO(rx_state);
-+static struct kobj_attribute rx_last_start_result = __ATTR_RO(rx_last_start_result);
-+static struct kobj_attribute tx_state             = __ATTR_RO(tx_state);
-+static struct kobj_attribute tx_last_start_result = __ATTR_RO(tx_last_start_result);
-+static struct kobj_attribute info_map             = __ATTR_RO(info_map);
-+
-+static struct attribute *mac_attrs[] = {
-+	&rx_state.attr,
-+	&rx_last_start_result.attr,
-+	&tx_state.attr,
-+	&tx_last_start_result.attr,
-+	&info_map.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(mac);
-+
-+static struct kobj_type mac_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = mac_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_mac_create(struct sl_ctrl_mac *ctrl_mac)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac create (num = %u)", ctrl_mac->num);
-+
-+	if (!ctrl_mac->parent_kobj) {
-+		sl_log_err(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac create missing parent");
-+		return -EBADRQC;
-+	}
-+
-+	rtn = kobject_init_and_add(&ctrl_mac->kobj, &mac_info, ctrl_mac->parent_kobj, "mac");
-+	if (rtn) {
-+		sl_log_err(ctrl_mac, LOG_BLOCK, LOG_NAME,
-+			   "mac create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&ctrl_mac->kobj);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_mac_counters_create(ctrl_mac);
-+	if (rtn) {
-+		sl_log_err(ctrl_mac, LOG_BLOCK, LOG_NAME, "sl_sysfs_mac_counters_create failed [%d]", rtn);
-+		kobject_put(&ctrl_mac->kobj);
-+		return rtn;
-+	}
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME,
-+		   "mac create (mac_kobj = 0x%p)", &ctrl_mac->kobj);
-+
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_mac_delete(struct sl_ctrl_mac *ctrl_mac)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "delete (num = %u)", ctrl_mac->num);
-+
-+	if (!ctrl_mac->parent_kobj)
-+		return;
-+
-+	sl_sysfs_mac_counters_delete(ctrl_mac);
-+	kobject_put(&ctrl_mac->kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_mac_counters.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_mac_counters.c
-new file mode 100644
-index 000000000000..97ab44983d8e
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_mac_counters.c
-@@ -0,0 +1,339 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2025-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_sysfs.h"
-+#include "sl_log.h"
-+#include "sl_ctrl_mac.h"
-+#include "sl_ctrl_mac_counters.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t mac_tx_start_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u32                 count;
-+	int		    rtn;
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
-+
-+	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_TX_START_CMD, &count);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac tx start cmd show (count = %u)", count);
-+
-+	return sysfs_emit(buf, "%u\n", count);
-+}
-+
-+static ssize_t mac_tx_started_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u32                 count;
-+	int		    rtn;
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
-+
-+	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_TX_STARTED, &count);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac tx started show (count = %u)", count);
-+
-+	return sysfs_emit(buf, "%u\n", count);
-+}
-+
-+static ssize_t mac_tx_start_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u32                 count;
-+	int		    rtn;
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
-+
-+	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_TX_START_FAIL, &count);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac tx start fail show (count = %u)", count);
-+
-+	return sysfs_emit(buf, "%u\n", count);
-+}
-+
-+static ssize_t mac_tx_stop_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u32                 count;
-+	int		    rtn;
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
-+
-+	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_TX_STOP_CMD, &count);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac tx stop cmd show (count = %u)", count);
-+
-+	return sysfs_emit(buf, "%u\n", count);
-+}
-+
-+static ssize_t mac_tx_stopped_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u32                 count;
-+	int		    rtn;
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
-+
-+	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_TX_STOPPED, &count);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac tx stopped show (count = %u)", count);
-+
-+	return sysfs_emit(buf, "%u\n", count);
-+}
-+
-+static ssize_t mac_tx_stop_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u32                 count;
-+	int		    rtn;
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
-+
-+	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_TX_STOP_FAIL, &count);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac tx stop fail show (count = %u)", count);
-+
-+	return sysfs_emit(buf, "%u\n", count);
-+}
-+
-+static ssize_t mac_rx_start_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u32                 count;
-+	int		    rtn;
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
-+
-+	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_RX_START_CMD, &count);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac rx start cmd show (count = %u)", count);
-+
-+	return sysfs_emit(buf, "%u\n", count);
-+}
-+
-+static ssize_t mac_rx_started_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u32                 count;
-+	int		    rtn;
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
-+
-+	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_RX_STARTED, &count);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac rx started show (count = %u)", count);
-+
-+	return sysfs_emit(buf, "%u\n", count);
-+}
-+
-+static ssize_t mac_rx_start_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u32                 count;
-+	int		    rtn;
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
-+
-+	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_RX_START_FAIL, &count);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac rx start fail show (count = %u)", count);
-+
-+	return sysfs_emit(buf, "%u\n", count);
-+}
-+
-+static ssize_t mac_rx_stop_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u32                 count;
-+	int		    rtn;
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
-+
-+	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_RX_STOP_CMD, &count);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac rx stop cmd show (count = %u)", count);
-+
-+	return sysfs_emit(buf, "%u\n", count);
-+}
-+
-+static ssize_t mac_rx_stopped_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u32                 count;
-+	int		    rtn;
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
-+
-+	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_RX_STOPPED, &count);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac rx stopped show (count = %u)", count);
-+
-+	return sysfs_emit(buf, "%u\n", count);
-+}
-+
-+static ssize_t mac_rx_stop_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u32                 count;
-+	int		    rtn;
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
-+
-+	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_RX_STOP_FAIL, &count);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac rx stop fail show (count = %u)", count);
-+
-+	return sysfs_emit(buf, "%u\n", count);
-+}
-+
-+static ssize_t mac_reset_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u32                 count;
-+	int		    rtn;
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
-+
-+	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_RESET_CMD, &count);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac reset cmd show (count = %u)", count);
-+
-+	return sysfs_emit(buf, "%u\n", count);
-+}
-+
-+static ssize_t mac_reset_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u32                 count;
-+	int		    rtn;
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
-+
-+	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_RESET, &count);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac reset show (count = %u)", count);
-+
-+	return sysfs_emit(buf, "%u\n", count);
-+}
-+
-+static ssize_t mac_reset_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u32                 count;
-+	int		    rtn;
-+
-+	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
-+
-+	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_RESET_FAIL, &count);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac reset fail show (count = %u)", count);
-+
-+	return sysfs_emit(buf, "%u\n", count);
-+}
-+
-+static struct kobj_attribute mac_tx_start_cmd  = __ATTR_RO(mac_tx_start_cmd);
-+static struct kobj_attribute mac_tx_started    = __ATTR_RO(mac_tx_started);
-+static struct kobj_attribute mac_tx_start_fail = __ATTR_RO(mac_tx_start_fail);
-+static struct kobj_attribute mac_tx_stop_cmd   = __ATTR_RO(mac_tx_stop_cmd);
-+static struct kobj_attribute mac_tx_stopped    = __ATTR_RO(mac_tx_stopped);
-+static struct kobj_attribute mac_tx_stop_fail  = __ATTR_RO(mac_tx_stop_fail);
-+static struct kobj_attribute mac_rx_start_cmd  = __ATTR_RO(mac_rx_start_cmd);
-+static struct kobj_attribute mac_rx_started    = __ATTR_RO(mac_rx_started);
-+static struct kobj_attribute mac_rx_start_fail = __ATTR_RO(mac_rx_start_fail);
-+static struct kobj_attribute mac_rx_stop_cmd   = __ATTR_RO(mac_rx_stop_cmd);
-+static struct kobj_attribute mac_rx_stopped    = __ATTR_RO(mac_rx_stopped);
-+static struct kobj_attribute mac_rx_stop_fail  = __ATTR_RO(mac_rx_stop_fail);
-+static struct kobj_attribute mac_reset_cmd     = __ATTR_RO(mac_reset_cmd);
-+static struct kobj_attribute mac_reset         = __ATTR_RO(mac_reset);
-+static struct kobj_attribute mac_reset_fail    = __ATTR_RO(mac_reset_fail);
-+
-+static struct attribute *mac_counters_attrs[] = {
-+	&mac_tx_start_cmd.attr,
-+	&mac_tx_started.attr,
-+	&mac_tx_start_fail.attr,
-+	&mac_tx_stop_cmd.attr,
-+	&mac_tx_stopped.attr,
-+	&mac_tx_stop_fail.attr,
-+	&mac_rx_start_cmd.attr,
-+	&mac_rx_started.attr,
-+	&mac_rx_start_fail.attr,
-+	&mac_rx_stop_cmd.attr,
-+	&mac_rx_stopped.attr,
-+	&mac_rx_stop_fail.attr,
-+	&mac_reset_cmd.attr,
-+	&mac_reset.attr,
-+	&mac_reset_fail.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(mac_counters);
-+
-+static struct kobj_type mac_counters = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = mac_counters_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_mac_counters_create(struct sl_ctrl_mac *ctrl_mac)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac counters create");
-+
-+	rtn = kobject_init_and_add(&ctrl_mac->counters_kobj, &mac_counters, &ctrl_mac->kobj, "counters");
-+	if (rtn) {
-+		sl_log_err(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac counters create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&ctrl_mac->counters_kobj);
-+		return rtn;
-+	}
-+
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_mac_counters_delete(struct sl_ctrl_mac *ctrl_mac)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac counters delete");
-+	kobject_put(&ctrl_mac->counters_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_media.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_media.c
-new file mode 100644
-index 000000000000..8973fcc2f378
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_media.c
-@@ -0,0 +1,1274 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include <linux/hpe/sl/sl_media.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_core_str.h"
-+#include "sl_core_lgrp.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_media_lgrp.h"
-+#include "sl_media_jack.h"
-+#include "data/sl_media_data_jack.h"
-+#include "base/sl_media_eeprom.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u8                    state;
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	rtn = sl_media_jack_state_get(media_lgrp->media_jack, &state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "state show (media_lgrp = 0x%p, state = %u %s)",
-+		   media_lgrp, state, sl_media_state_str(state));
-+
-+	return sysfs_emit(buf, "%s\n", sl_media_state_str(state));
-+}
-+
-+static ssize_t jack_power_state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	bool                  is_high_powered;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	is_high_powered = sl_media_jack_is_high_powered(media_lgrp->media_jack);
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "power state show (media_lgrp = 0x%p, state = %s)",
-+		   media_lgrp, is_high_powered ? "high" : "low");
-+
-+	return sysfs_emit(buf, "%s\n", is_high_powered ? "high" : "low");
-+}
-+
-+static ssize_t temperature_celsius_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                   rtn;
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u8                    temp;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp   = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_jack_cable_temp_get(media_lgrp->media_ldev->num, media_lgrp->num, &temp);
-+	if (rtn == -EBADRQC)
-+		return sysfs_emit(buf, "not-active\n");
-+	if (rtn == -EIO)
-+		return sysfs_emit(buf, "io-error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "temperature_celsius show (media_lgrp = 0x%p, temp = %uc)", media_lgrp, temp);
-+
-+	return sysfs_emit(buf, "%u\n", temp);
-+}
-+
-+static ssize_t temperature_warn_limit_celsius_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                   rtn;
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u8                    temp_warn_limit_c;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp  = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_jack_cable_temp_warn_limit_get(media_lgrp->media_ldev->num,
-+						      media_lgrp->num, &temp_warn_limit_c);
-+
-+	if (rtn == -EBADRQC)
-+		return sysfs_emit(buf, "not-active\n");
-+	if (rtn == -EIO)
-+		return sysfs_emit(buf, "io-error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "temperature_warn_limit_celsius show (media_lgrp = 0x%p, temp = %uc)",
-+		   media_lgrp, temp_warn_limit_c);
-+
-+	return sysfs_emit(buf, "%u\n", temp_warn_limit_c);
-+}
-+
-+static ssize_t temperature_down_limit_celsius_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                   rtn;
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u8                    temp_down_limit_c;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp  = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_jack_cable_temp_down_limit_get(media_lgrp->media_ldev->num,
-+						      media_lgrp->num, &temp_down_limit_c);
-+
-+	if (rtn == -EBADRQC)
-+		return sysfs_emit(buf, "not-active\n");
-+	if (rtn == -EIO)
-+		return sysfs_emit(buf, "io-error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "temperature_down_limit_celsius show (media_lgrp = 0x%p, temp = %uc)",
-+		   media_lgrp, temp_down_limit_c);
-+
-+	return sysfs_emit(buf, "%u\n", temp_down_limit_c);
-+}
-+
-+static ssize_t temperature_state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u8                    temperature_state;
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp   = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	if (!sl_media_lgrp_media_type_is_active(media_lgrp->media_ldev->num, media_lgrp->num))
-+		return sysfs_emit(buf, "not-active\n");
-+
-+	rtn  = sl_media_jack_cable_temp_state_get(media_lgrp->media_jack, &temperature_state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "temperature state show (media_lgrp = 0x%p, temperature_state = %u %s)",
-+		   media_lgrp, temperature_state, sl_media_temp_state_str(temperature_state));
-+
-+	return sysfs_emit(buf, "%s\n", sl_media_temp_state_str(temperature_state));
-+}
-+
-+static ssize_t vendor_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   vendor;
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_lgrp_vendor_get(media_lgrp, &vendor);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "vendor show (media_lgrp = 0x%p, vendor = %u %s)",
-+		   media_lgrp, vendor, sl_media_vendor_str(vendor));
-+
-+	return sysfs_emit(buf, "%s\n", sl_media_vendor_str(vendor));
-+}
-+
-+static ssize_t vendor_part_num_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	char                  vendor_pn_str[SL_MEDIA_VENDOR_PN_SIZE];
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp  = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_lgrp_vendor_pn_str_get(media_lgrp, vendor_pn_str);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "vendor part num show (media_lgrp = 0x%p, vendor_pn_str = %s)",
-+		   media_lgrp, vendor_pn_str);
-+
-+	return sysfs_emit(buf, "%s\n", vendor_pn_str);
-+}
-+
-+static ssize_t type_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   type;
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_lgrp_type_get(media_lgrp, &type);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "type show (media_lgrp = 0x%p, type = %u %s)",
-+		   media_lgrp, type, sl_media_type_str(type));
-+
-+	return sysfs_emit(buf, "%s\n", sl_media_type_str(type));
-+}
-+
-+static ssize_t shape_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   shape;
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_lgrp_shape_get(media_lgrp, &shape);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "shape show (media_lgrp = 0x%p, shape = %u %s)", media_lgrp, shape, sl_media_shape_str(shape));
-+
-+	return sysfs_emit(buf, "%s\n", sl_media_shape_str(shape));
-+}
-+
-+static ssize_t cable_end_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u8                    cable_end;
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_jack_cable_end_get(media_lgrp->media_jack, &cable_end);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "cable_end show (media_lgrp = 0x%p, cable_end = %u %s)",
-+		media_lgrp, cable_end, sl_media_cable_end_str(cable_end));
-+
-+	return sysfs_emit(buf, "%s\n", sl_media_cable_end_str(cable_end));
-+}
-+
-+static ssize_t length_cm_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   length_cm;
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_lgrp_length_get(media_lgrp, &length_cm);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "length_cm show (media_lgrp = 0x%p, length_cm = %u)",
-+		   media_lgrp, length_cm);
-+
-+	return sysfs_emit(buf, "%u\n", length_cm);
-+}
-+
-+static ssize_t max_speed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   max_speed;
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_lgrp_max_speed_get(media_lgrp, &max_speed);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "max speed show (media_lgrp = 0x%p, max_speed = %u %s)",
-+		   media_lgrp, max_speed, sl_media_speed_str(max_speed));
-+
-+	return sysfs_emit(buf, "%s\n", sl_media_speed_str(max_speed));
-+}
-+
-+static ssize_t serial_num_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	char                  serial_num_str[SL_MEDIA_SERIAL_NUM_SIZE];
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_lgrp_serial_num_str_get(media_lgrp, serial_num_str);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "serial num show (media_lgrp = 0x%p, serial_num = %s)",
-+		   media_lgrp, serial_num_str);
-+
-+	return sysfs_emit(buf, "%s\n", serial_num_str);
-+}
-+
-+static ssize_t hpe_part_num_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	char                  hpe_pn_str[SL_MEDIA_HPE_PN_SIZE];
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_lgrp_hpe_pn_str_get(media_lgrp, hpe_pn_str);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "hpe part num show (media_lgrp = 0x%p, hpe_pn = %s)",
-+		   media_lgrp, hpe_pn_str);
-+
-+	return sysfs_emit(buf, "%s\n", hpe_pn_str);
-+}
-+
-+static ssize_t jack_num_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "jack_num show (media_lgrp = 0x%p, jack_num = %u)",
-+		media_lgrp, media_lgrp->media_jack->physical_num);
-+
-+	return sysfs_emit(buf, "%u\n", media_lgrp->media_jack->physical_num);
-+}
-+
-+static ssize_t jack_type_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   density;
-+	u32                   jack_type;
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_lgrp_jack_type_get(media_lgrp, &jack_type);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	rtn = sl_media_lgrp_jack_type_qsfp_density_get(media_lgrp, &density);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "jack type show (media_lgrp = 0x%p, jack_type = %u %s)",
-+		   media_lgrp, jack_type, sl_media_jack_type_str(jack_type, density));
-+
-+	return sysfs_emit(buf, "%s\n", sl_media_jack_type_str(jack_type, density));
-+}
-+
-+static ssize_t furcation_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   furcation;
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_lgrp_furcation_get(media_lgrp, &furcation);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "furcation show (media_lgrp = 0x%p, furcation = %u %s)",
-+		   media_lgrp, furcation, sl_media_furcation_str(furcation));
-+
-+	return sysfs_emit(buf, "%s\n", sl_media_furcation_str(furcation));
-+}
-+
-+static ssize_t is_supported_cable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	bool                  unsupported;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	unsupported = sl_media_lgrp_is_cable_unsupported(media_lgrp);
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "is_supported_cable show (media_lgrp = 0x%p, is_supported_cable = %s)",
-+		   media_lgrp, unsupported ? "no" : "yes");
-+
-+	return sysfs_emit(buf, "%s\n", unsupported ? "no" : "yes");
-+}
-+
-+static ssize_t date_code_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	char                  date_code_str[SL_MEDIA_DATE_CODE_SIZE];
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_lgrp_date_code_str_get(media_lgrp, date_code_str);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "date code show (media_lgrp = 0x%p, date_code = %s)",
-+		   media_lgrp, date_code_str);
-+
-+	return sysfs_emit(buf, "%s\n", date_code_str);
-+}
-+
-+static ssize_t firmware_version_hex_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u8                    fw_ver[SL_MEDIA_FIRMWARE_VERSION_SIZE];
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_lgrp_fw_ver_str_get(media_lgrp, fw_ver);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "firmware version hex show (media_lgrp = 0x%p, firmware_version_hex = %02X.%02X)",
-+		media_lgrp, fw_ver[0], fw_ver[1]);
-+
-+	return sysfs_emit(buf, "%02X.%02X\n", fw_ver[0], fw_ver[1]);
-+}
-+
-+static ssize_t target_firmware_version_hex_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u8                    target_fw_ver_str[25];
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_eeprom_target_fw_ver_str_get(media_lgrp->media_jack, target_fw_ver_str, sizeof(target_fw_ver_str));
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "target firmware version hex show (media_lgrp = 0x%p, target_firmware_version_hex = %s)",
-+		media_lgrp, target_fw_ver_str);
-+
-+	return sysfs_emit(buf, "%s\n", target_fw_ver_str);
-+}
-+
-+static ssize_t cable_speed_state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u8                    cable_speed_state;
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_jack_cable_shift_state_get(media_lgrp->media_jack, &cable_speed_state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "cable_speed state show (media_lgrp = 0x%p, cable_speed_state = %u %s)",
-+		   media_lgrp, cable_speed_state, sl_media_cable_speed_state_str(cable_speed_state));
-+
-+	return sysfs_emit(buf, "%s\n", sl_media_cable_speed_state_str(cable_speed_state));
-+}
-+
-+static ssize_t active_cable_200g_host_interface_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u8                    host_interface;
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_jack_active_cable_200g_host_interface_get(media_lgrp->media_jack, &host_interface);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "active cable 200g host interface show (media_lgrp = 0x%p, host_interface = 0x%X)",
-+		   media_lgrp, host_interface);
-+
-+	return sysfs_emit(buf, "0x%02x\n", host_interface);
-+}
-+
-+static ssize_t active_cable_200g_lane_count_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u8                    lane_count;
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_jack_active_cable_200g_lane_count_get(media_lgrp->media_jack, &lane_count);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "active cable 200g lane coiunt show (media_lgrp = 0x%p, lane_count = 0x%X)",
-+		   media_lgrp, lane_count);
-+
-+	return sysfs_emit(buf, "0x%02x\n", lane_count);
-+}
-+
-+static ssize_t active_cable_200g_appsel_num_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u8                    appsel_num;
-+	int rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_jack_active_cable_200g_appsel_num_get(media_lgrp->media_jack, &appsel_num);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "active cable 200g appsel no show (media_lgrp = 0x%p, appsel_num = 0x%X)", media_lgrp, appsel_num);
-+
-+	return sysfs_emit(buf, "0x%02x\n", appsel_num);
-+}
-+
-+static ssize_t active_cable_400g_host_interface_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u8                    host_interface;
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_jack_active_cable_400g_host_interface_get(media_lgrp->media_jack, &host_interface);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "active cable 400g host interface show (media_lgrp = 0x%p, host_interface = 0x%X)",
-+		   media_lgrp, host_interface);
-+
-+	return sysfs_emit(buf, "0x%02x\n", host_interface);
-+}
-+
-+static ssize_t active_cable_400g_lane_count_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u8                    lane_count;
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_jack_active_cable_400g_lane_count_get(media_lgrp->media_jack, &lane_count);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "active cable 400g lane count show (media_lgrp = 0x%p, lane_count = 0x%X)",
-+		   media_lgrp, lane_count);
-+
-+	return sysfs_emit(buf, "0x%02x\n", lane_count);
-+}
-+
-+static ssize_t active_cable_400g_appsel_num_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u8                    appsel_num;
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_jack_active_cable_400g_appsel_num_get(media_lgrp->media_jack, &appsel_num);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "active cable 400g appsel no show (media_lgrp = 0x%p, appsel_num = 0x%X)", media_lgrp, appsel_num);
-+
-+	return sysfs_emit(buf, "0x%02x\n", appsel_num);
-+}
-+
-+static ssize_t last_fault_cause_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   fault_cause;
-+	time64_t              fault_time;
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	rtn = sl_media_jack_fault_cause_get(media_lgrp->media_jack, &fault_cause, &fault_time);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "last_fault cause show (cause = %u %s)", fault_cause,
-+		   sl_media_fault_cause_str(fault_cause));
-+
-+	if (fault_cause == SL_MEDIA_FAULT_CAUSE_NONE)
-+		return sysfs_emit(buf, "no-fault\n");
-+
-+	return sysfs_emit(buf, "%s\n", sl_media_fault_cause_str(fault_cause));
-+}
-+
-+static ssize_t last_fault_time_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   fault_cause;
-+	time64_t              fault_time;
-+	int		      rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+
-+	rtn = sl_media_jack_fault_cause_get(media_lgrp->media_jack, &fault_cause, &fault_time);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "last fault time show (cause = %u %s, time = %lld %ptTt %ptTd)",
-+		fault_cause, sl_media_fault_cause_str(fault_cause),
-+		fault_time, &fault_time, &fault_time);
-+
-+	if (fault_cause == SL_MEDIA_FAULT_CAUSE_NONE)
-+		return sysfs_emit(buf, "no-fault\n");
-+
-+	return sysfs_emit(buf, "%ptTt %ptTd\n", &fault_time, &fault_time);
-+}
-+
-+static ssize_t is_supported_ss200_cable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+
-+	sl_log_dbg(media_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "is supported ss200 cable show (is_supported_ss200_cable = %s)",
-+		media_lgrp->media_jack->is_supported_ss200_cable ? "yes" : "no");
-+
-+	if (media_lgrp->media_jack->is_supported_ss200_cable)
-+		return sysfs_emit(buf, "yes\n");
-+
-+	return sysfs_emit(buf, "no\n");
-+}
-+
-+static ssize_t jack_part_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	u8                    ldev_num;
-+	u8                    lgrp_num;
-+	u32                   jack_part;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ldev_num = media_lgrp->media_ldev->num;
-+	lgrp_num = media_lgrp->num;
-+
-+	jack_part = sl_core_lgrp_jack_part_get(ldev_num, lgrp_num);
-+
-+	sl_log_dbg(media_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "jack part show (jack_part = %u %s)", jack_part, sl_core_lgrp_dt_jack_part_str(jack_part));
-+
-+	return sysfs_emit(buf, "%s\n", sl_core_lgrp_dt_jack_part_str(jack_part));
-+}
-+
-+static ssize_t signal_cache_time_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                  rtn;
-+	struct sl_media_lgrp *media_lgrp;
-+	u8                   ldev_num;
-+	u8                   lgrp_num;
-+	time64_t             signal_cache_time_s;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+	ldev_num = media_lgrp->media_ldev->num;
-+	lgrp_num = media_lgrp->num;
-+
-+	rtn = sl_media_jack_signal_cache_time_s_get(ldev_num, lgrp_num, &signal_cache_time_s);
-+	if (rtn) {
-+		sl_log_err_trace(media_lgrp, LOG_BLOCK, LOG_NAME, "signal cache time show failed [%d]", rtn);
-+		return sysfs_emit(buf, "no-cache\n");
-+	}
-+
-+	sl_log_dbg(media_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "signal cache time show (signal_cache_time_s = %llu)", signal_cache_time_s);
-+
-+	return sysfs_emit(buf, "%ptTt %ptTd\n", &signal_cache_time_s, &signal_cache_time_s);
-+}
-+
-+static ssize_t error_info_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                   rtn;
-+	u32                   error_map;
-+	struct sl_media_lgrp *media_lgrp;
-+	char                  error_str[SL_MEDIA_JACK_ATTR_ERR_STR_SIZE];
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
-+
-+	rtn = sl_media_jack_attr_error_map_get(media_lgrp->media_jack, &error_map);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	rtn = sl_media_jack_attr_error_map_str(error_map, error_str, sizeof(error_str));
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(media_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "error info show (error_map = 0x%x %s)", error_map, error_str);
-+
-+	return sysfs_emit(buf, "%s\n", error_str);
-+}
-+
-+static struct kobj_attribute media_state                            = __ATTR_RO(state);
-+static struct kobj_attribute media_jack_power_state                 = __ATTR_RO(jack_power_state);
-+static struct kobj_attribute media_temperature_celsius              = __ATTR_RO(temperature_celsius);
-+static struct kobj_attribute media_temperature_warn_limit_celsius   = __ATTR_RO(temperature_warn_limit_celsius);
-+static struct kobj_attribute media_temperature_down_limit_celsius   = __ATTR_RO(temperature_down_limit_celsius);
-+static struct kobj_attribute media_temperature_state                = __ATTR_RO(temperature_state);
-+static struct kobj_attribute media_vendor                           = __ATTR_RO(vendor);
-+static struct kobj_attribute media_vendor_part_num                  = __ATTR_RO(vendor_part_num);
-+static struct kobj_attribute media_type                             = __ATTR_RO(type);
-+static struct kobj_attribute media_shape                            = __ATTR_RO(shape);
-+static struct kobj_attribute media_cable_end                        = __ATTR_RO(cable_end);
-+static struct kobj_attribute media_length_cm                        = __ATTR_RO(length_cm);
-+static struct kobj_attribute media_max_speed                        = __ATTR_RO(max_speed);
-+static struct kobj_attribute media_serial_num                       = __ATTR_RO(serial_num);
-+static struct kobj_attribute media_hpe_part_num                     = __ATTR_RO(hpe_part_num);
-+static struct kobj_attribute media_jack_num                         = __ATTR_RO(jack_num);
-+static struct kobj_attribute media_jack_type                        = __ATTR_RO(jack_type);
-+static struct kobj_attribute media_furcation                        = __ATTR_RO(furcation);
-+static struct kobj_attribute media_is_supported_cable               = __ATTR_RO(is_supported_cable);
-+static struct kobj_attribute media_date_code                        = __ATTR_RO(date_code);
-+static struct kobj_attribute media_firmware_version_hex             = __ATTR_RO(firmware_version_hex);
-+static struct kobj_attribute media_target_firmware_version_hex      = __ATTR_RO(target_firmware_version_hex);
-+static struct kobj_attribute media_cable_speed_state                = __ATTR_RO(cable_speed_state);
-+static struct kobj_attribute media_active_cable_200g_host_interface = __ATTR_RO(active_cable_200g_host_interface);
-+static struct kobj_attribute media_active_cable_200g_lane_count     = __ATTR_RO(active_cable_200g_lane_count);
-+static struct kobj_attribute media_active_cable_200g_appsel_num     = __ATTR_RO(active_cable_200g_appsel_num);
-+static struct kobj_attribute media_active_cable_400g_host_interface = __ATTR_RO(active_cable_400g_host_interface);
-+static struct kobj_attribute media_active_cable_400g_lane_count     = __ATTR_RO(active_cable_400g_lane_count);
-+static struct kobj_attribute media_active_cable_400g_appsel_num     = __ATTR_RO(active_cable_400g_appsel_num);
-+static struct kobj_attribute media_last_fault_cause                 = __ATTR_RO(last_fault_cause);
-+static struct kobj_attribute media_last_fault_time                  = __ATTR_RO(last_fault_time);
-+static struct kobj_attribute media_is_supported_ss200_cable         = __ATTR_RO(is_supported_ss200_cable);
-+static struct kobj_attribute media_jack_part                        = __ATTR_RO(jack_part);
-+static struct kobj_attribute media_signal_cache_time                = __ATTR_RO(signal_cache_time);
-+static struct kobj_attribute media_error_info                       = __ATTR_RO(error_info);
-+
-+static struct attribute *media_attrs[] = {
-+	&media_state.attr,
-+	&media_jack_power_state.attr,
-+	&media_temperature_celsius.attr,
-+	&media_temperature_warn_limit_celsius.attr,
-+	&media_temperature_down_limit_celsius.attr,
-+	&media_temperature_state.attr,
-+	&media_vendor.attr,
-+	&media_vendor_part_num.attr,
-+	&media_type.attr,
-+	&media_shape.attr,
-+	&media_cable_end.attr,
-+	&media_length_cm.attr,
-+	&media_max_speed.attr,
-+	&media_serial_num.attr,
-+	&media_hpe_part_num.attr,
-+	&media_jack_num.attr,
-+	&media_jack_type.attr,
-+	&media_furcation.attr,
-+	&media_is_supported_cable.attr,
-+	&media_date_code.attr,
-+	&media_firmware_version_hex.attr,
-+	&media_target_firmware_version_hex.attr,
-+	&media_cable_speed_state.attr,
-+	&media_active_cable_200g_host_interface.attr,
-+	&media_active_cable_200g_lane_count.attr,
-+	&media_active_cable_200g_appsel_num.attr,
-+	&media_active_cable_400g_host_interface.attr,
-+	&media_active_cable_400g_lane_count.attr,
-+	&media_active_cable_400g_appsel_num.attr,
-+	&media_last_fault_cause.attr,
-+	&media_last_fault_time.attr,
-+	&media_is_supported_ss200_cable.attr,
-+	&media_jack_part.attr,
-+	&media_signal_cache_time.attr,
-+	&media_error_info.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(media);
-+
-+static struct kobj_type media_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = media_groups,
-+};
-+
-+static ssize_t host_interface_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp_speed_kobject *speed_kobj;
-+	struct sl_ctrl_lgrp                *ctrl_lgrp;
-+	u32                                 speed;
-+	u32                                 type;
-+	int				    rtn;
-+
-+	speed_kobj = container_of(kobj, struct sl_media_lgrp_speed_kobject, kobj);
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(speed_kobj->media_lgrp->media_ldev->num, speed_kobj->media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(speed_kobj->media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(speed_kobj->media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_lgrp_type_get(speed_kobj->media_lgrp, &type);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	speed = speed_kobj->speed;
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "host interface show (media_lgrp = 0x%p, host_interface = %s)",
-+		speed_kobj->media_lgrp, sl_media_host_interface_str(speed, type));
-+
-+	return sysfs_emit(buf, "%s\n", sl_media_host_interface_str(speed, type));
-+}
-+
-+static ssize_t projected_ber_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp_speed_kobject *speed_kobj;
-+	struct sl_ctrl_lgrp                *ctrl_lgrp;
-+	u8                                  media_interface;
-+	u32                                 type;
-+	int				    rtn;
-+
-+	speed_kobj = container_of(kobj, struct sl_media_lgrp_speed_kobject, kobj);
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(speed_kobj->media_lgrp->media_ldev->num, speed_kobj->media_lgrp->num);
-+
-+	if (!sl_media_jack_is_cable_online(speed_kobj->media_lgrp->media_jack)) {
-+		if (sl_media_jack_is_cable_format_unsupported(speed_kobj->media_lgrp->media_jack))
-+			return sysfs_emit(buf, "unsupported-format\n");
-+		return sysfs_emit(buf, "no-cable\n");
-+	}
-+
-+	rtn = sl_media_lgrp_type_get(speed_kobj->media_lgrp, &type);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	if (type == SL_MEDIA_TYPE_PEC || type == SL_MEDIA_TYPE_BKP) {
-+		sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+			   "projected_ber show (media_lgrp = 0x%p, projected_ber = 0)", speed_kobj->media_lgrp);
-+		return sysfs_emit(buf, "0\n");
-+	}
-+
-+	rtn = sl_media_eeprom_media_interface_get(speed_kobj->media_lgrp->media_jack, &media_interface);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "projected_ber show (media_lgrp = 0x%p, projected_ber = %s)",
-+		   speed_kobj->media_lgrp, sl_media_ber_str(media_interface));
-+
-+	return sysfs_emit(buf, "%s\n", sl_media_ber_str(media_interface));
-+}
-+
-+static struct kobj_attribute media_speed_host_interface = __ATTR_RO(host_interface);
-+static struct kobj_attribute media_speed_projected_ber  = __ATTR_RO(projected_ber);
-+
-+static struct attribute *media_speed_attrs[] = {
-+	&media_speed_host_interface.attr,
-+	&media_speed_projected_ber.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(media_speed);
-+
-+static struct kobj_type media_speed_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = media_speed_groups,
-+};
-+
-+static void parent_speed_release(struct kobject *kobj)
-+{
-+}
-+
-+static struct kobj_type parent_speed_info = {
-+	.release = parent_speed_release,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_media_create(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	int                   rtn;
-+	u8                    state;
-+	struct sl_media_lgrp *media_lgrp;
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media create");
-+
-+	if (!ctrl_lgrp->parent_kobj) {
-+		sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media create missing parent");
-+		return 0;
-+	}
-+
-+	media_lgrp = sl_media_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!media_lgrp) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media_lgrp_get failed");
-+		return -EFAULT;
-+	}
-+
-+	rtn = kobject_init_and_add(&media_lgrp->kobj, &media_info, ctrl_lgrp->parent_kobj, "media");
-+	if (rtn) {
-+		kobject_put(&media_lgrp->kobj);
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "kobject_init_and_add failed [%d]", rtn);
-+		return rtn;
-+	}
-+
-+	rtn = kobject_init_and_add(&media_lgrp->parent_speed_kobj, &parent_speed_info, &media_lgrp->kobj, "speeds");
-+	if (rtn) {
-+		kobject_put(&media_lgrp->parent_speed_kobj);
-+		kobject_put(&media_lgrp->kobj);
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "kobject_init_and_add failed [%d]", rtn);
-+		return rtn;
-+	}
-+
-+	rtn = sl_sysfs_media_counters_create(ctrl_lgrp);
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media counters create failed [%d]", rtn);
-+		goto out_parents;
++	} else { /* QDD_SFF8636 */
++		qsfp_length = hw->qsfp_eeprom_page0[SFF8436_LINK_LEN_OFFSET];
++		attr->len = qsfp_length * 100;
++	}
++
++	/* TODO - sbl_link_len will be converted to len in cm, rather than
++	 *  this enum. Remove this section when that happens
++	 */
++	qsfp_length_mm = attr->len * 10;
++	switch (qsfp_length_mm) {
++	case 300:
++		attr->len = SBL_LINK_LEN_000_300; break;
++	case 400:
++		attr->len = SBL_LINK_LEN_000_400; break;
++	case 750:
++		attr->len = SBL_LINK_LEN_000_750; break;
++	case 800:
++		attr->len = SBL_LINK_LEN_000_800; break;
++	case 1000:
++		attr->len = SBL_LINK_LEN_001_000; break;
++	case 1100:
++		attr->len = SBL_LINK_LEN_001_100; break;
++	case 1150:
++		attr->len = SBL_LINK_LEN_001_150; break;
++	case 1200:
++		attr->len = SBL_LINK_LEN_001_200; break;
++	case 1400:
++		attr->len = SBL_LINK_LEN_001_400; break;
++	case 1420:
++		attr->len = SBL_LINK_LEN_001_420; break;
++	case 1500:
++		attr->len = SBL_LINK_LEN_001_500; break;
++	case 1600:
++		attr->len = SBL_LINK_LEN_001_600; break;
++	case 1640:
++		attr->len = SBL_LINK_LEN_001_640; break;
++	case 1700:
++		attr->len = SBL_LINK_LEN_001_700; break;
++	case 1900:
++		attr->len = SBL_LINK_LEN_001_900; break;
++	case 1910:
++		attr->len = SBL_LINK_LEN_001_910; break;
++	case 2000:
++		attr->len = SBL_LINK_LEN_002_000; break;
++	case 2100:
++		attr->len = SBL_LINK_LEN_002_100; break;
++	case 2130:
++		attr->len = SBL_LINK_LEN_002_130; break;
++	case 2200:
++		attr->len = SBL_LINK_LEN_002_200; break;
++	case 2300:
++		attr->len = SBL_LINK_LEN_002_300; break;
++	case 2390:
++		attr->len = SBL_LINK_LEN_002_390; break;
++	case 2400:
++		attr->len = SBL_LINK_LEN_002_400; break;
++	case 2500:
++		attr->len = SBL_LINK_LEN_002_500; break;
++	case 2600:
++		attr->len = SBL_LINK_LEN_002_600; break;
++	case 2620:
++		attr->len = SBL_LINK_LEN_002_620; break;
++	case 2700:
++		attr->len = SBL_LINK_LEN_002_700; break;
++	case 2800:
++		attr->len = SBL_LINK_LEN_002_800; break;
++	case 2900:
++		attr->len = SBL_LINK_LEN_002_900; break;
++	case 2990:
++		attr->len = SBL_LINK_LEN_002_990; break;
++	case 3000:
++		attr->len = SBL_LINK_LEN_003_000; break;
++	case 4000:
++		attr->len = SBL_LINK_LEN_004_000; break;
++	case 5000:
++		attr->len = SBL_LINK_LEN_005_000; break;
++	case 6000:
++		attr->len = SBL_LINK_LEN_006_000; break;
++	case 7000:
++		attr->len = SBL_LINK_LEN_007_000; break;
++	case 8000:
++		attr->len = SBL_LINK_LEN_008_000; break;
++	case 10000:
++		attr->len = SBL_LINK_LEN_010_000; break;
++	case 14000:
++		attr->len = SBL_LINK_LEN_014_000; break;
++	case 15000:
++		attr->len = SBL_LINK_LEN_015_000; break;
++	case 19000:
++		attr->len = SBL_LINK_LEN_019_000; break;
++	case 25000:
++		attr->len = SBL_LINK_LEN_025_000; break;
++	case 30000:
++		attr->len = SBL_LINK_LEN_030_000; break;
++	case 35000:
++		attr->len = SBL_LINK_LEN_035_000; break;
++	case 50000:
++		attr->len = SBL_LINK_LEN_050_000; break;
++	case 75000:
++		attr->len = SBL_LINK_LEN_075_000; break;
++	case 100000:
++		attr->len = SBL_LINK_LEN_100_000; break;
++	default:
++		attr->len = SBL_LINK_LEN_INVALID;
++		cxidev_warn(&hw->cdev, "No valid enum found for link length %d!",
++			    qsfp_length_mm);
++		break;
++	}
++}
++
++/**
++ * cass_hdsh_get_vendor() - Read the QSFP EEPROM and parse out the media vendor
++ *
++ * @hw: the device
++ * @attr: pointer to struct to initialize with cable information
++ * @qsfp_format: What spec this cable CSR space is organized according to.
++ *
++ * Return: 0 on success, negative errno on failure
++ */
++static void cass_hdsh_get_vendor(struct cass_dev *hw,
++				 struct sbl_media_attr *attr, u8 qsfp_format)
++{
++	const char *qsfp_vendor;
++
++	if (qsfp_format == QDD_CMIS)
++		qsfp_vendor = &(hw->qsfp_eeprom_page0[CMIS_VENDOR_OFFSET]);
++	else /* QDD_SFF8636 */
++		qsfp_vendor = &(hw->qsfp_eeprom_page0[SFF8436_VENDOR_OFFSET]);
++
++	if (strnstr(qsfp_vendor, QDD_VENDOR_TE, QSFP_VENDOR_MAX_STR_LEN) != NULL)
++		attr->vendor = SBL_LINK_VENDOR_TE;
++	else if (strnstr(qsfp_vendor, QDD_VENDOR_LEONI, QSFP_VENDOR_MAX_STR_LEN) != NULL)
++		attr->vendor = SBL_LINK_VENDOR_LEONI;
++	else if (strnstr(qsfp_vendor, QDD_VENDOR_MOLEX, QSFP_VENDOR_MAX_STR_LEN) != NULL)
++		attr->vendor = SBL_LINK_VENDOR_MOLEX;
++	else if (strnstr(qsfp_vendor, QDD_VENDOR_HISENSE, QSFP_VENDOR_MAX_STR_LEN) != NULL)
++		attr->vendor = SBL_LINK_VENDOR_HISENSE;
++	else if (strnstr(qsfp_vendor, QDD_VENDOR_DUST_PHOTONICS, QSFP_VENDOR_MAX_STR_LEN) != NULL)
++		attr->vendor = SBL_LINK_VENDOR_DUST_PHOTONICS;
++	else if (strnstr(qsfp_vendor, QDD_VENDOR_FINISAR, QSFP_VENDOR_MAX_STR_LEN) != NULL)
++		attr->vendor = SBL_LINK_VENDOR_FINISAR;
++	else if (strnstr(qsfp_vendor, QDD_VENDOR_LUXSHARE, QSFP_VENDOR_MAX_STR_LEN) != NULL)
++		attr->vendor = SBL_LINK_VENDOR_LUXSHARE;
++	else if (strnstr(qsfp_vendor, QDD_VENDOR_FIT, QSFP_VENDOR_MAX_STR_LEN) != NULL)
++		attr->vendor = SBL_LINK_VENDOR_FIT;
++	else if (strnstr(qsfp_vendor, QDD_VENDOR_FT, QSFP_VENDOR_MAX_STR_LEN) != NULL)
++		attr->vendor = SBL_LINK_VENDOR_FT;
++	else if (strnstr(qsfp_vendor, QDD_VENDOR_MELLANOX, QSFP_VENDOR_MAX_STR_LEN) != NULL)
++		attr->vendor = SBL_LINK_VENDOR_MELLANOX;
++	else if (strnstr(qsfp_vendor, QDD_VENDOR_HITACHI, QSFP_VENDOR_MAX_STR_LEN) != NULL)
++		attr->vendor = SBL_LINK_VENDOR_HITACHI;
++	else if (strnstr(qsfp_vendor, QDD_VENDOR_HPE, QSFP_VENDOR_MAX_STR_LEN) != NULL)
++		attr->vendor = SBL_LINK_VENDOR_HPE;
++	else if (strnstr(qsfp_vendor, QDD_VENDOR_CLOUD_LIGHT, QSFP_VENDOR_MAX_STR_LEN) != NULL)
++		attr->vendor = SBL_LINK_VENDOR_CLOUD_LIGHT;
++	else if (strnstr(qsfp_vendor, QDD_VENDOR_AMPHENOL, QSFP_VENDOR_MAX_STR_LEN) != NULL)
++		attr->vendor = SBL_LINK_VENDOR_AMPHENOL;
++	else {
++		cxidev_warn(&hw->cdev, "No valid enum found for link Vendor %.*s",
++			    QSFP_VENDOR_MAX_STR_LEN, qsfp_vendor);
++		attr->vendor = SBL_LINK_VENDOR_INVALID;
++	}
++}
++
++/**
++ * cass_headshell_power_up() - Power headshell up to high power mode
++ *
++ * @hw: the device
++ * @qsfp_format: What spec this cable CSR space is organized according to.
++ *
++ * Return: 0 on success, negative errno on failure
++ */
++int cass_headshell_power_up(struct cass_dev *hw, u8 qsfp_format)
++{
++	u8 qsfp_extid, data;
++	int rc = 0;
++
++	mutex_lock(&hw->qsfp_eeprom_lock);
++
++	// Full power up of all data paths + high power mode
++	if (qsfp_format == QDD_CMIS) {
++		/* TODO: aapl script will do the power up */
++		rc = 0;
++	} else if (qsfp_format == QDD_SFF8636) {
++		// If not, power up the QSFP
++		data = (SFF8636_PWR_CLASS_567_ENABLE | SFF8636_PWR_OVERRIDE);
++		qsfp_extid = hw->qsfp_eeprom_page0[SFF8436_EXT_IDENTIFIER_OFFSET];
++		// If the module supports Class8+ set that enable bit too
++		if (qsfp_extid & SFF8636_PWR_CLASS_8)
++			data |= SFF8636_PWR_CLASS_8_ENABLE;
++		rc = uc_cmd_qsfp_write(hw, 0, SFF8436_POWER_DATA_OFFSET,
++				       &data, sizeof(data));
++	} else
++		rc = -EINVAL;
++
++	mutex_unlock(&hw->qsfp_eeprom_lock);
++	return rc;
++}
++
++/**
++ * cass_link_headshell_insert() - Headshell insert
++ *
++ * @hw: the device
++ * @attr: pointer to struct containing cable information
++ *
++ * Return: 0 on success, negative errno on failure
++ */
++int cass_link_headshell_insert(struct cass_dev *hw,
++			       struct sbl_media_attr *attr)
++{
++	int err;
++
++	cass_phy_set_state(CASS_PHY_NOLINK, hw);
++	cxidev_dbg(&hw->cdev, "headshell insert: phy state = %d\n", hw->phy.state);
++
++	if (hw->port->hstate == CASS_HEADSHELL_STATUS_PRESENT) {
++		cxidev_err(&hw->cdev, "headshell insert - already present\n");
++		return -EUCLEAN;
++	}
++
++	if (hw->port->config_state & CASS_MEDIA_CONFIGURED) {
++		cxidev_err(&hw->cdev,
++			   "headshell insert - media already configured\n");
++		return -EUCLEAN;
++	}
++
++	err = hw->link_ops->media_config(hw, attr);
++	if (err) {
++		cxidev_err(&hw->cdev, "headshell insert - media config failed [%d]\n",
++			   err);
++		hw->port->config_state &= ~CASS_MEDIA_CONFIGURED;
++		return err;
 +	}
 +
 +	/*
-+	 * This if condition will be false for nic here
++	 * check any existing link config is compatible with the new media type
++	 *
++	 *    if not unconfigure link so it must be reconfigured again
++	 *
 +	 */
-+	rtn = sl_media_jack_state_get(media_lgrp->media_jack, &state);
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media_jack_state_get failed [%d]", rtn);
-+		goto out_counters;
-+	}
-+
-+	if (state == SL_MEDIA_JACK_CABLE_ONLINE) {
-+		/*
-+		 * kobj cleanup in the callee function
-+		 */
-+		rtn = sl_sysfs_media_speeds_create(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+		if (rtn) {
-+			sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media speeds create failed [%d]", rtn);
-+			goto out_counters;
-+		}
-+	}
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "create (media_kobj = 0x%p)", &media_lgrp->kobj);
-+
-+	return 0;
-+out_counters:
-+	sl_sysfs_media_counters_delete(ctrl_lgrp);
-+out_parents:
-+	kobject_put(&media_lgrp->parent_speed_kobj);
-+	kobject_put(&media_lgrp->kobj);
-+	return rtn;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+int sl_sysfs_media_speeds_create(u8 ldev_num, u8 lgrp_num)
-+{
-+#ifdef CONFIG_SYSFS
-+	int                   rtn;
-+	int                   i;
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+
-+	media_lgrp = sl_media_lgrp_get(ldev_num, lgrp_num);
-+	ctrl_lgrp = sl_ctrl_lgrp_get(ldev_num, lgrp_num);
-+
-+	if (media_lgrp->speeds_kobj_init)
-+		return 0;
-+
-+	media_lgrp->supported_speeds_num = 0;
-+	if (media_lgrp->cable_info->real_cable_status == CABLE_MEDIA_ATTR_ADDED) {
-+		for_each_set_bit(i, &media_lgrp->cable_info->media_attr.speeds_map,
-+				 sizeof(media_lgrp->cable_info->media_attr.speeds_map) * BITS_PER_BYTE) {
-+			media_lgrp->speeds_kobj[media_lgrp->supported_speeds_num].media_lgrp = media_lgrp;
-+			media_lgrp->speeds_kobj[media_lgrp->supported_speeds_num].speed = BIT(i);
-+			rtn = kobject_init_and_add(&media_lgrp->speeds_kobj[media_lgrp->supported_speeds_num].kobj,
-+						   &media_speed_info, &media_lgrp->parent_speed_kobj, sl_media_speed_str(BIT(i)));
-+			if (rtn) {
-+				for (i = 0; i <= media_lgrp->supported_speeds_num; ++i)
-+					kobject_put(&media_lgrp->speeds_kobj[i].kobj);
-+				media_lgrp->supported_speeds_num = 0;
-+				sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "kobject_init_and_add failed [%d]", rtn);
-+				return rtn;
++	if (hw->port->config_state & CASS_LINK_CONFIGURED) {
++		switch (hw->port->lattr.bl.config_target) {
++		case SBL_BASE_LINK_CONFIG_PEC:
++			if (attr->media != SBL_LINK_MEDIA_ELECTRICAL) {
++				cxidev_warn(&hw->cdev,
++					    "headshell insert - link attr PEC incompatible with new media");
++				hw->port->config_state &= ~CASS_LINK_CONFIGURED;
 +			}
-+			media_lgrp->supported_speeds_num++;
-+		}
-+	} else if (media_lgrp->cable_info->fake_cable_status == CABLE_MEDIA_ATTR_ADDED) {
-+		for_each_set_bit(i, &media_lgrp->cable_info->stashed_media_attr.speeds_map,
-+				 sizeof(media_lgrp->cable_info->stashed_media_attr.speeds_map) * BITS_PER_BYTE) {
-+			media_lgrp->speeds_kobj[media_lgrp->supported_speeds_num].media_lgrp = media_lgrp;
-+			media_lgrp->speeds_kobj[media_lgrp->supported_speeds_num].speed = BIT(i);
-+			rtn = kobject_init_and_add(&media_lgrp->speeds_kobj[media_lgrp->supported_speeds_num].kobj,
-+						   &media_speed_info, &media_lgrp->parent_speed_kobj, sl_media_speed_str(BIT(i)));
-+			if (rtn) {
-+				for (i = 0; i <= media_lgrp->supported_speeds_num; ++i)
-+					kobject_put(&media_lgrp->speeds_kobj[i].kobj);
-+				media_lgrp->supported_speeds_num = 0;
-+				sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "kobject_init_and_add failed [%d]", rtn);
-+				return rtn;
++			break;
++		case SBL_BASE_LINK_CONFIG_AOC:
++			if (attr->media != SBL_LINK_MEDIA_OPTICAL) {
++				cxidev_warn(&hw->cdev,
++					    "headshell insert - link attr AOC incompatible with new media");
++				hw->port->config_state &= ~CASS_LINK_CONFIGURED;
 +			}
-+			media_lgrp->supported_speeds_num++;
++			break;
++		default:
++			cxidev_warn(&hw->cdev,
++				    "headshell insert - link attr incompatible with new media");
++			hw->port->config_state &= ~CASS_LINK_CONFIGURED;
++			break;
 +		}
 +	}
 +
-+	media_lgrp->speeds_kobj_init = true;
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media speed nodes created");
-+
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_media_speeds_delete(u8 ldev_num, u8 lgrp_num)
-+{
-+#ifdef CONFIG_SYSFS
-+	struct sl_media_lgrp *media_lgrp;
-+	u8 i;
-+
-+	media_lgrp = sl_media_lgrp_get(ldev_num, lgrp_num);
-+	if (!media_lgrp)
-+		return;
-+
-+	if (media_lgrp->speeds_kobj_init) {
-+		for (i = 0; i < media_lgrp->supported_speeds_num; ++i)
-+			kobject_put(&media_lgrp->speeds_kobj[i].kobj);
-+	}
-+	media_lgrp->speeds_kobj_init = false;
-+	media_lgrp->supported_speeds_num = 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_media_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	struct sl_media_lgrp *media_lgrp;
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media delete");
-+
-+	if (!ctrl_lgrp->parent_kobj)
-+		return;
-+
-+	sl_sysfs_media_counters_delete(ctrl_lgrp);
-+
-+	media_lgrp = sl_media_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!media_lgrp) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media_lgrp_get failed");
-+		return;
-+	}
-+
-+	sl_sysfs_media_speeds_delete(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	kobject_put(&media_lgrp->parent_speed_kobj);
-+	kobject_put(&media_lgrp->kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_media_counters.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_media_counters.c
-new file mode 100644
-index 000000000000..682c106d4d3a
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_media_counters.c
-@@ -0,0 +1,599 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2025,2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_sysfs.h"
-+#include "sl_log.h"
-+#include "sl_media_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_media_counters.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t cause_eeprom_format_unsupported_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_EEPROM_FORMAT_UNSUPPORTED, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause eeprom format unsupported show (counter = %u)",
-+		   counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_eeprom_vendor_unsupported_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_EEPROM_VENDOR_UNSUPPORTED, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause eeprom vendor unsupported show (counter = %u)",
-+		   counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_eeprom_jack_io_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_EEPROM_JACK_IO, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause eeprom jack io show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_online_status_get_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_ONLINE_STATUS_GET, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause online status get show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_online_timedout_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_ONLINE_TIMEDOUT, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause online timedout show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_online_jack_io_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_ONLINE_JACK_IO, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause online jack io show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_online_jack_get_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_ONLINE_JACK_GET, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause online jack get show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_serdes_settings_get_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SERDES_SETTINGS_GET, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause serdes settings get show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_scan_status_get_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SCAN_STATUS_GET, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause scan status get show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_scan_hdl_get_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SCAN_HDL_GET, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause scan hdl get show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_scan_jack_get_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SCAN_JACK_GET, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause scan jack get show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_media_attr_set_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_MEDIA_ATTR_SET, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause media attr set show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_intr_event_jack_io_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_INTR_EVENT_JACK_IO, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause intr event jack io show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_power_set_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_POWER_SET, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause power set show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_shift_down_jack_io_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SHIFT_DOWN_JACK_IO, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause shift down jack io show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_shift_down_jack_io_low_power_set_show(struct kobject *kobj,
-+							   struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SHIFT_DOWN_JACK_IO_LOW_POWER_SET,
-+					      &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause shift down jack io low power set show (counter = %u)",
-+		   counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_shift_down_jack_io_high_power_set_show(struct kobject *kobj,
-+							    struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack,
-+					      MEDIA_CAUSE_SHIFT_DOWN_JACK_IO_HIGH_POWER_SET, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause shift down jack io high power set show (counter = %u)",
-+		   counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_shift_up_jack_io_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SHIFT_UP_JACK_IO, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause shift up jack io show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_shift_up_jack_io_low_power_set_show(struct kobject *kobj, struct kobj_attribute *kattr,
-+							 char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SHIFT_UP_JACK_IO_LOW_POWER_SET,
-+					      &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause shift up jack io low power set show (counter = %u)",
-+		   counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_shift_up_jack_io_high_power_set_show(struct kobject *kobj, struct kobj_attribute *kattr,
-+							  char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SHIFT_UP_JACK_IO_HIGH_POWER_SET,
-+					      &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause shift up jack io high power set show (counter = %u)",
-+		   counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_shift_state_jack_io_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SHIFT_STATE_JACK_IO, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause shift state jack io show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_offline_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_OFFLINE, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause offline show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_hot_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_HOT, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause hot show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static ssize_t cause_warm_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_media_lgrp *media_lgrp;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u32                   counter;
-+	u32                   rtn;
-+
-+	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
-+
-+	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_WARM, &counter);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause warm show (counter = %u)", counter);
-+
-+	return sysfs_emit(buf, "%u\n", counter);
-+}
-+
-+static struct kobj_attribute media_cause_eeprom_format_unsupported         =
-+			     __ATTR_RO(cause_eeprom_format_unsupported);
-+static struct kobj_attribute media_cause_eeprom_vendor_unsupported         =
-+			     __ATTR_RO(cause_eeprom_vendor_unsupported);
-+static struct kobj_attribute media_cause_eeprom_jack_io                    = __ATTR_RO(cause_eeprom_jack_io);
-+static struct kobj_attribute media_cause_online_status_get                 = __ATTR_RO(cause_online_status_get);
-+static struct kobj_attribute media_cause_online_timedout                   = __ATTR_RO(cause_online_timedout);
-+static struct kobj_attribute media_cause_online_jack_io                    = __ATTR_RO(cause_online_jack_io);
-+static struct kobj_attribute media_cause_online_jack_get                   = __ATTR_RO(cause_online_jack_get);
-+static struct kobj_attribute media_cause_serdes_settings_get               = __ATTR_RO(cause_serdes_settings_get);
-+static struct kobj_attribute media_cause_scan_status_get                   = __ATTR_RO(cause_scan_status_get);
-+static struct kobj_attribute media_cause_scan_hdl_get                      = __ATTR_RO(cause_scan_hdl_get);
-+static struct kobj_attribute media_cause_scan_jack_get                     = __ATTR_RO(cause_scan_jack_get);
-+static struct kobj_attribute media_cause_media_attr_set                    = __ATTR_RO(cause_media_attr_set);
-+static struct kobj_attribute media_cause_intr_event_jack_io                = __ATTR_RO(cause_intr_event_jack_io);
-+static struct kobj_attribute media_cause_power_set                         = __ATTR_RO(cause_power_set);
-+static struct kobj_attribute media_cause_shift_down_jack_io                = __ATTR_RO(cause_shift_down_jack_io);
-+static struct kobj_attribute media_cause_shift_down_jack_io_low_power_set  =
-+			     __ATTR_RO(cause_shift_down_jack_io_low_power_set);
-+static struct kobj_attribute media_cause_shift_down_jack_io_high_power_set =
-+			     __ATTR_RO(cause_shift_down_jack_io_high_power_set);
-+static struct kobj_attribute media_cause_shift_up_jack_io                  = __ATTR_RO(cause_shift_up_jack_io);
-+static struct kobj_attribute media_cause_shift_up_jack_io_low_power_set    =
-+			     __ATTR_RO(cause_shift_up_jack_io_low_power_set);
-+static struct kobj_attribute media_cause_shift_up_jack_io_high_power_set   =
-+			     __ATTR_RO(cause_shift_up_jack_io_high_power_set);
-+static struct kobj_attribute media_cause_shift_state_jack_io               =
-+			     __ATTR_RO(cause_shift_state_jack_io);
-+static struct kobj_attribute media_cause_offline                           = __ATTR_RO(cause_offline);
-+static struct kobj_attribute media_cause_hot                               = __ATTR_RO(cause_hot);
-+static struct kobj_attribute media_cause_warm                              = __ATTR_RO(cause_warm);
-+
-+static struct attribute *media_counters_attrs[] = {
-+	&media_cause_eeprom_format_unsupported.attr,
-+	&media_cause_eeprom_vendor_unsupported.attr,
-+	&media_cause_eeprom_jack_io.attr,
-+	&media_cause_online_status_get.attr,
-+	&media_cause_online_timedout.attr,
-+	&media_cause_online_jack_io.attr,
-+	&media_cause_online_jack_get.attr,
-+	&media_cause_serdes_settings_get.attr,
-+	&media_cause_scan_status_get.attr,
-+	&media_cause_scan_hdl_get.attr,
-+	&media_cause_scan_jack_get.attr,
-+	&media_cause_media_attr_set.attr,
-+	&media_cause_intr_event_jack_io.attr,
-+	&media_cause_power_set.attr,
-+	&media_cause_shift_down_jack_io.attr,
-+	&media_cause_shift_down_jack_io_low_power_set.attr,
-+	&media_cause_shift_down_jack_io_high_power_set.attr,
-+	&media_cause_shift_up_jack_io.attr,
-+	&media_cause_shift_up_jack_io_low_power_set.attr,
-+	&media_cause_shift_up_jack_io_high_power_set.attr,
-+	&media_cause_shift_state_jack_io.attr,
-+	&media_cause_offline.attr,
-+	&media_cause_hot.attr,
-+	&media_cause_warm.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(media_counters);
-+
-+static struct kobj_type media_counters = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = media_counters_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_media_counters_create(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	struct sl_media_lgrp *media_lgrp;
-+	int                   rtn;
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media counters create");
-+
-+	media_lgrp = sl_media_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!media_lgrp) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media_lgrp_get failed");
-+		return -EFAULT;
-+	}
-+
-+	rtn = kobject_init_and_add(&media_lgrp->counters_kobj, &media_counters, &media_lgrp->kobj,
-+				   "counters");
-+	if (rtn) {
-+		kobject_put(&media_lgrp->counters_kobj);
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+			   "media counters create kobject_init_and_add failed [%d]", rtn);
-+		return rtn;
++	hw->port->hstate = CASS_HEADSHELL_STATUS_PRESENT;
++	hw->port->config_state |= CASS_MEDIA_CONFIGURED;
++
++	/*
++	 * if the link is supposed to be up try to restart it
++	 */
++	if ((cass_link_get_state(hw) == CASS_LINK_STATUS_DOWN) &&
++	    (hw->port->lmon_dirn == CASS_LMON_DIRECTION_UP)) {
++
++		if ((hw->port->lattr.options &
++		     CASS_LINK_OPT_RESTART_ON_INSERT)) {
++			cxidev_dbg(&hw->cdev, "starting link after insert\n");
++			cass_lmon_request_up(hw);
++		}
 +	}
 +
 +	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
 +}
 +
-+void sl_sysfs_media_counters_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	struct sl_media_lgrp *media_lgrp;
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media counters delete");
-+
-+	media_lgrp = sl_media_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!media_lgrp) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media_lgrp_get failed");
-+		return;
-+	}
-+
-+	kobject_put(&media_lgrp->counters_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi.c
-new file mode 100644
-index 000000000000..605a7748e242
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi.c
-@@ -0,0 +1,80 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2026 Hewlett Packard Enterprise Development LP */
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_lgrp.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static struct attribute *pmi_attrs[] = {
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(pmi);
-+
-+static struct kobj_type pmi_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = pmi_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_pmi_create(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	if (!ctrl_lgrp->parent_kobj) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi create missing parent");
-+		return -EBADRQC;
-+	}
-+
-+	rtn = kobject_init_and_add(&ctrl_lgrp->pmi_kobj, &pmi_info, ctrl_lgrp->parent_kobj, "pmi");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi create kobject_init_and_add failed [%d]", rtn);
-+		goto out_pmi;
-+	}
-+
-+	rtn = sl_sysfs_pmi_rd_create(ctrl_lgrp, &ctrl_lgrp->pmi_kobj);
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd create failed [%d]", rtn);
-+		goto out_pmi;
-+	}
-+
-+	rtn = sl_sysfs_pmi_wr_create(ctrl_lgrp, &ctrl_lgrp->pmi_kobj);
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr create failed [%d]", rtn);
-+		goto out_rd;
-+	}
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi create (pmi_kobj = 0x%p)", &ctrl_lgrp->pmi_kobj);
-+	return 0;
-+
-+out_rd:
-+	sl_sysfs_pmi_rd_delete(ctrl_lgrp);
-+out_pmi:
-+	kobject_put(&ctrl_lgrp->pmi_kobj);
-+
-+	return -ENOMEM;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_pmi_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi delete (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	if (!ctrl_lgrp->parent_kobj)
-+		return;
-+
-+	sl_sysfs_pmi_wr_delete(ctrl_lgrp);
-+	sl_sysfs_pmi_rd_delete(ctrl_lgrp);
-+
-+	kobject_put(&ctrl_lgrp->pmi_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi_rd.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi_rd.c
-new file mode 100644
-index 000000000000..8e997c4ce3f5
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi_rd.c
-@@ -0,0 +1,197 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/sysfs.h>
-+#include <linux/kobject.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_core_lgrp.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t addr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u16                  addr;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_pmi_rd_addr_get(core_lgrp, &addr);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd addr show (addr = 0x%04X)", addr);
-+
-+	return sysfs_emit(buf, "0x%04X\n", addr);
-+}
-+
-+static ssize_t data_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u16                  data;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_pmi_rd_data_get(core_lgrp, &data);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd data show (data = 0x%04X)", data);
-+
-+	return sysfs_emit(buf, "0x%04X\n", data);
-+}
-+
-+static ssize_t dev_id_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   dev_id;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_pmi_rd_dev_id_get(core_lgrp, &dev_id);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd dev id show (dev_id = 0x%02X)", dev_id);
-+
-+	return sysfs_emit(buf, "0x%02X\n", dev_id);
-+}
-+
-+static ssize_t lane_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   lane;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_pmi_rd_lane_get(core_lgrp, &lane);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd lane show (lane = 0x%02X)", lane);
-+
-+	return sysfs_emit(buf, "0x%02X\n", lane);
-+}
-+
-+static ssize_t pll_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   pll;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_pmi_rd_pll_get(core_lgrp, &pll);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd pll show (pll = 0x%02X)", pll);
-+
-+	return sysfs_emit(buf, "0x%02X\n", pll);
-+}
-+
-+static ssize_t result_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	int                  result;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_pmi_rd_result_get(core_lgrp, &result);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd result show (result = %d)", result);
-+
-+	return sysfs_emit(buf, "%d\n", result);
-+}
-+
-+static struct kobj_attribute addr   = __ATTR_RO(addr);
-+static struct kobj_attribute data   = __ATTR_RO(data);
-+static struct kobj_attribute dev_id = __ATTR_RO(dev_id);
-+static struct kobj_attribute lane   = __ATTR_RO(lane);
-+static struct kobj_attribute pll    = __ATTR_RO(pll);
-+static struct kobj_attribute result = __ATTR_RO(result);
-+
-+static struct attribute *pmi_rd_attrs[] = {
-+	&addr.attr,
-+	&data.attr,
-+	&dev_id.attr,
-+	&lane.attr,
-+	&pll.attr,
-+	&result.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(pmi_rd);
-+
-+static struct kobj_type pmi_rd_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = pmi_rd_groups,
-+};
-+#endif
-+
-+int sl_sysfs_pmi_rd_create(struct sl_ctrl_lgrp *ctrl_lgrp, struct kobject *parent_kobj)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	rtn = kobject_init_and_add(&ctrl_lgrp->pmi_rd_kobj, &pmi_rd_info, parent_kobj, "rd");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd create kobject_init_and_add failed [%d]", rtn);
-+		goto out_pmi_rd;
-+	}
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd create (pmi_rd_kobj = 0x%p)", &ctrl_lgrp->pmi_rd_kobj);
-+	return 0;
-+
-+out_pmi_rd:
-+	kobject_put(&ctrl_lgrp->pmi_rd_kobj);
-+
-+	return -ENOMEM;
-+#else
-+	return 0;
-+#endif
-+}
-+
-+void sl_sysfs_pmi_rd_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd delete (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	kobject_put(&ctrl_lgrp->pmi_rd_kobj);
-+#endif
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi_wr.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi_wr.c
-new file mode 100644
-index 000000000000..ccc672378bf5
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi_wr.c
-@@ -0,0 +1,220 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/sysfs.h>
-+#include <linux/kobject.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_core_lgrp.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t addr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u16                  addr;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_pmi_wr_addr_get(core_lgrp, &addr);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr addr show (addr = 0x%04X)", addr);
-+
-+	return sysfs_emit(buf, "0x%04X\n", addr);
-+}
-+
-+static ssize_t data_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u16                  data;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_pmi_wr_data_get(core_lgrp, &data);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr data show (data = 0x%04X)", data);
-+
-+	return sysfs_emit(buf, "0x%04X\n", data);
-+}
-+
-+static ssize_t mask_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u16                  mask;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_pmi_wr_mask_get(core_lgrp, &mask);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr mask show (mask = 0x%04X)", mask);
-+
-+	return sysfs_emit(buf, "0x%04X\n", mask);
-+}
-+
-+static ssize_t dev_id_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   dev_id;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_pmi_wr_dev_id_get(core_lgrp, &dev_id);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr dev id show (dev_id = 0x%02X)", dev_id);
-+
-+	return sysfs_emit(buf, "0x%02X\n", dev_id);
-+}
-+
-+static ssize_t lane_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   lane;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_pmi_wr_lane_get(core_lgrp, &lane);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr lane show (lane = 0x%02X)", lane);
-+
-+	return sysfs_emit(buf, "0x%02X\n", lane);
-+}
-+
-+static ssize_t pll_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   pll;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_pmi_wr_pll_get(core_lgrp, &pll);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr pll show (pll = 0x%02X)", pll);
-+
-+	return sysfs_emit(buf, "0x%02X\n", pll);
-+}
-+
-+static ssize_t result_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	int                  result;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_pmi_wr_result_get(core_lgrp, &result);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr result show (result = %d)", result);
-+
-+	return sysfs_emit(buf, "%d\n", result);
-+}
-+
-+static struct kobj_attribute addr   = __ATTR_RO(addr);
-+static struct kobj_attribute data   = __ATTR_RO(data);
-+static struct kobj_attribute mask   = __ATTR_RO(mask);
-+static struct kobj_attribute dev_id = __ATTR_RO(dev_id);
-+static struct kobj_attribute lane   = __ATTR_RO(lane);
-+static struct kobj_attribute pll    = __ATTR_RO(pll);
-+static struct kobj_attribute result = __ATTR_RO(result);
-+
-+static struct attribute *pmi_wr_attrs[] = {
-+	&addr.attr,
-+	&data.attr,
-+	&mask.attr,
-+	&dev_id.attr,
-+	&lane.attr,
-+	&pll.attr,
-+	&result.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(pmi_wr);
-+
-+static struct kobj_type pmi_wr_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = pmi_wr_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_pmi_wr_create(struct sl_ctrl_lgrp *ctrl_lgrp, struct kobject *parent_kobj)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	rtn = kobject_init_and_add(&ctrl_lgrp->pmi_wr_kobj, &pmi_wr_info, parent_kobj, "wr");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr create kobject_init_and_add failed [%d]", rtn);
-+		goto out_pmi_wr;
-+	}
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr create (pmi_wr_kobj = 0x%p)", &ctrl_lgrp->pmi_wr_kobj);
-+	return 0;
-+
-+out_pmi_wr:
-+	kobject_put(&ctrl_lgrp->pmi_wr_kobj);
-+
-+	return -ENOMEM;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_pmi_wr_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr delete (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	kobject_put(&ctrl_lgrp->pmi_wr_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus.c
-new file mode 100644
-index 000000000000..a71c396e59f3
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus.c
-@@ -0,0 +1,89 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2026 Hewlett Packard Enterprise Development LP */
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_lgrp.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static struct attribute *sbus_attrs[] = {
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(sbus);
-+
-+static struct kobj_type sbus_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = sbus_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_sbus_create(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	if (!ctrl_lgrp->parent_kobj) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus create missing parent");
-+		return -EBADRQC;
-+	}
-+
-+	rtn = kobject_init_and_add(&ctrl_lgrp->sbus_kobj, &sbus_info, ctrl_lgrp->parent_kobj, "sbus");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus create kobject_init_and_add failed [%d]", rtn);
-+		goto out_sbus;
-+	}
-+
-+	rtn = sl_sysfs_sbus_rd_create(ctrl_lgrp, &ctrl_lgrp->sbus_kobj);
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd create failed [%d]", rtn);
-+		goto out_sbus;
-+	}
-+
-+	rtn = sl_sysfs_sbus_wr_create(ctrl_lgrp, &ctrl_lgrp->sbus_kobj);
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr create failed [%d]", rtn);
-+		goto out_rd;
-+	}
-+
-+	rtn = sl_sysfs_sbus_rst_create(ctrl_lgrp, &ctrl_lgrp->sbus_kobj);
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus rst create failed [%d]", rtn);
-+		goto out_wr;
-+	}
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus create (sbus_kobj = 0x%p)", &ctrl_lgrp->sbus_kobj);
-+	return 0;
-+
-+out_wr:
-+	sl_sysfs_sbus_wr_delete(ctrl_lgrp);
-+out_rd:
-+	sl_sysfs_sbus_rd_delete(ctrl_lgrp);
-+out_sbus:
-+	kobject_put(&ctrl_lgrp->sbus_kobj);
-+
-+	return -ENOMEM;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_sbus_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus delete (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	if (!ctrl_lgrp->parent_kobj)
-+		return;
-+
-+	sl_sysfs_sbus_rst_delete(ctrl_lgrp);
-+	sl_sysfs_sbus_wr_delete(ctrl_lgrp);
-+	sl_sysfs_sbus_rd_delete(ctrl_lgrp);
-+
-+	kobject_put(&ctrl_lgrp->sbus_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi.c
-new file mode 100644
-index 000000000000..5048b0f69f76
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi.c
-@@ -0,0 +1,80 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2026 Hewlett Packard Enterprise Development LP */
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_lgrp.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static struct attribute *sbus_pmi_attrs[] = {
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(sbus_pmi);
-+
-+static struct kobj_type sbus_pmi_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = sbus_pmi_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_sbus_pmi_create(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi create (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	if (!ctrl_lgrp->parent_kobj) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi create missing parent");
-+		return -EBADRQC;
-+	}
-+
-+	rtn = kobject_init_and_add(&ctrl_lgrp->sbus_pmi_kobj, &sbus_pmi_info, ctrl_lgrp->parent_kobj, "sbus_pmi");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi create kobject_init_and_add failed [%d]", rtn);
-+		goto out_sbus_pmi;
-+	}
-+
-+	rtn = sl_sysfs_sbus_pmi_rd_create(ctrl_lgrp, &ctrl_lgrp->sbus_pmi_kobj);
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd create failed [%d]", rtn);
-+		goto out_sbus_pmi;
-+	}
-+
-+	rtn = sl_sysfs_sbus_pmi_wr_create(ctrl_lgrp, &ctrl_lgrp->sbus_pmi_kobj);
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr create failed [%d]", rtn);
-+		goto out_rd;
-+	}
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi create (sbus_pmi_kobj = 0x%p)", &ctrl_lgrp->sbus_pmi_kobj);
-+	return 0;
-+
-+out_rd:
-+	sl_sysfs_sbus_pmi_rd_delete(ctrl_lgrp);
-+out_sbus_pmi:
-+	kobject_put(&ctrl_lgrp->sbus_pmi_kobj);
-+
-+	return -ENOMEM;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_sbus_pmi_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi delete (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	if (!ctrl_lgrp->parent_kobj)
-+		return;
-+
-+	sl_sysfs_sbus_pmi_wr_delete(ctrl_lgrp);
-+	sl_sysfs_sbus_pmi_rd_delete(ctrl_lgrp);
-+
-+	kobject_put(&ctrl_lgrp->sbus_pmi_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi_rd.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi_rd.c
-new file mode 100644
-index 000000000000..c8042fe67eb6
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi_rd.c
-@@ -0,0 +1,244 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/sysfs.h>
-+#include <linux/kobject.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_core_lgrp.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t dev_addr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   dev_addr;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_pmi_rd_dev_addr_get(core_lgrp, &dev_addr);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd dev_addr show (dev_addr = 0x%02X)", dev_addr);
-+
-+	return sysfs_emit(buf, "0x%02X\n", dev_addr);
-+}
-+
-+static ssize_t addr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u16                  addr;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_pmi_rd_addr_get(core_lgrp, &addr);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd addr show (addr = 0x%04X)", addr);
-+
-+	return sysfs_emit(buf, "0x%04X\n", addr);
-+}
-+
-+static ssize_t data_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u16                  data;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_pmi_rd_data_get(core_lgrp, &data);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd data show (data = 0x%04X)", data);
-+
-+	return sysfs_emit(buf, "0x%04X\n", data);
-+}
-+
-+static ssize_t mask_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u16                  mask;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_pmi_rd_mask_get(core_lgrp, &mask);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd mask show (mask = 0x%04X)", mask);
-+
-+	return sysfs_emit(buf, "0x%04X\n", mask);
-+}
-+
-+static ssize_t dev_id_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   dev_id;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_pmi_rd_dev_id_get(core_lgrp, &dev_id);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd dev id show (dev_id = 0x%02X)", dev_id);
-+
-+	return sysfs_emit(buf, "0x%02X\n", dev_id);
-+}
-+
-+static ssize_t lane_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   lane;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_pmi_rd_lane_get(core_lgrp, &lane);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd lane show (lane = 0x%02X)", lane);
-+
-+	return sysfs_emit(buf, "0x%02X\n", lane);
-+}
-+
-+static ssize_t pll_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   pll;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_pmi_rd_pll_get(core_lgrp, &pll);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd pll show (pll = 0x%02X)", pll);
-+
-+	return sysfs_emit(buf, "0x%02X\n", pll);
-+}
++/**
++ * cass_link_headshell_remove() - Headshell remove
++ *
++ *    Headshell must already be present and media configured.
++ *    Stop link if running and unconfigure media
++ *
++ * @hw: the device
++ *
++ * Return: 0 on success, negative errno on failure
++ */
++int cass_link_headshell_remove(struct cass_dev *hw)
++{
++	int err;
++
++	cass_phy_set_state(CASS_PHY_HEADSHELL_REMOVED, hw);
++	cxidev_dbg(&hw->cdev, "headshell remove: phy state = %d\n", hw->phy.state);
++
++	switch (hw->port->hstate) {
++	case CASS_HEADSHELL_STATUS_NOT_PRESENT:
++		cxidev_err(&hw->cdev, "headshell remove - not present\n");
++		return -EUCLEAN;
++
++	case CASS_HEADSHELL_STATUS_PRESENT:
++		if (!(hw->port->config_state & CASS_MEDIA_CONFIGURED)) {
++			cxidev_err(&hw->cdev,
++				   "headshell remove - media not configured\n");
++			return -EUCLEAN;
++		}
++		break;
++
++	case CASS_HEADSHELL_STATUS_ERROR:
++		break;
 +
-+static ssize_t result_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	int                  result;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_pmi_rd_result_get(core_lgrp, &result);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd result show (result = %d)", result);
-+
-+	return sysfs_emit(buf, "%d\n", result);
-+}
-+
-+static struct kobj_attribute dev_addr = __ATTR_RO(dev_addr);
-+static struct kobj_attribute addr     = __ATTR_RO(addr);
-+static struct kobj_attribute data     = __ATTR_RO(data);
-+static struct kobj_attribute mask     = __ATTR_RO(mask);
-+static struct kobj_attribute dev_id   = __ATTR_RO(dev_id);
-+static struct kobj_attribute lane     = __ATTR_RO(lane);
-+static struct kobj_attribute pll      = __ATTR_RO(pll);
-+static struct kobj_attribute result   = __ATTR_RO(result);
-+
-+static struct attribute *sbus_pmi_rd_attrs[] = {
-+	&dev_addr.attr,
-+	&addr.attr,
-+	&data.attr,
-+	&mask.attr,
-+	&dev_id.attr,
-+	&lane.attr,
-+	&pll.attr,
-+	&result.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(sbus_pmi_rd);
-+
-+static struct kobj_type sbus_pmi_rd_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = sbus_pmi_rd_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_sbus_pmi_rd_create(struct sl_ctrl_lgrp *ctrl_lgrp, struct kobject *parent_kobj)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	rtn = kobject_init_and_add(&ctrl_lgrp->sbus_pmi_rd_kobj, &sbus_pmi_rd_info, parent_kobj, "rd");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd create kobject_init_and_add failed [%d]", rtn);
-+		goto out_sbus_pmi_rd;
-+	}
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd create (sbus_pmi_rd_kobj = 0x%p)",
-+		   &ctrl_lgrp->sbus_pmi_rd_kobj);
-+	return 0;
-+
-+out_sbus_pmi_rd:
-+	kobject_put(&ctrl_lgrp->sbus_pmi_rd_kobj);
-+
-+	return -ENOMEM;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_sbus_pmi_rd_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd delete (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	kobject_put(&ctrl_lgrp->sbus_pmi_rd_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi_wr.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi_wr.c
-new file mode 100644
-index 000000000000..a9de4a9e42ea
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi_wr.c
-@@ -0,0 +1,244 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/sysfs.h>
-+#include <linux/kobject.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_core_lgrp.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t dev_addr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   dev_addr;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_pmi_wr_dev_addr_get(core_lgrp, &dev_addr);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr dev_addr show (dev_addr = 0x%02X)", dev_addr);
-+
-+	return sysfs_emit(buf, "0x%02X\n", dev_addr);
-+}
-+
-+static ssize_t addr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u16                  addr;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_pmi_wr_addr_get(core_lgrp, &addr);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr addr show (addr = 0x%04X)", addr);
-+
-+	return sysfs_emit(buf, "0x%04X\n", addr);
-+}
-+
-+static ssize_t data_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u16                  data;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_pmi_wr_data_get(core_lgrp, &data);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr data show (data = 0x%04X)", data);
-+
-+	return sysfs_emit(buf, "0x%04X\n", data);
-+}
-+
-+static ssize_t mask_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u16                  mask;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_pmi_wr_mask_get(core_lgrp, &mask);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr mask show (mask = 0x%04X)", mask);
-+
-+	return sysfs_emit(buf, "0x%04X\n", mask);
-+}
-+
-+static ssize_t dev_id_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   dev_id;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_pmi_wr_dev_id_get(core_lgrp, &dev_id);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr dev id show (dev_id = 0x%02X)", dev_id);
-+
-+	return sysfs_emit(buf, "0x%02X\n", dev_id);
-+}
-+
-+static ssize_t lane_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   lane;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_pmi_wr_lane_get(core_lgrp, &lane);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr lane show (lane = 0x%02X)", lane);
-+
-+	return sysfs_emit(buf, "0x%02X\n", lane);
-+}
-+
-+static ssize_t pll_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   pll;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_pmi_wr_pll_get(core_lgrp, &pll);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr pll show (pll = 0x%02X)", pll);
-+
-+	return sysfs_emit(buf, "0x%02X\n", pll);
-+}
-+
-+static ssize_t result_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	int                  result;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_pmi_wr_result_get(core_lgrp, &result);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr result show (result = %d)", result);
-+
-+	return sysfs_emit(buf, "%d\n", result);
-+}
-+
-+static struct kobj_attribute dev_addr = __ATTR_RO(dev_addr);
-+static struct kobj_attribute addr     = __ATTR_RO(addr);
-+static struct kobj_attribute data     = __ATTR_RO(data);
-+static struct kobj_attribute mask     = __ATTR_RO(mask);
-+static struct kobj_attribute dev_id   = __ATTR_RO(dev_id);
-+static struct kobj_attribute lane     = __ATTR_RO(lane);
-+static struct kobj_attribute pll      = __ATTR_RO(pll);
-+static struct kobj_attribute result   = __ATTR_RO(result);
-+
-+static struct attribute *sbus_pmi_wr_attrs[] = {
-+	&dev_addr.attr,
-+	&addr.attr,
-+	&data.attr,
-+	&mask.attr,
-+	&dev_id.attr,
-+	&lane.attr,
-+	&pll.attr,
-+	&result.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(sbus_pmi_wr);
-+
-+static struct kobj_type sbus_pmi_wr_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = sbus_pmi_wr_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_sbus_pmi_wr_create(struct sl_ctrl_lgrp *ctrl_lgrp, struct kobject *parent_kobj)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	rtn = kobject_init_and_add(&ctrl_lgrp->sbus_pmi_wr_kobj, &sbus_pmi_wr_info, parent_kobj, "wr");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr create kobject_init_and_add failed [%d]", rtn);
-+		goto out_sbus_pmi_wr;
-+	}
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr create (sbus_pmi_wr_kobj = 0x%p)",
-+		   &ctrl_lgrp->sbus_pmi_wr_kobj);
-+	return 0;
-+
-+out_sbus_pmi_wr:
-+	kobject_put(&ctrl_lgrp->sbus_pmi_wr_kobj);
-+
-+	return -ENOMEM;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_sbus_pmi_wr_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr delete (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	kobject_put(&ctrl_lgrp->sbus_pmi_wr_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_rd.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_rd.c
-new file mode 100644
-index 000000000000..8f4e74f9dd2d
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_rd.c
-@@ -0,0 +1,197 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/sysfs.h>
-+#include <linux/kobject.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_core_lgrp.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t dev_addr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   dev_addr;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_rd_dev_addr_get(core_lgrp, &dev_addr);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd dev addr show (dev_addr = 0x%02X)", dev_addr);
-+
-+	return sysfs_emit(buf, "0x%02X\n", dev_addr);
-+}
-+
-+static ssize_t data_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u32                  data;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_rd_data_get(core_lgrp, &data);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd data show (data = 0x%08X)", data);
-+
-+	return sysfs_emit(buf, "0x%08X\n", data);
-+}
-+
-+static ssize_t mask_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u32                  mask;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_rd_mask_get(core_lgrp, &mask);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd mask show (mask = 0x%08X)", mask);
-+
-+	return sysfs_emit(buf, "0x%08X\n", mask);
-+}
-+
-+static ssize_t reg_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   reg;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_rd_reg_get(core_lgrp, &reg);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd reg show (reg = 0x%02X)", reg);
-+
-+	return sysfs_emit(buf, "0x%02X\n", reg);
-+}
-+
-+static ssize_t lsb_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   lsb;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_rd_lsb_get(core_lgrp, &lsb);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd lsb show (lsb = %u)", lsb);
-+
-+	return sysfs_emit(buf, "%u\n", lsb);
-+}
-+
-+static ssize_t result_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	int                  result;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_rd_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_rd_result_get(core_lgrp, &result);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd result show (result = %d)", result);
-+
-+	return sysfs_emit(buf, "%d\n", result);
-+}
-+
-+static struct kobj_attribute dev_addr = __ATTR_RO(dev_addr);
-+static struct kobj_attribute data     = __ATTR_RO(data);
-+static struct kobj_attribute mask     = __ATTR_RO(mask);
-+static struct kobj_attribute reg      = __ATTR_RO(reg);
-+static struct kobj_attribute lsb      = __ATTR_RO(lsb);
-+static struct kobj_attribute result   = __ATTR_RO(result);
-+
-+static struct attribute *sbus_rd_attrs[] = {
-+	&dev_addr.attr,
-+	&data.attr,
-+	&mask.attr,
-+	&reg.attr,
-+	&lsb.attr,
-+	&result.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(sbus_rd);
-+
-+static struct kobj_type sbus_rd_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = sbus_rd_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_sbus_rd_create(struct sl_ctrl_lgrp *ctrl_lgrp, struct kobject *parent_kobj)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	rtn = kobject_init_and_add(&ctrl_lgrp->sbus_rd_kobj, &sbus_rd_info, parent_kobj, "rd");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd create kobject_init_and_add failed [%d]", rtn);
-+		goto out_sbus_rd;
-+	}
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd create (sbus_rd_kobj = 0x%p)", &ctrl_lgrp->sbus_rd_kobj);
-+	return 0;
-+
-+out_sbus_rd:
-+	kobject_put(&ctrl_lgrp->sbus_rd_kobj);
-+
-+	return -ENOMEM;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_sbus_rd_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd delete (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	kobject_put(&ctrl_lgrp->sbus_rd_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_rst.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_rst.c
-new file mode 100644
-index 000000000000..872a80636630
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_rst.c
-@@ -0,0 +1,105 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/sysfs.h>
-+#include <linux/kobject.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_core_lgrp.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t dev_addr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   dev_addr;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_rst_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_rst_dev_addr_get(core_lgrp, &dev_addr);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus rst dev addr show (dev_addr = 0x%02X)", dev_addr);
-+
-+	return sysfs_emit(buf, "0x%02X\n", dev_addr);
-+}
-+
-+static ssize_t result_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	int                  result;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_rst_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_rst_result_get(core_lgrp, &result);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus rst result show (result = %d)", result);
-+
-+	return sysfs_emit(buf, "%d\n", result);
-+}
-+
-+static struct kobj_attribute dev_addr = __ATTR_RO(dev_addr);
-+static struct kobj_attribute result   = __ATTR_RO(result);
-+
-+static struct attribute *sbus_rst_attrs[] = {
-+	&dev_addr.attr,
-+	&result.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(sbus_rst);
-+
-+static struct kobj_type sbus_rst_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = sbus_rst_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_sbus_rst_create(struct sl_ctrl_lgrp *ctrl_lgrp, struct kobject *parent_kobj)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	rtn = kobject_init_and_add(&ctrl_lgrp->sbus_rst_kobj, &sbus_rst_info, parent_kobj, "rst");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus rst create kobject_init_and_add failed [%d]", rtn);
-+		goto out_sbus_rst;
-+	}
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus rst create (sbus_rst_kobj = 0x%p)", &ctrl_lgrp->sbus_rst_kobj);
-+	return 0;
-+
-+out_sbus_rst:
-+	kobject_put(&ctrl_lgrp->sbus_rst_kobj);
-+
-+	return -ENOMEM;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_sbus_rst_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus rst delete (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	kobject_put(&ctrl_lgrp->sbus_rst_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_wr.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_wr.c
-new file mode 100644
-index 000000000000..036977d964d6
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_wr.c
-@@ -0,0 +1,197 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/sysfs.h>
-+#include <linux/kobject.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_core_lgrp.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t dev_addr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   dev_addr;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_wr_dev_addr_get(core_lgrp, &dev_addr);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr dev addr show (dev_addr = 0x%02X)", dev_addr);
-+
-+	return sysfs_emit(buf, "0x%02X\n", dev_addr);
-+}
-+
-+static ssize_t data_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u32                  data;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_wr_data_get(core_lgrp, &data);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr data show (data = 0x%08X)", data);
-+
-+	return sysfs_emit(buf, "0x%08X\n", data);
-+}
-+
-+static ssize_t mask_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u32                  mask;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_wr_mask_get(core_lgrp, &mask);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr mask show (mask = 0x%08X)", mask);
-+
-+	return sysfs_emit(buf, "0x%08X\n", mask);
-+}
-+
-+static ssize_t reg_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   reg;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_wr_reg_get(core_lgrp, &reg);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr reg show (reg = 0x%02X)", reg);
-+
-+	return sysfs_emit(buf, "0x%02X\n", reg);
-+}
-+
-+static ssize_t lsb_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u8                   lsb;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_wr_lsb_get(core_lgrp, &lsb);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr lsb show (lsb = %u)", lsb);
-+
-+	return sysfs_emit(buf, "%u\n", lsb);
-+}
-+
-+static ssize_t result_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	int                  result;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_wr_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_sbus_wr_result_get(core_lgrp, &result);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr result show (result = %d)", result);
-+
-+	return sysfs_emit(buf, "%d\n", result);
-+}
-+
-+static struct kobj_attribute dev_addr = __ATTR_RO(dev_addr);
-+static struct kobj_attribute data     = __ATTR_RO(data);
-+static struct kobj_attribute mask     = __ATTR_RO(mask);
-+static struct kobj_attribute reg      = __ATTR_RO(reg);
-+static struct kobj_attribute lsb      = __ATTR_RO(lsb);
-+static struct kobj_attribute result   = __ATTR_RO(result);
-+
-+static struct attribute *sbus_wr_attrs[] = {
-+	&dev_addr.attr,
-+	&data.attr,
-+	&mask.attr,
-+	&reg.attr,
-+	&lsb.attr,
-+	&result.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(sbus_wr);
-+
-+static struct kobj_type sbus_wr_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = sbus_wr_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_sbus_wr_create(struct sl_ctrl_lgrp *ctrl_lgrp, struct kobject *parent_kobj)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	rtn = kobject_init_and_add(&ctrl_lgrp->sbus_wr_kobj, &sbus_wr_info, parent_kobj, "wr");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr create kobject_init_and_add failed [%d]", rtn);
-+		goto out_sbus_wr;
-+	}
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr create (sbus_wr_kobj = 0x%p)", &ctrl_lgrp->sbus_wr_kobj);
-+	return 0;
-+
-+out_sbus_wr:
-+	kobject_put(&ctrl_lgrp->sbus_wr_kobj);
-+
-+	return -ENOMEM;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_sbus_wr_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr delete (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	kobject_put(&ctrl_lgrp->sbus_wr_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes.c
-new file mode 100644
-index 000000000000..08d2858fea54
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes.c
-@@ -0,0 +1,302 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_core_lgrp.h"
-+#include "sl_core_str.h"
-+#include "sl_sysfs_serdes_settings.h"
-+#include "sl_sysfs_serdes_eye.h"
-+#include "sl_sysfs_serdes_state.h"
-+#include "sl_sysfs_serdes_swizzle.h"
-+#include "sl_sysfs_serdes_lol.h"
-+#include "sl_sysfs_serdes_los.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+u8 lane_num_to_link_num(struct sl_ctrl_lgrp *ctrl_lgrp, u8 lane_num)
-+{
-+	switch (ctrl_lgrp->config.furcation) {
-+	case SL_MEDIA_FURCATION_X1:
 +	default:
++		cxidev_err(&hw->cdev, "headshell remove - unrecognised state\n");
++		return -EUCLEAN;
++	}
++
++	/* stop link coming up */
++	cass_lmon_set_up_pause(hw, true);
++
++	/* setup new state */
++	hw->port->hstate = CASS_HEADSHELL_STATUS_NOT_PRESENT;
++	cass_link_set_led(hw);
++
++	/* ensure link down and no media configured */
++	err = cass_link_headshell_down_no_media(hw,
++						CASS_DOWN_ORIGIN_HEADSHELL_REMOVED);
++	if (err) {
++		cxidev_err(&hw->cdev,
++			   "headshell remove - down_no_media failed [%d]\n",
++			   err);
++		cass_lmon_set_up_pause(hw, false);
++		return err;
++	}
++
++	cass_lmon_set_up_pause(hw, false);
++	return 0;
++}
++
++/**
++ * cass_link_headshell_error() - Headshell error
++ *
++ *    Any start state
++ *    Stop link and unconfigure media
++ *
++ * @hw: the device
++ *
++ * Return: 0 on success, negative errno on failure
++ */
++int cass_link_headshell_error(struct cass_dev *hw)
++{
++	int err;
++
++	cass_phy_set_state(CASS_PHY_HEADSHELL_REMOVED, hw);
++	cxidev_dbg(&hw->cdev, "headshell error: phy state = %d\n", hw->phy.state);
++
++	/* stop link coming up */
++	cass_lmon_set_up_pause(hw, true);
++
++	/* ensure link down and no media configured */
++	err = cass_link_headshell_down_no_media(hw,
++						CASS_DOWN_ORIGIN_HEADSHELL_ERROR);
++	if (err) {
++		cxidev_err(&hw->cdev,
++			   "headshell error - down_no_media failed [%d]\n",
++			   err);
++		cass_lmon_set_up_pause(hw, false);
++		return err;
++	}
++
++	/* setup new state */
++	hw->port->hstate = CASS_HEADSHELL_STATUS_ERROR;
++	cass_link_set_led(hw);
++
++	cass_lmon_set_up_pause(hw, false);
++	return 0;
++}
++
++/**
++ * cass_link_headshell_down_no_media() - take link down and unconfigure cable
++ *
++ * Common headshell remove/error code to stop link and unconfigure media
++ *
++ * @hw: the device
++ * @reason: the reason the link is going down
++ *
++ * Return: 0 on success, negative errno on failure
++ */
++static int cass_link_headshell_down_no_media(struct cass_dev *hw, int reason)
++{
++	int err;
++
++	cxidev_dbg(&hw->cdev, "headshell down no media\n");
++
++	/* ensure link down  */
++	spin_lock(&hw->port->lock);
++	switch (hw->port->lstate) {
++	case CASS_LINK_STATUS_DOWN:
++	case CASS_LINK_STATUS_ERROR:
++	case CASS_LINK_STATUS_UNCONFIGURED:
++	case CASS_LINK_STATUS_UNKNOWN:
++		cxidev_dbg(&hw->cdev, "headshell down - already link down (%s)\n",
++			   cass_link_state_str(hw->port->lstate));
++		spin_unlock(&hw->port->lock);
++		break;
++	default:
++		spin_unlock(&hw->port->lock);
++		err = cass_link_async_down_wait(hw, reason);
++		if (err) {
++			cxidev_err(&hw->cdev,
++				   "headshell down - down_wait failed [%d]\n",
++				   err);
++			return err;
++		}
++		break;
++	}
++
++	/* remove any media configuration */
++	if (hw->port->config_state & CASS_MEDIA_CONFIGURED) {
++		err = hw->link_ops->media_unconfig(hw);
++		if (err) {
++			cxidev_err(&hw->cdev, "headshell down - media unconfig failed [%d]\n", err);
++			return err;
++		}
++		hw->port->config_state &= ~CASS_MEDIA_CONFIGURED;
++	}
++
++	return 0;
++}
++
++/*
++ * Direct media configuration
++ *
++ *   Called by hms to set media for backplane media
++ *
++ *   If you are playing with the backplane (i.e. changing compute blades)
++ *   then leave it to the user to restart the link
++ */
++int cass_link_media_config(struct cass_dev *hw, struct sbl_media_attr *attr)
++{
++	int err;
++
++	cxidev_dbg(&hw->cdev, "media config\n");
++
++	if (hw->port->hstate != CASS_HEADSHELL_STATUS_NOT_PRESENT) {
++		cxidev_dbg(&hw->cdev, "media config - bad state %s\n",
++			   cass_link_headshell_state_str(hw->port->hstate));
++		return -EUCLEAN;
++	}
++
++	if (hw->port->config_state & CASS_MEDIA_CONFIGURED) {
++		cxidev_dbg(&hw->cdev, "media config - media already configured\n");
++		return -EUCLEAN;
++	}
++
++	err = hw->link_ops->media_config(hw, attr);
++	if (err) {
++		cxidev_dbg(&hw->cdev, "media config - media config failed [%d]\n",
++			   err);
++		hw->port->config_state &= ~CASS_MEDIA_CONFIGURED;
++		return err;
++	}
++
++	hw->port->hstate = CASS_HEADSHELL_STATUS_NO_DEVICE;
++	hw->port->config_state |= CASS_MEDIA_CONFIGURED;
++
++	return 0;
++}
++
++/**
++ * cass_link_headshell_state_str() - Get a string for the headshell state
++ *
++ * Return a text string describing a headshell status
++ *
++ * @state: input enum of target headshell state
++ *
++ * Return: This function will always return a text string
++ */
++const char *cass_link_headshell_state_str(enum cass_headshell_status state)
++{
++	switch (state) {
++	case CASS_HEADSHELL_STATUS_UNKNOWN:     return "unknown";
++	case CASS_HEADSHELL_STATUS_PRESENT:     return "present";
++	case CASS_HEADSHELL_STATUS_NOT_PRESENT: return "not present";
++	case CASS_HEADSHELL_STATUS_NO_DEVICE:   return "no device";
++	case CASS_HEADSHELL_STATUS_ERROR:       return "error";
++	default:                                return "unrecognised";
++	}
++}
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_cable.h b/drivers/net/ethernet/hpe/ss1/cass_cable.h
+new file mode 100644
+index 000000000000..e43bdfcf236f
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cass_cable.h
+@@ -0,0 +1,157 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright 2021 Hewlett Packard Enterprise Development LP */
++#ifndef _CASS_CABLE_H
++#define _CASS_CABLE_H
++
++#define QSFP_IDENTIFIER_OFFSET                   0
++#define QSFP_REV_CMPL_OFFSET                     1
++#define QSFP_VENDOR_MAX_STR_LEN                  16
++
++#define QDD_VENDOR_TE                   "TE Connectivity"
++#define QDD_VENDOR_HISENSE              "Hisense"
++#define QDD_VENDOR_FIT                  "FIT HON TENG"
++#define QDD_VENDOR_FT                   "FT HON TENG"
++#define QDD_VENDOR_MELLANOX             "Mellanox"
++#define QDD_VENDOR_MOLEX                "Molex"
++#define QDD_VENDOR_LEONI                "LEONI"
++#define QDD_VENDOR_HITACHI              "Hitachi Metals"
++#define QDD_VENDOR_LUXSHARE             "LUXSHARE-ICT"
++#define QDD_VENDOR_DUST_PHOTONICS       "DustPhotonics"
++#define QDD_VENDOR_FINISAR              "FINISAR CORP"
++#define QDD_VENDOR_HPE                  "HPE"
++#define QDD_VENDOR_CLOUD_LIGHT          "Cloud Light"
++#define QDD_VENDOR_AMPHENOL             "Amphenol"
++
++// SFF-8024 Specification for SFF Cross Reference -----------------------------
++#define SFF8436_MEDIA_TYPE_OFFSET                147
++#define SFF8436_LINK_LEN_OFFSET                  146
++#define SFF8436_VENDOR_OFFSET                    148
++#define SFF8436_EXT_IDENTIFIER_OFFSET            129
++#define SFF8436_POWER_DATA_OFFSET                93
++#define SFF8436_LOW_POWER_MASK                   0x02
++
++// SFF-8024 TABLE 4-1 IDENTIFIER VALUES
++#define SFF8024_TYPE_UNKNOWN                     0x00
++#define SFF8024_TYPE_GBIC                        0x01
++#define SFF8024_TYPE_MOTHERBOARD                 0x02
++#define SFF8024_TYPE_SFP                         0x03
++#define SFF8024_TYPE_300P_XBI                    0x04
++#define SFF8024_TYPE_XENPAK                      0x05
++#define SFF8024_TYPE_XFP                         0x06
++#define SFF8024_TYPE_XFF                         0x07
++#define SFF8024_TYPE_XFP_E                       0x08
++#define SFF8024_TYPE_XPAK                        0x09
++#define SFF8024_TYPE_X2                          0x0A
++#define SFF8024_TYPE_DWDM_SFP                    0x0B
++#define SFF8024_TYPE_QSFP_INF8438                0x0C
++#define SFF8024_TYPE_QSFP_PLUS                   0x0D
++#define SFF8024_TYPE_CXP                         0x0E
++#define SFF8024_TYPE_SMMHD4X                     0x0F
++#define SFF8024_TYPE_SMMHD8X                     0x10
++#define SFF8024_TYPE_QSFP28                      0x11
++#define SFF8024_TYPE_CXP2                        0x12
++#define SFF8024_TYPE_CDFP                        0x13
++#define SFF8024_TYPE_SMMHD4X_FANOUT              0x14
++#define SFF8024_TYPE_SMMHD8X_FANOUT              0x15
++#define SFF8024_TYPE_CDFP_3                      0x16
++#define SFF8024_TYPE_uQSFP                       0x17
++#define SFF8024_TYPE_QSFPDD                      0x18
++#define SFF8024_TYPE_OSFP8X                      0x19
++#define SFF8024_TYPE_SFPDD                       0x1A
++#define SFF8024_TYPE_DSFP                        0x1B
++#define SFF8024_TYPE_MINILINK4X                  0x1C
++#define SFF8024_TYPE_MINILINK8X                  0x1D
++#define SFF8024_TYPE_QSFP_PLUS_CMIS              0x1E
++
++// SFF-8636 Byte @ 93
++#define SFF8636_SW_RESET                         0x80
++#define SFF8636_PWR_CLASS_8_ENABLE               0x08
++#define SFF8636_PWR_CLASS_567_ENABLE             0x04
++#define SFF8636_PWR_CLASS_LOW                    0x02
++#define SFF8636_PWR_OVERRIDE                     0x01
++
++// SFF-8636 Extended Identifier Byte @ Page 00h byte 129
++#define SFF8636_PWR_CLASS_1234_MASK              0xC0
++#define SFF8636_PWR_CLASS_1                      0x00
++#define SFF8636_PWR_CLASS_2                      0x40
++#define SFF8636_PWR_CLASS_3                      0x80
++#define SFF8636_PWR_CLASS_4_AND_UP               0xC0
++#define SFF8636_PWR_CLASS_8                      0x20
++#define SFF8636_CLEI_IN_PG02                     0x10
++#define SFF8636_CDR_IN_TX                        0x08
++#define SFF8636_CDR_IN_RX                        0x04
++#define SFF8636_PWR_CLASS_567_MASK               0x03
++#define SFF8636_SEE_PWR_CLASS_1234               0x00
++#define SFF8636_PWR_CLASS_5                      0x01
++#define SFF8636_PWR_CLASS_6                      0x02
++#define SFF8636_PWR_CLASS_7                      0x03
++
++// Common Management Interface Specification (CMIS) ---------------------------
++#define CMIS_MEDIA_TYPE_OFFSET                   212
++#define CMIS_CABLE_LEN_OFFSET                    202
++#define CMIS_VENDOR_OFFSET                       129
++
++// CMIS and SFF-8636 Media/Transmitter Technology Types
++#define MEDIA_850_NM_VCSEL                       0x00
++#define MEDIA_1310_NM_VCSEL                      0x01
++#define MEDIA_1550_NM_VCSEL                      0x02
++#define MEDIA_1310_NM_FP                         0x03
++#define MEDIA_1310_NM_DFB                        0x04
++#define MEDIA_1550_NM_DFB                        0x05
++#define MEDIA_1310_NM_EML                        0x06
++#define MEDIA_1550_NM_EML                        0x07
++#define MEDIA_OTHERS                             0x08
++#define MEDIA_1490_NM_DFB                        0x09
++#define MEDIA_COPPER_UNEQ                        0x0A
++#define MEDIA_COPPER_PASSIVE_EQ                  0x0B
++#define MEDIA_COPPER_NEAR_FAR_LMT_ACT_EQ         0x0C
++#define MEDIA_COPPER_FAR_LMT_ACT_EQ              0x0D
++#define MEDIA_COPPER_NEAR_LMT_ACT_EQ             0x0E
++#define MEDIA_COPPER_LIN_ACT_EQ                  0x0F
++
++/**
++ * enum qsfp_format - cable spec types
++ *
++ * @QDD_FMT_UNKNOWN:       Format unknown
++ * @QDD_SFF8636:           Format compatible with SFF-8636
++ * @QDD_CMIS:              Format compatible with CMIS
++ *
++ * QSFP / QSFP-DD Protocol/Specification Types
++ */
++enum qsfp_format {
++	QDD_FMT_UNKNOWN = 0,
++	QDD_SFF8636,
++	QDD_CMIS,
++};
++
++/**
++ * enum cass_headshell_status - cable status
++ *
++ * @CASS_HEADSHELL_STATUS_UNKNOWN:       State unknown
++ * @CASS_HEADSHELL_STATUS_PRESENT:       A headshell is inserted
++ * @CASS_HEADSHELL_STATUS_NOT_PRESENT:   A headshell is not inserted
++ * @CASS_HEADSHELL_STATUS_ERROR:         A headshell has error
++ * @CASS_HEADSHELL_STATUS_NO_DEVICE:     No headshell hardware device
++ *
++ * The status of the media headshell
++ */
++enum cass_headshell_status {
++	CASS_HEADSHELL_STATUS_UNKNOWN          = 0,
++	CASS_HEADSHELL_STATUS_PRESENT          = 1 << 0,
++	CASS_HEADSHELL_STATUS_NOT_PRESENT      = 1 << 1,
++	CASS_HEADSHELL_STATUS_ERROR            = 1 << 2,
++	CASS_HEADSHELL_STATUS_NO_DEVICE        = 1 << 3,
++};
++
++int cass_is_cable_present(struct cass_dev *hw);
++int cass_headshell_power_up(struct cass_dev *hw, u8 qsfp_format);
++int cass_parse_heashell_data(struct cass_dev *hw, struct sbl_media_attr *attr,
++			     u8 *qsfp_format);
++int cass_link_headshell_insert(struct cass_dev *hw,
++			       struct sbl_media_attr *mattr);
++int cass_link_headshell_remove(struct cass_dev *hw);
++int cass_link_headshell_error(struct cass_dev *hw);
++int cass_link_media_config(struct cass_dev *hw, struct sbl_media_attr *attr);
++const char *cass_link_headshell_state_str(enum cass_headshell_status state);
++
++#endif	/* _CASS_CABLE_H */
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_core.c b/drivers/net/ethernet/hpe/ss1/cass_core.c
+new file mode 100644
+index 000000000000..45e992379e12
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cass_core.c
+@@ -0,0 +1,1564 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2020-2026 Hewlett Packard Enterprise Development LP */
++
++/* Cassini device handler */
++
++#include <linux/interrupt.h>
++#include <linux/pci.h>
++#include <linux/types.h>
++#include <linux/iopoll.h>
++#include <linux/seq_file.h>
++#include <linux/phy/phy.h>
++#include <linux/if_vlan.h>
++#include <linux/aer.h>
++#include <linux/hpe/cxi/driver.h>
++
++#include "cass_core.h"
++#include "cass_sbl.h"
++#include <linux/hpe/sbl/sbl.h>
++#include "cass_ss1_debugfs.h"
++#include "cxi_aux_dev.h"
++
++/* Range of available number of IRQs, depending on the number of VFs
++ * configured in Cassini.
++ */
++#define MIN_NUM_IRQS 63
++#define MAX_NUM_IRQS 2048
++
++static unsigned int sct_pid_mask = 0x7;
++module_param(sct_pid_mask, uint, 0444);
++MODULE_PARM_DESC(sct_pid_mask, "Source Connection PID Mask");
++
++static unsigned int hw_rev_override;
++module_param(hw_rev_override, uint, 0644);
++MODULE_PARM_DESC(hw_rev_override, "Hardware revision override");
++
++static bool enable_fgfc = true;
++module_param(enable_fgfc, bool, 0444);
++MODULE_PARM_DESC(enable_fgfc, "Enable/disable fine grain flow control");
++
++#define OUTSTANDING_LIMIT_MAX 2047U
++#define OUTSTANDING_LIMIT_MIN 1U
++#define OUTSTANDING_LIMIT_DEFAULT 64U
++
++static unsigned int get_pkt_limit;
++module_param(get_pkt_limit, uint, 0444);
++MODULE_PARM_DESC(get_pkt_limit,
++		 "Maximum number of outstanding GET packets (1-2047) per MCU");
++
++static unsigned int put_pkt_limit;
++module_param(put_pkt_limit, uint, 0444);
++MODULE_PARM_DESC(put_pkt_limit,
++		 "Maximum number of outstanding PUT packets (1-2047) per MCU");
++
++static unsigned int ioi_ord_limit;
++module_param(ioi_ord_limit, uint, 0444);
++MODULE_PARM_DESC(ioi_ord_limit,
++		 "Maximum number of outstanding ordered packets (1-2047) per MCU");
++
++static unsigned int ioi_unord_limit;
++module_param(ioi_unord_limit, uint, 0444);
++MODULE_PARM_DESC(ioi_unord_limit,
++		 "Maximum number of outstanding unordered packets (1-2047) per MCU");
++
++static bool ioi_enable = true;
++module_param(ioi_enable, bool, 0444);
++MODULE_PARM_DESC(ioi_enable,
++		 "Enable the In-Out-In protocol for puts.");
++
++bool disable_on_error = true;
++module_param(disable_on_error, bool, 0644);
++MODULE_PARM_DESC(disable_on_error,
++		 "Disable cxi device on certain unrecoverable errors");
++
++#ifndef PCI_EXT_CAP_ID_DVSEC
++#define PCI_EXT_CAP_ID_DVSEC 0x23
++#define PCI_DVSEC_HEADER1       0x4 /* Designated Vendor-Specific Header1 */
++#endif
++#ifndef PCI_DVSEC_HEADER1_VID
++#define PCI_DVSEC_HEADER1_VID(x)   ((x) & 0xffff)
++#define PCI_DVSEC_HEADER1_REV(x)   (((x) >> 16) & 0xf)
++#define PCI_DVSEC_HEADER1_LEN(x)   (((x) >> 20) & 0xfff)
++#endif
++
++static void cass_dev_release(struct device *dev)
++{
++	struct cass_dev *hw = container_of(dev, struct cass_dev, class_dev);
++
++	kfree(hw);
++}
++
++/**
++ * cxi_get_csrs_range() - Return the whole physical range of the CSRs
++ *
++ * The BAR0 contains amongst other things the CSRs. At least the retry
++ * handler needs an access to them. The CXI user module needs to mmap
++ * it.
++ *
++ * @cdev: the device
++ * @base: base address
++ * @len: length of the CSRs
++ */
++void cxi_get_csrs_range(struct cxi_dev *cdev, phys_addr_t *base, size_t *len)
++{
++	struct cass_dev *hw = container_of(cdev, struct
++					   cass_dev, cdev);
++
++	*base = hw->regs_base + C_MEMORG_CSR;
++	*len = C_MEMORG_CSR_SIZE;
++
++}
++EXPORT_SYMBOL(cxi_get_csrs_range);
++
++void traffic_shaping_cfg(struct cass_dev *hw)
++{
++	static const union c_oxe_cfg_arb_config arb_config = {
++		.mfs_out_sel = 1,
++		.fill_rate = 9,
++	};
++	const union c_oxe_cfg_arb_head_out_c head_out_c = {
++		.enable = 1,
++		.fill_qty = hw->tsc_fill_qty,
++		.limit = DIV_ROUND_UP(8 * ETHERNET_MAX_FRAME_SIZE, 1024),
++	};
++	const union c_oxe_cfg_arb_head_in_c head_in_c = {
++		.enable = 1,
++		.fill_qty = hw->tsc_fill_qty,
++		.limit = DIV_ROUND_UP(8 * ETHERNET_MAX_FRAME_SIZE, 1024),
++	};
++
++	/* 16 traffic shaping credits are returned at 100MHz frequency 200 Gbps
++	 * performance.
++	 */
++	cass_write(hw, C_OXE_CFG_ARB_CONFIG, &arb_config, sizeof(arb_config));
++	cass_write(hw, C_OXE_CFG_ARB_HEAD_OUT_C, &head_out_c,
++		   sizeof(head_out_c));
++	cass_write(hw, C_OXE_CFG_ARB_HEAD_IN_C, &head_in_c, sizeof(head_in_c));
++}
++
++/* Set the number of packets inflight based on link speed.
++ */
++static unsigned int calculate_packets_inflight(struct cass_dev *hw)
++{
++	unsigned int value;
++	struct cxi_link_info link_info;
++	bool is_link_up;
++
++	is_link_up = cass_sbl_is_link_up(hw);
++	if (!is_link_up) {
++		pr_err("cxi link info error: link is not up yet.\n");
 +		return 0;
-+	case SL_MEDIA_FURCATION_X2:
-+		if (lane_num & BIT(1))
-+			return 1;
-+		else
-+			return 0;
-+	case SL_MEDIA_FURCATION_X4:
-+		return lane_num;
++	}
++	cxi_link_mode_get(&hw->cdev, &link_info);
++
++	if (link_info.speed == SPEED_400000)
++		value = CASS2_MAX_PACKETS_INFLIGHT;
++	else
++		value = CASS1_MAX_PACKETS_INFLIGHT;
++
++	return value;
++}
++
++/* Set outstanding limits based on kernel module parameters.
++ * If no input, use the calculated packets_inflight.
++ */
++void cass_set_outstanding_limit(struct cass_dev *hw)
++{
++	int i;
++	unsigned int packets_inflight;
++	union c_oxe_cfg_outstanding_limit outstanding_limit;
++
++	packets_inflight = calculate_packets_inflight(hw);
++
++	if (packets_inflight < OUTSTANDING_LIMIT_MIN ||
++	    packets_inflight > OUTSTANDING_LIMIT_MAX) {
++		packets_inflight = OUTSTANDING_LIMIT_DEFAULT;
++	}
++
++	if (get_pkt_limit == 0)
++		get_pkt_limit = packets_inflight;
++	if (get_pkt_limit < OUTSTANDING_LIMIT_MIN ||
++	    get_pkt_limit > OUTSTANDING_LIMIT_MAX) {
++		pr_err("Invalid get_pkt_limit %u. Setting to %u\n",
++		       get_pkt_limit, OUTSTANDING_LIMIT_DEFAULT);
++		get_pkt_limit = OUTSTANDING_LIMIT_DEFAULT;
++	}
++
++	if (put_pkt_limit == 0)
++		put_pkt_limit = packets_inflight;
++	if (put_pkt_limit < OUTSTANDING_LIMIT_MIN ||
++	    put_pkt_limit > OUTSTANDING_LIMIT_MAX) {
++		pr_err("Invalid put_pkt_limit %u. Setting to %u\n",
++		       put_pkt_limit, OUTSTANDING_LIMIT_DEFAULT);
++		put_pkt_limit = OUTSTANDING_LIMIT_DEFAULT;
++	}
++
++	if (ioi_ord_limit == 0)
++		ioi_ord_limit = packets_inflight;
++	if (ioi_ord_limit < OUTSTANDING_LIMIT_MIN ||
++	    ioi_ord_limit > OUTSTANDING_LIMIT_MAX) {
++		pr_err("Invalid ioi_ord_limit %u. Setting to %u\n",
++		       ioi_ord_limit, OUTSTANDING_LIMIT_DEFAULT);
++		ioi_ord_limit = OUTSTANDING_LIMIT_DEFAULT;
++	}
++
++	if (ioi_unord_limit == 0)
++		ioi_unord_limit = packets_inflight;
++	if (ioi_unord_limit < OUTSTANDING_LIMIT_MIN ||
++	    ioi_unord_limit > OUTSTANDING_LIMIT_MAX) {
++		pr_err("Invalid ioi_unord_limit %u. Setting to %u\n",
++		       ioi_unord_limit, OUTSTANDING_LIMIT_DEFAULT);
++		ioi_unord_limit = OUTSTANDING_LIMIT_DEFAULT;
++	}
++
++	for (i = 0; i < C_OXE_CFG_OUTSTANDING_LIMIT_ENTRIES; i++) {
++		cass_read(hw, C_OXE_CFG_OUTSTANDING_LIMIT(i),
++			  &outstanding_limit, sizeof(outstanding_limit));
++		outstanding_limit.get_limit = get_pkt_limit;
++		outstanding_limit.put_limit = put_pkt_limit;
++		outstanding_limit.ioi_ord_limit = ioi_ord_limit;
++		outstanding_limit.ioi_unord_limit = ioi_unord_limit;
++		cass_write(hw, C_OXE_CFG_OUTSTANDING_LIMIT(i),
++			   &outstanding_limit, sizeof(outstanding_limit));
 +	}
 +}
 +
-+#ifdef CONFIG_SYSFS
-+static ssize_t hw_rev_1_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++/* Initialize OXE registers. */
++static void cass_oxe_init(struct cass_dev *hw)
 +{
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	int i;
++	union c_oxe_cfg_common cfg_common;
++	union c_oxe_cfg_fgfc fgfc;
++	static const union c_oxe_cfg_arb_drr_out wdrr_out = {
++		.quanta_val0 = DIV_ROUND_UP(PORTALS_MAX_FRAME_SIZE, 32),
++		.quanta_val1 = DIV_ROUND_UP(ETHERNET_MAX_FRAME_SIZE, 32),
++	};
++	static const union c_oxe_cfg_arb_drr_in wdrr_in = {
++		.quanta_val0 = DIV_ROUND_UP(PORTALS_MAX_FRAME_SIZE, 32),
++	};
++	static const union c_oxe_cfg_arb_mfs_out mfs_out = {
++		.mfs0 = DIV_ROUND_UP(PORTALS_MAX_FRAME_SIZE, 32),
++		.mfs1 = DIV_ROUND_UP(ETHERNET_MAX_FRAME_SIZE, 32),
++	};
++	static const union c_oxe_cfg_arb_mfs_in mfs_in = {
++		.mfs0 = DIV_ROUND_UP(PORTALS_MAX_FRAME_SIZE, 32),
++	};
++	static const union c_oxe_cfg_mcu_priority_limit mcu_priority_limit = {
++		.occ_climit = 8,
++		.occ_blimit = 4,
++	};
++	static const union c_oxe_cfg_fgfc_cnt fgfc_cnt = {
++		.vni_mask = 0xffff,
++	};
++	union c_oxe_cfg_fab_param fab_param;
 +
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, serdes_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
++	/* Note: All MCUs must use quanta and mfs value zero. */
++	cass_write(hw, C_OXE_CFG_ARB_DRR_OUT, &wdrr_out, sizeof(wdrr_out));
++	cass_write(hw, C_OXE_CFG_ARB_DRR_IN, &wdrr_in, sizeof(wdrr_in));
++	cass_write(hw, C_OXE_CFG_ARB_MFS_OUT, &mfs_out, sizeof(mfs_out));
++	cass_write(hw, C_OXE_CFG_ARB_MFS_IN, &mfs_in, sizeof(mfs_in));
 +
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "hw ver show (hw_rev_1 = 0x%X)",
-+		core_lgrp->core_ldev->serdes.hw_info[LGRP_TO_SERDES(core_lgrp->num)].rev_id_1);
++	traffic_shaping_cfg(hw);
 +
-+	return sysfs_emit(buf, "0x%X\n",
-+		core_lgrp->core_ldev->serdes.hw_info[LGRP_TO_SERDES(core_lgrp->num)].rev_id_1);
++	/* Clear all default reserved buffer class values. */
++	cass_clear(hw, C_OXE_CFG_PCT_BC_CDT(0), C_OXE_CFG_PCT_BC_CDT_SIZE);
++	cass_clear(hw, C_OXE_CFG_BUF_BC_PARAM(0), C_OXE_CFG_BUF_BC_PARAM_SIZE);
++
++	/* Lower MCU arbitration priority limits to prevent a single MCU
++	 * starving other MCUs within a traffic class.
++	 */
++	for (i = 0; i < C_OXE_CFG_MCU_PRIORITY_LIMIT_ENTRIES; i++)
++		cass_write(hw, C_OXE_CFG_MCU_PRIORITY_LIMIT(i),
++			   &mcu_priority_limit, sizeof(mcu_priority_limit));
++
++	for (i = 0; i < C_OXE_CFG_FGFC_CNT_ENTRIES; i++)
++		cass_write(hw, C_OXE_CFG_FGFC_CNT(i), &fgfc_cnt,
++			   sizeof(fgfc_cnt));
++
++	cass_read(hw, C_OXE_CFG_FAB_PARAM, &fab_param, sizeof(fab_param));
++	fab_param.req_32b_enabled = 0;
++	fab_param.rsp_32b_enabled = 0;
++	cass_write(hw, C_OXE_CFG_FAB_PARAM, &fab_param, sizeof(fab_param));
++
++	/* Disable In-Out-In for C1 and Mix system */
++	if (system_type_identifier == CASSINI_1_ONLY ||
++	    system_type_identifier == CASSINI_MIX) {
++		ioi_enable = false;
++	}
++	cass_read(hw, C_OXE_CFG_COMMON, &cfg_common,
++		  sizeof(cfg_common));
++	cfg_common.ioi_enable = ioi_enable;
++	cass_write(hw, C_OXE_CFG_COMMON, &cfg_common,
++		   sizeof(cfg_common));
++
++	cass_read(hw, C_OXE_CFG_FGFC, &fgfc, sizeof(fgfc));
++	fgfc.enable = enable_fgfc;
++	cass_write(hw, C_OXE_CFG_FGFC, &fgfc, sizeof(fgfc));
 +}
 +
-+static ssize_t hw_rev_2_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++#define DFA_NID_MASK 0xfffff000U
++
++/* TODO: Allow multiple request and response PCP configurations. Currently only
++ * request PCP 0 and response PCP 1 configuration is used.
++ */
++static void cass_pct_init(struct cass_dev *hw)
 +{
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	union c_pct_cfg_ixe_rsp_fifo_limits rsp_fifo_limits;
++	union c_pct_cfg_tgt_clr_req_fifo_limit req_fifo_limit;
++	u32 pid_mask = sct_pid_mask;
++	union c_cq_cfg_ocu_hash_mask hash_mask;
++	union c_pct_cfg_sct_tag_dfa_mask dfa_mask;
++	union c_pct_cfg_timing timing;
++	int i;
 +
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, serdes_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
++	/* Errata 2848 */
++	cass_read(hw, C_PCT_CFG_TGT_CLR_REQ_FIFO_LIMIT,
++		  &req_fifo_limit, sizeof(req_fifo_limit));
++	req_fifo_limit.mst_dealloc_fifo_limit = 7;
++	cass_write(hw, C_PCT_CFG_TGT_CLR_REQ_FIFO_LIMIT,
++		   &req_fifo_limit, sizeof(req_fifo_limit));
 +
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "hw ver show (hw_rev_2 = 0x%X)",
-+		core_lgrp->core_ldev->serdes.hw_info[LGRP_TO_SERDES(core_lgrp->num)].rev_id_2);
++	cass_read(hw, C_PCT_CFG_IXE_RSP_FIFO_LIMITS,
++		  &rsp_fifo_limits, sizeof(rsp_fifo_limits));
++	rsp_fifo_limits.smt_cdt_ack_limit = 7;
++	rsp_fifo_limits.spt_cdt_ack_limit = 7;
++	rsp_fifo_limits.sct_cdt_ack_limit = 7;
++	cass_write(hw, C_PCT_CFG_IXE_RSP_FIFO_LIMITS,
++		   &rsp_fifo_limits, sizeof(rsp_fifo_limits));
 +
-+	return sysfs_emit(buf, "0x%X\n",
-+		core_lgrp->core_ldev->serdes.hw_info[LGRP_TO_SERDES(core_lgrp->num)].rev_id_2);
-+}
++	/* Set default PCT timeouts */
++	cass_read(hw, C_PCT_CFG_TIMING, &timing, sizeof(timing));
++	timing.spt_timeout_epoch_sel = C1_DEFAULT_SPT_TIMEOUT_EPOCH;
++	timing.sct_idle_epoch_sel = C1_DEFAULT_SCT_IDLE_EPOCH;
++	timing.sct_close_epoch_sel = C1_DEFAULT_SCT_CLOSE_EPOCH;
++	timing.tct_timeout_epoch_sel = C1_DEFAULT_TCT_TIMEOUT_EPOCH;
++	cass_write(hw, C_PCT_CFG_TIMING, &timing, sizeof(timing));
 +
-+static ssize_t hw_version_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	/* Set SCT PID Mask. CQ and PCT DFA masks must be consistent. */
++	cass_read(hw, C_CQ_CFG_OCU_HASH_MASK, &hash_mask, sizeof(hash_mask));
 +
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, serdes_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
++	/* Mask off PID granule space as a part of SCT mask selection. */
++	pid_mask &= BIT(pid_bits) - 1;
 +
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "hw ver show (hw_version = 0x%X)",
-+		core_lgrp->core_ldev->serdes.hw_info[LGRP_TO_SERDES(core_lgrp->num)].version);
++	/* Software uses the top bit of the PID granule space to differentiate
++	 * between unrestricted puts and gets. To support having unrestricted
++	 * puts and gets on different SCTs, the top bit of the PID granule
++	 * space must always be included in SCT selection. This bit is the top
++	 * bit in the endpoint define.
++	 */
++	pid_mask |= BIT(C_DFA_ENDPOINT_DEFINED_BITS - 1);
 +
-+	return sysfs_emit(buf, "0x%X\n",
-+		core_lgrp->core_ldev->serdes.hw_info[LGRP_TO_SERDES(core_lgrp->num)].version);
-+}
++	hash_mask.dfa = DFA_NID_MASK | pid_mask;
++	cass_write(hw, C_CQ_CFG_OCU_HASH_MASK, &hash_mask, sizeof(hash_mask));
 +
-+static ssize_t fw_signature_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	for (i = 0; i < 4; i++)
++		dfa_mask.dscp[i].dfa_mask = pid_mask;
 +
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, serdes_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
++	for (i = 0; i < C_PCT_CFG_SCT_TAG_DFA_MASK_ENTRIES; i++) {
++		cass_write(hw, C_PCT_CFG_SCT_TAG_DFA_MASK(i), &dfa_mask,
++			   sizeof(dfa_mask));
 +
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "fw signature show (fw_signature = 0x%X)",
-+		core_lgrp->core_ldev->serdes.fw_info[LGRP_TO_SERDES(core_lgrp->num)].signature);
++		if (cass_version(hw, CASSINI_2))
++			cass_write(hw, C2_LPE_CFG_GET_FQ_DFA_MASK(i),
++				   &dfa_mask, sizeof(dfa_mask));
++	}
 +
-+	return sysfs_emit(buf, "0x%X\n",
-+		core_lgrp->core_ldev->serdes.fw_info[LGRP_TO_SERDES(core_lgrp->num)].signature);
-+}
-+
-+static ssize_t fw_version_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+
-+	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, serdes_kobj);
-+	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "fw version show (fw_version = 0x%X)",
-+		core_lgrp->core_ldev->serdes.fw_info[LGRP_TO_SERDES(core_lgrp->num)].version);
-+
-+	return sysfs_emit(buf, "0x%X\n",
-+		core_lgrp->core_ldev->serdes.fw_info[LGRP_TO_SERDES(core_lgrp->num)].version);
-+}
-+
-+static struct kobj_attribute hw_rev_id_1   = __ATTR_RO(hw_rev_1);
-+static struct kobj_attribute hw_rev_id_2   = __ATTR_RO(hw_rev_2);
-+static struct kobj_attribute hw_version    = __ATTR_RO(hw_version);
-+static struct kobj_attribute fw_signature  = __ATTR_RO(fw_signature);
-+static struct kobj_attribute fw_version    = __ATTR_RO(fw_version);
-+
-+static struct attribute *serdes_attrs[] = {
-+	&hw_rev_id_1.attr,
-+	&hw_rev_id_2.attr,
-+	&hw_version.attr,
-+	&fw_signature.attr,
-+	&fw_version.attr,
-+	NULL
++	/* Clear the default target resource settings. This is configured later
++	 * as a part of traffic class configuration.
++	 */
++	if (cass_version(hw, CASSINI_1)) {
++		cass_clear(hw, C1_PCT_CFG_TRS_TC_DED_LIMIT(0),
++			   C1_PCT_CFG_TRS_TC_DED_LIMIT_SIZE);
++		cass_clear(hw, C1_PCT_CFG_TRS_TC_MAX_LIMIT(0),
++			   C1_PCT_CFG_TRS_TC_MAX_LIMIT_SIZE);
++	} else {
++		cass_clear(hw, C2_PCT_CFG_TRS_TC_DED_LIMIT(0),
++			   C2_PCT_CFG_TRS_TC_DED_LIMIT_SIZE);
++		cass_clear(hw, C2_PCT_CFG_TRS_TC_MAX_LIMIT(0),
++			   C2_PCT_CFG_TRS_TC_MAX_LIMIT_SIZE);
++	}
++	cass_clear(hw, C_PCT_CFG_MST_TC_DED_LIMIT(0),
++		   C_PCT_CFG_MST_TC_DED_LIMIT_SIZE);
++	cass_clear(hw, C_PCT_CFG_MST_TC_MAX_LIMIT(0),
++		   C_PCT_CFG_MST_TC_MAX_LIMIT_SIZE);
++	cass_clear(hw, C_PCT_CFG_TCT_TC_DED_LIMIT(0),
++		   C_PCT_CFG_TCT_TC_DED_LIMIT_SIZE);
++	cass_clear(hw, C_PCT_CFG_TCT_TC_MAX_LIMIT(0),
++		   C_PCT_CFG_TCT_TC_MAX_LIMIT_SIZE);
 +};
-+ATTRIBUTE_GROUPS(serdes);
 +
-+static struct kobj_type serdes_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = serdes_groups,
-+};
-+
-+static struct attribute *serdes_lane_attrs[] = {
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(serdes_lane);
-+
-+static struct kobj_type serdes_lane_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = serdes_lane_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_serdes_create(struct sl_ctrl_lgrp *ctrl_lgrp)
++/* Wait for the hardware to be ready after a reset. */
++static int wait_hw_ready(struct cass_dev *hw)
 +{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+	int asic_lane_num;
++	void __iomem *csr = cass_csr(hw, C_RMU_STS_INIT_DONE);
++	union {
++		u64 value;
++		union c_atu_sts_init_done atu_sts_init_done;
++		union c_cq_sts_init_done cq_sts_init_done;
++		union c_lpe_sts_init_done lpe_sts_init_done;
++		union c_oxe_sts_common oxe_sts_common;
++		union c_rmu_sts_init_done rmu_sts_init_done;
++		union c_ee_sts_init_done ee_sts_init_done;
++	} x;
++	int rc;
 +
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "serdes create (lgrp = 0x%p)", ctrl_lgrp);
++	csr = cass_csr(hw, C_ATU_STS_INIT_DONE);
++	rc = readq_poll_timeout(csr, x.value,
++				(x.atu_sts_init_done.anchor_init_done == 1 &&
++				 x.atu_sts_init_done.tag_init_done == 1 &&
++				 x.atu_sts_init_done.prb_init_done == 1),
++				1, 1000000);
++	if (rc)
++		return rc;
 +
-+	if (!ctrl_lgrp->parent_kobj) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "serdes create missing parent");
-+		return -EBADRQC;
-+	}
++	csr = cass_csr(hw, C_CQ_STS_INIT_DONE);
++	rc = readq_poll_timeout(csr, x.value,
++				(x.cq_sts_init_done.tou_init_done == 1 &&
++				 x.cq_sts_init_done.cq_init_done == 1),
++				1, 1000000);
++	if (rc)
++		return rc;
 +
-+	rtn = kobject_init_and_add(&(ctrl_lgrp->serdes_kobj),
-+				   &serdes_info, ctrl_lgrp->parent_kobj, "serdes");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+			   "serdes create kobject_init_and_add failed [%d]", rtn);
-+		goto out_serdes;
-+	}
++	csr = cass_csr(hw, C_LPE_STS_INIT_DONE);
++	rc = readq_poll_timeout(csr, x.value,
++				(x.lpe_sts_init_done.free_mask_init_done == 0xf &&
++				 x.lpe_sts_init_done.ptlte_init_done == 1),
++				1, 1000000);
++	if (rc)
++		return rc;
 +
-+	rtn = kobject_init_and_add(&(ctrl_lgrp->serdes_lane_kobj),
-+				   &serdes_lane_info, &(ctrl_lgrp->serdes_kobj), "lane");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+			   "serdes create kobject_init_and_add failed [%d]", rtn);
-+		goto out_lane;
-+	}
++	csr = cass_csr(hw, C_OXE_STS_COMMON);
++	rc = readq_poll_timeout(csr, x.value,
++				(x.oxe_sts_common.init_done == 1),
++				1, 1000000);
++	if (rc)
++		return rc;
 +
-+	for (asic_lane_num = 0; asic_lane_num < SL_ASIC_MAX_LANES; ++asic_lane_num) {
++	csr = cass_csr(hw, C_RMU_STS_INIT_DONE);
++	rc = readq_poll_timeout(csr, x.value,
++				(x.rmu_sts_init_done.warm_reset == 0 &&
++				 x.rmu_sts_init_done.init_done == 1),
++				1, 1000000);
++	if (rc)
++		return rc;
 +
-+		rtn = kobject_init_and_add(&(ctrl_lgrp->serdes_lane_kobjs[asic_lane_num]),
-+					   &serdes_lane_info, &(ctrl_lgrp->serdes_lane_kobj), "%u", asic_lane_num);
-+		if (rtn) {
-+			sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+				   "serdes create lane kobject_init_and_add failed [%d]", rtn);
-+			goto out_lanes;
-+		}
++	csr = cass_csr(hw, C_EE_STS_INIT_DONE);
++	rc = readq_poll_timeout(csr, x.value,
++				(x.ee_sts_init_done.warm_reset == 0 &&
++				 x.ee_sts_init_done.init_done == 1),
++				1, 1000000);
++	if (rc)
++		return rc;
 +
-+		rtn = sl_sysfs_serdes_lane_state_create(ctrl_lgrp, asic_lane_num);
-+		if (rtn) {
-+			sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+				   "serdes_lane_state_create failed [%d]", rtn);
-+			goto out_lanes;
-+		}
-+
-+		rtn = sl_sysfs_serdes_lane_swizzle_create(ctrl_lgrp, asic_lane_num);
-+		if (rtn) {
-+			sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+				   "serdes_lane_swizzle_create failed [%d]", rtn);
-+			goto out_state;
-+		}
-+
-+		rtn = sl_sysfs_serdes_lane_settings_create(ctrl_lgrp, asic_lane_num);
-+		if (rtn) {
-+			sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+				   "serdes_lane_settings_create failed [%d]", rtn);
-+			goto out_swizzle;
-+		}
-+
-+		rtn = sl_sysfs_serdes_lane_eye_create(ctrl_lgrp, asic_lane_num);
-+		if (rtn) {
-+			sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+				   "serdes_lane_eye_create failed [%d]", rtn);
-+			goto out_settings;
-+		}
-+
-+		rtn = sl_sysfs_serdes_lane_lol_create(ctrl_lgrp, asic_lane_num);
-+		if (rtn) {
-+			sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+				   "serdes_lane_lol_create failed [%d]", rtn);
-+			goto out_eye;
-+		}
-+
-+		rtn = sl_sysfs_serdes_lane_los_create(ctrl_lgrp, asic_lane_num);
-+		if (rtn) {
-+			sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+				   "serdes_lane_los_create failed [%d]", rtn);
-+			goto out_lol;
-+		}
-+	}
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "serdes create (serdes_kobj = 0x%p)", &(ctrl_lgrp->serdes_kobj));
 +	return 0;
-+
-+out_lol:
-+	sl_sysfs_serdes_lane_lol_delete(ctrl_lgrp, asic_lane_num);
-+out_eye:
-+	sl_sysfs_serdes_lane_eye_delete(ctrl_lgrp, asic_lane_num);
-+out_settings:
-+	sl_sysfs_serdes_lane_settings_delete(ctrl_lgrp, asic_lane_num);
-+out_swizzle:
-+	sl_sysfs_serdes_lane_swizzle_delete(ctrl_lgrp, asic_lane_num);
-+out_state:
-+	sl_sysfs_serdes_lane_state_delete(ctrl_lgrp, asic_lane_num);
-+out_lanes:
-+	kobject_put(&(ctrl_lgrp->serdes_lane_kobjs[asic_lane_num]));
-+	for (asic_lane_num = asic_lane_num - 1; asic_lane_num >= 0; --asic_lane_num) {
-+		sl_sysfs_serdes_lane_los_delete(ctrl_lgrp, asic_lane_num);
-+		sl_sysfs_serdes_lane_lol_delete(ctrl_lgrp, asic_lane_num);
-+		sl_sysfs_serdes_lane_eye_delete(ctrl_lgrp, asic_lane_num);
-+		sl_sysfs_serdes_lane_settings_delete(ctrl_lgrp, asic_lane_num);
-+		sl_sysfs_serdes_lane_swizzle_delete(ctrl_lgrp, asic_lane_num);
-+		sl_sysfs_serdes_lane_state_delete(ctrl_lgrp, asic_lane_num);
-+		kobject_put(&(ctrl_lgrp->serdes_lane_kobjs[asic_lane_num]));
-+	}
-+out_lane:
-+	kobject_put(&(ctrl_lgrp->serdes_lane_kobj));
-+out_serdes:
-+	kobject_put(&(ctrl_lgrp->serdes_kobj));
-+
-+	return -ENOMEM;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
 +}
 +
-+void sl_sysfs_serdes_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
++/* Program the device NID. */
++static void program_nid(struct cass_dev *hw, u32 nid)
 +{
-+#ifdef CONFIG_SYSFS
-+	u8 asic_lane_num;
++	struct cxi_dev *cdev = &hw->cdev;
++	struct cxi_adev *cadev;
++	union c_oxe_cfg_fab_sfa cfg_fab_sfa = {};
++	union c_lpe_cfg_get_ctrl cfg_get_ctrl;
++	union c_ixe_cfg_dfa cfg_dfa = {};
++	union c_pct_cfg_pkt_misc cfg_pkt_misc;
 +
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "serdes delete (lgrp = 0x%p)", ctrl_lgrp);
++	cdev->prop.nid = nid;
 +
-+	if (!ctrl_lgrp->parent_kobj)
++	cass_read(hw, C_PCT_CFG_PKT_MISC, &cfg_pkt_misc, sizeof(cfg_pkt_misc));
++	cfg_pkt_misc.sfa_nid = cdev->prop.nid;
++	cass_write(hw, C_PCT_CFG_PKT_MISC, &cfg_pkt_misc, sizeof(cfg_pkt_misc));
++
++	cfg_fab_sfa.nid = cdev->prop.nid;
++	cass_write(hw, C_OXE_CFG_FAB_SFA, &cfg_fab_sfa, sizeof(cfg_fab_sfa));
++
++	cass_read(hw, C_LPE_CFG_GET_CTRL, &cfg_get_ctrl, sizeof(cfg_get_ctrl));
++	cfg_get_ctrl.dfa_nid = cdev->prop.nid;
++	cass_write(hw, C_LPE_CFG_GET_CTRL, &cfg_get_ctrl, sizeof(cfg_get_ctrl));
++
++	cfg_dfa.dfa_chk_en = 0xFF;
++	cfg_dfa.dfa_nid = cdev->prop.nid;
++	cass_write(hw, C_IXE_CFG_DFA, &cfg_dfa, sizeof(cfg_dfa));
++
++	cxi_send_async_event(cdev, CXI_EVENT_NID_CHANGED);
++
++	/*
++	 * The auxiliary device is freed when it is removed, which clears
++	 * cxi_adev under this lock first. Hold the lock for the whole
++	 * notification so removal waits for it and cannot free the device
++	 * under it.
++	 */
++	mutex_lock(&hw->cxi_adev_lock);
++	cadev = hw->cxi_adev;
++	if (cadev)
++		blocking_notifier_call_chain(&cadev->nid_notifier, nid, cdev);
++	mutex_unlock(&hw->cxi_adev_lock);
++}
++
++void cxi_set_nid(struct cxi_dev *cdev, u32 nid)
++{
++	struct cass_dev *hw = container_of(cdev, struct cass_dev, cdev);
++
++	/* The NID cannot be set from a VF */
++	if (!cdev->is_physfn)
 +		return;
 +
-+	for (asic_lane_num = 0; asic_lane_num < SL_ASIC_MAX_LANES; ++asic_lane_num) {
-+		sl_sysfs_serdes_lane_los_delete(ctrl_lgrp, asic_lane_num);
-+		sl_sysfs_serdes_lane_lol_delete(ctrl_lgrp, asic_lane_num);
-+		sl_sysfs_serdes_lane_eye_delete(ctrl_lgrp, asic_lane_num);
-+		sl_sysfs_serdes_lane_settings_delete(ctrl_lgrp, asic_lane_num);
-+		sl_sysfs_serdes_lane_swizzle_delete(ctrl_lgrp, asic_lane_num);
-+		sl_sysfs_serdes_lane_state_delete(ctrl_lgrp, asic_lane_num);
-+		kobject_put(&(ctrl_lgrp->serdes_lane_kobjs[asic_lane_num]));
++	program_nid(hw, nid);
++	hw->cdev.prop.nid_configured = true;
++}
++EXPORT_SYMBOL(cxi_set_nid);
++
++void cxi_set_nid_from_mac(struct cxi_dev *cdev, const u8 *addr)
++{
++	struct cass_dev *hw = container_of(cdev, struct cass_dev, cdev);
++	u32 nid;
++
++	/* The NID cannot be set from a VF */
++	if (!cdev->is_physfn)
++		return;
++
++	/* If the NID has already been explicitly configured, do not override it. */
++	if (hw->cdev.prop.nid_configured)
++		return;
++
++	nid = ether_addr_to_u64(addr) & 0xFFFFFULL;
++	program_nid(hw, nid);
++	cxidev_warn(&hw->cdev,
++		    "NID has not been explicitly set. NID derived from MAC: 0x%x\n", nid);
++}
++EXPORT_SYMBOL(cxi_set_nid_from_mac);
++
++/* Determine the Cassini link speed. When CCIX Extended Speed Mode
++ * (ESM) is enabled, non-standard speeds exist.
++ */
++static int get_pcie_link_speed(struct cass_dev *hw)
++{
++	struct pci_dev *pdev = hw->cdev.pdev;
++	enum pci_bus_speed speed;
++	u32 val;
++	int pos;
++	int rc;
++
++	/* Get the regular PCIe speed first */
++	speed = pcie_get_speed_cap(pdev);
++	switch (speed) {
++	case PCIE_SPEED_2_5GT:
++	case PCIE_SPEED_5_0GT:
++	case PCIE_SPEED_8_0GT:
++	case PCIE_SPEED_16_0GT:
++	case PCIE_SPEED_32_0GT:
++		hw->pcie_link_speed = speed;
++		break;
++
++	default:
++		hw->pcie_link_speed = CASS_SPEED_UNKNOWN;
++		break;
 +	}
-+	kobject_put(&(ctrl_lgrp->serdes_lane_kobj));
-+	kobject_put(&ctrl_lgrp->serdes_kobj);
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_eye.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_eye.c
-new file mode 100644
-index 000000000000..9dac679a96d9
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_eye.c
-@@ -0,0 +1,197 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
 +
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
++	/* ESM is only present on first generation Cassini hardware. */
++	if (cass_version(hw, CASSINI_2))
++		return 0;
 +
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_core_lgrp.h"
-+#include "sl_core_link.h"
-+#include "sl_sysfs_serdes_eye.h"
++	pos = 0;
++	while ((pos = pci_find_next_ext_capability(pdev, pos,
++						   PCI_EXT_CAP_ID_DVSEC))) {
++		pci_read_config_dword(pdev, pos + PCI_DVSEC_HEADER1, &val);
++		if (PCI_DVSEC_HEADER1_VID(val) == 0x0001 &&
++		    PCI_DVSEC_HEADER1_REV(val) == 0x1 &&
++		    PCI_DVSEC_HEADER1_LEN(val) == 0x040)
++			break;
++	}
++	if (pos == 0) {
++		/* The header is not present when using PCIe
++		 * passthrough with the vfio-pci driver.
++		 */
++		cxidev_warn(&hw->cdev, "Cannot find the PCIe DVSEC header\n");
++		return 0;
++	}
 +
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++	/* ESM control register */
++	rc = pci_read_config_dword(pdev, pos + 0x18, &val);
++	if (rc) {
++		cxidev_err(&hw->cdev, "Cannot get ESM status\n");
++		return -EIO;
++	}
++	hw->esm_active = !!(val & BIT(15));
 +
-+#ifdef CONFIG_SYSFS
-+static ssize_t value_upper_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                              rtn;
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	u8                               eye_upper;
++	if (!hw->esm_active)
++		return 0;
 +
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
++	/* ESM PCIe link speed, from the ESM status register */
++	rc = pci_read_config_dword(pdev, pos + 0x14, &val);
++	if (rc) {
++		cxidev_err(&hw->cdev, "Cannot get PCIe link speed\n");
++		return -EIO;
++	}
 +
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
++	switch (val & 0x7f) {
++	case 0x1:
++		hw->pcie_link_speed = PCIE_SPEED_2_5GT;
++		break;
++	case 0x2:
++		hw->pcie_link_speed = PCIE_SPEED_5_0GT;
++		break;
++	case 0x3:
++		hw->pcie_link_speed = PCIE_SPEED_8_0GT;
++		break;
++	case 0x6:
++		hw->pcie_link_speed = PCIE_SPEED_16_0GT;
++		break;
++	case 0xa:
++		hw->pcie_link_speed = CASS_SPEED_20_0GT;
++		break;
++	case 0xf:
++		hw->pcie_link_speed = CASS_SPEED_25_0GT;
++		break;
++	default:
++		hw->pcie_link_speed = CASS_SPEED_UNKNOWN;
++		break;
++	}
 +
-+	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_eye_upper_get(core_lgrp, lane_kobj->asic_lane_num, &eye_upper);
-+	if (rtn == -EIO)
-+		return sysfs_emit(buf, "no-serdes\n");
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "eye value upper show (asic_lane_num = %u, eye = %u)",
-+		lane_kobj->asic_lane_num, eye_upper);
-+
-+	return sysfs_emit(buf, "%u\n", eye_upper);
-+}
-+
-+static ssize_t value_lower_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                              rtn;
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	u8                               eye_lower;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_eye_lower_get(core_lgrp, lane_kobj->asic_lane_num, &eye_lower);
-+	if (rtn == -EIO)
-+		return sysfs_emit(buf, "no-serdes\n");
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "eye value lower show (asic_lane_num = %u, eye = %u)",
-+		lane_kobj->asic_lane_num, eye_lower);
-+
-+	return sysfs_emit(buf, "%u\n", eye_lower);
++	return 0;
 +}
 +
-+static ssize_t limit_high_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "eye limit high show (asic_lane_num = %u, limit = %u)",
-+		lane_kobj->asic_lane_num, core_lgrp->serdes.eye_limits[lane_kobj->asic_lane_num].high);
-+
-+	return sysfs_emit(buf, "%u\n",
-+		core_lgrp->serdes.eye_limits[lane_kobj->asic_lane_num].high);
-+}
-+
-+static ssize_t limit_low_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "eye limit low show (asic_lane_num = %u, limit = %u)",
-+		lane_kobj->asic_lane_num, core_lgrp->serdes.eye_limits[lane_kobj->asic_lane_num].low);
-+
-+	return sysfs_emit(buf, "%u\n",
-+		core_lgrp->serdes.eye_limits[lane_kobj->asic_lane_num].low);
-+}
-+
-+static struct kobj_attribute eye_value_upper = __ATTR_RO(value_upper);
-+static struct kobj_attribute eye_value_lower = __ATTR_RO(value_lower);
-+static struct kobj_attribute eye_limit_high  = __ATTR_RO(limit_high);
-+static struct kobj_attribute eye_limit_low   = __ATTR_RO(limit_low);
-+
-+static struct attribute *serdes_lane_eye_attrs[] = {
-+	&eye_value_upper.attr,
-+	&eye_value_lower.attr,
-+	&eye_limit_high.attr,
-+	&eye_limit_low.attr,
-+	NULL,
++static const unsigned int cfg_crnc_csr[] = {
++	C_ATU_CFG_CRNC,
++	C_CQ_CFG_CRNC,
++	C_EE_CFG_CRNC,
++	C_HNI_CFG_CRNC,
++	C_HNI_PML_CFG_CRNC,
++	C_IXE_CFG_CRNC,
++	C_LPE_CFG_CRNC,
++	C_MB_CFG_CRNC,
++	C_MST_CFG_CRNC,
++	C_OXE_CFG_CRNC,
++	C_PARBS_CFG_CRNC,
++	C_PCT_CFG_CRNC,
++	C_PI_CFG_CRNC,
++	C_PI_IPD_CFG_CRNC,
++	C_RMU_CFG_CRNC,
 +};
-+ATTRIBUTE_GROUPS(serdes_lane_eye);
 +
-+static struct kobj_type serdes_lane_eye_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = serdes_lane_eye_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_serdes_lane_eye_create(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
++/* Initializes the hardware. */
++static int init_hw(struct cass_dev *hw)
 +{
-+#ifdef CONFIG_SYSFS
++	int ret;
++	int i;
++	u64 do_dump = 0;
++	union c_lpe_cfg_min_free_shft lpe_cfg_min_free_shift = {
++		.min_free_shft = min_free_shift,
++	};
++	static const union c_mb_cfg_crmc cfg_crmc = {
++		.ring_timeout = 0xff,
++		.rd_addr_invalid_decerr_disable = 1,
++	};
++	static const union c_mb_cfg_misc cfg_mask = {
++		.nic_warm_rst0 = 1,
++		.nic_warm_rst1 = 1,
++		.nic_warm_rst2 = 1,
++		.nic_warm_rst3 = 1,
++		.nic_warm_rst4 = 1,
++		.nic_warm_rst5 = 1,
++		.nic_warm_rst6 = 1,
++		.nic_warm_rst7 = 1,
++		.nic_warm_rst8 = 1,
++		.nic_warm_rst9 = 1,
++	};
++	union c_mb_cfg_misc cfg;
++
++	/* Trigger a warm reset of the hardware - Only the bits common
++	 * to Cassini 1 & 2 are used here.
++	 */
++	cass_read(hw, C_MB_CFG_MISC, &cfg, sizeof(cfg));
++	cfg.qw |= cfg_mask.qw;
++	cass_write(hw, C_MB_CFG_MISC, &cfg, sizeof(cfg));
++
++	/* This CSR must be cleared while warm reset is asserted. */
++	cass_clear(hw, C_EE_DBG_LM_CB_TO_EQ_MAP(0), C_EE_DBG_LM_CB_TO_EQ_MAP_SIZE);
++
++	/* De-assert warm reset */
++	cfg.qw &= ~cfg_mask.qw;
++	cass_write(hw, C_MB_CFG_MISC, &cfg, sizeof(cfg));
++
++	cass_flush_pci(hw);
++
++	if (wait_hw_ready(hw)) {
++		cxidev_err(&hw->cdev, "chip not ready\n");
++		return -ENOTSUPP;
++	}
++
++	cass_init(hw);
++
++	/* Fake hardware initialization */
++	if (HW_PLATFORM_NETSIM(hw))
++		cass_write(hw, NICSIM_CONFIG_DUMP, &do_dump, sizeof(do_dump));
++
++	for (i = 0; i < C_MB_CFG_CRMC_ENTRIES; i++)
++		cass_write(hw, C_MB_CFG_CRMC(i), &cfg_crmc, sizeof(cfg_crmc));
++
++	for (i = 0; i < ARRAY_SIZE(cfg_crnc_csr); i++) {
++		static const union c_atu_cfg_crnc cfg_crnc = {
++			.csr_timeout = 0xfd,
++		};
++
++		/* Use c_atu_cfg_crnc as it's the same structure for
++		 * all CSRs
++		 */
++		cass_write(hw, cfg_crnc_csr[i], &cfg_crnc, sizeof(cfg_crnc));
++	}
++
++	cass_write(hw, C_LPE_CFG_MIN_FREE_SHFT, &lpe_cfg_min_free_shift,
++		   sizeof(lpe_cfg_min_free_shift));
++
++	if (cass_version(hw, CASSINI_2)) {
++		union c2_lpe_cfg_match_sel cfg_match_sel = {
++			.vni_cfg = vni_matching,
++		};
++
++		hw->cdev.prop.vni_matching = vni_matching;
++		cass_write(hw, C2_LPE_CFG_MATCH_SEL, &cfg_match_sel,
++			   sizeof(cfg_match_sel));
++	}
++
++	ret = cass_dmac_init(hw);
++	if (ret)
++		goto __init_hw_err_0;
++
++	ret = cass_telem_init(hw);
++	if (ret)
++		goto __init_hw_err_1;
++
++	cass_pct_init(hw);
++	cass_hni_init(hw);
++	cass_tle_init(hw);
++	cass_cq_init(hw);
++	cass_oxe_init(hw);
++
++	ret = cass_ixe_init(hw);
++	if (ret)
++		goto __init_hw_err_2;
++
++	cass_pte_init(hw);
++	ret = cass_atu_init(hw);
++	if (ret)
++		goto __init_hw_err_2;
++
++	cass_ee_init(hw);
++	ret = cass_tc_init(hw);
++	if (ret)
++		goto __init_hw_err_3;
++
++	cxi_dev_init_eth_tx_profile(hw);
++
++	return 0;
++
++__init_hw_err_3:
++	cass_atu_fini(hw);
++
++__init_hw_err_2:
++	cass_hni_fini(hw);
++	cass_telem_fini(hw);
++
++__init_hw_err_1:
++	cass_dmac_fini(hw);
++
++__init_hw_err_0:
++	return ret;
++}
++
++static void fini_hw(struct cass_dev *hw)
++{
++	cxi_eth_tx_profile_cleanup(hw);
++	cass_tc_fini(hw);
++	cass_atu_fini(hw);
++	cass_ixe_fini(hw);
++	cass_hni_fini(hw);
++	cass_telem_fini(hw);
++	cass_dmac_fini(hw);
++}
++
++/* Check whether the hardware is supported, and set the version. */
++static int is_supported(struct cass_dev *hw)
++{
++	cass_read(hw, C_MB_STS_REV, &hw->rev, sizeof(hw->rev));
++
++	if (!HW_PLATFORM_ASIC(hw) && !HW_PLATFORM_Z1(hw) &&
++	    !HW_PLATFORM_NETSIM(hw)) {
++		cxidev_err(&hw->cdev, "device %x/%x/%x/%x/%x is not supported\n",
++			   hw->rev.vendor_id, hw->rev.device_id,
++			   hw->rev.platform, hw->rev.proto, hw->rev.rev);
++		return -ENOTSUPP;
++	}
++
++	if (hw->rev.vendor_id == PCI_VENDOR_ID_CRAY &&
++	    hw->rev.device_id == PCI_DEVICE_ID_CASSINI_1) {
++		if (hw->rev.rev == 1)
++			hw->cdev.prop.cassini_version = CASSINI_1_0;
++		else if (hw->rev.rev == 2)
++			hw->cdev.prop.cassini_version = CASSINI_1_1;
++		else
++			goto unsupported;
++	} else if (hw->rev.vendor_id == PCI_VENDOR_ID_HPE &&
++		   (hw->rev.device_id == PCI_DEVICE_ID_CASSINI_2_PF ||
++		    hw->rev.device_id == PCI_DEVICE_ID_CASSINI_2_VF)) {
++		if (hw->rev.rev == 1)
++			hw->cdev.prop.cassini_version = CASSINI_2_0;
++		else
++			goto unsupported;
++	}
++
++	if (hw_rev_override) {
++		if (hw_rev_override != CASSINI_1_0 &&
++		    hw_rev_override != CASSINI_1_1 &&
++		    hw_rev_override != CASSINI_2_0)
++			goto unsupported;
++
++		hw->cdev.prop.cassini_version = hw_rev_override;
++	}
++
++	if (cass_version(hw, CASSINI_2) && HW_PLATFORM_Z1(hw) &&
++	    (hw->rev.proto & 0x001) == 1) {
++		cxidev_info(&hw->cdev, "device has reduced PCT tables\n");
++		hw->reduced_pct_tables = true;
++	}
++
++	return 0;
++
++unsupported:
++	cxidev_err(&hw->cdev, "device %x/%x/%x/%x/%x is not supported\n",
++		   hw->rev.vendor_id, hw->rev.device_id,
++		   hw->rev.platform, hw->rev.proto, hw->rev.rev);
++	return -ENOTSUPP;
++}
++
++static int cass_link_fini_once(struct cass_dev *hw, bool *link_started)
++{
 +	int rtn;
 +
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "serdes lane eye create (lgrp = 0x%p)", ctrl_lgrp);
++	if (!*link_started)
++		return 0;
 +
-+	rtn = kobject_init_and_add(&(ctrl_lgrp->serdes_lane_eye_kobjs[asic_lane_num].kobj),
-+				   &serdes_lane_eye_info, &(ctrl_lgrp->serdes_lane_kobjs[asic_lane_num]), "eye");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+			   "serdes lane eye create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&(ctrl_lgrp->serdes_lane_eye_kobjs[asic_lane_num].kobj));
++	rtn = hw->link_ops->link_fini(hw);
++	if (!rtn)
++		*link_started = false;
++
++	return rtn;
++}
++
++static int cass_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++{
++	int i;
++	int rc = 0;
++	struct cass_dev *hw;
++	bool is_physfn;
++	bool link_started = false;
++	bool class_dev_initialized = false;
++	int pos;
++
++	hw = kzalloc(sizeof(*hw), GFP_KERNEL);
++	if (!hw)
 +		return -ENOMEM;
-+	}
-+	ctrl_lgrp->serdes_lane_eye_kobjs[asic_lane_num].ctrl_lgrp      = ctrl_lgrp;
-+	ctrl_lgrp->serdes_lane_eye_kobjs[asic_lane_num].asic_lane_num = asic_lane_num;
 +
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "serdes lane eye create (serdes_kobj = 0x%p)", &(ctrl_lgrp->serdes_kobj));
++	pci_set_drvdata(pdev, hw);
++	hw->cdev.pdev = pdev;
++	INIT_LIST_HEAD(&hw->lni_list);
++	spin_lock_init(&hw->lni_lock);
++	refcount_set(&hw->refcount, 1);
++
++	atomic_set(&hw->stats.lni, 0);
++
++	/* Initializes the RMU domains */
++	atomic_set(&hw->stats.domain, 0);
++	ida_init(&hw->rmu_index_table);
++	ida_init(&hw->domain_table);
++	spin_lock_init(&hw->domain_lock);
++	spin_lock_init(&hw->pid_pool_lock);
++	spin_lock_init(&hw->rmu_lock);
++
++	/* Initialize the EQs */
++	atomic_set(&hw->stats.eq, 0);
++	ida_init(&hw->eq_index_table);
++	spin_lock_init(&hw->eq_shadow_lock);
++	mutex_init(&hw->init_eq_hw_state);
++
++	/* Initialize the communication profiles. */
++	ida_init(&hw->cp_table);
++	mutex_init(&hw->cp_lock);
++
++	/* Initialize the transmit and target CQs. */
++	atomic_set(&hw->stats.txq, 0);
++	atomic_set(&hw->stats.tgq, 0);
++	ida_init(&hw->cq_table);
++	spin_lock_init(&hw->cq_shadow_lock);
++	mutex_init(&hw->cq_init_lock);
++
++	/* Initialize the PTs */
++	atomic_set(&hw->stats.pt, 0);
++	ida_init(&hw->pte_table);
++	ida_init(&hw->pt_index_table);
++	ida_init(&hw->set_list_table);
++	ida_init(&hw->multicast_table);
++	spin_lock_init(&hw->lpe_shadow_lock);
++	spin_lock_init(&hw->rmu_portal_list_lock);
++	mutex_init(&hw->mst_table_lock);
++	mutex_init(&hw->pte_transition_sm_lock);
++	atomic_set(&hw->plec_count, 0);
++
++	/* Initialize the CTs. */
++	atomic_set(&hw->stats.ct, 0);
++	mutex_init(&hw->ct_init_lock);
++	ida_init(&hw->ct_table);
++
++	ida_init(&hw->lni_table);
++	cass_rgid_init(hw);
++
++	ida_init(&hw->md_index_table);
++
++	for (i = 0; i < C_PE_COUNT; i++)
++		ida_init(&hw->le_pool_ids[i]);
++
++	ida_init(&hw->tle_pool_ids);
++	mutex_init(&hw->msg_relay_lock);
++	mutex_init(&hw->tc_lock);
++	INIT_LIST_HEAD(&hw->tc_list);
++	mutex_init(&hw->cxi_adev_lock);
++	for (i = 0; i < ARRAY_SIZE(hw->vfs); i++)
++		mutex_init(&hw->vfs[i].notif_lock);
++
++	/* Initialize RMU Ethernet resource management */
++	idr_init(&hw->rmu_eth_idr);
++	mutex_init(&hw->rmu_eth_lock);
++
++	mutex_init(&hw->err_flg_mutex);
++	INIT_LIST_HEAD(&hw->err_flg_list);
++	spin_lock_init(&hw->sfs_err_flg_lock);
++
++	spin_lock_init(&hw->mst_match_done_lock);
++	mutex_init(&hw->mst_update_lock);
++
++	spin_lock_init(&hw->sbl_state_lock);
++
++	mutex_init(&hw->qsfp_eeprom_lock);
++	cass_phy_init(hw);
++
++	INIT_DELAYED_WORK(&hw->lni_cleanups_work, lni_cleanups_work);
++	mutex_init(&hw->lni_cleanups_lock);
++	INIT_LIST_HEAD(&hw->lni_cleanups_list);
++
++	mutex_init(&hw->sbus_mutex);
++	mutex_init(&hw->get_ctrl_mutex);
++	mutex_init(&hw->amo_remap_to_pcie_fadd_mutex);
++
++	hw->tsc_fill_qty = TSC_DEFAULT_FILL_QTY;
++	hw->uc_platform = CUC_BOARD_TYPE_UNKNOWN;
++
++	/* Enable Device */
++	rc = pci_enable_device(pdev);
++	if (rc) {
++		cxidev_err(&hw->cdev, "pci_enable_device() failed.\n");
++		goto hw_free;
++	}
++
++	/* The is_physfn and is_virtfn fields of struct pci_dev are only set if
++	 * SR-IOV has been successfully enabled. This means that we cannot rely on
++	 * them to identify physical vs. virtual functions in all cases. A PF on
++	 * real hardware without SR-IOV support, a passthrough PF attached to a VM,
++	 * or a VF attached to a VM, will all have is_physfn = is_virtfn = 0.
++	 *
++	 * C2 (and most other PCI devices) have distinct device IDs for PF and VF.
++	 * However, C1 uses the same ID for both, so we identify PF vs. VF by the
++	 * size of BAR 0.
++	 */
++
++	switch (id->device) {
++	case PCI_DEVICE_ID_CASSINI_1:
++		is_physfn = pci_resource_len(pdev, MMIO_BAR) >= MMIO_BAR_LEN_PF;
++		break;
++	case PCI_DEVICE_ID_CASSINI_2_PF:
++		is_physfn = true;
++		break;
++	case PCI_DEVICE_ID_CASSINI_2_VF:
++		is_physfn = false;
++		break;
++	default:
++		cxidev_err(&hw->cdev, "Unknown device ID: %04x", id->device);
++		return -EOPNOTSUPP;
++	}
++	hw->cdev.is_physfn = is_physfn;
++
++	hw->pci_disabled = false;
++
++	rc = pci_enable_pcie_error_reporting(pdev);
++	if (rc)
++		cxidev_err(&hw->cdev, "PCIe AER not enabled: %d\n", rc);
++
++	/* Set PID space variables for NIC. */
++	hw->cdev.prop.pid_bits = pid_bits;
++	hw->cdev.prop.pid_count = (1 << pid_bits) - 1; /* -1 is wildcard */
++	hw->cdev.prop.pid_granule =
++		(1 << (DFA_EP_BITS - hw->cdev.prop.pid_bits));
++
++	hw->cdev.prop.min_free_shift = min_free_shift;
++
++	/* Set the NID to invalid */
++	hw->cdev.prop.nid = CXI_INVALID_NID;
++
++	/* Enable DMA */
++	pci_set_master(pdev);
++
++	dma_set_max_seg_size(&hw->cdev.pdev->dev, UINT_MAX);
++
++	rc = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(57));
++	if (rc) {
++		cxidev_err(&hw->cdev, "dma_set_mask_and_coherent failed: %d\n", rc);
++		goto dev_disable;
++	}
++
++	/* Enable PCIe AMO requests */
++	pcie_capability_set_word(pdev, PCI_EXP_DEVCTL2,
++				 PCI_EXP_DEVCTL2_ATOMIC_REQ);
++
++	/* Make sure VF 10-bit tag support bit is set for correct counting of
++	 * PI_IPD_pti_tarb_blocked_on_tag.
++	 */
++#define PCI_SRIOV_CTRL_VF_10BIT_TAG 0x20
++	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_SRIOV);
++	if (pos) {
++		u16 word;
++
++		pci_read_config_word(pdev, pos + PCI_SRIOV_CTRL, &word);
++		word |= PCI_SRIOV_CTRL_VF_10BIT_TAG;
++		pci_write_config_word(pdev, pos + PCI_SRIOV_CTRL, word);
++	}
++
++	/* Sanity Check. Check BAR 0 is defined and mapped */
++	if (!(pci_resource_flags(pdev, MMIO_BAR) & IORESOURCE_MEM)) {
++		cxidev_err(&hw->cdev, "Incorrect Bar configuration\n");
++		goto dev_disable;
++	}
++
++	/* Take ownership of memory region */
++	rc = pci_request_regions(pdev, "cxi");
++	if (rc) {
++		cxidev_err(&hw->cdev, "pci_request_regions() failed.\n");
++		goto dev_disable;
++	}
++
++	/* Map the base registers */
++	hw->regs_base = pci_resource_start(pdev, MMIO_BAR);
++	if (is_physfn) {
++		hw->regs = ioremap(hw->regs_base + C_MEMORG_CSR,
++				   C_MEMORG_CSR_SIZE);
++		if (!hw->regs) {
++			cxidev_err(&hw->cdev, "ioremap failed\n");
++			goto free_regions;
++		}
++
++		/* Check hardware is supported */
++		rc = is_supported(hw);
++		if (rc)
++			goto unmap_regions;
++
++		/* Check for input and hardware version consistency */
++		if ((system_type_identifier == CASSINI_1_ONLY &&
++		     !cass_version(hw, CASSINI_1)) ||
++		    (system_type_identifier == CASSINI_2_ONLY &&
++		     !cass_version(hw, CASSINI_2))) {
++			cxidev_err(&hw->cdev,
++				   "NIC Version and system_type_identifier (%u) are inconsistent\n",
++				   system_type_identifier);
++			goto unmap_regions;
++		}
++
++		hw->cdev.system_type_identifier = system_type_identifier;
++
++		rc = get_pcie_link_speed(hw);
++		if (rc)
++			goto unmap_regions;
++
++#if defined(CXI_DISABLE_SRIOV)
++		rc = pci_sriov_set_totalvfs(pdev, 0);
++		if (rc)
++			goto unmap_regions;
++#endif
++	}
++
++	hw->with_vf_support = pdev->is_physfn || pci_msix_vec_count(pdev) != 2;
++
++	hw->cdev.cxi_num = atomic_inc_return(&cxi_num);
++	dev_set_name(&hw->class_dev, "cxi%u", hw->cdev.cxi_num);
++	strcpy(hw->cdev.name, dev_name(&hw->class_dev));
++
++	cxi_set_link_ops(hw);
++
++	rc = cass_irq_init(hw);
++	if (rc) {
++		cxidev_err(&hw->cdev, "cass_irq_init failed: %d\n", rc);
++		goto unmap_regions;
++	}
++
++	if (is_physfn) {
++		/* NIC address needs to be assigned before initialization. */
++		rc = init_hw(hw);
++		if (rc) {
++			cxidev_err(&hw->cdev, "init_hw failed: %d\n", rc);
++			goto free_irqs;
++		}
++
++		rc = register_error_handlers(hw);
++		if (rc)
++			goto fini_hw;
++
++		rc = cass_register_uc(hw);
++		if (rc) {
++			cxidev_err(&hw->cdev, "Cannot register the uC: %d\n", rc);
++			goto free_error_handlers;
++		}
++
++		switch (hw->uc_platform) {
++		case CUC_BOARD_TYPE_SAWTOOTH:
++		case CUC_BOARD_TYPE_BRAZOS:
++			if (!cass_version(hw, CASSINI_1)) {
++				cxidev_err(&hw->cdev, "Invalid Cassini 1 platform: %d\n",
++					   hw->uc_platform);
++				goto unregister_uc;
++			}
++			break;
++		case CUC_BOARD_TYPE_WASHINGTON:
++		case CUC_BOARD_TYPE_KENNEBEC:
++		case CUC_BOARD_TYPE_SOUHEGAN:
++			if (!cass_version(hw, CASSINI_2)) {
++				cxidev_err(&hw->cdev, "Invalid Cassini 2 platform: %d\n",
++					   hw->uc_platform);
++				goto unregister_uc;
++			}
++			break;
++		default:
++			cxidev_err(&hw->cdev, "Unknown uC platform %d\n",
++				   hw->uc_platform);
++			goto unregister_uc;
++		}
++
++		if (HW_PLATFORM_ASIC(hw) || HW_PLATFORM_NETSIM(hw)) {
++			/* These platforms have a micro-controller to fetch the
++			 * NIC ID from
++			 */
++			rc = uc_cmd_get_nic_id(hw);
++			if (rc)
++				goto unregister_uc;
++		} else {
++			hw->uc_nic = 0;
++		}
++
++		rc = uc_cmd_get_mac(hw);
++		if (rc)
++			eth_random_addr(hw->default_mac_addr);
++		uc_cmd_set_link_leds(hw, LED_FAST_GRN);
++
++		if (HW_PLATFORM_ASIC(hw)) {
++			/* Program MAC with burned-in MAC. */
++			ether_addr_copy(hw->cdev.mac_addr, hw->default_mac_addr);
++		} else {
++			u64 reg;
++			u8 mac_addr[ETH_ALEN];
++
++			/* Pull MAC from a scratch register on netsim and derive NID from it. */
++			if (HW_PLATFORM_NETSIM(hw))
++				cass_read(hw, NICSIM_NIC_ID, &reg, 8);
++			else
++				cass_read(hw, C_MB_DBG_SCRATCH(1), &reg, 8);
++
++			u64_to_ether_addr(reg, mac_addr);
++			ether_addr_copy(hw->cdev.mac_addr, mac_addr);
++			program_nid(hw, ether_addr_to_u64(hw->cdev.mac_addr) & 0xFFFFFULL);
++		}
++
++		/* SBL init must happen after uC init, since SBL needs to know
++		 * which NIC is associated with this driver instance
++		 */
++		rc = hw->link_ops->link_start(hw);
++		if (rc)
++			goto unregister_uc;
++		link_started = true;
++
++		cass_tc_get_hni_pause_cfg(hw);
++
++		if (cass_version(hw, CASSINI_1)) {
++			rc = cass_register_port(hw);
++			if (rc)
++				goto link_fini;
++		}
++
++		rc = cass_ptp_init(hw);
++		if (rc)
++			goto unregister_port;
++
++		rc = cxi_dmac_desc_set_alloc(&hw->cdev, 1, "pt_id");
++		if (rc < 0)
++			goto cass_ptp_fini;
++		hw->dmac_pt_id = rc;
++
++		hw->mst_entries = dma_alloc_coherent(&pdev->dev,
++						     C_MST_DBG_MST_TABLE_SIZE,
++						     &hw->mst_entries_dma_addr,
++						     GFP_KERNEL);
++		if (!hw->mst_entries)
++			goto cass_dmac_fini;
++
++		rc = cxi_dmac_desc_set_add(&hw->cdev, hw->dmac_pt_id,
++					   hw->mst_entries_dma_addr,
++					   C_MST_DBG_MST_TABLE(0),
++					   C_MST_DBG_MST_TABLE_SIZE);
++		if (rc)
++			goto cass_mst_fini;
++	}
++
++	/* Set after TC/QOS init */
++	hw->cdev.untagged_eth_pcp = hw->qos.untagged_eth_pcp;
++
++	hw->cdev.prop.device_rev = hw->rev.rev;
++	hw->cdev.prop.device_proto = hw->rev.proto;
++	hw->cdev.prop.device_platform = hw->rev.platform;
++
++	hw->max_eth_rxsize = VLAN_ETH_FRAME_LEN;
++
++	cass_probe_debugfs_init(hw);
++
++	/* Hack to grant exclusive access to userspace for QSFP
++	 * firmware flashing. The SL driver must not be able to query
++	 * the QSFP module while an upgrade is happening. Since the UC
++	 * accesses are serialized, we shouldn't need anything
++	 * stronger than that. More ideally, we should have this file
++	 * attached to the i2c debugfs entry, but this was only made
++	 * available in kernel 6.8.
++	 */
++	debugfs_create_bool("i2c_locked", 0644, hw->debug_dir, &hw->uc_i2c_locked);
++
++	/* RX and TX profile setup */
++	cass_dev_rx_tx_profiles_init(hw);
++
++	/* Resource Group setup */
++	cass_dev_rgroup_init(hw);
++
++	/* Service setup */
++	rc = cass_svc_init(hw);
++	if (rc)
++		goto rgroup_fini;
++
++	rc = cxi_configfs_device_init(hw);
++	if (rc) {
++		pr_err("configfs initialize failed\n");
++		goto svc_fini;
++	}
++
++	if (!is_physfn) {
++		struct cxi_get_dev_properties_cmd cmd = {
++			.op = CXI_OP_GET_DEV_PROPERTIES,
++		};
++		struct cxi_properties_info resp;
++		size_t reply_len = sizeof(resp);
++
++		rc = cass_vf_init(hw);
++		if (rc)
++			goto configfs_fini;
++
++		/* Retrieve the device properties */
++		rc = cxi_send_msg_to_pf(&hw->cdev, &cmd, sizeof(cmd),
++					&resp, &reply_len);
++		if (rc != 0) {
++			cxidev_err(&hw->cdev, "BAD: Reply has return code %d\n", rc);
++			goto vf_fini;
++		} else if (reply_len != sizeof(resp)) {
++			cxidev_err(&hw->cdev,
++				   "BAD: Reply has unexpected length %zu\n",
++				   reply_len);
++			goto vf_fini;
++		} else {
++			cxidev_dbg(&hw->cdev, "Reply is valid\n");
++
++			hw->cdev.prop = resp;
++		}
++	}
++
++	/* Export device information. */
++	rc = create_sysfs_properties(hw);
++	if (rc)
++		goto vf_fini;
++
++	/* Register the device with sysfs */
++	hw->class_dev.class = &cxi_class;
++	hw->class_dev.parent = &pdev->dev;
++	hw->class_dev.release = cass_dev_release;
++	dev_set_drvdata(&hw->class_dev, hw);
++	class_dev_initialized = true;
++	if (device_register(&hw->class_dev)) {
++		destroy_sysfs_properties(hw);
++		goto vf_fini;
++	}
++
++	cxi_add_device(&hw->cdev);
++
++	if (is_physfn) {
++		cass_phy_start(hw, true);
++		start_pcie_monitoring(hw);
++	}
++
++	/* RDMA is optional; the NIC and Ethernet work without it. */
++	rc = cxi_ib_add_adev(pdev, hw, hw->cdev.cxi_num);
++	if (rc)
++		cxidev_warn(&hw->cdev,
++			    "RDMA auxiliary device not created: %d\n", rc);
++
 +	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
 +
-+void sl_sysfs_serdes_lane_eye_delete(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "serdes lane eye delete (lgrp = 0x%p)", ctrl_lgrp);
++vf_fini:
++	if (!is_physfn)
++		cass_vf_fini(hw);
 +
-+	kobject_put(&(ctrl_lgrp->serdes_lane_eye_kobjs[asic_lane_num].kobj));
-+	ctrl_lgrp->serdes_lane_eye_kobjs[asic_lane_num].ctrl_lgrp = NULL;
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_lol.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_lol.c
-new file mode 100644
-index 000000000000..d7162e985822
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_lol.c
-@@ -0,0 +1,141 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2025-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_log.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_core_lgrp.h"
-+#include "sl_sysfs_serdes_lol.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t tx_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                              rtn;
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	bool                             is_tx_lol;
-+	struct sl_ctrl_lgrp             *ctrl_lgrp;
-+	u8                               ldev_num;
-+	u8                               lgrp_num;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	ctrl_lgrp = lane_kobj->ctrl_lgrp;
-+	ldev_num = lane_kobj->ctrl_lgrp->ctrl_ldev->num;
-+	lgrp_num = lane_kobj->ctrl_lgrp->num;
-+
-+	rtn = sl_core_lgrp_tx_lane_is_lol(ldev_num, lgrp_num, lane_kobj->asic_lane_num, &is_tx_lol);
-+	if (rtn == -ENOENT) {
-+		sl_core_log_dbg(ctrl_lgrp, LOG_NAME,
-+				"lol tx show (asic_lane_num = %u) - tx_lane_is_lol no cache [%d]",
-+				lane_kobj->asic_lane_num, rtn);
-+		return sysfs_emit(buf, "no-cache\n");
++configfs_fini:
++	cxi_configfs_cleanup(hw);
++svc_fini:
++	cass_svc_fini(hw);
++rgroup_fini:
++	cass_dev_rgroup_fini(hw);
++	cass_dev_rx_tx_profiles_fini(hw);
++	debugfs_remove_recursive(hw->debug_dir);
++cass_mst_fini:
++	if (is_physfn) {
++		rc = cass_link_fini_once(hw, &link_started);
++		if (rc) {
++			WARN(1, "Cassini link teardown failed during probe unwind: %d\n", rc);
++			return rc;
++		}
 +	}
-+
-+	if (rtn) {
-+		sl_core_log_err_trace(ctrl_lgrp, LOG_NAME,
-+				      "lol tx show (asic_lane_num = %u) - tx_lane_is_lol failed [%d]",
-+				      lane_kobj->asic_lane_num, rtn);
-+		return sysfs_emit(buf, "error\n");
++	if (is_physfn)
++		dma_free_coherent(&pdev->dev, C_MST_DBG_MST_TABLE_SIZE,
++				  hw->mst_entries, hw->mst_entries_dma_addr);
++cass_dmac_fini:
++	if (is_physfn) {
++		rc = cass_link_fini_once(hw, &link_started);
++		if (rc) {
++			WARN(1, "Cassini link teardown failed during probe unwind: %d\n", rc);
++			return rc;
++		}
 +	}
-+
-+	sl_core_log_dbg(ctrl_lgrp, LOG_NAME,
-+			"lol tx show (asic_lane_num = %u, is_tx_lol = %s)",
-+			lane_kobj->asic_lane_num, is_tx_lol ? "yes" : "no");
-+
-+	return sysfs_emit(buf, "%s\n", is_tx_lol ? "yes" : "no");
-+}
-+
-+static ssize_t rx_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                              rtn;
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	bool                             is_rx_lol;
-+	struct sl_ctrl_lgrp             *ctrl_lgrp;
-+	u8                               ldev_num;
-+	u8                               lgrp_num;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	ctrl_lgrp = lane_kobj->ctrl_lgrp;
-+	ldev_num = lane_kobj->ctrl_lgrp->ctrl_ldev->num;
-+	lgrp_num = lane_kobj->ctrl_lgrp->num;
-+
-+	rtn = sl_core_lgrp_rx_lane_is_lol(ldev_num, lgrp_num, lane_kobj->asic_lane_num, &is_rx_lol);
-+	if (rtn == -ENOENT) {
-+		sl_core_log_dbg(ctrl_lgrp, LOG_NAME,
-+				"lol rx show (asic_lane_num = %u) - rx_lane_is_lol no cache [%d]",
-+				lane_kobj->asic_lane_num, rtn);
-+		return sysfs_emit(buf, "no-cache\n");
++	if (is_physfn)
++		cxi_dmac_desc_set_free(&hw->cdev, hw->dmac_pt_id);
++cass_ptp_fini:
++	if (is_physfn) {
++		rc = cass_link_fini_once(hw, &link_started);
++		if (rc) {
++			WARN(1, "Cassini link teardown failed during probe unwind: %d\n", rc);
++			return rc;
++		}
 +	}
-+
-+	if (rtn) {
-+		sl_core_log_err_trace(ctrl_lgrp, LOG_NAME,
-+				      "lol rx show (asic_lane_num = %u) - rx_lane_is_lol failed [%d]",
-+				      lane_kobj->asic_lane_num, rtn);
-+		return sysfs_emit(buf, "error\n");
++	if (is_physfn)
++		cass_ptp_fini(hw);
++unregister_port:
++	if (is_physfn) {
++		rc = cass_link_fini_once(hw, &link_started);
++		if (rc) {
++			WARN(1, "Cassini link teardown failed during probe unwind: %d\n", rc);
++			return rc;
++		}
 +	}
-+
-+	sl_core_log_dbg(ctrl_lgrp, LOG_NAME,
-+			"lol rx show (asic_lane_num = %u, is_rx_lol = %s)",
-+			lane_kobj->asic_lane_num, is_rx_lol ? "yes" : "no");
-+
-+	return sysfs_emit(buf, "%s\n", is_rx_lol ? "yes" : "no");
-+}
-+
-+static struct kobj_attribute lol_tx = __ATTR_RO(tx);
-+static struct kobj_attribute lol_rx = __ATTR_RO(rx);
-+
-+static struct attribute *serdes_lane_lol_attrs[] = {
-+	&lol_tx.attr,
-+	&lol_rx.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(serdes_lane_lol);
-+
-+static struct kobj_type serdes_lane_lol_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = serdes_lane_lol_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_serdes_lane_lol_create(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "serdes lane lol create (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	rtn = kobject_init_and_add(&ctrl_lgrp->serdes_lane_lol_kobjs[asic_lane_num].kobj,
-+				   &serdes_lane_lol_info, &ctrl_lgrp->serdes_lane_kobjs[asic_lane_num], "lol");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+			   "serdes lane lol create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&ctrl_lgrp->serdes_lane_lol_kobjs[asic_lane_num].kobj);
-+		return -ENOMEM;
++	if (is_physfn)
++		if (cass_version(hw, CASSINI_1))
++			cass_unregister_port(hw);
++link_fini:
++	if (is_physfn) {
++		rc = cass_link_fini_once(hw, &link_started);
++		if (rc) {
++			WARN(1, "Cassini link teardown failed during probe unwind: %d\n", rc);
++			return rc;
++		}
 +	}
-+	ctrl_lgrp->serdes_lane_lol_kobjs[asic_lane_num].ctrl_lgrp     = ctrl_lgrp;
-+	ctrl_lgrp->serdes_lane_lol_kobjs[asic_lane_num].asic_lane_num = asic_lane_num;
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "serdes lane lol create (serdes_kobj = 0x%p)", &ctrl_lgrp->serdes_kobj);
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_serdes_lane_lol_delete(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "serdes lane los delete (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	kobject_put(&ctrl_lgrp->serdes_lane_lol_kobjs[asic_lane_num].kobj);
-+	ctrl_lgrp->serdes_lane_lol_kobjs[asic_lane_num].ctrl_lgrp = NULL;
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_los.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_los.c
-new file mode 100644
-index 000000000000..bdcb6b8ae4ae
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_los.c
-@@ -0,0 +1,142 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2025-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include "asm-generic/int-ll64.h"
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_log.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_core_lgrp.h"
-+#include "sl_sysfs_serdes_los.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t tx_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                              rtn;
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	bool                             is_tx_los;
-+	struct sl_ctrl_lgrp             *ctrl_lgrp;
-+	u8                               ldev_num;
-+	u8                               lgrp_num;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	ctrl_lgrp = lane_kobj->ctrl_lgrp;
-+	ldev_num = lane_kobj->ctrl_lgrp->ctrl_ldev->num;
-+	lgrp_num = lane_kobj->ctrl_lgrp->num;
-+
-+	rtn = sl_core_lgrp_tx_lane_is_los(ldev_num, lgrp_num, lane_kobj->asic_lane_num, &is_tx_los);
-+	if (rtn == -ENOENT) {
-+		sl_core_log_dbg(ctrl_lgrp, LOG_NAME,
-+				"los tx show (asic_lane_num = %u) - tx_lane_is_los no cache [%d]",
-+				lane_kobj->asic_lane_num, rtn);
-+		return sysfs_emit(buf, "no-cache\n");
++unregister_uc:
++	if (is_physfn) {
++		uc_cmd_set_link_leds(hw, LED_OFF);
++		cass_unregister_uc(hw);
 +	}
-+
-+	if (rtn) {
-+		sl_core_log_err_trace(ctrl_lgrp, LOG_NAME,
-+				      "los tx show (asic_lane_num = %u) - tx_lane_is_los failed [%d]",
-+				      lane_kobj->asic_lane_num, rtn);
-+		return sysfs_emit(buf, "error\n");
-+	}
-+
-+	sl_core_log_dbg(ctrl_lgrp, LOG_NAME,
-+			"los tx show (asic_lane_num = %u, is_tx_los = %s)",
-+			lane_kobj->asic_lane_num, is_tx_los ? "yes" : "no");
-+
-+	return sysfs_emit(buf, "%s\n", is_tx_los ? "yes" : "no");
-+}
-+
-+static ssize_t rx_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	int                              rtn;
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	bool                             is_rx_los;
-+	struct sl_ctrl_lgrp             *ctrl_lgrp;
-+	u8                               ldev_num;
-+	u8                               lgrp_num;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	ctrl_lgrp = lane_kobj->ctrl_lgrp;
-+	ldev_num = lane_kobj->ctrl_lgrp->ctrl_ldev->num;
-+	lgrp_num = lane_kobj->ctrl_lgrp->num;
-+
-+	rtn = sl_core_lgrp_rx_lane_is_los(ldev_num, lgrp_num, lane_kobj->asic_lane_num, &is_rx_los);
-+	if (rtn == -ENOENT) {
-+		sl_core_log_dbg(ctrl_lgrp, LOG_NAME,
-+				"los rx show (asic_lane_num = %u) - rx_lane_is_los no cache [%d]",
-+				lane_kobj->asic_lane_num, rtn);
-+		return sysfs_emit(buf, "no-cache\n");
-+	}
-+
-+	if (rtn) {
-+		sl_core_log_err_trace(ctrl_lgrp, LOG_NAME,
-+				      "los rx show (asic_lane_num = %u) - rx_lane_is_los failed [%d]",
-+				      lane_kobj->asic_lane_num, rtn);
-+		return sysfs_emit(buf, "error\n");
-+	}
-+
-+	sl_core_log_dbg(ctrl_lgrp, LOG_NAME,
-+			"los rx show (asic_lane_num = %u, is_rx_los = %s)",
-+			lane_kobj->asic_lane_num, is_rx_los ? "yes" : "no");
-+
-+	return sysfs_emit(buf, "%s\n", is_rx_los ? "yes" : "no");
-+}
-+
-+static struct kobj_attribute los_tx = __ATTR_RO(tx);
-+static struct kobj_attribute los_rx = __ATTR_RO(rx);
-+
-+static struct attribute *serdes_lane_los_attrs[] = {
-+	&los_tx.attr,
-+	&los_rx.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(serdes_lane_los);
-+
-+static struct kobj_type serdes_lane_los_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = serdes_lane_los_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_serdes_lane_los_create(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "serdes lane los create (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	rtn = kobject_init_and_add(&ctrl_lgrp->serdes_lane_los_kobjs[asic_lane_num].kobj,
-+				   &serdes_lane_los_info, &ctrl_lgrp->serdes_lane_kobjs[asic_lane_num], "los");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+			   "serdes lane los create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&ctrl_lgrp->serdes_lane_los_kobjs[asic_lane_num].kobj);
-+		return -ENOMEM;
-+	}
-+	ctrl_lgrp->serdes_lane_los_kobjs[asic_lane_num].ctrl_lgrp     = ctrl_lgrp;
-+	ctrl_lgrp->serdes_lane_los_kobjs[asic_lane_num].asic_lane_num = asic_lane_num;
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "serdes lane los create (serdes_kobj = 0x%p)", &ctrl_lgrp->serdes_kobj);
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_serdes_lane_los_delete(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "serdes lane los delete (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	kobject_put(&ctrl_lgrp->serdes_lane_los_kobjs[asic_lane_num].kobj);
-+	ctrl_lgrp->serdes_lane_los_kobjs[asic_lane_num].ctrl_lgrp = NULL;
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_settings.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_settings.c
-new file mode 100644
-index 000000000000..b33174640663
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_settings.c
-@@ -0,0 +1,506 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include <linux/hpe/sl/sl_media.h>
-+
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_core_lgrp.h"
-+#include "sl_core_link.h"
-+#include "sl_core_str.h"
-+#include "sl_sysfs_serdes_settings.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t pre1_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	s16                              pre1;
-+	int				 rtn;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_pre1_get(core_lgrp, lane_kobj->asic_lane_num, &pre1);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "settings pre1 show (pre1 = %d)", pre1);
-+
-+	return sysfs_emit(buf, "%d\n", pre1);
-+}
-+
-+static ssize_t pre2_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	s16                              pre2;
-+	int				 rtn;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_pre2_get(core_lgrp, lane_kobj->asic_lane_num, &pre2);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "settings pre2 show (pre2 = %d)", pre2);
-+
-+	return sysfs_emit(buf, "%d\n", pre2);
-+}
-+
-+static ssize_t pre3_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	s16                              pre3;
-+	int				 rtn;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_pre3_get(core_lgrp, lane_kobj->asic_lane_num, &pre3);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "settings pre3 show (pre3 = %d)", pre3);
-+
-+	return sysfs_emit(buf, "%d\n", pre3);
-+}
-+
-+static ssize_t cursor_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	s16                              cursor;
-+	int				 rtn;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_cursor_get(core_lgrp, lane_kobj->asic_lane_num, &cursor);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "settings cursor show (cursor = %d)", cursor);
-+
-+	return sysfs_emit(buf, "%d\n", cursor);
-+}
-+
-+static ssize_t post1_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	s16                              post1;
-+	int				 rtn;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_post1_get(core_lgrp, lane_kobj->asic_lane_num, &post1);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "settings post1 show (post1 = %d)", post1);
-+
-+	return sysfs_emit(buf, "%d\n", post1);
-+}
-+
-+static ssize_t post2_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	s16                              post2;
-+	int				 rtn;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_post2_get(core_lgrp, lane_kobj->asic_lane_num, &post2);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "settings post2 show (post2 = %d)", post2);
-+
-+	return sysfs_emit(buf, "%d\n", post2);
-+}
-+
-+static ssize_t media_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
-+		   "settings media show (media = %d)", core_link->serdes.media_serdes_settings.media);
-+	return sysfs_emit(buf, "%d\n", core_link->serdes.media_serdes_settings.media);
-+}
-+
-+static struct kobj_attribute settings_pre1   = __ATTR_RO(pre1);
-+static struct kobj_attribute settings_pre2   = __ATTR_RO(pre2);
-+static struct kobj_attribute settings_pre3   = __ATTR_RO(pre3);
-+static struct kobj_attribute settings_cursor = __ATTR_RO(cursor);
-+static struct kobj_attribute settings_post1  = __ATTR_RO(post1);
-+static struct kobj_attribute settings_post2  = __ATTR_RO(post2);
-+static struct kobj_attribute settings_media  = __ATTR_RO(media);
-+
-+static ssize_t osr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	u8                               osr;
-+	int				 rtn;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_osr_get(core_lgrp, lane_kobj->asic_lane_num, &osr);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "settings osr show (osr = %u %s)", osr, sl_core_serdes_lane_osr_str(osr));
-+
-+	return sysfs_emit(buf, "%s\n", sl_core_serdes_lane_osr_str(osr));
-+}
-+
-+static ssize_t encoding_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	u8                               encoding;
-+	int				 rtn;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_encoding_get(core_lgrp, lane_kobj->asic_lane_num, &encoding);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "settings encoding show (encoding = %u %s)",
-+		   encoding, sl_core_serdes_lane_encoding_str(encoding));
-+
-+	return sysfs_emit(buf, "%s\n", sl_core_serdes_lane_encoding_str(encoding));
-+}
-+
-+static ssize_t clocking_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	u16                              clocking;
-+	int				 rtn;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	rtn = sl_core_link_clocking_get(core_link, &clocking);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
-+		   "settings clocking show (clocking = %u %s)",
-+		   clocking, sl_core_serdes_lane_clocking_str(clocking));
-+
-+	return sysfs_emit(buf, "%s\n", sl_core_serdes_lane_clocking_str(clocking));
-+}
-+
-+static ssize_t width_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	u8                               width;
-+	int				 rtn;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_width_get(core_lgrp, lane_kobj->asic_lane_num, &width);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "settings width show (width = %u %s)",
-+		   width, sl_core_serdes_lane_width_str(width));
-+
-+	return sysfs_emit(buf, "%s\n", sl_core_serdes_lane_width_str(width));
-+}
-+
-+static ssize_t dfe_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	u8                               dfe;
-+	int				 rtn;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_dfe_get(core_lgrp, lane_kobj->asic_lane_num, &dfe);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "settings dfe show (dfe = %s)", (dfe) ? "enabled" : "disabled");
-+
-+	return sysfs_emit(buf, "%s\n", (dfe) ? "enabled" : "disabled");
-+}
-+
-+static ssize_t scramble_dis_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	u8                               scramble_dis;
-+	int				 rtn;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rtn = sl_core_lgrp_scramble_dis_get(core_lgrp, lane_kobj->asic_lane_num, &scramble_dis);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "settings scramble_dis show (scramble_dis = %s)", (scramble_dis) ? "set" : "not-set");
-+
-+	return sysfs_emit(buf, "%s\n", (scramble_dis) ? "set" : "not-set");
-+}
-+
-+static struct kobj_attribute settings_osr          = __ATTR_RO(osr);
-+static struct kobj_attribute settings_encoding     = __ATTR_RO(encoding);
-+static struct kobj_attribute settings_clocking     = __ATTR_RO(clocking);
-+static struct kobj_attribute settings_width        = __ATTR_RO(width);
-+static struct kobj_attribute settings_dfe          = __ATTR_RO(dfe);
-+static struct kobj_attribute settings_scramble_dis = __ATTR_RO(scramble_dis);
-+
-+static ssize_t link_training_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	if (is_flag_set(core_link->core_lgrp->link_caps[core_link->num].hpe_map, SL_LINK_CONFIG_HPE_LINKTRAIN))
-+		return sysfs_emit(buf, "enabled\n");
++free_error_handlers:
++	if (is_physfn)
++		deregister_error_handlers(hw);
++fini_hw:
++	if (is_physfn)
++		fini_hw(hw);
++free_irqs:
++	cass_irq_fini(hw);
++unmap_regions:
++	if (is_physfn)
++		iounmap(hw->regs);
++free_regions:
++	pci_release_regions(pdev);
++dev_disable:
++	cxidev_err(&hw->cdev, "deregistering device\n");
++
++	pci_clear_master(pdev);
++	pci_disable_pcie_error_reporting(pdev);
++	pci_disable_device(pdev);
++hw_free:
++	pci_set_drvdata(pdev, NULL);
++	if (class_dev_initialized)
++		put_device(&hw->class_dev);
 +	else
-+		return sysfs_emit(buf, "disabled\n");
++		kfree(hw);
++
++	return -ENODEV;
 +}
 +
-+static struct kobj_attribute settings_link_training = __ATTR_RO(link_training);
-+
-+static struct attribute *serdes_lane_settings_attrs[] = {
-+	/* media */
-+	&settings_pre1.attr,
-+	&settings_pre2.attr,
-+	&settings_pre3.attr,
-+	&settings_cursor.attr,
-+	&settings_post1.attr,
-+	&settings_post2.attr,
-+	&settings_media.attr,
-+	/* core */
-+	&settings_osr.attr,
-+	&settings_encoding.attr,
-+	&settings_clocking.attr,
-+	&settings_width.attr,
-+	&settings_dfe.attr,
-+	&settings_scramble_dis.attr,
-+	&settings_link_training.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(serdes_lane_settings);
-+
-+static struct kobj_type serdes_lane_settings_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = serdes_lane_settings_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_serdes_lane_settings_create(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
++static void cass_remove(struct pci_dev *pdev)
 +{
-+#ifdef CONFIG_SYSFS
++	struct cass_dev *hw = pci_get_drvdata(pdev);
 +	int rtn;
 +
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "serdes lane settings create (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	rtn = kobject_init_and_add(&(ctrl_lgrp->serdes_lane_settings_kobjs[asic_lane_num].kobj),
-+				   &serdes_lane_settings_info, &(ctrl_lgrp->serdes_lane_kobjs[asic_lane_num]), "settings");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+			   "serdes lane settings create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&(ctrl_lgrp->serdes_lane_settings_kobjs[asic_lane_num].kobj));
-+		return -ENOMEM;
++	if (hw->cxi_adev) {
++		cxi_ib_remove_adev(hw);
 +	}
-+	ctrl_lgrp->serdes_lane_settings_kobjs[asic_lane_num].ctrl_lgrp      = ctrl_lgrp;
-+	ctrl_lgrp->serdes_lane_settings_kobjs[asic_lane_num].asic_lane_num = asic_lane_num;
 +
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "serdes lane settings create (serdes_kobj = 0x%p)", &(ctrl_lgrp->serdes_kobj));
++	cxi_remove_device(&hw->cdev);
++	destroy_sysfs_properties(hw);
++	debugfs_lookup_and_remove("port", hw->debug_dir);
++	debugfs_lookup_and_remove("counters", hw->debug_dir);
 +
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
-+}
-+
-+void sl_sysfs_serdes_lane_settings_delete(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
-+{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "serdes lane settings delete (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	kobject_put(&(ctrl_lgrp->serdes_lane_settings_kobjs[asic_lane_num].kobj));
-+	ctrl_lgrp->serdes_lane_settings_kobjs[asic_lane_num].ctrl_lgrp = NULL;
-+#endif /* CONFIG_SYSFS */
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_state.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_state.c
-new file mode 100644
-index 000000000000..7fc14970a588
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_state.c
-@@ -0,0 +1,121 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+
-+#include "sl_log.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_core_lgrp.h"
-+#include "sl_core_str.h"
-+#include "sl_sysfs_serdes_state.h"
-+#include "hw/sl_core_hw_serdes_lane.h"
-+
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t tx_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u32                              state;
-+	int				 rtn;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+	rtn	  = sl_core_hw_serdes_tx_lane_state_get(core_lgrp, lane_kobj->asic_lane_num, &state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "state tx show (asic_lane_num = %u, state = %u %s)",
-+		lane_kobj->asic_lane_num, state, sl_core_serdes_lane_state_str(state));
-+
-+	return sysfs_emit(buf, "%s\n", sl_core_serdes_lane_state_str(state));
-+}
-+
-+static ssize_t rx_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	u32                              state;
-+	int				 rtn;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+	rtn	  = sl_core_hw_serdes_rx_lane_state_get(core_lgrp, lane_kobj->asic_lane_num, &state);
-+	if (rtn)
-+		return sysfs_emit(buf, "error\n");
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "state rx show (asic_lane_num = %u, state = %u %s)",
-+		lane_kobj->asic_lane_num, state, sl_core_serdes_lane_state_str(state));
-+
-+	return sysfs_emit(buf, "%s\n", sl_core_serdes_lane_state_str(state));
-+}
-+
-+static struct kobj_attribute state_tx = __ATTR_RO(tx);
-+static struct kobj_attribute state_rx = __ATTR_RO(rx);
-+
-+static struct attribute *serdes_lane_state_attrs[] = {
-+	&state_tx.attr,
-+	&state_rx.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(serdes_lane_state);
-+
-+static struct kobj_type serdes_lane_state_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = serdes_lane_state_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_serdes_lane_state_create(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "serdes lane state create (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	rtn = kobject_init_and_add(&(ctrl_lgrp->serdes_lane_state_kobjs[asic_lane_num].kobj),
-+				   &serdes_lane_state_info, &(ctrl_lgrp->serdes_lane_kobjs[asic_lane_num]), "state");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+			   "serdes lane state create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&(ctrl_lgrp->serdes_lane_state_kobjs[asic_lane_num].kobj));
-+		return -ENOMEM;
++	if (hw->cdev.is_physfn) {
++		stop_pcie_monitoring(hw);
++		cass_phy_stop(hw, true);
++		rtn = hw->link_ops->link_fini(hw);
++		if (rtn) {
++			WARN(1, "Cassini link teardown failed during remove: %d; aborting device teardown\n",
++			     rtn);
++			return;
++		}
 +	}
-+	ctrl_lgrp->serdes_lane_state_kobjs[asic_lane_num].ctrl_lgrp      = ctrl_lgrp;
-+	ctrl_lgrp->serdes_lane_state_kobjs[asic_lane_num].asic_lane_num = asic_lane_num;
 +
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "serdes lane state create (serdes_kobj = 0x%p)", &(ctrl_lgrp->serdes_kobj));
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
++	cancel_delayed_work_sync(&hw->lni_cleanups_work);
++	lni_cleanups(hw, true);
++
++	/* Destroy RMU Ethernet resource management */
++	idr_destroy(&hw->rmu_eth_idr);
++
++	cass_rgid_fini(hw);
++	cxi_configfs_cleanup(hw);
++	cass_svc_fini(hw);
++	cass_dev_rgroup_fini(hw);
++	cass_dev_rx_tx_profiles_fini(hw);
++
++	debugfs_remove_recursive(hw->debug_dir);
++
++	if (hw->cdev.is_physfn) {
++		if (hw->num_vfs)
++			cass_sriov_configure(hw->cdev.pdev, 0);
++		dma_free_coherent(&pdev->dev, C_MST_DBG_MST_TABLE_SIZE,
++				  hw->mst_entries, hw->mst_entries_dma_addr);
++		cxi_dmac_desc_set_free(&hw->cdev, hw->dmac_pt_id);
++		cass_ptp_fini(hw);
++		uc_cmd_set_link_leds(hw, LED_OFF);
++		cass_unregister_uc(hw);
++		if (cass_version(hw, CASSINI_1))
++			cass_unregister_port(hw);
++		deregister_error_handlers(hw);
++		fini_hw(hw);
++	} else {
++		cass_vf_fini(hw);
++	}
++
++	cass_irq_fini(hw);
++
++	if (hw->cdev.is_physfn)
++		iounmap(hw->regs);
++	pci_release_regions(pdev);
++	pci_clear_master(pdev);
++	pci_disable_pcie_error_reporting(pdev);
++	if (!hw->pci_disabled)
++		pci_disable_device(pdev);
++
++	cxidev_WARN_ONCE(&hw->cdev, !refcount_dec_and_test(&hw->refcount),
++			 "Resource leaks - HW refcount not zero: %d\n",
++			 refcount_read(&hw->refcount));
++	device_unregister(&hw->class_dev);
 +}
 +
-+void sl_sysfs_serdes_lane_state_delete(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
++void cass_disable_device(struct pci_dev *pdev, const char *reason)
 +{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "serdes lane state delete (lgrp = 0x%p)", ctrl_lgrp);
++	struct cass_dev *hw = pci_get_drvdata(pdev);
 +
-+	kobject_put(&(ctrl_lgrp->serdes_lane_state_kobjs[asic_lane_num].kobj));
-+	ctrl_lgrp->serdes_lane_state_kobjs[asic_lane_num].ctrl_lgrp = NULL;
-+#endif /* CONFIG_SYSFS */
++	if (reason)
++		cxidev_err(&hw->cdev, "Disabling device. Reason: %s", reason);
++	else
++		cxidev_err(&hw->cdev, "Disabling device");
++
++	pci_clear_master(pdev);
++	pci_disable_device(pdev);
++
++	hw->pci_disabled = true;
 +}
-diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_swizzle.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_swizzle.c
++
++void uncor_cb(struct cass_dev *hw, unsigned int irq, bool is_ext,
++	      unsigned int bitn)
++{
++	char reason[200];
++
++	if (!disable_on_error)
++		return;
++
++	snprintf(reason, sizeof(reason),
++		 "Unrecoverable error: %s with bitn: %d",
++		 (*hw->err_handlers)[irq][is_ext ? 1 : 0].csr_name_lo, bitn);
++
++	cass_disable_device(hw->cdev.pdev, reason);
++}
++
++static struct pci_device_id cass_ids[] = {
++	{ PCI_DEVICE(PCI_VENDOR_ID_CRAY, PCI_DEVICE_ID_CASSINI_1) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_HPE, PCI_DEVICE_ID_CASSINI_2_PF) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_HPE, PCI_DEVICE_ID_CASSINI_2_VF) },
++	{ 0, },
++};
++
++static struct pci_driver cass_pci_driver = {
++	.name = KBUILD_MODNAME,
++	.id_table = cass_ids,
++	.probe = cass_probe,
++	.remove = cass_remove,
++	.sriov_configure = cass_sriov_configure,
++};
++
++MODULE_DEVICE_TABLE(pci, cass_ids);
++
++int hw_register(void)
++{
++	int rc;
++
++	rc = genl_register_family(&cxierr_genl_family);
++	if (rc)
++		return rc;
++
++	rc = pci_register_driver(&cass_pci_driver);
++
++	if (rc)
++		genl_unregister_family(&cxierr_genl_family);
++
++	return rc;
++}
++
++void hw_unregister(void)
++{
++	pci_unregister_driver(&cass_pci_driver);
++	genl_unregister_family(&cxierr_genl_family);
++}
++
++/**
++ * cxi_retry_handler_running() - Check if retry handler is running.
++ *
++ * @cdev: CXI device.
++ *
++ * Return: True if retry handler is running. Else, false.
++ */
++bool cxi_retry_handler_running(struct cxi_dev *cdev)
++{
++	struct cass_dev *hw = container_of(cdev, struct cass_dev, cdev);
++
++	return hw->pct_eq_n != C_EQ_NONE;
++}
++EXPORT_SYMBOL(cxi_retry_handler_running);
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_core.h b/drivers/net/ethernet/hpe/ss1/cass_core.h
 new file mode 100644
-index 000000000000..5f2d17fc15e9
+index 000000000000..0810664d4ab9
 --- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_swizzle.c
-@@ -0,0 +1,126 @@
++++ b/drivers/net/ethernet/hpe/ss1/cass_core.h
+@@ -0,0 +1,1472 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright 2020-2026 Hewlett Packard Enterprise Development LP */
++
++#ifndef _CASS_CORE_H
++#define _CASS_CORE_H
++
++#include <linux/device.h>
++#include <linux/iova.h>
++#include <linux/module.h>
++#include <linux/moduleparam.h>
++#include <linux/pci.h>
++#include <linux/rbtree.h>
++#include <linux/workqueue.h>
++#include <net/netlink.h>
++#include <net/genetlink.h>
++#include <linux/ptp_clock_kernel.h>
++#include <linux/etherdevice.h>
++#include <linux/completion.h>
++#include <linux/hrtimer.h>
++#include <linux/hwmon.h>
++#include <linux/socket.h>
++#include <linux/i2c.h>
++
++#include "cxi_link.h"
++#include "cxi_core.h"
++#include "cuc_cxi.h"	/* from firmware_cassini/ */
++#include "cass_sbl.h"
++#include "pldm_cxi.h"
++#include "cass_sl.h"
++#include "cxi_qos_profiles.h"
++#include "cass_rx_tx_profile.h"
++#include "cass_rgroup.h"
++#include "cxi_config.h"
++#include "cass_p2p.h"
++#include "cass_vf.h"
++
++#define PCI_VENDOR_ID_CRAY         0x17db
++#define PCI_DEVICE_ID_CASSINI_1    0x0501
++#define PCI_VENDOR_ID_HPE          0x1590
++#define PCI_DEVICE_ID_CASSINI_2_PF 0x0371
++#define PCI_DEVICE_ID_CASSINI_2_VF 0x0372
++
++#define CXI_MODULE_NAME "cxi_ss1"
++
++/* The following are IPv6 next header values used for IPv6 extension headers.
++ * https://www.iana.org/assignments/ipv6-parameters/ipv6-parameters.xhtml
++ */
++#define IPV6_EH_HOPOPTS 0
++#define IPV6_EH_ROUTE 43
++#define IPV6_EH_FRAG 44
++#define IPV6_EH_ESP 50
++#define IPV6_EH_AH 51
++#define IPV6_EH_OPTS 60
++#define IPV6_EH_MOBILITY 135
++#define IPV6_EH_HIP 139
++#define IPV6_EH_SHIM6 140
++#define IPV6_EH_RSVD1 253
++#define IPV6_EH_RSVD2 254
++
++#define HW_PLATFORM(_hw) ((_hw)->rev.platform)
++#define HW_PLATFORM_ASIC(_hw) (HW_PLATFORM(_hw) == C_PLATFORM_ASIC)
++#define HW_PLATFORM_Z1(_hw) (HW_PLATFORM(_hw) == C_PLATFORM_Z1)
++#define HW_PLATFORM_NETSIM(_hw) (HW_PLATFORM(_hw) == C_PLATFORM_NETSIM)
++
++#define C_MAX_CSR_ERR_INFO 3
++#define C_MAX_CSR_CNTRS   3
++
++/* HPC MTU is fixed at 2k. The largest HPC header is 64 bytes. */
++#define C_MAX_HPC_MTU (2048 + 64)
++
++/* PCI BARs containing the CSRs and CQ/EQ areas. */
++#define MMIO_BAR 0
++
++/* Expected length of PCI BAR 0 for a Physical Function. Used to differentiate
++ * between Virtual Function (512M BAR 0) and Physical Function (2G BAR 0) under
++ * SR-IOV.
++ */
++#define MMIO_BAR_LEN_PF 2147483648
++
++/* Number of error interrupts */
++#define NUM_ERR_INTS 30
++
++#define PORTALS_MAX_FRAME_SIZE 2111U
++#define ETHERNET_MAX_FRAME_SIZE 9022U
++#define TSC_DEFAULT_FILL_QTY 16U
++
++#define PLEC_SIZE 256U
++
++enum cass_phy_state {
++	CASS_PHY_DOWN,
++	CASS_PHY_READY,
++	CASS_PHY_HALTED,
++	CASS_PHY_UP,
++	CASS_PHY_RUNNING,
++	CASS_PHY_NOLINK,
++	CASS_PHY_HEADSHELL_REMOVED,
++};
++
++#ifdef pr_fmt
++#undef pr_fmt
++#endif
++#define pr_fmt(fmt) KBUILD_MODNAME ":%s:%d " fmt, __func__, __LINE__
++
++#define atu_debug(fmt, ...) \
++do {						\
++	if (more_debug)				\
++		pr_debug(fmt, ##__VA_ARGS__);	\
++} while (0)
++
++/* Helper to get current task network namespace inode id safely. */
++#define CURRENT_NETNS_ID() ({					\
++	unsigned int __netns_id = 0;				\
++	struct task_struct *__ct = current;			\
++	rcu_read_lock();					\
++	if (__ct->nsproxy && __ct->nsproxy->net_ns)		\
++		__netns_id = __ct->nsproxy->net_ns->ns.inum;	\
++	rcu_read_unlock();					\
++	__netns_id;						\
++})
++
++#define ALLOC_IOVA_FAST(iovad, len, end) alloc_iova_fast(iovad, len, end, true)
++#define FREE_IOVA_FAST free_iova_fast
++
++#define INIT_IOVA_DOMAIN(iovad, ps, base, end) \
++		init_iova_domain(iovad, ps, base)
++
++#define ATU_HMM_PFN_TO_PFN(hpfn) page_to_pfn(hmm_pfn_to_page(hpfn))
++
++#define ATU_PFN_INVALID(hpfn) \
++	(!(hpfn & HMM_PFN_VALID) || \
++	 !(hpfn & HMM_PFN_WRITE) || \
++	  (hpfn & HMM_PFN_ERROR))
++#define ATU_PFN_WRITE(hpfn) ((hpfn & HMM_PFN_WRITE))
++#define ATU_PFN_VALID(hpfn) ((hpfn & HMM_PFN_VALID))
++
++/* AER is automatically enabled by the PCI core. */
++static inline int pci_enable_pcie_error_reporting(void *p) { return 0; }
++static inline void pci_disable_pcie_error_reporting(void *p) {}
++
++/* SR-IOV requires VFIO with KVM support enabled and kernel >= 5.19 */
++#if !defined(CONFIG_KVM_VFIO)
++#define CXI_DISABLE_SRIOV
++#endif
++
++#define ATU_FAULT_RETRY_MAX 16
++#define ATU_PTE_PTR (1 << 6)
++#define ATU_PTE_READ (1UL << 57)
++#define ATU_PTE_WRITE (1UL << 58)
++#define ATU_PTE_LEAF (1UL << 59)
++#define ATU_PTE_PRESENT (1UL << 60)
++#define ATU_HMM_RANGE_TIMEOUT 1000
++#define ATU_PTE_MASK (~(ATU_PTE_READ | ATU_PTE_WRITE | ATU_PTE_LEAF | \
++				ATU_PTE_PRESENT))
++
++#define MASK(x) (BIT(x) - 1)
++#define ATU_PTEPTR_SHIFT 6
++#define PTE_ADDR(pte) ((pte).ptr << ATU_PTEPTR_SHIFT)
++#define pfn2phys __pfn_to_phys
++#define PHYS_TO_PAGE(pa) pfn_to_page(__phys_to_pfn(pa))
++
++#define C_ADDR_SHIFT 12
++#define ATU_PTE_ENTRY_SIZE    sizeof(union a_pte)
++#define flsl(x) (fls64(x) - 1)
++#define ffsl(x) (fls64((x) & -(x)) - 1)
++#define ATUCQ_TIMEOUT (odp_sw_decouple ? decouple_timeout_us : atucq_timeout_us)
++#define ATU_IBW_TIMEOUT (5 * MSEC_PER_SEC * USEC_PER_MSEC)
++#define ATU_ODPQ_SPACE_TIMEOUT (100 * USEC_PER_MSEC)
++#define ATU_STS_ATUCQ_IDLE_TIMEOUT (10 * MSEC_PER_SEC * USEC_PER_MSEC)
++#define ATU_STS_IBW_IDLE_TIMEOUT (1000 * MSEC_PER_SEC * USEC_PER_MSEC)
++#define ATUCQ_ENTRY(index) (index & (C_ATU_CFG_CQ_TABLE_ENTRIES - 1))
++/* Based on the AC base page size */
++#define ATU_PMD_ORDER(cac) (cac->huge_shift - cac->page_shift)
++#define ATU_PMD_NR(cac) BIT(ATU_PMD_ORDER(cac))
++#define ATU_PTE_ORDER(cac) (cac->page_shift - PAGE_SHIFT)
++#define ATU_PTE_NR(cac) BIT(ATU_PTE_ORDER(cac))
++#define PFN_INC(cac, leaf) (leaf ? ATU_PMD_NR(cac) : 1)
++/* Based on the kernel base page size */
++#define K_PMD_ORDER(cac) (cac->huge_shift - PAGE_SHIFT)
++#define K_PMD_NR(cac) BIT(K_PMD_ORDER(cac))
++#define KPFN_INC(cac, leaf) (leaf ? K_PMD_NR(cac) : ATU_PTE_NR(cac))
++#define ATU_FLAGS_MASK ~(CXI_MAP_READ | CXI_MAP_WRITE | CXI_MAP_ALLOC_MD | \
++			 CXI_MAP_FAULT | CXI_MAP_PREFETCH)
++#define ATUCQ_INVALIDATE_ALL 0x200000000000000UL
++#define MAX_PG_TABLE_SIZE 15
++#define MIN_PG_TABLE_SIZE 3
++#define MIN_DEVICE_PG_TABLE_SIZE (MIN_PG_TABLE_SIZE + 2)
++#define INVALID_DMABUF_FD (-1)
++
++/* Reserve an AC for physical mapping to be shared by all processes */
++#define ATU_PHYS_AC (C_ATU_CFG_AC_TABLE_ENTRIES - 1)
++#define ATU_NTA_DEF_PI_ACXT ATU_PHYS_AC
++#define ATU_FLUSH_REQ_DELAY 0x3ff
++
++#ifndef VMA_ITERATOR
++#define for_each_vma(vmi, vma) for (; vma; vma = vma->vm_next)
++#endif /* VMA_ITERATOR */
++
++#define CASS_NUM_LE_POOLS (C_LPE_CFG_PE_LE_POOLS_ENTRIES / C_PE_COUNT)
++#define CASS_MIN_POOL_TLES 8
++#define ACS_AVAIL (ATU_PHYS_AC - 1)
++#define CTS_AVAIL (C_NUM_CTS - 1) /* CT 0 invalid */
++#define EQS_AVAIL (C_NUM_EQS - 1) /* EQ 0 invalid */
++
++#define CASS_MAX_IRQ_NAME 24
++
++/* Current devices have up to 31 sensors */
++#define CASS_MAX_SENSORS 32
++
++#define CASS2_MAX_PACKETS_INFLIGHT 128U
++#define CASS1_MAX_PACKETS_INFLIGHT 64U
++
++#define DEFAULT_LE_POOL_ID 0
++#define DEFAULT_TLE_POOL_ID 0
++
++enum cass_link_speed {
++	CASS_SPEED_UNKNOWN = PCI_SPEED_UNKNOWN,
++	CASS_SPEED_2_5GT = PCIE_SPEED_2_5GT,
++	CASS_SPEED_5_0GT = PCIE_SPEED_5_0GT,
++	CASS_SPEED_8_0GT = PCIE_SPEED_8_0GT,
++	CASS_SPEED_16_0GT = PCIE_SPEED_16_0GT,
++	CASS_SPEED_32_0GT = PCIE_SPEED_32_0GT,
++
++	CASS_SPEED_20_0GT,
++	CASS_SPEED_25_0GT,
++};
++
++/* Cassini clock frequency */
++#define C1_CLK_FREQ_HZ 1000000000ULL /* 1 GHz */
++#define C2_CLK_FREQ_HZ 1100000000ULL /* 1.1 GHz */
++
++extern const struct file_operations uc_fops;
++
++union a_pte {
++	struct c_page_table_entry pte;
++	u64 qw;
++};
++
++struct l1_entry {
++	/* The array of PTEs */
++	struct page *l1_pages;
++	dma_addr_t l1_pages_dma_addr;
++
++	/* Bitmap of used PTEs */
++	unsigned long *bitmap;
++};
++
++struct cass_nta {
++	/* nta root page table pointer virtual address */
++	union a_pte *root_ptr;
++	struct page *root_page;
++	dma_addr_t root_page_dma_addr;
++	int root_order;
++	int l1_order;
++	int numa_node;
++
++	/* Each L0 PDE has its own bitmap of allocated L1 PTE. */
++	int l0_entries;
++	int l1_entries;
++	struct l1_entry l1[];
++};
++
++struct cass_ac {
++	struct cxi_ac ac;
++	struct list_head list;
++	struct list_head md_list;
++	struct mutex md_mutex;
++	struct cxi_lni_priv *lni_priv;
++
++	struct mutex ac_mutex;
++
++	/* copy of the atu ac struct */
++	union c_atu_cfg_ac_table cfg_ac;
++	u32 flags;
++
++	int page_shift;
++	int huge_shift;
++	int ptg_mode;
++	bool hugepage_test;
++
++	struct cass_nta *nta;
++
++	u64 iova_base;
++	u64 iova_end;
++	u64 iova_len;
++
++	struct iova_domain *iovad;
++	struct dentry *debug_dir;
++	struct dentry *lni_dir;
++	refcount_t refcount;
++	refcount_t reader_refs;
++	struct completion readers_done;
++
++	u32 pasid;
++	struct iommu_sva *sva;
++};
++
++/* Value written by the ATU CQ in wait_rsp_data when completing
++ * commands.
++ */
++#define WAIT_RSP_DATA 0xf00fbeefULL
++
++struct cass_atu_cq {
++	/* Protects access to the ATU CQ and wait_rsp_data */
++	struct mutex atu_cq_mutex;
++	struct mutex atu_ib_mutex;
++	/* Inbound-wait hardware failure latch, protected by atu_ib_mutex. */
++	bool hw_failure;
++
++	struct wait_rsp_data {
++		u64 cmp ____cacheline_aligned;
++		u64 ib ____cacheline_aligned;
++	} wait_rsp_data;
++
++	dma_addr_t rsp_dma_addr;
++	dma_addr_t cmp_wait_rsp_addr;
++	dma_addr_t ib_wait_rsp_addr;
++
++	char cmpl_wait_int_name[CASS_MAX_IRQ_NAME];
++};
++
++struct sts_idle {
++	struct cass_dev *hw;
++	bool ib_wait;
++};
++
++#define MAX_VFMSG_SIZE (22432 + sizeof(struct vf_pf_msg_hdr))
++
++/* A VF to PF message header */
++struct vf_pf_msg_hdr {
++	unsigned int len;	/* whole message length */
++	int rc;			/* return code */
++	uid_t uid;
++	gid_t gid;
++	int seq;
++};
++
++/* Traffic Class descriptions. */
++struct cass_tc_cfg {
++	struct list_head tc_entry;
++
++	unsigned int tc;
++	enum cxi_traffic_class_type tc_type;
++
++	/* Restricted request DSCP. */
++	unsigned int res_req_dscp;
++
++	/* Unrestricted request DSCP. */
++	unsigned int unres_req_dscp;
++
++	/* Restricted response DSCP. */
++	unsigned int res_rsp_dscp;
++
++	/* Unrestricted response DSCP. */
++	unsigned int unres_rsp_dscp;
++
++	/* Request PCP. */
++	unsigned int req_pcp;
++
++	/* Response PCP. */
++	unsigned int rsp_pcp;
++
++	/* CQ OCU Set Index */
++	unsigned int ocuset;
++
++	/* Traffic class value specific to CQ configuration. */
++	unsigned int cq_tc;
++
++	/* Buffer Class */
++	unsigned int req_bc;
++};
++
++struct cass_rsrc_info {
++	u16 res;
++	u16 shared_total;
++	u16 shared_in_use;
++};
++
++struct cass_irq {
++	struct atomic_notifier_head nh;
++	int idx;
++	struct cpumask mask;
++	char irq_name[CASS_MAX_IRQ_NAME];
++	atomic_t refcount;
++	int vec;
++	struct mutex lock;
++};
++
++/* Maximum size of an error flag CSR. For Cassini-1, they are all 64
++ * bits. For Cassini-2, C_HNI_PML_ERR_FLG is 256 bits long.
++ */
++#define MAX_ERR_FLAG_BITLEN 256
++union err_flags {
++	DECLARE_BITMAP(mask, MAX_ERR_FLAG_BITLEN);
++	union c_pi_err_flg pi;
++	union c_pi_ext_err_flg pi_ext;
++	union c_pi_ipd_ext_err_flg pi_ipd_ext;
++	union c_atu_err_flg atu;
++	union c_atu_ext_err_flg atu_ext;
++	union c1_hni_err_flg c1_hni;
++	union c2_hni_err_flg c2_hni;
++	union c2_hni_ext_err_flg c2_hni_ext;
++	union c1_hni_pml_err_flg c1_hni_pml;
++	union ss2_port_pml_err_flg ss2_port_pml;
++	union c_rmu_err_flg rmu;
++	union c_lpe_err_flg lpe;
++	union c_pct_ext_err_flg pct_ext;
++	union c_ee_err_flg ee;
++	union c_ixe_err_flg ixe_err_flg;
++};
++
++struct cxi_reg_err_flg {
++	struct list_head list;
++	unsigned int irq;
++	bool is_ext;
++	union err_flags err_flags;
++	/* Callback. irq is the MSI-X interrupt index (0 to 29), and
++	 * is_ext indicates whether the flag is set in the ERR_FLG or
++	 * EXT_ERR_FLG CSR. bitn is the bit index in abovementioned
++	 * CSR.
++	 */
++	void (*cb)(struct cass_dev *hw, unsigned int irq,
++		   bool is_ext, unsigned int bitn);
++};
++
++/* For error CSR processing */
++struct flg_err_info;
++struct csr_info {
++	const char *csr_name;
++	const char *csr_name_lo; /* same, in lower case */
++
++	/* Various CSR offsets for that error. */
++	unsigned int flg;
++	unsigned int mask;
++	unsigned int clr;
++	unsigned int first_flg;
++	unsigned int first_flg_ts;
++	unsigned int bitlen;
++	const struct flg_err_info *flg_info;
++};
++
++extern const struct file_operations decouple_stats_fops;
++extern const struct file_operations sw_decouple_fops;
++
++/*
++ * there currently are not that many entities that need to reserve
++ * sets of dma descriptors.
++ *
++ * Currently, cassini telemetry/counters (with test/experimental code)
++ * uses five dmac descriptor sets and rosetta link monitoring (lmon)
++ * may use two dma descriptor sets.
++ *
++ */
++#define DMAC_DESC_SET_COUNT			16
++
++struct dmac_desc_set {
++	u16 count;      /* total number of descs */
++	u16 index;      /* index of first desc */
++	u16 numused;    /* number of descs written */
++	const char *name;	/* descriptive name to identify use */
++};
++
++struct cass_vf {
++	struct task_struct *task;
++	struct socket *req_sock;
++	struct socket *notif_sock;
++
++	/* Index and back-pointer to hardware struct for use by VF handler thread */
++	struct cass_dev *hw;
++	int vf_idx;
++
++	/* ID of physical-address context for use when configuring CQ, EQ, etc. */
++	unsigned int phys_ac;
++
++	unsigned int token;
++	int notif_seq;
++
++	/* Per VF mutex to maintain notification message/response sequencing */
++	struct mutex notif_lock;
++
++	/* Per-VF message buffers */
++	char request[MAX_VFMSG_SIZE];
++	char reply[MAX_VFMSG_SIZE];
++
++	struct task_struct *kvm_task;
++};
++
++enum cxi_rmu_eth_filter_mode {
++	CXI_RMU_ETH_FILTER_NONE = 0,
++	CXI_RMU_ETH_FILTER_DIRECT,
++	CXI_RMU_ETH_FILTER_RSS,
++};
++
++/**
++ * struct cxi_rmu_eth_priv - Private Ethernet resource tracking (INTERNAL)
++ *
++ * Full internal structure containing all resource management state.
++ * One allocation per function (PF or VF).
++ */
++struct cxi_rmu_eth_priv {
++	struct cxi_rmu_eth rmu_eth;     /* Public opaque handle */
++	struct cxi_dev *dev;            /* Device this allocation belongs to */
++	bool is_vf;                     /* True if this is a VF allocation */
++	unsigned int vf_num;            /* VF number (if is_vf=true) */
++	bool admin;                     /* True if it has admin privileges */
++
++	/* Resource allocation */
++	unsigned int indir_base;        /* Absolute offset in HW indirection table */
++	unsigned int indir_size;        /* Number of indir entries allocated */
++	unsigned int set_list_base;     /* Absolute offset in HW set_list (4+ for dynamic) */
++	unsigned int set_list_quota;    /* Max set_list entries for this function */
++
++	/* Default RSS configuration (used by all MACs when use_rss=true) */
++	unsigned int rss_queues;
++	struct cxi_pte *ptes[64];   /* PTE pointers for RSS queues */
++	u32 hash_types;
++	unsigned int indir_entries;     /* Active indirection table size */
++
++	/* Filter tracking [0..quota-1]: enum cxi_rmu_eth_filter_mode values */
++	u8 *mac_filter_slots;
++};
++
++struct cass_ac *cass_cac_get(struct cass_dev *hw, int acid);
++void cass_cac_put(struct cass_ac *cac);
++
++/* Private hardware data for Cassini. This is not seen by clients. */
++struct cass_dev {
++	/* Embed a cxi device. */
++	struct cxi_dev cdev;
++	struct cxi_cfg_group_item *cfg_dev_dir;
++
++	/* Register base in BAR0 */
++	void __iomem *regs;
++	unsigned long regs_base;
++
++	/* /sys/class interface */
++	struct device class_dev;
++
++	/* Device type and revision */
++	union c_mb_sts_rev rev;
++	bool reduced_pct_tables;
++
++	/* TODO: For development only. Netsim VFs are not really
++	 * supported.
++	 */
++	bool with_vf_support;
++
++	/* Number of VFs currently configured in the PF. */
++	unsigned int num_vfs;
++
++	/* Interrupt vector used for the PF/ VF communication */
++	unsigned int pf_vf_vec;
++	char pf_vf_int_name[CASS_MAX_IRQ_NAME];
++	struct completion pf_to_vf_comp;
++
++	/* Virtual function communication socket for SR-IOV. Used by PF to
++	 * listen for incoming VF connections, used by VF to initiate connection
++	 */
++	struct socket *vf_req_sock;
++	struct socket *vf_notif_sock;
++	struct task_struct *vf_listener;
++	struct task_struct *vf_notif_handler;
++	u8 vf_notif_buf[MAX_VFMSG_SIZE];
++	u8 vf_notif_rsp_buf[MAX_VFMSG_SIZE];
++	struct cass_vf vfs[C_NUM_VFS];
++	cxi_msg_relay_t msg_relay;
++	void *msg_relay_data;
++	struct mutex msg_relay_lock;
++	unsigned int vf_cmd_seq;
++	/* Mutex to maintain command message/response sequencing */
++	struct mutex vf_cmd_lock;
++
++	/* PCIe info */
++	bool esm_active;
++	u8 pcie_link_speed;
++	bool pci_disabled;
++
++	struct {
++		/* Monitoring */
++		struct delayed_work task;
++
++		/* Acceptable number of correctable errors per minute */
++		unsigned int corr_err_min;
++
++		/* PCIe Vendor Specific Information position */
++		unsigned int event_counter_control;
++		unsigned int event_counter_data;
++
++		/* Number of correctable and uncorrectable errors seen. */
++		u64 uncorr_err;
++		u64 corr_err;
++	} pcie_mon;
++
++	/* Error interrupts handling. Represent each of the 30 error
++	 * interrupts by a bit in err_irq_mask.
++	 */
++	unsigned long err_irq_mask;
++	unsigned long err_irq_raised;
++	int err_irq_vecs[NUM_ERR_INTS];
++	char err_int_names[NUM_ERR_INTS][CASS_MAX_IRQ_NAME];
++	struct workqueue_struct *err_irq_wq;
++	struct work_struct err_irq_work;
++	struct kobject *err_flgs_dir_kobj[2]; /* IRQA and IRQB */
++	const struct csr_info (*err_handlers)[NUM_ERR_INTS][2];
++
++	spinlock_t sfs_err_flg_lock; /* protects mask update */
++	struct sfs_err_flg {
++		struct kobject kobj;
++
++		/* IRQ A mask for the error flag CSR. */
++		DECLARE_BITMAP(err_irq_mask, MAX_ERR_FLAG_BITLEN);
++		unsigned int bitlen;
++
++		/* Which bits must never be automatically masked */
++		union err_flags no_auto_mask;
++
++		/* Which bits must never be printed in logs. Some error bits
++		 * can be raised during normal operation (eg. UC_INTERRUPT)
++		 * and should not appear in logs.
++		 */
++		union err_flags no_print_mask;
++	} sfs_err_flg[NUM_ERR_INTS][2];
++
++	/* Clients registered with the error interrupt handler, for
++	 * certain bits
++	 */
++	struct mutex err_flg_mutex;
++	struct list_head err_flg_list;
++
++	/* Temporary storage for CSR error processing. As there is
++	 * only one work at any given time, there is no race to access
++	 * these.
++	 */
++	struct {
++		struct err_info {
++			u64 data[5];
++			int count;
++		} err_info[C_MAX_CSR_ERR_INFO];
++		unsigned int err_info_count;
++		u64 cntrs_val[C_MAX_CSR_CNTRS];
++		unsigned int err_cntrs_count;
++		char err_info_str[100];
++		DECLARE_BITMAP(first_flg, MAX_ERR_FLAG_BITLEN);
++		union c_any_err_first_flg_ts first_flg_ts;
++	};
++
++	/* Each error is rate limited. If too many interrupts happen
++	 * for the same error bit, then the bit will be permanently
++	 * masked.
++	 */
++	struct ratelimit_state err_rl[NUM_ERR_INTS][MAX_ERR_FLAG_BITLEN];
++
++	/* Debugfs directories for that device */
++	struct dentry *debug_dir;
++	struct dentry *port_dir;
++	struct dentry *stats_dir;
++	struct dentry *lni_dir;
++	struct dentry *atu_dir;
++	struct dentry *decouple_dir;
++
++	/* Count users of this device. */
++	refcount_t refcount;
++
++	/* Keep track of NIs. TODO: keep as that may help debugging,
++	 * but should be removed eventually.
++	 */
++	struct list_head lni_list;
++	spinlock_t lni_lock;
++
++	struct {
++		atomic_t lni;
++		atomic_t domain;
++		atomic_t eq;
++		atomic_t txq;
++		atomic_t tgq;
++		atomic_t pt;
++		atomic_t ct;
++		atomic_t ac;
++		atomic_t md;
++	} stats;
++
++	struct dentry *domain_dir;
++	struct dentry *eq_dir;
++	struct dentry *cq_dir;
++	struct dentry *pt_dir;
++	struct dentry *ct_dir;
++	struct dentry *ac_dir;
++
++	/* Pending LNI cleanups */
++	struct list_head lni_cleanups_list;
++	struct delayed_work lni_cleanups_work;
++	struct mutex lni_cleanups_lock;
++
++	/* Number of IRQs available to that device. */
++	unsigned int num_irqs;
++
++	unsigned int atu_cq_vec;
++	unsigned int atu_pri_vec;
++
++	/* Completion IRQs */
++	unsigned int num_comp_irqs;
++	struct cass_irq *comp_irqs;
++
++	/* RMU table allocation bitmap. Each entry in the RMU table
++	 * contains a different VNI.
++	 */
++	struct ida rmu_index_table;
++	struct ida domain_table;
++	spinlock_t rmu_lock;
++	struct rb_root rmu_tree;
++
++	/* Physical PID leases and per-profile use counts are protected by
++	 * pid_pool_lock. domain_lock protects unique VNI+PID domain identities.
++	 */
++	spinlock_t pid_pool_lock;
++	spinlock_t domain_lock;
++	struct rb_root domain_tree;
++	DECLARE_BITMAP(leased_pids, 1 << MAX_PID_BITS);
++	u32 pid_usecount[1 << MAX_PID_BITS];
++
++	/* EQ allocation bitmap */
++	spinlock_t eq_shadow_lock;
++	struct ida eq_index_table;
++	struct mutex init_eq_hw_state;
++
++	/* Which EQ is registered with the PCT block. Protected by
++	 * init_eq_hw_state.
++	 */
++	unsigned int pct_eq_n;
++
++	/* Communication Profile Table (CPT) and containers. The table,
++	 * cpt_index_table, resides on the adapter and is used to reserve
++	 * one of the hardware resource. The RB tree, cp_cont_tree, is used to
++	 * store the allocated communication containers. Each container is
++	 * identified by a VNI and traffic class. Each container may contain
++	 * multiple communication profiles which map to an index in the CPT.
++	 * The lock, cp_lock, protects the tree.
++	 */
++	struct ida cp_table;
++	struct mutex cp_lock;
++
++	/* Configured traffic classes; entries can be added and removed at run time. */
++	struct list_head tc_list;
++	struct mutex tc_lock;	/* protects tc_list */
++
++	/* Next resource to be used for traffic class configuration. */
++	unsigned int next_oxe_bc;
++	unsigned int next_oxe_branch_bucket;
++	unsigned int next_oxe_leaf_bucket;
++	unsigned int next_cq_tc;
++	unsigned int next_cq_ocuset;
++	unsigned int next_cq_ocu;
++	unsigned int next_ixe_wrq;
++	unsigned int next_ixe_fq;
++	unsigned int next_lpe_fq;
++
++	u8 tsc_fill_qty;
++	struct qos_profile qos;
++	struct kobject tcs_kobj;
++
++	/* CQ allocation bitmaps. */
++	spinlock_t cq_shadow_lock;
++	struct mutex cq_init_lock;
++	struct ida cq_table;
++
++	/* CT allocations */
++	struct mutex ct_init_lock;
++
++	/* Multicast uniqueness table */
++	struct ida multicast_table;
++
++	/* PT allocation bitmap */
++	spinlock_t lpe_shadow_lock;
++	struct ida pte_table;
++	struct ida pt_index_table;
++	unsigned int dmac_pt_id;
++	struct mutex mst_table_lock;
++	struct mutex pte_transition_sm_lock;
++	union c_mst_dbg_mst_table *mst_entries;
++	dma_addr_t mst_entries_dma_addr;
++	atomic_t plec_count;
++
++	/* LE pool allocation bitmap */
++	struct ida le_pool_ids[C_PE_COUNT];
++	struct ida tle_pool_ids;
++
++	/* Ethernet Set List */
++	struct ida set_list_table;
++	struct cxi_tx_profile eth_tx_profile;
++
++	/* RMU Ethernet resource management */
++	struct idr rmu_eth_idr;
++
++	/* Protects all RMU Eth resources */
++	struct mutex rmu_eth_lock;
++
++	/* Protects C_RMU_CFG_PORTAL_LIST_X/Y. */
++	spinlock_t rmu_portal_list_lock;
++
++	/* RGID management */
++	struct xarray rgid_array;
++	refcount_t rgids_refcount;
++	struct ida lni_table;
++
++	/* ATU info */
++	void *oxe_dummy_addr;
++	dma_addr_t oxe_dummy_dma_addr;
++	struct cass_ac *cac_table[C_ATU_CFG_AC_TABLE_ENTRIES];
++	/* Protects AC publication and acquisition of reader pins. */
++	spinlock_t cac_table_lock;
++	struct ida atu_table;
++	struct cass_atu_cq atu_cq;
++	spinlock_t atu_shadow_lock;
++	atomic_t atu_error_inject;
++	atomic_t atu_odp_requests;
++	atomic_t atu_odp_fails;
++	atomic_t atu_prb_expired;
++	char odp_pri_int_name[CASS_MAX_IRQ_NAME];
++	int pri_rd_ptr;
++	struct work_struct pri_work;
++	struct workqueue_struct *pri_wq;
++	struct c_page_request_entry *page_request_table;
++	dma_addr_t prt_dma_addr;
++	struct cxi_reg_err_flg atu_err;
++	struct work_struct prb_work;
++	struct workqueue_struct *prb_wq;
++	struct mutex odpq_mutex;
++	struct list_head mm_lni_list;
++	struct mutex mm_mutex;
++	struct ida md_index_table;
++	bool ac_filter_disabled;
++	/* Flag to indicate that the IOMMU callback is in place to support
++	 * C1 ODP.
++	 */
++	bool ats_c1_odp_enable;
++
++	/* Number of invalidations due to memory deregistration */
++	atomic_t dcpl_md_clear_inval;
++	/* Number of invalidations due to the mmu notifier for NTA mode */
++	atomic_t dcpl_nta_mn_inval;
++	/* Number of invalidations due to the mmu notifier (via IOMMU callback)
++	 * for ATS mode
++	 */
++	atomic_t dcpl_ats_mn_inval;
++	/* Completion wait count */
++	atomic_t dcpl_comp_wait;
++	/* ODP decoupling entered - Completion wait has timed out */
++	atomic_t dcpl_entered;
++	/* ixe_epoch_x_cntr was 0 */
++	atomic_t dcpl_ixe_cntr_0;
++	/* ixe_epoch_x_cntr was not initially 0 but it decremented to 0 */
++	atomic_t dcpl_ixe_cntr_dec_0;
++	/* ee_epoch_x_cntr count of entering dec loop */
++	atomic_t dcpl_ee_cntr_dec_0;
++	/* ee_epoch_x_cntr is stuck */
++	atomic_t dcpl_ee_cntr_stuck;
++	/* oxe_epoch_x_cntr count of entering dec loop */
++	atomic_t dcpl_oxe_cntr_dec_0;
++	/* oxe_epoch_x_cntr is stuck */
++	atomic_t dcpl_oxe_cntr_stuck;
++	/* ixe_epoch_x_cntr is stuck after hw decoupling enabled */
++	atomic_t dcpl_ixe_cntr_stuck;
++	/* decouple process successful after hw decoupling enabled */
++	atomic_t dcpl_success;
++	/* ib_epoch_x_cntr decremented to 0 in step 6.2 */
++	atomic_t dcpl_ibw_cntr_dec_0_62;
++	/* ib_epoch_x_cntr count of dec loops in step 6.2 */
++	atomic_t dcpl_ibw_cntr_dec_0_62_count;
++	/* ib_epoch_x_cntr decremented to 0 in step 6.4 */
++	atomic_t dcpl_ibw_cntr_dec_0_64;
++	/* ib_epoch_x_cntr count of dec loops in step 6.4 */
++	atomic_t dcpl_ibw_cntr_dec_0_64_count;
++	/* ib_epoch_x_cntr is stuck */
++	atomic_t dcpl_step7;
++	/* IBW is active and ib_epoch_x_cntr is stuck */
++	atomic_t dcpl_ibw_active_stuck;
++	/* How long waiting to get the lock */
++	atomic_t dcpl_ibw_idle_wait;
++	/* IBW counter is inside of trylock loop */
++	atomic_t dcpl_ibw_cntr_is_0;
++	/* Decouple issued inbound wait */
++	atomic_t dcpl_ibw_issued;
++	/* Maximum time spent in decoupling */
++	ktime_t dcpl_max_time;
++	/* Histogram of time spent in decoupling */
++	#define DBINS 12
++	#define FIRST_BIN (64 * 1024)
++	int dcpl_time[DBINS];
++	/* Maximum time spent finding an MD */
++	ktime_t pri_max_md_time;
++	/* Histogram of time spent in finding MD during a fault */
++	#define MDBINS 8
++	#define FIRST_MDBIN (8 * 1024)
++	int pri_md_time[MDBINS];
++	/* Maximum time spent servicing a fault */
++	ktime_t pri_max_fault_time;
++	/* Histogram of time spent servicing a fault */
++	#define FBINS 7
++	#define FIRST_FBIN (8 * 1024)
++	int pri_fault_time[FBINS];
++
++	/* Counting event bitmap. */
++	struct ida ct_table;
++
++	/* Precision Time Protocol Clock */
++	struct ptp_clock_info ptp_info;
++	struct ptp_clock *ptp_clock;
++	spinlock_t rtc_lock;
++
++	/* MST locks. */
++	spinlock_t mst_match_done_lock;
++	struct mutex mst_update_lock;
++
++	/* Micro-controller */
++	bool uc_present;
++	int uc_platform;	/* CUC_BOARD_TYPE_xxx */
++	struct cxi_reg_err_flg uc_err;
++	struct completion uc_attention0_comp;
++	struct cuc_pkt uc_req;
++	struct cuc_pkt uc_resp;
++	struct workqueue_struct *uc_attn1_wq;
++	struct work_struct uc_attn1_work;
++	struct mutex uc_mbox_mutex;
++	struct i2c_adapter uc_i2c;
++	bool uc_i2c_locked;
++	s8 uc_nic;		/* NIC index from uC point of view */
++	u8 default_mac_addr[ETH_ALEN];
++	struct kobject uc_kobj;
++	char *fw_versions[7];	/* indexed by enum casuc_fw_target */
++	bool fru_info_valid;	/* FRU query was successful; do not query again. */
++	char *fru_info[PLDM_FRU_FIELD_VENDOR_IANA + 1];
++	struct idr pldm_sensors;
++	unsigned int pldm_sensors_count;
++	struct kobject *pldm_sensors_kobj;
++	unsigned int uc_dmac_id;
++	struct kobject port_kobj;
++	struct kobject port_num_kobj;
++	bool qsfp_beacon_active;
++	bool qsfp_over_temp;
++	bool qsfp_bad;
++
++	/* HW mon */
++	struct {
++		struct device *dev;
++		struct hwmon_chip_info chip_info;
++		const struct hwmon_channel_info *all_types[hwmon_max];
++
++		struct hwmon_channel_info info[5];
++
++		/* Enough room for 30 sensors. */
++		u32 config[CASS_MAX_SENSORS + hwmon_max];
++	} hwmon;
++
++	/* RX and TX Profiles */
++	struct cxi_rxtx_profile_list rx_profile_list;
++	struct cxi_rxtx_profile_list tx_profile_list;
++	struct mutex tx_profile_get_lock;
++	struct mutex rx_profile_get_lock;
++
++	/* Services */
++	struct mutex svc_lock;
++	struct idr svc_ids;
++	struct dentry *svc_debug;
++	struct list_head svc_list;
++	unsigned int svc_count;
++	struct cxi_resource_use resource_use[CXI_RESOURCE_MAX];
++	spinlock_t rgrp_lock;
++
++	/* Resource Groups */
++	struct cxi_rgroup_list rgroup_list;
++
++	/* HNI */
++	struct cxi_reg_err_flg hni_pause_err;
++	struct work_struct pause_timeout_work;
++	struct cxi_reg_err_flg hni_uncor_err;
++	struct cxi_reg_err_flg hni_pml_uncor_err;
++
++	/* IXE */
++	struct cxi_reg_err_flg ixe_pbuf_rd_err;
++
++	/* PML */
++	struct cxi_reg_err_flg pml_err;
++	struct {
++		spinlock_t lock;
++		enum cass_phy_state state;
++		struct delayed_work state_queue;
++		/* protected by lock; bumped by every non-worker transition */
++		unsigned int generation;
++		bool stopped;
++	} phy;
++
++	u32 max_eth_rxsize;
++
++	/* Ethernet TX timestamp shift. 0 to 3, stays at zero but
++	 * could become a kernel parameter.
++	 */
++	int tx_timestamp_shift;
++
++	/* base link support */
++	struct sbl_inst *sbl;           /* slingshot base-link instance */
++	atomic_t *sbl_counters;         /* sbl link counters */
++	bool link_config_dirty;         /* link config != running config */
++	spinlock_t sbl_state_lock;      /* link state lock */
++	struct cass_port *port;         /* port db array */
++	const struct cxi_link_ops *link_ops;
++
++	/* SBus config */
++	struct mutex sbus_mutex;      /* serialise SBus config accesses */
++
++	/* Rendezvous get control config */
++	struct mutex get_ctrl_mutex;  /* serialize writes from sysfs */
++
++	/* AMO remap sysfs mutex. */
++	struct mutex amo_remap_to_pcie_fadd_mutex;
++
++	/* sysfs support */
++	struct kobject properties_kobj;
++	struct kobject fru_kobj;
++	struct kobject link_restarts_kobj;
++
++	/* debugfs support */
++	struct attribute_group  port_group;
++	struct attribute        **port_attrs;
++	struct device_attribute *port_dev_attrs;
++	struct device_attribute port_attr;
++
++	/* Current copy of the QSFP eeprom, with its length. If length
++	 * is 0, the data is not valid.
++	 */
++	struct mutex qsfp_eeprom_lock;
++	u8 qsfp_eeprom_page0[ETH_MODULE_SFF_8436_LEN];
++	u8 qsfp_eeprom_page1[ETH_MODULE_SFF_8436_LEN];
++	u8 qsfp_format;
++	unsigned int qsfp_eeprom_page_len;
++
++	/*
++	 * telemetry for cassini
++	 */
++	struct {
++		struct telem_info	*info;
++	} telemetry;
++
++	/*
++	 * dma controller
++	 */
++	struct {
++		struct mutex			lock;
++		struct completion		irupt;
++		char				irupt_name[CASS_MAX_IRQ_NAME];
++		struct c_pi_dmac_cdesc		*cpl_desc;
++		dma_addr_t                      cpl_desc_dma_addr;
++		struct dmac_desc_set		*desc_sets;
++		unsigned long			*desc_map;
++	} dmac;
++
++	/* sl */
++	struct cass_sl_dev sl;
++
++	/*auxiliary device*/
++	void *cxi_adev;
++	/*
++	 * Protects the publication of cxi_adev and covers every use of it, so
++	 * the auxiliary device cannot be freed while a NID change is being
++	 * sent to it.
++	 */
++	struct mutex cxi_adev_lock;
++};
++
++static inline struct cass_dev *cxi_to_cass_dev(struct cxi_dev *dev)
++{
++	return container_of(dev, struct cass_dev, cdev);
++}
++
++/* Communication profile. */
++struct cass_cp {
++	struct cass_dev *hw;
++	struct cxi_tx_profile *tx_profile;
++
++	/* VNI/PCP and TC identify a unique communication profile. */
++	unsigned int vni_pcp;
++	enum cxi_traffic_class tc;
++	enum cxi_traffic_class_type tc_type;
++
++	/* Communication profile table ID. */
++	unsigned int id;
++
++	/* CP list ID. */
++	unsigned int list_id;
++
++	/* Number of users of this profile. */
++	refcount_t ref;
++};
++
++struct pldm_sensor {
++	struct cass_dev *hw;
++	unsigned int id;
++	struct kobject kobj;
++	char name[AUX_NAME_MAX];
++	struct numeric_sensor_pdr num;
++
++	/* Mapping when inserted into hwmon */
++	struct {
++		enum hwmon_sensor_types type;
++		int channel;
++		int multiplier;
++	} hwmon;
++};
++
++/* From struct getsensorreading_rsp */
++struct pldm_sensor_reading {
++	u8 operational_state;
++	u8 present_state;
++	u8 previous_state;
++	s64 present_reading;
++};
++
++/* Read one of the fields from a PLDM declaration */
++#define get_pldm_value(sensor, field) ({				\
++	const int s = sensor->num.sensor_data_size;			\
++	s64 value;							\
++									\
++	if (s == PLDM_DATA_SIZE_UINT8 || s == PLDM_DATA_SIZE_SINT8)	\
++		value = sensor->num.ssd.ssd8.field;			\
++	else if (s == PLDM_DATA_SIZE_UINT16 ||				\
++		 s == PLDM_DATA_SIZE_SINT16)				\
++		value = sensor->num.ssd.ssd16.field;			\
++	else								\
++		value = sensor->num.ssd.ssd32.field;			\
++									\
++	value;								\
++})
++
++static inline void __iomem *cass_csr(struct cass_dev *hw, u64 offset)
++{
++	BUG_ON(offset > C_MEMORG_CSR_SIZE);
++	return hw->regs + offset;
++}
++
++/**
++ * cass_clear() - Writes zeroes to a CSR
++ *
++ * @hw: the device
++ * @offset: offset of the CSR in the region
++ * @len: length to clear, in bytes. Must be a multiple of 8.
++ */
++static inline void cass_clear(struct cass_dev *hw, u64 offset, size_t len)
++{
++	void __iomem *base = cass_csr(hw, offset);
++	int i;
++
++	len /= sizeof(u64);
++
++	for (i = 0; i < len; i++, base += sizeof(u64))
++		writeq(0, base);
++}
++
++/* must come after cass_read/write/clear definitions. */
++#include <linux/hpe/cxi/libcassini.h>
++
++static inline bool cass_version(const struct cass_dev *hw,
++				enum cassini_version version)
++{
++	return cassini_version(&hw->cdev.prop, version);
++}
++
++static inline void cass_cond_lock(struct mutex *lock, bool need_lock)
++{
++	if (need_lock)
++		mutex_lock(lock);
++}
++
++static inline void cass_cond_unlock(struct mutex *lock, bool need_lock)
++{
++	if (need_lock)
++		mutex_unlock(lock);
++}
++
++static inline void cass_cp_lock(struct cass_dev *hw)
++{
++	mutex_lock(&hw->cp_lock);
++}
++
++static inline void cass_cp_unlock(struct cass_dev *hw)
++{
++	mutex_unlock(&hw->cp_lock);
++}
++
++static const char * const cxi_tc_strs[] = {
++	[CXI_TC_DEDICATED_ACCESS]       = "DEDICATED_ACCESS",
++	[CXI_TC_LOW_LATENCY]            = "LOW_LATENCY",
++	[CXI_TC_BULK_DATA]              = "BULK_DATA",
++	[CXI_TC_BEST_EFFORT]            = "BEST_EFFORT",
++	[CXI_TC_ETH]                    = "ETH",
++};
++
++static const char * const cxi_tc_type_strs[] = {
++	[CXI_TC_TYPE_DEFAULT] = "DEFAULT",
++	[CXI_TC_TYPE_HRP] = "HRP",
++	[CXI_TC_TYPE_RESTRICTED] = "RESTRICTED",
++	[CXI_TC_TYPE_COLL_LEAF] = "COLL_LEAF",
++};
++
++static inline const char *cxi_tc_to_str(enum cxi_traffic_class tc)
++{
++	if (tc >= CXI_TC_DEDICATED_ACCESS && tc < CXI_TC_MAX)
++		return cxi_tc_strs[tc];
++	return "(invalid)";
++}
++
++static inline
++const char *cxi_tc_type_to_str(enum cxi_traffic_class_type tc_type)
++{
++	if (tc_type >= CXI_TC_TYPE_DEFAULT && tc_type < CXI_TC_TYPE_MAX)
++		return cxi_tc_type_strs[tc_type];
++	return "(invalid)";
++}
++
++static const char * const cxi_rsrc_type_strs[] = {
++	[CXI_RSRC_TYPE_PTE] = "PTEs",
++	[CXI_RSRC_TYPE_TXQ] = "TXQs",
++	[CXI_RSRC_TYPE_TGQ] = "TGQs",
++	[CXI_RSRC_TYPE_EQ] = "EQs",
++	[CXI_RSRC_TYPE_CT] = "CTs",
++	[CXI_RSRC_TYPE_LE] = "LEs",
++	[CXI_RSRC_TYPE_TLE] = "TLEs",
++	[CXI_RSRC_TYPE_AC] = "ACs",
++};
++
++static inline
++const char *cxi_rsrc_type_to_str(enum cxi_rsrc_type rsrc_type)
++{
++	if (rsrc_type >= CXI_RSRC_TYPE_PTE && rsrc_type < CXI_RSRC_TYPE_MAX)
++		return cxi_rsrc_type_strs[rsrc_type];
++	return "(invalid)";
++}
++
++int cass_ixe_set_amo_remap_to_pcie_fadd(struct cass_dev *hw, int amo_remap);
++void cass_pte_init(struct cass_dev *hw);
++void cass_pte_set_get_ctrl(struct cass_dev *hw);
++int cass_atu_init(struct cass_dev *hw);
++void cass_atu_fini(struct cass_dev *hw);
++void cass_acs_disable(struct cxi_lni_priv *lni_priv);
++void cass_acs_free(struct cxi_lni_priv *lni_priv);
++int cass_ac_phys_alloc(struct cass_dev *hw, bool vf_en, int vf_num);
++void cass_ac_phys_free(struct cass_dev *hw, int acid);
++
++void cass_cq_init(struct cass_dev *hw);
++void cass_ee_init(struct cass_dev *hw);
++int cass_svc_init(struct cass_dev *hw);
++void cass_svc_fini(struct cass_dev *hw);
++int cass_tc_find(struct cass_dev *hw, enum cxi_traffic_class tc,
++		 enum cxi_traffic_class_type tc_type, u8 ethernet_pcp,
++		 struct cass_tc_cfg *tc_cfg);
++int cass_tc_init(struct cass_dev *hw);
++void cass_tc_fini(struct cass_dev *hw);
++void traffic_shaping_cfg(struct cass_dev *hw);
++void cass_tc_set_tx_pause_all(struct cass_dev *hw, bool enable);
++void cass_tc_set_rx_pause_all(struct cass_dev *hw, bool enable);
++void cass_clear_cps(struct cxi_tx_profile *tx_profile);
++
++static inline bool is_vni_valid(unsigned int vni)
++{
++	/* A VNI is 16 bits and VNI 0 is invalid */
++	return vni && !(vni & ~0xffff);
++}
++
++int register_error_handlers(struct cass_dev *hw);
++void deregister_error_handlers(struct cass_dev *hw);
++int cass_sriov_configure(struct pci_dev *pdev, int num_vfs);
++int cass_vf_init(struct cass_dev *hw);
++void cass_vf_fini(struct cass_dev *hw);
++
++#define ATU_CFG_AC_TABLE_MB_SHIFT 15
++/* Based on note in MEM_SIZE description - MEM_BASE must be aligned to
++ * 8x the largest configured page size.
++ * Derivative 1 Page Size as described in Table 364 - Page Table Sizes
++ */
++#define ATU_IOVA_BASE_SHIFT(ac) (12 + ac.base_pg_size + ac.pg_table_size + 3)
++#define ATU_IOVA_MASK(ac) (~MASK(ATU_IOVA_BASE_SHIFT(ac)))
++/* Maximum addressable memory range (56 bits) of Cassini. */
++#define ATU_MAX_ADDR_MEM_BITS 56
++#define ATU_LAC_SHIFT (ATU_MAX_ADDR_MEM_BITS - 3)
++#define ATU_VA_MASK(va) (va & MASK(ATU_MAX_ADDR_MEM_BITS))
++#define IS_DEVICE_MEM(md_priv) (md_priv->flags & CXI_MAP_DEVICE)
++
++extern struct mutex dev_list_mutex;
++extern int more_debug;
++extern struct genl_family cxierr_genl_family;
++extern struct cass_p2p_ops p2p_ops;
++extern bool odp_sw_decouple;
++extern bool ats_c1_override;
++
++/* Add the LAC to the top 3 bits of the IOVA so they are unique */
++static inline u64 cass_iova_base(struct cass_ac *cac)
++{
++	u64 iova_base;
++
++	iova_base = (u64)get_random_u32() << ATU_IOVA_BASE_SHIFT(cac->cfg_ac);
++	iova_base &= ~(0x7UL << ATU_LAC_SHIFT);
++	iova_base |= (u64)cac->ac.lac << ATU_LAC_SHIFT;
++
++	return iova_base;
++}
++
++void __iomem *cass_csr(struct cass_dev *hw, u64 offset);
++int cass_nta_cq_init(struct cass_dev *hw);
++void cass_nta_cq_fini(struct cass_dev *hw);
++int cass_nta_pri_init(struct cass_dev *hw);
++int cass_sts_idle(struct sts_idle *sidle);
++void cass_nta_pri_fini(struct cass_dev *hw);
++int cass_inbound_wait(struct cass_dev *hw, bool wait_for_response);
++u64 cass_nta_iova_alloc(struct cass_ac *cac, const struct ac_map_opts *m_opts);
++void cass_nta_iova_fini(struct cass_ac *cac);
++int cass_nta_iova_init(struct cass_ac *cac, size_t va_len);
++void cass_nta_free(struct cass_dev *hw, struct cass_nta *nta);
++void cass_l1_tables_free(struct cass_dev *hw, struct cass_nta *nta);
++void cass_clear_range(const struct cxi_md_priv *md_priv, u64 iova, u64 len);
++void cass_md_clear(struct cxi_md_priv *md_prv, bool inval, bool need_lock);
++void cass_dma_unmap_pages(struct cxi_md_priv *md_priv);
++int cass_dma_addr_mirror(dma_addr_t dma_addr, u64 iova, struct cass_ac *cac,
++			 u32 flags, bool is_huge_page, bool *invalidate);
++int cass_mirror_fault(const struct ac_map_opts *m_opts, u64 *pfns, int count,
++		      uintptr_t addr, size_t len);
++int cass_mirror_odp(const struct ac_map_opts *m_opts, struct cass_ac *cac,
++		    int npfns, u64 addr);
++int cass_mirror_device(struct cxi_md_priv *md_priv,
++		       const struct ac_map_opts *m_opts);
++int cass_mirror_range(struct cxi_md_priv *md_priv, struct ac_map_opts *m_opts);
++void cass_invalidate_range(const struct cass_ac *cac, u64 iova,
++			   size_t length);
++int cass_nta_init(struct cxi_lni_priv *lni_priv, struct ac_map_opts *m_opts,
++		  struct cass_ac *cac);
++int cass_nta_mirror_sgt(struct cxi_md_priv *md_priv, bool need_lock);
++int cass_nta_mirror_kern(struct cxi_md_priv *md_priv,
++			 const struct iov_iter *iter, bool need_lock);
++int cass_pin(const struct cass_ac *cac, struct page **pages, int npages,
++	     u64 addr, bool write);
++int cass_mirror_hp(const struct ac_map_opts *m_opts, struct cxi_md_priv *md_priv);
++int cass_pfns_mirror(struct cxi_md_priv *md_priv, const struct ac_map_opts *m_opts,
++		     u64 *pfns, int npfns, bool is_huge_page);
++int cass_vma_write_flag(struct mm_struct *mm, ulong start, ulong end,
++			u32 flags);
++int cass_pin_mirror(struct cxi_md_priv *md_priv, struct ac_map_opts *m_opts);
++void cass_notifier_cleanup(struct cxi_md_priv *md_priv);
++int cass_odp_decouple(struct cass_dev *hw);
++int cass_odp_supported(struct cass_dev *hw, u32 flags);
++int cass_mmu_notifier_insert(struct cxi_md_priv *md_priv,
++			     const struct ac_map_opts *m_opts);
++void cass_device_hugepage_size(int contig_cnt, struct ac_map_opts *m_opts);
++void cass_align_start_len(struct ac_map_opts *m_opts, uintptr_t va, size_t len,
++			  int align_shift);
++int cass_cpu_page_size(struct cass_dev *hw, struct ac_map_opts *m_opts,
++		       struct mm_struct *mm, uintptr_t va,
++		       const struct cxi_md_hints *hints, int *align_shift);
++int cass_ptp_init(struct cass_dev *hw);
++void cass_ptp_fini(struct cass_dev *hw);
++int cass_ats_init(struct cxi_lni_priv *lni_priv, struct ac_map_opts *m_opts,
++		  struct cass_ac *cac);
++int cass_ats_md_init(struct cxi_md_priv *md_priv, const struct ac_map_opts *m_opts);
++void cass_amd_iommu_inval_cb_init(struct pci_dev *pdev);
++void cass_unbind_ac(struct cass_dev *hw, const struct cass_ac *cac);
++void cass_iommu_init(struct cass_dev *hw);
++void cass_iommu_fini(struct cass_dev *hw);
++
++void cass_hni_init(struct cass_dev *hw);
++void cass_hni_fini(struct cass_dev *hw);
++int cass_cable_scan(struct cass_dev *hw);
++void update_oxe_link_up(struct cass_dev *hw);
++void update_hni_link_up(struct cass_dev *hw);
++int cass_create_tc_sysfs(struct cass_dev *hw);
++void cass_destroy_tc_sysfs(struct cass_dev *hw);
++
++int cass_ixe_init(struct cass_dev *hw);
++void cass_ixe_fini(struct cass_dev *hw);
++
++int cass_register_uc(struct cass_dev *hw);
++void cass_unregister_uc(struct cass_dev *hw);
++int cass_register_port(struct cass_dev *hw);
++void cass_unregister_port(struct cass_dev *hw);
++int uc_cmd_get_nic_id(struct cass_dev *hw);
++int uc_cmd_get_mac(struct cass_dev *hw);
++int uc_cmd_get_fru(struct cass_dev *hw);
++void uc_cmd_update_ier(struct cass_dev *hw, u32 set_bits, u32 clear_bits);
++int uc_cmd_qsfp_write(struct cass_dev *hw, u8 page, u8 addr,
++		      const u8 *data, size_t data_len);
++void uc_prepare_comm(struct cass_dev *hw);
++int uc_wait_for_response(struct cass_dev *hw);
++int cxi_get_qsfp_data(struct cxi_dev *cdev, u32 offset,
++		      u32 len, u32 page, u8 *data);
++void uc_cmd_set_link_leds(struct cass_dev *hw, enum casuc_led_states led_state);
++int update_sensor(struct pldm_sensor *sensor,
++		  struct pldm_sensor_reading *result);
++
++void finalize_pt_cleanups(struct cxi_lni_priv *lni, bool force);
++void finalize_cq_cleanups(struct cxi_lni_priv *lni, bool force);
++void finalize_eq_cleanups(struct cxi_lni_priv *lni);
++void finalize_ct_cleanups(struct cxi_lni_priv *lni);
++bool lni_cleanups(struct cass_dev *hw, bool force);
++void lni_cleanups_work(struct work_struct *work);
++void cass_rgid_init(struct cass_dev *hw);
++void cass_rgid_fini(struct cass_dev *hw);
++int cass_lac_get(struct cass_dev *hw, int id);
++void cass_lac_put(struct cass_dev *hw, int id, int lac);
++int cass_rgid_get(struct cass_dev *hw, struct cxi_rgroup *rgroup);
++void cass_rgid_put(struct cass_dev *hw, int id);
++int cass_lcid_get(struct cass_dev *hw, struct cxi_cp_priv *cp_priv, int rgid,
++		  enum cxi_trig_cp cp_type);
++void cass_lcid_put(struct cass_dev *hw, int rgid, int lcid);
++struct cxi_cp_priv *cass_cp_find(struct cass_dev *hw, int rgid, int lcid);
++struct cxi_cp_priv *cass_cp_rgid_find(struct cass_dev *hw,
++				      struct cxi_lni_priv *lni_priv,
++				      unsigned int vni_pcp, unsigned int tc,
++				      enum cxi_traffic_class_type tc_type,
++				      enum cxi_trig_cp cp_type);
++
++int get_dma_addr_if_contig(struct cass_dev *hw, void *addr, size_t len,
++			   enum dma_data_direction dir, struct page ***pages,
++			   dma_addr_t *dma_addr);
++
++int cass_telem_init(struct cass_dev *hw);
++void cass_telem_fini(struct cass_dev *hw);
++
++int create_sysfs_properties(struct cass_dev *hw);
++void destroy_sysfs_properties(struct cass_dev *hw);
++
++void cass_phy_init(struct cass_dev *hw);
++void cass_phy_start(struct cass_dev *hw, bool force_reconfig);
++void cass_phy_stop(struct cass_dev *hw, bool block);
++void cass_phy_bounce(struct cass_dev *hw);
++void cass_phy_trigger_machine(struct cass_dev *hw);
++void cass_phy_link_up(struct cass_dev *hw);
++void cass_phy_link_down(struct cass_dev *hw);
++
++extern unsigned int pe_total_les;
++void cass_cfg_le_pools(struct cass_dev *hw, int pool_id, int pe,
++		       const struct cxi_limits *les, bool release);
++void cass_cfg_tle_pool(struct cass_dev *hw, int pool_id,
++		       const struct cxi_limits *tles, bool release);
++void cass_tle_init(struct cass_dev *hw);
++
++int cass_dmac_init(struct cass_dev *hw);
++void cass_dmac_fini(struct cass_dev *hw);
++
++int cass_irq_init(struct cass_dev *hw);
++void cass_irq_fini(struct cass_dev *hw);
++struct cass_irq *cass_comp_irq_attach(struct cass_dev *hw,
++				      const struct cpumask *mask,
++				      struct notifier_block *nb);
++void cass_comp_irq_detach(struct cass_dev *hw, struct cass_irq *irq,
++			  struct notifier_block *nb);
++
++void cxi_register_hw_errors(struct cass_dev *hw,
++			    struct cxi_reg_err_flg *reg_err_flg);
++void cxi_unregister_hw_errors(struct cass_dev *hw,
++			      struct cxi_reg_err_flg *reg_err_flg);
++void cxi_enable_hw_errors(struct cass_dev *hw, unsigned int irq, bool is_ext,
++			  const unsigned long *bitmask);
++void cxi_disable_hw_errors(struct cass_dev *hw, unsigned int irq, bool is_ext,
++			   const unsigned long *bitmask);
++
++bool cass_phy_is_headshell_removed(struct cass_dev *hw);
++void cass_phy_set_state(enum cass_phy_state state, struct cass_dev *hw);
++
++void start_pcie_monitoring(struct cass_dev *hw);
++void stop_pcie_monitoring(struct cass_dev *hw);
++void cass_set_outstanding_limit(struct cass_dev *hw);
++
++void cass_disable_device(struct pci_dev *pdev, const char *reason);
++extern bool disable_on_error;
++void uncor_cb(struct cass_dev *hw, unsigned int irq, bool is_ext,
++	      unsigned int bitn);
++
++#endif	/* _CASS_CORE_H */
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_dev_info.c b/drivers/net/ethernet/hpe/ss1/cass_dev_info.c
+new file mode 100644
+index 000000000000..15f3e49fe380
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cass_dev_info.c
+@@ -0,0 +1,60 @@
 +// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2025-2026 Hewlett Packard Enterprise Development LP */
++/* Copyright 2024 Hewlett Packard Enterprise Development LP */
++
++#include "cass_core.h"
++
++int cxi_dev_info_get(struct cxi_dev *dev,
++		     struct cxi_dev_info_use *devinfo)
++{
++	struct cass_dev *hw = container_of(dev, struct cass_dev, cdev);
++	int speed;
++	int state;
++
++	devinfo->nid = hw->cdev.prop.nid;
++	devinfo->pid_bits = hw->cdev.prop.pid_bits;
++	devinfo->pid_count = hw->cdev.prop.pid_count;
++	devinfo->pid_granule = hw->cdev.prop.pid_granule;
++	devinfo->min_free_shift = hw->cdev.prop.min_free_shift;
++	devinfo->rdzv_get_idx = hw->cdev.prop.rdzv_get_idx;
++	devinfo->device_rev = hw->cdev.prop.device_rev;
++	devinfo->device_proto = hw->cdev.prop.device_proto;
++	devinfo->device_platform = hw->cdev.prop.device_platform;
++	devinfo->vendor_id = hw->rev.vendor_id;
++	devinfo->device_id = hw->rev.device_id;
++	devinfo->pct_eq = hw->pct_eq_n;
++	devinfo->uc_nic = hw->uc_nic;
++	devinfo->link_mtu = C_MAX_HPC_MTU;
++	devinfo->num_ptes = hw->cdev.prop.rsrcs.ptes.max;
++	devinfo->num_txqs = hw->cdev.prop.rsrcs.txqs.max;
++	devinfo->num_tgqs = hw->cdev.prop.rsrcs.tgqs.max;
++	devinfo->num_eqs = hw->cdev.prop.rsrcs.eqs.max;
++	devinfo->num_cts = hw->cdev.prop.rsrcs.cts.max;
++	devinfo->num_acs = hw->cdev.prop.rsrcs.acs.max;
++	devinfo->num_tles = hw->cdev.prop.rsrcs.tles.max;
++	devinfo->num_les = hw->cdev.prop.rsrcs.les.max;
++	devinfo->cassini_version = hw->cdev.prop.cassini_version;
++	devinfo->system_type_identifier = hw->cdev.system_type_identifier;
++
++	if (hw->port)
++		cass_sbl_link_mode_to_speed(hw->port->lattr.bl.link_mode, &speed);
++	else
++		speed = 0;
++	devinfo->link_speed = speed;
++
++	state = hw->phy.state == CASS_PHY_RUNNING;
++	devinfo->link_state = state;
++
++	if (!hw->fru_info_valid)
++		uc_cmd_get_fru(hw);
++
++	if (hw->fru_info[PLDM_FRU_FIELD_DESCRIPTION])
++		strscpy(devinfo->fru_description, hw->fru_info[PLDM_FRU_FIELD_DESCRIPTION],
++			sizeof(devinfo->fru_description) - 1);
++	else
++		strscpy(devinfo->fru_description, "Not Available",
++			sizeof(devinfo->fru_description) - 1);
++	devinfo->fru_description[sizeof(devinfo->fru_description) - 1] = '\0';
++
++	return 0;
++}
++EXPORT_SYMBOL(cxi_dev_info_get);
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_irq.c b/drivers/net/ethernet/hpe/ss1/cass_irq.c
+new file mode 100644
+index 000000000000..c8ccd8912e8d
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cass_irq.c
+@@ -0,0 +1,210 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2021 Hewlett Packard Enterprise Development LP */
++
++/* Cassini interrupt management */
++
++#include <linux/interrupt.h>
++#include <linux/pci.h>
++#include <linux/types.h>
++
++#include "cass_core.h"
++
++/*
++ * cass_irq_int_handler() - Completion interrupt handler
++ */
++static irqreturn_t cass_irq_int_handler(int irq, void *nh)
++{
++	atomic_notifier_call_chain(nh, 0, NULL);
++
++	return IRQ_HANDLED;
++}
++
++/*
++ * cass_comp_irq_attach() - Attach to a completion interrupt
++ *
++ * @hw: Cassini device
++ * @mask: CPU mask used as an affinity hint to select IRQ vector
++ * @nb: Notifier block to be called on interrupt
++ *
++ * @return Interrupt is returned index on success. A negative errno is returned
++ * on error.
++ */
++struct cass_irq *cass_comp_irq_attach(struct cass_dev *hw,
++				      const struct cpumask *mask,
++				      struct notifier_block *nb)
++{
++	struct cass_irq *best_irq = NULL;
++	int cpu;
++	int rc;
++	int i;
++
++	for_each_cpu(cpu, mask) {
++		for (i = 0; i < hw->num_comp_irqs; i++) {
++			struct cass_irq *irq = &hw->comp_irqs[i];
++
++			if (!cpumask_test_cpu(cpu, &irq->mask))
++				continue;
++
++			if (atomic_read(&irq->refcount) == 0) {
++				best_irq = irq;
++				goto do_register;
++			}
++
++			if (!best_irq || atomic_read(&best_irq->refcount) >
++					 atomic_read(&irq->refcount))
++				best_irq = irq;
++		}
++	}
++
++	/* If no match, select a random IRQ vector. */
++	if (!best_irq) {
++		i = get_random_u32() % hw->num_comp_irqs;
++		best_irq = &hw->comp_irqs[i];
++	}
++
++do_register:
++	rc = atomic_notifier_chain_register(&best_irq->nh, nb);
++	if (rc < 0)
++		return ERR_PTR(rc);
++
++	mutex_lock(&best_irq->lock);
++
++	if (atomic_read(&best_irq->refcount) == 0) {
++		rc = request_irq(best_irq->vec, cass_irq_int_handler, 0,
++				 best_irq->irq_name, &best_irq->nh);
++		if (rc) {
++			mutex_unlock(&best_irq->lock);
++
++			cxidev_err(&hw->cdev, "request_irq failed at index %d: %d\n",
++				   i, rc);
++
++			atomic_notifier_chain_unregister(&best_irq->nh, nb);
++
++			return ERR_PTR(rc);
++		}
++
++		rc = irq_set_affinity_hint(best_irq->vec, &best_irq->mask);
++		if (rc)
++			cxidev_err(&hw->cdev, "irq_set_affinity_hint failed: %d\n",
++				   rc);
++	}
++
++	atomic_inc(&best_irq->refcount);
++
++	mutex_unlock(&best_irq->lock);
++
++	return best_irq;
++}
++
++/*
++ * cass_comp_irq_detach() - Detach from a completion interrupt
++ *
++ * @hw: Cassini device
++ * @irq: An interrupt returned from cass_comp_irq_attach()
++ * @nb: The notifier block to detach
++ */
++void cass_comp_irq_detach(struct cass_dev *hw, struct cass_irq *irq,
++			  struct notifier_block *nb)
++{
++	atomic_notifier_chain_unregister(&irq->nh, nb);
++
++	mutex_lock(&irq->lock);
++
++	if (atomic_dec_return(&irq->refcount) == 0) {
++		irq_set_affinity_hint(irq->vec, NULL);
++		free_irq(irq->vec, &irq->nh);
++	} else {
++		synchronize_irq(irq->vec);
++	}
++
++	mutex_unlock(&irq->lock);
++}
++
++/*
++ * cass_irq_init() - Initialize interrupts
++ */
++int cass_irq_init(struct cass_dev *hw)
++{
++	int rc;
++	int i;
++	int nvecs_res = 0;
++	int nvecs_min = 0;
++	int nvecs_max = 0;
++	struct cass_irq *irq;
++	struct pci_dev *pdev = hw->cdev.pdev;
++	int numa = dev_to_node(&pdev->dev);
++
++	if (!hw->with_vf_support)
++		return 0;
++
++	/* Initialize the MSI vectors table */
++	if (hw->cdev.is_physfn) {
++		/* Reserve the special IRQ numbers */
++		nvecs_res += C_FIRST_AVAIL_MSIX_INT;
++	} else {
++		/* Reserve IRQ number 0 for communicating with the PF. */
++		nvecs_res += 1;
++	}
++
++	/* Reserve IRQs for ATU */
++	hw->atu_cq_vec = nvecs_res++;
++	hw->atu_pri_vec = nvecs_res++;
++
++	/* Get as many IRQs as possible, but not too many as
++	 * request_irq() will eventually fail.
++	 */
++	nvecs_min = nvecs_res + 1;
++	if (HW_PLATFORM_NETSIM(hw))
++		nvecs_max = 128;
++	else
++		nvecs_max = pci_msix_vec_count(pdev);
++
++	/* Enable MSIX. */
++	rc = pci_alloc_irq_vectors(pdev, nvecs_min, nvecs_max, PCI_IRQ_MSIX);
++	if (rc < 0)
++		return rc;
++
++	hw->num_irqs = rc;
++	hw->num_comp_irqs = hw->num_irqs - nvecs_res;
++
++	/* Use remaining IRQs for completions */
++	hw->comp_irqs = kcalloc(hw->num_comp_irqs, sizeof(struct cass_irq),
++				GFP_KERNEL);
++	if (!hw->comp_irqs) {
++		rc = -ENOMEM;
++		goto free_irq_vecs;
++	}
++
++	for (i = 0; i < hw->num_comp_irqs; i++) {
++		irq = &hw->comp_irqs[i];
++		irq->idx = nvecs_res + i;
++		ATOMIC_INIT_NOTIFIER_HEAD(&irq->nh);
++		atomic_set(&irq->refcount, 0);
++		irq->vec = pci_irq_vector(pdev, irq->idx);
++		mutex_init(&irq->lock);
++
++		scnprintf(irq->irq_name, sizeof(irq->irq_name),
++			  "%s_comp%d", hw->cdev.name, i);
++		cpumask_set_cpu(cpumask_local_spread(i, numa), &irq->mask);
++	}
++
++	return 0;
++
++free_irq_vecs:
++	pci_free_irq_vectors(pdev);
++
++	return rc;
++}
++
++/*
++ * cass_irq_fini() - Finalize interrupts
++ */
++void cass_irq_fini(struct cass_dev *hw)
++{
++	if (!hw->with_vf_support)
++		return;
++
++	kfree(hw->comp_irqs);
++
++	pci_free_irq_vectors(hw->cdev.pdev);
++}
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_link.c b/drivers/net/ethernet/hpe/ss1/cass_link.c
+new file mode 100644
+index 000000000000..db2b3bc281c1
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cass_link.c
+@@ -0,0 +1,192 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2020,2025 Hewlett Packard Enterprise Development LP */
 +
 +#include <linux/types.h>
-+#include <linux/sysfs.h>
-+#include <linux/kobject.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/device.h>
++#include <linux/workqueue.h>
++#include <linux/delay.h>
++#include <linux/hpe/sbl/sbl.h>
 +
-+#include "sl_log.h"
-+#include "sl_sysfs.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_core_lgrp.h"
-+#include "sl_core_str.h"
-+#include "sl_sysfs_serdes_swizzle.h"
++#include "cass_core.h"
 +
-+#define LOG_BLOCK SL_LOG_BLOCK
-+#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
-+
-+#ifdef CONFIG_SYSFS
-+static ssize_t tx_source_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++/*
++ * The link has asynchronously gone down
++ *
++ *   i.e. the fabric LSM has gone down, the base link has gone down or
++ *        the headshell/media removed
++ *
++ */
++void cass_link_async_down(struct cass_dev *hw, u32 origin)
 +{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	u8                               tx_source;
++	cxidev_dbg(&hw->cdev,
++		   "async link down, origin %s, (current dirn %s, origin %s)\n",
++		   cass_link_down_origin_str(origin),
++		   cass_lmon_dirn_str(cass_lmon_get_dirn(hw)),
++		   cass_link_down_origin_str(cass_link_get_down_origin(hw)));
 +
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
++	if (cass_version(hw, CASSINI_1))
++		atomic_inc(&hw->sbl_counters[link_async_down_tries]);
 +
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	tx_source = core_lgrp->serdes.dt.lane_info[lane_kobj->asic_lane_num].tx_source;
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "tx_source show (tx_source = %u)", tx_source);
-+
-+	return sysfs_emit(buf, "%u\n", tx_source);
-+}
-+
-+static ssize_t rx_source_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
-+{
-+	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
-+	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
-+	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
-+	u8                               rx_source;
-+
-+	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
-+	if (!lane_kobj->ctrl_lgrp)
-+		return sysfs_emit(buf, "no-lane\n");
-+
-+	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
-+				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
-+	if (!core_link)
-+		return sysfs_emit(buf, "no-link\n");
-+
-+	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
-+	if (!core_lgrp)
-+		return -ENODEV;
-+
-+	rx_source = core_lgrp->serdes.dt.lane_info[lane_kobj->asic_lane_num].rx_source;
-+
-+	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "rx_source show (rx_source = %u)", rx_source);
-+
-+	return sysfs_emit(buf, "%u\n", rx_source);
-+}
-+
-+static struct kobj_attribute tx_source = __ATTR_RO(tx_source);
-+static struct kobj_attribute rx_source = __ATTR_RO(rx_source);
-+
-+static struct attribute *serdes_lane_swizzle_attrs[] = {
-+	&tx_source.attr,
-+	&rx_source.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(serdes_lane_swizzle);
-+
-+static struct kobj_type serdes_lane_swizzle_info = {
-+	.sysfs_ops      = &kobj_sysfs_ops,
-+	.default_groups = serdes_lane_swizzle_groups,
-+};
-+#endif /* CONFIG_SYSFS */
-+
-+int sl_sysfs_serdes_lane_swizzle_create(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
-+{
-+#ifdef CONFIG_SYSFS
-+	int rtn;
-+
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "serdes lane swizzle create (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	rtn = kobject_init_and_add(&(ctrl_lgrp->serdes_lane_swizzle_kobjs[asic_lane_num].kobj),
-+				   &serdes_lane_swizzle_info, &(ctrl_lgrp->serdes_lane_kobjs[asic_lane_num]), "swizzle");
-+	if (rtn) {
-+		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+			   "serdes lane swizzle create kobject_init_and_add failed [%d]", rtn);
-+		kobject_put(&(ctrl_lgrp->serdes_lane_swizzle_kobjs[asic_lane_num].kobj));
-+		return -ENOMEM;
++	if (cass_lmon_get_dirn(hw) == CASS_LMON_DIRECTION_RESET) {
++		/*
++		 * Do nothing
++		 * This will take us down anyway and is only cleared
++		 * when reset had completed
++		 */
++		return;
 +	}
-+	ctrl_lgrp->serdes_lane_swizzle_kobjs[asic_lane_num].ctrl_lgrp      = ctrl_lgrp;
-+	ctrl_lgrp->serdes_lane_swizzle_kobjs[asic_lane_num].asic_lane_num = asic_lane_num;
 +
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "serdes lane swizzle create (serdes_kobj = 0x%p)", &(ctrl_lgrp->serdes_kobj));
-+	return 0;
-+#else /* CONFIG_SYSFS */
-+	return 0;
-+#endif /* CONFIG_SYSFS */
++	spin_lock(&hw->port->lock);
++	if (hw->port->link_down_origin != CASS_DOWN_ORIGIN_CMD) {
++		/*
++		 * We are executing a command don't overwrite origin
++		 * as the link keep-up code requires it
++		 */
++		hw->port->link_down_origin = origin;
++	}
++	spin_unlock(&hw->port->lock);
++	if (cass_version(hw, CASSINI_1))
++		atomic_inc(&hw->sbl_counters[link_async_down]);
++	cass_lmon_request_down(hw);
 +}
 +
-+void sl_sysfs_serdes_lane_swizzle_delete(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
++/*
++ * blocking async link down
++ *
++ *   wait until the link is in a suitable state ("down") for the
++ *   media to be changed
++ *
++ *   we would link to use a completion here but its too complicated so
++ *   will simply poll for it to be in a "down" state.
++ */
++int cass_link_async_down_wait(struct cass_dev *hw, u32 origin)
 +{
-+#ifdef CONFIG_SYSFS
-+	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
-+		   "serdes lane swizzle delete (lgrp = 0x%p)", ctrl_lgrp);
++	unsigned long timeout = jiffies +
++		msecs_to_jiffies(CASS_LINK_ASYNC_DOWN_TIMEOUT);
 +
-+	kobject_put(&(ctrl_lgrp->serdes_lane_swizzle_kobjs[asic_lane_num].kobj));
-+	ctrl_lgrp->serdes_lane_swizzle_kobjs[asic_lane_num].ctrl_lgrp = NULL;
-+#endif /* CONFIG_SYSFS */
++	cxidev_dbg(&hw->cdev, "async down wait - origin %s\n",
++		   cass_link_down_origin_str(origin));
++
++	if (cass_version(hw, CASSINI_1))
++		atomic_inc(&hw->sbl_counters[link_async_down_tries]);
++
++	/* stop the link if its coming up */
++	spin_lock(&hw->port->lock);
++	switch (hw->port->lstate) {
++
++	case CASS_LINK_STATUS_STARTING:
++	case CASS_LINK_STATUS_UP:
++		hw->port->link_down_origin = origin;
++		spin_unlock(&hw->port->lock);
++		cass_lmon_request_down(hw);
++		break;
++
++	default:
++		spin_unlock(&hw->port->lock);
++	}
++
++	/* wait for it to get to a "down" state */
++	do {
++		spin_lock(&hw->port->lock);
++		switch (hw->port->lstate) {
++
++		case CASS_LINK_STATUS_DOWN:
++		case CASS_LINK_STATUS_UNCONFIGURED:
++		case CASS_LINK_STATUS_ERROR:
++		case CASS_LINK_STATUS_UNKNOWN:
++			cxidev_dbg(&hw->cdev, "async down wait done (%s)\n",
++				   cass_link_state_str(hw->port->lstate));
++			if (cass_version(hw, CASSINI_1))
++				atomic_inc(&hw->sbl_counters[link_async_down]);
++			spin_unlock(&hw->port->lock);
++			return 0;
++
++		default:
++			spin_unlock(&hw->port->lock);
++			msleep(CASS_LINK_ASYNC_DOWN_INTERVAL);
++			break;
++		}
++	} while time_is_after_jiffies(timeout);
++
++	cxidev_err(&hw->cdev, "async down wait timed out (%s)\n",
++		   cass_link_state_str(hw->port->lstate));
++	return -ETIMEDOUT;
 +}
++
++/*
++ * blocking async link reset
++ *
++ *   block until the link reset completes
++ *
++ *   we would link to use a completion here but its too complicated so
++ *   will simply poll for it to be in an "unconfigured" state.
++ */
++int cass_link_async_reset_wait(struct cass_dev *hw, u32 origin)
++{
++	unsigned long timeout = jiffies +
++		msecs_to_jiffies(CASS_LINK_ASYNC_RESET_TIMEOUT);
++
++	cxidev_dbg(&hw->cdev, "async reset wait - origin %s\n",
++		   cass_link_down_origin_str(origin));
++
++	/* stop the link if its coming up */
++	spin_lock(&hw->port->lock);
++	switch (hw->port->lstate) {
++
++	case CASS_LINK_STATUS_STARTING:
++	case CASS_LINK_STATUS_UP:
++	case CASS_LINK_STATUS_STOPPING:
++	case CASS_LINK_STATUS_DOWN:
++	case CASS_LINK_STATUS_ERROR:
++	case CASS_LINK_STATUS_UNCONFIGURED:
++		hw->port->link_down_origin = origin;
++		spin_unlock(&hw->port->lock);
++		cass_lmon_request_reset(hw);
++		break;
++
++	default:
++		spin_unlock(&hw->port->lock);
++	}
++
++	/* wait for it to get to an "unconfigured" state */
++	do {
++		spin_lock(&hw->port->lock);
++		switch (hw->port->lstate) {
++
++		case CASS_LINK_STATUS_UNCONFIGURED:
++			cxidev_dbg(&hw->cdev, "async reset wait done (%s)\n",
++				   cass_link_state_str(hw->port->lstate));
++			spin_unlock(&hw->port->lock);
++			return 0;
++
++		default:
++			spin_unlock(&hw->port->lock);
++			msleep(CASS_LINK_ASYNC_RESET_INTERVAL);
++			break;
++		}
++	} while time_is_after_jiffies(timeout);
++
++	cxidev_err(&hw->cdev, "async reset wait timed out (%s)\n",
++		   cass_link_state_str(hw->port->lstate));
++	return -ETIMEDOUT;
++}
++
++/*
++ * print out link state, info etc for sysfs diags
++ *
++ */
++int cass_link_sysfs_sprint(struct cass_dev *hw, char *buf, size_t size)
++{
++	int rc;
++	int state;
++
++	spin_lock(&hw->port->lock);
++	state = hw->port->lstate;
++	spin_unlock(&hw->port->lock);
++
++	rc = scnprintf(buf, size, "%s", cass_link_state_str(state));
++
++	return rc;
++}
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_link_misc.c b/drivers/net/ethernet/hpe/ss1/cass_link_misc.c
+new file mode 100644
+index 000000000000..aa411234c101
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cass_link_misc.c
+@@ -0,0 +1,159 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2020,2025 Hewlett Packard Enterprise Development LP */
++
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/device.h>
++#include <linux/workqueue.h>
++#include <linux/delay.h>
++#include <linux/hpe/sbl/sbl.h>
++
++#include "cass_core.h"
++#include "cass_cable.h"
++
++/*
++ * thread safe access functions
++ *
++ *   TODO inline these
++ */
++int cass_link_get_state(struct cass_dev *hw)
++{
++	int state;
++
++	spin_lock(&hw->port->lock);
++	state = hw->port->lstate;
++	spin_unlock(&hw->port->lock);
++
++	return state;
++}
++
++void cass_link_set_led(struct cass_dev *hw)
++{
++	cxidev_dbg(&hw->cdev,
++		   "beacon = %s, overtemp = %s, hstate = %d, lstate = %d\n",
++		   hw->qsfp_beacon_active ? "true" : "false",
++		   hw->qsfp_over_temp ? "true" : "false",
++		   hw->port->hstate,
++		   hw->port->lstate);
++
++	if (hw->qsfp_beacon_active) {
++		uc_cmd_set_link_leds(hw, LED_SLOW_GRN);
++		return;
++	}
++
++	if (!cass_version(hw, CASSINI_1))
++		return;
++
++	if (hw->port->hstate == CASS_HEADSHELL_STATUS_NOT_PRESENT)
++		uc_cmd_set_link_leds(hw, LED_OFF);
++	else if (hw->qsfp_over_temp)
++		uc_cmd_set_link_leds(hw, LED_ON_YEL);
++	else if (hw->port->hstate == CASS_HEADSHELL_STATUS_ERROR)
++		uc_cmd_set_link_leds(hw, LED_FAST_YEL);
++	else {
++		switch (hw->port->lstate) {
++		case CASS_LINK_STATUS_UNKNOWN:
++		case CASS_LINK_STATUS_ERROR:
++			uc_cmd_set_link_leds(hw, LED_FAST_GRN_YEL);
++			break;
++		case CASS_LINK_STATUS_RESETTING:
++		case CASS_LINK_STATUS_UNCONFIGURED:
++		case CASS_LINK_STATUS_STOPPING:
++		case CASS_LINK_STATUS_DOWN:
++			uc_cmd_set_link_leds(hw, LED_OFF);
++			break;
++		case CASS_LINK_STATUS_STARTING:
++			uc_cmd_set_link_leds(hw, LED_FAST_GRN);
++			break;
++		case CASS_LINK_STATUS_UP:
++			uc_cmd_set_link_leds(hw, LED_ON_GRN);
++			break;
++		default:
++			break;
++		}
++	}
++}
++
++void cass_link_set_state(struct cass_dev *hw, int state, int err)
++{
++	spin_lock(&hw->port->lock);
++	hw->port->prev_lstate = hw->port->lstate;
++	hw->port->lstate = state;
++	hw->port->lerr = err;
++	spin_unlock(&hw->port->lock);
++
++	cass_link_set_led(hw);
++}
++
++int cass_link_get_down_origin(struct cass_dev *hw)
++{
++	int origin;
++
++	spin_lock(&hw->port->lock);
++	origin = hw->port->link_down_origin;
++	spin_unlock(&hw->port->lock);
++
++	return origin;
++}
++
++void cass_link_set_down_origin(struct cass_dev *hw, int origin)
++{
++	spin_lock(&hw->port->lock);
++	hw->port->link_down_origin = origin;
++	spin_unlock(&hw->port->lock);
++}
++
++/*
++ * enum to string functions
++ */
++const char *cass_link_state_str(enum cass_link_status state)
++{
++	switch (state) {
++	case CASS_LINK_STATUS_UNKNOWN:      return "unknown";
++	case CASS_LINK_STATUS_RESETTING:    return "resetting";
++	case CASS_LINK_STATUS_UNCONFIGURED: return "unconfigured";
++	case CASS_LINK_STATUS_STARTING:     return "starting";
++	case CASS_LINK_STATUS_UP:           return "up";
++	case CASS_LINK_STATUS_STOPPING:     return "stopping";
++	case CASS_LINK_STATUS_DOWN:         return "down";
++	case CASS_LINK_STATUS_ERROR:        return "error";
++	default:                            return "unrecognised";
++	}
++}
++
++const char *cass_lmon_dirn_str(enum cass_lmon_direction dirn)
++{
++	switch (dirn) {
++	case CASS_LMON_DIRECTION_INVALID: return "unknown";
++	case CASS_LMON_DIRECTION_NONE:    return "none";
++	case CASS_LMON_DIRECTION_UP:      return "up";
++	case CASS_LMON_DIRECTION_DOWN:    return "down";
++	case CASS_LMON_DIRECTION_RESET:   return "reset";
++	default:                          return "unrecognised";
++	}
++}
++
++const char *cass_link_down_origin_str(u32 origin)
++{
++	switch (origin) {
++	case CASS_DOWN_ORIGIN_UNKNOWN:           return "unknown";
++	case CASS_DOWN_ORIGIN_NONE:              return "none";
++	case CASS_DOWN_ORIGIN_CONFIG:            return "config";
++	case CASS_DOWN_ORIGIN_BL_LFAULT:         return "bl/lfault";
++	case CASS_DOWN_ORIGIN_BL_RFAULT:         return "bl/rfault";
++	case CASS_DOWN_ORIGIN_BL_ALIGN:          return "bl/align";
++	case CASS_DOWN_ORIGIN_BL_DOWN:           return "bl/down";
++	case CASS_DOWN_ORIGIN_BL_HISER:          return "bl/hiser";
++	case CASS_DOWN_ORIGIN_BL_LLR:            return "bl/llr";
++	case CASS_DOWN_ORIGIN_BL_UNKNOWN:        return "bl/unknown";
++	case CASS_DOWN_ORIGIN_LMON_UCW:          return "lmon/ucw";
++	case CASS_DOWN_ORIGIN_LMON_CCW:          return "lmon/ccw";
++	case CASS_DOWN_ORIGIN_LLR_TX_REPLAY:     return "lmon/llr_tx_replay";
++	case CASS_DOWN_ORIGIN_HEADSHELL_REMOVED: return "headshell-removed";
++	case CASS_DOWN_ORIGIN_HEADSHELL_ERROR:   return "headshell-error";
++	case CASS_DOWN_ORIGIN_MEDIA_REMOVED:     return "media-removed";
++	case CASS_DOWN_ORIGIN_CMD:               return "cmd";
++	default:                                 return "unrecognised";
++	}
++}
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_p2p.h b/drivers/net/ethernet/hpe/ss1/cass_p2p.h
+new file mode 100644
+index 000000000000..ab8fe48998a2
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cass_p2p.h
+@@ -0,0 +1,69 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright 2020-2024,2025 Hewlett Packard Enterprise Development LP */
++
++#ifndef _CASS_P2P_H
++#define _CASS_P2P_H
++
++struct ac_map_opts {
++	u64 va_start;
++	u64 va_end;
++	size_t va_len;
++	u32 flags;
++	u64 iova;
++	dma_addr_t *dma_addrs;
++	int page_shift;
++	int huge_shift;
++	int ptg_mode;
++	bool hugepage_test;
++	bool is_huge_page;
++	struct cxi_md_priv *md_priv;
++};
++
++struct cass_p2p_ops {
++	int (*get_pages)(struct ac_map_opts *m_opts);
++	void (*put_pages)(struct cxi_md_priv *md_priv);
++	int (*is_device_mem)(uintptr_t va, size_t len, int *page_shift);
++};
++
++#ifdef CONFIG_HPE_SS1_P2P_DMABUF
++int cass_device_get_pages(struct ac_map_opts *m_opts);
++void cass_device_put_pages(struct cxi_md_priv *md_priv);
++struct cxi_md_priv *cass_device_md(struct cxi_lni_priv *lni_priv, u64 va,
++				   size_t len, dma_addr_t *dma_addr);
++int cass_is_device_memory(struct cass_dev *hw, struct ac_map_opts *m_opts,
++			  uintptr_t va, size_t len);
++void cxi_p2p_fini(void);
++#else
++static inline int cass_device_get_pages(struct ac_map_opts *m_opts)
++{
++	return -ENOTSUPP;
++}
++
++static inline void cass_device_put_pages(struct cxi_md_priv *md_priv)
++{
++	return;
++}
++
++static inline struct cxi_md_priv *cass_device_md(struct cxi_lni_priv *lni_priv,
++						 u64 va, size_t len,
++						 dma_addr_t *dma_addr)
++{
++	return ERR_PTR(-ENOTSUPP);
++}
++
++static inline int cass_is_device_memory(struct cass_dev *hw,
++					struct ac_map_opts *m_opts,
++					uintptr_t va, size_t len)
++{
++	return -ENOTSUPP;
++}
++
++static inline void cxi_p2p_fini(void)
++{
++	return;
++}
++#endif
++int cxi_dmabuf_get_pages(struct ac_map_opts *m_opts);
++void cxi_dmabuf_put_pages(struct cxi_md_priv *md_priv);
++
++#endif /* CASS_P2P_H */
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_rgroup.h b/drivers/net/ethernet/hpe/ss1/cass_rgroup.h
+new file mode 100644
+index 000000000000..2a8ded868b21
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cass_rgroup.h
+@@ -0,0 +1,30 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright 2024 Hewlett Packard Enterprise Development LP */
++
++#ifndef _CASS_RGROUP_H_
++#define _CASS_RGROUP_H_
++
++#include <linux/xarray.h>
++
++#include "cxi_rgroup.h"
++
++void cass_dev_rgroup_init(struct cass_dev *hw);
++
++void cass_dev_rgroup_fini(struct cass_dev *hw);
++
++int cass_rgroup_add_resource(struct cxi_rgroup *rgroup,
++			     struct cxi_resource_entry *resource);
++
++int cass_rgroup_remove_resource(struct cxi_rgroup *rgroup,
++				struct cxi_resource_entry *resource);
++
++void cass_free_resource(struct cxi_rgroup *rgroup,
++			struct cxi_resource_entry *entry);
++
++int cass_alloc_resource(struct cxi_rgroup *rgroup,
++			struct cxi_resource_entry *entry);
++
++void cass_get_tle_in_use(struct cxi_rgroup *rgroup,
++			 struct cxi_resource_entry *entry);
++
++#endif /* _CASS_RGROUP_H_ */
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_rx_tx_profile.h b/drivers/net/ethernet/hpe/ss1/cass_rx_tx_profile.h
+new file mode 100644
+index 000000000000..26082e1cac82
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cass_rx_tx_profile.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright 2024 Hewlett Packard Enterprise Development LP */
++
++#ifndef _CASS_RX_TX_PROFILE_H_
++#define _CASS_RX_TX_PROFILE_H_
++
++struct cass_dev;
++
++void cass_dev_rx_tx_profiles_init(struct cass_dev *hw);
++void cass_dev_rx_tx_profiles_fini(struct cass_dev *hw);
++
++void cass_rx_profile_init(struct cass_dev *hw, struct cxi_rx_profile *rx_profile);
++void cass_tx_profile_init(struct cass_dev *hw, struct cxi_tx_profile *tx_profile);
++
++#endif /* _CASS_RX_TX_PROFILE_H_ */
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_sbl.h b/drivers/net/ethernet/hpe/ss1/cass_sbl.h
+new file mode 100644
+index 000000000000..e6e730087a86
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cass_sbl.h
+@@ -0,0 +1,581 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright 2020-2024 Hewlett Packard Enterprise Development LP */
++
++#ifndef _CXI_SBL_H
++#define _CXI_SBL_H
++
++#include <linux/phy/phy.h>
++#include "uapi/ethernet/sbl-abi.h"
++
++#define PCA_SHASTA_BRAZOS_PASS_1_PN        "102325100"
++#define PCA_SHASTA_BRAZOS_PASS_2_PN        "102325101"
++#define PCA_SHASTA_BRAZOS_PASS_3_PN        "102325102"
++#define PCA_SHASTA_BRAZOS_PASS_4_PN        "P41345-"
++
++#define PCA_SHASTA_SAWTOOTH_PASS_1_PN      "102251000"
++#define PCA_SHASTA_SAWTOOTH_PASS_2_PN      "102251001"
++#define PCA_SHASTA_SAWTOOTH_PASS_3_PN      "P43012-"
++
++#define CASS_LINK_ASYNC_DOWN_TIMEOUT              5000
++#define CASS_LINK_ASYNC_DOWN_INTERVAL              500
++#define CASS_LINK_ASYNC_RESET_TIMEOUT             5000
++#define CASS_LINK_ASYNC_RESET_INTERVAL             500
++#define CASS_PORT_DEFAULT_OPT_FLAGS                  0
++
++#define CASS_PCS_NUM_FECL_CNTRS                           8
++
++/**
++ * @brief default link options flags
++ */
++#define CASS_LINK_ATTR_DEFAULT_OPT_FLAGS                  0
++#define CASS_SBL_PORT_CONFIG1_PRE                         4
++#define CASS_SBL_PORT_CONFIG2_ATTEN                       12
++#define CASS_SBL_PORT_CONFIG2_GS1                         0
++#define CASS_SBL_PORT_CONFIG2_NUM_INTR                    4
++#define CASS_SBL_PORT_CONFIG2_INTR0                       0x2c
++#define CASS_SBL_PORT_CONFIG2_DATA0                       0x0909
++#define CASS_SBL_PORT_CONFIG2_INTR1                       0x6c
++#define CASS_SBL_PORT_CONFIG2_DATA1                       0x3
++#define CASS_SBL_PORT_CONFIG2_INTR2                       0x2c
++#define CASS_SBL_PORT_CONFIG2_DATA2                       0x090a
++#define CASS_SBL_PORT_CONFIG2_INTR3                       0x6c
++#define CASS_SBL_PORT_CONFIG2_DATA3                       0xa
++#define CASS_SBL_PORT_CONFIG3_ATTEN                       6
++#define CASS_SBL_PORT_CONFIG3_PRE                         4
++#define CASS_SBL_PORT_CONFIG3_POST                        0
++#define CASS_SBL_PORT_CONFIG3_GS1                         0
++
++#define CASS_SBL_SC_MASKED_OUT                            0
++#define CASS_SBL_SC_MASKED_IN                             0xffffffffffffffff
++#define CASS_SBL_SC_NA                                    0x0
++#define CASS_SBL_SC_LP_SWITCH                             0x1
++#define CASS_SBL_SC_MT_ELEC                               0x1
++#define CASS_SBL_SC_MT_OPT_ANY                            0x6
++#define CASS_SBL_SC_LBM_ANY                               0xff
++#define CASS_SBL_SC_LM_100                                0x2
++#define CASS_SBL_SC_LM_200                                0x1
++
++/* NOTE: don't forget to add sysfs entries if changing this */
++#define CASS_SBL_LINK_RESTART_TIME_SIZE 10
++
++/* Link up FEC check */
++#define CASS_SBL_UP_MIN_FEC_WINDOW             250    /* ms */
++
++/**
++ * @brief software counter names initialisers
++ *
++ *   provides a name for each counter index
++ *
++ */
++#define CASS_SBL_COUNTER_NAMES  "link_up", \
++				"link_up_tries", \
++				"link_down", \
++				"link_down_tries", \
++				"link_async_down", \
++				"link_async_down_tries", \
++				"link_reset", \
++				"link_reset_tries", \
++				"link_auto_restart", \
++				"link_down_origin_config", \
++				"link_down_origin_bl_lfault", \
++				"link_down_origin_bl_rfault", \
++				"link_down_origin_bl_align", \
++				"link_down_origin_bl_down", \
++				"link_down_origin_bl_hiser", \
++				"link_down_origin_bl_llr", \
++				"link_down_origin_bl_unknown", \
++				"link_down_origin_lmon_ucw", \
++				"link_down_origin_lmon_ccw", \
++				"link_down_origin_lmon_llr_tx_replay", \
++				"link_down_origin_headshell_removed", \
++				"link_down_origin_headshell_error", \
++				"link_down_origin_media_removed", \
++				"link_down_origin_cmd", \
++				SBL_COUNTERS_NAME
++
++#define CASS_LMON_COUNTER_NAMES "lmon_wakeup", \
++				"lmon_active", \
++				"lmon_limiter"
++
++/**
++ * enum cass_port_subtype - The sub-type of a port
++ * @CASS_PORT_SUBTYPE_INVALID: Invalid
++ * @CASS_PORT_SUBTYPE_LOCAL:   Local group fabric port
++ * @CASS_PORT_SUBTYPE_GLOBAL:  Global (inter-group) fabric port
++ * @CASS_PORT_SUBTYPE_IEEE:    Standard Ethernet NIC
++ * @CASS_PORT_SUBTYPE_CASSINI: Cassini NIC
++ *
++ * The sub-type of a port
++ */
++enum cass_port_subtype {
++	CASS_PORT_SUBTYPE_INVALID = 0,
++	CASS_PORT_SUBTYPE_LOCAL,
++	CASS_PORT_SUBTYPE_GLOBAL,
++	CASS_PORT_SUBTYPE_IEEE,
++	CASS_PORT_SUBTYPE_CASSINI,
++};
++
++/**
++ * enum cass_port_command - Commands that can be issued to a port
++ * @CASS_CMD_NULL:       Invalid
++ * @CASS_CMD_NOOP:       Do nothing (for testing)
++ * @CASS_CMD_PORT_START: Request port starts
++ * @CASS_CMD_PORT_STOP:  Request port stops
++ * @CASS_CMD_PORT_RESET: Request port reset
++ * @CASS_CMD_LINK_UP:    Request link bring-up
++ * @CASS_CMD_LINK_DOWN:  Request link bring-down
++ * @CASS_CMD_LINK_RESET: Request link resets
++ *
++ * Commands that can be issued to a port
++ */
++enum cass_port_command {
++	CASS_CMD_NULL = 0,
++	CASS_CMD_NOOP,
++	CASS_CMD_PORT_START,
++	CASS_CMD_PORT_STOP,
++	CASS_CMD_PORT_RESET,
++	CASS_CMD_LINK_UP,
++	CASS_CMD_LINK_DOWN,
++	CASS_CMD_LINK_RESET,
++};
++
++/**
++ * enum cass_port_status - The status of a port
++ * @CASS_PORT_STATUS_UNKNOWN:          State unknown
++ * @CASS_PORT_STATUS_NOT_PRESENT:      Port not present in hardware
++ * @CASS_PORT_STATUS_UNCONFIGURED:     Port is not configured
++ * @CASS_PORT_STATUS_STARTING:         Port Starting
++ * @CASS_PORT_STATUS_UP:               Port Up
++ * @CASS_PORT_STATUS_RUNNING:          Port Up and Link Up
++ * @CASS_PORT_STATUS_RUNNING_DEGRADED: Port Up and Link Up but link degraded
++ * @CASS_PORT_STATUS_STOPPING:         Port Stopping
++ * @CASS_PORT_STATUS_DOWN:             Port is down and ready to start
++ * @CASS_PORT_STATUS_RESETTING:        Port is resetting
++ * @CASS_PORT_STATUS_ERROR:            Port has an Error
++ *
++ * The status of a port
++ */
++enum cass_port_status {
++	CASS_PORT_STATUS_UNKNOWN          = 0,
++	CASS_PORT_STATUS_NOT_PRESENT      = 1 << 0,
++	CASS_PORT_STATUS_UNCONFIGURED     = 1 << 1,
++	CASS_PORT_STATUS_STARTING         = 1 << 2,
++	CASS_PORT_STATUS_UP               = 1 << 3,
++	CASS_PORT_STATUS_RUNNING          = 1 << 4,
++	CASS_PORT_STATUS_RUNNING_DEGRADED = 1 << 5,
++	CASS_PORT_STATUS_STOPPING         = 1 << 6,
++	CASS_PORT_STATUS_DOWN             = 1 << 7,
++	CASS_PORT_STATUS_RESETTING        = 1 << 8,
++	CASS_PORT_STATUS_ERROR            = 1 << 9,
++};
++
++/**
++ * enum cass_lmon_direction - link monitor direction flags
++ *
++ * @CASS_LMON_DIRECTION_INVALID: Invalid
++ * @CASS_LMON_DIRECTION_NONE:    no action requested
++ * @CASS_LMON_DIRECTION_UP:      port should try to come up
++ * @CASS_LMON_DIRECTION_DOWN:    port should try to come down
++ * @CASS_LMON_DIRECTION_RESET:   port should reset
++ */
++enum cass_lmon_direction {
++	CASS_LMON_DIRECTION_INVALID = 0,
++	CASS_LMON_DIRECTION_NONE,
++	CASS_LMON_DIRECTION_UP,
++	CASS_LMON_DIRECTION_DOWN,
++	CASS_LMON_DIRECTION_RESET,
++};
++
++/**
++ * enum cass_link_status - Status of the link
++ *
++ * @CASS_LINK_STATUS_UNKNOWN:		State unknown
++ * @CASS_LINK_STATUS_UNCONFIGURED:	Link is not configured
++ * @CASS_LINK_STATUS_STARTING:		Link bring-up in progress
++ * @CASS_LINK_STATUS_UP:		Link Up
++ * @CASS_LINK_STATUS_STOPPING:		Link bring-down in progress
++ * @CASS_LINK_STATUS_DOWN:		Link Down
++ * @CASS_LINK_STATUS_RESETTING:		Link reset in progress
++ * @CASS_LINK_STATUS_ERROR:		Link has an error
++ */
++enum cass_link_status {
++	CASS_LINK_STATUS_UNKNOWN      = 0,
++	CASS_LINK_STATUS_UNCONFIGURED = 1 << 0,
++	CASS_LINK_STATUS_STARTING     = 1 << 1,
++	CASS_LINK_STATUS_UP           = 1 << 2,
++	CASS_LINK_STATUS_STOPPING     = 1 << 3,
++	CASS_LINK_STATUS_DOWN         = 1 << 4,
++	CASS_LINK_STATUS_RESETTING    = 1 << 5,
++	CASS_LINK_STATUS_ERROR        = 1 << 6,
++};
++
++/**
++ * enum cass_link_status - Link configuration option flags
++ * @CASS_LINK_OPT_UP_AUTO_RESTART:	Keep trying to bring up a link that has
++ *					gone down
++ * @CASS_LINK_OPT_NO_SHUTDOWN:		Keep trying to bring up a link that has
++ *					gone down
++ * @CASS_LINK_OPT_RESTART_ON_INSERT:    Allow link restart if up before
++ *                                      headshell remove
++ *
++ * Link configuration option flags
++ */
++enum cass_link_options {
++	CASS_LINK_OPT_UP_AUTO_RESTART    = 1 << 1,
++	CASS_LINK_OPT_NO_SHUTDOWN        = CASS_LINK_OPT_UP_AUTO_RESTART,
++	CASS_LINK_OPT_RESTART_ON_INSERT  = 1 << 2,
++};
++
++/**
++ * enum cass_link_down_origin - The reason the link went down
++ * @CASS_DOWN_ORIGIN_UNKNOWN:		Origin is not known
++ * @CASS_DOWN_ORIGIN_NONE:		not coming down
++ * @CASS_DOWN_ORIGIN_CONFIG:		down after config
++ * @CASS_DOWN_ORIGIN_BL_LFAULT:		base link - local fault
++ * @CASS_DOWN_ORIGIN_BL_RFAULT:		base link - remote fault
++ * @CASS_DOWN_ORIGIN_BL_ALIGN:		base link - alignment lost
++ * @CASS_DOWN_ORIGIN_BL_DOWN:		base link - link down
++ * @CASS_DOWN_ORIGIN_BL_HISER:		base link - high serdes errors
++ * @CASS_DOWN_ORIGIN_BL_LLR:		base link - llr max buffer
++ * @CASS_DOWN_ORIGIN_BL_UNKNOWN:	base link - some other reason
++ * @CASS_DOWN_ORIGIN_LMON_UCW:		lmon - high uncorrected fec error rate
++ * @CASS_DOWN_ORIGIN_LMON_CCW:		lmon - high corrected fec error rate
++ * @CASS_DOWN_ORIGIN_LLR_TX_REPLAY:	lmon - high llr_tx_replay fec error rate
++ * @CASS_DOWN_ORIGIN_HEADSHELL_REMOVED: headshell removed
++ * @CASS_DOWN_ORIGIN_HEADSHELL_ERROR:   headshell fault
++ * @CASS_DOWN_ORIGIN_MEDIA_REMOVED:     media removed
++ * @CASS_DOWN_ORIGIN_CMD:               direct command
++ *
++ * The last reason why the link has gone down.
++ */
++enum cass_link_down_origin {
++	CASS_DOWN_ORIGIN_UNKNOWN,
++	CASS_DOWN_ORIGIN_NONE,
++	CASS_DOWN_ORIGIN_CONFIG,
++	CASS_DOWN_ORIGIN_BL_LFAULT,
++	CASS_DOWN_ORIGIN_BL_RFAULT,
++	CASS_DOWN_ORIGIN_BL_ALIGN,
++	CASS_DOWN_ORIGIN_BL_DOWN,
++	CASS_DOWN_ORIGIN_BL_HISER,
++	CASS_DOWN_ORIGIN_BL_LLR,
++	CASS_DOWN_ORIGIN_BL_UNKNOWN,
++	CASS_DOWN_ORIGIN_LMON_UCW,
++	CASS_DOWN_ORIGIN_LMON_CCW,
++	CASS_DOWN_ORIGIN_LLR_TX_REPLAY,
++	CASS_DOWN_ORIGIN_HEADSHELL_REMOVED,
++	CASS_DOWN_ORIGIN_HEADSHELL_ERROR,
++	CASS_DOWN_ORIGIN_MEDIA_REMOVED,
++	CASS_DOWN_ORIGIN_CMD,
++};
++
++/**
++ * enum cass_port_config_flags - Configure/unconfigured state
++ * @CASS_TYPE_CONFIGURED:	type info has been configured
++ * @CASS_PORT_CONFIGURED:	port info  has been configured
++ * @CASS_LINK_CONFIGURED:	link info has been configured
++ * @CASS_MEDIA_CONFIGURED:	media info has been configured
++ *
++ * Configured/uncofigured state for tpml
++ */
++enum cass_port_config_flags {
++	CASS_TYPE_CONFIGURED   = (1 << 0),
++	CASS_PORT_CONFIGURED   = (1 << 1),
++	CASS_LINK_CONFIGURED   = (1 << 2),
++	CASS_MEDIA_CONFIGURED  = (1 << 3),
++};
++
++/**
++ * enum cass_phy_mode - Phy mode for Cassini SerDes
++ * @PHY_MODE_NORMAL:		normal operation
++ * @PHY_MODE_TX_DISABLED:	Transmitter disabled
++ * @PHY_MODE_LOW_POWER:		SerDes in low power mode
++ * @PHY_MODE_OFF:		SerDes powered off
++ * @PHY_MODE_SPECIAL:		special operation flag
++ *
++ * Phy mode for Cassini SerDes
++ */
++enum cass_phy_mode {
++	PHY_MODE_NORMAL		= 0,
++	PHY_MODE_TX_DISABLED	= 1,
++	PHY_MODE_LOW_POWER	= 2,
++	PHY_MODE_OFF		= 4,
++	PHY_MODE_SPECIAL	= 8,
++};
++
++/**
++ * enum cass_pause_type - Pause type for Cassini
++ * @CASS_PAUSE_TYPE_INVALID:	invalid pause type
++ * @CASS_PAUSE_TYPE_NONE:		no pause specified
++ * @CASS_PAUSE_TYPE_GLOBAL:		standard pause
++ * @CASS_PAUSE_TYPE_802_3X:		standard pause
++ * @CASS_PAUSE_TYPE_PFC:		priority flow control pause
++ * @CASS_PAUSE_TYPE_802_1QBB:	priority flow control pause
++ *
++ * Pause type for Cassini
++ */
++enum cass_pause_type {
++	CASS_PAUSE_TYPE_INVALID  = 0,
++	CASS_PAUSE_TYPE_NONE,
++	CASS_PAUSE_TYPE_GLOBAL,
++	CASS_PAUSE_TYPE_802_3X   = CASS_PAUSE_TYPE_GLOBAL,
++	CASS_PAUSE_TYPE_PFC,
++	CASS_PAUSE_TYPE_802_1QBB = CASS_PAUSE_TYPE_PFC,
++};
++
++/**
++ * enum cass_sbl_counters_idx - Software counter indexes
++ *
++ * Counters cannot be reset
++ *
++ * @link_up:                            link reached up state
++ * @link_up_tries:                      link up called
++ * @link_down:                          link reached down state
++ * @link_down_tries:                    link down called
++ * @link_async_down:                    link async down triggers down
++ * @link_async_down_tries:              link async down called
++ * @link_reset:                         link reset completed
++ * @link_reset_tries:                   link reset called
++ * @link_auto_restart:                  lmon link auto-restarted
++ * @link_down_origin_config:            after config
++ * @link_down_origin_bl_lfault:         pcs local fault
++ * @link_down_origin_bl_rfault:         pcr remote fault
++ * @link_down_origin_bl_align:          pcs align
++ * @link_down_origin_bl_down:           pcs link down
++ * @link_down_origin_bl_hiser:          pcs high serdes error rate
++ * @link_down_origin_bl_llr:            llr error
++ * @link_down_origin_bl_unknown:        base link unknown
++ * @link_down_origin_lmon_ucw:          lmon high ucw rate
++ * @link_down_origin_lmon_ccw:          lmon high ccw rate
++ * @link_down_origin_lmon_llr_tx_replay:lmon high llr tx replay rate
++ * @link_down_origin_headshell_removed: headshell removed
++ * @link_down_origin_headshell_error:   headshell in error
++ * @link_down_origin_media_removed:     media removed
++ * @link_down_origin_cmd:               user command
++ * @SBL_COUNTERS:                       sbl counters defined in sbl_counters.h
++ * @CASS_SBL_NUM_COUNTERS:              the number of counters
++ */
++enum cass_sbl_counters_idx {
++	link_up,
++	link_up_tries,
++	link_down,
++	link_down_tries,
++	link_async_down,
++	link_async_down_tries,
++	link_reset,
++	link_reset_tries,
++	link_auto_restart,
++	link_down_origin_config,
++	link_down_origin_bl_lfault,
++	link_down_origin_bl_rfault,
++	link_down_origin_bl_align,
++	link_down_origin_bl_down,
++	link_down_origin_bl_hiser,
++	link_down_origin_bl_llr,
++	link_down_origin_bl_unknown,
++	link_down_origin_lmon_ucw,
++	link_down_origin_lmon_ccw,
++	link_down_origin_lmon_llr_tx_replay,
++	link_down_origin_headshell_removed,
++	link_down_origin_headshell_error,
++	link_down_origin_media_removed,
++	link_down_origin_cmd,
++	SBL_COUNTERS,
++	CASS_SBL_NUM_COUNTERS,
++};
++
++/**
++ * enum cass_counters_idx - Software counter indexes
++ *
++ * Counters cannot be reset
++ *
++ * @lmon_wakeup:                        lmon wakeup
++ * @lmon_active:                        lmon active
++ * @lmon_limiter:                       lmon limiter
++ */
++enum cass_lmon_counters_idx {
++	lmon_wakeup,
++	lmon_active,
++	lmon_limiter,
++	CASS_LMON_NUM_COUNTERS,
++};
++
++/**
++ * struct cass_link_attr - Attributes for link configuration
++ * @bl:                 base-link attributes
++ * @options:            option flags for links
++ * @el:                 ether link specific attributes;
++ * @el.mattr:           cable related configuration
++ *
++ * These attributes must be configured for a link.
++ * Different setting will be required for fabric or Ethernet links
++ * The anonymous union is not required by base link.
++ */
++struct cass_link_attr {
++	struct sbl_base_link_attr bl;
++	__u32 options;
++	struct sbl_media_attr mattr;
++};
++
++/**
++ * struct cass_port - port-specific values
++ *
++ * @subtype:                  ieee or casssini
++ * @lock:                     TODO what lock type?
++ * @lmon:                     link monitor thread
++ * @lmon_dirn:                lmon direction
++ * @lmon_wq:                  wq for waking the link monitor
++ * @lmon_active:              lmon is awake
++ * @lmon_limiter_on:          rate limiter is active
++ * @lmon_up_pause:            link up is paused
++ * @lmon_wake_jiffies:        end of wake count period
++ * @lmon_wake_cnt:            wakeups in period
++ * @lmon_counters:            sw counter block (can never be cleared)
++ * @config_state:             what has been configured
++ * @lattr:                    link related configuration
++ * @lstate:                   link state
++ * @prev_lstate:              previous link state
++ * @lerr:                     error number that caused error state
++ * @hstate:                   headshell state
++ * @link_down_origin:         reason we are going down
++ * @link_restart_count:       auto link restarts since last up command
++ * @link_restart_time_idx     auto link restarts current buffer index
++ * @link_restart_time_buf     auto link restarts timestamp buffer
++ * @pause_lock:               lock on pause state access
++ * @pause_type:               type of pause (global/pfc)
++ * @tx_pause:                 enable tx pause
++ * @rx_pause:                 enable rx pause
++ */
++struct cass_port {
++	int subtype;
++	spinlock_t lock;
++	struct task_struct *lmon;
++	int lmon_dirn;
++	wait_queue_head_t lmon_wq;
++	bool lmon_active;
++	bool lmon_limiter_on;
++	bool lmon_up_pause;
++	unsigned long lmon_wake_jiffies;
++	int lmon_wake_cnt;
++	atomic_t *lmon_counters;
++	u32 config_state;
++	struct cass_link_attr lattr;
++	u32 lstate;
++	u32 prev_lstate;
++	u32 lerr;
++	u32 hstate;
++	u32 link_down_origin;
++	u32 link_restart_count;
++	u32 link_restart_time_idx;
++	time64_t link_restart_time_buf[CASS_SBL_LINK_RESTART_TIME_SIZE];
++	spinlock_t pause_lock;
++	u32 pause_type;
++	bool tx_pause;
++	bool rx_pause;
++	time64_t start_time;
++};
++
++int cass_sbl_init(struct cass_dev *hw);
++int cass_sbl_link_start(struct cass_dev *hw);
++int cass_sbl_link_fini(struct cass_dev *hw);
++int cass_sbl_power_on(struct cass_dev *hw);
++int cass_sbl_power_off(struct cass_dev *hw);
++void cass_sbl_set_defaults(struct cass_dev *hw);
++int cass_sbl_configure(struct cass_dev *hw);
++int cass_sbl_reset(struct cass_dev *hw);
++
++/*
++ * link monitors (lmon)
++ */
++int  cass_lmon_start_all(struct cass_dev *hw);
++int  cass_lmon_stop_all(struct cass_dev *hw);
++void cass_lmon_kill_all(struct cass_dev *hw);
++int cass_lmon_get_dirn(struct cass_dev *hw);
++void cass_lmon_set_dirn(struct cass_dev *hw, int dirn);
++bool cass_lmon_get_active(struct cass_dev *hw);
++void cass_lmon_set_active(struct cass_dev *hw, bool state);
++void cass_lmon_set_up_pause(struct cass_dev *hw, bool state);
++bool cass_lmon_get_up_pause(struct cass_dev *hw);
++int  cass_lmon_request_up(struct cass_dev *hw);
++int  cass_lmon_request_down(struct cass_dev *hw);
++int  cass_lmon_request_reset(struct cass_dev *hw);
++const char *cass_lmon_dirn_str(enum cass_lmon_direction dirn);
++
++/*
++ * misc
++ */
++int  cass_link_get_down_origin(struct cass_dev *hw);
++void cass_link_set_down_origin(struct cass_dev *hw, int origin);
++const char *cass_link_state_str(enum cass_link_status state);
++const char *cass_link_down_origin_str(u32 origin);
++void cass_tc_get_hni_pause_cfg(struct cass_dev *hw);
++
++/*
++ * Port database
++ */
++int cass_port_new_port_db(struct cass_dev *hw);
++void cass_port_del_port_db(struct cass_dev *hw);
++
++/*
++ * link state access
++ */
++int  cass_link_get_state(struct cass_dev *hw);
++void cass_link_set_state(struct cass_dev *hw, int state, int err);
++
++/*
++ * set link led
++ */
++void cass_link_set_led(struct cass_dev *hw);
++
++/*
++ * sysfs
++ */
++int cass_link_sysfs_sprint(struct cass_dev *hw, char *buf, size_t size);
++int cass_pause_sysfs_sprint(struct cass_dev *hw, char *buf, size_t size);
++
++/*
++ * Text output helpers
++ */
++const char *cass_port_subtype_str(enum cass_port_subtype subtype);
++const char *cass_link_state_str(enum cass_link_status state);
++const char *cass_pause_type_str(enum cass_pause_type type);
++
++/*
++ * principal link functions
++ */
++void cass_link_async_down(struct cass_dev *hw, u32 origin);
++int  cass_link_async_down_wait(struct cass_dev *hw, u32 origin);
++int cass_link_async_reset_wait(struct cass_dev *hw, u32 origin);
++
++void cass_sbl_mode_get(struct cass_dev *hw, struct cxi_link_info *link_info);
++void cass_sbl_mode_set(struct cass_dev *hw, const struct cxi_link_info *link_info);
++void cass_sbl_pml_recovery_set(struct cass_dev *hw, bool set);
++void cass_sbl_get_debug_flags(struct cass_dev *hw, u32 *flags);
++void cass_sbl_set_debug_flags(struct cass_dev *hw, u32 clr_flags, u32 set_flags);
++void cass_sbl_link_mode_to_speed(u32 link_mode, int *speed);
++void cass_sbl_link_speed_to_mode(int speed, u32 *link_mode);
++
++int cass_sbl_media_config(struct cass_dev *hw, void *attr);
++int cass_sbl_media_unconfig(struct cass_dev *hw);
++int cass_sbl_link_config(struct cass_dev *hw);
++bool cass_sbl_is_link_up(struct cass_dev *hw);
++
++bool cass_sbl_pml_pcs_aligned(struct cass_dev *hw);
++int cass_sbl_exit(struct cass_dev *hw);
++void cass_sbl_exit_legacy(struct cass_dev *hw);
++
++/*
++ * sbl counters
++ */
++int cass_sbl_counters_init(struct cass_dev *hw);
++void cass_sbl_counters_term(struct cass_dev *hw);
++void cass_sbl_counters_down_origin_inc(struct cass_dev *hw, int down_origin);
++void cass_sbl_counters_update(struct cass_dev *hw);
++
++/*
++ * lmon counters
++ */
++void cass_lmon_counters_init(struct cass_dev *hw);
++void cass_lmon_counters_term(struct cass_dev *hw);
++
++int cass_sbl_set_eth_name(struct cass_dev *hw, const char *name);
++#endif	/* _CXI_SBL_H */
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_sl.h b/drivers/net/ethernet/hpe/ss1/cass_sl.h
+new file mode 100644
+index 000000000000..e36f7e695c9a
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cass_sl.h
+@@ -0,0 +1,95 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright 2022,2023,2024 Hewlett Packard Enterprise Development LP */
++
++#ifndef _CASS_SL_H_
++#define _CASS_SL_H_
++
++#include <linux/hpe/sl/sl_media.h>
++#include <linux/hpe/sl/sl_link.h>
++#include <linux/hpe/sl/sl_llr.h>
++#include <linux/hpe/sl/sl_mac.h>
++#include <linux/hpe/sl/sl_lgrp.h>
++#include <linux/hpe/sl/sl_ldev.h>
++#include <linux/hpe/sl/sl_fec.h>
++
++struct cass_sl_dev {
++	bool                         is_initialized;
++
++	struct sl_ops                ops;
++	struct sl_uc_ops             uc_ops;
++	struct sl_accessors          accessors;
++	struct sl_uc_accessor        uc_accessor;
++
++	struct sl_hw_attr            hw_attr;
++
++	struct sl_ldev              *ldev;
++	struct sl_ldev_attr          ldev_config;
++
++	struct sl_lgrp              *lgrp;
++	struct sl_lgrp_config        lgrp_config;
++
++	u32                          static_tech_map;
++	u32                          autoneg_tech_map;
++	u32                          link_up_mode;
++	u32                          link_up_fec_type;
++
++	struct sl_link              *link;
++	struct sl_link_config        link_config;
++	struct sl_link_policy        link_policy;
++	u32                          link_state;
++	bool                         is_fw_loaded;
++
++	struct sl_mac               *mac;
++
++	struct sl_llr               *llr;
++	struct sl_llr_config         llr_config;
++	bool                         enable_llr;
++	u32                          llr_state;
++	struct sl_llr_data           llr_data;
++
++	struct sl_media_attr         media_attr;
++	bool                         has_cable;
++
++	struct list_head             intr_list;
++	/* Serializes interrupt registration and removal. */
++	struct mutex                 intr_lock;
++
++	struct mutex                 pmi_lock;
++	struct mutex                 sbus_lock;
++
++	struct completion            step_complete;
++
++	u32                          old_an_mode;
++	u32                          old_lt_mode;
++
++	bool                         is_canceled;
++
++	struct {
++		void       *cntrs;
++		size_t      cntrs_size;
++		int         dma_id;
++		dma_addr_t  dma_addr;
++	} fec;
++};
++
++bool cass_sl_is_pcs_aligned(struct cass_dev *cass_dev);
++
++void cass_sl_mode_get(struct cass_dev *cass_dev, struct cxi_link_info *link_info);
++void cass_sl_mode_set(struct cass_dev *cass_dev, const struct cxi_link_info *link_info);
++void cass_sl_flags_get(struct cass_dev *cass_dev, u32 *flags);
++void cass_sl_flags_set(struct cass_dev *cass_dev, u32 clr_flags, u32 set_flags);
++
++void cass_sl_pml_recovery_set(struct cass_dev *cass_dev, bool set);
++
++int  cass_sl_init(struct cass_dev *cass_dev);
++int  cass_sl_connect_id_set(struct cass_dev *cass_dev, const char *connect_id);
++int  cass_sl_media_config(struct cass_dev *cass_dev, void *media_attr);
++int  cass_sl_link_config(struct cass_dev *cass_dev);
++bool cass_sl_is_link_up(struct cass_dev *cass_dev);
++int  cass_sl_link_up(struct cass_dev *cass_dev);
++int  cass_sl_link_down(struct cass_dev *cass_dev);
++int cass_sl_exit(struct cass_dev *cass_dev);
++int  cass_sl_media_unconfig(struct cass_dev *cass_dev);
++int cass_sl_link_fini(struct cass_dev *cass_dev);
++
++#endif /* _CASS_SL_H_ */
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_sl_io.h b/drivers/net/ethernet/hpe/ss1/cass_sl_io.h
+new file mode 100644
+index 000000000000..d03509583407
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cass_sl_io.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright 2025 Hewlett Packard Enterprise Development LP */
++
++#ifndef _CASS_SL_IO_H_
++#define _CASS_SL_IO_H_
++
++int cass_sl_uc_write8(void *uc_accessor, u8 page, u8 addr, u8 data);
++int cass_sl_uc_read(void *uc_accessor, u32 offset, u32 page, u8 *data, u32 len);
++u64 cass_sl_read64(void *pci_accessor, long addr);
++void cass_sl_write64(void *pci_accessor, long addr, u64 data64);
++int cass_sl_sbus_rd(void *sbus_accessor, u32 sbus_addr, u8 reg_addr, u32 *rd_data);
++int cass_sl_sbus_wr(void *sbus_accessor, u32 sbus_addr, u8 reg_addr, u32 req_data);
++int cass_sl_sbus_cmd(void *sbus_accessor, int ring, u32 req_data, u8 reg_addr,
++		     u8 dev_addr, u8 op, u32 *rsp_data, u8 *result_code,
++	u8 *overrun, u8 *error, int timeout_ms, u32 flags);
++int cass_sl_pmi_rd(void *pmi_accessor, u8 lgrp_num, u32 addr, u16 *data);
++int cass_sl_pmi_wr(void *pmi_accessor, u8 lgrp_num, u32 addr, u16 data, u16 mask);
++
++#endif /* _CASS_SL_IO_H_ */
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_ss1_debugfs.c b/drivers/net/ethernet/hpe/ss1/cass_ss1_debugfs.c
+new file mode 100644
+index 000000000000..edeee3937705
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cass_ss1_debugfs.c
+@@ -0,0 +1,824 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2018, 2025-2026 Hewlett Packard Enterprise Development LP */
++
++/* cxi-ss1 debug fs*/
++#include <linux/etherdevice.h>
++#include <linux/seq_file.h>
++#include <linux/hpe/sbl/sbl.h>
++#include "cass_core.h"
++#include "cass_ss1_debugfs.h"
++
++#define DEBUGFS_BUFSIZE        800
++
++/* Dump UC logging to debugfs */
++static int uc_log(struct seq_file *s, void *unused)
++{
++	struct cass_dev *hw = s->private;
++	int rc;
++
++	if (!hw->uc_present)
++		return 0;
++
++	mutex_lock(&hw->uc_mbox_mutex);
++
++	while (!seq_has_overflowed(s)) {
++		uc_prepare_comm(hw);
++
++		hw->uc_req.cmd = CUC_CMD_GET_LOG;
++		hw->uc_req.count = 1;
++
++		rc = uc_wait_for_response(hw);
++		if (rc || hw->uc_resp.count <= 1)
++			break;
++
++		hw->uc_resp.data[CUC_DATA_BYTES - 1] = 0;
++		seq_printf(s, "%s\n", hw->uc_resp.data);
++	}
++
++	mutex_unlock(&hw->uc_mbox_mutex);
++
++	return 0;
++}
++
++static int uc_log_debug_dev_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, uc_log, inode->i_private);
++}
++
++const struct file_operations uc_fops = {
++	.owner = THIS_MODULE,
++	.open = uc_log_debug_dev_open,
++	.read = seq_read,
++	.llseek  = seq_lseek,
++	.release = single_release,
++};
++
++/*
++ * print out pause state for debugfs diags
++ *
++ */
++static void cass_pause_debugfs_print(struct cass_dev *hw, struct seq_file *s)
++{
++	u32 pause_type;
++	bool tx_pause;
++	bool rx_pause;
++
++	spin_lock(&hw->port->pause_lock);
++	pause_type = hw->port->pause_type;
++	tx_pause = hw->port->tx_pause;
++	rx_pause = hw->port->rx_pause;
++	spin_unlock(&hw->port->pause_lock);
++
++	seq_printf(s, "pause: %s", cass_pause_type_str(pause_type));
++	switch (pause_type) {
++	case CASS_PAUSE_TYPE_GLOBAL:
++	case CASS_PAUSE_TYPE_PFC:
++		seq_printf(s, ", tx %s, rx %s",
++			   tx_pause ? "on" : "off", rx_pause ? "on" : "off");
++		break;
++	default:
++		break;
++	}
++	seq_puts(s, "\n");
++}
++
++static const int rsrc_dump_order[] = {
++	CXI_RESOURCE_AC,
++	CXI_RESOURCE_CT,
++	CXI_RESOURCE_EQ,
++	CXI_RESOURCE_PTLTE,
++	CXI_RESOURCE_TGQ,
++	CXI_RESOURCE_TXQ,
++	CXI_RESOURCE_PE0_LE,
++	CXI_RESOURCE_PE1_LE,
++	CXI_RESOURCE_PE2_LE,
++	CXI_RESOURCE_PE3_LE,
++	CXI_RESOURCE_TLE
++};
++
++static int dump_rgroups(struct cass_dev *hw, struct seq_file *s)
++{
++	int i;
++	int rc;
++	unsigned long index;
++	struct cxi_rgroup *rgroup;
++	struct cxi_resource_entry *entry;
++
++	seq_puts(s, "Rgroups:");
++	for_each_rgroup(index, rgroup) {
++		seq_printf(s, "\nID: %u\n", rgroup->id);
++		seq_printf(s, "  Name:%s\n", cxi_rgroup_name(rgroup));
++		seq_printf(s, "  State:%s\n",
++			   cxi_rgroup_is_enabled(rgroup) ? "Enabled" : "Disabled");
++		seq_printf(s, "  LNIs/RGID:%d\n",
++			   cxi_rgroup_lnis_per_rgid(rgroup));
++		seq_printf(s, "  System service:%d\n",
++			   cxi_rgroup_system_service(rgroup));
++		seq_printf(s, "  Counter pool ID:%d\n",
++			   cxi_rgroup_cntr_pool_id(rgroup));
++		seq_printf(s, "  LE pool IDs: %d %d %d %d  TLE pool ID: %d\n",
++			   rgroup->pools.le_pool_id[0],
++			   rgroup->pools.le_pool_id[1],
++			   rgroup->pools.le_pool_id[2],
++			   rgroup->pools.le_pool_id[3],
++			   rgroup->pools.tle_pool_id);
++
++		cxi_rgroup_print_ac_entry_info(rgroup, s);
++
++		seq_puts(s, "           ACs     CTs     EQs    PTEs    TGQs    TXQs    LE0s    LE1s    LE2s    LE3s    TLEs\n");
++		seq_puts(s, "  max   ");
++		for (i = 0; i < ARRAY_SIZE(rsrc_dump_order); i++) {
++			rc = cxi_rgroup_get_resource_entry(rgroup,
++							   rsrc_dump_order[i],
++							   &entry);
++			seq_printf(s, "%6lu  ", rc ? 0 : entry->limits.max);
++		}
++		seq_puts(s, "\n");
++
++		seq_puts(s, "  res   ");
++		for (i = 0; i < ARRAY_SIZE(rsrc_dump_order); i++) {
++			rc = cxi_rgroup_get_resource_entry(rgroup,
++							   rsrc_dump_order[i],
++							   &entry);
++			seq_printf(s, "%6lu  ", rc ? 0 : entry->limits.reserved);
++		}
++		seq_puts(s, "\n");
++
++		seq_puts(s, "Alloc   ");
++		for (i = 0; i < ARRAY_SIZE(rsrc_dump_order); i++) {
++			rc = cxi_rgroup_get_resource_entry(rgroup,
++							   rsrc_dump_order[i],
++							   &entry);
++			seq_printf(s, "%6lu  ", rc ? 0 : entry->limits.in_use);
++		}
++		seq_puts(s, "\n");
++	}
++
++	cxi_rx_profile_print(s);
++	cxi_tx_profile_print(s);
++
++	return 0;
++}
++
++static int dump_services(struct seq_file *s, void *unused)
++{
++	int i;
++	ulong value;
++	struct cass_dev *hw = s->private;
++	struct cxi_resource_use *rsrc_use = hw->resource_use;
++
++	spin_lock(&hw->rgrp_lock);
++
++	seq_puts(s, "Resources\n");
++	seq_puts(s, "           ACs     CTs     EQs    PTEs    TGQs    TXQs    LE0s    LE1s    LE2s    LE3s    TLEs\n");
++
++	seq_puts(s, "  Max ");
++	for (i = 0; i < ARRAY_SIZE(rsrc_dump_order); i++)
++		seq_printf(s, "  %6lu", rsrc_use[rsrc_dump_order[i]].max);
++	seq_puts(s, "\n");
++
++	seq_puts(s, "  Res ");
++	for (i = 0; i < ARRAY_SIZE(rsrc_dump_order); i++)
++		seq_printf(s, "  %6lu", rsrc_use[rsrc_dump_order[i]].reserved);
++	seq_puts(s, "\n");
++
++	seq_puts(s, "Alloc ");
++	for (i = 0; i < ARRAY_SIZE(rsrc_dump_order); i++)
++		seq_printf(s, "  %6lu", rsrc_use[rsrc_dump_order[i]].in_use);
++	seq_puts(s, "\n");
++
++	seq_puts(s, "Avail ");
++	for (i = 0; i < ARRAY_SIZE(rsrc_dump_order); i++) {
++		value = rsrc_use[rsrc_dump_order[i]].shared -
++			rsrc_use[rsrc_dump_order[i]].shared_use;
++		seq_printf(s, "  %6lu", value);
++	}
++	seq_puts(s, "\n\n");
++
++	dump_rgroups(hw, s);
++
++	spin_unlock(&hw->rgrp_lock);
++
++	return 0;
++}
++
++static int dump_service_debug_dev_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, dump_services, inode->i_private);
++}
++
++static const struct file_operations svc_debug_fops = {
++	.owner = THIS_MODULE,
++	.open = dump_service_debug_dev_open,
++	.read = seq_read,
++	.llseek  = seq_lseek,
++	.release = single_release,
++};
++
++void svc_service_debugfs_create(struct cass_dev *hw)
++{
++	hw->svc_debug = debugfs_create_file("services", 0444, hw->debug_dir,
++					    hw, &svc_debug_fops);
++}
++
++static int cass_port_uptime_str(time64_t time, char *buf, int len)
++{
++	int days;
++	int hours;
++	int mins;
++	int secs;
++	int bytes;
++
++	/* divide time by seconds per day to get days */
++	days  = time / (24 * 60 * 60);
++	time %= 24 * 60 * 60;
++
++	/* divide remainder by seconds per hour to get hours */
++	hours = time / (60 * 60);
++	time %= 60 * 60;
++
++	/* divide remainder by seconds per minute to get minutes */
++	mins  = time / 60;
++	time %= 60;
++
++	/* remainder in seconds */
++	secs  = time;
++
++	if (days)
++		bytes = snprintf(buf, len, "%dd %dh %dm %ds", days, hours, mins, secs);
++	else if (hours)
++		bytes = snprintf(buf, len, "%dh %dm %ds", hours, mins, secs);
++	else if (mins)
++		bytes = snprintf(buf, len, "%dm %ds", mins, secs);
++	else
++		bytes = snprintf(buf, len, "%ds", secs);
++
++	if (bytes > len)
++		return -ENOSPC;
++	else
++		return 0;
++}
++
++/*
++ * return the time (s) that we have been running for
++ * if we are not running return 0;
++ */
++static time64_t cass_port_uptime_get(struct cass_dev *hw)
++{
++	if (hw->port->lstate == CASS_LINK_STATUS_UP)
++		return  ktime_get_seconds() - hw->port->start_time;
++
++	return 0;
++}
++
++static void cass_uptime_debugfs_print(struct cass_dev *hw, struct seq_file *s)
++{
++	time64_t uptime;
++	char uptime_str[64];
++	int err;
++
++	uptime = cass_port_uptime_get(hw);
++	if (!uptime)
++		return;
++
++	err = cass_port_uptime_str(uptime, uptime_str, sizeof(uptime_str));
++	if (err) {
++		cxidev_err(&hw->cdev, "get uptime str failed [%d]\n", err);
++		return;
++	}
++
++	seq_printf(s, "uptime: %lld (%s)\n", uptime, uptime_str);
++}
++
++static void cass_lmon_debugfs_print(struct cass_dev *hw, struct seq_file *s)
++{
++	struct task_struct *lmon;
++	int limiter;
++	int dirn;
++	bool active;
++	u32 restart_count;
++
++	spin_lock(&hw->port->lock);
++	lmon  = hw->port->lmon;
++	limiter  = hw->port->lmon_limiter_on;
++	dirn  = hw->port->lmon_dirn;
++	active = hw->port->lmon_active;
++	restart_count = hw->port->link_restart_count;
++	spin_unlock(&hw->port->lock);
++
++	if (!lmon)
++		return;
++
++	seq_printf(s, "lmon: dirn %s%s%s", cass_lmon_dirn_str(dirn),
++		   active ? ", active" : "", limiter ? ", (limited)" : "");
++	if (cass_lmon_get_up_pause(hw))
++		seq_puts(s, ", up-paused");
++	if (hw->port->lattr.options & CASS_LINK_OPT_UP_AUTO_RESTART) {
++		seq_puts(s, ", up-auto-restart");
++		if (restart_count && (dirn == CASS_LMON_DIRECTION_UP))
++			seq_printf(s, " (%d)", restart_count);
++	}
++	seq_puts(s, "\n");
++}
++
++static void cass_link_debugfs_print(struct cass_dev *hw, struct seq_file *s)
++{
++	int state;
++	int down_origin;
++	int lerr;
++
++	spin_lock(&hw->port->lock);
++	state = hw->port->lstate;
++	lerr = hw->port->lerr;
++	down_origin = hw->port->link_down_origin;
++	spin_unlock(&hw->port->lock);
++
++	seq_printf(s, "link state: %s", cass_link_state_str(state));
++
++	if (state == CASS_LINK_STATUS_ERROR)
++		seq_printf(s, " [%d]\n", lerr);
++	else if (state == CASS_LINK_STATUS_DOWN)
++		seq_printf(s, " (%s)\n",
++			   cass_link_down_origin_str(down_origin));
++	else
++		seq_puts(s, "\n");
++}
++
++static int cass_port_show(struct seq_file *s, void *unused)
++{
++	struct cass_dev *hw = s->private;
++	char buf[DEBUGFS_BUFSIZE];
++	int nic_num = hw->uc_nic;
++
++	if (!cass_version(hw, CASSINI_1)) {
++		seq_puts(s, "NOT IMPLEMENTED!!\n");
++		return 0;
++	}
++
++	seq_printf(s, "** %d **\n", nic_num);
++
++	/* config */
++	spin_lock(&hw->port->lock);
++	seq_printf(s, "configured: %c%c%c%c\n",
++		   (hw->port->config_state & CASS_TYPE_CONFIGURED)   ? 't' : '-',
++		 (hw->port->config_state & CASS_PORT_CONFIGURED)   ? 'p' : '-',
++		 (hw->port->config_state & CASS_MEDIA_CONFIGURED)  ? 'm' : '-',
++		 (hw->port->config_state & CASS_LINK_CONFIGURED)   ? 'l' : '-');
++
++	/* port */
++	seq_printf(s, "type: ether (%s)\n",
++		   cass_port_subtype_str(hw->port->subtype));
++	spin_unlock(&hw->port->lock);
++
++	/* uptime */
++	cass_uptime_debugfs_print(hw, s);
++
++	/* media */
++	memset(buf, 0, DEBUGFS_BUFSIZE);
++	sbl_media_sysfs_sprint(hw->sbl, 0, buf, DEBUGFS_BUFSIZE);
++	seq_puts(s, buf);
++
++	/* pause */
++	cass_pause_debugfs_print(hw, s);
++
++	/* serdes */
++	memset(buf, 0, DEBUGFS_BUFSIZE);
++	sbl_serdes_sysfs_sprint(hw->sbl, 0, buf, DEBUGFS_BUFSIZE);
++	seq_puts(s, buf);
++
++	/* pcs */
++	memset(buf, 0, DEBUGFS_BUFSIZE);
++	sbl_pml_pcs_sysfs_sprint(hw->sbl, 0, buf, DEBUGFS_BUFSIZE);
++	seq_puts(s, buf);
++
++	/* lane degrade status */
++	memset(buf, 0, DEBUGFS_BUFSIZE);
++	sbl_pml_pcs_lane_degrade_sysfs_sprint(hw->sbl, 0, buf, DEBUGFS_BUFSIZE);
++	seq_puts(s, buf);
++
++	/* base link */
++	memset(buf, 0, DEBUGFS_BUFSIZE);
++	sbl_base_link_sysfs_sprint(hw->sbl, 0, buf, DEBUGFS_BUFSIZE);
++	seq_puts(s, buf);
++
++	/* base link */
++	memset(buf, 0, DEBUGFS_BUFSIZE);
++	sbl_fec_sysfs_sprint(hw->sbl, 0, buf, DEBUGFS_BUFSIZE);
++	seq_puts(s, buf);
++
++	/* link */
++	cass_link_debugfs_print(hw, s);
++	cass_lmon_debugfs_print(hw, s);
++
++	return 0;
++}
++
++static int cass_port_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, cass_port_show, inode->i_private);
++}
++
++static const struct file_operations cass_port_fops = {
++	.owner = THIS_MODULE,
++	.open = cass_port_open,
++	.read = seq_read,
++	.llseek  = seq_lseek,
++	.release = single_release,
++};
++
++void cass_port_debugfs_init(struct cass_dev *hw)
++{
++	debugfs_create_file("port", 0444, hw->debug_dir, hw, &cass_port_fops);
++}
++
++static int cass_sbl_counters_show(struct seq_file *s, void *unused)
++{
++	struct cass_dev *hw = s->private;
++	static char *sbl_counter_names[CASS_SBL_NUM_COUNTERS] = { CASS_SBL_COUNTER_NAMES };
++	static char *lmon_counter_names[CASS_LMON_NUM_COUNTERS] = { CASS_LMON_COUNTER_NAMES };
++	int i;
++
++	cass_sbl_counters_update(hw);
++
++	for (i = 0; i < CASS_SBL_NUM_COUNTERS; ++i)
++		seq_printf(s, "%s %d\n", sbl_counter_names[i], atomic_read(&hw->sbl_counters[i]));
++
++	for (i = 0; i < CASS_LMON_NUM_COUNTERS; ++i)
++		seq_printf(s, "%s %d\n", lmon_counter_names[i],
++			   atomic_read(&hw->port->lmon_counters[i]));
++
++	return 0;
++}
++
++static int cass_sbl_counters_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, cass_sbl_counters_show, inode->i_private);
++}
++
++static const struct file_operations cass_sbl_counters_fops = {
++	.owner = THIS_MODULE,
++	.open = cass_sbl_counters_open,
++	.read = seq_read,
++	.llseek  = seq_lseek,
++	.release = single_release,
++};
++
++void cass_sbl_counters_debugfs_init(struct cass_dev *hw)
++{
++	debugfs_create_file("counters", 0444, hw->debug_dir, hw, &cass_sbl_counters_fops);
++}
++
++void domain_debugfs_create(int vni, int pid, struct cass_dev *hw,
++			   struct cxi_domain_priv *domain_priv)
++{
++	char name[30];
++
++	sprintf(name, "%u_%u", vni, pid);
++	domain_priv->debug_dir = debugfs_create_dir(name, hw->domain_dir);
++	debugfs_create_u32("vni", 0444, domain_priv->debug_dir,
++			   &domain_priv->domain.vni);
++}
++
++void pt_debugfs_create(int id, struct cxi_pte_priv *pt, struct cass_dev *hw,
++		       struct cxi_lni_priv *lni_priv)
++{
++	char name[30];
++	char path[30];
++
++	sprintf(name, "%u", id);
++	pt->debug_dir = debugfs_create_dir(name, hw->pt_dir);
++	sprintf(path, "../../../pt/%u", id);
++	pt->lni_dir = debugfs_create_symlink(name, lni_priv->pt_dir,
++					     path);
++}
++
++void lni_debugfs_create(int id, struct cass_dev *hw, struct cxi_lni_priv *lni_priv)
++{
++	char name[30];
++
++	sprintf(name, "%d", id);
++	lni_priv->debug_dir = debugfs_create_dir(name, hw->lni_dir);
++	debugfs_create_u32("id", 0444, lni_priv->debug_dir, &lni_priv->lni.id);
++	debugfs_create_u32("rgid", 0444, lni_priv->debug_dir, &lni_priv->lni.rgid);
++	debugfs_create_u32("pid", 0444, lni_priv->debug_dir, &lni_priv->pid);
++
++	lni_priv->cq_dir = debugfs_create_dir("cq", lni_priv->debug_dir);
++	lni_priv->pt_dir = debugfs_create_dir("pt", lni_priv->debug_dir);
++	lni_priv->eq_dir = debugfs_create_dir("eq", lni_priv->debug_dir);
++	lni_priv->ct_dir = debugfs_create_dir("ct", lni_priv->debug_dir);
++	lni_priv->ac_dir = debugfs_create_dir("ac", lni_priv->debug_dir);
++}
++
++static int eq_debugfs_info(struct seq_file *s, void *unused)
++{
++	struct cxi_eq_priv *eq = s->private;
++
++	seq_printf(s, "EQ id: %u\n", eq->eq.eqn);
++	seq_puts(s, "event MSI vector: ");
++	if (eq->event_msi_irq) {
++		const struct cass_irq *irq = eq->event_msi_irq;
++
++		seq_printf(s, "%s\n", irq->irq_name);
++	} else {
++		seq_puts(s, "none\n");
++	}
++
++	seq_puts(s, "status MSI vector: ");
++	if (eq->status_msi_irq) {
++		const struct cass_irq *irq = eq->status_msi_irq;
++
++		seq_printf(s, "%s\n", irq->irq_name);
++	} else {
++		seq_puts(s, "none\n");
++	}
++
++	seq_printf(s, "slots: %lu\n", eq->queue_size);
++	seq_printf(s, "flags: %llx\n", eq->attr.flags);
++
++	return 0;
++}
++
++static int debug_eq_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, eq_debugfs_info, inode->i_private);
++}
++
++static const struct file_operations eq_fops = {
++	.owner = THIS_MODULE,
++	.open = debug_eq_open,
++	.read = seq_read,
++	.llseek  = seq_lseek,
++	.release = single_release,
++};
++
++void eq_debugfs_create(int id, struct cxi_eq_priv *eq, struct cass_dev *hw,
++		       struct cxi_lni_priv *lni_priv)
++{
++	char name[30];
++	char path[30];
++
++	sprintf(name, "%u", id);
++	eq->debug_file = debugfs_create_file(name, 0444, hw->eq_dir,
++					     eq, &eq_fops);
++	sprintf(path, "../../../eq/%u", id);
++	eq->lni_dir = debugfs_create_symlink(name, lni_priv->eq_dir,
++					     path);
++}
++
++static int cass_dmac_desc_sets_show(struct seq_file *s, void *unused)
++{
++	struct cass_dev *hw = s->private;
++	int i;
++	int j;
++	u16 count;
++	u16 index;
++	u16 numused;
++	const char *name;
++	union c_pi_cfg_dmac_desc desc;
++	s64 dst;
++	s32 src;
++	s32 len;
++	s16 rem;
++
++	mutex_lock(&hw->dmac.lock);
++	for (i = 0 ; i < DMAC_DESC_SET_COUNT ; ++i) {
++		count	= hw->dmac.desc_sets[i].count;
++		index	= hw->dmac.desc_sets[i].index;
++		numused = hw->dmac.desc_sets[i].numused;
++		name    = hw->dmac.desc_sets[i].name;
++		seq_printf(s, "desc_set[%02d]: count=%u index=%u numused=%u name='%s'\n",
++			   i, count, index, numused,
++			   name == NULL ? "" : name);
++		if (count != 0)
++			for (j = 0; j < count; ++j) {
++				cass_read(hw, C_PI_CFG_DMAC_DESC(index + j), &desc,
++					  sizeof(desc));
++				dst =  desc.qw[0];
++				src =  desc.qw[1] & 0xffffffff;
++				len = (desc.qw[1] >> 32) & 0x000fffff;
++				rem = (desc.qw[1] >> (32 + 20)) & 0x0fff;
++				seq_printf(s, "\tdesc[%04u]=0x%03x,0x%05x,0x%08x,0x%016llx %s\n",
++					   index + j, rem, len, src, dst,
++					   (((dst & 0x7f) == 0) ? "(dst 128-byte aligned)" : ""));
++			}
++	}
++	mutex_unlock(&hw->dmac.lock);
++	return 0;
++}
++
++static int cass_dmac_desc_sets_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, cass_dmac_desc_sets_show,
++			   inode->i_private);
++}
++
++static const struct file_operations cass_dmac_desc_sets_fops = {
++	.owner = THIS_MODULE,
++	.open = cass_dmac_desc_sets_open,
++	.read = seq_read,
++	.llseek	 = seq_lseek,
++	.release = single_release,
++};
++
++void cass_dmac_debugfs_init(struct cass_dev *hw)
++{
++	debugfs_create_file("dmac-desc-sets", 0444, hw->debug_dir,
++			    hw, &cass_dmac_desc_sets_fops);
++}
++
++static int cass_rmu_eth_filters_show(struct seq_file *s, void *unused)
++{
++	struct cass_dev *hw = s->private;
++	struct cxi_rmu_eth *rmu_eth;
++	int id;
++	int active_filters = 0;
++
++	mutex_lock(&hw->rmu_eth_lock);
++	idr_for_each_entry(&hw->rmu_eth_idr, rmu_eth, id) {
++		struct cxi_rmu_eth_priv *priv =
++			container_of(rmu_eth, struct cxi_rmu_eth_priv, rmu_eth);
++		unsigned int i;
++
++		for (i = 0; i < priv->set_list_quota; i++) {
++			union c_rmu_cfg_ptlte_set_list set_list;
++			union c_rmu_cfg_ptlte_set_list set_list_mask;
++			unsigned int hw_idx;
++			u8 mac[ETH_ALEN];
++			char func[8];
++			const char *type;
++			const char *rss;
++
++			if (!priv->mac_filter_slots[i])
++				continue;
++
++			hw_idx = priv->set_list_base + i;
++			if (priv->is_vf)
++				scnprintf(func, sizeof(func), "vf%u", priv->vf_num + 1);
++			else
++				scnprintf(func, sizeof(func), "pf");
++			rss = priv->mac_filter_slots[i] == CXI_RMU_ETH_FILTER_RSS ?
++				"on" : "off";
++
++			spin_lock(&hw->rmu_lock);
++			cass_read(hw, C_RMU_CFG_PTLTE_SET_LIST_X(hw_idx), &set_list,
++				  sizeof(set_list));
++			cass_shadow_read(hw, C_RMU_BASE,
++					 C_RMU_CFG_PTLTE_SET_LIST_Y_OFFSET(hw_idx),
++					 &set_list_mask, sizeof(set_list_mask));
++			spin_unlock(&hw->rmu_lock);
++
++			u64_to_ether_addr(set_list.dmac, mac);
++
++			if (!set_list.dmac && !set_list_mask.dmac)
++				type = "promisc";
++			else if (set_list.dmac == 0x010000000000ULL)
++				type = "allmcst";
++			else
++				type = "macaddr";
++
++			seq_printf(s,
++				   "func=%-4s client=%-3d slot=%-3u hw_idx=%-4u rss=%-3s type=%-7s mac=%pM ",
++				   func, id, i, hw_idx, rss, type, mac);
++			seq_printf(s,
++				   "match=%016llx:%016llx:%016llx:%016llx ",
++				   (unsigned long long)set_list.qw[0],
++				   (unsigned long long)set_list.qw[1],
++				   (unsigned long long)set_list.qw[2],
++				   (unsigned long long)set_list.qw[3]);
++			seq_printf(s,
++				   "mask=%016llx:%016llx:%016llx:%016llx",
++				   (unsigned long long)set_list_mask.qw[0],
++				   (unsigned long long)set_list_mask.qw[1],
++				   (unsigned long long)set_list_mask.qw[2],
++				   (unsigned long long)set_list_mask.qw[3]);
++			seq_puts(s, "\n");
++
++			active_filters++;
++		}
++	}
++
++	if (!active_filters)
++		seq_puts(s, "none\n");
++
++	mutex_unlock(&hw->rmu_eth_lock);
++
++	return 0;
++}
++
++static int cass_rmu_eth_filters_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, cass_rmu_eth_filters_show, inode->i_private);
++}
++
++static const struct file_operations cass_rmu_eth_filters_fops = {
++	.owner = THIS_MODULE,
++	.open = cass_rmu_eth_filters_open,
++	.read = seq_read,
++	.llseek  = seq_lseek,
++	.release = single_release,
++};
++
++static int tc_cfg_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, tc_cfg_show, inode->i_private);
++}
++
++static const struct file_operations tc_cfg_fops = {
++	.owner = THIS_MODULE,
++	.open = tc_cfg_open,
++	.read = seq_read,
++	.llseek  = seq_lseek,
++	.release = single_release,
++};
++
++void cass_probe_debugfs_init(struct cass_dev *hw)
++{
++	/* Various debugfs entries */
++	hw->debug_dir = debugfs_create_dir(hw->cdev.name, cxi_debug_dir);
++	hw->lni_dir = debugfs_create_dir("lni", hw->debug_dir);
++	hw->stats_dir = debugfs_create_dir("stats", hw->debug_dir);
++	hw->atu_dir = debugfs_create_dir("atu", hw->debug_dir);
++	debugfs_create_atomic_t("lni", 0444, hw->stats_dir, &hw->stats.lni);
++	debugfs_create_atomic_t("domain", 0444, hw->stats_dir,
++				&hw->stats.domain);
++	debugfs_create_atomic_t("eq", 0444, hw->stats_dir, &hw->stats.eq);
++	debugfs_create_atomic_t("txq", 0444, hw->stats_dir, &hw->stats.txq);
++	debugfs_create_atomic_t("tgq", 0444, hw->stats_dir, &hw->stats.tgq);
++	debugfs_create_atomic_t("pt", 0444, hw->stats_dir, &hw->stats.pt);
++	debugfs_create_atomic_t("ct", 0444, hw->stats_dir, &hw->stats.ct);
++	debugfs_create_atomic_t("ac", 0444, hw->stats_dir, &hw->stats.ac);
++	debugfs_create_atomic_t("md", 0444, hw->stats_dir, &hw->stats.md);
++
++	hw->domain_dir = debugfs_create_dir("domain", hw->debug_dir);
++	hw->eq_dir = debugfs_create_dir("eq", hw->debug_dir);
++	hw->cq_dir = debugfs_create_dir("cq", hw->debug_dir);
++	hw->pt_dir = debugfs_create_dir("pt", hw->debug_dir);
++	hw->ct_dir = debugfs_create_dir("ct", hw->debug_dir);
++	hw->ac_dir = debugfs_create_dir("ac", hw->debug_dir);
++
++	debugfs_create_file("tc_cfg", 0444, hw->debug_dir, hw, &tc_cfg_fops);
++	debugfs_create_atomic_t("error_inject", 0644, hw->atu_dir,
++				&hw->atu_error_inject);
++	debugfs_create_atomic_t("odp_requests", 0644, hw->atu_dir,
++				&hw->atu_odp_requests);
++	debugfs_create_atomic_t("atu_odp_fails", 0644, hw->atu_dir,
++				&hw->atu_odp_fails);
++	debugfs_create_atomic_t("atu_prb_expired", 0644, hw->atu_dir,
++				&hw->atu_prb_expired);
++
++	/* ODP Decouple stats */
++	debugfs_create_file("decouple_stats", 0644, hw->atu_dir, hw,
++			    &decouple_stats_fops);
++	debugfs_create_file("odp_sw_decouple", 0644, hw->atu_dir, hw,
++			    &sw_decouple_fops);
++
++	debugfs_create_file("uc_log", 0444, hw->debug_dir, hw, &uc_fops);
++	debugfs_create_file("rmu_eth_filters", 0444, hw->debug_dir, hw,
++			    &cass_rmu_eth_filters_fops);
++
++	/* setup SBL debugfs interface */
++	cass_port_debugfs_init(hw);
++
++	if (cass_version(hw, CASSINI_1))
++		cass_sbl_counters_debugfs_init(hw); /* Port counters */
++
++	cass_dmac_debugfs_init(hw);
++}
++
++void cq_debugfs_create(int id, struct cxi_cq_priv *cq, struct cass_dev *hw,
++		       struct cxi_lni_priv *lni_priv)
++{
++	char name[30];
++	char path[30];
++
++	sprintf(name, "%u", id);
++	cq->debug_dir = debugfs_create_dir(name, hw->cq_dir);
++	sprintf(path, "../../../cq/%u", id);
++	cq->lni_dir = debugfs_create_symlink(name, lni_priv->cq_dir, path);
++	debugfs_create_u32("id", 0444, cq->debug_dir, &cq->cass_cq.idx);
++}
++
++void ct_debugfs_setup(int id, struct cxi_ct_priv *ct_priv, struct cass_dev *hw,
++		      struct cxi_lni_priv *lni_priv)
++{
++	char name[30];
++	char path[30];
++
++	sprintf(name, "%u", id);
++	ct_priv->debug_dir = debugfs_create_dir(name, hw->ct_dir);
++	sprintf(path, "../../../ct/%u", id);
++	ct_priv->lni_dir = debugfs_create_symlink(name, lni_priv->ct_dir,
++						  path);
++}
++
++void ac_debugfs_create(int id, struct cass_ac *cac, struct cass_dev *hw,
++		       struct cxi_lni_priv *lni_priv)
++{
++	char name[30];
++	char path[30];
++
++	sprintf(name, "%u", id);
++	cac->debug_dir = debugfs_create_dir(name, hw->ac_dir);
++	sprintf(path, "../../../ac/%u", id);
++	cac->lni_dir = debugfs_create_symlink(name, lni_priv->ac_dir, path);
++}
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_ss1_debugfs.h b/drivers/net/ethernet/hpe/ss1/cass_ss1_debugfs.h
+new file mode 100644
+index 000000000000..26f9bc58ba5e
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cass_ss1_debugfs.h
+@@ -0,0 +1,86 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright 2018 Hewlett Packard Enterprise Development LP */
++
++#ifndef __CASS_DEBUGFS_H__
++#define __CASS_DEBUGFS_H__
++#include <linux/dcache.h>
++#include <linux/debugfs.h>
++#include <linux/netdevice.h>
++
++#ifdef CONFIG_DEBUG_FS
++
++void cass_port_debugfs_init(struct cass_dev *hw);
++void cass_sbl_counters_debugfs_init(struct cass_dev *hw);
++void domain_debugfs_create(int vni, int pid, struct cass_dev *hw,
++			   struct cxi_domain_priv *domain_priv);
++void pt_debugfs_create(int id, struct cxi_pte_priv *pt, struct cass_dev *hw,
++		       struct cxi_lni_priv *lni_priv);
++void lni_debugfs_create(int id, struct cass_dev *hw, struct cxi_lni_priv *lni_priv);
++void eq_debugfs_create(int id, struct cxi_eq_priv *eq, struct cass_dev *hw,
++		       struct cxi_lni_priv *lni_priv);
++void cass_dmac_debugfs_init(struct cass_dev *hw);
++void cass_probe_debugfs_init(struct cass_dev *hw);
++void cq_debugfs_create(int id, struct cxi_cq_priv *cq, struct cass_dev *hw,
++		       struct cxi_lni_priv *lni_priv);
++void ct_debugfs_setup(int id, struct cxi_ct_priv *ct_priv, struct cass_dev *hw,
++		      struct cxi_lni_priv *lni_priv);
++void ac_debugfs_create(int id, struct cass_ac *cac, struct cass_dev *hw,
++		       struct cxi_lni_priv *lni_priv);
++void svc_service_debugfs_create(struct cass_dev *hw);
++#else
++static inline void cass_port_debugfs_init(struct cass_dev *hw)
++{
++}
++
++static inline void cass_sbl_counters_debugfs_init(struct cass_dev *hw)
++{
++}
++
++static inline void domain_debugfs_create(int vni, int pid, struct cass_dev *hw,
++					 struct cxi_domain_priv *domain_priv)
++{
++}
++
++static inline void pt_debugfs_create(int id, struct cxi_pte_priv *pt, struct cass_dev *hw,
++				     struct cxi_lni_priv *lni_priv)
++{
++}
++
++static inline void lni_debugfs_create(int id, struct cass_dev *hw,
++				      struct cxi_lni_priv *lni_priv)
++{
++}
++
++static inline void eq_debugfs_create(int id, struct cxi_eq_priv *eq, struct cass_dev *hw,
++				     struct cxi_lni_priv *lni_priv)
++{
++}
++
++static inline void cass_dmac_debugfs_init(struct cass_dev *hw)
++{
++}
++
++static inline void cass_probe_debugfs_init(struct cass_dev *hw)
++{
++}
++
++static inline void cq_debugfs_create(int id, struct cxi_cq_priv *cq,
++				     struct cass_dev *hw, struct cxi_lni_priv *lni_priv)
++{
++}
++
++static inline void ct_debugfs_setup(int id, struct cxi_ct_priv *ct_priv, struct cass_dev *hw,
++				    struct cxi_lni_priv *lni_priv)
++{
++}
++
++static inline void ac_debugfs_create(int id, struct cass_ac *cac, struct cass_dev *hw,
++				     struct cxi_lni_priv *lni_priv)
++{
++}
++
++static inline void svc_service_debugfs_create(struct cass_dev *hw)
++{
++}
++#endif
++#endif
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_telem_tables.h b/drivers/net/ethernet/hpe/ss1/cass_telem_tables.h
+new file mode 100644
+index 000000000000..b9e925172ec3
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cass_telem_tables.h
+@@ -0,0 +1,3874 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024 Hewlett Packard Enterprise Development LP */
++
++/*
++ * Location of each Cassini telemetry item, indexed by item ID. The item
++ * IDs and these locations come from the Cassini hardware description;
++ * user space names the items, the kernel only knows their numbers.
++ */
++
++#ifndef _CASS_TELEM_TABLES_H
++#define _CASS_TELEM_TABLES_H
++
++/* offset, lsb, numbits, type */
++#define TI(o, l, n, t) { .offset = (o), .lsb = (l), .numbits = (n), \
++			 .type = CASSINI_TELEMETRY_ITEM_TYPE_##t }
++#define TU { .type = CASSINI_TELEMETRY_ITEM_TYPE_UNDEFINED }
++
++#define C1_TELEM_TOTAL	1923
++#define C1_TELEM_VALID	1890
++static const struct telem_item c1_items[C1_TELEM_TOTAL] = {
++	TU,
++	TI(0x100205d0, 0, 56, COUNTER),
++	TI(0x100205d8, 0, 56, COUNTER),
++	TI(0x100205e0, 0, 56, COUNTER),
++	TI(0x100205e8, 0, 56, COUNTER),
++	TI(0x100205c8, 0, 56, COUNTER),
++	TI(0x10020590, 0, 56, COUNTER),
++	TI(0x10020508, 0, 56, COUNTER),
++	TI(0x10020510, 0, 56, COUNTER),
++	TI(0x10020518, 0, 56, COUNTER),
++	TI(0x10020520, 0, 56, COUNTER),
++	TI(0x100205b8, 0, 56, COUNTER),
++	TI(0x100204a8, 0, 56, COUNTER),
++	TI(0x100204b0, 0, 56, COUNTER),
++	TI(0x100204b8, 0, 56, COUNTER),
++	TI(0x100204c0, 0, 56, COUNTER),
++	TI(0x100205a8, 0, 56, COUNTER),
++	TI(0x10020588, 0, 56, COUNTER),
++	TI(0x10020430, 0, 56, COUNTER),
++	TI(0x10020438, 0, 56, COUNTER),
++	TI(0x10020440, 0, 56, COUNTER),
++	TI(0x10020448, 0, 56, COUNTER),
++	TI(0x10020450, 0, 56, COUNTER),
++	TI(0x10020458, 0, 56, COUNTER),
++	TI(0x10020460, 0, 56, COUNTER),
++	TI(0x10020468, 0, 56, COUNTER),
++	TI(0x10020470, 0, 56, COUNTER),
++	TI(0x10020478, 0, 56, COUNTER),
++	TI(0x10020480, 0, 56, COUNTER),
++	TI(0x10020488, 0, 56, COUNTER),
++	TI(0x10020410, 0, 56, COUNTER),
++	TI(0x10020418, 0, 56, COUNTER),
++	TI(0x10020420, 0, 56, COUNTER),
++	TI(0x10020428, 0, 56, COUNTER),
++	TI(0x100204a0, 0, 56, COUNTER),
++	TI(0x10020498, 0, 56, COUNTER),
++	TI(0x10020490, 0, 56, COUNTER),
++	TI(0x100204f8, 0, 56, COUNTER),
++	TI(0x100204f0, 0, 56, COUNTER),
++	TI(0x100204e8, 0, 56, COUNTER),
++	TI(0x10020568, 0, 56, COUNTER),
++	TI(0x10020570, 0, 56, COUNTER),
++	TI(0x10020578, 0, 56, COUNTER),
++	TI(0x10020580, 0, 56, COUNTER),
++	TI(0x10020500, 0, 56, COUNTER),
++	TI(0x100205a0, 0, 56, COUNTER),
++	TI(0x10020598, 0, 56, COUNTER),
++	TI(0x100205f0, 0, 56, COUNTER),
++	TI(0x100205f8, 0, 56, COUNTER),
++	TI(0x10020400, 0, 56, COUNTER),
++	TI(0x10020408, 0, 56, COUNTER),
++	TI(0x10020528, 0, 56, COUNTER),
++	TI(0x10020530, 0, 56, COUNTER),
++	TI(0x10020538, 0, 56, COUNTER),
++	TI(0x10020540, 0, 56, COUNTER),
++	TI(0x100204c8, 0, 56, COUNTER),
++	TI(0x100204d0, 0, 56, COUNTER),
++	TI(0x100204d8, 0, 56, COUNTER),
++	TI(0x100204e0, 0, 56, COUNTER),
++	TI(0x10020548, 0, 56, COUNTER),
++	TI(0x10020550, 0, 56, COUNTER),
++	TI(0x10020558, 0, 56, COUNTER),
++	TI(0x10020560, 0, 56, COUNTER),
++	TI(0x100205c0, 0, 56, COUNTER),
++	TI(0x100205b0, 0, 56, COUNTER),
++	TI(0x540, 4, 16, COUNTER),
++	TI(0x100280, 0, 56, COUNTER),
++	TI(0x100288, 0, 56, COUNTER),
++	TI(0x100290, 0, 56, COUNTER),
++	TI(0x100298, 0, 56, COUNTER),
++	TI(0x1002a0, 0, 56, COUNTER),
++	TI(0x1002a8, 0, 56, COUNTER),
++	TI(0x1002b0, 0, 56, COUNTER),
++	TI(0x1002b8, 0, 56, COUNTER),
++	TI(0x1002c0, 0, 56, COUNTER),
++	TI(0x1002c8, 0, 56, COUNTER),
++	TI(0x1002d0, 0, 56, COUNTER),
++	TI(0x1002d8, 0, 56, COUNTER),
++	TI(0x1002e0, 0, 56, COUNTER),
++	TI(0x1002e8, 0, 56, COUNTER),
++	TI(0x1002f0, 0, 56, COUNTER),
++	TI(0x1002f8, 0, 56, COUNTER),
++	TI(0x100130, 0, 56, COUNTER),
++	TI(0x100140, 0, 56, COUNTER),
++	TI(0x100138, 0, 56, COUNTER),
++	TI(0x100148, 0, 56, COUNTER),
++	TI(0x100158, 0, 56, COUNTER),
++	TI(0x100150, 0, 56, COUNTER),
++	TI(0x100300, 0, 56, COUNTER),
++	TI(0x100308, 0, 56, COUNTER),
++	TI(0x100310, 0, 56, COUNTER),
++	TI(0x100318, 0, 56, COUNTER),
++	TI(0x100200, 0, 56, COUNTER),
++	TI(0x100208, 0, 56, COUNTER),
++	TI(0x100210, 0, 56, COUNTER),
++	TI(0x100218, 0, 56, COUNTER),
++	TI(0x100220, 0, 56, COUNTER),
++	TI(0x100228, 0, 56, COUNTER),
++	TI(0x100230, 0, 56, COUNTER),
++	TI(0x100238, 0, 56, COUNTER),
++	TI(0x100240, 0, 56, COUNTER),
++	TI(0x100248, 0, 56, COUNTER),
++	TI(0x100250, 0, 56, COUNTER),
++	TI(0x100258, 0, 56, COUNTER),
++	TI(0x100260, 0, 56, COUNTER),
++	TI(0x100268, 0, 56, COUNTER),
++	TI(0x100270, 0, 56, COUNTER),
++	TI(0x100278, 0, 56, COUNTER),
++	TI(0x100018, 0, 56, COUNTER),
++	TI(0x100010, 0, 56, COUNTER),
++	TI(0x100020, 0, 56, COUNTER),
++	TI(0x100028, 0, 56, COUNTER),
++	TI(0x1001a0, 0, 56, COUNTER),
++	TI(0x1001a8, 0, 56, COUNTER),
++	TI(0x1001b0, 0, 56, COUNTER),
++	TI(0x1001b8, 0, 56, COUNTER),
++	TI(0x100180, 0, 56, COUNTER),
++	TI(0x100188, 0, 56, COUNTER),
++	TI(0x100190, 0, 56, COUNTER),
++	TI(0x100198, 0, 56, COUNTER),
++	TI(0x100160, 0, 56, COUNTER),
++	TI(0x100168, 0, 56, COUNTER),
++	TI(0x100170, 0, 56, COUNTER),
++	TI(0x100178, 0, 56, COUNTER),
++	TI(0x1001c0, 0, 56, COUNTER),
++	TI(0x1001c8, 0, 56, COUNTER),
++	TI(0x1001d0, 0, 56, COUNTER),
++	TI(0x1001d8, 0, 56, COUNTER),
++	TI(0x1003e0, 0, 56, COUNTER),
++	TI(0x1003e8, 0, 56, COUNTER),
++	TI(0x1003f0, 0, 56, COUNTER),
++	TI(0x1003f8, 0, 56, COUNTER),
++	TI(0x1003a0, 0, 56, COUNTER),
++	TI(0x1003a8, 0, 56, COUNTER),
++	TI(0x1003b0, 0, 56, COUNTER),
++	TI(0x1003b8, 0, 56, COUNTER),
++	TI(0x1003c0, 0, 56, COUNTER),
++	TI(0x1003c8, 0, 56, COUNTER),
++	TI(0x1003d0, 0, 56, COUNTER),
++	TI(0x1003d8, 0, 56, COUNTER),
++	TI(0x100380, 0, 56, COUNTER),
++	TI(0x100388, 0, 56, COUNTER),
++	TI(0x100390, 0, 56, COUNTER),
++	TI(0x100398, 0, 56, COUNTER),
++	TI(0x100080, 0, 56, COUNTER),
++	TI(0x100088, 0, 56, COUNTER),
++	TI(0x100090, 0, 56, COUNTER),
++	TI(0x100098, 0, 56, COUNTER),
++	TI(0x100120, 0, 56, COUNTER),
++	TI(0x100128, 0, 56, COUNTER),
++	TI(0x1001e0, 0, 56, COUNTER),
++	TI(0x1001e8, 0, 56, COUNTER),
++	TI(0x1001f0, 0, 56, COUNTER),
++	TI(0x1001f8, 0, 56, COUNTER),
++	TI(0x1000a0, 0, 56, COUNTER),
++	TI(0x1000a8, 0, 56, COUNTER),
++	TI(0x1000b0, 0, 56, COUNTER),
++	TI(0x1000b8, 0, 56, COUNTER),
++	TI(0x100100, 0, 56, COUNTER),
++	TI(0x100110, 0, 56, COUNTER),
++	TI(0x100108, 0, 56, COUNTER),
++	TI(0x100118, 0, 56, COUNTER),
++	TI(0x100060, 0, 56, COUNTER),
++	TI(0x100068, 0, 56, COUNTER),
++	TI(0x100070, 0, 56, COUNTER),
++	TI(0x100078, 0, 56, COUNTER),
++	TI(0x100038, 0, 56, COUNTER),
++	TI(0x100030, 0, 56, COUNTER),
++	TI(0x8b0, 24, 5, UGAUGE),
++	TI(0x8b8, 52, 9, UGAUGE),
++	TI(0x8b8, 40, 9, UGAUGE),
++	TI(0x8b0, 0, 10, UGAUGE),
++	TI(0x8b0, 16, 4, UGAUGE),
++	TI(0x8b8, 0, 5, UGAUGE),
++	TI(0x8b0, 56, 5, UGAUGE),
++	TI(0x8b0, 48, 5, UGAUGE),
++	TI(0x8b8, 24, 3, UGAUGE),
++	TI(0x8b8, 36, 3, UGAUGE),
++	TI(0x8b8, 16, 3, UGAUGE),
++	TI(0x8b0, 40, 7, UGAUGE),
++	TI(0x8b8, 8, 5, UGAUGE),
++	TI(0x8b8, 32, 4, UGAUGE),
++	TI(0x4a000, 0, 56, COUNTER),
++	TI(0x4a008, 0, 56, COUNTER),
++	TI(0x4a010, 0, 56, COUNTER),
++	TI(0x4a018, 0, 56, COUNTER),
++	TI(0x4b000, 0, 41, UGAUGE),
++	TI(0x4b008, 0, 41, UGAUGE),
++	TI(0x4b010, 0, 41, UGAUGE),
++	TI(0x4b018, 0, 41, UGAUGE),
++	TI(0x4b020, 0, 41, UGAUGE),
++	TI(0x4b028, 0, 41, UGAUGE),
++	TI(0x4b030, 0, 41, UGAUGE),
++	TI(0x4b038, 0, 41, UGAUGE),
++	TI(0x4b040, 0, 41, UGAUGE),
++	TI(0x4b048, 0, 41, UGAUGE),
++	TI(0x4b050, 0, 41, UGAUGE),
++	TI(0x4b058, 0, 41, UGAUGE),
++	TI(0x4b060, 0, 41, UGAUGE),
++	TI(0x4b068, 0, 41, UGAUGE),
++	TI(0x4b070, 0, 41, UGAUGE),
++	TI(0x4b078, 0, 41, UGAUGE),
++	TI(0x4b080, 0, 41, UGAUGE),
++	TI(0x4b088, 0, 41, UGAUGE),
++	TI(0x4b090, 0, 41, UGAUGE),
++	TI(0x4b098, 0, 41, UGAUGE),
++	TI(0x4b0a0, 0, 41, UGAUGE),
++	TI(0x4b0a8, 0, 41, UGAUGE),
++	TI(0x4b0b0, 0, 41, UGAUGE),
++	TI(0x4b0b8, 0, 41, UGAUGE),
++	TI(0x4b0c0, 0, 41, UGAUGE),
++	TI(0x4b0c8, 0, 41, UGAUGE),
++	TI(0x4b0d0, 0, 41, UGAUGE),
++	TI(0x4b0d8, 0, 41, UGAUGE),
++	TI(0x4b0e0, 0, 41, UGAUGE),
++	TI(0x4b0e8, 0, 41, UGAUGE),
++	TI(0x4b0f0, 0, 41, UGAUGE),
++	TI(0x4b0f8, 0, 41, UGAUGE),
++	TI(0x4b100, 0, 41, UGAUGE),
++	TI(0x4b108, 0, 41, UGAUGE),
++	TI(0x4b110, 0, 41, UGAUGE),
++	TI(0x4b118, 0, 41, UGAUGE),
++	TI(0x4b120, 0, 41, UGAUGE),
++	TI(0x4b128, 0, 41, UGAUGE),
++	TI(0x4b130, 0, 41, UGAUGE),
++	TI(0x4b138, 0, 41, UGAUGE),
++	TI(0x4b140, 0, 41, UGAUGE),
++	TI(0x4b148, 0, 41, UGAUGE),
++	TI(0x4b150, 0, 41, UGAUGE),
++	TI(0x4b158, 0, 41, UGAUGE),
++	TI(0x4b160, 0, 41, UGAUGE),
++	TI(0x4b168, 0, 41, UGAUGE),
++	TI(0x4b170, 0, 41, UGAUGE),
++	TI(0x4b178, 0, 41, UGAUGE),
++	TI(0x4a020, 0, 56, COUNTER),
++	TI(0x4a028, 0, 56, COUNTER),
++	TI(0x4a030, 0, 56, COUNTER),
++	TI(0x4a038, 0, 56, COUNTER),
++	TI(0x4a040, 0, 56, COUNTER),
++	TI(0x4a048, 0, 56, COUNTER),
++	TI(0x4a050, 0, 56, COUNTER),
++	TI(0x4a058, 0, 56, COUNTER),
++	TI(0x4a080, 0, 56, COUNTER),
++	TI(0x4a088, 0, 56, COUNTER),
++	TI(0x4a090, 0, 56, COUNTER),
++	TI(0x4a098, 0, 56, COUNTER),
++	TI(0x850, 0, 12, UGAUGE),
++	TI(0x858, 0, 12, UGAUGE),
++	TI(0x860, 0, 12, UGAUGE),
++	TI(0x868, 0, 12, UGAUGE),
++	TI(0x4a060, 0, 56, COUNTER),
++	TI(0x4a068, 0, 56, COUNTER),
++	TI(0x4a070, 0, 56, COUNTER),
++	TI(0x4a078, 0, 56, COUNTER),
++	TI(0x100008, 0, 56, COUNTER),
++	TI(0x100000, 0, 56, COUNTER),
++	TI(0x1000e0, 0, 56, COUNTER),
++	TI(0x1000e8, 0, 56, COUNTER),
++	TI(0x1000f0, 0, 56, COUNTER),
++	TI(0x1000f8, 0, 56, COUNTER),
++	TI(0x1000c0, 0, 56, COUNTER),
++	TI(0x1000c8, 0, 56, COUNTER),
++	TI(0x1000d0, 0, 56, COUNTER),
++	TI(0x1000d8, 0, 56, COUNTER),
++	TI(0x100040, 0, 56, COUNTER),
++	TI(0x100b40, 0, 56, COUNTER),
++	TI(0x100b48, 0, 56, COUNTER),
++	TI(0x100b50, 0, 56, COUNTER),
++	TI(0x100b58, 0, 56, COUNTER),
++	TI(0x100d20, 0, 56, COUNTER),
++	TI(0x100aa0, 0, 56, COUNTER),
++	TI(0x100aa8, 0, 56, COUNTER),
++	TI(0x100ab0, 0, 56, COUNTER),
++	TI(0x100ab8, 0, 56, COUNTER),
++	TI(0x100c90, 0, 56, COUNTER),
++	TI(0x100c98, 0, 56, COUNTER),
++	TI(0x100c58, 0, 56, COUNTER),
++	TI(0x100c60, 0, 56, COUNTER),
++	TI(0x100c68, 0, 56, COUNTER),
++	TI(0x100b20, 0, 56, COUNTER),
++	TI(0x100b28, 0, 56, COUNTER),
++	TI(0x100b30, 0, 56, COUNTER),
++	TI(0x100b38, 0, 56, COUNTER),
++	TI(0x100b00, 0, 56, COUNTER),
++	TI(0x100b08, 0, 56, COUNTER),
++	TI(0x100b10, 0, 56, COUNTER),
++	TI(0x100b18, 0, 56, COUNTER),
++	TI(0x100e50, 0, 56, COUNTER),
++	TI(0x100e60, 0, 56, COUNTER),
++	TI(0x100e58, 0, 56, COUNTER),
++	TI(0x100e68, 0, 56, COUNTER),
++	TI(0x100e90, 0, 56, COUNTER),
++	TI(0x100a80, 0, 56, COUNTER),
++	TI(0x100a88, 0, 56, COUNTER),
++	TI(0x100a90, 0, 56, COUNTER),
++	TI(0x100a98, 0, 56, COUNTER),
++	TI(0x100b60, 0, 56, COUNTER),
++	TI(0x100b68, 0, 56, COUNTER),
++	TI(0x100b70, 0, 56, COUNTER),
++	TI(0x100b78, 0, 56, COUNTER),
++	TI(0x100d10, 0, 56, COUNTER),
++	TI(0x100cb0, 0, 56, COUNTER),
++	TI(0x100cb8, 0, 56, COUNTER),
++	TI(0x100d00, 0, 56, COUNTER),
++	TI(0x100d08, 0, 56, COUNTER),
++	TI(0x100cd0, 0, 56, COUNTER),
++	TI(0x100cd8, 0, 56, COUNTER),
++	TI(0x100d18, 0, 56, COUNTER),
++	TI(0x100cc0, 0, 56, COUNTER),
++	TI(0x100cc8, 0, 56, COUNTER),
++	TI(0x100ca8, 0, 56, COUNTER),
++	TI(0x100ce0, 0, 56, COUNTER),
++	TI(0x100ce8, 0, 56, COUNTER),
++	TI(0x100cf0, 0, 56, COUNTER),
++	TI(0x100cf8, 0, 56, COUNTER),
++	TI(0x100d88, 0, 56, COUNTER),
++	TI(0x100d50, 0, 56, COUNTER),
++	TI(0x100d70, 0, 56, COUNTER),
++	TI(0x100dc8, 0, 56, COUNTER),
++	TI(0x100e30, 0, 56, COUNTER),
++	TI(0x100e20, 0, 56, COUNTER),
++	TI(0x100dc0, 0, 56, COUNTER),
++	TI(0x100dd8, 0, 56, COUNTER),
++	TI(0x100d58, 0, 56, COUNTER),
++	TI(0x100d78, 0, 56, COUNTER),
++	TI(0x100d48, 0, 56, COUNTER),
++	TI(0x100d68, 0, 56, COUNTER),
++	TI(0x100d98, 0, 56, COUNTER),
++	TI(0x100de8, 0, 56, COUNTER),
++	TI(0x100e38, 0, 56, COUNTER),
++	TI(0x100de0, 0, 56, COUNTER),
++	TI(0x100d40, 0, 56, COUNTER),
++	TI(0x100d60, 0, 56, COUNTER),
++	TI(0x100db8, 0, 56, COUNTER),
++	TI(0x100d90, 0, 56, COUNTER),
++	TI(0x100da0, 0, 56, COUNTER),
++	TI(0x100d80, 0, 56, COUNTER),
++	TI(0x100da8, 0, 56, COUNTER),
++	TI(0x100e28, 0, 56, COUNTER),
++	TI(0x100dd0, 0, 56, COUNTER),
++	TI(0x100db0, 0, 56, COUNTER),
++	TI(0x100a40, 0, 56, COUNTER),
++	TI(0x100a48, 0, 56, COUNTER),
++	TI(0x100a50, 0, 56, COUNTER),
++	TI(0x100a58, 0, 56, COUNTER),
++	TI(0x100a60, 0, 56, COUNTER),
++	TI(0x100a68, 0, 56, COUNTER),
++	TI(0x100a70, 0, 56, COUNTER),
++	TI(0x100a78, 0, 56, COUNTER),
++	TI(0x100a20, 0, 56, COUNTER),
++	TI(0x100a28, 0, 56, COUNTER),
++	TI(0x100a30, 0, 56, COUNTER),
++	TI(0x100a38, 0, 56, COUNTER),
++	TI(0x100a00, 0, 56, COUNTER),
++	TI(0x100a08, 0, 56, COUNTER),
++	TI(0x100a10, 0, 56, COUNTER),
++	TI(0x100a18, 0, 56, COUNTER),
++	TI(0x100ae0, 0, 56, COUNTER),
++	TI(0x100ae8, 0, 56, COUNTER),
++	TI(0x100af0, 0, 56, COUNTER),
++	TI(0x100af8, 0, 56, COUNTER),
++	TI(0x100c80, 0, 56, COUNTER),
++	TI(0x100c88, 0, 56, COUNTER),
++	TI(0x100c40, 0, 56, COUNTER),
++	TI(0x100c48, 0, 56, COUNTER),
++	TI(0x100c50, 0, 56, COUNTER),
++	TI(0x100bc8, 0, 56, COUNTER),
++	TI(0x100bd8, 0, 56, COUNTER),
++	TI(0x100bc0, 0, 56, COUNTER),
++	TI(0x100bb0, 0, 56, COUNTER),
++	TI(0x100bb8, 0, 56, COUNTER),
++	TI(0x100bd0, 0, 56, COUNTER),
++	TI(0x100b98, 0, 56, COUNTER),
++	TI(0x100ba8, 0, 56, COUNTER),
++	TI(0x100b90, 0, 56, COUNTER),
++	TI(0x100b80, 0, 56, COUNTER),
++	TI(0x100b88, 0, 56, COUNTER),
++	TI(0x100ba0, 0, 56, COUNTER),
++	TI(0x100ca0, 0, 56, COUNTER),
++	TI(0x100e40, 0, 56, COUNTER),
++	TI(0x100e48, 0, 56, COUNTER),
++	TI(0x100bf8, 0, 56, COUNTER),
++	TI(0x100c08, 0, 56, COUNTER),
++	TI(0x100bf0, 0, 56, COUNTER),
++	TI(0x100be0, 0, 56, COUNTER),
++	TI(0x100be8, 0, 56, COUNTER),
++	TI(0x100c00, 0, 56, COUNTER),
++	TI(0x100ac0, 0, 56, COUNTER),
++	TI(0x100ac8, 0, 56, COUNTER),
++	TI(0x100ad0, 0, 56, COUNTER),
++	TI(0x100ad8, 0, 56, COUNTER),
++	TI(0x100c28, 0, 56, COUNTER),
++	TI(0x100c38, 0, 56, COUNTER),
++	TI(0x100c20, 0, 56, COUNTER),
++	TI(0x100c10, 0, 56, COUNTER),
++	TI(0x100c18, 0, 56, COUNTER),
++	TI(0x100c30, 0, 56, COUNTER),
++	TI(0x100e78, 0, 56, COUNTER),
++	TI(0x100e80, 0, 56, COUNTER),
++	TI(0x8800808, 0, 9, UGAUGE),
++	TI(0x8800808, 16, 9, UGAUGE),
++	TI(0x100e88, 0, 56, COUNTER),
++	TI(0x100d30, 0, 56, COUNTER),
++	TI(0x100d38, 0, 56, COUNTER),
++	TI(0x100d28, 0, 56, COUNTER),
++	TI(0x100c70, 0, 56, COUNTER),
++	TI(0x100c78, 0, 56, COUNTER),
++	TI(0x100e70, 0, 56, COUNTER),
++	TI(0x10004b8, 4, 16, COUNTER),
++	TI(0x1002000, 0, 56, COUNTER),
++	TI(0x10020c0, 0, 56, COUNTER),
++	TI(0x10020c8, 0, 56, COUNTER),
++	TI(0x10020d0, 0, 56, COUNTER),
++	TI(0x10020d8, 0, 56, COUNTER),
++	TI(0x10020e0, 0, 56, COUNTER),
++	TI(0x10020e8, 0, 56, COUNTER),
++	TI(0x10020f0, 0, 56, COUNTER),
++	TI(0x10020f8, 0, 56, COUNTER),
++	TI(0x10022b8, 0, 56, COUNTER),
++	TI(0x10022b0, 0, 56, COUNTER),
++	TI(0x10022a8, 0, 56, COUNTER),
++	TI(0x1002290, 0, 56, COUNTER),
++	TI(0x1002298, 0, 56, COUNTER),
++	TI(0x1002288, 0, 56, COUNTER),
++	TI(0x10022a0, 0, 56, COUNTER),
++	TI(0x1002280, 0, 56, COUNTER),
++	TI(0x1002270, 0, 56, COUNTER),
++	TI(0x1002278, 0, 56, COUNTER),
++	TI(0x1002620, 0, 56, COUNTER),
++	TU,
++	TI(0x1002630, 0, 56, COUNTER),
++	TI(0x1002608, 0, 56, COUNTER),
++	TI(0x1002660, 0, 56, COUNTER),
++	TI(0x1002648, 0, 56, COUNTER),
++	TI(0x1002688, 0, 56, COUNTER),
++	TI(0x1002678, 0, 56, COUNTER),
++	TI(0x1002668, 0, 56, COUNTER),
++	TI(0x1002670, 0, 56, COUNTER),
++	TI(0x1002610, 0, 56, COUNTER),
++	TI(0x1002618, 0, 56, COUNTER),
++	TI(0x10025f8, 0, 56, COUNTER),
++	TI(0x1002600, 0, 56, COUNTER),
++	TI(0x1002628, 0, 56, COUNTER),
++	TI(0x1002650, 0, 56, COUNTER),
++	TI(0x1002638, 0, 56, COUNTER),
++	TI(0x1002658, 0, 56, COUNTER),
++	TI(0x1002640, 0, 56, COUNTER),
++	TI(0x1002690, 0, 56, COUNTER),
++	TI(0x1002680, 0, 56, COUNTER),
++	TI(0x10025a0, 0, 56, COUNTER),
++	TU,
++	TU,
++	TU,
++	TI(0x10025b0, 0, 56, COUNTER),
++	TI(0x1002590, 0, 56, COUNTER),
++	TI(0x1002598, 0, 56, COUNTER),
++	TU,
++	TU,
++	TI(0x1002580, 0, 56, COUNTER),
++	TI(0x1002588, 0, 56, COUNTER),
++	TI(0x10025a8, 0, 56, COUNTER),
++	TI(0x10025e8, 0, 56, COUNTER),
++	TI(0x10025c0, 0, 56, COUNTER),
++	TI(0x10025c8, 0, 56, COUNTER),
++	TI(0x10025b8, 0, 56, COUNTER),
++	TI(0x10025d8, 0, 56, COUNTER),
++	TI(0x10025e0, 0, 56, COUNTER),
++	TI(0x10025d0, 0, 56, COUNTER),
++	TI(0x10025f0, 0, 56, COUNTER),
++	TI(0x1002570, 0, 56, COUNTER),
++	TI(0x1002568, 0, 56, COUNTER),
++	TI(0x1002578, 0, 56, COUNTER),
++	TU,
++	TI(0x10024c0, 0, 56, COUNTER),
++	TI(0x10024c8, 0, 56, COUNTER),
++	TI(0x10024d0, 0, 56, COUNTER),
++	TI(0x10024d8, 0, 56, COUNTER),
++	TI(0x10024e0, 0, 56, COUNTER),
++	TI(0x10024e8, 0, 56, COUNTER),
++	TI(0x10024f0, 0, 56, COUNTER),
++	TI(0x10024f8, 0, 56, COUNTER),
++	TI(0x1002480, 0, 56, COUNTER),
++	TI(0x1002488, 0, 56, COUNTER),
++	TI(0x1002490, 0, 56, COUNTER),
++	TI(0x1002498, 0, 56, COUNTER),
++	TI(0x10024a0, 0, 56, COUNTER),
++	TI(0x10024a8, 0, 56, COUNTER),
++	TI(0x10024b0, 0, 56, COUNTER),
++	TI(0x10024b8, 0, 56, COUNTER),
++	TI(0x10022c0, 0, 56, COUNTER),
++	TI(0x10022c8, 0, 56, COUNTER),
++	TI(0x10022d0, 0, 56, COUNTER),
++	TI(0x10022d8, 0, 56, COUNTER),
++	TI(0x10022e0, 0, 56, COUNTER),
++	TI(0x10022e8, 0, 56, COUNTER),
++	TI(0x10022f0, 0, 56, COUNTER),
++	TI(0x10022f8, 0, 56, COUNTER),
++	TI(0x10023d0, 0, 56, COUNTER),
++	TI(0x10023c8, 0, 56, COUNTER),
++	TI(0x1002300, 0, 56, COUNTER),
++	TI(0x1002308, 0, 56, COUNTER),
++	TI(0x1002310, 0, 56, COUNTER),
++	TI(0x1002318, 0, 56, COUNTER),
++	TI(0x1002320, 0, 56, COUNTER),
++	TI(0x1002328, 0, 56, COUNTER),
++	TI(0x1002330, 0, 56, COUNTER),
++	TI(0x1002338, 0, 56, COUNTER),
++	TI(0x1002510, 0, 56, COUNTER),
++	TU,
++	TU,
++	TU,
++	TU,
++	TU,
++	TU,
++	TU,
++	TU,
++	TU,
++	TU,
++	TU,
++	TU,
++	TU,
++	TU,
++	TU,
++	TI(0x1002528, 0, 56, COUNTER),
++	TI(0x1002530, 0, 56, COUNTER),
++	TI(0x1002538, 0, 56, COUNTER),
++	TI(0x1002540, 0, 56, COUNTER),
++	TI(0x1002548, 0, 56, COUNTER),
++	TI(0x1002550, 0, 56, COUNTER),
++	TI(0x1002558, 0, 56, COUNTER),
++	TI(0x1002560, 0, 56, COUNTER),
++	TU,
++	TU,
++	TU,
++	TU,
++	TU,
++	TU,
++	TU,
++	TU,
++	TI(0x1002520, 0, 56, COUNTER),
++	TI(0x1002500, 0, 56, COUNTER),
++	TI(0x1002508, 0, 56, COUNTER),
++	TI(0x1002518, 0, 56, COUNTER),
++	TI(0x1002080, 0, 56, COUNTER),
++	TI(0x1002088, 0, 56, COUNTER),
++	TI(0x1002090, 0, 56, COUNTER),
++	TI(0x1002098, 0, 56, COUNTER),
++	TI(0x10020a0, 0, 56, COUNTER),
++	TI(0x10020a8, 0, 56, COUNTER),
++	TI(0x10020b0, 0, 56, COUNTER),
++	TI(0x10020b8, 0, 56, COUNTER),
++	TI(0x1002440, 0, 56, COUNTER),
++	TI(0x1002448, 0, 56, COUNTER),
++	TI(0x1002450, 0, 56, COUNTER),
++	TI(0x1002458, 0, 56, COUNTER),
++	TI(0x1002460, 0, 56, COUNTER),
++	TI(0x1002468, 0, 56, COUNTER),
++	TI(0x1002470, 0, 56, COUNTER),
++	TI(0x1002478, 0, 56, COUNTER),
++	TI(0x1002400, 0, 56, COUNTER),
++	TI(0x1002408, 0, 56, COUNTER),
++	TI(0x1002410, 0, 56, COUNTER),
++	TI(0x1002418, 0, 56, COUNTER),
++	TI(0x1002420, 0, 56, COUNTER),
++	TI(0x1002428, 0, 56, COUNTER),
++	TI(0x1002430, 0, 56, COUNTER),
++	TI(0x1002438, 0, 56, COUNTER),
++	TI(0x10021a8, 0, 56, COUNTER),
++	TI(0x10021b0, 0, 56, COUNTER),
++	TI(0x1002200, 0, 56, COUNTER),
++	TI(0x1002208, 0, 56, COUNTER),
++	TI(0x1002210, 0, 56, COUNTER),
++	TI(0x1002218, 0, 56, COUNTER),
++	TI(0x1002220, 0, 56, COUNTER),
++	TI(0x1002228, 0, 56, COUNTER),
++	TI(0x1002230, 0, 56, COUNTER),
++	TI(0x1002238, 0, 56, COUNTER),
++	TI(0x1002240, 0, 56, COUNTER),
++	TI(0x1002248, 0, 56, COUNTER),
++	TI(0x1002250, 0, 56, COUNTER),
++	TI(0x1002258, 0, 56, COUNTER),
++	TI(0x1002260, 0, 56, COUNTER),
++	TI(0x1002268, 0, 56, COUNTER),
++	TI(0x10021d0, 0, 56, COUNTER),
++	TI(0x10021b8, 0, 56, COUNTER),
++	TI(0x10021d8, 0, 56, COUNTER),
++	TI(0x1002198, 0, 56, COUNTER),
++	TI(0x10021e8, 0, 56, COUNTER),
++	TI(0x10021c8, 0, 56, COUNTER),
++	TI(0x10021c0, 0, 56, COUNTER),
++	TI(0x10021a0, 0, 56, COUNTER),
++	TI(0x10021e0, 0, 56, COUNTER),
++	TI(0x10021f0, 0, 56, COUNTER),
++	TI(0x10021f8, 0, 56, COUNTER),
++	TI(0x1002340, 0, 56, COUNTER),
++	TI(0x1002348, 0, 56, COUNTER),
++	TI(0x1002350, 0, 56, COUNTER),
++	TI(0x1002358, 0, 56, COUNTER),
++	TI(0x1002360, 0, 56, COUNTER),
++	TI(0x1002368, 0, 56, COUNTER),
++	TI(0x1002370, 0, 56, COUNTER),
++	TI(0x1002378, 0, 56, COUNTER),
++	TI(0x10023c0, 0, 56, COUNTER),
++	TI(0x1002020, 0, 56, COUNTER),
++	TI(0x1002040, 0, 56, COUNTER),
++	TI(0x1002048, 0, 56, COUNTER),
++	TI(0x1002050, 0, 56, COUNTER),
++	TI(0x1002058, 0, 56, COUNTER),
++	TI(0x1002060, 0, 56, COUNTER),
++	TI(0x1002068, 0, 56, COUNTER),
++	TI(0x1002070, 0, 56, COUNTER),
++	TI(0x1002078, 0, 56, COUNTER),
++	TI(0x1001048, 0, 56, COUNTER),
++	TI(0x1001060, 0, 56, COUNTER),
++	TI(0x1001050, 0, 56, COUNTER),
++	TI(0x1001058, 0, 56, COUNTER),
++	TI(0x1001068, 0, 56, COUNTER),
++	TI(0x1001040, 0, 56, COUNTER),
++	TI(0x1001018, 0, 56, COUNTER),
++	TI(0x1001030, 0, 56, COUNTER),
++	TI(0x1001020, 0, 56, COUNTER),
++	TI(0x1001028, 0, 56, COUNTER),
++	TI(0x1001038, 0, 56, COUNTER),
++	TI(0x1001010, 0, 56, COUNTER),
++	TI(0x1002138, 0, 56, COUNTER),
++	TI(0x1002140, 0, 56, COUNTER),
++	TI(0x1002148, 0, 56, COUNTER),
++	TI(0x1002150, 0, 56, COUNTER),
++	TI(0x1002158, 0, 56, COUNTER),
++	TI(0x1002160, 0, 56, COUNTER),
++	TI(0x1002168, 0, 56, COUNTER),
++	TI(0x1002170, 0, 56, COUNTER),
++	TI(0x1002178, 0, 56, COUNTER),
++	TI(0x1002180, 0, 56, COUNTER),
++	TI(0x1002188, 0, 56, COUNTER),
++	TI(0x1002190, 0, 56, COUNTER),
++	TI(0x1002120, 0, 56, COUNTER),
++	TI(0x1002100, 0, 56, COUNTER),
++	TI(0x1002128, 0, 56, COUNTER),
++	TI(0x1002108, 0, 56, COUNTER),
++	TI(0x1002130, 0, 56, COUNTER),
++	TI(0x10023e8, 0, 56, COUNTER),
++	TI(0x10023f8, 0, 56, COUNTER),
++	TI(0x1002380, 0, 56, COUNTER),
++	TI(0x1002388, 0, 56, COUNTER),
++	TI(0x1002390, 0, 56, COUNTER),
++	TI(0x1002398, 0, 56, COUNTER),
++	TI(0x10023a0, 0, 56, COUNTER),
++	TI(0x10023a8, 0, 56, COUNTER),
++	TI(0x10023b0, 0, 56, COUNTER),
++	TI(0x10023b8, 0, 56, COUNTER),
++	TI(0x1002110, 0, 56, COUNTER),
++	TI(0x1002118, 0, 56, COUNTER),
++	TI(0x1002010, 0, 56, COUNTER),
++	TI(0x10023e0, 0, 56, COUNTER),
++	TI(0x10023f0, 0, 56, COUNTER),
++	TI(0x1002008, 0, 56, COUNTER),
++	TI(0x9870900, 0, 56, COUNTER),
++	TI(0x98708f0, 0, 56, COUNTER),
++	TI(0x9870958, 0, 56, COUNTER),
++	TI(0x98708c8, 0, 56, COUNTER),
++	TI(0x98708d0, 0, 56, COUNTER),
++	TI(0x98708d8, 0, 56, COUNTER),
++	TI(0x98708a0, 0, 56, COUNTER),
++	TI(0x98708a8, 0, 56, COUNTER),
++	TI(0x98708b0, 0, 56, COUNTER),
++	TI(0x98708e0, 0, 56, COUNTER),
++	TI(0x9870850, 0, 56, COUNTER),
++	TI(0x9870858, 0, 56, COUNTER),
++	TI(0x9870870, 0, 56, COUNTER),
++	TI(0x9870878, 0, 56, COUNTER),
++	TI(0x9870840, 0, 56, COUNTER),
++	TI(0x9870848, 0, 56, COUNTER),
++	TI(0x9870880, 0, 56, COUNTER),
++	TI(0x9870888, 0, 56, COUNTER),
++	TI(0x9870860, 0, 56, COUNTER),
++	TI(0x9870868, 0, 56, COUNTER),
++	TI(0x98708b8, 0, 56, COUNTER),
++	TI(0x98708c0, 0, 56, COUNTER),
++	TI(0x98708e8, 0, 56, COUNTER),
++	TI(0x9870898, 0, 56, COUNTER),
++	TI(0x9870890, 0, 56, COUNTER),
++	TI(0x9870920, 0, 56, COUNTER),
++	TI(0x9870928, 0, 56, COUNTER),
++	TI(0x9870908, 0, 56, COUNTER),
++	TI(0x9870918, 0, 56, COUNTER),
++	TI(0x9870930, 0, 56, COUNTER),
++	TI(0x9870948, 0, 56, COUNTER),
++	TI(0x9870938, 0, 56, COUNTER),
++	TI(0x9870940, 0, 56, COUNTER),
++	TI(0x9870950, 0, 56, COUNTER),
++	TI(0x9870910, 0, 56, COUNTER),
++	TI(0x98708f8, 0, 56, COUNTER),
++	TI(0x98709f0, 0, 56, COUNTER),
++	TI(0x98709d8, 0, 56, COUNTER),
++	TI(0x98709e0, 0, 56, COUNTER),
++	TI(0x98709e8, 0, 56, COUNTER),
++	TI(0x9870a00, 0, 56, COUNTER),
++	TI(0x9870a08, 0, 56, COUNTER),
++	TI(0x98709f8, 0, 56, COUNTER),
++	TI(0x98709b8, 0, 56, COUNTER),
++	TI(0x98709c0, 0, 56, COUNTER),
++	TI(0x98709c8, 0, 56, COUNTER),
++	TI(0x98709b0, 0, 56, COUNTER),
++	TI(0x98709a0, 0, 56, COUNTER),
++	TI(0x9870a18, 0, 56, COUNTER),
++	TI(0x9870a10, 0, 56, COUNTER),
++	TI(0x98709d0, 0, 56, COUNTER),
++	TI(0x9870998, 0, 56, COUNTER),
++	TI(0x9870988, 0, 56, COUNTER),
++	TI(0x9870990, 0, 56, COUNTER),
++	TI(0x9870980, 0, 56, COUNTER),
++	TI(0x98709a8, 0, 56, COUNTER),
++	TI(0x9870548, 0, 56, COUNTER),
++	TI(0x9870528, 0, 56, COUNTER),
++	TI(0x9870568, 0, 56, COUNTER),
++	TI(0x9870538, 0, 56, COUNTER),
++	TI(0x9870540, 0, 56, COUNTER),
++	TI(0x9870530, 0, 56, COUNTER),
++	TI(0x9870500, 0, 56, COUNTER),
++	TI(0x9870508, 0, 56, COUNTER),
++	TI(0x9870558, 0, 56, COUNTER),
++	TI(0x9870560, 0, 56, COUNTER),
++	TI(0x9870700, 0, 56, COUNTER),
++	TI(0x9870708, 0, 56, COUNTER),
++	TI(0x9870710, 0, 56, COUNTER),
++	TI(0x9870718, 0, 56, COUNTER),
++	TI(0x9870720, 0, 56, COUNTER),
++	TI(0x9870728, 0, 56, COUNTER),
++	TI(0x9870730, 0, 56, COUNTER),
++	TI(0x9870738, 0, 56, COUNTER),
++	TI(0x9870520, 0, 56, COUNTER),
++	TI(0x9870550, 0, 56, COUNTER),
++	TI(0x9870640, 0, 56, COUNTER),
++	TI(0x9870590, 0, 56, COUNTER),
++	TI(0x9870598, 0, 56, COUNTER),
++	TI(0x9870628, 0, 56, COUNTER),
++	TI(0x9870610, 0, 56, COUNTER),
++	TI(0x9870618, 0, 56, COUNTER),
++	TI(0x9870620, 0, 56, COUNTER),
++	TI(0x9870630, 0, 56, COUNTER),
++	TI(0x9870638, 0, 56, COUNTER),
++	TI(0x98705d8, 0, 56, COUNTER),
++	TI(0x98705c8, 0, 56, COUNTER),
++	TI(0x98705a8, 0, 56, COUNTER),
++	TI(0x9870608, 0, 56, COUNTER),
++	TI(0x98705f8, 0, 56, COUNTER),
++	TI(0x9870600, 0, 56, COUNTER),
++	TI(0x98705e0, 0, 56, COUNTER),
++	TI(0x98705d0, 0, 56, COUNTER),
++	TI(0x98705c0, 0, 56, COUNTER),
++	TI(0x98705f0, 0, 56, COUNTER),
++	TI(0x98705b0, 0, 56, COUNTER),
++	TI(0x98705b8, 0, 56, COUNTER),
++	TI(0x98705a0, 0, 56, COUNTER),
++	TI(0x9870648, 0, 56, COUNTER),
++	TI(0x9870650, 0, 56, COUNTER),
++	TI(0x9870588, 0, 56, COUNTER),
++	TI(0x9870580, 0, 56, COUNTER),
++	TI(0x98705e8, 0, 56, COUNTER),
++	TI(0x9870740, 0, 56, COUNTER),
++	TI(0x9870748, 0, 56, COUNTER),
++	TI(0x9870750, 0, 56, COUNTER),
++	TI(0x9870758, 0, 56, COUNTER),
++	TI(0x9870760, 0, 56, COUNTER),
++	TI(0x9870768, 0, 56, COUNTER),
++	TI(0x9870770, 0, 56, COUNTER),
++	TI(0x9870778, 0, 56, COUNTER),
++	TI(0x9870780, 0, 56, COUNTER),
++	TI(0x9870788, 0, 56, COUNTER),
++	TI(0x9870790, 0, 56, COUNTER),
++	TI(0x9870798, 0, 56, COUNTER),
++	TI(0x98707a0, 0, 56, COUNTER),
++	TI(0x98707a8, 0, 56, COUNTER),
++	TI(0x98707b0, 0, 56, COUNTER),
++	TI(0x98707b8, 0, 56, COUNTER),
++	TI(0x98707c0, 0, 56, COUNTER),
++	TI(0x98707c8, 0, 56, COUNTER),
++	TI(0x98707d0, 0, 56, COUNTER),
++	TI(0x98707d8, 0, 56, COUNTER),
++	TI(0x98707e0, 0, 56, COUNTER),
++	TI(0x98707e8, 0, 56, COUNTER),
++	TI(0x98707f0, 0, 56, COUNTER),
++	TI(0x98707f8, 0, 56, COUNTER),
++	TI(0x9870800, 0, 56, COUNTER),
++	TI(0x9870808, 0, 56, COUNTER),
++	TI(0x9870810, 0, 56, COUNTER),
++	TI(0x9870818, 0, 56, COUNTER),
++	TI(0x9870820, 0, 56, COUNTER),
++	TI(0x9870828, 0, 56, COUNTER),
++	TI(0x9870830, 0, 56, COUNTER),
++	TI(0x9870838, 0, 56, COUNTER),
++	TI(0x9870040, 0, 56, COUNTER),
++	TI(0x9870320, 0, 56, COUNTER),
++	TI(0x9870328, 0, 56, COUNTER),
++	TI(0x9870330, 0, 56, COUNTER),
++	TI(0x9870338, 0, 56, COUNTER),
++	TI(0x9870340, 0, 56, COUNTER),
++	TI(0x9870348, 0, 56, COUNTER),
++	TI(0x9870350, 0, 56, COUNTER),
++	TI(0x9870358, 0, 56, COUNTER),
++	TI(0x9800448, 4, 16, COUNTER),
++	TI(0x9800a00, 32, 15, UGAUGE),
++	TI(0x9800a08, 32, 15, UGAUGE),
++	TI(0x9800a10, 32, 15, UGAUGE),
++	TI(0x9800a18, 32, 15, UGAUGE),
++	TI(0x9800a00, 0, 15, UGAUGE),
++	TI(0x9800a08, 0, 15, UGAUGE),
++	TI(0x9800a10, 0, 15, UGAUGE),
++	TI(0x9800a18, 0, 15, UGAUGE),
++	TI(0x9800a00, 48, 15, UGAUGE),
++	TI(0x9800a08, 48, 15, UGAUGE),
++	TI(0x9800a10, 48, 15, UGAUGE),
++	TI(0x9800a18, 48, 15, UGAUGE),
++	TI(0x9800a00, 16, 15, UGAUGE),
++	TI(0x9800a08, 16, 15, UGAUGE),
++	TI(0x9800a10, 16, 15, UGAUGE),
++	TI(0x9800a18, 16, 15, UGAUGE),
++	TI(0x98701f8, 0, 56, COUNTER),
++	TI(0x98701f0, 0, 56, COUNTER),
++	TI(0x98701e8, 0, 56, COUNTER),
++	TI(0x98701c0, 0, 56, COUNTER),
++	TI(0x98701c8, 0, 56, COUNTER),
++	TI(0x98701d0, 0, 56, COUNTER),
++	TI(0x98701d8, 0, 56, COUNTER),
++	TI(0x98701e0, 0, 56, COUNTER),
++	TI(0x98700d0, 0, 56, COUNTER),
++	TI(0x98700b8, 0, 56, COUNTER),
++	TI(0x9870078, 0, 56, COUNTER),
++	TI(0x98700c8, 0, 56, COUNTER),
++	TI(0x98700c0, 0, 56, COUNTER),
++	TI(0x98700b0, 0, 56, COUNTER),
++	TI(0x98700a0, 0, 56, COUNTER),
++	TI(0x9870110, 0, 56, COUNTER),
++	TI(0x98700d8, 0, 56, COUNTER),
++	TI(0x98700e0, 0, 56, COUNTER),
++	TI(0x98700e8, 0, 56, COUNTER),
++	TI(0x98700a8, 0, 56, COUNTER),
++	TI(0x9870090, 0, 56, COUNTER),
++	TI(0x9870080, 0, 56, COUNTER),
++	TI(0x9870098, 0, 56, COUNTER),
++	TI(0x9870088, 0, 56, COUNTER),
++	TI(0x9870108, 0, 56, COUNTER),
++	TI(0x9870118, 0, 56, COUNTER),
++	TI(0x98700f0, 0, 56, COUNTER),
++	TI(0x98700f8, 0, 56, COUNTER),
++	TI(0x9870100, 0, 56, COUNTER),
++	TI(0x9870168, 0, 56, COUNTER),
++	TI(0x9870178, 0, 56, COUNTER),
++	TI(0x9870158, 0, 56, COUNTER),
++	TI(0x9870190, 0, 56, COUNTER),
++	TI(0x9870148, 0, 56, COUNTER),
++	TI(0x9870188, 0, 56, COUNTER),
++	TI(0x9870180, 0, 56, COUNTER),
++	TI(0x98701a0, 0, 56, COUNTER),
++	TI(0x9870198, 0, 56, COUNTER),
++	TI(0x9870008, 0, 56, COUNTER),
++	TI(0x9870048, 0, 56, COUNTER),
++	TI(0x9870038, 0, 56, COUNTER),
++	TI(0x9870010, 0, 56, COUNTER),
++	TI(0x9870018, 0, 56, COUNTER),
++	TI(0x98702a0, 0, 56, COUNTER),
++	TI(0x98702a8, 0, 56, COUNTER),
++	TI(0x98702b0, 0, 56, COUNTER),
++	TI(0x98702b8, 0, 56, COUNTER),
++	TI(0x98702e0, 0, 56, COUNTER),
++	TI(0x98702e8, 0, 56, COUNTER),
++	TI(0x98702f0, 0, 56, COUNTER),
++	TI(0x98702f8, 0, 56, COUNTER),
++	TI(0x98702c0, 0, 56, COUNTER),
++	TI(0x98702c8, 0, 56, COUNTER),
++	TI(0x98702d0, 0, 56, COUNTER),
++	TI(0x98702d8, 0, 56, COUNTER),
++	TI(0x9870300, 0, 56, COUNTER),
++	TI(0x9870308, 0, 56, COUNTER),
++	TI(0x9870310, 0, 56, COUNTER),
++	TI(0x9870318, 0, 56, COUNTER),
++	TI(0x9870240, 0, 56, COUNTER),
++	TI(0x9870248, 0, 56, COUNTER),
++	TI(0x9870250, 0, 56, COUNTER),
++	TI(0x9870258, 0, 56, COUNTER),
++	TI(0x9870260, 0, 56, COUNTER),
++	TI(0x9870268, 0, 56, COUNTER),
++	TI(0x9870270, 0, 56, COUNTER),
++	TI(0x9870278, 0, 56, COUNTER),
++	TI(0x9870280, 0, 56, COUNTER),
++	TI(0x9870288, 0, 56, COUNTER),
++	TI(0x9870290, 0, 56, COUNTER),
++	TI(0x9870298, 0, 56, COUNTER),
++	TI(0x9870440, 0, 56, COUNTER),
++	TI(0x9870448, 0, 56, COUNTER),
++	TI(0x9870450, 0, 56, COUNTER),
++	TI(0x9870458, 0, 56, COUNTER),
++	TI(0x98701a8, 0, 56, COUNTER),
++	TI(0x98701b0, 0, 56, COUNTER),
++	TI(0x9870170, 0, 56, COUNTER),
++	TI(0x98701b8, 0, 56, COUNTER),
++	TI(0x9870028, 0, 56, COUNTER),
++	TI(0x9870030, 0, 56, COUNTER),
++	TI(0x9870400, 0, 56, COUNTER),
++	TI(0x9870408, 0, 56, COUNTER),
++	TI(0x9870410, 0, 56, COUNTER),
++	TI(0x9870418, 0, 56, COUNTER),
++	TI(0x9870420, 0, 56, COUNTER),
++	TI(0x9870428, 0, 56, COUNTER),
++	TI(0x9870430, 0, 56, COUNTER),
++	TI(0x9870438, 0, 56, COUNTER),
++	TI(0x9870200, 0, 56, COUNTER),
++	TI(0x9870218, 0, 56, COUNTER),
++	TI(0x9870228, 0, 56, COUNTER),
++	TI(0x9870220, 0, 56, COUNTER),
++	TI(0x9870210, 0, 56, COUNTER),
++	TI(0x98703a0, 0, 56, COUNTER),
++	TI(0x98703a8, 0, 56, COUNTER),
++	TI(0x98703b0, 0, 56, COUNTER),
++	TI(0x98703b8, 0, 56, COUNTER),
++	TI(0x98703c0, 0, 56, COUNTER),
++	TI(0x98703c8, 0, 56, COUNTER),
++	TI(0x98703d0, 0, 56, COUNTER),
++	TI(0x98703d8, 0, 56, COUNTER),
++	TI(0x98703e0, 0, 56, COUNTER),
++	TI(0x98703e8, 0, 56, COUNTER),
++	TI(0x98703f0, 0, 56, COUNTER),
++	TI(0x98703f8, 0, 56, COUNTER),
++	TI(0x9870208, 0, 56, COUNTER),
++	TI(0x9870360, 0, 56, COUNTER),
++	TI(0x9870368, 0, 56, COUNTER),
++	TI(0x9870370, 0, 56, COUNTER),
++	TI(0x9870378, 0, 56, COUNTER),
++	TI(0x9870380, 0, 56, COUNTER),
++	TI(0x9870388, 0, 56, COUNTER),
++	TI(0x9870390, 0, 56, COUNTER),
++	TI(0x9870398, 0, 56, COUNTER),
++	TI(0x9803120, 0, 56, COUNTER),
++	TI(0x9803128, 0, 56, COUNTER),
++	TI(0x9803130, 0, 56, COUNTER),
++	TI(0x9803138, 0, 56, COUNTER),
++	TI(0x9803220, 0, 15, UGAUGE),
++	TI(0x9803228, 0, 15, UGAUGE),
++	TI(0x9803230, 0, 15, UGAUGE),
++	TI(0x9803238, 0, 15, UGAUGE),
++	TI(0x9803220, 16, 12, UGAUGE),
++	TI(0x9803228, 16, 12, UGAUGE),
++	TI(0x9803230, 16, 12, UGAUGE),
++	TI(0x9803238, 16, 12, UGAUGE),
++	TI(0x9803000, 0, 48, COUNTER),
++	TI(0x9803008, 0, 48, COUNTER),
++	TI(0x9803010, 0, 48, COUNTER),
++	TI(0x9803018, 0, 48, COUNTER),
++	TI(0x9803000, 60, 4, UGAUGE),
++	TI(0x9803008, 60, 4, UGAUGE),
++	TI(0x9803010, 60, 4, UGAUGE),
++	TI(0x9803018, 60, 4, UGAUGE),
++	TI(0x9803020, 0, 52, COUNTER),
++	TI(0x9803028, 0, 52, COUNTER),
++	TI(0x9803030, 0, 52, COUNTER),
++	TI(0x9803038, 0, 52, COUNTER),
++	TI(0x9803020, 52, 12, UGAUGE),
++	TI(0x9803028, 52, 12, UGAUGE),
++	TI(0x9803030, 52, 12, UGAUGE),
++	TI(0x9803038, 52, 12, UGAUGE),
++	TI(0x9803100, 0, 56, COUNTER),
++	TI(0x9803108, 0, 56, COUNTER),
++	TI(0x9803110, 0, 56, COUNTER),
++	TI(0x9803118, 0, 56, COUNTER),
++	TI(0x9803200, 0, 15, UGAUGE),
++	TI(0x9803208, 0, 15, UGAUGE),
++	TI(0x9803210, 0, 15, UGAUGE),
++	TI(0x9803218, 0, 15, UGAUGE),
++	TI(0x9803200, 16, 12, UGAUGE),
++	TI(0x9803208, 16, 12, UGAUGE),
++	TI(0x9803210, 16, 12, UGAUGE),
++	TI(0x9803218, 16, 12, UGAUGE),
++	TI(0x9800800, 0, 15, UGAUGE),
++	TI(0x9800808, 0, 15, UGAUGE),
++	TI(0x9800810, 0, 15, UGAUGE),
++	TI(0x9800818, 0, 15, UGAUGE),
++	TI(0x9800820, 0, 15, UGAUGE),
++	TI(0x9800828, 0, 15, UGAUGE),
++	TI(0x9800830, 0, 15, UGAUGE),
++	TI(0x9800838, 0, 15, UGAUGE),
++	TI(0x9800840, 0, 15, UGAUGE),
++	TI(0x9800848, 0, 15, UGAUGE),
++	TI(0x9800850, 0, 15, UGAUGE),
++	TI(0x9800858, 0, 15, UGAUGE),
++	TI(0x9800860, 0, 15, UGAUGE),
++	TI(0x9800868, 0, 15, UGAUGE),
++	TI(0x9800870, 0, 15, UGAUGE),
++	TI(0x9800878, 0, 15, UGAUGE),
++	TI(0x9800880, 0, 15, UGAUGE),
++	TI(0x9800888, 0, 15, UGAUGE),
++	TI(0x9800890, 0, 15, UGAUGE),
++	TI(0x9800898, 0, 15, UGAUGE),
++	TI(0x98008a0, 0, 15, UGAUGE),
++	TI(0x98008a8, 0, 15, UGAUGE),
++	TI(0x98008b0, 0, 15, UGAUGE),
++	TI(0x98008b8, 0, 15, UGAUGE),
++	TI(0x98008c0, 0, 15, UGAUGE),
++	TI(0x98008c8, 0, 15, UGAUGE),
++	TI(0x98008d0, 0, 15, UGAUGE),
++	TI(0x98008d8, 0, 15, UGAUGE),
++	TI(0x98008e0, 0, 15, UGAUGE),
++	TI(0x98008e8, 0, 15, UGAUGE),
++	TI(0x98008f0, 0, 15, UGAUGE),
++	TI(0x98008f8, 0, 15, UGAUGE),
++	TI(0x9800900, 0, 15, UGAUGE),
++	TI(0x9800908, 0, 15, UGAUGE),
++	TI(0x9800910, 0, 15, UGAUGE),
++	TI(0x9800918, 0, 15, UGAUGE),
++	TI(0x9800920, 0, 15, UGAUGE),
++	TI(0x9800928, 0, 15, UGAUGE),
++	TI(0x9800930, 0, 15, UGAUGE),
++	TI(0x9800938, 0, 15, UGAUGE),
++	TI(0x9800940, 0, 15, UGAUGE),
++	TI(0x9800948, 0, 15, UGAUGE),
++	TI(0x9800950, 0, 15, UGAUGE),
++	TI(0x9800958, 0, 15, UGAUGE),
++	TI(0x9800960, 0, 15, UGAUGE),
++	TI(0x9800968, 0, 15, UGAUGE),
++	TI(0x9800970, 0, 15, UGAUGE),
++	TI(0x9800978, 0, 15, UGAUGE),
++	TI(0x9800980, 0, 15, UGAUGE),
++	TI(0x9800988, 0, 15, UGAUGE),
++	TI(0x9800990, 0, 15, UGAUGE),
++	TI(0x9800998, 0, 15, UGAUGE),
++	TI(0x98009a0, 0, 15, UGAUGE),
++	TI(0x98009a8, 0, 15, UGAUGE),
++	TI(0x98009b0, 0, 15, UGAUGE),
++	TI(0x98009b8, 0, 15, UGAUGE),
++	TI(0x98009c0, 0, 15, UGAUGE),
++	TI(0x98009c8, 0, 15, UGAUGE),
++	TI(0x98009d0, 0, 15, UGAUGE),
++	TI(0x98009d8, 0, 15, UGAUGE),
++	TI(0x98009e0, 0, 15, UGAUGE),
++	TI(0x98009e8, 0, 15, UGAUGE),
++	TI(0x98009f0, 0, 15, UGAUGE),
++	TI(0x98009f8, 0, 15, UGAUGE),
++	TI(0x9870000, 0, 56, COUNTER),
++	TI(0x9870460, 0, 56, COUNTER),
++	TI(0x9870468, 0, 56, COUNTER),
++	TI(0x9870470, 0, 56, COUNTER),
++	TI(0x9870478, 0, 56, COUNTER),
++	TI(0x9870230, 0, 56, COUNTER),
++	TI(0x9870238, 0, 56, COUNTER),
++	TI(0x10004010, 4, 16, COUNTER),
++	TI(0x10020170, 0, 56, COUNTER),
++	TI(0x10020178, 0, 56, COUNTER),
++	TI(0x10020180, 0, 56, COUNTER),
++	TI(0x10020188, 0, 56, COUNTER),
++	TI(0x10020150, 0, 56, COUNTER),
++	TI(0x10020158, 0, 56, COUNTER),
++	TI(0x10020160, 0, 56, COUNTER),
++	TI(0x10020168, 0, 56, COUNTER),
++	TI(0x100200f0, 0, 56, COUNTER),
++	TI(0x100200f8, 0, 56, COUNTER),
++	TI(0x10020130, 0, 56, COUNTER),
++	TI(0x10020138, 0, 56, COUNTER),
++	TI(0x10020090, 0, 56, COUNTER),
++	TI(0x10020098, 0, 56, COUNTER),
++	TI(0x100200a0, 0, 56, COUNTER),
++	TI(0x10020048, 0, 56, COUNTER),
++	TI(0x10020050, 0, 56, COUNTER),
++	TI(0x10020058, 0, 56, COUNTER),
++	TI(0x10020078, 0, 56, COUNTER),
++	TI(0x10020080, 0, 56, COUNTER),
++	TI(0x10020088, 0, 56, COUNTER),
++	TI(0x10020018, 0, 56, COUNTER),
++	TI(0x10020020, 0, 56, COUNTER),
++	TI(0x10020028, 0, 56, COUNTER),
++	TI(0x100200a8, 0, 56, COUNTER),
++	TI(0x100200b0, 0, 56, COUNTER),
++	TI(0x100200b8, 0, 56, COUNTER),
++	TI(0x10020000, 0, 56, COUNTER),
++	TI(0x10020008, 0, 56, COUNTER),
++	TI(0x10020010, 0, 56, COUNTER),
++	TI(0x10020060, 0, 56, COUNTER),
++	TI(0x10020068, 0, 56, COUNTER),
++	TI(0x10020070, 0, 56, COUNTER),
++	TI(0x10020030, 0, 56, COUNTER),
++	TI(0x10020038, 0, 56, COUNTER),
++	TI(0x10020040, 0, 56, COUNTER),
++	TI(0x10020100, 0, 56, COUNTER),
++	TI(0x10020108, 0, 56, COUNTER),
++	TI(0x10020140, 0, 56, COUNTER),
++	TI(0x10020148, 0, 56, COUNTER),
++	TI(0x100200e0, 0, 56, COUNTER),
++	TI(0x100200e8, 0, 56, COUNTER),
++	TI(0x10020120, 0, 56, COUNTER),
++	TI(0x10020128, 0, 56, COUNTER),
++	TI(0x100200c8, 0, 56, COUNTER),
++	TI(0x100200c0, 0, 56, COUNTER),
++	TI(0x100200d0, 0, 56, COUNTER),
++	TI(0x100200d8, 0, 56, COUNTER),
++	TI(0x10020110, 0, 56, COUNTER),
++	TI(0x10020118, 0, 56, COUNTER),
++	TI(0x9870cd0, 0, 56, COUNTER),
++	TI(0x9870d40, 0, 56, COUNTER),
++	TI(0x9870cc0, 0, 56, COUNTER),
++	TI(0x9870cc8, 0, 56, COUNTER),
++	TI(0x9870cd8, 0, 56, COUNTER),
++	TI(0x9870cf8, 0, 56, COUNTER),
++	TI(0x9870ce0, 0, 56, COUNTER),
++	TI(0x9870ce8, 0, 56, COUNTER),
++	TI(0x9870cf0, 0, 56, COUNTER),
++	TI(0xa010018, 0, 12, UGAUGE),
++	TI(0x1002a90, 0, 56, COUNTER),
++	TI(0x10026b0, 0, 56, COUNTER),
++	TI(0x10026a8, 0, 56, COUNTER),
++	TI(0x10026b8, 0, 56, COUNTER),
++	TI(0x10026c8, 0, 56, COUNTER),
++	TI(0x10026d8, 0, 56, COUNTER),
++	TI(0x10026d0, 0, 56, COUNTER),
++	TI(0x10026c0, 0, 56, COUNTER),
++	TI(0x1002970, 0, 56, COUNTER),
++	TI(0x1002978, 0, 56, COUNTER),
++	TI(0x1002980, 0, 56, COUNTER),
++	TI(0x1002988, 0, 56, COUNTER),
++	TI(0x1002a98, 0, 56, COUNTER),
++	TI(0x1002aa0, 0, 56, COUNTER),
++	TI(0x1002aa8, 0, 56, COUNTER),
++	TI(0x1002ab0, 0, 56, COUNTER),
++	TI(0x1002ab8, 0, 56, COUNTER),
++	TI(0x1002ac0, 0, 56, COUNTER),
++	TI(0x1002ac8, 0, 56, COUNTER),
++	TI(0x1002ad0, 0, 56, COUNTER),
++	TI(0x1002ad8, 0, 56, COUNTER),
++	TI(0x1002ae0, 0, 56, COUNTER),
++	TI(0x1002ae8, 0, 56, COUNTER),
++	TI(0x1002af0, 0, 56, COUNTER),
++	TI(0x1002af8, 0, 56, COUNTER),
++	TI(0x1002b00, 0, 56, COUNTER),
++	TI(0x1002b08, 0, 56, COUNTER),
++	TI(0x1002b10, 0, 56, COUNTER),
++	TI(0x1002b18, 0, 56, COUNTER),
++	TI(0x1002b20, 0, 56, COUNTER),
++	TI(0x1002b28, 0, 56, COUNTER),
++	TI(0x1002b30, 0, 56, COUNTER),
++	TI(0x1002b38, 0, 56, COUNTER),
++	TI(0x1002b40, 0, 56, COUNTER),
++	TI(0x1002b48, 0, 56, COUNTER),
++	TI(0x1002b50, 0, 56, COUNTER),
++	TI(0x1002b58, 0, 56, COUNTER),
++	TI(0x1002b60, 0, 56, COUNTER),
++	TI(0x1002b68, 0, 56, COUNTER),
++	TI(0x1002b70, 0, 56, COUNTER),
++	TI(0x1002b78, 0, 56, COUNTER),
++	TI(0x1002b80, 0, 56, COUNTER),
++	TI(0x1002b88, 0, 56, COUNTER),
++	TI(0x1002b90, 0, 56, COUNTER),
++	TI(0x1002b98, 0, 56, COUNTER),
++	TI(0x1002ba0, 0, 56, COUNTER),
++	TI(0x1002ba8, 0, 56, COUNTER),
++	TI(0x1002bb0, 0, 56, COUNTER),
++	TI(0x1002bb8, 0, 56, COUNTER),
++	TI(0x1002bc0, 0, 56, COUNTER),
++	TI(0x1002bc8, 0, 56, COUNTER),
++	TI(0x1002bd0, 0, 56, COUNTER),
++	TI(0x1002bd8, 0, 56, COUNTER),
++	TI(0x1002be0, 0, 56, COUNTER),
++	TI(0x1002be8, 0, 56, COUNTER),
++	TI(0x1002bf0, 0, 56, COUNTER),
++	TI(0x1002bf8, 0, 56, COUNTER),
++	TI(0x1002c00, 0, 56, COUNTER),
++	TI(0x1002c08, 0, 56, COUNTER),
++	TI(0x1002c10, 0, 56, COUNTER),
++	TI(0x1002c18, 0, 56, COUNTER),
++	TI(0x1002c20, 0, 56, COUNTER),
++	TI(0x1002c28, 0, 56, COUNTER),
++	TI(0x1002c30, 0, 56, COUNTER),
++	TI(0x1002c38, 0, 56, COUNTER),
++	TI(0x1002c40, 0, 56, COUNTER),
++	TI(0x1002c48, 0, 56, COUNTER),
++	TI(0x1002c50, 0, 56, COUNTER),
++	TI(0x1002c58, 0, 56, COUNTER),
++	TI(0x1002c60, 0, 56, COUNTER),
++	TI(0x1002c68, 0, 56, COUNTER),
++	TI(0x1002c70, 0, 56, COUNTER),
++	TI(0x1002c78, 0, 56, COUNTER),
++	TI(0x1002c80, 0, 56, COUNTER),
++	TI(0x1002c88, 0, 56, COUNTER),
++	TI(0x1002c90, 0, 56, COUNTER),
++	TI(0x1002c98, 0, 56, COUNTER),
++	TI(0x1002ca0, 0, 56, COUNTER),
++	TI(0x1002ca8, 0, 56, COUNTER),
++	TI(0x1002cb0, 0, 56, COUNTER),
++	TI(0x1002cb8, 0, 56, COUNTER),
++	TI(0x1002cc0, 0, 56, COUNTER),
++	TI(0x1002cc8, 0, 56, COUNTER),
++	TI(0x1002cd0, 0, 56, COUNTER),
++	TI(0x1002cd8, 0, 56, COUNTER),
++	TI(0x1002ce0, 0, 56, COUNTER),
++	TI(0x1002ce8, 0, 56, COUNTER),
++	TI(0x1002cf0, 0, 56, COUNTER),
++	TI(0x1002cf8, 0, 56, COUNTER),
++	TI(0x1002d00, 0, 56, COUNTER),
++	TI(0x1002d08, 0, 56, COUNTER),
++	TI(0x1002d10, 0, 56, COUNTER),
++	TI(0x1002d18, 0, 56, COUNTER),
++	TI(0x1002d20, 0, 56, COUNTER),
++	TI(0x1002d28, 0, 56, COUNTER),
++	TI(0x1002d30, 0, 56, COUNTER),
++	TI(0x1002d38, 0, 56, COUNTER),
++	TI(0x1002d40, 0, 56, COUNTER),
++	TI(0x1002d48, 0, 56, COUNTER),
++	TI(0x1002d50, 0, 56, COUNTER),
++	TI(0x1002d58, 0, 56, COUNTER),
++	TI(0x1002d60, 0, 56, COUNTER),
++	TI(0x1002d68, 0, 56, COUNTER),
++	TI(0x1002d70, 0, 56, COUNTER),
++	TI(0x1002d78, 0, 56, COUNTER),
++	TI(0x1002d80, 0, 56, COUNTER),
++	TI(0x1002d88, 0, 56, COUNTER),
++	TI(0x1002d90, 0, 56, COUNTER),
++	TI(0x1002698, 0, 56, COUNTER),
++	TI(0x10026a0, 0, 56, COUNTER),
++	TI(0x1002a88, 0, 56, COUNTER),
++	TI(0x1002df8, 0, 56, COUNTER),
++	TI(0x1002e00, 0, 56, COUNTER),
++	TI(0x1002e08, 0, 56, COUNTER),
++	TI(0x1002e10, 0, 56, COUNTER),
++	TI(0x1002dd0, 0, 56, COUNTER),
++	TI(0x1002de0, 0, 56, COUNTER),
++	TI(0x1002dd8, 0, 56, COUNTER),
++	TI(0x1002de8, 0, 56, COUNTER),
++	TI(0x1002dc0, 0, 56, COUNTER),
++	TI(0x1002dc8, 0, 56, COUNTER),
++	TI(0x1002db8, 0, 56, COUNTER),
++	TI(0x1002da0, 0, 56, COUNTER),
++	TI(0x1002db0, 0, 56, COUNTER),
++	TI(0x1002da8, 0, 56, COUNTER),
++	TI(0x1002d98, 0, 56, COUNTER),
++	TI(0x1002df0, 0, 56, COUNTER),
++	TI(0x1002e78, 0, 56, COUNTER),
++	TI(0x1002e80, 0, 56, COUNTER),
++	TI(0x1002e88, 0, 56, COUNTER),
++	TI(0x1002e90, 0, 56, COUNTER),
++	TI(0x1002e50, 0, 56, COUNTER),
++	TI(0x1002e60, 0, 56, COUNTER),
++	TI(0x1002e58, 0, 56, COUNTER),
++	TI(0x1002e68, 0, 56, COUNTER),
++	TI(0x1002e40, 0, 56, COUNTER),
++	TI(0x1002e48, 0, 56, COUNTER),
++	TI(0x1002e38, 0, 56, COUNTER),
++	TI(0x1002e20, 0, 56, COUNTER),
++	TI(0x1002e30, 0, 56, COUNTER),
++	TI(0x1002e28, 0, 56, COUNTER),
++	TI(0x1002e18, 0, 56, COUNTER),
++	TI(0x1002e70, 0, 56, COUNTER),
++	TI(0x10029e0, 0, 56, COUNTER),
++	TI(0x10029e8, 0, 56, COUNTER),
++	TI(0x10029f0, 0, 56, COUNTER),
++	TI(0x10029f8, 0, 56, COUNTER),
++	TI(0x1002a00, 0, 56, COUNTER),
++	TI(0x1002a08, 0, 56, COUNTER),
++	TI(0x1002a10, 0, 56, COUNTER),
++	TI(0x1002a18, 0, 56, COUNTER),
++	TI(0x1002a20, 0, 56, COUNTER),
++	TI(0x1002a28, 0, 56, COUNTER),
++	TI(0x1002a80, 0, 56, COUNTER),
++	TI(0x1002990, 0, 56, COUNTER),
++	TI(0x1002998, 0, 56, COUNTER),
++	TI(0x10029a0, 0, 56, COUNTER),
++	TI(0x10029a8, 0, 56, COUNTER),
++	TI(0x10029b0, 0, 56, COUNTER),
++	TI(0x10029b8, 0, 56, COUNTER),
++	TI(0x10029c0, 0, 56, COUNTER),
++	TI(0x10029c8, 0, 56, COUNTER),
++	TI(0x10029d0, 0, 56, COUNTER),
++	TI(0x10029d8, 0, 56, COUNTER),
++	TI(0x1002a30, 0, 56, COUNTER),
++	TI(0x1002a38, 0, 56, COUNTER),
++	TI(0x1002a40, 0, 56, COUNTER),
++	TI(0x1002a48, 0, 56, COUNTER),
++	TI(0x1002a50, 0, 56, COUNTER),
++	TI(0x1002a58, 0, 56, COUNTER),
++	TI(0x1002a60, 0, 56, COUNTER),
++	TI(0x1002a68, 0, 56, COUNTER),
++	TI(0x1002a70, 0, 56, COUNTER),
++	TI(0x1002a78, 0, 56, COUNTER),
++	TU,
++	TU,
++	TI(0x10028c8, 0, 56, COUNTER),
++	TI(0x10028d0, 0, 56, COUNTER),
++	TI(0x10028d8, 0, 56, COUNTER),
++	TI(0x10028e0, 0, 56, COUNTER),
++	TI(0x10028e8, 0, 56, COUNTER),
++	TI(0x10028f0, 0, 56, COUNTER),
++	TI(0x10028f8, 0, 56, COUNTER),
++	TI(0x1002900, 0, 56, COUNTER),
++	TI(0x1002928, 0, 56, COUNTER),
++	TI(0x1002930, 0, 56, COUNTER),
++	TI(0x1002938, 0, 56, COUNTER),
++	TI(0x1002940, 0, 56, COUNTER),
++	TI(0x1002908, 0, 56, COUNTER),
++	TI(0x1002910, 0, 56, COUNTER),
++	TI(0x1002918, 0, 56, COUNTER),
++	TI(0x1002920, 0, 56, COUNTER),
++	TI(0x1002948, 0, 56, COUNTER),
++	TI(0x10028b8, 0, 56, COUNTER),
++	TI(0x1002868, 0, 56, COUNTER),
++	TI(0x1002870, 0, 56, COUNTER),
++	TI(0x1002878, 0, 56, COUNTER),
++	TI(0x1002880, 0, 56, COUNTER),
++	TI(0x1002888, 0, 56, COUNTER),
++	TI(0x1002890, 0, 56, COUNTER),
++	TI(0x1002898, 0, 56, COUNTER),
++	TI(0x10028a0, 0, 56, COUNTER),
++	TI(0x10028a8, 0, 56, COUNTER),
++	TI(0x10028b0, 0, 56, COUNTER),
++	TI(0x1002950, 0, 56, COUNTER),
++	TI(0x10028c0, 0, 56, COUNTER),
++	TI(0x1002738, 0, 56, COUNTER),
++	TI(0x1002740, 0, 56, COUNTER),
++	TI(0x1002748, 0, 56, COUNTER),
++	TI(0x1002750, 0, 56, COUNTER),
++	TI(0x1002758, 0, 56, COUNTER),
++	TI(0x1002760, 0, 56, COUNTER),
++	TI(0x1002768, 0, 56, COUNTER),
++	TI(0x1002770, 0, 56, COUNTER),
++	TI(0x1002778, 0, 56, COUNTER),
++	TI(0x1002780, 0, 56, COUNTER),
++	TI(0x1002840, 0, 56, COUNTER),
++	TI(0x10026e8, 0, 56, COUNTER),
++	TI(0x10026f0, 0, 56, COUNTER),
++	TI(0x10026f8, 0, 56, COUNTER),
++	TI(0x1002700, 0, 56, COUNTER),
++	TI(0x1002708, 0, 56, COUNTER),
++	TI(0x1002710, 0, 56, COUNTER),
++	TI(0x1002718, 0, 56, COUNTER),
++	TI(0x1002720, 0, 56, COUNTER),
++	TI(0x1002728, 0, 56, COUNTER),
++	TI(0x1002730, 0, 56, COUNTER),
++	TI(0x1002838, 0, 56, COUNTER),
++	TI(0x10027d8, 0, 56, COUNTER),
++	TI(0x10027e0, 0, 56, COUNTER),
++	TI(0x10027e8, 0, 56, COUNTER),
++	TI(0x10027f0, 0, 56, COUNTER),
++	TI(0x10027f8, 0, 56, COUNTER),
++	TI(0x1002800, 0, 56, COUNTER),
++	TI(0x1002808, 0, 56, COUNTER),
++	TI(0x1002810, 0, 56, COUNTER),
++	TI(0x1002818, 0, 56, COUNTER),
++	TI(0x1002820, 0, 56, COUNTER),
++	TI(0x1002788, 0, 56, COUNTER),
++	TI(0x1002790, 0, 56, COUNTER),
++	TI(0x1002798, 0, 56, COUNTER),
++	TI(0x10027a0, 0, 56, COUNTER),
++	TI(0x10027a8, 0, 56, COUNTER),
++	TI(0x10027b0, 0, 56, COUNTER),
++	TI(0x10027b8, 0, 56, COUNTER),
++	TI(0x10027c0, 0, 56, COUNTER),
++	TI(0x10027c8, 0, 56, COUNTER),
++	TI(0x10027d0, 0, 56, COUNTER),
++	TI(0x1002830, 0, 56, COUNTER),
++	TI(0x1002828, 0, 56, COUNTER),
++	TI(0x1002848, 0, 56, COUNTER),
++	TI(0x1002850, 0, 56, COUNTER),
++	TI(0x1002858, 0, 56, COUNTER),
++	TI(0x1002860, 0, 56, COUNTER),
++	TI(0xa803400, 32, 11, UGAUGE),
++	TI(0xa803408, 32, 11, UGAUGE),
++	TI(0xa803410, 32, 11, UGAUGE),
++	TI(0xa803418, 32, 11, UGAUGE),
++	TI(0xa803420, 32, 11, UGAUGE),
++	TI(0xa803428, 32, 11, UGAUGE),
++	TI(0xa803430, 32, 11, UGAUGE),
++	TI(0xa803438, 32, 11, UGAUGE),
++	TI(0xa803440, 32, 11, UGAUGE),
++	TI(0xa803448, 32, 11, UGAUGE),
++	TI(0xa803400, 0, 11, UGAUGE),
++	TI(0xa803408, 0, 11, UGAUGE),
++	TI(0xa803410, 0, 11, UGAUGE),
++	TI(0xa803418, 0, 11, UGAUGE),
++	TI(0xa803420, 0, 11, UGAUGE),
++	TI(0xa803428, 0, 11, UGAUGE),
++	TI(0xa803430, 0, 11, UGAUGE),
++	TI(0xa803438, 0, 11, UGAUGE),
++	TI(0xa803440, 0, 11, UGAUGE),
++	TI(0xa803448, 0, 11, UGAUGE),
++	TI(0xa803400, 16, 11, UGAUGE),
++	TI(0xa803408, 16, 11, UGAUGE),
++	TI(0xa803410, 16, 11, UGAUGE),
++	TI(0xa803418, 16, 11, UGAUGE),
++	TI(0xa803420, 16, 11, UGAUGE),
++	TI(0xa803428, 16, 11, UGAUGE),
++	TI(0xa803430, 16, 11, UGAUGE),
++	TI(0xa803438, 16, 11, UGAUGE),
++	TI(0xa803440, 16, 11, UGAUGE),
++	TI(0xa803448, 16, 11, UGAUGE),
++	TI(0xa803000, 32, 11, UGAUGE),
++	TI(0xa803008, 32, 11, UGAUGE),
++	TI(0xa803010, 32, 11, UGAUGE),
++	TI(0xa803018, 32, 11, UGAUGE),
++	TI(0xa803020, 32, 11, UGAUGE),
++	TI(0xa803028, 32, 11, UGAUGE),
++	TI(0xa803030, 32, 11, UGAUGE),
++	TI(0xa803038, 32, 11, UGAUGE),
++	TI(0xa803040, 32, 11, UGAUGE),
++	TI(0xa803048, 32, 11, UGAUGE),
++	TI(0xa803050, 32, 11, UGAUGE),
++	TI(0xa803058, 32, 11, UGAUGE),
++	TI(0xa803060, 32, 11, UGAUGE),
++	TI(0xa803068, 32, 11, UGAUGE),
++	TI(0xa803070, 32, 11, UGAUGE),
++	TI(0xa803078, 32, 11, UGAUGE),
++	TI(0xa803080, 32, 11, UGAUGE),
++	TI(0xa803088, 32, 11, UGAUGE),
++	TI(0xa803090, 32, 11, UGAUGE),
++	TI(0xa803098, 32, 11, UGAUGE),
++	TI(0xa8030a0, 32, 11, UGAUGE),
++	TI(0xa8030a8, 32, 11, UGAUGE),
++	TI(0xa8030b0, 32, 11, UGAUGE),
++	TI(0xa8030b8, 32, 11, UGAUGE),
++	TI(0xa8030c0, 32, 11, UGAUGE),
++	TI(0xa8030c8, 32, 11, UGAUGE),
++	TI(0xa8030d0, 32, 11, UGAUGE),
++	TI(0xa8030d8, 32, 11, UGAUGE),
++	TI(0xa8030e0, 32, 11, UGAUGE),
++	TI(0xa8030e8, 32, 11, UGAUGE),
++	TI(0xa8030f0, 32, 11, UGAUGE),
++	TI(0xa8030f8, 32, 11, UGAUGE),
++	TI(0xa803100, 32, 11, UGAUGE),
++	TI(0xa803108, 32, 11, UGAUGE),
++	TI(0xa803110, 32, 11, UGAUGE),
++	TI(0xa803118, 32, 11, UGAUGE),
++	TI(0xa803120, 32, 11, UGAUGE),
++	TI(0xa803128, 32, 11, UGAUGE),
++	TI(0xa803130, 32, 11, UGAUGE),
++	TI(0xa803138, 32, 11, UGAUGE),
++	TI(0xa803140, 32, 11, UGAUGE),
++	TI(0xa803148, 32, 11, UGAUGE),
++	TI(0xa803150, 32, 11, UGAUGE),
++	TI(0xa803158, 32, 11, UGAUGE),
++	TI(0xa803160, 32, 11, UGAUGE),
++	TI(0xa803168, 32, 11, UGAUGE),
++	TI(0xa803170, 32, 11, UGAUGE),
++	TI(0xa803178, 32, 11, UGAUGE),
++	TI(0xa803180, 32, 11, UGAUGE),
++	TI(0xa803188, 32, 11, UGAUGE),
++	TI(0xa803190, 32, 11, UGAUGE),
++	TI(0xa803198, 32, 11, UGAUGE),
++	TI(0xa8031a0, 32, 11, UGAUGE),
++	TI(0xa8031a8, 32, 11, UGAUGE),
++	TI(0xa8031b0, 32, 11, UGAUGE),
++	TI(0xa8031b8, 32, 11, UGAUGE),
++	TI(0xa8031c0, 32, 11, UGAUGE),
++	TI(0xa8031c8, 32, 11, UGAUGE),
++	TI(0xa8031d0, 32, 11, UGAUGE),
++	TI(0xa8031d8, 32, 11, UGAUGE),
++	TI(0xa8031e0, 32, 11, UGAUGE),
++	TI(0xa8031e8, 32, 11, UGAUGE),
++	TI(0xa8031f0, 32, 11, UGAUGE),
++	TI(0xa8031f8, 32, 11, UGAUGE),
++	TI(0xa803200, 32, 11, UGAUGE),
++	TI(0xa803208, 32, 11, UGAUGE),
++	TI(0xa803210, 32, 11, UGAUGE),
++	TI(0xa803218, 32, 11, UGAUGE),
++	TI(0xa803220, 32, 11, UGAUGE),
++	TI(0xa803228, 32, 11, UGAUGE),
++	TI(0xa803230, 32, 11, UGAUGE),
++	TI(0xa803238, 32, 11, UGAUGE),
++	TI(0xa803240, 32, 11, UGAUGE),
++	TI(0xa803248, 32, 11, UGAUGE),
++	TI(0xa803250, 32, 11, UGAUGE),
++	TI(0xa803258, 32, 11, UGAUGE),
++	TI(0xa803260, 32, 11, UGAUGE),
++	TI(0xa803268, 32, 11, UGAUGE),
++	TI(0xa803270, 32, 11, UGAUGE),
++	TI(0xa803278, 32, 11, UGAUGE),
++	TI(0xa803280, 32, 11, UGAUGE),
++	TI(0xa803288, 32, 11, UGAUGE),
++	TI(0xa803290, 32, 11, UGAUGE),
++	TI(0xa803298, 32, 11, UGAUGE),
++	TI(0xa8032a0, 32, 11, UGAUGE),
++	TI(0xa8032a8, 32, 11, UGAUGE),
++	TI(0xa8032b0, 32, 11, UGAUGE),
++	TI(0xa8032b8, 32, 11, UGAUGE),
++	TI(0xa8032c0, 32, 11, UGAUGE),
++	TI(0xa8032c8, 32, 11, UGAUGE),
++	TI(0xa8032d0, 32, 11, UGAUGE),
++	TI(0xa8032d8, 32, 11, UGAUGE),
++	TI(0xa8032e0, 32, 11, UGAUGE),
++	TI(0xa8032e8, 32, 11, UGAUGE),
++	TI(0xa8032f0, 32, 11, UGAUGE),
++	TI(0xa8032f8, 32, 11, UGAUGE),
++	TI(0xa803000, 0, 11, UGAUGE),
++	TI(0xa803008, 0, 11, UGAUGE),
++	TI(0xa803010, 0, 11, UGAUGE),
++	TI(0xa803018, 0, 11, UGAUGE),
++	TI(0xa803020, 0, 11, UGAUGE),
++	TI(0xa803028, 0, 11, UGAUGE),
++	TI(0xa803030, 0, 11, UGAUGE),
++	TI(0xa803038, 0, 11, UGAUGE),
++	TI(0xa803040, 0, 11, UGAUGE),
++	TI(0xa803048, 0, 11, UGAUGE),
++	TI(0xa803050, 0, 11, UGAUGE),
++	TI(0xa803058, 0, 11, UGAUGE),
++	TI(0xa803060, 0, 11, UGAUGE),
++	TI(0xa803068, 0, 11, UGAUGE),
++	TI(0xa803070, 0, 11, UGAUGE),
++	TI(0xa803078, 0, 11, UGAUGE),
++	TI(0xa803080, 0, 11, UGAUGE),
++	TI(0xa803088, 0, 11, UGAUGE),
++	TI(0xa803090, 0, 11, UGAUGE),
++	TI(0xa803098, 0, 11, UGAUGE),
++	TI(0xa8030a0, 0, 11, UGAUGE),
++	TI(0xa8030a8, 0, 11, UGAUGE),
++	TI(0xa8030b0, 0, 11, UGAUGE),
++	TI(0xa8030b8, 0, 11, UGAUGE),
++	TI(0xa8030c0, 0, 11, UGAUGE),
++	TI(0xa8030c8, 0, 11, UGAUGE),
++	TI(0xa8030d0, 0, 11, UGAUGE),
++	TI(0xa8030d8, 0, 11, UGAUGE),
++	TI(0xa8030e0, 0, 11, UGAUGE),
++	TI(0xa8030e8, 0, 11, UGAUGE),
++	TI(0xa8030f0, 0, 11, UGAUGE),
++	TI(0xa8030f8, 0, 11, UGAUGE),
++	TI(0xa803100, 0, 11, UGAUGE),
++	TI(0xa803108, 0, 11, UGAUGE),
++	TI(0xa803110, 0, 11, UGAUGE),
++	TI(0xa803118, 0, 11, UGAUGE),
++	TI(0xa803120, 0, 11, UGAUGE),
++	TI(0xa803128, 0, 11, UGAUGE),
++	TI(0xa803130, 0, 11, UGAUGE),
++	TI(0xa803138, 0, 11, UGAUGE),
++	TI(0xa803140, 0, 11, UGAUGE),
++	TI(0xa803148, 0, 11, UGAUGE),
++	TI(0xa803150, 0, 11, UGAUGE),
++	TI(0xa803158, 0, 11, UGAUGE),
++	TI(0xa803160, 0, 11, UGAUGE),
++	TI(0xa803168, 0, 11, UGAUGE),
++	TI(0xa803170, 0, 11, UGAUGE),
++	TI(0xa803178, 0, 11, UGAUGE),
++	TI(0xa803180, 0, 11, UGAUGE),
++	TI(0xa803188, 0, 11, UGAUGE),
++	TI(0xa803190, 0, 11, UGAUGE),
++	TI(0xa803198, 0, 11, UGAUGE),
++	TI(0xa8031a0, 0, 11, UGAUGE),
++	TI(0xa8031a8, 0, 11, UGAUGE),
++	TI(0xa8031b0, 0, 11, UGAUGE),
++	TI(0xa8031b8, 0, 11, UGAUGE),
++	TI(0xa8031c0, 0, 11, UGAUGE),
++	TI(0xa8031c8, 0, 11, UGAUGE),
++	TI(0xa8031d0, 0, 11, UGAUGE),
++	TI(0xa8031d8, 0, 11, UGAUGE),
++	TI(0xa8031e0, 0, 11, UGAUGE),
++	TI(0xa8031e8, 0, 11, UGAUGE),
++	TI(0xa8031f0, 0, 11, UGAUGE),
++	TI(0xa8031f8, 0, 11, UGAUGE),
++	TI(0xa803200, 0, 11, UGAUGE),
++	TI(0xa803208, 0, 11, UGAUGE),
++	TI(0xa803210, 0, 11, UGAUGE),
++	TI(0xa803218, 0, 11, UGAUGE),
++	TI(0xa803220, 0, 11, UGAUGE),
++	TI(0xa803228, 0, 11, UGAUGE),
++	TI(0xa803230, 0, 11, UGAUGE),
++	TI(0xa803238, 0, 11, UGAUGE),
++	TI(0xa803240, 0, 11, UGAUGE),
++	TI(0xa803248, 0, 11, UGAUGE),
++	TI(0xa803250, 0, 11, UGAUGE),
++	TI(0xa803258, 0, 11, UGAUGE),
++	TI(0xa803260, 0, 11, UGAUGE),
++	TI(0xa803268, 0, 11, UGAUGE),
++	TI(0xa803270, 0, 11, UGAUGE),
++	TI(0xa803278, 0, 11, UGAUGE),
++	TI(0xa803280, 0, 11, UGAUGE),
++	TI(0xa803288, 0, 11, UGAUGE),
++	TI(0xa803290, 0, 11, UGAUGE),
++	TI(0xa803298, 0, 11, UGAUGE),
++	TI(0xa8032a0, 0, 11, UGAUGE),
++	TI(0xa8032a8, 0, 11, UGAUGE),
++	TI(0xa8032b0, 0, 11, UGAUGE),
++	TI(0xa8032b8, 0, 11, UGAUGE),
++	TI(0xa8032c0, 0, 11, UGAUGE),
++	TI(0xa8032c8, 0, 11, UGAUGE),
++	TI(0xa8032d0, 0, 11, UGAUGE),
++	TI(0xa8032d8, 0, 11, UGAUGE),
++	TI(0xa8032e0, 0, 11, UGAUGE),
++	TI(0xa8032e8, 0, 11, UGAUGE),
++	TI(0xa8032f0, 0, 11, UGAUGE),
++	TI(0xa8032f8, 0, 11, UGAUGE),
++	TI(0x9870c98, 0, 56, COUNTER),
++	TI(0x9870c90, 0, 56, COUNTER),
++	TI(0x9870c68, 0, 56, COUNTER),
++	TI(0x9870c60, 0, 56, COUNTER),
++	TI(0x9870c70, 0, 56, COUNTER),
++	TI(0x9870c80, 0, 56, COUNTER),
++	TI(0x9870c78, 0, 56, COUNTER),
++	TI(0x9870c88, 0, 56, COUNTER),
++	TI(0x9870c48, 0, 56, COUNTER),
++	TI(0x9870c58, 0, 56, COUNTER),
++	TI(0x9870c40, 0, 56, COUNTER),
++	TI(0x9870c50, 0, 56, COUNTER),
++	TI(0x9001008, 8, 6, UGAUGE),
++	TI(0x9001008, 0, 6, UGAUGE),
++	TI(0x9870b48, 0, 56, COUNTER),
++	TI(0x9870be8, 0, 56, COUNTER),
++	TI(0x9870ba8, 0, 56, COUNTER),
++	TI(0x9870b38, 0, 56, COUNTER),
++	TI(0x9870be0, 0, 56, COUNTER),
++	TI(0x9870ba0, 0, 56, COUNTER),
++	TI(0x9870b30, 0, 56, COUNTER),
++	TI(0x9870b40, 0, 56, COUNTER),
++	TI(0x9870ad8, 0, 56, COUNTER),
++	TI(0x9870bb8, 0, 56, COUNTER),
++	TI(0x9870b78, 0, 56, COUNTER),
++	TI(0x9870ac8, 0, 56, COUNTER),
++	TI(0x9870bb0, 0, 56, COUNTER),
++	TI(0x9870b70, 0, 56, COUNTER),
++	TI(0x9870ac0, 0, 56, COUNTER),
++	TI(0x9870ad0, 0, 56, COUNTER),
++	TI(0x9870af0, 0, 56, COUNTER),
++	TI(0x9870bc0, 0, 56, COUNTER),
++	TI(0x9870b80, 0, 56, COUNTER),
++	TI(0x9870ae0, 0, 56, COUNTER),
++	TI(0x9870ae8, 0, 56, COUNTER),
++	TI(0x9870b10, 0, 56, COUNTER),
++	TI(0x9870bd0, 0, 56, COUNTER),
++	TI(0x9870b90, 0, 56, COUNTER),
++	TI(0x9870b00, 0, 56, COUNTER),
++	TI(0x9870bc8, 0, 56, COUNTER),
++	TI(0x9870b88, 0, 56, COUNTER),
++	TI(0x9870af8, 0, 56, COUNTER),
++	TI(0x9870b08, 0, 56, COUNTER),
++	TI(0x9870b28, 0, 56, COUNTER),
++	TI(0x9870bd8, 0, 56, COUNTER),
++	TI(0x9870b98, 0, 56, COUNTER),
++	TI(0x9870b18, 0, 56, COUNTER),
++	TI(0x9870b20, 0, 56, COUNTER),
++	TI(0x9870b68, 0, 56, COUNTER),
++	TI(0x9870b58, 0, 56, COUNTER),
++	TI(0x9870b60, 0, 56, COUNTER),
++	TI(0x9870b50, 0, 56, COUNTER),
++	TI(0x100698, 0, 56, COUNTER),
++	TI(0x1006b0, 0, 56, COUNTER),
++	TI(0x1006a0, 0, 56, COUNTER),
++	TI(0x100688, 0, 56, COUNTER),
++	TI(0x100728, 0, 56, COUNTER),
++	TI(0x100690, 0, 56, COUNTER),
++	TI(0x100720, 0, 56, COUNTER),
++	TI(0x1007d8, 0, 56, COUNTER),
++	TI(0x100680, 0, 56, COUNTER),
++	TI(0x100660, 0, 56, COUNTER),
++	TI(0x100668, 0, 56, COUNTER),
++	TI(0x1006e8, 0, 56, COUNTER),
++	TI(0x1006e0, 0, 56, COUNTER),
++	TI(0x100628, 0, 56, COUNTER),
++	TI(0x100900, 0, 56, COUNTER),
++	TI(0x100908, 0, 56, COUNTER),
++	TI(0x100910, 0, 56, COUNTER),
++	TI(0x100918, 0, 56, COUNTER),
++	TI(0x100920, 0, 56, COUNTER),
++	TI(0x100928, 0, 56, COUNTER),
++	TI(0x100930, 0, 56, COUNTER),
++	TI(0x100938, 0, 56, COUNTER),
++	TI(0x100940, 0, 56, COUNTER),
++	TI(0x100948, 0, 56, COUNTER),
++	TI(0x100950, 0, 56, COUNTER),
++	TI(0x100958, 0, 56, COUNTER),
++	TI(0x100960, 0, 56, COUNTER),
++	TI(0x100968, 0, 56, COUNTER),
++	TI(0x100970, 0, 56, COUNTER),
++	TI(0x100978, 0, 56, COUNTER),
++	TI(0x100648, 0, 56, COUNTER),
++	TI(0x100650, 0, 56, COUNTER),
++	TI(0x100658, 0, 56, COUNTER),
++	TI(0x100600, 0, 56, COUNTER),
++	TI(0x100608, 0, 56, COUNTER),
++	TI(0x100670, 0, 56, COUNTER),
++	TI(0x1006d0, 0, 56, COUNTER),
++	TI(0x1006c0, 0, 56, COUNTER),
++	TI(0x1006b8, 0, 56, COUNTER),
++	TI(0x1006c8, 0, 56, COUNTER),
++	TI(0x100630, 0, 56, COUNTER),
++	TI(0x100798, 0, 56, COUNTER),
++	TI(0x1007a0, 0, 56, COUNTER),
++	TI(0x100788, 0, 56, COUNTER),
++	TI(0x100790, 0, 56, COUNTER),
++	TI(0x100778, 0, 56, COUNTER),
++	TI(0x100780, 0, 56, COUNTER),
++	TI(0x1007a8, 0, 56, COUNTER),
++	TI(0x1007b8, 0, 56, COUNTER),
++	TI(0x1007b0, 0, 56, COUNTER),
++	TI(0x1007c0, 0, 56, COUNTER),
++	TI(0xb00130, 32, 12, UGAUGE),
++	TI(0xb00130, 0, 12, UGAUGE),
++	TI(0xb00100, 32, 13, UGAUGE),
++	TI(0xb00100, 0, 13, UGAUGE),
++	TI(0xb00118, 32, 9, UGAUGE),
++	TI(0xb00118, 0, 9, UGAUGE),
++	TI(0xb00110, 32, 12, UGAUGE),
++	TI(0xb00110, 0, 12, UGAUGE),
++	TI(0xb00128, 32, 12, UGAUGE),
++	TI(0xb00128, 0, 12, UGAUGE),
++	TI(0xb00108, 32, 14, UGAUGE),
++	TI(0xb00108, 0, 14, UGAUGE),
++	TI(0xb00120, 32, 12, UGAUGE),
++	TI(0xb00120, 0, 12, UGAUGE),
++	TI(0x100638, 0, 56, COUNTER),
++	TI(0x100740, 0, 56, COUNTER),
++	TI(0x100738, 0, 56, COUNTER),
++	TI(0x100748, 0, 56, COUNTER),
++	TI(0x100620, 0, 56, COUNTER),
++	TI(0x100610, 0, 56, COUNTER),
++	TI(0x100800, 0, 56, COUNTER),
++	TI(0x100808, 0, 56, COUNTER),
++	TI(0x100810, 0, 56, COUNTER),
++	TI(0x100818, 0, 56, COUNTER),
++	TI(0x100820, 0, 56, COUNTER),
++	TI(0x100828, 0, 56, COUNTER),
++	TI(0x100830, 0, 56, COUNTER),
++	TI(0x100838, 0, 56, COUNTER),
++	TI(0x100840, 0, 56, COUNTER),
++	TI(0x100848, 0, 56, COUNTER),
++	TI(0x100850, 0, 56, COUNTER),
++	TI(0x100858, 0, 56, COUNTER),
++	TI(0x100860, 0, 56, COUNTER),
++	TI(0x100868, 0, 56, COUNTER),
++	TI(0x100870, 0, 56, COUNTER),
++	TI(0x100878, 0, 56, COUNTER),
++	TI(0x100880, 0, 56, COUNTER),
++	TI(0x100888, 0, 56, COUNTER),
++	TI(0x100890, 0, 56, COUNTER),
++	TI(0x100898, 0, 56, COUNTER),
++	TI(0x1008a0, 0, 56, COUNTER),
++	TI(0x1008a8, 0, 56, COUNTER),
++	TI(0x1008b0, 0, 56, COUNTER),
++	TI(0x1008b8, 0, 56, COUNTER),
++	TI(0x1008c0, 0, 56, COUNTER),
++	TI(0x1008c8, 0, 56, COUNTER),
++	TI(0x1008d0, 0, 56, COUNTER),
++	TI(0x1008d8, 0, 56, COUNTER),
++	TI(0x1008e0, 0, 56, COUNTER),
++	TI(0x1008e8, 0, 56, COUNTER),
++	TI(0x1008f0, 0, 56, COUNTER),
++	TI(0x1008f8, 0, 56, COUNTER),
++	TI(0x1006a8, 0, 56, COUNTER),
++	TI(0x1007e0, 0, 56, COUNTER),
++	TI(0x100618, 0, 56, COUNTER),
++	TI(0x1006d8, 0, 56, COUNTER),
++	TI(0x100640, 0, 56, COUNTER),
++	TI(0x100718, 0, 56, COUNTER),
++	TI(0x100708, 0, 56, COUNTER),
++	TI(0x100710, 0, 56, COUNTER),
++	TI(0x100768, 0, 56, COUNTER),
++	TI(0x100770, 0, 56, COUNTER),
++	TI(0x100758, 0, 56, COUNTER),
++	TI(0x100760, 0, 56, COUNTER),
++	TI(0x100750, 0, 56, COUNTER),
++	TI(0x1007c8, 0, 56, COUNTER),
++	TI(0x1006f8, 0, 56, COUNTER),
++	TI(0x1006f0, 0, 56, COUNTER),
++	TI(0x100700, 0, 56, COUNTER),
++	TI(0x1007d0, 0, 56, COUNTER),
++	TI(0x100678, 0, 56, COUNTER),
++	TI(0x1007e8, 0, 56, COUNTER),
++	TI(0x100730, 0, 56, COUNTER),
++	TI(0x100203b8, 0, 56, COUNTER),
++	TI(0x100203c0, 0, 56, COUNTER),
++	TI(0x100203d0, 0, 56, COUNTER),
++	TI(0x100203c8, 0, 56, COUNTER),
++	TI(0x100203e0, 0, 56, COUNTER),
++	TI(0x100203f0, 0, 56, COUNTER),
++	TI(0x100203f8, 0, 56, COUNTER),
++	TI(0x100203e8, 0, 56, COUNTER),
++	TI(0x100203d8, 0, 56, COUNTER),
++	TI(0x11005000, 4, 16, COUNTER),
++	TI(0x110061d8, 0, 56, COUNTER),
++	TI(0x110061d0, 0, 56, COUNTER),
++	TI(0x110061c0, 0, 56, COUNTER),
++	TI(0x110061c8, 0, 56, COUNTER),
++	TI(0x110061e0, 0, 56, COUNTER),
++	TI(0x110061e8, 0, 56, COUNTER),
++	TI(0x11006178, 0, 56, COUNTER),
++	TI(0x11006170, 0, 56, COUNTER),
++	TI(0x11006160, 0, 56, COUNTER),
++	TI(0x11006168, 0, 56, COUNTER),
++	TI(0x11006158, 0, 56, COUNTER),
++	TI(0x11006150, 0, 56, COUNTER),
++	TI(0x11006140, 0, 56, COUNTER),
++	TI(0x11006148, 0, 56, COUNTER),
++	TI(0x11006180, 0, 56, COUNTER),
++	TI(0x11006188, 0, 56, COUNTER),
++	TI(0x110061b0, 0, 56, COUNTER),
++	TI(0x110061b8, 0, 56, COUNTER),
++	TI(0x11006190, 0, 56, COUNTER),
++	TI(0x11006198, 0, 56, COUNTER),
++	TI(0x11006068, 0, 56, COUNTER),
++	TI(0x11006060, 0, 56, COUNTER),
++	TI(0x11006050, 0, 56, COUNTER),
++	TI(0x11006058, 0, 56, COUNTER),
++	TI(0x11006030, 0, 56, COUNTER),
++	TI(0x11006038, 0, 56, COUNTER),
++	TI(0x11006048, 0, 56, COUNTER),
++	TI(0x11006040, 0, 56, COUNTER),
++	TI(0x11006010, 0, 56, COUNTER),
++	TI(0x11006018, 0, 56, COUNTER),
++	TI(0x11006020, 0, 56, COUNTER),
++	TI(0x11006008, 0, 56, COUNTER),
++	TI(0x11006000, 0, 56, COUNTER),
++	TI(0x11006028, 0, 56, COUNTER),
++	TI(0x11006118, 0, 56, COUNTER),
++	TI(0x11006110, 0, 56, COUNTER),
++	TI(0x11006108, 0, 56, COUNTER),
++	TI(0x11006120, 0, 56, COUNTER),
++	TI(0x11006090, 0, 56, COUNTER),
++	TI(0x11006088, 0, 56, COUNTER),
++	TI(0x110060f0, 0, 56, COUNTER),
++	TI(0x110060e8, 0, 56, COUNTER),
++	TI(0x11006098, 0, 56, COUNTER),
++	TI(0x11006100, 0, 56, COUNTER),
++	TI(0x110060f8, 0, 56, COUNTER),
++	TI(0x110061a0, 0, 56, COUNTER),
++	TI(0x110061a8, 0, 56, COUNTER),
++	TI(0x11006080, 0, 56, COUNTER),
++	TI(0x110060d8, 0, 56, COUNTER),
++	TI(0x110060d0, 0, 56, COUNTER),
++	TI(0x110060c8, 0, 56, COUNTER),
++	TI(0x110060c0, 0, 56, COUNTER),
++	TI(0x110060e0, 0, 56, COUNTER),
++	TI(0x11006128, 0, 56, COUNTER),
++	TI(0x11006130, 0, 56, COUNTER),
++	TI(0x11006138, 0, 56, COUNTER),
++	TI(0x110060b0, 0, 56, COUNTER),
++	TI(0x110060b8, 0, 56, COUNTER),
++	TI(0x110060a0, 0, 56, COUNTER),
++	TI(0x110060a8, 0, 56, COUNTER),
++	TI(0x11006078, 0, 56, COUNTER),
++	TI(0x11006070, 0, 56, COUNTER),
++	TI(0x10020268, 0, 56, COUNTER),
++	TI(0x10020280, 0, 56, COUNTER),
++	TI(0x10020290, 0, 56, COUNTER),
++	TI(0x10020288, 0, 56, COUNTER),
++	TI(0x10020260, 0, 56, COUNTER),
++	TI(0x10020270, 0, 56, COUNTER),
++	TI(0x10020278, 0, 56, COUNTER),
++	TI(0x10020238, 0, 56, COUNTER),
++	TI(0x10020240, 0, 56, COUNTER),
++	TI(0x10020210, 0, 56, COUNTER),
++	TI(0x10020208, 0, 56, COUNTER),
++	TI(0x10020228, 0, 56, COUNTER),
++	TI(0x10020220, 0, 56, COUNTER),
++	TI(0x10020230, 0, 56, COUNTER),
++	TI(0x10020218, 0, 56, COUNTER),
++	TI(0x10020200, 0, 56, COUNTER),
++	TI(0x10020250, 0, 56, COUNTER),
++	TI(0x10020248, 0, 56, COUNTER),
++	TI(0x10020258, 0, 56, COUNTER),
++	TI(0x100202e0, 0, 56, COUNTER),
++	TI(0x100202e8, 0, 56, COUNTER),
++	TI(0x100202d8, 0, 56, COUNTER),
++	TI(0x100202d0, 0, 56, COUNTER),
++	TI(0x100202c0, 0, 56, COUNTER),
++	TI(0x100202c8, 0, 56, COUNTER),
++	TI(0x100202a8, 0, 56, COUNTER),
++	TI(0x100202b0, 0, 56, COUNTER),
++	TI(0x100202a0, 0, 56, COUNTER),
++	TI(0x100202b8, 0, 56, COUNTER),
++	TI(0x10020298, 0, 56, COUNTER),
++	TI(0x100202f0, 0, 56, COUNTER),
++	TI(0x100202f8, 0, 56, COUNTER),
++	TI(0x10020380, 0, 56, COUNTER),
++	TI(0x10020388, 0, 56, COUNTER),
++	TI(0x10020350, 0, 56, COUNTER),
++	TI(0x10020370, 0, 56, COUNTER),
++	TI(0x10020378, 0, 56, COUNTER),
++	TI(0x10020358, 0, 56, COUNTER),
++	TI(0x10020328, 0, 56, COUNTER),
++	TI(0x10020360, 0, 56, COUNTER),
++	TI(0x10020368, 0, 56, COUNTER),
++	TI(0x10020340, 0, 56, COUNTER),
++	TI(0x10020330, 0, 56, COUNTER),
++	TI(0x10020320, 0, 56, COUNTER),
++	TI(0x10020318, 0, 56, COUNTER),
++	TI(0x10020348, 0, 56, COUNTER),
++	TI(0x10020308, 0, 56, COUNTER),
++	TI(0x10020300, 0, 56, COUNTER),
++	TI(0x10020310, 0, 56, COUNTER),
++	TI(0x10020338, 0, 56, COUNTER),
++	TI(0x9870a78, 0, 56, COUNTER),
++	TI(0x9870a80, 0, 56, COUNTER),
++	TI(0x9870a48, 0, 56, COUNTER),
++	TI(0x9870a50, 0, 56, COUNTER),
++	TI(0x9870a58, 0, 56, COUNTER),
++	TI(0x9870a60, 0, 56, COUNTER),
++	TI(0x9870a68, 0, 56, COUNTER),
++	TI(0x9870a70, 0, 56, COUNTER),
++	TI(0x9870a40, 0, 56, COUNTER),
++	TI(0x100450, 0, 56, COUNTER),
++	TI(0x100420, 0, 56, COUNTER),
++	TI(0x100428, 0, 56, COUNTER),
++	TI(0x1004e0, 0, 56, COUNTER),
++	TI(0x1004e8, 0, 56, COUNTER),
++	TI(0x1004f0, 0, 56, COUNTER),
++	TI(0x1004f8, 0, 56, COUNTER),
++	TI(0x100500, 0, 56, COUNTER),
++	TI(0x100508, 0, 56, COUNTER),
++	TI(0x100510, 0, 56, COUNTER),
++	TI(0x100518, 0, 56, COUNTER),
++	TI(0x100520, 0, 56, COUNTER),
++	TI(0x100528, 0, 56, COUNTER),
++	TI(0x100530, 0, 56, COUNTER),
++	TI(0x100538, 0, 56, COUNTER),
++	TI(0x100540, 0, 56, COUNTER),
++	TI(0x100548, 0, 56, COUNTER),
++	TI(0x100550, 0, 56, COUNTER),
++	TI(0x100558, 0, 56, COUNTER),
++	TI(0x100408, 0, 56, COUNTER),
++	TI(0x100448, 0, 56, COUNTER),
++	TI(0x100498, 0, 56, COUNTER),
++	TI(0x100490, 0, 56, COUNTER),
++	TI(0x1004c0, 0, 56, COUNTER),
++	TI(0x1004c8, 0, 56, COUNTER),
++	TI(0x1004d0, 0, 56, COUNTER),
++	TI(0x1004d8, 0, 56, COUNTER),
++	TI(0x1004a0, 0, 56, COUNTER),
++	TI(0x1004a8, 0, 56, COUNTER),
++	TI(0x1004b0, 0, 56, COUNTER),
++	TI(0x1004b8, 0, 56, COUNTER),
++	TI(0x100400, 0, 56, COUNTER),
++	TI(0x100430, 0, 56, COUNTER),
++	TI(0x100440, 0, 56, COUNTER),
++	TI(0x100438, 0, 56, COUNTER),
++};
++
++#define C2_TELEM_TOTAL	1923
++#define C2_TELEM_VALID	1922
++static const struct telem_item c2_items[C2_TELEM_TOTAL] = {
++	TU,
++	TI(0x100205d0, 0, 56, COUNTER),
++	TI(0x100205d8, 0, 56, COUNTER),
++	TI(0x100205e0, 0, 56, COUNTER),
++	TI(0x100205e8, 0, 56, COUNTER),
++	TI(0x100205c8, 0, 56, COUNTER),
++	TI(0x10020590, 0, 56, COUNTER),
++	TI(0x10020508, 0, 56, COUNTER),
++	TI(0x10020510, 0, 56, COUNTER),
++	TI(0x10020518, 0, 56, COUNTER),
++	TI(0x10020520, 0, 56, COUNTER),
++	TI(0x100205b8, 0, 56, COUNTER),
++	TI(0x100204a8, 0, 56, COUNTER),
++	TI(0x100204b0, 0, 56, COUNTER),
++	TI(0x100204b8, 0, 56, COUNTER),
++	TI(0x100204c0, 0, 56, COUNTER),
++	TI(0x100205a8, 0, 56, COUNTER),
++	TI(0x10020588, 0, 56, COUNTER),
++	TI(0x10020430, 0, 56, COUNTER),
++	TI(0x10020438, 0, 56, COUNTER),
++	TI(0x10020440, 0, 56, COUNTER),
++	TI(0x10020448, 0, 56, COUNTER),
++	TI(0x10020450, 0, 56, COUNTER),
++	TI(0x10020458, 0, 56, COUNTER),
++	TI(0x10020460, 0, 56, COUNTER),
++	TI(0x10020468, 0, 56, COUNTER),
++	TI(0x10020470, 0, 56, COUNTER),
++	TI(0x10020478, 0, 56, COUNTER),
++	TI(0x10020480, 0, 56, COUNTER),
++	TI(0x10020488, 0, 56, COUNTER),
++	TI(0x10020410, 0, 56, COUNTER),
++	TI(0x10020418, 0, 56, COUNTER),
++	TI(0x10020420, 0, 56, COUNTER),
++	TI(0x10020428, 0, 56, COUNTER),
++	TI(0x100204a0, 0, 56, COUNTER),
++	TI(0x10020498, 0, 56, COUNTER),
++	TI(0x10020490, 0, 56, COUNTER),
++	TI(0x100204f8, 0, 56, COUNTER),
++	TI(0x100204f0, 0, 56, COUNTER),
++	TI(0x100204e8, 0, 56, COUNTER),
++	TI(0x10020568, 0, 56, COUNTER),
++	TI(0x10020570, 0, 56, COUNTER),
++	TI(0x10020578, 0, 56, COUNTER),
++	TI(0x10020580, 0, 56, COUNTER),
++	TI(0x10020500, 0, 56, COUNTER),
++	TI(0x100205a0, 0, 56, COUNTER),
++	TI(0x10020598, 0, 56, COUNTER),
++	TI(0x100205f0, 0, 56, COUNTER),
++	TI(0x100205f8, 0, 56, COUNTER),
++	TI(0x10020400, 0, 56, COUNTER),
++	TI(0x10020408, 0, 56, COUNTER),
++	TI(0x10020528, 0, 56, COUNTER),
++	TI(0x10020530, 0, 56, COUNTER),
++	TI(0x10020538, 0, 56, COUNTER),
++	TI(0x10020540, 0, 56, COUNTER),
++	TI(0x100204c8, 0, 56, COUNTER),
++	TI(0x100204d0, 0, 56, COUNTER),
++	TI(0x100204d8, 0, 56, COUNTER),
++	TI(0x100204e0, 0, 56, COUNTER),
++	TI(0x10020548, 0, 56, COUNTER),
++	TI(0x10020550, 0, 56, COUNTER),
++	TI(0x10020558, 0, 56, COUNTER),
++	TI(0x10020560, 0, 56, COUNTER),
++	TI(0x100205c0, 0, 56, COUNTER),
++	TI(0x100205b0, 0, 56, COUNTER),
++	TI(0x540, 4, 16, COUNTER),
++	TI(0x100280, 0, 56, COUNTER),
++	TI(0x100288, 0, 56, COUNTER),
++	TI(0x100290, 0, 56, COUNTER),
++	TI(0x100298, 0, 56, COUNTER),
++	TI(0x1002a0, 0, 56, COUNTER),
++	TI(0x1002a8, 0, 56, COUNTER),
++	TI(0x1002b0, 0, 56, COUNTER),
++	TI(0x1002b8, 0, 56, COUNTER),
++	TI(0x1002c0, 0, 56, COUNTER),
++	TI(0x1002c8, 0, 56, COUNTER),
++	TI(0x1002d0, 0, 56, COUNTER),
++	TI(0x1002d8, 0, 56, COUNTER),
++	TI(0x1002e0, 0, 56, COUNTER),
++	TI(0x1002e8, 0, 56, COUNTER),
++	TI(0x1002f0, 0, 56, COUNTER),
++	TI(0x1002f8, 0, 56, COUNTER),
++	TI(0x100130, 0, 56, COUNTER),
++	TI(0x100140, 0, 56, COUNTER),
++	TI(0x100138, 0, 56, COUNTER),
++	TI(0x100148, 0, 56, COUNTER),
++	TI(0x100158, 0, 56, COUNTER),
++	TI(0x100150, 0, 56, COUNTER),
++	TI(0x100300, 0, 56, COUNTER),
++	TI(0x100308, 0, 56, COUNTER),
++	TI(0x100310, 0, 56, COUNTER),
++	TI(0x100318, 0, 56, COUNTER),
++	TI(0x100200, 0, 56, COUNTER),
++	TI(0x100208, 0, 56, COUNTER),
++	TI(0x100210, 0, 56, COUNTER),
++	TI(0x100218, 0, 56, COUNTER),
++	TI(0x100220, 0, 56, COUNTER),
++	TI(0x100228, 0, 56, COUNTER),
++	TI(0x100230, 0, 56, COUNTER),
++	TI(0x100238, 0, 56, COUNTER),
++	TI(0x100240, 0, 56, COUNTER),
++	TI(0x100248, 0, 56, COUNTER),
++	TI(0x100250, 0, 56, COUNTER),
++	TI(0x100258, 0, 56, COUNTER),
++	TI(0x100260, 0, 56, COUNTER),
++	TI(0x100268, 0, 56, COUNTER),
++	TI(0x100270, 0, 56, COUNTER),
++	TI(0x100278, 0, 56, COUNTER),
++	TI(0x100018, 0, 56, COUNTER),
++	TI(0x100010, 0, 56, COUNTER),
++	TI(0x100020, 0, 56, COUNTER),
++	TI(0x100028, 0, 56, COUNTER),
++	TI(0x1001a0, 0, 56, COUNTER),
++	TI(0x1001a8, 0, 56, COUNTER),
++	TI(0x1001b0, 0, 56, COUNTER),
++	TI(0x1001b8, 0, 56, COUNTER),
++	TI(0x100180, 0, 56, COUNTER),
++	TI(0x100188, 0, 56, COUNTER),
++	TI(0x100190, 0, 56, COUNTER),
++	TI(0x100198, 0, 56, COUNTER),
++	TI(0x100160, 0, 56, COUNTER),
++	TI(0x100168, 0, 56, COUNTER),
++	TI(0x100170, 0, 56, COUNTER),
++	TI(0x100178, 0, 56, COUNTER),
++	TI(0x1001c0, 0, 56, COUNTER),
++	TI(0x1001c8, 0, 56, COUNTER),
++	TI(0x1001d0, 0, 56, COUNTER),
++	TI(0x1001d8, 0, 56, COUNTER),
++	TI(0x1003e0, 0, 56, COUNTER),
++	TI(0x1003e8, 0, 56, COUNTER),
++	TI(0x1003f0, 0, 56, COUNTER),
++	TI(0x1003f8, 0, 56, COUNTER),
++	TI(0x1003a0, 0, 56, COUNTER),
++	TI(0x1003a8, 0, 56, COUNTER),
++	TI(0x1003b0, 0, 56, COUNTER),
++	TI(0x1003b8, 0, 56, COUNTER),
++	TI(0x1003c0, 0, 56, COUNTER),
++	TI(0x1003c8, 0, 56, COUNTER),
++	TI(0x1003d0, 0, 56, COUNTER),
++	TI(0x1003d8, 0, 56, COUNTER),
++	TI(0x100380, 0, 56, COUNTER),
++	TI(0x100388, 0, 56, COUNTER),
++	TI(0x100390, 0, 56, COUNTER),
++	TI(0x100398, 0, 56, COUNTER),
++	TI(0x100080, 0, 56, COUNTER),
++	TI(0x100088, 0, 56, COUNTER),
++	TI(0x100090, 0, 56, COUNTER),
++	TI(0x100098, 0, 56, COUNTER),
++	TI(0x100120, 0, 56, COUNTER),
++	TI(0x100128, 0, 56, COUNTER),
++	TI(0x1001e0, 0, 56, COUNTER),
++	TI(0x1001e8, 0, 56, COUNTER),
++	TI(0x1001f0, 0, 56, COUNTER),
++	TI(0x1001f8, 0, 56, COUNTER),
++	TI(0x1000a0, 0, 56, COUNTER),
++	TI(0x1000a8, 0, 56, COUNTER),
++	TI(0x1000b0, 0, 56, COUNTER),
++	TI(0x1000b8, 0, 56, COUNTER),
++	TI(0x100100, 0, 56, COUNTER),
++	TI(0x100110, 0, 56, COUNTER),
++	TI(0x100108, 0, 56, COUNTER),
++	TI(0x100118, 0, 56, COUNTER),
++	TI(0x100060, 0, 56, COUNTER),
++	TI(0x100068, 0, 56, COUNTER),
++	TI(0x100070, 0, 56, COUNTER),
++	TI(0x100078, 0, 56, COUNTER),
++	TI(0x100038, 0, 56, COUNTER),
++	TI(0x100030, 0, 56, COUNTER),
++	TI(0x8b0, 24, 5, UGAUGE),
++	TI(0x8b8, 52, 9, UGAUGE),
++	TI(0x8b8, 40, 9, UGAUGE),
++	TI(0x8b0, 0, 10, UGAUGE),
++	TI(0x8b0, 16, 4, UGAUGE),
++	TI(0x8b8, 0, 5, UGAUGE),
++	TI(0x8b0, 56, 5, UGAUGE),
++	TI(0x8b0, 48, 5, UGAUGE),
++	TI(0x8b8, 24, 3, UGAUGE),
++	TI(0x8b8, 36, 3, UGAUGE),
++	TI(0x8b8, 16, 3, UGAUGE),
++	TI(0x8b0, 40, 7, UGAUGE),
++	TI(0x8b8, 8, 5, UGAUGE),
++	TI(0x8b8, 32, 4, UGAUGE),
++	TI(0x4a000, 0, 56, COUNTER),
++	TI(0x4a008, 0, 56, COUNTER),
++	TI(0x4a010, 0, 56, COUNTER),
++	TI(0x4a018, 0, 56, COUNTER),
++	TI(0x4b000, 0, 41, UGAUGE),
++	TI(0x4b008, 0, 41, UGAUGE),
++	TI(0x4b010, 0, 41, UGAUGE),
++	TI(0x4b018, 0, 41, UGAUGE),
++	TI(0x4b020, 0, 41, UGAUGE),
++	TI(0x4b028, 0, 41, UGAUGE),
++	TI(0x4b030, 0, 41, UGAUGE),
++	TI(0x4b038, 0, 41, UGAUGE),
++	TI(0x4b040, 0, 41, UGAUGE),
++	TI(0x4b048, 0, 41, UGAUGE),
++	TI(0x4b050, 0, 41, UGAUGE),
++	TI(0x4b058, 0, 41, UGAUGE),
++	TI(0x4b060, 0, 41, UGAUGE),
++	TI(0x4b068, 0, 41, UGAUGE),
++	TI(0x4b070, 0, 41, UGAUGE),
++	TI(0x4b078, 0, 41, UGAUGE),
++	TI(0x4b080, 0, 41, UGAUGE),
++	TI(0x4b088, 0, 41, UGAUGE),
++	TI(0x4b090, 0, 41, UGAUGE),
++	TI(0x4b098, 0, 41, UGAUGE),
++	TI(0x4b0a0, 0, 41, UGAUGE),
++	TI(0x4b0a8, 0, 41, UGAUGE),
++	TI(0x4b0b0, 0, 41, UGAUGE),
++	TI(0x4b0b8, 0, 41, UGAUGE),
++	TI(0x4b0c0, 0, 41, UGAUGE),
++	TI(0x4b0c8, 0, 41, UGAUGE),
++	TI(0x4b0d0, 0, 41, UGAUGE),
++	TI(0x4b0d8, 0, 41, UGAUGE),
++	TI(0x4b0e0, 0, 41, UGAUGE),
++	TI(0x4b0e8, 0, 41, UGAUGE),
++	TI(0x4b0f0, 0, 41, UGAUGE),
++	TI(0x4b0f8, 0, 41, UGAUGE),
++	TI(0x4b100, 0, 41, UGAUGE),
++	TI(0x4b108, 0, 41, UGAUGE),
++	TI(0x4b110, 0, 41, UGAUGE),
++	TI(0x4b118, 0, 41, UGAUGE),
++	TI(0x4b120, 0, 41, UGAUGE),
++	TI(0x4b128, 0, 41, UGAUGE),
++	TI(0x4b130, 0, 41, UGAUGE),
++	TI(0x4b138, 0, 41, UGAUGE),
++	TI(0x4b140, 0, 41, UGAUGE),
++	TI(0x4b148, 0, 41, UGAUGE),
++	TI(0x4b150, 0, 41, UGAUGE),
++	TI(0x4b158, 0, 41, UGAUGE),
++	TI(0x4b160, 0, 41, UGAUGE),
++	TI(0x4b168, 0, 41, UGAUGE),
++	TI(0x4b170, 0, 41, UGAUGE),
++	TI(0x4b178, 0, 41, UGAUGE),
++	TI(0x4a020, 0, 56, COUNTER),
++	TI(0x4a028, 0, 56, COUNTER),
++	TI(0x4a030, 0, 56, COUNTER),
++	TI(0x4a038, 0, 56, COUNTER),
++	TI(0x4a040, 0, 56, COUNTER),
++	TI(0x4a048, 0, 56, COUNTER),
++	TI(0x4a050, 0, 56, COUNTER),
++	TI(0x4a058, 0, 56, COUNTER),
++	TI(0x4a080, 0, 56, COUNTER),
++	TI(0x4a088, 0, 56, COUNTER),
++	TI(0x4a090, 0, 56, COUNTER),
++	TI(0x4a098, 0, 56, COUNTER),
++	TI(0x850, 0, 12, UGAUGE),
++	TI(0x858, 0, 12, UGAUGE),
++	TI(0x860, 0, 12, UGAUGE),
++	TI(0x868, 0, 12, UGAUGE),
++	TI(0x4a060, 0, 56, COUNTER),
++	TI(0x4a068, 0, 56, COUNTER),
++	TI(0x4a070, 0, 56, COUNTER),
++	TI(0x4a078, 0, 56, COUNTER),
++	TI(0x100008, 0, 56, COUNTER),
++	TI(0x100000, 0, 56, COUNTER),
++	TI(0x1000e0, 0, 56, COUNTER),
++	TI(0x1000e8, 0, 56, COUNTER),
++	TI(0x1000f0, 0, 56, COUNTER),
++	TI(0x1000f8, 0, 56, COUNTER),
++	TI(0x1000c0, 0, 56, COUNTER),
++	TI(0x1000c8, 0, 56, COUNTER),
++	TI(0x1000d0, 0, 56, COUNTER),
++	TI(0x1000d8, 0, 56, COUNTER),
++	TI(0x100040, 0, 56, COUNTER),
++	TI(0x100b40, 0, 56, COUNTER),
++	TI(0x100b48, 0, 56, COUNTER),
++	TI(0x100b50, 0, 56, COUNTER),
++	TI(0x100b58, 0, 56, COUNTER),
++	TI(0x100d20, 0, 56, COUNTER),
++	TI(0x100aa0, 0, 56, COUNTER),
++	TI(0x100aa8, 0, 56, COUNTER),
++	TI(0x100ab0, 0, 56, COUNTER),
++	TI(0x100ab8, 0, 56, COUNTER),
++	TI(0x100c90, 0, 56, COUNTER),
++	TI(0x100c98, 0, 56, COUNTER),
++	TI(0x100c58, 0, 56, COUNTER),
++	TI(0x100c60, 0, 56, COUNTER),
++	TI(0x100c68, 0, 56, COUNTER),
++	TI(0x100b20, 0, 56, COUNTER),
++	TI(0x100b28, 0, 56, COUNTER),
++	TI(0x100b30, 0, 56, COUNTER),
++	TI(0x100b38, 0, 56, COUNTER),
++	TI(0x100b00, 0, 56, COUNTER),
++	TI(0x100b08, 0, 56, COUNTER),
++	TI(0x100b10, 0, 56, COUNTER),
++	TI(0x100b18, 0, 56, COUNTER),
++	TI(0x100e50, 0, 56, COUNTER),
++	TI(0x100e60, 0, 56, COUNTER),
++	TI(0x100e58, 0, 56, COUNTER),
++	TI(0x100e68, 0, 56, COUNTER),
++	TI(0x100e90, 0, 56, COUNTER),
++	TI(0x100a80, 0, 56, COUNTER),
++	TI(0x100a88, 0, 56, COUNTER),
++	TI(0x100a90, 0, 56, COUNTER),
++	TI(0x100a98, 0, 56, COUNTER),
++	TI(0x100b60, 0, 56, COUNTER),
++	TI(0x100b68, 0, 56, COUNTER),
++	TI(0x100b70, 0, 56, COUNTER),
++	TI(0x100b78, 0, 56, COUNTER),
++	TI(0x100d10, 0, 56, COUNTER),
++	TI(0x100cb0, 0, 56, COUNTER),
++	TI(0x100cb8, 0, 56, COUNTER),
++	TI(0x100d00, 0, 56, COUNTER),
++	TI(0x100d08, 0, 56, COUNTER),
++	TI(0x100cd0, 0, 56, COUNTER),
++	TI(0x100cd8, 0, 56, COUNTER),
++	TI(0x100d18, 0, 56, COUNTER),
++	TI(0x100cc0, 0, 56, COUNTER),
++	TI(0x100cc8, 0, 56, COUNTER),
++	TI(0x100ca8, 0, 56, COUNTER),
++	TI(0x100ce0, 0, 56, COUNTER),
++	TI(0x100ce8, 0, 56, COUNTER),
++	TI(0x100cf0, 0, 56, COUNTER),
++	TI(0x100cf8, 0, 56, COUNTER),
++	TI(0x100d88, 0, 56, COUNTER),
++	TI(0x100d50, 0, 56, COUNTER),
++	TI(0x100d70, 0, 56, COUNTER),
++	TI(0x100dc8, 0, 56, COUNTER),
++	TI(0x100e30, 0, 56, COUNTER),
++	TI(0x100e20, 0, 56, COUNTER),
++	TI(0x100dc0, 0, 56, COUNTER),
++	TI(0x100dd8, 0, 56, COUNTER),
++	TI(0x100d58, 0, 56, COUNTER),
++	TI(0x100d78, 0, 56, COUNTER),
++	TI(0x100d48, 0, 56, COUNTER),
++	TI(0x100d68, 0, 56, COUNTER),
++	TI(0x100d98, 0, 56, COUNTER),
++	TI(0x100de8, 0, 56, COUNTER),
++	TI(0x100e38, 0, 56, COUNTER),
++	TI(0x100de0, 0, 56, COUNTER),
++	TI(0x100d40, 0, 56, COUNTER),
++	TI(0x100d60, 0, 56, COUNTER),
++	TI(0x100db8, 0, 56, COUNTER),
++	TI(0x100d90, 0, 56, COUNTER),
++	TI(0x100da0, 0, 56, COUNTER),
++	TI(0x100d80, 0, 56, COUNTER),
++	TI(0x100da8, 0, 56, COUNTER),
++	TI(0x100e28, 0, 56, COUNTER),
++	TI(0x100dd0, 0, 56, COUNTER),
++	TI(0x100db0, 0, 56, COUNTER),
++	TI(0x100a40, 0, 56, COUNTER),
++	TI(0x100a48, 0, 56, COUNTER),
++	TI(0x100a50, 0, 56, COUNTER),
++	TI(0x100a58, 0, 56, COUNTER),
++	TI(0x100a60, 0, 56, COUNTER),
++	TI(0x100a68, 0, 56, COUNTER),
++	TI(0x100a70, 0, 56, COUNTER),
++	TI(0x100a78, 0, 56, COUNTER),
++	TI(0x100a20, 0, 56, COUNTER),
++	TI(0x100a28, 0, 56, COUNTER),
++	TI(0x100a30, 0, 56, COUNTER),
++	TI(0x100a38, 0, 56, COUNTER),
++	TI(0x100a00, 0, 56, COUNTER),
++	TI(0x100a08, 0, 56, COUNTER),
++	TI(0x100a10, 0, 56, COUNTER),
++	TI(0x100a18, 0, 56, COUNTER),
++	TI(0x100ae0, 0, 56, COUNTER),
++	TI(0x100ae8, 0, 56, COUNTER),
++	TI(0x100af0, 0, 56, COUNTER),
++	TI(0x100af8, 0, 56, COUNTER),
++	TI(0x100c80, 0, 56, COUNTER),
++	TI(0x100c88, 0, 56, COUNTER),
++	TI(0x100c40, 0, 56, COUNTER),
++	TI(0x100c48, 0, 56, COUNTER),
++	TI(0x100c50, 0, 56, COUNTER),
++	TI(0x100bc8, 0, 56, COUNTER),
++	TI(0x100bd8, 0, 56, COUNTER),
++	TI(0x100bc0, 0, 56, COUNTER),
++	TI(0x100bb0, 0, 56, COUNTER),
++	TI(0x100bb8, 0, 56, COUNTER),
++	TI(0x100bd0, 0, 56, COUNTER),
++	TI(0x100b98, 0, 56, COUNTER),
++	TI(0x100ba8, 0, 56, COUNTER),
++	TI(0x100b90, 0, 56, COUNTER),
++	TI(0x100b80, 0, 56, COUNTER),
++	TI(0x100b88, 0, 56, COUNTER),
++	TI(0x100ba0, 0, 56, COUNTER),
++	TI(0x100ca0, 0, 56, COUNTER),
++	TI(0x100e40, 0, 56, COUNTER),
++	TI(0x100e48, 0, 56, COUNTER),
++	TI(0x100bf8, 0, 56, COUNTER),
++	TI(0x100c08, 0, 56, COUNTER),
++	TI(0x100bf0, 0, 56, COUNTER),
++	TI(0x100be0, 0, 56, COUNTER),
++	TI(0x100be8, 0, 56, COUNTER),
++	TI(0x100c00, 0, 56, COUNTER),
++	TI(0x100ac0, 0, 56, COUNTER),
++	TI(0x100ac8, 0, 56, COUNTER),
++	TI(0x100ad0, 0, 56, COUNTER),
++	TI(0x100ad8, 0, 56, COUNTER),
++	TI(0x100c28, 0, 56, COUNTER),
++	TI(0x100c38, 0, 56, COUNTER),
++	TI(0x100c20, 0, 56, COUNTER),
++	TI(0x100c10, 0, 56, COUNTER),
++	TI(0x100c18, 0, 56, COUNTER),
++	TI(0x100c30, 0, 56, COUNTER),
++	TI(0x100e78, 0, 56, COUNTER),
++	TI(0x100e80, 0, 56, COUNTER),
++	TI(0x8800808, 0, 9, UGAUGE),
++	TI(0x8800808, 16, 9, UGAUGE),
++	TI(0x100e88, 0, 56, COUNTER),
++	TI(0x100d30, 0, 56, COUNTER),
++	TI(0x100d38, 0, 56, COUNTER),
++	TI(0x100d28, 0, 56, COUNTER),
++	TI(0x100c70, 0, 56, COUNTER),
++	TI(0x100c78, 0, 56, COUNTER),
++	TI(0x100e70, 0, 56, COUNTER),
++	TI(0x10004b8, 4, 16, COUNTER),
++	TI(0x1002000, 0, 56, COUNTER),
++	TI(0x10020c0, 0, 56, COUNTER),
++	TI(0x10020c8, 0, 56, COUNTER),
++	TI(0x10020d0, 0, 56, COUNTER),
++	TI(0x10020d8, 0, 56, COUNTER),
++	TI(0x10020e0, 0, 56, COUNTER),
++	TI(0x10020e8, 0, 56, COUNTER),
++	TI(0x10020f0, 0, 56, COUNTER),
++	TI(0x10020f8, 0, 56, COUNTER),
++	TI(0x10022b8, 0, 56, COUNTER),
++	TI(0x10022b0, 0, 56, COUNTER),
++	TI(0x10022a8, 0, 56, COUNTER),
++	TI(0x1002290, 0, 56, COUNTER),
++	TI(0x1002298, 0, 56, COUNTER),
++	TI(0x1002288, 0, 56, COUNTER),
++	TI(0x10022a0, 0, 56, COUNTER),
++	TI(0x1002280, 0, 56, COUNTER),
++	TI(0x1002270, 0, 56, COUNTER),
++	TI(0x1002278, 0, 56, COUNTER),
++	TI(0x1002708, 0, 56, COUNTER),
++	TI(0x1002780, 0, 56, COUNTER),
++	TI(0x1002718, 0, 56, COUNTER),
++	TI(0x10026f0, 0, 56, COUNTER),
++	TI(0x1002748, 0, 56, COUNTER),
++	TI(0x1002730, 0, 56, COUNTER),
++	TI(0x1002770, 0, 56, COUNTER),
++	TI(0x1002760, 0, 56, COUNTER),
++	TI(0x1002750, 0, 56, COUNTER),
++	TI(0x1002758, 0, 56, COUNTER),
++	TI(0x10026f8, 0, 56, COUNTER),
++	TI(0x1002700, 0, 56, COUNTER),
++	TI(0x10026e0, 0, 56, COUNTER),
++	TI(0x10026e8, 0, 56, COUNTER),
++	TI(0x1002710, 0, 56, COUNTER),
++	TI(0x1002738, 0, 56, COUNTER),
++	TI(0x1002720, 0, 56, COUNTER),
++	TI(0x1002740, 0, 56, COUNTER),
++	TI(0x1002728, 0, 56, COUNTER),
++	TI(0x1002778, 0, 56, COUNTER),
++	TI(0x1002768, 0, 56, COUNTER),
++	TI(0x1002660, 0, 56, COUNTER),
++	TI(0x10026b0, 0, 56, COUNTER),
++	TI(0x10026b8, 0, 56, COUNTER),
++	TI(0x10026a8, 0, 56, COUNTER),
++	TI(0x1002670, 0, 56, COUNTER),
++	TI(0x1002650, 0, 56, COUNTER),
++	TI(0x1002658, 0, 56, COUNTER),
++	TI(0x10026d0, 0, 56, COUNTER),
++	TI(0x10026d8, 0, 56, COUNTER),
++	TI(0x1002640, 0, 56, COUNTER),
++	TI(0x1002648, 0, 56, COUNTER),
++	TI(0x1002668, 0, 56, COUNTER),
++	TI(0x10026c0, 0, 56, COUNTER),
++	TI(0x1002680, 0, 56, COUNTER),
++	TI(0x1002688, 0, 56, COUNTER),
++	TI(0x1002678, 0, 56, COUNTER),
++	TI(0x1002698, 0, 56, COUNTER),
++	TI(0x10026a0, 0, 56, COUNTER),
++	TI(0x1002690, 0, 56, COUNTER),
++	TI(0x10026c8, 0, 56, COUNTER),
++	TI(0x1002628, 0, 56, COUNTER),
++	TI(0x1002620, 0, 56, COUNTER),
++	TI(0x1002630, 0, 56, COUNTER),
++	TI(0x1002638, 0, 56, COUNTER),
++	TI(0x10024c0, 0, 56, COUNTER),
++	TI(0x10024c8, 0, 56, COUNTER),
++	TI(0x10024d0, 0, 56, COUNTER),
++	TI(0x10024d8, 0, 56, COUNTER),
++	TI(0x10024e0, 0, 56, COUNTER),
++	TI(0x10024e8, 0, 56, COUNTER),
++	TI(0x10024f0, 0, 56, COUNTER),
++	TI(0x10024f8, 0, 56, COUNTER),
++	TI(0x1002480, 0, 56, COUNTER),
++	TI(0x1002488, 0, 56, COUNTER),
++	TI(0x1002490, 0, 56, COUNTER),
++	TI(0x1002498, 0, 56, COUNTER),
++	TI(0x10024a0, 0, 56, COUNTER),
++	TI(0x10024a8, 0, 56, COUNTER),
++	TI(0x10024b0, 0, 56, COUNTER),
++	TI(0x10024b8, 0, 56, COUNTER),
++	TI(0x10022c0, 0, 56, COUNTER),
++	TI(0x10022c8, 0, 56, COUNTER),
++	TI(0x10022d0, 0, 56, COUNTER),
++	TI(0x10022d8, 0, 56, COUNTER),
++	TI(0x10022e0, 0, 56, COUNTER),
++	TI(0x10022e8, 0, 56, COUNTER),
++	TI(0x10022f0, 0, 56, COUNTER),
++	TI(0x10022f8, 0, 56, COUNTER),
++	TI(0x10023d0, 0, 56, COUNTER),
++	TI(0x10023c8, 0, 56, COUNTER),
++	TI(0x1002300, 0, 56, COUNTER),
++	TI(0x1002308, 0, 56, COUNTER),
++	TI(0x1002310, 0, 56, COUNTER),
++	TI(0x1002318, 0, 56, COUNTER),
++	TI(0x1002320, 0, 56, COUNTER),
++	TI(0x1002328, 0, 56, COUNTER),
++	TI(0x1002330, 0, 56, COUNTER),
++	TI(0x1002338, 0, 56, COUNTER),
++	TI(0x1002510, 0, 56, COUNTER),
++	TI(0x10025a8, 0, 56, COUNTER),
++	TI(0x10025b0, 0, 56, COUNTER),
++	TI(0x10025b8, 0, 56, COUNTER),
++	TI(0x10025c0, 0, 56, COUNTER),
++	TI(0x10025c8, 0, 56, COUNTER),
++	TI(0x10025d0, 0, 56, COUNTER),
++	TI(0x10025d8, 0, 56, COUNTER),
++	TI(0x10025e0, 0, 56, COUNTER),
++	TI(0x10025e8, 0, 56, COUNTER),
++	TI(0x10025f0, 0, 56, COUNTER),
++	TI(0x10025f8, 0, 56, COUNTER),
++	TI(0x1002600, 0, 56, COUNTER),
++	TI(0x1002608, 0, 56, COUNTER),
++	TI(0x1002610, 0, 56, COUNTER),
++	TI(0x1002618, 0, 56, COUNTER),
++	TI(0x1002528, 0, 56, COUNTER),
++	TI(0x1002530, 0, 56, COUNTER),
++	TI(0x1002538, 0, 56, COUNTER),
++	TI(0x1002540, 0, 56, COUNTER),
++	TI(0x1002548, 0, 56, COUNTER),
++	TI(0x1002550, 0, 56, COUNTER),
++	TI(0x1002558, 0, 56, COUNTER),
++	TI(0x1002560, 0, 56, COUNTER),
++	TI(0x1002568, 0, 56, COUNTER),
++	TI(0x1002570, 0, 56, COUNTER),
++	TI(0x1002578, 0, 56, COUNTER),
++	TI(0x1002580, 0, 56, COUNTER),
++	TI(0x1002588, 0, 56, COUNTER),
++	TI(0x1002590, 0, 56, COUNTER),
++	TI(0x1002598, 0, 56, COUNTER),
++	TI(0x10025a0, 0, 56, COUNTER),
++	TI(0x1002520, 0, 56, COUNTER),
++	TI(0x1002500, 0, 56, COUNTER),
++	TI(0x1002508, 0, 56, COUNTER),
++	TI(0x1002518, 0, 56, COUNTER),
++	TI(0x1002080, 0, 56, COUNTER),
++	TI(0x1002088, 0, 56, COUNTER),
++	TI(0x1002090, 0, 56, COUNTER),
++	TI(0x1002098, 0, 56, COUNTER),
++	TI(0x10020a0, 0, 56, COUNTER),
++	TI(0x10020a8, 0, 56, COUNTER),
++	TI(0x10020b0, 0, 56, COUNTER),
++	TI(0x10020b8, 0, 56, COUNTER),
++	TI(0x1002440, 0, 56, COUNTER),
++	TI(0x1002448, 0, 56, COUNTER),
++	TI(0x1002450, 0, 56, COUNTER),
++	TI(0x1002458, 0, 56, COUNTER),
++	TI(0x1002460, 0, 56, COUNTER),
++	TI(0x1002468, 0, 56, COUNTER),
++	TI(0x1002470, 0, 56, COUNTER),
++	TI(0x1002478, 0, 56, COUNTER),
++	TI(0x1002400, 0, 56, COUNTER),
++	TI(0x1002408, 0, 56, COUNTER),
++	TI(0x1002410, 0, 56, COUNTER),
++	TI(0x1002418, 0, 56, COUNTER),
++	TI(0x1002420, 0, 56, COUNTER),
++	TI(0x1002428, 0, 56, COUNTER),
++	TI(0x1002430, 0, 56, COUNTER),
++	TI(0x1002438, 0, 56, COUNTER),
++	TI(0x10021a8, 0, 56, COUNTER),
++	TI(0x10021b0, 0, 56, COUNTER),
++	TI(0x1002200, 0, 56, COUNTER),
++	TI(0x1002208, 0, 56, COUNTER),
++	TI(0x1002210, 0, 56, COUNTER),
++	TI(0x1002218, 0, 56, COUNTER),
++	TI(0x1002220, 0, 56, COUNTER),
++	TI(0x1002228, 0, 56, COUNTER),
++	TI(0x1002230, 0, 56, COUNTER),
++	TI(0x1002238, 0, 56, COUNTER),
++	TI(0x1002240, 0, 56, COUNTER),
++	TI(0x1002248, 0, 56, COUNTER),
++	TI(0x1002250, 0, 56, COUNTER),
++	TI(0x1002258, 0, 56, COUNTER),
++	TI(0x1002260, 0, 56, COUNTER),
++	TI(0x1002268, 0, 56, COUNTER),
++	TI(0x10021d0, 0, 56, COUNTER),
++	TI(0x10021b8, 0, 56, COUNTER),
++	TI(0x10021d8, 0, 56, COUNTER),
++	TI(0x1002198, 0, 56, COUNTER),
++	TI(0x10021e8, 0, 56, COUNTER),
++	TI(0x10021c8, 0, 56, COUNTER),
++	TI(0x10021c0, 0, 56, COUNTER),
++	TI(0x10021a0, 0, 56, COUNTER),
++	TI(0x10021e0, 0, 56, COUNTER),
++	TI(0x10021f0, 0, 56, COUNTER),
++	TI(0x10021f8, 0, 56, COUNTER),
++	TI(0x1002340, 0, 56, COUNTER),
++	TI(0x1002348, 0, 56, COUNTER),
++	TI(0x1002350, 0, 56, COUNTER),
++	TI(0x1002358, 0, 56, COUNTER),
++	TI(0x1002360, 0, 56, COUNTER),
++	TI(0x1002368, 0, 56, COUNTER),
++	TI(0x1002370, 0, 56, COUNTER),
++	TI(0x1002378, 0, 56, COUNTER),
++	TI(0x10023c0, 0, 56, COUNTER),
++	TI(0x1002020, 0, 56, COUNTER),
++	TI(0x1002040, 0, 56, COUNTER),
++	TI(0x1002048, 0, 56, COUNTER),
++	TI(0x1002050, 0, 56, COUNTER),
++	TI(0x1002058, 0, 56, COUNTER),
++	TI(0x1002060, 0, 56, COUNTER),
++	TI(0x1002068, 0, 56, COUNTER),
++	TI(0x1002070, 0, 56, COUNTER),
++	TI(0x1002078, 0, 56, COUNTER),
++	TI(0x1001048, 0, 56, COUNTER),
++	TI(0x1001060, 0, 56, COUNTER),
++	TI(0x1001050, 0, 56, COUNTER),
++	TI(0x1001058, 0, 56, COUNTER),
++	TI(0x1001068, 0, 56, COUNTER),
++	TI(0x1001040, 0, 56, COUNTER),
++	TI(0x1001018, 0, 56, COUNTER),
++	TI(0x1001030, 0, 56, COUNTER),
++	TI(0x1001020, 0, 56, COUNTER),
++	TI(0x1001028, 0, 56, COUNTER),
++	TI(0x1001038, 0, 56, COUNTER),
++	TI(0x1001010, 0, 56, COUNTER),
++	TI(0x1002138, 0, 56, COUNTER),
++	TI(0x1002140, 0, 56, COUNTER),
++	TI(0x1002148, 0, 56, COUNTER),
++	TI(0x1002150, 0, 56, COUNTER),
++	TI(0x1002158, 0, 56, COUNTER),
++	TI(0x1002160, 0, 56, COUNTER),
++	TI(0x1002168, 0, 56, COUNTER),
++	TI(0x1002170, 0, 56, COUNTER),
++	TI(0x1002178, 0, 56, COUNTER),
++	TI(0x1002180, 0, 56, COUNTER),
++	TI(0x1002188, 0, 56, COUNTER),
++	TI(0x1002190, 0, 56, COUNTER),
++	TI(0x1002120, 0, 56, COUNTER),
++	TI(0x1002100, 0, 56, COUNTER),
++	TI(0x1002128, 0, 56, COUNTER),
++	TI(0x1002108, 0, 56, COUNTER),
++	TI(0x1002130, 0, 56, COUNTER),
++	TI(0x10023e8, 0, 56, COUNTER),
++	TI(0x10023f8, 0, 56, COUNTER),
++	TI(0x1002380, 0, 56, COUNTER),
++	TI(0x1002388, 0, 56, COUNTER),
++	TI(0x1002390, 0, 56, COUNTER),
++	TI(0x1002398, 0, 56, COUNTER),
++	TI(0x10023a0, 0, 56, COUNTER),
++	TI(0x10023a8, 0, 56, COUNTER),
++	TI(0x10023b0, 0, 56, COUNTER),
++	TI(0x10023b8, 0, 56, COUNTER),
++	TI(0x1002110, 0, 56, COUNTER),
++	TI(0x1002118, 0, 56, COUNTER),
++	TI(0x1002010, 0, 56, COUNTER),
++	TI(0x10023e0, 0, 56, COUNTER),
++	TI(0x10023f0, 0, 56, COUNTER),
++	TI(0x1002008, 0, 56, COUNTER),
++	TI(0x9870900, 0, 56, COUNTER),
++	TI(0x98708f0, 0, 56, COUNTER),
++	TI(0x9870958, 0, 56, COUNTER),
++	TI(0x98708c8, 0, 56, COUNTER),
++	TI(0x98708d0, 0, 56, COUNTER),
++	TI(0x98708d8, 0, 56, COUNTER),
++	TI(0x98708a0, 0, 56, COUNTER),
++	TI(0x98708a8, 0, 56, COUNTER),
++	TI(0x98708b0, 0, 56, COUNTER),
++	TI(0x98708e0, 0, 56, COUNTER),
++	TI(0x9870850, 0, 56, COUNTER),
++	TI(0x9870858, 0, 56, COUNTER),
++	TI(0x9870870, 0, 56, COUNTER),
++	TI(0x9870878, 0, 56, COUNTER),
++	TI(0x9870840, 0, 56, COUNTER),
++	TI(0x9870848, 0, 56, COUNTER),
++	TI(0x9870880, 0, 56, COUNTER),
++	TI(0x9870888, 0, 56, COUNTER),
++	TI(0x9870860, 0, 56, COUNTER),
++	TI(0x9870868, 0, 56, COUNTER),
++	TI(0x98708b8, 0, 56, COUNTER),
++	TI(0x98708c0, 0, 56, COUNTER),
++	TI(0x98708e8, 0, 56, COUNTER),
++	TI(0x9870898, 0, 56, COUNTER),
++	TI(0x9870890, 0, 56, COUNTER),
++	TI(0x9870920, 0, 56, COUNTER),
++	TI(0x9870928, 0, 56, COUNTER),
++	TI(0x9870908, 0, 56, COUNTER),
++	TI(0x9870918, 0, 56, COUNTER),
++	TI(0x9870930, 0, 56, COUNTER),
++	TI(0x9870948, 0, 56, COUNTER),
++	TI(0x9870938, 0, 56, COUNTER),
++	TI(0x9870940, 0, 56, COUNTER),
++	TI(0x9870950, 0, 56, COUNTER),
++	TI(0x9870910, 0, 56, COUNTER),
++	TI(0x98708f8, 0, 56, COUNTER),
++	TI(0x98709f0, 0, 56, COUNTER),
++	TI(0x98709d8, 0, 56, COUNTER),
++	TI(0x98709e0, 0, 56, COUNTER),
++	TI(0x98709e8, 0, 56, COUNTER),
++	TI(0x9870a00, 0, 56, COUNTER),
++	TI(0x9870a08, 0, 56, COUNTER),
++	TI(0x98709f8, 0, 56, COUNTER),
++	TI(0x98709b8, 0, 56, COUNTER),
++	TI(0x98709c0, 0, 56, COUNTER),
++	TI(0x98709c8, 0, 56, COUNTER),
++	TI(0x98709b0, 0, 56, COUNTER),
++	TI(0x98709a0, 0, 56, COUNTER),
++	TI(0x9870a18, 0, 56, COUNTER),
++	TI(0x9870a10, 0, 56, COUNTER),
++	TI(0x98709d0, 0, 56, COUNTER),
++	TI(0x9870998, 0, 56, COUNTER),
++	TI(0x9870988, 0, 56, COUNTER),
++	TI(0x9870990, 0, 56, COUNTER),
++	TI(0x9870980, 0, 56, COUNTER),
++	TI(0x98709a8, 0, 56, COUNTER),
++	TI(0x9870548, 0, 56, COUNTER),
++	TI(0x9870528, 0, 56, COUNTER),
++	TI(0x9870568, 0, 56, COUNTER),
++	TI(0x9870538, 0, 56, COUNTER),
++	TI(0x9870540, 0, 56, COUNTER),
++	TI(0x9870530, 0, 56, COUNTER),
++	TI(0x9870500, 0, 56, COUNTER),
++	TI(0x9870508, 0, 56, COUNTER),
++	TI(0x9870558, 0, 56, COUNTER),
++	TI(0x9870560, 0, 56, COUNTER),
++	TI(0x9870700, 0, 56, COUNTER),
++	TI(0x9870708, 0, 56, COUNTER),
++	TI(0x9870710, 0, 56, COUNTER),
++	TI(0x9870718, 0, 56, COUNTER),
++	TI(0x9870720, 0, 56, COUNTER),
++	TI(0x9870728, 0, 56, COUNTER),
++	TI(0x9870730, 0, 56, COUNTER),
++	TI(0x9870738, 0, 56, COUNTER),
++	TI(0x9870520, 0, 56, COUNTER),
++	TI(0x9870550, 0, 56, COUNTER),
++	TI(0x9870640, 0, 56, COUNTER),
++	TI(0x9870590, 0, 56, COUNTER),
++	TI(0x9870598, 0, 56, COUNTER),
++	TI(0x9870628, 0, 56, COUNTER),
++	TI(0x9870610, 0, 56, COUNTER),
++	TI(0x9870618, 0, 56, COUNTER),
++	TI(0x9870620, 0, 56, COUNTER),
++	TI(0x9870630, 0, 56, COUNTER),
++	TI(0x9870638, 0, 56, COUNTER),
++	TI(0x98705d8, 0, 56, COUNTER),
++	TI(0x98705c8, 0, 56, COUNTER),
++	TI(0x98705a8, 0, 56, COUNTER),
++	TI(0x9870608, 0, 56, COUNTER),
++	TI(0x98705f8, 0, 56, COUNTER),
++	TI(0x9870600, 0, 56, COUNTER),
++	TI(0x98705e0, 0, 56, COUNTER),
++	TI(0x98705d0, 0, 56, COUNTER),
++	TI(0x98705c0, 0, 56, COUNTER),
++	TI(0x98705f0, 0, 56, COUNTER),
++	TI(0x98705b0, 0, 56, COUNTER),
++	TI(0x98705b8, 0, 56, COUNTER),
++	TI(0x98705a0, 0, 56, COUNTER),
++	TI(0x9870648, 0, 56, COUNTER),
++	TI(0x9870650, 0, 56, COUNTER),
++	TI(0x9870588, 0, 56, COUNTER),
++	TI(0x9870580, 0, 56, COUNTER),
++	TI(0x98705e8, 0, 56, COUNTER),
++	TI(0x9870740, 0, 56, COUNTER),
++	TI(0x9870748, 0, 56, COUNTER),
++	TI(0x9870750, 0, 56, COUNTER),
++	TI(0x9870758, 0, 56, COUNTER),
++	TI(0x9870760, 0, 56, COUNTER),
++	TI(0x9870768, 0, 56, COUNTER),
++	TI(0x9870770, 0, 56, COUNTER),
++	TI(0x9870778, 0, 56, COUNTER),
++	TI(0x9870780, 0, 56, COUNTER),
++	TI(0x9870788, 0, 56, COUNTER),
++	TI(0x9870790, 0, 56, COUNTER),
++	TI(0x9870798, 0, 56, COUNTER),
++	TI(0x98707a0, 0, 56, COUNTER),
++	TI(0x98707a8, 0, 56, COUNTER),
++	TI(0x98707b0, 0, 56, COUNTER),
++	TI(0x98707b8, 0, 56, COUNTER),
++	TI(0x98707c0, 0, 56, COUNTER),
++	TI(0x98707c8, 0, 56, COUNTER),
++	TI(0x98707d0, 0, 56, COUNTER),
++	TI(0x98707d8, 0, 56, COUNTER),
++	TI(0x98707e0, 0, 56, COUNTER),
++	TI(0x98707e8, 0, 56, COUNTER),
++	TI(0x98707f0, 0, 56, COUNTER),
++	TI(0x98707f8, 0, 56, COUNTER),
++	TI(0x9870800, 0, 56, COUNTER),
++	TI(0x9870808, 0, 56, COUNTER),
++	TI(0x9870810, 0, 56, COUNTER),
++	TI(0x9870818, 0, 56, COUNTER),
++	TI(0x9870820, 0, 56, COUNTER),
++	TI(0x9870828, 0, 56, COUNTER),
++	TI(0x9870830, 0, 56, COUNTER),
++	TI(0x9870838, 0, 56, COUNTER),
++	TI(0x9870040, 0, 56, COUNTER),
++	TI(0x9870320, 0, 56, COUNTER),
++	TI(0x9870328, 0, 56, COUNTER),
++	TI(0x9870330, 0, 56, COUNTER),
++	TI(0x9870338, 0, 56, COUNTER),
++	TI(0x9870340, 0, 56, COUNTER),
++	TI(0x9870348, 0, 56, COUNTER),
++	TI(0x9870350, 0, 56, COUNTER),
++	TI(0x9870358, 0, 56, COUNTER),
++	TI(0x9800448, 4, 16, COUNTER),
++	TI(0x9800a00, 32, 15, UGAUGE),
++	TI(0x9800a08, 32, 15, UGAUGE),
++	TI(0x9800a10, 32, 15, UGAUGE),
++	TI(0x9800a18, 32, 15, UGAUGE),
++	TI(0x9800a00, 0, 15, UGAUGE),
++	TI(0x9800a08, 0, 15, UGAUGE),
++	TI(0x9800a10, 0, 15, UGAUGE),
++	TI(0x9800a18, 0, 15, UGAUGE),
++	TI(0x9800a00, 48, 15, UGAUGE),
++	TI(0x9800a08, 48, 15, UGAUGE),
++	TI(0x9800a10, 48, 15, UGAUGE),
++	TI(0x9800a18, 48, 15, UGAUGE),
++	TI(0x9800a00, 16, 15, UGAUGE),
++	TI(0x9800a08, 16, 15, UGAUGE),
++	TI(0x9800a10, 16, 15, UGAUGE),
++	TI(0x9800a18, 16, 15, UGAUGE),
++	TI(0x98701f8, 0, 56, COUNTER),
++	TI(0x98701f0, 0, 56, COUNTER),
++	TI(0x98701e8, 0, 56, COUNTER),
++	TI(0x98701c0, 0, 56, COUNTER),
++	TI(0x98701c8, 0, 56, COUNTER),
++	TI(0x98701d0, 0, 56, COUNTER),
++	TI(0x98701d8, 0, 56, COUNTER),
++	TI(0x98701e0, 0, 56, COUNTER),
++	TI(0x98700d0, 0, 56, COUNTER),
++	TI(0x98700b8, 0, 56, COUNTER),
++	TI(0x9870078, 0, 56, COUNTER),
++	TI(0x98700c8, 0, 56, COUNTER),
++	TI(0x98700c0, 0, 56, COUNTER),
++	TI(0x98700b0, 0, 56, COUNTER),
++	TI(0x98700a0, 0, 56, COUNTER),
++	TI(0x9870110, 0, 56, COUNTER),
++	TI(0x98700d8, 0, 56, COUNTER),
++	TI(0x98700e0, 0, 56, COUNTER),
++	TI(0x98700e8, 0, 56, COUNTER),
++	TI(0x98700a8, 0, 56, COUNTER),
++	TI(0x9870090, 0, 56, COUNTER),
++	TI(0x9870080, 0, 56, COUNTER),
++	TI(0x9870098, 0, 56, COUNTER),
++	TI(0x9870088, 0, 56, COUNTER),
++	TI(0x9870108, 0, 56, COUNTER),
++	TI(0x9870118, 0, 56, COUNTER),
++	TI(0x98700f0, 0, 56, COUNTER),
++	TI(0x98700f8, 0, 56, COUNTER),
++	TI(0x9870100, 0, 56, COUNTER),
++	TI(0x9870168, 0, 56, COUNTER),
++	TI(0x9870178, 0, 56, COUNTER),
++	TI(0x9870158, 0, 56, COUNTER),
++	TI(0x9870190, 0, 56, COUNTER),
++	TI(0x9870148, 0, 56, COUNTER),
++	TI(0x9870188, 0, 56, COUNTER),
++	TI(0x9870180, 0, 56, COUNTER),
++	TI(0x98701a0, 0, 56, COUNTER),
++	TI(0x9870198, 0, 56, COUNTER),
++	TI(0x9870008, 0, 56, COUNTER),
++	TI(0x9870048, 0, 56, COUNTER),
++	TI(0x9870038, 0, 56, COUNTER),
++	TI(0x9870010, 0, 56, COUNTER),
++	TI(0x9870018, 0, 56, COUNTER),
++	TI(0x98702a0, 0, 56, COUNTER),
++	TI(0x98702a8, 0, 56, COUNTER),
++	TI(0x98702b0, 0, 56, COUNTER),
++	TI(0x98702b8, 0, 56, COUNTER),
++	TI(0x98702e0, 0, 56, COUNTER),
++	TI(0x98702e8, 0, 56, COUNTER),
++	TI(0x98702f0, 0, 56, COUNTER),
++	TI(0x98702f8, 0, 56, COUNTER),
++	TI(0x98702c0, 0, 56, COUNTER),
++	TI(0x98702c8, 0, 56, COUNTER),
++	TI(0x98702d0, 0, 56, COUNTER),
++	TI(0x98702d8, 0, 56, COUNTER),
++	TI(0x9870300, 0, 56, COUNTER),
++	TI(0x9870308, 0, 56, COUNTER),
++	TI(0x9870310, 0, 56, COUNTER),
++	TI(0x9870318, 0, 56, COUNTER),
++	TI(0x9870240, 0, 56, COUNTER),
++	TI(0x9870248, 0, 56, COUNTER),
++	TI(0x9870250, 0, 56, COUNTER),
++	TI(0x9870258, 0, 56, COUNTER),
++	TI(0x9870260, 0, 56, COUNTER),
++	TI(0x9870268, 0, 56, COUNTER),
++	TI(0x9870270, 0, 56, COUNTER),
++	TI(0x9870278, 0, 56, COUNTER),
++	TI(0x9870280, 0, 56, COUNTER),
++	TI(0x9870288, 0, 56, COUNTER),
++	TI(0x9870290, 0, 56, COUNTER),
++	TI(0x9870298, 0, 56, COUNTER),
++	TI(0x9870440, 0, 56, COUNTER),
++	TI(0x9870448, 0, 56, COUNTER),
++	TI(0x9870450, 0, 56, COUNTER),
++	TI(0x9870458, 0, 56, COUNTER),
++	TI(0x98701a8, 0, 56, COUNTER),
++	TI(0x98701b0, 0, 56, COUNTER),
++	TI(0x9870170, 0, 56, COUNTER),
++	TI(0x98701b8, 0, 56, COUNTER),
++	TI(0x9870028, 0, 56, COUNTER),
++	TI(0x9870030, 0, 56, COUNTER),
++	TI(0x9870400, 0, 56, COUNTER),
++	TI(0x9870408, 0, 56, COUNTER),
++	TI(0x9870410, 0, 56, COUNTER),
++	TI(0x9870418, 0, 56, COUNTER),
++	TI(0x9870420, 0, 56, COUNTER),
++	TI(0x9870428, 0, 56, COUNTER),
++	TI(0x9870430, 0, 56, COUNTER),
++	TI(0x9870438, 0, 56, COUNTER),
++	TI(0x9870200, 0, 56, COUNTER),
++	TI(0x9870218, 0, 56, COUNTER),
++	TI(0x9870228, 0, 56, COUNTER),
++	TI(0x9870220, 0, 56, COUNTER),
++	TI(0x9870210, 0, 56, COUNTER),
++	TI(0x98703a0, 0, 56, COUNTER),
++	TI(0x98703a8, 0, 56, COUNTER),
++	TI(0x98703b0, 0, 56, COUNTER),
++	TI(0x98703b8, 0, 56, COUNTER),
++	TI(0x98703c0, 0, 56, COUNTER),
++	TI(0x98703c8, 0, 56, COUNTER),
++	TI(0x98703d0, 0, 56, COUNTER),
++	TI(0x98703d8, 0, 56, COUNTER),
++	TI(0x98703e0, 0, 56, COUNTER),
++	TI(0x98703e8, 0, 56, COUNTER),
++	TI(0x98703f0, 0, 56, COUNTER),
++	TI(0x98703f8, 0, 56, COUNTER),
++	TI(0x9870208, 0, 56, COUNTER),
++	TI(0x9870360, 0, 56, COUNTER),
++	TI(0x9870368, 0, 56, COUNTER),
++	TI(0x9870370, 0, 56, COUNTER),
++	TI(0x9870378, 0, 56, COUNTER),
++	TI(0x9870380, 0, 56, COUNTER),
++	TI(0x9870388, 0, 56, COUNTER),
++	TI(0x9870390, 0, 56, COUNTER),
++	TI(0x9870398, 0, 56, COUNTER),
++	TI(0x9803120, 0, 56, COUNTER),
++	TI(0x9803128, 0, 56, COUNTER),
++	TI(0x9803130, 0, 56, COUNTER),
++	TI(0x9803138, 0, 56, COUNTER),
++	TI(0x9803220, 0, 15, UGAUGE),
++	TI(0x9803228, 0, 15, UGAUGE),
++	TI(0x9803230, 0, 15, UGAUGE),
++	TI(0x9803238, 0, 15, UGAUGE),
++	TI(0x9803220, 16, 12, UGAUGE),
++	TI(0x9803228, 16, 12, UGAUGE),
++	TI(0x9803230, 16, 12, UGAUGE),
++	TI(0x9803238, 16, 12, UGAUGE),
++	TI(0x9803000, 0, 48, COUNTER),
++	TI(0x9803008, 0, 48, COUNTER),
++	TI(0x9803010, 0, 48, COUNTER),
++	TI(0x9803018, 0, 48, COUNTER),
++	TI(0x9803000, 60, 4, UGAUGE),
++	TI(0x9803008, 60, 4, UGAUGE),
++	TI(0x9803010, 60, 4, UGAUGE),
++	TI(0x9803018, 60, 4, UGAUGE),
++	TI(0x9803020, 0, 52, COUNTER),
++	TI(0x9803028, 0, 52, COUNTER),
++	TI(0x9803030, 0, 52, COUNTER),
++	TI(0x9803038, 0, 52, COUNTER),
++	TI(0x9803020, 52, 12, UGAUGE),
++	TI(0x9803028, 52, 12, UGAUGE),
++	TI(0x9803030, 52, 12, UGAUGE),
++	TI(0x9803038, 52, 12, UGAUGE),
++	TI(0x9803100, 0, 56, COUNTER),
++	TI(0x9803108, 0, 56, COUNTER),
++	TI(0x9803110, 0, 56, COUNTER),
++	TI(0x9803118, 0, 56, COUNTER),
++	TI(0x9803200, 0, 15, UGAUGE),
++	TI(0x9803208, 0, 15, UGAUGE),
++	TI(0x9803210, 0, 15, UGAUGE),
++	TI(0x9803218, 0, 15, UGAUGE),
++	TI(0x9803200, 16, 12, UGAUGE),
++	TI(0x9803208, 16, 12, UGAUGE),
++	TI(0x9803210, 16, 12, UGAUGE),
++	TI(0x9803218, 16, 12, UGAUGE),
++	TI(0x9800800, 0, 15, UGAUGE),
++	TI(0x9800808, 0, 15, UGAUGE),
++	TI(0x9800810, 0, 15, UGAUGE),
++	TI(0x9800818, 0, 15, UGAUGE),
++	TI(0x9800820, 0, 15, UGAUGE),
++	TI(0x9800828, 0, 15, UGAUGE),
++	TI(0x9800830, 0, 15, UGAUGE),
++	TI(0x9800838, 0, 15, UGAUGE),
++	TI(0x9800840, 0, 15, UGAUGE),
++	TI(0x9800848, 0, 15, UGAUGE),
++	TI(0x9800850, 0, 15, UGAUGE),
++	TI(0x9800858, 0, 15, UGAUGE),
++	TI(0x9800860, 0, 15, UGAUGE),
++	TI(0x9800868, 0, 15, UGAUGE),
++	TI(0x9800870, 0, 15, UGAUGE),
++	TI(0x9800878, 0, 15, UGAUGE),
++	TI(0x9800880, 0, 15, UGAUGE),
++	TI(0x9800888, 0, 15, UGAUGE),
++	TI(0x9800890, 0, 15, UGAUGE),
++	TI(0x9800898, 0, 15, UGAUGE),
++	TI(0x98008a0, 0, 15, UGAUGE),
++	TI(0x98008a8, 0, 15, UGAUGE),
++	TI(0x98008b0, 0, 15, UGAUGE),
++	TI(0x98008b8, 0, 15, UGAUGE),
++	TI(0x98008c0, 0, 15, UGAUGE),
++	TI(0x98008c8, 0, 15, UGAUGE),
++	TI(0x98008d0, 0, 15, UGAUGE),
++	TI(0x98008d8, 0, 15, UGAUGE),
++	TI(0x98008e0, 0, 15, UGAUGE),
++	TI(0x98008e8, 0, 15, UGAUGE),
++	TI(0x98008f0, 0, 15, UGAUGE),
++	TI(0x98008f8, 0, 15, UGAUGE),
++	TI(0x9800900, 0, 15, UGAUGE),
++	TI(0x9800908, 0, 15, UGAUGE),
++	TI(0x9800910, 0, 15, UGAUGE),
++	TI(0x9800918, 0, 15, UGAUGE),
++	TI(0x9800920, 0, 15, UGAUGE),
++	TI(0x9800928, 0, 15, UGAUGE),
++	TI(0x9800930, 0, 15, UGAUGE),
++	TI(0x9800938, 0, 15, UGAUGE),
++	TI(0x9800940, 0, 15, UGAUGE),
++	TI(0x9800948, 0, 15, UGAUGE),
++	TI(0x9800950, 0, 15, UGAUGE),
++	TI(0x9800958, 0, 15, UGAUGE),
++	TI(0x9800960, 0, 15, UGAUGE),
++	TI(0x9800968, 0, 15, UGAUGE),
++	TI(0x9800970, 0, 15, UGAUGE),
++	TI(0x9800978, 0, 15, UGAUGE),
++	TI(0x9800980, 0, 15, UGAUGE),
++	TI(0x9800988, 0, 15, UGAUGE),
++	TI(0x9800990, 0, 15, UGAUGE),
++	TI(0x9800998, 0, 15, UGAUGE),
++	TI(0x98009a0, 0, 15, UGAUGE),
++	TI(0x98009a8, 0, 15, UGAUGE),
++	TI(0x98009b0, 0, 15, UGAUGE),
++	TI(0x98009b8, 0, 15, UGAUGE),
++	TI(0x98009c0, 0, 15, UGAUGE),
++	TI(0x98009c8, 0, 15, UGAUGE),
++	TI(0x98009d0, 0, 15, UGAUGE),
++	TI(0x98009d8, 0, 15, UGAUGE),
++	TI(0x98009e0, 0, 15, UGAUGE),
++	TI(0x98009e8, 0, 15, UGAUGE),
++	TI(0x98009f0, 0, 15, UGAUGE),
++	TI(0x98009f8, 0, 15, UGAUGE),
++	TI(0x9870000, 0, 56, COUNTER),
++	TI(0x9870460, 0, 56, COUNTER),
++	TI(0x9870468, 0, 56, COUNTER),
++	TI(0x9870470, 0, 56, COUNTER),
++	TI(0x9870478, 0, 56, COUNTER),
++	TI(0x9870230, 0, 56, COUNTER),
++	TI(0x9870238, 0, 56, COUNTER),
++	TI(0x10004010, 4, 16, COUNTER),
++	TI(0x10020170, 0, 56, COUNTER),
++	TI(0x10020178, 0, 56, COUNTER),
++	TI(0x10020180, 0, 56, COUNTER),
++	TI(0x10020188, 0, 56, COUNTER),
++	TI(0x10020150, 0, 56, COUNTER),
++	TI(0x10020158, 0, 56, COUNTER),
++	TI(0x10020160, 0, 56, COUNTER),
++	TI(0x10020168, 0, 56, COUNTER),
++	TI(0x100200f0, 0, 56, COUNTER),
++	TI(0x100200f8, 0, 56, COUNTER),
++	TI(0x10020130, 0, 56, COUNTER),
++	TI(0x10020138, 0, 56, COUNTER),
++	TI(0x10020090, 0, 56, COUNTER),
++	TI(0x10020098, 0, 56, COUNTER),
++	TI(0x100200a0, 0, 56, COUNTER),
++	TI(0x10020048, 0, 56, COUNTER),
++	TI(0x10020050, 0, 56, COUNTER),
++	TI(0x10020058, 0, 56, COUNTER),
++	TI(0x10020078, 0, 56, COUNTER),
++	TI(0x10020080, 0, 56, COUNTER),
++	TI(0x10020088, 0, 56, COUNTER),
++	TI(0x10020018, 0, 56, COUNTER),
++	TI(0x10020020, 0, 56, COUNTER),
++	TI(0x10020028, 0, 56, COUNTER),
++	TI(0x100200a8, 0, 56, COUNTER),
++	TI(0x100200b0, 0, 56, COUNTER),
++	TI(0x100200b8, 0, 56, COUNTER),
++	TI(0x10020000, 0, 56, COUNTER),
++	TI(0x10020008, 0, 56, COUNTER),
++	TI(0x10020010, 0, 56, COUNTER),
++	TI(0x10020060, 0, 56, COUNTER),
++	TI(0x10020068, 0, 56, COUNTER),
++	TI(0x10020070, 0, 56, COUNTER),
++	TI(0x10020030, 0, 56, COUNTER),
++	TI(0x10020038, 0, 56, COUNTER),
++	TI(0x10020040, 0, 56, COUNTER),
++	TI(0x10020100, 0, 56, COUNTER),
++	TI(0x10020108, 0, 56, COUNTER),
++	TI(0x10020140, 0, 56, COUNTER),
++	TI(0x10020148, 0, 56, COUNTER),
++	TI(0x100200e0, 0, 56, COUNTER),
++	TI(0x100200e8, 0, 56, COUNTER),
++	TI(0x10020120, 0, 56, COUNTER),
++	TI(0x10020128, 0, 56, COUNTER),
++	TI(0x100200c8, 0, 56, COUNTER),
++	TI(0x100200c0, 0, 56, COUNTER),
++	TI(0x100200d0, 0, 56, COUNTER),
++	TI(0x100200d8, 0, 56, COUNTER),
++	TI(0x10020110, 0, 56, COUNTER),
++	TI(0x10020118, 0, 56, COUNTER),
++	TI(0x9870cd0, 0, 56, COUNTER),
++	TI(0x9870d40, 0, 56, COUNTER),
++	TI(0x9870cc0, 0, 56, COUNTER),
++	TI(0x9870cc8, 0, 56, COUNTER),
++	TI(0x9870cd8, 0, 56, COUNTER),
++	TI(0x9870cf8, 0, 56, COUNTER),
++	TI(0x9870ce0, 0, 56, COUNTER),
++	TI(0x9870ce8, 0, 56, COUNTER),
++	TI(0x9870cf0, 0, 56, COUNTER),
++	TI(0xa010018, 0, 12, UGAUGE),
++	TI(0x1002b80, 0, 56, COUNTER),
++	TI(0x10027a0, 0, 56, COUNTER),
++	TI(0x1002798, 0, 56, COUNTER),
++	TI(0x10027a8, 0, 56, COUNTER),
++	TI(0x10027b8, 0, 56, COUNTER),
++	TI(0x10027c8, 0, 56, COUNTER),
++	TI(0x10027c0, 0, 56, COUNTER),
++	TI(0x10027b0, 0, 56, COUNTER),
++	TI(0x1002a60, 0, 56, COUNTER),
++	TI(0x1002a68, 0, 56, COUNTER),
++	TI(0x1002a70, 0, 56, COUNTER),
++	TI(0x1002a78, 0, 56, COUNTER),
++	TI(0x1002b88, 0, 56, COUNTER),
++	TI(0x1002b90, 0, 56, COUNTER),
++	TI(0x1002b98, 0, 56, COUNTER),
++	TI(0x1002ba0, 0, 56, COUNTER),
++	TI(0x1002ba8, 0, 56, COUNTER),
++	TI(0x1002bb0, 0, 56, COUNTER),
++	TI(0x1002bb8, 0, 56, COUNTER),
++	TI(0x1002bc0, 0, 56, COUNTER),
++	TI(0x1002bc8, 0, 56, COUNTER),
++	TI(0x1002bd0, 0, 56, COUNTER),
++	TI(0x1002bd8, 0, 56, COUNTER),
++	TI(0x1002be0, 0, 56, COUNTER),
++	TI(0x1002be8, 0, 56, COUNTER),
++	TI(0x1002bf0, 0, 56, COUNTER),
++	TI(0x1002bf8, 0, 56, COUNTER),
++	TI(0x1002c00, 0, 56, COUNTER),
++	TI(0x1002c08, 0, 56, COUNTER),
++	TI(0x1002c10, 0, 56, COUNTER),
++	TI(0x1002c18, 0, 56, COUNTER),
++	TI(0x1002c20, 0, 56, COUNTER),
++	TI(0x1002c28, 0, 56, COUNTER),
++	TI(0x1002c30, 0, 56, COUNTER),
++	TI(0x1002c38, 0, 56, COUNTER),
++	TI(0x1002c40, 0, 56, COUNTER),
++	TI(0x1002c48, 0, 56, COUNTER),
++	TI(0x1002c50, 0, 56, COUNTER),
++	TI(0x1002c58, 0, 56, COUNTER),
++	TI(0x1002c60, 0, 56, COUNTER),
++	TI(0x1002c68, 0, 56, COUNTER),
++	TI(0x1002c70, 0, 56, COUNTER),
++	TI(0x1002c78, 0, 56, COUNTER),
++	TI(0x1002c80, 0, 56, COUNTER),
++	TI(0x1002c88, 0, 56, COUNTER),
++	TI(0x1002c90, 0, 56, COUNTER),
++	TI(0x1002c98, 0, 56, COUNTER),
++	TI(0x1002ca0, 0, 56, COUNTER),
++	TI(0x1002ca8, 0, 56, COUNTER),
++	TI(0x1002cb0, 0, 56, COUNTER),
++	TI(0x1002cb8, 0, 56, COUNTER),
++	TI(0x1002cc0, 0, 56, COUNTER),
++	TI(0x1002cc8, 0, 56, COUNTER),
++	TI(0x1002cd0, 0, 56, COUNTER),
++	TI(0x1002cd8, 0, 56, COUNTER),
++	TI(0x1002ce0, 0, 56, COUNTER),
++	TI(0x1002ce8, 0, 56, COUNTER),
++	TI(0x1002cf0, 0, 56, COUNTER),
++	TI(0x1002cf8, 0, 56, COUNTER),
++	TI(0x1002d00, 0, 56, COUNTER),
++	TI(0x1002d08, 0, 56, COUNTER),
++	TI(0x1002d10, 0, 56, COUNTER),
++	TI(0x1002d18, 0, 56, COUNTER),
++	TI(0x1002d20, 0, 56, COUNTER),
++	TI(0x1002d28, 0, 56, COUNTER),
++	TI(0x1002d30, 0, 56, COUNTER),
++	TI(0x1002d38, 0, 56, COUNTER),
++	TI(0x1002d40, 0, 56, COUNTER),
++	TI(0x1002d48, 0, 56, COUNTER),
++	TI(0x1002d50, 0, 56, COUNTER),
++	TI(0x1002d58, 0, 56, COUNTER),
++	TI(0x1002d60, 0, 56, COUNTER),
++	TI(0x1002d68, 0, 56, COUNTER),
++	TI(0x1002d70, 0, 56, COUNTER),
++	TI(0x1002d78, 0, 56, COUNTER),
++	TI(0x1002d80, 0, 56, COUNTER),
++	TI(0x1002d88, 0, 56, COUNTER),
++	TI(0x1002d90, 0, 56, COUNTER),
++	TI(0x1002d98, 0, 56, COUNTER),
++	TI(0x1002da0, 0, 56, COUNTER),
++	TI(0x1002da8, 0, 56, COUNTER),
++	TI(0x1002db0, 0, 56, COUNTER),
++	TI(0x1002db8, 0, 56, COUNTER),
++	TI(0x1002dc0, 0, 56, COUNTER),
++	TI(0x1002dc8, 0, 56, COUNTER),
++	TI(0x1002dd0, 0, 56, COUNTER),
++	TI(0x1002dd8, 0, 56, COUNTER),
++	TI(0x1002de0, 0, 56, COUNTER),
++	TI(0x1002de8, 0, 56, COUNTER),
++	TI(0x1002df0, 0, 56, COUNTER),
++	TI(0x1002df8, 0, 56, COUNTER),
++	TI(0x1002e00, 0, 56, COUNTER),
++	TI(0x1002e08, 0, 56, COUNTER),
++	TI(0x1002e10, 0, 56, COUNTER),
++	TI(0x1002e18, 0, 56, COUNTER),
++	TI(0x1002e20, 0, 56, COUNTER),
++	TI(0x1002e28, 0, 56, COUNTER),
++	TI(0x1002e30, 0, 56, COUNTER),
++	TI(0x1002e38, 0, 56, COUNTER),
++	TI(0x1002e40, 0, 56, COUNTER),
++	TI(0x1002e48, 0, 56, COUNTER),
++	TI(0x1002e50, 0, 56, COUNTER),
++	TI(0x1002e58, 0, 56, COUNTER),
++	TI(0x1002e60, 0, 56, COUNTER),
++	TI(0x1002e68, 0, 56, COUNTER),
++	TI(0x1002e70, 0, 56, COUNTER),
++	TI(0x1002e78, 0, 56, COUNTER),
++	TI(0x1002e80, 0, 56, COUNTER),
++	TI(0x1002788, 0, 56, COUNTER),
++	TI(0x1002790, 0, 56, COUNTER),
++	TI(0x1002b78, 0, 56, COUNTER),
++	TI(0x1002ee8, 0, 56, COUNTER),
++	TI(0x1002ef0, 0, 56, COUNTER),
++	TI(0x1002ef8, 0, 56, COUNTER),
++	TI(0x1002f00, 0, 56, COUNTER),
++	TI(0x1002ec0, 0, 56, COUNTER),
++	TI(0x1002ed0, 0, 56, COUNTER),
++	TI(0x1002ec8, 0, 56, COUNTER),
++	TI(0x1002ed8, 0, 56, COUNTER),
++	TI(0x1002eb0, 0, 56, COUNTER),
++	TI(0x1002eb8, 0, 56, COUNTER),
++	TI(0x1002ea8, 0, 56, COUNTER),
++	TI(0x1002e90, 0, 56, COUNTER),
++	TI(0x1002ea0, 0, 56, COUNTER),
++	TI(0x1002e98, 0, 56, COUNTER),
++	TI(0x1002e88, 0, 56, COUNTER),
++	TI(0x1002ee0, 0, 56, COUNTER),
++	TI(0x1002f68, 0, 56, COUNTER),
++	TI(0x1002f70, 0, 56, COUNTER),
++	TI(0x1002f78, 0, 56, COUNTER),
++	TI(0x1002f80, 0, 56, COUNTER),
++	TI(0x1002f40, 0, 56, COUNTER),
++	TI(0x1002f50, 0, 56, COUNTER),
++	TI(0x1002f48, 0, 56, COUNTER),
++	TI(0x1002f58, 0, 56, COUNTER),
++	TI(0x1002f30, 0, 56, COUNTER),
++	TI(0x1002f38, 0, 56, COUNTER),
++	TI(0x1002f28, 0, 56, COUNTER),
++	TI(0x1002f10, 0, 56, COUNTER),
++	TI(0x1002f20, 0, 56, COUNTER),
++	TI(0x1002f18, 0, 56, COUNTER),
++	TI(0x1002f08, 0, 56, COUNTER),
++	TI(0x1002f60, 0, 56, COUNTER),
++	TI(0x1002ad0, 0, 56, COUNTER),
++	TI(0x1002ad8, 0, 56, COUNTER),
++	TI(0x1002ae0, 0, 56, COUNTER),
++	TI(0x1002ae8, 0, 56, COUNTER),
++	TI(0x1002af0, 0, 56, COUNTER),
++	TI(0x1002af8, 0, 56, COUNTER),
++	TI(0x1002b00, 0, 56, COUNTER),
++	TI(0x1002b08, 0, 56, COUNTER),
++	TI(0x1002b10, 0, 56, COUNTER),
++	TI(0x1002b18, 0, 56, COUNTER),
++	TI(0x1002b70, 0, 56, COUNTER),
++	TI(0x1002a80, 0, 56, COUNTER),
++	TI(0x1002a88, 0, 56, COUNTER),
++	TI(0x1002a90, 0, 56, COUNTER),
++	TI(0x1002a98, 0, 56, COUNTER),
++	TI(0x1002aa0, 0, 56, COUNTER),
++	TI(0x1002aa8, 0, 56, COUNTER),
++	TI(0x1002ab0, 0, 56, COUNTER),
++	TI(0x1002ab8, 0, 56, COUNTER),
++	TI(0x1002ac0, 0, 56, COUNTER),
++	TI(0x1002ac8, 0, 56, COUNTER),
++	TI(0x1002b20, 0, 56, COUNTER),
++	TI(0x1002b28, 0, 56, COUNTER),
++	TI(0x1002b30, 0, 56, COUNTER),
++	TI(0x1002b38, 0, 56, COUNTER),
++	TI(0x1002b40, 0, 56, COUNTER),
++	TI(0x1002b48, 0, 56, COUNTER),
++	TI(0x1002b50, 0, 56, COUNTER),
++	TI(0x1002b58, 0, 56, COUNTER),
++	TI(0x1002b60, 0, 56, COUNTER),
++	TI(0x1002b68, 0, 56, COUNTER),
++	TI(0x1002a50, 0, 56, COUNTER),
++	TI(0x1002a48, 0, 56, COUNTER),
++	TI(0x10029b8, 0, 56, COUNTER),
++	TI(0x10029c0, 0, 56, COUNTER),
++	TI(0x10029c8, 0, 56, COUNTER),
++	TI(0x10029d0, 0, 56, COUNTER),
++	TI(0x10029d8, 0, 56, COUNTER),
++	TI(0x10029e0, 0, 56, COUNTER),
++	TI(0x10029e8, 0, 56, COUNTER),
++	TI(0x10029f0, 0, 56, COUNTER),
++	TI(0x1002a18, 0, 56, COUNTER),
++	TI(0x1002a20, 0, 56, COUNTER),
++	TI(0x1002a28, 0, 56, COUNTER),
++	TI(0x1002a30, 0, 56, COUNTER),
++	TI(0x10029f8, 0, 56, COUNTER),
++	TI(0x1002a00, 0, 56, COUNTER),
++	TI(0x1002a08, 0, 56, COUNTER),
++	TI(0x1002a10, 0, 56, COUNTER),
++	TI(0x1002a38, 0, 56, COUNTER),
++	TI(0x10029a8, 0, 56, COUNTER),
++	TI(0x1002958, 0, 56, COUNTER),
++	TI(0x1002960, 0, 56, COUNTER),
++	TI(0x1002968, 0, 56, COUNTER),
++	TI(0x1002970, 0, 56, COUNTER),
++	TI(0x1002978, 0, 56, COUNTER),
++	TI(0x1002980, 0, 56, COUNTER),
++	TI(0x1002988, 0, 56, COUNTER),
++	TI(0x1002990, 0, 56, COUNTER),
++	TI(0x1002998, 0, 56, COUNTER),
++	TI(0x10029a0, 0, 56, COUNTER),
++	TI(0x1002a40, 0, 56, COUNTER),
++	TI(0x10029b0, 0, 56, COUNTER),
++	TI(0x1002828, 0, 56, COUNTER),
++	TI(0x1002830, 0, 56, COUNTER),
++	TI(0x1002838, 0, 56, COUNTER),
++	TI(0x1002840, 0, 56, COUNTER),
++	TI(0x1002848, 0, 56, COUNTER),
++	TI(0x1002850, 0, 56, COUNTER),
++	TI(0x1002858, 0, 56, COUNTER),
++	TI(0x1002860, 0, 56, COUNTER),
++	TI(0x1002868, 0, 56, COUNTER),
++	TI(0x1002870, 0, 56, COUNTER),
++	TI(0x1002930, 0, 56, COUNTER),
++	TI(0x10027d8, 0, 56, COUNTER),
++	TI(0x10027e0, 0, 56, COUNTER),
++	TI(0x10027e8, 0, 56, COUNTER),
++	TI(0x10027f0, 0, 56, COUNTER),
++	TI(0x10027f8, 0, 56, COUNTER),
++	TI(0x1002800, 0, 56, COUNTER),
++	TI(0x1002808, 0, 56, COUNTER),
++	TI(0x1002810, 0, 56, COUNTER),
++	TI(0x1002818, 0, 56, COUNTER),
++	TI(0x1002820, 0, 56, COUNTER),
++	TI(0x1002928, 0, 56, COUNTER),
++	TI(0x10028c8, 0, 56, COUNTER),
++	TI(0x10028d0, 0, 56, COUNTER),
++	TI(0x10028d8, 0, 56, COUNTER),
++	TI(0x10028e0, 0, 56, COUNTER),
++	TI(0x10028e8, 0, 56, COUNTER),
++	TI(0x10028f0, 0, 56, COUNTER),
++	TI(0x10028f8, 0, 56, COUNTER),
++	TI(0x1002900, 0, 56, COUNTER),
++	TI(0x1002908, 0, 56, COUNTER),
++	TI(0x1002910, 0, 56, COUNTER),
++	TI(0x1002878, 0, 56, COUNTER),
++	TI(0x1002880, 0, 56, COUNTER),
++	TI(0x1002888, 0, 56, COUNTER),
++	TI(0x1002890, 0, 56, COUNTER),
++	TI(0x1002898, 0, 56, COUNTER),
++	TI(0x10028a0, 0, 56, COUNTER),
++	TI(0x10028a8, 0, 56, COUNTER),
++	TI(0x10028b0, 0, 56, COUNTER),
++	TI(0x10028b8, 0, 56, COUNTER),
++	TI(0x10028c0, 0, 56, COUNTER),
++	TI(0x1002920, 0, 56, COUNTER),
++	TI(0x1002918, 0, 56, COUNTER),
++	TI(0x1002938, 0, 56, COUNTER),
++	TI(0x1002940, 0, 56, COUNTER),
++	TI(0x1002948, 0, 56, COUNTER),
++	TI(0x1002950, 0, 56, COUNTER),
++	TI(0xa803400, 32, 11, UGAUGE),
++	TI(0xa803408, 32, 11, UGAUGE),
++	TI(0xa803410, 32, 11, UGAUGE),
++	TI(0xa803418, 32, 11, UGAUGE),
++	TI(0xa803420, 32, 11, UGAUGE),
++	TI(0xa803428, 32, 11, UGAUGE),
++	TI(0xa803430, 32, 11, UGAUGE),
++	TI(0xa803438, 32, 11, UGAUGE),
++	TI(0xa803440, 32, 11, UGAUGE),
++	TI(0xa803448, 32, 11, UGAUGE),
++	TI(0xa803400, 0, 11, UGAUGE),
++	TI(0xa803408, 0, 11, UGAUGE),
++	TI(0xa803410, 0, 11, UGAUGE),
++	TI(0xa803418, 0, 11, UGAUGE),
++	TI(0xa803420, 0, 11, UGAUGE),
++	TI(0xa803428, 0, 11, UGAUGE),
++	TI(0xa803430, 0, 11, UGAUGE),
++	TI(0xa803438, 0, 11, UGAUGE),
++	TI(0xa803440, 0, 11, UGAUGE),
++	TI(0xa803448, 0, 11, UGAUGE),
++	TI(0xa803400, 16, 11, UGAUGE),
++	TI(0xa803408, 16, 11, UGAUGE),
++	TI(0xa803410, 16, 11, UGAUGE),
++	TI(0xa803418, 16, 11, UGAUGE),
++	TI(0xa803420, 16, 11, UGAUGE),
++	TI(0xa803428, 16, 11, UGAUGE),
++	TI(0xa803430, 16, 11, UGAUGE),
++	TI(0xa803438, 16, 11, UGAUGE),
++	TI(0xa803440, 16, 11, UGAUGE),
++	TI(0xa803448, 16, 11, UGAUGE),
++	TI(0xa803000, 32, 11, UGAUGE),
++	TI(0xa803008, 32, 11, UGAUGE),
++	TI(0xa803010, 32, 11, UGAUGE),
++	TI(0xa803018, 32, 11, UGAUGE),
++	TI(0xa803020, 32, 11, UGAUGE),
++	TI(0xa803028, 32, 11, UGAUGE),
++	TI(0xa803030, 32, 11, UGAUGE),
++	TI(0xa803038, 32, 11, UGAUGE),
++	TI(0xa803040, 32, 11, UGAUGE),
++	TI(0xa803048, 32, 11, UGAUGE),
++	TI(0xa803050, 32, 11, UGAUGE),
++	TI(0xa803058, 32, 11, UGAUGE),
++	TI(0xa803060, 32, 11, UGAUGE),
++	TI(0xa803068, 32, 11, UGAUGE),
++	TI(0xa803070, 32, 11, UGAUGE),
++	TI(0xa803078, 32, 11, UGAUGE),
++	TI(0xa803080, 32, 11, UGAUGE),
++	TI(0xa803088, 32, 11, UGAUGE),
++	TI(0xa803090, 32, 11, UGAUGE),
++	TI(0xa803098, 32, 11, UGAUGE),
++	TI(0xa8030a0, 32, 11, UGAUGE),
++	TI(0xa8030a8, 32, 11, UGAUGE),
++	TI(0xa8030b0, 32, 11, UGAUGE),
++	TI(0xa8030b8, 32, 11, UGAUGE),
++	TI(0xa8030c0, 32, 11, UGAUGE),
++	TI(0xa8030c8, 32, 11, UGAUGE),
++	TI(0xa8030d0, 32, 11, UGAUGE),
++	TI(0xa8030d8, 32, 11, UGAUGE),
++	TI(0xa8030e0, 32, 11, UGAUGE),
++	TI(0xa8030e8, 32, 11, UGAUGE),
++	TI(0xa8030f0, 32, 11, UGAUGE),
++	TI(0xa8030f8, 32, 11, UGAUGE),
++	TI(0xa803100, 32, 11, UGAUGE),
++	TI(0xa803108, 32, 11, UGAUGE),
++	TI(0xa803110, 32, 11, UGAUGE),
++	TI(0xa803118, 32, 11, UGAUGE),
++	TI(0xa803120, 32, 11, UGAUGE),
++	TI(0xa803128, 32, 11, UGAUGE),
++	TI(0xa803130, 32, 11, UGAUGE),
++	TI(0xa803138, 32, 11, UGAUGE),
++	TI(0xa803140, 32, 11, UGAUGE),
++	TI(0xa803148, 32, 11, UGAUGE),
++	TI(0xa803150, 32, 11, UGAUGE),
++	TI(0xa803158, 32, 11, UGAUGE),
++	TI(0xa803160, 32, 11, UGAUGE),
++	TI(0xa803168, 32, 11, UGAUGE),
++	TI(0xa803170, 32, 11, UGAUGE),
++	TI(0xa803178, 32, 11, UGAUGE),
++	TI(0xa803180, 32, 11, UGAUGE),
++	TI(0xa803188, 32, 11, UGAUGE),
++	TI(0xa803190, 32, 11, UGAUGE),
++	TI(0xa803198, 32, 11, UGAUGE),
++	TI(0xa8031a0, 32, 11, UGAUGE),
++	TI(0xa8031a8, 32, 11, UGAUGE),
++	TI(0xa8031b0, 32, 11, UGAUGE),
++	TI(0xa8031b8, 32, 11, UGAUGE),
++	TI(0xa8031c0, 32, 11, UGAUGE),
++	TI(0xa8031c8, 32, 11, UGAUGE),
++	TI(0xa8031d0, 32, 11, UGAUGE),
++	TI(0xa8031d8, 32, 11, UGAUGE),
++	TI(0xa8031e0, 32, 11, UGAUGE),
++	TI(0xa8031e8, 32, 11, UGAUGE),
++	TI(0xa8031f0, 32, 11, UGAUGE),
++	TI(0xa8031f8, 32, 11, UGAUGE),
++	TI(0xa803200, 32, 11, UGAUGE),
++	TI(0xa803208, 32, 11, UGAUGE),
++	TI(0xa803210, 32, 11, UGAUGE),
++	TI(0xa803218, 32, 11, UGAUGE),
++	TI(0xa803220, 32, 11, UGAUGE),
++	TI(0xa803228, 32, 11, UGAUGE),
++	TI(0xa803230, 32, 11, UGAUGE),
++	TI(0xa803238, 32, 11, UGAUGE),
++	TI(0xa803240, 32, 11, UGAUGE),
++	TI(0xa803248, 32, 11, UGAUGE),
++	TI(0xa803250, 32, 11, UGAUGE),
++	TI(0xa803258, 32, 11, UGAUGE),
++	TI(0xa803260, 32, 11, UGAUGE),
++	TI(0xa803268, 32, 11, UGAUGE),
++	TI(0xa803270, 32, 11, UGAUGE),
++	TI(0xa803278, 32, 11, UGAUGE),
++	TI(0xa803280, 32, 11, UGAUGE),
++	TI(0xa803288, 32, 11, UGAUGE),
++	TI(0xa803290, 32, 11, UGAUGE),
++	TI(0xa803298, 32, 11, UGAUGE),
++	TI(0xa8032a0, 32, 11, UGAUGE),
++	TI(0xa8032a8, 32, 11, UGAUGE),
++	TI(0xa8032b0, 32, 11, UGAUGE),
++	TI(0xa8032b8, 32, 11, UGAUGE),
++	TI(0xa8032c0, 32, 11, UGAUGE),
++	TI(0xa8032c8, 32, 11, UGAUGE),
++	TI(0xa8032d0, 32, 11, UGAUGE),
++	TI(0xa8032d8, 32, 11, UGAUGE),
++	TI(0xa8032e0, 32, 11, UGAUGE),
++	TI(0xa8032e8, 32, 11, UGAUGE),
++	TI(0xa8032f0, 32, 11, UGAUGE),
++	TI(0xa8032f8, 32, 11, UGAUGE),
++	TI(0xa803000, 0, 11, UGAUGE),
++	TI(0xa803008, 0, 11, UGAUGE),
++	TI(0xa803010, 0, 11, UGAUGE),
++	TI(0xa803018, 0, 11, UGAUGE),
++	TI(0xa803020, 0, 11, UGAUGE),
++	TI(0xa803028, 0, 11, UGAUGE),
++	TI(0xa803030, 0, 11, UGAUGE),
++	TI(0xa803038, 0, 11, UGAUGE),
++	TI(0xa803040, 0, 11, UGAUGE),
++	TI(0xa803048, 0, 11, UGAUGE),
++	TI(0xa803050, 0, 11, UGAUGE),
++	TI(0xa803058, 0, 11, UGAUGE),
++	TI(0xa803060, 0, 11, UGAUGE),
++	TI(0xa803068, 0, 11, UGAUGE),
++	TI(0xa803070, 0, 11, UGAUGE),
++	TI(0xa803078, 0, 11, UGAUGE),
++	TI(0xa803080, 0, 11, UGAUGE),
++	TI(0xa803088, 0, 11, UGAUGE),
++	TI(0xa803090, 0, 11, UGAUGE),
++	TI(0xa803098, 0, 11, UGAUGE),
++	TI(0xa8030a0, 0, 11, UGAUGE),
++	TI(0xa8030a8, 0, 11, UGAUGE),
++	TI(0xa8030b0, 0, 11, UGAUGE),
++	TI(0xa8030b8, 0, 11, UGAUGE),
++	TI(0xa8030c0, 0, 11, UGAUGE),
++	TI(0xa8030c8, 0, 11, UGAUGE),
++	TI(0xa8030d0, 0, 11, UGAUGE),
++	TI(0xa8030d8, 0, 11, UGAUGE),
++	TI(0xa8030e0, 0, 11, UGAUGE),
++	TI(0xa8030e8, 0, 11, UGAUGE),
++	TI(0xa8030f0, 0, 11, UGAUGE),
++	TI(0xa8030f8, 0, 11, UGAUGE),
++	TI(0xa803100, 0, 11, UGAUGE),
++	TI(0xa803108, 0, 11, UGAUGE),
++	TI(0xa803110, 0, 11, UGAUGE),
++	TI(0xa803118, 0, 11, UGAUGE),
++	TI(0xa803120, 0, 11, UGAUGE),
++	TI(0xa803128, 0, 11, UGAUGE),
++	TI(0xa803130, 0, 11, UGAUGE),
++	TI(0xa803138, 0, 11, UGAUGE),
++	TI(0xa803140, 0, 11, UGAUGE),
++	TI(0xa803148, 0, 11, UGAUGE),
++	TI(0xa803150, 0, 11, UGAUGE),
++	TI(0xa803158, 0, 11, UGAUGE),
++	TI(0xa803160, 0, 11, UGAUGE),
++	TI(0xa803168, 0, 11, UGAUGE),
++	TI(0xa803170, 0, 11, UGAUGE),
++	TI(0xa803178, 0, 11, UGAUGE),
++	TI(0xa803180, 0, 11, UGAUGE),
++	TI(0xa803188, 0, 11, UGAUGE),
++	TI(0xa803190, 0, 11, UGAUGE),
++	TI(0xa803198, 0, 11, UGAUGE),
++	TI(0xa8031a0, 0, 11, UGAUGE),
++	TI(0xa8031a8, 0, 11, UGAUGE),
++	TI(0xa8031b0, 0, 11, UGAUGE),
++	TI(0xa8031b8, 0, 11, UGAUGE),
++	TI(0xa8031c0, 0, 11, UGAUGE),
++	TI(0xa8031c8, 0, 11, UGAUGE),
++	TI(0xa8031d0, 0, 11, UGAUGE),
++	TI(0xa8031d8, 0, 11, UGAUGE),
++	TI(0xa8031e0, 0, 11, UGAUGE),
++	TI(0xa8031e8, 0, 11, UGAUGE),
++	TI(0xa8031f0, 0, 11, UGAUGE),
++	TI(0xa8031f8, 0, 11, UGAUGE),
++	TI(0xa803200, 0, 11, UGAUGE),
++	TI(0xa803208, 0, 11, UGAUGE),
++	TI(0xa803210, 0, 11, UGAUGE),
++	TI(0xa803218, 0, 11, UGAUGE),
++	TI(0xa803220, 0, 11, UGAUGE),
++	TI(0xa803228, 0, 11, UGAUGE),
++	TI(0xa803230, 0, 11, UGAUGE),
++	TI(0xa803238, 0, 11, UGAUGE),
++	TI(0xa803240, 0, 11, UGAUGE),
++	TI(0xa803248, 0, 11, UGAUGE),
++	TI(0xa803250, 0, 11, UGAUGE),
++	TI(0xa803258, 0, 11, UGAUGE),
++	TI(0xa803260, 0, 11, UGAUGE),
++	TI(0xa803268, 0, 11, UGAUGE),
++	TI(0xa803270, 0, 11, UGAUGE),
++	TI(0xa803278, 0, 11, UGAUGE),
++	TI(0xa803280, 0, 11, UGAUGE),
++	TI(0xa803288, 0, 11, UGAUGE),
++	TI(0xa803290, 0, 11, UGAUGE),
++	TI(0xa803298, 0, 11, UGAUGE),
++	TI(0xa8032a0, 0, 11, UGAUGE),
++	TI(0xa8032a8, 0, 11, UGAUGE),
++	TI(0xa8032b0, 0, 11, UGAUGE),
++	TI(0xa8032b8, 0, 11, UGAUGE),
++	TI(0xa8032c0, 0, 11, UGAUGE),
++	TI(0xa8032c8, 0, 11, UGAUGE),
++	TI(0xa8032d0, 0, 11, UGAUGE),
++	TI(0xa8032d8, 0, 11, UGAUGE),
++	TI(0xa8032e0, 0, 11, UGAUGE),
++	TI(0xa8032e8, 0, 11, UGAUGE),
++	TI(0xa8032f0, 0, 11, UGAUGE),
++	TI(0xa8032f8, 0, 11, UGAUGE),
++	TI(0x9870c98, 0, 56, COUNTER),
++	TI(0x9870c90, 0, 56, COUNTER),
++	TI(0x9870c68, 0, 56, COUNTER),
++	TI(0x9870c60, 0, 56, COUNTER),
++	TI(0x9870c70, 0, 56, COUNTER),
++	TI(0x9870c80, 0, 56, COUNTER),
++	TI(0x9870c78, 0, 56, COUNTER),
++	TI(0x9870c88, 0, 56, COUNTER),
++	TI(0x9870c48, 0, 56, COUNTER),
++	TI(0x9870c58, 0, 56, COUNTER),
++	TI(0x9870c40, 0, 56, COUNTER),
++	TI(0x9870c50, 0, 56, COUNTER),
++	TI(0x9001008, 8, 6, UGAUGE),
++	TI(0x9001008, 0, 6, UGAUGE),
++	TI(0x9870b48, 0, 56, COUNTER),
++	TI(0x9870be8, 0, 56, COUNTER),
++	TI(0x9870ba8, 0, 56, COUNTER),
++	TI(0x9870b38, 0, 56, COUNTER),
++	TI(0x9870be0, 0, 56, COUNTER),
++	TI(0x9870ba0, 0, 56, COUNTER),
++	TI(0x9870b30, 0, 56, COUNTER),
++	TI(0x9870b40, 0, 56, COUNTER),
++	TI(0x9870ad8, 0, 56, COUNTER),
++	TI(0x9870bb8, 0, 56, COUNTER),
++	TI(0x9870b78, 0, 56, COUNTER),
++	TI(0x9870ac8, 0, 56, COUNTER),
++	TI(0x9870bb0, 0, 56, COUNTER),
++	TI(0x9870b70, 0, 56, COUNTER),
++	TI(0x9870ac0, 0, 56, COUNTER),
++	TI(0x9870ad0, 0, 56, COUNTER),
++	TI(0x9870af0, 0, 56, COUNTER),
++	TI(0x9870bc0, 0, 56, COUNTER),
++	TI(0x9870b80, 0, 56, COUNTER),
++	TI(0x9870ae0, 0, 56, COUNTER),
++	TI(0x9870ae8, 0, 56, COUNTER),
++	TI(0x9870b10, 0, 56, COUNTER),
++	TI(0x9870bd0, 0, 56, COUNTER),
++	TI(0x9870b90, 0, 56, COUNTER),
++	TI(0x9870b00, 0, 56, COUNTER),
++	TI(0x9870bc8, 0, 56, COUNTER),
++	TI(0x9870b88, 0, 56, COUNTER),
++	TI(0x9870af8, 0, 56, COUNTER),
++	TI(0x9870b08, 0, 56, COUNTER),
++	TI(0x9870b28, 0, 56, COUNTER),
++	TI(0x9870bd8, 0, 56, COUNTER),
++	TI(0x9870b98, 0, 56, COUNTER),
++	TI(0x9870b18, 0, 56, COUNTER),
++	TI(0x9870b20, 0, 56, COUNTER),
++	TI(0x9870b68, 0, 56, COUNTER),
++	TI(0x9870b58, 0, 56, COUNTER),
++	TI(0x9870b60, 0, 56, COUNTER),
++	TI(0x9870b50, 0, 56, COUNTER),
++	TI(0x100698, 0, 56, COUNTER),
++	TI(0x1006b0, 0, 56, COUNTER),
++	TI(0x1006a0, 0, 56, COUNTER),
++	TI(0x100688, 0, 56, COUNTER),
++	TI(0x100728, 0, 56, COUNTER),
++	TI(0x100690, 0, 56, COUNTER),
++	TI(0x100720, 0, 56, COUNTER),
++	TI(0x1007d8, 0, 56, COUNTER),
++	TI(0x100680, 0, 56, COUNTER),
++	TI(0x100660, 0, 56, COUNTER),
++	TI(0x100668, 0, 56, COUNTER),
++	TI(0x1006e8, 0, 56, COUNTER),
++	TI(0x1006e0, 0, 56, COUNTER),
++	TI(0x100628, 0, 56, COUNTER),
++	TI(0x100900, 0, 56, COUNTER),
++	TI(0x100908, 0, 56, COUNTER),
++	TI(0x100910, 0, 56, COUNTER),
++	TI(0x100918, 0, 56, COUNTER),
++	TI(0x100920, 0, 56, COUNTER),
++	TI(0x100928, 0, 56, COUNTER),
++	TI(0x100930, 0, 56, COUNTER),
++	TI(0x100938, 0, 56, COUNTER),
++	TI(0x100940, 0, 56, COUNTER),
++	TI(0x100948, 0, 56, COUNTER),
++	TI(0x100950, 0, 56, COUNTER),
++	TI(0x100958, 0, 56, COUNTER),
++	TI(0x100960, 0, 56, COUNTER),
++	TI(0x100968, 0, 56, COUNTER),
++	TI(0x100970, 0, 56, COUNTER),
++	TI(0x100978, 0, 56, COUNTER),
++	TI(0x100648, 0, 56, COUNTER),
++	TI(0x100650, 0, 56, COUNTER),
++	TI(0x100658, 0, 56, COUNTER),
++	TI(0x100600, 0, 56, COUNTER),
++	TI(0x100608, 0, 56, COUNTER),
++	TI(0x100670, 0, 56, COUNTER),
++	TI(0x1006d0, 0, 56, COUNTER),
++	TI(0x1006c0, 0, 56, COUNTER),
++	TI(0x1006b8, 0, 56, COUNTER),
++	TI(0x1006c8, 0, 56, COUNTER),
++	TI(0x100630, 0, 56, COUNTER),
++	TI(0x100798, 0, 56, COUNTER),
++	TI(0x1007a0, 0, 56, COUNTER),
++	TI(0x100788, 0, 56, COUNTER),
++	TI(0x100790, 0, 56, COUNTER),
++	TI(0x100778, 0, 56, COUNTER),
++	TI(0x100780, 0, 56, COUNTER),
++	TI(0x1007a8, 0, 56, COUNTER),
++	TI(0x1007b8, 0, 56, COUNTER),
++	TI(0x1007b0, 0, 56, COUNTER),
++	TI(0x1007c0, 0, 56, COUNTER),
++	TI(0xb00130, 32, 12, UGAUGE),
++	TI(0xb00130, 0, 12, UGAUGE),
++	TI(0xb00100, 32, 13, UGAUGE),
++	TI(0xb00100, 0, 13, UGAUGE),
++	TI(0xb00118, 32, 9, UGAUGE),
++	TI(0xb00118, 0, 9, UGAUGE),
++	TI(0xb00110, 32, 12, UGAUGE),
++	TI(0xb00110, 0, 12, UGAUGE),
++	TI(0xb00128, 32, 12, UGAUGE),
++	TI(0xb00128, 0, 12, UGAUGE),
++	TI(0xb00108, 32, 14, UGAUGE),
++	TI(0xb00108, 0, 14, UGAUGE),
++	TI(0xb00120, 32, 14, UGAUGE),
++	TI(0xb00120, 0, 14, UGAUGE),
++	TI(0x100638, 0, 56, COUNTER),
++	TI(0x100740, 0, 56, COUNTER),
++	TI(0x100738, 0, 56, COUNTER),
++	TI(0x100748, 0, 56, COUNTER),
++	TI(0x100620, 0, 56, COUNTER),
++	TI(0x100610, 0, 56, COUNTER),
++	TI(0x100800, 0, 56, COUNTER),
++	TI(0x100808, 0, 56, COUNTER),
++	TI(0x100810, 0, 56, COUNTER),
++	TI(0x100818, 0, 56, COUNTER),
++	TI(0x100820, 0, 56, COUNTER),
++	TI(0x100828, 0, 56, COUNTER),
++	TI(0x100830, 0, 56, COUNTER),
++	TI(0x100838, 0, 56, COUNTER),
++	TI(0x100840, 0, 56, COUNTER),
++	TI(0x100848, 0, 56, COUNTER),
++	TI(0x100850, 0, 56, COUNTER),
++	TI(0x100858, 0, 56, COUNTER),
++	TI(0x100860, 0, 56, COUNTER),
++	TI(0x100868, 0, 56, COUNTER),
++	TI(0x100870, 0, 56, COUNTER),
++	TI(0x100878, 0, 56, COUNTER),
++	TI(0x100880, 0, 56, COUNTER),
++	TI(0x100888, 0, 56, COUNTER),
++	TI(0x100890, 0, 56, COUNTER),
++	TI(0x100898, 0, 56, COUNTER),
++	TI(0x1008a0, 0, 56, COUNTER),
++	TI(0x1008a8, 0, 56, COUNTER),
++	TI(0x1008b0, 0, 56, COUNTER),
++	TI(0x1008b8, 0, 56, COUNTER),
++	TI(0x1008c0, 0, 56, COUNTER),
++	TI(0x1008c8, 0, 56, COUNTER),
++	TI(0x1008d0, 0, 56, COUNTER),
++	TI(0x1008d8, 0, 56, COUNTER),
++	TI(0x1008e0, 0, 56, COUNTER),
++	TI(0x1008e8, 0, 56, COUNTER),
++	TI(0x1008f0, 0, 56, COUNTER),
++	TI(0x1008f8, 0, 56, COUNTER),
++	TI(0x1006a8, 0, 56, COUNTER),
++	TI(0x1007e0, 0, 56, COUNTER),
++	TI(0x100618, 0, 56, COUNTER),
++	TI(0x1006d8, 0, 56, COUNTER),
++	TI(0x100640, 0, 56, COUNTER),
++	TI(0x100718, 0, 56, COUNTER),
++	TI(0x100708, 0, 56, COUNTER),
++	TI(0x100710, 0, 56, COUNTER),
++	TI(0x100768, 0, 56, COUNTER),
++	TI(0x100770, 0, 56, COUNTER),
++	TI(0x100758, 0, 56, COUNTER),
++	TI(0x100760, 0, 56, COUNTER),
++	TI(0x100750, 0, 56, COUNTER),
++	TI(0x1007c8, 0, 56, COUNTER),
++	TI(0x1006f8, 0, 56, COUNTER),
++	TI(0x1006f0, 0, 56, COUNTER),
++	TI(0x100700, 0, 56, COUNTER),
++	TI(0x1007d0, 0, 56, COUNTER),
++	TI(0x100678, 0, 56, COUNTER),
++	TI(0x1007e8, 0, 56, COUNTER),
++	TI(0x100730, 0, 56, COUNTER),
++	TI(0x100203b8, 0, 56, COUNTER),
++	TI(0x100203c0, 0, 56, COUNTER),
++	TI(0x100203d0, 0, 56, COUNTER),
++	TI(0x100203c8, 0, 56, COUNTER),
++	TI(0x100203e0, 0, 56, COUNTER),
++	TI(0x100203f0, 0, 56, COUNTER),
++	TI(0x100203f8, 0, 56, COUNTER),
++	TI(0x100203e8, 0, 56, COUNTER),
++	TI(0x100203d8, 0, 56, COUNTER),
++	TI(0x11005000, 4, 16, COUNTER),
++	TI(0x110061d8, 0, 56, COUNTER),
++	TI(0x110061d0, 0, 56, COUNTER),
++	TI(0x110061c0, 0, 56, COUNTER),
++	TI(0x110061c8, 0, 56, COUNTER),
++	TI(0x110061e0, 0, 56, COUNTER),
++	TI(0x110061e8, 0, 56, COUNTER),
++	TI(0x11006178, 0, 56, COUNTER),
++	TI(0x11006170, 0, 56, COUNTER),
++	TI(0x11006160, 0, 56, COUNTER),
++	TI(0x11006168, 0, 56, COUNTER),
++	TI(0x11006158, 0, 56, COUNTER),
++	TI(0x11006150, 0, 56, COUNTER),
++	TI(0x11006140, 0, 56, COUNTER),
++	TI(0x11006148, 0, 56, COUNTER),
++	TI(0x11006180, 0, 56, COUNTER),
++	TI(0x11006188, 0, 56, COUNTER),
++	TI(0x110061b0, 0, 56, COUNTER),
++	TI(0x110061b8, 0, 56, COUNTER),
++	TI(0x11006190, 0, 56, COUNTER),
++	TI(0x11006198, 0, 56, COUNTER),
++	TI(0x11006068, 0, 56, COUNTER),
++	TI(0x11006060, 0, 56, COUNTER),
++	TI(0x11006050, 0, 56, COUNTER),
++	TI(0x11006058, 0, 56, COUNTER),
++	TI(0x11006030, 0, 56, COUNTER),
++	TI(0x11006038, 0, 56, COUNTER),
++	TI(0x11006048, 0, 56, COUNTER),
++	TI(0x11006040, 0, 56, COUNTER),
++	TI(0x11006010, 0, 56, COUNTER),
++	TI(0x11006018, 0, 56, COUNTER),
++	TI(0x11006020, 0, 56, COUNTER),
++	TI(0x11006008, 0, 56, COUNTER),
++	TI(0x11006000, 0, 56, COUNTER),
++	TI(0x11006028, 0, 56, COUNTER),
++	TI(0x11006118, 0, 56, COUNTER),
++	TI(0x11006110, 0, 56, COUNTER),
++	TI(0x11006108, 0, 56, COUNTER),
++	TI(0x11006120, 0, 56, COUNTER),
++	TI(0x11006090, 0, 56, COUNTER),
++	TI(0x11006088, 0, 56, COUNTER),
++	TI(0x110060f0, 0, 56, COUNTER),
++	TI(0x110060e8, 0, 56, COUNTER),
++	TI(0x11006098, 0, 56, COUNTER),
++	TI(0x11006100, 0, 56, COUNTER),
++	TI(0x110060f8, 0, 56, COUNTER),
++	TI(0x110061a0, 0, 56, COUNTER),
++	TI(0x110061a8, 0, 56, COUNTER),
++	TI(0x11006080, 0, 56, COUNTER),
++	TI(0x110060d8, 0, 56, COUNTER),
++	TI(0x110060d0, 0, 56, COUNTER),
++	TI(0x110060c8, 0, 56, COUNTER),
++	TI(0x110060c0, 0, 56, COUNTER),
++	TI(0x110060e0, 0, 56, COUNTER),
++	TI(0x11006128, 0, 56, COUNTER),
++	TI(0x11006130, 0, 56, COUNTER),
++	TI(0x11006138, 0, 56, COUNTER),
++	TI(0x110060b0, 0, 56, COUNTER),
++	TI(0x110060b8, 0, 56, COUNTER),
++	TI(0x110060a0, 0, 56, COUNTER),
++	TI(0x110060a8, 0, 56, COUNTER),
++	TI(0x11006078, 0, 56, COUNTER),
++	TI(0x11006070, 0, 56, COUNTER),
++	TI(0x10020268, 0, 56, COUNTER),
++	TI(0x10020280, 0, 56, COUNTER),
++	TI(0x10020290, 0, 56, COUNTER),
++	TI(0x10020288, 0, 56, COUNTER),
++	TI(0x10020260, 0, 56, COUNTER),
++	TI(0x10020270, 0, 56, COUNTER),
++	TI(0x10020278, 0, 56, COUNTER),
++	TI(0x10020238, 0, 56, COUNTER),
++	TI(0x10020240, 0, 56, COUNTER),
++	TI(0x10020210, 0, 56, COUNTER),
++	TI(0x10020208, 0, 56, COUNTER),
++	TI(0x10020228, 0, 56, COUNTER),
++	TI(0x10020220, 0, 56, COUNTER),
++	TI(0x10020230, 0, 56, COUNTER),
++	TI(0x10020218, 0, 56, COUNTER),
++	TI(0x10020200, 0, 56, COUNTER),
++	TI(0x10020250, 0, 56, COUNTER),
++	TI(0x10020248, 0, 56, COUNTER),
++	TI(0x10020258, 0, 56, COUNTER),
++	TI(0x100202e0, 0, 56, COUNTER),
++	TI(0x100202e8, 0, 56, COUNTER),
++	TI(0x100202d8, 0, 56, COUNTER),
++	TI(0x100202d0, 0, 56, COUNTER),
++	TI(0x100202c0, 0, 56, COUNTER),
++	TI(0x100202c8, 0, 56, COUNTER),
++	TI(0x100202a8, 0, 56, COUNTER),
++	TI(0x100202b0, 0, 56, COUNTER),
++	TI(0x100202a0, 0, 56, COUNTER),
++	TI(0x100202b8, 0, 56, COUNTER),
++	TI(0x10020298, 0, 56, COUNTER),
++	TI(0x100202f0, 0, 56, COUNTER),
++	TI(0x100202f8, 0, 56, COUNTER),
++	TI(0x10020380, 0, 56, COUNTER),
++	TI(0x10020388, 0, 56, COUNTER),
++	TI(0x10020350, 0, 56, COUNTER),
++	TI(0x10020370, 0, 56, COUNTER),
++	TI(0x10020378, 0, 56, COUNTER),
++	TI(0x10020358, 0, 56, COUNTER),
++	TI(0x10020328, 0, 56, COUNTER),
++	TI(0x10020360, 0, 56, COUNTER),
++	TI(0x10020368, 0, 56, COUNTER),
++	TI(0x10020340, 0, 56, COUNTER),
++	TI(0x10020330, 0, 56, COUNTER),
++	TI(0x10020320, 0, 56, COUNTER),
++	TI(0x10020318, 0, 56, COUNTER),
++	TI(0x10020348, 0, 56, COUNTER),
++	TI(0x10020308, 0, 56, COUNTER),
++	TI(0x10020300, 0, 56, COUNTER),
++	TI(0x10020310, 0, 56, COUNTER),
++	TI(0x10020338, 0, 56, COUNTER),
++	TI(0x9870a78, 0, 56, COUNTER),
++	TI(0x9870a80, 0, 56, COUNTER),
++	TI(0x9870a48, 0, 56, COUNTER),
++	TI(0x9870a50, 0, 56, COUNTER),
++	TI(0x9870a58, 0, 56, COUNTER),
++	TI(0x9870a60, 0, 56, COUNTER),
++	TI(0x9870a68, 0, 56, COUNTER),
++	TI(0x9870a70, 0, 56, COUNTER),
++	TI(0x9870a40, 0, 56, COUNTER),
++	TI(0x100450, 0, 56, COUNTER),
++	TI(0x100420, 0, 56, COUNTER),
++	TI(0x100428, 0, 56, COUNTER),
++	TI(0x1004e0, 0, 56, COUNTER),
++	TI(0x1004e8, 0, 56, COUNTER),
++	TI(0x1004f0, 0, 56, COUNTER),
++	TI(0x1004f8, 0, 56, COUNTER),
++	TI(0x100500, 0, 56, COUNTER),
++	TI(0x100508, 0, 56, COUNTER),
++	TI(0x100510, 0, 56, COUNTER),
++	TI(0x100518, 0, 56, COUNTER),
++	TI(0x100520, 0, 56, COUNTER),
++	TI(0x100528, 0, 56, COUNTER),
++	TI(0x100530, 0, 56, COUNTER),
++	TI(0x100538, 0, 56, COUNTER),
++	TI(0x100540, 0, 56, COUNTER),
++	TI(0x100548, 0, 56, COUNTER),
++	TI(0x100550, 0, 56, COUNTER),
++	TI(0x100558, 0, 56, COUNTER),
++	TI(0x100408, 0, 56, COUNTER),
++	TI(0x100448, 0, 56, COUNTER),
++	TI(0x100498, 0, 56, COUNTER),
++	TI(0x100490, 0, 56, COUNTER),
++	TI(0x1004c0, 0, 56, COUNTER),
++	TI(0x1004c8, 0, 56, COUNTER),
++	TI(0x1004d0, 0, 56, COUNTER),
++	TI(0x1004d8, 0, 56, COUNTER),
++	TI(0x1004a0, 0, 56, COUNTER),
++	TI(0x1004a8, 0, 56, COUNTER),
++	TI(0x1004b0, 0, 56, COUNTER),
++	TI(0x1004b8, 0, 56, COUNTER),
++	TI(0x100400, 0, 56, COUNTER),
++	TI(0x100430, 0, 56, COUNTER),
++	TI(0x100440, 0, 56, COUNTER),
++	TI(0x100438, 0, 56, COUNTER),
++};
++
++#endif
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_trace.h b/drivers/net/ethernet/hpe/ss1/cass_trace.h
+new file mode 100644
+index 000000000000..34aa601cb57a
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cass_trace.h
+@@ -0,0 +1,60 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright 2019 Hewlett Packard Enterprise Development LP */
++
++/* Cassini Kernel Trace Event Definition */
++
++#undef TRACE_SYSTEM
++#define TRACE_SYSTEM cass
++
++#if !defined(_CASS_TRACE_H) || defined(TRACE_HEADER_MULTI_READ)
++#define _CASS_TRACE_H
++
++#include <linux/tracepoint.h>
++
++TRACE_EVENT(
++	cass_err,
++	TP_PROTO(unsigned int csr_flag, unsigned int bit,
++		 unsigned long seconds, unsigned long nanoseconds,
++		 const struct flg_err_info *flg_info,
++		 struct err_info *err_info,
++		 u64 *cntrs_val),
++	TP_ARGS(csr_flag, bit, seconds, nanoseconds, flg_info,
++		err_info, cntrs_val),
++	TP_STRUCT__entry(
++		__field(unsigned int, csr_flag)
++		__field(unsigned int, bit)
++		__field(unsigned long, seconds)
++		__field(unsigned long, nanoseconds)
++		__field(enum c_error_class, ec)
++		__dynamic_array(u64, err_info_data_0, err_info[0].count)
++		__dynamic_array(u64, err_info_data_1, err_info[1].count)
++		__dynamic_array(u64, err_info_data_2, err_info[2].count)
++		__array(u64, cntrs_val, C_MAX_CSR_CNTRS)
++	),
++	TP_fast_assign(
++		__entry->csr_flag = csr_flag;
++		__entry->bit = bit;
++		__entry->seconds = seconds;
++		__entry->nanoseconds = nanoseconds;
++		__entry->ec = flg_info->ec;
++		memcpy(__get_dynamic_array(err_info_data_0), err_info[0].data,
++		       err_info[0].count * sizeof(u64));
++		memcpy(__get_dynamic_array(err_info_data_1), err_info[1].data,
++		       err_info[1].count * sizeof(u64));
++		memcpy(__get_dynamic_array(err_info_data_2), err_info[2].data,
++		       err_info[2].count * sizeof(u64));
++		memcpy(__entry->cntrs_val, cntrs_val,
++		       C_MAX_CSR_CNTRS * sizeof(u64));
++	),
++	TP_printk("csr_flag: %u, bit: %u, ec: %u",
++		  __entry->csr_flag, __entry->bit, __entry->ec)
++);
++
++#endif /* _CASS_TRACE_H */
++
++#undef TRACE_INCLUDE_PATH
++#define TRACE_INCLUDE_PATH .
++#undef TRACE_INCLUDE_FILE
++#define TRACE_INCLUDE_FILE cass_trace
++
++#include <trace/define_trace.h>
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_vf.h b/drivers/net/ethernet/hpe/ss1/cass_vf.h
+new file mode 100644
+index 000000000000..f204767c33fb
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cass_vf.h
+@@ -0,0 +1,59 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2025-2026 Hewlett Packard Enterprise Development LP */
++
++#ifndef _CASS_VF_H
++#define _CASS_VF_H
++
++/* VF private structures */
++struct cxi_lni_priv_vf {
++	/* Matching fields in cxi_lni_priv */
++	struct cxi_dev *dev;
++	struct cxi_lni lni;
++	/* VF only fields */
++	int phys_lac; /* Physical LAC associated with this LNI */
++};
++
++struct cxi_domain_priv_vf {
++	/* Matching fields in cxi_domain_priv */
++	struct cxi_domain domain;
++	struct cxi_lni_priv *lni_priv;
++};
++
++struct cxi_cp_priv_vf {
++	/* Matching fields in cxi_cp_priv */
++	struct cxi_dev *dev;
++	struct cxi_cp cp;
++	/* VF only fields */
++	unsigned int cp_hndl;
++};
++
++struct cxi_cq_priv_vf {
++	/* Matching fields in cxi_cq_priv */
++	struct cxi_lni_priv *lni_priv;
++	struct cxi_cq cass_cq;
++	size_t cmds_len;
++	size_t cmds_order;
++	struct page **pages;
++	struct page *cmds_pages;
++	void *cmds;
++	dma_addr_t cmds_dma_addr;
++	void __iomem *cq_mmio;
++	u32 flags;
++	struct cxi_md_priv *md_priv;
++};
++
++struct cxi_md_priv_vf {
++	/* Matching fields in cxi_md_priv */
++	struct cxi_lni_priv *lni_priv;
++	struct device *device;
++	struct cxi_md md;
++	struct sg_table *sgt;        /* Scatter-gather table for DMA mapping */
++	struct page **pages;         /* Array of pinned pages */
++	u32 flags;                   /* Mapping flags */
++	/* VF only fields */
++	int npages;                  /* Number of pinned pages */
++};
++
++int cass_vf_get_token(struct cxi_dev *cdev, int vf_idx, unsigned int *token);
++
++#endif /* CASS_VF_H */
+diff --git a/drivers/net/ethernet/hpe/ss1/cass_vf_notif.h b/drivers/net/ethernet/hpe/ss1/cass_vf_notif.h
+new file mode 100644
+index 000000000000..eb45ffa0fa91
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cass_vf_notif.h
+@@ -0,0 +1,34 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright 2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kernel.h>
++#include <linux/types.h>
++
++#ifndef	_CASS_VF_NOTIF_H
++#define	_CASS_VF_NOTIF_H
++
++enum cass_vf_notif_ops {
++	CASS_VF_NOTIF_OP_INVALID = 0,
++	CASS_VF_NOTIF_OP_PING,
++	CASS_VF_NOTIF_OP_MAX,
++};
++
++struct cass_vf_notif_common {
++	enum cass_vf_notif_ops op;
++};
++
++struct cass_vf_notif_ping {
++	enum cass_vf_notif_ops op;
++};
++
++struct cass_vf_notif_info {
++	unsigned int req_size;
++	const char *name;
++	int (*handler)(struct cass_dev *hw, const void *cmd_in,
++		       void *resp, size_t *resp_len);
++};
++
++int dispatch_vf_notif(struct cass_dev *hw, const void *req, size_t req_len,
++		      void *rsp, size_t *rsp_len);
++
++#endif	/* _CASS_VF_NOTIF_H_ */
+diff --git a/drivers/net/ethernet/hpe/ss1/cuc_cxi.h b/drivers/net/ethernet/hpe/ss1/cuc_cxi.h
+new file mode 100644
+index 000000000000..f295064407e9
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cuc_cxi.h
+@@ -0,0 +1,370 @@
++/* SPDX-License-Identifier: MIT */
++/* Copyright 2021-2024 Hewlett Packard Enterprise Development LP */
++
++/* This file defines a set of commands and  request and response packet formats for
++ * communicating with the Cassini uC over USB, SMBus, or the HSN.
++ */
++
++#ifndef CUC_CXI_H
++#define CUC_CXI_H
++
++#define CUC_DATA_BYTES  253
++
++// I2C reads and writes to QSFP use a bus number of 0xFF because
++// // the actual bus number may not be known by the requester
++#define QSFP_I2C_BUS_REDIRECT      0xFF
++
++/**
++ * struct cuc_pkt - Cassini uC Packet Format
++ *
++ * This common packet format can be used to communicate with the uC across different
++ * physical interfaces (USB, SMBus, HSN). The SMBus interface is the lowest
++ * common denominator so this is pretty much modeled after the block read/write
++ * functions. We'll leave integrity checks to the physical interfaces.
++ */
++struct cuc_pkt {
++	u8 cmd;                   /* The command to be sent */
++	u8 count;                 /* The number of bytes to follow (including 'type') */
++	u8 type;                  /* Packet type */
++	u8 data[CUC_DATA_BYTES];  /* Data to be sent */
++} __packed;
++
++enum {
++	CUC_CMD_PING = 0,                       /* Perform a simple ping to the uC firmware */
++	CUC_CMD_BOARD_INFO = 1,                 /* Get board identification info */
++	CUC_CMD_I2C_READ = 2,                   /* Read an i2c device on the Cassini uC */
++	CUC_CMD_I2C_WRITE = 3,                  /* Write an i2c device on the Cassini uC */
++	CUC_CMD_GET_LOG = 12,                   /* Get a log message from the uC */
++	CUC_CMD_GET_FRU = 25,                   /* Get the FRU information for the device */
++	CUC_CMD_SET_FAN_PWM = 26,               /* Set fan to fixed speed w/ given PWM duty cycle */
++	CUC_CMD_GET_FAN_RPM = 27,               /* Get the latest fan RPM value */
++	CUC_CMD_GET_MAC = 29,                   /* Get MAC addresses */
++	CUC_CMD_QSFP_READ = 31,                 /* Do a QSFP/AOC I2C Read */
++	CUC_CMD_QSFP_WRITE = 32,                /* Do a QSFP/AOC I2C Write */
++	CUC_CMD_QSFP_RESET = 33,                /* Do a QSFP/AOC module reset */
++	CUC_CMD_GET_INTR = 34,                  /* Get Interrupt Status and Enable bits for a NIC */
++	CUC_CMD_CLEAR_ISR = 35,                 /* Clear Interrupt Status bits for a NIC */
++	CUC_CMD_UPDATE_IER = 36,                /* Set/Clear Interrupt Enable bits for a NIC */
++	CUC_CMD_PLDM = 39,                      /* Generic entry point for PLDM transaction */
++	CUC_CMD_FIRMWARE_UPDATE_START = 46,     /* Update firmware */
++	CUC_CMD_FIRMWARE_VERSION = 51,          /* Get the version of a firmware component */
++	CUC_CMD_FIRMWARE_UPDATE_DOWNLOAD = 52,  /* Download the firmware */
++	CUC_CMD_FIRMWARE_UPDATE_STATUS = 53,    /* Get status of firmware update */
++	CUC_CMD_RESET = 54,                     /* Reset the uC */
++	CUC_CMD_SET_LED = 58,                   /* Control the blink pattern (state) of an LED */
++	CUC_CMD_GET_NIC_ID = 60,                /* Get the NIC ID associated with this interface */
++	CUC_CMD_GET_TIMINGS = 61,               /* Get the power-on and initialization timings in usec */
++};
++
++enum {
++	CUC_TYPE_REQ,          /* Request packet */
++	CUC_TYPE_RSP_SUCCESS,  /* Success response packet */
++	CUC_TYPE_RSP_ERROR,    /* Error response packet */
++	CUC_TYPE_RSP_PLDM,     /* PLDM response packet */
++};
++
++struct cuc_error_rsp_data {
++	u8 error;  /* The POSIX errno that best describes the error */
++};
++
++enum {
++	CUC_BOARD_TYPE_UNKNOWN = -1,
++	CUC_BOARD_TYPE_SAWTOOTH = 0,
++	CUC_BOARD_TYPE_BRAZOS = 1,
++	CUC_BOARD_TYPE_WASHINGTON = 2,
++	CUC_BOARD_TYPE_KENNEBEC = 3,
++	CUC_BOARD_TYPE_PANGANI = 4,
++	CUC_BOARD_TYPE_SOUHEGAN = 5,
++};
++
++#define is_cas1_board_type(bt) ((bt == CUC_BOARD_TYPE_SAWTOOTH) || \
++								 (bt == CUC_BOARD_TYPE_BRAZOS))
++#define is_cas2_board_type(bt) ((bt == CUC_BOARD_TYPE_WASHINGTON) || \
++								 (bt == CUC_BOARD_TYPE_KENNEBEC) || \
++								 (bt == CUC_BOARD_TYPE_PANGANI) || \
++								 (bt == CUC_BOARD_TYPE_SOUHEGAN))
++struct cuc_board_info_rsp {
++	u8 board_type;
++	u8 board_rev;
++} __packed;
++
++struct cuc_i2c_read_req {
++	u8 bus;        /* The i2c bus number */
++	u8 addr;       /* The 7-bit i2c slave address */
++	u8 type;       /* Transaction type (current/random8/random16 read) */
++	u8 count;      /* Number of bytes to read/write */
++	u16 offset;    /* Offset in slave device to read from (if random) */
++} __attribute__((packed));
++
++struct cuc_i2c_write_req {
++	u8 bus;        /* The i2c bus number */
++	u8 addr;       /* The 7-bit i2c slave address */
++	u8 count;      /* Number of bytes to write */
++	u8 buf[0];
++} __attribute__((packed));
++
++struct cuc_set_fan_pwm_req_data {
++	/* PWM duty cycle value to set
++	 * 0- 100: Set to manual speed control
++	 * 255: Set to auto speed control
++	 */
++	u8 percent;
++} __packed;
++
++struct cuc_get_fan_rpm_rsp_data {
++	u32 rpm;     /* Measured fan speed in RPM */
++	u8 percent;  /* Current value of PWM duty cycle percent */
++	u8 is_auto;  /* Non-zero indicates auto speed control is active */
++} __packed;
++
++/* This is a special value that can be passed in the "nic" field of the
++ * cuc_mac_req_data structure to indicate to the uC that we want to get the
++ * MAC of the NIC that made the request
++ */
++#define CUC_MAC_THIS_NIC  0xFF
++
++struct cuc_mac_req_data {
++	u8 nic;  /* The NIC whose MAC addresses we want */
++} __packed;
++
++struct cuc_mac_rsp_data {
++	u8 nic;         /* The NIC */
++	u8 nic_mac[6];  /* The NIC MAC address */
++	u8 uc_mac[6];   /* The uC MAC address */
++} __packed;
++
++struct cuc_qsfp_read_req_data {
++	u8 nic;    /* Which NIC QSFP device to read */
++	u8 page;   /* Page select for reading */
++	u8 addr;   /* Start address for reading */
++	u8 count;  /* Number of bytes to read */
++} __packed;
++
++struct cuc_qsfp_read_rsp_data {
++	u8 data[0];
++} __packed;
++
++struct cuc_qsfp_write_req_data {
++	u8 nic;      /* Which NIC QSFP device to write */
++	u8 page;     /* Page select for writing */
++	u8 addr;     /* Start address for writing */
++	u8 count;    /* Number of bytes to write */
++	u8 data[];   /* Data to be written */
++} __packed;
++
++struct cuc_qsfp_reset_req_data {
++	u8 nic;  /* Which NIC QSFP device to reset */
++} __packed;
++
++/* These are Interrupt Masks for interrupt sources that cause UC_ATTENTION[1] to be set in
++ * C_PI_ERR_FLG. Some of these interrupt sources are related to the ASIC power-off condition, in
++ * which case it won't be possible to generate the UC_ATTENTION[1] interrupt, but the interrupt
++ * status and mask values are still valid and maintained via the CasuC/CUC interface.
++ */
++/* Bits 0 through 7 are reserved for uC and board-related interrupts */
++#define ATT1_UC_RESET                   BIT(0)
++#define ATT1_SENSOR_ALERT               BIT(1)
++#define ATT1_FAN_FAIL                   BIT(2)
++/* Bits 8 through 15 are reserved for asic-related interrupts */
++#define ATT1_ASIC_PWR_UP_DONE           BIT(8)
++#define ATT1_ASIC_PWR_FAIL              BIT(9)
++#define ATT1_ASIC_EPO_TEMPERATURE       BIT(10)
++/* Bits 16 through 23 are reserved for qsfp-related interrupts */
++#define ATT1_QSFP_POWER_FAIL            BIT(16)
++#define ATT1_QSFP_INSERT                BIT(17)
++#define ATT1_QSFP_REMOVE                BIT(18)
++#define ATT1_QSFP_INT                   BIT(19)
++#define ATT1_QSFP_EPO_TEMPERATURE       BIT(20)
++#define ATT1_QSFP_BAD_CABLE             BIT(21)
++/* Bits 24 through 31 are reserved for other future use */
++#define ATT1_ALL_INTERRUPTS             (0xFFFFFFFF)
++
++/* Most ATT1 interrupts are clearable by the host. Others are hardware-based and self-clearing */
++#define HOST_CLEARED_ATT1_INTERRUPTS  (ATT1_ALL_INTERRUPTS & ~(ATT1_QSFP_INT))
++
++struct cuc_get_intr_req_data {
++	u8 nic;  /* The NIC whose interrupts are being requested */
++} __packed;
++
++struct cuc_get_intr_rsp_data {
++	u32 isr;  /* Interrupt status register */
++	u32 ier;  /* Interrupt enable register */
++} __packed;
++
++struct cuc_clear_isr_req_data {
++	u8 nic;              /* The NIC whose interrupts are being cleared */
++	u32 isr_clear_bits;  /* Interrupt status bits to clear */
++} __packed;
++
++struct cuc_update_ier_req_data {
++	u8 nic;              /* The NIC whose interrupt enables are being updated */
++	u32 ier_set_bits;    /* Interrupt bits to enable */
++	u32 ier_clear_bits;  /* Interrupt bits to disable */
++} __packed;
++
++/* Two copies of the firmware are stored for each NIC, an active copy and a recovery copy */
++enum {
++	FW_SLOT_0,
++	FW_SLOT_ACTIVE = FW_SLOT_0,
++	FW_SLOT_1,
++	FW_SLOT_RECOVERY = FW_SLOT_1,
++	FW_SLOT_MAX
++};
++
++struct cuc_firmware_update_start_req {
++	u8 nic;    /* The NIC whose firmware is to be updated */
++	u32 size;  /* The size of the new firmware */
++	u8 slot;   /* The firmware slot to update */
++} __packed;
++
++/* The firmware (aka QSPI_BLOB) is composed of multiple, separately versioned components
++ * Not all of these targets are included in each blob. Blob contents are HW-specific. */
++enum casuc_fw_target {
++	FW_UC_APPLICATION,
++	FW_UC_BOOTLOADER,
++	FW_QSPI_BLOB,
++	FW_OPROM,
++	FW_CSR1,
++	FW_CSR2,
++	FW_SRDS,
++	FW_ISL68124_SAW,
++	FW_ISL68124_BRZ,
++	FW_IR38060_QSFP_BRZ,
++	FW_IR38060 = FW_IR38060_QSFP_BRZ,
++	/* Start of CAS2-specific entries */
++	FW_TDA38740_WAS,
++	FW_IR38060_WAS,
++	FW_IR38063_WAS,
++	FW_TDA38740_KEN,
++	FW_IR38060_KEN,
++	FW_IR38063_KEN,
++	FW_RESERVED, /* deprecated - FW_IR38060_QSFP_KEN */
++	FW_MFPGA_WAS,
++	FW_TDA38740_SOU,
++	FW_IR38063_0_SOU,
++	FW_IR38063_1_SOU,
++	FW_IR38063_2_SOU,
++	FW_MFPGA_SOU,
++	FW_NUM_ENTRIES
++};
++
++#define CAS1_BLOB_FW_TARGETS	FW_UC_APPLICATION, \
++								FW_UC_BOOTLOADER, \
++								FW_QSPI_BLOB, \
++								FW_OPROM, \
++								FW_CSR1, \
++								FW_CSR2, \
++								FW_SRDS, \
++								FW_ISL68124_SAW, \
++								FW_ISL68124_BRZ, \
++								FW_IR38060_QSFP_BRZ
++
++#define CAS2_BLOB_FW_TARGETS	FW_UC_APPLICATION, \
++								FW_UC_BOOTLOADER, \
++								FW_QSPI_BLOB, \
++								FW_OPROM, \
++								FW_CSR1, \
++								FW_CSR2, \
++								FW_SRDS, \
++								FW_TDA38740_WAS, \
++								FW_IR38060_WAS, \
++								FW_IR38063_WAS, \
++								FW_TDA38740_KEN, \
++								FW_IR38060_KEN, \
++								FW_IR38063_KEN, \
++								FW_MFPGA_WAS, \
++								FW_TDA38740_SOU, \
++								FW_IR38063_0_SOU, \
++								FW_IR38063_1_SOU, \
++								FW_IR38063_2_SOU, \
++								FW_MFPGA_SOU
++
++struct cuc_get_firmware_version_req {
++	u8 fw_target;   /* The component whose version is being requested */
++	u8 nic;         /* The NIC whose firmware version is being requested */
++	u8 from_flash;  /* 0 = Get the running version, 1 = Get the stored version */
++	u8 slot;        /* The slot to get the version from, when getting stored version */
++} __packed;
++
++struct cuc_firmware_update_download_req {
++	u8 data[0];
++} __packed;
++
++enum {
++	FWU_STATUS_STARTED,             /* The firmware update has been started */
++	FWU_STATUS_DOWNLOADING,         /* The firmware is being downloaded */
++	FWU_STATUS_VERIFYING_SIGNATURE, /* The firmware signature is being validated */
++	FWU_STATUS_VALIDATING_IMAGE,    /* The firmware is being validated */
++	FWU_STATUS_FLASHING,            /* The firmware is being flashed */
++	FWU_STATUS_VERIFYING_FLASH,     /* The firmware flash is being verified */
++	FWU_STATUS_IDLE = 0x80,
++	FWU_STATUS_SUCCESS,             /* The firmware update succeeded */
++	FWU_STATUS_FAILED,              /* The firmware update failed */
++	FWU_STATUS_FAILED_DOWNLOAD,     /* The firmware download failed */
++	FWU_STATUS_FAILED_BAD_SIGN,     /* The firmware signature was incorrect */
++	FWU_STATUS_FAILED_VALIDATION,   /* Failure validating image before flashing */
++	FWU_STATUS_FAILED_FLASH,        /* Failure during flash */
++	FWU_STATUS_FAILED_VERIFICATION, /* Failure verifying image in flash */
++	FWU_STATUS_FAILED_INVALID_SLOT, /* The firmware slot is not valid */
++};
++
++struct cuc_firmware_update_status_rsp {
++	u8 status;  /* Status of the firmware update state-machine */
++} __packed;
++
++enum casuc_leds {
++	LED_LINK_STATUS = 0,
++	LED_OCP_LINK_STATUS = 1,
++	LED_OCP_ACTIVITY_STATUS = 2,
++};
++
++/* GRN represents the nominal color and YEL represents the alternate color. Slow blinking
++ * frequency is 1Hz, fast is 2Hz.
++ */
++enum casuc_led_states {
++	LED_OFF = 0,
++	LED_ON_GRN = 1,
++	LED_SLOW_GRN = 2,
++	LED_FAST_GRN = 3,
++	LED_ON_YEL = 4,
++	LED_SLOW_YEL = 5,
++	LED_FAST_YEL = 6,
++	LED_SLOW_GRN_YEL = 7,
++	LED_FAST_GRN_YEL = 8,
++};
++
++struct cuc_set_led_req {
++	u8 nic;    /* The NIC whose LED state is to be set */
++	u8 led;    /* The LED whose state is to be set */
++	u8 state;  /* The state to set */
++} __packed;
++
++struct cuc_get_nic_id_rsp {
++	u8 nic;  /* The requested NIC ID */
++} __packed;
++
++enum cuc_timing_entries {
++    TIMING_UC_APPLICATION_STARTED,
++    TIMING_UC_PIN_INIT_COMPLETE,
++    TIMING_UC_FW_INIT_COMPLETE,
++    TIMING_EN_CLKS_UC_ASSERTED,
++    TIMING_12V_PG,
++    TIMING_PG_CASSINI_ASSERTED,
++    TIMING_RST_PON_NIC_N_DEASSERTED,
++    TIMING_VID_STABLE_ASSERTED,
++    TIMING_PERST_NIC_0_N_DEASSERTED,
++    TIMING_PERST_NIC_1_N_DEASSERTED,
++    TIMING_JTAG_TRST_N_DEASSERTED,
++    TIMING_UC_CASSINI_RDY_NIC_0,
++    TIMING_UC_CASSINI_RDY_NIC_1,
++    TIMING_PCIE_LINK_UP_NIC_0,
++    TIMING_PCIE_LINK_UP_NIC_1,
++    TIMING_UPTIME,
++    TIMING_NUM_ENTRIES
++};
++
++struct cuc_get_timings_rsp {
++    u64 entries_us[TIMING_NUM_ENTRIES];
++} __attribute__((packed));
++
++#endif /* CUC_CXI_H */
+diff --git a/drivers/net/ethernet/hpe/ss1/cxi_ac_entry_list.h b/drivers/net/ethernet/hpe/ss1/cxi_ac_entry_list.h
+new file mode 100644
+index 000000000000..954ee81e92eb
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cxi_ac_entry_list.h
+@@ -0,0 +1,20 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2020 Hewlett Packard Enterprise Development LP */
++
++#ifndef _CXI_AC_ENTRY_LIST_H_
++#define _CXI_AC_ENTRY_LIST_H_
++
++/* Access Control Entries */
++
++#define AC_ENTRY_GFP_OPTS            (GFP_KERNEL)
++
++#define AC_ENTRY_ID_MIN              (1)
++#define AC_ENTRY_ID_MAX              (INT_MAX)
++#define AC_ENTRY_ID_LIMITS           (XA_LIMIT(AC_ENTRY_ID_MIN, \
++					       AC_ENTRY_ID_MAX))
++#define AC_ENTRY_ID_XARRAY_FLAGS     (XA_FLAGS_ALLOC1)
++#define AC_ENTRY_UID_XARRAY_FLAGS    (0)
++#define AC_ENTRY_GID_XARRAY_FLAGS    (0)
++#define AC_ENTRY_NETNS_XARRAY_FLAGS  (0)
++
++#endif /* _CXI_AC_ENTRY_LIST_H_ */
+diff --git a/drivers/net/ethernet/hpe/ss1/cxi_aux_dev.h b/drivers/net/ethernet/hpe/ss1/cxi_aux_dev.h
+new file mode 100644
+index 000000000000..1eaf47550f5b
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cxi_aux_dev.h
+@@ -0,0 +1,14 @@
++
++/* SPDX-License-Identifier: GPL-2.0*/
++/* Copyright 2020-2024,2025 Hewlett Packard Enterprise Development LP */
++#ifndef __CXI_AUX_DEV_H__
++#define __CXI_AUX_DEV_H__
++#include <linux/device.h>
++#include <linux/pci.h>
++
++int cxi_ib_add_adev(struct pci_dev *pdev, struct cass_dev *hw, int cxi_num);
++void cxi_ib_remove_adev(struct cass_dev *hw);
++void cxi_release_aux_dev(struct device *dev);
++u8 *cxi_get_mac_addr(struct cxi_dev *dev);
++
++#endif
+diff --git a/drivers/net/ethernet/hpe/ss1/cxi_config.h b/drivers/net/ethernet/hpe/ss1/cxi_config.h
+new file mode 100644
+index 000000000000..dd3bf6ea8df5
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cxi_config.h
+@@ -0,0 +1,234 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++/* Copyright 2025 Hewlett Packard Enterprise Development LP */
++
++#ifndef _CXI_CONFIGFS_MGMT_H
++#define _CXI_CONFIGFS_MGMT_H
++
++#include <linux/hpe/cxi/cxi.h>
++#include <linux/configfs.h>
++#include <linux/slab.h>
++#include <linux/workqueue.h>
++#include <linux/ctype.h>
++
++#include "cass_core.h"
++
++#define PE_LE_MAX (C_LPE_STS_LIST_ENTRIES_ENTRIES / C_PE_COUNT)
++#define CONFIGFS_DIR_LEN 64
++#define CONFIGFS_RES_TYPE_LEN 16
++
++struct cxi_cfg_group_item {
++	struct config_group group;
++	struct cxi_cfg_rgroup_dir *rgp_dir;
++	struct cxi_cfg_rx_prof_dir *rx_prof_dir;
++	struct cxi_cfg_tx_prof_dir *tx_prof_dir;
++	char name[CONFIGFS_DIR_LEN];
++};
++
++struct cxi_cfg_rgroup_dir {
++	struct cxi_dev *cdev;
++	struct cxi_rgroup *rgroup;
++	struct config_group group;
++	char name[CONFIGFS_DIR_LEN];
++};
++
++struct cxi_cfg_rgroup {
++	struct cxi_dev *cdev;
++	struct cxi_rgroup *rgroup;
++	struct cxi_cfg_rgroup_attr *rgp_attr;
++	struct cxi_cfg_rgroup_res *rgp_res;
++	struct cxi_cfg_rgroup_state *rgp_state;
++	struct cxi_cfg_rgroup_ac_entry *ac_entry;
++	struct config_group group;
++	char name[CONFIGFS_DIR_LEN];
++};
++
++struct cxi_cfg_rgroup_ac_entry {
++	struct config_group group;
++	struct cxi_rgroup *rgroup;
++	enum cxi_ac_type ac_type;
++	union cxi_ac_data ac_data;
++	char name[CONFIGFS_DIR_LEN];
++};
++
++struct cxi_cfg_rgroup_ac_entry_sub {
++	struct config_group group;
++	struct config_item item;
++	struct cxi_rgroup *rgroup;
++	enum cxi_ac_type ac_type;
++	union cxi_ac_data ac_data;
++	unsigned int id;
++	char name[CONFIGFS_DIR_LEN];
++};
++
++struct cxi_cfg_rgroup_attr {
++	struct config_group group;
++	struct config_item item;
++	struct cxi_dev *cdev;
++	struct cxi_rgroup *rgroup;
++	char name[CONFIGFS_DIR_LEN];
++	int c_p_id;
++};
++
++struct cxi_cfg_rgroup_res {
++	struct cxi_dev *cdev;
++	struct cxi_rgroup *rgroup;
++	struct config_group group;
++	struct cxi_svc_desc *desc;
++	char name[CONFIGFS_DIR_LEN];
++};
++
++struct cxi_cfg_rgroup_state {
++	struct config_group group;
++	struct config_item item;
++	struct cxi_dev *cdev;
++	struct cxi_rgroup *rgroup;
++	char name[CONFIGFS_DIR_LEN];
++};
++
++struct cxi_cfg_rgroup_res_type {
++	struct config_group group;
++	struct config_item item;
++	struct config_group *parent_group;
++	struct cxi_rgroup *rgroup;
++	struct cxi_dev *cdev;
++	unsigned int id;
++	char name[CONFIGFS_DIR_LEN];
++	char res_type[CONFIGFS_RES_TYPE_LEN];
++	int reserved;
++	int max;
++	int in_use;
++};
++
++struct cxi_cfg_tx_prof_dir {
++	struct config_group group;
++	struct cxi_dev *cdev;
++	char name[CONFIGFS_DIR_LEN];
++};
++
++struct cxi_cfg_tx_prof_state {
++	struct config_group group;
++	struct cxi_dev *cdev;
++	struct cxi_tx_profile *tx_profile;
++	char name[CONFIGFS_DIR_LEN];
++};
++
++struct cxi_cfg_tx_prof_ac_entry {
++	struct config_group group;
++	struct cxi_dev *cdev;
++	struct cxi_tx_profile *tx_profile;
++	bool enable;
++	enum cxi_ac_type ac_type;
++	union cxi_ac_data ac_data;
++	unsigned int id;
++	char name[CONFIGFS_DIR_LEN];
++};
++
++struct cxi_cfg_tx_prof_ac_entry_sub {
++	struct config_group group;
++	struct cxi_dev *cdev;
++	struct cxi_tx_profile *tx_profile;
++	bool enable;
++	enum cxi_ac_type ac_type;
++	union cxi_ac_data ac_data;
++	unsigned int id;
++	char name[CONFIGFS_DIR_LEN];
++};
++
++struct cxi_cfg_tx_prof_attr {
++	struct config_group group;
++	struct cxi_dev *cdev;
++	struct cxi_tx_profile *tx_profile;
++	u16 match;
++	u16 ignore;
++	char tx_attr_name[CXI_VNI_NAME_LEN];
++	char name[CONFIGFS_DIR_LEN];
++};
++
++struct cxi_cfg_tx_prof_tc {
++	struct config_group group;
++	struct cxi_dev *cdev;
++	struct cxi_tx_profile *tx_profile;
++	bool dedicated;
++	bool low_latency;
++	bool bulk_data;
++	bool best_effort;
++	bool eth;
++	char name[CONFIGFS_DIR_LEN];
++};
++
++struct cxi_cfg_tx_prof {
++	struct config_group group;
++	struct cxi_dev *cdev;
++	unsigned int id;
++	struct cxi_tx_profile *tx_profile;
++	struct cxi_cfg_tx_prof_ac_entry *tx_prof_ac_entry;
++	struct cxi_cfg_tx_prof_attr *tx_prof_attr;
++	struct cxi_cfg_tx_prof_state *tx_prof_state;
++	struct cxi_cfg_tx_prof_tc *tx_prof_tc;
++	char name[CONFIGFS_DIR_LEN];
++};
++
++struct cxi_cfg_rx_prof_dir {
++	struct config_group group;
++	struct cxi_dev *cdev;
++	char name[CONFIGFS_DIR_LEN];
++};
++
++struct cxi_cfg_rx_prof {
++	struct config_group group;
++	struct cxi_dev *cdev;
++	unsigned int id;
++	struct cxi_rx_profile *rx_profile;
++	struct cxi_cfg_rx_prof_ac_entry *rx_prof_ac_entry;
++	struct cxi_cfg_rx_prof_attr *rx_prof_attr;
++	struct cxi_cfg_rx_prof_state *rx_prof_state;
++	char name[CONFIGFS_DIR_LEN];
++};
++
++struct cxi_cfg_rx_prof_state {
++	struct config_group group;
++	struct cxi_dev *cdev;
++	struct cxi_rx_profile *rx_profile;
++	char name[CONFIGFS_DIR_LEN];
++};
++
++struct cxi_cfg_rx_prof_ac_entry {
++	struct config_group group;
++	struct cxi_dev *cdev;
++	struct cxi_rx_profile *rx_profile;
++	bool enable;
++	enum cxi_ac_type ac_type;
++	union cxi_ac_data ac_data;
++	unsigned int id;
++	char name[CONFIGFS_DIR_LEN];
++};
++
++struct cxi_cfg_rx_prof_ac_entry_sub {
++	struct config_group group;
++	struct cxi_dev *cdev;
++	struct cxi_rx_profile *rx_profile;
++	bool enable;
++	enum cxi_ac_type ac_type;
++	union cxi_ac_data ac_data;
++	unsigned int id;
++	char name[CONFIGFS_DIR_LEN];
++};
++
++struct cxi_cfg_rx_prof_attr {
++	struct config_group group;
++	struct cxi_dev *cdev;
++	struct cxi_rx_profile *rx_profile;
++	u16 match;
++	u16 ignore;
++	char rx_attr_name[CXI_VNI_NAME_LEN];
++	char name[CONFIGFS_DIR_LEN];
++};
++
++int cxi_configfs_subsys_init(void);
++void cxi_configfs_cleanup(struct cass_dev *hw);
++int cxi_configfs_device_init(struct cass_dev *hw);
++void cxi_configfs_fini(void);
++void cxi_configfs_exit(void);
++
++#endif /* _CXI_CONFIGFS_MGMT_H */
+diff --git a/drivers/net/ethernet/hpe/ss1/cxi_configuration.h b/drivers/net/ethernet/hpe/ss1/cxi_configuration.h
+new file mode 100644
+index 000000000000..4458bb6078a8
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cxi_configuration.h
+@@ -0,0 +1,332 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright 2025 Hewlett Packard Enterprise Development LP */
++
++#ifndef _CXI_CONFIGURATION_H_
++#define _CXI_CONFIGURATION_H_
++
++/* Parameter for use with the 'by_user' retrieve functions */
++#define CXI_AC_ANY (CXI_AC_UID | CXI_AC_GID | CXI_AC_OPEN | CXI_AC_NETNS)
++
++#define AC_TYPE(type) \
++	ac_type == CXI_AC_UID ? "uid" : \
++	ac_type == CXI_AC_GID ? "gid" : \
++	ac_type == CXI_AC_NETNS ? "netns" : \
++	ac_type == CXI_AC_OPEN ? "open" : ""
++
++void cxi_ac_entry_list_init(struct cxi_ac_entry_list *list);
++
++void cxi_ac_entry_list_purge(struct cxi_ac_entry_list *list);
++
++void cxi_ac_entry_list_destroy(struct cxi_ac_entry_list *list);
++
++bool cxi_ac_entry_list_empty(struct cxi_ac_entry_list *list);
++
++int cxi_ac_entry_list_insert(struct cxi_ac_entry_list *list,
++			     enum cxi_ac_type ac_type,
++			     const union cxi_ac_data *ac_data,
++			     unsigned int *id);
++
++int cxi_ac_entry_list_delete(struct cxi_ac_entry_list *list,
++			     unsigned int id);
++
++int cxi_ac_entry_list_retrieve_by_id(struct cxi_ac_entry_list *list,
++				     unsigned int id,
++				     enum cxi_ac_type *ac_type,
++				     union cxi_ac_data *data);
++
++int cxi_ac_entry_list_retrieve_by_data(struct cxi_ac_entry_list *list,
++				       enum cxi_ac_type ac_type,
++				       const union cxi_ac_data *ac_data,
++				       unsigned int *id);
++
++int cxi_ac_entry_list_retrieve_by_user(struct cxi_ac_entry_list *list,
++				       uid_t uid,
++				       gid_t gid,
++				       unsigned int netns,
++				       cxi_ac_typeset_t desired_types,
++				       unsigned int *id);
++
++int cxi_ac_entry_list_retrieve_netns(struct cxi_ac_entry_list *list,
++				     union cxi_ac_data *ac_data);
++
++int cxi_ac_entry_list_get_ids(struct cxi_ac_entry_list *list,
++			      size_t max_ids,
++			      unsigned int *ids,
++			      size_t *num_ids);
++
++/* Common list for RX and TX Profiles */
++struct cxi_rxtx_profile_list {
++	struct xarray    xarray;
++	struct xa_limit  *limits;
++	gfp_t            flags;
++	gfp_t            gfp_opts;
++};
++
++int tx_profile_find_inc_refcount(struct cxi_dev *dev,
++				 unsigned int tx_profile_id,
++				 struct cxi_tx_profile **tx_profile);
++void cxi_rx_profile_remove_ac_entries(struct cxi_rx_profile *rx_profile);
++
++int cxi_rx_profile_release(struct cxi_dev *dev,
++			   unsigned int rx_profile_id);
++int cxi_rx_profile_revoke(struct cxi_dev *dev,
++			  unsigned int rx_profile_id);
++
++struct cxi_rx_profile *cxi_dev_find_rx_profile(struct cxi_dev *dev,
++					       u16 vni);
++struct cxi_rx_profile *cxi_dev_get_rx_profile(struct cxi_dev *dev,
++					      unsigned int vni);
++void cxi_rx_profile_update_pid_table(struct cxi_rx_profile *rx_profile, int pid,
++				     int count, bool set);
++void cxi_rx_profile_andnot_pid_table(struct cxi_reserved_pids *pids,
++				     int len);
++int cxi_rx_profile_alloc_pid(struct cxi_lni_priv *lni_priv,
++			     struct cxi_rx_profile *rx_profile,
++			     int pid, int vni, int count, bool reserve);
++
++int cxi_rx_profile_remove_ac_entry(struct cxi_rx_profile *rx_profile,
++				   unsigned int ac_entry_id);
++int cxi_rx_profile_get_ac_entry_ids(struct cxi_rx_profile *rx_profile,
++				    size_t max_ids,
++				    unsigned int *ac_entry_ids,
++				    size_t *num_ids);
++
++int cxi_rx_profile_get_ac_entry_data(struct cxi_rx_profile *rx_profile,
++				     unsigned int ac_entry_id,
++				     enum cxi_ac_type *ac_type,
++				     union cxi_ac_data *ac_data);
++int cxi_rx_profile_get_ac_entry_id_by_data(struct cxi_rx_profile *rx_profile,
++					   enum cxi_ac_type ac_type,
++					   const union cxi_ac_data *ac_data,
++					   unsigned int *ac_entry_id);
++int cxi_rx_profile_get_ac_entry_id_by_user(struct cxi_rx_profile *rx_profile,
++					   uid_t uid,
++					   gid_t gid,
++					   unsigned int netns,
++					   cxi_ac_typeset_t desired_types,
++					   unsigned int *ac_entry_id);
++void cxi_rx_profile_print(struct seq_file *s);
++
++void cxi_dev_init_eth_tx_profile(struct cass_dev *hw);
++void cxi_eth_tx_profile_cleanup(struct cass_dev *hw);
++struct cxi_tx_profile *cxi_dev_get_eth_tx_profile(struct cxi_dev *dev);
++
++struct cxi_tx_profile *cxi_dev_find_tx_profile(struct cxi_dev *dev,
++					       u16 vni);
++bool cxi_tx_profile_valid_tc(struct cxi_tx_profile *tx_profile,
++			     unsigned int tc);
++
++int cxi_tx_profile_release(struct cxi_dev *dev,
++			   unsigned int tx_profile_id);
++int cxi_tx_profile_revoke(struct cxi_dev *dev,
++			  unsigned int tx_profile_id);
++
++int cxi_tx_profile_get_info(struct cxi_dev *dev,
++			    struct cxi_tx_profile *tx_profile,
++			    struct cxi_tx_attr *tx_attr,
++			    struct cxi_rxtx_profile_state *state);
++
++int cxi_tx_profile_remove_ac_entry(struct cxi_tx_profile *tx_profile,
++				   unsigned int ac_entry_id);
++int cxi_tx_profile_get_ac_entry_ids(struct cxi_tx_profile *tx_profile,
++				    size_t max_ids,
++				    unsigned int *ac_entry_ids,
++				    size_t *num_ids);
++
++int cxi_tx_profile_get_ac_entry_data(struct cxi_tx_profile *tx_profile,
++				     unsigned int ac_entry_id,
++				     enum cxi_ac_type *ac_type,
++				     union cxi_ac_data *ac_data);
++int cxi_tx_profile_get_ac_entry_id_by_data(struct cxi_tx_profile *tx_profile,
++					   enum cxi_ac_type ac_type,
++					   const union cxi_ac_data *ac_data,
++					   unsigned int *ac_entry_id);
++int cxi_tx_profile_get_ac_entry_id_by_user(struct cxi_tx_profile *tx_profile,
++					   uid_t uid,
++					   gid_t gid,
++					   unsigned int netns,
++					   cxi_ac_typeset_t desired_types,
++					   unsigned int *ac_entry_id);
++void cxi_tx_profile_print(struct seq_file *s);
++
++enum cxi_profile_type {
++	CXI_PROF_RX = 1,
++	CXI_PROF_TX
++};
++
++bool cxi_valid_vni(struct cxi_dev *dev, enum cxi_profile_type type,
++		   unsigned int vni);
++
++/* Resource Group Entries */
++
++struct cxi_rgroup;
++
++struct cxi_rgroup_list {
++	struct xarray    xarray;
++};
++
++static const char * const cxi_resource_type_strs[] = {
++	[CXI_RESOURCE_PTLTE] = "ptlte",
++	[CXI_RESOURCE_TXQ] = "txq",
++	[CXI_RESOURCE_TGQ] = "tgq",
++	[CXI_RESOURCE_EQ] = "eq",
++	[CXI_RESOURCE_CT] = "ct",
++	[CXI_RESOURCE_PE0_LE] = "pe0_le",
++	[CXI_RESOURCE_PE1_LE] = "pe1_le",
++	[CXI_RESOURCE_PE2_LE] = "pe2_le",
++	[CXI_RESOURCE_PE3_LE] = "pe3_le",
++	[CXI_RESOURCE_TLE] = "tle",
++	[CXI_RESOURCE_AC] = "ac",
++};
++
++static inline
++const char *cxi_resource_type_to_str(enum cxi_resource_type type)
++{
++	if (type >= CXI_RESOURCE_PTLTE && type < CXI_RESOURCE_MAX)
++		return cxi_resource_type_strs[type];
++
++	return "(invalid)";
++}
++
++struct cxi_resource_use {
++	size_t     reserved;
++	size_t     shared;
++	size_t     shared_use;
++	size_t     in_use;
++	size_t     max;
++};
++
++struct cxi_resource_entry {
++	struct cxi_rgroup          *rgroup;
++	enum cxi_resource_type     type;
++	struct cxi_resource_limits limits;
++};
++
++struct cxi_resource_entry_list {
++	struct cxi_rgroup   *rgroup;
++	struct xarray       xarray;
++};
++
++struct cxi_rgroup_pools {
++	int            le_pool_id[C_PE_COUNT];
++	int            tle_pool_id;
++};
++
++/* Resource Group */
++
++struct cxi_rgroup_attr;
++struct cxi_rgroup_state;
++
++bool cxi_rgroup_valid_user(struct cxi_rgroup *rgroup);
++
++void cxi_dev_lock_rgroup_list(struct cass_dev *hw);
++void cxi_dev_unlock_rgroup_list(struct cass_dev *hw);
++
++void cxi_rgroup_get_info(struct cxi_rgroup *rgroup,
++			 struct cxi_rgroup_attr *attr,
++			struct cxi_rgroup_state *state);
++
++int cxi_rgroup_delete_resource(struct cxi_rgroup *rgroup,
++			       enum cxi_resource_type resource_type);
++
++int cxi_rgroup_get_resource(struct cxi_rgroup *rgroup,
++			    enum cxi_resource_type resource_type,
++			    struct cxi_resource_limits *limits);
++
++int cxi_rgroup_get_resource_entry(struct cxi_rgroup *rgroup,
++				  enum cxi_resource_type type,
++				  struct cxi_resource_entry **entry);
++
++int cxi_rgroup_get_resource_types(struct cxi_rgroup *rgroup,
++				  size_t max_resources,
++				  enum cxi_resource_type *resource_types,
++				  size_t *num_resources);
++
++int cxi_rgroup_alloc_resource(struct cxi_rgroup *rgroup,
++			      enum cxi_resource_type type);
++void cxi_rgroup_free_resource(struct cxi_rgroup *rgroup,
++			      enum cxi_resource_type type);
++
++int cxi_rgroup_delete_ac_entry(struct cxi_rgroup *rgroup,
++			       unsigned int ac_entry_id);
++
++int cxi_rgroup_get_ac_entry_ids(struct cxi_rgroup *rgroup,
++				size_t max_ids,
++				unsigned int *ids,
++				size_t *num_ids);
++
++int cxi_rgroup_get_ac_entry_data(struct cxi_rgroup *rgroup,
++				 unsigned int ac_entry_id,
++				 enum cxi_ac_type *type,
++				 union cxi_ac_data *ac_data);
++
++int cxi_rgroup_get_ac_entry_id_by_data(struct cxi_rgroup *rgroup,
++				       enum cxi_ac_type type,
++				       const union cxi_ac_data *ac_data,
++				       unsigned int *ac_entry_id);
++
++int cxi_rgroup_get_ac_entry_by_user(struct cxi_rgroup *rgroup,
++				    uid_t uid,
++				    gid_t gid,
++				    unsigned int netns,
++				    cxi_ac_typeset_t desired_types,
++				    unsigned int *ac_entry_id);
++
++void cxi_rgroup_inc_refcount(struct cxi_rgroup *rgroup);
++
++void cxi_rgroup_print_ac_entry_info(struct cxi_rgroup *rgroup,
++				    struct seq_file *s);
++
++int cxi_dev_find_rgroup_inc_refcount(struct cxi_dev *dev,
++				     unsigned int id,
++				     struct cxi_rgroup **rgroup);
++
++unsigned int cxi_dev_get_rgroup_count(struct cxi_dev *dev);
++
++int cxi_dev_get_rgroup_ids(struct cxi_dev *dev,
++			   size_t max_ids,
++			   unsigned int *rgroup_ids,
++			   size_t *num_ids);
++
++int cxi_dev_rgroup_get_resource(struct cxi_dev *dev,
++				unsigned int rgroup_id,
++				enum cxi_resource_type resource_type,
++				struct cxi_resource_limits *limits);
++
++int cxi_dev_rgroup_get_resource_types(struct cxi_dev *dev,
++				      unsigned int rgroup_id,
++				      size_t max_types,
++				      enum cxi_resource_type *resource_types,
++				      size_t *num_types);
++
++int cxi_dev_rgroup_delete_ac_entry(struct cxi_dev *dev,
++				   unsigned int rgroup_id,
++				   unsigned int ac_entry_id);
++
++int cxi_dev_rgroup_get_ac_entry_ids(struct cxi_dev *dev,
++				    unsigned int rgroup_id,
++				    size_t max_ids,
++				    unsigned int *ac_entry_ids,
++				    size_t *num_ids);
++
++int cxi_dev_rgroup_get_ac_entry_data(struct cxi_dev *dev,
++				     unsigned int rgroup_id,
++				     unsigned int ac_entry_id,
++				     enum cxi_ac_type *ac_type,
++				     union cxi_ac_data *ac_data);
++
++int cxi_dev_rgroup_get_ac_entry_id_by_data(struct cxi_dev *dev,
++					   unsigned int rgroup_id,
++					   enum cxi_ac_type ac_type,
++					   union cxi_ac_data *ac_data,
++					   unsigned int *ac_entry_id);
++
++int cxi_dev_rgroup_get_ac_entry_id_by_user(struct cxi_dev *dev,
++					   unsigned int rgroup_id,
++					   uid_t uid,
++					   gid_t gid,
++					   unsigned int netns,
++					   cxi_ac_typeset_t desired_types,
++					   unsigned int *ac_entry_id);
++
++#endif /* _CXI_CONFIGURATION_H_ */
+diff --git a/drivers/net/ethernet/hpe/ss1/cxi_core.h b/drivers/net/ethernet/hpe/ss1/cxi_core.h
+new file mode 100644
+index 000000000000..471cc9b3b393
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cxi_core.h
+@@ -0,0 +1,434 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright 2022-2026 Hewlett Packard Enterprise Development LP */
++
++#ifndef _CXI_CORE_H
++#define _CXI_CORE_H
++
++#include <linux/device.h>
++#include <linux/types.h>
++#include <linux/hmm.h>
++#include <linux/hpe/cxi/cxi.h>
++#include <linux/refcount.h>
++#include <linux/mmu_notifier.h>
++
++#define DFA_EP_BITS 17
++#define MAX_PID_BITS 9
++#define MIN_PID_BITS (MAX_PID_BITS - 3)
++#define XSTR(x) STR(x)
++#define STR(x) #x
++
++#define HAVE_GET_SINGLETON
++
++#define HAVE_IOVA_INIT_RCACHES
++
++#define dev_emerg_always(dev, fmt, ...)	  dev_emerg(dev, fmt, ##__VA_ARGS__)
++#define dev_alert_always(dev, fmt, ...)	  dev_alert(dev, fmt, ##__VA_ARGS__)
++#define dev_crit_always(dev, fmt, ...)	  dev_crit(dev, fmt, ##__VA_ARGS__)
++#define dev_err_always(dev, fmt, ...)	  dev_err(dev, fmt, ##__VA_ARGS__)
++#define dev_warn_always(dev, fmt, ...)	  dev_warn(dev, fmt, ##__VA_ARGS__)
++#define dev_notice_always(dev, fmt, ...)  dev_notice(dev, fmt, ##__VA_ARGS__)
++#define dev_info_always(dev, fmt, ...)	  dev_info(dev, fmt, ##__VA_ARGS__)
++#define dev_dbg_always(dev, fmt, ...)	  dev_dbg(dev, fmt, ##__VA_ARGS__)
++
++/*
++ * This is the main or core cassini cxi logging macro.	It is not intended to
++ * be used directly anywhere except the cxidev_*() macros.  The whole purpose
++ * behind this logging is to use '"%s: " fmt' and '"%s/%s: " fmt' to take
++ * advantage of C string constant concatenation to add common information to
++ * the logged cassini cxi messages.
++ */
++#define _cxi_log(freq, severity, cdev, fmt, ...)			\
++	dev_##severity##_##freq(&(cdev)->pdev->dev,		\
++				"%s[%s] " fmt,				\
++				(cdev)->name, (cdev)->eth_name,		\
++				##__VA_ARGS__)
++
++/*
++ * the cassini log equivalent of dev_*() log
++ */
++#define cxidev_emerg(cdev, fmt, ...)\
++		_cxi_log(always, emerg, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_alert(cdev, fmt, ...)\
++		_cxi_log(always, alert, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_crit(cdev, fmt, ...)\
++		_cxi_log(always, crit, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_err(cdev, fmt, ...)\
++		_cxi_log(always, err, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_warn(cdev, fmt, ...)\
++		_cxi_log(always, warn, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_notice(cdev, fmt, ...)\
++		_cxi_log(always, notice, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_info(cdev, fmt, ...)\
++		_cxi_log(always, info, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_dbg(cdev, fmt, ...)\
++		_cxi_log(always, dbg, cdev, fmt, ##__VA_ARGS__)
++
++#define cxidev_WARN(cdev, fmt, ...)\
++		dev_WARN(&(cdev)->cdev.pdev->dev,			\
++			 "%s[%s]: " fmt, (cdev)->cdev.name,	\
++			 (cdev)->cdev.eth_name,			\
++			 ##__VA_ARGS__)
++
++/*
++ * the cassini log equivalent of dev_*_once()
++ */
++#define cxidev_emerg_once(cdev, fmt, ...)\
++		_cxi_log(once, emerg, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_alert_once(cdev, fmt, ...)\
++		_cxi_log(once, alert, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_crit_once(cdev, fmt, ...)\
++		_cxi_log(once, crit, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_err_once(cdev, fmt, ...)\
++		_cxi_log(once, err, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_warn_once(cdev, fmt, ...)\
++		_cxi_log(once, warn, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_notice_once(cdev, fmt, ...)\
++		_cxi_log(once, notice, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_info_once(cdev, fmt, ...)\
++		_cxi_log(once, info, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_dbg_once(cdev, fmt, ...)\
++		_cxi_log(once, dbg, cdev, fmt, ##__VA_ARGS__)
++
++#define cxidev_WARN_ONCE(cdev, condition, fmt, ...)\
++		dev_WARN_ONCE(&(cdev)->pdev->dev, (condition),	\
++			      "%s[%s]: " fmt, (cdev)->name,		\
++			      (cdev)->eth_name,			\
++			      ##__VA_ARGS__)
++
++/*
++ * the cassini log equivalent of dev_*_ratelimited()
++ */
++#define cxidev_emerg_ratelimited(cdev, fmt, ...)\
++		_cxi_log(ratelimited, emerg, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_alert_ratelimited(cdev, fmt, ...)\
++		_cxi_log(ratelimited, alert, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_crit_ratelimited(cdev, fmt, ...)\
++		_cxi_log(ratelimited, crit, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_err_ratelimited(cdev, fmt, ...)\
++		_cxi_log(ratelimited, err, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_warn_ratelimited(cdev, fmt, ...)\
++		_cxi_log(ratelimited, warn, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_notice_ratelimited(cdev, fmt, ...)\
++		_cxi_log(ratelimited, notice, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_info_ratelimited(cdev, fmt, ...)\
++		_cxi_log(ratelimited, info, cdev, fmt, ##__VA_ARGS__)
++#define cxidev_dbg_ratelimited(cdev, fmt, ...)\
++		_cxi_log(ratelimited, dbg, cdev, fmt, ##__VA_ARGS__)
++
++extern unsigned int pid_bits;
++extern unsigned int system_type_identifier;
++extern unsigned int min_free_shift;
++extern unsigned int vni_matching;
++extern unsigned int tg_threshold[4];
++extern int untagged_eth_pcp;
++extern bool switch_connected;
++
++extern atomic_t cxi_num;
++extern struct class cxi_class;
++extern struct dentry *cxi_debug_dir;
++
++extern int hw_register(void);
++extern void hw_unregister(void);
++extern int cxi_configfs_subsys_init(void);
++extern void cxi_configfs_exit(void);
++
++void cxi_add_device(struct cxi_dev *cdev);
++void cxi_remove_device(struct cxi_dev *cdev);
++void cxi_send_async_event(struct cxi_dev *cdev, enum cxi_async_event event);
++void cxi_apply_for_all(void (*callback)(struct cxi_dev *dev, void *p),
++		       void *p);
++
++#define CXI_DEFAULT_LNIS_PER_RGID 1
++
++/* Service */
++struct cxi_svc_priv {
++	struct list_head list;
++	struct cxi_svc_desc svc_desc;
++	struct cxi_rgroup *rgroup;
++	struct cxi_rx_profile *rx_profile[CXI_SVC_MAX_VNIS];
++	struct cxi_tx_profile *tx_profile[CXI_SVC_MAX_VNIS];
++};
++
++/* Logical Network Interface */
++struct cxi_lni_priv {
++	struct cxi_dev *dev;
++	DECLARE_BITMAP(leased_pids, 1 << MAX_PID_BITS);
++	/* User LNI object. */
++	struct cxi_lni lni;
++
++	struct list_head list;
++	/* Users of this LNI. */
++	refcount_t refcount;
++
++	/* Service associated with this LNI. */
++	struct cxi_rgroup *rgroup;
++
++	/* Keep track of associated resources. TODO: keep as that may
++	 * help debugging, but should be removed eventually.
++	 */
++	struct list_head domain_list;
++	struct list_head eq_list;
++	struct list_head cq_list;
++	struct list_head pt_list;
++	struct list_head ac_list;
++	struct list_head ct_list;
++	struct list_head reserved_pids;
++	spinlock_t res_lock;
++	struct mutex ac_list_mutex;
++
++	struct ida lac_table;
++	atomic_t lpe_pe_num;
++
++	struct dentry *debug_dir;
++	struct dentry *cq_dir;
++	struct dentry *pt_dir;
++	struct dentry *eq_dir;
++	struct dentry *ct_dir;
++	struct dentry *ac_dir;
++
++	/* Pending resources to cleanup. Use res_lock to serialize. */
++	struct list_head pt_cleanups_list;
++	struct list_head cq_cleanups_list;
++	struct list_head eq_cleanups_list;
++	struct list_head ct_cleanups_list;
++
++	u32 pid;
++
++	/* Physical AC associated with the LNI. Should be ATU_PHYS_AC for LNIs
++	 * belonging to the PF, or the VF's physical AC for VFs.
++	 */
++	unsigned int phys_ac;
++
++	/* If this LNI belongs to a VF, then vf_en will be true and the VF number
++	 * will be in vf_num.
++	 */
++	bool is_vf;
++	u8 vf_num;
++};
++
++#include "cass_p2p.h" /* Pick up cxi_p2p_fini(), needs to be after the
++		       * definition of cxi_lni_priv */
++struct cass_vni;
++
++struct cxi_reserved_pids {
++	struct list_head entry;
++	struct cxi_rx_profile *rx_profile;
++	DECLARE_BITMAP(table, 1 << MAX_PID_BITS);
++};
++
++struct ct_wb_desc {
++	struct page *page;
++	dma_addr_t wb_dma_addr;
++	struct cxi_md_priv *md_priv;
++	bool is_map_page;
++};
++
++struct cxi_ct_priv {
++	struct list_head entry;
++	struct cxi_lni_priv *lni_priv;
++	struct dentry *debug_dir;
++	struct dentry *lni_dir;
++	struct ct_wb_desc wb_desc;
++	struct cxi_ct ct;
++	bool is_user;
++
++	/* Doorbell MMIO address */
++	void __iomem *ct_mmio;
++};
++
++struct cxi_domain_priv {
++	struct cxi_domain domain;
++	struct cxi_lni_priv *lni_priv;
++	struct list_head list;
++	struct dentry *debug_dir;
++	struct rb_node node;	/* attach to domain_tree */
++	struct cxi_rx_profile *rx_profile;
++
++	/* Users of this domain */
++	refcount_t refcount;
++};
++
++struct cxi_md_priv {
++	struct cxi_lni_priv *lni_priv;
++	struct device *device;
++	struct cxi_md md;
++	struct page **pages;
++	struct sg_table *sgt;
++	u32 flags;
++
++	struct list_head md_entry; /* entry in a CAC md_list */
++	struct cass_ac *cac;
++
++	struct sg_table *dmabuf_sgt;
++
++	/* DMA buffer file descriptor. This is passed in by user-space. */
++	int dmabuf_fd;
++
++	/* Offset into the DMA buffer where PFN mapping should begin. */
++	unsigned long dmabuf_offset;
++
++	/* User request DMA buffer len. This should not be aligned. */
++	unsigned long dmabuf_length;
++
++	struct dma_buf *dmabuf;
++	struct dma_buf_attachment *dmabuf_attach;
++
++	/* Users of this MD */
++	refcount_t refcount;
++
++	/* Original length of the MD */
++	size_t olen;
++
++	/* Need to lock when initially mirroring page tables */
++	bool need_lock;
++	/* SG table is owned by an external user (e.g. kfabric) */
++	bool external_sgt_owner;
++	struct mmu_interval_notifier mn_sub;
++	/* GPU direct info */
++	void *p2p_info;
++	bool cleanup_done;
++};
++
++struct cxi_cp_priv {
++	struct cxi_dev *dev;
++	struct cxi_cp cp;
++	struct cass_cp *cass_cp;
++	refcount_t refcount;
++	unsigned int rgid;
++	unsigned int lni_id;
++};
++
++/* EQ buffer description */
++struct eq_buf_desc {
++	const struct cxi_md *md; /* Virtual buffer MD. */
++	void *events;
++	size_t events_len;
++
++	struct page **pages;
++
++	dma_addr_t dma_addr; /* DMA buffer address. */
++};
++
++struct cxi_eq_priv {
++	struct cxi_lni_priv *lni_priv;
++	struct list_head list;
++	struct dentry *debug_file;
++	struct dentry *lni_dir;
++
++	bool reused;
++
++	/* Users of this EQ */
++	refcount_t refcount;
++
++	/* EQ buffer description */
++	struct eq_buf_desc active;
++
++	/* Doorbell MMIO address */
++	void __iomem *eq_mmio;
++
++	/* Current EQ descriptor state */
++	union c_ee_cfg_eq_descriptor cfg;
++
++	/* Copy of the creation attributes */
++	struct cxi_eq_attr attr;
++
++	/* Public event queue */
++	struct cxi_eq eq;
++
++	/* Interrupt vectors, and callbacks */
++	struct cass_irq *event_msi_irq;
++	void (*event_cb)(void *context);
++	void *event_cb_data;
++	struct notifier_block event_nb;
++
++	struct cass_irq *status_msi_irq;
++	void (*status_cb)(void *context);
++	void *status_cb_data;
++	struct notifier_block status_nb;
++
++	/* Number of slots in queue. */
++	size_t queue_size;
++
++	/* Resize buffer attributes */
++	struct mutex resize_mutex;
++	bool resized;
++	struct eq_buf_desc resize;
++};
++
++struct cxi_cq_priv {
++	struct cxi_lni_priv *lni_priv;
++	struct cxi_cq cass_cq;
++
++	/* DMA mapped CQ */
++	size_t cmds_len;
++	size_t cmds_order;
++	struct page **pages;
++	struct page *cmds_pages;
++	void *cmds;
++	dma_addr_t cmds_dma_addr;
++
++	/* Doorbell MMIO address */
++	void __iomem *cq_mmio;
++
++	u32 flags;
++	struct cxi_md_priv *md_priv;
++
++	struct list_head list;
++	struct dentry *debug_dir;
++	struct dentry *lni_dir;
++
++	/* EQ for error reporting. May be NULL. */
++	struct cxi_eq_priv *eq;
++};
++
++struct cxi_pte_priv {
++	struct cxi_lni_priv *lni_priv;
++	struct list_head list;
++	struct dentry *debug_dir;
++	struct dentry *lni_dir;
++
++	struct cxi_pte pte;
++
++	struct cxi_eq_priv *eq;
++
++	/* Users of this portal table entries. */
++	refcount_t refcount;
++
++	/* Pte is flow control enabled. */
++	bool fc_enabled;
++	bool plec_enabled;
++
++	/* pt_n -> mcast_id mapping */
++	unsigned int mcast_n;
++
++	/* Keep track of used MST entries when releasing the PTe. The
++	 * PTe can only be released when all MSTs attached to it have
++	 * been recycled.
++	 */
++	DECLARE_BITMAP(mst_rc_update, C_MST_DBG_MST_TABLE_ENTRIES);
++
++	int pe_num;
++	int le_pool;
++};
++
++void cxi_free_resource(struct cxi_dev *dev, struct cxi_svc_priv *svc_priv,
++		       enum cxi_rsrc_type type);
++int cxi_alloc_resource(struct cxi_dev *dev, struct cxi_svc_priv *svc_priv,
++		       enum cxi_rsrc_type type);
++unsigned int cxi_lni_get_pe_num(struct cxi_lni_priv *lni);
++
++
++void cxi_domain_lni_cleanup(struct cxi_lni_priv *lni_priv);
++
++int nvidia_p2p_init(void);
++void nvidia_p2p_fini(void);
++
++int amd_p2p_init(void);
++void amd_p2p_fini(void);
++
++int cxi_dma_buf_init(void);
++void cxi_dma_buf_fini(void);
++
++#include "cxi_configuration.h"
++
++#endif	/* _CXI_CORE_H */
+diff --git a/drivers/net/ethernet/hpe/ss1/cxi_eth.h b/drivers/net/ethernet/hpe/ss1/cxi_eth.h
+new file mode 100644
+index 000000000000..84590ef58ebf
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cxi_eth.h
+@@ -0,0 +1,352 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Cassini ethernet driver
++ * Copyright 2018-2020,2022 Hewlett Packard Enterprise Development LP
++ */
++
++#ifndef __CXI_ETH_H__
++#define __CXI_ETH_H__
++#include <linux/hpe/cxi/cxi.h>
++#include <uapi/ethernet/cassini_user_defs.h>
++#include <linux/ethtool.h>
++#include <linux/net_tstamp.h>
++#include <linux/netlink.h>
++
++#include "cxi_ethtool.h"
++#include "cxi_core.h"
++
++#define NETIF_NAPI_ADD netif_napi_add
++#define NETIF_NAPI_ADD_TX netif_napi_add_tx
++
++#define CXI_ETH_1_MB (1024 * 1024)
++#define CXI_ETH_1_GB (CXI_ETH_1_MB * 1024)
++
++#define SMALL_PKTS_BUF_COUNT_MIN 1U
++#define SMALL_PKTS_BUF_COUNT_MAX (16 * 1024U)
++
++#define LARGE_PKTS_BUF_COUNT_MIN 1U
++#define LARGE_PKTS_BUF_COUNT_MAX 10000U
++
++#define TX_QUEUE_LEN_DEFAULT 1000
++
++#define MAX_LE_LIMIT 16384
++
++/* Align max TX queues to max RX queues. */
++#define CXI_ETH_MAX_TX_QUEUES CXI_ETH_MAX_RSS_QUEUES
++
++/* 4.12 kernels do not define these.
++ * TODO: remove eventually
++ */
++#define SPEED_400000       400000
++#define SPEED_200000       200000
++#define ETHTOOL_LINK_MODE_50000baseKR_Full_BIT   52
++#define	ETHTOOL_LINK_MODE_100000baseCR2_Full_BIT 59
++#define	ETHTOOL_LINK_MODE_200000baseCR4_Full_BIT 66
++
++/* Cassini 1 & 2 support up to 5 segments */
++#define C_MAX_ETH_FRAGS 5
++#define MAX_CB_LEN 3
++
++/* Private DMA registration data stored in the SKB cb */
++struct cb_data {
++	u8 num_frags;
++	u16 dma_len[MAX_CB_LEN]; /* alas, not enough room for C_MAX_ETH_FRAGS */
++	dma_addr_t dma_addr[C_MAX_ETH_FRAGS];
++};
++
++static inline void cxi_force_icrc_check(struct sk_buff *skb)
++{
++#ifdef SKBTX_ZEROCOPY_FRAG
++	skb_shinfo(skb)->__unused |= BIT(1);
++#else
++	skb_shinfo(skb)->flags |= BIT(6);
++#endif
++}
++
++static inline void cxi_skb_icrc_gone(struct sk_buff *skb)
++{
++#ifdef SKBTX_ZEROCOPY_FRAG
++	skb_shinfo(skb)->__unused |= BIT(0);
++#else
++	skb_shinfo(skb)->flags |= BIT(7);
++#endif
++}
++
++/* An RX buffer. It can end-up on the request or priority list. */
++struct rx_buffer {
++	struct list_head buf_list;
++
++	unsigned int id;
++
++	size_t data_size;
++
++	enum c_ptl_list ptl_list; /* PRIORITY or REQUEST */
++
++	union {
++		struct {
++			/* Valid only if list is PRIORITY */
++			struct page *page;
++			dma_addr_t mapping;
++			size_t cur_offset;
++			unsigned int posted_count;
++		};
++		struct {
++			/* Valid only if list is REQUEST */
++			struct cxi_md *md;
++			u8 *data;
++		};
++	};
++};
++
++struct tx_queue {
++	struct cxi_eth *dev;
++	struct cxi_eq_attr eq_attr;
++	struct cxi_md *eq_md;
++	struct cxi_eq *eq;
++	struct cxi_cq *eth1_cq;
++	struct cxi_cq *eth2_cq; /* Initialized conditionally */
++	struct cxi_cq *shared_cq;
++	struct cxi_cq *untagged_cq; /* Points to one of the above CQs */
++	struct napi_struct napi;
++
++	/* It is possible for start_xmit to get a lot of small packets
++	 * that fill up the TX queue, in which case
++	 * netif_tx_stop_queue() would be called. However since IDC
++	 * packets do not generate an interrupt, the send queue may
++	 * never be awaken again. Protect against that by forcing a
++	 * DMA instead of IDC every 'force_dma_interval' contiguous
++	 * IDC requests.
++	 */
++	int force_dma;
++	int force_dma_interval;
++
++	/* Associated netdev TX queue. */
++	unsigned int id;
++
++	/* NUMA node and CPU TX queue should be bound to. */
++	unsigned int node;
++	unsigned int cpu;
++
++	/* Each DMA op can use up to an EQ slot (16 or 32 bytes event,
++	 * plus padding). If too many DMA operations are in flight,
++	 * the EQ might get overrun. Pause the EQ in that case.
++	 */
++	atomic_t dma_eq_cdt;
++
++	struct {
++		u64 polling;
++		u64 stopped;	/* netif queue stopped by driver, CQ almost full */
++		u64 stopped_eq;	/* netif queue stopped by driver, EQ almost full */
++		u64 restarted;	/* netif queue restarted by driver */
++		u64 tx_busy;	/* returned NETDEV_TX_BUSY */
++		u64 idc;
++		u64 idc_bytes;
++		u64 dma;
++		u64 dma_bytes;
++		u64 dma_forced;
++	} stats;
++};
++
++#define NB_BUCKETS 23
++struct bucket {
++	u64 min_ts;
++	u64 max_ts;
++	u64 b[NB_BUCKETS];
++};
++
++struct rx_queue {
++	struct cxi_eth *dev;
++	void *eq_buf;
++	size_t eq_buf_size;
++	struct cxi_md *eq_md;
++	struct cxi_eq *eq;
++	struct cxi_pte *pt;
++	struct napi_struct napi;
++
++	struct cxi_cq *cq_tgt_prio;
++
++	/* Pool of receive buffers. Buffers start on the rx_ready
++	 * list, where they wait to be appended to a portal. When a
++	 * buffer is appended, it moves to the rx_in_use
++	 * list. Eventually the buffer is unlinked by Cassini (usually
++	 * after it becomes full) and reused again by the driver once
++	 * all its data has been consumed.
++	 *
++	 * The buffers on the request list are for "small" packets,
++	 * while the buffers on the priority list are for large
++	 * packets.
++	 */
++	struct list_head rx_unallocated;
++	struct list_head rx_ready; /* allocated but not appended */
++	struct list_head rx_in_use; /* appended or unlinked */
++
++	unsigned int rx_bufs_count;
++	struct rx_buffer *rx_bufs;
++
++	/* Segmented packet reassembly state */
++	enum { FRAG_NONE, FRAG_MORE, FRAG_DROP } frag_state;
++	u64 pkt_cnt;
++	u8 next_seg_cnt;
++
++	unsigned int last_bad_frag_drop_rc;
++
++	struct {
++		u64 append_prio;
++		u64 append_req;
++		u64 append_failed;
++		u64 unlinked_prio;
++		u64 unlinked_req;
++	} stats;
++
++	/* Associated netdev RX queue. */
++	unsigned int id;
++
++	/* NUMA node and CPU RX queue should be bound to. */
++	unsigned int node;
++	unsigned int cpu;
++
++	/* Debug code. Should be removed eventually. Measure the time
++	 * between a napi schedule call, and the call to rx_eq_cb() to
++	 * process the queue.
++	 */
++	ktime_t time_napi_schedule;
++	struct bucket eth_napi_schedule;
++
++	/* Number of times an page should be posted to the priority queue. */
++	unsigned int page_chunks;
++};
++
++/* A queue only for PTP packets. Cassini ERRATA-3258. */
++#define PTP_RX_Q max_rss_queues
++
++struct cxi_eth {
++	struct list_head dev_list;
++	struct cxi_dev *cxi_dev;
++	bool is_c2;
++
++	struct net_device *ndev;
++
++	struct dentry *debug;
++
++	bool is_active;
++
++	int svc_id;
++	u32 min_free;
++	u64 mac_addr;
++
++	/* Cassini ERRATA-3258 for PTP. Cassini 1/1.1 doesn't set the timestamp
++	 * bit. Instead we have a separate portal entry that will only
++	 * get the PTP packets with the special MAC address. If
++	 * ptp_ts_enabled is true then these packets will have a
++	 * timestamp, except for a very short window.
++	 */
++	bool ptp_ts_enabled;
++	u64 ptp_mac_addr;
++	struct sk_buff *tstamp_skb;
++
++	unsigned int phys_lac;
++
++	bool eth2_active;
++	int eth1_pcp;
++	int eth2_pcp;
++
++	struct cxi_lni *lni;
++	struct cxi_cp *eth1_cp;
++	struct cxi_cp *eth2_cp;
++	struct cxi_cp *shared_cp;
++
++	/* Shared CQ with every RX channel for their target request
++	 * list. As posted buffers are big, operations on this CQ will
++	 * be few and far between.
++	 */
++	spinlock_t cq_tgt_req_lock;
++	struct cxi_cq *cq_tgt_req;
++
++	/* Event queue used for CQ errors. */
++	struct cxi_eq *err_eq;
++	struct cxi_eq_attr err_eq_attr;
++
++	/* TX queues/rings. TXQ zero remains allocated for the duration of the
++	 * Ethernet interface remaining open. TXQs greater than zero are
++	 * allocated/deallocated base on number of configured TX queues.
++	 */
++	struct tx_queue *txqs;
++	unsigned int cur_txqs;
++
++	/* RX queues/rings. RXQ zero is the default/catch-all RX queue and
++	 * remains allocated for the duration of the Ethernet interface
++	 * remaining open. RXQs greater than zero and allocated/deallocated
++	 * based on number of configured RX queues.
++	 */
++	struct rx_queue *rxqs;
++
++	/* Number of RX buffers */
++	unsigned int num_prio_buffers;
++	unsigned int num_req_buffers;
++
++	struct ethtool_ringparam ringparam;
++	struct kernel_ethtool_ringparam kernel_ring;
++
++	struct cxi_eth_res res;
++	struct cxi_eth_info eth_info;
++
++	/* ethtool private flags (CXI_ETH_PF_...) */
++	u32 priv_flags;
++
++	/* Timestamp config copy */
++	struct hwtstamp_config tstamp_config;
++};
++
++extern unsigned int rss_indir_size;
++extern unsigned int max_rss_queues;
++extern unsigned int max_tx_queues;
++extern unsigned int small_pkts_buf_size;
++extern unsigned int idc_dma_threshold;
++extern unsigned int lpe_cdt_thresh_id;
++extern unsigned long rx_repost_retry_jiffies;
++extern unsigned int small_pkts_buf_count;
++extern unsigned int large_pkts_buf_count;
++extern unsigned int buffer_threshold;
++
++#define CXI_ETH_MAX_MTU 9000
++#define CXI_ETH_TX_TIMEOUT (5 * HZ)
++
++/* Compute an approximative number of packets that can be contained in
++ * the small buffers. Since each segment cannot be larger that the
++ * buffer_threshold, use that as a base.
++ */
++static inline u32 num_small_packets(u32 buf_count)
++{
++	return buf_count * (small_pkts_buf_size / buffer_threshold);
++}
++
++size_t get_rxq_eq_buf_size(struct cxi_eth *dev);
++void hw_cleanup(struct cxi_eth *dev);
++int hw_setup(struct cxi_eth *dev);
++
++/* Netdev methods */
++int cxi_eth_open(struct net_device *ndev);
++int cxi_eth_close(struct net_device *ndev);
++netdev_tx_t cxi_eth_start_xmit(struct sk_buff *skb, struct net_device *dev);
++int cxi_eth_mac_addr(struct net_device *dev, void *p);
++void cxi_eth_set_rx_mode(struct net_device *dev);
++int cxi_change_mtu(struct net_device *netdev, int new_mtu);
++void disable_rx_queue(struct rx_queue *rx);
++void free_rx_queue(struct rx_queue *rx);
++int alloc_rx_queue(struct cxi_eth *dev, unsigned int id);
++void enable_rx_queue(struct rx_queue *rx);
++int post_rx_buffers(struct rx_queue *rx, gfp_t gfp);
++int alloc_tx_queue(struct cxi_eth *dev, unsigned int id);
++void free_tx_queue(struct tx_queue *tx);
++void enable_tx_queue(struct tx_queue *tx);
++void disable_tx_queue(struct tx_queue *tx);
++int cxi_set_rx_channels(struct cxi_eth *dev, unsigned int num_rx_channels);
++int cxi_set_tx_channels(struct cxi_eth *dev, unsigned int num_tx_channels);
++int cxi_eth_hwtstamp_get(struct net_device *ndev,
++			 struct kernel_hwtstamp_config *config);
++int cxi_eth_hwtstamp_set(struct net_device *ndev,
++			 struct kernel_hwtstamp_config *config,
++			 struct netlink_ext_ack *extack);
++
++extern const struct ethtool_ops cxi_eth_ethtool_ops;
++#endif
+diff --git a/drivers/net/ethernet/hpe/ss1/cxi_eth_debugfs.h b/drivers/net/ethernet/hpe/ss1/cxi_eth_debugfs.h
+new file mode 100644
+index 000000000000..03b6e38b2e96
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cxi_eth_debugfs.h
+@@ -0,0 +1,26 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright 2018 Hewlett Packard Enterprise Development LP */
++/* cxi-eth debug fs*/
++
++#ifndef __CXI_ETH_DEBUGFS_H__
++#define __CXI_ETH_DEBUGFS_H__
++#include <linux/debugfs.h>
++#include <linux/netdevice.h>
++
++#ifdef CONFIG_DEBUG_FS
++void device_debugfs_create(char *name, struct cxi_eth *dev,
++			   struct dentry *cxieth_debug_dir);
++struct dentry *device_eth_debugfs_init(void);
++
++#else
++static inline void device_debugfs_create(char *name, struct cxi_eth *dev,
++					 struct dentry *cxieth_debug_dir)
++{
++}
++
++static inline struct dentry *device_eth_debugfs_init(void)
++{
++	return NULL;
++}
++#endif
++#endif
+diff --git a/drivers/net/ethernet/hpe/ss1/cxi_ethtool.h b/drivers/net/ethernet/hpe/ss1/cxi_ethtool.h
+new file mode 100644
+index 000000000000..481c5a5e3741
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cxi_ethtool.h
+@@ -0,0 +1,26 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright 2018-2020,2022,2024,2026 Hewlett Packard Enterprise Development LP */
++
++/* ethtool private flags for the Cassini Ethernet driver */
++#define CXI_ETH_PF_INTERNAL_LOOPBACK         BIT(0)  /* internal loopback, tx to rx */
++#define CXI_ETH_PF_EXTERNAL_LOOPBACK         BIT(1)  /* external loopback, rx to tx */
++#define CXI_ETH_PF_LLR                       BIT(2)
++#define CXI_ETH_PF_PRECODING                 BIT(3)
++#define CXI_ETH_PF_IFG_HPC                   BIT(4)
++#define CXI_ETH_PF_ROCE_OPT                  BIT(5)  /* RoCE Cassini Optimizations */
++#define CXI_ETH_PF_IGNORE_ALIGN              BIT(6)  /* ignore align interrupt */
++#define CXI_ETH_PF_PML_REC                   BIT(7)  /* control pml recovery */
++#define CXI_ETH_PF_LINKTRAIN                 BIT(8)  /* link training */
++#define CXI_ETH_PF_REMOTE_FAULT_RECOVERY     BIT(9)  /* enable pml recovery for remote faults */
++#define CXI_ETH_PF_USE_UNSUPPORTED_CABLE     BIT(10) /* allow link up with unsupported cable */
++#define CXI_ETH_PF_FEC_MONITOR               BIT(11) /* Turn FEC Monitor on/off */
++#define CXI_ETH_PF_ALD                       BIT(12) /* control auto lane degrade */
++#define CXI_ETH_PF_IGNORE_MEDIA_ERROR        BIT(13) /* ignore media error */
++#define CXI_ETH_PF_USE_SUPPORTED_SS200_CABLE BIT(14) /* allow link up with supported ss200 cable */
++#define CXI_ETH_PF_LOS_LOL_HIDE              BIT(15) /* hide LOS/LOL down and link up fail cause */
++#define CXI_ETH_PF_R1_LINK_PARTNER           BIT(16) /* R1 link partner */
++
++#define PRIV_FLAGS_COUNT 17
++
++#define LOOPBACK_MODE (CXI_ETH_PF_INTERNAL_LOOPBACK | CXI_ETH_PF_EXTERNAL_LOOPBACK)
++#define LINK_DEBUG_FLAGS (CXI_ETH_PF_IGNORE_ALIGN | CXI_ETH_PF_REMOTE_FAULT_RECOVERY)
+diff --git a/drivers/net/ethernet/hpe/ss1/cxi_ethtool_names.h b/drivers/net/ethernet/hpe/ss1/cxi_ethtool_names.h
+new file mode 100644
+index 000000000000..fd0b90e90c6a
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cxi_ethtool_names.h
+@@ -0,0 +1,110 @@
++/* SPDX-License-Identifier: GPL-2.0-only or BSD-2-Clause */
++/*
++ * Copyright 2024 Hewlett Packard Enterprise Development LP
++ */
++
++#ifndef __CXI_ETHTOOL_NAMES_H
++#define __CXI_ETHTOOL_NAMES_H
++
++/* stats returned via .get_ethtool_stats()  */
++#define CXI_GLOBAL_STATS_LEN    ARRAY_SIZE(cxi_get_ethtool_stats_set)
++/* Telemetry item IDs */
++static const unsigned int cxi_get_ethtool_stats_set[] = {
++	586,	/* hni_rx_ok_ieee */
++	567,	/* hni_rx_bad_ieee */
++	637,	/* hni_tx_ok_ieee */
++	651,	/* hni_tx_poisoned_ieee */
++	590,	/* hni_rx_ok_opt */
++	568,	/* hni_rx_bad_opt */
++	639,	/* hni_tx_ok_opt */
++	652,	/* hni_tx_poisoned_opt */
++	507,	/* hni_pcs_corrected_cw */
++	542,	/* hni_pcs_uncorrected_cw */
++	539,	/* hni_pcs_good_cw */
++	543,	/* hni_pfc_fifo_oflw_cntr_0 */
++	544,	/* hni_pfc_fifo_oflw_cntr_1 */
++	545,	/* hni_pfc_fifo_oflw_cntr_2 */
++	546,	/* hni_pfc_fifo_oflw_cntr_3 */
++	547,	/* hni_pfc_fifo_oflw_cntr_4 */
++	548,	/* hni_pfc_fifo_oflw_cntr_5 */
++	549,	/* hni_pfc_fifo_oflw_cntr_6 */
++	550,	/* hni_pfc_fifo_oflw_cntr_7 */
++	758,	/* ixe_rx_udp_pkt */
++	757,	/* ixe_rx_tcp_pkt */
++	734,	/* ixe_rx_ipv4_pkt */
++	735,	/* ixe_rx_ipv6_pkt */
++	754,	/* ixe_rx_roce_pkt */
++	744,	/* ixe_rx_ptl_gen_pkt */
++	752,	/* ixe_rx_ptl_sml_pkt */
++	753,	/* ixe_rx_ptl_unrestricted_pkt */
++	750,	/* ixe_rx_ptl_smallmsg_pkt */
++	743,	/* ixe_rx_ptl_continuation_pkt */
++	749,	/* ixe_rx_ptl_restricted_pkt */
++	742,	/* ixe_rx_ptl_connmgmt_pkt */
++	748,	/* ixe_rx_ptl_response_pkt */
++	759,	/* ixe_rx_unrecognized_pkt */
++	751,	/* ixe_rx_ptl_sml_amo_pkt */
++	746,	/* ixe_rx_ptl_msgs */
++	747,	/* ixe_rx_ptl_multi_msgs */
++	745,	/* ixe_rx_ptl_mr_msgs */
++	737,	/* ixe_rx_pkt_drop_pct */
++	738,	/* ixe_rx_pkt_drop_rmu_norsp */
++	739,	/* ixe_rx_pkt_drop_rmu_wrsp */
++	736,	/* ixe_rx_pkt_drop_ixe_parser */
++	740,	/* ixe_rx_pkt_ipv4_options */
++	741,	/* ixe_rx_pkt_ipv6_options */
++	733,	/* ixe_rx_eth_seg */
++	755,	/* ixe_rx_roce_seg */
++	756,	/* ixe_rx_roce_spseg */
++};
++
++static const char cxi_get_ethtool_stats_name[CXI_GLOBAL_STATS_LEN][ETH_GSTRING_LEN] = {
++	"rx_ok_ieee",
++	"rx_bad_ieee",
++	"tx_ok_ieee",
++	"tx_poisoned_ieee",
++	"rx_ok_opt",
++	"rx_bad_opt",
++	"tx_ok_opt",
++	"tx_poisoned_opt",
++	"corrected_cw",
++	"uncorrected_cw",
++	"good_cw",
++	"fifo_oflw_cntr_0",
++	"fifo_oflw_cntr_1",
++	"fifo_oflw_cntr_2",
++	"fifo_oflw_cntr_3",
++	"fifo_oflw_cntr_4",
++	"fifo_oflw_cntr_5",
++	"fifo_oflw_cntr_6",
++	"fifo_oflw_cntr_7",
++	"rx_udp_pkt",
++	"rx_tcp_pkt",
++	"rx_ipv4_pkt",
++	"rx_ipv6_pkt",
++	"rx_roce_pkt",
++	"rx_ptl_gen_pkt",
++	"rx_ptl_sml_pkt",
++	"rx_ptl_unrestricted_pkt",
++	"rx_ptl_smallmsg_pkt",
++	"rx_ptl_continuation_pkt",
++	"rx_ptl_restricted_pkt",
++	"rx_ptl_connmgmt_pkt",
++	"rx_ptl_response_pkt",
++	"rx_unrecognized_pkt",
++	"rx_ptl_sml_amo_pkt",
++	"rx_ptl_msgs",
++	"rx_ptl_multi_msgs",
++	"rx_ptl_mr_msgs",
++	"rx_pkt_drop_pct",
++	"rx_pkt_drop_rmu_norsp",
++	"rx_pkt_drop_rmu_wrsp",
++	"rx_pkt_drop_ixe_parser",
++	"rx_pkt_ipv4_options",
++	"rx_pkt_ipv6_options",
++	"rx_eth_seg",
++	"rx_roce_seg",
++	"rx_roce_spseg",
++};
++
++#endif
+diff --git a/drivers/net/ethernet/hpe/ss1/cxi_internal.h b/drivers/net/ethernet/hpe/ss1/cxi_internal.h
+new file mode 100644
+index 000000000000..5768a26aa804
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cxi_internal.h
+@@ -0,0 +1,39 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright 2026 Hewlett Packard Enterprise Development LP */
++
++#ifndef _CXI_INTERNAL_H
++#define _CXI_INTERNAL_H
++
++#include <linux/hpe/cxi/cxi.h>
++
++struct cxi_ct *cxi_ct_alloc_internal(struct cxi_lni *lni,
++				     struct c_ct_writeback *wb, bool is_user,
++				     dma_addr_t wb_dma_addr);
++int cxi_ct_wb_update_internal(struct cxi_ct *ct, struct c_ct_writeback *wb,
++			      dma_addr_t wb_dma_addr);
++
++struct cxi_lni *cxi_lni_alloc_internal(struct cxi_dev *dev, unsigned int svc_id,
++				       bool vf_en, u8 vf_num);
++int cxi_lni_pid_alloc(struct cxi_lni *lni);
++void cxi_lni_pid_free(struct cxi_lni *lni, unsigned int pid);
++
++struct cxi_eq *cxi_eq_alloc_internal(struct cxi_lni *lni, const struct cxi_md *md,
++				     const struct cxi_eq_attr *attr,
++				     void (*event_cb)(void *cb_data),
++				     void *event_cb_data,
++				     void (*status_cb)(void *cb_data),
++				     void *status_cb_data, dma_addr_t dma_addr,
++				     int event_irq_idx, int status_irq_idx);
++int cxi_eq_resize_internal(struct cxi_eq *evtq, void *queue,
++			   size_t queue_len, struct cxi_md *queue_md,
++			   dma_addr_t dma_addr);
++
++struct cxi_cq *cxi_cq_alloc_buf_internal(struct cxi_lni *lni, struct cxi_eq *evtq,
++					 const struct cxi_cq_alloc_opts_buf *opts_b,
++					 int numa_node, dma_addr_t cmds_dma_addr,
++					 size_t cmds_len);
++
++struct cxi_rmu_eth *cxi_rmu_eth_alloc_internal(struct cxi_dev *cdev, bool vf_en,
++					       u8 vf_num);
++
++#endif /* _CXI_INTERNAL_H */
+diff --git a/drivers/net/ethernet/hpe/ss1/cxi_link.h b/drivers/net/ethernet/hpe/ss1/cxi_link.h
+new file mode 100644
+index 000000000000..e015248fe7aa
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cxi_link.h
+@@ -0,0 +1,65 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright 2023,2024,2026 Hewlett Packard Enterprise Development LP */
++
++#ifndef _CXI_LINK_H
++#define _CXI_LINK_H
++
++struct cxi_dev;
++struct cass_dev;
++
++/**
++ * struct cxi_link_info - Attributes for link configuration
++ *
++ * @flags: CXI private flags (CXI_ETH_PF_xxx)
++ * @speed: ethtool speed setting (SPEED_xxx)
++ * @autoneg: ethtool autonegotiation setting (AUTONEG_ENABLE / AUTONEG_DISABLE)
++ * @port_type: ethtool; port type (PORT_FIBRE, PORT_DA, ...)
++ * @fec_type: ethtool; fec (ETHTOOL_FEC_OFF, ETHTOOL_FEC_RS, ...)
++ *
++ * These attributes must be configured for a link.
++ * Different setting will be required for fabric or Ethernet links
++ */
++struct cxi_link_info {
++	u32 flags;		/* or'ed CXI_ETH_PF_xxx */
++	int speed;		/* SPEED_xxx */
++	u32 autoneg;		/* AUTONEG_ENABLE / AUTONEG_DISABLE */
++	u32 port_type;		/* PORT_FIBRE, PORT_DA, ... */
++	u32 fec_type;           /* ETHTOOL_FEC_OFF, ETHTOOL_FEC_RS, ... */
++};
++
++void cxi_link_mode_get(struct cxi_dev *cxi_dev, struct cxi_link_info *link_info);
++void cxi_link_mode_set(struct cxi_dev *cxi_dev, const struct cxi_link_info *link_info);
++void cxi_link_flags_get(struct cxi_dev *cxi_dev, u32 *flags);
++void cxi_link_flags_set(struct cxi_dev *cxi_dev, u32 clr_flags, u32 set_flags);
++u32 cxi_link_flags_supported(struct cxi_dev *cxi_dev);
++void cxi_link_use_unsupported_cable(struct cxi_dev *cxi_dev, bool use);
++void cxi_link_use_supported_ss200_cable(struct cxi_dev *cxi_dev, bool use);
++void cxi_link_ignore_media_error(struct cxi_dev *cxi_dev, bool ignore);
++void cxi_link_auto_lane_degrade(struct cxi_dev *cxi_dev, bool enable);
++void cxi_pml_recovery_set(struct cxi_dev *cxi_dev, bool set);
++void cxi_link_los_lol_hide(struct cxi_dev *cxi_dev, bool enable);
++
++struct cxi_link_ops {
++	int (*init)(struct cass_dev *hw);
++	int (*link_start)(struct cass_dev *hw);
++	int (*link_fini)(struct cass_dev *hw);
++	void (*mode_get)(struct cass_dev *hw, struct cxi_link_info *link_info);
++	void (*mode_set)(struct cass_dev *hw, const struct cxi_link_info *link_info);
++	void (*flags_get)(struct cass_dev *hw, u32 *flags);
++	void (*flags_set)(struct cass_dev *hw, u32 clr_flags, u32 set_flags);
++	u32  flags_supported;	/* CXI_ETH_PF_xxx handled by flags_set */
++	int  (*link_up)(struct cass_dev *hw);
++	int  (*link_down)(struct cass_dev *hw);
++	bool (*is_pcs_aligned)(struct cass_dev *hw);
++	int  (*media_config)(struct cass_dev *hw, void *attr);
++	int  (*media_unconfig)(struct cass_dev *hw);
++	int  (*link_config)(struct cass_dev *hw);
++	int  (*link_reset)(struct cass_dev *hw);
++	void (*link_exit)(struct cass_dev *hw);
++	void (*pml_recovery_set)(struct cass_dev *hw, bool set);
++	bool (*is_link_up)(struct cass_dev *hw);
++	int (*eth_name_set)(struct cass_dev *hw, const char *name);
++};
++
++void cxi_set_link_ops(struct cass_dev *hw);
++#endif
+diff --git a/drivers/net/ethernet/hpe/ss1/cxi_qos_profiles.h b/drivers/net/ethernet/hpe/ss1/cxi_qos_profiles.h
+new file mode 100644
+index 000000000000..be97faeae3c3
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cxi_qos_profiles.h
+@@ -0,0 +1,149 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++/*
++ * Cassini QoS Profiles
++ * Copyright 2023 Hewlett Packard Enterprise Development LP
++ */
++
++#define CXI_MAX_RDMA_TCS 4
++#define PCP_COUNT 8U
++#define CXI_ETH_TC_MAX (CXI_ETH_TC2 + 1)
++
++struct cass_tc_oxe_settings {
++	unsigned int spt_rsvd;
++	unsigned int smt_rsvd;
++	unsigned int sct_rsvd;
++	unsigned int srb_rsvd;
++	unsigned int pbuf_rsvd;
++	unsigned int assured_percent;
++	unsigned int ceiling_percent;
++	unsigned int bucket_limit;
++	unsigned int leaf_request_priority;
++	unsigned int leaf_response_priority;
++	unsigned int branch_priority;
++	unsigned int mfs_index;
++};
++
++struct cass_tc_dscp_pcp_settings {
++	/* Required request and response PCP and DSCP for all traffic classes
++	 * and traffic class types.
++	 */
++	unsigned int req_pcp;
++	unsigned int rsp_pcp;
++	unsigned int res_rsp_dscp;
++	unsigned int unres_rsp_dscp;
++
++	/* Restricted request DSCP used for CXI_TC_TYPE_DEFAULT and
++	 * CXI_TC_TYPE_RESTRICTED traffic class types.
++	 */
++	unsigned int res_req_dscp;
++
++	/* Unrestricted request DSCP used for CXI_TC_TYPE_DEFAULT and
++	 * CXI_TC_TYPE_HRP traffic class types.
++	 */
++	unsigned int unres_req_dscp;
++
++	/* Restricted request DSCP used only for CXI_TC_TYPE_HRP traffic class
++	 * type. -1 disables the CXI_TC_TYPE_HRP traffic class type for a given
++	 * traffic class.
++	 */
++	int hrp_res_req_dscp;
++
++	/* Restricted request DSCP used only for CXI_TC_TYPE_COLL_LEAF
++	 * traffic class type. -1 disables the CXI_TC_TYPE COLL_LEAF for a
++	 * given traffic class.
++	 */
++	int coll_leaf_res_req_dscp;
++
++	/* Unrestricted request DSCP used only for CXI_TC_TYPE_RESTRICTED
++	 * traffic class type. -1 disables the CXI_TC_TYPE_RESTRICTED traffic
++	 * class type for a given traffic class.
++	 */
++	int restricted_unres_req_dscp;
++};
++
++struct cass_tc_cq_settings {
++	unsigned int dynamic_fq_count;
++	unsigned int static_fq_count;
++	unsigned int fq_buf_reserved;
++	unsigned int pfq_high_thresh;
++};
++
++struct cass_tc_ixe_settings {
++	unsigned int fq_count;
++};
++
++struct cass_tc_lpe_settings {
++	unsigned int fq_count;
++};
++
++struct cass_tc_pct_settings {
++	unsigned int trs_rsvd;
++	unsigned int mst_rsvd;
++	unsigned int tct_rsvd;
++};
++
++struct cass_tc_hni_settings {
++	unsigned int pbuf_rsvd;
++	unsigned int mfs;
++};
++
++enum cxi_qos_profile {
++	CXI_QOS_HPC = 1, /* Leave 0 as Invalid to catch errors */
++	CXI_QOS_LL_BE_BD_ET,
++	CXI_QOS_LL_BE_BD_ET1_ET2,
++	CXI_QOS_NUM_PROF
++};
++
++struct cass_tc_eth_settings {
++	unsigned int pcp;
++	bool tc_pcps[8]; /* Used only by ETH_SHARED */
++};
++
++struct cxi_tc {
++	enum cxi_traffic_class tc;
++	struct kobject kobj;
++	unsigned int default_ocuset;
++	unsigned int default_cq_tc;
++	unsigned int restricted_ocuset;
++	unsigned int restricted_cq_tc;
++	unsigned int branch;
++	unsigned int leaf[2]; /* assumes always 2 leaves per TC */
++	unsigned int req_bc;
++
++	/* RDMA Only Settings */
++	struct cass_tc_dscp_pcp_settings dscp_pcp_settings;
++	struct cass_tc_ixe_settings ixe_settings;
++	struct cass_tc_lpe_settings lpe_settings;
++	struct cass_tc_pct_settings pct_settings;
++
++	/* Settings for RDMA + "Global" Ethernet */
++	struct cass_tc_oxe_settings oxe_settings;
++	struct cass_tc_cq_settings cq_settings;
++	struct cass_tc_hni_settings hni_settings;
++
++	/* Eth only settings */
++	struct cass_tc_eth_settings eth_settings;
++};
++
++struct qos_profile {
++	struct mutex mutex;
++	bool tcs_active[CXI_ETH_TC_MAX];
++	unsigned int pct_control_pcp;
++	unsigned int pct_control_res_rsp_dscp;
++	unsigned int pct_control_unres_rsp_dscp;
++	unsigned int tc_restricted_oxe_req_bc;
++	unsigned int untagged_eth_pcp;
++	struct cxi_tc tcs[CXI_ETH_TC_MAX];
++};
++
++extern struct qos_profile profiles[];
++int tc_cfg_show(struct seq_file *s, void *unused);
++
++/* Check if a TC is an ethernet TC. Excludes the general CXI_ETH class */
++static inline bool is_eth_tc(unsigned int tc)
++{
++	return (tc > CXI_TC_ETH && tc < CXI_ETH_TC_MAX);
++}
++
++void cxi_qos_calculate_limits(struct qos_profile *qos, bool is_c2);
+diff --git a/drivers/net/ethernet/hpe/ss1/cxi_rgroup.h b/drivers/net/ethernet/hpe/ss1/cxi_rgroup.h
+new file mode 100644
+index 000000000000..ae903ad466e6
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cxi_rgroup.h
+@@ -0,0 +1,68 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright 2024 Hewlett Packard Enterprise Development LP */
++
++/* TODO: are these really part of the uapi? */
++
++#ifndef _CXI_RGROUP_H_
++#define _CXI_RGROUP_H_
++
++#include <linux/xarray.h>
++#include "cass_core.h"
++
++/* Resource Groups contigurables */
++
++#define RGROUP_GFP_OPTS              (GFP_KERNEL)
++#define RGROUP_ID_MIN                (CXI_DEFAULT_SVC_ID)
++#define RGROUP_ID_MAX                (INT_MAX)
++#define RGROUP_ID_LIMITS             (XA_LIMIT(RGROUP_ID_MIN, \
++					       RGROUP_ID_MAX))
++#define RGROUP_XARRAY_FLAGS          (XA_FLAGS_ALLOC1)
++
++/* Resource Entries */
++
++#define RESOURCE_ENTRY_GFP_OPTS      (GFP_KERNEL)
++#define RESOURCE_ENTRY_ID_MIN        (0)
++#define RESOURCE_ENTRY_ID_MAX        (INT_MAX)
++#define RESOURCE_ENTRY_ID_LIMITS     (XA_LIMIT(RESOURCE_ENTRY_ID_MIN, \
++					       RESOURCE_ENTRY_ID_MAX))
++#define RESOURCE_ENTRY_XARRAY_FLAGS  (XA_FLAGS_ALLOC)
++
++struct cxi_rgroup_attr {
++	unsigned int   id;
++	unsigned int   cntr_pool_id;
++	unsigned int   lnis_per_rgid;
++	bool           system_service;
++	char           name[50];
++};
++
++struct cxi_rgroup_state {
++	bool           enabled;
++	refcount_t     refcount;
++};
++
++struct cxi_rgroup {
++	unsigned int                   id;
++	struct cass_dev                *hw;
++	struct cxi_rgroup_attr         attr;
++	struct cxi_rgroup_state        state;
++	struct cxi_resource_entry_list resource_entry_list;
++	struct cxi_ac_entry_list       ac_entry_list;
++	struct cxi_rgroup_pools        pools;
++};
++
++void cxi_dev_rgroup_init(struct cxi_dev *dev);
++void cxi_dev_rgroup_fini(struct cxi_dev *dev);
++
++/**
++ * for_each_rgroup() - Iterate over rgroup_list
++ *
++ * @list: rgroup list
++ * @index: index of @entry
++ * @entry: rgroup retrieved from array
++ *
++ * Return: first non-zero return value of operator or 0
++ */
++#define for_each_rgroup(index, entry) \
++	xa_for_each(&hw->rgroup_list.xarray, index, entry)
++
++#endif /* _CXI_RGROUP_H_ */
+diff --git a/drivers/net/ethernet/hpe/ss1/cxi_rxtx_profile.h b/drivers/net/ethernet/hpe/ss1/cxi_rxtx_profile.h
+new file mode 100644
+index 000000000000..250d765b4b67
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cxi_rxtx_profile.h
+@@ -0,0 +1,135 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2024 Hewlett Packard Enterprise Development LP */
++
++/** Common parts of RX and TX Profiles
++ *
++ * These functions should only be used to implement RX and TX profile
++ * functions.
++ */
++
++#ifndef _CXI_RXTX_PROFILE_H_
++#define _CXI_RXTX_PROFILE_H_
++
++#define DEF_RMU_INDEX (-1)
++
++void cxi_rxtx_profile_init(struct cxi_rxtx_profile *rxtx_profile,
++			   struct cass_dev *hw,
++			   const struct cxi_rxtx_vni_attr *vni_attr);
++
++void cxi_rxtx_profile_destroy(struct cxi_rxtx_profile *rxtx_profile);
++
++int cxi_rxtx_profile_find_inc_refcount(struct cxi_rxtx_profile_list *list,
++				       unsigned int profile_id,
++				       struct cxi_rxtx_profile **rxtx_profile);
++
++int cxi_rxtx_profile_test_insert(struct cxi_rxtx_profile_list *list,
++				 struct cxi_rxtx_profile *rxtx_profile,
++				 unsigned int *id,
++				 int (*test_func)(const struct cxi_rxtx_profile *p1,
++						  const struct cxi_rxtx_profile *p2));
++
++void cxi_rxtx_profile_release(struct cxi_rxtx_profile *rxtx_profile);
++void cxi_rxtx_profile_revoke(struct cxi_rxtx_profile *rxtx_profile);
++
++void cxi_rxtx_profile_get_info(struct cxi_rxtx_profile *rxtx_profile,
++			       struct cxi_rxtx_vni_attr *vni_attr,
++			       struct cxi_rxtx_profile_state *state);
++
++int cxi_rxtx_profile_add_ac_entry(struct cxi_rxtx_profile *rxtx_profile,
++				  enum cxi_ac_type ac_type,
++				  union cxi_ac_data *ac_data,
++				  unsigned int *ac_entry_id);
++
++int cxi_rxtx_profile_remove_ac_entry(struct cxi_rxtx_profile *rxtx_profile,
++				     unsigned int ac_entry_id);
++
++int cxi_rxtx_profile_get_ac_entry_ids(struct cxi_rxtx_profile *rxtx_profile,
++				      size_t max_ids,
++				      unsigned int *ac_entry_ids,
++				      size_t *num_ids);
++
++int cxi_rxtx_profile_get_ac_entry_data(struct cxi_rxtx_profile *rxtx_profile,
++				       unsigned int ac_entry_id,
++				       enum cxi_ac_type *ac_type,
++				       union cxi_ac_data *ac_data);
++
++int cxi_rxtx_profile_get_ac_entry_id_by_data(struct cxi_rxtx_profile *rxtx_profile,
++					     enum cxi_ac_type ac_type,
++					     const union cxi_ac_data *ac_data,
++					     unsigned int *ac_entry_id);
++
++int cxi_rxtx_profile_get_ac_entry_id_by_user(struct cxi_rxtx_profile *rxtx_profile,
++					     uid_t uid,
++					     gid_t gid,
++					     unsigned int netns,
++					     cxi_ac_typeset_t desired_types,
++					     unsigned int *ac_entry_id);
++
++void cxi_tx_profile_list_destroy(struct cass_dev *cdev);
++
++int vni_overlap_test(struct cxi_rxtx_profile *profile1,
++		     void *user_arg);
++bool unique_vni_space(struct cass_dev *hw,
++		      struct cxi_rxtx_profile_list *list,
++		      const struct cxi_rxtx_vni_attr *attr);
++
++__maybe_unused
++static struct cxi_rx_profile *co_rx_profile(struct cxi_rxtx_profile *profile)
++{
++	return container_of(profile, struct cxi_rx_profile, profile_common);
++}
++
++__maybe_unused
++static struct cxi_tx_profile *co_tx_profile(struct cxi_rxtx_profile *profile)
++{
++	return container_of(profile, struct cxi_tx_profile, profile_common);
++}
++
++/**
++ * vni_well_formed() - determine if any of the match bits
++ *                     are also in the ignore mask.
++ *
++ * @attr: pointer to the VNI attributes
++ *
++ * Return: whether we consider this set of attributes good.
++ */
++static inline bool vni_well_formed(const struct cxi_rxtx_vni_attr *attr)
++{
++	return !(attr->match & attr->ignore);
++}
++
++/**
++ * zero_vni() - Check for the zero vni which is invalid
++ *              Used for allocating an rx profile with unknown attributes
++ *              which will be updated later.
++ *
++ * @attr: pointer to the VNI attributes
++ *
++ * Return: The match value is the default (invalid) value of 0.
++ */
++static inline bool zero_vni(const struct cxi_rxtx_vni_attr *attr)
++{
++	return !attr->match;
++}
++
++/**
++ * vni_overlap() - determine if 2 vni specifications share
++ *                 any VNI space.
++ *
++ * @attr1: pointer to a VNI attribute
++ * @attr2: pointer to second VNI attribute
++ *
++ * Return: true if any VNI satisfies both specifications.
++ */
++static inline bool vni_overlap(const struct cxi_rxtx_vni_attr *attr1,
++			       const struct cxi_rxtx_vni_attr *attr2)
++{
++	u16 ignore = attr1->ignore | attr2->ignore;
++
++	if ((attr1->match & ~ignore) != (attr2->match & ~ignore))
++		return false;
++
++	return true;
++}
++
++#endif /* _CXI_RXTX_PROFILE_H_ */
+diff --git a/drivers/net/ethernet/hpe/ss1/cxi_rxtx_profile_list.h b/drivers/net/ethernet/hpe/ss1/cxi_rxtx_profile_list.h
+new file mode 100644
+index 000000000000..45faf343b283
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cxi_rxtx_profile_list.h
+@@ -0,0 +1,53 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/* Copyright 2023 Hewlett Packard Enterprise Development LP */
++
++#ifndef _CXI_RXTX_PROFILE_LIST_H_
++#define _CXI_RXTX_PROFILE_LIST_H_
++
++#include <linux/xarray.h>
++
++#define RX_PROFILE_ID_MIN        (1)
++#define RX_PROFILE_ID_MAX        (UINT_MAX)
++#define RX_PROFILE_XARRAY_FLAGS  (XA_FLAGS_ALLOC1)
++#define RX_PROFILE_GFP_OPTS      (GFP_KERNEL)
++
++#define TX_PROFILE_ID_MIN        (1)
++#define TX_PROFILE_ID_MAX        (UINT_MAX)
++#define TX_PROFILE_XARRAY_FLAGS  (XA_FLAGS_ALLOC1)
++#define TX_PROFILE_GFP_OPTS      (GFP_KERNEL)
++
++struct cxi_rxtx_profile;
++
++void cxi_rxtx_profile_list_init(struct cxi_rxtx_profile_list *list,
++				struct xa_limit *limits,
++				gfp_t flags,
++				gfp_t gfp_opts);
++
++void cxi_rxtx_profile_list_destroy(struct cxi_rxtx_profile_list *list,
++				   void (*cleanup)(struct cxi_rxtx_profile *rxtx_profile,
++						   void *user_args),
++				   void *user_args);
++
++void cxi_rxtx_profile_list_lock(struct cxi_rxtx_profile_list *list);
++void cxi_rxtx_profile_list_unlock(struct cxi_rxtx_profile_list *list);
++
++int cxi_rxtx_profile_list_iterate(struct cxi_rxtx_profile_list *list,
++				  int (*operator)(struct cxi_rxtx_profile *rxtx_profile,
++						void *user_arg),
++				void *user_arg);
++
++int cxi_rxtx_profile_list_insert(struct cxi_rxtx_profile_list *list,
++				 struct cxi_rxtx_profile *rxtx_profile,
++				 unsigned int *rxtx_profile_id);
++int cxi_rxtx_profile_list_remove(struct cxi_rxtx_profile_list *list,
++				 unsigned int rxtx_profile_id);
++int cxi_rxtx_profile_list_retrieve(struct cxi_rxtx_profile_list *list,
++				   unsigned int id,
++				   struct cxi_rxtx_profile **rxtx_profile);
++
++int cxi_rxtx_profile_list_get_ids(struct cxi_rxtx_profile_list *list,
++				  size_t max_ids,
++				  unsigned int *ids,
++				  size_t *num_ids);
++
++#endif /* _CXI_RXTX_PROFILE_LIST_H_ */
+diff --git a/drivers/net/ethernet/hpe/ss1/cxi_vf_cmd.h b/drivers/net/ethernet/hpe/ss1/cxi_vf_cmd.h
+new file mode 100644
+index 000000000000..cc82e2b1a40a
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/cxi_vf_cmd.h
+@@ -0,0 +1,52 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright 2026 Hewlett Packard Enterprise Development LP */
++
++#ifndef _CXI_VF_CMD_H
++#define _CXI_VF_CMD_H
++
++#include <linux/hpe/cxi/cxi.h>
++
++struct cxi_lni_alloc_resp_vf {
++	struct cxi_lni_alloc_resp base;
++	unsigned int rgid;
++};
++
++struct cxi_svc_list_get_resp_vf {
++	struct cxi_svc_list_get_resp base;
++	struct cxi_svc_desc svc_list[];
++};
++
++struct cxi_svc_rsrc_list_get_resp_vf {
++	struct cxi_svc_rsrc_list_get_resp base;
++	struct cxi_rsrc_use rsrc_list[];
++};
++
++struct cxi_ct_alloc_cmd_vf {
++	struct cxi_ct_alloc_cmd base;
++	u64 wb_dma_addr;
++};
++
++struct cxi_ct_wb_update_cmd_vf {
++	struct cxi_ct_wb_update_cmd base;
++	u64 wb_dma_addr;
++};
++
++struct cxi_cq_alloc_buf_cmd_vf {
++	struct cxi_cq_alloc_buf_cmd base;
++	u64 dma_addr;
++	size_t cmds_len;
++};
++
++struct cxi_eq_alloc_cmd_vf {
++	struct cxi_eq_alloc_cmd base;
++	u64 dma_addr;
++	int event_irq_idx;
++	int status_irq_idx;
++};
++
++struct cxi_eq_resize_cmd_vf {
++	struct cxi_eq_resize_cmd base;
++	u64 dma_addr;
++};
++
++#endif /* _CXI_VF_CMD_H */
+diff --git a/drivers/net/ethernet/hpe/ss1/pldm_cxi.h b/drivers/net/ethernet/hpe/ss1/pldm_cxi.h
+new file mode 100644
+index 000000000000..794c59ebcf98
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/ss1/pldm_cxi.h
+@@ -0,0 +1,374 @@
++/* SPDX-License-Identifier: MIT */
++/* Copyright 2021 Hewlett Packard Enterprise Development LP */
++
++/* This file contains Platform Level Data Model (PLDM) definitions
++ * necessary to read numeric sensors and parse FRU record data from
++ * the Cassini uC PLDM subsystem.
++ *
++ * More information can be found in the following DMTF documents
++ * (https://www.dmtf.org):
++ * DSP0240 v1.0.0: PLDM Base Specification
++ * DSP0245 v1.3.0: PLDM IDs and Codes Specification
++ * DSP0248 v1.2.0: PLDM for Platform Monitoring and Control Specification
++ * DSP0257 v1.0.0: PLDM for FRU Data Specification
++ */
++
++#ifndef PLDM_CXI_H
++#define PLDM_CXI_H
++
++#define C_MASK(XVAL, XBIT) XVAL##_MASK = (1 << XBIT)
++#define C_ENUM(XNAME, XVAL) XNAME = XVAL
++
++#define PLDM_THRESHOLD_LIST \
++    C(PLDM_THRESHOLD_UPPER_WARNING, 0), \
++    C(PLDM_THRESHOLD_UPPER_CRITICAL, 1), \
++    C(PLDM_THRESHOLD_UPPER_FATAL, 2), \
++    C(PLDM_THRESHOLD_LOWER_WARNING, 3), \
++    C(PLDM_THRESHOLD_LOWER_CRITICAL, 4), \
++    C(PLDM_THRESHOLD_LOWER_FATAL, 5)
++
++#define C C_ENUM
++enum pldm_threshold {
++    PLDM_THRESHOLD_LIST,
++    PLDM_THRESHOLD_COUNT
++};
++
++#undef C
++
++#define C C_MASK
++enum {
++    PLDM_THRESHOLD_LIST
++};
++
++#undef C
++
++/* Generic PLDM Message Fields (DSP0240 Figure 1) */
++struct pldm_hdr {
++	u8 instance_id:5;
++	u8 rsvd:1;
++	u8 d:1;
++	u8 rq:1;
++
++	u8 pldm_type:6;
++	u8 hdr_ver:2;
++
++	u8 pldm_command_code;
++	u8 payload[0];
++} __packed;
++
++/* PLDM Type Codes (DSP0245 Table 1) */
++enum pldm_type_code {
++	PLDM_TYPE_MESSAGING_CONTROL_AND_DISCOVERY = 0,
++	PLDM_TYPE_SMBIOS,
++	PLDM_TYPE_PLATFORM_MONITORING_AND_CONTROL,
++	PLDM_TYPE_BIOS_CONTROL_AND_CONFIGURATION,
++	PLDM_TYPE_FRU_DATA,
++	PLDM_TYPE_FIRMWARE_UPDATE,
++	PLDM_TYPE_REDFISH_DEVICE,
++	PLDM_TYPE_OEM = 0x3F,
++	PLDM_TYPE_COUNT
++};
++
++/* Generic PLDM Completion Codes (DSP0240 Table 4) */
++enum pldm_completion_code {
++	PLDM_SUCCESS = 0,
++	PLDM_ERROR = 1,
++	PLDM_ERROR_INVALID_DATA = 2,
++	PLDM_ERROR_INVALID_LENGTH = 3,
++	PLDM_ERROR_NOT_READY = 4,
++	PLDM_ERROR_UNSUPPORTED_CMD = 5,
++	PLDM_ERROR_INVALID_PLDM_TYPE = 6,
++	PLDM_ERROR_COMMAND_SPECIFIC_START = 0x80,
++	PLDM_ERROR_COMMAND_SPECIFIC_END = 0xFF
++};
++
++/* PLDM Command Numbers (DSP0248 Table 107) */
++enum pldm_platform_cmd {
++	PLDM_CMD_GET_SENSOR_READING = 0x11,
++	PLDM_CMD_GET_PDR = 0x51
++};
++
++enum pldm_sensor_opstate {
++    PLDM_OPSTATE_ENABLED = 0,
++    PLDM_OPSTATE_DISABLED = 1,
++    PLDM_OPSTATE_UNAVAILABLE = 2,
++    PLDM_OPSTATE_STATUS_UNKNOWN = 3,
++    PLDM_OPSTATE_FAILED = 4,
++    PLDM_OPSTATE_INITIALIZING = 5,
++    PLDM_OPSTATE_SHUTTING_DOWN = 6,
++    PLDM_OPSTATE_IN_TEST = 7
++};
++
++/* PLDM Sensor Units (Table 62 of DSP0248) */
++enum sensor_unit {
++    PLDM_UNIT_NONE = 0,
++    PLDM_UNIT_DEGREES_C = 2,
++    PLDM_UNIT_VOLTS = 5,
++    PLDM_UNIT_AMPS = 6,
++    PLDM_UNIT_WATTS = 7,
++};
++
++enum unit_modifier {
++    PLDM_MODIFIER_NANO = -9,
++    PLDM_MODIFIER_MICRO = -6,
++    PLDM_MODIFIER_MILLI = -3,
++    PLDM_MODIFIER_CENTI = -2,
++    PLDM_MODIFIER_DECI = -1,
++    PLDM_MODIFIER_NONE = 0,
++    PLDM_MODIFIER_KILO = 3,
++};
++
++/* GetSensorReading presentReading variable types (DSP0248 Table 30) */
++union sensor_value {
++	s8 value_SINT8;
++	u8 value_UINT8;
++	s16 value_SINT16;
++	u16 value_UINT16;
++	s32 value_SINT32;
++	u32 value_UINT32;
++};
++
++/* GetSensorReading Command Request Format (DSP0248 Table 30) */
++struct get_sensor_reading_req {
++	struct pldm_hdr hdr;
++	u16 sensor_id;
++	u8 rearm_event_status;
++} __packed;
++
++/* GetSensorReading Command Response Format (DSP0248 Table 30) */
++struct get_sensor_reading_rsp {
++	struct pldm_hdr hdr;
++	u8 completion_code;
++	u8 sensor_data_size;
++	u8 sensor_operational_state;
++	u8 sensor_event_message_enable;
++	u8 present_state;
++	u8 previous_state;
++	u8 event_state;
++	union sensor_value present_reading;
++} __packed;
++
++/* GetPDR Command Request Format (DSP0248 Table 68) */
++struct get_pdr_req {
++	struct pldm_hdr hdr;
++	u32 record_handle;
++	u32 data_transfer_handle;
++	u8 transfer_operation_flag;
++	u16 request_count;
++	u16 record_change_number;
++} __packed;
++
++/* GetPDR Command Response Format (DSP0248 Table 68) */
++struct get_pdr_rsp {
++	struct pldm_hdr hdr;
++	u8 completion_code;
++	u32 next_record_handle;
++	u32 next_data_transfer_handle;
++	u8 transfer_flag;
++	u16 response_count;
++	u8 record_data[];
++} __packed;
++
++/* GetPDR transferOperationFlag values (DSP0248 Table 68) */
++enum pldm_transfer_op {
++	PLDM_XFER_OP_GET_NEXT_PART = 0,
++	PLDM_XFER_OP_GET_FIRST_PART = 1
++};
++
++/* Common PDR Header Format (DSP0248 Table 75) */
++struct pdr_hdr {
++	u32 record_handle;
++	u8 pdr_header_version;
++	u8 pdr_type;
++	u16 record_change_number;
++	u16 data_length;
++	u8 data[0];
++} __packed;
++
++/* PDR Type Values (DSP0248 Table 76) */
++enum pdr_type {
++	PLDM_PDR_TERMINUS_LOCATOR = 1,
++	PLDM_PDR_NUMERIC_SENSOR = 2,
++	PLDM_PDR_STATE_SENSOR = 4,
++	PLDM_PDR_SENSOR_AUXILIARY_NAMES = 6,
++	PLDM_PDR_STATE_EFFECTER = 11,
++	PLDM_PDR_EFFECTER_AUXILIARY_NAMES = 13,
++	PLDM_PDR_ENTITY_ASSOCIATION = 15,
++	PLDM_PDR_ENTITY_AUXILIARY_NAMES = 16,
++	PLDM_PDR_FRU_RECORD_SET = 20,
++	PLDM_PDR_OEM = 127
++};
++
++/* Numeric Sensor PDR sensorDataSize values (DSP0248 Table 78) */
++enum pldm_data_size {
++	PLDM_DATA_SIZE_UINT8,
++	PLDM_DATA_SIZE_SINT8,
++	PLDM_DATA_SIZE_UINT16,
++	PLDM_DATA_SIZE_SINT16,
++	PLDM_DATA_SIZE_UINT32,
++	PLDM_DATA_SIZE_SINT32,
++};
++
++/* The Numeric Sensor PDR has variably sized fields depending on the size of the sensor reading.
++ * To keep the structure packing as simple as possible, unions are used for everything downstream
++ * of the first variably sized field. These sensor size dependent structs are only defined for a
++ * given size (not signedness). They include all Numeric Sensor PDR fields from 'hysteresis' to
++ * 'fatal_low' (DSP0248 Table 78)
++ */
++struct numeric_sensor_ssd8 {
++	u8 hysteresis;
++	u8 supported_thresholds;
++	u8 threshold_and_hysteresis_volatility;
++	float state_transition_interval;
++	float update_interval;
++	u8 max_readable;
++	u8 min_readable;
++	u8 range_field_format;
++	u8 range_field_support;
++	u8 nominal_value;
++	u8 normal_max;
++	u8 normal_min;
++	u8 warning_high;
++	u8 warning_low;
++	u8 critical_high;
++	u8 critical_low;
++	u8 fatal_high;
++	u8 fatal_low;
++} __packed;
++
++struct numeric_sensor_ssd16 {
++	u16 hysteresis;
++	u8 supported_thresholds;
++	u8 threshold_and_hysteresis_volatility;
++	float state_transition_interval;
++	float update_interval;
++	u16 max_readable;
++	u16 min_readable;
++	u8 range_field_format;
++	u8 range_field_support;
++	u16 nominal_value;
++	u16 normal_max;
++	u16 normal_min;
++	u16 warning_high;
++	u16 warning_low;
++	u16 critical_high;
++	u16 critical_low;
++	u16 fatal_high;
++	u16 fatal_low;
++} __packed;
++
++struct numeric_sensor_ssd32 {
++	u32 hysteresis;
++	u8 supported_thresholds;
++	u8 threshold_and_hysteresis_volatility;
++	float state_transition_interval;
++	float update_interval;
++	u32 max_readable;
++	u32 min_readable;
++	u8 range_field_format;
++	u8 range_field_support;
++	u32 nominal_value;
++	u32 normal_max;
++	u32 normal_min;
++	u32 warning_high;
++	u32 warning_low;
++	u32 critical_high;
++	u32 critical_low;
++	u32 fatal_high;
++	u32 fatal_low;
++} __packed;
++
++/* Numeric Sensor PDR Format (DSP0248 Table 78) */
++struct numeric_sensor_pdr {
++	struct pdr_hdr hdr;
++	u16 pldm_terminus_handle;
++	u16 sensor_id;
++	union {
++		struct {
++			u16 entity_type_entity_id :15;
++			u16 entity_type_logical   :1;
++		};
++		u16 entity_type;
++	};
++	u16 entity_instance_number;
++	u16 container_id;
++	u8 sensor_init;
++	u8 sensor_auxiliary_names_pdr;
++	u8 base_unit;
++	s8 unit_modifier;
++	u8 rate_unit;
++	u8 base_oem_unit_handle;
++	u8 aux_unit;
++	s8 aux_unit_modifier;
++	u8 aux_rate_unit;
++	u8 rel;
++	u8 aux_oem_unit_handle;
++	u8 is_linear;
++	u8 sensor_data_size;
++	float resolution;
++	float offset;
++	u16 accuracy;
++	u8 plus_tolerance;
++	u8 minus_tolerance;
++	union {
++		struct numeric_sensor_ssd8 ssd8;
++		struct numeric_sensor_ssd16 ssd16;
++		struct numeric_sensor_ssd32 ssd32;
++	} ssd;
++} __packed;
++
++#define AUX_NAME_MAX  33
++
++/* Sensor Auxiliary Names PDR Format (DSP0248 Table 83) */
++struct aux_name_pdr {
++	struct pdr_hdr hdr;
++	u16 pldm_terminus_handle;
++	u16 sensor_id;
++	u8 sensor_count;
++	u8 name_string_count;           /* Currently hard-coded to a single name */
++	u8 name_language_tag[3];        /* Currently hard-coded to "en" only */
++	u16 sensor_name[AUX_NAME_MAX];
++} __packed;
++
++/* PLDM FRU Field TLV (DSP0257 Table 2) */
++struct pldm_fru_field {
++	u8 field_type;
++	u8 length;
++	u8 value[];
++} __packed;
++
++/* PLDM FRU Record Data Format (DSP0257 Table 2) */
++struct pldm_fru_record {
++	u16 record_set_id;
++	u8 record_type;
++	u8 num_fields;
++	u8 field_encoding;
++	u8 field_data[];
++} __packed;
++
++/* FRU Record Types (DSP0257 Table 4) */
++enum pldm_fru_record_type {
++	PLDM_FRU_RECORD_GENERAL = 1,
++	PLDM_FRU_RECORD_OEM = 254
++};
++
++/* General FRU Record Field Types (DSP0257 Table 5) */
++enum pldm_fru_field_type {
++	PLDM_FRU_FIELD_CHASSIS_TYPE = 1,
++	PLDM_FRU_FIELD_MODEL = 2,
++	PLDM_FRU_FIELD_PART_NUMBER = 3,
++	PLDM_FRU_FIELD_SERIAL_NUMBER = 4,
++	PLDM_FRU_FIELD_MANUFACTURER = 5,
++	PLDM_FRU_FIELD_MANUFACTURE_DATE = 6,
++	PLDM_FRU_FIELD_VENDOR = 7,
++	PLDM_FRU_FIELD_NAME = 8,
++	PLDM_FRU_FIELD_SKU = 9,
++	PLDM_FRU_FIELD_VERSION = 10,
++	PLDM_FRU_FIELD_ASSET_TAG = 11,
++	PLDM_FRU_FIELD_DESCRIPTION = 12,
++	PLDM_FRU_FIELD_ENGINEERING_CHANGE_LEVEL = 13,
++	PLDM_FRU_FIELD_OTHER = 14,
++	PLDM_FRU_FIELD_VENDOR_IANA = 15
++};
++
++#endif /* PLDM_CXI_H */
 
 -- 
 2.56.0
