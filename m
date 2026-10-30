@@ -1,75 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.16
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793334712;
-	b=En9yk4UXFZn03bHGis/LgRiFYigSUjxz2GngyNQ6h6+R4ByrE6k9bpvPWuzQiSL89qoV
-	 YwofOe939Z6u4eTwwu30ALj1LmLJsi+FH+00oX5zSEiZUJd+Z/W+z9cxh5NaeEXm4NVXq
-	 jN02qEEaNgcH3l4Ru6pJclc6u0c4+RSBZavCurrF8N6iwSlzwhOj6JziZxQmsRFD2UL5l
-	 ouelThPm1QA/7hsveLtgu/VnDJHYriWfBdmORGS5X4ukF7xiXbJ5fnQZU0+LshuHeFfYG
-	 MwKRIt6gfRP/hDwRQ+ZQOzyI80fFo4wc1sYT1/w5cOsp0bEgzwItxXSuUX8CnwlzpfA==
+	t=1793334869;
+	b=tzgZF10BFX5hKZxSLppI7M90r2RwIcPYUyBanWeV0Ui7pqOWA6hk+bb9O+lKpkK/iGyC
+	 Z0nikINimYO6g/TItkxzYWaEw4uoT+5k/mIs9pzmHA4BNqKVB3vm7NQlVvvEpdoqjlsmJ
+	 KR6cCjqqSo2RU+9LZFrQvBo4ZpHKUBOidPxkZqG+zDGnEz2uXo/Z/cQSRUEhgqLsEnDqt
+	 3kNQalBaGGgp7ovvXjvdBHpgST/qoTAuBmvyw2NBQjPTVgBMjpU4gfyAaTistJZF09+zY
+	 JswDQjOEFrexYmC+9BSWaE3Jq9bbJWjRTWkyi9EyYo/OE7EgBeumYiOP39BtUfMp7cQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793334712;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=ZziXw8Mhu/MliXEzo41WRhscDvJYaH0eawGMV1Y+J3k=;
-	b=eZtNzn481sk6HQWimIl4/iSARxGTW3ySboYTsvErnVDSRV3hzcIVEoFBd9I0xzc6ndjb
-	 +4yTB81I2l25blO5jW8QocCjt6w7FL/0tCJyUQajDlIK4Ay/HTFWfELVT1d92iBcPoHsq
-	 CcS06qhVrEae7wDnzb/a/cP2nMvwM03xOzj/rvZFqHIonKhdVjmTfwjDAKX4mSluCYuzV
-	 35BaEHlY3rv70Ee5+LstSdYiNqKE/vosLGWgXZiD9aM8JxpD1CwjBjV0UCrm2Y/uFgyRK
-	 oJjcsKieUah5lbXBH552LInGqxC2DUV4xtAB2sjUKh7MuiKb/nOgUJwJ4napfyA6GjQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793334869;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=EdNxZc4X6LJFiwbbPfzZhQvrmn346FFzNDGFNfDLac0=;
+	b=jt3b9VH03X1d7NJRRMUC2Gvryzmz4SA+d7/+nOC6nEAB2hwhfwGOAFWP4OvsyqkPhTkS
+	 2kM4zIcn4GHpCpvrM3/b24IfrlbGCDmVfLlgdttrUu9KpIzdjJf3i+XOtVaSM+zLCJCPM
+	 0Aa2MbEohxh3eFc/WssPI980bKMq+Lm5x/9stjy1xtA68eFbLg0u6p32CkzUyKfkLOG/k
+	 4WqJD5ZK7F8okpDg5/Ftq0af1SDuIsfbPqTfb/hFfkEgqMsyH+X6jA9biwhxHk5JY4lQ0
+	 XujX5fnPwdX6rLsVdYLL1lx2D56HnynQAb1lmA2mWqryfjkACCq9UBtNOpOlOVF8KwA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--weiwan.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bn+lZmgA;
-	arc=none smtp.remote-ip=209.85.215.198
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QXQWURvf;
+	arc=none smtp.remote-ip=192.198.163.16
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F915606A323
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 04:31:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F915606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--weiwan.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA51606A31A;
+	Fri, 30 Oct 2026 04:34:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3FA51606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bn+lZmgA
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cdae10aebfdso235895a12.1
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:31:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793334711; x=1793939511; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZziXw8Mhu/MliXEzo41WRhscDvJYaH0eawGMV1Y+J3k=;
-        b=bn+lZmgA+J+K0XjBuCBZNUoxB3sifXpY12KNQK8KWDfMsytY/wKL2pHp1dJSeGaE7D
-         ZEQazoGfio2Txj+JSTcIdJp8Go/uOHd/z/DwJda2mi+om3+f7rBQoCQjudXJzEtzSRbU
-         cWGw8il0bjvGIaTWl3bxtswJiBGYmiT2RsV5EssKW18Rx9648jrtMBg8BMZ4bLo3ZqwP
-         sB6MXxj2q/+KqtpYAfNKggECAH7Wdd82b7Sl5NZls6i2eWJ1WMouWQnM+ptnw/hfiHit
-         ObpC5AdyslPLqOAFvuWsvcN74r/8beARAhhFgy8UE1fkPiglm5jiYEv5RQgilBA4E9sx
-         PfFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793334711; x=1793939511;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZziXw8Mhu/MliXEzo41WRhscDvJYaH0eawGMV1Y+J3k=;
-        b=b2SXUGSvCtASeYnayAH77yv+Gl8OxWPEO1wW4EEa9uR1wtM7WGK9/GQO1lJ4xVqZyg
-         rkASyo3rCxxXGqhhq2038xAEGsamsVDwJjf4ZVY/XRzvTXB6dmeUkZa4YpeRKPirypBh
-         EbAIix6NnzaD0V8brvBFUxWt6ecz/KmVYS3c1VHYWJ0sL3yKgmwRbCH9IlEyN3bHTzR2
-         DEKvFQbxcmJC9nJTZDx3C0A6FbruxZFB89qqoQdpTW3cskfztq+cqhHTCz/NSpUfBp9a
-         m1/7D8Uu9KI7Vl/s/XgnHyD4yng03qU0yu4zP0KOzhkN97vcbKnLnx6H0g8Lg8ermZqr
-         /okA==
-X-Forwarded-Encrypted: i=1; AKwUvBxre0aW0AIFXd09IVlm6Jn00WUWQk7HDX5Oak5OR60uDh2k/EG8RakeFKeTHQvBEQJELYMbMKA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL4ymrbIHzNURUzhp/A1gwdw/cLC8r0D+6kMaGOhQsuw7NnnO1g
-	J0REkQaMIkoo1jMVK8OGGQG0jMc3eakyfpMto0VFQwQIK11NitTeYbacGeMUfypTnouKeyHSmCa
-	uSqhGyA==
-X-Received: from pfbgi11.prod.google.com ([2002:a05:6a00:63cb:b0:8a0:4085:d831])
- (user=weiwan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:a94:b0:3e1:8a37:bf1e
- with SMTP id adf61e73a8af0-3e928a78297mr835173637.42.1793334710498; Thu, 29
- Oct 2026 21:31:50 -0700 (PDT)
-Date: Fri, 30 Oct 2026 04:31:44 +0000
-In-Reply-To: <20261030043145.2185700-1-weiwan@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QXQWURvf
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793334866; x=1824870866;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=aOvaYqDIxiTGgTbHsnThDlqt+KqsfhQW5CiHanjH9V4=;
+  b=QXQWURvfExmYHIlePXiVJ4UUWvNS98lAe/RpubvV63ZI0nFv0F0QQP7n
+   Gb9/66XbWsogpK7jK6HNCZPwbk8JPhyWnGpKMVf0XazBHo2/+P6uIPLPk
+   tjFb1xvCZBsJU/M6KC44+Is0xjrJ68QwfkPxe+Vlvkd9jj3M7yf7CqW+i
+   ZwHneoWeVs2A5dA01ttoE2R2eQZi9PKQFB37EDnJehVTXRqiF9rOB4X2v
+   8vEUumIQf9oPpwg792CN41bGEDp5B+bqK3rlIQoXlwKqSLpLww9XFuWPH
+   nlqLeY2FjXaQ2w0QddLBfSQQx1RadUqZX0kNBrf5wQo2fQ7J5H7vuXIUz
+   w==;
+X-CSE-ConnectionGUID: 82govd88Tpy7/dmBB2NsZA==
+X-CSE-MsgGUID: TQbXeH7NS3irMiu/qcHJqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11950"; a="2106855"
+X-IronPort-AV: E=Sophos;i="6.27,185,1787036400"; 
+   d="scan'208";a="2106855"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 21:34:25 -0700
+X-CSE-ConnectionGUID: Ib86rIOjQPKTYfDG86lDUQ==
+X-CSE-MsgGUID: aImYJuVoSn+YdNVEjNHdPw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,185,1787036400"; 
+   d="scan'208";a="5695023"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 29 Oct 2026 21:34:22 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xMeJm-00000000bJg-43jp;
+	Fri, 30 Oct 2026 04:34:18 +0000
+Date: Fri, 30 Oct 2026 12:33:21 +0800
+From: kernel test robot <lkp@intel.com>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+	linux-kselftest@vger.kernel.org,
+	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Subject: Re: [PATCH nf-next 5/8] net: netfilter: add IPv4 over IPv6 tunnel
+ flowtable acceleration
+Message-ID: <202610301255.BRNUBmqH-lkp@intel.com>
+References: <20261029-flowtable-sw-accel-ip6ip-sit-v1-5-6a17c54f9fb7@oss.qualcomm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,107 +92,128 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261030043145.2185700-1-weiwan@google.com>
-X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
-Message-ID: <20261030043145.2185700-2-weiwan@google.com>
-Subject: [PATCH net v2 1/2] net: Make PSP skb extension survive packet scrubbing
-From: Wei Wang <weiwan@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>
-Cc: Simon Horman <horms@kernel.org>, Jakub Sitnicki <jakub@cloudflare.com>, 
-	Daniel Zahka <daniel.zahka@gmail.com>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	bpf@vger.kernel.org, Wei Wang <weiwan@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261029-flowtable-sw-accel-ip6ip-sit-v1-5-6a17c54f9fb7@oss.qualcomm.com>
 
-skb_scrub_packet() drops all skb extensions unconditionally via
-skb_ext_reset(). It runs on tunnel encap/decap (ip_tunnel_rcv, vxlan_rcv,
-etc.) and virtual device forwarding/redirection (dev_forward_skb,
-netkit_xmit, skb_do_redirect).
+Hi Lorenzo,
 
-When a virtual device such as netkit is associated with a PSP device in
-another network namespace via PSP_CMD_DEV_ASSOC, incoming PSP packets
-decapsulated by psp_dev_rcv() lose their SKB_EXT_PSP extension when
-scrubbed during redirection into the peer netns. Without SKB_EXT_PSP,
-__psp_sk_rx_policy_check() rejects incoming TCP data segments at the
-socket layer with SKB_DROP_REASON_PSP_INPUT.
+kernel test robot noticed the following build warnings:
 
-Introduce a static skb_ext_scrub() helper in net/core/skbuff.c to
-preserve SKB_EXT_PSP across skb_scrub_packet() while dropping all other
-extensions. If SKB_EXT_PSP is not active, skb_ext_scrub() simply calls
-skb_ext_reset(). If SKB_EXT_PSP is the only extension in the skb_ext
-buffer, nothing needs to be scrubbed. Otherwise, save the PSP metadata,
-reset the extension block, and re-add a fresh SKB_EXT_PSP extension (or
-clear skb->decrypted if the allocation fails).
+[auto build test WARNING on 734bef548a96e8774d6eef5dfa2026c6edc4e80b]
 
-Fixes: 06c2dce2d0f6 ("psp: add new netlink cmd for dev-assoc and dev-disassoc")
-Link: https://lore.kernel.org/r/20260910-bpf-meta-inside-skb-ext-v2-3-0b21e42180b0@cloudflare.com
-Reported-by: Daniel Zahka <daniel.zahka@gmail.com>
-Closes: https://lore.kernel.org/netdev/DLODSKPY6ON6.1G6SP3CFFLCPJ@gmail.com/
-Co-developed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
-Signed-off-by: Wei Wang <weiwan@google.com>
----
- net/core/skbuff.c | 31 +++++++++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
+url:    https://github.com/intel-lab-lkp/linux/commits/Lorenzo-Bianconi/net-netfilter-nf_flow_table-recognize-IPv4-IPv6-in-tunnel-proto-matching/20261029-143512
+base:   734bef548a96e8774d6eef5dfa2026c6edc4e80b
+patch link:    https://lore.kernel.org/r/20261029-flowtable-sw-accel-ip6ip-sit-v1-5-6a17c54f9fb7%40oss.qualcomm.com
+patch subject: [PATCH nf-next 5/8] net: netfilter: add IPv4 over IPv6 tunnel flowtable acceleration
+config: m68k-defconfig (https://download.01.org/0day-ci/archive/20261030/202610301255.BRNUBmqH-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 16.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261030/202610301255.BRNUBmqH-lkp@intel.com/reproduce)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 93c2f440b9ec..5c4a2e982ebc 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -6369,6 +6369,32 @@ bool skb_try_coalesce(struct sk_buff *to, struct sk_buff *from,
- }
- EXPORT_SYMBOL(skb_try_coalesce);
- 
-+static void skb_ext_scrub(struct sk_buff *skb)
-+{
-+#if IS_ENABLED(CONFIG_INET_PSP)
-+	struct psp_skb_ext *pse = skb_ext_find(skb, SKB_EXT_PSP);
-+
-+	if (pse) {
-+		struct skb_ext *ext = skb->extensions;
-+		struct psp_skb_ext tmp = *pse;
-+
-+		/* Nothing else to scrub if PSP is the only extension in ext. */
-+		if (ext->chunks == SKB_EXT_CHUNKSIZEOF(*ext) +
-+				   skb_ext_type_len[SKB_EXT_PSP])
-+			return;
-+
-+		skb_ext_reset(skb);
-+		pse = skb_ext_add(skb, SKB_EXT_PSP);
-+		if (pse)
-+			memcpy(pse, &tmp, sizeof(*pse));
-+		else
-+			skb->decrypted = 0;
-+		return;
-+	}
-+#endif
-+	skb_ext_reset(skb);
-+}
-+
- /**
-  * skb_scrub_packet - scrub an skb
-  *
-@@ -6380,7 +6406,8 @@ EXPORT_SYMBOL(skb_try_coalesce);
-  * operations.
-  * skb_scrub_packet can also be used to clean a skb before injecting it in
-  * another namespace (@xnet == true). We have to clear all information in the
-- * skb that could impact namespace isolation.
-+ * skb that could impact namespace isolation. Note that PSP skb extension is
-+ * preserved across packet scrubbing by design.
-  */
- void skb_scrub_packet(struct sk_buff *skb, bool xnet)
- {
-@@ -6388,7 +6415,7 @@ void skb_scrub_packet(struct sk_buff *skb, bool xnet)
- 	skb->skb_iif = 0;
- 	skb->ignore_df = 0;
- 	skb_dst_drop(skb);
--	skb_ext_reset(skb);
-+	skb_ext_scrub(skb);
- 	nf_reset_ct(skb);
- 	nf_reset_trace(skb);
- 
--- 
-2.56.0.317.g454f8302e1-goog
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610301255.BRNUBmqH-lkp@intel.com/
 
+All warnings (new ones prefixed by >>):
+
+   net/netfilter/nf_flow_table_ip.c: In function 'nf_flow_queue_xmit4':
+>> net/netfilter/nf_flow_table_ip.c:891:35: warning: variable 'dst' set but not used [-Wunused-but-set-variable=]
+     891 |                 struct dst_entry *dst;
+         |                                   ^~~
+   net/netfilter/nf_flow_table_ip.c: In function 'nf_flow_queue_xmit6':
+   net/netfilter/nf_flow_table_ip.c:1237:35: warning: variable 'dst' set but not used [-Wunused-but-set-variable=]
+    1237 |                 struct dst_entry *dst;
+         |                                   ^~~
+
+
+vim +/dst +891 net/netfilter/nf_flow_table_ip.c
+
+   858	
+   859	static int nf_flow_queue_xmit4(struct nf_flowtable_ctx *ctx,
+   860				       struct sk_buff *skb,
+   861				       struct flow_offload_tuple_rhash *tuplehash,
+   862				       const struct nf_hook_state *state)
+   863	{
+   864		struct flow_offload_tuple *other_tuple;
+   865		enum flow_offload_tuple_dir dir;
+   866		struct nf_flow_xmit xmit = {};
+   867		union nf_inet_addr *ip_addr;
+   868		struct flow_offload *flow;
+   869		struct neighbour *neigh;
+   870		struct rtable *rt;
+   871	
+   872		if (unlikely(tuplehash->tuple.xmit_type == FLOW_OFFLOAD_XMIT_XFRM)) {
+   873			rt = dst_rtable(tuplehash->tuple.dst_cache);
+   874			memset(skb->cb, 0, sizeof(struct inet_skb_parm));
+   875			IPCB(skb)->iif = skb->dev->ifindex;
+   876			IPCB(skb)->flags = IPSKB_FORWARDED;
+   877			return nf_flow_xmit_xfrm(skb, state, &rt->dst);
+   878		}
+   879	
+   880		dir = tuplehash->tuple.dir;
+   881		flow = container_of(tuplehash, struct flow_offload, tuplehash[dir]);
+   882		other_tuple = &flow->tuplehash[!dir].tuple;
+   883		ip_addr = (union nf_inet_addr *)&other_tuple->src_v4;
+   884	
+   885		if (nf_flow_tunnel_push(state->net, skb, other_tuple,
+   886					tuplehash->tuple.dst_cache, &ip_addr) < 0)
+   887			return NF_DROP;
+   888	
+   889		switch (tuplehash->tuple.xmit_type) {
+   890		case FLOW_OFFLOAD_XMIT_NEIGH: {
+ > 891			struct dst_entry *dst;
+   892	
+   893			xmit.outdev = dev_get_by_index_rcu(state->net, tuplehash->tuple.ifidx);
+   894			if (!xmit.outdev) {
+   895				flow_offload_teardown(flow);
+   896				return NF_DROP;
+   897			}
+   898			if (other_tuple->tun.encap_proto ?
+   899			    other_tuple->tun.encap_proto == AF_INET6 :
+   900			    ctx->tun.inner_proto == IPPROTO_IPV6) {
+   901				struct rt6_info *rt6;
+   902	
+   903				rt6 = dst_rt6_info(tuplehash->tuple.dst_cache);
+   904				neigh = ip_neigh_gw6(rt6->dst.dev,
+   905						     rt6_nexthop(rt6, &ip_addr->in6));
+   906				dst = &rt6->dst;
+   907			} else {
+   908				rt = dst_rtable(tuplehash->tuple.dst_cache);
+   909				neigh = ip_neigh_gw4(rt->dst.dev,
+   910						     rt_nexthop(rt, ip_addr->ip));
+   911				dst = &rt->dst;
+   912			}
+   913			if (IS_ERR(neigh)) {
+   914				flow_offload_teardown(flow);
+   915				return NF_DROP;
+   916			}
+   917			xmit.dest = neigh->ha;
+   918			skb_dst_drop(skb);
+   919			skb_dst_set_noref(skb, &rt->dst);
+   920			break;
+   921		}
+   922		case FLOW_OFFLOAD_XMIT_DIRECT:
+   923			xmit.outdev = dev_get_by_index_rcu(state->net, tuplehash->tuple.out.ifidx);
+   924			if (!xmit.outdev) {
+   925				flow_offload_teardown(flow);
+   926				return NF_DROP;
+   927			}
+   928			xmit.dest = tuplehash->tuple.out.h_dest;
+   929			xmit.source = tuplehash->tuple.out.h_source;
+   930			break;
+   931		default:
+   932			WARN_ON_ONCE(1);
+   933			return NF_DROP;
+   934		}
+   935		xmit.tuple = other_tuple;
+   936		xmit.needs_gso_segment = tuplehash->tuple.needs_gso_segment;
+   937	
+   938		return nf_flow_queue_xmit(state->net, skb, &xmit);
+   939	}
+   940	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
