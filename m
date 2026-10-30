@@ -1,109 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793384004;
-	b=v7FDlumEEWYcpib7dWnFX8cReoGjhtW5FVsD5Vxi5+thTExpSFi3uIuxvfNkDmUPCNEN
-	 V5MtnByAzwcL+ZwFmAhuX83YSLw28w3g+d/Qaela7vYkUUN+s3m32g82PewmImsIjLknL
-	 TeUKnc23ewnGbuouram4gi4rcDvjx5slbtq3V4P/5+BcSA+MYQn8f1rXEWcLPmL6v1UDb
-	 bvDpL/ixUAYmL4blj7qIli+K4oCGz9P82Yll0gBJtxjP+wQOXKaSB+qiaxIRcK1ez6+pM
-	 VSNTCM7IKfPX7JMvBRBw4En0b8qgCjWZ+qZ7cj6k1DViuVGjY4kTwkEjCl2XZ4YTFXQ==
+	t=1793384101;
+	b=VXwPFvO1TliYH4NGQykiLezwRusN9vlppwNonQOp+yvI1z3WRBMbfHvyu+xeXppBWnkR
+	 Rmcm9omcAgDmoQOiRplm0QzMy6TzDecXQ8LE740DXcIiulaeuDiWD0Za4jV0XXaHLWv6+
+	 q+zPuuHzFKTY/3H4pNGaz5Mmb8KuYz07MpqUhYPsYm5wOULnrKHg57A5dvG2aG0mPAUkI
+	 tK83eVYtddNs6LT/qsf+fbNsJNWpk6XU5SFUghPg1au7k+H6w3J8WbxMi6UdbxHjhePv5
+	 1RvJta039NZ4vHbLo7gyBd6TuHE4b2rw1U7wqOkFQ2AIApgH3/KrnGlixa2DzV0LngA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793384004;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=fMT+So78QSqhuFKeOQlwYV6UaMLr+CNOGb0u2W5xmj4=;
-	b=3cLqx5ypgcgV/TEobeKEQoFzYPe53QMYSwYR2FXS7iWpRg4gNWArxXXMq5Ksh+Vw3XEd
-	 Xj7/WphOwEBVS3DmkfOEVdqzxc1lF1bFeREna+fXkm+NrwEdEsQM5VRa3chFNzzGpYxyO
-	 wZLNgMKKnDc4pT7n2Ys1UMvdMdRuRT0DvRkA4zcPT5KbAAI5ztYdv73htKpqy9+PYjt65
-	 CyAYS4Fudoz5h/ykFl7N3KnyHd8UMZ7lufLdhM5PDtc9kA7fPOIhS+c76h2wtBQDKV+Fg
-	 e0HW/N4wNRU/DBmA0SST2pv74TXcfD9fHsXBgPTJonjLW21JVQGC/1CK3urnXIYwSmg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793384101;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=xX4+/ngw10imxtV7Qx0M5QC+PH9quwicLxr3n+FYyZc=;
+	b=sTdecuee0XxpDhGWs+28QaNmJDIPPLzZx2OmCKGBTmabZIebnv/A7NNCABZyUBUYXdt3
+	 cMtbYVjmhVye3E9neX9frVV9RUPOg4nOVG0PWwsikFmBz+Puf2BS7x6U3ywxqRAIB0CNB
+	 4oJCcC31nDmB33eiuRjYSCkJwsrdUx6TxYBCB4lhfm/DceBFmMPClyjBJQpK6v8e3Pz1M
+	 RNRP+lrvRjS9cgqs57bz9wZxbDKRmMejmLur7Xub+HrmHcI9fENztUPv8eT5h6Sxja82k
+	 ma/gircrU3D23K4Kbix8lJt6ycuO2x/dGRAh7TJNsmYkELw2uVtaokgeTeSSssqIl3A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OaE3o8Rj;
-	arc=none smtp.remote-ip=209.85.221.43
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U+rTn4qL;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB23606A31D
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 18:13:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1DB23606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9AD606A31A;
+	Fri, 30 Oct 2026 18:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OaE3o8Rj
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-48c5358fc28so814632f8f.0
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 11:13:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793384002; x=1793988802; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fMT+So78QSqhuFKeOQlwYV6UaMLr+CNOGb0u2W5xmj4=;
-        b=OaE3o8RjEVR2zR75eyJC/w/NzOyHFo4/aqxLVy1sTOOTix0v/XRAORx0DvEXQvizgM
-         GxTHgDQzNXs28wuRg2tAdlgO4YFbkHs6wSwH1KlAI1xNAwZo7o36zCP4KnM/j5WijmTP
-         6Z15Z66ioDDzwi2MWRBKgTvweh+T2EYu4iDu55xkzRjld6HL856ZF+LbbQ9JjGnc7D0K
-         JZTexRxXbc+zHP469suaQUi5EcUd9aKst1j3ayVsyPLEsWdcsXAA52P3SDchoTerpujp
-         tppw+c0l0zQtKg9qiNVqXGoa3LIBe7VYE1HtlFeUKh5x4PNnZtS9WWdSHSvahFqtzjhJ
-         zRzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793384002; x=1793988802;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fMT+So78QSqhuFKeOQlwYV6UaMLr+CNOGb0u2W5xmj4=;
-        b=Lcfyl+q+jkFEYpQOvgucNnpW16rmsj/ihJZ3MVOKqtPY2cbi6ffauLUcGbS0tWgP6S
-         jYSNoUXDlzROXL2eJQ363qNbBglY40hNzv/EF//1LLjofnS55jDA+0BRQ3cfetGeQcn1
-         mumUAsl08hVmeAf/ZMmYj83VrfduEoM3ZXRTXZ0N2IKuXzej5HCa3vERPKfY6g/5zQvK
-         Sv3BeyHnoVYvtP/Hs9hj5R8NvvzXXNqwJgvyLBrfunkKra24j7RgxTIAoLw10bEaVcHp
-         38xmfDV4HF1J8kJuccIW9VUhqRnvutBiBkSu0tuKq7lpHfpxe5pVB+vx2Z25a2KA2bMN
-         I4oA==
-X-Forwarded-Encrypted: i=1; AKwUvBw+++ZKZqvDHguwlKIZsl6cJA8Cyk6CqLTKSnqmoOLTEQ2IzSP9ljlfqr31PJjv/P18IidQG8Y=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJdxTBu4bqh5emyURSadR+WAgABjfaBYcKnavqHZTxXg3VQTihj
-	GarcjaPbqAvySx3N5Cm/tcANIN6gRTJbifwBu1Un6QpuGNqfcB8+efG1
-X-Gm-Gg: AYBFou3Ob+OhDGjhLCgeVkPlxv3navAqW2UzZGg4X62Y6qEQoaKNTfOl38JmjdrHRDC
-	Xowz6a61BnnCt59cVnIndot2SfwbTT4bZJRDt+h55UuAmeiVfS6kYjZ27cM+wWO7jutO/1/E0AD
-	gXX1zkAayfd9E968xF1r7YYOIh4Qae+ZMheH4vB09K2QDmycpxTVRcJ5T2CxNPBMP63zKm+BjQ8
-	0oSR3saT3i557xojNIWWhDTAykt8WKZS5Kze08OK9zxPFJt8zs57Oy/Kut3zFhZKGwSQkRbtFDf
-	KS8DolbJ4QpL+ezQQ6/wg7oUM+mYYj7fAdlsPX+0yOnx7ArUCukchTPcpAyPcQALJbiH15Uz/kB
-	88YegYXY41iW4YVTpBC7tgpZOp70kbOVVGnxSWa0dVefl5t01zvZNUfJhiM8tfuO1DkrSD1uYgQ
-	oARMr4WmHXSFIh0UhF8cVIwXToQ0334YLR76is3Rou/RQrGbD4bijj83OvGheDr3jNohaPqrsYC
-	i6m3AIgAqR26Ss6La2bIy9ECED0nwUdfgXRJ+YIMznRvOujk91F/DQ0HeAi6H4CJtPbyYc1Abix
-	Npk9IAdjUeJcoxRWnn4MojjM2eBc2pWBXGsEOma3xmSHE3yWUtJlViNzNYtM67N6Jw0/Kpl7omW
-	zDg/xXO48yAENNpBsWo9GX2GA/eBq56yrUdYggehzEck4/VojgjW8KUXH1nKK
-X-Received: by 2002:a05:6000:1449:b0:48d:ff71:dd9d with SMTP id ffacd0b85a97d-48e6e2ef786mr7095121f8f.23.1793384002277;
-        Fri, 30 Oct 2026 11:13:22 -0700 (PDT)
-Received: from SD.cable.virginm.net (cpc117822-heme13-2-0-cust760.9-1.cable.virginm.net. [81.111.210.249])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b8c0b6sm4198221f8f.41.2026.10.30.11.13.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 11:13:21 -0700 (PDT)
-From: Prathamesh Deshpande <prathameshdeshpande7@gmail.com>
-To: dtatulea@nvidia.com
-Cc: andrew+netdev@lunn.ch,
-	cjubran@nvidia.com,
-	cratiu@nvidia.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	erezsh@mellanox.com,
-	kuba@kernel.org,
-	leon@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	mbloch@nvidia.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	prathameshdeshpande7@gmail.com,
-	saeedm@nvidia.com,
-	tariqt@nvidia.com,
-	valex@mellanox.com
-Subject: Re: [PATCH net] net/mlx5: IPOIB, Fix QPN lookup race
-Date: Fri, 30 Oct 2026 18:12:52 +0000
-Message-ID: <20261030181309.9266-1-prathameshdeshpande7@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <ade46454-e575-43e4-85aa-eeb5ad79408a@nvidia.com>
-References: <ade46454-e575-43e4-85aa-eeb5ad79408a@nvidia.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U+rTn4qL
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB531F000C1;
+	Fri, 30 Oct 2026 18:15:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793384100;
+	bh=xX4+/ngw10imxtV7Qx0M5QC+PH9quwicLxr3n+FYyZc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=U+rTn4qL9aKfAqK24WGz11+2HZDRD7OcmjFhcTHsKLHulDk+qJB0jX6OIJTW5dqv5
+	 bhAyVUPKMK5g5OPQw6v67tHcs41p3Qz95LDNO30NKVSfbbZD3eI2o6lUAs/JOVicYD
+	 Jm0Z882bafmmMiLZkzflj4+qaNReXe8iCQ1DYeO0aFA02mNWCQWjQM4qUDOMCG/1Yc
+	 i4G5qRJBWOQ6Tw1D2duEbyG8JIHXPNE4NpMDtyiQ+5vL92riH/rmmdy7Aj9yoY7pcg
+	 1wcV0QkSPPYD2Ly9j0vwfbdlNEfnC5IKQFK7Np4Z5BtOmYmlRL2ViMFzgMbRwTJvRF
+	 UTUaSSI8/Gxxg==
+Date: Fri, 30 Oct 2026 13:14:56 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Cunhao Lu <1579567540@qq.com>
+Cc: Andi Shyti <andi.shyti@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Jaehoon Chung <jh80.chung@samsung.com>,
+	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	linux-clk@vger.kernel.org,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	linux-usb@vger.kernel.org, Lee Jones <lee@kernel.org>,
+	mfd@lists.linux.dev, Jiri Slaby <jirislaby@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>, netdev@vger.kernel.org,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	linux-i2c@vger.kernel.org, linux-pm@vger.kernel.org,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Elaine Zhang <zhangqing@rock-chips.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Brian Masney <bmasney+clk@redhat.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	David Wu <david.wu@rock-chips.com>, linux-kernel@vger.kernel.org,
+	Zhang Rui <rui.zhang@intel.com>, linux-serial@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	Philipp Zabel <p.zabel@pengutronix.de>, linux-mmc@vger.kernel.org,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Jerome Brunet <jbrunet+clk@baylibre.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Ulf Hansson <ulfh@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-arm-kernel@lists.infradead.org,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>, Linus Walleij <linusw@kernel.org>
+Subject: Re: [PATCH 05/27] dt-bindings: pinctrl: rockchip: Add RK3572
+Message-ID: <179338409611.1169964.10654719461707272138.robh@kernel.org>
+References: <20261022-add-board-ok3572-c-v1-0-0b0fd85a31ee@qq.com>
+ <20261022-add-board-ok3572-c-v1-5-0b0fd85a31ee@qq.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -113,20 +95,19 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261022-add-board-ok3572-c-v1-5-0b0fd85a31ee@qq.com>
 
-On Fri, 30 Oct 2026 12:18:59 +0100, Dragos Tatulea wrote:
-> I don't think that all these cases can happen. But I can see how a
-> CQE completion on the parent can read a pointer from the hash
-> bucket that just got deleted.
->
-> Please improve the commit message.
 
-Thanks for reviewing. I will narrow the commit message to the parent CQE
-lookup racing with hash-entry removal.
+On Thu, 22 Oct 2026 00:11:02 +0800, Cunhao Lu wrote:
+> Add the RK3572 pinctrl compatible.
+> 
+> Signed-off-by: Cunhao Lu <1579567540@qq.com>
+> ---
+>  Documentation/devicetree/bindings/pinctrl/rockchip,pinctrl.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-> Holding the spinlock in the datapath is not a good idea. AFAIU
-> using hlist RCU variants will be enough.
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
-I will switch to RCU hlist operations with deferred freeing and send v2
-after validation.
