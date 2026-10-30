@@ -1,88 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793361723;
-	b=CNu1a62kHfbV1UoIaZzYDNNPf2R861eeHJOJJ9eKbpe+Cap583dj0m9ljmsuqM0bQMV/
-	 AkSVQYIMPGX0r3YDIafJgMox08dpCO2sRLlOpaUUQ9mx/9AO2BWRxYWuBb3Tfe8HLRS2a
-	 001B2dCEzvF7MhbIXnrjSaYpE+jvs4wcn7/X+fLmrZqwc6+BrNsik8q33bRwgyvcpD9fq
-	 c3nhJTb1w2IAb/m53dBHgSq+RXzUUaHeygr7tqZPiNYH8yOpCFrt8VaM96WpwwaQnjPRg
-	 pSTC/Rk4hAgw63Hc+AzidkpfgRZPCqP9/9bSsB94eUwbQ+kOKOdn5sytgCGO2K0sg6A==
+	t=1793361724;
+	b=2DjI78tq5cGFMtfq4xKuMab79VoJxHIcPG/dlco6AnLt5b0TaPuoiPu+CZvCFF2xr/Ue
+	 RGsUA5mEA1dWCCou+64R2iNbfGdtg0f1Bj/V/e7wVVMW/oYfYH3Xirp/iZrineufAX58b
+	 Q6NtRgPCdz/V9SB0Q0HtcPyEneQ1NFj/QqEOHlTisau3fqDkFWOlG3uIzUR0BLe1ziMJs
+	 ngbdHaHGVp9odqXJ0YkXg0b97Trtu2raN4lDBJTqqZdw7y0ics2s9Kx3zS63u3PvoMY8T
+	 1gl/doBpMqtbahdXAb/5vxZBzH5iif6W/SD0BQLxvAndzIFuwPXN6GLryKz/sU6LoJg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793361723;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793361724;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
-	bh=vMwZvawBiyShXBewO3K0dol5CkgA9oaHML9/XArfQDg=;
-	b=a/pGQbD4lE1939f1hFsN8laytKkxAa7ePEfuvkLigIbajjZGEiFBIhmWE2Gct0z+r5ZV
-	 tHiyBhBVTYUHh5Nf30FZRhlNuCVOuYIRCWtiZoJvTsM508fhP9geN+waBQ56j2DHkltOx
-	 LMhPhFmyM0zFc1RAi+WFgGMeH/2YzrNCrshKFAzCJB/MduRIIGVRgrRH7Gtdx/ZQcMvfk
-	 qQDSnDfDL4HoRtNTO4lM0SNZX/5SnG3mP0UKSk6T9myM4q/gw87dE1m1o4UCNZb7g5qKv
-	 9MwuXIDP005/iyXWM8HTurw0g5JvsFQ4Hj3vmo68KR66IzvdZYFFnStr7WcCX6BXd5w==
+	bh=0ZHLqr1JXzWBKlZZ1WTQDfeaoTxgloLN7VDsS0hfUyQ=;
+	b=kZyOojRM1lrTqvrQFuICpYBOItL8cEAElK6M0bu1jPuRYODlT8X+HIiNwpzN3yYpJWL2
+	 d6Bl0jEl2kSzoIyb+KBg13Y9N1AaGRgRqCMPgzodalqpKVpDgQOHBiTiukDS1LijIsQKI
+	 km02j8FDthxtTfjLJNVBJtiuzF68gE8s4sPlY4qUueZ/3Vdr8ve/ETxeDAE3dkVSQ4Gc3
+	 jh1tRaWVWYjxQNxPPUlMJXSMqkbT0nTJvTFsAUml0TlWUqSy8qOBjUwR6O7AMUZK7Ao3L
+	 GuYf33cEkd+G5ysl6Gqy3SIggQI/ZZbdAifQ01mLPa1BlH/yZ2qZvpbrC1YVym50sjQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cloudflare.com;
 	spf=pass smtp.mailfrom=cloudflare.com;
-	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=DRxY3OwX;
-	arc=none smtp.remote-ip=209.85.208.53
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=SoATSqHh;
+	arc=none smtp.remote-ip=209.85.218.41
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6372606A32C
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 12:02:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E6372606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F552606A338
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 12:02:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6F552606A338
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=DRxY3OwX
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6b488586facso716953a12.2
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 05:02:02 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=SoATSqHh
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c40e30c26a4so359722066b.0
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 05:02:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1793361721; x=1793966521; darn=vger.kernel.org;
+        d=cloudflare.com; s=google09082023; t=1793361723; x=1793966523; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=vMwZvawBiyShXBewO3K0dol5CkgA9oaHML9/XArfQDg=;
-        b=DRxY3OwXyfaaiay0YSbG0mi9ZjocAY7e59ETPcDqTJFexFmVR2lXQqKR1VbYP9xEpm
-         jUNkn42kY5kiOzOxzdNHJfD3fc7MK2RV3wye1GWo/pdXpFVDQXDDadBsixZESzVKhvUj
-         yC1AkEKyPgz2zGXRS1V8XXMh3jWvtTJrlQ+SSTbZQEzM3k2aFegAdLhtzpycKsKoJrSn
-         iu7QUx3jD137RUZihYWV2ze3vTJqdedewn4+LC/Ib3Nr+gFTOILmTP7HSDiF3GZXdXO6
-         EnyiZfYPUL/mO+IZHukqIRMWZGU4Xjuh/s1z5g5QgBO+RaKrIIHn2L/WAAVlnVuwVwkU
-         TQ3Q==
+        bh=0ZHLqr1JXzWBKlZZ1WTQDfeaoTxgloLN7VDsS0hfUyQ=;
+        b=SoATSqHhNdt8D1MGQLHZVmM4HEw2QSRyz0+xv2QOvOIvvsrp61UemHu4d4HzeWJlmK
+         gyQjAWsXG9o9fwhfY4sDB3nOhlW3WbdOk1t+EJpaySIpUpy9kwgHLe8H14lN4LpixI/z
+         3BllxnxMspkwrl96oek3fSjfktCgSS24flB5i6n2vsFWZyFVuDTIgfavGE1A0UqMXrHD
+         3mPFypXoFwUh+QDchVDdajrUpv/UXA2kDF3LzvCS2crZc7biw41ATJD3rFrh7adfnRKt
+         sUax+NJC+M9nNIoSRl7970O9BDXdkSpgLitCa4lSSFBoDwSNtyP5mWy5mVZlPdrmNH4B
+         diyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793361721; x=1793966521;
+        d=1e100.net; s=20260707; t=1793361723; x=1793966523;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=vMwZvawBiyShXBewO3K0dol5CkgA9oaHML9/XArfQDg=;
-        b=mc3zlTrRhFug0pEZyZ4hdHWhkhzRD4OWO/fj7jeUgntH9W9MSwRwstuowFZrNc0QG9
-         VHZgvwrMRPn+fIWE9z7/Fa0jP5HcS8wLMV5sjEgRNYBFAlf2OQcaWwAQnWD38a8CwTlC
-         NoTkNv9WiWayA78H0+a1qKoVrX/mgQnlAHj7JhZrKorVpGrxdbB5ro5DO2tpjvY/+10w
-         IxfXeYmP4h/cf2+BpkcZSemyXIp0/jpOIK6iDt2ug1KFncLUsuHi5s8kuqqe2uzmkeam
-         ZzghDIco53OQX1kqjb3pRDh1cr3zgj8bm3wwj22QPlyIwG/3w0l2ttkQy0mIwXDoZCpR
-         Y8cA==
-X-Forwarded-Encrypted: i=1; AKwUvBxUhM4I58AMc7nSafOrB5ezGNohf80+T6Q09ZpNjrarYakQ20e1UNY/I4bVNGFJUphcoao3NoM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJvl4AudMWLE4PErqa7VXR/BPLrBLC+MobIn9Vs9sGEu71MyKu+
-	+8ezOes7eNQU2uot29N78PyIg9ZK1j5Y9O95qXyF0tnMXArThzstcTKD7t8/JX6CeA4=
-X-Gm-Gg: AYBFou28NNVvCaPGf4rEXKc+kO9hmuIu5KzCAGEy88W4a/+sNx1bTGskLbGvvykdTgW
-	pVHK5BCsrTry52IyR5q1rkmXrFeB4LjeL/PNG8g+4WCt9Sq/FQsFdRKaS/3YuWtd3RGEdYEU3CN
-	og+jOhLt/4y6ks2B4axpWZt6SpHo80MtajWrO8ADnwWkabOs515cmijHY4hx7YW8L3dSSa3sRsa
-	NSTEg+iQjdNaoTHAm+j/0SPKPUalQJ+v4KBWBK7Wa31rdQAMtQRGKkxKJlFQ/3pa8gfBtk0JKZl
-	UBWo2FO64frxhX83r7UksDWZnE/uHZjntBoTTsNqTIh4ychLIYBX3IoDuW/BwpiEWgRnYxNjvog
-	9oJ/UhjPwnj3/ExAwjRLBYA4LaTYQci1A7wg7imIm1y1j6MjdHvQhA85RRyEAgEqMXlVIlkVFZ4
-	bzTOVpw0uJPW++IeCytHo1R8DZ6Xihon8fqhp1r7bjDTmkPGVhHv7osVqmzjdKH3lHvXYcW1TXK
-	D1SWFVscVbQQ3sgo1oDiCiMY6Q8qg3Kvavs8CbXqn6VQjr5p66Tu7DudwbZL9wZ3gdhAkT+DkOo
-	cpxG3UwSSyCX8Z4mxHC2JGjRdumM1m1WdIhFlg==
-X-Received: by 2002:aa7:cd5c:0:b0:6b1:b5ea:2580 with SMTP id 4fb4d7f45d1cf-6b4d66a3ee6mr991534a12.44.1793361721111;
-        Fri, 30 Oct 2026 05:02:01 -0700 (PDT)
+        bh=0ZHLqr1JXzWBKlZZ1WTQDfeaoTxgloLN7VDsS0hfUyQ=;
+        b=GorFlLotCx+W43CFCazJdEV+Qn5Vqq4mDdo4N7Nc5No4tSlnjID8ipfSn4o700YFff
+         LuPiVNaKz9IjaTuviEcjPxnOS/KpgBW9ajpCh1bbStuqOKt6XFIgran6jntXz549UCiU
+         SMu4EuMPjEBrVg3wUmDWW+Sm8wbEEPGbEw3qcxDYnOqIGyg1cEEg/2XsDj+b6Aj6X7YN
+         jXYy1mlnxfeMOj/9TG6+mrN+Vxv1rM/uSJ/k9gMJk5yn84Mitx86znKryq0eOL9jrUQe
+         YqbU6nGcb9iUHr5G+AIBX6pgFp/dLgtp4HCe0rGqWoUxuWReOvBKQtIIOKkJA6sZg+L1
+         4zbw==
+X-Forwarded-Encrypted: i=1; AKwUvByBFHodKrTCe3B3OHYBvCWxcpBpmmskCJX4uZ/vcn7cZmeU0cx4VJ+UNttegdZGdJ9f0JKVy6I=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJjW9QB9RwOe0syqGqx1jDRveeDGzhNTs9KZLwPzo9iX5xZ+zZQ
+	GcKJZQKAplx/tu1XoGo0xS+4aAvb44kGVSNuChdyAF8ZUd+iIbkg4GtOdvmu00+AnSQ=
+X-Gm-Gg: AYBFou2U2U/rFHMcXpvoM4myFO4L+b1MPPAaTvJtvfjjl6PmNi5jcSHSuY9HrFT8JSa
+	/QrQnIl+TfYquYhLdoLbcAkgH8yNNHHvrEkl+qy4egMvHqe48v2uUjQPTwCCadFUsURwJy15k3+
+	abOiwwW+DZU19lebuK9XtO5sQ43kYIM6F0khXN3szTXahOsePE4BmLzF2pV0qhGjW2GM2Nb0E+g
+	yJ7zFg5GI8dIvKcM9W/KU6wEt+ayECIygTBulNfS9x21cbIyI7FxUs3y4N5kPKE3+c9h0PSMfG9
+	UnXviRlYiujg6Kf5Jfr8iXzfh7BPsWBJkdKy7vTYa3xSMgPJz6n0b8LL2NXaN5yUBLkNBp7LCYB
+	tmKj+EwmXe8GdpKP4q+S3geU8GrLm5kdbpyPExqQSNnD5Jg7LFrJFEam1hQN1X5q3wXflC1hW8T
+	lZ/82BYV8TUn5L7QQCnl32N50QmHJ/uVetitUob/qsZPL0kLzI6EsvD7gw09S69OTfz66ZpPFA6
+	1fQaSC8DTTrIxJaj4QnsCXRas4UtGX495CEtxOq+MEv4ZyayGCaV+dykJApMTZPpiisk1v+MOpI
+	6SpUjWRE9YGRPfcTxeAyOVYDC+gVf6+woCKwUg==
+X-Received: by 2002:a17:907:9615:b0:c21:5cd6:3e49 with SMTP id a640c23a62f3a-c4ca7a697a3mr192464266b.9.1793361722443;
+        Fri, 30 Oct 2026 05:02:02 -0700 (PDT)
 Received: from cloudflare.com ([2a01:110f:491b:1300:7cff:6795:2d76:e9de])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b4d7b1c592sm548135a12.25.2026.10.30.05.01.59
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4cabe1003fsm59104966b.44.2026.10.30.05.02.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 05:01:59 -0700 (PDT)
+        Fri, 30 Oct 2026 05:02:02 -0700 (PDT)
 From: Jakub Sitnicki <jakub@cloudflare.com>
-Date: Fri, 30 Oct 2026 13:01:53 +0100
-Subject: [PATCH bpf-next 1/2] selftests/bpf: Cover concurrent sockmap
- update and delete
+Date: Fri, 30 Oct 2026 13:01:54 +0100
+Subject: [PATCH bpf-next 2/2] bpf, sockmap: Fix psock update-side data
+ races on sk->sk_prot and progs
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -94,7 +94,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261030-bpf-next-v1-1-035eabf8eae7@cloudflare.com>
+Message-Id: <20261030-bpf-next-v1-2-035eabf8eae7@cloudflare.com>
 References: <20261030-bpf-next-v1-0-035eabf8eae7@cloudflare.com>
 In-Reply-To: <20261030-bpf-next-v1-0-035eabf8eae7@cloudflare.com>
 To: Alexei Starovoitov <ast@kernel.org>, 
@@ -114,152 +114,119 @@ To: Alexei Starovoitov <ast@kernel.org>,
 Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, kernel-team@cloudflare.com
 X-Mailer: b4 0.16.0
 
-Add a sockmap_listen subtest where one thread keeps inserting a TCP
-socket into a sockmap with an attached verdict program while another
-thread deletes the same map entry.
+The update side of the sockmap psock lifecycle has several unsynchronized
+accesses to sk->sk_prot and psock prog state that KCSAN flags when the
+new update-vs-delete race selftest runs. The fix comes from Alexei [1]:
 
-Without any synchronization between the insert and delete paths, both
-end up racing on psock teardown and the socket's proto callbacks,
-which KCSAN reports as:
+* sock_map_link() installed psock programs and called sock_map_init_proto()
+  before taking sk->sk_callback_lock, racing a concurrent teardown's
+  tcp_bpf_update_proto() write of sk->sk_prot. Take the write_lock early,
+  before psock_set_prog() and sock_map_init_proto(), and drop the
+  psock->saved_data_ready gating from prog detection (it is re-checked
+  under the lock before stopping progs).
 
-    ==================================================================
-    BUG: KCSAN: data-race in sock_map_link / tcp_bpf_update_proto
+* sock_map_del_link() read psock->saved_data_ready outside the lock. Move
+  the saved_data_ready check under write_lock_bh(&sk->sk_callback_lock)
+  so prog teardown is serialized against the proto restore.
 
-    write (marked) to 0xffff88810b1f42a8 of 8 bytes by task 198 on cpu 0:
-     tcp_bpf_update_proto+0x278/0x400
-     sock_map_unref+0x1d3/0x240
-     sock_map_delete_elem+0x7b/0xb0
-     map_delete_elem+0x1e1/0x270
-     __sys_bpf+0x71a/0x870
-     __x64_sys_bpf+0x69/0x80
-     x64_sys_call+0xf26/0x2550
-     do_syscall_64+0xb8/0x2f0
-     entry_SYSCALL_64_after_hwframe+0x76/0x7e
+* sock_map_psock_get_checked() and sock_map_sk_is_suitable() did plain
+  sk->sk_prot reads. Convert to READ_ONCE() to mark the intentional racy
+  read against the WRITE_ONCE() swap in sock_replace_proto().
 
-    read to 0xffff88810b1f42a8 of 8 bytes by task 194 on cpu 3:
-     sock_map_link+0x146/0x5b0
-     sock_map_update_common+0x74/0x2b0
-     sock_map_update_elem_sys+0x246/0x2d0
-     bpf_map_update_value+0x80/0x400
-     map_update_elem+0x35c/0x3e0
-     __sys_bpf+0x540/0x870
-     __x64_sys_bpf+0x69/0x80
-     x64_sys_call+0xf26/0x2550
-     do_syscall_64+0xb8/0x2f0
-     entry_SYSCALL_64_after_hwframe+0x76/0x7e
+With these changes the sock_map_link/psock_set_prog side of the reported
+KCSAN splats is silenced; the remaining teardown-vs-core-TCP pairings
+are the separate read-side annotation problem.
 
-    value changed: 0xffffffff857540c0 -> 0xffffffff8468fde8
+[1] https://lore.kernel.org/bpf/DMBHB0TQOV1L.38MECMYFGUS5B@gmail.com
 
-    Reported by Kernel Concurrency Sanitizer on:
-    CPU: 3 UID: 0 PID: 194 Comm: test_progs Tainted: G           OE        7.3.0+ #12 PREEMPT(full)
-    Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-    ==================================================================
-
-Deleting an entry that is already gone is expected: sockmap reports
-EINVAL and sockhash reports ENOENT. Re-inserting a socket whose psock
-still holds the verdict program from a concurrent delete fails with
-EBUSY. Tolerate these errnos; the test relies on KCSAN as the witness.
-
+Suggested-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
 ---
- .../selftests/bpf/prog_tests/sockmap_listen.c      | 77 ++++++++++++++++++++++
- 1 file changed, 77 insertions(+)
+ net/core/sock_map.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c b/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-index 235e1d56f044..dca1f0de92e0 100644
---- a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-@@ -646,6 +646,82 @@ static void test_race_insert_listen(struct test_sockmap_listen *skel __always_un
- 	xclose(s);
- }
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index 057e2f3c0265..efe49551caba 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -152,11 +152,11 @@ static void sock_map_del_link(struct sock *sk,
+ 			struct bpf_map *map = link->map;
+ 			struct sk_psock_progs *progs = sock_map_progs(map);
  
-+struct update_delete_ctx {
-+	unsigned int nr_iter;
-+	unsigned int done;
-+	int mapfd;
-+};
-+
-+static void *delete_elem_thread(void *arg)
-+{
-+	struct update_delete_ctx *ctx = arg;
-+	unsigned int i;
-+
-+	for (i = 0; i < ctx->nr_iter; i++) {
-+		/* Expecting EINVAL (sockmap) or ENOENT (sockhash) when the
-+		 * entry is already gone.
-+		 */
-+		if (bpf_map_delete_elem(ctx->mapfd, &(u32){0}) &&
-+		    errno != EINVAL && errno != ENOENT) {
-+			FAIL_ERRNO("map_delete");
-+			break;
-+		}
-+	}
-+
-+	WRITE_ONCE(ctx->done, 1);
-+	return NULL;
-+}
-+
-+/* One thread keeps inserting a socket into a sockmap with an attached
-+ * verdict program while another thread deletes the same map entry.
-+ */
-+static void test_update_delete_with_prog(struct test_sockmap_listen *skel,
-+					 int family, int sotype, int mapfd)
-+{
-+	struct update_delete_ctx ctx = { 0 };
-+	int err, s, verdict;
-+	pthread_t t;
-+	u64 value;
-+
-+	verdict = bpf_program__fd(skel->progs.prog_skb_verdict);
-+	err = xbpf_prog_attach(verdict, mapfd, BPF_SK_SKB_VERDICT, 0);
-+	if (err)
+-			if (psock->saved_data_ready && progs->stream_parser)
++			if (progs->stream_parser)
+ 				strp_stop = true;
+-			if (psock->saved_data_ready && progs->stream_verdict)
++			if (progs->stream_verdict)
+ 				verdict_stop = true;
+-			if (psock->saved_data_ready && progs->skb_verdict)
++			if (progs->skb_verdict)
+ 				verdict_stop = true;
+ 			list_del(&link->list);
+ 			sk_psock_free_link(link);
+@@ -164,8 +164,11 @@ static void sock_map_del_link(struct sock *sk,
+ 		}
+ 	}
+ 	spin_unlock_bh(&psock->link_lock);
+-	if (strp_stop || verdict_stop) {
+-		write_lock_bh(&sk->sk_callback_lock);
++	if (!strp_stop && !verdict_stop)
 +		return;
 +
-+	s = xsocket(family, sotype, 0);
-+	if (s < 0)
-+		goto detach;
-+
-+	err = xlisten(s, 1);
-+	if (err)
-+		goto close;
-+
-+	ctx.mapfd = mapfd;
-+	ctx.nr_iter = 10000;
-+
-+	err = xpthread_create(&t, NULL, delete_elem_thread, &ctx);
-+	if (err)
-+		goto close;
-+
-+	value = s;
-+	while (!READ_ONCE(ctx.done)) {
-+		/* Expecting EBUSY while a deleted socket's psock still
-+		 * holds the verdict program.
-+		 */
-+		err = bpf_map_update_elem(mapfd, &(u32){0}, &value, BPF_ANY);
-+		if (err && errno != EBUSY) {
-+			FAIL_ERRNO("map_update");
-+			break;
-+		}
-+	}
-+
-+	xpthread_join(t, NULL);
-+close:
-+	xclose(s);
-+detach:
-+	xbpf_prog_detach2(verdict, mapfd, BPF_SK_SKB_VERDICT);
-+}
-+
- static void zero_verdict_count(int mapfd)
++	write_lock_bh(&sk->sk_callback_lock);
++	if (psock->saved_data_ready) {
+ 		if (strp_stop)
+ 			sk_psock_stop_strp(sk, psock);
+ 		if (verdict_stop)
+@@ -173,8 +176,8 @@ static void sock_map_del_link(struct sock *sk,
+ 
+ 		if (psock->psock_update_sk_prot)
+ 			psock->psock_update_sk_prot(sk, psock, false);
+-		write_unlock_bh(&sk->sk_callback_lock);
+ 	}
++	write_unlock_bh(&sk->sk_callback_lock);
+ }
+ 
+ static void sock_map_unref(struct sock *sk, void *link_raw)
+@@ -202,7 +205,7 @@ static struct sk_psock *sock_map_psock_get_checked(struct sock *sk)
+ 	rcu_read_lock();
+ 	psock = sk_psock(sk);
+ 	if (psock) {
+-		if (sk->sk_prot->close != sock_map_close) {
++		if (READ_ONCE(sk->sk_prot)->close != sock_map_close) {
+ 			psock = ERR_PTR(-EBUSY);
+ 			goto out;
+ 		}
+@@ -284,6 +287,7 @@ static int sock_map_link(struct bpf_map *map, struct sock *sk)
+ 		}
+ 	}
+ 
++	write_lock_bh(&sk->sk_callback_lock);
+ 	if (msg_parser)
+ 		psock_set_prog(&psock->progs.msg_parser, msg_parser);
+ 	if (stream_parser)
+@@ -298,11 +302,11 @@ static int sock_map_link(struct bpf_map *map, struct sock *sk)
+ 	 */
+ 	ret = sock_map_init_proto(sk, psock);
+ 	if (ret < 0) {
++		write_unlock_bh(&sk->sk_callback_lock);
+ 		sk_psock_put(sk, psock);
+ 		goto out;
+ 	}
+ 
+-	write_lock_bh(&sk->sk_callback_lock);
+ 	if (stream_parser && stream_verdict && !psock->saved_data_ready) {
+ 		if (sk_is_tcp(sk))
+ 			ret = sk_psock_init_strp(sk, psock);
+@@ -536,7 +540,7 @@ static bool sock_map_redirect_allowed(const struct sock *sk)
+ 
+ static bool sock_map_sk_is_suitable(const struct sock *sk)
  {
- 	unsigned int zero = 0;
-@@ -1289,6 +1365,7 @@ static void test_ops(struct test_sockmap_listen *skel, struct bpf_map *map,
- 		TEST(test_destroy_orphan_child, SOCK_STREAM),
- 		TEST(test_syn_recv_insert_delete, SOCK_STREAM),
- 		TEST(test_race_insert_listen, SOCK_STREAM),
-+		TEST(test_update_delete_with_prog, SOCK_STREAM),
- 		/* child clone */
- 		TEST(test_clone_after_delete, SOCK_STREAM),
- 		TEST(test_accept_after_delete, SOCK_STREAM),
+-	return !!sk->sk_prot->psock_update_sk_prot;
++	return !!READ_ONCE(sk->sk_prot)->psock_update_sk_prot;
+ }
+ 
+ static bool sock_map_sk_state_allowed(const struct sock *sk)
 
 -- 
 2.43.0
