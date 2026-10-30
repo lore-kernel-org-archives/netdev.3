@@ -1,76 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.27.42.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793355786;
-	b=OpYf/tXjlPXn0Ly0b8yBPbc8OHOG1hUK8hSMyz0GWOroYrrv4h5rVPQX88KH+YLhi5w7
-	 jOewLI01IIUhayW7xtEt1bPMo422GztqvBWmJnYyfHWeCbF5f+qCgBrg0HdGNp3hLJS/i
-	 oQre6bAmZzcj2kK0D30PzsPXYz7X5n/oROL0CfT1F6vNHjepdtjZOBUei4MTX5uQm3CBX
-	 XbfC8irb1swom+iRCNlEqsDn8ONfJS2ShymfubBODFWJRqpclJuHMpy+JfVbHUH70QZjs
-	 xdg7M1UQchV7F+Nb6baX6HXBLL4HPc/qqUREJCMTQTHwrk4yIi/SeZI7JDd6/2fdPqw==
+	t=1793356095;
+	b=E4iXvDT5h01HQ1iixQaJjnCunrOTXIQzvErlPhJ9DSoIpSQm7JyF5tVJx5US4F+2GTdu
+	 1qADUtvl1Jq71rtEr+gledhtgAXn5VemGwpYnxD/0s0rBi73Yp88Xnu/9u0NJeRPYaTX7
+	 ZdsuWrtaA8A9vMP9jKsiV/xumnmMndJLOg4xGKCiKEipcB2zbZwgDRTFQqdkt7W7BmWIn
+	 pJee0BNkQl9VILXT57GEolp9pK3I3b1flnS//guW10jdYuMty7q9uveF+u9J1WAkMKwOU
+	 bmfcrzUi5zXzV9564R5c6IaUD3YhWQHXaTqJoJJKjvd6kzcOEkrjn89Uke2I1yXtzbw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793355786;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=MoAghpZzhMWka6buBPWIBz9Jz+B7Jbd30cQS0OP8bSY=;
-	b=jjQVTNyDA1c/9mva4JncV2JE2MNYF2LHaHc5r9y0XPbjJKey1dDfAMgAt/ZMWl9eDzYJ
-	 XSl9+O2Itgew0qeOBUv3M9JskRl3MAsieBsTycm5vaXfIU5USyRQBVdee3VG26V+deB+E
-	 PC9iQTjG3HmhpTG9hZ5wi6WHWpiR6sZpKqa/PhQk1clEs36ETmdcBDqWyf4sr3BEKkmI8
-	 CUwz5w/9EiMfetgP1ylBlw76/rNANMajYNPqqREMvLUqEF/k4OfBZaETuAkk7jvVx4rsn
-	 bf/CN6wLBJHRTBqQDMtSdshCu7QV8PtJMr0309iut5avM/H3zVAOt5ubs94agnk/uOA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793356095;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=qyJeCY+1SCigp3wsQXw3Clfptu3D9KJx2aBdbZMV1xE=;
+	b=Ej0iPV1vy+W5345Gu1vlsCKpI/H+6pQo+LC6s1QT21vKuU2QP2zg9vuGHy+LHsnBszzC
+	 vR3inBqfio86fEZ2pWxTHL7Gynsfp5d+VsEWYfM2e7Hlb4XiB/sK7Ff2PCP6M9JA49FrX
+	 wXankEMTICia4a7UIlIFVMwhlqSNjZLHnlDKJnZWqpmoIGSAzusITF3/mLDn4wqqU9lQD
+	 EtdVo3xgc2lRMGrvxytdlnCeGNCKBXo5qvy2rTeZyEdhCnnulRVILb4w9v9V/JiX6CrAT
+	 xqjfuJYMM75GdTTokHvukRDiV34iKyd+/peKkECg0iqI/77dqoqpJLKDS4r0nNLvxbg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=CL2Ou8qH;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	dmarc=pass header.from=free.fr;
+	spf=pass smtp.mailfrom=free.fr;
+	dkim=pass header.d=free.fr header.i=@free.fr header.a=rsa-sha256 header.s=smtp-20201208 header.b=BD70mgLj;
+	arc=none smtp.remote-ip=212.27.42.4
+Received: from smtp4-g21.free.fr (smtp4-g21.free.fr [212.27.42.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687EE606A31C
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 10:23:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 687EE606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B6F60A3811;
+	Fri, 30 Oct 2026 10:28:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E5B6F60A3811
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=CL2Ou8qH
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id A905B1A13BF;
-	Fri, 30 Oct 2026 10:23:02 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7BBF9603C2;
-	Fri, 30 Oct 2026 10:23:02 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D7AA9103287DA;
-	Fri, 30 Oct 2026 11:22:54 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793355781; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=MoAghpZzhMWka6buBPWIBz9Jz+B7Jbd30cQS0OP8bSY=;
-	b=CL2Ou8qHtleTe62SzBLW7vbfcRTy7bXMr0HJ/6B8Wso+cJjQ72BwU3zWfGXZtcUDYwRoL6
-	JGyGL1kdp5WYuhZRHsiOx+nDHt7k8ZXNQRU2ZAn4mtxUAFtRO2drnurQ7/XjafNVa+G3km
-	ykfVUmOmQ6GqOWw7N6mL4ETShxWpqRyNvDRckGSDYPRWrr19Li7+W/yjzQDHQukznxVGa3
-	Vp2uS3GDSteydhURZZkOQelGDjTKozhbSw4XmVLu/ugi8DhF4U6o9GvgjaQn40vL1TbJtA
-	5ZvKh4Pf57SJf5g1xaR6dTGa0Jg9h2lKlK2TtgqajLE4jDJUYMziIy7XexLKtg==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
-	Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	thomas.petazzoni@bootlin.com,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	dkim=pass (2048-bit key, unprotected) header.d=free.fr header.i=@free.fr header.a=rsa-sha256 header.s=smtp-20201208 header.b=BD70mgLj
+Received: from stf-laptop.peak-system.com (unknown [IPv6:2a02:8424:8fef:6e01:2a4e:9a3e:485b:cbb0])
+	(Authenticated sender: stephane.grosjean@free.fr)
+	by smtp4-g21.free.fr (Postfix) with ESMTPSA id 0C19619F5A5;
+	Fri, 30 Oct 2026 11:28:07 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
+	s=smtp-20201208; t=1793356093;
+	bh=6fAfA2nJ2WjTHNs3g8XX1i9e9d0cKdgzO0QCkae6n6M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BD70mgLjj3ibezMaNF6AeqKjtW1YmhYD1a17JjEl/tysm4Q2t6pfvYpfHbWAVJvQ2
+	 8c6R+aa4wESUDXNfNulcsqjMeCp3tq2X3f+pJ721/35hzGsAOayq/ov2+OWxCRwO4x
+	 nsXP6C+z/9pi2e5zpNje8STuJP1wA3c5ZIkGGyg+8GlKS6MP/p4HB4cEpLGqpWenrG
+	 inJq3uCl4m+LpANOP5E1BDJqlo2wAJJpcH5ynTDg234dRO2vA86ektk1gYJy8PgiQM
+	 wUC0blfL54Ag2YNR9AEQUycM9Qr61mkOFRsS9xb1lih91+t0pmNX8US/yaw8x6W3Ng
+	 bntTMaN42ftmw==
+From: =?UTF-8?q?St=C3=A9phane=20Grosjean?= <stephane.grosjean@free.fr>
+To: Tristan Madani <tristmd@gmail.com>
+Cc: linux-can@vger.kernel.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH net] net: stmmac: Clear DMA errors for multi-channel interrupts
-Date: Fri, 30 Oct 2026 11:22:49 +0100
-Message-ID: <20261030102251.208929-1-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.56.0
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 net] can: peak_usb: fix use-after-free on PCAN-USB disconnect and init failure
+Date: Fri, 30 Oct 2026 11:27:04 +0100
+Message-ID: <20261030102705.30262-6-stephane.grosjean@free.fr>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261025210256.629830-1-tristan@talencesecurity.com>
+References: <20261023195400.3531721-1-tristan@talencesecurity.com> <20261025210256.629830-1-tristan@talencesecurity.com>
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -81,166 +71,84 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-The Multi-MSI interrupt handler doesn't clear the DMA error interrupts,
-and this leads to interrupt storms when one of these interrupts starts
-firing :
+Hi Tristan,
 
- - The RBU (rx buff unav) which triggers under high traffic load
+On 25/10/2026 22:02, Tristan Madani wrote:
+> The PCAN-USB adapter uses a restart_timer for bus error recovery
+> but does not define a dev_free callback.  When the device is
+> unplugged, peak_usb_disconnect() frees the candev without cancelling
+> the timer.  If a bus error armed the timer and USB disconnect races
+> with the timer callback, the timer fires on freed memory.
 
-   This triggers easily with iperf3 and small udp packets, and shows
-   when running the netpoll kselftest
+Thanks for the fix, the disconnect part looks right to me.
 
- - The RPS (rx process stop) which triggers when we stop the DMA RX.
+A small precision, since you'll respin (see below): the timer is not
+armed by a bus error itself, but by the completion handler of the
+asynchronous restart URB, pcan_usb_restart_pending(), i.e. after a
+restart from bus-off (restart-ms, or "ip link set canX type can
+restart"). This handler ignores urb->status, so it also arms the timer
+when the URB is killed on unplug, and the timer may still be pending
+(PCAN_USB_STARTUP_TIMEOUT, 10 ms) when free_candev() runs.
 
-   This one shows when restarting the RX logic without doing a down/up
-   cycle, like when attaching an XDP program. The XSK kselftests
-   triggers it.
+FYI, Sashiko reported the same issue independently on my peak_usb
+series [1]. I won't fix it there, and will point to your patch instead.
+Both apply in any order, without conflict.
 
-Let's make sure we clear these interrupts for multi-MSI cases. It's
-already properly done for the single-chan interrupt, and for that
-introduce an "ERR" DMA dir, as we don't want to touch the RI/TI bits
-when handling these interrupts.
+> The same timer is initialized in pcan_usb_init() via timer_setup(),
+> but on error (e.g. failed USB command to read the serial number) the
+> function returns without cancelling it.  Because dev_init failure in
+> peak_usb_create_dev() jumps to lbl_unregister_candev and skips the
+> adap_dev_free label, the dev_free callback is never invoked either.
 
-To avoid duplication, the DMA TX error handling is factored out in a
-dedicated helper (in the same commit to ease backporting).
+I agree with the Sashiko review of this patch [2]: the
+timer_shutdown_sync() added in pcan_usb_init() doesn't close this
+path. The netdev is registered before dev_init() runs, so it can be
+opened and restarted while pcan_usb_init() waits for the serial
+number. The restart URB submitted by pcan_usb_restart_async() is not
+anchored, so it may still be in flight when the probe fails, and when
+it completes, pcan_usb_restart_pending() re-arms the timer of the
+freed struct pcan_usb. On the disconnect path, there is no such issue,
+since usb_unbind_interface() flushes the endpoints before calling
+->disconnect().
 
-Both of the above storms have been found on dwmac-motorcomm (YT8601),
-and are triggered by the xdp.py, xsk_reconfig.py, xdp_features.py,
-ring_reconfig.py and netpoll_basic kernel selftests.
+The init failure path is fixed by patch 9 of my series [3], which does
+what Sashiko suggests: the netdevs are registered only once all the
+channels of the interface are set up, so no channel can be opened, and
+therefore restarted, while pcan_usb_init() is running. v7 of the
+series is coming soon.
 
-This seems to only affect dwmac4, there's no multi-msi mode on
-dwmac1000, and on dwxgmac these interrupts are masked as of today.
+So I'd suggest a v3 restricted to the disconnect path: drop the
+timer_shutdown_sync() below, and the init failure part of the subject
+and commit message.
 
-Fixes: 6ccf12ae111e ("net: stmmac: use interrupt mode INTM=1 for multi-MSI")
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
----
- drivers/net/ethernet/stmicro/stmmac/common.h  |  1 +
- .../net/ethernet/stmicro/stmmac/dwmac4_dma.h  |  5 ++
- .../net/ethernet/stmicro/stmmac/dwmac4_lib.c  |  2 +
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 46 +++++++++++++------
- 4 files changed, 40 insertions(+), 14 deletions(-)
+[...]
+> +static void pcan_usb_free(struct peak_usb_device *dev)
+> +{
+> +	struct pcan_usb *pdev =
+> +		container_of(dev, struct pcan_usb, dev);
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
-index c74bc7c9750e..a972bee66504 100644
---- a/drivers/net/ethernet/stmicro/stmmac/common.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/common.h
-@@ -382,6 +382,7 @@ enum dma_irq_dir {
- 	DMA_DIR_RX = 0x1,
- 	DMA_DIR_TX = 0x2,
- 	DMA_DIR_RXTX = 0x3,
-+	DMA_DIR_ERR = 0x4,
- };
- 
- enum request_irq_err {
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h
-index 43b036d4e95b..a7caac3c98e6 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h
-@@ -173,6 +173,11 @@ static inline u32 dma_chanx_base_addr(const struct dwmac4_addrs *addrs,
- 					 DMA_CHAN_STATUS_TI | \
- 					 DMA_CHAN_STATUS_MSK_COMMON)
- 
-+#define DMA_CHAN_STATUS_MSK_ERR		(DMA_CHAN_STATUS_AIS | \
-+					 DMA_CHAN_STATUS_FBE | \
-+					 DMA_CHAN_STATUS_RPS | \
-+					 DMA_CHAN_STATUS_RBU)
-+
- int dwmac4_dma_reset(void __iomem *ioaddr);
- void dwmac4_enable_dma_irq(struct stmmac_priv *priv, void __iomem *ioaddr,
- 			   u32 chan, bool rx, bool tx);
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
-index a0249715fafa..02aa1a3dd1e2 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
-@@ -150,6 +150,8 @@ int dwmac4_dma_interrupt(struct stmmac_priv *priv, void __iomem *ioaddr,
- 		intr_status &= DMA_CHAN_STATUS_MSK_RX;
- 	else if (dir == DMA_DIR_TX)
- 		intr_status &= DMA_CHAN_STATUS_MSK_TX;
-+	else if (dir == DMA_DIR_ERR)
-+		intr_status &= DMA_CHAN_STATUS_MSK_ERR;
- 
- 	/* ABNORMAL interrupts */
- 	if (unlikely(intr_status & DMA_CHAN_STATUS_AIS)) {
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 9ded31150fbe..2068b57df8d5 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3141,6 +3141,16 @@ static int stmmac_napi_check(struct stmmac_priv *priv, u32 chan, u32 dir)
- 	return status;
- }
- 
-+static void stmmac_dma_tx_error(struct stmmac_priv *priv, u32 chan, int status)
-+{
-+	if (unlikely(status & tx_hard_error_bump_tc)) {
-+		/* Try to bump up the dma threshold on this failure */
-+		stmmac_bump_dma_threshold(priv, chan);
-+	} else if (unlikely(status == tx_hard_error)) {
-+		stmmac_tx_err(priv, chan);
-+	}
-+}
-+
- /**
-  * stmmac_dma_interrupt - DMA ISR
-  * @priv: driver private structure
-@@ -3165,13 +3175,24 @@ static void stmmac_dma_interrupt(struct stmmac_priv *priv)
- 		status[chan] = stmmac_napi_check(priv, chan,
- 						 DMA_DIR_RXTX);
- 
--	for (chan = 0; chan < tx_channel_count; chan++) {
--		if (unlikely(status[chan] & tx_hard_error_bump_tc)) {
--			/* Try to bump up the dma threshold on this failure */
--			stmmac_bump_dma_threshold(priv, chan);
--		} else if (unlikely(status[chan] == tx_hard_error)) {
--			stmmac_tx_err(priv, chan);
--		}
-+	for (chan = 0; chan < tx_channel_count; chan++)
-+		stmmac_dma_tx_error(priv, chan, status[chan]);
-+}
-+
-+static void stmmac_dma_err_interrupt(struct stmmac_priv *priv)
-+{
-+	u8 tx_channel_count = priv->plat->tx_queues_to_use;
-+	u8 channels_to_check = max(priv->plat->rx_queues_to_use,
-+				   tx_channel_count);
-+	int status;
-+	u8 chan;
-+
-+	for (chan = 0; chan < channels_to_check; chan++) {
-+		status = stmmac_dma_interrupt_status(priv, priv->ioaddr,
-+						     &priv->xstats, chan,
-+						     DMA_DIR_ERR);
-+		if (chan < tx_channel_count)
-+			stmmac_dma_tx_error(priv, chan, status);
- 	}
- }
- 
-@@ -6466,6 +6487,9 @@ static irqreturn_t stmmac_mac_interrupt(int irq, void *dev_id)
- 	/* To handle Common interrupts */
- 	stmmac_common_interrupt(priv);
- 
-+	if (priv->plat->core_type == DWMAC_CORE_GMAC4)
-+		stmmac_dma_err_interrupt(priv);
-+
- 	return IRQ_HANDLED;
- }
- 
-@@ -6500,13 +6524,7 @@ static irqreturn_t stmmac_msi_intr_tx(int irq, void *data)
- 		return IRQ_HANDLED;
- 
- 	status = stmmac_napi_check(priv, chan, DMA_DIR_TX);
--
--	if (unlikely(status & tx_hard_error_bump_tc)) {
--		/* Try to bump up the dma threshold on this failure */
--		stmmac_bump_dma_threshold(priv, chan);
--	} else if (unlikely(status == tx_hard_error)) {
--		stmmac_tx_err(priv, chan);
--	}
-+	stmmac_dma_tx_error(priv, chan, status);
- 
- 	return IRQ_HANDLED;
- }
--- 
-2.56.0
+Nit: this fits on one line, as in pcan_usb_init().
 
+[...]
+> @@ -901,6 +909,7 @@ static int pcan_usb_init(struct peak_usb_device *dev)
+>  		dev_err(dev->netdev->dev.parent,
+>  			"unable to read %s serial number (err %d)\n",
+>  			pcan_usb.name, err);
+> +		timer_shutdown_sync(&pdev->restart_timer);
+>  		return err;
+>  	}
+
+This is the line I'd drop: it's harmless, but it doesn't fix the init
+failure path, and the timer can't be armed there once [3] is applied.
+
+With the patch restricted to the disconnect path, feel free to add:
+
+Reviewed-by: Stéphane Grosjean <s.grosjean@peak-system.fr>
+
+[1] https://lore.kernel.org/r/179281433446.3130.6290059781976829176@kernel.org
+[2] https://lore.kernel.org/r/179304858361.3134.1029344134259623994@kernel.org
+[3] https://lore.kernel.org/r/20261022-canfd_check_channel_idx-v6-9-197704231551@peak-system.fr
+
+Thanks,
+Stéphane
