@@ -1,22 +1,21 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.147.86
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.143.35
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793394074;
-	b=Kmyw/NglYIReePfcP5rQyRNm7UCFbh7yf6cMHzXtYZL8ZMlp0nspq/SyB5D11Hs+YSG2
-	 dRwGZsFWonUCOeWBy82ibzcTgh+DV26d0A+aI6ucnOcu8+eHUPTQwr0hvM8l9K6P4FoU0
-	 kVVHGJEWBrpVnieTLzsMAhXZUxb6zywVuDAfUsfmlJbpDlx2rzpTu23R6l7ngrV5WTFgh
-	 UqU6lSCEuMqDoMhPPdQmYJpD62yOQnDYMoVVb5vj6U1FuyFvvurCMMsxNdmyEW9lmlGj8
-	 VF3+nyY0v4mGnI+R/6I9GCIG9Plk0/IBhNcRJ0vtZpNqcWgQEDDIXaVB0ENFstA1kTw==
+	t=1793394090;
+	b=nkQ59BxDFv29pDArDLVkWmm0qcpgRQQ6bRFP7OUanhmWGFcVtZzQg882EFMMoD7wrShq
+	 ZHehSszuus7Ro97qJxDp5XSqyKjS/+NHQAc+LkrZRnryEQ89VhxCpJbQ/sogMf9+4DpzQ
+	 3mQXToBUVsn161SR5JSOX6ivnw0vSpQ0pZ5Upz+M6AFGsxgkf3ncpA71cllJF0uXsqlTR
+	 TNKYJmur62yAJe3bNWig9UFwn0jumYNwxk0KvAjqBp6Yoe+n1bBnn8pzUePSwLrED1in2
+	 CRFUMP+lP+lr5/8LOqiRbawNGp3WYM3gG8UKQQWbk9JL6+YiKAmiWkEgVnzot9GbIvA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793394074;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793394090;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Received:From:Date:Subject:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:CC:X-Mailer:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-LD-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
+	 Received:Received:Received:Received:From:Date:Subject:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:CC:
+	 X-Mailer:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-LD-Processed:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
@@ -26,76 +25,72 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
-	 X-HPE-SCL:X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=jokmvT97cdT91HDgt/UEHeaPTdXRagGP5/JD5X3QTQg=;
-	b=YcFZlCPIXdQRlMkxj9y3R8401CjguMDa6paDr5yF0oVwI0RU38KXiD6S4NMgTmLOix9n
-	 DXE4E0uwzp5A+loS+uFa6k36yRtYw/Ix8Kjz8b/cpxONicEmOc5sDtqJKFnIdVd6lGnf9
-	 FLFFYVFS8evxCKbGBW780mVqduEH+UlaVGuxniBpFann5Clbe8qHpkyRY97SQZipfEX2u
-	 JrslPBiGl54zJILYsVg5hyAL3rEAiecpP+8IfRYW4lfLUZ1GUeHabPIaaBs+Xp121l1jC
-	 3n+Cd6gETkSklPMixEwlY+DzxJ3ZWAiIyG7qwh5o04AjGPPl761RvBs6R/bN5UjIIvQ==
+	 X-Proofpoint-Spam-Info:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:X-HPE-SCL:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=lboqsmIAlA3b6834pdw231iO/gtmIEQpprll671Abto=;
+	b=1hkp/i0TQHzuenosePFf03sIO06vUGEVmVxBZ/JGjVln9RA6FwJgotDqxOyWZezYLfmO
+	 dFNP2U5JVnE13YjDggAH4MowUD9Wg67fkN3PMVouAUwFMXZ7WQqhhTDwOWrR88zJ5bUVv
+	 tyFTOC8DgY8p4lXeNPHdEwqE28TIdPKWzlgBeaFNg8K/LHxVXgKBFrYyc6BZLTcLH1ikv
+	 +b27GhtDhh02ubu57LBSwa8j9zxlQhV/I4xxebL0Xsl1UAhZpqimGyZml7ZvVBJSo5by1
+	 WjL3Yb4iWRmDPrrOZtvSwYpcgXePTHUKr0IJCOvBsxJf431V9jItekEnBwWrPDicuTw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=hpe.com;
 	spf=pass smtp.mailfrom=hpe.com;
-	dkim=pass header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=oufDnUJL;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.147.86
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+	dkim=pass header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=F1BpP7XM;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.143.35
+Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBE7606A323;
-	Fri, 30 Oct 2026 21:01:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AEBE7606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9914606A323;
+	Fri, 30 Oct 2026 21:01:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9914606A323
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=oufDnUJL
-Received: from pps.filterd (m0134422.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69UJ21YN923821;
-	Fri, 30 Oct 2026 21:00:45 GMT
+	dkim=pass (2048-bit key, unprotected) header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=F1BpP7XM
+Received: from pps.filterd (m0150245.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69UKCeCE1185069;
+	Fri, 30 Oct 2026 21:00:59 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps0720; bh=jo
-	kmvT97cdT91HDgt/UEHeaPTdXRagGP5/JD5X3QTQg=; b=oufDnUJL9Aua9/7skT
-	9uFbS+WNxU8rbHD56Z4zoK0Z0LgfCTj30OUbsJCUWrsDl3uDeT+lRrLVlpsFqr2Q
-	L309kq8SLCsUHB6lS+TjI18+tmx6b7KQUbjFolx+vtDTLUaqMq7awZDXb+O1Pziw
-	2xNqEWMDVeUAkapkN4e5fvb6nkf8DJJRZKfk+cEexElY/VES/Wbpv8ZkZs5kxtTC
-	+4WETTOpcsywcE1eqQIIDHMGWfpYVgUExM37aXTeOUC5TPPPoaQvVJkBH11BwSPI
-	wevlmI5lCJyiazOBepY4asnJyj/XBVWBu3+bou63hO9pWifB4RspEa8GgZ/vRpuY
-	gRVg==
-Received: from p1lg14878.it.hpe.com (p1lg14878.it.hpe.com [16.230.97.204])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 4hmvmy4xv0-1
+	:message-id:mime-version:references:subject:to; s=pps0720; bh=lb
+	oqsmIAlA3b6834pdw231iO/gtmIEQpprll671Abto=; b=F1BpP7XMn3JyzLLBSy
+	A2bhPcPc2pGHPIAbRbJ47QfG5zjYSexoucE+7GyoRxJiqg+LRverAmGS7hgt4LN0
+	kwnZytAszmf7yz5R9ItwVahqKg8WBEtrdGxrItaa6/3TSB9DjXV9j+mHAgoDxceG
+	Y1vRVGnuz7qQFU6iNFDEV5+Ii9JykM12vOJd4SJAHX41GWbBnOar/ddNpTxYRUJs
+	HAh0oCrRSm/qbtAIp/LuOlIIse12dk83bhwmMctxTUCxaL8MJoFX7qnjvskLxupm
+	qIQjHZ3eldck6EEwYFKre68dy2Att33tBLnmPtWpvm98uQ6AWx1z7eHdWUpnszzN
+	XpFg==
+Received: from p1lg14880.it.hpe.com (p1lg14880.it.hpe.com [16.230.97.201])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 4hn22wgds6-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 30 Oct 2026 21:00:44 +0000 (GMT)
-Received: from p1wg14923.americas.hpqcorp.net (unknown [10.119.18.111])
+	Fri, 30 Oct 2026 21:00:58 +0000 (GMT)
+Received: from p1wg14924.americas.hpqcorp.net (unknown [10.119.18.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by p1lg14878.it.hpe.com (Postfix) with ESMTPS id 891B2D2F8;
-	Fri, 30 Oct 2026 21:00:44 +0000 (UTC)
-Received: from p1wg14928.americas.hpqcorp.net (10.119.18.116) by
- p1wg14923.americas.hpqcorp.net (10.119.18.111) with Microsoft SMTP Server
+	by p1lg14880.it.hpe.com (Postfix) with ESMTPS id 6476E8014E0;
+	Fri, 30 Oct 2026 21:00:57 +0000 (UTC)
+Received: from p1wg14924.americas.hpqcorp.net (10.119.18.113) by
+ p1wg14924.americas.hpqcorp.net (10.119.18.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Fri, 30 Oct 2026 09:00:44 -1200
-Received: from p1wg14923.americas.hpqcorp.net (10.119.18.111) by
- p1wg14928.americas.hpqcorp.net (10.119.18.116) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Fri, 30 Oct 2026 09:00:43 -1200
+ 15.2.2562.43; Fri, 30 Oct 2026 09:00:54 -1200
 Received: from P1WG14918.americas.hpqcorp.net (16.230.19.121) by
- p1wg14923.americas.hpqcorp.net (10.119.18.111) with Microsoft SMTP Server
+ p1wg14924.americas.hpqcorp.net (10.119.18.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Fri, 30 Oct 2026 09:00:43 -1200
+ 15.2.2562.43 via Frontend Transport; Fri, 30 Oct 2026 09:00:54 -1200
 Received: from CO1PR08CU001.outbound.protection.outlook.com (192.58.206.35) by
  edge.it.hpe.com (16.230.19.121) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Fri, 30 Oct
- 2026 21:00:43 +0000
+ 2026 21:00:53 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wt9/Wqs+oCZBkv80zOHDSPav9UZZWOJV1T0FSbTzvoofY+183JhXw3el3pxkpNaXs2nZESWOdu+ejCTkXUDkz+3VCt55Dp38lXhiPiGBwrWdgdACbI5+29YD61JoM80HZd6GHPMz+2yXyp2MVuM0W0G9jLoupAaktMX9/uyAOccRnzY+LP3/cqDJe8CrAGfEJCow49eMaMLw6QNpAdVz5vaBROTJUfwcMKikicd+qOH16A4Ru4xK8kiNcRUwoBLKp+340QjnMMSFJ1Wf3mFny/A2+fMmFIpWMdKQv5FSrrmV9U8jkj9lnBL7ECTZzXTW4kGfbo+giD2lyv/8RUXZiw==
+ b=ooeA8bST/zkbu6iRjqO0FDf7uyBPm89ouBWKjECMgcuXDRaC/E2+2ywAhJqiBycBTKKF8rfaoTlAesJi+Cbx3FJ7SkYE/tSW8+r81QMcoZGVyQUANYWObiDFCrjVeRo/mK9vuF+cn4UVi03b4t+X9YoORdbzpG2vBHwE+VhgTEsCYnGkuClS/To+8JN6bKsN51G2Pj/VNJDT4PsrTudoUikM6vu7zu5iDfCfMl34tu4XSnyM75bm6nK4EDMjh1ErObjxvfb89C3GUQzeWe0DVX44HwX67wzNnU0+Pxma5rRRrEPQa+XtjeUE83Zce4/j8H9bz623hbO3HeKTtj9Nvw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jokmvT97cdT91HDgt/UEHeaPTdXRagGP5/JD5X3QTQg=;
- b=jzCAqTsveh3GhOoZSqfJE9Xd4ux+fkoGP+LOLNGw7rtuOpFPE/soAtVLDSkvThhpzgMOO7ssyJGvNN/FuWn9IVXfVvDIkcuNKjZZkmTybgfdMPYKaxXIPu6PllilJTEA8sFuk/AVgnqj1wn+N6CRYLlbucAxwu61zbI+ryjaNtXbI2UF78s2Itd0mMU/sUIHDSJHvsBQA3dr/KMhSJfjI7HONq3lbqjEOyNqbme07MeO5Yj/VFMBJcZqzsft2+yEZZrFTgvA/wb8BFwB5QQxJGiMTbi0DRaTYseGGPo6BqiXeV4a74HeEByLs3DyXLrq/r/B3VGhNuZXC7glQyG+XA==
+ bh=lboqsmIAlA3b6834pdw231iO/gtmIEQpprll671Abto=;
+ b=PGkzus4qjNHRJGSnAl5JHTozqMXYJ4ntWo9mX7J80JE2q6qfYqXtw1gmY7XJHHXNuHraxA8WNyaSw7CZfe4HnVHk0k0JaFYd88zcpCxmHdv2kZP/HxPziyyFJ9aGoSt88/nhCiTLkMIUiDBSP8MPZsTisGVptplIyAc+sk7yzRxcYgWmRodWELx7S7TDiA/l7PmbE/aVBiruwi0Q8Bo2AHDK7NZyYzwLq6j/IODjjR9bWE4PQvYrhr9y3h5Kpm4ZntF+YcFZfSw6fVv8KyyHHwKNF9zuGNQJeFHMSwN5dNFwf2Z53IvL0thVYyswLnKphrIco/UXXxS0/T2BqLJkWw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
  header.d=hpe.com; arc=none
@@ -105,17 +100,17 @@ Received: from DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:8:225::20)
  by IA4PR84MB951192.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:207:144::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.10; Fri, 30 Oct
- 2026 21:00:38 +0000
+ 2026 21:00:46 +0000
 Received: from DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
  ([fe80::d136:e75e:53c5:73d8]) by DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
  ([fe80::d136:e75e:53c5:73d8%6]) with mapi id 15.21.0569.008; Fri, 30 Oct 2026
- 21:00:38 +0000
+ 21:00:46 +0000
 From: Doug Ledford <doug.ledford@hpe.com>
-Date: Fri, 30 Oct 2026 13:59:08 -0700
-Subject: [PATCH 12/23] net: hpe: sl: add the control layer
+Date: Fri, 30 Oct 2026 13:59:10 -0700
+Subject: [PATCH 14/23] net: hpe: sl: add the sysfs interface
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261030-cxi-netdev-submission-v1-12-8c2c391cc283@hpe.com>
+Message-Id: <20261030-cxi-netdev-submission-v1-14-8c2c391cc283@hpe.com>
 References: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
 In-Reply-To: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
 To: Slingshot Open Source Team <slingshot-os-team@groups.ext.hpe.com>,
@@ -136,13 +131,10 @@ To: Slingshot Open Source Team <slingshot-os-team@groups.ext.hpe.com>,
 CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
         <linux-kbuild@vger.kernel.org>, Doug Ledford <doug.ledford@hpe.com>,
         "Sandeep
- Bhoot" <sandeep.bhoot@hpe.com>,
-        Mamila Santosh
-	<santosh-kumar.mamila@hpe.com>,
-        Iraimani P <iraimani.pavadai@hpe.com>
+ Bhoot" <sandeep.bhoot@hpe.com>
 X-Mailer: b4 0.16.0
-X-ClientProxiedBy: CH0PR03CA0017.namprd03.prod.outlook.com
- (2603:10b6:610:b0::22) To DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
+X-ClientProxiedBy: DS7PR03CA0303.namprd03.prod.outlook.com
+ (2603:10b6:8:2b::19) To DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
  (2603:10b6:8:225::20)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -155,6574 +147,13302 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM4PR84MB3970:EE_|IA4PR84MB951192:EE_
-X-MS-Office365-Filtering-Correlation-Id: 74a4694c-6338-4dd5-2052-08df36c8d905
+X-MS-Office365-Filtering-Correlation-Id: 5e823927-571f-421e-7251-08df36c8dd6a
 X-LD-Processed: 105b2061-b669-4b31-92ac-24d304d195dc,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|6133799003|18002099003|22082099003|921020|56012099006|261021121427099003|261028144727099003|261026121527099003|10067099003|261026140227099003|261022115727099003|261022075727099003|261022105027099003|261021123027099003|261021135927099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info: 4GQLdtK7bylrm+YC1t6s+Ro7P+LVrCRrI0mb1hjshhgP4TLcwEfd9VbMu2CP8QQnQyZSpaQC2PTttFiPh1P17YoXC3O0ZE+SQ9aWBAo/rst5+nMNx9DeJTK1RHTvabxUKLL+Rb6DKwGw9TKBGgoNGMZjvDSNIpzA+ocLbR02s53+t6WAVA1xDuhW8805Osh2qlOKzaEOlvnPpm0IogIqc9OlXwinzmrb0/7TXJaHOY6mvU5ZrVtAKrLq6uARPM7mRu5Xr+omJHRRKWKBaDubQ9AWe3DqYFilpgUY4tmwOIP5PyABGodA9XkCD84ETXsp3YRP/MQXron8SPQbg/6vKhQnFjUAz99TB5fUYUDj4NetHbN//RiSiH+YcSG2So8AfrDGfHvFYTh1T6p1TLL62OXBViiYyAcr8IzO1fm0juxWePKzCmL213p64uCSHzlR9CutKrHykuTH0RZnue7qaA+z4zdRI/8o3PB+gqINLEKlRhOa0MURQ+u/25x3rpG9OHzocl0PxJycCN6evS8dLvQRzAdXpiOIfTZnr6sVGtRTKUVGIRuf71OQe2x9CTfA9dhgarbdvbRn+tg8ZfygNL3IO78jXb6GQlFkC1ssb6B1eiwKD6Y5uiWIzq5nIoA+e+/JJkxHDD9SYGhgONINsNXyubIf5TJKKR4Fr39oq+tfzGkapzOgy7wYwQ5Mu2HAAvkvuUXEtrILmhpyw53DNg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(6133799003)(18002099003)(22082099003)(921020)(56012099006)(261021121427099003)(261028144727099003)(261026121527099003)(10067099003)(261026140227099003)(261022115727099003)(261022075727099003)(261022105027099003)(261021123027099003)(261021135927099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|6133799003|18002099003|22082099003|3023799007|921020|56012099006|261021121427099003|261028144727099003|261026121527099003|10067099003|261026140227099003|261022075727099003|261022105027099003|261021123027099003|261021135927099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info: VhY4kdjMfYOKEs/uXM8zGHYP5aCumkRy4AdG79BMDoZfoNxiDBje0tTK2zEzMSrbkSpXFszlqQ13HvmEV/NqMxQvKMgfuxWKthBdVwIH7rYp8qFcQlTdoUwWXxWyAJIvXxV5OlglCy5j6gpojn422vN73O8sX29tQjPH+y1SSKAJFZtVMm2YIiuhnAy/ZBXX+SJq69SOIb3est2+EwSFRS6HqmOcABMWK4S5fOd5dF3olQ9eMCsj2m1lHbsjlpMDZHeSsOkYNPI7G85+2Yc900SVDkRn2SM3MePw6sKMyXFoAclObPdddgL3ex4PBRHodnzp11aA49dghGN+06JtpDdVMp1v+XM2IYbLpvYMeuj+njl4GM/BFCHt3BMfCAqBsRE0dUsYnK6uM6mGREiXI6UB14CC6aIPf9L3eAH1FvgaYT0KtpH9CcO0vnQTRx//5+yYr++tsVuGP5haBXmiQoPaD0UGS3/LIi2sqxCFsCnakSBRP2oVQJhNI9N/0FlY381wIGN0aIBLeyi5ebuk4mxS7ZNv/XSdCUwz62qx/bekVDBL+UwSoWt2qTEaGH+lGWX1mBy1hHbQG6HGLa3q/V87ATB3fT2rYJDEGjFhrB6mGa2h6GZvxvFP4Y4jX6FOl9brduTi3ZE8wuN2+LLbl1dAnIf3fy+2zqlmVfDfWPkblaWiUbg4rOmTpttTn43S/xiJUB/qVpDHM5iDtNDMHg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(6133799003)(18002099003)(22082099003)(3023799007)(921020)(56012099006)(261021121427099003)(261028144727099003)(261026121527099003)(10067099003)(261026140227099003)(261022075727099003)(261022105027099003)(261021123027099003)(261021135927099003)(261009223027099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aHR0WkVRQSs3VDE4eEZFSXdGcTBFTnJnbE4yWHA2d0ljQzI0NmJTMWp0NXdJ?=
- =?utf-8?B?OXA4Wis1NDVOSnk1UWdibFBySng5cHdWWFhHYkpZcGJMaE1ES2pZS3hQRjJ0?=
- =?utf-8?B?bkpSUEdFbFcxTmNIK0dId0tXT2xLeXcwdXdMT2xSUlVqWWk4NjlZbjhEMnVL?=
- =?utf-8?B?VkNjR0FETnh4NmVXMExWeWNDMFd6U0J4STlhNCtuOThvdmwxS1lTK1JpdFJj?=
- =?utf-8?B?bzcwWFdLRGkzTE16RFhGSzJMQWIyeWM5eWFaWTBydThJbHcwcUhmRXBLMm90?=
- =?utf-8?B?OVBMa2crZEZrOXBqakpVRUtYYTREWUp3alRRaDd5eTFSZ0IrcWVpS0g5am84?=
- =?utf-8?B?WDh2SDRWdmYvZm9NU3VwQjBGSGxOSlBvYU04OUR0dlpOSXMyaEIwalVYR096?=
- =?utf-8?B?ejhhRURlR1ZGRkJZTkFYbmJuQkI3KzdpcGIxdjRxVDBhWG1HNktpTWdvNW0x?=
- =?utf-8?B?UWViZXN4MlpBbjVTclI1bXR3UktPWTgvNkJKWm85Zk9NN1QveTlMT05scGhL?=
- =?utf-8?B?VjRtaHV5NHZ6RzJ2ckhBK24vWUdPdkN4eFJYSCttSDU4cU9ld1p5RlRmYUV6?=
- =?utf-8?B?VUJTd3p4djFZajZHbi84ZUlEMU8vaWZuNkRnT0ZpenJ3Q3o5OGkwKzlrVUNS?=
- =?utf-8?B?cEdHc2JiMnh1Q3ZPTEV0ZjdxUm5KZmh6cGJYa2lpY21WQ0RBZ0ZvaTdKVHBS?=
- =?utf-8?B?SlRIclU5VVZ1WTREKzdGS09DVVlnUEt1ZnBTNTViTkZhVDZNamVldXV4WHpm?=
- =?utf-8?B?ZG5yaGF0SkhKdUJhM0d5b2c5WXN3aC9wU0ZrVW0vbkVJdE4xZ0JtTEtOWjR1?=
- =?utf-8?B?ZldFZzBhUnlGZTZhdmpXZHFqd1Rick91cUsrTG1yTjV5WTUzMzBGN3h5Zk8x?=
- =?utf-8?B?d2dpMU1QZWxNRnBMTFF4Z3RkbjZTbEZIb1duZFB0TWM2Uk9CcUo0MDcwMTVx?=
- =?utf-8?B?dmVhQkFUeFc5eWJPYU5qR1hDcWUvWWtPTWNaUmpnOG1LU003STB1SytWNEJu?=
- =?utf-8?B?ZW5HcXFkYjdhbWE2aWJQbExrMXJFTnZOSGRudERTcy82dHcveXc0Mk55bkNC?=
- =?utf-8?B?NUJkWGNIcXNLcGtqZnZBbXBaRUNLaGNMc2JOUVZIRTEwbEo1UWR6R1Zvenho?=
- =?utf-8?B?Z045ZFpoS096SmZRblJ2UFRZVW44MVpjTy9aZHZOM2JFVW9qVVhHQ0ZWc0V5?=
- =?utf-8?B?a0xzYXVncmpvK0dKRS9UY2VRK1FYNStqTkU2dGZsVHVQSFBiNm92Y1A4NXFR?=
- =?utf-8?B?YndySktKT2NzRUk5bGIxTU9NTGJWYUppK1VZeXF2bFpkczQrKzEwUVRjaEM5?=
- =?utf-8?B?LzAvUHlwNldiNFJ3WWsrWjB3UlNtTFNpKys4OVl3dm0zOElZa3VQT2ZjVVpD?=
- =?utf-8?B?SmRJRG04dmNUTkc5SVhWRkgrbWdNWXpXNFAwS3RoNkxhQ2ducm92eU51L3VK?=
- =?utf-8?B?V3QvTVRRdkxWRmRtRW5kNVR4NzBzaEtyeHVkME9UeU1GVWlyZDBGdXJmNE1Q?=
- =?utf-8?B?TW81cG42amZjNjUwN1JXaEMwL3hHVjgzSHZNREhSZG1SMXRiVzlKSG1SSzlh?=
- =?utf-8?B?RjI5Y0xGcW9tV2F6T05seC9xWVpUYXFoOStBVjNOa0hoVzgvQi9MUjh4Qjhh?=
- =?utf-8?B?Zjh3UlRCSnlwRzU3QmFSWkRCZVA2eVJmd01FOWZWWGVkTXlhSjJqdDlmK1Yz?=
- =?utf-8?B?TytHbUFEM0dQNkt6eldJaGlLRHhhbGJLUDY5dlc0dGVSaGZCYmVMdjJUNHRa?=
- =?utf-8?B?Y1NBRjUxODZoN2V4K1ZPOE5IOWg1T0l5NHNIc2ZpY2JQMXhkTXBpYTcrSnRK?=
- =?utf-8?B?LzlwcTlFVkc5Qk80akpKdnVLQzFSNndoZVVvc0R4OWZ6RXZPZkNRUEE0c3pQ?=
- =?utf-8?B?ZzcyOUlQVHJiczN1QTgyVFlCZmpWemxkczQ0MmRzb0svYnQ5eGYxRktDN0tz?=
- =?utf-8?B?R3pVeVNob0lIMVJ5cmZMUjdJZGNqUHprcERVNGgrMjVyNXdBMCs2ZEw1Y1Fi?=
- =?utf-8?B?RUZ0bFc0ZmhSclFtVDUrWFNsUFNrNWg2cVJLYTdDUnozYWdNTmdGMkNndjl1?=
- =?utf-8?B?SDdPQ082bXI3WXBiUkMxcXhHZ0FGdVN6R2RkOGdjNVhha2xRak5yTFFPSHZW?=
- =?utf-8?B?aHRmZm1STXBhNWFVWVlMWWZ0RTJmZVoxNDRlOHNQNmtjTE9hSDhuL1NjV0NB?=
- =?utf-8?B?MU92ZCs1bnZiK1BmK0M5QzFGWVdwa2owSytyY1VvZHIrd0NSdDVydHMwMFA0?=
- =?utf-8?B?czI0WDU1dVZOZG4wc1A0OHFwSjRnTGxQeUszTk5jNldsclRJeUo2N0dBM0hz?=
- =?utf-8?B?TlBTTS9FcWk1V2NWemRPa3NvYXUzcFBKZHp1Q3M0YTcwVzlpajc5dz09?=
-X-Exchange-RoutingPolicyChecked: y4nJ4ylvZw1Hgvnd7xjSuv7vvciZUp7lDWtpNBPk+F7YA00FPXBD58OMFcXPJsA7YqY1en4UwbCVzU2if1h2tLqHT+D6TztUaxIHhPsk8xd6fARjJSwQxRCjIOvHGYNHaudBM2z1cN9YRW/oSL9832d/q7H8gnLY160sVMqoVfjG2GJ3w6C5zFnMLIG8VzGpb9lcz8+jB68px+g1SRZ7h3hxTl8qHOVCB6VnAhK7sdu/HHtKaPh3yoDnR+Cdz7eWj3pvZ7tHbVvXjjwV8HLesTE3JLS568tmeSYHQSLpePecYg1SroH85H0VipUssZ44efj1wCwoSIl4bnavMYbIDg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 74a4694c-6338-4dd5-2052-08df36c8d905
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Z002WHZTOGJ1U3BmRTlEbkRzZklYN2xXL2hXM1l5SHRVT3RlazhwcGdDSjNn?=
+ =?utf-8?B?RjhiZG12OU90QWo1RTNaT2RHNzUvZDhGUlErb3FzK0NFNGNqR015a3lwSkxa?=
+ =?utf-8?B?K28zOWI2bmE4SGErY0RJOGM4Z05LdFdlREtHcDV1UkpTNGxQVkg1RCtqdVg3?=
+ =?utf-8?B?RWc2eEdRdm9FMWZvRjQ3Wkh1SnBpRUl5YWxkYVg5MzAwQm02czBrOU1lTXdD?=
+ =?utf-8?B?ZUo2Q1RtZzhEaTFtY3FZUzRKQThGTWhPUlc5ODBTZERZRmhrd2NTSE53K3NB?=
+ =?utf-8?B?ejFKQUFZZEc3Y1VaU3lQejlNeGdhbmx1cmxxNkJpdzB3dnE4L3BNdFhtYkgr?=
+ =?utf-8?B?TkNnT1NMK2FGL1hXc0wxN21oaHlWRUEwK25oWmJrMWs3ZVhvb25BY1VLeEpK?=
+ =?utf-8?B?cWFDWjhoTFZGU284eDZBOUFEMGlUeUprU2g2ZmF5VDJjcVd3Z1NYT2ZMenFp?=
+ =?utf-8?B?Y0owUVBnQXN2UG1SbkxRY05lS2E3VVhLaW9DdEJVK2lpQzhBcDhpQmZOUVU3?=
+ =?utf-8?B?T1lKblU0aTNJQ3cyRE9SeWRXclJScGQybG1UeFo2MDgraWlRWm9vQnFNb3NO?=
+ =?utf-8?B?dzNlSkxhMTFKS2pad0FzYTJ3RWxGc0hjYjA5YWJDbkFXc1ZmcG80US9XK1oz?=
+ =?utf-8?B?NnpYZDdRRVF6Q21yTWFibzV1byswZUM0OFplQUI1aFh0NDR1RnM2NGorOTdQ?=
+ =?utf-8?B?aEk3SFgyNmR5SE5mUi9hVDRqOGhuTW81RUxFN1BLQnVTSWFETHYvWmd2bzBF?=
+ =?utf-8?B?NkV3S3lSd256WCtGdEhrOW10d3JoRENsNzlTYjlmc01VV1pqMTFKb25XYWVw?=
+ =?utf-8?B?TW5rQmkrNk9qa1Bpdk9lVkFLLzE5dlR1VFc2VFJmQXJudVRzRFg4Y1BpalFM?=
+ =?utf-8?B?OGloL1dndGgwTWhrNDk2OHZDbTgrdnpHZmI1U1J4RXlOMERrMjAwZnhVWXk1?=
+ =?utf-8?B?MVgvd2Zyc0d0bEEwSFNkb1UrTHVJZWhTZnFXZmE5emVqM0JOcE52T3dhNUNm?=
+ =?utf-8?B?dzVsUDdMbmdsT3hMcEhQSXp2eldycEdHZVovTzVqUnRlRnJWYkVTRjhHVnBX?=
+ =?utf-8?B?SkFnYTVCdVI4NG15QkNjUER0QnJmRndiamNpdEt4RTNnNVp0SFRGNkYzV2ll?=
+ =?utf-8?B?Zk15RVVyRS9pS3pqVHlpMFNoSDVHYkF2M2FMU3FlYzRQbG45Vk01YVhOSWpn?=
+ =?utf-8?B?ZGN5UitvZzFkRWplUSsyWjg4NmxuUmlxUVRtSkRtZk5HblQ3WDF5amZRM0w0?=
+ =?utf-8?B?TG5LdFVkVkwwaGdBQW9KZ3NTV3ZTTHNMUGhSYTdydWE3K2tJMTFvUWwxaFBK?=
+ =?utf-8?B?MmZyQlNDUS9IUkViclRNejdaS3h5SS9ROVN3aUZMbFVmR2dwV3FneHA3Q3pT?=
+ =?utf-8?B?d0dMSXZsc2x4M2VHZURyWFZaWXlJRUQzTTZCK0ZtTGJkT0NGL3RKR3NQR01W?=
+ =?utf-8?B?eDE0VTltQWJ6cHN4ejB1bGx1VDg5YzJDbDVIcmRkQXhtWjVJZ2xZV09qSFlv?=
+ =?utf-8?B?NG1BdW9aeUhuWnNObEtZU3drQllTaG5GQjF0c3NRU0Y0RzY4am1OMDVwKzFO?=
+ =?utf-8?B?a3BMQVYxUmRaZ2xpMmpBZm91MFR2ZFpjaFFMaTJud3l5KzVHUDNtVXE2RkFt?=
+ =?utf-8?B?N3VNUC8yRklUbVRvT09SaU9XNjE5VEVhTXZpZ05LQlkvVncvU1ZqRTZjV0lX?=
+ =?utf-8?B?SDNwelpOMC9rdUpFVjRnNklRNmxvYTVoNUxDeUpYTXd1Q1VFSi8yc3ZvTGVP?=
+ =?utf-8?B?dUlMNEU4ZG4yQVkwbFhZMXRpYmJIMEFZcGFWczQzNFYxcmlHN1oyOTBZYXB5?=
+ =?utf-8?B?TEowcVEzTHJEU1NhcHdkSkhRT3ExWnI4YjhPK1BMa2xZS3BWbXd5THBBWWU0?=
+ =?utf-8?B?ZkdrYURYVkZkRHJKWlNSMVZnYlpqY21JSU95YVkxTVlXdlNVRjdzK2dyQTFJ?=
+ =?utf-8?B?cXFqb0lFd0o0aFZmMVJKM2ZPSGNCZWhuYm10dlFhZnBabVNtMmhHck5SWHBJ?=
+ =?utf-8?B?b0tXbzBUZ2lxNDQzMXBhcmJNVk14WDJKVmZPdm1xTEd0Y1hUQmhmdHdOZVpQ?=
+ =?utf-8?B?aUo2bk1JcGwrWnVJYlpkUE9hN0htR0hSNWpqVDZZTUhuUkJwQitHV2JFR29a?=
+ =?utf-8?B?RldYalFZZUd6VGw5QUVnclQ4UTY3N2piWXFNMHY4bkh4YkNFZmpDY29uWit4?=
+ =?utf-8?B?R2xpa0dGaVNPYzNJT1JURk1YWk0zc21xNmhRRXRZdHoreDFWSVZuZGgrL1d3?=
+ =?utf-8?B?Y09JcU81cDhLcWxtaUttNExqUVRUc3lHWDdIejFDbVdlQ2txb2k5ZnNWTDY4?=
+ =?utf-8?B?N3Z1dHYvaUR4R3Z6R0Z1M1R0VDBEWWk1WENqU1hUcnAxeE8zZElFdz09?=
+X-Exchange-RoutingPolicyChecked: natfP04c+MXDBX8QmkWAVzY6bYiBNYSHjcNcG/mmcTHw30hQfzK+E+qylPHe2ekqsfpKxTLuxJ54XgSZVHFeOSRztMl1R5kaoNod9FD77XxABgVAeX94xQHi39h2KFMWNkUagPwjcOw3li9WvLuurprlA7ZrOsVMaeXWpGAUdLw3MojGlbnV6SYxh3q26QseoSDrU1z4A+mUfXvlohXDCi47lK0iswm1HdW5OHK+XXyviohTBjgg4yTX25XcVJETJq/Oa2rQ991lpGfjb5ip7cnlReRHOEhWpef/UX1Yw521ntdqWxWoJmG8HxiwoggCl/74S2Yr5cM1yNUppI+eqQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5e823927-571f-421e-7251-08df36c8dd6a
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 21:00:38.0939
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 21:00:46.2385
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 105b2061-b669-4b31-92ac-24d304d195dc
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sCrLy1pF7eOegkc/FY7L4ihw7FrG+rv8NpzV/2wQnbicndYle/8o+E4JOMEqPO9gAMQpbpIqFQbwnvY6phElyA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: uATsWLPV7zDVw+GdFOrcbkKxvdAGVvgz9lgEAC0Ugg8tjIg7v4dDhNY5XZy9a62WntbTvoHQ6mDWf98qb2KxPg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR84MB951192
 X-OriginatorOrg: hpe.com
-X-Proofpoint-ORIG-GUID: 1IadV2qlMA46P35Cw3RT641kmqENWLVA
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfX2eY66psVO8R/
- ioi0SmD/j9quOdT1DJlCqR+4ebtRa2K3kesRCNvlAvKYMOTjDQiV8MAJyAPsWQpkfuh2lLy7V2g
- MiOtNBpmrEQzrGckrJZGAn79RafnB7wRaeZrM7W6MccGG6FTTdgesezkKYQe+WHyfowvIzqcMZl
- tZjO3kb3M5IeoTzeu52d14a1bvFgHtbdIwok8k1KFnymXLOnIqT9lTZ7RNvxtDPGUGUtdZMHau6
- WtxHKDUXZcS01CSoZuAnRwRi+3oDpLRayVeStDGwY6yPHeULLOu3raalDMtMnpUJ2DocSHOS5A2
- V5pqJ8XSfxg/+vDrGgk/QS/zERVGhPJbON8DMoz1olGaCrq0nsT8skXmmSq4ZCiVjpu2MltafIv
- memwqNni4ZAPvz5V9eZKCnjoyzYaFXqJ8fxhvbtlk+ji5yavHsLv/+SMSCH5F+os2NNZ/PmZ3OT
- skQSQNz7dDV5/7cYQkg==
-X-Authority-Analysis: v=2.4 cv=It6L47/g c=1 sm=1 tr=0 ts=6ae5057d cx=c_pps
- a=UObrlqRbTUrrdMEdGJ+KZA==:117 a=UObrlqRbTUrrdMEdGJ+KZA==:17
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfXysfFTSMivWPH
+ n+dI+HcQxmyiKTsl2YOUYi/ExdrGflQzyilJsftvjziWHZye/u1Kl5eM2u+TzEr4zRfbVeRy7tG
+ PvocUKP1fZl84EGl817tEM3t/BIMMIM=
+X-Proofpoint-GUID: 8aO4huqfHgT71_ZVZFYvKvcPXLZxQpr7
+X-Proofpoint-ORIG-GUID: 8aO4huqfHgT71_ZVZFYvKvcPXLZxQpr7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfX6JstFzTntFOc
+ XsSmxDZolnvrK7FLnJVcM0h19wgz03adtL4X1UP2ikqyQS2BtQUjD5hAKi9z0Hd0BrCZwF/Nm2s
+ chOdNmCFEclPWBIMs4HHT/SniZhX349MovrHEPP1XxgdAn0sC1LJJPTvLA+qpmV8PSYLQDh7+hP
+ w0SZcfXW+RYKyoVoC5YagLaWrGOEfTTEl2G/W5nUDJXR/gXrR+OyC0/WMUA+7x/Ka2SxaWEYpNU
+ MUS09rSBSE0U0BnMmC5g678RNfP3bn7Cj47KxOGAE/wvaohwViQrRXuO7yIzjpjK5ZpNzkqCE2B
+ 3SMNAbjjGsnPPuCSftRJUmr5Eqr4QDBkLlO/A+Q/YnyW8sLQKjjQAZzDSoGBECLdMF7mCvUIWt+
+ Oczko/daWqd1UHa68psUxm25FwHeK/IvGX6XUndIM+UCa4NRtNVNULOifeuUBGbfbczaPJj8e+Q
+ u8crxT2oljYbQczSw0A==
+X-Authority-Analysis: v=2.4 cv=JfUpPkKV c=1 sm=1 tr=0 ts=6ae5058a cx=c_pps
+ a=A+SOMQ4XYIH4HgQ50p3F5Q==:117 a=A+SOMQ4XYIH4HgQ50p3F5Q==:17
  a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
  a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
  a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=gQcMVamqm3wCPoSYhaRC:22
- a=ModqzXLkJJ0tFyq98apW:22 a=MvuuwTCpAAAA:8 a=LheknTmOAAAA:8 a=L5Av9709AAAA:8
- a=2BiQyANNfSttp-q31nQA:9 a=PIuFQOwuOW9NwPU1:21 a=QEXdDO2ut3YA:10
- a=CJm8_YjmqYhBDa0z6R8t:22 a=Jwhx0Ts52bvbemp9dy6E:22
-X-Proofpoint-GUID: 1IadV2qlMA46P35Cw3RT641kmqENWLVA
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfX/ZX+o7RbXo4V
- Ixu38zYx3WNJx7FWbE+QOpv9hQeSD+mhWXOo1q5xE3sMrYX1sIxtsxjsmPGwJW/BiV1DcJ6k8Ou
- eHEwGKAkB9fITvU3N80Vu6lmanfC7u4=
+ a=6XKncaru_qjgLvANlS_8:22 a=MvuuwTCpAAAA:8 a=Z7PFGMq4_24wirIJ3j0A:9
+ a=zul3UiU5sbC5z5GV:21 a=QEXdDO2ut3YA:10
 X-HPE-SCL: -1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-10-30_06,2026-10-21_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0 clxscore=1015
- priorityscore=1501 impostorscore=0 bulkscore=0 suspectscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610300083
+ clxscore=1015 impostorscore=0 malwarescore=0 priorityscore=1501
+ lowpriorityscore=0 bulkscore=0 phishscore=0 spamscore=0 suspectscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
+ definitions=main-2610300083
 
-Add the SL control layer, which validates and serialises requests from
-the NIC driver and sysfs onto the core state machines, and delivers
-link group notifications back.
+Add the sysfs interface for logical devices, link groups, links, LLR,
+MAC, media, SerDes, SBus and PMI.  The many small files follow the
+one-attribute-per-file sysfs rule.
+
+Known open issue (Sashiko L14, V2): the SL sysfs tree (about 378
+attributes) has no Documentation/ABI entries yet. The attribute
+documentation, including which attributes are stable interfaces and
+which belong in debugfs, is being prepared with the hardware engineers
+and will be part of V2.
 
 checkpatch --strict (100 columns) still reports the following in this
 patch. They need coordination with the internal repositories this code
 is maintained in and will be fixed in V2:
-- WARNING: LONG_LINE (239), LONG_LINE_STRING (18), LONG_LINE_COMMENT (2)
-- CHECK: UNNECESSARY_PARENTHESES (21), ALLOC_SIZEOF_STRUCT (4)
+- WARNING: LONG_LINE (586), CONST_STRUCT (60), LONG_LINE_STRING (20)
+- CHECK: UNNECESSARY_PARENTHESES (63), BRACES (1)
 
 Co-developed-by: Sandeep Bhoot <sandeep.bhoot@hpe.com>
 Signed-off-by: Sandeep Bhoot <sandeep.bhoot@hpe.com>
-Co-developed-by: Mamila Santosh <santosh-kumar.mamila@hpe.com>
-Signed-off-by: Mamila Santosh <santosh-kumar.mamila@hpe.com>
-Co-developed-by: Iraimani P <iraimani.pavadai@hpe.com>
-Signed-off-by: Iraimani P <iraimani.pavadai@hpe.com>
 Signed-off-by: Doug Ledford <doug.ledford@hpe.com>
 ---
- .../ethernet/hpe/sl/ctrl/data/sl_ctrl_data_lgrp.c  |  164 +++
- .../hpe/sl/ctrl/data/sl_ctrl_data_lgrp_trace.c     |   50 +
- .../ethernet/hpe/sl/ctrl/data/sl_ctrl_data_link.c  |  424 +++++++
- .../ethernet/hpe/sl/ctrl/data/sl_ctrl_data_llr.c   |   64 +
- drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_ldev.c    |  290 +++++
- drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_lgrp.c    |  351 ++++++
- .../net/ethernet/hpe/sl/ctrl/sl_ctrl_lgrp_notif.c  |  258 ++++
- drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_link.c    | 1230 ++++++++++++++++++++
- .../ethernet/hpe/sl/ctrl/sl_ctrl_link_counters.c   |  388 ++++++
- .../net/ethernet/hpe/sl/ctrl/sl_ctrl_link_fec.c    |  202 ++++
- .../ethernet/hpe/sl/ctrl/sl_ctrl_link_fec_priv.c   |  539 +++++++++
- .../net/ethernet/hpe/sl/ctrl/sl_ctrl_link_priv.c   |  865 ++++++++++++++
- drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_llr.c     |  630 ++++++++++
- .../ethernet/hpe/sl/ctrl/sl_ctrl_llr_counters.c    |  136 +++
- drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_mac.c     |  536 +++++++++
- .../ethernet/hpe/sl/ctrl/sl_ctrl_mac_counters.c    |   56 +
- .../ethernet/hpe/sl/ctrl/sl_ctrl_media_counters.c  |  157 +++
- 17 files changed, 6340 insertions(+)
+ drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_ldev.c  |  410 ++++++
+ drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp.c  |   98 ++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_lgrp_config.c   |  438 ++++++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_lgrp_policy.c   |   53 +
+ drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link.c  |  830 +++++++++++
+ .../net/ethernet/hpe/sl/sysfs/sl_sysfs_link_caps.c |  303 ++++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_link_config.c   |  388 +++++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_link_counters.c | 1498 ++++++++++++++++++++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_link_degrade.c  |  336 +++++
+ .../net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec.c  |  148 ++
+ .../hpe/sl/sysfs/sl_sysfs_link_fec_current.c       |  336 +++++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_down.c |  316 +++++
+ .../hpe/sl/sysfs/sl_sysfs_link_fec_mon_check.c     |  195 +++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_up.c   |  299 ++++
+ .../hpe/sl/sysfs/sl_sysfs_link_fec_up_check.c      |  137 ++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_link_pml_rec.c  |  193 +++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_link_policy.c   |  261 ++++
+ drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr.c   |  221 +++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_llr_config.c    |  140 ++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_llr_counters.c  |  397 ++++++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_llr_loop_time.c |  221 +++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_llr_policy.c    |   74 +
+ drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_mac.c   |  192 +++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_mac_counters.c  |  339 +++++
+ drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_media.c | 1274 +++++++++++++++++
+ .../hpe/sl/sysfs/sl_sysfs_media_counters.c         |  599 ++++++++
+ drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi.c   |   80 ++
+ .../net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi_rd.c    |  197 +++
+ .../net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi_wr.c    |  220 +++
+ drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus.c  |   89 ++
+ .../net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi.c  |   80 ++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi_rd.c   |  244 ++++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi_wr.c   |  244 ++++
+ .../net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_rd.c   |  197 +++
+ .../net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_rst.c  |  105 ++
+ .../net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_wr.c   |  197 +++
+ .../net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes.c    |  302 ++++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_serdes_eye.c    |  197 +++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_serdes_lol.c    |  141 ++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_serdes_los.c    |  142 ++
+ .../hpe/sl/sysfs/sl_sysfs_serdes_settings.c        |  506 +++++++
+ .../ethernet/hpe/sl/sysfs/sl_sysfs_serdes_state.c  |  121 ++
+ .../hpe/sl/sysfs/sl_sysfs_serdes_swizzle.c         |  126 ++
+ 43 files changed, 12884 insertions(+)
 
-diff --git a/drivers/net/ethernet/hpe/sl/ctrl/data/sl_ctrl_data_lgrp.c b/drivers/net/ethernet/hpe/sl/ctrl/data/sl_ctrl_data_lgrp.c
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_ldev.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_ldev.c
 new file mode 100644
-index 000000000000..279e41770f48
+index 000000000000..9aac5aa41404
 --- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/ctrl/data/sl_ctrl_data_lgrp.c
-@@ -0,0 +1,164 @@
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_ldev.c
+@@ -0,0 +1,410 @@
 +// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2025-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include "base/sl_ctrl_log.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_media_lgrp.h"
-+#include "sl_core_lgrp.h"
-+
-+#include "data/sl_core_data_lgrp.h"
-+#include "data/sl_media_data_lgrp.h"
-+
-+#include "sl_ctrl_data_lgrp.h"
-+
-+#define LOG_NAME SL_CTRL_LGRP_LOG_NAME
-+
-+int sl_ctrl_data_lgrp_err_trace_enable_set(struct sl_ctrl_lgrp *ctrl_lgrp, bool err_trace_enable)
-+{
-+	struct sl_core_lgrp *held_lgrp_1 __free(sl_core_lgrp_put) = NULL;
-+	int rtn;
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "set (err_trace_enable = %s)", err_trace_enable ? "true" : "false");
-+
-+	held_lgrp_1 = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!held_lgrp_1)
-+		return -ENODEV;
-+	spin_lock(&ctrl_lgrp->config_lock);
-+	rtn = sl_core_data_lgrp_err_trace_enable_set(held_lgrp_1,
-+						     err_trace_enable);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_lgrp, LOG_NAME,
-+				      "core trace enable set failed [%d]", rtn);
-+		spin_unlock(&ctrl_lgrp->config_lock);
-+		return rtn;
-+	}
-+
-+	rtn = sl_media_data_lgrp_err_trace_enable_set(sl_media_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num),
-+						      err_trace_enable);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_lgrp, LOG_NAME,
-+				      "media trace enable set failed [%d]", rtn);
-+		spin_unlock(&ctrl_lgrp->config_lock);
-+		return rtn;
-+	}
-+
-+	ctrl_lgrp->err_trace_enable = err_trace_enable;
-+
-+	spin_unlock(&ctrl_lgrp->config_lock);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_lgrp_warn_trace_set(struct sl_ctrl_lgrp *ctrl_lgrp, bool err_trace_enable)
-+{
-+	struct sl_core_lgrp *held_lgrp_1 __free(sl_core_lgrp_put) = NULL;
-+	int rtn;
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "set (warn_trace_enable = %s)", err_trace_enable ? "true" : "false");
-+
-+	held_lgrp_1 = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
-+	if (!held_lgrp_1)
-+		return -ENODEV;
-+	spin_lock(&ctrl_lgrp->config_lock);
-+	rtn = sl_core_data_lgrp_warn_trace_enable_set(held_lgrp_1,
-+						      err_trace_enable);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_lgrp, LOG_NAME,
-+				      "core trace enable set failed [%d]", rtn);
-+		spin_unlock(&ctrl_lgrp->config_lock);
-+		return rtn;
-+	}
-+
-+	rtn = sl_media_data_lgrp_warn_trace_enable_set(sl_media_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num),
-+						       err_trace_enable);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_lgrp, LOG_NAME,
-+				      "media trace enable set failed [%d]", rtn);
-+		spin_unlock(&ctrl_lgrp->config_lock);
-+		return rtn;
-+	}
-+
-+	ctrl_lgrp->warn_trace_enable = err_trace_enable;
-+
-+	spin_unlock(&ctrl_lgrp->config_lock);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_lgrp_serdes_lane_io_trace_set(struct sl_ctrl_lgrp *ctrl_lgrp, bool serdes_lane_io_trace)
-+{
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME,
-+			"set (serdes_lane_io_trace = %s)", serdes_lane_io_trace ? "enable" : "disable");
-+
-+	spin_lock(&ctrl_lgrp->config_lock);
-+	ctrl_lgrp->serdes_lane_io_trace_enable = serdes_lane_io_trace;
-+	spin_unlock(&ctrl_lgrp->config_lock);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_lgrp_mfs_get(struct sl_ctrl_lgrp *ctrl_lgrp, u32 *mfs)
-+{
-+	spin_lock(&ctrl_lgrp->config_lock);
-+	*mfs = ctrl_lgrp->config.mfs;
-+	spin_unlock(&ctrl_lgrp->config_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "get (mfs = %u)", *mfs);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_lgrp_furcation_get(struct sl_ctrl_lgrp *ctrl_lgrp, u32 *furcation)
-+{
-+	spin_lock(&ctrl_lgrp->config_lock);
-+	*furcation = ctrl_lgrp->config.furcation;
-+	spin_unlock(&ctrl_lgrp->config_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "get (furcation = %u)", *furcation);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_lgrp_fec_mode_get(struct sl_ctrl_lgrp *ctrl_lgrp, u32 *fec_mode)
-+{
-+	spin_lock(&ctrl_lgrp->config_lock);
-+	*fec_mode = ctrl_lgrp->config.fec_mode;
-+	spin_unlock(&ctrl_lgrp->config_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "get (fec_mode = %u)", *fec_mode);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_lgrp_tech_map_get(struct sl_ctrl_lgrp *ctrl_lgrp, u32 *tech_map)
-+{
-+	spin_lock(&ctrl_lgrp->config_lock);
-+	*tech_map = ctrl_lgrp->config.tech_map;
-+	spin_unlock(&ctrl_lgrp->config_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "get (tech_map = 0x%X)", *tech_map);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_lgrp_fec_map_get(struct sl_ctrl_lgrp *ctrl_lgrp, u32 *fec_map)
-+{
-+	spin_lock(&ctrl_lgrp->config_lock);
-+	*fec_map = ctrl_lgrp->config.fec_map;
-+	spin_unlock(&ctrl_lgrp->config_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "get (fec_map = 0x%X)", *fec_map);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_lgrp_options_get(struct sl_ctrl_lgrp *ctrl_lgrp, u32 *options)
-+{
-+	spin_lock(&ctrl_lgrp->config_lock);
-+	*options = ctrl_lgrp->config.options;
-+	spin_unlock(&ctrl_lgrp->config_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "get (options = 0x%X)", *options);
-+
-+	return 0;
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/ctrl/data/sl_ctrl_data_lgrp_trace.c b/drivers/net/ethernet/hpe/sl/ctrl/data/sl_ctrl_data_lgrp_trace.c
-new file mode 100644
-index 000000000000..5b6dfe73495e
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/ctrl/data/sl_ctrl_data_lgrp_trace.c
-@@ -0,0 +1,50 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2025-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/types.h>
-+#include <linux/spinlock.h>
-+
-+#include "data/sl_ctrl_data_lgrp_trace.h"
-+
-+#define LOG_NAME SL_CTRL_LGRP_LOG_NAME
-+
-+int sl_ctrl_data_lgrp_is_err_trace_enabled(struct sl_ctrl_lgrp *ctrl_lgrp, bool *err_trace_enable)
-+{
-+	spin_lock(&ctrl_lgrp->config_lock);
-+	*err_trace_enable = ctrl_lgrp->err_trace_enable;
-+	spin_unlock(&ctrl_lgrp->config_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME,
-+			"is err trace enabled (err_trace_enable = %s)",
-+			*err_trace_enable ? "true" : "false");
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_lgrp_is_warn_trace_enabled(struct sl_ctrl_lgrp *ctrl_lgrp, bool *warn_trace_enable)
-+{
-+	spin_lock(&ctrl_lgrp->config_lock);
-+	*warn_trace_enable = ctrl_lgrp->warn_trace_enable;
-+	spin_unlock(&ctrl_lgrp->config_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME,
-+			"is warn trace enabled (warn_trace_enable = %s)",
-+			*warn_trace_enable ? "true" : "false");
-+
-+	return 0;
-+}
-+
-+bool sl_ctrl_data_lgrp_is_serdes_lane_io_trace_enabled(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+	bool serdes_lane_io_trace;
-+
-+	spin_lock(&ctrl_lgrp->config_lock);
-+	serdes_lane_io_trace = ctrl_lgrp->serdes_lane_io_trace_enable;
-+	spin_unlock(&ctrl_lgrp->config_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME,
-+			"is serdes lane io trace enabled (serdes_lane_io_trace = %s)",
-+			serdes_lane_io_trace ? "enabled" : "disabled");
-+
-+	return serdes_lane_io_trace;
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/ctrl/data/sl_ctrl_data_link.c b/drivers/net/ethernet/hpe/sl/ctrl/data/sl_ctrl_data_link.c
-new file mode 100644
-index 000000000000..dfb1b820d5ef
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/ctrl/data/sl_ctrl_data_link.c
-@@ -0,0 +1,424 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2025 Hewlett Packard Enterprise Development LP */
-+
-+#include "base/sl_ctrl_log.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_link.h"
-+#include "data/sl_core_data_link.h"
-+
-+#include "data/sl_ctrl_data_link.h"
-+
-+#define LOG_NAME SL_CTRL_LINK_LOG_NAME
-+
-+int sl_ctrl_data_link_state_get(struct sl_ctrl_link *ctrl_link, u32 *link_state)
-+{
-+	struct sl_core_link *held_link_1 __free(sl_core_link_put) = NULL;
-+	int rtn;
-+	u32 core_link_state;
-+	u32 ctrl_link_state;
-+
-+	held_link_1 = sl_core_link_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+				       ctrl_link->ctrl_lgrp->num, ctrl_link->num);
-+	if (!held_link_1)
-+		return -ENODEV;
-+	spin_lock(&ctrl_link->data_lock);
-+	rtn = sl_core_data_link_state_get(held_link_1, &core_link_state);
-+	ctrl_link_state = ctrl_link->state;
-+	spin_unlock(&ctrl_link->data_lock);
-+
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_link, LOG_NAME,
-+				      "sl_core_data_link_state_get failed (rtn = %d)", rtn);
-+		return rtn;
-+	}
-+
-+	*link_state = (core_link_state == SL_CORE_LINK_STATE_AN) ? SL_LINK_STATE_AN : ctrl_link_state;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (link_state = %u %s)",
-+			*link_state,
-+			sl_link_state_str(*link_state));
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_fec_up_settle_wait_ms_get(struct sl_ctrl_link *ctrl_link, u32 *fec_up_settle_wait_ms)
-+{
-+	spin_lock(&ctrl_link->data_lock);
-+	*fec_up_settle_wait_ms = ctrl_link->config.fec_up_settle_wait_ms;
-+	spin_unlock(&ctrl_link->data_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (fec_up_settle_wait_ms = %d)", *fec_up_settle_wait_ms);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_fec_up_check_wait_ms_get(struct sl_ctrl_link *ctrl_link, s32 *fec_up_check_wait_ms)
-+{
-+	spin_lock(&ctrl_link->data_lock);
-+	*fec_up_check_wait_ms = ctrl_link->config.fec_up_check_wait_ms;
-+	spin_unlock(&ctrl_link->data_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (fec_up_check_wait_ms = %d)", *fec_up_check_wait_ms);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_fec_up_ucw_limit_get(struct sl_ctrl_link *ctrl_link, s32 *fec_up_ucw_limit)
-+{
-+	spin_lock(&ctrl_link->data_lock);
-+	*fec_up_ucw_limit = ctrl_link->config.fec_up_ucw_limit;
-+	spin_unlock(&ctrl_link->data_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (fec_up_ucw_limit = %d)", *fec_up_ucw_limit);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_fec_up_ccw_limit_get(struct sl_ctrl_link *ctrl_link, s32 *fec_up_ccw_limit)
-+{
-+	spin_lock(&ctrl_link->data_lock);
-+	*fec_up_ccw_limit = ctrl_link->config.fec_up_ccw_limit;
-+	spin_unlock(&ctrl_link->data_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (fec_up_ccw_limit = %d)", *fec_up_ccw_limit);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_policy_fec_mon_period_ms_get(struct sl_ctrl_link *ctrl_link, s32 *mon_period_ms)
-+{
-+	spin_lock(&ctrl_link->config_lock);
-+	*mon_period_ms = ctrl_link->policy.fec_mon_period_ms;
-+	spin_unlock(&ctrl_link->config_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (mon_period_ms = %d)", *mon_period_ms);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_policy_fec_mon_ucw_down_limit_get(struct sl_ctrl_link *ctrl_link, s32 *mon_ucw_down_limit)
-+{
-+	spin_lock(&ctrl_link->config_lock);
-+	*mon_ucw_down_limit = ctrl_link->policy.fec_mon_ucw_down_limit;
-+	spin_unlock(&ctrl_link->config_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (mon_ucw_down_limit = %d)", *mon_ucw_down_limit);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_policy_fec_mon_ucw_warn_limit_get(struct sl_ctrl_link *ctrl_link, s32 *mon_ucw_warn_limit)
-+{
-+	spin_lock(&ctrl_link->config_lock);
-+	*mon_ucw_warn_limit = ctrl_link->policy.fec_mon_ucw_warn_limit;
-+	spin_unlock(&ctrl_link->config_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (mon_ucw_warn_limit = %d)", *mon_ucw_warn_limit);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_policy_fec_mon_ccw_down_limit_get(struct sl_ctrl_link *ctrl_link, s32 *mon_ccw_down_limit)
-+{
-+	spin_lock(&ctrl_link->config_lock);
-+	*mon_ccw_down_limit = ctrl_link->policy.fec_mon_ccw_down_limit;
-+	spin_unlock(&ctrl_link->config_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (mon_ccw_down_limit = %d)", *mon_ccw_down_limit);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_policy_fec_mon_ccw_warn_limit_get(struct sl_ctrl_link *ctrl_link, s32 *mon_ccw_warn_limit)
-+{
-+	spin_lock(&ctrl_link->config_lock);
-+	*mon_ccw_warn_limit = ctrl_link->policy.fec_mon_ccw_warn_limit;
-+	spin_unlock(&ctrl_link->config_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (mon_ccw_warn_limit = %d)", *mon_ccw_warn_limit);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_fec_down_cache_ucw_cntr_get(struct sl_ctrl_link *ctrl_link, u64 *ucw)
-+{
-+	spin_lock(&ctrl_link->fec_down_cache.lock);
-+	*ucw = ctrl_link->fec_down_cache.cw_cntrs.ucw;
-+	spin_unlock(&ctrl_link->fec_down_cache.lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (ucw = %llu)", *ucw);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_fec_down_cache_ccw_cntr_get(struct sl_ctrl_link *ctrl_link, u64 *ccw)
-+{
-+	spin_lock(&ctrl_link->fec_down_cache.lock);
-+	*ccw = ctrl_link->fec_down_cache.cw_cntrs.ccw;
-+	spin_unlock(&ctrl_link->fec_down_cache.lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (ccw = %llu)", *ccw);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_fec_down_cache_gcw_cntr_get(struct sl_ctrl_link *ctrl_link, u64 *gcw)
-+{
-+	spin_lock(&ctrl_link->fec_down_cache.lock);
-+	*gcw = ctrl_link->fec_down_cache.cw_cntrs.gcw;
-+	spin_unlock(&ctrl_link->fec_down_cache.lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (gcw = %llu)", *gcw);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_fec_down_cache_lane_cntr_get(struct sl_ctrl_link *ctrl_link, u8 lane_num, u64 *lane_cntr)
-+{
-+	spin_lock(&ctrl_link->fec_down_cache.lock);
-+	*lane_cntr = ctrl_link->fec_down_cache.lane_cntrs.lanes[lane_num];
-+	spin_unlock(&ctrl_link->fec_down_cache.lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (lane_num = %d, lane_cntr = %llu)", lane_num, *lane_cntr);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_fec_down_cache_tail_cntr_get(struct sl_ctrl_link *ctrl_link, u8 bin_num, u64 *tail_cntr)
-+{
-+	spin_lock(&ctrl_link->fec_down_cache.lock);
-+	*tail_cntr = ctrl_link->fec_down_cache.tail_cntrs.ccw_bins[bin_num];
-+	spin_unlock(&ctrl_link->fec_down_cache.lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (bin_num = %d, tail_cntr = %llu)", bin_num, *tail_cntr);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_fec_mon_period_ms_get(struct sl_ctrl_link *ctrl_link, u32 *mon_period_get)
-+
-+{
-+	spin_lock(&ctrl_link->fec_data.lock);
-+	*mon_period_get = ctrl_link->fec_data.info.monitor.period_ms;
-+	spin_unlock(&ctrl_link->fec_data.lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (mon_period_get = %u)", *mon_period_get);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_fec_mon_ucw_down_limit_get(struct sl_ctrl_link *ctrl_link, s32 *ucw_down_limit)
-+{
-+	u32 period_ms;
-+
-+	spin_lock(&ctrl_link->fec_data.lock);
-+	period_ms = ctrl_link->fec_data.info.monitor.period_ms;
-+	*ucw_down_limit = ctrl_link->fec_data.info.monitor.ucw_down_limit;
-+	spin_unlock(&ctrl_link->fec_data.lock);
-+
-+	if (!period_ms) {
-+		sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+				       "fec_mon_ucw_down_limit_get failed (monitoring disabled)");
-+		return -EBADRQC;
-+	}
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_fec_mon_ccw_down_limit_get(struct sl_ctrl_link *ctrl_link, s32 *ccw_down_limit)
-+{
-+	u32 period_ms;
-+
-+	spin_lock(&ctrl_link->fec_data.lock);
-+	period_ms = ctrl_link->fec_data.info.monitor.period_ms;
-+	*ccw_down_limit = ctrl_link->fec_data.info.monitor.ccw_down_limit;
-+	spin_unlock(&ctrl_link->fec_data.lock);
-+
-+	if (!period_ms) {
-+		sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+				       "fec_mon_ccw_down_limit_get failed (monitoring disabled)");
-+		return -EBADRQC;
-+	}
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_fec_mon_ccw_warn_limit_get(struct sl_ctrl_link *ctrl_link, s32 *ccw_warn_limit)
-+{
-+	u32 period_ms;
-+
-+	spin_lock(&ctrl_link->fec_data.lock);
-+	period_ms = ctrl_link->fec_data.info.monitor.period_ms;
-+	*ccw_warn_limit = ctrl_link->fec_data.info.monitor.ccw_warn_limit;
-+	spin_unlock(&ctrl_link->fec_data.lock);
-+
-+	if (!period_ms) {
-+		sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+				       "fec_mon_ccw_warn_limit_get failed (monitoring disabled)");
-+		return -EBADRQC;
-+	}
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_fec_mon_ucw_warn_limit_get(struct sl_ctrl_link *ctrl_link, s32 *ucw_warn_limit)
-+{
-+	u32 period_ms;
-+
-+	spin_lock(&ctrl_link->fec_data.lock);
-+	period_ms = ctrl_link->fec_data.info.monitor.period_ms;
-+	*ucw_warn_limit = ctrl_link->fec_data.info.monitor.ucw_warn_limit;
-+	spin_unlock(&ctrl_link->fec_data.lock);
-+
-+	if (!period_ms) {
-+		sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+				       "fec_mon_ucw_warn_limit_get failed (monitoring disabled)");
-+		return -EBADRQC;
-+	}
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_fec_up_cache_ucw_cntr_get(struct sl_ctrl_link *ctrl_link, u64 *ucw)
-+{
-+	spin_lock(&ctrl_link->fec_up_cache.lock);
-+	*ucw = ctrl_link->fec_up_cache.cw_cntrs.ucw;
-+	spin_unlock(&ctrl_link->fec_up_cache.lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "get (ucw = %llu)", *ucw);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_fec_up_cache_ccw_cntr_get(struct sl_ctrl_link *ctrl_link, u64 *ccw)
-+{
-+	spin_lock(&ctrl_link->fec_up_cache.lock);
-+	*ccw = ctrl_link->fec_up_cache.cw_cntrs.ccw;
-+	spin_unlock(&ctrl_link->fec_up_cache.lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "get (ccw = %llu)", *ccw);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_fec_up_cache_gcw_cntr_get(struct sl_ctrl_link *ctrl_link, u64 *gcw)
-+{
-+	spin_lock(&ctrl_link->fec_up_cache.lock);
-+	*gcw = ctrl_link->fec_up_cache.cw_cntrs.gcw;
-+	spin_unlock(&ctrl_link->fec_up_cache.lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "get (gcw = %llu)", *gcw);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_fec_up_cache_lane_cntr_get(struct sl_ctrl_link *ctrl_link, u8 lane_num, u64 *lane_cntr)
-+{
-+	spin_lock(&ctrl_link->fec_up_cache.lock);
-+	*lane_cntr = ctrl_link->fec_up_cache.lane_cntrs.lanes[lane_num];
-+	spin_unlock(&ctrl_link->fec_up_cache.lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "get (lane_num = %d, lane_cntr = %llu)", lane_num, *lane_cntr);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_fec_up_cache_tail_cntr_get(struct sl_ctrl_link *ctrl_link, u8 bin_num, u64 *tail_cntr)
-+{
-+	spin_lock(&ctrl_link->fec_up_cache.lock);
-+	*tail_cntr = ctrl_link->fec_up_cache.tail_cntrs.ccw_bins[bin_num];
-+	spin_unlock(&ctrl_link->fec_up_cache.lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "get (bin_num = %d, tail_cntr = %llu)", bin_num, *tail_cntr);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_policy_options_get(struct sl_ctrl_link *ctrl_link, u32 *options)
-+{
-+	spin_lock(&ctrl_link->config_lock);
-+	*options = ctrl_link->policy.options;
-+	spin_unlock(&ctrl_link->config_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (options = 0x%08x)", *options);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_up_timeout_ms_get(struct sl_ctrl_link *ctrl_link, u32 *link_up_timeout_ms)
-+{
-+	spin_lock(&ctrl_link->data_lock);
-+	*link_up_timeout_ms = ctrl_link->config.link_up_timeout_ms;
-+	spin_unlock(&ctrl_link->data_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (link_up_timeout_ms = %d)", *link_up_timeout_ms);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_up_tries_max_get(struct sl_ctrl_link *ctrl_link, u32 *link_up_tries_max)
-+{
-+	spin_lock(&ctrl_link->data_lock);
-+	*link_up_tries_max = ctrl_link->config.link_up_tries_max;
-+	spin_unlock(&ctrl_link->data_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (link_up_tries_max = %d)", *link_up_tries_max);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_config_options_get(struct sl_ctrl_link *ctrl_link, u32 *options)
-+{
-+	spin_lock(&ctrl_link->data_lock);
-+	*options = ctrl_link->config.options;
-+	spin_unlock(&ctrl_link->data_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (options = 0x%08x)", *options);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_pause_map_get(struct sl_ctrl_link *ctrl_link, u32 *pause_map)
-+{
-+	spin_lock(&ctrl_link->data_lock);
-+	*pause_map = ctrl_link->config.pause_map;
-+	spin_unlock(&ctrl_link->data_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (pause_map = 0x%x)", *pause_map);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_link_hpe_map_get(struct sl_ctrl_link *ctrl_link, u32 *hpe_map)
-+{
-+	spin_lock(&ctrl_link->data_lock);
-+	*hpe_map = ctrl_link->config.hpe_map;
-+	spin_unlock(&ctrl_link->data_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"get (hpe_map = 0x%x)", *hpe_map);
-+
-+	return 0;
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/ctrl/data/sl_ctrl_data_llr.c b/drivers/net/ethernet/hpe/sl/ctrl/data/sl_ctrl_data_llr.c
-new file mode 100644
-index 000000000000..be742b146a0a
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/ctrl/data/sl_ctrl_data_llr.c
-@@ -0,0 +1,64 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2025 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/spinlock.h>
-+
-+#include "base/sl_ctrl_log.h"
-+#include "sl_ctrl_data_llr.h"
-+
-+#define LOG_NAME SL_CTRL_LLR_LOG_NAME
-+
-+int sl_ctrl_data_llr_config_mode_get(struct sl_ctrl_llr *ctrl_llr, u32 *mode)
-+{
-+	spin_lock(&ctrl_llr->data_lock);
-+	*mode = ctrl_llr->config.mode;
-+	spin_unlock(&ctrl_llr->data_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "get (mode = %u)\n", *mode);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_llr_config_setup_timeout_ms_get(struct sl_ctrl_llr *ctrl_llr, u32 *setup_timeout_ms)
-+{
-+	spin_lock(&ctrl_llr->data_lock);
-+	*setup_timeout_ms = ctrl_llr->config.setup_timeout_ms;
-+	spin_unlock(&ctrl_llr->data_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "get (setup_timeout_ms = %u)\n", *setup_timeout_ms);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_llr_config_start_timeout_ms_get(struct sl_ctrl_llr *ctrl_llr, u32 *start_timeout_ms)
-+{
-+	spin_lock(&ctrl_llr->data_lock);
-+	*start_timeout_ms = ctrl_llr->config.start_timeout_ms;
-+	spin_unlock(&ctrl_llr->data_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "get (start_timeout_ms = %u)\n", *start_timeout_ms);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_llr_config_link_dn_behavior_get(struct sl_ctrl_llr *ctrl_llr, u32 *link_dn_behavior)
-+{
-+	spin_lock(&ctrl_llr->data_lock);
-+	*link_dn_behavior = ctrl_llr->config.link_dn_behavior;
-+	spin_unlock(&ctrl_llr->data_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "get (link_dn_behavior = %u)\n", *link_dn_behavior);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_data_llr_config_options_get(struct sl_ctrl_llr *ctrl_llr, u32 *options)
-+{
-+	spin_lock(&ctrl_llr->data_lock);
-+	*options = ctrl_llr->config.options;
-+	spin_unlock(&ctrl_llr->data_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "get (options = 0x%08x)\n", *options);
-+
-+	return 0;
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_ldev.c b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_ldev.c
-new file mode 100644
-index 000000000000..0295dd902d6d
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_ldev.c
-@@ -0,0 +1,290 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2021-2023,2024,2025 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/spinlock.h>
-+#include <linux/slab.h>
-+#include <linux/err.h>
-+#include <linux/completion.h>
-+#include <linux/delay.h>
-+
-+#include "sl_asic.h"
-+#include "sl_sysfs.h"
-+#include "base/sl_ctrl_log.h"
-+#include "sl_core_ldev.h"
-+#include "sl_media_ldev.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_ctrl_lgrp.h"
-+
-+#define LOG_NAME SL_CTRL_LDEV_LOG_NAME
-+
-+#define SL_CTRL_LDEV_DEL_TIMEOUT_MS 2000
-+
-+static struct sl_ctrl_ldev *ctrl_ldevs[SL_ASIC_MAX_LDEVS];
-+static DEFINE_SPINLOCK(ctrl_ldevs_lock);
-+
-+#define CONFIG_SL_DEFAULT_WQ_MAX_ACTIVE  0 /* 0 is default (256 work items in queue). */
-+int sl_ctrl_ldev_new(u8 ldev_num, struct workqueue_struct *workq,
-+		     struct sl_ldev_attr *ldev_attr)
-+{
-+	int                   rtn;
-+	struct sl_ctrl_ldev   *ctrl_ldev;
-+
-+	ctrl_ldev = sl_ctrl_ldev_get(ldev_num);
-+	if (ctrl_ldev) {
-+		sl_ctrl_log_err(NULL, LOG_NAME, "exists (ldev = 0x%p)", ctrl_ldev);
-+		return -EBADRQC;
-+	}
-+
-+	ctrl_ldev = kzalloc(sizeof(struct sl_ctrl_ldev), GFP_KERNEL);
-+	if (!ctrl_ldev)
-+		return -ENOMEM;
-+
-+	ctrl_ldev->magic = SL_CTRL_LDEV_MAGIC;
-+	ctrl_ldev->ver   = SL_CTRL_LDEV_VER;
-+	ctrl_ldev->num   = ldev_num;
-+	ctrl_ldev->attr  = *ldev_attr;
-+
-+	kref_init(&ctrl_ldev->ref_cnt);
-+	init_completion(&ctrl_ldev->del_complete);
-+
-+	spin_lock_init(&ctrl_ldev->data_lock);
-+
-+	if (IS_ERR_OR_NULL(workq)) {
-+		ctrl_ldev->workq = alloc_workqueue("%s%u",
-+						   WQ_MEM_RECLAIM | WQ_PERCPU,
-+						   CONFIG_SL_DEFAULT_WQ_MAX_ACTIVE, "sl-ldev", ldev_num);
-+		if (!ctrl_ldev->workq) {
-+			rtn = -ENOMEM;
-+			sl_ctrl_log_err(ctrl_ldev, LOG_NAME, "alloc_workqueue failed [%d]", rtn);
-+			goto out;
-+		}
-+
-+		sl_ctrl_log_dbg(ctrl_ldev, LOG_NAME, "created workqueue (workq = 0x%p)", ctrl_ldev->workq);
-+		ctrl_ldev->create_workq = true;
-+	} else {
-+		ctrl_ldev->workq = workq;
-+		sl_ctrl_log_dbg(ctrl_ldev, LOG_NAME, "client workqueue (workq = 0x%p)", ctrl_ldev->workq);
-+	}
-+
-+	ctrl_ldev->notif_workq = alloc_workqueue("%s%u-notif",
-+						 WQ_MEM_RECLAIM | WQ_PERCPU,
-+						 CONFIG_SL_DEFAULT_WQ_MAX_ACTIVE, "sl-ldev", ldev_num);
-+	if (!ctrl_ldev->notif_workq) {
-+		rtn = -ENOMEM;
-+		sl_ctrl_log_err(ctrl_ldev, LOG_NAME, "alloc_workqueue notif failed [%d]", rtn);
-+		goto out_del_wq;
-+	}
-+
-+	rtn = sl_core_ldev_new(ldev_num, ctrl_ldev->attr.accessors,
-+			       ctrl_ldev->attr.ops, ctrl_ldev->workq);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_ldev, LOG_NAME, "core_ldev_new failed [%d]", rtn);
-+		goto out_del_notif_wq;
-+	}
-+
-+	rtn = sl_media_ldev_new(ldev_num, ctrl_ldev->workq);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_ldev, LOG_NAME, "media_ldev_new failed [%d]", rtn);
-+		goto out_del_core;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_ldev, LOG_NAME, "new (ldev = 0x%p)", ctrl_ldev);
-+
-+	spin_lock(&ctrl_ldevs_lock);
-+	ctrl_ldevs[ldev_num] = ctrl_ldev;
-+	spin_unlock(&ctrl_ldevs_lock);
-+
-+	return 0;
-+
-+out_del_core:
-+	sl_core_ldev_del(ldev_num);
-+out_del_notif_wq:
-+	destroy_workqueue(ctrl_ldev->notif_workq);
-+
-+out_del_wq:
-+	if (ctrl_ldev->create_workq)
-+		destroy_workqueue(ctrl_ldev->workq);
-+out:
-+	kfree(ctrl_ldev);
-+
-+	return rtn;
-+}
-+
-+#define SERDES_INIT_MAX_TRIES 3
-+#define SERDES_INIT_DELAY_MS  1000
-+int sl_ctrl_ldev_serdes_init(u8 ldev_num)
-+{
-+	int rtn;
-+	int tries;
-+	struct sl_ctrl_ldev *ctrl_ldev;
-+
-+	ctrl_ldev = sl_ctrl_ldev_get(ldev_num);
-+	if (!ctrl_ldev) {
-+		sl_ctrl_log_err(NULL, LOG_NAME, "ldev not found (ldev_num = %u)", ldev_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_ldev_kref_get_unless_zero(ctrl_ldev)) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"kref_get_unless_zero failed (ldev = 0x%p)", ctrl_ldev);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_ldev, LOG_NAME, "serdes init (ldev = 0x%p)", ctrl_ldev);
-+
-+	tries = SERDES_INIT_MAX_TRIES;
-+	do {
-+		rtn = sl_core_ldev_serdes_init(ldev_num);
-+		if (rtn == 0)
-+			goto out;
-+		tries--;
-+		if (tries)
-+			msleep(SERDES_INIT_DELAY_MS);
-+	} while (tries);
-+
-+out:
-+	if (sl_ctrl_ldev_put(ctrl_ldev))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"serdes init - ldev removed (ldev = 0x%p)", ctrl_ldev);
-+
-+	return rtn;
-+}
-+
-+static void sl_ctrl_ldev_release(struct kref *ref)
-+{
-+	struct sl_ctrl_ldev *ctrl_ldev;
-+	u8                  ldev_num;
-+	u8                  lgrp_num;
-+	int                 rtn;
-+
-+	ctrl_ldev = container_of(ref, struct sl_ctrl_ldev, ref_cnt);
-+	ldev_num = ctrl_ldev->num;
-+
-+	sl_ctrl_log_dbg(ctrl_ldev, LOG_NAME, "release (ldev = 0x%p)", ctrl_ldev);
-+
-+	/* Not repeated on a retry: the sysfs delete drops kobject references. */
-+	if (!ctrl_ldev->children_deleted) {
-+		for (lgrp_num = 0; lgrp_num < SL_ASIC_MAX_LGRPS; ++lgrp_num) {
-+			rtn = sl_ctrl_lgrp_del(ldev_num, lgrp_num);
-+			if (rtn && rtn != -EBADRQC)
-+				goto retry;
-+		}
-+		ctrl_ldev->children_deleted = true;
-+	}
-+
-+	if (!ctrl_ldev->sysfs_deleted) {
-+		/* Must delete sysfs first to guarantee nobody is reading */
-+		sl_sysfs_ldev_delete(ctrl_ldev);
-+		ctrl_ldev->sysfs_deleted = true;
-+	}
-+
-+	rtn = sl_core_ldev_del(ldev_num);
-+	if (rtn) {
-+		/*
-+		 * A core lgrp or link refused deletion, so the core ldev is
-+		 * still published and uses the workqueue and ldev state.
-+		 * Nobody holds a reference any more, so re-arm one for the
-+		 * next sl_ctrl_ldev_del() to retry, and wake the waiter so it
-+		 * can report the failure.
-+		 */
-+		sl_ctrl_log_err_trace(ctrl_ldev, LOG_NAME,
-+				      "release - core_ldev_del failed, ldev kept [%d]", rtn);
-+		goto retry;
-+	}
-+	sl_media_ldev_del(ldev_num);
-+
-+	destroy_workqueue(ctrl_ldev->notif_workq);
-+
-+	if (ctrl_ldev->create_workq)
-+		destroy_workqueue(ctrl_ldev->workq);
-+
-+	spin_lock(&ctrl_ldevs_lock);
-+	ctrl_ldevs[ldev_num] = NULL;
-+	spin_unlock(&ctrl_ldevs_lock);
-+
-+	complete_all(&ctrl_ldev->del_complete);
-+
-+	kfree(ctrl_ldev);
-+	return;
-+
-+retry:
-+	kref_init(&ctrl_ldev->ref_cnt);
-+	complete_all(&ctrl_ldev->del_complete);
-+}
-+
-+int sl_ctrl_ldev_put(struct sl_ctrl_ldev *ctrl_ldev)
-+{
-+	return kref_put(&ctrl_ldev->ref_cnt, sl_ctrl_ldev_release);
-+}
-+
-+int sl_ctrl_ldev_del(u8 ldev_num)
-+{
-+	struct sl_ctrl_ldev *ctrl_ldev;
-+	unsigned long       timeleft;
-+
-+	ctrl_ldev = sl_ctrl_ldev_get(ldev_num);
-+	if (!ctrl_ldev) {
-+		sl_ctrl_log_err_trace(NULL, LOG_NAME,
-+				      "del not found (ldev_num = %u)", ldev_num);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_ldev, LOG_NAME, "del (ldev = 0x%p)", ctrl_ldev);
-+
-+	/*
-+	 * Release cannot run before the put below, so rearming a completion
-+	 * left over from an earlier failed del is safe.
-+	 */
-+	reinit_completion(&ctrl_ldev->del_complete);
-+
-+	if (!sl_ctrl_ldev_put(ctrl_ldev)) {
-+		timeleft = wait_for_completion_timeout(&ctrl_ldev->del_complete,
-+						       msecs_to_jiffies(SL_CTRL_LDEV_DEL_TIMEOUT_MS));
-+
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"del completion_timeout (timeleft = %lums)", timeleft);
-+
-+		if (timeleft == 0) {
-+			sl_ctrl_log_err(NULL, LOG_NAME,
-+					"del timed out (ctrl_ldev = 0x%p)", ctrl_ldev);
-+			return -ETIMEDOUT;
-+		}
-+	}
-+
-+	/*
-+	 * A successful release unpublishes and frees the ldev. If it is still
-+	 * published, the core ldev refused deletion and was kept for a retry.
-+	 * Only the pointer value is compared, the ldev is not dereferenced.
-+	 */
-+	if (sl_ctrl_ldev_get(ldev_num) == ctrl_ldev)
-+		return -EBUSY;
-+
-+	return 0;
-+}
-+
-+bool sl_ctrl_ldev_kref_get_unless_zero(struct sl_ctrl_ldev *ctrl_ldev)
-+{
-+	return (kref_get_unless_zero(&ctrl_ldev->ref_cnt) != 0);
-+}
-+
-+struct sl_ctrl_ldev *sl_ctrl_ldev_get(u8 ldev_num)
-+{
-+	struct sl_ctrl_ldev *ctrl_ldev;
-+
-+	spin_lock(&ctrl_ldevs_lock);
-+	ctrl_ldev = ctrl_ldevs[ldev_num];
-+	spin_unlock(&ctrl_ldevs_lock);
-+
-+	sl_ctrl_log_dbg(NULL, LOG_NAME, "get (ldev_num = %u, ldev = 0x%p)",
-+			ldev_num, ctrl_ldev);
-+
-+	return ctrl_ldev;
-+}
-+
-+void sl_ctrl_ldev_exit(void)
-+{
-+	u8 ldev_num;
-+
-+	for (ldev_num = 0; ldev_num < SL_ASIC_MAX_LDEVS; ++ldev_num)
-+		sl_ctrl_ldev_del(ldev_num);
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_lgrp.c b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_lgrp.c
-new file mode 100644
-index 000000000000..1e7240325fcc
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_lgrp.c
-@@ -0,0 +1,351 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2021-2023,2024,2025 Hewlett Packard Enterprise Development LP */
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
 +
 +#include <linux/kobject.h>
-+#include <linux/spinlock.h>
-+#include <linux/slab.h>
++#include <linux/sysfs.h>
 +
-+#include "sl_asic.h"
++#include <linux/hpe/sl/sl_media.h>
++
++#include "sl.h"
++#include "sl_log.h"
 +#include "sl_sysfs.h"
-+#include "base/sl_ctrl_log.h"
 +#include "sl_ctrl_ldev.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_lgrp_notif.h"
-+#include "sl_ctrl_link.h"
-+#include "sl_ctrl_llr.h"
-+#include "sl_ctrl_mac.h"
-+#include "sl_media_lgrp.h"
-+#include "sl_core_lgrp.h"
++#include "sl_module.h"
 +
-+#define LOG_NAME SL_CTRL_LGRP_LOG_NAME
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
 +
-+#define SL_CTRL_LGRP_DEL_TIMEOUT_MS 2000
-+
-+static struct sl_ctrl_lgrp *ctrl_lgrps[SL_ASIC_MAX_LDEVS][SL_ASIC_MAX_LGRPS];
-+static DEFINE_SPINLOCK(ctrl_lgrps_lock);
-+
-+int sl_ctrl_lgrp_new(u8 ldev_num, u8 lgrp_num, struct kobject *sysfs_parent)
++#ifdef CONFIG_SYSFS
++static const char *sl_cable_type_str(u32 type)
 +{
-+	int                  rtn;
-+	struct sl_ctrl_ldev *ctrl_ldev;
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+
-+	ctrl_ldev = sl_ctrl_ldev_get(ldev_num);
-+	if (!ctrl_ldev) {
-+		sl_ctrl_log_err(NULL, LOG_NAME, "missing ldev (ldev_num = %u)", ldev_num);
-+		return -EBADRQC;
-+	}
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(ldev_num, lgrp_num);
-+	if (ctrl_lgrp) {
-+		sl_ctrl_log_err(NULL, LOG_NAME, "exists (lgrp = 0x%p)", ctrl_lgrp);
-+		return -EBADRQC;
-+	}
-+
-+	ctrl_lgrp = kzalloc(sizeof(struct sl_ctrl_lgrp), GFP_KERNEL);
-+	if (!ctrl_lgrp)
-+		return -ENOMEM;
-+
-+	snprintf(ctrl_lgrp->log_connect_id,
-+		 sizeof(ctrl_lgrp->log_connect_id), "ctrl-lgrp%02u", lgrp_num);
-+
-+	ctrl_lgrp->magic     = SL_CTRL_LGRP_MAGIC;
-+	ctrl_lgrp->ver       = SL_CTRL_LGRP_VER;
-+	ctrl_lgrp->num       = lgrp_num;
-+	ctrl_lgrp->ctrl_ldev = sl_ctrl_ldev_get(ldev_num);
-+
-+	kref_init(&ctrl_lgrp->ref_cnt);
-+	init_completion(&ctrl_lgrp->del_complete);
-+
-+	spin_lock_init(&ctrl_lgrp->data_lock);
-+	spin_lock_init(&ctrl_lgrp->config_lock);
-+	spin_lock_init(&ctrl_lgrp->log_lock);
-+
-+	spin_lock_init(&(ctrl_lgrp->ctrl_notif.lock));
-+
-+	rtn = kfifo_alloc(&ctrl_lgrp->ctrl_notif.fifo,
-+			  SL_CTRL_LGRP_NOTIF_MSG_COUNT * sizeof(struct sl_lgrp_notif_msg),
-+			  GFP_KERNEL);
-+	if (rtn) {
-+		sl_ctrl_log_err(ctrl_lgrp, LOG_NAME, "create notif fifo failed");
-+		rtn = -ENOMEM;
-+		goto out_free;
-+	}
-+	INIT_WORK(&ctrl_lgrp->notif_work, sl_ctrl_lgrp_notif_work);
-+
-+	rtn = sl_core_lgrp_new(ldev_num, lgrp_num);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_lgrp, LOG_NAME, "core_lgrp_new failed [%d]", rtn);
-+		goto out_kfifo_free;
-+	}
-+
-+	rtn = sl_media_lgrp_new(ldev_num, lgrp_num);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_lgrp, LOG_NAME, "media_lgrp_new failed [%d]", rtn);
-+		goto out_core_lgrp;
-+	}
-+
-+	if (sysfs_parent) {
-+		ctrl_lgrp->parent_kobj = sysfs_parent;
-+
-+		rtn = sl_sysfs_lgrp_create(ctrl_lgrp);
-+		if (rtn) {
-+			sl_ctrl_log_err_trace(ctrl_lgrp, LOG_NAME,
-+					      "sysfs_lgrp_create failed");
-+			goto out_media_lgrp;
-+		}
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "new (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	spin_lock(&ctrl_lgrps_lock);
-+	ctrl_lgrps[ldev_num][lgrp_num] = ctrl_lgrp;
-+	spin_unlock(&ctrl_lgrps_lock);
-+
-+	return 0;
-+
-+out_media_lgrp:
-+	sl_media_lgrp_del(ldev_num, lgrp_num);
-+out_core_lgrp:
-+	sl_core_lgrp_del(ldev_num, lgrp_num);
-+out_kfifo_free:
-+	kfifo_free(&ctrl_lgrp->ctrl_notif.fifo);
-+out_free:
-+	kfree(ctrl_lgrp);
-+
-+	return rtn;
-+}
-+
-+static void sl_ctrl_lgrp_release(struct kref *ref)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	u8                   ldev_num;
-+	u8                   lgrp_num;
-+	u8                   link_num;
-+	int                  rtn;
-+
-+	ctrl_lgrp = container_of(ref, struct sl_ctrl_lgrp, ref_cnt);
-+	ldev_num = ctrl_lgrp->ctrl_ldev->num;
-+	lgrp_num = ctrl_lgrp->num;
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(ldev_num, lgrp_num);
-+	if (!ctrl_lgrp) {
-+		sl_ctrl_log_err_trace(NULL, LOG_NAME,
-+				      "release lgrp not found (lgrp_num = %u)", lgrp_num);
-+		return;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "del (lgrp = 0x%p)", ctrl_lgrp);
-+
-+	if (!ctrl_lgrp->children_deleted) {
-+		for (link_num = 0; link_num < SL_ASIC_MAX_LINKS; ++link_num) {
-+			rtn = sl_ctrl_link_del(ldev_num, lgrp_num, link_num);
-+			if (rtn && rtn != -EBADRQC)
-+				goto retry;
-+
-+			rtn = sl_ctrl_llr_del(ldev_num, lgrp_num, link_num);
-+			if (rtn && rtn != -EBADRQC)
-+				goto retry;
-+
-+			rtn = sl_ctrl_mac_del(ldev_num, lgrp_num, link_num);
-+			if (rtn && rtn != -EBADRQC)
-+				goto retry;
-+		}
-+		ctrl_lgrp->children_deleted = true;
-+	}
-+
-+	if (!ctrl_lgrp->sysfs_deleted) {
-+		/* Must delete sysfs first to guarantee nobody is reading */
-+		sl_sysfs_lgrp_delete(ctrl_lgrp);
-+		ctrl_lgrp->sysfs_deleted = true;
-+	}
-+
-+	rtn = sl_core_lgrp_del(ldev_num, lgrp_num);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_lgrp, LOG_NAME,
-+				      "release - core_lgrp_del failed [%d]", rtn);
-+		goto retry;
-+	}
-+
-+	sl_media_lgrp_del(ldev_num, lgrp_num);
-+
-+	cancel_work_sync(&ctrl_lgrp->notif_work);
-+	kfifo_free(&ctrl_lgrp->ctrl_notif.fifo);
-+
-+	spin_lock(&ctrl_lgrps_lock);
-+	ctrl_lgrps[ldev_num][lgrp_num] = NULL;
-+	spin_unlock(&ctrl_lgrps_lock);
-+
-+	complete_all(&ctrl_lgrp->del_complete);
-+
-+	kfree(ctrl_lgrp);
-+	return;
-+
-+retry:
-+	sl_ctrl_log_err_trace(ctrl_lgrp, LOG_NAME,
-+			      "release - child/core deletion failed [%d]", rtn);
-+	kref_init(&ctrl_lgrp->ref_cnt);
-+	complete_all(&ctrl_lgrp->del_complete);
-+}
-+
-+int sl_ctrl_lgrp_put(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+	return kref_put(&ctrl_lgrp->ref_cnt, sl_ctrl_lgrp_release);
-+}
-+
-+int sl_ctrl_lgrp_del(u8 ldev_num, u8 lgrp_num)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	unsigned long        timeleft;
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(ldev_num, lgrp_num);
-+	if (!ctrl_lgrp) {
-+		sl_ctrl_log_err_trace(NULL, LOG_NAME,
-+				      "del not found (ldev_num = %u, lgrp_num = %u)", ldev_num, lgrp_num);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "del (lgrp = 0x%p)", ctrl_lgrp);
-+	reinit_completion(&ctrl_lgrp->del_complete);
-+
-+	if (!sl_ctrl_lgrp_put(ctrl_lgrp)) {
-+		timeleft = wait_for_completion_timeout(&ctrl_lgrp->del_complete,
-+						       msecs_to_jiffies(SL_CTRL_LGRP_DEL_TIMEOUT_MS));
-+
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"del completion_timeout (timeleft = %lums)", timeleft);
-+
-+		if (timeleft == 0) {
-+			sl_ctrl_log_err(NULL, LOG_NAME,
-+					"del timed out (ctrl_lgrp = 0x%p)", ctrl_lgrp);
-+			return -ETIMEDOUT;
-+		}
-+	}
-+	if (sl_ctrl_lgrp_get(ldev_num, lgrp_num) == ctrl_lgrp)
-+		return -EBUSY;
-+
-+	return 0;
-+}
-+
-+bool sl_ctrl_lgrp_kref_get_unless_zero(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+	return (kref_get_unless_zero(&ctrl_lgrp->ref_cnt) != 0);
-+}
-+
-+struct sl_ctrl_lgrp *sl_ctrl_lgrp_get(u8 ldev_num, u8 lgrp_num)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+
-+	spin_lock(&ctrl_lgrps_lock);
-+	ctrl_lgrp = ctrl_lgrps[ldev_num][lgrp_num];
-+	spin_unlock(&ctrl_lgrps_lock);
-+
-+	return ctrl_lgrp;
-+}
-+
-+int sl_ctrl_lgrp_connect_id_set(u8 ldev_num, u8 lgrp_num, const char *connect_id)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+	unsigned long       irq_flags;
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(ldev_num, lgrp_num);
-+	if (!ctrl_lgrp) {
-+		sl_ctrl_log_err(NULL, LOG_NAME, "NULL lgrp");
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_lgrp_kref_get_unless_zero(ctrl_lgrp)) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"kref_get_unless_zero failed (ctrl_lgrp = 0x%p)", ctrl_lgrp);
-+		return -EBADRQC;
-+	}
-+
-+	spin_lock_irqsave(&ctrl_lgrp->log_lock, irq_flags);
-+	strscpy_pad(ctrl_lgrp->log_connect_id, connect_id,
-+		    sizeof(ctrl_lgrp->log_connect_id));
-+	spin_unlock_irqrestore(&ctrl_lgrp->log_lock, irq_flags);
-+
-+	sl_media_lgrp_connect_id_set(ldev_num, lgrp_num, connect_id);
-+
-+	sl_core_lgrp_connect_id_set(ldev_num, lgrp_num, connect_id);
-+
-+	if (sl_ctrl_lgrp_put(ctrl_lgrp))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"connect_id set - lgrp removed (ctrl_lgrp = 0x%p)", ctrl_lgrp);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_lgrp_config_set(u8 ldev_num, u8 lgrp_num, struct sl_lgrp_config *lgrp_config)
-+{
-+	int                 rtn;
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(ldev_num, lgrp_num);
-+	if (!ctrl_lgrp) {
-+		sl_ctrl_log_err(NULL, LOG_NAME, "NULL lgrp");
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_lgrp_kref_get_unless_zero(ctrl_lgrp)) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"kref_get_unless_zero failed (ctrl_lgrp = 0x%p)", ctrl_lgrp);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "config set:");
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "  mfs       = %d",   lgrp_config->mfs);
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "  furcation = 0x%X", lgrp_config->furcation);
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "  fec_mode  = 0x%X", lgrp_config->fec_mode);
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "  tech_map  = 0x%X", lgrp_config->tech_map);
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "  fec_map   = 0x%X", lgrp_config->fec_map);
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "  options   = 0x%X", lgrp_config->options);
-+
-+	rtn = sl_core_lgrp_config_set(ldev_num, lgrp_num, lgrp_config);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_lgrp, LOG_NAME, "core_lgrp_config_set failed [%d]", rtn);
-+		goto out;
-+	}
-+
-+	spin_lock(&(ctrl_lgrp->config_lock));
-+	ctrl_lgrp->config = *lgrp_config;
-+	spin_unlock(&(ctrl_lgrp->config_lock));
-+
-+	rtn = 0;
-+
-+out:
-+	if (sl_ctrl_lgrp_put(ctrl_lgrp))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"config set - lgrp removed (ctrl_lgrp = 0x%p)", ctrl_lgrp);
-+
-+	return rtn;
-+}
-+
-+int sl_ctrl_lgrp_policy_set(u8 ldev_num, u8 lgrp_num, struct sl_lgrp_policy *lgrp_policy)
-+{
-+	struct sl_ctrl_lgrp *ctrl_lgrp;
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(ldev_num, lgrp_num);
-+	if (!ctrl_lgrp) {
-+		sl_ctrl_log_err(NULL, LOG_NAME, "NULL lgrp");
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_lgrp_kref_get_unless_zero(ctrl_lgrp)) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"kref_get_unless_zero failed (lgrp = 0x%p)", ctrl_lgrp);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "policy set");
-+
-+	spin_lock(&(ctrl_lgrp->config_lock));
-+	ctrl_lgrp->policy = *lgrp_policy;
-+	spin_unlock(&(ctrl_lgrp->config_lock));
-+
-+	if (sl_ctrl_lgrp_put(ctrl_lgrp))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"policy set - lgrp removed (ctrl_lgrp = 0x%p)", ctrl_lgrp);
-+
-+	return 0;
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_lgrp_notif.c b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_lgrp_notif.c
-new file mode 100644
-index 000000000000..298b8ab0306c
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_lgrp_notif.c
-@@ -0,0 +1,258 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2021-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/spinlock.h>
-+#include <linux/delay.h>
-+#include <linux/slab.h>
-+#include <linux/err.h>
-+
-+#include "base/sl_ctrl_log.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_lgrp_notif.h"
-+#include "sl_media_lgrp.h"
-+
-+#define LOG_NAME SL_CTRL_LGRP_NOTIF_LOG_NAME
-+
-+#define SL_CTRL_LGRP_NOTIF_LIST_STATE_IDLE    0
-+#define SL_CTRL_LGRP_NOTIF_LIST_STATE_SENDING 1
-+
-+static int sl_ctrl_lgrp_notif_list_state_get(struct sl_ctrl_lgrp *ctrl_lgrp)
-+{
-+	int notif_list_state;
-+
-+	spin_lock(&ctrl_lgrp->ctrl_notif.lock);
-+	notif_list_state = ctrl_lgrp->ctrl_notif.list_state;
-+	spin_unlock(&ctrl_lgrp->ctrl_notif.lock);
-+
-+	return notif_list_state;
-+}
-+
-+int sl_ctrl_lgrp_notif_callback_reg(u8 ldev_num, u8 lgrp_num, sl_lgrp_notif_t callback,
-+				    u32 types, void *tag)
-+{
-+	int                   rtn;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u8                    reg_idx;
-+	u8                    counter;
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(ldev_num, lgrp_num);
-+	if (!ctrl_lgrp) {
-+		sl_ctrl_log_err(NULL, LOG_NAME, "NULL ctrl_lgrp");
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_lgrp_kref_get_unless_zero(ctrl_lgrp)) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"kref_get_unless_zero failed (ctrl_lgrp = 0x%p)", ctrl_lgrp);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME,
-+			"notif callback reg (types = 0x%X, tag = 0x%p)",
-+			types, tag);
-+
-+	counter = 0;
-+	while (sl_ctrl_lgrp_notif_list_state_get(ctrl_lgrp) == SL_CTRL_LGRP_NOTIF_LIST_STATE_SENDING) {
-+		msleep(20);
-+		counter++;
-+		if (counter >= 10) {
-+			sl_ctrl_log_err(ctrl_lgrp, LOG_NAME, "registration timed out");
-+			rtn = -ETIMEDOUT;
-+			goto out;
-+		}
-+	}
-+
-+	spin_lock(&ctrl_lgrp->ctrl_notif.lock);
-+	if (ctrl_lgrp->ctrl_notif.list_state == SL_CTRL_LGRP_NOTIF_LIST_STATE_SENDING) {
-+		spin_unlock(&ctrl_lgrp->ctrl_notif.lock);
-+		sl_ctrl_log_err(ctrl_lgrp, LOG_NAME, "notif list is currently being used");
-+		rtn = -EBUSY;
-+		goto out;
-+	}
-+	for (reg_idx = 0; reg_idx < ARRAY_SIZE(ctrl_lgrp->ctrl_notif.reg_entry); ++reg_idx) {
-+		if (ctrl_lgrp->ctrl_notif.reg_entry[reg_idx].types == 0) {
-+			ctrl_lgrp->ctrl_notif.reg_entry[reg_idx].callback = callback;
-+			ctrl_lgrp->ctrl_notif.reg_entry[reg_idx].tag = tag;
-+			ctrl_lgrp->ctrl_notif.reg_entry[reg_idx].types = types;
-+			break;
-+		}
-+	}
-+	spin_unlock(&ctrl_lgrp->ctrl_notif.lock);
-+
-+	if (reg_idx >= ARRAY_SIZE(ctrl_lgrp->ctrl_notif.reg_entry)) {
-+		sl_ctrl_log_err(ctrl_lgrp, LOG_NAME, "registration list is full");
-+		rtn = -ENOSPC;
-+		goto out;
-+	}
-+
-+	if (types & SL_LGRP_NOTIF_MEDIA_PRESENT)
-+		sl_media_lgrp_real_cable_if_present_send(ldev_num, lgrp_num);
-+
-+	if (types & SL_LGRP_NOTIF_MEDIA_NOT_PRESENT)
-+		sl_media_lgrp_real_cable_if_not_present_send(ldev_num, lgrp_num);
-+
-+	if (types & SL_LGRP_NOTIF_MEDIA_HOT)
-+		sl_media_lgrp_cable_hot_send(ldev_num, lgrp_num);
-+
-+	if (types & SL_LGRP_NOTIF_MEDIA_WARM)
-+		sl_media_lgrp_cable_warm_send(ldev_num, lgrp_num);
-+
-+	if (types & SL_LGRP_NOTIF_MEDIA_COLD)
-+		sl_media_lgrp_cable_cold_send(ldev_num, lgrp_num);
-+
-+	rtn = 0;
-+out:
-+	if (sl_ctrl_lgrp_put(ctrl_lgrp))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"notif callback reg - lgrp removed (ctrl_lgrp = 0x%p)", ctrl_lgrp);
-+
-+	return rtn;
-+}
-+
-+int sl_ctrl_lgrp_notif_callback_unreg(u8 ldev_num, u8 lgrp_num, sl_lgrp_notif_t callback,
-+				      u32 types)
-+{
-+	int                   rtn;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	u8                    reg_idx;
-+	u8                    counter;
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(ldev_num, lgrp_num);
-+	if (!ctrl_lgrp) {
-+		sl_ctrl_log_err(NULL, LOG_NAME, "NULL ctrl_lgrp");
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_lgrp_kref_get_unless_zero(ctrl_lgrp)) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"kref_get_unless_zero failed (ctrl_lgrp = 0x%p)", ctrl_lgrp);
-+		return -EBADRQC;
-+	}
-+
-+	sl_media_lgrp_cable_temp_flags_clr(ldev_num, lgrp_num);
-+
-+	counter = 0;
-+	while (sl_ctrl_lgrp_notif_list_state_get(ctrl_lgrp) == SL_CTRL_LGRP_NOTIF_LIST_STATE_SENDING) {
-+		msleep(20);
-+		counter++;
-+		if (counter >= 10) {
-+			sl_ctrl_log_err(ctrl_lgrp, LOG_NAME, "unregistration timed out");
-+			rtn = -ETIMEDOUT;
-+			goto out;
-+		}
-+	}
-+
-+	spin_lock(&ctrl_lgrp->ctrl_notif.lock);
-+	if (ctrl_lgrp->ctrl_notif.list_state == SL_CTRL_LGRP_NOTIF_LIST_STATE_SENDING) {
-+		spin_unlock(&ctrl_lgrp->ctrl_notif.lock);
-+		sl_ctrl_log_err(ctrl_lgrp, LOG_NAME, "notif list is currently being used");
-+		rtn = -EBUSY;
-+		goto out;
-+	}
-+	for (reg_idx = 0; reg_idx < ARRAY_SIZE(ctrl_lgrp->ctrl_notif.reg_entry); ++reg_idx) {
-+		if ((ctrl_lgrp->ctrl_notif.reg_entry[reg_idx].types == types) &&
-+		    (ctrl_lgrp->ctrl_notif.reg_entry[reg_idx].callback == callback)) {
-+			ctrl_lgrp->ctrl_notif.reg_entry[reg_idx].callback = NULL;
-+			ctrl_lgrp->ctrl_notif.reg_entry[reg_idx].tag = NULL;
-+			ctrl_lgrp->ctrl_notif.reg_entry[reg_idx].types = 0;
-+			break;
-+		}
-+	}
-+	spin_unlock(&ctrl_lgrp->ctrl_notif.lock);
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "notif callback unreg (types = 0x%X)", types);
-+
-+	rtn = 0;
-+
-+out:
-+	if (sl_ctrl_lgrp_put(ctrl_lgrp))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"notif callback unreg - lgrp removed (ctrl_lgrp = 0x%p)", ctrl_lgrp);
-+
-+	return rtn;
-+}
-+
-+int sl_ctrl_lgrp_notif_enqueue(struct sl_ctrl_lgrp *ctrl_lgrp, u8 link_num,
-+			       u32 type, union sl_lgrp_notif_info *info, u64 info_map)
-+{
-+	struct sl_lgrp_notif_msg notif_msg;
-+	int                      rtn;
-+
-+	if (!ctrl_lgrp)
-+		return 0;
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME,
-+			"notif enqueue (link_num = %d, type = 0x%X)", link_num, type);
-+
-+	spin_lock(&ctrl_lgrp->ctrl_notif.lock);
-+	if (kfifo_is_full(&ctrl_lgrp->ctrl_notif.fifo)) {
-+		spin_unlock(&ctrl_lgrp->ctrl_notif.lock);
-+		sl_ctrl_log_err(ctrl_lgrp, LOG_NAME, "notification fifo is full");
-+		return -ENOSPC;
-+	}
-+	spin_unlock(&ctrl_lgrp->ctrl_notif.lock);
-+
-+	if (info)
-+		notif_msg.info = *info;
-+	else
-+		memset(&notif_msg.info, 0, sizeof(notif_msg.info));
-+
-+	notif_msg.ldev_num = ctrl_lgrp->ctrl_ldev->num;
-+	notif_msg.lgrp_num = ctrl_lgrp->num;
-+	notif_msg.link_num = link_num;
-+	notif_msg.type     = type;
-+	notif_msg.info_map = info_map;
-+
-+	rtn = kfifo_in_spinlocked(&ctrl_lgrp->ctrl_notif.fifo, &notif_msg, sizeof(notif_msg),
-+				  &ctrl_lgrp->ctrl_notif.lock);
-+	if (rtn != sizeof(notif_msg)) {
-+		sl_ctrl_log_err(ctrl_lgrp, LOG_NAME, "write to kfifo failed");
-+		return -EFAULT;
-+	}
-+
-+	/* Don't catch the return as it might already be running.  This is ok */
-+	queue_work(ctrl_lgrp->ctrl_ldev->notif_workq, &ctrl_lgrp->notif_work);
-+
-+	return 0;
-+}
-+
-+void sl_ctrl_lgrp_notif_work(struct work_struct *notif_work)
-+{
-+	struct sl_ctrl_lgrp      *ctrl_lgrp;
-+	struct sl_lgrp_notif_msg  notif_msg;
-+	u8                        reg_idx;
-+	int                       rtn;
-+	bool                      is_empty;
-+
-+	ctrl_lgrp = container_of(notif_work, struct sl_ctrl_lgrp, notif_work);
-+
-+	sl_ctrl_log_dbg(ctrl_lgrp, LOG_NAME, "notif work");
-+
-+	spin_lock(&ctrl_lgrp->ctrl_notif.lock);
-+	ctrl_lgrp->ctrl_notif.list_state = SL_CTRL_LGRP_NOTIF_LIST_STATE_SENDING;
-+	spin_unlock(&ctrl_lgrp->ctrl_notif.lock);
-+
-+	do {
-+		rtn = kfifo_out_spinlocked(&ctrl_lgrp->ctrl_notif.fifo,
-+					   &notif_msg, sizeof(notif_msg),
-+					   &ctrl_lgrp->ctrl_notif.lock);
-+		if (rtn != sizeof(notif_msg)) {
-+			sl_ctrl_log_err(ctrl_lgrp, LOG_NAME, "read from kfifo failed");
-+			goto out;
-+		}
-+		for (reg_idx = 0; reg_idx < SL_CTRL_LGRP_NOTIF_REG_COUNT; ++reg_idx) {
-+			if (notif_msg.type & ctrl_lgrp->ctrl_notif.reg_entry[reg_idx].types)
-+				(ctrl_lgrp->ctrl_notif.reg_entry[reg_idx].callback)
-+				(ctrl_lgrp->ctrl_notif.reg_entry[reg_idx].tag, &notif_msg);
-+		}
-+		spin_lock(&ctrl_lgrp->ctrl_notif.lock);
-+		is_empty = kfifo_is_empty(&ctrl_lgrp->ctrl_notif.fifo);
-+		spin_unlock(&ctrl_lgrp->ctrl_notif.lock);
-+	} while (!is_empty);
-+
-+out:
-+	spin_lock(&ctrl_lgrp->ctrl_notif.lock);
-+	ctrl_lgrp->ctrl_notif.list_state = SL_CTRL_LGRP_NOTIF_LIST_STATE_IDLE;
-+	spin_unlock(&ctrl_lgrp->ctrl_notif.lock);
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_link.c b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_link.c
-new file mode 100644
-index 000000000000..f3a8246fcb67
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_link.c
-@@ -0,0 +1,1230 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2021-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/spinlock.h>
-+#include <linux/slab.h>
-+#include <linux/completion.h>
-+
-+#include "sl_asic.h"
-+#include "sl_sysfs.h"
-+#include "base/sl_ctrl_log.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_link.h"
-+#include "data/sl_ctrl_data_link.h"
-+#include "sl_ctrl_link_priv.h"
-+#include "sl_ctrl_link_counters.h"
-+#include "sl_core_str.h"
-+#include "sl_core_link.h"
-+#include "sl_core_link_an.h"
-+#include "sl_core_mac.h"
-+#include "sl_core_llr.h"
-+#include "sl_core_link_an.h"
-+#include "sl_test_common.h"
-+
-+#define LOG_NAME SL_CTRL_LINK_LOG_NAME
-+
-+#define SL_CTRL_LINK_DOWN_WAIT_TIMEOUT_MS 2000
-+#define SL_CTRL_LINK_DEL_WAIT_TIMEOUT_MS  2000
-+
-+static struct sl_ctrl_link *ctrl_links[SL_ASIC_MAX_LDEVS][SL_ASIC_MAX_LGRPS][SL_ASIC_MAX_LINKS];
-+static DEFINE_SPINLOCK(ctrl_links_lock);
-+
-+static void sl_ctrl_link_release_work(struct work_struct *work);
-+
-+int sl_ctrl_link_new(u8 ldev_num, u8 lgrp_num, u8 link_num, struct kobject *sysfs_parent)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_lgrp  *ctrl_lgrp;
-+	struct sl_ctrl_link *ctrl_link;
-+
-+	ctrl_lgrp = sl_ctrl_lgrp_get(ldev_num, lgrp_num);
-+	if (!ctrl_lgrp) {
-+		sl_ctrl_log_err(NULL, LOG_NAME, "missing lgrp (lgrp_num = %u)", lgrp_num);
-+		return -EBADRQC;
-+	}
-+
-+	spin_lock(&ctrl_links_lock);
-+	ctrl_link = ctrl_links[ldev_num][lgrp_num][link_num];
-+	spin_unlock(&ctrl_links_lock);
-+	if (ctrl_link) {
-+		sl_ctrl_log_err(NULL, LOG_NAME, "new - link exists");
-+		return -EBADRQC;
-+	}
-+
-+	ctrl_link = kzalloc(sizeof(struct sl_ctrl_link), GFP_KERNEL);
-+	if (!ctrl_link)
-+		return -ENOMEM;
-+
-+	ctrl_link->magic    = SL_CTRL_LINK_MAGIC;
-+	ctrl_link->ver      = SL_CTRL_LINK_VER;
-+	ctrl_link->num      = link_num;
-+	ctrl_link->ctrl_lgrp = sl_ctrl_lgrp_get(ldev_num, lgrp_num);
-+
-+	kref_init(&ctrl_link->ref_cnt);
-+	kref_init(&ctrl_link->mem_ref);
-+	INIT_WORK(&ctrl_link->release_work, sl_ctrl_link_release_work);
-+	mutex_init(&ctrl_link->delete_lock);
-+	init_completion(&ctrl_link->del_complete);
-+
-+	spin_lock_init(&ctrl_link->config_lock);
-+	spin_lock_init(&ctrl_link->data_lock);
-+
-+	rtn = sl_ctrl_link_counters_init(ctrl_link);
-+	if (rtn) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME,
-+				"ctrl_link_counters_init failed [%d]", rtn);
-+		goto out;
-+	}
-+
-+	rtn = sl_ctrl_link_cause_counters_init(ctrl_link);
-+	if (rtn) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME,
-+				"ctrl_link_cause_counters_init failed [%d]", rtn);
-+		goto out_counters;
-+	}
-+
-+	rtn = sl_ctrl_link_an_cause_counters_init(ctrl_link);
-+	if (rtn) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME,
-+				"ctrl_link_an_cause_counters_init failed [%d]", rtn);
-+		goto out_cause_counters;
-+	}
-+
-+	ctrl_link->up_clock.start           = ktime_set(0, 0);
-+	ctrl_link->up_clock.elapsed         = ktime_set(0, 0);
-+	ctrl_link->up_clock.attempt_count   = 0;
-+	ctrl_link->up_clock.attempt_start   = ktime_set(0, 0);
-+	ctrl_link->up_clock.attempt_elapsed = ktime_set(0, 0);
-+	spin_lock_init(&ctrl_link->up_clock.lock);
-+
-+	spin_lock_init(&ctrl_link->fec_data.lock);
-+	timer_setup(&ctrl_link->fec_mon_timer, sl_ctrl_link_fec_mon_timer, 0);
-+	spin_lock_init(&ctrl_link->fec_mon_timer_lock);
-+	ctrl_link->fec_data.curr_ptr = &ctrl_link->fec_data.cntrs[0];
-+	ctrl_link->fec_data.prev_ptr = &ctrl_link->fec_data.cntrs[1];
-+	INIT_WORK(&ctrl_link->fec_mon_timer_work, sl_ctrl_link_fec_mon_timer_work);
-+
-+	spin_lock_init(&ctrl_link->fec_up_cache.lock);
-+	spin_lock_init(&ctrl_link->fec_down_cache.lock);
-+
-+	ctrl_link->state = SL_LINK_STATE_DOWN;
-+
-+	rtn = sl_core_link_new(ldev_num, lgrp_num, link_num);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_link, LOG_NAME,
-+				      "core_link_new failed [%d]", rtn);
-+		goto out_an_counters;
-+	}
-+
-+	if (sysfs_parent) {
-+		ctrl_link->parent_kobj = sysfs_parent;
-+
-+		rtn = sl_sysfs_link_create(ctrl_link);
-+		if (rtn) {
-+			sl_ctrl_log_err_trace(ctrl_link, LOG_NAME,
-+					      "sysfs_link_create failed [%d]", rtn);
-+			goto out_core_link;
-+		}
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "new (link = 0x%p)", ctrl_link);
-+
-+	spin_lock(&ctrl_links_lock);
-+	ctrl_links[ldev_num][lgrp_num][link_num] = ctrl_link;
-+	spin_unlock(&ctrl_links_lock);
-+
-+	return 0;
-+
-+out_core_link:
-+	sl_core_link_del(ldev_num, lgrp_num, link_num);
-+out_an_counters:
-+	sl_ctrl_link_an_cause_counters_del(ctrl_link);
-+out_cause_counters:
-+	sl_ctrl_link_cause_counters_del(ctrl_link);
-+out_counters:
-+	sl_ctrl_link_counters_del(ctrl_link);
-+out:
-+	kfree(ctrl_link);
-+	return rtn;
-+}
-+
-+static int sl_ctrl_link_down_cmd(struct sl_ctrl_link *ctrl_link)
-+{
-+	int rtn;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "down cmd");
-+
-+	SL_CTRL_LINK_COUNTER_INC(ctrl_link, LINK_DOWN_CMD);
-+
-+	sl_ctrl_link_up_clock_reset(ctrl_link);
-+
-+	sl_ctrl_link_fec_mon_stop(ctrl_link);
-+	cancel_work_sync(&ctrl_link->fec_mon_timer_work);
-+
-+	rtn = sl_core_link_an_lp_caps_stop(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+					   ctrl_link->ctrl_lgrp->num, ctrl_link->num);
-+	if (rtn)
-+		sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+				       "del core_link_an_lp_caps_stop failed [%d]", rtn);
-+
-+	rtn = sl_core_link_down(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num, ctrl_link->num,
-+				sl_ctrl_link_down_callback, ctrl_link, SL_LINK_DOWN_CAUSE_COMMAND_MAP);
-+	if (rtn) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME, "core_link_down failed [%d]", rtn);
-+		return rtn;
-+	}
-+
-+	return 0;
-+}
-+
-+static int sl_ctrl_link_cancel_cmd(struct sl_ctrl_link *ctrl_link)
-+{
-+	int rtn;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "cancel cmd");
-+
-+	SL_CTRL_LINK_COUNTER_INC(ctrl_link, LINK_UP_CANCEL_CMD);
-+
-+	sl_ctrl_link_fec_mon_stop(ctrl_link);
-+	cancel_work_sync(&ctrl_link->fec_mon_timer_work);
-+
-+	rtn = sl_core_link_an_lp_caps_stop(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+					   ctrl_link->ctrl_lgrp->num, ctrl_link->num);
-+	if (rtn)
-+		sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+				       "del core_link_an_lp_caps_stop failed [%d]", rtn);
-+
-+	rtn = sl_core_link_cancel(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num, ctrl_link->num,
-+				  sl_ctrl_link_down_callback, ctrl_link);
-+	if (rtn) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME, "core_link_down failed [%d]", rtn);
-+		return rtn;
-+	}
-+
-+	return 0;
-+}
-+
-+static void sl_ctrl_link_down_wait(struct sl_ctrl_link *ctrl_link)
-+{
-+	unsigned long timeleft;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "down wait");
-+
-+	timeleft = wait_for_completion_timeout(&ctrl_link->down_complete,
-+					       msecs_to_jiffies(SL_CTRL_LINK_DOWN_WAIT_TIMEOUT_MS));
-+	if (timeleft == 0)
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME,
-+				"del completion_timeout (down_complete = 0x%p)",
-+			&ctrl_link->down_complete);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "del completion (timeleft = %lu)", timeleft);
-+}
-+
-+static void sl_ctrl_link_free(struct kref *kref)
-+{
-+	kfree(container_of(kref, struct sl_ctrl_link, mem_ref));
-+}
-+
-+static void sl_ctrl_link_release_work(struct work_struct *work)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	u32                  link_state;
-+	u8                   ldev_num;
-+	u8                   lgrp_num;
-+	u8                   link_num;
-+	int                  rtn;
-+
-+	ctrl_link = container_of(work, struct sl_ctrl_link, release_work);
-+	ldev_num = ctrl_link->ctrl_lgrp->ctrl_ldev->num;
-+	lgrp_num = ctrl_link->ctrl_lgrp->num;
-+	link_num = ctrl_link->num;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "release (link = 0x%p)", ctrl_link);
-+
-+	spin_lock(&ctrl_link->data_lock);
-+	link_state = ctrl_link->state;
-+	switch (link_state) {
-+	case SL_LINK_STATE_STARTING:
-+		ctrl_link->is_canceled = true;
-+		spin_unlock(&ctrl_link->data_lock);
-+		SL_CTRL_LINK_COUNTER_INC(ctrl_link, LINK_UP_CANCEL_CMD);
-+		sl_ctrl_link_cancel_cmd(ctrl_link);
-+		sl_ctrl_link_down_wait(ctrl_link);
-+		break;
-+	case SL_LINK_STATE_UP:
-+	case SL_LINK_STATE_UP_DOWN_REQ:
-+		ctrl_link->state = SL_LINK_STATE_STOPPING;
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "release stopping");
-+		spin_unlock(&ctrl_link->data_lock);
-+		sl_ctrl_link_down_cmd(ctrl_link);
-+		sl_ctrl_link_down_wait(ctrl_link);
-+		break;
-+	case SL_LINK_STATE_STOPPING:
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "release already stopping");
-+		spin_unlock(&ctrl_link->data_lock);
-+		sl_ctrl_link_down_wait(ctrl_link);
-+		break;
-+	case SL_LINK_STATE_DOWN:
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "release already down");
-+		spin_unlock(&ctrl_link->data_lock);
-+		break;
-+	case SL_LINK_STATE_INVALID:
-+	default:
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME, "release invalid state (link_state = %u %s)",
-+				link_state, sl_link_state_str(link_state));
-+		spin_unlock(&ctrl_link->data_lock);
-+		rtn = -EBUSY;
-+		goto out_retry;
-+	}
-+
-+	spin_lock(&ctrl_link->data_lock);
-+	link_state = ctrl_link->state;
-+	spin_unlock(&ctrl_link->data_lock);
-+	if (link_state != SL_LINK_STATE_DOWN) {
-+		rtn = -EBUSY;
-+		goto out_retry;
-+	}
-+
-+	if (!ctrl_link->sysfs_deleted) {
-+		/* Must delete sysfs first to guarantee nobody is reading */
-+		sl_sysfs_link_delete(ctrl_link);
-+		ctrl_link->sysfs_deleted = true;
-+	}
-+
-+	rtn = sl_core_link_del(ldev_num, lgrp_num, link_num);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_link, LOG_NAME,
-+				      "release - core_link_del failed [%d]", rtn);
-+		goto out_retry;
-+	}
-+
-+	sl_ctrl_link_counters_del(ctrl_link);
-+	sl_ctrl_link_cause_counters_del(ctrl_link);
-+	sl_ctrl_link_an_cause_counters_del(ctrl_link);
-+
-+	spin_lock(&ctrl_links_lock);
-+	ctrl_links[ldev_num][lgrp_num][link_num] = NULL;
-+	spin_unlock(&ctrl_links_lock);
-+
-+	ctrl_link->delete_result = 0;
-+	complete_all(&ctrl_link->del_complete);
-+
-+	kref_put(&ctrl_link->mem_ref, sl_ctrl_link_free);
-+	return;
-+
-+out_retry:
-+	spin_lock(&ctrl_links_lock);
-+	ctrl_link->delete_result = rtn;
-+	kref_init(&ctrl_link->ref_cnt);
-+	ctrl_link->delete_requested = false;
-+	complete_all(&ctrl_link->del_complete);
-+	spin_unlock(&ctrl_links_lock);
-+}
-+
-+static void sl_ctrl_link_release(struct kref *kref)
-+{
-+	struct sl_ctrl_link *ctrl_link = container_of(kref, struct sl_ctrl_link, ref_cnt);
-+
-+	queue_work(system_unbound_wq, &ctrl_link->release_work);
-+}
-+
-+int sl_ctrl_link_put(struct sl_ctrl_link *ctrl_link)
-+{
-+	return ctrl_link ? kref_put(&ctrl_link->ref_cnt, sl_ctrl_link_release) : 0;
-+}
-+
-+int sl_ctrl_link_del(u8 ldev_num, u8 lgrp_num, u8 link_num)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+	unsigned long        timeleft;
-+	bool                 drop_owner = false;
-+	int                  rtn;
-+
-+	sl_ctrl_log_dbg(NULL, LOG_NAME, "link del (ldev_num = %u, lgrp_num = %u, link_num = %u)",
-+			ldev_num, lgrp_num, link_num);
-+
-+	spin_lock(&ctrl_links_lock);
-+	ctrl_link = ctrl_links[ldev_num][lgrp_num][link_num];
-+	if (ctrl_link)
-+		kref_get(&ctrl_link->mem_ref);
-+	spin_unlock(&ctrl_links_lock);
-+	if (!ctrl_link) {
-+		sl_ctrl_log_err_trace(NULL, LOG_NAME,
-+				      "link del link not found (ldev_num = %u, lgrp_num = %u, link_num = %u)",
-+			ldev_num, lgrp_num, link_num);
-+		return -EBADRQC;
-+	}
-+
-+	mutex_lock(&ctrl_link->delete_lock);
-+	spin_lock(&ctrl_links_lock);
-+	if (!ctrl_link->delete_requested) {
-+		ctrl_link->delete_requested = true;
-+		reinit_completion(&ctrl_link->del_complete);
-+		drop_owner = true;
-+	}
-+	spin_unlock(&ctrl_links_lock);
-+	if (drop_owner)
-+		sl_ctrl_link_put(ctrl_link);
-+
-+	timeleft = wait_for_completion_timeout(&ctrl_link->del_complete,
-+					       msecs_to_jiffies(SL_CTRL_LINK_DEL_WAIT_TIMEOUT_MS));
-+	rtn = timeleft ? ctrl_link->delete_result : -ETIMEDOUT;
-+	mutex_unlock(&ctrl_link->delete_lock);
-+	kref_put(&ctrl_link->mem_ref, sl_ctrl_link_free);
-+	return rtn;
-+}
-+
-+bool sl_ctrl_link_kref_get_unless_zero(struct sl_ctrl_link *ctrl_link)
-+{
-+	return (kref_get_unless_zero(&ctrl_link->ref_cnt) != 0);
-+}
-+
-+struct sl_ctrl_link *sl_ctrl_link_get(u8 ldev_num, u8 lgrp_num, u8 link_num)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+
-+	spin_lock(&ctrl_links_lock);
-+	ctrl_link = ctrl_links[ldev_num][lgrp_num][link_num];
-+	if (ctrl_link && (ctrl_link->delete_requested ||
-+			  !kref_get_unless_zero(&ctrl_link->ref_cnt)))
-+		ctrl_link = NULL;
-+	spin_unlock(&ctrl_links_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "get (link = 0x%p)", ctrl_link);
-+
-+	return ctrl_link;
-+}
-+
-+static int sl_ctrl_link_config_set_cmd(struct sl_ctrl_link *ctrl_link, struct sl_link_config *link_config)
-+{
-+	struct sl_core_link_config core_link_config;
-+	int                        rtn;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "config set cmd");
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "  link_up_timeout                = %ums",
-+			link_config->link_up_timeout_ms);
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "  link_up_tries_max              = %d",
-+			link_config->link_up_tries_max);
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "  fec_up_settle_wait             = %dms",
-+			link_config->fec_up_settle_wait_ms);
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "  fec_up_check_wait              = %dms",
-+			link_config->fec_up_check_wait_ms);
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "  fec_up_ucw_limit               = %d",
-+			link_config->fec_up_ucw_limit);
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "  fec_up_ccw_limit               = %d",
-+			link_config->fec_up_ccw_limit);
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "  pml_rec_timeout                = %ums",
-+			link_config->pml_rec_timeout_ms);
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "  pml_rec_rate_limit_max_time    = %ums",
-+			link_config->pml_rec_rate_limit_max_time_ms);
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "  pml_rec_rate_limit_window_size = %ums",
-+			link_config->pml_rec_rate_limit_window_size_ms);
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "  pause_map                      = 0x%X",
-+			link_config->pause_map);
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "  hpe_map                        = 0x%X",
-+			link_config->hpe_map);
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "  options                        = 0x%X",
-+			link_config->options);
-+
-+	/* Check if the configuration is locked. If we are performing an admin operation, then we can ignore the
-+	 * lock bit and continue to write the config.
-+	 */
-+	spin_lock(&ctrl_link->config_lock);
-+	if (!(link_config->options & SL_LINK_CONFIG_OPT_ADMIN) &&
-+	    (ctrl_link->config.options & SL_LINK_CONFIG_OPT_LOCK)) {
-+		sl_ctrl_log_info(ctrl_link, LOG_NAME, "link config locked (options: 0x%X)", ctrl_link->config.options);
-+		spin_unlock(&ctrl_link->config_lock);
-+		return 0;
-+	}
-+	spin_unlock(&ctrl_link->config_lock);
-+
-+	/* Admin bit is transient */
-+	link_config->options &= ~SL_LINK_CONFIG_OPT_ADMIN;
-+
-+	if ((!link_config->fec_up_settle_wait_ms && link_config->fec_up_check_wait_ms) ||
-+	    (link_config->fec_up_settle_wait_ms && !link_config->fec_up_check_wait_ms)) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME, "fec_up invalid (settle_wait = %ums, check_wait = %ums)",
-+				link_config->fec_up_settle_wait_ms, link_config->fec_up_check_wait_ms);
-+		return -EINVAL;
-+	}
-+
-+	core_link_config.magic                = SL_CORE_LINK_CONFIG_MAGIC;
-+	core_link_config.fault_start_callback = sl_ctrl_link_fault_start_callback;
-+	core_link_config.fault_callback       = sl_ctrl_link_fault_callback;
-+
-+	/* timeouts */
-+	core_link_config.link_up_timeout_ms = link_config->link_up_timeout_ms;
-+
-+	/* fec config */
-+	core_link_config.fec_up_settle_wait_ms = link_config->fec_up_settle_wait_ms;
-+	core_link_config.fec_up_check_wait_ms  = link_config->fec_up_check_wait_ms;
-+	core_link_config.fec_up_ucw_limit      = link_config->fec_up_ucw_limit;
-+	core_link_config.fec_up_ccw_limit      = link_config->fec_up_ccw_limit;
-+
-+	/* pml recovery config */
-+	core_link_config.pml_rec_timeout_ms                = link_config->pml_rec_timeout_ms;
-+	core_link_config.pml_rec_rate_limit_max_time_ms    = link_config->pml_rec_rate_limit_max_time_ms;
-+	core_link_config.pml_rec_rate_limit_window_size_ms = link_config->pml_rec_rate_limit_window_size_ms;
-+
-+	/* maps */
-+	core_link_config.hpe_map   = link_config->hpe_map;
-+	core_link_config.pause_map = link_config->pause_map;
-+
-+	/* flags */
-+	core_link_config.flags = link_config->options;
-+
-+	rtn = sl_core_link_config_set(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+				      ctrl_link->ctrl_lgrp->num, ctrl_link->num, &core_link_config);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_link, LOG_NAME,
-+				      "core_link_config_set failed [%d]", rtn);
-+		return rtn;
-+	}
-+
-+	spin_lock(&ctrl_link->config_lock);
-+	ctrl_link->config = *link_config;
-+	spin_unlock(&ctrl_link->config_lock);
-+
-+	if (ctrl_link->config.link_up_tries_max == SL_LINK_INFINITE_UP_TRIES)
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "link up tries set to infinite");
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_link_config_set(u8 ldev_num, u8 lgrp_num, u8 link_num,
-+			    struct sl_link_config *link_config)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link __free(sl_ctrl_link_put) = NULL;
-+	u32                  link_state;
-+
-+	ctrl_link = sl_ctrl_link_get(ldev_num, lgrp_num, link_num);
-+	if (!ctrl_link)
-+		return -ENODEV;
-+	if (!ctrl_link) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"config set NULL link (ldev_num = %u, lgrp_num = %u, link_num = %u)",
-+			ldev_num, lgrp_num, link_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_link_kref_get_unless_zero(ctrl_link)) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME, "config set link ref unavailable (ctrl_link = 0x%p)",
-+				ctrl_link);
-+		return -EBADRQC;
-+	}
-+
-+	rtn = sl_ctrl_data_link_state_get(ctrl_link, &link_state);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_link, LOG_NAME, "data_link_state_get failed [%d]", rtn);
-+		goto out;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "config set (link_state = %u %s)",
-+			link_state, sl_link_state_str(link_state));
-+
-+	switch (link_state) {
-+	case SL_LINK_STATE_DOWN:
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "config - set");
-+		rtn = sl_ctrl_link_config_set_cmd(ctrl_link, link_config);
-+		if (rtn) {
-+			sl_ctrl_log_err_trace(ctrl_link, LOG_NAME, "link_config_set_cmd failed [%d]", rtn);
-+			goto out;
-+		}
-+
-+		rtn = 0;
-+		goto out;
-+	case SL_LINK_STATE_STARTING:
-+	case SL_LINK_STATE_INVALID:
-+	case SL_LINK_STATE_STOPPING:
-+	case SL_LINK_STATE_UP:
-+	case SL_LINK_STATE_UP_DOWN_REQ:
-+	default:
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME, "config - invalid (link_state = %u %s)",
-+				link_state, sl_link_state_str(link_state));
-+		rtn = -EBADRQC;
-+		goto out;
-+	}
-+
-+out:
-+	if (sl_ctrl_link_put(ctrl_link))
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "config - link removed (link = 0x%p)", ctrl_link);
-+
-+	return rtn;
-+}
-+
-+int sl_ctrl_link_policy_set(u8 ldev_num, u8 lgrp_num, u8 link_num,
-+			    struct sl_link_policy *link_policy)
-+{
-+	int                         rtn;
-+	u32                         link_state;
-+	struct sl_ctrl_link *ctrl_link __free(sl_ctrl_link_put) = NULL;
-+	struct sl_core_link_policy  core_link_policy;
-+
-+	ctrl_link = sl_ctrl_link_get(ldev_num, lgrp_num, link_num);
-+	if (!ctrl_link)
-+		return -ENODEV;
-+	if (!ctrl_link) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"policy set NULL link (ldev_num = %u, lgrp_num = %u, link_num = %u)",
-+			ldev_num, lgrp_num, link_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_link_kref_get_unless_zero(ctrl_link)) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME, "policy set link ref unavailable (ctrl_link = 0x%p)",
-+				ctrl_link);
-+		return -EBADRQC;
-+	}
-+
-+	/* Check if the policy is locked. If we are performing an admin operation, then we can ignore the
-+	 * lock bit and continue to write the config.
-+	 */
-+	spin_lock(&ctrl_link->config_lock);
-+	if (!(link_policy->options & SL_LINK_POLICY_OPT_ADMIN) &&
-+	    (ctrl_link->policy.options & SL_LINK_POLICY_OPT_LOCK)) {
-+		sl_ctrl_log_info(ctrl_link, LOG_NAME, "link policy locked (options: 0x%X)", ctrl_link->policy.options);
-+		spin_unlock(&ctrl_link->config_lock);
-+		rtn = 0;
-+		goto out;
-+	}
-+	spin_unlock(&ctrl_link->config_lock);
-+
-+	/* Admin bit is transient */
-+	link_policy->options &= ~SL_LINK_POLICY_OPT_ADMIN;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "policy set");
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "  fec_mon_ucw_down_limit = %d", link_policy->fec_mon_ucw_down_limit);
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "  fec_mon_ucw_warn_limit = %d", link_policy->fec_mon_ucw_warn_limit);
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "  fec_mon_ccw_down_limit = %d", link_policy->fec_mon_ccw_down_limit);
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "  fec_mon_ccw_warn_limit = %d", link_policy->fec_mon_ccw_warn_limit);
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "  fec_mon_period         = %dms", link_policy->fec_mon_period_ms);
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "  options                = 0x%X", link_policy->options);
-+
-+	spin_lock(&ctrl_link->config_lock);
-+	ctrl_link->policy = *link_policy;
-+	spin_unlock(&ctrl_link->config_lock);
-+
-+	core_link_policy.options = link_policy->options;
-+	rtn = sl_core_link_policy_set(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num, ctrl_link->num,
-+				      &core_link_policy);
-+	if (rtn) {
-+		sl_core_log_err(ctrl_link, LOG_NAME, "core link policy set failed [%d]", rtn);
-+		rtn = -EBADRQC;
-+		goto out;
-+	}
-+
-+	rtn = sl_ctrl_data_link_state_get(ctrl_link, &link_state);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_link, LOG_NAME, "data link state get failed [%d]", rtn);
-+		goto out;
-+	}
-+
-+	if ((link_state != SL_LINK_STATE_UP) && (link_state != SL_LINK_STATE_UP_DOWN_REQ)) {
-+		sl_core_log_dbg(ctrl_link, LOG_NAME, "link_policy_set not up (link_state = %u %s)", link_state,
-+				sl_core_link_state_str(link_state));
-+		rtn = 0;
-+		goto out;
-+	}
-+
-+	sl_ctrl_link_fec_mon_start(ctrl_link);
-+
-+	rtn = 0;
-+
-+out:
-+	if (sl_ctrl_link_put(ctrl_link))
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "policy set - link removed (link = 0x%p)", ctrl_link);
-+
-+	return rtn;
-+}
-+
-+int sl_ctrl_link_an_lp_caps_get(u8 ldev_num, u8 lgrp_num, u8 link_num,
-+				struct sl_link_caps *caps, u32 timeout_ms, u32 flags)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link __free(sl_ctrl_link_put) = NULL;
-+
-+	ctrl_link = sl_ctrl_link_get(ldev_num, lgrp_num, link_num);
-+	if (!ctrl_link)
-+		return -ENODEV;
-+	if (!ctrl_link) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"caps get NULL link (ldev_num = %u, lgrp_num = %u, link_num = %u)",
-+			ldev_num, lgrp_num, link_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_link_kref_get_unless_zero(ctrl_link)) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME, "caps get link ref unavailable (ctrl_link = 0x%p)",
-+				ctrl_link);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "an lp caps get");
-+
-+	rtn = sl_core_link_an_lp_caps_get(ldev_num, lgrp_num, link_num,
-+					  sl_ctrl_link_an_lp_caps_get_callback, ctrl_link, caps, timeout_ms, flags);
-+	if (rtn)
-+		sl_ctrl_log_err_trace(ctrl_link, LOG_NAME,
-+				      "core_link_an_lp_caps_get failed [%d]", rtn);
-+
-+	if (sl_ctrl_link_put(ctrl_link))
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "an lp caps get - link removed (link = 0x%p)", ctrl_link);
-+
-+	return rtn;
-+}
-+
-+int sl_ctrl_link_an_lp_caps_stop(u8 ldev_num, u8 lgrp_num, u8 link_num)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link __free(sl_ctrl_link_put) = NULL;
-+
-+	ctrl_link = sl_ctrl_link_get(ldev_num, lgrp_num, link_num);
-+	if (!ctrl_link)
-+		return -ENODEV;
-+	if (!ctrl_link) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"caps stop NULL link (ldev_num = %u, lgrp_num = %u, link_num = %u)",
-+			ldev_num, lgrp_num, link_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_link_kref_get_unless_zero(ctrl_link)) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME, "caps stop link ref unavailable (ctrl_link = 0x%p)",
-+				ctrl_link);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "an lp caps stop");
-+
-+	rtn = sl_core_link_an_lp_caps_stop(ldev_num, lgrp_num, link_num);
-+	if (rtn)
-+		sl_ctrl_log_err_trace(ctrl_link, LOG_NAME,
-+				      "core_link_an_lp_caps_stop failed [%d]", rtn);
-+
-+	if (sl_ctrl_link_put(ctrl_link))
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "an lp caps stop - link removed (link = 0x%p)", ctrl_link);
-+
-+	return rtn;
-+}
-+
-+static int sl_ctrl_link_up_cmd(struct sl_ctrl_link *ctrl_link)
-+{
-+	int rtn;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "up cmd");
-+
-+	SL_CTRL_LINK_COUNTER_INC(ctrl_link, LINK_UP_CMD);
-+
-+	sl_ctrl_link_up_clock_start(ctrl_link);
-+
-+	sl_ctrl_link_is_canceled_set(ctrl_link, false);
-+
-+	init_completion(&ctrl_link->down_complete);
-+
-+	sl_ctrl_link_up_clock_attempt_start(ctrl_link);
-+
-+	rtn = sl_core_link_up(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num, ctrl_link->num,
-+			      sl_ctrl_link_up_callback, ctrl_link);
-+	if (rtn) {
-+		sl_ctrl_link_state_set(ctrl_link, SL_LINK_STATE_STOPPING);
-+
-+		sl_ctrl_log_err_trace(ctrl_link, LOG_NAME, "core_link_up failed [%d]", rtn);
-+
-+		sl_ctrl_link_up_clock_reset(ctrl_link);
-+
-+		sl_ctrl_link_state_set(ctrl_link, SL_LINK_STATE_DOWN);
-+
-+		return rtn;
-+	}
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_link_up(u8 ldev_num, u8 lgrp_num, u8 link_num)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link __free(sl_ctrl_link_put) = NULL;
-+	u32                  link_state;
-+
-+	ctrl_link = sl_ctrl_link_get(ldev_num, lgrp_num, link_num);
-+	if (!ctrl_link)
-+		return -ENODEV;
-+	if (!ctrl_link) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"link up NULL link (ldev_num = %u, lgrp_num = %u, link_num = %u)",
-+			ldev_num, lgrp_num, link_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_link_kref_get_unless_zero(ctrl_link)) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME, "link up ref unavailable (ctrl_link = 0x%p)",
-+				ctrl_link);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "up");
-+
-+	spin_lock(&ctrl_link->data_lock);
-+	link_state = ctrl_link->state;
-+	switch (link_state) {
-+	case SL_LINK_STATE_DOWN:
-+		ctrl_link->state = SL_LINK_STATE_STARTING;
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "up - starting");
-+		spin_unlock(&ctrl_link->data_lock);
-+		rtn = sl_ctrl_link_up_cmd(ctrl_link);
-+		if (rtn) {
-+			sl_ctrl_log_err_trace(ctrl_link, LOG_NAME, "link_up_cmd failed [%d]", rtn);
-+			goto out;
-+		}
-+
-+		rtn = 0;
-+		goto out;
-+	case SL_LINK_STATE_STARTING:
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "up - already starting");
-+		spin_unlock(&ctrl_link->data_lock);
-+		rtn = -EINPROGRESS;
-+		goto out;
-+	case SL_LINK_STATE_UP:
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "up - already up");
-+		spin_unlock(&ctrl_link->data_lock);
-+		rtn = -EALREADY;
-+		goto out;
-+	case SL_LINK_STATE_UP_DOWN_REQ:
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "up - already up down requested");
-+		spin_unlock(&ctrl_link->data_lock);
-+		rtn = -EALREADY;
-+		goto out;
-+	case SL_LINK_STATE_STOPPING:
-+	case SL_LINK_STATE_INVALID:
-+	default:
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "up - invalid (link_state = %u %s)",
-+				link_state, sl_link_state_str(link_state));
-+		spin_unlock(&ctrl_link->data_lock);
-+		rtn = -EBADRQC;
-+		goto out;
-+	}
-+
-+out:
-+	if (sl_ctrl_link_put(ctrl_link))
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "up - link removed (link = 0x%p)", ctrl_link);
-+
-+	return rtn;
-+}
-+
-+int sl_ctrl_link_down(u8 ldev_num, u8 lgrp_num, u8 link_num)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link __free(sl_ctrl_link_put) = NULL;
-+	u32                  link_state;
-+
-+	ctrl_link = sl_ctrl_link_get(ldev_num, lgrp_num, link_num);
-+	if (!ctrl_link)
-+		return -ENODEV;
-+	if (!ctrl_link) {
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"link down NULL link (ldev_num = %u, lgrp_num = %u, link_num = %u)",
-+			ldev_num, lgrp_num, link_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_link_kref_get_unless_zero(ctrl_link)) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME, "link down ref unavailable (ctrl_link = 0x%p)",
-+				ctrl_link);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "down");
-+
-+	spin_lock(&ctrl_link->data_lock);
-+	link_state = ctrl_link->state;
-+	switch (link_state) {
-+	case SL_LINK_STATE_STARTING:
-+		ctrl_link->state = SL_LINK_STATE_STOPPING;
-+		ctrl_link->is_canceled = true;
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "down - canceling");
-+		spin_unlock(&ctrl_link->data_lock);
-+		rtn = sl_ctrl_link_cancel_cmd(ctrl_link);
-+		if (rtn) {
-+			sl_ctrl_log_err_trace(ctrl_link, LOG_NAME, "cancel_cmd failed [%d]", rtn);
-+			goto out;
-+		}
-+
-+		rtn = 0;
-+		goto out;
-+	case SL_LINK_STATE_UP:
-+	case SL_LINK_STATE_UP_DOWN_REQ:
-+		ctrl_link->state = SL_LINK_STATE_STOPPING;
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "down - stopping");
-+		spin_unlock(&ctrl_link->data_lock);
-+		rtn = sl_ctrl_link_down_cmd(ctrl_link);
-+		if (rtn) {
-+			sl_ctrl_log_err_trace(ctrl_link, LOG_NAME, "down_cmd failed [%d]", rtn);
-+			goto out;
-+		}
-+
-+		rtn = 0;
-+		goto out;
-+	case SL_LINK_STATE_DOWN:
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "down - already down");
-+		spin_unlock(&ctrl_link->data_lock);
-+		rtn = -EALREADY;
-+		goto out;
-+	case SL_LINK_STATE_STOPPING:
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "down - already stopping");
-+		spin_unlock(&ctrl_link->data_lock);
-+		rtn = -EINPROGRESS;
-+		goto out;
-+	case SL_LINK_STATE_INVALID:
-+	default:
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "down - invalid (link_state = %u %s)",
-+				link_state, sl_link_state_str(link_state));
-+		spin_unlock(&ctrl_link->data_lock);
-+		rtn = -EBADRQC;
-+		goto out;
-+	}
-+
-+out:
-+	if (sl_ctrl_link_put(ctrl_link))
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "down - link removed (link = 0x%p)", ctrl_link);
-+
-+	return rtn;
-+}
-+
-+static int sl_ctrl_link_reset_cmd(struct sl_ctrl_link *ctrl_link)
-+{
-+	int           rtn;
-+	u8            ldev_num;
-+	u8            lgrp_num;
-+	u8            link_num;
-+	unsigned long timeleft;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "reset cmd");
-+
-+	SL_CTRL_LINK_COUNTER_INC(ctrl_link, LINK_RESET_CMD);
-+
-+	sl_ctrl_link_up_clock_reset(ctrl_link);
-+
-+	sl_ctrl_link_fec_mon_stop(ctrl_link);
-+	cancel_work_sync(&ctrl_link->fec_mon_timer_work);
-+
-+	ldev_num = ctrl_link->ctrl_lgrp->ctrl_ldev->num;
-+	lgrp_num = ctrl_link->ctrl_lgrp->num;
-+	link_num = ctrl_link->num;
-+
-+	rtn = sl_core_llr_stop(ldev_num, lgrp_num, link_num);
-+	if (rtn)
-+		sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME, "core_llr_stop failed [%d]", rtn);
-+
-+	rtn = sl_core_mac_tx_stop(ldev_num, lgrp_num, link_num);
-+	if (rtn)
-+		sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME, "core_mac_tx_stop failed [%d]", rtn);
-+
-+	rtn = sl_core_mac_rx_stop(ldev_num, lgrp_num, link_num);
-+	if (rtn)
-+		sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME, "core_mac_rx_stop failed [%d]", rtn);
-+
-+	rtn = sl_core_link_down(ldev_num, lgrp_num, link_num, sl_ctrl_link_down_callback,
-+				ctrl_link, SL_LINK_DOWN_CAUSE_COMMAND_MAP);
-+	if (rtn)
-+		sl_ctrl_log_warn(ctrl_link, LOG_NAME, "core_link_down failed [%d]", rtn);
-+
-+	timeleft = wait_for_completion_timeout(&ctrl_link->down_complete,
-+					       msecs_to_jiffies(SL_CTRL_LINK_DOWN_WAIT_TIMEOUT_MS));
-+	if (timeleft == 0)
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME,
-+				"completion_timeout (down_complete = 0x%p)", &ctrl_link->down_complete);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "completion (timeleft = %lu)", timeleft);
-+
-+	sl_core_link_reset(ldev_num, lgrp_num, link_num);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_link_reset(u8 ldev_num, u8 lgrp_num, u8 link_num)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link __free(sl_ctrl_link_put) = NULL;
-+	u32                  link_state;
-+
-+	ctrl_link = sl_ctrl_link_get(ldev_num, lgrp_num, link_num);
-+	if (!ctrl_link)
-+		return -ENODEV;
-+	if (!ctrl_link) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"link reset NULL link (ldev_num = %u, lgrp_num = %u, link_num = %u)",
-+			ldev_num, lgrp_num, link_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_link_kref_get_unless_zero(ctrl_link)) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME, "link reset ref unavailable (ctrl_link = 0x%p)",
-+				ctrl_link);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "reset");
-+
-+	spin_lock(&ctrl_link->data_lock);
-+	link_state = ctrl_link->state;
-+	switch (link_state) {
-+	case SL_LINK_STATE_STARTING:
-+		ctrl_link->is_canceled = true;
-+		SL_CTRL_LINK_COUNTER_INC(ctrl_link, LINK_UP_CANCEL_CMD);
-+		fallthrough;
-+	case SL_LINK_STATE_UP:
-+	case SL_LINK_STATE_UP_DOWN_REQ:
-+		ctrl_link->state = SL_LINK_STATE_STOPPING;
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "reset - stopping");
-+		spin_unlock(&ctrl_link->data_lock);
-+		rtn = sl_ctrl_link_reset_cmd(ctrl_link);
-+		if (rtn) {
-+			sl_ctrl_log_err_trace(ctrl_link, LOG_NAME, "link_reset_cmd failed [%d]", rtn);
-+			goto out;
-+		}
-+
-+		rtn = 0;
-+		goto out;
-+	case SL_LINK_STATE_DOWN:
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "reset - already down");
-+		spin_unlock(&ctrl_link->data_lock);
-+		rtn = 0;
-+		goto out;
-+	case SL_LINK_STATE_STOPPING:
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "down - already stopping");
-+		spin_unlock(&ctrl_link->data_lock);
-+
-+		rtn = 0;
-+		goto out;
-+	case SL_LINK_STATE_INVALID:
-+	default:
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "reset - invalid (link_state = %u %s)",
-+				link_state, sl_link_state_str(link_state));
-+		spin_unlock(&ctrl_link->data_lock);
-+		rtn = -EBADRQC;
-+		goto out;
-+	}
-+
-+out:
-+	if (sl_ctrl_link_put(ctrl_link))
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "reset - link removed (link = 0x%p)", ctrl_link);
-+
-+	return rtn;
-+}
-+
-+int sl_ctrl_link_up_clocks_get(u8 ldev_num, u8 lgrp_num, u8 link_num,
-+			       s64 *attempt_time, s64 *total_time, s64 *up_time)
-+{
-+	struct sl_ctrl_link *ctrl_link __free(sl_ctrl_link_put) = NULL;
-+
-+	ctrl_link = sl_ctrl_link_get(ldev_num, lgrp_num, link_num);
-+	if (!ctrl_link)
-+		return -ENODEV;
-+	if (!ctrl_link) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"clocks get NULL link (ldev_num = %u, lgrp_num = %u, link_num = %u)",
-+				ldev_num, lgrp_num, link_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_link_kref_get_unless_zero(ctrl_link)) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME, "clocks get link ref unavailable (ctrl_link = 0x%p)",
-+				ctrl_link);
-+		return -EBADRQC;
-+	}
-+
-+	spin_lock(&ctrl_link->up_clock.lock);
-+
-+	if (!ktime_compare(ctrl_link->up_clock.attempt_start, ktime_set(0, 0)))
-+		*attempt_time = ktime_to_ms(ctrl_link->up_clock.attempt_elapsed);
-+	else
-+		*attempt_time = ktime_to_ms(ktime_sub(ktime_get(), ctrl_link->up_clock.attempt_start));
-+
-+	if (!ktime_compare(ctrl_link->up_clock.start, ktime_set(0, 0)))
-+		*total_time = ktime_to_ms(ctrl_link->up_clock.elapsed);
-+	else
-+		*total_time = ktime_to_ms(ktime_sub(ktime_get(), ctrl_link->up_clock.start));
-+
-+	if (!ktime_compare(ctrl_link->up_clock.up, ktime_set(0, 0)))
-+		*up_time = 0;
-+	else
-+		*up_time = ktime_to_ms(ktime_sub(ktime_get(), ctrl_link->up_clock.up));
-+
-+	spin_unlock(&ctrl_link->up_clock.lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"clocks get (attempt_time = %lld, total_time = %lld)", *attempt_time, *total_time);
-+
-+	if (sl_ctrl_link_put(ctrl_link))
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "clocks get - link removed (link = 0x%p)", ctrl_link);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_link_up_count_get(u8 ldev_num, u8 lgrp_num, u8 link_num, u32 *attempt_count)
-+{
-+	struct sl_ctrl_link *ctrl_link __free(sl_ctrl_link_put) = NULL;
-+
-+	ctrl_link = sl_ctrl_link_get(ldev_num, lgrp_num, link_num);
-+	if (!ctrl_link)
-+		return -ENODEV;
-+	if (!ctrl_link) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"count get NULL link (ldev_num = %u, lgrp_num = %u, link_num = %u)",
-+				ldev_num, lgrp_num, link_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_link_kref_get_unless_zero(ctrl_link)) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME, "count get link ref unavailable (ctrl_link = 0x%p)",
-+				ctrl_link);
-+		return -EBADRQC;
-+	}
-+
-+	spin_lock(&ctrl_link->up_clock.lock);
-+	*attempt_count = ctrl_link->up_clock.attempt_count;
-+	spin_unlock(&ctrl_link->up_clock.lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "count get (attempt_count = %u)", *attempt_count);
-+
-+	if (sl_ctrl_link_put(ctrl_link))
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "count get - link removed (link = 0x%p)", ctrl_link);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_link_state_get_cmd(u8 ldev_num, u8 lgrp_num, u8 link_num, u32 *state)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link __free(sl_ctrl_link_put) = NULL;
-+
-+	*state = SL_LINK_STATE_INVALID;
-+	ctrl_link = sl_ctrl_link_get(ldev_num, lgrp_num, link_num);
-+	if (!ctrl_link)
-+		return -ENODEV;
-+	if (!ctrl_link) {
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"state get NULL link (ldev_num = %u, lgrp_num = %u, link_num = %u)",
-+			ldev_num, lgrp_num, link_num);
-+		return 0;
-+	}
-+
-+	if (!sl_ctrl_link_kref_get_unless_zero(ctrl_link)) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME, "state get kref unavailable (ctrl_link = 0x%p)", ctrl_link);
-+		return -EBADRQC;
-+	}
-+
-+	rtn = sl_ctrl_data_link_state_get(ctrl_link, state);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_link, LOG_NAME, "data_link_state_get failed [%d]", rtn);
-+		goto out;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"state get (state = %u %s)",
-+		*state, sl_link_state_str(*state));
-+
-+out:
-+	sl_ctrl_link_put(ctrl_link);
-+
-+	return rtn;
-+}
-+
-+int sl_ctrl_link_an_lp_caps_state_get(u8 ldev_num, u8 lgrp_num, u8 link_num, u32 *state)
-+{
-+	struct sl_ctrl_link *ctrl_link __free(sl_ctrl_link_put) = NULL;
-+
-+	ctrl_link = sl_ctrl_link_get(ldev_num, lgrp_num, link_num);
-+	if (!ctrl_link)
-+		return -ENODEV;
-+	if (!ctrl_link) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"an lp caps state get NULL link (ldev_num = %u, lgrp_num = %u, link_num = %u)",
-+			ldev_num, lgrp_num, link_num);
-+		return -EINVAL;
-+	}
-+
-+	if (!sl_ctrl_link_kref_get_unless_zero(ctrl_link)) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME,
-+				"an lp caps state get kref unavailable (ctrl_link = 0x%p)", ctrl_link);
-+		return -EBADRQC;
-+	}
-+
-+	*state = sl_core_link_an_lp_caps_state_get(ldev_num, lgrp_num, link_num);
-+
-+	if (sl_ctrl_link_put(ctrl_link))
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "an lp caps state get - link removed (link = 0x%p)", ctrl_link);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_link_an_fail_cause_get(u8 ldev_num, u8 lgrp_num, u8 link_num, u32 *fail_cause, time64_t *fail_time)
-+{
-+	int    rtn;
-+	struct sl_ctrl_link *ctrl_link __free(sl_ctrl_link_put) = NULL;
-+
-+	ctrl_link = sl_ctrl_link_get(ldev_num, lgrp_num, link_num);
-+	if (!ctrl_link)
-+		return -ENODEV;
-+	if (!ctrl_link) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"an fail cause get NULL link (ldev_num = %u, lgrp_num = %u, link_num = %u)",
-+				ldev_num, lgrp_num, link_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_link_kref_get_unless_zero(ctrl_link)) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME,
-+				"an fail cause get kref unavailable (ctrl_link = 0x%p)", ctrl_link);
-+		return -EBADRQC;
-+	}
-+
-+	rtn = sl_core_link_an_fail_cause_get(ldev_num, lgrp_num, link_num, fail_cause, fail_time);
-+
-+	if (sl_ctrl_link_put(ctrl_link))
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "an fail cause get - link removed (link = 0x%p)", ctrl_link);
-+
-+	return rtn;
-+}
-+
-+u32 sl_ctrl_link_an_retry_count_get(struct sl_ctrl_link *ctrl_link, int *count)
-+{
-+	*count = sl_core_link_an_retry_count_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+						 ctrl_link->ctrl_lgrp->num, ctrl_link->num);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "an retry get (count = %d)", *count);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_link_info_map_get(u8 ldev_num, u8 lgrp_num, u8 link_num, u64 *info_map)
-+{
-+	struct sl_ctrl_link *ctrl_link __free(sl_ctrl_link_put) = NULL;
-+
-+	ctrl_link = sl_ctrl_link_get(ldev_num, lgrp_num, link_num);
-+	if (!ctrl_link)
-+		return -ENODEV;
-+	if (!ctrl_link) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"info map get NULL link (ldev_num = %u, lgrp_num = %u, link_num = %u)",
-+			ldev_num, lgrp_num, link_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_link_kref_get_unless_zero(ctrl_link)) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME, "info map get ref unavailable (ctrl_link = 0x%p)",
-+				ctrl_link);
-+		return -EBADRQC;
-+	}
-+
-+	*info_map = sl_core_link_info_map_get(ldev_num, lgrp_num, link_num);
-+
-+	if (sl_ctrl_link_put(ctrl_link))
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "info map get - link removed (link = 0x%p)", ctrl_link);
-+
-+	return 0;
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_link_counters.c b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_link_counters.c
-new file mode 100644
-index 000000000000..1de7d93033b9
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_link_counters.c
-@@ -0,0 +1,388 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2023-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/slab.h>
-+
-+#include "sl_ctrl_link.h"
-+#include "sl_ctrl_link_counters.h"
-+#include "base/sl_ctrl_log.h"
-+#include "hw/sl_core_hw_an.h"
-+
-+#define LOG_NAME SL_CTRL_LINK_LOG_NAME
-+
-+#define SL_CTRL_LINK_COUNTER_INIT(_link, _counter) \
-+	(_link)->counters[_counter].name = #_counter
-+
-+#define SL_CTRL_LINK_CAUSE_COUNTER_INIT(_link, _counter) \
-+	(_link)->cause_counters[_counter].name = #_counter
-+
-+#define SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(_link, _counter) \
-+	(_link)->an_cause_counters[_counter].name = #_counter
-+
-+int sl_ctrl_link_counters_init(struct sl_ctrl_link *ctrl_link)
-+{
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "link counters init");
-+
-+	ctrl_link->counters = kzalloc(sizeof(struct sl_ctrl_link_counter) * SL_CTRL_LINK_COUNTERS_COUNT, GFP_KERNEL);
-+	if (!ctrl_link->counters)
-+		return -ENOMEM;
-+
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_UP_CMD);
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_UP_RETRY);
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_UP);
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_UP_FAIL);
-+
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_DOWN_CMD);
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_DOWN);
-+
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_UP_CANCEL_CMD);
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_UP_CANCELED);
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_RESET_CMD);
-+
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_FAULT_ASYNC);
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_RECOVERING);
-+
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_CCW_WARN_CROSSED);
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_UCW_WARN_CROSSED);
-+
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_DOWN_CCW_LIMIT_CROSSED);
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_DOWN_UCW_LIMIT_CROSSED);
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_DOWN_CCW_CAUSE);
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_DOWN_UCW_CAUSE);
-+
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_UP_FAIL_CCW_LIMIT_CROSSED);
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_UP_FAIL_UCW_LIMIT_CROSSED);
-+
-+	SL_CTRL_LINK_COUNTER_INIT(ctrl_link, LINK_HW_AN_ATTEMPT);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_link_counters_get(struct sl_ctrl_link *ctrl_link, u32 counter, int *count)
-+{
-+	*count = atomic_read(&ctrl_link->counters[counter].count);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "get (counter = %u %s, count = %d)", counter,
-+			ctrl_link->counters[counter].name, *count);
-+
-+	return 0;
-+}
-+
-+void sl_ctrl_link_counters_del(struct sl_ctrl_link *ctrl_link)
-+{
-+	kfree(ctrl_link->counters);
-+}
-+
-+int sl_ctrl_link_cause_counters_init(struct sl_ctrl_link *ctrl_link)
-+{
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "link cause counters init");
-+
-+	ctrl_link->cause_counters = kzalloc(sizeof(*ctrl_link->cause_counters) *
-+					    SL_CTRL_LINK_CAUSE_COUNTERS_COUNT, GFP_KERNEL);
-+	if (!ctrl_link->cause_counters)
-+		return -ENOMEM;
-+
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_UCW);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_LF);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_RF);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_DOWN);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_UP_TRIES);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_AUTONEG_NOMATCH);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_AUTONEG);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_CONFIG);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_INTR_ENABLE);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_TIMEOUT);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_CANCELED);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_UNSUPPORTED_CABLE);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_COMMAND);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_DOWNSHIFT);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_LLR_REPLAY_MAX);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_UPSHIFT);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_AUTONEG_CONFIG);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_PCS_FAULT);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_SERDES_PLL);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_SERDES_CONFIG);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_SERDES_SIGNAL);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_SERDES_QUALITY);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_NO_MEDIA);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_CCW);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_MEDIA_HOT);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_MEDIA_WARM);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_INTR_REGISTER);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_MEDIA_ERROR);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_UP_CANCELED);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_UNSUPPORTED_SPEED);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_SS200_CABLE);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_TX_LOL);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_RX_LOL);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_TX_LOS);
-+	SL_CTRL_LINK_CAUSE_COUNTER_INIT(ctrl_link, LINK_CAUSE_RX_LOS);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_link_cause_counters_get(struct sl_ctrl_link *ctrl_link, u32 counter, int *count)
-+{
-+	*count = atomic_read(&ctrl_link->cause_counters[counter].count);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "get (cause counter = %u %s, count = %d)", counter,
-+			ctrl_link->cause_counters[counter].name, *count);
-+
-+	return 0;
-+}
-+
-+void sl_ctrl_link_cause_counters_del(struct sl_ctrl_link *ctrl_link)
-+{
-+	kfree(ctrl_link->cause_counters);
-+}
-+
-+int sl_ctrl_link_an_cause_counters_init(struct sl_ctrl_link *ctrl_link)
-+{
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "link an cause counters init");
-+
-+	ctrl_link->an_cause_counters = kzalloc(sizeof(*ctrl_link->an_cause_counters) *
-+					    SL_CTRL_LINK_AN_CAUSE_COUNTERS_COUNT, GFP_KERNEL);
-+	if (!ctrl_link->an_cause_counters)
-+		return -ENOMEM;
-+
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_LP_CAPS_SERDES_LINK_UP_FAIL);
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_LP_CAPS_NOT_COMPLETE);
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_NOT_COMPLETE);
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_TEST_CAPS_NOMATCH);
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_SERDES_LINK_UP_FAIL);
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_BP_STORE_STATE_BAD);
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_BP_STORE_LP_ABILITY_NOT_SET);
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_BP_STORE_STATE_ERROR);
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_BP_STORE_BP_NOT_SET);
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_BP_SEND_INTR_ENABLE_FAIL);
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_NP_STORE_STATE_BAD);
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_NP_STORE_BP_SET);
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_NP_CHECK_STATE_BAD);
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_INTR_STATE_INVALID);
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_INTR_AN_RETRY_NP_SEND_FAIL);
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_INTR_OUT_OF_PAGES);
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_INTR_NP_SEND_FAIL);
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_PAGES_DECODE_FAIL);
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_PAGES_DECODE_NO_BP);
-+	SL_CTRL_LINK_AN_CAUSE_COUNTER_INIT(ctrl_link, LINK_AN_CAUSE_PAGES_DECODE_OUI_INVALID);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_link_an_cause_counters_get(struct sl_ctrl_link *ctrl_link, u32 counter, int *count)
-+{
-+	*count = atomic_read(&ctrl_link->an_cause_counters[counter].count);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "get (an cause counter = %u %s, count = %d)", counter,
-+			ctrl_link->an_cause_counters[counter].name, *count);
-+
-+	return 0;
-+}
-+
-+void sl_ctrl_link_an_cause_counters_del(struct sl_ctrl_link *ctrl_link)
-+{
-+	kfree(ctrl_link->an_cause_counters);
-+}
-+
-+void sl_ctrl_link_cause_counter_inc(struct sl_ctrl_link *ctrl_link, u64 cause_map)
-+{
-+	unsigned long which;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "link cause counter inc");
-+
-+	for_each_set_bit(which, (unsigned long *)&cause_map, sizeof(cause_map) * BITS_PER_BYTE) {
-+		switch (BIT(which)) {
-+		case SL_LINK_DOWN_CAUSE_UCW:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_UCW);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_LF:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_LF);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_RF:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_RF);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_DOWN:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_DOWN);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_UP_TRIES:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_UP_TRIES);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_AUTONEG_NOMATCH:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_AUTONEG_NOMATCH);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_AUTONEG:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_AUTONEG);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_CONFIG:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_CONFIG);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_INTR_ENABLE:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_INTR_ENABLE);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_TIMEOUT:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_TIMEOUT);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_CANCELED:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_CANCELED);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_UNSUPPORTED_CABLE:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_UNSUPPORTED_CABLE);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_COMMAND:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_COMMAND);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_DOWNSHIFT:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_DOWNSHIFT);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_LLR_REPLAY_MAX:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_LLR_REPLAY_MAX);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_UPSHIFT:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_UPSHIFT);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_AUTONEG_CONFIG:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_AUTONEG_CONFIG);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_PCS_FAULT:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_PCS_FAULT);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_SERDES_PLL:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_SERDES_PLL);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_SERDES_CONFIG:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_SERDES_CONFIG);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_SERDES_SIGNAL:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_SERDES_SIGNAL);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_SERDES_QUALITY:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_SERDES_QUALITY);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_NO_MEDIA:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_NO_MEDIA);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_CCW:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_CCW);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_MEDIA_HOT:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_MEDIA_HOT);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_MEDIA_WARM:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_MEDIA_WARM);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_INTR_REGISTER:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_INTR_REGISTER);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_MEDIA_ERROR:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_MEDIA_ERROR);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_UP_CANCELED:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_UP_CANCELED);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_UNSUPPORTED_SPEED:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_UNSUPPORTED_SPEED);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_SS200_CABLE:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_SS200_CABLE);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_TX_LOL:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_TX_LOL);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_RX_LOL:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_RX_LOL);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_TX_LOS:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_TX_LOS);
-+			break;
-+		case SL_LINK_DOWN_CAUSE_RX_LOS:
-+			SL_CTRL_LINK_CAUSE_COUNTER_INC(ctrl_link, LINK_CAUSE_RX_LOS);
-+			break;
-+		case SL_LINK_DOWN_RETRYABLE:
-+		case SL_LINK_DOWN_ORIGIN_ASYNC:
-+		case SL_LINK_DOWN_ORIGIN_LINK_UP:
-+			break;
-+		default:
-+			sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+					       "cause_counter_inc unknown cause (bit = %lu)", which);
-+			break;
-+		}
-+	}
-+}
-+
-+void sl_ctrl_link_an_cause_counter_inc(struct sl_ctrl_link *ctrl_link, unsigned long cause_map)
-+{
-+	unsigned long which;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "link an cause counter inc");
-+
-+	BUILD_BUG_ON(SL_CTRL_LINK_AN_CAUSE_COUNTERS_COUNT > 32);
-+
-+	for_each_set_bit(which, &cause_map, sizeof(cause_map) * BITS_PER_BYTE) {
-+		switch (BIT(which)) {
-+		case SL_CORE_HW_AN_FAIL_CAUSE_LP_CAPS_SERDES_LINK_UP_FAIL:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_LP_CAPS_SERDES_LINK_UP_FAIL);
-+			break;
-+		case SL_CORE_HW_AN_FAIL_CAUSE_LP_CAPS_NOT_COMPLETE:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_LP_CAPS_NOT_COMPLETE);
-+			break;
-+		case SL_CORE_HW_AN_FAIL_CAUSE_NOT_COMPLETE:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_NOT_COMPLETE);
-+			break;
-+		case SL_CORE_HW_AN_FAIL_CAUSE_TEST_CAPS_NOMATCH:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_TEST_CAPS_NOMATCH);
-+			break;
-+		case SL_CORE_HW_AN_FAIL_CAUSE_SERDES_LINK_UP_FAIL:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_SERDES_LINK_UP_FAIL);
-+			break;
-+		case SL_CORE_HW_AN_FAIL_CAUSE_BP_STORE_STATE_BAD:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_BP_STORE_STATE_BAD);
-+			break;
-+		case SL_CORE_HW_AN_FAIL_CAUSE_BP_STORE_LP_ABILITY_NOT_SET:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_BP_STORE_LP_ABILITY_NOT_SET);
-+			break;
-+		case SL_CORE_HW_AN_FAIL_CAUSE_BP_STORE_STATE_ERROR:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_BP_STORE_STATE_ERROR);
-+			break;
-+		case SL_CORE_HW_AN_FAIL_CAUSE_BP_STORE_BP_NOT_SET:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_BP_STORE_BP_NOT_SET);
-+			break;
-+		case SL_CORE_HW_AN_FAIL_CAUSE_BP_SEND_INTR_ENABLE_FAIL:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_BP_SEND_INTR_ENABLE_FAIL);
-+			break;
-+		case SL_CORE_HW_AN_FAIL_CAUSE_NP_STORE_STATE_BAD:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_NP_STORE_STATE_BAD);
-+			break;
-+		case SL_CORE_HW_AN_FAIL_CAUSE_NP_STORE_BP_SET:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_NP_STORE_BP_SET);
-+			break;
-+		case SL_CORE_HW_AN_FAIL_CAUSE_NP_CHECK_STATE_BAD:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_NP_CHECK_STATE_BAD);
-+			break;
-+		case SL_CORE_HW_AN_FAIL_CAUSE_INTR_STATE_INVALID:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_INTR_STATE_INVALID);
-+			break;
-+		case SL_CORE_HW_AN_FAIL_CAUSE_INTR_AN_RETRY_NP_SEND_FAIL:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_INTR_AN_RETRY_NP_SEND_FAIL);
-+			break;
-+		case SL_CORE_HW_AN_FAIL_CAUSE_INTR_OUT_OF_PAGES:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_INTR_OUT_OF_PAGES);
-+			break;
-+		case SL_CORE_HW_AN_FAIL_CAUSE_INTR_NP_SEND_FAIL:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_INTR_NP_SEND_FAIL);
-+			break;
-+		case SL_CORE_HW_AN_FAIL_CAUSE_PAGES_DECODE_FAIL:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_PAGES_DECODE_FAIL);
-+			break;
-+		case SL_CORE_HW_AN_FAIL_CAUSE_PAGES_DECODE_NO_BP:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_PAGES_DECODE_NO_BP);
-+			break;
-+		case SL_CORE_HW_AN_FAIL_CAUSE_PAGES_DECODE_OUI_INVALID:
-+			SL_CTRL_LINK_AN_CAUSE_COUNTER_INC(ctrl_link, LINK_AN_CAUSE_PAGES_DECODE_OUI_INVALID);
-+			break;
-+		default:
-+			sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+					       "an cause_counter_inc unknown fault cause (bit = %lu)", which);
-+			break;
-+		}
-+	}
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_link_fec.c b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_link_fec.c
-new file mode 100644
-index 000000000000..2c54795281e0
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_link_fec.c
-@@ -0,0 +1,202 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2023,2024,2025 Hewlett Packard Enterprise Development LP */
-+
-+#include "base/sl_ctrl_log.h"
-+#include "sl_ctrl_link.h"
-+#include "sl_ctrl_link_fec.h"
-+#include "sl_core_link.h"
-+
-+#define LOG_NAME SL_CTRL_LINK_FEC_LOG_NAME
-+
-+int sl_ctrl_link_fec_info_get(u8 ldev_num, u8 lgrp_num, u8 link_num, struct sl_fec_info *fec_info)
-+{
-+	struct sl_ctrl_link *ctrl_link __free(sl_ctrl_link_put) = NULL;
-+	int                 x;
-+
-+	ctrl_link = sl_ctrl_link_get(ldev_num, lgrp_num, link_num);
-+	if (!ctrl_link)
-+		return -ENODEV;
-+	if (!ctrl_link) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"info get NULL link (ldev_num = %u, lgrp_num = %u, link_num = %u)",
-+			ldev_num, lgrp_num, link_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_link_kref_get_unless_zero(ctrl_link)) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME,
-+				"fec info get kref unavailable (ctrl_link = 0x%p)", ctrl_link);
-+		return -EBADRQC;
-+	}
-+
-+	*fec_info = sl_ctrl_link_fec_data_info_get(ctrl_link);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"info get (ucw = %llu, ccw = %llu, gcw = %llu, period = %ums)",
-+		fec_info->ucw, fec_info->ccw, fec_info->gcw, fec_info->period_ms);
-+	for (x = 0; x < SL_CTRL_NUM_FEC_LANES; ++x)
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "info get (lane %d = 0x%llX)", x, fec_info->lanes[x]);
-+
-+	if (sl_ctrl_link_put(ctrl_link))
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "fec info get - link removed (link = 0x%p)", ctrl_link);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_link_fec_tail_get(u8 ldev_num, u8 lgrp_num, u8 link_num, struct sl_fec_tail *fec_tail)
-+{
-+	struct sl_ctrl_link *ctrl_link __free(sl_ctrl_link_put) = NULL;
-+	int                 x;
-+
-+	ctrl_link = sl_ctrl_link_get(ldev_num, lgrp_num, link_num);
-+	if (!ctrl_link)
-+		return -ENODEV;
-+	if (!ctrl_link) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"tail get NULL link (ldev_num = %u, lgrp_num = %u, link_num = %u)",
-+			ldev_num, lgrp_num, link_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_link_kref_get_unless_zero(ctrl_link)) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME,
-+				"fec tail get kref unavailable (ctrl_link = 0x%p)", ctrl_link);
-+		return -EBADRQC;
-+	}
-+
-+	*fec_tail = sl_ctrl_link_fec_data_tail_get(ctrl_link);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "tail get (period = %ums))", fec_tail->period_ms);
-+	for (x = 0; x < SL_CTRL_NUM_CCW_BINS; ++x)
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "tail get (bin %d = %llu)", x, fec_tail->ccw_bins[x]);
-+
-+	if (sl_ctrl_link_put(ctrl_link))
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "fec tail get - link removed (link = 0x%p)", ctrl_link);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_link_fec_data_get(u8 ldev_num, u8 lgrp_num, u8 link_num,
-+			      struct sl_core_link_fec_cw_cntrs *cw_cntrs,
-+			      struct sl_core_link_fec_lane_cntrs *lane_cntrs,
-+			      struct sl_core_link_fec_tail_cntrs *tail_cntrs)
-+{
-+	struct sl_core_link *held_link_1 __free(sl_core_link_put) = NULL;
-+	held_link_1 = sl_core_link_get(ldev_num, lgrp_num, link_num);
-+	if (!held_link_1)
-+		return -ENODEV;
-+	return sl_core_link_fec_data_get(held_link_1, cw_cntrs, lane_cntrs,
-+					 tail_cntrs);
-+}
-+
-+int sl_ctrl_link_fec_mon_state_get(struct sl_ctrl_link *ctrl_link, u32 *state)
-+{
-+	spin_lock(&ctrl_link->fec_mon_timer_lock);
-+	*state = ctrl_link->fec_mon_state;
-+	spin_unlock(&ctrl_link->fec_mon_timer_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "fec monitor (state = %u, %s)", *state,
-+			sl_ctrl_link_fec_mon_state_str(*state));
-+
-+	return 0;
-+}
-+
-+const char *sl_ctrl_link_fec_mon_state_str(u32 state)
-+{
-+	switch (state) {
-+	case SL_CTRL_LINK_FEC_MON_OFF:
-+		return "off";
-+	case SL_CTRL_LINK_FEC_MON_ON:
-+		return "on";
++	switch (type) {
++	case SL_CABLE_TYPE_PEC:
++		return "PEC";
++	case SL_CABLE_TYPE_AOC:
++		return "AOC";
++	case SL_CABLE_TYPE_POC:
++		return "POC";
++	case SL_CABLE_TYPE_AEC:
++		return "AEC";
 +	default:
 +		return "unknown";
 +	}
 +}
 +
-+//#define SL_CTRL_SERDES_RATE_25	25781250000
-+//#define SL_CTRL_SERDES_RATE_50	53125000000
-+//#define SL_CTRL_SERDES_RATE_100	106250000000
-+
-+/* CCW BER Calculation Multiplier (10^6). */
-+#define SL_CTRL_LINK_FEC_CCW_BER_MULT 1000000
-+#define SL_CTRL_LINK_FEC_CCW_BER_EXP 6
-+
-+/* UCW BER Calculation Multiplier (10^12). */
-+#define SL_CTRL_LINK_FEC_UCW_BER_MULT 1000000000000
-+#define SL_CTRL_LINK_FEC_UCW_BER_EXP 12
-+
-+#define MAX_CCW_COUNT (U64_MAX / (HZ * SL_CTRL_LINK_FEC_CCW_BER_MULT))
-+#define MAX_UCW_COUNT (U64_MAX / (HZ * SL_CTRL_LINK_FEC_UCW_BER_MULT))
-+
-+int sl_ctrl_link_fec_ber_calc(struct sl_fec_info *fec_info, struct sl_ber *ucw_ber, struct sl_ber *ccw_ber)
++static ssize_t mod_ver_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
 +{
-+	u64 total;
-+	u64 ccw_rate;	/* Rate * 10^10 */
-+	u64 ucw_rate;	/* Rate * 10^10 */
-+	int mag;
++	struct sl_ctrl_ldev *ctrl_ldev;
 +
-+	sl_ctrl_log_dbg(NULL, LOG_NAME, "fec_ber_calc");
++	ctrl_ldev = container_of(kobj, struct sl_ctrl_ldev, sl_info_kobj);
 +
-+	/* Total must be > 0 to calculate */
-+	total = fec_info->ccw + fec_info->gcw;
-+	if (total == 0) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"fec invalid (total = %llu)", total);
-+		return -EINVAL;
++	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME,
++		   "mod ver show (ldev = 0x%p, ver = v%s)", ctrl_ldev, sl_version_str_get());
++
++	return sysfs_emit(buf, "v%s\n", sl_version_str_get());
++}
++
++static ssize_t mod_hash_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_ldev *ctrl_ldev;
++
++	ctrl_ldev = container_of(kobj, struct sl_ctrl_ldev, sl_info_kobj);
++
++	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME,
++		   "mod hash show (ldev = 0x%p, hash = %s)", ctrl_ldev, sl_git_hash_str_get());
++
++	return sysfs_emit(buf, "%s\n", sl_git_hash_str_get());
++}
++
++static struct kobj_attribute mod_ver  = __ATTR_RO(mod_ver);
++static struct kobj_attribute mod_hash = __ATTR_RO(mod_hash);
++
++static struct attribute *ldev_attrs[] = {
++	&mod_ver.attr,
++	&mod_hash.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(ldev);
++
++static struct kobj_type sl_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = ldev_groups,
++};
++
++static struct attribute *supported_cables_attrs[] = {
++	NULL,
++};
++ATTRIBUTE_GROUPS(supported_cables);
++
++static struct kobj_type supported_cables_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = supported_cables_groups,
++};
++
++static struct attribute *cable_types_attrs[] = {
++	NULL,
++};
++ATTRIBUTE_GROUPS(cable_types);
++
++static struct kobj_type cable_types_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = cable_types_groups,
++};
++
++static struct attribute *cable_vendors_attrs[] = {
++	NULL,
++};
++ATTRIBUTE_GROUPS(cable_vendors);
++
++static struct kobj_type cable_vendors_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = cable_vendors_groups,
++};
++
++static ssize_t length_cm_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_ldev_cable_hpe_pn_kobj *hpe_pn_kobj;
++
++	hpe_pn_kobj = container_of(kobj, struct sl_ctrl_ldev_cable_hpe_pn_kobj, kobj);
++
++	sl_log_dbg(hpe_pn_kobj->ctrl_ldev, LOG_BLOCK, LOG_NAME,
++		   "length_cm show (ctrl_ldev = 0x%p, length_cm = %u)",
++		   hpe_pn_kobj->ctrl_ldev, cable_db[hpe_pn_kobj->cable_idx].length_cm);
++
++	return sysfs_emit(buf, "%u\n", cable_db[hpe_pn_kobj->cable_idx].length_cm);
++}
++
++static ssize_t max_speed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_ldev_cable_hpe_pn_kobj *hpe_pn_kobj;
++
++	hpe_pn_kobj = container_of(kobj, struct sl_ctrl_ldev_cable_hpe_pn_kobj, kobj);
++
++	sl_log_dbg(hpe_pn_kobj->ctrl_ldev, LOG_BLOCK, LOG_NAME,
++		   "max_speed show (ctrl_ldev = 0x%p, max_speed = %s)",
++		   hpe_pn_kobj->ctrl_ldev, sl_media_speed_str(cable_db[hpe_pn_kobj->cable_idx].max_speed));
++
++	return sysfs_emit(buf, "%s\n", sl_media_speed_str(cable_db[hpe_pn_kobj->cable_idx].max_speed));
++}
++
++static struct kobj_attribute cable_hpe_pn_length_cm = __ATTR_RO(length_cm);
++static struct kobj_attribute cable_hpe_pn_max_speed = __ATTR_RO(max_speed);
++
++static struct attribute *cable_hpe_pn_attrs[] = {
++	&cable_hpe_pn_length_cm.attr,
++	&cable_hpe_pn_max_speed.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(cable_hpe_pn);
++
++static struct kobj_type cable_hpe_pns_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = cable_hpe_pn_groups,
++};
++
++static void sl_sysfs_cable_types_delete(struct sl_ctrl_ldev *ctrl_ldev, int type_idx)
++{
++	int k;
++
++	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "types delete");
++
++	for (k = 0; k < type_idx; ++k) {
++		sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "types delete (type = %d)", k);
++		kobject_put(&ctrl_ldev->cable_types_kobj[k]);
 +	}
++}
 +
-+	if (fec_info->ccw > MAX_CCW_COUNT) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"fec ccw invalid (%llu > %llu)", fec_info->ccw, MAX_CCW_COUNT);
-+		return -EINVAL;
++static int sl_sysfs_cable_types_create(struct sl_ctrl_ldev *ctrl_ldev)
++{
++	int type_idx;
++	int rtn;
++
++	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "types create");
++
++	for (type_idx = 0; type_idx < SL_CABLE_TYPES_NUM; ++type_idx) {
++		sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "types create (type = %d)", type_idx);
++		rtn = kobject_init_and_add(&ctrl_ldev->cable_types_kobj[type_idx],
++					   &cable_types_info, &ctrl_ldev->supported_cables_kobj,
++					   sl_cable_type_str(type_idx));
++		if (rtn) {
++			sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME,
++				   "types create failed (type = %d) [%d]", type_idx, rtn);
++			kobject_put(&ctrl_ldev->cable_types_kobj[type_idx]);
++			sl_sysfs_cable_types_delete(ctrl_ldev, type_idx);
++			return -ENOMEM;
++		}
 +	}
-+
-+	if (fec_info->ucw > MAX_UCW_COUNT) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"fec ucw invalid (%llu > %llu)", fec_info->ucw, MAX_UCW_COUNT);
-+		return -EINVAL;
-+	}
-+
-+	/* B = BER
-+	 * n = [U/C]CW count
-+	 * g = Good CW count
-+	 * T = total CW = ccw_count + g
-+	 * t = time = (jiffies / HZ)
-+	 *
-+	 * B = (n/T) / t; B = (n * HZ) / (T * jiffies)
-+	 */
-+
-+	/* We use RS(544/514) with 10 bit symbols which is a total of 5440 bits per CW. */
-+	total = fec_info->ccw + (fec_info->gcw * 5440);
-+
-+	/* CCW count * CCW multiplier */
-+	ccw_rate = (fec_info->ccw * HZ * SL_CTRL_LINK_FEC_CCW_BER_MULT) / (total * fec_info->period_ms);
-+
-+	/* Keep at least 2 significant digits */
-+	mag = 0;
-+	while ((ccw_rate / 100) > 9) {
-+		ccw_rate /= 100;
-+		mag += 2;
-+	}
-+
-+	ccw_ber->mant = ccw_rate;
-+	ccw_ber->exp = mag - SL_CTRL_LINK_FEC_CCW_BER_EXP;	/* Divide by CCW multiplier */
-+
-+	/* UCW count * UCW multiplier */
-+	ucw_rate = (fec_info->ucw * HZ * SL_CTRL_LINK_FEC_UCW_BER_MULT) / (total * fec_info->period_ms);
-+
-+	/* Keep at least 2 significant digits */
-+	mag = 0;
-+	while ((ucw_rate / 100) > 9) {
-+		ucw_rate /= 100;
-+		mag += 2;
-+	}
-+
-+	ucw_ber->mant = ucw_rate;
-+	ucw_ber->exp = mag - SL_CTRL_LINK_FEC_UCW_BER_EXP;	/* Divide by UCW multiplier */
-+
-+	sl_ctrl_log_dbg(NULL, LOG_NAME, "fec_ber_calc (CCW = %ue%d, UCW = %ue%d)",
-+			ccw_ber->mant, ccw_ber->exp, ucw_ber->mant, ucw_ber->exp);
 +
 +	return 0;
 +}
-diff --git a/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_link_fec_priv.c b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_link_fec_priv.c
-new file mode 100644
-index 000000000000..a1f50d1a3b3c
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_link_fec_priv.c
-@@ -0,0 +1,539 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2023-2026 Hewlett Packard Enterprise Development LP */
 +
-+#include <linux/string.h>
-+#include <linux/spinlock.h>
-+#include <linux/time.h>
-+#include <linux/workqueue.h>
-+
-+#include "base/sl_ctrl_log.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_lgrp_notif.h"
-+#include "sl_ctrl_link.h"
-+#include "sl_ctrl_link_priv.h"
-+#include "sl_ctrl_link_counters.h"
-+#include "sl_ctrl_link_fec.h"
-+#include "sl_ctrl_link_fec_priv.h"
-+#include "sl_core_link.h"
-+#include "sl_platform.h"
-+
-+#define SL_CTRL_LINK_UCW_LIMIT_MAX_CHANCES 2
-+#define SL_CTRL_LINK_CCW_LIMIT_MAX_CHANCES 2
-+#define SL_CTRL_LINK_FEC_MON_PERIOD_MS     500
-+#define LOG_NAME SL_CTRL_LINK_FEC_LOG_NAME
-+
-+void sl_ctrl_link_fec_data_store(struct sl_ctrl_link *ctrl_link,
-+				 struct sl_core_link_fec_cw_cntrs   *cw_cntrs,
-+	struct sl_core_link_fec_lane_cntrs *lane_cntrs,
-+	struct sl_core_link_fec_tail_cntrs *tail_cntrs)
++static void sl_sysfs_cable_vendors_delete(struct sl_ctrl_ldev *ctrl_ldev, int type_idx, int vendor_idx)
 +{
-+	struct sl_ctrl_link_fec_cntrs *tmp_cntrs_ptr;
++	int k;
++	int l;
 +
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "data_store");
++	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "vendors delete");
 +
-+	spin_lock(&ctrl_link->fec_data.lock);
-+
-+	tmp_cntrs_ptr = ctrl_link->fec_data.prev_ptr;
-+	ctrl_link->fec_data.prev_ptr = ctrl_link->fec_data.curr_ptr;
-+	ctrl_link->fec_data.curr_ptr = tmp_cntrs_ptr;
-+
-+	ctrl_link->fec_data.curr_ptr->cw_cntrs   = *cw_cntrs;
-+	ctrl_link->fec_data.curr_ptr->lane_cntrs = *lane_cntrs;
-+	ctrl_link->fec_data.curr_ptr->tail_cntrs = *tail_cntrs;
-+	ctrl_link->fec_data.curr_ptr->timestamp  = jiffies;
-+
-+	spin_unlock(&ctrl_link->fec_data.lock);
-+}
-+
-+void sl_ctrl_link_fec_up_cache_clear(struct sl_ctrl_link *ctrl_link)
-+{
-+	spin_lock(&ctrl_link->fec_up_cache.lock);
-+	memset(&(ctrl_link->fec_up_cache.cw_cntrs),   0, sizeof(struct sl_core_link_fec_cw_cntrs));
-+	memset(&(ctrl_link->fec_up_cache.lane_cntrs), 0, sizeof(struct sl_core_link_fec_lane_cntrs));
-+	memset(&(ctrl_link->fec_up_cache.tail_cntrs), 0, sizeof(struct sl_core_link_fec_tail_cntrs));
-+	spin_unlock(&ctrl_link->fec_up_cache.lock);
-+}
-+
-+void sl_ctrl_link_fec_up_cache_store(struct sl_ctrl_link *ctrl_link,
-+				     struct sl_core_link_fec_cw_cntrs   *cw_cntrs,
-+	struct sl_core_link_fec_lane_cntrs *lane_cntrs,
-+	struct sl_core_link_fec_tail_cntrs *tail_cntrs)
-+{
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "up_cache_store");
-+
-+	spin_lock(&ctrl_link->fec_up_cache.lock);
-+	ctrl_link->fec_up_cache.cw_cntrs   = *cw_cntrs;
-+	ctrl_link->fec_up_cache.lane_cntrs = *lane_cntrs;
-+	ctrl_link->fec_up_cache.tail_cntrs = *tail_cntrs;
-+	spin_unlock(&ctrl_link->fec_up_cache.lock);
-+}
-+
-+void sl_ctrl_link_fec_down_cache_clear(struct sl_ctrl_link *ctrl_link)
-+{
-+	spin_lock(&ctrl_link->fec_down_cache.lock);
-+	memset(&(ctrl_link->fec_down_cache.cw_cntrs),   0, sizeof(struct sl_core_link_fec_cw_cntrs));
-+	memset(&(ctrl_link->fec_down_cache.lane_cntrs), 0, sizeof(struct sl_core_link_fec_lane_cntrs));
-+	memset(&(ctrl_link->fec_down_cache.tail_cntrs), 0, sizeof(struct sl_core_link_fec_tail_cntrs));
-+	spin_unlock(&ctrl_link->fec_down_cache.lock);
-+}
-+
-+void sl_ctrl_link_fec_down_cache_store(struct sl_ctrl_link *ctrl_link,
-+				       struct sl_core_link_fec_cw_cntrs   *cw_cntrs,
-+	struct sl_core_link_fec_lane_cntrs *lane_cntrs,
-+	struct sl_core_link_fec_tail_cntrs *tail_cntrs)
-+{
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "down_cache_store");
-+
-+	spin_lock(&ctrl_link->fec_down_cache.lock);
-+	ctrl_link->fec_down_cache.cw_cntrs   = *cw_cntrs;
-+	ctrl_link->fec_down_cache.lane_cntrs = *lane_cntrs;
-+	ctrl_link->fec_down_cache.tail_cntrs = *tail_cntrs;
-+	spin_unlock(&ctrl_link->fec_down_cache.lock);
-+}
-+
-+static void sl_ctrl_link_fec_mon_limits_calc(struct sl_ctrl_link *ctrl_link)
-+{
-+	struct sl_link_policy link_policy;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "mon limits calc");
-+
-+	sl_ctrl_link_policy_get(ctrl_link, &link_policy);
-+
-+	spin_lock(&ctrl_link->fec_data.lock);
-+
-+	ctrl_link->fec_data.info.monitor.period_ms = (link_policy.fec_mon_period_ms < 0) ?
-+		SL_CTRL_LINK_FEC_MON_PERIOD_MS : link_policy.fec_mon_period_ms;
-+
-+	if (link_policy.fec_mon_ccw_down_limit < 0)
-+		ctrl_link->fec_data.info.monitor.ccw_down_limit = 0;
-+	else
-+		ctrl_link->fec_data.info.monitor.ccw_down_limit = link_policy.fec_mon_ccw_down_limit;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"mon limits calc (ccw_down_limit = %d)",
-+		ctrl_link->fec_data.info.monitor.ccw_down_limit);
-+
-+	if (link_policy.fec_mon_ccw_warn_limit < 0)
-+		ctrl_link->fec_data.info.monitor.ccw_warn_limit =
-+			sl_ctrl_link_fec_limit_calc(ctrl_link,
-+						    SL_CTRL_LINK_FEC_CCW_MANT, SL_CTRL_LINK_FEC_CCW_EXP) >> 1;
-+	else
-+		ctrl_link->fec_data.info.monitor.ccw_warn_limit = link_policy.fec_mon_ccw_warn_limit;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"mon limits calc (ccw_warn_limit = %d)",
-+		ctrl_link->fec_data.info.monitor.ccw_warn_limit);
-+
-+	if (ctrl_link->fec_data.info.monitor.ccw_down_limit &&
-+	    (ctrl_link->fec_data.info.monitor.ccw_warn_limit > ctrl_link->fec_data.info.monitor.ccw_down_limit))
-+		sl_ctrl_log_warn(ctrl_link, LOG_NAME,
-+				 "CCW warning limit set greater than down limit (%d > %d)",
-+			ctrl_link->fec_data.info.monitor.ccw_warn_limit,
-+			ctrl_link->fec_data.info.monitor.ccw_down_limit);
-+
-+	if (link_policy.fec_mon_ucw_down_limit < 0) {
-+		ctrl_link->fec_data.info.monitor.ucw_down_limit =
-+			sl_ctrl_link_fec_limit_calc(ctrl_link, SL_CTRL_LINK_FEC_UCW_MANT, SL_CTRL_LINK_FEC_UCW_EXP);
-+	} else {
-+		ctrl_link->fec_data.info.monitor.ucw_down_limit = link_policy.fec_mon_ucw_down_limit;
++	for (k = 0; k < type_idx; ++k) {
++		for (l = 0; l < vendor_idx; ++l) {
++			sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME,
++				   "vendors delete (type = %d, vendor = %d)", k, l);
++			kobject_put(&ctrl_ldev->cable_vendors_kobj[k][l]);
++		}
 +	}
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"mon limits calc (ucw_down_limit = %d)",
-+		ctrl_link->fec_data.info.monitor.ucw_down_limit);
-+
-+	if (link_policy.fec_mon_ucw_warn_limit < 0)
-+		ctrl_link->fec_data.info.monitor.ucw_warn_limit =
-+			sl_ctrl_link_fec_limit_calc(ctrl_link, SL_CTRL_LINK_FEC_UCW_MANT,
-+						    SL_CTRL_LINK_FEC_UCW_EXP) >> 1;
-+	else
-+		ctrl_link->fec_data.info.monitor.ucw_warn_limit = link_policy.fec_mon_ucw_warn_limit;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"mon limits calc (ucw_warn_limit = %d)",
-+		ctrl_link->fec_data.info.monitor.ucw_warn_limit);
-+
-+	if (ctrl_link->fec_data.info.monitor.ucw_down_limit &&
-+	    (ctrl_link->fec_data.info.monitor.ucw_warn_limit > ctrl_link->fec_data.info.monitor.ucw_down_limit))
-+		sl_ctrl_log_warn(ctrl_link, LOG_NAME,
-+				 "CCW warning limit set greater than down limit (%d > %d)",
-+			ctrl_link->fec_data.info.monitor.ucw_warn_limit,
-+			ctrl_link->fec_data.info.monitor.ucw_down_limit);
-+
-+	spin_unlock(&ctrl_link->fec_data.lock);
 +}
 +
-+void sl_ctrl_link_fec_mon_start(struct sl_ctrl_link *ctrl_link)
++static int sl_sysfs_cable_vendors_create(struct sl_ctrl_ldev *ctrl_ldev)
 +{
-+	u32 period;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "mon_start");
-+
-+	sl_ctrl_link_fec_mon_limits_calc(ctrl_link);
-+
-+	spin_lock(&ctrl_link->fec_data.lock);
-+	period = ctrl_link->fec_data.info.monitor.period_ms;
-+	spin_unlock(&ctrl_link->fec_data.lock);
-+	if (!period) {
-+		sl_ctrl_link_fec_mon_stop(ctrl_link);
-+		cancel_work_sync(&ctrl_link->fec_mon_timer_work);
-+		return;
-+	}
-+
-+	spin_lock(&ctrl_link->fec_mon_timer_lock);
-+	ctrl_link->fec_mon_timer_stop = false;
-+	ctrl_link->fec_mon_state = SL_CTRL_LINK_FEC_MON_ON;
-+	mod_timer(&ctrl_link->fec_mon_timer, jiffies + msecs_to_jiffies(period));
-+	spin_unlock(&ctrl_link->fec_mon_timer_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "monitor timer started (period = %ums)", period);
-+}
-+
-+void sl_ctrl_link_fec_data_calc(struct sl_ctrl_link *ctrl_link)
-+{
++	int type_idx;
++	int vendor_idx;
++	int rtn;
 +	int x;
 +
-+	spin_lock(&ctrl_link->fec_data.lock);
++	BUILD_BUG_ON((SL_MEDIA_VENDOR_AMPHENOL > 10) || (SL_CABLE_VENDORS_NUM > 10));
 +
-+	ctrl_link->fec_data.info.ccw =
-+		ctrl_link->fec_data.curr_ptr->cw_cntrs.ccw - ctrl_link->fec_data.prev_ptr->cw_cntrs.ccw;
-+	ctrl_link->fec_data.info.ucw =
-+		ctrl_link->fec_data.curr_ptr->cw_cntrs.ucw - ctrl_link->fec_data.prev_ptr->cw_cntrs.ucw;
-+	ctrl_link->fec_data.info.gcw =
-+		ctrl_link->fec_data.curr_ptr->cw_cntrs.gcw - ctrl_link->fec_data.prev_ptr->cw_cntrs.gcw;
-+	for (x = 0; x < SL_CORE_LINK_FEC_NUM_LANES; ++x)
-+		ctrl_link->fec_data.info.lanes[x] = ctrl_link->fec_data.curr_ptr->lane_cntrs.lanes[x] -
-+			ctrl_link->fec_data.prev_ptr->lane_cntrs.lanes[x];
-+	ctrl_link->fec_data.info.period_ms =
-+		jiffies_to_msecs(ctrl_link->fec_data.curr_ptr->timestamp - ctrl_link->fec_data.prev_ptr->timestamp);
++	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "vendors create");
 +
-+	for (x = 0; x < SL_CTRL_NUM_CCW_BINS; ++x)
-+		ctrl_link->fec_data.tail.ccw_bins[x] = ctrl_link->fec_data.curr_ptr->tail_cntrs.ccw_bins[x] -
-+			ctrl_link->fec_data.prev_ptr->tail_cntrs.ccw_bins[x];
-+	ctrl_link->fec_data.tail.period_ms = ctrl_link->fec_data.info.period_ms;
-+
-+	spin_unlock(&ctrl_link->fec_data.lock);
-+
-+	if ((ctrl_link->fec_data.info.ccw > 0) || (ctrl_link->fec_data.info.ucw > 0)) {
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+				"data_calc (ccw = %llu, ucw = %llu, gcw = %llu, period = %ums)",
-+			ctrl_link->fec_data.info.ccw, ctrl_link->fec_data.info.ucw,
-+			ctrl_link->fec_data.info.gcw, ctrl_link->fec_data.info.period_ms);
-+		for (x = 0; x < SL_CTRL_NUM_CCW_BINS; ++x)
-+			sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+					"data_calc (bin %d = %llu)", x, ctrl_link->fec_data.tail.ccw_bins[x]);
-+	}
-+}
-+
-+struct sl_fec_info sl_ctrl_link_fec_data_info_get(struct sl_ctrl_link *ctrl_link)
-+{
-+	struct sl_fec_info fec_info;
-+
-+	spin_lock(&ctrl_link->fec_data.lock);
-+	fec_info = ctrl_link->fec_data.info;
-+	spin_unlock(&ctrl_link->fec_data.lock);
-+
-+	return fec_info;
-+}
-+
-+struct sl_fec_tail sl_ctrl_link_fec_data_tail_get(struct sl_ctrl_link *ctrl_link)
-+{
-+	struct sl_fec_tail fec_tail;
-+
-+	spin_lock(&ctrl_link->fec_data.lock);
-+	fec_tail = ctrl_link->fec_data.tail;
-+	spin_unlock(&ctrl_link->fec_data.lock);
-+
-+	return fec_tail;
-+}
-+
-+static bool sl_ctrl_link_fec_ucw_chance_limit_check(struct sl_ctrl_link *ctrl_link, s32 limit, struct sl_fec_info *info)
-+{
-+	if (SL_CTRL_LINK_FEC_UCW_LIMIT_CHECK(limit, info)) {
-+		SL_CTRL_LINK_COUNTER_INC(ctrl_link, LINK_DOWN_UCW_LIMIT_CROSSED);
-+		ctrl_link->fec_ucw_chance = ctrl_link->fec_ucw_chance + 1;
-+	} else {
-+		ctrl_link->fec_ucw_chance = 0;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "fec_ucw_chance_limit_check (limit = %d, UCW = %llu, ucw_chance = %u)",
-+			limit, info->ucw, ctrl_link->fec_ucw_chance);
-+
-+	return ctrl_link->fec_ucw_chance > SL_CTRL_LINK_UCW_LIMIT_MAX_CHANCES;
-+}
-+
-+static bool sl_ctrl_link_fec_ccw_chance_limit_check(struct sl_ctrl_link *ctrl_link, s32 limit, struct sl_fec_info *info)
-+{
-+	if (SL_CTRL_LINK_FEC_CCW_LIMIT_CHECK(limit, info)) {
-+		SL_CTRL_LINK_COUNTER_INC(ctrl_link, LINK_DOWN_CCW_LIMIT_CROSSED);
-+		ctrl_link->fec_ccw_chance = ctrl_link->fec_ccw_chance + 1;
-+	} else {
-+		ctrl_link->fec_ccw_chance = 0;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "fec_ccw_chance_limit_check (limit = %d, CCW = %llu, ccw_chance = %u)",
-+			limit, info->ccw, ctrl_link->fec_ccw_chance);
-+
-+	return ctrl_link->fec_ccw_chance > SL_CTRL_LINK_CCW_LIMIT_MAX_CHANCES;
-+}
-+
-+int sl_ctrl_link_fec_data_check(struct sl_ctrl_link *ctrl_link)
-+{
-+	int                rtn;
-+	s32                ccw_down_limit;
-+	s32                ccw_warn_limit;
-+	s32                ucw_down_limit;
-+	s32                ucw_warn_limit;
-+	struct sl_fec_info fec_info;
-+	bool               is_limit_crossed;
-+	time64_t           limit_crossed_time;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "data check");
-+
-+	spin_lock(&ctrl_link->fec_data.lock);
-+	ccw_down_limit = ctrl_link->fec_data.info.monitor.ccw_down_limit;
-+	ccw_warn_limit = ctrl_link->fec_data.info.monitor.ccw_warn_limit;
-+	ucw_down_limit = ctrl_link->fec_data.info.monitor.ucw_down_limit;
-+	ucw_warn_limit = ctrl_link->fec_data.info.monitor.ucw_warn_limit;
-+	spin_unlock(&ctrl_link->fec_data.lock);
-+
-+	fec_info = ctrl_link->fec_data.info;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"data check config (ccw_down = %d, ucw_down = %d, ccw_warn = %d, ucw_warn = %d)",
-+		ccw_down_limit, ucw_down_limit, ccw_warn_limit, ucw_warn_limit);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"data check info (UCW = %llu, CCW = %llu, GCW = %llu, period = %ums)",
-+		fec_info.ucw, fec_info.ccw, fec_info.gcw, fec_info.period_ms);
-+
-+	if (sl_ctrl_link_fec_ucw_chance_limit_check(ctrl_link, ucw_down_limit, &fec_info)) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME,
-+				"UCW exceeded down limit (UCW = %llu, CCW = %llu, ucw_chance = %u)",
-+			fec_info.ucw, fec_info.ccw, ctrl_link->fec_ucw_chance);
-+		ctrl_link->fec_ucw_chance = 0;
-+		rtn = sl_ctrl_link_async_down(ctrl_link, SL_LINK_DOWN_CAUSE_UCW_MAP, false);
-+		if (rtn) {
-+			sl_ctrl_log_err_trace(ctrl_link, LOG_NAME,
-+					      "data check UCW ctrl_link_async_down failed [%d]", rtn);
-+			return rtn;
++	for (type_idx = 0; type_idx < SL_CABLE_TYPES_NUM; ++type_idx) {
++		for (vendor_idx = 0; vendor_idx < SL_CABLE_VENDORS_NUM; ++vendor_idx) {
++			sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME,
++				   "vendors create (type = %d, vendor = %d)", type_idx, vendor_idx);
++			rtn = kobject_init_and_add(&ctrl_ldev->cable_vendors_kobj[type_idx][vendor_idx],
++						   &cable_vendors_info, &ctrl_ldev->cable_types_kobj[type_idx],
++						   sl_media_vendor_str(vendor_idx + SL_MEDIA_VENDOR_TE));
++			if (rtn) {
++				sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME,
++					   "vendors create failed (type = %d, vendor = %d) [%d]",
++					   type_idx, vendor_idx, rtn);
++				kobject_put(&ctrl_ldev->cable_vendors_kobj[type_idx][vendor_idx]);
++				for (x = 0; x < vendor_idx; ++x) {
++					sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME,
++						   "vendors create delete (type = %d, vendor = %d)", type_idx, x);
++					kobject_put(&ctrl_ldev->cable_vendors_kobj[type_idx][x]);
++				}
++				sl_sysfs_cable_vendors_delete(ctrl_ldev, type_idx, SL_CABLE_VENDORS_NUM);
++				sl_sysfs_cable_types_delete(ctrl_ldev, SL_CABLE_TYPES_NUM);
++				return -ENOMEM;
++			}
 +		}
-+		return -EIO;
-+	}
-+
-+	if (sl_ctrl_link_fec_ccw_chance_limit_check(ctrl_link, ccw_down_limit, &fec_info)) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME,
-+				"CCW exceeded down limit (UCW = %llu, CCW = %llu, ccw_chance = %u)",
-+			fec_info.ucw, fec_info.ccw, ctrl_link->fec_ccw_chance);
-+		ctrl_link->fec_ccw_chance = 0;
-+		rtn = sl_ctrl_link_async_down(ctrl_link, SL_LINK_DOWN_CAUSE_CCW_MAP, false);
-+		if (rtn) {
-+			sl_ctrl_log_err_trace(ctrl_link, LOG_NAME,
-+					      "data check CCW ctrl_link_async_down failed [%d]", rtn);
-+			return rtn;
-+		}
-+		return -EIO;
-+	}
-+
-+	if (SL_CTRL_LINK_FEC_UCW_LIMIT_CHECK(ucw_warn_limit, &fec_info)) {
-+		rtn = sl_core_link_ucw_warn_limit_crossed_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+							      ctrl_link->ctrl_lgrp->num, ctrl_link->num, &is_limit_crossed, &limit_crossed_time);
-+		if (rtn)
-+			sl_core_log_warn_trace(ctrl_link, LOG_NAME, "ucw_warn_limit_crossed_get failed [%d]", rtn);
-+
-+		if (!is_limit_crossed) {
-+			sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+					       "UCW exceeded warn limit (UCW = %llu, CCW = %llu)",
-+					       fec_info.ucw, fec_info.ccw);
-+			rtn = sl_ctrl_lgrp_notif_enqueue(ctrl_link->ctrl_lgrp, ctrl_link->num,
-+							 SL_LGRP_NOTIF_LINK_UCW_WARN, NULL, 0);
-+			if (rtn)
-+				sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+						       "data check ctrl_lgrp_notif_enqueue failed [%d]", rtn);
-+		}
-+		sl_core_link_ucw_warn_limit_crossed_set(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+							ctrl_link->ctrl_lgrp->num, ctrl_link->num, true);
-+		SL_CTRL_LINK_COUNTER_INC(ctrl_link, LINK_UCW_WARN_CROSSED);
-+	}
-+
-+	if (SL_CTRL_LINK_FEC_CCW_LIMIT_CHECK(ccw_warn_limit, &fec_info)) {
-+		rtn = sl_core_link_ccw_warn_limit_crossed_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+							      ctrl_link->ctrl_lgrp->num, ctrl_link->num, &is_limit_crossed, &limit_crossed_time);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME, "ccw_warn_limit_crossed_get failed [%d]", rtn);
-+
-+		if (!is_limit_crossed) {
-+			sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+					       "CCW exceeded warn limit (UCW = %llu, CCW = %llu)",
-+					       fec_info.ucw, fec_info.ccw);
-+			rtn = sl_ctrl_lgrp_notif_enqueue(ctrl_link->ctrl_lgrp, ctrl_link->num,
-+							 SL_LGRP_NOTIF_LINK_CCW_WARN, NULL, 0);
-+			if (rtn)
-+				sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+						       "data check ctrl_lgrp_notif_enqueue failed [%d]", rtn);
-+		}
-+		sl_core_link_ccw_warn_limit_crossed_set(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+							ctrl_link->ctrl_lgrp->num, ctrl_link->num, true);
-+		SL_CTRL_LINK_COUNTER_INC(ctrl_link, LINK_CCW_WARN_CROSSED);
 +	}
 +
 +	return 0;
 +}
 +
-+void sl_ctrl_link_fec_mon_timer_work(struct work_struct *work)
++static void sl_sysfs_cable_db_delete(struct sl_ctrl_ldev *ctrl_ldev, int db_idx)
 +{
-+	struct sl_core_link *held_link_1 __free(sl_core_link_put) = NULL;
-+	int                                  rtn;
-+	struct sl_ctrl_link                 *ctrl_link;
-+	u32                                  period;
-+	bool                                 stop;
-+	struct sl_core_link_fec_cw_cntrs     cw_cntrs;
-+	struct sl_core_link_fec_lane_cntrs   lane_cntrs;
-+	struct sl_core_link_fec_tail_cntrs   tail_cntrs;
++	int k;
 +
-+	ctrl_link = container_of(work, struct sl_ctrl_link, fec_mon_timer_work);
++	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "db delete");
 +
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "monitor timer work");
-+
-+	spin_lock(&ctrl_link->fec_data.lock);
-+	period = ctrl_link->fec_data.info.monitor.period_ms;
-+	spin_unlock(&ctrl_link->fec_data.lock);
-+	if (!period) {
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "monitor period zero");
-+		return;
-+	}
-+
-+	held_link_1 = sl_core_link_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+				       ctrl_link->ctrl_lgrp->num, ctrl_link->num);
-+	if (!held_link_1)
-+		return;
-+	if (sl_core_link_is_pml_recovery_running(held_link_1)) {
-+		sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME, "fec monitor skipped due to pml recovery running");
-+		goto start_mon;
-+	}
-+
-+	spin_lock(&ctrl_link->fec_mon_timer_lock);
-+	stop = ctrl_link->fec_mon_timer_stop;
-+	spin_unlock(&ctrl_link->fec_mon_timer_lock);
-+	if (stop) {
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "monitor stopped");
-+		return;
-+	}
-+
-+	rtn = sl_ctrl_link_fec_data_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+					ctrl_link->ctrl_lgrp->num, ctrl_link->num, &cw_cntrs, &lane_cntrs,
-+					&tail_cntrs);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_link, LOG_NAME,
-+				      "core_link_fec_tail_cntrs_get failed [%d]", rtn);
-+		goto start_mon;
-+	}
-+
-+	sl_ctrl_link_fec_data_store(ctrl_link, &cw_cntrs, &lane_cntrs, &tail_cntrs);
-+
-+	sl_ctrl_link_fec_data_calc(ctrl_link);
-+
-+	rtn = sl_ctrl_link_fec_data_check(ctrl_link);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_link, LOG_NAME, "check failed [%d]", rtn);
-+		return;
-+	}
-+
-+	spin_lock(&ctrl_link->fec_data.lock);
-+	period = ctrl_link->fec_data.info.monitor.period_ms;
-+	spin_unlock(&ctrl_link->fec_data.lock);
-+	if (!period) {
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "monitor period zero");
-+		return;
-+	}
-+
-+	spin_lock(&ctrl_link->fec_mon_timer_lock);
-+	stop = ctrl_link->fec_mon_timer_stop;
-+	spin_unlock(&ctrl_link->fec_mon_timer_lock);
-+	if (stop) {
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "monitor stopped");
-+		return;
-+	}
-+
-+start_mon:
-+	mod_timer(&ctrl_link->fec_mon_timer, jiffies + msecs_to_jiffies(period));
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "monitor started");
-+}
-+
-+void sl_ctrl_link_fec_mon_timer(struct timer_list *timer)
-+{
-+	struct sl_ctrl_link *ctrl_link;
-+
-+	ctrl_link = timer_container_of(ctrl_link, timer, fec_mon_timer);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "monitor timer");
-+
-+	queue_work(ctrl_link->ctrl_lgrp->ctrl_ldev->workq, &ctrl_link->fec_mon_timer_work);
-+}
-+
-+void sl_ctrl_link_fec_mon_stop(struct sl_ctrl_link *ctrl_link)
-+{
-+	bool stop;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "monitor stop");
-+
-+	spin_lock(&ctrl_link->fec_mon_timer_lock);
-+	stop = ctrl_link->fec_mon_timer_stop;
-+	ctrl_link->fec_mon_timer_stop = true;
-+	ctrl_link->fec_mon_state = SL_CTRL_LINK_FEC_MON_OFF;
-+	spin_unlock(&ctrl_link->fec_mon_timer_lock);
-+
-+	if (stop) {
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "monitor already stopped");
-+		return;
-+	}
-+
-+	timer_delete_sync(&ctrl_link->fec_mon_timer);
-+}
-+
-+#define SL_CTRL_LINK_FEC_LIMIT_25   25781250000ULL
-+#define SL_CTRL_LINK_FEC_LIMIT_50   53125000000ULL
-+#define SL_CTRL_LINK_FEC_LIMIT_100 106250000000ULL
-+u32 sl_ctrl_link_fec_limit_calc(struct sl_ctrl_link *ctrl_link, u32 mant, int exp)
-+{
-+	u64                 limit;
-+	int                 x;
-+	struct sl_link_caps link_caps;
-+
-+	sl_core_link_caps_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+			      ctrl_link->ctrl_lgrp->num, ctrl_link->num, &link_caps);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"fec limit calc (tech_map = 0x%X, mant = %u, exp = %d)",
-+		link_caps.tech_map, mant, exp);
-+
-+	if (link_caps.tech_map & SL_LGRP_CONFIG_TECH_CK_400G)
-+		limit = SL_CTRL_LINK_FEC_LIMIT_100 << 2;
-+	else if (link_caps.tech_map & SL_LGRP_CONFIG_TECH_CK_200G)
-+		limit = SL_CTRL_LINK_FEC_LIMIT_100 << 1;
-+	else if (link_caps.tech_map & SL_LGRP_CONFIG_TECH_BS_200G)
-+		limit = SL_CTRL_LINK_FEC_LIMIT_50 << 2;
-+	else if (link_caps.tech_map & SL_LGRP_CONFIG_TECH_CK_100G)
-+		limit = SL_CTRL_LINK_FEC_LIMIT_100;
-+	else if (link_caps.tech_map & SL_LGRP_CONFIG_TECH_BJ_100G)
-+		limit = SL_CTRL_LINK_FEC_LIMIT_25 << 2;
-+	else if (link_caps.tech_map & SL_LGRP_CONFIG_TECH_CD_100G)
-+		limit = SL_CTRL_LINK_FEC_LIMIT_50 << 1;
-+	else if (link_caps.tech_map & SL_LGRP_CONFIG_TECH_CD_50G)
-+		limit = SL_CTRL_LINK_FEC_LIMIT_50;
-+	else
-+		limit = SL_CTRL_LINK_FEC_LIMIT_100;
-+
-+	limit *= mant;
-+	for (x = exp; x < 0; ++x)
-+		limit /= 10;
-+
-+	if (limit > INT_MAX)
-+		return INT_MAX;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"fec limit calc (limit = %llu)", limit);
-+
-+	return limit;
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_link_priv.c b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_link_priv.c
-new file mode 100644
-index 000000000000..252673b57a0b
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_link_priv.c
-@@ -0,0 +1,865 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2021-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/spinlock.h>
-+
-+#include <linux/hpe/sl/sl_link.h>
-+
-+#include "base/sl_ctrl_log.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_lgrp_notif.h"
-+#include "sl_ctrl_link.h"
-+#include "sl_ctrl_link_priv.h"
-+#include "sl_ctrl_link_counters.h"
-+#include "sl_core_link.h"
-+#include "sl_core_link_an.h"
-+#include "sl_core_str.h"
-+
-+#define LOG_NAME SL_CTRL_LINK_LOG_NAME
-+
-+#define SL_LINK_DOWN_CAUSE_FATAL_MASK (                \
-+		SL_LINK_DOWN_CAUSE_AUTONEG_NOMATCH   | \
-+		SL_LINK_DOWN_CAUSE_CONFIG            | \
-+		SL_LINK_DOWN_CAUSE_DOWNSHIFT         | \
-+		SL_LINK_DOWN_CAUSE_INTR_ENABLE       | \
-+		SL_LINK_DOWN_CAUSE_UNSUPPORTED_CABLE | \
-+		SL_LINK_DOWN_CAUSE_SS200_CABLE       | \
-+		SL_LINK_DOWN_CAUSE_UCW               | \
-+		SL_LINK_DOWN_CAUSE_MEDIA_HOT         | \
-+		SL_LINK_DOWN_CAUSE_MEDIA_WARM        | \
-+		SL_LINK_DOWN_CAUSE_NO_MEDIA          | \
-+		SL_LINK_DOWN_CAUSE_UPSHIFT)
-+
-+void sl_ctrl_link_is_canceled_set(struct sl_ctrl_link *ctrl_link, bool canceled)
-+{
-+	spin_lock(&ctrl_link->data_lock);
-+	ctrl_link->is_canceled = canceled;
-+	spin_unlock(&ctrl_link->data_lock);
-+}
-+
-+bool sl_ctrl_link_is_canceled(struct sl_ctrl_link *ctrl_link)
-+{
-+	bool is_canceled;
-+
-+	spin_lock(&ctrl_link->data_lock);
-+	is_canceled = ctrl_link->is_canceled;
-+	spin_unlock(&ctrl_link->data_lock);
-+
-+	return is_canceled;
-+}
-+
-+static void sl_ctrl_link_last_up_fail_cause_map_clr(struct sl_ctrl_link *ctrl_link)
-+{
-+	spin_lock(&ctrl_link->data_lock);
-+	ctrl_link->last_up_fail_cause_map = 0;
-+	ctrl_link->last_up_fail_time      = 0;
-+	spin_unlock(&ctrl_link->data_lock);
-+}
-+
-+static void sl_ctrl_link_last_up_fail_cause_map_set(struct sl_ctrl_link *ctrl_link, u64 last_up_fail_cause_map)
-+{
-+	spin_lock(&ctrl_link->data_lock);
-+	ctrl_link->last_up_fail_cause_map |= last_up_fail_cause_map;
-+	ctrl_link->last_up_fail_time       = ktime_get_real_seconds();
-+	spin_unlock(&ctrl_link->data_lock);
-+}
-+
-+static bool sl_ctrl_link_is_last_up_fail_cause_set(struct sl_ctrl_link *ctrl_link, u64 last_up_fail_cause)
-+{
-+	bool is_last_up_fail_cause_set;
-+
-+	spin_lock(&ctrl_link->data_lock);
-+	is_last_up_fail_cause_set = ctrl_link->last_up_fail_cause_map & last_up_fail_cause;
-+	spin_unlock(&ctrl_link->data_lock);
-+
-+	return is_last_up_fail_cause_set;
-+}
-+
-+static int sl_ctrl_link_up_notif_send(struct sl_ctrl_lgrp *ctrl_lgrp, struct sl_ctrl_link *ctrl_link,
-+				      u64 info_map, u32 speed, u32 fec_mode, u32 fec_type)
-+{
-+	union sl_lgrp_notif_info info;
-+
-+	info.link_up.mode     = speed;
-+	info.link_up.fec_mode = fec_mode;
-+	info.link_up.fec_type = fec_type;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "up notif send (speed = %u %s, fec mode = %u %s, fec type = %u)",
-+			speed, sl_lgrp_config_tech_str(speed), fec_mode, sl_lgrp_fec_mode_str(fec_mode), fec_type);
-+
-+	return sl_ctrl_lgrp_notif_enqueue(ctrl_lgrp, ctrl_link->num, SL_LGRP_NOTIF_LINK_UP,
-+		&info, info_map);
-+}
-+
-+static int sl_ctrl_link_up_fail_notif_send(struct sl_ctrl_lgrp *ctrl_lgrp, struct sl_ctrl_link *ctrl_link,
-+					   u64 cause_map, u64 info_map)
-+{
-+	union sl_lgrp_notif_info info;
-+
-+	info.cause_map = cause_map;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "up fail notif send (cause_map = 0x%llX)", cause_map);
-+
-+	return sl_ctrl_lgrp_notif_enqueue(ctrl_lgrp, ctrl_link->num, SL_LGRP_NOTIF_LINK_UP_FAIL,
-+		&info, info_map);
-+}
-+
-+static int sl_ctrl_async_link_down_notif_send(struct sl_ctrl_link *ctrl_link, u64 cause_map, u64 info_map)
-+{
-+	union sl_lgrp_notif_info info;
-+	char                     cause_str[SL_LINK_DOWN_CAUSE_STR_SIZE];
-+
-+	info.cause_map = cause_map;
-+
-+	sl_link_down_cause_map_with_info_str(cause_map, cause_str, sizeof(cause_str));
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"async_link_down_notif_send (core_cause_map = 0x%llX %s)", cause_map, cause_str);
-+
-+	return sl_ctrl_lgrp_notif_enqueue(ctrl_link->ctrl_lgrp, ctrl_link->num,
-+		SL_LGRP_NOTIF_LINK_ASYNC_DOWN, &info, info_map);
-+}
-+
-+static int sl_ctrl_link_down_notif_send(struct sl_ctrl_link *ctrl_link, u64 cause_map, u64 info_map)
-+{
-+	union sl_lgrp_notif_info info;
-+	char                     cause_str[SL_LINK_DOWN_CAUSE_STR_SIZE];
-+
-+	info.cause_map = cause_map;
-+
-+	sl_link_down_cause_map_with_info_str(cause_map, cause_str, sizeof(cause_str));
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"link_down_notif_send (core_cause_map = 0x%llX %s)", cause_map, cause_str);
-+
-+	return sl_ctrl_lgrp_notif_enqueue(ctrl_link->ctrl_lgrp, ctrl_link->num,
-+		SL_LGRP_NOTIF_LINK_DOWN, &info, info_map);
-+}
-+
-+static int sl_ctrl_link_down_req_notif_send(struct sl_ctrl_link *ctrl_link, u64 cause_map, u64 info_map)
-+{
-+	union sl_lgrp_notif_info info;
-+	char                     cause_str[SL_LINK_DOWN_CAUSE_STR_SIZE];
-+
-+	info.cause_map = cause_map;
-+
-+	sl_link_down_cause_map_with_info_str(cause_map, cause_str, sizeof(cause_str));
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"link_down_req_notif_send (core_cause_map = 0x%llX %s)", cause_map, cause_str);
-+
-+	return sl_ctrl_lgrp_notif_enqueue(ctrl_link->ctrl_lgrp, ctrl_link->num,
-+					  SL_LGRP_NOTIF_LINK_DOWN_REQ, &info, info_map);
-+}
-+
-+void sl_ctrl_link_up_clock_start(struct sl_ctrl_link *ctrl_link)
-+{
-+	spin_lock(&ctrl_link->up_clock.lock);
-+	ctrl_link->up_clock.start         = ktime_get();
-+	ctrl_link->up_clock.elapsed       = ktime_set(0, 0);
-+	ctrl_link->up_clock.attempt_count = 0;
-+	spin_unlock(&ctrl_link->up_clock.lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"clock start (time = %lld)", ctrl_link->up_clock.start);
-+}
-+
-+static void sl_ctrl_link_up_clock_stop(struct sl_ctrl_link *ctrl_link)
-+{
-+	spin_lock(&ctrl_link->up_clock.lock);
-+	ctrl_link->up_clock.elapsed = ktime_sub(ktime_get(), ctrl_link->up_clock.start);
-+	ctrl_link->up_clock.start   = ktime_set(0, 0);
-+	ctrl_link->up_clock.up      = ktime_get();
-+	spin_unlock(&ctrl_link->up_clock.lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"clock stop (time = %lld)", ctrl_link->up_clock.elapsed);
-+}
-+
-+void sl_ctrl_link_up_clock_reset(struct sl_ctrl_link *ctrl_link)
-+{
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "clock reset");
-+
-+	spin_lock(&ctrl_link->up_clock.lock);
-+	ctrl_link->up_clock.elapsed         = ktime_set(0, 0);
-+	ctrl_link->up_clock.start           = ktime_set(0, 0);
-+	ctrl_link->up_clock.attempt_count   = 0;
-+	ctrl_link->up_clock.attempt_elapsed = ktime_set(0, 0);
-+	ctrl_link->up_clock.attempt_start   = ktime_set(0, 0);
-+	ctrl_link->up_clock.up              = ktime_set(0, 0);
-+	spin_unlock(&ctrl_link->up_clock.lock);
-+}
-+
-+void sl_ctrl_link_up_clock_attempt_start(struct sl_ctrl_link *ctrl_link)
-+{
-+	spin_lock(&ctrl_link->up_clock.lock);
-+	ctrl_link->up_clock.attempt_start   = ktime_get();
-+	ctrl_link->up_clock.attempt_elapsed = ktime_set(0, 0);
-+	ctrl_link->up_clock.attempt_count++;
-+	spin_unlock(&ctrl_link->up_clock.lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"clock attempt start (time = %lld)", ctrl_link->up_clock.attempt_start);
-+}
-+
-+static void sl_ctrl_link_up_clock_attempt_stop(struct sl_ctrl_link *ctrl_link)
-+{
-+	spin_lock(&ctrl_link->up_clock.lock);
-+	ctrl_link->up_clock.attempt_elapsed = ktime_sub(ktime_get(), ctrl_link->up_clock.attempt_start);
-+	ctrl_link->up_clock.attempt_start   = ktime_set(0, 0);
-+	spin_unlock(&ctrl_link->up_clock.lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"clock attempt stop (time = %lld)", ctrl_link->up_clock.attempt_elapsed);
-+}
-+
-+static void sl_ctrl_link_state_stopping_set(struct sl_ctrl_link *ctrl_link)
-+{
-+	u32           link_state;
-+
-+	spin_lock(&ctrl_link->data_lock);
-+	link_state = ctrl_link->state;
-+	switch (link_state) {
-+	case SL_LINK_STATE_STOPPING:
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "stopping set - already stopping");
-+		spin_unlock(&ctrl_link->data_lock);
-+		return;
-+	case SL_LINK_STATE_STARTING:
-+	case SL_LINK_STATE_UP:
-+	case SL_LINK_STATE_UP_DOWN_REQ:
-+		ctrl_link->state = SL_LINK_STATE_STOPPING;
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "stopping set - stopping");
-+		spin_unlock(&ctrl_link->data_lock);
-+		return;
-+	default:
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME, "stopping set - invalid state (link_state = %u %s)",
-+				link_state, sl_link_state_str(link_state));
-+		spin_unlock(&ctrl_link->data_lock);
-+		return;
++	for (k = 0; k < db_idx; ++k) {
++		sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "db delete (idx = %d)", k);
++		kobject_put(&ctrl_ldev->cable_hpe_pns_kobj[k].kobj);
 +	}
 +}
 +
-+int sl_ctrl_link_up_callback(void *tag, struct sl_core_link_up_info *up_info)
++static int sl_sysfs_cable_db_create(struct sl_ctrl_ldev *ctrl_ldev)
 +{
-+	struct sl_ctrl_link         *ctrl_link;
-+	char                         core_imap_str[SL_LINK_INFO_STRLEN];
-+	int                          max_up_tries;
-+	u32                          up_count;
-+	int                          rtn;
-+	s64                          attempt_time;
-+	s64                          total_time;
-+	s64                          up_time;
-+	union sl_lgrp_notif_info     info;
-+	struct sl_core_link_up_info  core_link_up_info;
-+	u64			     up_fail_cause_map;
-+
-+	ctrl_link = tag;
-+	core_link_up_info = *up_info;
-+
-+	sl_core_info_map_str(core_link_up_info.info_map, core_imap_str, sizeof(core_imap_str));
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"up callback (core_state = %u %s, core_cause_map = 0x%llX, info_map = %s (0x%llx))",
-+		core_link_up_info.state, sl_core_link_state_str(core_link_up_info.state),
-+		core_link_up_info.cause_map, core_imap_str, core_link_up_info.info_map);
-+
-+	sl_ctrl_link_last_up_fail_cause_map_clr(ctrl_link);
-+	sl_ctrl_link_last_up_fail_cause_map_set(ctrl_link, core_link_up_info.cause_map);
-+
-+	sl_ctrl_link_up_clock_attempt_stop(ctrl_link);
-+
-+	switch (core_link_up_info.state) {
-+	case SL_CORE_LINK_STATE_UP:
-+		SL_CTRL_LINK_COUNTER_INC(ctrl_link, LINK_UP);
-+		sl_ctrl_link_up_clock_stop(ctrl_link);
-+
-+		rtn = sl_ctrl_link_up_clocks_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
-+						 ctrl_link->num, &attempt_time, &total_time, &up_time);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME, "link_up_clocks_get failed [%d]", rtn);
-+
-+		rtn = sl_ctrl_link_up_count_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
-+						ctrl_link->num, &up_count);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME, "link_up_count_get failed [%d]", rtn);
-+
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+				"up callback (count = %d, attempt_time = %lldms, total_time = %lldms)",
-+			up_count, attempt_time, total_time);
-+
-+		sl_ctrl_link_fec_mon_start(ctrl_link);
-+
-+		sl_ctrl_link_state_set(ctrl_link, SL_LINK_STATE_UP);
-+
-+		rtn = sl_ctrl_link_up_notif_send(ctrl_link->ctrl_lgrp, ctrl_link, core_link_up_info.info_map,
-+						 core_link_up_info.speed, core_link_up_info.fec_mode, core_link_up_info.fec_type);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+					       "up callback ctrl_link_up_notif_send failed [%d]", rtn);
-+		return 0;
-+
-+	case SL_CORE_LINK_STATE_DOWN:
-+		SL_CTRL_LINK_COUNTER_INC(ctrl_link, LINK_UP_FAIL);
-+
-+		spin_lock(&ctrl_link->config_lock);
-+		max_up_tries = ctrl_link->config.link_up_tries_max;
-+		spin_unlock(&ctrl_link->config_lock);
-+
-+		/* canceled */
-+		if (sl_ctrl_link_is_canceled(ctrl_link)) {
-+			sl_ctrl_link_up_clock_reset(ctrl_link);
-+
-+			sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "up retry canceled");
-+
-+			sl_ctrl_link_state_stopping_set(ctrl_link);
-+
-+			flush_work(&ctrl_link->ctrl_lgrp->notif_work);
-+			sl_ctrl_link_state_set(ctrl_link, SL_LINK_STATE_DOWN);
-+			complete_all(&ctrl_link->down_complete);
-+
-+			rtn = sl_ctrl_link_last_up_fail_cause_map_get(ctrl_link, &up_fail_cause_map);
-+			if (rtn)
-+				sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME, "last_up_fail_cause_map_get failed [%d]", rtn);
-+
-+			rtn = sl_ctrl_link_up_fail_notif_send(ctrl_link->ctrl_lgrp, ctrl_link,
-+							      up_fail_cause_map, core_link_up_info.info_map);
-+			if (rtn)
-+				sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+						       "up callback work ctrl_link_up_fail_notif_send failed [%d]", rtn);
-+
-+			return 0;
-+		}
-+
-+		/* check up tries */
-+		rtn = sl_ctrl_link_up_count_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+						ctrl_link->ctrl_lgrp->num, ctrl_link->num, &up_count);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME, "link_up_count_get failed [%d]", rtn);
-+
-+		if ((up_count >= max_up_tries) && (max_up_tries != SL_LINK_INFINITE_UP_TRIES)) {
-+			sl_ctrl_link_up_clock_reset(ctrl_link);
-+
-+			sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "up callback work out of up tries");
-+
-+			sl_ctrl_link_state_stopping_set(ctrl_link);
-+
-+			sl_ctrl_link_last_up_fail_cause_map_set(ctrl_link, SL_LINK_DOWN_CAUSE_UP_TRIES_MAP);
-+
-+			flush_work(&ctrl_link->ctrl_lgrp->notif_work);
-+			sl_ctrl_link_state_set(ctrl_link, SL_LINK_STATE_DOWN);
-+
-+			complete_all(&ctrl_link->down_complete);
-+
-+			rtn = sl_ctrl_link_last_up_fail_cause_map_get(ctrl_link, &up_fail_cause_map);
-+			if (rtn)
-+				sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME, "last_up_fail_cause_map_get failed [%d]", rtn);
-+			rtn = sl_ctrl_link_up_fail_notif_send(ctrl_link->ctrl_lgrp, ctrl_link,
-+							      up_fail_cause_map, core_link_up_info.info_map);
-+			if (rtn)
-+				sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+						       "up callback work ctrl_link_up_fail_notif_send failed [%d]", rtn);
-+			return 0;
-+		}
-+
-+		/* check fatal down causes */
-+		if (sl_ctrl_link_is_last_up_fail_cause_set(ctrl_link, SL_LINK_DOWN_CAUSE_FATAL_MASK)) {
-+			sl_ctrl_link_up_clock_reset(ctrl_link);
-+
-+			sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "up callback work fatal down cause");
-+
-+			sl_ctrl_link_state_stopping_set(ctrl_link);
-+
-+			flush_work(&ctrl_link->ctrl_lgrp->notif_work);
-+
-+			sl_ctrl_link_state_set(ctrl_link, SL_LINK_STATE_DOWN);
-+			complete_all(&ctrl_link->down_complete);
-+
-+			rtn = sl_ctrl_link_last_up_fail_cause_map_get(ctrl_link, &up_fail_cause_map);
-+			if (rtn)
-+				sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME, "last_up_fail_cause_map_get failed [%d]", rtn);
-+			rtn = sl_ctrl_link_up_fail_notif_send(ctrl_link->ctrl_lgrp, ctrl_link,
-+							      up_fail_cause_map, core_link_up_info.info_map);
-+			if (rtn)
-+				sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+						       "up callback work ctrl_link_up_fail_notif_send failed [%d]", rtn);
-+
-+			return 0;
-+		}
-+
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "link up retry (ctrl_link = 0x%p)", ctrl_link);
-+
-+		SL_CTRL_LINK_COUNTER_INC(ctrl_link, LINK_UP_RETRY);
-+
-+		sl_ctrl_link_up_clock_attempt_start(ctrl_link);
-+
-+		rtn = sl_core_link_up(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
-+				      ctrl_link->num, sl_ctrl_link_up_callback, ctrl_link);
-+		if (rtn) {
-+			sl_ctrl_link_up_clock_reset(ctrl_link);
-+
-+			sl_ctrl_link_state_stopping_set(ctrl_link);
-+
-+			sl_ctrl_log_err_trace(ctrl_link, LOG_NAME,
-+					      "up callback work core_link_up failed [%d]", rtn);
-+
-+			flush_work(&ctrl_link->ctrl_lgrp->notif_work);
-+			sl_ctrl_link_state_set(ctrl_link, SL_LINK_STATE_DOWN);
-+
-+			complete_all(&ctrl_link->down_complete);
-+
-+			info.error = rtn;
-+			rtn = sl_ctrl_lgrp_notif_enqueue(ctrl_link->ctrl_lgrp, ctrl_link->num,
-+							 SL_LGRP_NOTIF_LINK_ERROR, &info, core_link_up_info.info_map);
-+			if (rtn)
-+				sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+						       "up callback work ctrl_lgrp_notif_enqueue failed [%d]", rtn);
-+
-+			return info.error;
-+		}
-+		return 0;
-+
-+	default:
-+		sl_ctrl_link_up_clock_reset(ctrl_link);
-+		sl_ctrl_link_state_stopping_set(ctrl_link);
-+
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME,
-+				"up callback work invalid (core_state = %u, core_imap = %s)",
-+			core_link_up_info.state, core_imap_str);
-+
-+		flush_work(&ctrl_link->ctrl_lgrp->notif_work);
-+		sl_ctrl_link_state_set(ctrl_link, SL_LINK_STATE_DOWN);
-+
-+		complete_all(&ctrl_link->down_complete);
-+
-+		info.error = -EBADRQC;
-+		rtn = sl_ctrl_lgrp_notif_enqueue(ctrl_link->ctrl_lgrp, ctrl_link->num,
-+						 SL_LGRP_NOTIF_LINK_ERROR, &info, core_link_up_info.info_map);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+					       "up callback work ctrl_lgrp_notif_enqueue failed [%d]", rtn);
-+
-+		return info.error;
-+	}
-+}
-+
-+int sl_ctrl_link_fault_start_callback(u8 ldev_num, u8 lgrp_num, u8 link_num)
-+{
-+	struct sl_ctrl_link *ctrl_link __free(sl_ctrl_link_put) = NULL;
-+
-+	ctrl_link = sl_ctrl_link_get(ldev_num, lgrp_num, link_num);
-+	if (!ctrl_link)
-+		return -ENODEV;
-+	if (!ctrl_link) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"NULL link (ldev_num = %u, lgrp_num = %u, link_num = %u)",
-+			ldev_num, lgrp_num, link_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_link_kref_get_unless_zero(ctrl_link)) {
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+				"fault start callback kref unavailable (ctrl_link = 0x%p)", ctrl_link);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "fault start callback");
-+
-+	sl_ctrl_link_state_set(ctrl_link, SL_LINK_STATE_STOPPING);
-+
-+	sl_ctrl_link_fec_mon_stop(ctrl_link);
-+	cancel_work_sync(&ctrl_link->fec_mon_timer_work);
-+
-+	if (sl_ctrl_link_put(ctrl_link))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"fault start callback - link removed (link = 0x%p)", ctrl_link);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_link_fault_callback(void *tag, u32 core_state, u64 core_cause_map, u64 core_info_map)
-+{
-+	struct sl_ctrl_link      *ctrl_link;
-+	char                      core_imap_str[SL_LINK_INFO_STRLEN];
-+	int                       rtn;
-+	union sl_lgrp_notif_info  info;
-+
-+	ctrl_link = tag;
-+
-+	SL_CTRL_LINK_COUNTER_INC(ctrl_link, LINK_FAULT_ASYNC);
-+
-+	sl_core_info_map_str(core_info_map, core_imap_str, sizeof(core_imap_str));
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"fault callback (core_state = %u %s, core_cause_map = 0x%llX, core_info_map = %s (0x%llx))",
-+			core_state, sl_core_link_state_str(core_state), core_cause_map, core_imap_str, core_info_map);
-+
-+	sl_ctrl_link_up_clock_reset(ctrl_link);
-+
-+	switch (core_state) {
-+	case SL_CORE_LINK_STATE_DOWN:
-+		SL_CTRL_LINK_COUNTER_INC(ctrl_link, LINK_DOWN);
-+
-+		sl_ctrl_link_fec_mon_stop(ctrl_link);
-+		cancel_work_sync(&ctrl_link->fec_mon_timer_work);
-+
-+		flush_work(&ctrl_link->ctrl_lgrp->notif_work);
-+		sl_ctrl_link_state_set(ctrl_link, SL_LINK_STATE_DOWN);
-+		complete_all(&ctrl_link->down_complete);
-+
-+		rtn = sl_ctrl_async_link_down_notif_send(ctrl_link, core_cause_map, core_info_map);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+					       "fault callback async_link_down_notif_send failed [%d]", rtn);
-+
-+		return 0;
-+
-+	default:
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME,
-+				"fault callback invalid (core_state = %u)", core_state);
-+
-+		flush_work(&ctrl_link->ctrl_lgrp->notif_work);
-+		sl_ctrl_link_state_set(ctrl_link, SL_LINK_STATE_DOWN);
-+
-+		complete_all(&ctrl_link->down_complete);
-+
-+		info.error = -EBADRQC;
-+		rtn = sl_ctrl_lgrp_notif_enqueue(ctrl_link->ctrl_lgrp, ctrl_link->num,
-+						 SL_LGRP_NOTIF_LINK_ERROR, &info, core_info_map);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+					       "fault callback ctrl_lgrp_notif_enqueue failed [%d]", rtn);
-+
-+		return 0;
-+	}
-+}
-+
-+int sl_ctrl_link_an_lp_caps_get_callback(void *tag, struct sl_link_caps *caps, u32 result)
-+{
-+	int                       rtn;
-+	struct sl_ctrl_link      *ctrl_link;
-+	union sl_lgrp_notif_info  info;
-+
-+	ctrl_link          =  tag;
-+	info.lp_link_caps = *caps;
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "an lp caps get callback");
-+
-+	switch (result) {
-+	case SL_CORE_LINK_LP_CAPS_DATA:
-+		rtn = sl_ctrl_lgrp_notif_enqueue(ctrl_link->ctrl_lgrp, ctrl_link->num,
-+						 SL_LGRP_NOTIF_AN_DATA, &info, 0);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+					       "lp caps data ctrl_lgrp_notif_enqueue failed [%d]", rtn);
-+		break;
-+	case SL_CORE_LINK_LP_CAPS_TIMEOUT:
-+		rtn = sl_ctrl_lgrp_notif_enqueue(ctrl_link->ctrl_lgrp, ctrl_link->num,
-+						 SL_LGRP_NOTIF_AN_TIMEOUT, NULL, 0);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+					       "lp caps timeout ctrl_lgrp_notif_enqueue failed [%d]", rtn);
-+		break;
-+	case SL_CORE_LINK_LP_CAPS_ERROR:
-+	default:
-+		rtn = sl_ctrl_lgrp_notif_enqueue(ctrl_link->ctrl_lgrp, ctrl_link->num,
-+						 SL_LGRP_NOTIF_AN_ERROR, NULL, 0);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+					       "lp caps error ctrl_lgrp_notif_enqueue failed [%d]", rtn);
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_link_down_callback(void *tag, u32 core_state, u64 core_cause_map, u64 core_info_map)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	char                 cause_str[100];
-+
-+	ctrl_link = tag;
-+
-+	sl_link_down_cause_map_with_info_str(core_cause_map, cause_str, sizeof(cause_str));
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"down callback (core_state = %u %s, core_cause = 0x%llX %s, core_info_map = %llu)",
-+		core_state, sl_core_link_state_str(core_state), core_cause_map, cause_str, core_info_map);
-+
-+	switch (core_state) {
-+	case SL_CORE_LINK_STATE_DOWN:
-+		SL_CTRL_LINK_COUNTER_INC(ctrl_link, LINK_DOWN);
-+
-+		if (core_cause_map & SL_LINK_DOWN_CAUSE_CANCELED)
-+			SL_CTRL_LINK_COUNTER_INC(ctrl_link, LINK_UP_CANCELED);
-+
-+		sl_ctrl_link_fec_mon_stop(ctrl_link);
-+		cancel_work_sync(&ctrl_link->fec_mon_timer_work);
-+
-+		flush_work(&ctrl_link->ctrl_lgrp->notif_work);
-+		sl_ctrl_link_state_set(ctrl_link, SL_LINK_STATE_DOWN);
-+		complete_all(&ctrl_link->down_complete);
-+
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+				"down callback (down_complete = 0x%p)", &ctrl_link->down_complete);
-+
-+		rtn = sl_ctrl_link_down_notif_send(ctrl_link, core_cause_map, core_info_map);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+					       "down callback ctrl_link_down_notif_send failed [%d]", rtn);
-+		return 0;
-+	default:
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "down callback invalid (core_state = %u %s)",
-+				core_state, sl_core_link_state_str(core_state));
-+		return -EBADRQC;
-+	}
-+}
-+
-+static int sl_ctrl_link_async_down_callback(void *tag, u32 core_state, u64 core_cause_map, u64 core_info_map)
-+{
-+	int                  rtn;
-+	struct sl_ctrl_link *ctrl_link;
-+	char                 cause_str[100];
-+
-+	ctrl_link = tag;
-+
-+	sl_link_down_cause_map_with_info_str(core_cause_map, cause_str, sizeof(cause_str));
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"async down callback (core_state = %u %s, core_cause = 0x%llX %s, core_info_map = %llu)",
-+		core_state, sl_core_link_state_str(core_state), core_cause_map, cause_str, core_info_map);
-+
-+	switch (core_state) {
-+	case SL_CORE_LINK_STATE_DOWN:
-+		SL_CTRL_LINK_COUNTER_INC(ctrl_link, LINK_DOWN);
-+
-+		sl_ctrl_link_fec_mon_stop(ctrl_link);
-+		cancel_work_sync(&ctrl_link->fec_mon_timer_work);
-+
-+		flush_work(&ctrl_link->ctrl_lgrp->notif_work);
-+		sl_ctrl_link_state_set(ctrl_link, SL_LINK_STATE_DOWN);
-+		complete_all(&ctrl_link->down_complete);
-+
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+				"async down callback (down_complete = 0x%p)", &ctrl_link->down_complete);
-+
-+		rtn = sl_ctrl_async_link_down_notif_send(ctrl_link, core_cause_map, core_info_map);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+					       "async down callback async_link_down_notif_send failed [%d]", rtn);
-+
-+		sl_ctrl_link_put(ctrl_link);
-+		return 0;
-+	default:
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "async down callback invalid (core_state = %u %s)",
-+				core_state, sl_core_link_state_str(core_state));
-+
-+		sl_ctrl_link_put(ctrl_link);
-+		return -EBADRQC;
-+	}
-+}
-+
-+int sl_ctrl_link_async_down(struct sl_ctrl_link *ctrl_link, u64 down_cause_map, bool force_down)
-+{
++	char hpe_pn[SL_MEDIA_HPE_PN_SIZE + SL_MEDIA_VENDOR_PN_SIZE];
++	int  i;
++	int  type_kobj_num;
 +	int  rtn;
-+	u32  link_state;
-+	u32  policy_options;
-+	bool accepted;
-+	char cause_str[SL_LINK_DOWN_CAUSE_STR_SIZE];
 +
-+	if (!sl_ctrl_link_kref_get_unless_zero(ctrl_link)) {
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME,
-+				"async_down kref_get_unless_zero failed (ctrl_link = 0x%p)", ctrl_link);
-+		return -EBADRQC;
-+	}
++	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "db create");
 +
-+	sl_link_down_cause_map_with_info_str(down_cause_map, cause_str, sizeof(cause_str));
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"async_down (down_cause_map = 0x%llX %s)", down_cause_map, cause_str);
-+
-+	sl_ctrl_link_up_clock_reset(ctrl_link);
-+
-+	policy_options = sl_ctrl_link_policy_options_get(ctrl_link);
-+
-+	spin_lock(&ctrl_link->data_lock);
-+	link_state = ctrl_link->state;
-+	switch (link_state) {
-+	case SL_LINK_STATE_UP_DOWN_REQ:
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "async_down already requested");
-+		spin_unlock(&ctrl_link->data_lock);
-+		sl_ctrl_link_put(ctrl_link);
-+		return 0;
-+	case SL_LINK_STATE_UP:
-+		if (!force_down && (policy_options & SL_LINK_POLICY_OPT_LINK_DOWN_REQ)) {
-+			ctrl_link->state = SL_LINK_STATE_UP_DOWN_REQ;
-+			sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "async_down request link down");
-+			spin_unlock(&ctrl_link->data_lock);
-+			rtn = sl_ctrl_link_down_req_notif_send(ctrl_link, down_cause_map, 0);
-+			if (rtn)
-+				sl_ctrl_log_warn_trace(ctrl_link, LOG_NAME,
-+						       "async_down ctrl_link_down_req_notif_send failed [%d]",
-+						       rtn);
-+			sl_ctrl_link_put(ctrl_link);
-+			return 0;
++	for (i = 0; i < ARRAY_SIZE(cable_db); ++i) {
++		sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "db create (idx = %d)", i);
++		switch (cable_db[i].type) {
++		case SL_MEDIA_TYPE_PEC:
++			type_kobj_num = SL_CABLE_TYPE_PEC;
++			break;
++		case SL_MEDIA_TYPE_AOC:
++			type_kobj_num = SL_CABLE_TYPE_AOC;
++			break;
++		case SL_MEDIA_TYPE_POC:
++			type_kobj_num = SL_CABLE_TYPE_POC;
++			break;
++		case SL_MEDIA_TYPE_AEC:
++			type_kobj_num = SL_CABLE_TYPE_AEC;
++			break;
++		default:
++			sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME,
++				   "unknown (type = %u)", cable_db[i].type);
++			continue;
 +		}
-+		ctrl_link->state = SL_LINK_STATE_STOPPING;
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "async_down stopping");
-+		spin_unlock(&ctrl_link->data_lock);
-+		kref_get(&ctrl_link->ref_cnt);
-+		rtn = sl_core_link_down_request(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
-+						ctrl_link->ctrl_lgrp->num, ctrl_link->num,
-+						sl_ctrl_link_async_down_callback, ctrl_link,
-+						down_cause_map, &accepted);
-+		if (!accepted)
-+			sl_ctrl_link_put(ctrl_link);
++		ctrl_ldev->cable_hpe_pns_kobj[i].ctrl_ldev = ctrl_ldev;
++		ctrl_ldev->cable_hpe_pns_kobj[i].cable_idx = i;
++		snprintf(hpe_pn, sizeof(hpe_pn), "%u_%s", cable_db[i].hpe_pn, cable_db[i].vendor_pn_str);
++		rtn = kobject_init_and_add(&ctrl_ldev->cable_hpe_pns_kobj[i].kobj, &cable_hpe_pns_info,
++					   &ctrl_ldev->cable_vendors_kobj[type_kobj_num][cable_db[i].vendor - SL_MEDIA_VENDOR_TE],
++					   hpe_pn);
 +		if (rtn) {
-+			sl_ctrl_log_err(ctrl_link, LOG_NAME, "async_down core_link_down failed [%d]", rtn);
-+			spin_lock(&ctrl_link->data_lock);
-+			if (ctrl_link->state == SL_LINK_STATE_STOPPING)
-+				ctrl_link->state = SL_LINK_STATE_UP;
-+			spin_unlock(&ctrl_link->data_lock);
-+			sl_ctrl_link_put(ctrl_link);
-+			return rtn;
++			sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME,
++				   "hpe_pn create failed (idx = %d, type = 0x%X %s, vendor = %u %s, len = %ucm, hpe_pn = %u) [%d]",
++				   i, cable_db[i].type, sl_media_type_str(cable_db[i].type),
++				   cable_db[i].vendor, sl_media_vendor_str(cable_db[i].vendor),
++				   cable_db[i].length_cm, cable_db[i].hpe_pn, rtn);
++			kobject_put(&ctrl_ldev->cable_hpe_pns_kobj[i].kobj);
++			sl_sysfs_cable_db_delete(ctrl_ldev, i);
++			sl_sysfs_cable_vendors_delete(ctrl_ldev, SL_CABLE_TYPES_NUM, SL_CABLE_VENDORS_NUM);
++			sl_sysfs_cable_types_delete(ctrl_ldev, SL_CABLE_TYPES_NUM);
++			return -ENOMEM;
 +		}
-+		sl_ctrl_link_put(ctrl_link);
-+		return 0;
-+	case SL_LINK_STATE_DOWN:
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "async_down already down");
-+		spin_unlock(&ctrl_link->data_lock);
-+		sl_ctrl_link_put(ctrl_link);
-+		return 0;
-+	case SL_LINK_STATE_STOPPING:
-+		sl_ctrl_log_dbg(ctrl_link, LOG_NAME, "async_down already stopping");
-+		spin_unlock(&ctrl_link->data_lock);
-+		sl_ctrl_link_put(ctrl_link);
-+		return 0;
-+	default:
-+		sl_ctrl_log_err(ctrl_link, LOG_NAME, "async_down invalid state (link_state = %u %s)",
-+				link_state, sl_link_state_str(link_state));
-+		spin_unlock(&ctrl_link->data_lock);
-+		sl_ctrl_link_put(ctrl_link);
-+		return -EBADRQC;
 +	}
-+}
-+
-+void sl_ctrl_link_config_get(struct sl_ctrl_link *ctrl_link, struct sl_link_config *link_config)
-+{
-+	spin_lock(&ctrl_link->config_lock);
-+	*link_config = ctrl_link->config;
-+	spin_unlock(&ctrl_link->config_lock);
-+}
-+
-+void sl_ctrl_link_policy_get(struct sl_ctrl_link *ctrl_link, struct sl_link_policy *link_policy)
-+{
-+	spin_lock(&ctrl_link->config_lock);
-+	*link_policy = ctrl_link->policy;
-+	spin_unlock(&ctrl_link->config_lock);
-+}
-+
-+s32 sl_ctrl_link_policy_fec_mon_ucw_down_limit_get(struct sl_ctrl_link *ctrl_link)
-+{
-+	s32 fec_mon_ucw_down_limit;
-+
-+	spin_lock(&ctrl_link->config_lock);
-+	fec_mon_ucw_down_limit = ctrl_link->policy.fec_mon_ucw_down_limit;
-+	spin_unlock(&ctrl_link->config_lock);
-+
-+	return fec_mon_ucw_down_limit;
-+}
-+
-+s32 sl_ctrl_link_policy_fec_mon_ucw_warn_limit_get(struct sl_ctrl_link *ctrl_link)
-+{
-+	s32 fec_mon_ucw_warn_limit;
-+
-+	spin_lock(&ctrl_link->config_lock);
-+	fec_mon_ucw_warn_limit = ctrl_link->policy.fec_mon_ucw_warn_limit;
-+	spin_unlock(&ctrl_link->config_lock);
-+
-+	return fec_mon_ucw_warn_limit;
-+}
-+
-+s32 sl_ctrl_link_policy_fec_mon_ccw_down_limit_get(struct sl_ctrl_link *ctrl_link)
-+{
-+	s32 fec_mon_ccw_down_limit;
-+
-+	spin_lock(&ctrl_link->config_lock);
-+	fec_mon_ccw_down_limit = ctrl_link->policy.fec_mon_ccw_down_limit;
-+	spin_unlock(&ctrl_link->config_lock);
-+
-+	return fec_mon_ccw_down_limit;
-+}
-+
-+s32 sl_ctrl_link_policy_fec_mon_ccw_warn_limit_get(struct sl_ctrl_link *ctrl_link)
-+{
-+	s32 fec_mon_ccw_warn_limit;
-+
-+	spin_lock(&ctrl_link->config_lock);
-+	fec_mon_ccw_warn_limit = ctrl_link->policy.fec_mon_ccw_warn_limit;
-+	spin_unlock(&ctrl_link->config_lock);
-+
-+	return fec_mon_ccw_warn_limit;
-+}
-+
-+s32 sl_ctrl_link_policy_fec_mon_period_ms_get(struct sl_ctrl_link *ctrl_link)
-+{
-+	s32 fec_mon_period_ms;
-+
-+	spin_lock(&ctrl_link->config_lock);
-+	fec_mon_period_ms = ctrl_link->policy.fec_mon_period_ms;
-+	spin_unlock(&ctrl_link->config_lock);
-+
-+	return fec_mon_period_ms;
-+}
-+
-+u32 sl_ctrl_link_policy_options_get(struct sl_ctrl_link *ctrl_link)
-+{
-+	u32 options;
-+
-+	spin_lock(&ctrl_link->config_lock);
-+	options = ctrl_link->policy.options;
-+	spin_unlock(&ctrl_link->config_lock);
-+
-+	return options;
-+}
-+
-+void sl_ctrl_link_state_set(struct sl_ctrl_link *ctrl_link, u32 link_state)
-+{
-+	spin_lock(&ctrl_link->data_lock);
-+	ctrl_link->state = link_state;
-+	spin_unlock(&ctrl_link->data_lock);
-+}
-+
-+u32 sl_ctrl_link_state_get(struct sl_ctrl_link *ctrl_link)
-+{
-+	u32 state;
-+
-+	spin_lock(&ctrl_link->data_lock);
-+	state = ctrl_link->state;
-+	spin_unlock(&ctrl_link->data_lock);
-+
-+	return state;
-+}
-+
-+int sl_ctrl_link_last_up_fail_cause_map_get(struct sl_ctrl_link *ctrl_link, u64 *last_up_fail_cause_map)
-+{
-+	spin_lock(&ctrl_link->data_lock);
-+	*last_up_fail_cause_map = ctrl_link->last_up_fail_cause_map;
-+	spin_unlock(&ctrl_link->data_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"last_up_fail_cause_map_get (last_up_fail_cause_map = 0x%llX)", *last_up_fail_cause_map);
 +
 +	return 0;
 +}
 +
-+int sl_ctrl_link_last_up_fail_cause_info_get(struct sl_ctrl_link *ctrl_link, u64 *last_up_fail_cause_map,
-+					     time64_t *last_up_fail_time)
-+{
-+	spin_lock(&ctrl_link->data_lock);
-+	*last_up_fail_cause_map = ctrl_link->last_up_fail_cause_map;
-+	*last_up_fail_time = ctrl_link->last_up_fail_time;
-+	spin_unlock(&ctrl_link->data_lock);
-+
-+	sl_ctrl_log_dbg(ctrl_link, LOG_NAME,
-+			"last up fail time show (cause_map = 0x%llX, time = %lld %ptTt %ptTd)",
-+			*last_up_fail_cause_map, *last_up_fail_time, last_up_fail_time, last_up_fail_time);
-+
-+	return 0;
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_llr.c b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_llr.c
-new file mode 100644
-index 000000000000..016ea353da4f
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_llr.c
-@@ -0,0 +1,630 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2023,2024,2025 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kobject.h>
-+#include <linux/types.h>
-+#include <linux/spinlock.h>
-+#include <linux/slab.h>
-+
-+#include "sl_asic.h"
-+#include "sl_sysfs.h"
-+#include "base/sl_ctrl_log.h"
-+#include "sl_ctrl_ldev.h"
-+#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_lgrp_notif.h"
-+#include "sl_ctrl_llr.h"
-+#include "data/sl_core_data_llr.h"
-+#include "sl_core_str.h"
-+#include "sl_ctrl_llr_counters.h"
-+
-+#define LOG_NAME SL_CTRL_LLR_LOG_NAME
-+
-+#define SL_CTRL_LLR_DEL_WAIT_TIMEOUT_MS 2000
-+
-+static struct sl_ctrl_llr *ctrl_llrs[SL_ASIC_MAX_LDEVS][SL_ASIC_MAX_LGRPS][SL_ASIC_MAX_LINKS];
-+static DEFINE_SPINLOCK(ctrl_llrs_lock);
-+
-+static void sl_ctrl_llr_setup_callback(void *tag,
-+				       enum sl_core_llr_state core_llr_state,
-+				       u64 core_imap,
-+				       struct sl_llr_data core_llr_data)
++static int sl_sysfs_cable_info_create(struct sl_ctrl_ldev *ctrl_ldev)
 +{
 +	int rtn;
-+	struct sl_ctrl_llr *ctrl_llr;
-+	union sl_lgrp_notif_info info;
 +
-+	ctrl_llr = tag;
++	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "cable info create (ldev = 0x%p)", ctrl_ldev);
 +
-+	ctrl_llr->setup.state = core_llr_state;
-+	ctrl_llr->setup.imap  = core_imap;
-+	ctrl_llr->setup.data  = core_llr_data;
-+
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "setup callback (state = %u %s)", core_llr_state,
-+			sl_core_llr_state_str(core_llr_state));
-+
-+	switch (core_llr_state) {
-+	case SL_CORE_LLR_STATE_SETUP:
-+		SL_CTRL_LLR_COUNTER_INC(ctrl_llr, LLR_SETUP);
-+		info.llr_data = ctrl_llr->setup.data;
-+		rtn = sl_ctrl_lgrp_notif_enqueue(ctrl_llr->ctrl_lgrp, ctrl_llr->num,
-+						 SL_LGRP_NOTIF_LLR_SETUP, &info, ctrl_llr->setup.imap);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_llr, LOG_NAME,
-+					       "setup SETUP ctrl_lgrp_notif_enqueue failed [%d]", rtn);
-+		return;
-+	case SL_CORE_LLR_STATE_SETUP_TIMEOUT:
-+		SL_CTRL_LLR_COUNTER_INC(ctrl_llr, LLR_SETUP_TIMEOUT);
-+		rtn = sl_ctrl_lgrp_notif_enqueue(ctrl_llr->ctrl_lgrp, ctrl_llr->num,
-+						 SL_LGRP_NOTIF_LLR_SETUP_TIMEOUT, NULL, ctrl_llr->setup.imap);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_llr, LOG_NAME,
-+					       "setup TIMEOUT ctrl_lgrp_notif_enqueue failed [%d]", rtn);
-+		return;
-+	case SL_CORE_LLR_STATE_CONFIGURED:
-+		SL_CTRL_LLR_COUNTER_INC(ctrl_llr, LLR_CONFIGURED);
-+		memset(&ctrl_llr->setup.data, 0, sizeof(struct sl_llr_data));
-+		rtn = sl_ctrl_lgrp_notif_enqueue(ctrl_llr->ctrl_lgrp, ctrl_llr->num,
-+						 SL_LGRP_NOTIF_LLR_CANCELED, NULL, ctrl_llr->setup.imap);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_llr, LOG_NAME,
-+					       "setup CONFIGURED ctrl_lgrp_notif_enqueue failed [%d]", rtn);
-+		return;
-+	default:
-+		memset(&ctrl_llr->setup.data, 0, sizeof(struct sl_llr_data));
-+		sl_ctrl_log_err(ctrl_llr, LOG_NAME,
-+				"setup ERROR invalid (state = %u %s)",
-+				core_llr_state, sl_core_llr_state_str(core_llr_state));
-+		info.error = -ENOMSG;
-+		rtn = sl_ctrl_lgrp_notif_enqueue(ctrl_llr->ctrl_lgrp, ctrl_llr->num,
-+						 SL_LGRP_NOTIF_LLR_ERROR, &info, ctrl_llr->setup.imap);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_llr, LOG_NAME,
-+					       "setup ERROR ctrl_lgrp_notif_enqueue failed [%d]", rtn);
-+		return;
-+	}
-+}
-+
-+static void sl_ctrl_llr_start_callback(void *tag,
-+				       enum sl_core_llr_state core_llr_state,
-+				       u64 core_imap)
-+{
-+	int rtn;
-+	struct sl_ctrl_llr *ctrl_llr;
-+	union sl_lgrp_notif_info info;
-+
-+	ctrl_llr = tag;
-+
-+	ctrl_llr->start.state = core_llr_state;
-+	ctrl_llr->start.imap  = core_imap;
-+
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "start callback (state = %u %s)",
-+			core_llr_state, sl_core_llr_state_str(core_llr_state));
-+
-+	switch (core_llr_state) {
-+	case SL_CORE_LLR_STATE_RUNNING:
-+		SL_CTRL_LLR_COUNTER_INC(ctrl_llr, LLR_RUNNING);
-+		rtn = sl_ctrl_lgrp_notif_enqueue(ctrl_llr->ctrl_lgrp, ctrl_llr->num,
-+						 SL_LGRP_NOTIF_LLR_RUNNING, NULL, ctrl_llr->start.imap);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_llr, LOG_NAME,
-+					       "start RUNNING ctrl_lgrp_notif_enqueue failed [%d[", rtn);
-+		return;
-+	case SL_CORE_LLR_STATE_START_TIMEOUT:
-+		SL_CTRL_LLR_COUNTER_INC(ctrl_llr, LLR_START_TIMEOUT);
-+		if (ctrl_llr->policy.options & SL_LLR_POLICY_OPT_CONTINUOUS_START_TRIES) {
-+			sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "start TIMEOUT retry");
-+			rtn = sl_core_llr_start(ctrl_llr->ctrl_lgrp->ctrl_ldev->num, ctrl_llr->ctrl_lgrp->num,
-+						ctrl_llr->num, sl_ctrl_llr_start_callback, ctrl_llr, 0);
-+			if (rtn)
-+				sl_ctrl_log_warn_trace(ctrl_llr, LOG_NAME,
-+						       "start TIMEOUT core_llr_start retry failed [%d]", rtn);
-+		}
-+		rtn = sl_ctrl_lgrp_notif_enqueue(ctrl_llr->ctrl_lgrp, ctrl_llr->num,
-+						 SL_LGRP_NOTIF_LLR_START_TIMEOUT, NULL, ctrl_llr->start.imap);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_llr, LOG_NAME,
-+					       "start TIMEOUT ctrl_lgrp_notif_enqueue failed [%d[", rtn);
-+		return;
-+	case SL_CORE_LLR_STATE_SETUP:
-+		SL_CTRL_LLR_COUNTER_INC(ctrl_llr, LLR_SETUP);
-+		rtn = sl_ctrl_lgrp_notif_enqueue(ctrl_llr->ctrl_lgrp, ctrl_llr->num,
-+						 SL_LGRP_NOTIF_LLR_CANCELED, NULL, ctrl_llr->start.imap);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_llr, LOG_NAME,
-+					       "start CONFIGURED ctrl_lgrp_notif_enqueue failed [%d[", rtn);
-+		return;
-+	default:
-+		memset(&ctrl_llr->setup.data, 0, sizeof(struct sl_llr_data));
-+		sl_ctrl_log_err(ctrl_llr, LOG_NAME, "start ERROR invalid (state = %u %s)",
-+				core_llr_state, sl_core_llr_state_str(core_llr_state));
-+		info.error = -ENOMSG;
-+		rtn = sl_ctrl_lgrp_notif_enqueue(ctrl_llr->ctrl_lgrp, ctrl_llr->num, SL_LGRP_NOTIF_LLR_ERROR,
-+						 &info, ctrl_llr->setup.imap);
-+		if (rtn)
-+			sl_ctrl_log_warn_trace(ctrl_llr, LOG_NAME, "start ERROR ctrl_lgrp_notif_enqueue failed [%d[",
-+					       rtn);
-+		return;
-+	}
-+}
-+
-+int sl_ctrl_llr_new(u8 ldev_num, u8 lgrp_num, u8 llr_num, struct kobject *sysfs_parent)
-+{
-+	int                 rtn;
-+	struct sl_ctrl_llr *ctrl_llr;
-+
-+	ctrl_llr = sl_ctrl_llr_get(ldev_num, lgrp_num, llr_num);
-+	if (ctrl_llr) {
-+		sl_ctrl_log_err(NULL, LOG_NAME, "exists (ctrl_llr = 0x%p)", ctrl_llr);
-+		return -EBADRQC;
-+	}
-+
-+	ctrl_llr = kzalloc(sizeof(*ctrl_llr), GFP_KERNEL);
-+	if (!ctrl_llr)
++	rtn = kobject_init_and_add(&ctrl_ldev->supported_cables_kobj, &supported_cables_info,
++				   ctrl_ldev->parent_kobj, "supported_cables");
++	if (rtn) {
++		sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME, "supported cables create failed [%d]", rtn);
++		kobject_put(&ctrl_ldev->supported_cables_kobj);
 +		return -ENOMEM;
-+
-+	ctrl_llr->magic     = SL_CTRL_LLR_MAGIC;
-+	ctrl_llr->ver       = SL_CTRL_LLR_VER;
-+	ctrl_llr->num       = llr_num;
-+	ctrl_llr->ctrl_lgrp = sl_ctrl_lgrp_get(ldev_num, lgrp_num);
-+	if (!ctrl_llr->ctrl_lgrp) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"new NULL lgrp (ldev_num = %u, lgrp_num = %u)", ldev_num, lgrp_num);
-+		kfree(ctrl_llr);
-+		return -EBADRQC;
 +	}
 +
-+	spin_lock_init(&ctrl_llr->data_lock);
-+	kref_init(&ctrl_llr->ref_cnt);
-+	init_completion(&ctrl_llr->del_complete);
-+
-+	rtn = sl_ctrl_llr_counters_init(ctrl_llr);
++	rtn = sl_sysfs_cable_types_create(ctrl_ldev);
 +	if (rtn) {
-+		sl_ctrl_log_err(ctrl_llr, LOG_NAME, "ctrl_llr_counters_init failed [%d]", rtn);
-+		goto out;
++		sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME, "cable types create failed [%d]", rtn);
++		kobject_put(&ctrl_ldev->supported_cables_kobj);
++		return rtn;
 +	}
 +
-+	rtn = sl_ctrl_llr_cause_counters_init(ctrl_llr);
++	rtn = sl_sysfs_cable_vendors_create(ctrl_ldev);
 +	if (rtn) {
-+		sl_ctrl_log_err(ctrl_llr, LOG_NAME, "ctrl_llr_cause_counters_init failed [%d]", rtn);
-+		goto out_counters;
++		sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME, "cable vendors create failed [%d]", rtn);
++		kobject_put(&ctrl_ldev->supported_cables_kobj);
++		return rtn;
 +	}
 +
-+	rtn = sl_core_llr_new(ldev_num, lgrp_num, llr_num);
++	rtn = sl_sysfs_cable_db_create(ctrl_ldev);
 +	if (rtn) {
-+		sl_ctrl_log_err(ctrl_llr, LOG_NAME, "core_llr_new failed [%d]", rtn);
-+		goto out_cause_counters;
++		sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME, "cable db create failed [%d]", rtn);
++		kobject_put(&ctrl_ldev->supported_cables_kobj);
++		return rtn;
 +	}
-+
-+	if (sysfs_parent) {
-+		ctrl_llr->parent_kobj = sysfs_parent;
-+
-+		rtn = sl_sysfs_llr_create(ctrl_llr);
-+		if (rtn) {
-+			sl_ctrl_log_err(ctrl_llr, LOG_NAME, "sysfs_llr_create failed [%d]", rtn);
-+			goto out_llr_new;
-+		}
-+	}
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "new (ctrl_llr = 0x%p)", ctrl_llr);
-+
-+	spin_lock(&ctrl_llrs_lock);
-+	ctrl_llrs[ldev_num][lgrp_num][llr_num] = ctrl_llr;
-+	spin_unlock(&ctrl_llrs_lock);
 +
 +	return 0;
-+out_llr_new:
-+		sl_core_llr_del(ldev_num, lgrp_num, llr_num);
-+out_cause_counters:
-+	sl_ctrl_llr_cause_counters_del(ctrl_llr);
-+out_counters:
-+	sl_ctrl_llr_counters_del(ctrl_llr);
-+out:
-+	kfree(ctrl_llr);
-+	return rtn;
 +}
++#endif /* CONFIG_SYSFS */
 +
-+static void sl_ctrl_llr_release(struct kref *kref)
++int sl_sysfs_ldev_create(u8 ldev_num, struct kobject *parent)
 +{
++#ifdef CONFIG_SYSFS
 +	int                 rtn;
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u8                  ldev_num;
-+	u8                  lgrp_num;
-+	u8                  llr_num;
++	struct sl_ctrl_ldev *ctrl_ldev;
 +
-+	ctrl_llr = container_of(kref, struct sl_ctrl_llr, ref_cnt);
-+	ldev_num = ctrl_llr->ctrl_lgrp->ctrl_ldev->num;
-+	lgrp_num = ctrl_llr->ctrl_lgrp->num;
-+	llr_num = ctrl_llr->num;
-+
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "release (ctrl_llr = 0x%p)", ctrl_llr);
-+
-+	rtn = sl_core_llr_stop(ldev_num, lgrp_num, llr_num);
-+	if (rtn)
-+		sl_ctrl_log_warn_trace(ctrl_llr, LOG_NAME, "release core_llr_stop failed [%d]", rtn);
-+
-+	/* Must delete sysfs first to guarantee nobody is reading */
-+	sl_sysfs_llr_delete(ctrl_llr);
-+
-+	sl_core_llr_del(ldev_num, lgrp_num, llr_num);
-+
-+	/* Free the counters and unpublish together so cause_counter_inc() sees neither half-done */
-+	spin_lock(&ctrl_llrs_lock);
-+	sl_ctrl_llr_counters_del(ctrl_llr);
-+	sl_ctrl_llr_cause_counters_del(ctrl_llr);
-+	ctrl_llrs[ldev_num][lgrp_num][llr_num] = NULL;
-+	spin_unlock(&ctrl_llrs_lock);
-+
-+	complete_all(&ctrl_llr->del_complete);
-+
-+	kfree(ctrl_llr);
-+}
-+
-+static int sl_ctrl_llr_put(struct sl_ctrl_llr *ctrl_llr)
-+{
-+	return kref_put(&ctrl_llr->ref_cnt, sl_ctrl_llr_release);
-+}
-+
-+int sl_ctrl_llr_del(u8 ldev_num, u8 lgrp_num, u8 llr_num)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	unsigned long       timeleft;
-+
-+	ctrl_llr = sl_ctrl_llr_get(ldev_num, lgrp_num, llr_num);
-+	if (!ctrl_llr) {
-+		sl_ctrl_log_err_trace(NULL, LOG_NAME,
-+				      "del not found (ldev_num = %u, lgrp_num = %u, llr_num = %u)",
-+				      ldev_num, lgrp_num, llr_num);
++	ctrl_ldev = sl_ctrl_ldev_get(ldev_num);
++	if (!ctrl_ldev) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "sysfs create ldev not found (ldev_num = %u)", ldev_num);
 +		return -EBADRQC;
 +	}
 +
-+	/* Release occurs on the last caller. Block until complete. */
-+	if (!sl_ctrl_llr_put(ctrl_llr)) {
-+		timeleft = wait_for_completion_timeout(&ctrl_llr->del_complete,
-+						       msecs_to_jiffies(SL_CTRL_LLR_DEL_WAIT_TIMEOUT_MS));
-+
-+		if (timeleft == 0) {
-+			sl_ctrl_log_err(NULL, LOG_NAME,
-+					"del completion_timeout (ctrl_llr = 0x%p)", ctrl_llr);
-+			return -ETIMEDOUT;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static bool sl_ctrl_llr_kref_get_unless_zero(struct sl_ctrl_llr *ctrl_llr)
-+{
-+	return (kref_get_unless_zero(&ctrl_llr->ref_cnt) != 0);
-+}
-+
-+struct sl_ctrl_llr *sl_ctrl_llr_get(u8 ldev_num, u8 lgrp_num, u8 llr_num)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+
-+	spin_lock(&ctrl_llrs_lock);
-+	ctrl_llr = ctrl_llrs[ldev_num][lgrp_num][llr_num];
-+	spin_unlock(&ctrl_llrs_lock);
-+
-+	sl_ctrl_log_dbg(NULL, LOG_NAME,
-+			"get (ldev_num = %u, lgrp_num = %u, llr_num = %u, ctrl_llr = 0x%p)",
-+			ldev_num, lgrp_num, llr_num, ctrl_llr);
-+
-+	return ctrl_llr;
-+}
-+
-+/*
-+ * The lookup and the counter update are done under ctrl_llrs_lock, which
-+ * sl_ctrl_llr_release() also holds while it frees the counters.
-+ */
-+void sl_ctrl_llr_cause_counter_inc(struct sl_core_llr *core_llr, unsigned long cause_map)
-+{
-+	struct sl_ctrl_llr *ctrl_llr;
-+	u8                  ldev_num = core_llr->core_lgrp->core_ldev->num;
-+	u8                  lgrp_num = core_llr->core_lgrp->num;
-+
-+	spin_lock(&ctrl_llrs_lock);
-+	ctrl_llr = ctrl_llrs[ldev_num][lgrp_num][core_llr->num];
-+	if (ctrl_llr)
-+		sl_ctrl_llr_cause_counters_inc(ctrl_llr, cause_map);
-+	spin_unlock(&ctrl_llrs_lock);
-+
-+	if (!ctrl_llr)
-+		sl_ctrl_log_dbg(NULL, LOG_NAME, "llr cause counter inc - llr not found");
-+}
-+
-+int sl_ctrl_llr_config_set(u8 ldev_num, u8 lgrp_num, u8 llr_num, struct sl_llr_config *llr_config)
-+{
-+	int                rtn;
-+	struct sl_ctrl_llr *ctrl_llr;
-+
-+	ctrl_llr = sl_ctrl_llr_get(ldev_num, lgrp_num, llr_num);
-+	if (!ctrl_llr) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"config set NULL llr (ldev_num = %u, lgrp_num = %u, llr_num = %u)",
-+				ldev_num, lgrp_num, llr_num);
++	if (!sl_ctrl_ldev_kref_get_unless_zero(ctrl_ldev)) {
++		sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME,
++			   "kref_get_unless_zero failed (ldev = 0x%p)", ctrl_ldev);
 +		return -EBADRQC;
 +	}
 +
-+	if (!sl_ctrl_llr_kref_get_unless_zero(ctrl_llr)) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"config set kref_get_unless_zero failed (ctrl_llr = 0x%p)",
-+				ctrl_llr);
-+		return -EBADRQC;
-+	}
++	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "ldev create (ldev = 0x%p)", ctrl_ldev);
 +
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "config set (setup timeout = %d, start timeout = %d)",
-+			llr_config->setup_timeout_ms, llr_config->start_timeout_ms);
-+
-+	rtn = sl_core_llr_config_set(ldev_num, lgrp_num, llr_num, llr_config);
-+	if (rtn) {
-+		sl_ctrl_log_err(ctrl_llr, LOG_NAME, "core_llr_config_set failed [%d]", rtn);
-+		goto out;
-+	}
-+
-+	spin_lock(&ctrl_llr->data_lock);
-+	ctrl_llr->config = *llr_config;
-+	spin_unlock(&ctrl_llr->data_lock);
-+
-+out:
-+	if (sl_ctrl_llr_put(ctrl_llr))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"config set - llr removed (ctrl_llr = 0x%p)", ctrl_llr);
-+
-+	return rtn;
-+}
-+
-+int sl_ctrl_llr_policy_set(u8 ldev_num, u8 lgrp_num, u8 llr_num, struct sl_llr_policy *llr_policy)
-+{
-+	int                rtn;
-+	struct sl_ctrl_llr *ctrl_llr;
-+
-+	ctrl_llr = sl_ctrl_llr_get(ldev_num, lgrp_num, llr_num);
-+	if (!ctrl_llr) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"policy set NULL llr (ldev_num = %u, lgrp_num = %u, llr_num = %u)",
-+				ldev_num, lgrp_num, llr_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_llr_kref_get_unless_zero(ctrl_llr)) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"policy set kref_get_unless_zero failed (ctrl_llr = 0x%p)", ctrl_llr);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "policy set");
-+
-+	rtn = sl_core_llr_policy_set(ldev_num, lgrp_num, llr_num, llr_policy);
-+	if (rtn) {
-+		sl_ctrl_log_err(ctrl_llr, LOG_NAME, "core_llr_policy_set failed [%d]", rtn);
-+		goto out;
-+	}
-+
-+	spin_lock(&ctrl_llr->data_lock);
-+	ctrl_llr->policy = *llr_policy;
-+	spin_unlock(&ctrl_llr->data_lock);
-+
-+out:
-+	if (sl_ctrl_llr_put(ctrl_llr))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"policy set - llr removed (ctrl_llr = 0x%p)", ctrl_llr);
-+
-+	return rtn;
-+}
-+
-+int sl_ctrl_llr_setup(u8 ldev_num, u8 lgrp_num, u8 llr_num)
-+{
-+	int                rtn;
-+	struct sl_ctrl_llr *ctrl_llr;
-+
-+	ctrl_llr = sl_ctrl_llr_get(ldev_num, lgrp_num, llr_num);
-+	if (!ctrl_llr) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"setup NULL llr (ldev_num = %u, lgrp_num = %u, llr_num = %u)",
-+				ldev_num, lgrp_num, llr_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_llr_kref_get_unless_zero(ctrl_llr)) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"setup kref_get_unless_zero failed (ctrl_llr = 0x%p)", ctrl_llr);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "setup");
-+
-+	SL_CTRL_LLR_COUNTER_INC(ctrl_llr, LLR_SETUP_CMD);
-+
-+	rtn = sl_core_llr_setup(ldev_num, lgrp_num, llr_num,
-+				sl_ctrl_llr_setup_callback, ctrl_llr, 0);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_llr, LOG_NAME, "core_llr_setup failed [%d]", rtn);
-+		SL_CTRL_LLR_COUNTER_INC(ctrl_llr, LLR_SETUP_FAIL);
-+	}
-+
-+	if (sl_ctrl_llr_put(ctrl_llr))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME, "setup - llr removed (ctrl_llr = 0x%p)", ctrl_llr);
-+
-+	return rtn;
-+}
-+
-+int sl_ctrl_llr_start(u8 ldev_num, u8 lgrp_num, u8 llr_num)
-+{
-+	int                rtn;
-+	struct sl_ctrl_llr *ctrl_llr;
-+
-+	ctrl_llr = sl_ctrl_llr_get(ldev_num, lgrp_num, llr_num);
-+	if (!ctrl_llr) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"start NULL llr (ldev_num = %u, lgrp_num = %u, llr_num = %u)",
-+				ldev_num, lgrp_num, llr_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_llr_kref_get_unless_zero(ctrl_llr)) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"start kref_get_unless_zero failed (ctrl_llr = 0x%p)", ctrl_llr);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "start");
-+
-+	SL_CTRL_LLR_COUNTER_INC(ctrl_llr, LLR_START_CMD);
-+
-+	rtn = sl_core_llr_start(ldev_num, lgrp_num, llr_num,
-+				sl_ctrl_llr_start_callback, ctrl_llr, 0);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_llr, LOG_NAME, "core_llr_start failed [%d]", rtn);
-+		SL_CTRL_LLR_COUNTER_INC(ctrl_llr, LLR_START_FAIL);
-+	}
-+
-+	if (sl_ctrl_llr_put(ctrl_llr))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME, "start - llr removed (ctrl_llr = 0x%p)", ctrl_llr);
-+
-+	return rtn;
-+}
-+
-+int sl_ctrl_llr_stop(u8 ldev_num, u8 lgrp_num, u8 llr_num)
-+{
-+	int                rtn;
-+	struct sl_ctrl_llr *ctrl_llr;
-+
-+	ctrl_llr = sl_ctrl_llr_get(ldev_num, lgrp_num, llr_num);
-+	if (!ctrl_llr) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"stop NULL llr (ldev_num = %u, lgrp_num = %u, llr_num = %u)",
-+				ldev_num, lgrp_num, llr_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_llr_kref_get_unless_zero(ctrl_llr)) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"stop kref_get_unless_zero failed (ctrl_llr = 0x%p)", ctrl_llr);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "stop");
-+
-+	SL_CTRL_LLR_COUNTER_INC(ctrl_llr, LLR_STOP_CMD);
-+
-+	rtn = sl_core_llr_stop(ldev_num, lgrp_num, llr_num);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_llr, LOG_NAME, "core_llr_stop failed [%d]", rtn);
-+		SL_CTRL_LLR_COUNTER_INC(ctrl_llr, LLR_STOP_FAIL);
-+	}
-+
-+	if (sl_ctrl_llr_put(ctrl_llr))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME, "stop - llr removed (ctrl_llr = 0x%p)", ctrl_llr);
-+
-+	return rtn;
-+}
-+
-+enum sl_llr_state sl_ctrl_llr_state_from_core_llr_state(enum sl_core_llr_state core_llr_state)
-+{
-+	switch (core_llr_state) {
-+	case SL_CORE_LLR_STATE_NEW:
-+		return SL_LLR_STATE_OFF;
-+	case SL_CORE_LLR_STATE_CONFIGURED:
-+	case SL_CORE_LLR_STATE_SETUP_TIMEOUT:
-+	case SL_CORE_LLR_STATE_SETUP_STOPPING:
-+		return SL_LLR_STATE_CONFIGURED;
-+	case SL_CORE_LLR_STATE_SETTING_UP:
-+		return SL_LLR_STATE_SETUP_BUSY;
-+	case SL_CORE_LLR_STATE_SETUP:
-+	case SL_CORE_LLR_STATE_START_TIMEOUT:
-+		return SL_LLR_STATE_SETUP;
-+	case SL_CORE_LLR_STATE_STARTING:
-+		return SL_LLR_STATE_START_BUSY;
-+	case SL_CORE_LLR_STATE_RUNNING:
-+		return SL_LLR_STATE_RUNNING;
-+	case SL_CORE_LLR_STATE_STOPPING:
-+		return SL_LLR_STATE_STOP_BUSY;
-+	case SL_CORE_LLR_STATE_SETUP_CANCELING:
-+	case SL_CORE_LLR_STATE_START_CANCELING:
-+		return SL_LLR_STATE_CANCELING;
-+	case SL_CORE_LLR_STATE_INVALID:
-+	default:
-+		return SL_LLR_STATE_INVALID;
-+	}
-+}
-+
-+int sl_ctrl_llr_state_get(u8 ldev_num, u8 lgrp_num, u8 llr_num, enum sl_llr_state *state)
-+{
-+	int rtn;
-+	struct sl_ctrl_llr *ctrl_llr;
-+	enum sl_core_llr_state core_llr_state;
-+
-+	ctrl_llr = sl_ctrl_llr_get(ldev_num, lgrp_num, llr_num);
-+	if (!ctrl_llr) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"state get NULL llr (ldev_num = %u, lgrp_num = %u, llr_num = %u)",
-+				ldev_num, lgrp_num, llr_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_llr_kref_get_unless_zero(ctrl_llr)) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"state get kref_get_unless_zero failed (ctrl_llr = 0x%p)",
-+				ctrl_llr);
-+		return -EBADRQC;
-+	}
-+
-+	rtn = sl_core_llr_state_get(ldev_num, lgrp_num, llr_num, &core_llr_state);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_llr, LOG_NAME, "core_llr_state_get failed [%d]", rtn);
-+		*state = SL_LLR_STATE_OFF;
++	if (ctrl_ldev->is_sysfs_ok) {
 +		rtn = 0;
 +		goto out;
 +	}
 +
-+	*state = sl_ctrl_llr_state_from_core_llr_state(core_llr_state);
-+	if (*state == SL_LLR_STATE_INVALID)
-+		sl_ctrl_log_err(ctrl_llr, LOG_NAME,
-+				"invalid (core_llr_state = %u %s)",
-+				core_llr_state, sl_core_llr_state_str(core_llr_state));
++	ctrl_ldev->parent_kobj = parent;
++	ctrl_ldev->is_sysfs_ok = false;
 +
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "state (core = %u %s, ctrl = %u %s)",
-+			core_llr_state, sl_core_llr_state_str(core_llr_state),
-+			*state, sl_llr_state_str(*state));
-+
-+out:
-+	if (sl_ctrl_llr_put(ctrl_llr))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"state get - llr removed (ctrl_llr = 0x%p)", ctrl_llr);
-+
-+	return rtn;
-+}
-+
-+int sl_ctrl_llr_info_map_get(u8 ldev_num, u8 lgrp_num, u8 llr_num, u64 *info_map)
-+{
-+	int                 rtn;
-+	struct sl_ctrl_llr *ctrl_llr;
-+
-+	ctrl_llr = sl_ctrl_llr_get(ldev_num, lgrp_num, llr_num);
-+	if (!ctrl_llr) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"info map get NULL llr (ldev_num = %u, lgrp_num = %u, llr_num = %u)",
-+				ldev_num, lgrp_num, llr_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_llr_kref_get_unless_zero(ctrl_llr)) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"info map get kref_get_unless_zero failed (ctrl_llr = 0x%p)", ctrl_llr);
-+		return -EBADRQC;
-+	}
-+
-+	rtn = sl_core_data_llr_info_map_get(sl_core_llr_get(ldev_num, lgrp_num, llr_num), info_map);
++	rtn = kobject_init_and_add(&(ctrl_ldev->sl_info_kobj), &sl_info, ctrl_ldev->parent_kobj, "sl_info");
 +	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_llr, LOG_NAME, "core_data_llr_info_map_get failed [%d]", rtn);
++		sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME, "sl_info create failed [%d]", rtn);
++		kobject_put(&ctrl_ldev->sl_info_kobj);
++		rtn = -ENOMEM;
 +		goto out;
 +	}
 +
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "info map get (info_map = 0x%llX)", *info_map);
++	rtn = sl_sysfs_cable_info_create(ctrl_ldev);
++	if (rtn) {
++		sl_log_err(ctrl_ldev, LOG_BLOCK, LOG_NAME, "cable info create failed [%d]", rtn);
++		kobject_put(&ctrl_ldev->sl_info_kobj);
++		goto out;
++	}
++
++	ctrl_ldev->is_sysfs_ok = true;
++	rtn = 0;
 +
 +out:
-+	if (sl_ctrl_llr_put(ctrl_llr))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"info map get - llr removed (ctrl_llr = 0x%p)", ctrl_llr);
++	sl_ctrl_ldev_put(ctrl_ldev);
 +
 +	return rtn;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
 +}
-diff --git a/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_llr_counters.c b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_llr_counters.c
++
++void sl_sysfs_ldev_delete(struct sl_ctrl_ldev *ctrl_ldev)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_ldev, LOG_BLOCK, LOG_NAME, "ldev delete (ldev = 0x%p)", ctrl_ldev);
++
++	if (!ctrl_ldev->parent_kobj)
++		return;
++	if (!ctrl_ldev->is_sysfs_ok)
++		return;
++
++	sl_sysfs_cable_db_delete(ctrl_ldev, ARRAY_SIZE(cable_db));
++	sl_sysfs_cable_vendors_delete(ctrl_ldev, SL_CABLE_TYPES_NUM, SL_CABLE_VENDORS_NUM);
++	sl_sysfs_cable_types_delete(ctrl_ldev, SL_CABLE_TYPES_NUM);
++
++	kobject_put(&ctrl_ldev->supported_cables_kobj);
++	kobject_put(&ctrl_ldev->sl_info_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp.c
 new file mode 100644
-index 000000000000..81af580d3837
+index 000000000000..f0533c8fd888
 --- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_llr_counters.c
-@@ -0,0 +1,136 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2025 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/slab.h>
-+#include <linux/atomic.h>
-+#include <linux/types.h>
-+
-+#include "sl_ctrl_llr.h"
-+#include "sl_ctrl_llr_counters.h"
-+#include "base/sl_ctrl_log.h"
-+
-+#define LOG_NAME SL_CTRL_LLR_LOG_NAME
-+
-+#define SL_CTRL_LLR_COUNTER_INIT(_llr, _counter) \
-+	(_llr)->counters[_counter].name = #_counter
-+
-+#define SL_CTRL_LLR_CAUSE_COUNTER_INIT(_llr, _counter) \
-+	(_llr)->cause_counters[_counter].name = #_counter
-+
-+#define SL_CTRL_LLR_CAUSE_COUNTER_INC(_llr, _counter) \
-+	atomic_inc(&(_llr)->cause_counters[_counter].count)
-+
-+int sl_ctrl_llr_counters_init(struct sl_ctrl_llr *ctrl_llr)
-+{
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "llr counters init");
-+
-+	ctrl_llr->counters = kzalloc(sizeof(*ctrl_llr->counters) * SL_CTRL_LLR_COUNTERS_COUNT, GFP_KERNEL);
-+	if (!ctrl_llr->counters)
-+		return -ENOMEM;
-+
-+	SL_CTRL_LLR_COUNTER_INIT(ctrl_llr, LLR_SETUP_CMD);
-+	SL_CTRL_LLR_COUNTER_INIT(ctrl_llr, LLR_SETUP);
-+	SL_CTRL_LLR_COUNTER_INIT(ctrl_llr, LLR_SETUP_TIMEOUT);
-+	SL_CTRL_LLR_COUNTER_INIT(ctrl_llr, LLR_SETUP_FAIL);
-+
-+	SL_CTRL_LLR_COUNTER_INIT(ctrl_llr, LLR_CONFIGURED);
-+
-+	SL_CTRL_LLR_COUNTER_INIT(ctrl_llr, LLR_START_CMD);
-+	SL_CTRL_LLR_COUNTER_INIT(ctrl_llr, LLR_RUNNING);
-+	SL_CTRL_LLR_COUNTER_INIT(ctrl_llr, LLR_START_TIMEOUT);
-+	SL_CTRL_LLR_COUNTER_INIT(ctrl_llr, LLR_START_FAIL);
-+
-+	SL_CTRL_LLR_COUNTER_INIT(ctrl_llr, LLR_STOP_CMD);
-+	SL_CTRL_LLR_COUNTER_INIT(ctrl_llr, LLR_STOP_FAIL);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_llr_cause_counters_init(struct sl_ctrl_llr *ctrl_llr)
-+{
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "llr cause counters init");
-+
-+	ctrl_llr->cause_counters = kzalloc(sizeof(*ctrl_llr->cause_counters) *
-+					   SL_CTRL_LLR_CAUSE_COUNTERS_COUNT, GFP_KERNEL);
-+	if (!ctrl_llr->cause_counters)
-+		return -ENOMEM;
-+
-+	SL_CTRL_LLR_CAUSE_COUNTER_INIT(ctrl_llr, LLR_CAUSE_SETUP_CONFIG);
-+	SL_CTRL_LLR_CAUSE_COUNTER_INIT(ctrl_llr, LLR_CAUSE_SETUP_INTR_ENABLE);
-+	SL_CTRL_LLR_CAUSE_COUNTER_INIT(ctrl_llr, LLR_CAUSE_SETUP_TIMEOUT);
-+	SL_CTRL_LLR_CAUSE_COUNTER_INIT(ctrl_llr, LLR_CAUSE_START_INTR_ENABLE);
-+	SL_CTRL_LLR_CAUSE_COUNTER_INIT(ctrl_llr, LLR_CAUSE_START_TIMEOUT);
-+	SL_CTRL_LLR_CAUSE_COUNTER_INIT(ctrl_llr, LLR_CAUSE_COMMAND);
-+	SL_CTRL_LLR_CAUSE_COUNTER_INIT(ctrl_llr, LLR_CAUSE_CANCELED);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_llr_counter_get(struct sl_ctrl_llr *ctrl_llr, u32 counter, int *count)
-+{
-+	*count = atomic_read(&ctrl_llr->counters[counter].count);
-+
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "get (counter = %u %s, count = %d)", counter,
-+			ctrl_llr->counters[counter].name, *count);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_llr_cause_counter_get(struct sl_ctrl_llr *ctrl_llr, u32 counter, int *count)
-+{
-+	*count = atomic_read(&ctrl_llr->cause_counters[counter].count);
-+
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "get (cause counter = %u %s, count = %d)", counter,
-+			ctrl_llr->cause_counters[counter].name, *count);
-+
-+	return 0;
-+}
-+
-+void sl_ctrl_llr_counters_del(struct sl_ctrl_llr *ctrl_llr)
-+{
-+	kfree(ctrl_llr->counters);
-+}
-+
-+void sl_ctrl_llr_cause_counters_del(struct sl_ctrl_llr *ctrl_llr)
-+{
-+	kfree(ctrl_llr->cause_counters);
-+}
-+
-+void sl_ctrl_llr_cause_counters_inc(struct sl_ctrl_llr *ctrl_llr, unsigned long cause_map)
-+{
-+	unsigned long which;
-+
-+	sl_ctrl_log_dbg(ctrl_llr, LOG_NAME, "llr cause counter inc");
-+
-+	BUILD_BUG_ON(SL_CTRL_LLR_CAUSE_COUNTERS_COUNT > 32);
-+
-+	for_each_set_bit(which, &cause_map, sizeof(cause_map) * BITS_PER_BYTE) {
-+		switch (BIT(which)) {
-+		case SL_LLR_FAIL_CAUSE_SETUP_CONFIG:
-+			SL_CTRL_LLR_CAUSE_COUNTER_INC(ctrl_llr, LLR_CAUSE_SETUP_CONFIG);
-+			break;
-+		case SL_LLR_FAIL_CAUSE_SETUP_INTR_ENABLE:
-+			SL_CTRL_LLR_CAUSE_COUNTER_INC(ctrl_llr, LLR_CAUSE_SETUP_INTR_ENABLE);
-+			break;
-+		case SL_LLR_FAIL_CAUSE_SETUP_TIMEOUT:
-+			SL_CTRL_LLR_CAUSE_COUNTER_INC(ctrl_llr, LLR_CAUSE_SETUP_TIMEOUT);
-+			break;
-+		case SL_LLR_FAIL_CAUSE_START_INTR_ENABLE:
-+			SL_CTRL_LLR_CAUSE_COUNTER_INC(ctrl_llr, LLR_CAUSE_START_INTR_ENABLE);
-+			break;
-+		case SL_LLR_FAIL_CAUSE_START_TIMEOUT:
-+			SL_CTRL_LLR_CAUSE_COUNTER_INC(ctrl_llr, LLR_CAUSE_START_TIMEOUT);
-+			break;
-+		case SL_LLR_FAIL_CAUSE_COMMAND:
-+			SL_CTRL_LLR_CAUSE_COUNTER_INC(ctrl_llr, LLR_CAUSE_COMMAND);
-+			break;
-+		case SL_LLR_FAIL_CAUSE_CANCELED:
-+			SL_CTRL_LLR_CAUSE_COUNTER_INC(ctrl_llr, LLR_CAUSE_CANCELED);
-+			break;
-+		default:
-+			sl_ctrl_log_warn_trace(ctrl_llr, LOG_NAME,
-+					       "cause_counter_inc unknown cause (bit = %lu)", which);
-+			break;
-+		}
-+	}
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_mac.c b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_mac.c
-new file mode 100644
-index 000000000000..a4202757d238
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_mac.c
-@@ -0,0 +1,536 @@
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp.c
+@@ -0,0 +1,98 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/* Copyright 2023,2024,2025 Hewlett Packard Enterprise Development LP */
 +
 +#include <linux/kobject.h>
-+#include <linux/spinlock.h>
-+#include <linux/types.h>
-+#include <linux/slab.h>
 +
-+#include <linux/hpe/sl/sl_mac.h>
-+
-+#include "sl_asic.h"
++#include "sl_log.h"
 +#include "sl_sysfs.h"
-+#include "base/sl_ctrl_log.h"
-+#include "sl_ctrl_ldev.h"
 +#include "sl_ctrl_lgrp.h"
-+#include "sl_ctrl_mac.h"
-+#include "sl_core_mac.h"
-+#include "sl_ctrl_mac_counters.h"
++#include "sl_core_link.h"
 +
-+#define SL_CTRL_MAC_DEL_WAIT_TIMEOUT_MS 2000
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
 +
-+#define LOG_NAME SL_CTRL_MAC_LOG_NAME
-+
-+static struct sl_ctrl_mac *ctrl_macs[SL_ASIC_MAX_LDEVS][SL_ASIC_MAX_LGRPS][SL_ASIC_MAX_LINKS];
-+static DEFINE_SPINLOCK(ctrl_macs_lock);
-+
-+int sl_ctrl_mac_new(u8 ldev_num, u8 lgrp_num, u8 mac_num, struct kobject *sysfs_parent)
++int sl_sysfs_lgrp_create(struct sl_ctrl_lgrp *ctrl_lgrp)
 +{
-+	int                 rtn;
-+	struct sl_ctrl_mac *ctrl_mac;
++	int rtn;
 +
-+	ctrl_mac = sl_ctrl_mac_get(ldev_num, lgrp_num, mac_num);
-+	if (ctrl_mac) {
-+		sl_ctrl_log_err(NULL, LOG_NAME, "exists (mac = 0x%p)", ctrl_mac);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "lgrp create (lgrp = 0x%p)", ctrl_lgrp);
++
++	if (!ctrl_lgrp->parent_kobj) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "lgrp create missing parent");
 +		return -EBADRQC;
 +	}
 +
-+	ctrl_mac = kzalloc(sizeof(*ctrl_mac), GFP_KERNEL);
-+	if (!ctrl_mac)
++	rtn = sl_sysfs_lgrp_config_create(ctrl_lgrp);
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "config create failed [%d]", rtn);
 +		return -ENOMEM;
-+
-+	ctrl_mac->magic     = SL_CTRL_MAC_MAGIC;
-+	ctrl_mac->ver       = SL_CTRL_MAC_VER;
-+	ctrl_mac->num       = mac_num;
-+	ctrl_mac->ctrl_lgrp = sl_ctrl_lgrp_get(ldev_num, lgrp_num);
-+	if (!ctrl_mac->ctrl_lgrp) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"new NULL lgrp (ldev_num = %u, lgrp_num = %u)", ldev_num, lgrp_num);
-+		kfree(ctrl_mac);
-+		return -EBADRQC;
 +	}
 +
-+	kref_init(&ctrl_mac->ref_cnt);
-+	kref_init(&ctrl_mac->mem_ref);
-+	init_completion(&ctrl_mac->del_complete);
-+
-+	spin_lock_init(&ctrl_mac->data_lock);
-+
-+	rtn = sl_ctrl_mac_counters_init(ctrl_mac);
++	rtn = sl_sysfs_lgrp_policy_create(ctrl_lgrp);
 +	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_mac, LOG_NAME, "ctrl_mac_counters_init failed [%d]", rtn);
-+		goto out;
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "policy create failed [%d]", rtn);
++		goto out_config;
 +	}
 +
-+	rtn = sl_core_mac_new(ldev_num, lgrp_num, mac_num);
++	rtn = sl_sysfs_serdes_create(ctrl_lgrp);
 +	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_mac, LOG_NAME, "core_mac_new failed [%d]", rtn);
-+		goto out_counters;
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "serdes create failed [%d]", rtn);
++		goto out_policy;
 +	}
 +
-+	if (sysfs_parent) {
-+		ctrl_mac->parent_kobj = sysfs_parent;
-+
-+		rtn = sl_sysfs_mac_create(ctrl_mac);
-+		if (rtn) {
-+			sl_ctrl_log_err_trace(ctrl_mac, LOG_NAME, "sysfs_mac_create failed [%d]", rtn);
-+			goto out_mac_new;
-+		}
++	rtn = sl_sysfs_media_create(ctrl_lgrp);
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media create failed [%d]", rtn);
++		goto out_serdes;
 +	}
 +
-+	sl_ctrl_log_dbg(ctrl_mac, LOG_NAME, "new (mac = 0x%p)", ctrl_mac);
++	rtn = sl_sysfs_pmi_create(ctrl_lgrp);
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi create failed [%d]", rtn);
++		goto out_media;
++	}
 +
-+	spin_lock(&ctrl_macs_lock);
-+	ctrl_macs[ldev_num][lgrp_num][mac_num] = ctrl_mac;
-+	spin_unlock(&ctrl_macs_lock);
++	rtn = sl_sysfs_sbus_create(ctrl_lgrp);
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus create failed [%d]", rtn);
++		goto out_pmi;
++	}
++
++	rtn = sl_sysfs_sbus_pmi_create(ctrl_lgrp);
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi create failed [%d]", rtn);
++		goto out_sbus;
++	}
 +
 +	return 0;
 +
-+out_mac_new:
-+	sl_core_mac_del(ldev_num, lgrp_num, mac_num);
-+out_counters:
-+	sl_ctrl_mac_counters_del(ctrl_mac);
-+out:
-+	kfree(ctrl_mac);
-+	return rtn;
++out_sbus:
++	sl_sysfs_sbus_delete(ctrl_lgrp);
++out_pmi:
++	sl_sysfs_pmi_delete(ctrl_lgrp);
++out_media:
++	sl_sysfs_media_delete(ctrl_lgrp);
++out_serdes:
++	sl_sysfs_serdes_delete(ctrl_lgrp);
++out_policy:
++	sl_sysfs_lgrp_policy_delete(ctrl_lgrp);
++out_config:
++	sl_sysfs_lgrp_config_delete(ctrl_lgrp);
++	return -ENOMEM;
 +}
 +
-+static void sl_ctrl_mac_free(struct kref *kref)
++void sl_sysfs_lgrp_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
 +{
-+	kfree(container_of(kref, struct sl_ctrl_mac, mem_ref));
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "lgrp delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	if (!ctrl_lgrp->parent_kobj)
++		return;
++
++	sl_sysfs_sbus_pmi_delete(ctrl_lgrp);
++	sl_sysfs_sbus_delete(ctrl_lgrp);
++	sl_sysfs_pmi_delete(ctrl_lgrp);
++	sl_sysfs_media_delete(ctrl_lgrp);
++	sl_sysfs_serdes_delete(ctrl_lgrp);
++	sl_sysfs_lgrp_policy_delete(ctrl_lgrp);
++	sl_sysfs_lgrp_config_delete(ctrl_lgrp);
 +}
-+
-+static void sl_ctrl_mac_release(struct kref *kref)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u8                  ldev_num;
-+	u8                  lgrp_num;
-+	u8                  mac_num;
-+
-+	ctrl_mac = container_of(kref, struct sl_ctrl_mac, ref_cnt);
-+	ldev_num = ctrl_mac->ctrl_lgrp->ctrl_ldev->num;
-+	lgrp_num = ctrl_mac->ctrl_lgrp->num;
-+	mac_num  = ctrl_mac->num;
-+
-+	sl_ctrl_log_dbg(ctrl_mac, LOG_NAME, "release (ctrl_mac = 0x%p)", ctrl_mac);
-+
-+	/* Must delete sysfs first to guarantee nobody is reading */
-+	sl_sysfs_mac_delete(ctrl_mac);
-+
-+	sl_core_mac_del(ldev_num, lgrp_num, mac_num);
-+
-+	sl_ctrl_mac_counters_del(ctrl_mac);
-+
-+	spin_lock(&ctrl_macs_lock);
-+	ctrl_macs[ldev_num][lgrp_num][mac_num] = NULL;
-+	spin_unlock(&ctrl_macs_lock);
-+
-+	/*
-+	 * Wake a waiting sl_ctrl_mac_del(). The memory is not freed here:
-+	 * the waiter still uses del_complete and ctrl_mac after it wakes,
-+	 * and holds mem_ref until it is done. The last holder frees it.
-+	 */
-+	complete_all(&ctrl_mac->del_complete);
-+	kref_put(&ctrl_mac->mem_ref, sl_ctrl_mac_free);
-+}
-+
-+static int sl_ctrl_mac_put(struct sl_ctrl_mac *ctrl_mac)
-+{
-+	return kref_put(&ctrl_mac->ref_cnt, sl_ctrl_mac_release);
-+}
-+
-+int sl_ctrl_mac_del(u8 ldev_num, u8 lgrp_num, u8 mac_num)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+	unsigned long       timeleft;
-+	int                 rtn = 0;
-+
-+	sl_ctrl_log_dbg(NULL, LOG_NAME, "del (ldev_num = %u, lgrp_num = %u, mac_num = %u)",
-+			ldev_num, lgrp_num, mac_num);
-+
-+	ctrl_mac = sl_ctrl_mac_get(ldev_num, lgrp_num, mac_num);
-+	if (!ctrl_mac) {
-+		sl_ctrl_log_err_trace(NULL, LOG_NAME,
-+				      "mac not found (ldev_num = %u, lgrp_num = %u, mac_num = %u)",
-+				      ldev_num, lgrp_num, mac_num);
-+		return -EBADRQC;
-+	}
-+
-+	/*
-+	 * Keep the memory, and with it del_complete, valid until we are done
-+	 * waiting: the release may run on another thread and must not free it
-+	 * under us.
-+	 */
-+	kref_get(&ctrl_mac->mem_ref);
-+
-+	/* Release occurs on the last caller. Block until complete. */
-+	if (!sl_ctrl_mac_put(ctrl_mac)) {
-+		timeleft = wait_for_completion_timeout(&ctrl_mac->del_complete,
-+						       msecs_to_jiffies(SL_CTRL_MAC_DEL_WAIT_TIMEOUT_MS));
-+
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"del completion_timeout (timeleft = %lums)", timeleft);
-+
-+		if (timeleft == 0) {
-+			sl_ctrl_log_err(NULL, LOG_NAME,
-+					"del completion_timeout (ctrl_mac = 0x%p)", ctrl_mac);
-+			rtn = -ETIMEDOUT;
-+		}
-+	}
-+
-+	kref_put(&ctrl_mac->mem_ref, sl_ctrl_mac_free);
-+
-+	return rtn;
-+}
-+
-+static bool sl_ctrl_mac_kref_get_unless_zero(struct sl_ctrl_mac *ctrl_mac)
-+{
-+	return (kref_get_unless_zero(&ctrl_mac->ref_cnt) != 0);
-+}
-+
-+struct sl_ctrl_mac *sl_ctrl_mac_get(u8 ldev_num, u8 lgrp_num, u8 mac_num)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+
-+	spin_lock(&ctrl_macs_lock);
-+	ctrl_mac = ctrl_macs[ldev_num][lgrp_num][mac_num];
-+	spin_unlock(&ctrl_macs_lock);
-+
-+	sl_ctrl_log_dbg(NULL, LOG_NAME,
-+			"get (ldev_num = %u, lgrp_num = %u, mac_num = %u, mac = 0x%p)",
-+			ldev_num, lgrp_num, mac_num, ctrl_mac);
-+
-+	return ctrl_mac;
-+}
-+
-+int sl_ctrl_mac_tx_start(u8 ldev_num, u8 lgrp_num, u8 mac_num)
-+{
-+	int                rtn;
-+	struct sl_ctrl_mac *ctrl_mac;
-+
-+	ctrl_mac = sl_ctrl_mac_get(ldev_num, lgrp_num, mac_num);
-+	if (!ctrl_mac) {
-+		sl_ctrl_log_err(NULL, LOG_NAME, "tx start - NULL mac");
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_mac_kref_get_unless_zero(ctrl_mac)) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"tx start - kref unavailable (ctrl_mac = 0x%p)", ctrl_mac);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_mac, LOG_NAME, "tx start");
-+
-+	SL_CTRL_MAC_COUNTER_INC(ctrl_mac, MAC_TX_START_CMD);
-+
-+	rtn = sl_core_mac_tx_start(ldev_num, lgrp_num, mac_num);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_mac, LOG_NAME, "tx start - core_mac_tx_start failed [%d]", rtn);
-+		SL_CTRL_MAC_COUNTER_INC(ctrl_mac, MAC_TX_START_FAIL);
-+		goto out;
-+	}
-+
-+	SL_CTRL_MAC_COUNTER_INC(ctrl_mac, MAC_TX_STARTED);
-+
-+	rtn = 0;
-+
-+out:
-+	if (sl_ctrl_mac_put(ctrl_mac))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"tx start - mac removed (ctrl_mac = 0x%p)", ctrl_mac);
-+
-+	return rtn;
-+}
-+
-+int sl_ctrl_mac_tx_stop(u8 ldev_num, u8 lgrp_num, u8 mac_num)
-+{
-+	int                rtn;
-+	struct sl_ctrl_mac *ctrl_mac;
-+
-+	ctrl_mac = sl_ctrl_mac_get(ldev_num, lgrp_num, mac_num);
-+	if (!ctrl_mac) {
-+		sl_ctrl_log_dbg(NULL, LOG_NAME, "tx stop - NULL mac");
-+		return 0;
-+	}
-+
-+	if (!sl_ctrl_mac_kref_get_unless_zero(ctrl_mac)) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"tx stop - kref unavailable (ctrl_mac = 0x%p)", ctrl_mac);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_mac, LOG_NAME, "tx stop");
-+
-+	SL_CTRL_MAC_COUNTER_INC(ctrl_mac, MAC_TX_STOP_CMD);
-+
-+	rtn = sl_core_mac_tx_stop(ldev_num, lgrp_num, mac_num);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_mac, LOG_NAME, "tx stop - core_mac_tx_stop failed [%d]", rtn);
-+		SL_CTRL_MAC_COUNTER_INC(ctrl_mac, MAC_TX_STOP_FAIL);
-+		goto out;
-+	}
-+
-+	SL_CTRL_MAC_COUNTER_INC(ctrl_mac, MAC_TX_STOPPED);
-+
-+	rtn = 0;
-+
-+out:
-+	if (sl_ctrl_mac_put(ctrl_mac))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"tx stop - mac removed (ctrl_mac = 0x%p)", ctrl_mac);
-+
-+	return rtn;
-+}
-+
-+int sl_ctrl_mac_tx_state_get(u8 ldev_num, u8 lgrp_num, u8 mac_num, u32 *state)
-+{
-+	int                rtn;
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u32                core_mac_state;
-+
-+	ctrl_mac = sl_ctrl_mac_get(ldev_num, lgrp_num, mac_num);
-+	if (!ctrl_mac) {
-+		sl_ctrl_log_dbg(NULL, LOG_NAME, "tx state get - NULL mac");
-+		*state = SL_MAC_STATE_OFF;
-+		return 0;
-+	}
-+
-+	if (!sl_ctrl_mac_kref_get_unless_zero(ctrl_mac)) {
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"tx state get - kref unavailable (ctrl_mac = 0x%p)", ctrl_mac);
-+		*state = SL_MAC_STATE_OFF;
-+		return 0;
-+	}
-+
-+	rtn = sl_core_mac_tx_state_get(ldev_num, lgrp_num, mac_num, &core_mac_state);
-+	if (rtn) {
-+		sl_ctrl_log_dbg(ctrl_mac, LOG_NAME, "tx state get - core_mac_tx_state_get failed [%d]", rtn);
-+		*state = SL_MAC_STATE_OFF;
-+		goto out;
-+	}
-+
-+	switch (core_mac_state) {
-+	case SL_CORE_MAC_STATE_ON:
-+		*state = SL_MAC_STATE_ON;
-+		break;
-+	default:
-+		*state = SL_MAC_STATE_OFF;
-+		break;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_mac, LOG_NAME, "tx state get (state = %u %s, core_state = %u)",
-+			*state, sl_mac_state_str(*state), core_mac_state);
-+
-+out:
-+	if (sl_ctrl_mac_put(ctrl_mac))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"tx state get - mac removed (ctrl_mac = 0x%p)", ctrl_mac);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_mac_rx_start(u8 ldev_num, u8 lgrp_num, u8 mac_num)
-+{
-+	int                rtn;
-+	struct sl_ctrl_mac *ctrl_mac;
-+
-+	ctrl_mac = sl_ctrl_mac_get(ldev_num, lgrp_num, mac_num);
-+	if (!ctrl_mac) {
-+		sl_ctrl_log_err(NULL, LOG_NAME, "rx start - NULL mac");
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_mac_kref_get_unless_zero(ctrl_mac)) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"rx start - kref unavailable (ctrl_mac = 0x%p)", ctrl_mac);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_mac, LOG_NAME, "rx start");
-+
-+	SL_CTRL_MAC_COUNTER_INC(ctrl_mac, MAC_RX_START_CMD);
-+
-+	rtn = sl_core_mac_rx_start(ldev_num, lgrp_num, mac_num);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_mac, LOG_NAME, "rx start - core_mac_rx_start failed [%d]", rtn);
-+		SL_CTRL_MAC_COUNTER_INC(ctrl_mac, MAC_RX_START_FAIL);
-+		goto out;
-+	}
-+
-+	SL_CTRL_MAC_COUNTER_INC(ctrl_mac, MAC_RX_STARTED);
-+
-+	rtn = 0;
-+
-+out:
-+
-+	if (sl_ctrl_mac_put(ctrl_mac))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"rx start - mac removed (ctrl_mac = 0x%p)", ctrl_mac);
-+
-+	return rtn;
-+}
-+
-+int sl_ctrl_mac_rx_stop(u8 ldev_num, u8 lgrp_num, u8 mac_num)
-+{
-+	int                rtn;
-+	struct sl_ctrl_mac *ctrl_mac;
-+
-+	ctrl_mac = sl_ctrl_mac_get(ldev_num, lgrp_num, mac_num);
-+	if (!ctrl_mac) {
-+		sl_ctrl_log_dbg(NULL, LOG_NAME, "rx stop - NULL mac");
-+		return 0;
-+	}
-+
-+	if (!sl_ctrl_mac_kref_get_unless_zero(ctrl_mac)) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"rx stop - kref unavailable (ctrl_mac = 0x%p)", ctrl_mac);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_mac, LOG_NAME, "rx stop");
-+
-+	SL_CTRL_MAC_COUNTER_INC(ctrl_mac, MAC_RX_STOP_CMD);
-+
-+	rtn = sl_core_mac_rx_stop(ldev_num, lgrp_num, mac_num);
-+	if (rtn) {
-+		sl_ctrl_log_err_trace(ctrl_mac, LOG_NAME, "rx stop - core_mac_rx_stop failed [%d]", rtn);
-+		SL_CTRL_MAC_COUNTER_INC(ctrl_mac, MAC_RX_STOP_FAIL);
-+		goto out;
-+	}
-+
-+	SL_CTRL_MAC_COUNTER_INC(ctrl_mac, MAC_RX_STOPPED);
-+
-+	rtn = 0;
-+
-+out:
-+
-+	sl_ctrl_mac_put(ctrl_mac);
-+
-+	return rtn;
-+}
-+
-+int sl_ctrl_mac_rx_state_get(u8 ldev_num, u8 lgrp_num, u8 mac_num, u32 *state)
-+{
-+	int                rtn;
-+	struct sl_ctrl_mac *ctrl_mac;
-+	u32                core_mac_state;
-+
-+	ctrl_mac = sl_ctrl_mac_get(ldev_num, lgrp_num, mac_num);
-+	if (!ctrl_mac) {
-+		sl_ctrl_log_dbg(NULL, LOG_NAME, "rx state get - NULL mac");
-+		*state = SL_MAC_STATE_OFF;
-+		return 0;
-+	}
-+
-+	if (!sl_ctrl_mac_kref_get_unless_zero(ctrl_mac)) {
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"rx state get - kref unavailable (ctrl_mac = 0x%p)", ctrl_mac);
-+		*state = SL_MAC_STATE_OFF;
-+		return 0;
-+	}
-+
-+	rtn = sl_core_mac_rx_state_get(ldev_num, lgrp_num, mac_num, &core_mac_state);
-+	if (rtn) {
-+		sl_ctrl_log_dbg(ctrl_mac, LOG_NAME, "rx state get - core_mac_rx_state_get failed [%d]", rtn);
-+		*state = SL_MAC_STATE_OFF;
-+		goto out;
-+	}
-+
-+	switch (core_mac_state) {
-+	case SL_CORE_MAC_STATE_ON:
-+		*state = SL_MAC_STATE_ON;
-+		break;
-+	default:
-+		*state = SL_MAC_STATE_OFF;
-+		break;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_mac, LOG_NAME, "rx state get (state = %u %s, core_state = %u)",
-+			*state, sl_mac_state_str(*state), core_mac_state);
-+
-+out:
-+
-+	if (sl_ctrl_mac_put(ctrl_mac))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"rx state get - mac removed (ctrl_mac = 0x%p)", ctrl_mac);
-+
-+	return 0;
-+}
-+
-+int sl_ctrl_mac_reset(u8 ldev_num, u8 lgrp_num, u8 mac_num)
-+{
-+	int                tx_rtn;
-+	int                rx_rtn;
-+	int                rtn = 0;
-+	struct sl_ctrl_mac *ctrl_mac;
-+
-+	ctrl_mac = sl_ctrl_mac_get(ldev_num, lgrp_num, mac_num);
-+	if (!ctrl_mac) {
-+		sl_ctrl_log_dbg(NULL, LOG_NAME, "reset - NULL mac");
-+		return 0;
-+	}
-+
-+	if (!sl_ctrl_mac_kref_get_unless_zero(ctrl_mac)) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"reset - kref unavailable (ctrl_mac = 0x%p)", ctrl_mac);
-+		return -EBADRQC;
-+	}
-+
-+	sl_ctrl_log_dbg(ctrl_mac, LOG_NAME, "reset");
-+
-+	SL_CTRL_MAC_COUNTER_INC(ctrl_mac, MAC_RESET_CMD);
-+
-+	tx_rtn = sl_core_mac_tx_stop(ldev_num, lgrp_num, mac_num);
-+	if (tx_rtn) {
-+		/* Log error, but allow the function to continue to mac rx stop */
-+		sl_ctrl_log_err_trace(ctrl_mac, LOG_NAME, "reset - core_mac_tx_stop failed [%d]", tx_rtn);
-+	}
-+
-+	rx_rtn = sl_core_mac_rx_stop(ldev_num, lgrp_num, mac_num);
-+	if (rx_rtn) {
-+		/* Log error, but allow the function to continue execution */
-+		sl_ctrl_log_err_trace(ctrl_mac, LOG_NAME, "core_mac_rx_stop failed [%d]", rx_rtn);
-+	}
-+
-+	if (tx_rtn && rx_rtn) {
-+		SL_CTRL_MAC_COUNTER_INC(ctrl_mac, MAC_RESET_FAIL);
-+		rtn = -EIO;
-+	} else {
-+		SL_CTRL_MAC_COUNTER_INC(ctrl_mac, MAC_RESET);
-+	}
-+
-+	sl_ctrl_mac_put(ctrl_mac);
-+
-+	return rtn;
-+}
-+
-+int sl_ctrl_mac_info_map_get(u8 ldev_num, u8 lgrp_num, u8 mac_num, u64 *info_map)
-+{
-+	struct sl_ctrl_mac *ctrl_mac;
-+
-+	ctrl_mac = sl_ctrl_mac_get(ldev_num, lgrp_num, mac_num);
-+	if (!ctrl_mac) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"info map get NULL mac (ldev_num = %u, lgrp_num = %u, mac_num = %u)",
-+				ldev_num, lgrp_num, mac_num);
-+		return -EBADRQC;
-+	}
-+
-+	if (!sl_ctrl_mac_kref_get_unless_zero(ctrl_mac)) {
-+		sl_ctrl_log_err(NULL, LOG_NAME,
-+				"info map get kref_get_unless_zero failed (ctrl_mac = 0x%p)",
-+				ctrl_mac);
-+		return -EBADRQC;
-+	}
-+
-+	*info_map = sl_core_mac_info_map_get(ldev_num, lgrp_num, mac_num);
-+
-+	sl_ctrl_log_dbg(ctrl_mac, LOG_NAME, "info map get (info_map = 0x%llX)", *info_map);
-+
-+	if (sl_ctrl_mac_put(ctrl_mac))
-+		sl_ctrl_log_dbg(NULL, LOG_NAME,
-+				"info map get - mac removed (ctrl_mac = 0x%p)", ctrl_mac);
-+
-+	return 0;
-+}
-diff --git a/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_mac_counters.c b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_mac_counters.c
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp_config.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp_config.c
 new file mode 100644
-index 000000000000..a30e64f80122
+index 000000000000..b2181e5114ee
 --- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_mac_counters.c
-@@ -0,0 +1,56 @@
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp_config.c
+@@ -0,0 +1,438 @@
 +// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2025-2026 Hewlett Packard Enterprise Development LP */
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
 +
-+#include <linux/slab.h>
-+#include <linux/atomic.h>
-+#include <linux/types.h>
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++#include <linux/hpe/sl/sl_lgrp.h>
 +
-+#include "sl_ctrl_mac.h"
-+#include "sl_ctrl_mac_counters.h"
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "data/sl_ctrl_data_lgrp.h"
++#include "data/sl_ctrl_data_lgrp_trace.h"
 +
-+#define SL_CTRL_MAC_COUNTER_INIT(_mac, _counter) \
-+	(_mac)->counters[_counter].name = #_counter
++#define is_flag_set(_flags, _flag) ({              \
++		typeof(_flags) __flags = (_flags); \
++		typeof(_flag)  __flag  = (_flag);  \
++						   \
++		((__flags & __flag) == __flag);    \
++})
 +
-+int sl_ctrl_mac_counters_init(struct sl_ctrl_mac *ctrl_mac)
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t mfs_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
 +{
-+	if (ctrl_mac->counters)
-+		return -EALREADY;
++	int                  rtn;
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	u32                  mfs;
 +
-+	ctrl_mac->counters = kzalloc(sizeof(*ctrl_mac->counters) * SL_CTRL_MAC_COUNTERS_COUNT, GFP_KERNEL);
-+	if (!ctrl_mac->counters)
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
++
++	rtn = sl_ctrl_data_lgrp_mfs_get(ctrl_lgrp, &mfs);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "mfs show (mfs = %u)", mfs);
++
++	return sysfs_emit(buf, "%u\n", mfs);
++}
++
++static ssize_t furcation_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	u32                  furcation;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
++
++	rtn = sl_ctrl_data_lgrp_furcation_get(ctrl_lgrp, &furcation);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "furcation show (furcation = %u %s)",
++		   furcation, sl_lgrp_furcation_str(furcation));
++
++	return sysfs_emit(buf, "%s\n", sl_lgrp_furcation_str(furcation));
++}
++
++static ssize_t fec_mode_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	u32                  fec_mode;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
++
++	rtn = sl_ctrl_data_lgrp_fec_mode_get(ctrl_lgrp, &fec_mode);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "fec mode show (mode = %u %s)",
++		   fec_mode, sl_lgrp_fec_mode_str(fec_mode));
++
++	return sysfs_emit(buf, "%s\n", sl_lgrp_fec_mode_str(fec_mode));
++}
++
++static ssize_t tech_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	int                  idx;
++	char                 output[50];
++	u32                  tech_map;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
++
++	rtn = sl_ctrl_data_lgrp_tech_map_get(ctrl_lgrp, &tech_map);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "tech map show (map = 0x%X)", tech_map);
++
++	if (tech_map == 0)
++		return sysfs_emit(buf, "none\n");
++
++	idx = 0;
++	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CK_400G))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CK_400G));
++	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CK_200G))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CK_200G));
++	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CK_100G))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CK_100G));
++	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_BS_200G))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_BS_200G));
++	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CD_100G))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CD_100G));
++	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CD_50G))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CD_50G));
++	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_BJ_100G))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_BJ_100G));
++	if (!idx)
++		return sysfs_emit(buf, "none\n");
++	output[idx - 1] = '\0';
++
++	return sysfs_emit(buf, "%s\n", output);
++}
++
++static ssize_t fec_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	int                  idx;
++	char                 output[20];
++	u32                  fec_map;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
++
++	rtn = sl_ctrl_data_lgrp_fec_map_get(ctrl_lgrp, &fec_map);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "fec map show (map = 0x%X)", fec_map);
++
++	if (fec_map == 0)
++		return sysfs_emit(buf, "none\n");
++
++	idx = 0;
++	if (is_flag_set(fec_map, SL_LGRP_CONFIG_FEC_RS_LL))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_lgrp_config_fec_str(SL_LGRP_CONFIG_FEC_RS_LL));
++	if (is_flag_set(fec_map, SL_LGRP_CONFIG_FEC_RS))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_lgrp_config_fec_str(SL_LGRP_CONFIG_FEC_RS));
++	if (!idx)
++		return sysfs_emit(buf, "none\n");
++	output[idx - 1] = '\0';
++
++	return sysfs_emit(buf, "%s\n", output);
++}
++
++static ssize_t link_type_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	u32                  options;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
++
++	rtn = sl_ctrl_data_lgrp_options_get(ctrl_lgrp, &options);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if (options & SL_LGRP_CONFIG_OPT_FABRIC)
++		return sysfs_emit(buf, "fabric\n");
++
++	return sysfs_emit(buf, "edge\n");
++}
++
++static ssize_t loopback_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	u32                  options;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
++
++	rtn = sl_ctrl_data_lgrp_options_get(ctrl_lgrp, &options);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "loopback show (options = 0x%X)", options);
++
++	if (options & SL_LGRP_CONFIG_OPT_SERDES_LOOPBACK_ENABLE)
++		return sysfs_emit(buf, "enabled-serdes\n");
++
++	return sysfs_emit(buf, "disabled\n");
++}
++
++static struct kobj_attribute lgrp_mfs       = __ATTR_RO(mfs);
++static struct kobj_attribute lgrp_furcation = __ATTR_RO(furcation);
++static struct kobj_attribute lgrp_fec_mode  = __ATTR_RO(fec_mode);
++static struct kobj_attribute lgrp_tech_map  = __ATTR_RO(tech_map);
++static struct kobj_attribute lgrp_fec_map   = __ATTR_RO(fec_map);
++static struct kobj_attribute lgrp_link_type = __ATTR_RO(link_type);
++static struct kobj_attribute lgrp_loopback  = __ATTR_RO(loopback);
++
++static ssize_t err_trace_enable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	bool                 is_err_trace_enabled;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
++
++	rtn = sl_ctrl_data_lgrp_is_err_trace_enabled(ctrl_lgrp, &is_err_trace_enabled);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "err trace enable show (is_err_trace_enabled = %u)", is_err_trace_enabled);
++
++	return sysfs_emit(buf, "%u\n", is_err_trace_enabled);
++}
++
++static ssize_t err_trace_enable_store(struct kobject *kobj, struct kobj_attribute *kattr, const char *buf, size_t count)
++{
++	int                  rtn;
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	u8                   val;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
++
++	rtn = kstrtou8(buf, 0, &val);
++	if (rtn) {
++		sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++			   "err trace enable store failed [%d]", rtn);
++		return rtn;
++	}
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "err trace enable store (val = %u)", val);
++
++	rtn = sl_ctrl_data_lgrp_err_trace_enable_set(ctrl_lgrp, val);
++	if (rtn) {
++		sl_log_err_trace(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++				 "err trace enable store failed [%d]", rtn);
++		return rtn;
++	}
++
++	return count;
++}
++
++static struct kobj_attribute lgrp_err_trace_enable = __ATTR_RW(err_trace_enable);
++
++static ssize_t warn_trace_enable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	bool                 is_warn_trace_enabled;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
++
++	rtn = sl_ctrl_data_lgrp_is_warn_trace_enabled(ctrl_lgrp, &is_warn_trace_enabled);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "warn trace enable show (is_warn_trace_enabled = %u)",
++		   is_warn_trace_enabled);
++
++	return sysfs_emit(buf, "%u\n", is_warn_trace_enabled);
++}
++
++static ssize_t warn_trace_enable_store(struct kobject *kobj, struct kobj_attribute *kattr,
++				       const char *buf, size_t count)
++{
++	int                  rtn;
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	u8                   val;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
++
++	rtn = kstrtou8(buf, 0, &val);
++	if (rtn) {
++		sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++			   "warn trace enable store failed [%d]", rtn);
++		return rtn;
++	}
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "warn trace enable store (val = %u)", val);
++
++	rtn = sl_ctrl_data_lgrp_warn_trace_set(ctrl_lgrp, val);
++	if (rtn) {
++		sl_log_err_trace(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++				 "warn trace enable store failed [%d]", rtn);
++		return rtn;
++	}
++
++	return count;
++}
++
++static struct kobj_attribute lgrp_warn_trace_enable = __ATTR_RW(warn_trace_enable);
++
++static ssize_t serdes_lane_io_trace_enable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	bool                 serdes_lane_io_trace;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
++
++	serdes_lane_io_trace = sl_ctrl_data_lgrp_is_serdes_lane_io_trace_enabled(ctrl_lgrp);
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "core init io trace enable show (serdes_lane_io_trace = %s)",
++		   serdes_lane_io_trace ? "enabled" : "disabled");
++
++	return sysfs_emit(buf, "%u\n", serdes_lane_io_trace ? 1 : 0);
++}
++
++static ssize_t serdes_lane_io_trace_enable_store(struct kobject *kobj, struct kobj_attribute *kattr,
++						 const char *buf, size_t count)
++{
++	int                  rtn;
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	u8                   val;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
++
++	rtn = kstrtou8(buf, 0, &val);
++	if (rtn) {
++		sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++			   "core init io trace enable store failed [%d]", rtn);
++		return rtn;
++	}
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "core init io trace enable store (val = %u)", val);
++
++	rtn = sl_ctrl_data_lgrp_serdes_lane_io_trace_set(ctrl_lgrp, (val == 1) ? true : false);
++	if (rtn) {
++		sl_log_err_trace(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++				 "core init io trace enable store failed [%d]", rtn);
++		return rtn;
++	}
++
++	return count;
++}
++
++static struct kobj_attribute lgrp_serdes_lane_io_trace_enable = __ATTR_RW(serdes_lane_io_trace_enable);
++
++static ssize_t fabric_link_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	u32                  options;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
++
++	rtn = sl_ctrl_data_lgrp_options_get(ctrl_lgrp, &options);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "fabric link show (fabric link = %s)",
++		   (options & SL_LGRP_CONFIG_OPT_FABRIC) ? "enabled" : "disabled");
++
++	return sysfs_emit(buf, "%s\n",
++			 (options & SL_LGRP_CONFIG_OPT_FABRIC) ? "enabled" : "disabled");
++}
++
++static struct kobj_attribute lgrp_fabric_link = __ATTR_RO(fabric_link);
++
++static ssize_t r1_partner_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	u32                  options;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, config_kobj);
++
++	rtn = sl_ctrl_data_lgrp_options_get(ctrl_lgrp, &options);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "r1 partner show (r1 partner = %s)",
++		   (options & SL_LGRP_CONFIG_OPT_R1) ? "enabled" : "disabled");
++
++	return sysfs_emit(buf, "%s\n", (options & SL_LGRP_CONFIG_OPT_R1) ? "enabled" : "disabled");
++}
++
++static struct kobj_attribute lgrp_r1_partner  = __ATTR_RO(r1_partner);
++
++static struct attribute *lgrp_config_attrs[] = {
++	&lgrp_mfs.attr,
++	&lgrp_furcation.attr,
++	&lgrp_fec_mode.attr,
++	&lgrp_tech_map.attr,
++	&lgrp_fec_map.attr,
++	&lgrp_link_type.attr,
++	&lgrp_loopback.attr,
++	&lgrp_err_trace_enable.attr,
++	&lgrp_warn_trace_enable.attr,
++	&lgrp_serdes_lane_io_trace_enable.attr,
++	&lgrp_fabric_link.attr,
++	&lgrp_r1_partner.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(lgrp_config);
++
++static struct kobj_type config_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = lgrp_config_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_lgrp_config_create(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "lgrp config create (lgrp = 0x%p)", ctrl_lgrp);
++
++	rtn = kobject_init_and_add(&(ctrl_lgrp->config_kobj), &config_info, ctrl_lgrp->parent_kobj, "config");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "lgrp config create failed [%d]", rtn);
++		kobject_put(&(ctrl_lgrp->config_kobj));
 +		return -ENOMEM;
-+
-+	SL_CTRL_MAC_COUNTER_INIT(ctrl_mac, MAC_TX_START_CMD);
-+	SL_CTRL_MAC_COUNTER_INIT(ctrl_mac, MAC_TX_STARTED);
-+	SL_CTRL_MAC_COUNTER_INIT(ctrl_mac, MAC_TX_START_FAIL);
-+
-+	SL_CTRL_MAC_COUNTER_INIT(ctrl_mac, MAC_TX_STOP_CMD);
-+	SL_CTRL_MAC_COUNTER_INIT(ctrl_mac, MAC_TX_STOPPED);
-+	SL_CTRL_MAC_COUNTER_INIT(ctrl_mac, MAC_TX_STOP_FAIL);
-+
-+	SL_CTRL_MAC_COUNTER_INIT(ctrl_mac, MAC_RX_START_CMD);
-+	SL_CTRL_MAC_COUNTER_INIT(ctrl_mac, MAC_RX_STARTED);
-+	SL_CTRL_MAC_COUNTER_INIT(ctrl_mac, MAC_RX_START_FAIL);
-+
-+	SL_CTRL_MAC_COUNTER_INIT(ctrl_mac, MAC_RX_STOP_CMD);
-+	SL_CTRL_MAC_COUNTER_INIT(ctrl_mac, MAC_RX_STOPPED);
-+	SL_CTRL_MAC_COUNTER_INIT(ctrl_mac, MAC_RX_STOP_FAIL);
-+
-+	SL_CTRL_MAC_COUNTER_INIT(ctrl_mac, MAC_RESET_CMD);
-+	SL_CTRL_MAC_COUNTER_INIT(ctrl_mac, MAC_RESET);
-+	SL_CTRL_MAC_COUNTER_INIT(ctrl_mac, MAC_RESET_FAIL);
++	}
 +
 +	return 0;
-+}
-+
-+int sl_ctrl_mac_counter_get(struct sl_ctrl_mac *ctrl_mac, u32 counter, int *count)
-+{
-+	*count = atomic_read(&ctrl_mac->counters[counter].count);
-+
++#else /* CONFIG_SYSFS */
 +	return 0;
++#endif /* CONFIG_SYSFS */
 +}
 +
-+void sl_ctrl_mac_counters_del(struct sl_ctrl_mac *ctrl_mac)
++void sl_sysfs_lgrp_config_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
 +{
-+	kfree(ctrl_mac->counters);
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "lgrp config delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	kobject_put(&(ctrl_lgrp->config_kobj));
++#endif /* CONFIG_SYSFS */
 +}
-diff --git a/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_media_counters.c b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_media_counters.c
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp_policy.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp_policy.c
 new file mode 100644
-index 000000000000..0f12a479d017
+index 000000000000..ccb9bf627ee4
 --- /dev/null
-+++ b/drivers/net/ethernet/hpe/sl/ctrl/sl_ctrl_media_counters.c
-@@ -0,0 +1,157 @@
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_lgrp_policy.c
+@@ -0,0 +1,53 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_core_link.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static struct attribute *lgrp_policy_attrs[] = {
++	NULL
++};
++ATTRIBUTE_GROUPS(lgrp_policy);
++
++static struct kobj_type policy_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = lgrp_policy_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_lgrp_policy_create(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "lgrp policy create (lgrp = 0x%p)", ctrl_lgrp);
++
++	rtn = kobject_init_and_add(&(ctrl_lgrp->policy_kobj), &policy_info, ctrl_lgrp->parent_kobj, "policies");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "lgrp policy create failed [%d]", rtn);
++		kobject_put(&(ctrl_lgrp->policy_kobj));
++		return -ENOMEM;
++	}
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_lgrp_policy_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "lgrp policy delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	kobject_put(&(ctrl_lgrp->policy_kobj));
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link.c
+new file mode 100644
+index 000000000000..df0f51c5f77e
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link.c
+@@ -0,0 +1,830 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2023-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "data/sl_ctrl_data_link.h"
++#include "sl_ctrl_link.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_ldev.h"
++#include "sl_core_link.h"
++#include "sl_core_str.h"
++#include "hw/sl_core_hw_an.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u32                  state;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
++
++	rtn = sl_ctrl_data_link_state_get(ctrl_link, &state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "state show (link = 0x%p, state = %u %s)", ctrl_link, state, sl_link_state_str(state));
++
++	return sysfs_emit(buf, "%s\n", sl_link_state_str(state));
++}
++
++static ssize_t speed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  state;
++	u32                  speed;
++	int		     rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
++
++	rtn = sl_ctrl_link_state_get_cmd(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
++					 ctrl_link->ctrl_lgrp->num, ctrl_link->num, &state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	rtn = sl_core_link_speed_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
++				     ctrl_link->ctrl_lgrp->num, ctrl_link->num, &speed);
++	if (rtn == -ENOLINK)
++		return sysfs_emit(buf, "no-link\n");
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "speed show (state = %u %s, speed = 0x%X %s)",
++		   state, sl_link_state_str(state), speed, sl_lgrp_config_tech_str(speed));
++
++	if ((state != SL_LINK_STATE_UP) && (state != SL_LINK_STATE_UP_DOWN_REQ))
++		return sysfs_emit(buf, "no-link\n");
++
++	return sysfs_emit(buf, "%s\n", sl_lgrp_config_tech_str(speed));
++}
++
++static ssize_t ccw_warn_limit_crossed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	bool                 is_limit_crossed;
++	time64_t             limit_crossed_time;
++	int		     rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
++
++	rtn = sl_core_link_ccw_warn_limit_crossed_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
++						      ctrl_link->num, &is_limit_crossed, &limit_crossed_time);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "ccw warn limit crossed show (is_limit_crossed = %d %s)", is_limit_crossed,
++		is_limit_crossed ? "yes" : "no");
++
++	return sysfs_emit(buf, "%s\n", is_limit_crossed ? "yes" : "no");
++}
++
++static ssize_t ccw_warn_limit_last_crossed_time_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	bool                 is_limit_crossed;
++	time64_t             limit_crossed_time;
++	int		     rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
++
++	rtn = sl_core_link_ccw_warn_limit_crossed_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
++						      ctrl_link->num, &is_limit_crossed, &limit_crossed_time);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "ccw warn limit last crossed time show (is_limit_crossed = 0x%X, time = %lld %ptTt %ptTd)",
++		is_limit_crossed, limit_crossed_time, &limit_crossed_time, &limit_crossed_time);
++
++	if (!is_limit_crossed)
++		return sysfs_emit(buf, "not-crossed\n");
++
++	return sysfs_emit(buf, "%ptTt %ptTd\n", &limit_crossed_time, &limit_crossed_time);
++}
++
++static ssize_t ucw_warn_limit_crossed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	bool                 is_limit_crossed;
++	time64_t             limit_crossed_time;
++	int		     rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
++
++	rtn = sl_core_link_ucw_warn_limit_crossed_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
++						      ctrl_link->num, &is_limit_crossed, &limit_crossed_time);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "ucw warn limit crossed show (is_limit_crossed = %d %s)", is_limit_crossed,
++		is_limit_crossed ? "yes" : "no");
++
++	return sysfs_emit(buf, "%s\n", is_limit_crossed ? "yes" : "no");
++}
++
++static ssize_t ucw_warn_limit_last_crossed_time_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	bool                 is_limit_crossed;
++	time64_t             limit_crossed_time;
++	int		     rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
++
++	rtn = sl_core_link_ucw_warn_limit_crossed_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
++						      ctrl_link->num, &is_limit_crossed, &limit_crossed_time);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "ucw warn limit last crossed time show (is_limit_crossed = 0x%X, time = %lld %ptTt %ptTd)",
++		is_limit_crossed, limit_crossed_time, &limit_crossed_time, &limit_crossed_time);
++
++	if (!is_limit_crossed)
++		return sysfs_emit(buf, "not-crossed\n");
++
++	return sysfs_emit(buf, "%ptTt %ptTd\n", &limit_crossed_time, &limit_crossed_time);
++}
++
++static ssize_t up_count_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  up_count;
++	int		     rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
++
++	rtn = sl_ctrl_link_up_count_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
++					ctrl_link->num, &up_count);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "up count show (up_count = %u)", up_count);
++
++	return sysfs_emit(buf, "%u\n", up_count);
++}
++
++static ssize_t time_to_link_up_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	u32                  state;
++	struct sl_ctrl_link *ctrl_link;
++	s64                  attempt_time_ms;
++	s64                  total_time_ms;
++	s64                  up_time_ms;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
++
++	rtn = sl_ctrl_data_link_state_get(ctrl_link, &state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if ((state != SL_LINK_STATE_UP) && (state != SL_LINK_STATE_UP_DOWN_REQ))
++		return sysfs_emit(buf, "no-link\n");
++
++	rtn = sl_ctrl_link_up_clocks_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
++					 ctrl_link->num, &attempt_time_ms, &total_time_ms, &up_time_ms);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "time to link up show (attempt_time = %lldms, total_time = %lldms)",
++		   attempt_time_ms, total_time_ms);
++
++	return sysfs_emit(buf, "%lld\n", attempt_time_ms);
++}
++
++static ssize_t total_time_to_link_up_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	u32                  state;
++	struct sl_ctrl_link *ctrl_link;
++	s64                  attempt_time_ms;
++	s64                  total_time_ms;
++	s64                  up_time_ms;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
++
++	rtn = sl_ctrl_data_link_state_get(ctrl_link, &state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if ((state != SL_LINK_STATE_UP) && (state != SL_LINK_STATE_UP_DOWN_REQ))
++		return sysfs_emit(buf, "no-link\n");
++
++	rtn = sl_ctrl_link_up_clocks_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
++					 ctrl_link->num, &attempt_time_ms, &total_time_ms, &up_time_ms);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "total time to link up show (attempt_time = %lldms, total_time = %lldms)",
++		   attempt_time_ms, total_time_ms);
++
++	return sysfs_emit(buf, "%lld\n", total_time_ms);
++}
++
++static ssize_t up_time_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	u32                  state;
++	struct sl_ctrl_link *ctrl_link;
++	s64                  attempt_time_ms;
++	s64                  total_time_ms;
++	s64                  up_time_ms;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
++
++	rtn = sl_ctrl_data_link_state_get(ctrl_link, &state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if ((state != SL_LINK_STATE_UP) && (state != SL_LINK_STATE_UP_DOWN_REQ))
++		return sysfs_emit(buf, "no-link\n");
++
++	rtn = sl_ctrl_link_up_clocks_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
++					 ctrl_link->num, &attempt_time_ms, &total_time_ms, &up_time_ms);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "up time show (up_time = %lldms)", up_time_ms);
++
++	return sysfs_emit(buf, "%lld\n", up_time_ms);
++}
++
++static ssize_t lp_caps_state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	u32                  lp_caps_state;
++	struct sl_ctrl_link *ctrl_link;
++	int		     rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
++
++	rtn = sl_ctrl_link_an_lp_caps_state_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
++						ctrl_link->num, &lp_caps_state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "an lp caps state show (lp_caps_state = %u %s)",
++		   lp_caps_state, sl_link_an_lp_caps_state_str(lp_caps_state));
++
++	return sysfs_emit(buf, "%s\n", sl_link_an_lp_caps_state_str(lp_caps_state));
++}
++
++static ssize_t last_autoneg_fail_cause_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  fail_cause;
++	time64_t             fail_time;
++	int		     rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
++
++	rtn = sl_ctrl_link_an_fail_cause_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
++					     ctrl_link->num, &fail_cause, &fail_time);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "last autoneg fail casue show (cause = %u %s)",
++		   fail_cause, sl_core_link_an_fail_cause_str(fail_cause));
++
++	if (fail_cause == SL_CORE_HW_AN_FAIL_CAUSE_NONE)
++		return sysfs_emit(buf, "no-fail\n");
++
++	return sysfs_emit(buf, "%s\n", sl_core_link_an_fail_cause_str(fail_cause));
++}
++
++static ssize_t last_autoneg_fail_time_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  fail_cause;
++	time64_t             fail_time;
++	int		     rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
++
++	rtn = sl_ctrl_link_an_fail_cause_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
++					     ctrl_link->num, &fail_cause, &fail_time);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "last autoneg fail time show (cause = %u %s, time = %lld %ptTt %ptTd)",
++		   fail_cause, sl_core_link_an_fail_cause_str(fail_cause), fail_time, &fail_time, &fail_time);
++
++	if (fail_cause == SL_CORE_HW_AN_FAIL_CAUSE_NONE)
++		return sysfs_emit(buf, "no-fail\n");
++
++	return sysfs_emit(buf, "%ptTt %ptTd\n", &fail_time, &fail_time);
++}
++
++static ssize_t info_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u64                  info_map;
++	char                 info_map_str[900];
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, kobj);
++
++	rtn = sl_ctrl_link_info_map_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
++					ctrl_link->ctrl_lgrp->num, ctrl_link->num, &info_map);
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "info map show sl_ctrl_link_info_map_get failed [%d]", rtn);
++		return sysfs_emit(buf, "no-link\n");
++	}
++
++	sl_core_info_map_str(info_map, info_map_str, sizeof(info_map_str));
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "info map show (info_map = 0x%llX %s)", info_map, info_map_str);
++
++	return sysfs_emit(buf, "%s\n", info_map_str);
++}
++
++static struct kobj_attribute link_state                            = __ATTR_RO(state);
++static struct kobj_attribute link_speed                            = __ATTR_RO(speed);
++static struct kobj_attribute link_ccw_warn_limit_crossed           = __ATTR_RO(ccw_warn_limit_crossed);
++static struct kobj_attribute link_ccw_warn_limit_last_crossed_time = __ATTR_RO(ccw_warn_limit_last_crossed_time);
++static struct kobj_attribute link_ucw_warn_limit_crossed           = __ATTR_RO(ucw_warn_limit_crossed);
++static struct kobj_attribute link_ucw_warn_limit_last_crossed_time = __ATTR_RO(ucw_warn_limit_last_crossed_time);
++static struct kobj_attribute link_up_count                         = __ATTR_RO(up_count);
++static struct kobj_attribute link_up_time_ms                       = __ATTR_RO(up_time_ms);
++static struct kobj_attribute link_time_to_link_up_ms               = __ATTR_RO(time_to_link_up_ms);
++static struct kobj_attribute link_total_time_to_link_up_ms         = __ATTR_RO(total_time_to_link_up_ms);
++static struct kobj_attribute link_lp_caps_state                    = __ATTR_RO(lp_caps_state);
++static struct kobj_attribute link_last_autoneg_fail_cause          = __ATTR_RO(last_autoneg_fail_cause);
++static struct kobj_attribute link_last_autoneg_fail_time           = __ATTR_RO(last_autoneg_fail_time);
++static struct kobj_attribute link_info_map                         = __ATTR_RO(info_map);
++
++static struct attribute *link_attrs[] = {
++	&link_state.attr,
++	&link_speed.attr,
++	&link_ccw_warn_limit_crossed.attr,
++	&link_ccw_warn_limit_last_crossed_time.attr,
++	&link_ucw_warn_limit_crossed.attr,
++	&link_ucw_warn_limit_last_crossed_time.attr,
++	&link_up_count.attr,
++	&link_up_time_ms.attr,
++	&link_time_to_link_up_ms.attr,
++	&link_total_time_to_link_up_ms.attr,
++	&link_lp_caps_state.attr,
++	&link_last_autoneg_fail_cause.attr,
++	&link_last_autoneg_fail_time.attr,
++	&link_info_map.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(link);
++
++static struct kobj_type link_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_groups,
++};
++
++static ssize_t last_down_cause_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u64                  down_cause_map;
++	time64_t             down_time;
++	char                 cause_str[SL_LINK_DOWN_CAUSE_STR_SIZE];
++	int		     rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, last_down_kobj);
++
++	rtn = sl_core_link_last_down_cause_map_info_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
++							ctrl_link->num, num, &down_cause_map, &down_time);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_link_down_cause_map_with_info_str(down_cause_map, cause_str, sizeof(cause_str));
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "last down cause show (num = %u, cause_map = 0x%llX %s)",
++		   num, down_cause_map, cause_str);
++
++	return sysfs_emit(buf, "%s\n", cause_str);
++}
++
++#define link_last_down_cause_map(_num)                                                                               \
++	static inline ssize_t cause_map_##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
++	{                                                                                                            \
++		return last_down_cause_map_show(kobj, kattr, buf, (_num));                                           \
++	}                                                                                                            \
++	static struct kobj_attribute link_last_down_cause_map_##_num = __ATTR_RO(cause_map_##_num)
++
++link_last_down_cause_map(0);
++link_last_down_cause_map(1);
++link_last_down_cause_map(2);
++link_last_down_cause_map(3);
++link_last_down_cause_map(4);
++link_last_down_cause_map(5);
++link_last_down_cause_map(6);
++link_last_down_cause_map(7);
++link_last_down_cause_map(8);
++link_last_down_cause_map(9);
++
++static ssize_t last_down_time_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u64                  down_cause_map;
++	time64_t             down_time;
++	int		     rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, last_down_kobj);
++
++	rtn = sl_core_link_last_down_cause_map_info_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
++							ctrl_link->num, num, &down_cause_map, &down_time);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "last down time show (num = %u, cause_map = 0x%llX, time = %lld %ptTt %ptTd)",
++		   num, down_cause_map, down_time, &down_time, &down_time);
++
++	if (down_cause_map == SL_LINK_DOWN_CAUSE_NONE)
++		return sysfs_emit(buf, "none\n");
++
++	return sysfs_emit(buf, "%ptTt %ptTd\n", &down_time, &down_time);
++}
++
++#define link_last_down_time(_num)                                                                               \
++	static inline ssize_t time_##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
++	{                                                                                                       \
++		return last_down_time_show(kobj, kattr, buf, (_num));                                           \
++	}                                                                                                       \
++	static struct kobj_attribute link_last_down_time_##_num = __ATTR_RO(time_##_num)
++
++link_last_down_time(0);
++link_last_down_time(1);
++link_last_down_time(2);
++link_last_down_time(3);
++link_last_down_time(4);
++link_last_down_time(5);
++link_last_down_time(6);
++link_last_down_time(7);
++link_last_down_time(8);
++link_last_down_time(9);
++
++static struct attribute *last_down_attrs[] = {
++	&link_last_down_cause_map_0.attr,
++	&link_last_down_time_0.attr,
++	&link_last_down_cause_map_1.attr,
++	&link_last_down_time_1.attr,
++	&link_last_down_cause_map_2.attr,
++	&link_last_down_time_2.attr,
++	&link_last_down_cause_map_3.attr,
++	&link_last_down_time_3.attr,
++	&link_last_down_cause_map_4.attr,
++	&link_last_down_time_4.attr,
++	&link_last_down_cause_map_5.attr,
++	&link_last_down_time_5.attr,
++	&link_last_down_cause_map_6.attr,
++	&link_last_down_time_6.attr,
++	&link_last_down_cause_map_7.attr,
++	&link_last_down_time_7.attr,
++	&link_last_down_cause_map_8.attr,
++	&link_last_down_time_8.attr,
++	&link_last_down_cause_map_9.attr,
++	&link_last_down_time_9.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(last_down);
++
++static struct kobj_type last_down = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = last_down_groups,
++};
++
++static ssize_t last_up_fail_cause_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u64                  up_fail_cause_map;
++	time64_t             up_fail_time;
++	char                 cause_str[SL_LINK_UP_FAIL_CAUSE_STR_SIZE];
++	int		     rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, last_up_fail_kobj);
++	rtn = sl_core_link_last_up_fail_cause_map_info_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
++							   ctrl_link->num, num, &up_fail_cause_map, &up_fail_time);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_link_down_cause_map_with_info_str(up_fail_cause_map, cause_str, sizeof(cause_str));
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "last up_fail cause show (num = %u, cause_map = 0x%llX %s)",
++		   num, up_fail_cause_map, cause_str);
++
++	return sysfs_emit(buf, "%s\n", cause_str);
++}
++
++#define link_last_up_fail_cause_map(_num)                                                                                    \
++	static inline ssize_t up_fail_cause_map_##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
++	{                                                                                                                    \
++		return last_up_fail_cause_map_show(kobj, kattr, buf, (_num));                                                \
++	}                                                                                                                    \
++	static struct kobj_attribute link_last_up_fail_cause_map_##_num = __ATTR_RO(up_fail_cause_map_##_num)
++
++link_last_up_fail_cause_map(0);
++link_last_up_fail_cause_map(1);
++link_last_up_fail_cause_map(2);
++link_last_up_fail_cause_map(3);
++link_last_up_fail_cause_map(4);
++link_last_up_fail_cause_map(5);
++link_last_up_fail_cause_map(6);
++link_last_up_fail_cause_map(7);
++link_last_up_fail_cause_map(8);
++link_last_up_fail_cause_map(9);
++
++static ssize_t last_up_fail_time_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u64                  up_fail_cause_map;
++	time64_t             up_fail_time;
++	int		     rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, last_up_fail_kobj);
++	rtn = sl_core_link_last_up_fail_cause_map_info_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num,
++							   ctrl_link->num, num, &up_fail_cause_map, &up_fail_time);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "last up_fail time show (num = %u, cause_map = 0x%llX, time = %lld %ptTt %ptTd)",
++		   num, up_fail_cause_map, up_fail_time, &up_fail_time, &up_fail_time);
++
++	if (up_fail_cause_map == SL_LINK_DOWN_CAUSE_NONE)
++		return sysfs_emit(buf, "none\n");
++
++	return sysfs_emit(buf, "%ptTt %ptTd\n", &up_fail_time, &up_fail_time);
++}
++
++#define link_last_up_fail_time(_num)                                                                                    \
++	static inline ssize_t up_fail_time_##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
++	{                                                                                                               \
++		return last_up_fail_time_show(kobj, kattr, buf, (_num));                                                \
++	}                                                                                                               \
++	static struct kobj_attribute link_last_up_fail_time_##_num = __ATTR_RO(up_fail_time_##_num)
++
++link_last_up_fail_time(0);
++link_last_up_fail_time(1);
++link_last_up_fail_time(2);
++link_last_up_fail_time(3);
++link_last_up_fail_time(4);
++link_last_up_fail_time(5);
++link_last_up_fail_time(6);
++link_last_up_fail_time(7);
++link_last_up_fail_time(8);
++link_last_up_fail_time(9);
++
++static struct attribute *last_up_fail_attrs[] = {
++	&link_last_up_fail_cause_map_0.attr,
++	&link_last_up_fail_time_0.attr,
++	&link_last_up_fail_cause_map_1.attr,
++	&link_last_up_fail_time_1.attr,
++	&link_last_up_fail_cause_map_2.attr,
++	&link_last_up_fail_time_2.attr,
++	&link_last_up_fail_cause_map_3.attr,
++	&link_last_up_fail_time_3.attr,
++	&link_last_up_fail_cause_map_4.attr,
++	&link_last_up_fail_time_4.attr,
++	&link_last_up_fail_cause_map_5.attr,
++	&link_last_up_fail_time_5.attr,
++	&link_last_up_fail_cause_map_6.attr,
++	&link_last_up_fail_time_6.attr,
++	&link_last_up_fail_cause_map_7.attr,
++	&link_last_up_fail_time_7.attr,
++	&link_last_up_fail_cause_map_8.attr,
++	&link_last_up_fail_time_8.attr,
++	&link_last_up_fail_cause_map_9.attr,
++	&link_last_up_fail_time_9.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(last_up_fail);
++
++static struct kobj_type last_up_fail = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = last_up_fail_groups,
++};
++
++static int sl_sysfs_link_last_up_fail_create(struct sl_ctrl_link *ctrl_link)
++{
++	int rtn;
++
++	rtn = kobject_init_and_add(&ctrl_link->last_up_fail_kobj,
++				   &last_up_fail, &ctrl_link->kobj, "last_up_fail");
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "last up_fail create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&ctrl_link->last_up_fail_kobj);
++		return rtn;
++	}
++
++	return 0;
++}
++
++static void sl_sysfs_link_last_up_fail_delete(struct sl_ctrl_link *ctrl_link)
++{
++	kobject_put(&ctrl_link->last_up_fail_kobj);
++}
++
++static int sl_sysfs_link_last_down_create(struct sl_ctrl_link *ctrl_link)
++{
++	int rtn;
++
++	rtn = kobject_init_and_add(&ctrl_link->last_down_kobj,
++				   &last_down, &ctrl_link->kobj, "last_down");
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "last down create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&ctrl_link->last_down_kobj);
++		return rtn;
++	}
++
++	return 0;
++}
++
++static void sl_sysfs_link_last_down_delete(struct sl_ctrl_link *ctrl_link)
++{
++	kobject_put(&ctrl_link->last_down_kobj);
++}
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_link_create(struct sl_ctrl_link *ctrl_link)
++{
++#ifdef CONFIG_SYSFS
++	int                  rtn;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link create (num = %u)", ctrl_link->num);
++
++	if (!ctrl_link->parent_kobj) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME, "link create missing parent");
++		return -EBADRQC;
++	}
++
++	core_link = sl_core_link_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
++				     ctrl_link->ctrl_lgrp->num, ctrl_link->num);
++	if (!core_link)
++		return -ENODEV;
++
++	rtn = kobject_init_and_add(&ctrl_link->kobj, &link_info, ctrl_link->parent_kobj, "link");
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "link create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&ctrl_link->kobj);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_link_policy_create(ctrl_link);
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "sl_sysfs_link_policy_create failed [%d]", rtn);
++		kobject_put(&ctrl_link->kobj);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_link_config_create(ctrl_link);
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "sl_sysfs_link_config_create failed [%d]", rtn);
++		sl_sysfs_link_policy_delete(ctrl_link);
++		kobject_put(&ctrl_link->kobj);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_link_degrade_create(core_link, &ctrl_link->kobj);
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "sl_sysfs_link_degrade_create failed [%d]", rtn);
++		sl_sysfs_link_policy_delete(ctrl_link);
++		sl_sysfs_link_config_delete(ctrl_link);
++		kobject_put(&ctrl_link->kobj);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_link_pml_rec_create(core_link, &ctrl_link->kobj);
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME, "sl_sysfs_link_pml_rec_create failed [%d]", rtn);
++		sl_sysfs_link_policy_delete(ctrl_link);
++		sl_sysfs_link_config_delete(ctrl_link);
++		sl_sysfs_link_degrade_delete(core_link);
++		kobject_put(&ctrl_link->kobj);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_link_fec_create(ctrl_link);
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "sl_sysfs_link_fec_create failed [%d]", rtn);
++		sl_sysfs_link_policy_delete(ctrl_link);
++		sl_sysfs_link_config_delete(ctrl_link);
++		sl_sysfs_link_degrade_delete(core_link);
++		sl_sysfs_link_pml_rec_delete(core_link);
++		kobject_put(&ctrl_link->kobj);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_link_caps_create(ctrl_link);
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "sl_sysfs_link_caps_create failed [%d]", rtn);
++		sl_sysfs_link_policy_delete(ctrl_link);
++		sl_sysfs_link_config_delete(ctrl_link);
++		sl_sysfs_link_degrade_delete(core_link);
++		sl_sysfs_link_pml_rec_delete(core_link);
++		sl_sysfs_link_fec_delete(ctrl_link);
++		kobject_put(&ctrl_link->kobj);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_link_counters_create(ctrl_link);
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "sl_sysfs_link_counters_create failed [%d]", rtn);
++		sl_sysfs_link_policy_delete(ctrl_link);
++		sl_sysfs_link_config_delete(ctrl_link);
++		sl_sysfs_link_degrade_delete(core_link);
++		sl_sysfs_link_pml_rec_delete(core_link);
++		sl_sysfs_link_fec_delete(ctrl_link);
++		sl_sysfs_link_caps_delete(ctrl_link);
++		kobject_put(&ctrl_link->kobj);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_link_last_down_create(ctrl_link);
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "sl_sysfs_link_last_down_create failed [%d]", rtn);
++		sl_sysfs_link_policy_delete(ctrl_link);
++		sl_sysfs_link_config_delete(ctrl_link);
++		sl_sysfs_link_degrade_delete(core_link);
++		sl_sysfs_link_pml_rec_delete(core_link);
++		sl_sysfs_link_fec_delete(ctrl_link);
++		sl_sysfs_link_caps_delete(ctrl_link);
++		sl_sysfs_link_counters_delete(ctrl_link);
++		kobject_put(&ctrl_link->kobj);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_link_last_up_fail_create(ctrl_link);
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "sl_sysfs_link_last_up_fail_create failed [%d]", rtn);
++		sl_sysfs_link_policy_delete(ctrl_link);
++		sl_sysfs_link_config_delete(ctrl_link);
++		sl_sysfs_link_degrade_delete(core_link);
++		sl_sysfs_link_pml_rec_delete(core_link);
++		sl_sysfs_link_fec_delete(ctrl_link);
++		sl_sysfs_link_caps_delete(ctrl_link);
++		sl_sysfs_link_counters_delete(ctrl_link);
++		sl_sysfs_link_last_down_delete(ctrl_link);
++		kobject_put(&ctrl_link->kobj);
++		return rtn;
++	}
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "link create (link_kobj = 0x%p)", &ctrl_link->kobj);
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_link_delete(struct sl_ctrl_link *ctrl_link)
++{
++#ifdef CONFIG_SYSFS
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link delete (num = %u)", ctrl_link->num);
++
++	if (!ctrl_link->parent_kobj)
++		return;
++
++	core_link = sl_core_link_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
++				     ctrl_link->ctrl_lgrp->num, ctrl_link->num);
++	if (!core_link)
++		return;
++
++	sl_sysfs_link_policy_delete(ctrl_link);
++	sl_sysfs_link_config_delete(ctrl_link);
++	sl_sysfs_link_degrade_delete(core_link);
++	sl_sysfs_link_pml_rec_delete(core_link);
++	sl_sysfs_link_fec_delete(ctrl_link);
++	sl_sysfs_link_caps_delete(ctrl_link);
++	sl_sysfs_link_counters_delete(ctrl_link);
++	sl_sysfs_link_last_down_delete(ctrl_link);
++	sl_sysfs_link_last_up_fail_delete(ctrl_link);
++	kobject_put(&ctrl_link->kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_caps.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_caps.c
+new file mode 100644
+index 000000000000..f52b34b31bd3
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_caps.c
+@@ -0,0 +1,303 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_ctrl_link.h"
++#include "sl_core_link.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_ldev.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t tech_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	struct sl_core_lgrp *core_lgrp;
++	int                  idx;
++	char                 output[80];
++	u32                  tech_map;
++	u32                  link_state;
++	int		     rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, caps_kobj);
++
++	core_link = sl_core_link_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
++				     ctrl_link->ctrl_lgrp->num, ctrl_link->num);
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = core_link->core_lgrp;
++
++	tech_map = core_lgrp->link_caps[core_link->num].tech_map;
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
++		   "tech map show (link = 0x%p, map = 0x%X)", core_link, tech_map);
++
++	rtn = sl_core_link_state_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
++				     ctrl_link->ctrl_lgrp->num, ctrl_link->num, &link_state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if ((tech_map == 0) ||
++	    ((link_state != SL_CORE_LINK_STATE_UP) &&
++		 (link_state != SL_CORE_LINK_STATE_GOING_UP) &&
++		 (link_state != SL_CORE_LINK_STATE_AN)) ||
++		!is_flag_set(core_link->config.flags, SL_LINK_CONFIG_OPT_AUTONEG_ENABLE))
++		return sysfs_emit(buf, "none\n");
++
++	idx = 0;
++	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CK_400G))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CK_400G));
++	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CK_200G))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CK_200G));
++	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CK_100G))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CK_100G));
++	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_BS_200G))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_BS_200G));
++	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CD_100G))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CD_100G));
++	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_CD_50G))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_CD_50G));
++	if (is_flag_set(tech_map, SL_LGRP_CONFIG_TECH_BJ_100G))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_lgrp_config_tech_str(SL_LGRP_CONFIG_TECH_BJ_100G));
++	if (!idx)
++		return sysfs_emit(buf, "none\n");
++	output[idx - 1] = '\0';
++
++	return sysfs_emit(buf, "%s\n", output);
++}
++
++static ssize_t pause_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	struct sl_core_lgrp *core_lgrp;
++	int                  idx;
++	char                 output[20];
++	u32                  pause_map;
++	u32                  link_state;
++	int		     rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, caps_kobj);
++
++	core_link = sl_core_link_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
++				     ctrl_link->ctrl_lgrp->num, ctrl_link->num);
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = core_link->core_lgrp;
++
++	pause_map = core_lgrp->link_caps[core_link->num].pause_map;
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
++		   "pause map show (link = 0x%p, map = 0x%X)", core_link, pause_map);
++
++	rtn = sl_core_link_state_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
++				     ctrl_link->ctrl_lgrp->num, ctrl_link->num, &link_state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if ((pause_map == 0) ||
++	    ((link_state != SL_CORE_LINK_STATE_UP) &&
++		 (link_state != SL_CORE_LINK_STATE_GOING_UP) &&
++		 (link_state != SL_CORE_LINK_STATE_AN)) ||
++		!is_flag_set(core_link->config.flags, SL_LINK_CONFIG_OPT_AUTONEG_ENABLE))
++		return sysfs_emit(buf, "none\n");
++
++	idx = 0;
++	if (is_flag_set(pause_map, SL_LINK_CONFIG_PAUSE_ASYM))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_pause_str(SL_LINK_CONFIG_PAUSE_ASYM));
++	if (is_flag_set(pause_map, SL_LINK_CONFIG_PAUSE_SYM))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_pause_str(SL_LINK_CONFIG_PAUSE_SYM));
++	if (!idx)
++		return sysfs_emit(buf, "none\n");
++	output[idx - 1] = '\0';
++
++	return sysfs_emit(buf, "%s\n", output);
++}
++
++static ssize_t fec_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	struct sl_core_lgrp *core_lgrp;
++	int                  idx;
++	char                 output[20];
++	u32                  fec_map;
++	u32                  link_state;
++	int		     rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, caps_kobj);
++
++	core_link = sl_core_link_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
++				     ctrl_link->ctrl_lgrp->num, ctrl_link->num);
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = core_link->core_lgrp;
++
++	fec_map = core_lgrp->link_caps[core_link->num].fec_map;
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
++		   "fec map show (link = 0x%p, map = 0x%X)", core_link, fec_map);
++
++	rtn = sl_core_link_state_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
++				     ctrl_link->ctrl_lgrp->num, ctrl_link->num, &link_state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if ((fec_map == 0) ||
++	    ((link_state != SL_CORE_LINK_STATE_UP) &&
++		 (link_state != SL_CORE_LINK_STATE_GOING_UP) &&
++		 (link_state != SL_CORE_LINK_STATE_AN)) ||
++		!is_flag_set(core_link->config.flags, SL_LINK_CONFIG_OPT_AUTONEG_ENABLE))
++		return sysfs_emit(buf, "none\n");
++
++	idx = 0;
++	if (is_flag_set(fec_map, SL_LGRP_CONFIG_FEC_RS_LL))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_lgrp_config_fec_str(SL_LGRP_CONFIG_FEC_RS_LL));
++	if (is_flag_set(fec_map, SL_LGRP_CONFIG_FEC_RS))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_lgrp_config_fec_str(SL_LGRP_CONFIG_FEC_RS));
++	if (!idx)
++		return sysfs_emit(buf, "none\n");
++	output[idx - 1] = '\0';
++
++	return sysfs_emit(buf, "%s\n", output);
++}
++
++static ssize_t hpe_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	struct sl_core_lgrp *core_lgrp;
++	int                  idx;
++	char                 output[80];
++	u32                  hpe_map;
++	u32                  link_state;
++	int		     rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, caps_kobj);
++
++	core_link = sl_core_link_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
++				     ctrl_link->ctrl_lgrp->num, ctrl_link->num);
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = core_link->core_lgrp;
++
++	hpe_map = core_lgrp->link_caps[core_link->num].hpe_map;
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
++		   "hpe map show (link = 0x%p, map = 0x%X)", core_link, hpe_map);
++
++	rtn = sl_core_link_state_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num,
++				     ctrl_link->ctrl_lgrp->num, ctrl_link->num, &link_state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if ((hpe_map == 0) ||
++	    ((link_state != SL_CORE_LINK_STATE_UP) &&
++		 (link_state != SL_CORE_LINK_STATE_GOING_UP) &&
++		 (link_state != SL_CORE_LINK_STATE_AN)) ||
++		!is_flag_set(core_link->config.flags, SL_LINK_CONFIG_OPT_AUTONEG_ENABLE))
++		return sysfs_emit(buf, "none\n");
++
++	idx = 0;
++	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_LINKTRAIN))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_LINKTRAIN));
++	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_PRECODING))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_PRECODING));
++	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_PCAL))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_PCAL));
++	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_R3))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_R3));
++	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_R2))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_R2));
++	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_C3))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_R3));
++	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_C2))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_R2));
++	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_LLR))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_LLR));
++	if (!idx)
++		return sysfs_emit(buf, "none\n");
++	output[idx - 1] = '\0';
++
++	return sysfs_emit(buf, "%s\n", output);
++}
++
++static struct kobj_attribute tech_map  = __ATTR_RO(tech_map);
++static struct kobj_attribute fec_map   = __ATTR_RO(fec_map);
++static struct kobj_attribute pause_map = __ATTR_RO(pause_map);
++static struct kobj_attribute hpe_map   = __ATTR_RO(hpe_map);
++
++static struct attribute *link_caps_attrs[] = {
++	&tech_map.attr,
++	&fec_map.attr,
++	&pause_map.attr,
++	&hpe_map.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(link_caps);
++
++static struct kobj_type link_caps = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_caps_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_link_caps_create(struct sl_ctrl_link *ctrl_link)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link caps create (num = %u)", ctrl_link->num);
++
++	rtn = kobject_init_and_add(&ctrl_link->caps_kobj, &link_caps, &ctrl_link->kobj, "caps");
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "link caps create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&ctrl_link->caps_kobj);
++		return rtn;
++	}
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_link_caps_delete(struct sl_ctrl_link *ctrl_link)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link caps delete (num = %u)", ctrl_link->num);
++
++	kobject_put(&ctrl_link->caps_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_config.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_config.c
+new file mode 100644
+index 000000000000..a61072c56ca3
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_config.c
+@@ -0,0 +1,388 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "data/sl_ctrl_data_link.h"
++#include "sl_ctrl_link.h"
++#include "sl_core_link.h"
++#include "data/sl_ctrl_data_link.h"
++#include "sl_test_common.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t link_up_timeout_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u32                  link_up_timeout_ms;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
++
++	rtn = sl_ctrl_data_link_up_timeout_ms_get(ctrl_link, &link_up_timeout_ms);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "link up timeout show (link_up_timeout = %ums)", link_up_timeout_ms);
++
++	return sysfs_emit(buf, "%u\n", link_up_timeout_ms);
++}
++
++static ssize_t link_up_tries_max_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u32                  link_up_tries_max;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
++
++	rtn = sl_ctrl_data_link_up_tries_max_get(ctrl_link, &link_up_tries_max);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "link up tries max show (link_up_tries_max = %d)", link_up_tries_max);
++
++	if (link_up_tries_max == SL_LINK_INFINITE_UP_TRIES)
++		return sysfs_emit(buf, "infinite\n");
++	else
++		return sysfs_emit(buf, "%d\n", link_up_tries_max);
++}
++
++static ssize_t fec_up_settle_wait_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u32                  fec_up_settle_wait_ms;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
++
++	rtn = sl_ctrl_data_link_fec_up_settle_wait_ms_get(ctrl_link, &fec_up_settle_wait_ms);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "fec_up_settle_wait show (fec_up_settle_wait = %dms)", fec_up_settle_wait_ms);
++
++	return sysfs_emit(buf, "%d\n", fec_up_settle_wait_ms);
++}
++
++static ssize_t fec_up_check_wait_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u32                  fec_up_check_wait_ms;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
++
++	rtn = sl_ctrl_data_link_fec_up_check_wait_ms_get(ctrl_link, &fec_up_check_wait_ms);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "fec_up_check_wait show (fec_up_check_wait = %dms)", fec_up_check_wait_ms);
++
++	return sysfs_emit(buf, "%d\n", fec_up_check_wait_ms);
++}
++
++static ssize_t fec_up_ucw_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	s32		     fec_up_ucw_limit;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
++
++	rtn = sl_ctrl_data_link_fec_up_ucw_limit_get(ctrl_link, &fec_up_ucw_limit);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "fec_up_ucw_limit show (fec_up_ucw_limit = %d)", fec_up_ucw_limit);
++
++	return sysfs_emit(buf, "%d\n", fec_up_ucw_limit);
++}
++
++static ssize_t fec_up_ccw_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	s32		     fec_up_ccw_limit;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
++
++	rtn = sl_ctrl_data_link_fec_up_ccw_limit_get(ctrl_link, &fec_up_ccw_limit);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "fec_up_ccw_limit show (fec_up_ccw_limit = %d)", fec_up_ccw_limit);
++
++	return sysfs_emit(buf, "%d\n", fec_up_ccw_limit);
++}
++
++static ssize_t lock_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u32                  options;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
++
++	rtn = sl_ctrl_data_link_config_options_get(ctrl_link, &options);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "lock show (options = 0x%X)", options);
++
++	return sysfs_emit(buf, "%s\n", is_flag_set(options,
++			 SL_LINK_CONFIG_OPT_LOCK) ? "enabled" : "disabled");
++}
++
++static ssize_t pause_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	int                  idx;
++	char                 output[20];
++	u32                  pause_map;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
++
++	rtn = sl_ctrl_data_link_pause_map_get(ctrl_link, &pause_map);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "pause map show (link = 0x%p, map = 0x%X)", ctrl_link, pause_map);
++
++	if (pause_map == 0)
++		return sysfs_emit(buf, "none\n");
++
++	idx = 0;
++	if (is_flag_set(pause_map, SL_LINK_CONFIG_PAUSE_ASYM))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_pause_str(SL_LINK_CONFIG_PAUSE_ASYM));
++	if (is_flag_set(pause_map, SL_LINK_CONFIG_PAUSE_SYM))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_pause_str(SL_LINK_CONFIG_PAUSE_SYM));
++	if (!idx)
++		return sysfs_emit(buf, "none\n");
++	output[idx - 1] = '\0';
++
++	return sysfs_emit(buf, "%s\n", output);
++}
++
++static ssize_t hpe_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	int                  idx;
++	char                 output[80];
++	u32                  hpe_map;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
++
++	rtn = sl_ctrl_data_link_hpe_map_get(ctrl_link, &hpe_map);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "hpe map show (link = 0x%p, map = 0x%X)", ctrl_link, hpe_map);
++
++	if (hpe_map == 0)
++		return sysfs_emit(buf, "none\n");
++
++	idx = 0;
++	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_LINKTRAIN))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_LINKTRAIN));
++	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_PRECODING))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_PRECODING));
++	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_PCAL))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_PCAL));
++	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_R3))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_R3));
++	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_R2))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_R2));
++	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_C3))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_R3));
++	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_C2))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_R2));
++	if (is_flag_set(hpe_map, SL_LINK_CONFIG_HPE_LLR))
++		idx += snprintf(output + idx, sizeof(output) - idx, "%s ",
++			sl_link_config_hpe_str(SL_LINK_CONFIG_HPE_LLR));
++	if (!idx)
++		return sysfs_emit(buf, "none\n");
++	output[idx - 1] = '\0';
++
++	return sysfs_emit(buf, "%s\n", output);
++}
++
++static ssize_t autoneg_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u32                  options;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
++
++	rtn = sl_ctrl_data_link_config_options_get(ctrl_link, &options);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "autoneg show (options = 0x%X)", options);
++
++	if (is_flag_set(options, SL_LINK_CONFIG_OPT_AUTONEG_ENABLE))
++		return sysfs_emit(buf, "enabled\n");
++
++	if (is_flag_set(options, SL_LINK_CONFIG_OPT_AUTONEG_CONTINUOUS_ENABLE))
++		return sysfs_emit(buf, "enabled-continuous\n");
++
++	return sysfs_emit(buf, "disabled\n");
++}
++
++static ssize_t loopback_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u32                  options;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
++
++	rtn = sl_ctrl_data_link_config_options_get(ctrl_link, &options);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "loopback show (options = 0x%X)", options);
++
++	if (is_flag_set(options, SL_LINK_CONFIG_OPT_HEADSHELL_LOOPBACK_ENABLE))
++		return sysfs_emit(buf, "enabled-headshell\n");
++
++	if (is_flag_set(options, SL_LINK_CONFIG_OPT_REMOTE_LOOPBACK_ENABLE))
++		return sysfs_emit(buf, "enabled-remote\n");
++
++	return sysfs_emit(buf, "disabled\n");
++}
++
++static ssize_t auto_lane_degrade_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u32                  options;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
++
++	rtn = sl_ctrl_data_link_config_options_get(ctrl_link, &options);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "auto lane degrade show (options = 0x%X)", options);
++
++	if (is_flag_set(options, SL_LINK_CONFIG_OPT_ALD_ENABLE))
++		return sysfs_emit(buf, "enabled\n");
++
++	return sysfs_emit(buf, "disabled\n");
++}
++
++static ssize_t pml_recovery_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u32                  options;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, config_kobj);
++
++	rtn = sl_ctrl_data_link_config_options_get(ctrl_link, &options);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "pml recovery show (options = 0x%X)", options);
++
++	if (is_flag_set(options, SL_LINK_CONFIG_OPT_PML_REC_ENABLE))
++		return sysfs_emit(buf, "enabled\n");
++
++	return sysfs_emit(buf, "disabled\n");
++}
++
++static struct kobj_attribute link_up_timeout_ms    = __ATTR_RO(link_up_timeout_ms);
++static struct kobj_attribute link_up_tries_max_ms  = __ATTR_RO(link_up_tries_max);
++static struct kobj_attribute fec_up_settle_wait_ms = __ATTR_RO(fec_up_settle_wait_ms);
++static struct kobj_attribute fec_up_check_wait_ms  = __ATTR_RO(fec_up_check_wait_ms);
++static struct kobj_attribute fec_up_ucw_limit      = __ATTR_RO(fec_up_ucw_limit);
++static struct kobj_attribute fec_up_ccw_limit      = __ATTR_RO(fec_up_ccw_limit);
++static struct kobj_attribute lock                  = __ATTR_RO(lock);
++static struct kobj_attribute pause_map             = __ATTR_RO(pause_map);
++static struct kobj_attribute hpe_map               = __ATTR_RO(hpe_map);
++static struct kobj_attribute autoneg               = __ATTR_RO(autoneg);
++static struct kobj_attribute loopback              = __ATTR_RO(loopback);
++static struct kobj_attribute auto_lane_degrade     = __ATTR_RO(auto_lane_degrade);
++static struct kobj_attribute pml_recovery          = __ATTR_RO(pml_recovery);
++
++static struct attribute *link_config_attrs[] = {
++	&link_up_timeout_ms.attr,
++	&link_up_tries_max_ms.attr,
++	&fec_up_settle_wait_ms.attr,
++	&fec_up_check_wait_ms.attr,
++	&fec_up_ucw_limit.attr,
++	&fec_up_ccw_limit.attr,
++	&lock.attr,
++	&pause_map.attr,
++	&hpe_map.attr,
++	&autoneg.attr,
++	&loopback.attr,
++	&auto_lane_degrade.attr,
++	&pml_recovery.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(link_config);
++
++static struct kobj_type link_config = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_config_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_link_config_create(struct sl_ctrl_link *ctrl_link)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link config create (num = %u)", ctrl_link->num);
++
++	rtn = kobject_init_and_add(&ctrl_link->config_kobj, &link_config, &ctrl_link->kobj, "config");
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "link config create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&ctrl_link->config_kobj);
++		return rtn;
++	}
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_link_config_delete(struct sl_ctrl_link *ctrl_link)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link config delete (num = %u)", ctrl_link->num);
++
++	kobject_put(&ctrl_link->config_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_counters.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_counters.c
+new file mode 100644
+index 000000000000..fdfb84636d0e
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_counters.c
+@@ -0,0 +1,1498 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/* Copyright 2025,2026 Hewlett Packard Enterprise Development LP */
 +
-+#include <linux/slab.h>
-+#include <linux/atomic.h>
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_ctrl_link.h"
++#include "sl_core_link.h"
++#include "sl_ctrl_link_counters.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t link_up_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_UP_CMD, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link up cmd show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t link_up_retry_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_UP_RETRY, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link up retry show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t link_up_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_UP, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link up show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t link_up_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_UP_FAIL, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link up fail show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t link_down_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_DOWN_CMD, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link down cmd show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t link_down_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_DOWN, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link down show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t link_up_canceled_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_UP_CANCELED, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link up canceled show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t link_up_cancel_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_UP_CANCEL_CMD, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link up cancel cmd show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t link_reset_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_RESET_CMD, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link reset cmd show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t link_fault_async_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_FAULT_ASYNC, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link fault async show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t link_ccw_warn_crossed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_CCW_WARN_CROSSED, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link ccw warn crossed show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t link_ucw_warn_crossed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_UCW_WARN_CROSSED, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link ucw warn crossed show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t link_down_ccw_limit_crossed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_DOWN_CCW_LIMIT_CROSSED, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link down ccw limit crossed show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t link_down_ucw_limit_crossed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_DOWN_UCW_LIMIT_CROSSED, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link down ucw limit crossed show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t link_down_ccw_cause_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_DOWN_CCW_CAUSE, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link down ccw cause show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t link_down_ucw_cause_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_DOWN_UCW_CAUSE, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link down ucw cause show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t link_up_fail_ccw_limit_crossed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_UP_FAIL_CCW_LIMIT_CROSSED, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link up fail ccw limit crossed show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t link_up_fail_ucw_limit_crossed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_UP_FAIL_UCW_LIMIT_CROSSED, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link up fail ucw limit crossed show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t link_autoneg_np_retry_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_retry_count_get(ctrl_link, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link autoneg np retry show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t link_autoneg_attempt_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_counters_get(ctrl_link, LINK_HW_AN_ATTEMPT, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link autoneg attempt show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_ucw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_UCW, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause ucw show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_lf_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_LF, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause lf show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_rf_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_RF, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause rf show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_down_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_DOWN, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause down show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_up_tries_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_UP_TRIES, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause up tries show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_autoneg_nomatch_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_AUTONEG_NOMATCH, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause autoneg nomatch show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_autoneg_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_AUTONEG, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause autoneg show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_config_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_CONFIG, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause config show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_intr_enable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_INTR_ENABLE, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause intr enable show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_timeout_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_TIMEOUT, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause timeout show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_canceled_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_CANCELED, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause canceled show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_unsupported_cable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_UNSUPPORTED_CABLE, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause unsupported cable show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_command_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_COMMAND, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause command show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_downshift_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_DOWNSHIFT, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause downshift show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_llr_replay_max_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_LLR_REPLAY_MAX, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause llr replay max show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_upshift_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_UPSHIFT, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause upshift show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_autoneg_config_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_AUTONEG_CONFIG, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause autoneg config show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_pcs_fault_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_PCS_FAULT, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause pcs fault show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_serdes_pll_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_SERDES_PLL, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause serdes pll show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_serdes_config_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_SERDES_CONFIG, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause serdes config show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_serdes_signal_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_SERDES_SIGNAL, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause serdes signal show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_serdes_quality_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_SERDES_QUALITY, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause serdes quality show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_no_media_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_NO_MEDIA, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause no media show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_ccw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_CCW, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause ccw show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_hot_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_MEDIA_HOT, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause hot show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_warm_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_MEDIA_WARM, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause warm show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_intr_register_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_INTR_REGISTER, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause intr register show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_media_error_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_MEDIA_ERROR, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause media error show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_up_canceled_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_UP_CANCELED, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause up canceled show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_unsupported_speed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_UNSUPPORTED_SPEED, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause unsupported speed show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_ss200_cable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_SS200_CABLE, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause ss200 cable show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_tx_lol_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_TX_LOL, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause tx lol show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_rx_lol_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_RX_LOL, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause rx lol show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_tx_los_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_TX_LOS, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause tx los show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_rx_los_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_cause_counters_get(ctrl_link, LINK_CAUSE_RX_LOS, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link cause rx los show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_lp_caps_serdes_link_up_fail_show(struct kobject *kobj,
++							 struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_LP_CAPS_SERDES_LINK_UP_FAIL, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause lp caps serdes link up fail show (counter = %u)",
++		   counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_lp_caps_not_complete_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_LP_CAPS_NOT_COMPLETE, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause lp caps not complete show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_not_complete_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_NOT_COMPLETE, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause not complete show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_test_caps_nomatch_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_TEST_CAPS_NOMATCH, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause test caps nomatch show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_serdes_link_up_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_SERDES_LINK_UP_FAIL, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause serdes link up fail show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_bp_store_state_bad_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_BP_STORE_STATE_BAD, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause bp store state bad show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_bp_store_lp_ability_not_set_show(struct kobject *kobj, struct kobj_attribute *kattr,
++							 char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_BP_STORE_LP_ABILITY_NOT_SET, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause bp store lp ability not set show (counter = %u)",
++		   counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_bp_store_state_error_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_BP_STORE_STATE_ERROR, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause bp store state error show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_bp_store_bp_not_set_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_BP_STORE_BP_NOT_SET, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause bp store bp not set show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_bp_send_intr_enable_fail_show(struct kobject *kobj, struct kobj_attribute *kattr,
++						      char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_BP_SEND_INTR_ENABLE_FAIL, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause bp send intr enable fail show (counter = %u)",
++		   counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_np_store_state_bad_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_NP_STORE_STATE_BAD, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause np store state bad show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_np_store_bp_set_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_NP_STORE_BP_SET, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause np store state bp set show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_np_check_state_bad_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_NP_CHECK_STATE_BAD, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause np check state bad show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_intr_state_invalid_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_INTR_STATE_INVALID, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause intr state invalid show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_intr_an_retry_np_send_fail_show(struct kobject *kobj, struct kobj_attribute *kattr,
++							char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_INTR_AN_RETRY_NP_SEND_FAIL, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause intr an retry np send fail show (counter = %u)",
++		   counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_intr_out_of_pages_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_INTR_OUT_OF_PAGES, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause intr out og pages show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_intr_np_send_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_INTR_NP_SEND_FAIL, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause intr np send fail show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_pages_decode_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_PAGES_DECODE_FAIL, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause pages decode fail show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_pages_decode_no_bp_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_PAGES_DECODE_NO_BP, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause pages decode no bp show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t an_cause_pages_decode_oui_invalid_show(struct kobject *kobj, struct kobj_attribute *kattr,
++						      char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	u32                  counter;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, counters_kobj);
++
++	rtn = sl_ctrl_link_an_cause_counters_get(ctrl_link, LINK_AN_CAUSE_PAGES_DECODE_OUI_INVALID, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link an cause pages decode oui invalid show (counter = %u)",
++		   counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static struct kobj_attribute link_up_cmd                    = __ATTR_RO(link_up_cmd);
++static struct kobj_attribute link_up_retry                  = __ATTR_RO(link_up_retry);
++static struct kobj_attribute link_up                        = __ATTR_RO(link_up);
++static struct kobj_attribute link_up_fail                   = __ATTR_RO(link_up_fail);
++static struct kobj_attribute link_down_cmd                  = __ATTR_RO(link_down_cmd);
++static struct kobj_attribute link_down                      = __ATTR_RO(link_down);
++static struct kobj_attribute link_up_cancel_cmd             = __ATTR_RO(link_up_cancel_cmd);
++static struct kobj_attribute link_up_canceled               = __ATTR_RO(link_up_canceled);
++static struct kobj_attribute link_reset_cmd                 = __ATTR_RO(link_reset_cmd);
++static struct kobj_attribute link_fault_async               = __ATTR_RO(link_fault_async);
++static struct kobj_attribute link_ccw_warn_crossed          = __ATTR_RO(link_ccw_warn_crossed);
++static struct kobj_attribute link_ucw_warn_crossed          = __ATTR_RO(link_ucw_warn_crossed);
++static struct kobj_attribute link_down_ccw_limit_crossed    = __ATTR_RO(link_down_ccw_limit_crossed);
++static struct kobj_attribute link_down_ucw_limit_crossed    = __ATTR_RO(link_down_ucw_limit_crossed);
++static struct kobj_attribute link_down_ccw_cause            = __ATTR_RO(link_down_ccw_cause);
++static struct kobj_attribute link_down_ucw_cause            = __ATTR_RO(link_down_ucw_cause);
++static struct kobj_attribute link_up_fail_ccw_limit_crossed = __ATTR_RO(link_up_fail_ccw_limit_crossed);
++static struct kobj_attribute link_up_fail_ucw_limit_crossed = __ATTR_RO(link_up_fail_ucw_limit_crossed);
++static struct kobj_attribute link_autoneg_np_retry          = __ATTR_RO(link_autoneg_np_retry);
++static struct kobj_attribute link_autoneg_attempt           = __ATTR_RO(link_autoneg_attempt);
++
++static struct kobj_attribute link_cause_ucw               = __ATTR_RO(cause_ucw);
++static struct kobj_attribute link_cause_lf                = __ATTR_RO(cause_lf);
++static struct kobj_attribute link_cause_rf                = __ATTR_RO(cause_rf);
++static struct kobj_attribute link_cause_down              = __ATTR_RO(cause_down);
++static struct kobj_attribute link_cause_up_tries          = __ATTR_RO(cause_up_tries);
++static struct kobj_attribute link_cause_autoneg_nomatch   = __ATTR_RO(cause_autoneg_nomatch);
++static struct kobj_attribute link_cause_autoneg           = __ATTR_RO(cause_autoneg);
++static struct kobj_attribute link_cause_config            = __ATTR_RO(cause_config);
++static struct kobj_attribute link_cause_intr_enable       = __ATTR_RO(cause_intr_enable);
++static struct kobj_attribute link_cause_timeout           = __ATTR_RO(cause_timeout);
++static struct kobj_attribute link_cause_canceled          = __ATTR_RO(cause_canceled);
++static struct kobj_attribute link_cause_unsupported_cable = __ATTR_RO(cause_unsupported_cable);
++static struct kobj_attribute link_cause_command           = __ATTR_RO(cause_command);
++static struct kobj_attribute link_cause_downshift         = __ATTR_RO(cause_downshift);
++static struct kobj_attribute link_cause_llr_replay_max    = __ATTR_RO(cause_llr_replay_max);
++static struct kobj_attribute link_cause_upshift           = __ATTR_RO(cause_upshift);
++static struct kobj_attribute link_cause_autoneg_config    = __ATTR_RO(cause_autoneg_config);
++static struct kobj_attribute link_cause_pcs_fault         = __ATTR_RO(cause_pcs_fault);
++static struct kobj_attribute link_cause_serdes_pll        = __ATTR_RO(cause_serdes_pll);
++static struct kobj_attribute link_cause_serdes_config     = __ATTR_RO(cause_serdes_config);
++static struct kobj_attribute link_cause_serdes_signal     = __ATTR_RO(cause_serdes_signal);
++static struct kobj_attribute link_cause_serdes_quality    = __ATTR_RO(cause_serdes_quality);
++static struct kobj_attribute link_cause_no_media          = __ATTR_RO(cause_no_media);
++static struct kobj_attribute link_cause_ccw               = __ATTR_RO(cause_ccw);
++static struct kobj_attribute link_cause_hot               = __ATTR_RO(cause_hot);
++static struct kobj_attribute link_cause_warm              = __ATTR_RO(cause_warm);
++static struct kobj_attribute link_cause_intr_register     = __ATTR_RO(cause_intr_register);
++static struct kobj_attribute link_cause_media_error       = __ATTR_RO(cause_media_error);
++static struct kobj_attribute link_cause_up_canceled       = __ATTR_RO(cause_up_canceled);
++static struct kobj_attribute link_cause_unsupported_speed = __ATTR_RO(cause_unsupported_speed);
++static struct kobj_attribute link_cause_ss200_cable       = __ATTR_RO(cause_ss200_cable);
++static struct kobj_attribute link_cause_tx_lol            = __ATTR_RO(cause_tx_lol);
++static struct kobj_attribute link_cause_rx_lol            = __ATTR_RO(cause_rx_lol);
++static struct kobj_attribute link_cause_tx_los            = __ATTR_RO(cause_tx_los);
++static struct kobj_attribute link_cause_rx_los            = __ATTR_RO(cause_rx_los);
++
++static struct kobj_attribute link_an_cause_lp_caps_serdes_link_up_fail =
++			     __ATTR_RO(an_cause_lp_caps_serdes_link_up_fail);
++static struct kobj_attribute link_an_cause_lp_caps_not_complete        = __ATTR_RO(an_cause_lp_caps_not_complete);
++static struct kobj_attribute link_an_cause_not_complete                = __ATTR_RO(an_cause_not_complete);
++static struct kobj_attribute link_an_cause_test_caps_nomatch           = __ATTR_RO(an_cause_test_caps_nomatch);
++static struct kobj_attribute link_an_cause_serdes_link_up_fail         = __ATTR_RO(an_cause_serdes_link_up_fail);
++static struct kobj_attribute link_an_cause_bp_store_state_bad          = __ATTR_RO(an_cause_bp_store_state_bad);
++static struct kobj_attribute link_an_cause_bp_store_lp_ability_not_set =
++			     __ATTR_RO(an_cause_bp_store_lp_ability_not_set);
++static struct kobj_attribute link_an_cause_bp_store_state_error        = __ATTR_RO(an_cause_bp_store_state_error);
++static struct kobj_attribute link_an_cause_bp_store_bp_not_set         = __ATTR_RO(an_cause_bp_store_bp_not_set);
++static struct kobj_attribute link_an_cause_bp_send_intr_enable_fail    =
++			     __ATTR_RO(an_cause_bp_send_intr_enable_fail);
++static struct kobj_attribute link_an_cause_np_store_state_bad          = __ATTR_RO(an_cause_np_store_state_bad);
++static struct kobj_attribute link_an_cause_np_store_bp_set             = __ATTR_RO(an_cause_np_store_bp_set);
++static struct kobj_attribute link_an_cause_np_check_state_bad          = __ATTR_RO(an_cause_np_check_state_bad);
++static struct kobj_attribute link_an_cause_intr_state_invalid          = __ATTR_RO(an_cause_intr_state_invalid);
++static struct kobj_attribute link_an_cause_intr_an_retry_np_send_fail  =
++			     __ATTR_RO(an_cause_intr_an_retry_np_send_fail);
++static struct kobj_attribute link_an_cause_intr_out_of_pages           = __ATTR_RO(an_cause_intr_out_of_pages);
++static struct kobj_attribute link_an_cause_intr_np_send_fail           = __ATTR_RO(an_cause_intr_np_send_fail);
++static struct kobj_attribute link_an_cause_pages_decode_fail           = __ATTR_RO(an_cause_pages_decode_fail);
++static struct kobj_attribute link_an_cause_pages_decode_no_bp          = __ATTR_RO(an_cause_pages_decode_no_bp);
++static struct kobj_attribute link_an_cause_pages_decode_oui_invalid    =
++			     __ATTR_RO(an_cause_pages_decode_oui_invalid);
++
++static struct attribute *link_counters_attrs[] = {
++	&link_up_cmd.attr,
++	&link_up_retry.attr,
++	&link_up.attr,
++	&link_up_fail.attr,
++	&link_down_cmd.attr,
++	&link_down.attr,
++	&link_up_cancel_cmd.attr,
++	&link_up_canceled.attr,
++	&link_reset_cmd.attr,
++	&link_fault_async.attr,
++	&link_ccw_warn_crossed.attr,
++	&link_ucw_warn_crossed.attr,
++	&link_down_ccw_limit_crossed.attr,
++	&link_down_ucw_limit_crossed.attr,
++	&link_down_ccw_cause.attr,
++	&link_down_ucw_cause.attr,
++	&link_up_fail_ccw_limit_crossed.attr,
++	&link_up_fail_ucw_limit_crossed.attr,
++	&link_autoneg_np_retry.attr,
++	&link_autoneg_attempt.attr,
++	&link_cause_ucw.attr,
++	&link_cause_lf.attr,
++	&link_cause_rf.attr,
++	&link_cause_down.attr,
++	&link_cause_up_tries.attr,
++	&link_cause_autoneg_nomatch.attr,
++	&link_cause_autoneg.attr,
++	&link_cause_config.attr,
++	&link_cause_intr_enable.attr,
++	&link_cause_timeout.attr,
++	&link_cause_canceled.attr,
++	&link_cause_unsupported_cable.attr,
++	&link_cause_command.attr,
++	&link_cause_downshift.attr,
++	&link_cause_llr_replay_max.attr,
++	&link_cause_upshift.attr,
++	&link_cause_autoneg_config.attr,
++	&link_cause_pcs_fault.attr,
++	&link_cause_serdes_pll.attr,
++	&link_cause_serdes_config.attr,
++	&link_cause_serdes_signal.attr,
++	&link_cause_serdes_quality.attr,
++	&link_cause_no_media.attr,
++	&link_cause_ccw.attr,
++	&link_cause_hot.attr,
++	&link_cause_warm.attr,
++	&link_cause_intr_register.attr,
++	&link_cause_media_error.attr,
++	&link_cause_up_canceled.attr,
++	&link_cause_unsupported_speed.attr,
++	&link_cause_ss200_cable.attr,
++	&link_cause_tx_lol.attr,
++	&link_cause_rx_lol.attr,
++	&link_cause_tx_los.attr,
++	&link_cause_rx_los.attr,
++	&link_an_cause_lp_caps_serdes_link_up_fail.attr,
++	&link_an_cause_lp_caps_not_complete.attr,
++	&link_an_cause_not_complete.attr,
++	&link_an_cause_test_caps_nomatch.attr,
++	&link_an_cause_serdes_link_up_fail.attr,
++	&link_an_cause_bp_store_state_bad.attr,
++	&link_an_cause_bp_store_lp_ability_not_set.attr,
++	&link_an_cause_bp_store_state_error.attr,
++	&link_an_cause_bp_store_bp_not_set.attr,
++	&link_an_cause_bp_send_intr_enable_fail.attr,
++	&link_an_cause_np_store_state_bad.attr,
++	&link_an_cause_np_store_bp_set.attr,
++	&link_an_cause_np_check_state_bad.attr,
++	&link_an_cause_intr_state_invalid.attr,
++	&link_an_cause_intr_an_retry_np_send_fail.attr,
++	&link_an_cause_intr_out_of_pages.attr,
++	&link_an_cause_intr_np_send_fail.attr,
++	&link_an_cause_pages_decode_fail.attr,
++	&link_an_cause_pages_decode_no_bp.attr,
++	&link_an_cause_pages_decode_oui_invalid.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(link_counters);
++
++static struct kobj_type link_counters = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_counters_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_link_counters_create(struct sl_ctrl_link *ctrl_link)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link counters create");
++
++	rtn = kobject_init_and_add(&ctrl_link->counters_kobj, &link_counters, &ctrl_link->kobj, "counters");
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "link counters create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&ctrl_link->counters_kobj);
++		return rtn;
++	}
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_link_counters_delete(struct sl_ctrl_link *ctrl_link)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link counters delete");
++	kobject_put(&ctrl_link->counters_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_degrade.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_degrade.c
+new file mode 100644
+index 000000000000..3ba254a54560
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_degrade.c
+@@ -0,0 +1,336 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2025-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
 +#include <linux/types.h>
 +
++#include "sl_log.h"
++#include "data/sl_core_data_link.h"
++
++#include "sl_sysfs.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_core_link *core_link;
++	u32                  link_state;
++	int                  degrade_state;
++
++	core_link = container_of(kobj, struct sl_core_link, degrade_kobj);
++
++	rtn = sl_core_data_link_state_get(core_link, &link_state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if (link_state != SL_CORE_LINK_STATE_UP)
++		return sysfs_emit(buf, "no-link\n");
++
++	rtn = sl_core_data_link_degrade_state_get(core_link, &degrade_state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "degrade state show (state = %u %s)",
++		   degrade_state, sl_link_degrade_state_str(degrade_state));
++
++	return sysfs_emit(buf, "%s\n", sl_link_degrade_state_str(degrade_state));
++}
++
++static ssize_t is_rx_degraded_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_core_link *core_link;
++	bool                 is_rx_degraded;
++	u32                  link_state;
++
++	core_link = container_of(kobj, struct sl_core_link, degrade_kobj);
++
++	rtn = sl_core_data_link_state_get(core_link, &link_state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if (link_state != SL_CORE_LINK_STATE_UP)
++		return sysfs_emit(buf, "no-link\n");
++
++	rtn = sl_core_data_link_is_rx_degrade_get(core_link, &is_rx_degraded);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "is rx degraded show (is_rx_degraded = %s)",
++		   is_rx_degraded ? "yes" : "no");
++
++	return sysfs_emit(buf, "%s\n", is_rx_degraded ? "yes" : "no");
++}
++
++static ssize_t rx_degrade_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_core_link *core_link;
++	u32                  link_state;
++	u8                   rx_degrade_map;
++	bool                 is_rx_degraded;
++
++	core_link = container_of(kobj, struct sl_core_link, degrade_kobj);
++
++	rtn = sl_core_data_link_state_get(core_link, &link_state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if (link_state != SL_CORE_LINK_STATE_UP)
++		return sysfs_emit(buf, "--\n");
++
++	rtn = sl_core_data_link_is_rx_degrade_get(core_link, &is_rx_degraded);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if (!is_rx_degraded)
++		return sysfs_emit(buf, "--\n");
++
++	rtn = sl_core_data_link_degrade_rx_degrade_map_get(core_link, &rx_degrade_map);
++	if (rtn == -EBADRQC)
++		return sysfs_emit(buf, "--\n");
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
++		   "rx degrade lane map show (rx_degrade_map = 0x%X)", rx_degrade_map);
++
++	return sysfs_emit(buf, "0x%X\n", rx_degrade_map);
++}
++
++static ssize_t rx_link_speed_gbps_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_core_link *core_link;
++	u32                  link_state;
++	u16                  link_speed;
++	bool                 is_rx_degraded;
++
++	core_link = container_of(kobj, struct sl_core_link, degrade_kobj);
++
++	rtn = sl_core_data_link_state_get(core_link, &link_state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if (link_state != SL_CORE_LINK_STATE_UP)
++		return sysfs_emit(buf, "--\n");
++
++	rtn = sl_core_data_link_is_rx_degrade_get(core_link, &is_rx_degraded);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if (!is_rx_degraded)
++		return sysfs_emit(buf, "--\n");
++
++	rtn = sl_core_data_link_degrade_rx_link_speed_get(core_link, &link_speed);
++	if (rtn == -EBADRQC)
++		return sysfs_emit(buf, "--\n");
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
++		   "rx degrade link speed gbps show (link_speed = %u)", link_speed);
++
++	return sysfs_emit(buf, "%u\n", link_speed);
++}
++
++static ssize_t is_tx_degraded_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_core_link *core_link;
++	bool                 is_tx_degraded;
++	u32                  link_state;
++
++	core_link = container_of(kobj, struct sl_core_link, degrade_kobj);
++
++	rtn = sl_core_data_link_state_get(core_link, &link_state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if (link_state != SL_CORE_LINK_STATE_UP)
++		return sysfs_emit(buf, "no-link\n");
++
++	rtn = sl_core_data_link_is_tx_degrade_get(core_link, &is_tx_degraded);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "is tx degraded show (degrade = %s)",
++		   is_tx_degraded ? "yes" : "no");
++
++	return sysfs_emit(buf, "%s\n", is_tx_degraded ? "yes" : "no");
++}
++
++static ssize_t tx_degrade_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_core_link *core_link;
++	u32                  link_state;
++	u8                   tx_degrade_map;
++	bool                 is_tx_degraded;
++
++	core_link = container_of(kobj, struct sl_core_link, degrade_kobj);
++
++	rtn = sl_core_data_link_state_get(core_link, &link_state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if (link_state != SL_CORE_LINK_STATE_UP)
++		return sysfs_emit(buf, "--\n");
++
++	rtn = sl_core_data_link_is_tx_degrade_get(core_link, &is_tx_degraded);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if (!is_tx_degraded)
++		return sysfs_emit(buf, "--\n");
++
++	rtn = sl_core_data_link_degrade_tx_degrade_map_get(core_link, &tx_degrade_map);
++	if (rtn == -EBADRQC)
++		return sysfs_emit(buf, "--\n");
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
++		   "tx degrade lane map show (tx_degrade_map = 0x%X)", tx_degrade_map);
++
++	return sysfs_emit(buf, "0x%X\n", tx_degrade_map);
++}
++
++static ssize_t tx_link_speed_gbps_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_core_link *core_link;
++	u32                  link_state;
++	u16                  link_speed;
++	bool                 is_tx_degraded;
++
++	core_link = container_of(kobj, struct sl_core_link, degrade_kobj);
++
++	rtn = sl_core_data_link_state_get(core_link, &link_state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if (link_state != SL_CORE_LINK_STATE_UP)
++		return sysfs_emit(buf, "--\n");
++
++	rtn = sl_core_data_link_is_tx_degrade_get(core_link, &is_tx_degraded);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if (!is_tx_degraded)
++		return sysfs_emit(buf, "--\n");
++
++	rtn = sl_core_data_link_degrade_tx_link_speed_get(core_link, &link_speed);
++	if (rtn == -EBADRQC)
++		return sysfs_emit(buf, "--\n");
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
++		   "tx degrade link speed gbps show (link_speed = %u)", link_speed);
++
++	return sysfs_emit(buf, "%u\n", link_speed);
++}
++
++static ssize_t is_recoverable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_core_link *core_link;
++	u32                  link_state;
++	bool                 is_tx_degraded;
++	bool                 is_rx_degraded;
++	bool                 is_recoverable;
++
++	core_link = container_of(kobj, struct sl_core_link, degrade_kobj);
++
++	rtn = sl_core_data_link_state_get(core_link, &link_state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if (link_state != SL_CORE_LINK_STATE_UP)
++		return sysfs_emit(buf, "no-link\n");
++
++	rtn = sl_core_data_link_is_tx_degrade_get(core_link, &is_tx_degraded);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	rtn = sl_core_data_link_is_rx_degrade_get(core_link, &is_rx_degraded);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if (!is_rx_degraded && !is_tx_degraded)
++		return sysfs_emit(buf, "--\n");
++
++	rtn = sl_core_data_link_degrade_is_recoverable_get(core_link, &is_recoverable);
++	if (rtn == -EBADRQC)
++		return sysfs_emit(buf, "inactive\n");
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
++		   "is recoverable show (is_recoverable = %s)", is_recoverable ? "yes" : "no");
++
++	return sysfs_emit(buf, "%s\n", is_recoverable ? "yes" : "no");
++}
++
++static struct kobj_attribute link_degrade_state              = __ATTR_RO(state);
++static struct kobj_attribute link_is_rx_degraded             = __ATTR_RO(is_rx_degraded);
++static struct kobj_attribute link_rx_degrade_lane_map        = __ATTR_RO(rx_degrade_map);
++static struct kobj_attribute link_rx_degrade_link_speed_gbps = __ATTR_RO(rx_link_speed_gbps);
++static struct kobj_attribute link_is_tx_degraded             = __ATTR_RO(is_tx_degraded);
++static struct kobj_attribute link_tx_degrade_lane_map        = __ATTR_RO(tx_degrade_map);
++static struct kobj_attribute link_tx_degrade_link_speed_gbps = __ATTR_RO(tx_link_speed_gbps);
++static struct kobj_attribute link_is_recoverable             = __ATTR_RO(is_recoverable);
++
++static struct attribute *link_degrade_attrs[] = {
++	&link_degrade_state.attr,
++	&link_is_rx_degraded.attr,
++	&link_rx_degrade_lane_map.attr,
++	&link_rx_degrade_link_speed_gbps.attr,
++	&link_is_tx_degraded.attr,
++	&link_tx_degrade_lane_map.attr,
++	&link_tx_degrade_link_speed_gbps.attr,
++	&link_is_recoverable.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(link_degrade);
++
++static struct kobj_type link_degrade = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_degrade_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_link_degrade_create(struct sl_core_link *core_link, struct kobject *parent_kobj)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "link degrade create (num = %u)", core_link->num);
++
++	rtn = kobject_init_and_add(&core_link->degrade_kobj, &link_degrade, parent_kobj, "auto_lane_degrade");
++	if (rtn) {
++		sl_log_err(core_link, LOG_BLOCK, LOG_NAME,
++			   "link degrade create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&core_link->degrade_kobj);
++		return rtn;
++	}
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_link_degrade_delete(struct sl_core_link *core_link)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "link degrade delete (num = %u)", core_link->num);
++
++	kobject_put(&core_link->degrade_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec.c
+new file mode 100644
+index 000000000000..37edb89f8595
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec.c
+@@ -0,0 +1,148 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_core_link.h"
++#include "sl_ctrl_ldev.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_link.h"
++#include "sl_ctrl_link_fec.h"
++#include "sl_sysfs_link_fec_current.h"
++#include "sl_sysfs_link_fec_mon_check.h"
++#include "sl_sysfs_link_fec_up_check.h"
++#include "sl_sysfs_link_fec_up.h"
++#include "sl_sysfs_link_fec_down.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t monitor_state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u32                  state;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.kobj);
++
++	rtn = sl_ctrl_link_fec_mon_state_get(ctrl_link, &state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "monitor state show (link = 0x%p, state = %u, %s)", ctrl_link, state,
++		   sl_ctrl_link_fec_mon_state_str(state));
++
++	return sysfs_emit(buf, "%s\n", sl_ctrl_link_fec_mon_state_str(state));
++}
++
++static struct kobj_attribute fec_monitor_state = __ATTR_RO(monitor_state);
++
++static struct attribute *link_fec_attrs[] = {
++	&fec_monitor_state.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(link_fec);
++
++static struct kobj_type link_fec = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_fec_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_link_fec_create(struct sl_ctrl_link *ctrl_link)
++{
++#ifdef CONFIG_SYSFS
++	int                  rtn;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link fec create (num = %u)", ctrl_link->num);
++
++	core_link = sl_core_link_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num, ctrl_link->num);
++	if (!core_link)
++		return -ENODEV;
++
++	rtn = kobject_init_and_add(&ctrl_link->fec.kobj, &link_fec, &ctrl_link->kobj, "fec");
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "link fec create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&ctrl_link->fec.kobj);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_link_fec_current_create(core_link, &ctrl_link->fec.kobj);
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "link fec current create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&ctrl_link->fec.kobj);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_link_fec_mon_check_create(ctrl_link);
++	if (rtn) {
++		sl_log_err(core_link, LOG_BLOCK, LOG_NAME, "fec mon check create failed [%d]", rtn);
++		sl_sysfs_link_fec_current_delete(core_link);
++		kobject_put(&ctrl_link->fec.kobj);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_link_fec_up_check_create(core_link, &ctrl_link->fec.kobj);
++	if (rtn) {
++		sl_log_err(core_link, LOG_BLOCK, LOG_NAME, "fec up check create failed [%d]", rtn);
++		sl_sysfs_link_fec_current_delete(core_link);
++		sl_sysfs_link_fec_mon_check_delete(ctrl_link);
++		kobject_put(&ctrl_link->fec.kobj);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_link_fec_up_create(ctrl_link);
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "link fec up create kobject_init_and_add failed [%d]", rtn);
++		sl_sysfs_link_fec_current_delete(core_link);
++		sl_sysfs_link_fec_mon_check_delete(ctrl_link);
++		sl_sysfs_link_fec_up_check_delete(core_link);
++		kobject_put(&ctrl_link->fec.kobj);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_link_fec_down_create(ctrl_link);
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "link fec down create kobject_init_and_add failed [%d]", rtn);
++		sl_sysfs_link_fec_current_delete(core_link);
++		sl_sysfs_link_fec_mon_check_delete(ctrl_link);
++		sl_sysfs_link_fec_up_check_delete(core_link);
++		sl_sysfs_link_fec_up_delete(ctrl_link);
++		kobject_put(&ctrl_link->fec.kobj);
++		return rtn;
++	}
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_link_fec_delete(struct sl_ctrl_link *ctrl_link)
++{
++#ifdef CONFIG_SYSFS
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link fec delete (num = %u)", ctrl_link->num);
++
++	core_link = sl_core_link_get(ctrl_link->ctrl_lgrp->ctrl_ldev->num, ctrl_link->ctrl_lgrp->num, ctrl_link->num);
++	if (!core_link)
++		return;
++
++	sl_sysfs_link_fec_current_delete(core_link);
++	sl_sysfs_link_fec_mon_check_delete(ctrl_link);
++	sl_sysfs_link_fec_up_check_delete(core_link);
++	sl_sysfs_link_fec_up_delete(ctrl_link);
++	sl_sysfs_link_fec_down_delete(ctrl_link);
++	kobject_put(&ctrl_link->fec.kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_current.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_current.c
+new file mode 100644
+index 000000000000..30514651d6fe
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_current.c
+@@ -0,0 +1,336 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_log.h"
++#include "sl_core_link.h"
++
++#include "sl_sysfs_link_fec_current.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t ccw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	u64                  ccw;
++	struct sl_core_link *core_link;
++
++	core_link = container_of(kobj, struct sl_core_link, fec.current_kobj);
++
++	rtn = sl_core_link_fec_ccw_get(core_link, &ccw);
++	if (rtn == -ENOLINK) {
++		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
++				 "ccw show sl_core_link_fec_ccw_get failed [%d]", rtn);
++		return sysfs_emit(buf, "no-link\n");
++	}
++	if (rtn) {
++		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
++				 "ccw show sl_core_link_fec_ccw_get failed [%d]", rtn);
++		return sysfs_emit(buf, "io-error\n");
++	}
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "ccw show (ccw = %llu)", ccw);
++
++	return sysfs_emit(buf, "%llu\n", ccw);
++}
++
++static ssize_t ucw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	u64                  ucw;
++	struct sl_core_link *core_link;
++
++	core_link = container_of(kobj, struct sl_core_link, fec.current_kobj);
++
++	rtn = sl_core_link_fec_ucw_get(core_link, &ucw);
++	if (rtn == -ENOLINK) {
++		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
++				 "ucw show sl_core_link_fec_ucw_get failed [%d]", rtn);
++		return sysfs_emit(buf, "no-link\n");
++	}
++	if (rtn) {
++		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
++				 "ucw show sl_core_link_fec_ucw_get failed [%d]", rtn);
++		return sysfs_emit(buf, "io-error\n");
++	}
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "ucw show (ucw = %llu)", ucw);
++
++	return sysfs_emit(buf, "%llu\n", ucw);
++}
++
++static ssize_t gcw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int		     rtn;
++	u64                  gcw;
++	struct sl_core_link *core_link;
++
++	core_link = container_of(kobj, struct sl_core_link, fec.current_kobj);
++
++	rtn = sl_core_link_fec_gcw_get(core_link, &gcw);
++	if (rtn == -ENOLINK) {
++		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
++				 "gcw show sl_core_link_fec_gcw_get failed [%d]", rtn);
++		return sysfs_emit(buf, "no-link\n");
++	}
++	if (rtn) {
++		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
++				 "gcw show sl_core_link_fec_gcw_get failed [%d]", rtn);
++		return sysfs_emit(buf, "io-error\n");
++	}
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
++		   "gcw show (link = 0x%p, gcw = %llu)", core_link, gcw);
++
++	return sysfs_emit(buf, "%llu\n", gcw);
++}
++
++static struct kobj_attribute link_fec_ccw = __ATTR_RO(ccw);
++static struct kobj_attribute link_fec_ucw = __ATTR_RO(ucw);
++static struct kobj_attribute link_fec_gcw = __ATTR_RO(gcw);
++
++static struct attribute *link_fec_current_attrs[] = {
++	&link_fec_ccw.attr,
++	&link_fec_ucw.attr,
++	&link_fec_gcw.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(link_fec_current);
++
++static struct kobj_type link_fec_current = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_fec_current_groups,
++};
++
++static struct attribute *link_fec_current_lane_attrs[] = {
++	NULL
++};
++ATTRIBUTE_GROUPS(link_fec_current_lane);
++
++static struct kobj_type link_fec_current_lane = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_fec_current_lane_groups,
++};
++
++static ssize_t link_fec_current_fecl_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
++{
++	int                            rtn;
++	struct sl_core_link_fecl_kobj *fecl_kobj;
++	struct sl_core_link           *core_link;
++	u8                             fecl_num;
++	u64                            fecl;
++
++	fecl_kobj = container_of(kobj, struct sl_core_link_fecl_kobj, kobj);
++
++	core_link = fecl_kobj->core_link;
++
++	fecl_num = ((4 * fecl_kobj->lane_num) + num);
++
++	rtn = sl_core_link_fec_lane_cntr_get(core_link, fecl_num, &fecl);
++	if (rtn == -ENOLINK) {
++		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
++				 "current fecl show sl_core_link_fec_lane_cntr_get failed [%d]", rtn);
++		return sysfs_emit(buf, "no-link\n");
++	}
++	if (rtn) {
++		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
++				 "current fecl show sl_core_link_fec_lane_cntr_get failed [%d]", rtn);
++		return sysfs_emit(buf, "io-error\n");
++	}
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "current fecl show (num = %u, lane_num = %u, fecl %u = %llu)",
++		   num, fecl_kobj->lane_num, fecl_num, fecl);
++
++	return sysfs_emit(buf, "%llu\n", fecl);
++}
++
++#define link_fec_current_fecl(_num)                                                                            \
++	static inline ssize_t fecl##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
++	{                                                                                                      \
++		return link_fec_current_fecl_show(kobj, kattr, buf, (_num));                                   \
++	}                                                                                                      \
++	static struct kobj_attribute link_fecl##_num = __ATTR_RO(fecl##_num)
++
++static ssize_t link_fec_current_bin_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
++{
++	int                  rtn;
++	struct sl_core_link *core_link;
++	u64                  ccw_bin;
++
++	core_link = container_of(kobj, struct sl_core_link, fec.current_tail_kobj);
++
++	rtn = sl_core_link_fec_tail_cntr_get(core_link, num, &ccw_bin);
++	if (rtn == -ENOLINK) {
++		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
++				 "current bin show sl_core_link_fec_tail_cntr_get failed [%d]", rtn);
++		return sysfs_emit(buf, "no-link\n");
++	}
++	if (rtn) {
++		sl_log_err_trace(core_link, LOG_BLOCK, LOG_NAME,
++				 "current bin show sl_core_link_fec_tail_cntr_get failed [%d]", rtn);
++		return sysfs_emit(buf, "io-error\n");
++	}
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "current bin show (bin %u = %llu)", num, ccw_bin);
++
++	return sysfs_emit(buf, "%llu\n", ccw_bin);
++}
++
++#define link_fec_current_tail0(_num)                                                                    \
++	static ssize_t bin0##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
++	{                                                                                               \
++		return link_fec_current_bin_show(kobj, kattr, buf, _num);                               \
++	}                                                                                               \
++	static struct kobj_attribute fec_bin0##_num = __ATTR_RO(bin0##_num)
++
++#define link_fec_current_tail(_num)                                                                           \
++	static inline ssize_t bin##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
++	{                                                                                                     \
++		return link_fec_current_bin_show(kobj, kattr, buf, (_num));                                   \
++	}                                                                                                     \
++	static struct kobj_attribute fec_bin##_num = __ATTR_RO(bin##_num)
++
++link_fec_current_fecl(0);
++link_fec_current_fecl(1);
++link_fec_current_fecl(2);
++link_fec_current_fecl(3);
++
++static struct attribute *link_fec_current_fecl_attrs[] = {
++	&link_fecl0.attr,
++	&link_fecl1.attr,
++	&link_fecl2.attr,
++	&link_fecl3.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(link_fec_current_fecl);
++
++static struct kobj_type link_fec_current_fecl = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_fec_current_fecl_groups,
++};
++
++link_fec_current_tail0(0);
++link_fec_current_tail0(1);
++link_fec_current_tail0(2);
++link_fec_current_tail0(3);
++link_fec_current_tail0(4);
++link_fec_current_tail0(5);
++link_fec_current_tail0(6);
++link_fec_current_tail0(7);
++link_fec_current_tail0(8);
++link_fec_current_tail0(9);
++link_fec_current_tail(10);
++link_fec_current_tail(11);
++link_fec_current_tail(12);
++link_fec_current_tail(13);
++link_fec_current_tail(14);
++
++static struct attribute *link_fec_current_tail_attrs[] = {
++	&fec_bin00.attr,
++	&fec_bin01.attr,
++	&fec_bin02.attr,
++	&fec_bin03.attr,
++	&fec_bin04.attr,
++	&fec_bin05.attr,
++	&fec_bin06.attr,
++	&fec_bin07.attr,
++	&fec_bin08.attr,
++	&fec_bin09.attr,
++	&fec_bin10.attr,
++	&fec_bin11.attr,
++	&fec_bin12.attr,
++	&fec_bin13.attr,
++	&fec_bin14.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(link_fec_current_tail);
++
++static struct kobj_type link_fec_current_tail = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_fec_current_tail_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_link_fec_current_create(struct sl_core_link *core_link, struct kobject *parent_kobj)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++	int x;
++	int out;
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
++		   "link fec current create (num = %u)", core_link->num);
++
++	rtn = kobject_init_and_add(&core_link->fec.current_kobj, &link_fec_current, parent_kobj, "current");
++	if (rtn) {
++		sl_log_err(core_link, LOG_BLOCK, LOG_NAME,
++			   "link fec current create kobject_init_and_add failed [%d]", rtn);
++		goto out_current;
++	}
++
++	rtn = kobject_init_and_add(&core_link->fec.current_lane_kobj,
++				   &link_fec_current_lane, &core_link->fec.current_kobj, "lane");
++	if (rtn) {
++		sl_log_err(core_link, LOG_BLOCK, LOG_NAME,
++			   "link fec current lane create kobject_init_and_add failed [%d]", rtn);
++		goto out_current_lane;
++	}
++	for (x = 0; x < SL_MAX_LANES; ++x) {
++		rtn = kobject_init_and_add(&core_link->fec.current_fecl_kobjs[x].kobj,
++					   &link_fec_current_fecl, &core_link->fec.current_lane_kobj, "%d", x);
++		if (rtn) {
++			sl_log_err(core_link, LOG_BLOCK, LOG_NAME,
++				   "link fec current fecl create kobject_init_and_add failed [%d]", rtn);
++			goto out_current_fecl;
++		}
++		core_link->fec.current_fecl_kobjs[x].core_link = core_link;
++		core_link->fec.current_fecl_kobjs[x].lane_num = x;
++	}
++
++	rtn = kobject_init_and_add(&core_link->fec.current_tail_kobj,
++				   &link_fec_current_tail, &core_link->fec.current_kobj, "tail");
++	if (rtn) {
++		sl_log_err(core_link, LOG_BLOCK, LOG_NAME,
++			   "link fec current tail create kobject_init_and_add failed [%d]", rtn);
++		goto out_current_tail;
++	}
++
++	return 0;
++
++out_current_tail:
++	kobject_put(&core_link->fec.current_tail_kobj);
++out_current_fecl:
++	if (x < SL_MAX_LANES)
++		kobject_put(&core_link->fec.current_fecl_kobjs[x].kobj);
++	for (out = 0; out < x; ++out)
++		kobject_put(&core_link->fec.current_fecl_kobjs[out].kobj);
++out_current_lane:
++	kobject_put(&core_link->fec.current_lane_kobj);
++out_current:
++	kobject_put(&core_link->fec.current_kobj);
++
++	return rtn;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_link_fec_current_delete(struct sl_core_link *core_link)
++{
++#ifdef CONFIG_SYSFS
++	int x;
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
++		   "link fec current delete (link_num = %u)", core_link->num);
++
++	kobject_put(&core_link->fec.current_tail_kobj);
++	for (x = 0; x < SL_MAX_LANES; ++x)
++		kobject_put(&core_link->fec.current_fecl_kobjs[x].kobj);
++	kobject_put(&core_link->fec.current_lane_kobj);
++	kobject_put(&core_link->fec.current_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_down.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_down.c
+new file mode 100644
+index 000000000000..6962b2c678da
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_down.c
+@@ -0,0 +1,316 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_log.h"
++#include "data/sl_ctrl_data_link.h"
++
++#include "sl_sysfs_link_fec_down.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t ccw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u64                  ccw;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.down_kobj);
++
++	rtn = sl_ctrl_data_link_fec_down_cache_ccw_cntr_get(ctrl_link, &ccw);
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "ccw show sl_ctrl_data_link_fec_down_cache_ccw_cntr_get failed [%d]", rtn);
++		return sysfs_emit(buf, "error\n");
++	}
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "ccw show (link = 0x%p, ccw = %llu)", ctrl_link, ccw);
++
++	return sysfs_emit(buf, "%llu\n", ccw);
++}
++
++static ssize_t ucw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u64                  ucw;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.down_kobj);
++
++	rtn = sl_ctrl_data_link_fec_down_cache_ucw_cntr_get(ctrl_link, &ucw);
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "ucw show sl_ctrl_data_link_fec_down_cache_ucw_cntr_get failed [%d]", rtn);
++		return sysfs_emit(buf, "error\n");
++	}
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "ucw show (link = 0x%p, ucw = %llu)", ctrl_link, ucw);
++
++	return sysfs_emit(buf, "%llu\n", ucw);
++}
++
++static ssize_t gcw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u64                  gcw;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.down_kobj);
++
++	rtn = sl_ctrl_data_link_fec_down_cache_gcw_cntr_get(ctrl_link, &gcw);
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "gcw show sl_ctrl_data_link_fec_down_cache_gcw_cntr_get failed [%d]", rtn);
++		return sysfs_emit(buf, "error\n");
++	}
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "gcw show (link = 0x%p, gcw = %llu)", ctrl_link, gcw);
++
++	return sysfs_emit(buf, "%llu\n", gcw);
++}
++
++static struct kobj_attribute link_fec_ccw = __ATTR_RO(ccw);
++static struct kobj_attribute link_fec_ucw = __ATTR_RO(ucw);
++static struct kobj_attribute link_fec_gcw = __ATTR_RO(gcw);
++
++static struct attribute *link_fec_down_attrs[] = {
++	&link_fec_ccw.attr,
++	&link_fec_ucw.attr,
++	&link_fec_gcw.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(link_fec_down);
++
++static struct kobj_type link_fec_down = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_fec_down_groups,
++};
++
++static struct attribute *link_fec_down_lane_attrs[] = {
++	NULL
++};
++ATTRIBUTE_GROUPS(link_fec_down_lane);
++
++static struct kobj_type link_fec_down_lane = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_fec_down_lane_groups,
++};
++
++static ssize_t link_fec_down_fecl_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
++{
++	int                            rtn;
++	struct sl_ctrl_link           *ctrl_link;
++	struct sl_ctrl_link_fecl_kobj *fecl_kobj;
++	u8                             fecl_num;
++	u64                            lane_cntr;
++
++	fecl_kobj = container_of(kobj, struct sl_ctrl_link_fecl_kobj, kobj);
++	ctrl_link = fecl_kobj->ctrl_link;
++
++	fecl_num = ((4 * fecl_kobj->lane_num) + num);
++
++	rtn = sl_ctrl_data_link_fec_down_cache_lane_cntr_get(ctrl_link, fecl_num, &lane_cntr);
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "current fecl show sl_ctrl_data_link_fec_down_cache_lane_cntr_get failed [%d]", rtn);
++		return sysfs_emit(buf, "error\n");
++	}
++
++	sl_log_dbg(fecl_kobj->ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "current fecl show (link = 0x%p, num = %u, lane_num = %u, fecl %u = %llu)",
++		ctrl_link, num, fecl_kobj->lane_num, fecl_num, lane_cntr);
++
++	return sysfs_emit(buf, "%llu\n", lane_cntr);
++}
++
++#define link_fec_down_fecl(_num)                                                                               \
++	static inline ssize_t fecl##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
++	{                                                                                                      \
++		return link_fec_down_fecl_show(kobj, kattr, buf, (_num));                                      \
++	}                                                                                                      \
++	static struct kobj_attribute link_fecl##_num = __ATTR_RO(fecl##_num)
++
++static ssize_t link_fec_down_bin_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u64                  tail_cntr;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.down_tail_kobj);
++
++	rtn = sl_ctrl_data_link_fec_down_cache_tail_cntr_get(ctrl_link, num, &tail_cntr);
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "down bin show sl_ctrl_data_link_fec_down_cache_tail_cntr_get failed [%d]", rtn);
++		return sysfs_emit(buf, "error\n");
++	}
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "down bin show (link = 0x%p, bin %u = %llu)",
++		ctrl_link, num, tail_cntr);
++
++	return sysfs_emit(buf, "%llu\n", tail_cntr);
++}
++
++#define link_fec_down_tail0(_num)                                                                       \
++	static ssize_t bin0##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
++	{                                                                                               \
++		return link_fec_down_bin_show(kobj, kattr, buf, _num);                                  \
++	}                                                                                               \
++	static struct kobj_attribute fec_bin0##_num = __ATTR_RO(bin0##_num)
++
++#define link_fec_down_tail(_num)                                                                              \
++	static inline ssize_t bin##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
++	{                                                                                                     \
++		return link_fec_down_bin_show(kobj, kattr, buf, (_num));                                      \
++	}                                                                                                     \
++	static struct kobj_attribute fec_bin##_num = __ATTR_RO(bin##_num)
++
++link_fec_down_fecl(0);
++link_fec_down_fecl(1);
++link_fec_down_fecl(2);
++link_fec_down_fecl(3);
++
++static struct attribute *link_fec_down_fecl_attrs[] = {
++	&link_fecl0.attr,
++	&link_fecl1.attr,
++	&link_fecl2.attr,
++	&link_fecl3.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(link_fec_down_fecl);
++
++static struct kobj_type link_fec_down_fecl = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_fec_down_fecl_groups,
++};
++
++link_fec_down_tail0(0);
++link_fec_down_tail0(1);
++link_fec_down_tail0(2);
++link_fec_down_tail0(3);
++link_fec_down_tail0(4);
++link_fec_down_tail0(5);
++link_fec_down_tail0(6);
++link_fec_down_tail0(7);
++link_fec_down_tail0(8);
++link_fec_down_tail0(9);
++link_fec_down_tail(10);
++link_fec_down_tail(11);
++link_fec_down_tail(12);
++link_fec_down_tail(13);
++link_fec_down_tail(14);
++
++static struct attribute *link_fec_down_tail_attrs[] = {
++	&fec_bin00.attr,
++	&fec_bin01.attr,
++	&fec_bin02.attr,
++	&fec_bin03.attr,
++	&fec_bin04.attr,
++	&fec_bin05.attr,
++	&fec_bin06.attr,
++	&fec_bin07.attr,
++	&fec_bin08.attr,
++	&fec_bin09.attr,
++	&fec_bin10.attr,
++	&fec_bin11.attr,
++	&fec_bin12.attr,
++	&fec_bin13.attr,
++	&fec_bin14.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(link_fec_down_tail);
++
++static struct kobj_type link_fec_down_tail = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_fec_down_tail_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_link_fec_down_create(struct sl_ctrl_link *ctrl_link)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++	int x;
++	int out;
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "link fec down create (num = %u)", ctrl_link->num);
++
++	rtn = kobject_init_and_add(&ctrl_link->fec.down_kobj, &link_fec_down,
++				   &ctrl_link->fec.kobj, "down");
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "link fec down create kobject_init_and_add failed [%d]", rtn);
++		goto out_down;
++	}
++
++	rtn = kobject_init_and_add(&ctrl_link->fec.down_lane_kobj,
++				   &link_fec_down_lane, &ctrl_link->fec.down_kobj, "lane");
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "link fec down lane create kobject_init_and_add failed [%d]", rtn);
++		goto out_down_lane;
++	}
++	for (x = 0; x < SL_MAX_LANES; ++x) {
++		rtn = kobject_init_and_add(&ctrl_link->fec.down_fecl_kobjs[x].kobj,
++					   &link_fec_down_fecl, &ctrl_link->fec.down_lane_kobj, "%d", x);
++		if (rtn) {
++			sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++				   "link fec down fecl create kobject_init_and_add failed [%d]", rtn);
++			goto out_down_fecl;
++		}
++		ctrl_link->fec.down_fecl_kobjs[x].ctrl_link = ctrl_link;
++		ctrl_link->fec.down_fecl_kobjs[x].lane_num = x;
++	}
++
++	rtn = kobject_init_and_add(&ctrl_link->fec.down_tail_kobj,
++				   &link_fec_down_tail, &ctrl_link->fec.down_kobj, "tail");
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "link fec down tail create kobject_init_and_add failed [%d]", rtn);
++		goto out_down_tail;
++	}
++
++	return 0;
++
++out_down_tail:
++	kobject_put(&ctrl_link->fec.down_tail_kobj);
++out_down_fecl:
++	if (x < SL_MAX_LANES)
++		kobject_put(&ctrl_link->fec.down_fecl_kobjs[x].kobj);
++	for (out = 0; out < x; ++out)
++		kobject_put(&ctrl_link->fec.down_fecl_kobjs[out].kobj);
++out_down_lane:
++	kobject_put(&ctrl_link->fec.down_lane_kobj);
++out_down:
++	kobject_put(&ctrl_link->fec.down_kobj);
++
++	return rtn;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_link_fec_down_delete(struct sl_ctrl_link *ctrl_link)
++{
++#ifdef CONFIG_SYSFS
++	int x;
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "link fec down delete (link_num = %u)", ctrl_link->num);
++
++	kobject_put(&ctrl_link->fec.down_tail_kobj);
++	for (x = 0; x < SL_MAX_LANES; ++x)
++		kobject_put(&ctrl_link->fec.down_fecl_kobjs[x].kobj);
++	kobject_put(&ctrl_link->fec.down_lane_kobj);
++	kobject_put(&ctrl_link->fec.down_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_mon_check.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_mon_check.c
+new file mode 100644
+index 000000000000..f989399518fc
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_mon_check.c
+@@ -0,0 +1,195 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_log.h"
++#include "data/sl_ctrl_data_link.h"
++
++#include "sl_sysfs_link_fec_mon_check.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t ucw_down_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	s32                  ucw_down_limit;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.mon_check_kobj);
++
++	rtn = sl_ctrl_data_link_fec_mon_ucw_down_limit_get(ctrl_link, &ucw_down_limit);
++	if (rtn == -EBADRQC) {
++		sl_log_warn_trace(ctrl_link, LOG_BLOCK, LOG_NAME,
++				  "ucw down limit show monitoring not enabled");
++		return sysfs_emit(buf, "not-monitoring\n");
++	}
++	if (rtn) {
++		sl_log_err_trace(ctrl_link, LOG_BLOCK, LOG_NAME, "fec_mon_ucw_down_limit_get failed [%d]", rtn);
++		return sysfs_emit(buf, "error\n");
++	}
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "ucw down limit show (ucw_down_limit = %d)", ucw_down_limit);
++
++	if (ucw_down_limit == -1)
++		return sysfs_emit(buf, "calculated\n");
++
++	return sysfs_emit(buf, "%d\n", ucw_down_limit);
++}
++
++static ssize_t ucw_warn_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	s32                  ucw_warn_limit;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.mon_check_kobj);
++
++	rtn = sl_ctrl_data_link_fec_mon_ucw_warn_limit_get(ctrl_link, &ucw_warn_limit);
++	if (rtn == -EBADRQC) {
++		sl_log_warn_trace(ctrl_link, LOG_BLOCK, LOG_NAME,
++				  "ucw warn limit show monitoring not enabled");
++		return sysfs_emit(buf, "not-monitoring\n");
++	}
++	if (rtn) {
++		sl_log_err_trace(ctrl_link, LOG_BLOCK, LOG_NAME, "fec_mon_ucw_warn_limit_get failed [%d]", rtn);
++		return sysfs_emit(buf, "error\n");
++	}
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "ucw warn limit show (ucw_warn_limit = %d)", ucw_warn_limit);
++
++	if (ucw_warn_limit == -1)
++		return sysfs_emit(buf, "calculated\n");
++
++	return sysfs_emit(buf, "%d\n", ucw_warn_limit);
++}
++
++static ssize_t ccw_down_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_link *ctrl_link;
++	s32                  ccw_down_limit;
++	int                  rtn;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.mon_check_kobj);
++
++	rtn = sl_ctrl_data_link_fec_mon_ccw_down_limit_get(ctrl_link, &ccw_down_limit);
++	if (rtn == -EBADRQC) {
++		sl_log_warn_trace(ctrl_link, LOG_BLOCK, LOG_NAME,
++				  "ccw down limit show monitoring not enabled");
++		return sysfs_emit(buf, "not-monitoring\n");
++	}
++	if (rtn) {
++		sl_log_err_trace(ctrl_link, LOG_BLOCK, LOG_NAME, "fec_mon_ccw_down_limit_get failed [%d]", rtn);
++		return sysfs_emit(buf, "error\n");
++	}
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "fec_mon_ccw_down_limit show (ccw_down_limit = %d)", ccw_down_limit);
++
++	if (ccw_down_limit == -1)
++		return sysfs_emit(buf, "calculated\n");
++
++	return sysfs_emit(buf, "%d\n", ccw_down_limit);
++}
++
++static ssize_t ccw_warn_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	s32                  ccw_warn_limit;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.mon_check_kobj);
++
++	rtn = sl_ctrl_data_link_fec_mon_ccw_warn_limit_get(ctrl_link, &ccw_warn_limit);
++	if (rtn == -EBADRQC) {
++		sl_log_warn_trace(ctrl_link, LOG_BLOCK, LOG_NAME,
++				  "ccw warn limit show monitoring not enabled");
++		return sysfs_emit(buf, "not-monitoring\n");
++	}
++	if (rtn) {
++		sl_log_err_trace(ctrl_link, LOG_BLOCK, LOG_NAME, "fec_mon_ccw_warn_limit_get failed [%d]", rtn);
++		return sysfs_emit(buf, "error\n");
++	}
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "fec_mon_ccw_warn_limit show (ccw_warn_limit = %d)", ccw_warn_limit);
++
++	if (ccw_warn_limit == -1)
++		return sysfs_emit(buf, "calculated\n");
++
++	return sysfs_emit(buf, "%d\n", ccw_warn_limit);
++}
++
++static ssize_t period_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	s32                  period_ms;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.mon_check_kobj);
++
++	rtn = sl_ctrl_data_link_fec_mon_period_ms_get(ctrl_link, &period_ms);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "fec_mon_period_ms_show show (period_ms = %u)", period_ms);
++
++	return sysfs_emit(buf, "%u\n", period_ms);
++}
++
++static struct kobj_attribute ucw_down_limit = __ATTR_RO(ucw_down_limit);
++static struct kobj_attribute ucw_warn_limit = __ATTR_RO(ucw_warn_limit);
++static struct kobj_attribute ccw_down_limit = __ATTR_RO(ccw_down_limit);
++static struct kobj_attribute ccw_warn_limit = __ATTR_RO(ccw_warn_limit);
++static struct kobj_attribute period_ms      = __ATTR_RO(period_ms);
++
++static struct attribute *link_fec_mon_check_attrs[] = {
++	&ucw_down_limit.attr,
++	&ucw_warn_limit.attr,
++	&ccw_down_limit.attr,
++	&ccw_warn_limit.attr,
++	&period_ms.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(link_fec_mon_check);
++
++static struct kobj_type link_fec_mon_check = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_fec_mon_check_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_link_fec_mon_check_create(struct sl_ctrl_link *ctrl_link)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link fec mon check create (num = %u)", ctrl_link->num);
++
++	rtn = kobject_init_and_add(&ctrl_link->fec.mon_check_kobj, &link_fec_mon_check,
++				   &ctrl_link->fec.kobj, "monitor_check");
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "link monitor check create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&ctrl_link->fec.mon_check_kobj);
++		return rtn;
++	}
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_link_fec_mon_check_delete(struct sl_ctrl_link *ctrl_link)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link fec mon check delete (num = %u)", ctrl_link->num);
++
++	kobject_put(&ctrl_link->fec.mon_check_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_up.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_up.c
+new file mode 100644
+index 000000000000..ecf92c043e01
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_up.c
+@@ -0,0 +1,299 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_log.h"
++#include "data/sl_ctrl_data_link.h"
++
++#include "sl_sysfs_link_fec_up.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t ccw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u64                  ccw;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.up_kobj);
++
++	rtn = sl_ctrl_data_link_fec_up_cache_ccw_cntr_get(ctrl_link, &ccw);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "ccw show (ccw = %llu)", ccw);
++
++	return sysfs_emit(buf, "%llu\n", ccw);
++}
++
++static ssize_t ucw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u64                  ucw;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.up_kobj);
++
++	rtn = sl_ctrl_data_link_fec_up_cache_ucw_cntr_get(ctrl_link, &ucw);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "ucw show (ucw = %llu)", ucw);
++
++	return sysfs_emit(buf, "%llu\n", ucw);
++}
++
++static ssize_t gcw_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u64                  gcw;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.up_kobj);
++
++	rtn = sl_ctrl_data_link_fec_up_cache_gcw_cntr_get(ctrl_link, &gcw);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "gcw show (link = 0x%p, gcw = %llu)", ctrl_link, gcw);
++
++	return sysfs_emit(buf, "%llu\n", gcw);
++}
++
++static struct kobj_attribute link_fec_ccw = __ATTR_RO(ccw);
++static struct kobj_attribute link_fec_ucw = __ATTR_RO(ucw);
++static struct kobj_attribute link_fec_gcw = __ATTR_RO(gcw);
++
++static struct attribute *link_fec_up_attrs[] = {
++	&link_fec_ccw.attr,
++	&link_fec_ucw.attr,
++	&link_fec_gcw.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(link_fec_up);
++
++static struct kobj_type link_fec_up = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_fec_up_groups,
++};
++
++static struct attribute *link_fec_up_lane_attrs[] = {
++	NULL
++};
++ATTRIBUTE_GROUPS(link_fec_up_lane);
++
++static struct kobj_type link_fec_up_lane = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_fec_up_lane_groups,
++};
++
++static ssize_t link_fec_up_fecl_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
++{
++	int                            rtn;
++	struct sl_ctrl_link           *ctrl_link;
++	struct sl_ctrl_link_fecl_kobj *fecl_kobj;
++	u8                             fecl_num;
++	u64                            fecl;
++
++	fecl_kobj = container_of(kobj, struct sl_ctrl_link_fecl_kobj, kobj);
++	ctrl_link = fecl_kobj->ctrl_link;
++
++	fecl_num = ((4 * fecl_kobj->lane_num) + num);
++
++	rtn = sl_ctrl_data_link_fec_up_cache_lane_cntr_get(ctrl_link, fecl_num, &fecl);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(fecl_kobj->ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "current fecl show (link = 0x%p, num = %u, lane_num = %u, fecl %u = %llu)",
++		fecl_kobj->ctrl_link, num, fecl_kobj->lane_num, fecl_num, fecl);
++
++	return sysfs_emit(buf, "%llu\n", fecl);
++}
++
++#define link_fec_up_fecl(_num)                                                                                 \
++	static inline ssize_t fecl##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
++	{                                                                                                      \
++		return link_fec_up_fecl_show(kobj, kattr, buf, (_num));                                        \
++	}                                                                                                      \
++	static struct kobj_attribute link_fecl##_num = __ATTR_RO(fecl##_num)
++
++static ssize_t link_fec_up_bin_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u64                 tail_cntr;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, fec.up_tail_kobj);
++
++	rtn = sl_ctrl_data_link_fec_up_cache_tail_cntr_get(ctrl_link, num, &tail_cntr);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "up bin show (link = 0x%p, bin %u = %llu)",
++		ctrl_link, num, tail_cntr);
++
++	return sysfs_emit(buf, "%llu\n", tail_cntr);
++}
++
++#define link_fec_up_tail0(_num)                                                                         \
++	static ssize_t bin0##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
++	{                                                                                               \
++		return link_fec_up_bin_show(kobj, kattr, buf, _num);                                    \
++	}                                                                                               \
++	static struct kobj_attribute fec_bin0##_num = __ATTR_RO(bin0##_num)
++
++#define link_fec_up_tail(_num)                                                                                \
++	static inline ssize_t bin##_num##_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
++	{                                                                                                     \
++		return link_fec_up_bin_show(kobj, kattr, buf, (_num));                                        \
++	}                                                                                                     \
++	static struct kobj_attribute fec_bin##_num = __ATTR_RO(bin##_num)
++
++link_fec_up_fecl(0);
++link_fec_up_fecl(1);
++link_fec_up_fecl(2);
++link_fec_up_fecl(3);
++
++static struct attribute *link_fec_up_fecl_attrs[] = {
++	&link_fecl0.attr,
++	&link_fecl1.attr,
++	&link_fecl2.attr,
++	&link_fecl3.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(link_fec_up_fecl);
++
++static struct kobj_type link_fec_up_fecl = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_fec_up_fecl_groups,
++};
++
++link_fec_up_tail0(0);
++link_fec_up_tail0(1);
++link_fec_up_tail0(2);
++link_fec_up_tail0(3);
++link_fec_up_tail0(4);
++link_fec_up_tail0(5);
++link_fec_up_tail0(6);
++link_fec_up_tail0(7);
++link_fec_up_tail0(8);
++link_fec_up_tail0(9);
++link_fec_up_tail(10);
++link_fec_up_tail(11);
++link_fec_up_tail(12);
++link_fec_up_tail(13);
++link_fec_up_tail(14);
++
++static struct attribute *link_fec_up_tail_attrs[] = {
++	&fec_bin00.attr,
++	&fec_bin01.attr,
++	&fec_bin02.attr,
++	&fec_bin03.attr,
++	&fec_bin04.attr,
++	&fec_bin05.attr,
++	&fec_bin06.attr,
++	&fec_bin07.attr,
++	&fec_bin08.attr,
++	&fec_bin09.attr,
++	&fec_bin10.attr,
++	&fec_bin11.attr,
++	&fec_bin12.attr,
++	&fec_bin13.attr,
++	&fec_bin14.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(link_fec_up_tail);
++
++static struct kobj_type link_fec_up_tail = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_fec_up_tail_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_link_fec_up_create(struct sl_ctrl_link *ctrl_link)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++	int x;
++	int out;
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "link fec up create (num = %u)", ctrl_link->num);
++
++	rtn = kobject_init_and_add(&ctrl_link->fec.up_kobj, &link_fec_up,
++				   &ctrl_link->fec.kobj, "up");
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "link fec up create kobject_init_and_add failed [%d]", rtn);
++		goto out_up;
++	}
++
++	rtn = kobject_init_and_add(&ctrl_link->fec.up_lane_kobj,
++				   &link_fec_up_lane, &ctrl_link->fec.up_kobj, "lane");
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "link fec up lane create kobject_init_and_add failed [%d]", rtn);
++		goto out_up_lane;
++	}
++	for (x = 0; x < SL_MAX_LANES; ++x) {
++		rtn = kobject_init_and_add(&ctrl_link->fec.up_fecl_kobjs[x].kobj,
++					   &link_fec_up_fecl, &ctrl_link->fec.up_lane_kobj, "%d", x);
++		if (rtn) {
++			sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++				   "link fec up fecl create kobject_init_and_add failed [%d]", rtn);
++			goto out_up_fecl;
++		}
++		ctrl_link->fec.up_fecl_kobjs[x].ctrl_link = ctrl_link;
++		ctrl_link->fec.up_fecl_kobjs[x].lane_num = x;
++	}
++
++	rtn = kobject_init_and_add(&ctrl_link->fec.up_tail_kobj,
++				   &link_fec_up_tail, &ctrl_link->fec.up_kobj, "tail");
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "link fec up tail create kobject_init_and_add failed [%d]", rtn);
++		goto out_up_tail;
++	}
++
++	return 0;
++
++out_up_tail:
++	kobject_put(&ctrl_link->fec.up_tail_kobj);
++out_up_fecl:
++	if (x < SL_MAX_LANES)
++		kobject_put(&ctrl_link->fec.up_fecl_kobjs[x].kobj);
++	for (out = 0; out < x; ++out)
++		kobject_put(&ctrl_link->fec.up_fecl_kobjs[out].kobj);
++out_up_lane:
++	kobject_put(&ctrl_link->fec.up_lane_kobj);
++out_up:
++	kobject_put(&ctrl_link->fec.up_kobj);
++
++	return rtn;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_link_fec_up_delete(struct sl_ctrl_link *ctrl_link)
++{
++#ifdef CONFIG_SYSFS
++	int x;
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "link fec up delete (link_num = %u)", ctrl_link->num);
++
++	kobject_put(&ctrl_link->fec.up_tail_kobj);
++	for (x = 0; x < SL_MAX_LANES; ++x)
++		kobject_put(&ctrl_link->fec.up_fecl_kobjs[x].kobj);
++	kobject_put(&ctrl_link->fec.up_lane_kobj);
++	kobject_put(&ctrl_link->fec.up_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_up_check.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_up_check.c
+new file mode 100644
+index 000000000000..763dde6ca217
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_fec_up_check.c
+@@ -0,0 +1,137 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2025-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_log.h"
++#include "sl_core_link.h"
++#include "data/sl_core_data_link.h"
++
++#include "sl_sysfs_link_fec_up_check.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t ucw_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_core_link *core_link;
++	s32                  ucw_limit;
++
++	core_link = container_of(kobj, struct sl_core_link, fec.up_check_kobj);
++
++	rtn = sl_core_data_link_fec_up_ucw_limit_get(core_link, &ucw_limit);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
++		   "fec_up_ucw_limit show (ucw_limit = %d)", ucw_limit);
++
++	return sysfs_emit(buf, "%d\n", ucw_limit);
++}
++
++static ssize_t ccw_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_core_link *core_link;
++	s32                  ccw_limit;
++
++	core_link = container_of(kobj, struct sl_core_link, fec.up_check_kobj);
++
++	rtn = sl_core_data_link_fec_up_ccw_limit_get(core_link, &ccw_limit);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
++		   "fec_up_ccw_limit show (ccw_limit = %d)", ccw_limit);
++
++	return sysfs_emit(buf, "%d\n", ccw_limit);
++}
++
++static ssize_t settle_wait_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_core_link *core_link;
++	u32                  settle_wait_ms;
++
++	core_link = container_of(kobj, struct sl_core_link, fec.up_check_kobj);
++
++	rtn = sl_core_data_link_fec_up_settle_wait_ms_get(core_link, &settle_wait_ms);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
++		   "settle_wait_ms show (settle_wait_ms = %u)", settle_wait_ms);
++
++	return sysfs_emit(buf, "%u\n", settle_wait_ms);
++}
++
++static ssize_t check_wait_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_core_link *core_link;
++	u32                  check_wait_ms;
++
++	core_link = container_of(kobj, struct sl_core_link, fec.up_check_kobj);
++
++	rtn = sl_core_data_link_fec_up_check_wait_ms_get(core_link, &check_wait_ms);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
++		   "check_wait_ms show (check_wait_ms = %u)", check_wait_ms);
++
++	return sysfs_emit(buf, "%u\n", check_wait_ms);
++}
++
++static struct kobj_attribute ucw_limit      = __ATTR_RO(ucw_limit);
++static struct kobj_attribute ccw_limit      = __ATTR_RO(ccw_limit);
++static struct kobj_attribute settle_wait_ms = __ATTR_RO(settle_wait_ms);
++static struct kobj_attribute check_wait_ms  = __ATTR_RO(check_wait_ms);
++
++static struct attribute *link_fec_up_check_attrs[] = {
++	&ucw_limit.attr,
++	&ccw_limit.attr,
++	&settle_wait_ms.attr,
++	&check_wait_ms.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(link_fec_up_check);
++
++static struct kobj_type link_fec_up_check = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_fec_up_check_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_link_fec_up_check_create(struct sl_core_link *core_link, struct kobject *parent_kobj)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "link fec up check create (num = %u)", core_link->num);
++
++	rtn = kobject_init_and_add(&core_link->fec.up_check_kobj, &link_fec_up_check, parent_kobj, "up_check");
++	if (rtn) {
++		sl_log_err(core_link, LOG_BLOCK, LOG_NAME,
++			   "link up_check create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&core_link->fec.up_check_kobj);
++		return rtn;
++	}
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_link_fec_up_check_delete(struct sl_core_link *core_link)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "link fec up check delete (num = %u)", core_link->num);
++
++	kobject_put(&core_link->fec.up_check_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_pml_rec.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_pml_rec.c
+new file mode 100644
+index 000000000000..dc076274157d
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_pml_rec.c
+@@ -0,0 +1,193 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++#include <linux/types.h>
++
++#include "sl_log.h"
++#include "data/sl_core_data_link.h"
++
++#include "sl_sysfs.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t pml_rec_attempts_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_core_link *core_link;
++	int                  attempts;
++	int		     rtn;
++
++	core_link = container_of(kobj, struct sl_core_link, pml_rec_kobj);
++
++	rtn = sl_core_data_link_pml_rec_attempts_get(core_link, &attempts);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "pml rec attempts show (attempts = %d)", attempts);
++
++	return sysfs_emit(buf, "%d\n", attempts);
++}
++
++static ssize_t pml_rec_successes_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_core_link *core_link;
++	int                  successes;
++	int		     rtn;
++
++	core_link = container_of(kobj, struct sl_core_link, pml_rec_kobj);
++
++	rtn = sl_core_data_link_pml_rec_successes_get(core_link, &successes);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "pml rec successes show (successes = %d)", successes);
++
++	return sysfs_emit(buf, "%d\n", successes);
++}
++
++static ssize_t pml_rec_link_fault_cause_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_core_link *core_link;
++	int                  link_fault_cause;
++	int		     rtn;
++
++	core_link = container_of(kobj, struct sl_core_link, pml_rec_kobj);
++
++	rtn = sl_core_data_link_pml_rec_link_fault_cause_get(core_link, &link_fault_cause);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "pml rec link_fault_cause show (link_fault_cause = %d)", link_fault_cause);
++
++	return sysfs_emit(buf, "%d\n", link_fault_cause);
++}
++
++static ssize_t pml_rec_link_down_cause_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_core_link *core_link;
++	int                  link_down_cause;
++	int		     rtn;
++
++	core_link = container_of(kobj, struct sl_core_link, pml_rec_kobj);
++
++	rtn = sl_core_data_link_pml_rec_link_down_cause_get(core_link, &link_down_cause);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "pml rec link_down_cause show (link_down_cause = %d)", link_down_cause);
++
++	return sysfs_emit(buf, "%d\n", link_down_cause);
++}
++
++static ssize_t pml_rec_link_fault_failed_cause_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_core_link *core_link;
++	int                  link_fault_failed_cause;
++	int		     rtn;
++
++	core_link = container_of(kobj, struct sl_core_link, pml_rec_kobj);
++
++	rtn = sl_core_data_link_pml_rec_link_fault_failed_cause_get(core_link, &link_fault_failed_cause);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "pml rec link_fault_failed_cause show (link_fault_failed_cause = %d)",
++		   link_fault_failed_cause);
++
++	return sysfs_emit(buf, "%d\n", link_fault_failed_cause);
++}
++
++static ssize_t pml_rec_link_down_failed_cause_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_core_link *core_link;
++	int                  link_down_failed_cause;
++	int		     rtn;
++
++	core_link = container_of(kobj, struct sl_core_link, pml_rec_kobj);
++
++	rtn = sl_core_data_link_pml_rec_link_down_failed_cause_get(core_link, &link_down_failed_cause);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "pml rec link_down_cause show (link_down_failed_cause = %d)",
++		   link_down_failed_cause);
++
++	return sysfs_emit(buf, "%d\n", link_down_failed_cause);
++}
++
++static ssize_t pml_rec_rate_limit_exceeded_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_core_link *core_link;
++	int                  rate_limit_exceeded;
++	int		     rtn;
++
++	core_link = container_of(kobj, struct sl_core_link, pml_rec_kobj);
++
++	rtn = sl_core_data_link_pml_rec_rate_limit_exceeded_get(core_link, &rate_limit_exceeded);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "pml rec rate_limit_exceeded show (rate_limit_exceeded = %d)",
++		   rate_limit_exceeded);
++
++	return sysfs_emit(buf, "%d\n", rate_limit_exceeded);
++}
++
++static struct kobj_attribute link_pml_rec_attempts                = __ATTR_RO(pml_rec_attempts);
++static struct kobj_attribute link_pml_rec_successes               = __ATTR_RO(pml_rec_successes);
++static struct kobj_attribute link_pml_rec_link_fault_cause        = __ATTR_RO(pml_rec_link_fault_cause);
++static struct kobj_attribute link_pml_rec_link_down_cause         = __ATTR_RO(pml_rec_link_down_cause);
++static struct kobj_attribute link_pml_rec_link_fault_failed_cause = __ATTR_RO(pml_rec_link_fault_failed_cause);
++static struct kobj_attribute link_pml_rec_link_down_failed_cause  = __ATTR_RO(pml_rec_link_down_failed_cause);
++static struct kobj_attribute link_pml_rec_rate_limit_exceeded     = __ATTR_RO(pml_rec_rate_limit_exceeded);
++
++static struct attribute *link_pml_rec_attrs[] = {
++	&link_pml_rec_attempts.attr,
++	&link_pml_rec_successes.attr,
++	&link_pml_rec_link_fault_cause.attr,
++	&link_pml_rec_link_down_cause.attr,
++	&link_pml_rec_link_fault_failed_cause.attr,
++	&link_pml_rec_link_down_failed_cause.attr,
++	&link_pml_rec_rate_limit_exceeded.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(link_pml_rec);
++
++static struct kobj_type link_pml_rec = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_pml_rec_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_link_pml_rec_create(struct sl_core_link *core_link, struct kobject *parent_kobj)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "link pml rec create (num = %u)", core_link->num);
++
++	rtn = kobject_init_and_add(&core_link->pml_rec_kobj, &link_pml_rec, parent_kobj, "pml_recovery");
++	if (rtn) {
++		sl_log_err(core_link, LOG_BLOCK, LOG_NAME,
++			   "link pml rec create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&core_link->pml_rec_kobj);
++		return rtn;
++	}
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_link_pml_rec_delete(struct sl_core_link *core_link)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME, "link pml rec delete (num = %u)", core_link->num);
++
++	kobject_put(&core_link->pml_rec_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_policy.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_policy.c
+new file mode 100644
+index 000000000000..110486b5d274
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_link_policy.c
+@@ -0,0 +1,261 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "data/sl_ctrl_data_link.h"
++#include "sl_ctrl_link.h"
++#include "sl_test_common.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t fec_mon_period_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	s32                  fec_mon_period_ms;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
++
++	rtn = sl_ctrl_data_link_policy_fec_mon_period_ms_get(ctrl_link, &fec_mon_period_ms);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "fec_mon_period_ms show (fec_mon_period_ms = %d)", fec_mon_period_ms);
++
++	return sysfs_emit(buf, "%d\n", fec_mon_period_ms);
++}
++
++static ssize_t fec_mon_ucw_down_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	s32                  fec_mon_ucw_down_limit;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
++
++	rtn = sl_ctrl_data_link_policy_fec_mon_ucw_down_limit_get(ctrl_link, &fec_mon_ucw_down_limit);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "fec_mon_ucw_down_limit show (fec_mon_ucw_down_limit = %d)", fec_mon_ucw_down_limit);
++
++	return sysfs_emit(buf, "%d\n", fec_mon_ucw_down_limit);
++}
++
++static ssize_t fec_mon_ucw_warn_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	s32                  fec_mon_ucw_warn_limit;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
++
++	rtn = sl_ctrl_data_link_policy_fec_mon_ucw_warn_limit_get(ctrl_link, &fec_mon_ucw_warn_limit);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "fec_mon_ucw_warn_limit show (fec_mon_ucw_warn_limit = %d)", fec_mon_ucw_warn_limit);
++
++	return sysfs_emit(buf, "%d\n", fec_mon_ucw_warn_limit);
++}
++
++static ssize_t fec_mon_ccw_down_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	s32                  fec_mon_ccw_down_limit;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
++
++	rtn = sl_ctrl_data_link_policy_fec_mon_ccw_down_limit_get(ctrl_link, &fec_mon_ccw_down_limit);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "fec_mon_ccw_down_limit show (fec_mon_ccw_down_limit = %d)", fec_mon_ccw_down_limit);
++
++	return sysfs_emit(buf, "%d\n", fec_mon_ccw_down_limit);
++}
++
++static ssize_t fec_mon_ccw_warn_limit_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	s32                  fec_mon_ccw_warn_limit;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
++
++	rtn = sl_ctrl_data_link_policy_fec_mon_ccw_warn_limit_get(ctrl_link, &fec_mon_ccw_warn_limit);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "fec_mon_ccw_warn_limit show (fec_mon_ccw_warn_limit = %d)", fec_mon_ccw_warn_limit);
++
++	return sysfs_emit(buf, "%d\n", fec_mon_ccw_warn_limit);
++}
++
++static ssize_t lock_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u32                  options;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
++
++	rtn = sl_ctrl_data_link_policy_options_get(ctrl_link, &options);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "link_policy_option_locked show (options = 0x%X)", options);
++
++	return sysfs_emit(buf, "%s\n", (options & SL_LINK_POLICY_OPT_LOCK) ? "enabled" : "disabled");
++}
++
++static ssize_t keep_serdes_up_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u32                  options;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
++
++	rtn = sl_ctrl_data_link_policy_options_get(ctrl_link, &options);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "link_policy_option_keep_serdes_up show (options = 0x%X)", options);
++
++	return sysfs_emit(buf, "%s\n",
++			 (options & SL_LINK_POLICY_OPT_KEEP_SERDES_UP) ? "enabled" : "disabled");
++}
++
++static ssize_t use_unsupported_cable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u32                  options;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
++
++	rtn = sl_ctrl_data_link_policy_options_get(ctrl_link, &options);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "link_policy_option_use_unsupported_cable show (options = 0x%X)", options);
++
++	return sysfs_emit(buf, "%s\n",
++			 (options & SL_LINK_POLICY_OPT_USE_UNSUPPORTED_CABLE) ? "enabled" : "disabled");
++}
++
++static ssize_t use_supported_ss200_cable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u32                  options;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
++
++	rtn = sl_ctrl_data_link_policy_options_get(ctrl_link, &options);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "link_policy_option_use_supported_ss200_cable show (options = 0x%X)", options);
++
++	return sysfs_emit(buf, "%s\n",
++			 (options & SL_LINK_POLICY_OPT_USE_SUPPORTED_SS200_CABLE) ? "enabled" : "disabled");
++}
++
++static ssize_t ignore_media_error_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_ctrl_link *ctrl_link;
++	u32                  options;
++
++	ctrl_link = container_of(kobj, struct sl_ctrl_link, policy_kobj);
++
++	rtn = sl_ctrl_data_link_policy_options_get(ctrl_link, &options);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME,
++		   "link_policy_option_ignore_media_error show (options = %u)", options);
++
++	return sysfs_emit(buf, "%s\n",
++			 (options & SL_LINK_POLICY_OPT_IGNORE_MEDIA_ERROR) ? "enabled" : "disabled");
++}
++
++static struct kobj_attribute fec_mon_period_ms         = __ATTR_RO(fec_mon_period_ms);
++static struct kobj_attribute fec_mon_ucw_down_limit    = __ATTR_RO(fec_mon_ucw_down_limit);
++static struct kobj_attribute fec_mon_ucw_warn_limit    = __ATTR_RO(fec_mon_ucw_warn_limit);
++static struct kobj_attribute fec_mon_ccw_down_limit    = __ATTR_RO(fec_mon_ccw_down_limit);
++static struct kobj_attribute fec_mon_ccw_warn_limit    = __ATTR_RO(fec_mon_ccw_warn_limit);
++static struct kobj_attribute lock                      = __ATTR_RO(lock);
++static struct kobj_attribute keep_serdes_up            = __ATTR_RO(keep_serdes_up);
++static struct kobj_attribute use_unsupported_cable     = __ATTR_RO(use_unsupported_cable);
++static struct kobj_attribute use_supported_ss200_cable = __ATTR_RO(use_supported_ss200_cable);
++static struct kobj_attribute ignore_media_error        = __ATTR_RO(ignore_media_error);
++
++static struct attribute *link_policy_attrs[] = {
++	&fec_mon_period_ms.attr,
++	&fec_mon_ucw_down_limit.attr,
++	&fec_mon_ucw_warn_limit.attr,
++	&fec_mon_ccw_down_limit.attr,
++	&fec_mon_ccw_warn_limit.attr,
++	&lock.attr,
++	&keep_serdes_up.attr,
++	&use_unsupported_cable.attr,
++	&use_supported_ss200_cable.attr,
++	&ignore_media_error.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(link_policy);
++
++static struct kobj_type link_policy = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = link_policy_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_link_policy_create(struct sl_ctrl_link *ctrl_link)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link policy create (num = %u)", ctrl_link->num);
++
++	rtn = kobject_init_and_add(&ctrl_link->policy_kobj, &link_policy, &ctrl_link->kobj, "policies");
++	if (rtn) {
++		sl_log_err(ctrl_link, LOG_BLOCK, LOG_NAME,
++			   "link policy create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&ctrl_link->policy_kobj);
++		return rtn;
++	}
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_link_policy_delete(struct sl_ctrl_link *ctrl_link)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_link, LOG_BLOCK, LOG_NAME, "link config delete (num = %u)", ctrl_link->num);
++
++	kobject_put(&ctrl_link->policy_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr.c
+new file mode 100644
+index 000000000000..fd142ad85ea1
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr.c
+@@ -0,0 +1,221 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2023-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include <linux/hpe/sl/sl_llr.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_core_str.h"
++#include "sl_ctrl_llr.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_ldev.h"
++
++#include "data/sl_core_data_llr.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t last_fail_cause_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                 rtn;
++	struct sl_core_llr *core_llr;
++	u32                 llr_fail_cause;
++	time64_t            llr_fail_time;
++
++	core_llr = container_of(kobj, struct sl_core_llr, kobj);
++
++	rtn = sl_core_data_llr_last_fail_cause_get(core_llr, &llr_fail_cause, &llr_fail_time);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME,
++		   "last fail cause show (cause = %u %s)", llr_fail_cause, sl_core_llr_fail_cause_str(llr_fail_cause));
++
++	if (llr_fail_cause == SL_LLR_FAIL_CAUSE_NONE)
++		return sysfs_emit(buf, "no-fail\n");
++
++	return sysfs_emit(buf, "%s\n", sl_core_llr_fail_cause_str(llr_fail_cause));
++}
++
++static ssize_t last_fail_time_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                 rtn;
++	struct sl_core_llr *core_llr;
++	u32                 llr_fail_cause;
++	time64_t            llr_fail_time;
++
++	core_llr = container_of(kobj, struct sl_core_llr, kobj);
++
++	rtn = sl_core_data_llr_last_fail_cause_get(core_llr, &llr_fail_cause, &llr_fail_time);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME,
++		   "last fail time show (cause = %u %s, time = %lld %ptTt %ptTd)",
++		   llr_fail_cause, sl_core_llr_fail_cause_str(llr_fail_cause),
++		   llr_fail_time, &llr_fail_time, &llr_fail_time);
++
++	if (llr_fail_cause == SL_LLR_FAIL_CAUSE_NONE)
++		return sysfs_emit(buf, "no-fail\n");
++
++	return sysfs_emit(buf, "%ptTt %ptTd\n", &llr_fail_time, &llr_fail_time);
++}
++
++static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int rtn;
++	struct sl_core_llr *core_llr;
++	enum sl_core_llr_state core_llr_state;
++	u32 llr_state;
++
++	core_llr = container_of(kobj, struct sl_core_llr, kobj);
++
++	rtn = sl_core_data_llr_state_get(core_llr, &core_llr_state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	llr_state = sl_ctrl_llr_state_from_core_llr_state(core_llr_state);
++
++	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME,
++		   "state show (core_llr_state = %u %s, llr_state = %u %s)",
++		   core_llr_state, sl_core_llr_state_str(core_llr_state),
++		   llr_state, sl_llr_state_str(llr_state));
++
++	return sysfs_emit(buf, "%s\n", sl_llr_state_str(llr_state));
++}
++
++static ssize_t info_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                 rtn;
++	struct sl_core_llr *core_llr;
++	u64                 info_map;
++	char                info_map_str[900];
++
++	core_llr = container_of(kobj, struct sl_core_llr, kobj);
++
++	rtn = sl_core_data_llr_info_map_get(core_llr, &info_map);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_core_info_map_str(info_map, info_map_str, sizeof(info_map_str));
++
++	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME,
++		   "info map show (info_map = 0x%llX %s)", info_map, info_map_str);
++
++	return sysfs_emit(buf, "%s\n", info_map_str);
++}
++
++static struct kobj_attribute llr_state           = __ATTR_RO(state);
++static struct kobj_attribute llr_last_fail_cause = __ATTR_RO(last_fail_cause);
++static struct kobj_attribute llr_last_fail_time  = __ATTR_RO(last_fail_time);
++static struct kobj_attribute llr_info_map        = __ATTR_RO(info_map);
++
++static struct attribute *llr_attrs[] = {
++	&llr_state.attr,
++	&llr_last_fail_cause.attr,
++	&llr_last_fail_time.attr,
++	&llr_info_map.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(llr);
++
++static struct kobj_type llr_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = llr_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_llr_create(struct sl_ctrl_llr *ctrl_llr)
++{
++#ifdef CONFIG_SYSFS
++	int                 rtn;
++	struct sl_core_llr *core_llr;
++
++	core_llr = sl_core_llr_get(ctrl_llr->ctrl_lgrp->ctrl_ldev->num,
++				   ctrl_llr->ctrl_lgrp->num, ctrl_llr->num);
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr create (num = %u)", ctrl_llr->num);
++
++	if (!ctrl_llr->parent_kobj) {
++		sl_log_err(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr create missing parent");
++		return -EBADRQC;
++	}
++
++	rtn = kobject_init_and_add(&core_llr->kobj, &llr_info, ctrl_llr->parent_kobj, "llr");
++	if (rtn) {
++		sl_log_err(ctrl_llr, LOG_BLOCK, LOG_NAME,
++			   "llr create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&core_llr->kobj);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_llr_config_create(ctrl_llr, &core_llr->kobj);
++	if (rtn) {
++		sl_log_err(ctrl_llr, LOG_BLOCK, LOG_NAME,
++			   "llr config create failed [%d]", rtn);
++		kobject_put(&core_llr->kobj);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_llr_policy_create(core_llr, &core_llr->kobj);
++	if (rtn) {
++		sl_log_err(ctrl_llr, LOG_BLOCK, LOG_NAME,
++			   "llr policy create failed [%d]", rtn);
++		kobject_put(&core_llr->kobj);
++		sl_sysfs_llr_config_delete(ctrl_llr);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_llr_loop_time_create(core_llr, &core_llr->kobj);
++	if (rtn) {
++		sl_log_err(ctrl_llr, LOG_BLOCK, LOG_NAME,
++			   "llr loop time create failed [%d]", rtn);
++		kobject_put(&core_llr->kobj);
++		sl_sysfs_llr_config_delete(ctrl_llr);
++		sl_sysfs_llr_policy_delete(core_llr);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_llr_counters_create(ctrl_llr, &core_llr->kobj);
++	if (rtn) {
++		sl_log_err(ctrl_llr, LOG_BLOCK, LOG_NAME, "sl_sysfs_llr_counters_create failed [%d]", rtn);
++		kobject_put(&core_llr->kobj);
++		sl_sysfs_llr_config_delete(ctrl_llr);
++		sl_sysfs_llr_policy_delete(core_llr);
++		sl_sysfs_llr_loop_time_delete(core_llr);
++		return rtn;
++	}
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME,
++		   "llr create (llr_kobj = 0x%p)", &core_llr->kobj);
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_llr_delete(struct sl_ctrl_llr *ctrl_llr)
++{
++#ifdef CONFIG_SYSFS
++	struct sl_core_llr *core_llr;
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "delete (num = %u)", ctrl_llr->num);
++
++	if (!ctrl_llr->parent_kobj)
++		return;
++
++	core_llr = sl_core_llr_get(ctrl_llr->ctrl_lgrp->ctrl_ldev->num,
++				   ctrl_llr->ctrl_lgrp->num, ctrl_llr->num);
++
++	sl_sysfs_llr_counters_delete(ctrl_llr);
++	sl_sysfs_llr_loop_time_delete(core_llr);
++	sl_sysfs_llr_policy_delete(core_llr);
++	sl_sysfs_llr_config_delete(ctrl_llr);
++	kobject_put(&core_llr->kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_config.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_config.c
+new file mode 100644
+index 000000000000..0fde52d669ca
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_config.c
+@@ -0,0 +1,140 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++#include <linux/hpe/sl/sl_lgrp.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "data/sl_ctrl_data_llr.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t mode_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                 rtn;
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 mode;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, config_kobj);
++
++	rtn = sl_ctrl_data_llr_config_mode_get(ctrl_llr, &mode);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME,
++		   "mode (mode = %u %s)",
++		   mode, sl_lgrp_llr_mode_str(mode));
++
++	return sysfs_emit(buf, "%s\n", sl_lgrp_llr_mode_str(mode));
++}
++
++static ssize_t setup_timeout_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                 rtn;
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 setup_timeout_ms;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, config_kobj);
++
++	rtn = sl_ctrl_data_llr_config_setup_timeout_ms_get(ctrl_llr, &setup_timeout_ms);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME,
++		   "setup timeout show (setup_timeout = %ums)",
++		   setup_timeout_ms);
++
++	return sysfs_emit(buf, "%u\n", setup_timeout_ms);
++}
++
++static ssize_t start_timeout_ms_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                 rtn;
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 start_timeout_ms;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, config_kobj);
++
++	rtn = sl_ctrl_data_llr_config_start_timeout_ms_get(ctrl_llr, &start_timeout_ms);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME,
++		   "start timeout show (start_timeout = %ums)",
++		   start_timeout_ms);
++
++	return sysfs_emit(buf, "%u\n", start_timeout_ms);
++}
++
++static ssize_t link_down_behavior_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                 rtn;
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 link_dn_behavior;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, config_kobj);
++
++	rtn = sl_ctrl_data_llr_config_link_dn_behavior_get(ctrl_llr, &link_dn_behavior);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME,
++		   "down behavior show (dn_behavior = %u %s)",
++		   link_dn_behavior, sl_llr_link_dn_behavior_str(link_dn_behavior));
++
++	return sysfs_emit(buf, "%s\n", sl_llr_link_dn_behavior_str(link_dn_behavior));
++}
++
++static struct kobj_attribute mode             = __ATTR_RO(mode);
++static struct kobj_attribute setup_timeout_ms = __ATTR_RO(setup_timeout_ms);
++static struct kobj_attribute start_timeout_ms = __ATTR_RO(start_timeout_ms);
++static struct kobj_attribute dn_behavior      = __ATTR_RO(link_down_behavior);
++
++static struct attribute *llr_config_attrs[] = {
++	&mode.attr,
++	&setup_timeout_ms.attr,
++	&start_timeout_ms.attr,
++	&dn_behavior.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(llr_config);
++
++static struct kobj_type llr_config = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = llr_config_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_llr_config_create(struct sl_ctrl_llr *ctrl_llr, struct kobject *parent_kobj)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr config create (num = %u)", ctrl_llr->num);
++
++	rtn = kobject_init_and_add(&ctrl_llr->config_kobj, &llr_config, parent_kobj, "config");
++	if (rtn) {
++		sl_log_err(ctrl_llr, LOG_BLOCK, LOG_NAME,
++			   "llr config create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&ctrl_llr->config_kobj);
++		return rtn;
++	}
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_llr_config_delete(struct sl_ctrl_llr *ctrl_llr)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr config delete (num = %u)", ctrl_llr->num);
++
++	kobject_put(&ctrl_llr->config_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_counters.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_counters.c
+new file mode 100644
+index 000000000000..516f130c76ff
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_counters.c
+@@ -0,0 +1,397 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2025-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_sysfs.h"
++#include "sl_log.h"
++#include "sl_ctrl_llr.h"
++#include "sl_ctrl_llr_counters.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t llr_setup_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 counter;
++	u32                 rtn;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
++
++	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_SETUP_CMD, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr setup cmd show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t llr_setup_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 counter;
++	u32                 rtn;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
++
++	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_SETUP, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr setup show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t llr_setup_timeout_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 counter;
++	u32                 rtn;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
++
++	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_SETUP_TIMEOUT, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr setup timeout show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t llr_setup_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 counter;
++	u32                 rtn;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
++
++	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_SETUP_FAIL, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr setup fail show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t llr_configured_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 counter;
++	u32                 rtn;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
++
++	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_CONFIGURED, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr configured show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t llr_start_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 counter;
++	u32                 rtn;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
++
++	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_START_CMD, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr start cmd show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t llr_running_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 counter;
++	u32                 rtn;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
++
++	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_RUNNING, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr running show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t llr_start_timeout_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 counter;
++	u32                 rtn;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
++
++	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_START_TIMEOUT, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr start timeout show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t llr_start_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 counter;
++	u32                 rtn;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
++
++	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_START_FAIL, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr start fail show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t llr_stop_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 counter;
++	u32                 rtn;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
++
++	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_STOP_CMD, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr stop cmd show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t llr_stop_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 counter;
++	u32                 rtn;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
++
++	rtn = sl_ctrl_llr_counter_get(ctrl_llr, LLR_STOP_FAIL, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr stop fail show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_setup_config_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 counter;
++	u32                 rtn;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
++
++	rtn = sl_ctrl_llr_cause_counter_get(ctrl_llr, LLR_CAUSE_SETUP_CONFIG, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr cause setup config show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_setup_intr_enable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 counter;
++	u32                 rtn;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
++
++	rtn = sl_ctrl_llr_cause_counter_get(ctrl_llr, LLR_CAUSE_SETUP_INTR_ENABLE, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr cause setup intr enable show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_setup_timeout_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 counter;
++	u32                 rtn;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
++
++	rtn = sl_ctrl_llr_cause_counter_get(ctrl_llr, LLR_CAUSE_SETUP_TIMEOUT, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr cause setup timeout show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_start_intr_enable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 counter;
++	u32                 rtn;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
++
++	rtn = sl_ctrl_llr_cause_counter_get(ctrl_llr, LLR_CAUSE_START_INTR_ENABLE, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr cause start intr enable show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_start_timeout_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 counter;
++	u32                 rtn;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
++
++	rtn = sl_ctrl_llr_cause_counter_get(ctrl_llr, LLR_CAUSE_START_TIMEOUT, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr cause start timeout show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_command_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 counter;
++	u32                 rtn;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
++
++	rtn = sl_ctrl_llr_cause_counter_get(ctrl_llr, LLR_CAUSE_COMMAND, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr cause command show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_canceled_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_llr *ctrl_llr;
++	u32                 counter;
++	u32                 rtn;
++
++	ctrl_llr = container_of(kobj, struct sl_ctrl_llr, counters_kobj);
++
++	rtn = sl_ctrl_llr_cause_counter_get(ctrl_llr, LLR_CAUSE_CANCELED, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr cause canceled show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static struct kobj_attribute llr_setup_cmd     = __ATTR_RO(llr_setup_cmd);
++static struct kobj_attribute llr_setup         = __ATTR_RO(llr_setup);
++static struct kobj_attribute llr_setup_timeout = __ATTR_RO(llr_setup_timeout);
++static struct kobj_attribute llr_setup_fail    = __ATTR_RO(llr_setup_fail);
++static struct kobj_attribute llr_configured    = __ATTR_RO(llr_configured);
++static struct kobj_attribute llr_start_cmd     = __ATTR_RO(llr_start_cmd);
++static struct kobj_attribute llr_running       = __ATTR_RO(llr_running);
++static struct kobj_attribute llr_start_timeout = __ATTR_RO(llr_start_timeout);
++static struct kobj_attribute llr_start_fail    = __ATTR_RO(llr_start_fail);
++static struct kobj_attribute llr_stop_cmd      = __ATTR_RO(llr_stop_cmd);
++static struct kobj_attribute llr_stop_fail     = __ATTR_RO(llr_stop_fail);
++
++static struct kobj_attribute llr_cause_setup_config      = __ATTR_RO(cause_setup_config);
++static struct kobj_attribute llr_cause_setup_intr_enable = __ATTR_RO(cause_setup_intr_enable);
++static struct kobj_attribute llr_cause_setup_timeout     = __ATTR_RO(cause_setup_timeout);
++static struct kobj_attribute llr_cause_start_intr_enable = __ATTR_RO(cause_start_intr_enable);
++static struct kobj_attribute llr_cause_start_timeout     = __ATTR_RO(cause_start_timeout);
++static struct kobj_attribute llr_cause_command           = __ATTR_RO(cause_command);
++static struct kobj_attribute llr_cause_canceled          = __ATTR_RO(cause_canceled);
++
++static struct attribute *llr_counters_attrs[] = {
++	&llr_setup_cmd.attr,
++	&llr_setup.attr,
++	&llr_setup_timeout.attr,
++	&llr_setup_fail.attr,
++	&llr_configured.attr,
++	&llr_start_cmd.attr,
++	&llr_running.attr,
++	&llr_start_timeout.attr,
++	&llr_start_fail.attr,
++	&llr_stop_cmd.attr,
++	&llr_stop_fail.attr,
++	&llr_cause_setup_config.attr,
++	&llr_cause_setup_intr_enable.attr,
++	&llr_cause_setup_timeout.attr,
++	&llr_cause_start_intr_enable.attr,
++	&llr_cause_start_timeout.attr,
++	&llr_cause_command.attr,
++	&llr_cause_canceled.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(llr_counters);
++
++static struct kobj_type llr_counters = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = llr_counters_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_llr_counters_create(struct sl_ctrl_llr *ctrl_llr, struct kobject *parent_kobj)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr counters create");
++
++	rtn = kobject_init_and_add(&ctrl_llr->counters_kobj, &llr_counters, parent_kobj, "counters");
++	if (rtn) {
++		sl_log_err(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr counters create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&ctrl_llr->counters_kobj);
++		return rtn;
++	}
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_llr_counters_delete(struct sl_ctrl_llr *ctrl_llr)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_llr, LOG_BLOCK, LOG_NAME, "llr counters delete");
++	kobject_put(&ctrl_llr->counters_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_loop_time.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_loop_time.c
+new file mode 100644
+index 000000000000..977bb176b454
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_loop_time.c
+@@ -0,0 +1,221 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_log.h"
++#include "data/sl_core_data_llr.h"
++
++#include "sl_sysfs.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t llr_loop_time_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf, u8 num)
++{
++	int                 rtn;
++	struct sl_core_llr *core_llr;
++	u64                 loop_time[SL_CORE_LLR_MAX_LOOP_TIME_COUNT];
++
++	core_llr = container_of(kobj, struct sl_core_llr, loop_time_kobj);
++
++	rtn = sl_core_data_llr_loop_time_get(core_llr, loop_time);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME,
++		   "loop time show (loop_time[%u] = %lluns)", num, loop_time[num]);
++
++	return sysfs_emit(buf, "%llu\n", loop_time[num]);
++}
++
++#define llr_loop_time(_num)                                                                                        \
++	static inline ssize_t time_##_num##_ns_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf) \
++	{                                                                                                          \
++		return llr_loop_time_show(kobj, kattr, buf, (_num));                                               \
++	}                                                                                                          \
++	static struct kobj_attribute llr_loop_time_##_num = __ATTR_RO(time_##_num##_ns)
++
++llr_loop_time(0);
++llr_loop_time(1);
++llr_loop_time(2);
++llr_loop_time(3);
++llr_loop_time(4);
++llr_loop_time(5);
++llr_loop_time(6);
++llr_loop_time(7);
++llr_loop_time(8);
++llr_loop_time(9);
++
++#define sl_sysfs_llr_loop_time_file(_num)                                                       \
++	do {                                                                                    \
++		rtn = sysfs_create_file(&core_llr->loop_time_kobj, &llr_loop_time_##_num.attr); \
++		if (rtn) {                                                                      \
++			sl_log_err(core_llr, LOG_BLOCK, LOG_NAME,                               \
++				"llr loop time create file failed [%d]", rtn);                  \
++			goto out;                                                               \
++		}                                                                               \
++	} while (0)
++
++static ssize_t calc_ns_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                 rtn;
++	struct sl_core_llr *core_llr;
++	u64                 calculated_ns;
++
++	core_llr = container_of(kobj, struct sl_core_llr, loop_time_kobj);
++
++	rtn = sl_core_data_llr_loop_calculated_ns_get(core_llr, &calculated_ns);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME,
++		   "calc show (calculated_ns = %lluns)", calculated_ns);
++
++	return sysfs_emit(buf, "%llu\n", calculated_ns);
++}
++
++static ssize_t min_ns_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                 rtn;
++	struct sl_core_llr *core_llr;
++	u64                 min_ns;
++
++	core_llr = container_of(kobj, struct sl_core_llr, loop_time_kobj);
++
++	rtn = sl_core_data_llr_loop_min_ns_get(core_llr, &min_ns);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME,
++		   "min show (min_ns = %lluns)", min_ns);
++
++	return sysfs_emit(buf, "%llu\n", min_ns);
++}
++
++static ssize_t max_ns_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                 rtn;
++	struct sl_core_llr *core_llr;
++	u64                 max_ns;
++
++	core_llr = container_of(kobj, struct sl_core_llr, loop_time_kobj);
++
++	rtn = sl_core_data_llr_loop_max_ns_get(core_llr, &max_ns);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME,
++		   "max show (max_ns = %lluns)", max_ns);
++
++	return sysfs_emit(buf, "%llu\n", max_ns);
++}
++
++static ssize_t average_ns_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                 rtn;
++	struct sl_core_llr *core_llr;
++	u64                 average_ns;
++
++	core_llr = container_of(kobj, struct sl_core_llr, loop_time_kobj);
++
++	rtn = sl_core_data_llr_loop_average_ns_get(core_llr, &average_ns);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME,
++		   "average show (average_ns = %lluns)", average_ns);
++
++	return sysfs_emit(buf, "%llu\n", average_ns);
++}
++
++static struct kobj_attribute llr_loop_calc    = __ATTR_RO(calc_ns);
++static struct kobj_attribute llr_loop_min     = __ATTR_RO(min_ns);
++static struct kobj_attribute llr_loop_max     = __ATTR_RO(max_ns);
++static struct kobj_attribute llr_loop_average = __ATTR_RO(average_ns);
++
++static struct attribute *llr_loop_time_attrs[] = {
++	NULL
++};
++ATTRIBUTE_GROUPS(llr_loop_time);
++
++static struct kobj_type llr_loop_time = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = llr_loop_time_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_llr_loop_time_create(struct sl_core_llr *core_llr, struct kobject *parent_kobj)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME, "llr loop time create (num = %u)", core_llr->num);
++
++	rtn = kobject_init_and_add(&core_llr->loop_time_kobj, &llr_loop_time, parent_kobj, "loop");
++	if (rtn) {
++		sl_log_err(core_llr, LOG_BLOCK, LOG_NAME,
++			   "llr loop time create kobject_init_and_add failed [%d]", rtn);
++		goto out;
++	}
++
++	BUILD_BUG_ON(SL_CORE_LLR_MAX_LOOP_TIME_COUNT < 10);
++
++	sl_sysfs_llr_loop_time_file(0);
++	sl_sysfs_llr_loop_time_file(1);
++	sl_sysfs_llr_loop_time_file(2);
++	sl_sysfs_llr_loop_time_file(3);
++	sl_sysfs_llr_loop_time_file(4);
++	sl_sysfs_llr_loop_time_file(5);
++	sl_sysfs_llr_loop_time_file(6);
++	sl_sysfs_llr_loop_time_file(7);
++	sl_sysfs_llr_loop_time_file(8);
++	sl_sysfs_llr_loop_time_file(9);
++
++	rtn = sysfs_create_file(&core_llr->loop_time_kobj, &llr_loop_calc.attr);
++	if (rtn) {
++		sl_log_err(core_llr, LOG_BLOCK, LOG_NAME,
++			   "llr loop time create file failed [%d]", rtn);
++		goto out;
++	}
++
++	rtn = sysfs_create_file(&core_llr->loop_time_kobj, &llr_loop_min.attr);
++	if (rtn) {
++		sl_log_err(core_llr, LOG_BLOCK, LOG_NAME,
++			   "llr loop time create file failed [%d]", rtn);
++		goto out;
++	}
++
++	rtn = sysfs_create_file(&core_llr->loop_time_kobj, &llr_loop_max.attr);
++	if (rtn) {
++		sl_log_err(core_llr, LOG_BLOCK, LOG_NAME,
++			   "llr loop time create file failed [%d]", rtn);
++		goto out;
++	}
++
++	rtn = sysfs_create_file(&core_llr->loop_time_kobj, &llr_loop_average.attr);
++	if (rtn) {
++		sl_log_err(core_llr, LOG_BLOCK, LOG_NAME,
++			   "llr loop time create file failed [%d]", rtn);
++		goto out;
++	}
++
++	return 0;
++out:
++	kobject_put(&core_llr->loop_time_kobj);
++	return rtn;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_llr_loop_time_delete(struct sl_core_llr *core_llr)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME, "llr loop time delete (num = %u)", core_llr->num);
++
++	kobject_put(&core_llr->loop_time_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_policy.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_policy.c
+new file mode 100644
+index 000000000000..8b35765570c6
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_llr_policy.c
+@@ -0,0 +1,74 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_log.h"
++#include "data/sl_core_data_llr.h"
++
++#include "sl_sysfs.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t continuous_tries_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                 rtn;
++	struct sl_core_llr *core_llr;
++	u32                 options;
++
++	core_llr = container_of(kobj, struct sl_core_llr, policy_kobj);
++
++	rtn = sl_core_data_llr_policy_options_get(core_llr, &options);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	return sysfs_emit(buf, "%s\n",
++		(options & SL_LLR_POLICY_OPT_CONTINUOUS_START_TRIES) ? "enabled" : "disabled");
++}
++
++static struct kobj_attribute continuous_tries = __ATTR_RO(continuous_tries);
++
++static struct attribute *llr_policy_attrs[] = {
++	&continuous_tries.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(llr_policy);
++
++static struct kobj_type llr_policy = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = llr_policy_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_llr_policy_create(struct sl_core_llr *core_llr, struct kobject *parent_kobj)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME, "llr policy create (num = %u)", core_llr->num);
++
++	rtn = kobject_init_and_add(&core_llr->policy_kobj, &llr_policy, parent_kobj, "policies");
++	if (rtn) {
++		sl_log_err(core_llr, LOG_BLOCK, LOG_NAME,
++			   "llr policy create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&core_llr->policy_kobj);
++		return rtn;
++	}
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_llr_policy_delete(struct sl_core_llr *core_llr)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(core_llr, LOG_BLOCK, LOG_NAME, "llr policy delete (num = %u)", core_llr->num);
++
++	kobject_put(&core_llr->policy_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_mac.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_mac.c
+new file mode 100644
+index 000000000000..5587398a98f9
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_mac.c
+@@ -0,0 +1,192 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2023-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include <linux/hpe/sl/sl_mac.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_ctrl_mac.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_ldev.h"
++#include "sl_core_str.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t rx_state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_mac *ctrl_mac;
++	u32                 state;
++	int		    rtn;
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, kobj);
++
++	rtn = sl_ctrl_mac_rx_state_get(ctrl_mac->ctrl_lgrp->ctrl_ldev->num,
++				       ctrl_mac->ctrl_lgrp->num, ctrl_mac->num, &state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME,
++		   "rx state show (mac = 0x%p, state = %u)", ctrl_mac, state);
++
++	return sysfs_emit(buf, "%s\n", sl_mac_state_str(state));
++}
++
++static ssize_t rx_last_start_result_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_mac *ctrl_mac;
++	int                 last_start_result;
++	int                 rtn;
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, kobj);
++
++	rtn = sl_core_mac_rx_last_start_result_get(ctrl_mac->ctrl_lgrp->ctrl_ldev->num,
++						   ctrl_mac->ctrl_lgrp->num, ctrl_mac->num, &last_start_result);
++
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME,
++		   "rx last start result show (mac = 0x%p, last_start_result = %d)", ctrl_mac, last_start_result);
++
++	return sysfs_emit(buf, "%d\n", last_start_result);
++}
++
++static ssize_t tx_state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_mac *ctrl_mac;
++	u32                 state;
++	int		    rtn;
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, kobj);
++
++	rtn = sl_ctrl_mac_tx_state_get(ctrl_mac->ctrl_lgrp->ctrl_ldev->num,
++				       ctrl_mac->ctrl_lgrp->num, ctrl_mac->num, &state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME,
++		   "tx state show (mac = 0x%p, state = %u)", ctrl_mac, state);
++
++	return sysfs_emit(buf, "%s\n", sl_mac_state_str(state));
++}
++
++static ssize_t tx_last_start_result_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_mac *ctrl_mac;
++	int                 last_start_result;
++	int                 rtn;
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, kobj);
++
++	rtn = sl_core_mac_tx_last_start_result_get(ctrl_mac->ctrl_lgrp->ctrl_ldev->num,
++						   ctrl_mac->ctrl_lgrp->num, ctrl_mac->num, &last_start_result);
++
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME,
++		   "tx last start result show (mac = 0x%p, last_start_result = %d)", ctrl_mac, last_start_result);
++
++	return sysfs_emit(buf, "%d\n", last_start_result);
++}
++
++static ssize_t info_map_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                 rtn;
++	struct sl_ctrl_mac *ctrl_mac;
++	u64                 info_map;
++	char                info_map_str[900];
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, kobj);
++
++	rtn = sl_ctrl_mac_info_map_get(ctrl_mac->ctrl_lgrp->ctrl_ldev->num,
++				       ctrl_mac->ctrl_lgrp->num, ctrl_mac->num, &info_map);
++	if (rtn) {
++		sl_log_err(ctrl_mac, LOG_BLOCK, LOG_NAME,
++			   "info map show sl_ctrl_mac_info_map_get failed [%d]", rtn);
++		return sysfs_emit(buf, "no-mac\n");
++	}
++
++	sl_core_info_map_str(info_map, info_map_str, sizeof(info_map_str));
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME,
++		   "info map show (info_map = 0x%llX %s)", info_map, info_map_str);
++
++	return sysfs_emit(buf, "%s\n", info_map_str);
++}
++
++static struct kobj_attribute rx_state             = __ATTR_RO(rx_state);
++static struct kobj_attribute rx_last_start_result = __ATTR_RO(rx_last_start_result);
++static struct kobj_attribute tx_state             = __ATTR_RO(tx_state);
++static struct kobj_attribute tx_last_start_result = __ATTR_RO(tx_last_start_result);
++static struct kobj_attribute info_map             = __ATTR_RO(info_map);
++
++static struct attribute *mac_attrs[] = {
++	&rx_state.attr,
++	&rx_last_start_result.attr,
++	&tx_state.attr,
++	&tx_last_start_result.attr,
++	&info_map.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(mac);
++
++static struct kobj_type mac_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = mac_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_mac_create(struct sl_ctrl_mac *ctrl_mac)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac create (num = %u)", ctrl_mac->num);
++
++	if (!ctrl_mac->parent_kobj) {
++		sl_log_err(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac create missing parent");
++		return -EBADRQC;
++	}
++
++	rtn = kobject_init_and_add(&ctrl_mac->kobj, &mac_info, ctrl_mac->parent_kobj, "mac");
++	if (rtn) {
++		sl_log_err(ctrl_mac, LOG_BLOCK, LOG_NAME,
++			   "mac create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&ctrl_mac->kobj);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_mac_counters_create(ctrl_mac);
++	if (rtn) {
++		sl_log_err(ctrl_mac, LOG_BLOCK, LOG_NAME, "sl_sysfs_mac_counters_create failed [%d]", rtn);
++		kobject_put(&ctrl_mac->kobj);
++		return rtn;
++	}
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME,
++		   "mac create (mac_kobj = 0x%p)", &ctrl_mac->kobj);
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_mac_delete(struct sl_ctrl_mac *ctrl_mac)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "delete (num = %u)", ctrl_mac->num);
++
++	if (!ctrl_mac->parent_kobj)
++		return;
++
++	sl_sysfs_mac_counters_delete(ctrl_mac);
++	kobject_put(&ctrl_mac->kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_mac_counters.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_mac_counters.c
+new file mode 100644
+index 000000000000..97ab44983d8e
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_mac_counters.c
+@@ -0,0 +1,339 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2025-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_sysfs.h"
++#include "sl_log.h"
++#include "sl_ctrl_mac.h"
++#include "sl_ctrl_mac_counters.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t mac_tx_start_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_mac *ctrl_mac;
++	u32                 count;
++	int		    rtn;
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
++
++	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_TX_START_CMD, &count);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac tx start cmd show (count = %u)", count);
++
++	return sysfs_emit(buf, "%u\n", count);
++}
++
++static ssize_t mac_tx_started_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_mac *ctrl_mac;
++	u32                 count;
++	int		    rtn;
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
++
++	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_TX_STARTED, &count);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac tx started show (count = %u)", count);
++
++	return sysfs_emit(buf, "%u\n", count);
++}
++
++static ssize_t mac_tx_start_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_mac *ctrl_mac;
++	u32                 count;
++	int		    rtn;
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
++
++	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_TX_START_FAIL, &count);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac tx start fail show (count = %u)", count);
++
++	return sysfs_emit(buf, "%u\n", count);
++}
++
++static ssize_t mac_tx_stop_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_mac *ctrl_mac;
++	u32                 count;
++	int		    rtn;
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
++
++	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_TX_STOP_CMD, &count);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac tx stop cmd show (count = %u)", count);
++
++	return sysfs_emit(buf, "%u\n", count);
++}
++
++static ssize_t mac_tx_stopped_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_mac *ctrl_mac;
++	u32                 count;
++	int		    rtn;
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
++
++	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_TX_STOPPED, &count);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac tx stopped show (count = %u)", count);
++
++	return sysfs_emit(buf, "%u\n", count);
++}
++
++static ssize_t mac_tx_stop_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_mac *ctrl_mac;
++	u32                 count;
++	int		    rtn;
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
++
++	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_TX_STOP_FAIL, &count);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac tx stop fail show (count = %u)", count);
++
++	return sysfs_emit(buf, "%u\n", count);
++}
++
++static ssize_t mac_rx_start_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_mac *ctrl_mac;
++	u32                 count;
++	int		    rtn;
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
++
++	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_RX_START_CMD, &count);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac rx start cmd show (count = %u)", count);
++
++	return sysfs_emit(buf, "%u\n", count);
++}
++
++static ssize_t mac_rx_started_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_mac *ctrl_mac;
++	u32                 count;
++	int		    rtn;
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
++
++	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_RX_STARTED, &count);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac rx started show (count = %u)", count);
++
++	return sysfs_emit(buf, "%u\n", count);
++}
++
++static ssize_t mac_rx_start_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_mac *ctrl_mac;
++	u32                 count;
++	int		    rtn;
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
++
++	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_RX_START_FAIL, &count);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac rx start fail show (count = %u)", count);
++
++	return sysfs_emit(buf, "%u\n", count);
++}
++
++static ssize_t mac_rx_stop_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_mac *ctrl_mac;
++	u32                 count;
++	int		    rtn;
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
++
++	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_RX_STOP_CMD, &count);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac rx stop cmd show (count = %u)", count);
++
++	return sysfs_emit(buf, "%u\n", count);
++}
++
++static ssize_t mac_rx_stopped_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_mac *ctrl_mac;
++	u32                 count;
++	int		    rtn;
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
++
++	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_RX_STOPPED, &count);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac rx stopped show (count = %u)", count);
++
++	return sysfs_emit(buf, "%u\n", count);
++}
++
++static ssize_t mac_rx_stop_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_mac *ctrl_mac;
++	u32                 count;
++	int		    rtn;
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
++
++	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_RX_STOP_FAIL, &count);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac rx stop fail show (count = %u)", count);
++
++	return sysfs_emit(buf, "%u\n", count);
++}
++
++static ssize_t mac_reset_cmd_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_mac *ctrl_mac;
++	u32                 count;
++	int		    rtn;
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
++
++	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_RESET_CMD, &count);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac reset cmd show (count = %u)", count);
++
++	return sysfs_emit(buf, "%u\n", count);
++}
++
++static ssize_t mac_reset_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_mac *ctrl_mac;
++	u32                 count;
++	int		    rtn;
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
++
++	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_RESET, &count);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac reset show (count = %u)", count);
++
++	return sysfs_emit(buf, "%u\n", count);
++}
++
++static ssize_t mac_reset_fail_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_mac *ctrl_mac;
++	u32                 count;
++	int		    rtn;
++
++	ctrl_mac = container_of(kobj, struct sl_ctrl_mac, counters_kobj);
++
++	rtn = sl_ctrl_mac_counter_get(ctrl_mac, MAC_RESET_FAIL, &count);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac reset fail show (count = %u)", count);
++
++	return sysfs_emit(buf, "%u\n", count);
++}
++
++static struct kobj_attribute mac_tx_start_cmd  = __ATTR_RO(mac_tx_start_cmd);
++static struct kobj_attribute mac_tx_started    = __ATTR_RO(mac_tx_started);
++static struct kobj_attribute mac_tx_start_fail = __ATTR_RO(mac_tx_start_fail);
++static struct kobj_attribute mac_tx_stop_cmd   = __ATTR_RO(mac_tx_stop_cmd);
++static struct kobj_attribute mac_tx_stopped    = __ATTR_RO(mac_tx_stopped);
++static struct kobj_attribute mac_tx_stop_fail  = __ATTR_RO(mac_tx_stop_fail);
++static struct kobj_attribute mac_rx_start_cmd  = __ATTR_RO(mac_rx_start_cmd);
++static struct kobj_attribute mac_rx_started    = __ATTR_RO(mac_rx_started);
++static struct kobj_attribute mac_rx_start_fail = __ATTR_RO(mac_rx_start_fail);
++static struct kobj_attribute mac_rx_stop_cmd   = __ATTR_RO(mac_rx_stop_cmd);
++static struct kobj_attribute mac_rx_stopped    = __ATTR_RO(mac_rx_stopped);
++static struct kobj_attribute mac_rx_stop_fail  = __ATTR_RO(mac_rx_stop_fail);
++static struct kobj_attribute mac_reset_cmd     = __ATTR_RO(mac_reset_cmd);
++static struct kobj_attribute mac_reset         = __ATTR_RO(mac_reset);
++static struct kobj_attribute mac_reset_fail    = __ATTR_RO(mac_reset_fail);
++
++static struct attribute *mac_counters_attrs[] = {
++	&mac_tx_start_cmd.attr,
++	&mac_tx_started.attr,
++	&mac_tx_start_fail.attr,
++	&mac_tx_stop_cmd.attr,
++	&mac_tx_stopped.attr,
++	&mac_tx_stop_fail.attr,
++	&mac_rx_start_cmd.attr,
++	&mac_rx_started.attr,
++	&mac_rx_start_fail.attr,
++	&mac_rx_stop_cmd.attr,
++	&mac_rx_stopped.attr,
++	&mac_rx_stop_fail.attr,
++	&mac_reset_cmd.attr,
++	&mac_reset.attr,
++	&mac_reset_fail.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(mac_counters);
++
++static struct kobj_type mac_counters = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = mac_counters_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_mac_counters_create(struct sl_ctrl_mac *ctrl_mac)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac counters create");
++
++	rtn = kobject_init_and_add(&ctrl_mac->counters_kobj, &mac_counters, &ctrl_mac->kobj, "counters");
++	if (rtn) {
++		sl_log_err(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac counters create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&ctrl_mac->counters_kobj);
++		return rtn;
++	}
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_mac_counters_delete(struct sl_ctrl_mac *ctrl_mac)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_mac, LOG_BLOCK, LOG_NAME, "mac counters delete");
++	kobject_put(&ctrl_mac->counters_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_media.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_media.c
+new file mode 100644
+index 000000000000..8973fcc2f378
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_media.c
+@@ -0,0 +1,1274 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include <linux/hpe/sl/sl_media.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_core_str.h"
++#include "sl_core_lgrp.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_ldev.h"
++#include "sl_media_lgrp.h"
 +#include "sl_media_jack.h"
-+#include "sl_ctrl_media_counters.h"
-+#include "base/sl_ctrl_log.h"
++#include "data/sl_media_data_jack.h"
++#include "base/sl_media_eeprom.h"
 +
-+#define LOG_NAME SL_CTRL_MEDIA_LOG_NAME
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
 +
-+#define SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(_media, _counter) \
-+	(_media)->cause_counters[_counter].name = #_counter
-+
-+int sl_ctrl_media_cause_counters_init(struct sl_media_jack *media_jack)
++#ifdef CONFIG_SYSFS
++static ssize_t state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
 +{
-+	sl_ctrl_log_dbg(media_jack, LOG_NAME, "media cause counters init");
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u8                    state;
++	int		      rtn;
 +
-+	media_jack->cause_counters = kzalloc(sizeof(*media_jack->cause_counters) *
-+					     SL_CTRL_MEDIA_CAUSE_COUNTERS_COUNT, GFP_KERNEL);
-+	if (!media_jack->cause_counters)
-+		return -ENOMEM;
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
 +
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_EEPROM_FORMAT_UNSUPPORTED);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_EEPROM_VENDOR_UNSUPPORTED);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_EEPROM_JACK_IO);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_ONLINE_STATUS_GET);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_ONLINE_TIMEDOUT);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_ONLINE_JACK_IO);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_ONLINE_JACK_GET);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_SERDES_SETTINGS_GET);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_SCAN_STATUS_GET);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_SCAN_HDL_GET);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_SCAN_JACK_GET);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_MEDIA_ATTR_SET);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_INTR_EVENT_JACK_IO);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_POWER_SET);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_SHIFT_DOWN_JACK_IO);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_SHIFT_DOWN_JACK_IO_LOW_POWER_SET);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_SHIFT_DOWN_JACK_IO_HIGH_POWER_SET);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_SHIFT_UP_JACK_IO);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_SHIFT_UP_JACK_IO_LOW_POWER_SET);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_SHIFT_UP_JACK_IO_HIGH_POWER_SET);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_SHIFT_STATE_JACK_IO);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_OFFLINE);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_HOT);
-+	SL_CTRL_MEDIA_CAUSE_COUNTER_INIT(media_jack, MEDIA_CAUSE_WARM);
++	rtn = sl_media_jack_state_get(media_lgrp->media_jack, &state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
 +
-+	return 0;
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "state show (media_lgrp = 0x%p, state = %u %s)",
++		   media_lgrp, state, sl_media_state_str(state));
++
++	return sysfs_emit(buf, "%s\n", sl_media_state_str(state));
 +}
 +
-+int sl_ctrl_media_cause_counter_get(struct sl_media_jack *media_jack, u32 counter, int *count)
++static ssize_t jack_power_state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
 +{
-+	*count = atomic_read(&media_jack->cause_counters[counter].count);
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	bool                  is_high_powered;
 +
-+	sl_ctrl_log_dbg(media_jack, LOG_NAME, "get (cause counter = %u %s, count = %d)", counter,
-+			media_jack->cause_counters[counter].name, *count);
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
 +
-+	return 0;
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	is_high_powered = sl_media_jack_is_high_powered(media_lgrp->media_jack);
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "power state show (media_lgrp = 0x%p, state = %s)",
++		   media_lgrp, is_high_powered ? "high" : "low");
++
++	return sysfs_emit(buf, "%s\n", is_high_powered ? "high" : "low");
 +}
 +
-+void sl_ctrl_media_cause_counters_del(struct sl_media_jack *media_jack)
++static ssize_t temperature_celsius_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
 +{
-+	kfree(media_jack->cause_counters);
++	int                   rtn;
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u8                    temp;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp   = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_jack_cable_temp_get(media_lgrp->media_ldev->num, media_lgrp->num, &temp);
++	if (rtn == -EBADRQC)
++		return sysfs_emit(buf, "not-active\n");
++	if (rtn == -EIO)
++		return sysfs_emit(buf, "io-error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "temperature_celsius show (media_lgrp = 0x%p, temp = %uc)", media_lgrp, temp);
++
++	return sysfs_emit(buf, "%u\n", temp);
 +}
 +
-+void sl_ctrl_media_cause_counter_inc(struct sl_media_jack *media_jack, unsigned long cause_map)
++static ssize_t temperature_warn_limit_celsius_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
 +{
-+	unsigned long which;
++	int                   rtn;
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u8                    temp_warn_limit_c;
 +
-+	sl_ctrl_log_dbg(media_jack, LOG_NAME, "media cause counter inc");
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp  = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
 +
-+	BUILD_BUG_ON(SL_CTRL_MEDIA_CAUSE_COUNTERS_COUNT > 32);
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
 +
-+	for_each_set_bit(which, &cause_map, sizeof(cause_map) * BITS_PER_BYTE) {
-+		switch (BIT(which)) {
-+		case SL_MEDIA_FAULT_CAUSE_EEPROM_FORMAT_UNSUPPORTED:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_EEPROM_FORMAT_UNSUPPORTED);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_EEPROM_VENDOR_UNSUPPORTED:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_EEPROM_VENDOR_UNSUPPORTED);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_EEPROM_JACK_IO:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_EEPROM_JACK_IO);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_ONLINE_STATUS_GET:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_ONLINE_STATUS_GET);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_ONLINE_TIMEDOUT:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_ONLINE_TIMEDOUT);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_ONLINE_JACK_IO:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_ONLINE_JACK_IO);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_ONLINE_JACK_GET:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_ONLINE_JACK_GET);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_SERDES_SETTINGS_GET:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_SERDES_SETTINGS_GET);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_SCAN_STATUS_GET:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_SCAN_STATUS_GET);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_SCAN_HDL_GET:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_SCAN_HDL_GET);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_SCAN_JACK_GET:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_SCAN_JACK_GET);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_MEDIA_ATTR_SET:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_MEDIA_ATTR_SET);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_INTR_EVENT_JACK_IO:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_INTR_EVENT_JACK_IO);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_POWER_SET:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_POWER_SET);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_SHIFT_DOWN_JACK_IO:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_SHIFT_DOWN_JACK_IO);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_SHIFT_DOWN_JACK_IO_LOW_POWER_SET:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_SHIFT_DOWN_JACK_IO_LOW_POWER_SET);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_SHIFT_DOWN_JACK_IO_HIGH_POWER_SET:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_SHIFT_DOWN_JACK_IO_HIGH_POWER_SET);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_SHIFT_UP_JACK_IO:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_SHIFT_UP_JACK_IO);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_SHIFT_UP_JACK_IO_LOW_POWER_SET:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_SHIFT_UP_JACK_IO_LOW_POWER_SET);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_SHIFT_UP_JACK_IO_HIGH_POWER_SET:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_SHIFT_UP_JACK_IO_HIGH_POWER_SET);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_SHIFT_STATE_JACK_IO:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_SHIFT_STATE_JACK_IO);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_OFFLINE:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_OFFLINE);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_HOT:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_HOT);
-+			break;
-+		case SL_MEDIA_FAULT_CAUSE_WARM:
-+			SL_CTRL_MEDIA_CAUSE_COUNTER_INC(media_jack, MEDIA_CAUSE_WARM);
-+			break;
-+		default:
-+			sl_ctrl_log_warn_trace(media_jack, LOG_NAME,
-+					       "cause_counter_inc unknown fault cause (bit = %lu)", which);
-+			break;
++	rtn = sl_media_jack_cable_temp_warn_limit_get(media_lgrp->media_ldev->num,
++						      media_lgrp->num, &temp_warn_limit_c);
++
++	if (rtn == -EBADRQC)
++		return sysfs_emit(buf, "not-active\n");
++	if (rtn == -EIO)
++		return sysfs_emit(buf, "io-error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "temperature_warn_limit_celsius show (media_lgrp = 0x%p, temp = %uc)",
++		   media_lgrp, temp_warn_limit_c);
++
++	return sysfs_emit(buf, "%u\n", temp_warn_limit_c);
++}
++
++static ssize_t temperature_down_limit_celsius_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                   rtn;
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u8                    temp_down_limit_c;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp  = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_jack_cable_temp_down_limit_get(media_lgrp->media_ldev->num,
++						      media_lgrp->num, &temp_down_limit_c);
++
++	if (rtn == -EBADRQC)
++		return sysfs_emit(buf, "not-active\n");
++	if (rtn == -EIO)
++		return sysfs_emit(buf, "io-error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "temperature_down_limit_celsius show (media_lgrp = 0x%p, temp = %uc)",
++		   media_lgrp, temp_down_limit_c);
++
++	return sysfs_emit(buf, "%u\n", temp_down_limit_c);
++}
++
++static ssize_t temperature_state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u8                    temperature_state;
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp   = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	if (!sl_media_lgrp_media_type_is_active(media_lgrp->media_ldev->num, media_lgrp->num))
++		return sysfs_emit(buf, "not-active\n");
++
++	rtn  = sl_media_jack_cable_temp_state_get(media_lgrp->media_jack, &temperature_state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "temperature state show (media_lgrp = 0x%p, temperature_state = %u %s)",
++		   media_lgrp, temperature_state, sl_media_temp_state_str(temperature_state));
++
++	return sysfs_emit(buf, "%s\n", sl_media_temp_state_str(temperature_state));
++}
++
++static ssize_t vendor_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   vendor;
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_lgrp_vendor_get(media_lgrp, &vendor);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "vendor show (media_lgrp = 0x%p, vendor = %u %s)",
++		   media_lgrp, vendor, sl_media_vendor_str(vendor));
++
++	return sysfs_emit(buf, "%s\n", sl_media_vendor_str(vendor));
++}
++
++static ssize_t vendor_part_num_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	char                  vendor_pn_str[SL_MEDIA_VENDOR_PN_SIZE];
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp  = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_lgrp_vendor_pn_str_get(media_lgrp, vendor_pn_str);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "vendor part num show (media_lgrp = 0x%p, vendor_pn_str = %s)",
++		   media_lgrp, vendor_pn_str);
++
++	return sysfs_emit(buf, "%s\n", vendor_pn_str);
++}
++
++static ssize_t type_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   type;
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_lgrp_type_get(media_lgrp, &type);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "type show (media_lgrp = 0x%p, type = %u %s)",
++		   media_lgrp, type, sl_media_type_str(type));
++
++	return sysfs_emit(buf, "%s\n", sl_media_type_str(type));
++}
++
++static ssize_t shape_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   shape;
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_lgrp_shape_get(media_lgrp, &shape);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "shape show (media_lgrp = 0x%p, shape = %u %s)", media_lgrp, shape, sl_media_shape_str(shape));
++
++	return sysfs_emit(buf, "%s\n", sl_media_shape_str(shape));
++}
++
++static ssize_t cable_end_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u8                    cable_end;
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_jack_cable_end_get(media_lgrp->media_jack, &cable_end);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "cable_end show (media_lgrp = 0x%p, cable_end = %u %s)",
++		media_lgrp, cable_end, sl_media_cable_end_str(cable_end));
++
++	return sysfs_emit(buf, "%s\n", sl_media_cable_end_str(cable_end));
++}
++
++static ssize_t length_cm_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   length_cm;
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_lgrp_length_get(media_lgrp, &length_cm);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "length_cm show (media_lgrp = 0x%p, length_cm = %u)",
++		   media_lgrp, length_cm);
++
++	return sysfs_emit(buf, "%u\n", length_cm);
++}
++
++static ssize_t max_speed_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   max_speed;
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_lgrp_max_speed_get(media_lgrp, &max_speed);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "max speed show (media_lgrp = 0x%p, max_speed = %u %s)",
++		   media_lgrp, max_speed, sl_media_speed_str(max_speed));
++
++	return sysfs_emit(buf, "%s\n", sl_media_speed_str(max_speed));
++}
++
++static ssize_t serial_num_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	char                  serial_num_str[SL_MEDIA_SERIAL_NUM_SIZE];
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_lgrp_serial_num_str_get(media_lgrp, serial_num_str);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "serial num show (media_lgrp = 0x%p, serial_num = %s)",
++		   media_lgrp, serial_num_str);
++
++	return sysfs_emit(buf, "%s\n", serial_num_str);
++}
++
++static ssize_t hpe_part_num_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	char                  hpe_pn_str[SL_MEDIA_HPE_PN_SIZE];
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_lgrp_hpe_pn_str_get(media_lgrp, hpe_pn_str);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "hpe part num show (media_lgrp = 0x%p, hpe_pn = %s)",
++		   media_lgrp, hpe_pn_str);
++
++	return sysfs_emit(buf, "%s\n", hpe_pn_str);
++}
++
++static ssize_t jack_num_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "jack_num show (media_lgrp = 0x%p, jack_num = %u)",
++		media_lgrp, media_lgrp->media_jack->physical_num);
++
++	return sysfs_emit(buf, "%u\n", media_lgrp->media_jack->physical_num);
++}
++
++static ssize_t jack_type_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   density;
++	u32                   jack_type;
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_lgrp_jack_type_get(media_lgrp, &jack_type);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	rtn = sl_media_lgrp_jack_type_qsfp_density_get(media_lgrp, &density);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "jack type show (media_lgrp = 0x%p, jack_type = %u %s)",
++		   media_lgrp, jack_type, sl_media_jack_type_str(jack_type, density));
++
++	return sysfs_emit(buf, "%s\n", sl_media_jack_type_str(jack_type, density));
++}
++
++static ssize_t furcation_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   furcation;
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_lgrp_furcation_get(media_lgrp, &furcation);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "furcation show (media_lgrp = 0x%p, furcation = %u %s)",
++		   media_lgrp, furcation, sl_media_furcation_str(furcation));
++
++	return sysfs_emit(buf, "%s\n", sl_media_furcation_str(furcation));
++}
++
++static ssize_t is_supported_cable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	bool                  unsupported;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	unsupported = sl_media_lgrp_is_cable_unsupported(media_lgrp);
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "is_supported_cable show (media_lgrp = 0x%p, is_supported_cable = %s)",
++		   media_lgrp, unsupported ? "no" : "yes");
++
++	return sysfs_emit(buf, "%s\n", unsupported ? "no" : "yes");
++}
++
++static ssize_t date_code_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	char                  date_code_str[SL_MEDIA_DATE_CODE_SIZE];
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_lgrp_date_code_str_get(media_lgrp, date_code_str);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "date code show (media_lgrp = 0x%p, date_code = %s)",
++		   media_lgrp, date_code_str);
++
++	return sysfs_emit(buf, "%s\n", date_code_str);
++}
++
++static ssize_t firmware_version_hex_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u8                    fw_ver[SL_MEDIA_FIRMWARE_VERSION_SIZE];
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_lgrp_fw_ver_str_get(media_lgrp, fw_ver);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "firmware version hex show (media_lgrp = 0x%p, firmware_version_hex = %02X.%02X)",
++		media_lgrp, fw_ver[0], fw_ver[1]);
++
++	return sysfs_emit(buf, "%02X.%02X\n", fw_ver[0], fw_ver[1]);
++}
++
++static ssize_t target_firmware_version_hex_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u8                    target_fw_ver_str[25];
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_eeprom_target_fw_ver_str_get(media_lgrp->media_jack, target_fw_ver_str, sizeof(target_fw_ver_str));
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "target firmware version hex show (media_lgrp = 0x%p, target_firmware_version_hex = %s)",
++		media_lgrp, target_fw_ver_str);
++
++	return sysfs_emit(buf, "%s\n", target_fw_ver_str);
++}
++
++static ssize_t cable_speed_state_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u8                    cable_speed_state;
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_jack_cable_shift_state_get(media_lgrp->media_jack, &cable_speed_state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "cable_speed state show (media_lgrp = 0x%p, cable_speed_state = %u %s)",
++		   media_lgrp, cable_speed_state, sl_media_cable_speed_state_str(cable_speed_state));
++
++	return sysfs_emit(buf, "%s\n", sl_media_cable_speed_state_str(cable_speed_state));
++}
++
++static ssize_t active_cable_200g_host_interface_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u8                    host_interface;
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_jack_active_cable_200g_host_interface_get(media_lgrp->media_jack, &host_interface);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "active cable 200g host interface show (media_lgrp = 0x%p, host_interface = 0x%X)",
++		   media_lgrp, host_interface);
++
++	return sysfs_emit(buf, "0x%02x\n", host_interface);
++}
++
++static ssize_t active_cable_200g_lane_count_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u8                    lane_count;
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_jack_active_cable_200g_lane_count_get(media_lgrp->media_jack, &lane_count);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "active cable 200g lane coiunt show (media_lgrp = 0x%p, lane_count = 0x%X)",
++		   media_lgrp, lane_count);
++
++	return sysfs_emit(buf, "0x%02x\n", lane_count);
++}
++
++static ssize_t active_cable_200g_appsel_num_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u8                    appsel_num;
++	int rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_jack_active_cable_200g_appsel_num_get(media_lgrp->media_jack, &appsel_num);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "active cable 200g appsel no show (media_lgrp = 0x%p, appsel_num = 0x%X)", media_lgrp, appsel_num);
++
++	return sysfs_emit(buf, "0x%02x\n", appsel_num);
++}
++
++static ssize_t active_cable_400g_host_interface_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u8                    host_interface;
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_jack_active_cable_400g_host_interface_get(media_lgrp->media_jack, &host_interface);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "active cable 400g host interface show (media_lgrp = 0x%p, host_interface = 0x%X)",
++		   media_lgrp, host_interface);
++
++	return sysfs_emit(buf, "0x%02x\n", host_interface);
++}
++
++static ssize_t active_cable_400g_lane_count_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u8                    lane_count;
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_jack_active_cable_400g_lane_count_get(media_lgrp->media_jack, &lane_count);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "active cable 400g lane count show (media_lgrp = 0x%p, lane_count = 0x%X)",
++		   media_lgrp, lane_count);
++
++	return sysfs_emit(buf, "0x%02x\n", lane_count);
++}
++
++static ssize_t active_cable_400g_appsel_num_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u8                    appsel_num;
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_jack_active_cable_400g_appsel_num_get(media_lgrp->media_jack, &appsel_num);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "active cable 400g appsel no show (media_lgrp = 0x%p, appsel_num = 0x%X)", media_lgrp, appsel_num);
++
++	return sysfs_emit(buf, "0x%02x\n", appsel_num);
++}
++
++static ssize_t last_fault_cause_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   fault_cause;
++	time64_t              fault_time;
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	rtn = sl_media_jack_fault_cause_get(media_lgrp->media_jack, &fault_cause, &fault_time);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "last_fault cause show (cause = %u %s)", fault_cause,
++		   sl_media_fault_cause_str(fault_cause));
++
++	if (fault_cause == SL_MEDIA_FAULT_CAUSE_NONE)
++		return sysfs_emit(buf, "no-fault\n");
++
++	return sysfs_emit(buf, "%s\n", sl_media_fault_cause_str(fault_cause));
++}
++
++static ssize_t last_fault_time_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   fault_cause;
++	time64_t              fault_time;
++	int		      rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++
++	rtn = sl_media_jack_fault_cause_get(media_lgrp->media_jack, &fault_cause, &fault_time);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "last fault time show (cause = %u %s, time = %lld %ptTt %ptTd)",
++		fault_cause, sl_media_fault_cause_str(fault_cause),
++		fault_time, &fault_time, &fault_time);
++
++	if (fault_cause == SL_MEDIA_FAULT_CAUSE_NONE)
++		return sysfs_emit(buf, "no-fault\n");
++
++	return sysfs_emit(buf, "%ptTt %ptTd\n", &fault_time, &fault_time);
++}
++
++static ssize_t is_supported_ss200_cable_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++
++	sl_log_dbg(media_lgrp, LOG_BLOCK, LOG_NAME,
++		   "is supported ss200 cable show (is_supported_ss200_cable = %s)",
++		media_lgrp->media_jack->is_supported_ss200_cable ? "yes" : "no");
++
++	if (media_lgrp->media_jack->is_supported_ss200_cable)
++		return sysfs_emit(buf, "yes\n");
++
++	return sysfs_emit(buf, "no\n");
++}
++
++static ssize_t jack_part_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	u8                    ldev_num;
++	u8                    lgrp_num;
++	u32                   jack_part;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ldev_num = media_lgrp->media_ldev->num;
++	lgrp_num = media_lgrp->num;
++
++	jack_part = sl_core_lgrp_jack_part_get(ldev_num, lgrp_num);
++
++	sl_log_dbg(media_lgrp, LOG_BLOCK, LOG_NAME,
++		   "jack part show (jack_part = %u %s)", jack_part, sl_core_lgrp_dt_jack_part_str(jack_part));
++
++	return sysfs_emit(buf, "%s\n", sl_core_lgrp_dt_jack_part_str(jack_part));
++}
++
++static ssize_t signal_cache_time_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                  rtn;
++	struct sl_media_lgrp *media_lgrp;
++	u8                   ldev_num;
++	u8                   lgrp_num;
++	time64_t             signal_cache_time_s;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++	ldev_num = media_lgrp->media_ldev->num;
++	lgrp_num = media_lgrp->num;
++
++	rtn = sl_media_jack_signal_cache_time_s_get(ldev_num, lgrp_num, &signal_cache_time_s);
++	if (rtn) {
++		sl_log_err_trace(media_lgrp, LOG_BLOCK, LOG_NAME, "signal cache time show failed [%d]", rtn);
++		return sysfs_emit(buf, "no-cache\n");
++	}
++
++	sl_log_dbg(media_lgrp, LOG_BLOCK, LOG_NAME,
++		   "signal cache time show (signal_cache_time_s = %llu)", signal_cache_time_s);
++
++	return sysfs_emit(buf, "%ptTt %ptTd\n", &signal_cache_time_s, &signal_cache_time_s);
++}
++
++static ssize_t error_info_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                   rtn;
++	u32                   error_map;
++	struct sl_media_lgrp *media_lgrp;
++	char                  error_str[SL_MEDIA_JACK_ATTR_ERR_STR_SIZE];
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, kobj);
++
++	rtn = sl_media_jack_attr_error_map_get(media_lgrp->media_jack, &error_map);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	rtn = sl_media_jack_attr_error_map_str(error_map, error_str, sizeof(error_str));
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(media_lgrp, LOG_BLOCK, LOG_NAME,
++		   "error info show (error_map = 0x%x %s)", error_map, error_str);
++
++	return sysfs_emit(buf, "%s\n", error_str);
++}
++
++static struct kobj_attribute media_state                            = __ATTR_RO(state);
++static struct kobj_attribute media_jack_power_state                 = __ATTR_RO(jack_power_state);
++static struct kobj_attribute media_temperature_celsius              = __ATTR_RO(temperature_celsius);
++static struct kobj_attribute media_temperature_warn_limit_celsius   = __ATTR_RO(temperature_warn_limit_celsius);
++static struct kobj_attribute media_temperature_down_limit_celsius   = __ATTR_RO(temperature_down_limit_celsius);
++static struct kobj_attribute media_temperature_state                = __ATTR_RO(temperature_state);
++static struct kobj_attribute media_vendor                           = __ATTR_RO(vendor);
++static struct kobj_attribute media_vendor_part_num                  = __ATTR_RO(vendor_part_num);
++static struct kobj_attribute media_type                             = __ATTR_RO(type);
++static struct kobj_attribute media_shape                            = __ATTR_RO(shape);
++static struct kobj_attribute media_cable_end                        = __ATTR_RO(cable_end);
++static struct kobj_attribute media_length_cm                        = __ATTR_RO(length_cm);
++static struct kobj_attribute media_max_speed                        = __ATTR_RO(max_speed);
++static struct kobj_attribute media_serial_num                       = __ATTR_RO(serial_num);
++static struct kobj_attribute media_hpe_part_num                     = __ATTR_RO(hpe_part_num);
++static struct kobj_attribute media_jack_num                         = __ATTR_RO(jack_num);
++static struct kobj_attribute media_jack_type                        = __ATTR_RO(jack_type);
++static struct kobj_attribute media_furcation                        = __ATTR_RO(furcation);
++static struct kobj_attribute media_is_supported_cable               = __ATTR_RO(is_supported_cable);
++static struct kobj_attribute media_date_code                        = __ATTR_RO(date_code);
++static struct kobj_attribute media_firmware_version_hex             = __ATTR_RO(firmware_version_hex);
++static struct kobj_attribute media_target_firmware_version_hex      = __ATTR_RO(target_firmware_version_hex);
++static struct kobj_attribute media_cable_speed_state                = __ATTR_RO(cable_speed_state);
++static struct kobj_attribute media_active_cable_200g_host_interface = __ATTR_RO(active_cable_200g_host_interface);
++static struct kobj_attribute media_active_cable_200g_lane_count     = __ATTR_RO(active_cable_200g_lane_count);
++static struct kobj_attribute media_active_cable_200g_appsel_num     = __ATTR_RO(active_cable_200g_appsel_num);
++static struct kobj_attribute media_active_cable_400g_host_interface = __ATTR_RO(active_cable_400g_host_interface);
++static struct kobj_attribute media_active_cable_400g_lane_count     = __ATTR_RO(active_cable_400g_lane_count);
++static struct kobj_attribute media_active_cable_400g_appsel_num     = __ATTR_RO(active_cable_400g_appsel_num);
++static struct kobj_attribute media_last_fault_cause                 = __ATTR_RO(last_fault_cause);
++static struct kobj_attribute media_last_fault_time                  = __ATTR_RO(last_fault_time);
++static struct kobj_attribute media_is_supported_ss200_cable         = __ATTR_RO(is_supported_ss200_cable);
++static struct kobj_attribute media_jack_part                        = __ATTR_RO(jack_part);
++static struct kobj_attribute media_signal_cache_time                = __ATTR_RO(signal_cache_time);
++static struct kobj_attribute media_error_info                       = __ATTR_RO(error_info);
++
++static struct attribute *media_attrs[] = {
++	&media_state.attr,
++	&media_jack_power_state.attr,
++	&media_temperature_celsius.attr,
++	&media_temperature_warn_limit_celsius.attr,
++	&media_temperature_down_limit_celsius.attr,
++	&media_temperature_state.attr,
++	&media_vendor.attr,
++	&media_vendor_part_num.attr,
++	&media_type.attr,
++	&media_shape.attr,
++	&media_cable_end.attr,
++	&media_length_cm.attr,
++	&media_max_speed.attr,
++	&media_serial_num.attr,
++	&media_hpe_part_num.attr,
++	&media_jack_num.attr,
++	&media_jack_type.attr,
++	&media_furcation.attr,
++	&media_is_supported_cable.attr,
++	&media_date_code.attr,
++	&media_firmware_version_hex.attr,
++	&media_target_firmware_version_hex.attr,
++	&media_cable_speed_state.attr,
++	&media_active_cable_200g_host_interface.attr,
++	&media_active_cable_200g_lane_count.attr,
++	&media_active_cable_200g_appsel_num.attr,
++	&media_active_cable_400g_host_interface.attr,
++	&media_active_cable_400g_lane_count.attr,
++	&media_active_cable_400g_appsel_num.attr,
++	&media_last_fault_cause.attr,
++	&media_last_fault_time.attr,
++	&media_is_supported_ss200_cable.attr,
++	&media_jack_part.attr,
++	&media_signal_cache_time.attr,
++	&media_error_info.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(media);
++
++static struct kobj_type media_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = media_groups,
++};
++
++static ssize_t host_interface_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp_speed_kobject *speed_kobj;
++	struct sl_ctrl_lgrp                *ctrl_lgrp;
++	u32                                 speed;
++	u32                                 type;
++	int				    rtn;
++
++	speed_kobj = container_of(kobj, struct sl_media_lgrp_speed_kobject, kobj);
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(speed_kobj->media_lgrp->media_ldev->num, speed_kobj->media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(speed_kobj->media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(speed_kobj->media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_lgrp_type_get(speed_kobj->media_lgrp, &type);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	speed = speed_kobj->speed;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "host interface show (media_lgrp = 0x%p, host_interface = %s)",
++		speed_kobj->media_lgrp, sl_media_host_interface_str(speed, type));
++
++	return sysfs_emit(buf, "%s\n", sl_media_host_interface_str(speed, type));
++}
++
++static ssize_t projected_ber_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp_speed_kobject *speed_kobj;
++	struct sl_ctrl_lgrp                *ctrl_lgrp;
++	u8                                  media_interface;
++	u32                                 type;
++	int				    rtn;
++
++	speed_kobj = container_of(kobj, struct sl_media_lgrp_speed_kobject, kobj);
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(speed_kobj->media_lgrp->media_ldev->num, speed_kobj->media_lgrp->num);
++
++	if (!sl_media_jack_is_cable_online(speed_kobj->media_lgrp->media_jack)) {
++		if (sl_media_jack_is_cable_format_unsupported(speed_kobj->media_lgrp->media_jack))
++			return sysfs_emit(buf, "unsupported-format\n");
++		return sysfs_emit(buf, "no-cable\n");
++	}
++
++	rtn = sl_media_lgrp_type_get(speed_kobj->media_lgrp, &type);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	if (type == SL_MEDIA_TYPE_PEC || type == SL_MEDIA_TYPE_BKP) {
++		sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++			   "projected_ber show (media_lgrp = 0x%p, projected_ber = 0)", speed_kobj->media_lgrp);
++		return sysfs_emit(buf, "0\n");
++	}
++
++	rtn = sl_media_eeprom_media_interface_get(speed_kobj->media_lgrp->media_jack, &media_interface);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "projected_ber show (media_lgrp = 0x%p, projected_ber = %s)",
++		   speed_kobj->media_lgrp, sl_media_ber_str(media_interface));
++
++	return sysfs_emit(buf, "%s\n", sl_media_ber_str(media_interface));
++}
++
++static struct kobj_attribute media_speed_host_interface = __ATTR_RO(host_interface);
++static struct kobj_attribute media_speed_projected_ber  = __ATTR_RO(projected_ber);
++
++static struct attribute *media_speed_attrs[] = {
++	&media_speed_host_interface.attr,
++	&media_speed_projected_ber.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(media_speed);
++
++static struct kobj_type media_speed_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = media_speed_groups,
++};
++
++static void parent_speed_release(struct kobject *kobj)
++{
++}
++
++static struct kobj_type parent_speed_info = {
++	.release = parent_speed_release,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_media_create(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	int                   rtn;
++	u8                    state;
++	struct sl_media_lgrp *media_lgrp;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media create");
++
++	if (!ctrl_lgrp->parent_kobj) {
++		sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media create missing parent");
++		return 0;
++	}
++
++	media_lgrp = sl_media_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!media_lgrp) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media_lgrp_get failed");
++		return -EFAULT;
++	}
++
++	rtn = kobject_init_and_add(&media_lgrp->kobj, &media_info, ctrl_lgrp->parent_kobj, "media");
++	if (rtn) {
++		kobject_put(&media_lgrp->kobj);
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "kobject_init_and_add failed [%d]", rtn);
++		return rtn;
++	}
++
++	rtn = kobject_init_and_add(&media_lgrp->parent_speed_kobj, &parent_speed_info, &media_lgrp->kobj, "speeds");
++	if (rtn) {
++		kobject_put(&media_lgrp->parent_speed_kobj);
++		kobject_put(&media_lgrp->kobj);
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "kobject_init_and_add failed [%d]", rtn);
++		return rtn;
++	}
++
++	rtn = sl_sysfs_media_counters_create(ctrl_lgrp);
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media counters create failed [%d]", rtn);
++		goto out_parents;
++	}
++
++	/*
++	 * This if condition will be false for nic here
++	 */
++	rtn = sl_media_jack_state_get(media_lgrp->media_jack, &state);
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media_jack_state_get failed [%d]", rtn);
++		goto out_counters;
++	}
++
++	if (state == SL_MEDIA_JACK_CABLE_ONLINE) {
++		/*
++		 * kobj cleanup in the callee function
++		 */
++		rtn = sl_sysfs_media_speeds_create(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++		if (rtn) {
++			sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media speeds create failed [%d]", rtn);
++			goto out_counters;
 +		}
 +	}
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "create (media_kobj = 0x%p)", &media_lgrp->kobj);
++
++	return 0;
++out_counters:
++	sl_sysfs_media_counters_delete(ctrl_lgrp);
++out_parents:
++	kobject_put(&media_lgrp->parent_speed_kobj);
++	kobject_put(&media_lgrp->kobj);
++	return rtn;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++int sl_sysfs_media_speeds_create(u8 ldev_num, u8 lgrp_num)
++{
++#ifdef CONFIG_SYSFS
++	int                   rtn;
++	int                   i;
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++
++	media_lgrp = sl_media_lgrp_get(ldev_num, lgrp_num);
++	ctrl_lgrp = sl_ctrl_lgrp_get(ldev_num, lgrp_num);
++
++	if (media_lgrp->speeds_kobj_init)
++		return 0;
++
++	media_lgrp->supported_speeds_num = 0;
++	if (media_lgrp->cable_info->real_cable_status == CABLE_MEDIA_ATTR_ADDED) {
++		for_each_set_bit(i, &media_lgrp->cable_info->media_attr.speeds_map,
++				 sizeof(media_lgrp->cable_info->media_attr.speeds_map) * BITS_PER_BYTE) {
++			media_lgrp->speeds_kobj[media_lgrp->supported_speeds_num].media_lgrp = media_lgrp;
++			media_lgrp->speeds_kobj[media_lgrp->supported_speeds_num].speed = BIT(i);
++			rtn = kobject_init_and_add(&media_lgrp->speeds_kobj[media_lgrp->supported_speeds_num].kobj,
++						   &media_speed_info, &media_lgrp->parent_speed_kobj, sl_media_speed_str(BIT(i)));
++			if (rtn) {
++				for (i = 0; i <= media_lgrp->supported_speeds_num; ++i)
++					kobject_put(&media_lgrp->speeds_kobj[i].kobj);
++				media_lgrp->supported_speeds_num = 0;
++				sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "kobject_init_and_add failed [%d]", rtn);
++				return rtn;
++			}
++			media_lgrp->supported_speeds_num++;
++		}
++	} else if (media_lgrp->cable_info->fake_cable_status == CABLE_MEDIA_ATTR_ADDED) {
++		for_each_set_bit(i, &media_lgrp->cable_info->stashed_media_attr.speeds_map,
++				 sizeof(media_lgrp->cable_info->stashed_media_attr.speeds_map) * BITS_PER_BYTE) {
++			media_lgrp->speeds_kobj[media_lgrp->supported_speeds_num].media_lgrp = media_lgrp;
++			media_lgrp->speeds_kobj[media_lgrp->supported_speeds_num].speed = BIT(i);
++			rtn = kobject_init_and_add(&media_lgrp->speeds_kobj[media_lgrp->supported_speeds_num].kobj,
++						   &media_speed_info, &media_lgrp->parent_speed_kobj, sl_media_speed_str(BIT(i)));
++			if (rtn) {
++				for (i = 0; i <= media_lgrp->supported_speeds_num; ++i)
++					kobject_put(&media_lgrp->speeds_kobj[i].kobj);
++				media_lgrp->supported_speeds_num = 0;
++				sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "kobject_init_and_add failed [%d]", rtn);
++				return rtn;
++			}
++			media_lgrp->supported_speeds_num++;
++		}
++	}
++
++	media_lgrp->speeds_kobj_init = true;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media speed nodes created");
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_media_speeds_delete(u8 ldev_num, u8 lgrp_num)
++{
++#ifdef CONFIG_SYSFS
++	struct sl_media_lgrp *media_lgrp;
++	u8 i;
++
++	media_lgrp = sl_media_lgrp_get(ldev_num, lgrp_num);
++	if (!media_lgrp)
++		return;
++
++	if (media_lgrp->speeds_kobj_init) {
++		for (i = 0; i < media_lgrp->supported_speeds_num; ++i)
++			kobject_put(&media_lgrp->speeds_kobj[i].kobj);
++	}
++	media_lgrp->speeds_kobj_init = false;
++	media_lgrp->supported_speeds_num = 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_media_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	struct sl_media_lgrp *media_lgrp;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media delete");
++
++	if (!ctrl_lgrp->parent_kobj)
++		return;
++
++	sl_sysfs_media_counters_delete(ctrl_lgrp);
++
++	media_lgrp = sl_media_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!media_lgrp) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media_lgrp_get failed");
++		return;
++	}
++
++	sl_sysfs_media_speeds_delete(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	kobject_put(&media_lgrp->parent_speed_kobj);
++	kobject_put(&media_lgrp->kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_media_counters.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_media_counters.c
+new file mode 100644
+index 000000000000..682c106d4d3a
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_media_counters.c
+@@ -0,0 +1,599 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2025,2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_sysfs.h"
++#include "sl_log.h"
++#include "sl_media_lgrp.h"
++#include "sl_ctrl_ldev.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_media_counters.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t cause_eeprom_format_unsupported_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_EEPROM_FORMAT_UNSUPPORTED, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause eeprom format unsupported show (counter = %u)",
++		   counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_eeprom_vendor_unsupported_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_EEPROM_VENDOR_UNSUPPORTED, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause eeprom vendor unsupported show (counter = %u)",
++		   counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_eeprom_jack_io_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_EEPROM_JACK_IO, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause eeprom jack io show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_online_status_get_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_ONLINE_STATUS_GET, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause online status get show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_online_timedout_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_ONLINE_TIMEDOUT, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause online timedout show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_online_jack_io_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_ONLINE_JACK_IO, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause online jack io show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_online_jack_get_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_ONLINE_JACK_GET, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause online jack get show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_serdes_settings_get_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SERDES_SETTINGS_GET, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause serdes settings get show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_scan_status_get_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SCAN_STATUS_GET, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause scan status get show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_scan_hdl_get_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SCAN_HDL_GET, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause scan hdl get show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_scan_jack_get_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SCAN_JACK_GET, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause scan jack get show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_media_attr_set_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_MEDIA_ATTR_SET, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause media attr set show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_intr_event_jack_io_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_INTR_EVENT_JACK_IO, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause intr event jack io show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_power_set_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_POWER_SET, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause power set show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_shift_down_jack_io_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SHIFT_DOWN_JACK_IO, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause shift down jack io show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_shift_down_jack_io_low_power_set_show(struct kobject *kobj,
++							   struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SHIFT_DOWN_JACK_IO_LOW_POWER_SET,
++					      &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause shift down jack io low power set show (counter = %u)",
++		   counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_shift_down_jack_io_high_power_set_show(struct kobject *kobj,
++							    struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack,
++					      MEDIA_CAUSE_SHIFT_DOWN_JACK_IO_HIGH_POWER_SET, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause shift down jack io high power set show (counter = %u)",
++		   counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_shift_up_jack_io_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SHIFT_UP_JACK_IO, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause shift up jack io show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_shift_up_jack_io_low_power_set_show(struct kobject *kobj, struct kobj_attribute *kattr,
++							 char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SHIFT_UP_JACK_IO_LOW_POWER_SET,
++					      &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause shift up jack io low power set show (counter = %u)",
++		   counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_shift_up_jack_io_high_power_set_show(struct kobject *kobj, struct kobj_attribute *kattr,
++							  char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SHIFT_UP_JACK_IO_HIGH_POWER_SET,
++					      &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause shift up jack io high power set show (counter = %u)",
++		   counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_shift_state_jack_io_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_SHIFT_STATE_JACK_IO, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause shift state jack io show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_offline_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_OFFLINE, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause offline show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_hot_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_HOT, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause hot show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static ssize_t cause_warm_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	u32                   counter;
++	u32                   rtn;
++
++	media_lgrp = container_of(kobj, struct sl_media_lgrp, counters_kobj);
++
++	rtn = sl_ctrl_media_cause_counter_get(media_lgrp->media_jack, MEDIA_CAUSE_WARM, &counter);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	ctrl_lgrp = sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num);
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media cause warm show (counter = %u)", counter);
++
++	return sysfs_emit(buf, "%u\n", counter);
++}
++
++static struct kobj_attribute media_cause_eeprom_format_unsupported         =
++			     __ATTR_RO(cause_eeprom_format_unsupported);
++static struct kobj_attribute media_cause_eeprom_vendor_unsupported         =
++			     __ATTR_RO(cause_eeprom_vendor_unsupported);
++static struct kobj_attribute media_cause_eeprom_jack_io                    = __ATTR_RO(cause_eeprom_jack_io);
++static struct kobj_attribute media_cause_online_status_get                 = __ATTR_RO(cause_online_status_get);
++static struct kobj_attribute media_cause_online_timedout                   = __ATTR_RO(cause_online_timedout);
++static struct kobj_attribute media_cause_online_jack_io                    = __ATTR_RO(cause_online_jack_io);
++static struct kobj_attribute media_cause_online_jack_get                   = __ATTR_RO(cause_online_jack_get);
++static struct kobj_attribute media_cause_serdes_settings_get               = __ATTR_RO(cause_serdes_settings_get);
++static struct kobj_attribute media_cause_scan_status_get                   = __ATTR_RO(cause_scan_status_get);
++static struct kobj_attribute media_cause_scan_hdl_get                      = __ATTR_RO(cause_scan_hdl_get);
++static struct kobj_attribute media_cause_scan_jack_get                     = __ATTR_RO(cause_scan_jack_get);
++static struct kobj_attribute media_cause_media_attr_set                    = __ATTR_RO(cause_media_attr_set);
++static struct kobj_attribute media_cause_intr_event_jack_io                = __ATTR_RO(cause_intr_event_jack_io);
++static struct kobj_attribute media_cause_power_set                         = __ATTR_RO(cause_power_set);
++static struct kobj_attribute media_cause_shift_down_jack_io                = __ATTR_RO(cause_shift_down_jack_io);
++static struct kobj_attribute media_cause_shift_down_jack_io_low_power_set  =
++			     __ATTR_RO(cause_shift_down_jack_io_low_power_set);
++static struct kobj_attribute media_cause_shift_down_jack_io_high_power_set =
++			     __ATTR_RO(cause_shift_down_jack_io_high_power_set);
++static struct kobj_attribute media_cause_shift_up_jack_io                  = __ATTR_RO(cause_shift_up_jack_io);
++static struct kobj_attribute media_cause_shift_up_jack_io_low_power_set    =
++			     __ATTR_RO(cause_shift_up_jack_io_low_power_set);
++static struct kobj_attribute media_cause_shift_up_jack_io_high_power_set   =
++			     __ATTR_RO(cause_shift_up_jack_io_high_power_set);
++static struct kobj_attribute media_cause_shift_state_jack_io               =
++			     __ATTR_RO(cause_shift_state_jack_io);
++static struct kobj_attribute media_cause_offline                           = __ATTR_RO(cause_offline);
++static struct kobj_attribute media_cause_hot                               = __ATTR_RO(cause_hot);
++static struct kobj_attribute media_cause_warm                              = __ATTR_RO(cause_warm);
++
++static struct attribute *media_counters_attrs[] = {
++	&media_cause_eeprom_format_unsupported.attr,
++	&media_cause_eeprom_vendor_unsupported.attr,
++	&media_cause_eeprom_jack_io.attr,
++	&media_cause_online_status_get.attr,
++	&media_cause_online_timedout.attr,
++	&media_cause_online_jack_io.attr,
++	&media_cause_online_jack_get.attr,
++	&media_cause_serdes_settings_get.attr,
++	&media_cause_scan_status_get.attr,
++	&media_cause_scan_hdl_get.attr,
++	&media_cause_scan_jack_get.attr,
++	&media_cause_media_attr_set.attr,
++	&media_cause_intr_event_jack_io.attr,
++	&media_cause_power_set.attr,
++	&media_cause_shift_down_jack_io.attr,
++	&media_cause_shift_down_jack_io_low_power_set.attr,
++	&media_cause_shift_down_jack_io_high_power_set.attr,
++	&media_cause_shift_up_jack_io.attr,
++	&media_cause_shift_up_jack_io_low_power_set.attr,
++	&media_cause_shift_up_jack_io_high_power_set.attr,
++	&media_cause_shift_state_jack_io.attr,
++	&media_cause_offline.attr,
++	&media_cause_hot.attr,
++	&media_cause_warm.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(media_counters);
++
++static struct kobj_type media_counters = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = media_counters_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_media_counters_create(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	struct sl_media_lgrp *media_lgrp;
++	int                   rtn;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media counters create");
++
++	media_lgrp = sl_media_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!media_lgrp) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media_lgrp_get failed");
++		return -EFAULT;
++	}
++
++	rtn = kobject_init_and_add(&media_lgrp->counters_kobj, &media_counters, &media_lgrp->kobj,
++				   "counters");
++	if (rtn) {
++		kobject_put(&media_lgrp->counters_kobj);
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++			   "media counters create kobject_init_and_add failed [%d]", rtn);
++		return rtn;
++	}
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_media_counters_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	struct sl_media_lgrp *media_lgrp;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media counters delete");
++
++	media_lgrp = sl_media_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!media_lgrp) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "media_lgrp_get failed");
++		return;
++	}
++
++	kobject_put(&media_lgrp->counters_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi.c
+new file mode 100644
+index 000000000000..605a7748e242
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi.c
+@@ -0,0 +1,80 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2026 Hewlett Packard Enterprise Development LP */
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_ctrl_lgrp.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static struct attribute *pmi_attrs[] = {
++	NULL,
++};
++ATTRIBUTE_GROUPS(pmi);
++
++static struct kobj_type pmi_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = pmi_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_pmi_create(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi (lgrp = 0x%p)", ctrl_lgrp);
++
++	if (!ctrl_lgrp->parent_kobj) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi create missing parent");
++		return -EBADRQC;
++	}
++
++	rtn = kobject_init_and_add(&ctrl_lgrp->pmi_kobj, &pmi_info, ctrl_lgrp->parent_kobj, "pmi");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi create kobject_init_and_add failed [%d]", rtn);
++		goto out_pmi;
++	}
++
++	rtn = sl_sysfs_pmi_rd_create(ctrl_lgrp, &ctrl_lgrp->pmi_kobj);
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd create failed [%d]", rtn);
++		goto out_pmi;
++	}
++
++	rtn = sl_sysfs_pmi_wr_create(ctrl_lgrp, &ctrl_lgrp->pmi_kobj);
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr create failed [%d]", rtn);
++		goto out_rd;
++	}
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi create (pmi_kobj = 0x%p)", &ctrl_lgrp->pmi_kobj);
++	return 0;
++
++out_rd:
++	sl_sysfs_pmi_rd_delete(ctrl_lgrp);
++out_pmi:
++	kobject_put(&ctrl_lgrp->pmi_kobj);
++
++	return -ENOMEM;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_pmi_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	if (!ctrl_lgrp->parent_kobj)
++		return;
++
++	sl_sysfs_pmi_wr_delete(ctrl_lgrp);
++	sl_sysfs_pmi_rd_delete(ctrl_lgrp);
++
++	kobject_put(&ctrl_lgrp->pmi_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi_rd.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi_rd.c
+new file mode 100644
+index 000000000000..8e997c4ce3f5
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi_rd.c
+@@ -0,0 +1,197 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/sysfs.h>
++#include <linux/kobject.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_ldev.h"
++#include "sl_core_lgrp.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t addr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u16                  addr;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_pmi_rd_addr_get(core_lgrp, &addr);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd addr show (addr = 0x%04X)", addr);
++
++	return sysfs_emit(buf, "0x%04X\n", addr);
++}
++
++static ssize_t data_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u16                  data;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_pmi_rd_data_get(core_lgrp, &data);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd data show (data = 0x%04X)", data);
++
++	return sysfs_emit(buf, "0x%04X\n", data);
++}
++
++static ssize_t dev_id_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   dev_id;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_pmi_rd_dev_id_get(core_lgrp, &dev_id);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd dev id show (dev_id = 0x%02X)", dev_id);
++
++	return sysfs_emit(buf, "0x%02X\n", dev_id);
++}
++
++static ssize_t lane_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   lane;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_pmi_rd_lane_get(core_lgrp, &lane);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd lane show (lane = 0x%02X)", lane);
++
++	return sysfs_emit(buf, "0x%02X\n", lane);
++}
++
++static ssize_t pll_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   pll;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_pmi_rd_pll_get(core_lgrp, &pll);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd pll show (pll = 0x%02X)", pll);
++
++	return sysfs_emit(buf, "0x%02X\n", pll);
++}
++
++static ssize_t result_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	int                  result;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_pmi_rd_result_get(core_lgrp, &result);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd result show (result = %d)", result);
++
++	return sysfs_emit(buf, "%d\n", result);
++}
++
++static struct kobj_attribute addr   = __ATTR_RO(addr);
++static struct kobj_attribute data   = __ATTR_RO(data);
++static struct kobj_attribute dev_id = __ATTR_RO(dev_id);
++static struct kobj_attribute lane   = __ATTR_RO(lane);
++static struct kobj_attribute pll    = __ATTR_RO(pll);
++static struct kobj_attribute result = __ATTR_RO(result);
++
++static struct attribute *pmi_rd_attrs[] = {
++	&addr.attr,
++	&data.attr,
++	&dev_id.attr,
++	&lane.attr,
++	&pll.attr,
++	&result.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(pmi_rd);
++
++static struct kobj_type pmi_rd_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = pmi_rd_groups,
++};
++#endif
++
++int sl_sysfs_pmi_rd_create(struct sl_ctrl_lgrp *ctrl_lgrp, struct kobject *parent_kobj)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	rtn = kobject_init_and_add(&ctrl_lgrp->pmi_rd_kobj, &pmi_rd_info, parent_kobj, "rd");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd create kobject_init_and_add failed [%d]", rtn);
++		goto out_pmi_rd;
++	}
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd create (pmi_rd_kobj = 0x%p)", &ctrl_lgrp->pmi_rd_kobj);
++	return 0;
++
++out_pmi_rd:
++	kobject_put(&ctrl_lgrp->pmi_rd_kobj);
++
++	return -ENOMEM;
++#else
++	return 0;
++#endif
++}
++
++void sl_sysfs_pmi_rd_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi rd delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	kobject_put(&ctrl_lgrp->pmi_rd_kobj);
++#endif
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi_wr.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi_wr.c
+new file mode 100644
+index 000000000000..ccc672378bf5
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_pmi_wr.c
+@@ -0,0 +1,220 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/sysfs.h>
++#include <linux/kobject.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_ldev.h"
++#include "sl_core_lgrp.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t addr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u16                  addr;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_pmi_wr_addr_get(core_lgrp, &addr);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr addr show (addr = 0x%04X)", addr);
++
++	return sysfs_emit(buf, "0x%04X\n", addr);
++}
++
++static ssize_t data_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u16                  data;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_pmi_wr_data_get(core_lgrp, &data);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr data show (data = 0x%04X)", data);
++
++	return sysfs_emit(buf, "0x%04X\n", data);
++}
++
++static ssize_t mask_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u16                  mask;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_pmi_wr_mask_get(core_lgrp, &mask);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr mask show (mask = 0x%04X)", mask);
++
++	return sysfs_emit(buf, "0x%04X\n", mask);
++}
++
++static ssize_t dev_id_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   dev_id;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_pmi_wr_dev_id_get(core_lgrp, &dev_id);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr dev id show (dev_id = 0x%02X)", dev_id);
++
++	return sysfs_emit(buf, "0x%02X\n", dev_id);
++}
++
++static ssize_t lane_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   lane;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_pmi_wr_lane_get(core_lgrp, &lane);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr lane show (lane = 0x%02X)", lane);
++
++	return sysfs_emit(buf, "0x%02X\n", lane);
++}
++
++static ssize_t pll_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   pll;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_pmi_wr_pll_get(core_lgrp, &pll);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr pll show (pll = 0x%02X)", pll);
++
++	return sysfs_emit(buf, "0x%02X\n", pll);
++}
++
++static ssize_t result_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	int                  result;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, pmi_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_pmi_wr_result_get(core_lgrp, &result);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr result show (result = %d)", result);
++
++	return sysfs_emit(buf, "%d\n", result);
++}
++
++static struct kobj_attribute addr   = __ATTR_RO(addr);
++static struct kobj_attribute data   = __ATTR_RO(data);
++static struct kobj_attribute mask   = __ATTR_RO(mask);
++static struct kobj_attribute dev_id = __ATTR_RO(dev_id);
++static struct kobj_attribute lane   = __ATTR_RO(lane);
++static struct kobj_attribute pll    = __ATTR_RO(pll);
++static struct kobj_attribute result = __ATTR_RO(result);
++
++static struct attribute *pmi_wr_attrs[] = {
++	&addr.attr,
++	&data.attr,
++	&mask.attr,
++	&dev_id.attr,
++	&lane.attr,
++	&pll.attr,
++	&result.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(pmi_wr);
++
++static struct kobj_type pmi_wr_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = pmi_wr_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_pmi_wr_create(struct sl_ctrl_lgrp *ctrl_lgrp, struct kobject *parent_kobj)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	rtn = kobject_init_and_add(&ctrl_lgrp->pmi_wr_kobj, &pmi_wr_info, parent_kobj, "wr");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr create kobject_init_and_add failed [%d]", rtn);
++		goto out_pmi_wr;
++	}
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr create (pmi_wr_kobj = 0x%p)", &ctrl_lgrp->pmi_wr_kobj);
++	return 0;
++
++out_pmi_wr:
++	kobject_put(&ctrl_lgrp->pmi_wr_kobj);
++
++	return -ENOMEM;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_pmi_wr_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "pmi wr delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	kobject_put(&ctrl_lgrp->pmi_wr_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus.c
+new file mode 100644
+index 000000000000..a71c396e59f3
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus.c
+@@ -0,0 +1,89 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2026 Hewlett Packard Enterprise Development LP */
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_ctrl_lgrp.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static struct attribute *sbus_attrs[] = {
++	NULL,
++};
++ATTRIBUTE_GROUPS(sbus);
++
++static struct kobj_type sbus_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = sbus_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_sbus_create(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus (lgrp = 0x%p)", ctrl_lgrp);
++
++	if (!ctrl_lgrp->parent_kobj) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus create missing parent");
++		return -EBADRQC;
++	}
++
++	rtn = kobject_init_and_add(&ctrl_lgrp->sbus_kobj, &sbus_info, ctrl_lgrp->parent_kobj, "sbus");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus create kobject_init_and_add failed [%d]", rtn);
++		goto out_sbus;
++	}
++
++	rtn = sl_sysfs_sbus_rd_create(ctrl_lgrp, &ctrl_lgrp->sbus_kobj);
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd create failed [%d]", rtn);
++		goto out_sbus;
++	}
++
++	rtn = sl_sysfs_sbus_wr_create(ctrl_lgrp, &ctrl_lgrp->sbus_kobj);
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr create failed [%d]", rtn);
++		goto out_rd;
++	}
++
++	rtn = sl_sysfs_sbus_rst_create(ctrl_lgrp, &ctrl_lgrp->sbus_kobj);
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus rst create failed [%d]", rtn);
++		goto out_wr;
++	}
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus create (sbus_kobj = 0x%p)", &ctrl_lgrp->sbus_kobj);
++	return 0;
++
++out_wr:
++	sl_sysfs_sbus_wr_delete(ctrl_lgrp);
++out_rd:
++	sl_sysfs_sbus_rd_delete(ctrl_lgrp);
++out_sbus:
++	kobject_put(&ctrl_lgrp->sbus_kobj);
++
++	return -ENOMEM;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_sbus_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	if (!ctrl_lgrp->parent_kobj)
++		return;
++
++	sl_sysfs_sbus_rst_delete(ctrl_lgrp);
++	sl_sysfs_sbus_wr_delete(ctrl_lgrp);
++	sl_sysfs_sbus_rd_delete(ctrl_lgrp);
++
++	kobject_put(&ctrl_lgrp->sbus_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi.c
+new file mode 100644
+index 000000000000..5048b0f69f76
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi.c
+@@ -0,0 +1,80 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2026 Hewlett Packard Enterprise Development LP */
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_ctrl_lgrp.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static struct attribute *sbus_pmi_attrs[] = {
++	NULL,
++};
++ATTRIBUTE_GROUPS(sbus_pmi);
++
++static struct kobj_type sbus_pmi_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = sbus_pmi_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_sbus_pmi_create(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi create (lgrp = 0x%p)", ctrl_lgrp);
++
++	if (!ctrl_lgrp->parent_kobj) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi create missing parent");
++		return -EBADRQC;
++	}
++
++	rtn = kobject_init_and_add(&ctrl_lgrp->sbus_pmi_kobj, &sbus_pmi_info, ctrl_lgrp->parent_kobj, "sbus_pmi");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi create kobject_init_and_add failed [%d]", rtn);
++		goto out_sbus_pmi;
++	}
++
++	rtn = sl_sysfs_sbus_pmi_rd_create(ctrl_lgrp, &ctrl_lgrp->sbus_pmi_kobj);
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd create failed [%d]", rtn);
++		goto out_sbus_pmi;
++	}
++
++	rtn = sl_sysfs_sbus_pmi_wr_create(ctrl_lgrp, &ctrl_lgrp->sbus_pmi_kobj);
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr create failed [%d]", rtn);
++		goto out_rd;
++	}
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi create (sbus_pmi_kobj = 0x%p)", &ctrl_lgrp->sbus_pmi_kobj);
++	return 0;
++
++out_rd:
++	sl_sysfs_sbus_pmi_rd_delete(ctrl_lgrp);
++out_sbus_pmi:
++	kobject_put(&ctrl_lgrp->sbus_pmi_kobj);
++
++	return -ENOMEM;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_sbus_pmi_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	if (!ctrl_lgrp->parent_kobj)
++		return;
++
++	sl_sysfs_sbus_pmi_wr_delete(ctrl_lgrp);
++	sl_sysfs_sbus_pmi_rd_delete(ctrl_lgrp);
++
++	kobject_put(&ctrl_lgrp->sbus_pmi_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi_rd.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi_rd.c
+new file mode 100644
+index 000000000000..c8042fe67eb6
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi_rd.c
+@@ -0,0 +1,244 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/sysfs.h>
++#include <linux/kobject.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_ldev.h"
++#include "sl_core_lgrp.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t dev_addr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   dev_addr;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_pmi_rd_dev_addr_get(core_lgrp, &dev_addr);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd dev_addr show (dev_addr = 0x%02X)", dev_addr);
++
++	return sysfs_emit(buf, "0x%02X\n", dev_addr);
++}
++
++static ssize_t addr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u16                  addr;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_pmi_rd_addr_get(core_lgrp, &addr);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd addr show (addr = 0x%04X)", addr);
++
++	return sysfs_emit(buf, "0x%04X\n", addr);
++}
++
++static ssize_t data_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u16                  data;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_pmi_rd_data_get(core_lgrp, &data);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd data show (data = 0x%04X)", data);
++
++	return sysfs_emit(buf, "0x%04X\n", data);
++}
++
++static ssize_t mask_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u16                  mask;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_pmi_rd_mask_get(core_lgrp, &mask);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd mask show (mask = 0x%04X)", mask);
++
++	return sysfs_emit(buf, "0x%04X\n", mask);
++}
++
++static ssize_t dev_id_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   dev_id;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_pmi_rd_dev_id_get(core_lgrp, &dev_id);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd dev id show (dev_id = 0x%02X)", dev_id);
++
++	return sysfs_emit(buf, "0x%02X\n", dev_id);
++}
++
++static ssize_t lane_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   lane;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_pmi_rd_lane_get(core_lgrp, &lane);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd lane show (lane = 0x%02X)", lane);
++
++	return sysfs_emit(buf, "0x%02X\n", lane);
++}
++
++static ssize_t pll_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   pll;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_pmi_rd_pll_get(core_lgrp, &pll);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd pll show (pll = 0x%02X)", pll);
++
++	return sysfs_emit(buf, "0x%02X\n", pll);
++}
++
++static ssize_t result_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	int                  result;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_pmi_rd_result_get(core_lgrp, &result);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd result show (result = %d)", result);
++
++	return sysfs_emit(buf, "%d\n", result);
++}
++
++static struct kobj_attribute dev_addr = __ATTR_RO(dev_addr);
++static struct kobj_attribute addr     = __ATTR_RO(addr);
++static struct kobj_attribute data     = __ATTR_RO(data);
++static struct kobj_attribute mask     = __ATTR_RO(mask);
++static struct kobj_attribute dev_id   = __ATTR_RO(dev_id);
++static struct kobj_attribute lane     = __ATTR_RO(lane);
++static struct kobj_attribute pll      = __ATTR_RO(pll);
++static struct kobj_attribute result   = __ATTR_RO(result);
++
++static struct attribute *sbus_pmi_rd_attrs[] = {
++	&dev_addr.attr,
++	&addr.attr,
++	&data.attr,
++	&mask.attr,
++	&dev_id.attr,
++	&lane.attr,
++	&pll.attr,
++	&result.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(sbus_pmi_rd);
++
++static struct kobj_type sbus_pmi_rd_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = sbus_pmi_rd_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_sbus_pmi_rd_create(struct sl_ctrl_lgrp *ctrl_lgrp, struct kobject *parent_kobj)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	rtn = kobject_init_and_add(&ctrl_lgrp->sbus_pmi_rd_kobj, &sbus_pmi_rd_info, parent_kobj, "rd");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd create kobject_init_and_add failed [%d]", rtn);
++		goto out_sbus_pmi_rd;
++	}
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd create (sbus_pmi_rd_kobj = 0x%p)",
++		   &ctrl_lgrp->sbus_pmi_rd_kobj);
++	return 0;
++
++out_sbus_pmi_rd:
++	kobject_put(&ctrl_lgrp->sbus_pmi_rd_kobj);
++
++	return -ENOMEM;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_sbus_pmi_rd_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi rd delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	kobject_put(&ctrl_lgrp->sbus_pmi_rd_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi_wr.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi_wr.c
+new file mode 100644
+index 000000000000..a9de4a9e42ea
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_pmi_wr.c
+@@ -0,0 +1,244 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/sysfs.h>
++#include <linux/kobject.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_ldev.h"
++#include "sl_core_lgrp.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t dev_addr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   dev_addr;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_pmi_wr_dev_addr_get(core_lgrp, &dev_addr);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr dev_addr show (dev_addr = 0x%02X)", dev_addr);
++
++	return sysfs_emit(buf, "0x%02X\n", dev_addr);
++}
++
++static ssize_t addr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u16                  addr;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_pmi_wr_addr_get(core_lgrp, &addr);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr addr show (addr = 0x%04X)", addr);
++
++	return sysfs_emit(buf, "0x%04X\n", addr);
++}
++
++static ssize_t data_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u16                  data;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_pmi_wr_data_get(core_lgrp, &data);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr data show (data = 0x%04X)", data);
++
++	return sysfs_emit(buf, "0x%04X\n", data);
++}
++
++static ssize_t mask_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u16                  mask;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_pmi_wr_mask_get(core_lgrp, &mask);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr mask show (mask = 0x%04X)", mask);
++
++	return sysfs_emit(buf, "0x%04X\n", mask);
++}
++
++static ssize_t dev_id_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   dev_id;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_pmi_wr_dev_id_get(core_lgrp, &dev_id);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr dev id show (dev_id = 0x%02X)", dev_id);
++
++	return sysfs_emit(buf, "0x%02X\n", dev_id);
++}
++
++static ssize_t lane_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   lane;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_pmi_wr_lane_get(core_lgrp, &lane);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr lane show (lane = 0x%02X)", lane);
++
++	return sysfs_emit(buf, "0x%02X\n", lane);
++}
++
++static ssize_t pll_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   pll;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_pmi_wr_pll_get(core_lgrp, &pll);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr pll show (pll = 0x%02X)", pll);
++
++	return sysfs_emit(buf, "0x%02X\n", pll);
++}
++
++static ssize_t result_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	int                  result;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_pmi_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_pmi_wr_result_get(core_lgrp, &result);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr result show (result = %d)", result);
++
++	return sysfs_emit(buf, "%d\n", result);
++}
++
++static struct kobj_attribute dev_addr = __ATTR_RO(dev_addr);
++static struct kobj_attribute addr     = __ATTR_RO(addr);
++static struct kobj_attribute data     = __ATTR_RO(data);
++static struct kobj_attribute mask     = __ATTR_RO(mask);
++static struct kobj_attribute dev_id   = __ATTR_RO(dev_id);
++static struct kobj_attribute lane     = __ATTR_RO(lane);
++static struct kobj_attribute pll      = __ATTR_RO(pll);
++static struct kobj_attribute result   = __ATTR_RO(result);
++
++static struct attribute *sbus_pmi_wr_attrs[] = {
++	&dev_addr.attr,
++	&addr.attr,
++	&data.attr,
++	&mask.attr,
++	&dev_id.attr,
++	&lane.attr,
++	&pll.attr,
++	&result.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(sbus_pmi_wr);
++
++static struct kobj_type sbus_pmi_wr_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = sbus_pmi_wr_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_sbus_pmi_wr_create(struct sl_ctrl_lgrp *ctrl_lgrp, struct kobject *parent_kobj)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	rtn = kobject_init_and_add(&ctrl_lgrp->sbus_pmi_wr_kobj, &sbus_pmi_wr_info, parent_kobj, "wr");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr create kobject_init_and_add failed [%d]", rtn);
++		goto out_sbus_pmi_wr;
++	}
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr create (sbus_pmi_wr_kobj = 0x%p)",
++		   &ctrl_lgrp->sbus_pmi_wr_kobj);
++	return 0;
++
++out_sbus_pmi_wr:
++	kobject_put(&ctrl_lgrp->sbus_pmi_wr_kobj);
++
++	return -ENOMEM;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_sbus_pmi_wr_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus_pmi wr delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	kobject_put(&ctrl_lgrp->sbus_pmi_wr_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_rd.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_rd.c
+new file mode 100644
+index 000000000000..8f4e74f9dd2d
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_rd.c
+@@ -0,0 +1,197 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/sysfs.h>
++#include <linux/kobject.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_ldev.h"
++#include "sl_core_lgrp.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t dev_addr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   dev_addr;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_rd_dev_addr_get(core_lgrp, &dev_addr);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd dev addr show (dev_addr = 0x%02X)", dev_addr);
++
++	return sysfs_emit(buf, "0x%02X\n", dev_addr);
++}
++
++static ssize_t data_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u32                  data;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_rd_data_get(core_lgrp, &data);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd data show (data = 0x%08X)", data);
++
++	return sysfs_emit(buf, "0x%08X\n", data);
++}
++
++static ssize_t mask_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u32                  mask;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_rd_mask_get(core_lgrp, &mask);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd mask show (mask = 0x%08X)", mask);
++
++	return sysfs_emit(buf, "0x%08X\n", mask);
++}
++
++static ssize_t reg_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   reg;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_rd_reg_get(core_lgrp, &reg);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd reg show (reg = 0x%02X)", reg);
++
++	return sysfs_emit(buf, "0x%02X\n", reg);
++}
++
++static ssize_t lsb_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   lsb;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_rd_lsb_get(core_lgrp, &lsb);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd lsb show (lsb = %u)", lsb);
++
++	return sysfs_emit(buf, "%u\n", lsb);
++}
++
++static ssize_t result_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	int                  result;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_rd_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_rd_result_get(core_lgrp, &result);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd result show (result = %d)", result);
++
++	return sysfs_emit(buf, "%d\n", result);
++}
++
++static struct kobj_attribute dev_addr = __ATTR_RO(dev_addr);
++static struct kobj_attribute data     = __ATTR_RO(data);
++static struct kobj_attribute mask     = __ATTR_RO(mask);
++static struct kobj_attribute reg      = __ATTR_RO(reg);
++static struct kobj_attribute lsb      = __ATTR_RO(lsb);
++static struct kobj_attribute result   = __ATTR_RO(result);
++
++static struct attribute *sbus_rd_attrs[] = {
++	&dev_addr.attr,
++	&data.attr,
++	&mask.attr,
++	&reg.attr,
++	&lsb.attr,
++	&result.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(sbus_rd);
++
++static struct kobj_type sbus_rd_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = sbus_rd_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_sbus_rd_create(struct sl_ctrl_lgrp *ctrl_lgrp, struct kobject *parent_kobj)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	rtn = kobject_init_and_add(&ctrl_lgrp->sbus_rd_kobj, &sbus_rd_info, parent_kobj, "rd");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd create kobject_init_and_add failed [%d]", rtn);
++		goto out_sbus_rd;
++	}
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd create (sbus_rd_kobj = 0x%p)", &ctrl_lgrp->sbus_rd_kobj);
++	return 0;
++
++out_sbus_rd:
++	kobject_put(&ctrl_lgrp->sbus_rd_kobj);
++
++	return -ENOMEM;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_sbus_rd_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus rd delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	kobject_put(&ctrl_lgrp->sbus_rd_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_rst.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_rst.c
+new file mode 100644
+index 000000000000..872a80636630
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_rst.c
+@@ -0,0 +1,105 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/sysfs.h>
++#include <linux/kobject.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_ldev.h"
++#include "sl_core_lgrp.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t dev_addr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   dev_addr;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_rst_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_rst_dev_addr_get(core_lgrp, &dev_addr);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus rst dev addr show (dev_addr = 0x%02X)", dev_addr);
++
++	return sysfs_emit(buf, "0x%02X\n", dev_addr);
++}
++
++static ssize_t result_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	int                  result;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_rst_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_rst_result_get(core_lgrp, &result);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus rst result show (result = %d)", result);
++
++	return sysfs_emit(buf, "%d\n", result);
++}
++
++static struct kobj_attribute dev_addr = __ATTR_RO(dev_addr);
++static struct kobj_attribute result   = __ATTR_RO(result);
++
++static struct attribute *sbus_rst_attrs[] = {
++	&dev_addr.attr,
++	&result.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(sbus_rst);
++
++static struct kobj_type sbus_rst_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = sbus_rst_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_sbus_rst_create(struct sl_ctrl_lgrp *ctrl_lgrp, struct kobject *parent_kobj)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	rtn = kobject_init_and_add(&ctrl_lgrp->sbus_rst_kobj, &sbus_rst_info, parent_kobj, "rst");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus rst create kobject_init_and_add failed [%d]", rtn);
++		goto out_sbus_rst;
++	}
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus rst create (sbus_rst_kobj = 0x%p)", &ctrl_lgrp->sbus_rst_kobj);
++	return 0;
++
++out_sbus_rst:
++	kobject_put(&ctrl_lgrp->sbus_rst_kobj);
++
++	return -ENOMEM;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_sbus_rst_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus rst delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	kobject_put(&ctrl_lgrp->sbus_rst_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_wr.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_wr.c
+new file mode 100644
+index 000000000000..036977d964d6
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_sbus_wr.c
+@@ -0,0 +1,197 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/sysfs.h>
++#include <linux/kobject.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_ldev.h"
++#include "sl_core_lgrp.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t dev_addr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   dev_addr;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_wr_dev_addr_get(core_lgrp, &dev_addr);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr dev addr show (dev_addr = 0x%02X)", dev_addr);
++
++	return sysfs_emit(buf, "0x%02X\n", dev_addr);
++}
++
++static ssize_t data_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u32                  data;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_wr_data_get(core_lgrp, &data);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr data show (data = 0x%08X)", data);
++
++	return sysfs_emit(buf, "0x%08X\n", data);
++}
++
++static ssize_t mask_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u32                  mask;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_wr_mask_get(core_lgrp, &mask);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr mask show (mask = 0x%08X)", mask);
++
++	return sysfs_emit(buf, "0x%08X\n", mask);
++}
++
++static ssize_t reg_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   reg;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_wr_reg_get(core_lgrp, &reg);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr reg show (reg = 0x%02X)", reg);
++
++	return sysfs_emit(buf, "0x%02X\n", reg);
++}
++
++static ssize_t lsb_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u8                   lsb;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_wr_lsb_get(core_lgrp, &lsb);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr lsb show (lsb = %u)", lsb);
++
++	return sysfs_emit(buf, "%u\n", lsb);
++}
++
++static ssize_t result_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	int                  result;
++	int                  rtn;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, sbus_wr_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_sbus_wr_result_get(core_lgrp, &result);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr result show (result = %d)", result);
++
++	return sysfs_emit(buf, "%d\n", result);
++}
++
++static struct kobj_attribute dev_addr = __ATTR_RO(dev_addr);
++static struct kobj_attribute data     = __ATTR_RO(data);
++static struct kobj_attribute mask     = __ATTR_RO(mask);
++static struct kobj_attribute reg      = __ATTR_RO(reg);
++static struct kobj_attribute lsb      = __ATTR_RO(lsb);
++static struct kobj_attribute result   = __ATTR_RO(result);
++
++static struct attribute *sbus_wr_attrs[] = {
++	&dev_addr.attr,
++	&data.attr,
++	&mask.attr,
++	&reg.attr,
++	&lsb.attr,
++	&result.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(sbus_wr);
++
++static struct kobj_type sbus_wr_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = sbus_wr_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_sbus_wr_create(struct sl_ctrl_lgrp *ctrl_lgrp, struct kobject *parent_kobj)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	rtn = kobject_init_and_add(&ctrl_lgrp->sbus_wr_kobj, &sbus_wr_info, parent_kobj, "wr");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr create kobject_init_and_add failed [%d]", rtn);
++		goto out_sbus_wr;
++	}
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr create (sbus_wr_kobj = 0x%p)", &ctrl_lgrp->sbus_wr_kobj);
++	return 0;
++
++out_sbus_wr:
++	kobject_put(&ctrl_lgrp->sbus_wr_kobj);
++
++	return -ENOMEM;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_sbus_wr_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "sbus wr delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	kobject_put(&ctrl_lgrp->sbus_wr_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes.c
+new file mode 100644
+index 000000000000..08d2858fea54
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes.c
+@@ -0,0 +1,302 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_ldev.h"
++#include "sl_core_lgrp.h"
++#include "sl_core_str.h"
++#include "sl_sysfs_serdes_settings.h"
++#include "sl_sysfs_serdes_eye.h"
++#include "sl_sysfs_serdes_state.h"
++#include "sl_sysfs_serdes_swizzle.h"
++#include "sl_sysfs_serdes_lol.h"
++#include "sl_sysfs_serdes_los.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++u8 lane_num_to_link_num(struct sl_ctrl_lgrp *ctrl_lgrp, u8 lane_num)
++{
++	switch (ctrl_lgrp->config.furcation) {
++	case SL_MEDIA_FURCATION_X1:
++	default:
++		return 0;
++	case SL_MEDIA_FURCATION_X2:
++		if (lane_num & BIT(1))
++			return 1;
++		else
++			return 0;
++	case SL_MEDIA_FURCATION_X4:
++		return lane_num;
++	}
++}
++
++#ifdef CONFIG_SYSFS
++static ssize_t hw_rev_1_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, serdes_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
++		   "hw ver show (hw_rev_1 = 0x%X)",
++		core_lgrp->core_ldev->serdes.hw_info[LGRP_TO_SERDES(core_lgrp->num)].rev_id_1);
++
++	return sysfs_emit(buf, "0x%X\n",
++		core_lgrp->core_ldev->serdes.hw_info[LGRP_TO_SERDES(core_lgrp->num)].rev_id_1);
++}
++
++static ssize_t hw_rev_2_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, serdes_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
++		   "hw ver show (hw_rev_2 = 0x%X)",
++		core_lgrp->core_ldev->serdes.hw_info[LGRP_TO_SERDES(core_lgrp->num)].rev_id_2);
++
++	return sysfs_emit(buf, "0x%X\n",
++		core_lgrp->core_ldev->serdes.hw_info[LGRP_TO_SERDES(core_lgrp->num)].rev_id_2);
++}
++
++static ssize_t hw_version_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, serdes_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
++		   "hw ver show (hw_version = 0x%X)",
++		core_lgrp->core_ldev->serdes.hw_info[LGRP_TO_SERDES(core_lgrp->num)].version);
++
++	return sysfs_emit(buf, "0x%X\n",
++		core_lgrp->core_ldev->serdes.hw_info[LGRP_TO_SERDES(core_lgrp->num)].version);
++}
++
++static ssize_t fw_signature_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, serdes_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
++		   "fw signature show (fw_signature = 0x%X)",
++		core_lgrp->core_ldev->serdes.fw_info[LGRP_TO_SERDES(core_lgrp->num)].signature);
++
++	return sysfs_emit(buf, "0x%X\n",
++		core_lgrp->core_ldev->serdes.fw_info[LGRP_TO_SERDES(core_lgrp->num)].signature);
++}
++
++static ssize_t fw_version_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_ctrl_lgrp  *ctrl_lgrp;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++
++	ctrl_lgrp = container_of(kobj, struct sl_ctrl_lgrp, serdes_kobj);
++	core_lgrp = sl_core_lgrp_get(ctrl_lgrp->ctrl_ldev->num, ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
++		   "fw version show (fw_version = 0x%X)",
++		core_lgrp->core_ldev->serdes.fw_info[LGRP_TO_SERDES(core_lgrp->num)].version);
++
++	return sysfs_emit(buf, "0x%X\n",
++		core_lgrp->core_ldev->serdes.fw_info[LGRP_TO_SERDES(core_lgrp->num)].version);
++}
++
++static struct kobj_attribute hw_rev_id_1   = __ATTR_RO(hw_rev_1);
++static struct kobj_attribute hw_rev_id_2   = __ATTR_RO(hw_rev_2);
++static struct kobj_attribute hw_version    = __ATTR_RO(hw_version);
++static struct kobj_attribute fw_signature  = __ATTR_RO(fw_signature);
++static struct kobj_attribute fw_version    = __ATTR_RO(fw_version);
++
++static struct attribute *serdes_attrs[] = {
++	&hw_rev_id_1.attr,
++	&hw_rev_id_2.attr,
++	&hw_version.attr,
++	&fw_signature.attr,
++	&fw_version.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(serdes);
++
++static struct kobj_type serdes_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = serdes_groups,
++};
++
++static struct attribute *serdes_lane_attrs[] = {
++	NULL,
++};
++ATTRIBUTE_GROUPS(serdes_lane);
++
++static struct kobj_type serdes_lane_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = serdes_lane_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_serdes_create(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++	int asic_lane_num;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "serdes create (lgrp = 0x%p)", ctrl_lgrp);
++
++	if (!ctrl_lgrp->parent_kobj) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "serdes create missing parent");
++		return -EBADRQC;
++	}
++
++	rtn = kobject_init_and_add(&(ctrl_lgrp->serdes_kobj),
++				   &serdes_info, ctrl_lgrp->parent_kobj, "serdes");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++			   "serdes create kobject_init_and_add failed [%d]", rtn);
++		goto out_serdes;
++	}
++
++	rtn = kobject_init_and_add(&(ctrl_lgrp->serdes_lane_kobj),
++				   &serdes_lane_info, &(ctrl_lgrp->serdes_kobj), "lane");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++			   "serdes create kobject_init_and_add failed [%d]", rtn);
++		goto out_lane;
++	}
++
++	for (asic_lane_num = 0; asic_lane_num < SL_ASIC_MAX_LANES; ++asic_lane_num) {
++
++		rtn = kobject_init_and_add(&(ctrl_lgrp->serdes_lane_kobjs[asic_lane_num]),
++					   &serdes_lane_info, &(ctrl_lgrp->serdes_lane_kobj), "%u", asic_lane_num);
++		if (rtn) {
++			sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++				   "serdes create lane kobject_init_and_add failed [%d]", rtn);
++			goto out_lanes;
++		}
++
++		rtn = sl_sysfs_serdes_lane_state_create(ctrl_lgrp, asic_lane_num);
++		if (rtn) {
++			sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++				   "serdes_lane_state_create failed [%d]", rtn);
++			goto out_lanes;
++		}
++
++		rtn = sl_sysfs_serdes_lane_swizzle_create(ctrl_lgrp, asic_lane_num);
++		if (rtn) {
++			sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++				   "serdes_lane_swizzle_create failed [%d]", rtn);
++			goto out_state;
++		}
++
++		rtn = sl_sysfs_serdes_lane_settings_create(ctrl_lgrp, asic_lane_num);
++		if (rtn) {
++			sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++				   "serdes_lane_settings_create failed [%d]", rtn);
++			goto out_swizzle;
++		}
++
++		rtn = sl_sysfs_serdes_lane_eye_create(ctrl_lgrp, asic_lane_num);
++		if (rtn) {
++			sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++				   "serdes_lane_eye_create failed [%d]", rtn);
++			goto out_settings;
++		}
++
++		rtn = sl_sysfs_serdes_lane_lol_create(ctrl_lgrp, asic_lane_num);
++		if (rtn) {
++			sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++				   "serdes_lane_lol_create failed [%d]", rtn);
++			goto out_eye;
++		}
++
++		rtn = sl_sysfs_serdes_lane_los_create(ctrl_lgrp, asic_lane_num);
++		if (rtn) {
++			sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++				   "serdes_lane_los_create failed [%d]", rtn);
++			goto out_lol;
++		}
++	}
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "serdes create (serdes_kobj = 0x%p)", &(ctrl_lgrp->serdes_kobj));
++	return 0;
++
++out_lol:
++	sl_sysfs_serdes_lane_lol_delete(ctrl_lgrp, asic_lane_num);
++out_eye:
++	sl_sysfs_serdes_lane_eye_delete(ctrl_lgrp, asic_lane_num);
++out_settings:
++	sl_sysfs_serdes_lane_settings_delete(ctrl_lgrp, asic_lane_num);
++out_swizzle:
++	sl_sysfs_serdes_lane_swizzle_delete(ctrl_lgrp, asic_lane_num);
++out_state:
++	sl_sysfs_serdes_lane_state_delete(ctrl_lgrp, asic_lane_num);
++out_lanes:
++	kobject_put(&(ctrl_lgrp->serdes_lane_kobjs[asic_lane_num]));
++	for (asic_lane_num = asic_lane_num - 1; asic_lane_num >= 0; --asic_lane_num) {
++		sl_sysfs_serdes_lane_los_delete(ctrl_lgrp, asic_lane_num);
++		sl_sysfs_serdes_lane_lol_delete(ctrl_lgrp, asic_lane_num);
++		sl_sysfs_serdes_lane_eye_delete(ctrl_lgrp, asic_lane_num);
++		sl_sysfs_serdes_lane_settings_delete(ctrl_lgrp, asic_lane_num);
++		sl_sysfs_serdes_lane_swizzle_delete(ctrl_lgrp, asic_lane_num);
++		sl_sysfs_serdes_lane_state_delete(ctrl_lgrp, asic_lane_num);
++		kobject_put(&(ctrl_lgrp->serdes_lane_kobjs[asic_lane_num]));
++	}
++out_lane:
++	kobject_put(&(ctrl_lgrp->serdes_lane_kobj));
++out_serdes:
++	kobject_put(&(ctrl_lgrp->serdes_kobj));
++
++	return -ENOMEM;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_serdes_delete(struct sl_ctrl_lgrp *ctrl_lgrp)
++{
++#ifdef CONFIG_SYSFS
++	u8 asic_lane_num;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME, "serdes delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	if (!ctrl_lgrp->parent_kobj)
++		return;
++
++	for (asic_lane_num = 0; asic_lane_num < SL_ASIC_MAX_LANES; ++asic_lane_num) {
++		sl_sysfs_serdes_lane_los_delete(ctrl_lgrp, asic_lane_num);
++		sl_sysfs_serdes_lane_lol_delete(ctrl_lgrp, asic_lane_num);
++		sl_sysfs_serdes_lane_eye_delete(ctrl_lgrp, asic_lane_num);
++		sl_sysfs_serdes_lane_settings_delete(ctrl_lgrp, asic_lane_num);
++		sl_sysfs_serdes_lane_swizzle_delete(ctrl_lgrp, asic_lane_num);
++		sl_sysfs_serdes_lane_state_delete(ctrl_lgrp, asic_lane_num);
++		kobject_put(&(ctrl_lgrp->serdes_lane_kobjs[asic_lane_num]));
++	}
++	kobject_put(&(ctrl_lgrp->serdes_lane_kobj));
++	kobject_put(&ctrl_lgrp->serdes_kobj);
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_eye.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_eye.c
+new file mode 100644
+index 000000000000..9dac679a96d9
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_eye.c
+@@ -0,0 +1,197 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_ldev.h"
++#include "sl_core_lgrp.h"
++#include "sl_core_link.h"
++#include "sl_sysfs_serdes_eye.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t value_upper_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                              rtn;
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	u8                               eye_upper;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_eye_upper_get(core_lgrp, lane_kobj->asic_lane_num, &eye_upper);
++	if (rtn == -EIO)
++		return sysfs_emit(buf, "no-serdes\n");
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
++		   "eye value upper show (asic_lane_num = %u, eye = %u)",
++		lane_kobj->asic_lane_num, eye_upper);
++
++	return sysfs_emit(buf, "%u\n", eye_upper);
++}
++
++static ssize_t value_lower_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                              rtn;
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	u8                               eye_lower;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_eye_lower_get(core_lgrp, lane_kobj->asic_lane_num, &eye_lower);
++	if (rtn == -EIO)
++		return sysfs_emit(buf, "no-serdes\n");
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
++		   "eye value lower show (asic_lane_num = %u, eye = %u)",
++		lane_kobj->asic_lane_num, eye_lower);
++
++	return sysfs_emit(buf, "%u\n", eye_lower);
++}
++
++static ssize_t limit_high_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
++		   "eye limit high show (asic_lane_num = %u, limit = %u)",
++		lane_kobj->asic_lane_num, core_lgrp->serdes.eye_limits[lane_kobj->asic_lane_num].high);
++
++	return sysfs_emit(buf, "%u\n",
++		core_lgrp->serdes.eye_limits[lane_kobj->asic_lane_num].high);
++}
++
++static ssize_t limit_low_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
++		   "eye limit low show (asic_lane_num = %u, limit = %u)",
++		lane_kobj->asic_lane_num, core_lgrp->serdes.eye_limits[lane_kobj->asic_lane_num].low);
++
++	return sysfs_emit(buf, "%u\n",
++		core_lgrp->serdes.eye_limits[lane_kobj->asic_lane_num].low);
++}
++
++static struct kobj_attribute eye_value_upper = __ATTR_RO(value_upper);
++static struct kobj_attribute eye_value_lower = __ATTR_RO(value_lower);
++static struct kobj_attribute eye_limit_high  = __ATTR_RO(limit_high);
++static struct kobj_attribute eye_limit_low   = __ATTR_RO(limit_low);
++
++static struct attribute *serdes_lane_eye_attrs[] = {
++	&eye_value_upper.attr,
++	&eye_value_lower.attr,
++	&eye_limit_high.attr,
++	&eye_limit_low.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(serdes_lane_eye);
++
++static struct kobj_type serdes_lane_eye_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = serdes_lane_eye_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_serdes_lane_eye_create(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "serdes lane eye create (lgrp = 0x%p)", ctrl_lgrp);
++
++	rtn = kobject_init_and_add(&(ctrl_lgrp->serdes_lane_eye_kobjs[asic_lane_num].kobj),
++				   &serdes_lane_eye_info, &(ctrl_lgrp->serdes_lane_kobjs[asic_lane_num]), "eye");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++			   "serdes lane eye create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&(ctrl_lgrp->serdes_lane_eye_kobjs[asic_lane_num].kobj));
++		return -ENOMEM;
++	}
++	ctrl_lgrp->serdes_lane_eye_kobjs[asic_lane_num].ctrl_lgrp      = ctrl_lgrp;
++	ctrl_lgrp->serdes_lane_eye_kobjs[asic_lane_num].asic_lane_num = asic_lane_num;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "serdes lane eye create (serdes_kobj = 0x%p)", &(ctrl_lgrp->serdes_kobj));
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_serdes_lane_eye_delete(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "serdes lane eye delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	kobject_put(&(ctrl_lgrp->serdes_lane_eye_kobjs[asic_lane_num].kobj));
++	ctrl_lgrp->serdes_lane_eye_kobjs[asic_lane_num].ctrl_lgrp = NULL;
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_lol.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_lol.c
+new file mode 100644
+index 000000000000..d7162e985822
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_lol.c
+@@ -0,0 +1,141 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2025-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_log.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_ldev.h"
++#include "sl_core_lgrp.h"
++#include "sl_sysfs_serdes_lol.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t tx_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                              rtn;
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	bool                             is_tx_lol;
++	struct sl_ctrl_lgrp             *ctrl_lgrp;
++	u8                               ldev_num;
++	u8                               lgrp_num;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	ctrl_lgrp = lane_kobj->ctrl_lgrp;
++	ldev_num = lane_kobj->ctrl_lgrp->ctrl_ldev->num;
++	lgrp_num = lane_kobj->ctrl_lgrp->num;
++
++	rtn = sl_core_lgrp_tx_lane_is_lol(ldev_num, lgrp_num, lane_kobj->asic_lane_num, &is_tx_lol);
++	if (rtn == -ENOENT) {
++		sl_core_log_dbg(ctrl_lgrp, LOG_NAME,
++				"lol tx show (asic_lane_num = %u) - tx_lane_is_lol no cache [%d]",
++				lane_kobj->asic_lane_num, rtn);
++		return sysfs_emit(buf, "no-cache\n");
++	}
++
++	if (rtn) {
++		sl_core_log_err_trace(ctrl_lgrp, LOG_NAME,
++				      "lol tx show (asic_lane_num = %u) - tx_lane_is_lol failed [%d]",
++				      lane_kobj->asic_lane_num, rtn);
++		return sysfs_emit(buf, "error\n");
++	}
++
++	sl_core_log_dbg(ctrl_lgrp, LOG_NAME,
++			"lol tx show (asic_lane_num = %u, is_tx_lol = %s)",
++			lane_kobj->asic_lane_num, is_tx_lol ? "yes" : "no");
++
++	return sysfs_emit(buf, "%s\n", is_tx_lol ? "yes" : "no");
++}
++
++static ssize_t rx_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                              rtn;
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	bool                             is_rx_lol;
++	struct sl_ctrl_lgrp             *ctrl_lgrp;
++	u8                               ldev_num;
++	u8                               lgrp_num;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	ctrl_lgrp = lane_kobj->ctrl_lgrp;
++	ldev_num = lane_kobj->ctrl_lgrp->ctrl_ldev->num;
++	lgrp_num = lane_kobj->ctrl_lgrp->num;
++
++	rtn = sl_core_lgrp_rx_lane_is_lol(ldev_num, lgrp_num, lane_kobj->asic_lane_num, &is_rx_lol);
++	if (rtn == -ENOENT) {
++		sl_core_log_dbg(ctrl_lgrp, LOG_NAME,
++				"lol rx show (asic_lane_num = %u) - rx_lane_is_lol no cache [%d]",
++				lane_kobj->asic_lane_num, rtn);
++		return sysfs_emit(buf, "no-cache\n");
++	}
++
++	if (rtn) {
++		sl_core_log_err_trace(ctrl_lgrp, LOG_NAME,
++				      "lol rx show (asic_lane_num = %u) - rx_lane_is_lol failed [%d]",
++				      lane_kobj->asic_lane_num, rtn);
++		return sysfs_emit(buf, "error\n");
++	}
++
++	sl_core_log_dbg(ctrl_lgrp, LOG_NAME,
++			"lol rx show (asic_lane_num = %u, is_rx_lol = %s)",
++			lane_kobj->asic_lane_num, is_rx_lol ? "yes" : "no");
++
++	return sysfs_emit(buf, "%s\n", is_rx_lol ? "yes" : "no");
++}
++
++static struct kobj_attribute lol_tx = __ATTR_RO(tx);
++static struct kobj_attribute lol_rx = __ATTR_RO(rx);
++
++static struct attribute *serdes_lane_lol_attrs[] = {
++	&lol_tx.attr,
++	&lol_rx.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(serdes_lane_lol);
++
++static struct kobj_type serdes_lane_lol_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = serdes_lane_lol_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_serdes_lane_lol_create(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "serdes lane lol create (lgrp = 0x%p)", ctrl_lgrp);
++
++	rtn = kobject_init_and_add(&ctrl_lgrp->serdes_lane_lol_kobjs[asic_lane_num].kobj,
++				   &serdes_lane_lol_info, &ctrl_lgrp->serdes_lane_kobjs[asic_lane_num], "lol");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++			   "serdes lane lol create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&ctrl_lgrp->serdes_lane_lol_kobjs[asic_lane_num].kobj);
++		return -ENOMEM;
++	}
++	ctrl_lgrp->serdes_lane_lol_kobjs[asic_lane_num].ctrl_lgrp     = ctrl_lgrp;
++	ctrl_lgrp->serdes_lane_lol_kobjs[asic_lane_num].asic_lane_num = asic_lane_num;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "serdes lane lol create (serdes_kobj = 0x%p)", &ctrl_lgrp->serdes_kobj);
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_serdes_lane_lol_delete(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "serdes lane los delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	kobject_put(&ctrl_lgrp->serdes_lane_lol_kobjs[asic_lane_num].kobj);
++	ctrl_lgrp->serdes_lane_lol_kobjs[asic_lane_num].ctrl_lgrp = NULL;
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_los.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_los.c
+new file mode 100644
+index 000000000000..bdcb6b8ae4ae
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_los.c
+@@ -0,0 +1,142 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2025-2026 Hewlett Packard Enterprise Development LP */
++
++#include "asm-generic/int-ll64.h"
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_log.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_ldev.h"
++#include "sl_core_lgrp.h"
++#include "sl_sysfs_serdes_los.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t tx_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                              rtn;
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	bool                             is_tx_los;
++	struct sl_ctrl_lgrp             *ctrl_lgrp;
++	u8                               ldev_num;
++	u8                               lgrp_num;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	ctrl_lgrp = lane_kobj->ctrl_lgrp;
++	ldev_num = lane_kobj->ctrl_lgrp->ctrl_ldev->num;
++	lgrp_num = lane_kobj->ctrl_lgrp->num;
++
++	rtn = sl_core_lgrp_tx_lane_is_los(ldev_num, lgrp_num, lane_kobj->asic_lane_num, &is_tx_los);
++	if (rtn == -ENOENT) {
++		sl_core_log_dbg(ctrl_lgrp, LOG_NAME,
++				"los tx show (asic_lane_num = %u) - tx_lane_is_los no cache [%d]",
++				lane_kobj->asic_lane_num, rtn);
++		return sysfs_emit(buf, "no-cache\n");
++	}
++
++	if (rtn) {
++		sl_core_log_err_trace(ctrl_lgrp, LOG_NAME,
++				      "los tx show (asic_lane_num = %u) - tx_lane_is_los failed [%d]",
++				      lane_kobj->asic_lane_num, rtn);
++		return sysfs_emit(buf, "error\n");
++	}
++
++	sl_core_log_dbg(ctrl_lgrp, LOG_NAME,
++			"los tx show (asic_lane_num = %u, is_tx_los = %s)",
++			lane_kobj->asic_lane_num, is_tx_los ? "yes" : "no");
++
++	return sysfs_emit(buf, "%s\n", is_tx_los ? "yes" : "no");
++}
++
++static ssize_t rx_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	int                              rtn;
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	bool                             is_rx_los;
++	struct sl_ctrl_lgrp             *ctrl_lgrp;
++	u8                               ldev_num;
++	u8                               lgrp_num;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	ctrl_lgrp = lane_kobj->ctrl_lgrp;
++	ldev_num = lane_kobj->ctrl_lgrp->ctrl_ldev->num;
++	lgrp_num = lane_kobj->ctrl_lgrp->num;
++
++	rtn = sl_core_lgrp_rx_lane_is_los(ldev_num, lgrp_num, lane_kobj->asic_lane_num, &is_rx_los);
++	if (rtn == -ENOENT) {
++		sl_core_log_dbg(ctrl_lgrp, LOG_NAME,
++				"los rx show (asic_lane_num = %u) - rx_lane_is_los no cache [%d]",
++				lane_kobj->asic_lane_num, rtn);
++		return sysfs_emit(buf, "no-cache\n");
++	}
++
++	if (rtn) {
++		sl_core_log_err_trace(ctrl_lgrp, LOG_NAME,
++				      "los rx show (asic_lane_num = %u) - rx_lane_is_los failed [%d]",
++				      lane_kobj->asic_lane_num, rtn);
++		return sysfs_emit(buf, "error\n");
++	}
++
++	sl_core_log_dbg(ctrl_lgrp, LOG_NAME,
++			"los rx show (asic_lane_num = %u, is_rx_los = %s)",
++			lane_kobj->asic_lane_num, is_rx_los ? "yes" : "no");
++
++	return sysfs_emit(buf, "%s\n", is_rx_los ? "yes" : "no");
++}
++
++static struct kobj_attribute los_tx = __ATTR_RO(tx);
++static struct kobj_attribute los_rx = __ATTR_RO(rx);
++
++static struct attribute *serdes_lane_los_attrs[] = {
++	&los_tx.attr,
++	&los_rx.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(serdes_lane_los);
++
++static struct kobj_type serdes_lane_los_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = serdes_lane_los_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_serdes_lane_los_create(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "serdes lane los create (lgrp = 0x%p)", ctrl_lgrp);
++
++	rtn = kobject_init_and_add(&ctrl_lgrp->serdes_lane_los_kobjs[asic_lane_num].kobj,
++				   &serdes_lane_los_info, &ctrl_lgrp->serdes_lane_kobjs[asic_lane_num], "los");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++			   "serdes lane los create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&ctrl_lgrp->serdes_lane_los_kobjs[asic_lane_num].kobj);
++		return -ENOMEM;
++	}
++	ctrl_lgrp->serdes_lane_los_kobjs[asic_lane_num].ctrl_lgrp     = ctrl_lgrp;
++	ctrl_lgrp->serdes_lane_los_kobjs[asic_lane_num].asic_lane_num = asic_lane_num;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "serdes lane los create (serdes_kobj = 0x%p)", &ctrl_lgrp->serdes_kobj);
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_serdes_lane_los_delete(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "serdes lane los delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	kobject_put(&ctrl_lgrp->serdes_lane_los_kobjs[asic_lane_num].kobj);
++	ctrl_lgrp->serdes_lane_los_kobjs[asic_lane_num].ctrl_lgrp = NULL;
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_settings.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_settings.c
+new file mode 100644
+index 000000000000..b33174640663
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_settings.c
+@@ -0,0 +1,506 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include <linux/hpe/sl/sl_media.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_ldev.h"
++#include "sl_core_lgrp.h"
++#include "sl_core_link.h"
++#include "sl_core_str.h"
++#include "sl_sysfs_serdes_settings.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t pre1_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	s16                              pre1;
++	int				 rtn;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_pre1_get(core_lgrp, lane_kobj->asic_lane_num, &pre1);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "settings pre1 show (pre1 = %d)", pre1);
++
++	return sysfs_emit(buf, "%d\n", pre1);
++}
++
++static ssize_t pre2_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	s16                              pre2;
++	int				 rtn;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_pre2_get(core_lgrp, lane_kobj->asic_lane_num, &pre2);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "settings pre2 show (pre2 = %d)", pre2);
++
++	return sysfs_emit(buf, "%d\n", pre2);
++}
++
++static ssize_t pre3_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	s16                              pre3;
++	int				 rtn;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_pre3_get(core_lgrp, lane_kobj->asic_lane_num, &pre3);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "settings pre3 show (pre3 = %d)", pre3);
++
++	return sysfs_emit(buf, "%d\n", pre3);
++}
++
++static ssize_t cursor_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	s16                              cursor;
++	int				 rtn;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_cursor_get(core_lgrp, lane_kobj->asic_lane_num, &cursor);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "settings cursor show (cursor = %d)", cursor);
++
++	return sysfs_emit(buf, "%d\n", cursor);
++}
++
++static ssize_t post1_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	s16                              post1;
++	int				 rtn;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_post1_get(core_lgrp, lane_kobj->asic_lane_num, &post1);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "settings post1 show (post1 = %d)", post1);
++
++	return sysfs_emit(buf, "%d\n", post1);
++}
++
++static ssize_t post2_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	s16                              post2;
++	int				 rtn;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_post2_get(core_lgrp, lane_kobj->asic_lane_num, &post2);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "settings post2 show (post2 = %d)", post2);
++
++	return sysfs_emit(buf, "%d\n", post2);
++}
++
++static ssize_t media_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
++		   "settings media show (media = %d)", core_link->serdes.media_serdes_settings.media);
++	return sysfs_emit(buf, "%d\n", core_link->serdes.media_serdes_settings.media);
++}
++
++static struct kobj_attribute settings_pre1   = __ATTR_RO(pre1);
++static struct kobj_attribute settings_pre2   = __ATTR_RO(pre2);
++static struct kobj_attribute settings_pre3   = __ATTR_RO(pre3);
++static struct kobj_attribute settings_cursor = __ATTR_RO(cursor);
++static struct kobj_attribute settings_post1  = __ATTR_RO(post1);
++static struct kobj_attribute settings_post2  = __ATTR_RO(post2);
++static struct kobj_attribute settings_media  = __ATTR_RO(media);
++
++static ssize_t osr_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	u8                               osr;
++	int				 rtn;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_osr_get(core_lgrp, lane_kobj->asic_lane_num, &osr);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
++		   "settings osr show (osr = %u %s)", osr, sl_core_serdes_lane_osr_str(osr));
++
++	return sysfs_emit(buf, "%s\n", sl_core_serdes_lane_osr_str(osr));
++}
++
++static ssize_t encoding_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	u8                               encoding;
++	int				 rtn;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_encoding_get(core_lgrp, lane_kobj->asic_lane_num, &encoding);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
++		   "settings encoding show (encoding = %u %s)",
++		   encoding, sl_core_serdes_lane_encoding_str(encoding));
++
++	return sysfs_emit(buf, "%s\n", sl_core_serdes_lane_encoding_str(encoding));
++}
++
++static ssize_t clocking_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	u16                              clocking;
++	int				 rtn;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	rtn = sl_core_link_clocking_get(core_link, &clocking);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_link, LOG_BLOCK, LOG_NAME,
++		   "settings clocking show (clocking = %u %s)",
++		   clocking, sl_core_serdes_lane_clocking_str(clocking));
++
++	return sysfs_emit(buf, "%s\n", sl_core_serdes_lane_clocking_str(clocking));
++}
++
++static ssize_t width_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	u8                               width;
++	int				 rtn;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_width_get(core_lgrp, lane_kobj->asic_lane_num, &width);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
++		   "settings width show (width = %u %s)",
++		   width, sl_core_serdes_lane_width_str(width));
++
++	return sysfs_emit(buf, "%s\n", sl_core_serdes_lane_width_str(width));
++}
++
++static ssize_t dfe_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	u8                               dfe;
++	int				 rtn;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_dfe_get(core_lgrp, lane_kobj->asic_lane_num, &dfe);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
++		   "settings dfe show (dfe = %s)", (dfe) ? "enabled" : "disabled");
++
++	return sysfs_emit(buf, "%s\n", (dfe) ? "enabled" : "disabled");
++}
++
++static ssize_t scramble_dis_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	u8                               scramble_dis;
++	int				 rtn;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rtn = sl_core_lgrp_scramble_dis_get(core_lgrp, lane_kobj->asic_lane_num, &scramble_dis);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
++		   "settings scramble_dis show (scramble_dis = %s)", (scramble_dis) ? "set" : "not-set");
++
++	return sysfs_emit(buf, "%s\n", (scramble_dis) ? "set" : "not-set");
++}
++
++static struct kobj_attribute settings_osr          = __ATTR_RO(osr);
++static struct kobj_attribute settings_encoding     = __ATTR_RO(encoding);
++static struct kobj_attribute settings_clocking     = __ATTR_RO(clocking);
++static struct kobj_attribute settings_width        = __ATTR_RO(width);
++static struct kobj_attribute settings_dfe          = __ATTR_RO(dfe);
++static struct kobj_attribute settings_scramble_dis = __ATTR_RO(scramble_dis);
++
++static ssize_t link_training_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	if (is_flag_set(core_link->core_lgrp->link_caps[core_link->num].hpe_map, SL_LINK_CONFIG_HPE_LINKTRAIN))
++		return sysfs_emit(buf, "enabled\n");
++	else
++		return sysfs_emit(buf, "disabled\n");
++}
++
++static struct kobj_attribute settings_link_training = __ATTR_RO(link_training);
++
++static struct attribute *serdes_lane_settings_attrs[] = {
++	/* media */
++	&settings_pre1.attr,
++	&settings_pre2.attr,
++	&settings_pre3.attr,
++	&settings_cursor.attr,
++	&settings_post1.attr,
++	&settings_post2.attr,
++	&settings_media.attr,
++	/* core */
++	&settings_osr.attr,
++	&settings_encoding.attr,
++	&settings_clocking.attr,
++	&settings_width.attr,
++	&settings_dfe.attr,
++	&settings_scramble_dis.attr,
++	&settings_link_training.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(serdes_lane_settings);
++
++static struct kobj_type serdes_lane_settings_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = serdes_lane_settings_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_serdes_lane_settings_create(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "serdes lane settings create (lgrp = 0x%p)", ctrl_lgrp);
++
++	rtn = kobject_init_and_add(&(ctrl_lgrp->serdes_lane_settings_kobjs[asic_lane_num].kobj),
++				   &serdes_lane_settings_info, &(ctrl_lgrp->serdes_lane_kobjs[asic_lane_num]), "settings");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++			   "serdes lane settings create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&(ctrl_lgrp->serdes_lane_settings_kobjs[asic_lane_num].kobj));
++		return -ENOMEM;
++	}
++	ctrl_lgrp->serdes_lane_settings_kobjs[asic_lane_num].ctrl_lgrp      = ctrl_lgrp;
++	ctrl_lgrp->serdes_lane_settings_kobjs[asic_lane_num].asic_lane_num = asic_lane_num;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "serdes lane settings create (serdes_kobj = 0x%p)", &(ctrl_lgrp->serdes_kobj));
++
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_serdes_lane_settings_delete(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "serdes lane settings delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	kobject_put(&(ctrl_lgrp->serdes_lane_settings_kobjs[asic_lane_num].kobj));
++	ctrl_lgrp->serdes_lane_settings_kobjs[asic_lane_num].ctrl_lgrp = NULL;
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_state.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_state.c
+new file mode 100644
+index 000000000000..7fc14970a588
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_state.c
+@@ -0,0 +1,121 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/kobject.h>
++#include <linux/sysfs.h>
++
++#include "sl_log.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_ldev.h"
++#include "sl_core_lgrp.h"
++#include "sl_core_str.h"
++#include "sl_sysfs_serdes_state.h"
++#include "hw/sl_core_hw_serdes_lane.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t tx_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u32                              state;
++	int				 rtn;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++	rtn	  = sl_core_hw_serdes_tx_lane_state_get(core_lgrp, lane_kobj->asic_lane_num, &state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
++		   "state tx show (asic_lane_num = %u, state = %u %s)",
++		lane_kobj->asic_lane_num, state, sl_core_serdes_lane_state_str(state));
++
++	return sysfs_emit(buf, "%s\n", sl_core_serdes_lane_state_str(state));
++}
++
++static ssize_t rx_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	u32                              state;
++	int				 rtn;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++	rtn	  = sl_core_hw_serdes_rx_lane_state_get(core_lgrp, lane_kobj->asic_lane_num, &state);
++	if (rtn)
++		return sysfs_emit(buf, "error\n");
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME,
++		   "state rx show (asic_lane_num = %u, state = %u %s)",
++		lane_kobj->asic_lane_num, state, sl_core_serdes_lane_state_str(state));
++
++	return sysfs_emit(buf, "%s\n", sl_core_serdes_lane_state_str(state));
++}
++
++static struct kobj_attribute state_tx = __ATTR_RO(tx);
++static struct kobj_attribute state_rx = __ATTR_RO(rx);
++
++static struct attribute *serdes_lane_state_attrs[] = {
++	&state_tx.attr,
++	&state_rx.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(serdes_lane_state);
++
++static struct kobj_type serdes_lane_state_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = serdes_lane_state_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_serdes_lane_state_create(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "serdes lane state create (lgrp = 0x%p)", ctrl_lgrp);
++
++	rtn = kobject_init_and_add(&(ctrl_lgrp->serdes_lane_state_kobjs[asic_lane_num].kobj),
++				   &serdes_lane_state_info, &(ctrl_lgrp->serdes_lane_kobjs[asic_lane_num]), "state");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++			   "serdes lane state create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&(ctrl_lgrp->serdes_lane_state_kobjs[asic_lane_num].kobj));
++		return -ENOMEM;
++	}
++	ctrl_lgrp->serdes_lane_state_kobjs[asic_lane_num].ctrl_lgrp      = ctrl_lgrp;
++	ctrl_lgrp->serdes_lane_state_kobjs[asic_lane_num].asic_lane_num = asic_lane_num;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "serdes lane state create (serdes_kobj = 0x%p)", &(ctrl_lgrp->serdes_kobj));
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_serdes_lane_state_delete(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "serdes lane state delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	kobject_put(&(ctrl_lgrp->serdes_lane_state_kobjs[asic_lane_num].kobj));
++	ctrl_lgrp->serdes_lane_state_kobjs[asic_lane_num].ctrl_lgrp = NULL;
++#endif /* CONFIG_SYSFS */
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_swizzle.c b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_swizzle.c
+new file mode 100644
+index 000000000000..5f2d17fc15e9
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sysfs/sl_sysfs_serdes_swizzle.c
+@@ -0,0 +1,126 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2025-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/types.h>
++#include <linux/sysfs.h>
++#include <linux/kobject.h>
++
++#include "sl_log.h"
++#include "sl_sysfs.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_ctrl_ldev.h"
++#include "sl_core_lgrp.h"
++#include "sl_core_str.h"
++#include "sl_sysfs_serdes_swizzle.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_SYSFS_LOG_NAME
++
++#ifdef CONFIG_SYSFS
++static ssize_t tx_source_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	u8                               tx_source;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	tx_source = core_lgrp->serdes.dt.lane_info[lane_kobj->asic_lane_num].tx_source;
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "tx_source show (tx_source = %u)", tx_source);
++
++	return sysfs_emit(buf, "%u\n", tx_source);
++}
++
++static ssize_t rx_source_show(struct kobject *kobj, struct kobj_attribute *kattr, char *buf)
++{
++	struct sl_lgrp_serdes_lane_kobj *lane_kobj;
++	struct sl_core_lgrp *core_lgrp __free(sl_core_lgrp_put) = NULL;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	u8                               rx_source;
++
++	lane_kobj = container_of(kobj, struct sl_lgrp_serdes_lane_kobj, kobj);
++	if (!lane_kobj->ctrl_lgrp)
++		return sysfs_emit(buf, "no-lane\n");
++
++	core_link = sl_core_link_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num,
++				     lane_num_to_link_num(lane_kobj->ctrl_lgrp, lane_kobj->asic_lane_num));
++	if (!core_link)
++		return sysfs_emit(buf, "no-link\n");
++
++	core_lgrp = sl_core_lgrp_get(lane_kobj->ctrl_lgrp->ctrl_ldev->num, lane_kobj->ctrl_lgrp->num);
++	if (!core_lgrp)
++		return -ENODEV;
++
++	rx_source = core_lgrp->serdes.dt.lane_info[lane_kobj->asic_lane_num].rx_source;
++
++	sl_log_dbg(core_lgrp, LOG_BLOCK, LOG_NAME, "rx_source show (rx_source = %u)", rx_source);
++
++	return sysfs_emit(buf, "%u\n", rx_source);
++}
++
++static struct kobj_attribute tx_source = __ATTR_RO(tx_source);
++static struct kobj_attribute rx_source = __ATTR_RO(rx_source);
++
++static struct attribute *serdes_lane_swizzle_attrs[] = {
++	&tx_source.attr,
++	&rx_source.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(serdes_lane_swizzle);
++
++static struct kobj_type serdes_lane_swizzle_info = {
++	.sysfs_ops      = &kobj_sysfs_ops,
++	.default_groups = serdes_lane_swizzle_groups,
++};
++#endif /* CONFIG_SYSFS */
++
++int sl_sysfs_serdes_lane_swizzle_create(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
++{
++#ifdef CONFIG_SYSFS
++	int rtn;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "serdes lane swizzle create (lgrp = 0x%p)", ctrl_lgrp);
++
++	rtn = kobject_init_and_add(&(ctrl_lgrp->serdes_lane_swizzle_kobjs[asic_lane_num].kobj),
++				   &serdes_lane_swizzle_info, &(ctrl_lgrp->serdes_lane_kobjs[asic_lane_num]), "swizzle");
++	if (rtn) {
++		sl_log_err(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++			   "serdes lane swizzle create kobject_init_and_add failed [%d]", rtn);
++		kobject_put(&(ctrl_lgrp->serdes_lane_swizzle_kobjs[asic_lane_num].kobj));
++		return -ENOMEM;
++	}
++	ctrl_lgrp->serdes_lane_swizzle_kobjs[asic_lane_num].ctrl_lgrp      = ctrl_lgrp;
++	ctrl_lgrp->serdes_lane_swizzle_kobjs[asic_lane_num].asic_lane_num = asic_lane_num;
++
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "serdes lane swizzle create (serdes_kobj = 0x%p)", &(ctrl_lgrp->serdes_kobj));
++	return 0;
++#else /* CONFIG_SYSFS */
++	return 0;
++#endif /* CONFIG_SYSFS */
++}
++
++void sl_sysfs_serdes_lane_swizzle_delete(struct sl_ctrl_lgrp *ctrl_lgrp, u8 asic_lane_num)
++{
++#ifdef CONFIG_SYSFS
++	sl_log_dbg(ctrl_lgrp, LOG_BLOCK, LOG_NAME,
++		   "serdes lane swizzle delete (lgrp = 0x%p)", ctrl_lgrp);
++
++	kobject_put(&(ctrl_lgrp->serdes_lane_swizzle_kobjs[asic_lane_num].kobj));
++	ctrl_lgrp->serdes_lane_swizzle_kobjs[asic_lane_num].ctrl_lgrp = NULL;
++#endif /* CONFIG_SYSFS */
 +}
 
 -- 
