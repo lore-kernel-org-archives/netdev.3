@@ -1,79 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=139.219.17.129
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793348188;
-	b=jsbFRD2L9zxTnefg5hKFJXT52k3MxRAXMO26omS8FoCmH/gmrVVzvdPigPFXrgeolJYh
-	 YOpSkeQvdcfddaYuSeu/MUaUuu6I3bM3ZeD1xaio4MQuerP6ncDpZXzP6L9KPdtKr/Kwy
-	 lgZhIbY9V1B25b4gi1+9PGRQKf986z9bCxVoFQxSux2h0bIfRps4a8KI1W4e/L331WztQ
-	 sVsIKXa1xX4uvCcFu+ReXvQGGmOCzhTBbe+IkQV8Y6bDURME0VOCMODiSy9zRjrm0quHL
-	 peviFzFEdpyXAcQnz5ittT4F5co1WiB2T2GOBxzaqJ/TosWjvwymRgwrFWbtUd8W79Q==
+	t=1793348247;
+	b=WRsGULU47neF0bH9iAySig/L7CKh6btCTSuZVVyTs2eVGyvaJKM1QRS/R/9CxIuTdWh5
+	 4Dn9GSlBZ5H2HIYIGmo2IQ/opHmfa0rvXc1NhWX/fv2h57FEM/c9OFh2XeUY/lL8SnBm1
+	 Kn+mSVmJpVs1q6EgU3JDHt3f2Pujv0EHMMLcu3RF5onujYK/chu3WlGN2otV9D6EwuF8k
+	 39sdp0AZ61+qDXtVzBFs7Twup1hSXtKFkasrXJQ7+B2decj8iowec0alCAoYdghAa5BPZ
+	 afCjH8S7xB7Qr+h4pPWuXSM6DLi+3JKfJdZ7DwH+/p8tcICFvvOVJxspZRSi6t+1oTA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793348188;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=nxb4ICs48/EH3I4EV/LG2u9tIdfwalBWWFtzW7PUfTc=;
-	b=Swnjc2QiyaCkuDFEknWkd/Vpz14d6L5B0AuRBpKknVamFmHSMQ0oqIkCVaTpQSZcEYcg
-	 HlRhK2fhYULTHcHYRhYnaMa5ATXVOoar/vExPwRQtCxE1Albnve/yibKzgo6kwXEu0BWR
-	 Lz2psDuqoyqe9J4JPIuiY0p5ubX1y9yCdk8x9wgAWFdGHG6HVy5sn5l7WXpDAPa3fGWlL
-	 rpXLH1D42gg0gOIk/JWqRkMeuExTZ3Y593XzcDc/r9mhh9qmuPMzO2wK0P2UKPt2PNqBb
-	 3qmXkC1b+JjAWnA/xb69ep2vfj2SupFpWkx3J+1c/TctjXW4ooVIcGV8l3NNvSukChg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793348247;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=Or1fmHbK264ZYZ6ugepa2A88iZBHWfZvo8gWLmIwKzk=;
+	b=GPgrQXbPswFJYUPoMWk/wyCjQX4c1pFP1ALjJYScL0yXA3BHlgQx26qgXnBI1Q18V95S
+	 tg4hBCcw705qkRBB5u3ievr0AtH09tT4zF9VqFAsPEbvTlSTG6Jh8C2mFV52gpXAro9Aa
+	 TYUEVJrIx0ykE/8Nx2YqvaKtrcYK4HOwEuk1o3w/aMMgByQHQX66ZWqZOLQldrVSOlv6c
+	 Vgr/9T02bNFpvdeMDgX+kkt0MMzh1JR7yUFic6SVtLd34Nyvx72CjqoQ3PwrBbW3PBo6z
+	 b2jDUilmPw7VLqE2vbgox4uq6v9fGXOMl4whxjPrY3+1JDJCBvWsP4HfN2lKHKhfuzw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GxCTz2HF;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=deeproute.ai;
+	spf=pass smtp.mailfrom=deeproute.ai;
+	dkim=pass header.d=deeproute.ai header.i=@deeproute.ai header.a=rsa-sha256 header.s=selector1 header.b=sDF9z7uM;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=139.219.17.129
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2129.outbound.protection.partner.outlook.cn [139.219.17.129])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFFB8606A31A;
-	Fri, 30 Oct 2026 08:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79856606A31E;
+	Fri, 30 Oct 2026 08:17:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 79856606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=deeproute.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deeproute.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GxCTz2HF
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793348187;
-	b=ktgjPCVtkgx+UJUxOWm6fSy6sX3RrxFJqMZE1nZmdkMVHoOKvMtT/fZkM/atRLz+VOeM
-	 jYNXNQJmHRoYsnwTC3OvvLJuDwyv6JayAbhhIpLiwZYOogSboQz/r2/dKaLGGs5hvQixA
-	 4fDBPiquQBDGqAFDOWf00c+JrQVxTF40insE9uUgNKFMI1u5jWqM2SjF6rfY5RvhszEH+
-	 7r+sYHd+EqRon/VDoMmrn3GrBPyk7A+c7iW8Yw9LFJ1hQdFIIC5gYxoodUW0Nm7dk33SC
-	 ZbRBOtAYXrXitiD1B/4j6aHHEY7cqX50PGyQwTbWk6YFfvoPR3HbcIdCTsCMFmVDeYw==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793348187;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=nxb4ICs48/EH3I4EV/LG2u9tIdfwalBWWFtzW7PUfTc=;
-	b=B1tHP2rBHe5NGFezdb3tSeKSbH0EsyztrQ2o9cPc4x1exAxRx0IoV/8tUq/5/hDkr+KU
-	 YPu/SSPQ43qHvLU5/prTdswYDgMHjvFzODd/mNdKj33KTaH0beZKUrVEm9Tr5Wd5W7mIt
-	 d8tT4zhSeLHZUc5SBVc0T7GRjdpBc+jTQlkExIrnYLbXDhY/ezXDdIIe71+ePT1Q9xXG7
-	 wpBt3fTzhg7aLJ9l7a2oCDq6dtD3TR/vk0CH6t9wUledN417jMN2/BBzo4BsOcIfDfIiU
-	 xbkbiFLNycEzifPI7A4wSAYinXElJBGLxeyUhGrTZ2rVbokraVDOJjSlh3RYaChYCzg==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id C674D1F000C1;
-	Fri, 30 Oct 2026 08:16:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793348187;
-	bh=nxb4ICs48/EH3I4EV/LG2u9tIdfwalBWWFtzW7PUfTc=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=GxCTz2HFnhjMHn9BaJehym9NHJiHfz70aN+nvDttXwy94/7hTA7D8x/w8zjwLjiSn
-	 vjVJazyvgt7Y71gqXT2DNKmGgpjBgtspTs1azQE6unS5yKF8rUtwipuJwwMZ3BuJLy
-	 AwFY3Iif4KI+CtwVGAGH1RtezmkkHNd3/fNho1W/7/Fd5SN1DbXekB6gyYcu6M/RQB
-	 hXp5vrWg2UJkDbdRXIqBG2+LtsXx4yy8UVY/dWxPONJa5TRSGSobKQ7vjnkjyHdVbH
-	 Y0FDS9Ii9DmmEd6uxXXNEirmem5/HqmfHq6p6d1rYR8Q3pejEvRLwvqZjlgQU/gJfM
-	 LUuZHtUg/Nd5g==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 25F3D436CC;
-	Fri, 30 Oct 2026 08:16:26 +0000 (UTC)
-From: Marcin Knap via B4 Relay <devnull+marcin.knap.vecima.com@kernel.org>
-Date: Fri, 30 Oct 2026 09:14:17 +0100
-Subject: [PATCH bpf v2] xsk: Do not free ZC Rx buffer when the Rx ring is
- full
+	dkim=pass (1024-bit key, unprotected) header.d=deeproute.ai header.i=@deeproute.ai header.a=rsa-sha256 header.s=selector1 header.b=sDF9z7uM
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NNll4AyF9f/SrXqi3OgdRdFaSdBClmPFgXMmdnzXoGgSGpzmZuvGcwxhpJgpwcu4j0BzAigh3s+KcMZfrFtqb8PQ3KrdFKnGBpp6uM8sR0TsvbijgjQQ3QNWS+UUnGlPmdg913jnzE5CDoqUxaZbR8L1WZArYHmfEVdeVIxKyvHSz5cY1kCbPk3uJcF5HLUaBNPKkYVSTa3M5CconkrfGkuNHWvq8qN9NkMR/AntjE6dEI0IvGsXiteERDDJtpGYM1A2V8J1ajqf1y+u4owTD4bHYOkGuOJL1GlkVzXSuRVoDMLuHad++on/lHeT1e1x55Nzl4PSH0LOQ8LMLJYWKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Or1fmHbK264ZYZ6ugepa2A88iZBHWfZvo8gWLmIwKzk=;
+ b=JFHCmq3Pjyfb1KIm2ixDedwdIZFT2sZXGP8EbQNd19iinepZbzL+u+p8u9hAaYAkHWbo1scqlexAy1tsyFxeYqZdsIbLFY1Nd8ysLHwOxFGVieD73pTXygnwjkNRvKxerKRcgKzwsD3az+NyrYLsOXGzW7Nf2/pDIqfO+QQes6vF3dqe15kpDoElE5kKRdFG8HItwtrD2yx1L14daA42hzhU3ywHo7OEagjkuqoi12TXpB+aJNTqJDaUPG8HfVdlLKS1QJo6QDeZRUzCLKbE0yWAu2IzVX5kjLztaFIDDnGJ3pcz8M83GdjOEUuIHXVKxiHu/brtxaOBSc+tz2ix8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=deeproute.ai; dmarc=pass action=none header.from=deeproute.ai;
+ dkim=pass header.d=deeproute.ai; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=deeproute.ai;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Or1fmHbK264ZYZ6ugepa2A88iZBHWfZvo8gWLmIwKzk=;
+ b=sDF9z7uMOOiKoHDsmbgRr2TdnTfy31+vUXR6KHh1lzM2m44dpHtUtL+K+NMoSmOs1Qx4tPZS8NiauIkMckxwMUQn0AFrFxuL6iXkJRJs8NMEydPeqaeoaSquqkhsSgYv7R7uxIAFDB/IbZgQ9cPD48pIkrYghC/54nl+IVtUoCk=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=deeproute.ai;
+Received: from ZQ0PR01MB0982.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:1::5) by ZQ0PR01MB1239.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:1c::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.9; Fri, 30 Oct
+ 2026 08:17:16 +0000
+Received: from ZQ0PR01MB0982.CHNPR01.prod.partner.outlook.cn
+ ([fe80::197a:1934:4b5b:4520]) by
+ ZQ0PR01MB0982.CHNPR01.prod.partner.outlook.cn ([fe80::197a:1934:4b5b:4520%3])
+ with mapi id 15.21.0569.008; Fri, 30 Oct 2026 08:17:16 +0000
+From: Jingxuan Xie <jingxuanxie@deeproute.ai>
+To: netdev@vger.kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: [RFC net v2 0/2] af_packet: retire TPACKET_V3 blocks without waiting for copiers
+Date: Fri, 30 Oct 2026 08:17:02 +0000
+Message-ID: <20261030081704.251652-1-jingxuanxie@deeproute.ai>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: SH0PR01CA0008.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:5::20) To ZQ0PR01MB0982.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:1::5)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,231 +102,122 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261030-xsk-zc-rx-double-free-v2-1-cf01d4a9f3f7@vecima.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNQQ6CMBBFr0Jm7RimKhFX3sOwaMtUqkJJC02Vc
- HcBD+Dy/7z//gSBveUAl2wCz9EG67oliF0GupHdndHWSwaRi4JyKjGFJ340+oS1G9WL0XhmJHl
- Q+anU9ZEMLNves7Fp895A9QaqXxlG9WA9rMYVa2wYnH9v75E2+M9RJCQUUlJpikKcjbpG1raVe
- +1aqOZ5/gLbBU1M0gAAAA==
-X-Change-ID: 20261019-xsk-zc-rx-double-free-1a3b059cd41f
-To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
- Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Magnus Karlsson <magnus.karlsson@intel.com>, 
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, Simon Horman <horms@kernel.org>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, jtollet@cisco.com
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
- Marcin Knap <marcin.knap@vecima.com>, 
- Joshua Washington <joshwash@google.com>, 
- Harshitha Ramamurthy <hramamurthy@google.com>, 
- Sunil Goutham <sgoutham@marvell.com>, Geetha sowjanya <gakula@marvell.com>, 
- Ratheesh Kannoth <rkannoth@marvell.com>, 
- Subbaraya Sundeep <sbhatta@marvell.com>, 
- Bharat Bhushan <bbhushan2@marvell.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793348185; l=7209;
- i=marcin.knap@vecima.com; s=20261019; h=from:subject:message-id;
- bh=zjCC53eamxy9uMwrekd/GVBEJYRREa6qEen7NhdsQgY=;
- b=JMsIQYe1NE5OYniKA2lvB97Xsdw88oJQPtAmSCDaKi15sBjcyt+WyWBhB9YeXee+577TW/01w
- /fa+Lx6zDrDB5c+neYFJxGKWLQW+14dC7+7u0rC92WOgK05a3sJFBL1
-X-Developer-Key: i=marcin.knap@vecima.com; a=ed25519;
- pk=rCvVOuopf4s4BHtLE+FRnv0x83PoFHgBPo9mtNlvzLk=
-X-Endpoint-Received: by B4 Relay for marcin.knap@vecima.com/20261019 with
- auth_id=1237
-X-Original-From: Marcin Knap <marcin.knap@vecima.com>
-Reply-To: marcin.knap@vecima.com
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: ZQ0PR01MB0982:EE_|ZQ0PR01MB1239:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6e9a80bf-33a6-46c8-ec6e-08df365e359e
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|52116014|23010399003|366016|376014|38350700014|56012099006|261028144727099003|261022105027099003|261026140227099003|261026121527099003|261021123027099003|261022075727099003|10067099003|261021135927099003|261021121427099003|261009223027099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	M3JScAB/k7lVOmjLkoHF+ZtENET9reZpQvIhEsRFyJjullzwI4qtT65osSITSdlXnlL0zYtZ7Tjuw0EDAkmc6ahYPXayq0/24dRel6OSxbr/SweHi2lvZwBcUoQpHC6M314nIcV4f0B2H/JeVgEd4EVsHcotrGhiETMqZjU1Q4GpULxGIsawbv6QF9K2cHQhhG7PzUsruCwx+vmEEPgHrFcL+NtcnrQAnTjMz2Kji+2EHg00p986f+mTNXTqIWB4xsZWoaIYx4Mn1eXgQ38CBsfkBCuVfnPqjEuFbm8FuG4HpGzdyil440v08PeWjtIHNOu+N/Ogslt3v4bX7Ba+q3/zADRlLg3E6i8juU6LmiUMJB83at3NfmikGOhf37a6Q3DtRaYFsy2kmiMG3HeJW/xWIOo0rqp2kp2aFx0HXzyu2oQ6Hn4+9HnKT3LjHj4o769FSImT7z8OwWuTd7e4dEl8tkGTUeYK8hV1sf2F37HUIGa2i61zRRif8gH0Eah5PJAfEQS5pHiPKSYvlXNLv2TWgow0cqDZyaIL6cjgGXWYI18Q/WZUpYYC35mKBlhj
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ0PR01MB0982.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(23010399003)(366016)(376014)(38350700014)(56012099006)(261028144727099003)(261022105027099003)(261026140227099003)(261026121527099003)(261021123027099003)(261022075727099003)(10067099003)(261021135927099003)(261021121427099003)(261009223027099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?UoqGgUUUUXV3HsDurEYIqPwr4bdRadwi9dzpbNJdxtiG+Uw0LRQh6nDrBwYU?=
+ =?us-ascii?Q?TIn6Ej8v7SsSI3rHkMk5CaISXH5Togls2WECwP4Is7ze257GzDYCF77tzrNK?=
+ =?us-ascii?Q?U7ypW74MtT7jsIyzAxUN8YM8d+hjsHLFdRM6pzqoULmu5rJkNWgreMW+j4Ok?=
+ =?us-ascii?Q?35SHd0BqEp34AUeKwPEsIDRmbQtaIDmAOm1ycBKbEp62/Vf2zYkpspwr+nA4?=
+ =?us-ascii?Q?tkq1Ba4f0gS7aCixrMr9FSzMIar/lqmveyIrBZ0m+vLb2ZSWnXeJ+5T2NcM5?=
+ =?us-ascii?Q?/kd9Xi/0OccqiKNitYjWJBGfOE91n68ifL2jfXOhrLBqMINDlePclonoN7qs?=
+ =?us-ascii?Q?o6BzuAPkLrYMiXDYQDbRHkPXqbk3D4UAVjKX1hmeA0wYd+7SrzhItLv2Z0oC?=
+ =?us-ascii?Q?hmNyvOrpWF/PDOk/JaWgk5hjs9RGFsw0uJi5/wnQ+t5Yft+vt5aud4RpGNzg?=
+ =?us-ascii?Q?IvE4G5dN3N4oknmbMYAuw/H2hNrnC28l6J07Bfv+Eym1iDmc77YIDi+mVxNu?=
+ =?us-ascii?Q?6ymTg7Zw7EgQRr3xZYGQjc0U3umjJ+tSh/BKcB3pbr7uOjt3d2wwK3VdNqaq?=
+ =?us-ascii?Q?lSvsvcp4yzKWVCmvYVQyA2V4yBLje/i2cMKyLSxoZgs8IUCIMuXRbS6mp7l/?=
+ =?us-ascii?Q?WdsrSXjKcSYLQtOEbbAWzmhAylgATUJLn23+adHKefVcCq/uv/cJZLWOYmvH?=
+ =?us-ascii?Q?Asn5yysyiB1ul8ujk8640OO6UBWxcRuLviImvdjIjBxoXQKFs2M1KqcDoudb?=
+ =?us-ascii?Q?USpGZMDaJvCD1EKu6hkco5s1Nx+ypa9xhRiyN7wnCErZUkze3rcU3pZgTrkO?=
+ =?us-ascii?Q?iacl8o3BlwMgENG7ycvy0oiXJb7SCorcErvGMKUTqTh2KPdJcSyoLdvXMUOe?=
+ =?us-ascii?Q?5erQtUiToY3dAuBrBUGTmFcs3k/E4cJWazyMHCCvenNoJJHumo85WWqYDD2J?=
+ =?us-ascii?Q?Q+dkK05cwWDGAR+GOUE7e5329oU4F4x47u/IyDNnh+r7+DVnJBmbunJw+I3U?=
+ =?us-ascii?Q?T4MbmURfhEP4Z5r9FXwlimgG5ZIMC5ju5/ztuv4nuik+boCAljrsCq5OhgoX?=
+ =?us-ascii?Q?SYtjwSfp5XnPmxTUQt+aXDQsvrKNlJFKdsf/YVLcRFU0ldatEcI8DPRk26Zg?=
+ =?us-ascii?Q?0WfWAyXC8CSUiSbgrLFs86lQ5/z2pSU5FMB+pR4bsfDzH+suK0c5kYdr+f4W?=
+ =?us-ascii?Q?Kg/m1XwCI+/r9BuMOHV4f7ZscuirZ6++rirTEZw1fW8Pyjk344UvTGkHFU8R?=
+ =?us-ascii?Q?t1X9iopHkS6V6y0j6ShOYQjxqOnZQGjkp/AN4m8gnYOTA6jpj2cN3smd78TK?=
+ =?us-ascii?Q?um29th01N7m7MqNo6zqV46MqUPkq0MWSn14zpXGagszps6HaxvBNotagATuY?=
+ =?us-ascii?Q?jHSkt3bCn9r6JN4O5xRS6cQBNYAM0h2b6BLBagC2Vk7URUGtuwCPJypfWb9y?=
+ =?us-ascii?Q?7/Oi8ShWES3ITqex79SVcyu5UjX1n1V64UtOn7va7sSkIHchqULGK9vqVci4?=
+ =?us-ascii?Q?JM6RKYkxmVm4JGJIGkMLFrNcRhRc/ZWN1AKNDIRC+gPM2M8u4CkFZm5ijZcB?=
+ =?us-ascii?Q?gvphO89YZpxZbx0FvagkWDf5LpK9MADhSTwTAv5RYALdn6CcIWMIXchSj9IR?=
+ =?us-ascii?Q?cpl68l9/EyE24LnzavA2IMtBSACgMkAb9CWkFUPx//7F5gqHCZ6nIzoKiWtd?=
+ =?us-ascii?Q?DSjANX1QVE71dNl4wVoa+Q7TzWkcYf07MfruJFb6VoGtntqBXXKpsyR1anoO?=
+ =?us-ascii?Q?u7MEJP1Y4A=3D=3D?=
+X-OriginatorOrg: deeproute.ai
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e9a80bf-33a6-46c8-ec6e-08df365e359e
+X-MS-Exchange-CrossTenant-AuthSource: ZQ0PR01MB0982.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 08:17:16.5128
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: df535b4a-68e6-4339-a092-afa4f2c24fcc
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tQn/RdjvU19ota0zcTg3LNJunqw7nPqRQS6Zi3/UoLgY4KBb+EXLJo3xLwfBZMAhebt6+H0Oj88prG+f2i8YgYwDB7DqDOzBE+hcC+pESS8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ0PR01MB1239
 
-From: Marcin Knap <marcin.knap@vecima.com>
+This revision keeps asynchronous block retirement but removes completion-si=
+de
+queue locking, the four-state enum, the eight-block publication budget and
+the workqueue used in v1. Private copy accounting now lives in the existing
+pgv allocation. Packet allocation and the existing retirement timer publish
+ready blocks in order under their existing receive queue lock.
 
-When an XDP program redirects a zero-copy buffer to an XSK and the
-socket's Rx ring is full, xsk_rcv_zc() frees the buffer and returns
--ENOBUFS to xdp_do_redirect().
+A preempted copier in a sealed block does not prevent capture into the next
+available block. Copy completion only performs a release decrement. In the
+absence of further traffic, publication may wait for a later timer callback;
+there is no hard bound under RT starvation. A finite ring can still exhaust.
 
-A failed xdp_do_redirect() leaves the buffer owned by the caller, and
-most drivers rely on that: mlx5e treats the failure as XDP_DROP and
-releases the buffer when the Rx WQE is refilled, while i40e, ice,
-ixgbe, igb, igc, stmmac, idpf and others free it themselves. The
-buffer is therefore freed twice. It gets reused for another Rx
-descriptor, the second free puts an in-use buffer back on the pool
-free list, and the same UMEM frame is later handed to user space
-twice. ixgbe and igb keep the buffer in the ring on their need_wakeup
--ENOBUFS (XDP_EXIT) path and run it through XDP again on the next poll,
-after the core has freed it.
+Patch 1 independently moves virtio RX-header preparation ahead of frame
+reservation. Patch 2 implements the retirement change. Neither patch changes
+the mmap layout or adds a UAPI.
 
-Leave the buffer with the caller on both the single-buffer and the
-multi-buffer -ENOBUFS paths, as xsk_rcv() and xsk_rcv_check() already
-do. A few drivers relied on the core freeing the buffer, so make them
-free it:
+Changes since v1, in response to Willem de Bruijn:
+- Split virtio header preparation into its own patch.
+- Remove the second receive queue lock acquisition from copy completion.
+- Remove the state enum, separate metadata allocation and worker lifecycle.
+- Replace the fixed publication budget with a loop over existing ready bloc=
+ks.
+- Use release completion and acquire observation of per-block counts.
+- Permit idle delivery to wait for the existing retirement timer.
 
-- i40e and ice consume the descriptor on XDP_EXIT without freeing it.
-- gve DQO counts the redirect error without freeing the buffer.
-- octeontx2 returns false on a failed redirect, so the caller goes on
-  to build an skb from the already freed buffer. Free the buffer and
-  report it as consumed instead.
+Testing: ARM64 QEMU virt, four CPUs, PREEMPT_RT and lockdep. The unmodified
+retirement logic blocks sender B behind a deliberately delayed copier A.
+With v2, B completes capture before A is released, for full-block and timer
+retirement; idle delivery, block sequence, lengths and payload are checked.
+The delay is introduced by validation-only kernel instrumentation and is
+not included in this series. Ordinary psock_tpacket and psock_fanout pass
+on uninstrumented RT and non-RT builds. External validation tests exercise
+the actual private helpers; LKMM tests check multi-copier ordering.
 
-Seen on Mellanox ConnectX-6 DX MT2892 (FW 22.47.1026) with AF_XDP
-zero-copy on 7.3.0-rc6 when the user-space consumer could not keep up
-with the Rx ring. With this change no duplicate frames were seen with
-striding RQ on or off.
+The ready-block loop has no fixed work budget: a large ready backlog can
+lengthen the receive queue critical section. A validation case publishes
+1000 blocks in one call. This tradeoff is explicitly retained for review.
+Separate RT KASAN and strict KCSAN runs pass the helper checks, psock tests,
+delayed-copy tests and concurrent-close test without sanitizer reports.
+Patch 1 also passes an independent malformed-GSO runtime check. ARM64 W=3D1
+packet-object builds pass for each patch and under allyesconfig/allmodconfi=
+g.
+QEMU does not establish hardware NIC or Orin integration acceptance.
 
-Fixes: 269009893146 ("xsk: recycle buffer in case Rx queue was full")
-Signed-off-by: Marcin Knap <marcin.knap@vecima.com>
----
-Tested on mlx5 (ConnectX-6 DX) in zero-copy single-buffer mode.
-The i40e and ice changes and the multi-buffer path are build-tested
-only, as I don't have that hardware available.
----
-Changes in v2:
-- Also free the buffer on zero-copy redirect failure in gve DQO and
-  octeontx2, which relied on the core freeing it (AI review).
-- Audited the remaining zero-copy drivers against Björn's table.
-  ixgbe and igb no longer run XDP on a freed buffer after
-  XDP_EXIT; making them drop and consume the descriptor (R2) is
-  left for a follow-up unless you prefer it in this patch.
-- Rebased on current bpf.
-- Link to v1: https://patch.msgid.link/20261019-xsk-zc-rx-double-free-v1-1-2aa19f6628fb@vecima.com
+v1:
+https://lore.kernel.org/netdev/20261028070528.139531-1-jingxuanxie@deeprout=
+e.ai/
 
-To: Joshua Washington <joshwash@google.com>
-To: Harshitha Ramamurthy <hramamurthy@google.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-To: Sunil Goutham <sgoutham@marvell.com>
-To: Geetha sowjanya <gakula@marvell.com>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-To: Subbaraya Sundeep <sbhatta@marvell.com>
-To: Bharat Bhushan <bbhushan2@marvell.com>
-To: Magnus Karlsson <magnus.karlsson@intel.com>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: Stanislav Fomichev <sdf@fomichev.me>
-To: Simon Horman <horms@kernel.org>
-To: Alexei Starovoitov <ast@kernel.org>
-To: Daniel Borkmann <daniel@iogearbox.net>
-To: Jesper Dangaard Brouer <hawk@kernel.org>
-To: John Fastabend <john.fastabend@gmail.com>
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: intel-wired-lan@lists.osuosl.org
-Cc: bpf@vger.kernel.org
----
- drivers/net/ethernet/google/gve/gve_rx_dqo.c           |  4 +++-
- drivers/net/ethernet/intel/i40e/i40e_xsk.c             |  1 +
- drivers/net/ethernet/intel/ice/ice_xsk.c               |  1 +
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c |  3 ++-
- net/xdp/xsk.c                                          | 15 +++------------
- 5 files changed, 10 insertions(+), 14 deletions(-)
+Review:
+https://lore.kernel.org/netdev/willemdebruijn.kernel.31ae9fde05c@gmail.com/
 
-diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-index 82ed5e48b00a..cc544420df11 100644
---- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-@@ -686,8 +686,10 @@ static void gve_xsk_done_dqo(struct gve_priv *priv, struct gve_rx_ring *rx,
- 			goto err;
- 		break;
- 	case XDP_REDIRECT:
--		if (unlikely(xdp_do_redirect(priv->dev, xdp, xprog)))
-+		if (unlikely(xdp_do_redirect(priv->dev, xdp, xprog))) {
-+			xsk_buff_free(xdp);
- 			goto err;
-+		}
- 		break;
- 	}
- 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_xsk.c b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-index 51a05ce4c7ce..a11ee1f3fa38 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-@@ -360,6 +360,7 @@ static void i40e_handle_xdp_result_zc(struct i40e_ring *rx_ring,
- 		return;
- 
- 	if (xdp_res == I40E_XDP_EXIT) {
-+		xsk_buff_free(xdp_buff);
- 		*failure = true;
- 		return;
- 	}
-diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
-index 0643017541c3..7c1dd4c87a71 100644
---- a/drivers/net/ethernet/intel/ice/ice_xsk.c
-+++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
-@@ -636,6 +636,7 @@ int ice_clean_rx_irq_zc(struct ice_rx_ring *rx_ring,
- 		if (likely(xdp_res & (ICE_XDP_TX | ICE_XDP_REDIR))) {
- 			xdp_xmit |= xdp_res;
- 		} else if (xdp_res == ICE_XDP_EXIT) {
-+			xsk_buff_free(first);
- 			failure = true;
- 			first = NULL;
- 			break;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-index 90af9b9044aa..6d10c132f61c 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-@@ -1555,7 +1555,8 @@ static bool otx2_xdp_rcv_pkt_handler(struct otx2_nic *pfvf,
- 				*need_xdp_flush = true;
- 				return true;
- 			}
--			return false;
-+			xsk_buff_free(xsk_buff);
-+			return true;
- 		}
- 
- 		err = xdp_do_redirect(pfvf->netdev, &xdp, prog);
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 781ba46eb152..89bac2feeff2 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -224,21 +224,15 @@ static int xsk_rcv_zc(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
- 	struct list_head *xskb_list;
- 	u32 contd = 0;
- 	u32 num_desc;
--	int err;
- 
--	if (likely(!frags)) {
--		err = __xsk_rcv_zc(xs, xskb, len, contd);
--		if (err)
--			goto err;
--		return 0;
--	}
-+	if (likely(!frags))
-+		return __xsk_rcv_zc(xs, xskb, len, contd);
- 
- 	contd = XDP_PKT_CONTD;
- 	num_desc = xdp_get_shared_info_from_buff(xdp)->nr_frags + 1;
- 	if (xskq_prod_nb_free(xs->rx, num_desc) < num_desc) {
- 		xs->rx_queue_full++;
--		err = -ENOBUFS;
--		goto err;
-+		return -ENOBUFS;
- 	}
- 
- 	__xsk_rcv_zc_safe(xs, xskb, len, contd);
-@@ -252,9 +246,6 @@ static int xsk_rcv_zc(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
- 	}
- 
- 	return 0;
--err:
--	xsk_buff_free(xdp);
--	return err;
- }
- 
- static void *xsk_copy_xdp_start(struct xdp_buff *from)
+Base: fcc00b15cb21a6de76826e5012b2c758505f5e65 (net/main).
 
----
-base-commit: fb7bd3a2aad70a76232a7168a505386d0a1396af
-change-id: 20261019-xsk-zc-rx-double-free-1a3b059cd41f
+jingxuanxie (2):
+  af_packet: prepare the virtio header before reserving an RX frame
+  af_packet: retire TPACKET_V3 blocks without waiting for copiers
 
-Best regards,
---  
-Marcin Knap <marcin.knap@vecima.com>
+ net/packet/af_packet.c | 162 +++++++++++++++++++++----------------------
+ net/packet/internal.h  |   9 ++-
+ 2 files changed, 88 insertions(+), 83 deletions(-)
 
 
+base-commit: fcc00b15cb21a6de76826e5012b2c758505f5e65
+--=20
+2.25.1
