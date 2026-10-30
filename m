@@ -1,57 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793334236;
-	b=w455+BXgHd2aXPRZeGL8Q0KZAVWPVUq7NXDpcLABV8eCt5G6QLHNKd6lr4bK644FS3kJ
-	 a5dssrEAK94sU3S5HnsQU9e0jJRPXI8/wuw1N39t4escPqyPP6mLX1ZvfjEvyQ4iF8NqP
-	 EPbcNAQ0hPS4GGCw1XwIMm05I9lR7aoF1MxP2Cq01w6JNV6tRA9BB9/Hb/YKIeD8JE3d1
-	 tReYPvsC89H/jZ/4I2tyXw1WvKRqA9siZ6nYNNx373iM5e1+P54e7QtHIWVXcb25Jf1Xu
-	 ua545X/GUjpCOhmSqHEFvbn1X6oghwVqxnYv2FyRWP5MZ0AjBJZTVEJsprsMWni8Cog==
+	t=1793334245;
+	b=N6Tzf5/FBPX8C7IugP0vLoqjHki+L9EFyEU2qDGb5iPx5DBM2Zq6M4dXDW3ad3qGUUwZ
+	 w0zIjBASCIkRbwitjKb6MMSkf6cTIBIU1Sbo5kv13V9XS8Gjw2jsv5izV+j7so3SKj69I
+	 Kn08T4n1aVLsFIDqkhh/9lT8LvtheVdOaH41AQSC1TRg9aN3gMuLgXPu5cRYLl8tsHMHX
+	 mM4jzSwwT8W0BLXuSvlRjl6QU5gJJT2eIhBTprAJ/0J3z2muhegPVUMv6DbItgET7oU00
+	 wLG34wfWo6x0Cmy+fnrxJTE+QvQOVPgkWe8f6PRHs+sMgpJ1AyQyg5+V5j6d5H6uJDw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793334236;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793334245;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:Auto-Submitted:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
 	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=M7VSPrJrJHCbE1kMHDzisJy0nh0mZ6eBvdUfX+4DD+9iVtsNPvy/+Lps55LiLd/SaM/q
-	 M37QpKK4+VNUguPOhPIY4oY9UidHl0xnVODVTgBqWRx4EW8aipSAbLTadmidk3jVbMUMf
-	 dsae7WyFHAXfuXwLr9lWt7tnn+5JbPfEMEn6hz5bRwTsIe641aDm+nD2HNTfijHhXPya4
-	 fqRIdYQ/e7ZlT5YsV5phagD0yLULA4bE2DtqlW1+LUv3IMmfaQgS1kHI/jAz5Yb1h8R4P
-	 OOcxUf9M0qAx8wd/PoJVAvpABhoUczXbeBdZZVzfWLyA3LzEcMzPdhrFXbwMYTOiUNw==
+	b=4O8ZLuKRAWM91YK+pD1wOaeizq1aKAPS30niGA7SQuD8O03eG/uLtHxULDSGJaNt/l/+
+	 oX0slhJorjf7OSa+vVHmeGCWjK++cA2/HsVKCCfOZ73uUaDT1ynf4KRE7KZ1SCX4xZSSn
+	 MK7vbZtpBy6S06Bv+g8IYjI2gD/FDjibAs1XtwhLqVpepVJmBENxtCoKG6fWUkc7zQwWP
+	 dLBOqdS6HRBKJSAPlNcqxB2Sz43l+siRf9vsk0MM7arnGY3V/uK2wb76ZK89e8Sa8imy/
+	 LCcLo4uvooQFg3cABciszDIBW9n+YuZjosfi4cJMq7ThYFTHNQn8sEKWL4Wv7rYivHA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ldLwaeWc;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dh8caDS7;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7139606A32E;
-	Fri, 30 Oct 2026 04:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCBED60A263D;
+	Fri, 30 Oct 2026 04:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ldLwaeWc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04CC71F000C1;
-	Fri, 30 Oct 2026 04:23:54 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dh8caDS7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 124121F00A15;
+	Fri, 30 Oct 2026 04:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793334235;
+	s=k20260515; t=1793334243;
 	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ldLwaeWc42S5001onPTjBkccHn8RWV07Twd9qsnHprVeqYkPGDHvTBuCfq5qzoJg1
-	 n0QX13t+Y2g9QwOgs6RMzagXHyYGwR/Yew3NqN0ny99DSVO6w/n7Ks4jcqkbzpvgP3
-	 bcbsF49lWQl4yiBPz3dlh/ETlzO8L2QYjDyLk8xEb805H+ZJEcEHxUtjzZZ5SfVET4
-	 sNCaJ8l/jbPCYd4xOAN0s2CoNlnRBjfZA3pU2Yo9+X3vbEzAP5bNFuucNTb2i/ehk9
-	 MiCVp2HC/5p9CcTjG4Ka2xvoT8X9pcQz1hA6hguILmfEz6uvvfDzYGmSsqi6PYg7NH
-	 FYSqxhDZEaw2Q==
+	b=dh8caDS7LQiaMEZdCpy+q1verBYTgJsnLXnD00vLjc6i3i6Xqryj1fRCgFmTnbaNC
+	 Y8fzaLbp1aHCbtBcfF126IQZk5cTtNYDAt921AARhiNjCzM+QD6v0vgZ5Ys2ux9pgZ
+	 q2dHCGBkZz+A/Vh7EGYek7Ma4TJX/4ka5jcxE7CKeTTbqkMAVe6IJnjXGYwn9V6fwI
+	 wb8YOa2GN99/V8XSRASYBbyD60zFiyMbnxJEOfk9IKVr+IUgBbHmY4AkSoHqmhfrz6
+	 C/kljxa1pl1kCwivWX1UtmC/GcF+to4uIeY3ZO7uZynEbumhrh+wgw5U/BumdglduY
+	 rZwB0e4s42lLw==
 From: netdev-bot+sinfo@kernel.org
 To: Kyle Zeng <kylebot@openai.com>
-Cc: netfilter-devel@vger.kernel.org, Pablo Neira Ayuso <pablo@netfilter.org>,
- Florian Westphal <fw@strlen.de>, coreteam@netfilter.org,
- bridge@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
  outbounddisclosures@openai.com
-Subject: 
- Re: [PATCH] netfilter: br_netfilter: reject unsafe neighbour devices for DNAT
-Date: Fri, 30 Oct 2026 04:23:54 +0000
-Message-ID: <179333423450.3327.5812474548450706778@kernel.org>
-In-Reply-To: <20261030042155.73844-1-kylebot@openai.com>
-References: <20261030042155.73844-1-kylebot@openai.com>
+Subject: Re: [PATCH] net: gro: avoid parsing headers from shared fragments
+Date: Fri, 30 Oct 2026 04:24:02 +0000
+Message-ID: <179333424260.3327.8381907365060593649@kernel.org>
+In-Reply-To: <20261030042212.73949-1-kylebot@openai.com>
+References: <20261030042212.73949-1-kylebot@openai.com>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
