@@ -1,79 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.42
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793371879;
-	b=45M8SgTNpPPN7dkQT4vcDCkDGQp01Dp3qCNNomRSS8ZUQu25uVAdA/hSl6ob8oDFxmBj
-	 coz9GJGPEUA/2uUrndIFaVKygEtFkkop3yCzzWcX/ZmnHzo9rm4x5hHUOeLsk6e2hHL2X
-	 UENs2jx3BMa7pHeTPselvjt+fEdMSQz7SpTLUjUcMmUGW/cxuWWrrpqfrH9zJR0KNjhyL
-	 GGE0aIhSCkp2GHC+7F4Zuj8yKy4P9oifG9QZzQ7qjZkfvM4SbI7QLBfIzFQ91RAsOROtW
-	 uOJ/IOGqbJZWyOnfoRYxrk0QW1pyjk+1gLpqfDNV+mQ0Mx9VcKKg9TyTQGfVwyB4cnA==
+	t=1793371937;
+	b=qOFLNEBIj8l4w+EU3TZqQcAsQH5AWt9kO1ib/SwegbI4i9KSQtkoDPitShDPOSZRGJmU
+	 LAw1FlS5bP9oe2zEMF4xU/ZKNlDGgC+39ndJ811aAj9uSENWp/v6YrovFT/61LOYQ1m6y
+	 JN/rLsVE/pZfu/kKjxaHyzsFKnRvrTzYIekF/gWRn2O4axJevcDpyPvYtGOq3Pf3I0jOj
+	 a+AZEqhPGQqyV6P5UUtJjI5z12sCvqWGWj6cfPx8hi7b62GMJBPGeqyZbHOkyq0WB7MC4
+	 scMB39Eoq+GfmxHOB88u0Dz5ObwwDaeofZaTgFntWbIhz/Zkjw/Uls1jXBMIU2UPASQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793371879;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=AOgKJ3hnwzeY3+jNKVK1NEjx8NuNMFS6brj6gyqCvn0=;
-	b=GL/wzglCTEt/awV6+Cb4i7HQaz4xf/yeE4ADrdfGdqBOjq7Muz7mFVKc2km3YKtETp19
-	 KunChck4M86D9v7NzQq4hvv18DKyGUX4DDf3YMYlDBpCp356+p7NpCDr7qu4/sFchitLa
-	 RUZchJJusv1qt4+WFCzqEitC0ta+kZqMoVvSFZRUSGscPgjxp9v3h830NwYeftj4/azsu
-	 R37EG6Rxx7/QUDCQ3/UsnSZKTjRExrl6m0zivGGOB9WChkv7/Lp1saxK25+11cA1rcuGW
-	 L/sVO+mVbnpKpZmkY7WZSH1m/LqerspvWOp/yXZleiqwaBhJelItCilZAfFDe8eJ1zQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793371937;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=+FE89L4Y8jG4q3VU8WYblS2b7i+0MgBqnI6lgaEqry0=;
+	b=EylQZhpIMdRztzu5RNactgNo6fdfiCIGuCTvEnGNuimN0Lh+51n87umgooeVvATXBHnZ
+	 74wBML+mF7HFemZi40Nj2jjmqKS62Xz/xHLuRifJMHhbcJFeNZr4NpBRp/LspO46PAnDy
+	 b8owJ+NAcYUowuiY3WmNjaLOYQH5X03b69puccKlgfTPrQzfW4jRpbjekuLkb+ggIrVH7
+	 PPMXZ6zOJILzBYy8evf4WOrcNJQ6ogUG4mIr5cyLctDeAXl23pQ5Mbso3Vo8utEqqDYZ3
+	 eUt6/z6Z7F2SHWDP7KpM9tsye9qojJoPjvZfnNQGdy/50M+htCZwuXnzeHKGmJRCVSg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PSpJGOUA;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=X28Y5Z4z;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.42
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011042.outbound.protection.outlook.com [52.101.52.42])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1E5606A31F;
-	Fri, 30 Oct 2026 14:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1852E606A31F;
+	Fri, 30 Oct 2026 14:52:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1852E606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PSpJGOUA
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793371878;
-	b=YTdFJFVUbqHREL7DaU9Go16iiZqRx8M4KQ0J+JeiJ4rYUoFA2RYZ7GPQkgz5sMj/1TTr
-	 D8NVZoI0NuGjZzWCr5jr34Ede0nbo+w2VQ8AdLo+cl48eFiJ4zi9UqcnBU23xl6pudUMp
-	 RZx8AVFtwJsiewQ4na/ISFBZUiU0tSL0D8tJj9B6W5pjAeAHMk5PsKgcY3YBqGcLNYWar
-	 HR0EOtv7oNftoMbR79XCharcC1U6WPXOsu0YowjyhFlpnkh7rWuYoiqKQlIuUF2sFUDZY
-	 7rBAYkyvnQqC/qVhFaC1j9xErrqul7DDV+hCS4JWnHM62Go+CJs99q6MmU4Nfx6eTxA==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793371878;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=AOgKJ3hnwzeY3+jNKVK1NEjx8NuNMFS6brj6gyqCvn0=;
-	b=Vpm3kqc9O6Qo4qw37qycZWtgjbioiMRJUxcSw6B0Dead23igqKITL7JSj3Pdy1PzKgtS
-	 RZwtcTT1UyK+1e4NiNDPO51AfZEvlvBhfOdjmhdDwmRhaY9AaV351BUWMFkd877v8UxHH
-	 pGsxVsoi676dk/m62iBngV8jmoWeCoewgCMb1P+mCAImBkwjFGHyY36wIN6jEQq6ri6xR
-	 poKBycymitplwhEQEnJ3wrx3rlD568B6tUQW7GYtkBJHqpWfVYtgvWPjGzb3PsZx17bZG
-	 p0WDwLCZV21LHfEIoqJzxW54to/0Yo7kWPI7Tox4OzCWVaMT6XNtPAMkRmvI8dkvWNQ==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id D17CC1F00A02;
-	Fri, 30 Oct 2026 14:51:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793371878;
-	bh=AOgKJ3hnwzeY3+jNKVK1NEjx8NuNMFS6brj6gyqCvn0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=PSpJGOUA8FlWKlhZn5wHJA+clpNxc+NHYgCZU+6PaoYbfYlZA4r/Es9Re4l8zXHRv
-	 +veQvMfG5jYryARNiCMEyJmF+bQ9uNbnZaoLdOxOuozvzloVzpqF1wj+9N8ALsX5R/
-	 zcy9/8xYlClnzv0TEmAwybija1+Vu1mpq1ErHeFYXdL9kQ+tvDG5s6iOJVBlpHOK1A
-	 V6Ocz+e3Aw/G5UlHhvVye52B7/JleAy6+rP22F37XBYR7QJ8WDA12FEjGosK8cW4J4
-	 WPQtpsRkcqXzulbbTV/mOZs7juL9FY1fD2euOgWrqQsiVuCUCVRXtRn5YoHLLRVBfs
-	 YAaOECycz3I+g==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 4CAEB437EB;
-	Fri, 30 Oct 2026 14:51:17 +0000 (UTC)
-From: Ramses de Norre via B4 Relay <devnull+ramses.well-founded.dev@kernel.org>
-Date: Fri, 30 Oct 2026 15:51:15 +0100
-Subject: [PATCH net v5 1/2] bonding: fix initial last_rx vs ARP-monitor
- slack window
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=X28Y5Z4z
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=j+sKSaTsXwnWuiz/qneS8/piwT3PYqPPCH9b775Rw4YLUgGVFq0g6ySVtXtwCgeYjnTzWGZ3fO5/w/Oq9M9Gk08os9XOC2yOb/LiFS2pwoGslMEbk5yKjlvuHNs5IA6PjTgVFhVX/oIfZu06pDCnz52yR3pnLX5kQpHxuYfT2yGcFDVmgR2OTz/v+1LoYrrjEN4FG0o3Ff+ADQIIJP6KmK4Euk6wE2dJ3ME78qR7+KmOatLpnI1F8ulzgW0Qdd2tQguHB/kxnURvViOz11nG/EbCvJJRsWF6qbUsMiGTo3LEOrd2WSVvg2n3iiZwNNQJ3NHG7xLttQZ8H20FLTUXNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+FE89L4Y8jG4q3VU8WYblS2b7i+0MgBqnI6lgaEqry0=;
+ b=aE+0cAG1t/YTwqQWsf+Oe4cJLnW9CReKOLZVvEVpgotq2VBJQkGScGv3iYIvdiP2xNorGWck/OodQDOaiyyHeO9yMKgbbEqocTinmMPoQgdTIW8LezvcKB45gCRBkdxBPMVp8foUTJi/fRpJqgkYqqoE/TaJWZNsugduSAzU8UKO+7yMfrzW1XKYhP9tYKwni99mqG1G8Gy3FVnnJeLuTj47+XtnaFtMj9YKtMP+zkg8D5fZkf/kZnf1GSgpvnZNXTYPWD7fonZB30rugGOZ541Z4JUfprrbAxSfaLym88CGg0VihoecBXEP13Loe1QfVexelEudVRFkguxKxwrMCA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+FE89L4Y8jG4q3VU8WYblS2b7i+0MgBqnI6lgaEqry0=;
+ b=X28Y5Z4zJF5D37bS/cFvANbcfxiQIZyt8bwRD8qFSx/+/VTuaA5kpHzqPy9wv+IX/XGyxCughHnQ1BqyUSKVpDwgoB1DsjZvVDweGnrfcJYOQ7NWpa8StBJ8gZIyVOG5I6X+xZCsQPfmdIqdPN/nEeKzLckqpzEwFrMNFhZoCZ0=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM6PR12MB4283.namprd12.prod.outlook.com (2603:10b6:5:211::21)
+ by DS7PR12MB5909.namprd12.prod.outlook.com (2603:10b6:8:7a::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.10; Fri, 30 Oct
+ 2026 14:52:08 +0000
+Received: from DM6PR12MB4283.namprd12.prod.outlook.com
+ ([fe80::9eab:812b:ad20:6087]) by DM6PR12MB4283.namprd12.prod.outlook.com
+ ([fe80::9eab:812b:ad20:6087%6]) with mapi id 15.21.0546.016; Fri, 30 Oct 2026
+ 14:52:08 +0000
+Message-ID: <c5ac697a-d5d8-4797-8dc3-967e00c47670@amd.com>
+Date: Fri, 30 Oct 2026 14:52:04 +0000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v4 3/3] sfc: ptp: avoid racing PPS timestamp updates
+To: netdev-bot+sashiko@kernel.org
+Cc: ecree.xilinx@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ richardcochran@gmail.com, alucerop@amd.com,
+ pieter.jansen-van-vuuren@amd.com, netdev@vger.kernel.org,
+ linux-net-drivers@amd.com, linux-kernel@vger.kernel.org
+References: <20261026123023.3566549-4-alex.austin@amd.com>
+ <179336481210.3134.2636807043421655737@kernel.org>
+Content-Language: en-GB
+From: "Austin, Alex (DCCG)" <alex.austin@amd.com>
+In-Reply-To: <179336481210.3134.2636807043421655737@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: LO4P123CA0210.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1a5::17) To DM6PR12MB4283.namprd12.prod.outlook.com
+ (2603:10b6:5:211::21)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,126 +100,176 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261030-bonding-last-rx-v5-1-0b9b653f2f94@well-founded.dev>
-References: <20261030-bonding-last-rx-v5-0-0b9b653f2f94@well-founded.dev>
-In-Reply-To: <20261030-bonding-last-rx-v5-0-0b9b653f2f94@well-founded.dev>
-To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Jiri Bohac <jbohac@suse.cz>, 
- Eric Dumazet <edumazet@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Nikolay Aleksandrov <razor@blackwall.org>, 
- Hangbin Liu <hangbin.liu@linux.dev>, 
- Ramses de Norre <ramses@well-founded.dev>, 
- Hangbin Liu <liuhangbin@kylinos.cn>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793371876; l=4064;
- i=ramses@well-founded.dev; s=20260817; h=from:subject:message-id;
- bh=9c6Pugc3oHAUY5z5+KeFXjevrZwDeEo26HSsv07oE+o=;
- b=fX9IIktJKWRmAE5dl9+jG4WB/pqWL8pQi14+evrodqwCjGehZdYU5IixUuGD/g6AFo6ilRo/B
- tUzrxsjA/PAAQLgxP5BGg017OzZ3no88Guws0fjBh4y9P/NEINtcNZu
-X-Developer-Key: i=ramses@well-founded.dev; a=ed25519;
- pk=1vBXHBVeJBMaC+2Zuonl0QQhEgGIQHERyF5RZNnrCmw=
-X-Endpoint-Received: by B4 Relay for ramses@well-founded.dev/20260817 with
- auth_id=957
-X-Original-From: Ramses de Norre <ramses@well-founded.dev>
-Reply-To: ramses@well-founded.dev
-Content-Transfer-Encoding: 7bit
-
-From: Ramses de Norre <ramses@well-founded.dev>
-
-bond_enslave() seeds a new slave's last_rx so that the ARP monitor does
-not report it UP before it receives traffic, see commit f31c7937c254
-("bonding: start slaves with link down for ARP monitor").
-
-The seed is one arp_interval (plus a tick) in the past. That was old
-enough when the up test was "jiffies <= last_rx + arp_interval". Commit
-da210f559019 ("bonding: add some slack to arp monitoring time limits")
-added arp_interval/2 of slack to that test without moving the seed, so
-the seed now falls inside the up window. For the first half interval
-after enslavement, bond_ab_arp_inspect() proposes a slave that starts
-DOWN as UP although it has received nothing. The up test always uses a
-single interval, so this does not depend on primary_reselect or
-arp_missed_max.
-
-If that slave is the configured primary, force_primary makes it the
-active slave. ARP validation fails it shortly after (on SFP+ ports the
-PHY is often still negotiating) and the bond falls back to the backup.
-With primary_reselect=always the bond recovers once the port really
-comes up, but drops traffic until then. With primary_reselect=failure,
-force_primary is spent and the bond stays on the backup.
-
-Reproducer:
-
-  ip link add bond0 type bond mode active-backup arp_interval 1000 \
-      arp_validate all arp_ip_target 192.0.2.1 \
-      primary eth0 primary_reselect failure
-  # eth0: SFP+ (slow link-up), eth1: RJ45 (fast link-up)
-  ip link set eth0 master bond0
-  ip link set eth1 master bond0
-  ip link set bond0 up
-  # bond0 lands on eth0 via force_primary, ARP-fails it before the
-  # SFP+ has carrier, falls to eth1, and stays there.
-
-Move the seed below the initial link state and seed a slave that starts
-DOWN two intervals in the past, outside the up window. A slave that
-starts UP keeps its current seed: the up test does not apply to it, and
-an older seed would only bring its down deadline forward by one
-interval. The initial link state is unchanged.
-
-Fixes: da210f559019 ("bonding: add some slack to arp monitoring time limits")
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
-Signed-off-by: Ramses de Norre <ramses@well-founded.dev>
----
- drivers/net/bonding/bond_main.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 7019e5d8fdc8e..2f5638f4d3a78 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2122,13 +2122,6 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 	if (res && bond_needs_speed_duplex(bond))
- 		new_slave->link = BOND_LINK_DOWN;
- 
--	new_slave->last_rx = jiffies -
--		(msecs_to_jiffies(bond->params.arp_interval) + 1);
--	for (i = 0; i < BOND_MAX_ARP_TARGETS; i++)
--		new_slave->target_last_arp_rx[i] = new_slave->last_rx;
--
--	new_slave->last_tx = new_slave->last_rx;
--
- 	/* check for initial state */
- 	new_slave->link = BOND_LINK_NOCHANGE;
- 	if (bond->params.miimon) {
-@@ -2157,8 +2150,23 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 					  BOND_SLAVE_NOTIFY_NOW);
- 	}
- 
--	if (new_slave->link != BOND_LINK_DOWN)
-+	/* The ARP monitor's up test includes arp_interval/2 of slack, see
-+	 * bond_time_in_interval(). Seed a slave that starts DOWN outside
-+	 * that window, so it stays DOWN until it receives traffic.
-+	 */
-+	if (new_slave->link == BOND_LINK_DOWN) {
-+		new_slave->last_rx = jiffies -
-+			(2 * msecs_to_jiffies(bond->params.arp_interval) + 1);
-+	} else {
- 		new_slave->last_link_up = jiffies;
-+		new_slave->last_rx = jiffies -
-+			(msecs_to_jiffies(bond->params.arp_interval) + 1);
-+	}
-+	for (i = 0; i < BOND_MAX_ARP_TARGETS; i++)
-+		new_slave->target_last_arp_rx[i] = new_slave->last_rx;
-+
-+	new_slave->last_tx = new_slave->last_rx;
-+
- 	slave_dbg(bond_dev, slave_dev, "Initial state of slave is BOND_LINK_%s\n",
- 		  new_slave->link == BOND_LINK_DOWN ? "DOWN" :
- 		  (new_slave->link == BOND_LINK_UP ? "UP" : "BACK"));
-
--- 
-2.56.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB4283:EE_|DS7PR12MB5909:EE_
+X-MS-Office365-Filtering-Correlation-Id: a265a954-ab54-45ac-b4c3-08df36955ef2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|6133799003|22082099003|18002099003|56012099006|11063799006|4143699003|261026121527099003|261026140227099003|261028144727099003|10067099003|261021135927099003|261021123027099003|261021121427099003|261022105027099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info:
+	xhDGqShr7evvJW2nnvEjZe9A3IWwT4+Ivp3d4ggGep5GN5My+5L85aDglh6ZJ+P/6Z2DbgFMT9dehbMA9UCnTpPBK5TFFwvuCK80+yJQf7juPLHzR/ZVtHrC/Q9cNV4ZXQhFKxvcr62m+AEcw1M98+BMnT7Pynipc0A3xjF4q19kYvc5tKEKgedfz0TEp1W/OAY/PziqQYi+Cc31l9m79FtBYjL1vrR+Bm2dXWYg6PWPfO8wp9SetZgw8qOhIkb6bYedwCDoYOu8k2iwJLLvm+b77F1x3oIuEgorwQg6XZs1jfDKcB5uecP+7Zp0Gh7X7MpnkDR59RooliExr1qyTphlA/2lOQ1TGcaHSRsXaoI6o62SLql1m+n0cURcSovFl2pEiPz4OpsGSeiJ08Nrr9PSqyO8uOvHBX0gA9yoCOKobYGtEuUwckCPDN7k0Y2y5RtMlshySfobT98SF3R7almZiJi+nLfiDgfTKZDM72wRnUGD5nw8CzI3mQy29MisKcT1RLYhwQQth+X7eh6YDGNrAr2jvSjmq3Y2Zd49vpjE056K4leTVU1CJkf/imaWXHGAtaEzknGvsax8SbQmXtUKNtMRSb1ToWux6re+oIc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4283.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(6133799003)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003)(261026121527099003)(261026140227099003)(261028144727099003)(10067099003)(261021135927099003)(261021123027099003)(261021121427099003)(261022105027099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Rlg4OTBnUUxBVzNuMUNsMmhZc2g3SnNXQy9aMFk2cm52VUFCYklScU0yTkdK?=
+ =?utf-8?B?M2ZTTnVBNzV4QXI3ZjNVT1NYSWhCV0VIQWFlTzUwbEZwME9neERqUklCVytT?=
+ =?utf-8?B?TTQ1d0R1OFpIM0oybE8rTHdJck9QUnUxdVh4VzlOcFI5RG45MkNIWFd4ei9O?=
+ =?utf-8?B?VGllZ2t1Q0kvVERKQWdWcFBKV3FHaE9DUExkTGpzNjluNWw1ajViL0llRDJj?=
+ =?utf-8?B?eTdrN3NFV2NFbG9wdTR1R0RpaUZwR3VnSFdtSDlXOFY1ZHJ3ZGFTY1FqZTdl?=
+ =?utf-8?B?OVBLWVk2UUJEVTdXd0NyWmZaem1LQkV5UzVFZzVocStTakh5Z1VubWxVQzY4?=
+ =?utf-8?B?V2J6akovWXR2dktFM2cyL0RmTFV2MkZLRFJyQlFnVlhkNXlUMzNYeWhnb2Y0?=
+ =?utf-8?B?N3F0WHYyc00yazVvMGJxMXR6aVEwMmNCYjBuSHBGY1NKQnc1R05hQVRUY2Nv?=
+ =?utf-8?B?akMwTTJsdVUvSWwvK1F5Nm9zcXl1aEUzMXE2NGtGdGoyV2xHWGhuVHA0Tjcw?=
+ =?utf-8?B?dXFiTVBrdi9xU29qUHR1UTkzRFJCNnp1aHczRzdkOW9MYTduc2Q1Y2J3K3Bi?=
+ =?utf-8?B?SnNackpxR3JUN3ExVFZuV2ZNVlRTc1JOQUF4OEFRS2JmOWgreGJVZlJsNFAy?=
+ =?utf-8?B?LzBQbWM1b0FBVExubWFSTDE3V2dMVDM2YkRCWXFXOEZIL0ozS3l6OGp3SFo2?=
+ =?utf-8?B?ajV4MG9rUW8zT0NUNUhFcmRKQklBWWJoSzhNMG43NEVnRzFCVzBteTA3Ujkz?=
+ =?utf-8?B?Uk1nTTFoSXpaSDNjcnpSSEZVVnR3cEttN2NDNkNjUDRqRThDVlk2aXRhVEpR?=
+ =?utf-8?B?U1dQRlcwYWhWb2lBWW0rYmxVTkdtYzFFUk5FSjF0Z0QzTjJnN09iQjdrLzRt?=
+ =?utf-8?B?WGpwdm9uZ20zTjNRLzRXeWpIZGhERndqb0dNZlZYMkd2NUpzSTMxWkRHOGVM?=
+ =?utf-8?B?SHJJSHB6U3RhNkM3VmRZd2NYZHlVTFBQZE54Y2hxa2hCeFhYb04zMkZMYnlF?=
+ =?utf-8?B?cmNIWkxxUk1ScWQ4WVlWSHBaOUhxdDNoc2RzSWswb3ZBWHdwS0ZHOFJRRjlk?=
+ =?utf-8?B?ZTRiTTNKenhXZFpyWVNISEIyU2pBdlluMVRtZVRoTXJENGN2SysrRFVYeW5q?=
+ =?utf-8?B?OUtPT2FIVHlnaGc2LzgrdlNUYTFWdGFHa3crUERxM1h1a2xaNzNLVkVlUXFl?=
+ =?utf-8?B?OHBYdi9hcDJTS05DOWhhVm51QkVRbFdLUUpqS09yWlBGd3cxNTFiUzBWejNs?=
+ =?utf-8?B?anpqZDQ4S2xVYUU0UytrSDV6WlU3VW1ZdGI5NHdMeHRYMFY5aUdOaWhxU2w2?=
+ =?utf-8?B?RVh0emJKa1hValNzMzBjWmpqblo5NGF3NmU1b09oMkJmQkFMblVUbk1UZjd6?=
+ =?utf-8?B?ekRwVWIwYUhqWUxuLzBvem9ZUzJOdXMyekY2UlVjbjFLL1pQd2RrY1pmWno2?=
+ =?utf-8?B?WlV5R3hJZVl6Y05XNjJxVnFLSkhMM1p3S0R6aFpQa3ZJRDhReE5MbWljOS85?=
+ =?utf-8?B?anRZUmVQakFnOXF6eDhPeHlRZUptWVhid2s2dmdrU2gwc0NRb2N1MHljVktj?=
+ =?utf-8?B?ZDhqaGNUazJLbjVmZ2dCQ1I0UUs3akZISk53S1FhcjdhVW1rcXhTM09URk03?=
+ =?utf-8?B?anptY1J5clpFVGxjSmdGNjdjV2hSczFKYitXd3AweVJkb3VqMmVKbjlQTWFI?=
+ =?utf-8?B?VlE2NDBCUnhXNndzclZGMTM2YmdqYWtOdis3QkZwODBKWXhnbk9URm1CUUZp?=
+ =?utf-8?B?WkY4MVpZMGdWTWplcndxZjY2VEZvc3NOQWVEcEtVd2grVnMzb3hZK0tiYmFr?=
+ =?utf-8?B?ZjNrR3RMWmd4KzNuakZjZHg1dVRoTmE2UmsrWkJiU0dBNmJXNFFRMy9LOU5C?=
+ =?utf-8?B?R0dMOHhDaXJuV3AxckdCUDJYN2FHN2RyaDJ5NmNtUUswV1VjUGJPLzZuUzFZ?=
+ =?utf-8?B?R0FRVmVtbjBDNWhNQUd3WnhtSHYvT3RnbnczY0lFU1M4WmJIWUlnYk9kcmpJ?=
+ =?utf-8?B?cGRrVXo1eHhJWkNaUXV2SFI0bmN0SElVWFNjbWFQbWhqcTl0QVdFWmlFcHZO?=
+ =?utf-8?B?VE5uUUVadlgzOHM2ek1mVWF6MGVvbG9vYVZHbVlaM21MakdMMzJiSG02VHBY?=
+ =?utf-8?B?czU5dmFOdkNZVzVTelRhZmZmRnhERzBxc2srSWJsTGhtOW5RVnJkV3BnT2Jz?=
+ =?utf-8?B?WUVrK1JWcHZaZXJSRUN1bEN4Sms2L0ZYVW4vVEkvZ2hQUHR1WW1BL3lhV0ZG?=
+ =?utf-8?B?cVNtWU9PQVgvai9yczkrQks0TDA3b0p2K2dxcWh4RE9ER2FtQU5IUTZvTk14?=
+ =?utf-8?Q?KHrifJj1yMSWe0+EJu?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a265a954-ab54-45ac-b4c3-08df36955ef2
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4283.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 14:52:08.3005
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ksqUy8/zWnRel6fpYi7WgRe79YPFhCQ4NJyCQ5E7wpoV1kc911PRdwc//l2N8CqwoWTa6+QuI5xN/y1kjzcXlA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5909
 
 
+On 30/10/2026 12:53, netdev-bot+sashiko@kernel.org wrote:
+> Caution: This message originated from an External Source. Use proper caution when opening attachments, clicking links, or responding.
+>
+>
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+>
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+>
+> - [Medium] This patch removes the shared ptp->host_time_pps race from
+>   drivers/net/ethernet/sfc/ptp.c, but the same race is still present in…
+>
+> --
+>
+> sfc: ptp: avoid racing PPS timestamp updates
+>
+> This patch removes the shared host_time_pps field from struct
+> efx_ptp_data in sfc/ptp.c. efx_ptp_synchronize() now returns the PPS
+> timestamp through storage owned by the caller. The PPS worker therefore
+> no longer copies a field that a concurrent SIOCSHWTSTAMP-driven
+> synchronization could be rewriting.
+>
+>> diff --git a/drivers/net/ethernet/sfc/ptp.c b/drivers/net/ethernet/sfc/ptp.c
+>> index e26269fae38d6..37511f234d76d 100644
+>> --- a/drivers/net/ethernet/sfc/ptp.c
+>> +++ b/drivers/net/ethernet/sfc/ptp.c
+> [ ... ]
+>
+>> @@ -1500,14 +1504,15 @@ static void efx_ptp_pps_worker(struct work_struct *work)
+>>  {
+>>       struct efx_ptp_data *ptp =
+>>               container_of(work, struct efx_ptp_data, pps_work);
+>> +     struct pps_event_time host_time_pps = {};
+>>       struct efx_nic *efx = ptp->efx;
+>>       struct ptp_clock_event ptp_evt;
+>>
+>> -     if (efx_ptp_synchronize(efx, PTP_SYNC_ATTEMPTS))
+>> +     if (efx_ptp_synchronize(efx, PTP_SYNC_ATTEMPTS, &host_time_pps))
+>>               return;
+>>
+>>       ptp_evt.type = PTP_CLOCK_PPSUSR;
+>> -     ptp_evt.pps_times = ptp->host_time_pps;
+>> +     ptp_evt.pps_times = host_time_pps;
+>>       ptp_clock_event(ptp->phc_clock, &ptp_evt);
+>>  }
+> [Severity: Medium]
+> This fixes the race in sfc/ptp.c. Is the same race still present in the
+> Siena copy of this code, drivers/net/ethernet/sfc/siena/ptp.c? That file
+> also descends from the Fixes target 7c236c43b838, and this patch doesn't
+> touch it.
+>
+> In siena/ptp.c, efx_ptp_process_times() still writes the shared field:
+>
+> drivers/net/ethernet/sfc/siena/ptp.c:efx_ptp_process_times() {
+>     ...
+>         /* Set PPS timestamp to match NIC top of second */
+>         ptp->host_time_pps = *last_time;
+>         pps_sub_ts(&ptp->host_time_pps, delta);
+>     ...
+> }
+>
+> The Siena efx_ptp_pps_worker() copies it after synchronization returns,
+> with no lock held:
+>
+> drivers/net/ethernet/sfc/siena/ptp.c:efx_ptp_pps_worker() {
+>     ...
+>         ptp_evt.type = PTP_CLOCK_PPSUSR;
+>         ptp_evt.pps_times = ptp->host_time_pps;
+>         ptp_clock_event(ptp->phc_clock, &ptp_evt);
+> }
+>
+> Meanwhile, the SIOCSHWTSTAMP path can run another synchronization:
+>
+> efx_siena_ptp_change_mode()
+>     efx_ptp_synchronize(efx, PTP_SYNC_ATTEMPTS * 2)
+>         efx_ptp_process_times()
+>             ptp->host_time_pps = *last_time;
+>
+> Can this give the partially updated PPS timestamp that the commit message
+> describes, but for Siena NICs?
+>
+> Siena also looks more exposed than sfc was before this series. The Siena
+> efx_ptp_synchronize() takes no phc_lock or any other mutex. The
+> WRITE_ONCE(*start, 0) handshake runs before efx_siena_mcdi_rpc_start(),
+> and the ptp->timeset[] processing runs after efx_siena_mcdi_rpc_finish().
+> Could two concurrent synchronizations clobber each other's state there
+> too?
+>
+> The earlier patch in this series, "sfc: ptp: serialize host and MC
+> synchronization transactions", seems to have handled that only for sfc.
+>
+> Should the same caller-owned out-parameter change, along with the
+> serialization, also be applied to siena/ptp.c? If not, could the commit
+> message say why Siena is left out?
+>
+> [ ... ]
+
+
+As before, I think we should tackle Siena issues in a different patchset.
+
+> --
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261026123023.3566549-1-alex.austin%40amd.com
