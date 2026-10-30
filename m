@@ -1,118 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.133
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793368297;
-	b=QqInE4pjjnWZtPaCFb/5DeF8Zm0e5ymiM+Xg8hw3V11w+YNUJ/qmxC6YJxpezgomF828
-	 612bprgI9mKOAewLppSNzmaLcRM5Cb1ep49t3EnH5GgoVWRadeDYWkK/BDJ8uRnWUG0+s
-	 dUPMxk2tmVf6xk9mEmEAVB3ADCwl3tRW3O+WWZ5+ZG2qcjEaFlO6Ck/6sFXXfG3vajRa9
-	 hphepU/PViyFsZ7ZxnqB0+217blGVS3+PV2CuVFA7qsLyQuDesleLnaBlWAoEScfyNPvu
-	 Hp+AtevHKk9GvqujlasBvFsXjDOU8qiTTe2q8fyDiSc7mgq7Fuw2HlBumQJ1zjeJCUQ==
+	t=1793368374;
+	b=a83zgmMxoFjRbHKXV1f/yPjIMKv9fvR3WD+zDmozj0e59ZPxLhN/vsGC9K4h4DYEXph8
+	 unpeZHweKZ+8a0huD8ZF/ZKA6FVSZXoutmQZSY+K3jDSAst25FPFGgz4FAolaDl+SXFPA
+	 RiWEzwILxKJl1Eruo7j4MNRxRt5+mA6ifdjUwS8/x9Iov63Ns+kYhljbIOWvNV/2Okbm2
+	 ivsmK3jSzGtexwNpUV89mC67K6fYlFxj+ZqtJB4n26lFWp36XIwY+wisUIujgsumZ0yPS
+	 MhogGEErsee3+yTO2sxNpZZNtSLRup85D7QnfYtixwSEZ+wkhXtidhKqhlK8AU117iQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793368297;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=szKIQcK4Y6tUERhcrUwO9hhUFFsNv+m6pizPQ1yqDLY=;
-	b=LiRuOZb18aCHBC2f6Qpe4K775zXJQsJdacdGR2QhrOlVgqLj7bwux6BaY5UmCWyZajTF
-	 1jEdGwtLLggE1HfGDSBFauKnTPU9fodgJjurr4lpxr5ZxyZArAO9LAfUXaEsRJ/RPE4J2
-	 cptb4PiD6odo36rg53yQGfUYDZGcladet6ixkbfSzc21ZEdAk+eHQIvcn9I6Jc7JEr8qP
-	 itt+X53sW0efUO83eVJivyyzrQAlp4V3R27nCvM2AI7YtxYX790PuHblfHDiNyDZD1+fo
-	 ac7etlV5OaiYXlpgWMLzzRWWyZ3e34vXYRhfKQgbxeZYmKcmAuxmi+cfaHBVQCHmm4w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793368374;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:CC:Subject:User-Agent:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=ZjCkrPgZkmpcI6klO5ZNTUrNouiYanWFs0XqwffC5jg=;
+	b=GSVfjfd949QLkQ3t6y9myEMmPPeJ8CbdEXbypUMARj51ViigEJZsEvknt1EnnW338s6E
+	 UEbHP2TvVK2XbR2bAkKX+64Z1iJttSwpsTwDlCk5DddjHQRJwStg3PzIN48r/JZ9Z2y8Q
+	 JOcwxh3NkTb1xOq/p8xTxysUIuLKxY2k43ye7kDF9+OMscoLccGhJ3Jaw0jP/FK+iOo8a
+	 83DD1RI/xQUj6R6OG2rltjpw9OTiYycxZQOEP3qq0MXpsQ6y885Vzk625R9CmdpVSdlk5
+	 a43cqCf4x//m4PWwO8ePjjZPkLMrHSyV0IaeJNwj8zbHGU9ndW0cAHBG7KsdCk3CTig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EuqrCpP7;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Qi7Skn7b;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vPsIqfqY;
+	arc=none smtp.remote-ip=74.125.227.133
+Received: from mail-pj2-f5.google.com (mail-pj2-f5.google.com [74.125.227.133])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1593606A33B
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 13:51:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B1593606A33B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748A6606A31D
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 13:52:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 748A6606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EuqrCpP7;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Qi7Skn7b
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793368295;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=szKIQcK4Y6tUERhcrUwO9hhUFFsNv+m6pizPQ1yqDLY=;
-	b=EuqrCpP73xUdgZVndA+YF0bpsd3ZOIAzVonojUto4G/AzBDU/cCjht7KyCh6ZrB1/U0cTu
-	+OR8gMS+yytFwllOdSG0qvFHYCzNlQwz2hrMZfl5vGneUYolFqguWrijUJtlDaexYrF3Ug
-	TrLAEEJKuGlAgoVKOrW/bc6aMmhj+/Q=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-652-1nyjZwKbMiKr24GduWplbA-1; Fri, 30 Oct 2026 09:51:33 -0400
-X-MC-Unique: 1nyjZwKbMiKr24GduWplbA-1
-X-Mimecast-MFC-AGG-ID: 1nyjZwKbMiKr24GduWplbA_1793368293
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a1895ffc83so5017015e9.3
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 06:51:33 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vPsIqfqY
+Received: by mail-pj2-f5.google.com with SMTP id d9443c01a7336-2e7c8213b09so2571855ad.0
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 06:52:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793368292; x=1793973092; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=szKIQcK4Y6tUERhcrUwO9hhUFFsNv+m6pizPQ1yqDLY=;
-        b=Qi7Skn7bfOy9qAj3skXrKNZ9uwBXg1SEm3VN5CPFoa4VPi7hhXivkjq4rJq/6KEIhj
-         MvmrR1AoCr3OyPuqH5Ru6Uj9vf+gEh931QvVwRdjzPsUttv4krlnI1a++L4wI0y+/NSk
-         aFV/fcds3DYFB6IVEGzJx4WqEpFlcrH+9ua6RdA+lkLgyz8xmlIHW1SwtbWxmygso64d
-         wQFlh0p0tMvcR6iEzVLnv/K4w9fxFCUeJjcXtNcFuFD99TWIPvQHtqjbgq3o4MGn6F3A
-         5f6MpfIPbAZPHbHNFYuQ3TVbhBMx53KqEnqH+owlteVcgKUBLKkWKlTUTijrXrND0oVR
-         KKHQ==
+        d=gmail.com; s=20260707; t=1793368374; x=1793973174; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id
+         :references:in-reply-to:user-agent:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=ZjCkrPgZkmpcI6klO5ZNTUrNouiYanWFs0XqwffC5jg=;
+        b=vPsIqfqYMcWRJ4rbWkXml6kSp2q11qbyeDun1W7E6bhUpVVVssc9gIr9xqylNJ/yds
+         FWrMGwOPW20Hnb2keBi9D4LHy1y8Ka8Hd/JAhescfVeSzRRioEzAz7VmN18KBsf/A5Du
+         Y2xcki/wmNFKv5/lOd0J8L1JVUIaunqBtRq33IHQz9jRrNzXTRMw/8ctl9TVQMmb7mzI
+         qvaSgwhIV4C8ZPbYRzlx32VqBhzOwiTVlpIaqSNcR0zPAcYs4jqTaeZcYde5ndYsmG6s
+         syInukzz4SRS/yZUlrIo6TwgU/DyiEBgeM6sJFb4ZSHCx4eGUAmreqR8XGA0sHvYf8E8
+         YT2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793368292; x=1793973092;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793368374; x=1793973174;
+        h=content-transfer-encoding:content-type:mime-version:message-id
+         :references:in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=szKIQcK4Y6tUERhcrUwO9hhUFFsNv+m6pizPQ1yqDLY=;
-        b=l54MScc6HSsU3dAtWJzKCR5xDm3XKYCRq4yTvBHB/iyAdQm4Li5z3GjfrLIecyHb7L
-         fOJYZgmdKy5QC9xbZvYPkmxoxf0cQV9Zh8RiqTO7lS4i7tR63SAp7VNWOjG6lLE0hX+v
-         BJVDt9AD6enbfjNa7hUdLC3Xgq1u8dA8ZU9uTNgS4gn5g77g96FesvtzoCAYMlWxh4rq
-         Bmq6oWulDWbDV6f/6WZw9QuGSTz3e73pmt51gOr7lQtSmzrgPbKquNZORwmWLnqwCEMj
-         Tym19ZEAXGvCdHgPPBsV5LT6YLn7lqXM5MvY4cIUq7lQhFjQDiSdvsBDUyNWMYQoCF7x
-         ifKg==
-X-Forwarded-Encrypted: i=1; AKwUvBx24o/Il+/ICrV9H8fWVtHl8cup2zxHYUqT6Axa/Q61be57Ccd5+f8pjrXhZHn59DnYAPHRqtk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJifTdCoG7r9/Ihc3sIFYUWiBEAz9B4DyExm9ukYcChEKwCooUg
-	Kz1SjdOKMflbs7oywJJM1+MGo/dw1RMBhpjAbnpn18KqaVna6HWV+u44vxoFqxRpDoog5jGB+Pu
-	qW2ziM8nxX/5IRRAdTG5Ks288IvtjiCtz/zBBXpZnVYqHSqwwgXt+fnNuEw==
-X-Gm-Gg: AYBFou37KB/cGG05v2pPYO6G9pVLhHuubDGAS2eGq3CEmr2WsTv7OCO1n/e1+9TizQU
-	OHiljG5I4zLfARrzcT0gmDNrJYOS3Nj8SlApd176DWuvtCCKaYRYNc+1tYi6P/4nud4lnfynB2T
-	eNNsHApTq9fNNWV9VY9Cx/k/KC4dlUvK8H8jMU8H9XF1KtJ8QN7Kllrgoo4/1nqSpU/Wly+hIj6
-	DpD2eb9Edp0vLq/4itmavQGiikZYJg717kX89z0WTd/x5tqTLzWn9DaBoLpkdcWajusm7rnTLwQ
-	ue8KUzgO15jTPV7R8qu2gSkJwuTeQz6GepBSwTyJTr+sQapegeB94UCWNelnUgOzL73XUcXjMoj
-	HOySByUQuMJ/80HB6rLyf6c+OpLmlh7cLyC2WNLr2hCQURDmVwd2i4pk9vc1Lqzan1BvlqQdfZ2
-	bFv9il3DyszKGH/0M=
-X-Received: by 2002:a05:600c:8183:b0:4a1:f9e6:f418 with SMTP id 5b1f17b1804b1-4ac19802178mr43295465e9.34.1793368292569;
-        Fri, 30 Oct 2026 06:51:32 -0700 (PDT)
-X-Received: by 2002:a05:600c:8183:b0:4a1:f9e6:f418 with SMTP id 5b1f17b1804b1-4ac19802178mr43295065e9.34.1793368292109;
-        Fri, 30 Oct 2026 06:51:32 -0700 (PDT)
-Received: from sgarzare-redhat (ip190-139-192-82.pool-bba.aruba.it. [82.192.139.190])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b80ecbsm3458621f8f.35.2026.10.30.06.51.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 06:51:31 -0700 (PDT)
-Date: Fri, 30 Oct 2026 14:51:26 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: jrmmhm.kernel@eldare.de
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
-	Bobby Eshleman <bobbyeshleman@meta.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowangio@gmail.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, virtualization@lists.linux.dev, 
-	kvm@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] vsock/virtio: clear vqs[] to avoid a UAF on a
- failed PM restore
-Message-ID: <auSZtMqcTz3r1nRk@sgarzare-redhat>
-References: <20261028-vsock-restore-uaf-send-v2-1-675aad6da714@eldare.de>
+        bh=ZjCkrPgZkmpcI6klO5ZNTUrNouiYanWFs0XqwffC5jg=;
+        b=LmZd086Ges92DrHgbsZDhuv4JXGQNRbMCVP3dEa6/qH+8vce0U2ldze5xUN8aazRMn
+         bvvNFoDmoSO6nfxRNz1Mw4+5FhhmxnpOhuvPrh7M+fM7dgGaSvX6Ah93HkRuY8moZHco
+         N+/Z0ABjN7l5EfDZ3EIkZ5GL6puT8g+rf8DxKkWs8DtEXazBgGIz2yJiuBIJjZlFHgPY
+         AHpK/4Nw3ftVXDoiurLXA4CRNdPR06t6Hp2JBos6+KsiVpBLxK+H64Ckk9EKG660TSVE
+         42y5avWxoEzyzduS+0pBfsMStTBPilJ/ae9Ii1ph1y+oRG/79q3pu64daI3JQUxFTYrF
+         fOug==
+X-Forwarded-Encrypted: i=1; AKwUvBwQQLlT2Wyd/WTSSl2Cidqk5mI9YiMYlwj5uCkJ0UL32CsCraGQRUZlaxSzJAHtKAbPXZ2m8Dw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLo7mTdT8vR9gbh7D2D9WK7hyqfNt1UD1N/Ze/gJXvgWQ3BVQQ6
+	gqHwP2dNBlAr5q/3GcfurWfx/ZYH3ZViuYgcv5YGYEetLffyuHpj2yG8
+X-Gm-Gg: AYBFou2nb6FtZOV6ocdQn99msX9eM2rIZSso/gi8NNwoBiXXDKjdGbjSGbDJfMc+stB
+	loM1LxL5Tu5/8MBczbEo4Ll4+iwIRL3+hPvhfCbYfDxw4g14J66Yot4fvzacO7cS3kb74LLMPBp
+	1+vBik8TX2n/JOmvJrdMhX+vKNHzzCCXpemWZQP5E4IJ5K2WrK8Cm+oidPs7WU48RCtXcsAIPUX
+	qSrfhZr1WJT6/3fxjP2laKSuN8012zf8yMi7Hai9a3hY3OJ/vtrKTnNa6yGWgWK3TBr7ATC3b3K
+	jWeVAOngaueDRt+dFEUVeHUT+N9nYWOCRtEfR1NeBqibYMwYvJL4VZZonLSkd9534N12kcZywD4
+	kVPe0Xa7fQbNaPWs/tkgk3/xvnO7jN/NO38i8ppujFSnI1twD8pZg0cdVyJrd4Igl7/2MH700KV
+	pXmChbDurmrCQr4Aa8BF3OYTJl7ri73j+6ihOe9kttWfrFIwGGb8npvgeKLjz6yE83+nnvdMDiS
+	nVsE3zy6vDzG0QJZbJxQCmxA5Fu7OlkSY8dDnKAfl0NpS6x2XUH2Dh1pXi18MwOtxIY/SnLdlQ2
+	D0eZ4qGH3NW2OK+QPJMbQrk///3n22AWwLwGNpo=
+X-Received: by 2002:a17:902:ffcf:b0:2e9:a782:bb82 with SMTP id d9443c01a7336-2eb364e93afmr22499015ad.54.1793368373608;
+        Fri, 30 Oct 2026 06:52:53 -0700 (PDT)
+Received: from ehlo.thunderbird.net ([168.138.199.194])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb38e9633fsm7600865ad.0.2026.10.30.06.52.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 30 Oct 2026 06:52:53 -0700 (PDT)
+Date: Fri, 30 Oct 2026 21:52:48 +0800
+From: Coia Prant <coiaprant@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Jakub Kicinski <kuba@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net_v2=5D_net=3A_pcs=3A_xpcs=3A_ma?=
+ =?US-ASCII?Q?ke_supported=5Finterfaces_authoritative?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20fb8d2d-a20e-472b-8f32-3fe2fec9a425@lunn.ch>
+References: <20261029102728.3189359-2-coiaprant@gmail.com> <20fb8d2d-a20e-472b-8f32-3fe2fec9a425@lunn.ch>
+Message-ID: <A049E9C1-CE52-4B04-8BD4-44962D008F6D@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -122,213 +102,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20261028-vsock-restore-uaf-send-v2-1-675aad6da714@eldare.de>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 28, 2026 at 07:22:43PM +0100, Jerome Mohm via B4 Relay wrote:
->From: Jerome Mohm <jrmmhm.kernel@eldare.de>
+On October 29, 2026 9:20:56 PM GMT+08:00, Andrew Lunn <andrew@lunn=2Ech> wr=
+ote:
+>On Thu, Oct 29, 2026 at 06:27:29PM +0800, Coia Prant wrote:
+>> pcs=2Esupported_interfaces is the mask of interfaces a given xpcs
+>> instance actually supports=2E The compat table describes what the
+>> Synopsys IP can do in general, but a specific integration may support
+>> a different subset: the RK3568 XPCS supports 1000BASE-X, SGMII and
+>> QSGMII in hardware, but does not implement the C73 10G or 2500BASE-X
+>> modes that the Synopsys compat table advertises=2E
+>>=20
+>> The Rockchip glue currently advertises only SGMII, since that is what
+>> the RK3568 MAC side supports today=2E 1000BASE-X and QSGMII can be adde=
+d
+>> later when the MAC side gains support=2E
+>>=20
+>> Without narrowing the mask, stmmac_phylink_setup() merges the PCS
+>> supported_interfaces into the MAC mask with phy_interface_or(), so the
+>> XPCS would contribute 1000BASE-X, 2500BASE-X, USXGMII and the 10G/25G
+>> modes to the combined set=2E The MAC side forces the phy modes and
+>> phylink start passes the mode explicitly, so this does not currently
+>> make phylink switch to an unsupported mode, but the combined mask still
+>> advertises interfaces the SoC cannot use=2E
 >
->virtio_vsock_vqs_del() frees the virtqueues via del_vqs() but never
->clears vsock->vqs[]. If a later virtio_vsock_restore() fails to
->reallocate them (its error path is a bare "goto out" that only unlocks
->and returns), the driver is left bound with a dangling vqs[]. The next
->virtio_vsock_vqs_del() - on a second freeze or on remove/unbind - then
->passes a freed vring_virtqueue to virtqueue_detach_unused_buf(), a slab
->use-after-free. KASAN on a guest with a virtio-vsock device on
->virtio-pci, after a restore made to fail by fault injection:
+>I don't know this code too well, but something does not feel right
+>here=2E It might be due to the way stmmac does PCS with phylink, which
+>is often considered broken=2E
 >
->  BUG: KASAN: slab-use-after-free in virtqueue_detach_unused_buf
->  Read of size 4 at addr ... by task repro
->   virtqueue_detach_unused_buf
->   virtio_vsock_vqs_del (net/vmw_vsock/virtio_transport.c:785)
->   virtio_vsock_remove
->   virtio_dev_remove
->   ... unbind_store
->  Freed by task ...:
->   kfree
->   vp_del_vqs
->   virtio_vsock_freeze          <- the preceding freeze freed the vq
->  Allocated by task 1:
->   vring_create_virtqueue
->   virtio_vsock_vqs_init
->   virtio_vsock_probe           <- original allocation at probe
+>What i would expect to happen is that each piece of hardware indicates
+>what it can do, and then phylink finds the common modes=2E
 >
->That second virtio_vsock_vqs_del() also repeats del_vqs(), which not
->every transport tolerates. virtio-mmio's vm_del_vqs() always ends in
->free_irq(), but after the failed vm_find_vqs() the device no longer
->holds its IRQ, so on virtio-mmio the second call also warns:
+>So maybe stmmac_phylink_setup() is wrong when it ORs them together?
 >
->  Trying to free already-free IRQ 51
->  WARNING: kernel/irq/manage.c:1894 at free_irq+0x23e/0x840
->   vm_del_vqs
->   virtio_vsock_vqs_del
->   virtio_vsock_remove          (or virtio_vsock_freeze)
+>Maybe look at other MAC drivers using pcs and phylink=2E
 >
->virtio-pci's vp_del_vqs() is idempotent, so the PCI case shows only
->the use-after-free.
->
->Clear vsock->vqs[] after del_vqs() and when virtio_find_vqs() fails in
->virtio_vsock_vqs_init(), and treat an empty vqs[] as "no virtqueues
->are live": virtio_vsock_vqs_del() then still resets the device
->(virtio_dev_remove() expects a reset device) and purges the send
->queue, but skips the detach loops and del_vqs(). find_vqs() cleans up
->after itself on failure, so skipping the second del_vqs() leaks
->nothing. Clearing the stale pointers follows virtio_blk
->commit 0739c2c6a015 ("virtio_blk: NULL out vqs to avoid double free on
->failed resume").
->
->The use-after-free was found with the help of an LLM coding assistant
->(Anthropic's Claude); the free_irq() warning on virtio-mmio was reported
->by the netdev Sashiko AI review of an earlier version of this patch.
->
->Testing: on a private VM with a KASAN fuzz kernel, over virtio-pci and
->over virtio-mmio (QEMU microvm). The restore allocation failure was
->forced with CONFIG_FAILSLAB steered by the fault-injection stacktrace
->filter to the virtio-vsock restore path only; a guest-root program
->drives a pm_test=devices freeze/restore cycle (so .restore returns
->-ENOMEM) and then unbinds the device, or runs a second freeze/restore
->cycle. Without a fix (v7.3-rc5 based) the PCI run reports the
->slab-use-after-free above. With only the vqs[] clearing (v1 of this
->patch, on net 363c8c79220d) the MMIO runs report the free_irq warning on
->remove and on the second freeze. With this patch on the same base,
->restore still fails with -ENOMEM on both transports and neither report
->appears; the device works again after a second, successful
->freeze/restore cycle and after unbind/bind, and a normal freeze/restore
->and unbind/bind still leave a working device. A find_vqs() failure after
->some virtqueues were set up was not exercised (each restore attempt
->failed at its first allocation, before any virtqueue was set up); that
->clear is covered by code reading only. The three single-VM tests of
->tools/testing/selftests/vsock/vmtest.sh (vm_server_host_client,
->vm_client_host_server, vm_loopback; 44 vsock_test cases each) pass on
->this tree, as on net; on both kernels the host-side runs skip the SO_INQ
->cases (SO_INQ not supported by the host kernel). The ns_* tests of
->vmtest.sh were not run (they need root on the host). checkpatch.pl
->--strict is clean and the fuzz-config build is warning-free. The
+>      Andrew
 
-Do we really need to write in a commit message that checkpatch.pl 
---strict is clean?
+Hi Andrew,
 
-Descriptive commits are great, but we're going a bit too far here. 
-Please include only the relevant information; for example, I think the 
-part after "Testing:" could be summarized in a few lines or removed 
-altogether.
+Thanks for the review=2E The comment is too terse, let me clarify the
+scope of this patch=2E
 
->reproducer needs guest root, CONFIG_FAILSLAB with
->CONFIG_FAULT_INJECTION_DEBUG_FS and
->CONFIG_FAULT_INJECTION_STACKTRACE_FILTER, and CONFIG_HIBERNATION with
->CONFIG_PM_DEBUG for pm_test; it is available on request.
->
->Fixes: bd50c5dc182b ("vsock/virtio: add support for device suspend/resume")
->Cc: stable@vger.kernel.org
->Signed-off-by: Jerome Mohm <jrmmhm.kernel@eldare.de>
->---
->The use-after-free was found with the help of Anthropic's Claude; the
->virtio-mmio warning comes from the netdev Sashiko review.
+The RK3568 XPCS supports 1000BASE-X, SGMII and QSGMII in hardware, but
+the Rockchip glue advertises only SGMII for now because that is what
+the RK3568 MAC side supports today=2E 1000BASE-X and QSGMII can be added
+later when the MAC side gains support=2E
 
-This is already in the commit description, no?
+On the stmmac side: I agree the phy_interface_or() in
+stmmac_phylink_setup() is not the usual intersect model, and it is one
+of the reasons stmmac's PCS glue is often considered fragile=2E But the
+DWMAC binding requires phy-mode globally (snps,dwmac=2Eyaml), so the
+dwmac-rk glue gets a fixed mode from DT and phylink start passes that
+mode explicitly=2E The OR-merged mask therefore does not currently make
+phylink switch to a mode the SoC cannot use=2E
 
->
->Changes in v2:
->- Skip the detach loops and del_vqs() in virtio_vsock_vqs_del() when no
->  virtqueues are live, so the teardown after a failed restore does not
->  free virtio-mmio's IRQ a second time (Sashiko review).
->- Use an empty vqs[] as the 'no live virtqueues' marker instead of v1's
->  per-loop NULL checks, and purge the send queue before the early
->  return.
->- Commit message: cite only virtio_blk 0739c2c6a015; drop the wrong
->  virtio_rtc and virtio_console references (Sashiko review). Drop the
->  commit ID from the code comment.
->- Tested on virtio-mmio (QEMU microvm) as well as virtio-pci.
->- Drop the Assisted-by trailer (removed upstream); tool use is
->  disclosed above instead.
->- Link to v1: https://patch.msgid.link/20261001-vsock-restore-uaf-send-v1-1-5da60f707506@eldare.de
->---
-> net/vmw_vsock/virtio_transport.c | 24 +++++++++++++++++++++---
-> 1 file changed, 21 insertions(+), 3 deletions(-)
->
->diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
->index 4f9aa9c4c3aa..bba594b7fc14 100644
->--- a/net/vmw_vsock/virtio_transport.c
->+++ b/net/vmw_vsock/virtio_transport.c
->@@ -714,8 +714,14 @@ static int virtio_vsock_vqs_init(struct virtio_vsock *vsock)
-> 	atomic_set(&vsock->queued_replies, 0);
->
-> 	ret = virtio_find_vqs(vdev, VSOCK_VQ_MAX, vsock->vqs, vqs_info, NULL);
->-	if (ret < 0)
->+	if (ret < 0) {
->+		/* On failure virtio_find_vqs() can leave freed virtqueues or
->+		 * error pointers in vsock->vqs[]. Clear it: an empty vqs[]
->+		 * tells virtio_vsock_vqs_del() that no virtqueues are live.
->+		 */
->+		memset(vsock->vqs, 0, sizeof(vsock->vqs));
+I've only been touching this area for the last few months, so I'm
+guessing it may have been intentional=2E You might want to ask Russell
+King, who designed the original logic, for the rationale=2E
 
-Should we move this in the virtio_find_vqs() ?
+This patch only touches the PCS side=2E It makes supported_interfaces
+authoritative on the PCS instance, so xpcs_find_compat() does not
+configure an interface the glue has marked as unsupported=2E Reworking
+stmmac's OR-merge into a proper intersect model is a separate, larger
+topic, and I'd rather not mix it into this fix=2E
 
-Maybe not for this patch, but for long term it could be a good idea IMO.
-
-> 		return ret;
->+	}
->
-> 	virtio_vsock_update_guest_cid(vsock);
->
->@@ -781,6 +787,15 @@ static void virtio_vsock_vqs_del(struct virtio_vsock *vsock)
-> 	 */
-> 	virtio_reset_device(vdev);
->
->+	virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
->+
->+	/* No virtqueues are live, e.g. after a failed restore: they were
->+	 * already deleted, and a second del_vqs() is not safe on every
->+	 * transport (virtio-mmio would free its IRQ again).
->+	 */
->+	if (!vsock->vqs[VSOCK_VQ_RX])
->+		return;
->+
-> 	mutex_lock(&vsock->rx_lock);
-> 	while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_RX])))
-> 		kfree_skb(skb);
->@@ -791,10 +806,13 @@ static void virtio_vsock_vqs_del(struct virtio_vsock *vsock)
-> 		kfree_skb(skb);
-> 	mutex_unlock(&vsock->tx_lock);
->
->-	virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
->-
-> 	/* Delete virtqueues and flush outstanding callbacks if any */
-> 	vdev->config->del_vqs(vdev);
->+
->+	/* The virtqueues are freed: clear the stale pointers, so that a
->+	 * virtio_vsock_vqs_del() after a failed restore skips them.
->+	 */
->+	memset(vsock->vqs, 0, sizeof(vsock->vqs));
-
-Same above, should we introduce a virtio_del_vqs() to do both and call 
-it in all drivers?
-
-Or skip del_vqs() if vdev->vqs is empty.
-
-I guess this issue could be spread around virtio drivers, so would be 
-nice to add common API in the virtio core to be used in all of them.
-
-That said, for a fix, this patch LGTM, my comments were more for a long 
-term work.
-
-With a fixed commit message I can give my R-b.
-
-Thanks,
-Stefano
-
-> }
->
-> static int virtio_vsock_probe(struct virtio_device *vdev)
->
->---
->base-commit: 363c8c79220d0db4d65dcd570529ddda15067cb5
->change-id: 20261001-vsock-restore-uaf-send-1fc7396fa1bd
->
->Best regards,
->--
->Jerome Mohm <jrmmhm.kernel@eldare.de>
->
->
-
+Coia
