@@ -1,49 +1,64 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793398206;
-	b=pCssJuyouW9/b5h5KqsI/958dte4w3/N9A5Rynmr/6DP3zi5FYotfXzOmg3lK9Po1lU6
-	 /7MZq8uYPGS8v8jjBkBzeJ2WxJ/iIS9HdwavHpSjJqy4Gx2vHtlyl/ku8VtTTayNxwy/m
-	 maT9K2qnI8We3gjWczATPn/XkZKicKzDWCNUc7ghjMNdFLsway9LrQK2XcLtPqTX/Gwtg
-	 lKwzEZFDDADmN6eg+vq9Vqz7gLxLBR9gJsbQ7DJN8SfqnaOvyb/qzFaguswYxFCvswIPe
-	 qmGPmEztMTMDY30xGI6g+RJ71wadwEG4J088jtvHDVZ2g95oL3cstkBSVaCu8MN8KsQ==
+	t=1793398283;
+	b=jjJhD/W4wdXDfSVl9bZzckiNv7SDTu2B3lLcU5qkyBoVl/+VUalN/mVEFTNOj1cLbPh8
+	 PHmeR2sGVwInyUqQh+Ic+c/ZXHV3VPyEPpjl3I8JNxlqYka5js1LpHrnS0ZzM4CLsy8Or
+	 sBgTPoaKgycfgQNDmuyDlWeV7Laa026VcPQ0gbB1r7U1cYVTCFXZ6R8flGQyq6bcCfVBq
+	 KkeHWJ+91A8g5zLVNdjypfTgSR2UMwLX6r66S6CLEIsVpg6WiFiZBcy2LN5WZLKAUdexs
+	 R/UZR7+KQxIAXEnW85dwVgxEA7xkwdKT5g1SEOBjeJjZlG2qGw7sHQgU+d6WGLIiBIQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793398206;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=CacpoIiwxOW4aqpf4E7cdOUOSLNbY/mAK7YBQamRQ+I=;
-	b=5tDgsFzErIYNMq/gPhe3eKcqymbACxChhnobH9QyDtjn5/bQvASxVx2pqlBoyNITltTJ
-	 Paievapg0jIBdTKYhZ8hLr2BbDY0L55fpeLQd2SWBbqk6Wo9oS1x4Zab5yFk/sB2WBjhW
-	 OTpXjm4upglCkc9/3CASl6If4QNMKwZ6n1tSU+S6LxaqMIqVu9EfegoIH/NAbN0CENU/d
-	 5kts3WmM7TsuifVYI+Qmls74zz/bpdFEy3g4ggeIKIiB5ZP+CvUFJminfMBNsu0YrgmJT
-	 3UtP62T0ANk8wVd/ugSerU3ALZdiXzQLC5y1P/yRWquPqK9KxHYUGnNWwjB7+Zg9xdA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793398283;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=/9Yi2qEaEo+04ZoHUXZf2/B+Xx4/Mv399Gk91xIUCYk=;
+	b=q8qXjip1VodBRmjXiHsACHxNP2CGDS4TfOv83rXaneUhvi6Synp24yjR5NCbzUGkM3Yb
+	 f7Vwb6oNS/6CfpuyGKD7EclbE0f3Rkxbuv1oHYuHo/4h1ew/qDQxJEwU4viDt/7F5u31z
+	 nJ8Gp232GlrezT8u0BMbN7l+9g+E33puhcawqLHfnHMNFccWwzg00yTPCtXJkw4psSkdM
+	 /NiebJWjcK4ybIsqm8WlA8Un8NdWsSa4oMkjWPiUBklc2nsrfoUK1ZDngaUnnzJSLnG6j
+	 ufdwI8ufuZh3o95DN37MoGkx5jkygj9sO6j4TxlzSktd5ujl095NcTZi8Bj/rZU8Dnw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LqGBxai3;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HnySJG0+;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F58606A31A;
-	Fri, 30 Oct 2026 22:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC39B606A31A;
+	Fri, 30 Oct 2026 22:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LqGBxai3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60181F0093A;
-	Fri, 30 Oct 2026 22:10:05 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HnySJG0+
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42261F000C1;
+	Fri, 30 Oct 2026 22:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793398205;
-	bh=CacpoIiwxOW4aqpf4E7cdOUOSLNbY/mAK7YBQamRQ+I=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=LqGBxai3uwM/30lxdhdBhrx6t56DkrPZUdbX9baeXbLJFQjj90xSha58D9meY30aw
-	 B4CYQhb9SYt8+4yJ9MewYj9k/eXAgXCEdC+aQP3Ea95N1zbZMgSIr2oW8m3++n10g3
-	 Ayvowi0RPQWkQWBCc8CqQq/wwto3zq5ZytfVIcKw2VlLGH677tGXB3UYW1XbbQoNw3
-	 o9+3Bw2arMfNe5faj4OjqnCntdgmrGyeWY2nkQ/HXOYKD/illcVj/H8cSqU89BimgU
-	 2PQgF01Ap6Q+1pdg+GpsGZh4BE/n6GZGv7ZO3V8+vkzMZttSoZ3WiOVf8MOKbcrv9r
-	 s/81IXNvoSAXA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA3D43800478;
-	Fri, 30 Oct 2026 22:10:05 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1793398282;
+	bh=/9Yi2qEaEo+04ZoHUXZf2/B+Xx4/Mv399Gk91xIUCYk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=HnySJG0+PhSd4KA2MAruKVkCmkwyt8YHxIivdI1WGSeB4mnZPdi31lryacPPx9gcv
+	 HnZ/lpU0hqotrTFDri3W18cYFwDYMD5kuNEzCWEp12zeVcPHTfPu+/wqhfh5svWfAc
+	 79Q3D8KkNPjymgCkd5HxpNkPPRp6ZR8m9N2kzi54e/FWL4bYmbOzYBeVD6Lwucu7EL
+	 bzt23/INkEdFb2ss39dmy+MthJjH9EW1O7Ixt8L1Y/qS00dXtgwT7Se6C5Tuqm9CS4
+	 Tu8Iuu/fjXPJyeR8DHm7wHAuzfbKLx8s98VUZ7fDTJCl3YIQ2a5WTuGURXauK5fvqH
+	 HHopjc1lDCzcg==
+Date: Fri, 30 Oct 2026 15:11:21 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Doug Ledford <doug.ledford@hpe.com>
+Cc: Slingshot Open Source Team <slingshot-os-team@groups.ext.hpe.com>,
+ "Nathan Chancellor" <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+ "Richard Cochran" <richardcochran@gmail.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Sumit
+ Semwal" <sumit.semwal@linaro.org>, Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, Guenter Roeck <linux@roeck-us.net>,
+ <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <linux-kbuild@vger.kernel.org>, "Sandeep Bhoot" <sandeep.bhoot@hpe.com>,
+ Iraimani P <iraimani.pavadai@hpe.com>, "Mamila Santosh"
+ <santosh-kumar.mamila@hpe.com>
+Subject: Re: [PATCH 00/23] Subject: [PATCH net-next 00/23] net/hpe: add HPE
+ Slingshot NIC drivers
+Message-ID: <20261030151121.1f232b50@kernel.org>
+In-Reply-To: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
+References: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,44 +68,12 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] sctp: account for chunk padding in sctp_init_cause()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179339820455.1798442.18307539223937960628.git-patchwork-notify@kernel.org>
-Date: Fri, 30 Oct 2026 22:10:04 +0000
-References: <20261027082405.1297-1-shengshilingmu97@gmail.com>
-In-Reply-To: <20261027082405.1297-1-shengshilingmu97@gmail.com>
-To: =?utf-8?b?44K944O844K544OI44Oe44OIIDxzaGVuZ3NoaWxpbmdtdTk3QGdtYWlsLmNvbT4=?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
-Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Fri, 30 Oct 2026 13:58:56 -0700 Doug Ledford wrote:
+>  416 files changed, 185137 insertions(+)
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue, 27 Oct 2026 17:24:05 +0900 you wrote:
-> sctp_init_cause() accepts a chunk when skb_tailroom() can hold the
-> cause header and the payload. sctp_addto_chunk() then writes 0-3
-> bytes of padding before that header so the chunk stays 4-byte
-> aligned. The check does not include the padding, and the following
-> skb_put() calls skb_over_panic() from softirq.
-> 
-> Count the padding sctp_addto_chunk() is about to write. The cause
-> length on the wire stays the header plus the payload.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] sctp: account for chunk padding in sctp_init_cause()
-    https://git.kernel.org/netdev/net/c/ed6c53b27be4
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+=F0=9F=A4=A3=EF=B8=8F
+--=20
+pw-bot: cr
