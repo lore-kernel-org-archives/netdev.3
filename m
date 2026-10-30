@@ -1,133 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793374535;
-	b=zQV9hslW9BDpwDurmMuVRPBjE0RO9g0wbjQWkm56ZH54xQdN/ik0dcoBXaPh1Z1Gpc4Y
-	 50HnIEcVniK/qIh1z9B90BB6RvNzG4VSGFw+WGvYsdXIJFwnvQDsU+xbXsKE6O6PVedTu
-	 j73Bw2AcgTH9+bz6Lql+4Rk6KQjO5cy0ZNOJa81U7Ta0W67JCLBGUQdE2vZOhs5NyT2se
-	 4sg2YtatAYvvFEoEZdOlfSZx9I0tdFu5g83bPBVBHIHBdffMGTd8L7JRot94Rx0yYzGvP
-	 Z5h1onpmIn7qXJI7G5fB5EQGBbDCjNmSX3NfTQ4NpClVelwOvsokbRi+S33vDa3oCcA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793374535;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
-	 References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=ER6YDPP1rBLp1ZGxBM9Am6tMgfb/xmNMpdowZy+wRq4=;
-	b=t+WNLSd3YBu6ZPynNSrjLrDHpZx3in6j3R4JR/3cFd4bLndDwHW0xo2wEaQ/RjocZYag
-	 OBTU+hcLj6nnI9VoedFN5x84ntMTp4zD10dMkPytLdTDt/F4n9AL8Lgk2fHBJ+Bc/EVio
-	 4b6WMjP/eIK3pg4vSLQr6vgq/PSQI2X72lYMxpzOtjpOHMdSNhOPdaMjdio1ikeLLCeDW
-	 NeDXvD8g/xwxDlcgSEXpj0wfUzL9eqsOKI5lAgGioYF2i23MSVaHvFsohWRgyB/y7eDTL
-	 kUm4qjSzn8YB9AFsmsKPYQiZxMrkDwoYtxwhyhH68dOSYhcVsNbTkubehzmaS5nwh0Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GduDMHEd;
-	arc=fail smtp.remote-ip=192.198.163.13
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=149.28.215.223
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793374541;
+	b=2KN2einCEwuKbnW0M0mF1kW9fegNOnRfh859wLtasEpA3dvLm+0J3hEsLCzFXQOUmf68
+	 1c/TjsqxxUMLHHO/bmhnqls/jQRdoCJ1L37M51ey8SfI486R6TWpzu38W1rt8GcysbYJn
+	 1KusRsEbV/hVKaHqUpdlyY8JBXqaLXWKHGW8PDLaWxhMNYmT5rsbTuFh2xgCI/by3sT6y
+	 BeQEYlx+6TF02JAkaqwmhr3EwZiUo7NblinLb3xhZOFLSON1TknDv2MZLssSmg/lRRLoZ
+	 qrvZ+DCICZ04RyHzF5LTVnvSDJoQygiXEbjL0REkV5kf/DQ/ccFl7rZp28NJLZkr3Rw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793374541;
+	h=DMARC-Filter:DKIM-Signature:X-Forward-Email-ID:
+	 X-Forward-Email-Sender:X-Forward-Email-Version:
+	 X-Forward-Email-Website:X-Complaints-To:X-Report-Abuse:
+	 X-Report-Abuse-To:Message-ID:Date:MIME-Version:User-Agent:Subject:To:
+	 Cc:References:Content-Language:From:Autocrypt:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=fMxdmQyFME9L1n77Z81SAQMq62mqaAtJxwWzXEaVgck=;
+	b=gcUYIY7RhWm1+8eyuy6AlRZgJ6qfoYWc9GYpwG++8YkqSar2y5ib51RCBhL4cvHkpVQQ
+	 V7i2jX1kf63U1kOj5ft5t42QGaWmKSwUM04SIYEmz+xq1mt3cTpJoKcduZRkT75xn06b2
+	 +eoxFyeBgv0CFUOnb8V7VDMky4cDIwSQV1HQlZcDvAzK3yprW76vMRb8xrIWJrRvM5o0q
+	 RK2t9yDq8t8kq0MYChhqa9JCGQS4R0XzHGC6cPCf9raEcsZIohGnkqxtF0waTsmoLZB9j
+	 QfMUYigSAXf8bGFW9xW6j6oe6QvfFKxpsVSf59Z3Nkle6vwuhfRTDTicETI/WxZ8srw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=ovn.org;
+	spf=pass smtp.mailfrom=fe-bounces.ovn.org;
+	dkim=pass header.d=ovn.org header.i=@ovn.org header.a=rsa-sha256 header.s=fe-13eddc7e57 header.b=g4KvcOil;
+	arc=none smtp.remote-ip=149.28.215.223
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [149.28.215.223])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867B2606A329;
-	Fri, 30 Oct 2026 15:35:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 867B2606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFFC606A326
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 15:35:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AEFFC606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GduDMHEd
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793374535; x=1824910535;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=+C8yKhR+gRLql8NlBeyf3Ih/xWGsIyHy/dKe2te41Iw=;
-  b=GduDMHEdXXr8y/Np7/SXsSmlPGdaWnWwN0imHBDxNl1WT69QttbQlC5q
-   zZt5m16X/E1ndITKQ5kHM47uR9tstNKH0h+oHdv2q2Yf64Nc1cBPXQWO6
-   trEpzNhZj+mhvpF439s9/sAxcUEv01omZFYMrAN8KludqX7/JVi9bP8Fx
-   SB2BvL0WvjjF1Zn3t5i0FuPxC6Pj4yOx/bHlAlX9DDQrBjWOQonpoOhwm
-   dLd28d7LOcnSFheejiUcdVtGSVvSIxXLXg3LIwWd9yESp67RCPjDIdcDr
-   1VF65oit+UG30e/UI17vEgXnleT7l665zL6qeuvuRfDEWf5T9qZPsTJ1b
-   w==;
-X-CSE-ConnectionGUID: ivSnVAbGTEyJZoLl/Dkccw==
-X-CSE-MsgGUID: 9uOIzK5wTUalt+HmGNoFyQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11951"; a="2134458"
-X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="2134458"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 08:35:34 -0700
-X-CSE-ConnectionGUID: 7c8P7VKXSaK/RnatDG7hCA==
-X-CSE-MsgGUID: mqO1ZYLbQXiFDKMdpi5mPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="5366949"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 08:35:34 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Fri, 30 Oct 2026 08:35:32 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Fri, 30 Oct 2026 08:35:32 -0700
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.21) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Fri, 30 Oct 2026 08:35:32 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fVD7Sh143MWMdDWWH/m6FUnKcgcfWqoNqmKtIVruxFJxQ8BT31ZSByLQ9hCC3auUzRw5Dj2lZ284ZddsNu7kxJccrZ7Ql3CHz545tL30v9mP/i87DRk9wfyGnlS7fyaVfgDU4rWIHENtR4bxOYokCVoZfX8ckYC8hgenS6QqNJRK/mHlbLtL7qaAFa7PynBCsKeHH4ZoOOezNjCQomQAS+GY1c9ffDgX8Qd/3gXOC4sSP9P76YihH5SvZkF7gD87DFSuF3nAs1+P37es/43zAWD/Po9R5wsmIpMOPFQRJTuqFQR8bwX5VPFDAuKF08zVmzWjpn0rboVij8T/IPzqlQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ER6YDPP1rBLp1ZGxBM9Am6tMgfb/xmNMpdowZy+wRq4=;
- b=q7AMCuiit4WuLusF+YA7V2llWAi7sTTFjAzA5WwwvJRMNKa9Pg8RYmKLDfBb907BQJtFOj160V7fF9zEcNS1QyeMGS3NLZBX6GqUJUf54V2J6gHdz63GW1i55w/FqA0b1ttudjJnYLPdSHjLjoEaQJ+8w/9eQRFCUHnZfrgIBDGrpfRQ/g57Xk0HcnbytXg+atEFWjepZkEk9XEAvoEDDMbmsEMmqwpgjq2TedD4TeRn2xulBoQhpJXoa473M/S9jNhgtyLWXAbq9xs7IHV/S+XSiMz3Y4vrJQ7vKJ1pmm1hzbkk8RvYEFembQIwEgjTPHJu798DkbMVZg5TM3vF3g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
- by SJ0PR11MB4928.namprd11.prod.outlook.com (2603:10b6:a03:2d2::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.10; Fri, 30 Oct
- 2026 15:35:30 +0000
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::6aa:411d:4bfa:619c]) by DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::6aa:411d:4bfa:619c%4]) with mapi id 15.21.0569.008; Fri, 30 Oct 2026
- 15:35:29 +0000
-Message-ID: <03c17d6b-452a-463d-8b33-2a2aa1819ef4@intel.com>
-Date: Fri, 30 Oct 2026 16:35:21 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] idpf: free the skb on TX DMA mapping errors
-To: Mina Almasry <almasrymina@google.com>
-CC: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
-	<przemyslaw.kitszel@intel.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Naman Gulati <namangulati@google.com>,
-	"Andrew Lunn" <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-References: <20261024030401.852598-1-almasrymina@google.com>
-Content-Language: en-US
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-In-Reply-To: <20261024030401.852598-1-almasrymina@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TL2P290CA0030.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:3::16) To DS0PR11MB8718.namprd11.prod.outlook.com
- (2603:10b6:8:1b9::20)
+	dkim=pass (1024-bit key, unprotected) header.d=ovn.org header.i=@ovn.org header.a=rsa-sha256 header.s=fe-13eddc7e57 header.b=g4KvcOil
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ovn.org;
+ h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
+ Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
+ s=fe-13eddc7e57; t=1793374534;
+ bh=fMxdmQyFME9L1n77Z81SAQMq62mqaAtJxwWzXEaVgck=;
+ b=g4KvcOilBhN3qVzxsrDZG+Ed0eBq9VYlyGevNYMGQbQ5af/AgTjaYDjq1OrUm0Giq8xrLIbuT
+ INEBeW0TXjwFXKpXgsdHe5dJqUInglX3Y47UDhCQJLB6AQRhKZt1enR7GTr4Rtj6WhVcgjUrp85
+ 6MBw8VQSvM7MXVih2vdPzDs=
+X-Forward-Email-ID: 6ae4b93f7a1ddf7160eb7c98
+X-Forward-Email-Sender: rfc822; i.maximets@ovn.org, smtp.forwardemail.net,
+ 149.28.215.223
+X-Forward-Email-Version: 2.18.12
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+Message-ID: <9a29aa0d-81ca-4406-83bf-ccbe55d0b2fa@ovn.org>
+Date: Fri, 30 Oct 2026 16:35:23 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -137,130 +63,190 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|SJ0PR11MB4928:EE_
-X-MS-Office365-Filtering-Correlation-Id: 27e69ab9-8f77-4ca5-5819-08df369b6d4d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|23010399003|1800799024|261026140227099003|261022105027099003|261026121527099003|261028144727099003|261009223027099003|261021121427099003|56012099006|11063799006|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: 58BFAh4It0y7CcMQxDUjcN3NE0v4Ry7an3T2KIYYHRPM4nr+MUAA9vy4EXpnX3Gwjq8KWOsQb3gbzr6dOrIIe6lSU8b1Rjh5gvmV9EMT6vOuo49pZY/A3uC2yeJUrGFVUn6/FDIBdBsG7VNI78dmxtkJeb2u7CGwkuHnjxyNP2JZTrGzTQTA0hOze3GEcyLRN8FRn1UkwZAOYiYIc3ggo8jBeyGkIG7ID/+LKdiOV0pAteTfp6memZ+KMm5HcWcpKoFxNRxfv8Ath8BTGhH02q9YIX8Yi5YoP4q3g3Sq/bZkj23DE+aUHr084RYEA+wy8ZixH1BpuYBEyJAiFL0aTzCqCNt43mSgtTCi5ywGLyL0IAxGBaeZ9AwdIDsHKsPvNeV2yhY1ceP4dSyscrsrJfPAa3QuHmqILHuHkonUnr/1RDr7VC8dkcA74YVHZkoVNYrKlO2WnCFocRoN95S0wOsdKMIzLVdHRLvhj7xbJjV17gClkT1Opz5aukZhrFc5yYXzVziJ5W/x02w7FHZq7dE3Ftm6t6uGP0gyil2KuvJxCE/M/ba7gWZzSozdrVJHi6eGkH+3hCeWth7aeF/Z8WQ4I1oBA8/YQpEkNgjKbbKP4HgeMQRKQjdDDn6YIZu7N9QTf+4BftWaHtv2Zwzn5jJXvBhJ1G5YvT7yZWJVvRo=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(23010399003)(1800799024)(261026140227099003)(261022105027099003)(261026121527099003)(261028144727099003)(261009223027099003)(261021121427099003)(56012099006)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L255OXdCYjBIWWtKOWg0SlJYSlZWeDNTUjF1Tnd0RVd2eUNtYlZIcExYTzR1?=
- =?utf-8?B?Ty9KSDFnQ0t4Y0dpb0gzSEZqaWFoU1ZleGJYKzNQZHdvWnp1aExpMUEwekZR?=
- =?utf-8?B?aktTVDkvRFNHa0pnY291d2tlSDF0ZGozdDVZdVJvVUdLYUtoTHVPV3JYRW5a?=
- =?utf-8?B?aDAwd2NETzJ0R1FtL05oNUE2NmEzdUVadTFtR25FdzlBd3dPc1BtQ0h5TlNT?=
- =?utf-8?B?Qm5KUnMvNzdSd2srckdvT2lWWjd5SDRFbUdYUWt2bkY1VXNVV3J5R1pLQTkr?=
- =?utf-8?B?N3dzU2J4RHBLcFFRMzVhV3l3QWhON2RDejg3SEtQUjJxOCtqZ1ZVdUFiRHZJ?=
- =?utf-8?B?UEtTZmtwa3lRY0pRemlPeWRidXhQdU1PVFdDaW9lU3A4S0ZBSjdJSW9ZdmpO?=
- =?utf-8?B?eTNuM1hrK2FUWG5ZVS9wNkErdFpITkQvOWg4RDMzVHJ5UUlpdFpvWWZ6elky?=
- =?utf-8?B?RkZzMGdIclRBUmNQSTBWMUgycE9hdzZ2Zkh3dHh6SDd4MWR1NXJQSG5yZWtE?=
- =?utf-8?B?WWhkcTVTRFg4NEpTUXNzTCszQ1dCRHlSaGJDemNTZFZsZWhCak9OczFkcHh2?=
- =?utf-8?B?VEwvN1hCSE5XWHpxQkVFMXVWNlNhU0VzWmxWaXhUVlBwem0raEZWZ0ZKMmVp?=
- =?utf-8?B?RmNSeVJsWjBxdERNd3NCMlYwSXJaT2FVVkNMRWdyaEJZdmRXSjcveWxSdk03?=
- =?utf-8?B?VnRqNXpNTVgxTHNWWWMyU2ZTRGVGZExoMGZuYUxwQWs5Tm1JQ3gwbi9QSGlE?=
- =?utf-8?B?YTMyd3pQdDRlMHVNSWZpalI5TDAxSWE2T0xUWC9SdlQrc08wV1VpMUk2U2hn?=
- =?utf-8?B?UVBPV1FjLy9Zc0tOWEM1dGVQSU91ODhrTDA2d1IzUVpod0lHbWRGSjU1VjNw?=
- =?utf-8?B?Y2wzUzBZenoyc3I5bndEZmowVUtNMWR1Uk1OOXZOcllNOVNIQzFHUVVpUFhG?=
- =?utf-8?B?TWlUUm5KWEhNWmZ2b1NLY2hrMUFZQ0JuOHY5blBZY0w1elNFOVlqNzJpTkhG?=
- =?utf-8?B?Y3dOZlNjeFZNdEcvZXN5RW45aUxNVVd6OUphcEpPQzFtVkFsQjJyOFkvQklm?=
- =?utf-8?B?cE5jWHIyZjc3bFd1NC9idzR6dEhIOFNGWTdkZ1pxVndJYW9sNjdCaDZiWXVO?=
- =?utf-8?B?QzlQcCs1M1ZxUnRhRldBMFIxQ3RTUTdTbjFhN3FKSUFzODdSVWVSME9tNlNv?=
- =?utf-8?B?S2p6RWtqSHpLZDVHQmhlUzhteWM1N3pUb1l3YkJqNWZiRk8xQVlQaElwMU96?=
- =?utf-8?B?RExOSXlhTGhqSm9rY3RXYlNVanRncVR6aHlxa0g5d25MdGx4dUQ2UEJKeGdk?=
- =?utf-8?B?Y3J4Q0YwV2FmNEp3WjA4bEhHenQ5ZXJrcDdwT29oUE1jOThWYVVOaXpabmhM?=
- =?utf-8?B?K3hpVVFIQmtoSGJ2Ujh4ZjUvU0JndG5kQm1ZL2JEekxIUk10UXdlcVkwaStw?=
- =?utf-8?B?aGtaeFlxMUxhOE5oQVBxVWxzblY4eDhxQzFPZzFBVzdrbmF0dkxCSmF5Vksy?=
- =?utf-8?B?OTMzdi91L245bmhlT2E0U3Q0TnNUeTU2VUFwRHQ4aGF4Q2ZveDVsMHovNnVu?=
- =?utf-8?B?OEV1ZHhYVi9FUnNSOHBOMXRqR25OMklwQ3NveEhEdDZqT3RqWERBQUMyZXdv?=
- =?utf-8?B?b0FoeTB2WGhDakQyN01QMkROc1RFVGh3bkFaUGN2bkRmTTBaM2NURnZ5SGdh?=
- =?utf-8?B?KzNXZnlPU01nRHlRNmdIc0FIenhxUWZZaEV3T2wwYWJLNUMyWm16RDBKTVRY?=
- =?utf-8?B?RmhSTFhQREo2ZEhZZWJZR2hzSkdVVTlXeUJCalNqRHJNWnpyL04yZ1BtR09G?=
- =?utf-8?B?UEFZMXRidnUrZFQxdThhdEdMeEsxYlFYVTJ6ckNRMGVaMjlQWXJjWUwrY28y?=
- =?utf-8?B?aG5JM0tvbkJvbWhkU0V6aGpmMStMRHNaTCtsK3ZBbXJQbk1wbjYxOW4rOGpP?=
- =?utf-8?B?WmRxR1RoRkhNN0RZVThGSldvYkRJQ3NzRVhzMXF6VTA4QmJjaUdhOVdqcUJy?=
- =?utf-8?B?TEMwc1JtdVVlZ2hHbm96cnJlUUovUG52L2R1UGNITnEwbmx5a1Y5U0NwNWpH?=
- =?utf-8?B?ZTJ2ZVk4UTJoTVNVTXpkcU5wd2lKbjNXWjBxbithYkNqTGJqUE43NHJGWGRN?=
- =?utf-8?B?QjFXd3RwZllKRHdSeFRQSVVwL0Ezd1U1RVREbStyWEFnRGZxVVpIRldaQ1Ir?=
- =?utf-8?B?WjJrYnlRRnhZeWVNbHlOaDlzZGxiMFM1K1dlNkdoOHhYcnh1aU1nZVI2VElW?=
- =?utf-8?B?c2hwRG50bFJuUnR6TjhTaFJqdHJDWlNMZlRzbjhzcTB4K2hWVWp1S1NaT1Zy?=
- =?utf-8?B?NHBCcXg1eWM5bUhyWjdld1RvVXZsYVhRc04waktGcW1MdE5iYjl5YzBTeVpw?=
- =?utf-8?Q?1saC1g/qC8OG6EH8=3D?=
-X-Exchange-RoutingPolicyChecked: 0uAaDD/L4QeIR1mK+yGjkXTK45ZwahBcmw5U8xTwTjfJlOZhbMK6aAwpk7APBClIWC2C2n+m0dWduFIgmNJaB4J02q3j/SI8OOn98UzAccS1F5oehL4VqgP6R5S2gxSET/R7qUXZoXXjz5U2wcVp98oIT6ItuAx44coxwdz3Sa2Rjrukr0pUM3nrbA2h1yTi2XOhnC7BHbc4DM+nUg4Q0f25N6tB6l4NWX1DPIRLTj5lG8XV9htcuUQrYo8B/EFIL17DRxl7NIpGRcQsZicLPNgd1LfWLgf9quRlRbUKiyKahYD8StlXCXhco2pdNwwmPCWwNB1Z2qYLLupJBrgETA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 27e69ab9-8f77-4ca5-5819-08df369b6d4d
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 15:35:29.4499
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GyvJczO+hz5JbTTObCL+4+cO6EN+ibu7y4Mker2Kvf+X3dMX+HHvkdSiZstTQj4JTVTodt5YhCRg5p6lo+ZIt6p2GGo2xsJECE9t66hTvFY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4928
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: openvswitch: make transport checksums writable
+To: Aaron Conole <aconole@redhat.com>, Ilya Maximets <i.maximets@ovn.org>
+Cc: Kyle Zeng <kylebot@openai.com>, dev@openvswitch.org,
+ Eelco Chaudron <echaudro@redhat.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, outbounddisclosures@openai.com
+References: <20261030042304.74291-1-kylebot@openai.com>
+ <be4ec40b-ed32-41e3-b564-2acfc63f651f@ovn.org>
+ <f7ta4nvjl2x.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <f7ta4nvjl2x.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Mina Almasry <almasrymina@google.com>
-Date: Sat, 24 Oct 2026 03:04:01 +0000
+On 10/30/26 3:53 PM, Aaron Conole wrote:
+> Ilya Maximets <i.maximets@ovn.org> writes:
+> 
+>> On 10/30/26 5:23 AM, Kyle Zeng wrote:
+>>> An IP address rewrite can execute even if the transport-header pull in
+>>> key_extract_l3l4() failed. In that case the transport key is cleared,
+>>> but the IP protocol and transport offset remain available. The address
+>>> rewrite helpers check the total skb length before updating the transport
+>>> checksum. This does not guarantee that the checksum is in the linear
+>>> head, or that it is writable.
+>>>
+>>> A non-linear IPv6 packet with a long, valid extension-header chain can
+>>> therefore cause an out-of-bounds checksum read/modify/write when the
+>>> GFP_ATOMIC head expansion fails. KASAN reports the access in
+>>> inet_proto_csum_replace16(). The IPv4 TCP/UDP and IPv6 TCP/UDP/ICMPv6
+>>> address rewrite paths all have the same missing check.
+>>
+>> While sending patches, make sure you Cc all maintainers.  And you need
+>> to specify the target tree, which is 'net' in this case.
+>>
+>>>
+>>> Make the applicable transport header writable before changing an
+>>> address, and propagate failure through the existing action error path.
+>>> Reload cached network-header and address pointers after the operation,
+>>> since it can move the skb head. Preserve the existing behavior for
+>>> unchanged addresses, truncated transport headers, non-first fragments,
+>>> and IPv6 destination rewrites that do not affect the pseudo-header.
+>>>
+>>> Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
+>>> Fixes: 3fdbd1ce11e5 ("openvswitch: add ipv6 'set' action")
+>>> Signed-off-by: Kyle Zeng <kylebot@openai.com>
+>>> ---
+>>> I have a reproducer for this issue and can share via DM
+>>>
+>>>  net/openvswitch/actions.c | 60 +++++++++++++++++++++++++++++++++++++++++++++++
+>>>  1 file changed, 60 insertions(+)
+>>>
+>>> diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+>>> index 12e339cbf791..36c2a1963222 100644
+>>> --- a/net/openvswitch/actions.c
+>>> +++ b/net/openvswitch/actions.c
+>>> @@ -319,6 +319,35 @@ static int pop_nsh(struct sk_buff *skb, struct sw_flow_key *key)
+>>>  	return 0;
+>>>  }
+>>>  
+>>> +static int ensure_l4_checksum_writable(struct sk_buff *skb, u8 l4_proto)
+>>> +{
+>>> +	unsigned int offset, len;
+>>> +
+>>> +	switch (l4_proto) {
+>>> +	case IPPROTO_TCP:
+>>> +		len = sizeof(struct tcphdr);
+>>> +		break;
+>>> +	case IPPROTO_UDP:
+>>> +		len = sizeof(struct udphdr);
+>>> +		break;
+>>> +	case IPPROTO_ICMPV6:
+>>> +		len = sizeof(struct icmp6hdr);
+>>> +		break;
+>>> +	default:
+>>> +		return 0;
+>>> +	}
+>>> +
+>>> +	offset = skb_transport_offset(skb);
+>>> +	if (unlikely(offset > skb->len))
+>>> +		return -EINVAL;
+>>> +
+>>> +	/* Truncated transport headers have no checksum to update. */
+>>> +	if (unlikely(skb->len - offset < len))
+>>> +		return 0;
+>>
+>> All the checks above are already executed at different places on the same
+>> path.  With this and the new checks in set_ipv4(), the l4 protocol is
+>> checked at least 3 times for no good reason.
+>>
+>> While inability to update L3 header is fatal for set_ipv4/6(), failure to
+>> update L4 checksum should not be.  And so, there is no point propagating
+>> the error.  If the header doesn't exist - there is nothing to update.  And
+>> if we ran out of memory trying to expand the linear parts of the skb, then
+>> we have a more significant problem at hand than a non-updated L4 checksum.
+>> In the worst case, the destination will just drop the packet.
+> 
+> Agreed.
+> 
+> We already do an skb_ensure_writable() on entry into the set_ipv(4/6)
+> functions that covers the IP header portion.  It's probably too early
+> there to try pulling, unless we want to bleed protocol details up one
+> level, and propagate down whether or not something like a pskb_may_pull
+> had an error (to skip updating the l4 region).  That would mean doing
+> the re-assignment of nh once.
+> 
+>> Can we just replace trnasport_len checks with skb_ensure_writable()?
+> 
+> If we do that, the nh can become stale within the scope of the
+> set_ip_addr function, too, I think (skb_ensure_writable inside
+> update_l4_* functions pulls and potentially unclones the head to a new
+> region).  So we might have to change the set_ip_* functions to fetch and
+> re-fetch their own header details.
 
-> From: Naman Gulati <namangulati@google.com>
-> 
-> When a DMA mapping fails in idpf_tx_splitq_map() or
-> idpf_tx_singleq_map(), the unwind walks the buffers with
-> libeth_tx_complete(). The first buffer is still typed LIBETH_SQE_FRAG
-> (or LIBETH_SQE_EMPTY if the linear data mapping itself failed) at that
-> point, so it is only unmapped and the skb is never freed. The callers
-> return NETDEV_TX_OK and do not touch the skb either, so it leaks.
-> 
-> Free the skb at the end of the unwind.
-> 
-> Fixes: d9028db618a6 ("idpf: convert to libeth Tx buffer completion")
-> Signed-off-by: Naman Gulati <namangulati@google.com>
-> Signed-off-by: Mina Almasry <almasrymina@google.com>
-> ---
->  drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c | 2 ++
->  drivers/net/ethernet/intel/idpf/idpf_txrx.c         | 3 +++
->  2 files changed, 5 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-> index e3ddf18dcbf51..010903260ff6f 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-> @@ -228,6 +228,8 @@ static void idpf_tx_singleq_dma_map_error(struct idpf_tx_queue *txq,
->  
->  	/* Update tail in case netdev_xmit_more was previously true */
->  	idpf_tx_buf_hw_update(txq, idx, false);
-> +
-> +	dev_kfree_skb_any(skb);
->  }
->  
->  /**
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> index 885df6294ad94..a92e2457781e6 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> @@ -2606,6 +2606,7 @@ static void idpf_tx_splitq_pkt_err_unmap(struct idpf_tx_queue *txq,
->  	struct idpf_sw_queue *refillq = txq->refillq;
->  	struct libeth_sq_napi_stats ss = { };
->  	struct idpf_tx_buf *tx_buf = first;
-> +	struct sk_buff *skb = first->skb;
->  	struct libeth_cq_pp cp = {
->  		.dev    = txq->dev,
->  		.ss     = &ss,
-> @@ -2621,6 +2622,8 @@ static void idpf_tx_splitq_pkt_err_unmap(struct idpf_tx_queue *txq,
->  		libeth_tx_complete(tx_buf, &cp);
->  	}
->  
-> +	dev_kfree_skb_any(skb);
+Yep.  We could drop the 'nh' argument from set_ip_addr and make it just
+use ip_hdr() directly in place of it.
 
-libeth_tx_complete() frees the skb.
-Before this loop, it's called on @first.
-
-> +
->  	/* Update tail in case netdev_xmit_more was previously true. */
->  	idpf_tx_buf_hw_update(txq, params->prev_ntu, false);
->  
 > 
-> base-commit: 7076f684d5132e6a6145e1da2fa74771ecd052e5
+>> It sounds like that would be sufficient here.  And re-fetch the 'nh'
+>> pointers right after the set_ipv4/6() calls with an inline comment like
+>> this:
+>>
+>> @@ -481,6 +480,7 @@ static int set_ipv4(struct sk_buff *skb, struct sw_flow_key *flow_key,
+>>                 if (unlikely(new_addr != nh->saddr)) {
+>>                         set_ip_addr(skb, nh, &nh->saddr, new_addr);
+>>                         flow_key->ipv4.addr.src = new_addr;
+>> +                       nh = ip_hdr(skb); /* Potentially reallocated. */
+>>                 }
+>>         }
+>>         if (mask->ipv4_dst) {
+>> ---
+>>
+>> Creating a separate function with all the duplicated checks doesn't make
+>> much sense to me.
+> 
+> +1
+> 
+> My personal preference is to do the header movement once at the start,
+> since it keeps the write paths looking cleaner - but I don't know if
+> there's really a performance cost in some traffic cases.
+I'm not sure I understand what you're suggesting here.  Could you elaborate
+or give an example?
 
-Thanks,
-Olek
+Best regards, Ilya Maximets.
