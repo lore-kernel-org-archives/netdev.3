@@ -1,65 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=13.77.154.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793329204;
-	b=URXkAwHHqEUr12Jplgv0zhnteSnFhSAkIqItPkOXEUSIndsVV9OQyfjqfy27TGBHoVNa
-	 LAYYZMhCmB967WpEnJzGYoW59gjr5SPFFROcMVu7ke3/25qqCcIdtKhhNNoKrKntA5vwJ
-	 ewF0tzB+VfVSIRpaXUJhqC4aDFzlw/ePwBdzOokUYYwtmaYFiBb0VZYeOU6Jft2DnCaVP
-	 slzZSK2979fh0MW7c5MYwCx+0ZqYnRPNhzU6TZfYTsIFWcKwTEHxttMxDz+90hmRJjW0B
-	 1GjbDy7JWL/isTQm0S4V5hAX25ezxYOjueb/WyT9zUEVRK+p20TDuwr5zR317638wgg==
+	t=1793329515;
+	b=22nDDvDG1aLK7LRcm5WB3XK6Or/PHaf65ZExjfhp31BAENnp+EOAMYYU4xHLPK6t93Cf
+	 RCYk2mbI/XfMReyU04Q97X79rbF1PqSgVY2kj91xk/So4Q8QmpithULAfSS98WhempmD/
+	 qhV/HFeMe94NDCi0BwUxDJTwFiZiM24Mb6CzkFCKPtqQQBRgwpNNzHvYIL+q9wClRSBsY
+	 qG8kr38Y/IZ4rAX5Yqc34Hu6eu1nbdbbgPQxlq53ZnjJHlCngwhrsqVR7Kaqlw6U87Miw
+	 lURJikE+NXiH2JfUhPunxGOdAMh51WYMjl/efGXqUzQJAqchP9MWZaPPr41NLuvvCBA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793329204;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=hq/4YWC1b796zdvcvOcwCEmulCT+xUiahOe+NXgkySI=;
-	b=Z+ObOQ4azSHy6ndMnoOEMnnD9CrtyLa+u/0ZdgzVw1/IJUgt7+c1xbteFFHRvqBFM4ya
-	 vuNNl/b6l/SVS/suAgyxezfmpUWw0IsFY15uA3/P8ri9xz5n1AcLY49EnqOoQtz2QithI
-	 f1uaIGxG4/2MQuz1tVz9uIVYwnzLdAphNrYAbqfIX0VeBXaWcnCmkAjeaSZbVDq3Gu29s
-	 tEO+670GtQlAa4h66nlJfyMHjM0mIZNXirekxZ5Wg1T8X7b3Zg072Qzn2cl/XbyS27+aL
-	 ATIjBrGTDBncVRPsoBgLu/I+RYDEwj1BO1ZhVIyekcTrneeMXhn1NfbJ9wnc6PJfNTw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793329515;
+	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-Spam-Status:X-Spam-Checker-Version;
+	bh=LrZBfGhAO98liKGA/GRCTc4NQemOV/QG1w7nMj/i7vg=;
+	b=GVjCQaFU031yg3GW50L/PDl5BX7iKZHNMMEg6wI3uBZcnDgqT0P+u7RhO2ZZZlq7EqJ4
+	 IriNOpG9dr8A5pJYmdGwfVhHr+sFT+eNJF1Tfnazus2gjzNAqmtyyR9XEULdDhXkvj1XU
+	 wgsNtjSU8IV7/sctPjIDAHJW+RWZquzl+RersUy00sgRSfwLWFsxXyfR43617psSlL+3v
+	 NVZREw9UokvqlYzXvL+dn0jhohs/aemAR7/fGN3AEPP7l8X4teHOn/cA2d0th6VlWWqg/
+	 vmLmVudEljKG7wM3PiThz3X/lBtp8yPNGz+4Zx5kAlICCb8U5Bp//bIDFh7FACGsnbw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=l4XMUV5j;
-	arc=none smtp.remote-ip=95.215.58.71
-Received: from mta1.migadu.com (out-71.mta1.migadu.com [95.215.58.71])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1ADF606A31C
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 03:00:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A1ADF606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	dmarc=pass header.from=linux.microsoft.com;
+	spf=pass smtp.mailfrom=linux.microsoft.com;
+	dkim=pass header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b="Ag17yy/r";
+	arc=none smtp.remote-ip=13.77.154.182
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFC2606A31A;
+	Fri, 30 Oct 2026 03:05:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8FFC2606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=l4XMUV5j
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=p+cl6/IcAPPzRu6xYDnXuIfufAoXhxeNqlv/DOQSqyM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793329201; v=1; x=1793934001;
- b=l4XMUV5jqgBgZ6CG2vgItAxTbvy4TLETZ5ePvpddf2tKiLKZpRi7XkE5fy/MHXDcOrJEwTYX
- s7D2GTbSX0tv8bWxVfFOjOzT4h1oNrlQaz3Yif3cUIoeARSP65Gb5R0W3+hpQf1EZlSQDt7LGLi
- VAAvBT08ehqwOvtR7ehSqa1M=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta11.migadu.com with ESMTPS id db5584a886e22652;
-	Fri, 30 Oct 2026 03:00:01 +0000
-X-Mizu-Trace-ID: db5584a886e22652
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 30 Oct 2026 10:59:51 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: ramses@well-founded.dev
-Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Jiri Bohac <jbohac@suse.cz>, Eric Dumazet <edumazet@kernel.org>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Nikolay Aleksandrov <razor@blackwall.org>
-Subject: Re: [PATCH net v4 1/2] bonding: fix initial last_rx vs ARP-monitor
- slack window
-Message-ID: <auQIJ731irNtKSFI@bogon>
-References: <20261028-bonding-last-rx-v4-0-4d8e4cd47467@well-founded.dev>
- <20261028-bonding-last-rx-v4-1-4d8e4cd47467@well-founded.dev>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=Ag17yy/r
+Received: from mac.lan (unknown [4.194.122.162])
+	by linux.microsoft.com (Postfix) with ESMTPSA id C7B9520B7166;
+	Thu, 29 Oct 2026 20:04:54 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C7B9520B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1793329501;
+	bh=LrZBfGhAO98liKGA/GRCTc4NQemOV/QG1w7nMj/i7vg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Ag17yy/rZkIKrpE7YD42xXo6bQ9ZSR9Cm+1MCLR28QzwlpL6csUl7iVmnD2v8jY+s
+	 WYQxpYjVg+x7Hz/O24jtTjzkK08WtL7n7oaWMmAF4zBQHw9cTyvrqxnct2CIzsJusW
+	 6vZiZp18ZYfyUTwJS/dRTlpJtQ6xglK8ts3TMOSg=
+From: "Cen Zhang (Microsoft)" <cenzhang@linux.microsoft.com>
+To: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com,
+	tgopinath@linux.microsoft.com,
+	Cen Zhang <cenzhang@linux.microsoft.com>
+Subject: [PATCH net] net/sched: fix rate estimator use-after-free when clearing NOLOCK
+Date: Thu, 29 Oct 2026 23:04:53 -0400
+Message-ID: <20261030030453.31928-1-cenzhang@linux.microsoft.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,106 +68,107 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261028-bonding-last-rx-v4-1-4d8e4cd47467@well-founded.dev>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 28, 2026 at 12:48:07PM +0100, Ramses de Norre via B4 Relay wrote:
-> From: Ramses de Norre <ramses@well-founded.dev>
-> 
-> bond_enslave() seeds a new slave's last_rx so that the ARP monitor does
-> not report it UP before a real ARP reply arrives, see commit
-> f31c7937c254 ("bonding: start slaves with link down for ARP monitor").
-> 
-> The seed is one arp_interval (plus a tick) in the past. That was old
-> enough when the up test was "jiffies <= last_rx + arp_interval". Commit
-> da210f559019 ("bonding: add some slack to arp monitoring time limits")
-> added arp_interval/2 of slack to that test without moving the seed, so
-> the seed now falls inside the up window. For the first half interval
-> after enslavement, bond_ab_arp_inspect() proposes a slave that starts
-> DOWN as UP although it has received nothing. The up test always uses a
-> single interval, so this does not depend on primary_reselect or
-> arp_missed_max.
-> 
-> If that slave is the configured primary, force_primary makes it the
-> active slave. ARP validation fails it shortly after (on SFP+ ports the
-> PHY is often still negotiating) and the bond falls back to the backup.
-> With primary_reselect=always the bond recovers once the port really
-> comes up, but drops traffic until then. With primary_reselect=failure,
-> force_primary is spent and the bond stays on the backup.
-> 
-> Reproducer:
-> 
->   ip link add bond0 type bond mode active-backup arp_interval 1000 \
->       arp_validate all arp_ip_target 192.0.2.1 \
->       primary eth0 primary_reselect failure
->   # eth0: SFP+ (slow link-up), eth1: RJ45 (fast link-up)
->   ip link set eth0 master bond0
->   ip link set eth1 master bond0
->   ip link set bond0 up
->   # bond0 lands on eth0 via force_primary, ARP-fails it before the
->   # SFP+ has carrier, falls to eth1, and stays there.
-> 
-> Move the seed below the initial link state and seed a slave that starts
-> DOWN two intervals in the past, outside the up window. A slave that
-> starts UP keeps its current seed: the up test does not apply to it, and
-> an older seed would only bring its down deadline forward by one
-> interval. The initial link state is unchanged.
-> 
-> Fixes: da210f559019 ("bonding: add some slack to arp monitoring time limits")
-> Signed-off-by: Ramses de Norre <ramses@well-founded.dev>
-> ---
->  drivers/net/bonding/bond_main.c | 23 ++++++++++++++++-------
->  1 file changed, 16 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-> index 7019e5d8fdc8e..bfa4cb97e647c 100644
-> --- a/drivers/net/bonding/bond_main.c
-> +++ b/drivers/net/bonding/bond_main.c
-> @@ -2122,13 +2122,6 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
->  	if (res && bond_needs_speed_duplex(bond))
->  		new_slave->link = BOND_LINK_DOWN;
->  
-> -	new_slave->last_rx = jiffies -
-> -		(msecs_to_jiffies(bond->params.arp_interval) + 1);
-> -	for (i = 0; i < BOND_MAX_ARP_TARGETS; i++)
-> -		new_slave->target_last_arp_rx[i] = new_slave->last_rx;
-> -
-> -	new_slave->last_tx = new_slave->last_rx;
-> -
->  	/* check for initial state */
->  	new_slave->link = BOND_LINK_NOCHANGE;
->  	if (bond->params.miimon) {
-> @@ -2159,6 +2152,22 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
->  
->  	if (new_slave->link != BOND_LINK_DOWN)
->  		new_slave->last_link_up = jiffies;
+qdisc_create() creates the rate estimator requested by TCA_RATE before
+qdisc_graft() converts a lockless child of a locking parent. The
+conversion in qdisc_clear_nolock() frees the per-CPU statistics, but
+the estimator keeps its own copy of the cpu_bstats pointer and its
+timer keeps reading the freed per-CPU memory on every estimator tick.
 
-Nit: This part could move down and merge with the "else" part.
+An unprivileged local user can trigger this. The estimator timer can
+access freed per-CPU statistics in softirq context and panic the kernel:
 
-> +
-> +	/* The ARP monitor's up test includes arp_interval/2 of slack, see
-> +	 * bond_time_in_interval(). Seed a slave that starts DOWN outside
-> +	 * that window, so it stays DOWN until a real reply arrives.
-> +	 */
-> +	if (new_slave->link == BOND_LINK_DOWN)
-> +		new_slave->last_rx = jiffies -
-> +			(2 * msecs_to_jiffies(bond->params.arp_interval) + 1);
-> +	else
-> +		new_slave->last_rx = jiffies -
-> +			(msecs_to_jiffies(bond->params.arp_interval) + 1);
-> +	for (i = 0; i < BOND_MAX_ARP_TARGETS; i++)
-> +		new_slave->target_last_arp_rx[i] = new_slave->last_rx;
-> +
-> +	new_slave->last_tx = new_slave->last_rx;
-> +
->  	slave_dbg(bond_dev, slave_dev, "Initial state of slave is BOND_LINK_%s\n",
->  		  new_slave->link == BOND_LINK_DOWN ? "DOWN" :
->  		  (new_slave->link == BOND_LINK_UP ? "UP" : "BACK"));
-> 
-> -- 
-> 2.56.0
-> 
-> 
+  BUG: unable to handle page fault for address: ff9d8b20ffa47920
+  RIP: 0010:gnet_stats_add_basic+0x77/0xc0
+  Call Trace:
+   <IRQ>
+   est_fetch_counters+0x31/0x50
+   est_timer+0x52/0x170
+   call_timer_fn+0x9f/0x210
+   run_timer_softirq+0x6e/0xb0
+   </IRQ>
+  Kernel panic - not syncing: Fatal exception in interrupt
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Fix by doing the NOLOCK conversion in qdisc_create(), right before
+the estimator is created, instead of in qdisc_graft(), so that the
+estimator captures the final statistics pointer. Removing the
+conversion from qdisc_graft() is safe: a new qdisc is created by
+qdisc_create() with the parent it is grafted under, and since
+commit bc50835e83f6 ("net: sched: Disallow replacing of child qdisc
+from one parent to another") an existing qdisc can only be grafted
+again under its original parent. Either way the qdisc was already
+converted for that parent at creation.
+
+Fixes: 8a53e616de29 ("net: sched: when clearing NOLOCK, clear TCQ_F_CPUSTATS, too")
+Cc: stable@vger.kernel.org
+Cc: AutonomousCodeSecurity@microsoft.com
+Signed-off-by: Cen Zhang (Microsoft) <cenzhang@linux.microsoft.com>
+---
+
+The bug was found and this fix was developed with the assistance of an
+LLM-based code analysis tool.
+
+Backport note: trees without commit bc50835e83f6 (v6.14) still allow
+regrafting an existing child qdisc under a different parent and need
+an additional fix for that path, for example cherry-picking that
+commit as well.
+
+ net/sched/sch_api.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index f36c41224bcc..d89f3f0a3c5f 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -1247,10 +1247,6 @@ static int qdisc_graft(struct net_device *dev, struct Qdisc *parent,
+ 		unsigned long cl;
+ 		int err;
+ 
+-		/* Only support running class lockless if parent is lockless */
+-		if (new && (new->flags & TCQ_F_NOLOCK) && !(parent->flags & TCQ_F_NOLOCK))
+-			qdisc_clear_nolock(new);
+-
+ 		if (!cops || !cops->graft)
+ 			return -EOPNOTSUPP;
+ 
+@@ -1327,6 +1323,7 @@ static int qdisc_block_indexes_set(struct Qdisc *sch, struct nlattr **tca,
+ 
+ static struct Qdisc *qdisc_create(struct net_device *dev,
+ 				  struct netdev_queue *dev_queue,
++				  struct Qdisc *parent_qdisc,
+ 				  u32 parent, u32 handle,
+ 				  struct nlattr **tca, int *errp,
+ 				  struct netlink_ext_ack *extack)
+@@ -1405,6 +1402,11 @@ static struct Qdisc *qdisc_create(struct net_device *dev,
+ 			goto err_out4;
+ 	}
+ 
++	/* Only support running class lockless if parent is lockless */
++	if ((sch->flags & TCQ_F_NOLOCK) && parent_qdisc &&
++	    !(parent_qdisc->flags & TCQ_F_NOLOCK))
++		qdisc_clear_nolock(sch);
++
+ 	if (tca[TCA_RATE]) {
+ 		err = -EOPNOTSUPP;
+ 		if (sch->flags & TCQ_F_MQROOT) {
+@@ -1817,7 +1819,7 @@ static int __tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ create_n_graft2:
+ 	if (clid == TC_H_INGRESS) {
+ 		if (dev_ingress_queue(dev)) {
+-			q = qdisc_create(dev, dev_ingress_queue(dev),
++			q = qdisc_create(dev, dev_ingress_queue(dev), NULL,
+ 					 tcm->tcm_parent, tcm->tcm_parent,
+ 					 tca, &err, extack);
+ 		} else {
+@@ -1834,7 +1836,7 @@ static int __tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 		else
+ 			dev_queue = netdev_get_tx_queue(dev, 0);
+ 
+-		q = qdisc_create(dev, dev_queue,
++		q = qdisc_create(dev, dev_queue, p,
+ 				 tcm->tcm_parent, tcm->tcm_handle,
+ 				 tca, &err, extack);
+ 	}
+-- 
+2.55.0
