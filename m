@@ -1,112 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=79.135.106.100
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793378723;
-	b=QduCCPphc+GdRZnGaULmW58PvXfpQdOpRmh4WOch2l4keJKO7Yw4/u6r/pMJfEs94HiH
-	 7rJc6ASUJr8ZDy58Qi94rEckmo6GKR6zxE9aZEyo6J6VjJJcgBNK+AG3jEVYGdxJ6ouZf
-	 7l8vSetHewDxjqRxdBUwLxt3SRQVUvUbtay+A7sk/gC9/QlnUsRBULz7d1BNhROG89lQ7
-	 IRXtWoyVZaWOH8vz9j4pZj+TlIfLT9lf7aTASVnCcOJl2u9rOoEFKsjeZEiQknfN2i6g+
-	 Cfrasmxnh5jVehdm4OLZeuCD0oV+acrM7QAsKya58NEKUVdsCUTALOcgfxTXHQFFfYg==
+	t=1793378869;
+	b=ONXigPMa0k3fdjMr7Ll8iltOkl5s9j6aq+yIuiuJYFgNSrYt3J1PH5oG3wUJ3r8/vtdS
+	 v1fAFRLFGWRlQSYGFELp8PcpmOYflYnIXT6OBypUUnf1PdbTZQu1TB2R/+ZAzcjEHWR6U
+	 LhLMnmTWOH3vIf5DFemcJoCf2CMVN7K2sXue7+srrFF5GdDkjR841bCJp1HypIiyFsOzq
+	 txFliksUxBWoHrjrW7ELWk3Z9AeIN9gIIKLr46FUIH2QjFUSOPF8XPgTdawzfa+/M1uW6
+	 82AwD5F4NCFYd1IsXfwMKmLT+E5lMK9+Kr8B8ei6VF5pa14Vbq/4q5ipWsiCDBf0ftw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793378723;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Authority-Analysis:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=4dVHIRd4XP8wCls0LamSIQUVU6Hcow9GRfU7ul96ths=;
-	b=IIc2zJcn92IkSEArFSww/RYNgxfVVkeTSHiz+pKY9/I4hhx39dHDszB6vT/oDtzjcfTz
-	 A3Wj4RkpjJNn68L9wJHkWJ5As9ZeHzKGK+RyTrp2bJ8WBjk/FW2NF/nwvTcsUOWrChbI8
-	 qp9cTtjQqiw6zVEkc5oUuWj74NUqHKkznJYiwf3HXf38oXbgcT4QcY+oDfIsXX48qZ9+O
-	 SWcSkkLxrBRGt7hktvhRS3/acJMh2lDVRZiftzbad+hs5V5lAb+ZHeMBi6neqz0BkL3OT
-	 zK+0cX1jpO8tTBoFAGnjfIVF64Yq9wam39DS2B5rpP8uha09ov/SmifmxJTk9LzH3MQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793378869;
+	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
+	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=PQ4G7FWKXf3yOQR/cwzdiaA0meyXV45WbDf7zl6Ty7Y=;
+	b=vnewQ1DEjO5rj+hJsdeSz/E1HfoGHXeuWgnKzWxiFLdXSfZwVvSMD7b21HYykAf8hNB5
+	 jsLbT0gvtEOaX8YKCKtjXC4jI74b/4g+a/oe3zpixoLEYd30h8jT7I6uXRolm29OYjch3
+	 VZAVd1GB8p/rOtKeAy7zW/LGKe1gSboEqendHxUwj/NlS0ci4jxzQJs8avbh5d2IB9ssC
+	 YYCBbUQ1ezAEaINtlFuaZIkeQV/qaGQnc+RiHcgUg2fSS15hwnsdWGmGMMhdjdB1sWcY5
+	 /+Vrc5H4wwWkfIvpHxj00gSKVEnWQfS44R3mWhHX3WIPknOEoiBl77puxXqCg4TWhfQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=ObMPLRYU;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=b2Zhiqun;
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	dmarc=pass header.from=1g4.org;
+	spf=pass smtp.mailfrom=1g4.org;
+	dkim=pass header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b="FVn/2D+f";
+	arc=none smtp.remote-ip=79.135.106.100
+Received: from mail-106100.protonmail.ch (mail-106100.protonmail.ch [79.135.106.100])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323D7606A31C
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 16:45:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 323D7606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C56606A31F
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 16:47:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 99C56606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=ObMPLRYU;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=b2Zhiqun
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69UERCjY3564376
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 16:45:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	4dVHIRd4XP8wCls0LamSIQUVU6Hcow9GRfU7ul96ths=; b=ObMPLRYUzvDQOx8T
-	jOmMEcGai/36LLrYr3iAzAd6lGwhObWYTPIHbw4b4hgyzN2RpBVsZFPpE03hd5bB
-	QXK0eT0uUvuPwCpZpU70nvpmlmNThdC5YxXzxtPJF8RVtcJSUQ91sGgfWAz7JXBX
-	9yCsmxN8y/dWhtFfUEq5+4QkT1q0HKI+fqnMZeG8BeLdsmo3Ymu58LTjxj9FCC35
-	jgONqHTr+vWUSHilkCuZZnM3d4S4JkEjzPxOnCgBQ/NqGAgTwbxfTUSc//5SCnak
-	Hekq0ajz1GufnHLMFQwbu3Uce2bX1Tbet0Amfplcc5ntcVyxOLI+7XLYCZ3e1lbP
-	6ZD0Pg==
-Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hme6qm11q-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 16:45:21 +0000 (GMT)
-Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-6f2e2fdde86so520603eaf.1
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 09:45:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1793378721; x=1793983521; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4dVHIRd4XP8wCls0LamSIQUVU6Hcow9GRfU7ul96ths=;
-        b=b2Zhiqun1fR36HkZHypNxmTH3OkyvTUwT7fafhZRPJYkqWABlHDJJoe1HU0Jzr2jba
-         HXB3zl7ZlFI5YUgX13SKgoDUDSgeJVSQupAbYgbmffTZhC2brV655wLMHNc0xBVdAdH5
-         TNEQqBRxgzTVqOB3qU6kYV6xUMAlOZiSE66rq/5Pnm0z7G1vG3Sl4H2fpuPYIwDRBcp0
-         LJEWvgKgZT0inAqVJLZYJCv87HRqi8zFv/pYFj6BsqYypfThXyW2rYly2a23cMKlYHHq
-         Qfq1oHNV1ZJlPBAu2NUTjq2q4ySAeo9SfNaKt8Mf4UoQ254vJfGjWTcihPxWypwXGoTK
-         auaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793378721; x=1793983521;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4dVHIRd4XP8wCls0LamSIQUVU6Hcow9GRfU7ul96ths=;
-        b=RSHhuxKD0hA9jxl7RXpJ+GmaKTgXVf24+YQicOYL9ewD1+det26nSPShFANk61+cyx
-         58OVbvDMT5aDXJ8vnHV6X44b/VOcR3tWL3C7OfmrSGhCVpIz7r16egmAWsMrendRmdeA
-         vyzTuEwLBk900qaXx/LHFdbTpdrW5Z/7nANCfGlZtFRqrLUIy8Ki0Zi4QwxTOQuN3WaD
-         Smk9QzfEi49Jx42bGKWjZ9shBfXIBvIXyLhEPc3gDHxLu77Aoql+VZw7zwWcqAxmI78v
-         A8DTeAIuDDtfABXdiiePundHEMdLnqdOOb3BbsZYjczkqF5vMubMDDC+g0bPg6hJuPED
-         b7Ig==
-X-Forwarded-Encrypted: i=1; AKwUvBwCATdtU1olotM/RBLQuY0GUVROs/7vBWlGF6eh/prOQDx+3opcBf2KghjFStnb+VXwy8m8JcE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKFRP447BbKFPvCHoOjnDcxJljBZC2qrt6CwOCduQ2EIO/HjvHK
-	IGl0L8jTPMBuSTTOlBk8VHm0+PlOf5vzJrtBI0KKLZV+H8lr995C9M94SSzeroj+uv+Negzqqpu
-	i3U3VXeKA2VwHgAg0vQk87IX3BU27aEJmGEOoQxAulyDCwE5P1ZV9h4T9QWs=
-X-Gm-Gg: AYBFou3phXkjFgtUQg1VnStUlG1nZRmhkVb1dxj3xV2qdhRIwab4HjaclPLjm8T/aNM
-	6YNWWEPzxueUtVtB0KLd0NNh43OoPBj+CQm76yP03CDa7NPrGpbTS4lm9O+dm8OtPaoEW7WCQG0
-	aVM/y4QUXLCKGclBeizBC5RDXXLxg49KvqWYb6838WEatTcMQYXMtARwcs9le99ZQigrpyDT9rk
-	iloB3FxmYS+kQotJxEz6ct28wV3FgGD+tFFXDrZMe6pdCQ3Au49feeeaxpjpnjK7pVDSrLlBZhL
-	chooC1kaeHcl49NeBBqgXG8XW998EcK3nkpESr8Y62eI7+PW5/kwtKNog3WMzPVYI329o4THfks
-	GodyiYZAaiwlPFLe+syg3DaOtw9xngFJxU/laQ0MSsF6SeTXHyeSBjZsNn5+TDxfbuKYkjyRyr6
-	xveX6hxT0b8tVSNWsW27dkY5E=
-X-Received: by 2002:a05:6820:2206:b0:6f7:6416:a33 with SMTP id 006d021491bc7-714f29bd94cmr1754808eaf.39.1793378721321;
-        Fri, 30 Oct 2026 09:45:21 -0700 (PDT)
-X-Received: by 2002:a05:6820:2206:b0:6f7:6416:a33 with SMTP id 006d021491bc7-714f29bd94cmr1754776eaf.39.1793378720848;
-        Fri, 30 Oct 2026 09:45:20 -0700 (PDT)
-Received: from [10.226.59.182] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-714f2e5b450sm2196842eaf.11.2026.10.30.09.45.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 Oct 2026 09:45:20 -0700 (PDT)
-Message-ID: <6c2b6fdf-90b0-43f3-b5fe-97235aeb4219@oss.qualcomm.com>
-Date: Fri, 30 Oct 2026 10:45:18 -0600
+	dkim=pass (2048-bit key, unprotected) header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=FVn/2D+f
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail; t=1793378865; x=1793638065;
+	bh=PQ4G7FWKXf3yOQR/cwzdiaA0meyXV45WbDf7zl6Ty7Y=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=FVn/2D+flZn6H8vP2GLlWJUdJLMxbEZltl2dwzm79NEaRK/Z8naG14DvxyU87xkwk
+	 wJO5ki6kmYY5rUMMh3rZcD9lXOQ6Eywmf3ICN9PhejJ6h0yjmtQZ0am8E6+jtSZF+N
+	 ALA6WuLnApuJghH8566r/GXuGLyN66TtU75wZKR+/9AHzEda5jNO85vpBRxQ0OEjHa
+	 c8dYnXKlVocWkNRmD2v1i386uaAVdDfFukRaqgMxIE9hz0Hccsq/FL66gTMUZhZDQL
+	 hxiuA1cIhwUm/R7BUPmewtmLU6RtBFQTwxLKFBVUhKxWZZpda5w1hbOn54MWJi9bUx
+	 knwa1R4xP7qpQ==
+Date: Fri, 30 Oct 2026 16:47:36 +0000
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Paul Moses <p@1g4.org>
+Cc: netdev-bot+sashiko@kernel.org, intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, vedang.patel@intel.com, jithu.joseph@intel.com, andre.guedes@intel.com, aleksandr.loktionov@intel.com, avigailx.dahan@intel.com, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v3 1/2] igc: only strip RX timestamp header from first buffer
+Message-ID: <K-58hRuSyY_aSjvzkpmwBMeDzvfjQyLMRjMsDlEL1M60FHZJTS1WXTaTrh79pf1igf7bt5MCaORbxYVJJliJ0FhGCzjtiEVvagd50w65Ssg=@1g4.org>
+In-Reply-To: <auSDQtz8l8hzzr86@boxer>
+References: <20261028083344.3047350-2-p@1g4.org> <179331704005.3134.12545545223659652020@kernel.org> <auSDQtz8l8hzzr86@boxer>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: 4c2a5fe1fa4764ac796a6e023df421e8b58cd007
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -116,109 +64,167 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] drm/drm_ras: Extend DRM RAS interface to include
- telemetry nodes
-To: Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>,
-        dri-devel@lists.freedesktop.org, netdev@vger.kernel.org,
-        riana.tauro@intel.com, aravind.iddamsetty@linux.intel.com,
-        rodrigo.vivi@intel.com, raag.jadav@intel.com, simona.vetter@ffwll.ch,
-        airlied@gmail.com, kuba@kernel.org, ogabbay@kernel.org,
-        lizhi.hou@amd.com, karol.wachowski@linux.intel.com
-Cc: carl.vanderlip@oss.qualcomm.com, troy.hanson@oss.qualcomm.com,
-        youssef.abdulrahman@oss.qualcomm.com
-References: <20261029203000.1763447-1-zachary.mckevitt@oss.qualcomm.com>
- <20261029203000.1763447-3-zachary.mckevitt@oss.qualcomm.com>
-Content-Language: en-US
-From: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-In-Reply-To: <20261029203000.1763447-3-zachary.mckevitt@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: dFSNxXAZfdWsjYoGZYXcxGziBvKozCNW
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDA2NiBTYWx0ZWRfX0PrNoTFLqz4g
- r3fEOU3bkm0p+OaMViwukarpTCFyFlLdmn3HlYvKRgrPsBJwydQFLTSUXOusnk7bCjq9ZvcKv8i
- PJr82oVe2omm+0qilDoGzhwQs/+hGYs=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDA2NiBTYWx0ZWRfX87VxgmXNCdxQ
- y3Yo/xFvB3PJk+F/bR5zdE2tNLG7j55nnmnrSMSSfP96LcUPod1bSLI24nQ/0L8+xsAEtduI4XG
- NXGbWYIlLHK43moKBeob5SIpAYNm7X0Ey2G69SAeGUfFdS7AkEKgdNOUf7qxulFwKEPCOHQveeo
- hpEBslu7Och4NOonroqJdbYLng/jGm+YK0523XVHeUWPJ3JtXXg+kgaGYU1Ud4R3m2hppJM+G9n
- bFSkUEbUJphKn0Gm2GV69wSx4BRVoDe97DGAbvqlci2Q9+BRNBX2anvkbfZGu7RkllPS4Lmpy5l
- LAnqVQt7GHeAwBReEJxN5aq9hD+cmAFXd3Te2FvQXiT6YNaNEtyyjoAh2en1jUDhpHpT7g6yyWh
- BFIoLKTAUiMJbUoPpCzHHvN1Wg6+Q6w2hwohs8rz9e+uPdxwzxWkvf8C8/Kqh2FROu5gzNYwsUG
- 09XaLQaG1OYaRifmhAw==
-X-Proofpoint-ORIG-GUID: dFSNxXAZfdWsjYoGZYXcxGziBvKozCNW
-X-Authority-Analysis: v=2.4 cv=TpVzFzXh c=1 sm=1 tr=0 ts=6ae4c9a2 cx=c_pps
- a=lVi5GcDxkcJcfCmEjVJoaw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
- a=EUspDBNiAAAA:8 a=Y-R_HQd9ABXJcl_gd78A:9 a=QEXdDO2ut3YA:10
- a=rBiNkAWo9uy_4UTK5NWh:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-30_05,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 lowpriorityscore=0 bulkscore=0 phishscore=0 priorityscore=1501
- impostorscore=0 adultscore=0 suspectscore=0 clxscore=1015 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610300066
-
-On 10/29/2026 2:29 PM, Zack McKevitt wrote:
-> Add a new node type, attribute set, and doit/dump functions for
-> performing telemetry read and write operations using the DRM RAS
-> interface.
-> 
-> ynl-regen.sh was used to regenerate drm_ras_nl.c, drm_ras_nl.h, and
-> include/uapi/drm/drm_ras.h from the drm_ras.yaml spec.
-> 
-> Signed-off-by: Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>
-
-One minor nit below.
-
-Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-
-> diff --git a/Documentation/netlink/specs/drm_ras.yaml b/Documentation/netlink/specs/drm_ras.yaml
-> index a88fdab7a1c7..a02aaed8772f 100644
-> --- a/Documentation/netlink/specs/drm_ras.yaml
-> +++ b/Documentation/netlink/specs/drm_ras.yaml
-> @@ -16,11 +16,11 @@ definitions:
->       type: enum
->       name: node-type
->       value-start: 1
-> -    entries: [error-counter]
-> +    entries: [error-counter, telemetry]
->       doc: >-
-> -         Type of the node. Currently, only error-counter nodes are
-> -         supported, which expose reliability counters for a hardware/software
-> -         component.
-> +         Type of the node. The error-counter nodes expose reliability counters
-> +         for a hardware/software component, and telemetry nodes expose an
-> +         interface for reading and writing telemetry values to a device.
->   
->   attribute-sets:
->     -
-> @@ -100,6 +100,34 @@ attribute-sets:
->           name: error-value
->           type: u32
->           doc: Current value of the error counter.
-> +  -
-> +    name: telemetry-attrs
-> +    attributes:
-> +      -
-> +        name: node-id
-> +        type: u32
-> +        doc: >-
-> +             Unique identifier for the node.
-> +             Assigned dynamically by the DRM RAS core upon registration.
-> +      -
-> +        name: field
-> +        type: u32
-> +        doc:  Telemetry field to be read/written, e.g., SoC temp.
-> +      -
-> +        name: field-name
-> +        type: string
-> +        doc:  Name of the telemetry field defined by the device's uapi.
-
-uapi -> uAPI
-Might as well be consistent with the documentation elsewhere in this patch.
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
 
+
+
+
+On Friday, October 30th, 2026 at 6:45 AM, Maciej Fijalkowski <maciej.fijalk=
+owski@intel.com> wrote:
+
+> On Thu, Oct 29, 2026 at 11:37:20PM +0000, netdev-bot+sashiko@kernel.org w=
+rote:
+> > Thank you for your contribution! Sashiko AI review found 1 potential
+> > issue(s) to consider.
+> >
+> > Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
+> >
+> > If you believe none of the issues are legitimate, please reply to each
+> > issue of Medium severity or higher and explain why the AI is wrong.
+> > If any of them are legitimate and you plan to respin, please let patchw=
+ork
+> > know by including "pw-bot: cr" as a separate line at the end of your re=
+ply
+> > (one such reply per series is enough).
+> >
+> > - [High] At this commit by itself, the new first-buffer test `!skb &&
+> >   igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP)` in igc_clean_rx_irq(=
+)=E2=80=A6
+> >
+> > --
+> >
+> > igc: only strip RX timestamp header from first buffer
+> >
+> > igc_clean_rx_irq() used to subtract IGC_TS_HDR_LEN from every descripto=
+r
+> > with TSIP set, which truncated multi-buffer packets. With this patch th=
+e
+> > timestamp header is only stripped when skb is NULL, which the commit tr=
+eats
+> > as marking the first buffer of a new packet.
+> >
+> > Link: https://lore.kernel.org/all/20260625-igb-rx-ts-fix-v3-1-99b3efa08=
+dca@aweta.nl/
+> >
+> > > diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/=
+ethernet/intel/igc/igc_main.c
+> > > index 1fb5f3cbe93c5..41b293dc10c3a 100644
+> > > --- a/drivers/net/ethernet/intel/igc/igc_main.c
+> > > +++ b/drivers/net/ethernet/intel/igc/igc_main.c
+> > > @@ -2639,7 +2639,8 @@ static int igc_clean_rx_irq(struct igc_q_vector=
+ *q_vector, const int budget)
+> > >
+> > >  =09=09pktbuf =3D page_address(rx_buffer->page) + rx_buffer->page_off=
+set;
+> > >
+> > > -=09=09if (igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP)) {
+> > > +=09=09if (!skb &&
+> > > +=09=09    igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP)) {
+> > >  =09=09=09ctx.rx_ts =3D pktbuf;
+> > >  =09=09=09pkt_offset =3D IGC_TS_HDR_LEN;
+> > >  =09=09=09size -=3D IGC_TS_HDR_LEN;
+> >
+> > [Severity: High]
+> >
+> > Is skb =3D=3D NULL a reliable first-buffer marker when an XDP program i=
+s
+> > attached? The commit message says:
+> >
+> >     Only consume the timestamp header when skb is NULL, which identifie=
+s the
+> >     first buffer of a new packet.
+> >
+> > Suppose igc_xdp_run_prog() returns IGC_XDP_CONSUMED, IGC_XDP_TX or
+> > IGC_XDP_REDIRECT for the first, non-EOP buffer of a multi-descriptor fr=
+ame.
+> > Then no skb is built, and igc_clean_rx_irq() moves on to the continuati=
+on
+> > descriptor with skb still NULL:
+> >
+> > =09=09/* fetch next buffer in frame if non-eop */
+> > =09=09if (igc_is_non_eop(rx_ring, rx_desc))
+> > =09=09=09continue;
+> >
+> > The continuation descriptor still has TSIP set, so this check strips
+> > IGC_TS_HDR_LEN a second time. If that descriptor holds fewer than 16 by=
+tes,
+> > can the unsigned size wrap here?
+> >
+> > The continuation buffer then goes through the new-frame path:
+> >
+> > =09=09if (!skb) {
+> > =09=09=09xdp_init_buff(&ctx.xdp, truesize, &rx_ring->xdp_rxq);
+> > =09=09=09xdp_prepare_buff(&ctx.xdp, pktbuf - igc_rx_offset(rx_ring),
+> > =09=09=09=09=09 igc_rx_offset(rx_ring) + pkt_offset,
+> > =09=09=09=09=09 size, true);
+> >
+> > In that case the XDP program would see a data_end about 4 GiB past data=
+.
+> > On XDP_PASS, the same size would reach igc_build_skb() or
+> > igc_construct_skb(), and the __skb_put() there does not check it.
+> >
+> > At this commit, XDP with multi-descriptor frames looks possible on kern=
+els
+> > with PAGE_SIZE >=3D 8192. igc_set_rx_mode() only clamps RLPML under the
+> > small-page #if:
+> >
+> > #if (PAGE_SIZE < 8192)
+> > =09if (adapter->max_frame_size <=3D IGC_MAX_FRAME_BUILD_SKB)
+> > =09=09rlpml =3D IGC_MAX_FRAME_BUILD_SKB;
+> > #endif
+> > =09wr32(IGC_RLPML, rlpml);
+> >
+> > On large-page kernels, RLPML therefore stays at MAX_JUMBO_FRAME_SIZE wh=
+ile
+> > igc_rx_bufsz() returns IGC_RXBUFFER_2048. igc_xdp_set_prog() only check=
+s
+> > dev->mtu > ETH_DATA_LEN, not the hardware receive length limit.
+> >
+> > This needs RX hardware timestamping enabled, an XDP program that return=
+s a
+> > non-PASS verdict for a first buffer, and a peer that sends frames large=
+r
+> > than about 2032 bytes.
+> >
+> > The next patch in this series, "igc: fix AF_XDP receive buffer size for=
+ 2K
+> > UMEM chunks", adds igc_set_rlpml(). It caps RLPML at 1526 bytes wheneve=
+r
+> > XDP is enabled, whatever PAGE_SIZE is. It is called from igc_setup_rctl=
+()
+> > and igc_xdp_set_prog(). With that change, XDP frames always fit in a si=
+ngle
+> > descriptor, and skb =3D=3D NULL becomes a correct first-buffer marker.
+>=20
+> Wow - finally.
+>=20
+> >
+> > This patch is tagged Cc: stable and could be backported on its own. Sho=
+uld
+> > it depend on that follow-up change, or should the two patches be swappe=
+d in
+> > the series?
+>=20
+> How would we make sure both commits from this set get actually backported
+> together?
+>=20
+> >
+> > --
+> > Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/pat=
+chset/20261028083344.3047350-1-p%401g4.org
+>=20
+
+I did forget to tag yours for stable, so maybe the will satisfy it?
+
+I think ultimately, it sees all related bugs as one big problem in
+an effort to catch adjacent. My understanding has been that unless
+there's true interdependence of patches, ie. kernel will be left broken
+unless taken together, a series in itself adequately satisfies this require=
+ment.
+
+Should I do a v4 to add the tag? Or can this be rectified through=20
+intel's process?
+
+Paul
