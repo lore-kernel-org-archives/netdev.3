@@ -1,85 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.171
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=23.88.38.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793367973;
-	b=TRuWUnLQ0qkwobPV3iEJ3ADh1twV2glPNgJJFsP+GsOsXbCKdG0FDa5SgfDqcAMcEdMf
-	 rfMJqhR2UIoZjXVBezFV5XxuvIwSSxmOBmuqj+gxE5F+0Ye1aPjwTcaIYJjmFfdVIkniq
-	 IeWrE2L+oo8mW542K4TMPNrFTgMI+fLX3IhRsJBnFZcC7p3FfLMKuBbi70tpjpRSl4j5u
-	 HUgtUO45MTDxlZxJq5iCUXo2fZ4sJBKoDaqZfzUG7NYkOCS7alzNZe3oH9JVjzYxegxA1
-	 NdRJTJeAPm0KQd0l9O5phJL3w0z90iF0y38ghH1SiCaaCk6huIvGfrJYiWw/c9cfUIA==
+	t=1793368277;
+	b=T24/st3LysyFCkdRuzrTodpfF75wSjiYxPOus/Dir89ndjA+3JnCnQHNje6GZYM+kDew
+	 FSLEylmNAvIeuOfpwdfCbwMRvWd62FFVdMqR7CPBr8WxF3grIKaVexVarEA/Qj+bpkd+Z
+	 2/Tv3FIOPcbBye9CRFioUFblW1gKLbyz7tkKvLDtQ2dTYOEBQiVmu78fyVC9zT8vdW0v3
+	 qVNM1IhHLrBaanb9AZMmbOjk2d9slnxBDr9FloiJXExmuThcvJrgv61m2E1YOsGsJRcm1
+	 5ZN66YCjeVaNXl9pwhWlxzL2dQU+wz5V8A16brPQASxvFpB7qHq0kmQJ92Fknr2yDsA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793367973;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793368277;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=Cel0vcm4G5w81qs6p/3zOaRkogZgkiMaq/fEg3zUQoI=;
-	b=ez9hjdpQ89Gm4rUjDMqk7mN8+++lHX4ypSiZMfeg+SuvDBOd+H3SANEKIUIvxd+YuVTp
-	 TV5f5wLZTanlcvFoXRYyyBStVv8+egekzDfb37vCfH4q95lWXZqWBe50330SM5GuevS23
-	 Nvaao1R++fXDSDkrD8+ATXfanOzGG0jw0+TZLJr+B7C8ICzbO8hp5wPetcJuKz60k+vKH
-	 jjkvJ4nSbxJAg4gTWv2o7zIqM7FdZGRQ+dFtIcDEmWFwM8SqtjNEOKKzpRjVFgk/6rIri
-	 y+xV4NKTFXE7rzV0bbbFNnmj/+QK92IrIbm9opWhBzyXLFMW8xWT7Mf33toU0XqFiJg==
+	bh=28nCSEvhlsnWDh1U08MOT7RrXgp6P/j1+6eqZ0qC0cg=;
+	b=IQHOTJo+d2lB/v5tNQ2Rsly7On+an22PZXFmS/L4vMEwQHc5zH09qkP1RchMDGOVpg8g
+	 e1lYO1+HfZZ3/q2n36cKAljZx0hWS8aEtIb7GRcdeGVkYO5Q1SMR7/U1iyXcT6bD+0Zzp
+	 xiLg1U+13gy4DvZtm+TAFKvKeBLrbFxVzMRR4ZqJamTg6riCl0eybMqYQZ5r5vqzb3aUr
+	 ZbBpzMP9L31IPpsGPwomqYn5/MK4P+244UWr4QFrfg8wI1gUfn/W11nE3inkwjaYYtLEx
+	 mIsm2GrPZznQ5PX14LyJICOTgbiNFxw+TN7pE/x7Iv/U2HGDCIsI8+lWxSIsjGIRC2A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ieee.org;
-	spf=pass smtp.mailfrom=ieee.org;
-	dkim=pass header.d=ieee.org header.i=@ieee.org header.a=rsa-sha256 header.s=google header.b=MHCzlPUZ;
-	arc=none smtp.remote-ip=209.85.167.171
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=simonwunderlich.de;
+	spf=pass smtp.mailfrom=simonwunderlich.de;
+	dkim=pass header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=USkFtrcy;
+	arc=none smtp.remote-ip=23.88.38.48
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8163E606A31C
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 13:46:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8163E606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ieee.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ieee.org
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 1B087606A31A
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 13:51:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1B087606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=ieee.org header.i=@ieee.org header.a=rsa-sha256 header.s=google header.b=MHCzlPUZ
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-4af173320f9so584038b6e.2
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 06:46:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ieee.org; s=google; t=1793367971; x=1793972771; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Cel0vcm4G5w81qs6p/3zOaRkogZgkiMaq/fEg3zUQoI=;
-        b=MHCzlPUZKMnE2kNo9yoyOWyk5iazVdyGZcGd3KBZgWLavn2s/MGurSTnlnGWrQcNlG
-         Y4sRWrGUcDXFVzUpwSMONQl4Vvs8Jlm/MTkPIxqmO3Gw4v3nqb5eZnERYCNZ8TeSG9yQ
-         lnRadBi21wkXJaAEkA/aq62Uy9tv+sDun8I24=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793367971; x=1793972771;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Cel0vcm4G5w81qs6p/3zOaRkogZgkiMaq/fEg3zUQoI=;
-        b=pFkFjS7hMkPyu5h1Rn8SuYqJXlusFTZJ+z/0z53woZRuQ00q/XxPPygxarfNXdxoi9
-         ZnUDIn+Lbr2uneaFJdZkMDX9UGcMLImxJjhguj0dmODJPbYmCfCl4HpDpMgbaTFcuxtK
-         M4fjgnbU/GGp1EJcndmOGGKeRu8VNjogYjGwqaWyoGql7lxpge+9yloulFQ2hMIUfCbE
-         FoHpjRQz5PE8crRB3i3WLyGM+KYaf73m+W2aYACdCLKKp5DM8YFy8wVK587xHAZpN46b
-         okv9tHQs7mlG1FFGFLwmJK8RgX6orh5oC1u+QTYm+w6J55JpGgaJq0yvhwdfBLnqym/N
-         Nrhg==
-X-Forwarded-Encrypted: i=1; AKwUvBy620alIMyYFsfkatajJkwmpaKYtoW0sFsO7HUGWch9SKoxtWWLsb3tlnO3+GnjNQ+2Amxs6yg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKRrj6OmLr5xoJyjXkjP5bvU1pEHUervBNAwa//ERhTVR5UhlqO
-	A/mNNDANR9BjDHf63l6il3Qz0XCt6qWBBLQAsO6MClnA4hAnjpadVC5VIjWyzOa+Gg==
-X-Gm-Gg: AYBFou0JbnM+B340eG3saqb8e1cChNY3s11b2JxDOaDga+HZH3Atjs08Gxg7nT/sUe8
-	/pYRUGRlFmoND16nG5WOP4epGZxip/ZbAts7ohmGe1luW6R9grMiD4aEoL8UlPlQ3lSPFZoMxj9
-	YmgeGAyCW8WArqRu7gfbT+a7gBIZoKKLrMB7p8mRHNfREaWf8MMZScmw8bSL4EC6jsBNqFsxynA
-	zav0Dzsj20A7vzxyBKTt2e/taaxUuZvyriHP08aa5Z23+zYtNSy031l4raW5kj34NLiI3/IsjVO
-	DLmkC/lp1dkwy51ESHnsUNO8lyt7cP6AvL6QyxTcNTHIOoUwRQFZVUv4N13PMhLZnolxGRIDy65
-	YoMk1QoEnK4UG4c4HOroyN8eQ10FbzvQocWiUjPpOJ590WfIQ1ngl6U9DE1zSeBo9cqZAZHYAjT
-	wWmoAUjZyWetpK6/T1ImOOS6pxT4/0Foi6TYaiYCmo+SLFqBL4tS1f89jx7hiHb9WP+NgXt8Ps+
-	CIk18JwkUtfUKq4CNAnfbiPivAI+z1fEuPHBrearlAHvKBNnv+evPxrKhQnN+kWPtu+TaXz9VQD
-	RcULrdagqQl1qg4OVBuKa/MZ
-X-Received: by 2002:a05:6808:151f:b0:4c3:6d56:77c2 with SMTP id 5614622812f47-5640de7e3a9mr1613306b6e.41.1793367971178;
-        Fri, 30 Oct 2026 06:46:11 -0700 (PDT)
-Received: from [172.22.22.28] ([73.62.185.64])
-        by smtp.googlemail.com with ESMTPSA id 5614622812f47-5640fdcef5asm1492922b6e.9.2026.10.30.06.46.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 Oct 2026 06:46:10 -0700 (PDT)
-Message-ID: <9207a52e-2d42-4e10-b777-2988e84d7dbe@ieee.org>
-Date: Fri, 30 Oct 2026 08:46:07 -0500
+	dkim=pass (2048-bit key, unprotected) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=USkFtrcy
+Received: from kero.packetmixer.de (p200300C597124FD839580c360d3Ed6f6.dip0.t-ipconnect.de [IPv6:2003:c5:9712:4fd8:3958:c36:d3e:d6f6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.simonwunderlich.de (Postfix) with UTF8SMTPSA id 77E09FA010;
+	Fri, 30 Oct 2026 14:51:08 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
+	s=09092022; t=1793368268;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=28nCSEvhlsnWDh1U08MOT7RrXgp6P/j1+6eqZ0qC0cg=;
+	b=USkFtrcyMOqYC1d/dtt3DHlLDTIxeSO9r+PHyPIFuRt4VSeTwwnOzOqW+LOFD8aNxh+fON
+	SKOj+NTTvt68WSA1/DzSo9wOGqcYZyTxHyWIlNGUNBSgoH5CfApd49uIcqf18ti1wDyOLg
+	JhPco0wJVu/DyVlG8gaqzjyQoUKdUxG9Av3aZTFsMkBa2ckeNML0o8KJlzVilomWEj+JKv
+	mV0LTX6NexMp5wFZMSU7U4GwKKMYQJzedxrvG23TOygefHpzBi7yseRt7y551bpiuUr3bG
+	rv47sWEQ6CZF+J2XFedhnBNOUv1JsVL+uuLKKxIw29GpyPdWLOsFPQiHQmgQxw==
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+a079f084653164a652d1@syzkaller.appspotmail.com,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net 01/14] batman-adv: avoid WARN_ON for orig_ifinfo allocation failure
+Date: Fri, 30 Oct 2026 14:50:52 +0100
+Message-ID: <20261030135105.2555887-2-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261030135105.2555887-1-sw@simonwunderlich.de>
+References: <20261030135105.2555887-1-sw@simonwunderlich.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -89,76 +78,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] PM: runtime: change stub pm_runtime_get_if_active()
- return 1 when !CONFIG_PM
-To: Sakari Ailus <sakari.ailus@linux.intel.com>, Frank.Li@oss.nxp.com
-Cc: Frank Li <Frank.Li@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>,
- Karol Wachowski <karol.wachowski@linux.intel.com>,
- Oded Gabbay <ogabbay@kernel.org>, Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, Matthew Brost <matthew.brost@intel.com>,
- Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Alex Elder <elder@kernel.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
- Rob Clark <robin.clark@oss.qualcomm.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Guenter Roeck <linux@roeck-us.net>, Guan-Yu Lin <guanyulin@google.com>,
- Mathias Nyman <mathias.nyman@linux.intel.com>, linux-pm@vger.kernel.org,
- linux-usb@vger.kernel.org, dri-devel@lists.freedesktop.org,
- intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- linux-hwmon@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- iommu@lists.linux.dev, linux-arm-msm@vger.kernel.org,
- linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
- netdev@vger.kernel.org, imx@lists.linux.dev, Rob Herring <robh@kernel.org>
-References: <20261029163044.3062958-1-Frank.Li@oss.nxp.com>
- <auRb_r8ZSSU-eHZA@kekkonen.localdomain>
-Content-Language: en-US
-From: Alex Elder <elder@ieee.org>
-In-Reply-To: <auRb_r8ZSSU-eHZA@kekkonen.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/30/26 3:57 AM, Sakari Ailus wrote:
-> Hi Frank,
-> 
-> Thanks for the patch.
-> 
-> On Thu, Oct 29, 2026 at 12:30:37PM -0400, Frank.Li@oss.nxp.com wrote:
->> From: Frank Li <Frank.Li@nxp.com>
->>
->> When CONFIG_PM is not enabled, all devices runtime PM state should be
->> treated as active.
->>
->> __pm_runtime_resume() returns 1 (called by pm_runtime_get()).
->> pm_runtime_get_if_active() is the try-and-get version of pm_runtime_get().
->> stub pm_runtime_active() also returns true. So pm_runtime_get_if_active()
->> should return the same value as the stub pm_runtime_get(), which is 1.
-> 
-> Shouldn't the same change be done to pm_runtime_get_if_in_use()? It's
-> otherwise the same, except that it requires also the use count to be
-> non-zero.
-I think "yes."
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-I think the logic for !CONFIG_PM should basically pretend runtime
-PM is enabled for all devices, and they're all ACTIVE and effectively
-in use.
+batadv_orig_ifinfo_new() returns NULL only when its GFP_ATOMIC
+allocation fails, which is a normal runtime condition and not a bug.
+batadv_v_ogm_forward() already handles this the same way, simply
+checking for NULL without a WARN_ON.
 
-That implies:
-- disable_depth == 0, so usage accounting would (if enabled) be done
-- runtime_status == RPM_ACTIVE (power is on, no delay)
-- usage_count > 0
-- runtime_error == 0
-- Maybe ignore_children is false?
+Do the same in batadv_iv_ogm_update_seqnos() to avoid a spurious
+WARN_ON splat when the allocation fails (e.g. under fault injection).
 
-This might not be complete (and could be wrong!).
+Fixes: 7351a4822d42 ("batman-adv: split out router from orig_node")
+Reported-by: syzbot+a079f084653164a652d1@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a079f084653164a652d1
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ net/batman-adv/bat_iv_ogm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Some of the other dev_pm_info flags could probably be assumed false,
-because they represent states in transition between ACTIVE and other
-states.
+diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
+index 89b499f7a37dd..158d2b8f04036 100644
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -1410,7 +1410,7 @@ batadv_iv_ogm_update_seqnos(const struct ethhdr *ethhdr,
+ 		return BATADV_NO_DUP;
+ 
+ 	orig_ifinfo = batadv_orig_ifinfo_new(orig_node, if_outgoing);
+-	if (WARN_ON(!orig_ifinfo)) {
++	if (!orig_ifinfo) {
+ 		batadv_orig_node_put(orig_node);
+ 		return 0;
+ 	}
+-- 
+2.47.3
 
-					-Alex
