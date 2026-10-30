@@ -1,109 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793396853;
-	b=b+bpVQXSOcPbm3JEjXPScFvO+Dds2QZHXe38uRQ2GZF6X1lyd//Wm9FOPO4YX4bxKxS9
-	 hxydoTkkMeR4PIRhAf2r1c+bB/8CgVg7sp7d64Pc94XQmGQrm0nWECElNAEd/XAILMU5A
-	 8BrYDTqiVnZgC3okrUJh1cKIZVIBWqK/fbuqP75ud+W7LrSezTNI031xeTkG0utPWL25A
-	 30w+DgHcFg+NgsquYPcahihyzKQcMwaNpbviIU2MEBC+GDvISna51ywyNNSbLMBbb4QC8
-	 Ip3MRchb83l/f8dZBgIcogdWVlItwZeRR7OxArris1Yg6ca7w1myBgWYDKbEXc7bMGA==
+	t=1793397136;
+	b=iZNskNTBzl2aRIuQMZWV8SQ/TG7dC447GVz+/wVX49TfNe+9B4Vbv7GpgJPlgj5nL0rq
+	 3k/98QJmOrbC+i+y2IK/n5ASj4w850jqg/6kfM0XLtFMApCcYZEraVJslt5GFYBKtcOR1
+	 DUnsXATfWMEvbEUPY/KrugIu5vDS8Wv/meFjgekhRg/FiqjId7ugdGO8skJvhD07nD68w
+	 LZcq/mILe1VkMs3Tufy74fzeZBtGzfvl9opEdF0FwrJq7i3wlCFi0+RB1nyeu7p1boZRe
+	 YZZXoqqThDpKrwZwooYhBULCuwVg/FfLTTNCiUWrxpL9U57MAvBzvMEZ9/OQcQIRuiw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793396853;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793397136;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Content-Type:Date:Message-Id:From:To:Cc:Subject:In-Reply-To:
-	 References:Content-Transfer-Encoding:MIME-Version;
-	bh=gIM0Lf0RizPpF2lV6gAp9aopG/Lg9g5C4lkrOp+TfwU=;
-	b=4bdpx+tNeWjyqrQ31fuVSRj8bM2IEC6Gm6QBFenRaRpJYBGFNHM1r0+Nck6xN72Re0I4
-	 J7bCK6S8jAJ2QlnpdvM7lbUDTdA4MTFrIRyj4L5xkmkwjUhul/pzLosCVE9bF3p9ZAWfB
-	 ybjBWp64N64DqZRyoPX6vkxf05wEDMIEAtdJaArWnGS8k8kyN/4o9CGOdde3/v8I2+qNX
-	 PhVJMm7Di7/0NNc8xeIHiXFEdWRpGs8J52l0R9VUo5d/eIvAVe09NVM6UzBIGHcYfk1Ed
-	 e1qbPZc2WjWHEZ3zQwc9EqmTmA3M5dkIxK9ozrbrpteEgfuCY2c4Q/AsMt6QwR48XTg==
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=IwMOb/LL4+tPG5EISzxH9OS1Wpx6RvsDfo79paVWmtI=;
+	b=QPi6oofrJWT5QphNP09D3nvJMgd66m2fK8EclBO4ZszdZenSD+LzWBGV+cC1y1y6WvWj
+	 QbOp+XHO6EMvTpUtpbw8HWsAa+H7OuXvftlMTQBmVVopos+WhMRotEWal3cOhmGON5kbr
+	 X1BeBqNhBTXNUVY8oNAOgtWNumpXa/0CVx3u6JFmpwY6T4IwAU46P5CzsUgRRzrLsbRSF
+	 SlKPaxtrOOjbY1vnAwfmWdp0aWThLaPLKjZdX1d/XfM6/iethWC+6B9Mpat/Lvr0uUWp8
+	 Q4Vnc1mt2qAafp0msFjjiX/D12EXmRkRO97ziP6OCnv0XehE0XGaDide9GvBe3cYCNw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QwLgp5NI;
-	arc=none smtp.remote-ip=209.85.214.170
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=f4rdtJBx;
+	arc=none smtp.remote-ip=209.85.221.169
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFBB606A31C
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 21:47:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BAFBB606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB75606A31C
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 21:52:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9FB75606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QwLgp5NI
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ea0efd636dso10764595ad.0
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 14:47:32 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=f4rdtJBx
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5e948e56af3so474521e0c.2
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 14:52:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793396852; x=1794001652; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to
-         :subject:cc:to:from:message-id:date:content-type:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gIM0Lf0RizPpF2lV6gAp9aopG/Lg9g5C4lkrOp+TfwU=;
-        b=QwLgp5NIIMg4AA8/Z8CtU3veu8cREA/NoPqO23FoHKGC2AvsPNQmzks5z8NjAGnG/7
-         BD+ScScN5uJUv8ITeksQDGK+fqx3rm7eK5nu5JL35HXr5EeDTZqo8H6lUhoriOU0kp3T
-         n4Cr6obn1rdNu4BtmuGD/0gHHQOz/9joE+tLRnTxTz3OpMJ8aym3QAdjy+0zl7O+2L0w
-         OcJWym7XY8P4pwpSMytqPjqzLzyaJmqOxy6zVKYr8aq3T+f039sSxExWB+CFDlN8z0yd
-         uiAKWbQYezGYKcGlBy2DHE+7yOcvR6xCHyhfPmirxfPFcswd06xFfor8tls/BoU2Rz6I
-         NofQ==
+        d=gmail.com; s=20260707; t=1793397134; x=1794001934; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=IwMOb/LL4+tPG5EISzxH9OS1Wpx6RvsDfo79paVWmtI=;
+        b=f4rdtJBxJnY1OOb4UuBttnhUEEHz6dYBSxO/kjASBUNx6wpLhJJ2vhhMN3sexd4g7f
+         22WpF6PGbPzU6f/+7iUVy6n/LJWwa8Z3ZOS+S9hJbmixjn0UMRf+WsxPSIB4xUTMrf69
+         /cC8IEyYlBMzKnN6SOP+hGbQDVjyyhPiJjrBD3SlxLq77C7Fvr37M8seDlDumNbt77or
+         TklQptrGfj/sfD35K3YxjWZEJaEgeykXFfGeSaUa0/cMv1C/RfFT+G4VY2MezGxMBS3M
+         0MLBbGOO61iKe2T1BXDyd3q4uGDcqRiVtJji71E61AKBP3nI6zVdkswA0mwT5qrraNio
+         4GTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793396852; x=1794001652;
-        h=mime-version:content-transfer-encoding:references:in-reply-to
-         :subject:cc:to:from:message-id:date:content-type:x-gm-gg
+        d=1e100.net; s=20260707; t=1793397134; x=1794001934;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gIM0Lf0RizPpF2lV6gAp9aopG/Lg9g5C4lkrOp+TfwU=;
-        b=bt/CK6zexG7ckSjUfck6KnbGw0sMr+AhJddVYpzjKF2H3jnNKrz+ctwKAujGtR+G23
-         Id3xY1Uyk8m7sAyMEdrqHuotqyE2IjqQ58vv/hWhdtICLJpwTQQdtbz5nzWd0YWcQb0j
-         3q59zhVh/NA2fhrrxdEpjKfGEgpOjzwLCTzD67OtEamhCQ2iv3nCtlSTq1Wee2AGNhI+
-         L7ZNXb9sx+x2Bowazm5RuOk9iaSqvcjNQNxtFxMm0umeJM+i7JGB1eaUgawaRiWzmBm0
-         tHWXLnGkJ5nsw5uwgMM47EeSgn95Y+oV6SMSHn2aPGkx5T5gy74BkjiMF6g+Rx8c9se9
-         nbKA==
-X-Forwarded-Encrypted: i=1; AKwUvBzkcGuXXoR+39xp3mc6j/qIhCI0zECnNr8J6BASqaAzvZDKfnvolx1/Dj4+PntiwdeUri40ZVA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKUcJmGtQgQHh55GF5H8/qq/s4Ty6bHlDZBpbsTCyZlogJrgzf1
-	5JdXClwB5620wfIWhpek57M7eGtN0wf+MPb/mOoK6XvwJd6yU1+gPWVLhSUvZA==
-X-Gm-Gg: AYBFou01lJxuHipf1TDzVPh5oMVlpcLBGmjJEYvMhGaOvSDfwBLK2eAc6zGE8q7sTUd
-	5CM/cpAV7accCC0ewa5gZ4qY+5E3rMfLPSdtEYNuZ9/XRehebBaPp9PE3AWLGomUtf7Vp6smixr
-	NgcoOSR8TCQyrwOyfs1KfNK8JOs05PM5iKD/ml7Ao5/OwOC03Mi/USUqhZ8BD6BOHEElqeK6zJh
-	fXKDYhwRqYVmIgAzICeRDgf98UNJFJ0uMlyBjrnNqqfcIrhUniCi94DjMP3K/fMRlLNM7LvwqN6
-	xa5DGjV7N/SsgQ7BIwNh7PamTIMgXhOl4pzq+fZlU1gBzgr3QP4qO64JZ31aDVF02aIfbMsOFtB
-	QzaSkBBzO8DjjjLqgXO3ihOWSmxXRPl9EL5UlVEbbyZqtYsld8s68d8NOSZAjhoCcADorMEucOO
-	2T9u8/umDWUtMmbsmBBF3JrkufeS6PwHPG9DGwWMeW4CMxzXiU/D/kC+7Sjnh3xgk29FZyRSsLC
-	+Bk5UJ44LcgqJMWuwWGRvvP1RfqbcUduqR2wWe5LMFNQHx4E07tI8NGTiSxZqRhgdWz3V10ICKm
-	YA+u3nKZbaevR6KtJZeWn0xQPDq7/0e+b1Ltc8l8PNYuujtCd28ei9dbEjh0fNurLn8q2OHME4t
-	xW071ab58wbnCwXDuZNJ6c6lLNI7u5CSPvA==
-X-Received: by 2002:a17:903:144b:b0:2e9:42d8:48d3 with SMTP id d9443c01a7336-2eb364d2529mr35787295ad.36.1793396851935;
-        Fri, 30 Oct 2026 14:47:31 -0700 (PDT)
-Received: from localhost ([153.61.198.252])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb39230bbfsm11775285ad.19.2026.10.30.14.47.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 Oct 2026 14:47:31 -0700 (PDT)
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 30 Oct 2026 21:47:30 +0000
-Message-Id: <DMII4JGTEUEG.2WRJPT6ODT6J0@gmail.com>
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Jamal Hadi Salim" <jhs@mojatatu.com>, <netdev@vger.kernel.org>
-Cc: "Eric Dumazet" <edumazet@kernel.org>, <bpf@vger.kernel.org>,
- <bot+bpf-ci@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>, "David
- Ahern" <dsahern@gmail.com>, "Martin KaFai Lau" <kafai@fb.com>, "Martin
- KaFai Lau" <martin.lau@linux.dev>, "John Fastabend"
- <john.fastabend@gmail.com>, "Stanislav Fomichev" <sdf@fomichev.me>, "Andrii
- Nakryiko" <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>,
- "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Song Liu" <song@kernel.org>,
- "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>,
- "Emil Tsalapatis" <emil@etsalapatis.com>, "Ihor Solodrai"
- <ihor.solodrai@linux.dev>, "David S . Miller" <davem@davemloft.net>, "Jakub
- Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
- Horman" <horms@kernel.org>, "Jiri Pirko" <jiri@resnulli.us>, "Victor
- Nogueira" <victor@mojatatu.com>, <linux-kselftest@vger.kernel.org>, "Shuah
- Khan" <shuah@kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH net v2] bpf: Fix skb_pull() BUG in
- __bpf_redirect_neigh()
-In-Reply-To: <bpf_redirect_neigh_short_linear.v2.r0.20261028080316-1@mojatatu.com>
-References: <bpf_redirect_neigh_short_linear.v2.r0.20261028080316-1@mojatatu.com>
-Content-Transfer-Encoding: 8bit
+        bh=IwMOb/LL4+tPG5EISzxH9OS1Wpx6RvsDfo79paVWmtI=;
+        b=1gtGEOo9++Vqc1ED9cpW9HfEg/M1tuIYpEc3IIQ6snBANTR107SzXU0+89uR/JO3Nv
+         wCP+k7IFkxoyKi8sHWmQxTCaXBTAtO3gHBfKVTXrijGWBfkGaz5TL1oCEKb/291WnsSj
+         5t/gPK/3eI96CGbs9xqDMW3CjOc//3/v8+okL9C1OengBdeNQfGovbSjk9evInEidVam
+         v5QTQNByPXGOWyyKFRdEsnRGv0aHaNXpc+yafB7t+9WOVqr6kR2Bt86uJ5argouwqIrZ
+         b8BuImQ1OH2BWvYlieJrEkygCXTX+A2E5JeW9vG/V9TTaDJ4vzF7aS2r/YEyGEnAsyC6
+         rNaA==
+X-Forwarded-Encrypted: i=1; AKwUvBwI7/XE82APCPJiPpZSs9Q6frJxNjl3mZdeHzTT0Mmbs4IdaW5BRPg97dBeHlbYZbjC3rPOA/Q=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLVx7QswrYqBaIJvu3VYj/Y6ub/n/vEUgDfKFNIyJ00XisZMri0
+	VZCzyPAI2EOdyc+bFyB6Uw5/Um1s5XwJhQqjkPMm3zZ5J46JQAb4eFpY
+X-Gm-Gg: AYBFou1DK8fK+a8pajCA/8N2RQKto5AfhzUT7dH9fHfjGRoJvAVp0upG11jL2Oxubqw
+	s9pWvUWh62fWc8uJg7Dl06Axy8+Ozp77+U4AfUvcZtq2A10QbUptqifltwxYfpZfkZvyVtmBW0X
+	jEM51515WWPosdaJ89ZcGisVuT7M8xq/lXcoZhvDS2xuGvinOoOuDrD6O4HwFCEsCa9V9DOEnTe
+	cvTa/WWwsWultlhfgaebIgURikZgz4KrwdopGSpmm3Rl/C+4eGFQnKmyLSFMfWQlYqCIaGdGNAt
+	gIb1jM++12vWsCnqAwoMl0bIUQ4IQMsmm/Anttky9wFvR8p3bnci1uGrqTJdbP2sQ/ewhXjEvbi
+	iJW5ghJBtxagrZvOIvSSwYLdEXcmmSxJZ8QHV2tji2wkuPWOdwzWDwByZce/ebgO183YqdQLv79
+	GwqpvdDby4o3CKS84koxRMCBhJqOThE4vMEG7nF3pa1rikV1DrzlYTSmcC+Qr+C7lZPtamnaEGE
+	l/U4sUR0bZRxlVsM5lkk4QzLALYvYWS/NzkvwlzRIY7N1rsp8t+7egnzF3eCN95YH0LZBxy81nH
+	bweg6M5RGNu0ktug9SS2FRyzwbykZ+xJBjJ42rApYZq6imABUy5EvN1zWsCkdecYoiKk+oaKx71
+	tdLtn1W4ZBlUKUnRKiQ/2bM4e4j9qWTFTPRqsK6JPan1B1v+IFil8FVxkeY5viKgDY8Yg
+X-Received: by 2002:a05:6122:298c:b0:5bf:b3a0:388c with SMTP id 71dfb90a1353d-5ec6882f8d1mr1888484e0c.6.1793397134616;
+        Fri, 30 Oct 2026 14:52:14 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec69c9c554sm3753194e0c.14.2026.10.30.14.52.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2026 14:52:13 -0700 (PDT)
+Date: Fri, 30 Oct 2026 17:52:13 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Antonio Quartulli <antonio@mandelbit.com>, 
+ willemdebruijn.kernel@gmail.com, 
+ jasowangio@gmail.com
+Cc: Antonio Quartulli <antonio@mandelbit.com>, 
+ andrew+netdev@lunn.ch, 
+ davem@davemloft.net, 
+ edumazet@kernel.org, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ netdev@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.1805eb8882e13@gmail.com>
+In-Reply-To: <20261030152540.1409884-1-antonio@mandelbit.com>
+References: <20261030152540.1409884-1-antonio@mandelbit.com>
+Subject: Re: [PATCH net v2] tun: bound the NAPI receive queue
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -113,99 +105,98 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 29, 2026 at 02:36 AM Jamal Hadi Salim <jhs@mojatatu.com> wrote:
-> Add egress coverage to tc_redirect_neigh: the existing test only attaches
-> redirect_neigh at ingress, where mac_len is populated.
+Antonio Quartulli wrote:
+> With IFF_NAPI, tun_get_user() queues every written packet for NAPI on
+> an unbounded list. When the poll runs asynchronously (threaded NAPI)
+> and is slower than the writer, the queue grows until the system runs
+> out of memory. An unprivileged user can do this from its own user and
+> network namespaces, and the queued skbs are not charged to its memcg:
+> in a test VM, a uid 1000 process limited to 128 MB caused a global OOM
+> in ~6 seconds.
+> 
+> Drop packets written while netdev_max_backlog of them are queued,
+> before allocating them, and count them as rx_dropped. The sendmsg()
+> path, whose callers pass zerocopy buffers, is left alone.
+> 
+> Still open: the limit counts packets rather than bytes and applies per
+> queue, and the queued skbs are still not charged to the writer's memcg.
+> 
+> Found, fixed and tested with the help of an AI coding assistant
+> (Claude Code).
+> 
+> Fixes: 943170998b20 ("tun: enable NAPI for TUN/TAP driver")
+> Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
+> ---
+> 
+> v2:
+> - Cc'ong netdev and maintainers
+> 
+> Notes:
+> - Affected since 943170998b20 (v4.15). Reproduced on mainline
+>   7be4bc52fd9e; the code is unchanged in net/main 94cea342e891, which
+>   this patch is based on and was build-tested (W=1) against. The
+>   before/after runtime tests were done on 7be4bc52fd9e.
+> - Conditions: unprivileged user namespaces allowed, /dev/net/tun
+>   accessible (0666 with the usual udev rule), threaded NAPI.
+> - Mitigation: disallow unprivileged user namespaces or restrict
+>   access to /dev/net/tun.
+> - A reproducer is available on request.
+> 
+>  drivers/net/tun.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index 770b8fe085c3..1ace0c1f22f2 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
+> @@ -60,6 +60,7 @@
+>  #include <linux/rcupdate.h>
+>  #include <net/net_namespace.h>
+>  #include <net/netns/generic.h>
+> +#include <net/hotdata.h>
+>  #include <net/rtnetlink.h>
+>  #include <net/sock.h>
+>  #include <net/xdp.h>
 
-This test cannot hit the BUG.
-Just drop it and respin as [PATCH bpf v3].
+Keep alphebetical order
 
->  static int __bpf_redirect_neigh(struct sk_buff *skb, struct net_device *dev,
->  				struct bpf_nh_params *nh)
->  {
-> -	struct ethhdr *ethh = eth_hdr(skb);
-> +	struct ethhdr *ethh;
->
->  	if (unlikely(skb->mac_header >= skb->network_header))
->  		goto out;
-> +	if (unlikely(skb_mac_header_len(skb) < ETH_HLEN ||
-> +		     !pskb_may_pull(skb, ETH_HLEN)))
-> +		goto out;
-> +	ethh = eth_hdr(skb);
 
-ETH_HLEN is not enough.
-__bpf_redirect_neigh_v4() and __bpf_redirect_neigh_v6() read ip_hdr()
-and ipv6_hdr() right after the pull. Nothing makes these headers linear.
-Take the AF_PACKET frame from the commit log without pop_eth and
-bpf_skb_change_head():
+> @@ -1856,6 +1857,17 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+>  			zerocopy = true;
+>  	}
+>  
+> +	/* In NAPI mode packets are queued here and processed by the NAPI
+> +	 * poll, possibly in a kthread or ksoftirqd. Bound that queue like
+> +	 * the per-CPU backlog, and drop before allocating and copying.
+> +	 */
+> +	if (tfile->napi_enabled && !frags && !msg_control &&
 
-  packet_snd()                     headlen == 14, IP header in frags
-  skb_pull(skb, ETH_HLEN)          headlen == 0
-  skb_reset_network_header(skb)    network header == skb->tail
-  ip4h->daddr, ip4h->saddr         read past skb->tail
+Why disable if frags? That is still using NAPI scheduling.
 
-The route lookup runs on garbage.
+Same for msg_control. tun_chr_write_iter calls with NULL msg_control.
 
-Eric's skb_network_offset() check also covers
-mac_header >= network_header. No need for two checks.
+> +	    unlikely(skb_queue_len_lockless(&tfile->sk.sk_write_queue) >=
+> +		     READ_ONCE(net_hotdata.max_backlog))) {
 
-Something like this:
+Nit: consider > instead of >=, same as enqueue_to_backlog
 
-diff --git a/net/core/filter.c b/net/core/filter.c
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2290,10 +2290,14 @@ static int bpf_out_neigh_v6(struct net *net, struct sk_buff *skb,
- static int __bpf_redirect_neigh_v6(struct sk_buff *skb, struct net_device *dev,
- 				   struct bpf_nh_params *nh)
- {
--	const struct ipv6hdr *ip6h = ipv6_hdr(skb);
- 	struct net *net = dev_net(dev);
- 	int err, ret = NET_XMIT_DROP;
-+	const struct ipv6hdr *ip6h;
-+
-+	if (unlikely(!pskb_may_pull(skb, sizeof(*ip6h))))
-+		goto out_drop;
-+	ip6h = ipv6_hdr(skb);
- 
- 	if (!nh) {
- 		struct dst_entry *dst;
- 		struct flowi6 fl6 = {
-@@ -2399,10 +2403,14 @@ static int bpf_out_neigh_v4(struct net *net, struct sk_buff *skb,
- static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
- 				   struct bpf_nh_params *nh)
- {
--	const struct iphdr *ip4h = ip_hdr(skb);
- 	struct net *net = dev_net(dev);
- 	int err, ret = NET_XMIT_DROP;
-+	const struct iphdr *ip4h;
-+
-+	if (unlikely(!pskb_may_pull(skb, sizeof(*ip4h))))
-+		goto out_drop;
-+	ip4h = ip_hdr(skb);
- 
- 	if (!nh) {
- 		struct flowi4 fl4 = {
- 			.flowi4_flags = FLOWI_FLAG_ANYSRC,
-@@ -2451,15 +2459,14 @@ static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
- static int __bpf_redirect_neigh(struct sk_buff *skb, struct net_device *dev,
- 				struct bpf_nh_params *nh)
- {
--	struct ethhdr *ethh = eth_hdr(skb);
--
--	if (unlikely(skb->mac_header >= skb->network_header))
-+	if (unlikely(skb_network_offset(skb) < ETH_HLEN ||
-+		     !pskb_may_pull(skb, ETH_HLEN)))
- 		goto out;
- 	bpf_push_mac_rcsum(skb);
--	if (is_multicast_ether_addr(ethh->h_dest))
-+	if (is_multicast_ether_addr(eth_hdr(skb)->h_dest))
- 		goto out;
- 
--	skb_pull(skb, sizeof(*ethh));
-+	skb_pull(skb, ETH_HLEN);
- 	skb_unset_mac_header(skb);
- 	skb_reset_network_header(skb);
- 
+> +		dev_core_stats_rx_dropped_inc(tun->dev);
+> +		return total_len;
+> +	}
 
-pw-bot: cr
+also best effort: more robust would require retesting once holding
+the lock.
+
+> +
+>  	if (!frags && tun_can_build_skb(tun, tfile, len, noblock, zerocopy)) {
+>  		/* For the packet that is not easy to be processed
+>  		 * (e.g gso or jumbo packet), we will do it at after
+> -- 
+> 2.56.0
+> 
+
+
