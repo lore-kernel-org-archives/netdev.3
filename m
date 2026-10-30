@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793353911;
-	b=S1gFL+S8AAbXMwNHeVVg8oMlw1Qfdb5AeFEZ45SSeEMiSX/Tt4aqWT2P24vo73pb8ptn
-	 LQ1R1GTERlGnE6DjCvRJBql7n/hAsgNeT/a8Esl+ntcr+FkQQ3b7TthrLnZ9kVPt8EB7M
-	 fVeMPQzk4k+vMl+lwbJs2RzKII7l0QgyDilE+lrZmCnTIG1EAgB0GwA9XkVlKFuRKnyIi
-	 9mo5f+SKzn1IvrUxvf64+kMaFdC02DajvKX8KprvfEwzemn0YzpZjOaVlJYOHdpzq17i1
-	 yPeegDgnktI4uE9L3U76riOcy8182PaaidcjQEIb0/1HNtcRV5EnVimmWdssghB1nFg==
+	t=1793353910;
+	b=LfVjJzyjutqvXvOCWVT18Tygk658d1vxde1eEu0I8WDPnSeIXc4oUMUPt+EG650Ghjvc
+	 +ApcBvmzRFjw55zmv1JGNFt2UUhRlGdJjX3bBb/o7uV6HLcHHKxHd8qrfgzbyMA20glHL
+	 9iDvfT13k8yInsfQ3QkEUO+vZOoDNGGAmqmsuOQC6yHJaCPcKJ9U9ZXDyWuPAwra8Wln8
+	 oJxhFIz7vDEIMTP/QR3yqDLYCXQ5m/m/2scllN9rJsq3Pq6JRBUx81HwzAFUzu9gfn/q2
+	 XLLMKkqFkwjHIeAtRIrP25XsBliQbO+8Qj8kazFAv3711IcMc6KVKXQTsZcIpWRhPzg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793353911;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793353910;
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
 	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=frkiuxk1Rd/ojAV2wzD+GKDvqPPCD0QvXjwcP143p90=;
-	b=Us63nV1Pj9ew0X2MgqEwBhWgYyk4yatrh+pfWTU7khKvZ4z1hRqolL13oIxx04W5o7qg
-	 K7j3K7EVm+aMHFz+MwrKvUNRYyLLvGpzTVcv6j9WmK9HG3JR+be+IwHOHwIuSf87/A/tH
-	 zdZYtF23DkrAm2oda6G+A4QHYA0hYYZYC8uLvQnns82DryOHxYfMt3TpBoBDQ/BCTiTD5
-	 W0bRxQMqaZqga+gxcQnF8DYaYnophXrzi+fC6tZ8+MQq5RLzWScS6HkSEmHor6fgltYEq
-	 nwzS3c6bgWgX6NBHxlsx4yHN8vSmB9A3tcHzSxfrCq8RnLCYsJnqia/PWPrr5pYVExg==
+	bh=JzAjuDGqRjFI5/M9hXqONAKHHmuFve3CBLlF8W41tpo=;
+	b=UBKIRlvZ53uqx0k5nhnVrbkHrqZbWtRIDer+E8QJvYUTdiABoepyIDhrZuzWsBs4asoS
+	 IHwPT1mRiUBi22o29fuXO7Q1aMkgRYJVrVIIbci0bwx0eoc+50zE37zilfop84Wjc9DtB
+	 SNIcchJFd/qIHA+kiZvvPTp0rMtAKYRrjL5wnqzMVjPziyTgDn9ThY2F/BAciXVcXyFLb
+	 dOLdO/5RzvDap0y64w7Fc10/zNRcfg2U79wJtLJGYvke0F02Ure74f8bjTA0YRU/PzJJF
+	 KgqcSwpYzj88FnyiriNrzs04U7+Y6CTVAt7ahEJE04bOisbCDctda1hFhe5jRZ2MNZA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RTTzCXSQ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EakpDaqR;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F08606A337;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FA0606A338;
 	Fri, 30 Oct 2026 09:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RTTzCXSQ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EakpDaqR
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1793353910;
-	b=wzRZoGOGxn5L8ijCtKkjpOpvwZxTPDntAAXV2vSKwWQe2rLWedsJ9Oo8+HjZV+GX5Z/Y
-	 TrTtry7IpFXG8cHOlhk2e5G8F020w49fPb737PlzrzBjOtxBuNEps8hR/08XgQxos4z10
-	 rAtfMQhS+z/hXsWecigUWnClvhaSZFsv7LjNXXTy8p4DLgxSl8gzx4IzokULLvPjS3jGL
-	 SUD5RpUHE6mttUN/8KaQ6yarZerHqr+3JQFLtLnqp3AD0bFPzpQVKdT1syYfIt+LLC8mE
-	 2s3qRcmGT18YI2bhq+8t20Awtmns7O79rD7BlAGVe1hKw/h9YlcqNyxPyDbX9jwl6pQ==
+	b=OPRgIbulRwQqaYEFLNWtXwN5TjcQgOW/A7CN0L/MFucOhBlHnqBb3EdgrMR2Vp74jslq
+	 RtASwIk9SicSRCHNCgyGkyDyiFbEDwT9vZNKRmv+rdR8XvIxVfJF/JbwXmbyDid4IFN3M
+	 NlZW+FnSHgWpwo0wEkNwEaZq6UeC7wkyyNb+yZTI2dSnkV7xt/nHl8pv0QK1Ia9Hbwb15
+	 9SegNTB8qBAHyy9QoeQIMQGwdzv0o1NdkUhXtJbBBou4yMpOYgoXBCdQNTR7xjDfK2+FT
+	 PhLbdJFW6tMQ6BAGB9RTTyr6o74367RiYY/pnKtsavkI6nqXX65dLUQ2S1WbWyz/Ikg==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1793353910;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To;
-	bh=frkiuxk1Rd/ojAV2wzD+GKDvqPPCD0QvXjwcP143p90=;
-	b=RyOG/IEmkS+W3oSHquYlBQhVMORvqOJ+v9A/1M3jlGB1endvLjerW5QilSjjBa9wYzP/
-	 8snYbwbNYM0O9kloXGQM1TgeBjKCVjqzwHdNf5fG+fXq55M3l6zKhPeM6wsGB2Fu0zT1Q
-	 eeTNIv+ppgTgdiUU4eQLI3dAjWMXd2KeTZ6DIMDA+zUMJ8Dj2nXxv/LK2OeojUBjn0oei
-	 Lnnibo3gNhiwA5PshJ3sLqCxov0uKTmM6BTonLYMUaXza0i8idl5p1Eo8kURWiHlqm5Io
-	 3JY6SE2W5O+stE6BIPJmKEAppW+KHSthyAllX5LByoleauHrPgTl109f+vqv1Bg/BzQ==
+	bh=JzAjuDGqRjFI5/M9hXqONAKHHmuFve3CBLlF8W41tpo=;
+	b=SPQXA/zPTodVuk2MC+G/TUAS7jAW6GoK+X1OSlw56bTtzBU1JIlVXVkaJ9ZZIRSqzoDT
+	 YJ2iwIgRbCaVS9lR0jCMeFLvRnYJ9Wad48vt0XfjBF9VacalmwvHxIPq30TedtKKO3pq+
+	 dCY4v9RX/LMs3fE85g0I8u91ui2gkcCi6T+8LgBnMsmWH8trhCF5Jko9k9nPCd/d5F72F
+	 LMv6UzK52Rw8ZM+hgW4Ry/zyldzDLHzASjncMDOFhEdxL1Or/I1P2hRE8D2FHA7DLAbJb
+	 oisHeGZEc+/4rjOHBWLHrx3SKFaIpOoFxWzizWoOvFCJDnTMwj/mEPy59xLvh3/PDeQ==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 824BD1F00A16;
+	by smtp.kernel.org (Postfix) with ESMTPS id 822CB1F0093A;
 	Fri, 30 Oct 2026 09:51:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1793353910;
-	bh=frkiuxk1Rd/ojAV2wzD+GKDvqPPCD0QvXjwcP143p90=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=RTTzCXSQlA/BdAkrOFV8RWEKmp3k8ApXRfcNkW/1YuR3VekfLav3RiNNhmExspGSN
-	 64qPzjl5JGbLF6Wz4U0uxTInzlS9fDZfGkMCWsULhWfk7bSXmDTgJPAlwulFOGnHoO
-	 SupnsZRrcI3bx+3Te5+/yDwT9v6M9IRghJ6lfWHt5XGmKUPtEHH00TPqU+ckczzK2x
-	 TjhzYxm6dNGzMoOoElM/siKRfzKoYS1wdjQVpAAu6lNeOBXY6dHSPM5dEi9M4+153D
-	 /9XL1NCO2mp2ng5PZ+a15J7LQLun/R61x9GgV3IRoEZGR3DRwLhWbBwwKOSi8W+fJk
-	 mYpVn23dygidg==
+	bh=JzAjuDGqRjFI5/M9hXqONAKHHmuFve3CBLlF8W41tpo=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=EakpDaqRVIGu2f2Wpp+w00yPJcfaMEZ8Z5DJBCY2ZD49Fz+xWRpEuV4PGCvnGTFAu
+	 HQa8iTsaYmbPIJjwAy+yUrSeej+SWsB8vJhVCYdwgAJ73p2NEQUzJ/4EZgRnMQlbSK
+	 ZSeM14HnAAPwSLtxfeTDUDhU9tHhaYZnuQTRdlqT8phJ957AY8iXio8YUHvAB7ronE
+	 reXBh5PAt+3VscyHlwx+mxCA1IlPXtB4cbrMET1yXZrnyxU6UBdN13hhCSjGafXDKz
+	 k86kWQISnoL7z5dFsoN5zkrz1E/cBV4rAG7kZD5h3f21PnuvLZMAHJUWlnu+wL5RMf
+	 tS+JbGzgsFmUw==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 087B343715;
-	Fri, 30 Oct 2026 09:51:49 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id DB7BA4370D;
+	Fri, 30 Oct 2026 09:51:48 +0000 (UTC)
 From: Cunhao Lu via B4 Relay <devnull+1579567540.qq.com@kernel.org>
-Date: Fri, 30 Oct 2026 17:43:59 +0800
-Subject: [PATCH v5 3/4] clk: rockchip: Add composite clock macro with mux
- table
+Subject: [PATCH v5 0/4] clk: rockchip: Add RK3572 clock and reset support
+Date: Fri, 30 Oct 2026 17:43:56 +0800
+Message-Id: <20261030-add-board-ok3572-c-clk-v5-0-9a43403cb149@qq.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -85,9 +85,12 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261030-add-board-ok3572-c-clk-v5-3-9a43403cb149@qq.com>
-References: <20261030-add-board-ok3572-c-clk-v5-0-9a43403cb149@qq.com>
-In-Reply-To: <20261030-add-board-ok3572-c-clk-v5-0-9a43403cb149@qq.com>
+X-B4-Tracking: v=1; b=H4sIANxm5GoC/3XO0U4DIRAF0F9peBbDDgtdfPI/jA/ADBZri4VKN
+ M3+u1Cj2Sbu403unDsXVihHKuxhc2GZaiwxHVtQdxvmd/b4QjxiywwE6EGA5BaRu2Qz8rSXagv
+ cc/+258IIDKgUBDSsHb9nCvHzCj89/+Ty4V7Jn7vWG7tYzil/XZfr0Hu/I/DfSB244MKJgJOyc
+ iB6PJ3ufTqwrldY3q8+WaEZRjgzTVI70reGXBp61ZDNQGddsNKgNnBjjEtju2qM3RgHBW4MhNb
+ +GfM8fwNmlcJOkwEAAA==
+X-Change-ID: 20261023-add-board-ok3572-c-clk-090dfd552fd9
 To: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
  Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -100,11 +103,11 @@ Cc: Cunhao Lu <1579567540@qq.com>, linux-clk@vger.kernel.org,
  linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
  netdev@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793353906; l=1536;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793353906; l=6405;
  i=1579567540@qq.com; s=20261015; h=from:subject:message-id;
- bh=5um5DvzGZ7NXY6308q7TLtQUZ+TSSmWq3dE0E24Czn4=;
- b=VG4JhmherdSJQ6Wt+860xnxVklWfiy/pC3b4pbpLDrn6mJNkwwQugYH1k2IkD8oHuVsKCDcFG
- x2YZkUemy5tCAKCe0J7VT7xmLoBN3URaUOsDo66SyUMAfe74OUCnm+f
+ bh=i68Y1nmmCbOvMxH5cnfBIgEWy5M+SQGHJUUSGcBqLJ4=;
+ b=PKWYK0y1h0dk2d0qvkIL2ftsiD0DuVIj/NJ3BnWMAoBh7D2a42FNC6rYXLXpZZ14yG51rFj1K
+ plJKFv+qfSVCW74Az09TW6oy54KdBRSre4hfgwuTCNx3qZgD5rsMol7
 X-Developer-Key: i=1579567540@qq.com; a=ed25519;
  pk=sUTWrzlIwT4C7ctjNfVZAzzg0G7QUn2XxRGpYsw4RtM=
 X-Endpoint-Received: by B4 Relay for 1579567540@qq.com/20261015 with
@@ -112,59 +115,161 @@ X-Endpoint-Received: by B4 Relay for 1579567540@qq.com/20261015 with
 X-Original-From: Cunhao Lu <1579567540@qq.com>
 Reply-To: 1579567540@qq.com
 
-From: Elaine Zhang <zhangqing@rock-chips.com>
+This is one of the subsystem submissions for RK3572 support.
 
-Some Rockchip composite clocks use mux selector values that do not
-match the order of their parent clocks.
+This series adds the CRU binding, clock and reset IDs, an internal
+Rockchip 24-bit fractional divider helper, a composite clock macro with
+mux-table support, and the RK3572 clock and reset driver. The shared
+helpers precede the driver that uses them.
 
-Add COMPOSITE_MUXTBL to describe the parent-to-selector mapping along
-with the divider and gate. The RK3572 audio clocks use this layout.
+The RK3572 SoC has eight CPU cores: two Cortex-A73 cores and six
+Cortex-A53 cores. It also integrates an Arm Mali-G310V2 MC1 GPU.
+The OK3572-C board provides two Gigabit Ethernet ports, three USB3 Type-A
+ports, a Type-C dual-role port, eMMC, microSD, and UART.
 
-Signed-off-by: Elaine Zhang <zhangqing@rock-chips.com>
+The driver provides the peripheral clock and reset trees, including the
+three audio fractional clocks. It obtains the PMU0 GRF for the AUPLL
+reference mux. CPU frequency scaling is controlled through SCMI; BPLL
+and LPLL remain enabled for firmware use.
+
+Testing was performed with Debian 13 minimal and Linux 7.3 on the
+OK3572-C with the FET3572-C module. Shared peripheral tests were run with
+the system booted from SD, while eMMC validation covered the complete
+boot chain.
+
+Passed functionality:
+
+- SD and eMMC complete the firmware, kernel, and root filesystem
+  boot chain.
+- UART console works at 1500000 baud.
+- SD read/write and data persistence checks pass.
+- All eight CPUs start; CPU frequency scaling and hotplug checks pass.
+- Both Ethernet ports obtain IPv4 addresses and pass bidirectional file
+  transfers.
+- All three Type-A ports pass USB2 and USB3 enumeration, data transfers,
+  and reconnect persistence checks.
+- Type-C host and device modes pass in both plug orientations. Physical
+  reconnects correctly select the expected device, host, and device roles
+  in sequence.
+
+Stability:
+
+- Repeated cold and software reboots complete on SD and eMMC without data
+  integrity failures.
+- A combined CPU, memory, network, SD, and USB3 stress test completes
+  without a crash, lockup, CPU offline event, or thermal shutdown.
+- Ethernet error and drop counters do not increase during bidirectional
+  network tests.
+
+Build and checks:
+
+- The kernel, modules, and board DTB build successfully.
+- Strict checkpatch reports no errors, with warnings about new
+  MAINTAINERS entries and the RK3572 Kconfig help text.
+
+Untested hardware and paths:
+
+- NPU
+- PCIe
+- GPU, video output, and audio
+- CPU rates above 1.2 GHz and voltage scaling
+- Other low-speed external interfaces
+
+Some files in this series are derived from the Forlinx OK3572-C BSP
+Alpha1. Thanks to Forlinx for their support.
+
+Thanks also to Rockchip's David Wu, Elaine Zhang, Finley Xiao, Frank
+Wang, William Wu, and Ye Zhang for providing the driver source files.
+
+AI assistance:
+
+- Codex / DeepSeek V4.1 Flash were used for:
+  - Reviewing and adjusting code style to follow community conventions
+  - Automating tests
+  - Collecting data
+
 Signed-off-by: Cunhao Lu <1579567540@qq.com>
-
 ---
+Changes in v5:
+- Select encodable 24-bit fractional-divider ratios using the actual
+  compensation and field-width limits.
+- Keep fractional-divider rate determination, programming and rate
+  recalculation consistent after integer-Hz rounding.
+- Correct the clk_ddrphy_top_src and aclk_top parent selector mapping.
+- Link to v4:
+  https://patch.msgid.link/20261027-add-board-ok3572-c-clk-v4-0-d4152b4fedaa@qq.com
+
 Changes in v4:
-- Split this helper out of the RK3572 driver patch.
+- Move COMPOSITE_MUXTBL into clk.h as a separate preparatory patch and
+  use it in the RK3572 driver.
+- Link to v3:
+  https://patch.msgid.link/20261026-add-board-ok3572-c-clk-v3-0-dbabfa39d692@qq.com
+
+Changes in v3:
+- Close the reset ID gap while preserving the register mapping of each
+  named reset.
+- Check fractional-divider scaling against the actual field widths and
+  reject unrepresentable compensated ratios during rate determination.
+- Use signed negative PLL coefficients in the RK3572 rate table.
+- Drop CLK_NR_CLKS from the binding and derive the provider size from
+  registered clocks, keeping the existing clock IDs.
+- Fix the indentation of the CRU binding example.
+- Link to v2:
+  https://patch.msgid.link/20261023-add-board-ok3572-c-clk-v2-0-90b98836be6e@qq.com
+
+Changes in v2:
+- Split the original RK3572 support series by subsystem.
+- Port the vendor 24-bit fractional divider to the internal Rockchip
+  clock helpers and adapt it to the determine_rate API.
+- Register audio frac0-2. Keep internal SPLL factors outside the DT
+  lookup so PPLL retains clock ID 0, and remove the unused xin12m factor.
+- Link to v1:
+  https://patch.msgid.link/20261022-add-board-ok3572-c-v1-0-0b0fd85a31ee@qq.com
+
 ---
- drivers/clk/rockchip/clk.h | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+Raw dmesg: see v2 cover letter.
 
-diff --git a/drivers/clk/rockchip/clk.h b/drivers/clk/rockchip/clk.h
-index dce4db3f67b0..bc3a1def679b 100644
---- a/drivers/clk/rockchip/clk.h
-+++ b/drivers/clk/rockchip/clk.h
-@@ -871,6 +871,28 @@ struct rockchip_clk_branch {
- 		.gate_flags	= gf,				\
- 	}
- 
-+#define COMPOSITE_MUXTBL(_id, cname, pnames, f, mo, ms, mw, mf,	\
-+			 mt, ds, dw, df, go, gs, gf)		\
-+	{							\
-+		.id		= _id,				\
-+		.branch_type	= branch_composite,		\
-+		.name		= cname,			\
-+		.parent_names	= pnames,			\
-+		.num_parents	= ARRAY_SIZE(pnames),		\
-+		.flags		= f,				\
-+		.muxdiv_offset	= mo,				\
-+		.mux_shift	= ms,				\
-+		.mux_width	= mw,				\
-+		.mux_flags	= mf,				\
-+		.mux_table	= mt,				\
-+		.div_shift	= ds,				\
-+		.div_width	= dw,				\
-+		.div_flags	= df,				\
-+		.gate_offset	= go,				\
-+		.gate_shift	= gs,				\
-+		.gate_flags	= gf,				\
-+	}
-+
- #define COMPOSITE_DIV_OFFSET(_id, cname, pnames, f, mo, ms, mw,	\
- 			     mf, do, ds, dw, df, go, gs, gf)	\
- 	{							\
+To: Stephen Boyd <sboyd@kernel.org>
+To: Brian Masney <bmasney+clk@redhat.com>
+To: Jerome Brunet <jbrunet+clk@baylibre.com>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: Heiko Stuebner <heiko@sntech.de>
+To: Philipp Zabel <p.zabel@pengutronix.de>
+To: Elaine Zhang <zhangqing@rock-chips.com>
+To: Richard Cochran <richardcochran@gmail.com>
+Cc: linux-clk@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-rockchip@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org
 
--- 
-2.34.1
+---
+Elaine Zhang (4):
+      dt-bindings: clock: rockchip: Add RK3572 CRU
+      clk: rockchip: Add internal support for 24-bit fractional dividers
+      clk: rockchip: Add composite clock macro with mux table
+      clk: rockchip: Add RK3572 clock and reset support
+
+ .../bindings/clock/rockchip,rk3572-cru.yaml        |   57 +
+ drivers/clk/rockchip/Kconfig                       |    7 +
+ drivers/clk/rockchip/Makefile                      |    2 +
+ drivers/clk/rockchip/clk-fractional-divider-v2.c   |  378 ++++
+ drivers/clk/rockchip/clk-rk3572.c                  | 1981 ++++++++++++++++++++
+ drivers/clk/rockchip/clk.c                         |   10 +
+ drivers/clk/rockchip/clk.h                         |   83 +
+ drivers/clk/rockchip/rst-rk3572.c                  |  739 ++++++++
+ include/dt-bindings/clock/rockchip,rk3572-cru.h    |  559 ++++++
+ include/dt-bindings/reset/rockchip,rk3572-cru.h    |  713 +++++++
+ 10 files changed, 4529 insertions(+)
+---
+base-commit: a804c5742bff224d4cb4d25dd383554d598be32b
+change-id: 20261023-add-board-ok3572-c-clk-090dfd552fd9
+
+Best regards,
+--  
+Cunhao Lu <1579567540@qq.com>
 
 
