@@ -1,98 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.54
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793383547;
-	b=iYFzl/cDErIyUAzbSLLBcdI84+8RITkMJAhg7nDnYEXUjgWwHirPkvc0V6JY26zO0j6H
-	 p6ijvvxVIjwdAH1osH+HH7KQSQEfggIuV5PX/HWpnFp5WAKT0Sdtyctp4HudsLHRyAcAU
-	 4vyaAQmN3MpsHdBgIgdGan5wWLHFPGDgAsVkEnt98wVNhQnm1CHGMWjs8hE04x3pOEsMU
-	 OLGPJ9BIAB0tUxFHN7GMYIngz7KeJY9h4tJnMu5e68H7Y1mF3RUypvG4yQfSPIyHlaILP
-	 4q7LIwMYe08iexphKIdEWfkmleMh77INW7FJYRnxUHCoL+SIf8RKNJq8M9G2ZukssIg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793383547;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.43
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793384004;
+	b=v7FDlumEEWYcpib7dWnFX8cReoGjhtW5FVsD5Vxi5+thTExpSFi3uIuxvfNkDmUPCNEN
+	 V5MtnByAzwcL+ZwFmAhuX83YSLw28w3g+d/Qaela7vYkUUN+s3m32g82PewmImsIjLknL
+	 TeUKnc23ewnGbuouram4gi4rcDvjx5slbtq3V4P/5+BcSA+MYQn8f1rXEWcLPmL6v1UDb
+	 bvDpL/ixUAYmL4blj7qIli+K4oCGz9P82Yll0gBJtxjP+wQOXKaSB+qiaxIRcK1ez6+pM
+	 VSNTCM7IKfPX7JMvBRBw4En0b8qgCjWZ+qZ7cj6k1DViuVGjY4kTwkEjCl2XZ4YTFXQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793384004;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type;
-	bh=6nFFsAgTb2JrA6ZMIp0GSgZNxXMgbryc9P3LqO1yWB8=;
-	b=oXm7zOqIybTDIhtwI23h+CHQN4DDYYxr5HVnH7QazHKhf5XlYsTYAZMLzuTmUkDTgUGg
-	 cfZDCWeT4la/tIDb4TpEioc8N/DySy/L1E4Tvp0LZ4AScZ/EuYhL0KLlpSYBobJ4OAjsF
-	 zhIDgMFtXDAAOvKE+tYmHyqEMpoxRVfMh/tFarrUBtms0fW0zBmPefinNCXG3lTQKLXo1
-	 p/xehtfIBUOTtYMMuEK0JqBc2DE1W2qawgJ9cczq3ivgdAxzBZHzEx74whu8gHiHD8Cgl
-	 x629uyQahY/mS5XIPFqlLMJTSXsi8nPfE8sSUtkrbBNJVR3/oowXiD2KFrdq8S5dKtQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=fMT+So78QSqhuFKeOQlwYV6UaMLr+CNOGb0u2W5xmj4=;
+	b=3cLqx5ypgcgV/TEobeKEQoFzYPe53QMYSwYR2FXS7iWpRg4gNWArxXXMq5Ksh+Vw3XEd
+	 Xj7/WphOwEBVS3DmkfOEVdqzxc1lF1bFeREna+fXkm+NrwEdEsQM5VRa3chFNzzGpYxyO
+	 wZLNgMKKnDc4pT7n2Ys1UMvdMdRuRT0DvRkA4zcPT5KbAAI5ztYdv73htKpqy9+PYjt65
+	 CyAYS4Fudoz5h/ykFl7N3KnyHd8UMZ7lufLdhM5PDtc9kA7fPOIhS+c76h2wtBQDKV+Fg
+	 e0HW/N4wNRU/DBmA0SST2pv74TXcfD9fHsXBgPTJonjLW21JVQGC/1CK3urnXIYwSmg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WdkWd5e2;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.54
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OaE3o8Rj;
+	arc=none smtp.remote-ip=209.85.221.43
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFBA606A31C
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 18:05:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7AFBA606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB23606A31D
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 18:13:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1DB23606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WdkWd5e2
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-1a2af4c8d00so5946c88.0
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 11:05:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793383546; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VCrZ6yKC9pycPwbxaIlE6bz7Ju6QssCzbWUud2Gwx1mpILdfU6lfam6IvEGTDLUZzW
-         v4HywbIPXiXEggVDH1UYKyItD7NA7IxDt+aBDZkWUnnC1E8TQ777xDOrycaeKIzXAt/f
-         gqU2yjmYD1ygVOT5j2ZCdBjsJ51jMuhhTskt0DApMvGnGzYzws7GKzZ/+8pHBqPI3QQp
-         vSMDYfvGU3B9U7ONGWAMdsG4M1sW9oPAm52D87rDeXTKER/0waG+U8XtAhg0A8MK0OIg
-         u16inQalwutB6vjD71YP6ixWh99tTFer10J3cW1SzL8Rrx2hPHYyx7zJykxOFFwBrutK
-         lXdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=6nFFsAgTb2JrA6ZMIp0GSgZNxXMgbryc9P3LqO1yWB8=;
-        fh=2k/0fsGEVi5QbcYxSk4jWGeW8rV9S2xYyBg8zQjoHFQ=;
-        b=HOSTDnIvStBFrK9cvptOKtUK0kyOK5k1HsYluPedVsu/1XxdxiCF7YWMfkzupRs5UY
-         gqkBQct0SV2JnNEk/xMKxukywTBkdXqfLqH2dL2ZFZR7JCG4bGd7abOJoJ09GQGqzsCx
-         zye909mJfpctChj/6uF+oCG2+4opoNzQZWsl0SnglXNYLVTvz235iG8ekg8Fbl9Ye2v3
-         MLrBnZgXCYzWOPww6oWq1hz9ofr8avAaCDgbG/fYSGgrVhV4DNfX6EMlSEqornK8v/lS
-         2YmO+QJeQcU43GeXgLO76gmExV/9f52xu14eniUrJtxmYO9hMdYjtWiWzqh2/oHNjD2a
-         1xew==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OaE3o8Rj
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-48c5358fc28so814632f8f.0
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 11:13:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793383546; x=1793988346; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6nFFsAgTb2JrA6ZMIp0GSgZNxXMgbryc9P3LqO1yWB8=;
-        b=WdkWd5e21k4WbvCxibQM8BdPrKKyHBCPM7scAPNXDbOUjzUDC4N7icSNDiB60gZlYj
-         nO4n4UTUZOsxm8/PmbZvcvpU2iI7GnBP87xkBeyB7yW9UdDbHnAvaJWtONWDP/Bo5y1H
-         y8Nc4QvmkLENOvyJ2uRlfm5vybB22Mw1eoSx2GhPAU1ShUFFD1ENMfjaoPk0IzlpT1Gk
-         BsI5P2c9SeYcpFd2cdI2AkJA6dQRGcMKRjjA95h7Dk2/VRs02NwzNfxNi3Yrya++OQ3U
-         UY3txWeCam2WGmCPBUpElJRyLCMQnEI86kpTg2v3q03cMYnsoOob/4CJvlaCr8LFw7PK
-         xWrg==
+        d=gmail.com; s=20260707; t=1793384002; x=1793988802; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fMT+So78QSqhuFKeOQlwYV6UaMLr+CNOGb0u2W5xmj4=;
+        b=OaE3o8RjEVR2zR75eyJC/w/NzOyHFo4/aqxLVy1sTOOTix0v/XRAORx0DvEXQvizgM
+         GxTHgDQzNXs28wuRg2tAdlgO4YFbkHs6wSwH1KlAI1xNAwZo7o36zCP4KnM/j5WijmTP
+         6Z15Z66ioDDzwi2MWRBKgTvweh+T2EYu4iDu55xkzRjld6HL856ZF+LbbQ9JjGnc7D0K
+         JZTexRxXbc+zHP469suaQUi5EcUd9aKst1j3ayVsyPLEsWdcsXAA52P3SDchoTerpujp
+         tppw+c0l0zQtKg9qiNVqXGoa3LIBe7VYE1HtlFeUKh5x4PNnZtS9WWdSHSvahFqtzjhJ
+         zRzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793383546; x=1793988346;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=6nFFsAgTb2JrA6ZMIp0GSgZNxXMgbryc9P3LqO1yWB8=;
-        b=taqEqryTAirQrNUHUHpYEKgTifj89StRpi/eTsCHCAVGLOOi0NriFJPLEbPJa4TYh+
-         Kkile1jg8XeucaoGrn22pAFmsA1NmJhnJEW12wxY6YUINNzEJictw73/f/jHeQo8V2ih
-         EICvPNqMHE6WRqRzTw7cwAQe9V37UHl7AcbNbrlXJxM7EQtl2U5b8/W0nDyx9wToMX6S
-         wc4CeUUIgtDUjaSjyINVO7RiM8Nt4M96v329yQGqsOhb96zWr2AyCaONfjJogVjTW8/e
-         Vxq5mLbaTdDvzXMNK/eY2JA8zqUKCiMCSAqGcBNV3FyOLuPdo/3iG7gOjQSxtfITFPf+
-         itiQ==
-X-Gm-Message-State: AFq9FYI5lUkSAPihAA9vRnzhhAOby9IgEjAdnLv3Tb8+CmKwiv3hnl8g
-	NIfMA6Y9M3sxhfiBkIfKZRWkWBeJ2wTAMXY34ntB4pEp1LUw1Q1TLcHRA4d1otEZDpisQtOYqUf
-	OZHEvJ6RB8PBP4vmaz1sik0X0KinvY6k=
-X-Gm-Gg: AYBFou1uykN7FqB3lti6De80pY5f078cYT7wT2oSAAFWyfR/wd4f3rtVNoYHbJCElB+
-	FttJvFoSh1mbLORRlwuDJml4ZnbP2uT/bBEeQIMolnUtowtsJCksP9i2amSGcb7ij5RzlHhr0lV
-	Mjl8gam0tn9I9YBTGqKVe8M6/kC7O7Gx1nJN6nY/v2wCDlMAnwb95qydk5MMfDuB5j8/A0u6IcR
-	y/lFapjdD3qcKADba95Wzw2scVRNnrGwPRRw2w2n3hTvPUj4Kx3Ra8LLSDGA6pQ/J0K/rXtXWYY
-	0gsPRH3/ro5ZPHfbMmd7fUuMSf2Xg3SjVCII7Ln20QMu2WD3zcbXtZfsIDzwOvAd2bGcsFdNXU2
-	kTYlGnu2y+3Jv5K3j9gky/I6hroAt6ytVjjHIYDat8aqCNh+MHJ96l+if0A==
-X-Received: by 2002:a05:7022:3c04:b0:1a9:c52f:655c with SMTP id
- a92af1059eb24-1ac5c555f7cmr3718375c88.36.1793383546411; Fri, 30 Oct 2026
- 11:05:46 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1793384002; x=1793988802;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fMT+So78QSqhuFKeOQlwYV6UaMLr+CNOGb0u2W5xmj4=;
+        b=Lcfyl+q+jkFEYpQOvgucNnpW16rmsj/ihJZ3MVOKqtPY2cbi6ffauLUcGbS0tWgP6S
+         jYSNoUXDlzROXL2eJQ363qNbBglY40hNzv/EF//1LLjofnS55jDA+0BRQ3cfetGeQcn1
+         mumUAsl08hVmeAf/ZMmYj83VrfduEoM3ZXRTXZ0N2IKuXzej5HCa3vERPKfY6g/5zQvK
+         Sv3BeyHnoVYvtP/Hs9hj5R8NvvzXXNqwJgvyLBrfunkKra24j7RgxTIAoLw10bEaVcHp
+         38xmfDV4HF1J8kJuccIW9VUhqRnvutBiBkSu0tuKq7lpHfpxe5pVB+vx2Z25a2KA2bMN
+         I4oA==
+X-Forwarded-Encrypted: i=1; AKwUvBw+++ZKZqvDHguwlKIZsl6cJA8Cyk6CqLTKSnqmoOLTEQ2IzSP9ljlfqr31PJjv/P18IidQG8Y=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJdxTBu4bqh5emyURSadR+WAgABjfaBYcKnavqHZTxXg3VQTihj
+	GarcjaPbqAvySx3N5Cm/tcANIN6gRTJbifwBu1Un6QpuGNqfcB8+efG1
+X-Gm-Gg: AYBFou3Ob+OhDGjhLCgeVkPlxv3navAqW2UzZGg4X62Y6qEQoaKNTfOl38JmjdrHRDC
+	Xowz6a61BnnCt59cVnIndot2SfwbTT4bZJRDt+h55UuAmeiVfS6kYjZ27cM+wWO7jutO/1/E0AD
+	gXX1zkAayfd9E968xF1r7YYOIh4Qae+ZMheH4vB09K2QDmycpxTVRcJ5T2CxNPBMP63zKm+BjQ8
+	0oSR3saT3i557xojNIWWhDTAykt8WKZS5Kze08OK9zxPFJt8zs57Oy/Kut3zFhZKGwSQkRbtFDf
+	KS8DolbJ4QpL+ezQQ6/wg7oUM+mYYj7fAdlsPX+0yOnx7ArUCukchTPcpAyPcQALJbiH15Uz/kB
+	88YegYXY41iW4YVTpBC7tgpZOp70kbOVVGnxSWa0dVefl5t01zvZNUfJhiM8tfuO1DkrSD1uYgQ
+	oARMr4WmHXSFIh0UhF8cVIwXToQ0334YLR76is3Rou/RQrGbD4bijj83OvGheDr3jNohaPqrsYC
+	i6m3AIgAqR26Ss6La2bIy9ECED0nwUdfgXRJ+YIMznRvOujk91F/DQ0HeAi6H4CJtPbyYc1Abix
+	Npk9IAdjUeJcoxRWnn4MojjM2eBc2pWBXGsEOma3xmSHE3yWUtJlViNzNYtM67N6Jw0/Kpl7omW
+	zDg/xXO48yAENNpBsWo9GX2GA/eBq56yrUdYggehzEck4/VojgjW8KUXH1nKK
+X-Received: by 2002:a05:6000:1449:b0:48d:ff71:dd9d with SMTP id ffacd0b85a97d-48e6e2ef786mr7095121f8f.23.1793384002277;
+        Fri, 30 Oct 2026 11:13:22 -0700 (PDT)
+Received: from SD.cable.virginm.net (cpc117822-heme13-2-0-cust760.9-1.cable.virginm.net. [81.111.210.249])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b8c0b6sm4198221f8f.41.2026.10.30.11.13.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2026 11:13:21 -0700 (PDT)
+From: Prathamesh Deshpande <prathameshdeshpande7@gmail.com>
+To: dtatulea@nvidia.com
+Cc: andrew+netdev@lunn.ch,
+	cjubran@nvidia.com,
+	cratiu@nvidia.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	erezsh@mellanox.com,
+	kuba@kernel.org,
+	leon@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	mbloch@nvidia.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	prathameshdeshpande7@gmail.com,
+	saeedm@nvidia.com,
+	tariqt@nvidia.com,
+	valex@mellanox.com
+Subject: Re: [PATCH net] net/mlx5: IPOIB, Fix QPN lookup race
+Date: Fri, 30 Oct 2026 18:12:52 +0000
+Message-ID: <20261030181309.9266-1-prathameshdeshpande7@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <ade46454-e575-43e4-85aa-eeb5ad79408a@nvidia.com>
+References: <ade46454-e575-43e4-85aa-eeb5ad79408a@nvidia.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,40 +113,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261028104758.299129-1-timur.stukan.linux@gmail.com> <179335745203.3134.6448413016247418659@kernel.org>
-In-Reply-To: <179335745203.3134.6448413016247418659@kernel.org>
-From: Timur Stukan <timur.stukan.linux@gmail.com>
-Date: Fri, 30 Oct 2026 20:05:35 +0200
-X-Gm-Features: AclHuK_oPUhcpJrKbW1D8_iO1QvO2I3T2TBooqrdX-PjaBCacASo09NEvMHhvII
-Message-ID: <CAF+_u5Cyzga3ic76Eiyb9eFZDyjdJGix9GQjwr9jYRJ6W+fiZw@mail.gmail.com>
-Subject: Re: [PATCH net v2] bonding: fix missing down path on speed/duplex
- failure after FAIL->UP
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, hangbin.liu@linux.dev, razor@blackwall.org, 
-	fmancera@suse.de, jv@jvosburgh.net, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Fri, 30 Oct 2026 at 12:50, <netdev-bot+sashiko@kernel.org> wrote:
+On Fri, 30 Oct 2026 12:18:59 +0100, Dragos Tatulea wrote:
+> I don't think that all these cases can happen. But I can see how a
+> CQE completion on the parent can read a pointer from the hash
+> bucket that just got deleted.
+>
+> Please improve the commit message.
 
-> Does slave->link == BOND_LINK_FAIL always mean the slave is still in use?
+Thanks for reviewing. I will narrow the commit message to the parent CQE
+lookup racing with hash-entry removal.
 
-No, but both routes described here start with the 802.3ad notifier
-setting FAIL on a slave that is DOWN or BACK, because it checks
-last_link_up rather than the current link state. I'll change the
-notifier to set FAIL only for a slave that is currently UP, so FAIL
-again means the slave was in use, and send it as patch 1 of v3.
+> Holding the spinlock in the datapath is not a good idea. AFAIU
+> using hlist RCU variants will be enough.
 
-> Can an in-use slave reach this fallback with slave->link == BOND_LINK_UP?
-
-Yes, this is also pre-existing, but it is the same problem this patch
-is fixing: a slave that may be in use being set to DOWN silently. I
-will add that to v3 also, and in v3 the full down path will be taken
-for a slave that is FAIL or UP if speed/duplex check fails, and only
-DOWN/BACK will be reverted silently. Checking curr_active_slave alone
-would miss non-active slaves in alb mode. In a normal miimon flow UP
-is never proposed for a slave that is already UP, so this only affects
-the racy cases.
-
-pw-bot: cr
+I will switch to RCU hlist operations with deferred freeing and send v2
+after validation.
