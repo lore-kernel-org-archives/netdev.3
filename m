@@ -1,58 +1,64 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793352188;
-	b=SAgP1m8z7DTv2uSFm1wQ8AGSKUf/AF6Y6wCZ9dw0krvafRFG56z49u3DALcB9w8GDn7I
-	 9E2nOD32AIMrDYiP0lEwIa/nVVTlvKZCbESKvZgxoGafPf3BCwedPU4tqc97Wv6DAkl7X
-	 pbtdIzdAE6YirAelAsUQkL2vcuqLIve4LdaG1NfNUIEqgH+crftrFxbkSiz4/JQZRbtxO
-	 XhGJ8f2fLFLAZaZa4qiGVBBwA+Xh4+u4n7jc4jDoa9K4rnxlgkueIX+QlXnbK3qTFBVtJ
-	 dpK4Ha83Czg92Kez4U0B41PIMnDv/QlgvkPtaTMuYf8GY0vRan70OzsB37tCirVFI8Q==
+	t=1793352444;
+	b=HI7ra9WbnvxUmZOBRFi0XCewCweAEqdq6GUyPN26IZDP6KrlVu0XWfok1Y8QOIlpgs9J
+	 D0vyZQlAmJOWGVvQZDKXaOE1iQL1TLDaHn7nMjWqXX3wmz+ulg2N+m0aR+T7EMJJOaf35
+	 qffvbZEx4FmTiI+eVbfZpZJztBX3zN/K2OxPT4Y3KjseJf1Xi17wa7qEqPFYNj5ZwllMD
+	 gntPKKiEIPkwbB5PF/yNRU5H4WHJf6x7xbPTmdGCdi+WTIo4I0T0wrNUeH78DYJ/AW12X
+	 ZamLOTqJWNRLKukwE3Ujr9R/+Kcm7eytXNUJFA0qfGsQA0krMQmVmmQiQPG4jpcK8kQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793352188;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=76Cktt4TZWV1Q1Xxiy9j0GML3rCKdijj27UwdsH+dr4=;
-	b=n2yywINqVD3HxSRk/N9SEeOFZHDsICKQ5G7xIuEauoZbqodLf4MkWxs01ZCs+paGxAlR
-	 MhX/60KM0t0tgyxtZhAx6vwSATRGqcZvgU1KRh2iQqs0FM/ir9plnEGFGSvcUSLsdkKnd
-	 O/Nty3jnQdIjyFPMMNzpFf9CWYBh7+MStmQUw7t411dG6Aee/WuBthov6rBS2acBhH12g
-	 1MXFQykw6l8JTlXV1CxaaoC0Y9s3dx2iwF/roxDa8LWCrgCDGeIOHS0a1c6keW/2bAPdD
-	 98Zv7k2/a+C01Q0hBCVa9aunFe+0BOtCrt5RzKpbIuc4ao84XWYUjmcLCl09I6gYoJw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793352444;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=XpPOMbTanyLL1MaVenpd+9dFSgUty7k/DJCEJhgMbaA=;
+	b=NQvqAAwczmXtOOAuZ8Xv16KiyvvYUTHr/Zxwqv2bSZhC80RvCE4EC9RZJxYYvGPiAe6F
+	 dtitme0PuZS84P4QecM2bYbMFfm8waAPtjHfjJyVdBRCEex+yB152m/Gqr0YBWhMzhnlb
+	 TgFiDGzSrALZEcdW87Dv9WdD+DqNCV9A0/4fAWDnW1ShRv3haHvr4toWlbg81+uHLV6Gu
+	 fpXbD4Mj/nZg/d/mhBpipSctbd6JG+42tb7Xtk5PTLe0qMXic6bCkKKYSaXSh/w8dCRYB
+	 bKtwYx0oHKNOtvKTG6TuQWlXAcJlxpJwYAJ9VhwE7DbUdKSoL3k+WbjXSTu//ooQ6IA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e2xku1QP;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=drCZPP2U;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F4C606A31A
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 09:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12390606A31A;
+	Fri, 30 Oct 2026 09:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e2xku1QP
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960F61F0093A;
-	Fri, 30 Oct 2026 09:23:05 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=drCZPP2U
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23AF21F000C1;
+	Fri, 30 Oct 2026 09:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793352187;
-	bh=76Cktt4TZWV1Q1Xxiy9j0GML3rCKdijj27UwdsH+dr4=;
-	h=From:To:Cc:Subject:Date;
-	b=e2xku1QPwy4a6KWC6o3zCJQHqGE3EpImUooynCpQkrEcL7TRQgOBqrvCX3GXGnnA5
-	 MnAmCd8V7LP6MTFINwNhZTvGPTJ8QDvyy3FgNtPRVqwbfYLfpIO/PB37Cze84FY1+q
-	 hwgwjcL0xqOi5DLyu3bnaIawUqTmyPPk5HoAnAmrQXG6oCnW+jMpaQlwMT8gwxNmDf
-	 drGu1UrLEDM3EpGXcxz09kOZ8Wtw5VI/u9FA52vL5raKbEFoTpU5nXZK8jkvobvpZT
-	 uqQlclC7qiQSQmu+XCEhh47nJ+2VytIv2eFzgJGFctTCenModXqB9nbj3tPmkETPWZ
-	 OadcnykTwlzVg==
-From: Eric Dumazet <edumazet@kernel.org>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@kernel.org>,
-	Katherine Leaver <kleaver@janestreet.com>
-Subject: [PATCH net] ipmr, ip6mr: queue netlink route queries out of band
-Date: Fri, 30 Oct 2026 10:23:03 +0100
-Message-ID: <20261030092303.2749386-1-edumazet@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	s=k20260515; t=1793352443;
+	bh=XpPOMbTanyLL1MaVenpd+9dFSgUty7k/DJCEJhgMbaA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=drCZPP2UoLwd6pJnJTRElBjdiOrYo5djwqv/8kmgGvy8OYOLb0gSQ7vZj+lQ5UH0b
+	 mjF9SOlH2i0L+ILKPoeeFXezH/3vwbauPRaxohqxE3oNfVQ6qWnFPuBvLhdtQ7uXO5
+	 +yVtHYhm3rwTIyHv5sO+9Rwgx9axsm6Ivrhun81tWIwoT48FCL5OiCWUu4BJ07Tg6J
+	 HWLCDq/vtHaAfdP1uzfMFQRQJeCWz5pl0ptX2yVWLMY11ug88zcSCWZ9jTY3aUuxtJ
+	 9Ql4bLFGPvUSSwhZNDWaIM+2+0yHU42J8PGJyOVZIJz/JtfaNEhftD3Mtumr/KNzBZ
+	 +cI+rvLL0K3Og==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Eric Dumazet <edumazet@google.com>, Jason Xing <kerneljasonxing@gmail.com>
+Cc: Petr Oros <poros@redhat.com>, netdev@vger.kernel.org, Magnus Karlsson
+ <magnus.karlsson@intel.com>, Maciej Fijalkowski
+ <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Alexei
+ Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend
+ <john.fastabend@gmail.com>, Willem de Bruijn <willemb@google.com>,
+ Vladimir Oltean <olteanv@gmail.com>, Doruk Tan Ozturk <doruk@0sec.ai>,
+ bpf@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] xsk: reset the mac header in the generic Tx path
+In-Reply-To: <CANn89i+aacS2PfaMXnimzGgbCLz-JSnqo6QyoS122Gf+kxya3w@mail.gmail.com>
+References: <20260817153957.3177627-1-poros@redhat.com>
+ <CANn89iKZe5reKy5uNxF7_G2=zytnPjWCUn+bX7-iGdJuTjBgMw@mail.gmail.com>
+ <CAL+tcoBX+3_oiy5KCtnBkjEdmDgzY6PYAT2oOqDSLXezDCFfHw@mail.gmail.com>
+ <CANn89i+aacS2PfaMXnimzGgbCLz-JSnqo6QyoS122Gf+kxya3w@mail.gmail.com>
+Date: Fri, 30 Oct 2026 10:27:20 +0100
+Message-ID: <87o6cb4jyf.fsf@all.your.base.are.belong.to.us>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,444 +68,149 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-ipmr_get_route() and ip6mr_get_route() queue synthetic skbs on the
-unresolved MFC entry to answer RTM_GETROUTE requests once the route
-is resolved. These skbs carry a fake IP header with version 0, and
-ipmr_cache_resolve(), ipmr_destroy_unres(), ip6mr_cache_resolve()
-and ip6mr_destroy_unres() rely on this in-band tag to tell them
-apart from regular packets queued by the input and output paths.
+Poking this thread again.
 
-The IP version is only validated once, in ip_rcv_core() and
-ip6_rcv_core(). A netfilter hook running later, for instance an
-nftables payload statement in a PREROUTING chain owned by an
-unprivileged user namespace, can rewrite the first header byte to
-zero. The SRv6 End.DX6 action also passes the decapsulated packet
-to ip6_mr_input() without checking that the inner header version
-is 6. If no MFC entry exists, the packet is queued and later handled
-as a netlink request: its payload is treated as an nlmsghdr and
-written to, mr_fill_mroute() may call skb_put() on a nonlinear skb
-(hitting SKB_LINEAR_ASSERT()), and the skb is unicast to a netlink
-portid taken from stale IPCB/IP6CB bytes in skb->cb[].
+Eric Dumazet <edumazet@google.com> writes:
 
-ipmr_cache_report() also relies on the same tag since
-commit 94a6736bb5ab ("ipmr: only copy pktinfo to cache reports").
+> On Mon, Aug 24, 2026 at 2:47=E2=80=AFPM Jason Xing <kerneljasonxing@gmail=
+.com> wrote:
+>>
+>> On Fri, Aug 21, 2026 at 1:07=E2=80=AFAM Eric Dumazet <edumazet@google.co=
+m> wrote:
+>> >
+>> > On Mon, Aug 17, 2026 at 5:40=E2=80=AFPM Petr Oros <poros@redhat.com> w=
+rote:
+>> > >
+>> > > __dev_queue_xmit() resets skb->mac_header, __dev_direct_xmit() does =
+not,
+>> > > so a frame taking the qdisc bypass path reaches ndo_start_xmit() with
+>> > > the sentinel left by __finalize_skb_around() and skb_mac_header() po=
+ints
+>> > > 65535 bytes past skb->head.
+>> > >
+>> > > The packet socket reaches it through packet_direct_xmit(), and
+>> > > packet_parse_headers() was taught to anchor the header by
+>> > > commit c2707480cfbf ("net/packet: reset the MAC header on the
+>> > > packet-socket transmit path"). AF_XDP reaches it through
+>> > > __xsk_generic_xmit(), and net/xdp/xsk.c never sets the mac header.
+>> > >
+>> > > ice reads eth->h_proto through skb_mac_header() on its ordinary Tx p=
+ath.
+>> > > On an E810 every one of 2817224 AF_XDP frames reached the driver wit=
+h the
+>> > > sentinel still in place, so the ethertype never came from the frame.=
+ With
+>> > > this patch all 5757920 frames of the same test carried the correct 0=
+x88b5.
+>> > > An AF_PACKET sender on the same port read 0x88b5 in both runs.
+>> > >
+>> > > On a KFENCE kernel that read lands inside the pool and gets reported=
+ as a
+>> > > use after free of an unrelated object, 387 times in a 180 s run:
+>> > >
+>> > >         BUG: KFENCE: use-after-free read in ice_xmit_frame_ring+0xdd=
+b/0x1650 [ice]
+>> > >          ice_xmit_frame_ring+0xddb/0x1650 [ice]
+>> > >          __dev_direct_xmit+0x347/0x4d0
+>> > >          __xsk_generic_xmit+0xc13/0x1e70
+>> > >          __xsk_sendmsg.constprop.0.isra.0+0x519/0x640
+>> > >          xsk_sendmsg+0x6c/0x90
+>> > >
+>> > > Rerunning the same reproducer on the same E810 with this patch appli=
+ed
+>> > > produced no reports and no bad reads.
+>> > >
+>> > > Anchor the header in xsk_skb_init_misc(), which runs once per skb for
+>> > > both build paths. With IFF_TX_SKB_NO_LINEAR the offset still is not a
+>> > > real header, but it stays in bounds and no such driver reads it.
+>> > >
+>> > > Fixes: 35fcde7f8deb ("xsk: support for Tx")
+>> > > Signed-off-by: Petr Oros <poros@redhat.com>
+>> > > ---
+>> > >  net/xdp/xsk.c | 1 +
+>> > >  1 file changed, 1 insertion(+)
+>> > >
+>> > > diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+>> > > index 7855ee09c4b640..885427392cb6b3 100644
+>> > > --- a/net/xdp/xsk.c
+>> > > +++ b/net/xdp/xsk.c
+>> > > @@ -931,6 +931,7 @@ static int xsk_skb_init_misc(struct sk_buff *skb=
+, struct xdp_sock *xs,
+>> > >         skb->priority =3D READ_ONCE(xs->sk.sk_priority);
+>> > >         skb->mark =3D READ_ONCE(xs->sk.sk_mark);
+>> > >         skb->destructor =3D xsk_destruct_skb;
+>> > > +       skb_reset_mac_header(skb);
+>> >
+>> > I don't know, I had at some point the goal of removing our dependency
+>> > on mac header in ndo_start_xmit(),
+>> > as this must be skb->data.
+>> >
+>> > ice could use skb_eth_hdr() instead of eth_hdr() or skb_mac_header()
+>> > and save few cycles.
+>> >
+>> > Some drivers call skb_reset_mac_header(skb), this is really a mess.
+>> >
+>> > With AI these days, it should not be too hard to completely remove our
+>> > dependency on mac_header.
+>> >
+>>
+>> I saw the status has been changed to 'rejected'. Why is that, I
+>> wonder? I think it's just a fix that can be done in xsk like
+>> skb_reset_network_header() that I'm going to add.
+>>
+>
+> skb_reset_network_header() is orthogonal.
+>
+> Patching net/xdp/xsk.c (and follow-up network header resets) only covers =
+one
+> caller while leaving the core issue open.
+>
+> The discrepancy is that __dev_queue_xmit() unconditionally executes
+> skb_reset_mac_header(skb), whereas __dev_direct_xmit() does not.
+>
+> As a result, other paths bypassing qdisc hit the exact same out-of-bounds=
+ read
+> in ice. For example, AF_PACKET with PACKET_QDISC_BYPASS only resets mac_h=
+eader
+> in packet_parse_headers() under:
+>
+> if ((!skb->protocol || skb->protocol =3D=3D htons(ETH_P_ALL)) &&
+>    sock->type =3D=3D SOCK_RAW) {
+> skb_reset_mac_header(skb);
+> ...
+> }
+>
+> Any PACKET_QDISC_BYPASS socket using SOCK_DGRAM or SOCK_RAW with an expli=
+cit
+> protocol (e.g. ETH_P_IP) sends an skb with mac_header unset (0xffff senti=
+nel)
+> directly into ndo_start_xmit().
+>
+> If the core stack was expected to guarantee mac_header for direct xmit, t=
+hat
+> reset belongs in __dev_direct_xmit(), not duplicated in xsk, packet,
+> selftests, etc.
+>
+> Work in net-next would presumably audit / change all drivers to not
+> rely on mac_header
+> being set (This I can do when net-next reopens)
+>
+> Then we can remove skb_reset_mac_header(skb) from __dev_queue_xmit()
+> and __dev_direct_xmit(), and from dpaa_tx() / dpaa_tx_extended()
 
-Stop trusting packet contents: queue route queries on a dedicated
-nl_queries list in the unresolved MFC entry, and pass an explicit
-nl_query flag from the callers.
+To clarify Eric's view: is the proposed TX contract that mac_header need
+not be initialized on entry to __dev_direct_xmit(), and rely on
+skb->data is at L2? What about skb->protocol and skb->network_header?
+For example, netkit L2 resets MAC locally, but relies on the existing
+protocol for peer RX, and its attached BPF can consume the existing
+network offset. (We just hit that internally for a packet sent from
+XSK/skb.)
 
-The per-entry limit of four queued skbs now applies to both lists
-combined, as before. The synthetic header keeps version 0, since it
-is copied into the NOCACHE report delivered to the mroute socket.
+...checksum-offload checks in __dev_direct_xmit() aside, since TX
+validation can also consume metadata before ndo_start_xmit().
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Fixes: 7bc570c8b4f7 ("[IPV6] MROUTE: Support multicast forwarding.")
-Reported-by: Katherine Leaver <kleaver@janestreet.com>
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
----
- include/linux/mroute_base.h |   2 +
- net/ipv4/ipmr.c             | 104 +++++++++++++++++++-----------------
- net/ipv6/ip6mr.c            |  76 +++++++++++++-------------
- 3 files changed, 94 insertions(+), 88 deletions(-)
 
-diff --git a/include/linux/mroute_base.h b/include/linux/mroute_base.h
-index 4d55827e970537aff6938503a39ee3306c8fde6d..2d506966357b2591af4eadef88b27e236a2fe9cf 100644
---- a/include/linux/mroute_base.h
-+++ b/include/linux/mroute_base.h
-@@ -119,6 +119,7 @@ enum {
-  * @mfc_flags: entry flags
-  * @expires: unresolved entry expire time
-  * @unresolved: unresolved cached skbs
-+ * @nl_queries: queued RTM_GETROUTE requests waiting for resolution
-  * @last_assert: time of last assert
-  * @minvif: minimum VIF id
-  * @maxvif: maximum VIF id
-@@ -141,6 +142,7 @@ struct mr_mfc {
- 		struct {
- 			unsigned long expires;
- 			struct sk_buff_head unresolved;
-+			struct sk_buff_head nl_queries;
- 		} unres;
- 		struct {
- 			unsigned long last_assert;
-diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-index e8f7d3b573d0f4f74ebabc3425993b8d39fdfd25..836f3f95b20c45f70f659379656761a18d220b93 100644
---- a/net/ipv4/ipmr.c
-+++ b/net/ipv4/ipmr.c
-@@ -109,7 +109,8 @@ static void ip_mr_forward(struct net *net, struct mr_table *mrt,
- 			  struct net_device *dev, struct sk_buff *skb,
- 			  struct mfc_cache *cache, int local);
- static int ipmr_cache_report(const struct mr_table *mrt,
--			     struct sk_buff *pkt, vifi_t vifi, int assert);
-+			     struct sk_buff *pkt, vifi_t vifi, int assert,
-+			     bool nl_query);
- static void mroute_netlink_event(struct mr_table *mrt, struct mfc_cache *mfc,
- 				 int cmd);
- static void igmpmsg_netlink_event(const struct mr_table *mrt, struct sk_buff *pkt);
-@@ -563,7 +564,7 @@ static netdev_tx_t reg_vif_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- 	/* Pairs with WRITE_ONCE() in vif_add() and vif_delete() */
- 	ipmr_cache_report(mrt, skb, READ_ONCE(mrt->mroute_reg_vif_num),
--			  IGMPMSG_WHOLEPKT);
-+			  IGMPMSG_WHOLEPKT, false);
- 
- 	rcu_read_unlock();
- 	kfree_skb(skb);
-@@ -781,23 +782,21 @@ static void ipmr_destroy_unres(struct mr_table *mrt, struct mfc_cache *c)
- 	WRITE_ONCE(mrt->cache_resolve_queue_len,
- 		   mrt->cache_resolve_queue_len - 1);
- 
--	while ((skb = skb_dequeue(&c->_c.mfc_un.unres.unresolved))) {
--		if (ip_hdr(skb)->version == 0) {
--			struct nlmsghdr *nlh = skb_pull(skb,
--							sizeof(struct iphdr));
--			nlh->nlmsg_type = NLMSG_ERROR;
--			nlh->nlmsg_len = nlmsg_msg_size(sizeof(struct nlmsgerr));
--			skb_trim(skb, nlh->nlmsg_len);
--			e = nlmsg_data(nlh);
--			e->error = -ETIMEDOUT;
--			memset(&e->msg, 0, sizeof(e->msg));
-+	while ((skb = skb_dequeue(&c->_c.mfc_un.unres.nl_queries))) {
-+		struct nlmsghdr *nlh = skb_pull(skb, sizeof(struct iphdr));
- 
--			rtnl_unicast(skb, net, NETLINK_CB(skb).portid);
--		} else {
--			kfree_skb(skb);
--		}
-+		nlh->nlmsg_type = NLMSG_ERROR;
-+		nlh->nlmsg_len = nlmsg_msg_size(sizeof(struct nlmsgerr));
-+		skb_trim(skb, nlh->nlmsg_len);
-+		e = nlmsg_data(nlh);
-+		e->error = -ETIMEDOUT;
-+		memset(&e->msg, 0, sizeof(e->msg));
-+
-+		rtnl_unicast(skb, net, NETLINK_CB(skb).portid);
- 	}
- 
-+	skb_queue_purge(&c->_c.mfc_un.unres.unresolved);
-+
- 	ipmr_cache_free(c);
- }
- 
-@@ -1027,6 +1026,7 @@ static struct mfc_cache *ipmr_cache_alloc_unres(void)
- 
- 	if (c) {
- 		skb_queue_head_init(&c->_c.mfc_un.unres.unresolved);
-+		skb_queue_head_init(&c->_c.mfc_un.unres.nl_queries);
- 		c->_c.mfc_un.unres.expires = jiffies + 10 * HZ;
- 	}
- 	return c;
-@@ -1039,31 +1039,29 @@ static void ipmr_cache_resolve(struct net *net, struct mr_table *mrt,
- 	struct sk_buff *skb;
- 	struct nlmsgerr *e;
- 
--	/* Play the pending entries through our router */
--	while ((skb = __skb_dequeue(&uc->_c.mfc_un.unres.unresolved))) {
--		if (ip_hdr(skb)->version == 0) {
--			struct nlmsghdr *nlh = skb_pull(skb,
--							sizeof(struct iphdr));
--
--			if (mr_fill_mroute(mrt, skb, &c->_c,
--					   nlmsg_data(nlh)) > 0) {
--				nlh->nlmsg_len = skb_tail_pointer(skb) -
--						 (u8 *)nlh;
--			} else {
--				nlh->nlmsg_type = NLMSG_ERROR;
--				nlh->nlmsg_len = nlmsg_msg_size(sizeof(struct nlmsgerr));
--				skb_trim(skb, nlh->nlmsg_len);
--				e = nlmsg_data(nlh);
--				e->error = -EMSGSIZE;
--				memset(&e->msg, 0, sizeof(e->msg));
--			}
-+	/* Answer the pending netlink route queries */
-+	while ((skb = __skb_dequeue(&uc->_c.mfc_un.unres.nl_queries))) {
-+		struct nlmsghdr *nlh = skb_pull(skb, sizeof(struct iphdr));
- 
--			rtnl_unicast(skb, net, NETLINK_CB(skb).portid);
-+		if (mr_fill_mroute(mrt, skb, &c->_c, nlmsg_data(nlh)) > 0) {
-+			nlh->nlmsg_len = skb_tail_pointer(skb) - (u8 *)nlh;
- 		} else {
--			rcu_read_lock();
--			ip_mr_forward(net, mrt, skb->dev, skb, c, 0);
--			rcu_read_unlock();
-+			nlh->nlmsg_type = NLMSG_ERROR;
-+			nlh->nlmsg_len = nlmsg_msg_size(sizeof(struct nlmsgerr));
-+			skb_trim(skb, nlh->nlmsg_len);
-+			e = nlmsg_data(nlh);
-+			e->error = -EMSGSIZE;
-+			memset(&e->msg, 0, sizeof(e->msg));
- 		}
-+
-+		rtnl_unicast(skb, net, NETLINK_CB(skb).portid);
-+	}
-+
-+	/* Play the pending packets through our router */
-+	while ((skb = __skb_dequeue(&uc->_c.mfc_un.unres.unresolved))) {
-+		rcu_read_lock();
-+		ip_mr_forward(net, mrt, skb->dev, skb, c, 0);
-+		rcu_read_unlock();
- 	}
- }
- 
-@@ -1072,7 +1070,8 @@ static void ipmr_cache_resolve(struct net *net, struct mr_table *mrt,
-  * Called under rcu_read_lock().
-  */
- static int ipmr_cache_report(const struct mr_table *mrt,
--			     struct sk_buff *pkt, vifi_t vifi, int assert)
-+			     struct sk_buff *pkt, vifi_t vifi, int assert,
-+			     bool nl_query)
- {
- 	unsigned char pkt_cb[sizeof(pkt->cb)];
- 	const int ihl = ip_hdrlen(pkt);
-@@ -1142,7 +1141,7 @@ static int ipmr_cache_report(const struct mr_table *mrt,
- 
- 	memset(skb->cb, 0, sizeof(skb->cb));
- 	/* Route queries from ipmr_get_route() carry NETLINK_CB, not IPCB. */
--	if (ip_hdr(pkt)->version) {
-+	if (!nl_query) {
- 		memcpy(pkt_cb, pkt->cb, sizeof(pkt_cb));
- 		ipv4_pktinfo_prepare(mroute_sk, pkt, false);
- 		*PKTINFO_SKB_CB(skb) = *PKTINFO_SKB_CB(pkt);
-@@ -1165,7 +1164,8 @@ static int ipmr_cache_report(const struct mr_table *mrt,
- /* Queue a packet for resolution. It gets locked cache entry! */
- /* Called under rcu_read_lock() */
- static int ipmr_cache_unresolved(struct mr_table *mrt, vifi_t vifi,
--				 struct sk_buff *skb, struct net_device *dev)
-+				 struct sk_buff *skb, struct net_device *dev,
-+				 bool nl_query)
- {
- 	struct net *net = read_pnet(&mrt->net);
- 	const struct iphdr *iph = ip_hdr(skb);
-@@ -1202,7 +1202,8 @@ static int ipmr_cache_unresolved(struct mr_table *mrt, vifi_t vifi,
- 		c->mfc_mcastgrp	= iph->daddr;
- 
- 		/* Reflect first query at mrouted. */
--		err = ipmr_cache_report(mrt, skb, vifi, IGMPMSG_NOCACHE);
-+		err = ipmr_cache_report(mrt, skb, vifi, IGMPMSG_NOCACHE,
-+					nl_query);
- 		if (err < 0)
- 			goto err;
- 
-@@ -1217,7 +1218,8 @@ static int ipmr_cache_unresolved(struct mr_table *mrt, vifi_t vifi,
- 	}
- 
- 	/* See if we can append the packet */
--	if (c->_c.mfc_un.unres.unresolved.qlen > 3) {
-+	if (skb_queue_len(&c->_c.mfc_un.unres.unresolved) +
-+	    skb_queue_len(&c->_c.mfc_un.unres.nl_queries) > 3) {
- 		c = NULL;
- 		err = -ENOBUFS;
- 		goto err;
-@@ -1228,7 +1230,8 @@ static int ipmr_cache_unresolved(struct mr_table *mrt, vifi_t vifi,
- 		skb->skb_iif = dev->ifindex;
- 	}
- 
--	skb_queue_tail(&c->_c.mfc_un.unres.unresolved, skb);
-+	skb_queue_tail(nl_query ? &c->_c.mfc_un.unres.nl_queries :
-+				  &c->_c.mfc_un.unres.unresolved, skb);
- 
- 	spin_unlock_bh(&mfc_unres_lock);
- 	return 0;
-@@ -1943,7 +1946,7 @@ static int ipmr_prepare_xmit(struct net *net, struct mr_table *mrt,
- 		WRITE_ONCE(vif->bytes_out, vif->bytes_out + skb->len);
- 		DEV_STATS_ADD(vif_dev, tx_bytes, skb->len);
- 		DEV_STATS_INC(vif_dev, tx_packets);
--		ipmr_cache_report(mrt, skb, vifi, IGMPMSG_WHOLEPKT);
-+		ipmr_cache_report(mrt, skb, vifi, IGMPMSG_WHOLEPKT, false);
- 		return -1;
- 	}
- 
-@@ -2120,10 +2123,11 @@ static void ip_mr_forward(struct net *net, struct mr_table *mrt,
- 			       c->_c.mfc_un.res.last_assert +
- 			       MFC_ASSERT_THRESH)) {
- 			c->_c.mfc_un.res.last_assert = jiffies;
--			ipmr_cache_report(mrt, skb, true_vifi, IGMPMSG_WRONGVIF);
-+			ipmr_cache_report(mrt, skb, true_vifi, IGMPMSG_WRONGVIF,
-+					  false);
- 			if (READ_ONCE(mrt->mroute_do_wrvifwhole))
- 				ipmr_cache_report(mrt, skb, true_vifi,
--						  IGMPMSG_WRVIFWHOLE);
-+						  IGMPMSG_WRVIFWHOLE, false);
- 		}
- 		goto dont_forward;
- 	}
-@@ -2293,7 +2297,7 @@ int ip_mr_input(struct sk_buff *skb)
- 
- 		vif = ipmr_find_vif(mrt, dev);
- 		if (vif >= 0)
--			return ipmr_cache_unresolved(mrt, vif, skb, dev);
-+			return ipmr_cache_unresolved(mrt, vif, skb, dev, false);
- 		kfree_skb(skb);
- 		return -ENODEV;
- 	}
-@@ -2401,7 +2405,7 @@ int ip_mr_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 	if (!cache) {
- 		vif = ipmr_find_vif(mrt, dev);
- 		if (vif >= 0)
--			return ipmr_cache_unresolved(mrt, vif, skb, dev);
-+			return ipmr_cache_unresolved(mrt, vif, skb, dev, false);
- 		goto mc_output;
- 	}
- 
-@@ -2523,7 +2527,7 @@ int ipmr_get_route(struct net *net, struct sk_buff *skb,
- 		iph->saddr = saddr;
- 		iph->daddr = daddr;
- 		iph->version = 0;
--		err = ipmr_cache_unresolved(mrt, vif, skb2, dev);
-+		err = ipmr_cache_unresolved(mrt, vif, skb2, dev, true);
- 		rcu_read_unlock();
- 		return err;
- 	}
-diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
-index af968a2c2a7847c96d50774729d8aee23df5294a..9710e8958b3892403e3cac1102554eea4d0a58fe 100644
---- a/net/ipv6/ip6mr.c
-+++ b/net/ipv6/ip6mr.c
-@@ -827,19 +827,18 @@ static void ip6mr_destroy_unres(struct mr_table *mrt, struct mfc6_cache *c)
- 	WRITE_ONCE(mrt->cache_resolve_queue_len,
- 		   mrt->cache_resolve_queue_len - 1);
- 
--	while ((skb = skb_dequeue(&c->_c.mfc_un.unres.unresolved)) != NULL) {
--		if (ipv6_hdr(skb)->version == 0) {
--			struct nlmsghdr *nlh = skb_pull(skb,
--							sizeof(struct ipv6hdr));
--			nlh->nlmsg_type = NLMSG_ERROR;
--			nlh->nlmsg_len = nlmsg_msg_size(sizeof(struct nlmsgerr));
--			skb_trim(skb, nlh->nlmsg_len);
--			((struct nlmsgerr *)nlmsg_data(nlh))->error = -ETIMEDOUT;
--			rtnl_unicast(skb, net, NETLINK_CB(skb).portid);
--		} else
--			kfree_skb(skb);
-+	while ((skb = skb_dequeue(&c->_c.mfc_un.unres.nl_queries))) {
-+		struct nlmsghdr *nlh = skb_pull(skb, sizeof(struct ipv6hdr));
-+
-+		nlh->nlmsg_type = NLMSG_ERROR;
-+		nlh->nlmsg_len = nlmsg_msg_size(sizeof(struct nlmsgerr));
-+		skb_trim(skb, nlh->nlmsg_len);
-+		((struct nlmsgerr *)nlmsg_data(nlh))->error = -ETIMEDOUT;
-+		rtnl_unicast(skb, net, NETLINK_CB(skb).portid);
- 	}
- 
-+	skb_queue_purge(&c->_c.mfc_un.unres.unresolved);
-+
- 	ip6mr_cache_free(c);
- }
- 
-@@ -1047,6 +1046,7 @@ static struct mfc6_cache *ip6mr_cache_alloc_unres(void)
- 	if (!c)
- 		return NULL;
- 	skb_queue_head_init(&c->_c.mfc_un.unres.unresolved);
-+	skb_queue_head_init(&c->_c.mfc_un.unres.nl_queries);
- 	c->_c.mfc_un.unres.expires = jiffies + 10 * HZ;
- 	return c;
- }
-@@ -1060,30 +1060,26 @@ static void ip6mr_cache_resolve(struct net *net, struct mr_table *mrt,
- {
- 	struct sk_buff *skb;
- 
--	/*
--	 *	Play the pending entries through our router
--	 */
-+	/* Answer the pending netlink route queries */
-+	while ((skb = __skb_dequeue(&uc->_c.mfc_un.unres.nl_queries))) {
-+		struct nlmsghdr *nlh = skb_pull(skb, sizeof(struct ipv6hdr));
- 
--	while ((skb = __skb_dequeue(&uc->_c.mfc_un.unres.unresolved))) {
--		if (ipv6_hdr(skb)->version == 0) {
--			struct nlmsghdr *nlh = skb_pull(skb,
--							sizeof(struct ipv6hdr));
--
--			if (mr_fill_mroute(mrt, skb, &c->_c,
--					   nlmsg_data(nlh)) > 0) {
--				nlh->nlmsg_len = skb_tail_pointer(skb) - (u8 *)nlh;
--			} else {
--				nlh->nlmsg_type = NLMSG_ERROR;
--				nlh->nlmsg_len = nlmsg_msg_size(sizeof(struct nlmsgerr));
--				skb_trim(skb, nlh->nlmsg_len);
--				((struct nlmsgerr *)nlmsg_data(nlh))->error = -EMSGSIZE;
--			}
--			rtnl_unicast(skb, net, NETLINK_CB(skb).portid);
-+		if (mr_fill_mroute(mrt, skb, &c->_c, nlmsg_data(nlh)) > 0) {
-+			nlh->nlmsg_len = skb_tail_pointer(skb) - (u8 *)nlh;
- 		} else {
--			rcu_read_lock();
--			ip6_mr_forward(net, mrt, skb->dev, skb, c);
--			rcu_read_unlock();
-+			nlh->nlmsg_type = NLMSG_ERROR;
-+			nlh->nlmsg_len = nlmsg_msg_size(sizeof(struct nlmsgerr));
-+			skb_trim(skb, nlh->nlmsg_len);
-+			((struct nlmsgerr *)nlmsg_data(nlh))->error = -EMSGSIZE;
- 		}
-+		rtnl_unicast(skb, net, NETLINK_CB(skb).portid);
-+	}
-+
-+	/* Play the pending packets through our router */
-+	while ((skb = __skb_dequeue(&uc->_c.mfc_un.unres.unresolved))) {
-+		rcu_read_lock();
-+		ip6_mr_forward(net, mrt, skb->dev, skb, c);
-+		rcu_read_unlock();
- 	}
- }
- 
-@@ -1188,7 +1184,8 @@ static int ip6mr_cache_report(const struct mr_table *mrt, struct sk_buff *pkt,
- 
- /* Queue a packet for resolution. It gets locked cache entry! */
- static int ip6mr_cache_unresolved(struct mr_table *mrt, mifi_t mifi,
--				  struct sk_buff *skb, struct net_device *dev)
-+				  struct sk_buff *skb, struct net_device *dev,
-+				  bool nl_query)
- {
- 	struct net *net = read_pnet(&mrt->net);
- 	struct mfc6_cache *c = NULL;
-@@ -1242,7 +1239,8 @@ static int ip6mr_cache_unresolved(struct mr_table *mrt, mifi_t mifi,
- 	}
- 
- 	/* See if we can append the packet */
--	if (c->_c.mfc_un.unres.unresolved.qlen > 3) {
-+	if (skb_queue_len(&c->_c.mfc_un.unres.unresolved) +
-+	    skb_queue_len(&c->_c.mfc_un.unres.nl_queries) > 3) {
- 		c = NULL;
- 		err = -ENOBUFS;
- 		goto err;
-@@ -1254,7 +1252,8 @@ static int ip6mr_cache_unresolved(struct mr_table *mrt, mifi_t mifi,
- 	}
- 
- 	skb_dst_drop(skb);
--	skb_queue_tail(&c->_c.mfc_un.unres.unresolved, skb);
-+	skb_queue_tail(nl_query ? &c->_c.mfc_un.unres.nl_queries :
-+				  &c->_c.mfc_un.unres.unresolved, skb);
- 
- 	spin_unlock_bh(&mfc_unres_lock);
- 	return 0;
-@@ -2399,7 +2398,8 @@ int ip6_mr_input(struct sk_buff *skb)
- 
- 		vif = ip6mr_find_vif(mrt, dev);
- 		if (vif >= 0) {
--			int err = ip6mr_cache_unresolved(mrt, vif, skb, dev);
-+			int err = ip6mr_cache_unresolved(mrt, vif, skb, dev,
-+							 false);
- 
- 			return err;
- 		}
-@@ -2451,7 +2451,7 @@ int ip6_mr_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 	if (!cache) {
- 		vif = ip6mr_find_vif(mrt, dev);
- 		if (vif >= 0)
--			return ip6mr_cache_unresolved(mrt, vif, skb, dev);
-+			return ip6mr_cache_unresolved(mrt, vif, skb, dev, false);
- 		goto ip6_output;
- 	}
- 
-@@ -2528,7 +2528,7 @@ int ip6mr_get_route(struct net *net, struct sk_buff *skb, struct rtmsg *rtm,
- 		iph->saddr = rt->rt6i_src.addr;
- 		iph->daddr = rt->rt6i_dst.addr;
- 
--		err = ip6mr_cache_unresolved(mrt, vif, skb2, dev);
-+		err = ip6mr_cache_unresolved(mrt, vif, skb2, dev, true);
- 		rcu_read_unlock();
- 
- 		return err;
--- 
-2.53.0
-
+Bj=C3=B6rn
