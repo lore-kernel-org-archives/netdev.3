@@ -1,115 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793362196;
-	b=ACUUP0rQVs6wq3b/gBG95/kGKNX8v9zAi9rYFCOG9CpSfDihuNCn0sbQn0+50VqCsxHu
-	 dE1xrApkKWctBriU6Ewl51nMmx9kJr0vRzh7IgkQL8xXJCLsWAA6toi3B1pWRS3OCCFCK
-	 yQIgPCVGKq2Z5orTQ7rcbMsMN2boDufYt5Xn3daWLVDWaMbDi800AD66lLi19FxrBtKpD
-	 npu0lEekR6jfsVLZS/amDOLiBZc1SYGIRTjYbK/Bbnh2IV5Q5rownlwpvjn+dfHJY4Bk3
-	 dW1nwSIPa8NE18Ze6kYLQRstTT2qudBZIPhieKeO7sXN5IOSUvqQ/mpNHGE06F3Aqxg==
+	t=1793362203;
+	b=H7a9z1oJ+U7fiGGnpB3nZyPwtAUI88YexUJ7nT0fVLgoTjA0xyGoQg6Xx8Fi1WgOUj09
+	 X/rOWEBDhwBNtYVVQAz7rNUeDJPqQPox9VTWL2I2/aT2civNKtSqjXBsE6lIL/npu4XRp
+	 aD7aOz5Ly34BloyEZj7H98cJcl5XZftw42b1ZZdvE/DE5NmuJdk0QBRB2YtMbnVBiyZaU
+	 mGJf1iwT+ovxcQH8TS5BV/WDS4/b8byrjzHtbMBd4DCs9V7OFIsmbgsNbMme1epIYnD31
+	 jb7W1Ng2ENbYdTCV9avYakRsycqXkcPsaEtgpnwyG4RDOctrbiuGKlEkb7UAcsE8ecA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793362196;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=hdnZT0z7davEfnf6scqYwmgfFD2zK/8ZHhv4LP8xp6I=;
-	b=At2vA4QOD90JIUCoZ+jayavhDDSw/dJF0lPUnhmOYHROk6k4BPOuVi+hBB0n6IRG2HhS
-	 Iyf1DoS0JSzBcCW0KpNUmVJ8uaJLz84I/Af+CAPGF0PeJS/bFz8iB2oUbQViXVaPtrvpD
-	 ylOtOPfidhQWxUlych5ooDK9cUjBD0NrIP1D72JdUC6PTm5IrS3QmPi7gfotD5P5wZ1lb
-	 LbARJx/2ErIXQqKIqW3wHE9vmvWQbLXP9shwOiIV4S9iTFoFjGrogUi4uggFvLeJrP77I
-	 m/uJD7JZESvwYsbFH49mUL5xGTRQ1sOr/jeBoK1sT71MwWTLwn/jCxt7xETS4faNenw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793362203;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=uyfW3OCWnUbkZHwTCgLuveiOBF9GzvaBjVb3gQhT8HY=;
+	b=xS9tU5TI8mycwCEuMYtS/QzNy/RBeoZ4UsmTcbJL4VvSgkkGRKH9JECZMijv2sPhS5aL
+	 Aew9k0oHTwsDYcQiAlxFs7rUDYnV5A9KfydGs+ls7QmCXxoKV0SRXfOSD9WgI8guRe4IB
+	 CzprlhWhM1qzdj8XuYdKpiabjXxs2W3LdVOlOFodak9B7QzGi80d1g0NNNUAfQBaTE08T
+	 4/LA6KT9AD3wH/vMGK2dSb+YQSwPgdXy0MIOhZSLVQWj89WM7/Zh+pKyKBF9SfwvhJ/b2
+	 oIxJVrqLQZ1oiampUz5IChX9/EwxCZw91WzXxPBTAKQ80Su6oyLkBRdIgP5gXAxsmgA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VkPpGI5Y;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=btKxDoL3;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LgGCIpXm;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C9C606A31E
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 12:09:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 09C9C606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075D2606A331
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 12:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VkPpGI5Y;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=btKxDoL3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793362193;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hdnZT0z7davEfnf6scqYwmgfFD2zK/8ZHhv4LP8xp6I=;
-	b=VkPpGI5YLusMynXLLODRqddWkbmOjtDJvTCEG7a8HIwqP3DQRw9LcGGJHv2YOYppc0BT9z
-	7ncJKN7X6IWCDIgYONJDyyeHNJdw+xD8COLyY5V0lu4fMtQVPO6cz0QjYbk5Xz33QXZyJm
-	IBNZqHyW1W9So4xKcnfP3jiAp6FUvEM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-171-NDdBwtAXOWWAjnastZd8BA-1; Fri, 30 Oct 2026 08:09:52 -0400
-X-MC-Unique: NDdBwtAXOWWAjnastZd8BA-1
-X-Mimecast-MFC-AGG-ID: NDdBwtAXOWWAjnastZd8BA_1793362191
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a318cd95e8so5881535e9.0
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 05:09:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793362191; x=1793966991; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hdnZT0z7davEfnf6scqYwmgfFD2zK/8ZHhv4LP8xp6I=;
-        b=btKxDoL3d9ODnAsVLbkTV6f/9SYd54SrOrF1/xXSp25TaA9ZWhcjwjZSRsW1A5ckhW
-         zhrBjJpLOl30HHyx7wze1VjvU8RxxQ6mh7jRDYkwQwlooRp46PhgxM8JuIsilmVabW9f
-         D3+g3VTI3YiPF3lDjoNlxk1amcS6pnBC8IcBlwqi6gXh4uGXv5Jkm09LbqbDa5Ih6IAp
-         aBpibP1l+NfW9OaNF23sfkW65ry6RjJsngStBHzByIo4IN3+f8slPaM6OmI4QVw9/I2G
-         Vd7Yb1zLXcbOY4WErusHcAUIzC2Ivls5jyh8vG89XM8a3a1iEzixclCPontDridybVw+
-         OJmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793362191; x=1793966991;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hdnZT0z7davEfnf6scqYwmgfFD2zK/8ZHhv4LP8xp6I=;
-        b=lUEYn3akV5e16fF2mkLIwGrbqvzvsrJAWFM7pXviJNzgr7FFvC5epfD7BNhDSuP9C3
-         3ltxZi+hu7xn037p7shM43ES9l2XqsCOUjRappmLcJcPzxAP8c1VnsRC0ZLEx6hcVwfm
-         cmkc6ZexenTfrAFEz/BY3dM0EEbHdt20EHAhD34Tf4P4VfbDUEAh2Z0rBNYgOymaeFuR
-         PVJciHOKveKDLg4zBpXm4OUFTsl3pVSGvch6H0tocsm9O4i4NNNciwBZPb7RyedbDxqt
-         7ZeelsaEbHdLN0kUExjT48nsXYWBCdxMpXF7vrhvrUuqRSjyjobRDG8PklRLFLTmdWp7
-         Hk+w==
-X-Forwarded-Encrypted: i=1; AKwUvBwDhst8zyqeI7vFyWGyMQqqEjlDGRGAfykXBj0JrJ0+VnujWKDTtI9yXpaUY+cTUpetlNLA6cc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIZbo49jWVQFqbZDZTsAM+Cj/nAWsGk8rDO37xXTpAL+v7By8ii
-	iuyZPohkpzof/kG0vkRfj0RtgQpc4V/zZn6Lyg/5LSkZlAdZUb5nmle9fGxnIR+dQ3oZCrRD4ls
-	eKUtFEBCUFmNRkqK5ZenfP/d5kj+oapomJ/mk9w4o3I/yC6usDqfl87gCzA==
-X-Gm-Gg: AYBFou0hoNG7I0Bojxi1tR7ILyznS0m5NxwfOxRe/h+g+YsTu2GekgZ8AQTPWlssNAL
-	DH1wiOwkC00CzNPVq5ROo5BpRBTkzLTEyWOKZKxzq/+Hv3Fp9R2VDjxmBllrz7Mm3WGJOmE4mls
-	Rkewqwujo4Q54+pZcs7o/3fXrVSJ2TBq670SJKz3CpsXPGv2qcMkccVWL8HEdvw+cvlIoetNrK6
-	CgNgZ4Vf65/j1c7hCN4Wi9Dwd1GtLjMuPDMPG++vbooMyDDtse2U/iyf8loOtfQf+B5ZkELqyZh
-	VAYOO8tT6TcCdARrCQlYHCi/P+S2NkShPPXQWrMom4dti98lTShG3Ts8dWkYRC72lKDrGp9qtXU
-	jloFUhjLxwXtTNhQyYxokR1iuQ7U2THbdP2HgF8NWulnUUPFU9ikKoGsKTRUTBCSGOOhgjq1JZ/
-	9tdYuiJINBky6Gz6Y=
-X-Received: by 2002:a05:600c:37c8:b0:4a2:18c4:61a5 with SMTP id 5b1f17b1804b1-4ac16acd93cmr47054035e9.6.1793362191520;
-        Fri, 30 Oct 2026 05:09:51 -0700 (PDT)
-X-Received: by 2002:a05:600c:37c8:b0:4a2:18c4:61a5 with SMTP id 5b1f17b1804b1-4ac16acd93cmr47053415e9.6.1793362191072;
-        Fri, 30 Oct 2026 05:09:51 -0700 (PDT)
-Received: from sgarzare-redhat (ip190-139-192-82.pool-bba.aruba.it. [82.192.139.190])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4abf67aa704sm54507825e9.8.2026.10.30.05.09.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 05:09:50 -0700 (PDT)
-Date: Fri, 30 Oct 2026 13:09:42 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: phind.uet@gmail.com
-Cc: Bobby Eshleman <bobbyeshleman@meta.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	George Zhang <georgezhang@vmware.com>, Andy King <acking@vmware.com>, Dmitry Torokhov <dtor@vmware.com>, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vsock: reject negative tv_usec in
- SO_VM_SOCKETS_CONNECT_TIMEOUT
-Message-ID: <auSIGIZctLp1oOhf@sgarzare-redhat>
-References: <20261030064428.73930-1-phind.uet@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LgGCIpXm
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B205C1F00A1E;
+	Fri, 30 Oct 2026 12:10:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793362202;
+	bh=uyfW3OCWnUbkZHwTCgLuveiOBF9GzvaBjVb3gQhT8HY=;
+	h=From:To:Cc:Subject:Date;
+	b=LgGCIpXm/lhUu9Lca7InZeS70Mrn+2f/7l0BJAyP1jwMVunrYg2fqHdKviRaxBWJv
+	 XQ54+8+uQxqe+gWAOUUyjVun5nK1sMXScEGYKevcqqYdyNMLymkbQTgGVrNUYETp6P
+	 xSXHXDNQWAv8eAOeTYnquHxyd0QmWBzyYSZFo7nB+FG6y3Mewv3VmxyFsgZUc5NYW4
+	 mBOuX+sKz4mJlOXurq04KORJE7nw0+mZf54Ges7REeBSCasLjH8x1cK2XTRrsVpD7N
+	 Jc2ypAkR+Bc0NoMrgFm3VipP8lguSRjyXC4AghesnAaHiJHG78w3qHIORUbHteeSXp
+	 DTzOtNgUA+MFw==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Neal Cardwell <ncardwell@google.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Eric Dumazet <edumazet@kernel.org>
+Subject: [PATCH net] soreuseport: annotate data-races around reuse->socks[] and num_socks
+Date: Fri, 30 Oct 2026 13:09:56 +0100
+Message-ID: <20261030120956.3026324-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -119,50 +62,114 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20261030064428.73930-1-phind.uet@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 30, 2026 at 02:43:50PM +0800, phind.uet@gmail.com wrote:
->From: Nguyen Dinh Phi <phind.uet@gmail.com>
->
->The timeval validation checks tv_usec < USEC_PER_SEC but not
->tv_usec >= 0, so a negative tv_usec makes the timeout computation
->wrap into a bogus value, later tripping "schedule_timeout: wrong
->timeout value" instead of being rejected.
->
->Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
->
+From: Eric Dumazet <edumazet@google.com>
 
-This blank line shouldn't be there, maybe it can be fixed when the net 
-maintainers apply this patch, so please wait their comments before 
-sending a v2.
+reuseport_select_sock() and reuseport_migrate_sock() read
+reuse->num_socks and reuse->socks[] locklessly under RCU, while
+writers holding reuseport_lock can change them.
 
->Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
->---
-> net/vmw_vsock/af_vsock.c | 3 ++-
-> 1 file changed, 2 insertions(+), 1 deletion(-)
->
->diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->index d0508887a2fb..1d7d53542724 100644
->--- a/net/vmw_vsock/af_vsock.c
->+++ b/net/vmw_vsock/af_vsock.c
->@@ -2156,7 +2156,8 @@ static int vsock_connectible_setsockopt(struct socket *sock,
-> 					     optname == SO_VM_SOCKETS_CONNECT_TIMEOUT_OLD);
-> 		if (err)
-> 			break;
->-		if (tv.tv_sec >= 0 && tv.tv_usec < USEC_PER_SEC &&
->+		if (tv.tv_sec >= 0 && tv.tv_usec >= 0 &&
->+		    tv.tv_usec < USEC_PER_SEC &&
-> 		    tv.tv_sec < (MAX_SCHEDULE_TIMEOUT / HZ - 1)) {
-> 			vsk->connect_timeout = tv.tv_sec * HZ +
-> 				DIV_ROUND_UP((unsigned long)tv.tv_usec, (USEC_PER_SEC / HZ));
->-- 
->2.43.0
->
+Readers snapshot num_socks once, then index socks[] with it.
+Meanwhile, writers can perform several operations, storing into
+slots below the reader's stale count:
 
-LGTM:
+- __reuseport_detach_sock() moves the last socket into slot i.
+- __reuseport_add_sock() then writes the new socket at the
+  (now smaller) num_socks index.
+- reuseport_stop_listen_sock() calls __reuseport_detach_sock()
+  then __reuseport_add_closed_sock(), which writes slot
+  max_socks - num_closed_socks - 1. This can be the slot a reader
+  still considers part of the listener region when the array is full.
+- __reuseport_detach_closed_sock() can then rewrite that slot.
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+All pointers stored in socks[] remain valid for the RCU grace period,
+but without annotations the compiler is allowed to tear or reload
+these accesses. For instance, reuseport_select_sock_by_hash() could
+reload reuse->socks[i] between the sk_state/sk_incoming_cpu checks
+and the return, returning a socket that did not pass them.
 
+Use WRITE_ONCE() for all socks[] stores done while the array is
+visible to readers, and for num_socks updates (readers already use
+READ_ONCE()). Use READ_ONCE() in the two lockless readers.
+
+Fixes: ef456144da8e ("soreuseport: define reuseport groups")
+Link: https://lore.kernel.org/netdev/20260902071900.395567-1-ruanjinjie@huawei.com/
+Cc: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+---
+These issues were spotted while reviewing Jinjie Ruan's patch converting
+the num_socks smp_wmb()/smp_rmb() pair to release/acquire, which can
+build on top of this fix.
+
+ net/core/sock_reuseport.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/net/core/sock_reuseport.c b/net/core/sock_reuseport.c
+index 29948cb44b7d1a8864ff680aaeb2b4582ede5ff4..fccbdd0430b05984e82c19b17b6b723b0a3a03a1 100644
+--- a/net/core/sock_reuseport.c
++++ b/net/core/sock_reuseport.c
+@@ -124,10 +124,10 @@ static int reuseport_sock_index(struct sock *sk,
+ static void __reuseport_add_sock(struct sock *sk,
+ 				 struct sock_reuseport *reuse)
+ {
+-	reuse->socks[reuse->num_socks] = sk;
++	WRITE_ONCE(reuse->socks[reuse->num_socks], sk);
+ 	/* paired with smp_rmb() in reuseport_(select|migrate)_sock() */
+ 	smp_wmb();
+-	reuse->num_socks++;
++	WRITE_ONCE(reuse->num_socks, reuse->num_socks + 1);
+ 	reuseport_get_incoming_cpu(sk, reuse);
+ }
+ 
+@@ -139,8 +139,8 @@ static bool __reuseport_detach_sock(struct sock *sk,
+ 	if (i == -1)
+ 		return false;
+ 
+-	reuse->socks[i] = reuse->socks[reuse->num_socks - 1];
+-	reuse->num_socks--;
++	WRITE_ONCE(reuse->socks[i], reuse->socks[reuse->num_socks - 1]);
++	WRITE_ONCE(reuse->num_socks, reuse->num_socks - 1);
+ 	reuseport_put_incoming_cpu(sk, reuse);
+ 
+ 	return true;
+@@ -149,7 +149,7 @@ static bool __reuseport_detach_sock(struct sock *sk,
+ static void __reuseport_add_closed_sock(struct sock *sk,
+ 					struct sock_reuseport *reuse)
+ {
+-	reuse->socks[reuse->max_socks - reuse->num_closed_socks - 1] = sk;
++	WRITE_ONCE(reuse->socks[reuse->max_socks - reuse->num_closed_socks - 1], sk);
+ 	/* paired with READ_ONCE() in inet_csk_bind_conflict() */
+ 	WRITE_ONCE(reuse->num_closed_socks, reuse->num_closed_socks + 1);
+ 	reuseport_get_incoming_cpu(sk, reuse);
+@@ -163,7 +163,8 @@ static bool __reuseport_detach_closed_sock(struct sock *sk,
+ 	if (i == -1)
+ 		return false;
+ 
+-	reuse->socks[i] = reuse->socks[reuse->max_socks - reuse->num_closed_socks];
++	WRITE_ONCE(reuse->socks[i],
++		   reuse->socks[reuse->max_socks - reuse->num_closed_socks]);
+ 	/* paired with READ_ONCE() in inet_csk_bind_conflict() */
+ 	WRITE_ONCE(reuse->num_closed_socks, reuse->num_closed_socks - 1);
+ 	reuseport_put_incoming_cpu(sk, reuse);
+@@ -521,7 +522,7 @@ static struct sock *run_bpf_filter(struct sock_reuseport *reuse, u16 socks,
+ 	if (index >= socks)
+ 		return NULL;
+ 
+-	return reuse->socks[index];
++	return READ_ONCE(reuse->socks[index]);
+ }
+ 
+ static struct sock *reuseport_select_sock_by_hash(struct sock_reuseport *reuse,
+@@ -532,7 +533,7 @@ static struct sock *reuseport_select_sock_by_hash(struct sock_reuseport *reuse,
+ 
+ 	i = j = reciprocal_scale(hash, num_socks);
+ 	do {
+-		struct sock *sk = reuse->socks[i];
++		struct sock *sk = READ_ONCE(reuse->socks[i]);
+ 
+ 		if (sk->sk_state != TCP_ESTABLISHED) {
+ 			/* Paired with WRITE_ONCE() in __reuseport_(get|put)_incoming_cpu(). */
+-- 
+2.53.0
 
