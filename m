@@ -1,95 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.174
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.179
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793328010;
-	b=QpM2RaQFAbeYKevjFTG05CSpHLVeb+nC4/7SoC3v9+JgEw7Jje/coUHlHBFEw7P4xq2l
-	 ErKd1Ldp+mEqnxQUC1HD9EtetXHdcNF/JzNh1IhzqMQtOqIooUgV6ed12qYTD4Abmyt0j
-	 yJhV8aUTYROg4qjB1CE++j55HkyO/m37zS2NqllXpVFwuJ2HrTEN54TyA1TJ6czq8dsOn
-	 zhzCam07uaoJSPwj/hM77Ryt2FwJS+EMYTNZF9sekaXeBzPGnCly4JTsQLS+SS3tis9E0
-	 Z1IPyQVdNeDjBQhoOCSyBO4WL6O0Q5cAJS8kdyzSc2odL+2A1mH/rNmwaGil9MH/oZg==
+	t=1793328017;
+	b=WChfI8YJs/HrvHCx34Xm0YezFMp1mXc1nRExVLLYQd0ixyb/Rox91OHhnrsnwJOGFNAt
+	 gLW0TFJ+GFFIUOvBA7jxYeI6kFUOIcJwZJtJHp5VZDsLcvhhAKAMqOmHR3ZqUBarL/3gc
+	 wj0Zkxi7eCQ06+BaMq+YatSSIgc74ZA60anPsf+veot37Lfxi0xiC1kwez1U76VTGE2qZ
+	 hvXnPVjzrjh0cgbmRpa9HkAYoC8o56WFRnsSybHPffRqCD6bB91dGUeJ3Nnyg4bLFEUAb
+	 A1Qr0DmwrBJiW0oDyt5ipymc3VP9QYRyb7+g6DEwmvWynpHAz5z2++x6pnW60lI6Apw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793328010;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793328017;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=YSAh+y1tZ3U19Rc97yZ2/Ifnxo6JWkQYI8MOkedjj2I=;
-	b=QtnsTQ6qT5SsFxu03myzASo9Mj+Q1ZdIizpx1wELGJ2gXxz6fqjUbd9W4HPsddzmhlwL
-	 u8gp7suhZrGMr2b9z6cy65xEYQ7Mbl+H4gGVt+4WZVGNwgAb8fblWu/vYEzoypcShHwF0
-	 TDAtyIiVm8NEzTO7DcRcSZKr7Vu9s//GyiY2mxzEJUW5c8FvBuu1J2I+j+ErWi1iFHpDf
-	 eqc862XxlO3Q7RJFsp0VpdRzgemmiz/6GEAsNF12i3JvBkrkMLWXJgAfCLAd/p8qSAbSL
-	 s/YqkXRG8aZG4fh31Kkae5LclGuwRqXs4QDzI9sZJQ3Ms/kN0yGvjXnUn8Ql8IG+hzA==
+	bh=+ELhbW/6uxFSOtLiXrpEjFCc5Al5bqntgfPHZO1Nwwg=;
+	b=YaGh14W3Bcr5/LuYhabIle8CQOm+nYnRgTVLRtiYwvcVeWQX0ekhYWyVovc5TXXt1mqv
+	 1yGTZFRRErMqQcsc8HLsNbrx5UN6aQdY9zrP1xW75CCBWrR+r9ir21le6hjSI5OJ43Qbv
+	 YtJ4SJYA1BMbl35tYAR/wkTz1M9zy8Jdh3wfDIQmfUws5zsAVlWMM4qLZz2XagwT3hxYE
+	 kqD5t6jLt0kA26U4nbIkq/oAjlQ+ryGBVjHsDHd+PpI5ZTji3Iuet+Ct9pZVTT+UjCMtW
+	 pmcvcm/snh0PeSduh9QFiC4m6sCAPY1rsRMWpBGZlzHz+FQwRDYeqOycS7EopUfEkOA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=U5MbUX9R;
-	arc=none smtp.remote-ip=209.85.221.174
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vAisCruQ;
+	arc=none smtp.remote-ip=209.85.221.179
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86783606A31D
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 02:40:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 86783606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A048606A31F
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 02:40:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6A048606A31F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=U5MbUX9R
-Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-5ec690faf85so83471e0c.0
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 19:40:10 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vAisCruQ
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5ec20398b05so276384e0c.1
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 19:40:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793328009; x=1793932809; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793328016; x=1793932816; darn=vger.kernel.org;
         h=mime-version:content-transfer-encoding:content-type:message-id:date
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=YSAh+y1tZ3U19Rc97yZ2/Ifnxo6JWkQYI8MOkedjj2I=;
-        b=U5MbUX9RhTMavnColAP3lfJm4DLBU/va00boE654w4KsCKHYF9mOCar0j6U6c2nj5D
-         YAEoP9o/Qyz1vOcRjNWQweKGCPCzaqSYkT894bv1xFIkfOTc+GFNj+ChNYatPJMVtU1C
-         Uv+4gov1Yi6757H7wlMMuiGeNMyjzCjICuuHBQ3AX6pHx+0mumwjMiskSii6eflVIdXh
-         6UibHggjHYA+U2wESaxbMQNyR69xBfWawi4ktDujjVoEhLOK3ar6kXP39fdGZLVt5Gw3
-         iCh+qdby1o6OZYLrhUj+YtQTba3Z0ANX5mND6Xu/8JNnUWvRD/zLFAiEJCboS131id3Z
-         phRQ==
+        bh=+ELhbW/6uxFSOtLiXrpEjFCc5Al5bqntgfPHZO1Nwwg=;
+        b=vAisCruQ8cBFET8/dNwfmyX4n77Anbj6EdSlbqajFzCnS4ibrEtl1nvb9B4yOA8Pgb
+         y6qBY5tyTutbrINbP9qrKQnGBuoysT5emmza9W8WrZRuTbWGaEuNoEq1LfXZe+zl2omN
+         oz1xP+KvELhetEI+CFCf/RSa2SHk35YqiIwHoWJF4HMVzh/fBjcwc4hBs8KoDLld8Efv
+         kEh7pG9RvwS2tst/SqVyjwRq92JVGJQqGzfJ3aGUDY32N+hkW9LEqdupYbtyT67gc5fo
+         Z2JWMIkV9aK90ZiO7ouT4iWD1AnLaIMzsaeGPoqLzug9mHJkSWq3xjliW0k+OO44zekS
+         EGdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793328009; x=1793932809;
+        d=1e100.net; s=20260707; t=1793328016; x=1793932816;
         h=mime-version:content-transfer-encoding:content-type:message-id:date
          :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=YSAh+y1tZ3U19Rc97yZ2/Ifnxo6JWkQYI8MOkedjj2I=;
-        b=1QoHW6YFCpprh821/Nl4ErX5Wre4ZUl0DCvuzzl1CwG6SYFNyRhS9zz3kwPxLDlONl
-         TBlARWHLojwlfBj7/FkwI0Al7kZw8dMmKTL4waHYYs4v1WGo2qru9GTOuJhHO38kmXmT
-         LSk2IF0my+fN/Kr3YK71jcx8DlHErwOCvniMrUBsd1lP8i1DT8+vMUpVsCkvsGE54egX
-         D5gBKw7s1hM2K4rpzywtmrq9eHckSF8PpynuBcLVBjKmNwiqSfMpJBuK0juQZ7+08QrD
-         Q6+1mJm/PLz95OHlg1/4xj+y31ucOEdCOqnO4wfCSHX/BW21VEApGCL9uK98hfjr8p2u
-         tYdA==
-X-Forwarded-Encrypted: i=1; AKwUvBxI2K9aDTn6iYRKD/iZWlYn06dbaRXWMzA3hJ4aTZHOW5S+/FSUgg/fA4YJf7zXq2StV/+gorA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJW4zCtf0slv8FrLpAoJ6Z8ujqnsDeyRUQZG3RxxBeqC+zOLczl
-	RRLvXXes/I3drWWwSqo+dGNJ4HcB1tFIgNMDXkzxUki4+lVZNHnWb97GVVAJ7ZKe
-X-Gm-Gg: AYBFou1NBD7w3EFiqHf6pZAwovUosLoVmVAeiSkOtQMH9K0JQ3zaL1NkgmCWS4fBksT
-	dSO7s8nVfMqfwY/Q8DyePOPXHXwetKlMRO4+iCsr5TLdpE2Y9WCoPez/WINXkOwelmMWmAEo+eW
-	LLvHEcPVHqMDb0sDBavILktl8HaemP9uD4DXBH1yj+lpalUxlEWvUWfqkC2UX6sKD2UCZGryJOp
-	xXWqXgQ5LvwC751rG3mhsZanDlytw9yoVjOzW0YpsNpS7U+L5tuJidzPIx2WaztRkNpFCxOV7o1
-	rMe+z6MrbU/UNiYHcw93PHBcLSPW6Mk+0Lu+Ahh5RCBM/+pG9LDFOPy0wf8sp8XYKdkZjIeKvQj
-	1GfQrJannO7W4E0fa4HMSqz16NqwLlhz/aFjEwI/wqqAydxzoMrGcQvLFClsKITj+zpYnBRh9YB
-	QJBcIZpMNlMwDBNz6ucUB6EKjhWFfLsiUmBVDNM79al6K1tp2Y3I1Wt/5OpfCeH8362sIl8Kmse
-	zmyVu4NRueGB/qR6m0Xskm6O18a2PGFqQewR2zuuYFmfxQVfjm/JnpbIaK8bKMrvAOx7sbcqM5N
-	+DncaURaqzaCp+AkPuRNJlmc9BmksOzGvMq0zUZPxeU1W3NaUSRMsQRvnppesygj0YfT0jRfcsp
-	LTOLKF0QdGntxYkak7rsoMfBjOtq9
-X-Received: by 2002:a05:6122:1b0c:b0:5c9:a60b:e5c8 with SMTP id 71dfb90a1353d-5ec6893b14cmr559247e0c.11.1793328009288;
-        Thu, 29 Oct 2026 19:40:09 -0700 (PDT)
+        bh=+ELhbW/6uxFSOtLiXrpEjFCc5Al5bqntgfPHZO1Nwwg=;
+        b=elv4kAEgSBy7tgLHqXf0tLuIBRAYCZKOyKxTtHXIHxNiMqemvFDvm5Dh8SGjuouBAv
+         VM932ITu53udSNf+jKJYXaAekHNQB8uYdhoZKKLS8bgVyc16mmYlUKbc8HH2KJPr8Kzp
+         2+w5RB9UsCjbnimAciy+ot9CnvYKbY1j+0MHsAPcvLzB4Jg7ciMDx1I8YaKtlC7oAUz7
+         J69HPt5A0i2w0n3pnlOn2uqw1c5Djins9sHQCRIE5c8oA6mTUhavypqZjntsG2E2iqPu
+         aW3Zyf79QnquTiMHDLMA11FGdaik/464y7n+ZU67MoxFd/JBibk240bcCbioVSKQvylZ
+         rFvQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwKW+5Km4UJiBKdqDmaxRb0oJf2ngnZUss48n/X/zMxCwhJtqIwftaHNyvRyeW9EkJf66vMetc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ9Pw+rJGP1LGnvJoivpQmcCvIcYz64g8OHDf6fae6LWJuH0eZL
+	2Mt/rjbKYDlvRJGI7gNJ9hG0EIYp8SoG8Vavlk3u/hLtxrWgSb9xBGpz
+X-Gm-Gg: AYBFou0O1BMwlwyI0nuNeKoLimjQf8u3ktm7S35EbApoc6k7AWvO0jZl12vCBT9JpHd
+	KqBOmiuenaLlyXqjZHo/5jtcU4UkTg0TfEwy/vB+4QdKbCgwa1gMZgFlpAsPc37Vyk9tLpNaOXg
+	vK4Rc96cPXQ9hIB06yVSUCHKfB84UisApPIZelmlVof2gbOqBluFGcL53uqxMx076D6ilVE4EWO
+	eDm2GhpFUCa7/G48hV7q+5sGa/eaU+NjpftDMQllIPYELCFPCgw8qMl9CACWQsn3eQ1zBAcyMIb
+	iKUGRPa2bY7IepEFBdcah4ojb62OkgFWht4RyLJ/eI1n4IqUgoNeU24W4nX8DvZ+j2WhWG3Rj8t
+	vS+TeDnR/4JyRQ38I2WE6jHz/bRkO1+mQgSmoUWS+b93TJSAxG6HTTIoqdBis+HuULhOECg1ulT
+	azfG4j0Rwz61s/4IhpWwruwd/eva6ngWssvat3a/24594c8oTcRRvEyzg4AYHSSEr0eivrHlvbQ
+	az50FsdTVIkB9lvCNIxn4b0TMG+IDguoWdS6wOPkPj9mSVnLh76Wd56wBLTCvMIsrlNiP68V4Bu
+	2tpcJGutEuro0pa5ivL770x+CJO9z2+zdWElQIw330qDhyNCacpOapwmxYMD2S0TH87txwqV7Fy
+	Ncs6eLvNkX6SPpf3rR28VwkcekC7w
+X-Received: by 2002:a05:6122:ec5:b0:5ea:dc36:245b with SMTP id 71dfb90a1353d-5ec6896de21mr562647e0c.18.1793328016018;
+        Thu, 29 Oct 2026 19:40:16 -0700 (PDT)
 Received: from macbook-pro-de-joas.local ([2804:7f0:b101:c5e8:ccdf:2b09:f69e:4902])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec69c5d183sm963735e0c.13.2026.10.29.19.40.04
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec69c5d183sm963735e0c.13.2026.10.29.19.40.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 19:40:08 -0700 (PDT)
+        Thu, 29 Oct 2026 19:40:15 -0700 (PDT)
 From: Joas Antonio dos Santos <joasantonio108@gmail.com>
-To: David Heidelberg <david@ixit.cz>
+To: David Heidelberg <david@ixit.cz>, Krzysztof Kozlowski <krzk@kernel.org>
 Cc: David S. Miller <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Fan Wu <fanwu01@zju.edu.cn>,
- oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject:
- [PATCH net] nfc: st21nfca: complete a pending SE APDU request only once
+ Simon Horman <horms@kernel.org>, oe-linux-nfc@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH net] nfc: s3fwrn5: validate the firmware image size against
+ the firmware file
 Date: Thu, 29 Oct 2026 23:40:02 -0300
-Message-ID: <179332800288.52644.8728400883396719965@gmail.com>
+Message-ID: <179332800288.52644.4206885352837613064@gmail.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -102,111 +101,101 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-st21nfca_hci_se_io() stores the netlink callback and its context in
-info->se_info and arms the BWI timer.  The request is then completed
-either by st21nfca_se_wt_work(), when the timer expires, or by an
-EVT_TRANSMIT_DATA event on the APDU reader gate.  Neither checks that a
-request is still pending, and the callback, se_io_cb(), frees its
-context every time it is called.
+s3fwrn5_fw_download() hashes and flashes sector_size * image_sectors
+bytes starting at fw->image.  sector_size comes from the GET_BOOTINFO
+response of the controller's bootloader and image_sectors and the image
+offset come from the firmware file, and none of them is checked against
+the size of the file.  s3fwrn5_fw_update_sector() also always sends
+16 * 256 bytes from the start of each sector.
 
-So when the secure element answers after the timeout, the response
-calls se_io_cb() again on the context the timeout already freed, and
-frees it a second time.  The same happens if the controller sends two
-EVT_TRANSMIT_DATA events for one request.  An EVT_TRANSMIT_DATA, or a
-timer armed by EVT_WTX_REQUEST, with no request pending calls the
-callback on the context of an earlier, already completed request, or
-calls a NULL callback if there never was one.
+The controller decides whether the update runs at all: it reports the
+version that s3fwrn5_fw_check_version() compares against in
+CORE_INIT_RSP.  So on every device up, as long as the firmware file is
+installed, a controller that reports a
+large sector_size makes sha1() and the update loop read far past the
+end of the firmware buffer, and one that reports a small sector_size
+gets up to 4 KiB past the end of the image sent to it in
+UPDATE_SECTOR data packets.
 
-With st21nfca on a virtual phy and an emulated controller answering an
-NFC_CMD_SE_IO request 4 s after it was sent (the default timeout is
-3.2 s):
+Check that everything that is hashed and sent lies within the image,
+reject a zero sector_size, reject an image offset past the end of the
+file, and make sure the GET_BOOTINFO response is long enough before
+copying the 10 bytes of boot information out of it.
 
-  BUG: KASAN: slab-use-after-free in se_io_cb+0x2ec/0x334
-  Read of size 4 at addr fff00000c5277da0 by task kworker/3:1/59
-  Workqueue: events nfc_hci_msg_rx_work
-  Call trace:
-   se_io_cb+0x2ec/0x334
-   st21nfca_apdu_reader_event_received+0x1ec/0x248
-   st21nfca_hci_event_received+0xb0/0x300
-   nfc_hci_event_received+0xb8/0x30c
-   ...
-  Freed by task 59:
-   kfree+0x214/0x498
-   se_io_cb+0x2bc/0x334
-   st21nfca_se_wt_work+0x14c/0x1d4
-
-and for an EVT_TRANSMIT_DATA without a request:
-
-  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-  pc : 0x0
-  lr : st21nfca_apdu_reader_event_received+0x1ec/0x248
-
-Use bwi_active, which st21nfca_hci_se_io() sets, to tell whether a
-request is pending, and clear it in whichever of the two paths
-completes the request first.  The event handler already stops the timer
-and waits for the timeout work before looking at it.  Also complete the
-request with the error if sending EVT_SE_END_OF_APDU_TRANSFER fails
-rather than never calling the callback, which leaked the context.
-
-Fixes: 2130fb97fecf ("NFC: st21nfca: Adding support for secure element")
+Fixes: c04c674fadeb ("nfc: s3fwrn5: Add driver for Samsung S3FWRN5 NFC Chip")
 Cc: stable@vger.kernel.org
 Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
 Assisted-by: Yaga Agent HackerSec Claude:claude-opus-5-5
 ---
 Tested on arm64 QEMU with KASAN, with a test-only module that registers
-st21nfca through st21nfca_hci_probe() on a virtual phy (LLC nop) and a
-userspace controller emulator (DEV_UP, ENABLE_SE, SE_IO over netlink).
-Without the patch: slab-use-after-free in se_io_cb() for a late and for
-a duplicated EVT_TRANSMIT_DATA, NULL pointer call for an unsolicited one.
-With it all three are quiet and a normal SE_IO exchange still works.
+s3fwrn5 through s3fwrn5_probe() on a virtual phy and a userspace
+emulator for the NCI and bootloader protocols.  With a 4156 byte
+firmware file (one 4096 byte sector) and the controller reporting an
+older version:
+- sector_size 0xffff: oops in sha1_ce_transform() from
+  s3fwrn5_fw_download() without the patch, update refused with it;
+- sector_size 16, 2 sectors: KASAN vmalloc-out-of-bounds in
+  s3fwrn5_fw_prep_msg() while building an UPDATE_SECTOR data packet
+  without the patch, update refused with it;
+- sector_size 4096: the update runs the same with and without it.
 Not tested on hardware.
 
-st-nci has the same pattern; Fan Wu's pending "nfc: st-nci: drain SE
-timers before NCI teardown" v2 already makes bwi_active an ownership
-token there, so this only touches st21nfca.
+ drivers/nfc/s3fwrn5/firmware.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
- drivers/nfc/st21nfca/se.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/nfc/st21nfca/se.c b/drivers/nfc/st21nfca/se.c
-index 7154bc1d6..4261ed1d9 100644
---- a/drivers/nfc/st21nfca/se.c
-+++ b/drivers/nfc/st21nfca/se.c
-@@ -264,6 +264,12 @@ static void st21nfca_se_wt_work(struct work_struct *work)
- 						struct st21nfca_hci_info,
- 						se_info.timeout_work);
+diff --git a/drivers/nfc/s3fwrn5/firmware.c b/drivers/nfc/s3fwrn5/firmware.c
+index 9145deec7..159afb8de 100644
+--- a/drivers/nfc/s3fwrn5/firmware.c
++++ b/drivers/nfc/s3fwrn5/firmware.c
+@@ -93,7 +93,8 @@ static int s3fwrn5_fw_get_bootinfo(struct s3fwrn5_fw_info *fw_info,
+ 		return ret;
  
-+	/* The timer can also be armed by EVT_WTX_REQUEST while no
-+	 * st21nfca_hci_se_io() is pending.
+ 	hdr = (struct s3fwrn5_fw_header *) rsp->data;
+-	if (hdr->code != S3FWRN5_FW_RET_SUCCESS) {
++	if (hdr->code != S3FWRN5_FW_RET_SUCCESS ||
++	    rsp->len < S3FWRN5_FW_HDR_SIZE + 10) {
+ 		ret = -EINVAL;
+ 		goto out;
+ 	}
+@@ -307,6 +308,10 @@ int s3fwrn5_fw_request_firmware(struct s3fwrn5_fw_info *fw_info)
+ 	memcpy(&fw->sig_size, fw->fw->data + 0x18, 4);
+ 
+ 	memcpy(&image_off, fw->fw->data + 0x1C, 4);
++	if (image_off > fw->fw->size) {
++		release_firmware(fw->fw);
++		return -EINVAL;
++	}
+ 	fw->image = fw->fw->data + image_off;
+ 	memcpy(&fw->image_sectors, fw->fw->data + 0x20, 4);
+ 
+@@ -409,11 +414,26 @@ int s3fwrn5_fw_download(struct s3fwrn5_fw_info *fw_info)
+ {
+ 	struct device *dev = &fw_info->ndev->nfc_dev->dev;
+ 	struct s3fwrn5_fw_image *fw = &fw_info->fw;
++	size_t image_avail = fw->fw->data + fw->fw->size -
++			     (const u8 *)fw->image;
++	u64 total = (u64)fw_info->sector_size * fw->image_sectors;
+ 	u8 hash_data[SHA1_DIGEST_SIZE];
+ 	u32 image_size, off;
+ 	int ret;
+ 
+-	image_size = fw_info->sector_size * fw->image_sectors;
++	/* sector_size comes from the bootloader and image_sectors from the
++	 * firmware file.  The whole image is hashed, and
++	 * s3fwrn5_fw_update_sector() sends 16 * 256 bytes from the start of
++	 * each sector, so all of that must lie within the firmware image.
 +	 */
-+	if (!info->se_info.bwi_active)
-+		return;
++	if (!fw_info->sector_size || total > image_avail ||
++	    (fw->image_sectors &&
++	     total - fw_info->sector_size + 16 * 256 > image_avail)) {
++		dev_err(dev, "Invalid firmware image size\n");
++		return -EINVAL;
++	}
 +
- 	info->se_info.bwi_active = false;
++	image_size = total;
  
- 	if (!info->se_info.xch_error) {
-@@ -383,11 +389,20 @@ int st21nfca_apdu_reader_event_received(struct nfc_hci_dev *hdev,
- 	case ST21NFCA_EVT_TRANSMIT_DATA:
- 		timer_delete_sync(&info->se_info.bwi_timer);
- 		cancel_work_sync(&info->se_info.timeout_work);
-+		/* Only complete a pending st21nfca_hci_se_io(), and only once:
-+		 * the timeout work may already have completed it, and the
-+		 * callback frees its context.
-+		 */
-+		if (!info->se_info.bwi_active)
-+			break;
-+
- 		info->se_info.bwi_active = false;
- 		r = nfc_hci_send_event(hdev, ST21NFCA_DEVICE_MGNT_GATE,
- 				ST21NFCA_EVT_SE_END_OF_APDU_TRANSFER, NULL, 0);
--		if (r < 0)
-+		if (r < 0) {
-+			info->se_info.cb(info->se_info.cb_context, NULL, 0, r);
- 			goto exit;
-+		}
- 
- 		info->se_info.cb(info->se_info.cb_context,
- 			skb->data, skb->len, 0);
+ 	/* Compute SHA of firmware data */
+ 	sha1(fw->image, image_size, hash_data);
 -- 
 2.43.0
 
