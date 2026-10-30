@@ -1,60 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.170
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793357453;
-	b=dstZ6QJ82vmiXLGMfuJDvsJrxebLWb42fEMFtG5aSCAhD9f5ZRGKMpGRiJWTvEqaj0Uv
-	 1TpsyKyxmeOVBtseJISONOc06N0Dai2y9wWZm4e/07emli4VjLS25Y1gUYLsFiqtK+zIv
-	 upgvEj5R7+QZeUllY31cwFN8vrkSs2/xTEBJ00Cvdfv4Fp2EiNeSmFui4cPx+8ngNiHKC
-	 HWGEpyIGiolX/PpF2SRtl8L6oyX2pQVHs3BlBzrVf9861aao4BTqhMc2yWUZzYqaQZU4q
-	 Tzi/UM33IkAC5pFpFj9oQ7XdJiJuvLY9MrwWYXNYDosmw37sGA1AzbhZ1rXtA1GsiYA==
+	t=1793357911;
+	b=LZn7wRv23YpfD/IVdlwe5zq27L/RMSevtRltvr06B1O/NRA67FimVr3SZExQjjXuWNy5
+	 YyB9zVlIKQtm7Nr5tvOMD14dUfVpx5govQlu2B3iMWXxqv8d6m6Ho1jvXTLx+CNUaMVe4
+	 kksEDjY2B+t8lPiSu01CcN/X4vxhHM6npw6b4BPelnSnqN4E89sntrwNBA41WDI8ADaKB
+	 rubZMdOpp/XybAedcby+Sw7P+559oGpKICZho6TC5yaBJDA6QnQL4xqGg7RK9Y0hWbhYL
+	 8dbgwY1KOvRZ/BgAn7pqI7lCVyPyGPAyCwp3/QaUU/7q0qVXhQzdsjRs5qNsi55w+hw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793357453;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=3ZA1tFIQbefFkP0k1Tx7ybaXRmfxV/nEBepijkpjAgg=;
-	b=B0HQAnIKS3Jb4y6yVsLx2/hr2T9BdKiz/6HOJZL1Gj/pFb3sFfRswGEXQb6wB0ROyYIn
-	 kqqDwZtr2tnvf8B+5CpVrm1vEpPgGxFN7b/81/wbq0bIhLZrTN7IXij/GdFeATuhS1VlF
-	 iNM5J7VcBrqturvWGG5jq0bvaYkaXXTEKE4AuGjANGIRafAZPwF/ck9bksx/OR7gMmAEU
-	 9jYOtfPB4MGSE+DRsjs2thGLzXxsCuVYdaHqAsmrkrgil4c5oAa2W+R0z15cqPOsN8mZe
-	 YIFsFtUc54/DXJnpYGKmMXLoy9HkMQ227rTPcC1Gs+fVNyfV43N8Rd1pVY6O2qDIuBg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793357911;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
+	 X-Gm-Gg:X-Received:Received:Received:X-Received:MIME-Version:
+	 References:In-Reply-To:From:Date:X-Gmail-Original-Message-ID:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
+	bh=qANwLEKHR+Q8Yt9LD0kW884nruLVZmuaF5lEr9bqDbs=;
+	b=S92tnGEre1EMGHOEIx3ImDaYoyX1PNxY27jas9zZZP/6c2PBNt4QnsWEpr99eipTVrC9
+	 biN/SpOZkKIIn9gdC78LlMaky0qSJ3oWhXYKxM5EU0T2WiAFVpiDvwepbNqhwcOvGnRTZ
+	 qkx84goOiclco0E0eQPnYAQxzstmcrI5GuR03A+gjaxeRnGdX8zh1HBea5OoZBEnSkMID
+	 Jnoidn/R+BZvsYfz/ty7UCoh8tqfwB4/G7id1vrSPh8fp/4i2C9ZtrjyIBqlcL8c2bapy
+	 MwutlgsNhLLD6NnjeDQH4P4L1BVcZphz0KMfPA0ICYMxFjXJ1CC7wNA3MUd6xWIUKnQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CxOdNEIH;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=linux-m68k.org;
+	spf=pass smtp.mailfrom=gmail.com;
+	arc=none smtp.remote-ip=209.85.221.170
+Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36646606B979;
-	Fri, 30 Oct 2026 10:50:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CxOdNEIH
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7933A1F000C1;
-	Fri, 30 Oct 2026 10:50:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793357453;
-	bh=3ZA1tFIQbefFkP0k1Tx7ybaXRmfxV/nEBepijkpjAgg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=CxOdNEIHHgwssYhKwmgc//1ZAjB1rGJWu73+RkAkWS2DonjemBGQs4gvvlgVitqJz
-	 281Lgnu0wWAImoTpPH9sdd6YHBX+mNtmsAwczMwKX7G0o/dzk/vvxDbQZ9BPXUoyLY
-	 vO70fmZEuTnGCADkyQllCua2LJAFzSXmQctuXiKJQsx/21WZRVW90P4cp4ud4kbc/V
-	 WJc1sLtmlWd4xn+ywxeGJ+6jgJtbmHaeFffSDLsIAVsEPKL3dju9ojiRh3gftbxlh+
-	 1wyIM2nM1ZWlVf3dX7Os/lV0MxSngisB6J7jTW5AtZmoRYgUziQpfhk67Bd6iAmDNU
-	 h+hWxV6O7qIvQ==
-Subject: Re: [PATCH net v2] bonding: fix missing down path on speed/duplex
- failure after FAIL->UP
-From: netdev-bot+sashiko@kernel.org
-To: timur.stukan.linux@gmail.com
-Cc: netdev@vger.kernel.org, hangbin.liu@linux.dev, razor@blackwall.org,
- fmancera@suse.de, jv@jvosburgh.net, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
-Date: Fri, 30 Oct 2026 10:50:52 +0000
-Message-ID: <179335745203.3134.6448413016247418659@kernel.org>
-In-Reply-To: <20261028104758.299129-1-timur.stukan.linux@gmail.com>
-References: <20261028104758.299129-1-timur.stukan.linux@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674AC606D289
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 10:58:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 674AC606D289
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-5ec6f271883so224693e0c.3
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 03:58:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793357910; x=1793962710;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=qANwLEKHR+Q8Yt9LD0kW884nruLVZmuaF5lEr9bqDbs=;
+        b=PPNCwhElqqiZ9tqVnyUs86ZnhxKn9UO+x44UD/JBJ+G68rXfNXPdhWIg6qFLsJEnqf
+         UlmyKXJbwvOxZ8QNduqnPracWRn+WvmY4SZCiz/nxYGQzsqCbJbn6KOAzPOqqHIbLr3D
+         TDOorawkpRFRzulaoF2H3+UCe437eiYwnEUUDc8bLkE0tStZiNQ2SHoANzua2EYjm3qV
+         rBTKcaHB6abGsPr0lK7ogBNwFyp6eie8IvyA/IXSnT4TmzdEpUJ0LYaeCVvPS2l5tOYI
+         oFcnEXTpwxdRrGCT/jHc9C/ENtnLBPLLj3Qvad8jRL6CnJX1pjlHY7j+AiBSr1G6ZOnd
+         TlqA==
+X-Gm-Message-State: AFq9FYK6m1wsrvoGSsJKxdTIkvMCokUdkhzZmdQhWuWS1rKZVRjfPynW
+	szutlLx9wvOBpXE3jtDWCBbugMxlDK9vLc097k/2/CM8DJaKO7HlWmdfTELeLGPJ
+X-Gm-Gg: AYBFou0zZwjABhFd7I7QJbKID88N2s/e2gnS+YHj2ruYTf3uKhdt4dY/s1QD9uR2cll
+	MkPtaGPA9RdYMqhVVTf9ONXmXpDJuEWp1FTPUhsMrv7wAYHnAlT2aBnwYcdIiQhGTNM13bMd7nM
+	AnDNf/RjBrCymiey4O53tHSA7obfFHoLoDXiwLGYAwDdq3eHpHq/UcinzXS5DdTx02TxTFsMYOE
+	i+bpHJidJOUIIwzVTxBK1whf2jxtyN65pE6C4HYlGN8z0A8SkEE/5X8uuLv5XqerX0aP/yd5M4X
+	xykviqeUi/LoDED7AHPFfNiMJHYpsY7XjkoN/zJ9sQSL3U7kpOY59M8HktV1xmAIn32EjRoy53A
+	e4NnOyUf1dtaf6PM8LY0TYH1g7r/qlyFhBGFWwsl6QmM7zeUSbHc6IZzIU0DEJJHOG2Qx7K7VvZ
+	dWjz+htcZDI0dD7h/VwtYLz0I8vM1BV2nEkf9xdckDOiykZL8Ir7Vfi9jmLxkz+t1JVT9dcrSmF
+	YG82+fzZfNlLwgQBpFpC+ZnQruPBsNjpNcJdQoYNPPKtecsOPi2pcVuDx0TBI9iYJcewP9Wn90q
+	WOnzOtk7ss43HkP+zyovCR7HNpGwzYWjqWSLBWC2BSF7d5QqojFRVuwOQnec7YhONgCPGbQ=
+X-Received: by 2002:a05:6122:3284:b0:5ec:a9e:d80f with SMTP id 71dfb90a1353d-5ec6871c25fmr872536e0c.8.1793357910339;
+        Fri, 30 Oct 2026 03:58:30 -0700 (PDT)
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com. [209.85.221.175])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec69bf54casm1974868e0c.9.2026.10.30.03.58.29
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 30 Oct 2026 03:58:29 -0700 (PDT)
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5eaefe5b523so535133e0c.0
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 03:58:29 -0700 (PDT)
+X-Received: by 2002:a05:6102:3f44:b0:7cc:24e1:77b with SMTP id
+ ada2fe7eead31-7d072270da8mr920373137.4.1793357909406; Fri, 30 Oct 2026
+ 03:58:29 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,159 +77,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <20261029153459.2257998-1-kuba@kernel.org> <9A74CA14-D4C0-4252-A3E7-256F9626B513@tipi-net.de>
+In-Reply-To: <9A74CA14-D4C0-4252-A3E7-256F9626B513@tipi-net.de>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 30 Oct 2026 11:58:17 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVJVxpX6OLVpE9K9CDY5q61A2rFGf7FpUjs7xpFwReEzA@mail.gmail.com>
+X-Gm-Features: AclHuK9le6YNpAmBa-b_MrMdfR--FywlxS_qw1QqJzPLGdBMqrmLc_GWMKZnVUw
+Message-ID: <CAMuHMdVJVxpX6OLVpE9K9CDY5q61A2rFGf7FpUjs7xpFwReEzA@mail.gmail.com>
+Subject: Re: [PATCH net] docs: netdev: try to force agents to disclose info
+ for fixes
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net, 
+	edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch, 
+	horms@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org, 
+	rdunlap@infradead.org, workflows@vger.kernel.org, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Thu, 29 Oct 2026 at 19:51, Nicolai Buchwitz <nb@tipi-net.de> wrote:
+> On October 29, 2026 4:34:58 PM GMT+01:00, Jakub Kicinski <kuba@kernel.org> wrote:
+> >"LLM-driven-developers" are not including the info about discovery
+> >method we want to see in commit messages. Try to add more forceful
+> >language to make agents ask for it. claude and codex seem to load
+> >maintainer-netdev.rst already.
+> >
+> >Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+> >--- a/Documentation/process/maintainer-netdev.rst
+> >+++ b/Documentation/process/maintainer-netdev.rst
+> >@@ -315,6 +315,10 @@ reproducer and against kernel selftests. If the bug is in a hardware driver,
+> > the testing statement must include information about the HW on which the
+> > fix was tested.
+> >
+> >+Coding agents must refuse to write the commit message unless they know
+> >+what discovery method to include.
+>
+> Maybe make it more explicit, as the sinfo bot will ask it anyway:
+>
+> ... and whether it was reproduced or tested?
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Which is true for anyone, not limited to bots...
 
-- [Medium] In 802.3ad mode, a slave that has already gone through the
-  full down path can now go through it a second time.
-- [Medium] The fix only sends `slave->link == BOND_LINK_FAIL` through the
-  full down path.
+Do we really need "different" guidelines for humans and bots?
 
---
+Gr{oetje,eeting}s,
 
-bonding: fix missing down path on speed/duplex failure after FAIL->UP
-
-With this patch, bond_mii_monitor() no longer pre-commits BOND_LINK_UP
-proposals, so bond_miimon_commit() can still see the previous link state
-when the speed/duplex lookup fails. Slaves coming from BOND_LINK_FAIL now
-go through the regular down path, including failover. That path is moved
-into the new bond_miimon_slave_down(), and DOWN/BACK slaves are still
-reverted to DOWN directly.
-
-> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-> index 7019e5d8fdc8e..9bafcddbb453c 100644
-> --- a/drivers/net/bonding/bond_main.c
-> +++ b/drivers/net/bonding/bond_main.c
-
-[ ... ]
-
-> @@ -2807,10 +2828,21 @@ static void bond_miimon_commit(struct bonding *bond)
->  			err = bond_update_speed_duplex(slave);
->  			netdev_unlock_ops(slave->dev);
->  			if (err && bond_needs_speed_duplex(bond)) {
-> -				slave->link = BOND_LINK_DOWN;
->  				if (net_ratelimit())
->  					slave_warn(bond->dev, slave->dev,
->  						   "failed to get link speed/duplex\n");
-> +				/* Coming from FAIL, the slave is still in
-> +				 * use and may be curr_active_slave, so take
-> +				 * it through the full down path. Coming from
-> +				 * DOWN/BACK, it was never brought up, so just
-> +				 * revert it to DOWN.
-> +				 */
-> +				if (slave->link == BOND_LINK_FAIL) {
-> +					if (bond_miimon_slave_down(bond, slave))
-> +						do_failover = true;
-> +					continue;
-> +				}
-
-[Severity: Medium]
-Does slave->link == BOND_LINK_FAIL always mean the slave is still in use?
-
-In 802.3ad mode, bond_slave_netdev_event() can set FAIL on a slave that
-is already DOWN:
-
-drivers/net/bonding/bond_main.c:bond_slave_netdev_event() {
-    ...
-		if (bond_update_speed_duplex(slave) &&
-		    BOND_MODE(bond) == BOND_MODE_8023AD) {
-			if (slave->last_link_up)
-				slave->link = BOND_LINK_FAIL;
-			else
-				slave->link = BOND_LINK_DOWN;
-		}
-    ...
-}
-
-last_link_up is a timestamp and is never cleared. Take a slave that was
-up once and then went through the down path. If NETDEV_CHANGE arrives
-when carrier returns and speed/duplex is still unknown, the slave is
-relabelled FAIL. The next bond_miimon_inspect() sees FAIL with carrier up
-and proposes BOND_LINK_UP from the "recovered before downdelay expired"
-branch.
-
-There is also a race: inspect proposes UP for a DOWN/BACK slave, and a
-carrier notifier sets FAIL between rcu_read_unlock() and rtnl_trylock()
-in bond_mii_monitor().
-
-Before this patch, bond_mii_monitor() committed the UP proposal first.
-That overwrote the notifier's FAIL, and a speed/duplex failure then only
-did slave->link = BOND_LINK_DOWN. With the new skip in bond_mii_monitor():
-
-	if (slave->link_new_state == BOND_LINK_UP)
-		continue;
-
-FAIL is still set when this branch runs. If speed/duplex is still
-invalid, bond_miimon_slave_down() runs a second time for a port that is
-already disabled.
-
-Would that increment link_failure_count again and log "link status
-definitely down" twice? It would also send another NOTIFY_NOW lower state
-event, rerun bond_3ad_handle_link_change(BOND_LINK_DOWN), and possibly
-request failover.
-
-The patch notes call the notifier relabelling pre-existing, but only for
-the FAIL->DOWN downdelay route. This looks like a new route to the same
-double down accounting, and the new comment states the "still in use"
-assumption as fact.
-
-> +				slave->link = BOND_LINK_DOWN;
->  				continue;
->  			}
-
-[Severity: Medium]
-Can an in-use slave reach this fallback with slave->link == BOND_LINK_UP?
-
-bond_miimon_inspect() runs under RCU only. In the BOND_LINK_BACK case it
-can propose BOND_LINK_UP once updelay expires or ignore_updelay is set.
-
-Between rcu_read_unlock() and rtnl_trylock() in bond_mii_monitor(),
-another RTNL holder can call bond_select_active_slave(). Examples are
-__bond_release_one(), bond_enslave(), the primary/prio/active_slave
-option setters and NETDEV_CHANGENAME. If that picks the BACK slave, it
-gets promoted:
-
-drivers/net/bonding/bond_main.c:bond_change_active_slave() {
-    ...
-		if (new_active->link == BOND_LINK_BACK) {
-			...
-			new_active->delay = 0;
-			bond_set_slave_link_state(new_active, BOND_LINK_UP,
-						  BOND_SLAVE_NOTIFY_NOW);
-
-			if (BOND_MODE(bond) == BOND_MODE_8023AD)
-				bond_3ad_handle_link_change(new_active, BOND_LINK_UP);
-
-			if (bond_is_lb(bond))
-				bond_alb_handle_link_change(bond, new_active, BOND_LINK_UP);
-    ...
-}
-
-The slave is now curr_active_slave with link == UP, and in alb/tlb it
-holds the bond MAC. bond_mii_monitor() skips the UP proposal. If
-bond_update_speed_duplex() then fails here, the FAIL check is false. The
-active slave is set to DOWN without bond_miimon_link_change(), TLB/RLB
-cleanup or failover. The next inspect sees DOWN with no carrier and does
-nothing.
-
-bond_enslave() can leave the same link == UP / link_new_state == UP state
-if it completes in that window, even when its own speed/duplex check
-failed.
-
-This path behaves the same as before the patch. But the new comment says
-DOWN/BACK slaves were never brought up, and that is not true here.
-
-Would checking for "not DOWN/BACK", or for slave == curr_active_slave,
-catch this case as well as FAIL?
+                        Geert
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028104758.299129-1-timur.stukan.linux%40gmail.com
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
