@@ -1,100 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.228.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793363084;
-	b=0HqeCkIvENJKZDLtM5id539ltCCx0SMDocjRGTFujAMfA2hpJpPRAX29wNdK9hEqlhuO
-	 VjpPYfuxxCqkv5vXuiULafaqE5K2kQ3iqwc01nkiaRIPopstb19Vn1nwRCPnz/OQ4YCF0
-	 DQO+fxfNvC4yJz1Qqiwcqmmx6JZIn2NlJvA9OHV/S5CfiBpq1RvEBU+C1FSiH+2Wl5+M0
-	 bT2/0fp27a6IpY9lkQmlwJv1TeijHqXtEzxsbxDZZHymciuYxCHr9Ja78iyGvulJBbZ5M
-	 ErE2/cE6MSCtI2S7imZIxoS0iEKUkYvpuOETGWKJWxuu6du9p2Odr9cDvCarhmc7KaQ==
+	t=1793363113;
+	b=Z+oFkdnODUn7okFBvji/gXDGNt3uagfG3HeyhimWL0xqADKoS78F0CzJDaBkDsl0js1C
+	 mQ1hACAcs5tI3jzpy77s27evlAIp52DrcFGvvVZQ0C4ZvJ9ilQqwOhB4cUCFyp4zD+cMV
+	 vgJdgm3deP8Zndo4WiPkHxhRxKipLArM+wkIFhmH7bBEnQDP7xcqtonLHPmAL1jpJnqk/
+	 hvV4fMKCIl0zvrmSkITD0tFIzxAYgO5cs7U6nQMqKmkX8l6rISPPTu51U3udR6S+M12xD
+	 UlxoGDVdnwU37FOo67BUqTHAff3RZUjSpbeE5NrX14JsM0mV5xtXBirnrGDRVtUhKyQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793363084;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=+yrymDp79FZjbqEueI9kZqfriu2oDHzO0g8H9zdbK7E=;
-	b=YoTpiOXwq4touGCJ6dPy2dZ7C8r7IjgcmKS6Gf9NeaJ4d0Sld9Vm93MkEjSPROMWV/1G
-	 VJOYk5E6GNRnYax5XLzGPJsma26drZRTmFzvi/j7mhocDbchUBZkSjkMwwMysi83lszhh
-	 STq9vMImfqWjmnIhV4Mpm5F6uUA5Bdx1vfEKNxtxXsMGV29OsP2aNXdy2NSThVz1R96iN
-	 //GUx0guzO13pk/Ozxr3ni6Hh/H3ld1JAKpyTNntflC+11TSNgSM3iAuumXFr66xXlR5Y
-	 tMsp3bCFZwkWVP1csZdPQCr93bf/kbTLw8/HQRZ+PssQgenAG6ZkfLK+MISOAW+lutw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793363113;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=23LkiJqgraZQ3C0qET4DUDukldHjTQgox9RGCWz5tjE=;
+	b=xFE+SVf9AP6Vco9wQDlWp4/YO/ANSIxl83BRi3tiFCp2pLjA+iSviZDWDGBpkd5IDy50
+	 P526NXJrgEUlofLdv+AQnVH9cvxR++C21UsSmP1fMfBA+g4B8IjWtHQb5X4Y4PTUp2667
+	 f/ejZ4TBaM28UvCsRg2IC4V71gEX88W2VDzi8hUVQF/doB/NxZdNKt5w8URJslYS1M/RL
+	 w+sWIfnReNR+JPqOjZkUXCQ2QRTw2YzcWnDAWSVLawjuTCEkq6SlDELlUVyb+uQPSyqxK
+	 +9N7kQjulMAe6VoWVlek/eyj60um5w47QaSFbFdJVF1/+s9Vct+1MZpq7GXKRiAVsEg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kDl7HVvK;
-	arc=none smtp.remote-ip=74.125.228.5
-Received: from mail-pz2-f5.google.com (mail-pz2-f5.google.com [74.125.228.5])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VPs9LOOb;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961C9606A31D
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 12:24:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 961C9606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD84F606A330;
+	Fri, 30 Oct 2026 12:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kDl7HVvK
-Received: by mail-pz2-f5.google.com with SMTP id 41be03b00d2f7-cdac0ac5f19so340821a12.1
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 05:24:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793363083; x=1793967883; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+yrymDp79FZjbqEueI9kZqfriu2oDHzO0g8H9zdbK7E=;
-        b=kDl7HVvKhavC8dBhxopELEbRq96LLaI6slGnuyyzzpW6HiVfGW+5iNPWoH9zW/heUE
-         w8JVowdf9BDkIaRkb7XkvY6hKwgR0yzPfsDWcGZ/TEK3ir2aGz2DFMTmEl5ZhJjIRj65
-         IaYA3vc9JbhxAqMO4AE7rw37++O1oUWN3Nmqcedd8UaAiPLTaFv3cdQA9uxOBqo02BDu
-         ss3CrAEcE9GJBCtpgMGVvQtPYxRYHv/K46Bxi/obXBWgOIplzdfvA+5nCQS18C+R5zJo
-         1LWEf+wYAQtEBy64hU04DLZ9zd58muabV/fqQF+M8lsvlA7BwXW74bgmo1u6xwlDDvrO
-         Yo8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793363083; x=1793967883;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+yrymDp79FZjbqEueI9kZqfriu2oDHzO0g8H9zdbK7E=;
-        b=LIvGF3R+aHbzqbgbR8r2YoRVTK6NNbskiF4Mem9lVtwCxzXvDf6Ia71p9WTs5CkCQg
-         VH378jbBT3QoCctVUJq04adoviQhqJHVYRaxMG9YrRsh3GK7gooLdKIMc0JXYTLLroXL
-         R0yek/uxuoSuCdSAB7qTu1PsjqPw4vBEQFJdxwy4e1c1dEEVoaFUVWwmWBgKqLr66DAw
-         PR+6JMlSC7gDvvCTDjMDzD7vDgqSGoVRSFyUcsM6Hef4PK4erD8VxAX2fvET8J8OlMIX
-         vkdgfajzuJ5uCgGmogmKfsDPZwhThclnyHoM533T82U4GO6InUOZwhfdUxH2JC2a4eJ5
-         oyYw==
-X-Forwarded-Encrypted: i=1; AKwUvBzkw72WVSxCLrK4LsG6Au+zRKnVm3dMEUzBa/Idm0EIwOB6bRhfSvkaS70CG4HXB8QfMrNXheM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLc7sL9cY3BHIScKWUgEEUDsFrEKpaVsUXJd10i+seGwjR3RAe0
-	DlcPJN1amMdD42S/Khk8moVcwbZfrzzDYKlf/S0LOIgF4KblzMZuWWHG
-X-Gm-Gg: AYBFou3y0NZCon1KoRZuFJ3JtTtNu0X6Kf990GWKt4qb9c6+YpPNe1VPpLgpV0drDw2
-	PRt0fHYmHxovi9dAn7ospvOQ1gBM5CSUwyDJTomy8ggsfYz0xdBJO7tOJmiMfAX2H1n8nVPAkTS
-	qCS8jGyaWu+QmwMUO7RqlVR6odwVURQ7iheeUZbQsmIBSpShX4FhaEcql+KlXqqDeieSP68He5J
-	ihbAEieIZLctxN4mkQnQOi+mqjN2IBSrMBcTTOvKdBLbZHid0wX3FknzYM+XxU2MuK9mRAhPfY0
-	Rf3uuVjyAiyDWoFBuslcDOaMV0rETxfyovWq2RRJtAiZgyuW6zZmWkwu9GO8nsVFmG4ssa9Nv5Y
-	b7ggvy0MgDg1scogDQ89tGG5VQsLFaioH1Gy2Sb48uT3CVV/7loKjeLK6mkV46BludjzP+HwtHw
-	bRo/V+RGffQZUN8CwrRSx7R0MUrbzOti9oWL5U8J7ZABURGfYidrHEw9fROrNivPC6quMuuJcj0
-	iGlU+s6HBAQmEQiTDMsncZyrJ4wfVZuT2Dg7S66BBjxs5Yp0L8iRZNoJ7y8NMzD7OKNoXVD2sw+
-	iOgZZ4er1hxOAFtWaOdeU1h3wRH+UxaxpZQ/nOW5fhAMcj/BcqX7Mt98mg==
-X-Received: by 2002:a05:6a00:2d85:b0:873:f7a4:433f with SMTP id d2e1a72fcca58-8a9bea6ad35mr1985118b3a.26.1793363082777;
-        Fri, 30 Oct 2026 05:24:42 -0700 (PDT)
-Received: from 192.168.1.3 ([2409:8a1e:2331:2850:d40c:1fcf:6319:8524])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8a9ef56b38dsm687929b3a.31.2026.10.30.05.24.39
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 30 Oct 2026 05:24:42 -0700 (PDT)
-From: Rongzheng Wang <testwrzwrz@gmail.com>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: Jason Xing <kerneljasonxing@gmail.com>,
-	netdev@vger.kernel.org,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	stable@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v4 1/2] xsk: defer software checksum until the skb is complete
-Date: Fri, 30 Oct 2026 20:24:34 +0800
-Message-Id: <20261030122434.91530-1-testwrzwrz@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <auSF/bDmOW0Y7T4D@boxer>
-References: <20261030023248.78802-1-testwrzwrz@gmail.com> <20261030023248.78802-2-testwrzwrz@gmail.com> <CAL+tcoDUGqk-KfMBqdG4RBURHQc=9J+Ce7B7CZZWRN5yN7pRrw@mail.gmail.com> <20261030084017.16202-1-testwrzwrz@gmail.com> <CAL+tcoBThTe7299eVU=tsUdi392dS9cioXX5RA5AKRsYAGbdVg@mail.gmail.com> <20261030094633.27910-1-testwrzwrz@gmail.com> <auSF/bDmOW0Y7T4D@boxer>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VPs9LOOb
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A721F0093A;
+	Fri, 30 Oct 2026 12:25:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793363112;
+	bh=23LkiJqgraZQ3C0qET4DUDukldHjTQgox9RGCWz5tjE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=VPs9LOObafEAkIgfCh0KBUw6CV63pTxlaTrjmreenP3GVHcY8nfbQ0a2EqwgIvx1p
+	 vxtcTOTRFlqw0+18PjsGmzRu14e+4nw328HisPAd/kbb3VuS4onhM7YE1wx7Iw0U+P
+	 UZHrDv9EkPWFU8VJKpilPsRhGXgjYXb2NJoBqnfrClg0vxAtHNCeeh4RXer7uCHdMF
+	 4P4AtHLXXa9v8cCk+S3Y4qHCk6MWbG4XDHUIenPPJ3247kg5sq0lgPbhkJm2UIfbhB
+	 NETQrR3avszMOOpVRRBcNVD0uXz0gD6t9tPwGUkXasDFujCNcEeWRA65H/gYB9r4qa
+	 Lg91oUJ3GUrMw==
+Subject: Re: [PATCH net 2/2] mptcp: release the parent socket reference with
+ the subflow context
+From: netdev-bot+sashiko@kernel.org
+To: zzzccc427@gmail.com
+Cc: matttbe@kernel.org, martineau@kernel.org, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, geliang@kernel.org,
+ horms@kernel.org, netdev@vger.kernel.org, mptcp@lists.linux.dev,
+ linux-kernel@vger.kernel.org, baijiaju1990@gmail.com, jjzuming@gmail.com
+Date: Fri, 30 Oct 2026 12:25:11 +0000
+Message-ID: <179336311140.3134.6875927878730480019@kernel.org>
+In-Reply-To:
+ <pm-mptcp-objects-candidate-0010-v3-14c229ea28a7d31f60a0-2@gmail.com>
+References:
+ <pm-mptcp-objects-candidate-0010-v3-14c229ea28a7d31f60a0-2@gmail.com>
+X-sashiko-severity: Critical
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,23 +66,247 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-Thanks for the review, the suggestions, and the Reviewed-by on 2/2.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-> Can you stop removing all the previous conversations and rather reply
-> inline to related paragraphs?
+Critical: 1 · High: 1 · Medium: 1 · Low: 1
 
-Sorry, I'll reply inline from now on.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> I don't think v5 is necessary. And as Jason said you received 3 review/ack
-> tags and none of them got included in v4.
+- [Critical] The new sock_put(ctx->conn) sits in subflow_ctx_destruct(),
+  and a TCP child cloned from a retired MPTCP listener subflow can…
+- [High] The fix is incomplete.
+- [Medium] The commit message presents the delegated-action use-after-
+  free as a live bug that this patch fixes: the second interleaving, the…
+- [Low] The comment in subflow_ulp_release()
+  (net/mptcp/subflow.c:2115-2118) says the context 'will be freed by…
 
-You're right. v4 went out before Jason's tag arrived, and I missed the
-other two tags from v3. Since you don't think v5 is necessary, I won't
-send one; if there is another revision, I'll carry all the tags.
+--
 
-I learned a lot from this patch and from the review feedback. I'll be more
-careful with future patches and wait longer for reviewers' feedback before
-sending the next version.
+I'm sending this review as a reply to the patch on the list. It has four inline comments:
+
+- **Medium:** the commit message credits this patch with a fix that the previous commit in the series already makes.
+- **High:** mptcp_subflow_drop_ctx() still drops the parent reference immediately, so the fix is incomplete.
+- **Critical:** a possible double free of the subflow context when a child is cloned from a listener that is being closed.
+- **Low:** a stale comment.
+
+mptcp: release the parent socket reference with the subflow context
+
+This commit moves the sock_put() on the MPTCP parent socket from
+subflow_ulp_release() into subflow_ctx_destruct(). The parent reference
+then lives as long as the subflow socket. The aim is to fix use-after-free
+in bpf_skc_to_mptcp_sock() readers and in delegated action processing,
+building on the previous commit that keeps a retired context attached
+until sk_destruct.
+
+> A delegated action pins the TCP subflow socket, but
+> mptcp_subflow_process_delegated() locks and updates ctx->conn. A peer
+> reset followed by the application closing the MPTCP socket releases
+> the parent before mptcp_napi_poll() takes its data lock:
+>
+>   Delegation / NAPI                 Peer reset / application close
+>   queue SEND or SNDBUF
+>     sock_hold(ssk)
+>                                     subflow_ulp_release(ssk)
+>                                       sock_put(parent)
+>                                     mptcp_close(parent)
+>                                       last sock_put(parent)
+>   mptcp_napi_poll()
+>     mptcp_subflow_process_delegated()
+>       mptcp_data_lock(parent)
+
+[ ... ]
+
+> Fixes: b19bc2945b40 ("mptcp: implement delegated actions")
+
+[Severity: Medium]
+Can this delegated action sequence still happen on the tree this patch
+applies to?
+
+The previous commit in the series, "mptcp: keep delegated subflow contexts
+alive until socket release", added this guard to mptcp_napi_poll() in
+net/mptcp/protocol.c:
+
+	bh_lock_sock_nested(ssk);
+	if (unlikely(!READ_ONCE(inet_csk(ssk)->icsk_ulp_ops))) {
+		...
+		goto unlock;
+	}
+
+Before this patch, the parent sock_put() ran in subflow_ulp_release().
+That function is called from tcp_cleanup_ulp() right before:
+
+	icsk->icsk_ulp_ops = NULL;
+
+At that point the subflow is owned by the user or bh-locked. So
+mptcp_napi_poll() sees one of three states:
+
+- An attached ULP, where ctx->conn still pins the parent.
+- An owned socket, where it only clears the scheduled bit.
+- NULL ops, where it skips the entry.
+
+Also, tcp_release_cb_override() isn't reached after the ULP release,
+because mptcp_subflow_ops_undo_override() restores sk_prot.
+
+If that's right, this patch only fixes the bpf_skc_to_mptcp_sock() case.
+For delegated actions it is defence in depth.
+
+Should the second interleaving, the second KASAN report and the
+b19bc2945b40 Fixes tag move to the previous commit instead?
+
+> diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+> index 8dc0677dc5514..ebcface15661a 100644
+> --- a/net/mptcp/subflow.c
+> +++ b/net/mptcp/subflow.c
+
+[ ... ]
+
+> @@ -820,6 +822,8 @@ static void subflow_ctx_destruct(struct sock *ssk)
+>
+>  	rcu_assign_pointer(inet_csk(ssk)->icsk_ulp_data, NULL);
+>  	ctx->tcp_sock_destruct(ssk);
+> +	if (ctx->conn)
+> +		sock_put(ctx->conn);
+>  	kfree_rcu(ctx, rcu);
+>  }
+
+[Severity: High]
+The commit message says "Every reference on the subflow socket then also
+keeps the parent alive". Does that hold for mptcp_subflow_drop_ctx()?
+That function still drops the parent reference right away when the ULP
+is attached:
+
+net/mptcp/subflow.c:mptcp_subflow_drop_ctx() {
+	...
+	if (inet_csk(ssk)->icsk_ulp_ops) {
+		subflow_ulp_fallback(ssk, ctx);
+		if (ctx->conn)
+			sock_put(ctx->conn);
+	...
+}
+
+In that branch the TCP socket stays hashed as plain TCP, so a reference
+on it no longer pins the msk. bpf_mptcp_sock_from_subflow() returns
+ctx->conn without taking a reference of its own.
+
+One way to reach it is closing a listener that has an unaccepted
+connection:
+
+mptcp_check_listen_stop()
+  mptcp_subflow_queue_clean()
+    __mptcp_unaccepted_force_close(msk)
+      mptcp_do_fastclose(msk)        <- only sends RST, child stays in ehash
+      __mptcp_destroy_sock(msk)
+        mptcp_destroy()              <- sets free_first
+          mptcp_destroy_common()
+            __mptcp_close_ssk(first) <- in_accept_queue branch
+              mptcp_subflow_drop_ctx(first)
+                sock_put(msk)
+        sock_put(msk)
+    mptcp_cancel_work(msk)
+    sock_put(msk)                    <- msk freed
+
+Suppose a TC or SK_SKB program on another CPU called bpf_sk_lookup_tcp()
+on that 4-tuple, then bpf_skc_to_mptcp_sock(), before the fallback. It
+holds only the TCP reference. Wouldn't it then read the freed msk, the
+same way as in the first KASAN report?
+
+The dispose_child label in subflow_syn_recv_sock() looks like a second
+path. It is reached after:
+
+	ctx->conn = (struct sock *)owner;
+
+and by then tcp_v4_syn_recv_sock() has already hashed the child.
+
+Does this put also need to be deferred, for example past an RCU grace
+period, or otherwise tied to the TCP socket's lifetime?
+
+[Severity: Critical]
+Can a TCP child cloned from a retired MPTCP listener subflow inherit
+subflow_ctx_destruct()? If so, it would run this new sock_put() on the
+listener's ctx.
+
+The comment on mptcp_subflow_ctx_release() from the previous commit says
+"TCP never clones such a socket". However, tcp_v4_rcv() checks the
+listener state without holding the listener lock:
+
+CPU1 (softirq)
+tcp_v4_rcv()
+  if (unlikely(sk->sk_state != TCP_LISTEN)) { ... }   <- passes
+  sock_hold(sk)
+  tcp_check_req()
+    ->syn_recv_sock()
+      inet_csk_clone_lock()
+        sk_clone_lock()
+
+CPU2
+mptcp_close()
+  mptcp_check_listen_stop()
+  __mptcp_destroy_sock()
+    mptcp_destroy()                  <- free_first = 1
+      __mptcp_close_ssk(listener ssk)
+        __tcp_close()
+          inet_csk_destroy_sock()
+            tcp_cleanup_ulp()
+              subflow_ulp_release()  <- release == true
+                mptcp_subflow_ctx_release()
+                  ssk->sk_destruct = subflow_ctx_destruct;
+              icsk->icsk_ulp_ops = NULL;
+
+tcp_cleanup_ulp() leaves icsk_ulp_data pointing at the listener's ctx.
+Suppose CPU2 gets this far before sk_clone_lock() copies the listener:
+
+- sk_clone_lock() keeps the inherited sk_destruct on success. It only
+  clears it on the failure path.
+- inet_clone_ulp() returns early because icsk_ulp_ops is NULL.
+
+The child then has sk_destruct == subflow_ctx_destruct, icsk_ulp_data
+pointing at the listener's ctx, and is_mptcp set.
+
+inet_csk_reqsk_queue_add() then sees that the listener is no longer
+TCP_LISTEN and calls inet_child_forget(). When the child is freed,
+subflow_ctx_destruct(child) runs ctx->tcp_sock_destruct, then
+sock_put(ctx->conn) on the listener msk, then kfree_rcu(ctx).
+
+Later the listener ssk is destroyed, and subflow_ctx_destruct() runs
+again on the same ctx. Wouldn't that call ctx->tcp_sock_destruct through
+a pointer read from memory that may already be freed? It would also put
+the listener msk a second time and kfree_rcu() the ctx twice.
+
+The destructor inheritance comes from the previous commit in this series.
+This patch adds the extra put on the listener msk on top of it.
+
+[ ... ]
+
+> @@ -2120,7 +2124,6 @@ static void subflow_ulp_release(struct sock *ssk)
+>  		if (!release && !test_and_set_bit(MPTCP_WORK_CLOSE_SUBFLOW,
+>  						  &mptcp_sk(sk)->flags))
+>  			mptcp_schedule_work(sk);
+> -		sock_put(sk);
+>  	}
+>
+>  	mptcp_subflow_ops_undo_override(ssk);
+
+[Severity: Low]
+This isn't a bug, but the comment a few lines above in
+subflow_ulp_release() still says:
+
+	/* if the msk has been orphaned, keep the ctx
+	 * alive, will be freed by __mptcp_close_ssk(),
+	 * when the subflow is still unaccepted
+	 */
+
+After this series, __mptcp_close_ssk() only retires the context through
+mptcp_subflow_ctx_release(). The context is freed in subflow_ctx_destruct()
+when the subflow socket is destroyed, and with this patch the parent
+reference is dropped there too.
+
+Should this comment be updated?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/pm-mptcp-objects-candidate-0010-v3-14c229ea28a7d31f60a0-0%40gmail.com
