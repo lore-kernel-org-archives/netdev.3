@@ -1,57 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793400028;
-	b=dhwyeP5/m3w5jXL7AtmGi66xaC7/PEOD63GCUdADKEAeBB/jVLDs23PMZO4ED1JnsYzR
-	 99Asimw/8TEBqQ9ozu8BfM4oC6EbJDJtzPoHl/LrL51QtAKwYc4lyasQPgUVOaTmvATmC
-	 kSu/++VGjUYx8YuRjdyqjP5QxPEZmffZQDy1xPAPHtsyf/j4GD7ebhbb4YKV72PiStZG/
-	 MGNwW1XTkYWEg8kDAKUh9bPiSoOHahj5xiDTpCQQGNaZ/9zcM0kIZmaAOkRTMzWsR/+ZG
-	 7rn3MttsyVW3W23Y8N15U3oPeOWMzaOMTqlB5tivsZPGr+hA7reQzeClpMhNvYz2WFw==
+	t=1793400025;
+	b=xHvUzibcf3Jw2KdyxoEwEB/9oD+k3ausFbCcqbZ765dxP6dkT7bsND2zFGz+D/ojwx5C
+	 D68QZfTyqzlpMeFvyzHSeJ3IiH5cI+qvJC10hIxXcUA0ttY6/I+zWVKp/vCOdIdwK+zVC
+	 GGxhwe8XSfPV35ueEelsfldH7g5rzYLkRX5ngmflwqp9UjQiFr2cB9anf/TM3cxklVA/C
+	 BZvKMnGZtxMDg5+8kdB08Mzq0ISalZn32FwErc0R2xVDt14Hs+wLZibks7XeftszkkU28
+	 EmkCJ+rjxs8Fh+OAELqD0ElaBYSK1iRal5VpAgSWef+hmem8spK5xlSWwd/nBZUTaSw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793400028;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793400025;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=xMKFo9NeAp6VSM4Q6y13qEB/LpKXUGXdFSRrfyC/258=;
-	b=sStzMlejKqGlwXeELQQwulUI6yxwf2Z85izbXpio24szFOpTqKsSAETtelZDi0qt8O8h
-	 I4lY5xn5y5apDyoNohOno6y/ZdS/W/UYWyEsH6BsoNninAYC4kOY8syFtgFwcldd0/4fg
-	 xNH+cOFryvuNV0PWWrJJGZUOVTF2xyuNYf0Y9uYAgSnIeNOzZE6dICqHzPKB7D6UjHlcP
-	 YZcmB7P5HJdUsuDtjg8CIrxHcnp0+9K1pjLxD9oQcqNtdXnzIm4zFyQwK/pnXS2QXu5jg
-	 5gIBVx3bjqpxI0rYjKEnBsGx0GeRTuakbpBakKBK/3VZFufdVA+uxzcnsRQ26RB3E+w==
+	bh=pKaXAD++xzCTb9YAmzxK6XCkM1LAwdtdAL8cl3z8d/E=;
+	b=F+nbgLmr874VRP/Qkgt4a7KGYgu89OO1ytrnABPmGN2d8mwRKP0nOuZ6VRokJmSlnap1
+	 g1Wr6F3d0RoYupNwbmXMHohqWdEfCpO5URds1mQeX5Zrk3RyoMW1gy8IYX/yiSyWC1+t8
+	 9MoN1QbGgK5PC+g9D6h32cwcNtrVNxUemqXa2+MHAEcpKx4bO4Wyae/Y5oNJSczFEWMCX
+	 WMxD5amEEMDinqsw70b8SbsmXQmnhcV26JgUoL2Abok9drRufSWmRgh17g4h/d+F6s6Di
+	 +jdsg+OC7wgOZIg7Blvq/ofwSfMQ38C58t2k9dCeHWbyuRJ+JfPqU4LEtQkD1ll91UQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F589kPpg;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U7RjqwR1;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6494C60A2603;
-	Fri, 30 Oct 2026 22:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25915606A31A;
+	Fri, 30 Oct 2026 22:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F589kPpg
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D7D1F00A02;
-	Fri, 30 Oct 2026 22:40:27 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U7RjqwR1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCAE01F00A17;
+	Fri, 30 Oct 2026 22:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793400028;
-	bh=xMKFo9NeAp6VSM4Q6y13qEB/LpKXUGXdFSRrfyC/258=;
+	s=k20260515; t=1793400024;
+	bh=pKaXAD++xzCTb9YAmzxK6XCkM1LAwdtdAL8cl3z8d/E=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=F589kPpgEFOTS7Nkeqt0YRYTiWCWHSmfk8NtAG5GeDDrv7v/lsRc6veL2ID7lGfvW
-	 pfyNHWyAFlOILoKY9HNjBkLOYwd1UXXfBTSPaYKAsEcrEOBn+Rs40LPUbrRtnkok5S
-	 H+5eHQEIPxYIv/2Xl5Qr6RoBXY7U8DXndbfEczBeRDYJSUG4eaF68yKQr+o4Dks0J+
-	 7JS+2nfGFNdYccw3j0nMRxQ0GxkBbLVEfuK59LA65aHuAeA5XvpiNe0en2w73KK2KP
-	 DQTjuixBCUxbZnNPHNcBqwB/o3EDQvDwxR18ger8fS1NziHYZOwHR1exDiZxNvZBma
-	 ntKIc7hDG1FUg==
-Subject: Re: [PATCH net v2] net: wwan: mhi_wwan_ctrl: send a DTR drop before
- it can be coalesced
+	b=U7RjqwR1CCYKpI3YLKiGdzMbMplGHQR6AzHAljoDcgO1qr4m2jtLoQB8sIn007k9D
+	 7ZwJUxKa27N9A7MSEVhk+4AWJvXrmm8ZXsw+rhwfeYBtOgjOA0Nf0t10irrnjonjp0
+	 lTh9pHEShngtoOkVUe9uBp+ZQmzaywEnOgnp9PFa5uQxBUUw/fZJQOsBHeXwhKdUZl
+	 WENVWioWxHZuz7tgv6vmptqPNl9xdsTTK0LOc7TnJLdjGkl377ZZfC7UKbL5avVjIJ
+	 eV9IDyudNPp3FKnjnoXMdm56puymFl9SVH018aSUpVM5ZNUmRklbvhrD8FjUGXxcTU
+	 XX/pa/ZrQ/HYw==
+Subject: Re: [PATCH net] l2tp: fix use-after-free in l2tp_udp_encap_recv()
 From: netdev-bot+sashiko@kernel.org
-To: peter.hunt@opengear.com
-Cc: netdev@vger.kernel.org, loic.poulain@oss.qualcomm.com,
- ryazanov.s.a@gmail.com, johannes@sipsolutions.net, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- dnlplm@gmail.com, linux-kernel@vger.kernel.org
-Date: Fri, 30 Oct 2026 22:40:27 +0000
-Message-ID: <179340002701.3131.15535297427661129303@kernel.org>
-In-Reply-To: <20261027171055.1796482-1-peter.hunt@opengear.com>
-References: <20261027171055.1796482-1-peter.hunt@opengear.com>
+To: xiaolinkui@126.com
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, gnault@redhat.com, kuniyu@google.com,
+ michael.bommarito@gmail.com, alice.kernel@fastmail.im, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, xiaolinkui@kylinos.cn, stable@vger.kernel.org
+Date: Fri, 30 Oct 2026 22:40:23 +0000
+Message-ID: <179340002340.3131.5823454250644987437@kernel.org>
+In-Reply-To: <20261027063657.1359170-1-xiaolinkui@126.com>
+References: <20261027063657.1359170-1-xiaolinkui@126.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -65,10 +64,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -76,130 +75,86 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The fix still loses a DTR drop when the transport refuses it.
-- [Low] Two existing comments in drivers/net/wwan/mhi_wwan_ctrl.c no
-  longer match the code after this patch.
+- [Medium] The commit message describes a use-after-free that no code
+  path in the current tree can trigger.
 
 --
 
-net: wwan: mhi_wwan_ctrl: send a DTR drop before it can be coalesced
+l2tp: fix use-after-free in l2tp_udp_encap_recv()
 
-This patch flushes the DTR/RTS work item in mhi_wwan_ctrl_dtr_rts() when
-DTR goes from high to low. The aim is to keep a following raise from
-coalescing the drop away. It also flushes the work in mhi_wwan_ctrl_stop()
-so that pending state is sent before the channel is stopped.
+This patch reorders the error paths in l2tp_udp_encap_recv() so that
+tunnel->stats.rx_invalid is incremented before the session reference is
+dropped. The commit message says the old order could write into a freed
+tunnel when packets are processed from the socket backlog, and the patch
+is tagged for stable.
 
-> diff --git a/drivers/net/wwan/mhi_wwan_ctrl.c b/drivers/net/wwan/mhi_wwan_ctrl.c
-> index e3c2075889565..7723199278671 100644
-> --- a/drivers/net/wwan/mhi_wwan_ctrl.c
-> +++ b/drivers/net/wwan/mhi_wwan_ctrl.c
-> @@ -209,9 +209,17 @@ static void mhi_wwan_ctrl_dtr_work(struct work_struct *work)
->  static void mhi_wwan_ctrl_dtr_rts(struct wwan_port *port, unsigned int mdmbits)
->  {
->  	struct mhi_wwan_dev *mhiwwan = wwan_port_get_drvdata(port);
-> +	bool drop = (READ_ONCE(mhiwwan->dtr_mdmbits) & TIOCM_DTR) &&
-> +		    !(mdmbits & TIOCM_DTR);
->  
->  	WRITE_ONCE(mhiwwan->dtr_mdmbits, mdmbits);
->  	schedule_delayed_work(&mhiwwan->dtr_work, 0);
-> +
-> +	/* A DTR drop matters on its own, e.g. to hang up a modem set to AT&D2,
-> +	 * so send it now rather than let a following raise coalesce it away
-> +	 */
-> +	if (drop)
-> +		flush_delayed_work(&mhiwwan->dtr_work);
->  }
-
-[Severity: Medium]
-Can the drop still be lost if the first send attempt fails? On a transient
-error, mhi_wwan_ctrl_dtr_work() re-arms itself:
-
-    ret = mhi_wwan_ctrl_send_dtr(mhiwwan, READ_ONCE(mhiwwan->dtr_mdmbits));
-    if (ret == -EAGAIN || ret == -ENOMEM)
-        schedule_delayed_work(&mhiwwan->dtr_work, msecs_to_jiffies(10));
-
-mhi_queue() returns -EAGAIN when the IP_CTRL UL ring is full. -ENOMEM comes
-from the dtr_msg allocation in mhi_wwan_ctrl_send_dtr().
-
-flush_delayed_work() only waits for the instance it queued itself. Its
-kernel-doc says it "only considers the last queueing instance". So it
-returns after one failed attempt, and the 10ms retry timer is still armed.
-
->From userspace on the AT port, the sequence would be:
-
-TIOCMBIC(DTR)
-  mhi_wwan_ctrl_dtr_rts(port, 0)
-    drop = true
-    flush_delayed_work()
-      mhi_wwan_ctrl_dtr_work() -> -EAGAIN, re-arms 10ms timer
-
-TIOCMBIS(DTR)
-  mhi_wwan_ctrl_dtr_rts(port, DTR|RTS)
-    drop = false, since dtr_mdmbits is already 0
-    WRITE_ONCE(mhiwwan->dtr_mdmbits, DTR|RTS)
-    schedule_delayed_work(..., 0) is a no-op, work is already pending
-
-10ms later
-  mhi_wwan_ctrl_dtr_work() sends DTR|RTS
-
-Wouldn't the modem then see only the raise? That is the case this patch is
-meant to fix. drop is computed against the last requested state, not the
-last state that was actually sent.
-
-The commit message says a drop that hits a full UL ring "is still retried
-with whatever state is latest by then". The new comment says the drop is
-sent "now rather than let a following raise coalesce it away".
-
-Would it be better to keep track of an unsent drop until the transport
-accepts it? One option is a drop-pending flag that dtr_work sends before the
-latest state. Otherwise, the comment could say this is best effort.
+> The frees are RCU deferred, which hides the bug on the regular path
+> because __udp4_lib_rcv() holds rcu_read_lock().  It does not hide it on
+> the backlog path: __release_sock() drops sk_lock before invoking
+> sk_backlog_rcv(), takes no RCU read lock and may cond_resched() between
+> packets, so a grace period can complete before the statistics update.
 
 [ ... ]
 
-> @@ -246,6 +254,9 @@ static void mhi_wwan_ctrl_stop(struct wwan_port *port)
->  
->  	cancel_work_sync(&mhiwwan->rx_refill);
->  
-> +	/* Send any pending DTR/RTS state before the channel stops */
-> +	flush_delayed_work(&mhiwwan->dtr_work);
-> +
->  	mhi_unprepare_from_transfer(mhiwwan->mhi_dev);
->  }
+> Found by inspection; no reproducer.  Hitting the window needs a session
+> teardown racing a packet on the backlog path, and the RCU deferred frees
+> mean KASAN is only likely to report it with CONFIG_RCU_STRICT_GRACE_PERIOD.
 
-The same limitation applies to this flush. After one failed attempt,
-mhi_unprepare_from_transfer() runs while the 10ms retry is still armed.
+[Severity: Medium]
+Can the backlog path described here actually be reached?
 
-On a plain last close nothing cancels that retry. disable_delayed_work_sync()
-is only called from mhi_wwan_ctrl_remove().
+Only one sk_backlog_rcv callback calls l2tp_udp_encap_recv(), and that is
+pppol2tp_backlog_recv() in net/l2tp/l2tp_ppp.c:
 
-Could the DTR message then be queued after the channel named in its dest_id
-has been stopped? Could it race with a later reopen?
+static int pppol2tp_backlog_recv(struct sock *sk, struct sk_buff *skb)
+{
+	int rc;
 
-[Severity: Low]
-This isn't a bug, but two existing comments in mhi_wwan_ctrl.c no longer
-match the code after this change.
+	rc = l2tp_udp_encap_recv(sk, skb);
+	...
+}
 
-The struct mhi_wwan_dev comment still describes pure coalescing:
+pppol2tp_create() installs it:
 
-	/* Latest DTR/RTS state for the modem, sent from dtr_work so a burst of
-	 * changes is coalesced and only the final state has to get through
-	 */
+	sk->sk_backlog_rcv = pppol2tp_backlog_recv;
 
-mhi_wwan_ctrl_dtr_rts() now flushes each DTR drop so that it is not
-coalesced.
+Nothing seems to queue skbs on a PPPoL2TP socket's backlog, though.
+sk_add_backlog() is called only from __sk_receive_skb(), tcp, sctp, tipc
+and x25.
 
-mhi_wwan_ctrl_remove() has this comment:
+The callers of __sk_receive_skb() are pppoe, pptp, l2tp_ip, l2tp_ip6,
+phonet and vmci. Each of them targets its own sockets, never a
+PF_PPPOX / PX_PROTO_OL2TP one.
 
-	wwan_remove_port(mhiwwan->wwan_port);
-	/* Give the DTR/RTS drop from removal one attempt, then stop the work */
-	flush_delayed_work(&mhiwwan->dtr_work);
+The live entry point is the UDP encap hook set up in
+l2tp_tunnel_register():
 
-When start_count is set, wwan_remove_port() calls
-wwan_port_drop_dtr_rts(port, false) and then port->ops->stop(). After this
-patch both of those paths flush dtr_work, so a removal drop can be tried up
-to three times.
+	.encap_rcv = l2tp_udp_encap_recv,
 
-Should these two comments be updated to match?
+That hook is called only from udp_queue_rcv_one_skb() and
+udpv6_queue_rcv_one_skb(). Both run under the rcu_read_lock() taken in
+ip_local_deliver_finish() and ip6_input(). NF_QUEUE reinjection runs
+okfn with BH disabled, which also counts as an RCU read-side section.
+
+The free path is:
+
+l2tp_session_put()->l2tp_session_free()->l2tp_tunnel_put()
+  ->l2tp_tunnel_free()->kfree_rcu(tunnel, rcu)
+
+So with the old ordering, a final put could only queue the free. The
+tunnel memory would stay valid until the reader leaves the RCU section.
+
+For the same reason, can CONFIG_RCU_STRICT_GRACE_PERIOD expose this? A
+strict grace period still cannot end while the receive path holds
+rcu_read_lock() or has BH disabled.
+
+The reordering itself looks correct as hardening. Would it be more
+accurate to describe it that way, and to drop or justify the
+Cc: stable tag, rather than present it as a reachable use-after-free?
+
+Also, pppol2tp_backlog_recv() appears to be unreachable, and it passes a
+PPPoX sk to a function that expects a UDP tunnel socket. Could it be
+removed as part of a respin?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261027171055.1796482-1-peter.hunt%40opengear.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261027063657.1359170-1-xiaolinkui%40126.com
