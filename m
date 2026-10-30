@@ -1,91 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793334102;
-	b=4qem4Ffdo05IJNpIn3IWsrD5fNTIKkGPgQt+urGHiiMYvfWOeaGltPvuYYxocrPEGb6+
-	 236F/54/ccosiS+RguX8e+EkjLyGstXAn5/m9KKd32lmOfU4B+INVfBl4joi0KQjf6XEU
-	 SGBSo9GFpkzwfKvXQ/mOuENArYmdw+RavgfZZjP+Zw8XGuEl5ntuEV5ypI9NPTAO2fEJW
-	 H8vC2rq8+YwaaebIxUw9UU42i46ZD3965StDyvOW8rIIlZUUMV8bSanDIs2kvPDulznks
-	 xxInp4xim1Qkn8Xlk13YbJ4yq0w1NQ/ATlgNCI/xDhSsHzqThy6mZrG58CrGls1/4ow==
+	t=1793334119;
+	b=DOy2wV19hH60aLzzvqWxmzQb5lzpyHUN+RAO2WRBxpQ3CngL2A4gtam4BtJVonIF5RLZ
+	 jPS3txrO7/WCFZC+x+qq/YHzD+okzH2184B6gdCrxtNU34TIMDfFvd9q89DP2uCJ/JRhm
+	 FT6KI4nvSS8Dw1wuOKTduMeuH0nKv4pJWs1zb7XFt2zdjLox3MCWdcuJKhA4rTpjZQbkH
+	 RAIhrOY+O9XmHfj0+AxHCYSn4yYrhT/Vo/Tm8vMMB70pVJkynHafMIakgN8xyDVcglvFu
+	 A4HSP5xFNSzuwBxXW5VwZsjFSDXLZvTMYtgbw/6FY6JrveSYBucbZe/jd4drY4iHSWw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793334102;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793334119;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=PMpIblKmZXt8BOY3Honm+2Ww2wYw3iNTalEqXhUNRCc=;
-	b=Wjs/SnR9BWEUnjqJ3qwopurgTvqeEt4XeyGKzfo/imKE4a9xla72gWgjRLSsOpBRdrNu
-	 LGM1O4IDhrAko/+SnFxIY7pmPTeOTL5g/Isk1bxfoc4pjz22hBxiFitao91qAVlyb9Lsd
-	 FC9Dv+v2MU5eJwqKbwvxkYW+pL/5Od5NFm4i32wU4wCN84WCA3DsdfSrIu7Nk86cMEmb2
-	 Tu0Bhd+abDE4/AFux+mEjzXAWKFCl66C8R3Ik4kz1ZlbKqE6vUs2JEpXfu9L0X1YLGmVW
-	 teTP5GfbLikYTFEXEWz4omcVvX3IYoT5bYiJ6zVNPqNwv3SXZ8r03SABt17bvkiGueQ==
+	bh=uu4+KvWwIV0d7oHG+0bpuFJz50WGRRgzdpZ6XppMrug=;
+	b=rl2QEHyA9lH3qnuCQFR8CwJ6p9OTrbWTnwrZCHCSdWnt1C7ltT1b7zr3UhE2qZfizCu9
+	 z8X77ZIw3oj9Lg9LjWox/AiGe53UtLBpooIDlvrf75rgNKLS9EMiTZNw9vrZrOlHoOooq
+	 CKiubw/5qcMgsZyiKGOu7BWXlVH2RD6yfXqg/imLGsPLMfxbHINhYzx68RY1HCtnKC9we
+	 0NFRdgVScPeg1pi/VXg5XyMI+HWhEyan4vI3Kp7GS04O5FwbusAtyEoaPUaGlw7SCVpGe
+	 /hx/Dj8wYS/5yCLkeP3+9OkIr/OCr+sxjU+p9jihLWAk3F9wTIywmeBARH+gwnETBHw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=openai.com;
 	spf=pass smtp.mailfrom=openai.com;
-	dkim=pass header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=V2Tu+7XG;
-	arc=none smtp.remote-ip=209.85.160.51
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+	dkim=pass header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=UQt10XbB;
+	arc=none smtp.remote-ip=209.85.160.46
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64077606A31D
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 04:21:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 64077606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC6C606A321
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 04:21:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ECC6C606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=V2Tu+7XG
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-4a6fb4040cfso89391fac.3
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:21:41 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=UQt10XbB
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-483a66818edso164618fac.0
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:21:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1793334100; x=1793938900; darn=vger.kernel.org;
+        d=openai.com; s=google; t=1793334118; x=1793938918; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PMpIblKmZXt8BOY3Honm+2Ww2wYw3iNTalEqXhUNRCc=;
-        b=V2Tu+7XGLweuI6JuW4q0Atp29krGpuRTqzaj3uF28jN846RWoygzoK6hQsvoo1UC9X
-         knJAdo9MZNzSZj+rmkB/s1YKmt1kHg8xySqg/Y7Ilb8KXauOASd9C4O2nnuE4TRK807M
-         J6rcR7iWe6FJEElVS0i4BdLAwdMFYZoYnAJMc=
+        bh=uu4+KvWwIV0d7oHG+0bpuFJz50WGRRgzdpZ6XppMrug=;
+        b=UQt10XbBkkvXiGl5Qft/UotQH8UE3kbVRvvtssudQnkCaG9GnY6433nC1ryUbs88XD
+         U8nWbPb0vXcjs5jWmQ+K5Iz7gQYZ2eJrm1GRmeXjRzkjoT1doVzYm+Lb1QYaEa59mFby
+         LK0jstYeyvXJrZFbBo842W2EzZPw4CA3v1VVc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793334100; x=1793938900;
+        d=1e100.net; s=20260707; t=1793334118; x=1793938918;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=PMpIblKmZXt8BOY3Honm+2Ww2wYw3iNTalEqXhUNRCc=;
-        b=syhfSfAiC+/pZcLFISEWoAbQp4FphZ1v/3HXIbXQLg4HtPmuQcMkjgb4SJCV1Hn/0l
-         JRdiF/YYbN6u6ulZREN9qfiX2NF7EzhSGKuQA9G7Kfi82Ft2w0mUzrfTMDj0VT7VOs2N
-         J3YXngv5+uWDS3nP0N0wcglNx2SHaPCPsbZAlOgKTJvavFmlVeOzJl3koqEzm0+3nb2S
-         SMvKeoCFw+mfZVHXec2Xcja9McFyA29TkWrfak0YyMyxTeGc0h5UBDa3kt5jW4PoOXDT
-         KL1fnAN65nnP47ZvQrZAG10Z8gmTtlK5p9OR20Xe99+kMjO0gbN0fVj9fAUOKdvpUv1c
-         rsEg==
-X-Forwarded-Encrypted: i=1; AKwUvBy46N2FlaSLimxGR414mEtBu1/AIzhA8mcyvGrikf0o9JleGOSmXZvYAaFAI4Ohw3TPvO071gw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK6LAzK+IaDqApUCe8DNfS89NLHQhaet4zLYXOeODoEKkvbSWNl
-	FLL+JfdwltHin15fHRRnkysfZ97t6TZ72Le8BXg2dMSF8cXXedSC8Bl0VUgAVdh7HOI=
-X-Gm-Gg: AYBFou38eSAXgF2uDl1YXNQsrb46zrdMfPv5RMNDhm7Zc55KqkJDjk3aENe8TTqMscA
-	Wt+UmBnjinD0qsmD5T826sWpI6qZ2UsrxysfTWbGrokf9ROI4YGNZK1sxbyNVCmpn6UOuuBbFuQ
-	DQWaR1se1Wh8X+nALi5gNvCCUkH3NzkH1rScTvaNg59VQUhq2bCGhMBZ7UbruheuYAUsQ+Pmqkm
-	QQMKGwhlWkgTco0P2tFGOF/Oyr4Jmi2qHj1LAFQM9wTIealcfbeE/kR1vAtWw8vMJ6b0M1zgIR4
-	QgY1OTIZpf2RMc0Mrbx8nyakvjL5DWm+cEdqBIhqSv/PFifG9nubBlrj1e4jxlziPH+zpWc0LG9
-	C82SGYXakcuhKPe8Dq7mW6Jdd9u17RIZ+/xkO/5GbEpn0c9+8aU6YX0O0cR8ie8eO7Ar9g9+nT/
-	xfgODy8NYcSu6GO5oNSZySVmjR8CMmLJ8Rd/0laiuv7/kL4zBCQSHOeRIekcGcr2ez/9fdCk9fE
-	zo63Vwbqnr0TNUgX66xtlBjmZztIg1B84+D43+VrkwZncfBR3xdvsoaYTdvmVkmNwrcfo8BG8xC
-	PZ/QY1GaWoruwajYXNZL/hK80E52ytcDjKS18M5zlh+1jx0pJEjjqQrcFjeVpyC57ADmmVrM5+4
-	WrGF1FAVOhChESnAg+6JYzkkYa43uFg==
-X-Received: by 2002:a05:6870:1f0a:b0:49d:c8ab:967b with SMTP id 586e51a60fabf-4a907775750mr775519fac.47.1793334100321;
-        Thu, 29 Oct 2026 21:21:40 -0700 (PDT)
+        bh=uu4+KvWwIV0d7oHG+0bpuFJz50WGRRgzdpZ6XppMrug=;
+        b=LdQlz02wZqIWDnIzNSk1SxI7mdEoBu/NBShcsZ1YwJpEs72LvtBQHNXGqws6g3Qgqx
+         TAC6zC+Wen/IQJrRQTntvNTj3wJ+2SsAi1FGxwp8q1pb7sjDk0exwiT39rwVZP78IF64
+         aakV+yfhdsfPU/ZnnjG884rTHlAhbxaio3V+On7Pfj4hJPVU8FyfFCvCLlhaX3K/I1KA
+         mEH73KLTxuGVeoDIoo8w1nHS5/4ulhVCfBTkg8pcGRV2pYa/+B+cz8MeMRwsQb+S04Hk
+         9Z4H9+izo+cjpk9w8Oj+v49jkEUg0BqkH0Ma4lUElixVapcM8GMUno/wWBf23ECWQpFU
+         AVEQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxIUgvTbiVvO5TO7gHQoUnSzl0J0YUbugM+IQT9bBaAhsQJYsuYv/0xYJaG30pGnuArh8M6eNg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKUmtK3DTcmTS0ZzhSOcGI1nddBdVIAIM+lNRKjKkKEbe8SPvnw
+	6Dr8VqCPr6yabYQgp2r4YwAsMx7/S58vTXuUu1XwwyM2XRQq4NuoOJ7qPT+tj1T5nbQ=
+X-Gm-Gg: AYBFou3+yGtEbzl89g9wMdgZ+JqhKSCswyWlzWWri7oycp5dNKw9Nk+k/3mzisD3irJ
+	B5VYviWfme8YXdCHxa6tsu6g53eqpoIsysxvbCs0tMs9uYJkZOMjtYdnIleXesvhuwjWo/PudxN
+	KM09ZxuLXAXL3j/7LdWFpu3mKzwoYtrG6JPgFWSe1VJu3oP9p718azPVH1LZWiardWj0OrevNve
+	p7C36PgXC3DIemJftOAth5bwS66ql/JyaYeg/ktpqDvPKc6HsjsfR98NdgAOe6GaLAs1yo2qSSI
+	rWimzQ+WvGIUiyal7AzNotF1G5tC3PcuSK3GX4m2cAT+vJ/tFgDWrJeVdHbgS4h26KoCSA/dpeV
+	ZudlC5kZyezJxoTeotmqBZ5t/LQqx0tpSp2zPCIAXUbPq0OgRK8J0ICPANM162a6oDuSmQl0Ftw
+	JQb35ZTs0+0CkNH1pEK4BB6cpq9BYn5K7vwozOMhwkXwxcyBRw7VBz1zM/tlouHIR72krcnM1rY
+	Yfp1QY/4r+kmf9h5q5SiXHs1X8TmBVQFA5gRGrCYzAjaz/sJ2suIwwg51wP/kL037fBsixfR3EI
+	oS7DoYNtXuYBLvZJXwJJbfhyqlwHH5KsfLJzynfQcEOKwPAdvFe6C8XLxzMax6sjAsXHiuFpKsR
+	Ih/Kkycqmhh8X7GEWjbToYvGOUu7ziw==
+X-Received: by 2002:a05:6808:17a3:b0:4ec:4c7e:37b5 with SMTP id 5614622812f47-5640ddb4f38mr841806b6e.29.1793334117847;
+        Thu, 29 Oct 2026 21:21:57 -0700 (PDT)
 Received: from com-75606.corp.openai.org ([199.47.143.5])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a90af650a1sm769349fac.15.2026.10.29.21.21.39
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-5640fd9888bsm764152b6e.5.2026.10.29.21.21.56
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 29 Oct 2026 21:21:40 -0700 (PDT)
+        Thu, 29 Oct 2026 21:21:57 -0700 (PDT)
 From: Kyle Zeng <kylebot@openai.com>
-To: bpf@vger.kernel.org
-Cc: John Fastabend <john.fastabend@gmail.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
+To: netfilter-devel@vger.kernel.org
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	coreteam@netfilter.org,
+	bridge@lists.linux.dev,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	outbounddisclosures@openai.com
-Subject: [PATCH] net: skmsg: fix copy cursor when coalescing clones
-Date: Thu, 29 Oct 2026 21:21:38 -0700
-Message-ID: <20261030042138.73739-1-kylebot@openai.com>
+Subject: [PATCH] netfilter: br_netfilter: reject unsafe neighbour devices for DNAT
+Date: Thu, 29 Oct 2026 21:21:55 -0700
+Message-ID: <20261030042155.73844-1-kylebot@openai.com>
 X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -98,66 +99,57 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A splice or zero-copy append can leave the destination copy cursor at
-sg.end. If sk_msg_clone() subsequently coalesces with the last entry,
-sg.end does not advance and the cursor still points at an unused slot.
-sk_msg_memcopy_from_iter() can then walk around the ring and write into
-older entries, including file pages spliced from a read-only descriptor.
+The IPv4 and IPv6 bridge prerouting callbacks classify DNAT traffic using
+the logical input device saved in skb->dev. The physical input port can
+have a different bridge master when prerouting resumes, for example after
+an NFQUEUE verdict. Netfilter reassembly can also combine the first
+fragment's bridge information with a different fragment's input device.
 
-Software TLS can reach this with an ordinary MSG_MORE send after a file
-splice and a splice from another TCP socket. Both TCP and the TLS
-encrypted-message allocation can use the sending task's page fragment,
-so the TCP-sourced plaintext can be contiguous with the next cloned
-encrypted-message range.
+br_nf_pre_routing_finish_bridge() replaces skb->dev with the port's
+current bridge master, but looks up the neighbour using the existing
+route. This can put an skb with skb->dev pointing to bridge B on an
+unresolved neighbour of bridge A. Deleting B and resolving the neighbour
+on A then causes a use-after-free in __dev_queue_xmit().
 
-When coalescing with an exhausted destination, move the copy cursor to
-the tail and set copybreak to its old length before extending it. Find
-the actual tail on each iteration using the ring iterator, including
-when end wraps to zero. Leave an existing copy cursor unchanged and
-preserve the normal coalescing, reference counting, and memory charging.
+Before calling the neighbour output method, check that the neighbour
+keeps skb->dev alive. A neighbour holds its device, and a VLAN device
+also holds its real device, so allow a VLAN whose real device is the
+bridge. Release the neighbour and drop the skb on a mismatch.
 
-Fixes: fda497e5f5b8 ("Optimize sk_msg_clone() by data merge to end dst sg entry")
-Cc: stable@vger.kernel.org
+Doing this in the shared continuation covers both protocol families,
+including a queue in the remaining bridge prerouting hooks. Leave the
+cached-header path unchanged since it does not enqueue the skb.
+
 Signed-off-by: Kyle Zeng <kylebot@openai.com>
 ---
 I have a reproducer for this issue and can share via DM
 
- net/core/skmsg.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ net/bridge/br_netfilter_hooks.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index df385a5a961e..0e9ff4be78ba 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -103,16 +103,26 @@ int sk_msg_clone(struct sock *sk, struct sk_msg *dst, struct sk_msg *src,
- 	}
+diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
+index e15355ff215a..726a2d17ed3a 100644
+--- a/net/bridge/br_netfilter_hooks.c
++++ b/net/bridge/br_netfilter_hooks.c
+@@ -307,6 +307,18 @@ int br_nf_pre_routing_finish_bridge(struct net *net, struct sock *sk, struct sk_
  
- 	while (len) {
-+		int last = dst->sg.end;
+ 			ret = br_handle_frame_finish(net, sk, skb);
+ 		} else {
++			struct net_device *dev = neigh->dev;
 +
- 		sge_len = sge->length - off;
- 		if (sge_len > len)
- 			sge_len = len;
- 
--		if (dst->sg.end)
--			sgd = sk_msg_elem(dst, dst->sg.end - 1);
-+		sgd = NULL;
-+		if (dst->sg.size) {
-+			sk_msg_iter_var_prev(last);
-+			sgd = sk_msg_elem(dst, last);
-+		}
- 
- 		if (sgd &&
- 		    (sg_page(sge) == sg_page(sgd)) &&
- 		    (sg_virt(sge) + off == sg_virt(sgd) + sgd->length)) {
-+			/* Start copying at the newly cloned suffix. */
-+			if (dst->sg.curr == dst->sg.end) {
-+				dst->sg.curr = last;
-+				dst->sg.copybreak = sgd->length;
++			/* The neighbour queue must keep skb->dev alive. A VLAN
++			 * device also holds a reference to its real device.
++			 */
++			if (is_vlan_dev(dev))
++				dev = vlan_dev_real_dev(dev);
++			if (dev != skb->dev) {
++				neigh_release(neigh);
++				goto free_skb;
 +			}
- 			sgd->length += sge_len;
- 			dst->sg.size += sge_len;
- 		} else if (!sk_msg_full(dst)) {
++
+ 			/* the neighbour function below overwrites the complete
+ 			 * MAC header, so we save the Ethernet source address and
+ 			 * protocol number.
 
 base-commit: d89e1d186ec9271bf78e62771779e9fc03bf0fc3
 -- 
