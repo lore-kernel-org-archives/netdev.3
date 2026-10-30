@@ -1,103 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793363200;
-	b=PZXRGD+ZV7UyihtOD7j3InIEm0FCN1aBmwGUnPYN52HCi7XNb6Jgl9JypcGV+mMSuhvC
-	 NZI9udVC7kqQ9NlflxBiQign0oPpGi2/qWsMk0mZgUlYMmeBLWaZlIPMkU479YuNRYkAR
-	 CMzg4IdupySeE5/qbJHCnc6d8LfUGfMD7sYtgobm8Z00XrDC3/xauZJNdqbC77pv8xs3B
-	 sJgRz9essZFiX9gdy4i5j7oTS4d6FfehYWKKQ6xlogjdBfNu8oNqY7hKEX1K/CtS8fJg4
-	 Mu5JOg/tv7glId0Xu9g9g6498YiUBIs33dr4hTpkLQtrTkcovQFSxe+ZWLqEU0RvC9w==
+	t=1793363503;
+	b=xELGeHYtlaPemYHnTErfedE8gg6x5cStJlf8LFdeX2Mo3+YViZCzc83uJRPiA3tKgWyi
+	 iCfxiJgXI+BJSJpEFzkUN6fD0uPom573MAYj7/sRaGCOa9mFqQfUhBpHChGgTj2JQY7T3
+	 52dPu+F1MWJGIfDrnVUYET6SdZjH3wjthrjUFp7fQKhejzSKPcmQv3q+dDv7DM47gv2sG
+	 Cxly+Abed4R115McUSwZ0J0XKfmEVhL8bn5c+UXDNWNGLhKd7YJ7hNjxHyHvcjqpFAKOx
+	 MuMlV5kFId2XrbXwp5PvutAj6mxXWDhfCoudIbJ5uokwEzLt7kKwle0OmwtslFKCHKw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793363200;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=Ib0ZIb2YOYQ7w34USWape/G8EkDxIb1fCiEOQLBLNlA=;
-	b=imwh27orIx85qKjJysp5LNdjg7YFtT9G64D4eTdshqQ15kz9NIOiBq9+f+FZFmglwBjY
-	 9xOv1QhuYU1mgNRDuqLqEJ+cWfcOe5c83o3cR0RZTKBo//6ztaAxGnj+VOTyeq/+tUbqn
-	 Yo93285uvNZcbfbM+3gu7lPvXqS1yzGoEb1jc0pt9Wv0Yboua9w8cB29tHKVPFEMvTrPI
-	 JhZqy4KpSNd/PhNGCKBNNy65WqB5j5yhKRimsbcU1vt/7LOhb5deU7CdQ12edFnxwjNfL
-	 0VRyObuUOL4Kc86e9IFPcVbK5ljo5F+JKFPzCpSR5L6poOFp7pUYa8YOIAfvP6vY2Rg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793363503;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=UDoy5Y6pyUGkFvr6CnxyA/cvulZjeL9SSvBftaqkDcU=;
+	b=Cjly4DXfgd+lkv0jH5oTOiN02TEm6IlEL+N5nQwYJMJYsmMAXo7gxSG4xh6xoMK3WbDg
+	 HD7ZxwQrVRcTgAIeJgMa4fi6tZxcdrijPjqkYv8EoujLMZ7D0fwOWYT0Vs2CGPQqzUVqK
+	 WXQUOJYzLFkKg5DMLcXDhB2iJL2/j7BBGTjQ99B6+9Ccf60FLeNhVbVCsWCcljFS1AMnv
+	 LuhDoVvEWu40jmk5vW+LOd5StULEziSMYWea8syFDTm3ZMR3Hw5bqsPoU83gANoADdbEA
+	 cDLICAhDODe4ADL4QuhytgqGJp8gI/9crlNL4UZtuyRw8o9LhBCEV9szEyoo4x5PbJA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cloudflare.com;
-	spf=pass smtp.mailfrom=cloudflare.com;
-	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=fhXFza+Y;
-	arc=none smtp.remote-ip=209.85.208.50
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gOiUAzAg;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69EB0606A31E
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 12:26:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 69EB0606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C5C606A31A;
+	Fri, 30 Oct 2026 12:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=fhXFza+Y
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6b1dae0febeso858601a12.2
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 05:26:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1793363199; x=1793967999; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :user-agent:references:in-reply-to:subject:cc:to:from:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Ib0ZIb2YOYQ7w34USWape/G8EkDxIb1fCiEOQLBLNlA=;
-        b=fhXFza+Yzy3VG+9OGHMOcR47ihiPebAoAFmsMUY2P6j1pr41QmigtuRDAv5TPC+uDE
-         0J3nvWYLFmutTaTKdFz30ALFGAiiWg7cTyjr82gecO8pWjzBrrlyLSTp8j3jYXv3pL43
-         xFkN4qEcHAjm2DJwQl7q5XooRBhI0bAl0tueGBxYCb0WgpV8Ybtpi4mCobTc/mvoUD5+
-         sZmdzO9P3Ja8qlIWOVILGj0XA2BiBzcjS4Vj+W/j4ZnusyI8UcB9l0j6YLD/mCxJCQzZ
-         tj2PheJ8/nEusRkl5R9YusrHcvJUoURwDOSSceCnHGjKE2frWjKllo14yQ/XiJ8aZEKi
-         JfnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793363199; x=1793967999;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :user-agent:references:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ib0ZIb2YOYQ7w34USWape/G8EkDxIb1fCiEOQLBLNlA=;
-        b=EggQ3QXz8RRtqYqWCb+ZDgMJS2FhWP80uN0qTISCiLJwaKQNFIin8VPVBtjRAyjv0B
-         XLMiuNISUZP7H/VxOI2OjfpstR/1mkfEjH4k4KcrW8Lzmf2bVukC+Tl0zKsNHWqA7cLo
-         FX37XzzhQpq65ZtNzRtPkGTUn6iQXshs8bK5kthlXCcW+aAQ8+BWV2qd1QawhMQPp+3f
-         WsLvgLI8qi2C1RJLmsQVFmQjGpzwO5qf7oic2xnbFPkD8n679YetVpBYGqBWrAKYgfg8
-         APkyJj/u1yo1s3DWgVFLHaGCx8/bBSOQKi1Hid5JuVVp1b3ikdrCfuCNTm3eYhIIVDj0
-         W3jw==
-X-Forwarded-Encrypted: i=1; AKwUvBwb2qmgb+Hli17E6/Yltzf+9rv6L0KawK1xaLb74fqfQGBLnt0IUB9JVvG8Iui2Vrp8KZfhy9I=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJPpfhL2B/qycC2+n87GADKmG1zT9or0evf2FNJiQ7YlX7+rNDo
-	XB6QkgmaiC/PuS0VzZ2Hb91inZdWhfRNLA1yPch8rQ2vY5gbjA9QTjE9bLEcoCOUN+o=
-X-Gm-Gg: AYBFou1HRqqWk+8pyAhTv562X+64RxrRpS0o6HKZiWMVJxhGgIJJkYTAFiB9urlXRYo
-	VzmSoa+WlxuDH7aicJpG+/iHmbvPzqj/hStgyDRAM+0+qMLjy3n84ctd54jHo5/GJh5RNYZuLuB
-	PEA59j62Ea2J4v0v5pUycO/A4wwaAovJRD73C4l7Tlx7wVHQB5A0jFnoTsTRG5mIzO70MasWpTY
-	8OW/5pjYBSO3H6GHa1zLsdre5ThZpBmZWEIMCY9QxVrHsUoJ4gtrKn7ztW7FUvCqVVZEXaQGmrg
-	qxj/gGK068CtvYLkKtdrDiOBHo8mpdwTXl+nzCpz2DIsMwx0aXZ5yRuZJP4Ys+poz7vbPe4zZI3
-	5nXfLolilkBPK5dMWHRcnLUQLz3z/Sz43FlfnXQ1UE/MBXUwZp9OgKbxVFMVEngryCOdKhYI9e+
-	t6Ojhltk8vi3x2Cs1SNDIfTgXAPs8HnKKQDWtzbGpmEuH3P+WCiLLktC7ORr69diLYicpDbm/Jz
-	9UD9MMidXaedyBFFf4rM44JGd3K/T3l0WwnTAIMA8fYhkWY4dglsZ5W8IH6ml0W97UcN65W52/J
-	jaXWPDlVqYrnBwyaq/6CwyRPN+ja6cM5j0KNrvRC6Q==
-X-Received: by 2002:a05:6402:c516:20b0:6a9:a3df:e4f1 with SMTP id 4fb4d7f45d1cf-6b4d4c714a4mr1147063a12.25.1793363198834;
-        Fri, 30 Oct 2026 05:26:38 -0700 (PDT)
-Received: from cloudflare.com ([2a09:bac6:5067:295f::41f:54])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b4d7b3fc5csm540597a12.33.2026.10.30.05.26.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 05:26:37 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-Cc: "phx" <phx0fer@gmail.com>,  "John Fastabend" <john.fastabend@gmail.com>,
-  "Jiayuan Chen" <jiayuan.chen@linux.dev>,  "Network Development"
- <netdev@vger.kernel.org>,  "bpf" <bpf@vger.kernel.org>
-Subject: Re: [PATCH bpf v2] bpf, sockmap: annotate the psock teardown data
- races
-In-Reply-To: <DMFRU74YCDSH.1WJJT7VL3MEYE@gmail.com> (Alexei Starovoitov's
-	message of "Tue, 27 Oct 2026 16:46:11 +0000")
-References: <20261021155629.68813-1-phx0fer@gmail.com>
-	<20261022054811.35008-1-phx0fer@gmail.com>
-	<DMBHB0TQOV1L.38MECMYFGUS5B@gmail.com> <871p9g6ym1.fsf@cloudflare.com>
-	<CAADnVQLTe611mm0iJEf5gJi2GtW42kxNHH3sUPevD039FvzL7g@mail.gmail.com>
-	<87v76o63qv.fsf@cloudflare.com>
-	<CAKvCo-zf6=ABrMEn_8r7rJFFvaaXQrz8GAUQ9Uz4h0Ze9gY68w@mail.gmail.com>
-	<87pkwv5cj8.fsf@cloudflare.com> <DMFRU74YCDSH.1WJJT7VL3MEYE@gmail.com>
-User-Agent: mu4e 1.14.1; emacs 30.2
-Date: Fri, 30 Oct 2026 13:26:36 +0100
-Message-ID: <87pkwrtlvn.fsf@cloudflare.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gOiUAzAg
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 212521F000C1;
+	Fri, 30 Oct 2026 12:31:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793363502;
+	bh=UDoy5Y6pyUGkFvr6CnxyA/cvulZjeL9SSvBftaqkDcU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=gOiUAzAgalNmuspXqWNxd0/bC1ZC138HacRukovaykxAkYsZHWblCZ0FrGRo73d2U
+	 vU0uvwUNuLgfU49FnqhePn1b9FgSzI3Y2EAUx75qRSpMGMhR1GIi/WlK44GoHMp/Ft
+	 tyqySIhIIKeY2VasPDAZloVXXk9ZBwXy/pjOg+T0s3Fb4Q9ZopQvh43JW2FMW5x359
+	 brAasqxL3ZrqWf6Kjxa/IsXeGaezv4RimpHLjjCbyvPwRZohqUOOn4uUCt6JYTd0CN
+	 WwoHTMa0T3ZJSTLa3O0qtOkD/xuDp3Tu5q49j3ULyyOmfyUSehIKwKen5Wwu5o6G7q
+	 7HgFMPntQFuhQ==
+Subject: Re: [PATCH net] mptcp: protect listener backlog reads in diagnostics
+From: netdev-bot+sashiko@kernel.org
+To: zzzccc427@gmail.com
+Cc: matttbe@kernel.org, martineau@kernel.org, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, geliang@kernel.org,
+ horms@kernel.org, netdev@vger.kernel.org, mptcp@lists.linux.dev,
+ linux-kernel@vger.kernel.org, baijiaju1990@gmail.com, jjzuming@gmail.com
+Date: Fri, 30 Oct 2026 12:31:41 +0000
+Message-ID: <179336350162.3134.14466007220476234920@kernel.org>
+In-Reply-To:
+ <pm-mptcp-objects-candidate-0066-v3-73df72b7a543d4cada0e@gmail.com>
+References:
+ <pm-mptcp-objects-candidate-0066-v3-73df72b7a543d4cada0e@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -107,27 +65,115 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 27, 2026 at 04:46 PM GMT, Alexei Starovoitov wrote:
-> On Tue Oct 27, 2026 at 4:33 PM UTC, Jakub Sitnicki wrote:
->> On Tue, Oct 27, 2026 at 01:10 PM +08, phx wrote:
->>> Sorry for the long silence =E2=80=94 my laptop died right after v2 and =
-took the
->>> local mail and the working tree with it. Agreed that the ordering fix is
->>> the right one; please go ahead with the commandeer, Jakub.
->>>
->>> I do still have the reproducer (a KCSAN selftest for this race, verified
->>> in QEMU). Say the word and I will post it, or send it to you to fold in=
-to
->>> your respin.
->>
->> Feel free to iterate on the patch once you get your dev env restored.
->
-> I very much prefer if you Jakub will take it over.
-> 'phx' is a clueless bot that sends spam across all subsystem.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Fix now posted:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-https://patch.msgid.link/20261030-bpf-next-v1-0-035eabf8eae7@cloudflare.com
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] In net/mptcp/mptcp_diag.c, mptcp_diag_get_info() now only
+  applies the listener override when the socket is not owned: `if…
+
+--
+
+mptcp: protect listener backlog reads in diagnostics
+
+This commit takes the MPTCP data lock in mptcp_diag_get_info() around the
+listener state check and the backlog reads. The override from msk->first
+is now applied only when no process owns the socket. The goal is to fix a
+use-after-free on the token based diag paths, which can race with a
+disconnect, re-listen and close of the same socket.
+
+> diff --git a/net/mptcp/mptcp_diag.c b/net/mptcp/mptcp_diag.c
+> index 136c2d05c0eeb..a71bcaee15c8d 100644
+> --- a/net/mptcp/mptcp_diag.c
+> +++ b/net/mptcp/mptcp_diag.c
+> @@ -199,7 +199,12 @@ static void mptcp_diag_get_info(struct sock *sk, struct inet_diag_msg *r,
+>  			  READ_ONCE(mptcp_sk(sk)->backlog_len);
+>  	r->idiag_wqueue = sk_wmem_alloc_get(sk);
+>  
+> -	if (inet_sk_state_load(sk) == TCP_LISTEN) {
+> +	/* The listener walk holds the listen hash lock: do not wait for a
+> +	 * socket owner that could be unhashing the first subflow.
+> +	 */
+> +	mptcp_data_lock(sk);
+> +	if (!sock_owned_by_user(sk) &&
+> +	    inet_sk_state_load(sk) == TCP_LISTEN) {
+>  		struct sock *lsk = READ_ONCE(msk->first);
+>  
+>  		if (lsk) {
+
+[Severity: Medium]
+mptcp_diag_get_info() is the shared idiag_get_info callback, so this new
+sock_owned_by_user() check also applies to mptcp_diag_dump_listeners().
+
+mptcp_listen() never inserts the msk into the token table. Isn't the
+listener walk then the main way a listening MPTCP socket gets reported?
+
+While a task holds lock_sock() on the listening msk, the override is
+skipped. That covers listen(), most mptcp_setsockopt() and
+mptcp_getsockopt() calls, shutdown and close, and the worker. In that
+case only the fallback values are reported:
+
+	r->idiag_rqueue = sk_rmem_alloc_get(sk) +
+			  READ_ONCE(mptcp_sk(sk)->backlog_len);
+	r->idiag_wqueue = sk_wmem_alloc_get(sk);
+
+For a listener these are normally 0/0, not the accept queue length and
+the max backlog. Could this make ss -Ml and accept queue monitoring show
+occasional 0/0 readings for MPTCP listeners?
+
+For comparison, tcp_diag_get_info() always reports sk_ack_backlog and
+sk_max_ack_backlog for TCP_LISTEN, with no ownership check:
+
+net/ipv4/tcp_diag.c:tcp_diag_get_info() {
+	if (inet_sk_state_load(sk) == TCP_LISTEN) {
+		r->idiag_rqueue = READ_ONCE(sk->sk_ack_backlog);
+		r->idiag_wqueue = READ_ONCE(sk->sk_max_ack_backlog);
+	...
+}
+
+The listener walk also looks like it was already memory safe before this
+patch:
+
+net/mptcp/mptcp_diag.c:mptcp_diag_dump_listeners() {
+	...
+		rcu_read_lock();
+		spin_lock(&ilb->lock);
+		sk_nulls_for_each(sk, node, &ilb->nulls_head) {
+			...
+			ret = sk_diag_dump(sk, skb, cb, r, net_admin);
+	...
+}
+
+Releasing the hashed listener subflow goes through
+tcp_set_state(TCP_CLOSE)->inet_unhash(), which takes the same ilb->lock.
+Hashed listeners are also SOCK_RCU_FREE.
+
+The use-after-free described in the commit message seems reachable only
+from the token based paths: the token iteration in mptcp_diag_dump() and
+mptcp_diag_dump_one(). On those paths TCP_LISTEN shows up only in the
+disconnect and re-listen race.
+
+The commit message accepts the tradeoff:
+
+  While a process owns the socket, the dump reports the MPTCP socket's
+  own queue values instead.
+
+It doesn't explain why the listener walk needs the check, though. Is the
+ownership check needed on the mptcp_diag_dump_listeners() path, or could
+it be limited to the token based callers?
+
+With this change, the existing comment inside the if (lsk) block, "so
+Send-Q will show accept queue", only holds while the socket is not owned.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/pm-mptcp-objects-candidate-0066-v3-73df72b7a543d4cada0e%40gmail.com
