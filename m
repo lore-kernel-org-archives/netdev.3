@@ -1,101 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793395737;
-	b=CaItHyK1K9ChVv2JFyHvtB+WIl9C5Bsm3apPi2n5zOr1FdgTwYR0maRWnhUSL4Y/7YOP
-	 C8DfJwADWLj8QWMX1lKGBJTr67ZmeSmz5SBqKbfkOibOG6EUPeEza6JvSkz3VMsw1xAyD
-	 3IC6orhpz7AlsDmvYbf2ms4+CwcZhxMdqIHGhQNEhbeHJ3FeHBw/CccCOGVB3yijZE9hj
-	 YUgaFsY6FnRt/e7USNxlg/3BHHThkcm+uG8VXxldK30TxrcprefTTFS1WJR66hEk2J0aT
-	 oBWlGcwnHm+Itk8iHZnzet8RPgesHHWWo397qncE+qJZN6y4XDZSh/1IhdT+H2YOtjg==
+	t=1793395969;
+	b=DKxwBediTGG9aik3pNWZgsI0LCp+nalJNZZHuZZOglsGwe0K3WbcyZ4mHvFCQz48LgIu
+	 RnrTMNjx2ydLdMAcO/QK81B+hs47AJ2nrpyDIMQ+R+scJJVJTKdQ/zP3AO9fOSRttmK6j
+	 9fx1+DwV8gvvgrj6XSZ41CaggbagcUcvPS0vK5AtLFam0YeHt5CvEJp0pS7V5eN8ROXui
+	 UKZU1luUiQd5k2oSugDSTMj7wthCTvoyILTfM78RpCj5J7DXXLqEqBXFCsRJtsw6JMLHk
+	 VBtUpnmwJn/SOazOEnL8jckNwb37MNiAZUvNbUd8TqMgiq9jBpe/ZUTOwoVaD07scLQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793395737;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=VAC2gRysazALbkHLgOMIEvbY+EZby3ybWz+RCk1jtS4=;
-	b=DWHePCav3FuyEYFqmgwB8hcXl2io/VoZOOSzSGau5Xhpb+iRF3jfGrtWH7/GCXuLKvRk
-	 YefkkSAkoaCjt/vlqJP/+q5VkX+o2CNhpAdH3WPI2fUjgKC3cCTDgbeXr1aFvZjdWEozz
-	 AOmQ9JycEPTFj2fgORNo4PsbwL6KbgMxXsBpDjHP31CJFI7BBiGcAnJwY7WUmZSmOoF/7
-	 tCIAGJmD/HMgdxtpoF0QiYXRvGkMjplGwgfPsbPzO/3uvSrHZagd5caVI5MxihXq0rEAe
-	 PhOSK5cG4+3ld41a25NAl6xKJZtNhaN2sLHIxVE9zo3K9vTKv9F9ZIYRdWRL2NFWnQA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793395969;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=uob3BhIRyzjXuGomSt8dP0MqP8bCTPEwp7jEZ+lxeqU=;
+	b=pJOnPPmxgBS48NsvNhpz/unbCYgYZuY+RPkkKLuZhqOLvudp2+n19Oi2AqXA5MuCywk9
+	 vRWPerMxN02I6ndVefLcGZKtbMNT04PUC6OQKZg71/B50S3YKIMMirR9EkfYXDMMqAW0y
+	 Lo0LcX/8RV3Y/PxtgwFN1SPPpqt23+DLRtyMyCmhlwu4J3P7b0zVFki9tX6b2YujOY7yN
+	 EhL4ja3R2FFna5xzCQC8WjT7hwtGtxhiSpWWxjQgfiV1bUlbVLsO0QE9pNaa35p5JSgYx
+	 pUnI8AHuOV4+5JiUPwGoIekgL3uDOZaiGNUVufrjPwkyRqb70IAtcDPCbWx0k7VYg8g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cloudflare.com;
-	spf=pass smtp.mailfrom=cloudflare.com;
-	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=MdKwCtBp;
-	arc=none smtp.remote-ip=209.85.167.169
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PXW6AgZ1;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A91606A321
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 21:28:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 20A91606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E609606A31C;
+	Fri, 30 Oct 2026 21:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=MdKwCtBp
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-4ab8cb2a6e4so804843b6e.0
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 14:28:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1793395735; x=1794000535; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VAC2gRysazALbkHLgOMIEvbY+EZby3ybWz+RCk1jtS4=;
-        b=MdKwCtBp7RIBpJ7YgN++0iieKNgdr7rja9DlXnbPUjZb5+0+leaD8DGXtamTkA5Meq
-         r4EDkVi75cWUq2d9SXM6aiq36GhFImdmh8SdXP6bG4P5rJF0+qI3w0+rhQ1WBjIlTwXt
-         07316dDFfNKgu3wiuoYmcbN9WuczNuI+k+t8GvV//CPuU5YrUJ3wWcBZ25QR1ZbL41w3
-         jFMtbRnDL1bHoa7x35HEzJHvzysd9ghBhI7HaS7OS8X8nwQUIGA6ujBRfPmJbqQOsx3z
-         aIFmby8wjpAfTGdYu3GHb10jNLq/XKx/6qDj/hG+F/5Se2Q4xz25StFZjzepbMhEPiQE
-         sRnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793395735; x=1794000535;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VAC2gRysazALbkHLgOMIEvbY+EZby3ybWz+RCk1jtS4=;
-        b=yhRFc0+eqsv4ekxNHjP4/GAxdRJDbThw6fTtdj6bOFvVXj1LJCWsndPpS9bdIX3U2d
-         4URH51hPXtBboxBjxbns+BgOhUx4rX6/m3PEAICrBJ6uU9iOAxthvntH9uQGns19cP0o
-         2+p77zoZlR2ecueGD9A6iL3Yi6DuAnBiY2SaWPWh67UxpUEaAhnP7mZSg+Ioytw8bpF3
-         6ooM52FFSup2h+LNVX39na4WcyhPfoxOSqF7gTzEsMJcQYagnPyvYVcSZ4bqqlORKGl+
-         ST7/Hk0PwYDikzeiMKYk0VHO/hSqe9mosfEjFofYwdsoarc/VSGHYyo833PYYk0IRs/E
-         MskA==
-X-Forwarded-Encrypted: i=1; AKwUvBw+Zsuw7CSTldA3zCGy936S9iwPEEgK006KR4TSzmnc54lc4raiIEbhhhLrjJytPoFflm5XEsg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIeNS5a+8C0T8tV9of6jmonSEB3xVwiM1Qq9scFkbcU/ouxCOYh
-	poTmtsi/gTb2P0nAbd+vQVaMtsfjW7Lpf+pMBxQPpkKORf5x2LYt4I9dr50eiRgHiNE=
-X-Gm-Gg: AYBFou0Tle6SvJI6JQ1hwh5Ildo1SRRTnpKy0Jz9MYUw7cU7w0fs6o4NrjSnSa7d2Lc
-	b9g67HmcUbn3+VSoNoStENNXha3FCBw4JKm86paYmMZhOpwH6p3FhQYhhhyLZS7WQqRjr20qDhN
-	SwrfkYyct/Th+sOWNyTy5c48TakmcJ9+7xAGQyWLuR3WWdVd9mFGhPxhYx3q7H7KLq76NcFTTxy
-	t9Xn7NKJ4/J8gOh920wcrYVmQtVc0HQzIl++gNuR+e09lCCKUXU6LP25opDWk0QZnMvjIOca89H
-	qkvz0atR09KTtlHXtZreIojZt5aAPyjkVQvsZLTjCptzSdn1wu4sp51++ymlVW1MpV37nIMcAcM
-	K7Suc08TD8lH0YKBq44f9I4xzyQsnfXu7tLTLboHiVodNMWNfDmGJGRV3gLtsIUbiHzWZ4sFunL
-	2JKXPgS7zixSBHoMCydUfBDUHilIYLa/IKhK+H3XceujfUTUGYxTkrKR46TG0KixKj/8UjkMvlz
-	ucbLZh1Jxe+xmCHrmRsyMUFtdv/nniNAhp9oCzVuZnh6dDXzyMpVv5hkccGjs9Bph13Z+oMFPNG
-	mDDFUneSakkL
-X-Received: by 2002:a05:6808:1494:b0:4d6:90f4:48b1 with SMTP id 5614622812f47-5640de2eed3mr2467493b6e.51.1793395734839;
-        Fri, 30 Oct 2026 14:28:54 -0700 (PDT)
-Received: from 20HS2G4 ([2a09:bac6:bf21:15d7::22d:91])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-5640fd93451sm2339531b6e.3.2026.10.30.14.28.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 14:28:54 -0700 (PDT)
-Date: Fri, 30 Oct 2026 16:28:50 -0500
-From: Chris Arges <carges@cloudflare.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, 
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
-	Phil Sutter <phil@nwl.cc>, Jason Wang <jasowangio@gmail.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, virtualization@lists.linux.dev, 
-	Max Krasnyansky <maxk@qualcomm.com>, Rusty Russell <rusty@rustcorp.com.au>, 
-	Paulos Yibelo <habte.yibelo@gmail.com>
-Subject: Re: [PATCH RFC v7 4/5] net: resolve uncommon partial checksums at
- ingress
-Message-ID: <auUGy8bhvANg_dYi@20HS2G4>
-References: <cover.1793276116.git.mst@redhat.com>
- <93d0e37c99711bebdf60c120af03010455c2f2e2.1793276116.git.mst@redhat.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PXW6AgZ1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B6E1F00A02;
+	Fri, 30 Oct 2026 21:32:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793395969;
+	bh=uob3BhIRyzjXuGomSt8dP0MqP8bCTPEwp7jEZ+lxeqU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=PXW6AgZ1/ZOx1vRACNXmKr4OcwCPg3Ec1TJrfRspdjpGLEJyh+Q5rB9STXS2zLTj0
+	 C2eHjmORjVOWydGbDqUhvCyXFll3l2ROs1PqrJ4d0l82rTQcOp/J8dlpgs5AfvN4Ce
+	 muvL8GhrSzan4qBMUntlkawZIzicSbLNckS95YNDsij3Ig+G3OogVe5KYSh6gK2mVU
+	 Hm0TgUCMmXlRSL9KfyyfOoCw8barRxNvdPojg+A6GLXzBtIEeaQtvNAD7Ucc/jYq6n
+	 rXYc342qoow7bDxRjG/1J4eGN46VQ4WvFDpmZePwLFV+anEhm7xDTOUuiwWQUa5F+1
+	 /i99VhpT4YmdQ==
+Subject: Re: [PATCH net] net: lan966x: save the RX state after quiescing the
+ NAPI in a reload
+From: netdev-bot+sashiko@kernel.org
+To: daniel.machon@microchip.com
+Cc: horatiu.vultur@microchip.com, UNGLinuxDriver@microchip.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, devnexen@gmail.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Fri, 30 Oct 2026 21:32:48 +0000
+Message-ID: <179339596805.3131.15722665365949001732@kernel.org>
+In-Reply-To:
+ <20261029-lan966x-fdma-reload-quiesce-v1-1-daaeda5ca3aa@microchip.com>
+References:
+ <20261029-lan966x-fdma-reload-quiesce-v1-1-daaeda5ca3aa@microchip.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,478 +66,244 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <93d0e37c99711bebdf60c120af03010455c2f2e2.1793276116.git.mst@redhat.com>
 
-On 2026-10-29 14:53:34, Michael S. Tsirkin wrote:
-> As reported first by Paulos Yibelo <habte.yibelo@gmail.com> (after which
-> others, credited below, found more ways the bug can affect users) a
-> virtio net header can place CHECKSUM_PARTIAL at any in-packet offset.
-> If that state is retained, later checksum completion can modify the
-> packet after protocol processing has made decisions from it.
-> 
-> Let's fix that: let's validate csum_start and csum_offset and only keep
-> CHECKSUM_PARTIAL when csum_start and csum_offset match a parsed TCP or
-> UDP header, while handling VLAN headers, IPv4 options and IPv6 extension
-> headers.  Complete other non-GSO checksums immediately, before any
-> protocol processing runs.
-> 
-> We can't easily "complete the checksum" for GSO we don't recognize - GSO
-> assumes knowledge of the protocol. We could segment ignoring the
-> checksum then do whatever csum_start and csum_offset say, but that
-> seems like an overkill for something that shouldn't happen.
-> 
-> There's some risk here:
-> - non-gso packets which can't be parsed get checksum calculated in
->   software, adding performance overhead
-> - gso packets which can't be parsed get dropped
-> 
-> Note that for zero copy, userspace can change the data after the
-> checksum has been calculated.  This is fundamental to zero copy by
-> design, and the only outcome is a bad checksum and a packet drop.
-> 
-> To mitigate the risks, the following patch will add a sysctl knob to
-> bypass the resolution. This is reasonable if the setup is such that
-> there is no protocol processing at all.
-> 
-> UDP tunnel headers get the same handling on the inner header.
-> 
-> Packets without VIRTIO_NET_HDR_F_NEEDS_CSUM are unaffected.
-> 
-> Note a fundamental limitation of this approach: an nf/BPF program
-> that tweaks the payload of a packet in flight may rely on the
-> checksum being fixed up later, assuming the packet carries
-> CHECKSUM_PARTIAL.
-> 
-> For metadata that fails validation the checksum
-> is now completed at input, so such edits leave a stale checksum
-> and the packet is dropped at the receiver.  Protocols whose
-> transport header we cannot parse (anything but TCP and UDP) are
-> affected even when the metadata is self-consistent.
-> 
-> The sysctl added in the next patch is the escape hatch for these setups,
-> but it is a very blunt tool.
-> 
-v7: Tested-by: Chris Arges <carges@cloudflare.com>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-> Reported-by: Paulos Yibelo <habte.yibelo@gmail.com>
-> Reported-by: Chris Arges <carges@cloudflare.com>
-> Tested-by: Chris Arges <carges@cloudflare.com>
-> Fixes: f43798c27684 ("tun: Allow GSO using virtio_net_hdr")
-> Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> ---
-> 
-> Notes (changelog):
->     v4->v5:
->         caller changes moved to "account for ingress-resolved
->         virtio net hdr state" (Willem de Bruijn)
->         a packet too small to be GSO: ignore the tunnel GSO request,
->         complete wild metadata in place (sashiko)
->         document the zero copy interaction (sashiko)
->         honor a preset skb->protocol on ethernet: the stack uses it,
->         except on loopback which re-parses the frame (sashiko)
->     v5->v6:
->         read both skb->protocol and the frame ethertype: do not
->         validate when they disagree, instead of preferring the
->         preset protocol; same check after the IP version inference
->         where there is no L2 header (Willem de Bruijn)
->         pull the IPv4 options in the helper as introduced, with the
->         transport header offset computed before the pull
->         (Willem de Bruijn)
->         fold the trivial protocol calculation cleanup, formerly a
->         separate patch, in (Willem de Bruijn)
-> 
->  include/linux/virtio_net.h | 315 ++++++++++++++++++++++++++++++++++++-
->  1 file changed, 311 insertions(+), 4 deletions(-)
-> 
-> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-> index 013c6c7e2dea..54048759cc6e 100644
-> --- a/include/linux/virtio_net.h
-> +++ b/include/linux/virtio_net.h
-> @@ -5,7 +5,11 @@
->  #include <linux/if_vlan.h>
->  #include <linux/ip.h>
->  #include <linux/ipv6.h>
-> +#include <linux/netdevice.h>
->  #include <linux/udp.h>
-> +#include <net/gso.h>
-> +#include <net/ip.h>
-> +#include <net/ipv6.h>
->  #include <net/tcp.h>
->  #include <uapi/linux/tcp.h>
->  #include <uapi/linux/virtio_net.h>
-> @@ -48,6 +52,216 @@ static inline int virtio_net_hdr_set_proto(struct sk_buff *skb,
->  	return 0;
->  }
+Critical: 0 · High: 1 (4) · Medium: 0 · Low: 0
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] The patch does not fully fix the restore path, even though the
+  commit message says it does.
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but
+  lan966x_fdma_rx_alloc()…
+- [High] This problem wasn't introduced by this patch, but
+  lan966x_fdma_reload() swaps lan966x->rx.page_pool and destroys the old…
+- [High] This problem wasn't introduced by this patch, but it produces
+  the same outcome the commit message describes: a page the stack still…
+- [High] This problem wasn't introduced by this patch, but
+  lan966x_fdma_reload() runs lan966x_fdma_rx_start() and…
+
+--
+
+net: lan966x: save the RX state after quiescing the NAPI in a reload
+
+This patch moves napi_synchronize(), napi_disable() and
+lan966x_fdma_stop_netdev() in lan966x_fdma_reload() so they run before
+the copies of rx->page[] and the RX FDMA state are taken. A NAPI poll
+can then no longer advance the ring after the snapshot. The old_pages
+buffer is still allocated first, so an allocation failure returns
+before anything needs to be undone.
+
+> diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
+> index 21668bbcc9063..2dbc25c098fec 100644
+> --- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
+> +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
+> @@ -819,21 +819,21 @@ static int lan966x_fdma_reload(struct lan966x *lan966x, int new_mtu)
+>  	int page_order, max_mtu;
+>  	int err, i, j;
 >  
-> +/* TODO: nothing virtio specific here, move to ip.h */
-> +
-> +/*
-> + * Pull and minimally validate the IPv4 header at @nhoff.
-> + * Returns the header and stores the transport header offset in
-> + * @thoff, or NULL if truncated or malformed.  The whole header,
-> + * options included, is guaranteed linear on return.
-> + */
-> +static inline struct iphdr *virtio_net_ip4_parse(struct sk_buff *skb,
-> +						  unsigned int nhoff,
-> +						  unsigned int *thoff)
-> +{
-> +	unsigned int ihl;
-> +	struct iphdr *iph;
-> +
-> +	if (!pskb_may_pull(skb, nhoff + sizeof(struct iphdr)))
-> +		return NULL;
-> +
-> +	iph = (struct iphdr *)(skb->data + nhoff);
-> +	if (iph->version != 4 ||
-> +	    iph->ihl < sizeof(struct iphdr) / sizeof(u32))
-> +		return NULL;
-> +
-> +	ihl = iph->ihl * sizeof(u32);
-> +	*thoff = nhoff + ihl;
-> +	/* Pull the options as well: the transport header offset
-> +	 * returned above must be within the linear data.  iph goes
-> +	 * stale across the pull.
-> +	 */
-> +	if (!pskb_may_pull(skb, nhoff + ihl))
-> +		return NULL;
-> +
-> +	return (struct iphdr *)(skb->data + nhoff);
-> +}
-> +
-> +/* Where does the L3 header start, and what protocol is it?
-> + * Handles Ethernet and VLAN headers; other devices use the
-> + * network header offset the caller set up.
-> + */
-> +static inline bool
-> +virtio_net_l3_start(struct sk_buff *skb, int *nhoff, __be16 *proto)
-> +{
-> +	/* skb->dev should always be set here already,
-> +	 * but let's not crash when it is not.
-> +	 */
-> +	if (WARN_ON_ONCE(!skb->dev))
-> +		return false;
-> +
-> +	if (skb->dev->type == ARPHRD_ETHER ||
-> +	    skb->dev->type == ARPHRD_LOOPBACK) {
-> +		__be16 h_proto;
-> +
-> +		if (!pskb_may_pull(skb, ETH_HLEN))
-> +			return false;
-> +		h_proto = eth_hdr(skb)->h_proto;
-> +		/* skb->protocol is a sender claim, and parts of the
-> +		 * stack parse the packet per it: when it disagrees with
-> +		 * the frame we do not know which view the packet will
-> +		 * be parsed as, so do not validate.
-> +		 */
-> +		if (skb->protocol && skb->protocol != h_proto)
-> +			return false;
-> +		*nhoff = ETH_HLEN;
-> +		*proto = h_proto;
-> +		if (eth_type_vlan(*proto)) {
-> +			*proto = __vlan_get_protocol(skb, *proto, nhoff);
-> +			if (!*proto)
-> +				return false;
-> +		}
-> +	} else {
-> +		const struct iphdr *iph;
-> +
-> +		*nhoff = skb_network_offset(skb);
-> +		/* An unset network header shows up as an offset
-> +		 * outside of the packet.
-> +		 */
-> +		if (*nhoff < 0 || (unsigned int)*nhoff >= skb->len)
-> +			return false;
-> +		/* No L2 header to cross-check with: take the protocol
-> +		 * from the IP version at the network header.
-> +		 */
-> +		if (!pskb_may_pull(skb, *nhoff + 1))
-> +			return false;
-> +		iph = (const struct iphdr *)(skb->data + *nhoff);
-> +		if (iph->version == 4)
-> +			*proto = htons(ETH_P_IP);
-> +		else if (iph->version == 6)
-> +			*proto = htons(ETH_P_IPV6);
-> +		else
-> +			return false;
-> +		if (skb->protocol && skb->protocol != *proto)
-> +			return false;
-> +	}
-> +	return true;
-> +}
-> +
-> +/* Walk the L3 header at @nhoff: where does its transport header
-> + * start, and which protocol is it?  Returns false if the header
-> + * is truncated, malformed or fragmented.
-> + */
-> +static inline bool
-> +virtio_net_l4_start(struct sk_buff *skb, unsigned int nhoff, __be16 proto,
-> +		    unsigned int *thoff, int *ip_proto)
-> +{
-> +	if (proto == htons(ETH_P_IP)) {
-> +		const struct iphdr *iph = virtio_net_ip4_parse(skb, nhoff, thoff);
-> +
-> +		if (!iph || ip_is_fragment(iph))
-> +			return false;
-> +		*ip_proto = iph->protocol;
-> +		return true;
-> +	}
-> +
-> +	if (proto == htons(ETH_P_IPV6)) {
-> +		const struct ipv6hdr *iph;
-> +		int flags = 0;
-> +
-> +		if (!pskb_may_pull(skb, nhoff + sizeof(*iph)))
-> +			return false;
-> +		iph = (const void *)(skb->data + nhoff);
-> +		if (iph->version != 6)
-> +			return false;
-> +		*thoff = nhoff + sizeof(*iph);
-> +		*ip_proto = iph->nexthdr;
-> +		if (*ip_proto != IPPROTO_TCP && *ip_proto != IPPROTO_UDP) {
-> +			*thoff = nhoff;
-> +			/* Find the transport header behind any
-> +			 * extension headers, AH included.
-> +			 */
-> +			*ip_proto = ipv6_find_hdr(skb, thoff, -1, NULL,
-> +						  &flags);
-> +			if (*ip_proto < 0 || flags & IP6_FH_F_FRAG)
-> +				return false;
-> +		}
-> +		return true;
-> +	}
-> +
-> +	return false;
-> +}
-> +
-> +/* Does checksum metadata match a known TCP or UDP header? */
-> +static inline bool
-> +virtio_net_csum_partial_ok_at_offset(struct sk_buff *skb, u8 hdr_gso_type,
-> +				     unsigned int nhoff, __be16 proto)
-> +{
-> +	unsigned int thoff;
-> +	int ip_proto;
-> +
-> +	if (!virtio_net_l4_start(skb, nhoff, proto, &thoff, &ip_proto))
-> +		return false;
-> +
-> +	if (skb_checksum_start_offset(skb) != thoff)
-> +		return false;
-> +
-> +	switch (ip_proto) {
-> +	case IPPROTO_TCP:
-> +		if (skb->csum_offset != offsetof(struct tcphdr, check) ||
-> +		    !pskb_may_pull(skb, thoff + sizeof(struct tcphdr)))
-> +			return false;
-> +		break;
-> +	case IPPROTO_UDP:
-> +		if (skb->csum_offset != offsetof(struct udphdr, check) ||
-> +		    !pskb_may_pull(skb, thoff + sizeof(struct udphdr)))
-> +			return false;
-> +		break;
-> +	default:
-> +		return false;
-> +	}
-> +
-> +	switch (hdr_gso_type & ~VIRTIO_NET_HDR_GSO_ECN) {
-> +	case VIRTIO_NET_HDR_GSO_NONE:
-> +		return true;
-> +	case VIRTIO_NET_HDR_GSO_TCPV4:
-> +		return proto == htons(ETH_P_IP) && ip_proto == IPPROTO_TCP;
-> +	case VIRTIO_NET_HDR_GSO_TCPV6:
-> +		return proto == htons(ETH_P_IPV6) && ip_proto == IPPROTO_TCP;
-> +	case VIRTIO_NET_HDR_GSO_UDP:
-> +	case VIRTIO_NET_HDR_GSO_UDP_L4:
-> +		return ip_proto == IPPROTO_UDP;
-> +	default:
-> +		return false;
-> +	}
-> +}
-> +
-> +static inline bool
-> +virtio_net_csum_partial_ok(struct sk_buff *skb, u8 hdr_gso_type)
-> +{
-> +	int nhoff;
-> +	__be16 proto;
-> +
-> +	if (!virtio_net_l3_start(skb, &nhoff, &proto))
-> +		return false;
-> +
-> +	return virtio_net_csum_partial_ok_at_offset(skb, hdr_gso_type, nhoff,
-> +						   proto);
-> +}
-> +
-> +/*
-> + * Handle a packet whose checksum metadata does not match the packet:
-> + * GSO packets are dropped, as segmentation needs one checksum per
-> + * segment; others are completed in software.
-> + */
-> +static inline int __virtio_net_resolve_csum_partial_mismatch(struct sk_buff *skb)
-> +{
-> +	if (skb_is_gso(skb))
-> +		return -EINVAL;
-> +
-> +	return skb_checksum_help(skb) ?: 1;
-> +}
-> +
->  static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
->  					  const struct virtio_net_hdr *hdr,
->  					  bool little_endian, u8 hdr_gso_type)
-> @@ -194,11 +408,35 @@ static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
->  	return 0;
->  }
+> -	old_pages = kmemdup(lan966x->rx.page, sizeof(lan966x->rx.page),
+> -			   GFP_KERNEL);
+> +	old_pages = kmalloc_objs(*lan966x->rx.page, FDMA_DCB_MAX);
+>  	if (!old_pages)
+>  		return -ENOMEM;
 >  
-> +/*
-> + * Return value:
-> + * 0 - success
-> + * >0 - checksum was completed in software (slow path)
-> + * <0 - failure
-> + */
->  static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
->  					const struct virtio_net_hdr *hdr,
->  					bool little_endian)
->  {
-> -	return __virtio_net_hdr_to_skb(skb, hdr, little_endian, hdr->gso_type);
-> +	typeof(skb->transport_header) old_transport = skb->transport_header;
-> +	int ret = __virtio_net_hdr_to_skb(skb, hdr, little_endian,
-> +					  hdr->gso_type);
+> +	napi_synchronize(&lan966x->napi);
+> +	napi_disable(&lan966x->napi);
+> +	lan966x_fdma_stop_netdev(lan966x);
+
+[Severity: High]
+This is a pre-existing issue, but both the success path and the restore
+path of lan966x_fdma_reload() restart things in this order:
+
+	lan966x_fdma_rx_start(&lan966x->rx);
+	[ ... ]
+	lan966x_fdma_wakeup_netdev(lan966x);
+	napi_enable(&lan966x->napi);
+
+An FDMA DB interrupt can fire while NAPI is still disabled. Examples are
+a TX completion after netif_wake_queue() on another CPU, or ndo_xdp_xmit
+traffic, which ignores queue state. In that case lan966x_fdma_irq_handler()
+does:
+
+		lan_wr(0, lan966x, FDMA_INTR_DB_ENA);
+		lan_wr(db, lan966x, FDMA_INTR_DB);
+
+		napi_schedule(&lan966x->napi);
+
+The napi_schedule() does nothing, because napi_disable() holds
+NAPI_STATE_SCHED. napi_enable() does not schedule a poll either.
+FDMA_INTR_DB_ENA is only re-armed by the poll, by rx_start, or by the
+first TX activation.
+
+Could this leave all DB interrupts masked, with RX and TX completion
+dead on every port until the next reload?
+
+There is also a narrower window between napi_disable() and rx_start().
+The read-modify-write in rx_start only sets the RX channel bit, so a TX
+bit cleared by the handler stays cleared until an RX poll writes 0xff.
+
+lan966x_fdma_pci_reload() documents this hazard and calls napi_enable()
+first:
+
+	/* Order matters: napi_enable() must precede the wakes, or a TX that
+	 * completes first clears FDMA_INTR_DB_ENA with nothing scheduled to
+	 * restore it, leaving RX dead until the next reload.
+	 */
+
+Should the platform reload use the same ordering?
+
 > +
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (likely(skb->ip_summed != CHECKSUM_PARTIAL ||
-> +		   virtio_net_csum_partial_ok(skb, hdr->gso_type)))
-> +		return 0;
-> +
-> +	/*
-> +	 * Here we do not trust the checksum metadata.
-> +	 * __virtio_net_hdr_to_skb set the transport header to csum_start
-> +	 * from virtio hdr, restore it to a known good value.
-> +	 */
-> +	skb->transport_header = old_transport;
-> +
-> +	return __virtio_net_resolve_csum_partial_mismatch(skb);
->  }
+>  	/* Store these for later to free them */
+> +	memcpy(old_pages, lan966x->rx.page, sizeof(lan966x->rx.page));
+
+[Severity: High]
+This isn't a bug introduced by this patch, but a refill failure in
+lan966x_fdma_napi_poll() seems to lead to the outcome the commit message
+describes, a page the stack still owns being returned to the old pool:
+
+allocate_new:
+	while (dcb_reload != fdma->dcb_index) {
+		[ ... ]
+		fdma_dcb_add(fdma, old_dcb, FDMA_DCB_INFO_DATAL(fdma->db_size),
+			     FDMA_DCB_STATUS_INTR);
+		[ ... ]
+	}
+
+The return value of fdma_dcb_add() is ignored. If
+page_pool_dev_alloc_pages() fails, lan966x_fdma_rx_dataptr_cb() returns
+-ENOMEM without updating rx->page[old_dcb][0]. The slot still points at
+the page that was already passed to the stack, placed in the TX ring,
+redirected, or recycled.
+
+The DCB is not relinked either. Software eventually stops at that DCB,
+so the stale pointer stays in place.
+
+The next reload copies that pointer into old_pages here and calls
+page_pool_put_full_page() on it before page_pool_destroy(). Can this
+cause a use-after-free or double free when the skb or xdp_frame owner
+later frees the page? lan966x_fdma_rx_free_pages() at teardown seems to
+have the same exposure.
+
+>  	memcpy(&fdma_rx_old, &lan966x->rx.fdma, sizeof(struct fdma));
+
+[Severity: High]
+The commit message says:
+
+  "...and the restore path puts back a stale DCB index and last DCB
+  pointer."
+
+With the snapshot now taken after napi_disable(), the restore path puts
+back the current dcb_index (say k) and last_dcb (DCB k-1). Does the
+hardware agree with that position? The restore path does:
+
+restore:
+	[ ... ]
+	memcpy(&lan966x->rx.fdma, &fdma_rx_old, sizeof(struct fdma));
+	[ ... ]
+	lan966x_fdma_llp_configure(lan966x, lan966x->rx.fdma.dma,
+				   lan966x->rx.fdma.channel_id);
+
+	lan966x_fdma_rx_start(&lan966x->rx);
+
+The LLP points at the ring base (DCB 0), and the channel is reactivated
+without rebuilding the DCB chain.
+
+After traffic, each NAPI refill through fdma_dcb_add()->__fdma_dcb_add()
+appends the consumed DCB after last_dcb with an INVALID nextptr. The
+chain is then k -> ... -> n-1 -> 0 -> ... -> k-1 (INVALID).
+
+Starting at DCB 0, the hardware would fill DCBs 0..k-1 and stop at k-1.
+lan966x_fdma_napi_poll() only checks fdma_has_frames() on DCB k. If
+lan966x_fdma_rx_alloc() fails while k != 0, wouldn't RX stop on all
+ports until the next successful reload?
+
+On its restore path, lan966x_fdma_pci_reload() calls
+lan966x_fdma_pci_reset_mem(). That runs fdma_dcbs_init() to reset the
+indices and rebuild the chain before the LLP is programmed.
+
+Does the platform restore path need to re-initialise the old ring in a
+similar way, or program the LLP to fdma.dma + dcb_index *
+sizeof(struct fdma_dcb)?
+
+>  	page_pool = lan966x->rx.page_pool;
+
+[Severity: High]
+This is a pre-existing issue, but is it safe to destroy this page_pool
+while XDP_TX pages from it can still be queued in the TX ring?
+
+lan966x_fdma_xmit_xdpf() stores the RX page in the TX ring:
+
+		next_dcb_buf->data.page = page;
+
+These buffers are only reclaimed from NAPI, by
+lan966x_fdma_tx_clear_buf(). That function recycles into whichever pool
+is current:
+
+			else
+				page_pool_recycle_direct(rx->page_pool,
+							 dcb_buf->data.page);
+
+The TX channel is not drained during the reload. After napi_enable(),
+these old-pool pages would be recycled into the new pool, and
+__page_pool_put_page() does not check page->pp against the pool
+argument.
+
+Would the old pool's inflight count then never reach zero, so the
+deferred page_pool_destroy() never completes? The new pool's inflight
+accounting would also go negative.
+
+When the MTU grows (page_order 0 -> 2), the new pool would DMA sync and
+later unmap an order-0 page using its larger max_len and order. On
+non-coherent systems, could that invalidate cache lines past the end of
+the page, or let the device DMA past it? After XDP detach the dma_dir
+would also mismatch (DMA_BIDIRECTIONAL vs DMA_FROM_DEVICE).
+
+>  	page_order = lan966x->rx.page_order;
+>  	max_mtu = lan966x->rx.max_mtu;
 >  
->  /* This function must be called after virtio_net_hdr_from_skb(). */
-> @@ -282,6 +520,35 @@ static inline unsigned int virtio_l3min(bool is_ipv6)
->  	return is_ipv6 ? sizeof(struct ipv6hdr) : sizeof(struct iphdr);
->  }
->  
-> +/* Do the tunnel offsets match the outer headers in the frame?
-> + * The L3 header the tunnel claims must be the one the frame
-> + * carries, with UDP following it at @outer_th.
-> + */
-> +static inline bool
-> +virtio_net_tnl_offsets_ok(struct sk_buff *skb, bool outer_isv6,
-> +			  unsigned int outer_th)
-> +{
-> +	int nhoff;
-> +	__be16 proto;
-> +	unsigned int thoff;
-> +	int ip_proto;
-> +
-> +	if (!virtio_net_l3_start(skb, &nhoff, &proto))
-> +		return false;
-> +	if (outer_isv6 != (proto == htons(ETH_P_IPV6)))
-> +		return false;
-> +	if (!virtio_net_l4_start(skb, nhoff, proto, &thoff, &ip_proto))
-> +		return false;
-> +
-> +	return ip_proto == IPPROTO_UDP && outer_th == thoff;
-> +}
-> +
-> +/*
-> + * Return value:
-> + * 0 - success
-> + * >0 - checksum was completed in software (slow path)
-> + * <0 - failure
-> + */
->  static inline int
->  virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
->  			  const struct virtio_net_hdr_v1_hash_tunnel *vhdr,
-> @@ -290,9 +557,11 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
->  			  bool little_endian)
->  {
->  	const struct virtio_net_hdr *hdr = (const struct virtio_net_hdr *)vhdr;
-> +	typeof(skb->transport_header) old_transport = skb->transport_header;
->  	unsigned int inner_nh, outer_th, inner_th;
->  	unsigned int inner_l3min, outer_l3min;
->  	u8 gso_inner_type, gso_tunnel_type;
-> +	__be16 inner_proto;
->  	bool outer_isv6, inner_isv6;
->  	int ret;
->  
-> @@ -335,9 +604,12 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
->  	/* Let the basic parsing deal with plain GSO features. */
->  	ret = __virtio_net_hdr_to_skb(skb, hdr, true,
->  				      hdr->gso_type & ~gso_tunnel_type);
-> -	if (ret)
-> +	if (ret < 0)
->  		return ret;
->  
-> +	if (!virtio_net_tnl_offsets_ok(skb, outer_isv6, outer_th))
-> +		return -EINVAL;
-> +
->  	/* In case of USO, the inner protocol is still unknown and
->  	 * `inner_isv6` is just a guess, additional parsing is needed.
->  	 * The previous validation ensures that accessing an ipv4 inner
-> @@ -352,9 +624,29 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
->  			return -EINVAL;
->  	}
->  
-> -	skb_set_inner_protocol(skb, inner_isv6 ? htons(ETH_P_IPV6) :
-> -						 htons(ETH_P_IP));
-> +	inner_proto = inner_isv6 ? htons(ETH_P_IPV6) : htons(ETH_P_IP);
-> +
-> +	/*
-> +	 * We know VIRTIO_NET_HDR_F_NEEDS_CSUM was set so __virtio_net_hdr_to_skb
-> +	 * set CHECKSUM_PARTIAL.
-> +	 */
-> +	if (unlikely(!virtio_net_csum_partial_ok_at_offset(skb, gso_inner_type,
-> +							  inner_nh,
-> +							  inner_proto))) {
-> +		/* __virtio_net_hdr_to_skb set the transport header to
-> +		 * csum_start, restore it to a known good value.
-> +		 */
-> +		skb->transport_header = old_transport;
-> +
-> +		return __virtio_net_resolve_csum_partial_mismatch(skb);
-> +	}
-> +
-> +	skb_set_inner_protocol(skb, inner_proto);
->  	if (hdr->flags & VIRTIO_NET_HDR_F_UDP_TUNNEL_CSUM) {
-> +		/* Checked here, after the validation: a packet completed
-> +		 * in software never uses the feature, so an unnegotiated
-> +		 * request only matters for metadata good enough to act on.
-> +		 */
->  		if (!tnl_csum_negotiated)
->  			return -EINVAL;
->  
-> @@ -368,6 +660,21 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
->  	skb->inner_mac_header = inner_nh + skb_headroom(skb);
->  	skb->transport_header = outer_th + skb_headroom(skb);
->  	skb->encapsulation = 1;
-> +
-> +	if (!skb_is_gso(skb)) {
-> +		/* Too small to segment: complete the checksum in place
-> +		 * instead of dropping - senders do tag small packets
-> +		 * with GSO headers, e.g. packetdrill sets gso_type and
-> +		 * gso_size with --mss, whatever the packet size.
-> +		 * The outer UDP checksum is not calculated, but a zero
-> +		 * one is fine: UDP over IPv4 allows a disabled
-> +		 * checksum, and so do tunnels over IPv6 where the
-> +		 * receiver opts in (RFC 6935, RFC 6936).
-> +		 */
-> +		skb_shinfo(skb)->gso_type &= ~(SKB_GSO_UDP_TUNNEL_CSUM |
-> +					       SKB_GSO_UDP_TUNNEL);
-> +	}
-> +
->  	return 0;
->  }
->  
-> -- 
-> MST
-> 
+> -	napi_synchronize(&lan966x->napi);
+> -	napi_disable(&lan966x->napi);
+> -	lan966x_fdma_stop_netdev(lan966x);
+> -
+>  	lan966x_fdma_rx_disable(&lan966x->rx);
+>  	lan966x->rx.page_order = round_up(new_mtu, PAGE_SIZE) / PAGE_SIZE - 1;
+>  	lan966x->rx.max_mtu = new_mtu;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but lan966x_fdma_rx_alloc(),
+called right after this, drops the return value of fdma_dcbs_init():
+
+	fdma_dcbs_init(fdma, FDMA_DCB_INFO_DATAL(fdma->db_size),
+		       FDMA_DCB_STATUS_INTR);
+
+	lan966x_fdma_llp_configure(lan966x, fdma->dma, fdma->channel_id);
+
+	return 0;
+
+Suppose page_pool_dev_alloc_pages() fails at DCB k. This can happen
+because it uses GFP_ATOMIC, with order > 0 for a jumbo MTU.
+lan966x_fdma_rx_dataptr_cb() then returns -ENOMEM before writing
+rx->page[k][0], and fdma_dcbs_init() stops there.
+
+lan966x_fdma_reload() still takes the success path. It puts every
+old_pages[i][j] back to the old pool and calls page_pool_destroy().
+rx.page[k..n_dcbs-1] are never cleared, so they still point at those
+old pages.
+
+Could a later lan966x_fdma_rx_free_pages() on deinit, or the memcpy()
+into old_pages on the next reload, put those freed pages again?
+
+The new ring would also end at DCB k-1, so RX would stall once
+dcb_index reaches k.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261029-lan966x-fdma-reload-quiesce-v1-1-daaeda5ca3aa%40microchip.com
