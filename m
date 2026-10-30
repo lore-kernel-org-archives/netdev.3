@@ -1,112 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793380016;
-	b=WGN96CZFX6mbTZQO9scMuLRmCOsLwevkltq8L9XUHEf8xwQPFO30NZEk4gltGZfTbigs
-	 8aDKk64KD8m9RaQYnMf7/swi6dy3+YM6HHZvXzUIIZ3PSNCcziVJh5CIZqH1MTPAZPGfo
-	 J+FHzLhKQ7muIA8PYmzg8L9QWNoEiEw/g+pO3ginzF470h0cQZC8bGSgHGyTsYmTrB27a
-	 cjdxE6GB+Lt/kQoldYTXx1re3Wb9kKnBWmzLZ9M6g38z9gv8nhj3CF/BPUgAZRyp2zy2R
-	 YkDg3nspFWT3JTwL74Cl76LwrV6b46nUkaVyOJfZqM8gYVIRcKxxaA+u8JNm8XenW+w==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793380016;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=1+QjOGUHNV6g3mx0sg1Jrx3XtV4BRZaSsgv5wHeNG7Y=;
-	b=EsM7dpyzh9+aOr9aVw2qYI+Ursky5NoN9NN8l8tP4UlM7aVhh4jqxpi+lur4/QAHacZX
-	 01fPNKbMU/1k80z5Qa2ytBdMa2lL5NPxRHdcZStZ5pyfJqvDEPXaQ5ZANFlNNkb31G3S+
-	 rHuoGvSDGoweDqCVobpD9GVWMJcHqqH8CZqo8IX8xoAaUvYnAVqVrHCHbxf187QzyZrMC
-	 5y67on6p1NyxvIkWRSE6mn+5JLvyOsNo6s65R2R8p42iAmKZzWJlkxO559ATQEuuqGkxB
-	 KQE3BoVxlReHyYKBTYqTPkSl4Vz5/viZ4FU0WP20Rxi3zE+LhJwOmKId2+hHNliWadw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=SuJJaK4Z;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=TRGII9Xp;
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.54
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793380075;
+	b=IUFe1bXQGNL4S02oYdd7oUt+/OtAI1Jam7rKm7xmeui8qzOPtZbjemErwtO6pl0RbO02
+	 R6aQ3xio59BPcCBFHuoms4TnZ4LVB0HNEnZpGd8MrcYwwVN0W2s62nsFBwVvVM/3toO3+
+	 YstgorGl17x4h6C9lmekBHNVnzVDnd6K5086PshXuKwitKELAam0uIGhB0c4jBJH3mUmU
+	 S/r/FSAKGLr3iYsoBL8nLXg0WDZBqH33pcOhaA7EKb2Xv6yV2NYGHMJG/+VjNtGLDfdDH
+	 EpHSL0uEHMJw43rgK8d3SQwUij2q+4u/xd29VZPbpAjNzweH+Vy1aVEvgZDpp73Ik4g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793380075;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=qob3acME+/uuwxiwUET/rYXw51dpGRAJwWeO+kYwEXg=;
+	b=jGgqnT/bZnlYZL1tROE2dq5Ho03p5zgDDHijGBb2+BDmO07yxbdXlgtQTmdG/9Gvgj/T
+	 OdH2JvD6ghfiZXEjkVgYbl8b51XRCMghQUr2RgbXCC38pPv7Jq+rHCbyz6WYDOJisAJ/M
+	 PFtj5F2OjKB9bz2nxhuPyRL6+HtqzU7wyiB9QjKucW7pXhqkeNsruJsZKhj/1kcBiRx5I
+	 RHlgK08gaqAqJI2afwXPS21/nuTNUKnh3ZaWt3sugUz5UN85ELWy+XtF7TpT44lVhO7As
+	 qxiojrncC1MjJHZfVQoYUsG3Ke3zArmBU9Q+Rn65kHsybHAzq1ikxJfTzB5yA5sUglQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=arista.com;
+	spf=pass smtp.mailfrom=arista.com;
+	dkim=pass header.d=arista.com header.i=@arista.com header.a=rsa-sha256 header.s=google header.b=VKpR58mA;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.54
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75EE2606A31A
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 17:06:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 75EE2606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6D4606A31D
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 17:07:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC6D4606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arista.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=SuJJaK4Z;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=TRGII9Xp
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69UERJmH4141730
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 17:06:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	1+QjOGUHNV6g3mx0sg1Jrx3XtV4BRZaSsgv5wHeNG7Y=; b=SuJJaK4Zqg0DHe1h
-	SRoGJjGUkObm9CxiFqWw31uBdcK3DtTay6zqM6fd70EdrYgdP9pN4IuYJM19eShP
-	MS8c9a3JC3AQZEiFTKZJe5TbBkLN64Vr8JQQu/T7eotTUOD7FJ631OoU/W1D7flU
-	JTxT8utX687E0yza46RPsPRio2KlZGfLY85B3brnZwxBflS9K7Qxa8oJnxYQGEsV
-	vDod39aMyq8ZP9IQQQZXgpv3G8mlEU6wt8gvddnikXm6LGhPpP2CFcYVVEGq8Vem
-	pd7NMRa3usW3xAXneXnbOippJNNFEUY1i2XaGaIYYQtRlNDcJMtsZauJhKDnVdUx
-	x7w7/A==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hme6qv3aa-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 17:06:54 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d02df2bf09so7493805ad.0
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 10:06:54 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=arista.com header.i=@arista.com header.a=rsa-sha256 header.s=google header.b=VKpR58mA
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c4550d8ab15so118260166b.2
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 10:07:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793380072; cv=none;
+        d=google.com; s=arc-20260327;
+        b=evP+6Z4DOAobCNti5Lf5+Lf0YEpxVMmb4JmpYy4i5HRMSz5z+QTQhdtL+QJ0oRENDi
+         TK9ezdzLskt4EiDmqLd0HWNoBVO2lEkCNFb1Rcb96CxVFCDSVkieMtvsfahsMhCPuUXz
+         XvKNvECENVpZn8O9tu2axGn7hCSF4WmKniZUFQznlDb7uksguqwe9NAUvVjXEOm8GDKG
+         CRyzeSV3DdM3E8nnV9Dj2rpcdMezSGZiV+5A5lAqgjCgbufP+5/O7PEFoVNtPvsI9zIB
+         6O8149nJzeqcWriJVgkOpHnLnQrChEwnD5sO/mJaFyVzu6UQCRGNYV18OlU+owSfAvkG
+         A3Dw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=qob3acME+/uuwxiwUET/rYXw51dpGRAJwWeO+kYwEXg=;
+        fh=cFwHVZpBoZw3rQNUJRmrHY7xFWtSxYepoKgCG4HjwR4=;
+        b=JVskWvoIOXisKsSWagVfddatDEtiu7MWJLi/Pe5gBJUj6xj3eCkFJIng5G09mTvNrD
+         4lCuVmKz11hsOtTkZPEfhukmUdEvcNP7jb1WUp7ClWbWx7nkmh3c5UA4ROxetRC7X7lm
+         hix7GiG7RtH/nMOsZypbu5G/keuqC3KkPVmU37vHu0IGS4yuQ/JOZJwk5F6t9KcpNhCh
+         2mEDL7h86L/NIJzCIqXqrALHCL6RwhZIex4kGRIonrKZuflMoHKI3QlUAk4dRlfEeKrm
+         l79ry6/Qeh+vjijcgjyRwdG44offAo3ck48Q8cWA5gK/tyD3Cm0h8K7jHcJeAB6r3q2/
+         QbEA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1793380013; x=1793984813; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1+QjOGUHNV6g3mx0sg1Jrx3XtV4BRZaSsgv5wHeNG7Y=;
-        b=TRGII9Xpc/FuBnDSjlOm4t6fD/3SGKWe5hlP8ctru6WibW5uoyyQcldlBKYPp4ryrc
-         Dk39lcx5aRp6p6hRmhk3jN+LiJLTysEcO2cSeKSBtOO924zJM8oN1V9IieHutPusBlfH
-         TPfq6n8ieCkO2spGR5WcWXbDYIlKZ6L1E7avd2LQbWpV0H7E7z7O9kkvZIMIf3U/o53G
-         CgtuSg141W7T0oUYMXtMAgS0oU+sbeU5Ja5coGXL2/Tr7AqXqOWZhzlMikurcuIBi8Ha
-         /eoRxMnBTofTGPfu7yvvBoJCyJCdq/6LPB4w8k17V7kN9c6cOP71utoYZ2OrRb04XzsA
-         0Cwg==
+        d=arista.com; s=google; t=1793380072; x=1793984872; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qob3acME+/uuwxiwUET/rYXw51dpGRAJwWeO+kYwEXg=;
+        b=VKpR58mApdXvWNJTEvtEi1xVLi2JLTQc671av8hr0+KgnoidMZyEH0u1IUeg+Y3EIU
+         4B/DrBBt111eScqZOtuvkmymJtUO/ejeBgMneMFisL4rbPFo/ubFrOZxJOqwQvhqW6Mr
+         HIFSP2Dn4MGi2O5/MXNrBb7Zag56z9CBNh62tGocFAN5k3cnNycFXqvCXRDwH5aPGbUx
+         zzz6xO9J5S8Wa0rj8FVFzEtfm8YGno5ebQ78UXtwRrhLo4xZ+8SKZfZyYalMtlZaHqST
+         Hj1MHF4OP1TqsuyxdbGlj1d87pnme5W+bU3J3M2BMpSkMVMA3u+36pYJQGvApnQ8lk0E
+         a5bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793380013; x=1793984813;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1+QjOGUHNV6g3mx0sg1Jrx3XtV4BRZaSsgv5wHeNG7Y=;
-        b=ZInGJTnAZScrLEZzSA90mbJ+hKd7VBMQ1RUX9JRG0tS7brKYv+YFB6kN5BnXm4RgZa
-         vV9qa04EG6OXj5OJUm4YilH4Krux2zBSMdHhWpSLeLYCAiX3ALzXh3XUpeJ5oFe0z+XQ
-         DfH17vEpbOch6h6mea96UieAf6cQBh4U30CAhYv1Qy4TxbSV2XrMTlS7ynDgq3VdP2zf
-         PlhmI0cxRxxyOC7Z0WfFN+5h2Dc0If2eTcco3VMJB99cJmSBPToU7cK7Frxp69D4NQhD
-         /wFcKfGolVPzjSs7GxOKRnOfmVEOrjxdcstfwtizLOyqqmdE9xqxu29alzUU50Yoh6fi
-         E2Ig==
-X-Forwarded-Encrypted: i=1; AKwUvBzzqmBQ3J7j4wuhaCYo29YsH1+Bx2bkkj5aDIJGSZEI4Y0k+Vo0EGnh1wYh96h/ukv8Y6+xaJI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI7w5PDJS+Gjtw8U/RKOKKBM2kO0ZLzJ56U3hlSVXNO/eI8oUtJ
-	bEX1uNt9Juw+8/Amz1fqXmNpyCivZjY2p8WCanuYEmMVNmmavKHu62ThtaGSxBk1ucb9n/16qYU
-	OxPUYS/l63cxPZygUhhsbouT9ULG+hDxQK7JV1ZZkpOlIh1HBy61WJynnVJ0=
-X-Gm-Gg: AYBFou24gOfxgdNSf3qAoz2OE57BNCKfKQu5S9W2HU5Q1WnXw17H/UW0MBXJHg+P3Ky
-	/L+uKnqM9sCjpX6OdaXJVdzu4mHvwv0sZClX1OgfqfDDppWcCZoyOayl8JMVR21tUwIM+3ap9tH
-	BpNRl2OOIEam/M0uMlWveGG/i1LqNwRQlolM5sESF6/O2aizRjnGJ9NBMd+hYXkSk10GEvoXp8y
-	n3Kxk1ruNqbtVgBXh967MFa8M45G6yJ4xkMJD22axkvc1A8eTfAQ0nVjvq4ponvtVsyvtqDn5ed
-	yQ+BL+T9iGkbfP0ePSmRxPEodr0lxkYtZMPltVH91tXyo398VE1eBLhVhR63wupIal5WuMf0ClZ
-	RLk7M0n1hKazB+2JkS0Owyd9HoliD72JCj85qkVHzbrtkmNGA/LzU3yYfcP1CvGVr7ItmEMb/+b
-	jCfufu9ua3rskx2AnlPuKBRMg=
-X-Received: by 2002:a17:902:f54d:b0:2e8:4f3f:60dd with SMTP id d9443c01a7336-2eb3645b7bbmr27073065ad.37.1793380013098;
-        Fri, 30 Oct 2026 10:06:53 -0700 (PDT)
-X-Received: by 2002:a17:902:f54d:b0:2e8:4f3f:60dd with SMTP id d9443c01a7336-2eb3645b7bbmr27072895ad.37.1793380012717;
-        Fri, 30 Oct 2026 10:06:52 -0700 (PDT)
-Received: from [10.226.59.182] (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb3927e526sm10442855ad.51.2026.10.30.10.06.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 Oct 2026 10:06:52 -0700 (PDT)
-Message-ID: <13f102db-287d-4d5f-a113-c5614a3cb7bc@oss.qualcomm.com>
-Date: Fri, 30 Oct 2026 11:06:50 -0600
+        d=1e100.net; s=20260707; t=1793380072; x=1793984872;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qob3acME+/uuwxiwUET/rYXw51dpGRAJwWeO+kYwEXg=;
+        b=ifsea7wnfVFwa+HspVuhG3JNF9gvJyWVtUKNKUt3qczTr1Sr297hCpX6divhb5eORL
+         9wc9syLV+bNt/FUsieJwEqykrfmm0r+EO6LIMss4+/29ubJFFySSlK5H3sG2WFuOpdyL
+         WQ0wx+OpxhU3Nm+4VI05StHyhUSD/s0FDIRwjOLEIC/0NjRZ7iAfTWeG4IvkKSVXC5xI
+         ShI7QurrcPEcHsYVeW3xGzWKBph8/3zdyA2V5AKxQck6bTT4ZFvHUXLK04slcRKyOgKr
+         kLsjshEbNSW39jv6suleJetihDkNqV4xd+0UgdL4MBLNQJ1bt7iO2KblLNjVsfrNSj0w
+         3iSw==
+X-Gm-Message-State: AFq9FYJG/4l9+bxIRnmYdDCUh9gRHIkAnSJAdNjnVS2JteaVrfhfft0y
+	VcUMxn2+RIK0ue1D1IBgjLjZRazhTDIbusMbVS4hlij7cQhOgYpBEGxCEY6mjNg+DyDAor4FxQV
+	Yu7e7Oj3a5izKCDxN9l2Nr6sryZPwlr0HYUuPPv8c
+X-Gm-Gg: AYBFou10YT6R25Gzd6eqJ/u8xjHg1w97nI3Fz26GHzIMPjdQgmZ+1YSZaH311MgjqUJ
+	r0KfOVnX12pHFg2FoHJLdzjHTvTMA3VUXnpr+5xo2lRxQsMdXJU54PdvgQtX93JFSdx5syXJqOG
+	9FsJLw5jVLUKEHKuAuoRZPHiTzOBEQfw4pidlRTi4MuJAGYSE9NHLYaHBo57+HLBmEfNR+oOpwd
+	aHjnDjv7j5qP5UPw93pvEkBUm9JU5K1FJPx+d4lWzypPkk7QqIX7NvWEOSpn7Wv9y2euCCJo7c2
+	PLVjTOsCOt1O4B/SXV6RBF8Zg5HzZ71EdbZQ8h3Xv8f6tE1LokZr8tSVL1WDLK5JNhCERDc/gjI
+	RENEtx/Y9IXizb3e0znxYZnAeWaqnelwzb3eEFcKsfUo3mgKPr4MLxNgeDs6mg+MStKDo+g==
+X-Received: by 2002:a17:907:1b1e:b0:c46:9d50:8af0 with SMTP id
+ a640c23a62f3a-c4ca7ad10cbmr261267566b.36.1793380071989; Fri, 30 Oct 2026
+ 10:07:51 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -116,143 +103,303 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] accel/qaic: Add callbacks for DRM RAS netlink
- telemetry
-To: Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>,
-        dri-devel@lists.freedesktop.org, netdev@vger.kernel.org,
-        riana.tauro@intel.com, aravind.iddamsetty@linux.intel.com,
-        rodrigo.vivi@intel.com, raag.jadav@intel.com, simona.vetter@ffwll.ch,
-        airlied@gmail.com, kuba@kernel.org, ogabbay@kernel.org,
-        lizhi.hou@amd.com, karol.wachowski@linux.intel.com
-Cc: carl.vanderlip@oss.qualcomm.com, troy.hanson@oss.qualcomm.com,
-        youssef.abdulrahman@oss.qualcomm.com
-References: <20261029203000.1763447-1-zachary.mckevitt@oss.qualcomm.com>
- <20261029203000.1763447-4-zachary.mckevitt@oss.qualcomm.com>
-Content-Language: en-US
-From: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-In-Reply-To: <20261029203000.1763447-4-zachary.mckevitt@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: UTUmv6P6259QBqBse4dCRDa3Wa7XEAOL
-X-Proofpoint-ORIG-GUID: UTUmv6P6259QBqBse4dCRDa3Wa7XEAOL
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDA2OCBTYWx0ZWRfX3aLNF9mMMnKZ
- 3vqP1EMlmBJ7OnDrsldIfnRo0tL5B2HhpRbeUprq4ErnB5NBFESHOlV6PWFwPm5w0X/ENiRSSlw
- JvWOodx4cZTL2uivUI/UQXfIu1p2j6zGFh/8xE4epTWOlFeVqsd9bnJ3w1WHe38IQ1+xvb6Yc+Q
- PiuD6eFf0D3zYYwCfKHKR8snC1x/n76MaAbprXvGburAweS3Bfms9oXRBM/gWng5pLSjr/NceJM
- 0Ar0RcXE5121bQ8wDTSGMNU3fUbdMlRR5zbbVYwXnurIreMWZ8dhtJqh0zSrINbgrV0sZoR2+ao
- Vofkwj8DpbUBuFvEQd5ZB25smCocOiPYhG7wlymtGyj2BvRdj+E/kf/rh+RWQJlM4YOr/7ZU+/H
- EyG7sbZ5NxQimWN2Qr09u3ZmaL/TOocDfFiYE2f4iN0kXSslf325MCLGGWn+XJ2gxGPCILr38GI
- 9PKtNv0iFT0uW34FD2g==
-X-Authority-Analysis: v=2.4 cv=dPgzC+Zb c=1 sm=1 tr=0 ts=6ae4ceae cx=c_pps
- a=JL+w9abYAAE89/QcEU+0QA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=sY8SXE2aXj8CL1lXyIYA:9 a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDA2OCBTYWx0ZWRfX+7dTmcKA4qSf
- MXsY7M/nsqlQdQfgg4EXcSXmv2VM2f9kW0gzJI6UBUrqf1Tc07amNdGkNfqyoJRUuKqE5FNzB7F
- l7SUk+59iS1yKDVjB/gJX5saTm189/M=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-30_05,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0 spamscore=0 malwarescore=0 clxscore=1015
- priorityscore=1501 lowpriorityscore=0 phishscore=0 bulkscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610300068
+References: <20261027024635.366900-1-prasad@arista.com> <20261030101535.GN257209@horms.kernel.org>
+In-Reply-To: <20261030101535.GN257209@horms.kernel.org>
+From: Prasad Koya <prasad@arista.com>
+Date: Fri, 30 Oct 2026 10:07:40 -0700
+X-Gm-Features: AclHuK-iy31HWG0hImZ2B5mI-iSu54uMUj-w_Tlsie6i_umsKnZ4WLRajsinLec
+Message-ID: <CAKh1g57V4xfLiXk68SMGnUGiAbXdnyEpxUz27bONxNyOQtT4OQ@mail.gmail.com>
+Subject: Re: [PATCH net] macvlan: fix allmulti reference counting in passthru mode
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/29/2026 2:30 PM, Zack McKevitt wrote:
-> @@ -611,6 +620,13 @@ static int qaic_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->   		return ret;
->   	}
->   
-> +	ret = qaic_drm_ras_register_node(qdev);
-> +	if (ret) {
-> +		qaic_mhi_free_controller(qdev->mhi_cntrl, link_up);
-> +		qaic_destroy_drm_device(qdev, QAIC_NO_PARTITION);
-> +		return ret;
-> +	}
-> +
->   	return 0;
->   }
+  Thanks. Please use the following Fixes tag:
 
-Registering the mhi_controller will kickoff a whole init and boot 
-sequence for the hardware. Feels like we should attempt this before that 
-as if this fails, we don't leave the hardware in a weird state.
+  Fixes: bbeb0eadcf9f ("macvlan: Don't propagate IFF_ALLMULTI changes
+on down interfaces.")
+  Signed-off-by: Prasad Koya <prasad@arista.com>
 
-> diff --git a/drivers/accel/qaic/qaic_telemetry.c b/drivers/accel/qaic/qaic_telemetry.c
-> new file mode 100644
-> index 000000000000..fdce7a71d3eb
-> --- /dev/null
-> +++ b/drivers/accel/qaic/qaic_telemetry.c
-> @@ -0,0 +1,513 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +/* Copyright (c) 2020-2021, The Linux Foundation. All rights reserved. */
-> +/* Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries. */
-> +
-> +#include <drm/drm_file.h>
-> +#include <drm/drm_ras.h>
-> +#include <asm/byteorder.h>
 
-A before D in the alphabet?
-
-> +#include <linux/completion.h>
-> +#include <linux/fs.h>
-> +#include <linux/fs_struct.h>
-> +#include <linux/kernel.h>
-> +#include <linux/kref.h>
-> +#include <linux/list.h>
-> +#include <linux/mhi.h>
-> +#include <linux/mutex.h>
-> +#include <linux/namei.h>
-> +#include <linux/path.h>
-> +#include <linux/sprintf.h>
-> +#include <linux/srcu.h>
-> +#include <linux/types.h>
-> +#include <linux/workqueue.h>
-> +#include <uapi/drm/qaic_accel.h>
+On Fri, Oct 30, 2026 at 3:15=E2=80=AFAM Simon Horman <horms@kernel.org> wro=
+te:
+>
+> On Mon, Oct 26, 2026 at 07:46:35PM -0700, Prasad Koya wrote:
+> > Enabling allmulticast on a down passthru macvlan, bringing it up,
+> > then toggling allmulticast off and on can underflow the lower device's
+> > allmulti reference count.
+> >
+> > macvlan_change_rx_flags() only propagates IFF_ALLMULTI changes while
+> > the macvlan is up. However, the passthru path in macvlan_open() skips
+> > taking an allmulti reference when IFF_ALLMULTI is already set.
+> > Clearing allmulticast after opening the device therefore decrements
+> > a reference that was never taken. With no other allmulti users, the
+> > unsigned counter wraps from zero to UINT_MAX. The next increment
+> > fails with -EOVERFLOW and reports "allmulti touches roof".
+> >
+>
+> Hi Prasad,
+>
+> A Fixes tag should go here.
+> (No blank line between it and your Signed-off-by line).
+>
+> There is no need to repost just to address this.
+> Replying with the Fixes tag should be sufficient.
+>
+> > Signed-off-by: Prasad Koya <prasad@arista.com>
+> > ---
+> > Reproducer:
+> >
+> >   #!/bin/bash
+> >   set -euo pipefail
+> >
+> >   ns=3Dallmulti-test
+> >   host=3Dam-veth0
+> >   peer=3Dam-veth1
+> >   mv=3Dam-mv0
+> >
+> >   cleanup()
+> >   {
+> >       ip netns del "$ns" 2>/dev/null || true
+> >   }
+> >   trap cleanup EXIT
+> >
+> >   ip netns add "$ns"
+> >   ip link add "$host" type veth peer name "$peer"
+> >   ip link set "$peer" netns "$ns"
+> >
+> >   ip link set "$host" up
+> >   ip -n "$ns" link set lo up
+> >   ip -n "$ns" link set "$peer" up
+> >
+> >   ip -n "$ns" link add link "$peer" name "$mv" type macvlan mode passth=
+ru
+> >
+> >   ip -n "$ns" link set dev "$mv" allmulticast on
+> >   ip -n "$ns" link set dev "$mv" up
+> >   ip -n "$ns" link set dev "$mv" allmulticast off
+> >   ip -n "$ns" link set dev "$mv" allmulticast on
+> >
+> >  drivers/net/macvlan.c | 10 ++++++++++
+> >  1 file changed, 10 insertions(+)
+> >
+> > diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+> > index afad90b9222a..e20d587453d1 100644
+> > --- a/drivers/net/macvlan.c
+> > +++ b/drivers/net/macvlan.c
+> > @@ -643,6 +643,14 @@ static int macvlan_open(struct net_device *dev)
+> >                       if (err < 0)
+> >                               goto out;
+> >               }
+> > +             if (dev->flags & IFF_ALLMULTI) {
+> > +                     err =3D dev_set_allmulti(lowerdev, 1);
+> > +                     if (err < 0) {
+> > +                             if (!(vlan->flags & MACVLAN_FLAG_NOPROMIS=
+C))
+> > +                                     dev_set_promiscuity(lowerdev, -1)=
+;
+> > +                             goto out;
+> > +                     }
+> > +             }
+> >               goto hash_add;
+> >       }
+> >
+> > @@ -713,6 +721,8 @@ static int macvlan_stop(struct net_device *dev)
+> >       dev_mc_unsync(lowerdev, dev);
+> >
+> >       if (macvlan_passthru(vlan->port)) {
+> > +             if (dev->flags & IFF_ALLMULTI)
+> > +                     dev_set_allmulti(lowerdev, -1);
+> >               if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC))
+> >                       dev_set_promiscuity(lowerdev, -1);
+> >               goto hash_del;
+> >
+> > base-commit: 7076f684d5132e6a6145e1da2fa74771ecd052e5
+> > --
+> > 2.43.0
+> >
+>
+> I'm unsure if it matters, but the order of initialisation of multicast an=
+d
+> promiscuity differs here from the non-pass-through case.
+>
+> Overall I think the approach you have taken here is appropriate
+> as a minimal fix for net.
+>
+> Reviewed-by: Simon Horman <horms@kernel.org>
+>
+>
+> But I do see that there is growing duplication of code in the
+> pass-through and non-pass-through paths. And I believe that
+> is due to the approach taken by the existing code of using
+> goto to control flow (other than for cleanup in error paths).
+>
+> In the longer term I think it would be nice to address that.
+> I took a stab at that. Perhaps I'm overthinking things.
+> But, FWIIW, this is what I cam up with (compile tested only).
+>
+> diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+> index a48c9e662fe9..f2a3cf540e4e 100644
+> --- a/drivers/net/macvlan.c
+> +++ b/drivers/net/macvlan.c
+> @@ -631,24 +631,31 @@ static const struct header_ops macvlan_hard_header_=
+ops =3D {
+>         .parse_protocol =3D eth_header_parse_protocol,
+>  };
+>
+> -static int macvlan_open(struct net_device *dev)
+> +static int macvlan_should_set_promisc(struct net_device *dev)
+>  {
+>         struct macvlan_dev *vlan =3D netdev_priv(dev);
+> -       struct net_device *lowerdev =3D vlan->lowerdev;
+> -       int err;
+>
+> -       if (macvlan_passthru(vlan->port)) {
+> -               if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC)) {
+> -                       err =3D dev_set_promiscuity(lowerdev, 1);
+> -                       if (err < 0)
+> -                               goto out;
+> -               }
+> -               goto hash_add;
+> -       }
+> +       if (macvlan_passthru(vlan->port))
+> +               return !(vlan->flags & MACVLAN_FLAG_NOPROMISC);
 > +
-> +#include "qaic.h"
-> +#include "qaic_telemetry.h"
+> +       return dev->flags & IFF_PROMISC;
+> +}
 > +
-> +#define MAGIC				0x55AA
-> +#define VERSION				0x1
-> +
-> +/*
-> + * Telemetry fields defined by the uAPI.
-> + * This table will be used by drm_ras's dumpit to display
-> + * each field to userspace.
+> +/* Initialise acceleration or add unicast address.
+> + * Skipped for pass-through ports.
 > + */
-> +const struct drm_ras_telemetry_field qaic_telemetry_fields_gettable[] = {
-> +	{"QAIC_DEVINFO_THERMAL_SOC_MAX_TEMP", 1},
-> +	{"QAIC_DEVINFO_THERMAL_BOARD_TEMP", 2},
-> +	{"QAIC_DEVINFO_THERMAL_BOARD_MAX_TEMP", 3},
-> +	{"QAIC_DEVINFO_THERMAL_DDR_TEMP", 4},
-> +	{"QAIC_DEVINFO_THERMAL_WARNING_TEMP", 5},
-> +	{"QAIC_DEVINFO_THERMAL_SHUTDOWN_TEMP", 6},
-> +	{"QAIC_DEVINFO_BOARD_TDP", 7},
-> +	{"QAIC_DEVINFO_BOARD_POWER", 8},
-> +	{"QAIC_DEVINFO_POWER_STATE", 9},
-> +	{"QAIC_DEVINFO_POWER_MAX", 10},
-> +	{"QAIC_DEVINFO_THROTTLE_PERCENT", 11},
-> +	{"QAIC_DEVINFO_THROTTLE_TIME", 12},
-> +	{"QAIC_DEVINFO_UPTIME", 13},
-> +	{"QAIC_DEVINFO_THERMAL_SOC_FLOOR_TEMP", 14},
-> +	{"QAIC_DEVINFO_THERMAL_SOC_CEILING_TEMP", 15},
-> +	{"QAIC_DEVINFO_VOLTAGE_CX", 16},
-> +	{"QAIC_DEVINFO_VOLTAGE_MX", 17},
-> +	{"QAIC_DEVINFO_VOLTAGE_NSP_CX", 18},
-> +	{"QAIC_DEVINFO_VOLTAGE_NSP_MX", 19},
-> +	{"QAIC_DEVINFO_CFG_TOPS", 20},
-> +	{"QAIC_DEVINFO_THERMAL_PMIC_TEMP_A", 21},
-> +	{"QAIC_DEVINFO_THERMAL_PMIC_TEMP_C", 22},
-> +	{"QAIC_DEVINFO_THERMAL_PMIC_TEMP_E", 23},
-> +	{"QAIC_DEVINFO_POWER_ACTION", 24},
-> +	{"QAIC_DEVINFO_SOC_TDP", 25},
-> +	{"QAIC_DEVINFO_SOC_POWER", 26},
-
-This should be in sync with the defines in qaic_accel.h right? Can we 
-just use those defines here?
-
-
+> +static int macvlan_init_vlan(struct net_device *dev)
+> +{
+> +       struct macvlan_dev *vlan =3D netdev_priv(dev);
+> +       struct net_device *lowerdev;
+> +
+> +       if (macvlan_passthru(vlan->port))
+> +               return 0;
+>
+> -       err =3D -EADDRINUSE;
+>         if (macvlan_addr_busy(vlan->port, dev->dev_addr))
+> -               goto out;
+> +               return -EADDRINUSE;
+> +
+> +       lowerdev =3D vlan->lowerdev;
+>
+>         /* Attempt to populate accel_priv which is used to offload the L2
+>          * forwarding requests for unicast packets.
+> @@ -661,40 +668,71 @@ static int macvlan_open(struct net_device *dev)
+>          * populated we must add the unicast address to the lower device.
+>          */
+>         if (IS_ERR_OR_NULL(vlan->accel_priv)) {
+> +               int err;
+> +
+>                 vlan->accel_priv =3D NULL;
+>                 err =3D dev_uc_add(lowerdev, dev->dev_addr);
+>                 if (err < 0)
+> -                       goto out;
+> +                       return err;
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +/* Clean up acceleration or remove unicast address.
+> + * Skipped for pass-through ports.
+> + */
+> +static void macvlan_uninit_vlan(struct net_device *dev)
+> +{
+> +       struct macvlan_dev *vlan =3D netdev_priv(dev);
+> +       struct net_device *lowerdev;
+> +
+> +       if (macvlan_passthru(vlan->port))
+> +               return;
+> +
+> +       lowerdev =3D vlan->lowerdev;
+> +
+> +       if (vlan->accel_priv) {
+> +               lowerdev->netdev_ops->ndo_dfwd_del_station(lowerdev,
+> +                                                          vlan->accel_pr=
+iv);
+> +               vlan->accel_priv =3D NULL;
+> +       } else {
+> +               dev_uc_del(lowerdev, dev->dev_addr);
+>         }
+> +}
+> +
+> +static int macvlan_open(struct net_device *dev)
+> +{
+> +       struct macvlan_dev *vlan =3D netdev_priv(dev);
+> +       struct net_device *lowerdev;
+> +       int err;
+> +
+> +       err =3D macvlan_init_vlan(dev);
+> +       if (err)
+> +               return err;
+> +
+> +       lowerdev =3D vlan->lowerdev;
+>
+>         if (dev->flags & IFF_ALLMULTI) {
+>                 err =3D dev_set_allmulti(lowerdev, 1);
+>                 if (err < 0)
+> -                       goto del_unicast;
+> +                       goto uninit;
+>         }
+>
+> -       if (dev->flags & IFF_PROMISC) {
+> +       if (macvlan_should_set_promisc(dev)) {
+>                 err =3D dev_set_promiscuity(lowerdev, 1);
+>                 if (err < 0)
+>                         goto clear_multi;
+>         }
+>
+> -hash_add:
+>         macvlan_hash_add(vlan);
+>         return 0;
+>
+>  clear_multi:
+>         if (dev->flags & IFF_ALLMULTI)
+>                 dev_set_allmulti(lowerdev, -1);
+> -del_unicast:
+> -       if (vlan->accel_priv) {
+> -               lowerdev->netdev_ops->ndo_dfwd_del_station(lowerdev,
+> -                                                          vlan->accel_pr=
+iv);
+> -               vlan->accel_priv =3D NULL;
+> -       } else {
+> -               dev_uc_del(lowerdev, dev->dev_addr);
+> -       }
+> -out:
+> +uninit:
+> +       macvlan_uninit_vlan(dev);
+>         return err;
+>  }
+>
+> @@ -712,21 +750,15 @@ static int macvlan_stop(struct net_device *dev)
+>         dev_uc_unsync(lowerdev, dev);
+>         dev_mc_unsync(lowerdev, dev);
+>
+> -       if (macvlan_passthru(vlan->port)) {
+> -               if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC))
+> -                       dev_set_promiscuity(lowerdev, -1);
+> -               goto hash_del;
+> -       }
+> -
+>         if (dev->flags & IFF_ALLMULTI)
+>                 dev_set_allmulti(lowerdev, -1);
+>
+> -       if (dev->flags & IFF_PROMISC)
+> +       if (macvlan_should_set_promisc(dev))
+>                 dev_set_promiscuity(lowerdev, -1);
+>
+> -       dev_uc_del(lowerdev, dev->dev_addr);
+> +       if (!macvlan_passthru(vlan->port))
+> +               dev_uc_del(lowerdev, dev->dev_addr);
+>
+> -hash_del:
+>         macvlan_hash_del(vlan, !dev->dismantle);
+>         return 0;
+>  }
