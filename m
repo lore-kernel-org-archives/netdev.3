@@ -1,58 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793353516;
-	b=vJBELtrwQ0eXGLgagobi6C7Kr8iwzLye2dao9XL9rfBhumiEFnIn9oJ/CtRknmvWrrUV
-	 f4aRHVHeM2Q6Fzx0+50Y0EMoyRdFIIP7Tcms5PYxc28Kuy2y+fbbveiyKQkjhGDfi76oW
-	 b8zRd/1W5kZshklLdtHUrL3g5U4WBOqVZjPvTD++3wM60b/4rUgxvbLTQbNffjKgT+MTd
-	 ydywLgGVv4JNLnzAhyRqTBvVMY60PfhuOsMx3smiMJX71avbzRYiaqlH7umbUpiVC/llg
-	 5GGeev3aiW98HqPA0a1KNy4AFWcFUOkgOJM2/bMCC1jsoSWDKEgizvyW3+oQYnVIdJQ==
+	t=1793353603;
+	b=T2H6tmhCX5sXGY9NryMhG7tR5bgI3eAFeQqvSLj3unhu+5PjCOftGsSHamNX1zZ4ze/F
+	 eVXn6LGivvbFgHosCFe2IC0wJmqLFjatE8Eu1/KkbOjq1cJOJslHS2Fjn0E3GA0SNOnD9
+	 iqjMRjVjdNQczF6vGRRjysga7eF2hRaIc59Q1N1ZtvWzQwuwV+9wV/4hqkRS5/2E/HlM1
+	 wBbJwmUDy+j64NXsea5yln+MSi4wWWkxpuQtRCwdoCD1YUAubWx+U9KksyXjdaa+tytRI
+	 Bbmph1sFrn6lTCq/jcjVZyPi5RVWsSt1ztv2b9F+M9BeIdNOUDIk/njqmazXLD1xWSA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793353516;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=+at7dZGwSvVu/7pH3+e+iC9k0A30G52g4dzyOrLdjBc=;
-	b=iJnWPsNDLT0DmF4z0UxYfg+9R7i0DX5YSvELtb57kY9+k6HEdpXdhcsHFtSjGEse/pdR
-	 yiKJ7YNqqcMDl9zpMd9hnHapc0W1f3jDt2Np4M9pnf+nkU7qTUwxJ+F+Ec9VHTTtsIErq
-	 ugmJJC8U79qpJeEpDWbIykxpZ8kkOxqLr/ZXlsj06OG0XKpZeXrXmkQsDmkocFCWyOckC
-	 MVvy5d/I7w3BdJTdaT1dmvdSx4r6JIrXDc1hOEr255T+uaUBh3VKNaQIUYzoZfz+crIU/
-	 PtFfyj9969WMhvlPQQpFaYxd7KhFhvDd1Jd1suFbpC+MEyAp6C4jo39QUD0UTXHxZgA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793353603;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=IOz4ue54IuUUiPM1zk33V1FdxBfzHmxJTDRmhyQa7XU=;
+	b=dMFEyh/mEDJO4JCrjzneHYJCtKvHaEjr4XQBf/pi+LKhPV5bz0sJieey979CI3jhOKBg
+	 uzUGRCfbhVclzYG1tHtjQ9NepzDbLUshpeaV/s94XkWyjKRuk389J4PFD//5pV7xfbzr9
+	 gvYbJZDfC9CEX8QYVtjKm3B7fmMqnPTA+Ue3fBCiXp9aH6aAWIs7kwATezjohtSdeSS0A
+	 EFQVUd+JgeVWlEgwH3CJfp+WohulD5KKbuBdlgz+4eR8vfXmlK0YquoAGrA3kZnVXiNqv
+	 gk+7QhN4jHAsFLWEvfAmjlURMxEjoJnmEgvI4l0QvkS3KgvLtvXv+asOGGV7iPByViQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=KakueTtm;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0kQNarSx;
+	arc=none smtp.remote-ip=74.125.227.130
+Received: from mail-pj2-f2.google.com (mail-pj2-f2.google.com [74.125.227.130])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B7F606A31C;
-	Fri, 30 Oct 2026 09:45:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83B7F606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9928606A31F
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 09:46:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B9928606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=KakueTtm
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id BB4781A1398;
-	Fri, 30 Oct 2026 09:45:12 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 80902603C2;
-	Fri, 30 Oct 2026 09:45:12 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8A1DD10328D09;
-	Fri, 30 Oct 2026 10:45:06 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793353511; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=+at7dZGwSvVu/7pH3+e+iC9k0A30G52g4dzyOrLdjBc=;
-	b=KakueTtmpKnc0gGtghPxjB49nubrJ6XBiNYam2pWHCZjYxJfRbCIXhWKJZ1V2YP2Kze+Vd
-	jqHOc7bT3gkJsajsa+0fpgL7ZbUYoJljuJVLoNG7WXE79CPkglquXiC/j1J23SnovW6uw+
-	XbEoekTVBSNP2OrPTHTvnuzgkaAhp46UX86u9vR1M/drKBX8OCfGwxWaiF1dfrF0pDmoE1
-	5s5f7X3Tuq6jZwPtW9Nt70g8TrBhoyM10I/y4yYn4N+H41IcB30NM8xCPkPr8JgFtXryXb
-	YsMacOQMfcv83V5yeoEFHiRiWfPKO+cIGIx9AxIWyMWpIjJ+QGVJO0RC3bYiRw==
-Message-ID: <fefab524-d29b-4d34-a638-6ad56674b2ed@bootlin.com>
-Date: Fri, 30 Oct 2026 10:45:05 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0kQNarSx
+Received: by mail-pj2-f2.google.com with SMTP id d9443c01a7336-2e651c30dcbso2873495ad.0
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 02:46:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793353602; x=1793958402; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=IOz4ue54IuUUiPM1zk33V1FdxBfzHmxJTDRmhyQa7XU=;
+        b=0kQNarSxZeE3Cgu1GV71IQdek42/dUZi3/owzf5Vhn4qSxRd1DyUIgfdlVEZ4HBb/C
+         VYM32ZLAbj4dljoJS/GPhetwNEkkYloNNXA9XdW28TQUKhX4pJl2aOPcutJ2jPZWxPZJ
+         mA6uT/BkIi0JbMbAHv7iJAMvQWG2CgRcaYFqne5jC4z/7mQcojmPslt2/MvEyFG43Sgv
+         uWg7TF056NBGJI33kAGa0OSnk5APUaPUzs5z0ECZD5fukdrTttMeZCjrH5IQ1zNCrBjj
+         B4R1XvC2/XOhfJiEEGil+7LysefNDT2yzXI9kEBdXd4K2FOw+x+AqPbqaPAPhvfMbWNl
+         bN2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793353602; x=1793958402;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IOz4ue54IuUUiPM1zk33V1FdxBfzHmxJTDRmhyQa7XU=;
+        b=Cl63h7B5z4+N8jArP7vJ5y2NcKfWPSef7Wy47xIQ7/w24/GTXDpj7grhUQ8oh5U0E6
+         ik4MwaMH240yJDX/1eXv3hBh8hnwoO8rdsm49jgEB7dpzXBs5jdyE39T1kMUDDlslfgm
+         12BOf81+XNFtWmhNbeI7xBChf5Rpazks9uHcmC9EnYtYOc5it1AdbOKJLlSmwBrcivE1
+         QA4KF+YmeONio9G5i04miOCfZish3Gy8oP/kJhZw3VzUnWz2uQ3u8I4OFb1miQM8PGNX
+         ajr4BDQrPTCMppvXasom3nP2ijjiC8DC1bsdR9NJMmOryh1/uJQXUH6MbhMJGqfREYzA
+         sLtw==
+X-Gm-Message-State: AFq9FYKB1h2Z+8C22QJ0kK7cXd62Q4G9qbeF3lYmW/42g3953ZF7Tn1f
+	5tNWCDHb/SkEGeRB1xK5zD1fz11Cre6mPhy3inaXlXw5uQarQfDc2H3x
+X-Gm-Gg: AYBFou11FdGVM8ZS4HWTKURoKqVWCXBCbyLArbreu/ae78Cd0GCqJFxbX9awPXo1VRr
+	NB6oaUpquRGOYBtZKF3uHarmu2HzVo6e2sFatkBnm2b34ZZDB4LX02Y/IUY4UnBW6HZw4d9US6l
+	D3KR2w47nReoPg8lmUXAE7KI5eAIGb9BW1i1H+9FUhHrT4GYu2waGI5Es92+JPBL2owjblL05hu
+	YapIE4CfsPSblrjtdG+feEMDyJhGel8KOb+hgzeXZJ/KQtFBUMH2jNhv5oelWBJBM1Qwk0zVfFe
+	hRJeNRUTXmKwXTB9xg3RXZLuPwPbF9w15z7UZqaJQh583JMZyVEOGEaNos6kOet95LC22fyVPO1
+	qXTqzlalNM0KRV7DaT+o8vj9Xd2ARd8uEzgptKMNJf1N/jbHI7bKETdxPKWLoyHHvqwiJ/bW2v+
+	Hq2sj+0XWQg5JE/nC9Kt6tIgPcdyF0kTR0psE7WXIdNgr5RxriqXOhp9UivoIegb3sHxL6tMO43
+	9aDGWLmQUQ0WF+ApI5oa7ZmgCZ8LLPM0Sfvl/L4vA/Xru4ssicfyx8fgSs0etC/hg6YFkVWcuGd
+	DeMl5krVJzVl2jmx5mdx68QHMOfKQiAkc26b3YoC83KPFGsh2xqMm/XGbw/EGJM=
+X-Received: by 2002:a17:902:ef03:b0:2e9:460e:ca49 with SMTP id d9443c01a7336-2eb3649be5bmr20449825ad.18.1793353602042;
+        Fri, 30 Oct 2026 02:46:42 -0700 (PDT)
+Received: from localhost.localdomain ([240e:46d:2600:2f3f:68c5:29e3:ffaa:7181])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb392aa7bcsm4998055ad.67.2026.10.30.02.46.38
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 30 Oct 2026 02:46:41 -0700 (PDT)
+From: Rongzheng Wang <testwrzwrz@gmail.com>
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: netdev@vger.kernel.org,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	stable@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v4 1/2] xsk: defer software checksum until the skb is complete
+Date: Fri, 30 Oct 2026 17:46:33 +0800
+Message-Id: <20261030094633.27910-1-testwrzwrz@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <CAL+tcoBThTe7299eVU=tsUdi392dS9cioXX5RA5AKRsYAGbdVg@mail.gmail.com>
+References: <20261030023248.78802-1-testwrzwrz@gmail.com> <20261030023248.78802-2-testwrzwrz@gmail.com> <CAL+tcoDUGqk-KfMBqdG4RBURHQc=9J+Ce7B7CZZWRN5yN7pRrw@mail.gmail.com> <20261030084017.16202-1-testwrzwrz@gmail.com> <CAL+tcoBThTe7299eVU=tsUdi392dS9cioXX5RA5AKRsYAGbdVg@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,57 +103,13 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Betterbird (Linux)
-Subject: Re: [PATCH net] net: phy: don't require RTNL to detach a PHY from an
- unregistered netdev
-To: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>,
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- syzbot+583f42a41879bb60de32@syzkaller.appspotmail.com
-References: <20261029142423.93573-1-ngocthang2710.1999@gmail.com>
-From: Kory Maincent <kory.maincent@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20261029142423.93573-1-ngocthang2710.1999@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
+Hi Jason,
 
+Makes sense, thanks. I'll wait for their feedback on the selftest patch
+before sending v5, and fold it in together with the rest.
 
-On 10/29/26 15:24, Nguyen Ngoc Thang wrote:
-> phy_detach_internal() reads dev->hwprov with rtnl_dereference(), but
-> MAC drivers commonly attach and detach PHYs while their net_device is
-> not registered, without holding RTNL. Before register_netdev(), a failed
-> phylink_connect_phy() or phy_attach_direct() unwinds through
-> phy_detach_internal(). After unregister_netdev(), a driver's remove path
-> may call phy_disconnect(). Both trip lockdep:
-> 
->    WARNING: suspicious RCU usage
->    drivers/net/phy/phy_device.c:1831 suspicious rcu_dereference_protected() usage!
->     phy_detach_internal+0x6a5/0x830 drivers/net/phy/phy_device.c:1831
->     phylink_connect_phy+0x22e/0x2b0 drivers/net/phy/phylink.c:2452
->     ax88772_bind+0xbb1/0x1520 drivers/net/usb/asix_devices.c:925
->     usbnet_probe+0xbb3/0x27e0 drivers/net/usb/usbnet.c:1812
-> 
-> syzbot hits this with an emulated asix device. phy_eee_rx_clock_stop()
-> fails on a USB MDIO error, so phylink_bringup_phy() fails and the PHY is
-> detached from inside usbnet_probe(), before the netdev is registered.
-> 
-> hwprov is only set through ethtool, under RTNL, on a registered device.
-> reg_state also changes only under RTNL. So if the device is not
-> registered, no one else can reach hwprov, and RTNL is not needed. Tell
-> lockdep that. A detach from a registered device without RTNL still
-> warns.
-
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-
-Thank you!
--- 
-Köry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
-
+Thanks,
+Rongzheng
