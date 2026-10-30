@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793399624;
-	b=BtAHCUORiEOAVH5N1W9HZeMDnLCfOLa5qA2CgglJhghTpczBRyFkQZe8SkChhK8wjrXC
-	 iv3Abj1i9GVhz5KOLbOycXHqeFFxJsl/eCobMp8DHfLHpRzxs8qPNC+6Shq88wQHkXLk1
-	 YrwhtL6qJhUPJy0hfTTW6zspWRIY5TWQsLyf8STW8sDmSex8Kc1hDPhyXgCy+f6IWmw9H
-	 gMj5o2Y5OCyi2JWSzzpQaSwpk5ozVunLQ9GBb5jrEUt+XOFPSWkKKeWYFtVXFRQaxGdAv
-	 Q4RX3lm2enNyJR/oslir5Ob6rxjVxrk4JBUGQ1J+82+WNkWLoIcdcT/tybjioYPGG+g==
+	t=1793399729;
+	b=YybtfBti1DK+kZ8sUwuPKuaG88GP5rM97jaBifFY5J6I85f+Dl1iZPlMdUYyPn5eW7Z6
+	 R66cOON2V+xLmu/Q+66fJznyGfh3hBuDpVD66tVAxQQx2i0lbim/NE9fXJZHf4GVBMiXN
+	 iaKbOzfdNEeCCOwADkjPNgS44dav9F1NAdGEhqCELgqL7tSC+n1CPui+8qEZppP80MD7V
+	 /boNMeqoMq0IkDtEfuHC20wYHtoGaJ2aHTOFKD5qqteBFDuPFldo24hWUhZNl27g7qsOd
+	 flvrHd1p4ZMII8G3PwYVBLpab80J0zWKqK3ditMtRrMclc2TzV+M0lhzTjM5FE1WMRg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793399624;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793399729;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=HCDkI+BzP0zTvfHzTEgMZGxHihmLBLovpb+ZElG6bg0=;
-	b=Y0sFbfXmdTH4A3SXC4MtSW9A/u87Nx6uaR6IsCoiAMM7Je71yWPqzPB1IYJ/u1TPCqKC
-	 gMoyCKvjnnv4m7jVJfDRYNaRDCkdstGMa5qzY77HdAY8wa3IgD7PDejj1xULEA6ygtSQI
-	 Zl52+N7ETgfITf/m914JaPvodfndbBXwhbsBbmPWBRvSF6CzqgLuwbU5+iY3KKzlBI4xB
-	 7s8SxiB8TNi3mROQbnCASXJp7XS0oNvShwUvLRU9UIZ1lt5h5MxgZXXGHzCYyffLOn4KT
-	 8tSdehJ7mONCygGHpoO7CkaeoQ6eDKXptPZrToap1TT1Pr/lkSbhFxw+39yho9L4uZQ==
+	bh=c5FNLKpGPBXCzLoL9l9FYqQQEEoOEWsMsTMyCRl19Zc=;
+	b=RUOqaBEooDZQOFPGKiA0kIehvb1MzX0Z4/7lf4tygjxE+pSNwY7xDKLWEcNGvpwzCGuN
+	 81njK/pB5GobTILXhTpf7VsAuslLNIosgrk49QW7ig4pEVOCRnjrYi2zKNVdKskCQ6z/R
+	 fGuPhIWGqhARyTyIOwL7Izj06htEg3PjGHKvWkHLvzALz02SuoEER12AF2XIF4bKF08gC
+	 sUsar+sN9Xdb51ONLlN1SqI+l+EWbyS94Vf6cGU3JcFhbV4I11A87wmsLyb10OuNrv1yq
+	 vC38Y2j55mYMj50X8f6bFmGp/lPQ8LNNBKjyPGjGe2ltG73o9WRSWfMsGEZXZP10uCg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fmY0mRE5;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OkAVJTFC;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050C0606A31A;
-	Fri, 30 Oct 2026 22:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBF6606A31F;
+	Fri, 30 Oct 2026 22:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fmY0mRE5
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461F01F000C1;
-	Fri, 30 Oct 2026 22:33:43 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OkAVJTFC
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 413221F000C1;
+	Fri, 30 Oct 2026 22:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793399623;
-	bh=HCDkI+BzP0zTvfHzTEgMZGxHihmLBLovpb+ZElG6bg0=;
+	s=k20260515; t=1793399728;
+	bh=c5FNLKpGPBXCzLoL9l9FYqQQEEoOEWsMsTMyCRl19Zc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=fmY0mRE5zQhua/jGYMFiEduqZiWNM9z5RsG5wnWCnJhKxSxIYzNmYykqg9UCbUxNQ
-	 WsTy+BNiK2YpAJdQciclRTuoPtwIW/pVenJ1P2IS+jaBb/2gbN7Z09Ue8ufpwx0RSa
-	 HUIn4BwK7pixq/P8I2RwFnZD4GJ0P9FsjLsOqB30zFgTTXzZY3OnjJPqh2ilx5Ec4I
-	 zjhINxkZ3bnJPBxLq8aWL8+fa+G83/V0x0pDZPsePjZRKgAoSmcEWm3C9FoeqRKpO9
-	 3ODxaVhWO6hxrIn7Qvzh5ZRoSvSwvVwET2/AIVXh3qk2jafVnK0VtdHtE2sPLdLaqI
-	 RVdKgsIBLoJpA==
-Date: Fri, 30 Oct 2026 15:33:42 -0700
+	b=OkAVJTFC9nkaS2ADOIv0tIoJtyBH5qhu95EVA4oWXJ/9qsc1MQ49NQkqmXHuTpWJB
+	 5v4axZyEgRpEmHfSq0Jx8tpk1n+Zd2gKVOmVc8a3+IWqMLdlmcpfdSQJ9zfSqd6KqH
+	 JpDExDI0wOP1MrsvLnPWUplPPLGexHaWt8pmY3YWUOULaZb793BmI6Le7gGSD84csb
+	 aY6K7OEsA93vjujjjOZtJGFnbA/QmhnpevRepB8vdSmKj14O4YPXRvrvIXNYqFLZ0f
+	 K4omWD3TnJtL1ES/mSuYcX390OmnuLkv5suaeQ1/2w7K+vmXHMvJm9qoehM+AAIXJ4
+	 01OiWnCU8Dsfg==
+Date: Fri, 30 Oct 2026 15:35:27 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Hongmei Xu <hongmei.xu@oss.qualcomm.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
-Subject: Re: [PATCH net-next v4] net: phy: aquantia: Add support for 5GbaseR
-Message-ID: <20261030153342.41d9868b@kernel.org>
-In-Reply-To: <20261030-aquantia-support-5gbaser-v4-1-7dfb0cf306de@oss.qualcomm.com>
-References: <20261030-aquantia-support-5gbaser-v4-1-7dfb0cf306de@oss.qualcomm.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: Alex Elder <elder@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Krzysztof Kozlowski
+ <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH net-next] net: ipa: Drop unused qmi_elem_info arrays
+Message-ID: <20261030153527.161df2d4@kernel.org>
+In-Reply-To: <20261029111059.85020-2-krzysztof.kozlowski@oss.qualcomm.com>
+References: <20261029111059.85020-2-krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,10 +64,10 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 30 Oct 2026 15:51:42 +0800 Hongmei Xu wrote:
-> Aquantia PHYs can operate with a 5G USX interface between the PHY
-> and MAC, reported as interface type 12 in the PHYXS vendor interface
-> status register (MDIO_PHYXS_VEND_IF_STATUS_TYPE_USX_5G).
+On Thu, 29 Oct 2026 12:11:00 +0100 Krzysztof Kozlowski wrote:
+> 'ipa_mem_array_ei' is not used anywhere, so can be dropped completely.
+> 'ipa_mem_bounds_ei' and 'ipa_mem_range_ei' are not used outside of their
+> units, so they can be narrowed to file-scope.
 
 ## Form letter - net-next-closed
 
@@ -84,4 +84,3 @@ See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#develop
 -- 
 pw-bot: defer
 pv-bot: closed
-
