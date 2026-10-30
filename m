@@ -1,13 +1,13 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.143.35
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793394047;
-	b=dFILclUzWT3T+qP9XIh4jMOk9+aw9kqjZmeBTIsg1xZomOWosTn+ikh/XWwVKAqdtGlf
-	 t6n5HD/uNmAa+lwv5wsBcxkePDZYuIlQTBb5QO5olWKTaGXtSiUDDplhdcwMdSZHpTqYj
-	 tQIX0VlcVw+rE2PO78cMWpI24Txft8ALJqWRAnKNNeTgjRIboVwzI0OLloLMHgS2+ZYTX
-	 DdT75rOLhyvNB6zziG5TDyJ882DDwZLwRnBPEzFHmWvUlg89AP453wGP8xS4e6GVSsCEE
-	 KNSM14kCySPfZF3QlHKxeqMF9JyTEjT2WF/DsNL0FSjxT6CfYrNNbhJjii1KwkucLYA==
+	t=1793394048;
+	b=SV1F4oeOqy6eJcT/A6/nAwEgF2vo46yBf/kpfugmoGTZxDLmLh+3Zts/riN8JcryuL9e
+	 QD5EPY7OP6YLUzE9r9f9R0Zll5K2LCxo9wi4WGKPqTIPzQrMP5ZK91SLl8TkiUO3c11DF
+	 UJSVP5HDPEho5eOI91Q4MYcQJF8P3yICFgbZiAjyGO18B3h1DfofCrLFqmGBkypAX3tUQ
+	 2xWrHXr8EFW5/u5+pTXKHjEkDOalNQSfAxIg8/Dr/BUP9VHp01pVr8CrpVzgNOlHaZ3xY
+	 UFp9LiJ8mwdvC4MKX7RZRpcaRTtTGQ7IzIv/b81SOfZJMKnc7u3IZ/gSPhMajGQ9gpg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793394047;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793394048;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
 	 Received:Received:Received:Received:From:Date:Subject:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:CC:
@@ -25,92 +25,92 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:X-Proofpoint-GUID:
-	 X-HPE-SCL:X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=fsBQPk4vTz6eo6R/4j52WHRIb0tf3+PzvQpLM2wfcLs=;
-	b=i6rojK1TfU9+kfX1X2l5Zn7ARXsp26S6900lPlPuUA9y3AngtWfiFFBylQcU+lxexW9T
-	 jmL3EIBJP6F+CkGJKS6RA2TySmmiK45yx7pk0kO6g8N/iogg8SjchzbUQjbqY305qin51
-	 bQJtc33SZOB1CzQPJigrSiMbqpY3JeBkiPeynwlNEXu3pxkpxLYBkZWTBsPd+Qr/0kOLR
-	 CxRRb3OKsw1LVxSbVihbNrF32OZRrMseUgZk2PnaSpWElq+tlt+Uetk2PQK90V7sG/lt8
-	 8CemnZgtXLHIZHWpqva1REDHqMLD35xq6v5iDdZ5FlvmesfrgSLKXBZ0UBnWp/kgTbg==
+	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:X-HPE-SCL:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=LaQqsRxqcz+0ebZE3xpaGXcAgVY7WNkjDdvOMKyIq+E=;
+	b=FMQL62HniXI3MwTuhEiW1fgI/TXEBLz9Uh2dx05HiD6+SRtKCt2uvDiq91oBA+nv/SXm
+	 mwFgA8VTh59rwIwdCDfbWy9KNp/rMYpbpS6Q3AoX9gOHhgQmoGM7AfJl/CVrZEptKJEOy
+	 PkV7reb1X7VSwmwgoMr6PfW+Vnr2w6or3C+Z+iF/av5WR+Kz8ohFYS/Ywbbffwbi51Pc6
+	 kyxKLYKphDyTUrQp8CUvLYqXWFbetHA4m3wgX8Y5w9T5N84eYxQ6qVAtqYme2ORkSjvjf
+	 BSPxXykIixw5kKRCLXHwKT/m/YiOPpkKWAP+URH7oLTaUU5vrNZcG/tWUJV9PkNKwBg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=hpe.com;
 	spf=pass smtp.mailfrom=hpe.com;
-	dkim=pass header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b="Ay+s+EG/";
+	dkim=pass header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=V7X1yLad;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.143.35
 Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0C8606A31D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D087606A31C;
 	Fri, 30 Oct 2026 21:00:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D0C8606A31D
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D087606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=Ay+s+EG/
-Received: from pps.filterd (m0134425.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69UKPY3E956908;
+	dkim=pass (2048-bit key, unprotected) header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=V7X1yLad
+Received: from pps.filterd (m0134424.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69UHvYWD1038185;
 	Fri, 30 Oct 2026 21:00:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps0720; bh=fs
-	BQPk4vTz6eo6R/4j52WHRIb0tf3+PzvQpLM2wfcLs=; b=Ay+s+EG/ll8YjlElvw
-	0eeB4vuyl+n29hawess8mVyPGO7HYMhpHk+3wnT8uFSJJeuKQKqO4utCPLwsMdy/
-	uPNTu91B82T3gNbe7rqqCR8McIWPG3bbTGgy3EZCyePkspQMPHst86ByxO33EvnG
-	BeYdPkNxDKVk4MToAD/38SoNNItLSutG01qDIPNY4NDM+vYIIxAuIHwlNS8TPmhJ
-	Y8BnqJG96BPYstB6BgmudH1luSTizKGVUt/dv+D78zVIzSnf0Qise3qLsHO24NDk
-	B/epnhj4zJ7/slUS0JsfhJYys30D/9bEbs/nyfs8StQycJ6WYUk6ZJvJI+dNaKWV
-	qmRw==
-Received: from p1lg14881.it.hpe.com (p1lg14881.it.hpe.com [16.230.97.202])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 4hn28b09p7-1
+	:message-id:mime-version:references:subject:to; s=pps0720; bh=La
+	QqsRxqcz+0ebZE3xpaGXcAgVY7WNkjDdvOMKyIq+E=; b=V7X1yLadI9Vmpg1BIB
+	rNsrD3kAEBsr5PBBH3c5YOYjoyerJ5ikXoz+DCTyWg0s5qNHSEWHpLzLmZSEAXQQ
+	I/zcAtbN1u66fvYsKNKYqnlYVjfuBSBu4Bye1QPk/C1x8yW3qi2fD2g+h9waO8XX
+	TPmGwat8qVnO2irlWdw3FfR4Jr7g/zrKK2V91+bv1EWHYki0PoExsqTGWIOG59my
+	kEUBdLbYXhDMAtxMNOAl8R3qPFe4GtOCX/rsbR3rxTmyPzyz+sg902NPZTzFBGPD
+	NzykCDWq44Z8tNwIgq2lFELezzk8hW4ETFxa0bcXiMyoPejqvaKtLbqS28/Oz6Gs
+	zRIw==
+Received: from p1lg14879.it.hpe.com (p1lg14879.it.hpe.com [16.230.97.200])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 4hmx98uj0n-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
 	Fri, 30 Oct 2026 21:00:10 +0000 (GMT)
-Received: from p1wg14924.americas.hpqcorp.net (unknown [10.119.18.113])
+Received: from p1wg14923.americas.hpqcorp.net (unknown [10.119.18.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by p1lg14881.it.hpe.com (Postfix) with ESMTPS id 9443C8047A0;
-	Fri, 30 Oct 2026 21:00:09 +0000 (UTC)
-Received: from p1wg14926.americas.hpqcorp.net (10.119.18.115) by
- p1wg14924.americas.hpqcorp.net (10.119.18.113) with Microsoft SMTP Server
+	by p1lg14879.it.hpe.com (Postfix) with ESMTPS id 22E03147B1;
+	Fri, 30 Oct 2026 21:00:10 +0000 (UTC)
+Received: from p1wg14928.americas.hpqcorp.net (10.119.18.116) by
+ p1wg14923.americas.hpqcorp.net (10.119.18.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Fri, 30 Oct 2026 09:00:08 -1200
-Received: from P1WG14918.americas.hpqcorp.net (16.230.19.121) by
- p1wg14926.americas.hpqcorp.net (10.119.18.115) with Microsoft SMTP Server
+ 15.2.2562.43; Fri, 30 Oct 2026 09:00:09 -1200
+Received: from p1wg14921.americas.hpqcorp.net (16.230.19.124) by
+ p1wg14928.americas.hpqcorp.net (10.119.18.116) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Fri, 30 Oct 2026 09:00:08 -1200
-Received: from BL0PR07CU001.outbound.protection.outlook.com (192.58.206.35) by
- edge.it.hpe.com (16.230.19.121) with Microsoft SMTP Server (version=TLS1_2,
+ 15.2.2562.43 via Frontend Transport; Fri, 30 Oct 2026 09:00:09 -1200
+Received: from CO1PR08CU001.outbound.protection.outlook.com (192.58.206.38) by
+ edge.it.hpe.com (16.230.19.124) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Fri, 30 Oct
- 2026 21:00:08 +0000
+ 2026 09:00:09 -1200
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QzhIF0j7H06D3ZYMCqXAuMIQ9ESjnJ9pflTUaXgaxPmlFNj9fIKLRXROhGEM6xiCk1zqjwtrjX6tYHhoTjQc4W4wW1z20npunXZg+gfaO4O0wcqfwLCLV6Y6vE4ojOD/tKeH+yPjKPCNM0NmNyMVKAU/sSTODoo3T5ebfZ7egyfHMLsxRWtLydkaQAiwOzx+9nmNemv1kxa6S6uLCiJrghNCdTFWWdQv0U9jD15mMgFMLrc/INkXm4Of/0ZY/KmKzESvT/U1428ZF6dc8+i9+qCCLR2LOHtCHx7748QCh7iFAdGQLnRETeQnGqQS1Ox1BAxkFBfMcw4iDoIlJLNMyA==
+ b=FqPjeyB7zDhePo2EUCTGQXhvq09roaKkojYuKS9p3Rk3bw5Jk8tXQUeOJwgzJAfdRQ3kvD0LR2yLjWwaHArelqt2pS0ISjKIPNRtCu28YkYRrzb+eBv7Vedjn9yQ969B6dnl7GNrfQ8pVKgtzGrfQwFS4AdlUzorJHUCMoi5UpvjM/gSCIFm6No6323val34Ele96qAGxKexDWBAR7H2Iylq5sKdFTkolVeJXgZnD6vuGrVhHBJMIDJX6uYmgs9QJGFxDk27mgozLqYvwOO6WB4GNPpOn707xa/0FhfyGDQpN+waDyFSbDG/HQ0Ms5nBqLk+XbvybxHd3kKV0fQbYA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fsBQPk4vTz6eo6R/4j52WHRIb0tf3+PzvQpLM2wfcLs=;
- b=lqobkmbcpflyiPgBgGLqlrNg1M9NAWFjssbm7F4p/UU87tWjqlEENPYAF8eGDoZgqn8kNvahpjvKCGHahO/kET08olo8Spq+/TbcqLb87dbv7CU3Hl2SvY0ZrFCRYEjGdudyp5Ej2dtvQfcxFSDkfb7gps2g2sqjnqu1VTOWvK8GFwBso/qsO35SKwFu0UWJ22xCFtgejcqF3FyNIBRZFMqkaFt4jj/RGJvjwgyUGY6X2kyUfN9o9JYKwCErIO0WKf2DP5Vb9O13dvWY4D20BbYYQZtA7NSGMlLV7vz+Nsq65PmMy0BOosIY1BCKw/1gLdkLd+FLTJ3xAMjtQJlUGg==
+ bh=LaQqsRxqcz+0ebZE3xpaGXcAgVY7WNkjDdvOMKyIq+E=;
+ b=BdfuRjszQqAnDyiIDZa9nrOKYwkCvWg+Z6stER9BR0sRbCT9rcr1n+sVGs+NjaGghJYnARdKNegZkZo4rmxvQWHQMm04UBF2evnHPdnXzHVbM7qfRUeOZjY2OAjts6vwE+yOUpgjbzZl6fDoO37VSJhyhBak2mW+rZfeW7ppMpnD0Nh3v7pBgl92dpnCyMLRzrJpz+65+LW8oSC8l7J0AxTSTzEBQ29DzQ9d24v40xuLTh70Ypdq7t9vEUYoeCII/KWK2WeFIeamS4D7DSDc7yWHM+9LucoT/vzrQ7COTXn4VR6njO/vp9FuH1xENa62IBtRiQv+AbZLvAPcPJjbdg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
  header.d=hpe.com; arc=none
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=hpe.com;
 Received: from DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:8:225::20)
- by LV3PR84MB3767.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:408:1d3::11) with
+ by IA4PR84MB951192.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:207:144::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.9; Fri, 30 Oct
- 2026 21:00:00 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.10; Fri, 30 Oct
+ 2026 21:00:06 +0000
 Received: from DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
  ([fe80::d136:e75e:53c5:73d8]) by DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
  ([fe80::d136:e75e:53c5:73d8%6]) with mapi id 15.21.0569.008; Fri, 30 Oct 2026
- 21:00:00 +0000
+ 21:00:06 +0000
 From: Doug Ledford <doug.ledford@hpe.com>
-Date: Fri, 30 Oct 2026 13:59:00 -0700
-Subject: [PATCH 04/23] net: hpe: sbl: add the SerDes layer
+Date: Fri, 30 Oct 2026 13:59:01 -0700
+Subject: [PATCH 05/23] net: hpe: sbl: add the PML link layer
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261030-cxi-netdev-submission-v1-4-8c2c391cc283@hpe.com>
+Message-Id: <20261030-cxi-netdev-submission-v1-5-8c2c391cc283@hpe.com>
 References: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
 In-Reply-To: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
 To: Slingshot Open Source Team <slingshot-os-team@groups.ext.hpe.com>,
@@ -130,11 +130,12 @@ To: Slingshot Open Source Team <slingshot-os-team@groups.ext.hpe.com>,
         Guenter Roeck <linux@roeck-us.net>
 CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
         <linux-kbuild@vger.kernel.org>, Doug Ledford <doug.ledford@hpe.com>,
-        "Mamila
- Santosh" <santosh-kumar.mamila@hpe.com>
+        "Sandeep
+ Bhoot" <sandeep.bhoot@hpe.com>,
+        Mamila Santosh <santosh-kumar.mamila@hpe.com>
 X-Mailer: b4 0.16.0
-X-ClientProxiedBy: DSSP221CA0006.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:8:3d5::17) To DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
+X-ClientProxiedBy: BN9PR03CA0507.namprd03.prod.outlook.com
+ (2603:10b6:408:130::32) To DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
  (2603:10b6:8:225::20)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -146,1191 +147,3139 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR84MB3970:EE_|LV3PR84MB3767:EE_
-X-MS-Office365-Filtering-Correlation-Id: 47d917d7-b163-4138-bfd4-08df36c8c2c4
+X-MS-TrafficTypeDiagnostic: DM4PR84MB3970:EE_|IA4PR84MB951192:EE_
+X-MS-Office365-Filtering-Correlation-Id: e9cbdb66-affd-4db4-ade6-08df36c8c619
 X-LD-Processed: 105b2061-b669-4b31-92ac-24d304d195dc,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|261022075727099003|261026135527099003|261022113327099003|261022115727099003|261022105027099003|261021133027099003|261028144727099003|261021123027099003|261021135927099003|261021130227099003|261021121427099003|261009223027099003|261026121527099003|261026130827099003|261026140227099003|10067099003|56012099006|5023799004|6133799003|3023799007|18002099003|22082099003|921020;
-X-Microsoft-Antispam-Message-Info: myh0EhBL1vuUwqZyPT9TZmHCdAx2CEDTMSwFMK+kQ/RkngVrdI/GTgE4TX79D4SrPZ6cL9QoZcrOlAuhApjun63JxYeTauhMHh/eUw9GNuyHbkyjKSR2BK7pcimPcDWxte171BLaAihutTR3StBg+H+9tSr2B6NXSVE3hIR3BRi9dsN/HWqVZWOXhgkx+hWmmvz8kdRko8FhBj3pIMYSequxTyikHzxk8ZRPeBj1F9my3RtYqspEdMi9v0YxxAGxS+6XuV4JZ8bxp+Mg4l2Rj4vW3uU1n94RgIEp0hbIbGbHCpbGnOOZegQuqE2A/Lrxx6wwBsARv4wB0bUr8jgxoslhNVoKe5BvIkJpVCDKhbef4a1PxOSjO7gCKgr8+zgD5Lc/w6qGzy37XDjG98z2Rug0BMq5cbS0yHtJs2Jk6lRGqs6jdi1LlU/UAs/9MrkoZ6dc9o5O6WJzus8rLgodJePyad9L7Yja+E4Wopaqk1EVy7J68Sd9zbkd762q0V5PBvqMmum1/1XNRTqi2Cirq77Lbyx0zhny0D96A0+fX1BSiGD1dqHIYhLo1vNyRF9+y6TSQak1J4QSVy6ImJlWoVx7AfeLSmJbzcWKjcagZb5ULdi/+ZwOTieVdanUUvG0PYipFyl2OhqP+lpQ5Ie257eYldu0CnkDFAqGhnYIiflNDAVot1N4MbUZN8rdwGPZtt2Mlgu+Y1NQnX5yOZ+Vww==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(261022075727099003)(261026135527099003)(261022113327099003)(261022115727099003)(261022105027099003)(261021133027099003)(261028144727099003)(261021123027099003)(261021135927099003)(261021130227099003)(261021121427099003)(261009223027099003)(261026121527099003)(261026130827099003)(261026140227099003)(10067099003)(56012099006)(5023799004)(6133799003)(3023799007)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|6133799003|18002099003|18092099006|22082099003|3023799007|921020|56012099006|5023799004|261021121427099003|261028144727099003|261026121527099003|10067099003|261026140227099003|261022075727099003|261022113327099003|261022105027099003|261021123027099003|261021135927099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info: 4IBgnVkHaniSClcrG9PD46qz1OJ96EAgpjfPzwXVtNAycSkiGa+HLRZ+dPzDdoaIAlfCUa2V4TrGjLefHL8tpPtzc5UuIP8jlj3tY1DhjpyLBoxd/NyTU5Ifyvpq7CbmwQkALXHxRQDPZpAYSfHp57lUImprP1YgxwMHwSW+hrpBXsCDUpzgRRd//EyxriaW8HSiRWxibSvnGLS1RWJ8JGFSl1tH80WSarMuzZycw8sOoXKKo+G3M/SkgbDRqvm1m9SBjcb63P51hSzSSeb8UJFHGXbq9GTXK4yzlbOFdWW0LQSMCMeK5CrPrcuT4bCsqB4FGwr9ltZJls9bNNgeNakGVyFBY4ceHp4sv2UFdIiRW+r0m0v5XsWKNV17hXIAa9faXWoE57Kbv/KFAG6VYSgy+CnklYbaxm4rqSBSMv5GKoU61voHR3eO3Bz7snC2u660zmgu+kylvZN+zu0VDvmjRtYe4D1iDLy/ZbYw7IwFYFl+PmO53ClYEwERQ9937W5ZfuBcM5K6aPv4eWeYtLIgR9fl+UGGfgg63C+l+qu2uRG6rQ7GJsXbemRkl3xWz+HUk7IP4y/M1faYTvReD2T6vBxLukn24rWmR2z+PApCOqpxojjMU4W1qsFHpsGAJ10Xt8RkKORCKJfgE8X3YqBdjHcXWtoOaK3xUGXPyx5J+4Oi8DTnGSGv2MTqUBDVD/3OQGEqzdoKfVhuMk4D9g==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(6133799003)(18002099003)(18092099006)(22082099003)(3023799007)(921020)(56012099006)(5023799004)(261021121427099003)(261028144727099003)(261026121527099003)(10067099003)(261026140227099003)(261022075727099003)(261022113327099003)(261022105027099003)(261021123027099003)(261021135927099003)(261009223027099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RHczbU1zMXp4L1p2LzR0Nmx1VHEvdnBFZGVVNVFPd1pabkNlRzdnMll6eUZE?=
- =?utf-8?B?endBb2w4Q3RaM28zZXVpZDAwTEdrZHNIK2ZuYkZlS1J2WlZrc21mZVFaV0RN?=
- =?utf-8?B?RWtjSzUwdGg2M3JMUzRReDZReUtvcHB6bWE1cWdxejdKcG1JWmxGOE1aRzJR?=
- =?utf-8?B?YTArR2FTM1RUdlltUDlXMVJwUmhQSlV6bjN1aDhQOXRjdkJkdUMwTG9tWGZi?=
- =?utf-8?B?MnByS0JEamdnV0ZJdU8wQ1VIT0JLN0dKN1Z5Q2RkR2g2cjg3Mko2R2lqUXBl?=
- =?utf-8?B?Y1lYV3h5UVdGNEhxazh2TWpwdmEydzRnNjRvZmJUNWFqenV0aXZZRlI5QTJU?=
- =?utf-8?B?R2xNazFvQnpNa0JudXE2UFBTR0ZWay9wcktlaHVQRWx6WnlnUXdpYTlKTldH?=
- =?utf-8?B?NmVLb3NTbXRHT1o2alZBdXpCLy9kOFdxR3RyQnVQTXhQaUxkd2ZPWUVBL0tz?=
- =?utf-8?B?ZjJZQks1R2FlZ1ZMR3FIR3JNQm55TUQ3ZGJTblNxQkhOYkVWczM0Z1dWWkls?=
- =?utf-8?B?N0ZLVzY4OFZGYmJTNmsxZDJhc2lEMTVFa3VMTUNRd3ZPd1FJRGtZOVdmUDI3?=
- =?utf-8?B?R2hqYXJITHFObXlYejFUTWo3N0pCUzNKQU82NUhvMUJmbGpXdFZ6VlNNR0JN?=
- =?utf-8?B?YlRWcDUwaDZLSDZOU2xIVlhpM1ZwWjZCK1R1SUZOQmNlcVA3OEtBc3E0THNl?=
- =?utf-8?B?NytvdEowOEZSMEpCN2hlYmVzUUhEWXptcWZ2bUlPUGZ3M3BpRWxWaXBqNXhl?=
- =?utf-8?B?ZHMrR3BqOHF0WVBFdy9oZW04Qmhtdmg2Tk95aVJmUi9pQ2JRSnBNOWlIVWRu?=
- =?utf-8?B?TzFQL0t1T3prNXIrRCsyQlJGRzl1TW1UcUM0WEdHWmJ5cysyV1VZdFpyWlJ3?=
- =?utf-8?B?NHhJSlBpUWdjbHZyeTdKK1orejFEQXlHdUtycEVzSHV0ZGcwS2VHNDUrRDFL?=
- =?utf-8?B?aXkyL3VIVFNpcjhFaVdMZEplRnpzMDlISS82Q243L3RTbndFd3NId3BiQWcz?=
- =?utf-8?B?c1ZzUzRieG1TVnBRejNmZE1LMW1WbG9ONjAvSnVqa1pYNTk5UjVQZ25rZFV3?=
- =?utf-8?B?Zk5kWnRDTEZETTgyeUNBcHJHRldRcE9va29kdlBwSmJzeHIzbWhSZTZqR0Zk?=
- =?utf-8?B?WE9rUGRXaEoxSkxvUmx1UmdNSHdmenVOVmkzWjl5NGN1K29TY1Y2VlNpU2x5?=
- =?utf-8?B?RWRRdjRPRkxndGRadEE5WmVGZCtqUnFWTStXVmVROG53Mm1uOUVXNmZaZ2Vz?=
- =?utf-8?B?QkVSUGh1encxU0plb0dvNmxDdmIxbmk2VmFHaFlBcVc1Rk45WStUNEFtYmJE?=
- =?utf-8?B?VkNSa1A4WVc1SXdrRjVGTlNIMS9UTEJkbTNGNDNnL1dtTms4aFcrRElaRVBt?=
- =?utf-8?B?eStsTXd6SURrV0R4cFlBZGFxT0lEdmx4REpaalZIZ05xUGwvb2pPRVFXQVpp?=
- =?utf-8?B?NWp3UGk5VEdIRVltdlkzM3RaTWk5N01IVWZSQ0JqVy9IeDE1N1FVNHZ0QTBS?=
- =?utf-8?B?WTZ3dkRLVkd2NCsyS2Urc3QwczNEQy9MbTh3d1N2KzBXa3ZBMG1LcFlnTkVU?=
- =?utf-8?B?eU5hQ3g0QjZZWnVYeVMxVk44ZVJqQ09jSk9nMmN3VEJWQmZLbEtKSzI1YnB2?=
- =?utf-8?B?WE9RREFuczI3b1ZaK1RhWkJpeldEOU1YeVVUN24zWlpYVDZ5RWhWWE9hQzNq?=
- =?utf-8?B?Wm9EL2ZyYXdVYzh6dDA5T2tzN0dPR3VWUmJ5QUhDNm5tenZKcnp6dVV2bnht?=
- =?utf-8?B?c2tWdlM0ay8zKzFaZnVWbHEwWW84d2N6T01RaDNUODlkYThYMStMc2pJQkFU?=
- =?utf-8?B?OHZrdXN3SXpyYWQ5dWd4eTdadkxzZ1Q4VmgwSEFaQy90QURIZEEweWlwc0tX?=
- =?utf-8?B?MitkMkJ1TVI2bmlDalRPUlRHTWdRSlVuTnRFWmJISUovMGNIQTVpSDVkdHZV?=
- =?utf-8?B?ZTR1QlQrNG9HOWVlUEI4TWdHNWJBazFhYW0vbXp1K0ZIZ016bWdIc28yaG03?=
- =?utf-8?B?bzFWOXo1WXUxOE14ZW9Mc0lxRk95REhJUVBwamVWZkFtNm1XS2JDdGk2MTlE?=
- =?utf-8?B?Qk9wVDhHMnhUdE9mMUxJVlF4NHFXWFVGSlFYUHZDajQ0SXpIdXhmU1hFNVY4?=
- =?utf-8?B?bG9BSnZ1SHVuSnI4UGlBaTIwSjBzYlFtUGRkM0lVbjFtUHVnUFFIdTdXVVpz?=
- =?utf-8?B?Uis0b2p5QmpycG9LTXRxMzI0aVAzUU9vd1BQR3hyOWY0dDFkdmI0MkpSSFJy?=
- =?utf-8?B?WWp1TUdVaEg1ZkJPRW1Fa3Rjb3B1WlBXaUZwWWcxbkhiK0xxRFlRaGwvQ3Vw?=
- =?utf-8?B?SHFGUUllNk5EUEFrNjhWTEFpemVuckZWOXNYNS9OeFRhSVVEZ1ZyQT09?=
-X-Exchange-RoutingPolicyChecked: EGNz6LnvMxO7hPNqwrcQb8GfSdutmvlg7VD490tbWiSkGy7T2NZjHij8pqWSuxi/fMV8vtatMCPuuU2YI6hesUYRbv/SR4OMByxwNnSat1Hxfe7Q2BC9AlHKzCG6Dgh1spyQDTtZJrz9asnOAviKgwwi2nVXeS+M3l3QL+Utl1TxOCmEMb8BJN4PGl/7sqDy96o+ZzzRW7oB69C9qR8v7Xnc7VqofsSYHho9FqD8d1ilj+VJJ2XqA4FcgeFNn0V4YxcRrNalZaZU66Pm2BuIn1W3y2biZak6W8fE46tJNHUusJV0Snjm1I2HmNE0GCWQsIcNTesKkBhI+2ZL3HLSCw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 47d917d7-b163-4138-bfd4-08df36c8c2c4
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VjNrNDl3Y0xpZ0RuS0JBbTRQdTdIS29VaWZLYXgxaXg5bGcxK2IrczdsaFJC?=
+ =?utf-8?B?ZWZDU2FXbU43N2sycG83c1d4cmYxZ1JCT0ZpT25lenlFUjBRaE5PRnozOFNy?=
+ =?utf-8?B?RWRMUFMvMlBiNEUyOEQ2SmF4bWRSSEN2ZnJ3WFJMV1FsRU9hNHY4RzNtcGtN?=
+ =?utf-8?B?SE9QdWhFaFN0ZVRHc3AyYkNrRW1zeS9vTDFLSXFvOG1ZN0EzaWxDNU8yaFRV?=
+ =?utf-8?B?amJLOUs3T0c4T1I0R0VKTWdweXBzaDd5alNxWTVaNHRCWDM5UThyU3BlYm1P?=
+ =?utf-8?B?QW9GcG9xMUxiVkpQcGhrcW1nTXVtU29rTjlQS1N5SmhsdzZYMkI5dE94RVk0?=
+ =?utf-8?B?d3VXMFFOd0RjRzRpOW1wdFNJQU5SM1J6TlBIZ0hKOEYrQ0ZVaVVlUkhJa1cw?=
+ =?utf-8?B?SlVUbVdBbXdiVEQ3RWV5QWxONTlxdjE3eHVsTmliMUFkUG5yZllXRmkxM2FF?=
+ =?utf-8?B?c3kwcTBVYzhHVEpyRmdJSjBmQk9XN1p5bnFLbHM4UVVNN084ZXhoTmo5ZnI2?=
+ =?utf-8?B?dTE0bU4xTlQ2QnFub0Y3V291dDFsNkhBbmloSGk2RSs2L0FyalVmc1RFdXJ2?=
+ =?utf-8?B?eVQzMUUwVGdpUlVQK0JiRHBkUUU4L0FiTTF6RXE4YytVT2lIRzNrMHZubGVr?=
+ =?utf-8?B?RmxPNTllSGQ4NU8vQ2Iwb1dIV1d1MUNuZzRYUHdXZDBRSWVLOVZ1THZKUWs0?=
+ =?utf-8?B?K2Y4Qm41N3g2ZzFwUWdkY0ZkSHRidlZsdU9rUjlJVUpXUTZtc1FQUVFzc3k1?=
+ =?utf-8?B?RXl6WjUySGNJRmZXRkErQ2twd0I0ajJFUmM2MWgyTVZBNzdPNWZKM1VzOVBq?=
+ =?utf-8?B?akRuR2wvSzhlM2lURFlZQ1U2QUpXelozSU1NamxHdXNGeklicVQrS3FYdHhw?=
+ =?utf-8?B?T21UeDUxMFRUUnB4SHNvbFRrTzdlVCtpem13bXppdE5uMElGd3ZvRlBrZ3dv?=
+ =?utf-8?B?eHJUckhNTFQ1c2tUSnVDYlJSVFd1MVBvaHd0RU9EaGR2OFAzVmo1VE5HT3NC?=
+ =?utf-8?B?SU50Nm0ySjRpNy9mZVJtVURRRlkycXBWWEk5TjdCZGlUUFhodWEzbTl0dGtX?=
+ =?utf-8?B?eldVamZQb3pjT0pTYU53bXdVVHRvSUdrODVla09NTXpTc28xMERUOG5OR1VC?=
+ =?utf-8?B?VXAvMFk1eTFMZ1BPWmt1bmtMeTFHUHo4VlhQbkxZb3pKK1NFZ1pmL3Z6UDJD?=
+ =?utf-8?B?MkxpZm1QZUtwUzhmNTd3Z1IwNExLMElkZFQwWnNWUHhWZlM3SGFVS29oMkNn?=
+ =?utf-8?B?VEowelRhRGhkWUVldnJOT1lPa2lvTW9PMm5ldEVLMXRVZlMwUktiaXVFZ0xZ?=
+ =?utf-8?B?VlNGc1BPZ3FjRE1tc2V2Nm5HSGV1SEhvVHFLNTlLTE4vUjhMRU56bTdRaVpZ?=
+ =?utf-8?B?VStDeHZ6am9uang2UlZ2ZnlZckZKL0c1NDQrcHpzYUVISnI2YmxhL1o1QWV3?=
+ =?utf-8?B?ZUtRVkZzMVlwdnBVQ2dsQUZCQ282amdrSUp2TzFnWEt2TG1qTUYwelR4UWxr?=
+ =?utf-8?B?T1kwcHF4YVVQL1BXOFdpNWhWSXRucGtpd3ZUNDR5SHNYVlZaekVzQXg5SFVp?=
+ =?utf-8?B?c3NPdTRTWFYzVVprL052OWtxUk9MSW94d2xmaFM1SVRDUmdhMXFzYStWUWoy?=
+ =?utf-8?B?bkM3Y0FTUzFGWXJTbzdrU2hIcHVNWTdHbERhdWU3c0laUHdQSENSblExT0dG?=
+ =?utf-8?B?UGl5ejMzU3hNYWhjemo2MjM1WXM2YmdxUFByMXhWMjVPZkVTb1hMc3JYZURr?=
+ =?utf-8?B?RlVqNXF6dFBOWDVGcWpwMlZyWm9Ga2w2SExWMFhRQXVsMFpQckV6aWdQcFZE?=
+ =?utf-8?B?M3lOaDFhQWFJaUJicnMveEFUSFlNZzVEdjdZWnFhdi8wYitBR1VTRExNQUpW?=
+ =?utf-8?B?b1FKeUJyYzIwOC85TmtVNHFOaTBRYUluMXBUYm00bGZoOUxhbHhiUzlsYkpB?=
+ =?utf-8?B?SzloOHVUd1B5WWdSditCQXVJUkE1NUxBMFBxNTE5aGxEK1VPdXp6NUZ2cmFt?=
+ =?utf-8?B?akZCQ2dPcTNjSzR5Q2JSUlpYV3cwQUQyZVhIeXczbllmT0tKNDUrTVNwU0s4?=
+ =?utf-8?B?NWNxc2ZTUEdjQlduOEcyRWlvUG5NdG5aTnVna2lERmN4c0V1UGdNOGxveHFj?=
+ =?utf-8?B?eElaUEREN1VYZHkwejRxRGdFVkUzQjRGR0ljRUhNSWJsdzJPZG4zbXdvaEtZ?=
+ =?utf-8?B?Q09mVnNYaU9JUmNLdmtaTDZqb01VNVlvQmozU2RWcU9JUGIzMlFjLzY1bWdp?=
+ =?utf-8?B?VUpQNlhBbk56U2NnNUxFMzNlZUpMOTVpbTJ6NHZ5MGQvNldIQXBnN2ZCV05E?=
+ =?utf-8?B?Uzk0WlZFMnhDYW9ycVFXUFFIWXZ2NktGNlRxK2NrdmNPYmJYcEQ2Zz09?=
+X-Exchange-RoutingPolicyChecked: hM+JdayHJhrJ6/vgWHgBN2g5T/Bth8N3OAlCZXvDcbmFoEURztwallGWSvfQMQPTntsPm1EfNUmfZcUUAFD5m8oeyAK8BHlB8oN+ZCKIMTjBHgiRaytng4zyKjDdTker+w4dicMBJW4nW92rFTf1ighK/jPwQWyZD8A34vHaw0rrJhofrs+d+oMbnyyhcU0d9Ht01RPOH2nZgN+La8/xm7+CZJ/Up+TrIYaboBGKk+AKx4AWkkciFSbFNCZGg7202QV6W7Il+Dp9s11YhZq7yOtaAnqanBNHN5pJQjowtFpya7nZu+h8LRz+TySzBy4fguros9y9F3qhTRV1+iZ6PA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9cbdb66-affd-4db4-ade6-08df36c8c619
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 21:00:00.7381
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 21:00:06.0727
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 105b2061-b669-4b31-92ac-24d304d195dc
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qgbAg5my2wHGL98PWTbtd6oALM1ggKaJ8YqylrBqij1Ssjzma3WWr1dyYu4cp/vhny4+t1h6RKCjTkMMK1xxVw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR84MB3767
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4NLxAYfZn+Ijs033f4OHnroXQbMda3Qv5qsnCmTn89hHLS0cUyI1pKBjnk5cutu9szOfH83rOprpDhH+sCddAQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR84MB951192
 X-OriginatorOrg: hpe.com
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfX6ShRL4KDw3xx
- PuXupTuTVmoHVcezSGSKIdyBPoh+LwDeOhVdEC5MXGJ3VrkxM8x/IsYB13Fgmxg6dAPk2oEApA+
- kTVfLzyhYOoC9HnPFwKkmRPagXR4k2hxFwNBxl3KO+Cb3w50sIbVqCj0MYH+pgqbDMh//Ht7Nu9
- aqAoHpSvoMcUNWn5CjLBiNwFw4OzBw3AkdDyxkUDfYYFdQNj2xx9JA7bFTVokI45N1pV3e0fhOK
- kHvcIdcQq5d9LtO2X1DdH/OmpO0XwDIaYXYwE3t5GCH7M8qnoNu4YMaXOnMmNWUZQmGdH4B4eAo
- 9iMUtRB4/1vPc5i+EXN1cjthlLjlLcyxMmiZJDQYhLN1uakTuLG/F/9k+KPYCGyYl8HqU68CJc3
- r9KAPUEOvIJUfHAY/MCY7iHeMJInhSU44VCRN9HQ52rZ/0Xcroon/OGW+HmOnhfklbpClXMYh9n
- s+VlFwxb7GA+CrlOgfA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfX1EMimP7HMUdg
- JD+2ceWMVgdeza2Ldym0zSEMdykIU0YUzCjU37Rigb5NO9SEiEDw7Do0QTlf3Go63N6xc9RshCP
- SfWz1BtJJOSbTiZ49RG9YudhTyEJ+mQ=
-X-Proofpoint-ORIG-GUID: yG6fLZG8c87NwtHXoYx49ygFV66IMb8k
-X-Authority-Analysis: v=2.4 cv=P8+vFSAu c=1 sm=1 tr=0 ts=6ae5055b cx=c_pps
- a=FAnPgvRYq/vnBSvlTDCQOQ==:117 a=FAnPgvRYq/vnBSvlTDCQOQ==:17
+X-Authority-Analysis: v=2.4 cv=QOf91QLL c=1 sm=1 tr=0 ts=6ae5055b cx=c_pps
+ a=5jkVtQsCUlC8zk5UhkBgHg==:117 a=5jkVtQsCUlC8zk5UhkBgHg==:17
  a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
  a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
  a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=gQcMVamqm3wCPoSYhaRC:22
- a=ZSrvDirOKP4VPF05hnFf:22 a=MvuuwTCpAAAA:8 a=iTzTgzf_AAAA:8
- a=wzg1yKxi0KSakgm5DiMA:9 a=EObSGzcHVnEKk7FG:21 a=QEXdDO2ut3YA:10
- a=JL7qxNyGISI99KadRA9B:22
-X-Proofpoint-GUID: yG6fLZG8c87NwtHXoYx49ygFV66IMb8k
+ a=3haJ9R1Aw3gUfsUHDaCR:22 a=MvuuwTCpAAAA:8 a=7Is5PNyc-Z3HrKzonxwA:9
+ a=7J2o5t3KS26tSaJB:21 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: MCCJWv9_q2eqxGD0i9yuku0oufNsQn4A
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfXw55rdD2ZwhOh
+ saaI78bJMLJV/nu+h/Rl5GxLcdrzOXkiP78xozDeUVTO6jNifz3xsxvWNCkVzbjRqgzpP0trf5j
+ EgAUAfBQ5jltne69clYgey/bguOkRuSVRHR3rw6XPsindRWUL4XuGW0/E5ybUWQSdQEFRutLKSn
+ cPvdE5SvVgBC8unE5Psc+1zGsaUjJ8cismTd1REMnxeX3yg+7+8Xj9Q+MCI/t8Otwmdgvx3xbsE
+ BA0jk/UxAK0TXcmuL6kbnBnq1fKH20mYu6IP2snXZgPBD4RKlcJTH5jf6Bt/uUaTszm5BeTkUjJ
+ +I/onq/pfR8roDezGqpfbObxnOtQcI9JHCRljCn1riw4BWM9l2vpyN0RJQDIu4dnPhTMsDSYpHK
+ qpu3SykeIabKGPmMthLXI6ukHawfNq+9fF6jlYXAJ6LZiN9klo49+AtrFp8xfyNVsEEi1N4L0SE
+ Er8qoliqZHpvMd8GQEQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfX5LBm0ctMYya0
+ Sx6BAOZsVTKPa5LZ4N3jPUfNc7i3CZklYtiNDasXbWkNV94DvtYLhCI8LEnNCNT8u6SiORWHUtl
+ 5gMfHz8u96kQSCuVyldspHvdgBE/nGM=
+X-Proofpoint-ORIG-GUID: MCCJWv9_q2eqxGD0i9yuku0oufNsQn4A
 X-HPE-SCL: -1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-10-30_06,2026-10-21_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 malwarescore=0 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 spamscore=0 adultscore=0 clxscore=1015 phishscore=0
+ clxscore=1011 phishscore=0 lowpriorityscore=0 spamscore=0 impostorscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 priorityscore=1501 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610300083
 
-Add the SerDes layer: per-lane configuration, the autogenerated lane
-map, and the function-pointer table that lets the PML layer drive the
-SerDes without knowing which SerDes core is present.
-
-sbl_serdes_map_autogen.h is generated from the hardware lane
-description and is kept in generated form, so style checkers will flag
-it for line length and macro layout.
+Add the PML (physical media layer) code: MAC, PCS and LLR (link level
+retry) configuration and the SerDes operation hooks.  The *_nic files
+hold the parts that only apply to the NIC; the base files are shared
+with the switch variant of this block.
 
 checkpatch --strict (100 columns) still reports the following in this
 patch. They need coordination with the internal repositories this code
 is maintained in and will be fixed in V2:
-- WARNING: LONG_LINE (45), BLOCK_COMMENT_STYLE (36), ALLOC_WITH_SIZEOF
-  (2), ENOTSUPP (1), LONG_LINE_COMMENT (1), LONG_LINE_STRING (1),
-  TYPO_SPELLING (1)
-- CHECK: UNNECESSARY_PARENTHESES (37), BRACES (13), ALLOC_SIZEOF_STRUCT
-  (2), PARENTHESIS_ALIGNMENT (2), COMPARISON_TO_NULL (1), LINE_SPACING
-  (1)
+- WARNING: LONG_LINE (33), LONG_LINE_COMMENT (7), TYPO_SPELLING (2)
+- CHECK: BRACES (20), PARENTHESIS_ALIGNMENT (8), UNNECESSARY_PARENTHESES
+  (7), OPEN_ENDED_LINE (2)
 
+Co-developed-by: Sandeep Bhoot <sandeep.bhoot@hpe.com>
+Signed-off-by: Sandeep Bhoot <sandeep.bhoot@hpe.com>
 Co-developed-by: Mamila Santosh <santosh-kumar.mamila@hpe.com>
 Signed-off-by: Mamila Santosh <santosh-kumar.mamila@hpe.com>
 Signed-off-by: Doug Ledford <doug.ledford@hpe.com>
 ---
- drivers/net/ethernet/hpe/sbl/sbl_serdes.c    | 1117 +++++++
- drivers/net/ethernet/hpe/sbl/sbl_serdes_fn.c | 4310 ++++++++++++++++++++++++++
- 2 files changed, 5427 insertions(+)
+ drivers/net/ethernet/hpe/sbl/sbl_pml.c           |  787 ++++++++++++++++
+ drivers/net/ethernet/hpe/sbl/sbl_pml_llr.c       |  736 +++++++++++++++
+ drivers/net/ethernet/hpe/sbl/sbl_pml_llr_nic.c   |   34 +
+ drivers/net/ethernet/hpe/sbl/sbl_pml_mac.c       |  220 +++++
+ drivers/net/ethernet/hpe/sbl/sbl_pml_pcs.c       | 1085 ++++++++++++++++++++++
+ drivers/net/ethernet/hpe/sbl/sbl_pml_pcs_nic.c   |   53 ++
+ drivers/net/ethernet/hpe/sbl/sbl_pml_serdes_op.c |  145 +++
+ 7 files changed, 3060 insertions(+)
 
-diff --git a/drivers/net/ethernet/hpe/sbl/sbl_serdes.c b/drivers/net/ethernet/hpe/sbl/sbl_serdes.c
+diff --git a/drivers/net/ethernet/hpe/sbl/sbl_pml.c b/drivers/net/ethernet/hpe/sbl/sbl_pml.c
 new file mode 100644
-index 000000000000..4db5bb1a0bb9
+index 000000000000..367c3184fb79
 --- /dev/null
-+++ b/drivers/net/ethernet/hpe/sbl/sbl_serdes.c
-@@ -0,0 +1,1117 @@
++++ b/drivers/net/ethernet/hpe/sbl/sbl_pml.c
+@@ -0,0 +1,787 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+/* Copyright 2019-2022, 2024-2025 Hewlett Packard Enterprise Development LP */
++/* Copyright 2019-2023 Hewlett Packard Enterprise Development LP */
 +
++#include <linux/types.h>
 +#include <linux/kernel.h>
-+#include <linux/device.h>
 +#include <linux/slab.h>
++#include <linux/device.h>
 +#include <linux/delay.h>
++#include <linux/sched.h>
++#include <linux/jiffies.h>
++#include <linux/init.h>
++#include <linux/timer.h>
 +
-+#include <linux/hpe/sbl/sbl.h>
 +#include <linux/hpe/sbl/sbl_kconfig.h>
++#include <linux/hpe/sbl/sbl.h>
 +
-+#include "sbl_constants.h"
-+#include "sbl_serdes.h"
-+#include "sbl_config_list.h"
-+#include "sbl_serdes_map.h"
-+#include "sbl_serdes_fn.h"
++#include <linux/hpe/sbl/sbl_pml.h>
++
++#include "sbl_pml_fn.h"
++#include "sbl_link.h"
 +#include "sbl_internal.h"
++#include "sbl_serdes_fn.h"
 +
-+static atomic_t sbl_next_serdes_config_tag = ATOMIC_INIT(-1);
-+
-+static int sbl_serdes_stop_internal(struct sbl_inst *sbl, int port_num)
++/* Bring-up PML block of a link */
++int sbl_pml_start(struct sbl_inst *sbl, int port_num)
 +{
 +	struct sbl_link *link = sbl->link + port_num;
-+	int err = 0;
-+	int serdes;
-+
-+	sbl_dev_dbg(sbl->dev, "p%d: SerDes stop", port_num);
-+
-+	err = sbl_port_stop_pcal(sbl, port_num);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "p%d: SerDes stop: port_pcal_stop failed [%d]",
-+			    port_num, err);
-+		goto out;
-+	}
-+
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		err = sbl_set_tx_rx_enable(sbl, port_num, serdes,
-+					   false, false, false);
-+		if (err) {
-+			sbl_dev_err(sbl->dev,
-+				    "p%d: SerDes stop: disable failed [%d]",
-+				port_num, err);
-+			goto out;
-+		}
-+	}
-+
-+	err = sbl_spico_reset(sbl, port_num);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "p%d: SerDes stop: spico_reset failed [%d]",
-+			    port_num, err);
-+		goto out;
-+	}
-+
-+out:
-+	if (err) {
-+		link->sstate = SBL_SERDES_STATUS_ERROR;
-+		/* Try and recover from errors with FW reload */
-+		link->reload_serdes_fw = true;
-+	} else {
-+		sbl_dev_dbg(sbl->dev, "p%d: SerDes stop: done", port_num);
-+		link->sstate = SBL_SERDES_STATUS_DOWN;
-+	}
-+	link->serr = err;
-+
-+	return err;
-+}
-+
-+/* This delay is to give time for the optical transceivers to lock */
-+static int sbl_serdes_optical_lock_delay(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	unsigned long last_jiffy;
-+	int err = 0;
-+
-+	sbl_dev_dbg(sbl->dev, "p%d: optical lock delay", port_num);
-+
-+	if (link->blattr.config_target != SBL_BASE_LINK_CONFIG_AOC) {
-+		sbl_dev_err(sbl->dev, "p%d: optical lock delay - config not optical", port_num);
-+		return -EINVAL;
-+	}
-+
-+	link->optical_delay_active = true;
-+	last_jiffy = jiffies + msecs_to_jiffies(link->blattr.aoc.optical_lock_delay);
-+	while (time_is_after_jiffies(last_jiffy)) {
-+		if (sbl_base_link_start_cancelled(sbl, port_num)) {
-+			err = -ECANCELED;
-+			goto out;
-+		}
-+		if (sbl_start_timeout(sbl, port_num)) {
-+			err = -ETIMEDOUT;
-+			goto out;
-+		}
-+		msleep(link->blattr.aoc.optical_lock_interval);
-+	}
-+out:
-+	link->optical_delay_active = false;
-+	return err;
-+}
-+
-+/**
-+ * sbl_serdes_load() - SerDes initial load function
-+ * @sbl: pointer containing target config and state
-+ * @port_num: target port number
-+ * @force: reset and flash even if current fw is at the correct
-+ *        rev and build number
-+ *
-+ *  When power cycle or controller boots, This function
-+ *  Applies the SBus speedup and flashes all SBM/SerDes firmware images
-+ *
-+ * Return: 0 on success or negative errno on failure
-+ */
-+int sbl_serdes_load(struct sbl_inst *sbl, int port_num, bool force)
-+{
 +	int err;
 +
-+	if (!sbl->is_hw)
-+		return 0;
++	sbl_dev_dbg(sbl->dev, "%d: pml bring-up starting", port_num);
 +
-+	if (port_num == SBL_ALL_PORTS) {
-+		err = sbl_apply_sbus_divider(sbl, SBL_SBUS_DIVIDER_DFLT);
-+		if (err) {
-+			sbl_dev_err(sbl->dev, "p%d: SBus speedup failed [%d]", port_num, err);
-+			return err;
-+		}
++	/* serdes must be up */
++	if (link->sstate != SBL_SERDES_STATUS_RUNNING) {
++		sbl_dev_err(sbl->dev, "%d: pml serdes not running", port_num);
++		err = -ENOLINK;
++		goto out_err;
 +	}
 +
-+	/* retrieve, flash and release SBM firmware */
-+	if (port_num == SBL_ALL_PORTS) {
-+		err = sbl_sbm_firmware_flash(sbl);
-+		if (err) {
-+			sbl_dev_err(sbl->dev, "p%d: failed to flash SBM fw [%d]", port_num, err);
-+			return err;
-+		}
++	/* pcs must be sending am so link partner can tune */
++	if (!(READ_ONCE(link->link_info) & SBL_LINK_INFO_PCS_TX_AM)) {
++		sbl_dev_err(sbl->dev, "%d: pml pcs not tx am", port_num);
++		err = -ENODATA;
++		goto out_err;
 +	}
 +
-+	/* retrieve and flash SerDes firmware */
-+	err = sbl_serdes_firmware_flash(sbl, port_num, force);
++	/* make sure we have time left */
++	 sbl_start_timeout_ensure_remaining(sbl, port_num,
++					    SBL_PML_MIN_START_TIME);
++
++	/* make sure am locking is enabled */
++	if (!(READ_ONCE(link->link_info) & SBL_LINK_INFO_PCS_ALIGN_EN))
++		sbl_pml_pcs_enable_alignment(sbl, port_num);
++
++	err = sbl_pml_mac_config(sbl, port_num);
 +	if (err) {
-+		sbl_dev_err(sbl->dev, "p%d: failed to flash SerDes fw [%d]",
-+			    port_num, err);
-+		return err;
++		sbl_dev_err(sbl->dev, "%d: pml mac config failed [%d]", port_num, err);
++		goto out_err;
 +	}
 +
-+	return 0;
-+}
-+EXPORT_SYMBOL(sbl_serdes_load);
++	sbl_pml_llr_config(sbl, port_num);
 +
-+/* link partner detection
-+ *
-+ * This function will attempt a serdes minitune. This fast tune will only
-+ * succeed if the lp is sending AM using the same mode as we are using.
-+ *
-+ */
-+int sbl_serdes_lp_detect(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link;
-+	int err;
-+	int tmp_err;
++	/* keep trying to get the PML block up until
++	 * we succeed, timeout or have a fatal error
++	 */
++	while (true) {
 +
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
-+
-+	link = sbl->link + port_num;
-+
-+	/* in loopback mode the link partner (ourself) is always present! */
-+	if (link->loopback_mode == SBL_LOOPBACK_MODE_LOCAL)
-+		return 0;
-+
-+	if (link->sstate != SBL_SERDES_STATUS_DOWN) {
-+		sbl_dev_err(sbl->dev, "p%d: serdes_lpd wrong state to start (%s)",
-+			    port_num, sbl_serdes_state_str(link->sstate));
-+		/* leave state unchanged */
-+		return -EUCLEAN;
-+	}
-+
-+	link->sstate = SBL_SERDES_STATUS_LPD_MT;
-+	link->serr = 0;
-+
-+	for (link->lpd_try_count = 0; true; ++link->lpd_try_count) {
-+		err = sbl_serdes_minitune_setup(sbl, port_num);
-+		if (err) {
-+			sbl_dev_err(sbl->dev, "p%d: serdes_lpd setup failed [%d]",
-+				    port_num, err);
-+			goto out_err;
-+		}
-+
-+		/* If the other end is there then we should block for no more
-+		 * than 5s
-+		 */
-+		err = sbl_serdes_minitune_block(sbl, port_num);
++		/* wait for the pcs to come up  */
++		err = sbl_pml_pcs_wait(sbl, port_num);
 +		switch (err) {
 +		case 0:
-+			sbl_dev_dbg(sbl->dev, "p%d: serdes_lpd done", port_num);
-+			link->lp_detected = true;
-+			goto out_done;
-+
-+		case -ETIMEDOUT:
-+			sbl_dev_warn(sbl->dev, "p%d: serdes_lpd timed out", port_num);
-+			/* Occasionally serdes minitune will fail even though the link
-+			 * partner is actually there!
-+			 * Sometimes we can recover by resetting the serdes PLLs and/or
-+			 * reloading the serdes firmware
-+			 */
-+			if (!sbl_debug_option(sbl, port_num, SBL_DEBUG_INHIBIT_SPLL_RESET)) {
-+				tmp_err = sbl_reset_serdes_plls(sbl, port_num);
-+				if (tmp_err) {
-+					/* if this fails nothing we can do */
-+					sbl_dev_err(sbl->dev, "p%d: serdes_lpd pll reset failed [%d]",
-+						    port_num, tmp_err);
-+					/* TODO maybe force fw reload here? */
-+				}
-+			}
-+
-+			if (link->blattr.options & SBL_OPT_RELOAD_FW_ON_TIMEOUT)
-+				link->reload_serdes_fw = true;
-+
-+			goto out_done;
-+
-+		case -ECANCELED:
-+			sbl_dev_dbg(sbl->dev, "p%d: serdes_lpd cancelled", port_num);
-+			goto out_done;
-+
-+		case -ETIME:
-+			sbl_dev_dbg(sbl->dev, "p%d: serdes_lpd nothing detected", port_num);
-+			/* just try again */
++			/* good - carry on with mac */
 +			break;
-+
++		case -ECANCELED:
++			sbl_dev_dbg(sbl->dev, "%d: pml pcs wait cancelled", port_num);
++			goto out_err;
++		case -ETIMEDOUT:
++			sbl_dev_dbg(sbl->dev, "%d: pml pcs wait timeout", port_num);
++			goto out_err_invalidate;
 +		default:
-+			sbl_dev_err(sbl->dev, "p%d: serdes_lpd block failed [%d]", port_num, err);
++			sbl_dev_dbg(sbl->dev, "%d: pml pcs wait failed [%d]", port_num, err);
++			goto out_err_invalidate;
++		}
++
++		sbl_pml_pcs_enable_auto_lane_degrade(sbl, port_num);
++
++		/* start mac */
++		sbl_pml_mac_start(sbl, port_num);
++
++		/* start llr */
++		err = sbl_pml_llr_start(sbl, port_num);
++		switch (err) {
++		case 0:
++			/* all good */
++			goto out_done;
++		case -ECANCELED:
++			sbl_dev_dbg(sbl->dev, "%d: pml llr start cancelled", port_num);
++			goto out_err;
++		case -ETIMEDOUT:
++			sbl_dev_dbg(sbl->dev, "%d: pml llr start timeout", port_num);
++			goto out_err;
++		default:
++			sbl_dev_dbg(sbl->dev, "%d: pml llr start failed [%d]", port_num, err);
 +			goto out_err;
 +		}
 +	};
 +
 +out_done:
-+	link->sstate = SBL_SERDES_STATUS_DOWN;
-+	link->serr = 0;
-+	return err;
++	/* clear any PML errors which might have been set during startup */
++	sbl_pml_err_flgs_clear_all(sbl, port_num);
 +
++	/* pml block is up */
++	sbl_dev_dbg(sbl->dev, "%d: pml bring-up done (up)", port_num);
++	return 0;
++
++out_err_invalidate:
++	if (link->dfe_tune_count == SBL_DFE_USED_SAVED_PARAMS) {
++		/* either the link partner is not starting or the saved params could be bad -
++		 * we cannot (currently) determine which so destroy the saved params
++		 * just in case
++		 */
++		sbl_dev_dbg(sbl->dev, "%d: pml bring-up - invalidating tuning params", port_num);
++		sbl_serdes_invalidate_tuning_params(sbl, port_num);
++	}
 +out_err:
-+	/* serdes is broken and requires reset */
-+	link->sstate = SBL_SERDES_STATUS_ERROR;
-+	link->serr = err;
++	sbl_pml_mac_stop(sbl, port_num);
++	if (!sbl_debug_option(sbl, port_num, SBL_DEBUG_INHIBIT_CLEANUP))
++		sbl_pml_pcs_disable_alignment(sbl, port_num);
++	sbl_dev_dbg(sbl->dev, "%d: pml bring-up failed [%d]", port_num, err);
 +	return err;
 +}
 +
-+int sbl_serdes_start(struct sbl_inst *sbl, int port_num)
++/* Take down the PML block of a link */
++int sbl_pml_link_down(struct sbl_inst *sbl, int port_num)
 +{
-+	struct sbl_link *link;
-+	int err;
-+	int tmp_err;
++	sbl_dev_dbg(sbl->dev, "%d: pml bring-down starting\n", port_num);
 +
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
++	sbl_pml_recovery_cancel(sbl, port_num);
 +
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
++	/* stop everything in order */
++	sbl_pml_llr_stop(sbl, port_num);
++	sbl_pml_mac_stop(sbl, port_num);
++	sbl_pml_pcs_stop(sbl, port_num);
 +
-+	sbl_dev_dbg(sbl->dev, "p%d: SerDes start", port_num);
++	/* clear pml errors */
++	sbl_pml_err_flgs_clear_all(sbl, port_num);
 +
-+	link = sbl->link + port_num;
++	sbl_dev_dbg(sbl->dev, "%d: pml bring-down done (down)\n", port_num);
++	return 0;
++}
 +
++/* function to reset the major PML cfg regs to their default values
++ *
++ * It would seem that the default for the llr down behaviour is
++ * SBL_LLR_LINK_DOWN_BLOCK this should be SBL_LLR_LINK_DOWN_DISCARD;
++ */
++void sbl_pml_set_defaults(struct sbl_inst *sbl, int port_num)
++{
++	struct sbl_link *link = sbl->link + port_num;
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++	u64 llr_link_down_behavior;
++
++	/* pcs */
 +	if (link->sstate != SBL_SERDES_STATUS_DOWN) {
-+		sbl_dev_err(sbl->dev, "p%d: SerDes start: wrong state (%s)",
-+			    port_num, sbl_serdes_state_str(link->sstate));
-+		/* leave state unchanged */
-+		return -EUCLEAN;
++		/* default is to not tx am.
++		 * we should not do this because it can break optical headshells
++		 */
++		sbl_dev_warn(sbl->dev, "%d: pcs reset while serdes is running\n", port_num);
 +	}
 +
-+	/* configure serdes */
-+	err = sbl_serdes_config(sbl, port_num, false);
-+	if (err) {
-+		sbl_dev_err(sbl->dev,
-+			    "p%d: SerDes start: serdes_config failed [%d]",
-+			    port_num, err);
-+		if (err == -EBADE)
-+			link->reload_serdes_fw = true;
++	sbl_write64(sbl, base | SBL_PML_CFG_PCS_OFFSET,
++		    SBL_PML_CFG_PCS_DFLT);
++	sbl_write64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_OFFSET,
++		    SBL_PML_CFG_PCS_AUTONEG_DFLT);
++	sbl_write64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_TIMERS_OFFSET,
++		    SBL_PML_CFG_PCS_AUTONEG_TIMERS_DFLT);
++	sbl_write64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_BASE_PAGE_OFFSET,
++		    SBL_PML_CFG_PCS_AUTONEG_BASE_PAGE_DFLT);
++	sbl_write64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_NEXT_PAGE_OFFSET,
++		    SBL_PML_CFG_PCS_AUTONEG_NEXT_PAGE_DFLT);
++	sbl_write64(sbl, base | SBL_PML_CFG_PCS_AMS_OFFSET,
++		    SBL_PML_CFG_PCS_AMS_DFLT);
++	sbl_write64(sbl, base | SBL_PML_CFG_TX_PCS_OFFSET,
++		    SBL_PML_CFG_TX_PCS_DFLT);
++	sbl_write64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET,
++		    SBL_PML_CFG_RX_PCS_DFLT);
++
++	sbl_write64(sbl, base | SBL_PML_DBG_PCS_OFFSET, SBL_PML_DBG_PCS_DFLT);
++
++	/* pcs: we need special AMs for 200GHz mode */
++	sbl_write64(sbl, base | SBL_PML_CFG_RX_PCS_AMS_OFFSET,
++		    SBL_PML_CFG_RX_PCS_AMS_SET(SBL_PCS_200_UM_MATCH_MSK,
++					       SBL_PCS_200_CM_MATCH_MSK));
++	sbl_write64(sbl, base | SBL_PML_CFG_PCS_CM_OFFSET,
++		    SBL_PCS_200_CM);
++	sbl_write64(sbl, base | SBL_PML_CFG_PCS_UM_OFFSET(0), SBL_PCS_200_UM0);
++	sbl_write64(sbl, base | SBL_PML_CFG_PCS_UM_OFFSET(1), SBL_PCS_200_UM1);
++	sbl_write64(sbl, base | SBL_PML_CFG_PCS_UM_OFFSET(2), SBL_PCS_200_UM2);
++	sbl_write64(sbl, base | SBL_PML_CFG_PCS_UM_OFFSET(3), SBL_PCS_200_UM3);
++	sbl_write64(sbl, base | SBL_PML_CFG_PCS_UM_OFFSET(4), SBL_PCS_200_UM4);
++	sbl_write64(sbl, base | SBL_PML_CFG_PCS_UM_OFFSET(5), SBL_PCS_200_UM5);
++	sbl_write64(sbl, base | SBL_PML_CFG_PCS_UM_OFFSET(6), SBL_PCS_200_UM6);
++	sbl_write64(sbl, base | SBL_PML_CFG_PCS_UM_OFFSET(7), SBL_PCS_200_UM7);
++
++	/* assert we have destroyed any previous pcs config */
++	link->pcs_config = false;
++
++	/* mac */
++	sbl_write64(sbl, base | SBL_PML_CFG_TX_MAC_OFFSET,
++		    SBL_PML_CFG_TX_MAC_DFLT);
++	sbl_write64(sbl, base | SBL_PML_CFG_RX_MAC_OFFSET,
++		    SBL_PML_CFG_RX_MAC_DFLT);
++
++	/* llr */
++	val64 = SBL_PML_CFG_LLR_DFLT;
++	llr_link_down_behavior = sbl_pml_llr_link_down_behaviour(sbl, port_num);
++	val64 = SBL_PML_CFG_LLR_LINK_DOWN_BEHAVIOR_UPDATE(val64,
++							  llr_link_down_behavior);
++	sbl_write64(sbl, base | SBL_PML_CFG_LLR_OFFSET, val64);
++	sbl_write64(sbl, base | SBL_PML_CFG_LLR_SM_OFFSET,
++		    SBL_PML_CFG_LLR_SM_DFLT);
++
++	/* read to flush everything */
++	sbl_read64(sbl, base | SBL_PML_CFG_LLR_OFFSET);
++}
++
++/* interrupt support
++ *
++ * we only have one handler
++ */
++int sbl_pml_install_intr_handler(struct sbl_inst *sbl, int port_num, u64 err_flags)
++{
++	struct sbl_link *link = sbl->link + port_num;
++
++	if (link->intr_err_flgs) {
++		sbl_dev_err(sbl->dev, "intr %d: handler already registered\n", port_num);
++		return -EALREADY;
++	}
++	link->intr_err_flgs = err_flags;
++
++	return (*sbl->ops.sbl_pml_install_intr_handler)(sbl->accessor, port_num, err_flags);
++}
++
++int sbl_pml_enable_intr_handler(struct sbl_inst *sbl, int port_num, u64 err_flags)
++{
++	struct sbl_link *link = sbl->link + port_num;
++
++	if (!link->intr_err_flgs) {
++		sbl_dev_warn(sbl->dev, "intr %d: no handler registered for enable\n", port_num);
++		return 0;
++	}
++
++	if ((err_flags & ~link->intr_err_flgs) || !(err_flags & link->intr_err_flgs)) {
++		sbl_dev_err(sbl->dev, "intr %d: cannot enable flags 0x%llx, 0x%llx\n", port_num,
++			    err_flags, link->intr_err_flgs);
++		return -EINVAL;
++	}
++
++	return (*sbl->ops.sbl_pml_enable_intr_handler)(sbl->accessor, port_num, err_flags);
++}
++
++int sbl_pml_disable_intr_handler(struct sbl_inst *sbl, int port_num, u64 err_flags)
++{
++	struct sbl_link *link = sbl->link + port_num;
++
++	if (!link->intr_err_flgs) {
++		sbl_dev_warn(sbl->dev, "intr %d: no handler registered for disable\n", port_num);
++		return 0;
++	}
++
++	if ((err_flags & ~link->intr_err_flgs) || !(err_flags & link->intr_err_flgs)) {
++		sbl_dev_err(sbl->dev, "intr %d: cannot disable flags 0x%llx, 0x%llx\n", port_num,
++			    err_flags, link->intr_err_flgs);
++		return -EINVAL;
++	}
++
++	return (*sbl->ops.sbl_pml_disable_intr_handler)(sbl->accessor, port_num, err_flags);
++}
++
++int sbl_pml_remove_intr_handler(struct sbl_inst *sbl, int port_num)
++{
++	struct sbl_link *link = sbl->link + port_num;
++	int err;
++
++	if (!link->intr_err_flgs) {
++		sbl_dev_warn(sbl->dev, "intr %d: no handler registered to remove\n", port_num);
++		return 0;
++	}
++
++	err =  (*sbl->ops.sbl_pml_remove_intr_handler)(sbl->accessor, port_num,
++			link->intr_err_flgs);
++	if (!err)
++		link->intr_err_flgs = 0;
++
++	return err;
++}
++
++/* Error flags
++ *
++ * TODO: inline?
++ */
++bool sbl_pml_err_flgs_test(struct sbl_inst *sbl, int port_num, u64 err_flgs)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	val64 = sbl_read64(sbl, base | SBL_PML_ERR_FLG_OFFSET);
++
++	return val64 & err_flgs;
++}
++
++void sbl_pml_err_flgs_clear(struct sbl_inst *sbl, int port_num, u64 err_flgs)
++{
++	u32 base = SBL_PML_BASE(port_num);
++
++	sbl_write64(sbl, base | SBL_PML_ERR_CLR_OFFSET, err_flgs);
++}
++
++void sbl_pml_err_flgs_clear_all(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 err_flgs;
++
++	err_flgs = sbl_read64(sbl, base | SBL_PML_ERR_FLG_OFFSET);
++	sbl_write64(sbl, base | SBL_PML_ERR_CLR_OFFSET, err_flgs);
++}
++
++static bool sbl_pml_recovery_ignore_down_origin_fault(enum sbl_link_down_origin down_origin)
++{
++	switch (down_origin) {
++	case SBL_LINK_DOWN_ORIGIN_LINK_DOWN:
++	case SBL_LINK_DOWN_ORIGIN_LOCAL_FAULT:
++	case SBL_LINK_DOWN_ORIGIN_REMOTE_FAULT:
++	case SBL_LINK_DOWN_ORIGIN_ALIGN:
++	case SBL_LINK_DOWN_ORIGIN_HISER:
++	case SBL_LINK_DOWN_ORIGIN_LLR_MAX:
++		return true;
++	default:
++		return false;
++	}
++}
++
++void sbl_pml_link_down_async_alert(struct sbl_inst *sbl, int port_num,
++				   enum sbl_link_down_origin down_origin)
++{
++	struct sbl_link *link = sbl->link + port_num;
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++	u64 err_flags;
++
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_LLR_SM_OFFSET);
++	if (SBL_PML_CFG_LLR_SM_REPLAY_CT_MAX_GET(val64) < SBL_LLR_REPLAY_CT_MAX_UNLIMITED)
++		err_flags = SBL_PML_FAULT_ERR_FLAGS;
++	else
++		err_flags = SBL_PML_REC_FAULT_ERR_FLAGS;
++
++	/* going down or in recovery state, so don't need more intrs */
++	sbl_pml_disable_intr_handler(sbl, port_num, err_flags);
++
++	if (sbl_debug_option(sbl, port_num, SBL_DEBUG_INHIBIT_CLEANUP)) {
++		/* set state to error and signal no cleanup with the error number */
++		link->blstate = SBL_BASE_LINK_STATUS_ERROR;
++		link->blerr = -ECONNABORTED;
++	}
++
++	sbl_async_alert(sbl, port_num, SBL_ASYNC_ALERT_LINK_DOWN,
++			(void *)(uintptr_t)down_origin, 0);
++}
++
++static void sbl_pml_recovery_origin_counter_update(struct sbl_inst *sbl, int port_num,
++						   enum sbl_link_down_origin origin)
++{
++	switch (origin) {
++	case SBL_LINK_DOWN_ORIGIN_LINK_DOWN:
++		sbl_link_counters_incr(sbl, port_num, pml_recovery_origin_bl_ldown);
++		break;
++	case SBL_LINK_DOWN_ORIGIN_LOCAL_FAULT:
++		sbl_link_counters_incr(sbl, port_num, pml_recovery_origin_bl_lfault);
++		break;
++	case SBL_LINK_DOWN_ORIGIN_REMOTE_FAULT:
++		sbl_link_counters_incr(sbl, port_num, pml_recovery_origin_bl_rfault);
++		break;
++	case SBL_LINK_DOWN_ORIGIN_ALIGN:
++		sbl_link_counters_incr(sbl, port_num, pml_recovery_origin_bl_align);
++		break;
++	case SBL_LINK_DOWN_ORIGIN_HISER:
++		sbl_link_counters_incr(sbl, port_num, pml_recovery_origin_bl_hiser);
++		break;
++	case SBL_LINK_DOWN_ORIGIN_LLR_MAX:
++		sbl_link_counters_incr(sbl, port_num, pml_recovery_origin_bl_llr);
++		break;
++	default:
++		sbl_dev_warn(sbl->dev, "%d: pml recovery origin (%d) with no counter",
++			     port_num, origin);
++		break;
++	}
++}
++
++/* PML recovery is limited by the combined amount of time spent in one or more
++ * recovery attempts over a window, rather than by a count. This approximates
++ * bandwidth loss. For example, 60 ms per second in PML recovery corresponds
++ * to a roughly %6 loss of bandwidth.
++ *
++ * After each successful recovery, the duration is subtracted from the
++ * remaining time budgeted for the window. The rate test fails if the remaining
++ * time is insufficient for another attempt.
++ */
++static bool sbl_pml_recovery_rate_test(struct sbl_inst *sbl, int port_num)
++{
++	struct sbl_link *link = sbl->link + port_num;
++	u64 window_end = link->pml_recovery.rl_window_start + msecs_to_jiffies(link->blattr.pml_recovery.rl_window_size);
++
++	/* reset if not started or window has elapsed */
++	if (!link->pml_recovery.rl_window_start ||
++	    link->pml_recovery.init_jiffies > window_end) {
++		link->pml_recovery.rl_window_start = link->pml_recovery.init_jiffies;
++		link->pml_recovery.rl_time_remaining = link->blattr.pml_recovery.rl_max_duration;
++		return true;
++	}
++
++	if (link->pml_recovery.rl_time_remaining < SBL_PML_REC_POLL_INTERVAL)
++		return false;
++
++	return true;
++}
++
++static void sbl_pml_recovery_monitor_fallback_timer(struct timer_list *t)
++{
++	struct sbl_pml_recovery *pml_recovery = container_of(t, struct sbl_pml_recovery, timer);
++	struct sbl_inst *sbl;
++	struct sbl_link *link;
++	int port_num;
++	enum sbl_link_down_origin down_origin;
++	u32 elapsed;
++	u32 rl_total_time;
++	unsigned long timeout;
++	unsigned long irq_flags;
++
++	if (!pml_recovery || !pml_recovery->sbl)
++		return;
++
++	spin_lock_irqsave(&pml_recovery->lock, irq_flags);
++	if (!pml_recovery->enabled || !pml_recovery->started) {
++		spin_unlock_irqrestore(&pml_recovery->lock, irq_flags);
++		return;
++	}
++	spin_unlock_irqrestore(&pml_recovery->lock, irq_flags);
++
++	sbl = pml_recovery->sbl;
++	port_num = pml_recovery->port_num;
++	down_origin = pml_recovery->down_origin;
++	link = sbl->link + port_num;
++	timeout = pml_recovery->init_jiffies + msecs_to_jiffies(pml_recovery->timeout);
++	elapsed = jiffies_to_msecs(jiffies - link->pml_recovery.init_jiffies);
++	link->pml_recovery.rl_time_remaining -=
++		jiffies_to_msecs(jiffies -
++				 link->pml_recovery.last_poll_jiffies);
++	link->pml_recovery.last_poll_jiffies  = jiffies;
++
++	if (sbl_pml_recovery_no_faults(sbl, port_num)) {
++		sbl_dev_info(sbl->dev, "%d: PML recovered successfully in %ums", port_num, elapsed);
++		sbl_link_counters_incr(sbl, port_num, pml_recovery_successes);
++		sbl_pml_recovery_origin_counter_update(sbl, port_num, down_origin);
++		sbl_link_counters_incr(sbl, port_num, (elapsed < SBL_PML_REC_HISTOGRAM_MAX) ?
++				      (pml_recovery_histogram_0_9ms + elapsed / 10) :
++				       pml_recovery_histogram_high);
 +		goto out;
++	} else if (time_is_before_eq_jiffies(timeout)) {
++		sbl_dev_info(sbl->dev, "%d: PML recovery monitor timed out (%ums)", port_num, elapsed);
++		goto out_fail;
++	} else if (!sbl_pml_recovery_rate_test(sbl, port_num)) {
++		rl_total_time = link->blattr.pml_recovery.rl_max_duration - link->pml_recovery.rl_time_remaining;
++		sbl_dev_err(sbl->dev, "%d: PML recovery rate exceeded (%ums/%ums) after %ums", port_num, rl_total_time,
++			    link->blattr.pml_recovery.rl_window_size, elapsed);
++		sbl_link_counters_incr(sbl, port_num, pml_recovery_rate_exceeded);
++		goto out_fail;
 +	}
 +
-+	/* wait a while before starting to tune to let the optics lock if present
-+	 * (in local loopback mode however there are never any optics to wait for)
-+	 */
-+	if (link->blattr.loopback_mode != SBL_LOOPBACK_MODE_LOCAL) {
-+		if (link->mattr.media == SBL_LINK_MEDIA_OPTICAL) {
-+			err = sbl_serdes_optical_lock_delay(sbl, port_num);
-+			if (err)
-+				goto out;
++	/* start timer for next poll */
++	spin_lock_irqsave(&pml_recovery->lock, irq_flags);
++	if (pml_recovery->enabled)
++		mod_timer(&pml_recovery->timer,
++			  jiffies + msecs_to_jiffies(SBL_PML_REC_POLL_INTERVAL));
++	spin_unlock_irqrestore(&pml_recovery->lock, irq_flags);
++	return;
++
++out_fail:
++	sbl_pml_link_down_async_alert(sbl, port_num, down_origin);
++
++out:
++	spin_lock_irqsave(&link->fec_discard_lock, irq_flags);
++	link->fec_discard_time = jiffies;
++	link->fec_discard_type = SBL_FEC_DISCARD_TYPE_PML_REC_END;
++	spin_unlock_irqrestore(&link->fec_discard_lock, irq_flags);
++	spin_lock_irqsave(&pml_recovery->lock, irq_flags);
++	pml_recovery->started = false;
++	spin_unlock_irqrestore(&pml_recovery->lock, irq_flags);
++}
++
++void sbl_pml_recovery_init(struct sbl_pml_recovery *recovery)
++{
++	spin_lock_init(&recovery->lock);
++	recovery->enabled = false;
++	timer_setup(&recovery->timer, sbl_pml_recovery_monitor_fallback_timer,
++		    TIMER_IRQSAFE);
++}
++
++/* Allow recovery once the fault monitor is about to deliver PML faults */
++void sbl_pml_recovery_enable(struct sbl_inst *sbl, int port_num)
++{
++	struct sbl_pml_recovery *recovery = &sbl->link[port_num].pml_recovery;
++	unsigned long irq_flags;
++
++	spin_lock_irqsave(&recovery->lock, irq_flags);
++	recovery->enabled = true;
++	spin_unlock_irqrestore(&recovery->lock, irq_flags);
++}
++
++static void sbl_pml_recovery_monitor(struct sbl_inst *sbl, int port_num,
++				     enum sbl_link_down_origin down_origin)
++{
++	struct sbl_link *link = sbl->link + port_num;
++	struct sbl_pml_recovery *recovery = &link->pml_recovery;
++	u32 rl_total_time;
++	unsigned long irq_flags;
++
++	spin_lock_irqsave(&recovery->lock, irq_flags);
++	if (!recovery->enabled || recovery->started) {
++		spin_unlock_irqrestore(&recovery->lock, irq_flags);
++		return;
++	}
++
++	recovery->started = true;
++	recovery->init_jiffies = jiffies;
++	recovery->last_poll_jiffies = recovery->init_jiffies;
++	recovery->sbl = sbl;
++	recovery->port_num = port_num;
++	recovery->down_origin = down_origin;
++	recovery->timeout = link->blattr.pml_recovery.timeout;
++
++	if (!sbl_pml_recovery_rate_test(sbl, port_num)) {
++		rl_total_time = link->blattr.pml_recovery.rl_max_duration -
++				recovery->rl_time_remaining;
++		recovery->started = false;
++		spin_unlock_irqrestore(&recovery->lock, irq_flags);
++		sbl_dev_err(sbl->dev, "%d: PML recovery rate exceeded (%ums/%ums)", port_num,
++			    rl_total_time, link->blattr.pml_recovery.rl_window_size);
++		sbl_pml_link_down_async_alert(sbl, port_num, down_origin);
++		sbl_link_counters_incr(sbl, port_num, pml_recovery_rate_exceeded);
++		return;
++	}
++	sbl_link_counters_incr(sbl, port_num, pml_recovery_attempts);
++
++	spin_lock(&link->fec_discard_lock);
++	link->fec_discard_time = recovery->init_jiffies;
++	link->fec_discard_type = SBL_FEC_DISCARD_TYPE_PML_REC_START;
++	spin_unlock(&link->fec_discard_lock);
++
++	/* cancel cannot slip between restarting alignment and arming the poll */
++	sbl_pml_pcs_disable_alignment(sbl, port_num);
++	sbl_pml_pcs_enable_alignment(sbl, port_num);
++	mod_timer(&recovery->timer,
++		  jiffies + msecs_to_jiffies(SBL_PML_REC_POLL_INTERVAL));
++	spin_unlock_irqrestore(&recovery->lock, irq_flags);
++
++	sbl_dev_info(sbl->dev, "%d: PML recovery started - %s", port_num,
++		     sbl_down_origin_str(down_origin));
++}
++
++void sbl_pml_recovery_cancel(struct sbl_inst *sbl, int port_num)
++{
++	struct sbl_link *link = sbl->link + port_num;
++	struct sbl_pml_recovery *recovery = &link->pml_recovery;
++	unsigned long irq_flags;
++	bool was_started;
++	u32 elapsed;
++
++	spin_lock_irqsave(&recovery->lock, irq_flags);
++	recovery->enabled = false;
++	spin_unlock_irqrestore(&recovery->lock, irq_flags);
++
++	/* with the gate closed neither the handler nor the timer can rearm */
++	timer_delete_sync(&recovery->timer);
++
++	spin_lock_irqsave(&recovery->lock, irq_flags);
++	was_started = recovery->started;
++	recovery->started = false;
++	spin_unlock_irqrestore(&recovery->lock, irq_flags);
++
++	if (!was_started)
++		return;
++
++	elapsed = jiffies_to_msecs(jiffies - recovery->init_jiffies);
++	spin_lock_irqsave(&link->fec_discard_lock, irq_flags);
++	link->fec_discard_time = jiffies;
++	link->fec_discard_type = SBL_FEC_DISCARD_TYPE_PML_REC_END;
++	spin_unlock_irqrestore(&link->fec_discard_lock, irq_flags);
++
++	sbl_dev_info(sbl->dev, "%d: PML recovery canceled (%ums)", port_num, elapsed);
++}
++
++/**
++ * sbl_pml_hdlr() - local interrupt handler called by surrounding framework
++ * @sbl: A slingshot base link device instance
++ * @port_num: port number
++ * @data: Value is NULL in all cases
++ *
++ * This function does the following operations: Reads PML error-flag
++ * registers, extracts PCS-lane degradation information for both TX
++ * and RX paths and issues warning alerts when failure conditions are
++ * met. If auto negotiation error flags are raised, the function disables
++ * further PML interrupts. It also logs critical error when all lanes
++ * are reported down, link faults. It also checks possible case of
++ * down origin and alert the clients.
++ *
++ * Context: Interrupt
++ *
++ * Return: 0 on success
++ */
++int sbl_pml_hdlr(struct sbl_inst *sbl, int port_num, void *data)
++{
++	struct sbl_link *link = sbl->link + port_num;
++	u32 base = SBL_PML_BASE(port_num);
++	u64 raised_flgs;
++	u64 sts_pcs_lane_degrade_reg;
++	enum sbl_link_down_origin down_origin = SBL_LINK_DOWN_ORIGIN_UNKNOWN;
++	char pcs_state_str[SBL_PCS_STATE_STR_LEN];
++	u64 val64;
++	struct lane_degrade degrade_data;
++	enum sbl_async_alert_type alert = SBL_ASYNC_ALERT_INVALID;
++	int result;
++	unsigned long irq_flags;
++
++	raised_flgs = sbl_read64(sbl, base | SBL_PML_ERR_FLG_OFFSET) & link->intr_err_flgs;
++
++	if (!raised_flgs)
++		return 0;
++
++	if (sbl_debug_option(sbl, port_num, SBL_DEBUG_TRACE_PML_INT)) {
++		sbl_dev_info(sbl->dev,
++			     "%d: pml hdlr (%lld %lld hs%lld mr%lld ld%lld) in 0x%llx",
++			port_num,
++			SBL_PML_ERR_FLG_AUTONEG_PAGE_RECEIVED_GET(raised_flgs),
++			SBL_PML_ERR_FLG_AUTONEG_COMPLETE_GET(raised_flgs),
++			SBL_PML_ERR_FLG_PCS_HI_SER_GET(raised_flgs),
++			SBL_PML_ERR_FLG_LLR_REPLAY_AT_MAX_GET(raised_flgs),
++			SBL_PML_ERR_FLG_PCS_LINK_DOWN_GET(raised_flgs),
++			link->intr_err_flgs);
++	}
++
++	sts_pcs_lane_degrade_reg = sbl_read64(sbl, base | SBL_PML_STS_PCS_LANE_DEGRADE_OFFSET);
++	degrade_data.tx = SBL_PML_STS_PCS_LANE_DEGRADE_LP_PLS_AVAILABLE_GET(sts_pcs_lane_degrade_reg);
++	degrade_data.rx = SBL_PML_STS_PCS_LANE_DEGRADE_RX_PLS_AVAILABLE_GET(sts_pcs_lane_degrade_reg);
++	if (SBL_PML_ERR_FLG_PCS_RX_DEGRADE_GET(raised_flgs) && degrade_data.tx && degrade_data.rx) {
++		spin_lock_irqsave(&link->fec_discard_lock, irq_flags);
++		link->fec_discard_time = jiffies;
++		link->fec_discard_type = SBL_FEC_DISCARD_TYPE_RX_DEGRADE;
++		spin_unlock_irqrestore(&link->fec_discard_lock, irq_flags);
++		sbl_dev_warn(sbl->dev, "%d: RX side Degraded -> TX Lanes Available: 0x%llx - RX Lanes Available: 0x%llx",
++			     port_num, degrade_data.tx, degrade_data.rx);
++		sbl_async_alert(sbl, port_num, SBL_ASYNC_ALERT_RX_DEGRADE,
++				&degrade_data, sizeof(degrade_data));
++	}
++
++	if (SBL_PML_ERR_FLG_PCS_TX_DEGRADE_GET(raised_flgs) && degrade_data.tx && degrade_data.rx) {
++		sbl_dev_warn(sbl->dev, "%d: TX side Degraded -> TX Lanes Available: 0x%llx - RX Lanes Available: 0x%llx",
++			     port_num, degrade_data.tx, degrade_data.rx);
++		sbl_async_alert(sbl, port_num, SBL_ASYNC_ALERT_TX_DEGRADE,
++				&degrade_data, sizeof(degrade_data));
++	}
++
++	result = SBL_PML_ERR_FLG_PCS_TX_DEGRADE_FAILURE_GET(raised_flgs);
++
++	if (result) {
++		alert = SBL_ASYNC_ALERT_TX_DEGRADE_FAILURE;
++		sbl_async_alert(sbl, port_num, alert, NULL, 0);
++	}
++
++	result = SBL_PML_ERR_FLG_PCS_RX_DEGRADE_FAILURE_GET(raised_flgs);
++
++	if (result) {
++		alert = SBL_ASYNC_ALERT_RX_DEGRADE_FAILURE;
++		sbl_async_alert(sbl, port_num, alert, NULL, 0);
++	}
++
++	if (alert != SBL_ASYNC_ALERT_INVALID) {
++		/* if Auto Lane Degrade is enabled, we will print this message regardless of whether
++		 * the link went down because of lane degrade failure or not
++		 */
++		sbl_dev_err(sbl->dev, "%d: pml hdlr - link going down - all lanes down [%d]", port_num, alert);
++		down_origin = SBL_LINK_DOWN_ORIGIN_DEGRADE_FAILURE;
++	}
++
++	/* autoneg err flags */
++	if (raised_flgs & SBL_AUTONEG_ERR_FLGS) {
++		sbl_pml_disable_intr_handler(sbl, port_num, SBL_AUTONEG_ERR_FLGS);
++		complete(&link->an_hw_change);
++	}
++
++	/* link faults */
++	if (SBL_PML_ERR_FLG_PCS_HI_SER_GET(raised_flgs)) {
++		if (sbl_debug_option(sbl, port_num, SBL_DEBUG_IGNORE_HISER)) {
++			sbl_dev_warn(sbl->dev, "%d: pml hdlr - hiser - ignored", port_num);
++		} else {
++			sbl_dev_dbg(sbl->dev, "%d: pml hdlr - hiser", port_num);
++			down_origin = SBL_LINK_DOWN_ORIGIN_HISER;
 +		}
 +	}
 +
-+	/* make sure we have time left for at lease 2 tuning cycles */
-+	sbl_start_timeout_ensure_remaining(sbl, port_num,
-+					   2 * (link->blattr.dfe_timeout +
-+						 link->blattr.dfe_pre_delay));
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_LLR_SM_OFFSET);
++	if (SBL_PML_ERR_FLG_LLR_REPLAY_AT_MAX_GET(raised_flgs) &&
++	    SBL_PML_CFG_LLR_SM_REPLAY_CT_MAX_GET(val64) < SBL_LLR_REPLAY_CT_MAX_UNLIMITED) {
++		sbl_dev_dbg(sbl->dev, "%d: pml hdlr - max llr replay", port_num);
++		down_origin = SBL_LINK_DOWN_ORIGIN_LLR_MAX;
++	}
 +
-+	/* tune serdes */
-+	link->sstate = SBL_SERDES_STATUS_TUNING;
++	if (SBL_PML_ERR_FLG_PCS_LINK_DOWN_GET(raised_flgs)) {
++		val64 = sbl_read64(sbl, base | SBL_PML_STS_RX_PCS_OFFSET);
 +
-+	err = sbl_serdes_tuning(sbl, port_num);
-+	if (err) {
++		if (sbl_debug_option(sbl, port_num, SBL_DEBUG_TRACE_PML_INT)) {
++			sbl_dev_info(sbl->dev, "%d: pml hdlr - link down (%s)", port_num,
++				     sbl_pml_pcs_state_str(sbl, port_num, pcs_state_str,
++							   SBL_PCS_STATE_STR_LEN));
++		}
++
++		if (!SBL_PML_STS_RX_PCS_ALIGN_STATUS_GET(val64)) {
++			if (sbl_debug_option(sbl, port_num, SBL_DEBUG_IGNORE_ALIGN)) {
++				sbl_dev_warn(sbl->dev, "%d: pml hdlr - align - ignored", port_num);
++			} else {
++				sbl_dev_dbg(sbl->dev, "%d: pml hdlr - align", port_num);
++				down_origin = SBL_LINK_DOWN_ORIGIN_ALIGN;
++			}
++		} else if (SBL_PML_STS_RX_PCS_LOCAL_FAULT_GET(val64)) {
++			sbl_dev_dbg(sbl->dev, "%d: pml hdlr - local fault", port_num);
++			down_origin = SBL_LINK_DOWN_ORIGIN_LOCAL_FAULT;
++		} else if (SBL_PML_STS_RX_PCS_FAULT_GET(val64)) {
++			if (link->blattr.options & SBL_DISABLE_PML_RECOVERY ||
++			    sbl_debug_option(sbl, port_num, SBL_DEBUG_REMOTE_FAULT_RECOVERY)) {
++				sbl_dev_dbg(sbl->dev, "%d: pml hdlr - remote fault", port_num);
++				down_origin = SBL_LINK_DOWN_ORIGIN_REMOTE_FAULT;
++			} else {
++				sbl_dev_dbg(sbl->dev, "%d: pml hdlr - remote fault - ignored", port_num);
++			}
++		} else {
++			sbl_dev_dbg(sbl->dev, "%d: pml hdlr - link down", port_num);
++			down_origin = SBL_LINK_DOWN_ORIGIN_LINK_DOWN;
++		}
++	}
++
++	if (down_origin != SBL_LINK_DOWN_ORIGIN_UNKNOWN) {
++		if (!(link->blattr.options & SBL_DISABLE_PML_RECOVERY) && !link->is_degraded) {
++			if (sbl_pml_recovery_ignore_down_origin_fault(down_origin)) {
++				sbl_dev_dbg(sbl->dev, "%d: PML recovery, pml hdlr fault(%d) is ignored", port_num, down_origin);
++				sbl_pml_recovery_monitor(sbl, port_num, down_origin);
++
++			} else
++				sbl_pml_link_down_async_alert(sbl, port_num, down_origin);
++		} else {
++			sbl_dev_info(sbl->dev, "%d: PML recovery is disabled", port_num);
++			sbl_pml_link_down_async_alert(sbl, port_num, down_origin);
++		}
++	}
++
++	sbl_write64(sbl, base | SBL_PML_ERR_CLR_OFFSET, raised_flgs);
++	sbl_read64(sbl, base | SBL_PML_ERR_CLR_OFFSET);  /* flush */
++
++	return 0;
++}
++EXPORT_SYMBOL(sbl_pml_hdlr);
++
++/**
++ * sbl_pml_recovery_log_link_down() - Print pcs status when link down
++ * @sbl: A slingshot base link device instance
++ * @port_num: port number
++ *
++ * Print PCS receive path status and eye heights signal when
++ * reporting link down reason
++ */
++void sbl_pml_recovery_log_link_down(struct sbl_inst *sbl, int port_num)
++{
++	if (!sbl_pml_recovery_no_faults(sbl, port_num)) {
++		sbl_pml_recovery_log_pcs_status(sbl, port_num);
++		sbl_log_port_eye_heights(sbl, port_num);
++	}
++}
++EXPORT_SYMBOL(sbl_pml_recovery_log_link_down);
+diff --git a/drivers/net/ethernet/hpe/sbl/sbl_pml_llr.c b/drivers/net/ethernet/hpe/sbl/sbl_pml_llr.c
+new file mode 100644
+index 000000000000..a190f6890b4e
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sbl/sbl_pml_llr.c
+@@ -0,0 +1,736 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/* Copyright 2019-2025 Hewlett Packard Enterprise Development LP */
++
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/device.h>
++#include <linux/delay.h>
++#include <linux/sched.h>
++
++#include <linux/hpe/sbl/sbl.h>
++#include <linux/hpe/sbl/sbl_an.h>
++#include <linux/hpe/sbl/sbl_kconfig.h>
++
++#include <linux/hpe/sbl/sbl_pml.h>
++
++#include "sbl_pml_fn.h"
++#include "sbl_link.h"
++#include "sbl_internal.h"
++
++static int sbl_pml_llr_ready_wait(struct sbl_inst *sbl, int port_num)
++{
++	int err = -1;
++
++	sbl_dev_dbg(sbl->dev, "%d: LLR ready wait", port_num);
++
++	sbl_link_info_set(sbl, port_num, SBL_LINK_INFO_LLR_WAIT);
++
++	while (sbl_pml_llr_get_state(sbl, port_num) != SBL_PML_LLR_STATE_ADVANCE) {
++
++		if (sbl_start_timeout(sbl, port_num)) {
++			sbl_dev_err(sbl->dev, "%d: LLR ready wait timeout", port_num);
++			err = -ETIMEDOUT;
++			goto out;
++		}
++
++		if (sbl_base_link_start_cancelled(sbl, port_num)) {
++			sbl_dev_err(sbl->dev, "%d: LLR ready wait cancelled", port_num);
++			err = -ECANCELED;
++			goto out;
++		}
++
++		/* should be relatively well synchronised by this point */
++		usleep_range(5000, 6000);
++	}
++
++	err = 0;
++
++out:
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_LLR_WAIT);
++	return err;
++}
++
++/* calculate the loop time
++ *
++ * try to make a number of measurements or timeout/cancelled
++ */
++static int sbl_pml_llr_measure_loop_time_ns(struct sbl_inst *sbl, int port_num,
++					    u64 *llr_loop_time)
++{
++	struct sbl_link *link;
++	u32              base;
++	u64              min_loop_time;
++	u64              max_loop_time;
++	int              x;
++	u64              val64;
++	u64              time64;
++	int              err;
++
++	sbl_link_info_set(sbl, port_num, SBL_LINK_INFO_LLR_MEASURE);
++
++	link = sbl->link + port_num;
++	base = SBL_PML_BASE(port_num);
++
++	min_loop_time  = SBL_PML_LLR_MIN_LOOP_TIME;
++	max_loop_time  = SBL_PML_LLR_MAX_LOOP_TIME;
++	*llr_loop_time = SBL_PML_LLR_MAX_LOOP_TIME;
++	time64         = 0ULL;
++
++	sbl_dev_dbg(sbl->dev, "%d: LLR measure loop time (len = %s)(media = %s)",
++		    port_num, sbl_link_len_str(link->mattr.len),
++		    sbl_link_media_str(link->mattr.media));
++
++	/* calc loop time bounds */
++	if (link->mattr.len != SBL_LINK_LEN_INVALID) {
++		err = sbl_media_calc_loop_time(sbl, port_num, &min_loop_time);
++		if (err) {
++			sbl_dev_err(sbl->dev, "%d: LLR measure calc loop time failed [%d]", port_num, err);
++			goto out;
++		}
++		/* arbitrary range for max */
++		max_loop_time = min_loop_time + 100 /* ns */;
++	}
++	sbl_dev_dbg(sbl->dev, "%d: LLR measure loop time bounds: min = %lldns, max = %lldns",
++		    port_num, min_loop_time, max_loop_time);
++
++	/* measure loop time */
++	for (x = 0; x < SBL_PML_LLR_TIMING_LOOPS; ++x) {
++
++		if (sbl_start_timeout(sbl, port_num)) {
++			sbl_dev_err(sbl->dev, "%d: LLR measure loop time timeout", port_num);
++			err = -ETIMEDOUT;
++			goto out;
++		}
++
++		if (sbl_base_link_start_cancelled(sbl, port_num)) {
++			sbl_dev_err(sbl->dev, "%d: LLR measure loop time cancelled", port_num);
++			err = -ECANCELED;
++			goto out;
++		}
++
++		/* start a measurement */
++		sbl_write64(sbl, base | SBL_PML_STS_LLR_LOOP_TIME_OFFSET, 0ULL);
++		sbl_read64(sbl, base | SBL_PML_STS_LLR_LOOP_TIME_OFFSET);  /* flush */
++		/* give the measurement time to complete */
++		udelay(SBL_PML_LLR_TIMING_MEASURE_DELAY);
++		/* read the measurement */
++		val64 = sbl_read64(sbl, base | SBL_PML_STS_LLR_LOOP_TIME_OFFSET);
++
++		time64 = SBL_PML_STS_LLR_LOOP_TIME_LOOP_TIME_GET(val64); /* ns */
++		sbl_dev_dbg(sbl->dev, "%d: LLR measure time = %lldns (%d)", port_num, time64, x);
++
++		/* if we didn't get a valid time, then wait to retry */
++		if (!time64)
++			msleep(SBL_PML_LLR_TIMING_RETRY_DELAY);
++
++		/* if we did get a valid time, then check it here */
++		else if ((time64 >= min_loop_time) && (time64 <= max_loop_time)) {
++			/* save the fastest time here */
++			if (time64 < *llr_loop_time)
++				*llr_loop_time = time64;
++		}
++	}
++
++	/* check result here */
++	if (*llr_loop_time == SBL_PML_LLR_MAX_LOOP_TIME) {
++		if (sbl_debug_option(sbl, port_num, SBL_DEBUG_ALLOW_LOOP_TIME_FAIL)) {
++			sbl_dev_err(sbl->dev, "%d: LLR measure loop time failed (min = %lld, max = %lld, last = %lld)",
++				    port_num, min_loop_time, max_loop_time, time64);
++			err = -ENODATA;
++			goto out;
++		}
++		/* set to max calculated loop time */
++		*llr_loop_time = max_loop_time;
++	}
++
++	sbl_dev_dbg(sbl->dev, "%d: LLR measure loop time = %lldns", port_num, *llr_loop_time);
++	err = 0;
++
++out:
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_LLR_MEASURE);
++	return err;
++}
++
++/*   calculate the required size of the llr buffer
++ *
++ *   we will use the measured loop time not cable length as we dont
++ *   always have that.
++ *
++ *   TODO: link degrade & mfs
++ */
++static void sbl_pml_llr_calculate_capacity(struct sbl_inst *sbl, int port_num,
++					   u64 *max_data, u64 *max_seq)
++{
++	struct sbl_link *link = sbl->link + port_num;
++
++	u64 bytes_per_ns = 25;
++	u64 bytes_per_frame = sbl_frame_size(sbl, port_num);
++	u64 cap_data_max;
++	u64 cap_seq_max;
++	u64 calc;
++
++	switch (link->link_mode) {
++	case SBL_LINK_MODE_BS_200G:
++		bytes_per_ns = 25;  /* 25000us */
++		break;
++	case SBL_LINK_MODE_BJ_100G:
++	case SBL_LINK_MODE_CD_100G:
++		bytes_per_ns = 13;  /* 12500us */
++		break;
++	case SBL_LINK_MODE_CD_50G:
++		bytes_per_ns =  7;  /*  6250us */
++		break;
++	}
++
++	sbl_llr_max_data_get(sbl, port_num, &cap_data_max, &cap_seq_max);
++
++	calc = (link->llr_loop_time * bytes_per_ns) + (bytes_per_frame * SBL_PML_LLR_NUM_FRAMES);
++
++	/* units 48 byte quanta */
++	*max_data = DIV_ROUND_UP(calc, 48);
++	if (*max_data > cap_data_max) {
++		sbl_dev_dbg(sbl->dev,
++			    "%d: LLR max data cap 0x%llx out of bounds, setting to 0x%llx",
++			port_num, *max_data, cap_data_max);
++		*max_data = cap_data_max;
++	}
++
++	/* units 32 byte frame size */
++	*max_seq  = DIV_ROUND_UP(calc, 32);
++	if (*max_seq > cap_seq_max) {
++		sbl_dev_dbg(sbl->dev,
++			    "%d: LLR max seq cap 0x%llx out of bounds, setting to 0x%llx",
++			port_num, *max_seq, cap_seq_max);
++		*max_seq = cap_seq_max;
++	}
++
++	sbl_dev_dbg(sbl->dev,
++		    "%d: LLR cap: data = 0x%llx, seq = 0x%llx",
++		port_num, *max_data, *max_seq);
++}
++
++/* enable llr timing measurements */
++static void sbl_pml_llr_enable_loop_timing(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	sbl_dev_dbg(sbl->dev, "%d: LLR enable loop timing", port_num);
++
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_LLR_OFFSET);
++	val64 = SBL_PML_CFG_LLR_ENABLE_LOOP_TIMING_UPDATE(val64, 1ULL);
++	sbl_write64(sbl, base | SBL_PML_CFG_LLR_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_CFG_LLR_OFFSET);  /* flush */
++
++	sbl_link_info_set(sbl, port_num, SBL_LINK_INFO_LLR_LOOP);
++}
++
++/* disable llr timing measurements */
++static void sbl_pml_llr_disable_loop_timing(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	sbl_dev_dbg(sbl->dev, "%d: LLR disable loop timing", port_num);
++
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_LLR_OFFSET);
++	val64 = SBL_PML_CFG_LLR_ENABLE_LOOP_TIMING_UPDATE(val64, 0ULL);
++	sbl_write64(sbl, base | SBL_PML_CFG_LLR_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_CFG_LLR_OFFSET);  /* flush */
++
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_LLR_LOOP);
++}
++
++/* set LLR mode */
++static void sbl_pml_llr_mode_set(struct sbl_inst *sbl, int port_num, u32 llr_mode)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	sbl_dev_dbg(sbl->dev, "%d: LLR mode set (%d)", port_num, llr_mode);
++
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_LLR_OFFSET);
++	switch (llr_mode) {
++	case SBL_LLR_MODE_OFF:
++		val64 = SBL_PML_CFG_LLR_LLR_MODE_UPDATE(val64, 0ULL);
++		break;
++	case SBL_LLR_MODE_MONITOR:
++		val64 = SBL_PML_CFG_LLR_LLR_MODE_UPDATE(val64, 1ULL);
++		break;
++	case SBL_LLR_MODE_ON:
++		val64 = SBL_PML_CFG_LLR_LLR_MODE_UPDATE(val64, 2ULL);
++		break;
++	default:
++		sbl_dev_dbg(sbl->dev, "%d: LLR mode invalid (%d)", port_num, llr_mode);
++		return;
++	}
++	sbl_write64(sbl, base | SBL_PML_CFG_LLR_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_CFG_LLR_OFFSET);  /* flush */
++}
++
++/* LLR detect */
++static int sbl_pml_llr_detect(struct sbl_inst *sbl, int port_num, u32 *llr_mode)
++{
++	u32           base       = SBL_PML_BASE(port_num);
++	u64           val64      = 0;
++	u64           time64     = 0;
++	unsigned long last_jiffy = jiffies + msecs_to_jiffies(SBL_PML_LLR_DETECT_TIMEOUT);
++	int           err        = -1;
++
++	sbl_dev_dbg(sbl->dev, "%d: LLR detect", port_num);
++
++	sbl_link_info_set(sbl, port_num, SBL_LINK_INFO_LLR_DETECT);
++
++	/* OFF unless we detect a loop */
++	*llr_mode = SBL_LLR_MODE_OFF;
++
++	sbl_write64(sbl, (base | SBL_PML_STS_LLR_LOOP_TIME_OFFSET), 0ULL);
++	sbl_read64(sbl, (base | SBL_PML_STS_LLR_LOOP_TIME_OFFSET));  /* flush */
++	do {
++
++		if (sbl_start_timeout(sbl, port_num)) {
++			err = -ETIMEDOUT;
++			goto out;
++		}
++
++		if (sbl_base_link_start_cancelled(sbl, port_num)) {
++			err = -ECANCELED;
++			goto out;
++		}
++
++		msleep(SBL_PML_LLR_DETECT_DELAY);
++
++		val64 = sbl_read64(sbl, (base | SBL_PML_STS_LLR_LOOP_TIME_OFFSET));
++		time64 = SBL_PML_STS_LLR_LOOP_TIME_LOOP_TIME_GET(val64);                 /* ns */
++		sbl_dev_dbg(sbl->dev, "%d: LLR time = %lldns", port_num, time64);
++
++		if (time64) {
++			/* loop detected */
++			if ((time64 < SBL_PML_LLR_MIN_LOOP_TIME) || (time64 > SBL_PML_LLR_MAX_LOOP_TIME)) {
++				sbl_dev_warn(sbl->dev, "%d: LLR time out of bounds (%lldns)", port_num, time64);
++				continue;
++			}
++			*llr_mode = SBL_LLR_MODE_ON;
++			err = 0;
++			goto out;
++		}
++
++	} while (time_before(jiffies, last_jiffy));
++
++out:
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_LLR_DETECT);
++	return err;
++}
++
++/* get LLR mode */
++static int sbl_pml_llr_mode_get(struct sbl_inst *sbl, int port_num, u32 *llr_mode)
++{
++	struct sbl_link *link = sbl->link + port_num;
++	int               err = -1;
++
++	sbl_dev_dbg(sbl->dev, "%d: LLR mode get (%d)", port_num, link->blattr.llr_mode);
++
++	switch (link->blattr.llr_mode) {
++
++	case SBL_LLR_MODE_MONITOR:
++		sbl_dev_dbg(sbl->dev, "%d: LLR mode monitor", port_num);
++		*llr_mode = SBL_LLR_MODE_MONITOR;
++		return 0;
++
++	case SBL_LLR_MODE_ON:
++		sbl_dev_dbg(sbl->dev, "%d: LLR mode on", port_num);
++		goto out_on;
++
++	case SBL_LLR_MODE_AUTO:
++		/* check fabric link here */
++		if (link->blattr.options & SBL_OPT_FABRIC_LINK) {
++			sbl_dev_dbg(sbl->dev, "%d: LLR mode on fabric", port_num);
++			goto out_on;
++		}
++		/* check ether link here */
++		if (!(link->blattr.options & SBL_OPT_ENABLE_ETHER_LLR))
++			goto out_off;
++		/* check AN options here */
++		if (link->an_options & AN_OPT_LLR) {
++			if (link->an_options & AN_OPT_ETHER_LLR) {
++				if (link->an_options & AN_OPT_HPC_WITH_LLR) {
++					link->llr_options |= SBL_PML_LLR_OPTION_HPC_WIH_LLR;
++					link->ifg_config = SBL_IFG_CONFIG_HPC;
++					sbl_dev_dbg(sbl->dev, "%d: LLR mode on with HPC from AN", port_num);
++					goto out_on;
++				}
++				sbl_dev_dbg(sbl->dev, "%d: LLR mode on without HPC from AN", port_num);
++				goto out_on;
++			}
++			goto out_off;
++		}
++		/* do loop detect here */
++		err = sbl_pml_llr_detect(sbl, port_num, &(link->llr_mode));
 +		switch (err) {
++		case 0:
++			if (link->llr_mode == SBL_LLR_MODE_OFF)
++				goto out_off;
++			if (link->blattr.options & SBL_OPT_ENABLE_IFG_HPC_WITH_LLR) {
++				link->llr_options |= SBL_PML_LLR_OPTION_HPC_WIH_LLR;
++				link->ifg_config = SBL_IFG_CONFIG_HPC;
++				sbl_dev_dbg(sbl->dev, "%d: LLR mode on with HPC from LOOP", port_num);
++				goto out_on;
++			}
++			sbl_dev_dbg(sbl->dev, "%d: LLR mode on without HPC from LOOP", port_num);
++			goto out_on;
 +		case -ECANCELED:
-+			sbl_dev_dbg(sbl->dev, "p%d: SerDes start: tuning cancelled", port_num);
-+			break;
++			sbl_dev_dbg(sbl->dev, "%d: LLR detect cancelled", port_num);
++			goto out_err;
 +		case -ETIMEDOUT:
-+			sbl_dev_dbg(sbl->dev, "p%d: SerDes start: tuning timed out", port_num);
-+			/* occasionally tuning can fail even thought the lp is good
-+			 * resetting the serdes rx plls or reloading the serdes fw can
-+			 * sometimes fix this
-+			 */
-+			if (!sbl_debug_option(sbl, port_num, SBL_DEBUG_INHIBIT_SPLL_RESET)) {
-+				tmp_err = sbl_reset_serdes_plls(sbl, port_num);
-+				if (tmp_err) {
-+					/* if this fails nothing we can do */
-+					sbl_dev_err(sbl->dev, "p%d: SerDes start: reset_serdes_plls failed [%d]",
-+						    port_num, tmp_err);
-+					/* TODO maybe force fw reload here? */
++			sbl_dev_dbg(sbl->dev, "%d: LLR detect timed out", port_num);
++			goto out_err;
++		default:
++			goto out_off;
++		}
++		goto out_off;
++
++	case SBL_LLR_MODE_OFF:
++		goto out_off;
++
++	default:
++		sbl_dev_err(sbl->dev, "%d: LLR invalid mode [%d]", port_num, link->blattr.llr_mode);
++		err = -EBADRQC;
++		goto out_err;
++	}
++
++out_off:
++	sbl_dev_dbg(sbl->dev, "%d: LLR mode off", port_num);
++	*llr_mode = SBL_LLR_MODE_OFF;
++	return 0;
++
++out_on:
++	*llr_mode = SBL_LLR_MODE_ON;
++	return 0;
++
++out_err:
++	*llr_mode = SBL_LLR_MODE_OFF;
++	return err;
++}
++
++/* configure */
++void sbl_pml_llr_config(struct sbl_inst *sbl, int port_num)
++{
++	struct sbl_link *link = sbl->link + port_num;
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	sbl_dev_dbg(sbl->dev, "%d: LLR config", port_num);
++
++	/* init to original requested */
++	link->llr_mode = link->blattr.llr_mode;
++
++	/* config */
++	sbl_write64(sbl, base | SBL_PML_STS_LLR_MAX_USAGE_OFFSET, 0ULL);
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_LLR_OFFSET);
++	val64 = SBL_PML_CFG_LLR_LLR_MODE_UPDATE(val64, 0ULL);  /* LLR OFF */
++	val64 = SBL_PML_CFG_LLR_PREAMBLE_SEQ_CHECK_UPDATE(val64, 1ULL);
++	val64 = SBL_PML_CFG_LLR_ACK_NACK_ERR_CHECK_UPDATE(val64, 1ULL);
++	val64 = SBL_PML_CFG_LLR_FILTER_LOSSLESS_WHEN_OFF_UPDATE(val64, 1ULL);
++	val64 = SBL_PML_CFG_LLR_FILTER_CTL_FRAMES_UPDATE(val64, 1ULL);
++	val64 = SBL_PML_CFG_LLR_SIZE_UPDATE(val64, 3ULL);
++	val64 = SBL_PML_CFG_LLR_ENABLE_LOOP_TIMING_UPDATE(val64, 0ULL);  /* loop timing off */
++	val64 = SBL_PML_CFG_LLR_LINK_DOWN_BEHAVIOR_UPDATE(val64,
++				 sbl_pml_llr_link_down_behaviour(sbl,
++								 port_num));
++	val64 = SBL_PML_CFG_LLR_MAC_IF_CREDITS_UPDATE(val64,
++						      SBL_PML_CFG_LLR_MAC_IF_CREDITS_DFLT);
++	sbl_write64(sbl, base | SBL_PML_CFG_LLR_OFFSET, val64);
++
++	sbl_write64(sbl, base | SBL_PML_CFG_LLR_CF_SMAC_OFFSET,
++		    SBL_PML_CFG_LLR_CF_SMAC_DFLT);
++
++	sbl_write64(sbl, base | SBL_PML_CFG_LLR_CF_ETYPE_OFFSET,
++		    SBL_PML_CFG_LLR_CF_ETYPE_DFLT);
++
++	sbl_write64(sbl, base | SBL_PML_CFG_LLR_SM_OFFSET,
++		    SBL_PML_CFG_LLR_SM_DFLT);
++
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_LLR_CF_RATES_OFFSET);
++	val64 = SBL_PML_CFG_LLR_CF_RATES_LOOP_TIMING_PERIOD_UPDATE(val64, SBL_PML_LLR_TIMING_PERIOD);
++	sbl_write64(sbl, base | SBL_PML_CFG_LLR_CF_RATES_OFFSET, val64);
++
++	sbl_read64(sbl, base | SBL_PML_CFG_LLR_OFFSET);  /* flush */
++}
++
++/* start */
++int sbl_pml_llr_start(struct sbl_inst *sbl, int port_num)
++{
++	struct sbl_link *link = sbl->link + port_num;
++	u32 base = SBL_PML_BASE(port_num);
++	u64 llr_max_data;
++	u64 llr_max_seq;
++	u64 val64;
++	u64 recovery_timeout_ns;
++	int err = -1;
++
++	sbl_dev_dbg(sbl->dev, "%d: LLR start", port_num);
++
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_LLR_DISABLED);
++
++	sbl_pml_llr_enable_loop_timing(sbl, port_num);
++
++	/* get mode here */
++	err = sbl_pml_llr_mode_get(sbl, port_num, &(link->llr_mode));
++	if (err) {
++		sbl_dev_err(sbl->dev, "%d: LLR get mode failed [%d]", port_num, err);
++		goto out_err;
++	}
++
++	/* if LLR is OFF then nothing to do here */
++	if (link->llr_mode == SBL_LLR_MODE_OFF)
++		goto out;
++
++	/* set HPC if needed */
++	if (link->llr_options & SBL_PML_LLR_OPTION_HPC_WIH_LLR)
++		sbl_pml_mac_hpc_set(sbl, port_num);
++
++	/* start ordered sets */
++	sbl_pml_pcs_ordered_sets(sbl, port_num, true);
++
++	/* measure llr loop time if we don't have it already */
++	if (!link->llr_loop_time) {
++		err = sbl_pml_llr_measure_loop_time_ns(sbl, port_num, &link->llr_loop_time);
++		if (err) {
++			sbl_dev_err(sbl->dev, "%d: LLR loop measurement failed [%d]", port_num, err);
++			goto out_err;
++		}
++	}
++
++	/* set max replay time from loop-back time */
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_LLR_SM_OFFSET);
++	if (link->blattr.options & SBL_DISABLE_PML_RECOVERY)
++		val64 = SBL_PML_CFG_LLR_SM_REPLAY_CT_MAX_UPDATE(val64, SBL_DFLT_REPLAY_CT_MAX);
++	else
++		val64 = SBL_PML_CFG_LLR_SM_REPLAY_CT_MAX_UPDATE(val64, SBL_LLR_REPLAY_CT_MAX_UNLIMITED);
++	val64 = SBL_PML_CFG_LLR_SM_REPLAY_TIMER_MAX_UPDATE(val64,
++							   3 * link->llr_loop_time + 500);
++	sbl_write64(sbl, base | SBL_PML_CFG_LLR_SM_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_CFG_LLR_SM_OFFSET);  /* flush */
++
++	/* capacity configuration */
++	if (link->blattr.options & SBL_OPT_FABRIC_LINK) {
++		/* these can be set to their defaults for fabric links */
++		sbl_write64(sbl, base | SBL_PML_CFG_LLR_CAPACITY_OFFSET,
++			    SBL_PML_CFG_LLR_CAPACITY_DFLT);
++		sbl_read64(sbl, base | SBL_PML_CFG_LLR_CAPACITY_OFFSET);  /* flush */
++	} else {
++		sbl_pml_llr_calculate_capacity(sbl, port_num, &llr_max_data, &llr_max_seq);
++		val64 = SBL_PML_CFG_LLR_CAPACITY_MAX_DATA_SET(llr_max_data) |
++			SBL_PML_CFG_LLR_CAPACITY_MAX_SEQ_SET(llr_max_seq);
++		sbl_write64(sbl, base | SBL_PML_CFG_LLR_CAPACITY_OFFSET, val64);
++		sbl_read64(sbl, base | SBL_PML_CFG_LLR_CAPACITY_OFFSET);  /* flush */
++	}
++
++	/* set max data age timer & link down timer */
++	if (link->blattr.options & SBL_DISABLE_PML_RECOVERY)
++		sbl_write64(sbl, base | SBL_PML_CFG_LLR_TIMEOUTS_OFFSET,
++			    SBL_PML_CFG_LLR_TIMEOUTS_DFLT);
++	else {
++		recovery_timeout_ns = ((u64)link->blattr.pml_recovery.timeout +
++			SBL_PML_REC_LLR_TIMEOUT_OFFSET) * NSEC_PER_MSEC;
++		if (recovery_timeout_ns > U32_MAX) {
++			err = -ERANGE;
++			goto out_err;
++		}
++		val64 = sbl_read64(sbl, base | SBL_PML_CFG_LLR_TIMEOUTS_OFFSET);
++		val64 = SBL_PML_CFG_LLR_TIMEOUTS_DATA_AGE_TIMER_MAX_UPDATE(val64,
++			recovery_timeout_ns);
++		val64 = SBL_PML_CFG_LLR_TIMEOUTS_PCS_LINK_DN_TIMER_MAX_UPDATE(val64,
++			recovery_timeout_ns);
++		sbl_write64(sbl, base | SBL_PML_CFG_LLR_TIMEOUTS_OFFSET, val64);
++	}
++	sbl_read64(sbl, base | SBL_PML_CFG_LLR_TIMEOUTS_OFFSET);  /* flush */
++
++	/* clear all the llr related error flags */
++	sbl_pml_err_flgs_clear(sbl, port_num, SBL_PML_ALL_LLR_ERR_FLGS);
++
++	/* set required mode */
++	sbl_pml_llr_mode_set(sbl, port_num, link->llr_mode);
++
++	/* wait for llr to start */
++	err = sbl_pml_llr_ready_wait(sbl, port_num);
++	if (err) {
++		sbl_dev_err(sbl->dev, "%d: LLR ready wait failed [%d]", port_num, err);
++		goto out_err;
++	}
++
++	/* success */
++	sbl_dev_dbg(sbl->dev, "%d: LLR running", port_num);
++	sbl_link_info_set(sbl, port_num, SBL_LINK_INFO_LLR_RUN);
++
++out:
++	sbl_pml_llr_disable_loop_timing(sbl, port_num);
++	return 0;
++
++out_err:
++	sbl_pml_llr_disable_loop_timing(sbl, port_num);
++	sbl_pml_llr_stop(sbl, port_num);
++	return err;
++}
++
++/**
++ * sbl_pml_llr_get_state() - Get pml llr state
++ * @sbl: A slingshot base link device instance
++ * @port_num: port number
++ *
++ * Return: state value
++ */
++u32 sbl_pml_llr_get_state(struct sbl_inst *sbl, int port_num)
++{
++	u32 base  = SBL_PML_BASE(port_num);
++	u64 val64 = sbl_read64(sbl, base | SBL_PML_STS_LLR_OFFSET);
++
++	switch (SBL_PML_STS_LLR_LLR_STATE_GET(val64)) {
++	case 0: /* OFF */
++		return SBL_PML_LLR_STATE_OFF;
++	case 1: /* INIT */
++		return SBL_PML_LLR_STATE_INIT;
++	case 2: /* ADVANCE */
++		return SBL_PML_LLR_STATE_ADVANCE;
++	case 3: /* HALT */
++		return SBL_PML_LLR_STATE_HALT;
++	case 4: /* REPLAY */
++		return SBL_PML_LLR_STATE_REPLAY;
++	case 5: /* DISCARD */
++		return SBL_PML_LLR_STATE_DISCARD;
++	case 6: /* MONITOR */
++		return SBL_PML_LLR_STATE_MONITOR;
++	default:
++		return SBL_PML_LLR_STATE_UNKNOWN;
++	}
++}
++EXPORT_SYMBOL(sbl_pml_llr_get_state);
++
++/**
++ * sbl_pml_llr_stop() - Stop pml llr functionality
++ * @sbl: A slingshot base link device instance
++ * @port_num: port number
++ *
++ * Configure various pml llr registers to stop functionality
++ */
++void sbl_pml_llr_stop(struct sbl_inst *sbl, int port_num)
++{
++	struct sbl_link *link = sbl->link + port_num;
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	sbl_dev_dbg(sbl->dev, "%d: LLR stop", port_num);
++
++	link->llr_mode = SBL_LLR_MODE_OFF;
++
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_LLR_OFFSET);
++	val64 = SBL_PML_CFG_LLR_LLR_MODE_UPDATE(val64, 0LL);  /* LLR OFF */
++	val64 = SBL_PML_CFG_LLR_FILTER_LOSSLESS_WHEN_OFF_UPDATE(val64, 1ULL);
++	val64 = SBL_PML_CFG_LLR_FILTER_CTL_FRAMES_UPDATE(val64, 0ULL);
++	val64 = SBL_PML_CFG_LLR_ENABLE_LOOP_TIMING_UPDATE(val64, 0ULL);
++	val64 = SBL_PML_CFG_LLR_LINK_DOWN_BEHAVIOR_UPDATE(val64,
++				 sbl_pml_llr_link_down_behaviour(sbl,
++								 port_num));
++	val64 = SBL_PML_CFG_LLR_MAC_IF_CREDITS_UPDATE(val64,
++						      SBL_PML_CFG_LLR_MAC_IF_CREDITS_DFLT);
++	sbl_write64(sbl, base | SBL_PML_CFG_LLR_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_CFG_LLR_OFFSET);  /* flush */
++
++	sbl_pml_pcs_ordered_sets(sbl, port_num, false);
++
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_LLR_RUN);
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_LLR_DISABLED);
++}
++EXPORT_SYMBOL(sbl_pml_llr_stop);
++
++/**
++ * sbl_pml_llr_disable() - Disable pml llr
++ * @sbl: A slingshot base link device instance
++ * @port_num: port number
++ *
++ * This function disables the LLR feature by updating the LLR
++ * mode configuration register. Also updates the link info to reflect
++ * disabled state and clear active status.
++ */
++void sbl_pml_llr_disable(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	sbl_dev_dbg(sbl->dev, "%d: LLR disable", port_num);
++
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_LLR_OFFSET);
++	val64 = SBL_PML_CFG_LLR_LLR_MODE_UPDATE(val64, 0ULL); /* LLR OFF */
++	sbl_write64(sbl, base | SBL_PML_CFG_LLR_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_CFG_LLR_OFFSET);  /* flush */
++
++	sbl_link_info_set(sbl, port_num, SBL_LINK_INFO_LLR_DISABLED);
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_LLR_RUN);
++}
++EXPORT_SYMBOL(sbl_pml_llr_disable);
++
++/**
++ * sbl_pml_llr_enable() - Enable pml llr
++ * @sbl: A slingshot base link device instance
++ * @port_num: port number
++ *
++ * Sets the LLR mode based on the link configuration to
++ * enable the LLR feature.
++ */
++void sbl_pml_llr_enable(struct sbl_inst *sbl, int port_num)
++{
++	struct sbl_link *link = sbl->link + port_num;
++
++	sbl_dev_dbg(sbl->dev, "%d: LLR enable", port_num);
++
++	sbl_pml_llr_mode_set(sbl, port_num, link->llr_mode);
++}
++EXPORT_SYMBOL(sbl_pml_llr_enable);
++
++/**
++ * sbl_pml_llr_check_is_ready() - check llr state
++ * @sbl: A slingshot base link device instance
++ * @port_num: port number
++ * @timeout_ms: Value
++ *
++ * Check matching LLR state in invervals, if state
++ * matches then return else sleep in intervals untill timeout.
++ *
++ * Context: Sleep in intervals based on condition
++ *
++ * Return: true on success
++ */
++bool sbl_pml_llr_check_is_ready(struct sbl_inst *sbl, int port_num, unsigned int timeout_ms)
++{
++	unsigned long to_jiffy = jiffies + msecs_to_jiffies(timeout_ms);
++
++	sbl_dev_dbg(sbl->dev, "%d: LLR check is ready", port_num);
++
++	do {
++		if (sbl_pml_llr_get_state(sbl, port_num) == SBL_PML_LLR_STATE_ADVANCE)
++			return true;
++		usleep_range(5000, 6000);
++	} while (time_before(jiffies, to_jiffy));
++
++	return false;
++}
++EXPORT_SYMBOL(sbl_pml_llr_check_is_ready);
++
++/* behaviour when the link is down
++ * TODO - revisit with cassini and/or faster restart
++ */
++u64 sbl_pml_llr_link_down_behaviour(struct sbl_inst *sbl,
++				    int port_num)
++{
++	if (sbl_is_fabric_link(sbl, port_num)) {
++		/*   fabric link should really be BLOCK, but only if the pcs
++		 *   can recover quickly. Currently it can't - pcs failure means
++		 *   going right back to tuning the serdes.
++		 */
++		return 0ULL;
++	}
++
++	return 0ULL;
++}
+diff --git a/drivers/net/ethernet/hpe/sbl/sbl_pml_llr_nic.c b/drivers/net/ethernet/hpe/sbl/sbl_pml_llr_nic.c
+new file mode 100644
+index 000000000000..d154a2f25c6e
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sbl/sbl_pml_llr_nic.c
+@@ -0,0 +1,34 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/* Copyright 2025 Hewlett Packard Enterprise Development LP */
++
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/device.h>
++#include <linux/delay.h>
++#include <linux/sched.h>
++
++#include <linux/hpe/sbl/sbl.h>
++#include <linux/hpe/sbl/sbl_an.h>
++#include <linux/hpe/sbl/sbl_kconfig.h>
++
++#include <linux/hpe/sbl/sbl_pml.h>
++
++#include "sbl_pml_fn.h"
++#include "sbl_link.h"
++#include "sbl_internal.h"
++
++int sbl_frame_size(struct sbl_inst *sbl, int port_num)
++{
++	u64 bytes_per_frame = 9216;
++
++	return bytes_per_frame;
++}
++
++void sbl_llr_max_data_get(struct sbl_inst *sbl, int port_num,
++			  u64 *cap_data_max, u64 *cap_seq_max)
++{
++	*cap_data_max = sbl_llr_edge_cap_data_max_get();
++	*cap_seq_max  = sbl_llr_edge_cap_seq_max_get();
++}
+diff --git a/drivers/net/ethernet/hpe/sbl/sbl_pml_mac.c b/drivers/net/ethernet/hpe/sbl/sbl_pml_mac.c
+new file mode 100644
+index 000000000000..782bfc26451e
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sbl/sbl_pml_mac.c
+@@ -0,0 +1,220 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/* Copyright 2019-2021 Hewlett Packard Enterprise Development LP */
++
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/device.h>
++#include <linux/delay.h>
++#include <linux/sched.h>
++
++#include <linux/hpe/sbl/sbl.h>
++#include <linux/hpe/sbl/sbl_kconfig.h>
++
++#include <linux/hpe/sbl/sbl_pml.h>
++
++#include "sbl_pml_fn.h"
++#include "sbl_link.h"
++#include "sbl_internal.h"
++
++/* get mode */
++static void sbl_pml_mac_get_mode(struct sbl_inst *sbl, int port_num, u64 *ifg_mode, u64 *ifg_adjustment)
++{
++	struct sbl_link *link = sbl->link + port_num;
++
++	sbl_dev_dbg(sbl->dev, "%d: MAC get mode", port_num);
++
++	/* start with what was requested */
++	link->ifg_config = link->blattr.ifg_config;
++
++	/* check BL options */
++	if (link->blattr.options & SBL_OPT_ENABLE_IFG_CONFIG) {
++		/* set using IFG config */
++		switch (link->ifg_config) {
++		case SBL_IFG_CONFIG_HPC:
++			*ifg_mode       = 0;
++			*ifg_adjustment = 3;
++			break;
++		case SBL_IFG_CONFIG_IEEE_200G:
++			*ifg_mode       = 1;
++			*ifg_adjustment = 0;
++			break;
++		case SBL_IFG_CONFIG_IEEE_100G:
++			*ifg_mode       = 1;
++			*ifg_adjustment = 1;
++			break;
++		case SBL_IFG_CONFIG_IEEE_50G:
++		default:
++			*ifg_mode       = 1;
++			*ifg_adjustment = 2;
++			break;
++		}
++	} else if (link->blattr.options & SBL_OPT_FABRIC_LINK) {
++		/* set fabric link */
++		*ifg_mode       = 0;
++		*ifg_adjustment = 3;
++	} else {
++		/* set ether link */
++		switch (link->link_mode) {
++		case SBL_LINK_MODE_BS_200G:
++			*ifg_mode       = 1;
++			*ifg_adjustment = 0;
++			break;
++		case SBL_LINK_MODE_BJ_100G:
++			*ifg_mode       = 1;
++			*ifg_adjustment = 1;
++			break;
++		case SBL_LINK_MODE_CD_100G:
++			*ifg_mode       = 1;
++			*ifg_adjustment = 1;
++			break;
++		case SBL_LINK_MODE_CD_50G:
++		default:
++			*ifg_mode       = 1;
++			*ifg_adjustment = 2;
++			break;
++		}
++	}
++}
++
++/* configure */
++int sbl_pml_mac_config(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 ifg_mode       = 0;
++	u64 ifg_adjustment = 0;
++	u64 val64;
++
++	sbl_dev_dbg(sbl->dev, "%d: MAC config", port_num);
++
++	sbl_pml_mac_get_mode(sbl, port_num, &ifg_mode, &ifg_adjustment);
++
++	/* tx mac config */
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_TX_MAC_OFFSET);
++	val64 = SBL_PML_CFG_TX_MAC_PCS_CREDITS_UPDATE(val64,
++						      SBL_PML_CFG_TX_MAC_PCS_CREDITS_DFLT);
++	val64 = SBL_PML_CFG_TX_MAC_IFG_MODE_UPDATE(val64, ifg_mode);
++	val64 = SBL_PML_CFG_TX_MAC_IEEE_IFG_ADJUSTMENT_UPDATE(val64, ifg_adjustment);
++	/* Short preamble is always 0 for now. See Rosetta ERRATA-2594 */
++	val64 = SBL_PML_CFG_TX_MAC_SHORT_PREAMBLE_UPDATE(val64, 0ULL);
++	val64 = SBL_PML_CFG_TX_MAC_MAC_OPERATIONAL_UPDATE(val64, 0ULL);
++	sbl_write64(sbl, base | SBL_PML_CFG_TX_MAC_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_CFG_TX_MAC_OFFSET);  /* flush */
++
++	/* rx mac config */
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_RX_MAC_OFFSET);
++	val64 = SBL_PML_CFG_RX_MAC_SHORT_PREAMBLE_UPDATE(val64, 0ULL);
++	val64 = SBL_PML_CFG_RX_MAC_FILTER_ILLEGAL_SIZE_UPDATE(val64, 1ULL);
++	val64 = SBL_PML_CFG_RX_MAC_MAC_OPERATIONAL_UPDATE(val64, 0ULL);
++	sbl_write64(sbl, base | SBL_PML_CFG_RX_MAC_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_CFG_RX_MAC_OFFSET);  /* flush */
++
++	return 0;
++}
++
++/**
++ * sbl_pml_mac_start() - Start mac
++ * @sbl: A slingshot base link device instance
++ * @port_num: port number
++ *
++ * Configure various MAC registers to start tx/rx mac
++ * and clear if any errors
++ */
++void sbl_pml_mac_start(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	sbl_dev_dbg(sbl->dev, "%d: MAC start", port_num);
++
++	/* tx mac start */
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_TX_MAC_OFFSET);
++	val64 = SBL_PML_CFG_TX_MAC_MAC_OPERATIONAL_UPDATE(val64, 1ULL);
++	sbl_write64(sbl, base | SBL_PML_CFG_TX_MAC_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_CFG_TX_MAC_OFFSET);  /* flush */
++
++	/* rx mac start */
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_RX_MAC_OFFSET);
++	val64 = SBL_PML_CFG_RX_MAC_MAC_OPERATIONAL_UPDATE(val64, 1ULL);
++	sbl_write64(sbl, base | SBL_PML_CFG_RX_MAC_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_CFG_RX_MAC_OFFSET);  /* flush */
++
++	/* clear any errors */
++	val64 = SBL_PML_ERR_FLG_MAC_TX_DP_ERR_SET(1ULL) |
++		SBL_PML_ERR_FLG_MAC_RX_DP_ERR_SET(1ULL);
++	sbl_write64(sbl, base | SBL_PML_ERR_CLR_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_ERR_CLR_OFFSET);  /* flush */
++
++	sbl_link_info_set(sbl, port_num, SBL_LINK_INFO_MAC_OP);
++
++}
++EXPORT_SYMBOL(sbl_pml_mac_start);
++
++/**
++ * sbl_pml_mac_stop() - Stop mac
++ * @sbl: A slingshot base link device instance
++ * @port_num: port number
++ *
++ * Configure various MAC registers to off tx/rx mac
++ */
++void sbl_pml_mac_stop(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	sbl_dev_dbg(sbl->dev, "%d: MAC stop", port_num);
++
++	/* rx mac off */
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_RX_MAC_OFFSET);
++	val64 = SBL_PML_CFG_RX_MAC_MAC_OPERATIONAL_UPDATE(val64, 0ULL);
++	sbl_write64(sbl, base | SBL_PML_CFG_RX_MAC_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_CFG_RX_MAC_OFFSET);  /* flush */
++
++	/* tx mac off */
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_TX_MAC_OFFSET);
++	val64 = SBL_PML_CFG_TX_MAC_MAC_OPERATIONAL_UPDATE(val64, 0ULL);
++	sbl_write64(sbl, base | SBL_PML_CFG_TX_MAC_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_CFG_TX_MAC_OFFSET);  /* flush */
++
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_MAC_OP);
++}
++EXPORT_SYMBOL(sbl_pml_mac_stop);
++
++/* get the current hw status */
++void sbl_pml_mac_hw_status(struct sbl_inst *sbl, int port_num, bool *tx_op, bool *rx_op,
++			   u32 *ifg_mode, u32 *ifg_adjustment)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	sbl_dev_dbg(sbl->dev, "%d: MAC status", port_num);
++
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_TX_MAC_OFFSET);
++	if (tx_op)
++		*tx_op = SBL_PML_CFG_TX_MAC_MAC_OPERATIONAL_GET(val64);
++	if (ifg_mode)
++		*ifg_mode = SBL_PML_CFG_TX_MAC_IFG_MODE_GET(val64);
++	if (ifg_adjustment)
++		*ifg_adjustment = SBL_PML_CFG_TX_MAC_IEEE_IFG_ADJUSTMENT_GET(val64);
++	if (rx_op) {
++		val64 = sbl_read64(sbl, base | SBL_PML_CFG_RX_MAC_OFFSET);
++		*rx_op = SBL_PML_CFG_RX_MAC_MAC_OPERATIONAL_GET(val64);
++	}
++}
++
++/* HPC IFG set */
++void sbl_pml_mac_hpc_set(struct sbl_inst *sbl, int port_num)
++{
++	u32 base  = SBL_PML_BASE(port_num);
++	u64 val64 = 0;
++
++	sbl_dev_dbg(sbl->dev, "%d: MAC HPC set", port_num);
++
++	val64 = sbl_read64(sbl, (base | SBL_PML_CFG_TX_MAC_OFFSET));
++	val64 = SBL_PML_CFG_TX_MAC_IFG_MODE_UPDATE(val64, 0ULL); /* HPC */
++	val64 = SBL_PML_CFG_TX_MAC_IEEE_IFG_ADJUSTMENT_UPDATE(val64, 3ULL); /* no adjustment */
++	sbl_write64(sbl, (base | SBL_PML_CFG_TX_MAC_OFFSET), val64);
++	sbl_read64(sbl, (base | SBL_PML_CFG_TX_MAC_OFFSET));  /* flush */
++}
++
+diff --git a/drivers/net/ethernet/hpe/sbl/sbl_pml_pcs.c b/drivers/net/ethernet/hpe/sbl/sbl_pml_pcs.c
+new file mode 100644
+index 000000000000..81484e177394
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sbl/sbl_pml_pcs.c
+@@ -0,0 +1,1085 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/* Copyright 2019,2022-2025 Hewlett Packard Enterprise Development LP */
++
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/device.h>
++#include <linux/delay.h>
++#include <linux/sched.h>
++
++#include <linux/hpe/sbl/sbl.h>
++#include <linux/hpe/sbl/sbl_kconfig.h>
++#include <linux/hpe/sbl/sbl_pml.h>
++
++#include "sbl_pml_fn.h"
++#include "sbl_link.h"
++#include "sbl_serdes_map.h"
++#include "sbl_internal.h"
++#include "sbl_serdes_fn.h"
++
++/* Function to find the lanes that data will be arriving on and
++ * setup the correct active lanes to align and active fec lanes.
++ */
++static int sbl_pml_pcs_determine_active_lanes(struct sbl_inst *sbl, int port_num)
++{
++	struct sbl_link *link = sbl->link + port_num;
++	struct serdes_info *serdes =  sbl->switch_info->ports[port_num].serdes;
++	int i;
++
++	sbl_dev_dbg(sbl->dev, "%d: pcs config lanes", port_num);
++
++	switch (link->link_mode) {
++	case SBL_LINK_MODE_BS_200G:
++		/* 4 lanes of 50Gbps - 8 internal 25Gbps fec lanes
++		 * setup directly
++		 */
++		link->active_rx_lanes  = 0xf;    /* all */
++		link->active_fec_lanes = 0xff;   /* all */
++		break;
++	case SBL_LINK_MODE_BJ_100G:
++		/* 4 lanes of 25Gbps - 4 internal 25Gbps lanes
++		 * setup directly
++		 */
++		link->active_rx_lanes  = 0xf;    /* all */
++		link->active_fec_lanes = 0xf;    /* special case */
++		break;
++	case SBL_LINK_MODE_CD_100G:
++		/* 2 lanes of 50Gbps - 4 internal 25Gbps lanes
++		 * locate incoming lanes 0 and 1
++		 */
++		link->active_rx_lanes  = 0;
++		link->active_fec_lanes = 0;
++		if (link->loopback_mode == SBL_LOOPBACK_MODE_LOCAL) {
++			/* we will receive on the tx lanes we went out on */
++			for (i = 0; i < SBL_SERDES_LANES_PER_PORT; ++i) {
++				if (serdes[i].tx_lane_source < 2) {
++					link->active_rx_lanes  |= 0x1 << i;
++					link->active_fec_lanes |= 0x3 << 2 * i;
 +				}
 +			}
++		} else {
++			/* we will receive on the rx lanes */
++			for (i = 0; i < SBL_SERDES_LANES_PER_PORT; ++i) {
++				if (serdes[i].rx_lane_source < 2) {
++					link->active_rx_lanes  |= 0x1 << i;
++					link->active_fec_lanes |= 0x3 << 2 * i;
++				}
++			}
++		}
++		break;
++	case SBL_LINK_MODE_CD_50G:
++		/* 1 lanes of 50Gbps - 2 internal 25Gbps lanes
++		 * locate incoming lane 0
++		 */
++		if (link->loopback_mode == SBL_LOOPBACK_MODE_LOCAL) {
++			/* we will receive on the lane 0 we went out on */
++			for (i = 0; i < SBL_SERDES_LANES_PER_PORT; ++i) {
++				if (serdes[i].tx_lane_source == 0) {
++					link->active_rx_lanes  = 0x1 << i;
++					link->active_fec_lanes = 0x3 << 2 * i;
++					break;
++				}
++			}
++		} else {
++			/* we will receive on the rx lane */
++			for (i = 0; i < SBL_SERDES_LANES_PER_PORT; ++i) {
++				if (serdes[i].rx_lane_source == 0) {
++					link->active_rx_lanes  = 0x1 << i;
++					link->active_fec_lanes = 0x3 << 2 * i;
++				}
++			}
++		}
++		break;
++	default:
++		sbl_dev_err(sbl->dev, "%d: pcs bad link_mode (%d)", port_num, link->link_mode);
++		return -EBADRQC;
++	}
 +
-+			if (link->blattr.options & SBL_OPT_RELOAD_FW_ON_TIMEOUT)
-+				link->reload_serdes_fw = true;
++	return 0;
++}
++
++/* helper state functions */
++static bool sbl_pml_pcs_locked(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	struct sbl_link *link = sbl->link + port_num;
++	u64 locked_lanes;
++	u64 val64;
++
++	val64 = sbl_read64(sbl, base | SBL_PML_STS_RX_PCS_OFFSET);
++	locked_lanes = SBL_PML_STS_RX_PCS_AM_LOCK_GET(val64);
++
++	return (locked_lanes == link->active_fec_lanes);
++}
++
++static void sbl_pml_pcs_start_lock(struct sbl_inst *sbl, int port_num)
++{
++	struct sbl_link *link = sbl->link + port_num;
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	sbl_dev_dbg(sbl->dev, "%d: pml bring-up start am lock\n", port_num);
++
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET);
++	val64 = SBL_PML_CFG_RX_PCS_ENABLE_LOCK_UPDATE(val64, 1ULL);
++	val64 = SBL_PML_CFG_RX_PCS_ACTIVE_LANES_UPDATE(val64, link->active_rx_lanes);
++	sbl_write64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET);
++}
++
++static void sbl_pml_pcs_stop_lock(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	sbl_dev_dbg(sbl->dev, "%d: pml bring-up stop am lock\n", port_num);
++
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET);
++	val64 = SBL_PML_CFG_RX_PCS_ENABLE_LOCK_UPDATE(val64, 0ULL);
++	val64 = SBL_PML_CFG_RX_PCS_ACTIVE_LANES_UPDATE(val64, 0ULL);
++	sbl_write64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET);
++}
++
++/* wait for the pcs to become aligned */
++static int sbl_pml_pcs_alignment_wait(struct sbl_inst *sbl, int port_num)
++{
++	unsigned long start_jiffy;
++	int elapsed;
++	int err = 0;
++
++	sbl_dev_dbg(sbl->dev, "%d: pml pcs alignment wait\n", port_num);
++
++	sbl_link_info_set(sbl, port_num, SBL_LINK_INFO_PCS_A_WAIT);
++
++	 /*   poll for all lanes to get bitlock
++	  *
++	  *   This might be a very long time as the other end obviously needs to
++	  *   be coming up at the same time. So start eagerly checking and then back off.
++	  *
++	  *   If we are getting a high serdes error rate or bad eyes then we can never
++	  *   meaningfully lock so bail with an error and the serdes will be retuned.
++	  *
++	  *   Occasionally the pcs seems to get stuck and some lanes never come up.
++	  *   Restarting locking seems to clear this.
++	  */
++restart:
++	start_jiffy = jiffies;
++	while (!sbl_pml_pcs_locked(sbl, port_num)) {
++
++		if (sbl_start_timeout(sbl, port_num)) {
++			sbl_dev_dbg(sbl->dev, "%d: pcs lock wait timeout\n",
++				    port_num);
++			err = -ETIMEDOUT;
++			goto out;
++		}
++
++		if (sbl_base_link_start_cancelled(sbl, port_num)) {
++			sbl_dev_dbg(sbl->dev, "%d: pcs lock wait cancelled\n",
++				    port_num);
++			err = -ECANCELED;
++			goto out;
++		}
++
++		elapsed = jiffies_to_msecs(jiffies - start_jiffy);
++		if (elapsed > 1000) {
++
++			/* if we have a high serdes error, we will never align  */
++			if (sbl_pml_pcs_high_serdes_error(sbl, port_num)) {
++				sbl_dev_warn(sbl->dev, "%d: pcs lock high serdes error detected\n", port_num);
++				err = -EADV;
++				goto out;
++			}
++
++			/* Ensure the serdes is still good (eyes stay open)  */
++			err = sbl_port_check_eyes(sbl, port_num);
++			if (err) {
++				sbl_dev_warn(sbl->dev, "%d: pcs lock some eyes have gone bad", port_num);
++				goto out;
++			}
++
++			/* restart locking in case it's locked up */
++			sbl_pml_pcs_stop_lock(sbl, port_num);
++			sbl_pml_pcs_start_lock(sbl, port_num);
++
++			msleep(SBL_PML_PCS_ALIGN_SLOW_POLL_DELAY);
++		} else if (elapsed > 50)
++			msleep(100);
++		else
++			usleep_range(10000, 11000);
++	}
++
++	/* poll for lane alignment */
++	start_jiffy = jiffies;
++
++	while (!sbl_pml_pcs_aligned(sbl, port_num)) {
++
++		if (sbl_start_timeout(sbl, port_num)) {
++			sbl_dev_dbg(sbl->dev, "%d: pcs align wait timeout\n",
++				    port_num);
++			err = -ETIMEDOUT;
++			goto out;
++		}
++
++		if (sbl_base_link_start_cancelled(sbl, port_num)) {
++			sbl_dev_dbg(sbl->dev, "%d: pcs align wait cancelled\n",
++				    port_num);
++			err = -ECANCELED;
++			goto out;
++		}
++
++		/* if we lose lock restart trying to lock again  */
++		if (!sbl_pml_pcs_locked(sbl, port_num)) {
++			sbl_dev_warn(sbl->dev, "%d: pcs align - lost lock\n", port_num);
++			goto restart;
++		}
++
++		elapsed = jiffies_to_msecs(jiffies - start_jiffy);
++		if (elapsed > SBL_PML_PCS_ALIGN_TIMEOUT) {
++
++			/* we should have got alignment by now
++			 * give up, restart locking and try again
++			 */
++			sbl_pml_pcs_stop_lock(sbl, port_num);
++			sbl_pml_pcs_start_lock(sbl, port_num);
++			goto restart;
++		} else if (elapsed > 50)
++			msleep(100);
++		else
++			usleep_range(10000, 11000);
++	}
++
++out:
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_PCS_A_WAIT);
++
++	return err;
++}
++
++static bool sbl_pml_pcs_no_faults(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 faults;
++	u64 val64;
++
++	val64 = sbl_read64(sbl, base | SBL_PML_STS_RX_PCS_OFFSET);
++	faults = SBL_PML_STS_RX_PCS_FAULT_GET(val64) | SBL_PML_STS_RX_PCS_LOCAL_FAULT_GET(val64);
++
++	return (faults == 0ULL);
++}
++
++/* wait for pcs faults to clear
++ *
++ * we wait for fault to stay clear as it is momentarily set sometimes
++ */
++static int sbl_pml_pcs_fault_clear_wait(struct sbl_inst *sbl, int port_num)
++{
++	unsigned long start_jiffy = jiffies;
++	int no_fault_count = 0;
++	int elapsed;
++	int err;
++
++	sbl_dev_dbg(sbl->dev, "%d: pml pcs fault clear wait\n", port_num);
++
++	sbl_link_info_set(sbl, port_num, SBL_LINK_INFO_PCS_F_WAIT);
++
++	while (true) {
++
++		/* check for timeout */
++		if (sbl_start_timeout(sbl, port_num)) {
++			sbl_dev_dbg(sbl->dev, "%d: pml fault clear wait timeout\n",
++				    port_num);
++			err = -ETIMEDOUT;
++			goto out;
++		}
++
++		if (sbl_base_link_start_cancelled(sbl, port_num)) {
++			sbl_dev_dbg(sbl->dev, "%d: pml fault clear wait cancelled\n",
++				    port_num);
++			err = -ECANCELED;
++			goto out;
++		}
++
++		/* check we are still aligned */
++		if (!sbl_pml_pcs_aligned(sbl, port_num)) {
++			sbl_dev_dbg(sbl->dev, "%d: pml fault clear wait lost alignment\n",
++				    port_num);
++			err = -ENOLCK;
++			goto out;
++		}
++
++		/* check for no fault
++		 * we need multiple good tests to be sure it is up
++		 */
++		if (sbl_pml_pcs_no_faults(sbl, port_num)) {
++			++no_fault_count;
++			if (no_fault_count == SBL_PML_REQUIRED_NO_FAULT_COUNT) {
++				/* done */
++				err = 0;
++				goto out;
++			} else {
++				/* poll fast and check again */
++				start_jiffy = jiffies;
++			}
++		} else
++			no_fault_count = 0;
++
++		/* wait with backoff */
++		elapsed = jiffies_to_msecs(jiffies - start_jiffy);
++		if (elapsed > 5000)
++			msleep(1000);
++		else if (elapsed > 100)
++			msleep(100);
++		else
++			usleep_range(10000, 11000);
++	}
++
++out:
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_PCS_F_WAIT);
++
++	return err;
++}
++
++/* PCS configuration */
++static int sbl_pml_pcs_config(struct sbl_inst *sbl, int port_num)
++{
++	struct sbl_link *link = sbl->link + port_num;
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++	int err;
++	u64 en_lane_degrade_reg;
++
++	sbl_dev_dbg(sbl->dev, "%d: pcs config", port_num);
++
++	/* work out all the lane config and store in link db */
++	err = sbl_pml_pcs_determine_active_lanes(sbl, port_num);
++	if (err) {
++		sbl_dev_dbg(sbl->dev, "%d: pcs config lanes failed [%d]", port_num, err);
++		return err;
++	}
++
++	/* pcs must be off for setting  */
++	sbl_pml_pcs_stop(sbl, port_num);
++
++	/* clear out the previous active lanes and disable lock */
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET);
++	val64 = SBL_PML_CFG_RX_PCS_ACTIVE_LANES_UPDATE(val64, 0ULL);
++	val64 = SBL_PML_CFG_RX_PCS_ENABLE_LOCK_UPDATE(val64, 0ULL);
++	sbl_write64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET);
++
++	/* rapid alignment is broken so disable */
++	val64 = sbl_read64(sbl, base | SBL_PML_DBG_PCS_OFFSET);
++	val64 = SBL_PML_DBG_PCS_ENABLE_RAPID_ALIGNMENT_UPDATE(val64, 0ULL);
++	sbl_write64(sbl, base | SBL_PML_DBG_PCS_OFFSET, val64);
++
++	/* pcs config */
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_PCS_OFFSET);
++	switch (link->link_mode) {
++	case SBL_LINK_MODE_BS_200G:
++		val64 = SBL_PML_CFG_PCS_PCS_MODE_UPDATE(val64, 0ULL);
++		break;
++	case SBL_LINK_MODE_BJ_100G:
++		val64 = SBL_PML_CFG_PCS_PCS_MODE_UPDATE(val64, 1ULL);
++		break;
++	case SBL_LINK_MODE_CD_100G:
++		val64 = SBL_PML_CFG_PCS_PCS_MODE_UPDATE(val64, 2ULL);
++		break;
++	case SBL_LINK_MODE_CD_50G:
++		val64 = SBL_PML_CFG_PCS_PCS_MODE_UPDATE(val64, 3ULL);
++		break;
++	default:
++		sbl_dev_dbg(sbl->dev, "%d: pcs link mode invalid (%d)", port_num, link->link_mode);
++		return -EBADRQC;
++	}
++	val64 = SBL_PML_CFG_PCS_ENABLE_AUTO_NEG_UPDATE(val64, 0ULL);
++	if ((link->blattr.options & SBL_OPT_LANE_DEGRADE) &&
++	    (link->link_mode == SBL_LINK_MODE_BS_200G))
++		val64 = SBL_PML_CFG_PCS_ENABLE_AUTO_LANE_DEGRADE_UPDATE(val64, 1ULL);
++	else
++		val64 = SBL_PML_CFG_PCS_ENABLE_AUTO_LANE_DEGRADE_UPDATE(val64, 0ULL);
++
++	sbl_write64(sbl, base | SBL_PML_CFG_PCS_OFFSET, val64);
++
++	/* pcs tx  */
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_TX_PCS_OFFSET);
++	val64 = SBL_PML_CFG_TX_PCS_ENABLE_CTL_OS_UPDATE(val64, 0ULL);
++	val64 = SBL_PML_CFG_TX_PCS_CDC_READY_LEVEL_UPDATE(val64,
++							  SBL_PML_CFG_TX_PCS_CDC_READY_LEVEL_DFLT);
++	val64 = SBL_PML_CFG_TX_PCS_GEARBOX_CREDITS_UPDATE(val64,
++							  SBL_PML_CFG_TX_PCS_GEARBOX_CREDITS_DFLT);
++	val64 = SBL_PML_CFG_TX_PCS_LANE_0_SOURCE_UPDATE(val64,
++		 sbl->switch_info->ports[port_num].serdes[0].tx_lane_source);
++	val64 = SBL_PML_CFG_TX_PCS_LANE_1_SOURCE_UPDATE(val64,
++		 sbl->switch_info->ports[port_num].serdes[1].tx_lane_source);
++	val64 = SBL_PML_CFG_TX_PCS_LANE_2_SOURCE_UPDATE(val64,
++		 sbl->switch_info->ports[port_num].serdes[2].tx_lane_source);
++	val64 = SBL_PML_CFG_TX_PCS_LANE_3_SOURCE_UPDATE(val64,
++		 sbl->switch_info->ports[port_num].serdes[3].tx_lane_source);
++	sbl_write64(sbl, base | SBL_PML_CFG_TX_PCS_OFFSET, val64);
++
++	/* pcs rx */
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET);
++	switch (link->blattr.fec_mode) {
++	case SBL_RS_MODE_OFF:
++		val64 = SBL_PML_CFG_RX_PCS_RS_MODE_UPDATE(val64, 0ULL);
++		break;
++	case SBL_RS_MODE_OFF_SYN:
++		val64 = SBL_PML_CFG_RX_PCS_RS_MODE_UPDATE(val64, 1ULL);
++		break;
++	case SBL_RS_MODE_OFF_CHK:
++		val64 = SBL_PML_CFG_RX_PCS_RS_MODE_UPDATE(val64, 2ULL);
++		break;
++	case SBL_RS_MODE_ON_SYN_MRK:
++		val64 = SBL_PML_CFG_RX_PCS_RS_MODE_UPDATE(val64, 3ULL);
++		break;
++	case SBL_RS_MODE_ON_CHK_SYN_MRK:
++		val64 = SBL_PML_CFG_RX_PCS_RS_MODE_UPDATE(val64, 4ULL);
++		break;
++	case SBL_RS_MODE_ON:
++		val64 = SBL_PML_CFG_RX_PCS_RS_MODE_UPDATE(val64, 5ULL);
++		break;
++	default:
++		sbl_dev_dbg(sbl->dev, "%d: pcs fec mode invalid (%d)", port_num, link->blattr.fec_mode);
++		return -EBADRQC;
++	}
++	val64 = SBL_PML_CFG_RX_PCS_ENABLE_CTL_OS_UPDATE(val64, 0ULL);                   /* ordered sets off */
++	val64 = SBL_PML_CFG_RX_PCS_HEALTH_BAD_SENSITIVITY_UPDATE(val64, 4ULL);          /* less sensitive */
++	val64 = SBL_PML_CFG_RX_PCS_ENABLE_RX_SM_UPDATE(val64,                           /* state machine */
++			(link->blattr.options & SBL_OPT_FABRIC_LINK) ? 0ULL : 1ULL);
++	en_lane_degrade_reg = sbl_read64(sbl, base | SBL_PML_CFG_PCS_OFFSET);
++	/* If we disable the following CSR, Auto Lane Degrade is enabled and
++	 * there is a concern regarding handling of short burst errors
++	 */
++	if (SBL_PML_CFG_PCS_ENABLE_AUTO_LANE_DEGRADE_GET(en_lane_degrade_reg))
++		val64 = SBL_PML_CFG_RX_PCS_RESTART_LOCK_ON_BAD_CWS_UPDATE(val64, 0ULL);     /* restart on 3 bad RS codewords - 0 with autodegrade enabled */
++	else
++		val64 = SBL_PML_CFG_RX_PCS_RESTART_LOCK_ON_BAD_CWS_UPDATE(val64, 1ULL);     /* restart on 3 bad RS codewords - 1 with autodegrade disabled */
++	val64 = SBL_PML_CFG_RX_PCS_RESTART_LOCK_ON_BAD_AMS_UPDATE(val64,                /* restart on 5 bad AMs */
++			(link->link_mode == SBL_LINK_MODE_BS_200G) ? 1ULL : 0ULL);
++	val64 = SBL_PML_CFG_RX_PCS_ACTIVE_LANES_UPDATE(val64, link->active_rx_lanes);
++	val64 = SBL_PML_CFG_RX_PCS_ENABLE_LOCK_UPDATE(val64, 0ULL);                     /* pcs disable lock  (really enable alignment process) */
++	sbl_write64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET, val64);
++
++	link->pcs_config = true;
++
++	return 0;
++}
++
++/* Enables auto lane degrading in the hardware.
++ *
++ * This function can also be called if the AM_LOCK is observed on some lanes
++ * but not all and the timeout has expired. This will allow auto lane degrade
++ * feature to be used when not all lanes are available at the initial link
++ * bringup.
++ */
++void sbl_pml_pcs_enable_auto_lane_degrade(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64, en_lane_degrade_reg;
++	unsigned long timeout;
++	int err = 0;
++
++	en_lane_degrade_reg = sbl_read64(sbl, base | SBL_PML_CFG_PCS_OFFSET);
++	if (SBL_PML_CFG_PCS_ENABLE_AUTO_LANE_DEGRADE_GET(en_lane_degrade_reg)) {
++		timeout = jiffies + usecs_to_jiffies(HM_TIMEOUT);
++		while (!sbl_pml_rx_pls_available(sbl, port_num)) {
++			if (time_after(jiffies, timeout)) {
++				sbl_dev_dbg(sbl->dev, "%d: timeout for rx pls available\n", port_num);
++				err = -ETIMEDOUT;
++				goto out;
++			}
++		}
++		timeout = jiffies + usecs_to_jiffies(HM_TIMEOUT);
++		while (!sbl_pml_lp_pls_available(sbl, port_num)) {
++			if (time_after(jiffies, timeout)) {
++				sbl_dev_dbg(sbl->dev, "%d: timeout for lp pls available\n", port_num);
++				err = -ETIMEDOUT;
++				goto out;
++			}
++		}
++
++		val64 = sbl_read64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET);
++		val64 = SBL_PML_CFG_RX_PCS_ALLOW_AUTO_DEGRADE_UPDATE(val64, 1ULL);
++		sbl_write64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET, val64);
++
++		val64 = sbl_read64(sbl, base | SBL_PML_CFG_TX_PCS_OFFSET);
++		val64 = SBL_PML_CFG_TX_PCS_ALLOW_AUTO_DEGRADE_UPDATE(val64, 1ULL);
++		sbl_write64(sbl, base | SBL_PML_CFG_TX_PCS_OFFSET, val64);
++		sbl_read64(sbl, base | SBL_PML_CFG_PCS_OFFSET); /* flush */
++		sbl_dev_dbg(sbl->dev, "auto lane degrade is enabled");
++	}
++out:
++	if (err) {
++		sbl_dev_err(sbl->dev, "%d: auto lane degrade is not enabled", port_num);
++		en_lane_degrade_reg = sbl_read64(sbl, base | SBL_PML_CFG_PCS_OFFSET);
++		en_lane_degrade_reg = SBL_PML_CFG_PCS_ENABLE_AUTO_LANE_DEGRADE_UPDATE(en_lane_degrade_reg, 0ULL);
++		sbl_write64(sbl, base | SBL_PML_CFG_PCS_OFFSET, en_lane_degrade_reg);
++
++		val64 = sbl_read64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET);
++		val64 = SBL_PML_CFG_RX_PCS_RESTART_LOCK_ON_BAD_CWS_UPDATE(val64, 1ULL);
++		sbl_write64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET, val64);
++		sbl_read64(sbl, base | SBL_PML_CFG_PCS_OFFSET); /* flush */
++		sbl_dev_dbg(sbl->dev, "Restart lock on bad CWS set back to 1 since couldn't enable ALD\n");
++	}
++}
++
++bool sbl_pml_rx_pls_available(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++	u64 sts_pcs_lane_degrade_reg;
++
++	sts_pcs_lane_degrade_reg = sbl_read64(sbl, base | SBL_PML_STS_PCS_LANE_DEGRADE_OFFSET);
++	val64 = SBL_PML_STS_PCS_LANE_DEGRADE_RX_PLS_AVAILABLE_GET(sts_pcs_lane_degrade_reg);
++
++	return (val64 == MAX_PLS_AVAILABLE);
++}
++
++bool sbl_pml_lp_pls_available(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++	u64 sts_pcs_lane_degrade_reg;
++
++	sts_pcs_lane_degrade_reg = sbl_read64(sbl, base | SBL_PML_STS_PCS_LANE_DEGRADE_OFFSET);
++	val64 = SBL_PML_STS_PCS_LANE_DEGRADE_LP_PLS_AVAILABLE_GET(sts_pcs_lane_degrade_reg);
++
++	return (val64 == MAX_PLS_AVAILABLE);
++}
++
++/* PCS start-up */
++void sbl_pml_pcs_start(struct sbl_inst *sbl, int port_num)
++{
++	struct sbl_link *link = sbl->link + port_num;
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++	u32 val32;
++
++	sbl_dev_dbg(sbl->dev, "%d: pcs start", port_num);
++
++	/* we need updated AMs for 200GHz mode */
++	val32 = SBL_PML_CFG_PCS_AMS_DFLT;
++	if (link->link_mode == SBL_LINK_MODE_BS_200G)
++		val32 = SBL_PML_CFG_PCS_AMS_USE_PROGRAMMABLE_AMS_UPDATE(
++				val32, 1ULL);
++	else
++		val32 = SBL_PML_CFG_PCS_AMS_USE_PROGRAMMABLE_AMS_UPDATE(
++				val32, 0ULL);
++	sbl_write32(sbl, base | SBL_PML_CFG_PCS_AMS_OFFSET, val32);
++
++	/* start pcs */
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_PCS_OFFSET);
++	val64 = SBL_PML_CFG_PCS_PCS_ENABLE_UPDATE(val64, 1ULL);
++	sbl_write64(sbl, base | SBL_PML_CFG_PCS_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_CFG_PCS_OFFSET); /* flush */
++
++	/* record if we are trying to align */
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET);
++	if (SBL_PML_CFG_RX_PCS_ENABLE_LOCK_GET(val64))
++		sbl_link_info_set(sbl, port_num, SBL_LINK_INFO_PCS_ALIGN_EN);
++	else
++		sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_PCS_ALIGN_EN);
++}
++
++void sbl_pml_pcs_enable_alignment(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	sbl_dev_dbg(sbl->dev, "%d: pcs enable alignment", port_num);
++
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET);
++	val64 = SBL_PML_CFG_RX_PCS_ENABLE_LOCK_UPDATE(val64, 1ULL);
++	sbl_write64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET, val64);
++
++	/* alignment process is underway */
++	sbl_link_info_set(sbl, port_num, SBL_LINK_INFO_PCS_ALIGN_EN);
++}
++
++void sbl_pml_pcs_disable_alignment(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	sbl_dev_dbg(sbl->dev, "%d: pcs disable alignment", port_num);
++
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET);
++	val64 = SBL_PML_CFG_RX_PCS_ENABLE_LOCK_UPDATE(val64, 0ULL);
++	sbl_write64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET, val64);
++
++	/* alignment process is stopped */
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_PCS_ALIGN_EN);
++}
++
++/* remote fault.
++ *
++ * there is a debug reg we can use to send remote fault to our link partner
++ */
++void sbl_pml_pcs_set_tx_rf(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	sbl_dev_dbg(sbl->dev, "%d: pcs set tx rf", port_num);
++
++	val64 = sbl_read64(sbl, base | SBL_PML_DBG_PCS_OFFSET);
++	val64 = SBL_PML_DBG_PCS_FORCE_TX_DATA_UPDATE(val64, 1ULL);
++	val64 = SBL_PML_DBG_PCS_FORCE_TX_DATA_RF_UPDATE(val64, 1ULL);
++	sbl_write64(sbl, base | SBL_PML_DBG_PCS_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_DBG_PCS_OFFSET);
++
++	sbl_link_info_set(sbl, port_num, SBL_LINK_INFO_PCS_TX_RF);
++}
++
++void sbl_pml_pcs_clear_tx_rf(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	sbl_dev_dbg(sbl->dev, "%d: pcs clear tx rf", port_num);
++
++	val64 = sbl_read64(sbl, base | SBL_PML_DBG_PCS_OFFSET);
++	val64 = SBL_PML_DBG_PCS_FORCE_TX_DATA_UPDATE(val64, 0ULL);
++	val64 = SBL_PML_DBG_PCS_FORCE_TX_DATA_RF_UPDATE(val64, 0ULL);
++	sbl_write64(sbl, base | SBL_PML_DBG_PCS_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_DBG_PCS_OFFSET);
++
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_PCS_TX_RF);
++}
++
++/*   wait for the pcs to come up
++ *
++ *   i.e for it to be locked and aligned and faults to have cleared
++ *
++ *
++ */
++int sbl_pml_pcs_wait(struct sbl_inst *sbl, int port_num)
++{
++	char pcs_state_str[SBL_PCS_STATE_STR_LEN];
++	int err;
++
++	sbl_dev_dbg(sbl->dev, "%d: pcs wait", port_num);
++
++	/* start locking */
++	sbl_pml_pcs_start_lock(sbl, port_num);
++
++	/* clear forcing remote fault.
++	 * (it will continue to be set until PCS is actually ready)
++	 */
++	sbl_pml_pcs_clear_tx_rf(sbl, port_num);
++
++	/* keep trying to bring the pcs up until we timeout */
++	while (true) {
++
++		/* wait for alignment */
++		err = sbl_pml_pcs_alignment_wait(sbl, port_num);
++		switch (err) {
++		case 0:
 +			break;
++
++		case -ETIMEDOUT:
++			/* out of time, dump state and give up  */
++			sbl_dev_err(sbl->dev, "%d: pcs_wait alignment timeout (%s)\n", port_num,
++				    sbl_pml_pcs_state_str(sbl, port_num, pcs_state_str,
++							  SBL_PCS_STATE_STR_LEN));
++			goto out;
++
++		case -ECANCELED:
++			sbl_dev_dbg(sbl->dev, "%d: pcs_wait alignment failed [%d]\n", port_num, err);
++			goto out;
++
 +		default:
-+			sbl_dev_err(sbl->dev,
-+				    "p%d: SerDes start: serdes_tuning failed [%d]",
-+				    port_num, err);
-+			break;
++			/* something unexpected */
++			sbl_dev_err(sbl->dev, "%d: pcs_wait alignment failed [%d]\n", port_num, err);
++			goto out;
++		}
++
++		/* wait for faults to clear */
++		err = sbl_pml_pcs_fault_clear_wait(sbl, port_num);
++		switch (err) {
++
++		case 0:
++			goto out;
++
++		case -ENOLCK:
++			/* alignment lost - try to align again  */
++			sbl_dev_warn(sbl->dev, "%d: pcs_wait alignment lost - restart (%s)\n", port_num,
++				     sbl_pml_pcs_state_str(sbl, port_num, pcs_state_str,
++							   SBL_PCS_STATE_STR_LEN));
++			continue;
++
++		case -ETIMEDOUT:
++			sbl_dev_err(sbl->dev, "%d: pcs_wait fault clear timeout (%s)\n", port_num,
++				    sbl_pml_pcs_state_str(sbl, port_num, pcs_state_str,
++							  SBL_PCS_STATE_STR_LEN));
++			goto out;
++
++		case -ECANCELED:
++			sbl_dev_dbg(sbl->dev, "%d: pcs_wait fault clear cancelled\n", port_num);
++			goto out;
++
++		default:
++			/* something unexpected */
++			sbl_dev_err(sbl->dev, "%d: pcs_wait fault clear failed [%d]\n", port_num, err);
++			goto out;
 +		}
 +	}
 +
 +out:
-+	/* update status */
-+	if (err) {
-+		link->sstate = SBL_SERDES_STATUS_ERROR;
-+		link->serr = err;
-+	} else {
-+		sbl_dev_dbg(sbl->dev, "p%d: SerDes start: done", port_num);
-+		link->sstate = SBL_SERDES_STATUS_RUNNING;
-+		link->serr = 0;
-+	}
++	/* drop all stage info */
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_PCS_ALIGN_EN);
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_PCS_A_WAIT);
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_PCS_F_WAIT);
 +
-+	return err;
++	if (err)
++		return err;
++
++	/* clear all the PCS related error flags */
++	sbl_pml_err_flgs_clear(sbl, port_num, SBL_PML_ALL_PCS_ERR_FLGS);
++
++	/* note pcs is up */
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_PCS_TX_AM);
++	sbl_link_info_set(sbl, port_num, SBL_LINK_INFO_PCS_UP);
++
++	return 0;
 +}
 +
-+int sbl_serdes_stop(struct sbl_inst *sbl, int port_num)
++char *sbl_pml_pcs_state_str(struct sbl_inst *sbl, int port_num, char *buf, int len)
++{
++	struct sbl_link *link = sbl->link + port_num;
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	if (!buf || !len)
++		return "";
++
++	val64 = sbl_read64(sbl, base | SBL_PML_STS_RX_PCS_OFFSET);
++	snprintf(buf, len, "lk %llx/%.2x, a%lld f%lld lf%lld hs%lld",
++		 SBL_PML_STS_RX_PCS_AM_LOCK_GET(val64),
++			link->active_fec_lanes,
++			SBL_PML_STS_RX_PCS_ALIGN_STATUS_GET(val64),
++			SBL_PML_STS_RX_PCS_FAULT_GET(val64),
++			SBL_PML_STS_RX_PCS_LOCAL_FAULT_GET(val64),
++			SBL_PML_STS_RX_PCS_HI_SER_GET(val64));
++	return buf;
++}
++
++/**
++ * sbl_pml_pcs_recovery_enable() - Enable PCS recovery
++ * @sbl: A slingshot base link device instance
++ * @port_num: port number
++ *
++ * Context: Process context, Acquires lock and release
++ * pcs_recovery_lock <spin_lock>
++ */
++void sbl_pml_pcs_recovery_enable(struct sbl_inst *sbl, int port_num)
 +{
 +	struct sbl_link *link;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
 +
 +	link = sbl->link + port_num;
 +
-+	if (!(link->sstate & (SBL_SERDES_STATUS_RUNNING | SBL_SERDES_STATUS_AUTONEG))) {
-+		sbl_dev_err(sbl->dev, "p%d: SerDes stop: wrong state (%s)",
-+			    port_num, sbl_serdes_state_str(link->sstate));
-+		/* leave state unchanged */
-+		return -EUCLEAN;
-+	}
++	sbl_dev_dbg(sbl->dev, "%d: PCS recovery enable", port_num);
++
++	spin_lock(&link->pcs_recovery_lock);
++	link->pcs_recovery_flag = true;
++	spin_unlock(&link->pcs_recovery_lock);
++}
++EXPORT_SYMBOL(sbl_pml_pcs_recovery_enable);
++
++/**
++ * sbl_pml_pcs_recovery_disable() - Disable PCS recovery
++ * @sbl: A slingshot base link device instance
++ * @port_num: port number
++ *
++ * Context: Process context, Acquires lock and release
++ * pcs_recovery_lock <spin_lock>
++ */
++void sbl_pml_pcs_recovery_disable(struct sbl_inst *sbl, int port_num)
++{
++	struct sbl_link *link;
++
++	link = sbl->link + port_num;
++
++	sbl_dev_dbg(sbl->dev, "%d: PCS recovery disable", port_num);
++
++	spin_lock(&link->pcs_recovery_lock);
++	link->pcs_recovery_flag = false;
++	spin_unlock(&link->pcs_recovery_lock);
++}
++EXPORT_SYMBOL(sbl_pml_pcs_recovery_disable);
++
++/**
++ * sbl_pml_pcs_aligned() - Check pcs align status
++ * @sbl: A slingshot base link device instance
++ * @port_num: port number
++ *
++ * Return: status of pcs align
++ */
++bool sbl_pml_pcs_aligned(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	val64 = sbl_read64(sbl, base | SBL_PML_STS_RX_PCS_OFFSET);
++
++	return (SBL_PML_STS_RX_PCS_ALIGN_STATUS_GET(val64) == 1);
++}
++EXPORT_SYMBOL(sbl_pml_pcs_aligned);
++
++bool sbl_pml_pcs_high_serdes_error(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	val64 = sbl_read64(sbl, base | SBL_PML_STS_RX_PCS_OFFSET);
++	return SBL_PML_STS_RX_PCS_HI_SER_GET(val64);
++}
++
++bool sbl_pml_pcs_up(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	if (!sbl->is_hw)
++		return true;
++
++	val64 = sbl_read64(sbl, base | SBL_PML_STS_RX_PCS_OFFSET);
++
++	return SBL_PML_STS_RX_PCS_ALIGN_STATUS_GET(val64) &&
++			!SBL_PML_STS_RX_PCS_FAULT_GET(val64) &&
++			!SBL_PML_STS_RX_PCS_LOCAL_FAULT_GET(val64) &&
++			!SBL_PML_STS_RX_PCS_HI_SER_GET(val64);
++}
++
++bool sbl_pml_recovery_no_faults(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	struct sbl_link *link = sbl->link + port_num;
++	u64 val64;
++
++	val64 = sbl_read64(sbl, base | SBL_PML_STS_RX_PCS_OFFSET);
++
++	sbl_dev_dbg(sbl->dev, "%d:sbl_pml_recovery fault info val=0x%llx aml=0x%llx fecl:0x%x",
++		    port_num, val64, SBL_PML_STS_RX_PCS_AM_LOCK_GET(val64), link->active_fec_lanes);
++
++	return SBL_PML_STS_RX_PCS_ALIGN_STATUS_GET(val64) &&
++			!SBL_PML_STS_RX_PCS_FAULT_GET(val64) &&
++			!SBL_PML_STS_RX_PCS_LOCAL_FAULT_GET(val64) &&
++			!SBL_PML_STS_RX_PCS_HI_SER_GET(val64) &&
++			(SBL_PML_STS_RX_PCS_AM_LOCK_GET(val64) == link->active_fec_lanes);
++}
++
++void sbl_pml_recovery_log_pcs_status(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	val64 = sbl_read64(sbl, base | SBL_PML_STS_RX_PCS_DESKEW_DEPTHS_OFFSET);
++	sbl_dev_info(sbl->dev, "%d: SBL_PML_STS_RX_PCS_DESKEW_DEPTHS_OFFSET = 0x%llx",
++		     port_num, val64);
++
++	val64 = sbl_read64(sbl, base | SBL_PML_STS_RX_PCS_AM_MATCH_OFFSET);
++	sbl_dev_info(sbl->dev, "%d: SBL_PML_STS_RX_PCS_AM_MATCH_OFFSET = 0x%llx",
++		     port_num, val64);
++
++	val64 = sbl_read64(sbl, base | SBL_PML_STS_RX_PCS_FECL_SOURCES_OFFSET);
++	sbl_dev_info(sbl->dev, "%d: SBL_PML_STS_RX_PCS_FECL_SOURCES_OFFSET = 0x%llx",
++		     port_num, val64);
++}
++
++/* stop the pcs */
++void sbl_pml_pcs_stop(struct sbl_inst *sbl, int port_num)
++{
++	u32 base = SBL_PML_BASE(port_num);
++	struct sbl_link *link = sbl->link + port_num;
++	u64 val64;
 +
 +	if (sbl_debug_option(sbl, port_num, SBL_DEBUG_KEEP_SERDES_UP)) {
-+		sbl_dev_err(sbl->dev, "p%d: KEEP SERDES UP", port_num);
-+		return 0;
-+	}
-+
-+	return sbl_serdes_stop_internal(sbl, port_num);
-+}
-+
-+int sbl_serdes_reset(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link;
-+	int fail_reset_serdes = 0;
-+	int serdes;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
-+
-+	sbl_dev_dbg(sbl->dev, "p%d: SerDes reset", port_num);
-+
-+	link = sbl->link + port_num;
-+	link->sstate = SBL_SERDES_STATUS_RESETTING;
-+
-+	/* optionally clear any saved tuning params */
-+	if (link->blattr.options & SBL_OPT_RESET_CLEAR_PARAMS) {
-+		link->tuning_params.tp_state_hash0 = 0;
-+		link->tuning_params.tp_state_hash1 = 0;
-+		for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+			memset(link->tuning_params.params[serdes].ctle, 0,
-+			       sizeof(u16) * NUM_CTLE_PARAMS);
-+			memset(link->tuning_params.params[serdes].ffe, 0,
-+			       sizeof(u16) * NUM_FFE_PARAMS);
-+			memset(link->tuning_params.params[serdes].dfe, 0,
-+			       sizeof(u16) * NUM_DFE_PARAMS);
-+			memset(link->tuning_params.params[serdes].rxvs, 0,
-+			       sizeof(u16) * NUM_RXVS_PARAMS);
-+			memset(link->tuning_params.params[serdes].rxvc, 0,
-+			       sizeof(u16) * NUM_RXVC_PARAMS);
-+			memset(link->tuning_params.params[serdes].rsdo, 0,
-+			       sizeof(u16) * NUM_RSDO_PARAMS);
-+			memset(link->tuning_params.params[serdes].rsdc, 0,
-+			       sizeof(u16) * NUM_RSDC_PARAMS);
-+			memset(link->tuning_params.params[serdes].rsto, 0,
-+			       sizeof(u16) * NUM_RSTO_PARAMS);
-+			memset(link->tuning_params.params[serdes].rstc, 0,
-+			       sizeof(u16) * NUM_RSTC_PARAMS);
-+			memset(link->tuning_params.params[serdes].eh, 0,
-+			       sizeof(u16) * NUM_EH_PARAMS);
-+			memset(link->tuning_params.params[serdes].gtp, 0,
-+			       sizeof(u16) * NUM_GTP_PARAMS);
-+			memset(link->tuning_params.params[serdes].dccd, 0,
-+			       sizeof(u16) * NUM_DCCD_PARAMS);
-+			memset(link->tuning_params.params[serdes].p4lv, 0,
-+			       sizeof(u16) * NUM_P4LV_PARAMS);
-+			memset(link->tuning_params.params[serdes].afec, 0,
-+			       sizeof(u16) * NUM_AFEC_PARAMS);
-+		}
-+	}
-+
-+	/* Stop continuous tune */
-+	err = sbl_port_stop_pcal(sbl, port_num);
-+	if (err)
-+		sbl_dev_warn(sbl->dev, "p%d: SerDes reset: port_stop_pcal failed [%d]",
-+			     port_num, err);
-+
-+	/* Previously sbl_spico_reset() is now changed to
-+	 * sbl_serdes_soft_reset() to avoid SBUS lockups - SSHOTPLAT-2222.
-+	 * Upon error, spico reset will reload serdes firmware.
-+	 * Note, reloading the firmware can be forced with a
-+	 * debug option.
-+	 */
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		err = sbl_serdes_soft_reset(sbl, port_num, serdes);
-+		if (err) {
-+			fail_reset_serdes = serdes;
-+			break;
-+		}
-+	}
-+	if (err)
-+		sbl_dev_err(sbl->dev, "p%ds%d: SerDes reset: serdes_soft_reset failed [%d]",
-+			    port_num, fail_reset_serdes, err);
-+	else if (sbl_debug_option(sbl, port_num, SBL_DEBUG_FORCE_RELOAD_SERDES_FW))
-+		/* Skip out_success and continue to SPICO reload */
-+		sbl_dev_info(sbl->dev, "p%d: SPICO force serdes_firmware_flash_safe", port_num);
-+	else
-+		goto out_success;
-+
-+	/* reload fw */
-+	err = sbl_serdes_firmware_flash_safe(sbl, port_num, true);
-+	if (err)
-+		sbl_dev_err(sbl->dev, "p%d: SerDes reset: serdes_firmware_flash_safe failed [%d]",
-+			    port_num, err);
-+	else
-+		goto out_success;
-+
-+	/* This is really bad!
-+	 * There is nothing we can do but say we are in error and
-+	 * be reset again
-+	 */
-+	sbl_dev_err(sbl->dev, "p%d: SerDes reset: failed [%d]", port_num, err);
-+	link->sstate = SBL_SERDES_STATUS_ERROR;
-+	link->serr = err;
-+
-+	return err;
-+
-+out_success:
-+	/* serdes should be fine */
-+	sbl_dev_dbg(sbl->dev, "p%d: SerDes reset: done", port_num);
-+	link->sstate = SBL_SERDES_STATUS_DOWN;
-+	link->serr = 0;
-+
-+	return 0;
-+}
-+
-+int sbl_an_serdes_start(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
-+
-+	link = sbl->link + port_num;
-+
-+	if (link->mattr.media != SBL_LINK_MEDIA_ELECTRICAL) {
-+		sbl_dev_err(sbl->dev, "p%d: SerDes AN start - media not electrical",
-+			    port_num);
-+		return -EINVAL;
-+	}
-+
-+	if (link->blattr.pec.an_mode != SBL_AN_MODE_ON &&
-+	    link->blattr.pec.an_mode != SBL_AN_MODE_FIXED) {
-+		sbl_dev_err(sbl->dev, "p%d: SerDes AN start - bad mode specified (%s)",
-+			    port_num, sbl_an_mode_str(link->blattr.pec.an_mode));
-+		return -EINVAL;
-+	}
-+
-+	if (link->sstate != SBL_SERDES_STATUS_DOWN) {
-+		sbl_dev_err(sbl->dev, "p%d: SerDes AN start - wrong state (%s)",
-+			    port_num, sbl_serdes_state_str(link->sstate));
-+		/* leave state unchanged */
-+		return -EUCLEAN;
-+	}
-+
-+	err = sbl_serdes_stop_internal(sbl, port_num);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "p%d: SerDes AN start - stop internal failed [%d]",
-+			    port_num, err);
-+		goto out_err;
-+	}
-+
-+	err = sbl_serdes_config(sbl, port_num, true);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "p%d: SerDes AN start - config failed [%d]",
-+			    port_num, err);
-+		goto out_err;
-+	}
-+
-+	sbl_dev_dbg(sbl->dev, "p%d: SerDes AN started", port_num);
-+	link->sstate = SBL_SERDES_STATUS_AUTONEG;
-+	link->serr = 0;
-+	return 0;
-+
-+out_err:
-+	link->sstate = SBL_SERDES_STATUS_ERROR;
-+	link->serr = err;
-+	return err;
-+}
-+
-+int sbl_an_serdes_stop(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
-+
-+	link = sbl->link + port_num;
-+
-+	if (link->sstate != SBL_SERDES_STATUS_AUTONEG) {
-+		sbl_dev_err(sbl->dev, "p%d: SerDes in wrong state (%s) for AN stop\n",
-+			    port_num, sbl_serdes_state_str(link->sstate));
-+		/* leave state unchanged */
-+		return -EUCLEAN;
-+	}
-+
-+	err = sbl_serdes_stop_internal(sbl, port_num);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "p%d: SerDes AN stop failed [%d]\n",
-+			    port_num, err);
-+		link->sstate = SBL_SERDES_STATUS_ERROR;
-+	} else {
-+		sbl_dev_dbg(sbl->dev, "p%d: SerDes AN stopped", port_num);
-+		link->sstate = SBL_SERDES_STATUS_DOWN;
-+	}
-+	link->serr = err;
-+	return err;
-+}
-+
-+/**
-+ * sbl_serdes_get_tuning_params() - Save tuning params
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @tuning_params: tuning parameters used to configure a link,
-+ *                allowing the SerDes to come up without needing to DFE tune.
-+ *
-+ * Get tuning parameters which was used to configure a link
-+ *
-+ * Context: Process, May sleep. Uses mutex_lock
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+int sbl_serdes_get_tuning_params(struct sbl_inst *sbl, int port_num,
-+				 struct sbl_tuning_params *tuning_params)
-+{
-+	struct sbl_link *link;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
-+
-+	link = sbl->link + port_num;
-+
-+	/* don't return invalid parameters */
-+	mutex_lock(&link->tuning_params_mtx);
-+	if (link->tuning_params.magic != SBL_TUNING_PARAM_MAGIC) {
-+		mutex_unlock(&link->tuning_params_mtx);
-+		return -ENODATA;
-+	}
-+
-+	sbl_dev_dbg(sbl->dev, "p%d: tp get - returning hash0 0x%llx hash1 0x%llx\n",
-+		    port_num, link->tuning_params.tp_state_hash0,
-+		link->tuning_params.tp_state_hash1);
-+
-+	memcpy(tuning_params, &link->tuning_params, sizeof(struct sbl_tuning_params));
-+	mutex_unlock(&link->tuning_params_mtx);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(sbl_serdes_get_tuning_params);
-+
-+/**
-+ * sbl_serdes_set_tuning_params() - set tuning params for serdes
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @tuning_params: Pointer to struct sbl_tuning_params
-+ *
-+ *  Set tuning parameters used to configure a link, allowing the SerDes
-+ *  to come up.
-+ *
-+ * Context: Process, May sleep. Uses mutex_lock
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+int sbl_serdes_set_tuning_params(struct sbl_inst *sbl, int port_num,
-+				 struct sbl_tuning_params *tuning_params)
-+{
-+	struct sbl_link *link;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
-+
-+	link = sbl->link + port_num;
-+
-+	if (tuning_params->magic != SBL_TUNING_PARAM_MAGIC)
-+		return -EINVAL;
-+
-+	/* only support one verion for now */
-+	if (tuning_params->version != SBL_TUNING_PARAM_VERSION)
-+		return -EINVAL;
-+
-+	mutex_lock(&link->tuning_params_mtx);
-+	memcpy(&link->tuning_params, tuning_params, sizeof(struct sbl_tuning_params));
-+	mutex_unlock(&link->tuning_params_mtx);
-+
-+	sbl_dev_dbg(sbl->dev, "p%d: tp set - received hash0 0x%llx hash1 0x%llx\n",
-+		    port_num, link->tuning_params.tp_state_hash0,
-+		link->tuning_params.tp_state_hash1);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(sbl_serdes_set_tuning_params);
-+
-+/**
-+ * sbl_serdes_invalidate_tuning_params() - Invalidate tuning params
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * Clearing per port tuning parameters
-+ *
-+ * Context: Process, May sleep. Uses mutex_lock
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+int sbl_serdes_invalidate_tuning_params(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
-+
-+	link = sbl->link + port_num;
-+
-+	mutex_lock(&link->tuning_params_mtx);
-+	link->tuning_params.magic = 0;               /* prevent transfer to usr-space */
-+	link->tuning_params.tp_state_hash0 = 0;      /* prevent use */
-+	link->tuning_params.tp_state_hash1 = 0;      /* prevent use */
-+	mutex_unlock(&link->tuning_params_mtx);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(sbl_serdes_invalidate_tuning_params);
-+
-+/**
-+ * sbl_serdes_invalidate_all_tuning_params() - Invalidate all tuning params
-+ * @sbl: A slingshot base link device instance
-+ *
-+ * Clearing all ports tuning parameters
-+ *
-+ * Return: 0 on success
-+ */
-+int sbl_serdes_invalidate_all_tuning_params(struct sbl_inst *sbl)
-+{
-+	int i;
-+
-+	for (i = 0; i < sbl->switch_info->num_ports; ++i)
-+		sbl_serdes_invalidate_tuning_params(sbl, i);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(sbl_serdes_invalidate_all_tuning_params);
-+
-+/**
-+ * sbl_serdes_add_config() - Serdes configuration addition
-+ * @sbl: A slingshot base link device instance
-+ * @tp_state_mask0: State lookup mask
-+ * @tp_state_mask1: State lookup mask
-+ * @tp_state_match0: match values after masking
-+ * @tp_state_match1: match values after masking
-+ * @port_mask: applicable ports
-+ * @serdes_mask: applicable serdes
-+ * @vals: Configuration values
-+ * @is_default: Default configuration
-+ *
-+ * A SerDes configuration entry specifies a set of config values which
-+ * are selected to get the SerDes to tune reliably for a given setup.
-+ *
-+ * Context: Process context, Acquires lock and release serdes_config_lock <spin_lock>
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+int sbl_serdes_add_config(struct sbl_inst *sbl,
-+			  u64 tp_state_mask0, u64 tp_state_mask1,
-+		u64 tp_state_match0, u64 tp_state_match1,
-+		u64 port_mask, u8 serdes_mask, struct sbl_sc_values *vals,
-+		bool is_default)
-+{
-+	struct sbl_serdes_config *new_sc;
-+	struct sbl_serdes_config *sc;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	if (vals->magic != SBL_SERDES_CONFIG_MAGIC)
-+		return -EINVAL;
-+
-+	sbl_dev_dbg(sbl->dev, "serdes add config");
-+
-+	new_sc = kmalloc(sizeof(struct sbl_serdes_config), GFP_KERNEL);
-+	if (!new_sc)
-+		return -ENOMEM;
-+
-+	new_sc->tp_state_mask0  = tp_state_mask0;
-+	new_sc->tp_state_mask1  = tp_state_mask1;
-+	new_sc->tp_state_match0 = tp_state_match0;
-+	new_sc->tp_state_match1 = tp_state_match1;
-+	new_sc->port_mask       = port_mask;
-+	new_sc->serdes_mask     = serdes_mask;
-+	new_sc->is_default      = is_default;
-+	new_sc->tag             = sbl_serdes_get_config_tag();
-+	memcpy(&new_sc->vals, vals, sizeof(struct sbl_sc_values));
-+	INIT_LIST_HEAD(&new_sc->list);
-+
-+	spin_lock(&sbl->serdes_config_lock);
-+
-+	/* check new entry is unique */
-+	list_for_each_entry(sc, &sbl->serdes_config_list, list) {
-+		if (sc->port_mask == port_mask &&
-+		    sc->serdes_mask == serdes_mask &&
-+		    sc->tp_state_mask0 == tp_state_mask0 &&
-+		    sc->tp_state_mask1 == tp_state_mask1 &&
-+		    sc->tp_state_match0 == tp_state_match0 &&
-+		    sc->tp_state_match1 == tp_state_match1) {
-+			spin_unlock(&sbl->serdes_config_lock);
-+			kfree(new_sc);
-+			return -EEXIST;
-+		}
-+	}
-+
-+	/* add the new entry */
-+	list_add(&new_sc->list, &sbl->serdes_config_list);
-+	sbl_dev_dbg(sbl->dev, "added serdes config, tag %d\n", new_sc->tag);
-+	spin_unlock(&sbl->serdes_config_lock);
-+	return 0;
-+}
-+EXPORT_SYMBOL(sbl_serdes_add_config);
-+
-+/**
-+ * sbl_serdes_del_config() - Delete serdes configuration
-+ * @sbl: A slingshot base link device instance
-+ * @tp_state_mask0: State lookup mask
-+ * @tp_state_mask1: State lookup mask
-+ * @tp_state_match0: match values after masking
-+ * @tp_state_match1: match values after masking
-+ * @port_mask: applicable ports
-+ * @serdes_mask: applicable serdes
-+ *
-+ * Delete SerDes config values which are selected to get the
-+ * SerDes to tune
-+ *
-+ * Context: Process context, Acquires lock and release serdes_config_lock <spin_lock>
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+int sbl_serdes_del_config(struct sbl_inst *sbl,
-+			  u64 tp_state_mask0, u64 tp_state_mask1,
-+		u64 tp_state_match0, u64 tp_state_match1,
-+		u64 port_mask, u8  serdes_mask)
-+{
-+	struct sbl_serdes_config *sc;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	sbl_dev_dbg(sbl->dev, "serdes del config");
-+
-+	spin_lock(&sbl->serdes_config_lock);
-+
-+	/* find the entry and remove it */
-+	list_for_each_entry(sc, &sbl->serdes_config_list, list) {
-+		if (sc->port_mask == port_mask &&
-+		    sc->serdes_mask == serdes_mask &&
-+		    sc->tp_state_mask0 == tp_state_mask0 &&
-+		    sc->tp_state_mask1 == tp_state_mask1 &&
-+		    sc->tp_state_match0 == tp_state_match0 &&
-+		    sc->tp_state_match1 == tp_state_match1) {
-+			list_del(&sc->list);
-+			spin_unlock(&sbl->serdes_config_lock);
-+			sbl_dev_dbg(sbl->dev, "deleted serdes config, tag %d\n", sc->tag);
-+			kfree(sc);
-+			return 0;
-+		}
-+	}
-+
-+	/* not found */
-+	spin_unlock(&sbl->serdes_config_lock);
-+	return -ENOENT;
-+}
-+EXPORT_SYMBOL(sbl_serdes_del_config);
-+
-+/**
-+ * sbl_serdes_clear_all_configs() - serdes clear all configurations
-+ * @sbl: A slingshot base link device instance
-+ * @clr_default: Clear default value
-+ *
-+ * Context: Process context, Acquires lock and release serdes_config_lock <spin_lock>
-+ *
-+ * Return: 0 on success, negative error on failure
-+ */
-+int sbl_serdes_clear_all_configs(struct sbl_inst *sbl, bool clr_default)
-+{
-+	struct sbl_serdes_config *sc;
-+	struct sbl_serdes_config *tmp_sc;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	sbl_dev_dbg(sbl->dev, "serdes clear all configs");
-+
-+	/* find the entries and remove them */
-+	spin_lock(&sbl->serdes_config_lock);
-+	list_for_each_entry_safe(sc, tmp_sc, &sbl->serdes_config_list, list) {
-+		/* clear if not default or we want to clear the default */
-+		if (!sc->is_default || clr_default) {
-+			list_del(&sc->list);
-+			kfree(sc);
-+		}
-+	}
-+	spin_unlock(&sbl->serdes_config_lock);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(sbl_serdes_clear_all_configs);
-+
-+/**
-+ * sbl_serdes_dump_configs() - Print all serdes configs
-+ * @sbl: A slingshot base link device instance
-+ *
-+ * Context: Process context, Acquires lock and release serdes_config_lock <spin_lock>
-+ * Return: on error
-+ */
-+void sbl_serdes_dump_configs(struct sbl_inst *sbl)
-+{
-+	struct sbl_serdes_config *sc;
-+	int count = 0;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
++		sbl_dev_err(sbl->dev, "%d: KEEP SERDES UP", port_num);
 +		return;
-+
-+	spin_lock(&sbl->serdes_config_lock);
-+	list_for_each_entry_reverse(sc, &sbl->serdes_config_list, list) {
-+		sbl_dev_info(sbl->dev,
-+			     "serdes config %d: dflt: %d, tag %d, mask0 0x%llx, match0 0x%llx, mask1 0x%llx, match1 0x%llx, ports 0x%llx, serdes 0x%x\n",
-+			count++, sc->is_default, sc->tag, sc->tp_state_mask0, sc->tp_state_match0, sc->tp_state_mask1, sc->tp_state_match1, sc->port_mask, sc->serdes_mask);
 +	}
-+	spin_unlock(&sbl->serdes_config_lock);
-+}
-+EXPORT_SYMBOL(sbl_serdes_dump_configs);
 +
-+u32 sbl_serdes_get_config_tag(void)
++	sbl_dev_dbg(sbl->dev, "%d: pml pcs stop\n", port_num);
++
++	if ((link->sstate != SBL_SERDES_STATUS_DOWN) &&
++	    (link->mattr.media == SBL_LINK_MEDIA_OPTICAL)) {
++		sbl_dev_err(sbl->dev, "%d: not stopping pcs because serdes is running",
++			    port_num);
++		return;
++	}
++
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_PCS_OFFSET);
++	val64 = SBL_PML_CFG_PCS_PCS_ENABLE_UPDATE(val64, 0ULL);
++	sbl_write64(sbl, base | SBL_PML_CFG_PCS_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_CFG_PCS_OFFSET); /* flush */
++
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_PCS_TX_AM);
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_PCS_ALIGN_EN);
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_PCS_A_WAIT);
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_PCS_F_WAIT);
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_PCS_UP);
++}
++
++/* enable/disable pcs sending ordered sets */
++void sbl_pml_pcs_ordered_sets(struct sbl_inst *sbl,
++			      int port_num, int enable)
 +{
-+	return atomic_inc_return(&sbl_next_serdes_config_tag);
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++	u64 state = (enable) ? 1ULL : 0ULL;
++
++	sbl_dev_dbg(sbl->dev, "%d: pml pcs ordered sets - %s\n", port_num,
++		    (enable) ? "start" : "stop");
++
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET);
++	val64 = SBL_PML_CFG_RX_PCS_ENABLE_CTL_OS_UPDATE(val64, state);
++	sbl_write64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET, val64);
++
++	val64 = sbl_read64(sbl, base | SBL_PML_CFG_TX_PCS_OFFSET);
++	val64 = SBL_PML_CFG_TX_PCS_ENABLE_CTL_OS_UPDATE(val64, state);
++	sbl_write64(sbl, base | SBL_PML_CFG_TX_PCS_OFFSET, val64);
++
++	/* pci flush */
++	sbl_read64(sbl, base | SBL_PML_CFG_PCS_OFFSET);
++
++	if (enable)
++		sbl_link_info_set(sbl, port_num, SBL_LINK_INFO_OS);
++	else
++		sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_OS);
++}
++
++/*   Start/Stop sending am.
++ *
++ *   Start: configures and starts the PCS and then immediately disables the alignment
++ *   locking process
++ *
++ *   Stop: just switched off the PCS
++ */
++int  sbl_pml_pcs_am_start(struct sbl_inst *sbl, int port_num)
++{
++	struct sbl_link *link;
++	int err;
++
++	err = sbl_validate_instance(sbl);
++	if (err)
++		return err;
++
++	err = sbl_validate_port_num(sbl, port_num);
++	if (err)
++		return err;
++
++	link = sbl->link + port_num;
++
++	if (!(link->blstate & (SBL_BASE_LINK_STATUS_STARTING | SBL_BASE_LINK_STATUS_STARTING))) {
++		sbl_dev_err(sbl->dev, "pcs_am_start %d: wrong state (%s)\n", port_num,
++			    sbl_link_state_str(link->blstate));
++		return -ENAVAIL;
++	}
++
++	/* configuring will stop the pcs
++	 * this might perturb link partner when tuning so report we do this
++	 */
++	if (READ_ONCE(link->link_info) & SBL_LINK_INFO_PCS_TX_AM)
++		sbl_dev_dbg(sbl->dev, "%d pcs_am_start: tx am restart\n", port_num);
++
++	err = sbl_pml_pcs_config(sbl, port_num);
++	if (err) {
++		sbl_dev_err(sbl->dev, "pcs_config %d: failed [%d]\n", port_num, err);
++		return err;
++	}
++
++	/* send remote fault to the link partner */
++	sbl_pml_pcs_set_tx_rf(sbl, port_num);
++
++	/* start the pcs - which will start it sending AM */
++	sbl_pml_pcs_start(sbl, port_num);
++
++	/* if pcs is running it will be sending AMs */
++	sbl_link_info_set(sbl, port_num, SBL_LINK_INFO_PCS_TX_AM);
++
++	/* but definitely not doing any of this yet */
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_PCS_ANEG);
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_PCS_A_WAIT);
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_PCS_F_WAIT);
++	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_PCS_UP);
++
++	return 0;
 +}
 +
 +#ifdef CONFIG_SYSFS
 +/**
-+ * sbl_serdes_sysfs_sprint() - Format all seredes status into buffer
++ * sbl_pml_pcs_sysfs_sprint() - Format serdes info into buffer
 + * @sbl: A slingshot base link device instance
 + * @port_num: port number
 + * @buf: Destination buffer to write the data
 + * @size: Size of @buf in bytes, the output is truncated to fit
 + *
-+ * Inspects the current SERDES state and based on the value, formats
-+ * relevant status or counter information into a readable string. The
-+ * formatted output is written to the provided buffer. The output includes
-+ * flags such as ":on", ":off", or serdes-reload-counters[fw,spico,pll] values
++ * This function checks the pcs_config flag and based on that
++ * it will format serdes info string into buffer.
++ *
++ * Context: Process context, Acquires lock and release
++ * link->lock <spin_lock>
++ *
++ * Return: Number of characters written, at most @size - 1
++ */
++int sbl_pml_pcs_sysfs_sprint(struct sbl_inst *sbl, int port_num, char *buf, size_t size)
++{
++	struct sbl_link *link = sbl->link + port_num;
++	char state_str[SBL_PCS_STATE_STR_LEN];
++	int s = 0;
++
++	spin_lock(&link->lock);
++	if (link->pcs_config) {
++		s += scnprintf(buf + s, size - s, "pcs:  %s (%d %d %d %d) rx %x %s\n",
++				sbl_link_mode_str(link->link_mode),
++				sbl->switch_info->ports[port_num].serdes[0].tx_lane_source,
++				sbl->switch_info->ports[port_num].serdes[1].tx_lane_source,
++				sbl->switch_info->ports[port_num].serdes[2].tx_lane_source,
++				sbl->switch_info->ports[port_num].serdes[3].tx_lane_source,
++				link->active_rx_lanes,
++				sbl_pml_pcs_state_str(sbl, port_num, state_str, SBL_PCS_STATE_STR_LEN));
++	}
++	spin_unlock(&link->lock);
++
++	return s;
++}
++EXPORT_SYMBOL(sbl_pml_pcs_sysfs_sprint);
++
++/**
++ * sbl_pml_pcs_lane_degrade_sysfs_sprint() - Formats PCS ALD,TX/RX lane degrade into buffer
++ * @sbl: A slingshot base link device instance
++ * @port_num: port number
++ * @buf: Destination buffer to write the data
++ * @size: Size of @buf in bytes, the output is truncated to fit
++ *
++ * This function formats PCS ALD/(TX/RX) lane degrade string into buffer
++ * based on the flag 'pcs_config'.
++ *
++ * Context: Process context, Acquires lock and release
++ * link->lock <spin_lock>
++ *
++ * Return: Number of characters written, at most @size - 1
++ */
++int sbl_pml_pcs_lane_degrade_sysfs_sprint(struct sbl_inst *sbl, int port_num, char *buf, size_t size)
++{
++	struct sbl_link *link = sbl->link + port_num;
++	int s = 0;
++	u32 base = SBL_PML_BASE(port_num);
++	u64 sts_pcs_lane_degrade_reg = sbl_read64(sbl, base | SBL_PML_STS_PCS_LANE_DEGRADE_OFFSET);
++	u64 cfg_pcs_reg = sbl_read64(sbl, base | SBL_PML_CFG_PCS_OFFSET);
++
++	spin_lock(&link->lock);
++	if (link->pcs_config) {
++		s += scnprintf(buf + s, size - s, "ALD: %lld - TX: 0x%llx - RX: 0x%llx\n",
++				SBL_PML_CFG_PCS_ENABLE_AUTO_LANE_DEGRADE_GET(cfg_pcs_reg),
++				SBL_PML_STS_PCS_LANE_DEGRADE_LP_PLS_AVAILABLE_GET(sts_pcs_lane_degrade_reg),
++				SBL_PML_STS_PCS_LANE_DEGRADE_RX_PLS_AVAILABLE_GET(sts_pcs_lane_degrade_reg));
++	}
++	spin_unlock(&link->lock);
++
++	return s;
++}
++EXPORT_SYMBOL(sbl_pml_pcs_lane_degrade_sysfs_sprint);
++#endif
+diff --git a/drivers/net/ethernet/hpe/sbl/sbl_pml_pcs_nic.c b/drivers/net/ethernet/hpe/sbl/sbl_pml_pcs_nic.c
+new file mode 100644
+index 000000000000..220039733053
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sbl/sbl_pml_pcs_nic.c
+@@ -0,0 +1,53 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/* Copyright 2025 Hewlett Packard Enterprise Development LP */
++
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/device.h>
++#include <linux/delay.h>
++#include <linux/sched.h>
++
++#include <linux/hpe/sbl/sbl.h>
++#include <linux/hpe/sbl/sbl_kconfig.h>
++
++#include <linux/hpe/sbl/sbl_pml.h>
++
++#include "sbl_pml_fn.h"
++#include "sbl_link.h"
++#include "sbl_serdes_map.h"
++#include "sbl_internal.h"
++#include "sbl_serdes_fn.h"
++
++#ifdef CONFIG_SYSFS
++/**
++ * sbl_pml_pcs_speed_sysfs_sprint() - Report PCS mode into buffer
++ * @sbl: A slingshot base link device instance
++ * @port_num: port number
++ * @buf: Destination buffer to write the data
++ * @size: Size of @buf in bytes, the output is truncated to fit
++ *
++ * Based on PCS config, this function writes the link mode into
++ * the provided buffer
 + *
 + * Context: Process context, Acquires lock and release link->lock <spin_lock>
 + *
 + * Return: Number of characters written, at most @size - 1
 + */
-+int sbl_serdes_sysfs_sprint(struct sbl_inst *sbl, int port_num, char *buf, size_t size)
++int sbl_pml_pcs_speed_sysfs_sprint(struct sbl_inst *sbl, int port_num, char *buf, size_t size)
 +{
 +	struct sbl_link *link = sbl->link + port_num;
 +	int s = 0;
-+	int i;
-+	int s_fw_reload_count[4] = {0};
-+	int s_spico_reset_count[4] = {0};
-+	int s_pll_reset_count[4] = {0};
 +
 +	spin_lock(&link->lock);
-+	s += scnprintf(buf + s, size - s, "serdes: %s",
-+			sbl_serdes_state_str(link->sstate));
-+	switch (link->sstate) {
-+	case SBL_SERDES_STATUS_ERROR:
-+		s += scnprintf(buf + s, size - s, " [%d]", link->serr);
-+		break;
-+	case SBL_SERDES_STATUS_LPD_MT:
-+		s += scnprintf(buf + s, size - s, " cnt %d", link->lpd_try_count);
-+		break;
-+	case SBL_SERDES_STATUS_RUNNING:
-+		if (link->loopback_mode != SBL_LOOPBACK_MODE_OFF) {
-+			s += scnprintf(buf + s, size - s, ", loopback: %s",
-+					sbl_loopback_mode_str(link->loopback_mode));
-+		}
-+		s += scnprintf(buf + s, size - s, ", precoding: %s",
-+				(link->precoding_enabled) ? "on" : "off");
-+		if (link->dfe_tune_count == SBL_DFE_USED_SAVED_PARAMS) {
-+			s += scnprintf(buf + s, size - s, ", tune: used-saved-params");
-+		} else {
-+			s += scnprintf(buf + s, size - s,
-+				       ", tune: cnt %d, eff %s (%lld.%.3ld/%lld.%.3ld)",
-+					link->dfe_tune_count,
-+					sbl_serdes_effort_str(link->ical_effort),
-+					(long long)link->tune_time.tv_sec,
-+					link->tune_time.tv_nsec / 1000000,
-+					(long long)link->total_tune_time.tv_sec,
-+					link->total_tune_time.tv_nsec / 1000000);
-+		}
-+		break;
-+	case SBL_SERDES_STATUS_TUNING:
-+		if (link->dfe_tune_count == SBL_DFE_USED_SAVED_PARAMS) {
-+			s += scnprintf(buf + s, size - s, ", loading-saved-params");
-+		} else {
-+			s += scnprintf(buf + s, size - s, ", cnt %d, eff %s (%d/%d)",
-+					link->dfe_tune_count,
-+					sbl_serdes_effort_str(link->ical_effort),
-+					sbl_link_tune_elapsed(sbl, port_num),
-+					link->blattr.dfe_timeout);
-+		}
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	s += scnprintf(buf + s, size - s, ", pcal: %s",
-+			(link->pcal_running) ? "on" : "off");
-+	if (link->dfe_predelay_active)
-+		s += scnprintf(buf + s, size - s, ", pre-delay");
-+	if (link->optical_delay_active)
-+		s += scnprintf(buf + s, size - s, ", optical-delay");
-+	s += scnprintf(buf + s, size - s, ", fw_reload_skip_cnt: %d",
-+			sbl_link_counters_read(sbl, port_num, serdes_fw_reload_skip));
-+	s += scnprintf(buf + s, size - s, "\n");
-+
-+	s += scnprintf(buf + s, size - s, "serdes-reload-counters[fw,spico,pll]:");
-+	sbl_link_counters_get(sbl, port_num, s_fw_reload_count,
-+			      serdes0_fw_reload, 4);
-+	sbl_link_counters_get(sbl, port_num, s_spico_reset_count,
-+			      serdes0_spico_reset, 4);
-+	sbl_link_counters_get(sbl, port_num, s_pll_reset_count,
-+			      serdes0_pll_reset, 4);
-+	for (i = 0; i < sbl->switch_info->num_serdes; ++i) {
-+		s += scnprintf(buf + s, size - s, " s%d:[%d,%d,%d]", i, s_fw_reload_count[i],
-+					s_spico_reset_count[i], s_pll_reset_count[i]);
-+	}
-+	s += scnprintf(buf + s, size - s, "\n");
++	if (link->pcs_config)
++		s += scnprintf(buf + s, size - s, "%s", sbl_link_mode_str(link->link_mode));
++	else
++		s += scnprintf(buf + s, size - s, "NA");
 +	spin_unlock(&link->lock);
 +
 +	return s;
 +}
-+EXPORT_SYMBOL(sbl_serdes_sysfs_sprint);
++EXPORT_SYMBOL(sbl_pml_pcs_speed_sysfs_sprint);
++#endif
+diff --git a/drivers/net/ethernet/hpe/sbl/sbl_pml_serdes_op.c b/drivers/net/ethernet/hpe/sbl/sbl_pml_serdes_op.c
+new file mode 100644
+index 000000000000..4ade8b13b398
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sbl/sbl_pml_serdes_op.c
+@@ -0,0 +1,145 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2019-2023,2025 Hewlett Packard Enterprise Development LP */
++
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/device.h>
++#include <linux/delay.h>
++
++#include <linux/hpe/sbl/sbl.h>
++#include <linux/hpe/sbl/sbl_kconfig.h>
++
++#include <linux/hpe/sbl/sbl_pml.h>
++
++#include "sbl_serdes.h"
++#include "sbl_internal.h"
++
++static inline bool sbl_pml_serdes_op_busy(struct sbl_inst *sbl, int port_num)
++{
++	u64 val64;
++
++	val64 = sbl_read64(sbl, SBL_PML_BASE(port_num) |
++			SBL_PML_SERDES_CORE_INTERRUPT_OFFSET);
++	return SBL_PML_SERDES_CORE_INTERRUPT_DO_CORE_INTERRUPT_GET(val64);
++}
 +
 +/**
-+ * sbl_serdes_fw_sysfs_sprint() - Format SERDES firmware rev and build into buffer
++ * sbl_pml_serdes_op() - Perform a serdes interrupt configuration
 + * @sbl: A slingshot base link device instance
 + * @port_num: port number
-+ * @buf: Destination buffer to write the data
-+ * @size: Size of @buf in bytes, the output is truncated to fit
++ * @serdes_sel: Value
++ * @op: Read serdes version
++ * @data: Set to zero
++ * @result: Pass this value to caller
++ * @timeout: Time set used for polling
++ * @flags: Used to set US/MSec delay
 + *
-+ * Get the serdes firmware version and build information for the port as a string.
-+ * Multiple serdes firmware versions and build exist per port. Format those information
-+ * into provided buffer
++ * This function validates the instance and port number, picks
++ * polling interval from the provided flags and executes SERDES
++ * core interrupt configuration. It polls the completion or timeout
++ * for this operation and returns success or negative on failure
 + *
-+ * Return: Number of characters written (at most @size - 1), negative error on failure
++ * Context: May sleep based on access to serdes
++ *
++ * Return: 0 on success, negative error code on failure
 + */
-+int sbl_serdes_fw_sysfs_sprint(struct sbl_inst *sbl, int port_num, char *buf, size_t size)
++int sbl_pml_serdes_op(struct sbl_inst *sbl, int port_num, u64 serdes_sel,
++		      u64 op, u64 data, u16 *result, int timeout,
++		      unsigned int flags)
 +{
-+	int serdes = 0;
-+	struct fw {
-+		uint rev;
-+		uint build;
-+	} fw[SBL_SERDES_LANES_PER_PORT];
-+	ssize_t s = 0;
++	struct sbl_link *link;
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++	int delay;
++	int poll_interval;
++	unsigned long last_jiffy;
++	int err;
 +
-+	int err = sbl_validate_instance(sbl);
-+
++	err = sbl_validate_instance(sbl);
 +	if (err)
 +		return err;
 +
@@ -1338,4370 +3287,85 @@ index 000000000000..4db5bb1a0bb9
 +	if (err)
 +		return err;
 +
-+	if (!buf || size == 0U)
-+		return -ENOMEM;
++	sbl_dev_dbg(sbl->dev, "serdes op, p%ds%lld, %lld, %lld, %d 0x%x\n",
++		    port_num, serdes_sel, op, data, timeout, flags);
 +
-+	memset(fw, 0, sizeof(fw));
-+	for (serdes = 0; serdes < SBL_SERDES_LANES_PER_PORT; ++serdes) {
-+		struct fw *pfw = fw + serdes;
++	if (!result)
++		return -EINVAL;
 +
-+		sbl_serdes_get_fw_vers(sbl, port_num, serdes,
-+				       &pfw->rev, &pfw->build);
++	/* cannot wait infinitely */
++	if (timeout <= 0)
++		return -EINVAL;
 +
-+		s += scnprintf(buf + s, size - s,
-+			"0x%4.4x_%4.4x\n", pfw->rev, pfw->build);
++	/* a polling interval is mandatory */
++	poll_interval = sbl_flags_get_poll_interval_from_flags(flags);
++	if (!poll_interval)
++		return -EINVAL;
++
++	delay = sbl_flags_get_delay_from_flags(flags);
++
++	link = sbl->link + port_num;
++	err = mutex_lock_interruptible(&link->serdes_mtx);
++	if (err)
++		return -ERESTARTSYS;
++
++	if (sbl_pml_serdes_op_busy(sbl, port_num)) {
++		mutex_unlock(&link->serdes_mtx);
++		return -EBUSY;
 +	}
 +
-+	return s;
++	/* start the operation  */
++	val64 = SBL_PML_SERDES_CORE_INTERRUPT_SET(serdes_sel, 1ULL, op, data);
++	sbl_write64(sbl, base | SBL_PML_SERDES_CORE_INTERRUPT_OFFSET, val64);
++	sbl_read64(sbl, base | SBL_PML_SERDES_CORE_INTERRUPT_OFFSET); /* flush */
++
++	if (delay)
++		udelay(delay);
++
++	/* poll for completion or timeout */
++	last_jiffy = jiffies + msecs_to_jiffies(timeout) + 1;
++	while (sbl_pml_serdes_op_busy(sbl, port_num)) {
++		if (time_is_before_jiffies(last_jiffy)) {
++			mutex_unlock(&link->serdes_mtx);
++			return -ETIMEDOUT;
++		}
++		msleep(poll_interval);
++	}
++
++	/* get the result */
++	val64 = sbl_read64(sbl, base | SBL_PML_SERDES_CORE_INTERRUPT_OFFSET);
++	*result = SBL_PML_SERDES_CORE_INTERRUPT_CORE_INTERRUPT_DATA_GET(val64);
++
++	mutex_unlock(&link->serdes_mtx);
++	return 0;
 +}
-+EXPORT_SYMBOL(sbl_serdes_fw_sysfs_sprint);
++EXPORT_SYMBOL(sbl_pml_serdes_op);
 +
 +/**
-+ * sbl_sbm_fw_sysfs_sprint() - Get sbus master firmware version
++ * sbl_pml_serdes_op_timing() - serdes core interrupt access timings
 + * @sbl: A slingshot base link device instance
-+ * @ring: Value
-+ * @buf: Destination buffer to write the data
-+ * @size: Size of @buf in bytes, the output is truncated to fit
++ * @port_num: port number
++ * @capture: Value to capture the interrupt delay
++ * @clear: Value to clear interrupt delay
++ * @set: Value to set interrupt delay
 + *
-+ * Return: Number of characters written (at most @size - 1), negative error on failure
++ * Return: 0 on success
 + */
-+int sbl_sbm_fw_sysfs_sprint(struct sbl_inst *sbl, int ring, char *buf, size_t size)
++int sbl_pml_serdes_op_timing(struct sbl_inst *sbl, int port_num, u64 capture,
++			     u64 clear, u64 set)
 +{
-+	uint fw_rev, fw_build = 0;
-+
-+	int err = sbl_validate_instance(sbl);
-+
-+	if (err)
-+		return err;
-+
-+	if (ring < 0 || ring >= sbl_get_num_sbus_rings(sbl))
-+		return -EINVAL;
-+
-+	if (!buf || size == 0U)
-+		return -ENOMEM;
-+
-+	sbl_sbm_get_fw_vers(sbl, ring, &fw_rev, &fw_build);
-+	return scnprintf(buf, size, "0x%4.4x_%4.4x\n", fw_rev, fw_build);
-+}
-+EXPORT_SYMBOL(sbl_sbm_fw_sysfs_sprint);
-+
-+#endif
-diff --git a/drivers/net/ethernet/hpe/sbl/sbl_serdes_fn.c b/drivers/net/ethernet/hpe/sbl/sbl_serdes_fn.c
-new file mode 100644
-index 000000000000..f085d5c41da1
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sbl/sbl_serdes_fn.c
-@@ -0,0 +1,4310 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/* Copyright 2019-2026 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/kernel.h>
-+#include <linux/device.h>
-+#include <linux/delay.h>
-+#include <linux/slab.h>
-+
-+#include <linux/hpe/sbl/sbl.h>
-+#include <linux/hpe/sbl/sbl_kconfig.h>
-+#include <linux/hpe/sbl/sbl_test.h>
-+
-+#include <linux/hpe/sbl/sbl_pml.h>
-+
-+#include <uapi/ethernet/sbl_sbm_constants.h>
-+#include <uapi/ethernet/sbl_serdes_defaults.h>
-+
-+#include "sbl_constants.h"
-+#include "sbl_serdes_map.h"
-+#include "sbl_serdes.h"
-+#include "sbl_sbm_serdes.h"
-+#include "sbl_serdes_fn.h"
-+#include "sbl_internal.h"
-+#include "sbl_config_list.h"
-+#include "sbl_pml_fn.h"
-+
-+static void sbl_send_serdes_fw_corruption_alert(struct sbl_inst *sbl, int port, int serdes)
-+{
-+	u32 alert_data;
-+	struct serdes_info *serdes_info;
-+
-+	serdes_info = &sbl->switch_info->ports[port].serdes[serdes];
-+	alert_data = ((serdes_info->sbus_ring & 0xffff) << 16) |
-+		(serdes_info->rx_addr & 0xffff);
-+
-+	sbl_async_alert(sbl, port,
-+			SBL_ASYNC_ALERT_SERDES_FW_CORRUPTION,
-+			(void *)(uintptr_t)alert_data, 0);
-+
-+	/* Delay to allow userspace to get a serdes state dump */
-+	msleep(SBL_SERDES_STATE_DUMP_DELAY);
-+}
-+
-+static bool get_serdes_precoding(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	if (sbl_debug_option(sbl, port_num, SBL_DEBUG_FORCE_PRECODING_ON))
-+		return true;
-+
-+	if (sbl_debug_option(sbl, port_num, SBL_DEBUG_FORCE_PRECODING_OFF))
-+		return false;
-+
-+	switch (link->blattr.precoding) {
-+	case SBL_PRECODING_ON:
-+		return true;
-+	case SBL_PRECODING_OFF:
-+		return false;
-+	case SBL_PRECODING_DEFAULT:
-+		return (link->blattr.options & SBL_OPT_FABRIC_LINK) ? true : false;
-+	default:
-+		sbl_dev_err(sbl->dev, "%d: invalid precoding (%d) - switching off",
-+			    port_num, link->blattr.precoding);
-+		/* switch off anyway */
-+		return false;
-+	}
-+}
-+
-+/* Dummy function used when DEV_TRACE2 or DEV_TRACE3 are not defined */
-+void dev_ignore(struct device *dev, const char *format, ...)
-+{
-+
-+}
-+
-+/* Creates a u64 hash key based on the currently requested serdes state */
-+/* NOTE: enums need to be bitwise values to use this hashing */
-+static u64 sbl_get_tp_hash0(struct sbl_inst *sbl, int port_num)
-+{
-+	int media;
-+
-+	switch (sbl->link[port_num].mattr.media) {
-+	case SBL_LINK_MEDIA_ELECTRICAL:
-+		if (sbl->link[port_num].mattr.info & SBL_MEDIA_INFO_DIGITAL)
-+			media = SBL_EXT_LINK_MEDIA_ELECTRICAL_ACT;
-+		else
-+			media = SBL_EXT_LINK_MEDIA_ELECTRICAL;
-+
-+		break;
-+
-+	case SBL_LINK_MEDIA_OPTICAL:
-+		if (sbl->link[port_num].mattr.info & SBL_MEDIA_INFO_DIGITAL)
-+			media = SBL_EXT_LINK_MEDIA_OPTICAL_DIGITAL;
-+		else
-+			media = SBL_EXT_LINK_MEDIA_OPTICAL_ANALOG;
-+
-+		break;
-+
-+	default:
-+		media = SBL_EXT_LINK_MEDIA_ELECTRICAL;
-+		break;
-+	}
-+
-+	return sbl_create_tp_hash0(sbl->link[port_num].blattr.link_partner,
-+			sbl->link[port_num].loopback_mode,
-+			sbl->link[port_num].blattr.tuning_pattern,
-+			sbl->link[port_num].link_mode,
-+			media,
-+			sbl->link[port_num].mattr.vendor);
-+}
-+
-+static u64 sbl_get_tp_hash1(struct sbl_inst *sbl, int port_num)
-+{
-+	return sbl_create_tp_hash1(sbl->link[port_num].mattr.len);
-+}
-+
-+void sbl_serdes_get_fw_vers(struct sbl_inst *sbl, int port_num, int serdes,
-+			    uint *fw_rev, uint *fw_build)
-+{
-+	if (sbl_serdes_spico_int(sbl, port_num, serdes, SPICO_INT_CM4_REV_ID,
-+				 SPICO_INT_DATA_NONE, (uint16_t *)fw_rev,
-+				SPICO_INT_RETURN_RESULT)) {
-+		/* Failure expected when Spico is in reset */
-+		dev_dbg(sbl->dev, "p%ds%d: Failed to read firmware rev!", port_num, serdes);
-+		*fw_rev = 0x0;
-+	}
-+	if (sbl_serdes_spico_int(sbl, port_num, serdes, SPICO_INT_CM4_BUILD_ID,
-+				 SPICO_INT_DATA_NONE, (uint16_t *)fw_build,
-+				SPICO_INT_RETURN_RESULT)) {
-+		/* Failure expected when Spico is in reset */
-+		dev_dbg(sbl->dev, "p%ds%d: Failed to read firmware build!", port_num, serdes);
-+		*fw_build = 0x0;
-+	}
-+}
-+
-+/* Get mask of serdes used for target link mode */
-+static u8 get_serdes_tx_mask(struct sbl_inst *sbl, int port_num)
-+{
-+	int serdes;
-+	u8 serdes_mask = 0;
-+
-+	switch (sbl->link[port_num].link_mode) {
-+	case SBL_LINK_MODE_CD_50G:
-+		for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+			if (sbl->switch_info->ports[port_num].serdes[serdes].tx_lane_source == 0) {
-+				serdes_mask |= 1 << serdes;
-+				break;
-+			}
-+		}
-+		break;
-+	case SBL_LINK_MODE_CD_100G:
-+		for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+			if ((sbl->switch_info->ports[port_num].serdes[serdes].tx_lane_source == 0) ||
-+			    (sbl->switch_info->ports[port_num].serdes[serdes].tx_lane_source == 1)) {
-+				serdes_mask |= 1 << serdes;
-+			}
-+		}
-+		break;
-+	case SBL_LINK_MODE_BS_200G:
-+	case SBL_LINK_MODE_BJ_100G:
-+		serdes_mask = 0xf;
-+		break;
-+	default:
-+		sbl_dev_warn(sbl->dev, "%d: Unsupported link mode (%d)",
-+			     port_num, sbl->link[port_num].link_mode);
-+		serdes_mask = 0x0;
-+		break;
-+	}
-+
-+	return serdes_mask;
-+}
-+
-+/* Get mask of serdes used for target link mode */
-+static u8 get_serdes_rx_mask(struct sbl_inst *sbl, int port_num)
-+{
-+	int serdes;
-+	u8 serdes_mask = 0;
-+
-+	/* if we are looped back then rx serdes are the same as the tx ones */
-+	if (sbl->link[port_num].loopback_mode == SBL_LOOPBACK_MODE_LOCAL)
-+		return get_serdes_tx_mask(sbl, port_num);
-+
-+	/* otherwise look them up */
-+	switch (sbl->link[port_num].link_mode) {
-+	case SBL_LINK_MODE_CD_50G:
-+		for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+			if (sbl->switch_info->ports[port_num].serdes[serdes].rx_lane_source == 0) {
-+				serdes_mask |= 1 << serdes;
-+				break;
-+			}
-+		}
-+		break;
-+	case SBL_LINK_MODE_CD_100G:
-+		for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+			if ((sbl->switch_info->ports[port_num].serdes[serdes].rx_lane_source == 0) ||
-+			    (sbl->switch_info->ports[port_num].serdes[serdes].rx_lane_source == 1)) {
-+				serdes_mask |= 1 << serdes;
-+			}
-+		}
-+		break;
-+	case SBL_LINK_MODE_BS_200G:
-+	case SBL_LINK_MODE_BJ_100G:
-+		serdes_mask = 0xf;
-+		break;
-+	default:
-+		sbl_dev_warn(sbl->dev, "%d: Unsupported link mode (%d)",
-+			     port_num, sbl->link[port_num].link_mode);
-+		serdes_mask = 0x0;
-+		break;
-+	}
-+
-+	return serdes_mask;
-+}
-+
-+/* Utility function to skip over irrelevant serdes lanes */
-+static bool tx_serdes_required_for_link_mode(struct sbl_inst *sbl, int port_num,
-+					     int serdes)
-+{
-+	u8 serdes_mask = get_serdes_tx_mask(sbl, port_num);
-+
-+	/* Enable physical lane 0 - this has the clock for all serdes and is
-+	   always required. */
-+	if ((serdes == 0) || (serdes_mask & (1 << serdes)))
-+		return true;
-+	else
-+		return false;
-+}
-+
-+/* Utility function to skip over irrelevant serdes lanes */
-+static bool rx_serdes_required_for_link_mode(struct sbl_inst *sbl, int port_num,
-+					     int serdes)
-+{
-+	u8 serdes_mask = get_serdes_rx_mask(sbl, port_num);
-+
-+	if (serdes_mask & (1 << serdes))
-+		return true;
-+	else
-+		return false;
-+}
-+
-+/* Returns a count of the number of bits set in input val */
-+static int sbl_num_bits_set(u64 val)
-+{
-+	int bits_set = 0;
-+	int i;
-+
-+	for (i = 0; i < 64; ++i) {
-+		if (val & (1ULL << i))
-+			bits_set++;
-+	}
-+	return bits_set;
-+}
-+
-+/* Looks up sbl_sc_val struct for the given port, serdes, and hash */
-+static int sbl_get_serdes_config_values(struct sbl_inst *sbl, int port_num,
-+					int serdes, struct sbl_sc_values *vals)
-+{
-+	u64 hash0 = sbl_get_tp_hash0(sbl, port_num);
-+	u64 hash1 = sbl_get_tp_hash1(sbl, port_num);
-+	struct sbl_serdes_config *sc;
-+	int num_ports_bits, num_serdes_bits, num_mask_bits;
-+	int least_port_bits = 64;
-+	int least_serdes_bits = 64;
-+	int most_mask_bits = 0;
-+	bool curr_best;
-+	int rc = -1;
-+
-+	spin_lock(&sbl->serdes_config_lock);
-+
-+	list_for_each_entry(sc, &sbl->serdes_config_list, list) {
-+
-+		if ((sc->port_mask & (1ULL << port_num)) &&
-+		    (sc->serdes_mask & (1ULL << serdes)) &&
-+		    /* Ensure no bits are set in hash that are not set
-+		       in tp_state_match for all bits included in the mask */
-+		    (((sc->tp_state_mask0 & hash0) &
-+		      ~(sc->tp_state_mask0 & sc->tp_state_match0)) == 0) &&
-+		    (((sc->tp_state_mask1 & hash1) &
-+		      ~(sc->tp_state_mask1 & sc->tp_state_match1)) == 0)) {
-+			/* This is A match, but there may be >1. We want to
-+			   choose the match that's most specific to this
-+			   config. To determine this, we choose a match which:
-+			   * [1] Has the least number of bits set in its
-+			   port_mask
-+			   * [2] If tie, has the least number of bits set in
-+			    its serdes_mask
-+			   * [3] If tie, has the most number bits set it its
-+			    tp_state_mask0 and tp_state_mask1.
-+			   * [4] If tie, pick the one with the lowest index */
-+			sbl_dev_dbg(sbl->dev,
-+				    "p%d: get values: hash0 0x%llx hash1 0x%llx matched 0x%llx 0x%llx, tag %d\n",
-+				port_num, hash0, hash1, sc->tp_state_match0, sc->tp_state_match1, sc->tag);
-+			curr_best = false;
-+			num_ports_bits	= sbl_num_bits_set(sc->port_mask);
-+			num_serdes_bits = sbl_num_bits_set(sc->serdes_mask);
-+			num_mask_bits	= sbl_num_bits_set(sc->tp_state_mask0);
-+			num_mask_bits  += sbl_num_bits_set(sc->tp_state_mask1);
-+			if (num_ports_bits < least_port_bits) {
-+				/* [1] */
-+				curr_best = true;
-+			} else if (num_ports_bits == least_port_bits) {
-+				if (num_serdes_bits < least_serdes_bits) {
-+					/* [2] */
-+					curr_best = true;
-+				} else if (num_serdes_bits == least_serdes_bits) {
-+					if (num_mask_bits > most_mask_bits) {
-+						/* [3] */
-+						curr_best = true;
-+					}
-+				}
-+			}
-+
-+			if (curr_best) {
-+				sbl_dev_dbg(sbl->dev, "p%d: tag %d is current best match\n", port_num, sc->tag);
-+				*vals = sc->vals;
-+				least_port_bits = num_ports_bits;
-+				least_serdes_bits = num_serdes_bits;
-+				most_mask_bits = num_mask_bits;
-+				rc = 0;
-+			}
-+		}
-+	}
-+	spin_unlock(&sbl->serdes_config_lock);
-+
-+	if (rc == 0)
-+		return 0;
-+
-+	sbl_dev_err(sbl->dev, "%d: get values: no match for hash0 0x%llx hash1 0x%llx\n",
-+		    port_num, hash0, hash1);
-+	return -ENOENT;
-+}
-+
-+/* Checks if there are valid tuning params in the sbl struct which can
-+ * be used for this serdes tune
-+ */
-+static bool sbl_is_retune(struct sbl_inst *sbl, int port_num)
-+{
-+	int serdes, i;
-+	u64 tp_state_hash0, tp_state_hash1;
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	DEV_TRACE2(sbl->dev, "p%d", port_num);
-+
-+	/* Reuse of cached tuning params are disabled until AOC sync is implemented */
-+	if (link->mattr.media == SBL_LINK_MEDIA_OPTICAL)
-+		return false;
-+
-+	/* Check tuning params are for this target configuration */
-+	tp_state_hash0 = sbl_get_tp_hash0(sbl, port_num);
-+	tp_state_hash1 = sbl_get_tp_hash1(sbl, port_num);
-+	if ((sbl->link[port_num].tuning_params.tp_state_hash0 != tp_state_hash0) ||
-+	    (sbl->link[port_num].tuning_params.tp_state_hash1 != tp_state_hash1)) {
-+		sbl_dev_dbg(sbl->dev,
-+			    "p%d: tuning param mismatch (saved: 0x%llx 0x%llx curr:0x%llx 0x%llx) - not retune\n",
-+			port_num, sbl->link[port_num].tuning_params.tp_state_hash0,
-+			sbl->link[port_num].tuning_params.tp_state_hash1, tp_state_hash0, tp_state_hash1);
-+		return false;
-+	}
-+
-+	/* Check that we actually have tuning params to apply */
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (!(rx_serdes_required_for_link_mode(sbl, port_num, serdes) ||
-+		      tx_serdes_required_for_link_mode(sbl, port_num, serdes)))
-+			continue;
-+		for (i = 0; i < NUM_CTLE_PARAMS; ++i) {
-+			if (sbl->link[port_num].tuning_params.params[serdes].ctle[i]) {
-+				sbl_dev_dbg(sbl->dev, "p%d: tuning params OK - retune\n", port_num);
-+				return true;
-+			}
-+		}
-+		for (i = 0; i < NUM_FFE_PARAMS; ++i) {
-+			if (sbl->link[port_num].tuning_params.params[serdes].ffe[i]) {
-+				sbl_dev_dbg(sbl->dev, "p%d: tuning params OK - retune\n", port_num);
-+				return true;
-+			}
-+		}
-+		for (i = 0; i < NUM_DFE_PARAMS; ++i) {
-+			if (sbl->link[port_num].tuning_params.params[serdes].dfe[i]) {
-+				sbl_dev_dbg(sbl->dev, "p%d: tuning params OK - retune\n", port_num);
-+				return true;
-+			}
-+		}
-+		/* Could continue on to check vernier, etc., but if all the above are 0,
-+		    we've got other problems. */
-+	}
-+
-+	sbl_dev_warn(sbl->dev, "p%d: Saved tuning parameters but all 0-forcing retune", port_num);
-+
-+	return false;
-+}
-+
-+/* Parse the vers string into rev and build */
-+static int sbl_parse_version_string(struct sbl_inst *sbl, const char *fw_fname,
-+				    int *fw_rev, int *fw_build)
-+{
-+	char  rev_str[SBL_MAX_STR_LEN];
-+	char  build_str[SBL_MAX_STR_LEN];
-+	char  *p;
-+	int err;
-+
-+	p = strstr(fw_fname, ".");
-+	if (p == NULL) {
-+		sbl_dev_err(sbl->dev, "Bad firmware file name: %s", fw_fname);
-+		return -EINVAL;
-+	}
-+
-+	if (strlen(p) < strlen(".0x0000_0000")) {
-+		sbl_dev_err(sbl->dev, "Bad firmware file name: %s", fw_fname);
-+		return -EINVAL;
-+	}
-+
-+	memcpy(rev_str, &(p[3]), SBL_FW_REV_LEN);
-+	rev_str[SBL_FW_REV_LEN] = '\n';
-+	rev_str[SBL_FW_REV_LEN + 1] = '\0';
-+	memcpy(build_str, &(p[8]), SBL_FW_BUILD_LEN);
-+	build_str[SBL_FW_BUILD_LEN] = '\n';
-+	build_str[SBL_FW_BUILD_LEN + 1] = '\0';
-+
-+	err = kstrtou32(rev_str, 16, fw_rev);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "Failed to convert %s to an integer [%d]", rev_str, err);
-+		return err;
-+	}
-+
-+	err = kstrtou32(build_str, 16, fw_build);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "Failed to convert %s to an integer [%d]", build_str, err);
-+		return err;
-+	}
++	u32 base = SBL_PML_BASE(port_num);
++	u64 val64;
++
++	val64 = SBL_PML_CFG_SERDES_CORE_INTERRUPT_CAPTURE_INTERRUPT_DATA_DELAY_SET(capture) |
++		SBL_PML_CFG_SERDES_CORE_INTERRUPT_CLEAR_INTERRUPT_DELAY_SET(clear) |
++		SBL_PML_CFG_SERDES_CORE_INTERRUPT_SET_INTERRUPT_DELAY_SET(set);
++
++	sbl_write64(sbl, base | SBL_PML_CFG_SERDES_CORE_INTERRUPT_OFFSET,
++		    val64);
 +	return 0;
 +}
-+
-+void sbl_sbm_get_fw_vers(struct sbl_inst *sbl, int sbus_ring, uint *fw_rev, uint *fw_build)
-+{
-+	uint sbus_addr = SBUS_ADDR(sbus_ring, SBUS_BCAST_SBM_SPICO);
-+
-+	/* SBUS Critical Section */
-+	mutex_lock(&sbl->sbus_ring_mtx[sbus_ring]);
-+
-+	if (sbl_sbm_spico_int(sbl, sbus_addr, SPICO_INT_SBMS_REV_ID,
-+			      SPICO_INT_DATA_NONE, fw_rev)) {
-+		/* Failure expected when Spico is in reset */
-+		dev_dbg(sbl->dev, "sbm%d: Failed to read firmware rev from 0x%x", sbus_ring, sbus_addr);
-+		*fw_rev = 0x0;
-+	}
-+	if (sbl_sbm_spico_int(sbl, sbus_addr, SPICO_INT_SBMS_BUILD_ID,
-+			      SPICO_INT_DATA_NONE, fw_build)) {
-+		/* Failure expected when Spico is in reset */
-+		dev_dbg(sbl->dev, "sbm%d: Failed to read firmware build from 0x%x", sbus_ring, sbus_addr);
-+		*fw_build = 0x0;
-+	}
-+	mutex_unlock(&sbl->sbus_ring_mtx[sbus_ring]);
-+}
-+
-+int sbl_sbm_firmware_flash(struct sbl_inst *sbl)
-+{
-+	int err;
-+
-+	err = sbl_sbm_firmware_flash_ring(sbl, 0,
-+					  sbl->switch_info->num_sbus_rings - 1, false);
-+	if (err)
-+		/* sending port 0 in event as this event doesn't apply to any specific port */
-+		sbl_async_alert(sbl, 0, SBL_ASYNC_ALERT_SBM_FW_LOAD_FAILURE, NULL, 0);
-+
-+	return err;
-+}
-+
-+int sbl_sbm_firmware_flash_ring(struct sbl_inst *sbl, int first_ring,
-+				int last_ring, bool force)
-+{
-+	bool flash_needed, fw_requested = false;
-+	int sbus_ring;
-+	int err;
-+	int fw_rev, fw_build;
-+	const struct firmware *fw = NULL;
-+
-+	if ((last_ring < first_ring) || (first_ring < 0) ||
-+	    (last_ring > sbl->switch_info->num_sbus_rings - 1)) {
-+		sbl_dev_err(sbl->dev, "Invalid rings specified first:%d last:%d",
-+			    first_ring, last_ring);
-+		return -EINVAL;
-+	}
-+
-+	err = sbl_parse_version_string(sbl, sbl->iattr.sbm_fw_fname,
-+				       &fw_rev, &fw_build);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "Failed to parse version string %s [%d]",
-+			    sbl->iattr.sbm_fw_fname, err);
-+		return err;
-+	}
-+
-+	/* Check SBus Master firmware versions */
-+	for (sbus_ring = first_ring; sbus_ring <= last_ring; ++sbus_ring) {
-+		flash_needed = false;
-+		if (sbl_validate_sbm_fw_vers(sbl, sbus_ring, fw_rev,
-+					     fw_build)) {
-+			flash_needed = true;
-+		}
-+
-+		if (flash_needed || force) {
-+			if (!fw_requested) {
-+				err = request_firmware(&fw, sbl->iattr.sbm_fw_fname,
-+						       sbl->dev);
-+				if (err) {
-+					sbl_dev_err(sbl->dev, "firmware request failed [%d]", err);
-+					return err;
-+				}
-+				sbl_dev_dbg(sbl->dev, "loaded fw (size %zd)", fw->size);
-+				fw_requested = true;
-+			}
-+			sbl_dev_dbg(sbl->dev, "ring %d sbus_master firmware out of date! Flashing...", sbus_ring);
-+
-+			err = sbl_sbm_firm_upload(sbl, sbus_ring, fw->size, fw->data);
-+			if (err) {
-+				sbl_dev_err(sbl->dev, "Failed to upload ring %d firmware!", sbus_ring);
-+				goto out_release;
-+			} else {
-+				sbl_dev_info(sbl->dev, "Ring %d Sbus Master firmware flashed successfully.", sbus_ring);
-+			}
-+		}
-+	}
-+
-+ out_release:
-+	release_firmware(fw);
-+
-+	return err;
-+}
-+
-+static void sbl_serdes_firmware_validation(struct sbl_inst *sbl, const struct firmware *fw,
-+					   u32 sbus_addr, u32 result, u32 sbus_ring)
-+{
-+	int rc, i;
-+	u8 data;
-+	bool corruption_found = false;
-+
-+	for (i = 0; i < fw->size; ++i) {
-+		if (i % 2 == 0) {
-+			rc = sbl_sbus_wr(sbl, sbus_addr,
-+					SPICO_SBR_ADDR_IMEM, i / 2);
-+			if (rc)
-+				break;
-+			rc = sbl_sbus_rd(sbl, sbus_addr,
-+					 SPICO_SBR_ADDR_RDATA,
-+					&result);
-+			if (rc)
-+				break;
-+			data = (result & 0xff00) >> 8;
-+		} else {
-+			data = result & 0xff;
-+		}
-+		if (data != fw->data[i]) {
-+			corruption_found = true;
-+			sbl_dev_warn(sbl->dev, "0x%x: Act 0x%4.4x Exp 0x%4.4x", i, data, fw->data[i]);
-+		}
-+	}
-+	rc = sbl_sbus_wr(sbl, sbus_addr, SPICO_SBR_ADDR_CTL,
-+			 SPICO_SBR_DATA_IMEM_CNTL_DIS);
-+	if (rc)
-+		sbl_dev_err(sbl->dev, "SBM Imem rd disable failed [%d]", rc);
-+	if (corruption_found)
-+		sbl_dev_err(sbl->dev, "r%d: SBM FW corruption found", sbus_ring);
-+	else
-+		sbl_dev_info(sbl->dev, "r%d: No SBM FW corruption found", sbus_ring);
-+}
-+
-+int sbl_serdes_firmware_flash_safe(struct sbl_inst *sbl, int port_num,
-+				   bool force)
-+{
-+	int rc;
-+	u32 sbus_addr, crc_result, sbus_ring;
-+	u32 curr_fw_rev = 0, curr_fw_build = 0;
-+	u32 result;
-+	const struct firmware *fw = NULL;
-+	int fw_rev, fw_build;
-+	int serdes = 0;
-+
-+	if (!sbl->is_hw)
-+		return 0;
-+
-+	if (port_num == SBL_ALL_PORTS)
-+		return -ENOTSUPP;
-+
-+	sbus_ring = sbl->switch_info->ports[port_num].serdes[serdes].sbus_ring;
-+
-+	/* First, try the FW flash */
-+	rc = sbl_serdes_firmware_flash(sbl, port_num, force);
-+	if (rc)
-+		goto sbm_fw_reload;
-+
-+	/* Now, validate the SerDes FW - this also validates
-+	 * SPICO interrupts are working correctly.
-+	 */
-+	rc = sbl_parse_version_string(sbl, sbl->iattr.serdes_fw_fname,
-+				      &fw_rev, &fw_build);
-+	if (rc) {
-+		sbl_dev_err(sbl->dev,
-+			    "Failed to parse version string %s [%d]",
-+			sbl->iattr.sbm_fw_fname, rc);
-+		return rc;
-+	}
-+	rc = sbl_validate_serdes_fw_vers(sbl, port_num, serdes, fw_rev, fw_build);
-+	if (rc)
-+		goto sbm_fw_reload;
-+
-+	/* Finally, validate the SBM FW - this also validates
-+	 * Sbus reads/writes are working correctly.
-+	 */
-+	rc = sbl_parse_version_string(sbl, sbl->iattr.sbm_fw_fname,
-+				      &fw_rev, &fw_build);
-+	if (rc) {
-+		sbl_dev_err(sbl->dev,
-+			    "Failed to parse version string %s [%d]",
-+			sbl->iattr.sbm_fw_fname, rc);
-+		return rc;
-+	}
-+	rc = sbl_validate_sbm_fw_vers(sbl, sbus_ring, fw_rev, fw_build);
-+	if (rc)
-+		goto sbm_fw_reload;
-+
-+	/* If all the above succeed, we're done unless we force SBM FW reload */
-+	if (sbl_debug_option(sbl, port_num,
-+			     SBL_DEBUG_FORCE_RELOAD_SBM_FW)) {
-+		sbl_dev_info(sbl->dev, "p%d: SBus Master FW reload forced", port_num);
-+		goto sbm_fw_reload;
-+	}
-+	return 0;
-+
-+ sbm_fw_reload:
-+	if (sbl_debug_option(sbl, port_num, SBL_DEBUG_INHIBIT_RELOAD_SBM_FW)) {
-+		sbl_dev_warn(sbl->dev, "p%d: SBus Master FW reload inhibited", port_num);
-+		return rc;
-+	}
-+
-+	/* We may trigger a sbus master FW reload from multiple ports at the
-+	 * same time. Ensure we only actually reload the firmware once per
-+	 * sbus ring
-+	 */
-+	sbl->reload_sbm_fw[sbus_ring] = true;
-+	mutex_lock(SBM_FW_MTX(sbl, sbus_ring));
-+	if (!sbl->reload_sbm_fw[sbus_ring]) {
-+		sbl_dev_info(sbl->dev, "r%d: Sbus master FW reload no longer needed", sbus_ring);
-+	} else {
-+
-+		if (mutex_is_locked(SBUS_RING_MTX(sbl, sbus_ring)))
-+			sbl_dev_dbg(sbl->dev,
-+				    "%s: Sbus contention detected, sbus_ring_mtx[%d] locked",
-+				    __func__, sbus_ring);
-+
-+		/* SBUS Critical Section */
-+		mutex_lock(SBUS_RING_MTX(sbl, sbus_ring));
-+
-+		/* First, dump the SBM FW info for debug */
-+		sbus_addr = SBUS_ADDR(sbus_ring, SBUS_BCAST_SBM_SPICO);
-+		/* Version info: Rev.Build */
-+		if (sbl_sbm_spico_int(sbl, sbus_addr, SPICO_INT_SBMS_REV_ID,
-+				      SPICO_INT_DATA_NONE, &curr_fw_rev)) {
-+			sbl_dev_warn(sbl->dev,
-+				     "r%d: Failed to read firmware rev from 0x%x",
-+				 sbus_ring, sbus_addr);
-+		} else {
-+			sbl_dev_info(sbl->dev, "r%d: firmware rev 0x%x", sbus_ring, curr_fw_rev);
-+		}
-+		if (sbl_sbm_spico_int(sbl, sbus_addr, SPICO_INT_SBMS_BUILD_ID,
-+				      SPICO_INT_DATA_NONE, &curr_fw_build)) {
-+			sbl_dev_warn(sbl->dev,
-+				     "r%d: Failed to read firmware build from 0x%x",
-+				 sbus_ring, sbus_addr);
-+		} else {
-+			sbl_dev_info(sbl->dev, "r%d: firmware build 0x%x",
-+				     sbus_ring, curr_fw_build);
-+		}
-+		/* CRC */
-+		rc = sbl_sbm_spico_int(sbl, sbus_addr, SPICO_INT_SBMS_DO_CRC,
-+				       SPICO_INT_DATA_NONE, &crc_result);
-+		if (rc) {
-+			sbl_dev_err(sbl->dev,
-+				    "p%d(0x%x): CRC check interrupt failed (%d)!",
-+				port_num, sbus_addr, rc);
-+		} else {
-+			if (crc_result != SPICO_RESULT_SBR_CRC_PASS) {
-+				sbl_dev_err(sbl->dev,
-+					    "p%d(0x%x): CRC check fail (result: 0x%x exp: 0x%x)!",
-+					port_num, sbus_addr, crc_result, SPICO_RESULT_SBR_CRC_PASS);
-+			} else {
-+				sbl_dev_info(sbl->dev,
-+					     "p%d(0x%x): CRC check passed",
-+					 port_num, sbus_addr);
-+			}
-+		}
-+		/* FW Status */
-+		rc = sbl_sbus_rd(sbl, sbus_addr, SPICO_INT_SBMS_FW_STS,
-+				 &result);
-+		if (rc) {
-+			sbl_dev_err(sbl->dev,
-+				    "p%d(0x%x): FW status read failed (%d)!",
-+				port_num, sbus_addr, rc);
-+		} else {
-+			sbl_dev_info(sbl->dev, "p%d(0x%x): FW status: 0x%x",
-+				     port_num, sbus_addr, result);
-+		}
-+
-+		rc = request_firmware(&fw, sbl->iattr.sbm_fw_fname, sbl->dev);
-+		if (rc != 0) {
-+			sbl_dev_err(sbl->dev, "firmware request failed [%d]", rc);
-+		} else {
-+			sbl_dev_info(sbl->dev,
-+				     "p%d(0x%x): Checking SBM FW for corruption...",
-+				 port_num, sbus_addr);
-+			rc = sbl_sbus_wr(sbl, sbus_addr, SPICO_SBR_ADDR_CTL,
-+					 SPICO_SBR_DATA_IMEM_CNTL_EN_RD);
-+			if (rc)
-+				sbl_dev_err(sbl->dev, "SBM Imem rd enable failed [%d]", rc);
-+			else
-+				sbl_serdes_firmware_validation(sbl, fw, sbus_addr, result, sbus_ring);
-+
-+			release_firmware(fw);
-+		}
-+
-+		mutex_unlock(SBUS_RING_MTX(sbl, sbus_ring));
-+
-+		/* Now, try reloading the sbus master FW */
-+		rc = sbl_sbm_firmware_flash_ring(sbl, sbus_ring, sbus_ring, true);
-+		if (rc)
-+			sbl_dev_err(sbl->dev, "r%d: SBM FW flash failed (%d)!", sbus_ring, rc);
-+		else
-+			sbl_dev_info(sbl->dev, "r%d: SBM FW flash succeeded", sbus_ring);
-+
-+		sbl->reload_sbm_fw[sbus_ring] = false;
-+	}
-+	mutex_unlock(SBM_FW_MTX(sbl, sbus_ring));
-+
-+	/* Finally, retry the SerDes FW reload */
-+	rc = sbl_serdes_firmware_flash(sbl, port_num, true);
-+	if (rc != 0)
-+		sbl_dev_err(sbl->dev,
-+			    "p%d: SerDes FW flash failed (%d) despite SBM reload!",
-+			port_num, rc);
-+	else
-+		sbl_dev_info(sbl->dev, "p%d: SerDes FW flash succeeded", port_num);
-+
-+	/* Regardless of the success/failure of the initial flash and recovery
-+	 * attempt, we return the status of the final serdes firmware flash,
-+	 * which is the true metric of if this function was successful.
-+	 */
-+	return rc;
-+}
-+
-+int sbl_serdes_firmware_flash(struct sbl_inst *sbl, int port_num, bool force)
-+{
-+	bool flash_needed;
-+	int serdes = 0;
-+	int sr, err = 0;
-+	int fw_rev, fw_build;
-+	int port = port_num;
-+	int first_port, last_port;
-+	const struct firmware *fw = NULL;
-+
-+	/* Lock sbm_fw_mtx to ensure we don't reload the sbus master FW
-+	 * while reloading the SerDes FW
-+	 */
-+	if (port_num == SBL_ALL_PORTS) {
-+		for (sr = 0; sr < sbl->switch_info->num_sbus_rings; ++sr)
-+			mutex_lock(SBM_FW_MTX(sbl, sr));
-+	} else {
-+		sr = sbl->switch_info->ports[port_num].serdes[0].sbus_ring;
-+		mutex_lock(SBM_FW_MTX(sbl, sr));
-+	}
-+
-+	if (!force) {
-+		err = sbl_parse_version_string(sbl, sbl->iattr.serdes_fw_fname,
-+					       &fw_rev, &fw_build);
-+		if (err) {
-+			sbl_dev_err(sbl->dev,
-+				    "Failed to parse version string %s [%d]",
-+				sbl->iattr.serdes_fw_fname, err);
-+			goto out;
-+		}
-+
-+		/* Check SerDes firmware versions */
-+		flash_needed = false;
-+		if (port_num == SBL_ALL_PORTS) {
-+			first_port = 0;
-+			last_port = sbl->switch_info->num_ports - 1;
-+		} else {
-+			first_port = port_num;
-+			last_port = port_num;
-+		}
-+		for (port = first_port; port <= last_port; ++port) {
-+			for (serdes = 0; serdes < sbl->switch_info->num_serdes;
-+			     ++serdes) {
-+				if (sbl_validate_serdes_fw_vers(sbl, port,
-+								serdes, fw_rev,
-+								fw_build)) {
-+					sbl_dev_info(sbl->dev, "port %d serdes: %d firmware out of date! Flash required",
-+						     port, serdes);
-+					flash_needed = true;
-+					break;
-+				}
-+			}
-+			if (flash_needed)
-+				break;
-+		}
-+	} else {
-+		flash_needed = true;
-+	}
-+
-+	if (flash_needed) {
-+		err = request_firmware(&fw, sbl->iattr.serdes_fw_fname, sbl->dev);
-+		if (err) {
-+			sbl_dev_err(sbl->dev, "firmware request failed [%d]",
-+				    err);
-+			goto out;
-+		}
-+
-+		err = sbl_serdes_firm_upload(sbl, port_num, fw->size, fw->data);
-+		if (err) {
-+			sbl_dev_err(sbl->dev, "%d: serdes firmware upload failed [%d]", port_num, err);
-+			if (port_num == SBL_ALL_PORTS)
-+				sbl_send_serdes_fw_corruption_alert(sbl, 0, 0);
-+			else
-+				sbl_send_serdes_fw_corruption_alert(sbl, port, serdes);
-+			goto out;
-+		} else {
-+			if (port_num == SBL_ALL_PORTS)
-+				sbl_dev_dbg(sbl->dev, "All SerDes firmware flashed successfully.");
-+			else
-+				sbl_dev_dbg(sbl->dev, "p%d SerDes firmware flashed successfully.", port_num);
-+		}
-+	} else {
-+		/* Serdes firmware reload skipped as the firmware validation succeeded */
-+		for (port = first_port; port <= last_port; ++port)
-+			sbl_link_counters_incr(sbl, port, serdes_fw_reload_skip);
-+	}
-+
-+ out:
-+	release_firmware(fw);
-+
-+	if (port_num == SBL_ALL_PORTS) {
-+		for (sr = 0; sr < sbl->switch_info->num_sbus_rings; ++sr)
-+			mutex_unlock(SBM_FW_MTX(sbl, sr));
-+	} else {
-+		mutex_unlock(SBM_FW_MTX(sbl, sr));
-+	}
-+	return err;
-+}
-+
-+int sbl_validate_sbm_fw_vers(struct sbl_inst *sbl, u32 sbus_ring,
-+			     int fw_rev, int fw_build)
-+{
-+	u32 curr_fw_rev = 0, curr_fw_build = 0;
-+	u32 sbus_addr = SBUS_ADDR(sbus_ring, SBUS_BCAST_SBM_SPICO);
-+
-+	DEV_TRACE2(sbl->dev,
-+		   "sbus_addr: 0x%x, desired rev: 0x%x, desired build: 0x%x",
-+		   sbus_ring, fw_rev, fw_build);
-+
-+	/* SBUS Critical Section */
-+	mutex_lock(SBUS_RING_MTX(sbl, sbus_ring));
-+
-+	if (sbl_sbm_spico_int(sbl, sbus_addr, SPICO_INT_SBMS_REV_ID,
-+			      SPICO_INT_DATA_NONE, &curr_fw_rev)) {
-+		/* Failure expected when Spico is in reset */
-+		sbl_dev_warn(sbl->dev, "r%d: Failed to read SBM firmware rev from 0x%x",
-+			     sbus_ring, sbus_addr);
-+	}
-+	if (sbl_sbm_spico_int(sbl, sbus_addr, SPICO_INT_SBMS_BUILD_ID,
-+			      SPICO_INT_DATA_NONE, &curr_fw_build)) {
-+		/* Failure expected when Spico is in reset */
-+		sbl_dev_warn(sbl->dev, "r%d: Failed to read SBM firmware build from 0x%x",
-+			     sbus_ring, sbus_addr);
-+	}
-+
-+	mutex_unlock(SBUS_RING_MTX(sbl, sbus_ring));
-+
-+	if (((int)curr_fw_rev == fw_rev) && ((int)curr_fw_build == fw_build)) {
-+		sbl_dev_dbg(sbl->dev, "r%d: Found expected SBM rev: 0x%x_%x",
-+			    sbus_ring, curr_fw_rev, curr_fw_build);
-+		return 0;
-+	}
-+	sbl_dev_warn(sbl->dev,
-+		     "r%d: Expected rev: 0x%x_%x Current SBM rev: 0x%x_%x",
-+			sbus_ring, fw_rev, fw_build, curr_fw_rev, curr_fw_build);
-+	return -1;
-+}
-+
-+int sbl_validate_serdes_fw_crc(struct sbl_inst *sbl, int port, int serdes)
-+{
-+	u16 crc_result;
-+	int err;
-+
-+	err = sbl_serdes_spico_int(sbl, port, serdes, SPICO_INT_CM4_CRC,
-+				   SPICO_INT_DATA_NONE, &crc_result,
-+					SPICO_INT_RETURN_RESULT);
-+	if (err)
-+		return err;
-+
-+	/* CRC failure can be injected for test purposes */
-+	sbl_test_manipulate_serdes_fw_crc_result(&crc_result);
-+
-+	if (crc_result != SPICO_RESULT_SERDES_CRC_PASS) {
-+		sbl_dev_dbg(sbl->dev,
-+			    "p%ds%d: CRC check fail (result 0x%x, expected 0x%x)!",
-+			port, serdes, crc_result, SPICO_RESULT_SERDES_CRC_PASS);
-+		return -EBADE;
-+	}
-+
-+	return 0;
-+}
-+
-+int sbl_validate_serdes_fw_vers(struct sbl_inst *sbl, int port_num, int serdes,
-+				int fw_rev, int fw_build)
-+{
-+	u16 curr_fw_rev = 0, curr_fw_build = 0;
-+	int err;
-+
-+	DEV_TRACE2(sbl->dev, "p%ds%d: desired rev: 0x%x, desired build: 0x%x",
-+		   port_num, serdes, fw_rev, fw_build);
-+
-+	if (!sbl->is_hw)
-+		return 0;
-+
-+	if (sbl_serdes_spico_int(sbl, port_num, serdes, SPICO_INT_CM4_REV_ID,
-+				 SPICO_INT_DATA_NONE, &curr_fw_rev,
-+				 SPICO_INT_RETURN_RESULT)) {
-+		/* Failure expected when Spico is in reset */
-+		sbl_dev_dbg(sbl->dev, "p%ds%d: Failed to read firmware rev!",
-+			    port_num, serdes);
-+	}
-+	if (sbl_serdes_spico_int(sbl, port_num, serdes, SPICO_INT_CM4_BUILD_ID,
-+				 SPICO_INT_DATA_NONE, &curr_fw_build,
-+				 SPICO_INT_RETURN_RESULT)) {
-+		/* Failure expected when Spico is in reset */
-+		sbl_dev_dbg(sbl->dev, "p%ds%d: Failed to read firmware build!",
-+			    port_num, serdes);
-+	}
-+
-+	err = sbl_validate_serdes_fw_crc(sbl, port_num, serdes);
-+	if (err) {
-+		sbl_dev_warn(sbl->dev, "p%ds%d: Failed CRC check",
-+			     port_num, serdes);
-+		return -1;
-+	}
-+
-+	if (((int)curr_fw_rev == fw_rev) && ((int)curr_fw_build == fw_build)) {
-+		sbl_dev_dbg(sbl->dev, "p%ds%d: Found expected rev: 0x%x_%x",
-+			    port_num, serdes, curr_fw_rev, curr_fw_build);
-+		return 0;
-+	}
-+	sbl_dev_warn(sbl->dev, "p%ds%d: Expected rev: 0x%x_%x Current rev: 0x%x_%x",
-+		     port_num, serdes, fw_rev, fw_build,
-+			curr_fw_rev, curr_fw_build);
-+	return -1;
-+}
-+
-+/* does the CRC check */
-+int sbl_sbm_firm_upload(struct sbl_inst *sbl, int sbus_ring,
-+			size_t fw_size, const u8 *fw_data)
-+{
-+	u32 sbus_addr, unused, crc_result;
-+	int err;
-+
-+	if (!sbl->is_hw)
-+		return 0;
-+
-+	/* SBUS Critical Section */
-+	mutex_lock(SBUS_RING_MTX(sbl, sbus_ring));
-+
-+	sbus_addr = SBUS_ADDR(sbus_ring, SBUS_BCAST_SBM_SPICO);
-+
-+	err = sbl_sbus_op_aux(sbl, sbus_addr, SPICO_SBR_ADDR_IP_IDCODE,
-+			      SBUS_IFACE_DST_CORE | SBUS_CMD_RESET,
-+				   SPICO_SBR_DATA_NONE, &unused);
-+	if (err)
-+		goto err_out;
-+
-+	err = sbl_sbus_wr(sbl, sbus_addr, SPICO_SBR_ADDR_CTL,
-+			  SPICO_SBR_DATA_RESET_HIGH);
-+	if (err)
-+		goto err_out;
-+
-+	err = sbl_sbus_wr(sbl, sbus_addr, SPICO_SBR_ADDR_CTL,
-+			  SPICO_SBR_DATA_RESET_LOW);
-+	if (err)
-+		goto err_out;
-+
-+	err = sbl_sbus_wr(sbl, sbus_addr, SPICO_SBR_ADDR_CTL,
-+			  SPICO_SBR_DATA_IMEM_CNTL_EN);
-+	if (err)
-+		goto err_out;
-+
-+	err = sbl_sbus_wr(sbl, sbus_addr, SPICO_SBR_ADDR_IMEM,
-+			  SPICO_SBR_DATA_NONE);
-+	if (err)
-+		goto err_out;
-+
-+	err = sbl_sbus_wr(sbl, sbus_addr, SPICO_SBR_ADDR_IMEM,
-+			  SPICO_SBR_DATA_SET_BURST_WR);
-+	if (err)
-+		goto err_out;
-+
-+	err = sbl_spico_burst_upload(sbl, sbus_addr,
-+				     SPICO_SBR_ADDR_IMEM_BURST_DATA,
-+					  fw_size, fw_data);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "Upload failed!");
-+		goto err_out;
-+	}
-+
-+	err = sbl_sbus_wr(sbl, sbus_addr, SPICO_SBR_ADDR_IMEM,
-+			  SPICO_SBR_DATA_SET_BURST_WR | fw_size);
-+	if (err)
-+		goto err_out;
-+
-+	err = sbl_sbus_wr(sbl, sbus_addr, SPICO_SBR_ADDR_IMEM,
-+			  SPICO_SBR_DATA_SET_BURST_WR |
-+			       (fw_size + 1));
-+	if (err)
-+		goto err_out;
-+
-+	err = sbl_sbus_wr(sbl, sbus_addr, SPICO_SBR_ADDR_IMEM,
-+			  SPICO_SBR_DATA_SET_BURST_WR |
-+			       (fw_size + 2));
-+	if (err)
-+		goto err_out;
-+
-+	err = sbl_sbus_wr(sbl, sbus_addr, SPICO_SBR_ADDR_IMEM,
-+			  SPICO_SBR_DATA_SET_BURST_WR |
-+			       (fw_size + 3));
-+	if (err)
-+		goto err_out;
-+
-+	err = sbl_sbus_wr(sbl, sbus_addr, SPICO_SBR_ADDR_CTL,
-+			  SPICO_SBR_DATA_IMEM_CNTL_DIS);
-+	if (err)
-+		goto err_out;
-+
-+	err = sbl_sbus_wr(sbl, sbus_addr, SPICO_SBR_ADDR_ECC,
-+			  SPICO_SBR_DATA_ECC_EN);
-+	if (err)
-+		goto err_out;
-+
-+	err = sbl_sbus_wr(sbl, sbus_addr, SPICO_SBR_ADDR_CTL,
-+			  SPICO_SBR_DATA_SPICO_EN);
-+	if (err)
-+		goto err_out;
-+
-+	err = sbl_sbm_spico_int(sbl, sbus_addr, SPICO_INT_SBMS_DO_CRC,
-+				SPICO_INT_DATA_NONE, &crc_result);
-+	if (err)
-+		goto err_out;
-+
-+	if (crc_result != SPICO_RESULT_SBR_CRC_PASS) {
-+		sbl_dev_err(sbl->dev, "0x%x: CRC check fail (result 0x%x, expected 0x%x)!",
-+			    sbus_addr, crc_result, SPICO_RESULT_SBR_CRC_PASS);
-+		err = -EBADE;
-+	}
-+
-+	/* Increment sbus master fw reload counter */
-+	atomic_inc(&sbl->sbm_fw_reload_count[sbus_ring]);
-+
-+err_out:
-+	mutex_unlock(SBUS_RING_MTX(sbl, sbus_ring));
-+	return err;
-+}
-+
-+int sbl_serdes_firm_upload(struct sbl_inst *sbl, int port_num, size_t fw_size,
-+			   const u8 *fw_data)
-+{
-+	int serdes;
-+	u32 sbus_addr;
-+	u64 core_status_value;
-+	int sbus_ring;
-+	int err = -1;
-+	int port, first_port, last_port, first_ring, last_ring;
-+	int first_serdes, last_serdes;
-+	unsigned long last_jiffy;
-+
-+	if (port_num == SBL_ALL_PORTS) {
-+		sbl_dev_dbg(sbl->dev, "Loading SerDes firmware for all ports...");
-+		first_port = 0;
-+		last_port = sbl->switch_info->num_ports - 1;
-+		first_serdes = 0; /* force to a single iteration */
-+		last_serdes = 0;
-+		first_ring = 0;
-+		last_ring = sbl->switch_info->num_sbus_rings - 1;
-+	} else {
-+		sbl_dev_dbg(sbl->dev, "p%d: Loading SerDes firmware...", port_num);
-+		first_port = port_num;
-+		last_port = port_num;
-+		first_serdes = 0;
-+		last_serdes = sbl->switch_info->num_serdes - 1;
-+		/* All serdes for a given port are always on the same ring, so
-+		   just use serdes 0 to determine the ring. */
-+		first_ring = sbl->switch_info->ports[port_num].serdes[0].sbus_ring;
-+		last_ring = sbl->switch_info->ports[port_num].serdes[0].sbus_ring;
-+	}
-+	for (port = first_port; port <= last_port; ++port) {
-+		for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+			err = sbl_serdes_soft_reset(sbl, port, serdes);
-+			if (err)
-+				return err;
-+		}
-+	}
-+
-+	/* Don't allow SPICO interrupts while we are reloading firmware */
-+	for (port = first_port; port <= last_port; ++port)
-+		mutex_lock(&sbl->link[port].serdes_mtx);
-+
-+	sbl_dev_dbg(sbl->dev, "p%d: Flashing SerDes firmware...", port_num);
-+	for (sbus_ring = first_ring; sbus_ring <= last_ring; ++sbus_ring) {
-+
-+		/* SBUS Critical Section */
-+		mutex_lock(SBUS_RING_MTX(sbl, sbus_ring));
-+
-+		for (serdes = first_serdes; serdes <= last_serdes; ++serdes) {
-+			if (port_num == SBL_ALL_PORTS)
-+				sbus_addr = SBUS_ADDR(sbus_ring, SBUS_BCAST_CM4_SERDES_SPICO);
-+			else
-+				sbus_addr = SBUS_ADDR(sbl->switch_info->ports[port_num].serdes[serdes].sbus_ring,
-+						      sbl->switch_info->ports[port_num].serdes[serdes].rx_addr);
-+
-+			err = sbl_sbus_wr(sbl, sbus_addr,
-+					  SPICO_SERDES_ADDR_RESET_EN,
-+				       SPICO_SERDES_DATA_SET_GLOBAL_RESET);
-+			if (err)
-+				break;
-+
-+			err = sbl_sbus_wr(sbl, sbus_addr,
-+					  SPICO_SERDES_ADDR_RESET_EN,
-+				       SPICO_SERDES_DATA_CLR_GLOBAL_RESET);
-+			if (err)
-+				break;
-+
-+			err = sbl_sbus_wr(sbl, sbus_addr,
-+					  SPICO_SERDES_ADDR_INTR_DIS,
-+				       SPICO_SERDES_DATA_SET_INTR_DIS);
-+			if (err)
-+				break;
-+
-+			err = sbl_sbus_wr(sbl, sbus_addr,
-+					  SPICO_SERDES_ADDR_IMEM,
-+				       SPICO_SERDES_DATA_SET_IMEM_CNTL_EN);
-+			if (err)
-+				break;
-+
-+			err = sbl_spico_burst_upload(sbl, sbus_addr,
-+						     SPICO_SERDES_ADDR_IMEM_BURST,
-+						  fw_size, fw_data);
-+			if (err) {
-+				sbl_dev_err(sbl->dev, "Upload failed!");
-+				break;
-+			}
-+
-+			err = sbl_sbus_wr(sbl, sbus_addr,
-+					  SPICO_SERDES_ADDR_IMEM,
-+				       SPICO_SERDES_DATA_CLR_IMEM_CNTL_EN);
-+			if (err)
-+				break;
-+
-+			err = sbl_sbus_wr(sbl, sbus_addr,
-+					  SPICO_SERDES_ADDR_ECC,
-+				       SPICO_SERDES_DATA_SET_ECC_EN);
-+			if (err)
-+				break;
-+
-+			err = sbl_sbus_wr(sbl, sbus_addr,
-+					  SPICO_SERDES_ADDR_ECCLOG,
-+				       SPICO_SERDES_DATA_CLR_ECC_ERR);
-+			if (err)
-+				break;
-+
-+			err = sbl_sbus_wr(sbl, sbus_addr,
-+					  SPICO_SERDES_ADDR_RESET_EN,
-+				       SPICO_SERDES_DATA_SET_SPICO_EN);
-+			if (err)
-+				break;
-+
-+			err = sbl_sbus_wr(sbl, sbus_addr,
-+					  SPICO_SERDES_ADDR_INTR_DIS,
-+				       SPICO_SERDES_DATA_SET_INTR_EN);
-+			if (err)
-+				break;
-+		}
-+
-+		mutex_unlock(SBUS_RING_MTX(sbl, sbus_ring));
-+
-+		if (err)
-+			break;
-+	}
-+
-+	for (port = first_port; port <= last_port; ++port)
-+		mutex_unlock(&sbl->link[port].serdes_mtx);
-+
-+	/* If any errors occurred above, return now we've unlocked all mutexes. */
-+	if (err)
-+		return err;
-+
-+	/* Increment SerDes firmware reload counters */
-+	if (port_num != SBL_ALL_PORTS)
-+		for (serdes = first_serdes; serdes <= last_serdes; ++serdes)
-+			sbl_link_counters_incr(sbl, port_num, serdes0_fw_reload + serdes);
-+
-+	if (!sbl->is_hw)
-+		return 0;
-+
-+	sbl_dev_dbg(sbl->dev, "p%d: Validating flash..", port_num);
-+	for (port = first_port; port <= last_port; ++port) {
-+		for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+			sbus_addr =
-+				SBUS_ADDR(sbl->switch_info->ports[port].serdes[serdes].sbus_ring,
-+					  sbl->switch_info->ports[port].serdes[serdes].rx_addr);
-+			last_jiffy = jiffies + msecs_to_jiffies(1000 *
-+								 sbl->iattr.core_status_rd_timeout);
-+			do {
-+				core_status_value = sbl_read64(sbl, SBL_PML_BASE(port) |
-+							       SBL_PML_SERDES_CORE_STATUS_OFFSET(serdes));
-+				if (core_status_value &
-+				    SERDES_CORE_STATUS_SPICO_READY_MASK) {
-+					break;
-+				}
-+				msleep(sbl->iattr.core_status_rd_poll_interval);
-+			} while (time_is_after_jiffies(last_jiffy));
-+
-+			if (!(core_status_value & (1 << 5))) {
-+				sbl_dev_err(sbl->dev, "p%ds%d Timeout reading o_core_status (timeout:%ds)",
-+					    port_num, serdes, sbl->iattr.core_status_rd_timeout);
-+				return -ETIME;
-+			}
-+
-+			err = sbl_validate_serdes_fw_crc(sbl, port, serdes);
-+			if (err)
-+				return err;
-+
-+		}
-+	}
-+	sbl_dev_dbg(sbl->dev, "p%d: FW upload complete!", port_num);
-+
-+	return 0;
-+}
-+
-+static int sbl_get_serdes_tuning_params(struct sbl_inst *sbl, int port_num,
-+					struct sbl_tuning_params *tps)
-+{
-+	int i, serdes, err;
-+
-+	if (!tps)
-+		return -EINVAL;
-+
-+	tps->magic = SBL_TUNING_PARAM_MAGIC;
-+	tps->version = SBL_TUNING_PARAM_VERSION;
-+
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (!rx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+			continue;
-+
-+		for (i = 0; i < NUM_CTLE_PARAMS; ++i) {
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_HAL_READ,
-+					SPICO_INT_DATA_HAL_CTLE_BASE | i,
-+					&tps->params[serdes].ctle[i],
-+					SPICO_INT_RETURN_RESULT);
-+			if (err)
-+				return err;
-+
-+			sbl_dev_dbg(sbl->dev, "p%ds%d: CTLE[%d]: %d",
-+				    port_num, serdes, i,
-+					tps->params[serdes].ctle[i]);
-+		}
-+		for (i = 0; i < NUM_FFE_PARAMS; ++i) {
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_HAL_READ,
-+					SPICO_INT_DATA_HAL_FFE_BASE | i,
-+					&tps->params[serdes].ffe[i],
-+					SPICO_INT_RETURN_RESULT);
-+			if (err)
-+				return err;
-+
-+			sbl_dev_dbg(sbl->dev, "p%ds%d: FFE[%d]: %d",
-+				    port_num, serdes, i,
-+					tps->params[serdes].ffe[i]);
-+		}
-+		for (i = 0; i < NUM_DFE_PARAMS; ++i) {
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_HAL_READ,
-+					SPICO_INT_DATA_HAL_DFE_BASE | i,
-+					&tps->params[serdes].dfe[i],
-+					SPICO_INT_RETURN_RESULT);
-+			if (err)
-+				return err;
-+
-+			sbl_dev_dbg(sbl->dev, "p%ds%d: DFE[%d]: %d",
-+				    port_num, serdes, i,
-+					tps->params[serdes].dfe[i]);
-+		}
-+		for (i = 0; i < NUM_RXVS_PARAMS; ++i) {
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_HAL_READ,
-+					SPICO_INT_DATA_HAL_RXVS_BASE |
-+						(i + SPICO_INT_DATA_HAL_RXVS_OFFSET),
-+					&tps->params[serdes].rxvs[i],
-+					SPICO_INT_RETURN_RESULT);
-+			if (err)
-+				return err;
-+
-+			sbl_dev_dbg(sbl->dev, "p%ds%d: RXVS[%d]: %d",
-+				    port_num, serdes, i,
-+					tps->params[serdes].rxvs[i]);
-+		}
-+		for (i = 0; i < NUM_RXVC_PARAMS; ++i) {
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_HAL_READ,
-+					SPICO_INT_DATA_HAL_RXVC_BASE | i,
-+					&tps->params[serdes].rxvc[i],
-+					SPICO_INT_RETURN_RESULT);
-+			if (err)
-+				return err;
-+
-+			sbl_dev_dbg(sbl->dev, "p%ds%d: RXVC[%d]: %d",
-+				    port_num, serdes, i,
-+					tps->params[serdes].rxvc[i]);
-+		}
-+		for (i = 0; i < NUM_RSDO_PARAMS; ++i) {
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_HAL_READ,
-+					SPICO_INT_DATA_HAL_RSDO_BASE | i,
-+					&tps->params[serdes].rsdo[i],
-+					SPICO_INT_RETURN_RESULT);
-+			if (err)
-+				return err;
-+
-+			sbl_dev_dbg(sbl->dev, "p%ds%d: RSDO[%d]: %d",
-+				    port_num, serdes, i,
-+					tps->params[serdes].rsdo[i]);
-+		}
-+		for (i = 0; i < NUM_RSDC_PARAMS; ++i) {
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_HAL_READ,
-+					SPICO_INT_DATA_HAL_RSDC_BASE | i,
-+					&tps->params[serdes].rsdc[i],
-+					SPICO_INT_RETURN_RESULT);
-+			if (err)
-+				return err;
-+
-+			sbl_dev_dbg(sbl->dev, "p%ds%d: RSDC[%d]: %d",
-+				    port_num, serdes, i,
-+					tps->params[serdes].rsdc[i]);
-+		}
-+		for (i = 0; i < NUM_RSTO_PARAMS; ++i) {
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_HAL_READ,
-+					SPICO_INT_DATA_HAL_RSTO_BASE | i,
-+					&tps->params[serdes].rsto[i],
-+					SPICO_INT_RETURN_RESULT);
-+			if (err)
-+				return err;
-+
-+			sbl_dev_dbg(sbl->dev, "p%ds%d: RSTO[%d]: %d",
-+				    port_num, serdes, i,
-+					tps->params[serdes].rsto[i]);
-+		}
-+		for (i = 0; i < NUM_RSTC_PARAMS; ++i) {
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_HAL_READ,
-+					SPICO_INT_DATA_HAL_RSTC_BASE | i,
-+					&tps->params[serdes].rstc[i],
-+					SPICO_INT_RETURN_RESULT);
-+			if (err)
-+				return err;
-+
-+			sbl_dev_dbg(sbl->dev, "p%ds%d: RSTC[%d]: %d",
-+				    port_num, serdes, i,
-+					tps->params[serdes].rstc[i]);
-+		}
-+		for (i = 0; i < NUM_EH_PARAMS; ++i) {
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_HAL_READ,
-+					SPICO_INT_DATA_HAL_EH_BASE | i,
-+					&tps->params[serdes].eh[i],
-+					SPICO_INT_RETURN_RESULT);
-+			if (err)
-+				return err;
-+
-+			sbl_dev_dbg(sbl->dev, "p%ds%d: EH[%d]: %d",
-+				    port_num, serdes, i,
-+					tps->params[serdes].eh[i]);
-+		}
-+		for (i = 0; i < NUM_GTP_PARAMS; ++i) {
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_HAL_READ,
-+					SPICO_INT_DATA_HAL_GTP_BASE | i,
-+					&tps->params[serdes].gtp[i],
-+					SPICO_INT_RETURN_RESULT);
-+			if (err)
-+				return err;
-+
-+			sbl_dev_dbg(sbl->dev, "p%ds%d: GTP[%d]: %d",
-+				    port_num, serdes, i,
-+					tps->params[serdes].gtp[i]);
-+		}
-+		for (i = 0; i < NUM_DCCD_PARAMS; ++i) {
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_HAL_READ,
-+					SPICO_INT_DATA_HAL_DCCD_BASE | i,
-+					&tps->params[serdes].dccd[i],
-+					SPICO_INT_RETURN_RESULT);
-+			if (err)
-+				return err;
-+
-+			sbl_dev_dbg(sbl->dev, "p%ds%d: DCCD[%d]: %d",
-+				    port_num, serdes, i,
-+					tps->params[serdes].dccd[i]);
-+		}
-+		for (i = 0; i < NUM_P4LV_PARAMS; ++i) {
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_HAL_READ,
-+					SPICO_INT_DATA_HAL_P4LV_BASE | i,
-+					&tps->params[serdes].p4lv[i],
-+					SPICO_INT_RETURN_RESULT);
-+			if (err)
-+				return err;
-+
-+			sbl_dev_dbg(sbl->dev, "p%ds%d: P4LV[%d]: %d",
-+				    port_num, serdes, i,
-+					tps->params[serdes].p4lv[i]);
-+		}
-+
-+		if (sbl_validate_serdes_fw_vers(sbl, port_num, serdes,
-+						SBL_KNOWN_FW0_REV,
-+					SBL_KNOWN_FW0_BUILD)) {
-+			return -EADDRNOTAVAIL;
-+		}
-+
-+		for (i = 0; i < NUM_AFEC_PARAMS; ++i) {
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_MEM_READ |
-+						(SBUS_AFE_CTRL_KNOWN_FW0_BASE + i), 0x0,
-+					&tps->params[serdes].afec[i],
-+					SPICO_INT_RETURN_RESULT);
-+			if (err)
-+				return err;
-+
-+			sbl_dev_dbg(sbl->dev, "p%ds%d: AFEC[%d]: %d",
-+				    port_num, serdes, i,
-+					tps->params[serdes].afec[i]);
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+int sbl_check_serdes_tuning_params(struct sbl_inst *sbl, int port_num)
-+{
-+	int i, serdes, err;
-+	struct sbl_tuning_params *tps;
-+	int min, max;
-+	int num_oob_params;
-+	int max_oob_params = SBL_MAX_OOB_SERDES_PARAMS;
-+
-+	tps = kzalloc(sizeof(struct sbl_tuning_params), GFP_KERNEL);
-+	if (!tps)
-+		return -ENOMEM;
-+
-+	/* debug adjustment to number of oob tuning params allowed */
-+	if (sbl_debug_option(sbl, port_num, SBL_DEBUG_BAD_PARAM_1))
-+		max_oob_params += 1;
-+	if (sbl_debug_option(sbl, port_num, SBL_DEBUG_BAD_PARAM_2))
-+		max_oob_params += 2;
-+
-+	err = sbl_get_serdes_tuning_params(sbl, port_num, tps);
-+	if (err) {
-+		kfree(tps);
-+		return err;
-+	}
-+
-+	if (!sbl->is_hw) {
-+		kfree(tps);
-+		return 0;
-+	}
-+
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (!rx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+			continue;
-+
-+		num_oob_params = 0;
-+		for (i = 0; i < NUM_CTLE_PARAMS; ++i) {
-+			switch (i) {
-+			case CTLE_HF_OFFSET:
-+				min = SBL_CTLE_HF_MIN;
-+				max = SBL_CTLE_HF_MAX;
-+				break;
-+			case CTLE_LF_OFFSET:
-+				min = SBL_CTLE_LF_MIN;
-+				max = SBL_CTLE_LF_MAX;
-+				break;
-+			case CTLE_DC_OFFSET:
-+				min = SBL_CTLE_DC_MIN;
-+				max = SBL_CTLE_DC_MAX;
-+				break;
-+			case CTLE_BW_OFFSET:
-+				min = SBL_CTLE_BW_MIN;
-+				max = SBL_CTLE_BW_MAX;
-+				break;
-+			case CTLE_GS1_OFFSET:
-+				min = SBL_CTLE_GS1_MIN;
-+				max = SBL_CTLE_GS1_MAX;
-+				break;
-+			case CTLE_GS2_OFFSET:
-+				min = SBL_CTLE_GS2_MIN;
-+				max = SBL_CTLE_GS2_MAX;
-+				break;
-+			case CTLE_SCE_OFFSET:
-+				min = SBL_CTLE_SCE_MIN;
-+				max = SBL_CTLE_SCE_MAX;
-+				break;
-+			case CTLE_HF_MIN_OFFSET:
-+				min = SBL_CTLE_HF_MIN_MIN;
-+				max = SBL_CTLE_HF_MIN_MAX;
-+				break;
-+			case CTLE_HF_MAX_OFFSET:
-+				min = SBL_CTLE_HF_MAX_MIN;
-+				max = SBL_CTLE_HF_MAX_MAX;
-+				break;
-+			case CTLE_LF_MIN_OFFSET:
-+				min = SBL_CTLE_LF_MIN_MIN;
-+				max = SBL_CTLE_LF_MIN_MAX;
-+				break;
-+			case CTLE_LF_MAX_OFFSET:
-+				min = SBL_CTLE_LF_MAX_MIN;
-+				max = SBL_CTLE_LF_MAX_MAX;
-+				break;
-+			default:
-+				continue;
-+			}
-+			if ((tps->params[serdes].ctle[i] < min) ||
-+			    (tps->params[serdes].ctle[i] > max)) {
-+				sbl_dev_warn(sbl->dev, "p%ds%d: CTLE[%d] value(%d) out of bounds(%d:%d)!",
-+					     port_num, serdes, i,
-+					 tps->params[serdes].ctle[i], min, max);
-+				num_oob_params++;
-+			} else {
-+				sbl_dev_dbg(sbl->dev, "p%ds%d: CTLE[%d] value(%d) within bounds(%d:%d)",
-+					    port_num, serdes, i,
-+					 tps->params[serdes].ctle[i], min, max);
-+			}
-+		}
-+
-+		for (i = 0; i < NUM_FFE_PARAMS; ++i) {
-+			switch (i) {
-+			case FFE_PRE2_OFFSET:
-+				min = SBL_FFE_PRE2_MIN;
-+				max = SBL_FFE_PRE2_MAX;
-+				break;
-+			case FFE_PRE1_OFFSET:
-+				min = SBL_FFE_PRE1_MIN;
-+				max = SBL_FFE_PRE1_MAX;
-+				break;
-+			case FFE_POST1_OFFSET:
-+				min = SBL_FFE_POST1_MIN;
-+				max = SBL_FFE_POST1_MAX;
-+				break;
-+			case FFE_BFLF_OFFSET:
-+				min = SBL_FFE_BFLF_MIN;
-+				max = SBL_FFE_BFLF_MAX;
-+				break;
-+			case FFE_BFHF_OFFSET:
-+				min = SBL_FFE_BFHF_MIN;
-+				max = SBL_FFE_BFHF_MAX;
-+				break;
-+			case FFE_DATARATE_OFFSET:
-+				min = SBL_FFE_DATARATE_MIN;
-+				max = SBL_FFE_DATARATE_MAX;
-+				break;
-+			case FFE_SCE_OFFSET:
-+				min = SBL_FFE_SCE_MIN;
-+				max = SBL_FFE_SCE_MAX;
-+				break;
-+			case FFE_PRE1_MIN_OFFSET:
-+				min = SBL_FFE_PRE1_MIN_MIN;
-+				max = SBL_FFE_PRE1_MIN_MAX;
-+				break;
-+			case FFE_PRE1_MAX_OFFSET:
-+				min = SBL_FFE_PRE1_MAX_MIN;
-+				max = SBL_FFE_PRE1_MAX_MAX;
-+				break;
-+			case FFE_PRE2_MIN_OFFSET:
-+				min = SBL_FFE_PRE2_MIN_MIN;
-+				max = SBL_FFE_PRE2_MIN_MAX;
-+				break;
-+			case FFE_PRE2_MAX_OFFSET:
-+				min = SBL_FFE_PRE2_MAX_MIN;
-+				max = SBL_FFE_PRE2_MAX_MAX;
-+				break;
-+			case FFE_BFLF_ICAL_OFFSET:
-+				min = SBL_FFE_BFLF_ICAL_MIN;
-+				max = SBL_FFE_BFLF_ICAL_MAX;
-+				break;
-+			case FFE_POST1_MIN_OFFSET:
-+				min = SBL_FFE_POST1_MIN_MIN;
-+				max = SBL_FFE_POST1_MIN_MAX;
-+				break;
-+			case FFE_POST1_MAX_OFFSET:
-+				min = SBL_FFE_POST1_MAX_MIN;
-+				max = SBL_FFE_POST1_MAX_MAX;
-+				break;
-+			default:
-+				continue;
-+			}
-+			if ((tps->params[serdes].ffe[i] < min) ||
-+			    (tps->params[serdes].ffe[i] > max)) {
-+				sbl_dev_warn(sbl->dev, "p%ds%d: FFE[%d] value(%d) out of bounds(%d:%d)!",
-+					     port_num, serdes, i,
-+					 tps->params[serdes].ffe[i], min, max);
-+				num_oob_params++;
-+			} else {
-+				sbl_dev_dbg(sbl->dev, "p%ds%d: FFE[%d] value(%d) within bounds(%d:%d)",
-+					    port_num, serdes, i,
-+					 tps->params[serdes].ffe[i], min, max);
-+			}
-+		}
-+		for (i = 0; i < NUM_DFE_PARAMS; ++i) {
-+			switch (i) {
-+			case DFE_GT1_OFFSET:
-+				min = SBL_DFE_GT1_MIN;
-+				max = SBL_DFE_GT1_MAX;
-+				break;
-+			case DFE_GT2_OFFSET:
-+				min = SBL_DFE_GT2_MIN;
-+				max = SBL_DFE_GT2_MAX;
-+				break;
-+			case DFE_G2_OFFSET:
-+				min = SBL_DFE_G2_MIN;
-+				max = SBL_DFE_G2_MAX;
-+				break;
-+			case DFE_G3_OFFSET:
-+				min = SBL_DFE_G3_MIN;
-+				max = SBL_DFE_G3_MAX;
-+				break;
-+			case DFE_G4_OFFSET:
-+				min = SBL_DFE_G4_MIN;
-+				max = SBL_DFE_G4_MAX;
-+				break;
-+			case DFE_G5_OFFSET:
-+				min = SBL_DFE_G5_MIN;
-+				max = SBL_DFE_G5_MAX;
-+				break;
-+			case DFE_G6_OFFSET:
-+				min = SBL_DFE_G6_MIN;
-+				max = SBL_DFE_G6_MAX;
-+				break;
-+			case DFE_G7_OFFSET:
-+				min = SBL_DFE_G7_MIN;
-+				max = SBL_DFE_G7_MAX;
-+				break;
-+			case DFE_G8_OFFSET:
-+				min = SBL_DFE_G8_MIN;
-+				max = SBL_DFE_G8_MAX;
-+				break;
-+			case DFE_G9_OFFSET:
-+				min = SBL_DFE_G9_MIN;
-+				max = SBL_DFE_G9_MAX;
-+				break;
-+			case DFE_G10_OFFSET:
-+				min = SBL_DFE_G10_MIN;
-+				max = SBL_DFE_G10_MAX;
-+				break;
-+			case DFE_G11_OFFSET:
-+				min = SBL_DFE_G11_MIN;
-+				max = SBL_DFE_G11_MAX;
-+				break;
-+			case DFE_G12_OFFSET:
-+				min = SBL_DFE_G12_MIN;
-+				max = SBL_DFE_G12_MAX;
-+				break;
-+			case DFE_G13_OFFSET:
-+				min = SBL_DFE_G13_MIN;
-+				max = SBL_DFE_G13_MAX;
-+				break;
-+			default:
-+				continue;
-+			}
-+			if ((tps->params[serdes].dfe[i] < min) ||
-+			    (tps->params[serdes].dfe[i] > max)) {
-+				sbl_dev_warn(sbl->dev, "p%ds%d: DFE[%d] value(%d) out of bounds(%d:%d)!",
-+					     port_num, serdes, i,
-+					 tps->params[serdes].dfe[i], min, max);
-+				num_oob_params++;
-+			} else {
-+				sbl_dev_dbg(sbl->dev, "p%ds%d: DFE[%d] value(%d) within bounds(%d:%d)",
-+					    port_num, serdes, i,
-+					 tps->params[serdes].dfe[i], min, max);
-+			}
-+		}
-+
-+		if (num_oob_params > max_oob_params) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: Too many tuning params out of bounds(%d, max %d)!",
-+				    port_num, serdes, num_oob_params, max_oob_params);
-+			return -EDQUOT;
-+		} else if (num_oob_params > 0) {
-+			sbl_dev_info(sbl->dev, "p%ds%d: Some tuning params out of bounds(%d, max %d)",
-+				     port_num, serdes, num_oob_params, max_oob_params);
-+		}
-+	}
-+
-+	kfree(tps);
-+	return 0;
-+}
-+
-+int sbl_save_serdes_tuning_params(struct sbl_inst *sbl, int port_num)
-+{
-+	int err;
-+
-+	sbl->link[port_num].tuning_params.tp_state_hash0 =
-+		sbl_get_tp_hash0(sbl, port_num);
-+	sbl->link[port_num].tuning_params.tp_state_hash1 =
-+		sbl_get_tp_hash1(sbl, port_num);
-+	sbl_dev_dbg(sbl->dev, "Updated hash0 to 0x%llx, hash1 to 0x%llx",
-+		    sbl->link[port_num].tuning_params.tp_state_hash0,
-+		sbl->link[port_num].tuning_params.tp_state_hash1);
-+
-+	err = sbl_get_serdes_tuning_params(sbl, port_num,
-+					   &sbl->link[port_num].tuning_params);
-+
-+	return err;
-+}
-+
-+int sbl_apply_serdes_tuning_params(struct sbl_inst *sbl, int port_num,
-+				   int serdes)
-+{
-+	int i, err;
-+	u16 result;
-+
-+	sbl_dev_dbg(sbl->dev, "p%ds%d: applying saved tuning params", port_num, serdes);
-+
-+	DEV_TRACE2(sbl->dev, "CTLE params");
-+	for (i = 0; i < NUM_CTLE_PARAMS; ++i) {
-+		DEV_TRACE2(sbl->dev, "%d ",
-+			   sbl->link[port_num].tuning_params.params[serdes].ctle[i]);
-+	}
-+	DEV_TRACE2(sbl->dev, "RXFFE params");
-+	for (i = 0; i < NUM_FFE_PARAMS; ++i) {
-+		DEV_TRACE2(sbl->dev, "%d ",
-+			   sbl->link[port_num].tuning_params.params[serdes].ffe[i]);
-+	}
-+	DEV_TRACE2(sbl->dev, "DFE params");
-+	for (i = 0; i < NUM_DFE_PARAMS; ++i) {
-+		DEV_TRACE2(sbl->dev, "%d ",
-+			   sbl->link[port_num].tuning_params.params[serdes].dfe[i]);
-+	}
-+	DEV_TRACE2(sbl->dev, "RXVS params");
-+	for (i = 0; i < NUM_RXVS_PARAMS; ++i) {
-+		DEV_TRACE2(sbl->dev, "%d ",
-+			   sbl->link[port_num].tuning_params.params[serdes].rxvs[i]);
-+	}
-+	DEV_TRACE2(sbl->dev, "RXVC params");
-+	for (i = 0; i < NUM_RXVC_PARAMS; ++i) {
-+		DEV_TRACE2(sbl->dev, "%d ",
-+			   sbl->link[port_num].tuning_params.params[serdes].rxvc[i]);
-+	}
-+	DEV_TRACE2(sbl->dev, "RSDO params");
-+	for (i = 0; i < NUM_RSDO_PARAMS; ++i) {
-+		DEV_TRACE2(sbl->dev, "%d ",
-+			   sbl->link[port_num].tuning_params.params[serdes].rsdo[i]);
-+	}
-+	DEV_TRACE2(sbl->dev, "RSDC params");
-+	for (i = 0; i < NUM_RSDC_PARAMS; ++i) {
-+		DEV_TRACE2(sbl->dev, "%d ",
-+			   sbl->link[port_num].tuning_params.params[serdes].rsdc[i]);
-+	}
-+	DEV_TRACE2(sbl->dev, "RSTO params");
-+	for (i = 0; i < NUM_RSTO_PARAMS; ++i) {
-+		DEV_TRACE2(sbl->dev, "%d ",
-+			   sbl->link[port_num].tuning_params.params[serdes].rsto[i]);
-+	}
-+	DEV_TRACE2(sbl->dev, "RSTC params");
-+	for (i = 0; i < NUM_RSTC_PARAMS; ++i) {
-+		DEV_TRACE2(sbl->dev, "%d ",
-+			   sbl->link[port_num].tuning_params.params[serdes].rstc[i]);
-+	}
-+	DEV_TRACE2(sbl->dev, "EH params");
-+	for (i = 0; i < NUM_EH_PARAMS; ++i) {
-+		DEV_TRACE2(sbl->dev, "%d ",
-+			   sbl->link[port_num].tuning_params.params[serdes].eh[i]);
-+	}
-+	DEV_TRACE2(sbl->dev, "GTP params");
-+	for (i = 0; i < NUM_GTP_PARAMS; ++i) {
-+		DEV_TRACE2(sbl->dev, "%d ",
-+			   sbl->link[port_num].tuning_params.params[serdes].gtp[i]);
-+	}
-+	DEV_TRACE2(sbl->dev, "DCCD params");
-+	for (i = 0; i < NUM_DCCD_PARAMS; ++i) {
-+		DEV_TRACE2(sbl->dev, "%d ",
-+			   sbl->link[port_num].tuning_params.params[serdes].dccd[i]);
-+	}
-+	DEV_TRACE2(sbl->dev, "P4LV params");
-+	for (i = 0; i < NUM_P4LV_PARAMS; ++i) {
-+		DEV_TRACE2(sbl->dev, "%d ",
-+			   sbl->link[port_num].tuning_params.params[serdes].p4lv[i]);
-+	}
-+	DEV_TRACE2(sbl->dev, "AFEC params");
-+	for (i = 0; i < NUM_AFEC_PARAMS; ++i) {
-+		DEV_TRACE2(sbl->dev, "%d ",
-+			   sbl->link[port_num].tuning_params.params[serdes].afec[i]);
-+	}
-+
-+	for (i = 0; i < NUM_CTLE_PARAMS; ++i) {
-+		/* GS1/GS2 are "config values" - don't apply them from saved
-+		   "turning params", as this will override the desired config */
-+		if (((SPICO_INT_DATA_HAL_CTLE_BASE | i) ==
-+		     SPICO_INT_DATA_HAL_CTLE_GS1) ||
-+		    ((SPICO_INT_DATA_HAL_CTLE_BASE | i) ==
-+		     SPICO_INT_DATA_HAL_CTLE_GS2)) {
-+			continue;
-+		}
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_READ,
-+						SPICO_INT_DATA_HAL_CTLE_BASE | i,
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		DEV_TRACE2(sbl->dev, "Updating CLTE param %d from 0x%x to 0x%x",
-+			   i, result, sbl->link[port_num].tuning_params.params[serdes].ctle[i]);
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_WRITE,
-+						sbl->link[port_num].tuning_params.params[serdes].ctle[i],
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		if (result != SPICO_INT_CM4_HAL_READ) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: Failed updating CTLE[%d] tuning param!",
-+				    port_num, serdes, i);
-+			return -EBADE;
-+		}
-+	}
-+	for (i = 0; i < NUM_FFE_PARAMS; ++i) {
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_READ,
-+						SPICO_INT_DATA_HAL_FFE_BASE | i,
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		DEV_TRACE2(sbl->dev, "Updating FFE param %d from 0x%x to 0x%x",
-+			   i, result, sbl->link[port_num].tuning_params.params[serdes].ffe[i]);
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_WRITE,
-+						sbl->link[port_num].tuning_params.params[serdes].ffe[i],
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		if (result != SPICO_INT_CM4_HAL_READ) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: Failed updating FFE[%d] tuning param!",
-+				    port_num, serdes, i);
-+			return -EBADE;
-+		}
-+	}
-+	for (i = 0; i < NUM_DFE_PARAMS; ++i) {
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_READ,
-+						SPICO_INT_DATA_HAL_DFE_BASE | i,
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		DEV_TRACE2(sbl->dev, "Updating DFE param %d from 0x%x to 0x%x",
-+			   i, result, sbl->link[port_num].tuning_params.params[serdes].dfe[i]);
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_WRITE,
-+						sbl->link[port_num].tuning_params.params[serdes].dfe[i],
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		if (result != SPICO_INT_CM4_HAL_READ) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: Failed updating DFE[%d] tuning param!",
-+				    port_num, serdes, i);
-+			return -EBADE;
-+		}
-+	}
-+
-+	for (i = 0; i < NUM_RXVS_PARAMS; ++i) {
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_READ,
-+						SPICO_INT_DATA_HAL_RXVS_BASE |
-+							(i + SPICO_INT_DATA_HAL_RXVS_OFFSET),
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		DEV_TRACE2(sbl->dev, "Updating RXVS param %d from 0x%x to 0x%x",
-+			   i, result, sbl->link[port_num].tuning_params.params[serdes].rxvs[i]);
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_WRITE,
-+						sbl->link[port_num].tuning_params.params[serdes].rxvs[i],
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		if (result != SPICO_INT_CM4_HAL_READ) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: Failed updating RXVS[%d] tuning param!",
-+				    port_num, serdes, i);
-+			return -EBADE;
-+		}
-+	}
-+
-+	for (i = 0; i < NUM_RXVC_PARAMS; ++i) {
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_READ,
-+						SPICO_INT_DATA_HAL_RXVC_BASE | i,
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		DEV_TRACE2(sbl->dev, "Updating RXVC param %d from 0x%x to 0x%x",
-+			   i, result, sbl->link[port_num].tuning_params.params[serdes].rxvc[i]);
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_WRITE,
-+						sbl->link[port_num].tuning_params.params[serdes].rxvc[i],
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		if (result != SPICO_INT_CM4_HAL_READ) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: Failed updating RXVC[%d] tuning param!",
-+				    port_num, serdes, i);
-+			return -EBADE;
-+		}
-+	}
-+
-+	for (i = 0; i < NUM_RSDO_PARAMS; ++i) {
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_READ,
-+						SPICO_INT_DATA_HAL_RSDO_BASE | i,
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		DEV_TRACE2(sbl->dev, "Updating RSDO param %d from 0x%x to 0x%x",
-+			   i, result, sbl->link[port_num].tuning_params.params[serdes].rsdo[i]);
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_WRITE,
-+						sbl->link[port_num].tuning_params.params[serdes].rsdo[i],
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		if (result != SPICO_INT_CM4_HAL_READ) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: Failed updating RSDO[%d] tuning param!",
-+				    port_num, serdes, i);
-+			return -EBADE;
-+		}
-+	}
-+
-+	for (i = 0; i < NUM_RSDC_PARAMS; ++i) {
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_READ,
-+						SPICO_INT_DATA_HAL_RSDC_BASE | i,
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		DEV_TRACE2(sbl->dev, "Updating RSDC param %d from 0x%x to 0x%x",
-+			   i, result, sbl->link[port_num].tuning_params.params[serdes].rsdc[i]);
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_WRITE,
-+						sbl->link[port_num].tuning_params.params[serdes].rsdc[i],
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		if (result != SPICO_INT_CM4_HAL_READ) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: Failed updating RSDC[%d] tuning param!",
-+				    port_num, serdes, i);
-+			return -EBADE;
-+		}
-+	}
-+
-+	for (i = 0; i < NUM_RSTO_PARAMS; ++i) {
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_READ,
-+						SPICO_INT_DATA_HAL_RSTO_BASE | i,
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		DEV_TRACE2(sbl->dev, "Updating RSTO param %d from 0x%x to 0x%x",
-+			   i, result, sbl->link[port_num].tuning_params.params[serdes].rsto[i]);
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_WRITE,
-+						sbl->link[port_num].tuning_params.params[serdes].rsto[i],
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		if (result != SPICO_INT_CM4_HAL_READ) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: Failed updating RSTO[%d] tuning param!",
-+				    port_num, serdes, i);
-+			return -EBADE;
-+		}
-+	}
-+
-+	for (i = 0; i < NUM_RSTC_PARAMS; ++i) {
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_READ,
-+						SPICO_INT_DATA_HAL_RSTC_BASE | i,
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		DEV_TRACE2(sbl->dev, "Updating RSTC param %d from 0x%x to 0x%x",
-+			   i, result, sbl->link[port_num].tuning_params.params[serdes].rstc[i]);
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_WRITE,
-+						sbl->link[port_num].tuning_params.params[serdes].rstc[i],
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		if (result != SPICO_INT_CM4_HAL_READ) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: Failed updating RSTC[%d] tuning param!",
-+				    port_num, serdes, i);
-+			return -EBADE;
-+		}
-+	}
-+
-+	for (i = 0; i < NUM_EH_PARAMS; ++i) {
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_READ,
-+						SPICO_INT_DATA_HAL_EH_BASE | i,
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		DEV_TRACE2(sbl->dev, "Updating EH param %d from 0x%x to 0x%x",
-+			   i, result, sbl->link[port_num].tuning_params.params[serdes].eh[i]);
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_WRITE,
-+						sbl->link[port_num].tuning_params.params[serdes].eh[i],
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		if (result != SPICO_INT_CM4_HAL_READ) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: Failed updating EH[%d] tuning param!",
-+				    port_num, serdes, i);
-+			return -EBADE;
-+		}
-+	}
-+
-+	for (i = 0; i < NUM_GTP_PARAMS; ++i) {
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_READ,
-+						SPICO_INT_DATA_HAL_GTP_BASE | i,
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		DEV_TRACE2(sbl->dev, "Updating GTP param %d from 0x%x to 0x%x",
-+			   i, result, sbl->link[port_num].tuning_params.params[serdes].gtp[i]);
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_WRITE,
-+						sbl->link[port_num].tuning_params.params[serdes].gtp[i],
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		if (result != SPICO_INT_CM4_HAL_READ) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: Failed updating GTP[%d] tuning param!",
-+				    port_num, serdes, i);
-+			return -EBADE;
-+		}
-+	}
-+
-+	for (i = 0; i < NUM_DCCD_PARAMS; ++i) {
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_READ,
-+						SPICO_INT_DATA_HAL_DCCD_BASE | i,
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		DEV_TRACE2(sbl->dev, "Updating DCCD param %d from 0x%x to 0x%x",
-+			   i, result, sbl->link[port_num].tuning_params.params[serdes].dccd[i]);
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_WRITE,
-+						sbl->link[port_num].tuning_params.params[serdes].dccd[i],
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		if (result != SPICO_INT_CM4_HAL_READ) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: Failed updating DCCD[%d] tuning param!",
-+				    port_num, serdes, i);
-+			return -EBADE;
-+		}
-+	}
-+
-+	for (i = 0; i < NUM_P4LV_PARAMS; ++i) {
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_READ,
-+						SPICO_INT_DATA_HAL_P4LV_BASE | i,
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		DEV_TRACE2(sbl->dev, "Updating P4LV param %d from 0x%x to 0x%x",
-+			   i, result, sbl->link[port_num].tuning_params.params[serdes].p4lv[i]);
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_WRITE,
-+						sbl->link[port_num].tuning_params.params[serdes].p4lv[i],
-+						&result, SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		if (result != SPICO_INT_CM4_HAL_READ) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: Failed updating P4LV[%d] tuning param!",
-+				    port_num, serdes, i);
-+			return -EBADE;
-+		}
-+	}
-+
-+	if (sbl_validate_serdes_fw_vers(sbl, port_num, serdes,
-+					SBL_KNOWN_FW0_REV,
-+									SBL_KNOWN_FW0_BUILD)) {
-+		return -EADDRNOTAVAIL;
-+	}
-+	for (i = 0; i < NUM_AFEC_PARAMS; ++i) {
-+		DEV_TRACE2(sbl->dev, "Updating AFEC param %d to 0x%x",
-+			   i, sbl->link[port_num].tuning_params.params[serdes].afec[i]);
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_MEM_WRITE |
-+							(SBUS_AFE_CTRL_KNOWN_FW0_BASE + i),
-+						sbl->link[port_num].tuning_params.params[serdes].afec[i],
-+						&result, SPICO_INT_IGNORE_RESULT);
-+		if (err)
-+			return err;
-+	}
-+
-+	/* Apply values */
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_HAL_CALL,
-+					SPICO_INT_DATA_HAL_CTLE_APPLY, NULL,
-+					SPICO_INT_IGNORE_RESULT);
-+	if (err)
-+		return err;
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_HAL_CALL,
-+					SPICO_INT_DATA_HAL_FFE_APPLY, NULL,
-+					SPICO_INT_IGNORE_RESULT);
-+	if (err)
-+		return err;
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_HAL_CALL,
-+					SPICO_INT_DATA_HAL_DFE_APPLY, NULL,
-+					SPICO_INT_IGNORE_RESULT);
-+	if (err)
-+		return err;
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_HAL_CALL,
-+					SPICO_INT_DATA_HAL_RXV_APPLY, NULL,
-+					SPICO_INT_IGNORE_RESULT);
-+	if (err)
-+		return err;
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_HAL_CALL,
-+					SPICO_INT_DATA_HAL_DC_APPLY, NULL,
-+					SPICO_INT_IGNORE_RESULT);
-+	if (err)
-+		return err;
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_HAL_CALL,
-+					SPICO_INT_DATA_HAL_TC_APPLY, NULL,
-+					SPICO_INT_IGNORE_RESULT);
-+	if (err)
-+		return err;
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_HAL_CALL,
-+					SPICO_INT_DATA_HAL_PCAL_SETUP, NULL,
-+					SPICO_INT_IGNORE_RESULT);
-+	if (err)
-+		return err;
-+
-+	DEV_TRACE2(sbl->dev, "rc: 0");
-+
-+	return 0;
-+}
-+
-+int sbl_get_eye_heights(struct sbl_inst *sbl, int port_num, int serdes,
-+			int *eye_heights)
-+{
-+	u16 result;
-+	int err;
-+
-+	if (!eye_heights) {
-+		sbl_dev_err(sbl->dev, "Bad args");
-+		return -EINVAL;
-+	}
-+
-+	DEV_TRACE2(sbl->dev, "p%ds%d", port_num, serdes);
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_GET_RX_EQ,
-+					SPICO_INT_DATA_RXEQ_EH_THLE, &result,
-+					SPICO_INT_RETURN_RESULT);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "p%ds%d: Failed to read setting!", port_num, serdes);
-+		return err;
-+	}
-+	eye_heights[0] = result;
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_GET_RX_EQ,
-+					SPICO_INT_DATA_RXEQ_EH_THME, &result,
-+					SPICO_INT_RETURN_RESULT);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "p%ds%d: Failed to read setting!", port_num, serdes);
-+		return err;
-+	}
-+	eye_heights[1] = result;
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_GET_RX_EQ,
-+					SPICO_INT_DATA_RXEQ_EH_THUE, &result,
-+					SPICO_INT_RETURN_RESULT);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "p%ds%d: Failed to read setting!", port_num, serdes);
-+		return err;
-+	}
-+	eye_heights[2] = result;
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_GET_RX_EQ,
-+					SPICO_INT_DATA_RXEQ_EH_THLO, &result,
-+					SPICO_INT_RETURN_RESULT);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "p%ds%d: Failed to read setting!", port_num, serdes);
-+		return err;
-+	}
-+	eye_heights[3] = result;
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_GET_RX_EQ,
-+					SPICO_INT_DATA_RXEQ_EH_THMO, &result,
-+					SPICO_INT_RETURN_RESULT);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "p%ds%d: Failed to read setting!", port_num, serdes);
-+		return err;
-+	}
-+	eye_heights[4] = result;
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_GET_RX_EQ,
-+					SPICO_INT_DATA_RXEQ_EH_THUO, &result,
-+					SPICO_INT_RETURN_RESULT);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "p%ds%d: Failed to read setting!", port_num, serdes);
-+		return err;
-+	}
-+	eye_heights[5] = result;
-+
-+	DEV_TRACE2(sbl->dev, "rc: 0");
-+
-+	return 0;
-+}
-+
-+int sbl_serdes_soft_reset(struct sbl_inst *sbl, int port_num, int serdes)
-+{
-+	u32 unused;
-+	int err;
-+	u32 sbus_ring = sbl->switch_info->ports[port_num].serdes[serdes].sbus_ring;
-+	u32 sbus_addr =
-+		SBUS_ADDR(sbus_ring,
-+			  sbl->switch_info->ports[port_num].serdes[serdes].rx_addr);
-+
-+	DEV_TRACE2(sbl->dev, "p%ds%d", port_num, serdes);
-+
-+	/* Don't allow SPICO interrupts while we are resetting the SerDes */
-+	mutex_lock(&sbl->link[port_num].serdes_mtx);
-+	/* SBUS Critical Section */
-+	mutex_lock(SBUS_RING_MTX(sbl, sbus_ring));
-+
-+	/* Reset high */
-+	err = sbl_sbus_op_aux(sbl, sbus_addr, SPICO_SERDES_ADDR_IMEM,
-+			      SBUS_IFACE_DST_CORE | SBUS_CMD_RESET,
-+				   SPICO_SERDES_DATA_RESET, &unused);
-+	if (err) {
-+		mutex_unlock(SBUS_RING_MTX(sbl, sbus_ring));
-+		mutex_unlock(&sbl->link[port_num].serdes_mtx);
-+		return err;
-+	}
-+
-+	/* Reset low */
-+	err = sbl_sbus_wr(sbl, sbus_addr, SPICO_SERDES_ADDR_RESET_EN,
-+			  SPICO_SERDES_DATA_CLR_GLOBAL_RESET);
-+	if (err) {
-+		mutex_unlock(SBUS_RING_MTX(sbl, sbus_ring));
-+		mutex_unlock(&sbl->link[port_num].serdes_mtx);
-+		return err;
-+	}
-+
-+	/* Enable ECC */
-+	err = sbl_sbus_wr(sbl, sbus_addr, SPICO_SERDES_ADDR_ECC,
-+			  SPICO_SERDES_DATA_SET_ECC_EN);
-+	if (err) {
-+		mutex_unlock(SBUS_RING_MTX(sbl, sbus_ring));
-+		mutex_unlock(&sbl->link[port_num].serdes_mtx);
-+		return err;
-+	}
-+
-+	/* Clear any ECC errors that occurred previously */
-+	err = sbl_sbus_wr(sbl, sbus_addr, SPICO_SERDES_ADDR_ECCLOG,
-+			  SPICO_SERDES_DATA_CLR_ECC_ERR);
-+	if (err) {
-+		mutex_unlock(SBUS_RING_MTX(sbl, sbus_ring));
-+		mutex_unlock(&sbl->link[port_num].serdes_mtx);
-+		return err;
-+	}
-+
-+	/* Enable SPICO */
-+	err = sbl_sbus_wr(sbl, sbus_addr, SPICO_SERDES_ADDR_RESET_EN,
-+			  SPICO_SERDES_DATA_SET_SPICO_EN);
-+	if (err) {
-+		mutex_unlock(SBUS_RING_MTX(sbl, sbus_ring));
-+		mutex_unlock(&sbl->link[port_num].serdes_mtx);
-+		return err;
-+	}
-+
-+	/* Enable interrupts */
-+	err = sbl_sbus_wr(sbl, sbus_addr, SPICO_SERDES_ADDR_INTR_DIS,
-+			  SPICO_SERDES_DATA_SET_INTR_EN);
-+	if (err) {
-+		mutex_unlock(SBUS_RING_MTX(sbl, sbus_ring));
-+		mutex_unlock(&sbl->link[port_num].serdes_mtx);
-+		return err;
-+	}
-+
-+	mutex_unlock(SBUS_RING_MTX(sbl, sbus_ring));
-+	mutex_unlock(&sbl->link[port_num].serdes_mtx);
-+
-+	DEV_TRACE2(sbl->dev, "rc: 0");
-+
-+	sbl->link[port_num].pcal_running = false;
-+	return 0;
-+}
-+
-+int sbl_serdes_init(struct sbl_inst *sbl, int port_num, int serdes,
-+		    int encoding, int divisor, int width)
-+{
-+	int err;
-+	bool tx_en, rx_en;
-+
-+	DEV_TRACE2(sbl->dev, "p%ds%d: encoding: %d divisor: %d width: %d",
-+		   port_num, serdes, encoding, divisor, width);
-+
-+	err = sbl_set_tx_rx_enable(sbl, port_num, serdes, false, false,
-+				   false);
-+	if (err)
-+		return err;
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_PLL_RECAL,
-+					SPICO_INT_DATA_NONE, NULL,
-+					SPICO_INT_VALIDATE_RESULT);
-+	if (err)
-+		return err;
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_TX_PHASE_CAL,
-+					SPICO_INT_DATA_NONE, NULL,
-+					SPICO_INT_VALIDATE_RESULT);
-+	if (err)
-+		return err;
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_TX_BAUD,
-+					(divisor & SPICO_INT_DIVIDER_MASK) |
-+					SPICO_INT_DATA_TXTX_RC_NOT_SS,
-+					NULL, SPICO_INT_VALIDATE_RESULT);
-+	if (err)
-+		return err;
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_WIDTH_MODE,
-+					encoding | width |
-+					SPICO_INT_DATA_TXRX_FC_IGNORE, NULL,
-+					SPICO_INT_VALIDATE_RESULT);
-+	if (err)
-+		return err;
-+
-+	/* tx/rx based on link mode, and always configuing physical lane 0 */
-+	if (tx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+		tx_en = true;
-+	else
-+		tx_en = false;
-+
-+	if (rx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+		rx_en = true;
-+	else
-+		rx_en = false;
-+
-+	err = sbl_set_tx_rx_enable(sbl, port_num, serdes, tx_en, rx_en,
-+				   false);
-+	if (err)
-+		return err;
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_PCIE_SLICES,
-+					SPICO_INT_DATA_TX_OVERRIDE, NULL,
-+					SPICO_INT_VALIDATE_RESULT);
-+	if (err)
-+		return err;
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_PCIE_SLICES,
-+					SPICO_INT_DATA_RX_EID_EN, NULL,
-+					SPICO_INT_VALIDATE_RESULT);
-+	if (err)
-+		return err;
-+
-+	/* Reset signal_ok */
-+	sbl_serdes_mem_rmw(sbl, port_num, serdes, SERDES_MEM_ADDR_O_CORE_STATUS,
-+			   0, SERDES_CORE_STATUS_RX_SIG_OK_MASK);
-+
-+	/* Set PRBS for loopback mode - will be changed later */
-+	if (sbl->link[port_num].loopback_mode == SBL_LOOPBACK_MODE_LOCAL) {
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_PRBS_CTRL,
-+						SPICO_INT_DATA_PRBS31_AS_TXGEN, NULL,
-+						SPICO_INT_VALIDATE_RESULT);
-+		if (err)
-+			return err;
-+
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_PRBS_CTRL,
-+						SPICO_INT_DATA_PRBS31_AS_RXGEN, NULL,
-+						SPICO_INT_VALIDATE_RESULT);
-+		if (err)
-+			return err;
-+	}
-+	DEV_TRACE2(sbl->dev, "rc: 0");
-+
-+	return 0;
-+}
-+
-+int sbl_serdes_polarity_ctrl(struct sbl_inst *sbl, int port_num, int serdes,
-+			     int encoding, bool an)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	u32 datapath = 0;
-+	int err;
-+
-+	DEV_TRACE2(sbl->dev, "p%ds%d: encoding:0x%x", port_num, serdes, encoding);
-+
-+	/* Set Polarity Inversions */
-+	switch (sbl->link[port_num].loopback_mode) {
-+	case SBL_LOOPBACK_MODE_REMOTE:
-+	case SBL_LOOPBACK_MODE_OFF:
-+		if (sbl->switch_info->ports[port_num].serdes[serdes].txinv)
-+			datapath |= SPICO_INT_DATA_SET_TXINV;
-+		else
-+			datapath |= SPICO_INT_DATA_CLR_TXINV;
-+
-+		if (sbl->switch_info->ports[port_num].serdes[serdes].rxinv)
-+			datapath |= SPICO_INT_DATA_SET_RXINV;
-+		else
-+			datapath |= SPICO_INT_DATA_CLR_RXINV;
-+
-+		break;
-+	case SBL_LOOPBACK_MODE_LOCAL:
-+		datapath |= SPICO_INT_DATA_CLR_TXINV;
-+		datapath |= SPICO_INT_DATA_CLR_RXINV;
-+		break;
-+	default:
-+		sbl_dev_warn(sbl->dev, "%d: Unsupported loopback mode (%d)",
-+			     port_num, sbl->link[port_num].loopback_mode);
-+		return -EINVAL;
-+	}
-+
-+	/* Set Precode */
-+	if (encoding == SBL_ENC_PAM4) {
-+		link->precoding_enabled = get_serdes_precoding(sbl, port_num);
-+		if (link->precoding_enabled)
-+			datapath |= SPICO_INT_DATA_SET_PRECODE;
-+		else
-+			datapath |= SPICO_INT_DATA_CLR_PRECODE;
-+	} else {
-+		datapath |= SPICO_INT_DATA_CLR_PRECODE;
-+	}
-+
-+	/* Set Graycode & Swizzle */
-+	if (an || (encoding == SBL_ENC_NRZ))
-+		datapath |= SPICO_INT_DATA_CLR_GRAY_SWZ;
-+	else
-+		datapath |= SPICO_INT_DATA_SET_GRAY_SWZ;
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_POLARITY_CTRL,
-+					datapath, NULL,
-+					SPICO_INT_VALIDATE_RESULT);
-+	if (err)
-+		return err;
-+
-+	return 0;
-+}
-+
-+int sbl_set_tx_rx_enable(struct sbl_inst *sbl, int port_num, int serdes,
-+			 bool tx_en, bool rx_en, bool txo_en)
-+{
-+	u32 int_data = 0;
-+	u64 core_status_value;
-+	int tx_rdy, rx_rdy;
-+	unsigned long last_jiffy;
-+	int err;
-+
-+	DEV_TRACE2(sbl->dev, "p%ds%d: tx_en: %d rx_en: %d txo_en: %d",
-+		   port_num, serdes, tx_en, rx_en, txo_en);
-+
-+	if (!sbl->is_hw)
-+		return 0;
-+
-+	if (tx_en)
-+		int_data |= SPICO_INT_DATA_SET_TX_EN;
-+
-+	if (rx_en)
-+		int_data |= SPICO_INT_DATA_SET_RX_EN;
-+
-+	if (txo_en)
-+		int_data |= SPICO_INT_DATA_SET_TXO_EN;
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_SERDES_EN,
-+					int_data, NULL,
-+					SPICO_INT_VALIDATE_RESULT);
-+	if (err)
-+		return err;
-+
-+	/* Wait for tx_rdy and rx_rdy to be set. */
-+	last_jiffy = jiffies + msecs_to_jiffies(1000 * sbl->iattr.serdes_en_timeout);
-+	do {
-+		core_status_value = sbl_read64(sbl, SBL_PML_BASE(port_num) |
-+					       SBL_PML_SERDES_CORE_STATUS_OFFSET(serdes));
-+		tx_rdy = (core_status_value & SERDES_CORE_STATUS_TX_RDY_MASK) ? 1 : 0;
-+		rx_rdy = (core_status_value & SERDES_CORE_STATUS_RX_RDY_MASK) ? 1 : 0;
-+		if ((tx_rdy == tx_en) && (rx_rdy == rx_en))
-+			break;
-+		msleep(sbl->iattr.serdes_en_poll_interval);
-+	} while (time_is_after_jiffies(last_jiffy));
-+
-+	if ((tx_rdy != tx_en) || (rx_rdy != rx_en)) {
-+		sbl_dev_err(sbl->dev,
-+			    "p%ds%d: Timeout setting tx/rx/txo enable! tx_en:%d rx_en:%d txo_en:%d tx_rdy:%d rx_rdy:%d (timeout:%ds)",
-+			    port_num, serdes, tx_en, rx_en, txo_en, tx_rdy, rx_rdy,
-+			    sbl->iattr.serdes_en_timeout);
-+		return -ETIME;
-+	}
-+	DEV_TRACE2(sbl->dev, "rc 0");
-+
-+	return 0;
-+}
-+
-+int sbl_set_tx_eq(struct sbl_inst *sbl, int port_num, int serdes,
-+		  int atten, int pre, int post, int pre2, int pre3)
-+{
-+	int err, rc = 0;
-+
-+	DEV_TRACE2(sbl->dev,
-+		   "p%ds%d: atten: %d pre: %d post: %d pre2: %d pre3: %d",
-+		   port_num, serdes, atten, pre, post, pre2, pre3);
-+
-+	if ((atten < TXEQ_ATTEN_MIN) || (atten > TXEQ_ATTEN_MAX)) {
-+		sbl_dev_err(sbl->dev,
-+			    "Invalid value for atten(%d) Expected in the range of %d to %d",
-+			atten, TXEQ_ATTEN_MIN, TXEQ_ATTEN_MAX);
-+		return -EINVAL;
-+	}
-+	if ((pre < TXEQ_PRE1_MIN) || (pre > TXEQ_PRE1_MAX)) {
-+		sbl_dev_err(sbl->dev,
-+			    "Invalid value for pre(%d) Expected in the range of %d to %d",
-+			pre, TXEQ_PRE1_MIN, TXEQ_PRE1_MAX);
-+		return -EINVAL;
-+	}
-+	if ((post < TXEQ_POST_MIN) || (post > TXEQ_POST_MAX)) {
-+		sbl_dev_err(sbl->dev,
-+			    "Invalid value for post(%d) Expected in the range of %d to %d",
-+			post, TXEQ_POST_MIN, TXEQ_POST_MAX);
-+		return -EINVAL;
-+	}
-+	if ((pre2 < TXEQ_PRE2_MIN) || (pre2 > TXEQ_PRE2_MAX)) {
-+		sbl_dev_err(sbl->dev,
-+			    "Invalid value for pre2(%d) Expected in the range of %d to %d",
-+			pre2, TXEQ_PRE2_MIN, TXEQ_PRE2_MAX);
-+		return -EINVAL;
-+	}
-+	if ((pre3 < TXEQ_PRE3_MIN) || (pre3 > TXEQ_PRE3_MAX)) {
-+		sbl_dev_err(sbl->dev,
-+			    "Invalid value for pre3(%d) Expected in the range of %d to %d",
-+			pre3, TXEQ_PRE3_MIN, TXEQ_PRE3_MAX);
-+		return -EINVAL;
-+	}
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_TXEQ_LOAD,
-+					SPICO_INT_DATA_SET_TXEQ_ATTEN |
-+						(atten & SPICO_INT_DATA_TXEQ_DATA_MASK), NULL,
-+					SPICO_INT_VALIDATE_RESULT);
-+	if (err)
-+		return err;
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_TXEQ_LOAD,
-+					SPICO_INT_DATA_SET_TXEQ_PRE1 |
-+						(pre & SPICO_INT_DATA_TXEQ_DATA_MASK), NULL,
-+					SPICO_INT_VALIDATE_RESULT);
-+	if (err)
-+		return err;
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_TXEQ_LOAD,
-+					SPICO_INT_DATA_SET_TXEQ_POST |
-+						(post & SPICO_INT_DATA_TXEQ_DATA_MASK), NULL,
-+					SPICO_INT_VALIDATE_RESULT);
-+	if (err)
-+		return err;
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_TXEQ_LOAD,
-+					SPICO_INT_DATA_SET_TXEQ_PRE2 |
-+						(pre2 & SPICO_INT_DATA_TXEQ_DATA_MASK), NULL,
-+					SPICO_INT_VALIDATE_RESULT);
-+	if (err)
-+		return err;
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_TXEQ_LOAD,
-+					SPICO_INT_DATA_SET_TXEQ_PRE3 |
-+						(pre3 & SPICO_INT_DATA_TXEQ_DATA_MASK), NULL,
-+					SPICO_INT_VALIDATE_RESULT);
-+	if (err)
-+		return err;
-+
-+	DEV_TRACE2(sbl->dev, "rc: %d", rc);
-+
-+	return rc;
-+}
-+
-+int sbl_set_gs(struct sbl_inst *sbl, int port_num, int serdes, int gs1, int gs2)
-+{
-+	int err;
-+	u16 result;
-+
-+	DEV_TRACE2(sbl->dev, "port: %d gs1: %d gs2: %d", port_num, gs1, gs2);
-+
-+	if ((gs1 < RXEQ_DFE_GS1_MIN) || (gs1 > RXEQ_DFE_GS1_MAX)) {
-+		sbl_dev_err(sbl->dev,
-+			    "Invalid value for gs1(%d) Expected in the range of %d to %d",
-+			gs1, RXEQ_DFE_GS1_MIN, RXEQ_DFE_GS1_MAX);
-+		return -EINVAL;
-+	}
-+	if ((gs2 < RXEQ_DFE_GS2_MIN) || (gs2 > RXEQ_DFE_GS2_MAX)) {
-+		sbl_dev_err(sbl->dev,
-+			    "Invalid value for gs2(%d) Expected in the range of %d to %d",
-+			gs2, RXEQ_DFE_GS2_MIN, RXEQ_DFE_GS2_MAX);
-+		return -EINVAL;
-+	}
-+
-+	if (!sbl->is_hw)
-+		return 0;
-+
-+	/* Write GS1 */
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_HAL_READ,
-+					SPICO_INT_DATA_HAL_CTLE_GS1,
-+					&result,
-+					SPICO_INT_RETURN_RESULT);
-+	if (err)
-+		return err;
-+
-+	DEV_TRACE2(sbl->dev,
-+		   "p%ds%d: Updating GS1 from 0x%x to 0x%x",
-+		   port_num, serdes, result, gs1);
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_HAL_WRITE,
-+					gs1, &result,
-+					SPICO_INT_RETURN_RESULT);
-+	if (err)
-+		return err;
-+
-+	if (result != SPICO_INT_CM4_HAL_READ) {
-+		sbl_dev_err(sbl->dev,
-+			    "p%ds%d: Failed updating gs1 (0x%x)!",
-+			port_num, serdes, gs1);
-+		return -EBADE;
-+	}
-+
-+	/* Write GS2 */
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_HAL_READ,
-+					SPICO_INT_DATA_HAL_CTLE_GS2,
-+					&result,
-+					SPICO_INT_RETURN_RESULT);
-+	if (err)
-+		return err;
-+
-+	DEV_TRACE2(sbl->dev,
-+		   "p%ds%d: Updating GS2 from 0x%x to 0x%x",
-+		   port_num, serdes, result, gs2);
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_HAL_WRITE,
-+					gs2, &result,
-+					SPICO_INT_RETURN_RESULT);
-+	if (err)
-+		return err;
-+
-+	if (result != SPICO_INT_CM4_HAL_READ) {
-+		sbl_dev_err(sbl->dev,
-+			    "p%ds%d: Failed updating gs2 (0x%x)!",
-+			port_num, serdes, gs2);
-+		return -EBADE;
-+	}
-+
-+	DEV_TRACE2(sbl->dev, "rc: 0");
-+
-+	return 0;
-+}
-+
-+int sbl_set_tx_data_sel(struct sbl_inst *sbl, int port_num, int serdes,
-+			int data_sel)
-+{
-+	int err;
-+	u16 result;
-+	int retry_cnt = 0;
-+
-+	DEV_TRACE2(sbl->dev, "p%ds%d data_sel: %d", port_num, serdes, data_sel);
-+
-+	if (!sbl->is_hw)
-+		return 0;
-+
-+	if (data_sel == SBL_DS_CORE) {
-+		do {
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_PRBS_CTRL,
-+						SPICO_INT_DATA_DISABLE_TXRXGEN,
-+						&result,
-+						SPICO_INT_RETURN_RESULT);
-+			if (err)
-+				return err;
-+
-+			if (result == SPICO_INT_DATA_PRBS_SUCCESS)
-+				return 0;
-+
-+			sbl_dev_dbg(sbl->dev, "p%ds%d: attempt %d tx data sel returned %d",
-+				    port_num, serdes, retry_cnt, result);
-+			usleep_range(1000, 2000);
-+		} while (retry_cnt++ < SPICO_INT_DATA_PRBS_RETRY_LIMIT);
-+	} else { /* SBL_DS_PRBS */
-+		do {
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_PRBS_CTRL,
-+						SPICO_INT_DATA_PRBS31_AS_TXGEN,
-+						&result,
-+						SPICO_INT_RETURN_RESULT);
-+			if (err)
-+				return err;
-+
-+			if (result == SPICO_INT_DATA_PRBS_SUCCESS)
-+				return 0;
-+
-+			sbl_dev_dbg(sbl->dev, "p%ds%d: attempt %d tx data sel returned %d",
-+				    port_num, serdes, retry_cnt, result);
-+			usleep_range(1000, 2000);
-+		} while (retry_cnt++ < SPICO_INT_DATA_PRBS_RETRY_LIMIT);
-+	}
-+
-+	sbl_dev_err(sbl->dev, "p%ds%d: Failed to set TX data select (%d)!",
-+		    port_num, serdes, data_sel);
-+	return -EBADE;
-+}
-+
-+int sbl_set_prbs_rx_mode(struct sbl_inst *sbl, int port_num, int serdes)
-+{
-+	int err;
-+	/* Avago_serdes_data_qual_t qual; */
-+
-+	DEV_TRACE2(sbl->dev, "p%ds%d", port_num, serdes);
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_DFE_CTRL,
-+					SPICO_INT_DATA_NONE, NULL,
-+					SPICO_INT_VALIDATE_RESULT);
-+	if (err)
-+		return err;
-+
-+	err = sbl_serdes_dfe_tune_wait(sbl, port_num);
-+	if (err)
-+		return err;
-+
-+	DEV_TRACE2(sbl->dev, "rc: 0");
-+
-+	return 0;
-+}
-+
-+int sbl_apply_sbus_divider(struct sbl_inst *sbl, int divider)
-+{
-+	int sbus_ring, err;
-+	u32 sbus_addr;
-+
-+	/* Force divider to either SPEEDUP or DFLT */
-+	if (divider == SBL_SBUS_DIVIDER_SPEEDUP) {
-+		sbl_dev_dbg(sbl->dev, "Applying SBUS speedup.");
-+	} else {
-+		sbl_dev_dbg(sbl->dev, "Disabling SBUS speedup.");
-+		divider = SBL_SBUS_DIVIDER_DFLT;
-+	}
-+
-+	/* increase SBUS ring clock frequency */
-+	for (sbus_ring = 0; sbus_ring < sbl->switch_info->num_sbus_rings; ++sbus_ring) {
-+		sbus_addr = SBUS_ADDR(sbus_ring, SBUS_BCAST_SBM);
-+		DEV_TRACE2(sbl->dev, "ring: %d divider_exp: %d", sbus_ring,
-+			   divider);
-+		/* SBUS Critical Section */
-+		mutex_lock(SBUS_RING_MTX(sbl, sbus_ring));
-+		err = sbl_sbus_wr(sbl, sbus_addr, SBM_CRM_ADDR_CLK_DIV, divider);
-+		mutex_unlock(SBUS_RING_MTX(sbl, sbus_ring));
-+		if (err)
-+			return err;
-+	}
-+
-+	/* adjust op flags */
-+	if (divider == SBL_SBUS_DIVIDER_SPEEDUP)
-+		sbl->sbus_op_flags = sbl->iattr.sbus_op_flags_fast;
-+	else /* SBL_SBUS_DIVIDER_DFLT */
-+		sbl->sbus_op_flags = sbl->iattr.sbus_op_flags_slow;
-+
-+	sbl_dev_dbg(sbl->dev, "SBus divider update complete");
-+	return 0;
-+}
-+
-+/* Note - cannot do broadcast here! */
-+int sbl_serdes_dfe_tune_start(struct sbl_inst *sbl, int port_num, int serdes,
-+			      bool is_retune)
-+{
-+	int err;
-+	u16 result;
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_GET_RX_EQ,
-+					SPICO_INT_DATA_RXEQ_STS_DFE_STS,
-+					&result, SPICO_INT_RETURN_RESULT);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "p%ds%d: Failed checking status of DFE tune!",
-+			    port_num, serdes);
-+		return -EIO;
-+	}
-+	if (result == DFE_CAL_DONE) {
-+		sbl_dev_dbg(sbl->dev, "p%ds%d: DFE done before we started",
-+			    port_num, serdes);
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_SET_RX_EQ,
-+					SPICO_INT_DATA_RXEQ_STS_DFE_STS | 0x0,
-+					NULL, SPICO_INT_IGNORE_RESULT);
-+		if (err) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: Failed to clear DFE sts!",
-+				    port_num, serdes);
-+			return err;
-+		}
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_GET_RX_EQ,
-+					SPICO_INT_DATA_RXEQ_STS_DFE_STS,
-+					&result, SPICO_INT_RETURN_RESULT);
-+		if (err) {
-+			sbl_dev_err(sbl->dev,
-+				    "p%ds%d: Failed checking status of DFE tune!",
-+				port_num, serdes);
-+			return -EIO;
-+		}
-+		if (result == DFE_CAL_DONE) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: DFE done before we started!",
-+				    port_num, serdes);
-+			return -ENOMSG;
-+		}
-+	}
-+
-+	DEV_TRACE2(sbl->dev, "p%ds%d is_retune:%d", port_num, serdes,
-+		   is_retune);
-+
-+	/* Set effort level */
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_HAL_READ,
-+					SPICO_INT_DATA_ICAL_EFFORT_SEL, &result,
-+					SPICO_INT_RETURN_RESULT);
-+	if (err)
-+		return err;
-+
-+	if (sbl_debug_option(sbl, port_num, SBL_DEBUG_FORCE_MAX_EFFORT)) {
-+		link->ical_effort = SPICO_INT_DATA_ICAL_MAX_EFFORT;
-+	} else if (sbl_debug_option(sbl, port_num, SBL_DEBUG_FORCE_MED_EFFORT)) {
-+		link->ical_effort = SPICO_INT_DATA_ICAL_MED_EFFORT;
-+	} else if (sbl_debug_option(sbl, port_num, SBL_DEBUG_FORCE_MIN_EFFORT)) {
-+		link->ical_effort = SPICO_INT_DATA_ICAL_MIN_EFFORT;
-+	} else if (link->blattr.options & SBL_OPT_DFE_ALWAYS_MAX_EFFORT) {
-+		link->ical_effort = SPICO_INT_DATA_ICAL_MAX_EFFORT;
-+	} else if (link->blattr.options & SBL_OPT_DFE_ALWAYS_MED_EFFORT) {
-+		link->ical_effort = SPICO_INT_DATA_ICAL_MED_EFFORT;
-+	} else if (link->blattr.options & SBL_OPT_DFE_ALWAYS_MIN_EFFORT) {
-+		link->ical_effort = SPICO_INT_DATA_ICAL_MIN_EFFORT;
-+	} else if (link->dfe_tune_count < 3) {
-+		/* medium effort for first few attempts */
-+		link->ical_effort = SPICO_INT_DATA_ICAL_MED_EFFORT;
-+	} else {
-+		/* rest full effort */
-+		link->ical_effort = SPICO_INT_DATA_ICAL_MAX_EFFORT;
-+	}
-+	/* sync with sysfs */
-+	mb();
-+
-+	if (!sbl->is_hw)
-+		return 0;
-+
-+	DEV_TRACE2(sbl->dev, "p%ds%d: Updating ICAL effort from 0x%x to 0x%x",
-+		   port_num, serdes, result, link->ical_effort);
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_HAL_WRITE,
-+					link->ical_effort, &result,
-+					SPICO_INT_RETURN_RESULT);
-+	if (err)
-+		return err;
-+
-+	if (result != SPICO_INT_CM4_HAL_READ) {
-+		sbl_dev_err(sbl->dev, "p%ds%d: Failed updating ICAL effort (0x%x)!",
-+			    port_num, serdes, link->ical_effort);
-+		return -EBADE;
-+	}
-+	sbl_dev_dbg(sbl->dev, "p%ds%d: Setup ICAL effort 0x%x",
-+		    port_num, serdes, link->ical_effort);
-+
-+	/* Initiate DFE tune */
-+	err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+				   SPICO_INT_CM4_DFE_CTRL,
-+					SPICO_INT_DATA_DFE_ICAL, NULL,
-+					SPICO_INT_VALIDATE_RESULT);
-+	if (err)
-+		return err;
-+
-+	DEV_TRACE2(sbl->dev, "rc: 0");
-+	return 0;
-+}
-+
-+int sbl_serdes_dfe_tune_wait(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	u16 result;
-+	int err, serdes;
-+	u8 in_progress_mask, serdes_mask, tuned_mask = 0;
-+	unsigned long last_jiffy;
-+
-+	serdes_mask = get_serdes_rx_mask(sbl, port_num);
-+	in_progress_mask = serdes_mask;
-+
-+	DEV_TRACE2(sbl->dev, "p%d serdes_mask:0x%x", port_num, serdes_mask);
-+
-+	last_jiffy = jiffies + msecs_to_jiffies(1000 * link->blattr.dfe_timeout);
-+	do {
-+		for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+			if (!rx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+				continue;
-+
-+			if (!((1 << serdes) & in_progress_mask))
-+				continue;
-+
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_GET_RX_EQ,
-+							SPICO_INT_DATA_RXEQ_STS_DFE_STS,
-+							&result, SPICO_INT_RETURN_RESULT);
-+			if (err) {
-+				sbl_dev_err(sbl->dev, "p%ds%d: Failed checking status of DFE tune!",
-+					    port_num, serdes);
-+				return -EIO;
-+			}
-+			if (!sbl->is_hw)
-+				result = DFE_CAL_DONE;
-+
-+			if (result & DFE_LOS_MASK) {
-+				sbl_dev_warn(sbl->dev, "p%ds%d: Loss of signal when in DFE tune!",
-+					     port_num, serdes);
-+				return -ENOMSG;
-+			} else if (result & DFE_CAL_RUN_IN_PRGRS_MASK) {
-+				sbl_dev_dbg(sbl->dev, "p%ds%d: DFE still in progress", port_num,
-+					    serdes);
-+			} else if (result & DFE_CAL_DONE) {
-+				sbl_dev_dbg(sbl->dev, "p%ds%d: DFE done", port_num,
-+					    serdes);
-+				tuned_mask      |= (1 << serdes);
-+				in_progress_mask &= ~(1 << serdes);
-+			} else {
-+				sbl_dev_dbg(sbl->dev, "p%ds%d: DFE complete", port_num, serdes);
-+				tuned_mask      |= (1 << serdes);
-+				in_progress_mask &= ~(1 << serdes);
-+			}
-+		}
-+		if (!in_progress_mask)
-+			break;
-+
-+		msleep(link->blattr.dfe_poll_interval);
-+	} while (time_is_after_jiffies(last_jiffy) &&
-+		 !sbl_start_timeout(sbl, port_num) &&
-+		 !sbl_base_link_start_cancelled(sbl, port_num));
-+
-+	if (serdes_mask == tuned_mask)
-+		return 0;
-+
-+	if (sbl_base_link_start_cancelled(sbl, port_num))
-+		return -ECANCELED;
-+
-+	if (sbl_start_timeout(sbl, port_num)) {
-+		sbl_dev_dbg(sbl->dev, "p%d: start timeout waiting for DFE to tune to complete\n",
-+			    port_num);
-+		return -ETIMEDOUT;
-+	}
-+
-+	/* just didnt finish */
-+	sbl_dev_dbg(sbl->dev, "p%d serdes_mask:0x%x: Timeout waiting for DFE to complete (timeout:%ds)",
-+		    port_num, serdes_mask, link->blattr.dfe_timeout);
-+	return -ETIME;
-+}
-+
-+int sbl_port_dfe_tune_start(struct sbl_inst *sbl, int port_num, bool is_retune)
-+{
-+	int err, serdes;
-+
-+	sbl_dev_dbg(sbl->dev, "p%d: DFE tune retune:%d", port_num, is_retune);
-+
-+	/* DFE Tune */
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (!(rx_serdes_required_for_link_mode(sbl, port_num, serdes) ||
-+		      tx_serdes_required_for_link_mode(sbl, port_num, serdes)))
-+			continue;
-+		err = sbl_serdes_dfe_tune_start(sbl, port_num, serdes,
-+						is_retune);
-+		if (err) {
-+			sbl_dev_err(sbl->dev, "p%d: Failed to start DFE tune!",
-+				    port_num);
-+			return err;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+int sbl_port_dfe_tune_wait(struct sbl_inst *sbl, int port_num)
-+{
-+	int err;
-+
-+	/* DFE Tune */
-+	err = sbl_serdes_dfe_tune_wait(sbl, port_num);
-+	if (err) {
-+		switch (err) {
-+		case -ECANCELED:
-+			sbl_dev_dbg(sbl->dev, "p%d: DFE wait cancelled", port_num);
-+			break;
-+		case -ETIMEDOUT:
-+			sbl_dev_dbg(sbl->dev, "p%d: DFE wait start timeout", port_num);
-+			break;
-+		case -ETIME:
-+			sbl_dev_dbg(sbl->dev, "p%d: DFE wait timed out", port_num);
-+			break;
-+		default:
-+			sbl_dev_err(sbl->dev, "p%d: DFE wait failed [%d]", port_num, err);
-+		}
-+		return err;
-+	}
-+
-+	/* extra checks */
-+	if (sbl->link[port_num].loopback_mode != SBL_LOOPBACK_MODE_LOCAL) {
-+
-+		/* Eye height check (without pcal active) */
-+		err = sbl_port_check_eyes(sbl, port_num);
-+		if (err) {
-+			sbl_dev_dbg(sbl->dev, "p%d: some eyes bad", port_num);
-+			return err;
-+		}
-+		sbl_dev_dbg(sbl->dev, "p%d: all eyes good", port_num);
-+
-+		/* Validate tuning params */
-+		err = sbl_check_serdes_tuning_params(sbl, port_num);
-+		if (err) {
-+			sbl_dev_err(sbl->dev, "p%d: some tuning params bad", port_num);
-+			sbl->link[port_num].tune_param_oob_count++;
-+			return -ELNRNG;
-+		}
-+		sbl_dev_dbg(sbl->dev, "p%d: all tuning params good", port_num);
-+		sbl->link[port_num].tune_param_oob_count = 0;
-+
-+		/* Set up PCAL */
-+		/*   (This can reduce the eye heights but increase the eye widths).
-+		     Future eye height checks will be held off for a period while
-+		     the pcal process settles */
-+		if (sbl->link[port_num].blattr.options & SBL_OPT_ENABLE_PCAL) {
-+			if (sbl_debug_option(sbl, port_num, SBL_DEBUG_INHIBIT_PCAL)) {
-+				sbl_dev_warn(sbl->dev, "p%d: pcal inhibited\n", port_num);
-+			} else {
-+				err = sbl_port_start_pcal(sbl, port_num);
-+				if (err)
-+					return err;
-+			}
-+		} else {
-+			sbl_dev_dbg(sbl->dev, "p%d: PCAL is disabled!", port_num);
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+void sbl_log_port_eye_heights(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	int eye, num_eyes = 0;
-+	int eye_heights[NUM_PAM4_EYES];
-+	int serdes;
-+
-+	switch (link->link_mode) {
-+	default:
-+	case SBL_LINK_MODE_BJ_100G: /* NRZ */
-+		num_eyes = NUM_NRZ_EYES;
-+		break;
-+	case SBL_LINK_MODE_CD_50G:
-+	case SBL_LINK_MODE_CD_100G:
-+	case SBL_LINK_MODE_BS_200G: /* PAM4 */
-+		num_eyes = NUM_PAM4_EYES;
-+		break;
-+	}
-+
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (!rx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+			continue;
-+		if (sbl_get_eye_heights(sbl, port_num, serdes, eye_heights)) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: Failed to read eye heights",
-+				    port_num, serdes);
-+			return;
-+		}
-+		for (eye = 0; eye < num_eyes; ++eye) {
-+			sbl_dev_info(sbl->dev, "p%ds%d eye[%d] height: 0x%x",
-+				     port_num, serdes, eye, eye_heights[eye]);
-+		}
-+	}
-+}
-+
-+int sbl_port_check_eyes(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	int min_eye_height, max_eye_height;
-+	int eye, num_eyes = 0;
-+	int eye_heights[NUM_PAM4_EYES];
-+	unsigned long holdoff_end_jiffies;
-+	int serdes;
-+
-+	/* pcal can generate bad eyes temporarily when its starting up so
-+	   if its not settled yet ignore this test */
-+	if (link->pcal_running && link->blattr.pcal_eyecheck_holdoff) {
-+		holdoff_end_jiffies = link->pcal_start_jiffies +
-+				msecs_to_jiffies(link->blattr.pcal_eyecheck_holdoff);
-+		if (time_is_after_jiffies(holdoff_end_jiffies)) {
-+			sbl_dev_info(sbl->dev, "p%d: holding off eye checks",
-+				     port_num);
-+			return 0;
-+		}
-+	}
-+
-+	if (!sbl->is_hw)
-+		return 0;
-+
-+	/* setup test criteria */
-+	switch (link->link_mode) {
-+	default:
-+	case SBL_LINK_MODE_BJ_100G: /* NRZ */
-+		num_eyes = NUM_NRZ_EYES;
-+		min_eye_height =
-+			link->blattr.nrz_min_eye_height;
-+		max_eye_height =
-+			link->blattr.nrz_max_eye_height;
-+		break;
-+	case SBL_LINK_MODE_CD_50G:
-+	case SBL_LINK_MODE_CD_100G:
-+	case SBL_LINK_MODE_BS_200G: /* PAM4 */
-+		num_eyes = NUM_PAM4_EYES;
-+		min_eye_height =
-+			link->blattr.pam4_min_eye_height;
-+		max_eye_height =
-+			link->blattr.pam4_max_eye_height;
-+		break;
-+	}
-+
-+	/* check eye height */
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (!rx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+			continue;
-+
-+		sbl_dev_dbg(sbl->dev, "p%ds%d: checking eye height(s)", port_num, serdes);
-+		if (sbl_get_eye_heights(sbl, port_num, serdes, eye_heights)) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: Failed to read eye heights",
-+				    port_num, serdes);
-+			return -EIO;
-+		}
-+
-+		for (eye = 0; eye < num_eyes; ++eye) {
-+			sbl_dev_dbg(sbl->dev, "p%ds%d eye[%d] height: 0x%x",
-+				    port_num, serdes, eye, eye_heights[eye]);
-+			if (eye_heights[eye] < min_eye_height) {
-+				sbl_dev_dbg(sbl->dev,
-+					    "p%ds%d eye[%d] height (0x%x) less than requirement (0x%x)!",
-+					    port_num, serdes, eye, eye_heights[eye],
-+					    min_eye_height);
-+				return -ECHRNG;
-+			} else if ((sbl->link[port_num].loopback_mode !=
-+				    SBL_LOOPBACK_MODE_LOCAL) &&
-+				   (eye_heights[eye] > max_eye_height)) {
-+				sbl_dev_dbg(sbl->dev,
-+					    "p%ds%d eye[%d] height (0x%x) greater than max (0x%x)!",
-+					    port_num, serdes, eye, eye_heights[eye],
-+					    max_eye_height);
-+				return -ECHRNG;
-+			}
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+/* Constructs maps of */
-+/* - active serdes (ones in use for this mode)
-+   - serdes not reporting electrical idle (i.e. seeing a signal)
-+   - serdes with all good eyes (i.e. data can be extracted from the signal) */
-+
-+/* Only called on Rosetta */
-+/* active map is always valid and returned
-+   other maps only valid if function succeeds otherwise zero */
-+
-+/* Electrical idle detect seems fast to respond but sometimes shows unexpected
-+   and probably wrong, electrical idle. */
-+
-+/* TODO investigate EID filtering - if its fast enough? */
-+
-+/* Eye height measurements seem to be very slow at being updated after a change to the
-+   serdes. BRCM say this is because the PLL takes a long time to unlock
-+   There is an optional delay that can be added to give the eye heights time
-+   to be updated. */
-+
-+int sbl_port_get_serdes_state_maps(struct sbl_inst *sbl, int port_num, u8 *active_map,
-+				   u8 *not_idle_map, u8 *ok_eye_map)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	int min_eye_height, max_eye_height;
-+	int eye, num_eyes = 0;
-+	u64 core_status;
-+	int eye_heights[NUM_PAM4_EYES];
-+	int err;
-+	int serdes;
-+
-+	if (!active_map || !not_idle_map || !ok_eye_map)
-+		return -EINVAL;
-+
-+	*active_map = *not_idle_map = *ok_eye_map = 0;
-+
-+	/* always build active serdes map */
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes)
-+		if (rx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+			*active_map  |= (1 << serdes);
-+
-+	/* must be configured to get criteria from attributes */
-+	if (!link->blconfigured)
-+		return -EUCLEAN;
-+
-+	/* get eye test criteria */
-+	switch (link->link_mode) {
-+	case SBL_LINK_MODE_BJ_100G: /* NRZ */
-+		num_eyes = NUM_NRZ_EYES;
-+		min_eye_height = link->blattr.nrz_min_eye_height;
-+		max_eye_height = link->blattr.nrz_max_eye_height;
-+		break;
-+	case SBL_LINK_MODE_CD_50G:
-+	case SBL_LINK_MODE_CD_100G:
-+	case SBL_LINK_MODE_BS_200G: /* PAM4 */
-+		num_eyes = NUM_PAM4_EYES;
-+		min_eye_height = link->blattr.pam4_min_eye_height;
-+		max_eye_height = link->blattr.pam4_max_eye_height;
-+		break;
-+	default:
-+		sbl_dev_dbg(sbl->dev, "%d: get_serdes_state_maps, unrecognised link mode (%d)",
-+			    port_num, link->link_mode);
-+		return -ENODATA;
-+	}
-+
-+	/* check electrical idle not asserted */
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+
-+		if (!rx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+			continue;
-+
-+		core_status = sbl_read64(sbl, SBL_PML_BASE(port_num) |
-+		       SBL_PML_SERDES_CORE_STATUS_OFFSET(serdes));
-+
-+		/* TODO fix to use normal address map macro */
-+		if (!(core_status & SERDES_CORE_STATUS_RX_IDLE_DETECT_MASK))
-+			*not_idle_map |= 1 << serdes;
-+	}
-+
-+	/* optionally wait a little to allow current eye heights to be available */
-+	if (sbl_debug_option(sbl, port_num, SBL_DEBUG_SERDES_MAP_DELAY))
-+		msleep(150);
-+
-+	/* check eyes */
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+
-+		/* assume good if serdes is used */
-+		if (rx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+			*ok_eye_map |= (1 << serdes);
-+		else
-+			continue;
-+
-+		/* get eyes */
-+		err = sbl_get_eye_heights(sbl, port_num, serdes, eye_heights);
-+		if (err) {
-+			sbl_dev_dbg(sbl->dev, "%d: get_serdes_state_maps, get_eye_heights failed [%d]",
-+				    port_num, err);
-+			*not_idle_map = *ok_eye_map = 0;
-+			return err;
-+		}
-+
-+		/* All eyes must be good
-+		   drop from map if any bad eyes found */
-+		for (eye = 0; eye < num_eyes; ++eye) {
-+
-+			if (eye_heights[eye] < min_eye_height) {
-+				*ok_eye_map &= ~(1 << serdes);
-+				break;
-+			} else if ((link->loopback_mode != SBL_LOOPBACK_MODE_LOCAL) &&
-+				   (eye_heights[eye] > max_eye_height)) {
-+				*ok_eye_map &= ~(1 << serdes);
-+				break;
-+			}
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+int sbl_port_start_pcal(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	int serdes, err;
-+
-+	if (link->pcal_running)
-+		return 0;
-+
-+	sbl_dev_dbg(sbl->dev, "p%d: starting PCAL", port_num);
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (!rx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+			continue;
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_DFE_CTRL,
-+						SPICO_INT_DATA_DFE_CONT_PCAL,
-+						NULL,
-+						SPICO_INT_VALIDATE_RESULT);
-+		if (err)
-+			return err;
-+	}
-+	link->pcal_running = true;
-+	link->pcal_start_jiffies = jiffies;
-+
-+	return 0;
-+}
-+
-+int sbl_port_stop_pcal(struct sbl_inst *sbl, int port_num)
-+{
-+	int serdes, err;
-+
-+	if (!sbl->link[port_num].pcal_running)
-+		return 0;
-+
-+	sbl_dev_dbg(sbl->dev, "p%d: stopping PCAL", port_num);
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (!rx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+			continue;
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_DFE_CTRL,
-+						SPICO_INT_DATA_DFE_PAUSE_PCAL,
-+						NULL,
-+						SPICO_INT_VALIDATE_RESULT);
-+		if (err)
-+			return err;
-+	}
-+
-+	sbl->link[port_num].pcal_running = false;
-+	return 0;
-+}
-+
-+int sbl_port_dfe_tune(struct sbl_inst *sbl, int port_num, bool is_retune)
-+{
-+	int err;
-+
-+	sbl_dev_dbg(sbl->dev, "p%d: Starting DFE %stune...", port_num,
-+		    is_retune ? "re" : "");
-+
-+	sbl_link_tune_begin(sbl, port_num);
-+
-+	err = sbl_port_dfe_tune_start(sbl, port_num, is_retune);
-+	if (err) {
-+		sbl_dev_dbg(sbl->dev, "p%d: Failed to start DFE tune!", port_num);
-+		goto out;
-+	}
-+
-+	sbl_dev_dbg(sbl->dev, "p%d: Waiting for DFE tuning to complete...", port_num);
-+	err = sbl_port_dfe_tune_wait(sbl, port_num);
-+	if (err) {
-+		sbl_dev_dbg(sbl->dev, "p%d: DFE tune failed!", port_num);
-+		goto out;
-+	}
-+
-+out:
-+	sbl_link_tune_update_total_timespec(sbl, port_num);
-+	return err;
-+}
-+
-+int sbl_serdes_minitune_setup(struct sbl_inst *sbl, int port_num)
-+{
-+	int err;
-+	u16 result;
-+	int serdes;
-+
-+	err = sbl_serdes_config(sbl, port_num, false);
-+	if (err) {
-+		sbl_dev_err(sbl->dev,
-+			    "mt: SerDes config failed for port %d with err %d",
-+			port_num, err);
-+		return err;
-+	}
-+
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (!rx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+			continue;
-+		/* Set effort level */
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_READ,
-+						SPICO_INT_DATA_ICAL_EFFORT_SEL,
-+						&result,
-+						SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		DEV_TRACE2(sbl->dev,
-+			   "p%ds%d: mt: Updating ICAL effort from 0x%x to 0x%x",
-+			   port_num, serdes, result,
-+			   SPICO_INT_DATA_ICAL_EFFORT_0);
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_WRITE,
-+						SPICO_INT_DATA_ICAL_EFFORT_0,
-+						&result,
-+						SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		if (result != SPICO_INT_CM4_HAL_READ) {
-+			sbl_dev_err(sbl->dev,
-+				    "p%ds%d: mt: Failed updating ICAL effort (0x%x)!",
-+				port_num, serdes, SPICO_INT_DATA_ICAL_EFFORT_0);
-+			return -EBADE;
-+		}
-+		/* Enable EID based on DFE tuning */
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_READ,
-+						SPICO_INT_DATA_EID_FILTER_SEL,
-+						&result,
-+						SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		DEV_TRACE2(sbl->dev,
-+			   "p%ds%d: mt: Updating EID Filter from 0x%x to 0x%x",
-+			   port_num, serdes, result,
-+			   SPICO_INT_DATA_EID_FILTER_DFE);
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_WRITE,
-+						SPICO_INT_DATA_EID_FILTER_DFE,
-+						&result,
-+						SPICO_INT_RETURN_RESULT);
-+		if (err)
-+			return err;
-+
-+		if (result != SPICO_INT_CM4_HAL_READ) {
-+			sbl_dev_err(sbl->dev,
-+				    "p%ds%d: mt: Failed updating EID Filter (0x%x)!",
-+				port_num, serdes,
-+				SPICO_INT_DATA_EID_FILTER_DFE);
-+			return -EBADE;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+int sbl_serdes_minitune_block(struct sbl_inst *sbl, int port_num)
-+{
-+	u64 core_status_value;
-+	u8 sig_ok_mask = 0;
-+	u8 tgt_serdes = 0;
-+	u16 result;
-+	int serdes;
-+	int err;
-+	u8 serdes_mask;
-+	unsigned long last_jiffy;
-+
-+	serdes_mask = get_serdes_rx_mask(sbl, port_num);
-+
-+	/* Wait for signal OK */
-+	last_jiffy = jiffies + msecs_to_jiffies(1000 * sbl->link[port_num].blattr.lpd_timeout);
-+	do {
-+		for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+			if (!rx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+				continue;
-+			tgt_serdes = 1 << serdes;
-+
-+			if (tgt_serdes & sig_ok_mask)
-+				continue;
-+
-+			core_status_value = sbl_read64(sbl,
-+						       SBL_PML_BASE(port_num) |
-+			       SBL_PML_SERDES_CORE_STATUS_OFFSET(serdes));
-+			if (((core_status_value &
-+			      SERDES_CORE_STATUS_RX_IDLE_DETECT_MASK) == 0) &&
-+			    ((core_status_value &
-+			      SERDES_CORE_STATUS_RX_SIG_OK_MASK) == 0)) {
-+				sbl_dev_dbg(sbl->dev, "p%ds%d: mt: Found EID 0 or SIG OK 0", port_num, serdes);
-+				sig_ok_mask |= 1 << serdes;
-+				continue;
-+			} else {
-+				DEV_TRACE2(sbl->dev, "p%ds%d: mt: Waiting for EID==0(%d) or SIG OK==0(%d)",
-+					   port_num, serdes,
-+						(core_status_value & SERDES_CORE_STATUS_RX_IDLE_DETECT_MASK) ? 1 : 0,
-+						(core_status_value & SERDES_CORE_STATUS_RX_SIG_OK_MASK) ? 1 : 0);
-+			}
-+		}
-+
-+		if (sig_ok_mask == serdes_mask)
-+			break;
-+		if (sbl_base_link_start_cancelled(sbl, port_num))
-+			break;
-+		if (sbl_start_timeout(sbl, port_num))
-+			break;
-+
-+		msleep(sbl->link[port_num].blattr.lpd_poll_interval);
-+	} while (time_is_after_jiffies(last_jiffy));
-+
-+	/* Disable EID filter */
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (!rx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+			continue;
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_READ,
-+						SPICO_INT_DATA_EID_FILTER_SEL,
-+						&result,
-+						SPICO_INT_RETURN_RESULT);
-+		if (err) {
-+			sbl_dev_err(sbl->dev,
-+				    "p%ds%d: mt block exit@1: sbl_serdes_spico_int failed [%d]",
-+				port_num, serdes, err);
-+			return err;
-+		}
-+		DEV_TRACE2(sbl->dev,
-+			   "p%ds%d: Updating EID Filter from 0x%x to 0x%x",
-+			   port_num, serdes, result,
-+			   SPICO_INT_DATA_EID_FILTER_OFF);
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_HAL_WRITE,
-+						SPICO_INT_DATA_EID_FILTER_OFF,
-+						&result,
-+						SPICO_INT_RETURN_RESULT);
-+		if (err) {
-+			sbl_dev_err(sbl->dev,
-+				    "p%ds%d: mt block exit@2: sbl_serdes_spico_int failed [%d]",
-+				port_num, serdes, err);
-+			return err;
-+		}
-+		if (result != SPICO_INT_CM4_HAL_READ) {
-+			sbl_dev_err(sbl->dev,
-+				    "p%ds%d: mt: Failed updating EID Filter (0x%x)!",
-+				port_num, serdes,
-+				SPICO_INT_DATA_EID_FILTER_OFF);
-+			return -EBADE;
-+		}
-+	}
-+	/* Make sure all tunes are complete */
-+	err = sbl_serdes_dfe_tune_wait(sbl, port_num);
-+	if (err) {
-+		sbl_dev_dbg(sbl->dev, "%d: mt: Failed to detect with link partner!",
-+			    port_num);
-+	}
-+
-+	if (sbl_base_link_start_cancelled(sbl, port_num))
-+		return -ECANCELED;
-+	if (sbl_start_timeout(sbl, port_num))
-+		return -ETIMEDOUT;
-+
-+	if (sig_ok_mask != serdes_mask) {
-+		sbl_dev_dbg(sbl->dev,
-+			    "p%ds<mask>0x%x: mt: SerDes signal ok not detected (timeout:%ds)",
-+			    port_num, (serdes_mask & ~sig_ok_mask),
-+			    sbl->link[port_num].blattr.lpd_timeout);
-+		return -ETIME;
-+	}
-+
-+	return err;
-+}
-+
-+int sbl_serdes_config(struct sbl_inst *sbl, int port_num, bool allow_an)
-+{
-+	int err, encoding, divisor, width, serdes, j;
-+	struct sbl_sc_values values = {0};
-+	u16 result;
-+	u32 rx_phase_slip_cnt;
-+	u32 rx_phase_slip_reapply;
-+	bool use_default_tx_eq, use_default_gs;
-+	bool tx_en, rx_en, txo_en;
-+
-+	if (allow_an && (sbl->link[port_num].blattr.config_target != SBL_BASE_LINK_CONFIG_PEC)) {
-+		sbl_dev_err(sbl->dev, "%d: AN allowed but has no config", port_num);
-+		return -ENAVAIL;
-+	}
-+
-+	/* Stop continuous tune */
-+	err = sbl_port_stop_pcal(sbl, port_num);
-+	if (err) {
-+		sbl_dev_warn(sbl->dev, "%d: serdes config: stop pcal failed [%d]",
-+			     port_num, err);
-+		return err;
-+	}
-+
-+	/* Handle requested speed */
-+	if (allow_an) {
-+		switch (sbl->link[port_num].blattr.pec.an_mode) {
-+		case SBL_AN_MODE_FIXED:
-+		case SBL_AN_MODE_ON:
-+			encoding = SBL_ENC_NRZ;
-+			divisor  = SBL_DIV_AN;
-+			width    = SBL_WID_AN;
-+			break;
-+		case SBL_AN_MODE_OFF:
-+		default:
-+			sbl_dev_warn(sbl->dev, "%d: Unsupported an mode (%d)",
-+				     port_num, sbl->link[port_num].blattr.pec.an_mode);
-+			return -EINVAL;
-+
-+		}
-+	} else {
-+		switch (sbl->link[port_num].link_mode) {
-+		case SBL_LINK_MODE_BJ_100G:
-+			encoding = SBL_ENC_NRZ;
-+			divisor  = SBL_DIV_25G;
-+			width    = SBL_WID_25G;
-+			break;
-+		case SBL_LINK_MODE_CD_50G:
-+		case SBL_LINK_MODE_CD_100G:
-+		case SBL_LINK_MODE_BS_200G:
-+			encoding = SBL_ENC_PAM4;
-+			divisor  = SBL_DIV_50G;
-+			width    = SBL_WID_50G;
-+			break;
-+		default:
-+			sbl_dev_warn(sbl->dev, "%d: Unsupported link mode (%d)",
-+				     port_num, sbl->link[port_num].link_mode);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (!(rx_serdes_required_for_link_mode(sbl, port_num, serdes) ||
-+		      tx_serdes_required_for_link_mode(sbl, port_num, serdes)))
-+			continue;
-+		err = sbl_serdes_init(sbl, port_num, serdes, encoding,
-+				      divisor, width);
-+		if (err)
-+			return err;
-+	}
-+
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (!(rx_serdes_required_for_link_mode(sbl, port_num, serdes) ||
-+		      tx_serdes_required_for_link_mode(sbl, port_num, serdes)))
-+			continue;
-+		err = sbl_serdes_polarity_ctrl(sbl, port_num, serdes,
-+					       encoding, allow_an);
-+		if (err)
-+			return err;
-+	}
-+
-+	/* Set Rx Termination */
-+	switch (sbl->link[port_num].blattr.link_partner) {
-+	case SBL_LINK_PARTNER_SWITCH:
-+		for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+			if (!(rx_serdes_required_for_link_mode(sbl, port_num, serdes) ||
-+			      tx_serdes_required_for_link_mode(sbl, port_num, serdes)))
-+				continue;
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_INT_RX_TERM,
-+						SPICO_INT_DATA_RXT_FLOAT, NULL,
-+						SPICO_INT_VALIDATE_RESULT);
-+			if (err)
-+				return err;
-+		}
-+		break;
-+	case SBL_LINK_PARTNER_NIC:
-+	case SBL_LINK_PARTNER_NIC_C2:
-+		for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+			if (!(rx_serdes_required_for_link_mode(sbl, port_num, serdes) ||
-+			      tx_serdes_required_for_link_mode(sbl, port_num, serdes)))
-+				continue;
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_INT_RX_TERM,
-+						SPICO_INT_DATA_RXT_AVDD, NULL,
-+						SPICO_INT_VALIDATE_RESULT);
-+			if (err)
-+				return err;
-+		}
-+		break;
-+	default:
-+		sbl_dev_warn(sbl->dev, "p%d: Unsupported link partner mode (enum %d)!",
-+			     port_num, sbl->link[port_num].blattr.link_partner);
-+		return -EINVAL;
-+	}
-+
-+	/* Handle requested loopback mode */
-+	switch (sbl->link[port_num].loopback_mode) {
-+	case SBL_LOOPBACK_MODE_LOCAL:
-+		for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+			if (!(rx_serdes_required_for_link_mode(sbl, port_num, serdes) ||
-+			      tx_serdes_required_for_link_mode(sbl, port_num, serdes)))
-+				continue;
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_LOOPBACK,
-+						SPICO_INT_DATA_ILB, NULL,
-+						SPICO_INT_VALIDATE_RESULT);
-+			if (err)
-+				return err;
-+		}
-+		break;
-+	case SBL_LOOPBACK_MODE_REMOTE:
-+	case SBL_LOOPBACK_MODE_OFF:
-+		for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+			if (!(rx_serdes_required_for_link_mode(sbl, port_num, serdes) ||
-+			      tx_serdes_required_for_link_mode(sbl, port_num, serdes)))
-+				continue;
-+			err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+						   SPICO_INT_CM4_LOOPBACK,
-+						SPICO_INT_DATA_ELB, NULL,
-+						SPICO_INT_VALIDATE_RESULT);
-+			if (err)
-+				return err;
-+		}
-+		break;
-+	default:
-+		sbl_dev_warn(sbl->dev, "Unsupported loopback mode (enum %d)!",
-+			     sbl->link[port_num].loopback_mode);
-+		return -EINVAL;
-+	}
-+
-+	/* Set port config values */
-+	if (!allow_an) {
-+		for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+			if (!(rx_serdes_required_for_link_mode(sbl, port_num, serdes) ||
-+			      tx_serdes_required_for_link_mode(sbl, port_num, serdes)))
-+				continue;
-+			use_default_tx_eq = false;
-+			use_default_gs    = false;
-+			err = sbl_get_serdes_config_values(sbl, port_num,
-+							   serdes,
-+								&values);
-+			if (err) {
-+				sbl_dev_warn(sbl->dev,
-+						     "p%ds%d: Unable to read config list!",
-+						     port_num, serdes);
-+				use_default_tx_eq = true;
-+				use_default_gs    = true;
-+			}
-+			/* Apply tx eq values */
-+			if (!use_default_tx_eq) {
-+				err = sbl_set_tx_eq(sbl, port_num, serdes,
-+						    values.atten,
-+							 values.pre,
-+							 values.post,
-+							 values.pre2,
-+							 values.pre3);
-+				if (err) {
-+					sbl_dev_warn(sbl->dev,
-+						     "Bad settings for port %d! Applying defaults.",
-+						     port_num);
-+					use_default_tx_eq = true;
-+				}
-+			}
-+			if (use_default_tx_eq) {
-+				err = sbl_set_tx_eq(sbl, port_num, serdes,
-+						    SBL_DFLT_PORT_CONFIG_ATTEN,
-+						 SBL_DFLT_PORT_CONFIG_PRE,
-+						 SBL_DFLT_PORT_CONFIG_POST,
-+						 SBL_DFLT_PORT_CONFIG_PRE2,
-+						 SBL_DFLT_PORT_CONFIG_PRE3);
-+				if (err) {
-+					sbl_dev_err(sbl->dev, "Default serdes atten/pre/post settings failed!");
-+					return err;
-+				}
-+			}
-+			/* Apply gainshape values */
-+			if (!use_default_gs) {
-+				err = sbl_set_gs(sbl, port_num, serdes,
-+						 values.gs1,
-+						      values.gs2);
-+				if (err) {
-+					sbl_dev_warn(sbl->dev,
-+						     "Bad gs1/gs2 settings for port %d! Applying defaults.",
-+						     port_num);
-+					use_default_gs = true;
-+				}
-+			}
-+			if (use_default_gs) {
-+				err = sbl_set_gs(sbl, port_num, serdes,
-+						 SBL_DFLT_PORT_CONFIG_GS1,
-+					      SBL_DFLT_PORT_CONFIG_GS2);
-+				if (err) {
-+					sbl_dev_err(sbl->dev,
-+						    "Default serdes gainshape settings failed!");
-+					return err;
-+				}
-+			}
-+
-+			if (values.num_intr) {
-+				sbl_dev_dbg(sbl->dev,
-+					    "p%ds%d: Applying %d interrupts",
-+					port_num, serdes, values.num_intr);
-+			}
-+			for (j = 0; j < values.num_intr; ++j) {
-+				sbl_dev_dbg(sbl->dev,
-+					    "p%d: Applying interrupt 0x%x with data 0x%x",
-+				port_num, values.intr_val[j],
-+				values.data_val[j]);
-+				err = sbl_serdes_spico_int(sbl, port_num,
-+							   serdes, values.intr_val[j],
-+						values.data_val[j], &result,
-+						SPICO_INT_RETURN_RESULT);
-+				if (err) {
-+					sbl_dev_warn(sbl->dev,
-+						     "p%ds%d: interrupt 0x%x data 0x%x failed!",
-+						     port_num, serdes, values.intr_val[j],
-+						     values.data_val[j]);
-+				}
-+				if (result != values.intr_val[j]) {
-+					sbl_dev_dbg(sbl->dev,
-+						    "p%ds%d: interrupt:0x%x data:0x%x result:0x%x != code:0x%x. This is okay in some cases.",
-+						 port_num, serdes, values.intr_val[j], values.data_val[j], result, values.intr_val[j]);
-+				}
-+			}
-+		}
-+	}
-+	/* TODO - Set PRBS here */
-+
-+	/* Set Tx Phase Cal */
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (!(rx_serdes_required_for_link_mode(sbl, port_num, serdes) ||
-+		      tx_serdes_required_for_link_mode(sbl, port_num, serdes)))
-+			continue;
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_TX_PHASE_CAL,
-+						SPICO_INT_DATA_TPCE, NULL,
-+						SPICO_INT_VALIDATE_RESULT);
-+		if (err)
-+			return err;
-+	}
-+
-+	/* Set Rx Phase Slip */
-+	if (sbl->link[port_num].loopback_mode == SBL_LOOPBACK_MODE_LOCAL)
-+		rx_phase_slip_reapply = 1;
-+	else
-+		rx_phase_slip_reapply = 0;
-+
-+	rx_phase_slip_cnt = sbl->iattr.rx_phase_slip_cnt;
-+	if (rx_phase_slip_cnt > SPICO_INT_DATA_RX_PHASE_MAX) {
-+		sbl_dev_warn(sbl->dev,
-+			     "Invalid value for rx_phase_slip_cnt (0x%x). Setting to 0x%x",
-+			 rx_phase_slip_cnt, SPICO_INT_DATA_RX_PHASE_MAX);
-+		rx_phase_slip_cnt = SPICO_INT_DATA_RX_PHASE_MAX;
-+	}
-+	sbl_dev_dbg(sbl->dev, "p%d: rx_phase_slip_cnt: 0x%x", port_num,
-+		    rx_phase_slip_cnt);
-+	sbl_dev_dbg(sbl->dev, "p%d: rx_phase_slip_reapply: 0x%x", port_num,
-+		    rx_phase_slip_reapply);
-+
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (!(rx_serdes_required_for_link_mode(sbl, port_num, serdes) ||
-+		      tx_serdes_required_for_link_mode(sbl, port_num, serdes)))
-+			continue;
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_RX_PHASE_SLIP,
-+						(rx_phase_slip_reapply << SPICO_INT_DATA_RXP_APPLY_OFFSET) |
-+						(rx_phase_slip_cnt << SPICO_INT_DATA_RX_PHASE_OFFSET), NULL,
-+						SPICO_INT_VALIDATE_RESULT);
-+		if (err)
-+			return err;
-+	}
-+
-+	switch (sbl->link[port_num].loopback_mode) {
-+	case SBL_LOOPBACK_MODE_LOCAL:
-+		/* Disable TX and RX */
-+		for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+			err = sbl_set_tx_rx_enable(sbl, port_num, serdes,
-+						   false, false, false);
-+			if (err)
-+				return err;
-+		}
-+		break;
-+	case SBL_LOOPBACK_MODE_REMOTE:
-+	case SBL_LOOPBACK_MODE_OFF:
-+		/* Disable TX */
-+		for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+			if (rx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+				rx_en = true;
-+			else
-+				rx_en = false;
-+			err = sbl_set_tx_rx_enable(sbl, port_num, serdes,
-+						   false, rx_en, false);
-+			if (err)
-+				return err;
-+		}
-+		break;
-+	default:
-+		sbl_dev_warn(sbl->dev, "Unsupported loopback mode (enum %d)!",
-+			     sbl->link[port_num].loopback_mode);
-+		return -EINVAL;
-+	}
-+
-+	msleep(20);
-+
-+	/* Enable tx on physical lane 0 - this has the clock for all serdes and
-+	   is always required. */
-+	/* rx based on link mode */
-+	if (rx_serdes_required_for_link_mode(sbl, port_num, 0))
-+		rx_en = true;
-+	else
-+		rx_en = false;
-+	/* txo based on link mode */
-+	if (get_serdes_tx_mask(sbl, port_num) & (1 << 0))
-+		txo_en = true;
-+	else
-+		txo_en = false;
-+	err = sbl_set_tx_rx_enable(sbl, port_num, 0,
-+				   true, rx_en, txo_en);
-+	if (err)
-+		return err;
-+
-+	usleep_range(1000, 2000);
-+
-+	/* Enable lane 1 2 3 as needed */
-+	for (serdes = 1; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (rx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+			rx_en = true;
-+		else
-+			rx_en = false;
-+		if (tx_serdes_required_for_link_mode(sbl, port_num, serdes)) {
-+			tx_en = true;
-+			txo_en = true;
-+		} else {
-+			tx_en = false;
-+			txo_en = false;
-+		}
-+		err = sbl_set_tx_rx_enable(sbl, port_num, serdes,
-+					   tx_en, rx_en, txo_en);
-+		if (err)
-+			return err;
-+	}
-+
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (!(rx_serdes_required_for_link_mode(sbl, port_num, serdes) ||
-+		      tx_serdes_required_for_link_mode(sbl, port_num, serdes)))
-+			continue;
-+		if (sbl->link[port_num].blattr.tuning_pattern ==
-+		    SBL_TUNING_PATTERN_CORE) {
-+			err = sbl_set_tx_data_sel(sbl, port_num, serdes,
-+						  SBL_DS_CORE);
-+			if (err)
-+				return err;
-+		} else {
-+			err = sbl_set_tx_data_sel(sbl, port_num, serdes,
-+						  SBL_DS_PRBS);
-+			if (err)
-+				return err;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+int sbl_serdes_tuning(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	int err = 0;
-+	int serdes;
-+	bool is_retune;
-+	int j;
-+
-+	sbl_dev_dbg(sbl->dev, "SerDes tuning for port %d", port_num);
-+
-+	mutex_lock(&link->tuning_params_mtx);
-+	if (!(link->blattr.options & SBL_OPT_FABRIC_LINK)) {
-+		sbl_dev_dbg(sbl->dev,
-+			    "p%d: Saved tuning params disabled for edge links",
-+				port_num);
-+		is_retune = false;
-+	} else if (link->tune_param_oob_count >= SBL_MAX_TUNE_PARAM_OOB_FAILS) {
-+		sbl_dev_dbg(sbl->dev,
-+			    "p%d: Ignoring saved param load - too many params oob!",
-+				port_num);
-+		link->tune_param_oob_count = 0;
-+		is_retune = false;
-+	} else if ((link->blattr.options & SBL_OPT_USE_SAVED_PARAMS) &&
-+			(link->loopback_mode != SBL_LOOPBACK_MODE_LOCAL) &&
-+			!sbl_debug_option(sbl, port_num, SBL_DEBUG_INHIBIT_USE_SAVED_TP)) {
-+		is_retune = sbl_is_retune(sbl, port_num);
-+	} else {
-+		sbl_dev_dbg(sbl->dev,
-+			    "p%d: Usage of saved tuning params is disabled!",
-+				port_num);
-+		is_retune = false;
-+	}
-+
-+	if (is_retune) {
-+		sbl_dev_dbg(sbl->dev, "p%d: Applying saved tuning params",
-+			    port_num);
-+		for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+			if (!rx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+				continue;
-+			err = sbl_apply_serdes_tuning_params(sbl, port_num, serdes);
-+			if (err) {
-+				sbl_dev_err(sbl->dev, "p%ds%d: Failed to apply saved tuning params!",
-+					    port_num, serdes);
-+				mutex_unlock(&link->tuning_params_mtx);
-+				return err;
-+			}
-+			sbl_dev_dbg(sbl->dev, "p%ds%d: saved tuning params applied", port_num, serdes);
-+		}
-+	} else {
-+		sbl_dev_dbg(sbl->dev, "p%d: No saved tuning params found", port_num);
-+	}
-+	mutex_unlock(&link->tuning_params_mtx);
-+
-+	/* If we have applied saved params then the serdes should work straight away,
-+	   we do not need to tune again. However we will start PCAL as normal.
-+	   We mark the tune count to indicate we have done this */
-+	if (is_retune) {
-+		sbl_link_tune_zero_total_timespec(sbl, port_num);
-+		link->dfe_tune_count = SBL_DFE_USED_SAVED_PARAMS;
-+		link->serr = 0;
-+
-+		if (link->blattr.options & SBL_OPT_ENABLE_PCAL) {
-+			if (sbl_debug_option(sbl, port_num, SBL_DEBUG_INHIBIT_PCAL)) {
-+				sbl_dev_warn(sbl->dev, "%d: pcal inhibited\n", port_num);
-+			} else {
-+				err = sbl_port_start_pcal(sbl, port_num);
-+				if (err)
-+					return err;
-+			}
-+		} else {
-+			sbl_dev_warn(sbl->dev, "p%d PCAL is disabled with SerDes saved params enabled!", port_num);
-+		}
-+
-+		return link->serr;
-+	}
-+
-+	/* There is already a delay after starting (configuring) the serdes to allow the
-+	   optics to lock..
-+	   This extra delay is about waiting for the link partner to start as we currently
-+	   have no way of knowing this */
-+	if (link->blattr.dfe_pre_delay) {
-+		sbl_dev_dbg(sbl->dev, "p%d: pre delay of %d seconds...", port_num,
-+			    link->blattr.dfe_pre_delay);
-+		link->dfe_predelay_active = true;
-+		for (j = 0; j < link->blattr.dfe_pre_delay; ++j) {
-+			if (sbl_base_link_start_cancelled(sbl, port_num)) {
-+				link->dfe_predelay_active = false;
-+				return -ECANCELED;
-+			}
-+			if (sbl_start_timeout(sbl, port_num)) {
-+				link->dfe_predelay_active = false;
-+				return -ETIMEDOUT;
-+			}
-+			msleep(1000);
-+		}
-+		link->dfe_predelay_active = false;
-+	}
-+
-+	/* Try to tune, keep going unless error, cancelled, timeout
-+	   or too many failed param checks.
-+	   In the latter case this is possibly because the saved tuning
-+	   params are not good and we keep tuning to a bad place. We therefore
-+	   need to fail here and reset the serdes on the next cycle to clear out
-+	   the current tuning params */
-+	sbl_dev_dbg(sbl->dev, "p%d: DFE %stune starting", port_num,
-+		    is_retune ? "re" : "");
-+
-+	sbl_link_tune_zero_total_timespec(sbl, port_num);
-+	link->dfe_tune_count = -1;
-+	while (true) {
-+		link->dfe_tune_count++;
-+		link->serr = sbl_port_dfe_tune(sbl, port_num, is_retune);
-+
-+		switch (link->serr) {
-+		case 0:
-+			sbl_dev_dbg(sbl->dev, "p%d: dfe %stune good\n", port_num,
-+				    is_retune ? "re" : "");
-+
-+			/* Setup the current tuning params for next time */
-+			if (link->blattr.options & SBL_OPT_DFE_SAVE_PARAMS) {
-+				sbl_dev_dbg(sbl->dev, "p%d: Saving tuning params...", port_num);
-+				mutex_lock(&link->tuning_params_mtx);
-+				err = sbl_save_serdes_tuning_params(sbl, port_num);
-+				if (err) {
-+					sbl_dev_warn(sbl->dev, "p%d: Failed to save tuning params [%d]",
-+						     port_num, err);
-+					/* not a fatal error */
-+				}
-+				mutex_unlock(&link->tuning_params_mtx);
-+				sbl_dev_dbg(sbl->dev, "p%d: Saved tuning params", port_num);
-+			}
-+
-+			if (sbl->link[port_num].blattr.tuning_pattern ==
-+			    SBL_TUNING_PATTERN_PRBS) {
-+				for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+					if (!rx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+						continue;
-+					err = sbl_set_prbs_rx_mode(sbl, port_num, serdes);
-+					if (err)
-+						return err;
-+
-+				}
-+			}
-+			goto out;
-+
-+		case -ELNRNG:   /* tuning params out of range */
-+			if (link->tune_param_oob_count >= SBL_MAX_TUNE_PARAM_OOB_FAILS) {
-+				sbl_dev_info(sbl->dev, "%d: too many params oob fails\n", port_num);
-+				/* give up and return error
-+				   The calling framework should reset the spico to delete any
-+				   applied tuning params so we can do a full tune */
-+				goto out;
-+			}
-+			fallthrough;
-+
-+		case -ETIME:    /* tuning did not complete */
-+		case -ECHRNG:   /* eye heights bad */
-+
-+			/*  try to tune again */
-+
-+			break;
-+
-+		case -ECANCELED:
-+			sbl_dev_dbg(sbl->dev, "p%d: %stune cancelled\n", port_num,
-+				    is_retune ? "re" : "");
-+			goto out;
-+
-+		case -ETIMEDOUT:
-+			sbl_dev_dbg(sbl->dev, "p%d: %stune timed out\n", port_num,
-+				    is_retune ? "re" : "");
-+			goto out;
-+
-+		default:
-+			sbl_dev_dbg(sbl->dev, "p%d: %stune failed [%d]\n", port_num,
-+				    is_retune ? "re" : "", link->serr);
-+			goto out;
-+		}
-+	}
-+
-+out:
-+	sbl_dev_dbg(sbl->dev, "p%d: SerDes tuning complete", port_num);
-+	return link->serr;
-+}
-+
-+int sbl_spico_reset(struct sbl_inst *sbl, int port_num)
-+{
-+	int serdes;
-+	int err = 0;
-+	int pass;
-+	u32 sbus_addr;
-+	u32 sbus_ring;
-+	u32 result[SBL_SERDES_LANES_PER_PORT];
-+	unsigned long last_jiffy;
-+
-+	sbl_dev_dbg(sbl->dev, "p%d: spico reset start", port_num);
-+
-+	sbus_ring = sbl->switch_info->ports[port_num].serdes[0].sbus_ring;
-+	if (mutex_is_locked(SBUS_RING_MTX(sbl, sbus_ring)))
-+		sbl_dev_dbg(sbl->dev, "spico_reset: Sbus contention detected, sbus_ring_mtx[%d] locked", sbus_ring);
-+
-+	/* SBUS Critical Section */
-+	mutex_lock(SBUS_RING_MTX(sbl, sbus_ring));
-+
-+	/* Issue the reset */
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (!(rx_serdes_required_for_link_mode(sbl, port_num, serdes) ||
-+		      tx_serdes_required_for_link_mode(sbl, port_num, serdes)))
-+			continue;
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_PROC_RESET,
-+				SPICO_INT_DATA_PROC_RESET, NULL,
-+				SPICO_INT_IGNORE_RESULT);
-+		if (err) {
-+			mutex_unlock(SBUS_RING_MTX(sbl, sbus_ring));
-+			sbl_dev_err(sbl->dev, "s%d: sbl_serdes_spico_int failed %d", sbus_ring, err);
-+			return err;
-+		}
-+
-+		/* Increment SPICO reset counter */
-+		sbl_link_counters_incr(sbl, port_num, serdes0_spico_reset + serdes);
-+	}
-+
-+	/* Check that each lane has been reset */
-+	last_jiffy = jiffies + msecs_to_jiffies(SPICO_PROC_RESET_RETRY_TIMEOUT_MS);
-+	pass = 0;
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (!(rx_serdes_required_for_link_mode(sbl, port_num, serdes) ||
-+		      tx_serdes_required_for_link_mode(sbl, port_num, serdes)))
-+			continue;
-+		sbus_addr = SBUS_ADDR(sbl->switch_info->ports[port_num].serdes[serdes].sbus_ring,
-+				      sbl->switch_info->ports[port_num].serdes[serdes].rx_addr);
-+		do {
-+			err = sbl_sbus_rd(sbl, sbus_addr,
-+					  SBM_CRM_ADDR_PROC_STS,
-+					       &result[serdes]);
-+			if (err) {
-+				mutex_unlock(SBUS_RING_MTX(sbl, sbus_ring));
-+				return err;
-+			}
-+
-+			if (!sbl->is_hw)
-+				result[serdes] = SPICO_STATE_PAUSE;
-+
-+			if ((result[serdes] & SPICO_STATE_MASK) == SPICO_STATE_PAUSE) {
-+				sbl_dev_dbg(sbl->dev, "p%ds%d: SPICO reset PAUSE: pass %d",
-+					    port_num, serdes, pass);
-+				break;
-+			} else if ((result[serdes] & SPICO_STATE_MASK) == SPICO_STATE_ERROR) {
-+				sbl_dev_dbg(sbl->dev, "p%ds%d: SPICO reset ERROR: pass %d",
-+					    port_num, serdes, pass);
-+				/* NOTE: I've seen the transition form ERROR -> PAUSE successfully */
-+			} else {
-+				sbl_dev_dbg(sbl->dev, "p%ds%d: SPICO reset OTHER 0x%x: pass %d",
-+					    port_num, serdes, result[serdes], pass);
-+			}
-+			pass++;
-+			/* No delay here, as we could miss the PAUSE state */
-+		} while (time_is_after_jiffies(last_jiffy));
-+
-+	}
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (!(rx_serdes_required_for_link_mode(sbl, port_num, serdes) ||
-+		      tx_serdes_required_for_link_mode(sbl, port_num, serdes)))
-+			continue;
-+		if ((result[serdes] & SPICO_STATE_MASK) != SPICO_STATE_PAUSE) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: SPICO reset failed! result: 0x%x after passes: %d",
-+				    port_num, serdes, result[serdes], pass);
-+			err = -ETIME;
-+		}
-+	}
-+	if (err) {
-+		mutex_unlock(SBUS_RING_MTX(sbl, sbus_ring));
-+		return -ETIME;
-+	}
-+
-+	sbl->link[port_num].pcal_running = false;
-+
-+	mutex_unlock(SBUS_RING_MTX(sbl, sbus_ring));
-+
-+	sbl_dev_dbg(sbl->dev, "p%d: spico reset done", port_num);
-+	return 0;
-+}
-+
-+
-+#define SPICO_INT_DATA_PLL_RESET     0xffff
-+
-+int sbl_reset_serdes_plls(struct sbl_inst *sbl, int port_num)
-+{
-+	int serdes;
-+	int err;
-+
-+	sbl_dev_info(sbl->dev, "p%d: resetting serdes PLLs", port_num);
-+
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		if (!rx_serdes_required_for_link_mode(sbl, port_num, serdes))
-+			continue;
-+
-+		err = sbl_serdes_spico_int(sbl, port_num, serdes,
-+					   SPICO_INT_CM4_DFE_CTRL,
-+				SPICO_INT_DATA_PLL_RESET, NULL,
-+				SPICO_INT_VALIDATE_RESULT);
-+		if (err) {
-+			sbl_dev_err(sbl->dev, "p%ds%d: serdes PLL reset failed!", port_num, serdes);
-+			return err;
-+		}
-+
-+		/* Increment PLL reset counter */
-+		sbl_link_counters_incr(sbl, port_num, serdes0_pll_reset + serdes);
-+	}
-+
-+	return 0;
-+}
-+
++EXPORT_SYMBOL(sbl_pml_serdes_op_timing);
 
 -- 
 2.56.0
