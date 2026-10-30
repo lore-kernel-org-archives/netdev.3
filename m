@@ -1,102 +1,118 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793366765;
-	b=gKQ0lGMRzEfTJ3eFrjR84r/NfTfrVjCKdRvl+7/wNiuP98UK+1AZdn1BNlPOsxL7Cy+b
-	 SyD0TvA3T1J4nnYjsFKFRPDG7ckEIT4DEuCxjmLi/plfFvcd+Jq8nCDcr+7tkSxW/BDLb
-	 CmKJXP8deaLQH1MIbK+rx7OAdRxQQbp1senTShsbs/6ojs0doPzWuDwKgrmQgCXHBA6r3
-	 8R4AwvB98dNJ4Eqw5HJO2vLDI1cYVDc3cuPgvOtQ+vlLvmbpjzhtQRw9R9lu0l8EdnAU+
-	 /aZ5lcDXy1yggavS4Ml4b3SxyUY9N/rceIWmRbzcKZmo1TMSd01qKIoYqB1HlapPXaw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793366765;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Sent-From:X-URL:X-Accept-Language:
-	 X-Accept-Content-Type;
-	bh=AuxF/+sQ/UQdcElAHk0l9a9PKIVFoZySrr11hiSSgY0=;
-	b=HExhM61PHgv3sOjVNZ+0Kh/M0Xvau9F63PI3TsDf+j5cnZ3NQSGpx2Rp+g7o2pDerVup
-	 HREHGhJSAhZKDwNHA5E/1iJUD9H/9mhPN6er6VLUeXAEdVz+enMuWs0tA+btvmvNqBL2J
-	 d5w84VscR4jKGtnyDzbGY8eZKj9tD9aKgCgDCYUlUl7WsaoiQ+x0QQzoxvBWyUQfWc0Cr
-	 vd56uQLKerpVeDWMTHt5WcMI+PGYrnzYfvnOVkM3DyF6rzag1mGA/Zta+5GWnZoO5T4jp
-	 Y+mc1ma9rmS0ObwFD6lbBntZrM6mms20dkVZk5HQPIB/oA/CRUw79AAwHj3JlFmr+hg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b="Pd8/w+3+";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.42.244.94
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793366994;
+	b=KITLk868xANVPlXQjCxsYcohC4PQ4FTtRK/rE4Yp+G8hdqYefJ69rlVW8ontzFGuAEZw
+	 /ekRclvU5SAx6dLu/zUXw5ScDdL6HsbOeJpNWcmfW/VQPkceClVhdrkR8EfWAGI+nONbc
+	 6ElWuzDo64Artr/cVS51oL+lc/u5Q5ETb4yldAbeDI4iEMlfnM1XnGkUW9x835/FSsOQs
+	 oWT+6xZAJ5ncZB6hj/ntH0Vdf+QeuId4i3vtW2GUm9nflflvXfeRE4LWeNiX4J41lHg+j
+	 BUjeQKDRytVCQUeydKsL5LmWI9m6nkr5yLsK/YhMZ9s+2tNhO+IiXKx1FmnJQr+grZQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793366994;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:Organization:x-ms-reactions:
+	 X-purgate-ID:X-purgate-type:X-purgate-size:X-Notice:X-purgate:
+	 X-purgate:X-pfmilter;
+	bh=QpUKaSoVRoEgdKmoyk8G7l81p1qWRtQXTZ0eVa1XsI0=;
+	b=f6IDDM4NhbwiFYS1LPPUgfuV6ppKu5XuPxXLtW7xeqN9V1JOseEiUh9Ym+JHytrC3ri8
+	 niXReb0ZZpep/ay+qqNUMlQqLw5ywqp1kDK50usUApkWS2AowDj4KChpaXhYAW1JqyuTK
+	 bRks7wyIOVdnrE0CzfF2YwVAR6xsge6tCQhIDoDHPFYw7CURjXO0ttpQwCsfgiu9yKiei
+	 5IE/ce36xBl3He+xzzi4Ud+JiM05GpuIn/yCQO9rx7UvRJMZ+bxJpHb10mrYdVLt0Vdr+
+	 YVhbGt++F9QmDr7NmacCzl89Ya9GELVFZcZcUDpk7//VlbyC/t/sgSBvI6x9xPFnVKA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=fritz.com;
+	spf=pass smtp.mailfrom=fritz.com;
+	dkim=pass header.d=fritz.com header.i=@fritz.com header.a=rsa-sha256 header.s=mail header.b=AmiP1sdZ;
+	arc=none smtp.remote-ip=212.42.244.94
+Received: from mail.avm.de (mail.avm.de [212.42.244.94])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8E8606A31A;
-	Fri, 30 Oct 2026 13:26:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C8E8606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99AC606A31C;
+	Fri, 30 Oct 2026 13:29:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E99AC606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fritz.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=Pd8/w+3+
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 0177F200AD7;
-	Fri, 30 Oct 2026 14:26:01 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793366761;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AuxF/+sQ/UQdcElAHk0l9a9PKIVFoZySrr11hiSSgY0=;
-	b=Pd8/w+3++qktJlDCj+45w8dcKN1gf65UBEJH4hTwwlixCRfLVc9X0cMzhvm56iwGU8wKnh
-	FekeJAIFVNleQ7iVawkipxia4OT8ka3FfAs7oHhOTlkX/uUgWvcicfFaQ3C8nJk9fuKMmR
-	KHdJ06Hc7vczmcfKrR9Jxnvy7G8BjOJdZDTsGT/Gli5hOe8HRmhNu4AUTPTJCDGGB4Xg/W
-	Pksy4phJBr+akdkUrGVBajKqdAwr0zXCqX3BqBm44LJ20A7hJZhndAcZZHyFSkrg/cyd1n
-	p8B0oQgoBu7aJnWTNBBCl4oA4q1+JR/yTqttec+YNz+UgCOoUySDn3naBYkp2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793366761;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AuxF/+sQ/UQdcElAHk0l9a9PKIVFoZySrr11hiSSgY0=;
-	b=LrsQYzRF0mmijGfs7U8wkqhK+f6wnFxsIFrQeVKL2YVBIfcZdIViQDtPlzBnzaveJ7hHiT
-	Sv7gVTIOzTYpgeDPyidhBzfxwBrwmUADoLcvnaXNzXh2Tg8Or1jdtv/STuWBwvP9OgSEEp
-	ojfzYdVt2mhbHtvtyx0gZBPR/5iQQNx3HVINmx+x8Jm4OUht+Xw7mt/cufVz1XdJndHwrB
-	e5hzbGLlK/eaETrYvVXxzITsU0deEIxBNh9Lq3TUcxJOSHap8k5iXlh5SsM+poMTjCrgnV
-	SQKWGNgo1PS5IBY6BP1ZTXoEBVEQi6FIGoRxHv6wNcLl33RNleUcD4LZfDgO/Q==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793366761; a=rsa-sha256;
-	cv=none;
-	b=AUoLDpzSx7dVznQ2eTsOVIFP1aitg4Uc6EbxWFwF60a9bEAsjaMr9MPErSUx/7MDJ7nW0a
-	Jbn/O+CwWWpfNevxgEv5ma36XlSzLhwOzP8KpT1eGMQ7O7cFm4+dRxQl4rQ07w3RYNHpjZ
-	2gx//odRjPl51osC07cBomL8s805znA0w+eFQ+sGl7XaAjmk0FrhGTSGLYgZDpoj+EmU5k
-	IeD0/00+H2JvYLWOTHJ7yMeIWjBtX2poLPB1sBA8yrE3AufWV5KDaYrBpKcNLNVhEXV2FW
-	UBJfYJYWI9KuF1Y6soiV1GnSJ85+0WqcGBsVs+v8+gsg2Z6vD0tXUdg1RyYRTw==
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1xMmcK-001sVU-2y;
-	Fri, 30 Oct 2026 14:26:00 +0100
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1xMmcK-0000000Epla-3Jyj;
-	Fri, 30 Oct 2026 14:26:00 +0100
-Date: Fri, 30 Oct 2026 14:26:00 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Kory Maincent <kory.maincent@bootlin.com>
-Cc: Carlo Szelinsky <github@szelinsky.de>, netdev-bot+sashiko@kernel.org,
+	dkim=pass (2048-bit key, unprotected) header.d=fritz.com header.i=@fritz.com header.a=rsa-sha256 header.s=mail header.b=AmiP1sdZ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fritz.com; s=mail;
+	t=1793366980; bh=a/fEt90n+2smzc8tULN5m3m/hMMA3WQXHcvWhcoynLc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AmiP1sdZKE4ipmV9XkFzIAg6sDdTc8piKssit8JG5M7jVm+wWoA9HNBcL6nnioxmf
+	 UtVWmWL8HC8cipXhGGKFKn344d7QBy4BigwXDhd9cibHOOYqfnPwcm+wl7S8LyH40H
+	 PIcRpdlbp12mkcZ/qVoxVXxHxdsVB4yBgm4K8e8Gb7j8o5MGT6HVOS52CCT1ImUgYM
+	 rC8fGm5esO5fYtQK82TXSmpyrCUdX6hUkhNuydSuiEjRPAEuIkSRJ3Vr5CzOMuVEiE
+	 +YmeA56zTDNX6G2v3XBcddEQclfpxGdALH3GP+htSNoKgdV3GvyPoPiSSRu1+yw2Ux
+	 Cmo8WDvejZ5Lw==
+Received: from [212.42.244.78] (helo=mail.avm.de)
+	by mail.avm.de with ESMTP (eXpurgate 4.57.1)
+	(envelope-from <n.schier@fritz.com>)
+	id 6ae49bc4-23c8-7f0000032729-7f0000019972-1
+	for <multiple-recipients>; Fri, 30 Oct 2026 14:29:40 +0100
+Received: from mail-auth.fritz.com (unknown [212.42.244.78])
+	by mail.avm.de (Postfix) with ESMTPS;
+	Fri, 30 Oct 2026 14:29:40 +0100 (CET)
+Date: Fri, 30 Oct 2026 14:29:39 +0100
+From: Nicolas Schier <n.schier@fritz.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, Nathan Chancellor <nathan@kernel.org>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kyle Swenson <kyle.swenson@est.tech>, Ross Cawston <ross@r-sc.ca>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2 06/14] net: pse-pd: check the PI state under the
- lock when setting a power limit
-Message-ID: <auSa6OHeftNNLBKE@pengutronix.de>
-References: <179274321449.3134.2737207729630977183@kernel.org>
- <20261023215441.1087277-1-github@szelinsky.de>
- <3b37693b-bc91-4c76-8df3-7e66743b156b@bootlin.com>
+	Luis Augenstein <luis.augenstein@tngtech.com>,
+	Maximilian Huber <maximilian.huber@tngtech.com>,
+	Anup Patel <anup@brainfault.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Andy Lutomirski <luto@kernel.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, soc@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Mark Rutland <mark.rutland@arm.com>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Atish Patra <atish.patra@linux.dev>,
+	Sean Christopherson <seanjc@google.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org, linux-efi@vger.kernel.org,
+	netdev@vger.kernel.org, kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linux-kselftest@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH v5 13/13] treewide: Stop defining __ASSEMBLY__ for
+ assembler files
+Message-ID: <20261030-dexterous-manatee-of-honor-eac4eb@l-nschier-z2>
+References: <20261023064908.66707-1-thuth@redhat.com>
+ <20261023064908.66707-14-thuth@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,46 +122,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="FhzCQO4A3K0b968D"
+Content-Disposition: inline
+In-Reply-To: <20261023064908.66707-14-thuth@redhat.com>
+Organization: FRITZ! Technology GmbH
+x-ms-reactions: disallow
+X-purgate-ID: 149429::1793366980-1E7C8EE4-1E744FE6/0/0
+X-purgate-type: clean
+X-purgate-size: 2843
+X-Notice: Whitelisted
+X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
+X-purgate: clean
+X-pfmilter: host: postfix-mx-03  mail-id: E6A11A07A2  external: no
+
+--FhzCQO4A3K0b968D
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <3b37693b-bc91-4c76-8df3-7e66743b156b@bootlin.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 30, 2026 at 12:30:16PM +0100, Kory Maincent wrote:
-> 
-> 
-> On 10/23/26 23:54, Carlo Szelinsky wrote:
-> > On Fri, 23 Oct 2026 08:13:34 +0000, netdev-bot+sashiko@kernel.org wrote:
-> > > [Severity: High]
-> > > Do admin_state_enabled and isr_pd_detected really mean the PI is powered?
-> > 
-> > Kory, a question about pending PIs. A PI can be admin enabled with a
-> > PD detected but without power: when there was not enough budget when
-> > it was enabled or when the PD was detected, or when a PI with higher
-> > priority took its budget. Such a PI passes the check in
-> > pse_pi_update_pw_budget(), so setting a power limit reserves budget
-> > for it if the limit fits. When the PI is powered later,
-> > pse_pi_allocate_pw_budget_static_prio() sets pw_allocated_mW again,
-> > and the budget reserved before is never freed.
-> > 
-> > This was the same before my patch. Should set_pw_limit skip a pending
-> > PI, for example with pse_pi_is_admin_enable_pending()? If yes, I would
-> > send that as a separate patch.
-> 
-> Sorry for the late reply.
-> No, I don't think we should skip setting power limit for a pending PI.
-> Lowering the power limit of a PI could allow this pending PI to be powered
-> again with a smaller power budget.
+On Fri, Oct 23, 2026 at 08:48:50AM +0200, Thomas Huth wrote:
+> All spots have been changed to __ASSEMBLER__ (i.e. the macro that
+> gets defined by the compiler), so we don't have to manually define
+> __ASSEMBLY__ anymore.
+>=20
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  Makefile                                             | 2 +-
+>  arch/alpha/boot/compressed/Makefile                  | 2 +-
+>  arch/arm64/kernel/vdso32/Makefile                    | 1 -
+>  arch/loongarch/vdso/Makefile                         | 2 +-
+>  arch/mips/boot/compressed/Makefile                   | 2 +-
+>  arch/mips/vdso/Makefile                              | 2 +-
+>  arch/powerpc/boot/Makefile                           | 2 +-
+>  arch/powerpc/platforms/cell/spufs/Makefile           | 2 +-
+>  arch/s390/Makefile                                   | 2 +-
+>  arch/x86/boot/Makefile                               | 2 +-
+>  arch/x86/boot/compressed/Makefile                    | 2 +-
+>  arch/x86/realmode/rm/Makefile                        | 2 +-
+>  arch/xtensa/kernel/Makefile                          | 2 +-
+>  drivers/firmware/efi/libstub/Makefile                | 2 +-
+>  drivers/net/wan/Makefile                             | 2 +-
+>  scripts/Makefile.build                               | 2 +-
+>  scripts/gfp-translate                                | 2 +-
+>  scripts/headers_install.sh                           | 1 -
+>  scripts/sbom/tests/cmd_graph/test_savedcmd_parser.py | 2 +-
+>  tools/testing/selftests/kvm/lib/riscv/handlers.S     | 4 ----
+>  tools/testing/selftests/vDSO/vgetrandom-chacha.S     | 2 --
+>  21 files changed, 17 insertions(+), 25 deletions(-)
+>=20
 
-Ack, makes sense.
+Reviewed-by: Nicolas Schier <n.schier@fritz.com>
 
-Best Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+--FhzCQO4A3K0b968D
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEDv+Fiet06YHnC6RpiMa8nIiabbgFAmrkm8MACgkQiMa8nIia
+bbgYnhAAoBtAI6CuFq9HQy+0LMEBBrZiObTja20n/nhSog1KoLUqfiUozqhmkZ/q
+CT6UauaVVL+guGjUkQd4MU9Y4sF+qy0kKmfzavbo/MIofHFX6fypq5WinV83BS4k
+PfHvku6pkGUFMvVkCliG3iiJVbANl4MGycOY5VxIXI9veRse6+SRuWaP5fqRD0dv
+XZHNc+ZmLOMmkijTKgYUq7fUIdBhxmeq4Px5Q0aq0cESHCORoGOcUcdASB8KRxr/
+S2whk42NUvuQxJF/S68XDQ9N3LdkhPBY2Y0GHdcJ+esswGxGJVb7rfY38dRXkz8R
+a/X59L/D+n6k/1v/xfmmj36rd/INoushZOa+gNXEg5KPwORqTYICzhwVlfZz5mdv
+0XgTKePC+FBeKnCHfJjMK1P6SAnag5q59vu8MXmzNGH9HIhm2PzyPhRrPYA4lwBl
+N1Hh9kQBBwy4oEdLX69syKiLtIA3mDxbo80VqRIUm6MpUjxkTbkAgLQgfXDRz2M0
+Wa9/fDB/O1tJKj8IR8V+jbjPqz5/6/fNkpD9/6fpqvBgeD2vkjOk3q/IvTq5gvHK
+ApKpaLY5DYJBXdX80Rm5ofEmFac0/p9C+eX3ovHAHFIG7JPR5kTF3fwDtbSbP7z6
+ghTZsJCcqEgyM22oqOSpskYbUmxnPEnUkGMg6K1a7KZPgUJQ9zA=
+=Pwya
+-----END PGP SIGNATURE-----
+
+--FhzCQO4A3K0b968D--
