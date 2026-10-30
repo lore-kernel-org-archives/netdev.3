@@ -1,58 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793376701;
-	b=AyEVH1CYz68ae19OTZHTlRl1pD2QDXWWU/FFDmT+GNcgTlV50IpwW8Cc2jZ2vTja8Ck8
-	 mr6mobLynm1Kp/cOcvDEU/AML5kfWHtH1CA/gA9TBtaRnt6X9NaXXPu/qivzqC+X7ALyy
-	 l+Lj2fPoULzActlozpGmyBtZBUL0ySv2r5mxwDUMtk85FxOkOqeJY4BjBm2p65VadI48K
-	 eDScXA3nTVP3j5Ln8/eG4y4YrdYyy5TJzMSO6wPF+zUbb6Wbhu+BrgelbNR8xGhQ7eEFa
-	 IN+eNxcGyMZm9qUlvuMl1h9C5fBsZz8UZG/9IU/QP1fVp2yw8UMKd0Tp01zp64VAF1w==
+	t=1793377085;
+	b=E4rcz/85jlCWvPv4nWu1H9Ko3FnJCF3ZD8xbnOLjuwJJt1SPEMQjZWB7EYM2QmOfi8tc
+	 HlHFqcsM6kF+2mnxcbeX9QFYgpELsUvrwzt6a03n0hCSS+46UiyRRwHf8LNv67oKCzLOm
+	 jkAvC/U6R/5M3xunRQPuXoEFAkkwgu4fh3ffbMYvvRZF7HtMzF3xeBcb3gSeKEh+9DWSD
+	 aY69c9bRYwXpw8+B1yEMWDsxeCzzhVfPhICRL+csS8SqE/D9tA9HqQUf0sfwx9fZy3fp3
+	 wafdEnunj+GoMXq9VYSPvBiYasZgpDzuNbTI4o6eYwG4wCWd/1Hj9zXXPblD4vmrQMQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793376701;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=THuUtMwAVhpRA2NrdipfCYJztWnUG7sDWK3sD1+K1lM=;
-	b=Vn/lXIhcTVpScUBDFp+jsaNkx7t8+vTnHUxHWLBzyVrDQMJPe5PQ88hacNUZu2pzn/xV
-	 TOV6DCRNESJEruHGL69GY9Zcn8EomJ9l0wK63Sd33v5YiPNj3xk1VvPnm24yvDZaq7UwJ
-	 9zOa7yK426sj5XVBpOREpq9GxNG99EU41GEVa9Rzgmle1A7XzTEm11fAe5kZRKQ/eDMur
-	 dE2FQb2R3RsZ7WMXrly+Or5tKaILNdR2agHkYDsP7T1CAR9UuKhUfv7jbvgLItg/DXvhI
-	 ETYXe9kd96fygxmD14dlwKsy+7yCuxXymPlypK/5muvYjQF9gEYVB1eN8b9qIrN+0YA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793377085;
+	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
+	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Mailer;
+	bh=ZDNHG8v8zk9WmJP9GH0iqpZHJN79nd4ttmjK0fCFWyk=;
+	b=g+oShhIcx4+U1ExFeVr5j6GsJYo/5175aWY+N0Qql8HHioXVHRwHEe3iC84M4dfssZda
+	 obYJcr917EMqxlx8qpQK2gz6Zg5gbf8u7+NRPVn+gQRKKkC8jFP8TDYs66i/b3FVd6OOU
+	 lkvemoU/loolHnqTI8unhr/CfvAuZl5x0EOfZ/eoGX4/i64ACe/9adlGB46m0abNEI9qz
+	 DmPAq0jZQF447eAu80uooril0wVtnabXyr1Px44juFCSIu7WFcAYsP6yymM0vRlMsXjCz
+	 YohpH8YBaKYFUXPqp0Z7xwbc+qQE9YZzTh+sMbj0g4yHl9vqfhYqGu9+Lvj9pjBAPeQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fbP+WE9W;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eWb9BuFd;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C45606A31A;
-	Fri, 30 Oct 2026 16:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3F3606A31C;
+	Fri, 30 Oct 2026 16:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fbP+WE9W
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D16C1F000C1;
-	Fri, 30 Oct 2026 16:11:40 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eWb9BuFd
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85BF71F000C1;
+	Fri, 30 Oct 2026 16:18:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793376700;
-	bh=THuUtMwAVhpRA2NrdipfCYJztWnUG7sDWK3sD1+K1lM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fbP+WE9WgEDroWQuXs/xxxP43YHUSkAqlpiRQE41b7SzSq3/Q6hb64UvFiADwJDXv
-	 CJ18QZZ6WHKWQudZ8i5PCsag/0BMfx6mkYpsSeO8e3i5gClIzcLjY1zuI1tGBRV5We
-	 KcxOi0xekKwRumSOhPc/wJGh14FnTnRKzDDzEYDwvJ27fRh5bqbIHnke3sha4CPkH9
-	 xVxYkLFt+EtAqfCR2OtCRGPFvh2zr/kNtFxs4kQRYlVrbiZ7xb/aRJQ+t0f3fDLn/v
-	 knvqtnAis0ljkjIkst4j4uGkthg6m/g26ICo+bOBdzTJPadylKQzgio2uvi6K9hzki
-	 jYU6GEt3rlRHA==
-Date: Fri, 30 Oct 2026 11:11:36 -0500
-From: Rob Herring <robh@kernel.org>
-To: Robert Marko <robert.marko@sartura.hr>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
-	kuba@kernel.org, pabeni@redhat.com, krzk+dt@kernel.org,
-	conor+dt@kernel.org, lxu@maxlinear.com, hkallweit1@gmail.com,
-	linux@armlinux.org.uk, lgirdwood@gmail.com, broonie@kernel.org,
-	michael@walle.cc, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	lrosu@maxlinear.com, luka.perkov@sartura.hr
-Subject: Re: [PATCH net-next v3 1/5] dt-bindings: net: maxlinear: add
- MxL86211C VDDP supply
-Message-ID: <20261030161136.GA259810-robh@kernel.org>
-References: <20261020093655.344585-1-robert.marko@sartura.hr>
+	s=k20260515; t=1793377084;
+	bh=ZDNHG8v8zk9WmJP9GH0iqpZHJN79nd4ttmjK0fCFWyk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=eWb9BuFdkxI1AoMZhA1RbZq7J/sUlQ18FiCmi5ShQw/WYHUb+y+CeSsSuuZqY26lW
+	 1/nv4TeLqKesyblsRXZpbD+xxPtpMZj5VfWLthnZjuelUmKZlEQu6WEnqvU/yEuZPG
+	 aJx/6bdO3sgrCSwaR2sTbIj1xu8miLdFRL6KAq72+SLi9OtLq3ycFHm/W1+MWoETdf
+	 BiZ2FQ8ok2GAmsmOv+By3+V63Vc88VU4ZRLqt/IvLJTXfIcpn8LAi97b1WifL7prbi
+	 9YPywOmhwxgnttRnNAMgV7KKwYeJOg7i6Zynast3R7X0DeM7v3UVU1gEpneK8Op02b
+	 N5ACo2z7m2LwA==
+From: Christian Brauner <brauner@kernel.org>
+To: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ kernel test robot <yi1.lai@intel.com>, stable@vger.kernel.org
+In-Reply-To: <20261030-work-nsfs-init_ns_tree-v1-1-7ec0adb47c54@kernel.org>
+References: <20261030-work-nsfs-init_ns_tree-v1-1-7ec0adb47c54@kernel.org>
+Subject: Re: [PATCH] ns: don't add init_ipc_ns and init_net without
+ namespace support
+Message-Id: <20261030-labil-bergab-besetzen-9a2b7d8d71ac@brauner>
+Date: Fri, 30 Oct 2026 17:18:01 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,111 +59,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261020093655.344585-1-robert.marko@sartura.hr>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev-ce4c1
 
-On Tue, Oct 20, 2026 at 11:35:34AM +0200, Robert Marko wrote:
-> Describe the optional VDDP supply used by the MxL86211C PHY. Its
-> voltage determines whether the MDIO, MDC, and MDINT pads use 1.8 V or
-> 3.3 V.
+On Fri, 30 Oct 2026 16:50:07 +0100, Christian Brauner wrote:
+> When CONFIG_IPC_NS or CONFIG_NET_NS are turned off we still add the
+> initial ipc and network namespace to the namespace trees. ipc_ns_init()
+> calls ns_tree_add(&init_ipc_ns) whenever CONFIG_SYSVIPC is set and
+> setup_net() calls ns_tree_add_raw() on init_net whenever CONFIG_NET is
+> set.
 > 
-> Existing device trees do not describe the supply and rely on the hardware
-> reset default. Keep the property optional to preserve their compatibility.
+> But without CONFIG_IPC_NS and CONFIG_NET_NS these aren't namespaces
+> userspace can do anything with. They don't have proc_ns_operations so
+> there's no /proc/<pid>/ns/{ipc,net} for them, nsfs_fh_to_dentry()
+> refuses them with -EOPNOTSUPP, and since ns->ops is NULL
+> __ns_tree_add_raw() doesn't add them to the owner list of init_user_ns
+> either. So they end up half registered. That's also not how we treat
+> any of the other namespace types. Without CONFIG_UTS_NS, CONFIG_PID_NS,
+> CONFIG_TIME_NS or CONFIG_USER_NS the initial namespace is never added
+> to the tree.
 > 
-> Select the MxL86211C PHY ID and nodes using the existing MaxLinear
-> broken-interrupt property, so this binding is checked during normal DT
-> validation. Restrict the new supply property to the MxL86211C with the
-> compatible conditional.
-> 
-> Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-> ---
-> Changes in v3:
-> - Make VDDP optional for existing device trees.
-> - Select MxL86211C nodes and nodes using the legacy MaxLinear property.
-> - Replace the empty then branch with a negated compatible condition.
-> 
-> Changes in v2:
-> - Model VDDP as a supply instead of a regulator provider.
-> - Select the schema for the MxL86211C PHY ID.
-> 
->  .../bindings/net/maxlinear,gpy2xx.yaml        | 48 +++++++++++++++++++
->  1 file changed, 48 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/maxlinear,gpy2xx.yaml b/Documentation/devicetree/bindings/net/maxlinear,gpy2xx.yaml
-> index 8a3713abd1ca9..53f430e121510 100644
-> --- a/Documentation/devicetree/bindings/net/maxlinear,gpy2xx.yaml
-> +++ b/Documentation/devicetree/bindings/net/maxlinear,gpy2xx.yaml
-> @@ -10,10 +10,37 @@ maintainers:
->    - Andrew Lunn <andrew@lunn.ch>
->    - Michael Walle <michael@walle.cc>
->  
-> +select:
-> +  anyOf:
-> +    - properties:
-> +        compatible:
-> +          contains:
-> +            const: ethernet-phy-idc133.5400
-> +      required:
-> +        - compatible
-> +    - required:
-> +        - maxlinear,use-broken-interrupts
-> +
->  allOf:
->    - $ref: ethernet-phy.yaml#
-> +  - if:
-> +      not:
-> +        properties:
-> +          compatible:
-> +            contains:
-> +              const: ethernet-phy-idc133.5400
-> +        required:
-> +          - compatible
-> +    then:
-> +      properties:
-> +        vddp-supply: false
->  
->  properties:
-> +  vddp-supply:
-> +    description: |
+> [...]
 
-Don't need '|'.
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-> +      Optional regulator supplying the VDDP pin. Its voltage configures the
-> +      MDIO, MDC, and MDINT pad voltage and must be either 1.8 V or 3.3 V.
-> +
->    maxlinear,use-broken-interrupts:
->      description: |
->        Interrupts are broken on some GPY2xx PHYs in that they keep the
-> @@ -45,4 +72,25 @@ examples:
->          };
->      };
->  
-> +  - |
-> +    vddp: regulator-vddp {
-> +        compatible = "regulator-fixed";
-> +        regulator-name = "vddp";
-> +        regulator-min-microvolt = <1800000>;
-> +        regulator-max-microvolt = <1800000>;
-> +    };
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Drop. Examples don't show providers.
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-> +
-> +    ethernet {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        ethernet-phy@0 {
-> +            compatible = "ethernet-phy-idc133.5400",
-> +                         "ethernet-phy-ieee802.3-c45";
-> +            reg = <0>;
-> +            vddp-supply = <&vddp>;
-> +
-> +        };
-> +    };
-> +
->  ...
-> -- 
-> 2.56.0
-> 
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] ns: don't add init_ipc_ns and init_net without namespace support
+      https://git.kernel.org/vfs/vfs/c/82f1c815aaef
+
