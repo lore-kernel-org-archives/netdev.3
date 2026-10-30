@@ -1,101 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793368695;
-	b=g1vlQzE7LbaGKNUCAyKyqyRpa5CDZgvxZ5yMvA/C0+RZzJefVMD/uYRkVhWoXwG7jaYm
-	 C6ebw6ucN9tOvXINGVYDbb25As4/BWeQ4EvSxEYRPPLli3Gcwkdg1tgshS0AaemPxKtYl
-	 qZ7OtJt5Ev2ULbIUx13m8PoR/OfmKBYh/6mfXTQu32ka3MRg3j6aOOConLjQVUX4nzpoz
-	 YRDgGGXQ3AWMEY75uUzyP+YkPdcux8aAc5USdLYMXMi3J3CnrB515l1Bou9jg38AhRL0k
-	 r5bM+li6onW36BJiLILZqIUTs7ewo33s/WjIs4G/JezYmFgh7WoS2cyDOgsDs4Tn8+A==
+	t=1793369693;
+	b=A1DcQRZEiOkScgU1Oq6B6aq5Xy3XoRojgBra9w/Be9n4YwwYIMInWZOYwG3JJjrOilhD
+	 FRlEJJiWN/4z/lfLk3BxpXKyrz+vr/Z723JAJ+W3h+vlndoWL7Mv7vf/V2m/u5Yq5mWKP
+	 dTQEsUD3OnK2T4SA9G81ESpZvS+kZC4CB3LFDs0ljdAp8mD9HzNlHzcNgTGTITihNJI/E
+	 i/8l9C9Uc3zTRwUD+cGxlLLeSzcUGAmUBZn5ZiPzZRojzxQD/HZ/SgtOU37d8xtIaK/ma
+	 wXai8syckRXzZy24ysOy+DX4Q/x99I9iR4q+fkIgJGI8B6Jg5G7RbvRRkp0baQMvBQw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793368695;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=FvM3i9oJggLF/0zM+j9Mgv4JThMqTDYyofjEp6i1BaE=;
-	b=Zu7Y12IdrVt55QWfYqjX17xdrMxfWi5cSPkP1tZxgG1WtGAfWuFWp8DbAoSL74PknxOR
-	 MFWZHrwlqXsCEgzELLKTWjZ6KKkVLkKE6l1hG/JZ4i+R51hgIC7QatusIJl0TwDzErZZP
-	 OFY7vTNYEY+Gl+8bjb+YEWHIJUO7yL4ewC3kfgvpu6729rhGyiCnLWbDmlK1UUebkbb7q
-	 FGVS/5F3cwswJTlSslG+VFEVWdgOrsr27Nlxt9mBF72SFwn2JnvkwJemV5pfyn+wXvlGb
-	 wjQGJ7Ujih6Jk1QVqXcsLKLt6r4v+oEDUTS8dF5YNYoCmenT6erdVxoIF7ymnfr0O0Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793369693;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=uSWkWu0paLSVigzrw+dyHl6X7hCrziDcX3CFcmRfIi4=;
+	b=lASsNfH5PwCYEhW6+ICkCqA/WnH9ojAX9/Qo3Q5OzDB1RYOTHrDVoZey+S51e61DKFRV
+	 Inju0U0qDrIXnwEz8WzqZNEvzNGg46HoyA9jxobS1mRqDbojmwWdH5io9Aj+9dAYnGMNU
+	 GxFBU/I+cZns0zAlgWoopJtPqifw6Okat5GPJognlCTNfQY0+selz7zJsM17UKg6FCI8L
+	 /OZeplbEhcarNgfyXt43iKXQmIwERBBwRY7rwfQMF33+q3L9TbLmjs1AenlVk85Twa5a7
+	 0GY0W2YlMVB9/udOA7PhDlWpfAV6xcFeNYrjDtlxFdNAw7LV45TFNYtdZVo3IgsQatw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GziDWtFo;
-	arc=none smtp.remote-ip=209.85.221.175
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F33A606A31C
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 13:58:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F33A606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b="Lm/VmcDW";
+	arc=none smtp.remote-ip=111.22.67.139
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822D4606A31A;
+	Fri, 30 Oct 2026 14:14:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 822D4606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GziDWtFo
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5eafaeb8684so230633e0c.3
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 06:58:14 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=Lm/VmcDW
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793368694; x=1793973494; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=FvM3i9oJggLF/0zM+j9Mgv4JThMqTDYyofjEp6i1BaE=;
-        b=GziDWtFo9OIuAHIXdmmf/xoVkLmKXeWVFjSfY0C3w6Hyg0+3zcC6MgmjY+hdIgajXB
-         o19bf6HcHWw6aOCl7upKjKfiBofa44OMJ/TvLLcuuTuNW9aucLV1UQz1xdQCwQEjZkGo
-         QQAF06J1NGdkGg27pn+CsdOd2QX5Rxvb9xqGXDSATi9y+NkxiN8i1mfJEQ+Gb2C54TC9
-         1VThYUtHay7MsVgvMjGYXeKob7Bl7/oS95vLOI7KG8KxiY3WSp18/reoDpT33rv1AXeQ
-         9viTfWmg7Q1qAiHl/m/g6NPUWseTZYmJQvDJsAq+GY3mTcNqcPvdjrlJZ2pZgDOOv2AD
-         5Asw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793368694; x=1793973494;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FvM3i9oJggLF/0zM+j9Mgv4JThMqTDYyofjEp6i1BaE=;
-        b=ArkZYzHxCDv75G4FIuY4nPNx5nkECS0RFQ+CYorIXk62Lt8wNjLwhBJ+FJ20HnqVoP
-         pUZnqcfe7OeJ96ScUNkGU+JscWJNIH+28NgpgIjyXjYXjr7ZxyFQv3qDkJ6OmlJuS0d+
-         5mB6ZIauMyVI1DdjpD2foKb3XKTh9NWNS/zZm3IZXVj69vm6Kg2k/IrHLZJIX06SDQ6I
-         9Q2wH2kgs0eCHAsAPyxj86Z5ybrAb35sxAIemuIQlUnJPRZaav0Js+p3UFN+fVmeG4pF
-         0X8/5qPVZK4TDvSJE9kowcUgjYYuAjSPkzjcMg2ML+BEfLaaCK63oBUZCjHbce3yRc+L
-         CZxA==
-X-Forwarded-Encrypted: i=1; AKwUvBzc+zCsjoxVRy3lqabVcHreJEKMA5RsuzvHIF4j7C+nwLS6hWxcopdWvt7/cXWE7lMpi3yqDjk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI2QbELrTcQV1KJ/couALMQ+A7G9ig2CF22Xyr3Ehl4Q0YvLuk2
-	NUnhh/cQbHq5hqxMaKMpmr5qaAX2rXxbelNnQjO+PM+4+Yqv4C3ZPzJl
-X-Gm-Gg: AYBFou18cTX9IkizVWAJj2MhMjEwuML4QW90iP+ish85pTGdpmiRGCLcXgrV8PS++rb
-	gOokKKoxv1w9Tr2yUQC7d+/4Hqe1iXuRu0QZIzWjNq7CB2YwJFQJ49QrIjeBU9pWOJOVJ3vhgnb
-	kUgduTCbOjJtkapOy5lAor+EwxhYXI8RYmk2kEqHcwds00x4mHd2CHenQu6ZowDonjYzS0nzf71
-	4/mrNFT45ID4CV+agNMD8Wy/bebebOnYb6UhZBQnjbgFdGRluuALsNPX4TcFf1jORdHHICMQrR1
-	dLLCgog4B+GsDAFVw+EgonHpG7JqaQTzDjkIcdXXnOdbBnZKovW0ujZ5D74e8uc7mQzdxmn0wIq
-	7mMFGZr/v3zszQeXJmyLUyx74M0hhW4SvjijdQfPfSx5uyN7aA9naIE831o0bBqZfRz58vQ70jL
-	mrUzhrDApk6w2tGSqk6VrppB1iU3w/jIIdYNEvv4itE4eTtUvJdg9hAlldOaDCr1eBXlYjV86hn
-	jWCVB7+uaJGEnERtclaiNRDm5QQzNZP4B+wux6QmeNLzG8Kuh+dRehFq49ObbrkcDoMASGeSw9i
-	uTLslKE2BE9wQutEm8zKxi41smL6X29NN8J1JaGfHMImCIQOmDeWZlQxd+D07bO+3MuEtLhTBjK
-	M+pYst49sIwgCcarSKltYWskYiVw0URl1vTTqfMUmAj1TQyFbmqXRoBuErBLPa+zlgudhWQ==
-X-Received: by 2002:a05:6123:12d:b0:5ea:c382:af67 with SMTP id 71dfb90a1353d-5ec6882df59mr1136072e0c.13.1793368694100;
-        Fri, 30 Oct 2026 06:58:14 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec69bf220esm2319190e0c.7.2026.10.30.06.58.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 06:58:13 -0700 (PDT)
-Date: Fri, 30 Oct 2026 09:58:13 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Rongguang Wei <clementwei90@163.com>, 
- netdev@vger.kernel.org
-Cc: willemdebruijn.kernel@gmail.com, 
- jasowangio@gmail.com, 
- andrew+netdev@lunn.ch, 
- davem@davemloft.net, 
- kuba@kernel.org, 
- Rongguang Wei <weirongguang@kylinos.cn>
-Message-ID: <willemdebruijn.kernel.f2fb738aa85b@gmail.com>
-In-Reply-To: <20261030060043.94719-3-clementwei90@163.com>
-References: <20261030060043.94719-1-clementwei90@163.com>
- <20261030060043.94719-3-clementwei90@163.com>
-Subject: Re: [PATCH net v9 2/2] selftests: net: add TAP socket filter attach
- tests
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=Lm/VmcDWU28tEi+s9Wt6fhNwmihn6RsXswUjsNaq8BLTR993hTPqh4Q4oAl+xDB2Q2cXEaD+Vmj2T
+	 Q90ykTShJyc6QpLXAT+tNSSSHIkUsZbqv5tKPC9hVa1fVF2IwMWMtFeqxKIwne/N/MtT3JKWEh9siQ
+	 7pzUVTyq0KFwu86U=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee56ae4a657acc-73a14;
+	Fri, 30 Oct 2026 22:14:48 +0800 (CST)
+X-RM-TRANSID:2ee56ae4a657acc-73a14
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[112.23.104.16])
+	by rmsmtp-syy-appsvr02-12002 (RichMail) with SMTP id 2ee26ae4a6574be-625e7;
+	Fri, 30 Oct 2026 22:14:48 +0800 (CST)
+X-RM-TRANSID:2ee26ae4a6574be-625e7
+From: Xia Yan <yanxia@cmss.chinamobile.com>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	willemdebruijn.kernel@gmail.com,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	yana06070@163.com
+Subject: [PATCH net] ipv6: fix cached route reuse for SO_MARK control messages
+Date: Fri, 30 Oct 2026 22:14:35 +0800
+Message-ID: <20261030141435.779302-1-yanxia@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,30 +76,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
 Content-Transfer-Encoding: 7bit
 
-Rongguang Wei wrote:
-> From: Rongguang Wei <weirongguang@kylinos.cn>
-> 
-> reattach_filter_without_user_buffer() attaches a filter, makes the buffer
-> the program was copied from unreadable, detaches the queue and attaches it
-> again. It then attaches a second queue from a fresh socket, which starts
-> without a filter of its own, so a clear IFF_NOFILTER shows that the filter
-> was installed again from the kernel copy.
-> 
-> attach_filter_bad_len_keeps_program() checks that a TUNATTACHFILTER with a
-> bad length leaves the installed program and the filter state that
-> TUNGETIFF reports alone, and that a queue attached afterwards still gets
-> the filter.  attach_filter_bad_prog_keeps_program() refuses a program with
-> a valid length and instructions that bpf_check_classic() rejects, and
-> checks the same properties: the filter state on the queue, and a queue
-> attached afterwards still gets the saved program.
-> 
-> attach_filter_nofilter_flag() and detach_filter_clears_reattach() cover the
-> ways to attach a queue without a filter.
-> 
-> Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
+A connected IPv6 UDP socket can reuse its cached route when a SO_MARK
+control message supplies a different mark. The packet then takes the
+route selected for the socket mark instead of the per-message mark.
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+udpv6_sendmsg() sets flowi6_mark from the control message and clears
+connected. However, ip6_sk_dst_lookup_flow() still tries the cached dst;
+connected only controls whether a newly looked-up route is stored.
+ip6_sk_dst_check() checks the addresses and output interface, but not
+the mark.
+
+Commit 42dcfd850e51 ("udp6: allow SO_MARK ctrl msg to affect routing")
+fixed the mark used for fresh route lookups; connected sockets still
+reuse the route cached before the control message.
+
+Reject the cached dst when flowi6_mark differs from sk_mark so that
+the packet goes through a new route lookup with the requested mark.
+
+Found during code review of IPv6 UDP route caching. Reproduced in UML
+with a connected socket and a fwmark rule pointing to a prohibit route:
+marked sends succeeded before the fix and return EACCES after it.
+A two-interface test also confirms that marked sends use the selected
+interface and subsequent sends without a control message still use the
+socket mark. cmsg_so_mark.sh passes before and after.
+
+Fixes: c6af0c227a22 ("ip: support SO_MARK cmsg")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xia Yan <yanxia@cmss.chinamobile.com>
+---
+
+Tested on net 5838f10563d58afca6711edb5e4eda968ca181d9. The relevant
+send and route-cache code is unchanged at the base commit.
+
+Full x86_64 W=1 builds completed before and after with no new
+diagnostics, using configurations based on allmodconfig and
+allyesconfig. WERROR was disabled for both; allyesconfig also had
+KASAN disabled. Both used LD_ORPHAN_WARN_LEVEL="warn" and
+DRM_WERROR=n.
+
+ net/ipv6/ip6_output.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 25fe0ba98b1a6..843bb95e635b9 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -1125,6 +1125,7 @@ static struct dst_entry *ip6_sk_dst_check(struct sock *sk,
+ 	    ip6_rt_check(&rt->rt6i_src, &fl6->saddr,
+ 			 np->saddr_cache ? &np->saddr : NULL) ||
+ #endif
++	    fl6->flowi6_mark != READ_ONCE(sk->sk_mark) ||
+ 	   (fl6->flowi6_oif && fl6->flowi6_oif != dst_dev(dst)->ifindex)) {
+ 		dst_release(dst);
+ 		dst = NULL;
+
+base-commit: d8a4f4c59da52b7c31ae337243b8473a19a3f819
+-- 
+2.39.0.windows.2
+
+
+
