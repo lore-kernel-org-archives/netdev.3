@@ -1,64 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.7
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793331250;
-	b=kQCFUOzNbciwLKTXsPbhiAxmhCTL7YERJZFph8QiogNc2WZU566EzSdUQye8ylrQJWff
-	 Yu2a7pwcYXQWX2Yyk14oMRZNgLTknhHJpT340VY0AjSpELbJEEMUMoE9qQxUtHcpLY7RV
-	 PCUwAsfWGBvsoh+3Vt9k/XV7n4nuTEuGlxGgANDsDjQw5lyPmQlUR5I3DvywGolR3DYCO
-	 3may3SQ2srAp5kaZh0MHNkFfT2NgMYi4VN0TmeVcVQDqi9sXAR/dVKOn2MLLdeYd3HIdS
-	 i0gDF9hqxUODw6RpI1964g52zs9GpjLdJLU00pFOU0IFPE/rDMPn/2qv6iHBkSgn6zg==
+	t=1793331249;
+	b=FtXx+CKoLO3W8Yj4L7TyHhNE+RvCeyqGQ3bijwrQeCcdZZ22KGVAH4/1XlULK5er1ryt
+	 bwFgRWk2kRcmIabUJURL7AmLc7i3H7teiClVoP+PUP3Gz7pscLpDwOLLFoAzHj/Ld339X
+	 YtdagHjXaxnfdRX/igR/MySAbqWH8DpcWnIau8QVN8g9L49cWQCnp6xUnBjaex2UOOeGj
+	 wwwqaZkCGCLesNfOij63QMe7z1DTAe8lFdiX6udbgSMVER2VIiWjyhyPU6WT3+3Iw3yqd
+	 9hsvDGLEeV+epuX749Z+384MlzsDGooqrVIySdV0Z5tnPG+FsYooX0h70zWVivnyHMw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793331250;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793331249;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
-	 X-CM-SenderInfo;
-	bh=ut3h8Z3NwdR/pZ5OEt3IhKBu1YSO6/1hSwR9VC1HyvE=;
-	b=fDBkqLA1vbjHUGmy+PqTTOyPI2wMBGoXKFtU3RlxqWpvM7vhh1z5jqVnT4/wG7ixWTTP
-	 Mp+Nylh94aLjX05yd+79GS17c5HZJddBFiVxD/HfZB7UwrQI1X/NP5YG5OdPQhwYGp1HM
-	 2pr8ejlPYnjvrCPRbVgbySTiERtH/Rp8Yt0GMMqeIaEsAKsHVz4YKSJYyWOGbAsb/kF89
-	 jOAEdwbp8bYogQj2SsMHRpvY91BSV0VxqbOk3pc4a1vMcWIQq3sInQ6ByEMiYh+HirmZx
-	 Vch09whHc6USeIx9WUuEZwMmtGQMpy0tUny/akRu4hg/LRsgd8Cd/wG/MawYCzNg8Gw==
+	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=8ktqWfSef3AXz7FND5pOxckiQELIeSzD/uEmAhKFSN4=;
+	b=hwPbdNaaHlRS0HIpe6MYlZibY3U58wDYcIfe+tE7czIY0nB/PLpMzNktZEABREUcoE0i
+	 urYTLXM7iHI0MEUcfiYAOn5npPf2gPe5mKz1FZSv11K2w1jpx90HKA1M2cdVz/7xEuNLq
+	 FJVtywXtFOp3jjZHYEkGOGcgibcdSF9+byEfw/IQP3swBL5GXKUxsjOTLfDIP3cCD8xSO
+	 9YcdCrM2/QjkhzSzgIh5uS/kKG6I/v7XZtMzpixWl3VjqemlcOW3ld2NiDybDw6HN5c8T
+	 a7keR/e9hS9Fo63qeeNY3Yg+JpV1TRKxLSFw/jjRHRB63GOfpIO9CRl8GxrzmOCrUDQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=126.com;
 	spf=pass smtp.mailfrom=126.com;
-	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=bYU65cA2;
+	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=eh60Onbl;
 	arc=none smtp.remote-ip=117.135.210.7
 Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C2F606A31D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B7E606A31C;
 	Fri, 30 Oct 2026 03:34:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29C2F606A31D
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29B7E606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=bYU65cA2
+	dkim=pass (1024-bit key, unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=eh60Onbl
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=ut
-	3h8Z3NwdR/pZ5OEt3IhKBu1YSO6/1hSwR9VC1HyvE=; b=bYU65cA23VZZ7S0RdB
-	0psX+ZY6Mk7IAlEztJe2kh8cLNGaaZ/Civ+2f5I7R/h7kausyourvSRJfhJwigkC
-	YYPARAWxtKlnpTUiYRco5slU60bzDFHLuBRvq7maMoVSSTOTRLC494w5lQZpOFCV
-	eikUuaTv4tPwtvxNyphE+ugUY=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=8k
+	tqWfSef3AXz7FND5pOxckiQELIeSzD/uEmAhKFSN4=; b=eh60Onblv4hinnKmq+
+	YfoZV0QfX/RDhb18lG1RCyvaFKBzAvcsxNrAdtosecIXoTCWm1uWhTuIr7D5uyzR
+	oTI7NEB6zyj14xYkwulAoEZN+fVnLd3Rc/iIURZYXAm/idPzvrr4QlSysBrqIXBT
+	hCJFEQ89z8ES25/gGnJUcdgYs=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wDXv+kOEORqy4KnCg--.7858S3;
-	Fri, 30 Oct 2026 11:33:36 +0800 (CST)
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wDXv+kOEORqy4KnCg--.7858S2;
+	Fri, 30 Oct 2026 11:33:35 +0800 (CST)
 From: Linkui Xiao <xiaolinkui@126.com>
 To: jiri@resnulli.us,
 	davem@davemloft.net,
 	edumazet@kernel.org,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	horms@kernel.org,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
 	Linkui Xiao <xiaolinkui@kylinos.cn>
-Subject: [PATCH net 1/2] devlink: param: do not dereference a missing param item
-Date: Fri, 30 Oct 2026 11:33:31 +0800
-Message-Id: <20261030033332.3685172-2-xiaolinkui@126.com>
+Subject: [PATCH net 0/2] devlink: do not dereference a missing param item or shared buffer
+Date: Fri, 30 Oct 2026 11:33:30 +0800
+Message-Id: <20261030033332.3685172-1-xiaolinkui@126.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261030033332.3685172-1-xiaolinkui@126.com>
-References: <20261030033332.3685172-1-xiaolinkui@126.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,49 +66,50 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDXv+kOEORqy4KnCg--.7858S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7WFW7tw1rtry3XF13Aw1kZrb_yoW8Wryxp3
-	yUKF15Jw17XrWjvr4jqr4xZry7u3WUAay3tFy7tryYyas3Aw1vvF1rGrySqF4Yy395Gwn3
-	tr1rC3ZY9w47XrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j0uWdUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqRDbsmrkEBBapgAA3i
+X-CM-TRANSID:_____wDXv+kOEORqy4KnCg--.7858S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7AF18Gr1fZFyUWFyxuFyUJrb_yoW8Ww1rpF
+	WYgFn8tr1DtFWvvr4kZF4xZFyj93WxG34FkFyrtw1Fvan8C3s2qF4Utw4avF4Yy393Ww1j
+	qw13Zan8uFyDAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07ULo7NUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlQ-asWrkEA86OwAA3h
 
 From: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-devl_param_value_changed() looks the param item up by id and only warns
-when the lookup fails. devlink_param_notify() is called with the result
-regardless, and devlink_nl_param_fill() dereferences param_item->param
-in its very first statement, so a driver that passes a param_id which is
-not registered on this instance turns the warning into a NULL pointer
-dereference.
+Two devlink helpers look an object up by id or index, warn when the
+lookup fails, and then pass the NULL result to code that dereferences
+it. A driver mistake (a param_id that was never registered, an sb_index
+that was never registered or is unregistered twice) therefore costs an
+oops instead of a warning.
 
-Every other user of devlink_param_find_by_id() handles the NULL result:
-devlink_param_unregister() and devl_param_driverinit_value_set() return
-right after the same warning, devl_param_driverinit_value_get() returns
--EINVAL. Do the same here so that a bogus param_id costs a warning
-instead of an oops.
+  1/2 param: devl_param_value_changed() hands the missing param item to
+      devlink_param_notify() -> devlink_nl_param_fill(), whose first
+      statement dereferences param_item->param.
 
-Fixes: ea601e170988 ("devlink: Add devlink notifications support for params")
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+  2/2 sb: devl_sb_unregister() runs list_del() on the missing shared
+      buffer; list is the first member of struct devlink_sb, so it
+      reads and writes through address 0.
+
+In both cases every other user of the same lookup already returns right
+after the warning, so the fixes just align the remaining callers; there
+is no change of behavior beyond avoiding the dereference. The param side
+follows the example Jiri set for devlink_param_unregister():
+
 Link: https://lore.kernel.org/all/20230126075838.1643665-5-jiri@resnulli.us/
----
- net/devlink/param.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/devlink/param.c b/net/devlink/param.c
-index 95ac9db8c993..474fe009f22d 100644
---- a/net/devlink/param.c
-+++ b/net/devlink/param.c
-@@ -1008,7 +1008,8 @@ void devl_param_value_changed(struct devlink *devlink, u32 param_id)
- 	struct devlink_param_item *param_item;
- 
- 	param_item = devlink_param_find_by_id(&devlink->params, param_id);
--	WARN_ON(!param_item);
-+	if (WARN_ON(!param_item))
-+		return;
- 
- 	devlink_param_notify(devlink, 0, param_item, DEVLINK_CMD_PARAM_NEW);
- }
+Both Fixes: tags point at the commits that introduced the unguarded
+WARN_ON pattern; the current devl_() functions are pure renames of those
+originals. No in-tree caller triggers either path today (the audit is
+part of a defensive hardening pass), so both are aimed at stopping
+out-of-tree drivers from turning a driver bug into an oops.
+
+Linkui Xiao (2):
+  devlink: param: do not dereference a missing param item
+  devlink: sb: do not dereference a missing shared buffer
+
+ net/devlink/param.c | 3 ++-
+ net/devlink/sb.c    | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
 -- 
 2.25.1
 
