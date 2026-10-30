@@ -1,66 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.148
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.111
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793325942;
-	b=PpnBXP5q8NyHYwn++Ck/yHA+TDcV9iOA4oxPRgGYqYRqiwiLze2ynUVU5BURsUM/J/cW
-	 9Tdx/00tydzCpSPnnbrLlWsecV+J3utkyf8irNB/IYMMoe3a/ADUalovO5S4NxosSuoBJ
-	 4VyL/qtVsbLMEBc7AMwCXvOGFGJV6sJqCaRKLrgrTrMR7BmuNyH9HK7d0SM7oclvDRtZz
-	 B1IIwG8umWYtZo+/82BHLxHWnsqAzeVy9RCdWjdvNvcO4TohtyVJRQ7w8nhq3eZ8qKzRv
-	 h+1igkOwjOo5pkSyDwPInKk9OfpM2Pp96t0QJzcIrwWPjVXVP96+8jBsKstkWxFo7IQ==
+	t=1793326120;
+	b=jjpuBww1dfKU3OkPBK7KVdRZQ8V2d6cPnCDivJoH9f/fV+xuR7H8lobJ1yAGQkOr2Dxe
+	 0PaTJk69wPLWe26P+/uItXw58GzLeTXGL0G+COYwbtXa2JAkfnAlVGS1kUmySkghPmCEV
+	 H4O8RJ4GxMQ4d99klQ1Rjsct6/NKJkNRzCwCd8N7TnYQxrRMSpZMFyCkjTvGqHknen2jo
+	 /ubqN0VN/cIHeTTwOXSfo3TnNk769XABus9KrfPKwwUcQxO8KqWCMsGlydjI9lj8OvJwz
+	 Na/Y9BtphDXb5RWVvRusefBNvY7TvKogLNQtuctJ5PW4byAi/w6tA2fyV9HuvX8H2+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793325942;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793326120;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=5q6VLlVtRVGzt5myNjmdcIJTUsnVE4fKK2cK3gpYnOc=;
-	b=e6eV+IFjuId+FsvKXutU0P84+PCZjtyTy7uynF+4ziREYml70ZEhucRrmjorLNSTq7Av
-	 WfRcpxiqTFKzOZ3vfY0dNm6U2YeSMDHftFv3MrFf7pDyQdumkvVPkfWOi1kBR1kPdKHIL
-	 qat2E81WL5s9uvvre9JDPFZ+HmRy4/gFMGFrX7EVsJBB3CqAopKzHzcGIRfFOV7hlXQfA
-	 2CzvJOlprg3Vi9Gyb8zPPWbKQP9M03Y+7NY0buEicl2crtj3IwG0jhWO/NWXUYoIQ0nRR
-	 MfG1gjlvxmxjapkF1GKM0H+NzGgs1fnCbqxODZ/93Nhu/YPC62eyfqUGtOfJTIEsl1g==
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=jXEeJjVSvGxZ8q8EzCH69WzOU8f2eD7e2wgHvZHQF68=;
+	b=pqsr2j2DiOF5cF5p/K1vaBhHc4aWWc50TFQzVIjMnwxUOi46BT4K2tXZL7MuEl4UFhO0
+	 1+oFwLx+r/C+o6WA2PCJIamlgfOxsSOmT/tmvfMNxN293jWV21acGbrClB2zDbOl/FqTH
+	 sdBNqjIw2RGVvfMiw4Mao7dJVnLwiS6r1EyWJpdBXdb0BCimZVCIY4F6dzrHg4JENj1NT
+	 tnj0MDnkkPUfmls6nlZeyz1wW6SU7I+wlRL97/HkVGkgVDSXGdCnxMiaKGD3MBV/6eGVd
+	 URxuFxzW5WKtFS8KulIkKda8pKj2dSDTHqsIBthqbRH1BZb2AfPhVgkQMhATgoJK1vA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=PfR+rHNA;
-	arc=none smtp.remote-ip=91.218.175.148
-Received: from mta0.migadu.com (out-148.mta0.migadu.com [91.218.175.148])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ChxbJdqt;
+	arc=none smtp.remote-ip=95.215.58.111
+Received: from mta1.migadu.com (out-111.mta1.migadu.com [95.215.58.111])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2E3606A31A
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 02:05:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E2E3606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FD7606A31E
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 02:08:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28FD7606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=PfR+rHNA
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ChxbJdqt
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=9cmqbsbAYRunmp/btWpjdtkpFl2yYOXgBmGWd0cWFJQ=;
+DKIM-Signature: a=rsa-sha256; bh=fQ2I1M5NKH3HdhAaNaRV7oOmuMHnPLp6U9yM6UkMKTs=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793325939; v=1; x=1793930739;
- b=PfR+rHNAuyMeSUsq8dt1qw+B7dfBtmt1xW7FyBiIgPtM9FobTgY+6F4rSz2u82NdCzpSDYN0
- tXdxT/MUDaEizK+nZ/90aQqcFP2uIW5D1NVcveUqsmmgMsJcX9eFstVx28Pjzx41kAZXKxL0nKR
- 8V7INOUFfUFudUcYKCXTUT9I=
+ t=1793326117; v=1; x=1793930917;
+ b=ChxbJdqtseFWpGuGcRZcrnrbobTyUOfi8UJjCHg7dd9IrYr/vO0c0lIttd2Ioe+d9PBBYlyj
+ UIhNZReqjWTzAJ4WUAUSmng/DOPlaQIQsKoc9tm/T/ztP9wVae3iV+y2By8iuyU1GmUNfvzYqz+
+ uL4hkrKV7vpbFXKap87Oxb0k=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 62c2abc1fac3e23c;
-	Fri, 30 Oct 2026 02:05:22 +0000
-X-Mizu-Trace-ID: 62c2abc1fac3e23c
+Received: by smtp.migadu.com with ESMTPS id 952ee4ee204bc145;
+	Fri, 30 Oct 2026 02:08:37 +0000
+X-Mizu-Trace-ID: 952ee4ee204bc145
 X-Migadu-Flow: FLOW_OUT
-Date: Fri, 30 Oct 2026 10:05:11 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: =?iso-8859-1?Q?=D6mer?= Mete Kaya <omermetekaya0@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Joas Antonio dos Santos <joasantonio108@gmail.com>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	syzbot+88435e204734072bf39a@syzkaller.appspotmail.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] netdevsim: reject port addition and clean up
- ports after a failed reload
-Message-ID: <auP7VyY3MGqOphL-@bogon>
-References: <20261030001444.289973-1-omermetekaya0@gmail.com>
+Message-ID: <8a565dd0-f2a7-4d18-9df7-bcf1ed303a59@linux.dev>
+Date: Fri, 30 Oct 2026 10:08:31 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,69 +58,120 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261030001444.289973-1-omermetekaya0@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v1] net/mlx5e: kTLS, Fix missing error unwind when
+ enabling RX offload
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, saeedm@nvidia.com, leon@kernel.org,
+ tariqt@nvidia.com, mbloch@nvidia.com, borisp@nvidia.com, witu@nvidia.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+References: <20261026095346.1212609-1-xuanqiang.luo@linux.dev>
+ <20261029134019.GG257209@horms.kernel.org>
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+In-Reply-To: <20261029134019.GG257209@horms.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi, 
-On Fri, Oct 30, 2026 at 03:13:20AM +0300, Ömer Mete Kaya wrote:
-> nsim_drv_port_add() does not check devlink_is_reload_failed(), so ports
-> can be added via new_port after a failed reload.  nsim_dev_reload_destroy()
-> returns early in that state, leaving them behind.  nsim_drv_remove() then
-> hits WARN_ON in bpf_offload_dev_destroy() and a subsequent use-after-free.
+On 2026/10/29 at 21:40 Simon Horman wrote:
+> On Mon, Oct 26, 2026 at 06:53:46PM +0900, Xuanqiang Luo wrote:
+>> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+>>
+>> Since commit abed42f9cd80 ("net/mlx5e: Conditionally create async
+>> ICOSQ"), the async ICOSQ is only created when an XDP program is attached
+>> or priv->ktls_rx_was_enabled is set. When TLS RX offload is enabled for
+>> the first time, mlx5e_ktls_set_feature_rx() sets the flag and reopens
+>> the channels so that they get the queue, but it ignores the return value
+>> of mlx5e_safe_reopen_channels().
+>>
+>> If the reopen fails, mlx5e_safe_switch_params() keeps the old channels,
+>> which have no async ICOSQ, while NETIF_F_HW_TLS_RX is still reported as
+>> enabled. The next offloaded RX connection then dereferences the NULL
+>> c->async_icosq in post_rx_param_wqes(). Enabling the feature again does
+>> not help, as the flag is already set and the reopen is skipped.
+>>
+>> Propagate the error, clear the flag and destroy the accel TCP flow
+>> tables again, so that the feature stays disabled and the next attempt
+>> retries the reopen.
+>>
+>> Fixes: abed42f9cd80 ("net/mlx5e: Conditionally create async ICOSQ")
+>> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+>> ---
+>> Found by code inspection while backporting commit abed42f9cd80 to a
+>> downstream kernel. I do not have a crypto-enabled ConnectX NIC, so the
+>> failure has not been reproduced and the fix is only compile-tested.
+>>
+>> The crash itself is the one described in the changelog of abed42f9cd80
+>> ("async ICOSQ allocation is not triggered, causing a NULL pointer
+>> crash"). This patch only covers the case where the reopen that should
+>> create the queue fails. ktls.c is also the only caller that ignores the
+>> return value of mlx5e_safe_reopen_channels(); the callers in health.c
+>> and reporter_tx.c check it.
+>>
+>>   drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c | 6 +++++-
+>>   1 file changed, 5 insertions(+), 1 deletion(-)
 > 
-> Block port creation with -EIO when reload has failed, and delete any
-> leftover ports on the early-return path as a safety net.
+> I agree that a minimal approach to addressing this problem is appropriate
+> for net.
 > 
-> Fixes: 75ba029f3c07 ("netdevsim: implement proper devlink reload")
-> Reported-by: syzbot+88435e204734072bf39a@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=88435e204734072bf39a
-> Signed-off-by: Ömer Mete Kaya <omermetekaya0@gmail.com>
+> Reviewed-by: Simon Horman <horms@kernel.org>
 
-Looks Joas has a same issue fix with yours a few hour earlier.
+Thanks for the review!
 
-https://lore.kernel.org/netdev/179324296598.34505.11070163314749859668@gmail.com/
-
-> ---
-> Tested with syzbot C reproducer.
-> v2: drop Cc:stable and target net-next.
 > 
->  drivers/net/netdevsim/dev.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+> However, I do think the logic of this function is becoming somewhat
+> convoluted and would benefit from:
 > 
-> diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
-> index feb88ccbbced..61f0824ce4d3 100644
-> --- a/drivers/net/netdevsim/dev.c
-> +++ b/drivers/net/netdevsim/dev.c
-> @@ -1697,8 +1697,10 @@ static void nsim_dev_reload_destroy(struct nsim_dev *nsim_dev)
->  {
->  	struct devlink *devlink = priv_to_devlink(nsim_dev);
+> 1. Handling error paths in conditionals while leaving
+>     the main thread of execution unconditional.
 > 
-> -	if (devlink_is_reload_failed(devlink))
-> +	if (devlink_is_reload_failed(devlink)) {
-> +		nsim_dev_port_del_all(nsim_dev);
->  		return;
-> +	}
->  	debugfs_remove(nsim_dev->take_snapshot);
+> 2. Use goto for unwind.
 > 
->  	if (nsim_dev_get_vfs(nsim_dev)) {
-> @@ -1758,7 +1760,9 @@ int nsim_drv_port_add(struct nsim_bus_dev *nsim_bus_dev, enum nsim_dev_port_type
->  	int err;
+> This is approach is complicated by the function needing to
+> handle the enable condition. But at any rate, maybe a follow-up patch do do
+> something like this would be worthwhile?
 > 
->  	devl_lock(priv_to_devlink(nsim_dev));
-> -	if (__nsim_dev_port_lookup(nsim_dev, type, port_index))
-> +	if (devlink_is_reload_failed(priv_to_devlink(nsim_dev)))
-> +		err = -EIO;
-> +	else if (__nsim_dev_port_lookup(nsim_dev, type, port_index))
->  		err = -EEXIST;
->  	else
->  		err = __nsim_dev_port_add(nsim_dev, type, port_index, perm_addr);
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c
+> index 3cc1213c2f68..0f5dcd1b822e 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls.c
+> @@ -137,19 +137,22 @@ int mlx5e_ktls_set_feature_rx(struct net_device *netdev, bool enable)
+>   	mutex_lock(&priv->state_lock);
+>   	if (enable) {
+>   		err = mlx5e_accel_fs_tcp_create(priv->fs);
+> -		if (!err && !priv->ktls_rx_was_enabled) {
+> -			priv->ktls_rx_was_enabled = true;
+> -			err = mlx5e_safe_reopen_channels(priv);
+> -			if (err) {
+> -				priv->ktls_rx_was_enabled = false;
+> -				mlx5e_accel_fs_tcp_destroy(priv->fs);
+> -			}
+> +		if (err || priv->ktls_rx_was_enabled)
+> +			goto out_unlock;
+> +
+> +		priv->ktls_rx_was_enabled = true;
+> +		err = mlx5e_safe_reopen_channels(priv);
+> +		if (err) {
+> +			priv->ktls_rx_was_enabled = false;
+> +			enable = false;
+>   		}
+> -	} else {
+> -		mlx5e_accel_fs_tcp_destroy(priv->fs);
+>   	}
+> -	mutex_unlock(&priv->state_lock);
+>   
+> +	if (!enable)
+> +		mlx5e_accel_fs_tcp_destroy(priv->fs);
+> +
+> +out_unlock:
+> +	mutex_unlock(&priv->state_lock);
+>   	return err;
+>   }
+>   
+Thanks for the suggestion. Agreed, the nesting is getting hard to
+follow. I'll send a cleanup along these lines to net-next once this
+fix has made it there.
 
-
-But yours have an extra guard in nsim_drv_port_add...
-
-Leave this to Jakub decide...
-
-Thanks
-Hangbin
+Thanks,
+Xuanqiang
