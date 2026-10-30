@@ -1,55 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793334590;
-	b=iZamBZ0h6Tcek2rq+YhpLLUnQorBdNCNTaudjfPMXmDXX6zZvhUYD+p0tnQOpArl+7JO
-	 QCf7+fyFtMhcX22S/tNhdsIYhsp/GKtbpcmFET3HaxmB0EMKKE5MhTO3yYJ7EM/osUOld
-	 /zQ0akKx/wXldtXsZluQqPQu3seVd1rvMZeSfClQXYLzGQdb3z1Bt3gQSwDtbvoEGbbZX
-	 3ytwJ3+SelZ6iIAPkRepjZm1B/gG3ayjLOzt7rTkNFaCjPRrcXkGg7AEiSRiue8JPiDDj
-	 GwmVQj3yJ5L1V3snYHOwAjsPWzspZtaifcjTqfGWRiJUX3MEZZSpzrrzV1c8dZNBrkg==
+	t=1793334597;
+	b=TZQ+hAXQRhKzVPNozJBPYL0poYXQqvXbMhBW0EFc7kS1f70Dp0QUDfSoEGMjkYitHb4w
+	 eai/R+/v5k86GUSJ2P905ltdYKZ0j7tIN6SY9myjkU6IaiPrHvEp04dC0SAbxXXtJzfTV
+	 7kzisK6TVxtiKcptGs/nrcFjFQJobyLbDWMykV2jF4OtE+HOwRcslVtJyzalUXbbi6BWm
+	 Jr1KN9ymzpq0HN3NxRsT9+ahf5IrHM37jqUP6zzOeV7Gzyay4h7T/lfV1W86ktkhmoOye
+	 cGKhb6urBsSR//ds3FvlQnrRDF8a3A/hVYhGE03Hpnk3OuImdPMcWeoY/QIbzWgfopQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793334590;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793334597;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:Auto-Submitted:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
 	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=n/r/OOEN9b+G0ZtBZMMJxNN3Maq1TLqq/r57PV8r8wHW83l3BObuvRSgTHnaxnVB5Bge
-	 LUPAdj958PtK2Zgx6FscBAbRz0gh7+LXE7icDsG/VqaA6lEq+gI+yCgOxSwxoH1eNGISZ
-	 5PexHnZgEcfyjCaRFyBIJwRQ+V++jLNENdvBoRIkfPsshLI91WBeZOfsDi7nbkSCXVJFC
-	 ZkpLDdXOckdV/1LAvw9+EQwMcfJJrKUDU6huwQHO1ekdsjCnUbDhqcXgOiP751nZs1EUv
-	 rRRt3AYnlR+KZHVNvda8KJdbfCCGRnW/YF97u4uceRmG8WsMv4Xk2csxnJQNhwXpAKQ==
+	b=ENajvyEokn0mXtv1NaG0qq/dzgwfNJbwDl8m1fXuB5jqF4Ql9QFTgTdAesjLmEvp9CCt
+	 ZEXyU2qlZHZaYKmis4w5wwgX70Z1Fm3achIXn0Vu02vc8B3D1ILoAUYgi5zqcGJsWUcMh
+	 mQa74pDb5ypXH/4GnMofshB25RGoyUYi8pVwbkcNPWSbf6xPtL3CKEhYusRLA6Av04jLK
+	 RxugplfiGakwul8b8yJ+r27Hl8cS0IooFtbskUbSDke5a7K1WXTDIxHhc6TfKvvDDMe4f
+	 1eEjTNKkulvHTVqKlyVzEb0neylB8YJx+hZNNJtkgnEMGMNfKFc2zBK+Wt3+5YKyspw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DoJ+pgRW;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FScFQM7Z;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24B6606A31E;
-	Fri, 30 Oct 2026 04:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82B4606A31E;
+	Fri, 30 Oct 2026 04:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DoJ+pgRW
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F269B1F00A02;
-	Fri, 30 Oct 2026 04:29:48 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FScFQM7Z
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C093A1F0093A;
+	Fri, 30 Oct 2026 04:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793334589;
+	s=k20260515; t=1793334597;
 	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DoJ+pgRWgsNbaTvcpAklHyfb03QLKPxKKVpqLLdw/8bzWJLtED4//uDzjHBCY0hsS
-	 pPmheJkcKGdQtE92+gVv8HkHfH/d82MYHPFLDltY0Vp70B6ThabWX0IKhim7QO0LHV
-	 L1pELHvetxCF1eGe3ylnnlDIc2Z2FvtZQ6AKaiF+xTt48YnmjqxGgnwesJ+L6McY9S
-	 vKQaKu3D3Ao6m5hyNrn04l68rsJPBKHtMnNd/gzz/hVEauG8QVj+iUNo9tLrAWfwqN
-	 EcdOMEHdDUFQQlz1k0UG5orUq/Jd3fdGFIS6REdega2OfabdE3u/bHeMJ2TiZOaA3V
-	 P9c/8Z95t8LOA==
+	b=FScFQM7ZdrELcNO4Ops7J2H+84yigvpiBpxLjLivIsbw/3VtblpIa3qIopDfptqDN
+	 gTeHvoipK36d2P45XgBcMo+vY4T0aUp20CCm6PKSMcmubFDu/42WjK9Ma0sMwWPOE1
+	 vfI3Vy00pj0qiqzWpmdxRUqMs3E/rxLZGynO/exRH12G+hkWo63VafZIZMlNFyYSlH
+	 Guot0dUrcoUPX0viI++tanPYAookOEELRr7iXPAXhtjW1NNxc5W2f0AAKAbbUJSomw
+	 oxP0AZ0WDmRxTQHCJpvNsBrF+SMijg9o2XfyKNOLy3U1wWK4yrlSJw6ggKB+iXsL0R
+	 sAshb/pJussxw==
 From: netdev-bot+sinfo@kernel.org
 To: Kyle Zeng <kylebot@openai.com>
-Cc: mptcp@lists.linux.dev, Matthieu Baerts <matttbe@kernel.org>,
- Mat Martineau <martineau@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, outbounddisclosures@openai.com
-Subject: Re: [PATCH] mptcp: pm: kernel: use RCU to free endpoint listeners
-Date: Fri, 30 Oct 2026 04:29:48 +0000
-Message-ID: <179333458853.3327.8665162337871121477@kernel.org>
-In-Reply-To: <20261030042255.74216-1-kylebot@openai.com>
-References: <20261030042255.74216-1-kylebot@openai.com>
+Cc: dev@openvswitch.org, Aaron Conole <aconole@redhat.com>,
+ Eelco Chaudron <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ outbounddisclosures@openai.com
+Subject: Re: [PATCH] net: openvswitch: make transport checksums writable
+Date: Fri, 30 Oct 2026 04:29:56 +0000
+Message-ID: <179333459630.3327.17629856282918906224@kernel.org>
+In-Reply-To: <20261030042304.74291-1-kylebot@openai.com>
+References: <20261030042304.74291-1-kylebot@openai.com>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
