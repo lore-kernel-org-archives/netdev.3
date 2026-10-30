@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.143.35
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.147.86
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793394065;
-	b=JGWXfPZkwuszIycenl1dMkicUiOOAXUBwAafG08ruHflF3ZdPmpNtQWU5Q8hUdD6zFi4
-	 MS8ri/7a6WW0cG8ten3Bk0qrH4GDXITEc2kic8p4KoOE4+538MKIeet2R5K3FiABs33H0
-	 OeKFov7Dbup0hxw9Q6l/wE9UpLE8KAK6uoYlNpsNDCCWchXpNnQzeNo6ID9Az/3iz3lQM
-	 3nw0Yosj1PWz89pOpWq08loHryBBr4NIVJCkaQmBMVrj7MTQIDnAZYWEOQbAxPzhDB5zs
-	 fRYUA7d1ITPe4Oo7XkG2ed/ae2NrT1liQ/3dkM1dhFkEVpE8VFiIZKEO9j2y929xO9A==
+	t=1793394078;
+	b=yWJPSKklYIeHRi6izcqX0wIKziuG3AhzSpV1BlfYgl3OaJH9dBG5R2ZpnbSP3DT5z3z/
+	 A3eOfa8U+dchW57OBh6nwJ4lRv5ssKoFYdXND0ZZdpmEf/F9qw1rBQIlmpqTvasaCH1x+
+	 8p2DChRx7EmrdlNyzKdbWtZziDPAE3lVi8+NhLAyvmzU1g7hs+hd5qiboclz96y2QL/U3
+	 ufbEYDq6aJ/GjqP13DnLies88c44uQH0jjYmlJ6EIzwD2SkQcyOu7tmhqmF1pFzb4Wcyc
+	 gDvIIJK+z8qwmJ3Vazj8CZMovlRZ5zzP5IRUJRRxm93fyb2I3Hkv8R9MT1jsqPHNXRA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793394065;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793394078;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
 	 Received:Received:Received:Received:From:Date:Subject:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:CC:
@@ -25,72 +25,72 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg:
-	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:X-HPE-SCL:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=UUetOG8bb12H7eTtGvbIiaV5Extzs9iFYH1LAkp3Hug=;
-	b=M7ZmgBYVxADI3Tuz8qR0G/iq+0tYjc7p5pxklDAtodJ0KEHB6SQ7Cle4471RWAhbaAl5
-	 XvTSLgcfFsKEDn0K31EJhJ+FGogKLhzrnDYVmzrIR2a5w3FdWimuTSXDvD9tQZWnWK0G1
-	 bnIvJzg7iuAt5Wb+GCIwBGOqsVKHjuNRCg0/ifIQzSqx/2fF0GrjPgGtuPeoewjHqMzEG
-	 qNpyd2kkvYJJM+ErFK7MJUKcvnqYUg4zYKML6SWk6/XhPIrEmYu9WkP+Q6EWy5E4x64A4
-	 WylvCmHSOdsWiVLUkieqB+LMjM5Cb+iTUv7OcKmKFXHjnpTbQLamAKQTqZdekU1dgDA==
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:X-Proofpoint-GUID:
+	 X-HPE-SCL:X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=xBRr2GZhxBHnHKtvtOttTc98zguohuoucwX/W+aKf9M=;
+	b=ZGVKzrCNFft3ZcXbrVTIMbEik/RoFhzi+uhH0nZt7+AZQmteSiWvDGpgofo7Ov0IjTrX
+	 UDMQv30Z5jZIGOJ39mflu+W3FWDUYfouJNVXppUmywNedTg85uf2VcXYYbuZ4+UZR5sMA
+	 tyeiLjwoqiuUc5d5eT90/rGCluE0DqAJhVxXn1vs/C+Ek1yXLEdFIK8yVVXIscOLcDnsg
+	 RS5v3U0ATqYvLT8PcosnC2bbqSZr2yaHIcV9aFPCzOw1u/H+Q3g61HilSdyT16qGv/zXh
+	 Bn2w4FvLZ8ZjES6dIcIz1c5QlrpOoJSEbdiLmzrC0AnhsM06DJ+ozPZ8NIXCPkBCAlQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=hpe.com;
 	spf=pass smtp.mailfrom=hpe.com;
-	dkim=pass header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=Wxoa2qGV;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.143.35
-Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
+	dkim=pass header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b="B/AWfhbE";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.147.86
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0701E60A3822;
-	Fri, 30 Oct 2026 21:01:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0701E60A3822
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB16606A31F;
+	Fri, 30 Oct 2026 21:01:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5CB16606A31F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=Wxoa2qGV
-Received: from pps.filterd (m0134424.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69UHvU3a1038028;
-	Fri, 30 Oct 2026 21:00:30 GMT
+	dkim=pass (2048-bit key, unprotected) header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=B/AWfhbE
+Received: from pps.filterd (m0134421.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69UHxgqr1536656;
+	Fri, 30 Oct 2026 21:00:50 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps0720; bh=UU
-	etOG8bb12H7eTtGvbIiaV5Extzs9iFYH1LAkp3Hug=; b=Wxoa2qGVvESY3fvNbv
-	cBWiTJc1LMestkYTA9AaMu7T/mvYPT13QgNYH3rWO/GjFhKaj6aQpLG75kvz5u5W
-	1ITY0FDJWwdVUvJjqLX2s6zPs2d19+i5Wch6AZfZbwSWZLqZf3rTkDSkPyFb4QNr
-	uewWyyA2oR6sav/OqWRWBt95lWYoFsJRCib3COr9QAWhdmSG9kIeELz7PaasWSNz
-	61AOZt+4Ann6FmxgyGVi4zZOSeFMxN3c5RHb64WDguF8QmerDQaa0dRlw4Yj9tPf
-	jjtTNzqw+8xsXaTB0w3kY5JOPnE+DZUKHWWH0hfyU7r+h0bctoKGfdhl139m3eVZ
-	C0aA==
+	:message-id:mime-version:references:subject:to; s=pps0720; bh=xB
+	Rr2GZhxBHnHKtvtOttTc98zguohuoucwX/W+aKf9M=; b=B/AWfhbEKKZatNnPXc
+	sUOWR3AvAb8Xpy7V4ee82Xrz3TLILJCX0D5P+kn1U1eK7kqau45vREzRzhv5WJMP
+	d09sk+SJgvc2dUg1FAAS3FPg0WCP52owQydTr4NAp/Xt6NAh4vjYAlK8gWQhZrGM
+	C2R3dhOLAhQVy6BrXyI0dGGm+1KSO7rONGBEuV6TleQGzJfG9burmzG2hwLpRRAz
+	YHIrdlzfrcymdUR7VO5ZQSDiQTjNJHS7ngOXnr1aTyPKU6TbT/G8eGDqQgS7oYop
+	rQor8rbvurTB6xK/PHwAuSGZcsc2DJuJc9Ow82xm+V5EM+gRQ9B11stwAWSH3+8s
+	ZfBw==
 Received: from p1lg14878.it.hpe.com (p1lg14878.it.hpe.com [16.230.97.204])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 4hmx98uj5d-1
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 4hmwj9v533-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 30 Oct 2026 21:00:30 +0000 (GMT)
-Received: from p1wg14925.americas.hpqcorp.net (unknown [10.119.18.114])
+	Fri, 30 Oct 2026 21:00:49 +0000 (GMT)
+Received: from p1wg14923.americas.hpqcorp.net (unknown [10.119.18.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by p1lg14878.it.hpe.com (Postfix) with ESMTPS id 64281D2F8;
-	Fri, 30 Oct 2026 21:00:29 +0000 (UTC)
+	by p1lg14878.it.hpe.com (Postfix) with ESMTPS id 39C00D2A5;
+	Fri, 30 Oct 2026 21:00:49 +0000 (UTC)
 Received: from p1wg14926.americas.hpqcorp.net (10.119.18.115) by
- p1wg14925.americas.hpqcorp.net (10.119.18.114) with Microsoft SMTP Server
+ p1wg14923.americas.hpqcorp.net (10.119.18.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Fri, 30 Oct 2026 09:00:21 -1200
+ 15.2.2562.43; Fri, 30 Oct 2026 09:00:48 -1200
 Received: from P1WG14918.americas.hpqcorp.net (16.230.19.121) by
  p1wg14926.americas.hpqcorp.net (10.119.18.115) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Fri, 30 Oct 2026 09:00:21 -1200
-Received: from CO1PR08CU001.outbound.protection.outlook.com (192.58.206.38) by
+ 15.2.2562.43 via Frontend Transport; Fri, 30 Oct 2026 09:00:48 -1200
+Received: from CO1PR08CU001.outbound.protection.outlook.com (192.58.206.35) by
  edge.it.hpe.com (16.230.19.121) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Fri, 30 Oct
- 2026 21:00:20 +0000
+ 2026 21:00:48 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YAE1d9jhyIAVjq5phkXY5S/GAVspbRanVPG3hxT1V32HpkLXA0fmwasavqHMozIn3m6gQzWESdogMcNywxoLDY7bdlL3mzjE2pZhLJFYkOJj1/SwnSix8tF7jUGBvnhpkUSY115rIw60FTeJ468HP34MRzhCciNrjJyazP4bt59VYk6trclQHpzQCCd2PGOLqQxrES+QfVabuYHBCdU/UYhwtJf9k+0J+YEqawYxnt4TH1luvrzUzmOzA1f2hZjrkCgVHenMV8vo3Ewxxgon2LL/K7OzHS0oAAOTYmO3eTE46/J8LRWClTlZCvCYaiwpOc/H/Na1dYSKsPJqQpWQvg==
+ b=XL9amNYoCubrSMOq35w1/CBf9UiF75XDTyPwX5sJPTJKDE6zXfVDPARAzUPGXKu881NoCkXWz2VcZgljBaYU5oU99fR+rAldGU+VCE/IeFVlnkz4RirgNcSC0kNaTtnGH2H+yZgxnU2D4SNyg2Wfa2Z5OCm4j7QuVFZs+mymH3zzMzr6GbMuX8srZuf3XJsqA/xjND7c9QPPBym2OiWu4nPe0CBwAWJaQTepv79/XMdLJVoXD6R9ao0EKfuIF5IIx4HCnJ+LHwI3VCqbCv+Gqu516GSuBZlPAHweveRylolJe2x5W2koOqRvieWByRZBZUC7pqr0tX+cWZ29aa0pcA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UUetOG8bb12H7eTtGvbIiaV5Extzs9iFYH1LAkp3Hug=;
- b=ayAknQf3RGxB4OSczL98moXCsQo4UzYY4RztnEdDGPp108zxNo0C4Ob4eCXBNoemCGAuUK+etwTDPQslxYGisRH+JcvZS6I4v4sL2eLIbTSYHqxVk0xaKq26XA3ruJ7VWz2+zVyKrXqNjgnZi8JHoPAaVQYG0UWw4Y/fazGF7BdZUvPFSJYgKYX32tK/0UQCufpXJ8s8gAUNDqhSMk25pt0R4/njwIWJQmy9LbwMF4s8WEoZX0t464b/zVbHdNJZpSFiQ4qcThLVRsmXcrYNTEIUD+ghwiLo/R+n00EUhVQN0hDelG1nA/YH0WsE4WSwPNrkUNzglnRHD5MxNReVUQ==
+ bh=xBRr2GZhxBHnHKtvtOttTc98zguohuoucwX/W+aKf9M=;
+ b=ZBKHP2pviB4TLzZCTBF16stiJ1U03gSsgFzDI5/CXjKd27CxHIZkyxxA4gUTz/5HVF+7sZ0Wx6Ef/mi0mV7mVyG4XOcGPiNhcORxngr2LBCBST7naQoPxbcI+VNSyAvbIp7H59erd2CGzhmwhgXEypapHwF+QngSOHnepLB9odY6naJZZHNoR6X0Qdym4L4CZ15KQdx/wNQrStOdYXJOF6dtyVCS9bxniAijHJeTEwFyfF0xDPuDYcmC5upg6ugMxZZyqsC21pAI/xX5s6QFT3fgQKXSU+xK7qmQ4F4A8wUm95RA9BtKKMgHBjzGYodLOgf565zWXz3+38aV6wkRgg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
  header.d=hpe.com; arc=none
@@ -100,17 +100,17 @@ Received: from DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:8:225::20)
  by IA4PR84MB951192.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:207:144::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.10; Fri, 30 Oct
- 2026 21:00:17 +0000
+ 2026 21:00:41 +0000
 Received: from DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
  ([fe80::d136:e75e:53c5:73d8]) by DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
  ([fe80::d136:e75e:53c5:73d8%6]) with mapi id 15.21.0569.008; Fri, 30 Oct 2026
- 21:00:17 +0000
+ 21:00:41 +0000
 From: Doug Ledford <doug.ledford@hpe.com>
-Date: Fri, 30 Oct 2026 13:59:04 -0700
-Subject: [PATCH 08/23] net: hpe: sbl: add media, FEC and counter support
+Date: Fri, 30 Oct 2026 13:59:09 -0700
+Subject: [PATCH 13/23] net: hpe: sl: add media and cable handling
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261030-cxi-netdev-submission-v1-8-8c2c391cc283@hpe.com>
+Message-Id: <20261030-cxi-netdev-submission-v1-13-8c2c391cc283@hpe.com>
 References: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
 In-Reply-To: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
 To: Slingshot Open Source Team <slingshot-os-team@groups.ext.hpe.com>,
@@ -130,12 +130,11 @@ To: Slingshot Open Source Team <slingshot-os-team@groups.ext.hpe.com>,
         Guenter Roeck <linux@roeck-us.net>
 CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
         <linux-kbuild@vger.kernel.org>, Doug Ledford <doug.ledford@hpe.com>,
-        "Sandeep
- Bhoot" <sandeep.bhoot@hpe.com>,
-        Mamila Santosh <santosh-kumar.mamila@hpe.com>
+        "Mamila
+ Santosh" <santosh-kumar.mamila@hpe.com>
 X-Mailer: b4 0.16.0
-X-ClientProxiedBy: CH2PR10CA0024.namprd10.prod.outlook.com
- (2603:10b6:610:4c::34) To DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
+X-ClientProxiedBy: CH0PR03CA0018.namprd03.prod.outlook.com
+ (2603:10b6:610:b0::23) To DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
  (2603:10b6:8:225::20)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -148,1822 +147,4100 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM4PR84MB3970:EE_|IA4PR84MB951192:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2b50deb5-f084-4898-ea7e-08df36c8cd0f
+X-MS-Office365-Filtering-Correlation-Id: 702d3196-c3d5-4b91-b486-08df36c8db29
 X-LD-Processed: 105b2061-b669-4b31-92ac-24d304d195dc,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|6133799003|18002099003|22082099003|3023799007|921020|56012099006|5023799004|261021121427099003|261026130827099003|261028144727099003|261026121527099003|261026135527099003|10067099003|261026140227099003|261021133027099003|261022115727099003|261022075727099003|261021130227099003|261022113327099003|261022105027099003|261021123027099003|261021135927099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info: pKbEIOpUpeae7bRCenkCLiS45csp93aaeNsx3Ra9crj+QH8/3k/dA9MK90TkHjlXoZ7pm4zBmpSogADZ+CQMDblQjo1gMfNxRpB1zykw5NJcYN4BHD+pGs/zZuMf138m7uklkAV+5QqxjPYyB2OJv7/qeiB/JsmIPV9LViVVwIq3WBNqgAOHDJOLhfKNkegEZgrS4QPMeytxw0ur0ODLRjVs1HWZbML224ReVChe5q8P0iKCFeG+ZSvHNyTvaoYs+a1u6TXgoUAJOD1kB+E3MPsIwAtqYiCL47YjdI7eWvyoZEnTFbm6FYugG6IDymlsHisd5PVT0F30hr8eAoDJdlex64hU2UbBQ16CV7aACvA6nOJzCBl3MolQu0h52bzVvCXmf01v1nkuGP6ytIkKgkMks7DqoFyBR7YGLqPNvInZRUMqbi3kWqQFtOtmxxyef33vlJjWNwSFd4CAQcG7gspP5vFupMprZfVDY7u0R8vz5GDjpYo5LZW1sEXZwfKsEThxcnNncQ0h6Iv+eGMSQ0SDohzvoCej2uwfoLeQBKscZyNztppAbRb0RT8aNFfrmO8uc2LZwzm8+Wsljsrj1HES+pTEipRlTo1a7GyQWPn9k22KjeuYrRYeUIdzMrDHgcW+eBguIBnwnIB3ZfY6gGJ0BCXDRlW6X8DGDgS5ZIFGAk4p33xvw9puqjN5LsSHy+er7awbCirNSLL1HbhCyw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(6133799003)(18002099003)(22082099003)(3023799007)(921020)(56012099006)(5023799004)(261021121427099003)(261026130827099003)(261028144727099003)(261026121527099003)(261026135527099003)(10067099003)(261026140227099003)(261021133027099003)(261022115727099003)(261022075727099003)(261021130227099003)(261022113327099003)(261022105027099003)(261021123027099003)(261021135927099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|6133799003|18002099003|22082099003|921020|56012099006|5023799004|261021121427099003|261026130827099003|261028144727099003|261026121527099003|261026135527099003|10067099003|261026140227099003|261021133027099003|261022115727099003|261022075727099003|261021130227099003|261022113327099003|261022105027099003|261021123027099003|261021135927099003|261009223027099003|261009221227099003|260925022911599003|260925021311599003|260925021911599003;
+X-Microsoft-Antispam-Message-Info: uP6inkd2Tq7xhCESv6z1TozBDSo1kFfqzG/Hf/MH2B3zn80g5jQHn/NE0zu0MuJtJiXFo1hUNE+O5wLyJ8XtYpdSUfp7kTQ+yxIjvJMjXY2x1q36nB5HMxCbjpj/kCtnQ0NaHQAxqDgRQ6VPf04sQ9PgjnXwUrU7N3IQrcw1BIC9cuMeDrsNqEWL5vxf8l9WEDNJiCy9l4+L2WBZ/WaRFgJKaEDEJPUq7IW9+l4PtzOpjlJD5WKjFLvMY/7p5sifQXwGz8hAfcPK7gaGqyDZYA0bwC6zsTJ3jo7krrb5hFi7K+5AvVkT/cnnOc+Eh8oaeNLTlI7sUajaCmK1QwDFcPJMYL2nbHQSt1jKwOMrRb+GSpsArBNAd5QHGiqT0OJuJZ2s1zxFVbJ+Zs9+0b9+KkE5y+raIp/WUnVgA8gafmWHDzZd5/YZvUhnVF34N4miNFwqdL0uLm58CyirPqN9yfnrmL96Ysa41yyulq2tMPeFuybYhKVzdTHEaNfMs084d8Fu/QSA4Wvj8CfuWHHHRXXMhp0RSgKfpR1uAL1rCsXKKonHK1McZCKBH9x1yJvkT+wvCGVmj1QtAZPQljOcuS91ZStfVJgW2XMQw9W9X8LXv/AvxDk6CXdEKl2ztMe4PXp3O+J6pLKP2Jky6KUi3trW61gEq9wSb/cnwvG4yqLBDqFFCPgJquwY45kHB+xamwCIcV3UDFsC6gA8aNzBUw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(6133799003)(18002099003)(22082099003)(921020)(56012099006)(5023799004)(261021121427099003)(261026130827099003)(261028144727099003)(261026121527099003)(261026135527099003)(10067099003)(261026140227099003)(261021133027099003)(261022115727099003)(261022075727099003)(261021130227099003)(261022113327099003)(261022105027099003)(261021123027099003)(261021135927099003)(261009223027099003)(261009221227099003)(260925022911599003)(260925021311599003)(260925021911599003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?b1c0c24zL2IvSzZFS3ltbmplQlE2SHlIN1BvYS9QTXlyVWc2TzVVTGFqRkoy?=
- =?utf-8?B?SzMyRTVyckNRVTd5MzZTc1FTWWFhdWlHQUlLc3JqM2dWNFc1VlVWK1k0RklE?=
- =?utf-8?B?aUw5VjFlTGoxMkorN2JrMThpYk9aaWpPSFZwZmliYm44cGI2Z2gvdXVvMzIy?=
- =?utf-8?B?WDhnVlVHdEljbXJicmR2TkN1bXhYcTNLOXFUUGJEZFZGRjk0M0UrUmMwaGpD?=
- =?utf-8?B?ZGZrNkprbkx5UHFBQ2xKTUdrL05qSnFvbzNCVjZQSFVJV2ErandpYUJIUHQr?=
- =?utf-8?B?NmZMa2szbFhCam1OWEZJZHdDcW45VU5paGJyZ05TS3pRdG5RcHJKQ3gxTkxr?=
- =?utf-8?B?NWZIMUczTHM1ZzU5TWdJdVBYTDVlYjBDd2t4QUJDNmJsajZjOVJRSmJVeTNa?=
- =?utf-8?B?SUtNbjBib0tVWTcrOFFZejRZU3N1TXEzaDVoUUZPNVEyYjFwMENjNjRoZFB1?=
- =?utf-8?B?cjhCYWhncTNYUUJ4U01NWitWSERLamxHN1RKeG9LYVEvK0NURkN3d2tQSmFn?=
- =?utf-8?B?SHRNWXY1NE9ONGRtaWQ5dW1yTlhua09ocWszRXhjcDhvZTdJSVJaMk1RRWE4?=
- =?utf-8?B?OFNOeXdUcWFKSklSUGZBTWJHQytrZFJNak9WWS9KdGFmVW5TcVMrczVUWCtL?=
- =?utf-8?B?eWcreVpINi9Tczc4VWdiV2lPMkZFN0JYMjR1NW5ETkFjaFY0OWliZ3V5cHBm?=
- =?utf-8?B?MHJJZUFiQWplUDNITy9yanBMWFlldXdhQTIycWZqd2NzZXByQnhJMG5kdzZO?=
- =?utf-8?B?MVhkbyt0RFJSTTNEdkl0RWtIZlpwS3ZpUVgwbVZZTkZ4eVlwdlhFVlNnQWx1?=
- =?utf-8?B?WUFtOWcvNnBDN0phY2V0MENsVGFBVTVPNlZyNFBPL29Ud3BrZlZsVitDcndH?=
- =?utf-8?B?c2VxWk5GZXk5eldscmdzcVl2MGIyMi9semM2SWcvSmI0VnN4VUxxYlFUd0ww?=
- =?utf-8?B?NmFsZGhSKzhPaUZnaGVvQ2VXTmhSeWdycWxYTVhsQzFaeWlPQ1FJVklWNVF6?=
- =?utf-8?B?WHhSVU1oQ3BZeTFLNzN2Rzl6QS9DQVNUMFczdTBIRVdwK0E5OXR0SU5MVmgx?=
- =?utf-8?B?NU5zWXQwdmROdWg1WXFnOTE5Smc3TmVJUnovQTVaNFVmdTBGeksrUEpnTVA4?=
- =?utf-8?B?MFRDODBGakRVREJPcmdPMktVZkxubndEMWN3aTZ0RWFqcDRobUc2VFJkOGdl?=
- =?utf-8?B?Y2NJeS9ySExoSzBBVVNCS3N4VkpLdGIxR1FGWnFNL3lRVTRKWGRBcmxuWFNL?=
- =?utf-8?B?blJkT3FVRDB1alJEbjZaM1owcklTd2NFQ0hTZGNPTnZ3ckZvQTNqanFoZUo3?=
- =?utf-8?B?WWxSUWNKZXQ4bUhabTY1NmMyRDAxWE4zbWdHVGVITGNSMHl0b3RhT1F4eldY?=
- =?utf-8?B?eDJ0VFMrcTZqVU5ybGJKZVVWV2V6SUx1QUhXTFpCRDlaZHhNRFMrMmFxVXJq?=
- =?utf-8?B?N28yR1NBcVBOV05iMVdYTS9lV1QycUVHb0NzaHRURUJBRzlNZGxOcWVnU3hy?=
- =?utf-8?B?cjJQWEIxTVZtZVh5TFR0U1I4TGJkQUMzNkZieDRzTnY3ZlpnV0pEMFJEck1j?=
- =?utf-8?B?UDI4bzZxcE1QYjYrOGFtem5YbDJoK3ErOFN2WFhLSWdJbWN6ZEpGcWVIbDAx?=
- =?utf-8?B?Nm1EZlArTTM4dFQxSkFjSDJyblN4UWlvaUlnRmhSd1dLTmFYajF0c0Y4ZHdo?=
- =?utf-8?B?eTZkOTJleGY2SlNVMFRiVnZrTmpPbUNXcFBHVERqSE1TbmIvdVFsOU1JR0p5?=
- =?utf-8?B?RFdweDhGaEdPNzRpbHE4VUI0Nk1yV0dkZXNlaXNJVitLcnFMZjZ1ZC9jbWNs?=
- =?utf-8?B?aEpYWFdtbHlqUUozeWF0MDlqS1paWWdvQ2lxZjAwaGE1WmFtdkpsL0tGcXU3?=
- =?utf-8?B?aVNoeHVNaG9odmJSTzFiNHhBbEJzMUduMmdFSmJJRkdSOWJzZ3V3TVIwMU84?=
- =?utf-8?B?eGhaWm9qVDcwSTNvbC8rRUE0Q3dBVFFJcmN4c3U2T2o1YkVoa2l1dEJXbzZz?=
- =?utf-8?B?ZXpiakRTeWpsNlg3cnRGSUhMb1hkTFRqdVhkNlVXSzk0bitaK0dBOWFrTVdq?=
- =?utf-8?B?MVczc1ZvbitYb2FkMWZzOGxJN2tWRGF4bUJIcFE1TzhjNEVFNG4rYXhmbGNx?=
- =?utf-8?B?WEhEbTFtWU9McE5uZUxBMHhoTlZ6KzZja25IenNudEdUSWpZeE5adjlCQ2VS?=
- =?utf-8?B?R1g3aXhSRkdpakFDMmNDYVk5ZXBuOWNnSWJvRHlXbUpxdWdGRDdLa09wcXRm?=
- =?utf-8?B?clRLMTdKdUxxT2NHWUp5OUhrcmdFNyt1MHdDUDJESlMrZHplQnd5c1RIcE5w?=
- =?utf-8?B?OENtWkRyWC9kT1ppMHRsWU1meDkxTzhyNjhTTVl4WkRrbE5oS0Rtdz09?=
-X-Exchange-RoutingPolicyChecked: p7UQv6nJkH+Obs9mIW/nrOIcRheg2cQK51KORKN5tRZMsuYY22VA5j2VKlJNZ8y5/WKQH98Vk5KtkeYwzGOLWTPHyYDl6C/5YH5chZH6BUFhnjzdQo1SW/UWp4HpeN9MnytUKMiP8vkThuOPy/HITZ0h7z10y+Px1i6G3gG/URVs2qUvkhxaxx20kMPvzY4w1e7kfpYyoTt80BYegDnXBAjYPDOYfhsOABOEyNn+7o4PRhKXlMvJWaeNI/gdH2+LMVAVsUASj0AKllrpH0CM9e1wuS30y0QdiFnop5PsOH9Bf9hhbE9rCM3PF2cqlXD/ZZGdfEqyJMFyOt28tY/Wkg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2b50deb5-f084-4898-ea7e-08df36c8cd0f
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UTZBbDZEdUl3OVFhTktDb1VjcDh4TWxCVnJ0QTJ2Zi9yRFBGb2hVdVJxb2JZ?=
+ =?utf-8?B?OWVSb3FiUmo3eG01SzFZYS9OZmVjTG01NmxsNmZ4eXFOY1lHQzZZL2trMjdr?=
+ =?utf-8?B?NHZMSUxZbmJrN2E3TWxPWkZENUhnTzlXS25uVlVEc2xyLzdjbWJiem5mUkU1?=
+ =?utf-8?B?OXp0ck4zT0ZCZUEzeXpwTjhLRzlMUTl1K2krQmlUZTJ6V3Jab253T3NHS2lR?=
+ =?utf-8?B?UGU5OEpXZmFsSDVzSThiYy9NOVl0enowTWx3MWdYMC9GaWEybVlsait4Um9T?=
+ =?utf-8?B?WUFSZDJPV0JYL2pML2FNTVdFQm5BdlJ0Rm9MSlNZQWM1NnpxdWl3M0MvQWw3?=
+ =?utf-8?B?L3BoRW5KOWlQL2cyaXJRTDM3SlBjblB6SmgyNjBRakJXRFpFK0ZiaW9hN0oy?=
+ =?utf-8?B?RjBzUER6ZVVNOXJ0Q1RhODFnSnJGU2ZhYkIwOUVwc3p3cTRhNForZGxvYmoy?=
+ =?utf-8?B?UHNtb1RybmZGcHU2T3FmOVpmbVJZSXhQRUkvT2M5Tk8wTTlKZUxJWTJzUEsr?=
+ =?utf-8?B?RUFCTEhSdGhZV1ZMbXV2alpHdC8yYVFxclRkS3g2cDMybXNscWtmWVltTGl3?=
+ =?utf-8?B?ZW5xSEFLQ254by9YNllvTVVtV3dmSkN0VjI5Z3dGRDd6dlhyT0VFdEpZZ0tq?=
+ =?utf-8?B?V2RXV21DRG5sVDJZdDV1YzEyckdjYXY2TTQzVEtGMXZSWHFGa1cya1BjM29H?=
+ =?utf-8?B?RnFjZDUvVUhvVzlhbTNHTXhQcmR3RXZkZkdJRldsQ3BFY1k3NWovYVd5Wll0?=
+ =?utf-8?B?MHZTdDE0NWo3blRUMkYrcklmSGNSNzcrVmRyMmZWdXc3NmI2bmg3VVZaUEtW?=
+ =?utf-8?B?QmxoaGNhRkkwM1lZWFQ2Wlh6bjM3akxhVTJFd0pMNTN4amN5VnVmUldZdE9j?=
+ =?utf-8?B?T2JBOVJFWmdPdmdjcGxqaXNLUjFPdk14QUQ1SmxQSCtnREhQd1JMSlpFV042?=
+ =?utf-8?B?UXhoTmpidUNCaW9mVkVNalBWd1NGOFFrUEhLZUdCMnNLUkdCcmdRQnhMa1RY?=
+ =?utf-8?B?akxrWkhzbk9DTTJjdENtcGhDN014RFFOSUtXK2FYMWd0c2VObzZadHB5aDlK?=
+ =?utf-8?B?UWd0ZFcxM3RRTVJ3VTNFdGU0OUh2cGxrS3JQS3kwaC9vY0c4UVJqUnBsbXdF?=
+ =?utf-8?B?MFhGR3BjeUV1SzJTZmwydk94aElCaTRDOTA1VzlzNlVLNmsyTCsrYzJKYktE?=
+ =?utf-8?B?VU5zWGdXMkF0eE1YRHE4NmYxQmo5S0IrY0xWQWpyUzk5OXJnZ3FIaFZoNjJP?=
+ =?utf-8?B?M0tRNUpnQnRDOUN2empheDViTmhTKzArbEZld2hKZnlINmN5TDRRMDFSWjgw?=
+ =?utf-8?B?MnZlN2dQNWVub3FXQnVXQzBCcS92TW1NTHNWcDQ5T2tySE1sd0Q4elJuYVZ1?=
+ =?utf-8?B?dWRxSDcrTmRZQ0FtUkpYTmNJaVFFT0p1eVU4YUE0aFV0RzVwUjZ0a0c2alpi?=
+ =?utf-8?B?b3UxS0xoazhNblZWQnNCa1BYZFVTRDB5enZzNXNuMEJWcWpENTZTUXBwNUlO?=
+ =?utf-8?B?bmYyRC9Ia0JGSW1pVVBsOWgxSWRPZ3NnVlZDU0M2Z3V6RjZDdlVHcTNQaW4y?=
+ =?utf-8?B?bFpSWWNqTEo3bWYrZTFuc2VuckVPeVJUUTRrZWk5bi9ub2VZOTZEclppYm1I?=
+ =?utf-8?B?QjI3NUo2UGkyOTlMdHVLSC9jNXRpR0dxUTlEdlFOM3ZiZkJIcGJwajF3bnRz?=
+ =?utf-8?B?cmxBTVNXeUxJaU9tQk9HMVJ3SUloZ21mQ1VqeGFiNFlJNWc0N0paYTlpdkwz?=
+ =?utf-8?B?alhmRWoxVEJqcWdWNHdKTTFkNjVjUEZjVVMxZU5pdVlGOC9jbXRBQ1RYKzlq?=
+ =?utf-8?B?dVJTQmxhSTMxdzVaT1hlR1oxTEdQVUN4ZGZWMUZUdm1sbnB5OCszc25HUDVl?=
+ =?utf-8?B?ODBVSzQzSHRMNmZFQjcrZEJBRmZ6V1JnZkdFUnRTeWd3Wno0dlhVMFdNZkI0?=
+ =?utf-8?B?ZHJ1THI1ZDhyR0VrQzFFY2dYT3FBTzl5bzkyNndQWjZ6cG1aOWQ5cjl5am55?=
+ =?utf-8?B?RE42QmtNbmN6SnJaSHYzNjNQZWJ2dzVTK24zeENmWFpXbjVMN3Y4T1BTVU1p?=
+ =?utf-8?B?WGVxa0tzQ051bjBOSTc0Y1FvT1lVNGdrblE5aURWUjNDblZzL0QyZ1VIenAw?=
+ =?utf-8?B?eEVOdkhVQ2JXaERxSVIzMmdqdVJRSGRqdjVCcWs5d2xwRWUxYTBqR2h2VEZm?=
+ =?utf-8?B?ZEFBYksyYmtMN2s3ZWJHclI0TjJFblFtVll4aTNUWlpQQ0t6UHE0VXNob3Vl?=
+ =?utf-8?B?cFJpZmxhR0JBNER4TXhGS2xsL0dDdkJwK3VlZE9iaVk5c3BSS0E1eWdDOE1T?=
+ =?utf-8?B?emkrcFRGdW9sQTJVSjdUWktCMDJkVXBCSzJHenpoYmZEWVVPcWx1UT09?=
+X-Exchange-RoutingPolicyChecked: QwlY47EZjY0PSqwBEjEVzCbPenMyNVcU+K1SusfhpVsolBbw34B/Xx/Vo1NNeAZonWkWPSBxHgio7HOLoT6UqR50HX+kqVQ/zdkF6HwGuEkDxSZWf3u1ZWnTunmpxWv0CPXZFB4W95Z2YTFc899+6doDvqD9H2ivubVLvYnaxXnJpKl1q0/ctJCBGTOGwBKirhKNDnhSWYVqOa9vOlRMrWA3bGQJozS8US7xGLgj+MmPIi/I3g0u4uIqEN2UkAm10uSuSNtY8yBOWrDUDaBHZJLow/X/HW+NAQWYli/t9vuoYzzV3NcUfN57FvZt1IAdf53XpYq9Y+CtEUbjIkYsNQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 702d3196-c3d5-4b91-b486-08df36c8db29
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 21:00:17.5954
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 21:00:41.7255
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 105b2061-b669-4b31-92ac-24d304d195dc
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Fqoryb+6xbc5NSV8flu9nXwHoSuTmAw1ILqHkjfO0RT44HGKpBZJJk9PtOIiemtTjhUAsEelKY/0yOUxDeBhyg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: SIYAHGcszLFaUizNIB8mezZZyxixJW5C3B7p6I+ucNZak5SyBNXt5v/sKQTbJRwWYelO3yHKBhxqrKqJgv8Now==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR84MB951192
 X-OriginatorOrg: hpe.com
-X-Authority-Analysis: v=2.4 cv=QOf91QLL c=1 sm=1 tr=0 ts=6ae5056e cx=c_pps
+X-Proofpoint-ORIG-GUID: dU9eXnkX_n6fc1FXjlOriZAz8Xa_Or92
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfX4JhYphrXFI8C
+ TSE1eR4iyUYIrgwAMVyskf1NIaBcp6TH5JROOR9xNqk384sc95U8SzNK4S/3Ag/QtpKdsd+xotR
+ pTy7QndgNUucYSNxr2cceRf1mCVqe/k=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfX4eCksjnDj8Hl
+ adGHbovmdexlyuTven9bxpFxBQnAIvhgCzFIog8erIvbrRKvtRucji7bkWb0pLpoiDxrdOMNX73
+ nr8MQHFASHydAaSwpbyKoz60LWLg4YB0xrQXTsaSyRD0rmUEIqoz5NqPpeJOuJyTQH/mI8y2CpX
+ IljzfIpVEsaRxroknN180+qL/WB8dbRCEMFPm/VK/9oUTGFEjvSb52KXtMScRalf8+vGnRDhnEv
+ l3wBUFbxvLXVeS+Xys9ybAtzabmBiFkHkbKGRaKUAEa58Zl2FvdnzAT0hjuNtfLXDEymzqm+mAi
+ nEj/jBaLDJDuw0LgoZ5EIRnvvRKYs2uAOGyP6RXyLrLcCSVPuJRA8EtYc0getOGtHZiyL0yBwbd
+ GmDsQWWJTG388/qSIYuDS+9NKzpaS3yo4jNMD9j6VoHAt74y6QBxCp/7A5lKZ7RmRxLxq5jw+jW
+ fNv/fd5pLF8jid46FhQ==
+X-Authority-Analysis: v=2.4 cv=bKGDs/+Z c=1 sm=1 tr=0 ts=6ae50581 cx=c_pps
  a=UObrlqRbTUrrdMEdGJ+KZA==:117 a=UObrlqRbTUrrdMEdGJ+KZA==:17
  a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
  a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
  a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=gQcMVamqm3wCPoSYhaRC:22
- a=3haJ9R1Aw3gUfsUHDaCR:22 a=MvuuwTCpAAAA:8 a=iTzTgzf_AAAA:8
- a=uJ3LQuXv2TKb7hm_gHAA:9 a=UgyqpFzXoMhERF59:21 a=QEXdDO2ut3YA:10
- a=JL7qxNyGISI99KadRA9B:22
-X-Proofpoint-GUID: _oqZsscYN_RL4Xv66yXuOR35ZX5m-JEN
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfXw3XE/CqWS2Yg
- jENnRA01GWha/yQdegB3J5+k03SbeUZs9whNJLVXnoD3La/txPKLVEwCtRDjDJtQHkkiXAE53em
- TNiWgC1qDaHGux9CA6VI3GRvXaIUKlm7WPEjCBGk1+ozBRKlQc6IS4Ma/VVwZei9PFkG3ghIPfY
- c66cdSX+DUFgjX/uduiMzZbzixAvtHEfvDjMTkHPiigv9wPyqjCkv3FXlb1E0Xly7mHJ7K+Xsdq
- lmsq4v2DXj25wnrviv4jtLsKK24blfmve2Q2MMVMZsuVY+PAP7ACy0o0w/3MImIJrA/yoSJmAQe
- 00iiEU0g6ZWmnsMWw7Etny+xvtOpK9bp8Geap96YFDcU+g4y5OAOwavbeByfHXyavfhZVrQ35bJ
- 1B8fZtHInYZBxuWfSQlyPJld6n5uu1GRGjG/74gSH6XPUTdEiVf9fPDqjs/M0CHzxZ7+R0mAfRA
- VALmqHuuj9mpQyIPiEA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfXyJiWaY+FhNnr
- qLMUeYO0MG4ZGHYaNkvGenxfo/P0pDQSdlY+it9ob4nkiddewcTc5TIDV+fncSIFI3AjTUVXXMn
- OiPB5NVVISpL9BO84SiPQ446ZD8AW3M=
-X-Proofpoint-ORIG-GUID: _oqZsscYN_RL4Xv66yXuOR35ZX5m-JEN
+ a=ay80y3fxfMS_JZZz1qJy:22 a=MvuuwTCpAAAA:8 a=oPDcsV5zAAAA:8
+ a=LCAnrB7BMdWhVdc1Wu8A:9 a=UO5Xvd6sF9_3KjH3:21 a=QEXdDO2ut3YA:10
+ a=nha20LbOgcfWf79Gid5B:22
+X-Proofpoint-GUID: dU9eXnkX_n6fc1FXjlOriZAz8Xa_Or92
 X-HPE-SCL: -1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-10-30_06,2026-10-21_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0 lowpriorityscore=0 spamscore=0 impostorscore=0
- bulkscore=0 adultscore=0 malwarescore=0 priorityscore=1501 suspectscore=0
+ bulkscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0 malwarescore=0
+ clxscore=1015 impostorscore=0 adultscore=0 suspectscore=0 phishscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610300083
 
-Add media detection, FEC (forward error correction) configuration and
-the link counters.  sbl_platform.h is updated for the media fields
-added here.
+Add cable and media handling: EEPROM parsing, the cable database,
+per-jack data, and the emulated jack used when no real media is
+present.
 
 checkpatch --strict (100 columns) still reports the following in this
 patch. They need coordination with the internal repositories this code
 is maintained in and will be fixed in V2:
-- WARNING: LONG_LINE (5)
-- CHECK: BRACES (16), UNNECESSARY_PARENTHESES (10)
+- WARNING: LONG_LINE (164), LONG_LINE_STRING (21), LONG_LINE_COMMENT
+  (2), BRACES (1)
+- CHECK: UNNECESSARY_PARENTHESES (27), ALLOC_SIZEOF_STRUCT (3), BRACES
+  (2), COMPARISON_TO_NULL (1)
 
-Co-developed-by: Sandeep Bhoot <sandeep.bhoot@hpe.com>
-Signed-off-by: Sandeep Bhoot <sandeep.bhoot@hpe.com>
 Co-developed-by: Mamila Santosh <santosh-kumar.mamila@hpe.com>
 Signed-off-by: Mamila Santosh <santosh-kumar.mamila@hpe.com>
 Signed-off-by: Doug Ledford <doug.ledford@hpe.com>
 ---
- drivers/net/ethernet/hpe/sbl/sbl_counters.c  | 137 ++++
- drivers/net/ethernet/hpe/sbl/sbl_fec.c       | 971 +++++++++++++++++++++++++++
- drivers/net/ethernet/hpe/sbl/sbl_fec_nic.c   |  36 +
- drivers/net/ethernet/hpe/sbl/sbl_media.c     | 482 +++++++++++++
- drivers/net/ethernet/hpe/sbl/sbl_media_nic.c |  47 ++
- 5 files changed, 1673 insertions(+)
+ .../ethernet/hpe/sl/media/base/sl_media_eeprom.c   |  611 +++++++++++
+ .../hpe/sl/media/data/nic/sl_media_data_jack.c     |  496 +++++++++
+ .../hpe/sl/media/data/nic/sl_media_data_jack_emu.c |   38 +
+ .../hpe/sl/media/data/nic/sl_media_data_ldev.c     |   30 +
+ .../hpe/sl/media/data/sl_media_data_cable_db_ops.c |  111 ++
+ .../hpe/sl/media/data/sl_media_data_jack.c         |  344 +++++++
+ .../hpe/sl/media/data/sl_media_data_ldev.c         |  115 +++
+ .../hpe/sl/media/data/sl_media_data_lgrp.c         |  127 +++
+ .../hpe/sl/media/data/sl_media_data_lgrp_trace.c   |   31 +
+ .../net/ethernet/hpe/sl/media/nic/sl_media_io.c    |   63 ++
+ .../net/ethernet/hpe/sl/media/nic/sl_media_jack.c  |  315 ++++++
+ .../net/ethernet/hpe/sl/media/nic/sl_media_ldev.c  |   13 +
+ drivers/net/ethernet/hpe/sl/media/sl_media_jack.c  | 1067 ++++++++++++++++++++
+ drivers/net/ethernet/hpe/sl/media/sl_media_ldev.c  |   22 +
+ drivers/net/ethernet/hpe/sl/media/sl_media_lgrp.c  |  498 +++++++++
+ 15 files changed, 3881 insertions(+)
 
-diff --git a/drivers/net/ethernet/hpe/sbl/sbl_counters.c b/drivers/net/ethernet/hpe/sbl/sbl_counters.c
+diff --git a/drivers/net/ethernet/hpe/sl/media/base/sl_media_eeprom.c b/drivers/net/ethernet/hpe/sl/media/base/sl_media_eeprom.c
 new file mode 100644
-index 000000000000..90feb6436105
+index 000000000000..80113ec4860d
 --- /dev/null
-+++ b/drivers/net/ethernet/hpe/sbl/sbl_counters.c
-@@ -0,0 +1,137 @@
++++ b/drivers/net/ethernet/hpe/sl/media/base/sl_media_eeprom.c
+@@ -0,0 +1,611 @@
 +// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2023-2026 Hewlett Packard Enterprise Development LP */
 +
-+/* Copyright 2019, 2022 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/types.h>
-+#include <linux/kernel.h>
 +#include <linux/slab.h>
-+#include <linux/device.h>
++#include <linux/errno.h>
++#include <linux/string.h>
 +
-+#include <linux/hpe/sbl/sbl.h>
++#include <linux/hpe/sl/sl_media.h>
 +
-+#include "sbl_internal.h"
++#include "sl_media_eeprom.h"
++#include "sl_media_lgrp.h"
++#include "sl_media_jack.h"
++#include "base/sl_media_log.h"
++#include "data/sl_media_data_cable_db.h"
 +
-+/* create and initialise the SBL link's counter array */
-+int sbl_link_counters_init(struct sbl_link *link)
++#define LOG_NAME SL_MEDIA_EEPROM_LOG_NAME
++
++static void sl_media_eeprom_appsel_info_store(struct sl_media_jack *media_jack, u8 host_interface,
++					      unsigned long *speeds_map, u8 appsel_num, u8 lane_count)
 +{
-+	int i;
-+
-+	if (!link->counters) {
-+		link->counters = kzalloc(sizeof(atomic_t) * SBL_LINK_NUM_COUNTERS,
-+					 GFP_KERNEL);
-+		if (!link->counters)
-+			return -ENOMEM;
-+	}
-+
-+	for (i = 0; i < SBL_LINK_NUM_COUNTERS; ++i)
-+		atomic_set(link->counters + i, 0);
-+
-+	return 0;
-+}
-+
-+/* destroy the SBL link's counter array */
-+void sbl_link_counters_term(struct sbl_link *link)
-+{
-+	kfree(link->counters);
-+	link->counters = NULL;
-+}
-+
-+/**
-+ * sbl_link_counters_get() - Get a block of SBL link counters
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @counters: Number of counters to read from 'first'
-+ * @first: Index of the first counter to read
-+ * @count: Number of consecutive counters to read starting from 'first'
-+ *
-+ * Reads a sequence of counters starting from index 'first'
-+ * until the given 'count' and stores them to output
-+ * pointed by 'counters'
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+int sbl_link_counters_get(struct sbl_inst *sbl, int port_num,
-+			  int *counters, u16 first, u16 count)
-+{
-+	struct sbl_link *link;
-+	int i;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return -EINVAL;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return -EINVAL;
-+
-+	link = sbl->link + port_num;
-+
-+	if ((first + count) > SBL_LINK_NUM_COUNTERS)
-+		return -EINVAL;
-+
-+	if (!counters)
-+		return -EINVAL;
-+
-+	for (i = first; i < first + count; ++i)
-+		*counters++ = atomic_read(link->counters + i);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(sbl_link_counters_get);
-+
-+/**
-+ * sbl_link_counters_read() - Read value of a SBL link counter
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @counter: Index at which reads the counter value
-+ *
-+ * Read link count value based on the 'counter' index
-+ *
-+ * Return: value of a SBL link counter on success, 0 on failure
-+ */
-+int sbl_link_counters_read(struct sbl_inst *sbl, int port_num, u16 counter)
-+{
-+	struct sbl_link *link;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return 0;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return 0;
-+
-+	link = sbl->link + port_num;
-+
-+	if (counter >= SBL_LINK_NUM_COUNTERS)
-+		return 0;
-+
-+	return atomic_read(link->counters + counter);
-+}
-+EXPORT_SYMBOL(sbl_link_counters_read);
-+
-+/* Increment a SBL link counter */
-+int sbl_link_counters_incr(struct sbl_inst *sbl, int port_num, u16 counter)
-+{
-+	struct sbl_link *link;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return -EINVAL;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return -EINVAL;
-+
-+	link = sbl->link + port_num;
-+
-+	if (counter >= SBL_LINK_NUM_COUNTERS)
-+		return -EINVAL;
-+
-+	atomic_inc(link->counters + counter);
-+
-+	return 0;
-+}
-diff --git a/drivers/net/ethernet/hpe/sbl/sbl_fec.c b/drivers/net/ethernet/hpe/sbl/sbl_fec.c
-new file mode 100644
-index 000000000000..d458ca5e1269
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sbl/sbl_fec.c
-@@ -0,0 +1,971 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/* Copyright 2024-2025 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/types.h>
-+#include <linux/kernel.h>
-+#include <linux/device.h>
-+#include <linux/delay.h>
-+#include <linux/workqueue.h>
-+#include <linux/spinlock.h>
-+
-+#include <linux/hpe/sbl/sbl.h>
-+#include <linux/hpe/sbl/sbl_an.h>
-+#include <linux/hpe/sbl/sbl_fec.h>
-+#include <linux/hpe/sbl/sbl_kconfig.h>
-+
-+#include <linux/hpe/sbl/sbl_pml.h>
-+
-+#include "sbl_serdes_map.h"
-+#include "sbl_pml_fn.h"
-+#include "sbl_link.h"
-+#include "sbl_serdes.h"
-+#include "sbl_serdes_fn.h"
-+#include "sbl_internal.h"
-+
-+static void sbl_fec_counts_zero(struct sbl_inst *sbl, int port_num,
-+				struct sbl_pcs_fec_cntrs *cntrs)
-+{
-+	memset(cntrs, 0, sizeof(struct sbl_pcs_fec_cntrs));
-+}
-+
-+static u64 sbl_fec_rate_calc(struct sbl_inst *sbl, int port_num,
-+			     u64 curr, u64 prev, unsigned long tdiff)
-+{
-+	if (curr < prev) {
-+		sbl_dev_err(sbl->dev, "%d: fec counter went backwards", port_num);
-+
-+		return 0;
-+	} else
-+		return (curr - prev) * HZ / tdiff;
-+}
-+
-+static int sbl_fec_rates_update(struct sbl_inst *sbl, int port_num,
-+				u32 window)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	struct fec_data *fec_data = link->fec_data;
-+	struct sbl_fec *fec_prmts = fec_data->fec_prmts;
-+	struct sbl_pcs_fec_cntrs *temp;
-+	unsigned long tdiff;
-+	int i;
-+	bool discard_rates;
-+	enum sbl_fec_discard_type reason;
-+	unsigned long irq_flags;
-+
-+	spin_lock(&fec_prmts->fec_cnt_lock);
-+
-+	/* make sure the period is sufficient to update rates
-+	 * otherwise zero rates so nothing fires
-+	 */
-+	if (time_is_after_jiffies(fec_prmts->fec_curr_cnts->time + msecs_to_jiffies(window))) {
-+		sbl_fec_counts_zero(sbl, port_num, fec_prmts->fec_rates);
-+		spin_unlock(&fec_prmts->fec_cnt_lock);
-+
-+		return -EINPROGRESS;
-+	}
-+
-+	temp = fec_prmts->fec_prev_cnts;
-+	fec_prmts->fec_prev_cnts = fec_prmts->fec_curr_cnts;
-+	fec_prmts->fec_curr_cnts = temp;
-+	sbl_fec_counts_get(sbl, port_num, fec_prmts->fec_curr_cnts);
-+
-+	spin_lock_irqsave(&link->fec_discard_lock, irq_flags);
-+	discard_rates = (link->fec_discard_time >= fec_prmts->fec_prev_cnts->time) &&
-+			(link->fec_discard_time < fec_prmts->fec_curr_cnts->time);
-+	reason = link->fec_discard_type;
-+	spin_unlock_irqrestore(&link->fec_discard_lock, irq_flags);
-+
-+	if (discard_rates) {
-+		sbl_dev_dbg(sbl->dev, "%d: %s - ignoring FEC rates for the current window", port_num,
-+			    sbl_fec_discard_str(reason));
-+		sbl_fec_counts_zero(sbl, port_num, fec_prmts->fec_rates);
-+		spin_unlock(&fec_prmts->fec_cnt_lock);
-+		return -EINTR;
-+	}
-+
-+	/* calc time difference  (HZ)
-+	 * (unsigned so rollover ok)
-+	 */
-+	tdiff = fec_prmts->fec_curr_cnts->time - fec_prmts->fec_prev_cnts->time;
-+
-+	/* calculate rates */
-+	fec_prmts->fec_rates->ccw =
-+		sbl_fec_rate_calc(sbl, port_num,
-+				  fec_prmts->fec_curr_cnts->ccw,
-+				  fec_prmts->fec_prev_cnts->ccw, tdiff);
-+	fec_prmts->fec_rates->ucw =
-+		sbl_fec_rate_calc(sbl, port_num,
-+				  fec_prmts->fec_curr_cnts->ucw,
-+				  fec_prmts->fec_prev_cnts->ucw, tdiff);
-+	fec_prmts->fec_rates->llr_tx_replay =
-+		sbl_fec_rate_calc(sbl, port_num,
-+				  fec_prmts->fec_curr_cnts->llr_tx_replay,
-+				  fec_prmts->fec_prev_cnts->llr_tx_replay, tdiff);
-+
-+	for (i = 0; i < SBL_PCS_NUM_FECL_CNTRS; ++i)
-+		fec_prmts->fec_rates->fecl[i] =
-+			sbl_fec_rate_calc(sbl, port_num,
-+					  fec_prmts->fec_curr_cnts->fecl[i],
-+					  fec_prmts->fec_prev_cnts->fecl[i], tdiff);
-+
-+	fec_prmts->fec_rates->time = jiffies_to_msecs(tdiff);
-+
-+	spin_unlock(&fec_prmts->fec_cnt_lock);
-+
-+	return 0;
-+
-+}
-+
-+/* returns true if the corrected code word rate is bad */
-+static bool sbl_fec_ccw_rate_bad(struct sbl_inst *sbl, int port_num,
-+				 u32 thresh_adj, bool use_stp_thresh)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	struct fec_data *fec_data = link->fec_data;
-+	struct sbl_fec *fec_prmts = fec_data->fec_prmts;
-+
-+	u64 ccw_bad;
-+	bool ignore_err;
-+	u64 ccw_hwm;
-+
-+	sbl_fec_ccw_bad_get(fec_prmts, use_stp_thresh, &ccw_bad, &ccw_hwm);
-+
-+	/* update high water mark
-+	 * we record this even if no test is performed so we can use it for
-+	 * debug/calibration
-+	 */
-+	if (fec_prmts->fec_rates->ccw > ccw_hwm) {
-+		spin_lock(&fec_prmts->fec_cw_lock);
-+		fec_prmts->fec_ccw_hwm = fec_prmts->fec_rates->ccw;
-+		spin_unlock(&fec_prmts->fec_cw_lock);
-+	}
-+
-+	/* apply percentage adjustment */
-+	ccw_bad = ccw_bad * thresh_adj / 100;
-+
-+	if (ccw_bad == 0) {
-+		sbl_dev_dbg(sbl->dev, "%d: fec ccw test ignored, threshold is zero", port_num);
-+
-+		return false;
-+	}
-+
-+	/* check corrected code words */
-+	if (fec_prmts->fec_rates->ccw > ccw_bad) {
-+		sbl_link_counters_incr(sbl, port_num, fec_ccw_err);
-+		ignore_err = sbl_debug_option(sbl, port_num, SBL_DEBUG_IGNORE_HIGH_FEC_CCW);
-+
-+		sbl_dev_err(sbl->dev, "%d: bad ccw, ccw %lld (>%lld), ucw %lld, (%lld %lld %lld %lld %lld %lld %lld %lld), window %ldms%s\n",
-+			    port_num, fec_prmts->fec_rates->ccw, ccw_bad,
-+				fec_prmts->fec_rates->ucw,
-+				fec_prmts->fec_rates->fecl[0], fec_prmts->fec_rates->fecl[1],
-+				fec_prmts->fec_rates->fecl[2], fec_prmts->fec_rates->fecl[3],
-+				fec_prmts->fec_rates->fecl[4], fec_prmts->fec_rates->fecl[5],
-+				fec_prmts->fec_rates->fecl[6], fec_prmts->fec_rates->fecl[7],
-+				fec_prmts->fec_rates->time,
-+				ignore_err ? " -ignored" : "");
-+		if (ignore_err)
-+			return false;
-+		else
-+			return true;
-+	}
-+	return false;
-+}
-+
-+/* returns true if the uncorrected code word rate is bad
-+ * threshold adjustment is a percentage
-+ */
-+static bool sbl_fec_ucw_rate_bad(struct sbl_inst *sbl, int port_num,
-+				 u32 thresh_adj)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	struct fec_data *fec_data = link->fec_data;
-+	struct sbl_fec *fec_prmts = fec_data->fec_prmts;
-+
-+	bool ignore_err;
-+	u64 ucw_bad;
-+	u64 ucw_hwm;
-+
-+	sbl_fec_ucw_bad_get(fec_prmts, &ucw_bad, &ucw_hwm);
-+
-+	/* update high water mark
-+	 * we record this even if no test is performed so we can use it for
-+	 * debug/calibration
-+	 */
-+	if (fec_prmts->fec_rates->ucw > ucw_hwm) {
-+		spin_lock(&fec_prmts->fec_cw_lock);
-+		fec_prmts->fec_ucw_hwm = fec_prmts->fec_rates->ucw;
-+		spin_unlock(&fec_prmts->fec_cw_lock);
-+	}
-+
-+	/* apply percentage adjustment */
-+	ucw_bad = ucw_bad * thresh_adj / 100;
-+
-+	if (ucw_bad == 0) {
-+		sbl_dev_dbg(sbl->dev, "%d: fec ucw test ignored, threshold is zero", port_num);
-+		return false;
-+	}
-+
-+	/* check uncorrected code words */
-+	if (fec_prmts->fec_rates->ucw > ucw_bad) {
-+		sbl_link_counters_incr(sbl, port_num, fec_ucw_err);
-+		ignore_err = sbl_debug_option(sbl, port_num, SBL_DEBUG_IGNORE_HIGH_FEC_UCW);
-+
-+		sbl_dev_err(sbl->dev, "%d: bad ucw, ccw %lld, ucw %lld (>%lld), (%lld %lld %lld %lld %lld %lld %lld %lld), window %ldms%s\n",
-+			    port_num, fec_prmts->fec_rates->ccw,
-+				    fec_prmts->fec_rates->ucw, ucw_bad,
-+				    fec_prmts->fec_rates->fecl[0], fec_prmts->fec_rates->fecl[1],
-+				    fec_prmts->fec_rates->fecl[2], fec_prmts->fec_rates->fecl[3],
-+				    fec_prmts->fec_rates->fecl[4], fec_prmts->fec_rates->fecl[5],
-+				    fec_prmts->fec_rates->fecl[6], fec_prmts->fec_rates->fecl[7],
-+				    fec_prmts->fec_rates->time,
-+				    ignore_err ? " -ignored" : "");
-+		if (ignore_err)
-+			return false;
-+		else
-+			return true;
-+	}
-+	return false;
-+
-+}
-+
-+static bool sbl_fec_txr_rate_bad(struct sbl_inst *sbl, int port_num,
-+				 u32 thresh_adj)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	struct fec_data *fec_data = link->fec_data;
-+	struct sbl_fec *fec_prmts = fec_data->fec_prmts;
-+
-+	u64 llr_tx_replay_bad;
-+	u64 llr_tx_replay_hwm;
-+	bool ignore_err;
-+
-+	spin_lock(&fec_prmts->fec_cw_lock);
-+	llr_tx_replay_bad = fec_prmts->fec_llr_tx_replay_thresh;
-+	llr_tx_replay_hwm = fec_prmts->fec_llr_tx_replay_hwm;
-+	spin_unlock(&fec_prmts->fec_cw_lock);
-+
-+	/* update high water mark
-+	 * we record this even if no test is performed so we can use it for
-+	 * debug/calibration
-+	 */
-+	if (fec_prmts->fec_rates->llr_tx_replay > llr_tx_replay_hwm) {
-+		spin_lock(&fec_prmts->fec_cw_lock);
-+		fec_prmts->fec_llr_tx_replay_hwm = fec_prmts->fec_rates->llr_tx_replay;
-+		spin_unlock(&fec_prmts->fec_cw_lock);
-+	}
-+	if (llr_tx_replay_bad == 0) {
-+		sbl_dev_dbg(sbl->dev, "%d: fec llr_tx_replay test ignored, threshold is zero", port_num);
-+		return false;
-+	}
-+
-+	/* check llr_tx_replay rate */
-+	if (fec_prmts->fec_rates->llr_tx_replay > llr_tx_replay_bad) {
-+		sbl_link_counters_incr(sbl, port_num, fec_txr_err);
-+		ignore_err = sbl_debug_option(sbl, port_num, SBL_DEBUG_IGNORE_HIGH_FEC_TXR);
-+
-+		sbl_dev_err(sbl->dev, "%d: bad llr_tx_replay, llr_tx_replay %lld (>%lld), window %ldms%s\n",
-+			    port_num,
-+				fec_prmts->fec_rates->llr_tx_replay, llr_tx_replay_bad,
-+				fec_prmts->fec_rates->time,
-+				ignore_err ? " -ignored" : "");
-+
-+		if (ignore_err)
-+			return false;
-+		else
-+			return true;
-+	}
-+	return false;
-+}
-+
-+/* print a few warnings (so we can see how things are changing) about high
-+ * fec lane error rates
-+ */
-+static void sbl_fec_rates_warnings(struct sbl_inst *sbl, int port_num,
-+				   int *warning_count)
-+{
-+
-+	struct sbl_link *link = sbl->link + port_num;
-+	struct fec_data *fec_data = link->fec_data;
-+	struct sbl_fec *fec_prmts = fec_data->fec_prmts;
-+	int fecl_warn;
-+	int i;
-+
-+	spin_lock(&fec_prmts->fec_cw_lock);
-+	fecl_warn = fec_prmts->fecl_warn;
-+	spin_unlock(&fec_prmts->fec_cw_lock);
-+
-+	if (fecl_warn == 0) {
-+		dev_dbg(sbl->dev, "%d: fec ccw warn ignored, threshold is zero", port_num);
-+
-+		return;
-+	}
-+
-+	for (i = 0; i < SBL_PCS_NUM_FECL_CNTRS; ++i) {
-+		if (fec_prmts->fec_rates->fecl[i] > fecl_warn) {
-+			sbl_link_counters_incr(sbl, port_num, fec_warn);
-+
-+			if (*warning_count > 0) {
-+				dev_warn(sbl->dev,
-+					 "sbl %d: warning, ccw %lld, (%lld %lld %lld %lld %lld %lld %lld %lld)%s\n",
-+					 port_num, fec_prmts->fec_rates->ccw,
-+					 fec_prmts->fec_rates->fecl[0],
-+					 fec_prmts->fec_rates->fecl[1],
-+					 fec_prmts->fec_rates->fecl[2],
-+					 fec_prmts->fec_rates->fecl[3],
-+					 fec_prmts->fec_rates->fecl[4],
-+					 fec_prmts->fec_rates->fecl[5],
-+					 fec_prmts->fec_rates->fecl[6],
-+					 fec_prmts->fec_rates->fecl[7],
-+					 (*warning_count == 1) ? " - last" : "");
-+				--*warning_count;
-+			} else {
-+				dev_dbg(sbl->dev,
-+					"sbl %d: warning, ccw %lld, (%lld %lld %lld %lld %lld %lld %lld %lld)\n",
-+					port_num, fec_prmts->fec_rates->ccw,
-+					fec_prmts->fec_rates->fecl[0],
-+					fec_prmts->fec_rates->fecl[1],
-+					fec_prmts->fec_rates->fecl[2],
-+					fec_prmts->fec_rates->fecl[3],
-+					fec_prmts->fec_rates->fecl[4],
-+					fec_prmts->fec_rates->fecl[5],
-+					fec_prmts->fec_rates->fecl[6],
-+					fec_prmts->fec_rates->fecl[7]);
-+			}
-+			return;
++	switch (host_interface) {
++	case SL_MEDIA_SS1_HOST_INTERFACE_50GAUI_1_C2M:
++	case SL_MEDIA_SS1_HOST_INTERFACE_50GBASE_CR:
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_CD_50G;
++		break;
++	case SL_MEDIA_SS1_HOST_INTERFACE_100GAUI_2_C2M:
++	case SL_MEDIA_SS1_HOST_INTERFACE_100GBASE_CR2:
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_CD_100G;
++		break;
++	case SL_MEDIA_SS2_HOST_INTERFACE_100GBASE_CR1:
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_BJ_100G;
++		fallthrough;
++	case SL_MEDIA_SS2_HOST_INTERFACE_100GAUI_1_L_C2M:
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_CK_100G;
++		break;
++	case SL_MEDIA_SS1_HOST_INTERFACE_200GBASE_CR4:
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_BS_200G;
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_BJ_100G;
++		break;
++	case SL_MEDIA_SS1_HOST_INTERFACE_200GAUI_4_C2M:
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_BS_200G;
++		media_jack->appsel_num_200_gaui = appsel_num;
++		media_jack->lane_count_200_gaui = lane_count;
++		media_jack->host_interface_200_gaui = host_interface;
++		break;
++	case SL_MEDIA_SS2_HOST_INTERFACE_200GBASE_CR2:
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_BJ_100G;
++		fallthrough;
++	case SL_MEDIA_SS2_HOST_INTERFACE_200GAUI_2_S_C2M:
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_CK_200G;
++		break;
++	case SL_MEDIA_SS2_HOST_INTERFACE_400GBASE_CR4:
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_BJ_100G;
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_CK_400G;
++		break;
++	case SL_MEDIA_SS2_HOST_INTERFACE_400GAUI_4_S_C2M:
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_CK_400G;
++		if (media_jack->appsel_num_400_gaui) /* we prefer 4_l_c2m over 4_s_c2m for default ck400G speed */
++			break;
++		media_jack->appsel_num_400_gaui = appsel_num;
++		media_jack->lane_count_400_gaui = lane_count;
++		media_jack->host_interface_400_gaui = host_interface;
++		break;
++	case SL_MEDIA_SS1_HOST_INTERFACE_400GAUI_4_L_C2M:
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_CK_400G;
++		media_jack->appsel_num_400_gaui = appsel_num;
++		media_jack->lane_count_400_gaui = lane_count;
++		media_jack->host_interface_400_gaui = host_interface;
++		fallthrough;
++	case SL_MEDIA_SS1_HOST_INTERFACE_400GBASE_CR8:
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_BS_200G;
++		fallthrough;
++	case SL_MEDIA_SS1_HOST_INTERFACE_CAUI_4_C2M:
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_BJ_100G;
++		break;
++	case SL_MEDIA_SS2_HOST_INTERFACE_800GBASE_CR8:
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_BJ_100G;
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_CK_400G;
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_CK_800G;
++		break;
++	case SL_MEDIA_SS2_HOST_INTERFACE_800GAUI_8_S_C2M:
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_CK_400G;
++		*speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_CK_800G;
++		if (!media_jack->host_interface_400_gaui) {
++			media_jack->appsel_num_400_gaui = appsel_num;
++			media_jack->host_interface_400_gaui = host_interface;
 +		}
-+	}
-+}
-+
-+/**
-+ * sbl_fec_thresholds_clear() - Clear fec ccw/ucw/warn thresholds to zero
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * Clears fec ccw/ucw/warn parameters to zero. This update is performed
-+ * while holding a spinlock to ensure safe concurrent access.
-+ *
-+ * Context: Process context, Acquires lock and release fec_cw_lock <spin_lock>
-+ */
-+void sbl_fec_thresholds_clear(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	struct fec_data *fec_data = link->fec_data;
-+	struct sbl_fec *fec_prmts = fec_data->fec_prmts;
-+
-+	sbl_dev_dbg(sbl->dev, "%d: clearing fec thresholds", port_num);
-+
-+	spin_lock(&fec_prmts->fec_cw_lock);
-+	fec_prmts->fec_ucw_thresh = 0;
-+	fec_prmts->fec_ccw_thresh = 0;
-+	fec_prmts->fec_stp_ccw_thresh = 0;
-+	fec_prmts->fecl_warn  = 0;
-+	spin_unlock(&fec_prmts->fec_cw_lock);
-+}
-+EXPORT_SYMBOL(sbl_fec_thresholds_clear);
-+
-+/**
-+ * sbl_fec_thresholds_set() - setup the fec thresholds
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @ucw_in: value for link mode and media
-+ * @ccw_in: value for link mode and media
-+ *
-+ * This function gets ccw/ucw/ccw warning values using arguments
-+ * provided and copies it to the fec parameters.
-+ *
-+ * Context: Process context, Acquires lock and release fec_cw_lock <spin_lock>
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+int sbl_fec_thresholds_set(struct sbl_inst *sbl, int port_num,
-+			   s32 ucw_in, s32 ccw_in)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	struct fec_data *fec_data = link->fec_data;
-+	struct sbl_fec *fec_prmts = fec_data->fec_prmts;
-+
-+	int link_mode;
-+	u64 ucw;
-+	u64 ccw;
-+	u64 stp_ccw;
-+	u64 fecl_warn  = 0;
-+	int err = 0;
-+
-+	/* Uncorrected codeword threshold */
-+	switch (ucw_in) {
-+	case SBL_LINK_FEC_INVALID:
-+		sbl_dev_err(sbl->dev, "%d: link ucw invalid", port_num);
-+		goto fail;
-+
-+	case SBL_LINK_FEC_OFF:
-+		ucw = 0;
 +		break;
-+
-+	case SBL_LINK_FEC_IEEE:
-+		ucw = sbl_link_get_ucw_thresh_ieee(sbl, port_num);
-+		break;
-+
-+	case SBL_LINK_FEC_HPE:
-+		ucw = sbl_link_get_ucw_thresh_hpe(sbl, port_num);
-+		break;
-+
 +	default:
++		sl_media_log_dbg(media_jack, LOG_NAME,
++				 "invalid host interface (0x%x)", host_interface);
++	}
++}
 +
-+		if (ucw_in < 0) {
-+			sbl_dev_err(sbl->dev, "%d: bad link attr ucw (%d)", port_num,
-+				    ucw_in);
-+			goto fail;
-+		}
++#define APPSEL_PAGE0_START_OFFSET 86
++#define APPSEL_PAGE1_START_OFFSET 223
++#define APPSEL_STRIDE             4
++#define APPSEL_END                0xFF
++#define APPSEL_LAST_PAGE0         114
++#define APPSEL_LAST_PAGE1         247
++#define APPSEL_LANE_COUNT_OFFSET  2
++static int sl_media_eeprom_appsel_info_get(struct sl_media_jack *media_jack, unsigned long *speeds_map)
++{
++	u8  host_interface;
++	u8  appsel_curr;
++	u8  appsel_num;
 +
-+		/* explicit number, just use it */
-+		ucw = ucw_in;
-+		break;
++	appsel_curr = APPSEL_PAGE0_START_OFFSET;
++	appsel_num = 1;
++	while (appsel_curr <= APPSEL_LAST_PAGE0) {
++		host_interface = media_jack->eeprom_page0[appsel_curr];
++		if (host_interface == APPSEL_END)
++			return 0;
++		sl_media_eeprom_appsel_info_store(media_jack, host_interface, speeds_map, appsel_num,
++						  media_jack->eeprom_page0[appsel_curr + APPSEL_LANE_COUNT_OFFSET]);
++		appsel_curr += APPSEL_STRIDE;
++		appsel_num++;
 +	}
 +
-+	/* Corrected codeword threshold */
-+	switch (ccw_in) {
-+	case SBL_LINK_FEC_INVALID:
-+		sbl_dev_err(sbl->dev, "%d: attr ccw invalid", port_num);
-+		goto fail;
++	appsel_curr = APPSEL_PAGE1_START_OFFSET;
++	while (appsel_curr <= APPSEL_LAST_PAGE1) {
++		host_interface = media_jack->eeprom_page1[appsel_curr];
++		if (host_interface == APPSEL_END)
++			return 0;
++		sl_media_eeprom_appsel_info_store(media_jack, host_interface, speeds_map, appsel_num,
++						  media_jack->eeprom_page1[appsel_curr + APPSEL_LANE_COUNT_OFFSET]);
++		appsel_curr += APPSEL_STRIDE;
++		appsel_num++;
++	}
 +
-+	case SBL_LINK_FEC_OFF:
-+		ccw = 0;
-+		stp_ccw = 0;
-+		break;
++	return 0;
++}
 +
-+	case SBL_LINK_FEC_IEEE:
-+		ccw = sbl_link_get_ccw_thresh_ieee(sbl, port_num);
-+		stp_ccw = sbl_link_get_stp_ccw_thresh_ieee(sbl, port_num);
-+		break;
++static int sl_media_eeprom_furcation_get(struct sl_media_jack *media_jack, u32 *furcation)
++{
++	*furcation = SL_MEDIA_FURCATION_X1;
++	return 0;
++}
 +
-+	case SBL_LINK_FEC_HPE:
-+		ccw = sbl_link_get_ccw_thresh_hpe(sbl, port_num);
-+		stp_ccw = sbl_link_get_stp_ccw_thresh_hpe(sbl, port_num);
-+		break;
++#define CMIS_CONNECTOR_TYPE_OFFSET    203
++#define CMIS_CONNECTOR_POC_SR8        0x28
++#define CMIS_CONNECTOR_POC_SR4        0x0C
++#define SFF8436_CONNECTOR_TYPE_OFFSET 130
++#define SFF_CONNECTOR_AOC             0x23
++static bool sl_media_eeprom_is_type_poc(struct sl_media_jack *media_jack, u8 format)
++{
++	if (format == SL_MEDIA_MGMT_IF_CMIS) {
++		switch (media_jack->eeprom_page0[CMIS_CONNECTOR_TYPE_OFFSET]) {
++		case CMIS_CONNECTOR_POC_SR8:
++		case CMIS_CONNECTOR_POC_SR4:
++			return true;
++		default:
++			return false;
++		}
++	}
 +
++	/* SFF */
++	switch (media_jack->eeprom_page0[SFF8436_CONNECTOR_TYPE_OFFSET]) {
++	case SFF_CONNECTOR_AOC:
++		return false;
 +	default:
-+
-+		if (ccw_in < 0) {
-+			sbl_dev_err(sbl->dev, "%d:bad link attr ccw (%d)", port_num,
-+				    ccw_in);
-+			goto fail;
-+		}
-+
-+		/* explicit number, just use it */
-+		ccw = ccw_in;
-+		stp_ccw = ccw_in;
-+		break;
++		return true;
 +	}
++}
 +
-+	/* ccw warning thresholds */
-+	err = sbl_base_link_get_status(sbl, port_num,
-+				       NULL, NULL, NULL, NULL, NULL, &link_mode);
++#define CMIS_TYPE_OFFSET    212
++#define CMIS_MEDIA_AOC      0x00
++#define CMIS_MEDIA_PEC      0x0A
++#define CMIS_MEDIA_AEC      0x0C
++#define CMIS_MEDIA_ACC      0x0F
++#define SFF8436_TYPE_OFFSET 147
++#define SFF_MEDIA_AOC       0x00
++#define SFF_MEDIA_PEC       0xA0
++#define SFF_MEDIA_AEC       0xC0
++static int sl_media_eeprom_type_get(struct sl_media_jack *media_jack, u8 format, u32 vendor, u32 *type)
++{
++	u8 media;
 +
-+	if (err) {
-+		sbl_dev_warn(sbl->dev, "%d:thresh, get mode failed [%d]-warnings disabled", port_num, err);
-+		fecl_warn = 0;
-+	} else {
-+
-+		switch (link_mode) {
-+		case SBL_LINK_MODE_BS_200G:
-+			fecl_warn = ccw / 8;
++	if (format == SL_MEDIA_MGMT_IF_CMIS) {
++		media = media_jack->eeprom_page0[CMIS_TYPE_OFFSET];
++		switch (media) {
++		case CMIS_MEDIA_AOC:
++			if (sl_media_eeprom_is_type_poc(media_jack, format))
++				*type = SL_MEDIA_TYPE_POC;
++			else
++				*type = SL_MEDIA_TYPE_AOC;
 +			break;
-+		case SBL_LINK_MODE_BJ_100G:
-+			fecl_warn = ccw / 8;
++		case CMIS_MEDIA_PEC:
++			*type = SL_MEDIA_TYPE_PEC;
 +			break;
-+		case SBL_LINK_MODE_CD_100G:
-+			fecl_warn = ccw / 4;
++		case CMIS_MEDIA_AEC:
++			*type = SL_MEDIA_TYPE_AEC;
 +			break;
-+		case SBL_LINK_MODE_CD_50G:
-+			fecl_warn = ccw / 2;
++		case CMIS_MEDIA_ACC:
++			/* compensate for Molex type programming issue */
++			if (vendor == SL_MEDIA_VENDOR_MOLEX)
++				*type = SL_MEDIA_TYPE_AEC;
++			else
++				*type = SL_MEDIA_TYPE_ACC;
 +			break;
 +		default:
-+			fecl_warn = 0;
++			*type = SL_MEDIA_TYPE_UNSUPPORTED;
++		}
++	} else {
++		media = media_jack->eeprom_page0[SFF8436_TYPE_OFFSET];
++		switch (media) {
++		case SFF_MEDIA_AOC:
++			if (sl_media_eeprom_is_type_poc(media_jack, format))
++				*type = SL_MEDIA_TYPE_POC;
++			else
++				*type = SL_MEDIA_TYPE_AOC;
++			break;
++		case SFF_MEDIA_PEC:
++			*type = SL_MEDIA_TYPE_PEC;
++			break;
++		case SFF_MEDIA_AEC:
++			*type = SL_MEDIA_TYPE_AEC;
++			break;
++		default:
++			*type = SL_MEDIA_TYPE_UNSUPPORTED;
++		}
++	}
++
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "type get (media = 0x%X, type = 0x%X %s)",
++			 media, *type, sl_media_type_str(*type));
++
++	return 0;
++}
++
++#define CMIS_VENDOR_OFFSET      129
++#define SFF8436_VENDOR_OFFSET   148
++#define VENDOR_NAME_MAX_LEN     32
++struct vendor {
++	char name[VENDOR_NAME_MAX_LEN];
++	u32  type;
++};
++
++static const struct vendor vendor_list[] = {
++	{ .name = "TE Connectivity",
++	  .type = SL_MEDIA_VENDOR_TE },
++	{ .name = "Hisense",
++	  .type = SL_MEDIA_VENDOR_HISENSE },
++	{ .name = "FINISAR CORP",
++	  .type = SL_MEDIA_VENDOR_FINISAR },
++	{ .name = "Bizlink",
++	  .type = SL_MEDIA_VENDOR_BIZLINK },
++	{ .name = "Cloud Light",
++	  .type = SL_MEDIA_VENDOR_CLOUD_LIGHT },
++	{ .name = "Molex",
++	  .type = SL_MEDIA_VENDOR_MOLEX },
++	{ .name = "MULTILANE",
++	  .type = SL_MEDIA_VENDOR_MULTILANE },
++	{ .name = "Amphenol",
++	  .type = SL_MEDIA_VENDOR_AMPHENOL },
++};
++
++static int sl_media_eeprom_vendor_get(struct sl_media_jack *media_jack, u8 format, u32 *vendor)
++{
++	const char *vendor_ptr;
++	int         x;
++
++	if (format == SL_MEDIA_MGMT_IF_CMIS)
++		vendor_ptr = &(media_jack->eeprom_page0[CMIS_VENDOR_OFFSET]);
++	else
++		vendor_ptr = &(media_jack->eeprom_page0[SFF8436_VENDOR_OFFSET]);
++
++	for (x = 0; x < ARRAY_SIZE(vendor_list); ++x) {
++		if (strnstr(vendor_ptr, vendor_list[x].name, VENDOR_NAME_MAX_LEN) == NULL)
++			continue;
++		*vendor = vendor_list[x].type;
++		sl_media_log_dbg(media_jack, LOG_NAME,
++				 "vendor get (vendor = %u %s)", *vendor, sl_media_vendor_str(*vendor));
++		return 0;
++	}
++
++	*vendor = 0;
++
++	sl_media_jack_fault_cause_set(media_jack, SL_MEDIA_FAULT_CAUSE_EEPROM_VENDOR_UNSUPPORTED);
++	sl_media_log_err_trace(media_jack, LOG_NAME, "eeprom vendor get unsupported");
++
++	return 0;
++}
++
++static bool is_valid_char(char c)
++{
++	return c >= 33 && c <= 126;
++}
++
++#define CMIS_VENDOR_PN_OFFSET 148
++#define SFF_VENDOR_PN_OFFSET  168
++static int sl_media_eeprom_vendor_pn_str_get(struct sl_media_jack *media_jack, u8 format, char *vendor_pn_str)
++{
++	int x;
++	int pos;
++	u8  vendor_pn_offset;
++
++	if (format == SL_MEDIA_MGMT_IF_CMIS)
++		vendor_pn_offset = CMIS_VENDOR_PN_OFFSET;
++	else
++		vendor_pn_offset = SFF_VENDOR_PN_OFFSET;
++
++	pos = 0;
++	memset(vendor_pn_str, 0, SL_MEDIA_VENDOR_PN_SIZE);
++	for (x = 0; x < SL_MEDIA_VENDOR_PN_SIZE - 1; ++x) {
++		if (is_valid_char(media_jack->eeprom_page0[vendor_pn_offset + x])) {
++			vendor_pn_str[pos] = media_jack->eeprom_page0[vendor_pn_offset + x];
++			pos++;
++		}
++	}
++
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "vendor part num get (par_num = %s)", vendor_pn_str);
++
++	return 0;
++}
++
++#define HPE_PN_OFFSET 229
++static int sl_media_eeprom_hpe_pn_get(struct sl_media_jack *media_jack, u32 *hpe_pn, char *hpe_pn_str)
++{
++	const char *pn_ptr;
++	int         i;
++	int         counter;
++
++	counter = 0;
++	for (i = 0; i < SL_MEDIA_HPE_PN_SIZE - 1; ++i) {
++		if (is_valid_char(media_jack->eeprom_page0[HPE_PN_OFFSET + i])) {
++			hpe_pn_str[counter] = media_jack->eeprom_page0[HPE_PN_OFFSET + i];
++			counter++;
++		}
++	}
++	hpe_pn_str[counter] = '\0';
++
++	pn_ptr = &(media_jack->eeprom_page0[HPE_PN_OFFSET]);
++	for (i = 0; i < SL_MEDIA_HPE_PN_SIZE - 1; ++i) {
++		if (pn_ptr[i] < 48 || pn_ptr[i] > 57) /* if the PN character is not numeric, ignore it */
++			continue;
++		*hpe_pn = *hpe_pn * 10 + (pn_ptr[i] - '0');
++	}
++
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "hpe part num get (hpe_pn = %s)", hpe_pn_str);
++
++	return 0;
++}
++
++#define CMIS_SERIAL_NUM_OFFSET 166
++#define SFF_SERIAL_NUM_OFFSET  196
++static int sl_media_eeprom_serial_num_get(struct sl_media_jack *media_jack, u8 format, char *serial_num_str)
++{
++	int i;
++	int counter;
++	u8  serial_num_offset;
++
++	if (format == SL_MEDIA_MGMT_IF_CMIS)
++		serial_num_offset = CMIS_SERIAL_NUM_OFFSET;
++	else
++		serial_num_offset = SFF_SERIAL_NUM_OFFSET;
++
++	counter = 0;
++	memset(serial_num_str, '\0', SL_MEDIA_SERIAL_NUM_SIZE);
++	for (i = 0; i < (SL_MEDIA_SERIAL_NUM_SIZE - 1); ++i) {
++		if (media_jack->eeprom_page0[serial_num_offset + i] == '-')
++			break;
++
++		if (is_valid_char(media_jack->eeprom_page0[serial_num_offset + i])) {
++			serial_num_str[counter] = media_jack->eeprom_page0[serial_num_offset + i];
++			counter++;
++		}
++	}
++
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "serial num get (serial_num = %s)", serial_num_str);
++
++	return 0;
++}
++
++#define CMIS_DATE_CODE_OFFSET 182
++#define SFF_DATE_CODE_OFFSET  212
++static int sl_media_eeprom_date_code_get(struct sl_media_jack *media_jack, u8 format, char *date_code_str)
++{
++	u8 date_code_offset;
++
++	if (format == SL_MEDIA_MGMT_IF_CMIS)
++		date_code_offset = CMIS_DATE_CODE_OFFSET;
++	else
++		date_code_offset = SFF_DATE_CODE_OFFSET;
++
++	date_code_str[0] = media_jack->eeprom_page0[date_code_offset];
++	date_code_str[1] = media_jack->eeprom_page0[date_code_offset + 1];
++	date_code_str[2] = '-';
++	date_code_str[3] = media_jack->eeprom_page0[date_code_offset + 2];
++	date_code_str[4] = media_jack->eeprom_page0[date_code_offset + 3];
++	date_code_str[5] = '-';
++	date_code_str[6] = media_jack->eeprom_page0[date_code_offset + 4];
++	date_code_str[7] = media_jack->eeprom_page0[date_code_offset + 5];
++	date_code_str[8] = '\0';
++
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "date code get (date = %s)", date_code_str);
++
++	return 0;
++}
++
++#define FIRMWARE_VERSION_OFFSET 39
++static int sl_media_eeprom_fw_ver_get(struct sl_media_jack *media_jack, u8 *fw_ver)
++{
++	fw_ver[0] = media_jack->eeprom_page0[FIRMWARE_VERSION_OFFSET];
++	fw_ver[1] = media_jack->eeprom_page0[FIRMWARE_VERSION_OFFSET + 1];
++
++	return 0;
++}
++
++#define CABLE_END_OFFSET 240
++static int sl_media_eeprom_cable_end_get(struct sl_media_jack *media_jack)
++{
++	media_jack->cable_end = media_jack->eeprom_page0[CABLE_END_OFFSET];
++
++	return 0;
++}
++
++#define CMIS_LENGTH_OFFSET    202
++#define SFF8436_LENGTH_OFFSET 146
++static int sl_media_eeprom_length_get(struct sl_media_jack *media_jack, u8 format, u32 *length)
++{
++	if (format == SL_MEDIA_MGMT_IF_CMIS) {
++		*length = (media_jack->eeprom_page0[CMIS_LENGTH_OFFSET] & 0x3F);
++		switch (media_jack->eeprom_page0[CMIS_LENGTH_OFFSET] & 0xC0) {
++		case 0:
++			*length *= 10;
++			break;
++		case 0x40:
++			*length *= 100;
++			break;
++		case 0x80:
++			*length *= 1000;
++			break;
++		case 0xC0:
++			*length *= 10000;
++			break;
++		default:
++			*length = 0;
 +			break;
 +		}
-+	}
-+
-+	sbl_dev_dbg(sbl->dev, "%d: Setting fec thresh ucw %lld, ccw %lld, warn %lld",
-+		    port_num, ucw, ccw, fecl_warn);
-+
-+	spin_lock(&fec_prmts->fec_cw_lock);
-+	fec_prmts->fec_ucw_thresh = ucw;
-+	fec_prmts->fec_ccw_thresh = ccw;
-+	fec_prmts->fec_stp_ccw_thresh = stp_ccw;
-+	fec_prmts->fec_llr_tx_replay_thresh = SBL_FEC_LLR_TX_REPLAY_THRESH;
-+	fec_prmts->fecl_warn = fecl_warn;
-+	spin_unlock(&fec_prmts->fec_cw_lock);
-+
-+	return 0;
-+fail:
-+	sbl_dev_warn(sbl->dev, "%d: fec monitoring disabled", port_num);
-+	sbl_fec_thresholds_clear(sbl, port_num);
-+	return -ENAVAIL;
-+}
-+EXPORT_SYMBOL(sbl_fec_thresholds_set);
-+
-+/**
-+ * sbl_fec_adjustments_set() - setup the fec threshold adjustments
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @ucw_adj: Value (An adjustment of zero means disable the test)
-+ * @ccw_adj: Value (An adjustment of zero means disable the test)
-+ *
-+ * This function copies provided parameters(ucw adj/ccw adj) from caller
-+ * into fec parameters of fec_ucw_down_thresh_adj and fec_ccw_down_thresh_adj
-+ *
-+ * Context: Process context, Acquires lock and release fec_cw_lock <spin_lock>
-+ *
-+ * Return: 0 on success
-+ */
-+int sbl_fec_adjustments_set(struct sbl_inst *sbl, int port_num,
-+			    u32 ucw_adj, u32 ccw_adj)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	struct fec_data *fec_data = link->fec_data;
-+	struct sbl_fec *fec_prmts = fec_data->fec_prmts;
-+
-+	spin_lock(&fec_prmts->fec_cw_lock);
-+	fec_prmts->fec_ucw_down_thresh_adj = ucw_adj;
-+	fec_prmts->fec_ccw_down_thresh_adj = ccw_adj;
-+	spin_unlock(&fec_prmts->fec_cw_lock);
-+
-+	sbl_dev_dbg(sbl->dev, "%d: Setting fec thresh adjustments ucw_adj %d, ccw_adj %d",
-+		    port_num, ucw_adj, ccw_adj);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(sbl_fec_adjustments_set);
-+
-+int sbl_fec_up_check(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	struct fec_data *fec_data = link->fec_data;
-+	struct sbl_fec *fec_prmts = fec_data->fec_prmts;
-+	bool ucw_err;
-+	bool ccw_err	 = false;
-+	bool stp_ccw_err = false;
-+	u32 ucw_thresh_adj;
-+	u32 ccw_thresh_adj;
-+	u32 stp_ccw_thresh_adj;
-+	int i;
-+
-+	spin_lock(&fec_prmts->fec_cw_lock);
-+	ucw_thresh_adj = fec_prmts->fec_ucw_up_thresh_adj;
-+	ccw_thresh_adj = fec_prmts->fec_ccw_up_thresh_adj;
-+	stp_ccw_thresh_adj = fec_prmts->fec_stp_ccw_up_thresh_adj;
-+	spin_unlock(&fec_prmts->fec_cw_lock);
-+
-+	/* initial measurement */
-+	msleep(SBL_FEC_UP_SETTLE_PERIOD); /* time for fec rates to settle */
-+	sbl_fec_counts_get(sbl, port_num, fec_prmts->fec_curr_cnts);
-+
-+	for (i = 0; i < (link->blattr.options & SBL_OPT_FABRIC_LINK ?
-+			 SBL_FEC_UP_COUNT_FABRIC : SBL_FEC_UP_COUNT_EDGE); ++i) {
-+
-+		msleep(SBL_FEC_UP_WINDOW);
-+		sbl_fec_rates_update(sbl, port_num, SBL_FEC_UP_WINDOW);
-+
-+		ucw_err = sbl_fec_ucw_rate_bad(sbl, port_num, ucw_thresh_adj);
-+		if (ucw_err)
-+			sbl_dev_err(sbl->dev, "%d: fec up check: ucw fail", port_num);
-+
-+		if ((link->dfe_tune_count == SBL_DFE_USED_SAVED_PARAMS) && (stp_ccw_thresh_adj > 0))
-+			stp_ccw_err = sbl_fec_ccw_rate_bad(sbl, port_num, stp_ccw_thresh_adj, true);
-+		else
-+			ccw_err = sbl_fec_ccw_rate_bad(sbl, port_num, ccw_thresh_adj, false);
-+
-+		if (ccw_err)
-+			sbl_dev_err(sbl->dev, "%d: fec up check: ccw fail", port_num);
-+		else if (stp_ccw_err)
-+			sbl_dev_err(sbl->dev, "%d: fec up check: stp ccw fail", port_num);
-+
-+		if (ucw_err || ccw_err || stp_ccw_err) {
-+			sbl_link_counters_incr(sbl, port_num, fec_up_fail);
-+			return -EOVERFLOW;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+void sbl_fec_counts_get(struct sbl_inst *sbl, int port_num,
-+			struct sbl_pcs_fec_cntrs *cntrs)
-+{
-+	cntrs->fecl[0] = sbl_read64(sbl, SBL_PCS_FECL_ERRORS_00_ADDR(port_num));
-+	cntrs->fecl[1] = sbl_read64(sbl, SBL_PCS_FECL_ERRORS_01_ADDR(port_num));
-+	cntrs->fecl[2] = sbl_read64(sbl, SBL_PCS_FECL_ERRORS_02_ADDR(port_num));
-+	cntrs->fecl[3] = sbl_read64(sbl, SBL_PCS_FECL_ERRORS_03_ADDR(port_num));
-+	cntrs->fecl[4] = sbl_read64(sbl, SBL_PCS_FECL_ERRORS_04_ADDR(port_num));
-+	cntrs->fecl[5] = sbl_read64(sbl, SBL_PCS_FECL_ERRORS_05_ADDR(port_num));
-+	cntrs->fecl[6] = sbl_read64(sbl, SBL_PCS_FECL_ERRORS_06_ADDR(port_num));
-+	cntrs->fecl[7] = sbl_read64(sbl, SBL_PCS_FECL_ERRORS_07_ADDR(port_num));
-+
-+	cntrs->ccw = sbl_read64(sbl, SBL_PCS_CORRECTED_CW_ADDR(port_num));
-+	cntrs->ucw = sbl_read64(sbl, SBL_PCS_UNCORRECTED_CW_ADDR(port_num));
-+
-+	cntrs->llr_tx_replay = sbl_read64(sbl, SBL_LLR_TX_REPLAY_EVENT_ADDR(port_num));
-+
-+	cntrs->time = jiffies;
-+}
-+
-+void sbl_fec_monitor_start(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&link->lock, flags);
-+	if (!link->start_cancelled) {
-+		link->fec_monitor_enabled = true;
-+		mod_timer(&link->fec_data->fec_timer,
-+			  jiffies + msecs_to_jiffies(SBL_FEC_MON_PERIOD));
-+	}
-+	spin_unlock_irqrestore(&link->lock, flags);
-+}
-+
-+void sbl_fec_monitor_stop(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&link->lock, flags);
-+	link->fec_monitor_enabled = false;
-+	spin_unlock_irqrestore(&link->lock, flags);
-+
-+	timer_delete_sync(&link->fec_data->fec_timer);
-+	cancel_work_sync(&link->fec_data->fec_timer_work);
-+}
-+
-+static void sbl_fec_monitor_rearm(struct sbl_link *link)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&link->lock, flags);
-+	if (link->fec_monitor_enabled)
-+		mod_timer(&link->fec_data->fec_timer,
-+			  jiffies + msecs_to_jiffies(SBL_FEC_MON_PERIOD));
-+	spin_unlock_irqrestore(&link->lock, flags);
-+}
-+
-+void sbl_fec_timer_work(struct work_struct *work)
-+{
-+	u32 ucw_thresh_adj;
-+	u32 ccw_thresh_adj;
-+	int port_num;
-+	unsigned long irq_flags;
-+	struct sbl_link *link;
-+	enum sbl_link_down_origin down_origin = SBL_LINK_DOWN_ORIGIN_UNKNOWN;
-+	struct sbl_fec *fec_prmts;
-+	int warning_count = SBL_MAX_FEC_WARNINGS;
-+	int err;
-+	struct fec_data *fec_data = container_of(work, struct fec_data, fec_timer_work);
-+	struct sbl_inst *sbl = fec_data->sbl;
-+
-+	port_num = fec_data->port_num;
-+	link = sbl->link + port_num;
-+	fec_prmts = fec_data->fec_prmts;
-+
-+	if ((link->blstate == SBL_BASE_LINK_STATUS_UP) && (sbl_pml_pcs_aligned(sbl, port_num))) {
-+		err = sbl_fec_rates_update(sbl, port_num, SBL_FEC_MON_PERIOD);
-+
-+		if (!err) {
-+			spin_lock_irqsave(&fec_prmts->fec_cw_lock, irq_flags);
-+			ucw_thresh_adj = fec_prmts->fec_ucw_down_thresh_adj;
-+			ccw_thresh_adj = fec_prmts->fec_ccw_down_thresh_adj;
-+			spin_unlock_irqrestore(&fec_prmts->fec_cw_lock, irq_flags);
-+
-+			if (sbl_fec_ucw_rate_bad(sbl, port_num, ucw_thresh_adj)) {
-+				/* take the link down */
-+				down_origin = SBL_LINK_DOWN_ORIGIN_UCW;
-+				sbl_pml_link_down_async_alert(sbl, port_num, down_origin);
-+				return;
-+			}
-+
-+			if (sbl_fec_ccw_rate_bad(sbl, port_num, ccw_thresh_adj, false)) {
-+				/* take the link down */
-+				down_origin = SBL_LINK_DOWN_ORIGIN_CCW;
-+				sbl_pml_link_down_async_alert(sbl, port_num, down_origin);
-+				return;
-+			}
-+
-+			if (sbl_fec_txr_rate_bad(sbl, port_num, 0)) {
-+				/* take the link down */
-+				down_origin = SBL_LINK_DOWN_ORIGIN_LLR_TX_REPLAY;
-+				sbl_pml_link_down_async_alert(sbl, port_num, down_origin);
-+				return;
-+			}
-+			sbl_fec_rates_warnings(sbl, port_num, &warning_count);
-+
-+		}
-+
-+	}
-+	sbl_fec_monitor_rearm(link);
-+}
-+
-+void sbl_zero_all_fec_counts(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	struct fec_data *fec_data = link->fec_data;
-+	struct sbl_fec *fec_prmts = fec_data->fec_prmts;
-+
-+	spin_lock(&fec_prmts->fec_cnt_lock);
-+	memset(fec_prmts->fec_curr_cnts, 0, sizeof(struct sbl_pcs_fec_cntrs));
-+	memset(fec_prmts->fec_prev_cnts, 0, sizeof(struct sbl_pcs_fec_cntrs));
-+	memset(fec_prmts->fec_rates, 0, sizeof(struct sbl_pcs_fec_cntrs));
-+	spin_unlock(&fec_prmts->fec_cnt_lock);
-+}
-+
-+void sbl_fec_timer(struct timer_list *timer)
-+{
-+	int port_num;
-+	struct sbl_link *link;
-+	struct fec_data *fec_data = timer_container_of(fec_data, timer,
-+						       fec_timer);
-+	struct sbl_inst *sbl = fec_data->sbl;
-+
-+	port_num = fec_data->port_num;
-+	link = sbl->link + port_num;
-+
-+	if (!queue_work(sbl->workq, &(link->fec_data->fec_timer_work)))
-+		sbl_dev_warn(sbl->dev, "fec timer work already queued");
-+}
-+
-+#ifdef CONFIG_SYSFS
-+/**
-+ * sbl_fec_sysfs_sprint() - Format FEC parameters status into buffer
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @buf: Destination buffer to write the data
-+ * @size: Size of @buf in bytes, the output is truncated to fit
-+ *
-+ * This function formats FEC parameters and writes the result into the
-+ * provided buffer typically for use in sysfs output.
-+ *
-+ * Context: Process context, Acquires lock and release fec_cw_lock <spin_lock>
-+ *
-+ * Return: Number of characters written, at most @size - 1
-+ */
-+int sbl_fec_sysfs_sprint(struct sbl_inst *sbl, int port_num, char *buf, size_t size)
-+{
-+	u64 ucw_thresh;
-+	u64 ucw_hwm;
-+	u64 ccw_thresh;
-+	u64 ccw_hwm;
-+	u64 llr_tx_replay_thresh;
-+	u64 llr_tx_replay_hwm;
-+	u64 fecl_warn;
-+	int s = 0;
-+	struct sbl_link *link = sbl->link + port_num;
-+	struct fec_data *fec_data = link->fec_data;
-+	struct sbl_fec *fec_prmts = fec_data->fec_prmts;
-+
-+	spin_lock(&fec_prmts->fec_cw_lock);
-+	if (link->blstate == SBL_BASE_LINK_STATUS_STARTING) {
-+		ucw_thresh = fec_prmts->fec_ucw_thresh * fec_prmts->fec_ucw_up_thresh_adj / 100;
-+		ccw_thresh = fec_prmts->fec_ccw_thresh * fec_prmts->fec_ccw_up_thresh_adj / 100;
 +	} else {
-+		ucw_thresh = fec_prmts->fec_ucw_thresh * fec_prmts->fec_ucw_down_thresh_adj / 100;
-+		ccw_thresh = fec_prmts->fec_ccw_thresh * fec_prmts->fec_ccw_down_thresh_adj / 100;
++		*length = media_jack->eeprom_page0[SFF8436_LENGTH_OFFSET] * 100;
 +	}
 +
-+	llr_tx_replay_thresh = fec_prmts->fec_llr_tx_replay_thresh;
-+	ucw_hwm = fec_prmts->fec_ucw_hwm;
-+	ccw_hwm = fec_prmts->fec_ccw_hwm;
-+	llr_tx_replay_hwm = fec_prmts->fec_llr_tx_replay_hwm;
-+	fecl_warn = fec_prmts->fecl_warn;
-+	spin_unlock(&fec_prmts->fec_cw_lock);
-+	if (link->blstate == SBL_BASE_LINK_STATUS_UP) {
-+
-+		s += scnprintf(buf + s, size - s,
-+			       "fec monitor: hwm- ccw %lld/%lld, ucw %lld/%lld",
-+			       ccw_hwm, ccw_thresh, ucw_hwm, ucw_thresh);
-+		s += scnprintf(buf + s, size - s,
-+			       ", llr_tx_replay %lld/%lld, warn %lld",
-+			       llr_tx_replay_hwm, llr_tx_replay_thresh, fecl_warn);
-+
-+		if (ucw_thresh == 0)
-+			s += scnprintf(buf + s, size - s, ", ucw-off");
-+
-+		if (ccw_thresh == 0)
-+			s += scnprintf(buf + s, size - s, ", ccw-off");
-+
-+		s += scnprintf(buf + s, size - s, "\n");
-+
-+		if (sbl_pml_pcs_aligned(sbl, port_num)) {
-+			spin_lock(&fec_prmts->fec_cnt_lock);
-+			if (fec_prmts->fec_rates) {
-+				s += scnprintf(buf + s, size - s,
-+					       "fec monitor: rates- ccw %lld",
-+					       fec_prmts->fec_rates->ccw);
-+				s += scnprintf(buf + s, size - s, ", ucw %lld/%lld",
-+					       fec_prmts->fec_rates->ucw,
-+					       fec_prmts->fec_curr_cnts->ucw);
-+				s += scnprintf(buf + s, size - s,
-+					       ", llr_tx_replay %lld, window %ld",
-+					       fec_prmts->fec_rates->llr_tx_replay,
-+					       fec_prmts->fec_rates->time);
-+				s += scnprintf(buf + s, size - s,
-+					       ", (%lld %lld %lld %lld %lld %lld %lld %lld)\n",
-+					       fec_prmts->fec_rates->fecl[0],
-+					       fec_prmts->fec_rates->fecl[1],
-+					       fec_prmts->fec_rates->fecl[2],
-+					       fec_prmts->fec_rates->fecl[3],
-+					       fec_prmts->fec_rates->fecl[4],
-+					       fec_prmts->fec_rates->fecl[5],
-+					       fec_prmts->fec_rates->fecl[6],
-+					       fec_prmts->fec_rates->fecl[7]);
-+			}
-+			spin_unlock(&fec_prmts->fec_cnt_lock);
-+		}
-+	}
-+	return s;
-+}
-+EXPORT_SYMBOL(sbl_fec_sysfs_sprint);
-+#endif
-+
-+/**
-+ * sbl_fec_txr_rate_set() - set the llr replay threshold
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @txr_rate: Value - An adjustment of zero means disable the test
-+ *
-+ * This function sets the LLR (Link-Level Retry) replay threshold
-+ * used by the FEC logic. The threshold value is provided by the caller.
-+ *
-+ * Context: Process context, Acquires lock and release fec_cw_lock <spin_lock>
-+ *
-+ * Return: 0 on success
-+ */
-+int sbl_fec_txr_rate_set(struct sbl_inst *sbl, int port_num,
-+			 u32 txr_rate)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	struct fec_data *fec_data = link->fec_data;
-+	struct sbl_fec *fec_prmts = fec_data->fec_prmts;
-+
-+	spin_lock(&fec_prmts->fec_cw_lock);
-+	fec_prmts->fec_llr_tx_replay_thresh = txr_rate;
-+	spin_unlock(&fec_prmts->fec_cw_lock);
-+
-+	sbl_dev_dbg(sbl->dev, "%d: Setting txr_rate %d",
-+		    port_num, txr_rate);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(sbl_fec_txr_rate_set);
-+
-+/**
-+ * sbl_fec_modify_adjustments() - Update FEC threshold adjustments
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @ucw_up_adj: Adjusting un-corrected code word thresholds
-+ * @ccw_up_adj: Adjusting corrected code word thresholds
-+ * @ucw_down_adj: Adjusting un-corrected code word thresholds
-+ * @ccw_down_adj: Adjusting corrected code word thresholds
-+ * @stp_ccw_up_adj: stp un-corrected code word thresholds
-+ *
-+ * This function adjusts max/min of uncorrected/corrected
-+ * words for tuning/debug/test purposes at various levels.
-+ * Used at test/debug/tuning interface.
-+ *
-+ * Context: Process context, Acquires lock and release fec_cw_lock <spin_lock>
-+ */
-+void sbl_fec_modify_adjustments(struct sbl_inst *sbl, int port_num,
-+				u32 *ucw_up_adj, u32 *ccw_up_adj,
-+				u32 *ucw_down_adj, u32 *ccw_down_adj,
-+				u32 *stp_ccw_up_adj)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	struct fec_data *fec_data = link->fec_data;
-+	struct sbl_fec *fec_prmts = fec_data->fec_prmts;
-+
-+	spin_lock(&fec_prmts->fec_cw_lock);
-+	if (ucw_up_adj)
-+		fec_prmts->fec_ucw_up_thresh_adj = *ucw_up_adj;
-+	if (ccw_up_adj)
-+		fec_prmts->fec_ccw_up_thresh_adj = *ccw_up_adj;
-+	if (ucw_down_adj)
-+		fec_prmts->fec_ucw_down_thresh_adj = *ucw_down_adj;
-+	if (ccw_down_adj)
-+		fec_prmts->fec_ccw_down_thresh_adj = *ccw_down_adj;
-+	if (stp_ccw_up_adj)
-+		fec_prmts->fec_stp_ccw_up_thresh_adj = *stp_ccw_up_adj;
-+	spin_unlock(&fec_prmts->fec_cw_lock);
-+}
-+EXPORT_SYMBOL(sbl_fec_modify_adjustments);
-+
-+/**
-+ * sbl_fec_dump() - Print FEC info
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * Context: Process context, Acquires lock and release fec_cw_lock <spin_lock>
-+ */
-+void sbl_fec_dump(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	struct fec_data *fec_data = link->fec_data;
-+	struct sbl_fec *fec_prmts = fec_data->fec_prmts;
-+
-+	u64 ucw_thresh;
-+	u64 ccw_thresh;
-+	u64 stp_ccw_thresh;
-+	u32 ucw_up_adj;
-+	u32 ccw_up_adj;
-+	u32 stp_ccw_up_adj;
-+	u32 ucw_down_adj;
-+	u32 ccw_down_adj;
-+
-+	spin_lock(&fec_prmts->fec_cw_lock);
-+	ucw_thresh     = fec_prmts->fec_ucw_thresh;
-+	ccw_thresh     = fec_prmts->fec_ccw_thresh;
-+	stp_ccw_thresh = fec_prmts->fec_stp_ccw_thresh;
-+	ucw_up_adj     = fec_prmts->fec_ucw_up_thresh_adj;
-+	ccw_up_adj     = fec_prmts->fec_ccw_up_thresh_adj;
-+	stp_ccw_up_adj = fec_prmts->fec_stp_ccw_up_thresh_adj;
-+	ucw_down_adj   = fec_prmts->fec_ucw_down_thresh_adj;
-+	ccw_down_adj   = fec_prmts->fec_ccw_down_thresh_adj;
-+	spin_unlock(&fec_prmts->fec_cw_lock);
-+
-+	sbl_dev_info(sbl->dev, "%d: ucw : thresh %lld", port_num, ucw_thresh);
-+	sbl_dev_info(sbl->dev, "%d: ucw up: x%d%%, %lld", port_num,
-+		     ucw_up_adj, ucw_thresh * ucw_up_adj / 100);
-+	sbl_dev_info(sbl->dev, "%d: ucw down: x%d%%, %lld", port_num,
-+		     ucw_down_adj, ucw_thresh * ucw_down_adj / 100);
-+
-+	sbl_dev_info(sbl->dev, "%d: ccw : thresh %lld", port_num, ccw_thresh);
-+	sbl_dev_info(sbl->dev, "%d: stp ccw : thresh %lld", port_num, stp_ccw_thresh);
-+	sbl_dev_info(sbl->dev, "%d: ccw up: x%d%%, %lld", port_num,
-+		     ccw_up_adj, ccw_thresh * ccw_up_adj / 100);
-+	sbl_dev_info(sbl->dev, "%d: stp ccw up: x%d%%, %lld", port_num,
-+		     stp_ccw_up_adj, stp_ccw_thresh * stp_ccw_up_adj / 100);
-+	sbl_dev_info(sbl->dev, "%d: ccw down: x%d%%, %lld", port_num,
-+		     ccw_down_adj, ccw_thresh * ccw_down_adj / 100);
-+}
-+EXPORT_SYMBOL(sbl_fec_dump);
-+
-+/**
-+ * sbl_fec_hwms_clear() - Clear fec HW management config
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * This function clears the FEC HWM configuration
-+ *
-+ * Context: Process context, Acquires lock and release fec_cw_lock <spin_lock>
-+ */
-+void sbl_fec_hwms_clear(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	struct fec_data *fec_data = link->fec_data;
-+	struct sbl_fec *fec_prmts = fec_data->fec_prmts;
-+
-+	sbl_dev_dbg(sbl->dev, "%d: clearing fec thresholds", port_num);
-+
-+	spin_lock(&fec_prmts->fec_cw_lock);
-+	fec_prmts->fec_ucw_hwm = 0;
-+	fec_prmts->fec_ccw_hwm = 0;
-+	fec_prmts->fec_llr_tx_replay_hwm = 0;
-+	spin_unlock(&fec_prmts->fec_cw_lock);
-+}
-+EXPORT_SYMBOL(sbl_fec_hwms_clear);
-diff --git a/drivers/net/ethernet/hpe/sbl/sbl_fec_nic.c b/drivers/net/ethernet/hpe/sbl/sbl_fec_nic.c
-new file mode 100644
-index 000000000000..e7a06c8895d7
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sbl/sbl_fec_nic.c
-@@ -0,0 +1,36 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/* Copyright 2025 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/types.h>
-+#include <linux/kernel.h>
-+#include <linux/device.h>
-+#include <linux/delay.h>
-+#include <linux/workqueue.h>
-+#include <linux/spinlock.h>
-+
-+#include <linux/hpe/sbl/sbl.h>
-+#include <linux/hpe/sbl/sbl_fec.h>
-+#include <linux/hpe/sbl/sbl_kconfig.h>
-+
-+#include <linux/hpe/sbl/sbl_pml.h>
-+
-+#include "sbl_internal.h"
-+
-+void sbl_fec_ucw_bad_get(struct sbl_fec *fec_prmts, u64 *ucw_bad, u64 *ucw_hwm)
-+{
-+	spin_lock(&fec_prmts->fec_cw_lock);
-+	*ucw_hwm = fec_prmts->fec_ucw_hwm;
-+	*ucw_bad = fec_prmts->fec_ucw_thresh;
-+	spin_unlock(&fec_prmts->fec_cw_lock);
-+}
-+
-+void sbl_fec_ccw_bad_get(struct sbl_fec *fec_prmts, bool use_stp_thresh,
-+			 u64 *ccw_bad, u64 *ccw_hwm)
-+{
-+	spin_lock(&fec_prmts->fec_cw_lock);
-+	*ccw_hwm = fec_prmts->fec_ccw_hwm;
-+	*ccw_bad = use_stp_thresh ? fec_prmts->fec_stp_ccw_thresh :
-+		fec_prmts->fec_ccw_thresh;
-+	spin_unlock(&fec_prmts->fec_cw_lock);
-+}
-diff --git a/drivers/net/ethernet/hpe/sbl/sbl_media.c b/drivers/net/ethernet/hpe/sbl/sbl_media.c
-new file mode 100644
-index 000000000000..ec2b4574565e
---- /dev/null
-+++ b/drivers/net/ethernet/hpe/sbl/sbl_media.c
-@@ -0,0 +1,482 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/* Copyright 2019, 2021-2025 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/types.h>
-+#include <linux/kernel.h>
-+#include <linux/device.h>
-+
-+#include <linux/hpe/sbl/sbl.h>
-+#include <linux/hpe/sbl/sbl_kconfig.h>
-+
-+#include <linux/hpe/sbl/sbl_pml.h>
-+
-+#include "sbl_internal.h"
-+
-+/**
-+ * sbl_media_config() - Config media
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @mattr: media attributes
-+ *
-+ * This function sets the media attributes for the link
-+ * and sets the state as configured.
-+ *
-+ * Context: Process, Acquires locks and releases link->lock <spin_lock>
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+int sbl_media_config(struct sbl_inst *sbl, int port_num,
-+		     struct sbl_media_attr *mattr)
-+{
-+	struct sbl_link *link;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	sbl_dev_dbg(sbl->dev, "media config\n");
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
-+
-+	if (!mattr)
-+		return -EINVAL;
-+
-+	if (mattr->magic != SBL_MEDIA_ATTR_MAGIC)
-+		return -EINVAL;
-+
-+	link = sbl->link + port_num;
-+
-+	spin_lock(&link->lock);
-+
-+	if (!(link->blstate & (SBL_BASE_LINK_STATUS_UNCONFIGURED | SBL_BASE_LINK_STATUS_DOWN))) {
-+
-+		sbl_dev_err(sbl->dev, "%d: wrong state (%s) to configure media\n", port_num,
-+			    sbl_link_state_str(link->blstate));
-+		spin_unlock(&link->lock);
-+		return -EUCLEAN;
-+	}
-+
-+	memcpy(&link->mattr, mattr, sizeof(struct sbl_media_attr));
-+	link->mconfigured = true;
-+
-+	if (link->blconfigured)
-+		link->blstate = SBL_BASE_LINK_STATUS_DOWN;
-+
-+	/* the media might have changed so invalidate the llr loop time */
-+	link->llr_loop_time = 0;
-+
-+	spin_unlock(&link->lock);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(sbl_media_config);
-+
-+/**
-+ * sbl_media_unconfig() - Unconfig media
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * Clear media attributes and set base link status to unconfigure.
-+ *
-+ * Context: Process, Acquires Lock and releases link->lock <spin_lock>
-+ *
-+ * Return: negative error code on failure
-+ */
-+int sbl_media_unconfig(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link;
-+	int err = 0;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	sbl_dev_dbg(sbl->dev, "media unconfig\n");
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
-+
-+	link = sbl->link + port_num;
-+
-+	spin_lock(&link->lock);
-+
-+	if (!(link->blstate & (SBL_BASE_LINK_STATUS_UNCONFIGURED |
-+			SBL_BASE_LINK_STATUS_DOWN |
-+			SBL_BASE_LINK_STATUS_STOPPING))) {
-+
-+		sbl_dev_err(sbl->dev, "%d: wrong state (%s) to unconfigure media\n", port_num,
-+			    sbl_link_state_str(link->blstate));
-+		spin_unlock(&link->lock);
-+		return -EUCLEAN;
-+	}
-+
-+	memset(&link->mattr, 0, sizeof(struct sbl_media_attr));
-+	link->mconfigured = false;
-+
-+	link->blstate = SBL_BASE_LINK_STATUS_UNCONFIGURED;
-+
-+	spin_unlock(&link->lock);
-+
-+	return err;
-+}
-+EXPORT_SYMBOL(sbl_media_unconfig);
-+
-+bool sbl_media_check_mode_supported(struct sbl_inst *sbl, int port_num, u32 link_mode)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	u32 info_mode_bit = 0;
-+	u32 media_info;
-+	bool allow_bad_mode;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&link->lock, flags);
-+	media_info = link->mattr.info;
-+	allow_bad_mode = link->blattr.options & SBL_OPT_ALLOW_MEDIA_BAD_MODE;
-+	spin_unlock_irqrestore(&link->lock, flags);
-+
-+	if (!media_info) {
-+		/* We have no info about media
-+		 * assume its OK so we can carry on
-+		 * if its not we will fail later anyway
-+		 */
-+		sbl_dev_warn(sbl->dev, "%d: no media info - assuming link mode OK", port_num);
-+		return true;
-+	}
-+
-+	switch (link_mode) {
-+	case SBL_LINK_MODE_BS_200G:
-+		info_mode_bit = SBL_MEDIA_INFO_SUPPORTS_BS_200G;
-+		break;
-+	case SBL_LINK_MODE_BJ_100G:
-+		info_mode_bit = SBL_MEDIA_INFO_SUPPORTS_BJ_100G;
-+		break;
-+	case SBL_LINK_MODE_CD_100G:
-+		info_mode_bit = SBL_MEDIA_INFO_SUPPORTS_CD_100G;
-+		break;
-+	case SBL_LINK_MODE_CD_50G:
-+		info_mode_bit = SBL_MEDIA_INFO_SUPPORTS_CD_50G;
-+		break;
-+	default:
-+		/* do nothing here - below will catch invalid link mode */
-+		break;
-+	}
-+
-+	if (media_info & info_mode_bit)
-+		return true;
-+
-+	if (allow_bad_mode ||
-+	    sbl_debug_option(sbl, port_num, SBL_DEBUG_ALLOW_MEDIA_BAD_MODE)) {
-+		sbl_dev_warn(sbl->dev, "%d: link mode (%s) not supported by media - ignored",
-+			     port_num, sbl_link_mode_str(link_mode));
-+		return true;
-+	}
-+	sbl_dev_err(sbl->dev, "%d: link mode (%s) not supported by media",
-+		    port_num, sbl_link_mode_str(link_mode));
-+	return false;
-+}
-+
-+/**
-+ * sbl_media_check_headshell_reset_supported() - Check headshell based on media info
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * Return: True if reset is supported else false
-+ */
-+bool sbl_media_check_headshell_reset_supported(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	if (!link->mattr.info) {
-+		/* We have no info about media */
-+		sbl_dev_dbg(sbl->dev, "%d: no media info available to check headshell reset supported bit", port_num);
-+		return false;
-+	}
-+
-+	if (link->mattr.info & SBL_MEDIA_INFO_SUPPORTS_HEADSHELL_RESET)
-+		return true;
-+
-+	return false;
-+}
-+EXPORT_SYMBOL(sbl_media_check_headshell_reset_supported);
-+
-+static bool sbl_media_check_len_supported(struct sbl_inst *sbl, int port_num, u64 len)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	switch (len) {
-+	case SBL_LINK_LEN_BACKPLANE:
-+	case SBL_LINK_LEN_000_300:
-+	case SBL_LINK_LEN_000_400:
-+	case SBL_LINK_LEN_000_750:
-+	case SBL_LINK_LEN_000_800:
-+	case SBL_LINK_LEN_001_000:
-+	case SBL_LINK_LEN_001_100:
-+	case SBL_LINK_LEN_001_150:
-+	case SBL_LINK_LEN_001_200:
-+	case SBL_LINK_LEN_001_400:
-+	case SBL_LINK_LEN_001_420:
-+	case SBL_LINK_LEN_001_500:
-+	case SBL_LINK_LEN_001_600:
-+	case SBL_LINK_LEN_001_640:
-+	case SBL_LINK_LEN_001_700:
-+	case SBL_LINK_LEN_001_800:
-+	case SBL_LINK_LEN_001_900:
-+	case SBL_LINK_LEN_001_910:
-+	case SBL_LINK_LEN_002_000:
-+	case SBL_LINK_LEN_002_100:
-+	case SBL_LINK_LEN_002_130:
-+	case SBL_LINK_LEN_002_200:
-+	case SBL_LINK_LEN_002_300:
-+	case SBL_LINK_LEN_002_390:
-+	case SBL_LINK_LEN_002_400:
-+	case SBL_LINK_LEN_002_500:
-+	case SBL_LINK_LEN_002_600:
-+	case SBL_LINK_LEN_002_620:
-+	case SBL_LINK_LEN_002_700:
-+	case SBL_LINK_LEN_002_800:
-+	case SBL_LINK_LEN_002_900:
-+	case SBL_LINK_LEN_002_990:
-+	case SBL_LINK_LEN_003_000:
-+	case SBL_LINK_LEN_004_000:
-+	case SBL_LINK_LEN_005_000:
-+	case SBL_LINK_LEN_006_000:
-+	case SBL_LINK_LEN_007_000:
-+	case SBL_LINK_LEN_008_000:
-+	case SBL_LINK_LEN_010_000:
-+	case SBL_LINK_LEN_014_000:
-+	case SBL_LINK_LEN_015_000:
-+	case SBL_LINK_LEN_019_000:
-+	case SBL_LINK_LEN_025_000:
-+	case SBL_LINK_LEN_030_000:
-+	case SBL_LINK_LEN_035_000:
-+	case SBL_LINK_LEN_050_000:
-+	case SBL_LINK_LEN_075_000:
-+	case SBL_LINK_LEN_100_000:
-+		return true;
-+	default:
-+		if ((link->blattr.options & SBL_OPT_ALLOW_MEDIA_BAD_LEN) ||
-+		    sbl_debug_option(sbl, port_num, SBL_DEBUG_ALLOW_MEDIA_BAD_LEN)) {
-+			sbl_dev_warn(sbl->dev, "%d: unsupported media len (%lld) - ignored", port_num, len);
-+			return true;
-+		}
-+		sbl_dev_err(sbl->dev, "%d: unsupported media len (%lld)", port_num, len);
-+		return false;
-+	}
-+}
-+
-+/* return valid length in cm or 0 */
-+u32 sbl_media_get_len_cm(struct sbl_inst *sbl, int port_num, u64 len)
-+{
-+	if (sbl_media_check_len_supported(sbl, port_num, len)) {
-+		switch (len) {
-+		case SBL_LINK_LEN_BACKPLANE: return 25;
-+		case SBL_LINK_LEN_000_300:   return 30;
-+		case SBL_LINK_LEN_000_400:   return 40;
-+		case SBL_LINK_LEN_000_750:   return 75;
-+		case SBL_LINK_LEN_000_800:   return 80;
-+		case SBL_LINK_LEN_001_000:   return 100;
-+		case SBL_LINK_LEN_001_100:   return 110;
-+		case SBL_LINK_LEN_001_150:   return 115;
-+		case SBL_LINK_LEN_001_200:   return 120;
-+		case SBL_LINK_LEN_001_400:   return 140;
-+		case SBL_LINK_LEN_001_420:   return 142;
-+		case SBL_LINK_LEN_001_500:   return 150;
-+		case SBL_LINK_LEN_001_600:   return 160;
-+		case SBL_LINK_LEN_001_640:   return 164;
-+		case SBL_LINK_LEN_001_700:   return 170;
-+		case SBL_LINK_LEN_001_800:   return 180;
-+		case SBL_LINK_LEN_001_900:   return 190;
-+		case SBL_LINK_LEN_001_910:   return 191;
-+		case SBL_LINK_LEN_002_000:   return 200;
-+		case SBL_LINK_LEN_002_100:   return 210;
-+		case SBL_LINK_LEN_002_130:   return 213;
-+		case SBL_LINK_LEN_002_200:   return 220;
-+		case SBL_LINK_LEN_002_300:   return 230;
-+		case SBL_LINK_LEN_002_390:   return 239;
-+		case SBL_LINK_LEN_002_400:   return 240;
-+		case SBL_LINK_LEN_002_500:   return 250;
-+		case SBL_LINK_LEN_002_600:   return 260;
-+		case SBL_LINK_LEN_002_620:   return 262;
-+		case SBL_LINK_LEN_002_700:   return 270;
-+		case SBL_LINK_LEN_002_800:   return 280;
-+		case SBL_LINK_LEN_002_900:   return 290;
-+		case SBL_LINK_LEN_002_990:   return 299;
-+		case SBL_LINK_LEN_003_000:   return 300;
-+		case SBL_LINK_LEN_004_000:   return 400;
-+		case SBL_LINK_LEN_005_000:   return 500;
-+		case SBL_LINK_LEN_006_000:   return 600;
-+		case SBL_LINK_LEN_007_000:   return 700;
-+		case SBL_LINK_LEN_008_000:   return 800;
-+		case SBL_LINK_LEN_010_000:   return 1000;
-+		case SBL_LINK_LEN_014_000:   return 1400;
-+		case SBL_LINK_LEN_015_000:   return 1500;
-+		case SBL_LINK_LEN_019_000:   return 1900;
-+		case SBL_LINK_LEN_025_000:   return 2500;
-+		case SBL_LINK_LEN_030_000:   return 3000;
-+		case SBL_LINK_LEN_035_000:   return 3500;
-+		case SBL_LINK_LEN_050_000:   return 5000;
-+		case SBL_LINK_LEN_075_000:   return 7500;
-+		case SBL_LINK_LEN_100_000:   return 10000;
-+		}
-+	}
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "length get (length = %ucm)", *length);
 +
 +	return 0;
 +}
 +
-+/* calc loop time based on cable length */
-+int sbl_media_calc_loop_time(struct sbl_inst *sbl, int port_num, u64 *calc_loop_time)
++#define SUPPORTED_FLAGS_ADVERTISEMENT_OFFSET 157
++static void sl_media_eeprom_supported_flags_advertised_get(struct sl_media_jack *media_jack,
++							   u8 *supported_flags_advertised)
 +{
-+	struct sbl_link *link;
-+	u32 len;
-+	int err;
++	spin_lock(&media_jack->data_lock);
++	memcpy(supported_flags_advertised, &media_jack->eeprom_page1[SUPPORTED_FLAGS_ADVERTISEMENT_OFFSET],
++	       SL_MEDIA_SUPPORTED_FLAGS_ADVERTISED_SIZE);
++	spin_unlock(&media_jack->data_lock);
++}
 +
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
++bool sl_media_eeprom_is_fw_version_supported(struct sl_media_jack *media_jack, struct sl_media_attr *media_attr)
++{
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "is fw version supported (type = 0x%X %s, shape = %u %s, end = %u %s, idx = %d)",
++			 media_attr->type, sl_media_type_str(media_attr->type),
++			 media_attr->shape, sl_media_shape_str(media_attr->shape),
++			 media_jack->cable_end, sl_media_cable_end_str(media_jack->cable_end),
++			 media_jack->cable_db_idx);
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "is fw version supported (fw_ver = %02X.%02X, db_fw_ver = %02X.%02X, db_split_fw_ver = %02X.%02X)",
++			 media_attr->fw_ver[0], media_attr->fw_ver[1],
++			 cable_db[media_jack->cable_db_idx].fw_ver.major,
++			 cable_db[media_jack->cable_db_idx].fw_ver.minor,
++			 cable_db[media_jack->cable_db_idx].fw_ver.split_major,
++			 cable_db[media_jack->cable_db_idx].fw_ver.split_minor);
 +
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
++	if (media_attr->shape == SL_MEDIA_SHAPE_SPLITTER && media_jack->cable_end != SL_MEDIA_CABLE_END_DD)
++		return ((media_attr->fw_ver[0] > cable_db[media_jack->cable_db_idx].fw_ver.split_major) ||
++			((media_attr->fw_ver[0] == cable_db[media_jack->cable_db_idx].fw_ver.split_major) &&
++			(media_attr->fw_ver[1] >= cable_db[media_jack->cable_db_idx].fw_ver.split_minor)));
 +
-+	if (!calc_loop_time)
-+		return -EINVAL;
++	return ((media_attr->fw_ver[0] > cable_db[media_jack->cable_db_idx].fw_ver.major) ||
++		((media_attr->fw_ver[0] == cable_db[media_jack->cable_db_idx].fw_ver.major) &&
++		(media_attr->fw_ver[1] >= cable_db[media_jack->cable_db_idx].fw_ver.minor)));
++}
 +
-+	link = sbl->link + port_num;
-+	*calc_loop_time = 0;
++int sl_media_eeprom_target_fw_ver_str_get(struct sl_media_jack *media_jack, char *target_fw_str, size_t target_fw_size)
++{
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "target fw ver get (idx = %u, type = 0x%X %s, shape = %u %s, end = %u %s, supported = %s)",
++			 media_jack->cable_db_idx,
++			 media_jack->cable_info[0].media_attr.type,
++			 sl_media_type_str(media_jack->cable_info[0].media_attr.type),
++			 media_jack->cable_info[0].media_attr.shape,
++			 sl_media_shape_str(media_jack->cable_info[0].media_attr.shape),
++			 media_jack->cable_end,
++			 sl_media_cable_end_str(media_jack->cable_end),
++			 media_jack->is_cable_unsupported ? "no" : "yes");
 +
-+	if ((link->blattr.loopback_mode == SBL_LOOPBACK_MODE_OFF) ||
-+	    (link->blattr.loopback_mode == SBL_LOOPBACK_MODE_INVALID)) {
-+		len = sbl_media_get_len_cm(sbl, port_num, link->mattr.len);
-+		if (!len)
-+			return -EBADRQC;
-+	} else
-+		len = 0;
++	if (!SL_MEDIA_LGRP_MEDIA_TYPE_IS_ACTIVE(media_jack->cable_info[0].media_attr.type)) {
++		snprintf(target_fw_str, target_fw_size, "invalid-type\n");
++		return 0;
++	}
 +
-+	sbl_dev_dbg(sbl->dev, "%d: len = %d, lb = %s",
-+		    port_num, len, sbl_loopback_mode_str(link->blattr.loopback_mode));
++	if (media_jack->is_cable_unsupported) {
++		snprintf(target_fw_str, target_fw_size, "unsupported\n");
++		return 0;
++	}
 +
-+	if (link->mattr.media == SBL_LINK_MEDIA_ELECTRICAL)
-+		*calc_loop_time = 2 * len * SBL_MEDIA_NS_PER_M / 100;
-+	else
-+		*calc_loop_time = (2 * len * SBL_MEDIA_OPTICAL_NS_PER_M / 100) +
-+			(4 * SBL_MEDIA_OPTICAL_TRANCEIVER_DELAY);
-+	*calc_loop_time += 2 * (SBL_ASIC_TX_DELAY + SBL_ASIC_RX_DELAY);
++	if (media_jack->is_supported_ss200_cable) {
++		snprintf(target_fw_str, target_fw_size, "ss200-cable\n");
++		return 0;
++	}
 +
-+	sbl_dev_dbg(sbl->dev, "%d: calc loop time %lld cm %lld ns",
-+		    port_num, link->mattr.len, *calc_loop_time);
++	if (media_jack->cable_info[0].media_attr.shape == SL_MEDIA_SHAPE_SPLITTER &&
++	    media_jack->cable_end != SL_MEDIA_CABLE_END_DD) {
++		snprintf(target_fw_str, target_fw_size, "%02X.%02X\n",
++			 cable_db[media_jack->cable_db_idx].fw_ver.split_major,
++			 cable_db[media_jack->cable_db_idx].fw_ver.split_minor);
++		return 0;
++	}
++
++	snprintf(target_fw_str, target_fw_size, "%02X.%02X\n",
++		 cable_db[media_jack->cable_db_idx].fw_ver.major,
++		 cable_db[media_jack->cable_db_idx].fw_ver.minor);
 +
 +	return 0;
 +}
 +
-+/**
-+ * sbl_media_get_loop_time_ns() - Get loop time in ns
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @measurement_only: set to false when reading
-+ *
-+ * This function returns available loop time. If not and
-+ * 'measurement_only' is true, returns 0 with a warning.
-+ * Otherwise attempts to calculate the loop time.
-+ *
-+ * Return: calculate loop time on success, 0 on failure
-+ */
-+u64 sbl_media_get_loop_time_ns(struct sbl_inst *sbl, int port_num,
-+			       bool measurement_only)
++void sl_media_eeprom_parse(struct sl_media_jack *media_jack, struct sl_media_attr *media_attr)
 +{
-+	struct sbl_link *link = sbl->link + port_num;
-+	u64 calc_loop_time;
-+	int err;
++	sl_media_log_dbg(media_jack, LOG_NAME, "parse");
 +
-+	if (!link->mconfigured)
-+		return 0;
++	/* vendor get MUST be first */
++	sl_media_eeprom_vendor_get(media_jack, media_attr->format, &(media_attr->vendor));
++	sl_media_eeprom_vendor_pn_str_get(media_jack, media_attr->format, media_attr->vendor_pn_str);
++	sl_media_eeprom_type_get(media_jack, media_attr->format, media_attr->vendor, &(media_attr->type));
++	sl_media_eeprom_hpe_pn_get(media_jack, &(media_attr->hpe_pn), media_attr->hpe_pn_str);
++	sl_media_eeprom_serial_num_get(media_jack, media_attr->format, media_attr->serial_num_str);
++	sl_media_eeprom_date_code_get(media_jack, media_attr->format, media_attr->date_code_str);
++	sl_media_eeprom_fw_ver_get(media_jack, media_attr->fw_ver);
++	sl_media_eeprom_cable_end_get(media_jack);
++	sl_media_eeprom_length_get(media_jack, media_attr->format, &(media_attr->length_cm));
++	sl_media_eeprom_appsel_info_get(media_jack, &(media_attr->speeds_map));
++	sl_media_eeprom_furcation_get(media_jack, &(media_attr->furcation));
++	sl_media_eeprom_supported_flags_advertised_get(media_jack, media_attr->supported_flags_advertised);
 +
-+	if (link->llr_loop_time)
-+		return link->llr_loop_time;
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "parse (format = %u, vendor = %u %s, vendor_pn_str = %s, fw = %02X.%02X)",
++			 media_attr->format, media_attr->vendor, sl_media_vendor_str(media_attr->vendor),
++			 media_attr->vendor_pn_str, media_attr->fw_ver[0], media_attr->fw_ver[1]);
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "parse (type = 0x%X %s, length = %ucm, speeds_map = 0x%lX)",
++			 media_attr->type, sl_media_type_str(media_attr->type), media_attr->length_cm,
++			 media_attr->speeds_map);
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "parse (hpe_pn = %u, serial_num = %s, errors = 0x%X, info = 0x%X)",
++			 media_attr->hpe_pn, media_attr->serial_num_str, media_attr->errors, media_attr->info);
++}
 +
-+	if (measurement_only) {
-+		sbl_dev_warn(sbl->dev, "%d: measured loop time not found", port_num);
++#define IDENTIFIER_OFFSET 0
++#define REV_CMPL_OFFSET   1
++int sl_media_eeprom_format_get(struct sl_media_jack *media_jack, u8 *format)
++{
++	u8   identifier;
++	u8   revision;
++	bool is_sff8636;
++	bool is_cmis;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "format get");
++
++	identifier = media_jack->eeprom_page0[IDENTIFIER_OFFSET];
++	revision   = media_jack->eeprom_page0[REV_CMPL_OFFSET];
++
++	is_sff8636 = (identifier == 0x0D || identifier == 0x11) && (revision < 0x27);
++	is_cmis    = ((identifier == 0x18) || (identifier == 0x19) || (identifier >= 0x1E && identifier <= 0x25)) &&
++			((revision & 0xF0) >= 0x30 && (revision & 0xF0) <= 0x50);
++
++	if (is_sff8636) {
++		*format = SL_MEDIA_MGMT_IF_SFF8636;
++		sl_media_log_dbg(media_jack, LOG_NAME, "format SFF8636 (id = 0x%X, rev = 0x%X)", identifier, revision);
 +		return 0;
 +	}
 +
-+	if (!sbl_media_check_len_supported(sbl, port_num, link->mattr.len))
++	if (is_cmis) {
++		*format = SL_MEDIA_MGMT_IF_CMIS;
++		sl_media_log_dbg(media_jack, LOG_NAME, "format CMIS (id = 0x%X, rev = 0x%X)", identifier, revision);
 +		return 0;
++	}
 +
-+	err = sbl_media_calc_loop_time(sbl, port_num, &calc_loop_time);
-+	if (err)
-+		return 0;
-+
-+	return calc_loop_time;
-+}
-+EXPORT_SYMBOL(sbl_media_get_loop_time_ns);
-+
-+int sbl_media_validate_config(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	if (!(link->mconfigured && link->blconfigured))
-+		return -EUCLEAN;
-+
-+	if ((link->mattr.media == SBL_LINK_MEDIA_ELECTRICAL) &&
-+	    (link->blattr.config_target == SBL_BASE_LINK_CONFIG_PEC))
-+		return 0;
-+
-+	if ((link->mattr.media == SBL_LINK_MEDIA_OPTICAL) &&
-+	    (link->blattr.config_target == SBL_BASE_LINK_CONFIG_AOC))
-+		return 0;
++	media_jack->is_cable_format_unsupported = true;
++	sl_media_jack_fault_cause_set(media_jack, SL_MEDIA_FAULT_CAUSE_EEPROM_FORMAT_UNSUPPORTED);
++	sl_media_log_err_trace(media_jack, LOG_NAME, "unsupported format (id = 0x%X, rev = 0x%X)",
++			       identifier, revision);
 +
 +	return -EMEDIUMTYPE;
 +}
 +
-+#ifdef CONFIG_SYSFS
-+/**
-+ * sbl_media_sysfs_sprint() - Format media info into buffer
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @buf: Destination buffer to write the data
-+ * @size: Size of @buf in bytes, the output is truncated to fit
-+ *
-+ * This function checks the state of media configuration and info.
-+ * Based on that it will format the string and write into the
-+ * provided buffer.
-+ *
-+ * Return: Number of characters written, at most @size - 1
-+ */
-+int sbl_media_sysfs_sprint(struct sbl_inst *sbl, int port_num, char *buf, size_t size)
++#define MEDIA_INTERFACE_CODE_OFFSET 87
++int sl_media_eeprom_media_interface_get(struct sl_media_jack *media_jack, u8 *media_interface)
 +{
-+	struct sbl_link *link = sbl->link + port_num;
-+	int s = 0;
++	spin_lock(&media_jack->data_lock);
++	*media_interface = media_jack->eeprom_page0[MEDIA_INTERFACE_CODE_OFFSET];
++	spin_unlock(&media_jack->data_lock);
 +
-+	spin_lock(&link->lock);
-+	if (link->mconfigured) {
-+		s += scnprintf(buf + s, size - s, "media: %s, %s, (%s), info ",
-+			       sbl_link_media_str(link->mattr.media),
-+			       sbl_link_len_str(link->mattr.len),
-+			       sbl_link_vendor_str(link->mattr.vendor));
-+		if (link->mattr.info) {
-+			if (link->mattr.info & SBL_MEDIA_INFO_SUPPORTS_BS_200G)
-+				s += scnprintf(buf + s, size - s, "200 ");
-+			if (link->mattr.info & SBL_MEDIA_INFO_SUPPORTS_BJ_100G)
-+				s += scnprintf(buf + s, size - s, "100bj ");
-+			if (link->mattr.info & SBL_MEDIA_INFO_SUPPORTS_CD_100G)
-+				s += scnprintf(buf + s, size - s, "100cd ");
-+			if (link->mattr.info & SBL_MEDIA_INFO_SUPPORTS_CD_50G)
-+				s += scnprintf(buf + s, size - s, "50 ");
-+			if (link->mattr.info & SBL_MEDIA_INFO_ANALOG)
-+				s += scnprintf(buf + s, size - s, "analog ");
-+			if (link->mattr.info & SBL_MEDIA_INFO_DIGITAL)
-+				s += scnprintf(buf + s, size - s, "digital ");
-+		} else
-+			s += scnprintf(buf + s, size - s, "none");
-+		s += scnprintf(buf + s, size - s, "\n");
-+	}
-+	spin_unlock(&link->lock);
-+
-+	return s;
++	return 0;
 +}
-+EXPORT_SYMBOL(sbl_media_sysfs_sprint);
-+#endif
-diff --git a/drivers/net/ethernet/hpe/sbl/sbl_media_nic.c b/drivers/net/ethernet/hpe/sbl/sbl_media_nic.c
+diff --git a/drivers/net/ethernet/hpe/sl/media/data/nic/sl_media_data_jack.c b/drivers/net/ethernet/hpe/sl/media/data/nic/sl_media_data_jack.c
 new file mode 100644
-index 000000000000..dc462e17dd72
+index 000000000000..9d46b3f13de2
 --- /dev/null
-+++ b/drivers/net/ethernet/hpe/sbl/sbl_media_nic.c
-@@ -0,0 +1,47 @@
++++ b/drivers/net/ethernet/hpe/sl/media/data/nic/sl_media_data_jack.c
+@@ -0,0 +1,496 @@
 +// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
 +
++#include <linux/delay.h>
++
++#include "base/sl_media_log.h"
++
++#include "sl_media_io.h"
++#include "sl_media_jack.h"
++#include "data/sl_media_data_jack.h"
++#include "sl_core_link.h"
++
++#define LOG_NAME SL_MEDIA_DATA_JACK_LOG_NAME
++
++enum sl_media_led_states {
++	LED_OFF          = 0,
++	LED_ON_GRN       = 1,
++	LED_SLOW_GRN     = 2,
++	LED_FAST_GRN     = 3,
++	LED_ON_YEL       = 4,
++	LED_SLOW_YEL     = 5,
++	LED_FAST_YEL     = 6,
++	LED_SLOW_GRN_YEL = 7,
++	LED_FAST_GRN_YEL = 8,
++};
++
++int sl_media_data_jack_scan(u8 ldev_num)
++{
++	struct sl_media_jack *media_jack;
++
++	sl_media_log_dbg(NULL, LOG_NAME, "jack scan");
++
++	media_jack = sl_media_data_jack_get(ldev_num, 0);
++	media_jack->cable_info[0].ldev_num = ldev_num;
++	media_jack->cable_info[0].lgrp_num = 0; /* hardcoding 0 since only one lgrp*/
++
++	return 0;
++}
++
++int sl_media_data_jack_fake_media_attr_set(struct sl_media_jack *media_jack,
++					   struct sl_media_lgrp_cable_info *cable_info, struct sl_media_attr *fake_media_attr)
++{
++	return 0;
++}
++
++void sl_media_data_jack_fake_media_attr_clr(struct sl_media_jack *media_jack,
++					    struct sl_media_lgrp_cable_info *cable_info)
++{
++
++}
++
++#define DATA_PATH_STATE_DEACTIVATED       0x1
++#define DATA_PATH_EXPLICIT_CONTROL_ENABLE 0x00
++#define DATA_PATH_ID                      0x08
++#define DATA_PATH_LOWER_LANE_CONFIG       (DATA_PATH_EXPLICIT_CONTROL_ENABLE)
++#define DATA_PATH_LANES_DEACTIVATED       (DATA_PATH_STATE_DEACTIVATED << 4 | DATA_PATH_STATE_DEACTIVATED)
++int sl_media_data_jack_cable_downshift(struct sl_media_jack *media_jack)
++{
++	int rtn;
++	int i;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "data jack cable downshift");
++
++	/*
++	 * Deinit all lanes (DataPathDeinit @ page 0x10 byte 128)
++	 */
++	rtn = sl_media_io_write8(media_jack, 0x10, 128, 0xFF);
++	if (rtn) {
++		sl_media_jack_fault_cause_set(media_jack, SL_MEDIA_FAULT_CAUSE_SHIFT_DOWN_JACK_IO);
++		sl_media_log_err_trace(media_jack, LOG_NAME, "data path deinit = 0xFF - write failed [%d]", rtn);
++		return rtn;
++	}
++	msleep(500);
++
++	/*
++	 * enable low power mode
++	 */
++	rtn = sl_media_data_jack_cable_low_power_set(media_jack);
++	if (rtn) {
++		sl_media_jack_fault_cause_set(media_jack, SL_MEDIA_FAULT_CAUSE_SHIFT_DOWN_JACK_IO_LOW_POWER_SET);
++		sl_media_log_err_trace(media_jack, LOG_NAME, "low power mode - write failed [%d]", rtn);
++		return rtn;
++	}
++	msleep(500);
++
++	/*
++	 * Staged Control Set 0, Data Path Configuration bytes @ page 0x10 bytes 145-148
++	 * Config lanes 1 to 4
++	 */
++	for (i = 0; i < 4; ++i) {
++		rtn = sl_media_io_write8(media_jack, 0x10, 145 + i,
++					 (media_jack->appsel_num_200_gaui << 4) |
++							   DATA_PATH_LOWER_LANE_CONFIG);
++		if (rtn) {
++			sl_media_jack_fault_cause_set(media_jack, SL_MEDIA_FAULT_CAUSE_SHIFT_DOWN_JACK_IO);
++			sl_media_log_err_trace(media_jack, LOG_NAME,
++					       "SCS0 configuration - config lanes 1-4 - write failed [%d]", rtn);
++			return rtn;
++		}
++	}
++	msleep(100);
++
++	/*
++	 * ApplyDPInitLane8-1
++	 */
++	rtn = sl_media_io_write8(media_jack, 0x10, 143, 0xFF);
++	if (rtn) {
++		sl_media_jack_fault_cause_set(media_jack, SL_MEDIA_FAULT_CAUSE_SHIFT_DOWN_JACK_IO);
++		sl_media_log_err_trace(media_jack, LOG_NAME, "apply dpinit = 0xFF - write failed [%d]", rtn);
++		return rtn;
++	}
++	msleep(500);
++
++	/*
++	 * enable high power mode
++	 */
++	rtn = sl_media_data_jack_cable_high_power_set(media_jack);
++	if (rtn) {
++		sl_media_jack_fault_cause_set(media_jack, SL_MEDIA_FAULT_CAUSE_SHIFT_DOWN_JACK_IO_HIGH_POWER_SET);
++		sl_media_log_err_trace(media_jack, LOG_NAME, "high power mode - write failed [%d]", rtn);
++		return rtn;
++	}
++	msleep(8000);
++
++	/*
++	 * (Re)Init all lanes (DataPathDeinit @ page 0x10 byte 128)
++	 */
++	rtn = sl_media_io_write8(media_jack, 0x10, 128, 0x00);
++	if (rtn) {
++		sl_media_jack_fault_cause_set(media_jack, SL_MEDIA_FAULT_CAUSE_SHIFT_DOWN_JACK_IO);
++		sl_media_log_err_trace(media_jack, LOG_NAME, "data path deinit = 0x00 - write failed [%d]", rtn);
++		return rtn;
++	}
++
++	/*
++	 * waiting for firmware reload
++	 */
++	msleep(3000);
++
++	return 0;
++}
++
++int sl_media_data_jack_cable_hw_shift_state_get(struct sl_media_jack *media_jack)
++{
++	int rtn;
++	int i;
++	u8  downshift_lower_lane_config;
++	u8  upshift_lower_lane_config;
++	u8  read_data[4];
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "data jack cable hw shift state get");
++
++	downshift_lower_lane_config = (media_jack->appsel_num_200_gaui << 4) | DATA_PATH_LOWER_LANE_CONFIG;
++	upshift_lower_lane_config = (media_jack->appsel_num_400_gaui << 4) | DATA_PATH_LOWER_LANE_CONFIG;
++
++	for (i = 0; i < 4; ++i) {
++		rtn = sl_media_io_read8(media_jack, 0x10, 145 + i, &read_data[i]);
++		if (rtn) {
++			sl_media_log_err_trace(media_jack, LOG_NAME,
++					       "SCS0 configuration - config lanes 1-4 - read failed [%d]", rtn);
++			return SL_MEDIA_JACK_CABLE_HW_SHIFT_IO_ERROR;
++		}
++	}
++
++	if ((read_data[0] == downshift_lower_lane_config) &&
++	    (read_data[1] == downshift_lower_lane_config) &&
++	    (read_data[2] == downshift_lower_lane_config) &&
++	    (read_data[3] == downshift_lower_lane_config)) {
++		sl_media_log_dbg(media_jack, LOG_NAME, "cable is downshifted");
++		return SL_MEDIA_JACK_CABLE_HW_SHIFT_STATE_DOWNSHIFTED;
++	} else if ((read_data[0] == upshift_lower_lane_config) &&
++		   (read_data[1] == upshift_lower_lane_config) &&
++		   (read_data[2] == upshift_lower_lane_config) &&
++		   (read_data[3] == upshift_lower_lane_config)) {
++		sl_media_log_dbg(media_jack, LOG_NAME, "cable is upshifted");
++		return SL_MEDIA_JACK_CABLE_HW_SHIFT_STATE_UPSHIFTED;
++	}
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "cable is in unknown shift state");
++	return SL_MEDIA_JACK_CABLE_HW_SHIFT_STATE_UNKNOWN;
++}
++
++int sl_media_data_jack_cable_upshift(struct sl_media_jack *media_jack)
++{
++	int rtn;
++	int i;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "data jack cable upshift");
++
++	/*
++	 * Deinit all lanes (DataPathDeinit @ page 0x10 byte 128)
++	 */
++	rtn = sl_media_io_write8(media_jack, 0x10, 128, 0xFF);
++	if (rtn) {
++		sl_media_jack_fault_cause_set(media_jack, SL_MEDIA_FAULT_CAUSE_SHIFT_UP_JACK_IO);
++		sl_media_log_err_trace(media_jack, LOG_NAME, "data path deinit = 0xFF - write failed [%d]", rtn);
++		return rtn;
++	}
++	msleep(500);
++
++	/*
++	 * enable low power mode
++	 */
++	rtn = sl_media_data_jack_cable_low_power_set(media_jack);
++	if (rtn) {
++		sl_media_jack_fault_cause_set(media_jack, SL_MEDIA_FAULT_CAUSE_SHIFT_UP_JACK_IO_LOW_POWER_SET);
++		sl_media_log_err_trace(media_jack, LOG_NAME, "low power mode - write failed [%d]", rtn);
++		return rtn;
++	}
++	msleep(500);
++
++	/*
++	 * Staged Control Set 0, Data Path Configuration bytes @ page 0x10 bytes 145-148
++	 * Config lanes 1 to 4
++	 */
++	for (i = 0; i < 4; ++i) {
++		rtn = sl_media_io_write8(media_jack, 0x10, 145 + i,
++					 (media_jack->appsel_num_400_gaui << 4) | DATA_PATH_LOWER_LANE_CONFIG);
++		if (rtn) {
++			sl_media_jack_fault_cause_set(media_jack, SL_MEDIA_FAULT_CAUSE_SHIFT_UP_JACK_IO);
++			sl_media_log_err_trace(media_jack, LOG_NAME,
++					       "SCS0 configuration - config lanes 1-4 - write failed [%d]", rtn);
++			return rtn;
++		}
++	}
++	msleep(100);
++
++	/*
++	 * ApplyDPInitLane8-1
++	 */
++	rtn = sl_media_io_write8(media_jack, 0x10, 143, 0xFF);
++	if (rtn) {
++		sl_media_jack_fault_cause_set(media_jack, SL_MEDIA_FAULT_CAUSE_SHIFT_UP_JACK_IO);
++		sl_media_log_err_trace(media_jack, LOG_NAME, "apply dpinit = 0xFF - write failed [%d]", rtn);
++		return rtn;
++	}
++	msleep(500);
++
++	/*
++	 * enable high power mode
++	 */
++	rtn = sl_media_data_jack_cable_high_power_set(media_jack);
++	if (rtn) {
++		sl_media_jack_fault_cause_set(media_jack, SL_MEDIA_FAULT_CAUSE_SHIFT_UP_JACK_IO_HIGH_POWER_SET);
++		sl_media_log_err_trace(media_jack, LOG_NAME, "high power mode - write failed [%d]", rtn);
++		return rtn;
++	}
++	msleep(8000);
++
++	/*
++	 * (Re)Init all lanes (DataPathDeinit @ page 0x10 byte 128)
++	 */
++	rtn = sl_media_io_write8(media_jack, 0x10, 128, 0x00);
++	if (rtn) {
++		sl_media_jack_fault_cause_set(media_jack, SL_MEDIA_FAULT_CAUSE_SHIFT_UP_JACK_IO);
++		sl_media_log_err_trace(media_jack, LOG_NAME, "data path deinit = 0x00 - write failed [%d]", rtn);
++		return rtn;
++	}
++
++	/*
++	 * waiting for firmware reload
++	 */
++	msleep(3000);
++
++	return 0;
++}
++
++int sl_media_data_jack_cable_soft_reset(struct sl_media_jack *media_jack)
++{
++	int rtn;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "data jack cable soft reset");
++
++	rtn = sl_media_io_write8(media_jack, 0x00, 0x1a, 0x08);
++	if (rtn)
++		return rtn;
++
++	msleep(300);
++
++	rtn = sl_media_io_write8(media_jack, 0x00, 0x1a, 0x00);
++	if (rtn)
++		return rtn;
++
++	/*
++	 * waiting for firmware reload
++	 */
++	msleep(3000);
++
++	return 0;
++}
++
++#define SL_MEDIA_POWER_UP_PAGE      0x00
++#define SL_MEDIA_CMIS_POWER_UP_ADDR 0x1a
++#define SL_MEDIA_CMIS_POWER_UP_DATA 0x00
++#define SL_MEDIA_SFF_POWER_UP_ADDR  0x5D
++#define SL_MEDIA_SFF_POWER_UP_DATA  0x0D
++int sl_media_data_jack_cable_high_power_set(struct sl_media_jack *media_jack)
++{
++	int rtn;
++	u8  addr;
++	u8  data;
++
++	if (sl_media_data_jack_media_is_format_cmis(media_jack)) {
++		addr = SL_MEDIA_CMIS_POWER_UP_ADDR;
++		data = SL_MEDIA_CMIS_POWER_UP_DATA;
++	} else {
++		addr = SL_MEDIA_SFF_POWER_UP_ADDR;
++		data = SL_MEDIA_SFF_POWER_UP_DATA;
++	}
++
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "high power set (addr = 0x%X, data = 0x%X)", addr, data);
++
++	rtn = sl_media_io_write8(media_jack, SL_MEDIA_POWER_UP_PAGE, addr, data);
++	if (rtn) {
++		sl_media_log_err_trace(media_jack, LOG_NAME, "write8 failed [%d]", rtn);
++		return -EIO;
++	}
++
++	spin_lock(&media_jack->data_lock);
++	media_jack->is_high_powered = true;
++	spin_unlock(&media_jack->data_lock);
++
++	return 0;
++}
++
++#define SL_MEDIA_POWER_DOWN_PAGE      0x00
++#define SL_MEDIA_CMIS_POWER_DOWN_ADDR 0x1a
++#define SL_MEDIA_CMIS_POWER_DOWN_DATA 0x10
++#define SL_MEDIA_SFF_POWER_DOWN_ADDR  0x5D
++#define SL_MEDIA_SFF_POWER_DOWN_DATA  0x00
++int sl_media_data_jack_cable_low_power_set(struct sl_media_jack *media_jack)
++{
++	int rtn;
++	u8  addr;
++	u8  data;
++
++	if (sl_media_data_jack_media_is_format_cmis(media_jack)) {
++		addr = SL_MEDIA_CMIS_POWER_DOWN_ADDR;
++		data = SL_MEDIA_CMIS_POWER_DOWN_DATA;
++	} else {
++		addr = SL_MEDIA_SFF_POWER_DOWN_ADDR;
++		data = SL_MEDIA_SFF_POWER_DOWN_DATA;
++	}
++
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "low power set (addr = 0x%X, data = 0x%X)", addr, data);
++
++	rtn = sl_media_io_write8(media_jack, SL_MEDIA_POWER_DOWN_PAGE, addr, data);
++	if (rtn) {
++		sl_media_log_err_trace(media_jack, LOG_NAME, "write8 failed [%d]", rtn);
++		return -EIO;
++	}
++
++	spin_lock(&media_jack->data_lock);
++	media_jack->is_high_powered = false;
++	spin_unlock(&media_jack->data_lock);
++
++	return 0;
++}
++
++int sl_media_data_jack_cable_temp_get(struct sl_media_jack *media_jack, u8 *temp)
++{
++	int rtn;
++	u8  data;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "data jack cable temp get");
++
++	if (!sl_media_lgrp_media_type_is_active(media_jack->cable_info[0].ldev_num,
++						media_jack->cable_info[0].lgrp_num)) {
++		sl_media_log_dbg(media_jack, LOG_NAME, "not active cable");
++		return -EBADRQC;
++	}
++
++	rtn = sl_media_io_read8(media_jack, 0, 14, &data);
++	if (rtn) {
++		sl_media_log_err_trace(media_jack, LOG_NAME, "temp get read failed [%d]", rtn);
++		return -EIO;
++	}
++
++	*temp = data;
++	return 0;
++}
++
++int sl_media_data_jack_cable_temp_warn_limit_get(struct sl_media_jack *media_jack, u8 *temp_warn_limit_c)
++{
++	int rtn;
++	u8  data;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "cable temp warn limit get");
++
++	if (!sl_media_lgrp_media_type_is_active(media_jack->cable_info[0].ldev_num,
++						media_jack->cable_info[0].lgrp_num)) {
++		sl_media_log_dbg(media_jack, LOG_NAME, "not active cable");
++		return -EBADRQC;
++	}
++
++	rtn = sl_media_io_read8(media_jack, 2, 132, &data);
++	if (rtn) {
++		sl_media_log_err_trace(media_jack, LOG_NAME, "cable temp warn limit read failed [%d]", rtn);
++		return -EIO;
++	}
++
++	*temp_warn_limit_c = data;
++	return 0;
++}
++
++int sl_media_data_jack_cable_temp_down_limit_get(struct sl_media_jack *media_jack, u8 *temp_down_limit_c)
++{
++	int rtn;
++	u8  data;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "cable temp down limit get");
++
++	if (!sl_media_lgrp_media_type_is_active(media_jack->cable_info[0].ldev_num,
++						media_jack->cable_info[0].lgrp_num)) {
++		sl_media_log_dbg(media_jack, LOG_NAME, "not active cable");
++		return -EBADRQC;
++	}
++
++	rtn = sl_media_io_read8(media_jack, 2, 128, &data);
++	if (rtn) {
++		sl_media_log_err_trace(media_jack, LOG_NAME, "cable temp down limit read failed [%d]", rtn);
++		return -EIO;
++	}
++
++	*temp_down_limit_c = data;
++	return 0;
++}
++
++void sl_media_data_jack_led_set(struct sl_media_jack *media_jack)
++{
++	int                  rtn;
++	struct sl_core_link *core_link;
++	u32                  link_state;
++	u8                   state;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "led set");
++
++	core_link = sl_core_link_get_pinned(media_jack->cable_info[0].ldev_num,
++					    media_jack->cable_info[0].lgrp_num, 0);
++	if (!core_link)
++		return;
++
++	/* hardcoding 0 since only one link*/
++	rtn = sl_core_link_state_get(media_jack->cable_info[0].ldev_num,
++				     media_jack->cable_info[0].lgrp_num, 0, &link_state);
++	sl_core_link_put_pinned(core_link);
++	if (rtn) {
++		sl_media_log_err_trace(media_jack, LOG_NAME, "core link state get failed [%d]", rtn);
++		return;
++	}
++
++	rtn = sl_media_jack_state_get(media_jack, &state);
++	if (rtn)
++		sl_media_log_err_trace(media_jack, LOG_NAME, "media_jack_state_get failed [%d]", rtn);
++
++	switch (state) {
++	case SL_MEDIA_JACK_CABLE_REMOVED:
++		sl_media_io_led_set(media_jack, LED_OFF);
++		return;
++	case SL_MEDIA_JACK_CABLE_ERROR:
++		sl_media_io_led_set(media_jack, LED_FAST_YEL);
++		return;
++	}
++
++	switch (link_state) {
++	case SL_CORE_LINK_STATE_UNCONFIGURED:
++	case SL_CORE_LINK_STATE_CANCELING:
++	case SL_CORE_LINK_STATE_DOWN:
++	case SL_CORE_LINK_STATE_GOING_DOWN:
++	case SL_CORE_LINK_STATE_TIMEOUT:
++		sl_media_io_led_set(media_jack, LED_OFF);
++		break;
++	case SL_CORE_LINK_STATE_GOING_UP:
++	case SL_CORE_LINK_STATE_AN:
++		sl_media_io_led_set(media_jack, LED_FAST_GRN);
++		break;
++	case SL_CORE_LINK_STATE_UP:
++		sl_media_io_led_set(media_jack, LED_ON_GRN);
++		break;
++	}
++}
++
++static inline u8 sl_media_data_jack_num_update(u8 physical_jack_num)
++{
++	return physical_jack_num - 1;
++}
++
++void sl_media_data_jack_cable_temp_monitor_start(struct sl_media_ldev *media_ldev)
++{
++}
++
++void sl_media_data_jack_cable_temp_monitor_stop(struct sl_media_ldev *media_ldev)
++{
++}
+diff --git a/drivers/net/ethernet/hpe/sl/media/data/nic/sl_media_data_jack_emu.c b/drivers/net/ethernet/hpe/sl/media/data/nic/sl_media_data_jack_emu.c
+new file mode 100644
+index 000000000000..0aed275e8c5c
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/media/data/nic/sl_media_data_jack_emu.c
+@@ -0,0 +1,38 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024,2025 Hewlett Packard Enterprise Development LP */
++
++#include <linux/types.h>
++
++#include "sl_asic.h"
++
++#include "base/sl_media_log.h"
++
++#include "sl_media_lgrp.h"
++#include "sl_media_jack.h"
++#include "data/sl_media_data_jack.h"
++
++#define LOG_NAME SL_MEDIA_DATA_JACK_LOG_NAME
++
++int sl_media_data_jack_lgrp_connect(struct sl_media_lgrp *media_lgrp)
++{
++	struct sl_media_jack *media_jack;
++	u8                    i;
++
++	sl_media_log_dbg(media_lgrp, LOG_NAME, "jack lgrp connect");
++
++	media_jack = sl_media_data_jack_get(media_lgrp->media_ldev->num,
++					    media_lgrp->num >> (SL_MEDIA_LGRPS_DIVIDE_PER_PORT));
++	for (i = 0; i < SL_MEDIA_LGRPS_PER_PORT; ++i) {
++		if (media_jack->cable_info[i].lgrp_num == media_lgrp->num) {
++			media_lgrp->media_jack = media_jack;
++			media_lgrp->cable_info = &media_jack->cable_info[i];
++			return 0;
++		}
++	}
++
++	return -EFAULT;
++}
++
++void sl_media_data_jack_unregister_event_notifier(void)
++{
++}
+diff --git a/drivers/net/ethernet/hpe/sl/media/data/nic/sl_media_data_ldev.c b/drivers/net/ethernet/hpe/sl/media/data/nic/sl_media_data_ldev.c
+new file mode 100644
+index 000000000000..a2cd33257fc5
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/media/data/nic/sl_media_data_ldev.c
+@@ -0,0 +1,30 @@
++// SPDX-License-Identifier: GPL-2.0
 +/* Copyright 2025 Hewlett Packard Enterprise Development LP */
 +
 +#include <linux/types.h>
-+#include <linux/kernel.h>
-+#include <linux/device.h>
++#include <linux/errno.h>
 +
-+#include <linux/hpe/sbl/sbl.h>
-+#include <linux/hpe/sbl/sbl_kconfig.h>
++#include "base/sl_media_log.h"
++#include "sl_media_ldev.h"
++#include "data/sl_media_data_ldev.h"
 +
-+#include <linux/hpe/sbl/sbl_pml.h>
++#define LOG_NAME  SL_LOG_LDEV_LOG_NAME
 +
-+#include "sbl_internal.h"
-+
-+#ifdef CONFIG_SYSFS
-+
-+/**
-+ * sbl_media_type_sysfs_sprint() - Report media type into buffer
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @buf: Destination buffer to write the data
-+ * @size: Size of @buf in bytes, the output is truncated to fit
-+ *
-+ * This function reads the physical type of media used based on mconfigured
-+ * and writes a formatted description of the type into the provided buffer
-+ *
-+ * Return: Number of characters written, at most @size - 1
-+ */
-+int sbl_media_type_sysfs_sprint(struct sbl_inst *sbl, int port_num, char *buf, size_t size)
++int sl_media_data_ldev_uc_ops_set(u8 ldev_num, struct sl_uc_ops *uc_ops,
++				  struct sl_uc_accessor *uc_accessor)
 +{
-+	struct sbl_link *link = sbl->link + port_num;
-+	int s = 0;
++	struct sl_media_ldev *media_ldev;
 +
-+	spin_lock(&link->lock);
++	media_ldev = sl_media_ldev_get(ldev_num);
++	if (!media_ldev) {
++		sl_media_log_err(NULL, LOG_NAME, "ldev not found (ldev_num = %u)", ldev_num);
++		return -EINVAL;
++	}
 +
-+	if (link->mconfigured)
-+		s += scnprintf(buf + s, size - s, "%s", sbl_link_media_str(link->mattr.media));
-+	else
-+		s += scnprintf(buf + s, size - s, "NA");
++	sl_media_log_dbg(media_ldev, LOG_NAME, "media_data_ldev_uc_ops_set");
 +
-+	spin_unlock(&link->lock);
++	media_ldev->uc_ops = uc_ops;
++	media_ldev->uc_accessor = uc_accessor;
 +
-+	return s;
++	return 0;
 +}
-+EXPORT_SYMBOL(sbl_media_type_sysfs_sprint);
-+#endif
+diff --git a/drivers/net/ethernet/hpe/sl/media/data/sl_media_data_cable_db_ops.c b/drivers/net/ethernet/hpe/sl/media/data/sl_media_data_cable_db_ops.c
+new file mode 100644
+index 000000000000..8099343084d8
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/media/data/sl_media_data_cable_db_ops.c
+@@ -0,0 +1,111 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024,2025 Hewlett Packard Enterprise Development LP */
++
++#include <linux/slab.h>
++#include <linux/kernel.h>
++
++#include <linux/hpe/sl/sl_media.h>
++
++#include "sl_media_jack.h"
++#include "data/sl_media_data_cable_db.h"
++#include "data/sl_media_data_cable_db_ops.h"
++#include "base/sl_media_log.h"
++
++#define LOG_NAME SL_MEDIA_CABLE_LOG_NAME
++
++#define SL_MEDIA_TYPE_SERDES 1
++
++int sl_media_data_cable_db_ops_cable_validate(struct sl_media_attr *media_attr, struct sl_media_jack *media_jack)
++{
++	int indexer;
++
++	sl_media_log_dbg(NULL, LOG_NAME, "cable validate");
++
++	/*
++	 * Check for loopback module
++	 */
++	if (media_attr->vendor == SL_MEDIA_VENDOR_MULTILANE) {
++		media_attr->hpe_pn       = 1;
++		media_attr->type         = SL_MEDIA_TYPE_PEC;
++		media_attr->length_cm    = 100;
++		media_attr->furcation    = SL_MEDIA_FURCATION_X1;
++		media_attr->max_speed    = SL_MEDIA_SPEEDS_SUPPORT_CK_400G;
++		media_attr->speeds_map   = SL_MEDIA_SPEEDS_SUPPORT_CK_400G |
++					   SL_MEDIA_SPEEDS_SUPPORT_BS_200G |
++					   SL_MEDIA_SPEEDS_SUPPORT_BJ_100G |
++					   SL_MEDIA_SPEEDS_SUPPORT_CD_50G;
++		media_jack->cable_db_idx = -1;
++		return 0;
++	}
++
++	/*
++	 * Linear search through the cable_db array
++	 */
++	for (indexer = 0; indexer < ARRAY_SIZE(cable_db); ++indexer) {
++		if (cable_db[indexer].hpe_pn == media_attr->hpe_pn &&
++		    cable_db[indexer].vendor == media_attr->vendor &&
++		    cable_db[indexer].type   == media_attr->type) {
++			media_attr->shape                    = cable_db[indexer].shape;
++			media_attr->max_speed                = cable_db[indexer].max_speed;
++			media_jack->is_supported_ss200_cable = cable_db[indexer].is_supported_ss200_cable;
++			media_jack->cable_db_idx             = indexer;
++			return 0;
++		}
++	}
++
++	return -ENOENT;
++}
++
++int sl_media_data_cable_db_ops_serdes_settings_get(struct sl_media_jack *media_jack, u32 media_type, u32 flags)
++{
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "serdes settings get (media_type = 0x%X %s, flags = 0x%X)",
++		media_type, sl_media_type_str(media_type), flags);
++
++	if (flags & SL_MEDIA_TYPE_UNSUPPORTED) {
++		sl_media_log_warn_trace(media_jack, LOG_NAME, "serdes setting get unsuppported cable");
++		if (media_type == SL_MEDIA_TYPE_AEC ||
++		    media_type == SL_MEDIA_TYPE_ACC ||
++		    media_type == SL_MEDIA_TYPE_POC ||
++		    media_type == SL_MEDIA_TYPE_AOC) {
++			media_jack->serdes_settings.pre1   = -12;
++			media_jack->serdes_settings.pre2   = 0;
++			media_jack->serdes_settings.pre3   = 0;
++			media_jack->serdes_settings.cursor = 98;
++			media_jack->serdes_settings.post1  = -4;
++			media_jack->serdes_settings.post2  = 0;
++		} else {
++			media_jack->serdes_settings.pre1   = 0;
++			media_jack->serdes_settings.pre2   = 0;
++			media_jack->serdes_settings.pre3   = 0;
++			media_jack->serdes_settings.cursor = 100;
++			media_jack->serdes_settings.post1  = 0;
++			media_jack->serdes_settings.post2  = 0;
++		}
++	} else if (flags & SL_MEDIA_TYPE_BACKPLANE) {
++		media_jack->serdes_settings.pre1   = 0;
++		media_jack->serdes_settings.pre2   = 0;
++		media_jack->serdes_settings.pre3   = 0;
++		media_jack->serdes_settings.cursor = 100;
++		media_jack->serdes_settings.post1  = 0;
++		media_jack->serdes_settings.post2  = 0;
++	} else if (flags & SL_MEDIA_TYPE_LOOPBACK) {
++		media_jack->serdes_settings.pre1   = 0;
++		media_jack->serdes_settings.pre2   = 0;
++		media_jack->serdes_settings.pre3   = 0;
++		media_jack->serdes_settings.cursor = 100;
++		media_jack->serdes_settings.post1  = 0;
++		media_jack->serdes_settings.post2  = 0;
++	} else {
++		if (media_jack->cable_db_idx < 0 || media_jack->cable_db_idx >= ARRAY_SIZE(cable_db)) {
++			sl_media_log_err_trace(media_jack, LOG_NAME,
++					       "serdes settings get invalid (idx = %d)",
++					       media_jack->cable_db_idx);
++			return -ENOENT;
++		}
++		media_jack->serdes_settings = cable_db[media_jack->cable_db_idx].serdes_settings;
++	}
++	media_jack->serdes_settings.media = SL_MEDIA_TYPE_SERDES;
++
++	return 0;
++}
+diff --git a/drivers/net/ethernet/hpe/sl/media/data/sl_media_data_jack.c b/drivers/net/ethernet/hpe/sl/media/data/sl_media_data_jack.c
+new file mode 100644
+index 000000000000..17631509afa2
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/media/data/sl_media_data_jack.c
+@@ -0,0 +1,344 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2022,2023,2024,2025 Hewlett Packard Enterprise Development LP */
++
++#include <linux/slab.h>
++#include <linux/kernel.h>
++#include <linux/atomic.h>
++
++#include <linux/hpe/sl/sl_media.h>
++
++#include "base/sl_media_log.h"
++#include "sl_media_ldev.h"
++#include "sl_media_lgrp.h"
++#include "sl_media_jack.h"
++#include "data/sl_media_data_jack.h"
++#include "sl_asic.h"
++#include "sl_ctrl_lgrp_notif.h"
++#include "data/sl_media_data_lgrp.h"
++#include "sl_ctrl_lgrp.h"
++#include "sl_core_link.h"
++#include "sl_ctrl_media_counters.h"
++
++static struct sl_media_jack *media_jacks[SL_ASIC_MAX_LDEVS][SL_MEDIA_MAX_JACK_NUM];
++static DEFINE_SPINLOCK(media_jacks_lock);
++
++#define LOG_NAME SL_MEDIA_DATA_JACK_LOG_NAME
++
++void sl_media_data_jack_del(u8 ldev_num, u8 jack_num)
++{
++	struct sl_media_jack *media_jack;
++
++	media_jack = sl_media_data_jack_get(ldev_num, jack_num);
++	if (!media_jack) {
++		sl_media_log_dbg(NULL, LOG_NAME, "not found (jack_num = %u)", jack_num);
++		return;
++	}
++
++	sl_ctrl_media_cause_counters_del(media_jack);
++
++	spin_lock(&media_jacks_lock);
++	media_jacks[ldev_num][jack_num] = NULL;
++	spin_unlock(&media_jacks_lock);
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "del (jack = 0x%p)", media_jack);
++
++	kfree(media_jack);
++}
++
++int sl_media_data_jack_new(struct sl_media_ldev *media_ldev, u8 jack_num)
++{
++	struct sl_media_jack *media_jack;
++	int                   rtn;
++
++	media_jack = sl_media_data_jack_get(media_ldev->num, jack_num);
++	if (media_jack) {
++		sl_media_log_err(NULL, LOG_NAME, "jack already exists");
++		return -EEXIST;
++	}
++
++	media_jack = kzalloc(sizeof(struct sl_media_jack), GFP_KERNEL);
++	if (!media_jack)
++		return -ENOMEM;
++
++	media_jack->magic             = SL_MEDIA_JACK_MAGIC;
++	media_jack->num               = jack_num;
++	media_jack->physical_num      = 1;
++	media_jack->cable_db_idx      = -1;
++	media_jack->fault_cause       = SL_MEDIA_FAULT_CAUSE_NONE;
++
++	spin_lock_init(&media_jack->log_lock);
++
++	rtn = sl_ctrl_media_cause_counters_init(media_jack);
++	if (rtn) {
++		sl_media_log_err(media_jack, LOG_NAME, "ctrl_media_cause_counters_init failed [%d]", rtn);
++		goto out;
++	}
++
++	spin_lock_init(&(media_jack->data_lock));
++
++	media_jack->media_ldev = media_ldev;
++
++	media_jack->state                  = SL_MEDIA_JACK_CABLE_REMOVED;
++	media_jack->lane_data.cache.cached = false;
++	media_jack->lane_data.read_state   = SL_MEDIA_JACK_LANE_DATA_READ_STATE_IDLE;
++	media_jack->lane_data.read_generation = 0;
++	init_waitqueue_head(&media_jack->lane_data.read_wait);
++
++	media_jack->temperature_value_c      = -1;
++	media_jack->temperature_down_limit_c = -1;
++	media_jack->temperature_warn_limit_c = -1;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "new (jack = 0x%p)", media_jack);
++
++	spin_lock(&media_jacks_lock);
++	media_jacks[media_ldev->num][jack_num] = media_jack;
++	spin_unlock(&media_jacks_lock);
++
++	return 0;
++
++out:
++	kfree(media_jack);
++	return -ENOMEM;
++}
++
++struct sl_media_jack *sl_media_data_jack_get(u8 ldev_num, u8 jack_num)
++{
++	struct sl_media_jack *media_jack;
++
++	spin_lock(&media_jacks_lock);
++	media_jack = media_jacks[ldev_num][jack_num];
++	spin_unlock(&media_jacks_lock);
++
++	sl_media_log_dbg(NULL, LOG_NAME,
++			 "get (ldev_num = %u, jack_num = %u, jack = 0x%p)",
++			 ldev_num, jack_num, media_jack);
++
++	return media_jack;
++}
++
++void sl_media_data_cable_serdes_settings_clr(struct sl_media_jack *media_jack)
++{
++	sl_media_log_dbg(media_jack, LOG_NAME, "serdes settings clr");
++
++	memset(&(media_jack->serdes_settings), 0, sizeof(struct sl_media_serdes_settings));
++}
++
++void sl_media_data_jack_eeprom_clr(struct sl_media_jack *media_jack)
++{
++	sl_media_log_dbg(media_jack, LOG_NAME, "eeprom clr");
++
++	memset(media_jack->eeprom_page0, 0, SL_MEDIA_EEPROM_PAGE_SIZE);
++	memset(media_jack->eeprom_page1, 0, SL_MEDIA_EEPROM_PAGE_SIZE);
++}
++
++/*
++ * This state describes the cable that is currently in the jack, so it must be
++ * cleared whenever the cable changes or the next cable inherits it. Client
++ * notification registrations, fake-cable debug state and counters belong to
++ * the jack and are kept. A stash that is still live behind a fake cable is
++ * kept too.
++ */
++void sl_media_data_jack_cable_state_clr(struct sl_media_jack *media_jack)
++{
++	unsigned int i;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "cable state clr");
++
++	spin_lock(&media_jack->data_lock);
++	media_jack->is_cable_unsupported        = false;
++	media_jack->is_cable_format_unsupported = false;
++	media_jack->is_supported_ss200_cable    = false;
++	media_jack->cable_db_idx                = -1;
++
++	media_jack->is_high_powered                = false;
++	media_jack->cable_high_power_wait_time_end = 0;
++
++	media_jack->cable_shift_state       = 0;
++	media_jack->appsel_num_200_gaui     = 0;
++	media_jack->lane_count_200_gaui     = 0;
++	media_jack->host_interface_200_gaui = 0;
++	media_jack->appsel_num_400_gaui     = 0;
++	media_jack->lane_count_400_gaui     = 0;
++	media_jack->host_interface_400_gaui = 0;
++
++	memset(&media_jack->lane_data.cache, 0, sizeof(media_jack->lane_data.cache));
++
++	media_jack->temperature_prev_state   = SL_MEDIA_JACK_TEMP_STATE_COLD;
++	media_jack->temperature_state        = SL_MEDIA_JACK_TEMP_STATE_COLD;
++	media_jack->temperature_value_c      = -1;
++	media_jack->temperature_warn_limit_c = -1;
++	media_jack->temperature_down_limit_c = -1;
++
++	for (i = 0; i < ARRAY_SIZE(media_jack->cable_info); ++i) {
++		struct sl_media_lgrp_cable_info *cable_info = &media_jack->cable_info[i];
++
++		if (cable_info->real_cable_status != CABLE_MEDIA_ATTR_STASHED)
++			memset(&cable_info->stashed_media_attr, 0,
++			       sizeof(cable_info->stashed_media_attr));
++		cable_info->hot_notif_sent  = false;
++		cable_info->warm_notif_sent = false;
++		cable_info->cold_notif_sent = false;
++	}
++	spin_unlock(&media_jack->data_lock);
++}
++
++int sl_media_data_jack_media_attr_set(struct sl_media_jack *media_jack,
++				      struct sl_media_lgrp_cable_info *cable_info, struct sl_media_attr *media_attr)
++{
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "media attr set (format = %d, vendor = %d %s, type = 0x%X %s, length_cm = %d, speeds_map = 0x%lX)",
++			 media_attr->format, media_attr->vendor, sl_media_vendor_str(media_attr->vendor),
++			 media_attr->type, sl_media_type_str(media_attr->type),
++			 media_attr->length_cm, media_attr->speeds_map);
++
++	spin_lock(&media_jack->data_lock);
++
++	if (cable_info->real_cable_status == CABLE_MEDIA_ATTR_ADDED) {
++		sl_media_log_err_trace(media_jack, LOG_NAME, "media attr already set");
++		spin_unlock(&media_jack->data_lock);
++		return -EEXIST;
++	}
++
++	if (cable_info->fake_cable_status == CABLE_MEDIA_ATTR_ADDED) {
++		cable_info->stashed_media_attr = *media_attr;
++		cable_info->real_cable_status  = CABLE_MEDIA_ATTR_STASHED;
++	} else {
++		cable_info->media_attr        = *media_attr;
++		cable_info->real_cable_status = CABLE_MEDIA_ATTR_ADDED;
++	}
++
++	spin_unlock(&media_jack->data_lock);
++
++	return 0;
++}
++
++void sl_media_data_jack_media_attr_clr(struct sl_media_jack *media_jack,
++				       struct sl_media_lgrp_cable_info *cable_info)
++{
++	struct sl_media_lgrp *media_lgrp;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "media attr clr");
++
++	media_lgrp = sl_media_data_lgrp_get(cable_info->ldev_num, cable_info->lgrp_num);
++	spin_lock(&media_jack->data_lock);
++	if (cable_info->real_cable_status == CABLE_MEDIA_ATTR_REMOVED) {
++		spin_unlock(&media_jack->data_lock);
++		sl_media_log_dbg(media_jack, LOG_NAME, "no media attr to clear");
++		return;
++	}
++
++	if (cable_info->real_cable_status == CABLE_MEDIA_ATTR_ADDED)
++		memset(&(cable_info->media_attr), 0, sizeof(struct sl_media_attr));
++
++	cable_info->real_cable_status = CABLE_MEDIA_ATTR_REMOVED;
++	spin_unlock(&media_jack->data_lock);
++
++	if (media_lgrp) {
++		/* Only send notification if both real and fake cables are removed */
++		if (cable_info->fake_cable_status == CABLE_MEDIA_ATTR_REMOVED)
++			sl_media_data_jack_cable_if_not_present_send(media_lgrp);
++	}
++}
++
++bool sl_media_data_jack_media_is_format_cmis(struct sl_media_jack *media_jack)
++{
++	bool is_cmis;
++
++	spin_lock(&media_jack->data_lock);
++	is_cmis = (media_jack->cable_info[0].media_attr.format == SL_MEDIA_MGMT_IF_CMIS);
++	spin_unlock(&media_jack->data_lock);
++
++	return is_cmis;
++}
++
++void sl_media_data_jack_cable_if_present_send(struct sl_media_lgrp *media_lgrp)
++{
++	int                      rtn;
++	union sl_lgrp_notif_info info;
++
++	sl_media_log_dbg(media_lgrp, LOG_NAME, "present send");
++
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	if ((media_lgrp->cable_info->real_cable_status == CABLE_MEDIA_ATTR_ADDED) ||
++	    (media_lgrp->cable_info->fake_cable_status == CABLE_MEDIA_ATTR_ADDED)) {
++		info.media_attr = media_lgrp->cable_info->media_attr;
++		rtn = sl_ctrl_lgrp_notif_enqueue(sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num),
++						 SL_LGRP_NOTIF_NO_LINK, SL_LGRP_NOTIF_MEDIA_PRESENT, &info, 0);
++		if (rtn)
++			sl_media_log_warn_trace(media_lgrp, LOG_NAME,
++						"present_send ctrl_lgrp_notif_enqueue failed [%d]", rtn);
++	}
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++}
++
++void sl_media_data_jack_cable_if_not_present_send(struct sl_media_lgrp *media_lgrp)
++{
++	int rtn;
++
++	sl_media_log_dbg(media_lgrp, LOG_NAME, "not present send");
++
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	if (media_lgrp->cable_info->real_cable_status == CABLE_MEDIA_ATTR_REMOVED) {
++		rtn = sl_ctrl_lgrp_notif_enqueue(sl_ctrl_lgrp_get(media_lgrp->media_ldev->num, media_lgrp->num),
++						 SL_LGRP_NOTIF_NO_LINK, SL_LGRP_NOTIF_MEDIA_NOT_PRESENT, NULL, 0);
++		if (rtn)
++			sl_media_log_warn_trace(media_lgrp, LOG_NAME,
++						"not_present_send ctrl_lgrp_notif_enqueue failed [%d]", rtn);
++	}
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++}
++
++void sl_media_data_jack_cable_temp_state_init(struct sl_media_jack *media_jack)
++{
++	spin_lock(&media_jack->data_lock);
++	media_jack->temperature_prev_state = SL_MEDIA_JACK_TEMP_STATE_COLD;
++	media_jack->temperature_state = SL_MEDIA_JACK_TEMP_STATE_COLD;
++	spin_unlock(&media_jack->data_lock);
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "temperature state init (prev_state = %u, state = %u)",
++			 media_jack->temperature_prev_state, media_jack->temperature_state);
++}
++
++void sl_media_data_jack_cable_temp_state_set(struct sl_media_jack *media_jack, u8 temperature_state)
++{
++	spin_lock(&media_jack->data_lock);
++	media_jack->temperature_prev_state = media_jack->temperature_state;
++	media_jack->temperature_state = temperature_state;
++	spin_unlock(&media_jack->data_lock);
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "temperature state set (state = %u)", media_jack->temperature_state);
++}
++
++int sl_media_data_jack_cable_temp_state_get(struct sl_media_jack *media_jack, u8 *temperature_state)
++{
++	spin_lock(&media_jack->data_lock);
++	*temperature_state = media_jack->temperature_state;
++	spin_unlock(&media_jack->data_lock);
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "temperature state get (state = %u %s)",
++			 *temperature_state, sl_media_temp_state_str(*temperature_state));
++
++	return 0;
++}
++
++int  sl_media_data_jack_cable_temp_prev_state_get(struct sl_media_jack *media_jack, u8 *temperature_prev_state)
++{
++	spin_lock(&media_jack->data_lock);
++	*temperature_prev_state = media_jack->temperature_prev_state;
++	spin_unlock(&media_jack->data_lock);
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "temperature prev state get (state = %u %s)",
++			 *temperature_prev_state, sl_media_temp_state_str(*temperature_prev_state));
++
++	return 0;
++}
++
++void sl_media_data_jack_headshell_busy_set(struct sl_media_jack *media_jack, int value)
++{
++	atomic_set(&media_jack->is_headshell_busy, value);
++}
++
++bool sl_media_data_jack_is_headshell_busy(struct sl_media_jack *media_jack)
++{
++	return (atomic_read(&media_jack->is_headshell_busy) == SL_MEDIA_JACK_HEADSHELL_BUSY);
++}
+diff --git a/drivers/net/ethernet/hpe/sl/media/data/sl_media_data_ldev.c b/drivers/net/ethernet/hpe/sl/media/data/sl_media_data_ldev.c
+new file mode 100644
+index 000000000000..fddedcd46776
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/media/data/sl_media_data_ldev.c
+@@ -0,0 +1,115 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2023,2024,2025 Hewlett Packard Enterprise Development LP */
++
++#include <linux/spinlock.h>
++#include <linux/slab.h>
++
++#include <linux/hpe/sl/sl_media.h>
++
++#include "sl_asic.h"
++#include "base/sl_media_log.h"
++#include "sl_media_ldev.h"
++#include "data/sl_media_data_ldev.h"
++#include "data/sl_media_data_lgrp.h"
++#include "data/sl_media_data_jack.h"
++
++static struct sl_media_ldev *media_ldevs[SL_ASIC_MAX_LDEVS];
++static DEFINE_SPINLOCK(media_ldevs_lock);
++
++#define LOG_NAME SL_MEDIA_DATA_LDEV_LOG_NAME
++
++int sl_media_data_ldev_new(u8 ldev_num, struct workqueue_struct *workqueue)
++{
++	struct sl_media_ldev *media_ldev;
++	int                   rtn;
++	u8                    jack_num;
++
++	media_ldev = sl_media_data_ldev_get(ldev_num);
++	if (media_ldev) {
++		sl_media_log_err(NULL, LOG_NAME, "exists (ldev = 0x%p)", media_ldev);
++		return -EBADRQC;
++	}
++
++	media_ldev = kzalloc(sizeof(struct sl_media_ldev), GFP_KERNEL);
++	if (!media_ldev)
++		return -ENOMEM;
++
++	media_ldev->magic     = SL_MEDIA_LDEV_MAGIC;
++	media_ldev->num       = ldev_num;
++	media_ldev->workqueue = workqueue;
++
++	for (jack_num = 0; jack_num < SL_MEDIA_MAX_JACK_NUM; ++jack_num) {
++		rtn = sl_media_data_jack_new(media_ldev, jack_num);
++		if (rtn) {
++			sl_media_log_err(media_ldev, LOG_NAME, "jack new failed [%d]", rtn);
++			goto out_jacks;
++		}
++	}
++
++	rtn = sl_media_data_jack_scan(ldev_num);
++	if (rtn) {
++		sl_media_log_err(media_ldev, LOG_NAME, "jack scan failed [%d]", rtn);
++		goto out_jacks;
++	}
++
++	sl_media_log_dbg(media_ldev, LOG_NAME, "new (ldev = 0x%p)", media_ldev);
++
++	spin_lock(&media_ldevs_lock);
++	media_ldevs[ldev_num] = media_ldev;
++	spin_unlock(&media_ldevs_lock);
++
++	sl_media_data_jack_cable_temp_monitor_start(media_ldev);
++
++	return 0;
++
++out_jacks:
++	while (jack_num)
++		sl_media_data_jack_del(ldev_num, --jack_num);
++	kfree(media_ldev);
++	return -EFAULT;
++}
++
++void sl_media_data_ldev_del(u8 ldev_num)
++{
++	struct sl_media_ldev *media_ldev;
++	u8                    lgrp_num;
++	u8                    jack_num;
++
++	media_ldev = sl_media_data_ldev_get(ldev_num);
++	if (!media_ldev) {
++		sl_media_log_dbg(NULL, LOG_NAME, "not found (ldev_num = %u)", ldev_num);
++		return;
++	}
++
++	sl_media_data_jack_cable_temp_monitor_stop(media_ldev);
++
++	spin_lock(&media_ldevs_lock);
++	media_ldevs[ldev_num] = NULL;
++	spin_unlock(&media_ldevs_lock);
++
++	sl_media_log_dbg(media_ldev, LOG_NAME, "del (ldev = 0x%p)", media_ldev);
++
++	for (lgrp_num = 0; lgrp_num < SL_ASIC_MAX_LGRPS; ++lgrp_num)
++		sl_media_data_lgrp_del(ldev_num, lgrp_num);
++
++	for (jack_num = 0; jack_num < SL_MEDIA_MAX_JACK_NUM; ++jack_num)
++		sl_media_data_jack_del(ldev_num, jack_num);
++
++	sl_media_data_jack_unregister_event_notifier();
++
++	kfree(media_ldev);
++}
++
++struct sl_media_ldev *sl_media_data_ldev_get(u8 ldev_num)
++{
++	struct sl_media_ldev *media_ldev;
++
++	spin_lock(&media_ldevs_lock);
++	media_ldev = media_ldevs[ldev_num];
++	spin_unlock(&media_ldevs_lock);
++
++	sl_media_log_dbg(NULL, LOG_NAME, "get (ldev_num = %u, ldev = 0x%p)",
++			 ldev_num, media_ldev);
++
++	return media_ldev;
++}
+diff --git a/drivers/net/ethernet/hpe/sl/media/data/sl_media_data_lgrp.c b/drivers/net/ethernet/hpe/sl/media/data/sl_media_data_lgrp.c
+new file mode 100644
+index 000000000000..27c30bdf3378
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/media/data/sl_media_data_lgrp.c
+@@ -0,0 +1,127 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2023,2024,2025 Hewlett Packard Enterprise Development LP */
++
++#include <linux/spinlock.h>
++#include <linux/slab.h>
++
++#include <linux/hpe/sl/sl_media.h>
++
++#include "sl_media_lgrp.h"
++#include "data/sl_media_data_lgrp.h"
++#include "data/sl_media_data_ldev.h"
++#include "data/sl_media_data_jack.h"
++#include "sl_asic.h"
++#include "base/sl_media_log.h"
++
++static struct sl_media_lgrp *media_lgrps[SL_ASIC_MAX_LDEVS][SL_ASIC_MAX_LGRPS];
++static DEFINE_SPINLOCK(media_lgrps_lock);
++
++#define LOG_NAME SL_MEDIA_DATA_LGRP_LOG_NAME
++
++int sl_media_data_lgrp_new(u8 ldev_num, u8 lgrp_num)
++{
++	struct sl_media_lgrp *media_lgrp;
++	int                   rtn;
++
++	media_lgrp = sl_media_data_lgrp_get(ldev_num, lgrp_num);
++	if (media_lgrp) {
++		sl_media_log_err(NULL, LOG_NAME, "exists (lgrp = 0x%p)", media_lgrp);
++		return -EBADRQC;
++	}
++
++	media_lgrp = kzalloc(sizeof(struct sl_media_lgrp), GFP_KERNEL);
++	if (!media_lgrp)
++		return -ENOMEM;
++
++	media_lgrp->magic       = SL_MEDIA_LGRP_MAGIC;
++	media_lgrp->num         = lgrp_num;
++	media_lgrp->media_ldev  = sl_media_data_ldev_get(ldev_num);
++
++	media_lgrp->speeds_kobj_init = false;
++	spin_lock_init(&media_lgrp->log_lock);
++	spin_lock_init(&media_lgrp->data_lock);
++	snprintf(media_lgrp->connect_id, sizeof(media_lgrp->connect_id), "lgrp%02u", lgrp_num);
++
++	rtn = sl_media_data_jack_lgrp_connect(media_lgrp);
++	if (rtn) {
++		sl_media_log_err(media_lgrp, LOG_NAME, "jack lgrp connect failed [%d]", rtn);
++		kfree(media_lgrp);
++		return -EFAULT;
++	}
++
++	sl_media_log_dbg(media_lgrp, LOG_NAME, "new (lgrp = 0x%p)", media_lgrp);
++
++	spin_lock(&media_lgrps_lock);
++	media_lgrps[ldev_num][lgrp_num] = media_lgrp;
++	spin_unlock(&media_lgrps_lock);
++
++	return 0;
++}
++
++void sl_media_data_lgrp_del(u8 ldev_num, u8 lgrp_num)
++{
++	struct sl_media_lgrp *media_lgrp;
++
++	media_lgrp = sl_media_data_lgrp_get(ldev_num, lgrp_num);
++	if (!media_lgrp) {
++		sl_media_log_dbg(NULL, LOG_NAME, "not found (lgrp_num = %u)", lgrp_num);
++		return;
++	}
++
++	spin_lock(&media_lgrps_lock);
++	media_lgrps[ldev_num][lgrp_num] = NULL;
++	spin_unlock(&media_lgrps_lock);
++
++	sl_media_log_dbg(media_lgrp, LOG_NAME, "del (lgrp = 0x%p)", media_lgrp);
++
++	kfree(media_lgrp);
++}
++
++struct sl_media_lgrp *sl_media_data_lgrp_get(u8 ldev_num, u8 lgrp_num)
++{
++	struct sl_media_lgrp *media_lgrp;
++
++	spin_lock(&media_lgrps_lock);
++	media_lgrp = media_lgrps[ldev_num][lgrp_num];
++	spin_unlock(&media_lgrps_lock);
++
++	sl_media_log_dbg(NULL, LOG_NAME,
++			 "get (ldev_num = %u, lgrp_num = %u, lgrp = 0x%p)",
++			 ldev_num, lgrp_num, media_lgrp);
++
++	return media_lgrp;
++}
++
++void sl_media_data_lgrp_connect_id_set(struct sl_media_lgrp *media_lgrp, const char *connect_id)
++{
++	unsigned long irq_flags;
++
++	spin_lock_irqsave(&(media_lgrp->log_lock), irq_flags);
++	strscpy_pad(media_lgrp->connect_id, connect_id,
++		    sizeof(media_lgrp->connect_id));
++	spin_unlock_irqrestore(&(media_lgrp->log_lock), irq_flags);
++
++	sl_media_log_dbg(media_lgrp, SL_MEDIA_DATA_LGRP_LOG_NAME, "connect_id = %s", connect_id);
++}
++
++int sl_media_data_lgrp_err_trace_enable_set(struct sl_media_lgrp *media_lgrp, bool err_trace_enable)
++{
++	spin_lock(&media_lgrp->data_lock);
++	media_lgrp->err_trace_enable = err_trace_enable;
++	spin_unlock(&media_lgrp->data_lock);
++
++	sl_media_log_dbg(media_lgrp, LOG_NAME, "set (err_trace_enable = %s)", err_trace_enable ? "true" : "false");
++
++	return 0;
++}
++
++int sl_media_data_lgrp_warn_trace_enable_set(struct sl_media_lgrp *media_lgrp, bool warn_trace_enable)
++{
++	spin_lock(&media_lgrp->data_lock);
++	media_lgrp->warn_trace_enable = warn_trace_enable;
++	spin_unlock(&media_lgrp->data_lock);
++
++	sl_media_log_dbg(media_lgrp, LOG_NAME, "set (warn_trace_enable = %s)", warn_trace_enable ? "true" : "false");
++
++	return 0;
++}
+diff --git a/drivers/net/ethernet/hpe/sl/media/data/sl_media_data_lgrp_trace.c b/drivers/net/ethernet/hpe/sl/media/data/sl_media_data_lgrp_trace.c
+new file mode 100644
+index 000000000000..aec8a52d1cc0
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/media/data/sl_media_data_lgrp_trace.c
+@@ -0,0 +1,31 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2025 Hewlett Packard Enterprise Development LP */
++
++#include <linux/types.h>
++#include <linux/spinlock.h>
++
++#include "data/sl_media_data_lgrp_trace.h"
++
++#define LOG_NAME SL_MEDIA_DATA_LGRP_LOG_NAME
++
++int sl_media_data_lgrp_is_err_trace_enabled(struct sl_media_lgrp *media_lgrp, bool *err_trace_enable)
++{
++	spin_lock(&media_lgrp->data_lock);
++	*err_trace_enable = media_lgrp->err_trace_enable;
++	spin_unlock(&media_lgrp->data_lock);
++
++	sl_media_log_dbg(media_lgrp, LOG_NAME, "get (err_trace_enable = %s)", *err_trace_enable ? "true" : "false");
++
++	return 0;
++}
++
++int sl_media_data_lgrp_is_warn_trace_enabled(struct sl_media_lgrp *media_lgrp, bool *warn_trace_enable)
++{
++	spin_lock(&media_lgrp->data_lock);
++	*warn_trace_enable = media_lgrp->warn_trace_enable;
++	spin_unlock(&media_lgrp->data_lock);
++
++	sl_media_log_dbg(media_lgrp, LOG_NAME, "get (warn_trace_enable = %s)", *warn_trace_enable ? "true" : "false");
++
++	return 0;
++}
+diff --git a/drivers/net/ethernet/hpe/sl/media/nic/sl_media_io.c b/drivers/net/ethernet/hpe/sl/media/nic/sl_media_io.c
+new file mode 100644
+index 000000000000..e031d82b104b
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/media/nic/sl_media_io.c
+@@ -0,0 +1,63 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024,2025 Hewlett Packard Enterprise Development LP */
++
++#include <linux/hpe/sl/sl_ldev.h>
++
++#include "sl_media_ldev.h"
++#include "sl_media_io.h"
++#include "sl_media_jack.h"
++#include "base/sl_media_log.h"
++
++#define LOG_NAME SL_MEDIA_IO_LOG_NAME
++
++int sl_media_io_write8(struct sl_media_jack *media_jack, u8 page, u8 offset, u8 data)
++{
++	struct sl_media_ldev *media_ldev;
++
++	media_ldev = media_jack->media_ldev;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "media_io_write8 0x%x <- 0x%x", offset, data);
++
++	return media_ldev->uc_ops->uc_write8(media_ldev->uc_accessor->uc, page, offset, data);
++}
++
++int sl_media_io_read(struct sl_media_jack *media_jack, u8 page, u8 offset, u8 *data, size_t len)
++{
++	int                   rtn_len;
++	struct sl_media_ldev *media_ldev;
++
++	media_ldev = media_jack->media_ldev;
++
++	rtn_len = media_ldev->uc_ops->uc_read(media_ldev->uc_accessor->uc, (u32)offset, (u32)page, data, len);
++	if (rtn_len < 0) {
++		sl_media_log_err_trace(media_jack, LOG_NAME, "media_io_read failed [%d]", rtn_len);
++		return rtn_len;
++	}
++
++	if (rtn_len != len) {
++		sl_media_log_err_trace(media_jack, LOG_NAME,
++				       "media_io_read length mismatch (expected = %zu, returned = %d)", len, rtn_len);
++		return -EIO;
++	}
++
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "media_io_read (page = 0x%X, offset = 0x%X, rtn_len = %d)", page, offset, rtn_len);
++
++	return 0;
++}
++
++int sl_media_io_read8(struct sl_media_jack *media_jack, u8 page, u8 offset, u8 *data)
++{
++	return sl_media_io_read(media_jack, page, offset, data, 1);
++}
++
++void sl_media_io_led_set(struct sl_media_jack *media_jack, u8 led_pattern)
++{
++	struct sl_media_ldev *media_ldev;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "media_io_led_set (pattern = %u)", led_pattern);
++
++	media_ldev = media_jack->media_ldev;
++
++	media_ldev->uc_ops->uc_led_set(media_ldev->uc_accessor->uc, led_pattern);
++}
+diff --git a/drivers/net/ethernet/hpe/sl/media/nic/sl_media_jack.c b/drivers/net/ethernet/hpe/sl/media/nic/sl_media_jack.c
+new file mode 100644
+index 000000000000..33f1a2a20ab7
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/media/nic/sl_media_jack.c
+@@ -0,0 +1,315 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024,2025 Hewlett Packard Enterprise Development LP */
++
++#include <linux/string.h>
++
++#include <linux/hpe/sl/sl_media.h>
++
++#include "sl_asic.h"
++#include "sl_sysfs.h"
++#include "sl_media_jack.h"
++#include "sl_media_lgrp.h"
++#include "data/sl_media_data_jack.h"
++#include "data/sl_media_data_lgrp.h"
++#include "data/sl_media_data_cable_db_ops.h"
++#include "base/sl_media_log.h"
++#include "base/sl_media_eeprom.h"
++
++#define LOG_NAME SL_MEDIA_JACK_LOG_NAME
++
++#define FLAT_MEM_OFFSET 2
++#define FLAT_MEM_BIT    7
++static int sl_media_data_jack_eeprom_page1_get(struct sl_media_jack *media_jack, u8 *eeprom_page1)
++{
++	sl_media_log_dbg(media_jack, LOG_NAME, "eeprom page1 get");
++
++	if ((media_jack->eeprom_page0[FLAT_MEM_OFFSET] & BIT(FLAT_MEM_BIT)) != 0) {
++		sl_media_log_dbg(media_jack, LOG_NAME, "no page1 in eeprom");
++		return 0;
++	}
++
++	memcpy(media_jack->eeprom_page1, eeprom_page1, SL_MEDIA_EEPROM_PAGE_SIZE);
++
++	return 0;
++}
++
++static int sl_media_jack_cable_attr_set(struct sl_media_jack *media_jack, u8 ldev_num, u8 lgrp_num,
++					struct sl_media_attr *media_attr)
++{
++	int rtn;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "cable attr set");
++
++	/*
++	 * only first element is valid in cable_info since single lgrp on nic
++	 */
++	media_jack->cable_info[0].ldev_num = ldev_num;
++	media_jack->cable_info[0].lgrp_num = lgrp_num;
++
++	rtn = sl_media_data_jack_media_attr_set(media_jack, &media_jack->cable_info[0], media_attr);
++	if (rtn) {
++		sl_media_log_err_trace(media_jack, LOG_NAME, "media attr set failed [%d]", rtn);
++		sl_media_jack_fault_cause_set(media_jack, SL_MEDIA_FAULT_CAUSE_MEDIA_ATTR_SET);
++		return rtn;
++	}
++
++	return 0;
++}
++
++static void sl_media_jack_cable_attr_errors_update(struct sl_media_jack *media_jack, u32 errors)
++{
++	sl_media_log_dbg(media_jack, LOG_NAME, "cable attr errors update");
++
++	/*
++	 * only first element is valid in cable_info since single lgrp on nic
++	 */
++	media_jack->cable_info[0].media_attr.errors |= errors;
++}
++
++static void sl_media_data_jack_cable_attr_send(struct sl_media_jack *media_jack)
++{
++	struct sl_media_lgrp *media_lgrp;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "cable attr send");
++
++	/*
++	 * only first element is valid in cable_info since single lgrp on nic
++	 */
++	media_lgrp = sl_media_data_lgrp_get(media_jack->cable_info[0].ldev_num,
++					    media_jack->cable_info[0].lgrp_num);
++	if (media_lgrp)
++		sl_media_data_jack_cable_if_present_send(media_lgrp);
++}
++
++int sl_media_jack_cable_insert(u8 ldev_num, u8 lgrp_num, u8 jack_num,
++			       u8 *eeprom_page0, u8 *eeprom_page1, u32 flags)
++{
++	int                   rtn;
++	struct sl_media_attr  media_attr;
++	struct sl_media_jack *media_jack;
++
++	media_jack = sl_media_data_jack_get(ldev_num, jack_num);
++	if (!media_jack) {
++		sl_media_log_err(NULL, LOG_NAME, "media_data_jack_get failed");
++		return -EFAULT;
++	}
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "cable insert");
++
++	/* Start clean so nothing from the previous cable is inherited */
++	sl_media_data_jack_cable_state_clr(media_jack);
++
++	sl_media_jack_fault_cause_set(media_jack, SL_MEDIA_FAULT_CAUSE_NONE);
++
++	memset(&media_attr, 0, sizeof(struct sl_media_attr));
++
++	media_attr.magic    = SL_MEDIA_ATTR_MAGIC;
++	media_attr.ver      = SL_MEDIA_ATTR_VER;
++	media_attr.size     = sizeof(struct sl_media_attr);
++	media_attr.errors   = 0;
++	media_attr.info     = 0;
++
++	if (flags & SL_MEDIA_TYPE_BACKPLANE) {
++		media_attr.vendor        = SL_MEDIA_VENDOR_HPE;
++		media_attr.type          = SL_MEDIA_TYPE_BKP;
++		media_attr.info          = SL_MEDIA_INFO_AUTONEG;
++		media_attr.length_cm     = 25;
++		media_attr.hpe_pn        = 60821555;
++		media_attr.furcation     = SL_MEDIA_FURCATION_X1;
++		media_attr.speeds_map    = SL_MEDIA_SPEEDS_SUPPORT_CK_400G |
++					   SL_MEDIA_SPEEDS_SUPPORT_CK_200G |
++					   SL_MEDIA_SPEEDS_SUPPORT_BS_200G |
++					   SL_MEDIA_SPEEDS_SUPPORT_CK_100G |
++					   SL_MEDIA_SPEEDS_SUPPORT_CD_100G |
++					   SL_MEDIA_SPEEDS_SUPPORT_BJ_100G |
++					   SL_MEDIA_SPEEDS_SUPPORT_CD_50G;
++		media_attr.max_speed     = SL_MEDIA_SPEEDS_SUPPORT_CK_400G;
++		media_attr.jack_type     = SL_MEDIA_JACK_TYPE_BACKPLANE;
++		strscpy_pad(media_attr.serial_num_str, "AK20212120", sizeof(media_attr.serial_num_str));
++		strscpy_pad(media_attr.hpe_pn_str, "PK60821-555", sizeof(media_attr.hpe_pn_str));
++		strscpy_pad(media_attr.date_code_str, "08-19-21", sizeof(media_attr.date_code_str));
++		memset(media_attr.fw_ver, 0, sizeof(media_attr.fw_ver));
++	} else {
++		memcpy(media_jack->eeprom_page0, eeprom_page0, SL_MEDIA_EEPROM_PAGE_SIZE);
++
++		sl_media_data_jack_eeprom_page1_get(media_jack, eeprom_page1);
++
++		rtn = sl_media_eeprom_format_get(media_jack, &(media_attr.format));
++		if (rtn) {
++			sl_media_log_warn_trace(media_jack, LOG_NAME, "eeprom format unsupported");
++			memset(&media_attr, 0, sizeof(struct sl_media_attr));
++			media_attr.errors |= SL_MEDIA_ERROR_CABLE_FORMAT_UNSUPPORTED;
++			media_attr.errors |= SL_MEDIA_ERROR_TRYABLE;
++			rtn = sl_media_jack_cable_attr_set(media_jack, ldev_num, lgrp_num, &media_attr);
++			if (rtn)
++				sl_media_log_err_trace(media_jack, LOG_NAME, "cable attr set failed [%d]", rtn);
++			sl_media_data_jack_cable_attr_send(media_jack);
++			return 0;
++		}
++
++		sl_media_eeprom_parse(media_jack, &media_attr);
++
++		if (media_attr.type == SL_MEDIA_TYPE_PEC)
++			media_attr.info |= SL_MEDIA_INFO_AUTONEG;
++
++		rtn = sl_media_data_cable_db_ops_cable_validate(&media_attr, media_jack);
++		if (rtn) {
++			sl_media_log_warn_trace(media_jack, LOG_NAME,
++						"cable validate failed [%d] (vendor = %d %s, type = 0x%X %s, length_cm = %d, speeds = 0x%lX)",
++						rtn, media_attr.vendor, sl_media_vendor_str(media_attr.vendor),
++						media_attr.type, sl_media_type_str(media_attr.type),
++						media_attr.length_cm, media_attr.speeds_map);
++
++			media_jack->is_cable_unsupported = true;
++			media_attr.errors |= SL_MEDIA_ERROR_CABLE_UNSUPPORTED;
++			media_attr.errors |= SL_MEDIA_ERROR_TRYABLE;
++		}
++
++		if (SL_MEDIA_LGRP_MEDIA_TYPE_IS_ACTIVE(media_attr.type) &&
++		    !media_jack->is_cable_unsupported && !media_jack->is_supported_ss200_cable) {
++			if (!sl_media_eeprom_is_fw_version_supported(media_jack, &media_attr)) {
++				sl_media_log_warn_trace(media_jack, LOG_NAME, "eeprom fw version unsupported");
++				media_attr.errors |= SL_MEDIA_ERROR_CABLE_FW_UNSUPPORTED;
++				media_attr.errors |= SL_MEDIA_ERROR_TRYABLE;
++			}
++			/*
++			 * disallow BJ100 speed on active cables
++			 */
++			media_attr.speeds_map &= ~SL_MEDIA_SPEEDS_SUPPORT_BJ_100G;
++		}
++
++		if (media_jack->is_supported_ss200_cable) {
++			media_attr.speeds_map  = 0;
++			media_attr.speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_BS_200G;
++			media_attr.speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_CD_100G;
++			media_attr.speeds_map |= SL_MEDIA_SPEEDS_SUPPORT_CD_50G;
++			media_attr.info       |= SL_MEDIA_INFO_SUPPORTED_SS200_CABLE;
++		}
++
++		media_attr.jack_type = SL_MEDIA_JACK_TYPE_QSFP;
++		media_attr.jack_type_info.qsfp.density = SL_MEDIA_QSFP_DENSITY_SINGLE;
++	}
++
++	rtn = sl_media_jack_cable_attr_set(media_jack, ldev_num, lgrp_num, &media_attr);
++	if (rtn) {
++		sl_media_log_err_trace(media_jack, LOG_NAME, "cable attr set failed [%d]", rtn);
++		return 0;
++	}
++
++	if (media_jack->is_cable_unsupported)
++		flags |= SL_MEDIA_TYPE_UNSUPPORTED;
++	if (media_attr.vendor == SL_MEDIA_VENDOR_MULTILANE)
++		flags |= SL_MEDIA_TYPE_LOOPBACK;
++	rtn = sl_media_data_cable_db_ops_serdes_settings_get(media_jack, media_attr.type, flags);
++	if (rtn) {
++		sl_media_log_err_trace(media_jack, LOG_NAME, "serdes settings get failed [%d]", rtn);
++		sl_media_jack_fault_cause_set(media_jack, SL_MEDIA_FAULT_CAUSE_SERDES_SETTINGS_GET);
++		sl_media_data_jack_cable_attr_send(media_jack);
++		return 0;
++	}
++
++	if (SL_MEDIA_LGRP_MEDIA_TYPE_IS_ACTIVE(media_attr.type)) {
++		rtn = sl_media_data_jack_cable_soft_reset(media_jack);
++		if (rtn) {
++			sl_media_log_err_trace(media_jack, LOG_NAME, "cable soft reset failed [%d]", rtn);
++			sl_media_jack_state_set(media_jack, SL_MEDIA_JACK_CABLE_ERROR);
++			sl_media_jack_cable_attr_errors_update(media_jack, SL_MEDIA_ERROR_CABLE_HEADSHELL_FAULT);
++			sl_media_data_jack_cable_attr_send(media_jack);
++			return rtn;
++		}
++
++		/* must be last in the sequence because it needs time to load firmware */
++		rtn = sl_media_jack_cable_high_power_set(ldev_num, jack_num);
++		if (rtn) {
++			sl_media_log_err_trace(media_jack, LOG_NAME, "cable high power set failed [%d]", rtn);
++			sl_media_jack_state_set(media_jack, SL_MEDIA_JACK_CABLE_ERROR);
++			sl_media_jack_cable_attr_errors_update(media_jack, SL_MEDIA_ERROR_CABLE_HEADSHELL_FAULT);
++			sl_media_data_jack_cable_attr_send(media_jack);
++			return 0;
++		}
++	}
++
++	rtn = sl_sysfs_media_speeds_create(ldev_num, lgrp_num);
++	if (rtn) {
++		sl_media_log_err_trace(media_jack, LOG_NAME, "media speeds create failed [%d]", rtn);
++		sl_media_data_jack_cable_attr_send(media_jack);
++		return rtn;
++	}
++
++	if (SL_MEDIA_LGRP_MEDIA_TYPE_IS_ACTIVE(media_attr.type)) {
++		if (sl_media_data_jack_cable_hw_shift_state_get(media_jack) ==
++		    SL_MEDIA_JACK_CABLE_HW_SHIFT_STATE_DOWNSHIFTED)
++			sl_media_jack_cable_shift_state_set(media_jack, SL_MEDIA_JACK_CABLE_SHIFT_STATE_DOWNSHIFTED);
++		else if (sl_media_data_jack_cable_hw_shift_state_get(media_jack) ==
++			 SL_MEDIA_JACK_CABLE_HW_SHIFT_STATE_UPSHIFTED)
++			sl_media_jack_cable_shift_state_set(media_jack, SL_MEDIA_JACK_CABLE_SHIFT_STATE_UPSHIFTED);
++		else
++			sl_media_jack_cable_shift_state_set(media_jack, SL_MEDIA_JACK_CABLE_SHIFT_STATE_NOTSHIFTED);
++	}
++
++	sl_media_jack_state_set(media_jack, SL_MEDIA_JACK_CABLE_ONLINE);
++
++	sl_media_data_jack_cable_attr_send(media_jack);
++
++	return 0;
++}
++
++int sl_media_jack_cable_remove(u8 ldev_num, u8 lgrp_num, u8 jack_num)
++{
++	struct sl_media_jack *media_jack;
++
++	media_jack = sl_media_data_jack_get(ldev_num, jack_num);
++	if (!media_jack) {
++		sl_media_log_err(NULL, LOG_NAME, "media_data_jack_get failed");
++		return -EFAULT;
++	}
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "cable remove");
++
++	sl_sysfs_media_speeds_delete(ldev_num, lgrp_num);
++
++	/*
++	 * only first element is valid in cable_info since single lgrp on nic
++	 */
++	sl_media_data_jack_media_attr_clr(media_jack, &media_jack->cable_info[0]);
++	sl_media_data_cable_serdes_settings_clr(media_jack);
++	sl_media_data_jack_eeprom_clr(media_jack);
++	sl_media_data_jack_cable_state_clr(media_jack);
++
++	sl_media_jack_state_set(media_jack, SL_MEDIA_JACK_CABLE_REMOVED);
++	sl_media_jack_fault_cause_set(media_jack, SL_MEDIA_FAULT_CAUSE_NONE);
++
++	return 0;
++}
++
++int sl_media_jack_cable_temp_hw_check(struct sl_media_jack *media_jack)
++{
++	return SL_MEDIA_JACK_TEMP_STATE_COLD;
++}
++
++void sl_media_jack_cable_hot_notif_send(struct sl_media_jack *media_jack)
++{
++}
++
++void sl_media_jack_cable_warm_notif_send(struct sl_media_jack *media_jack)
++{
++}
++
++void sl_media_jack_cable_cold_notif_send(struct sl_media_jack *media_jack)
++{
++}
++
++void sl_media_jack_cable_hot_notif_sent_set(struct sl_media_jack *media_jack,
++					    struct sl_media_lgrp_cable_info *cable_info, bool value)
++{
++}
++
++void sl_media_jack_cable_warm_notif_sent_set(struct sl_media_jack *media_jack,
++					     struct sl_media_lgrp_cable_info *cable_info, bool value)
++{
++}
++
++void sl_media_jack_cable_cold_notif_sent_set(struct sl_media_jack *media_jack,
++					     struct sl_media_lgrp_cable_info *cable_info, bool value)
++{
++}
+diff --git a/drivers/net/ethernet/hpe/sl/media/nic/sl_media_ldev.c b/drivers/net/ethernet/hpe/sl/media/nic/sl_media_ldev.c
+new file mode 100644
+index 000000000000..6902223eb76a
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/media/nic/sl_media_ldev.c
+@@ -0,0 +1,13 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2025 Hewlett Packard Enterprise Development LP */
++
++#include <linux/types.h>
++
++#include "sl_media_ldev.h"
++#include "data/sl_media_data_ldev.h"
++
++int sl_media_ldev_uc_ops_set(u8 ldev_num, struct sl_uc_ops *uc_ops,
++			     struct sl_uc_accessor *uc_accessor)
++{
++	return sl_media_data_ldev_uc_ops_set(ldev_num, uc_ops, uc_accessor);
++}
+diff --git a/drivers/net/ethernet/hpe/sl/media/sl_media_jack.c b/drivers/net/ethernet/hpe/sl/media/sl_media_jack.c
+new file mode 100644
+index 000000000000..14be1d19c097
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/media/sl_media_jack.c
+@@ -0,0 +1,1067 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/types.h>
++#include <linux/delay.h>
++
++#include "sl_asic.h"
++#include "sl_core_link.h"
++#include "sl_media_jack.h"
++#include "sl_media_lgrp.h"
++#include "sl_media_io.h"
++#include "data/sl_media_data_jack.h"
++#include "base/sl_media_log.h"
++
++#define LOG_NAME SL_MEDIA_JACK_LOG_NAME
++
++#define SL_MEDIA_JACK_SIGNAL_CACHE_LIFETIME_MS 1200
++#define SL_MEDIA_JACK_SIGNAL_READ_TIMEOUT_MS   (2 * SL_MEDIA_JACK_SIGNAL_CACHE_LIFETIME_MS)
++#define SL_MEDIA_JACK_MAX_NUM_LANE_DATA_READS  4
++#define SL_MEDIA_JACK_LANE_DATA_POLL_TIME_MS   (SL_MEDIA_JACK_SIGNAL_CACHE_LIFETIME_MS / \
++						SL_MEDIA_JACK_MAX_NUM_LANE_DATA_READS)
++
++#define SWAP_BYTE_NIBBLE(_x) ({                    \
++	typeof(_x) __x = (_x);                     \
++	((__x & 0x0F) << 4) | ((__x & 0xF0) >> 4); \
++})
++
++#define MEDIA_LANE_DP_STATE_GET(_lane_data, _lane_num) ({ \
++	typeof(_lane_data) __lane_data = (_lane_data);    \
++	typeof(_lane_num)  __lane_num  = (_lane_num);     \
++	(__lane_data)->dp_states[__lane_num / 2] >>       \
++		(4 * (__lane_num & 1)) & 0x0F;            \
++})
++
++#define SL_MEDIA_JACK_SIGNAL_INFO_ALLOWED(_dp_state) ({         \
++	typeof(_dp_state) __dp_state = (_dp_state);             \
++	((__dp_state) == SL_MEDIA_JACK_DP_STATE_ACTIVATED)   || \
++	((__dp_state) == SL_MEDIA_JACK_DP_STATE_TX_TURN_ON)  || \
++	((__dp_state) == SL_MEDIA_JACK_DP_STATE_TX_TURN_OFF) || \
++	((__dp_state) == SL_MEDIA_JACK_DP_STATE_INITIALIZED);   \
++})
++
++enum sl_media_cable_shift {
++	SL_MEDIA_JACK_CABLE_DOWNSHIFT,
++	SL_MEDIA_JACK_CABLE_UPSHIFT,
++};
++
++int sl_media_jack_new(struct sl_media_ldev *media_ldev, u8 jack_num)
++{
++	return sl_media_data_jack_new(media_ldev, jack_num);
++}
++
++void sl_media_jack_del(u8 ldev_num, u8 jack_num)
++{
++	sl_media_data_jack_del(ldev_num, jack_num);
++}
++
++struct sl_media_jack *sl_media_jack_get(u8 ldev_num, u8 jack_num)
++{
++	return sl_media_data_jack_get(ldev_num, jack_num);
++}
++
++void sl_media_jack_state_set(struct sl_media_jack *media_jack, u8 jack_state)
++{
++	spin_lock(&media_jack->data_lock);
++	media_jack->state = jack_state;
++	spin_unlock(&media_jack->data_lock);
++
++	sl_media_data_jack_led_set(media_jack);
++}
++
++int sl_media_jack_state_get(struct sl_media_jack *media_jack, u8 *state)
++{
++	spin_lock(&media_jack->data_lock);
++	*state = media_jack->state;
++	spin_unlock(&media_jack->data_lock);
++
++	return 0;
++}
++
++int sl_media_jack_cable_end_get(struct sl_media_jack *media_jack, u8 *cable_end)
++{
++	spin_lock(&media_jack->data_lock);
++	*cable_end = media_jack->cable_end;
++	spin_unlock(&media_jack->data_lock);
++
++	return 0;
++}
++
++bool sl_media_jack_is_high_powered(struct sl_media_jack *media_jack)
++{
++	bool is_high_powered;
++
++	spin_lock(&media_jack->data_lock);
++	is_high_powered = media_jack->is_high_powered;
++	spin_unlock(&media_jack->data_lock);
++
++	return is_high_powered;
++}
++
++void sl_media_jack_cable_shift_state_set(struct sl_media_jack *media_jack, u8 state)
++{
++	spin_lock(&media_jack->data_lock);
++	media_jack->cable_shift_state = state;
++	spin_unlock(&media_jack->data_lock);
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "cable shift state set = %u", media_jack->cable_shift_state);
++}
++
++int sl_media_jack_cable_shift_state_get(struct sl_media_jack *media_jack, u8 *cable_shift_state)
++{
++	spin_lock(&media_jack->data_lock);
++	*cable_shift_state = media_jack->cable_shift_state;
++	spin_unlock(&media_jack->data_lock);
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "cable shift state get = %u", *cable_shift_state);
++
++	return 0;
++}
++
++bool sl_media_jack_is_cable_online(struct sl_media_jack *media_jack)
++{
++	u8 state;
++
++	spin_lock(&media_jack->data_lock);
++	state = media_jack->state;
++	spin_unlock(&media_jack->data_lock);
++
++	return (state == SL_MEDIA_JACK_CABLE_ONLINE);
++}
++
++bool sl_media_jack_is_cable_format_unsupported(struct sl_media_jack *media_jack)
++{
++	bool is_format_unsupported;
++
++	spin_lock(&media_jack->data_lock);
++	is_format_unsupported = media_jack->is_cable_format_unsupported;
++	spin_unlock(&media_jack->data_lock);
++
++	return is_format_unsupported;
++}
++
++int sl_media_jack_active_cable_200g_host_interface_get(struct sl_media_jack *media_jack, u8 *host_interface_200_gaui)
++{
++	spin_lock(&media_jack->data_lock);
++	*host_interface_200_gaui = media_jack->host_interface_200_gaui;
++	spin_unlock(&media_jack->data_lock);
++
++	return 0;
++}
++
++int sl_media_jack_active_cable_200g_appsel_num_get(struct sl_media_jack *media_jack, u8 *appsel_num_200_gaui)
++{
++	spin_lock(&media_jack->data_lock);
++	*appsel_num_200_gaui = media_jack->appsel_num_200_gaui;
++	spin_unlock(&media_jack->data_lock);
++
++	return 0;
++}
++
++int sl_media_jack_active_cable_200g_lane_count_get(struct sl_media_jack *media_jack, u8 *lane_count_200_gaui)
++{
++	spin_lock(&media_jack->data_lock);
++	*lane_count_200_gaui = media_jack->lane_count_200_gaui;
++	spin_unlock(&media_jack->data_lock);
++
++	return 0;
++}
++
++int sl_media_jack_active_cable_400g_host_interface_get(struct sl_media_jack *media_jack, u8 *host_interface_400_gaui)
++{
++	spin_lock(&media_jack->data_lock);
++	*host_interface_400_gaui = media_jack->host_interface_400_gaui;
++	spin_unlock(&media_jack->data_lock);
++
++	return 0;
++}
++
++int sl_media_jack_active_cable_400g_appsel_num_get(struct sl_media_jack *media_jack, u8 *appsel_num_400_gaui)
++{
++	spin_lock(&media_jack->data_lock);
++	*appsel_num_400_gaui = media_jack->appsel_num_400_gaui;
++	spin_unlock(&media_jack->data_lock);
++
++	return 0;
++}
++
++int sl_media_jack_active_cable_400g_lane_count_get(struct sl_media_jack *media_jack, u8 *lane_count_400_gaui)
++{
++	spin_lock(&media_jack->data_lock);
++	*lane_count_400_gaui = media_jack->lane_count_400_gaui;
++	spin_unlock(&media_jack->data_lock);
++
++	return 0;
++}
++
++#define SL_MEDIA_HIGH_POWER_WAIT_TIME 10000
++int sl_media_jack_cable_high_power_set(u8 ldev_num, u8 jack_num)
++{
++	int                   rtn;
++	struct sl_media_jack *media_jack;
++
++	media_jack = sl_media_jack_get(ldev_num, jack_num);
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "high power set");
++
++	rtn = sl_media_data_jack_cable_high_power_set(media_jack);
++	if (rtn) {
++		sl_media_jack_fault_cause_set(media_jack, SL_MEDIA_FAULT_CAUSE_POWER_SET);
++		sl_media_log_err_trace(media_jack, LOG_NAME, "high power set failed [%d]", rtn);
++		return -EIO;
++	}
++
++	media_jack->cable_high_power_wait_time_end = jiffies +
++		msecs_to_jiffies(SL_MEDIA_HIGH_POWER_WAIT_TIME);
++
++	return 0;
++}
++
++static int sl_media_jack_cable_shift_checks(struct sl_media_lgrp *media_lgrp, u8 shift_state)
++{
++	u8 i;
++
++	sl_media_log_dbg(media_lgrp->media_jack, LOG_NAME, "cable shift checks");
++
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	if (media_lgrp->media_jack->state != SL_MEDIA_JACK_CABLE_ONLINE) {
++		media_lgrp->media_jack->cable_shift_state = SL_MEDIA_JACK_CABLE_SHIFT_STATE_FAILED_NO_CABLE;
++		spin_unlock(&media_lgrp->media_jack->data_lock);
++		sl_media_log_dbg(media_lgrp->media_jack, LOG_NAME, "shift check failed - no online cable");
++		return -EFAULT;
++	}
++
++	for (i = 0; i < SL_MEDIA_MAX_LGRPS_PER_JACK; ++i) {
++		if (media_lgrp->media_jack->cable_info[i].real_cable_status == CABLE_MEDIA_ATTR_STASHED) {
++			media_lgrp->media_jack->cable_shift_state = SL_MEDIA_JACK_CABLE_SHIFT_STATE_FAILED_FAKE_CABLE;
++			spin_unlock(&media_lgrp->media_jack->data_lock);
++			sl_media_log_dbg(media_lgrp->media_jack, LOG_NAME,
++					 "shift check failed - fake cable (lgrp_num = %u)",
++					 media_lgrp->media_jack->cable_info[i].lgrp_num);
++			return -EFAULT;
++		}
++	}
++	if (!(media_lgrp->media_jack->cable_info[0].media_attr.speeds_map &
++			(SL_MEDIA_SPEEDS_SUPPORT_CK_400G | SL_MEDIA_SPEEDS_SUPPORT_BS_200G))) {
++		media_lgrp->media_jack->cable_shift_state = SL_MEDIA_JACK_CABLE_SHIFT_STATE_FAILED_NO_SUPPORT;
++		spin_unlock(&media_lgrp->media_jack->data_lock);
++		sl_media_log_dbg(media_lgrp->media_jack, LOG_NAME,
++				 "shift check failed - no shift support in cable");
++		return -EINVAL;
++	}
++	if (shift_state == SL_MEDIA_JACK_CABLE_DOWNSHIFT) {
++		if ((media_lgrp->media_jack->host_interface_200_gaui != SL_MEDIA_SS1_HOST_INTERFACE_200GAUI_4_C2M) ||
++		    (media_lgrp->media_jack->lane_count_200_gaui != 0x44) ||
++			(media_lgrp->media_jack->host_interface_400_gaui == 0)) {
++			media_lgrp->media_jack->cable_shift_state = SL_MEDIA_JACK_CABLE_SHIFT_STATE_FAILED_CHECK;
++			spin_unlock(&media_lgrp->media_jack->data_lock);
++			sl_media_log_dbg(media_lgrp->media_jack, LOG_NAME,
++					 "downshift check failed - invalid host interface and/or lane count");
++			return -EINVAL;
++		}
++	} else {
++		if (((media_lgrp->media_jack->host_interface_400_gaui != SL_MEDIA_SS2_HOST_INTERFACE_400GAUI_4_S_C2M) &&
++		     (media_lgrp->media_jack->host_interface_400_gaui != SL_MEDIA_SS1_HOST_INTERFACE_400GAUI_4_L_C2M)) ||
++			(media_lgrp->media_jack->lane_count_400_gaui != 0x44)) {
++			media_lgrp->media_jack->cable_shift_state = SL_MEDIA_JACK_CABLE_SHIFT_STATE_FAILED_CHECK;
++			spin_unlock(&media_lgrp->media_jack->data_lock);
++			sl_media_log_dbg(media_lgrp->media_jack, LOG_NAME,
++					 "upshift check failed - invalid host interface and/or lane count");
++			return -EINVAL;
++		}
++	}
++
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++
++	return 0;
++}
++
++int sl_media_jack_cable_downshift(u8 ldev_num, u8 lgrp_num, u8 link_num)
++{
++	int                   rtn;
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	struct sl_media_attr  media_attr;
++
++	media_lgrp = sl_media_lgrp_get(ldev_num, lgrp_num);
++	core_link = sl_core_link_get(ldev_num, lgrp_num, link_num);
++	if (!core_link)
++		return -ENODEV;
++
++	sl_media_log_dbg(media_lgrp->media_jack, LOG_NAME, "cable downshift");
++
++	if (media_lgrp->media_jack->is_cable_unsupported) {
++		sl_media_log_dbg(media_lgrp->media_jack, LOG_NAME, "cable unsupported - shift not required");
++		return 0;
++	}
++
++	if (media_lgrp->media_jack->is_supported_ss200_cable) {
++		sl_media_log_dbg(media_lgrp->media_jack, LOG_NAME, "ss200 cable - shift not required");
++		return 0;
++	}
++
++	if (!sl_media_lgrp_media_type_is_active(media_lgrp->media_ldev->num, media_lgrp->num)) {
++		sl_media_log_dbg(media_lgrp->media_jack, LOG_NAME, "non-active cable - shift not required");
++		return 0;
++	}
++
++	if (sl_media_data_jack_cable_hw_shift_state_get(media_lgrp->media_jack) == SL_MEDIA_JACK_CABLE_HW_SHIFT_STATE_DOWNSHIFTED) {
++		sl_media_jack_cable_shift_state_set(media_lgrp->media_jack, SL_MEDIA_JACK_CABLE_SHIFT_STATE_DOWNSHIFTED);
++		sl_media_log_dbg(media_lgrp->media_jack, LOG_NAME, "already downshifted");
++		return 0;
++	}
++
++	rtn = sl_media_jack_cable_shift_checks(media_lgrp, SL_MEDIA_JACK_CABLE_DOWNSHIFT);
++	if (rtn) {
++		sl_media_log_err_trace(media_lgrp->media_jack, LOG_NAME, "cable shift checks failed [%d]", rtn);
++		return 0;
++	}
++
++	if (!sl_core_link_policy_is_ignore_media_errors_set(core_link)) {
++		sl_media_lgrp_media_attr_get(ldev_num, lgrp_num, &media_attr);
++		if (media_attr.errors & SL_MEDIA_ERROR_CABLE_FW_UNSUPPORTED) {
++			sl_media_log_err_trace(media_lgrp->media_jack, LOG_NAME,
++					       "can't downshift - cable firmware unsupported");
++			return 0;
++		}
++	}
++
++	rtn = sl_media_data_jack_cable_downshift(media_lgrp->media_jack);
++	if (rtn) {
++		sl_media_jack_cable_shift_state_set(media_lgrp->media_jack,
++						    SL_MEDIA_JACK_CABLE_SHIFT_STATE_FAILED_DOWNSHIFT);
++		sl_media_log_err_trace(media_lgrp->media_jack, LOG_NAME, "data jack cable downshift failed [%d]", rtn);
++		return rtn;
++	}
++
++	sl_media_jack_cable_shift_state_set(media_lgrp->media_jack, SL_MEDIA_JACK_CABLE_SHIFT_STATE_DOWNSHIFTED);
++
++	return 0;
++}
++
++int sl_media_jack_cable_upshift(u8 ldev_num, u8 lgrp_num, u8 link_num)
++{
++	int                   rtn;
++	struct sl_media_lgrp *media_lgrp;
++	struct sl_core_link *core_link __free(sl_core_link_put) = NULL;
++	struct sl_media_attr  media_attr;
++
++	media_lgrp = sl_media_lgrp_get(ldev_num, lgrp_num);
++	core_link = sl_core_link_get(ldev_num, lgrp_num, link_num);
++	if (!core_link)
++		return -ENODEV;
++
++	sl_media_log_dbg(media_lgrp->media_jack, LOG_NAME, "cable upshift");
++
++	if (media_lgrp->media_jack->is_cable_unsupported) {
++		sl_media_log_dbg(media_lgrp->media_jack, LOG_NAME, "cable unsupported - shift not required");
++		return 0;
++	}
++
++	if (media_lgrp->media_jack->is_supported_ss200_cable) {
++		sl_media_log_dbg(media_lgrp->media_jack, LOG_NAME, "ss200 cable - shift not required");
++		return 0;
++	}
++
++	if (!sl_media_lgrp_media_type_is_active(media_lgrp->media_ldev->num, media_lgrp->num)) {
++		sl_media_log_dbg(media_lgrp->media_jack, LOG_NAME, "non-active cable - shift not required");
++		return 0;
++	}
++
++	if (sl_media_data_jack_cable_hw_shift_state_get(media_lgrp->media_jack) == SL_MEDIA_JACK_CABLE_HW_SHIFT_STATE_UPSHIFTED) {
++		sl_media_jack_cable_shift_state_set(media_lgrp->media_jack, SL_MEDIA_JACK_CABLE_SHIFT_STATE_UPSHIFTED);
++		sl_media_log_dbg(media_lgrp->media_jack, LOG_NAME, "already upshifted");
++		return 0;
++	}
++
++	rtn = sl_media_jack_cable_shift_checks(media_lgrp, SL_MEDIA_JACK_CABLE_UPSHIFT);
++	if (rtn) {
++		sl_media_log_err_trace(media_lgrp->media_jack, LOG_NAME, "cable shift checks failed [%d]", rtn);
++		return 0;
++	}
++
++	if (!sl_core_link_policy_is_ignore_media_errors_set(core_link)) {
++		sl_media_lgrp_media_attr_get(ldev_num, lgrp_num, &media_attr);
++		if (media_attr.errors & SL_MEDIA_ERROR_CABLE_FW_UNSUPPORTED) {
++			sl_media_log_err_trace(media_lgrp->media_jack, LOG_NAME,
++					       "can't upshift - cable firmware unsupported");
++			return 0;
++		}
++	}
++
++	rtn = sl_media_data_jack_cable_upshift(media_lgrp->media_jack);
++	if (rtn) {
++		sl_media_jack_cable_shift_state_set(media_lgrp->media_jack,
++						    SL_MEDIA_JACK_CABLE_SHIFT_STATE_FAILED_UPSHIFT);
++		sl_media_log_err_trace(media_lgrp->media_jack, LOG_NAME, "data jack cable upshift failed [%d]", rtn);
++		return rtn;
++	}
++
++	sl_media_jack_cable_shift_state_set(media_lgrp->media_jack, SL_MEDIA_JACK_CABLE_SHIFT_STATE_UPSHIFTED);
++
++	return 0;
++}
++
++void sl_media_jack_fault_cause_set(struct sl_media_jack *media_jack, u32 fault_cause)
++{
++	spin_lock(&media_jack->data_lock);
++	media_jack->fault_cause = fault_cause;
++	media_jack->fault_time  = ktime_get_real_seconds();
++	spin_unlock(&media_jack->data_lock);
++
++	if (fault_cause == SL_MEDIA_FAULT_CAUSE_NONE)
++		return;
++
++	if (fault_cause == SL_MEDIA_FAULT_CAUSE_HOT)
++		sl_media_data_jack_led_set(media_jack);
++
++	sl_ctrl_media_cause_counter_inc(media_jack, fault_cause);
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "fault cause set (cause = %u %s)", fault_cause,
++			 sl_media_fault_cause_str(fault_cause));
++}
++
++int sl_media_jack_fault_cause_get(struct sl_media_jack *media_jack, u32 *fault_cause,
++				  time64_t *fault_time)
++{
++	spin_lock(&media_jack->data_lock);
++	*fault_cause = media_jack->fault_cause;
++	*fault_time  = media_jack->fault_time;
++	spin_unlock(&media_jack->data_lock);
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "cable fault cause get (cause = %u %s)", *fault_cause,
++			 sl_media_fault_cause_str(*fault_cause));
++
++	return 0;
++}
++
++const char *sl_media_fault_cause_str(u32 fault_cause)
++{
++	switch (fault_cause) {
++	case SL_MEDIA_FAULT_CAUSE_EEPROM_FORMAT_UNSUPPORTED:
++		return "eeprom-format-unsupported";
++	case SL_MEDIA_FAULT_CAUSE_EEPROM_VENDOR_UNSUPPORTED:
++		return "eeprom-vendor-unsupported";
++	case SL_MEDIA_FAULT_CAUSE_EEPROM_JACK_IO:
++		return "eeprom-jack-io";
++	case SL_MEDIA_FAULT_CAUSE_ONLINE_STATUS_GET:
++		return "online-status-get";
++	case SL_MEDIA_FAULT_CAUSE_ONLINE_TIMEDOUT:
++		return "online-timedout";
++	case SL_MEDIA_FAULT_CAUSE_ONLINE_JACK_IO:
++		return "online-jack-io";
++	case SL_MEDIA_FAULT_CAUSE_ONLINE_JACK_GET:
++		return "online-jack-get";
++	case SL_MEDIA_FAULT_CAUSE_SERDES_SETTINGS_GET:
++		return "serdes-settings-get";
++	case SL_MEDIA_FAULT_CAUSE_SCAN_STATUS_GET:
++		return "scan-status-get";
++	case SL_MEDIA_FAULT_CAUSE_SCAN_HDL_GET:
++		return "scan-hdl-get";
++	case SL_MEDIA_FAULT_CAUSE_SCAN_JACK_GET:
++		return "scan-jack-get";
++	case SL_MEDIA_FAULT_CAUSE_MEDIA_ATTR_SET:
++		return "media-attr-set";
++	case SL_MEDIA_FAULT_CAUSE_INTR_EVENT_JACK_IO:
++		return "intr-event-jack-io";
++	case SL_MEDIA_FAULT_CAUSE_POWER_SET:
++		return "power-set";
++	case SL_MEDIA_FAULT_CAUSE_SHIFT_DOWN_JACK_IO:
++		return "shift-down-jack-io";
++	case SL_MEDIA_FAULT_CAUSE_SHIFT_DOWN_JACK_IO_LOW_POWER_SET:
++		return "shift-down-jack-io-low-power-set";
++	case SL_MEDIA_FAULT_CAUSE_SHIFT_DOWN_JACK_IO_HIGH_POWER_SET:
++		return "shift-down-jack-io-high-power-set";
++	case SL_MEDIA_FAULT_CAUSE_SHIFT_UP_JACK_IO:
++		return "shift-up-jack-io";
++	case SL_MEDIA_FAULT_CAUSE_SHIFT_UP_JACK_IO_LOW_POWER_SET:
++		return "shift-up-jack-io-low-power-set";
++	case SL_MEDIA_FAULT_CAUSE_SHIFT_UP_JACK_IO_HIGH_POWER_SET:
++		return "shift-up-jack-io-high-power-set";
++	case SL_MEDIA_FAULT_CAUSE_SHIFT_STATE_JACK_IO:
++		return "shift-state-jack-io";
++	case SL_MEDIA_FAULT_CAUSE_OFFLINE:
++		return "offline";
++	case SL_MEDIA_FAULT_CAUSE_HOT:
++		return "hot";
++	case SL_MEDIA_FAULT_CAUSE_WARM:
++		return "warm";
++	default:
++		return "unknown";
++	}
++}
++
++const char *sl_media_temp_state_str(u8 temperature_state)
++{
++	switch (temperature_state) {
++	case SL_MEDIA_JACK_TEMP_STATE_COLD:
++		return "cold";
++	case SL_MEDIA_JACK_TEMP_STATE_WARM:
++		return "warm";
++	case SL_MEDIA_JACK_TEMP_STATE_HOT:
++		return "hot";
++	default:
++		return "unknown";
++	}
++}
++
++int sl_media_jack_cable_temp_state_get(struct sl_media_jack *media_jack, u8 *temperature_state)
++{
++	return sl_media_data_jack_cable_temp_state_get(media_jack, temperature_state);
++}
++
++int sl_media_jack_cable_temp_prev_state_get(struct sl_media_jack *media_jack, u8 *temperature_prev_state)
++{
++	return sl_media_data_jack_cable_temp_prev_state_get(media_jack, temperature_prev_state);
++}
++
++int sl_media_jack_cable_temp_get(u8 ldev_num, u8 lgrp_num, u8 *temp)
++{
++	struct sl_media_lgrp *group = sl_media_lgrp_get(ldev_num, lgrp_num);
++
++	if (!group || !group->media_jack)
++		return -EBADRQC;
++	return sl_media_data_jack_cable_temp_get(group->media_jack, temp);
++}
++
++int sl_media_jack_cable_temp_warn_limit_get(u8 ldev_num, u8 lgrp_num, u8 *temp_warn_limit_c)
++{
++	struct sl_media_lgrp *group = sl_media_lgrp_get(ldev_num, lgrp_num);
++
++	if (!group || !group->media_jack)
++		return -EBADRQC;
++	return sl_media_data_jack_cable_temp_warn_limit_get(group->media_jack,
++							 temp_warn_limit_c);
++}
++
++int sl_media_jack_cable_temp_down_limit_get(u8 ldev_num, u8 lgrp_num, u8 *temp_down_limit_c)
++{
++	struct sl_media_lgrp *group = sl_media_lgrp_get(ldev_num, lgrp_num);
++
++	if (!group || !group->media_jack)
++		return -EBADRQC;
++	return sl_media_data_jack_cable_temp_down_limit_get(group->media_jack,
++							 temp_down_limit_c);
++}
++
++int sl_media_jack_cable_low_power_set(struct sl_media_jack *media_jack)
++{
++	return sl_media_data_jack_cable_low_power_set(media_jack);
++}
++
++void sl_media_jack_led_set(u8 ldev_num, u8 lgrp_num)
++{
++	struct sl_media_lgrp *media_lgrp;
++
++	media_lgrp = sl_media_lgrp_get(ldev_num, lgrp_num);
++
++	sl_media_log_dbg(media_lgrp->media_jack, LOG_NAME, "led set");
++
++	sl_media_data_jack_led_set(media_lgrp->media_jack);
++}
++
++static const char *sl_media_jack_lane_dp_state_str(u8 dp_state)
++{
++	switch (dp_state) {
++	case SL_MEDIA_JACK_DP_STATE_DEACTIVATED:
++		return "dp-deactivated";
++	case SL_MEDIA_JACK_DP_STATE_INIT:
++		return "dp-init";
++	case SL_MEDIA_JACK_DP_STATE_DEINIT:
++		return "dp-deinit";
++	case SL_MEDIA_JACK_DP_STATE_ACTIVATED:
++		return "dp-activated";
++	case SL_MEDIA_JACK_DP_STATE_TX_TURN_ON:
++		return "dp-tx-turn-on";
++	case SL_MEDIA_JACK_DP_STATE_TX_TURN_OFF:
++		return "dp-tx-turn-off";
++	case SL_MEDIA_JACK_DP_STATE_INITIALIZED:
++		return "dp-initialized";
++	default:
++		return "unknown";
++	}
++}
++
++/* Swap the lanes in the lane data structure. See sl_core_lgrp_media_lane_data_swap
++ * for more details.
++ */
++static void sl_media_jack_lane_data_swap(struct sl_media_jack_lane_data *lane_data)
++{
++	u8 dp_states;
++
++	lane_data->signal.rx.los_map = SWAP_BYTE_NIBBLE(lane_data->signal.rx.los_map);
++	lane_data->signal.tx.los_map = SWAP_BYTE_NIBBLE(lane_data->signal.tx.los_map);
++	lane_data->signal.rx.lol_map = SWAP_BYTE_NIBBLE(lane_data->signal.rx.lol_map);
++	lane_data->signal.tx.lol_map = SWAP_BYTE_NIBBLE(lane_data->signal.tx.lol_map);
++	lane_data->dp_states_changed = SWAP_BYTE_NIBBLE(lane_data->dp_states_changed);
++
++	/* Swap lanes 0 & 1 for 4 & 5 and visa versa */
++	dp_states = lane_data->dp_states[2];
++	lane_data->dp_states[2] = lane_data->dp_states[0];
++	lane_data->dp_states[0] = dp_states;
++
++	/* Swap lanes 2 & 3 for 6 & 7 and visa versa */
++	dp_states = lane_data->dp_states[3];
++	lane_data->dp_states[3] = lane_data->dp_states[1];
++	lane_data->dp_states[1] = dp_states;
++}
++
++#define SL_MEDIA_JACK_DP_STATE_OFFSET    128
++#define SL_MEDIA_JACK_TX_LOS_OFFSET      136
++#define SL_MEDIA_JACK_RX_LOS_OFFSET      147
++#define SL_MEDIA_JACK_MAX_COHERENT_BYTES 8
++static int sl_media_jack_lane_data_read(u8 ldev_num, u8 lgrp_num, struct sl_media_jack_lane_data *lane_data)
++{
++	int                             rtn;
++	u8                              read_bytes[SL_MEDIA_JACK_MAX_COHERENT_BYTES];
++	bool                            swap;
++	struct sl_media_jack_lane_data  tmp_lane_data;
++	struct sl_media_jack           *media_jack;
++
++	media_jack = sl_media_lgrp_get(ldev_num, lgrp_num)->media_jack;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "media_io_read_lane_data (ldev_num = %u, lgrp_num = %u)",
++			 ldev_num, lgrp_num);
++
++	rtn = sl_media_io_read(media_jack, 0x11, SL_MEDIA_JACK_TX_LOS_OFFSET, (u8 *)&tmp_lane_data.signal.tx, 2);
++	if (rtn) {
++		sl_media_log_err(media_jack, LOG_NAME, "media_io_read_data failed [%d]", rtn);
++		return -EIO;
++	}
++
++	rtn = sl_media_io_read(media_jack, 0x11, SL_MEDIA_JACK_RX_LOS_OFFSET, (u8 *)&tmp_lane_data.signal.rx, 2);
++	if (rtn) {
++		sl_media_log_err(media_jack, LOG_NAME, "media_io_read_data failed [%d]", rtn);
++		return -EIO;
++	}
++
++	rtn = sl_media_io_read(media_jack, 0x11, SL_MEDIA_JACK_DP_STATE_OFFSET, read_bytes,
++			       SL_MEDIA_JACK_MAX_COHERENT_BYTES);
++	if (rtn) {
++		sl_media_log_err(media_jack, LOG_NAME, "media_io_read_data failed [%d]", rtn);
++		return -EIO;
++	}
++
++	memcpy(tmp_lane_data.dp_states, read_bytes, 4);
++	tmp_lane_data.dp_states_changed = read_bytes[6];
++
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "lane data read (dp_states_changed = 0x%X)", tmp_lane_data.dp_states_changed);
++
++	swap = sl_core_lgrp_media_lane_data_swap(ldev_num, lgrp_num);
++	if (swap)
++		sl_media_jack_lane_data_swap(&tmp_lane_data);
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "lane data swap = %s", swap ? "yes" : "no");
++
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "lane data read map (rx_lol = 0x%X, tx_lol = 0x%X, rx_los = 0x%X, tx_los = 0x%X)",
++			 tmp_lane_data.signal.rx.lol_map, tmp_lane_data.signal.tx.lol_map,
++			 tmp_lane_data.signal.rx.los_map, tmp_lane_data.signal.tx.los_map);
++
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "lanes dp_state (0 = %s, 1 = %s, 2 = %s, 3 = %s, 4 = %s, 5 = %s, 6 = %s, 7 = %s)",
++			 sl_media_jack_lane_dp_state_str(MEDIA_LANE_DP_STATE_GET(&tmp_lane_data, 0)),
++			 sl_media_jack_lane_dp_state_str(MEDIA_LANE_DP_STATE_GET(&tmp_lane_data, 1)),
++			 sl_media_jack_lane_dp_state_str(MEDIA_LANE_DP_STATE_GET(&tmp_lane_data, 2)),
++			 sl_media_jack_lane_dp_state_str(MEDIA_LANE_DP_STATE_GET(&tmp_lane_data, 3)),
++			 sl_media_jack_lane_dp_state_str(MEDIA_LANE_DP_STATE_GET(&tmp_lane_data, 4)),
++			 sl_media_jack_lane_dp_state_str(MEDIA_LANE_DP_STATE_GET(&tmp_lane_data, 5)),
++			 sl_media_jack_lane_dp_state_str(MEDIA_LANE_DP_STATE_GET(&tmp_lane_data, 6)),
++			 sl_media_jack_lane_dp_state_str(MEDIA_LANE_DP_STATE_GET(&tmp_lane_data, 7)));
++
++	spin_lock(&media_jack->data_lock);
++	memcpy(lane_data, &tmp_lane_data, sizeof(*lane_data));
++	spin_unlock(&media_jack->data_lock);
++
++	return 0;
++}
++
++static bool sl_media_jack_is_lane_data_valid(struct sl_media_jack *media_jack, unsigned long serdes_lane_map,
++					     struct sl_media_jack_lane_data *lane_data)
++{
++	u8 serdes_lane_num;
++	u8 lane_dp_state;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "lane data valid (serdes_lane_map = 0x%lx)", serdes_lane_map);
++
++	if (lane_data->dp_states_changed & serdes_lane_map) {
++		sl_media_log_dbg(media_jack, LOG_NAME,
++				 "lane data valid DP state changed (dp_states_changed = 0x%X, serdes_lane_map = 0x%lx)",
++				 lane_data->dp_states_changed, serdes_lane_map);
++		return false;
++	}
++
++	for_each_set_bit(serdes_lane_num, &serdes_lane_map, SL_ASIC_MAX_LANES) {
++		lane_dp_state = MEDIA_LANE_DP_STATE_GET(lane_data, serdes_lane_num);
++
++		if (!SL_MEDIA_JACK_SIGNAL_INFO_ALLOWED(lane_dp_state)) {
++			sl_media_log_dbg(media_jack, LOG_NAME,
++					 "lane data valid DP state not allowed (lane_num = %u, dp_state = %u %s)",
++					 serdes_lane_num, lane_dp_state,
++					 sl_media_jack_lane_dp_state_str(lane_dp_state));
++			return false;
++		}
++	}
++
++	return true;
++}
++
++static void sl_media_jack_lane_data_cache_set(struct sl_media_jack *media_jack,
++					      struct sl_media_jack_lane_data *lane_data)
++{
++	spin_lock(&media_jack->data_lock);
++	media_jack->lane_data.cache.data   = *lane_data;
++	media_jack->lane_data.cache.cached = true;
++	media_jack->lane_data.cache.timestamp_s = ktime_get_real_seconds();
++	spin_unlock(&media_jack->data_lock);
++}
++
++static bool sl_media_jack_lane_data_cache_get(struct sl_media_jack *media_jack,
++					      struct sl_media_jack_lane_data *lane_data)
++{
++	bool     cached;
++
++	spin_lock(&media_jack->data_lock);
++	cached     = media_jack->lane_data.cache.cached;
++	*lane_data = media_jack->lane_data.cache.data;
++	spin_unlock(&media_jack->data_lock);
++
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "lane data cache get map (rx_los = 0x%X, tx_los = 0x%X, rx_lol = 0x%X, tx_lol = 0x%X)",
++			 lane_data->signal.rx.los_map, lane_data->signal.tx.los_map,
++			 lane_data->signal.rx.lol_map, lane_data->signal.tx.lol_map);
++
++	return cached;
++}
++
++static bool sl_media_jack_signal_equal(struct sl_media_jack_signal *a, struct sl_media_jack_signal *b)
++{
++	return (a->rx.los_map == b->rx.los_map) &&
++	       (a->tx.los_map == b->tx.los_map) &&
++	       (a->rx.lol_map == b->rx.lol_map) &&
++	       (a->tx.lol_map == b->tx.lol_map);
++}
++
++static void sl_media_jack_signal_or(struct sl_media_jack_signal *a, struct sl_media_jack_signal *b)
++{
++	a->rx.los_map |= b->rx.los_map;
++	a->tx.los_map |= b->tx.los_map;
++	a->rx.lol_map |= b->rx.lol_map;
++	a->tx.lol_map |= b->tx.lol_map;
++}
++
++static int sl_media_jack_lane_data_get(u8 ldev_num, u8 lgrp_num, u8 serdes_lane_map,
++				       struct sl_media_jack_lane_data *lane_data)
++{
++	int                             rtn;
++	u8                              read_count;
++	bool                            is_stable;
++	struct sl_media_jack_lane_data  current_lane_data;
++	struct sl_media_jack_signal     prev_signal;
++	struct sl_media_jack           *media_jack;
++
++	media_jack = sl_media_lgrp_get(ldev_num, lgrp_num)->media_jack;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "lane data get (ldev_num = %u, lgrp_num = %u, serdes_lane_map = 0x%X)",
++			 ldev_num, lgrp_num, serdes_lane_map);
++
++	rtn = sl_media_jack_lane_data_read(ldev_num, lgrp_num, lane_data);
++	if (rtn) {
++		sl_media_log_err_trace(media_jack, LOG_NAME, "lane data read failed [%d]", rtn);
++		return rtn;
++	}
++
++	msleep(SL_MEDIA_JACK_LANE_DATA_POLL_TIME_MS);
++
++	read_count = 0;
++	is_stable  = false;
++
++	rtn = sl_media_jack_lane_data_read(ldev_num, lgrp_num, lane_data);
++	if (rtn) {
++		sl_media_log_err_trace(media_jack, LOG_NAME, "lane data read failed [%d]", rtn);
++		return rtn;
++	}
++
++	if (!sl_media_jack_is_lane_data_valid(media_jack, serdes_lane_map, lane_data)) {
++		sl_media_log_err_trace(media_jack, LOG_NAME, "lane data not valid");
++		return -EIO;
++	}
++
++	/* Short circuit, no new bits can be set */
++	if (lane_data->signal.rx.los_map == 0xFF &&
++	    lane_data->signal.tx.los_map == 0xFF &&
++	    lane_data->signal.rx.lol_map == 0xFF &&
++	    lane_data->signal.tx.lol_map == 0xFF) {
++		read_count++;
++		is_stable = true;
++		goto out;
++	}
++
++	prev_signal = lane_data->signal;
++
++	msleep(SL_MEDIA_JACK_LANE_DATA_POLL_TIME_MS);
++
++	for (read_count = 1; read_count < SL_MEDIA_JACK_MAX_NUM_LANE_DATA_READS; ++read_count) {
++		rtn = sl_media_jack_lane_data_read(ldev_num, lgrp_num, &current_lane_data);
++		if (rtn) {
++			sl_media_log_err_trace(media_jack, LOG_NAME, "lane data read failed [%d]", rtn);
++			return rtn;
++		}
++
++		if (!sl_media_jack_is_lane_data_valid(media_jack, serdes_lane_map, &current_lane_data)) {
++			sl_media_log_err_trace(media_jack, LOG_NAME, "lane data not valid");
++			return -EIO;
++		}
++
++		prev_signal = lane_data->signal;
++		sl_media_jack_signal_or(&lane_data->signal, &current_lane_data.signal);
++
++		is_stable = sl_media_jack_signal_equal(&lane_data->signal, &prev_signal);
++		if (is_stable) {
++			++read_count;
++			break;
++		}
++
++		msleep(SL_MEDIA_JACK_LANE_DATA_POLL_TIME_MS);
++	}
++
++out:
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "lane data get (read_count = %u)", read_count);
++
++	if (!is_stable) {
++		sl_media_log_err_trace(media_jack, LOG_NAME, "lane data unstable");
++		return -EIO;
++	}
++
++	sl_media_jack_lane_data_cache_set(media_jack, lane_data);
++
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "lane data get map (rx_los = 0x%X, tx_los = 0x%X, rx_lol = 0x%X, tx_lol = 0x%X)",
++			 lane_data->signal.rx.los_map, lane_data->signal.tx.los_map,
++			 lane_data->signal.rx.lol_map, lane_data->signal.tx.lol_map);
++
++	return 0;
++}
++
++int sl_media_jack_signal_get(u8 ldev_num, u8 lgrp_num, u8 serdes_lane_map, struct sl_media_jack_signal *media_signal)
++{
++	int                             rtn;
++	struct sl_media_jack_lane_data  lane_data;
++	struct sl_media_jack           *media_jack;
++	bool                            cached;
++	unsigned long                   time_left;
++	u32                             generation;
++
++	media_jack = sl_media_lgrp_get(ldev_num, lgrp_num)->media_jack;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "signal get (ldev_num = %u, lgrp_num = %u, serdes_lane_map = 0x%X)",
++			 ldev_num, lgrp_num, serdes_lane_map);
++
++	if (!sl_media_lgrp_media_type_is_active(ldev_num, lgrp_num)) {
++		sl_media_log_warn_trace(media_jack, LOG_NAME, "cable not active");
++		return -EBADRQC;
++	}
++
++	if (!sl_media_lgrp_is_signal_status_supported(ldev_num, lgrp_num)) {
++		sl_media_log_dbg(media_jack, LOG_NAME, "signal status unsupported");
++		return -EBADRQC;
++	}
++
++	spin_lock(&media_jack->data_lock);
++	switch (media_jack->lane_data.read_state) {
++	case SL_MEDIA_JACK_LANE_DATA_READ_STATE_IDLE:
++		media_jack->lane_data.read_state = SL_MEDIA_JACK_LANE_DATA_READ_STATE_BUSY;
++		sl_media_log_dbg(media_jack, LOG_NAME, "reading lane data - state set to BUSY");
++		spin_unlock(&media_jack->data_lock);
++
++		rtn = sl_media_jack_lane_data_get(ldev_num, lgrp_num, serdes_lane_map, &lane_data);
++
++		spin_lock(&media_jack->data_lock);
++		media_jack->lane_data.read_state    = SL_MEDIA_JACK_LANE_DATA_READ_STATE_IDLE;
++		media_jack->lane_data.last_read_rtn = rtn;
++		WRITE_ONCE(media_jack->lane_data.read_generation,
++			   media_jack->lane_data.read_generation + 1);
++		spin_unlock(&media_jack->data_lock);
++
++		wake_up_all(&media_jack->lane_data.read_wait);
++
++		if (rtn) {
++			sl_media_log_err_trace(media_jack, LOG_NAME, "lane data read failed [%d]", rtn);
++			return rtn;
++		}
++
++		goto out;
++
++	case SL_MEDIA_JACK_LANE_DATA_READ_STATE_BUSY:
++		generation = media_jack->lane_data.read_generation;
++		sl_media_log_dbg(media_jack, LOG_NAME, "waiting for lane data read to complete");
++		spin_unlock(&media_jack->data_lock);
++
++		time_left = msecs_to_jiffies(SL_MEDIA_JACK_SIGNAL_READ_TIMEOUT_MS);
++		time_left = wait_event_timeout(media_jack->lane_data.read_wait,
++					       READ_ONCE(media_jack->lane_data.read_generation) !=
++					       generation, time_left);
++
++		if (time_left == 0) {
++			sl_media_log_err_trace(media_jack, LOG_NAME, "lane data read timed out");
++			return -ETIMEDOUT;
++		}
++
++		spin_lock(&media_jack->data_lock);
++		rtn = media_jack->lane_data.last_read_rtn;
++		if (rtn) {
++			sl_media_log_err_trace(media_jack, LOG_NAME, "lane data read failed [%d]", rtn);
++			spin_unlock(&media_jack->data_lock);
++			return rtn;
++		}
++
++		cached    = media_jack->lane_data.cache.cached;
++		lane_data = media_jack->lane_data.cache.data;
++		spin_unlock(&media_jack->data_lock);
++
++		if (!cached) {
++			sl_media_log_err_trace(media_jack, LOG_NAME, "lane data not cached");
++			return -EIO;
++		}
++
++		goto out;
++
++	default:
++		sl_media_log_err(media_jack, LOG_NAME, "invalid lane data read state (%u)",
++				 media_jack->lane_data.read_state);
++		spin_unlock(&media_jack->data_lock);
++		return -EIO;
++	}
++
++out:
++	*media_signal = lane_data.signal;
++
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "signal get (rx_los = 0x%X, rx_lol = 0x%X, tx_los = 0x%X, tx_lol = 0x%X)",
++			 media_signal->rx.los_map, media_signal->rx.lol_map,
++			 media_signal->tx.los_map, media_signal->tx.lol_map);
++
++	return 0;
++}
++
++int sl_media_jack_signal_cache_get(u8 ldev_num, u8 lgrp_num, u8 serdes_lane_map,
++				   struct sl_media_jack_signal *media_signal)
++{
++	struct sl_media_jack_lane_data  lane_data;
++	struct sl_media_jack           *media_jack;
++
++	media_jack = sl_media_lgrp_get(ldev_num, lgrp_num)->media_jack;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "signal cache get (ldev_num =%u, lgrp_num = %u, serdes_lane_map = 0x%X)",
++			 ldev_num, lgrp_num, serdes_lane_map);
++
++	if (!sl_media_jack_lane_data_cache_get(media_jack, &lane_data)) {
++		sl_media_log_err_trace(media_jack, LOG_NAME, "lane data not cached");
++		return -ENOENT;
++	}
++
++	*media_signal = lane_data.signal;
++
++	return 0;
++}
++
++int sl_media_jack_signal_cache_time_s_get(u8 ldev_num, u8 lgrp_num, time64_t *cache_time)
++{
++	bool                  cached;
++	struct sl_media_jack *media_jack;
++
++	media_jack = sl_media_lgrp_get(ldev_num, lgrp_num)->media_jack;
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "signal cache time get (ldev_num =%u, lgrp_num = %u)",
++			 ldev_num, lgrp_num);
++
++	spin_lock(&media_jack->data_lock);
++	cached = media_jack->lane_data.cache.cached;
++	*cache_time = media_jack->lane_data.cache.timestamp_s;
++	spin_unlock(&media_jack->data_lock);
++
++	sl_media_log_dbg(media_jack, LOG_NAME,
++			 "signal cache time get (cache_time = %lld, cached = %s)",
++			 *cache_time, cached ? "yes" : "no");
++
++	return cached ? 0 : -ENOENT;
++}
++
++int sl_media_jack_attr_error_map_str(unsigned long error_map, char *error_str, unsigned int error_str_size)
++{
++	int rtn;
++	int str_pos;
++	int which;
++
++	if (!error_str)
++		return -EINVAL;
++
++	if (error_str_size < SL_MEDIA_JACK_ATTR_ERR_STR_SIZE)
++		return -EINVAL;
++
++	if (!error_map) {
++		str_pos = snprintf(error_str, error_str_size, "none ");
++		goto out;
++	}
++
++	str_pos = 0;
++
++	for_each_set_bit(which, &error_map, sizeof(error_map) * BITS_PER_BYTE) {
++		switch (BIT(which)) {
++		case SL_MEDIA_ERROR_CABLE_UNSUPPORTED:
++			rtn = snprintf(error_str + str_pos, error_str_size - str_pos, "cable-unsupported ");
++			break;
++		case SL_MEDIA_ERROR_CABLE_FORMAT_UNSUPPORTED:
++			rtn = snprintf(error_str + str_pos, error_str_size - str_pos, "cable-format-unsupported ");
++			break;
++		case SL_MEDIA_ERROR_CABLE_FW_UNSUPPORTED:
++			rtn = snprintf(error_str + str_pos, error_str_size - str_pos, "cable-fw-unsupported ");
++			break;
++		case SL_MEDIA_ERROR_CABLE_HEADSHELL_FAULT:
++			rtn = snprintf(error_str + str_pos, error_str_size - str_pos, "cable-headshell-fault ");
++			break;
++		case SL_MEDIA_ERROR_TEMP_DOWN_LIMIT_DEFAULT:
++			rtn = snprintf(error_str + str_pos, error_str_size - str_pos, "temp-down-limit-default ");
++			break;
++		case SL_MEDIA_ERROR_TEMP_WARN_LIMIT_DEFAULT:
++			rtn = snprintf(error_str + str_pos, error_str_size - str_pos, "temp-warn-limit-default ");
++			break;
++		case SL_MEDIA_ERROR_TRYABLE:
++			rtn = snprintf(error_str + str_pos, error_str_size - str_pos, "tryable ");
++			break;
++		default:
++			rtn = snprintf(error_str + str_pos, error_str_size - str_pos, "unknown ");
++			break;
++		}
++
++		if (rtn < 0) {
++			str_pos = snprintf(error_str, error_str_size, "error ");
++			goto out;
++		}
++		if (str_pos + rtn >= error_str_size) {
++			error_str[str_pos - 2] = '.';
++			error_str[str_pos - 3] = '.';
++			error_str[str_pos - 4] = '.';
++			break;
++		}
++		str_pos += rtn;
++	}
++
++out:
++	error_str[str_pos - 1] = '\0';
++
++	return 0;
++}
++
++int sl_media_jack_attr_error_map_get(struct sl_media_jack *media_jack, u32 *error_map)
++{
++	spin_lock(&media_jack->data_lock);
++	*error_map = media_jack->cable_info->media_attr.errors;
++	spin_unlock(&media_jack->data_lock);
++
++	sl_media_log_dbg(media_jack, LOG_NAME, "attr error map get (error_map = %u)", *error_map);
++
++	return 0;
++}
+diff --git a/drivers/net/ethernet/hpe/sl/media/sl_media_ldev.c b/drivers/net/ethernet/hpe/sl/media/sl_media_ldev.c
+new file mode 100644
+index 000000000000..a78d70494b5c
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/media/sl_media_ldev.c
+@@ -0,0 +1,22 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2024 Hewlett Packard Enterprise Development LP */
++
++#include <linux/types.h>
++
++#include "sl_media_ldev.h"
++#include "data/sl_media_data_ldev.h"
++
++int sl_media_ldev_new(u8 ldev_num, struct workqueue_struct *workqueue)
++{
++	return sl_media_data_ldev_new(ldev_num, workqueue);
++}
++
++void sl_media_ldev_del(u8 ldev_num)
++{
++	sl_media_data_ldev_del(ldev_num);
++}
++
++struct sl_media_ldev *sl_media_ldev_get(u8 ldev_num)
++{
++	return sl_media_data_ldev_get(ldev_num);
++}
+diff --git a/drivers/net/ethernet/hpe/sl/media/sl_media_lgrp.c b/drivers/net/ethernet/hpe/sl/media/sl_media_lgrp.c
+new file mode 100644
+index 000000000000..b15805a82270
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/media/sl_media_lgrp.c
+@@ -0,0 +1,498 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2023-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/slab.h>
++#include <linux/types.h>
++
++#include "base/sl_media_log.h"
++
++#include "sl_media_lgrp.h"
++#include "sl_media_jack.h"
++#include "data/sl_media_data_lgrp.h"
++#include "data/sl_media_data_jack.h"
++
++#define LOG_NAME SL_MEDIA_LGRP_LOG_NAME
++
++int sl_media_lgrp_new(u8 ldev_num, u8 lgrp_num)
++{
++	return sl_media_data_lgrp_new(ldev_num, lgrp_num);
++}
++
++void sl_media_lgrp_del(u8 ldev_num, u8 lgrp_num)
++{
++	sl_media_data_lgrp_del(ldev_num, lgrp_num);
++}
++
++struct sl_media_lgrp *sl_media_lgrp_get(u8 ldev_num, u8 lgrp_num)
++{
++	return sl_media_data_lgrp_get(ldev_num, lgrp_num);
++}
++
++void sl_media_lgrp_media_attr_get(u8 ldev_num, u8 lgrp_num, struct sl_media_attr *media_attr)
++{
++	struct sl_media_lgrp *media_lgrp;
++
++	memset(media_attr, 0, sizeof(struct sl_media_attr));
++
++	media_lgrp = sl_media_data_lgrp_get(ldev_num, lgrp_num);
++	if (!media_lgrp) {
++		sl_media_log_err(NULL, SL_MEDIA_LGRP_LOG_NAME, "media_data_lgrp_get failed");
++		return;
++	}
++
++	sl_media_log_dbg(media_lgrp, SL_MEDIA_LGRP_LOG_NAME, "media_attr_get");
++
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	switch (media_lgrp->cable_info->real_cable_status) {
++	case CABLE_MEDIA_ATTR_ADDED:
++		*media_attr = media_lgrp->cable_info->media_attr;
++		break;
++	case CABLE_MEDIA_ATTR_STASHED:
++		*media_attr = media_lgrp->cable_info->stashed_media_attr;
++		break;
++	}
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++}
++
++bool sl_media_lgrp_media_has_error(struct sl_media_lgrp *media_lgrp)
++{
++	struct sl_media_attr media_attr;
++
++	sl_media_lgrp_media_attr_get(media_lgrp->media_ldev->num, media_lgrp->num, &media_attr);
++
++	sl_media_log_dbg(media_lgrp, SL_MEDIA_LGRP_LOG_NAME,
++			 "media has error (media_attr.errors = 0x%X)", media_attr.errors);
++
++	return ((media_attr.errors & (SL_MEDIA_ERROR_CABLE_FORMAT_UNSUPPORTED |
++				      SL_MEDIA_ERROR_CABLE_FW_UNSUPPORTED)) != 0);
++}
++
++void sl_media_lgrp_media_serdes_settings_get(u8 ldev_num, u8 lgrp_num,
++					     struct sl_media_serdes_settings *media_serdes_settings)
++{
++	struct sl_media_lgrp *media_lgrp;
++
++	media_lgrp = sl_media_data_lgrp_get(ldev_num, lgrp_num);
++	sl_media_log_dbg(media_lgrp, SL_MEDIA_LGRP_LOG_NAME, "media serdes settings get");
++
++	*media_serdes_settings = media_lgrp->media_jack->serdes_settings;
++}
++
++bool sl_media_lgrp_media_type_is_active(u8 ldev_num, u8 lgrp_num)
++{
++	struct sl_media_attr media_attr;
++
++	sl_media_lgrp_media_attr_get(ldev_num, lgrp_num, &media_attr);
++
++	return SL_MEDIA_LGRP_MEDIA_TYPE_IS_ACTIVE(media_attr.type);
++}
++
++void sl_media_lgrp_connect_id_set(u8 ldev_num, u8 lgrp_num, const char *connect_id)
++{
++	sl_media_data_lgrp_connect_id_set(sl_media_data_lgrp_get(ldev_num, lgrp_num), connect_id);
++}
++
++void sl_media_lgrp_real_cable_if_present_send(u8 ldev_num, u8 lgrp_num)
++{
++	struct sl_media_lgrp *media_lgrp;
++
++	media_lgrp = sl_media_data_lgrp_get(ldev_num, lgrp_num);
++
++	sl_media_log_dbg(media_lgrp, SL_MEDIA_LGRP_LOG_NAME, "real cable if present send");
++
++	sl_media_data_jack_cable_if_present_send(media_lgrp);
++}
++
++void sl_media_lgrp_real_cable_if_not_present_send(u8 ldev_num, u8 lgrp_num)
++{
++	struct sl_media_lgrp *media_lgrp;
++
++	media_lgrp = sl_media_data_lgrp_get(ldev_num, lgrp_num);
++
++	sl_media_log_dbg(media_lgrp, SL_MEDIA_LGRP_LOG_NAME, "real cable if not present send");
++
++	sl_media_data_jack_cable_if_not_present_send(media_lgrp);
++}
++
++void sl_media_lgrp_cable_hot_send(u8 ldev_num, u8 lgrp_num)
++{
++	struct sl_media_lgrp *media_lgrp;
++
++	media_lgrp = sl_media_lgrp_get(ldev_num, lgrp_num);
++
++	sl_media_log_dbg(media_lgrp, SL_MEDIA_LGRP_LOG_NAME, "cable hot send");
++
++	if (sl_media_lgrp_media_type_is_active(ldev_num, lgrp_num)) {
++		sl_media_lgrp_hot_client_ready_set(ldev_num, lgrp_num, true);
++		if (sl_media_jack_cable_temp_hw_check(media_lgrp->media_jack) == SL_MEDIA_JACK_TEMP_STATE_HOT) {
++			sl_media_jack_fault_cause_set(media_lgrp->media_jack, SL_MEDIA_FAULT_CAUSE_HOT);
++			sl_media_jack_cable_hot_notif_send(media_lgrp->media_jack);
++		}
++	}
++}
++
++void sl_media_lgrp_cable_warm_send(u8 ldev_num, u8 lgrp_num)
++{
++	struct sl_media_lgrp *media_lgrp;
++
++	media_lgrp = sl_media_lgrp_get(ldev_num, lgrp_num);
++
++	sl_media_log_dbg(media_lgrp, SL_MEDIA_LGRP_LOG_NAME, "cable warm send");
++
++	if (sl_media_lgrp_media_type_is_active(ldev_num, lgrp_num)) {
++		sl_media_lgrp_warm_client_ready_set(ldev_num, lgrp_num, true);
++		if (sl_media_jack_cable_temp_hw_check(media_lgrp->media_jack) == SL_MEDIA_JACK_TEMP_STATE_WARM) {
++			sl_media_jack_cable_warm_notif_send(media_lgrp->media_jack);
++		}
++	}
++}
++
++void sl_media_lgrp_cable_cold_send(u8 ldev_num, u8 lgrp_num)
++{
++	struct sl_media_lgrp *media_lgrp;
++
++	media_lgrp = sl_media_lgrp_get(ldev_num, lgrp_num);
++
++	sl_media_log_dbg(media_lgrp, SL_MEDIA_LGRP_LOG_NAME, "cable cold send");
++
++	if (sl_media_lgrp_media_type_is_active(ldev_num, lgrp_num)) {
++		sl_media_lgrp_cold_client_ready_set(ldev_num, lgrp_num, true);
++		if (sl_media_jack_cable_temp_hw_check(media_lgrp->media_jack) == SL_MEDIA_JACK_TEMP_STATE_COLD)
++			sl_media_jack_cable_cold_notif_send(media_lgrp->media_jack);
++	}
++}
++
++void sl_media_lgrp_cable_temp_flags_clr(u8 ldev_num, u8 lgrp_num)
++{
++	u8                   i;
++	struct sl_media_lgrp *media_lgrp;
++
++	media_lgrp = sl_media_lgrp_get(ldev_num, lgrp_num);
++
++	sl_media_log_dbg(media_lgrp, SL_MEDIA_LGRP_LOG_NAME, "cable temp flags clr");
++
++	for (i = 0; i < media_lgrp->media_jack->port_count; ++i) {
++		if (sl_media_lgrp_media_type_is_active(ldev_num, lgrp_num)) {
++			sl_media_lgrp_hot_client_ready_set(ldev_num, lgrp_num, false);
++			sl_media_jack_cable_hot_notif_sent_set(media_lgrp->media_jack,
++							       &media_lgrp->media_jack->cable_info[i], false);
++			sl_media_lgrp_warm_client_ready_set(ldev_num, lgrp_num, false);
++			sl_media_jack_cable_warm_notif_sent_set(media_lgrp->media_jack,
++								&media_lgrp->media_jack->cable_info[i], false);
++			sl_media_lgrp_cold_client_ready_set(ldev_num, lgrp_num, false);
++			sl_media_jack_cable_cold_notif_sent_set(media_lgrp->media_jack,
++								&media_lgrp->media_jack->cable_info[i], false);
++		}
++	}
++}
++
++void sl_media_lgrp_hot_client_ready_set(u8 ldev_num, u8 lgrp_num, bool value)
++{
++	struct sl_media_lgrp *media_lgrp;
++
++	media_lgrp = sl_media_data_lgrp_get(ldev_num, lgrp_num);
++
++	sl_media_log_dbg(media_lgrp, SL_MEDIA_LGRP_LOG_NAME, "hot client ready set (value = %s)",
++			 value ? "true" : "false");
++
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	media_lgrp->cable_info->hot_client_ready = value;
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++}
++
++void sl_media_lgrp_warm_client_ready_set(u8 ldev_num, u8 lgrp_num, bool value)
++{
++	struct sl_media_lgrp *media_lgrp;
++
++	media_lgrp = sl_media_data_lgrp_get(ldev_num, lgrp_num);
++
++	sl_media_log_dbg(media_lgrp, SL_MEDIA_LGRP_LOG_NAME, "warm client ready set (value = %s)",
++			 value ? "true" : "false");
++
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	media_lgrp->cable_info->warm_client_ready = value;
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++}
++
++void sl_media_lgrp_cold_client_ready_set(u8 ldev_num, u8 lgrp_num, bool value)
++{
++	struct sl_media_lgrp *media_lgrp;
++
++	media_lgrp = sl_media_data_lgrp_get(ldev_num, lgrp_num);
++
++	sl_media_log_dbg(media_lgrp, SL_MEDIA_LGRP_LOG_NAME, "cold client ready set (value = %s)",
++			 value ? "true" : "false");
++
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	media_lgrp->cable_info->cold_client_ready = value;
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++}
++
++int sl_media_lgrp_vendor_get(struct sl_media_lgrp *media_lgrp, u32 *vendor)
++{
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	switch (media_lgrp->cable_info->real_cable_status) {
++	case CABLE_MEDIA_ATTR_ADDED:
++		*vendor = media_lgrp->cable_info->media_attr.vendor;
++		break;
++	case CABLE_MEDIA_ATTR_STASHED:
++		*vendor = media_lgrp->cable_info->stashed_media_attr.vendor;
++		break;
++	default:
++		*vendor = SL_MEDIA_VENDOR_UNKNOWN;
++	}
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++
++	return 0;
++}
++
++int sl_media_lgrp_vendor_pn_str_get(struct sl_media_lgrp *media_lgrp, char *vendor_pn_str)
++{
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	switch (media_lgrp->cable_info->real_cable_status) {
++	case CABLE_MEDIA_ATTR_ADDED:
++		strscpy_pad(vendor_pn_str,
++			    media_lgrp->cable_info->media_attr.vendor_pn_str, SL_MEDIA_VENDOR_PN_SIZE);
++		break;
++	case CABLE_MEDIA_ATTR_STASHED:
++		strscpy_pad(vendor_pn_str,
++			    media_lgrp->cable_info->stashed_media_attr.vendor_pn_str, SL_MEDIA_VENDOR_PN_SIZE);
++		break;
++	default:
++		memset(vendor_pn_str, '0', SL_MEDIA_VENDOR_PN_SIZE - 2);
++		vendor_pn_str[SL_MEDIA_VENDOR_PN_SIZE - 1] = '\0';
++	}
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++
++	return 0;
++}
++
++int sl_media_lgrp_type_get(struct sl_media_lgrp *media_lgrp, u32 *type)
++{
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	switch (media_lgrp->cable_info->real_cable_status) {
++	case CABLE_MEDIA_ATTR_ADDED:
++		*type = media_lgrp->cable_info->media_attr.type;
++		break;
++	case CABLE_MEDIA_ATTR_STASHED:
++		*type = media_lgrp->cable_info->stashed_media_attr.type;
++		break;
++	default:
++		*type = SL_MEDIA_TYPE_UNKNOWN;
++	}
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++
++	return 0;
++}
++
++int sl_media_lgrp_shape_get(struct sl_media_lgrp *media_lgrp, u32 *shape)
++{
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	switch (media_lgrp->cable_info->real_cable_status) {
++	case CABLE_MEDIA_ATTR_ADDED:
++		*shape = media_lgrp->cable_info->media_attr.shape;
++		break;
++	case CABLE_MEDIA_ATTR_STASHED:
++		*shape = media_lgrp->cable_info->stashed_media_attr.shape;
++		break;
++	default:
++		*shape = SL_MEDIA_SHAPE_UNKNOWN;
++	}
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++
++	return 0;
++}
++
++int sl_media_lgrp_length_get(struct sl_media_lgrp *media_lgrp, u32 *length_cm)
++{
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	switch (media_lgrp->cable_info->real_cable_status) {
++	case CABLE_MEDIA_ATTR_ADDED:
++		*length_cm = media_lgrp->cable_info->media_attr.length_cm;
++		break;
++	case CABLE_MEDIA_ATTR_STASHED:
++		*length_cm = media_lgrp->cable_info->stashed_media_attr.length_cm;
++		break;
++	default:
++		*length_cm = 0;
++	}
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++
++	return 0;
++}
++
++int sl_media_lgrp_max_speed_get(struct sl_media_lgrp *media_lgrp, u32 *max_speed)
++{
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	switch (media_lgrp->cable_info->real_cable_status) {
++	case CABLE_MEDIA_ATTR_ADDED:
++		*max_speed = media_lgrp->cable_info->media_attr.max_speed;
++		break;
++	case CABLE_MEDIA_ATTR_STASHED:
++		*max_speed = media_lgrp->cable_info->stashed_media_attr.max_speed;
++		break;
++	default:
++		*max_speed = 0;
++	}
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++
++	return 0;
++}
++
++int sl_media_lgrp_serial_num_str_get(struct sl_media_lgrp *media_lgrp, char *serial_num_str)
++{
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	switch (media_lgrp->cable_info->real_cable_status) {
++	case CABLE_MEDIA_ATTR_ADDED:
++		strscpy_pad(serial_num_str,
++			    media_lgrp->cable_info->media_attr.serial_num_str, SL_MEDIA_SERIAL_NUM_SIZE);
++		break;
++	case CABLE_MEDIA_ATTR_STASHED:
++		strscpy_pad(serial_num_str,
++			    media_lgrp->cable_info->stashed_media_attr.serial_num_str, SL_MEDIA_SERIAL_NUM_SIZE);
++		break;
++	default:
++		memset(serial_num_str, '0', (SL_MEDIA_SERIAL_NUM_SIZE - 1));
++		serial_num_str[SL_MEDIA_SERIAL_NUM_SIZE - 1] = '\0';
++	}
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++
++	return 0;
++}
++
++int sl_media_lgrp_hpe_pn_str_get(struct sl_media_lgrp *media_lgrp, char *hpe_pn_str)
++{
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	switch (media_lgrp->cable_info->real_cable_status) {
++	case CABLE_MEDIA_ATTR_ADDED:
++		strscpy_pad(hpe_pn_str,
++			    media_lgrp->cable_info->media_attr.hpe_pn_str, SL_MEDIA_HPE_PN_SIZE);
++		break;
++	case CABLE_MEDIA_ATTR_STASHED:
++		strscpy_pad(hpe_pn_str,
++			    media_lgrp->cable_info->stashed_media_attr.hpe_pn_str, SL_MEDIA_HPE_PN_SIZE);
++		break;
++	default:
++		memset(hpe_pn_str, '0', SL_MEDIA_HPE_PN_SIZE - 2);
++		hpe_pn_str[SL_MEDIA_HPE_PN_SIZE - 1] = '\0';
++	}
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++
++	return 0;
++}
++
++int sl_media_lgrp_jack_type_get(struct sl_media_lgrp *media_lgrp, u32 *jack_type)
++{
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	switch (media_lgrp->cable_info->real_cable_status) {
++	case CABLE_MEDIA_ATTR_ADDED:
++		*jack_type = media_lgrp->cable_info->media_attr.jack_type;
++		break;
++	case CABLE_MEDIA_ATTR_STASHED:
++		*jack_type = media_lgrp->cable_info->stashed_media_attr.jack_type;
++		break;
++	default:
++		*jack_type = SL_MEDIA_JACK_TYPE_UNKNOWN;
++	}
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++
++	return 0;
++}
++
++int sl_media_lgrp_jack_type_qsfp_density_get(struct sl_media_lgrp *media_lgrp, u32 *density)
++{
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	switch (media_lgrp->cable_info->real_cable_status) {
++	case CABLE_MEDIA_ATTR_ADDED:
++		*density = media_lgrp->cable_info->media_attr.jack_type_info.qsfp.density;
++		break;
++	case CABLE_MEDIA_ATTR_STASHED:
++		*density = media_lgrp->cable_info->stashed_media_attr.jack_type_info.qsfp.density;
++		break;
++	default:
++		*density = SL_MEDIA_QSFP_DENSITY_UNKNOWN;
++	}
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++
++	return 0;
++}
++
++int sl_media_lgrp_furcation_get(struct sl_media_lgrp *media_lgrp, u32 *furcation)
++{
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	switch (media_lgrp->cable_info->real_cable_status) {
++	case CABLE_MEDIA_ATTR_ADDED:
++		*furcation = media_lgrp->cable_info->media_attr.furcation;
++		break;
++	case CABLE_MEDIA_ATTR_STASHED:
++		*furcation = media_lgrp->cable_info->stashed_media_attr.furcation;
++		break;
++	default:
++		*furcation = SL_MEDIA_FURCATION_UNKNOWN;
++	}
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++
++	return 0;
++}
++
++bool sl_media_lgrp_is_cable_unsupported(struct sl_media_lgrp *media_lgrp)
++{
++	bool unsupported;
++
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	unsupported = media_lgrp->media_jack->is_cable_unsupported;
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++
++	return unsupported;
++}
++
++int sl_media_lgrp_date_code_str_get(struct sl_media_lgrp *media_lgrp, char *date_code_str)
++{
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	switch (media_lgrp->cable_info->real_cable_status) {
++	case CABLE_MEDIA_ATTR_ADDED:
++		strscpy_pad(date_code_str,
++			    media_lgrp->cable_info->media_attr.date_code_str, SL_MEDIA_DATE_CODE_SIZE);
++		break;
++	case CABLE_MEDIA_ATTR_STASHED:
++		strscpy_pad(date_code_str,
++			    media_lgrp->cable_info->stashed_media_attr.date_code_str, SL_MEDIA_DATE_CODE_SIZE);
++		break;
++	default:
++		memset(date_code_str, '0', SL_MEDIA_DATE_CODE_SIZE - 2);
++		date_code_str[SL_MEDIA_DATE_CODE_SIZE - 1] = '\0';
++	}
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++
++	return 0;
++}
++
++int sl_media_lgrp_fw_ver_str_get(struct sl_media_lgrp *media_lgrp, u8 *fw_ver)
++{
++	spin_lock(&media_lgrp->media_jack->data_lock);
++	switch (media_lgrp->cable_info->real_cable_status) {
++	case CABLE_MEDIA_ATTR_ADDED:
++		memcpy(fw_ver, media_lgrp->cable_info->media_attr.fw_ver, SL_MEDIA_FIRMWARE_VERSION_SIZE);
++		break;
++	case CABLE_MEDIA_ATTR_STASHED:
++		memcpy(fw_ver, media_lgrp->cable_info->stashed_media_attr.fw_ver, SL_MEDIA_FIRMWARE_VERSION_SIZE);
++		break;
++	default:
++		memset(fw_ver, 0, SL_MEDIA_FIRMWARE_VERSION_SIZE);
++	}
++	spin_unlock(&media_lgrp->media_jack->data_lock);
++
++	return 0;
++}
++
++bool sl_media_lgrp_is_signal_status_supported(u8 ldev_num, u8 lgrp_num)
++{
++	struct sl_media_attr media_attr;
++
++	sl_media_lgrp_media_attr_get(ldev_num, lgrp_num, &media_attr);
++
++	return (media_attr.supported_flags_advertised[0] & SL_MEDIA_ADVERTISED_FLAGS_TX_LOS) ||
++	       (media_attr.supported_flags_advertised[0] & SL_MEDIA_ADVERTISED_FLAGS_TX_LOL) ||
++	       (media_attr.supported_flags_advertised[1] & SL_MEDIA_ADVERTISED_FLAGS_RX_LOS) ||
++	       (media_attr.supported_flags_advertised[1] & SL_MEDIA_ADVERTISED_FLAGS_RX_LOL);
++}
 
 -- 
 2.56.0
