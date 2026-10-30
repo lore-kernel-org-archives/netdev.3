@@ -1,88 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793320113;
-	b=lSmwljvyUiB5HMLdSq7LXP7M0USRTUKOrbaIsnfmyTIWjJ/F5vKP56k+Bn0XACLF4AMO
-	 tCbq7azxxvpEIHSxhQLKQjK6xHWfI1UbH3cpRTCO045tA8Z2d9+mkZjU0YOtKhtD2Jigs
-	 Hz8oCbyal6rQ6ws6N5ewt1BEx131dLeg2GuaVP18w2rqt746R3GrhY6I0PTFgprRIeUsn
-	 4dfpjDGQn0N8hj2twHtjUJAGZaaJIcaxycr8tyhyIkKZCAFAwUh0Z1MlM4oxiVwDtqh8P
-	 6f5HFf8NG8GcoVhIr73yXsG6rB/iu+NBFaLKpCyAJ/5e0G1sUrU9ZkCcZEqbt+TSmCg==
+	t=1793320171;
+	b=Jio5695cZtc9UPphlOOq7FpP31HqYsvPLQHibWZR+SC+rFZzd8c4irfQF0MRMHL8FCvq
+	 WsxwAFnxbKPtLAxNgDOvb7b1xMx1GjBntkgkS7O5mfzGmsLfpFJkHjyRzS6yT1eF8i0t8
+	 KA93CTETLMXW/r/bvy8YeRH0IRF/cyVkHp00pl9bKwjYBKCHKZbVOitoO5L/G/6qreEBZ
+	 p2JQvWJJnT6sKTL4nLH7kZM63+wfuOCUUKi1nAVLG66WibV5SwcPx54MrAFOReOVtdneF
+	 EjOtgmugtDpN1lBU/NRu2c0uozRJCJwRHgxPEh3WxmNYTh2NjROYltswB/CNmZ/bLTg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793320113;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=wpGAv65gBuWPBCuFkdizu+JJRhLdNC6Zx1Lfa+fJFHE=;
-	b=KRVkaRtsYHCuefe2tofMG2bsUlndfEeH9UvrGqdbvHyAqOSIUcdT11/tIvKawnQFWn1V
-	 ogCbwWb7j0Z9I/uVA8SsDpWEcdn+7KYoVCBS4UJMTq1fR3cVq8zxeuVm2KWcY3qp1bJCs
-	 CisSKCFdGwSg7x3gNBK9FRLkpFsFNabCJ9OQkZ8jAOMMeRjPm//rV2a/nHsu/Y7f7yxti
-	 s9s6ae5JO6RV+v8R2aHxefvFFLN6kK7fZLz+OLsCnbKWayEbiam6w5tPJZhF7hJJJ9wne
-	 T/Duow3GYA17W3i+ckjjDbshfcWnmmTY8qbJjmPbZz/K1IWriE2SfzrKaGG72yk5KzA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793320171;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	b=QJvWMtvYfFPnhrVMH7py1PXmJ9ICJZwuIZfp9oOMNwMNExq/ZtJ2/RGO8KkKNk8kxNsv
+	 Q18Nb2hnUT/LaLKuWinSHslcgnYmzwidCGsLMOCXuZRz/SObt7V11faSA0fUTCKpi5DQ5
+	 498ZBLDBP3EcFMeelmvR8/SysAeFYpdp58/zakjN8RucgixgjYZrHrE00CAMSmoWgULoL
+	 WPbax+3SBSbmQ41ptieU79SAFzYUTK/BRd/kYp3vow9yXG+JywDEknUA8wJs+G6WnttJB
+	 8DvY0V1OXMjJzo0um9WL6pC9MOxmXk4LFLqgSEfKlOP/taePI+Tp65n02XNAGPMyLAg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dr+a7CLo;
-	arc=none smtp.remote-ip=209.85.221.49
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WBASHjtM;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0647606A31A
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 00:28:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E0647606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1423F606A31A;
+	Fri, 30 Oct 2026 00:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dr+a7CLo
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48afbd2c386so70538f8f.3
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 17:28:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793320111; x=1793924911; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wpGAv65gBuWPBCuFkdizu+JJRhLdNC6Zx1Lfa+fJFHE=;
-        b=dr+a7CLoWz+kVq4WbPNah6tfR/D2whkiYNfi69dXlaN/mfWhaxYzFJFRtKHB4b299m
-         6aRRBge28ZkbfW8WbYfAq6jdnTQzlLHdyIZsqeVm8gXdu2HIpofQPg2zJn5lWeR97FFe
-         DxQj8jpgN7scHkVRY2rWnZcZbZKQ8xJjmwz4czQLYyCkKIeteLO416hwQMHHe7vcpwvh
-         wFUAcmMxzn1EiVJ9b4uCSt1wpzeDXcq7nZwTysa14ZsJnOlvv1+N529lnkz0IwHzfEXw
-         HosGIG5cPkv9fuYAZS7J5ih2IMTslMroyVVWw+lWZJvlSwA4PLT/aU77OT5Wv+PIS9s3
-         Vpog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793320111; x=1793924911;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wpGAv65gBuWPBCuFkdizu+JJRhLdNC6Zx1Lfa+fJFHE=;
-        b=skPsiv+CZNOjBX0nQ82FyYJnXzNv2v+M14K95XjSVBKZxXOsde2V3bgnU4sRnGUsXo
-         DKwpwhP8lt5xVYU33jez1EssSc1lxvCM0xxO9UT5YoTuTv373qWwVc2DGnBDsg8c8JMZ
-         e8uzVJ1bod0/tP1fn+keVCfMk2iW3yzfGM2VHY7erQoG/fIRLJzwCVjlGvIOhrAtF+bu
-         OpH8l/FIdGh9B2u1IhsCDGZsB8w8Wv9khzl/mXPKzsKa8JWEpQF9YjYar/zfQ8iv5Evc
-         t2zHo8vil77EUy1yg/CpQ22gDoflTzLp39KDG3aNFdTOthwSIkmOVSmVtrxxMuBmnK9y
-         q3VQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxb7U4+JYWsV6o5ZZYwagCgdngdnNBan1/7f1tcboLHHbxiN5MYimuGhyXrJqr/M5VHJ5p20Y0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJgLZTTq49fwYaog+LAtWU6QbJOExRmnwWnypJSvQhmviAl2E+6
-	KAbvgqixFIGMpaPXab7hAh6PBGjxFuqZ49v7Dw8jY6AVwXSY0I5urikRYcz6L23YsiI=
-X-Gm-Gg: AYBFou2HkHfMAN9FzZ7z1qDchPYdfVzZZICVcQpDyXtQTTfNAktFEmOrnVSRqciIJiH
-	8dzUEQ7GbyyW5/bGeHjVOclx1SnKE6OetgaTuHF7eBQDZmHdKTgsymIh3E+BvPO9rV2VdifHemU
-	wSVUCJYj97jzbRnDC4baZAc7RVNYJcSYoWN1fUZOfZM76xc4SDTqtT1giBMgPXRBs9XacCYaWQ1
-	coXXEGDIUOuh2/HHcUVodIKT/3GvaxHaCyJBFFZhJnlDvgg5+ry01/AuN28x6iyZRIhre3SvbXQ
-	NjE9pWgr05khLl3ojeRMrklzIa8hzVP2oNoeZflLlOQmEsXGjC4T2xiJpnw57ZDvQv+wT9syFnv
-	F8cnZjOtvtZaZZEbGJUlZ2BhjXSAg08lfzsn+TaHGsQuGKviQl+Dt7YT5I4KdgeCKIXUZLyHwGF
-	fXTVpywtuju42GVCpMuqWyChQgT2q159xChQSqRzz8KX9yExoy2DR4WyzkH0aT5uvtjSOs4KyqP
-	jz+gb9lkmbDetG5UxZ6I+WmLF/Gb9MLYHpsf6kFaV4ysO8UPIzSSFjxBBq+/QLD1Y7OB6ncwDvW
-	TU2T/ma4DoHcYLadEsc38Lcr3l5tX1h8CTAXL3VS
-X-Received: by 2002:a05:6000:238a:b0:48e:44d:5a9d with SMTP id ffacd0b85a97d-48e6e4fc4efmr2200732f8f.45.1793320111301;
-        Thu, 29 Oct 2026 17:28:31 -0700 (PDT)
-Received: from [192.168.18.21] ([46.197.185.71])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71ba53d7sm70205f8f.53.2026.10.29.17.28.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Oct 2026 17:28:30 -0700 (PDT)
-Message-ID: <9c36dafb-0299-42b7-8945-080360e7e49b@gmail.com>
-Date: Fri, 30 Oct 2026 03:28:28 +0300
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WBASHjtM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3EB01F000C1;
+	Fri, 30 Oct 2026 00:29:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793320170;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=WBASHjtMalyLYLtMdLmhhHvLK4681I+TAryxUAPBl/l7wk7PAW0BHEq5gQkIGMaD2
+	 HI5n9JygD8NPQWO0ApHwaaIeTmA3EZ1VoEo0aMv9UfftPqx+BSKgGd7jjwR1W7KGzv
+	 X+Z/rLPFUYIaOAU2Bbrv26CQGK4axfOljZ2uAg1YBII0sNSYtNx4eenhGQg+Dv5wBQ
+	 qb/b09acSRHKffeCplNxXOIuQ0LUHg/XxBnXPQig6qd4qLrI6Sx+rSm2nwfllS81Gg
+	 cHEqmJvHaEahGqwDsK+A5U5MMiBq05hlbuoeumXNMRmDKbYBgYeGgjDK+WQlwmkGWG
+	 IxcskI+G/DmjA==
+From: netdev-bot+sinfo@kernel.org
+To: Prathamesh Deshpande <prathameshdeshpande7@gmail.com>
+Cc: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Cosmin Ratiu <cratiu@nvidia.com>,
+ Carolina Jubran <cjubran@nvidia.com>, Alex Vesker <valex@mellanox.com>,
+ Erez Shitrit <erezsh@mellanox.com>, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net/mlx5: IPOIB, Fix QPN lookup race
+Date: Fri, 30 Oct 2026 00:29:29 +0000
+Message-ID: <179332016921.3327.55556569249842187@kernel.org>
+In-Reply-To: <20261030002241.8508-1-prathameshdeshpande7@gmail.com>
+References: <20261030002241.8508-1-prathameshdeshpande7@gmail.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,43 +67,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2] netdevsim: reject port addition and clean up
- ports after a failed reload
-To: Mina Almasry <almasrymina@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Jiri Pirko <jiri@resnulli.us>,
- syzbot+88435e204734072bf39a@syzkaller.appspotmail.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261030001444.289973-1-omermetekaya0@gmail.com>
- <CAHS8izOAYwGR_ukmXNq8V-wOVDxGu0TWET1tjGa_nXG99LFUmA@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?=C3=96mer_Mete_Kaya?= <omermetekaya0@gmail.com>
-In-Reply-To: <CAHS8izOAYwGR_ukmXNq8V-wOVDxGu0TWET1tjGa_nXG99LFUmA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
+Hi!
 
-> I'm so sorry, I don't think I was clear. Currently net-next is closed.
-> I should have said wait until net-next re-opens and THEN send your
-> fix:
-> 
-> https://netdev.bots.linux.dev/net-next.html
-> 
-> And yes, normally fixes go to net, but the volume of fixes has been so
-> large that non-critcal fixes now go to net-next.
-> 
-> Let me try this:
-> 
-> pw-bot: defer
-> 
-> 
-Hi Mina,
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Apologies for taking up your time; I will resend it after November 9th.
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Thanks,
-Ömer
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
