@@ -1,59 +1,138 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.5
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793340079;
-	b=x3f7IlK9hCRBKrOyZaQpTm/J7iA3KxkQUOjgxH5V1pGj54WTHAEtQo0cb1NBqHLSBMTl
-	 59TKz3i+rdjmUiZ76rsqIqqI8u9/nLVb+o9JgW035AIGl0ISfgqRY9M4kpt7f/1xkrU2P
-	 K9EYrDRVZXuzffMkBjVdKzCdiFbxIGo95vKXOKY8zMG3NWD4dWPVVO3s0v7Y/UAFDtI7G
-	 K1eI6TSovskm2tnKSakkZvb2k8yQX6qryhsRUUFmtk3+WLQRCIYrNsgUImQcRnmcLm9R1
-	 p/dn7uxgF8zTEU7M/wmX1/SyxyoethXd62yw5/XNxC5Up61df78ytY6N6X5TOScR2Ig==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793340079;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=SNo6lEnp0YEeshRc8RFLr5k4atQhnLvqusrNkgI6V88=;
-	b=ZLGuTelYfAyeKgZjX7dR4RRdCdr3iG0YESqEGsD1HyScQyo3Z/Z3yZZftJSDzgX/pnEa
-	 v+r0anowmRxEkNm1StGjzHtssaEvM+CjU2Fvg48NFQiMhzZ7aVCD/T+hmyCCa42+TAaeF
-	 ge/3g5vk4bq7gnDNufL3rghc3/fw6zuzcqqV0ahzJv4hujL0iPpsIT88EVKAQg+C7PkjC
-	 myXjb45xhNaRdUA2JM0REefM54JPj0KQpVl0guMLosC+tgrIged4zyERmHthlaY3gw1RZ
-	 Ig2e+Bgpkhnw9JmTJpfhJPocVevruLYLaMD1YVsMSFNw5eWNSEbONEW/C4E+xFuWLbg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=EW59JHFu;
-	arc=none smtp.remote-ip=220.197.31.5
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.21
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1793340985;
+	b=KsIaVbQOO9uhgGc3idWgWZm0/T3U2Pi1VJ9SMAXmGOVFrx78Y0LmBhSgyLE3yYY6/Zs6
+	 XedqHSWQ9RUvQMbmsExQm0GaGhv1Ke9piuKMA8v8dUJ3Nbjv++TKfxyy26Md8FxBLDcaP
+	 RghZljTfvPgCf0PelIsl1t5JdUbRz44BkAQMHFhbsBZLUd2IOEHwfQUw6iDKOFSTE2qNI
+	 MUgtx9tefCr0OQGxfBLVovHVyXBu98DJrGAXG6pOESbMv7rYZsdQKFBL3cZROOw/xbTjv
+	 WqEp0yopnpPnaCMDYsibuqbdpIDk5xz0dPQFxWh6FUv9WtzXW2NRjecT5gktvH9Z+CA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793340985;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
+	 References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=NWAHlAbQb2WHwHgbXZU+HmQyis8VxQJEqcdAq7R4PvQ=;
+	b=1jQk8ZZFLlKj8guqBo9fewof2MO5SnOLaf61As9M5LpIPu2x1Y1kxXfQp2GRWyJ57xEI
+	 Olh34m3YCd4+Gfl8Soz1JmdSHsh1PemQtUTSCT5BOYzNEw1OTvkdnWjaG802msOz+fteM
+	 osuVpiM3xmrwhnK0JRp0n5KiNOEI7atju3MbeDfQBjeDKX6ScAdwWhR+TPQSpUp7rIC/m
+	 +OAZgneiT24S6DBzf6pmaYOl8foNghwaEeny1nwCWEZPiNJktn84rfaA5a11hj+qJ+GEd
+	 4lTygt//oC3hmXoR4jMk8hNr+17Z+IkhP9V91s7hdyMXuwpWHaANnkO6JPceqWc4xBQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VzeOJgpV;
+	arc=fail smtp.remote-ip=198.175.65.21
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961F7606A31C
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 06:01:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 961F7606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9884606A31C
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 06:16:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B9884606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=EW59JHFu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=SN
-	o6lEnp0YEeshRc8RFLr5k4atQhnLvqusrNkgI6V88=; b=EW59JHFuDEdX/0U7Pe
-	ccrpwJhongPxuoCdM7D6loBTY20VY6S9qLLitwh5uOCb1gbgq2voBJqBsUa6Jv0x
-	ea0Exlrz/bO8E0gDK8aH4rXHKTBdu3yl/U+NQQTw7w/S89mHdhf/gS4KJ/x1aXt/
-	FHhul4gdBSmA2HDbmZX+64m78=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDXb1WNMuRq0UhWEA--.43024S2;
-	Fri, 30 Oct 2026 14:00:46 +0800 (CST)
-From: Rongguang Wei <clementwei90@163.com>
-To: netdev@vger.kernel.org
-Cc: willemdebruijn.kernel@gmail.com,
-	jasowangio@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	Rongguang Wei <weirongguang@kylinos.cn>
-Subject: [PATCH net v9 0/2] tun: fix re-attaching the socket filter
-Date: Fri, 30 Oct 2026 14:00:41 +0800
-Message-Id: <20261030060043.94719-1-clementwei90@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VzeOJgpV
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793340985; x=1824876985;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=fjwAZubC/b9ZKqqR5ZoQmgRODzw8buFjOpyQIFrFYfg=;
+  b=VzeOJgpVVdq6vuIY7UjlIz4Hr79Q3ecwNvCXvPjFOh+AlJt+I06woa7R
+   35/ROqmINPAGiW+fKz5bgdkYBr6xgV+3uZZHkVGrlVTrLnPqwJg5cqIrI
+   qNAotJFU7AdtVl4RITSoCS8rp8HVUZXq9mYi58IXsOmRdWWgh84couZRb
+   P/QLyPLX3QPerfVHPQlio8uOX7MZbLIY9rnQvWWyGU1Gad5NsBdQnO3GC
+   gtNt0e8zjxh0u7t79Y7YrOsu0YldKxCV2h/p6sS1WUgeI6LLxLG9Zipdf
+   EPaJKGclA4Mr1o+CFBwJCfRLshZhO/Fjaz+5iVIA03Kgq8JwwO8/9/Njg
+   Q==;
+X-CSE-ConnectionGUID: vCtwz3L1R+WYma5Yu2+zfQ==
+X-CSE-MsgGUID: CY9UUi9eT4Wp9f9sm4ISqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11950"; a="2191105"
+X-IronPort-AV: E=Sophos;i="6.27,185,1787036400"; 
+   d="scan'208";a="2191105"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 23:16:24 -0700
+X-CSE-ConnectionGUID: HmuR9ArQQGikYY1aU3JwwA==
+X-CSE-MsgGUID: LZwpCPWiR1S+mGwGgFnsMg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,185,1787036400"; 
+   d="scan'208";a="5434449"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 23:16:24 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Thu, 29 Oct 2026 23:16:23 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56 via Frontend Transport; Thu, 29 Oct 2026 23:16:23 -0700
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.13) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Thu, 29 Oct 2026 23:16:21 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SXTcLZvWZkT32vH0AiRFKOBOby1Lz7qEkyA5iptGDqzSYcVT3qZkNhua/3IDOuqiJFki01ZqOOtx+LbOB8uYxgsBHPVNU/5Gl3jYEaHl3neobSSIhieocIq2jgqRrYnXEi7v9LJRNSrUmz2cFi+BN5vqBfI2VkCdQ9MSPyhNd6xPvXEHtkOqe1NrcUYiRi2oOJMLQRH+J7gfam3+uFYaAu1v2yEfdWtz6580cg4cVJs1Zajv/AVo4yVFvn7x+11VgxtX9KxOtz7TjbmURQf08RY49qUYAjpZ2FA6fGwOXz+hDa+3JTH+AjhvdTvogJq95CQrtoyjduoF14ETJPa/jg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NWAHlAbQb2WHwHgbXZU+HmQyis8VxQJEqcdAq7R4PvQ=;
+ b=sIvhdWv3xOP/cHGJjUCBz7ekQFiytdmD2SquPS3Z9FQ6rTpEyh0n6N9E3VNhOwxW4SRxyaiZwzVNv3NnVeQxL2ES8usb3k4GQQvfY2v6ZVQCiEQR9s6YHT3tlijWUVMbg9fuipdjCqoht1oRF9WzRtd3XdO7QtPaDMxPhhuEdS0h+EZgjYfgofpS9aphX8RUV9IW5OSf1Qtwi7FA6ThaIG8eIOdLZuXBazq5lXFTX7fdMG7P7Y+UkYVztMgI8SiRxtB4qwxPNLn5Ffo188TZRVw+I0YSNJnJzD8d6WfiOG2Wp/F7qdoBAS3UIgnOSK8YxIj/we28ADaE5ad9Nes6+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7958.namprd11.prod.outlook.com (2603:10b6:8:f9::19) by
+ MW4PR11MB5872.namprd11.prod.outlook.com (2603:10b6:303:169::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.8; Fri, 30 Oct
+ 2026 06:16:19 +0000
+Received: from DS0PR11MB7958.namprd11.prod.outlook.com
+ ([fe80::8cb2:cffc:b684:9a99]) by DS0PR11MB7958.namprd11.prod.outlook.com
+ ([fe80::8cb2:cffc:b684:9a99%4]) with mapi id 15.21.0569.008; Fri, 30 Oct 2026
+ 06:16:18 +0000
+Message-ID: <86fb7702-9b70-412c-a8a0-a2d78cb5fae2@intel.com>
+Date: Fri, 30 Oct 2026 11:46:05 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] drm/xe: Expose retired VRAM pages via drm-ras
+To: Rodrigo Vivi <rodrigo.vivi@intel.com>, Jakub Kicinski <kuba@kernel.org>,
+	Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>
+CC: <intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+	<netdev@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
+	<simona.vetter@ffwll.ch>, <airlied@gmail.com>, <tejas.upadhyay@intel.com>,
+	<himal.prasad.ghimiray@intel.com>, <raag.jadav@intel.com>,
+	<joshua.santosh.ranjan@intel.com>, <ashwin.kumar.kulkarni@intel.com>,
+	<pratik.bari@intel.com>, <Hawking.Zhang@amd.com>, <tao.zhou1@amd.com>,
+	<YiPeng.Chai@amd.com>, <jinzhou.su@amd.com>, <cesun102@amd.com>,
+	<lijo.lazar@amd.com>, <alexander.deucher@amd.com>, <christian.koenig@amd.com>
+References: <20261007080354.3072751-1-aravind.iddamsetty@linux.intel.com>
+ <20261007080354.3072751-2-aravind.iddamsetty@linux.intel.com>
+ <20261016154913.1af64e88@kernel.org> <atYFYbLXfSIPLTzA@intel.com>
+Content-Language: en-US
+From: "Tauro, Riana" <riana.tauro@intel.com>
+In-Reply-To: <atYFYbLXfSIPLTzA@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5P287CA0056.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d3::11) To DS0PR11MB7958.namprd11.prod.outlook.com
+ (2603:10b6:8:f9::19)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,116 +142,125 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDXb1WNMuRq0UhWEA--.43024S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAF43Xr1ktr18GF1kAw1UKFg_yoW7Jr4UpF
-	WrW345Gw4kWrWxWwn3Zw4xZ34ayws7GF45ZwnxG34rZan8Wry093ySg34YvasrArZ7Ww1j
-	yF1jv3ZFg3WDAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07joGQDUUUUU=
-X-CM-SenderInfo: 5fohzv5qwzvxizq6il2tof0z/xtbC4g+D7mrkMo9DsQAA3B
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7958:EE_|MW4PR11MB5872:EE_
+X-MS-Office365-Filtering-Correlation-Id: 724c24c5-b39d-4bb4-e303-08df364d4f31
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|376014|4143699003|56012099006|11063799006|261009223027099003|261022075727099003|261021121427099003|261026121527099003|10067099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info: SUuKaRRvfimzbFqeslrz4ENN9JKKbz3P0vLhBFX6cFD291eZsQxUnsMvLS4onuavq0+oGs4saTWvNbAz7cjfYcGnaU6KbSRmOYs2gvMx7Avv5+ZnTwx8JMX/dVXR7i2L1tZMCuBBWz2FDKtzuRW+OPMfALUJG07Qx/LeeA62nibBW72PwTKwCJajUVPnXMr77bs7kP4/nap0yuCn/EYFaZMULEmrKhy6NYHlVrriW+XXK9XP+ggKT7zWtDuvjd+BRXJZajQT50V7lDlyq9oV34YMN+edtZEWAoMR3XL1sd6cks1SFas3HsrdM0/bzfuSexpyf2dx4/iy+O5y8pAVTDg5qQOsHk5AoeDPrxz+WORPDz1AWwZYD/M527+azRFaHiX34aAvs3ltWmfpt4nZdacB/ARA88gRcJdMAnfnGTNctqTTzfiI7+wVAjo0nqfeDJEFmk188oHuGQ+qDMOebLf8TIpHAqa+60VSjYgCxB+SxODJlxCb2xW6vnPt5cxuk4sLBavxUdnUh+GQVcnSa9RdQPF9Xp2AdNUdXa/RvrnRB/smQkxtG0E8JpjrhcOR05Mkuhp+YoN6zUE1Ib2Yxoq4NXiBEWFg1EKr8HTKCSaLg+V29fFEWOmQ/RsbIWi9
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7958.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(376014)(4143699003)(56012099006)(11063799006)(261009223027099003)(261022075727099003)(261021121427099003)(261026121527099003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WDg3SjdoOFNvMFRCRzR1ZzNtVHRFZ2QzWjY4MmdseFd4NDJrZFhyTmNicEtt?=
+ =?utf-8?B?V2ZVRVRPcnVDMUFONzhQSEVxcU5uV3hIZU5qS1pjQ0pVTFFFTmpxKytzR0dB?=
+ =?utf-8?B?RXRpMG44NjR1a2FzdTMwRWJ4cklGUFBzUlVzU3hlOE11Uk5WTGJveXNQQlhr?=
+ =?utf-8?B?TjBJbVd6RXdUU1c3MkF1Rzdqd1FvMHV3M29uTFhWdUovR2p6WnZlQ0dqaWlV?=
+ =?utf-8?B?dFU3Rk1vTHNMUEcxdFZTb3VNTGZZOEFsblZvNFJKem9XNUYxN20xeUgzTlRJ?=
+ =?utf-8?B?ejJqT0NKTjZ0MCtONlB5eVlqY1gyeUg0bThLV0I3aHd0eVRxYlBxdWxzdElY?=
+ =?utf-8?B?K2JYekxwM2Y3UUxOaHVNY09nU1hRMGNnVnk3a201TlRYQTd2VGtTcURoeE9M?=
+ =?utf-8?B?RnZNSzZUZlFEeENoMEcxQis0cEkvc0krbWlFMGhYclpuQWhtV25HNjFxaXN2?=
+ =?utf-8?B?ZGNYaDZXRCtRVkJ3NTdLMGFJMnF0cXh3NVFGa0RINnc3ZDhFWXBCbEVkVysx?=
+ =?utf-8?B?NFZhUDdORmIwR3F0dzNkakF5K2h3UnVsT2lSbTlyN0hPNGJjMnRtQ21INW9q?=
+ =?utf-8?B?VG1LV1JydEpoQ3NJcXhRU01PU2JkU3k2blFpWWUycWdTNzEyVktleVVCMkZC?=
+ =?utf-8?B?Mk1JRFVjd05ML1RJUnRudDFVcmljZUFCWXQreHhwejZSWXp6azJ0dG9DK0Zn?=
+ =?utf-8?B?QkZPZk1OWE5ac3NBU2ZtdXhhODJlaUFLc2JNVHFCSFJwV3kzSGNUMDZRbFhU?=
+ =?utf-8?B?ZnBQdzkxZGJxM2paRVc4NG9kbVlwR3BFdmRxYzljSjVGL3UzTTFzZDRWUjNJ?=
+ =?utf-8?B?RURjanBTRm5iRXM3THRlcXBRUlVWczVwbmcxTFRuL1huTUpacUpLZUwvUG40?=
+ =?utf-8?B?cDVTV3R4WkpyQWxuS1ZWRnFtRm5vcTg0Y0VpY2lLV2J5U3hka09FeGtqazJM?=
+ =?utf-8?B?Q08vM3dxSlM0MXpMNkl2WHRRUUlZOE5TRldQNG9La0p0dytpMDZ2bjJ5OVhM?=
+ =?utf-8?B?azdZMEtaYmVOQTRQWDBQV3o2VEg4bE80eFNtMEJtN1dVWHJRNXBUZVViNVhB?=
+ =?utf-8?B?Wk95UHl4MmdHUkc3QUc0L3JOaldCVkNrQSsxSUtFTWVZb1RNckp0MmxadDJT?=
+ =?utf-8?B?SUNhWUpZUWpkKzg0YzFmQlppbFE5L3ZIZ1hMbUV6SGYrdDcwQk5JQ3VlM1RE?=
+ =?utf-8?B?bVhFUXBFZTkvU3Fzd1RmNUk5MWhycW9VbWxNNktOUlIrT0FCRDZMc1BhZWQ5?=
+ =?utf-8?B?ZWFjWHVwZlhRenVTZGJuKzgySm5ZSU13RWw5Q2ZoSWZKVlpoaUVNVW56Q0Vv?=
+ =?utf-8?B?RTk3K0k0TDdrTzFsODI4R3FNa29IZ25GYnQ3N28xeXdkd3JCelgxVkMwYjhs?=
+ =?utf-8?B?R0tReVR2ZU4xd0Z5ZTJhRTNhd0xYWmNYa1ZxS3lpQURmbGJscHVNY0Ewb3pR?=
+ =?utf-8?B?cVBFaXpOWGZDcU9Zekw2aEVQRjUrd0RXOGE3dzlCdnZjMHB6QUJpL0pTYnYv?=
+ =?utf-8?B?UlFBa2pCWEFMMTBhVGkvUVpCZFkzOThTb2p3c2JlUU5OTlNZTGcxVllqQ2tQ?=
+ =?utf-8?B?RTNGZkFybDYwd0pSaytOR2tXZjIxbmpBMkNSVGdWVlk1R3p4R0dhU3VVdnN2?=
+ =?utf-8?B?YnBiLzhNWFY1OC9BeGhpNzE5anVXYmlQZ1ZoNFFDbFBna2RIQmQyOXBvVldr?=
+ =?utf-8?B?Z1Z2SE01TWVwenJhMHUxd1ZsOWFoODdZT0FGVXZ6Q05iczNvSWI5dlNrRE9J?=
+ =?utf-8?B?RHhkSzZML1VNc25EYno3OVh3Mmx6UUxHMTlSVlJyUCtBYi9MU254WlFIazhY?=
+ =?utf-8?B?OGpZVXYxMTVTUzhzNWVFWktxbm52YVVGU2g0YVM5L0VXTjNDS0l4TlY3a2dT?=
+ =?utf-8?B?T1pINVhva1FoS2sva1ZpQ2Joa25Rcm93aGFLbHlXeHNHWVlwellyMldqU0pz?=
+ =?utf-8?B?OFNOVEw0NDA0VktwTThGaUtVMFBGMG5GS0h6QXgwdUVUaHUrM09LMDY5VnFy?=
+ =?utf-8?B?MG1qSzlKZ3lxb0FGVHhLZFQ5OE1FWFJpN1pqejE2R1JIRlQ5RkxnS3kzNS9u?=
+ =?utf-8?B?M2hOeExRVEEvUWZ6czZiVjBadWFXbnFSNTB2aFJSUWVHY1ZCaENQemp5Lzkx?=
+ =?utf-8?B?VDZHbGNzay9YS1NzeXFMNEduQ05SNmtKeVA3SFRLYkNXanlkN0t6K0lQdXZN?=
+ =?utf-8?B?TXVPZUs4T1dkbjUxMU1ZWVgrSVkxVndmSjM0ZXVoenNBY2RwalpZc3llQy9r?=
+ =?utf-8?B?R1FJZjdmOVlwQngydVE4YkZ4MWVWNDhKR0wrQWdqdHhQV2VESHRZTkZJbWVL?=
+ =?utf-8?B?eUowRjNjeTY1cjF1d3NST2FtWndnQWRZeG0vNG5leWpIZlJZTUplZz09?=
+X-Exchange-RoutingPolicyChecked: BTnaL7KUgtdIfmpzlDF4kW7iZWM2Rc3NywBO/NfY/Rju16lIwXvmB1aFR+FavlPwCwkwpG4aqWpl7ru834UxcQSolabElvASR5qFL5smgeZA+Ooide6phhuPJbQRH1QQaS77b38khiO0BZZvzsOaa66LnfoMixpnYTpT2qUT0B6RqW7lTjzqQktadAynuGexJOTCc/KUdcJBfjGGkkbIKsdnl5JDPtOPewhOEF7agqEqlaqO0nqTco8ndN137dBJLe6qNFFObOLOiri6mn1ovZO7pjruzdVb3ghPqBbUo99AXvU3FfsIYJqYmfp9yGLnCWK54Jlz91jG1h7xr3qdfw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 724c24c5-b39d-4bb4-e303-08df364d4f31
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7958.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 06:16:18.3121
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gvJq/Cjt9EiU+QodsatbwYX/0e1GcpdeyyPS7rW1CVxLe8Os4IkkO35fGDI9E12/5LEYKOtl1kNoqQPxqLg9SQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB5872
+X-OriginatorOrg: intel.com
 
-From: Rongguang Wei <weirongguang@kylinos.cn>
+Hi Aravind/Rodrigo
 
-This is v9 of the series that fixes attaching a queue to a TAP device which
-re-installs the socket filter of a persistent device.
+How about using a generic telemetry node for this series from 
+https://lore.kernel.org/dri-devel/20261029203000.1763447-1-zachary.mckevitt@oss.qualcomm.com/T/#t 
+instead of a dedicated node for vram-retired-pages?
 
-Patch 1 keeps a copy of the program in the kernel when it is configured,
-instead of reading tun->fprog from user space again on every later attach,
-and fixes the inverted error check in tun_attach(). The two changes are
-one patch on purpose: with only the kernel copy every re-attach returns 0
-without publishing the queue, and with only the check fixed a re-attach
-that used to succeed without a filter starts to fail. IFF_NOFILTER keeps
-working and is no longer needed to work around the re-attach bug. The
-program is verified with bpf_prog_validate_classic() when it is copied in,
-and the copy is committed only after every queue accepted it, so a program
-that is refused later, when it is built, does not replace the saved one.
-The header is zeroed before it is filled in, so TUNGETFILTER never copies
-uninitialized padding to user space.
+Thanks
+Riana
 
-Patch 2 adds selftests: it re-attaches a queue after the buffer the program
-was copied from was made unreadable, attaches a second queue from a fresh
-socket to check that the filter is rebuilt from the kernel copy, and checks
-that a TUNATTACHFILTER with a bad length or bad instructions keeps the
-saved program, plus the ways to attach a queue without a filter.
-
-Thanks to Willem de Bruijn for the reviews, and to the CI reviews for
-the comments they raised.
-
-Rongguang Wei (2):
-  tun: keep a kernel copy of the socket filter program
-  selftests: net: add TAP socket filter attach tests
-
----
-v9:
-  - zero the whole sock_fprog header in tun_copy_filter(), so that the
-    padding TUNGETFILTER copies is not uninitialized stack
-v8:
-  - narrow the bpf_prog_validate_classic() contract to the classic
-    verifier and note that it can also return -ENOMEM; a program can still
-    be refused when it is built, and the commit message now says so
-  - commit the new program only after every queue took it, so a late
-    failure does not replace the saved one, and filter_attached is left
-    alone
-  - selftests: check the filter state and a newly attached queue in
-    attach_filter_bad_prog_keeps_program() too
-v7:
-  - verify the instructions in tun_copy_filter() before anything is
-    replaced, so an invalid program is rejected even when no queue is
-    attached
-  - fix the kernel-doc of sk_attach_filter_kern(): drop a reference to a
-    function that does not exist and complete the Return section
-  - reject a program whose length is out of range before allocating
-    memory for it
-  - document why the filter is dropped when a later step of tun_attach()
-    fails, and why filter_accept[] has three instructions
-  - selftests: add a case for a rejected program with valid length and
-    bad instructions
-v6:
-  - add description for return value of sk_attach_filter_kern(); no code
-    change is involved
-v5:
-  - add kernel-doc for sk_attach_filter_kern() describing what the missing
-    original program means for SO_GET_FILTER and sock_diag
-  - mention in the message that a rejected header now leaves the installed
-    filter alone
-  - fix the wording of the mprotect() comment and note what the IFF_NOFILTER
-    and TUNGETFILTER checks in the re-attach test
-  - https://lore.kernel.org/netdev/20261012021113.45939-1-clementwei90@163.com/
-v4:
-  - merge the kernel copy and the error check into one patch, so that no
-    step of the series turns a re-attach into a silent no-op or into a new
-    failure
-  - charge the kernel copy to the caller's memory cgroup
-  - selftests: check that the queue is attached again, and attach a new
-    queue to see that the filter was installed from the kernel copy
-  - https://lore.kernel.org/netdev/20261003063859.136895-1-clementwei90@163.com/
-v3:
-  - reorder: the kernel copy of the program comes before the corrected
-    error check
-  - add sk_attach_filter_kern() in the patch that first uses it
-  - address the review of the selftests
-  - https://lore.kernel.org/netdev/20260930080746.135017-1-clementwei90@163.com/
-v2:
-  - roll back the filter attach when a later step of tun_attach() fails
-  - keep a copy of the program in the kernel, so that a later attach does
-    not depend on the address space of the process that set the filter
-  - add selftests for the re-attach and for a rejected TUNATTACHFILTER
-  - https://lore.kernel.org/netdev/20260929093712.131096-1-clementwei90@163.com/
-v1:
-  - https://lore.kernel.org/netdev/20260923025653.59348-1-clementwei90@163.com/
----
- drivers/net/tun.c                 | 127 +++++++++++++--
- include/linux/filter.h            |   2 +
- net/core/filter.c                 |  67 +++++++++
- tools/testing/selftests/net/tun.c | 249 ++++++++++++++++++++++++++++++
- 4 files changed, 433 insertions(+), 12 deletions(-)
-
-
-base-commit: c339f4010dea8b0d754f84ace70cd1b089878ef8
--- 
-2.43.0
-
-
-No virus found
-		Checked by Hillstone Network AntiVirus
-
+On 19-10-2026 17:26, Rodrigo Vivi wrote:
+> On Fri, Oct 16, 2026 at 03:49:13PM -0700, Jakub Kicinski wrote:
+>> On Wed,  7 Oct 2026 13:33:53 +0530 Aravind Iddamsetty wrote:
+>>> +  -
+>>> +    name: retired-resource-attrs
+>>> +    attributes:
+>>> +      -
+>>> +        name: node-id
+>>> +        type: u32
+>>> +        doc: Node ID targeted by this retired resource operation.
+>>> +      -
+>>> +        name: vram-page
+>>> +        type: nest
+>>> +        nested-attributes: vram-page-attrs
+>> why wrap attrs in a nest? Are you planning to add other resource types
+>> (than a page)? It's a common anti-pattern in Netlink to over-wrap stuff.
+> we should indeed remove the wrap and have only the page info.
+>
+>>> +        doc: >-
+>>> +             Type-specific payload. The resource type is identified by the
+>>> +             node (its node-name); each node reports a single resource type.
+>>> +  -
+>>> +    name: vram-page-attrs
+>>> +    attributes:
+>>> +      -
+>>> +        name: address
+>>> +        type: u64
+>>> +        doc: Device address of the retired VRAM page (e.g. DPA).
+>>> +      -
+>>> +        name: size
+>>> +        type: u64
+>> prefer uint
+>>
+>>> +        doc: Size of the retired VRAM page in bytes.
+>>> +      -
+>>> +        name: max-pages
+>>> +        type: u32
+>>> +        doc: >-
+>>> +             Maximum VRAM pages that can be retired. Present only in the
+>>> +             leading summary entry of the dump (no address/size/status).
+>>> +      -
+>>> +        name: status
+>>> +        type: u32
+>>> +        doc: Retirement status of the retired VRAM page.
+>>> +        enum: retired-resource-status
+>>> +      -
+>>> +        name: pad
+>>> +        type: pad
+>> And then you won't need pad
+> I noticed this in the review prompts, but I have some reservations here.
+> We know for sure our value is always u64 because it is our hw definition.
+> I don't see a good reason why not use the exact size that matches our hw.
