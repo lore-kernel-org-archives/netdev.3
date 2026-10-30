@@ -1,43 +1,43 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=23.88.38.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793368282;
-	b=t+UQepocGSB5bTT7XRTA42D3gQwJRKdh+tffxkvIQKQ+yAzTCLDluBhfm8zymhEnPeGd
-	 hZh2y3uhzihCKCfvPO6WQaEfaDwkrx/O+42KYXz88vI537XD3I1V9+99x7jo7SoehnqK1
-	 j3kGO95NB2tFrwXIzvpQwldxtjZjmP/tFPGFPCp7QP4Xt53H+FfZAsJ0RzgLL/aw9HJMS
-	 HMpvcpI7qjsXXuE6llZkSZHN0ZepOGgFC2FlxNtUjmRJhKkO7lKFuum7b4LcSrWO3ORlE
-	 CQOEA8ErKg4QYwvY4nnqgyfer3v+GQL1k/0CWbNRlAcqDA6OBOGyTcVAnE+gveb6GOQ==
+	t=1793368283;
+	b=PJMKD3Re/SKpmu5Cm/O1avpmJ+AT7R76EduPvtT0HMXSFUJ0czqtxDAmRvF4VU1IO1bj
+	 e7muC2A0UjSYhLe47ug2lAGNIGxU5qci9b5YWBQyRyyFxR+SDZMsHBydiQyu2nVhEwAes
+	 fVMbRZPQi2SwUuEXPubyQFAMLKI/hmTj7BzC45vWZx9Mt/7iO3r4arwEWU99gSAJ5U0+d
+	 K6HQvSxaqJZMOYrbdplddePEN2DiOnIQQs/kijLsZLVomkyEY8BGoP5ImnsPhRKa1EzAk
+	 9m9IbtgEYk4JvR/2UHr9GplIHwXdONzEc+idKJfBzrp1ndlgGFFwGfGlfPIdQFyqAlw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793368282;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793368283;
 	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=UFxRLs5vW2tsghKtP5gycgKT1qnvgM0WlTrEQHjOoas=;
-	b=sQwApkHUzCsUSVtz3J9h8D/deFxjzhcSI3XfBd5AnMUT8f32pzqGEKoiSFjT3aqtx54M
-	 l8Um/qEiRqMu37GRjts3a9ouvEsow9O0oAMm76tardkLfwdqWE/jIz8ScnUUJawNsA3Hb
-	 h0R40hozMiHxdeNQeykuq6WLPOkvlgRvbXeSpK4ks0l+QwbtHTJ1Sjm9zA/XoOPieJdQK
-	 fJgiOZoFB9Kk5WxiUcDRvpgd+zYLmgnXSt24OPn00uFW9ppBrFWx/8T1D17lRksIsNQoJ
-	 CXexfonvp58Tvc2UXMgAd9YkkBnICMyXlTKyFweoZ5paKOASzJw1NWkqrFHY8l5NpWQ==
+	bh=FWL1F1vUJ7Rasf3dRTG7SOA/ia/4OoBsj5jwSa+rk1s=;
+	b=tMorAepY9U/6JIREX13g8FGcyj7/IgklNbMHfkmTqytlMC9a08cCLy57UoIRo3VBw01s
+	 ZqSD2N9SAPMJLRuGFcze8B/+B3h4czMgclBPhiyXEbyEKBXAwWBqp0m+DuY/PAA6FS7gg
+	 4a2eJJd2E/ZNeJQpWtdBcMXkAm8M1F58eiL0aPpmXgmln6LHb7D94DWJ8NQOxQWSsJa7H
+	 6K6YVOahp7AkzooQbFl+udKOB286nFVp6pBNiVrbGwEa2+LCgL2oUenhsqFDDxt1ILLsO
+	 GxEKh9Gbw7ePvqnQgzYsVR4aIRO7LZbLAyEo4NcCtIfhjdiN9juR5+6AM9Kxb9bheAQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=simonwunderlich.de;
 	spf=pass smtp.mailfrom=simonwunderlich.de;
-	dkim=pass header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=ytb8whlv;
+	dkim=pass header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=weEB+vu7;
 	arc=none smtp.remote-ip=23.88.38.48
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id CFC4360A2601;
-	Fri, 30 Oct 2026 13:51:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CFC4360A2601
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 8E18C606A33A
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 13:51:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E18C606A33A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=ytb8whlv
-Received: from kero.packetmixer.de (p200300C597124fd839580c360d3ed6f6.dip0.t-ipconnect.de [IPv6:2003:c5:9712:4fd8:3958:c36:d3e:d6f6])
+	dkim=pass (2048-bit key, unprotected) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=weEB+vu7
+Received: from kero.packetmixer.de (p200300c597124Fd839580C360D3ed6F6.dip0.t-ipconnect.de [IPv6:2003:c5:9712:4fd8:3958:c36:d3e:d6f6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with UTF8SMTPSA id 1BDA5FA006;
+	by mail.simonwunderlich.de (Postfix) with UTF8SMTPSA id C4F24FA2F0;
 	Fri, 30 Oct 2026 14:51:20 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
 	s=09092022; t=1793368280;
@@ -45,12 +45,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UFxRLs5vW2tsghKtP5gycgKT1qnvgM0WlTrEQHjOoas=;
-	b=ytb8whlvwET1ZOa7sOau/pD5WhJsaHvM+YCfXF46KrSrLm8+s4uO4USxI+hdJpWBkHExE5
-	aS80MRVtVSeNGUjFuVaCWtk9nEAhZJclx5ZwlVEn/c2FfqhsQfFWqN61/a2E2F0jaL7kqD
-	JE8Zj0yJL5hPnqslmf9M+86DpTyJZsLodj1ySvLLmS2KzQfBf3FsvMHbZT6XEZFKoisOMq
-	B33npiMYvzmT45Stpu9lXv4j9sbE+wxRdyngdlO9ba0bulEBhg1zFVN8l0iewhBpSvuLFV
-	oMvNjB1ue9BwgpXAtK5+5fJxu2NPX3AqqvaGhfpgs2z//fjF3Go+so15uXQyNQ==
+	bh=FWL1F1vUJ7Rasf3dRTG7SOA/ia/4OoBsj5jwSa+rk1s=;
+	b=weEB+vu7I//jKEx/ZyXAZsMGs3Hr4ki0P+ytfDCwrTX7/4g4R6jdErl9XeIaXJI5bG3tjl
+	r/MysQdsxPCuK1giVx6k19vp0404XIDz51GdBRzjkEbiiz+UX/V0umHpdqatu28Rca7yVX
+	Bex/aml1ZNkVpP6RlANijFpdUv5yTFAvUWJLw0rhd/We2EUd13eiF7MLa6/US4oiAN5f5I
+	8asOGtXk+ajWe3tQ1zdRigNWbdoJPT1DTXmCV8dILPTMobYvl1lySzAxfOYTYTq9u6Dnr3
+	qi0uYsQk25HLpLuD74GgsKCQ7UwptmbXzp2NH8MBUY5MDVb9Hh7LSOhrp5a6Zg==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -60,12 +60,12 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Simon Horman <horms@kernel.org>,
 	b.a.t.m.a.n@lists.open-mesh.org,
 	Sven Eckelmann <sven@narfation.org>,
-	stable@vger.kernel.org,
 	Sashiko <sashiko-bot@kernel.org>,
+	stable+noautosel@kernel.org,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net v2 13/14] batman-adv: tt: don't drop local events queued during TVLV update
-Date: Fri, 30 Oct 2026 14:51:04 +0100
-Message-ID: <20261030135105.2555887-14-sw@simonwunderlich.de>
+Subject: [PATCH net v2 14/14] batman-adv: tt: limit local table to single TVLV response size
+Date: Fri, 30 Oct 2026 14:51:05 +0100
+Message-ID: <20261030135105.2555887-15-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261030135105.2555887-1-sw@simonwunderlich.de>
 References: <20261030135105.2555887-1-sw@simonwunderlich.de>
@@ -82,181 +82,186 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-batadv_tt_tvlv_container_update() read the number of local changes without
-holding changes_list_lock. batadv_tt_local_event() is not serialized by
-the commit_lock and can queue new events before the changes_list is
-flushed:
+The reservation of local TT entries and VLANs only limits the local table
+by (int) packet_size_max. But the full table response is sent as a single
+unicast TVLV packet whose tvlv_len (covering the TVLV header and the TT
+TVLV) is only 16 bit wide. The reservation must therefore be capped at the
+minimum of both the packet_size_max and the maximum theoretic table
+response.
 
-  CPU0                          CPU1
-  batadv_tt_tvlv_container_update()
-    num = ...local_changes;
-                                batadv_tt_local_event()
-                                  list_add_tail(...);
-                                  ...local_changes++;
-    spin_lock_bh(&...changes_list_lock);
-    /* only num events copied but all freed */
+The size limit was already missing the 16 bit tvlv_len cap since the
+original packet_size_max check was introduced. But this check was only
+reachable with fragmentation disabled and a hard interface MTU larger than
+the maximum unicast TVLV packet. In this case,
+batadv_tt_prepare_tvlv_local_data() refuses to build the full table
+response and no oversized packet is created. It is therefore mostly
+affecting the commit 85fb027f611b ("batman-adv: tt: reject VLAN/TT entries
+before reaching size limit"), which should prevent this kind of
+overallocation.
 
-The additional events were freed without ever being sent. Other nodes will
-only notice this via a CRC mismatch and must request the full table.
-
-The number of changes and the changes_list must therefore be taken
-atomically. Events queued afterwards then stay in the tt.changes_list for
-the next TT round.
-
-The changes can no longer be kept for the next round when the TVLV buffer
-allocation fails. But they would be sent with a skipped TTVN anyway, so the
-other nodes have to request the full table in this case either way. The
-last changeset is only dropped in this case when the TTVN was incremented.
-Without new changes, it still describes the current TTVN.
-
-Previously, the unconsumed changes caused a retry of the TVLV container
-update in the next commit round. Since the changes are now consumed, the
-next round would only take the path without changes and wait for
-BATADV_TT_OGM_APPEND_MAX rounds before updating the container again. Until
-then, the outdated container with the previous TTVN would still be
-announced. The ogm_append_cnt is therefore reset on failure to retry the
-update in the next OGM interval.
-
-This doesn't make the CRC consistent with the announced changeset. The
-local table modifications are still not serialized with the commit and
-batadv_tt_local_transition_new() can still make a client part of the CRC
-for which the event is only part of the next TT round. Such an
-inconsistency is detected by the CRC check of the other nodes and solved
-via a full table request.
-
-Cc: stable@vger.kernel.org
 Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/bug/linux-fc286ddd-5bed-4683-b842-ee7a307eeb19
-Fixes: a73105b8d4c7 ("batman-adv: improved client announcement mechanism")
+Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930094558.3723766-2-sw%40simonwunderlich.de?part=8
+Fixes: a19d3d85e1b8 ("batman-adv: limit local translation table max size")
+Cc: <stable+noautosel@kernel.org> # requires 85fb027f611b, old behavior only affects MTU > 64KiB without fragmentation
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/translation-table.c | 61 +++++++++++++++++++++++-------
- 1 file changed, 48 insertions(+), 13 deletions(-)
+ net/batman-adv/translation-table.c | 69 ++++++++++++++++++++----------
+ 1 file changed, 47 insertions(+), 22 deletions(-)
 
 diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index fa5ead248f192..f0100ccf93deb 100644
+index f0100ccf93deb..46304069b3b75 100644
 --- a/net/batman-adv/translation-table.c
 +++ b/net/batman-adv/translation-table.c
-@@ -1323,22 +1323,24 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
-  * batadv_tt_tvlv_container_update() - update the translation table tvlv
-  *  container after local tt changes have been committed
+@@ -26,8 +26,10 @@
+ #include <linux/jhash.h>
+ #include <linux/jiffies.h>
+ #include <linux/kref.h>
++#include <linux/limits.h>
+ #include <linux/list.h>
+ #include <linux/lockdep.h>
++#include <linux/minmax.h>
+ #include <linux/net.h>
+ #include <linux/netdevice.h>
+ #include <linux/netlink.h>
+@@ -253,7 +255,8 @@ static int batadv_tt_len(int changes_num)
+  *
+  * Return: local translation table size in bytes.
+  */
+-static int batadv_tt_local_transmit_size(u16 num_vlan, u16 num_entries)
++static int batadv_tt_local_transmit_size(unsigned int num_vlan,
++					 unsigned int num_entries)
+ {
+ 	int hdr_size;
+ 
+@@ -266,6 +269,25 @@ static int batadv_tt_local_transmit_size(u16 num_vlan, u16 num_entries)
+ 	return hdr_size + batadv_tt_len(num_entries);
+ }
+ 
++/**
++ * batadv_tt_local_transmit_size_max() - get the maximum size of a full local table
++ *  response
++ * @bat_priv: the bat priv with all the mesh interface information
++ *
++ * The full table response is sent as a single unicast TVLV packet. Its
++ * tvlv_len, which covers the TVLV header and the TT TVLV, is only 16 bit wide.
++ * This limits the response size even when packet_size_max is larger.
++ *
++ * Return: maximum size of a full local table response in bytes
++ */
++static int batadv_tt_local_transmit_size_max(struct batadv_priv *bat_priv)
++{
++	int tvlv_size_max = sizeof(struct batadv_unicast_tvlv_packet) + U16_MAX;
++	int packet_size_max = READ_ONCE(bat_priv->packet_size_max);
++
++	return min(packet_size_max, tvlv_size_max);
++}
++
+ /**
+  * batadv_tt_local_reserve() - reserve room in the transmittable local table
   * @bat_priv: the bat priv with all the mesh interface information
-+ * @changes_list: list of committed changes which will be consumed
-+ * @tt_diff_entries_num: number of entries in @changes_list
-  */
--static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
-+static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv,
-+					    struct list_head *changes_list,
-+					    int tt_diff_entries_num)
+@@ -290,22 +312,23 @@ static int batadv_tt_local_transmit_size(u16 num_vlan, u16 num_entries)
+ static bool batadv_tt_local_reserve(struct batadv_priv *bat_priv, u16 num_vlan,
+ 				    u16 num_entries, int *table_size)
  {
- 	struct batadv_tvlv_tt_change *tt_change;
- 	struct batadv_tt_change_node *entry;
- 	struct batadv_tvlv_tt_data *tt_data;
- 	struct batadv_tt_change_node *safe;
- 	int tt_diff_entries_count = 0;
--	int tt_diff_entries_num = 0;
- 	bool drop_changes = false;
- 	size_t tt_extra_len = 0;
- 	int tt_change_len = 0;
- 	int tt_diff_len;
- 	u16 tvlv_len;
+-	int packet_size_max = READ_ONCE(bat_priv->packet_size_max);
++	int size_max = batadv_tt_local_transmit_size_max(bat_priv);
++	unsigned int entries;
++	unsigned int vlans;
  
--	tt_diff_entries_num = READ_ONCE(bat_priv->tt.local_changes);
- 	tt_diff_len = batadv_tt_len(tt_diff_entries_num);
+ 	scoped_guard(spinlock_bh, &bat_priv->tt.reserve_lock) {
+-		bat_priv->tt.reserved_vlans += num_vlan;
+-		bat_priv->tt.reserved_entries += num_entries;
++		vlans = bat_priv->tt.reserved_vlans + num_vlan;
++		entries = bat_priv->tt.reserved_entries + num_entries;
  
- 	/* if we have too many changes for one packet don't send any
-@@ -1356,19 +1358,39 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
+-		*table_size = batadv_tt_local_transmit_size(bat_priv->tt.reserved_vlans,
+-							    bat_priv->tt.reserved_entries);
+-		if (*table_size <= packet_size_max)
+-			return true;
++		*table_size = batadv_tt_local_transmit_size(vlans, entries);
++		if (*table_size > size_max)
++			return false;
  
- 	tvlv_len = batadv_tt_prepare_tvlv_local_data(bat_priv, &tt_data,
- 						     &tt_change, &tt_diff_len);
--	if (!tvlv_len)
-+	if (!tvlv_len) {
-+		/* the changes are lost and the other nodes have to request the
-+		 * full table. Don't answer TT requests for the new TTVN with
-+		 * the stale changeset of the previous TTVN. Without changes, the
-+		 * TTVN was not incremented and the last changeset is still valid
-+		 */
-+		if (drop_changes || tt_diff_entries_num > 0) {
-+			list_for_each_entry_safe(entry, safe, changes_list,
-+						 list) {
-+				list_del(&entry->list);
-+				kmem_cache_free(batadv_tt_change_cache, entry);
-+			}
-+
-+			spin_lock_bh(&bat_priv->tt.last_changeset_lock);
-+			kfree(bat_priv->tt.last_changeset);
-+			bat_priv->tt.last_changeset = NULL;
-+			bat_priv->tt.last_changeset_len = 0;
-+			spin_unlock_bh(&bat_priv->tt.last_changeset_lock);
-+		}
-+
-+		/* announce the already committed TTVN in the next OGM interval
-+		 * instead of waiting for BATADV_TT_OGM_APPEND_MAX idle rounds
-+		 */
-+		atomic_set(&bat_priv->tt.ogm_append_cnt, 0);
- 		return;
-+	}
- 
- 	tt_data->flags = BATADV_TT_OGM_DIFF;
- 
- 	if (!drop_changes && tt_diff_len == 0)
- 		goto container_register;
- 
--	spin_lock_bh(&bat_priv->tt.changes_list_lock);
--	WRITE_ONCE(bat_priv->tt.local_changes, 0);
--
--	list_for_each_entry_safe(entry, safe, &bat_priv->tt.changes_list,
--				 list) {
-+	list_for_each_entry_safe(entry, safe, changes_list, list) {
- 		if (tt_diff_entries_count < tt_diff_entries_num) {
- 			memcpy(tt_change + tt_diff_entries_count,
- 			       &entry->change,
-@@ -1378,7 +1400,6 @@ static void batadv_tt_tvlv_container_update(struct batadv_priv *bat_priv)
- 		list_del(&entry->list);
- 		kmem_cache_free(batadv_tt_change_cache, entry);
- 	}
--	spin_unlock_bh(&bat_priv->tt.changes_list_lock);
- 
- 	tt_extra_len = batadv_tt_len(tt_diff_entries_num -
- 				     tt_diff_entries_count);
-@@ -4429,11 +4450,25 @@ static void batadv_tt_local_purge_pending_clients(struct batadv_priv *bat_priv)
-  */
- static void batadv_tt_local_commit_changes_nolock(struct batadv_priv *bat_priv)
- {
-+	LIST_HEAD(changes_list);
-+	int changes_num;
-+
- 	lockdep_assert_held(&bat_priv->tt.commit_lock);
- 
--	if (READ_ONCE(bat_priv->tt.local_changes) == 0) {
-+	/* atomically get the list of changes. The TTVN decision and the
-+	 * announced changeset must cover the same events. Events queued
-+	 * afterwards stay in the tt.changes_list for the next TT round
-+	 */
-+	spin_lock_bh(&bat_priv->tt.changes_list_lock);
-+	list_splice_init(&bat_priv->tt.changes_list, &changes_list);
-+	changes_num = READ_ONCE(bat_priv->tt.local_changes);
-+	WRITE_ONCE(bat_priv->tt.local_changes, 0);
-+	spin_unlock_bh(&bat_priv->tt.changes_list_lock);
-+
-+	if (changes_num == 0) {
- 		if (!batadv_atomic_dec_not_zero(&bat_priv->tt.ogm_append_cnt))
--			batadv_tt_tvlv_container_update(bat_priv);
-+			batadv_tt_tvlv_container_update(bat_priv, &changes_list,
-+							changes_num);
- 		return;
+-		bat_priv->tt.reserved_vlans -= num_vlan;
+-		bat_priv->tt.reserved_entries -= num_entries;
++		bat_priv->tt.reserved_vlans = vlans;
++		bat_priv->tt.reserved_entries = entries;
  	}
  
-@@ -4450,7 +4485,7 @@ static void batadv_tt_local_commit_changes_nolock(struct batadv_priv *bat_priv)
- 
- 	/* reset the sending counter */
- 	atomic_set(&bat_priv->tt.ogm_append_cnt, BATADV_TT_OGM_APPEND_MAX);
--	batadv_tt_tvlv_container_update(bat_priv);
-+	batadv_tt_tvlv_container_update(bat_priv, &changes_list, changes_num);
+-	return false;
++	return true;
  }
  
  /**
+@@ -339,9 +362,10 @@ static bool batadv_tt_local_reserve_entry(struct batadv_priv *bat_priv,
+ 		return true;
+ 
+ 	net_ratelimited_function(batadv_info, bat_priv->mesh_iface,
+-				 "Local translation table size (%i) exceeds maximum packet size (%i); Ignoring new local tt entry: %pM\n",
++				 "Local translation table size (%i) exceeds maximum table response size (%i); Ignoring new local tt entry: %pM\n",
+ 				 table_size,
+-				 READ_ONCE(bat_priv->packet_size_max), addr);
++				 batadv_tt_local_transmit_size_max(bat_priv),
++				 addr);
+ 
+ 	return false;
+ }
+@@ -374,8 +398,9 @@ bool batadv_tt_local_reserve_vlan(struct batadv_priv *bat_priv,
+ 		return true;
+ 
+ 	net_ratelimited_function(batadv_info, bat_priv->mesh_iface,
+-				 "Local translation table size (%i) exceeds maximum packet size (%i); Ignoring new VLAN: %d\n",
+-				 table_size, READ_ONCE(bat_priv->packet_size_max),
++				 "Local translation table size (%i) exceeds maximum table response size (%i); Ignoring new VLAN: %d\n",
++				 table_size,
++				 batadv_tt_local_transmit_size_max(bat_priv),
+ 				 batadv_print_vid(vid));
+ 
+ 	return false;
+@@ -724,9 +749,9 @@ static u16 batadv_tt_entries(u16 tt_len)
+  */
+ static int batadv_tt_local_table_transmit_size(struct batadv_priv *bat_priv)
+ {
++	unsigned int tt_local_entries = 0;
+ 	struct batadv_meshif_vlan *vlan;
+-	u16 tt_local_entries = 0;
+-	u16 num_vlan = 0;
++	unsigned int num_vlan = 0;
+ 
+ 	rcu_read_lock();
+ 	hlist_for_each_entry_rcu(vlan, &bat_priv->meshif_vlan_list, list) {
+@@ -4727,16 +4752,16 @@ void batadv_tt_local_resize_to_mtu(struct net_device *mesh_iface)
+ 	struct batadv_priv *bat_priv = netdev_priv(mesh_iface);
+ 	int timeout = BATADV_TT_LOCAL_TIMEOUT / 2;
+ 	bool reduced = false;
+-	int packet_size_max;
+ 	int table_size;
++	int size_max;
+ 
+-	packet_size_max = READ_ONCE(bat_priv->packet_size_max);
++	size_max = batadv_tt_local_transmit_size_max(bat_priv);
+ 
+ 	spin_lock_bh(&bat_priv->tt.commit_lock);
+ 
+ 	while (timeout) {
+ 		table_size = batadv_tt_local_table_transmit_size(bat_priv);
+-		if (packet_size_max >= table_size)
++		if (size_max >= table_size)
+ 			break;
+ 
+ 		batadv_tt_local_purge(bat_priv, timeout);
+@@ -4745,8 +4770,8 @@ void batadv_tt_local_resize_to_mtu(struct net_device *mesh_iface)
+ 		timeout /= 2;
+ 		reduced = true;
+ 		net_ratelimited_function(batadv_info, mesh_iface,
+-					 "Forced to purge local tt entries to fit new maximum fragment MTU (%i)\n",
+-					 packet_size_max);
++					 "Forced to purge local tt entries to fit new maximum table response size (%i)\n",
++					 size_max);
+ 	}
+ 
+ 	/* commit these changes immediately, to avoid synchronization problem
 -- 
 2.47.3
 
