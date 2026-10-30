@@ -1,63 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793330982;
-	b=Wme7JLxmKqa519RAwuIjLVyLPujUczV2MbHi0eKvsHrUVSAjwr5VuecjQYjzPALmKt4V
-	 ADtpVnTy4x6YYAehIP++OKesNyEX7UTtH1j3K3Pw+MRigVd4LS2i7dN5x1FB7CB3z7ce1
-	 mOJZzT5lISylfgItpwKSYhsYJTSuxLg/Io1ASBnVKy6gLsqGLO070BOiSdt8PvU1eowA6
-	 v3DRyjR1HUZ0Qc5BPvB+e+VAPwiqNfe5K29SZLai1I9wlGxMzegrfeWrg+FJIWQwFJvpT
-	 FCw9+2Z5BhA/Pc22MjHTg41VrRX2iOMRuCCnkkHW9ZXJlFlbIY+hSfO1PZKo08blJ8w==
+	t=1793331084;
+	b=oHP8uqZXQqkOYJFActsQF4i6HmcfPhcwGnNxC7WW7yRwP+nLRqMh4ZbeQSPObJGUgr7f
+	 pU+rnGXTJqSrOPX5lOm2jVaNFJAof+ulneihXFsZO2YhkU7U5rlprIFJLpkJ/mUYqfQsu
+	 tcUq1+jKtHVEuhAxIjKJkRzCuSWCoIJlUVXjkfIjV1PP/atAtw5sQ97Y8Q6GObH/TdJ4R
+	 hDcc/P83eNOaQS8sZEYbujX3y/Jd25GyzqK+XFmsRWFFBZdXQz+sfIX7Xmx0721YAA9nX
+	 N321Wa6yEoVs7oXVlnmDxizN12SkuamvEERxLQx3BUHjXu5vID/HNJlO1dylPIilY9A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793330982;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=bmm23ncerky5gmfp8Yu8ywVTzgXle91nrI6gF0mAulOrv81kQPAiMikIOikaFJbVfdCX
-	 VUvbckEuBGOuBjFXThBfBVAE6ulf9uxEL/pS1ItqWIkZjaf3DyzAnwSxWsryivIrchLHX
-	 llWH+hsZdpjnx6xB6pG/kKdPwf9jo+bvDKjZcB5kFV5PDsbUHbxx4lTkFTeL7sU7g6E7o
-	 p5rSIaID1hWdegsx/0Q1wSauUhLki1lUpJXsCcucygRh239a5Y/Vj6R9Pk+NmW/5G7IS0
-	 yokU3wx9uwNTKl7NuCRmGPh4xu3LEmA6uMUt/0ROdHEkMZ9bsFvgkYVb5wcbpqTIfcg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793331084;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=8ktqWfSef3AXz7FND5pOxckiQELIeSzD/uEmAhKFSN4=;
+	b=WWWXhRN51Jcz1CFz0sBUL0R1AKNkumikq03q2Krbs7csA6GKDp3OFghfgIKp5+XJZ4Vm
+	 /1KK3habk/dDO7wtuhdvYJPgxk7MGCzvuWaVZjIfMVypAO89IwMdHWAY6W4vBUR5csVo2
+	 T6LcQFyV7TKWbpaO9Ye7atqwoZbJq8SfecD3U00P5KYCfWMxDqcIy3ny8isukb2AlwDc+
+	 SPfFfpACeKDOt3CJbLW2vhWyNZGkkwnQkts5FqILYsqJbMXNwv8TDF3Wu0blARM4VgFHw
+	 RCGj80NyIaMdfpKMw4NFVMW0mpK3RKGfolIvgdlteXKvWwkcZEElftYLInS0fFw2r3A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mSSvmtu6;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=126.com;
+	spf=pass smtp.mailfrom=126.com;
+	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=qP4XW4f2;
+	arc=none smtp.remote-ip=117.135.210.8
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3541E606A31E;
-	Fri, 30 Oct 2026 03:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4DB606A31A;
+	Fri, 30 Oct 2026 03:31:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7C4DB606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mSSvmtu6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05411F00A18;
-	Fri, 30 Oct 2026 03:29:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793330981;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mSSvmtu6eHVxFg0ZfMRB9mHWisxwTZIQwsXshb2+9Lj0xF3OsXcfmJkHhvFWVWFC7
-	 xU3nrISdxAvry+x7iqYmu+BRrCXqS9bTej7B1BEmmhB3LA79q0XcDTU1lcykfuMUnc
-	 LjbLaE7rQ8zfZ8+67gHIbpMRd7nrVgNl3QhP9R2AiNu1eUdO/XwVojo9ceSWUe1Qsf
-	 O6L9TSEstXcox2aPaKTSR6yizvbJRp24nwmPN/cBwcPqUHl15HA/1qvrIrNOe+5yeq
-	 Ejt41anE0T7SveJ35e/O8xMHR4+gmRuPf9/LcvSMqfjkfaEDErs9fCLLyMiIX9oqDG
-	 ULWwTRVwx4URg==
-From: netdev-bot+sinfo@kernel.org
-To: Zhiyu Zhang <zhiyuzhang999@gmail.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
- Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Matthieu Baerts <matttbe@kernel.org>,
- Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
- netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
- Tong Liu <lyutoon@gmail.com>, Qi Tang <tpluszz77@gmail.com>
-Subject: 
- Re: [PATCH net] tcp: restore IPv6 af_ops on disconnect of a v4-mapped socket
-Date: Fri, 30 Oct 2026 03:29:40 +0000
-Message-ID: <179333098042.3327.6001182207228154005@kernel.org>
-In-Reply-To: <20261030032314.1978575-1-zhiyuzhang999@gmail.com>
-References: <20261030032314.1978575-1-zhiyuzhang999@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key, unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=qP4XW4f2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=8k
+	tqWfSef3AXz7FND5pOxckiQELIeSzD/uEmAhKFSN4=; b=qP4XW4f28Uio8qY3Q4
+	sZfIiClVGpIuaQKGgHQH/8jZFEgSNsfk8jQNPBb2kEhpReEQ+gs4wZ5NJFGen/3h
+	xuerkNRat0t1ghnobMXMOMyqJngV1+dXv4xXl+Wb8GTWG5dQt/a6i0ibLv0Osi2p
+	M01oBLhgBlrnYxIZFbXM3/vvI=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCkvCgDn7+djD+Rq5VDKBg--.22802S2;
+	Fri, 30 Oct 2026 11:30:44 +0800 (CST)
+From: Linkui Xiao <xiaolinkui@126.com>
+To: jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Linkui Xiao <xiaolinkui@kylinos.cn>
+Subject: [PATCH net 0/2] devlink: do not dereference a missing param item or shared buffer
+Date: Fri, 30 Oct 2026 11:30:39 +0800
+Message-Id: <20261030033041.3679526-1-xiaolinkui@126.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,21 +65,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCkvCgDn7+djD+Rq5VDKBg--.22802S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7AF18Gr1fZFyUWFyxuFyUJrb_yoW8Ww1rpF
+	WYgFn8tr1DtFWvvr4kZF4xZFyj93WxG34FkFyrtw1Fvan8C3s2qF4Utw4avF4Yy393Ww1j
+	qw13Zan8uFyDAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UlD7-UUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlASwh2rkD2QmmwAA3-
 
-Hi!
+From: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Two devlink helpers look an object up by id or index, warn when the
+lookup fails, and then pass the NULL result to code that dereferences
+it. A driver mistake (a param_id that was never registered, an sb_index
+that was never registered or is unregistered twice) therefore costs an
+oops instead of a warning.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+  1/2 param: devl_param_value_changed() hands the missing param item to
+      devlink_param_notify() -> devlink_nl_param_fill(), whose first
+      statement dereferences param_item->param.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+  2/2 sb: devl_sb_unregister() runs list_del() on the missing shared
+      buffer; list is the first member of struct devlink_sb, so it
+      reads and writes through address 0.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+In both cases every other user of the same lookup already returns right
+after the warning, so the fixes just align the remaining callers; there
+is no change of behavior beyond avoiding the dereference. The param side
+follows the example Jiri set for devlink_param_unregister():
+
+Link: https://lore.kernel.org/all/20230126075838.1643665-5-jiri@resnulli.us/
+
+Both Fixes: tags point at the commits that introduced the unguarded
+WARN_ON pattern; the current devl_() functions are pure renames of those
+originals. No in-tree caller triggers either path today (the audit is
+part of a defensive hardening pass), so both are aimed at stopping
+out-of-tree drivers from turning a driver bug into an oops.
+
+Linkui Xiao (2):
+  devlink: param: do not dereference a missing param item
+  devlink: sb: do not dereference a missing shared buffer
+
+ net/devlink/param.c | 3 ++-
+ net/devlink/sb.c    | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+-- 
+2.25.1
+
