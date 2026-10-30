@@ -1,98 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.98
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.97
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793394855;
-	b=GJ4ffqmvAvBxWpvpImLmFn4n9Tku/rYloxiNbbhFJvov/ZrpWvvh6LkBM+gD+Lk/yrA1
-	 etFcil1QGFlzWyUMrjaTOOUxe8H1l7ySdLb0FtblB4oaaLisu+k/rD29aNrUB1PhJcxmZ
-	 cm3mXcVlk/LrQhSiNtkKfcuFNSme+M0fG0YzuubOOWclMO+5w3JIOW05DM26v1+kAq3gL
-	 kX3th7Wor3Tmbe/BcwmscEaNTFl6xjbj7mlWqBDHUXf+MYC+64Pb2o0b7srqz4EGrkYCS
-	 tVSSJxZrnNRuS822ppaHWSPhxIfL2cdVO0/Qr4FBqEZeRzsLE8ElkKhLgY5lZDtOHoQ==
+	t=1793394856;
+	b=a3Oscd1oDKnJSboDPdu+9vGjwPI86Y5JUnCbVMRMewFN8ENwxG8c02rTpEinpwoDQ2z+
+	 dlJnU8UbvI+4CVMY951Lx8GJEI5CUlzRuO/Go66uOQo/v9Wje/E9alsJ9Os2Rt8XLTI40
+	 HA+vGyyQnxsX7IjMrk01k0yIr1hLLceNBOiZ2o98EVPJxDU8M/VcvYkG3XL2CY69WN3RG
+	 uB/jG11PVJPRgE+TPwfkQMpbnjwc1aAMybUVxC88BU0xIdu9PCXdJn8IaDPo6C3uFiJTG
+	 9IBB1EQxy/8EOxwefH9bIr7JEVt49qIrzEqWw/Efep5ZK0c1ETeHnUzgAc9tK3CDiDw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793394855;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793394856;
 	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
 	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
 	 X-Received:X-Received:Received:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-DetectorID-Processed;
-	bh=b5hKSSPqLOErsxv3U30fZpQLPSnwl4d2gi3NrK5GmXM=;
-	b=YZG14fgazd6qSx61t6bxNSMsXQDgh6eIgLTDL2ctLCVLRjElRbXYd1Jn5msgEwr0uutU
-	 DX2ooZbLHoOf9vWoBGrKwZjebvsCyHnYVYgIUtwrGWtzSJl4u2w1uTzJjimTAOoo7N/L7
-	 vQyrjdzz5aLAIk1Ntttl3K+HVdaoKliDMr9sT2Z8Ea+4OGx3A41bf/2k0ZLXpe1gGy4uF
-	 0pQ91kkMSRrAJ0A8ESEnhdraqfPjp27sPRwbW0AggXl6a1jJ/foggGvOhqG+2NQUSQ3ha
-	 p0RqbzqZxdooP2FcENYR42eQhpp8285MwezTn7cOmqW5Iw+1sG4lxL+Q6AlzfX84qCA==
+	bh=5pFLRxCJ/yA1VIBBqBPBGRLvkDsq4oo9CE4KjMa/p5I=;
+	b=WgO+IP3xWIcoJJ/raKAX24I6b8w9Db/mF/805LPukqOutFF/Dwe+g69RJM7vrCtGlRhw
+	 tVOF1Vxx073JwjV2NvbFuRjjtM2hAaSKIRwH+/ngrGuqZrz++FEsoFjOHQcYZ+X1TTpQp
+	 v7QdyCiSGoU1iucLzdS+KQUfoXeNgoe5k51sMzp7Vd0dW3q8k2h3LmjLLDF/dVNeHmHS/
+	 BsaTkFaK1PrgnbZ9o33A3m2KcegYRJkTTmhVmlytWVVWvBqnA7a4LdUiSm0AJPI06VjMN
+	 Dd/ROIGvVQIAv4gjYW4QhUJI9IMsKxXL+fYFdGUkCqcGIZnQ3CiSwNRhsGXNamb4mtw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=broadcom.com;
 	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=Y4tRDSMX;
-	arc=none smtp.remote-ip=209.85.216.98
-Received: from mail-pj1-f98.google.com (mail-pj1-f98.google.com [209.85.216.98])
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=HW5InC7m;
+	arc=none smtp.remote-ip=209.85.216.97
+Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C9560A261B
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 21:14:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E7C9560A261B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1CB606A31E
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 21:14:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E1CB606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=Y4tRDSMX
-Received: by mail-pj1-f98.google.com with SMTP id 98e67ed59e1d1-3ab60ff4273so1006499a91.0
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 14:14:14 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=HW5InC7m
+Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-3ac7842c17dso805020a91.3
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 14:14:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793394854; x=1793999654;
+        d=1e100.net; s=20260707; t=1793394856; x=1793999656;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=b5hKSSPqLOErsxv3U30fZpQLPSnwl4d2gi3NrK5GmXM=;
-        b=JGUWm+m1hayXVWFIMYmCNNcQb0u8ECpb7+eYYie8juyX5+dHX8zOFKECANBKnPbRCG
-         bkfyDCE+tBoZhbAP57xZw50/g9ovgm4XBQrJcPO3wASrxX5uR0qtzlFgvakqsg3Ta73c
-         QBrbGCE1pjb9R/1ow3dvabO6vn04xGpwdkNwLc85hHptzswXRR854Dut70jOEhVyFcJc
-         mK4FZKXHXNM74XQk6vgn07wFkA19Q+cqCH31ZaZ7tDUxcjGPmgY4JoYfjBavtUW3z1jI
-         mC3wlxefily73hOQRO13G18PcXK1L1WHQUdCfbsKHSyVYeyN0Mtet45YJe6tE1aHOF6p
-         E3QQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwR+NRdNN2CkFIJUU0a2RIvTGaGGsmRc63J1ZxhCJyTp9Sz/3BdR8piu0T57BH1uxUmh+r/5S8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJfg0rqBp5aeoAQO72AZrgGn3+/3P0IRLz52FxG/RqI9eg9lfRq
-	JlLWZQdLh9Azu53s/DWpYYD6ZubEppNe3L9i2XiRUThRiPRlfdRN6UBULmqnyhCQ10BFUO6PRWP
-	rjBl+R+uef5UrKcMdYgejSHGPMuiswz4ovimiApK0XLEWII4fgW3iG8OoAOONEEeOZonVPPeIqY
-	9F1pPS6JA7U9dhEwKyEvj9DxMbRwVfsa9OXkBCEk/XkjrcVBJIlbwYSXcP4XWIS5QYwXUzELXKq
-	XAjAqnC4tNrTv1kCZ0=
-X-Gm-Gg: AYBFou32oPrskxdZ6uBfjJ0g+3bnXHSicHEkMuwXJ2FZUNtAIQjBYFZG834ECsINNcE
-	RNkoudHiYljo0/RKUKYVWJDDYKXdvB7dUtA+SkLIDzAl3J1GuOFrsbp/Vm0VdVchsQJtFFBa/x0
-	EotsbQ7AexdF3TYdPCelgH2eu5hX7zi56450vraLLkDPnQHjYgEvMRTbGROTxFHmS6r8Y267U2I
-	qbPW4ER/iTipNuY0FzcgdBwqxr9m2hHnJnUqcPtvs0g5jlmf3x+ZhZhCmOkwdA/3aljz4o1qvIB
-	LueQi+R+xNJ3l60gMuGaFef54JtlgeV6AtDbW5aIn/DO+39cYRwAsysUYMz2l/NfOlatXojl3gg
-	wVMvaV5yDLY33PhSFoqyw8ljZJvTmJsjMF27IX6erZ84OGkO532IKFo6gjw4uZd5clmvcBAHIOW
-	4JN5knvU6AO8/2A2c1YzmJnHvlFivY4hDEb/Pwpmmx
-X-Received: by 2002:a17:90b:3c09:b0:3ab:2236:6b3d with SMTP id 98e67ed59e1d1-3ae89814a11mr2714537a91.27.1793394854158;
-        Fri, 30 Oct 2026 14:14:14 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-28.dlp.protect.broadcom.com. [144.49.247.28])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae6e803953sm4838913a91.4.2026.10.30.14.14.13
+        bh=5pFLRxCJ/yA1VIBBqBPBGRLvkDsq4oo9CE4KjMa/p5I=;
+        b=kuATNJeBfeVGjNduvjJj4nz+AHjbZU3F59H0CsJYFb/jUKsA6USdcMcdET1qjhsl3r
+         nnBgzhBDRXxwsR1j2xBtFjszvn69/rY6MtVOYBizFarNRWNEJbVX6En1/11ugOrXAn3g
+         gGen1b9mRSh6mHgnLcNQrxYWTiPYHFwP2XbjUlWxgOAg70so0f5LGSi0bCHm13Dg2NXb
+         kl4WZ96Cb+g7odEsPFsSTuz7rv4TPEZuKSdAOjPI0CSAOsut/uTkzSwas0j3qM9NoUIQ
+         tlQdWzp1q0hux9KjFXWxtNBbm1WDht7vMrFT/VL0xuob+NwIYwZHiRy7jHeOIqPtKx0Y
+         Z5eA==
+X-Forwarded-Encrypted: i=1; AKwUvBzjIDtfQCc+LVCqKzFRUaJDTzAnG1KLy58e2QZuLBDUoW4UJy4AH+IgelsVL53zQaAbdBBCLo0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIaqQBcVL6xif0pPSCSOV+n/O8tJJfFNPFhWEWOA+KiWp8oS1mG
+	/TVKuheg1sh8wp3XiN7hF3lq0EXZ0aeJg044S63hZ7BMV0pTn1f+nfyZKXXg4UO6+GfSmPDd2mC
+	9X+3AwrOtVKc8nX2EkwmD5BL4xG2dS+y7SHfCFHgSKiWHODJi7y2TpB1rIxiNi6SokzrdEU8hR4
+	q5iIWXcYHds/Tk9x3CwGIKv57DJermNeuXnKkl94iN3677DUMkU5xz8lU2WmePsTdCSLhE6sp0M
+	kLG/NVSVBhC+08L
+X-Gm-Gg: AYBFou3CZpNO4Nas/pCpb23WDBq/VUL9xnfePUNUvDkhrMUw4GzsQlLOaRiGrY6f68m
+	bDV8VPNPf7CLViloKx0e0a+hKZbk9Q0vqc95YWUKSbvZx8VsvxXDv/1qmNl0h65qo9xmwwZLNaj
+	IOMvXIlSv6fUIPfTLz3FH4aoXgWDqO8eFfPKO+gbk5tgHJgSw80Ij4+rsjfSLFF7+/QJHXe0/X1
+	/f6gTxO3Xavd/roAUoYCFDj8N6FtfMpcxAk2cVfbbRJmt/guN51GlHGWhFOLD3C0/iwgm2Qtu/B
+	n4jr9TnbVNg6DrrXsqqOW2q1WSbpiNh9BN0lGP/RRx+cWd3mSyBV3B4/a+jGn6LQvxhk4oTMLOW
+	LLzYtQ+xNl1Ki84nsgCLHqRDAPHrcue1oO3U9XbIJWl64U/bxhV54v2eePYIpuWmMXPQLuAHklG
+	kIjADv1MOIRDg6kbcTWJrH37RCXpYM51jVTHQ6AzxX
+X-Received: by 2002:a17:90b:5485:b0:3ad:c482:ae9a with SMTP id 98e67ed59e1d1-3ae8957cc71mr2902955a91.1.1793394855565;
+        Fri, 30 Oct 2026 14:14:15 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-13.dlp.protect.broadcom.com. [144.49.247.13])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae6e84adc9sm4635201a91.5.2026.10.30.14.14.15
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 30 Oct 2026 14:14:14 -0700 (PDT)
+        Fri, 30 Oct 2026 14:14:15 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-33c35f5ca6cso2475781eec.1
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 14:14:13 -0700 (PDT)
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-3692c5b061bso3040071eec.1
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 14:14:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1793394852; x=1793999652; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1793394854; x=1793999654; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=b5hKSSPqLOErsxv3U30fZpQLPSnwl4d2gi3NrK5GmXM=;
-        b=Y4tRDSMXoVFivlNJ9iI0Mn0a7u2r8NLMd9tsm33uPMDHhXMLckDWNK2mOMFIoFtrxE
-         dE4a672xzzvguQCbY64CRUOKpQE3lmVNoa/fuVHZ2xqKscn2e1Z0Ssp0XpWElYVYsAm/
-         iiXj3TJnOp5heokj7TzawcSXhwy8jbevCSfOA=
-X-Forwarded-Encrypted: i=1; AKwUvBzVm4ntoyihemYfbJpXmYpzzE7s5OoaYjLaSjC5FpxFMnlto71V4Eod4GSvnswJDCC2Qr6/hZw=@vger.kernel.org
-X-Received: by 2002:a05:693c:87cd:20b0:36a:32de:a239 with SMTP id 5a478bee46e88-36a420643f1mr4957562eec.0.1793394852000;
+        bh=5pFLRxCJ/yA1VIBBqBPBGRLvkDsq4oo9CE4KjMa/p5I=;
+        b=HW5InC7m/3RNELA5uTBoQBpmT4vDugbK/tTEc3yLRuaM00sGFk7XCC+bg4xFZEvABP
+         x335J1I8Wtk8xdBHWGruNkEvztLFCln2PEl2HcotkgGYyNxqqxqpMM9HpT+tYvB7vlgu
+         YFwa7LfHGjrVcqnE4+xQV62FmisrTFLTpZFKY=
+X-Forwarded-Encrypted: i=1; AKwUvByBiNRId2ekjVD9wZc1XJA6+B4V+Rt+Hdg6FypzQMT/g3s86Ls0lPlSSeuiwc7A5sWiiYQgLC4=@vger.kernel.org
+X-Received: by 2002:a05:693c:88c9:20b0:36a:18e2:64c with SMTP id 5a478bee46e88-36a4232bf0fmr5036683eec.11.1793394853378;
+        Fri, 30 Oct 2026 14:14:13 -0700 (PDT)
+X-Received: by 2002:a05:693c:88c9:20b0:36a:18e2:64c with SMTP id 5a478bee46e88-36a4232bf0fmr5036630eec.11.1793394852487;
         Fri, 30 Oct 2026 14:14:12 -0700 (PDT)
-X-Received: by 2002:a05:693c:87cd:20b0:36a:32de:a239 with SMTP id 5a478bee46e88-36a420643f1mr4957500eec.0.1793394851045;
-        Fri, 30 Oct 2026 14:14:11 -0700 (PDT)
 Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a42669128sm10574595eec.3.2026.10.30.14.14.09
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a42669128sm10574595eec.3.2026.10.30.14.14.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 14:14:09 -0700 (PDT)
+        Fri, 30 Oct 2026 14:14:11 -0700 (PDT)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: netde@vger.kernel.org
 Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
@@ -106,9 +106,9 @@ Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
 	Vivien Didelot <vivien.didelot@gmail.com>,
 	netdev@vger.kernel.org (open list:BROADCOM B53/SF2 ETHERNET SWITCH DRIVER),
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v3 7/8] net: dsa: b53: harden mirror register programming
-Date: Fri, 30 Oct 2026 14:13:49 -0700
-Message-ID: <20261030211350.287566-8-florian.fainelli@broadcom.com>
+Subject: [PATCH net v3 8/8] net: dsa: b53: fix mirror port encoding on BCM5325 and BCM5365
+Date: Fri, 30 Oct 2026 14:13:50 -0700
+Message-ID: <20261030211350.287566-9-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261030211350.287566-1-florian.fainelli@broadcom.com>
 References: <20261030211350.287566-1-florian.fainelli@broadcom.com>
@@ -124,232 +124,132 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-The mirror destination check can reject a first rule when a bootloader or
-previous kernel left mirroring enabled. Not all supported switches receive
-a hardware reset during setup. Unchecked register accesses can also
-corrupt mirror state or report an unsuccessful rule installation as
-successful. Reference counting must not record a first source reference
-until hardware programming has succeeded.
+BCM5325 and BCM5365 use an 11-bit bitmap for the mirror capture port,
+whereas newer switches use a four-bit port ID. Programming the port
+number directly can select no destination or the wrong destination, and
+can select multiple destinations. For example, port 2 requires BIT(2),
+but writing 2 selects port 1 instead.
 
-Clear capture control and both source-control registers during b53 and
-bcm_sf2 setup, propagating initialization failures. Check all mirror
-register reads and writes and only increment the source reference count
-after successful programming. Log deletion failures because the DSA
-callback cannot return an error.
+Use the bitmap encoding on BCM5325 and BCM5365, including translating
+logical CPU port 5 to hardware bit 8. Apply the corresponding field mask
+when checking for a conflicting destination, replacing the destination,
+and clearing it after the last mirror source is removed. Keep the port ID
+encoding for newer switches.
 
-Use the source masks to decide whether a destination is occupied. This
-preserves the destination when a failed deletion leaves sources enabled,
-and permits a new destination after the last source was removed even if
-the final capture-control clear failed. Program the capture destination
-before the new source so a failed destination write cannot leave a new
-source enabled. Clearing the inactive capture-port field is cleanup.
+The ingress and egress mirror source masks use the same layout on these
+switches, with the CPU port at bit 8 and bits 5-7 reserved, so apply the
+same translation when setting and clearing a source port bit.
 
 Fixes: ed3af5fd08eb ("net: dsa: b53: Add support for port mirroring")
 Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
- drivers/net/dsa/b53/b53_common.c | 109 +++++++++++++++++++++----------
- drivers/net/dsa/b53/b53_priv.h   |   1 +
- drivers/net/dsa/bcm_sf2.c        |   5 ++
- 3 files changed, 81 insertions(+), 34 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 40 +++++++++++++++++++++++++++-----
+ drivers/net/dsa/b53/b53_regs.h   |  1 +
+ 2 files changed, 35 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index b16167c9510b..c2706c2e643f 100644
+index c2706c2e643f..c320f53b41cd 100644
 --- a/drivers/net/dsa/b53/b53_common.c
 +++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1307,6 +1307,10 @@ static int b53_setup(struct dsa_switch *ds)
- 		return ret;
- 	}
- 
-+	ret = b53_mirror_init(ds);
-+	if (ret)
-+		return ret;
-+
- 	/* setup default vlan for filtering mode */
- 	pvid = b53_default_pvid(dev);
- 	vl = &dev->vlans[pvid];
-@@ -2540,20 +2544,49 @@ enum dsa_tag_protocol b53_get_tag_protocol(struct dsa_switch *ds, int port,
+@@ -2544,6 +2544,31 @@ enum dsa_tag_protocol b53_get_tag_protocol(struct dsa_switch *ds, int port,
  }
  EXPORT_SYMBOL(b53_get_tag_protocol);
  
-+int b53_mirror_init(struct dsa_switch *ds)
++static u16 b53_mirror_capture_port_mask(struct b53_device *dev)
 +{
-+	struct b53_device *dev = ds->priv;
-+	int ret;
++	if (is5325(dev) || is5365(dev))
++		return CAP_PORT_MASK_25;
 +
-+	/* A switch reset may leave the previous mirror configuration intact. */
-+	ret = b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, 0);
-+	if (ret)
-+		return ret;
-+
-+	ret = b53_write16(dev, B53_MGMT_PAGE, B53_IG_MIR_CTL, 0);
-+	if (ret)
-+		return ret;
-+
-+	return b53_write16(dev, B53_MGMT_PAGE, B53_EG_MIR_CTL, 0);
++	return CAP_PORT_MASK;
 +}
-+EXPORT_SYMBOL(b53_mirror_init);
 +
- int b53_mirror_add(struct dsa_switch *ds, int port,
- 		   struct dsa_mall_mirror_tc_entry *mirror, bool ingress,
- 		   struct netlink_ext_ack *extack)
++static u16 b53_mirror_port_mask(struct b53_device *dev, int port)
++{
++	/* These switches use a bitmap with the CPU port at bit 8. */
++	if ((is5325(dev) || is5365(dev)) && port == B53_CPU_PORT_25)
++		port = B53_CPU_PORT;
++
++	return BIT(port);
++}
++
++static u16 b53_mirror_capture_port(struct b53_device *dev, int port)
++{
++	if (is5325(dev) || is5365(dev))
++		return b53_mirror_port_mask(dev, port);
++
++	return port;
++}
++
+ int b53_mirror_init(struct dsa_switch *ds)
  {
  	struct b53_device *dev = ds->priv;
+@@ -2569,6 +2594,8 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
+ 	struct b53_device *dev = ds->priv;
  	unsigned int *mirror_count = &dev->ports[port].mirror_count[ingress];
--	u16 reg, loc, cap_ctl;
-+	u16 reg, other_reg, loc, other_loc, cap_ctl;
+ 	u16 reg, other_reg, loc, other_loc, cap_ctl;
++	u16 cap_mask = b53_mirror_capture_port_mask(dev);
++	u16 cap_port = b53_mirror_capture_port(dev, mirror->to_local_port);
  	int ret;
  
-+	loc = ingress ? B53_IG_MIR_CTL : B53_EG_MIR_CTL;
-+	other_loc = ingress ? B53_EG_MIR_CTL : B53_IG_MIR_CTL;
-+
-+	ret = b53_read16(dev, B53_MGMT_PAGE, loc, &reg);
-+	if (ret)
-+		return ret;
-+
-+	ret = b53_read16(dev, B53_MGMT_PAGE, other_loc, &other_reg);
-+	if (ret)
-+		return ret;
-+
- 	ret = b53_read16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, &cap_ctl);
+ 	loc = ingress ? B53_IG_MIR_CTL : B53_EG_MIR_CTL;
+@@ -2587,7 +2614,7 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
+ 		return ret;
+ 
+ 	if (((reg | other_reg) & MIRROR_MASK) &&
+-	    (cap_ctl & CAP_PORT_MASK) != mirror->to_local_port) {
++	    (cap_ctl & cap_mask) != cap_port) {
+ 		NL_SET_ERR_MSG_MOD(extack,
+ 				   "Only one mirroring destination is supported");
+ 		return -EOPNOTSUPP;
+@@ -2599,14 +2626,15 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
+ 	}
+ 
+ 	/* Select the destination before enabling the new source. */
+-	cap_ctl &= ~CAP_PORT_MASK;
+-	cap_ctl |= mirror->to_local_port;
++	cap_ctl &= ~cap_mask;
++	cap_ctl |= cap_port;
+ 	cap_ctl |= MIRROR_EN;
+ 	ret = b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, cap_ctl);
  	if (ret)
  		return ret;
  
--	if ((cap_ctl & MIRROR_EN) &&
-+	if (((reg | other_reg) & MIRROR_MASK) &&
- 	    (cap_ctl & CAP_PORT_MASK) != mirror->to_local_port) {
- 		NL_SET_ERR_MSG_MOD(extack,
- 				   "Only one mirroring destination is supported");
-@@ -2565,19 +2598,17 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
- 		return 0;
- 	}
+-	ret = b53_write16(dev, B53_MGMT_PAGE, loc, reg | BIT(port));
++	ret = b53_write16(dev, B53_MGMT_PAGE, loc,
++			  reg | b53_mirror_port_mask(dev, port));
+ 	if (ret)
+ 		return ret;
  
--	if (ingress)
--		loc = B53_IG_MIR_CTL;
--	else
--		loc = B53_EG_MIR_CTL;
--
--	b53_read16(dev, B53_MGMT_PAGE, loc, &reg);
--	reg |= BIT(port);
--	b53_write16(dev, B53_MGMT_PAGE, loc, reg);
--
-+	/* Select the destination before enabling the new source. */
- 	cap_ctl &= ~CAP_PORT_MASK;
- 	cap_ctl |= mirror->to_local_port;
- 	cap_ctl |= MIRROR_EN;
--	b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, cap_ctl);
-+	ret = b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, cap_ctl);
-+	if (ret)
-+		return ret;
-+
-+	ret = b53_write16(dev, B53_MGMT_PAGE, loc, reg | BIT(port));
-+	if (ret)
-+		return ret;
+@@ -2639,7 +2667,7 @@ void b53_mirror_del(struct dsa_switch *ds, int port,
+ 	if (ret)
+ 		goto err;
  
- 	(*mirror_count)++;
+-	reg &= ~BIT(port);
++	reg &= ~b53_mirror_port_mask(dev, port);
+ 	ret = b53_write16(dev, B53_MGMT_PAGE, loc, reg);
+ 	if (ret)
+ 		goto err;
+@@ -2658,7 +2686,7 @@ void b53_mirror_del(struct dsa_switch *ds, int port,
+ 	if (ret)
+ 		goto err;
  
-@@ -2591,8 +2622,8 @@ void b53_mirror_del(struct dsa_switch *ds, int port,
- 	struct b53_device *dev = ds->priv;
- 	unsigned int *mirror_count =
- 		&dev->ports[port].mirror_count[mirror->ingress];
--	bool loc_disable = false, other_loc_disable = false;
--	u16 reg, loc;
-+	u16 reg, other_reg, loc, other_loc;
-+	int ret;
+-	reg &= ~(MIRROR_EN | CAP_PORT_MASK);
++	reg &= ~(MIRROR_EN | b53_mirror_capture_port_mask(dev));
+ 	ret = b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, reg);
+ 	if (ret)
+ 		goto err;
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index 54a278db67c9..821ac74777f2 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -239,6 +239,7 @@
+ /* Mirror capture control register (16 bit) */
+ #define B53_MIR_CAP_CTL			0x10
+ #define  CAP_PORT_MASK			0xf
++#define  CAP_PORT_MASK_25		0x7ff
+ #define  BLK_NOT_MIR			BIT(14)
+ #define  MIRROR_EN			BIT(15)
  
- 	if (!*mirror_count)
- 		return;
-@@ -2600,33 +2631,43 @@ void b53_mirror_del(struct dsa_switch *ds, int port,
- 	if (--(*mirror_count))
- 		return;
- 
--	if (mirror->ingress)
--		loc = B53_IG_MIR_CTL;
--	else
--		loc = B53_EG_MIR_CTL;
-+	loc = mirror->ingress ? B53_IG_MIR_CTL : B53_EG_MIR_CTL;
-+	other_loc = mirror->ingress ? B53_EG_MIR_CTL : B53_IG_MIR_CTL;
- 
- 	/* Update the desired ingress/egress register */
--	b53_read16(dev, B53_MGMT_PAGE, loc, &reg);
-+	ret = b53_read16(dev, B53_MGMT_PAGE, loc, &reg);
-+	if (ret)
-+		goto err;
-+
- 	reg &= ~BIT(port);
--	if (!(reg & MIRROR_MASK))
--		loc_disable = true;
--	b53_write16(dev, B53_MGMT_PAGE, loc, reg);
-+	ret = b53_write16(dev, B53_MGMT_PAGE, loc, reg);
-+	if (ret)
-+		goto err;
- 
- 	/* Now look at the other one to know if we can disable mirroring
- 	 * entirely
- 	 */
--	if (mirror->ingress)
--		b53_read16(dev, B53_MGMT_PAGE, B53_EG_MIR_CTL, &reg);
--	else
--		b53_read16(dev, B53_MGMT_PAGE, B53_IG_MIR_CTL, &reg);
--	if (!(reg & MIRROR_MASK))
--		other_loc_disable = true;
--
--	b53_read16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, &reg);
--	/* Both no longer have ports, let's disable mirroring */
--	if (loc_disable && other_loc_disable)
--		reg &= ~(MIRROR_EN | CAP_PORT_MASK);
--	b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, reg);
-+	ret = b53_read16(dev, B53_MGMT_PAGE, other_loc, &other_reg);
-+	if (ret)
-+		goto err;
-+
-+	if ((reg | other_reg) & MIRROR_MASK)
-+		return;
-+
-+	ret = b53_read16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, &reg);
-+	if (ret)
-+		goto err;
-+
-+	reg &= ~(MIRROR_EN | CAP_PORT_MASK);
-+	ret = b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, reg);
-+	if (ret)
-+		goto err;
-+
-+	return;
-+
-+err:
-+	dev_err(dev->dev, "Failed to delete mirror rule for port %d: %d\n",
-+		port, ret);
- }
- EXPORT_SYMBOL(b53_mirror_del);
- 
-diff --git a/drivers/net/dsa/b53/b53_priv.h b/drivers/net/dsa/b53/b53_priv.h
-index 910c71618d0b..b871a82cbb23 100644
---- a/drivers/net/dsa/b53/b53_priv.h
-+++ b/drivers/net/dsa/b53/b53_priv.h
-@@ -546,6 +546,7 @@ int b53_mdb_add(struct dsa_switch *ds, int port,
- int b53_mdb_del(struct dsa_switch *ds, int port,
- 		const struct switchdev_obj_port_mdb *mdb,
- 		struct dsa_db db);
-+int b53_mirror_init(struct dsa_switch *ds);
- int b53_mirror_add(struct dsa_switch *ds, int port,
- 		   struct dsa_mall_mirror_tc_entry *mirror, bool ingress,
- 		   struct netlink_ext_ack *extack);
-diff --git a/drivers/net/dsa/bcm_sf2.c b/drivers/net/dsa/bcm_sf2.c
-index 9e5713015187..9f54cd414c18 100644
---- a/drivers/net/dsa/bcm_sf2.c
-+++ b/drivers/net/dsa/bcm_sf2.c
-@@ -1059,6 +1059,11 @@ static int bcm_sf2_sw_setup(struct dsa_switch *ds)
- {
- 	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
- 	unsigned int port;
-+	int ret;
-+
-+	ret = b53_mirror_init(ds);
-+	if (ret)
-+		return ret;
- 
- 	/* Enable all valid ports and disable those unused */
- 	for (port = 0; port < priv->hw_params.num_ports; port++) {
 -- 
 2.53.0
 
