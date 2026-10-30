@@ -1,103 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793399105;
-	b=jNAu3wTypoCuQlZLfIT1zyxED3P+nzsb4UvkHPxVDm5Zp926N4fwPfaKpeL9v8sZ5KVy
-	 eNAIyFV9N9VYAX8bKE07WMC74iBVTYRweY8LWRnI3GFlVkROUqfavR9aAXOXoU0XyVe1d
-	 a6RmNVnWdYA1XHZcUhaC4dLITtZvCbzdhtNa+uAzpa/AeOnF9NZOAhe764+uCLjX6/a6B
-	 wc8+wOFs0hzUBHRWjPXB2jUzqK67kEU5R5zfB4VRgh+Nqk0qAeX2P9Hv5RIkWUhh36Lvk
-	 AUBpvcYv+eMp656LaCifU6DQHbz3iIlMR5Bq8SkJlF+lxshW0zDBKPV5XpVTOoAmRJA==
+	t=1793399386;
+	b=Rq/JGuF0gRzL0nBdskbMkS5fcVz5YAWMZDAacSIt3zAI+N/01FoZ1VAnFMKc4ZOF8B/p
+	 +PbNW34ZE4BuzBRsLWDfhaxLSyueezkZOsIyCRkpKNECVyH7pOT6wksE1c30Ukz9vSv5L
+	 LXJkmaHUGefuWli0AD3xLYtU29bM6RieyTo4Km3RBAVptBC1SENnKdQkuzx2MjPtniMvD
+	 hvK6ro+onQouHBrUxFQgQc/MHX5R8cKRehW7eJfrRHD9T/MTHFjTxjP4pjS790JIgVOgS
+	 DlurmdfqBmqKox+FUfanYyy99c5bARRL8Xx2Sj3kawoxjXp+CPeJene6iLka0IDmFAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793399105;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793399386;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=/+KneAP5j4JycW2Osy6h4oU9OQtsTeRD6BdS9+k/6qE=;
-	b=BbveVxaXLxQaaXhpF6Nzw/B6KUgHg8aHwfDw2Bd1ZAOufIvECJRoE9MLU8xuZzF6m5Nm
-	 qoDCiZIrGbv+BNUZO1PAxhiiXxRVKrDElNBlL+M4l6GZYh13jp+e5nOFKtE+DH+w4sbPQ
-	 cXdS2Gga8zoMIXkYwByP55hcaDmGiYhn6zrXudVQ929M8nnBfbyDLcAeurIZw9BOZd5Fb
-	 2I8bYDeHg8/lkdMJx5uSxRoE6ia/bKub57ChoVT5zyvBf6WN7zotHlnFzZ08OfaIOPtXZ
-	 GBlp8vBto+WEOH4dtIIHi26hjEx+6pnythFApLk2ovrW3qJudXV2DnuDdxjUZcoD82g==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=Te+EXzznd0wdlADA+6XlZTiqeKUHZc1UFKzEbNtjc8Q=;
+	b=frIenYunhG435HrJoD97xtfCychBb3ScDJDz+3JYlU/ArnX5C61e8Vzqc/ilsftPssQ1
+	 hwJYN8SZewfXmnag9n18O6iWMBem2OR0x3dsZKDYehNOnbqslmjVMLOt6ZyG9hKHVtubV
+	 dp5BD0sPzpOHrNryM2/lNc8E/yTk9IragVIMZg9lvjFHItvGSgn1rqhTcbsQd/NVRhuwH
+	 a5yn9uCvXZqSqXyvFdKX+pJV9RRSLldNm9BKz4KDtYBcmlyMVJLPGQ2v68LQDLByrpflo
+	 4QwTKvjaHpkYKX6bPoZCy2fHMADxZcNiduuIZ5OybiOLE/MiGhlhN71CXShY5I6Iigg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fON+oxNo;
-	arc=none smtp.remote-ip=209.85.128.175
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=h4BaQDlw;
+	arc=none smtp.remote-ip=209.85.221.173
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863CC606A31E
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 22:25:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 863CC606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9556B606A31A
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 22:29:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9556B606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fON+oxNo
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-8b0d91601bdso19581037b3.1
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 15:25:05 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=h4BaQDlw
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-5eafb65e204so396966e0c.1
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 15:29:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793399104; x=1794003904; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/+KneAP5j4JycW2Osy6h4oU9OQtsTeRD6BdS9+k/6qE=;
-        b=fON+oxNodYAgFJVlp9NMyimkvkAqRKgDVxsc7oPe5/oKL+jFJcDMbJD7JyAAlKDN6X
-         Ulrgfg5oRZHZvrJt1/wumsGGM6hnegz6txsFgooLxk17khHW2ooVi/Ebs0ftClD4SO5k
-         n87A+Wy9KTW+fTdyYvj8B78qf8da4YbMqPpTFvdhHzQbqLrSLrSxEbLO9sF5YhJ5aLZH
-         YzEujhIVn4WLLXO+6Is1F/CV7tGZSvmR9kqFIziZ6PFOz+Ezxqzc11v/PzKOrWmTKfIJ
-         HvRSkgc7fXxGW5Y1gE7/dvg5HajVlh5gjWdFt2sz6g7JoT2qcYV/r5PoHimftmTExgD9
-         ApVA==
+        d=gmail.com; s=20260707; t=1793399384; x=1794004184; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Te+EXzznd0wdlADA+6XlZTiqeKUHZc1UFKzEbNtjc8Q=;
+        b=h4BaQDlw9kEiKvqZ+Ita/tYbWxguQr3je0TpUgs0aZddKG2SZAnksywc81QOkg4B2G
+         pxG7abPLoOeER6tNce+qXAAqd7uNDSKXQqPoo4HvbE5DYsWPK9PG2EDzgfmC44KuCkMs
+         fkHRTlwuD3sYpWGvWdGc+KIXMbhSGtqichphJSkY54kFnf8CmZo+N6WhRS6EL2pJHU3C
+         3eACCDdR2QNjW6w8M07GRGwdhjpWfHevtfE9l4bqhYLeBV5PjXrBiIkhHuL1Sqg73Hfa
+         YGkmE2qvvgCXlQjez9B+jGmr3UQDYlz/XxLaflbkKu7B6ZDLkzTSgHtWUfxFIDYS9KbE
+         8Alw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793399104; x=1794003904;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793399384; x=1794004184;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/+KneAP5j4JycW2Osy6h4oU9OQtsTeRD6BdS9+k/6qE=;
-        b=fuDxWIKQz0kV3RjwJBVHKS1L+VEUDff8PCKlqTTkdwhDfgUSrM1npLUi/LA1xUcfZJ
-         MN3IMI4GWDJ4bPnzR7LAdu0TL6qvVuw9NpsmGnG18gKXkkUtEC4ufctLEDfDjg0cGUfL
-         GKpnTtfdSGg+hbC+WBR3/qudeY6V3up4qsPZr/VgZakg26hQd8dIaLFqnv0Qwjoo6qGp
-         w+6OEgx6P/SzXyy6Do2fRMiAjU136mX99iVKVb/I34zDCqCxgphl85L/fp4kSDtxkE/W
-         pNXmgQo2HZnSv9F3cSgUzSxtbRyzbVpoYNzQ4B5ZlZUq29d5ycXj5bf4S9EsdKYJipH9
-         i27Q==
-X-Forwarded-Encrypted: i=1; AKwUvBzsNvEH7WxkId7mpfagUhSAuTVOoVOTNTJ7riNvfoFnxqbkY5Q9LDmRsl+OpJLl0R6bbXfwi6k=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK6qbpQNRk5ySKH6Yn3ERr05Cl4aEy2nr0gampvn0HNWEVHdQtc
-	FweLKhu160n3P//lMGHcSJB1io67vHxXXuQondzjwA5P+imEnRD5XLIz
-X-Gm-Gg: AYBFou1mKu8Ly4owgUrmuGIcbRQGBTfD4yhbBFYqDRgcjj/UjTfDQDgA0FgVLMfovN9
-	o3LmiJvlJ+joXHqnWSXtGJmq3UZD92KYPeTkOJ5X6HsWE425SE5O5bUMGtAsSKjcoFixSQrm+7L
-	6+chOxPn2fkScq70Z972NeIInlxu2hB8hcArV+/s5QRg5DcDDBKroXfqk/PzWzckW1RW4lV71w0
-	5TA4YIXQuRVznu5sVVdIzEInJxSCxrmRa9Nq+gEahNmY/omb9BzPRd08UTvdHsUN81f3lf7FmQ6
-	IVuiHft0zb2yj4ijNn+JQSMTEfLx8X9jGWA5Di54zUXPWEXeBUMSkJqQQAhwPi+z+Js/3Jf0ODT
-	PkXd73dI5lgtXLrydRls2OMX0JNPqowmG+qsU4Rz8dxGWS1vRfxKatZNysrW8AOYSE67VWzCf7c
-	SDI0AW+3mMKukUxw7Fw3GafVyUOU4DZFLEBF2l0go1k6R3Swkf6Ng7sUkg3ATHbr4/+0f07LKC2
-	NCBFUrHXSxjK1M5yWoTb1fde8JKZzBkkrpg8Sq+bSqZ1lW6ZOiUNxFH+f/9yYqaWJ79ZwShIOm1
-	LnYGV3v0+xzV/QRpYNULxmzuFA==
-X-Received: by 2002:a05:690c:92:b0:8a9:8744:c07d with SMTP id 00721157ae682-8b1c67060e0mr55008757b3.18.1793399104308;
-        Fri, 30 Oct 2026 15:25:04 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:72::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67baf147246sm730246d50.1.2026.10.30.15.25.03
+        bh=Te+EXzznd0wdlADA+6XlZTiqeKUHZc1UFKzEbNtjc8Q=;
+        b=rsQUg9pO2W5womXhcGe6CurfkRZHbsxTZcdTCLMM26rEx824eobsvwPnyx5yrRlj5b
+         Xd72tKoGuDsrlP4utRf7r/nDbTsMV8UOWeSHrCn/ShrOK4gi0wWkcwOMlxGvaWhX2EFH
+         zu1oR82bY5FUaJW06JcBtyrc4hKJms6wwA322P6GnhDxbIAG8TpbLwkJ9KNktscnV1bb
+         d5f93zK0MNJgAwUu7Fr0QvrFEp36zFGYsvaK8hI/q11oqm2fMGI4HAb2HrwNwMZm4/ro
+         tHAcAVvEFfUguDJiwLS7sArc8kx0Bjds8URVUUJXVF6teowAKGvWdEl16QnSGVjGQtJP
+         d0ig==
+X-Gm-Message-State: AFq9FYJT9IqpWyfffNI/i7Etblar4hTAVlBP/5NdLCTP6sJifBRNaxtK
+	mD1N3yQpKIrjPPzG7wCNpKwvjNVwEGnEgfQ8tsa5d4Bx0pWIItarAap9
+X-Gm-Gg: AYBFou0fWpAngtzJWxKV1ph3ds00PS0TasuKw2JXChqXoEcLqehWgmXLo3Uop2tkhk2
+	w5vByF4T1CbRIHYfDVMHxR/bgl+cqYHApi5JPs41qMAnjnAVcdmOpErcPHK+LV8UnQKgYDKbtmT
+	2dVUbhcohicRu+7skGVPXPPQLh4RZ2Y4KuObOYtZiSbqRsNb0H7SjIFdmtcVFF9DMW79NInY0L6
+	NmH2B3gNt0nV0bifeFE4sAZILxO5V0kLoG1Y9tdKou9giWoK4RWJ0egwG1c/NBSzxOG5zwsw+fo
+	xvkqrhL/5UVscdV4L6pSzYO8b9Ji7htt62zhYmXkeRmELcyW/BU0kdE5pbzgteZlCvBuBjmwMte
+	/KPRIxMwPKSbZee58nM77oMK5o9NQk6cHnJNNTBulSLqUMmKho0Uf7O30diwzSzS4JPiOtPY1k4
+	VqChhAmgmmVpmna1T4HLavr6SwXBCt4Cd0mcQniLpqKdjpSOBSkRX3FXE21AUKWdyk3b4sBms8I
+	6qK1233hC6H1K42oh12AxdpoXqXBogRF3wTXYoDnY3U2PI/UOvSSBiNZg3744dD+fyKTzEhaIdW
+	m4TzflUK0GQIkc7lIL4c75kqnXQ2FbUdslV/l57kBSNJRUR85ED60mDotKIOlNFNLEk2xB5HlDJ
+	3hDKHwsgvfj1fPucv3ujRYddNS5YulIkF23J4ozozDg+6usEVO3odOeGqK4P6b7Old+lN
+X-Received: by 2002:a05:6122:20a9:b0:5c9:a60d:3276 with SMTP id 71dfb90a1353d-5ec6894bf69mr2018923e0c.10.1793399384580;
+        Fri, 30 Oct 2026 15:29:44 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec69c99e3csm3840233e0c.15.2026.10.30.15.29.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 15:25:03 -0700 (PDT)
-Date: Fri, 30 Oct 2026 15:25:02 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: jrmmhm.kernel@eldare.de
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] vsock/virtio: clear vqs[] to avoid a UAF on a failed
- PM restore
-Message-ID: <auUZPiXDIPpQ2/vK@devvm29614.prn0.facebook.com>
-References: <20261001-vsock-restore-uaf-send-v1-1-5da60f707506@eldare.de>
+        Fri, 30 Oct 2026 15:29:43 -0700 (PDT)
+Date: Fri, 30 Oct 2026 18:29:43 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Eric Dumazet <edumazet@kernel.org>, 
+ =?UTF-8?B?dGVuY2VudG9zX3NlY3VyZShUZW5jZW50T1PlronlhajlhazlhbHpgq7nrrEp?= <tencentos_secure@tencent.com>
+Cc: netdev@vger.kernel.org, 
+ David Ahern <dsahern@kernel.org>, 
+ Ido Schimmel <idosch@nvidia.com>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Willem de Bruijn <willemb@google.com>, 
+ Steffen Klassert <klassert@kernel.org>, 
+ security@kernel.org
+Message-ID: <willemdebruijn.kernel.15f496f9f2418@gmail.com>
+In-Reply-To: <CAL4Wiio2inRipSSWgFKkRjuPA=iLkynvWCXQ7cpe9G5XWi9=7Q@mail.gmail.com>
+References: <v2-20261026-cover@tencent.com>
+ <98906F734B5D43DA+v2-20261026-p2@tencent.com>
+ <CAL4Wiio2inRipSSWgFKkRjuPA=iLkynvWCXQ7cpe9G5XWi9=7Q@mail.gmail.com>
+Subject: Re: [PATCH net 2/2] net/ipv4: fail append when the moved fraggap
+ exceeds the fragment data
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -107,143 +107,70 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261001-vsock-restore-uaf-send-v1-1-5da60f707506@eldare.de>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 01, 2026 at 07:13:29PM +0200, Jerome Mohm via B4 Relay wrote:
-> From: Jerome Mohm <jrmmhm.kernel@eldare.de>
-> 
-> virtio_vsock_vqs_del() frees the virtqueues via del_vqs() but never
-> clears vsock->vqs[]. If a later virtio_vsock_restore() fails to
-> reallocate them (its error path is a bare "goto out" that only unlocks
-> and returns), the driver is left bound with a dangling vqs[]. The next
-> virtio_vsock_vqs_del() - on a second freeze or on remove/unbind - then
-> passes a freed vring_virtqueue to virtqueue_detach_unused_buf(), a slab
-> use-after-free. KASAN on a guest with a virtio-vsock device, after a
-> restore made to fail by fault injection:
-> 
->   BUG: KASAN: slab-use-after-free in virtqueue_detach_unused_buf
->   Read of size 4 at addr ... by task repro
->    virtqueue_detach_unused_buf
->    virtio_vsock_vqs_del (net/vmw_vsock/virtio_transport.c:785)
->    virtio_vsock_remove
->    virtio_dev_remove
->    ... unbind_store
->   Freed by task ...:
->    kfree
->    vp_del_vqs
->    virtio_vsock_freeze          <- the preceding freeze freed the vq
->   Allocated by task 1:
->    vring_create_virtqueue
->    virtio_vsock_vqs_init
->    virtio_vsock_probe           <- original allocation at probe
-> 
-> The object is the RX vring_virtqueue freed during the freeze;
-> vsock->vqs[RX] still points at it. virtqueue_detach_unused_buf() does
-> not guard a NULL vq, so a bare NULL-out is not enough on its own.
-> 
-> Clear vsock->vqs[] after del_vqs() in virtio_vsock_vqs_del(), skip the
-> detach loops when a vq pointer is NULL, and also clear the array when
-> virtio_find_vqs() fails partway in virtio_vsock_vqs_init() (which can
-> leave freed pointers behind). This mirrors virtio_blk
-> commit 0739c2c6a015 ("virtio_blk: NULL out vqs to avoid double free on
-> failed resume") and virtio_rtc commit 548d2208455f ("virtio: rtc: tear
-> down old virtqueues before restore"); virtio_console carries the same
-> stale-pointers-after-failed-restore fix.
-> 
-> Testing: reproduced on a private VM with a KASAN fuzz kernel based on
-> v7.3-rc5. The restore allocation failure was forced with CONFIG_FAILSLAB
-> steered by the fault-injection stacktrace filter to the virtio-vsock
-> restore path only; a guest-root program drives a pm_test=devices
-> freeze/restore cycle (so .restore returns -ENOMEM) and then unbinds the
-> device. The unfixed kernel reports the slab-use-after-free above; with
-> this patch the same run makes restore fail identically yet produces no
-> KASAN report. checkpatch.pl --strict is clean and the build is
-> warning-free. The reproducer is available on request.
-> 
-> Fixes: bd50c5dc182b ("vsock/virtio: add support for device suspend/resume")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Jerome Mohm <jrmmhm.kernel@eldare.de>
-> ---
->  net/vmw_vsock/virtio_transport.c | 28 +++++++++++++++++++++++-----
->  1 file changed, 23 insertions(+), 5 deletions(-)
-> 
-> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-> index 4f9aa9c4c3aa..0553c0641fd2 100644
-> --- a/net/vmw_vsock/virtio_transport.c
-> +++ b/net/vmw_vsock/virtio_transport.c
-> @@ -714,8 +714,15 @@ static int virtio_vsock_vqs_init(struct virtio_vsock *vsock)
->  	atomic_set(&vsock->queued_replies, 0);
->  
->  	ret = virtio_find_vqs(vdev, VSOCK_VQ_MAX, vsock->vqs, vqs_info, NULL);
-> -	if (ret < 0)
-> +	if (ret < 0) {
-> +		/*
-> +		 * On a partial failure virtio_find_vqs() can leave freed
-> +		 * virtqueue pointers in vsock->vqs[]; clear them so a later
-> +		 * virtio_vsock_vqs_del() does not detach a freed virtqueue.
-> +		 */
+Eric Dumazet wrote:
+> Le lun. 26 oct. 2026 =C3=A0 12:23, tencentos_secure(TencentOS=E5=AE=89=E5=
+=85=A8=E5=85=AC=E5=85=B1=E9=82=AE=E7=AE=B1)
+> <tencentos_secure@tencent.com> a =C3=A9crit :
+> >
+> > When the first fragment of a cork is already at maxfraglen, the next
+> > __ip_append_data() iteration relays the previous fragment's tail,
+> > fraggap =3D skb_prev->len - maxfraglen, into the new skb. The moved
+> > fraggap is charged against datalen by computing
+> >
+> >         copy =3D datalen - transhdrlen - fraggap - pagedlen;
+> >
+> > but once datalen is capped at maxfraglen - fragheaderlen it can becom=
+e
+> > smaller than transhdrlen + fraggap. Then copy goes negative: no paylo=
+ad
+> > is copied and the iteration makes no progress. Worse, in the paged
+> > branch (MSG_SPLICE_PAGES / MSG_ZEROCOPY / GSO) pagedlen =3D datalen -=
 
-IMHO we can drop this comment. Clearing after failure is common enough.
+> > transhdrlen - fraggap additionally wraps unsigned, breaking the
+> > alloclen + pagedlen =3D=3D fraglen invariant that commit eca856950f7c=
 
-> +		memset(vsock->vqs, 0, sizeof(vsock->vqs));
->  		return ret;
-> +	}
->  
->  	virtio_vsock_update_guest_cid(vsock);
->  
-> @@ -782,19 +789,30 @@ static void virtio_vsock_vqs_del(struct virtio_vsock *vsock)
->  	virtio_reset_device(vdev);
->  
->  	mutex_lock(&vsock->rx_lock);
-> -	while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_RX])))
-> -		kfree_skb(skb);
-> +	if (vsock->vqs[VSOCK_VQ_RX])
-> +		while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_RX])))
-> +			kfree_skb(skb);
->  	mutex_unlock(&vsock->rx_lock);
->  
->  	mutex_lock(&vsock->tx_lock);
-> -	while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_TX])))
-> -		kfree_skb(skb);
-> +	if (vsock->vqs[VSOCK_VQ_TX])
-> +		while ((skb = virtqueue_detach_unused_buf(vsock->vqs[VSOCK_VQ_TX])))
-> +			kfree_skb(skb);
->  	mutex_unlock(&vsock->tx_lock);
->  
->  	virtio_vsock_skb_queue_purge(&vsock->send_pkt_queue);
->  
->  	/* Delete virtqueues and flush outstanding callbacks if any */
->  	vdev->config->del_vqs(vdev);
-> +
-> +	/*
-> +	 * del_vqs() has freed the virtqueues. Clear the stale pointers: if a
-> +	 * later virtio_vsock_restore() fails to allocate new ones, the driver
-> +	 * stays bound with a dangling vqs[] and the next virtio_vsock_vqs_del()
-> +	 * would detach a freed virtqueue (use-after-free). Mirrors virtio_blk
-> +	 * commit 0739c2c6a015.
-> +	 */
+> > ("ipv4: account for fraggap on the paged allocation path") relies
+> > on; the loop then either queues skbs with garbage tail accounting
+> > (silent packet corruption) or, when maxfraglen =3D=3D fragheaderlen,
+> > never makes progress and grinds on until -ENOBUFS.
+> >
+> > Reject such an append before any allocation: if the moved tail
+> > (transhdrlen + fraggap) cannot fit in the fragment's datalen, the
+> > iteration cannot make progress, so fail with -EINVAL. This covers all=
 
-Ditto here.
+> > three alloclen branches, including the paged one. With the preceding
+> > fix fraggap is bounded by the alignment slop, but the condition stays=
 
-> +	memset(vsock->vqs, 0, sizeof(vsock->vqs));
->  }
->  
->  static int virtio_vsock_probe(struct virtio_device *vdev)
-> 
-> ---
-> base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
-> change-id: 20261001-vsock-restore-uaf-send-1fc7396fa1bd
-> 
-> Best regards,
-> --  
-> Jerome Mohm <jrmmhm.kernel@eldare.de>
-> 
-> 
+> > reachable with extreme geometries (e.g. an effective mtu too small fo=
+r
+> > fragheaderlen + transhdrlen), so pin the geometry explicitly, as
+> > __ip6_append_data() has done since commit 232cd35d0804 ("ipv6: fix
+> > out of bound writes in __ip6_append_data()").
+> >
+> =
 
-The rest LGTM.
+> I do not think this is reachable once patch 1 is applied.
+> =
 
-Best,
-Bobby
+> ip_setup_cork() rejects cork->fragsize < 68 (inetdev_valid_mtu()), and
+> fragheaderlen is at most 60, so a capped datalen is at least 8, and
+> maxfraglen =3D=3D fragheaderlen cannot happen.
+> =
+
+> transhdrlen is non zero only on the first iteration with an empty
+> queue, where fraggap is 0, and current callers pass at most 8 bytes
+> (UDP, ICMP, ping). On later iterations transhdrlen is 0 and, with
+> patch 1, fraggap <=3D mtu - maxfraglen <=3D 7.
+> =
+
+> So transhdrlen + fraggap > datalen can not be true.
+
+Supposedly there is a path where
+
+    transhdrlen + fraggap > IPV4_MIN_MTU
+
+icmp_timestamp sets transhdrlen to 20
