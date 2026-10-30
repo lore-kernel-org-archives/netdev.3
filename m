@@ -1,103 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.54
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793380098;
-	b=fGtlbndW3lO0Y7f5bPcMQNjvGJUfhZsaIRPP5FNlldX85O+Zo1JSR2nNjjlO24WvTs+q
-	 3ag4KbPg3tKVo58q1UPH4IFMBccI25jzsSXms6/XQMfDU2HmvePsfPdt7fy9KlY31lZ9o
-	 eHlwcTGDuo2H/SqYTV6jJACD7WfRBTzTiDO73iJZoqEo1jMi3kTf48Nbw5XgdI4WWNbD+
-	 lYYIbqEQvk5jvNJ4JiJGWWQHIzPKRXSpepwfMgqS9qw/8esdo17QXmA6OYK9kVl/OlhHj
-	 fZx3HbTctxHeBLAQmpDhz1jJAaGadTnTZIs0kzli26aJCassfB9oPOHVQNUXY3rzF4g==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793380098;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.181
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793380118;
+	b=1gvaGTFKFdei/Sf7otNR96W51sKlLiztXiLSQ49xnC+Pr9vngw5A9IHNjbqVNUZj0FkL
+	 jvYzD5l5jw9LOO5JjrlrRTtvrvB83PgLEkKOedz16SKuztV/oRInwBG/x57yn05BECM6m
+	 cmhvaGTIJ8LOjBU3Gt+V8d7RHdlSSD+DSBYNoE8rOrHMx0k+HP5FBRlZsxxpB+estGYLy
+	 pJTYJgE4gZ1XrAp1CJ8CprFidZfgvPdKAQbima3SsQR3A/rR08rfJF8qFEHwXpuSbvspc
+	 fqVDWNevoEkGkZMOBIHwrF1+SBIYo6bKbB1T+DAOH6ZEXtLzrDgxXKxORB07AUUuhGQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793380118;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=UJQFo6lBsRxUZVqaTAfTugCYtH9lDVXLbR2YaM1dQaQ=;
-	b=XjXWByTs99gF5fJaGtiUwtotNIDdU/+PQzGCcyeILadYtwSUux+ML6sP/XIOt7pTzFBX
-	 k42ln+TDRrYAh+K/8PJxkbx1an1gg3jy1uRRy+4iqtyfJ0aBfedo8skDsMOscMhvnkNZj
-	 CCiwjy8l3nWxfilHTl5ITbxzRAV3hmikItKw8a+poFeCrrqpD6Q3MLWBtYS8O6trTNd/k
-	 D7vnwTPzhr372Ztmk7UzbYDBN9v42+xt/iRwfy/0XGfgVbwLpRxr9I/CFvF62qFNZbCHG
-	 960n6glCLZ6h0GLJMO9pZRrqxRgxyIjq9kxSnwxZpB4nHgJFV9ewUnA2Xxb2Edsn6Pw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type;
+	bh=HxML07JrVrj4RRpOs9TXwwC7f4fwJda0Oemp7EKVGdA=;
+	b=Tg+/0Zy43gm6cQBXJ3lRWuydHVPICAISevMftgNPMd6B6so2LPBHvAwLoQUhf07Ec0rs
+	 fOpF6i0KDSB5RUwDOVvCLxfsJE6LfTe6NrSUiPIg3ytT2P4JA5QN99ADyfPyehxwd0PO5
+	 xgw/t3W8xrCPSHY7HkO1rCdMgHzTFHqDQWjJahzHAOC8XH9fCy5Ls5XwtmfnVbp4SfjLW
+	 iKyLkVtJ4abaHq8iS3CKhlCLxldTbjnS5ADZSA+/Y77nf2JldvT4F/9L6Qtf5b+NBiXhU
+	 wiO1sP8Vzi+ezBIAH8+UFxMZdZgA6euX9Y+TxW1rvReeyFhnX4MM4c2ZeKFx0lpzn7g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PtFuYrJH;
-	arc=none smtp.remote-ip=209.85.222.54
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DzvdKKji;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.181
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DEA606A322
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 17:08:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D9DEA606A322
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB33606A326
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 17:08:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9FB33606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PtFuYrJH
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-99061e2171cso244248241.2
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 10:08:17 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DzvdKKji
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-36a1947498bso311101eec.1
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 10:08:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793380117; cv=none;
+        d=google.com; s=arc-20260327;
+        b=q90wafbYDh85y2TNVKNHoMmUpmOe/qRZ7nuOjnVJ1Ulx0Hb089FO6Q1WiJhSHxlwHe
+         +FwyCt4BM5NwDTEExt4eFjRj5PLYlFwUfVTmzHntKnzqe7FC64mPpNbMZWZO+z7xUkRL
+         i+TN3zYzgFMBac0vyppoK81AvTYSRALxCmjoN294u/p8CNyI1bnsgZwPXjB7kwuyfs5Q
+         w+kuyEvPGh70MGhQ2oQ27JmmSTkV+VXjj75kM/bfaulNR5GL4E5nh4eGp7vRnGZg5GIl
+         Nfqyj2TcsXR4ciZiuXagHNghJEJ8TfJJZhae5rwxVzCK5cJCluVhKkN+QCaNTOkciGHo
+         r64g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=HxML07JrVrj4RRpOs9TXwwC7f4fwJda0Oemp7EKVGdA=;
+        fh=VAPGHN2ET6WMnhZNuwdaTv9rYemXIsWZY2kHCEaeE1c=;
+        b=oBuGHOo7nf0Vl8xUCFVOYA99bqHyj6M/NaHCsSn34UXde8coRi4lJlgfQNHZSrKY4f
+         uAFIdpQRUjmMIcK+2uQ+WmwTqozQCy+lT3lfx7jdQmrPIt5sYRvsW6lcXrJaxNhDUiUX
+         JVMqUljK/heSkbNFpy92iB0yjts32T9qC8HlAXFUi3CngTJTIcQJQVj9pfABkn43hHF0
+         UkYX+/rqhPUeIrMJGogHDddolBwhBpGMi7gp+JE3X6DDTQP8O4LJiCG44itEi6+iYTZT
+         0OIOPWA9881kpzuIIPFEV2AZJ+jA2gTjMi3de0nWmjMd9t+m7zB8QkKEcXIn2FS7egeY
+         r9tw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793380097; x=1793984897; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=UJQFo6lBsRxUZVqaTAfTugCYtH9lDVXLbR2YaM1dQaQ=;
-        b=PtFuYrJHVVjxsD3+QnaSsedFWNS4nLWLqgvQv9apD0CYg5eNqRuNk6eZI0jdSZ6Q8/
-         SBwnmkPqnWIk//ri5tKsgwcIul7GOTra7xsgHbKxGtHZZ1hxyVA38OX9DMfgbypyckWj
-         2g68t60m9Mg4vbUOrIyMhhks2iiLLoNgOaadCYN/QGP6Q7p5jK0Mf2mxgu2eyD/S3SjR
-         pcF/3efkDIquTT4hk1qE/3q9Hts+Gic2hBNKmagf47naDwa5XKie4fsfnogh80rCo71W
-         6lcflru1iV7jjyM/TKK/ITzoZTgmQUugv/sRQYeidVrpm6ger3hXQYcP3e1Wmp2emTZh
-         DDdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793380097; x=1793984897;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20260707; t=1793380117; x=1793984917; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=UJQFo6lBsRxUZVqaTAfTugCYtH9lDVXLbR2YaM1dQaQ=;
-        b=lBc0+TqDnMrOBQw7KzuoAv5lOTFhrBYYi4JuzYVEltx3a5pHvh5xErShB7d/5M1KRj
-         jelmfIXSoqgKOoGZe5bBRdsR80TEge0WA2wAmXs3RT8FoyEIzH3vMU/nyRMFkaiEVBCO
-         bgWgG7A/hg4pJEXs9BUD/GwUfb5xDE1ZFlwFbZnIU/1FS8Bp2CmiJVI7VK4Xbi04cutF
-         FSSkjOnKMWOyBNjZWavDuWRrOVkJEz37xKQ3K4eJax3Hy4wFj2oo2p94PtJN6c4Jt3cm
-         Y2MW139HNv5+K9kQDmGqfv/VZANrfCl+i+QgEYwKCRN9LcHFpet9vlUo/MRgii7YqMY+
-         akzQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx9E0ilw7Ao20wpreBYg2QcI0CD2rejokfmm1SXY3mh0lSpY2DDzbgLF31vUe5qOPtcX3gSivE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJOsm+Esz5Pq7iRK6nItOo8LjLzkqWwYJ9wqlyAVmAHQ0d7jGvU
-	rkG2xeXvTtkNHX2Hv6QNP53iaX1JnF9zNz+2wj/2mcpD51Hc6J6+dlVl
-X-Gm-Gg: AYBFou2R2IUykv5LcKEVkYl6jppTR5Gia+G36ymG2VLyaBM8ifVxfJKJqZ+4ZR/ROd7
-	p9ieBKeaApDRm9yKDwooPCOOCuS7ZWirHflKOIXa+m/JoZ9abnGHWfcG1JpOK6dZx+4KjXX67Hz
-	VSf9N3th3BnbaRJa0S1/8EX2J7rHne15dSEgH8pKV6gutS2UH59O/K42QWrVDKq2DHuEl+TY9v+
-	cJIzimZLhEyj1ChXVwM4nvbLDqGznUSfspTumWE9pNK3CxUA42tnoloCI1+D0I9moag+DzQ13wz
-	zzk7FSRUogFB4pNYSsnG02l5EyfynZy9UuxmdKmJQHHbQz8PGp+C/VRCfb7pxTbUCR3dCqFhpTj
-	XJUaIP+VAGwA3Dv9FOp2GQ91PWBKQ7c+OwR3dJdebpTFDqje2c5YLMLXQ+LPgC4SiKZH8ruYlwB
-	ncDsEQI+3soWFboG5ERj+pYn8sKyyuXsjoVbWWbeZUb+UnhLC3YzshP9p6nRXdHlPD7+yal07px
-	0EvCNcnYv75lGTts/+5+zmxATcXRnP9hNvcnOyHqGP+QAgIW1y+2uq+PCN7Ee/Lq2KrT7DakLBR
-	kCp1/LoQBB2OABWcM+DtyT9Ar7FENY8a5gYUrqg61dFRbyteqUJrvXFFm1v36MTinf/3GCkURtP
-	DMFHHCjbQl3Z3ycqasAyzxvmp3B7x5AX4YzuGaFdbY98VAvf1CHcaOsgYGPGqXnGk4cko
-X-Received: by 2002:a05:6102:50a5:b0:7cc:25bc:3b20 with SMTP id ada2fe7eead31-7d072bb35d2mr1407630137.7.1793380096890;
-        Fri, 30 Oct 2026 10:08:16 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-992ee3a066esm3190273241.5.2026.10.30.10.08.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 10:08:16 -0700 (PDT)
-Date: Fri, 30 Oct 2026 13:08:15 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Ahmad AG <ahmadag1001@gmail.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: kuba@kernel.org, 
- davem@davemloft.net, 
- edumazet@kernel.org, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.2ea2182d344a4@gmail.com>
-In-Reply-To: <CAASqGyYfFwZizof-O+Bn3_H85sEFytVr9GapOVQsW9miVa+Zsg@mail.gmail.com>
-References: <20261030100504.23498-1-ahmadag1001@gmail.com>
- <willemdebruijn.kernel.2e53c121ad9ea@gmail.com>
- <CAASqGyYfFwZizof-O+Bn3_H85sEFytVr9GapOVQsW9miVa+Zsg@mail.gmail.com>
-Subject: Re: [PATCH net v2] net/packet: account user-triggered allocations to
- memcg
+        bh=HxML07JrVrj4RRpOs9TXwwC7f4fwJda0Oemp7EKVGdA=;
+        b=DzvdKKjiubsVbMwKzsQ7OZz2Imxqi+00JZUqKyxM8AOizqzIOyKcW6VOykfZwiIHGF
+         57cMPbwdV+ny3p3vnIld8EStmBo5eIvqQ50ThFFCUVi49IorC9D2QtXmQ60t7QUSIaJC
+         AhANEJLnTC8IkzRYwMN249nWNY1gYM+976/qNZEBbrEaj6Ohp3I9L2giYdp/iU358Kms
+         WoRsCYo3kgG2V8NOqNY5x/JQeC6BIKYP7mnvMp2EBm3CquEIkQjdYY4y5naql28TjYx4
+         od8G+VEDCU5zrLYUE89hS+u8fxyYybDFcLmiHfmxPrRvc4n5fdCmGyf5TaII8Xf3NgiS
+         DmQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793380117; x=1793984917;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=HxML07JrVrj4RRpOs9TXwwC7f4fwJda0Oemp7EKVGdA=;
+        b=HT4AolgIU8Ves96L+KDMNQoSSivsDWnxt0Gm2mRLvU84JQ4VBu3uQJcqTEK2mjdGvN
+         AThvwkpuMIU62OXaSv5Cgi784usYED1VHH+5vTUvis5YVMfr+A+ds4SoxUY4WzZVSM84
+         XbCieXJxN3Y9aGKK3eSIFf611xhRfQirz+nYfZP23NdROcjnRavhN6U/d21q5KuhHr80
+         Ce1tWsURus0cMDF0r4YDoKv8DXOiYlOMOhWXBJXxZsC89nk0V9VqR4urjx/U/Oq71rNW
+         /H/HxR3y72UVA66Ik4iCdOoAmspSLdqVswK8dq+5GOTnKx/d6y8zhlC1YrAOeHwsAhoj
+         6lpw==
+X-Gm-Message-State: AFq9FYJNZ3mHgfV5gxAcY9tponlPMqH5abl8129Ds8Mcs+LWGPG2ZdSt
+	F1wmGX7l87gdxVVUxGTl7WmFF356vJSlmunuRArNKC/j0BkES5dQtaKnkm7V91xFoa+sp8oQmWK
+	NJu4QZHw3u9lMBzQal2Z/C3L4mJhEJYQ=
+X-Gm-Gg: AYBFou1pWOqzyvKQX99PiGQX0Fj+8mGykkt6Zu9/Fd6PiLHlKgLjr1hm1zNyc58w4jS
+	/x7R6pRvZfKFUKSgfwkAR+7Xjbj1kevL8xcGtp6TpvGBAgRtSbR3NEwkneR3aPrp4VlOD2LlmdS
+	c/kV+yVjwqbNuhVAocDldD/+7eFfkB+BlUJzp/Dyr1V/KORPxsGb/FYNxaszazuCmVQYUS+Kwft
+	Zes4RvOXMY0toE3FBQx9OLGRnGsR70+Z6XWQDxMoWGbQhFS1gZ7s70moyoMc4AtYWuglicHvsdK
+	NCHHcO49MB4rP2JPvVw4nsFaofXWFyuwG0f3mHKGj1RnargRQpk0i3LpUZGbCChTcWMvX2jBKd2
+	hVFiRBuZ64piltxYY1WnBwlBXgMN+RCi7KzaeGgBEh7CpnMp8lP2nCoNsQA==
+X-Received: by 2002:a05:7022:628a:b0:1a4:c892:b130 with SMTP id
+ a92af1059eb24-1ac5b9cb62dmr4974858c88.15.1793380116576; Fri, 30 Oct 2026
+ 10:08:36 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -107,18 +102,99 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+References: <20261028104758.299129-1-timur.stukan.linux@gmail.com> <91955.1793289071@vermin>
+In-Reply-To: <91955.1793289071@vermin>
+From: Timur Stukan <timur.stukan.linux@gmail.com>
+Date: Fri, 30 Oct 2026 19:08:25 +0200
+X-Gm-Features: AclHuK_q4UB9KXrhigTXAjvWJSIdR7qM0bZtgDXcbgAdX5p_OjAdmHpPO-SNVk4
+Message-ID: <CAF+_u5CGDY8m_abiXMZFboaSnfShmFh-c_EE2EaQSOQOTu0ezA@mail.gmail.com>
+Subject: Re: [PATCH net v2] bonding: fix missing down path on speed/duplex
+ failure after FAIL->UP
+To: Jay Vosburgh <jv@jvosburgh.net>
+Cc: netdev@vger.kernel.org, Hangbin Liu <hangbin.liu@linux.dev>, 
+	Nikolay Aleksandrov <razor@blackwall.org>, Fernando Fernandez Mancera <fmancera@suse.de>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Ahmad AG wrote:
-> Thanks. I will send a v3 to net-next, without the Fixes and stable
-> tags, keeping the allocations that scale with user input (ring
-> buffers, fanout array, membership entries) and leaving the small
-> fixed-size per-socket ones such as the rollover state alone. I will
-> add __GFP_NOWARN to the vmalloc fallback.
+On Thu, 29 Oct 2026 at 17:51, Jay Vosburgh <jv@jvosburgh.net> wrote:
 
-Just be careful that net-next is closed.
+>         Reading bond_commit_link_state(), for this call site, all it
+> really does is slave->link = slave->link_new_state, when link_new_state
+> != BOND_LINK_NOCHAGE.  The changes to ->should_notify_link only matter
+> for the ARP monitor, so that part is effectively a no-op here.
+>
+>         Therefore, I wonder if it would be cleaner overall to not do the
+> bond_commit_link_state here at all, but instead keep what you've added
+> in the BOND_LINK_UP part of bond_miimon_commit, and then add calls to
+> bond_set_slave_link_state(slave, ..., BOND_SLAVE_NOTIFY_LATER) to the
+> BOND_LINK_FAIL/BOND_LINK_BACK case to make the change stick.
+>
+>         A quick hack patch that I have not tested to hopefully
+> illustrate what I mean:
+>
+> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+> index 756d79281ffc..5fb215fa85f6 100644
+> --- a/drivers/net/bonding/bond_main.c
+> +++ b/drivers/net/bonding/bond_main.c
+> @@ -2877,6 +2877,8 @@ static void bond_miimon_commit(struct bonding *bond)
+>
+>                 case BOND_LINK_FAIL:
+>                 case BOND_LINK_BACK:
+> +                       bond_set_slave_link_state(slave, slave->link_new_state,
+> +                                                 BOND_SLAVE_NOTIFY_LATER);
+>                         slave_dbg(bond->dev, slave->dev, "link_new_state %d on slave\n",
+>                                   slave->link_new_state);
+>                         continue;
+> @@ -2933,19 +2935,8 @@ static void bond_mii_monitor(struct work_struct *work)
+>                         goto re_arm;
+>                 }
+>
+> -               if (commit) {
+> -                       bond_for_each_slave(bond, slave, iter) {
+> -                               /* UP state is committed by bond_miimon_commit()
+> -                                * after the speed and duplex check, so that it
+> -                                * can still see the previous link state.
+> -                                */
+> -                               if (slave->link_new_state == BOND_LINK_UP)
+> -                                       continue;
+> -                               bond_commit_link_state(slave,
+> -                                                      BOND_SLAVE_NOTIFY_LATER);
+> -                       }
+> +               if (commit)
+>                         bond_miimon_commit(bond);
+> -               }
+>
+>                 if (bond->send_peer_notif)
+>                         bond_peer_notify_may_events(bond, true);
+>
+>
+>         Thoughts?
+>
+>         -J
+>
+> ---
+>         -Jay Vosburgh, jv@jvosburgh.net
 
-It makes sense to send this to net, just probably not stable
-material.
+
+Hi Jay,
+
+Thanks for the review.
+
+I had the same thought and was planning to send it later as a separate
+patch, but doing it here makes sense.
+
+I went through the possible consequences. Without the loop, DOWN is
+also applied only when bond_miimon_commit() reaches that slave. I
+don't think other slaves handled earlier in the same pass can be
+affected, because when each such slave goes DOWN, its own link change
+rebuilds the arrays and redoes the aggregator selection anyway, so
+nothing stale is left after the pass.
+
+I tested it in 802.3ad, alb and active-backup with downdelay 0,
+including two slaves going down, and the original FAIL->UP case with
+downdelay. I'll send v3 with this change
+
+Thanks,
+Timur.
