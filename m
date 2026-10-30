@@ -1,87 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793334161;
-	b=YnsELxOJX17yXUhg8MJiz1FQnthTscuP2Cq0sc4YHCHk6l8iQEvQv4iAMaH5o0qaBR7o
-	 TFr8MJRfX66np3n4y2V7bILa4gsY3E1e7S/3w1wxtDPmNqkSvisC9ldGhYAF6I49AMQId
-	 sUMvtkV6N3b4ruXxo/DlA0EAnAqlC0UkCQJMYFCA38ris86QpDqBtM/bSYXNA2de2sFV+
-	 tdkSeKIGgMrH+VVkmLDR5yWm9RxqxXZRT+IwziCfHojac7LUd1waHjBtwQGnJ7dxJwMK0
-	 dtUkys9g0ptJodx+DlNC+GDhn7oioQYboTnnhF/8ruoAX1wPX+L3dXTXQSm61A8B4ow==
+	t=1793334170;
+	b=zBav0OHZpEZahxBN+Ei4hnT9mOn1r3A5PtSMS4LIWEVP88GovZG1gFaJv/yzZqghL5bA
+	 Cx2A/z3SBHfuq44ES37xJ1T3qXnM3cDtX1IiwQQ/RzfYdS6UOh4FpCyeFwQ6IzHIhgjL8
+	 CSui5IqguyHOcJP28RBPYG1P4EWS13aoXzwx/bZGsS59s/O4l8dzIZqD7gJs01FhlID8C
+	 nqidpUfm0fyUwDU9Xc8qrKau1mpXplbTdLyrovlJM0xbU778x0f6palQSsqTT5oXy5Re/
+	 mO6JcqCsGSOtdN/SYP8VYHPQLQNfFANYiWD54BEIW7NMWkweHgAmyWPWoUC5byW7HQQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793334161;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793334170;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=67W27p/QagU+bgmoCOvDgTbuvJiSS6L9t9Om4gfOTck=;
-	b=Bx9bzhC0a6Ew3QpEIa9BMJZzTWn8bk19QK5JxIHmpDCs6usietQf0ncQsAUSJlkqAyRr
-	 dvI/QEGkZneKhx0LTCweFW1c5wl4bcQi4JH7D4ZvlU1xkQSQeZ++hsj45F/qIFUGW+ZxK
-	 XpTuAY3hLmkPeaRsaZEvWuQHilvwDMrM3uAFQSfkDAgrQ5jwVJi4bl1aZ3Q08ZFn3+Lob
-	 Fb8ARdl1FGL3B5pNBtxUOmFPznBG2i4EK1ukNkRvBjD8stzKwRmCrTJgAYIe++Q5l5VsQ
-	 a3WsSx+RYfbv35ejh/YF67R0RblB/5OIwnMGm2eKHMVHP2vl+hZj0Ap/eNQ7aULJPKw==
+	bh=oPIl+2oEPHabOjWk4tVLNrKPICyr6qT8RKDg7WJU7ek=;
+	b=BKWubCgkQptbZm3ApITjrKbRU8ywqmym7a87xBpR1qzoOS6ZRXHuw7Yo2wxjEmVTmnVu
+	 vjmpOk984y011GCL9yrndsb0zqYmy9l4vDNJKduFq8+OxAhKiHT+ZjKyVSDx1I48Z34BC
+	 UbVXG7UY/jiZFHVDicdjFK/FHD+zrcmhSK5muz6QPWNZKXteZ3MNvGZIHeThHB+U6O29Q
+	 hBDthI/ve3KU2iUUIflmmMg21Z06NzmyjaTqhjQvz+fnpLxeDdxgi4c13V4ZrbjEPZTit
+	 YN+N2VpI4hWlMVjXc/jhOo/VMQe1E1WT0Jyxn8LcEZbgayfSKrO98j5IDmtTG8uX2Tw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=openai.com;
 	spf=pass smtp.mailfrom=openai.com;
-	dkim=pass header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=aNhDxSLy;
-	arc=none smtp.remote-ip=209.85.210.50
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+	dkim=pass header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=Set+tV4o;
+	arc=none smtp.remote-ip=209.85.161.41
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0AD8606A31D
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 04:22:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0AD8606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D56606A31D
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 04:22:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B8D56606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=aNhDxSLy
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-84d5e56f876so258792a34.3
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:22:40 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=Set+tV4o
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-6df0b02fe91so1079860eaf.0
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:22:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1793334160; x=1793938960; darn=vger.kernel.org;
+        d=openai.com; s=google; t=1793334169; x=1793938969; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=67W27p/QagU+bgmoCOvDgTbuvJiSS6L9t9Om4gfOTck=;
-        b=aNhDxSLyz1ZkZUffll5tb/D9lBZYdQj51d9JB9BCY+u3aDDAsZHi82xdG/llhnRlZT
-         gMdeEH11C8c46kyEN/ZoCYdOHPAzncXjp2uRi4YXr2+CdIQPG19lTICxGtSKTezs4YQW
-         qJPHDehTVxR70DLxIhqAbGeMx2SynNbZsfWFI=
+        bh=oPIl+2oEPHabOjWk4tVLNrKPICyr6qT8RKDg7WJU7ek=;
+        b=Set+tV4obQ7M7+4r9gKQeiwhgOCufLMNr2KdJwsQTj9HuSGBAA6de41f359kIORSUg
+         0F6ccfZDW0xSvbKtVK6dp1TMou/jhe4DDYq9dM5YJBxk4fj435JuJhEwq09ORWmZEc1g
+         9XkHelDcwfnmoRJT6CC6birnv/uRC1W6h1SlE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793334160; x=1793938960;
+        d=1e100.net; s=20260707; t=1793334169; x=1793938969;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=67W27p/QagU+bgmoCOvDgTbuvJiSS6L9t9Om4gfOTck=;
-        b=w+Z7NWFtfu6hbiwYdMG9R7UgKcXhHtjr4x9ECyhR9XTsStaB87coQb3VGm/2W+ZO1M
-         zqWZFHBrQyabEgYhoWgwWb2Bu1w6StrTlianSUX689M2CsHKWs1eJVpXTqlBxAHGVCNd
-         yqxiV73jTtjZ/rTT9b9lLWMBcOIhzJuf+jJ5myRcD3G7sXkNNHA31uhUILq9dR7z4kD/
-         J6oz6QkjrAdH37SOzBfsTzpqrRmegxKAuua4Mf2euIBTvwqrojyQMT35KxFGhJvzDuF/
-         0rYT5jcdWscPs3+rIUZ+851i/8Pp85Pz7x3SwwHLYFT90/SFvGOjdIT7i5vTxz/R2Y1b
-         WXFw==
-X-Gm-Message-State: AFq9FYL/7YEGUeC9sI9o4pLsRf/dDrOuxW1HOyNiLIpQTN29vU5+FQpN
-	8FaN+ffBQeus7D+qy7ln1qlX/nlabC6FhtKL6VcBQc6ZHH7aWmUwoLrJql8h+B3ivzvWcQknKxo
-	VXbTvtXE=
-X-Gm-Gg: AYBFou24uofTWJSDcE7dGTSKjrHLUexgTl7P5eK+uW1E/YE+l7qZHBG+MFDTIbf6ICc
-	v/r6svHXGihOx9PFRqpF9Ks3j7lRfmOKuF3r8FtBeBnXSA1ZRtdwYK6d3r7ugxpoVw5/75f4Rv/
-	BViIfWIDyk+OfBzo7lVkP/7o37WxF3KcZIunwQChkWSf/bG8CFkxcQnF69nuSO4K4FDM+CgUXgW
-	77ZmBNlWG/ZjrmfBP4wnorgPlUXIcwBvisnDWmXm/CFDsq7++klTu55cx/iY8DM+W0EnbFYJnaL
-	j3KOzIfbQ+ObP1XszFAy+Np2dFduUPotk2m8dZHvT/WqafOQg2O87EG2ybQD9Nbqay7JtqSOmZu
-	aWbVk1Nk4ubQ3DrZYKlLBlGk6KZeSEI8HeptpU/ZO5GBqrSzvWLkFfxoMgII20nWOC4rl4L7sDo
-	zU8gGVpxFGrlUoZVPsrph/7tS+VcSm7Pi2lFM9MastKSUWJKfXuCwt694r3pBcQRwZ5vE31sb2i
-	Mph2JWKWyZl3PE9IMUDIzEVsmn5IaRkz1UlhmbqT2BkziaBPa+vHQyyolxRoUWy+ZqDfvcf8ifw
-	+01xlpSkPfv3wKvmgOr4bSLd+G45EKmLtnimHxn3EMCtKw5mWsr5mMncsURvZwRYPSaiCnTRRLH
-	6lhC+qGzaEniypfGTEh9r4wePZDSQZSqfmsaaEv38nwoEjIidmbo=
-X-Received: by 2002:a05:6808:1925:b0:4c3:4e34:c69e with SMTP id 5614622812f47-5640d919f60mr1177894b6e.8.1793334159798;
-        Thu, 29 Oct 2026 21:22:39 -0700 (PDT)
+        bh=oPIl+2oEPHabOjWk4tVLNrKPICyr6qT8RKDg7WJU7ek=;
+        b=21/SceoXE/jkkYrGer7kbR+GPWMa4P7tVhx3hhObJKWJFSPwGPKU8gIL+pZDZ15Zh0
+         tVTLAy+EhTHVr3Xp1uNkeJtnRbSnUWeP8t+mhKTbKTtTE2lvdNqczsMQM3QKKni05alv
+         wpNLPtWpPOCly8S9rjf+wFfHA1S5vncSn179Nev7iTggLcGKlbrBTxVdKprJu/CtlTjt
+         tSGbsojIGBLC9d8DjC9eocuKsdVk6p8MzhJ0gQ+uTg9DbR1w/KF/kOmY/bWgmB+41HUV
+         rdUh0ooZcjg2485nYJ514CItZbJOhFa6BocFq+vgWy92ST1drPSxJ1bfGQcWJaD/tj9r
+         8DGw==
+X-Gm-Message-State: AFq9FYILY2VBaBf0OfLh2bXTxwFbikG2vyhKaYOskQoiB6tLhQ4CFRgv
+	mHpi2XKYSesCbXWfYvX0SCdLBorUZUnuRDY6poFkoRy/ZT/109zH+vH5M4EJZm4ldh3ZEpKhpQq
+	9xZPk99k=
+X-Gm-Gg: AYBFou3PoGFJHscdIMEYfIlYnuJ8PA/9jpHdDe6GZQ8rNuoixSOAvglksmWchye5dxV
+	slEKjlj/NpKq7ASNkEno/Y8ODQK3BPvAGbyOba/0jlauSALnkb7ua9pX1zcvwc9V27t0toAagJk
+	mJsJeGiNBijCsMXNg/f8vwD5nm1Qsqa82Emb9u04u/NuxuAmCuidCBNhAmVffY4fCIl2YXLOXDb
+	DjfRQX8tCrRj0j904AC0/GFy3TXDuw33dpOQUG2Uzfcu4ToMYuJCzDptlr+Gg7y1w9ScdgFli4b
+	H+qZHoK3ImXOJkKe4tTNmILbmUdLr/hvJU0sLgHf2rXqU13ji/rsm036dHZDVpLLgFiAtqWJSsj
+	dEAY/EkdR+/zUWauD8go1YHcELyDSase6r4tl27vmb29pvMRnyUU1Szb2aUQrFhdQO2tjmkjyge
+	Hm27eQreP7ZqbNZNWph1HnYYZSY9pS+vaygJwVNCluFvtC8E4urYAcJcBVDNnQWr7ALDqLMg7aO
+	WUVwT4sAdNYQRhCuO8N2q+FtEmJGx37Y4JtzBcJMYh0TypErR/ubC0YXWcv3TYXnlpGlQrDv4qj
+	vIusBNC2vwTi4hbLfsMzAGQjwHJ6sERQ5fdfYlEoa4tr0FdciLXKg4DauATaMufVBGWdIspuD9r
+	nIjuM5iORfr0zN7o6omgSmdrLdJlRrA==
+X-Received: by 2002:a05:6808:bd4:b0:4e7:f052:460c with SMTP id 5614622812f47-5640df5a6c2mr657364b6e.23.1793334168751;
+        Thu, 29 Oct 2026 21:22:48 -0700 (PDT)
 Received: from com-75606.corp.openai.org ([199.47.143.5])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-5640fe45587sm703285b6e.15.2026.10.29.21.22.39
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-5640fe0fc77sm691718b6e.12.2026.10.29.21.22.47
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 29 Oct 2026 21:22:39 -0700 (PDT)
+        Thu, 29 Oct 2026 21:22:48 -0700 (PDT)
 From: Kyle Zeng <kylebot@openai.com>
 To: netdev@vger.kernel.org
-Cc: Sabrina Dubroca <sd@queasysnail.net>,
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	outbounddisclosures@openai.com
-Subject: [PATCH] macsec: reject frames that decapsulate into runt Ethernet frames
-Date: Thu, 29 Oct 2026 21:22:37 -0700
-Message-ID: <20261030042237.74106-1-kylebot@openai.com>
+Subject: [PATCH] mpls: reject headroom that overflows skb header offsets
+Date: Thu, 29 Oct 2026 21:22:46 -0700
+Message-ID: <20261030042246.74144-1-kylebot@openai.com>
 X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -94,65 +97,66 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When an SCI is unknown and the C bit is clear, macsec_handle_frame()
-removes the SecTAG and the default ICV without checking how much of the
-frame remains. A short frame can therefore become an skb shorter than
-ETH_HLEN. eth_type_trans() cannot pull its Ethernet header, and a second
-stacked MACsec device can copy stale skb headroom into a packet delivered
-to a packet socket.
+MPLS output reserves LL_RESERVED_SPACE(out_dev) plus the size of the
+new label stack with skb_cow_head() or skb_cow(). The aligned expansion
+can leave skb->data more than U16_MAX bytes past skb->head. Resetting
+the network header then truncates the offset, so mpls_hdr() addresses
+the wrong location. The subsequent neighbour output passes the negative
+skb_network_offset() to __skb_pull() as an unsigned length and can write
+an Ethernet header outside the skb allocation.
 
-The matched-SCI path has a related hole: macsec_validate_skb() accepts a
-short_length of one, so a frame that passes the existing length check can
-still become a 13-byte Ethernet frame.
+For example, a netkit device with needed_headroom 65488 gives an initial
+network offset of 65504. Pushing one MPLS label requests 65508 bytes of
+headroom, but with NET_SKB_PAD=64 the COW adds 64 bytes. The new network
+offset is 65564 and truncates to 28. This can be reached with an ordinary
+non-GSO IPv4 packet in a user-owned network namespace.
 
-Require enough bytes for the MACsec overhead and a complete Ethernet
-header before decapsulating an unknown-SCI frame. Apply the same bound
-in macsec_validate_skb(), using the selected SecY's ICV length, to cover
-the no-SA, synchronous-decrypt and asynchronous-decrypt delivery paths.
-Leave other unknown-SCI handling unchanged.
+Check the actual headroom after COW, including its alignment slack,
+before installing the inner header or pushing labels. Apply the same
+check to native MPLS forwarding, including its penultimate-hop popping
+path. Use the existing transmit-error and skb disposal paths.
 
-Fixes: c09440f7dcb3 ("macsec: introduce IEEE 802.1AE driver")
+Fixes: e3e4712ec096 ("mpls: ip tunnel support")
+Fixes: 0189197f4416 ("mpls: Basic routing support")
 Cc: stable@vger.kernel.org
 Signed-off-by: Kyle Zeng <kylebot@openai.com>
 ---
 I have a reproducer for this issue and can share via DM
 
- drivers/net/macsec.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ net/mpls/af_mpls.c       | 4 ++++
+ net/mpls/mpls_iptunnel.c | 4 ++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 87f3f4bdb026..240ba0ae07d1 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -408,8 +408,10 @@ static bool macsec_validate_skb(struct sk_buff *skb, u16 icv_len, bool xpn)
- 	int len = skb->len - 2 * ETH_ALEN;
- 	int extra_len = macsec_extra_len(!!(h->tci_an & MACSEC_TCI_SC)) + icv_len;
+diff --git a/net/mpls/af_mpls.c b/net/mpls/af_mpls.c
+index ad4ad6f2001a..4bfdb7c81f04 100644
+--- a/net/mpls/af_mpls.c
++++ b/net/mpls/af_mpls.c
+@@ -453,6 +453,10 @@ static int mpls_forward(struct sk_buff *skb, struct net_device *dev,
+ 	if (skb_cow(skb, hh_len + new_header_size))
+ 		goto tx_err;
  
--	/* a) It comprises at least 17 octets */
--	if (skb->len <= 16)
-+	/* a) It comprises at least 17 octets. The SecTAG and ICV must
-+	 * also leave a complete Ethernet header.
-+	 */
-+	if (skb->len < ETH_HLEN + extra_len)
- 		return false;
++	/* The aligned expansion must still fit the u16 header offsets. */
++	if (unlikely(skb_headroom(skb) > U16_MAX))
++		goto tx_err;
++
+ 	skb->dev = out_dev;
+ 	skb->protocol = htons(ETH_P_MPLS_UC);
  
- 	/* b) MACsec EtherType: already checked */
-@@ -1331,9 +1333,12 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- nosci:
- 	/* 10.6.1 if the SC is not found */
- 	cbit = !!(hdr->tci_an & MACSEC_TCI_C);
--	if (!cbit)
--		macsec_finalize_skb(skb, MACSEC_DEFAULT_ICV_LEN,
--				    macsec_extra_len(macsec_skb_cb(skb)->has_sci));
-+	if (!cbit) {
-+		len = macsec_extra_len(macsec_skb_cb(skb)->has_sci);
-+		if (skb->len < ETH_HLEN + len + MACSEC_DEFAULT_ICV_LEN)
-+			goto drop_nosc;
-+		macsec_finalize_skb(skb, MACSEC_DEFAULT_ICV_LEN, len);
-+	}
+diff --git a/net/mpls/mpls_iptunnel.c b/net/mpls/mpls_iptunnel.c
+index 1a1a0eb5b787..4eccbd911fe1 100644
+--- a/net/mpls/mpls_iptunnel.c
++++ b/net/mpls/mpls_iptunnel.c
+@@ -109,6 +109,10 @@ static int mpls_xmit(struct sk_buff *skb)
+ 	if (skb_cow_head(skb, hh_len + new_header_size))
+ 		goto drop;
  
- 	list_for_each_entry_rcu(macsec, &rxd->secys, secys) {
- 		struct sk_buff *nskb;
++	/* The aligned expansion must still fit the u16 header offsets. */
++	if (unlikely(skb_headroom(skb) > U16_MAX))
++		goto drop;
++
+ 	skb_set_inner_protocol(skb, skb->protocol);
+ 	skb_reset_inner_network_header(skb);
+ 
 
 base-commit: d89e1d186ec9271bf78e62771779e9fc03bf0fc3
 -- 
