@@ -1,90 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793334178;
-	b=UDHNMFaT+9aAFiGvfaZQI16Y7ijseTQIVaABOxERHFcbyhx5LkM5VbyU37kyWqJ9W/us
-	 9orBnZ3r3jVMMpLHMMhPhlWqr0jOhuyvJYfPGDaQb8XKRp5uVmQNZEUbf6morziTUOulU
-	 CYl2EN36e/ClDacwQOsqWe3xaNLFuXqRfRnuiLQmxdwCOmkTfzNWVmVV1BDx2QqTE81Cs
-	 vnGbzs/65sSQ8JhDoYIK3F/GvxwnWAWKAr0v15zbafmszMvqoen/wpjcuby92Y5hJFm7x
-	 SID6/LSprxOF0qy4a4ljDpCjMuLeUp4/qYokMRrHDjhDz3j4APoqv1B9aF+Gp64DXOw==
+	t=1793334187;
+	b=ZEX4wHcfr8FM+qh/fUTZOWNNICbxcxcQbLBIQiJxXbv0DQ2kaiC3+cub6gq8SzZTtFcS
+	 FhGo7slibgi3VBQ6xapSKidvSpY8NTIvdSkquzxo7Tj2GT02o9qb3ehZFO+O8Pn8cqFjz
+	 5Bmj7oeeVzJe47ar5Qer6Kp16wavgO7Tzn+0hlSjyLRMH6iJbfgLDPpdrCeGvUr4B/0MW
+	 Tc4KnDuO+9OWZCyr7Kz7HdsCn6n6XgGOW3doA58SyEtSaAmdyOXTKAiIa0/WjEbYgrjg5
+	 bqWy2EHoMSHt/SOG/JnypPt9Q6LochrYxae+oBmL0FVPoBWo04EtvNCOjHG5ZwJvc+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793334178;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793334187;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=GJHR2hSEQjDA7JEPW4kRvNrUrFju1iQ8fE/qcrxDnx4=;
-	b=nLpreuPvchkcSm0hq5dMxtMw6WwFve/e4y7Te/lJ5bXtd0GOp8XglX+08yBwj4t8FNg9
-	 sSqZRREnFpBV9iCFskhvUsjBln0K19nHPOTVHk/9NGQRzQ0aOhnQE0aWjcEuS501OthAn
-	 XTaGIlw8WBYgho8qshxRdclmDNPZzptiqP3xZDTJVATQZjGyuVdUoK3O6E/n/2JononAI
-	 GdxQc78x/DcRiMWg25TgYjSPnaEcw2Lg0/Pa/v9BNKlNiuEywzT9qBm/KYOYmYXwR3I5I
-	 3rqyeOSJAJNzTrK++adhuyx6156gWSQ7GZfhNQ3Fs2rA3vQ4uoo8forVrRhNkoNDicQ==
+	bh=J0FkcDItDnYI8f6l23PjrTbyMzPiMOtn9QhR8JgnGN0=;
+	b=pFlH9lMpjek1jYUnHK2fOAR6klebcDGp90dkQWjDUUByOmKjSWZw7Dm+++zk2gRHB4XA
+	 q3ZEFSrw8ZLHfAA6so0KTs2XfbT3/a3lbcofrsO4GjOirO4/icIT3YBXWgQF1EkohhkQ8
+	 yHs+8L7eaCCpMswHalbV6eQ8QbEbEI1cnM4o0gSbC7jGO6YeTEV/ivSl8YfmeurGR3gnY
+	 QlnEdG5Gz5KeEajOdNiRHFW29Tg/dU85Z5VraKZ2StKo3ghTljhxuLyKznML2XtSy8gby
+	 pW7tatxRho4huGhdPjGXDUXglOcu/J+6jOAfD15Yavi8i69CDPEYMyL9yvmB+TAQSIg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=openai.com;
 	spf=pass smtp.mailfrom=openai.com;
-	dkim=pass header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=bbdaf1Oz;
-	arc=none smtp.remote-ip=209.85.161.44
-Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
+	dkim=pass header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=JQ2IkKzK;
+	arc=none smtp.remote-ip=209.85.167.171
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85300606A324
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 04:22:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 85300606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AC2606A326
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 04:23:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 72AC2606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=bbdaf1Oz
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-6aa9606ddadso224949eaf.0
-        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:22:58 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=JQ2IkKzK
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-4ed6d69bdfaso187012b6e.3
+        for <netdev@vger.kernel.org>; Thu, 29 Oct 2026 21:23:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1793334177; x=1793938977; darn=vger.kernel.org;
+        d=openai.com; s=google; t=1793334186; x=1793938986; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GJHR2hSEQjDA7JEPW4kRvNrUrFju1iQ8fE/qcrxDnx4=;
-        b=bbdaf1OzyfVIjziEcBKDEx0mtzA7kv0ty2w3AElpjlhAtv9H+B8D9hvQ5IpEb03FUF
-         vENlSRLccwoAnqBpQ0ladWXi1X9pUyWpAKXru2rUskhWdMqnF6ZYogH+3x5BYmpH1G9A
-         F9tPV/yJyNkbbToD+sX18Gtl/KplDDFziD7/Q=
+        bh=J0FkcDItDnYI8f6l23PjrTbyMzPiMOtn9QhR8JgnGN0=;
+        b=JQ2IkKzKFmio0UGJ+0Yw22iCeqz/VOcrdzeTpusdnEADfpJEnnWJqdDiwYihUhrVZp
+         /z2zwufeRJJvZNHe3lNN3mBPsUaqLXCp/XuAdJ7U34V5KRbdheznQFSf+cNbWhbTjvQ/
+         yhcIDxK+GY3h3ABUjxklCXj3CyJiRvQi0qsgE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793334177; x=1793938977;
+        d=1e100.net; s=20260707; t=1793334186; x=1793938986;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=GJHR2hSEQjDA7JEPW4kRvNrUrFju1iQ8fE/qcrxDnx4=;
-        b=u8FsU/mkJlwbXhrSGhwr0Oy1zuIu+bsb709Xam3BLNVmco85w7NCbPKCMgRW731bbS
-         Ys3uHyiMKYmL3b1l3TLIf0LScv/wn2h3vk3mEG0t2bNOVm+PY3zGuzffgR6prHbgrff5
-         8DYqTTloR5/hMn07o8kOFpqkTdY0wOkKm6wUddF8JffnuxqtlH+2FO4Tz7v8qOxgE2mb
-         lvVKcgQqVePt19ikQtr/bX2dZhw6VaWQZHULhWRfp4aYXMTHSZTEi6+OF6vh7LDoTch9
-         tWy/WAqci0Yxf0KnwMna2gaII8dsI363UFIx7/1dDGBT2oCyhGc5hF/jvQMfG4y9uoUL
-         9tzg==
-X-Forwarded-Encrypted: i=1; AKwUvBzsTSc2Skpw4OI0wTNKK3OaFfWDWX3RCUO+/bdW6REFhQGRIgP+FASZ+RsJvpndC0WP0DCC+A8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLL73t5JVz1516q+wMox8v8H3dF1J1VuQ8ZDRyuvTC1E2a6J293
-	Kq4oxa/qprp5kk9li2r6zyQSpmwPBQFkLZV3Wu4EUyaprtIEcTkkoqPBf6W1u4ZtzvU=
-X-Gm-Gg: AYBFou2S/auMvn5ILGnfNZxWOgN9NiHm6IzWI/DbNF0VnAXnau6J6iSEEgpMsGmXTYm
-	XJDJfjfupaN36deOnXZAFQNUH81QYTrzzIyB2UYOztOG1MuwkirTYA16t99TUp0uyyX3V75TLEB
-	Dlv6+sQruvsaNkpQ/PbnEj/VHhXGobAzNKBsxhRScd5MHpaHJBWihZfYt+VHE/fOcqKLoxabFjz
-	u/vO19CAtu9YbxMIZB+cm3sCSGkh7kcpCHXZ4b3joPsGRSgJmthZS+TfA18jUALv/zgFy1AylMx
-	IytX2FuZ+q8VC1Fsn5i/gEM7MAsMUpknqlXXr58DzpQpR1zPIz8IbcwE5zFtBP61lD08H/Cewp2
-	owkgq6z277ub9PLtm7dX8zXLXBDQk21iXxFOAGW8gyRgvHUENYhoAYe5126sSlnb3XrAaC2OpSQ
-	dumezh9YBbhvi2t5LCy2TAjNYomJIOpiRGAE9wXaincjrKhn0IQZVhjSBgR/XpTO2UbHfhORQ8d
-	fbSc80ccicqPmVuiDb2Ph6pin/VPEMjjodcydSzH17UICjAHhbJCfFmwP5/wKeeZPBM001W6eKu
-	sJvN+duVevSb5eUGHw17TyjBAdtZfzFJw8luEmp50MrZDVCYqH4Qks7uEUERSx9/ngwYFZKzljz
-	DOOCugUzPo47NZpemt2KBwfsAX1zjDw==
-X-Received: by 2002:a05:6820:55d7:10b0:70a:598b:127c with SMTP id 006d021491bc7-714f29e7222mr536195eaf.45.1793334177541;
-        Thu, 29 Oct 2026 21:22:57 -0700 (PDT)
+        bh=J0FkcDItDnYI8f6l23PjrTbyMzPiMOtn9QhR8JgnGN0=;
+        b=KZjgzkFYTkrlSOb7RT0idhMUAoEA8dC+gZlP6NE9SoDlOIyyFQL0tVGl3B8XL1nk3p
+         n9k/mJNgcUlGjFgA1uGL5gsZ01sVZAdptyJSknSTbICmd2xxSP9zG8xQKoM/6OvYqimn
+         94XdHuxO2DNJirg3AV5BW+dnKdiQaFRNqcZbhGC5wwRk2dVlQ7IOFgTgLt0v7k9uH4yv
+         v84i6fAaxPGYrpxo2pJN/7AKmiu/L8e9jc2yv1syi4ZC/q1v2OvdyqN1ZqLVSKNP2HDL
+         Pv+H2X3tav42SEnEYErngDFejJMHKTUs2hFJS2K8qw3JLbNRa/a6ZQqjBXEVzza/UV/M
+         6DZA==
+X-Forwarded-Encrypted: i=1; AKwUvBwp9nfKiAYX/0IfVQ+D7Q2DxLGQy/omJzkfzxuIMGA/tdkpF1h9YF8Q0PTgtZPONDttTfQhDtE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIXsmVXI3dgno+s4Xz+miATCKE4OlrvP9/m1B8K1muSsNfmYr4G
+	oXELKchlSlLf/Cq0Uq+HRA0iWfVns5c4uxfN2zdvd1AgPlQVPgo7VNPCpjkH58rking=
+X-Gm-Gg: AYBFou2I5aIXrVmaD1b07BiUrSSe0w7g1YlF2Z2XR1uVdKzUH3YCb1E2D3T2F6FYM2r
+	7PBKJv3uDq0LIBbn+6y2mf6+K1LBtRdavi9SQU4Rj3utqEUgh1MmwK8CltvPdNoOebwxn5hVtl0
+	dOtUB0BheWQmbrjqqtTOkgxHCyw3z1xhJClGoNaG+Y3SZjI0xZkf0NMV9OdO1CI302OePyy12ek
+	pULVGIVpsrS7RUXtaHSX4UA2narsKO7MrJE8TU6JdbfBgVcCAYnnboLHaKP9yk4Wov1OZfNcId4
+	WQ7dyU8n2uMox8ajAp+m7tWctzdfMs0kbdR8YlWLpZxygwZP95yH4tg5bM3R9GQGUt0a1jLmmc+
+	VGBLvEDVphdFkaYYTtDCdRH/epSwt1rOimnlNZTRKUgh7P2lkGIPurS6V/+empeC+AOmpjaR5KT
+	7qGCwsCSXLSgApV2u4eEHtpWhOdmbhT8emirEwBfB0DPA/aNc9uQ6SI9BfKWKDXpCzLGUtITM2Q
+	7pVcFyDCDRZ729BeLah2mLy9yhaNieKfDNmpWTJ+N/cT3fg8WoTEQU9i32xtPisN+UydkEZpr9K
+	U7FDkKBDcQ5WoyPdE0GuEyxRroo7r/UndglTG5I8QG5dgEc0ji9hfiIOVlBau4xBTEJNKgFURsK
+	aTX1B9slC7mvrD4cUWKxLvZlxV6twEg==
+X-Received: by 2002:a05:6808:8896:b0:4bb:ac05:9ebf with SMTP id 5614622812f47-5640ddb2da3mr560571b6e.14.1793334186362;
+        Thu, 29 Oct 2026 21:23:06 -0700 (PDT)
 Received: from com-75606.corp.openai.org ([199.47.143.5])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-714f2a818b9sm1094944eaf.1.2026.10.29.21.22.56
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-5640fc49923sm699662b6e.1.2026.10.29.21.23.05
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 29 Oct 2026 21:22:57 -0700 (PDT)
+        Thu, 29 Oct 2026 21:23:06 -0700 (PDT)
 From: Kyle Zeng <kylebot@openai.com>
-To: mptcp@lists.linux.dev
-Cc: Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
+To: dev@openvswitch.org
+Cc: Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	outbounddisclosures@openai.com
-Subject: [PATCH] mptcp: pm: kernel: use RCU to free endpoint listeners
-Date: Thu, 29 Oct 2026 21:22:55 -0700
-Message-ID: <20261030042255.74216-1-kylebot@openai.com>
+Subject: [PATCH] net: openvswitch: make transport checksums writable
+Date: Thu, 29 Oct 2026 21:23:04 -0700
+Message-ID: <20261030042304.74291-1-kylebot@openai.com>
 X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -97,41 +98,148 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-mptcp_pm_nl_create_listen_socket() starts the TCP listener directly
-instead of going through mptcp_listen(). It consequently misses setting
-SOCK_RCU_FREE on the parent MPTCP socket.
+An IP address rewrite can execute even if the transport-header pull in
+key_extract_l3l4() failed. In that case the transport key is cleared,
+but the IP protocol and transport offset remain available. The address
+rewrite helpers check the total skb length before updating the transport
+checksum. This does not guarantee that the checksum is in the linear
+head, or that it is writable.
 
-tcp_child_process() can invoke the listener's subflow_data_ready()
-callback without holding the MPTCP parent lock or a reference to the
-parent. An authenticated MP_JOIN racing with endpoint teardown can
-therefore access the parent after its last reference has been dropped.
-The ADD_ADDR error path can also close an already published listener.
+A non-linear IPv6 packet with a long, valid extension-header chain can
+therefore cause an out-of-bounds checksum read/modify/write when the
+GFP_ATOMIC head expansion fails. KASAN reports the access in
+inet_proto_csum_replace16(). The IPv4 TCP/UDP and IPv6 TCP/UDP/ICMPv6
+address rewrite paths all have the same missing check.
 
-Set SOCK_RCU_FREE before __inet_listen_sk() publishes the TCP listener,
-matching mptcp_listen(). This protects the parent on every subsequent
-close path, including a failed endpoint addition.
+Make the applicable transport header writable before changing an
+address, and propagate failure through the existing action error path.
+Reload cached network-header and address pointers after the operation,
+since it can move the skb head. Preserve the existing behavior for
+unchanged addresses, truncated transport headers, non-first fragments,
+and IPv6 destination rewrites that do not affect the pseudo-header.
 
-Fixes: 1729cf186d8a ("mptcp: create the listening socket for new port")
-Cc: stable@vger.kernel.org
+Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
+Fixes: 3fdbd1ce11e5 ("openvswitch: add ipv6 'set' action")
 Signed-off-by: Kyle Zeng <kylebot@openai.com>
 ---
 I have a reproducer for this issue and can share via DM
 
- net/mptcp/pm_kernel.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/openvswitch/actions.c | 60 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
-diff --git a/net/mptcp/pm_kernel.c b/net/mptcp/pm_kernel.c
-index 1a7750813235..f7396628490e 100644
---- a/net/mptcp/pm_kernel.c
-+++ b/net/mptcp/pm_kernel.c
-@@ -906,6 +906,7 @@ static int mptcp_pm_nl_create_listen_socket(struct sock *sk,
- 	 * old status is known (TCP_CLOSE).
- 	 */
- 	inet_sk_state_store(newsk, TCP_LISTEN);
-+	sock_set_flag(newsk, SOCK_RCU_FREE);
- 	lock_sock(ssk);
- 	WRITE_ONCE(mptcp_subflow_ctx(ssk)->pm_listener, true);
- 	err = __inet_listen_sk(ssk, backlog);
+diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+index 12e339cbf791..36c2a1963222 100644
+--- a/net/openvswitch/actions.c
++++ b/net/openvswitch/actions.c
+@@ -319,6 +319,35 @@ static int pop_nsh(struct sk_buff *skb, struct sw_flow_key *key)
+ 	return 0;
+ }
+ 
++static int ensure_l4_checksum_writable(struct sk_buff *skb, u8 l4_proto)
++{
++	unsigned int offset, len;
++
++	switch (l4_proto) {
++	case IPPROTO_TCP:
++		len = sizeof(struct tcphdr);
++		break;
++	case IPPROTO_UDP:
++		len = sizeof(struct udphdr);
++		break;
++	case IPPROTO_ICMPV6:
++		len = sizeof(struct icmp6hdr);
++		break;
++	default:
++		return 0;
++	}
++
++	offset = skb_transport_offset(skb);
++	if (unlikely(offset > skb->len))
++		return -EINVAL;
++
++	/* Truncated transport headers have no checksum to update. */
++	if (unlikely(skb->len - offset < len))
++		return 0;
++
++	return skb_ensure_writable(skb, offset + len);
++}
++
+ static void update_ip_l4_checksum(struct sk_buff *skb, struct iphdr *nh,
+ 				  __be32 addr, __be32 new_addr)
+ {
+@@ -462,6 +491,7 @@ static int set_ipv4(struct sk_buff *skb, struct sw_flow_key *flow_key,
+ {
+ 	struct iphdr *nh;
+ 	__be32 new_addr;
++	u8 l4_proto;
+ 	int err;
+ 
+ 	err = skb_ensure_writable(skb, skb_network_offset(skb) +
+@@ -470,6 +500,10 @@ static int set_ipv4(struct sk_buff *skb, struct sw_flow_key *flow_key,
+ 		return err;
+ 
+ 	nh = ip_hdr(skb);
++	l4_proto = nh->protocol;
++	if (nh->frag_off & htons(IP_OFFSET) ||
++	    (l4_proto != IPPROTO_TCP && l4_proto != IPPROTO_UDP))
++		l4_proto = 0;
+ 
+ 	/* Setting an IP addresses is typically only a side effect of
+ 	 * matching on them in the current userspace implementation, so it
+@@ -479,6 +513,11 @@ static int set_ipv4(struct sk_buff *skb, struct sw_flow_key *flow_key,
+ 		new_addr = OVS_MASKED(nh->saddr, key->ipv4_src, mask->ipv4_src);
+ 
+ 		if (unlikely(new_addr != nh->saddr)) {
++			err = ensure_l4_checksum_writable(skb, l4_proto);
++			if (unlikely(err))
++				return err;
++
++			nh = ip_hdr(skb);
+ 			set_ip_addr(skb, nh, &nh->saddr, new_addr);
+ 			flow_key->ipv4.addr.src = new_addr;
+ 		}
+@@ -487,6 +526,11 @@ static int set_ipv4(struct sk_buff *skb, struct sw_flow_key *flow_key,
+ 		new_addr = OVS_MASKED(nh->daddr, key->ipv4_dst, mask->ipv4_dst);
+ 
+ 		if (unlikely(new_addr != nh->daddr)) {
++			err = ensure_l4_checksum_writable(skb, l4_proto);
++			if (unlikely(err))
++				return err;
++
++			nh = ip_hdr(skb);
+ 			set_ip_addr(skb, nh, &nh->daddr, new_addr);
+ 			flow_key->ipv4.addr.dst = new_addr;
+ 		}
+@@ -533,6 +577,13 @@ static int set_ipv6(struct sk_buff *skb, struct sw_flow_key *flow_key,
+ 		mask_ipv6_addr(saddr, key->ipv6_src, mask->ipv6_src, masked);
+ 
+ 		if (unlikely(memcmp(saddr, masked, sizeof(masked)))) {
++			err = ensure_l4_checksum_writable(skb,
++							  flow_key->ip.proto);
++			if (unlikely(err))
++				return err;
++
++			nh = ipv6_hdr(skb);
++			saddr = (__be32 *)&nh->saddr;
+ 			set_ipv6_addr(skb, flow_key->ip.proto, saddr, masked,
+ 				      true);
+ 			memcpy(&flow_key->ipv6.addr.src, masked,
+@@ -555,6 +606,15 @@ static int set_ipv6(struct sk_buff *skb, struct sw_flow_key *flow_key,
+ 							     NULL, &flags)
+ 					       != NEXTHDR_ROUTING);
+ 
++			if (recalc_csum) {
++				err = ensure_l4_checksum_writable(skb,
++								  flow_key->ip.proto);
++				if (unlikely(err))
++					return err;
++
++				nh = ipv6_hdr(skb);
++				daddr = (__be32 *)&nh->daddr;
++			}
+ 			set_ipv6_addr(skb, flow_key->ip.proto, daddr, masked,
+ 				      recalc_csum);
+ 			memcpy(&flow_key->ipv6.addr.dst, masked,
 
 base-commit: d89e1d186ec9271bf78e62771779e9fc03bf0fc3
 -- 
