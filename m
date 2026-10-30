@@ -1,49 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793401207;
-	b=4mqbBT1RissTjNUCM99dRvj1r+FzSInCbv+F1AdguTT+M/P/MO9bUBh/uRmH5ErI1T/u
-	 nAEJGjesclWE7KInPKtOmaq0nudXnf+FxzDkY5eB9xlq9u3yb1escGvA8IP6bJRJtHTwN
-	 7JzU07szhRPnnOTMKWsKIiWpYEf9Pk1gh7FXcZVlgbMVSkxVcS+FaWohAk/2L4QpGIpKQ
-	 rbGWZHOxA5Qd4yn1QUlm8HCUiIdo5qSA8wVaWfUAN+WlpMHNApfov4kfQVQfcgIg3C9V9
-	 bHPxTu01KBTC5QyhxJovFLK+MwuhyvkSNJURgn196rmbfJU/TGClbNJEGxF0esbaVvQ==
+	t=1793401233;
+	b=iPLHBDT5r0tltc1GC1SNQBwZItlExGszjSV4XpEF38SynLcUbV31ijzV7mke8xiZxS0o
+	 mOxAtoDojCC2WD4xG5J52t4M97+zGszh4xPCgCWuXGNTvJKITmgTNdW2qg8AvtBMODI9a
+	 E6UL87sgy6Y6Yt1Y0u1mLXuvwXUW/6KIZdbKxZu5dQgOZyqN8QOCvbTuD6Am9dExkXVyG
+	 PfOB/Ep9dsx0iDtEYYGxJ+sAtFCAl/8QooaSN4PAm2tFtz/EBpXGL76MsJEj4sJnTra7U
+	 BSlzSpOuR5t/3L5x8M+TAKct6yb6CkayfhsJB7j4/rgAyglmbV/2MvpGNxkfJnifabQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793401207;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=osr5VkiWXvDktjhH5ErCuXVZ8pTUO5HJxnMX8wvP8OQ=;
-	b=F53O4nSFcbDz936poL0bkI9meJ7THjm8+hGm+RRS2XhigBaZEiaKtIxTDOTsZ8/z07wO
-	 7D7rqBzdFir6qwH8xoan7G44q2EVDFrvulohX1VTLKJYeuVrWFUdK0YmhrNFZ9IBsV+E3
-	 CqFesnCTiSRVI30QlKPDQrT+isf/1UiftgOK8l9gq2qNQmFlOxSS1CI2VnCVsM502rtR4
-	 Yd8axM+NVzDkZ5LeAFpM4ZJvh4t6Ky03eOFKdL+uQnilTttMbOi9hpVGzSLME4Fx7qrRq
-	 Cr56o/avJKdic1/ZI0W19XDqyjKd2HPg0mK+1/8ctLT15n+sMrg1wubaSM5aAAtEkCg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793401233;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=VJF0CUXK29LO5bKdyyqKbNK4/EKb/LtfiBdeNXFNeJo=;
+	b=0jtZK2pvGgcolPPM3I4nFzP0O4YdnstWJ4tcNnGUac3f/xoACCjsRbDDKxq8h6LBwlLI
+	 sM7JLl3EPKaZLXjwF2PN+PwHZLOPl68kiSd+JkK95Nn2DNMt3rP+1jHTHcGoujaZJibDl
+	 +C7Wte6SsZrHDyDd1q6wAfZigIe2dfrrrd5aF4y0tKyfrAxIMZLsFjzucENKJ18UNYfWv
+	 v5iD4QZK5Yczr9Xo8Ne7Dd7tywyDZ9zANozOvY2tAhBhjIOu4As90Wk18I1vbcx1O7FPF
+	 eTqAFODINh/5oa7cPIXMhThzs5hq3FAHOcdEmXpsA0VtStj+tAIiisBA1LqurBM+kqg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S6MC5x4a;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gMX2HlcR;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B827A606A31A;
-	Fri, 30 Oct 2026 23:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6F0606A323;
+	Fri, 30 Oct 2026 23:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S6MC5x4a
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C94C1F0093A;
-	Fri, 30 Oct 2026 23:00:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gMX2HlcR
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A64D1F000C1;
+	Fri, 30 Oct 2026 23:00:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793401206;
-	bh=osr5VkiWXvDktjhH5ErCuXVZ8pTUO5HJxnMX8wvP8OQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=S6MC5x4a6Zj745NPvimsN7uFs2MbYzpY+Nt1KpWjaeZPW3GRUgM04g52GVMVUkYIp
-	 2U7cvBUcxTkN4vcgn7w5g8OvQCFhIPBwIt9KnszcGqlqTRJzE/30d5FT0Xpe65+pQ5
-	 fIAOBL7pbDKPYRVAcHHnDn1bosUWuI0Iu2ukSNYF2+wjXewAbUN2UrU3sbpEllErHL
-	 bPQ8Bbsiw+my+arF2CSH9+HP7PEMKN9XSOvB7fzn3HN8Wa+06hRgstl8WqIYGtF7If
-	 wE4xt9bPMfjHypocAEU8ZtcCgzlI6kTq2AGIHt+RmErZTNe/GIVEP1tCh6Dqy5ieJW
-	 CixNMMIsYDKYw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4012D3800478;
-	Fri, 30 Oct 2026 23:00:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1793401230;
+	bh=VJF0CUXK29LO5bKdyyqKbNK4/EKb/LtfiBdeNXFNeJo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=gMX2HlcRcPcjQO+WZuUs9mvbtbFdxBmsFJS0J02H8KiuT9f3ThRhaMGE/B+0OgpL/
+	 R7Kp+c3zgL2Jiww6AIxWac94GC3LwPVyK3bRyG9dukPf3FpnSLnKSJfs3PfnqbNdXV
+	 mTmLE72kDI/KwHlAb2wumu3NJmkKwoRh6qbU2OGHu2q5iq3P8iyqQwYZZKzSOueg/X
+	 BeoHJDyWjC2nAwer3MB/c9esauUaHRz25c62JqpAfdwF6sjNTGI6i7RuwCTdJG/lXp
+	 YTy63jcsehsSgYu9JXB1opIeG5Ua5pycxfXrgX181JqEV6sPTHmTDcp9tEYwbT1RMo
+	 iRHVrtw9iAy8w==
+Date: Fri, 30 Oct 2026 16:00:29 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Yingjie Wang <x-professor@outlook.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "davem@davemloft.net"
+ <davem@davemloft.net>, "edumazet@kernel.org" <edumazet@kernel.org>,
+ "pabeni@redhat.com" <pabeni@redhat.com>, "horms@kernel.org"
+ <horms@kernel.org>, "shuah@kernel.org" <shuah@kernel.org>,
+ "phx0fer@gmail.com" <phx0fer@gmail.com>, "wang.zhan@smartx.com"
+ <wang.zhan@smartx.com>, "kuniyu@google.com" <kuniyu@google.com>,
+ "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net v2 1/2] net: preserve rps_default_mask on failed
+ writes
+Message-ID: <20261030160029.76ee6c7f@kernel.org>
+In-Reply-To: <11f9052cba649eb1efec6e9e45eb9377d46e19d1.1793286626.git.x-professor@outlook.com>
+References: <cover.1793286626.git.x-professor@outlook.com>
+	<11f9052cba649eb1efec6e9e45eb9377d46e19d1.1793286626.git.x-professor@outlook.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,45 +66,105 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v4] net: Use a dedicated flag to track disabled napi
- instances
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179340120505.1817172.4977674769262712465.git-patchwork-notify@kernel.org>
-Date: Fri, 30 Oct 2026 23:00:05 +0000
-References: <20261029153130.121204-1-maxime.chevallier@bootlin.com>
-In-Reply-To: <20261029153130.121204-1-maxime.chevallier@bootlin.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: andrew+netdev@lunn.ch, kuba@kernel.org, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- linux@armlinux.org.uk, kuniyu@google.com, sdf.kernel@gmail.com,
- thomas.petazzoni@bootlin.com, alexis.lothore@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- daniel.machon@microchip.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu, 29 Oct 2026 16:31:29 +0100 you wrote:
-> Trying to disable the napi threaded state while the napi instance is
-> disabled will hang forever in napi_stop_kthread(), as it waits for
-> NAPIF_STATE_SCHED_THREADED to clear.
+On Thu, 29 Oct 2026 15:10:36 +0000 Yingjie Wang wrote:
+> rps_default_mask_sysctl() passes the live per-netns mask to
+> cpumask_parse(). bitmap_parse() stores chunks as it scans from right to
+> left, so a later error can leave lower chunks changed.
+> rps_cpumask_housekeeping() also intersects its input in place before
+> returning -EINVAL when no housekeeping CPUs remain.
 > 
-> This won't happen until the next ____napi_schedule() call, which won't
-> happen as it's disabled.
+> Consequently, a failed write changes both the value read from the sysctl
+> and the default copied to RX queues created later. On a four-CPU VM,
+> after setting the mask to 1, writing zz,00000003 failed with EOVERFLOW
+> but changed the mask to 3. Writing a mask containing only isolated CPUs
+> failed with EINVAL but changed it to 0. No kernel modification or error
+> injection was needed to reproduce either case.
 > 
-> [...]
+> Parse and validate a temporary mask before taking the mutex. After both
+> steps succeed, take the mutex and replace the live pointer. Readers
+> access and consume the pointer while holding the same mutex, so the
+> replaced mask can be freed after dropping the mutex.
+> 
+> The rps_default_mask selftest failed on the base kernel and passed with
+> the fix. The fixed kernel also kept the mask at 1 for the overflow and
+> housekeeping failure cases, while valid writes of 2 and 0 still
+> succeeded.
+> 
+> The issue was found while fuzzing sysctl write error paths.
+> 
+> Fixes: 605cfa1b1090 ("net: introduce default_rps_mask netns attribute")
+> Reviewed-by: Wang Zhan <wang.zhan@smartx.com>
+> Tested-by: Wang Zhan <wang.zhan@smartx.com>
+> Signed-off-by: Yingjie Wang <x-professor@outlook.com>
 
-Here is the summary with links:
-  - [net,v4] net: Use a dedicated flag to track disabled napi instances
-    https://git.kernel.org/netdev/net/c/8dc87fc5d6a0
+kzalloc(cpumask_size(), GFP_KERNEL) failure seems purely theoretical.
+Please drop the Fixes tag and drop the selftest, and repost after the
+merge window is over (https://netdev.bots.linux.dev/net-next.html)
 
-You are awesome, thank you!
+> diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+> index 473c162736d69..f25281c709346 100644
+> --- a/net/core/sysctl_net_core.c
+> +++ b/net/core/sysctl_net_core.c
+> @@ -105,34 +105,37 @@ static int rps_default_mask_sysctl(const struct ctl_table *table, int write,
+>  				   void *buffer, size_t *lenp, loff_t *ppos)
+>  {
+>  	struct net *net = (struct net *)table->data;
+> +	struct cpumask *new_mask = NULL;
+>  	struct cpumask *mask;
+>  	int err = 0;
+>  
+> -	mutex_lock(&rps_default_mask_mutex);
+> -	mask = net->core.rps_default_mask;
+>  	if (write) {
+> -		if (!mask) {
+> -			mask = kzalloc(cpumask_size(), GFP_KERNEL);
+> -			net->core.rps_default_mask = mask;
+> -		}
+> -		err = -ENOMEM;
+> -		if (!mask)
+> -			goto done;
+> +		new_mask = kzalloc(cpumask_size(), GFP_KERNEL);
+> +		if (!new_mask)
+> +			return -ENOMEM;
+>  
+> -		err = cpumask_parse(buffer, mask);
+> +		err = cpumask_parse(buffer, new_mask);
+>  		if (err)
+> -			goto done;
+> +			goto out;
+>  
+> -		err = rps_cpumask_housekeeping(mask);
+> +		err = rps_cpumask_housekeeping(new_mask);
+>  		if (err)
+> -			goto done;
+> +			goto out;
+> +	}
+> +
+> +	mutex_lock(&rps_default_mask_mutex);
+> +	mask = net->core.rps_default_mask;
+> +	if (write) {
+> +		net->core.rps_default_mask = new_mask;
+> +		new_mask = mask;
+
+nit: this could use
+
+		swap(net->core.rps_default_mask, new_mask);
+
+>  	} else {
+>  		err = dump_cpumask(buffer, lenp, ppos,
+>  				   mask ?: cpu_none_mask);
+>  	}
+>  
+> -done:
+>  	mutex_unlock(&rps_default_mask_mutex);
+> +out:
+> +	kfree(new_mask);
+>  	return err;
+>  }
+>  
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+pw-bot: cr
 
