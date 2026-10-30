@@ -1,49 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793353206;
-	b=TOo5RBT5S04wrU5c8fmUcXHUmBzLlGDG2oSDr8tsGdci1HtmVQBd9y/XvUY/xpe2nlFr
-	 5sHEmL+amYtKmWwD13Yqw1LAn+9ekQYEXX89qxqksQTNbsjhpEO4ilMmShLaa6WvH5lif
-	 gxnnJ46D8oTdZwkwoniHjcl9FBRf8P5jxGo7DFB3IXQAijEPNUeM/QLpfjKH3ZaLgIu4D
-	 mox82+uzVyG28o3jVWMgJ4S8tOmoFmo8XR2MPVF56sZc6Yq/+rWPiPID9zvHan/X6tZ+Y
-	 UEhMo8fQnP1gTSGi5sD6kATnPB1YIxWzTh80KFEwmpFwTxzGhyLvL1yx7QN86tohRig==
+	t=1793353516;
+	b=vJBELtrwQ0eXGLgagobi6C7Kr8iwzLye2dao9XL9rfBhumiEFnIn9oJ/CtRknmvWrrUV
+	 f4aRHVHeM2Q6Fzx0+50Y0EMoyRdFIIP7Tcms5PYxc28Kuy2y+fbbveiyKQkjhGDfi76oW
+	 b8zRd/1W5kZshklLdtHUrL3g5U4WBOqVZjPvTD++3wM60b/4rUgxvbLTQbNffjKgT+MTd
+	 ydywLgGVv4JNLnzAhyRqTBvVMY60PfhuOsMx3smiMJX71avbzRYiaqlH7umbUpiVC/llg
+	 5GGeev3aiW98HqPA0a1KNy4AFWcFUOkgOJM2/bMCC1jsoSWDKEgizvyW3+oQYnVIdJQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793353206;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=q97ib2TJPGW5E/QbfamNipDgstGtnceryoKyk72t9L8=;
-	b=GGbXd7PwpWVBIiWqYg7Hjp4C9AeaNdCaCgpQ291TkUEYQ/aRENQlgibzAD3iITyBdtZx
-	 b3sL9BLhMpVUksZ1fRh1op15cmWNRHMztRqHoHRRNV/VrPrZeRmYPKjAOo2rG9tV+omZX
-	 AY+lgGgjIXcD+ONqRwP/dthfRup6dd/Ao6dJVrG9hX+WlNBhqFWYL2FNOdar+UE1VOcIj
-	 mNhB794SiZbrpNv+Kv589JCb+Qj8fBoDttga8uTi/NQz9+IxoQAmJF51en/qGGiWJjQsw
-	 qr96i5sx5H4thkLEXWGf7k3KShyznD0fxjAR8O1rI4iEyILNMy2Gkhdk155zBnaEF1Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793353516;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=+at7dZGwSvVu/7pH3+e+iC9k0A30G52g4dzyOrLdjBc=;
+	b=iJnWPsNDLT0DmF4z0UxYfg+9R7i0DX5YSvELtb57kY9+k6HEdpXdhcsHFtSjGEse/pdR
+	 yiKJ7YNqqcMDl9zpMd9hnHapc0W1f3jDt2Np4M9pnf+nkU7qTUwxJ+F+Ec9VHTTtsIErq
+	 ugmJJC8U79qpJeEpDWbIykxpZ8kkOxqLr/ZXlsj06OG0XKpZeXrXmkQsDmkocFCWyOckC
+	 MVvy5d/I7w3BdJTdaT1dmvdSx4r6JIrXDc1hOEr255T+uaUBh3VKNaQIUYzoZfz+crIU/
+	 PtFfyj9969WMhvlPQQpFaYxd7KhFhvDd1Jd1suFbpC+MEyAp6C4jo39QUD0UTXHxZgA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ng0jMIm3;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=KakueTtm;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABF4606A32E;
-	Fri, 30 Oct 2026 09:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B7F606A31C;
+	Fri, 30 Oct 2026 09:45:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83B7F606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ng0jMIm3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C6E01F00A02;
-	Fri, 30 Oct 2026 09:40:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793353206;
-	bh=q97ib2TJPGW5E/QbfamNipDgstGtnceryoKyk72t9L8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ng0jMIm3EJt5nxY9uMhz8iXU4DgSJvH3LydfcLjyYKK8HUqNNZJFBYWEyl+lefcyL
-	 NeFPnkZf6OZqc+RfIYL4WhvmYwemj8EyrmwLIRF6v0e/e3TBtTBEQvdAXQr+AduuLV
-	 myUfKQAqIdOquJJRbyJHcBNolj8rSfQuFdrxtArjLOLjBQ4SfmNkVsdKEac4sUZp9v
-	 9blouBCPzcIk/w0dNvcdWmFVdHV4k8M+YNpaAdfiivc635ZoCzB3wQymDz5/aHBXQG
-	 JU+ZrMez+CkTYliDch24peGKqWClY2m2WTTouemmDi/JVHjKdFjc/yykXloWkYNaXX
-	 ut4lGbx81g9rw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 030B23800449;
-	Fri, 30 Oct 2026 09:40:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=KakueTtm
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id BB4781A1398;
+	Fri, 30 Oct 2026 09:45:12 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 80902603C2;
+	Fri, 30 Oct 2026 09:45:12 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8A1DD10328D09;
+	Fri, 30 Oct 2026 10:45:06 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793353511; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=+at7dZGwSvVu/7pH3+e+iC9k0A30G52g4dzyOrLdjBc=;
+	b=KakueTtmpKnc0gGtghPxjB49nubrJ6XBiNYam2pWHCZjYxJfRbCIXhWKJZ1V2YP2Kze+Vd
+	jqHOc7bT3gkJsajsa+0fpgL7ZbUYoJljuJVLoNG7WXE79CPkglquXiC/j1J23SnovW6uw+
+	XbEoekTVBSNP2OrPTHTvnuzgkaAhp46UX86u9vR1M/drKBX8OCfGwxWaiF1dfrF0pDmoE1
+	5s5f7X3Tuq6jZwPtW9Nt70g8TrBhoyM10I/y4yYn4N+H41IcB30NM8xCPkPr8JgFtXryXb
+	YsMacOQMfcv83V5yeoEFHiRiWfPKO+cIGIx9AxIWyMWpIjJ+QGVJO0RC3bYiRw==
+Message-ID: <fefab524-d29b-4d34-a638-6ad56674b2ed@bootlin.com>
+Date: Fri, 30 Oct 2026 10:45:05 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,45 +62,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Betterbird (Linux)
+Subject: Re: [PATCH net] net: phy: don't require RTNL to detach a PHY from an
+ unregistered netdev
+To: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>,
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ syzbot+583f42a41879bb60de32@syzkaller.appspotmail.com
+References: <20261029142423.93573-1-ngocthang2710.1999@gmail.com>
+From: Kory Maincent <kory.maincent@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20261029142423.93573-1-ngocthang2710.1999@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] ipv6: raw: fix use-after-free in
- rawv6_send_hdrinc()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179335320480.958825.16569701682023560926.git-patchwork-notify@kernel.org>
-Date: Fri, 30 Oct 2026 09:40:04 +0000
-References: <20261026044808.613-1-n0ps1edzz@gmail.com>
-In-Reply-To: <20261026044808.613-1-n0ps1edzz@gmail.com>
-To: Zhou Qiuyue <n0ps1edzz@gmail.com>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, hangbin.liu@linux.dev, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello:
 
-This patch was applied to netdev/net.git (main)
-by Dave Miller <davem@davem-thinkpadp1gen8.ibmlond.csb>:
 
-On Mon, 26 Oct 2026 12:48:08 +0800 you wrote:
-> rawv6_send_hdrinc() caches the route before handing the skb to
-> l3mdev_ip6_out(). The VRF output path may replace skb->dst and release
-> the original route, leaving the cached pointer stale.
+On 10/29/26 15:24, Nguyen Ngoc Thang wrote:
+> phy_detach_internal() reads dev->hwprov with rtnl_dereference(), but
+> MAC drivers commonly attach and detach PHYs while their net_device is
+> not registered, without holding RTNL. Before register_netdev(), a failed
+> phylink_connect_phy() or phy_attach_direct() unwinds through
+> phy_detach_internal(). After unregister_netdev(), a driver's remove path
+> may call phy_disconnect(). Both trip lockdep:
 > 
-> The function later dereferences that pointer for statistics accounting
-> and as the output device passed to NF_HOOK(). Its RCU read-side critical
-> section starts after l3mdev_ip6_out(), so it cannot prevent the old route
-> from being reclaimed in between.
+>    WARNING: suspicious RCU usage
+>    drivers/net/phy/phy_device.c:1831 suspicious rcu_dereference_protected() usage!
+>     phy_detach_internal+0x6a5/0x830 drivers/net/phy/phy_device.c:1831
+>     phylink_connect_phy+0x22e/0x2b0 drivers/net/phy/phylink.c:2452
+>     ax88772_bind+0xbb1/0x1520 drivers/net/usb/asix_devices.c:925
+>     usbnet_probe+0xbb3/0x27e0 drivers/net/usb/usbnet.c:1812
 > 
-> [...]
+> syzbot hits this with an emulated asix device. phy_eee_rx_clock_stop()
+> fails on a USB MDIO error, so phylink_bringup_phy() fails and the PHY is
+> detached from inside usbnet_probe(), before the netdev is registered.
+> 
+> hwprov is only set through ethtool, under RTNL, on a registered device.
+> reg_state also changes only under RTNL. So if the device is not
+> registered, no one else can reach hwprov, and RTNL is not needed. Tell
+> lockdep that. A detach from a registered device without RTNL still
+> warns.
 
-Here is the summary with links:
-  - [net,v2] ipv6: raw: fix use-after-free in rawv6_send_hdrinc()
-    https://git.kernel.org/netdev/net/c/66dfb2cacda7
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 
-You are awesome, thank you!
+Thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
 
