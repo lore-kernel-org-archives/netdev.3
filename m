@@ -1,60 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.192
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793347951;
-	b=btNvBLrGtnGufJpGzOG95Tta9NDBdAJS1ETEsH0cmkSZ+Oj5EBQXSDfTNcR7mti+exfI
-	 xC6U0e5dM1aHLoI8iGc9dd9LS/ajHofiQvtiV6m3mzsjsgH/a8E9gtdL8XFnso087CBTJ
-	 7NlKcSJ1TadfZLMQ/yiPOWSs/k0TpsEe0s/Pf/ko4A937c3bltf17mpFXgLWT9aIVGVXM
-	 XotDJL44BY7qvNbQiOpI/r0J+wIZb8K3AyN5NFEj8Q7mN1wLBS9r4CoitrqRiaXiOpUgC
-	 bq2HVbGT3L8jqgD0wjmcjFFnR6zhLAQ2X+OVTRC7jgf/X4n1Gby2E55t+mkjavheI+g==
+	t=1793347959;
+	b=rU01MrlS1+W2PIf65axPfja3A35kvOVTNK/YKr66Wy9cljCLD/RQOBa8Cn4kPjl3YcJr
+	 rogiNionN/5qLLCrBzpH0C1J24TCyWKkzXKJ8MuvwmBygbNYMhQexkHwwt7m+fRnbRtUt
+	 CoDWVRPaC87C3rlKbOioWf4XmgXCLDgwQ3akd6jROVj+UQErnZtbsL/+zkjFZuoRDSa69
+	 CvXB5fgrPNP2XRkyrFQ+qJl2rIQiNfkkGkPXktC2N6hsp4y3o6X+nXLUIFodCQyEQPLxB
+	 sot/hpTDsrlXGeL4+Nq+sHa77JO9bPpNev1v/StCTE345m1c/hlurwzh2nA7X6nRZug==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793347951;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=cwt4Hg4qMuIaaCvAXceJlYQIKFNEo2HNhM36aeH05D4=;
-	b=xuBoMPdx64+2VQJPLrspW0LsTl83BwTlG5VeAh9hE9S67nQmgSpBCviBp3ZuLOIVohS3
-	 T1Lrh2Ek5OmXk9J2+vLLNs8vZOLZ+2UWaQZmegx3JgHbF70lk0bzUjkUAA74aP6Pg63Oa
-	 U95R99uvYkYCUCSpL1795cqWdQ3/2Ge3909ZzpIPiKKO/i0N3Qq+eZfeM7IFxDPYa79FB
-	 rlb0PKMJldlzGL25c9vnR2BgobHzqj6CrOCwVeuVthJ59kx6Wh4wJ6qYRqy8dZ5xyQY0D
-	 YFSfYXoJ2FAWgiwO+/rfubzLRSLRvqE3OHp/koRYCupm1rMlSdr+0iQMtEBuEHAI/Gw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793347959;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=1eOarHzAsENVZMHKn6FEU4kOA/5SkTXSfgR+jYQ2Wck=;
+	b=eZtGyD8cstGJiPX8p3lXqAhU3EWnluZK8qV51KI+ELX6hegnye+HtaMeZCSVF2285k/9
+	 YWdz36/HpTw1HLed3QNh/XlFGlTOk6HkCUc24fxUZFPXpiFLvltJB6+RrCBU+z89KXYIj
+	 7ZjyLTDLtZVLImUuWEuRblkvv4A6OufsWIRRoHnw/dZvki6tYXead+rwNSLR2Dea1Nqk4
+	 0kWbVwIIyDcGjDMZQV1XZpU6FePkffEXD17WzM1YuycGXN2Ys1eCegJ0ZDwPZwttAESNV
+	 gO6cYnoEtboclw1w2ZzTwxKB7nA7xym/2cv0hRJuYNHEX/c0b1WxpbM7q/3/bSrOU7g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QJnsaMfq;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=CFU5B0tc;
+	arc=none smtp.remote-ip=91.218.175.192
+Received: from mta0.migadu.com (out-192.mta0.migadu.com [91.218.175.192])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDB1606A31C;
-	Fri, 30 Oct 2026 08:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C409A606A31D
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 08:12:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C409A606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QJnsaMfq
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF631F000C1;
-	Fri, 30 Oct 2026 08:12:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793347950;
-	bh=cwt4Hg4qMuIaaCvAXceJlYQIKFNEo2HNhM36aeH05D4=;
-	h=From:To:Cc:Subject:Date;
-	b=QJnsaMfq3q22zM8v2AhRdonJAq1zicvekS3FWa1Wh3jaP7OM653ElGaDufODpuzLn
-	 atlGfBVEhY9P5V4x7Qn8r+6cchg/KJ4KmNZAwpBlZV4oKhZ82gRdt8NttcsYYeDLBV
-	 /YHj2XhHaSQnc89zxkHY7EROmScwcnleDu541wUoYKAd9VsNDPjwQmb+xio+KiaoP8
-	 SZoLRvYQkMTGdyP0tIJRL9vYkW2L2D5XdPWpvqCQWB+hY6dcpbxa91wLSK82F2ewLl
-	 wiSTzcqT4KrkYesxYrU2Z6h1LoKOsL+v+mC2WaGYCsgS1FEFAQ/SH8SjdLNdtNKBqm
-	 SH6mfc10UZaNg==
-From: Eric Dumazet <edumazet@kernel.org>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	netdev@vger.kernel.org,
-	edumazet@kernel.org,
-	stable@vger.kernel.org,
-	Kyle Zeng <kylebot@openai.com>,
-	Florian Westphal <fw@strlen.de>
-Subject: [PATCH v2 net] inet: frags: limit the truesize of a reassembly queue
-Date: Fri, 30 Oct 2026 09:12:25 +0100
-Message-ID: <20261030081225.2575462-1-edumazet@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=CFU5B0tc
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=6R09/GlFusOPFb6unSV/Xj0uyriwOdbAv2ijaqmAJX0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793347956; v=1; x=1793952756;
+ b=CFU5B0tcSto+raXKFA6eoXJPcFOBtRF4gllgF2A5Z9cUkrC+pPT7XSxUXBECD3BIA6ImP5Q7
+ QS/k2yT/QThyaAa0jXzw/nvUjXIbdC9YNtrpcmvd2iVH02J4io74MiQpQm1lVuxVthsF35LbO5u
+ yA8QN6GPYLKUtSvHj5a9Ijlg=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta11.migadu.com with ESMTPS id 28f7219672ac7ce9;
+	Fri, 30 Oct 2026 08:12:36 +0000
+X-Mizu-Trace-ID: 28f7219672ac7ce9
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 30 Oct 2026 16:12:19 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Justin Iurman <justin.iurman@gmail.com>,
+	Shuah Khan <shuah@kernel.org>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Hangbin Liu <liuhangbin@kylinos.cn>
+Subject: Re: [PATCH 0/3] net: ioam6: makes IOAM insertion transparent to IPv6
+ ECMP
+Message-ID: <auRRYzF8iExhcVZp@bogon>
+References: <20261028-ipv6_ioam_ecmp-v1-0-9b6715b6f4c0@kylinos.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,107 +71,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261028-ipv6_ioam_ecmp-v1-0-9b6715b6f4c0@kylinos.cn>
 
-The truesize of fragments in a reassembly queue is only bounded by
-the per netns ipfrag_high_thresh sysctl, which has no upper limit.
+On Wed, Oct 28, 2026 at 01:45:28PM +0800, Hangbin Liu wrote:
+> This series makes IOAM insertion transparent to IPv6 ECMP, as required
+> by RFC 9486 (C2): a packet carrying IOAM options must be forwarded
+> along the same path as the identical packet without them.
+> 
+> Patch 1 fixes the transit side: hash policy 0 hashed the raw IPv6
+> nexthdr, which becomes NEXTHDR_HOP once an IOAM Hop-by-Hop header is
+> inserted. The policy-0 key (and the ICMPv6-error flow selection) now
+> uses the nexthdr the packet would have had if the Hop-by-Hop header
+> carried only IOAM options and padding.
+> 
+> Patch 2 fixes the injecting node: the ioam6 output re-lookup on a
+> destination-cache miss hashed the transformed packet's NEXTHDR_HOP
+> instead of the original nexthdr (inline) or IPPROTO_IPV6 (encap), and
+> rebuilt the flow keys from the outer header only.
+> 
+> Patch 3 adds selftests/net/ioam6_ecmp.sh, covering both places: a
+> transit forwarder with a multipath route, and an encapsulating node
+> compared against a plain ip6ip6 baseline.
+> 
+> The issue was found while reviewing RFC9486. It can be reproduced and
+> verified by the newly added ioam6_ecmp.sh test.
+> 
+> Tested with:
+> ecmp_rehash.sh
+> fib_nexthops.sh
+> ioam6_ecmp.sh
+> tcp_ecmp_failover.sh
+> forwarding/gre_inner_v4_multipath.sh
+> forwarding/gre_inner_v6_multipath.sh
+> forwarding/gre_multipath_nh_res.sh
+> forwarding/gre_multipath_nh.sh
+> forwarding/gre_multipath.sh
+> forwarding/ip6gre_inner_v4_multipath.sh
+> forwarding/ip6gre_inner_v6_multipath.sh
+> forwarding/router_mpath_nh_res.sh
+> forwarding/router_mpath_nh.sh
+> forwarding/router_multipath.sh
+> 
+> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+> ---
+> Hangbin Liu (3):
+>       ipv6: route: consider IOAM options in ECMP hash policy 0
+>       ipv6: ioam6: use transformed packet nexthdr for ECMP re-lookup
+>       selftests: net: add ioam6 ECMP test (RFC 9486 C2)
+> 
+>  include/uapi/linux/in6.h                  |   1 +
+>  net/ipv6/ioam6_iptunnel.c                 |   4 +-
+>  net/ipv6/route.c                          |  67 +++++-
+>  tools/testing/selftests/net/Makefile      |   1 +
+>  tools/testing/selftests/net/ioam6_ecmp.sh | 349 ++++++++++++++++++++++++++++++
+>  5 files changed, 419 insertions(+), 3 deletions(-)
+> ---
+> base-commit: 5d7f3375cd574fc83f0cd30839b21455c0e79ae2
+> change-id: 20261020-ipv6_ioam_ecmp-ae4ef0a4bdae
+> 
+> Best regards,
+> --  
+> Hangbin Liu <liuhangbin@kylinos.cn>
+> 
 
-inet_frag_reasm_finish() sums the truesize of all fragments in an int.
-If this sum reaches 2^32, it wraps, and the final sk_wmem_alloc
-adjustment of the socket owning the reassembled skb can cancel its own
-reference, leading to a use-after-free of this socket.
+Sashiko found some issues. I will fix them and post new version.
 
-This can be triggered from an unprivileged user/network namespace,
-raising ipfrag_high_thresh and using padded TUN packets, which keep
-a large truesize after being trimmed by ip_rcv_core().
-
-Track the sum of the truesize of fragments in each queue, and refuse
-a fragment that would make it bigger than INT_MAX / 2. Callers kill
-the queue on this error. This bound is far above the needs of
-legitimate traffic.
-
-Fixes: 18685451fc4e ("inet: inet_defrag: prevent sk release while still in use")
-Cc: stable@vger.kernel.org
-Reported-by: Kyle Zeng <kylebot@openai.com>
-Cc: Florian Westphal <fw@strlen.de>
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
----
-v2: reset q->truesize in inet_frag_queue_flush(), as ip_frag_reinit()
-    can keep a queue alive after flushing its fragments (Wang Zhan, Sashiko).
-    Document @truesize in struct inet_frag_queue kernel-doc (Sashiko).
-v1: https://lore.kernel.org/netdev/20261028182934.2236310-1-edumazet@kernel.org/
-
-Kyle Zeng provided a more complicated patch, I wrote something much simpler.
-LLM was used to discover the bug, build a repro, and test the fix.
----
- include/net/inet_frag.h  | 9 +++++++++
- net/ipv4/inet_fragment.c | 5 +++++
- 2 files changed, 14 insertions(+)
-
-diff --git a/include/net/inet_frag.h b/include/net/inet_frag.h
-index b02d2472b003ec6e7b8e391d56115e8f0578ca61..c1fb419a9cf03a346edd0424ca0ba5b06b6a20f0 100644
---- a/include/net/inet_frag.h
-+++ b/include/net/inet_frag.h
-@@ -79,6 +79,7 @@ struct frag_v6_compare_key {
-  * @tstamp_type: stamp has a mono delivery time (EDT)
-  * @flags: fragment queue flags
-  * @max_size: maximum received fragment size
-+ * @truesize: sum of the truesize of queued fragments
-  * @fqdir: pointer to struct fqdir
-  * @rcu: rcu head for freeing deferall
-  */
-@@ -100,6 +101,7 @@ struct inet_frag_queue {
- 	u8			tstamp_type;
- 	__u8			flags;
- 	u16			max_size;
-+	unsigned int		truesize;
- 	struct fqdir		*fqdir;
- 	struct rcu_head		rcu;
- };
-@@ -172,6 +174,13 @@ extern const u8 ip_frag_ecn_table[16];
- #define IPFRAG_DUP	1
- #define IPFRAG_OVERLAP	2
- #define IPFRAG_MIXED_SECPATH	3
-+#define IPFRAG_TOOBIG	4
-+
-+/* Max sum of the truesize of fragments in a queue. This keeps the sums
-+ * done in inet_frag_reasm_prepare() and inet_frag_reasm_finish() well
-+ * below INT_MAX. Legitimate traffic stays far below this limit.
-+ */
-+#define INET_FRAG_MAX_TRUESIZE	(INT_MAX / 2)
- int inet_frag_queue_insert(struct inet_frag_queue *q, struct sk_buff *skb,
- 			   int offset, int end);
- void *inet_frag_reasm_prepare(struct inet_frag_queue *q, struct sk_buff *skb,
-diff --git a/net/ipv4/inet_fragment.c b/net/ipv4/inet_fragment.c
-index c18da91c1f031ee0b97f9e072837d053380da2f2..0b8d22ffafca69b2bccd98eca3d4bda93ebb816a 100644
---- a/net/ipv4/inet_fragment.c
-+++ b/net/ipv4/inet_fragment.c
-@@ -336,6 +336,7 @@ void inet_frag_queue_flush(struct inet_frag_queue *q,
- 	q->rb_fragments = RB_ROOT;
- 	q->fragments_tail = NULL;
- 	q->last_run_head = NULL;
-+	q->truesize = 0;
- }
- EXPORT_SYMBOL(inet_frag_queue_flush);
- 
-@@ -446,6 +447,9 @@ int inet_frag_queue_insert(struct inet_frag_queue *q, struct sk_buff *skb,
- 	if (last && !secpath_equal(last, skb))
- 		return IPFRAG_MIXED_SECPATH;
- 
-+	if (skb->truesize > INET_FRAG_MAX_TRUESIZE - q->truesize)
-+		return IPFRAG_TOOBIG;
-+
- 	/* An IP fragment is never a GSO packet, but an untrusted source
- 	 * (virtio_net_hdr) may have attached GSO metadata to it. Do not let
- 	 * that reach the reassembled skb, whose head keeps the first
-@@ -510,6 +514,7 @@ int inet_frag_queue_insert(struct inet_frag_queue *q, struct sk_buff *skb,
- 	if (offset)
- 		nf_reset_ct(skb);
- 
-+	q->truesize += skb->truesize;
- 	return IPFRAG_OK;
- }
- EXPORT_SYMBOL(inet_frag_queue_insert);
--- 
-2.53.0
-
+pw-bot: cr
