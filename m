@@ -1,114 +1,124 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.152
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793400350;
-	b=k8puv5iQbYhQxZx9gOQka1iynE/cVU3iPpFQ3T3HB+dHnZWAZP06tFnVDu4z/TwVhudD
-	 g2NhiwGwwHouqpLAv/lTzcIPBt9R3ebPw7v6+m2G1CG8O5gTPyuaTZkQcPEpHfV4rZWuI
-	 AMNaxNH6hT/gi6uWBDjzZr68hhZ0qP2132USDtyv/5gpMM83WiCuZDr70i2SY+qFTK8x/
-	 +qqL7sIi+zdcwj6Vw1e3AOIiYYulO6j4WE5CScHB7dQVj66IJPQLMdwf0s58F0DvkneBC
-	 5ichMFsHpUB8bZYqaepBu9s/oGi5muyaf1STmvtZ6DppCw5k1gCvj7CubnRlwRA9BHw==
+	t=1793400595;
+	b=2XF0ENZddRPY3YpZ6+oSriePGDN7sUiMFaaSlz0AKQ5/oQQZWH6PG25omNQUNtdHUOPC
+	 TeAfW6zqUQQvCHSCJPCjDStjtoT2p+hzxMIRqQ77bUKZe88Q9EZmKLfXCEAmaIFliG41q
+	 CQJyjR5wxt6FHWBjLmsaBN5GJKhUhVUwMrGvJMY0Dr6YEEIymXnte8JbByMtmRW6vw2xW
+	 6nOsujSYv/xnZ+SN33TTzcH1xCIMu/VJLmBsZFyZKT8MS/oUmcuTEqAf6erBcgI4ZJdwj
+	 DmEWCmoIrwKGi+ajzy8LZxsDmtUjq79Bg3IsjhHRc75JCD8G1HU0gn+mjm17lFcBlIw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793400350;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Content-Type:Content-Transfer-Encoding:MIME-Version:From:To:
-	 Cc:Subject:In-reply-to:References:Date:Message-id:Reply-To;
-	bh=0B8O7nu9f1oA8mtZ669QAgxW4AUmioLSCxqsLxGiP0U=;
-	b=mb4gMltUgZYHIz1z1gaaIejJYPJ9WKAoqSDOwSqAVxDINp8sYmNUpP6IESH9ZN1a8Mi1
-	 8KaTNTPrgcyw4juc9yGi60X2WAgDR2K+y30H2VsCWbYQP38rokoW1sMoCZi1zFLJoX2hv
-	 K+ixMK/Ozz8yYCq9n2fMw7boAojitpTOAnwjthDdmiFEur3D71uHldiRgERJNdx26OPgq
-	 o4szh1wZoRrSXMAOFNrdClKEfQ7/9ZYyiwLKwQdPgpLbsyRw7fPNVlUb38qj5fPF5HHyR
-	 Bo3SN1bfVufn3lzeWJvkYUM7e3bvzJ7cHTquyqgfmICE9Fj7nH4Dn+1f2Kr44RvUY5g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793400595;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=+T9BCD4WHAeHhgAEVu7K97ymFe/bRNG12NnyP6fiFZk=;
+	b=IlUSaicRy3wjsoE3YRd5jGdFHIG0dx8u3NeZhU2lHOjj5+KVKRt/+33JnCezmemgKKNJ
+	 cWv1nY8As3et7qoezCbbAVsTIANrDLBHXn4uJRVqiQrbcd6FRp2geP1CBIyzgdaN197zS
+	 1BI/Fqh05Y0QEJ6Q9uxCRO4FRBpum9TBQl9d6RSU/yEfHNvKIWr4GE3nSZA334Q350EWv
+	 1Cd3aZUVL+P/QyQZh5LKJUxfzkZpmhlfjePNU4Dz0cR9Ysym5BCr/05Dt8oAzyMTx8FMj
+	 P6NRR1ZJ41+aEZw028kIj+kh/vjo5NK/UN7ERGljql4nzSTy0XlLzYMo3VRmrWaz9dA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ownmail.net;
-	spf=pass smtp.mailfrom=ownmail.net;
-	dkim=pass header.d=ownmail.net header.i=@ownmail.net header.a=rsa-sha256 header.s=fm2 header.b=RLnZSdWX;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=imNKQsTW;
-	arc=none smtp.remote-ip=202.12.124.152
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Pxy4fQ2u;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=oaWb7p3H;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68076606A31C
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 22:45:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 68076606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07FF4606A31A
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 22:49:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 07FF4606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ownmail.net header.i=@ownmail.net header.a=rsa-sha256 header.s=fm2 header.b=RLnZSdWX;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=imNKQsTW
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 7D1DB7A0113
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 18:45:48 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Fri, 30 Oct 2026 18:45:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to; s=fm2; t=
-	1793400348; x=1793486748; bh=0B8O7nu9f1oA8mtZ669QAgxW4AUmioLSCxq
-	sLxGiP0U=; b=RLnZSdWXklO+Dl2hB1PDqehMxnk3I51lzbjzPytoWS9xCjFA9fV
-	MQx3N3RqieAIr4vjBtzsQTG+aohUO+J6RzAvzJcszeIcDlXiDhx7zgm0jqPEQuID
-	Szrw0Huay946e2avB8uE4NSLfZeNNzSdSfwJoDShf3rUooJ4phG9AQUux2jD0PGA
-	epKrmomaUqCZiAwXz/UnA03f6vPcy9oKx45QiJ/QtedwHyunREFJ+xbfuo0u60Wd
-	7hfFFngjj/rvic/heSFunGpXyUhEBunmlLCwEWhna7TiDT6r9G+K6jXaYKL7VwU5
-	mSpxkG5cmI27rSuJsQelmCWUHjdKw+1u7/g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793400348; x=
-	1793486748; bh=0B8O7nu9f1oA8mtZ669QAgxW4AUmioLSCxqsLxGiP0U=; b=i
-	mNKQsTWMXZmUzulgqrFmEbjY81/LIz4JpcFmkB03Ln6T8IHtITkSQZSkL/045rO6
-	GQdgkM0ki1gnCMB2c8GlXWVGG5HpfVcLCrQA4fnVBMJzJOSjwCJaz4WNa6htCMPw
-	BjLf20xCKVEnihA+dW9eMAxsTaZXrPth6oY0CMgaQPEn2ECWLUuJwYPCB+s1in+z
-	K05PcdyFGeQvBW5PebP8ovdXo7pw33DLWZYO4ANFSORCgkb268V1Yah1W1hzX9BL
-	xkcqBQgsm9IwyE0FgXWN+/FTT/hwYAAANUlPEnXg6mOR6H6RyoWFf3ihIucDtMO0
-	OJ2kNK3kx1DrRrmjId4HA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=sign d=ownmail.net a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793400348; d=ownmail.net;
-	mf=PG5laWxiQG93bm1haWwubmV0Pg==;
-	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:hmMKLnnVlVMO3IYDBmYBPfoQZlmqY7g+PfVkanSMP4M+qXy
-	Gy3ndM2/y1+H5keO1ZEGuwb4RhSkyvUmeQ25OPPI1X9tRCH6TIkWX18M2Yj9r4B7
-	piWVM56nZ1CzQY03nFGLbsJy8zGs56qFP4qJiWfMaoxfC2ax/mt247oAnt6tzuhf
-	uQyFCaNHPebKU/2TE7q4TikzV63AdxxM1GFIXcquTlzElGhcUmudFUkA5JliI7E5
-	eVmF3kA0O1SjEkBnFIxlkgyhLioZE2tra9/8niTSTp2eawxeSaR2Jt58RsYeZo3i
-	Xzy+BzeGnOJ4urRBkmRDdvOq6y/3pig8Q/py+fQ==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
-	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
-	action=mi-m=1; hc=13;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,reply-to,
-	subject,to;
-Message-Instance: m=1; h=sha256:6hS8kX8/2Y/Z02XsQ/S0GdyJ84NWRMwe7axxxaOjTNY=:ln1xf0CyP84OtQxdxCpn+k5tLttKTvxi8ap5isSNh3Q=;
-X-ME-Sender: <xms:Gx7lamfFP_mfuzxUGs31fMhFiGpsD89uYDXoIuF6aQ6VpYLsK9j4DQ>
-    <xme:Gx7lalz2KGzxldIGZbbOubnNLn4FlKwqlyWQpBEbOE3ZghM9rK5p4FjMT7Bf8_MHe
-    cLXafqcplc9g_GNWkH_rbYBwXPePQ67c5Z88K4X3PlbjM-G0w>
-X-ME-Received: <xmr:Gx7lahEV6dNd6QNAJZ3SLh9G0utdymFzsJ9N9xhMf_faIqdHSKItJWt1kop7KsJM6L4WCn_AJ4Dp1S8BTLFkrwMGo-qmjno>
-X-ME-Proxy-Cause: dmFkZTENnjV24hxZOZ2AhqWYYvaUGnTJGIvJXMAM/HCP0jMhhBPFe17oUdYSKatVeqdPzZ
-    Vpf2QikxTbrzIGvPM/XTu8ZdA0ZvVMjiSS8sTUT/UG0mF0QujI4xuz7+fDuJ5fTBeMOZk0
-    kT32b7viec1SkGY98z0PRJepQN7PQw1ZBEsLFhS7Qavt9hRt19/navlj949D1uf/jv0Mqr
-    9PwjMspBYtAkOteLu/NieyU9rupiM/H8tYIpKPslQ5IXfKTDPA6GCoTrpi1qm+RGexx32/
-    zB+YItZ4XCdwtse0c4X6q5GMd9zWnFwtaQFTSKgeDMt4jl5mAOaDGjGZjz8hYGaUgva9oT
-    J1H9fNRGhuYdB31gjto3Zjhemlf9hp3w66eNSTNeJOJ/i92vuY6qN7J2G0e3SYuccD2LaZ
-    Fg0BNSr8Tymvkq4pMiseqGVLQnzkgVnRwmlQZwSNAeZNdG2Y90LOoqxjUazSlamHSVUemY
-    A2HBRsKd1y0RVmnzGNZt4QM8s3WEk1BNBo7tIAVkP99LGGjcOnIK7QIp4pGGhI4qvILU5t
-    kpnkaJQl9/0716DR7BMF143vlmB9Xp6YaXk8plsLI7gS/f2WqPD7p9Gslq28DfNV9jKzFH
-    slzHq88UugB2KdDb2Fb/Y0XbLOJcA//KdfGkWuHfQBVhKtK4ohYPFWPpgnAQ
-X-ME-Proxy: <xmx:Gx7lak18XawSA9qLkltB3cMfg6XV692L5nRUg8HkeSaEEj7iugQFeg>
-    <xmx:Gx7lap82czRjD0aSai-Gy-5GXHxnKPQqwmd5saoxmdm5DGP6Ab_-KA>
-    <xmx:Gx7lanFnG-Y30YA5hc7OmETIL3qVu9bC8Mx4unaftyRX8J4Q8_GDsQ>
-    <xmx:Gx7lavjOxcLUTtrjQR5y1RaHo_h7J9MpDXR2MQt3K6mLIPvf5mk-jA>
-    <xmx:HB7lakzguzV6FITwoQXyGzP9IxX1OkMztxcoHOS75Tg8a4Q2Efuv6sYa>
-Feedback-ID: i9d664b8f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 30 Oct 2026 18:45:43 -0400 (EDT)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Pxy4fQ2u;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=oaWb7p3H
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793400593;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+T9BCD4WHAeHhgAEVu7K97ymFe/bRNG12NnyP6fiFZk=;
+	b=Pxy4fQ2uW7rA1gS1nswrtud4oKoBldxUpaF46GJK1vxdEiJPGO6Vj662LGx63kFJakw50V
+	pA7EeQjetWxxJcVwqXfTZwz1FwaxIQ6pfwDP76Mnv0g/jvhvTq6qSrnNcsdlmoOm9T89ZU
+	MvjcNPdurKiAK+vwQFT1+dk8jWp7qXI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-647-16XkUxWWPaiOM_bDLEHAVw-1; Fri, 30 Oct 2026 18:49:52 -0400
+X-MC-Unique: 16XkUxWWPaiOM_bDLEHAVw-1
+X-Mimecast-MFC-AGG-ID: 16XkUxWWPaiOM_bDLEHAVw_1793400592
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a35e1d2dddso10405395e9.0
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 15:49:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793400591; x=1794005391; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+T9BCD4WHAeHhgAEVu7K97ymFe/bRNG12NnyP6fiFZk=;
+        b=oaWb7p3HPm1mrzmvjrrcD+rOOBFyNsI8emRPZ5AatU7kaZAZrx8guT4wTF63JJQorQ
+         Y1BY5gLgakr6iMvTeSPMe4ugW4tTRGytqCMpW1rm5pR91agRoDR+S7JsVxFNqNZouGQM
+         tGM8I/CGzI2jA9V3P1cRsH8h9VR57LKOD4/79SJnOIRlBpw1Xm7ffbNnmIHilX5I98Gg
+         2XHalYTUxfp9mrI5qDBSO+z66INAtJjiyGV8N7j0SozuGYRDxAOmjcXKm786iH5m6go1
+         E2j8UKQ8GdE9SHDQzn8uZsP/xlIWKS0m4dzqNZjehYbaNT2qVEXKI2V+7YBviY0aMnuW
+         Alwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793400591; x=1794005391;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+T9BCD4WHAeHhgAEVu7K97ymFe/bRNG12NnyP6fiFZk=;
+        b=Uaxfs55upa4J7WYvtftXorsT/mGO6hYp6+P6jBxnLCVXvqk5HrDy+J3T1MAvg7nijM
+         1NQpsExovXFZ4IIBhKFpKpl0EWMjohcm9q9J3y4EkzcJ2GTc291EfRAvgtRZ9LQT4Byo
+         zLMFfq6Ofz3FtnvjGrz5yZ2NaFAC2KhGoLZoyZCvGjxO/XSK5PSvzuVVascsvkEum/eL
+         MjTRzeK9bLH0hRlLe2OvG7ibtsZxwBMCHE5myk+wpom84ONpjDWFETmY/5Mx4cWP7COD
+         TM8/0+y+Ts1357gbCk1CMr8dL8TMZG3n5/7+jysW8Qb8nOD1HiBiRWPhNzWFhWI5daVH
+         u2oQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw4hvcPqBItqTZBpVCan3pzZq8LxvtsGY/KBj+URdhY8Nw0Gjx3669PVWEpuj8q7Dd88jEQT2I=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLtFUZceow10aOQJVmmJTR4b9Rb5ec46hGqpHR9CzJ9Xd/Crvjt
+	lGyjauFiC1Me/5+hT4Zth9WJbbvATi8yC7az/mj6ntpsL1PFAUS4y6LswXNupHR8GBMuWOYoGJo
+	4rAacTxnyvlVF9AFkzfGeOFt2DPHH8HX+/WXiuyJDmZtsgWWMIljet/HmWQ==
+X-Gm-Gg: AYBFou1srfEn5eeu8VGNc4LjLzivoyjmG7CDDy2P0ujQ5vvPnzJevH1PBEtiZj40brT
+	EbGY1Iin0tnM0SAhaGTPS8yOGKtsD6xERck1jbhtgG0ARbzsKhat7qHBrNi50fS6w1YnK18GhwS
+	uMbkJ47wd1LNxRzzhng72+2LOFgVrpiXmFJMsJudWqAolATEwM0sARL6N6RvGUFYx5+gpC5YGYD
+	7vDNSFtY0PJQ6SOZs/GsvWeTiY0t1kiBQPBu4nic1yPyyI09rXiBk2KBgH3VYsD5PH43Ib4V8kx
+	coIzDvqaRX9gYf/kqrhWjbis/p9bzPDVAfr71S3X0xU0Xo6Um/6bXuf7wDfPxXC5i9+P/pxHJSU
+	Ht4RuYp/aUOq5zYcEsrKFxmeJf1AzfkXPnoaNv8T7RnjC
+X-Received: by 2002:a05:600c:46d1:b0:4a2:1867:10e8 with SMTP id 5b1f17b1804b1-4ac17b2c8a7mr81098155e9.25.1793400591320;
+        Fri, 30 Oct 2026 15:49:51 -0700 (PDT)
+X-Received: by 2002:a05:600c:46d1:b0:4a2:1867:10e8 with SMTP id 5b1f17b1804b1-4ac17b2c8a7mr81097795e9.25.1793400590841;
+        Fri, 30 Oct 2026 15:49:50 -0700 (PDT)
+Received: from redhat.com ([2a06:c701:73c1:fd00:6c8e:5a61:f533:519d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4abf0b36853sm80313395e9.0.2026.10.30.15.49.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2026 15:49:49 -0700 (PDT)
+Date: Fri, 30 Oct 2026 18:49:46 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: linux-kernel@vger.kernel.org, Chris Arges <carges@cloudflare.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	Phil Sutter <phil@nwl.cc>, Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, virtualization@lists.linux.dev,
+	Max Krasnyansky <maxk@qualcomm.com>,
+	Rusty Russell <rusty@rustcorp.com.au>,
+	Paulos Yibelo <habte.yibelo@gmail.com>
+Subject: Re: [PATCH RFC v7 4/5] net: resolve uncommon partial checksums at
+ ingress
+Message-ID: <20261030184752-mutt-send-email-mst@kernel.org>
+References: <cover.1793276116.git.mst@redhat.com>
+ <93d0e37c99711bebdf60c120af03010455c2f2e2.1793276116.git.mst@redhat.com>
+ <willemdebruijn.kernel.10a41a35b45f6@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -118,151 +128,173 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-From: NeilBrown <neilb@ownmail.net>
-To: "Kal Cutter Conley" <kalcutterc@nvidia.com>
-Cc: "Trond Myklebust" <trondmy@kernel.org>, "Anna Schumaker" <anna@kernel.org>,
- "Chuck Lever" <cel@kernel.org>, "Jeff Layton" <jlayton@kernel.org>,
- "Olga Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
- "Tom Talpey" <tom@talpey.com>, "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- "Kal Cutter Conley" <kalcutterc@nvidia.com>, linux-nfs@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] sunrpc: fix lost wakeups when stopping service threads
-In-reply-to: <20261030130629.103716-1-kalcutterc@nvidia.com>
-References: <20261030130629.103716-1-kalcutterc@nvidia.com>
-Date: Sat, 31 Oct 2026 09:45:39 +1100
-Message-id: <179340033904.269288.4611945330659974906@noble.neil.brown.name>
-Reply-To: NeilBrown <neil@brown.name>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <willemdebruijn.kernel.10a41a35b45f6@gmail.com>
 
-On Sat, 31 Oct 2026, Kal Cutter Conley wrote:
-> Stopping NFS can leave rpc.nfsd 0 in an uninterruptible wait with
-> this stack:
->=20
->   svc_stop_kthreads [sunrpc]
->   svc_set_num_threads [sunrpc]
->   nfsd_svc [nfsd]
->   write_threads [nfsd]
->   nfsctl_transaction_write [nfsd]
->=20
-> SP_NEED_VICTIM and SP_VICTIM_REMAINS remain set while all remaining
-> nfsd threads sleep in svc_recv() and none has RQ_VICTIM set.
->=20
-> The stop request is published with unordered set_bit() operations.
-> svc_pool_wake_idle_thread() checks the idle list and task state before
-> calling wake_up_process(). If it sees an empty list or TASK_RUNNING,
-> it skips the wakeup and its memory barrier. The requester can therefore
-> miss a sleeping worker while that worker misses the stop request.
->=20
-> Order work publication before both lockless checks, even when no
-> wakeup occurs. Pair with set_current_state() and llist_add() in
-> svc_thread_wait_for_work(), so the worker observes the pending work or
-> the requester observes the idle worker and wakes it.
->=20
-> Fixes: 60749cbe3d8a ("sunrpc: change sp_nrthreads from atomic_t to unsigned=
- int.")
-> Signed-off-by: Kal Cutter Conley <kalcutterc@nvidia.com>
-> ---
->  net/sunrpc/svc.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
->=20
-> diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
-> index af8d87c1de83..f3cc63acc5e1 100644
-> --- a/net/sunrpc/svc.c
-> +++ b/net/sunrpc/svc.c
-> @@ -29,6 +29,8 @@
->  #include <linux/sunrpc/clnt.h>
->  #include <linux/sunrpc/bc_xprt.h>
-> =20
-> +#include <asm/barrier.h>
-> +
->  #include <trace/events/sunrpc.h>
-> =20
->  #include "fail.h"
-> @@ -693,6 +695,13 @@ void svc_pool_wake_idle_thread(struct svc_pool *pool)
->  	struct svc_rqst	*rqstp;
->  	struct llist_node *ln;
-> =20
-> +	/*
-> +	 * Order work publication before the idle-list and task-state checks,
-> +	 * even when wake_up_process() is skipped. Pairs with the barriers in
-> +	 * set_current_state() and llist_add() in svc_thread_wait_for_work().
-> +	 */
-> +	smp_mb();
-> +
+On Fri, Oct 30, 2026 at 03:21:57PM -0400, Willem de Bruijn wrote:
+> Michael S. Tsirkin wrote:
+> > As reported first by Paulos Yibelo <habte.yibelo@gmail.com> (after which
+> > others, credited below, found more ways the bug can affect users) a
+> > virtio net header can place CHECKSUM_PARTIAL at any in-packet offset.
+> > If that state is retained, later checksum completion can modify the
+> > packet after protocol processing has made decisions from it.
+> > 
+> > Let's fix that: let's validate csum_start and csum_offset and only keep
+> > CHECKSUM_PARTIAL when csum_start and csum_offset match a parsed TCP or
+> > UDP header, while handling VLAN headers, IPv4 options and IPv6 extension
+> > headers.  Complete other non-GSO checksums immediately, before any
+> > protocol processing runs.
+> > 
+> > We can't easily "complete the checksum" for GSO we don't recognize - GSO
+> > assumes knowledge of the protocol. We could segment ignoring the
+> > checksum then do whatever csum_start and csum_offset say, but that
+> > seems like an overkill for something that shouldn't happen.
+> > 
+> > There's some risk here:
+> > - non-gso packets which can't be parsed get checksum calculated in
+> >   software, adding performance overhead
+> > - gso packets which can't be parsed get dropped
+> > 
+> > Note that for zero copy, userspace can change the data after the
+> > checksum has been calculated.  This is fundamental to zero copy by
+> > design, and the only outcome is a bad checksum and a packet drop.
+> > 
+> > To mitigate the risks, the following patch will add a sysctl knob to
+> > bypass the resolution. This is reasonable if the setup is such that
+> > there is no protocol processing at all.
+> > 
+> > UDP tunnel headers get the same handling on the inner header.
+> > 
+> > Packets without VIRTIO_NET_HDR_F_NEEDS_CSUM are unaffected.
+> > 
+> > Note a fundamental limitation of this approach: an nf/BPF program
+> > that tweaks the payload of a packet in flight may rely on the
+> > checksum being fixed up later, assuming the packet carries
+> > CHECKSUM_PARTIAL.
+> > 
+> > For metadata that fails validation the checksum
+> > is now completed at input, so such edits leave a stale checksum
+> > and the packet is dropped at the receiver.  Protocols whose
+> > transport header we cannot parse (anything but TCP and UDP) are
+> > affected even when the metadata is self-consistent.
+> > 
+> > The sysctl added in the next patch is the escape hatch for these setups,
+> > but it is a very blunt tool.
+> > 
+> > Reported-by: Paulos Yibelo <habte.yibelo@gmail.com>
+> > Reported-by: Chris Arges <carges@cloudflare.com>
+> > Tested-by: Chris Arges <carges@cloudflare.com>
+> > Fixes: f43798c27684 ("tun: Allow GSO using virtio_net_hdr")
+> > Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> 
+> > +static inline bool
+> > +virtio_net_l4_start(struct sk_buff *skb, unsigned int nhoff, __be16 proto,
+> > +		    unsigned int *thoff, int *ip_proto)
+> > +{
+> > +	if (proto == htons(ETH_P_IP)) {
+> > +		const struct iphdr *iph = virtio_net_ip4_parse(skb, nhoff, thoff);
+> > +
+> > +		if (!iph || ip_is_fragment(iph))
+> > +			return false;
+> > +		*ip_proto = iph->protocol;
+> > +		return true;
+> > +	}
+> > +
+> > +	if (proto == htons(ETH_P_IPV6)) {
+> > +		const struct ipv6hdr *iph;
+> > +		int flags = 0;
+> > +
+> > +		if (!pskb_may_pull(skb, nhoff + sizeof(*iph)))
+> > +			return false;
+> > +		iph = (const void *)(skb->data + nhoff);
+> > +		if (iph->version != 6)
+> > +			return false;
+> > +		*thoff = nhoff + sizeof(*iph);
+> > +		*ip_proto = iph->nexthdr;
+> > +		if (*ip_proto != IPPROTO_TCP && *ip_proto != IPPROTO_UDP) {
+> > +			*thoff = nhoff;
+> > +			/* Find the transport header behind any
+> > +			 * extension headers, AH included.
+> > +			 */
+> > +			*ip_proto = ipv6_find_hdr(skb, thoff, -1, NULL,
+> > +						  &flags);
+> > +			if (*ip_proto < 0 || flags & IP6_FH_F_FRAG)
+> > +				return false;
+> 
+> Minor, not cause for respinning on its own.
+> 
+>     `flags` should include `IP6_FH_F_AUTH` so `ipv6_find_hdr()` stops at
+>     `NEXTHDR_AUTH` instead of skipping it:
+> 
+>     - `CHECKSUM_PARTIAL` and GSO behind IPsec AH are invalid: AH authenticates
+>       the inner L4 header including its checksum field
+> 
+> > +		}
+> > +		return true;
+> > +	}
+> > +
+> > +	return false;
+> > +}
+> > +
+> 
+> > @@ -368,6 +660,21 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
+> >  	skb->inner_mac_header = inner_nh + skb_headroom(skb);
+> >  	skb->transport_header = outer_th + skb_headroom(skb);
+> >  	skb->encapsulation = 1;
+> > +
+> > +	if (!skb_is_gso(skb)) {
+> > +		/* Too small to segment: complete the checksum in place
+> > +		 * instead of dropping - senders do tag small packets
+> > +		 * with GSO headers, e.g. packetdrill sets gso_type and
+> > +		 * gso_size with --mss, whatever the packet size.
+> > +		 * The outer UDP checksum is not calculated, but a zero
+> > +		 * one is fine: UDP over IPv4 allows a disabled
+> > +		 * checksum, and so do tunnels over IPv6 where the
+> > +		 * receiver opts in (RFC 6935, RFC 6936).
+> > +		 */
+> > +		skb_shinfo(skb)->gso_type &= ~(SKB_GSO_UDP_TUNNEL_CSUM |
+> > +					       SKB_GSO_UDP_TUNNEL);
+> 
+> Maybe this carve-out for non-gso packet is best moved to its own
+> patch, as that is where the remaining issues (to merging the rest)
+> seem to be.
+> 
+>     1. Moving `!tnl_csum_negotiated` below `virtio_net_csum_partial_ok_at_offset()`
+>        accepts packets with an unnegotiated `VIRTIO_NET_HDR_F_UDP_TUNNEL_CSUM`
+>        flag whenever inner validation falls back to
+>        `__virtio_net_resolve_csum_partial_mismatch()`.
+>     2. `__virtio_net_resolve_csum_partial_mismatch()` calls `skb_checksum_help()`,
+>        which completes only the inner checksum at `hdr->csum_start` and sets
+>        `skb->ip_summed = CHECKSUM_NONE`, leaving the outer UDP `uh->check` with
+>        an uncompleted pseudo-header checksum seed.
+> 
+>     Despite the comment, this block neither completes any checksum in place nor
+>     is the outer UDP checksum zero when `VIRTIO_NET_HDR_F_UDP_TUNNEL_CSUM` is set:
+>   
+>     - With `VIRTIO_NET_HDR_F_UDP_TUNNEL_CSUM`, the outer `uh->check` carries the
+>       non-zero pseudo-header checksum seed (as expected by
+>       `__skb_udp_tunnel_segment()`), not `0`.
 
-I don't like this.  Stand-alone barriers are, I think, harder to read
-than barriers combined with operations, like smp_load_acquire() or
-similar.  And this one seems quite detached from anything.
+Oh yea i kept tweaking this and forgot to update the ocmment.
 
-If I understand correctly, the possible race is between
-svc_thread_wait_for_work which includes:
+>     - Clearing `SKB_GSO_UDP_TUNNEL_CSUM` on a `!skb_is_gso(skb)` packet leaves
+>       `skb->ip_summed == CHECKSUM_PARTIAL` at `inner_th` with nothing completing
+>       the outer `uh->check` on transmit/forwarding (`validate_xmit_skb()` only
+>       completes/offloads the single inner checksum, emitting a corrupt outer UDP
+>       checksum). Even zeroing `uh->check` would be invalid over IPv6 unless the
+>       receiver explicitly opted into RFC 6936 (`UDP_NO_CHECK6_RX`).
 
-		llist_add(&rqstp->rq_idle, &pool->sp_idle_threads);
-		if (likely(svc_thread_should_sleep(rqstp)))
+Indeed.
 
-and svc_stop_kthread which includes:
-
-		set_bit(SP_NEED_VICTIM, &pool->sp_flags);
-		svc_pool_wake_idle_thread(pool);
-
-The first sets ->sp_idle_threads.first and then checks SP_NEED_VICTIM
-and the second sets SP_NEED_VICTIM and then checks
-->sp_idle_threads.first.
-
-So we need barriers to ensure the values are seen is the expected order.
-Have I missed anything?
-
-llist_add() always calls try_cmpxchg() which is fully ordered, so no
-extra barriers are needed there.
-
-There is no barrier between the set_bit)( and the READ_ONCE() in
-svc_pool_wake_idle_thread(), so you added one.  I agree that is correct
-and solves the problem.
-But it is only this call to svc_pool_wake_idle_thread() that needs a
-barrier, not all calls.  So I would prefer the barrier went in
-svc_stop_kthreads().   Do you have a reason for not including it there?
-
-We do need a full memory barrier - a "release" on the set_bit and an
-"acquire" on the test of ->sp_idle_threads.first
-
-I would be happy with smp_load_acquire(->sp_idle_theads_first) in
-svc_pool_wake_idle_thread().  I'm not sure it is needed though.
-
-I would like set_bit_release(SP_NEED_VICTIM) in svc_stop_kthreads()
-but we don't have that.
-We could do
-   atomic_long_fetch_or_release(BIT(SP_NEED_VICTIM), (atomic_long_t*)&pool->s=
-p_flags)
-but that is ugly.
-
-So I think the best solution is
-
-		set_bit(SP_NEED_VICTIM, &pool->sp_flags);
-		/* Order SP_NEED_VICTIM before testing sp_idle_threads,
-                 * matching svc_thread_wait_for_work() which orders
-                 * setting sp_idle_threads before testing the bit
-		 */
-+               smp_mb__after_atomic();
-		svc_pool_wake_idle_thread(pool);
-
-We probably need the same in svc_wake_up() after the set_bit().
-
-Does this make the barriers easier to understand?
-
-Thoughts?
-
-Thanks,
-NeilBrown
-
-
->  	rcu_read_lock();
->  	ln =3D READ_ONCE(pool->sp_idle_threads.first);
->  	if (ln) {
->=20
-> base-commit: b803428098f6fcd584db9f0499217b80e465bb34
-> --=20
-> 2.53.0
->=20
->=20
+> > +	}
+> > +
+> >  	return 0;
+> >  }
+> >  
+> > -- 
+> > MST
+> > 
+> 
 
