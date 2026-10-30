@@ -1,59 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793347010;
-	b=uckcq36SYbrsfvNmocN+At1X2Yzpf8wTYrRnvIeUTjGuF5fIRjv6IF6MGG0N3Yd2RcJ4
-	 1bmk72aZY6yLur1k9t216azy8Or78o3MVKDM80xPN1OEEL8AhOCdS4AcEmBfRsDh1wFyu
-	 X2uCiWGH22XhtCMWUtAKnyE5c9i+CzI0I15ibHGm3SdMCxpXRxZSZa+rtorhCjApamGQW
-	 oxN/cBES+DU9jE6cUPxIzshlk47huhz0ONNkfsh6cjJg49LDOF9e7lR6+BiWSrFD2Wpco
-	 IbWM+LXHtcRWw4XQbLEbTGUcdEzZKegJfOKb4dcr7s2DoN0DiDgLJUtMa/Vt18pTpKw==
+	t=1793347128;
+	b=Pvg55qTY9XyTa1OA+Vhn/iYV2nSYI260BMC9uAxkhSPS06lW0vVNgE8UIMvY/9kFro5p
+	 2y/tBYLwZ5uKAHJsk8Itr9OomWlXLV06x8JkV67XX5RPWCvDlwlZZnBQKBMf4RlQmNqJC
+	 aEHXBdMF39AFuuBC2U/617d967L2c8BHzdieRjyG66/D9lziA+so2DZzRiCpEOp1UpzON
+	 U5k+IkgMSPGOVYKc6g93BtNGUew9TsC0LwA2WrUqiFRWs4Loa7uqoQ+tQaieqWSPRnf8o
+	 TzuAP/jUB9RBOrektLcNjvsqiNTGdmj4QFA1M3avBDdPSD0PpzRi5kuMHZHkvixMsTQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793347010;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=JXGYxeNljDfE9v0Wusv0u/tqPJ5oQM2BhPc23kAApSM=;
-	b=PRulWehBPOsQ5fJcvRSjOafSz9nbTriBoVOJBthJsXeofqiJc3OVUR6i+ls71zCP/Kiw
-	 Jn7QkCcwYukc4bUMQ68wnE2PYxvkdLvylb+AQQCus1QDVIoDMkg/Hymii08jP+UQ1glhL
-	 1MipNSXU7+Ydc2EzShuqAARhlZgSVf1XpQztN5AwD6K95dBysE15aS0qac/IErHA2lwcV
-	 7lScSSvkqoa3Bw8oNc4wLB3mpOTVlT1Kv3Pdqrun6tVOnRhmw+dAymvDUOoqhelElX9Fl
-	 ydZSIvkkie6kCba1ftN/U0DJVHHsmCVcLyN37sAAETAEI55q7LOHxoG0bcUqDAGU/QA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793347128;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=gZXHbZniI6ovtIu1JCQcb7cZkxkCt/JEGLR8wEhz0Rs=;
+	b=DUhmYm9LQfizEx+XMflHjmGW4PmMyzUtx4e2u2HRhA55I61m5DyLRKTKx8SaI+hcnG1N
+	 y+P1tGIuK50kp32gjaNb9ijQaM6qVRnn8Ps8zG7fPSnlK0Ee9Y1cZWh3s5HDxVtT1tcxw
+	 x5S53NJq1DPmAwomva6Rr38K/+c50ntjico7qIIxnCQLgl1Yhlsis3b+khmFNpqMulsGc
+	 hXULmFI4mX4RJW82sDMiBrBsNBw0FFBgpgZ6/BAfemDkd+mR6PiEy2hqMB4+zjew+jeZU
+	 +ZvscnGthmMAqpOY3zStTlri2RBEBtyw6NUcA8g+UyIaEcqLI9G+F06AJ24fIFGPqgw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HGVYJ9RW;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="E9NU/b73";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EA8606A31A;
-	Fri, 30 Oct 2026 07:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B613606A31A
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 07:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HGVYJ9RW
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6C71F000C1;
-	Fri, 30 Oct 2026 07:56:48 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E9NU/b73
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C7B1F000C1;
+	Fri, 30 Oct 2026 07:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793347008;
-	bh=JXGYxeNljDfE9v0Wusv0u/tqPJ5oQM2BhPc23kAApSM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HGVYJ9RWP9UruJCcvFurWZNMnRDrEKMjcAdZiPfBNpT9ZRBw1ededGO3MpgEisiiX
-	 fer/w3TsAjVGGOGMbPdhJYH4jJT7XWHF8UN35EEfRWP01QfdpE6DwX7wZfEcoIView
-	 35Bu4pLmlMfMS4V+HcHMn62pxonwic56sVv8CLJjHfEkvokEL5zDrQnUKySyOIBZk0
-	 wp9xrDboYv0N5Y0Va3CfgghBf7GC8ZD3YTwFZLm+x+MLV9Lfmg0zR7fgCRAyueDTik
-	 TbPl+/wevStzdrzM3nlumCLlrt3Juz83HX817I8u6gBPkafxd+k7RSIUCXqBkoGdTH
-	 1848LhV6B7C0g==
-Subject: Re: [PATCH] qed: drain slowpath tasklets during teardown
-From: netdev-bot+sashiko@kernel.org
-To: yaojiale02@163.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, Ariel.Elior@qlogic.com,
- Yuval.Mintz@qlogic.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Date: Fri, 30 Oct 2026 07:56:47 +0000
-Message-ID: <179334700771.3134.3043092838285502459@kernel.org>
-In-Reply-To: <20261028045535.110688-1-yaojiale02@163.com>
-References: <20261028045535.110688-1-yaojiale02@163.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1793347128;
+	bh=gZXHbZniI6ovtIu1JCQcb7cZkxkCt/JEGLR8wEhz0Rs=;
+	h=From:To:Cc:Subject:Date;
+	b=E9NU/b73053P6hgkyqJkwG4u7dx9eKdNfw0Fgta3JoxGdM1r3VxPzhuNIgsPPyD7W
+	 z0ItHraevONL/yolbJmPmllQfjJs7Dcu+sy6pmoQ6Wk+JdYRl8AMhTKzmVE6wIJm+2
+	 4vYUgxK6tMCyHCq7SO+P4LkdQ3cgYHvLzTA0/QDkFIYXUDX1wZTJn46slbOJefFP/c
+	 7kTm6K8sRLhcCg/BA0UayxJwq30QudVsONxyP3mUTBfyMKib8xR4K4SjF9d031EtJS
+	 nWJAwv2NtwLcJQaTc/uAJZhslRJ74zWm5FdHNk0SkE1RgCXaXBuZ+xLaaSDyqWOV9L
+	 GLHL/F0l63BMA==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Neal Cardwell <ncardwell@google.com>
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	Kyle Zeng <kylebot@openai.com>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>
+Subject: [PATCH v2 net] tcp: wait for TIME_WAIT teardown before freeing per-netns ehash
+Date: Fri, 30 Oct 2026 08:58:43 +0100
+Message-ID: <20261030075843.2567707-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,149 +63,107 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+From: Kyle Zeng <kylebot@openai.com>
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+inet_twsk_kill() removes a TIME_WAIT socket from the established hash
+before it finishes using the ehash lock, hashinfo and bind tables, and
+before it drops the death-row reference. A running timer can therefore
+unhash its socket before inet_twsk_purge() reaches it. The purge cannot
+synchronize with that timer, and tcp_sk_exit_batch() can free the
+private ehash and hashinfo while inet_twsk_kill() is still using them.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+An unprivileged reproducer using user and network namespaces, a private
+TCP ehash and a FIN_WAIT2 timer triggers a KASAN slab-use-after-free in
+inet_twsk_kill(). The allocation and free stacks point to
+inet_pernet_hashinfo_alloc() and inet_pernet_hashinfo_free().
 
-- [High] The fix covers only the normal stop path.
-- [Medium] In qed_slowpath_stop() (qed_main.c:1412-1419) the order is
-  qed_nic_stop(), which now calls tasklet_kill(), then…
+Wait for an RCU grace period after purging the whole batch, if one
+netns in the batch uses a private ehash. TIME_WAIT removal runs with
+bottom halves disabled, so this also waits for removers that were
+already invisible to the purge. Keep the wait under
+tcp_exit_batch_mutex, before freeing any private hashinfo.
 
---
+The same window exists with the shared tcp_hashinfo. There, the
+hashinfo memory stays valid, but tcp_sk_exit_batch() can decrement
+tcp_death_row.tw_refcount from 2 to 1 before inet_twsk_kill() drops its
+own reference. This triggers the WARN_ON_ONCE() in tcp_sk_exit_batch(),
+then a refcount_t "decrement hit 0" warning from inet_twsk_kill().
 
-qed: drain slowpath tasklets during teardown
+Adding a grace period for the shared case would be costly on busy
+hosts. It is not needed: struct net is freed by a later cleanup_net(),
+after the synchronize_rcu() in ops_undo_list(), so inet_twsk_kill()
+can safely drop the last tw_refcount reference itself.
+Use refcount_dec_if_one() and only warn if tw_refcount is not 1
+after a grace period.
 
-This patch replaces tasklet_disable() with tasklet_kill() for the per-hwfn
-sp_dpc tasklet in qed_nic_stop(). The intent is that a pending slowpath
-tasklet is removed from the queue before qed_slowpath_stop() frees the
-interrupt and status block resources.
+Fixes: d1e5e6408b30 ("tcp: Introduce optional per-netns ehash.")
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+[edumazet: only call synchronize_net() if one netns in the batch uses a private ehash,
+ use refcount_dec_if_one() to avoid a false WARN with the shared ehash]
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+---
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+---
+v2: [edumazet]
+    Avoid a false WARN_ON_ONCE() in tcp_sk_exit_batch() when a concurrent
+    inet_twsk_kill() still holds a tw_refcount reference, as reported by
+    Jiayuan Chen and Sashiko. Use refcount_dec_if_one() and only warn
+    after a grace period, instead of adding synchronize_net() for the
+    shared ehash, which would be costly on busy hosts.
 
-> diff --git a/drivers/net/ethernet/qlogic/qed/qed_main.c b/drivers/net/ethernet/qlogic/qed/qed_main.c
-> index 28a8a2b9d501c..abe8a841b2773 100644
-> --- a/drivers/net/ethernet/qlogic/qed/qed_main.c
-> +++ b/drivers/net/ethernet/qlogic/qed/qed_main.c
-> @@ -833,10 +833,10 @@ static int qed_nic_stop(struct qed_dev *cdev)
->  		struct qed_hwfn *p_hwfn = &cdev->hwfns[i];
->  
->  		if (p_hwfn->b_sp_dpc_enabled) {
-> -			tasklet_disable(&p_hwfn->sp_dpc);
-> +			tasklet_kill(&p_hwfn->sp_dpc);
+    When net-next reopens, I plan to free the private hashinfo after
+    an RCU grace period (call_rcu()), so that tcp_sk_exit_batch() no
+    longer needs synchronize_net(). This would also cover request
+    sockets and RCU lookups that could still touch a private ehash.
 
-[Severity: High]
-Only qed_slowpath_stop() reaches qed_nic_stop(). What about the error
-unwind in qed_slowpath_start()?
+v1: https://lore.kernel.org/netdev/20261028162510.2180528-1-edumazet@kernel.org/
 
-By the time any of its error labels can be taken, the tasklet is set up
-and the slowpath IRQ is live:
+ net/ipv4/tcp_ipv4.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-qed_nic_setup()->qed_resc_setup()->qed_int_setup()->qed_int_sp_dpc_setup()
-    tasklet_setup(&p_hwfn->sp_dpc, qed_int_sp_dpc);
-    p_hwfn->b_sp_dpc_enabled = true;
-
-qed_hw_init()->qed_hw_init_pf()
-    qed_int_igu_enable(p_hwfn, p_ptt, int_mode);
-    ...
-    rc = qed_sp_pf_start(p_hwfn, p_ptt, p_tunn,
-
-qed_sp_pf_start(), qed_mcp_load_done(), the DCBX mcp cmd,
-qed_ll2_alloc_if() or qed_mcp_send_drv_version() can fail after that
-point. When one does, qed_slowpath_start() unwinds through:
-
-err3:
-	qed_hw_stop(cdev);
-err2:
-	qed_hw_timers_stop_all(cdev);
-	if (IS_PF(cdev))
-		qed_slowpath_irq_free(cdev);
-	qed_free_stream_mem(cdev);
-	qed_disable_msix(cdev);
-err1:
-	qed_resc_free(cdev);
-
-Nothing on this path calls tasklet_kill(&p_hwfn->sp_dpc).
-
-free_irq() waits for the hardirq handler but not for the tasklet. The
-flush in qed_hw_stop() is only a disable/enable, so a pending tasklet
-stays pending.
-
-Next, qed_resc_free()->qed_int_free()->qed_int_sp_sb_free() frees the
-status block that qed_int_sp_dpc() dereferences:
-
-	dma_free_coherent(&p_hwfn->cdev->pdev->dev,
-			  SB_ALIGNED_SIZE(p_hwfn),
-			  p_sb->sb_info.sb_virt,
-			  p_sb->sb_info.sb_phys);
-	kfree(p_sb);
-
-After that, __qede_probe() takes its err1 label and calls
-qed_ops->common->remove()->qed_remove()->qed_free_cdev(). That kfree()s
-the qed_dev that embeds hwfns[i].sp_dpc.
-
-Suppose the last interrupt scheduled sp_dpc and it hasn't run yet. Can
-qed_int_sp_dpc() then run against the freed status blocks? Could a freed
-tasklet_struct also be left on the per-CPU tasklet list?
-
-Would it make sense to kill the tasklet in a common teardown helper, for
-example after free_irq() in qed_slowpath_irq_free()? That would cover
-both the stop path and the qed_slowpath_start() unwind.
-
->  			p_hwfn->b_sp_dpc_enabled = false;
-
-[Severity: Medium]
-Is this ordering safe with respect to the slowpath IRQ? qed_slowpath_stop()
-does:
-
-	qed_nic_stop(cdev);
-
-	if (IS_PF(cdev))
-		qed_slowpath_irq_free(cdev);
-
-	qed_disable_msix(cdev);
-
-	qed_resc_free(cdev);
-
-This means the handlers that schedule sp_dpc are still registered when
-tasklet_kill() returns:
-
-qed_msix_sp_int()
-	tasklet_schedule((struct tasklet_struct *)tasklet);
-
-qed_single_int()
-		if (unlikely(status & 0x1)) {
-			tasklet_schedule(&hwfn->sp_dpc);
-
-In INTA mode, qed_single_int() is registered with IRQF_SHARED and reads
-the SISR over MMIO. On a surprise-removed device that read returns
-all-ones.
-
-qed_hw_stop() calls qed_slowpath_irq_sync() only once, before
-qed_sp_pf_stop() and qed_int_igu_disable_int(). qed_int_igu_disable_int()
-only writes IGU_REG_PF_CONFIGURATION and does not wait for in-flight
-handlers. No synchronize_irq() follows it.
-
-The old tasklet_disable() left t->count at 1, so a late tasklet_schedule()
-could queue the tasklet but it would not run. After tasklet_kill() the
-count is 0. An interrupt that arrives between tasklet_kill() and
-free_irq() therefore queues an enabled tasklet again. Nothing kills it a
-second time after free_irq().
-
-Can qed_int_sp_dpc() then run on another CPU during or after
-qed_resc_free()->qed_int_sp_sb_free()? It reads p_sp_sb, sb_virt and
-p_sb_attn. It also calls qed_sb_ack(sb_info, IGU_INT_ENABLE, 1) on a PF
-that has already been stopped.
-
-Would it close this window to call tasklet_kill() only after the IRQ
-source is gone, for example after free_irq() in qed_slowpath_irq_free()?
-
-[ ... ]
-
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index a7f9242f1e429033da2c1284b7c1a1964b2ab171..0dc3b087665dc09ffbdc5c124c4ea2ce7d813c56 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -3549,6 +3549,7 @@ static int __net_init tcp_sk_init(struct net *net)
+ 
+ static void __net_exit tcp_sk_exit_batch(struct list_head *net_exit_list)
+ {
++	bool synced = false;
+ 	struct net *net;
+ 
+ 	/* make sure concurrent calls to tcp_sk_exit_batch from net_cleanup_work
+@@ -3563,9 +3564,27 @@ static void __net_exit tcp_sk_exit_batch(struct list_head *net_exit_list)
+ 
+ 	tcp_twsk_purge(net_exit_list);
+ 
++	/* inet_twsk_kill() unhashes a twsk before it is done with ehash
++	 * and bhash, and before it drops its tw_refcount reference,
++	 * so tcp_twsk_purge() can miss it. Such callers run with BH
++	 * disabled: wait for them before freeing a private ehash.
++	 */
++	list_for_each_entry(net, net_exit_list, exit_list) {
++		if (net->ipv4.tcp_death_row.hashinfo->pernet) {
++			synchronize_net();
++			synced = true;
++			break;
++		}
++	}
++
+ 	list_for_each_entry(net, net_exit_list, exit_list) {
+ 		inet_pernet_hashinfo_free(net->ipv4.tcp_death_row.hashinfo);
+-		WARN_ON_ONCE(!refcount_dec_and_test(&net->ipv4.tcp_death_row.tw_refcount));
++		/* Without a grace period, a concurrent inet_twsk_kill() might
++		 * still hold a tw_refcount reference. Let it drop it: struct net
++		 * is freed by a later cleanup_net(), after an RCU grace period.
++		 */
++		if (!refcount_dec_if_one(&net->ipv4.tcp_death_row.tw_refcount))
++			WARN_ON_ONCE(synced);
+ 		tcp_fastopen_ctx_destroy(net);
+ 	}
+ 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028045535.110688-1-yaojiale02%40163.com
+2.53.0
+
