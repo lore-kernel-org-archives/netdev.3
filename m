@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=23.88.38.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793368279;
-	b=PrKvCPPHp8iMlwMdPrQl/iB6YCtACUaAlzPGiG9y7dM/WUGRAVwhlJ6ExVGOrjYRxMdI
-	 BQQIw35Mi9pUWztdd6j6dAPSFTimTxXOAj9gxrlhmSDtiGmjGgA1zqSMxv/ty3VPfaD50
-	 64+5Mnp2//V0Ab7KfkBj+Ox5F0jZlbCqAWeS6lix0fb7ve5FGAnpnaD+895oOSVh71wzt
-	 OjkFIGAnTtfurtxuS/b4WypmFpU+efC3oeyy55/gtSxIZUJqBQW7uXxf/jgk2bgip/SGt
-	 S6b1chWvK1vucD+2s/aM3plpLIEioYhGfH/YcbRwp7RV9CF/fyytOMTsIHmuEAd92Ew==
+	t=1793368284;
+	b=mKjQOEcS/S1QotQ5oMF9IM27LuMI+Ro6B1gkHY+F97ZgU6SZUNaUnKAOP+TxVUpWCvEO
+	 W6Z1SY/zYReMBo9BLNBFuXyyRH/1VwTXzUw3VGLefQTl4gDg2udU4167haiA2SjJLpPij
+	 464kMyfTf13gpgncgKFHyC6fsdygpl+E0+qNEMeKQaJZ5b/Aw3Bvqt1NfNYJ0YUswU2ug
+	 kQ1wzA5vn8siMo0bVFdYiP5KUvrdFFH0zy8gCfb4RIVQn2fYBEx6nf8ubncRX6r/Fr69g
+	 GvR5vLymt41rEF8nSn9BHQ/B7uvDAFe0Ki01jZniiniHboXATkX/zdy6s3AmXQ0WLIw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793368279;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793368284;
 	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=7RJrvzHfyRH2NludABJx8SkoHJ3QglEZ3QwWWnb4wDA=;
-	b=GCoJZ9jFij+oLRhijiOy4yl+LeAaa/p7IeEL37N3acFs96pVFR4uu1o4VnmOGrGHts6e
-	 2Bjk0H6UfpX05wbftee5zEXMX28fQjnulldqMyIdmKvTN1uB81YmU7kdTu1Px2e5xby1d
-	 HVA8gJS9QqxtBhCKEUM0zjLULm953LrYwNiz+fTepzWQ9GAdvX1MbxSrth5ewf4qj47ME
-	 99Cc/eTDD2jPO+8AyWQbctZ9WI+I8+jiTWuMzxGzjQMQcpE9yXOm5fz56KqoDda0uqvtF
-	 bSUNIV+xqn5Igao7OUX8XP6pqQzfhfR4Nn8Gy2w2UFmuAZIGY4VliPJcltH9rAzTELg==
+	bh=zooGUg5U79hEFPrT6Hi6K1nHULVSW/Tn4sEvAK4VHgM=;
+	b=H1eRKxnY8FBo0Gx7ZzH6xXQTTMqT1ve9gcqOMCyAXff84Y5ZZ/278VZq5cr5M85q/cZl
+	 IQMo7RLYYBHikese/BapO1XRJrLYEejulQ6XlV3Iv235hhTeaHxq9Eq511RKjMglGi0Mm
+	 40+KDvb7EUdtTV1lAVqp3vAWUiLHkazd6P5OFbktvHlx+csmsQCuzmkg1Z94YdW2MnJqp
+	 1ZbVh7h4JudJ7/MYUgQKQQ0krvzEG0kJt7ZahQwZ/5/gE1d1ZDDRMo9qNbAbWH54HH4T3
+	 oq8zEhvmzC6DiThISi3PhRV+gHuoYihJgho4QqvmdXsOmEqzo/r4L/pF6A0SZFpcM9w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=simonwunderlich.de;
 	spf=pass smtp.mailfrom=simonwunderlich.de;
-	dkim=pass header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=Uj9ZNI8M;
+	dkim=pass header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=BFFAb6w4;
 	arc=none smtp.remote-ip=23.88.38.48
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 3EFA1606A32F;
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 7433B606A334;
 	Fri, 30 Oct 2026 13:51:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3EFA1606A32F
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7433B606A334
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=Uj9ZNI8M
-Received: from kero.packetmixer.de (p200300c597124Fd839580C360D3ed6F6.dip0.t-ipconnect.de [IPv6:2003:c5:9712:4fd8:3958:c36:d3e:d6f6])
+	dkim=pass (2048-bit key, unprotected) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.a=rsa-sha256 header.s=09092022 header.b=BFFAb6w4
+Received: from kero.packetmixer.de (p200300C597124Fd839580C360d3Ed6F6.dip0.t-ipconnect.de [IPv6:2003:c5:9712:4fd8:3958:c36:d3e:d6f6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with UTF8SMTPSA id E38E7FA156;
-	Fri, 30 Oct 2026 14:51:10 +0100 (CET)
+	by mail.simonwunderlich.de (Postfix) with UTF8SMTPSA id C70D9FA197;
+	Fri, 30 Oct 2026 14:51:11 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
 	s=09092022; t=1793368271;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7RJrvzHfyRH2NludABJx8SkoHJ3QglEZ3QwWWnb4wDA=;
-	b=Uj9ZNI8M4c5o4Os1IXz7uiJxfYui+RDzm1Dz5CjSqpmnu1qnnnsztK4BrmhL5dBuo+f4jA
-	e63MWLv7Pi7/1ILRtfyjCjON2tQ2nxNWcppNf/LDZzOh60l7t0AYuWsdeWhBFHekCc5ik3
-	46FKQtt1Nb2gOVEUccTVhIsoRHCUgvShp3Zq+oc7Z0xvVuu0ZzGfb/M7f/Uh8ZMljxX+kl
-	6QACAaZDu7kv2Rj1U2kbF6cxWLpPRTGfnC9A2CFTD83hZHayfhysa/yt0eghDsRwy/eTzi
-	dilHbngjWayN5MjAqApnpvevXOIa1KHh/TIdk/Nt2jSro9EhWuNj2ta7vmS+SQ==
+	bh=zooGUg5U79hEFPrT6Hi6K1nHULVSW/Tn4sEvAK4VHgM=;
+	b=BFFAb6w48mJG8/X+32JzoBLNREjEax2+Ii+ujqab09H93BmKa4mFxx6dz43FTvXokA0w/5
+	uS9pd+9rBiYgRfZ7iJxsZOzvHFtcXi6eQ8AQQNSX+KB7R6IFQyh/6nJkS3M+B6wySG6fjG
+	QSLxR+SQMU0cYf+84uHeuPZBJpBt5Oi0NVpKfD2ZRUdPlB3E3ji1IjNflfKRECfgooloAV
+	veGDs6EyxD97JzMC34Md1h6QixT9E2NLzKFkOMnGZOiUN+G1lc9QPSLT/QdzklptH4ZUUo
+	HQvcE9TLPo7fS1kXsTE72DPYSvG6QdQfe3A8htrhxLJuWEAcdcPS+Vzb8AGZDA==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -62,10 +62,11 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Sven Eckelmann <sven@narfation.org>,
 	stable@vger.kernel.org,
 	Sashiko <sashiko-bot@kernel.org>,
+	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net 04/14] batman-adv: tpmeter: fix u32 truncation of reported bytes
-Date: Fri, 30 Oct 2026 14:50:55 +0100
-Message-ID: <20261030135105.2555887-5-sw@simonwunderlich.de>
+Subject: [PATCH net 05/14] batman-adv: dat: initialize orig_node of unfilled candidate slots
+Date: Fri, 30 Oct 2026 14:50:56 +0100
+Message-ID: <20261030135105.2555887-6-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261030135105.2555887-1-sw@simonwunderlich.de>
 References: <20261030135105.2555887-1-sw@simonwunderlich.de>
@@ -78,40 +79,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-When more than 4 GB are transferred by the throughput meter,
-batadv_tp_batctl_notify() will cut of the upper 32 bit of the u64 counter
-and thus under-report the actual transferred bytes.
+batadv_dat_select_candidates() allocates the candidate array without
+zeroing it. batadv_choose_next_candidate() marks each slot as
+BATADV_DAT_CANDIDATE_NOT_FOUND but only sets orig_node when an eligible
+originator was found. In the following rounds,
+batadv_is_orig_node_eligible() compares res[j].orig_node of all previous
+slots against the evaluated originator. For slots without candidates, it
+reads uninitialized memory.
 
-The data type of the temporary storage variable must therefore still
-continue to use u64.
+The orig_node has to be cleared together with the
+BATADV_DAT_CANDIDATE_NOT_FOUND type.
 
 Cc: stable@vger.kernel.org
 Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/bug/linux-08bb3be4-6c6a-452d-b4e4-606940c6cfa5
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
+Closes: https://sashiko.dev/#/bug/linux-b25d9aa4-10bb-427c-a145-ccaadc2a1bb9
+Fixes: 785ea1144182 ("batman-adv: Distributed ARP Table - create DHT helper functions")
+Acked-by: Linus Lüssing <linus.luessing@c0d3.blue>
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/tp_meter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/distributed-arp-table.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 022eb13e8ec47..56feb02d2b7ef 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -221,7 +221,7 @@ static void batadv_tp_batctl_notify(enum batadv_tp_meter_reason reason,
- 				    unsigned long start_time, u64 total_sent,
- 				    u32 cookie)
- {
--	u32 total_bytes;
-+	u64 total_bytes;
- 	u32 test_time;
- 	u8 result;
+diff --git a/net/batman-adv/distributed-arp-table.c b/net/batman-adv/distributed-arp-table.c
+index 74050bffedbce..0260ed7e828b2 100644
+--- a/net/batman-adv/distributed-arp-table.c
++++ b/net/batman-adv/distributed-arp-table.c
+@@ -653,6 +653,7 @@ static void batadv_choose_next_candidate(struct batadv_priv *bat_priv,
+ 	 * NOT_FOUND
+ 	 */
+ 	cands[select].type = BATADV_DAT_CANDIDATE_NOT_FOUND;
++	cands[select].orig_node = NULL;
  
+ 	/* iterate over the originator list and find the node with the closest
+ 	 * dat_address which has not been selected yet
 -- 
 2.47.3
 
