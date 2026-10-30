@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793359708;
-	b=VgeFZvIrksWjVF0juD0amB7S4EB2V/04pXZqDowRov6h3henVpn4D3vKqtC/94D8OGsa
-	 Tqf3YQCHQccKjxee5HiFhd3clLTwnoM0GzKneuY+ox48LE66FpCQ9ImxkiKKREq367e7R
-	 sj89i4W/0W7JZxkgYmYrrZ/lfTMJn8emgR6LF+tttglT83lgo7owdtzxj8TASSJ9i0L5+
-	 ipIpnsdV+pZx2Og5Frdwkgx/nxJwCjHFTVSxDrD9j38NEtSvQKyjbcn7hpblI4HtulsCC
-	 rw+aOxb5Pgio2dWAt9L+QFg5Mbnn6yzN2NtN74OZNNZ00o0kV/pf8Y/QC4/MAiwDrOQ==
+	t=1793359709;
+	b=jz1KGICXBBMwyopcggjVsk06rdWww94HfGZlXPPnVrUjSE/wnhl9e5ysMujbVhfN1j6/
+	 0sED/9OMjwX0ScOEf10Y3cCwg3Lqg2hQTrVqtms2F/ZZbH1t2bUN8rMnPGAdqA+NbsXBW
+	 X0cBZvIVri7xNk+PBUvviOT4SOE5oo37K225g5bnCTiZJjrHmlPxaK3NGDlUa6WruQakP
+	 HhI/ufCOgLx8U/O9kgEEYgKyF+e2KG0LJMeOQnUzVVy8HufxI6X6QlYAElmlZg1q0iit6
+	 5yoeuAtOSM4N1kcRTtUaAtNGrHU0VxWZsz9DpKfkz+IkBND+NxoHkAkjfDRX+cfTBZw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793359708;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793359709;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=6nKRA7VpnTg8LL6hJs+2zVnoEpbZxXVRw/cjVV+gHvk=;
-	b=U7E1B+fPnzDarD4DeRmm8LN00H39V0NssFzOLAJodnzR6Dc+cmR0tZouUvQEXbpF9S6o
-	 KLLZCFcewByeLo+DtRV3imOsOgFziEausTj4nNCd/B0aOGZxR9qIQpHvLxXHfUjuBjmvc
-	 LorrDf4GLVZgU8wMyXFKv5ax6QmCpRZZHaCbA2FOaoi/9mpGrgrHDjRjUabXaYOZVurbJ
-	 OJEUZP+gWOAjLuItbODw4G/Dyvpc2JPkXvyWzYniiYeR+XLVI7E7Ll7fvfjWPxEy7fbMS
-	 N4qMHNAHm95nVzwB1XK/J63UZgAW0cfL3tAQ6/H3UdFYQZUuiRPdxbqomlQZkpYLTlw==
+	bh=l8tFIArwNBGpXF7b0HkWXv0ehLQYJslCMdryKQuEUhA=;
+	b=pUnojFBw2pvwUWfXXk/UuBMLkLO644P1YpAearaEC8XYe1CWIcQqB7pBOaL8sD8mrP7y
+	 wPl4BsqwjdC9XoGG9/OGj14Xm1GfNfMn0HBsplHoMsxQhm5pNBLr7Mn7iQdwUCgkmGKs7
+	 zIQxwYgTbUFxWz136hSvEIRTN3PIKeGYzvHdcLJw+Tw+6wfZkIgPILP6uwrvdLjMnIBKT
+	 usjSGqtTtnu2r8flUBulH19jVXt8C3hENNHMKbeZU8yZ1DgJO4BB6U1TjmMGHBtDyBqYE
+	 +9/brZnVNIU4J//LWW357cC9ImxlTB7W5frs2CDXXWairHulsGBN5Y6kv14TkGhMg6Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RweMM4tD;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Db0Nz+TR;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C70606A31A
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 11:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC44606A322
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 11:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RweMM4tD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF65F1F000C1;
-	Fri, 30 Oct 2026 11:28:27 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Db0Nz+TR
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1001E1F000C1;
+	Fri, 30 Oct 2026 11:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793359708;
-	bh=6nKRA7VpnTg8LL6hJs+2zVnoEpbZxXVRw/cjVV+gHvk=;
+	s=k20260515; t=1793359709;
+	bh=l8tFIArwNBGpXF7b0HkWXv0ehLQYJslCMdryKQuEUhA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RweMM4tDQjV/Erw0poTC2PhsTdpM9AL6Pwm+fh29amy6jyCtYtQjLCLfrANoC7o7V
-	 IZMI/aRmQiTjpukvXoTMcXmBLE7aUQCDEu6cUfKRQO/RJRs09L8KUqC6RqIRdOb2wB
-	 M05d3cxg1bYFPtbuBursLcWoasgltSl4+hVl35JLDe7+ty3110Cpe/wsELWKKp3F/y
-	 WQ9TSUlU06oYgCoeqvSn199aU6a1vtpJmdQVcS4l7pTnaHsk8xdDY0PP6t35XtJlhO
-	 2xkrPsl+xqi8r8hu28aj8JXaO08G+Px0EvdHdUgrA3ln53U8a1Zn5kdUOFWulhmvpN
-	 x3bJDEG0ngoRQ==
-Subject: Re: [PATCH net v3 1/2] net: dsa: mxl862xx: bound FDB dump walk with a
- read limit
+	b=Db0Nz+TRAC3hAzuoOWUrcW0bxXKON8NbOCeovZr7Ix348rhycey4eZxZMsLTZLLG4
+	 GqwzLBHrpqW3auBpDAMUtQBeKJ+JETKkQXcZbbotKtLr2iENjIMmxm1PU+cXhC1ufC
+	 /MtMW9+TBECN1j9TwIAxPFOcJlW9evOz2jMEvLB6sXHPjQKxQj4Kim/9n2W9j0GvOn
+	 T/nSXJBR8Ela5izb843e9l6bjJdk5vpk5P1NfTKNuNIFPdeFiTGqmR8zD/VdIUrdiu
+	 GJ5BjLhVweLsu3pkQ/BNjCUTwDrWeAwne9NCbru8K8gETdOSu5RZkkiJdSEdumIkl7
+	 Ivl+dbUGMPYpQ==
+Subject: Re: [PATCH net v3 2/2] net: dsa: mxl862xx: validate the bridge id
+ returned by BRIDGE_ALLOC
 From: netdev-bot+sashiko@kernel.org
 To: memoriaru@foxmail.com
 Cc: netdev@vger.kernel.org, daniel@makrotopia.org, andrew@lunn.ch,
  f.fainelli@gmail.com, olteanv@gmail.com, johan@kernel.org, kuba@kernel.org,
  pabeni@redhat.com
-Date: Fri, 30 Oct 2026 11:28:27 +0000
-Message-ID: <179335970748.3134.15827650378445276832@kernel.org>
-In-Reply-To: <tencent_1AD6B5B7C296D319F828A281A2A65B95D609@qq.com>
-References: <tencent_1AD6B5B7C296D319F828A281A2A65B95D609@qq.com>
+Date: Fri, 30 Oct 2026 11:28:28 +0000
+Message-ID: <179335970863.3134.5191378244494717635@kernel.org>
+In-Reply-To: <tencent_F5633A48A97A7D712B7DB98CE1950213C805@qq.com>
+References: <tencent_F5633A48A97A7D712B7DB98CE1950213C805@qq.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -67,7 +67,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -75,141 +75,96 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The patch says it stops mxl862xx_port_fdb_dump() from "walking
-  forever with RTNL held".
-
-Pre-existing issues:
-- [Low] The kernel-doc for struct mxl862xx_mac_table_read
-  (drivers/net/dsa/mxl862xx/mxl862xx-api.h:120) says "@last: Indicates…
+- [Medium] In mxl862xx_allocate_bridge()
+  (drivers/net/dsa/mxl862xx/mxl862xx.c), a positive firmware command…
 
 --
 
-I found two possible regressions in this patch.
+net: dsa: mxl862xx: validate the bridge id returned by BRIDGE_ALLOC
 
-1. (Medium) The 16384-read cap is finite, but each read is a full mailbox exchange done under RTNL. rtnl_fdb_dump() ignores the -EIO, so the long walk is repeated once for every user port.
-2. (Low, pre-existing) The kernel-doc for @last says the last=1 response carries an entry, but the code throws that response away. The new comment follows the code's reading.
-
-The draft reply:
-
-net: dsa: mxl862xx: bound FDB dump walk with a read limit
-
-This patch caps the MAC table walk in mxl862xx_port_fdb_dump() at
-MXL862XX_MAC_TABLE_WALK_LIMIT (16384) reads. Past that limit it returns
--EIO, so a device that never sets the last flag can no longer keep the
-loop running forever with RTNL held. The limit is checked after the last
-test so that a correctly ended walk of a full table is not rejected.
+This patch makes mxl862xx_allocate_bridge() reject a firmware-supplied
+bridge id that is 0, is 0xffff, or is already in use in priv->bridges[]
+or priv->ports[].fid. It guards against firmware that does not follow the
+API and would otherwise break FID isolation between domains.
 
 > diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.c b/drivers/net/dsa/mxl862xx/mxl862xx.c
-> index e05ad52cd297e..37e8c18f14f33 100644
+> index 37e8c18f14f33..d8d58f280d358 100644
 > --- a/drivers/net/dsa/mxl862xx/mxl862xx.c
 > +++ b/drivers/net/dsa/mxl862xx/mxl862xx.c
 
 [ ... ]
 
-> @@ -1513,6 +1519,22 @@ static int mxl862xx_port_fdb_dump(struct dsa_switch *ds, int port,
->  		if (param.last)
->  			break;
+>  static int mxl862xx_allocate_bridge(struct mxl862xx_priv *priv)
+>  {
+>  	struct mxl862xx_bridge_alloc br_alloc = {};
+> +	u16 id;
+>  	int ret;
 >  
-> +		/* The exact MAC table capacity is not part of the public
-> +		 * driver API. Use a conservative read limit: 16k is well
-> +		 * above any documented table size for this family, while a
-> +		 * device that never sets last (or keeps answering with
-> +		 * entries for other ports, which never reach the callback)
-> +		 * would otherwise keep us walking forever with RTNL held.
-> +		 * Checked after the "last" test so that a correctly ended
-> +		 * walk of a full table is not rejected.
-> +		 */
-
-[Severity: Low]
-This is a pre-existing issue and was not introduced by this patch. The
-new comment does rely on it, though.
-
-The kernel-doc for struct mxl862xx_mac_table_read in mxl862xx-api.h
-says:
-
- * @last: Indicates that the read operation returned last entry
-
-Read literally, the response with last=1 still carries a valid final
-entry. mxl862xx_port_fdb_dump() breaks on param.last before it looks at
-port_id, mac or tci, so that payload is thrown away.
-
-The new comment and the commit message ("the walk needs one read more
-than the number of entries it reports") assume that the last=1 response
-is an empty end marker.
-
-Which reading matches the firmware? If the kernel-doc is right, every
-dump drops one entry and the placement of the limit check is off by one.
-If the code is right, could the kernel-doc be updated to say that last=1
-means no valid entry was returned?
-
-> +		if (count++ >= MXL862XX_MAC_TABLE_WALK_LIMIT) {
-> +			dev_err(ds->dev,
-> +				"FDB dump walk exceeded %d reads, aborting\n",
-> +				MXL862XX_MAC_TABLE_WALK_LIMIT);
-> +			return -EIO;
-> +		}
-> +
+>  	ret = MXL862XX_API_READ(priv, MXL862XX_BRIDGE_ALLOC, br_alloc);
+>  	if (ret)
+>  		return ret;
 
 [Severity: Medium]
-Does this limit really keep the RTNL hold time bounded in practice for a
-device that never sets last?
+Can a positive firmware result get past all of the new checks here?
 
-Each iteration is a full MXL862XX_MAC_TABLEENTRYREAD mailbox exchange
-in mxl862xx_api_wrap(). The 53-byte struct mxl862xx_mac_table_read
-moves 27 data words plus a CRC word, so after the first iteration one
-read costs roughly:
+The transport layer decodes the firmware result as a signed 11-bit value
+in mxl862xx_crc6_verify():
 
-mxl862xx_api_wrap()
-    mxl862xx_busy_wait()
-    mxl862xx_rst_data()          /* 2 writes, busy-wait, 2 reads */
-    CRC word write
-    mxl862xx_send_cmd()          /* 2 writes, busy-wait, 2 reads */
-    mxl862xx_reg_read() x 28
+	*result = sign_extend32((len_ret & LEN_RET_LEN_MASK) |
+				((ctrl & CTRL_CRC_FLAG) >> 4), 10);
 
-That is about 40 Clause-45 accesses and three busy-waits per read. At a
-typical 2.5 MHz MDC this is about 2-3 ms per read, or roughly 30-50
-seconds per port before the -EIO fires.
+The kernel-doc for mxl862xx_issue_cmd() says it returns a "firmware result
+value (>= 0) on success". mxl862xx_send_cmd() only remaps negative values,
+and mxl862xx_api_wrap() returns cmd_ret after a successful read. So a
+CRC-valid status from 1 to 1023 comes back unchanged from
+MXL862XX_API_READ().
 
-mxl862xx_busy_wait() also allows up to 500 ms per wait:
+In that case, if (ret) return ret; returns the status itself before
+br_alloc.bridge_id is examined. Both callers only check for ret < 0:
 
-	return readx_poll_timeout(mxl862xx_ctrl_read, priv, val,
-				  !(val & CTRL_BUSY_MASK), 15, 500000);
+mxl862xx_port_bridge_join():
+	ret = mxl862xx_allocate_bridge(priv);
+	if (ret < 0)
+		return ret;
 
-So a device that holds its busy bit could stretch the bounded walk much
-further.
+	priv->bridges[bridge.num] = ret;
 
-The -EIO also does not seem to end the dump. rtnl_fdb_dump() only stops
-on -EMSGSIZE:
+mxl862xx_port_setup():
+	ret = mxl862xx_allocate_bridge(priv);
+	if (ret < 0) {
+		...
+	}
+	priv->ports[port].fid = ret;
 
-		if (dev->netdev_ops->ndo_fdb_dump)
-			err = dev->netdev_ops->ndo_fdb_dump(skb, cb, dev, NULL,
-							    &fidx);
-		else
-			err = ndo_dflt_fdb_dump(skb, cb, dev, NULL, &fidx);
-		if (err == -EMSGSIZE)
-			break;
+If the firmware returns a status of 1 while FID 1 is already stored in
+priv->bridges[] or priv->ports[].fid, wouldn't 1 be recorded as a newly
+allocated FID without ever going through mxl862xx_bridge_id_in_use()? The
+firmware bridge actually allocated in br_alloc.bridge_id would also be
+leaked.
 
-Each DSA user port goes through dsa_user_fdb_dump()->dsa_port_fdb_dump()
-->mxl862xx_port_fdb_dump() on its own, and the failure is not latched.
-One bridge fdb show would then run the user port count times 16384 reads
-under RTNL, with one dev_err per port that is not rate-limited.
-Userspace gets a silently truncated list rather than an error. Each new
-dump or -EMSGSIZE continuation starts again with initial=1 and a fresh
-budget.
+That looks like the same duplicate-FID problem the patch is meant to
+close, caused by the same kind of non-conforming firmware.
 
-RTM_GETNEIGH's dumpit is registered without RTNL_FLAG_DUMP_UNLOCKED, so
-an unprivileged local user can trigger this repeatedly. Other RTNL users
-are blocked meanwhile, including mxl862xx_crc_err_work_fn() and
-mxl862xx_host_flood_work_fn().
+Would it make sense to also treat a positive status as an error before
+validating the payload id, for example:
 
-The commit message does not explain where 16k comes from. Would a
-jiffies-based deadline, a bound tied to the real table capacity, or
-latching the failure so that other ports and later dumps fail fast work
-better here?
+	if (ret < 0)
+		return ret;
+	if (ret)
+		return -EIO;
 
->  		entry_port_id = le32_to_cpu(param.port_id);
 >  
->  		if (entry_port_id == port) {
+> -	return le16_to_cpu(br_alloc.bridge_id);
+> +	id = le16_to_cpu(br_alloc.bridge_id);
+> +
+
+[ ... ]
+
+> +	if (!id || id == 0xffff || mxl862xx_bridge_id_in_use(priv, id))
+> +		return -EIO;
+> +
+> +	return id;
+>  }
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/tencent_1AD6B5B7C296D319F828A281A2A65B95D609%40qq.com
