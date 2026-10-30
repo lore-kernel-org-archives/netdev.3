@@ -1,101 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.173
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793362251;
-	b=rrp/7a1iqIyxFFlI502PGMpgwdqSPWkpp48Gcc48ToV1lmjcAzYDiKpw4xt8vvhmNsMG
-	 YORn+WJEHhztc+dkYSULNyLx1y0oH4s9zQq+sLF2oJlnuFPKCJBLlndTBzAns/YhZV2Y8
-	 RPlsuDs0L3kLA3+KYaO4FIdgZY5nhtbH4/+DyidXuh9YRVVtHATBAvjPo9jfpGnQm7wKM
-	 5lNGYQtj5T4sVCKtUrZ/ebbWKHSxv4FrWaoWYv5UiKuFu39HE4/rOd/o7w9TstpdS/f3x
-	 tNWbAcRZ61w5WhuVe98PVPncOzxP1YIJrttsBJ+SLkJmvG5C8loKnfhFzcTJa4XFE7w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793362251;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=QA50g16aHudGDcSXsItQdqb/ZNETm3wfRubXwKNAx98=;
-	b=gLDj4WNubGTyH77m6ABSK70+7oGwGpozAGFR7F7WweReWhCuT9rTWxP3mro4NS1JQlMA
-	 IOdt018ap7Cczf3U0jadvtm7W2qzXNRyvbd6Pe2nZpyMYDHUN6U4DZY8vFO4ExHyYM1Mc
-	 HQV9jotpUj8kKpmMsA5UGOafYJG5AP39W3I22SUzJVTyi5BghmagOZO67RfkpoieTBD9l
-	 I4EvGNJM/3rmgG2QaJj1LHKdCVUR0EjTnQNmWJOmBmFz8VrsYCl9Mw/UCxX8Y+6Kyjp34
-	 P2F/4YFOsQO5h+zZ8/kWQWiG2//awICPUGDbSc3ijXEFaHW7mTd5aq92fdQQEssNAQg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=E3MVxeMT;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.173
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.200
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793362476;
+	b=0NQa23B2Um9klUJEj3zaW1PHXCcNK+CNQnva5Mv9M/c4lyAjJMvH8A472e+Och/5L9uu
+	 F4rRlnE9umFBlXf7q5tKrPEZOmnQqyn6M2CfOefkcLjjpK1zOZuyxDWfoEAMfaWaWl35q
+	 ZWIN8vNTKO7dxPFYOx7HcJIt1XUS3SerCsYgTzu3ZCkYSiFMQRKYlKBQ+UQvFgzlGKwx0
+	 X6+ImO7IWwYNhVv8TsxsUJ/gsdmbjufj0lp1AjyIrIaliDKxBuCLeFdBRJ4wHEJi1lNFT
+	 P7KksU3+l3Yh9tWs0w+3fVJeul+nHH7rZb2zSqtkLg3kJpCNIybbhZ98X5PQ3U7enRA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793362476;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:MIME-Version:X-Received:Date:
+	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
+	 Subject:From:To:Content-Type;
+	bh=fIsZN7+4fkQBsb9F8HsQdpPNVBhUbbSPmwMZcGaHUyM=;
+	b=BbzdpN0Uq50b4KotLIcEjIS2IeqIZO3jQQBlZvNplDFlLeAm4weDvAA+j2zL5jq2SP61
+	 ct03vQHtVndpAtldNEo0zqucCtgdA0HaPBpUV1lkscgo8zM+qKB5UozzEoQJ8BEkcVaAp
+	 emWHa6Zku+hOn0Er9gJUk2zSOaCEh/GQbxItWQdLC27TWvtH9u3jWEznTaAoqEMb7cvRP
+	 3QfWiPlrbJIzwn/w5eyLhUqOSpJvS7G08ovocqiHyaKkxlfKTxUK4kIeCPXYjZ2i0Bu+L
+	 v11xXW6phbKy3NqM84ZOFJgw26gXyQnuUaAmyCXTw+gK56baiMZpZzuaOI9s5C7CFTQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=fail header.from=syzkaller.appspotmail.com;
+	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	arc=none smtp.remote-ip=209.85.167.200
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC53606A31C
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 12:10:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ADC53606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=E3MVxeMT
-Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-4f48d91ba7dso368638b6e.2
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 05:10:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793362249; cv=none;
-        d=google.com; s=arc-20260327;
-        b=GYuXg8d9bWGpRhTSxNV3aK59IKAYqILHejkSVl1SyZ98xK5b+C55l1MtSTydspMlaf
-         3JvzEwO5SDCkh+RZNQm5vNnEhV/oCMbQDSYYD41pBDoQEdT2HfBbshKwaPBUhAVuJUKa
-         8y4NbXFBGJa0MYQwyDFcQy9f/P/ecZM84S6a8zmlt4SQzvybLI5ycOlKkcrmut3Ns1Gn
-         rYy9pEzNZ6UgVmiYb7OVKP6Fcn6HI9cHypKBjGVgnPyCG5w8ds0crKg3fh2UBVGl5UKm
-         BxTyxW01QbEDMTzzh+8335gja/aeXmS5w6+jRrxeKfZfaNbrRkJRbQWkZljSQ0sDdpye
-         tz0Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QA50g16aHudGDcSXsItQdqb/ZNETm3wfRubXwKNAx98=;
-        fh=d0LydO8IW8sd2WLB87qVWssoI5/1YfKIWNX6PL3YcrY=;
-        b=F/CRmJgQBT2aZQHPU2k1nKCwQeUrfOpyhlGxPki8HRKOcGD4dzR5K5bFGDqGdlmxX6
-         gCNImXzjUnSntW6WFQ8QnIT3QtSZvvXFDJLXTzIy0oY4hnhFyU3i0Hax+SmBJ7W6SSP7
-         6pipfZKmm6rfJd76CPeoKsCBcTmXPnxJVnbpM/Hc7TrQKOt282967s0uxrYU0FTOVWTL
-         9z/ghBd6JoGPmjaKmgm6qmFHIIV/qCCPfdFoyFcBG7vhofO1ZcZNJu/3jZKiZJFxhG3r
-         Ooc3jx6T9i4DKi9WY/sty+bIKfz+Kze07b+cOrkuzHxt6yfplTnvc1PG+WHxzEyk3jv7
-         6KQQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793362249; x=1793967049; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QA50g16aHudGDcSXsItQdqb/ZNETm3wfRubXwKNAx98=;
-        b=E3MVxeMT8vw/bg1QUyjHbM1ISQlhs/B0OjX5kTo0urxT0gAbzc58k9InBnhmf0Ewq6
-         9uQP1EjXZp5Ph/2dBCyX5aryfZuIBJnI4TdnO6iboEASvYrnFeCYMdxOYHS/ZMaTgp73
-         66OF6RhEb4JN4nS5RUBjFIQX7yQLn6JSZQjjVw6yNjLHcbcu+DcwMSLDuQm4cMNZ3u4S
-         U4iFYjlHgMAf0CI/BXBgKLRuZdFHaZndU8wBpzhviYsdkr/MMywz48GuqWsuP6fy9emD
-         H4ZatYNBP8gqNAniHitbn2O8gz0knFr4+WJZ19C2pJJl+nTEfBdy35IlkfowWXVWJpGk
-         XNuQ==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD59606A32F
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 12:14:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4DD59606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4e778acdbc6so729740b6e.3
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 05:14:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793362249; x=1793967049;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1793362475; x=1793967275;
+        h=content-type:to:from:subject:message-id:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=QA50g16aHudGDcSXsItQdqb/ZNETm3wfRubXwKNAx98=;
-        b=qq7YqGXBWl28mWvK1McPaa7kmOABFwF/3AceAZrN6MQN1LZFhqrCW8aU5aLlmHDUhd
-         fcs0P38reGoMOa4Fi8o24fMfKnYl1CmhPxhKH6/D2uVazxY4mgMCN8SbdokN6nOyaCDZ
-         OS+zfRyZN5Prd9WvXM/ZbSNhu8r/nLlNbmAsSAsOBOb1LBdbF2H6bU+yvnM3CsFJt6Gs
-         KaeTMFv8B+HzJI7IIto9f2K90fAzhxLduw4ZDYohAA2BT2ljbelx9NU3397V8+CJFMAj
-         jjknvQINrc1xzNdzWLRy5t+PjNti1V1zogmDAUen33R1wdLiOx+XMG+tdQLkLVk+zisL
-         86pA==
-X-Forwarded-Encrypted: i=1; AKwUvBzbyWeH6WeaHDpnq6stQLw1AKMwAhHAAKuOPbVdOc4k509sArHOJFueoXr+fCYowsjjCZjW/hA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLc1OkdZoQtn19Dx+j/0BJOhMxjADRJWT3f+61yhur5ra8bfMY3
-	glpYwdkcSKobD6pOXlehI0P2BQT5A0M0gWwgiy14HbJ6wRm35YcB7PONrHVhu0rixoPzBEc0xRG
-	njLTpr4EeShvcFVJCz/U8No9StHQLnC0=
-X-Gm-Gg: AYBFou2/lNXaWisQ4iJ/ZQx4FqFQQpwzh5ho8Wpoa5v8gtr3MFGMOYTrg9eMxzJtf07
-	R6H73F2Kuk8ZFfD/LtB6K2sKkom42/NmBIgBlOGVWWlXkIOXvWzYvtz44gYARWdIt2Ztj0isKkX
-	PTI330DMQUkhzEGxyKeWjOTqspDV0JQ0aN6A1vAmHqHjLpkXM5RZUnkYL0St3376Zi8zVMgowbG
-	eT1axw/rx7nOjD2Q6miBdvAQSJj9DpElrJR7D/C2fN2R69pCUb+v5A3GSvP8C5izmqZQJwMwWMQ
-	bSt3fDbfIliLZVbiWlr+mywHebQDhLpBBEY2L66y9q7UTYCyFJ79iWrn48h0SOzZod0g1CP7f22
-	lOrpFBlClDtUPwtj2X89U0LbHKrwCMjWhbEn1IERuSdvTWaNZUf/zMuAPQiTtGLPQa1xHwymu/I
-	CWMhAoaotUwf1qRnF83BxCRpw=
-X-Received: by 2002:a05:6808:11c7:b0:4ea:686e:fe86 with SMTP id
- 5614622812f47-5640df62ac0mr1416797b6e.63.1793362249561; Fri, 30 Oct 2026
- 05:10:49 -0700 (PDT)
+        bh=fIsZN7+4fkQBsb9F8HsQdpPNVBhUbbSPmwMZcGaHUyM=;
+        b=VCrjtke6P3DfHVFzze1BSDKTmWIAFoh5X2Ca5f3H/Ka+oQaAG1KvrbOTGsjBhuh7tA
+         u89vWYXX3D2aPLiabyg7i8UUNNJJruvxb43FqJ2myyhqHb7Ffxe29CfGQhy8UUuStoLR
+         NLNkM9Urhzu6YGGxaCPPwlX+Wjs/PaMEv8xMu/qndwkkoPZYjU7kpbllXVd2BZLrTCVz
+         RlbowdIEhMFh6Es0LvJy4FTMQJGrd9PcSnm/PR8FvfazEA+ZSCAOqTAMfNlF4tZsxTfy
+         tiX+004vfRnQU7nI6NAk3LoxN/clJ4YXjXkaQ1tyyYDxLBsnKy63V/nZ0+MbdNNnkbhL
+         0mYA==
+X-Forwarded-Encrypted: i=1; AKwUvByNS/6G+W0PB6PwdP7AdwCvbIII27RT/pmMZRPZT6081UlI9Poouxlmqr1VT7WaEzNlLJ813Sw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK57cQRZhnYvSDhAwuD4o0bJqUqZi9QAypnb8c5gyWoAGBEr+ZC
+	02XqvfDQ088ezifc6u6Kz+7URwJkIkCyo9zG5aSLAem83B4y9kB2dDA2IJO+BLQTp8M675l/IH3
+	pn4Ikl8eV0+KvzwtcWD7pqco7AuPBRmEDalIDR53ABC5eoYx9aGhmNMB4OB4=
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,272 +58,149 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261027-netlink-dump-livelock-v2-1-c4bb05352a33@gmail.com> <179332592143.3134.3446883215083774550@kernel.org>
-In-Reply-To: <179332592143.3134.3446883215083774550@kernel.org>
-From: Jhonata Poma-Hansen <jhonata.poma@gmail.com>
-Date: Fri, 30 Oct 2026 13:10:37 +0100
-X-Gm-Features: AclHuK_RWzDPl0fMVJWfqiGX-48WGTJYsqVpLqwIl0KpdhbtkY637vTEbdwkYGs
-Message-ID: <CACgZWq6SQjQDvCz6L_4yo=JG-tB8sdM=1yGWGZA+uaD8CjT=pA@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/2] netlink: check sk_rcvbuf before charging the
- dump skb
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kuniyu@google.com, m.szyprowski@samsung.com
+X-Received: by 2002:a05:6808:4704:b0:4f1:6c9c:78d3 with SMTP id
+ 5614622812f47-5640df39312mr1305526b6e.26.1793362475290; Fri, 30 Oct 2026
+ 05:14:35 -0700 (PDT)
+Date: Fri, 30 Oct 2026 05:14:35 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ae48a2b.6713f5d0.92cad.0001.GAE@google.com>
+Subject: [syzbot] [wpan?] general protection fault in ieee802154_llsec_dump_table
+ (2)
+From: syzbot <syzbot+9ea34da5ca6100593c90@syzkaller.appspotmail.com>
+To: alex.aring@gmail.com, linux-kernel@vger.kernel.org, 
+	linux-wpan@vger.kernel.org, miquel.raynal@bootlin.com, netdev@vger.kernel.org, 
+	stefan@datenfreihafen.org, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, 30 Oct 2026, Sashiko wrote:
-> [High] In netlink_dump() (net/netlink/af_netlink.c:2327), a dump can
-> still fail to start because of memory charged by skbs that have...
+Hello,
 
-This is real, but it is not new: both the previous check and the one
-before ae8f160e7eb2 refuse the skb when the stale charge alone is at or
-above sk_rcvbuf. It needs a single notification with a truesize of at
-least sk_rcvbuf, so only very small receive buffers. The patch fixes
-the common case where the stale charge is below sk_rcvbuf; the commit
-message could have been narrower about that.
+syzbot found the following issue on:
 
-Never failing the first skb on rcvbuf would let a reader that does not
-read queue one skb per dump request without bound, which is what
-ae8f160e7eb2 closed.
+HEAD commit:    c339f4010dea Merge tag 'platform-drivers-x86-v7.4-1' of gi..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=15a3dd95580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=119e5f4d0a8d39cf
+dashboard link: https://syzkaller.appspot.com/bug?extid=9ea34da5ca6100593c90
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=151a448d580000
 
-> [Medium] This problem wasn't introduced by this patch, but it has the
-> same trigger the commit describes.
+AI-generated root cause summary:
+In net/ieee802154/nl-mac.c, ieee802154_llsec_dump_table() iterates through all
+network devices in the namespace and assumes any device with dev->type ==
+ARPHRD_IEEE802154 has a non-NULL ml_priv pointing to struct ieee802154_mlme_ops.
+However, devices such as TUN can have their link type changed to
+ARPHRD_IEEE802154 via the TUNSETLINK ioctl without initializing ml_priv (leaving
+it NULL). Consequently, ieee802154_llsec_dump_table() dereferences
+data.ops->llsec at offset 0x38 of a NULL pointer when dumping LLSEC tables,
+leading to a general protection fault / kernel crash (Denial of Service).
 
-Right, the gate in netlink_recvmsg() is unchanged by this patch.
+full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=9ea34da5ca6100593c90
 
-Thanks,
-Jhonata
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+9ea34da5ca6100593c90@syzkaller.appspotmail.com
 
-Best regards,
-Jhonata Poma-Hansen
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000007: 0000 [#1] SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000038-0x000000000000003f]
+CPU: 0 UID: 0 PID: 6025 Comm: syz-executor400 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/15/2026
+RIP: 0010:ieee802154_llsec_dump_table+0x204/0x5d0 net/ieee802154/nl-mac.c:778
+Code: 89 f8 48 c1 e8 03 80 3c 18 00 0f 85 d3 02 00 00 4d 8b be b8 07 00 00 49 8d 7f 38 4c 89 bc 24 98 00 00 00 48 89 f8 48 c1 e8 03 <80> 3c 18 00 0f 85 a5 02 00 00 4d 8b 7f 38 4d 85 ff 0f 84 b2 01 00
+RSP: 0018:ffffc900031ef4a0 EFLAGS: 00010202
+RAX: 0000000000000007 RBX: dffffc0000000000 RCX: 0000000000000000
+RDX: ffff8880314ccb00 RSI: ffffffff8b9ff162 RDI: 0000000000000038
+RBP: 0000000000000026 R08: 0000000000000324 R09: 0000000000000324
+R10: ffffc900031ef40f R11: ffffc900031ef520 R12: ffff888036830610
+R13: 0000000000000000 R14: ffff88805d7a8000 R15: 0000000000000000
+FS:  000055558d27f400(0000) GS:ffff88812248e000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fff8aa5bff8 CR3: 000000002ce9b000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ genl_dumpit+0x125/0x230 net/netlink/genetlink.c:1026
+ netlink_dump+0x53b/0xd00 net/netlink/af_netlink.c:2351
+ __netlink_dump_start+0x6d6/0x990 net/netlink/af_netlink.c:2466
+ genl_family_rcv_msg_dumpit+0x1e2/0x2e0 net/netlink/genetlink.c:1075
+ genl_family_rcv_msg net/netlink/genetlink.c:1191 [inline]
+ genl_rcv_msg+0x471/0x800 net/netlink/genetlink.c:1209
+ netlink_rcv_skb+0x159/0x420 net/netlink/af_netlink.c:2576
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
+ netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
+ netlink_unicast+0x668/0x950 net/netlink/af_netlink.c:1361
+ netlink_sendmsg+0x9ac/0x10c0 net/netlink/af_netlink.c:1920
+ sock_sendmsg_nosec net/socket.c:800 [inline]
+ __sock_sendmsg net/socket.c:818 [inline]
+ __sys_sendto+0x492/0x4e0 net/socket.c:2283
+ __do_sys_sendto net/socket.c:2290 [inline]
+ __se_sys_sendto net/socket.c:2286 [inline]
+ __x64_sys_sendto+0xe0/0x1c0 net/socket.c:2286
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f0fada8d8b7
+Code: 48 89 fa 4c 89 df e8 98 1d 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
+RSP: 002b:00007fff8aa5c1d0 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 000055558d27f400 RCX: 00007f0fada8d8b7
+RDX: 0000000000000014 RSI: 00007fff8aa5c220 RDI: 0000000000000004
+RBP: 0000000000000003 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000202 R12: 00007f0fadac9d23
+R13: 00007fff8aa5c390 R14: 000000000000001d R15: 0000000000000002
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:ieee802154_llsec_dump_table+0x204/0x5d0 net/ieee802154/nl-mac.c:778
+Code: 89 f8 48 c1 e8 03 80 3c 18 00 0f 85 d3 02 00 00 4d 8b be b8 07 00 00 49 8d 7f 38 4c 89 bc 24 98 00 00 00 48 89 f8 48 c1 e8 03 <80> 3c 18 00 0f 85 a5 02 00 00 4d 8b 7f 38 4d 85 ff 0f 84 b2 01 00
+RSP: 0018:ffffc900031ef4a0 EFLAGS: 00010202
+RAX: 0000000000000007 RBX: dffffc0000000000 RCX: 0000000000000000
+RDX: ffff8880314ccb00 RSI: ffffffff8b9ff162 RDI: 0000000000000038
+RBP: 0000000000000026 R08: 0000000000000324 R09: 0000000000000324
+R10: ffffc900031ef40f R11: ffffc900031ef520 R12: ffff888036830610
+R13: 0000000000000000 R14: ffff88805d7a8000 R15: 0000000000000000
+FS:  000055558d27f400(0000) GS:ffff88812258e000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffdac0fedc4 CR3: 000000002ce9b000 CR4: 00000000003526f0
+----------------
+Code disassembly (best guess):
+   0:	89 f8                	mov    %edi,%eax
+   2:	48 c1 e8 03          	shr    $0x3,%rax
+   6:	80 3c 18 00          	cmpb   $0x0,(%rax,%rbx,1)
+   a:	0f 85 d3 02 00 00    	jne    0x2e3
+  10:	4d 8b be b8 07 00 00 	mov    0x7b8(%r14),%r15
+  17:	49 8d 7f 38          	lea    0x38(%r15),%rdi
+  1b:	4c 89 bc 24 98 00 00 	mov    %r15,0x98(%rsp)
+  22:	00
+  23:	48 89 f8             	mov    %rdi,%rax
+  26:	48 c1 e8 03          	shr    $0x3,%rax
+* 2a:	80 3c 18 00          	cmpb   $0x0,(%rax,%rbx,1) <-- trapping instruction
+  2e:	0f 85 a5 02 00 00    	jne    0x2d9
+  34:	4d 8b 7f 38          	mov    0x38(%r15),%r15
+  38:	4d 85 ff             	test   %r15,%r15
+  3b:	0f                   	.byte 0xf
+  3c:	84                   	.byte 0x84
+  3d:	b2 01                	mov    $0x1,%dl
 
-=F0=9F=87=A9=F0=9F=87=B0 +45 7143 7020 =F0=9F=87=AE=F0=9F=87=B9 +39 3205740=
-789
 
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-Il giorno ven 30 ott 2026 alle ore 03:05
-<netdev-bot+sashiko@kernel.org> ha scritto:
->
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 (1) =C2=B7 Low: 2
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] In netlink_dump() (net/netlink/af_netlink.c:2327), a dump can
->   still fail to start because of memory charged by skbs that have=E2=80=
-=A6
-> - [Low] The new comment in netlink_dump() ("netlink_recvmsg() continues
->   the dump at or below half of sk_rcvbuf, and the skb must be queued=E2=
-=80=A6
-> - [Low] The dump_extack selftest (tools/testing/selftests/net/netlink-
->   dumps.c, comment at lines 158-161, branch at 162-163) still describes=
-=E2=80=A6
->
-> Pre-existing issues:
-> - [Medium] This problem wasn't introduced by this patch, but it has the
->   same trigger the commit describes.
->
-> --
->
-> netlink: check sk_rcvbuf before charging the dump skb
->
-> This patch changes netlink_dump() so that sk_rmem_alloc is compared
-> against sk_rcvbuf before the new dump skb is charged instead of after.
-> A dump can then start while something else is still charged to the
-> socket. It also refuses an skb that would push sk_rmem_alloc past
-> INT_MAX, so the wraparound fix from ae8f160e7eb2 still holds.
->
-> > diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-> > index a904dc3bcad6b..4129e93a9ff0c 100644
-> > --- a/net/netlink/af_netlink.c
-> > +++ b/net/netlink/af_netlink.c
-> > @@ -2318,9 +2318,13 @@ static int netlink_dump(struct sock *sk, bool lo=
-ck_taken)
-> >       if (!skb)
-> >               goto errout_skb;
-> >
-> > +     /* Check the limit before charging the skb: netlink_recvmsg() con=
-tinues
-> > +      * the dump at or below half of sk_rcvbuf, and the skb must be qu=
-eued
-> > +      * then. Keep sk_rmem_alloc at or below INT_MAX.
-> > +      */
->
-> [Severity: Low]
-> Is "the skb must be queued then" guaranteed? netlink_recvmsg() checks its
-> gate without any lock that keeps senders out:
->
-> netlink_recvmsg() {
->     ...
->         if (READ_ONCE(nlk->cb_running) &&
->             atomic_read(&sk->sk_rmem_alloc) <=3D sk->sk_rcvbuf / 2) {
->                 ret =3D netlink_dump(sk, false);
->     ...
-> }
->
-> netlink_dump() then takes nl_cb_mutex and calls alloc_skb(GFP_KERNEL).
-> Both can sleep before the skb is charged. Several things can happen in
-> that window:
->
->   - netlink_broadcast_deliver() fills the socket up to rcvbuf, or puts
->     an skb of any truesize into an empty socket.
->   - A rejected broadcast briefly over-charges before its atomic_sub().
->   - setsockopt(SO_RCVBUF) shrinks rcvbuf.
->   - A second reader's dump skb gets queued first.
->
-> Any of these can make rmem - skb->truesize >=3D rcvbuf true after the gat=
-e
-> passed. netlink_recvmsg() then sets sk_err while the dump keeps running.
-> A later read seems to resume the dump, so this looks transient. The same
-> races also existed before this patch.
->
-> Could the comment and the commit message ("so the skb is then always
-> queued") be softened to say this only holds when nothing else charges
-> the socket concurrently?
->
-> Separately, the plain read of sk->sk_rcvbuf in that gate races with the
-> WRITE_ONCE() in sock_setsockopt(). That part is pre-existing.
->
-> >       rcvbuf =3D READ_ONCE(sk->sk_rcvbuf);
-> >       rmem =3D atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
-> > -     if (rmem !=3D skb->truesize && rmem >=3D rcvbuf) {
-> > +     if (rmem - skb->truesize >=3D rcvbuf || rmem > INT_MAX) {
->
-> [Severity: High]
-> Can the dump still get stuck when the stale charge alone is at least
-> sk_rcvbuf?
->
-> The commit message says this fixes "A dump that starts while something
-> else is still charged to a socket with a small receive buffer fails with
-> ENOBUFS and stays running". This check only covers a stale charge that is
-> below sk_rcvbuf.
->
-> netlink_broadcast_deliver() accepts a notification of any truesize into
-> a socket with nothing charged, through rmem =3D=3D skb->truesize. The
-> selftest in the next patch uses SO_RCVBUF 2048, which gives sk_rcvbuf
-> 4096. With a buffer that small, one rtnetlink or genetlink notification
-> can have truesize >=3D sk_rcvbuf.
->
-> do_one_broadcast() gives the first listener the original skb through
-> p->skb2 =3D skb_get(p->skb). After the reader dequeues it, the charge sta=
-ys
-> on the socket until netlink_broadcast_filtered() calls consume_skb(skb).
-> This is the preempted-sender state from the commit message. The
-> broadcaster can also sleep in skb_clone() for later listeners.
->
-> The reader then sends a dump request:
->
-> __netlink_dump_start()
->     WRITE_ONCE(nlk->cb_running, true);
->     netlink_dump()
->         rmem - skb->truesize >=3D rcvbuf -> -ENOBUFS
->     return ret;   /* cb_running is still true */
->
-> The ack goes through netlink_rcv_skb()->netlink_ack()->netlink_unicast()
-> ->netlink_attachskb(). There rmem =3D stale + ack truesize, which is abov=
-e
-> rcvbuf and not equal to the ack truesize, so the ack is dropped.
-> netlink_overrun() then sets sk_err, or does nothing if NETLINK_NO_ENOBUFS
-> is set.
->
-> When the broadcaster later drops its reference, sock_rfree() only
-> uncharges. It does not wake the reader or call netlink_dump().
->
-> netlink_recvmsg() resumes a dump only after skb_recv_datagram() returns
-> an skb, and the queue is empty. So:
->
->   - the next recvmsg() returns sk_err;
->   - the one after that blocks;
->   - every later dump request gets -EBUSY from __netlink_dump_start(),
->     until some unrelated message arrives.
->
-> Would it be more robust to never fail the first netlink_dump() call from
-> __netlink_dump_start() because of rcvbuf? Another option is to clear
-> cb_running, or arrange a resume, when that call fails.
->
-> [Severity: Low]
-> This isn't a bug, but the dump_extack test in
-> tools/testing/selftests/net/netlink-dumps.c still describes the old
-> behaviour:
->
-> dump_extack() {
->     ...
->                 /* Once we fill the buffer we'll see one ENOBUFS followed
->                  * by a number of EBUSYs. Then the last recv() will final=
-ly
->                  * trigger and complete the dump.
->                  */
->                 if (ret =3D=3D FOUND_ERR && (ea.err =3D=3D ENOBUFS || ea.=
-err =3D=3D EBUSY))
->                         continue;
->     ...
-> }
->
-> With this check, the bad RTM_GETNEIGH dumps keep queueing DONE+extack
-> skbs as long as the charge before each one is below sk_rcvbuf. So
-> sk_rmem_alloc ends up in [rcvbuf, rcvbuf + truesize).
->
-> The ENOBUFS ack for the next dump is then refused in netlink_attachskb(),
-> and netlink_overrun() sets NETLINK_S_CONGESTED. Because of that bit, the
-> later EBUSY acks are dropped as well. The ENOBUFS/EBUSY branch above can
-> no longer be reached.
->
-> Should the comment and the branch be updated, perhaps to check the new
-> behaviour instead? The next patch in the series only adds a new test and
-> leaves dump_extack unchanged.
->
-> [Severity: Medium]
-> This isn't a bug introduced by this patch, but the same trigger can also
-> stall a dump after it has started. netlink_recvmsg() is the only place
-> that continues a running dump:
->
-> netlink_recvmsg() {
->     ...
->         skb_free_datagram(sk, skb);
->
->         if (READ_ONCE(nlk->cb_running) &&
->             atomic_read(&sk->sk_rmem_alloc) <=3D sk->sk_rcvbuf / 2) {
->                 ret =3D netlink_dump(sk, false);
->     ...
-> }
->
-> The sk_rmem_alloc value read there still includes the charge of a
-> notification that was dequeued but is held through skb_get() in
-> do_one_broadcast(). That charge stays until consume_skb(skb) in
-> netlink_broadcast_filtered().
->
-> Suppose that notification's truesize is between rcvbuf/2 and rcvbuf:
->
->   1. The dump starts normally under the new check.
->   2. The reader consumes the first dump skb.
->   3. The gate sees the stale charge above rcvbuf/2 and does not
->      continue the dump.
->   4. The next recvmsg() blocks on an empty queue.
->   5. netlink_skb_destructor()->sock_rfree() later uncharges, but neither
->      wakes the reader nor calls netlink_dump().
->
-> A dump that needs several skbs, such as a scan dump, then stalls until
-> some unrelated message arrives. Could this be handled together with the
-> start-of-dump case? The gate and the destructor are not changed here, and
-> they behaved the same way before ae8f160e7eb2.
->
-> >               atomic_sub(skb->truesize, &sk->sk_rmem_alloc);
-> >               goto errout_skb;
-> >       }
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20261027-netlink-dump-livelock-v2-0-c4bb05352a33%40gmail.com
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
