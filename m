@@ -1,57 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793330972;
-	b=5slrV3TQE5evUhfGM0FISPQt/mHtf0qdohqHfldeCiXUwQkaOLpbUOXpRh++RxVd7nPJ
-	 UL2+V3OqSVYKCP+BkHkyBKGMQ0IXNfgVBWeB9aSxncWQt9AGF3+InY867OxpMwiHeBao6
-	 HPfbGfSRLyPBIJqbbksu6WSsJwVTZ93YKOzT0p/uuTaZ6ALkUv7rKkYLxUaVqN/5+Aieq
-	 Y/sidXe1ZdIJXrsEBfdAix4NFLz3Z8XXW3t/YIxdT8Pvzda+9oEFipN92kIyEvZ2RvJaj
-	 xyIJKVsukYvhVUOPaOniXeLeWzR3HVyf29D3u32fFh5hRaONFTurAg/8hM/NIxM1pDg==
+	t=1793330982;
+	b=Wme7JLxmKqa519RAwuIjLVyLPujUczV2MbHi0eKvsHrUVSAjwr5VuecjQYjzPALmKt4V
+	 ADtpVnTy4x6YYAehIP++OKesNyEX7UTtH1j3K3Pw+MRigVd4LS2i7dN5x1FB7CB3z7ce1
+	 mOJZzT5lISylfgItpwKSYhsYJTSuxLg/Io1ASBnVKy6gLsqGLO070BOiSdt8PvU1eowA6
+	 v3DRyjR1HUZ0Qc5BPvB+e+VAPwiqNfe5K29SZLai1I9wlGxMzegrfeWrg+FJIWQwFJvpT
+	 FCw9+2Z5BhA/Pc22MjHTg41VrRX2iOMRuCCnkkHW9ZXJlFlbIY+hSfO1PZKo08blJ8w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793330972;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793330982;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:Auto-Submitted:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
 	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=LoBprTxw4mQdZUhPnDo9BPooOc6Yepc8Y59Vv7nzi7DeT6O+haMqTCwdBMg8CIchXr0I
-	 rAxfCDYb+rjHGJcBcXAw2PqBNbmnZN61a90TCTsH4R263l/SDyCMAfYzsYmNPcxtvnyUG
-	 0CwddYBObR5ospqYmn15IyBqJ4XgUJ9WQGZKg4bbPBkW7fT8oPqQONIg8+x3/bMvvZHuo
-	 ngQtANVJ6EuYym2qqbHxBycNI07ZSClEDA9hpLx0dLOQpys7IxN0zya9WOjpvAWb2Ojyu
-	 ymIpBkh8KHo+XnuZ2Hu0+/wkUmyHGLUqOdTXvp+HjNCPvEEoPaxt9mi+Tb4ocxk4jDA==
+	b=bmm23ncerky5gmfp8Yu8ywVTzgXle91nrI6gF0mAulOrv81kQPAiMikIOikaFJbVfdCX
+	 VUvbckEuBGOuBjFXThBfBVAE6ulf9uxEL/pS1ItqWIkZjaf3DyzAnwSxWsryivIrchLHX
+	 llWH+hsZdpjnx6xB6pG/kKdPwf9jo+bvDKjZcB5kFV5PDsbUHbxx4lTkFTeL7sU7g6E7o
+	 p5rSIaID1hWdegsx/0Q1wSauUhLki1lUpJXsCcucygRh239a5Y/Vj6R9Pk+NmW/5G7IS0
+	 yokU3wx9uwNTKl7NuCRmGPh4xu3LEmA6uMUt/0ROdHEkMZ9bsFvgkYVb5wcbpqTIfcg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KlFS5Jti;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mSSvmtu6;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB30606A31A;
-	Fri, 30 Oct 2026 03:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3541E606A31E;
+	Fri, 30 Oct 2026 03:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KlFS5Jti
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24E51F000C1;
-	Fri, 30 Oct 2026 03:29:30 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mSSvmtu6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05411F00A18;
+	Fri, 30 Oct 2026 03:29:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793330971;
+	s=k20260515; t=1793330981;
 	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KlFS5Jti06khpDFPHe0DnZofB1jL95kEEc5qVPI9IGuAPh/JIw4eFrmGw87lXK3gh
-	 WC1tqn4V846nN90+wpM5hy+dR4QG0n62axIUUx5ThaTAB2a7jbfPwR7VcF/OwsgPAi
-	 Vk7BtT4E0tSmzaKd7EQx8JTBhcJlIO47M75A9If9kOP8ZShAN8R4plNNW4ceSL4kyo
-	 gfb/B7FuO5jIWlJZSJznb4B+/ugyLUn/XIjue+WcmrmV/TdJIrSOAkMArfgF3Id7CA
-	 dURtV7twv41wb++Z8RKcNP36SBfwwX7tyZe+DWIK+9Ya4Xmj6PRI6qE6HdwiJoeZFO
-	 aUiFmKZmH+s6g==
+	b=mSSvmtu6eHVxFg0ZfMRB9mHWisxwTZIQwsXshb2+9Lj0xF3OsXcfmJkHhvFWVWFC7
+	 xU3nrISdxAvry+x7iqYmu+BRrCXqS9bTej7B1BEmmhB3LA79q0XcDTU1lcykfuMUnc
+	 LjbLaE7rQ8zfZ8+67gHIbpMRd7nrVgNl3QhP9R2AiNu1eUdO/XwVojo9ceSWUe1Qsf
+	 O6L9TSEstXcox2aPaKTSR6yizvbJRp24nwmPN/cBwcPqUHl15HA/1qvrIrNOe+5yeq
+	 Ejt41anE0T7SveJ35e/O8xMHR4+gmRuPf9/LcvSMqfjkfaEDErs9fCLLyMiIX9oqDG
+	 ULWwTRVwx4URg==
 From: netdev-bot+sinfo@kernel.org
-To: Hengyu Liang <hengyul@cs.unc.edu>
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org, horms@kernel.org,
- jchapman@katalix.com, tparkin@katalix.com, gnault@redhat.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v2] l2tp: only return sessions of the given tunnel in
- l2tp_session_get()
-Date: Fri, 30 Oct 2026 03:29:30 +0000
-Message-ID: <179333097026.3327.6449566722898594878@kernel.org>
-In-Reply-To: <20261030032617.4065353-1-hengyul@cs.unc.edu>
-References: <20261030032617.4065353-1-hengyul@cs.unc.edu>
+To: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+Cc: Eric Dumazet <edumazet@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Matthieu Baerts <matttbe@kernel.org>,
+ Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Tong Liu <lyutoon@gmail.com>, Qi Tang <tpluszz77@gmail.com>
+Subject: 
+ Re: [PATCH net] tcp: restore IPv6 af_ops on disconnect of a v4-mapped socket
+Date: Fri, 30 Oct 2026 03:29:40 +0000
+Message-ID: <179333098042.3327.6001182207228154005@kernel.org>
+In-Reply-To: <20261030032314.1978575-1-zhiyuzhang999@gmail.com>
+References: <20261030032314.1978575-1-zhiyuzhang999@gmail.com>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
