@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.147.86
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.143.35
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793394057;
-	b=iQgBR2sJvcLs2z7XEv+ppjIqfVTPCiDrF8DO5NgzVv8XdWY5WllA+zGLCXdqaBr+mz7s
-	 +9zEW9wLCr28enAJso0jKO4MGjSzlM/F+S1ezqXsGuzT+010xo8xglQTkZ3yllaKbSls3
-	 hryqARSVmzEkPDXjeWTZRRiUZ3nWwViUSGGlw3XHbnO5d/9Rlntlt56fmnXCZ3U/yCw/0
-	 L6QRfNhGoyCz5or8v2xQX4Zbev0DqwP69MGP/+CUaySzMHV9zV+4QQJmUQQs/sjW9I3Hx
-	 /ZEmrhEOkYjmkEunvnpzjqrnonVl7TnI+AlIzFkGuxB9mCgR9VRUyxctvRTiJeWsmdw==
+	t=1793394062;
+	b=fN6aGDRHBIHKA6qaKFEaGRkkQvMGsT0TGr9AyWw685ZsBgvjB/pFeRhOHifFjwEHAG90
+	 TVJvTY9IJJ0B4yvJSJbcfn2t/dILGnBf3pJTPirc25UG+hmb8MGb/CCt+8kdBpYwGHHnw
+	 JHgM0/o9GA+4LkhGI7zfEXDkOHFK/sDvQKovtMGOvBhVRcbemn/wufNHfPw8k79yG0izw
+	 yMI/urKerYvJVQ4lrYJY7jfKVL1b2In+kKFKHJch+BtV7tEWSDrQ22rTXRPY7Tjo6NVtF
+	 MC0Ei2Z/5D/+/6/XO0nnDEo/Nj2y65FDnctzNqwY79be6GeRgmvOncdI4JkpOsjyPDA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793394057;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793394062;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
 	 Received:Received:Received:Received:From:Date:Subject:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:CC:
@@ -25,72 +25,72 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
-	 X-HPE-SCL:X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=sCfLQxYGHYSOyKVT32b17M8L9KDAFJ1YDxMd0tnvBi0=;
-	b=npWb/spT41Mmuu1Cwv1686znsQu9HpFeeesDfr1eB+RVG5lIJVzMlq1riPWoLxiC5PFo
-	 eVhSAH898rxmwErN4nUdhnvK8gRs7RAh64DWpiaxQLAvALOttvPlhYTz3uR1FGGvoJV30
-	 WEgd8eLMxw9hlVe8knWbZcLq+APv0RuwFi8hR0EAK+d+56Or2pd6Rga7JIczjna3DueTe
-	 VCmZzBtSVDnoIWKQy4B98cevlHRlM62J1TGAwvBiiMlLbcr4h5hNFzl1YVEp/yyV6rwbN
-	 8CpBMUjjlisG/ZR+aj1I76r6LlMlZTkbMFg1OzYY/bvWm2D4CCYtfy9SykJtYUWcaoQ==
+	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:X-HPE-SCL:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=E7ZclzSo0AVT762Pk8buvLV/xHyhlEzYvwBcz8+ywyM=;
+	b=BLDMJCWlaEF18OqSIcgGD8PpOWsDBuik2Bsz9hSNKi+PFD12QuKX/0j29oPcSxEwtzIR
+	 yWmlyM0uLX4lCBRViNxw1HZnm6iX+tLnUZ4x+/p84MTKC1O8RXn9KG+jGVVZ5Ss7AX+NZ
+	 AQgqJ/9sMR07K+GyG55kET1xTHzKu21PEDe9DDU6bMhX1AuFeuhC5nOv48l/NJYVUyPP4
+	 MhAiQNYGRWzOoYvPUstzlwwpPQxAfLgQZjQM8gcq6PxcCcTBucAVIK4LNAAGC821jlG7v
+	 V+N3qsVR3S9LTpec3Mr6brqXtiQVz8GE767I/GOVoLkUJhOO8PxmH5hoXoBkLCdRqZg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=hpe.com;
 	spf=pass smtp.mailfrom=hpe.com;
-	dkim=pass header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=SJx8SL+J;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.147.86
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+	dkim=pass header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=Ke+fKKrx;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.143.35
+Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1AB60A2622;
-	Fri, 30 Oct 2026 21:00:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9E1AB60A2622
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D50E60A2617;
+	Fri, 30 Oct 2026 21:01:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D50E60A2617
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=SJx8SL+J
-Received: from pps.filterd (m0134422.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69UI07AL770946;
-	Fri, 30 Oct 2026 21:00:30 GMT
+	dkim=pass (2048-bit key, unprotected) header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=Ke+fKKrx
+Received: from pps.filterd (m0134424.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69UHvU3d1038028;
+	Fri, 30 Oct 2026 21:00:37 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps0720; bh=sC
-	fLQxYGHYSOyKVT32b17M8L9KDAFJ1YDxMd0tnvBi0=; b=SJx8SL+JMyWKn3ReX2
-	ml1ZwfYMqmpPRvNkHpsnNCWWG7opFNEd4WAq+DD9QRyz6gS7Ee3T1/qpWAJao9OL
-	cZh7tGaLEAuJYgW06rVKGaygsIxFBp4i/DnHPUpbSbBjXC/2YygoKYZo88LNySSS
-	rFyd6gho8Afzz9lJA9hR1eN2UECR4pYunyrWtoGBBmCOzGdKElosOnm6irw2lH6k
-	2JcxYh7ZOwbAdeIlbOCzGrOi1U2GzL5kHnpuH20EAv/hUiliu5AGqqtib4X2PBcG
-	0uM+KX8ZrKAQCo0J56exBG8NbDyED3zC395P+VksqjlcgP7z0hX5dDtOCI7WReAB
-	MOlg==
-Received: from p1lg14878.it.hpe.com (p1lg14878.it.hpe.com [16.230.97.204])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 4hmvmy4xsn-1
+	:message-id:mime-version:references:subject:to; s=pps0720; bh=E7
+	ZclzSo0AVT762Pk8buvLV/xHyhlEzYvwBcz8+ywyM=; b=Ke+fKKrxISwDtHsGSY
+	XPksyuJpAQEufj7/fti9lXHooIha5r707HZAP++saKLSW+1IAP8OS1dnLgKTccIg
+	8um9lMUxIRIsCF9z/Cuuwam0iIEgkHH53YmOIh5jEM5+NAcdSxvZC5h5wbD1BCUl
+	2NLfdCTVrwIJTRYH7E0DWts89O2rP65QAx0Q81JLKkl9k/BlWazYFPcm/DQxvGh8
+	Hu4jLkaPSe9bmk9+dABsMcVMqYhqBLgTyE5r2520OyX8QYy6XsBcvvhcPbsHQHfm
+	uWj0kY9W4fdzMxXtV2hijZEC3+LLhTtOYgN4zB5qlKJh+Iumc+DwwilpKOyYwjRB
+	QWqQ==
+Received: from p1lg14880.it.hpe.com (p1lg14880.it.hpe.com [16.230.97.201])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 4hmx98uj6y-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 30 Oct 2026 21:00:29 +0000 (GMT)
-Received: from p1wg14925.americas.hpqcorp.net (unknown [10.119.18.114])
+	Fri, 30 Oct 2026 21:00:36 +0000 (GMT)
+Received: from p1wg14923.americas.hpqcorp.net (unknown [10.119.18.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by p1lg14878.it.hpe.com (Postfix) with ESMTPS id 39D75D29D;
-	Fri, 30 Oct 2026 21:00:29 +0000 (UTC)
+	by p1lg14880.it.hpe.com (Postfix) with ESMTPS id D1F73800EF1;
+	Fri, 30 Oct 2026 21:00:35 +0000 (UTC)
 Received: from p1wg14927.americas.hpqcorp.net (10.119.18.117) by
- p1wg14925.americas.hpqcorp.net (10.119.18.114) with Microsoft SMTP Server
+ p1wg14923.americas.hpqcorp.net (10.119.18.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Fri, 30 Oct 2026 09:00:14 -1200
+ 15.2.2562.43; Fri, 30 Oct 2026 09:00:35 -1200
 Received: from P1WG14918.americas.hpqcorp.net (16.230.19.121) by
  p1wg14927.americas.hpqcorp.net (10.119.18.117) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Fri, 30 Oct 2026 09:00:14 -1200
-Received: from CO1PR08CU001.outbound.protection.outlook.com (192.58.206.38) by
+ 15.2.2562.43 via Frontend Transport; Fri, 30 Oct 2026 09:00:35 -1200
+Received: from CO1PR08CU001.outbound.protection.outlook.com (192.58.206.35) by
  edge.it.hpe.com (16.230.19.121) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Fri, 30 Oct
- 2026 21:00:13 +0000
+ 2026 21:00:32 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z+ia2IOBr/FFjC2fcByRU/BBU74UTnxakGT6/3o/4kjAk0MUg/LpUe3aGlkh4MTeDwp2OVpt15DW+UDkVjVuv2/4a1KQC+Aer2JmqthJJl3P7+PGTRbCs1NHwLnPmSz67mP8b2JcChBSzbXui5JGXvWjd14EWl+eGx20Hcmj+o4e6ri8e8px2yAq44O1SwC60l9o8jBKLwKrA4hfIfq7mZCkmLU0RKJvnyaFnm7DBNSeNc5E1CSPELfnNDBJ//3LzDwLBF19GkqTwaaDj2Xv9TprXmWUtMZWleQWRhDghEQ/ryENG+F0aWKo2RyqdoRi1x4HlRdc7FQogOJXK804Zw==
+ b=AfbX0vIaGbAWOnatTU6YWkrAxHpXh6MPnkNTfGVbYC6ZRtT7FvId7vWq+4Sg94RS5wpG/8hv5i9MlRfxwRhegjKMObQZXRKWxao7fH6px7sAl1mkMYfPS8A4tS4N7E2P8hpDAx9UxmD+H1phc39d8HWjhuC8KdKjvJjCO4LsSM7V83kE8r0qKUlpxmBC/kdJBQTwdv8DkCOQ65+FQ+xU0ckwEZjxZCmtrxt/NJHgHzNuhcZvHazbzQnneFkXyG4MYV7SXINiMsWtjna1tGL1WrHN9177N41gHop1ewFY8+JoQlmhGpIwZLGYGth/VMP/2wmm7x57HlsOzaSnrr9DAA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sCfLQxYGHYSOyKVT32b17M8L9KDAFJ1YDxMd0tnvBi0=;
- b=Gf+ZmuYLm6eo8bpE3otF+6NJZ6XxoV1rdm3NZ32LBTOBhkKOR4+BARKY9oUuJwH4DWvYC+ApMqTzcfLwX0A1tTRhF1gp6iEV8tZm5H2pO3FN+TkIqFAJyxL6fPm1Q8fbJ68BBF6mmUhVCCTmQ5u4E0CwbpuVfKOZRRFlWG9YjwXNgwWyCBBlzlKFYpolEyRIripS+/5QpkX+CUI/DcvEg/KtFBk9ha40IG0amKp/lcroZkVGHM97B7ByE3FeS/jcWs4fzPiGuimF+grvQtrG9gPmqkuGfb5P1kY4IPyR5BDXk8iiKtbGcPJYmsGbrtNCNB0X3ypicXvXEYc2e+sAxg==
+ bh=E7ZclzSo0AVT762Pk8buvLV/xHyhlEzYvwBcz8+ywyM=;
+ b=fo2Iqe1WqgoTu3J38idc7hbaqcBvxzl/f443hztb3bYpCxmgzf7msYWjJJnb0sVSppayzbJ/PdhqpvWfwBlaD/HwCPk8PJsgyBxpvBewdln8YivgGcug5c5oPkymL5P0zxwy8PiTrUOMRxoXpfx6xkY8Y947aP4d2+3ofYykmZgQgsZgfXg6jDfOdWgygw/0LODKFk3y/CBJAYJmI1Ybhlp3ROwSUkVXhgvzIm+eLTgEFM9r5bBEzCrv3N+kpof8bZy6KrigyGEq+4dn12wEZdEizmPzpZYKDu5LN7yvZvQ/ta0i9D8OJC3bKww29PqD+UqR/DDmBq60KNZ7mY+JbQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
  header.d=hpe.com; arc=none
@@ -100,17 +100,17 @@ Received: from DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:8:225::20)
  by IA4PR84MB951192.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:207:144::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.10; Fri, 30 Oct
- 2026 21:00:11 +0000
+ 2026 21:00:30 +0000
 Received: from DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
  ([fe80::d136:e75e:53c5:73d8]) by DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
  ([fe80::d136:e75e:53c5:73d8%6]) with mapi id 15.21.0569.008; Fri, 30 Oct 2026
- 21:00:11 +0000
+ 21:00:30 +0000
 From: Doug Ledford <doug.ledford@hpe.com>
-Date: Fri, 30 Oct 2026 13:59:02 -0700
-Subject: [PATCH 06/23] net: hpe: sbl: add link state management
+Date: Fri, 30 Oct 2026 13:59:06 -0700
+Subject: [PATCH 10/23] net: hpe: sl: add the module entry points
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261030-cxi-netdev-submission-v1-6-8c2c391cc283@hpe.com>
+Message-Id: <20261030-cxi-netdev-submission-v1-10-8c2c391cc283@hpe.com>
 References: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
 In-Reply-To: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
 To: Slingshot Open Source Team <slingshot-os-team@groups.ext.hpe.com>,
@@ -130,11 +130,11 @@ To: Slingshot Open Source Team <slingshot-os-team@groups.ext.hpe.com>,
         Guenter Roeck <linux@roeck-us.net>
 CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
         <linux-kbuild@vger.kernel.org>, Doug Ledford <doug.ledford@hpe.com>,
-        "Mamila
- Santosh" <santosh-kumar.mamila@hpe.com>
+        "Sandeep
+ Bhoot" <sandeep.bhoot@hpe.com>
 X-Mailer: b4 0.16.0
-X-ClientProxiedBy: BL1PR13CA0351.namprd13.prod.outlook.com
- (2603:10b6:208:2c6::26) To DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
+X-ClientProxiedBy: CH0PR03CA0019.namprd03.prod.outlook.com
+ (2603:10b6:610:b0::24) To DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
  (2603:10b6:8:225::20)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -147,3196 +147,2433 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM4PR84MB3970:EE_|IA4PR84MB951192:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9ca5cfb0-4fd2-4446-0427-08df36c8c8ea
+X-MS-Office365-Filtering-Correlation-Id: 78584528-be9c-4a45-34a7-08df36c8d477
 X-LD-Processed: 105b2061-b669-4b31-92ac-24d304d195dc,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|6133799003|18002099003|22082099003|3023799007|921020|56012099006|5023799004|261021121427099003|261026130827099003|261028144727099003|261026121527099003|261026135527099003|10067099003|261026140227099003|261021133027099003|261022115727099003|261022075727099003|261021130227099003|261022113327099003|261022105027099003|261021123027099003|261021135927099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info: FxupuYTuD5169QbiXF/VbhJpoJmGQOk3rDpLoVfw7eEKgVQEGNVPkSlBzHRs5x3lt3d5jbFLMveBE4BvMcgqGAU6L8dUe7HJFN4actdI3hyfbhGlB+wwX3QqF78OSR6o+A2trI4Qr2uaA67OSS0CRKd/2vFw891Zq1BRT1p09YFni7KW2kMx5ormCIUZQZEqw/RtAX8aKlXdUcx7FuuRxr1cDv52a/B+aFlvrXoJSCSDxZMuilImqzv+xOEL86fxRzSIfV+oLpyPfbftVVv8pWFtBgtMkZ4ZQ0VVDIzEq1VjbAeJjC6jLNiNCOkpdsV1VJ2BxCUrhBtp+qViHnXpvuaBJ6V5fluuaZEY3ZvfcMBLOc3QaXqS3gjS/oV3+Bgs+zcTINud1bITKFoU7EgNCpVsn3W3WAckKw1ZPXPWrbzsAECW9qvjDZb5poMkI2VfnDKAAWNz11xGi8HdewNNfMQKtHziwN6viY63lkd6AZ4cxCxD08xjvUVmBVeNPLK4KGFF3q6sUNZcLxo/xuml0cghMap/PoIbh3rrFGX6RGzSNYb+4lS371AzQLCLu5sOtSSd8xinqKn1YUtNUFfOT+nRFp7s6P5LZIKMehwiMePPNQTFipjV54Kod/8nsTAvTozJsKyCF1YUXH2cTg5c+VJ98Mii6uOitKlbmwZMPsmvOatgYcgWXxgVs6r/tne3BBAzbux8aXbPVQhbyZKSyw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(6133799003)(18002099003)(22082099003)(3023799007)(921020)(56012099006)(5023799004)(261021121427099003)(261026130827099003)(261028144727099003)(261026121527099003)(261026135527099003)(10067099003)(261026140227099003)(261021133027099003)(261022115727099003)(261022075727099003)(261021130227099003)(261022113327099003)(261022105027099003)(261021123027099003)(261021135927099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|18002099003|22082099003|921020|56012099006|261021121427099003|261028144727099003|261026121527099003|10067099003|261026140227099003|261022115727099003|261022075727099003|261022105027099003|261021123027099003|261021135927099003|261009223027099003|261009221227099003;
+X-Microsoft-Antispam-Message-Info: 5YnWuqBebsjZs3DHDwGCt/5fsOqaT0TDTttspFjfQtFJlRj4KsFK+Wf1PiJD91kHIijRgj0Du1YRg8W4QafENV+39LO+XYe0Fvqbq4K0O/AfeqVb1W/BPXwlR/+i1sodZejzJrNE+bP5viwc+W/XZKfThip9gCP45i5uGBYN16AN+eemg6sF7+2zsmVYRXIiM4OtOtbWTArUy3u3HJedGqG2H9dqlRr5u7cTaFg21rV0ljbeFxwxDspEWJlYnF0copzLSHW+BezVHl662b0cfCzTxEerzjKCJVzLWvD/AFNa+uZMFMLNcDMHo2AXpFqvhkwn4++zhLc232bTdJRmR33ipKQjisNcQv6z4V/u7bZveANCUfqOmP02LD+7+0YYQkRcMgXlV+awZ188/l6t5TWgh44fAb6zOfsnQWBKiH9hMYQ3Qn2WTIUnbnAGh0pZ2//2FaCHFyoMsGO1J1TmvOSKO/5FR0WNjbN1cEWSdKGvL2GJRZG4SoxsaxsB6VKogWGpGe8dJO3+rikrxhbN4J4aGhQ65umARTCGML6/bJVWD2yvJ/47bomxEYJg81+9PSMyi5/1f/cBe3gjbzHImyH8jGzqoYT018fq+snCt7GeYMg9OfkyCj13X4/6Qk1DNLheLUoygn32nON/zolumKLdatUnIylfuutKdgNGNNiOUeab7gD+/FYCXvmUPi2umeVzfIuWsatZlKQkIZTtaw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(18002099003)(22082099003)(921020)(56012099006)(261021121427099003)(261028144727099003)(261026121527099003)(10067099003)(261026140227099003)(261022115727099003)(261022075727099003)(261022105027099003)(261021123027099003)(261021135927099003)(261009223027099003)(261009221227099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?K2RNYlJnWTl2MzBmL2hrN0k0K0ttMjZqaGY1Q2JrTnU3WWhKR0dpUlZENmd1?=
- =?utf-8?B?dEpXR2FQMVJLeWRCaW53dnVEczRjdEJQUmFZR2xad2NFZ2JaeUtPa0NXVHhR?=
- =?utf-8?B?SDl1bG5xajVtcDZmRUUrUWpSQ1FPNHdsblcvaTg1Y0U3ODJTMjNBRy9zeCtJ?=
- =?utf-8?B?M1FLOFdQOE5UY004ZkxlcnZnSkdlNUFvVDg1YWpiZUNVU29YYkg4TU03OTZ6?=
- =?utf-8?B?RXNobUFjSGlhaXJYbU5LcU9KVkQyY3hKWU9tRGp5QU82dENsU0RlUjUrb0gy?=
- =?utf-8?B?a1laMmhZa0h1VHU0SlhYWDBRS2ZBNXJJMkJmU3AzQ2l0NXpySkI4RzZMMThY?=
- =?utf-8?B?Ylp2THVBZUZKRmVqQzFDRVBWcXdzKy9ObXBPMk5jOWdIaUhIOWVNVUlZNk5k?=
- =?utf-8?B?b0I2UzF4bG83TjRWbTZmQnRkSWxYb21ZNU1XbHpCNWZPT2FDV0ZXd0VsdHJ2?=
- =?utf-8?B?Yi9uNkkrZFlCVTlrcTZ6cGs4MWpSLzlKNHN5T3RPMmhXQW4yeHNSSm9XZE1z?=
- =?utf-8?B?VFBTNXJMZFFnSUdtcmlYTHBoOHRvbEowc2Y1NW03N3ZjWWV5YjB4WmpOK3dh?=
- =?utf-8?B?WUhLaGxzMElkZzAxeUoxVlBlV3JNdjJ5WEV5VU9TUFplbFFkOVU2RTFENDFU?=
- =?utf-8?B?cVZNZnpLY2w1Q2x6OEdFT0w3TkNWcGFOdEJycGc1dGdwbWJyMlV3YUdkQXcz?=
- =?utf-8?B?Ni9mRlUvdEVYNnJvTWtlMVJ1SVRxSkkwN0ZlMjAxRHRLWlNBZVBWMGhLN2t0?=
- =?utf-8?B?ZXFVQS8zcTVNKzhkMEI4WnFvOCtDZkk2Z0lDR2QyUjJVaDFuSExUR1NHSG5v?=
- =?utf-8?B?WkhWOUFHdWlaRW5rQVJKSWVVOTBvUmtmbEtoSjdQSWg4Umg5aW5zWEgzV2xy?=
- =?utf-8?B?V2txcWpIMitUbTZWZ1ZRVHloczI0NkJ1UGRyMVBWL1podTNxSUFxV0NWUCtL?=
- =?utf-8?B?VDUxL2hLSEx5bFR2ekY5ajc5WUM3T0xrL3ltYVJOU2JGcDdUekp1NkMvdS9Q?=
- =?utf-8?B?UlhKSlpUR3p3QWVqMGNsZnlXS2xxVURkUnNjd1BOWlI1ZURKaVI3cDUrSFpv?=
- =?utf-8?B?c1hjNUNJZXl0UE9ObDd3YmZPQThqbHlsYUxMenNJNHREWXYrZnE4NmNYRzBL?=
- =?utf-8?B?T3lqdENWM2J0RHVVcUFWVWRZeFUwaXVZYThkQjdCd1htRWpxTW5kWHRhQTM0?=
- =?utf-8?B?ZWdSRHZsSjQraXEwUGdTWU9SNEd1TGZSK0JmV1JiT1RyNDQyTldLM2NVVnA0?=
- =?utf-8?B?amlhbVRUek4rSXJiTlh1RkpsQkl3Sm4xNDNEQlR6QXBhRnFQRVhpZHo3aWFw?=
- =?utf-8?B?WUcyc2w0bkpOWkZhak95SGo1ZEpyZ2ltS29KMFdIZ1hxV1kvSUwvVkZjNVVo?=
- =?utf-8?B?elM5c0NrcFdXRTF4UzVJVHZIY0VFRWlHR2VxNEROUTVXMDNUakxUYXJVMnJC?=
- =?utf-8?B?WEdVS3hRRzZxYjJMWmJlb3lIaTkxWnVDMnFvS1F3cENvVXlMVms0TkpwdHhh?=
- =?utf-8?B?cG5ERU5OK0hidEZIQTF1SlN4SU5XdWFPZG1pU2lPWUJ6cDJta3JnanJpNjRR?=
- =?utf-8?B?ZExMWXZNaDRpeWFDdXVVMjMzNERUOEcwTzhhZzRrWFBVdkF3TTdMNlEwZlFy?=
- =?utf-8?B?WXZtTDZGQVVKcVFrTmRlaEllZFJ0THJjVU83bTlkMXFETnJTSjZtelNSUS9J?=
- =?utf-8?B?ZFNDWDEzVkNwejV3Q3E0d3lsK2F5Kzg0dTNZSk5xVW1LSUlsTmY4M21Sa2tv?=
- =?utf-8?B?MlltcGhLN1BDM1RGN1BvZnYyZU1MbVFOWG9Yd2xPQ1hjYlVFTVBnTFNjWEU4?=
- =?utf-8?B?NkJuU3IrZ2N3VW1NWHNFRW9nc3M4UU9RWXEwU3l3QjI0dzJFUDN4QTJnQTYz?=
- =?utf-8?B?b1lNT3BsVUtxYlVYdTZQQUJuQ0p0cmtxSGpuc3NRVE0zZ0NFOHZkVlgzeGdU?=
- =?utf-8?B?T2d0a0lHUWdMVkFHWFoyRkhyb3R1aDN5dDFtSmRXYVpiTjQrL1RRQkVwNFlv?=
- =?utf-8?B?SmpkbEswV05VSWM5aGZ0dDhNMHZXcXJNNjdSQWc4T1pWK3B5ZjV3U29qclQ1?=
- =?utf-8?B?bHY3RUIrSlpjNDFpc096RXhMcDYxTVdLWkdTRUhzdzVqcmZwMVhUd25ML3pX?=
- =?utf-8?B?SGR4ejFuL2VibnZmNndQUzQyM1RVRmNjb1N1OFhvR3BhZjR6WmtEc3pHMnB1?=
- =?utf-8?B?dlpiZmpyN0RHRkZIYmNubnhzVG0yZmIvUlVMVm1zVjQ2U0FLQXBJaVFkbVhJ?=
- =?utf-8?B?T3lDbDdLdGZBZzBOSGpxUVcxK1VldDZIeDZNL2RIZEhEbE1JY0c0dWNwdlU1?=
- =?utf-8?B?T3JFTmVRNWZzWVJkaU4yckFkUjZNUElaUHhQbXZ1ajkyUmRHY2FOZz09?=
-X-Exchange-RoutingPolicyChecked: nPJBW4Zk3koJRCIswfBvOE2SOMSbid1uTfHDw3ixwrX5mR0+e9uK7h5cSjC976DYgAnZlw0Tl8LBz1cXkP2V5dC02KzZbmXmZskasNKp5yMBla98d2hnaa9dsdgxTlfNrBMV4Td4kJvMkMzgIICSooL1vo0IMCjRdbPMG5rTaZpaa4LbcNPMl4tHsP8u16USvLLKTr7gSg4jfs46/ppMk58ZDGeqfsijT5Y2mpV/TtyY7jV9oxtleMu/yWPSDABJIjUvwIFsx4V6JDrcKhmam2RC7CT5V8tEWcpHJKpx7m9uczaRvE0L+JacGiiMQy0wqH9Vq7jTqSatxBEJ2U8+Sw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9ca5cfb0-4fd2-4446-0427-08df36c8c8ea
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?b2d6THAzdWtvdmUrbG8wMWpUN3NtWlFQVkMzV1dPZmJLbTEveXB2YUZuT1RU?=
+ =?utf-8?B?aWJkWXRmeE1zQWozNWhoblpJYVcyczlrS1orTGRrUE1zSVdIcWdvdXBjS1Ax?=
+ =?utf-8?B?YS85YVNFd2NtS004aEIwR3Y5ME9ZL0gweEw4TnkrVFphSzlOTjkzam5LVWtr?=
+ =?utf-8?B?K0xmVHNpRkFoUXZXQnY5Y05KSnRPQVp6UmNZWmFUcXlub1o2VFJQMFJxWUow?=
+ =?utf-8?B?NmhoN1Q1bnM2RkVnbUFyMktDTUpNS0lMZzBCVFJsTDNtcGFGdXRGd1c1MFJD?=
+ =?utf-8?B?eC91WEs1S2YwUXk3WFR3RnJLQ0dJWWEvSGZxcnRYNEdPSy9YR0VGdGZ6QVFZ?=
+ =?utf-8?B?RUdTYTZaSVVJbkowcVdkRXROaU5KdDZyeHlIU2VUVVVwZURLZkVIUVo2d2s2?=
+ =?utf-8?B?Z3dlY3pjZGp0Q0NkVzU2UGtOM1JaTEJuanFCaGQ0clpqMDdvd0J4Nk9KVThZ?=
+ =?utf-8?B?OUV2cStCT09HeVVOWXA5dHd2OFhraUFBdFVCQm9aNlA4aCtFNCtIOTFvaWx4?=
+ =?utf-8?B?YUR3WnZtS2VjNUdGR3cvTEp2RElTNWhHT3RrdWF6RXpqcmwzcVUwU2FCQUhU?=
+ =?utf-8?B?cnVmNUtwQk01cVZFMDFhR2RxaGwyYWdLaEt2VGJrSG5YRkkva2RvWGVydng5?=
+ =?utf-8?B?YlZOYTBXQ1Z3VFB2MWozaHh5aCt0OXp0cDI2c2dqaTZBQXNRRTJKOHBRdzZ4?=
+ =?utf-8?B?UDlyM2RnWVBoMkVYbjVJUkNFSzhhVGQxN3lueHVDcWtxaWJ6U0pva3phOFVV?=
+ =?utf-8?B?cFdUZ3dzZmpCWUNsN2ZidGljWjRFb2t2RHdKVDJWLy9qWkdFNGRJZ0lIR0Vn?=
+ =?utf-8?B?cEJxRmY1QkdJV1E3ZStDdU1jcnpwd1lTeUZ0Y0hoTWJ3Y3ZpL2ZyQlNsMWdM?=
+ =?utf-8?B?MTl6d2ZOSEFHMThzZEt1azc0eCtJOTZOOFBhVjRXVE9rTzhhekpCVi9wellh?=
+ =?utf-8?B?ZzBvTk05NFhTTFpWZXJnMWwyY3M5eVpvSXUyditzZGp1UU9TT25VV0V6V2Jw?=
+ =?utf-8?B?QnU3VHYyUFc4Ym1VV0xiWDhFVWMzMXkweDRPbFJZdTlTM0Z3aHZ5azZsWi9V?=
+ =?utf-8?B?VFdCbjhkNXE4WFg4MTgvSmNtaGFMN3JKdlBuKzhIMWJXNFlWckorYmZpbkRx?=
+ =?utf-8?B?eUxOU3E4TWtaVkZOVjJ6cTVpME02d1pHc1BGVlhWQTM4UktPVWZXMy9lbTJ2?=
+ =?utf-8?B?ZG9jK0xVSzVRaW5remh2WUFDNUV5VFNOVWZmSGlWOUI0cjQ5Nk03VFl5bUEy?=
+ =?utf-8?B?WXp3SHRRWURNWUF1MFVralMrYkV4cHFzYTA2WmQ3UnRJcjZrVzY5RG9JMmhO?=
+ =?utf-8?B?YVBURThxdThoYW9IRDhrYUFhSDE3eFVySEFjd0FHK3I3RG10eWxtM3ZtTXEz?=
+ =?utf-8?B?UmI2aUE3Z2U2SXZGcUswc0RTa3hReUFCZVZtMlc5ZDhGUWIxck1OZjdZWHN2?=
+ =?utf-8?B?SWpQTlpSUkcySlY0UXhQWi9VWG44bnZWbVU2d1lCQTVDc0pEcnlCQXlYTzAz?=
+ =?utf-8?B?aDdlZm5DN0txWmdhT3ZpdU5zdkM4RnJJNU5oVCtXZTFMb0dKVjcwaTdOcEwx?=
+ =?utf-8?B?VmpVVVMvM0NVWWd5WE9aR2VuWGJzRlNRWmRsQTR6T2diOWdIazQ0Mm9Gb04z?=
+ =?utf-8?B?ZGtCbzFCajR3bHk2eXlEVWxQdllXR0l4dXJOOFVRZHU3L2FWZTR3aHZBemJt?=
+ =?utf-8?B?Yi9wdW1DUnBhakhoS1VYQ1p3QXE2dTNUN2gwMTUxd1gvb1JkNlRCclJFM3NJ?=
+ =?utf-8?B?dTNHaTZZSk1HRWY0MFVpYzBJU2U1ZTZPcWJUcnlYM3pmTnhwV01RbVdjc1B2?=
+ =?utf-8?B?Uit1amtWYmJzZklkelJpWEJHQW42ekk0NE9OVkhqMm1oSSs3Q29yZlBTQ1Zh?=
+ =?utf-8?B?cklVWGFWRXJBcDF0c3hKOXgwWkpjb1FRVFVSdlVScEdKOEh0VCtpR1RaeWQy?=
+ =?utf-8?B?a3RTMGM1MnpkN2g3TzNNM2VGNGdlaU1vTk5ub3Fmanhnc3pCUC9uYzE4Z2Yy?=
+ =?utf-8?B?bVRFQXBrVmxMT3ArT3pDcUZXVm1wV0daNHdFa29OdDJhSmxaYTN3aktELzVY?=
+ =?utf-8?B?bGRtUXI3clJucEhCNkdyU2x4TGJPWEVVMmFyV2M3QkhyQjh1WlZFY2htREMw?=
+ =?utf-8?B?WnhDNlhsZG9HL1FjMmlGNGV1TFgrWDNuVTcvdU9id1ZRSmlUQzdLSXFyaUJQ?=
+ =?utf-8?B?UHRXSU5KdmZPN3JiUEtxMGNNbFp3NUs3SjFWT0RmbmdueHNxK0FoNUxlM0py?=
+ =?utf-8?B?U1o3VEZ2ZWJoY3dDY0pRd1ZOWkZFc245TThzeHc4MnJyNWdrRUNPdk9Manpr?=
+ =?utf-8?B?OC9OU3VSYm5vWnJkd2VaaDFRT21WV200VDZhSjBGSE4yQ0xaQUNwUT09?=
+X-Exchange-RoutingPolicyChecked: zMb45MME2yI8s4MR6mU0Uvo/fiyqMPz3oedJ00XEBFpBg1No6Hrd5gEFsiu4Nm6MJqKL+18Raukjnk8sILJQf3g+fTM5ROFvDVQl0SB2ggH5AByoElJv4ngqaOb3XcmLyHHUf8YxJQGQzimZp+USTdGVwIoZ1t5Esqqlz9ibySr6FhOeB5Lf67PItA1Scp1C6ujXNFNCikEwcrj5B/+y31Noe+8g2LeYd/y+NAoO+MQrVfqrX65tBagxQ70nJSk7FAkb05MvPmN4GprLOdn8IQQs9KcvS/qiqG49D/vQ/HPDh9jWTqj+y143/7RWZnMpGM00gZCK5mXLRRoJq7I69g==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 78584528-be9c-4a45-34a7-08df36c8d477
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 21:00:11.0477
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2026 21:00:30.1182
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 105b2061-b669-4b31-92ac-24d304d195dc
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ah27lYLZa6g+KzuxxX7b+Uft96E+EsvoQcd0ysCiWHX3si7eWcN63fdTB1d8EBOB/HyD0h/cXhlTU89JfLSX9A==
+X-MS-Exchange-CrossTenant-UserPrincipalName: K//JbdrmLHMgCDIfuqaz0cXCtgi9H4W4Qk2hgAj4F0vaUpveeHKwh/X0by2jebijtKWTubY4FmxP2PrBhgGPow==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR84MB951192
 X-OriginatorOrg: hpe.com
-X-Proofpoint-ORIG-GUID: dZbtSJlitOyY-R2A9zpvjsMWmNBoNBFP
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfX7NH5OuMcl4uT
- O356aIjvb6yqpOyfvWFxxse9uf42RdGrJKwIREmoAj4ttuVnGYAhJd6Y/3ORmDzIsr+gMTbcksv
- gCas3ZUpKo4kMG0zArwTSczp5NT0eVjatAIW65w8kCKCqRkFyXvcSbI991oBtPLN3VtVPEIro/L
- CKsk3BqasclYXi/psECLYMshWnPvc/YVn/QSUZI3YUodriN+5XVsyo2EcV++rESDvJtsynNR5vk
- Eut15Zszi5LuaIBiUdPS0hSkWr0wQDqQsvG5uWtjYNs5R8QwitP2wju4UqJ/aYwagxa391zUgd2
- TsDXVGV59Z4leShAojapgRi1oiEbTg/iAdLrna057DZbrK/ov01KAf778KY+7FdtJesw/f8GeGO
- VY1rBXcTJ7sU4HJVB0L8nLBgV2Dw92ZCvSIYPiobH+uYQg3mN4sx+cT5z7KvW9ZD29uf4Cq+Qqq
- jRSEjHGmYlUs2p/h4HA==
-X-Authority-Analysis: v=2.4 cv=It6L47/g c=1 sm=1 tr=0 ts=6ae5056d cx=c_pps
- a=UObrlqRbTUrrdMEdGJ+KZA==:117 a=UObrlqRbTUrrdMEdGJ+KZA==:17
+X-Authority-Analysis: v=2.4 cv=QOf91QLL c=1 sm=1 tr=0 ts=6ae50574 cx=c_pps
+ a=A+SOMQ4XYIH4HgQ50p3F5Q==:117 a=A+SOMQ4XYIH4HgQ50p3F5Q==:17
  a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
  a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
  a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=gQcMVamqm3wCPoSYhaRC:22
- a=ModqzXLkJJ0tFyq98apW:22 a=MvuuwTCpAAAA:8 a=QgmGcT5o_GdUoS45VkwA:9
- a=eYjDDw7RqwnV9FQP:21 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: dZbtSJlitOyY-R2A9zpvjsMWmNBoNBFP
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfXxOaZWZV0zdCn
- 40S75VovroSPDplVNO+7H1kxWpC8Ss5+gJ7wAukgjHLln0OIscP9RtW6MEZdO/1aod9NNMD72RS
- goSsyFAtf4bADDbS/C7KjvmlKygfhOk=
+ a=3haJ9R1Aw3gUfsUHDaCR:22 a=MvuuwTCpAAAA:8 a=nSX5DhlMTjCL_WW1bjMA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: JKLx5nuNkasYk-KlNbFaHkkLgVOs2-sU
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfXy2PCR6ClUjUr
+ +ZhKklKgg6Nb2DOtHsuqQB+51XNJSRwQndD181MuTidR24xZl+JyBr4LCoqpk6ijmQKakRkYs5J
+ Hw/rHBHAK0Vb4V1X4RqAmwkYwS3qIP7bILHM68GROny2IjxvvNFTa3ulfdd50TTh37YrB/UEWbs
+ CrR0J2VTj9BZ4bcs0ovbczJSSKBX95zufbMXmNCJhoMz1v8m2KnZGPefJC5aowfEBGfpxor0iaX
+ BBpYHUH0+wafHRoQN3optJrL29LA2uN4zl+1q7uIEzbiZwTiqi3RKxdJZVpENNKI2D1gfWeWAVm
+ gwGTfRf1P+viEALxSosf9OudQuLoBoYF6ykjMG6K0JoD5BTWqDvu7xyDRY5vXNPqSZWyutRmFTt
+ d9sz1Buw5yyGfW47b+2u38xaH6Qk+aAUfcT/1juKIAX9VsZ9VOu21uLcLLXsxiVs4mBG9XIxAQL
+ IF8JeifcVBR0iawWKjw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDA4MyBTYWx0ZWRfX1QVr66zEo6rv
+ FxR2oeTr2viUo3VPGLFGTnJB4n7e4c2dYfx41DuYrC1uCTgSKE9Hs/1XgVfPR66VpS8WW6uVSQy
+ fp4H8dW4guLNNFovHqzncuGhhpLSrP8=
+X-Proofpoint-ORIG-GUID: JKLx5nuNkasYk-KlNbFaHkkLgVOs2-sU
 X-HPE-SCL: -1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-10-30_06,2026-10-21_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0 clxscore=1015
- priorityscore=1501 impostorscore=0 bulkscore=0 suspectscore=0 phishscore=0
+ clxscore=1015 phishscore=0 lowpriorityscore=0 spamscore=0 impostorscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 priorityscore=1501 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610300083
 
-Add the link state machine: bring-up, auto-negotiation and the NIC
-specific link ops.  This ties the PML and SerDes layers together and
-is what the NIC driver calls to take a link up or down.
+Add the module entry points and the logical device, link group, link,
+MAC, LLR, FEC and media objects that make up the SL API used by the
+NIC driver.
 
 checkpatch --strict (100 columns) still reports the following in this
 patch. They need coordination with the internal repositories this code
 is maintained in and will be fixed in V2:
-- WARNING: LONG_LINE (22), LONG_LINE_COMMENT (2)
-- CHECK: BRACES (22), UNNECESSARY_PARENTHESES (8), COMPARISON_TO_NULL
-  (1)
+- WARNING: LONG_LINE_STRING (17), LONG_LINE (6)
+- CHECK: BRACES (2), UNNECESSARY_PARENTHESES (2)
 
-Co-developed-by: Mamila Santosh <santosh-kumar.mamila@hpe.com>
-Signed-off-by: Mamila Santosh <santosh-kumar.mamila@hpe.com>
+Co-developed-by: Sandeep Bhoot <sandeep.bhoot@hpe.com>
+Signed-off-by: Sandeep Bhoot <sandeep.bhoot@hpe.com>
 Signed-off-by: Doug Ledford <doug.ledford@hpe.com>
 ---
- drivers/net/ethernet/hpe/sbl/sbl_link.c        | 1739 ++++++++++++++++++++++++
- drivers/net/ethernet/hpe/sbl/sbl_link_an.c     | 1010 ++++++++++++++
- drivers/net/ethernet/hpe/sbl/sbl_link_an_nic.c |  111 ++
- drivers/net/ethernet/hpe/sbl/sbl_link_nic.c    |  196 +++
- 4 files changed, 3056 insertions(+)
+ drivers/net/ethernet/hpe/sl/sl_fec.c       |  68 ++++
+ drivers/net/ethernet/hpe/sl/sl_ldev.c      | 133 ++++++
+ drivers/net/ethernet/hpe/sl/sl_lgrp.c      | 409 +++++++++++++++++++
+ drivers/net/ethernet/hpe/sl/sl_link.c      | 632 +++++++++++++++++++++++++++++
+ drivers/net/ethernet/hpe/sl/sl_llr.c       | 289 +++++++++++++
+ drivers/net/ethernet/hpe/sl/sl_mac.c       | 220 ++++++++++
+ drivers/net/ethernet/hpe/sl/sl_media.c     | 356 ++++++++++++++++
+ drivers/net/ethernet/hpe/sl/sl_media_nic.c |  23 ++
+ drivers/net/ethernet/hpe/sl/sl_module.c    | 129 ++++++
+ 9 files changed, 2259 insertions(+)
 
-diff --git a/drivers/net/ethernet/hpe/sbl/sbl_link.c b/drivers/net/ethernet/hpe/sbl/sbl_link.c
+diff --git a/drivers/net/ethernet/hpe/sl/sl_fec.c b/drivers/net/ethernet/hpe/sl/sl_fec.c
 new file mode 100644
-index 000000000000..706fa9ba9676
+index 000000000000..af438c9443f7
 --- /dev/null
-+++ b/drivers/net/ethernet/hpe/sbl/sbl_link.c
-@@ -0,0 +1,1739 @@
++++ b/drivers/net/ethernet/hpe/sl/sl_fec.c
+@@ -0,0 +1,68 @@
 +// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2023,2024,2025 Hewlett Packard Enterprise Development LP */
 +
-+/* Copyright 2019-2026 Hewlett Packard Enterprise Development LP */
++#include <linux/module.h>
 +
-+#include <linux/types.h>
-+#include <linux/kernel.h>
-+#include <linux/bitops.h>
-+#include <linux/device.h>
-+#include <linux/delay.h>
++#include <linux/hpe/sl/sl_fec.h>
 +
-+#include <linux/hpe/sbl/sbl.h>
-+#include <linux/hpe/sbl/sbl_an.h>
-+#include <linux/hpe/sbl/sbl_fec.h>
-+#include <linux/hpe/sbl/sbl_kconfig.h>
++#include "sl_log.h"
++#include "sl_link.h"
++#include "sl_ctrl_link_fec.h"
 +
-+#include <linux/hpe/sbl/sbl_pml.h>
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_FEC_LOG_NAME
 +
-+#include "sbl_serdes_map.h"
-+#include "sbl_pml_fn.h"
-+#include "sbl_link.h"
-+#include "sbl_serdes.h"
-+#include "sbl_serdes_fn.h"
-+#include "sbl_internal.h"
-+
-+/* detect the presence of our link partner */
-+static int sbl_base_link_lp_detect(struct sbl_inst *sbl, int port_num)
++int sl_fec_info_get(struct sl_link *link, struct sl_fec_info *fec_info)
 +{
-+	struct sbl_link *link = sbl->link + port_num;
-+	int err = 0;
++	int rtn;
 +
-+	/* already detected - probably from autoneg */
-+	if (link->lp_detected)
-+		return 0;
-+
-+	sbl_link_info_set(sbl, port_num, SBL_LINK_INFO_LP_DET);
-+
-+	/* currently we have only one way to do this */
-+	if (link->blattr.options & SBL_OPT_SERDES_LPD) {
-+		err =  sbl_serdes_lp_detect(sbl, port_num);
-+		if (!err)
-+			link->lp_detected = true;
++	rtn = sl_link_check(link);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "fec info get fail");
++		return rtn;
 +	}
-+
-+	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_LP_DET);
-+
-+	return err;
-+}
-+
-+/* Check/recover SBL FW */
-+static int sbl_base_link_check_fix_fw(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	int serdes;
-+	int err;
-+
-+	for (serdes = 0; serdes < sbl->switch_info->num_serdes; ++serdes) {
-+		err = sbl_validate_serdes_fw_crc(sbl, port_num, serdes);
-+		if (err) {
-+			/* Any lane with corrputed FW will cause all lanes for
-+			 * the port to be reloaded.
-+			 */
-+			goto reload_fw;
-+		}
-+	}
-+	return 0;
-+
-+ reload_fw:
-+	err = sbl_serdes_firmware_flash_safe(sbl, port_num, false);
-+	if (err) {
-+		/* All we can do is report failure here */
-+		sbl_dev_err(sbl->dev, "%d: check/fix: fw flash failed [%d]\n",
-+			    port_num, err);
-+		link->sstate = SBL_SERDES_STATUS_ERROR;
-+	}
-+	return err;
-+}
-+
-+static int sbl_link_get_mode_electrical(struct sbl_inst *sbl, int port_num)
-+{
-+	sbl_dev_dbg(sbl->dev, "bl %d: elec get mode", port_num);
-+
-+	return sbl_link_autoneg(sbl, port_num);
-+}
-+
-+/* For now we will just use the configured speed */
-+static int sbl_link_get_mode_optical(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	sbl_dev_dbg(sbl->dev, "bl %d: optical link - fixing speed to config value (%s)\n",
-+		    port_num, sbl_link_mode_str(link->blattr.link_mode));
-+	link->link_mode = link->blattr.link_mode;
-+
-+	return 0;
-+}
-+
-+/* determine the link mode (speed) */
-+static int sbl_base_link_get_mode(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	int err = 0;
-+
-+	/* determine required mode */
-+	if (link->loopback_mode == SBL_LOOPBACK_MODE_LOCAL) {
-+		/* directly use the mode specified - no media check */
-+		link->link_mode = link->blattr.link_mode;
-+		return 0;
-+	}
-+
-+	switch (link->mattr.media) {
-+
-+	case SBL_LINK_MEDIA_ELECTRICAL:
-+		err = sbl_link_get_mode_electrical(sbl, port_num);
-+		break;
-+
-+	case SBL_LINK_MEDIA_OPTICAL:
-+		err = sbl_link_get_mode_optical(sbl, port_num);
-+		break;
-+
-+	default:
-+		sbl_dev_err(sbl->dev, "bl %d: bad media to determine mode", port_num);
-+		err = -ENOMEDIUM;
-+		break;
-+	}
-+	if (err)
-+		return err;
-+
-+	/* ensure the media supports the required mode */
-+	if (!sbl_media_check_mode_supported(sbl, port_num, link->link_mode)) {
-+		sbl_dev_err(sbl->dev, "bl %d: config mode (%s) not supported by media",
-+			    port_num, sbl_link_mode_str(link->blattr.link_mode));
-+		return -EMEDIUMTYPE;
-+	} else
-+		return 0;
-+}
-+
-+/* return true if get_mode failed because autoneg timed out */
-+static bool sbl_base_link_an_timed_out(struct sbl_inst *sbl, int port_num, int err)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	if (err != -ETIME)
-+		return false;
-+
-+	if (link->mattr.media != SBL_LINK_MEDIA_ELECTRICAL)
-+		return false;
-+
-+	if (link->blattr.pec.an_mode == SBL_AN_MODE_OFF)
-+		return false;
-+
-+	return true;
-+}
-+
-+static int sbl_link_fault_monitor_start(struct sbl_inst *sbl, int port_num)
-+{
-+	int err;
-+	u32 base = SBL_PML_BASE(port_num);
-+	u64 val64;
-+	u64 err_flags;
-+
-+	val64 = sbl_read64(sbl, base | SBL_PML_CFG_LLR_SM_OFFSET);
-+	if (SBL_PML_CFG_LLR_SM_REPLAY_CT_MAX_GET(val64) < SBL_LLR_REPLAY_CT_MAX_UNLIMITED)
-+		err_flags = SBL_PML_FAULT_ERR_FLAGS;
-+	else
-+		err_flags = SBL_PML_REC_FAULT_ERR_FLAGS;
-+
-+	/* make sure we have not already had an error */
-+	if (sbl_pml_err_flgs_test(sbl, port_num, err_flags)) {
-+		sbl_dev_err(sbl->dev, "fm %d: start - errors already present\n",
-+			    port_num);
-+		err = -ENETDOWN;
-+		goto out;
-+	}
-+
-+	sbl_pml_recovery_enable(sbl, port_num);
-+
-+	err = sbl_pml_install_intr_handler(sbl, port_num, err_flags);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "fm %d: intr install failed [%d]\n", port_num, err);
-+		goto out;
-+	}
-+
-+	err = sbl_pml_enable_intr_handler(sbl, port_num, err_flags);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "fm %d: intr enable failed [%d]\n", port_num, err);
-+		goto out_uninstall;
-+		return err;
-+	}
-+
-+	if (sbl_pml_err_flgs_test(sbl, port_num, err_flags)) {
-+		sbl_dev_err(sbl->dev, "fm %d: link down during start\n", port_num);
-+		err = -ENETDOWN;
-+		goto out_disable;
-+	} else {
-+		/* all up and running */
-+		sbl_link_info_set(sbl, port_num, SBL_LINK_INFO_FAULT_MON);
-+	}
-+	return 0;
-+
-+out_disable:
-+	sbl_pml_disable_intr_handler(sbl, port_num, err_flags);
-+out_uninstall:
-+	sbl_pml_remove_intr_handler(sbl, port_num);
-+out:
-+	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_FAULT_MON);
-+
-+	return err;
-+}
-+
-+static int sbl_link_fault_monitor_stop(struct sbl_inst *sbl, int port_num)
-+{
-+	int err;
-+	u32 base = SBL_PML_BASE(port_num);
-+	u64 val64;
-+	u64 err_flags;
-+
-+	val64 = sbl_read64(sbl, base | SBL_PML_CFG_LLR_SM_OFFSET);
-+	if (SBL_PML_CFG_LLR_SM_REPLAY_CT_MAX_GET(val64) < SBL_LLR_REPLAY_CT_MAX_UNLIMITED)
-+		err_flags = SBL_PML_FAULT_ERR_FLAGS;
-+	else
-+		err_flags = SBL_PML_REC_FAULT_ERR_FLAGS;
-+
-+	err = sbl_pml_disable_intr_handler(sbl, port_num, err_flags);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "fm %d: intr disable failed [%d]\n", port_num, err);
-+		return err;
-+	}
-+
-+	err = sbl_pml_remove_intr_handler(sbl, port_num);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "fm %d: intr remove failed [%d]\n", port_num, err);
-+		return err;
-+	}
-+
-+	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_FAULT_MON);
-+	return 0;
-+}
-+
-+static void sbl_base_link_report_err(struct sbl_inst *sbl, char *txt, int port_num, int err)
-+{
-+	switch (err) {
-+	case -ECANCELED:
-+		sbl_dev_dbg(sbl->dev, "bl %d: %s cancelled\n", port_num, txt);
-+		break;
-+	case -ETIMEDOUT:
-+		sbl_dev_dbg(sbl->dev, "bl %d: %s timed out\n", port_num, txt);
-+		break;
-+	default:
-+		sbl_dev_err(sbl->dev, "bl %d: %s failed [%d]\n", port_num, txt, err);
-+	}
-+}
-+
-+/**
-+ * sbl_get_lp_subtype() - Get link partner sub type
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @lp_subtype: Value to get Link partner subtype
-+ *
-+ * This function reads the versions used (cas(v1/v2))
-+ * which refers to link partner sub type. Client driver
-+ * uses this information for later process
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+int sbl_get_lp_subtype(struct sbl_inst *sbl, int port_num, enum sbl_lp_subtype *lp_subtype)
-+{
-+	int              err;
-+	struct sbl_link *link;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
-+
-+	if (lp_subtype == NULL)
++	if (!fec_info) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL fec_info");
 +		return -EINVAL;
++	}
 +
-+	sbl_dev_dbg(sbl->dev, "%d: get lp subtype", port_num);
-+
-+	link = sbl->link + port_num;
-+
-+	*lp_subtype = link->lp_subtype;
-+
-+	return 0;
++	return sl_ctrl_link_fec_info_get(link->ldev_num, link->lgrp_num, link->num, fec_info);
 +}
-+EXPORT_SYMBOL(sbl_get_lp_subtype);
++EXPORT_SYMBOL(sl_fec_info_get);
 +
-+/**
-+ * sbl_base_link_config() - config base link
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @blattr: Pointer to struct sbl_base_link_attr
-+ *
-+ * Set base link config based on attributes provided
-+ *
-+ * Context: Process context, Acquires lock and release link->lock <spin_lock>
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+int sbl_base_link_config(struct sbl_inst *sbl, int port_num, struct sbl_base_link_attr *blattr)
++int sl_fec_tail_get(struct sl_link *link, struct sl_fec_tail *fec_tail)
 +{
-+	struct sbl_link *link;
-+	int err;
++	int rtn;
 +
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
-+
-+	sbl_dev_dbg(sbl->dev, "bl %d: config\n", port_num);
-+
-+	if (!blattr)
++	rtn = sl_link_check(link);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "fec tail get fail");
++		return rtn;
++	}
++	if (!fec_tail) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL fec_tail");
 +		return -EINVAL;
++	}
 +
-+	if (blattr->magic != SBL_LINK_ATTR_MAGIC)
++	return sl_ctrl_link_fec_tail_get(link->ldev_num, link->lgrp_num, link->num, fec_tail);
++}
++EXPORT_SYMBOL(sl_fec_tail_get);
++
++int sl_fec_ber_calc(struct sl_fec_info *fec_info, struct sl_ber *ucw_ber, struct sl_ber *ccw_ber)
++{
++	if (!fec_info) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL fec_info");
 +		return -EINVAL;
-+
-+	link = sbl->link + port_num;
-+
-+	spin_lock(&link->lock);
-+
-+	if (!(link->blstate & (SBL_BASE_LINK_STATUS_DOWN | SBL_BASE_LINK_STATUS_UNCONFIGURED))) {
-+
-+		sbl_dev_err(sbl->dev, "bl %d: wrong state (%s) for config", port_num,
-+			    sbl_link_state_str(link->blstate));
-+		spin_unlock(&link->lock);
-+		return -EUCLEAN;
++	}
++	if (!ucw_ber) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL ucw_ber");
++		return -EINVAL;
++	}
++	if (!ccw_ber) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL ccw_ber");
++		return -EINVAL;
 +	}
 +
-+	memcpy(&link->blattr, blattr, sizeof(struct sbl_base_link_attr));
-+
-+	link->blconfigured = true;
-+
-+	if (link->blattr.loopback_mode == SBL_LOOPBACK_MODE_LOCAL) {
-+		/* we dont need media to go to down */
-+		link->blstate = SBL_BASE_LINK_STATUS_DOWN;
-+	} else if (link->mconfigured) {
-+		/* we need media as well if not loopback */
-+		link->blstate = SBL_BASE_LINK_STATUS_DOWN;
-+	}
-+
-+	spin_unlock(&link->lock);
-+
-+	return 0;
++	return sl_ctrl_link_fec_ber_calc(fec_info, ucw_ber, ccw_ber);
 +}
-+EXPORT_SYMBOL(sbl_base_link_config);
-+
-+/**
-+ * sbl_base_link_start() - Initialize and bring up links
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * This function performs full sequence to bring up serdes link.
-+ * It handles firmware validation, link mode detection, alignment,
-+ * SerDes startup and link integrity checks. This process ensures
-+ * link partner is detected and all lanes are properly initialized
-+ * and active before reporting the link is up
-+ *
-+ * Context: Process, May sleep. Uses mutex_lock_interruptible
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+int sbl_base_link_start(struct sbl_inst *sbl, int port_num)
-+{
-+	int err;
-+	int tmp_err;
-+	u32 base = SBL_PML_BASE(port_num);
-+	u64 cfg_pcs_reg;
-+	u64 sts_pcs_lane_degrade_reg;
-+	struct lane_degrade lanes;
-+	u32 ucw_adj = 100;
-+	u32 ccw_adj = 0;
-+	s32 ucw_in = SBL_LINK_FEC_HPE;
-+	s32 ccw_in = SBL_LINK_FEC_HPE;
-+	struct sbl_link *link;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
-+
-+	sbl_dev_dbg(sbl->dev, "bl %d: start\n", port_num);
-+
-+	link = sbl->link + port_num;
-+
-+	err = mutex_lock_interruptible(&link->busy_mtx);
-+	if (err)
-+		return -ERESTARTSYS;
-+
-+	if (link->blstate == SBL_BASE_LINK_STATUS_UP) {
-+		/* link came up while waiting for the mutex */
-+		mutex_unlock(&link->busy_mtx);
-+		return 0;
-+	}
-+
-+	if (link->blstate != SBL_BASE_LINK_STATUS_DOWN) {
-+
-+		sbl_dev_err(sbl->dev, "bl %d: wrong state (%s) for start", port_num,
-+			    sbl_link_state_str(link->blstate));
-+		mutex_unlock(&link->busy_mtx);
-+		return -EUCLEAN;
-+	}
-+
-+	/* only local loopback is possible without media */
-+	if (link->blattr.loopback_mode != SBL_LOOPBACK_MODE_LOCAL) {
-+		err = sbl_media_validate_config(sbl, port_num);
-+		if (err) {
-+			sbl_dev_err(sbl->dev, "bl %d: config unsuitable for media type", port_num);
-+			mutex_unlock(&link->busy_mtx);
-+			return err;
-+		}
-+	}
-+
-+	link->blstate = SBL_BASE_LINK_STATUS_STARTING;
-+
-+	/* check for loopback mode change */
-+	if (link->blattr.loopback_mode != link->loopback_mode)
-+		link->llr_loop_time = 0;
-+	link->loopback_mode = link->blattr.loopback_mode;
-+
-+	/* setup the timeout for start to complete
-+	 * (autoneg might modify this later)
-+	 */
-+	sbl_link_init_start_timeout(sbl, port_num);
-+
-+	/* clear out any residual pcs state */
-+	sbl_pml_set_defaults(sbl, port_num);
-+
-+	/* reset state */
-+	link->lp_detected = false;
-+
-+	/* validate serdes firmwares are (still) uncorrupted, recover them if
-+	 * needed
-+	 */
-+	err = sbl_base_link_check_fix_fw(sbl, port_num);
-+	if (err) {
-+		sbl_base_link_report_err(sbl, "ensure_healthly", port_num, err);
-+		goto out;
-+	}
-+
-+	/* determine the link mode
-+	 * this may do autoneg for electrical links
-+	 */
-+	err = sbl_base_link_get_mode(sbl, port_num);
-+	if (err) {
-+		if (sbl_base_link_an_timed_out(sbl, port_num, err))
-+			sbl_dev_dbg(sbl->dev, "bl %d: autoneg timeout", port_num);
-+		else
-+			sbl_base_link_report_err(sbl, "get_mode", port_num, err);
-+		goto out;
-+	}
-+
-+	/* start sending alignment markers for lp to tune against */
-+	err = sbl_pml_pcs_am_start(sbl, port_num);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "bl %d: am_start failed [%d]\n", port_num, err);
-+		goto out;
-+	}
-+
-+	/* wait until we detect the link partner */
-+	err = sbl_base_link_lp_detect(sbl, port_num);
-+	if (err) {
-+		sbl_base_link_report_err(sbl, "lpd", port_num, err);
-+		goto out;
-+	}
-+
-+	/* record when we really start to bring up the link */
-+	sbl_link_up_begin(sbl, port_num);
-+
-+	/* start the serdes */
-+	err = sbl_serdes_start(sbl, port_num);
-+	if (err) {
-+		sbl_base_link_report_err(sbl, "serdes_start", port_num, err);
-+		goto out;
-+	}
-+
-+	/* start the pml block (pcs,mac,llr) */
-+	err = sbl_pml_start(sbl, port_num);
-+	if (err) {
-+		sbl_base_link_report_err(sbl, "pml_start", port_num, err);
-+		goto out_serdes;
-+	}
-+
-+	/* clearing fec values before start */
-+	sbl_zero_all_fec_counts(sbl, port_num);
-+
-+	/* setup thresholds and adjustments for fec monitoring */
-+	err = sbl_fec_thresholds_set(sbl, port_num, ucw_in, ccw_in);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "%d: setting fec thresholds failed [%d]",
-+			    port_num, err);
-+		goto out_pcs;
-+	}
-+
-+	err = sbl_fec_adjustments_set(sbl, port_num, ucw_adj, ccw_adj);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "%d: setting fec adjustments failed [%d]",
-+			    port_num, err);
-+		goto out_pcs;
-+	}
-+
-+	/* start fec checking */
-+	err = sbl_fec_up_check(sbl, port_num);
-+	if (err) {
-+		unsigned long flags;
-+
-+		sbl_serdes_invalidate_tuning_params(sbl, port_num);
-+		sbl_dev_info(sbl->dev, "%d: failed start fec check", port_num);
-+
-+		/* SSHOTPLAT-5697 forces a maximum effort tune
-+		 * straight away after FEC up check fails.
-+		 */
-+		sbl_dev_dbg(sbl->dev, "bl %d: forcing a maximum effort tune for next retry", port_num);
-+		spin_lock_irqsave(&link->lock, flags);
-+		link->blattr.options |= SBL_OPT_DFE_ALWAYS_MAX_EFFORT;
-+		spin_unlock_irqrestore(&link->lock, flags);
-+
-+		goto out_pcs;
-+	}
-+
-+	/* start monitoring for link faults */
-+	err = sbl_link_fault_monitor_start(sbl, port_num);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "bl %d: link fault detect start failed [%d]\n", port_num, err);
-+		goto out_pcs;
-+	}
-+
-+	/* final check the link is still up and all lanes remain active */
-+	if (!sbl_pml_pcs_up(sbl, port_num)) {
-+		sbl_dev_err(sbl->dev, "bl %d: link failed during startup\n", port_num);
-+		err = -ENETDOWN;
-+		goto out_fm;
-+	}
-+
-+	cfg_pcs_reg = sbl_read64(sbl, base | SBL_PML_CFG_PCS_OFFSET);
-+	if (SBL_PML_CFG_PCS_ENABLE_AUTO_LANE_DEGRADE_GET(cfg_pcs_reg)) {
-+
-+		sts_pcs_lane_degrade_reg = sbl_read64(sbl, base | SBL_PML_STS_PCS_LANE_DEGRADE_OFFSET);
-+		lanes.tx = SBL_PML_STS_PCS_LANE_DEGRADE_LP_PLS_AVAILABLE_GET(sts_pcs_lane_degrade_reg);
-+		lanes.rx = SBL_PML_STS_PCS_LANE_DEGRADE_RX_PLS_AVAILABLE_GET(sts_pcs_lane_degrade_reg);
-+
-+		if (lanes.tx != SBL_LINK_ALL_LANES || lanes.rx != SBL_LINK_ALL_LANES) {
-+			sbl_dev_err(sbl->dev, "bl %d: lane failed during startup - TX: 0x%llx - RX: 0x%llx",
-+				    port_num, lanes.tx, lanes.rx);
-+			err = -ENETDOWN;
-+			goto out_fm;
-+		}
-+	}
-+
-+	/* success ! */
-+	sbl_link_up_record_timespec(sbl, port_num);
-+	sbl_link_start_record_timespec(sbl, port_num);
-+
-+	link->blstate = SBL_BASE_LINK_STATUS_UP;
-+	link->blerr = 0;
-+
-+	sbl_dev_dbg(sbl->dev, "starting timer port_num:%d ", port_num);
-+	sbl_fec_monitor_start(sbl, port_num);
-+	mutex_unlock(&link->busy_mtx);
-+
-+	return 0;
-+
-+	/* failed */
-+out_fm:
-+	sbl_link_fault_monitor_stop(sbl, port_num);
-+out_pcs:
-+	if (!sbl_debug_option(sbl, port_num, SBL_DEBUG_INHIBIT_CLEANUP))
-+		sbl_pml_link_down(sbl, port_num);
-+out_serdes:
-+	if (!sbl_debug_option(sbl, port_num, SBL_DEBUG_INHIBIT_CLEANUP))
-+		sbl_serdes_stop(sbl, port_num);
-+out:
-+	if (sbl_debug_option(sbl, port_num, SBL_DEBUG_INHIBIT_CLEANUP) ||
-+	    sbl_debug_option(sbl, port_num, SBL_DEBUG_INHIBIT_RELOAD_FW))
-+		link->reload_serdes_fw = false;
-+	else if (sbl_debug_option(sbl, port_num, SBL_DEBUG_FORCE_RELOAD_FW))
-+		link->reload_serdes_fw = true;
-+
-+	if (link->reload_serdes_fw) {
-+		sbl_dev_info(sbl->dev, "bl %d: reloading serdes fw\n", port_num);
-+		tmp_err = sbl_serdes_firmware_flash_safe(sbl, port_num, true);
-+		if (tmp_err) {
-+			/* All we can do is report failure here */
-+			sbl_dev_err(sbl->dev, "bl %d: fw flash failed [%d]\n",
-+				    port_num, tmp_err);
-+			link->sstate = SBL_SERDES_STATUS_ERROR;
-+		} else
-+			link->sstate = SBL_SERDES_STATUS_DOWN;
-+		link->serr = tmp_err;
-+		link->reload_serdes_fw = false;
-+	}
-+	link->blstate = SBL_BASE_LINK_STATUS_ERROR;
-+	link->blerr = err;
-+	mutex_unlock(&link->busy_mtx);
-+
-+	return err;
-+}
-+EXPORT_SYMBOL(sbl_base_link_start);
-+
-+/**
-+ * sbl_ignore_save_tuning_param() - Config ignore save tuning parameters
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @ignore: If set then ignore save tuning
-+ *
-+ * This function performs the Load saved tuning params before tuning
-+ * when 'ignore' is set false from caller.
-+ */
-+void sbl_ignore_save_tuning_param(struct sbl_inst *sbl, int port_num, bool ignore)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&link->lock, flags);
-+	if (ignore)
-+		link->blattr.options &= ~SBL_OPT_USE_SAVED_PARAMS;
-+	else
-+		link->blattr.options |= SBL_OPT_USE_SAVED_PARAMS;
-+	spin_unlock_irqrestore(&link->lock, flags);
-+}
-+EXPORT_SYMBOL(sbl_ignore_save_tuning_param);
-+
-+/**
-+ * sbl_enable_opt_lane_degrade() - Enable opt lane degrade
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @enable: if set then enable OPT LANE DEGRADE
-+ *
-+ * This function performs enable auto lane degrade when
-+ * 'enable' is set from the caller
-+ */
-+void sbl_enable_opt_lane_degrade(struct sbl_inst *sbl, int port_num, bool enable)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&link->lock, flags);
-+	if (enable)
-+		link->blattr.options |= SBL_OPT_LANE_DEGRADE;
-+	else
-+		link->blattr.options &= ~SBL_OPT_LANE_DEGRADE;
-+	spin_unlock_irqrestore(&link->lock, flags);
-+}
-+EXPORT_SYMBOL(sbl_enable_opt_lane_degrade);
-+
-+/**
-+ * sbl_disable_pml_recovery() - Disable PML recovery
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @disable: if set, then disable PML recovery
-+ *
-+ * This function performs disable PML recovery
-+ * when 'disable' is set from the caller
-+ */
-+void sbl_disable_pml_recovery(struct sbl_inst *sbl, int port_num, bool disable)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&link->lock, flags);
-+	if (disable)
-+		link->blattr.options |= SBL_DISABLE_PML_RECOVERY;
-+	else
-+		link->blattr.options &= ~SBL_DISABLE_PML_RECOVERY;
-+	spin_unlock_irqrestore(&link->lock, flags);
-+}
-+EXPORT_SYMBOL(sbl_disable_pml_recovery);
-+
-+/**
-+ * sbl_set_degraded_flag() - Set degraded flag
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * Context: Process context, Acquires lock and releases is_degraded_lock <spin_lock>
-+ */
-+void sbl_set_degraded_flag(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	spin_lock(&link->is_degraded_lock);
-+	link->is_degraded = true;
-+	spin_unlock(&link->is_degraded_lock);
-+}
-+EXPORT_SYMBOL(sbl_set_degraded_flag);
-+
-+/**
-+ * sbl_clear_degraded_flag() - Clear degraded flag
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * Context: Process context, Acquires lock and releases is_degraded_lock <spin_lock>
-+ */
-+void sbl_clear_degraded_flag(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	spin_lock(&link->is_degraded_lock);
-+	link->is_degraded = false;
-+	spin_unlock(&link->is_degraded_lock);
-+}
-+EXPORT_SYMBOL(sbl_clear_degraded_flag);
-+
-+/**
-+ * sbl_get_degraded_flag() - Get degraded flag
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * Context: Process context, Acquires lock and releases is_degraded_lock <spin_lock>
-+ *
-+ * Return: status of degraded flag
-+ */
-+bool sbl_get_degraded_flag(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	bool degraded_flag;
-+
-+	spin_lock(&link->is_degraded_lock);
-+	degraded_flag = link->is_degraded;
-+	spin_unlock(&link->is_degraded_lock);
-+
-+	return degraded_flag;
-+}
-+EXPORT_SYMBOL(sbl_get_degraded_flag);
-+
-+/**
-+ * sbl_base_link_enable_start() - Enable base link start
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * Context: Process context, Acquires lock and releases link->lock <spin_lock>
-+ *
-+ * Return: 0
-+ */
-+int sbl_base_link_enable_start(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	sbl_dev_dbg(sbl->dev, "bl %d: enable start\n", port_num);
-+
-+	spin_lock(&link->lock);
-+	link->start_cancelled = false;
-+	spin_unlock(&link->lock);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(sbl_base_link_enable_start);
-+
-+/**
-+ * sbl_base_link_cancel_start() - Cancel base link start
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * Context: Process context, Acquires lock and releases link->lock <spin_lock>
-+ *
-+ * Return: 0
-+ */
-+int sbl_base_link_cancel_start(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	sbl_dev_dbg(sbl->dev, "bl %d: cancelling start\n", port_num);
-+
-+	spin_lock(&link->lock);
-+	link->start_cancelled = true;
-+	complete_all(&link->an_hw_change);
-+	spin_unlock(&link->lock);
-+	sbl_fec_monitor_stop(sbl, port_num);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(sbl_base_link_cancel_start);
-+
-+bool sbl_base_link_start_cancelled(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	bool cancelled;
-+
-+	spin_lock(&link->lock);
-+	cancelled = link->start_cancelled;
-+	spin_unlock(&link->lock);
-+
-+	return cancelled;
-+}
-+
-+/**
-+ * sbl_base_link_stop() - Stop base link
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * This function cleanly shuts down previously initialized
-+ * SerDes link, link monitoring and stops the PML block.
-+ *
-+ * Context: Process, May sleep. Uses mutex_lock_interruptible
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+int sbl_base_link_stop(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
-+
-+	sbl_dev_dbg(sbl->dev, "bl %d: stop", port_num);
-+
-+	link = sbl->link + port_num;
-+
-+	err = mutex_lock_interruptible(&link->busy_mtx);
-+	if (err)
-+		return -ERESTARTSYS;
-+
-+	sbl_fec_monitor_stop(sbl, port_num);
-+
-+	if (link->blstate == SBL_BASE_LINK_STATUS_DOWN) {
-+		/* link went down while waiting for the mutex */
-+		mutex_unlock(&link->busy_mtx);
-+		return 0;
-+	}
-+
-+	if (link->blstate != SBL_BASE_LINK_STATUS_UP) {
-+		sbl_dev_err(sbl->dev, "bl %d: not up (%s) for stop - ignored", port_num,
-+			    sbl_link_state_str(link->blstate));
-+		mutex_unlock(&link->busy_mtx);
-+		return -EBUSY;
-+	}
-+
-+	/* if keeping serdes up, don't change state to stopping */
-+	if (!sbl_debug_option(sbl, port_num, SBL_DEBUG_KEEP_SERDES_UP))
-+		link->blstate = SBL_BASE_LINK_STATUS_STOPPING;
-+
-+	/* We stop the serdes before stopping the pml to avoid breaking AOC firmware,
-+	 * really we should stop the pml first. This should be harmless provided
-+	 * down detection is off.
-+	 */
-+	err = sbl_link_fault_monitor_stop(sbl, port_num);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "bl %d: link_fault_monitor_stop failed [%d]", port_num, err);
-+		goto out;
-+	}
-+
-+	sbl_pml_recovery_cancel(sbl, port_num);
-+
-+	err = sbl_serdes_stop(sbl, port_num);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "bl %d: serdes_stop failed [%d]", port_num, err);
-+		goto out;
-+	}
-+
-+	err = sbl_pml_link_down(sbl, port_num);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "bl %d: pml_link_down failed [%d]", port_num, err);
-+		goto out;
-+	}
-+
-+out:
-+	spin_lock(&link->lock);
-+	if (err)
-+		link->blstate = SBL_BASE_LINK_STATUS_ERROR;
-+	/* if keep serdes up, don't change state to down */
-+	else if (!sbl_debug_option(sbl, port_num, SBL_DEBUG_KEEP_SERDES_UP))
-+		link->blstate = SBL_BASE_LINK_STATUS_DOWN;
-+	link->blerr = err;
-+	spin_unlock(&link->lock);
-+
-+	mutex_unlock(&link->busy_mtx);
-+
-+	sbl_dev_dbg(sbl->dev, "bl %d: stop done", port_num);
-+
-+	return link->blerr;
-+}
-+EXPORT_SYMBOL(sbl_base_link_stop);
-+
-+/**
-+ * sbl_base_link_reset() - Reset base link
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * This function resets the base link by disabling
-+ * pml interrupt handlers, resets serdes and PML block.
-+ *
-+ * Context: Process, May sleep. Uses mutex_lock_interruptible
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+int sbl_base_link_reset(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
-+
-+	sbl_dev_dbg(sbl->dev, "bl %d: reset\n", port_num);
-+
-+	link = sbl->link + port_num;
-+
-+	err = mutex_lock_interruptible(&link->busy_mtx);
-+	if (err)
-+		return -ERESTARTSYS;
-+
-+	sbl_fec_monitor_stop(sbl, port_num);
-+
-+	link->blstate = SBL_BASE_LINK_STATUS_RESETTING;
-+
-+	/* disable and remove any pml intr handlers */
-+	if (link->intr_err_flgs) {
-+		sbl_pml_disable_intr_handler(sbl, port_num, link->intr_err_flgs);
-+		sbl_pml_remove_intr_handler(sbl, port_num);
-+		link->intr_err_flgs = 0;
-+	}
-+
-+	sbl_pml_recovery_cancel(sbl, port_num);
-+
-+	err = sbl_serdes_reset(sbl, port_num);
-+	if (err)
-+		sbl_dev_err(sbl->dev, "bl %d: reset: serdes_reset failed [%d]", port_num, err);
-+
-+	err = sbl_pml_link_down(sbl, port_num);
-+	if (err)
-+		sbl_dev_warn(sbl->dev, "bl %d: reset: pcs_link_down failed [%d]", port_num, err);
-+
-+	link->blstate = SBL_BASE_LINK_STATUS_UNCONFIGURED;
-+	link->blerr = 0;
-+	link->blconfigured = false;
-+	link->pcs_config = false;
-+	link->llr_loop_time = 0;
-+	link->start_cancelled = false;
-+	WRITE_ONCE(link->link_info, 0);
-+	link->lp_subtype = SBL_LP_SUBTYPE_INVALID;
-+	/* dont reset media attribute */
-+
-+	/* reset hw */
-+	sbl_pml_set_defaults(sbl, port_num);
-+
-+	sbl_pml_err_flgs_clear_all(sbl, port_num);
-+
-+	mutex_unlock(&link->busy_mtx);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(sbl_base_link_reset);
-+
-+/**
-+ * sbl_base_link_try_start_fail_cleanup() - Clean up resources
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * Try to clear any error states that are non-fatal so we can directly
-+ * attempt another start up.
-+ *
-+ * Context: Process, May sleep. Uses mutex_lock_interruptible
-+ */
-+void sbl_base_link_try_start_fail_cleanup(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return;
-+
-+	sbl_dev_dbg(sbl->dev, "bl %d: try start fail cleanup\n", port_num);
-+
-+	link = sbl->link + port_num;
-+
-+	err = mutex_lock_interruptible(&link->busy_mtx);
-+	if (err)
-+		return;
-+
-+	/* disable and remove any pml intr handlers */
-+	if (link->intr_err_flgs) {
-+		sbl_pml_disable_intr_handler(sbl, port_num, link->intr_err_flgs);
-+		sbl_pml_remove_intr_handler(sbl, port_num);
-+		link->intr_err_flgs = 0;
-+	}
-+
-+	/* when debugging we can leave the hw in its current state */
-+	if (sbl_debug_option(sbl, port_num, SBL_DEBUG_INHIBIT_CLEANUP)) {
-+		sbl_dev_warn(sbl->dev, "%d: hw cleanup inhibited\n", port_num);
-+		mutex_unlock(&link->busy_mtx);
-+		return;
-+	}
-+
-+	/* clean up the serdes state
-+	 * We have to do this before resetting the PML or the optical transceivers can
-+	 * fail.
-+	 */
-+	switch (link->sstate) {
-+	case SBL_SERDES_STATUS_RUNNING:
-+		sbl_serdes_stop(sbl, port_num);
-+		break;
-+	case SBL_SERDES_STATUS_AUTONEG:
-+		sbl_an_serdes_stop(sbl, port_num);
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	/* still not down! */
-+	if (link->sstate != SBL_SERDES_STATUS_DOWN)
-+		sbl_serdes_reset(sbl, port_num);
-+
-+	/* some errors we can clean up and move to down so
-+	 * we can try to come up again directly
-+	 */
-+	if (link->blstate == SBL_BASE_LINK_STATUS_ERROR) {
-+		switch (link->blerr) {
-+
-+		case -EADV:          /* pcs startup saw high serdes error rate */
-+		case -EBADE:         /* bad page exchange during auto neg */
-+		case -ENETDOWN:      /* pcs dropped out after starting */
-+		case -ECHRNG:        /* serdes eye heights went bad during pcs startup */
-+		case -ELNRNG:        /* unable to tune properly */
-+			sbl_serdes_invalidate_all_tuning_params(sbl);
-+			fallthrough;
-+		case -ETIME:
-+		case -ETIMEDOUT:
-+		case -EOVERFLOW:
-+		case -ECANCELED:
-+		case -ENOSR:         /* llr failed to start */
-+
-+			link->blstate = SBL_BASE_LINK_STATUS_DOWN;
-+			link->blerr = 0;
-+			link->pcs_config = false;
-+			link->llr_loop_time = 0;
-+			link->start_cancelled = false;
-+
-+			sbl_pml_link_down(sbl, port_num);
-+			sbl_pml_set_defaults(sbl, port_num);
-+			break;
-+
-+		default:
-+			sbl_dev_err(sbl->dev, "%d: start fail cleanup not clearing err %d\n",
-+				    port_num, link->blerr);
-+			break;
-+		}
-+	}
-+
-+	mutex_unlock(&link->busy_mtx);
-+}
-+EXPORT_SYMBOL(sbl_base_link_try_start_fail_cleanup);
-+
-+/**
-+ * sbl_base_link_get_status() - Get link status
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @blstate: link state
-+ * @blerr: link err
-+ * @sstate: state
-+ * @serr: err
-+ * @media_type: media type
-+ * @link_mode: link mode
-+ *
-+ * This function gets base link status from params
-+ * used
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+int sbl_base_link_get_status(struct sbl_inst *sbl, int port_num,
-+			     int *blstate, int *blerr, int *sstate, int *serr,
-+		int *media_type, int *link_mode)
-+{
-+	struct sbl_link *link;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
-+
-+	link = sbl->link + port_num;
-+
-+	if (blstate)
-+		*blstate = link->blstate;
-+	if (blerr)
-+		*blerr = link->blerr;
-+	if (sstate)
-+		*sstate = link->sstate;
-+	if (serr)
-+		*serr = link->serr;
-+	if (media_type)
-+		*media_type = link->mattr.media;
-+
-+	if (link_mode) {
-+		if (link->sstate == SBL_SERDES_STATUS_RUNNING)
-+			*link_mode = link->link_mode;            /* actual mode */
-+		else
-+			*link_mode = link->blattr.link_mode;     /* target mode */
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(sbl_base_link_get_status);
-+
-+/**
-+ * sbl_base_link_state_str() - Read the state of the pcs and serdes
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @buf: Destination buffer to write the data
-+ * @len: Length of data to write
-+ *
-+ * This function reads the state of pcs and serdes
-+ * and return in the string format
-+ *
-+ * Return: Number of characters written on success
-+ */
-+char *sbl_base_link_state_str(struct sbl_inst *sbl, int port_num, char *buf, int len)
-+{
-+	char pcs_buf[SBL_PCS_STATE_STR_LEN];
-+	u8 not_idle_map;  /* not signalling electrical idle */
-+	u8 good_eyes_map;
-+	u8 active_map;
-+
-+	if (!buf || !len)
-+		return "";
-+
-+	sbl_pml_pcs_state_str(sbl, port_num, pcs_buf, SBL_PCS_STATE_STR_LEN);
-+
-+	if (sbl_port_get_serdes_state_maps(sbl, port_num, &active_map,
-+					   &not_idle_map, &good_eyes_map)) {
-+		/* only active map unavailable */
-+		snprintf(buf, len, "pcs %s, serdes -,-/%x", pcs_buf, active_map);
-+	} else
-+		snprintf(buf, len, "pcs %s, serdes %x,%x/%x", pcs_buf,
-+			 not_idle_map, good_eyes_map, active_map);
-+
-+	return buf;
-+}
-+EXPORT_SYMBOL(sbl_base_link_state_str);
-+
-+/**
-+ * sbl_link_get_ucw_thresh_hpe() - uncorrected codeword thresholds(hpe)
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * This function reads ucw(hpe) based on link mode
-+ *
-+ * Return: Threshold value on success, 0 on failure.
-+ */
-+u64  sbl_link_get_ucw_thresh_hpe(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	/* return a little under 1e-10 for all modes and cable types */
-+	switch (link->link_mode) {
-+	case SBL_LINK_MODE_BS_200G:
-+		return 21;
-+	case SBL_LINK_MODE_BJ_100G:
-+	case SBL_LINK_MODE_CD_100G:
-+		return 11;
-+	case SBL_LINK_MODE_CD_50G:
-+		return 5;
-+	default:
-+		sbl_dev_err(sbl->dev, "%d: cannot determine ucw rate", port_num);
-+		return 0;
-+	}
-+}
-+EXPORT_SYMBOL(sbl_link_get_ucw_thresh_hpe);
-+
-+/**
-+ * sbl_link_get_ucw_thresh_ieee() - uncorrected codeword thresholds(ieee)
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * This function reads ucw(ieee).
-+ *
-+ * Return: Threshold value on success, 0 on failure.
-+ */
-+u64  sbl_link_get_ucw_thresh_ieee(struct sbl_inst *sbl, int port_num)
-+{
-+	/* currently these are the same as the hpe values */
-+	return sbl_link_get_ucw_thresh_hpe(sbl, port_num);
-+}
-+EXPORT_SYMBOL(sbl_link_get_ucw_thresh_ieee);
-+
-+/**
-+ * sbl_link_get_ccw_thresh_hpe() - corrected codeword thresholds
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * This function reads ccw(hpe) based on link mode
-+ *
-+ * Return: Threshold value on success, 0 on failure.
-+ */
-+u64  sbl_link_get_ccw_thresh_hpe(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	/* for electrical links use a threshold of 1.e-5
-+	 * (we consider loopback links to be electrical)
-+	 */
-+	if ((link->mattr.media == SBL_LINK_MEDIA_ELECTRICAL) ||
-+	    (link->loopback_mode == SBL_LOOPBACK_MODE_LOCAL)) {
-+		switch (link->link_mode) {
-+		case SBL_LINK_MODE_BS_200G:
-+			return 21250000;
-+		case SBL_LINK_MODE_BJ_100G:
-+			return 10312500;
-+		case SBL_LINK_MODE_CD_100G:
-+			return 10625000;
-+		case SBL_LINK_MODE_CD_50G:
-+			return 5312500;
-+		default:
-+			sbl_dev_err(sbl->dev, "%d: cannot determine PEC ccw rate", port_num);
-+			return 0;
-+		}
-+
-+	}
-+
-+	/* optical links seem to require a threshold of about 4e-5
-+	 * (otherwise pcal can sometimes take us over the threshold)
-+	 */
-+	if (link->mattr.media == SBL_LINK_MEDIA_OPTICAL) {
-+		switch (link->link_mode) {
-+		case SBL_LINK_MODE_BS_200G:
-+			return 85000000;
-+		case SBL_LINK_MODE_BJ_100G:
-+			return 41250000;
-+		case SBL_LINK_MODE_CD_100G:
-+			return 42500000;
-+		case SBL_LINK_MODE_CD_50G:
-+			return 21250000;
-+		default:
-+			sbl_dev_err(sbl->dev, "%d: cannot determine AOC ccw rate", port_num);
-+			return 0;
-+		}
-+	}
-+
-+	/* dont recognise media */
-+	sbl_dev_err(sbl->dev, "%d: cannot determine ccw rate - unrecognised media", port_num);
-+	return 0;
-+}
-+EXPORT_SYMBOL(sbl_link_get_ccw_thresh_hpe);
-+
-+/**
-+ * sbl_link_get_ccw_thresh_ieee() - Get correcred code words threshold
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * This function reads ccw(ieee) based on link mode
-+ *
-+ * Return: Threshold value on success, 0 on failure.
-+ */
-+u64  sbl_link_get_ccw_thresh_ieee(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	/* ieee thresholds are about 2e-4
-+	 * We dont care about media type
-+	 */
-+	switch (link->link_mode) {
-+	case SBL_LINK_MODE_BS_200G:
-+		return 42500000;
-+	case SBL_LINK_MODE_BJ_100G:
-+	case SBL_LINK_MODE_CD_100G:
-+		return 21250000;
-+	case SBL_LINK_MODE_CD_50G:
-+		return 10625000;
-+	default:
-+		sbl_dev_err(sbl->dev, "%d: cannot determine ccw rate", port_num);
-+		return 0;
-+	}
-+}
-+EXPORT_SYMBOL(sbl_link_get_ccw_thresh_ieee);
-+
-+/**
-+ * sbl_link_get_stp_ccw_thresh_hpe() - Get Corrected code words(hpe) threshold
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * Get Corrected code words(hpe) threshold when STP is used
-+ *
-+ * Return: Threshold value on success, 0 on failure.
-+ */
-+u64  sbl_link_get_stp_ccw_thresh_hpe(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	/* for electrical links use a threshold of 1.e-8
-+	 * (we consider loopback links to be electrical)
-+	 */
-+	if ((link->mattr.media == SBL_LINK_MEDIA_ELECTRICAL) ||
-+	    (link->loopback_mode == SBL_LOOPBACK_MODE_LOCAL)) {
-+		switch (link->link_mode) {
-+		case SBL_LINK_MODE_BS_200G:
-+			return 2125;
-+		case SBL_LINK_MODE_BJ_100G:
-+			return 1031;
-+		case SBL_LINK_MODE_CD_100G:
-+			return 1062;
-+		case SBL_LINK_MODE_CD_50G:
-+			return 531;
-+		default:
-+			sbl_dev_err(sbl->dev, "%d: cannot determine PEC stp ccw rate", port_num);
-+			return 0;
-+		}
-+
-+	}
-+
-+	/* optical links seem to require a threshold of about 4e-8
-+	 * (otherwise pcal can sometimes take us over the threshold)
-+	 */
-+	if (link->mattr.media == SBL_LINK_MEDIA_OPTICAL) {
-+		switch (link->link_mode) {
-+		case SBL_LINK_MODE_BS_200G:
-+			return 8500;
-+		case SBL_LINK_MODE_BJ_100G:
-+			return 4125;
-+		case SBL_LINK_MODE_CD_100G:
-+			return 4250;
-+		case SBL_LINK_MODE_CD_50G:
-+			return 2125;
-+		default:
-+			sbl_dev_err(sbl->dev, "%d: cannot determine AOC stp ccw rate", port_num);
-+			return 0;
-+		}
-+	}
-+
-+	/* dont recognise media */
-+	sbl_dev_err(sbl->dev, "%d: cannot determine stp ccw rate - unrecognised media", port_num);
-+	return 0;
-+}
-+EXPORT_SYMBOL(sbl_link_get_stp_ccw_thresh_hpe);
-+
-+/**
-+ * sbl_link_get_stp_ccw_thresh_ieee() - Get corrected code word(ieee) threshold
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ *
-+ * Get Corrected code words(ieee) threshold when STP is used
-+ *
-+ * Return: Threshold value on success, 0 on failure.
-+ */
-+u64  sbl_link_get_stp_ccw_thresh_ieee(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	/* ieee thresholds are about 2e-8
-+	 * We dont care about media type
-+	 */
-+	switch (link->link_mode) {
-+	case SBL_LINK_MODE_BS_200G:
-+		return 4250;
-+	case SBL_LINK_MODE_BJ_100G:
-+	case SBL_LINK_MODE_CD_100G:
-+		return 2125;
-+	case SBL_LINK_MODE_CD_50G:
-+		return 1062;
-+	default:
-+		sbl_dev_err(sbl->dev, "%d: cannot determine stp ccw rate", port_num);
-+		return 0;
-+	}
-+}
-+EXPORT_SYMBOL(sbl_link_get_stp_ccw_thresh_ieee);
-+
-+/* Link info
-+ * lets you see the current state of the link
-+ *
-+ * Atomic mask updates preserve concurrently changed flags.
-+ */
-+void sbl_link_info_set(struct sbl_inst *sbl, int port_num, u32 flag)
-+{
-+	switch (flag) {
-+
-+	case SBL_LINK_INFO_LP_DET:
-+	case SBL_LINK_INFO_PCS_ANEG:
-+	case SBL_LINK_INFO_PCS_TX_AM:
-+	case SBL_LINK_INFO_PCS_TX_RF:
-+	case SBL_LINK_INFO_PCS_ALIGN_EN:
-+	case SBL_LINK_INFO_PCS_A_WAIT:
-+	case SBL_LINK_INFO_PCS_F_WAIT:
-+	case SBL_LINK_INFO_PCS_UP:
-+	case SBL_LINK_INFO_MAC_OP:
-+	case SBL_LINK_INFO_OS:
-+	case SBL_LINK_INFO_LLR_LOOP:
-+	case SBL_LINK_INFO_LLR_MEASURE:
-+	case SBL_LINK_INFO_LLR_WAIT:
-+	case SBL_LINK_INFO_LLR_RUN:
-+	case SBL_LINK_INFO_LLR_DISABLED:
-+	case SBL_LINK_INFO_FAULT_MON:
-+	case SBL_LINK_INFO_LLR_DETECT:
-+		set_mask_bits(&sbl->link[port_num].link_info, 0, flag);
-+		break;
-+
-+	default:
-+		sbl_dev_dbg(sbl->dev, "bl %d: unrecognised set info flag (%d)\n",
-+			    port_num, flag);
-+		break;
-+	}
-+}
-+
-+void sbl_link_info_clear(struct sbl_inst *sbl, int port_num, u32 flag)
-+{
-+	switch (flag) {
-+
-+	case SBL_LINK_INFO_LP_DET:
-+	case SBL_LINK_INFO_PCS_ANEG:
-+	case SBL_LINK_INFO_PCS_TX_AM:
-+	case SBL_LINK_INFO_PCS_TX_RF:
-+	case SBL_LINK_INFO_PCS_ALIGN_EN:
-+	case SBL_LINK_INFO_PCS_A_WAIT:
-+	case SBL_LINK_INFO_PCS_F_WAIT:
-+	case SBL_LINK_INFO_PCS_UP:
-+	case SBL_LINK_INFO_MAC_OP:
-+	case SBL_LINK_INFO_OS:
-+	case SBL_LINK_INFO_LLR_LOOP:
-+	case SBL_LINK_INFO_LLR_MEASURE:
-+	case SBL_LINK_INFO_LLR_WAIT:
-+	case SBL_LINK_INFO_LLR_RUN:
-+	case SBL_LINK_INFO_LLR_DISABLED:
-+	case SBL_LINK_INFO_FAULT_MON:
-+	case SBL_LINK_INFO_LLR_DETECT:
-+		set_mask_bits(&sbl->link[port_num].link_info, flag, 0);
-+		break;
-+
-+	default:
-+		sbl_dev_dbg(sbl->dev, "bl %d: unrecognised clear info flag (%d)\n",
-+			    port_num, flag);
-+		break;
-+	}
-+}
-+
-+#ifdef CONFIG_SYSFS
-+/**
-+ * sbl_base_link_sysfs_sprint() - Format link info into buffer
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @buf: Destination buffer to write the data
-+ * @size: Size of @buf in bytes, the output is truncated to fit
-+ *
-+ * Context: Process, Acquires lock and release link->lock <spin_lock>
-+ *
-+ * Return: Number of characters written, at most @size - 1
-+ */
-+int sbl_base_link_sysfs_sprint(struct sbl_inst *sbl, int port_num, char *buf, size_t size)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	bool mac_tx_op;
-+	bool mac_rx_op;
-+	u32 mac_ifg_mode;
-+	u32 link_info;
-+	u64 llr_cfg;
-+	u32 llr_mode;
-+	u32 llr_down_behavior;
-+	u64 llr_sts;
-+	int s = 0;
-+
-+	spin_lock(&link->lock);
-+	link_info = READ_ONCE(link->link_info);
-+
-+	s += scnprintf(buf + s, size - s, "base link state: %s",
-+			sbl_link_state_str(link->blstate));
-+	if (link->blstate == SBL_BASE_LINK_STATUS_ERROR)
-+		s += scnprintf(buf + s, size - s, " [%d]", link->blerr);
-+	if (link->blstate == SBL_BASE_LINK_STATUS_STARTING)
-+		s += scnprintf(buf + s, size - s, " (%d/%d)",
-+				sbl_link_start_elapsed(sbl, port_num),
-+				sbl_get_start_timeout(sbl, port_num));
-+	if (link->blstate == SBL_BASE_LINK_STATUS_UP)
-+		s += scnprintf(buf + s, size - s, " (%lld.%.3ld, %lld.%.3ld)",
-+				(long long)link->start_time.tv_sec,
-+				link->start_time.tv_nsec / 1000000,
-+				(long long)link->up_time.tv_sec,
-+				link->up_time.tv_nsec / 1000000);
-+	s += scnprintf(buf + s, size - s, "\n");
-+
-+	if (link_info) {
-+		s += scnprintf(buf + s, size - s, "base link info: ");
-+		if (link_info & SBL_LINK_INFO_PCS_ANEG)
-+			s += scnprintf(buf + s, size - s, "pcs-aneg ");
-+		if (link_info & SBL_LINK_INFO_PCS_TX_AM)
-+			s += scnprintf(buf + s, size - s, "pcs-tx-am ");
-+		if (link_info & SBL_LINK_INFO_PCS_ALIGN_EN)
-+			s += scnprintf(buf + s, size - s, "pcs-a-en ");
-+		if (link_info & SBL_LINK_INFO_PCS_A_WAIT)
-+			s += scnprintf(buf + s, size - s, "pcs-a-wait ");
-+		if (link_info & SBL_LINK_INFO_PCS_TX_RF)
-+			s += scnprintf(buf + s, size - s, "pcs-tx-rf ");
-+		if (link_info & SBL_LINK_INFO_PCS_F_WAIT)
-+			s += scnprintf(buf + s, size - s, "pcs-f-wait ");
-+		if (link_info & SBL_LINK_INFO_PCS_UP)
-+			s += scnprintf(buf + s, size - s, "pcs-up ");
-+		if (link_info & SBL_LINK_INFO_LP_DET)
-+			s += scnprintf(buf + s, size - s, "lp-det ");
-+		if (link_info & SBL_LINK_INFO_MAC_OP)
-+			s += scnprintf(buf + s, size - s, "mac ");
-+		if (link_info & SBL_LINK_INFO_OS)
-+			s += scnprintf(buf + s, size - s, "os ");
-+		if (link_info & SBL_LINK_INFO_LLR_LOOP)
-+			s += scnprintf(buf + s, size - s, "llr-loop-en ");
-+		if (link_info & SBL_LINK_INFO_LLR_DETECT)
-+			s += scnprintf(buf + s, size - s, "llr-detect ");
-+		if (link_info & SBL_LINK_INFO_LLR_MEASURE)
-+			s += scnprintf(buf + s, size - s, "llr-measure ");
-+		if (link_info & SBL_LINK_INFO_LLR_WAIT)
-+			s += scnprintf(buf + s, size - s, "llr-wait ");
-+		if (link_info & SBL_LINK_INFO_LLR_RUN)
-+			s += scnprintf(buf + s, size - s, "llr ");
-+		if (link_info & SBL_LINK_INFO_LLR_DISABLED)
-+			s += scnprintf(buf + s, size - s, "llr-dis ");
-+		if (link_info & SBL_LINK_INFO_FAULT_MON)
-+			s += scnprintf(buf + s, size - s, "fm ");
-+		s += scnprintf(buf + s, size - s, "\n");
-+	}
-+
-+	if (link->blconfigured) {
-+
-+		if (link->blattr.config_target == SBL_BASE_LINK_CONFIG_PEC) {
-+			s += scnprintf(buf + s, size - s, "base link: an: mode %s",
-+					sbl_an_mode_str(link->blattr.pec.an_mode));
-+			if (link_info & SBL_LINK_INFO_PCS_ANEG) {
-+				if (link->blattr.pec.an_mode == SBL_AN_MODE_FIXED)
-+					s += scnprintf(buf + s, size - s, "(%s)",
-+							sbl_link_mode_str(link->blattr.link_mode));
-+				s += scnprintf(buf + s, size - s, ", tries %d, nonce %x, state %s",
-+						link->an_try_count, link->an_nonce,
-+						sbl_an_get_sm_state(sbl, port_num));
-+			}
-+			if ((link->blattr.pec.an_mode != SBL_AN_MODE_OFF) && (link->an_rx_count))
-+				s += scnprintf(buf + s, size - s, ", received %d",
-+					       link->an_rx_count);
-+			if (link->an_100cr4_fixup_applied)
-+				s += scnprintf(buf + s, size - s, ", 100cr4-fixup");
-+			if (link->an_options & AN_OPT_LLR)
-+				s += scnprintf(buf + s, size - s, ", llr");
-+
-+			s += scnprintf(buf + s, size - s, "\n");
-+		}
-+		sbl_pml_mac_hw_status(sbl, port_num, &mac_tx_op, &mac_rx_op, &mac_ifg_mode, NULL);
-+		if (mac_tx_op || mac_rx_op) {
-+			s += scnprintf(buf + s, size - s, "base link: mac: tx %d, rx %d, ifg %s\n",
-+					mac_tx_op, mac_rx_op, sbl_ifg_config_str(link->ifg_config));
-+		}
-+
-+		llr_cfg = sbl_read64(sbl, SBL_PML_BASE(port_num) | SBL_PML_CFG_LLR_OFFSET);
-+		switch (SBL_PML_CFG_LLR_LLR_MODE_GET(llr_cfg)) {
-+		case 0:
-+			llr_mode = SBL_LLR_MODE_OFF;
-+			break;
-+		case 1:
-+			llr_mode = SBL_LLR_MODE_MONITOR;
-+			break;
-+		case 2:
-+			llr_mode = SBL_LLR_MODE_ON;
-+			break;
-+		default:
-+			llr_mode = SBL_LLR_MODE_INVALID;
-+		}
-+		switch (SBL_PML_CFG_LLR_LINK_DOWN_BEHAVIOR_GET(llr_cfg)) {
-+		case 0:
-+			llr_down_behavior = SBL_LLR_LINK_DOWN_DISCARD;
-+			break;
-+		case 1:
-+			llr_down_behavior = SBL_LLR_LINK_DOWN_BLOCK;
-+			break;
-+		case 2:
-+			llr_down_behavior = SBL_LLR_LINK_DOWN_BEST_EFFORT;
-+			break;
-+		default:
-+			llr_down_behavior = SBL_LLR_LINK_DOWN_INVALID;
-+		}
-+		llr_sts = sbl_read64(sbl, SBL_PML_BASE(port_num) |
-+				     SBL_PML_STS_LLR_MAX_USAGE_OFFSET);
-+		s += scnprintf(buf + s, size - s,
-+			       "base link: llr: mode %s, down %s, loop %lld %s %s\n",
-+			       sbl_llr_mode_str(llr_mode),
-+			       sbl_llr_down_behaviour_str(llr_down_behavior),
-+			       link->llr_loop_time,
-+			       SBL_PML_STS_LLR_MAX_USAGE_BUFF_SPC_STARVED_GET(llr_sts) ?
-+			       "buf starved" : "",
-+			       SBL_PML_STS_LLR_MAX_USAGE_SEQ_STARVED_GET(llr_sts) ?
-+			       "seq starved" : "");
-+
-+		if (link->blattr.options & SBL_DISABLE_PML_RECOVERY)
-+			s += scnprintf(buf + s, size - s, "base link: pml rec: disabled\n");
-+		else
-+			s += scnprintf(buf + s, size - s,
-+				       "base link: pml rec: enabled, to %u, rl %u/%u\n",
-+				       link->blattr.pml_recovery.timeout,
-+				       link->blattr.pml_recovery.rl_max_duration,
-+				       link->blattr.pml_recovery.rl_window_size);
-+	}
-+
-+	spin_unlock(&link->lock);
-+
-+	s += sbl_debug_sysfs_sprint(sbl, port_num, buf + s, size - s);
-+
-+	return s;
-+}
-+EXPORT_SYMBOL(sbl_base_link_sysfs_sprint);
-+#endif
-+
-+/**
-+ * sbl_base_link_dump_attr() - Format all link attributes into buffer
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @buf: Destination buffer to write the data
-+ * @size: Size of @buf in bytes, the output is truncated to fit
-+ *
-+ * Return: Number of characters written, at most @size - 1
-+ */
-+int sbl_base_link_dump_attr(struct sbl_inst *sbl, int port_num, char *buf, size_t size)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	struct sbl_base_link_attr *attr = &link->blattr;
-+	int s = 0;
-+
-+	s += scnprintf(buf + s, size - s, "%d: base link attributes:\n", port_num);
-+
-+	if (!link->blconfigured) {
-+		s += scnprintf(buf + s, size - s, "not configured\n");
-+		return s;
-+	}
-+
-+	s += scnprintf(buf + s, size - s, "options 0x%x", attr->options);
-+	if (attr->options) {
-+		s += scnprintf(buf + s, size - s, " -");
-+		if (attr->options & SBL_OPT_FABRIC_LINK)
-+			s += scnprintf(buf + s, size - s, " fabric");
-+		if (attr->options & SBL_OPT_SERDES_LPD)
-+			s += scnprintf(buf + s, size - s, " serdes-lpd");
-+		if (attr->options & SBL_OPT_DFE_SAVE_PARAMS)
-+			s += scnprintf(buf + s, size - s, " save-params");
-+		if (attr->options & SBL_OPT_USE_SAVED_PARAMS)
-+			s += scnprintf(buf + s, size - s, " use-params");
-+		if (attr->options & SBL_OPT_RESET_CLEAR_PARAMS)
-+			s += scnprintf(buf + s, size - s, " reset-clear-params");
-+		if (attr->options & SBL_OPT_ENABLE_PCAL)
-+			s += scnprintf(buf + s, size - s, " pcal");
-+		if (attr->options & SBL_OPT_DFE_ALWAYS_MAX_EFFORT)
-+			s += scnprintf(buf + s, size - s, " max-effort");
-+		if (attr->options & SBL_OPT_DFE_ALWAYS_MED_EFFORT)
-+			s += scnprintf(buf + s, size - s, " med-effort");
-+		if (attr->options & SBL_OPT_DFE_ALWAYS_MIN_EFFORT)
-+			s += scnprintf(buf + s, size - s, " min-effort");
-+		if (attr->options & SBL_OPT_AUTONEG_TIMEOUT_IEEE)
-+			s += scnprintf(buf + s, size - s, " an-timeout-ieee");
-+		if (attr->options & SBL_OPT_AUTONEG_TIMEOUT_SSHOT)
-+			s += scnprintf(buf + s, size - s, " an-timeout-sshot");
-+		if (attr->options & SBL_OPT_AUTONEG_100CR4_FIXUP)
-+			s += scnprintf(buf + s, size - s, " an-100cr4-fixup");
-+		if (attr->options & SBL_OPT_RELOAD_FW_ON_TIMEOUT)
-+			s += scnprintf(buf + s, size - s, " timeout-reload-fw");
-+		if (attr->options & SBL_OPT_ALLOW_MEDIA_BAD_MODE)
-+			s += scnprintf(buf + s, size - s, " allow-media-bad-mode");
-+		if (attr->options & SBL_OPT_ALLOW_MEDIA_BAD_LEN)
-+			s += scnprintf(buf + s, size - s, " allow-media-bad-len");
-+		if (attr->options & SBL_OPT_ENABLE_ETHER_LLR)
-+			s += scnprintf(buf + s, size - s, " enable-ether-llr");
-+		if (attr->options & SBL_OPT_ENABLE_IFG_HPC_WITH_LLR)
-+			s += scnprintf(buf + s, size - s, " enable-ifg-hpc-with-llr");
-+		if (attr->options & SBL_OPT_ENABLE_IFG_CONFIG)
-+			s += scnprintf(buf + s, size - s, " enable-ifg-config");
-+		if (attr->options & SBL_OPT_DISABLE_AN_LLR)
-+			s += scnprintf(buf + s, size - s, " disable-an-llr");
-+		if (attr->options & SBL_OPT_LANE_DEGRADE)
-+			s += scnprintf(buf + s, size - s, " enable-lane-degrade");
-+		if (attr->options & SBL_DISABLE_PML_RECOVERY)
-+			s += scnprintf(buf + s, size - s, " disable-pml-recovery");
-+	}
-+	s += scnprintf(buf + s, size - s, "\n");
-+	s += scnprintf(buf + s, size - s, "start_timeout %d\n", attr->start_timeout);
-+	if (attr->config_target == SBL_BASE_LINK_CONFIG_PEC) {
-+		s += scnprintf(buf + s, size - s, "config_target PEC\n");
-+		s += scnprintf(buf + s, size - s, "an_mode %d (%s)\n",
-+			       attr->pec.an_mode,
-+			       sbl_an_mode_str(attr->pec.an_mode));
-+		s += scnprintf(buf + s, size - s, "an_retry_timeout %d\n",
-+			       attr->pec.an_retry_timeout);
-+		s += scnprintf(buf + s, size - s, "an_max_retry %d\n", attr->pec.an_max_retry);
-+	}
-+	if (attr->config_target == SBL_BASE_LINK_CONFIG_AOC) {
-+		s += scnprintf(buf + s, size - s, "config_target AOC\n");
-+		s += scnprintf(buf + s, size - s, "optical_lock_delay %d\n",
-+			       attr->aoc.optical_lock_delay);
-+		s += scnprintf(buf + s, size - s, "optical_lock_interval %d\n",
-+			       attr->aoc.optical_lock_interval);
-+	}
-+	s += scnprintf(buf + s, size - s, "lpd_timeout %d\n", attr->lpd_timeout);
-+	s += scnprintf(buf + s, size - s, "lpd_poll_interval %d\n", attr->lpd_poll_interval);
-+	s += scnprintf(buf + s, size - s, "link_mode %d (%s)\n",
-+		       attr->link_mode, sbl_link_mode_str(attr->link_mode));
-+	s += scnprintf(buf + s, size - s, "loopback_mode %d (%s)\n",
-+		       attr->loopback_mode,
-+		       sbl_loopback_mode_str(attr->loopback_mode));
-+	s += scnprintf(buf + s, size - s, "link_partner %d\n", attr->link_partner);
-+	s += scnprintf(buf + s, size - s, "tuning_pattern %d\n", attr->tuning_pattern);
-+	s += scnprintf(buf + s, size - s, "precoding %d\n", attr->precoding);
-+	s += scnprintf(buf + s, size - s, "dfe_pre_delay %d\n", attr->dfe_pre_delay);
-+	s += scnprintf(buf + s, size - s, "dfe_timeout %d\n", attr->dfe_timeout);
-+	s += scnprintf(buf + s, size - s, "dfe_poll_interval %d\n", attr->dfe_poll_interval);
-+	s += scnprintf(buf + s, size - s, "pcal_eyecheck_holdoff %d\n",
-+		       attr->pcal_eyecheck_holdoff);
-+	s += scnprintf(buf + s, size - s, "nrz_min_eye_height 0x%x\n", attr->nrz_min_eye_height);
-+	s += scnprintf(buf + s, size - s, "nrz_max_eye_height 0x%x\n", attr->nrz_max_eye_height);
-+	s += scnprintf(buf + s, size - s, "pam4_min_eye_height 0x%x\n", attr->pam4_min_eye_height);
-+	s += scnprintf(buf + s, size - s, "pam4_max_eye_height 0x%x\n", attr->pam4_max_eye_height);
-+	s += scnprintf(buf + s, size - s, "fec_mode %d\n", attr->fec_mode);
-+	s += scnprintf(buf + s, size - s, "enable_autodegrade %d\n", attr->enable_autodegrade);
-+	s += scnprintf(buf + s, size - s, "llr_mode %d (%s)\n",
-+		       attr->llr_mode, sbl_llr_mode_str(attr->llr_mode));
-+	s += scnprintf(buf + s, size - s, "ifg_config %d (%s)\n",
-+		       attr->ifg_config, sbl_ifg_config_str(attr->ifg_config));
-+	s += scnprintf(buf + s, size - s, "pml_recovery.timeout %u\n", attr->pml_recovery.timeout);
-+	s += scnprintf(buf + s, size - s, "pml_recovery.rl_max_duration %u\n",
-+		       attr->pml_recovery.rl_max_duration);
-+	s += scnprintf(buf + s, size - s, "pml_recovery.rl_window_size %u\n",
-+		       attr->pml_recovery.rl_window_size);
-+
-+	return s;
-+}
-+EXPORT_SYMBOL(sbl_base_link_dump_attr);
-diff --git a/drivers/net/ethernet/hpe/sbl/sbl_link_an.c b/drivers/net/ethernet/hpe/sbl/sbl_link_an.c
++EXPORT_SYMBOL(sl_fec_ber_calc);
+diff --git a/drivers/net/ethernet/hpe/sl/sl_ldev.c b/drivers/net/ethernet/hpe/sl/sl_ldev.c
 new file mode 100644
-index 000000000000..aecadbceb593
+index 000000000000..631d215fb7f4
 --- /dev/null
-+++ b/drivers/net/ethernet/hpe/sbl/sbl_link_an.c
-@@ -0,0 +1,1010 @@
++++ b/drivers/net/ethernet/hpe/sl/sl_ldev.c
+@@ -0,0 +1,133 @@
 +// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2023,2024,2025 Hewlett Packard Enterprise Development LP */
 +
-+/* Copyright 2019-2025 Hewlett Packard Enterprise Development LP */
++#include <linux/module.h>
++#include <linux/workqueue.h>
++#include <linux/err.h>
 +
-+#include <linux/types.h>
-+#include <linux/kernel.h>
-+#include <linux/device.h>
-+#include <linux/random.h>
-+#include <linux/delay.h>
++#include <linux/hpe/sl/sl_ldev.h>
 +
-+#include <linux/hpe/sbl/sbl.h>
-+#include <linux/hpe/sbl/sbl_an.h>
++#include "sl_asic.h"
++#include "sl_log.h"
++#include "sl_ldev.h"
++#include "sl_sysfs.h"
++#include "sl_ctrl_ldev.h"
 +
-+#include <linux/hpe/sbl/sbl_pml.h>
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_LDEV_LOG_NAME
 +
-+#include "sbl_pml_fn.h"
-+#include "sbl_link.h"
-+#include "sbl_serdes.h"
-+#include "sbl_constants.h"
-+#include "sbl_serdes_map.h"
-+#include "sbl_internal.h"
++static struct sl_ldev ldevs[SL_ASIC_MAX_LDEVS];
 +
-+/* for debug purposes we can add an extra null message page for fabric links */
-+#define SBL_SEND_EXTRA_FABRIC_NULL_PAGE                 0
-+
-+/* set the reset state */
-+static void sbl_an_pml_an_reset(struct sbl_inst *sbl, int port_num, u64 reset_state)
++void sl_ldev_init(void)
 +{
-+	u32 base = SBL_PML_BASE(port_num);
-+	u64 cfg_pcs_autoneg_reg;
++	u8 ldev_num;
 +
-+	/* reset */
-+	cfg_pcs_autoneg_reg = sbl_read64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_OFFSET);
-+	cfg_pcs_autoneg_reg = SBL_PML_CFG_PCS_AUTONEG_RESET_UPDATE(cfg_pcs_autoneg_reg, reset_state);
-+	sbl_write64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_OFFSET,
-+		    cfg_pcs_autoneg_reg);
-+	sbl_read64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_OFFSET);
-+}
-+
-+static void sbl_an_send_base_page(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	u32 base = SBL_PML_BASE(port_num);
-+
-+	/* first page is the base page (whole reg) */
-+	sbl_write64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_BASE_PAGE_OFFSET, link->an_tx_page[0]);
-+	sbl_read64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_BASE_PAGE_OFFSET);
-+
-+	sbl_dev_dbg(sbl->dev, "an %d: tx base page: 0x%llx", port_num, link->an_tx_page[0]);
-+
-+	/* start autoneg by taking an sm out of reset*/
-+	sbl_an_pml_an_reset(sbl, port_num, 0);
-+}
-+
-+static u32 sbl_an_get_nonce(void)
-+{
-+	u16 buf;
-+
-+	while (1) {
-+		get_random_bytes(&buf, 2);
-+		buf &= 0x1f;
-+		if (buf)
-+			return buf;
++	for (ldev_num = 0; ldev_num < SL_ASIC_MAX_LDEVS; ++ldev_num) {
++		ldevs[ldev_num].magic = SL_LDEV_MAGIC;
++		ldevs[ldev_num].ver   = SL_LDEV_VER;
++		ldevs[ldev_num].size  = sizeof(struct sl_ldev);
++		ldevs[ldev_num].num   = ldev_num;
 +	}
 +}
 +
-+static bool sbl_an_base_is_complete(struct sbl_inst *sbl, int port_num)
++int sl_ldev_check(struct sl_ldev *ldev)
 +{
-+	u32 base = SBL_PML_BASE(port_num);
-+	u64 sts_autoneg_base_reg;
-+
-+	sts_autoneg_base_reg = sbl_read64(sbl, base | SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_OFFSET);
-+
-+	return SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_COMPLETE_GET(sts_autoneg_base_reg);
-+}
-+
-+static bool sbl_an_base_is_page_recv(struct sbl_inst *sbl, int port_num)
-+{
-+	u32 base = SBL_PML_BASE(port_num);
-+	u64 sts_autoneg_base_reg;
-+	bool val;
-+
-+	sts_autoneg_base_reg = sbl_read64(sbl, base | SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_OFFSET);
-+
-+	val = (SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_LP_ABILITY_GET(sts_autoneg_base_reg)) &&
-+	      (SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_PAGE_RECEIVED_GET(sts_autoneg_base_reg));
-+
-+	return val;
-+}
-+
-+static bool sbl_an_is_base_page(struct sbl_inst *sbl, int port_num)
-+{
-+	u32 base = SBL_PML_BASE(port_num);
-+	u64 sts_autoneg_base_reg;
-+	u64 state;
-+	bool val;
-+
-+	sts_autoneg_base_reg = sbl_read64(sbl, base | SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_OFFSET);
-+
-+	state = SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_STATE_GET(sts_autoneg_base_reg);
-+
-+	val = (state == SBL_PML_AUTONEG_STATE_COMPLETE_ACK) ||
-+	      (state == SBL_PML_AUTONEG_STATE_AN_GOOD_CHECK);
-+
-+	val = val && (SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_PAGE_RECEIVED_GET(sts_autoneg_base_reg)) &&
-+	      (SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_BASE_PAGE_GET(sts_autoneg_base_reg)) &&
-+	      (SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_LP_ABILITY_GET(sts_autoneg_base_reg));
-+
-+	return val;
-+}
-+
-+/* Setup the pages */
-+static int sbl_an_setup_tx_pages(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	sbl_dev_dbg(sbl->dev, "an %d: run setup tx pages", port_num);
-+
-+	/* init to known non-zero value so it's easy to tell used pages from init pages */
-+	memset(link->an_tx_page, 0xAA, sizeof(link->an_tx_page));
-+
-+	/* build the base page */
-+
-+	link->an_tx_page[0] = 0;
-+	link->an_tx_page[0] |= AN_CW_S_802_3;
-+
-+	if (link->blattr.pec.an_mode == SBL_AN_MODE_FIXED) {
-+
-+		switch (link->blattr.link_mode) {
-+
-+		case SBL_LINK_MODE_BS_200G:
-+			link->an_tx_page[0] |= (AN_CW_A_200GBASE_CR4) << AN_CW_A_BASE_BIT;
-+			break;
-+
-+		case SBL_LINK_MODE_BJ_100G:
-+			link->an_tx_page[0] |= (AN_CW_A_100GBASE_CR4) << AN_CW_A_BASE_BIT;
-+			break;
-+
-+		case SBL_LINK_MODE_CD_100G:
-+			link->an_tx_page[0] |= (AN_CW_A_100GBASE_CR2) << AN_CW_A_BASE_BIT;
-+			break;
-+
-+		case SBL_LINK_MODE_CD_50G:
-+			link->an_tx_page[0] |= (AN_CW_A_50GBASE_CR) << AN_CW_A_BASE_BIT;
-+			break;
-+
-+		default:
-+			sbl_dev_err(sbl->dev, "an %d: bad an blattr mode", port_num);
-+			return -EINVAL;
-+		}
-+	} else {
-+		/* all modes we support */
-+		link->an_tx_page[0] |= (AN_CW_A_200GBASE_CR4) << AN_CW_A_BASE_BIT;
-+		link->an_tx_page[0] |= (AN_CW_A_100GBASE_CR4) << AN_CW_A_BASE_BIT;
-+		link->an_tx_page[0] |= (AN_CW_A_100GBASE_CR2) << AN_CW_A_BASE_BIT;
-+		link->an_tx_page[0] |= (AN_CW_A_50GBASE_CR)   << AN_CW_A_BASE_BIT;
++	if (!ldev) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL ldev");
++		return -EINVAL;
 +	}
-+
-+	/* Not sure what to set here - both Arista and Mellanox say zero so for
-+	 * now we will do the same and set nothing
-+	 */
-+
-+	/* TODO: Enhance PAUSE support. Currently only symmetric PAUSE is advertised.
-+	 * Should support: asymmetric PAUSE modes, flow control negotiation per standard,
-+	 * and link partner capability reporting.
-+	 */
-+	link->an_tx_page[0] |= (AN_CW_C_SYMMETRIC) << AN_CW_C_BASE_BIT;
-+
-+	sbl_dev_dbg(sbl->dev, "an %d: bp = 0x%llx", port_num, link->an_tx_page[0]);
-+
-+	/* check for disabled next pages */
-+	if (sbl_debug_option(sbl, port_num, SBL_DEBUG_DISABLE_AN_NEXT_PAGES)) {
-+		sbl_dev_dbg(sbl->dev, "an %d: next pages disabled", port_num);
-+		link->an_tx_count = 1;
-+		return 0;
++	if (IS_ERR(ldev)) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "ldev pointer error");
++		return -EINVAL;
 +	}
-+
-+	/* build HPE OUI next pages */
-+
-+	/* have next page (set in previous page) */
-+	link->an_tx_page[0] |= AN_CW_NP_MASK;
-+
-+	/* OUI message page */
-+	link->an_tx_page[1] = 0ULL;
-+	link->an_tx_page[1] |= AN_NP_MP_MASK;
-+	link->an_tx_page[1] |= AN_NP_CODE_OUI_EXTENDED_MSG;
-+	link->an_tx_page[1] |= AN_NP_OUI_HPE;
-+
-+	sbl_dev_dbg(sbl->dev, "an %d: np mp = 0x%llx", port_num, link->an_tx_page[1]);
-+
-+	/* have next page (set in previous page) */
-+	link->an_tx_page[1] |= AN_CW_NP_MASK;
-+
-+	/* unformatted page with OUI message page */
-+	link->an_tx_page[2] = 0ULL;
-+	link->an_tx_page[2] |= AN_NP_OUI_VER_0_1;
-+	/* LLR options here */
-+	if (link->blattr.llr_mode == SBL_LLR_MODE_AUTO) {
-+		if (!(link->blattr.options & SBL_OPT_DISABLE_AN_LLR)) {
-+			link->an_tx_page[2] |= (AN_OPT_LLR << AN_OPT_BASE_BIT);
-+			if (link->blattr.options & SBL_OPT_ENABLE_ETHER_LLR)
-+				link->an_tx_page[2] |= (AN_OPT_ETHER_LLR << AN_OPT_BASE_BIT);
-+
-+			if (link->blattr.options & SBL_OPT_ENABLE_IFG_HPC_WITH_LLR)
-+				link->an_tx_page[2] |= (AN_OPT_HPC_WITH_LLR << AN_OPT_BASE_BIT);
-+			/* TODO: add IPV4 option */
-+		}
++	if (ldev->magic != SL_LDEV_MAGIC) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad ldev magic");
++		return -EINVAL;
 +	}
-+	sbl_an_version_read(sbl, port_num);
-+
-+	sbl_dev_dbg(sbl->dev, "an %d: np ufp = 0x%llx", port_num, link->an_tx_page[2]);
-+
-+	link->an_tx_count = SBL_AN_MAX_TX_PAGES;
-+
-+	return 0;
-+}
-+
-+static int sbl_an_pml_setup(struct sbl_inst *sbl, int port_num)
-+{
-+	u32 base = SBL_PML_BASE(port_num);
-+	u64 cfg_pcs_autoneg_reg;
-+	u64 cfg_pcs_reg;
-+	u64 cfg_rx_pcs_reg;
-+	u64 val64;
-+
-+	/* disable pcs autoneg
-+	 * as pcs is also disabled this will reset the pcs-serdes CDC logic
-+	 */
-+	cfg_pcs_reg = sbl_read64(sbl, base | SBL_PML_CFG_PCS_OFFSET);
-+	cfg_pcs_reg = SBL_PML_CFG_PCS_ENABLE_AUTO_NEG_UPDATE(cfg_pcs_reg, 0ULL);
-+	sbl_write64(sbl, base | SBL_PML_CFG_PCS_OFFSET, cfg_pcs_reg);
-+	sbl_read64(sbl, base | SBL_PML_CFG_PCS_OFFSET);
-+
-+	/* configure an */
-+	cfg_pcs_autoneg_reg = SBL_PML_CFG_PCS_AUTONEG_RX_LANE_SET(sbl->switch_info->ports[port_num].rx_an_swizzle) |
-+			      SBL_PML_CFG_PCS_AUTONEG_TX_LANE_SET(sbl->switch_info->ports[port_num].tx_an_swizzle) |
-+			      SBL_PML_CFG_PCS_AUTONEG_RESET_SET(1ULL) |       /* start held in reset */
-+			      SBL_PML_CFG_PCS_AUTONEG_RESTART_SET(0ULL) |     /* not used - always zero */
-+			      SBL_PML_CFG_PCS_AUTONEG_NEXT_PAGE_LOADED_SET(0ULL);
-+	sbl_write64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_OFFSET,
-+		    cfg_pcs_autoneg_reg);
-+	sbl_read64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_OFFSET);
-+
-+	/* reset alignment locking */
-+	cfg_rx_pcs_reg = sbl_read64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET);
-+	cfg_rx_pcs_reg = SBL_PML_CFG_RX_PCS_ACTIVE_LANES_UPDATE(cfg_rx_pcs_reg, 0ULL);
-+	cfg_rx_pcs_reg = SBL_PML_CFG_RX_PCS_ENABLE_LOCK_UPDATE(cfg_rx_pcs_reg, 0ULL);
-+	sbl_write64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET, cfg_rx_pcs_reg);
-+	sbl_read64(sbl, base | SBL_PML_CFG_RX_PCS_OFFSET);
-+
-+	/* config an timers */
-+	val64 = SBL_PML_CFG_PCS_AUTONEG_TIMERS_DFLT;
-+	/* disable fault timeout by setting it to its max value  */
-+	val64 = SBL_PML_CFG_PCS_AUTONEG_TIMERS_LINK_FAIL_INHIBIT_TIMER_MAX_UPDATE(val64, 0xffffffffULL);
-+
-+	sbl_write64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_TIMERS_OFFSET, val64);
-+
-+	/* clear err flags */
-+	sbl_pml_err_flgs_clear_all(sbl, port_num);
-+
-+	/* enable autoneg
-+	 * this will take CDC logic out of reset
-+	 */
-+	cfg_pcs_reg = sbl_read64(sbl, base | SBL_PML_CFG_PCS_OFFSET);
-+	cfg_pcs_reg = SBL_PML_CFG_PCS_ENABLE_AUTO_NEG_UPDATE(cfg_pcs_reg, 1ULL);
-+	sbl_write64(sbl, base | SBL_PML_CFG_PCS_OFFSET, cfg_pcs_reg);
-+
-+	/* an reset is still asserted, it will be deasserted after base page is loaded */
-+
-+	sbl_link_info_set(sbl, port_num, SBL_LINK_INFO_PCS_ANEG);
-+
-+	return 0;
-+}
-+
-+/* perform page exchange
-+ *
-+ *   Rosetta has a hw bug whereby some error flags cannot be cleared by the normal method
-+ *   as the an state machine will continually reassert them. (The failed, complete and
-+ *   next page received err flags) so instead we disable intrs for these flags when they
-+ *   are received and reset them in wait prepare.
-+ *
-+ *   For next pages we would like to do:
-+ *
-+ *      wait_prepare()
-+ *      send_next_page()
-+ *      wait_for_completion()
-+ *
-+ *   However this sequence will cause the err flags to be immediately set in the wait
-+ *   prepare and the intr fire.
-+ *
-+ *   The best we can do is
-+ *
-+ *      preempt_disable()
-+ *      send_next_page()
-+ *      wait_prepare()
-+ *      preempt_enable()
-+ *      wait_for_completion()
-+ *
-+ *     But we can still miss intrs
-+ *     There would seem to be nothing we can do about this
-+ *
-+ *    26 Feb 2021 - added SM exchange to work around rosetta interrupt bug
-+ *
-+ */
-+static int sbl_an_exchange(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	u32 base = SBL_PML_BASE(port_num);
-+	unsigned long timeout = msecs_to_jiffies(1000 * link->blattr.pec.an_retry_timeout);
-+	unsigned long remaining_jiffies;
-+	u64 sts_autoneg_base_reg;
-+	int err;
-+
-+	sbl_dev_dbg(sbl->dev, "an %d: exchange start", port_num);
-+
-+	if (sbl_base_link_start_cancelled(sbl, port_num))
-+		return -ECANCELED;
-+	if (sbl_start_timeout(sbl, port_num))
-+		return -ETIMEDOUT;
-+
-+	if (!sbl->is_hw)
-+		return 0;
-+
-+	/* clear any previous pages */
-+	memset(link->an_rx_page, 0, SBL_AN_MAX_RX_PAGES * sizeof(u64));
-+	link->an_rx_count = 0;
-+
-+	/* update the nonce */
-+	link->an_nonce = sbl_an_get_nonce();
-+	link->an_tx_page[0] &= ~AN_CW_T_MASK;
-+	link->an_tx_page[0] |= ((link->an_nonce << AN_CW_T_BASE_BIT) & AN_CW_T_MASK);
-+
-+	/* base page exchange */
-+
-+	err = sbl_an_hw_wait_prepare(sbl, port_num);
-+	if (err)
-+		return err;
-+
-+	sbl_an_send_base_page(sbl, port_num);
-+
-+	remaining_jiffies = wait_for_completion_timeout(&link->an_hw_change, timeout);
-+	if (sbl_base_link_start_cancelled(sbl, port_num))
-+		return -ECANCELED;
-+	if (remaining_jiffies == 0) {
-+		sbl_dev_dbg(sbl->dev, "an %d: base page exchange timeout (nonce %.2x, sm_state %s)",
-+			    port_num, link->an_nonce, sbl_an_get_sm_state(sbl, port_num));
-+		sbl_an_dump_state(sbl, port_num);
-+
-+		/* check we have not missed the err flg */
-+		if (sbl_an_base_is_complete(sbl, port_num) || sbl_an_base_is_page_recv(sbl, port_num))
-+			sbl_dev_err(sbl->dev, "an %d: MISSED A BASE PAGE!!!!", port_num);
-+
-+		return -ETIME;
++	if (ldev->ver != SL_LDEV_VER) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad ldev version");
++		return -EINVAL;
 +	}
-+
-+	/* check it is a base page */
-+	if (!sbl_an_is_base_page(sbl, port_num)) {
-+		sbl_dev_err(sbl->dev, "an %d: missing base page indication", port_num);
-+		sbl_an_dump_state(sbl, port_num);
-+		return -EBADE;
-+	}
-+
-+	/* copy page to return buffer */
-+	sts_autoneg_base_reg = sbl_read64(sbl, base | SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_OFFSET);
-+	link->an_rx_page[0] = SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_LP_BASE_PAGE_GET(sts_autoneg_base_reg);
-+	link->an_rx_count = 1;
-+
-+	/* check if an is complete i.e. no one has more to send */
-+	if (sbl_an_base_is_complete(sbl, port_num))
-+		goto out_success;
-+
-+	/* since not complete, we must have received a page - check this */
-+	if (!sbl_an_base_is_page_recv(sbl, port_num)) {
-+		sbl_dev_err(sbl->dev, "an %d: expected page received indication", port_num);
-+		sbl_an_dump_state(sbl, port_num);
-+		return -EBADE;
-+	}
-+
-+	/* next page exchange */
-+	err = sbl_an_page_exchange(sbl, port_num, remaining_jiffies);
-+
-+	if (err)
-+		return err;
-+
-+out_success:
-+
-+	/* dump the final state on the way out */
-+	sbl_an_dump_state(sbl, port_num);
-+
-+	sbl_dev_dbg(sbl->dev, "an %d: exchange complete", port_num);
-+
-+	return 0;
-+}
-+
-+/* save away the LLR options here */
-+static void sbl_an_save_llr_options(struct sbl_link *link, int x)
-+{
-+	if (link->blattr.llr_mode == SBL_LLR_MODE_AUTO) {
-+		if (!(link->blattr.options & SBL_OPT_DISABLE_AN_LLR)) {
-+			if (link->an_rx_page[x] & (AN_OPT_LLR << AN_OPT_BASE_BIT))
-+				link->an_options |= AN_OPT_LLR;
-+			if (link->an_rx_page[x] & (AN_OPT_ETHER_LLR << AN_OPT_BASE_BIT)) {
-+				if (link->blattr.options & SBL_OPT_ENABLE_ETHER_LLR)
-+					link->an_options |= AN_OPT_ETHER_LLR;
-+			}
-+			if (link->an_rx_page[x] & (AN_OPT_HPC_WITH_LLR << AN_OPT_BASE_BIT)) {
-+				if (link->blattr.options & SBL_OPT_ENABLE_IFG_HPC_WITH_LLR)
-+					link->an_options |= AN_OPT_HPC_WITH_LLR;
-+			}
-+			/* TODO: add IPV4 option */
-+		}
-+	}
-+
-+}
-+
-+static int sbl_an_ability_match(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	u32 fec_ability;
-+	u32 tech_ability;
-+	u32 pause_ability;
-+	u64  last_msg_code = 0;
-+	bool expect_hpe    = false;
-+	int  x             = 0;
-+
-+	sbl_dev_dbg(sbl->dev, "an %d: rx count = %d", port_num, link->an_rx_count);
-+
-+	if (!sbl->is_hw) {
-+		/* Netsim/Z1: No AN happening, so just force the response data to the
-+		 * tx data to ensure capability match
-+		 */
-+		link->an_rx_page[0] = link->an_tx_page[0];
-+	}
-+	/* abilities */
-+	tech_ability = (link->an_tx_page[0] & link->an_rx_page[0] & AN_CW_A_MASK)
-+			>> AN_CW_A_BASE_BIT;
-+	fec_ability = (link->an_tx_page[0] & link->an_rx_page[0] & AN_CW_F_MASK)
-+					>> AN_CW_F_BASE_BIT;
-+	pause_ability = (link->an_tx_page[0] & link->an_rx_page[0] & AN_CW_C_MASK)
-+					>> AN_CW_C_BASE_BIT;
-+	sbl_dev_dbg(sbl->dev, "an %d: tech 0x%x, fec 0x%x, pause %d", port_num,
-+		    tech_ability, fec_ability, pause_ability);
-+
-+	/* FEC mode (we only do RS) */
-+	if (fec_ability & AN_CW_F_25G_RS_REQ) {
-+		/* ignore for now - set in config */
-+	} else if (fec_ability & AN_CW_F_25G_BASER_REQ) {
-+		sbl_dev_warn(sbl->dev, "an %d: cannot do fec mode baser",
-+			     port_num);
-+	} else {
-+		sbl_dev_dbg(sbl->dev, "an %d: no matching fec mode (partner fec 0x%x)",
-+			    port_num, fec_ability);
-+	}
-+
-+	/* TODO pause */
-+
-+	/* link mode (speed) */
-+	if (tech_ability & AN_CW_A_200GBASE_CR4) {
-+		link->link_mode = SBL_LINK_MODE_BS_200G;
-+	} else if (tech_ability & AN_CW_A_100GBASE_CR4) {
-+		link->link_mode = SBL_LINK_MODE_BJ_100G;
-+	} else if (tech_ability & AN_CW_A_100GBASE_CR2) {
-+		link->link_mode = SBL_LINK_MODE_CD_100G;
-+	} else if (tech_ability & AN_CW_A_50GBASE_KR) {
-+		link->link_mode = SBL_LINK_MODE_CD_50G;
-+	} else {
-+		sbl_dev_err(sbl->dev, "an %d: no matching mode (partner ability 0x%x)",
-+			    port_num, tech_ability);
-+		return -ENOENT;
-+	}
-+
-+	/* look at next page(s) */
-+	link->lp_subtype = SBL_LP_SUBTYPE_UNKNOWN;
-+	for (x = 1; x < link->an_rx_count; ++x) {
-+
-+		/* do message page */
-+		if (link->an_rx_page[x] & AN_NP_MP_MASK) {
-+			last_msg_code = link->an_rx_page[x] & AN_NP_MSG_MASK;
-+			sbl_dev_dbg(sbl->dev, "an %d: msg_code = %llu", port_num, last_msg_code);
-+			switch (last_msg_code) {
-+			case AN_NP_CODE_NULL_MSG:
-+			case AN_NP_CODE_OUI_MSG:
-+				/* nothing to do */
-+				break;
-+			case AN_NP_CODE_OUI_EXTENDED_MSG:
-+				switch (link->an_rx_page[x] & AN_NP_OUI_MASK) {
-+				case AN_NP_OUI_HPE:
-+					/* have HPE OUI message - expect an unformatted page next */
-+					expect_hpe = true;
-+					break;
-+				default:
-+					sbl_dev_dbg(sbl->dev, "an %d: unknown OUI = 0x%llX", port_num, (link->an_rx_page[x] & AN_NP_OUI_MASK) >> AN_NP_OUI_BASE_BIT);
-+					expect_hpe = false;
-+					break;
-+				}
-+				break;
-+			default:
-+				sbl_dev_dbg(sbl->dev, "an %d: unknown msg_code = 0x%llX", port_num, last_msg_code);
-+				break;
-+			}
-+			/* go on to next page */
-+			continue;
-+		}
-+
-+		/* do unformatted page */
-+		switch (last_msg_code) {
-+		case AN_NP_CODE_OUI_EXTENDED_MSG:
-+			if (!expect_hpe)
-+				break;
-+
-+			/* got a HPE OUI message - check the unformatted page and set options */
-+			switch (link->an_rx_page[x] & AN_NP_OUI_VER_MASK) {
-+			case AN_NP_OUI_VER_0_1:
-+				sbl_an_save_llr_options(link, x);
-+				/* save away cassini version here */
-+				link->lp_subtype = ((link->an_rx_page[x] >> AN_LP_SUBTYPE_BASE_BIT) & AN_LP_SUBTYPE_MASK);
-+				sbl_dev_dbg(sbl->dev, "an %d: HPE an_options = 0x%X, lp_subtype = %d", port_num, link->an_options, link->lp_subtype);
-+				break;
-+			default:
-+				sbl_dev_dbg(sbl->dev, "an %d: unknown OUI version 0x%llX", port_num, link->an_rx_page[x] & AN_NP_OUI_VER_MASK);
-+				break;
-+			}
-+			expect_hpe = false;
-+			break;
-+		default:
-+			sbl_dev_dbg(sbl->dev, "an %d: unknown ufp = 0x%llX", port_num, link->an_rx_page[x]);
-+			break;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static void sbl_an_update_timeout(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	unsigned int new_timeout = 0;
-+
-+	if (link->blattr.options & SBL_OPT_AUTONEG_TIMEOUT_SSHOT) {
-+		/* use slingshot timeouts - which are longer than the IEEE defaults */
-+		switch (link->link_mode) {
-+		case SBL_LINK_MODE_BS_200G:
-+			new_timeout = SBL_LINK_AUTONEG_TIMEOUT_SSHOT_200;
-+			break;
-+		case SBL_LINK_MODE_BJ_100G:
-+		case SBL_LINK_MODE_CD_100G:
-+			new_timeout = SBL_LINK_AUTONEG_TIMEOUT_SSHOT_100;
-+			break;
-+		case SBL_LINK_MODE_CD_50G:
-+			new_timeout = SBL_LINK_AUTONEG_TIMEOUT_SSHOT_50;
-+			break;
-+		default:
-+			sbl_dev_warn(sbl->dev, "an %d: bad mode in update_timeout",
-+				     port_num);
-+		}
-+	}
-+
-+	if (link->blattr.options & SBL_OPT_AUTONEG_TIMEOUT_IEEE) {
-+		/* use IEEE timeouts */
-+		switch (link->link_mode) {
-+		case SBL_LINK_MODE_BS_200G:
-+			new_timeout = SBL_LINK_AUTONEG_TIMEOUT_IEEE_200;
-+			break;
-+		case SBL_LINK_MODE_BJ_100G:
-+		case SBL_LINK_MODE_CD_100G:
-+			new_timeout = SBL_LINK_AUTONEG_TIMEOUT_IEEE_100;
-+			break;
-+		case SBL_LINK_MODE_CD_50G:
-+			new_timeout = SBL_LINK_AUTONEG_TIMEOUT_IEEE_50;
-+			break;
-+		default:
-+			sbl_dev_warn(sbl->dev, "an %d: bad mode in update_timeout",
-+				     port_num);
-+		}
-+	}
-+
-+	if (new_timeout) {
-+		sbl_dev_dbg(sbl->dev, "an %d: update start timeout to %d ms",
-+			    port_num, new_timeout);
-+		link->an_timeout_active = true;
-+		sbl_link_update_start_timeout(sbl, port_num, new_timeout);
-+	}
-+}
-+
-+/* If there is no common mode between this port and our link partner
-+ * and if the lp advertises 100KR4 and we advertise 100CR4 then add 100CR4
-+ * to the lp's abilities.
-+ *
-+ * This is necessary because recent Mellanox software no longer advertises
-+ * 100CR even though it seems to be able to tune in this mode. Adding 100CR4
-+ * to the lp abilities means that we will resolve 100CR4 and start using this
-+ * mode.
-+ */
-+#define SBL_AN_KR4_BIT (1ULL << (AN_CW_A_BASE_BIT + AN_CW_A_100GBASE_KR4_BIT))
-+#define SBL_AN_CR4_BIT (1ULL << (AN_CW_A_BASE_BIT + AN_CW_A_100GBASE_CR4_BIT))
-+
-+static bool sbl_an_100cr4_fixup(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	/* check no match */
-+	if (link->an_tx_page[0] & link->an_rx_page[0] & AN_CW_A_MASK)
-+		return false;
-+
-+	/* check we want cr4 */
-+	if (!(link->an_tx_page[0] & SBL_AN_CR4_BIT))
-+		return false;
-+
-+	/* check lp wants kr4 */
-+	if (!(link->an_rx_page[0] & SBL_AN_KR4_BIT))
-+		return false;
-+
-+	/* add cr4 to lp abilities */
-+	link->an_rx_page[0] |= SBL_AN_CR4_BIT;
-+
-+	/* fixup applied */
-+	sbl_dev_info(sbl->dev, "an %d: 100cr4 fixup applied", port_num);
-+	return true;
-+}
-+
-+int sbl_link_autoneg(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link;
-+	u32 base = SBL_PML_BASE(port_num);
-+	u32 random;
-+	u64 cfg_pcs_reg;
-+	int err;
-+
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
-+
-+	/* set starting point */
-+	link = sbl->link + port_num;
-+	link->an_options = 0;
-+	link->link_mode  = link->blattr.link_mode;
-+
-+	switch (link->blattr.pec.an_mode) {
-+
-+	case SBL_AN_MODE_OFF:
-+		sbl_dev_dbg(sbl->dev, "an %d: AN off", port_num);
-+		/* nothing more to do here */
-+		return 0;
-+
-+	case SBL_AN_MODE_ON:
-+	case SBL_AN_MODE_FIXED:
-+		/* ok */
-+		break;
-+
-+	default:
-+		sbl_dev_err(sbl->dev, "an %d: invalid AN mode (%s)", port_num,
-+			    sbl_an_mode_str(link->blattr.pec.an_mode));
++	if (ldev->num >= SL_ASIC_MAX_LDEVS) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad ldev num");
 +		return -EINVAL;
 +	}
 +
-+	/* we can never be in loopback mode as the nonce will be the same! */
-+	if (link->blattr.loopback_mode != SBL_LOOPBACK_MODE_OFF) {
-+		sbl_dev_err(sbl->dev, "an %d: cannot autoneg in loopback mode", port_num);
-+		return -ENOTUNIQ;
-+	}
-+
-+	/* pcs must not be enabled and autoneg must be off */
-+	cfg_pcs_reg = sbl_read64(sbl, base | SBL_PML_CFG_PCS_OFFSET);
-+	if (SBL_PML_CFG_PCS_PCS_ENABLE_GET(cfg_pcs_reg)) {
-+		sbl_dev_err(sbl->dev, "an %d: pcs is enabled", port_num);
-+		err = -EBUSY;
-+		goto out;
-+	}
-+	if (SBL_PML_CFG_PCS_ENABLE_AUTO_NEG_GET(cfg_pcs_reg)) {
-+		sbl_dev_err(sbl->dev, "an %d: autoneg already enabled", port_num);
-+		err = -EBUSY;
-+		goto out;
-+	}
-+
-+	/* sort out the data to send/receive */
-+	err = sbl_an_setup_tx_pages(sbl, port_num);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "an %d, page setup failed [%d]", port_num, err);
-+		goto out;
-+	}
-+
-+	/* setup */
-+	err = sbl_pml_install_intr_handler(sbl, port_num, SBL_AUTONEG_ERR_FLGS);
-+	if (err)
-+		goto out;
-+	link->an_100cr4_fixup_applied = false;
-+
-+	/* try to negotiate */
-+	link->an_try_count = 0;
-+	while (1) {
-+
-+		link->an_try_count++;
-+
-+		/* keep trying until up timeout expires or cancelled */
-+		if (sbl_start_timeout(sbl, port_num)) {
-+			err = -ETIMEDOUT;
-+			break;
-+		}
-+		if (sbl_base_link_start_cancelled(sbl, port_num)) {
-+			err = -ECANCELED;
-+			break;
-+		}
-+
-+		/* setup the serdes and pml */
-+		err = sbl_an_serdes_start(sbl, port_num);
-+		if (err)
-+			break;
-+		usleep_range(1000, 2000);
-+
-+		err = sbl_an_pml_setup(sbl, port_num);
-+		if (err)
-+			break;
-+
-+		/* try to exchange pages */
-+		err = sbl_an_exchange(sbl, port_num);
-+		if (err == -EPROTO) {
-+			/* we have received an unexpected base page
-+			 * The lp must have restarted autoneg and we should too
-+			 *
-+			 * However we know that some Mellanox cards will do this if there is no
-+			 * ability match - particularly only supporting 100KR4 not 100CR4
-+			 * See if we can try to fix this up
-+			 */
-+			if (link->blattr.options & SBL_OPT_AUTONEG_100CR4_FIXUP) {
-+				if (sbl_an_100cr4_fixup(sbl, port_num)) {
-+					/* fixup applied */
-+					link->an_100cr4_fixup_applied = true;
-+					/* carry on to ability match */
-+				} else {
-+					/* fixup failed - retry exchange */
-+					sbl_an_serdes_stop(sbl, port_num);
-+					continue;
-+				}
-+			} else {
-+				sbl_an_serdes_stop(sbl, port_num);
-+				continue;
-+			}
-+		} else if (err == -ETIME) {
-+			/* we have timed out */
-+			if (link->an_try_count < link->blattr.pec.an_max_retry) {
-+				/* retry */
-+				sbl_an_serdes_stop(sbl, port_num);
-+				/* Random delay of 1-5 before retry */
-+				get_random_bytes(&random, sizeof(random));
-+				random = 1u + (random % 5u);
-+				msleep(random);
-+				continue;
-+			} else {
-+				/* give up */
-+				break;
-+			}
-+		} else if (err) {
-+			/* other error */
-+			sbl_dev_dbg(sbl->dev, "an %d: exchange failed [%d] (sm_state %s)",
-+				    port_num, err, sbl_an_get_sm_state(sbl, port_num));
-+			break;
-+		}
-+
-+		/* pages have been exchanged - try to resolve the mode etc */
-+		err = sbl_an_ability_match(sbl, port_num);
-+		if (err) {
-+			/* no match - try again (in case they change) */
-+			sbl_an_serdes_stop(sbl, port_num);
-+			continue;
-+		}
-+
-+		/* see if we need to update the start timeout */
-+		sbl_an_update_timeout(sbl, port_num);
-+
-+		/* we know the lp is there */
-+		link->lp_detected = true;
-+		break;
-+	}
-+
-+	/* cleanup */
-+	if (link->sstate == SBL_SERDES_STATUS_AUTONEG)
-+		sbl_an_serdes_stop(sbl, port_num);
-+	sbl_pml_disable_intr_handler(sbl, port_num, SBL_AUTONEG_ERR_FLGS);
-+	sbl_pml_remove_intr_handler(sbl, port_num);
-+
-+out:
-+	sbl_pml_err_flgs_clear_all(sbl, port_num);
-+	sbl_link_info_clear(sbl, port_num, SBL_LINK_INFO_PCS_ANEG);
-+
-+	return err;
-+}
-+
-+void sbl_an_send_next_page(struct sbl_inst *sbl, int port_num)
-+{
-+	u32 base = SBL_PML_BASE(port_num);
-+	u64 cfg_pcs_autoneg_reg;
-+
-+	cfg_pcs_autoneg_reg = sbl_read64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_OFFSET);
-+	cfg_pcs_autoneg_reg = SBL_PML_CFG_PCS_AUTONEG_NEXT_PAGE_LOADED_UPDATE(cfg_pcs_autoneg_reg, 1ULL);
-+	sbl_write64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_OFFSET, cfg_pcs_autoneg_reg);
-+}
-+
-+bool sbl_an_next_is_complete(struct sbl_inst *sbl, int port_num)
-+{
-+	u32 base = SBL_PML_BASE(port_num);
-+	u64 sts_autoneg_next_reg;
-+
-+	sts_autoneg_next_reg = sbl_read64(sbl, base | SBL_PML_STS_PCS_AUTONEG_NEXT_PAGE_OFFSET);
-+
-+	return SBL_PML_STS_PCS_AUTONEG_NEXT_PAGE_COMPLETE_GET(sts_autoneg_next_reg);
-+}
-+
-+bool sbl_an_is_next_page(struct sbl_inst *sbl, int port_num)
-+{
-+	u32 base = SBL_PML_BASE(port_num);
-+	u64 sts_autoneg_next_reg;
-+	u64 state;
-+	bool value;
-+
-+	sts_autoneg_next_reg = sbl_read64(sbl, base | SBL_PML_STS_PCS_AUTONEG_NEXT_PAGE_OFFSET);
-+
-+	state = SBL_PML_STS_PCS_AUTONEG_NEXT_PAGE_STATE_GET(sts_autoneg_next_reg);
-+
-+	value =	 (state == SBL_PML_AUTONEG_STATE_COMPLETE_ACK) ||
-+		(state == SBL_PML_AUTONEG_STATE_AN_GOOD_CHECK);
-+
-+	value = value && (SBL_PML_STS_PCS_AUTONEG_NEXT_PAGE_LP_ABILITY_GET(sts_autoneg_next_reg)) &&
-+		(!SBL_PML_STS_PCS_AUTONEG_NEXT_PAGE_BASE_PAGE_GET(sts_autoneg_next_reg));
-+
-+	return value;
-+}
-+
-+void sbl_an_setup_next_page(struct sbl_inst *sbl, int port_num, int page_idx)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	u32 base = SBL_PML_BASE(port_num);
-+
-+	sbl_write64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_NEXT_PAGE_OFFSET,
-+		    link->an_tx_page[page_idx]);
-+	sbl_dev_dbg(sbl->dev, "an %d: tx next page: 0x%llx", port_num,
-+		    link->an_tx_page[page_idx]);
-+	sbl_read64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_NEXT_PAGE_OFFSET);
-+}
-+
-+void sbl_an_setup_null_page(struct sbl_inst *sbl, int port_num)
-+{
-+	u32 base = SBL_PML_BASE(port_num);
-+	u64 null_page;
-+
-+	/* Construct a null message page as in 802.3-2015: 28.2.3.4.1 & annex 28C */
-+	null_page  = sbl_read64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_NEXT_PAGE_OFFSET);
-+	null_page ^= AN_NP_T_MASK;          /* toggle bit 11 */
-+	null_page &= ~AN_NP_NP_MASK;        /* clear next page bit */
-+	null_page |= AN_NP_MP_MASK;         /* set this is msg page */
-+	null_page &= ~AN_NP_MSG_MASK;       /* clear msg code */
-+	null_page |= AN_NP_CODE_NULL_MSG;   /* set null msg code */
-+	null_page &= ~AN_NP_UCF_MASK;       /* clear unformatted code field code */
-+	sbl_write64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_NEXT_PAGE_OFFSET, null_page);
-+	sbl_dev_dbg(sbl->dev, "an %d: tx null next page: 0x%llx", port_num,
-+		    null_page);
-+	sbl_read64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_NEXT_PAGE_OFFSET);
-+}
-+
-+/* setup to detect complete or page received error flags become set */
-+int sbl_an_hw_wait_prepare(struct sbl_inst *sbl, int port_num)
-+{
-+	struct sbl_link *link = sbl->link + port_num;
-+	unsigned long flags;
-+	int err;
-+
-+	spin_lock_irqsave(&link->lock, flags);
-+	if (link->start_cancelled) {
-+		spin_unlock_irqrestore(&link->lock, flags);
-+		return -ECANCELED;
-+	}
-+	reinit_completion(&link->an_hw_change);
-+	spin_unlock_irqrestore(&link->lock, flags);
-+
-+	sbl_pml_err_flgs_clear(sbl, port_num, SBL_AUTONEG_ERR_FLGS);
-+
-+	err = sbl_pml_enable_intr_handler(sbl, port_num, SBL_AUTONEG_ERR_FLGS);
-+	if (err) {
-+		sbl_dev_err(sbl->dev, "an %d: intr enable failed [%d]", port_num, err);
-+		return err;
-+	}
-+
 +	return 0;
 +}
 +
-+const char *sbl_an_get_sm_state(struct sbl_inst *sbl, int port_num)
++struct sl_ldev *sl_ldev_new(u8 ldev_num,
++			    struct workqueue_struct *workq, struct sl_ldev_attr *ldev_attr)
 +{
-+	u32 base = SBL_PML_BASE(port_num);
-+	u64 sts_pcs_autoneg_reg;
-+	u64 sm_state;
++	int rtn;
 +
-+	sts_pcs_autoneg_reg = sbl_read64(sbl, base | SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_OFFSET);
-+	sm_state = SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_STATE_GET(sts_pcs_autoneg_reg);
++	if (ldev_num >= SL_ASIC_MAX_LDEVS) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "invalid (ldev_num = %u)", ldev_num);
++		return ERR_PTR(-EINVAL);
++	}
++	rtn = sl_ldev_attr_check(ldev_attr);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "new fail");
++		return ERR_PTR(rtn);
++	}
 +
-+	return  sbl_an_state_str(sm_state);
++	rtn = sl_ctrl_ldev_new(ldev_num, workq, ldev_attr);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "new fail");
++		return ERR_PTR(rtn);
++	}
++
++	return &ldevs[ldev_num];
 +}
++EXPORT_SYMBOL(sl_ldev_new);
 +
-+/**
-+ * sbl_get_an_pages() - Get an pages
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @count: number of pages
-+ * @pages: Pointer to max rx pages
-+ *
-+ * Get number of an pages 'count' and rx pages 'pages'
-+ * by reading 'an_rx_count' and 'an_rx_page'
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+int sbl_get_an_pages(struct sbl_inst *sbl, int port_num, int *count, u64 *pages)
++int sl_ldev_sysfs_parent_set(struct sl_ldev *ldev, struct kobject *parent)
 +{
-+	struct sbl_link *link;
-+	int i;
-+	int err;
++	int rtn;
 +
-+	err = sbl_validate_instance(sbl);
-+	if (err)
-+		return err;
-+
-+	err = sbl_validate_port_num(sbl, port_num);
-+	if (err)
-+		return err;
-+
-+	if (!count || !pages)
++	rtn = sl_ldev_check(ldev);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "parent set fail");
++		return rtn;
++	}
++	if (!parent) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL parent");
 +		return -EINVAL;
-+
-+	link = sbl->link + port_num;
-+
-+	/* check we did autoneg successfully */
-+	if ((link->blattr.pec.an_mode != SBL_AN_MODE_ON) &&
-+	    (link->blattr.pec.an_mode != SBL_AN_MODE_FIXED)) {
-+		sbl_dev_info(sbl->dev, "%d: not autoneg mode - no pages to get", port_num);
-+		return -ENODATA;
-+	}
-+	if (!link->an_rx_count) {
-+		sbl_dev_info(sbl->dev, "%d: no an pages to get", port_num);
-+		return -ENODATA;
 +	}
 +
-+	if (link->an_rx_count > *count) {
-+		/* insufficient space
-+		 * update size to say how much we need and return
-+		 */
-+		*count = link->an_rx_count;
-+		return -ENOSPC;
-+	}
-+
-+	for (i = 0; i < link->an_rx_count; ++i)
-+		*pages++ = link->an_rx_page[i];
-+	*count = link->an_rx_count;
-+
-+	return 0;
++	return sl_sysfs_ldev_create(ldev->num, parent);
 +}
-+EXPORT_SYMBOL(sbl_get_an_pages);
++EXPORT_SYMBOL(sl_ldev_sysfs_parent_set);
 +
-+void sbl_an_dump_state(struct sbl_inst *sbl, int port_num)
++int sl_ldev_serdes_init(struct sl_ldev *ldev)
 +{
-+	struct sbl_link *link = sbl->link + port_num;
-+	u32 base = SBL_PML_BASE(port_num);
-+	u64 val64;
-+	int i;
++	int rtn;
 +
-+	val64 = sbl_read64(sbl, base | SBL_PML_ERR_FLG_OFFSET);
-+	sbl_dev_dbg(sbl->dev, "an %d: dump: err flgs       0x%llx", port_num, val64);
-+
-+	val64 = sbl_read64(sbl, base | SBL_PML_CFG_PCS_OFFSET);
-+	sbl_dev_dbg(sbl->dev, "an %d: dump: cfg pcs        0x%llx", port_num, val64);
-+
-+	val64 = sbl_read64(sbl, base | SBL_PML_CFG_PCS_AUTONEG_OFFSET);
-+	sbl_dev_dbg(sbl->dev, "an %d: dump: cfg pcs an     0x%llx", port_num, val64);
-+
-+	val64 = sbl_read64(sbl, base | SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_OFFSET);
-+	sbl_dev_dbg(sbl->dev, "an %d: dump: sts an base pg 0x%llx", port_num, val64);
-+
-+	sbl_dev_dbg(sbl->dev, "%d base, complete (%lld), state (%lld) (%s), received (%lld) , base page (%lld), lp (%lld), lp_base (%lld) ",
-+		    port_num,
-+			SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_COMPLETE_GET(val64),
-+			SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_STATE_GET(val64),
-+			sbl_an_get_sm_state(sbl, port_num),
-+			SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_PAGE_RECEIVED_GET(val64),
-+			SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_BASE_PAGE_GET(val64),
-+			SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_LP_ABILITY_GET(val64),
-+			SBL_PML_STS_PCS_AUTONEG_BASE_PAGE_LP_BASE_PAGE_GET(val64));
-+
-+	val64 = sbl_read64(sbl, base | SBL_PML_STS_PCS_AUTONEG_NEXT_PAGE_OFFSET);
-+
-+	sbl_dev_dbg(sbl->dev, "%d next, complete (%lld), state (%lld) (%s), received (%lld) , base page (%lld), lp (%lld), lp_next (%lld) ",
-+		    port_num,
-+			SBL_PML_STS_PCS_AUTONEG_NEXT_PAGE_COMPLETE_GET(val64),
-+			SBL_PML_STS_PCS_AUTONEG_NEXT_PAGE_STATE_GET(val64),
-+			sbl_an_get_sm_state(sbl, port_num),
-+			SBL_PML_STS_PCS_AUTONEG_NEXT_PAGE_PAGE_RECEIVED_GET(val64),
-+			SBL_PML_STS_PCS_AUTONEG_NEXT_PAGE_BASE_PAGE_GET(val64),
-+			SBL_PML_STS_PCS_AUTONEG_NEXT_PAGE_LP_ABILITY_GET(val64),
-+			SBL_PML_STS_PCS_AUTONEG_NEXT_PAGE_LP_NEXT_PAGE_GET(val64));
-+
-+	sbl_dev_dbg(sbl->dev, "an %d: dump: sts an next pg 0x%llx", port_num, val64);
-+
-+	for (i = 0; i < link->an_tx_count; ++i) {
-+		sbl_dev_dbg(sbl->dev, "an %d: dump: tx pg %d: 0x%llx", port_num,
-+			    i, link->an_tx_page[i]);
++	rtn = sl_ldev_check(ldev);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "serdes init fail");
++		return rtn;
 +	}
-+	for (i = 0; i < link->an_rx_count; ++i) {
-+		sbl_dev_dbg(sbl->dev, "an %d: dump: rx pg %d: 0x%llx", port_num,
-+			    i, link->an_rx_page[i]);
-+	}
++
++	return sl_ctrl_ldev_serdes_init(ldev->num);
 +}
-diff --git a/drivers/net/ethernet/hpe/sbl/sbl_link_an_nic.c b/drivers/net/ethernet/hpe/sbl/sbl_link_an_nic.c
++EXPORT_SYMBOL(sl_ldev_serdes_init);
++
++int sl_ldev_del(struct sl_ldev *ldev)
++{
++	int rtn;
++
++	rtn = sl_ldev_check(ldev);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "del fail");
++		return rtn;
++	}
++
++	return sl_ctrl_ldev_del(ldev->num);
++}
++EXPORT_SYMBOL(sl_ldev_del);
++
++void sl_ldev_exit(void)
++{
++	sl_ctrl_ldev_exit();
++}
+diff --git a/drivers/net/ethernet/hpe/sl/sl_lgrp.c b/drivers/net/ethernet/hpe/sl/sl_lgrp.c
 new file mode 100644
-index 000000000000..e9536283c47a
+index 000000000000..bb2dc68f4198
 --- /dev/null
-+++ b/drivers/net/ethernet/hpe/sbl/sbl_link_an_nic.c
-@@ -0,0 +1,111 @@
++++ b/drivers/net/ethernet/hpe/sl/sl_lgrp.c
+@@ -0,0 +1,409 @@
 +// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2023-2026 Hewlett Packard Enterprise Development LP */
 +
++#include <linux/module.h>
++#include <linux/slab.h>
++#include <linux/err.h>
++
++#include <linux/hpe/sl/sl_lgrp.h>
++
++#include "sl_asic.h"
++#include "sl_log.h"
++#include "sl_ldev.h"
++#include "sl_lgrp.h"
++#include "sl_core_lgrp.h"
++#include "sl_core_link.h"
++#include "sl_ctrl_lgrp.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_LGRP_LOG_NAME
++
++static struct sl_lgrp lgrps[SL_ASIC_MAX_LDEVS][SL_ASIC_MAX_LGRPS];
++
++void sl_lgrp_init(void)
++{
++	u8 ldev_num;
++	u8 lgrp_num;
++
++	for (ldev_num = 0; ldev_num < SL_ASIC_MAX_LDEVS; ++ldev_num) {
++		for (lgrp_num = 0; lgrp_num < SL_ASIC_MAX_LGRPS; ++lgrp_num) {
++			lgrps[ldev_num][lgrp_num].magic    = SL_LGRP_MAGIC;
++			lgrps[ldev_num][lgrp_num].ver      = SL_LGRP_VER;
++			lgrps[ldev_num][lgrp_num].num      = lgrp_num;
++			lgrps[ldev_num][lgrp_num].ldev_num = ldev_num;
++		}
++	}
++}
++
++int sl_lgrp_check(struct sl_lgrp *lgrp)
++{
++	if (!lgrp) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL lgrp");
++		return -EINVAL;
++	}
++	if (IS_ERR(lgrp)) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "lgrp pointer error");
++		return -EINVAL;
++	}
++	if (lgrp->magic != SL_LGRP_MAGIC) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad lgrp magic");
++		return -EINVAL;
++	}
++	if (lgrp->ver != SL_LGRP_VER) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad lgrp version");
++		return -EINVAL;
++	}
++	if (lgrp->num >= SL_ASIC_MAX_LGRPS) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad lgrp num");
++		return -EINVAL;
++	}
++	if (lgrp->ldev_num >= SL_ASIC_MAX_LDEVS) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad ldev num");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int sl_lgrp_config_check(struct sl_lgrp_config *lgrp_config)
++{
++	if (!lgrp_config) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL lgrp_config");
++		return -EINVAL;
++	}
++	if (IS_ERR(lgrp_config)) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "lgrp_config pointer error");
++		return -EINVAL;
++	}
++	if (lgrp_config->magic != SL_LGRP_CONFIG_MAGIC) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad lgrp_config magic");
++		return -EINVAL;
++	}
++	if (lgrp_config->ver != SL_LGRP_CONFIG_VER) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad lgrp_config version");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int sl_lgrp_policy_check(struct sl_lgrp_policy *lgrp_policy)
++{
++	if (!lgrp_policy) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL lgrp_policy");
++		return -EINVAL;
++	}
++	if (IS_ERR(lgrp_policy)) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "lgrp_policy pointer error");
++		return -EINVAL;
++	}
++	if (lgrp_policy->magic != SL_LGRP_POLICY_MAGIC) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad lgrp_policy magic");
++		return -EINVAL;
++	}
++	if (lgrp_policy->ver != SL_LGRP_POLICY_VER) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad lgrp_policy version");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++int sl_lgrp_hw_attr_set(struct sl_lgrp *lgrp, struct sl_hw_attr *hw_attr)
++{
++	int rtn;
++
++	rtn = sl_lgrp_check(lgrp);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "hw attr set fail");
++		return rtn;
++	}
++	if (!hw_attr) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL hw_attr");
++		return -EINVAL;
++	}
++
++	return sl_core_lgrp_hw_attr_set(lgrp->ldev_num, lgrp->num, hw_attr);
++}
++EXPORT_SYMBOL(sl_lgrp_hw_attr_set);
++
++struct sl_lgrp *sl_lgrp_new(struct sl_ldev *ldev, u8 lgrp_num, struct kobject *sysfs_parent)
++{
++	int rtn;
++
++	rtn = sl_ldev_check(ldev);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "new fail");
++		return ERR_PTR(rtn);
++	}
++	if (lgrp_num >= SL_ASIC_MAX_LGRPS) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "invalid (lgrp_num = %u)", lgrp_num);
++		return ERR_PTR(-EINVAL);
++	}
++
++	rtn = sl_ctrl_lgrp_new(ldev->num, lgrp_num, sysfs_parent);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "new fail");
++		return ERR_PTR(rtn);
++	}
++
++	return &lgrps[ldev->num][lgrp_num];
++}
++EXPORT_SYMBOL(sl_lgrp_new);
++
++int sl_lgrp_del(struct sl_lgrp *lgrp)
++{
++	int rtn;
++
++	rtn = sl_lgrp_check(lgrp);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "del fail");
++		return rtn;
++	}
++
++	return sl_ctrl_lgrp_del(lgrp->ldev_num, lgrp->num);
++}
++EXPORT_SYMBOL(sl_lgrp_del);
++
++int sl_lgrp_config_set(struct sl_lgrp *lgrp, struct sl_lgrp_config *lgrp_config)
++{
++	int rtn;
++
++	rtn = sl_lgrp_check(lgrp);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "config set fail");
++		return rtn;
++	}
++	rtn = sl_lgrp_config_check(lgrp_config);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "config set fail");
++		return rtn;
++	}
++
++	return sl_ctrl_lgrp_config_set(lgrp->ldev_num, lgrp->num, lgrp_config);
++}
++EXPORT_SYMBOL(sl_lgrp_config_set);
++
++int sl_lgrp_policy_set(struct sl_lgrp *lgrp, struct sl_lgrp_policy *lgrp_policy)
++{
++	int rtn;
++
++	rtn = sl_lgrp_check(lgrp);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "policy set fail");
++		return rtn;
++	}
++	rtn = sl_lgrp_policy_check(lgrp_policy);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "policy set fail");
++		return rtn;
++	}
++
++	return sl_ctrl_lgrp_policy_set(lgrp->ldev_num, lgrp->num, lgrp_policy);
++}
++EXPORT_SYMBOL(sl_lgrp_policy_set);
++
++int sl_lgrp_notif_callback_reg(struct sl_lgrp *lgrp, sl_lgrp_notif_t callback,
++			       u32 types, void *tag)
++{
++	int rtn;
++
++	rtn = sl_lgrp_check(lgrp);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "callback reg fail");
++		return rtn;
++	}
++	if (!callback) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL callback");
++		return -EINVAL;
++	}
++
++	return sl_ctrl_lgrp_notif_callback_reg(lgrp->ldev_num, lgrp->num, callback, types, tag);
++}
++EXPORT_SYMBOL(sl_lgrp_notif_callback_reg);
++
++int sl_lgrp_notif_callback_unreg(struct sl_lgrp *lgrp, sl_lgrp_notif_t callback,
++				 u32 types)
++{
++	int rtn;
++
++	rtn = sl_lgrp_check(lgrp);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "callback unreg fail");
++		return rtn;
++	}
++	if (!callback) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL callback");
++		return -EINVAL;
++	}
++
++	return sl_ctrl_lgrp_notif_callback_unreg(lgrp->ldev_num, lgrp->num, callback, types);
++}
++EXPORT_SYMBOL(sl_lgrp_notif_callback_unreg);
++
++int sl_lgrp_connect_id_set(struct sl_lgrp *lgrp, const char *connect_id)
++{
++	int rtn;
++
++	rtn = sl_lgrp_check(lgrp);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "id set fail");
++		return rtn;
++	}
++	if (!connect_id) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL connect_id");
++		return -EINVAL;
++	}
++
++	return sl_ctrl_lgrp_connect_id_set(lgrp->ldev_num, lgrp->num, connect_id);
++}
++EXPORT_SYMBOL(sl_lgrp_connect_id_set);
++
++const char *sl_lgrp_config_tech_str(u32 config)
++{
++	if (config == SL_LGRP_CONFIG_TECH_CK_400G)
++		return "ck400G";
++	if (config == SL_LGRP_CONFIG_TECH_CK_200G)
++		return "ck200G";
++	if (config == SL_LGRP_CONFIG_TECH_CK_100G)
++		return "ck100G";
++	if (config == SL_LGRP_CONFIG_TECH_BS_200G)
++		return "bs200G";
++	if (config == SL_LGRP_CONFIG_TECH_CD_100G)
++		return "cd100G";
++	if (config == SL_LGRP_CONFIG_TECH_CD_50G)
++		return "cd50G";
++	if (config == SL_LGRP_CONFIG_TECH_BJ_100G)
++		return "bj100G";
++
++	return "unknown";
++}
++EXPORT_SYMBOL(sl_lgrp_config_tech_str);
++
++const char *sl_lgrp_config_fec_str(u32 config)
++{
++	if (config == SL_LGRP_CONFIG_FEC_RS_LL)
++		return "reed-solomon-low-latency";
++	if (config == SL_LGRP_CONFIG_FEC_RS)
++		return "reed-solomon";
++
++	return "unknown";
++}
++EXPORT_SYMBOL(sl_lgrp_config_fec_str);
++
++const char *sl_lgrp_furcation_str(u32 furcation)
++{
++	if (furcation == SL_MEDIA_FURCATION_X1)
++		return "unfurcated";
++	if (furcation == SL_MEDIA_FURCATION_X2)
++		return "bifurcated";
++	if (furcation == SL_MEDIA_FURCATION_X4)
++		return "quadfurcated";
++
++	return "unknown";
++}
++EXPORT_SYMBOL(sl_lgrp_furcation_str);
++
++const char *sl_lgrp_notif_str(u32 notif)
++{
++	switch (notif) {
++	case SL_LGRP_NOTIF_INVALID:
++		return "invalid";
++	case SL_LGRP_NOTIF_LINK_UP:
++		return "link-up";
++	case SL_LGRP_NOTIF_LINK_UP_FAIL:
++		return "link-up-fail";
++	case SL_LGRP_NOTIF_LINK_DOWN:
++		return "link-down";
++	case SL_LGRP_NOTIF_LINK_ASYNC_DOWN:
++		return "link-async-down";
++	case SL_LGRP_NOTIF_LINK_ERROR:
++		return "link-error";
++	case SL_LGRP_NOTIF_LINK_UCW_WARN:
++		return "link-ucw-warn";
++	case SL_LGRP_NOTIF_LINK_CCW_WARN:
++		return "link-ccw-warn";
++	case SL_LGRP_NOTIF_LLR_SETUP:
++		return "llr-setup";
++	case SL_LGRP_NOTIF_LLR_SETUP_TIMEOUT:
++		return "llr-setup-timeout";
++	case SL_LGRP_NOTIF_LLR_RUNNING:
++		return "llr-running";
++	case SL_LGRP_NOTIF_LLR_START_TIMEOUT:
++		return "llr-start-timeout";
++	case SL_LGRP_NOTIF_LLR_CANCELED:
++		return "llr-canceled";
++	case SL_LGRP_NOTIF_LLR_ERROR:
++		return "llr-error";
++	case SL_LGRP_NOTIF_MEDIA_PRESENT:
++		return "media-present";
++	case SL_LGRP_NOTIF_MEDIA_NOT_PRESENT:
++		return "media-not-present";
++	case SL_LGRP_NOTIF_MEDIA_ERROR:
++		return "media-error";
++	case SL_LGRP_NOTIF_MEDIA_HOT:
++		return "media-hot";
++	case SL_LGRP_NOTIF_MEDIA_COLD:
++		return "media-cold";
++	case SL_LGRP_NOTIF_MEDIA_WARM:
++		return "media-warm";
++	case SL_LGRP_NOTIF_AN_DATA:
++		return "an-data";
++	case SL_LGRP_NOTIF_AN_TIMEOUT:
++		return "an-timeout";
++	case SL_LGRP_NOTIF_AN_ERROR:
++		return "an-error";
++	case SL_LGRP_NOTIF_LANE_DEGRADE:
++		return "auto-lane-degrade";
++	case SL_LGRP_NOTIF_LANE_DEGRADE_RECOVERY:
++		return "auto-lane-degrade-recovery";
++	case SL_LGRP_NOTIF_PML_RECOVERY:
++		return "pml-recovery";
++	case SL_LGRP_NOTIF_LINK_DOWN_REQ:
++		return "link-down-request";
++	default:
++		return "unknown";
++	}
++}
++EXPORT_SYMBOL(sl_lgrp_notif_str);
++
++const char *sl_lgrp_config_opt_str(u32 option)
++{
++	switch (option) {
++	case SL_LGRP_CONFIG_OPT_SERDES_LOOPBACK_ENABLE:
++		return "loopback-serdes-enable";
++	default:
++		return "unknown";
++	}
++}
++EXPORT_SYMBOL(sl_lgrp_config_opt_str);
++
++const char *sl_lgrp_fec_mode_str(u32 mode)
++{
++	switch (mode) {
++	case SL_LGRP_FEC_MODE_OFF:
++		return "off";
++	case SL_LGRP_FEC_MODE_MONITOR:
++		return "monitor";
++	case SL_LGRP_FEC_MODE_CORRECT:
++		return "correct";
++	default:
++		return "unknown";
++	}
++}
++EXPORT_SYMBOL(sl_lgrp_fec_mode_str);
++
++const char *sl_lgrp_llr_mode_str(u32 mode)
++{
++	switch (mode) {
++	case SL_LGRP_LLR_MODE_OFF:
++		return "off";
++	case SL_LGRP_LLR_MODE_MONITOR:
++		return "monitor";
++	case SL_LGRP_LLR_MODE_ON:
++		return "on";
++	default:
++		return "unknown";
++	}
++}
++EXPORT_SYMBOL(sl_lgrp_llr_mode_str);
+diff --git a/drivers/net/ethernet/hpe/sl/sl_link.c b/drivers/net/ethernet/hpe/sl/sl_link.c
+new file mode 100644
+index 000000000000..c66e48a62748
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sl_link.c
+@@ -0,0 +1,632 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2023-2026 Hewlett Packard Enterprise Development LP */
++
++#include <linux/module.h>
++#include <linux/err.h>
++
++#include <linux/hpe/sl/sl_link.h>
++
++#include "sl_asic.h"
++#include "sl_log.h"
++#include "sl_lgrp.h"
++#include "sl_link.h"
++#include "sl_core_str.h"
++#include "sl_ctrl_link.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_LINK_LOG_NAME
++
++static struct sl_link links[SL_ASIC_MAX_LDEVS][SL_ASIC_MAX_LGRPS][SL_ASIC_MAX_LINKS];
++
++void sl_link_init(void)
++{
++	u8 ldev_num;
++	u8 lgrp_num;
++	u8 link_num;
++
++	for (ldev_num = 0; ldev_num < SL_ASIC_MAX_LDEVS; ++ldev_num) {
++		for (lgrp_num = 0; lgrp_num < SL_ASIC_MAX_LGRPS; ++lgrp_num) {
++			for (link_num = 0; link_num < SL_ASIC_MAX_LINKS; ++link_num) {
++				links[ldev_num][lgrp_num][link_num].magic    = SL_LINK_MAGIC;
++				links[ldev_num][lgrp_num][link_num].ver      = SL_LINK_VER;
++				links[ldev_num][lgrp_num][link_num].num      = link_num;
++				links[ldev_num][lgrp_num][link_num].lgrp_num = lgrp_num;
++				links[ldev_num][lgrp_num][link_num].ldev_num = ldev_num;
++			}
++		}
++	}
++}
++
++int sl_link_check(struct sl_link *link)
++{
++	if (!link) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL link");
++		return -EINVAL;
++	}
++	if (IS_ERR(link)) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "link pointer error");
++		return -EINVAL;
++	}
++	if (link->magic != SL_LINK_MAGIC) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad link magic");
++		return -EINVAL;
++	}
++	if (link->ver != SL_LINK_VER) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad link version");
++		return -EINVAL;
++	}
++	if (link->num >= SL_ASIC_MAX_LINKS) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad link num");
++		return -EINVAL;
++	}
++	if (link->lgrp_num >= SL_ASIC_MAX_LGRPS) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad lgrp num");
++		return -EINVAL;
++	}
++	if (link->ldev_num >= SL_ASIC_MAX_LDEVS) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad ldev num");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int sl_link_config_check(struct sl_link_config *link_config)
++{
++	if (!link_config) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL link_config");
++		return -EINVAL;
++	}
++	if (IS_ERR(link_config)) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "link_config pointer error");
++		return -EINVAL;
++	}
++	if (link_config->magic != SL_LINK_CONFIG_MAGIC) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad link_config magic");
++		return -EINVAL;
++	}
++	if (link_config->ver != SL_LINK_CONFIG_VER) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad link_config version");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int sl_link_policy_check(struct sl_link_policy *link_policy)
++{
++	if (!link_policy) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL link_policy");
++		return -EINVAL;
++	}
++	if (IS_ERR(link_policy)) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "link_policy pointer error");
++		return -EINVAL;
++	}
++	if (link_policy->magic != SL_LINK_POLICY_MAGIC) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad link_policy magic");
++		return -EINVAL;
++	}
++	if (link_policy->ver != SL_LINK_POLICY_VER) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad link_policy version");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++struct sl_link *sl_link_new(struct sl_lgrp *lgrp, u8 link_num, struct kobject *sysfs_parent)
++{
++	int rtn;
++
++	rtn = sl_lgrp_check(lgrp);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "new fail");
++		return ERR_PTR(rtn);
++	}
++	if (link_num >= SL_ASIC_MAX_LINKS) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "invalid (link_num = %u)", link_num);
++		return ERR_PTR(-EINVAL);
++	}
++
++	rtn = sl_ctrl_link_new(lgrp->ldev_num, lgrp->num, link_num, sysfs_parent);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "new fail");
++		return ERR_PTR(rtn);
++	}
++
++	return &links[lgrp->ldev_num][lgrp->num][link_num];
++}
++EXPORT_SYMBOL(sl_link_new);
++
++int sl_link_del(struct sl_link *link)
++{
++	int rtn;
++
++	rtn = sl_link_check(link);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "del fail");
++		return rtn;
++	}
++
++	return sl_ctrl_link_del(link->ldev_num, link->lgrp_num, link->num);
++}
++EXPORT_SYMBOL(sl_link_del);
++
++int sl_link_config_set(struct sl_link *link, struct sl_link_config *link_config)
++{
++	int rtn;
++
++	rtn = sl_link_check(link);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "link config set fail");
++		return rtn;
++	}
++	rtn = sl_link_config_check(link_config);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "link config set fail");
++		return rtn;
++	}
++
++	return sl_ctrl_link_config_set(link->ldev_num, link->lgrp_num, link->num, link_config);
++}
++EXPORT_SYMBOL(sl_link_config_set);
++
++int sl_link_policy_set(struct sl_link *link, struct sl_link_policy *link_policy)
++{
++	int rtn;
++
++	rtn = sl_link_check(link);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "policy set fail");
++		return rtn;
++	}
++	rtn = sl_link_policy_check(link_policy);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "policy set fail");
++		return rtn;
++	}
++
++	return sl_ctrl_link_policy_set(link->ldev_num, link->lgrp_num, link->num, link_policy);
++}
++EXPORT_SYMBOL(sl_link_policy_set);
++
++int sl_link_an_lp_caps_get(struct sl_link *link, struct sl_link_caps *caps, u32 timeout_ms, u32 flags)
++{
++	int rtn;
++
++	rtn = sl_link_check(link);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "lp caps get fail");
++		return rtn;
++	}
++	if (!caps) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL caps");
++		return -EINVAL;
++	}
++	if (timeout_ms == 0) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "0 timeout");
++		return -EINVAL;
++	}
++
++	return sl_ctrl_link_an_lp_caps_get(link->ldev_num, link->lgrp_num, link->num, caps, timeout_ms, flags);
++}
++EXPORT_SYMBOL(sl_link_an_lp_caps_get);
++
++int sl_link_an_lp_caps_stop(struct sl_link *link)
++{
++	int rtn;
++
++	rtn = sl_link_check(link);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "lp caps stop fail");
++		return rtn;
++	}
++
++	return sl_ctrl_link_an_lp_caps_stop(link->ldev_num, link->lgrp_num, link->num);
++}
++EXPORT_SYMBOL(sl_link_an_lp_caps_stop);
++
++int sl_link_up(struct sl_link *link)
++{
++	int rtn;
++
++	rtn = sl_link_check(link);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "link up fail");
++		return rtn;
++	}
++
++	return sl_ctrl_link_up(link->ldev_num, link->lgrp_num, link->num);
++}
++EXPORT_SYMBOL(sl_link_up);
++
++int sl_link_down(struct sl_link *link)
++{
++	int rtn;
++
++	rtn = sl_link_check(link);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "link down fail");
++		return rtn;
++	}
++
++	return sl_ctrl_link_down(link->ldev_num, link->lgrp_num, link->num);
++}
++EXPORT_SYMBOL(sl_link_down);
++
++int sl_link_reset(struct sl_link *link)
++{
++	int rtn;
++
++	rtn = sl_link_check(link);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "link reset fail");
++		return rtn;
++	}
++
++	return sl_ctrl_link_reset(link->ldev_num, link->lgrp_num, link->num);
++}
++EXPORT_SYMBOL(sl_link_reset);
++
++int sl_link_clocks_get(struct sl_link *link, u32 *up_count, s64 *up_time, s64 *total_time)
++{
++	int rtn;
++	s64 up;
++
++	rtn = sl_link_check(link);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "link clocks get fail");
++		return rtn;
++	}
++
++	rtn = sl_ctrl_link_up_clocks_get(link->ldev_num, link->lgrp_num, link->num, up_time, total_time, &up);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "link_up_clocks_get failed [%d]", rtn);
++		return rtn;
++	}
++
++	rtn = sl_ctrl_link_up_count_get(link->ldev_num, link->lgrp_num, link->num, up_count);
++	if (rtn)
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "link_up_count_get failed [%d]", rtn);
++
++	return rtn;
++}
++EXPORT_SYMBOL(sl_link_clocks_get);
++
++int sl_link_state_get(struct sl_link *link, u32 *state)
++{
++	int rtn;
++
++	rtn = sl_link_check(link);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "link state get fail");
++		return rtn;
++	}
++	if (!state) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL state");
++		return -EINVAL;
++	}
++
++	return sl_ctrl_link_state_get_cmd(link->ldev_num, link->lgrp_num, link->num, state);
++}
++EXPORT_SYMBOL(sl_link_state_get);
++
++const char *sl_link_state_str(u32 state)
++{
++	switch (state) {
++	case SL_LINK_STATE_INVALID:
++		return "invalid";
++	case SL_LINK_STATE_DOWN:
++		return "down";
++	case SL_LINK_STATE_AN:
++		return "autoneg";
++	case SL_LINK_STATE_STARTING:
++		return "starting";
++	case SL_LINK_STATE_UP:
++		return "up";
++	case SL_LINK_STATE_UP_DOWN_REQ:
++		return "up-requested-down";
++	case SL_LINK_STATE_STOPPING:
++		return "stopping";
++	default:
++		return "unknown";
++	}
++}
++EXPORT_SYMBOL(sl_link_state_str);
++
++const char *sl_link_degrade_state_str(u32 degrade_state)
++{
++	switch (degrade_state) {
++	case SL_LINK_DEGRADE_STATE_ACTIVE:
++		return "active";
++	case SL_LINK_DEGRADE_STATE_INACTIVE:
++		return "inactive";
++	case SL_LINK_DEGRADE_STATE_FAILED:
++		return "error";
++	case SL_LINK_DEGRADE_STATE_INVALID:
++		return "invalid";
++	default:
++		return "unknown";
++	}
++}
++EXPORT_SYMBOL(sl_link_degrade_state_str);
++
++const char *sl_link_an_lp_caps_state_str(u32 lp_caps_state)
++{
++	switch (lp_caps_state) {
++	case SL_CORE_LINK_LP_CAPS_NOT_RUNNING:
++		return "not_running";
++	case SL_CORE_LINK_LP_CAPS_RUNNING:
++		return "running";
++	case SL_CORE_LINK_LP_CAPS_DATA:
++		return "data";
++	case SL_CORE_LINK_LP_CAPS_TIMEOUT:
++		return "timeout";
++	case SL_CORE_LINK_LP_CAPS_ERROR:
++		return "error";
++	default:
++		return "unknown";
++	}
++}
++EXPORT_SYMBOL(sl_link_an_lp_caps_state_str);
++
++const char *sl_link_config_opt_str(u32 option)
++{
++	switch (option) {
++	case SL_LINK_CONFIG_OPT_AUTONEG_ENABLE:
++		return "autoneg-enable";
++	case SL_LINK_CONFIG_OPT_AUTONEG_CONTINUOUS_ENABLE:
++		return "autoneg-continuous";
++	case SL_LINK_CONFIG_OPT_HEADSHELL_LOOPBACK_ENABLE:
++		return "loopback-headshell-enable";
++	case SL_LINK_CONFIG_OPT_REMOTE_LOOPBACK_ENABLE:
++		return "loopback-remote-enable";
++	default:
++		return "unknown";
++	}
++}
++EXPORT_SYMBOL(sl_link_config_opt_str);
++
++const char *sl_link_policy_opt_str(u32 option)
++{
++	switch (option) {
++	case SL_LINK_POLICY_OPT_KEEP_SERDES_UP:
++		return "keep-serdes-up";
++	case SL_LINK_POLICY_OPT_USE_UNSUPPORTED_CABLE:
++		return "use-unsupported-cable";
++	case SL_LINK_POLICY_OPT_IGNORE_MEDIA_ERROR:
++		return "ignore-media-error";
++	case SL_LINK_POLICY_OPT_USE_SUPPORTED_SS200_CABLE:
++		return "use-supported-ss200-cable";
++	case SL_LINK_POLICY_OPT_LINK_DOWN_REQ:
++		return "link-down-request";
++	default:
++		return "unknown";
++	}
++}
++EXPORT_SYMBOL(sl_link_policy_opt_str);
++
++#define SL_LINK_DOWN_INFO_MASK (     \
++	SL_LINK_DOWN_RETRYABLE      |\
++	SL_LINK_DOWN_ORIGIN_ASYNC   |\
++	SL_LINK_DOWN_ORIGIN_LINK_UP)
++
++static int sl_link_down_cause_map_masked_str(unsigned long cause_map, char *cause_str, unsigned int cause_str_size,
++					     u64 mask)
++{
++	int rtn;
++	int str_pos;
++	int which;
++
++	if (!cause_str)
++		return -EINVAL;
++
++	if (cause_str_size < SL_LINK_DOWN_CAUSE_STR_SIZE_MIN)
++		return -EINVAL;
++
++	cause_map &= mask;
++
++	if (cause_map == SL_LINK_DOWN_CAUSE_NONE) {
++		scnprintf(cause_str, cause_str_size, "none");
++		return 0;
++	}
++
++	str_pos = 0;
++
++	for_each_set_bit(which, &cause_map, sizeof(cause_map) * BITS_PER_BYTE) {
++
++		switch (BIT(which)) {
++		case SL_LINK_DOWN_CAUSE_UCW:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "ucw ");
++			break;
++		case SL_LINK_DOWN_CAUSE_LF:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "lcl-fault ");
++			break;
++		case SL_LINK_DOWN_CAUSE_RF:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "rmt-fault ");
++			break;
++		case SL_LINK_DOWN_CAUSE_DOWN:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "link-down ");
++			break;
++		case SL_LINK_DOWN_CAUSE_UP_TRIES:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "up-tries ");
++			break;
++		case SL_LINK_DOWN_CAUSE_AUTONEG_NOMATCH:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "autoneg-nomatch ");
++			break;
++		case SL_LINK_DOWN_CAUSE_AUTONEG:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "autoneg-fail ");
++			break;
++		case SL_LINK_DOWN_CAUSE_CONFIG:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "config ");
++			break;
++		case SL_LINK_DOWN_CAUSE_INTR_ENABLE:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "intr-enable ");
++			break;
++		case SL_LINK_DOWN_CAUSE_TIMEOUT:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "timeout ");
++			break;
++		case SL_LINK_DOWN_CAUSE_CANCELED:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "canceled ");
++			break;
++		case SL_LINK_DOWN_CAUSE_COMMAND:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "command ");
++			break;
++		case SL_LINK_DOWN_CAUSE_DOWNSHIFT:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "downshift-fail ");
++			break;
++		case SL_LINK_DOWN_CAUSE_LLR_REPLAY_MAX:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "llr-replay-at-max ");
++			break;
++		case SL_LINK_DOWN_CAUSE_UPSHIFT:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "upshift-fail ");
++			break;
++		case SL_LINK_DOWN_CAUSE_AUTONEG_CONFIG:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "an-config ");
++			break;
++		case SL_LINK_DOWN_CAUSE_PCS_FAULT:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "pcs-fault ");
++			break;
++		case SL_LINK_DOWN_CAUSE_SERDES_PLL:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "serdes-pll ");
++			break;
++		case SL_LINK_DOWN_CAUSE_SERDES_CONFIG:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "serdes-config ");
++			break;
++		case SL_LINK_DOWN_CAUSE_SERDES_SIGNAL:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "serdes-signal ");
++			break;
++		case SL_LINK_DOWN_CAUSE_SERDES_QUALITY:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "serdes-quality ");
++			break;
++		case SL_LINK_DOWN_CAUSE_NO_MEDIA:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "no-media ");
++			break;
++		case SL_LINK_DOWN_CAUSE_CCW:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "ccw ");
++			break;
++		case SL_LINK_DOWN_CAUSE_MEDIA_HOT:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "media-hot ");
++			break;
++		case SL_LINK_DOWN_CAUSE_MEDIA_WARM:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "media-warm ");
++			break;
++		case SL_LINK_DOWN_CAUSE_INTR_REGISTER:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "interrupt-reg ");
++			break;
++		case SL_LINK_DOWN_CAUSE_MEDIA_ERROR:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "media-error ");
++			break;
++		case SL_LINK_DOWN_CAUSE_UP_CANCELED:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "up-canceled ");
++			break;
++		case SL_LINK_DOWN_CAUSE_UNSUPPORTED_SPEED:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "unsupported-speed ");
++			break;
++		case SL_LINK_DOWN_CAUSE_SS200_CABLE:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "ss200-cable ");
++			break;
++		case SL_LINK_DOWN_CAUSE_TX_LOL:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "tx-lol ");
++			break;
++		case SL_LINK_DOWN_CAUSE_RX_LOL:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "rx-lol ");
++			break;
++		case SL_LINK_DOWN_CAUSE_TX_LOS:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "tx-los ");
++			break;
++		case SL_LINK_DOWN_CAUSE_RX_LOS:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "rx-los ");
++			break;
++
++		case SL_LINK_DOWN_RETRYABLE:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "retryable ");
++			break;
++		case SL_LINK_DOWN_ORIGIN_ASYNC:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "origin-async ");
++			break;
++		case SL_LINK_DOWN_ORIGIN_LINK_UP:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "origin-up ");
++			break;
++
++		default:
++			rtn = snprintf(cause_str + str_pos, cause_str_size - str_pos, "unknown ");
++			break;
++		}
++
++		if (rtn < 0) {
++			scnprintf(cause_str, cause_str_size, "error");
++			return 0;
++		}
++		if (str_pos + rtn >= cause_str_size) {
++			str_pos = cause_str_size - 1;
++			cause_str[str_pos - 3] = '.';
++			cause_str[str_pos - 2] = '.';
++			cause_str[str_pos - 1] = '.';
++			cause_str[str_pos] = '\0';
++			return 0;
++		}
++		str_pos += rtn;
++	}
++
++	cause_str[str_pos - 1] = '\0';
++
++	return 0;
++}
++
++int sl_link_down_cause_map_str(u64 cause_map, char *cause_str, unsigned int cause_str_size)
++{
++	return sl_link_down_cause_map_masked_str(cause_map, cause_str, cause_str_size, ~SL_LINK_DOWN_INFO_MASK);
++}
++EXPORT_SYMBOL(sl_link_down_cause_map_str);
++
++int sl_link_down_cause_map_with_info_str(u64 cause_map, char *cause_str, unsigned int cause_str_size)
++{
++	return sl_link_down_cause_map_masked_str(cause_map, cause_str, cause_str_size, ~0ULL);
++}
++EXPORT_SYMBOL(sl_link_down_cause_map_with_info_str);
++
++int sl_link_info_map_str(u64 info_map, char *info_map_str, unsigned int info_map_str_size)
++{
++	return sl_core_info_map_str(info_map, info_map_str, info_map_str_size);
++}
++EXPORT_SYMBOL(sl_link_info_map_str);
++
++const char *sl_link_config_pause_str(u32 config)
++{
++	if (config == SL_LINK_CONFIG_PAUSE_ASYM)
++		return "pause-asym";
++	if (config == SL_LINK_CONFIG_PAUSE_SYM)
++		return "pause-sym";
++
++	return "unknown";
++}
++EXPORT_SYMBOL(sl_link_config_pause_str);
++
++const char *sl_link_config_hpe_str(u32 config)
++{
++	if (config == SL_LINK_CONFIG_HPE_LINKTRAIN)
++		return "link-train";
++	if (config == SL_LINK_CONFIG_HPE_PRECODING)
++		return "precode";
++	if (config == SL_LINK_CONFIG_HPE_PCAL)
++		return "progressive-cal";
++	if (config == SL_LINK_CONFIG_HPE_R3)
++		return "R3";
++	if (config == SL_LINK_CONFIG_HPE_R2)
++		return "R2";
++	if (config == SL_LINK_CONFIG_HPE_R1)
++		return "R1";
++	if (config == SL_LINK_CONFIG_HPE_C3)
++		return "C3";
++	if (config == SL_LINK_CONFIG_HPE_C2)
++		return "C2";
++	if (config == SL_LINK_CONFIG_HPE_C1)
++		return "C1";
++	if (config == SL_LINK_CONFIG_HPE_LLR)
++		return "llr";
++
++	return "unknown";
++}
++EXPORT_SYMBOL(sl_link_config_hpe_str);
+diff --git a/drivers/net/ethernet/hpe/sl/sl_llr.c b/drivers/net/ethernet/hpe/sl/sl_llr.c
+new file mode 100644
+index 000000000000..539574d4e428
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sl_llr.c
+@@ -0,0 +1,289 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2023,2024,2025 Hewlett Packard Enterprise Development LP */
++
++#include <linux/module.h>
++#include <linux/err.h>
++
++#include <linux/hpe/sl/sl_llr.h>
++
++#include "sl_asic.h"
++#include "sl_log.h"
++#include "sl_lgrp.h"
++#include "sl_llr.h"
++#include "sl_ctrl_llr.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_LLR_LOG_NAME
++
++static struct sl_llr llrs[SL_ASIC_MAX_LDEVS][SL_ASIC_MAX_LGRPS][SL_ASIC_MAX_LINKS];
++
++void sl_llr_init(void)
++{
++	u8 ldev_num;
++	u8 lgrp_num;
++	u8 link_num;
++
++	for (ldev_num = 0; ldev_num < SL_ASIC_MAX_LDEVS; ++ldev_num) {
++		for (lgrp_num = 0; lgrp_num < SL_ASIC_MAX_LGRPS; ++lgrp_num) {
++			for (link_num = 0; link_num < SL_ASIC_MAX_LINKS; ++link_num) {
++				llrs[ldev_num][lgrp_num][link_num].magic    = SL_LLR_MAGIC;
++				llrs[ldev_num][lgrp_num][link_num].ver      = SL_LLR_VER;
++				llrs[ldev_num][lgrp_num][link_num].num      = link_num;
++				llrs[ldev_num][lgrp_num][link_num].lgrp_num = lgrp_num;
++				llrs[ldev_num][lgrp_num][link_num].ldev_num = ldev_num;
++			}
++		}
++	}
++}
++
++static int sl_llr_check(struct sl_llr *llr)
++{
++	if (!llr) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL llr");
++		return -EINVAL;
++	}
++	if (IS_ERR(llr)) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "llr pointer error");
++		return -EINVAL;
++	}
++	if (llr->magic != SL_LLR_MAGIC) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad llr magic");
++		return -EINVAL;
++	}
++	if (llr->ver != SL_LLR_VER) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "wrong llr version");
++		return -EINVAL;
++	}
++	if (llr->num >= SL_ASIC_MAX_LINKS) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad llr num");
++		return -EINVAL;
++	}
++	if (llr->lgrp_num >= SL_ASIC_MAX_LGRPS) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad lgrp num");
++		return -EINVAL;
++	}
++	if (llr->ldev_num >= SL_ASIC_MAX_LDEVS) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad ldev num");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int sl_llr_config_check(struct sl_llr_config *llr_config)
++{
++	if (!llr_config) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL llr_config");
++		return -EINVAL;
++	}
++	if (IS_ERR(llr_config)) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "llr_config pointer error");
++		return -EINVAL;
++	}
++	if (llr_config->magic != SL_LLR_CONFIG_MAGIC) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad llr_config magic");
++		return -EINVAL;
++	}
++	if (llr_config->ver != SL_LLR_CONFIG_VER) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "wrong llr_config version");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int sl_llr_policy_check(struct sl_llr_policy *llr_policy)
++{
++	if (!llr_policy) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL llr_policy");
++		return -EINVAL;
++	}
++	if (IS_ERR(llr_policy)) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "llr_policy pointer error");
++		return -EINVAL;
++	}
++	if (llr_policy->magic != SL_LLR_POLICY_MAGIC) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad llr_policy magic");
++		return -EINVAL;
++	}
++	if (llr_policy->ver != SL_LLR_POLICY_VER) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "wrong llr_policy version");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++struct sl_llr *sl_llr_new(struct sl_lgrp *lgrp, u8 llr_num, struct kobject *sysfs_parent)
++{
++	int rtn;
++
++	rtn = sl_lgrp_check(lgrp);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "new fail");
++		return ERR_PTR(rtn);
++	}
++	if (llr_num >= SL_ASIC_MAX_LINKS) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "invalid (llr_num = %u)", llr_num);
++		return ERR_PTR(-EINVAL);
++	}
++
++	rtn = sl_ctrl_llr_new(lgrp->ldev_num, lgrp->num, llr_num, sysfs_parent);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "new fail");
++		return ERR_PTR(rtn);
++	}
++
++	return &llrs[lgrp->ldev_num][lgrp->num][llr_num];
++}
++EXPORT_SYMBOL(sl_llr_new);
++
++int sl_llr_del(struct sl_llr *llr)
++{
++	int rtn;
++
++	rtn = sl_llr_check(llr);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "del fail");
++		return rtn;
++	}
++
++	return sl_ctrl_llr_del(llr->ldev_num, llr->lgrp_num, llr->num);
++}
++EXPORT_SYMBOL(sl_llr_del);
++
++int sl_llr_config_set(struct sl_llr *llr, struct sl_llr_config *llr_config)
++{
++	int rtn;
++
++	rtn = sl_llr_check(llr);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "config set fail");
++		return rtn;
++	}
++	rtn = sl_llr_config_check(llr_config);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "config set fail");
++		return rtn;
++	}
++
++	return sl_ctrl_llr_config_set(llr->ldev_num, llr->lgrp_num, llr->num, llr_config);
++}
++EXPORT_SYMBOL(sl_llr_config_set);
++
++int sl_llr_policy_set(struct sl_llr *llr, struct sl_llr_policy *llr_policy)
++{
++	int rtn;
++
++	rtn = sl_llr_check(llr);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "policy set fail");
++		return rtn;
++	}
++	rtn = sl_llr_policy_check(llr_policy);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "policy set fail");
++		return rtn;
++	}
++
++	return sl_ctrl_llr_policy_set(llr->ldev_num, llr->lgrp_num, llr->num, llr_policy);
++}
++EXPORT_SYMBOL(sl_llr_policy_set);
++
++int sl_llr_setup(struct sl_llr *llr)
++{
++	int rtn;
++
++	rtn = sl_llr_check(llr);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "setup fail");
++		return rtn;
++	}
++
++	return sl_ctrl_llr_setup(llr->ldev_num, llr->lgrp_num, llr->num);
++}
++EXPORT_SYMBOL(sl_llr_setup);
++
++int sl_llr_start(struct sl_llr *llr)
++{
++	int rtn;
++
++	rtn = sl_llr_check(llr);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "start fail");
++		return rtn;
++	}
++
++	return sl_ctrl_llr_start(llr->ldev_num, llr->lgrp_num, llr->num);
++}
++EXPORT_SYMBOL(sl_llr_start);
++
++int sl_llr_stop(struct sl_llr *llr)
++{
++	int rtn;
++
++	rtn = sl_llr_check(llr);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "stop fail");
++		return rtn;
++	}
++
++	return sl_ctrl_llr_stop(llr->ldev_num, llr->lgrp_num, llr->num);
++}
++EXPORT_SYMBOL(sl_llr_stop);
++
++int sl_llr_state_get(struct sl_llr *llr, enum sl_llr_state *state)
++{
++	int rtn;
++
++	rtn = sl_llr_check(llr);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "state get fail");
++		return rtn;
++	}
++
++	return sl_ctrl_llr_state_get(llr->ldev_num, llr->lgrp_num, llr->num, state);
++}
++EXPORT_SYMBOL(sl_llr_state_get);
++
++const char *sl_llr_state_str(u32 state)
++{
++	switch (state) {
++	case SL_LLR_STATE_INVALID:
++		return "invalid";
++	case SL_LLR_STATE_OFF:
++		return "off";
++	case SL_LLR_STATE_CONFIGURED:
++		return "configured";
++	case SL_LLR_STATE_SETUP_BUSY:
++		return "setup-busy";
++	case SL_LLR_STATE_SETUP:
++		return "setup";
++	case SL_LLR_STATE_START_BUSY:
++		return "start-busy";
++	case SL_LLR_STATE_RUNNING:
++		return "running";
++	case SL_LLR_STATE_CANCELING:
++		return "canceling";
++	case SL_LLR_STATE_STOP_BUSY:
++		return "stop-busy";
++	default:
++		return "unknown";
++	}
++}
++EXPORT_SYMBOL(sl_llr_state_str);
++
++const char *sl_llr_link_dn_behavior_str(u32 behavior)
++{
++	switch (behavior) {
++	case SL_LLR_LINK_DN_BEHAVIOR_DISCARD:
++		return "discard";
++	case SL_LLR_LINK_DN_BEHAVIOR_BLOCK:
++		return "block";
++	case SL_LLR_LINK_DN_BEHAVIOR_BEST_EFFORT:
++		return "best-effort";
++	default:
++		return "unknown";
++	}
++}
++EXPORT_SYMBOL(sl_llr_link_dn_behavior_str);
+diff --git a/drivers/net/ethernet/hpe/sl/sl_mac.c b/drivers/net/ethernet/hpe/sl/sl_mac.c
+new file mode 100644
+index 000000000000..a8c6ee46721e
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sl_mac.c
+@@ -0,0 +1,220 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2023,2024,2025 Hewlett Packard Enterprise Development LP */
++
++#include <linux/module.h>
++#include <linux/err.h>
++
++#include <linux/hpe/sl/sl_mac.h>
++
++#include "sl_asic.h"
++#include "sl_log.h"
++#include "sl_lgrp.h"
++#include "sl_mac.h"
++#include "sl_ctrl_mac.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_MAC_LOG_NAME
++
++static struct sl_mac macs[SL_ASIC_MAX_LDEVS][SL_ASIC_MAX_LGRPS][SL_ASIC_MAX_LINKS];
++
++void sl_mac_init(void)
++{
++	u8 ldev_num;
++	u8 lgrp_num;
++	u8 link_num;
++
++	for (ldev_num = 0; ldev_num < SL_ASIC_MAX_LDEVS; ++ldev_num) {
++		for (lgrp_num = 0; lgrp_num < SL_ASIC_MAX_LGRPS; ++lgrp_num) {
++			for (link_num = 0; link_num < SL_ASIC_MAX_LINKS; ++link_num) {
++				macs[ldev_num][lgrp_num][link_num].magic    = SL_MAC_MAGIC;
++				macs[ldev_num][lgrp_num][link_num].ver      = SL_MAC_VER;
++				macs[ldev_num][lgrp_num][link_num].num      = link_num;
++				macs[ldev_num][lgrp_num][link_num].lgrp_num = lgrp_num;
++				macs[ldev_num][lgrp_num][link_num].ldev_num = ldev_num;
++			}
++		}
++	}
++}
++
++static int sl_mac_check(struct sl_mac *mac)
++{
++	if (!mac) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL mac");
++		return -EINVAL;
++	}
++	if (IS_ERR(mac)) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "mac pointer error");
++		return -EINVAL;
++	}
++	if (mac->magic != SL_MAC_MAGIC) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad mac magic");
++		return -EINVAL;
++	}
++	if (mac->ver != SL_MAC_VER) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad mac version");
++		return -EINVAL;
++	}
++	if (mac->num >= SL_ASIC_MAX_LINKS) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad mac num");
++		return -EINVAL;
++	}
++	if (mac->lgrp_num >= SL_ASIC_MAX_LGRPS) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad lgrp num");
++		return -EINVAL;
++	}
++	if (mac->ldev_num >= SL_ASIC_MAX_LDEVS) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "bad ldev num");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++struct sl_mac *sl_mac_new(struct sl_lgrp *lgrp, u8 mac_num, struct kobject *sysfs_parent)
++{
++	int rtn;
++
++	rtn = sl_lgrp_check(lgrp);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "new fail");
++		return ERR_PTR(rtn);
++	}
++	if (mac_num >= SL_ASIC_MAX_LINKS) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "invalid (mac_num = %u)", mac_num);
++		return ERR_PTR(-EINVAL);
++	}
++
++	rtn = sl_ctrl_mac_new(lgrp->ldev_num, lgrp->num, mac_num, sysfs_parent);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "new fail");
++		return ERR_PTR(rtn);
++	}
++
++	return &macs[lgrp->ldev_num][lgrp->num][mac_num];
++}
++EXPORT_SYMBOL(sl_mac_new);
++
++int sl_mac_del(struct sl_mac *mac)
++{
++	int rtn;
++
++	rtn = sl_mac_check(mac);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "del fail");
++		return rtn;
++	}
++
++	return sl_ctrl_mac_del(mac->ldev_num, mac->lgrp_num, mac->num);
++}
++EXPORT_SYMBOL(sl_mac_del);
++
++int sl_mac_tx_start(struct sl_mac *mac)
++{
++	int rtn;
++
++	rtn = sl_mac_check(mac);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "tx start fail");
++		return rtn;
++	}
++
++	return sl_ctrl_mac_tx_start(mac->ldev_num, mac->lgrp_num, mac->num);
++}
++EXPORT_SYMBOL(sl_mac_tx_start);
++
++int sl_mac_tx_stop(struct sl_mac *mac)
++{
++	int rtn;
++
++	rtn = sl_mac_check(mac);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "tx stop fail");
++		return rtn;
++	}
++
++	return sl_ctrl_mac_tx_stop(mac->ldev_num, mac->lgrp_num, mac->num);
++}
++EXPORT_SYMBOL(sl_mac_tx_stop);
++
++int sl_mac_tx_state_get(struct sl_mac *mac, u32 *state)
++{
++	int rtn;
++
++	rtn = sl_mac_check(mac);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "tx state get fail");
++		return rtn;
++	}
++
++	return sl_ctrl_mac_tx_state_get(mac->ldev_num, mac->lgrp_num, mac->num, state);
++}
++EXPORT_SYMBOL(sl_mac_tx_state_get);
++
++int sl_mac_rx_start(struct sl_mac *mac)
++{
++	int rtn;
++
++	rtn = sl_mac_check(mac);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "rx start fail");
++		return rtn;
++	}
++
++	return sl_ctrl_mac_rx_start(mac->ldev_num, mac->lgrp_num, mac->num);
++}
++EXPORT_SYMBOL(sl_mac_rx_start);
++
++int sl_mac_rx_stop(struct sl_mac *mac)
++{
++	int rtn;
++
++	rtn = sl_mac_check(mac);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "rx stop fail");
++		return rtn;
++	}
++
++	return sl_ctrl_mac_rx_stop(mac->ldev_num, mac->lgrp_num, mac->num);
++}
++EXPORT_SYMBOL(sl_mac_rx_stop);
++
++int sl_mac_rx_state_get(struct sl_mac *mac, u32 *state)
++{
++	int rtn;
++
++	rtn = sl_mac_check(mac);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "rx state get fail");
++		return rtn;
++	}
++
++	return sl_ctrl_mac_rx_state_get(mac->ldev_num, mac->lgrp_num, mac->num, state);
++}
++EXPORT_SYMBOL(sl_mac_rx_state_get);
++
++int sl_mac_reset(struct sl_mac *mac)
++{
++	int rtn;
++
++	rtn = sl_mac_check(mac);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "reset fail");
++		return rtn;
++	}
++
++	return sl_ctrl_mac_reset(mac->ldev_num, mac->lgrp_num, mac->num);
++}
++EXPORT_SYMBOL(sl_mac_reset);
++
++const char *sl_mac_state_str(u32 state)
++{
++	switch (state) {
++	case SL_MAC_STATE_OFF:
++		return "off";
++	case SL_MAC_STATE_ON:
++		return "on";
++	default:
++		return "unknown";
++	}
++}
++EXPORT_SYMBOL(sl_mac_state_str);
+diff --git a/drivers/net/ethernet/hpe/sl/sl_media.c b/drivers/net/ethernet/hpe/sl/sl_media.c
+new file mode 100644
+index 000000000000..50f60e36645c
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sl_media.c
+@@ -0,0 +1,356 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2022,2023,2024,2025 Hewlett Packard Enterprise Development LP */
++
++#include <linux/module.h>
++
++#include <linux/hpe/sl/sl_media.h>
++
++#include "sl_log.h"
++#include "sl_lgrp.h"
++#include "sl_media_jack.h"
++
++#define LOG_BLOCK SL_LOG_BLOCK
++#define LOG_NAME  SL_LOG_MEDIA_LOG_NAME
++
++int sl_media_headshell_temp_get(struct sl_lgrp *lgrp, u8 *temp)
++{
++	int rtn;
++
++	rtn = sl_lgrp_check(lgrp);
++	if (rtn) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "headshell temp get fail");
++		return rtn;
++	}
++	if (!temp) {
++		sl_log_err(NULL, LOG_BLOCK, LOG_NAME, "NULL temp");
++		return -EINVAL;
++	}
++
++	return sl_media_jack_cable_temp_get(lgrp->ldev_num, lgrp->num, temp);
++}
++EXPORT_SYMBOL(sl_media_headshell_temp_get);
++
++const char *sl_media_furcation_str(u32 furcation)
++{
++	switch (furcation) {
++	case SL_MEDIA_FURCATION_X1:
++		return "unfurcated";
++	case SL_MEDIA_FURCATION_X2:
++		return "bifurcated";
++	case SL_MEDIA_FURCATION_X4:
++		return "quadfurcated";
++	case SL_MEDIA_FURCATION_UNKNOWN:
++		return "unknown";
++	default:
++		return "invalid";
++	}
++}
++EXPORT_SYMBOL(sl_media_furcation_str);
++
++const char *sl_media_state_str(u8 state)
++{
++	switch (state) {
++	case SL_MEDIA_JACK_CABLE_REMOVED:
++		return "removed";
++	case SL_MEDIA_JACK_CABLE_INSERTED:
++		return "inserted";
++	case SL_MEDIA_JACK_CABLE_GOING_ONLINE:
++		return "going-online";
++	case SL_MEDIA_JACK_CABLE_ONLINE:
++		return "online";
++	case SL_MEDIA_JACK_CABLE_ERROR:
++		return "error";
++	default:
++		return "invalid";
++	}
++}
++EXPORT_SYMBOL(sl_media_state_str);
++
++const char *sl_media_cable_speed_state_str(u8 cable_speed_state)
++{
++	switch (cable_speed_state) {
++	case SL_MEDIA_JACK_CABLE_SHIFT_STATE_UPSHIFTED:
++		return "400G";
++	case SL_MEDIA_JACK_CABLE_SHIFT_STATE_DOWNSHIFTED:
++		return "200G";
++	case SL_MEDIA_JACK_CABLE_SHIFT_STATE_FAILED_NO_CABLE:
++		return "failed-no-cable";
++	case SL_MEDIA_JACK_CABLE_SHIFT_STATE_FAILED_FAKE_CABLE:
++		return "failed-fake-cable";
++	case SL_MEDIA_JACK_CABLE_SHIFT_STATE_FAILED_NO_SUPPORT:
++		return "failed-no-support";
++	case SL_MEDIA_JACK_CABLE_SHIFT_STATE_FAILED_CHECK:
++		return "failed-check";
++	case SL_MEDIA_JACK_CABLE_SHIFT_STATE_FAILED_UPSHIFT:
++		return "failed-up";
++	case SL_MEDIA_JACK_CABLE_SHIFT_STATE_FAILED_DOWNSHIFT:
++		return "failed-down";
++	case SL_MEDIA_JACK_CABLE_SHIFT_STATE_NOTSHIFTED:
++		return "none";
++	default:
++		return "invalid";
++	}
++}
++EXPORT_SYMBOL(sl_media_cable_speed_state_str);
++
++const char *sl_media_type_str(u32 type)
++{
++	switch (type) {
++	case SL_MEDIA_TYPE_HEADSHELL:
++		return "headshell";
++	case SL_MEDIA_TYPE_BACKPLANE:
++		return "backplane";
++	case SL_MEDIA_TYPE_ELECTRICAL:
++		return "electrical";
++	case SL_MEDIA_TYPE_OPTICAL:
++		return "optical";
++	case SL_MEDIA_TYPE_PASSIVE:
++		return "passive";
++	case SL_MEDIA_TYPE_ACTIVE:
++		return "active";
++	case SL_MEDIA_TYPE_ANALOG:
++		return "analog";
++	case SL_MEDIA_TYPE_DIGITAL:
++		return "digital";
++	case SL_MEDIA_TYPE_LOOPBACK:
++		return "loopback";
++	case SL_MEDIA_TYPE_UNSUPPORTED:
++		return "unsupported";
++	case SL_MEDIA_TYPE_UNKNOWN:
++		return "unknown";
++	case SL_MEDIA_TYPE_AOC:
++		return "AOC";
++	case SL_MEDIA_TYPE_POC:
++		return "POC";
++	case SL_MEDIA_TYPE_PEC:
++		return "PEC";
++	case SL_MEDIA_TYPE_AEC:
++		return "AEC";
++	case SL_MEDIA_TYPE_ACC:
++		return "ACC";
++	case SL_MEDIA_TYPE_BKP:
++		return "BKP";
++	default:
++		return "invalid";
++	}
++}
++EXPORT_SYMBOL(sl_media_type_str);
++
++const char *sl_media_shape_str(u32 shape)
++{
++	switch (shape) {
++	case SL_MEDIA_SHAPE_UNKNOWN:
++		return "unknown";
++	case SL_MEDIA_SHAPE_STRAIGHT:
++		return "straight";
++	case SL_MEDIA_SHAPE_SPLITTER:
++		return "splitter(y)";
++	case SL_MEDIA_SHAPE_BIFURCATED:
++		return "bifurcated(H)";
++	default:
++		return "invalid";
++	}
++}
++EXPORT_SYMBOL(sl_media_shape_str);
++
++const char *sl_media_cable_end_str(u8 cable_end)
++{
++	switch (cable_end) {
++	case SL_MEDIA_CABLE_END_DD:
++		return "qsfp_dd";
++	case SL_MEDIA_CABLE_END_END1:
++		return "qsfp_end1";
++	case SL_MEDIA_CABLE_END_END2:
++		return "qsfp_end2";
++	default:
++		return "invalid";
++	}
++}
++EXPORT_SYMBOL(sl_media_cable_end_str);
++
++const char *sl_media_vendor_str(u32 vendor)
++{
++	switch (vendor) {
++	case SL_MEDIA_VENDOR_UNKNOWN:
++		return "unknown";
++	case SL_MEDIA_VENDOR_TE:
++		return "te";
++	case SL_MEDIA_VENDOR_HISENSE:
++		return "hisense";
++	case SL_MEDIA_VENDOR_LEONI:
++		return "leoni";
++	case SL_MEDIA_VENDOR_FINISAR:
++		return "finisar";
++	case SL_MEDIA_VENDOR_MOLEX:
++		return "molex";
++	case SL_MEDIA_VENDOR_BIZLINK:
++		return "bizlink";
++	case SL_MEDIA_VENDOR_HPE:
++		return "hpe";
++	case SL_MEDIA_VENDOR_CLOUD_LIGHT:
++		return "cloud-light";
++	case SL_MEDIA_VENDOR_MULTILANE:
++		return "multilane";
++	case SL_MEDIA_VENDOR_AMPHENOL:
++		return "amphenol";
++	default:
++		return "invalid";
++	}
++}
++EXPORT_SYMBOL(sl_media_vendor_str);
++
++const char *sl_media_speed_str(u32 speed)
++{
++	switch (speed) {
++	case SL_MEDIA_SPEEDS_SUPPORT_CK_800G:
++		return "ck800G";
++	case SL_MEDIA_SPEEDS_SUPPORT_CK_400G:
++		return "ck400G";
++	case SL_MEDIA_SPEEDS_SUPPORT_CK_200G:
++		return "ck200G";
++	case SL_MEDIA_SPEEDS_SUPPORT_CK_100G:
++		return "ck100G";
++	case SL_MEDIA_SPEEDS_SUPPORT_BS_200G:
++		return "bs200G";
++	case SL_MEDIA_SPEEDS_SUPPORT_BJ_100G:
++		return "bj100G";
++	case SL_MEDIA_SPEEDS_SUPPORT_CD_100G:
++		return "cd100G";
++	case SL_MEDIA_SPEEDS_SUPPORT_CD_50G:
++		return "cd50G";
++	default:
++		return "invalid";
++	}
++}
++EXPORT_SYMBOL(sl_media_speed_str);
++
++const char *sl_media_ber_str(u8 media_interface)
++{
++	switch (media_interface) {
++	case 1:
++		return "<1E-12";
++	case 2:
++		return "<5E-5";
++	case 3:
++		return "<2.6E-4";
++	case 4:
++		return "<1E-6";
++	default:
++		return "invalid";
++	}
++}
++EXPORT_SYMBOL(sl_media_ber_str);
++
++const char *sl_media_host_interface_str(u32 speed, u32 type)
++{
++	if ((type == SL_MEDIA_TYPE_PEC) || (type == SL_MEDIA_TYPE_BKP)) {
++		switch (speed) {
++		case SL_MEDIA_SPEEDS_SUPPORT_CD_50G:
++			return "50GBASE-CR";
++		case SL_MEDIA_SPEEDS_SUPPORT_CD_100G:
++			return "100GBASE-CR2";
++		case SL_MEDIA_SPEEDS_SUPPORT_CK_100G:
++			return "100GBASE-CR1";
++		case SL_MEDIA_SPEEDS_SUPPORT_BS_200G:
++			return "200GBASE-CR4";
++		case SL_MEDIA_SPEEDS_SUPPORT_CK_200G:
++			return "200GBASE-CR2";
++		case SL_MEDIA_SPEEDS_SUPPORT_CK_400G:
++			return "400GBASE-CR4";
++		case SL_MEDIA_SPEEDS_SUPPORT_CK_800G:
++			return "800GBASE-CR8";
++		case SL_MEDIA_SPEEDS_SUPPORT_BJ_100G:
++			return "BJ-100G";
++		default:
++			return "invalid";
++		}
++	}
++
++	switch (speed) {
++	case SL_MEDIA_SPEEDS_SUPPORT_CD_50G:
++		return "50GAUI-1-C2M";
++	case SL_MEDIA_SPEEDS_SUPPORT_CD_100G:
++		return "100GAUI-2-C2M";
++	case SL_MEDIA_SPEEDS_SUPPORT_CK_100G:
++		return "100GAUI-1-L-C2M";
++	case SL_MEDIA_SPEEDS_SUPPORT_BS_200G:
++		return "200GAUI-4-C2M";
++	case SL_MEDIA_SPEEDS_SUPPORT_CK_200G:
++		return "200GAUI-2-S-C2M";
++	case SL_MEDIA_SPEEDS_SUPPORT_CK_400G:
++		return "400GAUI-4-S-C2M";
++	case SL_MEDIA_SPEEDS_SUPPORT_CK_800G:
++		return "800GAUI-8-S-C2M";
++	case SL_MEDIA_SPEEDS_SUPPORT_BJ_100G:
++		return "BJ-100G";
++	default:
++		return "invalid";
++	}
++
++}
++EXPORT_SYMBOL(sl_media_host_interface_str);
++
++const char *sl_media_info_str(u32 info)
++{
++	switch (info) {
++	case SL_MEDIA_INFO_AUTONEG:
++		return "autoneg";
++	case SL_MEDIA_INFO_FAKE:
++		return "fake";
++	case SL_MEDIA_INFO_RESETTABLE:
++		return "resettable";
++	case SL_MEDIA_INFO_LINKTRAIN:
++		return "linktrain";
++	case SL_MEDIA_INFO_SUPPORTED_SS200_CABLE:
++		return "supported-ss200-cable";
++	default:
++		return "invalid";
++	}
++}
++EXPORT_SYMBOL(sl_media_info_str);
++
++const char *sl_media_error_str(u32 error)
++{
++	switch (error) {
++	case SL_MEDIA_ERROR_CABLE_UNSUPPORTED:
++		return "unsupported";
++	case SL_MEDIA_ERROR_CABLE_FORMAT_UNSUPPORTED:
++		return "unsupported-format";
++	case SL_MEDIA_ERROR_CABLE_FW_UNSUPPORTED:
++		return "unsupported-fw";
++	case SL_MEDIA_ERROR_CABLE_HEADSHELL_FAULT:
++		return "headshell-fault";
++	case SL_MEDIA_ERROR_TEMP_DOWN_LIMIT_DEFAULT:
++		return "temperature-down-limit-default";
++	case SL_MEDIA_ERROR_TEMP_WARN_LIMIT_DEFAULT:
++		return "temperature-warn-limit-default";
++	case SL_MEDIA_ERROR_TRYABLE:
++		return "tryable";
++	default:
++		return "invalid";
++	}
++}
++EXPORT_SYMBOL(sl_media_error_str);
++
++const char *sl_media_jack_type_str(u32 jack_type, u32 density)
++{
++	switch (jack_type) {
++	case SL_MEDIA_JACK_TYPE_BACKPLANE:
++		return "backplane";
++	case SL_MEDIA_JACK_TYPE_SFP:
++		return "sfp";
++	case SL_MEDIA_JACK_TYPE_QSFP:
++		if (density == SL_MEDIA_QSFP_DENSITY_DOUBLE)
++			return "qsfp-dd";
++		return "qsfp";
++	case SL_MEDIA_JACK_TYPE_OSFP:
++		return "osfp";
++	case SL_MEDIA_JACK_TYPE_UNKNOWN:
++		return "unknown";
++	case SL_MEDIA_JACK_TYPE_UNSUPPORTED:
++		return "unsupported";
++	default:
++		return "invalid";
++	}
++}
++EXPORT_SYMBOL(sl_media_jack_type_str);
+diff --git a/drivers/net/ethernet/hpe/sl/sl_media_nic.c b/drivers/net/ethernet/hpe/sl/sl_media_nic.c
+new file mode 100644
+index 000000000000..23af513e6bd9
+--- /dev/null
++++ b/drivers/net/ethernet/hpe/sl/sl_media_nic.c
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: GPL-2.0
 +/* Copyright 2025 Hewlett Packard Enterprise Development LP */
 +
++#include <linux/module.h>
 +#include <linux/types.h>
-+#include <linux/kernel.h>
-+#include <linux/device.h>
-+#include <linux/random.h>
-+#include <linux/delay.h>
 +
-+#include <linux/hpe/sbl/sbl.h>
-+#include <linux/hpe/sbl/sbl_an.h>
++#include <linux/hpe/sl/sl_lgrp.h>
 +
-+#include <linux/hpe/sbl/sbl_pml.h>
++#include "sl_lgrp.h"
 +
-+#include "sbl_pml_fn.h"
-+#include "sbl_link.h"
-+#include "sbl_serdes.h"
-+#include "sbl_constants.h"
-+#include "sbl_serdes_map.h"
-+#include "sbl_internal.h"
-+
-+int sbl_an_page_exchange(struct sbl_inst *sbl, int port_num, unsigned long remaining_jiffies)
++int sl_media_cable_insert(struct sl_lgrp *lgrp, u8 *eeprom_page0, u8 *eeprom_page1, u32 flags)
 +{
-+	struct sbl_link *link = sbl->link + port_num;
-+	int xcng_count = 1;
-+	u64 sts_autoneg_next_reg;
-+	u32 base = SBL_PML_BASE(port_num);
-+	int err;
-+
-+	/* -- Interrupt based next page exchange sequence -- */
-+	do {
-+		/* Too many Rx pages ?*/
-+		if (xcng_count >= SBL_AN_MAX_RX_PAGES) {
-+			sbl_dev_err_ratelimited(sbl->dev, "an %d: rx next page: too many pages %d",
-+						port_num, xcng_count);
-+			sbl_an_dump_state(sbl, port_num);
-+			return -EPROTO;
-+		}
-+
-+		sbl_dev_dbg(sbl->dev, "an %d: next page %d: start", port_num, xcng_count);
-+
-+		if (sbl_base_link_start_cancelled(sbl, port_num))
-+			return -ECANCELED;
-+		if (sbl_start_timeout(sbl, port_num))
-+			return -ETIMEDOUT;
-+
-+		/* setup the next page (real or null) */
-+		if (xcng_count < link->an_tx_count)
-+			sbl_an_setup_next_page(sbl, port_num, xcng_count);
-+		else
-+			sbl_an_setup_null_page(sbl, port_num);
-+
-+		/* setup and enable interrupt */
-+		err = sbl_an_hw_wait_prepare(sbl, port_num);
-+		if (err)
-+			return err;
-+
-+		/* send the next page */
-+		sbl_an_send_next_page(sbl, port_num);
-+
-+		/* wait for next page interrupt */
-+		remaining_jiffies = wait_for_completion_timeout(&link->an_hw_change, remaining_jiffies);
-+		if (sbl_base_link_start_cancelled(sbl, port_num))
-+			return -ECANCELED;
-+		if (!remaining_jiffies) {
-+			sbl_dev_err(sbl->dev, "an %d: next page %d: exchange timeout", port_num, xcng_count);
-+			sbl_an_dump_state(sbl, port_num);
-+			return -ETIME;
-+		}
-+
-+		/* check if received page is a next page */
-+		if (!sbl_an_is_next_page(sbl, port_num)) {
-+			sbl_dev_dbg_ratelimited(sbl->dev, "an %d: next page %d: missing next page indication, resend next-page",
-+						port_num, xcng_count);
-+			sbl_an_dump_state(sbl, port_num);
-+			continue;
-+
-+		}
-+
-+		/* put the received page in the buffer if indicated */
-+		if (link->an_rx_page[xcng_count - 1] & AN_NP_NP_MASK) {
-+			sts_autoneg_next_reg = sbl_read64(sbl, base |
-+						  SBL_PML_STS_PCS_AUTONEG_NEXT_PAGE_OFFSET);
-+			link->an_rx_page[xcng_count] =
-+				SBL_PML_STS_PCS_AUTONEG_NEXT_PAGE_LP_NEXT_PAGE_GET(sts_autoneg_next_reg);
-+			sbl_dev_dbg(sbl->dev, "an %d: rx next page: 0x%llx",
-+				    port_num, link->an_rx_page[xcng_count]);
-+			link->an_rx_count++;
-+		}
-+
-+		/* go to the additional next page */
-+		xcng_count++;
-+
-+		/* check to see if the exchange is done */
-+	} while (!sbl_an_next_is_complete(sbl, port_num));
-+
++	/* placeholder for future functionality */
 +	return 0;
 +}
++EXPORT_SYMBOL(sl_media_cable_insert);
 +
-+void sbl_an_version_read(struct sbl_inst *sbl, int port_num)
++int sl_media_cable_remove(struct sl_lgrp *lgrp)
 +{
-+	struct sbl_link *link = sbl->link + port_num;
-+
-+	/* cassini version here */
-+	/* TODO: Implement dynamic version detection from HW device tree or runtime detection.
-+	 * Currently hardcoded to CASSINI_V1. Should query actual hardware version
-+	 * during autonegotiation setup to properly report link partner capability.
-+	 */
-+	link->an_tx_page[2] |= ((SBL_LP_SUBTYPE_CASSINI_V1 & AN_LP_SUBTYPE_MASK) << AN_LP_SUBTYPE_BASE_BIT);
++	/* placeholder for future functionality */
++	return 0;
 +}
-diff --git a/drivers/net/ethernet/hpe/sbl/sbl_link_nic.c b/drivers/net/ethernet/hpe/sbl/sbl_link_nic.c
++EXPORT_SYMBOL(sl_media_cable_remove);
+diff --git a/drivers/net/ethernet/hpe/sl/sl_module.c b/drivers/net/ethernet/hpe/sl/sl_module.c
 new file mode 100644
-index 000000000000..2c0be275d019
+index 000000000000..b63efedf94ff
 --- /dev/null
-+++ b/drivers/net/ethernet/hpe/sbl/sbl_link_nic.c
-@@ -0,0 +1,196 @@
++++ b/drivers/net/ethernet/hpe/sl/sl_module.c
+@@ -0,0 +1,129 @@
 +// SPDX-License-Identifier: GPL-2.0
++/* Copyright 2023-2026 Hewlett Packard Enterprise Development LP */
 +
-+/* Copyright 2025 Hewlett Packard Enterprise Development LP */
-+
-+#include <linux/types.h>
-+#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/moduleparam.h>
++#include <linux/init.h>
 +#include <linux/device.h>
-+#include <linux/delay.h>
++#include <linux/cdev.h>
++#include <linux/fs.h>
++#include <linux/version.h>
 +
-+#include <linux/hpe/sbl/sbl.h>
-+#include <linux/hpe/sbl/sbl_an.h>
-+#include <linux/hpe/sbl/sbl_fec.h>
-+#include <linux/hpe/sbl/sbl_kconfig.h>
++#include "sl_module.h"
 +
-+#include <linux/hpe/sbl/sbl_pml.h>
++#include "sl.h"
++#include "sl_ldev.h"
++#include "sl_lgrp.h"
++#include "sl_link.h"
++#include "sl_llr.h"
++#include "sl_mac.h"
 +
-+#include "sbl_serdes_map.h"
-+#include "sbl_pml_fn.h"
-+#include "sbl_link.h"
-+#include "sbl_serdes.h"
-+#include "sbl_serdes_fn.h"
-+#include "sbl_internal.h"
++static unsigned long serdes_core_io_trace_lgrp_map;
++module_param(serdes_core_io_trace_lgrp_map, ulong, 0644);
++MODULE_PARM_DESC(serdes_core_io_trace_lgrp_map, "serdes core io trace enable link group map");
 +
-+/**
-+ * sbl_link_get_fec_thresholds() - Get fec thresholds
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @ucw_bad: Pointer to an int where output is stored(ucw threshold value)
-+ * @ccw_bad: Pointer to an int where output is stored(ccw threshold value)
-+ * @fecl_warn: Pointer to an int where output is stored(warn threshold value)
-+ *
-+ * Get threshold values based on link mode used.
-+ * @ucw_bad, @ucw_bad and @fecl_warn holds the values and
-+ * returns through provided pointers to the caller.
-+ *
-+ * Return the failure and warning thresholds for fec metrics
-+ * monitoring
-+ *
-+ * The ccw values used here corresponds to a BER of 1.e-4
-+ * The ucw values correspond to a little less than 1e-10
-+ * The single lane fec warning threshold is the ccw rate divided by
-+ * the number of fec lanes in use for the mode.
-+ *
-+ *
-+ * 200G LINK (BS) (CD)
-+ *   212500000000 bits/second over a 4-lane link @ 200G
-+ *   39062500 cw/s (5440 bits/codeword)
-+ *
-+ *   (Post)Pre-FEC BER
-+ *  21250000.000000 (un)corrected cw/s => 1e-04 BER (1 bad bit per codeword)
-+ *   2125000.000000 (un)corrected cw/s => 1e-05 BER
-+ *    212500.000000 (un)corrected cw/s => 1e-06 BER
-+ *     21250.000000 (un)corrected cw/s => 1e-07 BER
-+ *      2125.000000 (un)corrected cw/s => 1e-08 BER
-+ *       212.500000 (un)corrected cw/s => 1e-09 BER
-+ *        21.250000 (un)corrected cw/s => 1e-10 BER
-+ *         2.125000 (un)corrected cw/s => 1e-11 BER
-+ *         0.212500 (un)corrected cw/s => 1e-12 BER
-+ *         0.021250 (un)corrected cw/s => 1e-13 BER
-+ *         0.002125 (un)corrected cw/s => 1e-13 BER
-+ *
-+ * 100G LINK (BJ)
-+ *   103125000000 bits/second over a 4-lane link @ 100G
-+ *   19531250 cw/s (5280 bits/codeword)
-+ *
-+ *   (Post) Pre-FEC BER
-+ *   1031250.000000 (un)corrected cw/s => 1e-05 BER (1 bad bit per codeword)
-+ *    103125.000000 (un)corrected cw/s => 1e-06 BER
-+ *     10312.500000 (un)corrected cw/s => 1e-07 BER
-+ *      1031.250000 (un)corrected cw/s => 1e-08 BER
-+ *       103.125000 (un)corrected cw/s => 1e-09 BER
-+ *        10.312500 (un)corrected cw/s => 1e-10 BER
-+ *         1.031250 (un)corrected cw/s => 1e-11 BER
-+ *         0.103125 (un)corrected cw/s => 1e-12 BER
-+ *
-+ * Cassini uses the old
-+ *    sbl_link_get_fec_thresholds()
-+ * Rosetta uses the newer
-+ *    sbl_link_get_ucw_thresh_ieee()
-+ *    sbl_link_get_ucw_thresh_hpe()
-+ *    sbl_link_get_ccw_thresh_ieee()
-+ *    sbl_link_get_ccw_thresh_hpe()
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+int sbl_link_get_fec_thresholds(struct sbl_inst *sbl, int port_num,
-+				int *ucw_bad, int *ccw_bad, int *fecl_warn)
++u64 sl_serdes_core_io_trace_lgrp_map_get(void)
 +{
-+	struct sbl_link *link = sbl->link + port_num;
-+	int ucw;
-+	int ccw;
-+	int warn;
++	return serdes_core_io_trace_lgrp_map;
++}
 +
-+	if (link->sstate != SBL_SERDES_STATUS_RUNNING)
-+		return -ENAVAIL;
++#define SL_DEVICE_NAME "sl"
 +
-+	switch (link->link_mode) {
-+	case SBL_LINK_MODE_BS_200G:
-+		ucw = 21;
-+		ccw = 21250000;
-+		warn = ccw / 8;
-+		break;
-+	case SBL_LINK_MODE_BJ_100G:
-+		ucw = 11;
-+		ccw = 10312500;
-+		warn = ccw / 8;
-+		break;
-+	case SBL_LINK_MODE_CD_100G:
-+		ucw = 11;
-+		ccw = 10625000;
-+		warn = ccw / 4;
-+		break;
-+	case SBL_LINK_MODE_CD_50G:
-+		ucw = 5;
-+		ccw = 5312500;
-+		warn = ccw / 2;
-+		break;
-+	default:
-+		sbl_dev_err(sbl->dev, "%d: bad mode for fec thresh", port_num);
-+		return -ENAVAIL;
++#define tostr(x)             #x
++#define version_str(a, b, c) tostr(a.b.c)
++#define SL_VERSION_STR       version_str(SL_VERSION_MAJOR, SL_VERSION_MINOR, SL_VERSION_INC)
++#define hash_str(h)          tostr(h)
++#define SL_GIT_HASH_STR      hash_str(GIT_HASH)
++
++void sl_version_get(int *major, int *minor, int *inc)
++{
++	if (major)
++		*major = SL_VERSION_MAJOR;
++	if (minor)
++		*minor = SL_VERSION_MINOR;
++	if (inc)
++		*inc = SL_VERSION_INC;
++}
++EXPORT_SYMBOL(sl_version_get);
++
++char *sl_version_str_get(void)
++{
++	return SL_VERSION_STR;
++}
++
++char *sl_git_hash_str_get(void)
++{
++	return (strlen(SL_GIT_HASH_STR) == 0) ? "unavailable" : SL_GIT_HASH_STR;
++}
++EXPORT_SYMBOL(sl_git_hash_str_get);
++
++static dev_t          sl_dev;
++static struct class  *sl_class;
++static struct device *sl_device;
++
++static int __init sl_init(void)
++{
++	int rtn;
++
++	pr_info("%s: init v" SL_VERSION_STR "\n", module_name(THIS_MODULE));
++	pr_info("%s: hash " SL_GIT_HASH_STR "\n", module_name(THIS_MODULE));
++
++	rtn = alloc_chrdev_region(&sl_dev, 0, 1, SL_DEVICE_NAME);
++	if (rtn) {
++		pr_err("alloc_chrdev_region failed [%d]", rtn);
++		return -EIO;
 +	}
 +
-+	if (ucw_bad)
-+		*ucw_bad = ucw;
-+	if (ccw_bad)
-+		*ccw_bad = ccw;
-+	if (fecl_warn)
-+		*fecl_warn = warn;
++	sl_class = class_create(SL_DEVICE_NAME);
++
++	if (IS_ERR(sl_class)) {
++		rtn = PTR_ERR(sl_class);
++		pr_err("class_create \"%s\" failed [%d]", SL_DEVICE_NAME, rtn);
++		goto out_region;
++	}
++
++	sl_device = device_create(sl_class, NULL, sl_dev, NULL, SL_DEVICE_NAME);
++	if (IS_ERR(sl_device)) {
++		rtn = PTR_ERR(sl_device);
++		pr_err("device_create failed [%d]", rtn);
++		goto out_class;
++	}
++
++	sl_ldev_init();
++	sl_lgrp_init();
++	sl_link_init();
++	sl_llr_init();
++	sl_mac_init();
 +
 +	return 0;
-+}
-+EXPORT_SYMBOL(sbl_link_get_fec_thresholds);
 +
-+#ifdef CONFIG_SYSFS
-+/**
-+ * sbl_base_link_llr_sysfs_sprint() - Report LLR on/off status into buffer
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @buf: Destination buffer to write the data
-+ * @size: Size of @buf in bytes, the output is truncated to fit
-+ *
-+ * This function checks the state info flags of LLR.
-+ * Based on this flag, it formats the string indicating
-+ * whether LLR is on/off and writes it into provided buffer
-+ *
-+ * Context: Process context, Acquires lock and release link->lock <spin_lock>
-+ *
-+ * Return: Number of characters written, at most @size - 1
-+ */
-+int sbl_base_link_llr_sysfs_sprint(struct sbl_inst *sbl, int port_num, char *buf, size_t size)
++out_class:
++	class_destroy(sl_class);
++out_region:
++	unregister_chrdev_region(sl_dev, 1);
++
++	return rtn;
++}
++module_init(sl_init);
++
++struct device *sl_device_get(void)
 +{
-+	struct sbl_link *link = sbl->link + port_num;
-+	int s = 0;
-+
-+	spin_lock(&link->lock);
-+
-+	if (READ_ONCE(link->link_info) & SBL_LINK_INFO_LLR_RUN)
-+		s += scnprintf(buf + s, size - s, "on");
-+	else
-+		s += scnprintf(buf + s, size - s, "off");
-+
-+	spin_unlock(&link->lock);
-+
-+	return s;
++	return sl_device;
 +}
-+EXPORT_SYMBOL(sbl_base_link_llr_sysfs_sprint);
 +
-+/**
-+ * sbl_base_link_loopback_sysfs_sprint() - Report loopback mode status into buffer
-+ * @sbl: A slingshot base link device instance
-+ * @port_num: port number
-+ * @buf: Destination buffer to write the data
-+ * @size: Size of @buf in bytes, the output is truncated to fit
-+ *
-+ * This function gets the loopback mode status and
-+ * formats the string into the provided buffer
-+ *
-+ * Context: Process context, Acquires lock and release link->lock <spin_lock>
-+ *
-+ * Return: Number of characters written, at most @size - 1
-+ */
-+int sbl_base_link_loopback_sysfs_sprint(struct sbl_inst *sbl, int port_num, char *buf, size_t size)
++static void __exit sl_exit(void)
 +{
-+	struct sbl_link *link = sbl->link + port_num;
-+	int s = 0;
++	pr_info("%s: exit\n", module_name(THIS_MODULE));
 +
-+	spin_lock(&link->lock);
++	device_destroy(sl_class, sl_dev);
++	class_destroy(sl_class);
++	unregister_chrdev_region(sl_dev, 1);
 +
-+	s += scnprintf(buf + s, size - s, sbl_loopback_mode_str(link->loopback_mode));
-+
-+	spin_unlock(&link->lock);
-+
-+	return s;
++	sl_ldev_exit();
 +}
-+EXPORT_SYMBOL(sbl_base_link_loopback_sysfs_sprint);
-+#endif
++module_exit(sl_exit);
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Slingshot Platform Team <hpcdev_ss_plat@hpe.com>");
++MODULE_DESCRIPTION("Slingshot Link Module");
++MODULE_VERSION(SL_VERSION_STR);
 
 -- 
 2.56.0
