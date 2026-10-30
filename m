@@ -1,123 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793348435;
-	b=0C6OvTRoeq5F0jXcDpJ7mR7L9ez0i4KhesqauEDQctVbiLjvJtEyckB5XM6sGVIwAVRD
-	 iA8qbkd3WSQt8LX4l2VXbiJFxZ8L0P6yNRa9oXz2ylGt+OCm2pfvDIUoiEbidCO4Wwn+V
-	 T8c5HIOaSpoSYDRkqhtYKTYAAVlVAGCn0I/M+0/UF58EegXp/ocfu9zh4NNWlUevBz1GN
-	 Wurl1jTiHzKP1nZJKbUenYmEg4zjHiuEdiToxMptVX3CvTeazmCi9O3QZrhJue44z646i
-	 oQS37kXxLfPhoX+KOwRyGmIFV1y+ZIcutS/JoMCpKVXaJDU9W7P+aPLJwHjYFFThZTw==
+	t=1793348559;
+	b=Rh/DzXJXd5sxLd4adxLSG2s/Pegu2nL97WQrcmojGHAvnUzGM2n3RAHSlnb3a+GLPKYY
+	 xXJPxZuHrp0W6m31ZvmBNeM+Too+/Jw43EsiVcFWlz6hwnwM/CDqQdGTGrAc+K1ohK5uy
+	 oN9FROvA4EHNrAE+ZYWdfaSG0SukaF6MCVkCPcN13nq0FHbOygLovVbkJUkXp9wYuRj2/
+	 b0H1YBQLW+Fl8QIH1y+6pyg6IwRKPje034Jk62UzTlva9mcMRgCAdtEBsvDeVUXWc0AUT
+	 acF/gF3+qiedYU4PWFcKzKk9Ej33GS90d7eQLT0DOFbTWqssobpOxhp0lgQ+UkpAFAQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793348435;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
-	 To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Info:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=lIPzTuhussiig+aEn2mZeROStxtfOxwExgWef6pP0yc=;
-	b=sg1vDeHqFxdVQ9op/EEtqDVdDOnNBAH02ZwO9EQ14zknh3cdZCiQeb0NREg/t7LVqjgK
-	 D+UUkeIIORNlVFRF+13+9BTFDefDeKF9aQyoWG5mX3XDkPjFcrTxQMFgBmKOQz+G7AXMK
-	 Hv45HPs2QqLi1R8ZyQaQpq6WYa8HvlFeaXDlTYH/96tEcGAj1qeku/Ec3wBqIWbOTimRA
-	 4cb5J3MAjssXw5VeSMG8wyDer7nxAlmNgZ0xbKfZmtprp6nbFFNEQv7BdAnGkxExEWH88
-	 sl6zTc9FoXVMHM0wncnEiprH0A2t4jWnRt8aND/MEovzvQ7liBhSGKZYQecNpXAqF8A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793348559;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:Content-Language:To:
+	 Cc:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=v92GAJjZbomnBYNnJfUXzhExe9lvts+O0oV7sTd25Fc=;
+	b=l4QFxXbL4uvkawgiZ7AMLwDILQvDMpL6CQYizazVUH3xIOcoS5dfZctBQt0HqNUXDJ04
+	 3Hs4glhRaderT0QLyQSxMVJtxngQiKekCdMaERIK0gdZhsRmtIid1vlEuK/J/MjheYCUR
+	 OIFEHmiU4jdmMNGru5K1SxxGMLTzHdHfm2DF7Px9U1OHwEY7MI+zRMnY6NktpzjEPgVG4
+	 qcL3UekyyRb5HVXpLYzCTNGsZM5Glm0k73epb85weDuFTpd62GDUwusQ7Qr74yzrHc26F
+	 RgJj9lFc8MKpJ7NwTcJQZ3xbvJtpdBqYVzuw1Kew+jn/vDSLIHWKk71wg7Ck/jMkZsA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=SNzxkYDL;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=kvnb4lzy;
-	arc=none smtp.remote-ip=205.220.168.131
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=none header.from=blackwall.org;
+	spf=none smtp.mailfrom=blackwall.org;
+	dkim=pass header.d=blackwall.org header.i=@blackwall.org header.a=rsa-sha256 header.s=google header.b=CqKLbhic;
+	arc=none smtp.remote-ip=209.85.221.51
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F04606A32D
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 08:20:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3F04606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBA5606A322
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 08:22:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DEBA5606A322
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=SNzxkYDL;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=kvnb4lzy
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69U8FQEE3709875
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 08:20:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=lIPzTuhussiig+aEn2mZeROS
-	txtfOxwExgWef6pP0yc=; b=SNzxkYDLAXzpsny7h/UM+IgX6WF5LAIfnCyrglve
-	7xSqnpMslNfHzuKPJZQ2QMN3Zs34YqfCe/7kMON6xG3J1f41+w7tIy5N2TlNnjp5
-	KJJUyWXUNjyoG9QivhWAgkwWWUcAwNU1bbAE/QKFzWXQUAS4Sio6iQ6w2dveRxCl
-	WtHWBXFFAa8EsHO+mMPh7Rag5vndVCEKo0EUr7qlJNzSySanIZbO5D2BduKpp1Nc
-	gevlKgISR2bvahCScNq4ko7bt9/Phf65roMbbv+oSrC0taHbbGd6yjGq3ixAHlaS
-	aeRtfW0BUPU31XqrO4jbbwxN2h+KQFj383H5kxfHOglf1Q==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hme6rj1f3-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 08:20:33 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-93f5844cb60so96914285a.0
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 01:20:33 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=blackwall.org header.i=@blackwall.org header.a=rsa-sha256 header.s=google header.b=CqKLbhic
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-48df8fe8513so376207f8f.0
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 01:22:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1793348433; x=1793953233; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lIPzTuhussiig+aEn2mZeROStxtfOxwExgWef6pP0yc=;
-        b=kvnb4lzyV8jf4WWorgOoU2fnrLmB2lmGs0hgxKKzA+Cr84N8678653PASGYSh4Htwr
-         Dp3GoFxWiGRB9WhrAabptJSlyZItlOOioKADDgzDk5O0m2uCtmP+RMyrL4n7W7pEkvIh
-         N9KW1mSuPVzDeEJKsD+CyFh63Ulusu5FxaCIMfm9+GcN22p6n/q2dKtjMqO6zbrFx37e
-         RrRRBWlk1hqInfvihThrRcrDvKcFKe9dqm8GmfHtS2xCLfzPfNmMbtUNRkg6gTTlZ27t
-         tPyjZ7cEbyO8uWbF9baBRsxyad/HhCFMI/AIuVT5h8sMsQTqvaeXRRXYh1IvaVd8ynEj
-         c+cA==
+        d=blackwall.org; s=google; t=1793348557; x=1793953357; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=v92GAJjZbomnBYNnJfUXzhExe9lvts+O0oV7sTd25Fc=;
+        b=CqKLbhicYDHaXCZRwL3p04ldrDIvLGZvyz8To7GnYLehyD1KBe48fJ5J8okkQuweg1
+         xq6TRrsSXnOkToaOr5M/TaxfEX52N3jFJ3/F9ZxsiwGFa3lASuQPS+RkOhOKneDtbaLE
+         LCAkvHRIkB4QtWolLc2RuHzeTOc+2fvGdY3mrfGFhEjQ3PvmMhoer40y+zfWC69lKhpp
+         y/uYCkyabqWd9k82czHpVqvtlMy8lG78ScTRmaSpBDtZ79Vmr4Jc1P53PCkHIQVOc5ZB
+         OFP9CoSCDKu+fmTvDfDeGOopMl6suY9bl6LBfyMPRG4InFqp/qAuPqwsF0DSYjBINDUs
+         KFIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793348433; x=1793953233;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lIPzTuhussiig+aEn2mZeROStxtfOxwExgWef6pP0yc=;
-        b=aPsj5xZsWDseWOKnk9PV0UitgdImzeBVB6TMbBfakGQgRKdHQnYHOPC/BkSfpHqskg
-         TYB+/ZSEU/o6BbroNH/vvSJPzVQVxTCJeE8C8kKD6MtAhtEN450sPdR7+DSlrkG03uMC
-         xR+mXzAmBW+ZFw0ghDKXoOJ3KSeOK6dvNVgGBMq0DmRBGIlPSEo/gu/KYYT2vDw7h+L1
-         927Rs9gXzPX3MX/EKy8M6s/+jOwmv21RERc3jAIdDOBEZne4slQ1chAc5NhUa8WkPcAz
-         x8ZPr2JyOu/Btn6fB01V9FSU4h2W73ryh9OmfUEQh1W16G7Mbyd5dDjij5dgkUbCE79/
-         2HWQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwYw1aSoQkzLKwH4XEghOO0qgCo2MCfmNYlr7L8UlhKNCtpUxj1XntuHYkNdB+COmKowZyLjcQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKj1dz6WAZt2l7O8qf/DjYpIgutK/di4p+i7k0U3jj1dP5T0Nq5
-	/JVvVjyvSXADGehtkJVFowWxg8TZFZcQwqcL+777Tn5jykDj5n+qav9yvVv1wxeOm4Z+G06cMr0
-	b0nLqBTs9XjJMlvqWTy7pMQsrHIj+8Jyp3YkByWBUOzDBt7Z05znUrmU1uN4=
-X-Gm-Gg: AYBFou0xAAsn7vF8a5kPvk7SoZkWgz14C+dH7sUuAUXIizUgWc7ylU8WLR4lj7wHthz
-	leUUWGEl0WYXYXiSE7NSo9m9p7KHJUKpjUOdJSqeAfk42yf9j9zImTqZJHuZzrhcS+j9ajAAGLl
-	aZuTvAmxD4Z4rV/0qkpUUulzqSONGGl6YNA6usjyRkC21AqNo7iu2gcPBvSrsjgg5XywFNlHoY+
-	KQevXowJcFKtpMLfr6pcT1p9PDb7Xy8qFJsoth9NQJEhg87d4bPiCjB8RJwVCtM42YveRLT9CnI
-	UJGaUrp+SmmtLurts3KS2rRFAmMSL8YvUqeRp/XeCUsr+xMv9kF/+miRZlUwZxgVtA2tS5flD1E
-	CThhUrjGRqW+nxPjiGKBTgg4wIhJy8WEpb2fisdh8aOXoHOZumea9NyT+QUHj+9uEh4dLvRdfHa
-	aavIu4z+iV1c6FZnuRVzWS1A==
-X-Received: by 2002:a05:620a:1a20:b0:93f:2b65:593b with SMTP id af79cd13be357-944133ecfd3mr741678485a.38.1793348432618;
-        Fri, 30 Oct 2026 01:20:32 -0700 (PDT)
-X-Received: by 2002:a05:620a:1a20:b0:93f:2b65:593b with SMTP id af79cd13be357-944133ecfd3mr741676385a.38.1793348432139;
-        Fri, 30 Oct 2026 01:20:32 -0700 (PDT)
-Received: from localhost (net-93-144-6-81.cust.dsl.teletu.it. [93.144.6.81])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b725b8sm1972421f8f.20.2026.10.30.01.20.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 01:20:30 -0700 (PDT)
-Date: Fri, 30 Oct 2026 09:20:30 +0100
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-To: kernel test robot <lkp@intel.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
-        Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-        Shuah Khan <skhan@linuxfoundation.org>, oe-kbuild-all@lists.linux.dev,
-        netdev@vger.kernel.org, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH nf-next 5/8] net: netfilter: add IPv4 over IPv6 tunnel
- flowtable acceleration
-Message-ID: <auRTTqtCzyQAjDEe@lore-desk>
-References: <20261029-flowtable-sw-accel-ip6ip-sit-v1-5-6a17c54f9fb7@oss.qualcomm.com>
- <202610301255.BRNUBmqH-lkp@intel.com>
+        d=1e100.net; s=20260707; t=1793348557; x=1793953357;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=v92GAJjZbomnBYNnJfUXzhExe9lvts+O0oV7sTd25Fc=;
+        b=KgjPcf/gyKDIIchXfGxZNaE6fqci5UwuDlKK/qKk+heL5iYD/avoRGraBGgZhPQc6x
+         MjPpGrXnf7xyKVGzoUGDMD+q6m7aDrx6QnskvFzc4yInQdU2jVek/abdkch9KHHXvI9G
+         7rax7hwmRk5Y4d9H/QBeUSaLBrk+EIDq079YMFeNL8Nfr+aeFssoIWWPQVwaFSTyidG9
+         LR4wq+1iYBN8WZ+nqv7GfXk43/ZMcaDNsgX/8Pt7bAwbGXrNWdvDlxBaSR3MOJJKNeDg
+         2Dff2rDulna51MrBUKwKyExqMNCFFnOpkY+VkAaCeX/EDsYViFzx46kZaWzFNW7jJgPA
+         QOog==
+X-Forwarded-Encrypted: i=1; AKwUvBwEd/n8Ect7ZMM9+fJuStkrGXBdU+BK34mtvTMdcRHKzzRAUB7KTFYOduBqoVRBIQ01rCNgWEI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI1F9fwEwTzjjLPh74olXK8IdSOd4v+Ddd1YTKh/KsNI/pFL2ts
+	fXQXSPIy0u1CYJ4BwwfVfBTqJHZSKrHtEoKPLWah7wYZ8E8cQ1wIl+bYnb+d0HcoSis=
+X-Gm-Gg: AYBFou0a7dnxi8gNdKXnV4prgH2HegylEtGGEybvQzKdn4LtcM1AorCbH73fFDCala6
+	DPDu459tjiLZ3gzpMURwdOkV4kZp30R9c4WCM57dVHbX0njF2eH7pIlKs3uctptYXCrWygl8371
+	ZeDsD8fE0ja24aCtSaszepRbvXHaZdd2LER7ZPQdvwqRr3je+7G+85zrjST18fh1KyE00M2pR6o
+	d2WG6TqwiDJJltdUSbtvW612ccgDMZWEhpVBOl75rr/RIER6Cf480MOZvPzShqbhNIoxMWWAd7Q
+	sMAVtsNDZdAYAhgdUH4+67+8asw1LLrJddh3bNjqkasBaxZed2LpdomegRF5tf33KZ+1dNAKFqp
+	ERF9bIB4zkX+Swi9fTWrYRC3ElbG1fr8cSpxTB0xqwOSPNy9E7pbVVLvMAbcSTXxGIil9NgUcXb
+	ksVaUG19kf4RM/isbChQgeBUaoqdBG89m4LMSlP9LbP/tq/xBxCp18YTC0O9NGJ4zoMdXqscQx3
+	2EppzcDP6CGF/pXYdA5nQ7y+M1JG6hgxGSrruMBz4hVsOtnSA7EUy33PVfgm1OtWaHld/K2Pwt8
+	OtFal7dBjrW/6RarP+tCJXOD4TfNgBKkGS2Csd9JYgy6eG7hJZUlj5dI83E=
+X-Received: by 2002:a5d:5d09:0:b0:48e:64e2:4883 with SMTP id ffacd0b85a97d-48e6e2dbb76mr3748074f8f.8.1793348556634;
+        Fri, 30 Oct 2026 01:22:36 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b80306sm2116937f8f.33.2026.10.30.01.22.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 30 Oct 2026 01:22:36 -0700 (PDT)
+Message-ID: <788c84fa-12a4-4282-9afc-438d3206f21c@blackwall.org>
+Date: Fri, 30 Oct 2026 10:22:35 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -127,195 +91,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Bcierrnx+NloiNUP"
-Content-Disposition: inline
-In-Reply-To: <202610301255.BRNUBmqH-lkp@intel.com>
-X-Proofpoint-ORIG-GUID: k8mg586fMGYtHaUuMQyGAoi_rheanq0Y
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDAzMyBTYWx0ZWRfX1xXAMbMmxvLX
- gF/twdkDQY2QJlnMb1mH9bU2sHIa2Yqk2R3lfR2KtkV2S4k5IOxQegn3Kai+CIn9wWHcpJKhVfb
- w4TE4wVRX0pSdG/MNrl9G4r1w+TmMz4=
-X-Authority-Analysis: v=2.4 cv=PIqaavqC c=1 sm=1 tr=0 ts=6ae45351 cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=7fYLNvKHbgS61GKHX+yayQ==:17
- a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22 a=NEAV23lmAAAA:8
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=i3X5FwGiAAAA:8 a=QyXUC8HyAAAA:8
- a=hGUAt8QyJn-wdT-a5YkA:9 a=CjuIK1q_8ugA:10 a=FPnsdwdfccfL58mOmmoA:9
- a=PEH46H7Ffwr30OY-TuGO:22 a=mmqRlSCDY2ywfjPLJ4af:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDAzMyBTYWx0ZWRfXzsscBnTmVF4F
- mLMfG4mJO9GemffDRNCpUIhNrODiOktog0e0CnU7vs4i4mvi0ia29R3vWfm2kFmDF7Bi8kfs18r
- nlORtvbsZgWquxIEveeFhq663Js24a/IS7dE68/XvhRt8zCkx3s1XgwX4McnokrLdXeP4jTen1R
- FwK7+zbyUUJYhJOuRQzJeLpJQsgEXNJZLWiUAZZPI4ziLdvJA7eT1NE13cL0PZQjFJkwe+sGOCy
- vq+J371lQ8XACuboL3ItLLDkOjrwVf6xeDoOAj5Kby6VkQHjbCFDMq3+qZ1wBsoueWpP5n4wx53
- jExHYQbMqH0IS2hcqVher3+MJ5PsucAcouzgPcjGcV/QHGN15QooT+HZCzFhvoWXiQAijZAkDKI
- bVGfzAt9kHT6THFpo/8nBaqgYh2wiVo0z4ifen3PAfggDhxUoAnuEiHDzgXpgGZXE8WG95/VZss
- IiMR+G/u3tF/nhCTGTA==
-X-Proofpoint-GUID: k8mg586fMGYtHaUuMQyGAoi_rheanq0Y
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-30_03,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0 bulkscore=0 impostorscore=0 spamscore=0
- lowpriorityscore=0 suspectscore=0 phishscore=0 adultscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
- definitions=main-2610300033
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: bridge: mcast: release the EHT host budget for
+ zero-address hosts
+Content-Language: en-US, bg
+To: Cheng Yongkang <teel4res@gmail.com>, Ido Schimmel <idosch@nvidia.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ bridge@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <179328314076.648427.17991367257682028617@gmail.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <179328314076.648427.17991367257682028617@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
---Bcierrnx+NloiNUP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 29/10/2026 16:12, Cheng Yongkang wrote:
+> __eht_del_set_entry() decrements eht_host->num_entries only when the set
+> entry's host address is non-zero.  A report sent from the unspecified
+> source address 0.0.0.0 (or in6addr_any for MLDv2) creates an EHT host
+> with h_addr == 0, while the set entries created for its sources have
+> non-zero source addresses and are counted against PG_SRC_ENT_LIMIT.
+> Deleting those sources never releases the host's budget; after 32 counted
+> sources the host stays at num_entries == 32 and every later counted set
+> entry is refused.  The same sequence with a non-zero report source
+> releases the budget normally:
+> 
+>    host 0.0.0.0:  IS_EXC/ALLOW1/BLOCK/ALLOW2 = 32/0/32/32
+>    host 10.9.9.9: IS_EXC/ALLOW1/BLOCK/ALLOW2 = 32/0/32/0
+> 
+> Only set entries created for a non-zero source address are counted:
+> br_multicast_create_eht_set_entry() rejects a zero source when
+> allow_zero_src is false, and __eht_lookup_create_set_entry() increments
+> num_entries only for those entries.  The auto-created wildcard entry for
+> a zero host uses allow_zero_src == true and is not counted.  Release the
+> budget based on eht_set->src_addr instead of h_addr, so counted entries
+> decrement for zero-address hosts as well.  The uncounted wildcard entry
+> no longer decrements the counter, which also removes the converse
+> mismatch for non-zero hosts.
+> 
+> Fixes: baa74d39ca39 ("net: bridge: multicast: add EHT source set handling functions")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Cheng Yongkang <teel4res@gmail.com>
+> ---
+>   net/bridge/br_multicast_eht.c | 9 ++++++++-
+>   1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/bridge/br_multicast_eht.c b/net/bridge/br_multicast_eht.c
+> index 18eaf9c..548ad78 100644
+> --- a/net/bridge/br_multicast_eht.c
+> +++ b/net/bridge/br_multicast_eht.c
+> @@ -167,7 +167,14 @@ static void __eht_del_set_entry(struct net_bridge_group_eht_set_entry *set_h)
+>   	RB_CLEAR_NODE(&set_h->rb_node);
+>   	hlist_del_init(&set_h->host_list);
+>   	memset(&zero_addr, 0, sizeof(zero_addr));
+> -	if (memcmp(&set_h->h_addr, &zero_addr, sizeof(zero_addr)))
+> +	/* Only set entries created for a non-zero source address are counted
+> +	 * towards the host's budget, the auto-created zero source entry is
+> +	 * not (see __eht_lookup_create_set_entry()).  Check the set's source
+> +	 * address and not the host address: the host address can be zero as
+> +	 * well (IGMPv3/MLDv2 allow an unspecified report source address), but
+> +	 * its real source entries are still counted.
+> +	 */
+> +	if (memcmp(&set_h->eht_set->src_addr, &zero_addr, sizeof(zero_addr)))
+>   		eht_host->num_entries--;
+>   	hlist_add_head(&set_h->mcast_gc.gc_node, &set_h->br->mcast_gc_list);
+>   	queue_work(system_long_wq, &set_h->br->mcast_gc_work);
 
-> Hi Lorenzo,
->=20
-> kernel test robot noticed the following build warnings:
->=20
-> [auto build test WARNING on 734bef548a96e8774d6eef5dfa2026c6edc4e80b]
->=20
-> url:    https://github.com/intel-lab-lkp/linux/commits/Lorenzo-Bianconi/n=
-et-netfilter-nf_flow_table-recognize-IPv4-IPv6-in-tunnel-proto-matching/202=
-61029-143512
-> base:   734bef548a96e8774d6eef5dfa2026c6edc4e80b
-> patch link:    https://lore.kernel.org/r/20261029-flowtable-sw-accel-ip6i=
-p-sit-v1-5-6a17c54f9fb7%40oss.qualcomm.com
-> patch subject: [PATCH nf-next 5/8] net: netfilter: add IPv4 over IPv6 tun=
-nel flowtable acceleration
-> config: m68k-defconfig (https://download.01.org/0day-ci/archive/20261030/=
-202610301255.BRNUBmqH-lkp@intel.com/config)
-> compiler: m68k-linux-gcc (GCC) 16.2.0
-> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
-ve/20261030/202610301255.BRNUBmqH-lkp@intel.com/reproduce)
->=20
-> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
-ion of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202610301255.BRNUBmqH-lkp=
-@intel.com/
->=20
-> All warnings (new ones prefixed by >>):
->=20
->    net/netfilter/nf_flow_table_ip.c: In function 'nf_flow_queue_xmit4':
-> >> net/netfilter/nf_flow_table_ip.c:891:35: warning: variable 'dst' set b=
-ut not used [-Wunused-but-set-variable=3D]
->      891 |                 struct dst_entry *dst;
->          |                                   ^~~
->    net/netfilter/nf_flow_table_ip.c: In function 'nf_flow_queue_xmit6':
->    net/netfilter/nf_flow_table_ip.c:1237:35: warning: variable 'dst' set =
-but not used [-Wunused-but-set-variable=3D]
->     1237 |                 struct dst_entry *dst;
->          |                                   ^~~
+I don't think this is a -net fix, it can target net-next when it opens up.
+You can also trim the comment, it is way too verbose for something so simple.
 
-ack, I will fix it in v2.
+Thanks,
+  Nik
 
-Regards,
-Lorenzo
-
->=20
->=20
-> vim +/dst +891 net/netfilter/nf_flow_table_ip.c
->=20
->    858=09
->    859	static int nf_flow_queue_xmit4(struct nf_flowtable_ctx *ctx,
->    860				       struct sk_buff *skb,
->    861				       struct flow_offload_tuple_rhash *tuplehash,
->    862				       const struct nf_hook_state *state)
->    863	{
->    864		struct flow_offload_tuple *other_tuple;
->    865		enum flow_offload_tuple_dir dir;
->    866		struct nf_flow_xmit xmit =3D {};
->    867		union nf_inet_addr *ip_addr;
->    868		struct flow_offload *flow;
->    869		struct neighbour *neigh;
->    870		struct rtable *rt;
->    871=09
->    872		if (unlikely(tuplehash->tuple.xmit_type =3D=3D FLOW_OFFLOAD_XMIT_=
-XFRM)) {
->    873			rt =3D dst_rtable(tuplehash->tuple.dst_cache);
->    874			memset(skb->cb, 0, sizeof(struct inet_skb_parm));
->    875			IPCB(skb)->iif =3D skb->dev->ifindex;
->    876			IPCB(skb)->flags =3D IPSKB_FORWARDED;
->    877			return nf_flow_xmit_xfrm(skb, state, &rt->dst);
->    878		}
->    879=09
->    880		dir =3D tuplehash->tuple.dir;
->    881		flow =3D container_of(tuplehash, struct flow_offload, tuplehash[d=
-ir]);
->    882		other_tuple =3D &flow->tuplehash[!dir].tuple;
->    883		ip_addr =3D (union nf_inet_addr *)&other_tuple->src_v4;
->    884=09
->    885		if (nf_flow_tunnel_push(state->net, skb, other_tuple,
->    886					tuplehash->tuple.dst_cache, &ip_addr) < 0)
->    887			return NF_DROP;
->    888=09
->    889		switch (tuplehash->tuple.xmit_type) {
->    890		case FLOW_OFFLOAD_XMIT_NEIGH: {
->  > 891			struct dst_entry *dst;
->    892=09
->    893			xmit.outdev =3D dev_get_by_index_rcu(state->net, tuplehash->tupl=
-e.ifidx);
->    894			if (!xmit.outdev) {
->    895				flow_offload_teardown(flow);
->    896				return NF_DROP;
->    897			}
->    898			if (other_tuple->tun.encap_proto ?
->    899			    other_tuple->tun.encap_proto =3D=3D AF_INET6 :
->    900			    ctx->tun.inner_proto =3D=3D IPPROTO_IPV6) {
->    901				struct rt6_info *rt6;
->    902=09
->    903				rt6 =3D dst_rt6_info(tuplehash->tuple.dst_cache);
->    904				neigh =3D ip_neigh_gw6(rt6->dst.dev,
->    905						     rt6_nexthop(rt6, &ip_addr->in6));
->    906				dst =3D &rt6->dst;
->    907			} else {
->    908				rt =3D dst_rtable(tuplehash->tuple.dst_cache);
->    909				neigh =3D ip_neigh_gw4(rt->dst.dev,
->    910						     rt_nexthop(rt, ip_addr->ip));
->    911				dst =3D &rt->dst;
->    912			}
->    913			if (IS_ERR(neigh)) {
->    914				flow_offload_teardown(flow);
->    915				return NF_DROP;
->    916			}
->    917			xmit.dest =3D neigh->ha;
->    918			skb_dst_drop(skb);
->    919			skb_dst_set_noref(skb, &rt->dst);
->    920			break;
->    921		}
->    922		case FLOW_OFFLOAD_XMIT_DIRECT:
->    923			xmit.outdev =3D dev_get_by_index_rcu(state->net, tuplehash->tupl=
-e.out.ifidx);
->    924			if (!xmit.outdev) {
->    925				flow_offload_teardown(flow);
->    926				return NF_DROP;
->    927			}
->    928			xmit.dest =3D tuplehash->tuple.out.h_dest;
->    929			xmit.source =3D tuplehash->tuple.out.h_source;
->    930			break;
->    931		default:
->    932			WARN_ON_ONCE(1);
->    933			return NF_DROP;
->    934		}
->    935		xmit.tuple =3D other_tuple;
->    936		xmit.needs_gso_segment =3D tuplehash->tuple.needs_gso_segment;
->    937=09
->    938		return nf_flow_queue_xmit(state->net, skb, &xmit);
->    939	}
->    940=09
->=20
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
-
---Bcierrnx+NloiNUP
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCauRTTgAKCRA6cBh0uS2t
-rNyiAP96de8d8ol5sTVxCRMFuA1Y2F1Jeg1ujGKpbilvjjArHQEA9gKtTM3eyFXo
-NwZOtc15lb5dcMPPGX8LETiowFvdEA4=
-=vQ0n
------END PGP SIGNATURE-----
-
---Bcierrnx+NloiNUP--
