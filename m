@@ -1,66 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.238.174.39
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793336400;
-	b=kMD4RmgNgVkWa5km53aLszEDjTwftnIMgOuICC1cHY2xppbCGDb/YPKhNrCmNkGaTmD3
-	 /kSda+wbVlxEoMtmdQxQm68/ozSXYDQMFjqQlTtxXpUvZ5ZmgE4GzVmR4Cl4aQa0nBzDm
-	 UZxgqtmH0yJG55BdlLPyJqFNDC+f516Li0GUhmOOzPm5yfJAlTpgQnjksZu4YP1yTNxRW
-	 dlHkpq+ycBVQ6ohZF8hCFVM8WnjgdslBjiBE/cw/J3K0p2uNY/G1guu/caz8+Nu8aAL66
-	 ub1eZaHAXHkNuYArV/uUtMvp0VH3dWVCFjRfcH+d0wocDG0NiKXLsqbP6YkTlpT1rag==
+	t=1793337623;
+	b=wst1fqkq3XhCh5V/rDeww3V4Dk3yf8743r4ir9Yehll2k9IJ3zMFY9LD0m0k1FKccrQC
+	 cQcGC/qO0gnzrIs+lrYOZI12JSsRT01GtTZh4fTFv8GW8jFO3J0tV8It0iWKJTX1HF14J
+	 Hb7JZPBdiQi5+4beJ9gT2GtaVxZ5xBFShm5pPOxMLvq/t0lFCYbtFw4r53ZZQgeoT9ZUo
+	 QgJiPJZlY3gCBg7XGtl+3litJHdJLdNv3CaaeTZ7vKP9QhQqPg+EgZiRxHBS4+8oncDAS
+	 d93073eTgbN9YDcA+YTCocionWSDDzEgPKT3yvptzYnahTKFbfu4fSlmlLn3yCNjsCg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793336400;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=+uhFviJi95FfRixQqgCz3QABcgJJElu6aUonffMDIc8=;
-	b=002qVAVYP2jaqpvOXJDuA82Fle8dhgaSwMHLUat5Ac7kswePFRfTgMwqbfI74Q1ql3X6
-	 6G8+fqk2Ru57CLERhWxEe7AP3ag4U57RBvkYso7l/aRbzehc9lnYCfbXuVRxNUGW0rLic
-	 QfZRyMh9pjF4UXyxZkUAqN485FZqLwiYtLCAEc1pvtaXYwI4t+VdV4PCzog9OeS/cwPE/
-	 ZzY+Us3/9M3ahySh9iuAwIbRfx5ngcouZAoUZgxdK/cy07+pDhpNVTStkfCv+WmBQg+Ce
-	 zbVAASqi770fX7qll+FqEpnRWlJKgwn9yfv5/ZKtg9D9CkCM2oWQlfqLORZ0RYOHYxg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793337623;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:Date:
+	 From:To:cc:Subject:In-Reply-To:Message-ID:References:MIME-Version:
+	 Content-Type;
+	bh=vimO4kOcCdtVgDL7SqCrpC6sr0unIIQNr1/pz7rBYSE=;
+	b=mBFXQfSh+KO7VCyX6gqDsQOqZLSW2H6fyRr2dbqSL5WrWQjD6/2d6l2Byliy4/faQWlE
+	 qQk7UBN+wcpIn5/OEUm2PI3xNKs8qgeX8sz9yvNtQ4wnjKTc6AUEHSMLuYkxKiTNq3vbS
+	 YW9OJS2qXbi9bn3aX0sCcgeGACUuHFgVuRHtFfjTNc8N72Vq1iEvvLp6D+xnF7EAYVvWl
+	 Q1YZc99tIcUnX/3C+Dl/aUgdBVxbM0PGBnxrRa4WyJAicWIq2vTaBDOAkmkQvQ8EsGzUp
+	 KOLeaisnw/EDHzCdJo6wgpgQYbhOTX28ZAS9nN/Sx1J2AIBrdjK8rX5wfJduWsfi2NA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	arc=none smtp.remote-ip=91.218.175.177
-Received: from mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=ssi.bg;
+	spf=pass smtp.mailfrom=ssi.bg;
+	dkim=pass header.d=ssi.bg header.i=@ssi.bg header.a=rsa-sha256 header.s=ssi header.b=MEpXQVsx;
+	arc=none smtp.remote-ip=193.238.174.39
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963C8606A327
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 04:59:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 963C8606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=1QZfhhnleUE4Qtl413axRXSMeGIPVgq5jpbG/FueLes=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793336392; v=1; x=1793941192;
- b=CAM0eMC/IoWBKYBvBR11LKbWnwA6T9XJ6kceuVgU/asRgOwE5PylhyeiOEBfA8vgzkXozUE8
- xUSKrcoickxbdKZ6lSFZ3kXp+mjJITgjaEsKWMJMsssfNAnAj3hm9tCuOY+jtB9CeM9ZwfctQYl
- FEa+Z1HpXL7q7AV4FV0eTCD0=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 9aef2a93ac6fa195;
-	Fri, 30 Oct 2026 04:59:52 +0000
-X-Mizu-Trace-ID: 9aef2a93ac6fa195
-X-Migadu-Flow: FLOW_OUT
-From: Qingfang Deng <qingfang.deng@linux.dev>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Asim Viladi Oglu Manizada <manizada@pm.me>,
-	Eric Woudstra <ericwouds@gmail.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Julius Bairaktaris <julius@bairaktaris.de>
-Subject: [PATCH net-next v3 1/2] pppoe: pass bound packets directly to generic PPP
-Date: Fri, 30 Oct 2026 12:59:39 +0800
-Message-ID: <20261030045943.2093-1-qingfang.deng@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA821606A31A;
+	Fri, 30 Oct 2026 05:20:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DA821606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key, unprotected) header.d=ssi.bg header.i=@ssi.bg header.a=rsa-sha256 header.s=ssi header.b=MEpXQVsx
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id 39F7421F69;
+	Fri, 30 Oct 2026 07:20:12 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=vimO4kOcCdtVgDL7SqCrpC6sr0unIIQNr1/pz7rBYSE=; b=MEpXQVsxlF2L
+	uMCYLaTDqs0jSBKYEJvlXcSI4Y9jW6sL010kHggjgAPQSO/QuvAh9w9QvemC5Dqz
+	NOuUKLpp/VUX1CiNz1Jl06qV6/aoJ7xC/AaHbpqzVFlP4uViPCzdo5rynXRG6k9P
+	KjXTYMYdqXtNj8xyR9F1JUlTME2MpKonRo3ldszCujQQsGv+5JEBK/TthqwvYMcC
+	Hq+xpOu4jb0QaPOvdvlrcAsz9JcYIjVFOWfx2Be/kFncJldimAOqrrnMQjpp+e3v
+	ff+dvkGtyh51q/bsO9DN35fX06QDqaIMZlbFiYNwDGeVM9BcIo4b8eQACzkGybV0
+	QazvFaNHszJ8vK1Lud2mPZL48Wwieuf5Zv4ixdqORKrYGNAkUvVq3z7yFcYC1/sX
+	cI0Ji/LXhsHv3UGntwQNztt7ckqthfrDoqMFA8y4CMFvJjzuB1Tum29ckGwfrgcu
+	+bIZvqZgjpVE4ZuH3glaREuzh14HziGNtQWoWgIoBBLegWqQikFkPZhmH26SxUEv
+	0pclqGA8aWZAEfXjk5STmbqA5IMVVCoQyfPs+nL6bgxTcB/QblP4KjZLFDGzsvdb
+	VOX1ijTaQ1qyRIdZBbccqKZ6AtootHLj1K6ohrpzv3gsPFWAd9PxfCbpWjlWkQv6
+	e8prZMg7S7gTcpmFVAV0k8WAFlLN9lw=
+Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Fri, 30 Oct 2026 07:20:12 +0200 (EET)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by box.ssi.bg (Potsfix) with ESMTPSA id 2D569620CA;
+	Fri, 30 Oct 2026 07:20:11 +0200 (EET)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 69U5K5C9008270;
+	Fri, 30 Oct 2026 07:20:05 +0200
+Date: Fri, 30 Oct 2026 07:20:05 +0200 (EET)
+From: Julian Anastasov <ja@ssi.bg>
+To: Star Chang <starchang@google.com>
+cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, horms@kernel.org, johannes@sipsolutions.net,
+        johannes.berg@intel.com, linux-kernel@vger.kernel.org,
+        wangroger@google.com
+Subject: Re: [PATCH net v4] net: Fix Hole-196 vulnerability by dropping
+ unicast ARP/IP in L2 BMC
+In-Reply-To: <20261029090241.4070613-1-starchang@google.com>
+Message-ID: <553d89ed-8691-45b6-ac98-0faf00b859cd@ssi.bg>
+References: <20261026150539.1357037-1-starchang@google.com> <20261027015619.1745984-1-starchang@google.com> <5c1fe870-39ff-e83e-e479-0e1f0fed6a83@ssi.bg> <20261028061644.2997812-1-starchang@google.com> <f631e178-d9ec-f335-9163-c44a9e6c58af@ssi.bg>
+ <20261029090241.4070613-1-starchang@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,91 +83,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 
-Bound PPPoE sockets pass received frames to the generic PPP layer. They
-currently do so through __sk_receive_skb(), which takes the socket BH
-lock and serializes calls to ppp_input().
 
-The lock originally prevented ppp_input() from racing with
-ppp_unregister_channel(). Commit ec4215683e47 ("ppp: defer channel free
-to an RCU grace period to fix pppol2tp RX UAF") now keeps the generic
-PPP channel alive until in-flight RCU readers have completed, so bound
-packets can be passed directly to ppp_input() from pppoe_rcv().
+	Hello,
 
-The direct bound receive path also skips the socket filter check in
-__sk_receive_skb(). This does not affect normal pppd PPPoE operation:
-pppd uses the kernel PPP channel and does not attach a receive filter to
-a socket. Instead, it uses the generic PPP pass and active filters,
-installed through PPPIOCSPASS and PPPIOCSACTIVE, unaffected by this
-change.
+On Thu, 29 Oct 2026, Star Chang wrote:
 
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
----
-A local receive-path benchmark sends 1492-byte IPv4 packets through
-multiqueue TAP -> PPPoE -> PPP in a 16-vCPU x86-64 QEMU KVM guest.
-Senders are pinned to distinct guest CPUs. This synchronous TAP receive
-path does not use GRO. The generic PPP receive lock (ppp->rlock) is
-retained in both variants. Median throughput over 12 samples per cell
-across four boots, expressed as IP-layer Gbps:
+> Hi Julian,
+> 
+> Thank you for the prompt feedback!
+> 
+> On the ARP side:
+> Glad to hear that dropping non-GARP ARP Replies (ar_op == ARPOP_REPLY && sip != tip) in L2 BMC sounds like the right direction.
+> 
+> Regarding the points you raised:
+> 1. For GARP: Leaving it to DROP_GRATUITOUS_ARP to decide makes total sense. Legitimate GARP (sip == tip) will bypass our drop check and fall through to the existing IN_DEV_DROP_GRATUITOUS_ARP logic in arp_process().
 
-  Senders       Before       After     Change
-        1        19.08       19.63     +2.89%
-        2        31.52       33.77     +7.15%
-        4        53.67       63.48    +18.28%
-        8        39.79       51.50    +29.42%
-       16        49.40       61.33    +24.15%
+	May be DROP_UNICAST_IN_L2_MULTICAST should drop also
+the GARP packets. Why should the GARP packets to be more
+privileged than the other broadcast requests?
 
-Repeating the test with a separate benchmark-only change that removes
-the generic PPP receive lock:
+	I see your v5 and it looks like you do not take the
+path to stop the broadcast requests from updating the cache.
 
-  Senders       Before       After     Change
-        1        19.45       19.89     +2.23%
-        2        33.29       34.92     +4.90%
-        4        61.72       67.01     +8.57%
-        8        44.46      123.76   +178.35%
-       16        54.62      220.48   +303.69%
+> 2. For RFC 3927 (169.254.0.0/16): I completely agree with your concern that exempting it opens another door. Given that Hole-196 attacks typically target the subnet gateway rather than link-local addresses, keeping it simple without an exemption seems safer.
 
-Eight and sixteen senders perform worse than four whenever at least
-one receive lock remains. With both locks removed, throughput
-rises from 67.01 Gbps with four senders to 123.76 Gbps with eight
-and 220.48 Gbps with sixteen.
+	As this is a broadcast reply, we should be concerned
+if the same IP is locally configured. But what if we send
+broadcast request and receive broadcast reply for such address?
+I don't know if there is some support for such broadcasts.
 
-GPT Codex assisted in the benchmarks.
----
-v3:
- - Update the benchmark results. Code remains unchanged.
- - Sashiko reported a potential dangling skb->dev pointer in v2:
-   https://sashiko.dev/#/patchset/20261028030509.23294-1-qingfang.deng%40linux.dev?part=1
-   That requires a very specific and uncommon setup. Both extensions
-   require a non NULL skb->dev, so I doubt anyone had hit that path.
-   PPPoL2TP also bypasses __sk_receive_skb().
-v2: https://lore.kernel.org/netdev/20261028030509.23294-1-qingfang.deng@linux.dev/
- - Split out the synchronize_net() change (already in net tree e7b01bc0202a)
- - Do not change the banner comment
- - Include the benchmark results
+	As result, IMHO the handling should be:
 
-v1: https://lore.kernel.org/netdev/20260804074452.75548-1-qingfang.deng@linux.dev/
----
+- broadcast request: do not update cache, send replies as usually.
+GARP requests (ARP Announcement) should not update the cache.
 
- drivers/net/ppp/pppoe.c | 4 ++++
- 1 file changed, 4 insertions(+)
+- broadcast replies:
+	- reply for 169.254.0.0/16: one day these should be
+validated and then allowed, now dropped
+	- otherwise, drop, do not update cache
 
-diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
-index 67c28ac763ef..a1ed756a6220 100644
---- a/drivers/net/ppp/pppoe.c
-+++ b/drivers/net/ppp/pppoe.c
-@@ -415,6 +415,10 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
- 	if (!po)
- 		goto drop;
- 
-+	if (likely(po->sk.sk_state & PPPOX_BOUND)) {
-+		ppp_input(&po->chan, skb);
-+		return NET_RX_SUCCESS;
-+	}
- 	return __sk_receive_skb(&po->sk, skb, 0, 1, false);
- 
- drop:
--- 
-2.43.0
+- the ARP traffic on the WLAN will increase because we will not
+update the cache from remote requests, only from remote unicast
+replies which are in response to our broadcast requests
+
+> Regarding your comment on the IP part ("But not sure for the IP part..."):
+> Could you please elaborate on your concerns with the IP changes?
+
+	From my notes about DHCPv4, I see broadcasts only for:
+
+- DISCOVER: client_mac->brd, 0.0.0.0:68 -> 255.255.255.255:67
+- REQUEST: UNUSED IP, client_mac->brd, 0.0.0.0:68 -> 255.255.255.255:67
+
+	But things now may differ.
+> 
+> The motivation for exempting UDP port 68 was that in our lab testing, we noticed certain DHCP servers responding with unicast IP addresses over L2 broadcast, which caused legitimate lease packets to be dropped by drop_unicast_in_l2_multicast.
+> 
+> We would be very glad to adjust, simplify, or rethink the IP logic based on your advice.
+> 
+> Thanks again for your time and guidance!
+> 
+> Best regards,
+> Star Chang
+
+Regards
+
+--
+Julian Anastasov <ja@ssi.bg>
 
