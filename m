@@ -1,101 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=37.230.196.243
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793358168;
-	b=a9wLE28WXCfLtAzPt4Qa2fficHMCpWCTiWs8ZR22q1vTu6xmMnT4lRMEUB2WlKJgRz6h
-	 IY4baQSBVMEbNRb/BcnSlHKrAeNV31Qoekat1gNRWi1CuqSvmwprbPLqu0sep/a477+Zs
-	 SveCEinM6svMRDDodZqzBrQmbc4NsErkZEZEQ1aOJjYjrdw/BIuofgUlCKHUuqDZfAgcS
-	 wtUJHwlB5FGb0cYjJvwFFrmoKcGmqTSPDDkgWThylL4DCixf88CPWVpbo8ZLmGrFlxoVS
-	 eAHnR0JJ3rXjdgmwsMOU8ynO+GH3qt75rg2jH6UwjcL3oWbfGDE4Ddm5Po9vwaScCQA==
+	t=1793358355;
+	b=AI0qHNniRInIqztEZbju3OpPQ+bHeMzd+cuxx6zcQ1WVRuBPsEPSga5pxD+P1Nzg/DTG
+	 2vpKdkwLqi4f5VaC1roiyc01MtbXoKRIPPVcaU8vC1FsI6WwXPmJ9bU6TiTge0zpDx2kL
+	 ddokwu53kJ0b0LxT6gBOQOBpAUsWHJrO7p0ARJ6h31y/dwRYp9bSbxGU9dd7T/bDQX9H1
+	 UObFnQQbJzcRVZvQD2XpLes911+Lj1txsoAGxqAjROA6WYsrM+GJggtG8g1bPQG9UHKGi
+	 51AhXo9smP0ueYQ9HaViYlQkW945lSwCwAcCbNO5HITKlW1VkxWdmVU+2QjfP8shORQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793358168;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:X-KSMG-AntiPhishing:X-KSMG-AntiSpam-Auth:
-	 X-KSMG-AntiSpam-Envelope-From:X-KSMG-AntiSpam-Info:
-	 X-KSMG-AntiSpam-Interceptor-Info:X-KSMG-AntiSpam-Lua-Profiles:
-	 X-KSMG-AntiSpam-Method:X-KSMG-AntiSpam-Rate:X-KSMG-AntiSpam-Status:
-	 X-KSMG-AntiSpam-Version:X-KSMG-AntiVirus:X-KSMG-AntiVirus-Status:
-	 X-KSMG-LinksScanning:X-KSMG-Message-Action:X-KSMG-Rule-ID;
-	bh=H9TixdvCYfAxhdujwN74ql2Wvj86XbJl7rH8qpd1rDs=;
-	b=FlOcCINOM3OL+BpUBdvaljTueRl4hJL5k2cq6BMeujK7/1+0uyMvsojEoSExWVKZTJnS
-	 tDpuVr9emkfwFjVxmqnJrr+/U/Xh8gB8l198lmiJzGQNUYuOiS8+Zf415IaiRvp6FnPsa
-	 iVn8oTxRs3c/P1S9YoW/4g4ujVXqaQ6eSNOOZOMkkJCMCT1U2p7nx7EH5X+LkZnKA3P6j
-	 g+2ZCJyiXTIg2ba6GgMMsLaAR2r8utQ0lwZSFegO1FIMq7V+Z5uBJTMPxfaSSDLkkXp0s
-	 p0u5Zw1lSgdUoAt+dUYYCeU+yoaFlEp7GtjIyufcakPLpfPnRPyEjjEV5pxtEOKR52g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793358355;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=zCm2nV5O4wlaDx56bSSyYv3tpFjUlYFnDPRRhQYENCY=;
+	b=tvFVPSegP6fPG4YS84AheAC1oJBk0/FSh/FF+QjYreoVUWEte7GCFx5OjZxUB65xFd+J
+	 bn6xYqNMcvbHEHaNGbuZqn3IL2QxxcTjN4SngmYTGDV1DQk5X3vP3j2gEKEpK0QqHGFXB
+	 jDeaHk1kswABXg6BvqVGwu7gXo8yblJzfSSl85MyFNU8JjdUlkXuFxZ7+Hi4OUAZ1DPza
+	 WqUVc5zT9btnjLOy1EPuenelhPn2MFXGuna1/8DmE90sQW/a7b9XQCTgCv/0sCO8Bchtx
+	 HVg758HTVmJ/WJm9brUicog3HZEQo/u5OwkETzYPzjbMZ0kw2PIkwFSXDYDM79zcAGQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=astralinux.ru;
-	spf=pass smtp.mailfrom=astralinux.ru;
-	dkim=pass header.d=astralinux.ru header.i=@astralinux.ru header.a=rsa-sha256 header.s=mail header.b=JE4+caH8;
-	arc=none smtp.remote-ip=37.230.196.243
-Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="cu/Uv6KU";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F72606A335;
-	Fri, 30 Oct 2026 11:02:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 26F72606A335
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC9C606A31A
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 11:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=astralinux.ru header.i=@astralinux.ru header.a=rsa-sha256 header.s=mail header.b=JE4+caH8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
-	s=mail; t=1793358162;
-	bh=jUFlfZP4fmlVy7cT7aawURCBbnI/ZDRP3SAo3SZoNDc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=JE4+caH8RmJhWsRV8AgvtaobgG8GjmvBHbGh4RknMFvSUjEXHuSsdDoAJN0ZEuorP
-	 Zq7coXNLdaGgHE3hRkyqLdmU/dHDRo2jIbXwheiMyDXgClt3br7j0U5mgQ0Yq95wpM
-	 qitKd0PNdxPXmMKNHvGCiRyEWV0yHug5bELWOcVG/KJjNLTqJAAQhQM/iJXxBH2qRD
-	 NIzjaSR1tArrLcuVC5/U9oHlLBQaE/EJu5uGg1oe0PiMmAHbZHthDBDAyZiFCok5CO
-	 hy5FAetUlGlnpcxdyPZObnH58upp3Z2ikVOHoCz/TvTSyG5gRg3MHFyv2ZcbxJ877r
-	 ELO2wqhQwQYJw==
-Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw01.astralinux.ru (Postfix) with ESMTP id B347424E8A;
-	Fri, 30 Oct 2026 14:02:42 +0300 (MSK)
-Received: from new-mail.astralinux.ru (unknown [10.205.207.13])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
-	Fri, 30 Oct 2026 14:02:25 +0300 (MSK)
-Received: from DESKTOP-D46TNHI (unknown [10.198.26.228])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4jGJ6z1V40z1V2r;
-	Fri, 30 Oct 2026 14:00:59 +0300 (MSK)
-From: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>,
-	Sasha Levin <sashal@kernel.org>,
-	Luxiao Xu <rakukuip@gmail.com>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Vega <vega@nebusec.ai>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>
-Subject: [PATCH 5.10/5.15] bpf: Check sk_state before sk_protocol in bpf_tcp_*_syncookie
-Date: Fri, 30 Oct 2026 13:59:48 +0300
-Message-ID: <20261030105949.1538-1-mdmitrichenko@astralinux.ru>
-X-Mailer: git-send-email 2.54.0.windows.1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cu/Uv6KU
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5B91F0093A
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 11:05:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793358355;
+	bh=zCm2nV5O4wlaDx56bSSyYv3tpFjUlYFnDPRRhQYENCY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=cu/Uv6KUdwyXLwmE8crIxiA/ITPP7K/e13QHBjTS871iAVf3rn5h+wMU1VYv+cFjF
+	 FkkLtjWz1iaVRtaQ0f3ZmLhyexXKkzzZ096u5COAxm9CPcg6cuCHjbY6vRWLoj9mNE
+	 XczLkHKg6RJJP41AfoaHmvjrH8gyA/hEv7Wc+B3AkXHDaZLiqttVEQWfBWJYFfPlyr
+	 vLSa5M9YDGg+0f4SQwbww0nbsKRCRp3TgBnnnmy2LoqNGjhk4YbGRbDkFkqaFf6nVF
+	 nnoNS765Q3+bTOqccEwvTqqeudbL6lT6dCDy1Z6e4My8XCFXqpTN/yb5WO12yVFiD6
+	 MuUw6umStHeLg==
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-4a75a5fa32dso119778fac.1
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 04:05:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzH6ybnTyuF3LOX0CTo3aBu/YbXbQ4mW+FN2OjyvJgNMTQ90+QBmJggUnUUE4tVEMeQIT8IHJw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI17TEoSN1+RK/RIjdIfPwu1Dn/J6V8ghKj9+6ryOE+OkjHawzx
+	M96lLfgEKR/VoGqkroWI2cAddy+e0nEEmrmeMqXoq8V+s9rk/YTWnbvDat0v933+WhvV8glZDJi
+	VK/9rcviUPXBbO1M2U8zqI5ZDR0HCmsg=
+X-Received: by 2002:a05:6870:8101:b0:491:88f1:f3aa with SMTP id
+ 586e51a60fabf-4a9076a4e0dmr1167286fac.26.1793358354538; Fri, 30 Oct 2026
+ 04:05:54 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,70 +59,156 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-KSMG-AntiPhishing: NotDetected, bases: 2026/10/30 10:30:00
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: mdmitrichenko@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 133 0.3.133 d508d579b02cdb6df47808421a9b9e12fc9fb75b, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;lore.kernel.org:7.1.1;astralinux.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;new-mail.astralinux.ru:7.1.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 207136 [Oct 30 2026]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.27
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/10/30 08:35:00 #28764057
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2026/10/30 10:30:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 1
+References: <20261027130617.1550253-1-edumazet@kernel.org> <179321450338.3134.9348301510643981873@kernel.org>
+In-Reply-To: <179321450338.3134.9348301510643981873@kernel.org>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Fri, 30 Oct 2026 12:05:43 +0100
+X-Gmail-Original-Message-ID: <CAL4WiirihJKbubcDmnvUeuDEM0dsjOgQd6yuUdzfKUPj3cQDyg@mail.gmail.com>
+X-Gm-Features: AclHuK_L8nVT0i3ZS28VaWzM1pq_HNFt9aJCz0YujAXDUb2S8lO79SsajklSykc
+Message-ID: <CAL4WiirihJKbubcDmnvUeuDEM0dsjOgQd6yuUdzfKUPj3cQDyg@mail.gmail.com>
+Subject: Re: [PATCH net] tcp: bound snd_cwnd_clamp to TCP_MAX_SND_CWND
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
+	ncardwell@google.com, kuniyu@google.com, horms@kernel.org, 
+	netdev@vger.kernel.org, mason@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Luxiao Xu <rakukuip@gmail.com>
+Le mer. 28 oct. 2026 =C3=A0 20:08, <netdev-bot+sashiko@kernel.org> a =C3=A9=
+crit :
+>
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [High] The patch sets TCP_MAX_SND_CWND to 1U << 24 (16,777,216).
+>
+> --
+>
+> tcp: bound snd_cwnd_clamp to TCP_MAX_SND_CWND
+>
+> This patch changes the default snd_cwnd_clamp from ~0 to a finite
+> TCP_MAX_SND_CWND of 2^24 packets. It also caps the locked RTAX_CWND
+> metric, TCP_BPF_SNDCWND_CLAMP and TCP_BPF_IW at that value. The stated
+> goal is to stop congestion control u32 arithmetic from misbehaving when
+> cwnd gets very large.
+>
+> > diff --git a/include/net/tcp.h b/include/net/tcp.h
+> > index 0265c27a5fd77..be1609cd78840 100644
+> > --- a/include/net/tcp.h
+> > +++ b/include/net/tcp.h
+> > @@ -1553,6 +1553,12 @@ static inline unsigned int tcp_packets_in_flight=
+(const struct tcp_sock *tp)
+> >
+> >  #define TCP_INFINITE_SSTHRESH        0x7fffffff
+> >
+> > +/* Default and maximum snd_cwnd_clamp, in packets.
+> > + * Far above any usable BDP, but low enough that congestion control
+> > + * arithmetic such as 100 * cwnd in CUBIC cannot overflow a u32.
+> > + */
+> > +#define TCP_MAX_SND_CWND     (1U << 24)
+>
+> [Severity: High]
+> Is 2^24 small enough for the claim in this comment? 100 * cwnd fits, but
+> CUBIC has larger u32 products on cwnd:
+>
+> net/ipv4/tcp_cubic.c:cubictcp_recalc_ssthresh() {
+>     ...
+>         if (tcp_snd_cwnd(tp) < ca->last_max_cwnd && fast_convergence)
+>                 ca->last_max_cwnd =3D (tcp_snd_cwnd(tp) * (BICTCP_BETA_SC=
+ALE + beta))
+>                         / (2 * BICTCP_BETA_SCALE);
+>     ...
+>         return max((tcp_snd_cwnd(tp) * beta) / BICTCP_BETA_SCALE, 2U);
+> }
+>
+> With beta =3D 717:
+>
+>   cwnd * 1741 wraps once cwnd is above about 2.47M.
+>   cwnd * 717 wraps once cwnd is above about 5.99M.
+>
+> Both points are below 2^24.
+>
+> At cwnd =3D 2^24, ssthresh comes out as 3,358,720 instead of 11,747,328.
+> last_max_cwnd comes out as 1,679,360 instead of about 14.3M.
+>
+> Just above each wrap point the product is close to zero, so ssthresh
+> would drop to a few thousand or to the 2U floor. The wrong Wmax then
+> reaches bictcp_update(), and the comment there says that code is only
+> overflow-free for cwnd below 1 million packets.
+>
+> Other in-tree modules have the same pattern:
+>
+>   dctcp_ssthresh():          cwnd * dctcp_alpha (up to 1024, also the
+>                              default), wraps at 2^22
+>   bictcp_recalc_ssthresh():  cwnd * 1843 and cwnd * 819
+>   tcp_cdg_ssthresh():        cwnd * min(1024U, backoff_beta)
+>   tcpnv_recalc_ssthresh():   cwnd * nv_loss_dec_factor (default 819)
+>   tcp_roccet.c:              cwnd * beta and cwnd * (1024 + beta)
+>
+> DCTCP at cwnd =3D 2^24 is the clearest case:
+>
+>         return max(tcp_snd_cwnd(tp) - ((tcp_snd_cwnd(tp) * ca->dctcp_alph=
+a) >> 11U), 2U);
+>
+> Here 2^24 * 1024 wraps to 0. ssthresh then equals cwnd, so the ECN
+> window reduction never happens.
+>
+> The inputs named in the commit message can still put cwnd at the clamp
+> directly. That skips any real growth in flight:
+>
+>   tcp_init_cwnd() returns min_t(__u32, cwnd, tp->snd_cwnd_clamp)
+>   for RTAX_INITCWND
+>   TCP_BPF_IW now sets min_t(u32, val, tp->snd_cwnd_clamp)
+>
+> Either path can set cwnd to 2^24. The next RTO or recovery then calls
+> the CC ssthresh callback with that cwnd:
+>
+>   tcp_enter_loss()->icsk_ca_ops->ssthresh()
+>   tcp_init_cwnd_reduction()->icsk_ca_ops->ssthresh()
+>
+> The sk_sndbuf argument in the commit message limits packets_out. These
+> callbacks read snd_cwnd, not packets_out.
+>
+> The generic stack has a similar product as well:
+>
+> net/ipv4/tcp_output.c:tcp_tso_should_defer() {
+>     ...
+>         u32 chunk =3D min(tp->snd_wnd, tcp_snd_cwnd(tp) * tp->mss_cache);
+>     ...
+> }
+>
+> With a 1448 byte MSS, this wraps above about 2.97M packets.
+>
+> Would a lower bound work here, around 2^21 or less to cover multipliers
+> up to 2048? The other option is widening these products to u64.
 
-commit 31a420a822ff92e2090bd5d65efe8e34e2d6d9b8 upstream.
+Good point, 2^24 is too big: the ssthresh() handlers multiply cwnd
+by factors up to 2047 (CUBIC/BIC/ROCCET 1024 + beta), and DCTCP wraps
+to zero at 2^24 with alpha =3D 1024.
 
-bpf_tcp_gen_syncookie and bpf_tcp_check_syncookie accept a socket pointer
-'sk' with argument type ARG_PTR_TO_BTF_ID_SOCK_COMMON. However, they access
-sk->sk_protocol without validating whether 'sk' represents a full socket.
+I will send a v2 using 2^20 instead. This covers all in-tree
+multipliers (< 2048), and also matches the "cwnd < 1 million packets"
+assumption documented in CUBIC bictcp_update().
 
-Fix this issue by checking sk->sk_state != TCP_LISTEN before inspecting
-sk->sk_protocol in both bpf_tcp_gen_syncookie and bpf_tcp_check_syncookie.
-Since mini-sockets are never in the TCP_LISTEN state, the condition
-short-circuits and prevents dereferencing fullsock-specific fields.
+2^20 packets does not limit real flows: a peer can not advertise
+more than 65535 << 14 bytes (~1GB), which is below 2^20 packets for
+any MSS >=3D 1024.
 
-Fixes: 399040847084 ("bpf: add helper to check for a valid SYN cookie")
-Fixes: 70d66244317e ("bpf: add bpf_tcp_gen_syncookie helper")
-Reported-by: Vega <vega@nebusec.ai>
-Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
-Signed-off-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://lore.kernel.org/bpf/6218aa3534d0d2d3f448fde70a8dc2769d7a8201.1785823138.git.rakukuip@gmail.com
-Signed-off-by: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
----
-Backport fix for CVE-2026-80738
+I prefer this over widening each product to u64, which would touch
+many CC modules and still leave bictcp_update() limits in place.
 
- net/core/filter.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+The tcp_tso_should_defer() products (cwnd * mss_cache) can overflow
+with large MSS regardless of this patch, but they only affect
+the TSO deferral heuristic. This can be addressed separately in net-next.
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index b885b8b..b8b8dd3 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -6626,5 +6626,5 @@ BPF_CALL_5(bpf_tcp_check_syncookie, struct sock *, sk, void *, iph, u32, iph_len
- 
- 	/* sk_listener() allows TCP_NEW_SYN_RECV, which makes no sense here. */
--	if (sk->sk_protocol != IPPROTO_TCP || sk->sk_state != TCP_LISTEN)
-+	if (sk->sk_state != TCP_LISTEN || sk->sk_protocol != IPPROTO_TCP)
- 		return -EINVAL;
- 
-@@ -6701,5 +6701,5 @@ BPF_CALL_5(bpf_tcp_gen_syncookie, struct sock *, sk, void *, iph, u32, iph_len,
- 		return -EINVAL;
- 
--	if (sk->sk_protocol != IPPROTO_TCP || sk->sk_state != TCP_LISTEN)
-+	if (sk->sk_state != TCP_LISTEN || sk->sk_protocol != IPPROTO_TCP)
- 		return -EINVAL;
- 
--- 
-2.51.1
-
+pw-bot: cr
