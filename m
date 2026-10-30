@@ -1,99 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793358679;
-	b=BGM3DfpRZTnpG7YA0yyEhH4sJQkxHFQcNbzYDQkVtOR/6uupXqESJw6DAwp4nWvIeYp6
-	 R37TLty18jpwsVc/rNF6hr3C9/rIPpa7dnP14EaP6zclY5B9TA8Km4/RnpZwMvGsgQfTe
-	 EKMhayMdqAQ3vTxrsiep4Zvonu8Abv/Aq9bMCd102w4euQIp4nRYwn6hsnL0Icu6y9j7K
-	 U22gIquW7I1Bf/DtGLcSS/M42EEqZE7JdCPUgjny9GRcIWC9sBr6a7Era99IizaGwH83W
-	 +UptXaLkd36WyHnzaQGt8a2bgQ/Pk4YH4ocG4FCHVkKKN1nM6GEdqsSbv8W7x6zoVUg==
+	t=1793358933;
+	b=cXCevO470A6bR1NL71/5BEdl55TlgI0fjSng8ZsyZegyMgcHF2wTPRr3rZgFqm+bLhMK
+	 Ee2WudXNSYCN3VZYQ2Ro8zxFd5qjlk1W/CzR+kU4NayGFnbB+oDWCGfBGUloyNyRXGD0C
+	 z25b3/fN9uYzSXeddodg7IWMMSB3qcbNbf6L+rlIncB26JWxsWUA1k0cRxn7q/yJ+jhEL
+	 WNtHmw22e2qx5Z4wn95nzqwiizR5FQAfLHck0xiOxkRH1RDuG7HNTjOfbHBW80EqO8F9h
+	 3WUDj1Ar7hKffPv2b/qtHDXgRNlYNsBbM5IYHce1n2CtcLMOit/+qxRWZwR9iM8wkew==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793358679;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	bh=KmOrBm1qC65xwrgbyzMtaj27QcC/iPJg0n2kc5knBkY=;
-	b=mqzJaeJmqhKAw2PWNtMj9iNVV1N6VNhLi2PyTKTmiL3qHWh8rOGOZky6TNYeNdDDhht0
-	 XA0rkN8KrjbVpxMjI1HjoYhOp/JiU19sLrGYt7pxLj7+7PZc8+DViukOT02ewUoO5qsyX
-	 8VXTTc3KCArnnjPA972rZd25ItG3svaqZfGkH7adYQwb3YJLwWh8sIoo2UPQA7HhiSG4v
-	 2EAbkZH0QxuKBtqiD3lXopUMwfzzVh8pLT3BrXATHs9pdOHP/Q1Lro3Bh3NnLsysQNfK1
-	 zRddIRfPLHr+p1Yp5nGCcgSwDLTnKKv/CsbLFo1pyynIX6XaSqSmWe1hCbPPZMo+IZA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793358933;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=NgFw98abvJpGmoFM42LssdatIt/oCiwXS2s4Oiwx1Hw=;
+	b=Sd5oNJUOIwd0UDX4yJNTRhvSMnZ7WDRSrh9tHoeUNtv+aBrR0PNgwL7ckhQb5pcjLYD6
+	 9ogGD93fTMcTrYF4VPzY48dz8s27WkkDx29SblA9d7s150lMXMGYXsGzW8m486abfI+0G
+	 8Ocou4JEsVMeky/YV0oX+LkEklVuj3zwIpWynxPa2sjAsUslkpma6L1tYUukRQ7v0LAPH
+	 9wwhfBiIkNpQ+pRyWZuU+wMJYiytNjAPYYGGGilV1blKi88BeAzNCmFL90ym/BFamOmBp
+	 MAIVBelVXbBw266Tw6vUmS78f7D5MOSKXXgOUucLRoOdsiw800YN0yIiMph+Iv4zVdg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zWuZnZ9o;
-	arc=none smtp.remote-ip=209.85.217.53
-Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FrTedrC2;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127C460A260F
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 11:11:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 127C460A260F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8199606A32A
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 11:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zWuZnZ9o
-Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-7a6e560f580so351232137.1
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 04:11:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793358673; x=1793963473; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=KmOrBm1qC65xwrgbyzMtaj27QcC/iPJg0n2kc5knBkY=;
-        b=zWuZnZ9oXZ5HmCIQULU2ysuHIxEAao+4ssIn5SxifJ4hATR4wMsIroOAme4Ha/exnz
-         u88h30A443XorD04h9OibQs3AsxA6ZdamxupOrVxZmd3EGYNVgVGNaxpoWqBmHABT2xI
-         WLGkfFKwu8xMSJKQ5KztKDRtkUQp36XNPrft9PZilrNktRx87afAV8xhQ+ZGCGTXO/rd
-         V9cqMdNvHJX173W7Ibnw1ymxuMOGbV3fE6maXXbnkKvuHGwIuL2fWCxaIkda43uOG2yM
-         nBQcbsHBTUj7XPCLwskOI4Y+i6RuXou02KmEArxLxiz+vwAGjSpiqLrIFGCjnlw7jO/3
-         V20Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793358673; x=1793963473;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KmOrBm1qC65xwrgbyzMtaj27QcC/iPJg0n2kc5knBkY=;
-        b=N7c9tjXgOY1B1u1l+x/QH4nEuLoXZQFBrLC+1jo9b5mycHA5074zT8SYkF4jQ7Qalg
-         j512cW8Eam9b82ljPJz5bkr1zLx2Y1909UMe97l7xOJR/3zx3BiuTxVutFUeHyPv+R28
-         9kcuwCyk0sp+5sbVJyqCir7K4jlatylM1BK4625dXqpQ6jjmouciTE/lAtfEFCnB9lYo
-         cUt2BofqEMtCmGxlh4CidVdUDAs90YrNbscdR/1T/LpJBtEQvrMmq9QOtf9nCldMDJKw
-         FimZ/JU/kg9g/54UyDrFG3RQ5eXWPuDPW15+P6m9lNp51dpYacPhfz8h0yTPj++RRu/B
-         NSoA==
-X-Forwarded-Encrypted: i=1; AKwUvBxQH744S2V0nar2kHzHl1D7IdQcqDTWaZ3yW6Mauh982fYQ9OamspZWDAEBsgrTMhFlXSZnMQ0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKdZjNvy9FgAbiCdGMqC+ZdFAOcX9t7T1rc0jC8ZZYchvpVN3gH
-	eMta5Onz84jWbRtDU18T9D3yXHV9cumi45OSnNegPLWlVDtSXstvxpXr
-X-Gm-Gg: AYBFou01Wzu6MxripL5CMZUaYf+b89SXCmHWf6NMLEmPV1Urnk3PaD8FRL5WV3KvkUK
-	YLh3QnzAusjLASCDcsCAZNayOTBUJpwHOIO5JYS+dC5n1JGM5P14Dv7dNwcwHIScF+k6pUl2XfO
-	Qf3bCS850XixvCamRwyEP1IUfqXgDFXfnAMPrct0C1QWCWI1v/dIp0vn8SH+CK4BFHDpJNrR6SU
-	Baxe6IQXV6HRKjkZSv9go9kWdRSH/Wk8aOtucG0xsdDpQJQq1BFn/ZVfhUGx+WS3xvIJjiRcj98
-	vw6/MghV01WQPASwJH1owi9wRGVLzF19AeD3Ioo8fTvvo/30JpFEPaWYXuD42Xh3FLu9Mtx1Qgb
-	Qd+mck2Xtj/hUf3hbQ3J6L3crxBms3VpciI/30DPefJ/LtJBMyc/CozY4dN+v70H8wr8UIBdtt2
-	ACL8ljUHfkF7QCt9xliWHij2phWntfjJyNpx2OKk67QVAd3YMjgTZa7blubbF1rCcyQlDjGfBFm
-	M/b2sy7K9qyBfq0yDQRBc0kt60Bc8ilcMCSqWfB1uo8syJ/eQikmjDlkdPSzQ8J3MNIY6wVnEzc
-	NnfUBWVCrEUlaIXy1n79rnQgCJ9VskK1BEWwCUYRe0UwKoYtbSgblw2XEv8wHYUV3lGzqsfsGK5
-	MrytRoBYxdcjCdmWi9yc=
-X-Received: by 2002:a05:6102:3588:b0:7cc:2c52:47aa with SMTP id ada2fe7eead31-7d071f2ec61mr1143935137.0.1793358672919;
-        Fri, 30 Oct 2026 04:11:12 -0700 (PDT)
-Received: from 1.0.0.127.in-addr.arpa ([191.34.116.20])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d07754c1b4sm1841044137.4.2026.10.30.04.11.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 04:11:12 -0700 (PDT)
-From: Joas Antonio dos Santos <joasantonio108@gmail.com>
-To: David Heidelberg <david@ixit.cz>
-Cc: David S. Miller <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, oe-linux-nfc@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject:
- [PATCH net 3/3] nfc: llcp: free the response skb when the data exchange fails
-Date: Fri, 30 Oct 2026 08:10:42 -0300
-Message-ID: <179335864272.64596.2156668877648051796@gmail.com>
-In-Reply-To: <179335864271.64596.805818095553030218@gmail.com>
-References: <179335864271.64596.805818095553030218@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FrTedrC2
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340131F00A1B;
+	Fri, 30 Oct 2026 11:15:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793358932;
+	bh=NgFw98abvJpGmoFM42LssdatIt/oCiwXS2s4Oiwx1Hw=;
+	h=From:To:Cc:Subject:Date;
+	b=FrTedrC2uWyL/PbBqEeLSHS3lIWNsYWgno9kI5pZNHQaexgO0RXghtE6xL079tf4W
+	 Gw1DiLVBQU8pdMWL5cMsVDjlFPwJzNL6I5Z51WEqYCNP+LYuXNPx967Ni9ko5OEzfh
+	 YdFdsBsKWLhKI9VAfRc1jCE5SxOanoxpYiI9iJ3KGG0Ut209s2g6whbvuqGntJtPNw
+	 MgxI9taD53Y+QRb/3ypbFoQJzbTd4qKaL1wpJfjtPdIaoRSoZ0WNba2Btk/o8vQW/D
+	 XacvIL9KaoQFgkI125TynTG0wRHMZXMu3KExSQJChcQHfIRH6Ka/bIK83ytK/R+z3Y
+	 +PNwn0q8SxYTA==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Neal Cardwell <ncardwell@google.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	Eric Dumazet <edumazet@kernel.org>,
+	Chris Mason <mason@kernel.org>
+Subject: [PATCH v2 net] tcp: bound snd_cwnd_clamp to TCP_MAX_SND_CWND
+Date: Fri, 30 Oct 2026 12:15:28 +0100
+Message-ID: <20261030111528.2850082-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,41 +62,115 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-nfc_llcp_recv() is the data exchange callback for LLCP PDUs sent in
-initiator mode, and it returns without freeing the skb when err is set.
-Like for raw sockets, the skb can carry the response even when err is
-set: the HCI core passes it on with the error derived from the
-controller's result code, and NCI does the same for a frame interface
-data packet with a non-zero status byte.  So each failed exchange leaks
-an skb.
+snd_cwnd has no practical upper bound: snd_cwnd_clamp defaults to ~0,
+and RTAX_INITCWND, a locked RTAX_CWND metric, TCP_BPF_IW and
+TCP_BPF_SNDCWND_CLAMP accept any positive value.
 
-This was found by LLM-assisted code review.
+Congestion control modules do u32 arithmetic on cwnd that assumes
+much smaller values. For instance, ssthresh() handlers compute:
 
-Free the skb on the error path; it is NULL when the error does not come
-with a response, and kfree_skb() handles that.
+  CUBIC, BIC, ROCCET:  cwnd * (BICTCP_BETA_SCALE + beta), up to 2047
+  DCTCP:               cwnd * dctcp_alpha, up to 1024
+  CDG, NV, CUBIC, ...: cwnd * beta, below 1024
 
-Fixes: d646960f7986 ("NFC: Initial LLCP support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
-Assisted-by: Yaga Agent HackerSec Claude:claude-opus-5-5
+With a large initcwnd route or TCP_BPF_IW, cwnd is set directly to
+such values, and the next RTO or recovery calls ->ssthresh() with it.
+The product then wraps: DCTCP with cwnd = 2^24 and alpha = 1024 gets
+ssthresh == cwnd, and CUBIC computes a wrong ssthresh and Wmax.
+CUBIC bictcp_update() also expects cwnd below about one million packets.
+
+The paths that can grow cwnd by large amounts (tcp_slow_start(),
+tcp_cong_avoid_ai(), bbr_set_cwnd() and tcp_init_cwnd()) already
+bound it by snd_cwnd_clamp, so give snd_cwnd_clamp a finite default
+of 2^20 packets, and cap the metric and BPF paths that set it or set
+cwnd directly.
+
+2^20 packets do not limit real flows: with the maximum window scale
+of 14, a peer can not advertise more than 65535 << 14 bytes (~1GB),
+which is less than 2^20 packets for any MSS of 1024 bytes or more.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Chris Mason <mason@kernel.org>
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
 ---
- net/nfc/llcp_core.c | 2 ++
- 1 file changed, 2 insertions(+)
+v2: lower TCP_MAX_SND_CWND to 2^20 to cover CC ssthresh() products (Sashiko)
+v1: https://lore.kernel.org/netdev/20261027130617.1550253-1-edumazet@kernel.org/
 
-diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-index 74bf81700..f0632a0b9 100644
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -1638,6 +1638,8 @@ void nfc_llcp_recv(void *data, struct sk_buff *skb, int err)
+Chris found the bug thanks to an LLM. A repro can confirm it.
+---
+ include/net/tcp.h      | 9 +++++++++
+ net/core/filter.c      | 3 ++-
+ net/ipv4/tcp.c         | 2 +-
+ net/ipv4/tcp_metrics.c | 3 ++-
+ 4 files changed, 14 insertions(+), 3 deletions(-)
+
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 3560adddf821544d260bcf07cdd8a4d280c0ff36..5c9203aae83417d75bfe520cfdbecff36a15a057 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -1554,6 +1554,15 @@ static inline unsigned int tcp_packets_in_flight(const struct tcp_sock *tp)
  
- 	if (err < 0) {
- 		pr_err("LLCP PDU receive err %d\n", err);
-+		/* skb may carry the response even when the exchange failed */
-+		kfree_skb(skb);
- 		return;
+ #define TCP_INFINITE_SSTHRESH	0x7fffffff
+ 
++/* Default and maximum snd_cwnd_clamp, in packets.
++ * A peer can not advertise more than 65535 << 14 bytes, so a larger
++ * cwnd is useless with any MSS of 1024 bytes or more.
++ * Congestion control modules multiply cwnd by u32 factors up to 2047
++ * (cwnd * (BICTCP_BETA_SCALE + beta) in CUBIC), and CUBIC's
++ * bictcp_update() expects cwnd to stay below about one million packets.
++ */
++#define TCP_MAX_SND_CWND	(1U << 20)
++
+ static inline u32 tcp_snd_cwnd(const struct tcp_sock *tp)
+ {
+ 	return tp->snd_cwnd;
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 09c60a58c82abe8fc188c8f68059691cdcb52fb4..96f9ba67095a286b8973cbc198adf8da18af1b16 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -5590,11 +5590,12 @@ static int bpf_sol_tcp_setsockopt(struct sock *sk, int optname,
+ 	case TCP_BPF_IW:
+ 		if (val <= 0 || tp->data_segs_out > tp->syn_data)
+ 			return -EINVAL;
+-		tcp_snd_cwnd_set(tp, val);
++		tcp_snd_cwnd_set(tp, min_t(u32, val, tp->snd_cwnd_clamp));
+ 		break;
+ 	case TCP_BPF_SNDCWND_CLAMP:
+ 		if (val <= 0)
+ 			return -EINVAL;
++		val = min_t(u32, val, TCP_MAX_SND_CWND);
+ 		tp->snd_cwnd_clamp = val;
+ 		WRITE_ONCE(tp->snd_ssthresh, val);
+ 		break;
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index b9de7c302ba83acfcb9cc6a2a2f67362277386b6..876f3e5f34c07f3af592d49e79d48eed3fc5d61c 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -456,7 +456,7 @@ void tcp_init_sock(struct sock *sk)
+ 	 * initialization of these values.
+ 	 */
+ 	tp->snd_ssthresh = TCP_INFINITE_SSTHRESH;
+-	tp->snd_cwnd_clamp = ~0;
++	tp->snd_cwnd_clamp = TCP_MAX_SND_CWND;
+ 	tp->mss_cache = TCP_MSS_DEFAULT;
+ 
+ 	tp->reordering = READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_reordering);
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index d58f99c67d4dc0877d0e853c9e9faddd80343c22..ae551546422fe7c38b2ac3224f9ea9adbd3679d0 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -495,7 +495,8 @@ void tcp_init_metrics(struct sock *sk)
  	}
  
+ 	if (tcp_metric_locked(tm, TCP_METRIC_CWND))
+-		tp->snd_cwnd_clamp = tcp_metric_get(tm, TCP_METRIC_CWND);
++		tp->snd_cwnd_clamp = min(tcp_metric_get(tm, TCP_METRIC_CWND),
++					 TCP_MAX_SND_CWND);
+ 
+ 	val = READ_ONCE(net->ipv4.sysctl_tcp_no_ssthresh_metrics_save) ?
+ 	      0 : tcp_metric_get(tm, TCP_METRIC_SSTHRESH);
 -- 
-2.43.0
+2.53.0
 
