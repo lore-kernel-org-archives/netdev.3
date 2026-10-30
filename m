@@ -1,79 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.36.163.20
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.2
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793339985;
-	b=4SXKZMqQtxkEwJ13Y/Vb2bxXYZRiZM25CD86p7X5ZTnXfTvnH/el3QcPjaky+fYC44xg
-	 1nyByYG6rxo0LphDWRJ2iPVWRJ+ImG1vc+h1ttwamyhZkD8rCZIvIHfX+Crf9+AgTFMJk
-	 YAU1IseX7iNIgflsZ93CR789Rf3O90IXx7MEq/K5PNLhwXCttVmSFB5IihVeehfByfDww
-	 80EdyL1wjPhRLzLZH2wQyCM+s6hNgY1GOT1emG+wnuRnwcS93Cj5TVvOgfNVyxmo/LqwW
-	 /f9bx4gaP4URdqvX6nTNBOmQG/ZcwBjfn5d60Ux2p9y5VfH6t1VoU2Te+uuwZ4wEmHQ==
+	t=1793340079;
+	b=CCXXy942IE7PqNxxFJqVFKKWyxg7TnOlc9pvxtMDR6GUry95sbSMuRO1t9Jrs+pvhUyt
+	 Znzu6Kz3y5kxxhmqcRvHlwnk8OFM4yPrluP/pHJF1HFYnK2dgR1Yfo7j8bCFIYD2B6jY8
+	 mCGRIZuHAJJR+PGR8AbxfARbtdO6nhZtxG5ZQNuOXIHXQ7zsuGsn1ea0LPVPEV8npYYeZ
+	 47bL/58jsuHNn85kTg0pzoejEdsnRfGhwIB71DrmfrRisgMv0lwE0Bk9lnnjXOrlP+xK/
+	 ekHPfysgBUpwjbCCJyb/RHp8Rz3qbtNPCN8W4oPigwOPd3IDTpaOJ5yqbv8Ev2IgPlQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793339985;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:X-SEG-SpamProfiler-Analysis:
-	 X-SEG-SpamProfiler-Score:x-atlnz-ls;
-	bh=Wm/iilB5CgT7+iUai4Q2JgTujeFHrVbrWuLvh18fVpo=;
-	b=oQ1XepZtsasER1wZx/rGFwmDHBgr2O/EAf18yncOEJzuao3ia62tb8VnMZ/djarAm97f
-	 AoJtTAx620Lc9yI1AfV/JxIA/T7eQkCZUAIvRtuA1gCMofldWCp9CLkEJoRVb9o/VKvfj
-	 TfKD3XXhAa9jH/cvN2RVpxJ4h2lgdXrFAAOT37v0VRYYM2FbujlwmpYmdJ+xQuAjzQsZg
-	 H11mTcvGX5hQZTV1G0px81CuQeMZ/faaQt6gJlyS/lz+EClhs/vCsPjTz+oE4yYfGnIFy
-	 OnZwJn0hUYDAACZZ6+raPz1IC/yhnrsVXmyJ/ZnQ8hJ6cwAeRm5gewczNQz5KQfizWQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793340079;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
+	 X-CM-SenderInfo;
+	bh=sQtdtxU2Tur7wzsQ+rH348xm0XPtxxn0p8Wu9/qOfHY=;
+	b=waBmZPhcfxKgdfgn5x3RF8dXJKVrZ7iRdGqcfLPetPqptb1QJR9KUnrSPtuX2euIA1/T
+	 59jQX3+8Szjp8ABFf1H8nPMp26wAnbEg8aZWkyNKdK5FD94p41m6WI6IsZ08+SOMeR/Sg
+	 wNiWOEDAOWFuFeWZqA4cOnB+Q2IN6hA/5IPFU1YwTNy8FN0wcylGlcckb3sjP0rRUL3tC
+	 ivTyx5vBnDWS0ORy4DfQXsOT4p3W28O6AG61EEC64SMRauPyZjyVDJ8sQgGgmR6GJ3ZKv
+	 K2uQd2etXFT4Kan0j46nrnrwxyE5llZJJrm1dFsRIj2SyHLvisYXkhvyzXYXZt8JfKQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=alliedtelesis.co.nz;
-	spf=pass smtp.mailfrom=alliedtelesis.co.nz;
-	dkim=pass header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.a=rsa-sha256 header.s=mail181024 header.b=CrIHP+Ni;
-	arc=none smtp.remote-ip=202.36.163.20
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=o0YChxH+;
+	arc=none smtp.remote-ip=220.197.31.2
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3BF606A326
-	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 05:59:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1D3BF606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460DF606A31A
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 06:01:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 460DF606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.a=rsa-sha256 header.s=mail181024 header.b=CrIHP+Ni
-Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id B6FCA2C0677;
-	Fri, 30 Oct 2026 18:59:42 +1300 (NZDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-	s=mail181024; t=1793339982;
-	bh=Wm/iilB5CgT7+iUai4Q2JgTujeFHrVbrWuLvh18fVpo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CrIHP+NiwoE3I3YvGcNeolh5ie4qLS+HTgmvjsQMh5srrwGERRvGAOA9Ex4cVg1+Y
-	 biTA1SSSmbJCiNu8n/f6XDoxMbSNzc6YvQA6VBDePcghfQnP5uFqw8WhO/M98SruE7
-	 Jv1HKYGFKWPgOJ1avNOtZ0JT91C3YzGBDVYez90xlcF4qpsfJy58Ekig/ZYErVGpaW
-	 y4vd6SXt9a0WR9e2AhRW9woViM2y94CFh6TEWNaLADM1nq/Dbimjve84a2Jekmy3lV
-	 mMl8JcrVhNsYEY9QfRx9pP03la7mdeWp1NXgn0VaYXJ7G8P2WC27j3KjCvsTkWPJdh
-	 8V6l9ALpLq6fw==
-Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
-	id <B6ae4324e0000>; Fri, 30 Oct 2026 18:59:42 +1300
-Received: from angga-dl.ws.atlnz.lc (angga-dl.ws.atlnz.lc [10.33.22.14])
-	by pat.atlnz.lc (Postfix) with ESMTP id 8173213EE2B;
-	Fri, 30 Oct 2026 18:59:42 +1300 (NZDT)
-Received: by angga-dl.ws.atlnz.lc (Postfix, from userid 1025)
-	id 7F907564D90; Fri, 30 Oct 2026 18:59:42 +1300 (NZDT)
-From: Hermin Anggawijaya <hermin.anggawijaya@alliedtelesis.co.nz>
-To: dsahern@kernel.org,
-	idosch@nvidia.com,
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=o0YChxH+
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=sQ
+	tdtxU2Tur7wzsQ+rH348xm0XPtxxn0p8Wu9/qOfHY=; b=o0YChxH+Ih1G0S7LL8
+	GaxAiwejmmxzpJk67MU/Ol9thySwUOiJs8MtzhvCV2YHPsAgdpavND1fT5/mrPZH
+	G22vKup5wS74xMFzbnDgR8KrSkgZKKqkXBpWq5CKdj8M0XDbZacgcUMKb6RCNKFZ
+	5z3GxZ4LgK8EchQn8DoN/W+eo=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDXb1WNMuRq0UhWEA--.43024S4;
+	Fri, 30 Oct 2026 14:00:49 +0800 (CST)
+From: Rongguang Wei <clementwei90@163.com>
+To: netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com,
+	jasowangio@gmail.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
-	edumazet@kernel.org,
 	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Hermin Anggawijaya <hermin.anggawijaya@alliedtelesis.co.nz>
-Subject: [PATCH net-next 2/2] selftests: net: test RA PIO handling of manually added addresses
-Date: Fri, 30 Oct 2026 18:57:57 +1300
-Message-ID: <20261030055757.2094944-3-hermin.anggawijaya@alliedtelesis.co.nz>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261030055757.2094944-1-hermin.anggawijaya@alliedtelesis.co.nz>
-References: <20261030055757.2094944-1-hermin.anggawijaya@alliedtelesis.co.nz>
+	Rongguang Wei <weirongguang@kylinos.cn>
+Subject: [PATCH net v9 2/2] selftests: net: add TAP socket filter attach tests
+Date: Fri, 30 Oct 2026 14:00:43 +0800
+Message-Id: <20261030060043.94719-3-clementwei90@163.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20261030060043.94719-1-clementwei90@163.com>
+References: <20261030060043.94719-1-clementwei90@163.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,153 +66,312 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-SEG-SpamProfiler-Analysis: v=2.4 cv=FJW4xPos c=1 sm=1 tr=0 ts=6ae4324e a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=660iZSQnnn4A:10 a=Q208khUp9j-A8GAraSAA:9 a=3ZKOabzyN94A:10
-X-SEG-SpamProfiler-Score: 0
-x-atlnz-ls: pat
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDXb1WNMuRq0UhWEA--.43024S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW3JF45GF43AryxXF13ZFW8WFg_yoWfZr4xpa
+	s5WayDGr1UXrW7Xws7ArW8uFWfAw4DGr15ZFs5K3s8Zr4DGryUua9akFWSkan2yr48uws0
+	kFyaya43WwsIqFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jqeHDUUUUU=
+X-CM-SenderInfo: 5fohzv5qwzvxizq6il2tof0z/xtbC4hGE72rkMpFD6wAA3d
 
-Add a test that sends a Router Advertisement with three autonomous
-PIOs to a host that has two manually added addresses matching the
-addresses SLAAC would form from the first two prefixes:
+From: Rongguang Wei <weirongguang@kylinos.cn>
 
- - a plain manual address must keep its infinite lifetimes,
- - a manual address added with mngtmpaddr must have its lifetimes
-   refreshed from the PIO,
- - the third prefix must create a SLAAC address with the advertised
-   lifetimes.
+reattach_filter_without_user_buffer() attaches a filter, makes the buffer
+the program was copied from unreadable, detaches the queue and attaches it
+again. It then attaches a second queue from a fresh socket, which starts
+without a filter of its own, so a clear IFF_NOFILTER shows that the filter
+was installed again from the kernel copy.
 
-Extend _send_ra() so it can emit PIOs with the autonomous flag set.
+attach_filter_bad_len_keeps_program() checks that a TUNATTACHFILTER with a
+bad length leaves the installed program and the filter state that
+TUNGETIFF reports alone, and that a queue attached afterwards still gets
+the filter.  attach_filter_bad_prog_keeps_program() refuses a program with
+a valid length and instructions that bpf_check_classic() rejects, and
+checks the same properties: the filter state on the queue, and a queue
+attached afterwards still gets the saved program.
 
-Signed-off-by: Hermin Anggawijaya <hermin.anggawijaya@alliedtelesis.co.nz=
->
+attach_filter_nofilter_flag() and detach_filter_clears_reattach() cover the
+ways to attach a queue without a filter.
+
+Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
 ---
- tools/testing/selftests/net/rtnetlink.py | 79 +++++++++++++++++++++++-
- 1 file changed, 78 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/tun.c | 249 ++++++++++++++++++++++++++++++
+ 1 file changed, 249 insertions(+)
 
-diff --git a/tools/testing/selftests/net/rtnetlink.py b/tools/testing/sel=
-ftests/net/rtnetlink.py
-index 5534ade056a5..a1294460e9b5 100755
---- a/tools/testing/selftests/net/rtnetlink.py
-+++ b/tools/testing/selftests/net/rtnetlink.py
-@@ -266,7 +266,7 @@ def ipv6_route_del_reason_expired() -> None:
-             ksft_eq(attrs.get('del-reason'), 'expired')
-=20
-=20
--def _send_ra(sock, ifindex, lifetime, rio=3DNone, pio=3DNone):
-+def _send_ra(sock, ifindex, lifetime, rio=3DNone, pio=3DNone, slaac_pios=
-=3D()):
-     """The kernel fills in the ICMPv6 checksum on raw ICMPv6 sockets."""
-=20
-     # type, code, cksum, hop limit, flags, router lifetime,
-@@ -282,6 +282,11 @@ def _send_ra(sock, ifindex, lifetime, rio=3DNone, pi=
-o=3DNone):
-         # RFC 4861 prefix information option, on-link only (L set, A cle=
-ar)
-         ra +=3D struct.pack('!BBBBIII', 3, 4, plen, 0x80, valid_lft, 0, =
-0)
-         ra +=3D socket.inet_pton(socket.AF_INET6, prefix)
-+    for prefix, plen, valid_lft in slaac_pios:
-+        # RFC 4861 prefix information option, on-link and autonomous
-+        ra +=3D struct.pack('!BBBBIII', 3, 4, plen, 0xc0, valid_lft,
-+                          valid_lft, 0)
-+        ra +=3D socket.inet_pton(socket.AF_INET6, prefix)
-     sock.sendto(ra, ('ff02::1', 0, 0, ifindex))
-=20
-=20
-@@ -382,6 +387,77 @@ def ipv6_route_del_reason_absent() -> None:
-                         "user deletion must not carry del-reason")
-=20
-=20
-+def _ipv6_addr_lifetimes(ns, ifname):
-+    """Map each global IPv6 address on ifname to (valid, preferred)."""
+diff --git a/tools/testing/selftests/net/tun.c b/tools/testing/selftests/net/tun.c
+index 34de2580e32e..3730fba859a4 100644
+--- a/tools/testing/selftests/net/tun.c
++++ b/tools/testing/selftests/net/tun.c
+@@ -9,9 +9,11 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <unistd.h>
++#include <linux/filter.h>
+ #include <linux/if_tun.h>
+ #include <netinet/tcp.h>
+ #include <sys/ioctl.h>
++#include <sys/mman.h>
+ #include <sys/socket.h>
+ 
+ #include "kselftest_harness.h"
+@@ -548,6 +550,253 @@ TEST_F(tun, reattach_close_delete)
+ 	EXPECT_EQ(tun_delete(self->ifname), 0);
+ }
+ 
++/* accept: return skb->len.  Three instructions on purpose, so that the
++ * length read back through TUNGETFILTER tells it apart from a rejected
++ * program that is shorter.
++ */
++static const struct sock_filter filter_accept[] = {
++	BPF_STMT(BPF_LD | BPF_W | BPF_LEN, 0),
++	BPF_STMT(BPF_ALU | BPF_ADD | BPF_K, 0),
++	BPF_STMT(BPF_RET | BPF_A, 0),
++};
 +
-+    addrs =3D ip(f"-6 addr show dev {ifname} scope global", json=3DTrue,=
- ns=3Dns)
-+    return {a['local']: (a['valid_life_time'], a['preferred_life_time'])
-+            for a in addrs[0]['addr_info'] if 'local' in a}
++/* Put the instructions in an anonymous mapping, so that the test can make the
++ * address unreadable afterwards.
++ */
++static void *filter_alloc(const struct sock_filter *insns, unsigned int len)
++{
++	void *p;
 +
++	p = mmap(NULL, getpagesize(), PROT_READ | PROT_WRITE,
++		 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	if (p == MAP_FAILED)
++		return NULL;
 +
-+def ipv6_ra_pio_manual_addr_lifetime() -> None:
-+    """
-+    A PIO must refresh the lifetimes of SLAAC addresses only (RFC 4862
-+    Section 5.5.3 e). A manually added address that matches the address
-+    SLAAC would form keeps its lifetimes, unless it was added with
-+    mngtmpaddr.
-+    """
++	memcpy(p, insns, len * sizeof(*insns));
 +
-+    forever =3D 0xffffffff
-+    lft =3D 600
-+    # EUI-64 interface identifier of 02:00:00:00:00:01
-+    iid =3D '::ff:fe00:1'
-+    manual =3D '2001:db8:7' + iid
-+    mngtmp =3D '2001:db8:8' + iid
-+    slaac =3D '2001:db8:9' + iid
++	return p;
++}
 +
-+    with NetNS() as ns_h, NetNS() as ns_r:
-+        ip(f"link add veth0 netns {ns_h} type veth peer name veth1 netns=
- {ns_r}")
-+        with NetNSEnter(str(ns_h)):
-+            _write_ipv6_sysctl("conf/veth0/accept_ra", 2)
-+            _write_ipv6_sysctl("conf/veth0/accept_dad", 0)
-+            _write_ipv6_sysctl("conf/veth0/addr_gen_mode", 0)
-+        with NetNSEnter(str(ns_r)):
-+            _write_ipv6_sysctl("conf/veth1/accept_dad", 0)
-+        ip("link set dev veth0 address 02:00:00:00:00:01", ns=3Dstr(ns_h=
-))
-+        ip(f"-6 addr add {manual}/64 dev veth0 nodad", ns=3Dstr(ns_h))
-+        ip(f"-6 addr add {mngtmp}/64 dev veth0 nodad mngtmpaddr",
-+           ns=3Dstr(ns_h))
-+        ip("link set dev veth0 up", ns=3Dstr(ns_h))
-+        ip("link set dev veth1 up", ns=3Dstr(ns_r))
++static int filter_attach(int fd, const struct sock_filter *insns, unsigned int len)
++{
++	struct sock_fprog fp = {
++		.len = len,
++		.filter = (struct sock_filter *)insns,
++	};
 +
-+        sock, ifindex =3D _ra_router_sock(ns_r, "veth1")
-+        # The PIOs are processed in order, so once the SLAAC address
-+        # shows up the other two prefixes have been handled as well.
-+        pios =3D [('2001:db8:7::', 64, lft), ('2001:db8:8::', 64, lft),
-+                ('2001:db8:9::', 64, lft)]
++	return ioctl(fd, TUNATTACHFILTER, (void *)&fp);
++}
 +
-+        lfts =3D {}
-+        for _ in range(20):
-+            try:
-+                _send_ra(sock, ifindex, 0, slaac_pios=3Dpios)
-+            except OSError:
-+                # router link-local address still tentative
-+                pass
-+            time.sleep(0.2)
-+            lfts =3D _ipv6_addr_lifetimes(str(ns_h), "veth0")
-+            if slaac in lfts:
-+                break
++static int filter_get(int fd, struct sock_fprog *fp)
++{
++	return ioctl(fd, TUNGETFILTER, (void *)fp);
++}
 +
-+        ksft_in(slaac, lfts, "RA did not create the SLAAC address")
-+        if slaac not in lfts:
-+            return
++static int tun_get_iff_flags(int fd)
++{
++	struct ifreq ifr = { 0 };
 +
-+        ksft_eq(lfts[manual], (forever, forever),
-+                "RA changed the lifetimes of a manually added address")
-+        # valid_lft is not lowered below two hours (RFC 4862 5.5.3 e),
-+        # so only the preferred lifetime follows the PIO
-+        ksft_true(0 < lfts[mngtmp][1] <=3D lft,
-+                  f"RA did not refresh mngtmpaddr lifetimes: {lfts[mngtm=
-p]}")
-+        ksft_true(0 < lfts[slaac][0] <=3D lft and 0 < lfts[slaac][1] <=3D=
- lft,
-+                  f"unexpected SLAAC address lifetimes: {lfts[slaac]}")
++	if (ioctl(fd, TUNGETIFF, (void *)&ifr) < 0)
++		return -1;
 +
++	return ifr.ifr_flags;
++}
 +
- def _insert_and_get_addrs_ipv4(test_addrs: list[str], scopes: list[str])=
- -> list[str]:
-     with NetNS() as ns, NetNSEnter(str(ns)):
-         dev_name =3D "dummy_dev"
-@@ -497,6 +573,7 @@ def main() -> None:
-               ipv6_route_del_reason_expired,
-               ipv6_route_del_reason_ra_withdrawn,
-               ipv6_route_del_reason_absent,
-+              ipv6_ra_pio_manual_addr_lifetime,
-               ipv4_verify_same_scope_addr_order, ipv4_verify_inter_scope=
-_addr_order,
-               ipv6_verify_same_scope_addr_order, ipv6_verify_inter_scope=
-_addr_order])
-     ksft_exit()
---=20
-2.56.0
++/*
++ * A queue can be attached long after the filter was configured, from a
++ * process that does not necessarily map the buffer the program was copied
++ * from, so the kernel has to keep its own copy of the program.  Here the
++ * mapping is made unreadable before the queue is attached again, and a
++ * second queue is then attached from a fresh socket, which starts without a
++ * filter of its own.
++ */
++TEST_F(tun, reattach_filter_without_user_buffer)
++{
++	struct sock_fprog gf = { 0 };
++	struct ifreq ifr = { 0 };
++	short flags = 0;
++	void *prog;
++	int fd, ret;
++
++	prog = filter_alloc(filter_accept, ARRAY_SIZE(filter_accept));
++	ASSERT_NE(prog, NULL);
++	ASSERT_EQ(filter_attach(self->fd, prog, ARRAY_SIZE(filter_accept)), 0);
++
++	EXPECT_EQ(tun_detach(self->fd, self->ifname), 0);
++
++	/* This memory is no longer readable */
++	ASSERT_EQ(mprotect(prog, getpagesize(), PROT_NONE), 0);
++
++	ret = tun_attach(self->fd, self->ifname);
++	EXPECT_EQ(ret, 0);
++
++	flags = tun_get_iff_flags(self->fd);
++	EXPECT_GE(flags, 0);
++	/* The queue is attached again, not left disabled */
++	EXPECT_EQ(flags & IFF_DETACH_QUEUE, 0);
++	EXPECT_EQ(flags & IFF_NOFILTER, 0);
++
++	/* The two checks below document the expected state, they cannot
++	 * tell a reinstalled filter from no filter: tun_detach() leaves
++	 * sk_filter alone, and TUNGETFILTER only returns the header.
++	 */
++	EXPECT_EQ(filter_get(self->fd, &gf), 0);
++	EXPECT_EQ(gf.len, ARRAY_SIZE(filter_accept));
++
++	/* A new queue starts without a filter, so a clear IFF_NOFILTER shows
++	 * that the filter was installed again from the kernel copy.
++	 */
++	fd = open("/dev/net/tun", O_RDWR);
++	ASSERT_GE(fd, 0);
++
++	strcpy(ifr.ifr_name, self->ifname);
++	ifr.ifr_flags = IFF_TAP | IFF_MULTI_QUEUE;
++	EXPECT_GE(ioctl(fd, TUNSETIFF, (void *)&ifr), 0);
++
++	flags = tun_get_iff_flags(fd);
++	EXPECT_GE(flags, 0);
++	EXPECT_EQ(flags & IFF_NOFILTER, 0);
++
++	close(fd);
++
++	ASSERT_EQ(mprotect(prog, getpagesize(), PROT_READ | PROT_WRITE), 0);
++	ASSERT_EQ(munmap(prog, getpagesize()), 0);
++}
++
++/* A new queue attached with IFF_NOFILTER must not get the filter that is
++ * configured on the device.
++ */
++TEST_F(tun, attach_filter_nofilter_flag)
++{
++	struct ifreq ifr = { 0 };
++	short flags = 0;
++	int fd;
++
++	ASSERT_EQ(filter_attach(self->fd, filter_accept, ARRAY_SIZE(filter_accept)), 0);
++
++	fd = open("/dev/net/tun", O_RDWR);
++	ASSERT_GE(fd, 0);
++
++	strcpy(ifr.ifr_name, self->ifname);
++	ifr.ifr_flags = IFF_TAP | IFF_MULTI_QUEUE | IFF_NOFILTER;
++	EXPECT_GE(ioctl(fd, TUNSETIFF, (void *)&ifr), 0);
++
++	flags = tun_get_iff_flags(fd);
++	EXPECT_GE(flags, 0);
++	EXPECT_EQ(flags & IFF_NOFILTER, IFF_NOFILTER);
++
++	close(fd);
++}
++
++/* After TUNDETACHFILTER a later attach must not install the filter again */
++TEST_F(tun, detach_filter_clears_reattach)
++{
++	short flags = 0;
++
++	ASSERT_EQ(filter_attach(self->fd, filter_accept, ARRAY_SIZE(filter_accept)), 0);
++	EXPECT_EQ(ioctl(self->fd, TUNDETACHFILTER, 0), 0);
++
++	flags = tun_get_iff_flags(self->fd);
++	EXPECT_GE(flags, 0);
++	EXPECT_EQ(flags & IFF_NOFILTER, IFF_NOFILTER);
++
++	EXPECT_EQ(tun_detach(self->fd, self->ifname), 0);
++	EXPECT_EQ(tun_attach(self->fd, self->ifname), 0);
++
++	flags = tun_get_iff_flags(self->fd);
++	EXPECT_GE(flags, 0);
++	EXPECT_EQ(flags & IFF_NOFILTER, IFF_NOFILTER);
++}
++
++/* A TUNATTACHFILTER with a bad length must leave the installed program and the
++ * filter state that TUNGETIFF reports alone.
++ */
++TEST_F(tun, attach_filter_bad_len_keeps_program)
++{
++	struct sock_fprog gf = { 0 };
++	struct ifreq ifr = { 0 };
++	short flags = 0;
++	int fd;
++
++	ASSERT_EQ(filter_attach(self->fd, filter_accept, ARRAY_SIZE(filter_accept)), 0);
++
++	errno = 0;
++	EXPECT_EQ(filter_attach(self->fd, filter_accept, 0), -1);
++	EXPECT_EQ(errno, EINVAL);
++
++	EXPECT_EQ(filter_get(self->fd, &gf), 0);
++	EXPECT_EQ(gf.len, ARRAY_SIZE(filter_accept));
++
++	flags = tun_get_iff_flags(self->fd);
++	EXPECT_GE(flags, 0);
++	EXPECT_EQ(flags & IFF_NOFILTER, 0);
++
++	/* A queue attached afterwards still gets the filter, so the rejected
++	 * ioctl left the saved program and filter_attached alone.
++	 */
++	fd = open("/dev/net/tun", O_RDWR);
++	ASSERT_GE(fd, 0);
++
++	strcpy(ifr.ifr_name, self->ifname);
++	ifr.ifr_flags = IFF_TAP | IFF_MULTI_QUEUE;
++	EXPECT_GE(ioctl(fd, TUNSETIFF, (void *)&ifr), 0);
++
++	flags = tun_get_iff_flags(fd);
++	EXPECT_GE(flags, 0);
++	EXPECT_EQ(flags & IFF_NOFILTER, 0);
++
++	close(fd);
++}
++
++/* A TUNATTACHFILTER with instructions that bpf_check_classic() rejects must
++ * be refused, and must leave the program installed already in place.
++ */
++TEST_F(tun, attach_filter_bad_prog_keeps_program)
++{
++	struct sock_fprog gf = { 0 };
++	struct sock_filter bad[] = {
++		BPF_STMT(BPF_LD | BPF_W | BPF_LEN, 0),
++		BPF_JUMP(BPF_JMP | BPF_JEQ | BPF_K, 0, 1, 0),
++	};
++	struct ifreq ifr = { 0 };
++	short flags = 0;
++	int fd;
++
++	ASSERT_EQ(filter_attach(self->fd, filter_accept,
++				ARRAY_SIZE(filter_accept)), 0);
++
++	errno = 0;
++	EXPECT_EQ(filter_attach(self->fd, bad, ARRAY_SIZE(bad)), -1);
++	EXPECT_EQ(errno, EINVAL);
++
++	/* the program attached before is untouched */
++	EXPECT_EQ(filter_get(self->fd, &gf), 0);
++	EXPECT_EQ(gf.len, ARRAY_SIZE(filter_accept));
++
++	/* IFF_NOFILTER comes from the socket's sk_filter, not from the saved
++	 * header, so a clear flag shows the filter is still installed.
++	 */
++	flags = tun_get_iff_flags(self->fd);
++	EXPECT_GE(flags, 0);
++	EXPECT_EQ(flags & IFF_NOFILTER, 0);
++
++	/* A queue attached afterwards still gets the filter, so the rejected
++	 * program never replaced the saved one.
++	 */
++	fd = open("/dev/net/tun", O_RDWR);
++	ASSERT_GE(fd, 0);
++
++	strcpy(ifr.ifr_name, self->ifname);
++	ifr.ifr_flags = IFF_TAP | IFF_MULTI_QUEUE;
++	EXPECT_GE(ioctl(fd, TUNSETIFF, (void *)&ifr), 0);
++
++	flags = tun_get_iff_flags(fd);
++	EXPECT_GE(flags, 0);
++	EXPECT_EQ(flags & IFF_NOFILTER, 0);
++
++	close(fd);
++}
++
+ FIXTURE(tun_vnet_gso)
+ {
+ 	char ifname[IFNAMSIZ];
+-- 
+2.43.0
+
+
+No virus found
+		Checked by Hillstone Network AntiVirus
 
