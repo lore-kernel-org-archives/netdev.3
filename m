@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793334251;
-	b=dkDbSFolwUSYReHEFzxmLXrAnsWg7ysYRbj6NDyGbBz6W3YVXpqI8sAxq8nBiSOcAfJD
-	 qps3QaLzOMr2VqeMqf/5I9Niyg8PtQXjGG72CswX/LEkvKdYrRZOa2AN1tHhDkEMLDbHT
-	 AELlRT8qVc87XNNOf90YaZpRzqkDcbYGDvSFjgUyk+lyvATf1Nqk3EMAfjt5smByIDzi9
-	 46SHDetmgwq2dOnScZE1bTdmybycAq4z+s9sqKyIW1gijzPJgUte+h1oCsyEkF0RToyg8
-	 Bh+g3myNgz8LCUJghYAlZiEoppN3ehctu62EIs7rz10kgOsleDN5ELQGxpSA4EsARTA==
+	t=1793334260;
+	b=Fv5TXezJhXBxpdYbhEfgIet2qbgAyI4xy9Smp8FiXb4prX1Xwu/qWUJtgIRBWouRYPav
+	 +itm8pCTxtAz/KaHcunwbJhXF6jrTHumlPeQs6Bl9DbQ7w3uihVzJX0QXAErAp3lOWGdb
+	 Ox1ZkT/ZinMDRd/+3R9wZx0+QgyXyMY1Pu9jNfJbDvDmSNI0es1LaGSi10+5BdtQYkI0u
+	 chZNAlvWPxtXaYteaRTypc5X0IBzLvQUMOAKh2ErzAoKpIUJ/6bxdAMdBQR+kc1uICIyr
+	 P2xbp3CtOa3YTi7jLuj4WIabmlCwVKCKDHn8QMPVy9dk43rV4vKBXn2rP/3ZCpLGBbQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793334251;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793334260;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:Auto-Submitted:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
 	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=qo/4kSEXSfHzbhKenYcznaCpIdRugvUXz6JdojDz4SI97qpMEMwPgCXJc4WBgY+02VYd
-	 POChWHiqkEEcMgU3ZIWTs9A6NwF/r/5hnbgcWfWIUjtGy2S23aQLBBT3mOKBzjlSUY1u6
-	 04lEDU+bLDx9ph+C4Y95y0pjgq0fBK9Ay1CrXzuMwxFyNKgIhhCjWM6FMjc2CRQCa7+Xp
-	 3RntUr0xNBXWqOhJWHlBemwbq8WStGf5oWR2d+t3PNI3eQ6LfQX5D9jJ6lm6W7+Ppu5t2
-	 d+pUBvdjkZHekV6iOVFcM0x4fDaFCKGtrMNh6quP77hhy2P3JfByx3hlOZvhckG6g1g==
+	b=23sYVdgVvq63IcTsFNMUVg5/Rg2aDu5BspVFmTVFACbMM4MYeLYAlJ+QXbEYtCBH/Ive
+	 8ern/ao5EODtBCz7mMjloA7D25bhNoLaBasHWhI4alv3KkP++L3caRpu6I3cVhr+oeyXt
+	 fKEHvghuEqSXKgM2r0iawg0yiXndxAL9TpOxFFaHjbnVpFyuDvt1QnPCoSaQCiWjAgvNw
+	 J/JHtl9jLQDTs8JI7I+YzIlLd9CnsF9UoWDauJ7hEPsLYjdV+T289M7KZkZ7Zqfg/IPr+
+	 GrllyhXxROG9bnA1eiKOJtBVT6TtRGudxxMckn/eM57N2JxOEqinIEyHyWA7NQCMFyg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HZq5Oedj;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BXoT7Vxj;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F34E606A32C;
-	Fri, 30 Oct 2026 04:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E958C60A2601;
+	Fri, 30 Oct 2026 04:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HZq5Oedj
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3607D1F000C1;
-	Fri, 30 Oct 2026 04:24:11 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BXoT7Vxj
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450841F00A15;
+	Fri, 30 Oct 2026 04:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793334251;
+	s=k20260515; t=1793334259;
 	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HZq5OedjjLKzmGUFUblf3zl0yIf5EdQIZa8oxxpoTXIY+Z3DtPuWiX08+PpE6UMQC
-	 Ttz47yO+wsRJ2dwNlzp6/5STetNXlBMbe23dgRXt94643uOhwCMIrhr6I6C9oOM0Fs
-	 c0tF6R9H3UMPhTKTbcb/4sBfwNKYJnpc+p9gFCfFLSXrPkuIJVScSFKMU0pgrqHtx+
-	 sX68oc2Wru67WHye4HrQ8xjvytLVBN1R1EAedVLlNum9e9k8BvhoK9wr0bz80VepIA
-	 uUA4j55Z1q5v75dgQ8fMz+fGTG8PaMILRb8gq91iXI3wNoti+HOMU1t9L9/tu8qBLM
-	 RZ1Gqs0yS223g==
+	b=BXoT7Vxjj90e4Kjq90CHkt3q2Ykb2E8D5w1Go4IR/XBST3ohR01JcqAKvCT6/+rBF
+	 /gimWC0RXrU8L7jT2rqqN8z8RxhQQLytHUmWD3vYcusKpSxJAPIGoIwZiwVz7dnU3w
+	 5wFuTH/hqWrzsHSI+Ftinv7294qbSJM4snCQV/eFourcTYfz6VVtLaqFp/STPnLTJ7
+	 t4dKd5ZL3o8N6WXO3DkzELmew0QVXF4tMkZ7mWcVw7NtfY19/9drp0zYNiFNm9IzD7
+	 +5RmuYNiNMW5+7Eq68OQo4z8msabeputpH7ru4bECqEgUUph0nUSp3KVMxrtox/tGI
+	 SLVB+8FZhARPQ==
 From: netdev-bot+sinfo@kernel.org
 To: Kyle Zeng <kylebot@openai.com>
 Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
  Ido Schimmel <idosch@nvidia.com>, linux-kernel@vger.kernel.org,
  outbounddisclosures@openai.com
-Subject: Re: [PATCH] ip6mr: Serialize multicast router socket ownership
-Date: Fri, 30 Oct 2026 04:24:10 +0000
-Message-ID: <179333425079.3327.8979801594721563909@kernel.org>
-In-Reply-To: <20261030042221.73996-1-kylebot@openai.com>
-References: <20261030042221.73996-1-kylebot@openai.com>
+Subject: Re: [PATCH] ipv4: keep XFRM headers out of corked skb lengths
+Date: Fri, 30 Oct 2026 04:24:18 +0000
+Message-ID: <179333425883.3327.4360202216473786007@kernel.org>
+In-Reply-To: <20261030042229.74068-1-kylebot@openai.com>
+References: <20261030042229.74068-1-kylebot@openai.com>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
