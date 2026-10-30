@@ -1,68 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793377558;
-	b=ubhLdecWhFH4hwf8kz7Gr/IE5PESq+FKklcHlV0W8U6PmFMECZC761jPPe1gp9BUnQlx
-	 +UUazzVgV2/nEWxKpWoF/r/XvwifvxOfuYLCbVPKbGJ5ea/r6kbuquwAw9jRkH1ExlDDm
-	 HLfbwnkVFQDcaXpbNxBpe67/WhTrclYjYL1F7ADlyF7Q+l1mxsiAiSxk4A9tH88Pyp8Cs
-	 X3om6pulkEDbBW5Y6jc3KmLDV82K5V7985OuALHHvhnQpPxPLpYs0z99uFx/q2HB+nL3+
-	 AH+Hp2eig+vP2KDb4AaNqeltF1A5Tx7VoLXrALi/nIfCW2/ROe6S7OeDNfSiIlid3RA==
+	t=1793377918;
+	b=QUKLVuLqI8Tx1X3cwPZtyfr6sobdEjCokRiRpg5SZH0FhMLT0VwgeEIJTTko8O61oY0R
+	 QNPJmAm0fB2Q9rSRPCn2Q8nz86edwQrsNDtkD4TYDJf5E3dD5RRXw3ZVcQqHAgYNhUkq3
+	 cgiaDnv4FH9X726wxegONNpB5o5nKKkA5J5f1j9QqvfWxYESx3VX80uynandmMMmxgh0H
+	 vH5vJTNWvEyj8Jczrp5LRmUnQXH5/KFSFQuoTAcPSvGuSvGTUY5sQIubgxb/XT+UjJpmb
+	 lhH2CJgXbRwv9xTOeJnewv+yAgoqlXUHk9VbDpujtTHL5ZWCO8Q5wyQQA2b7BYa3EoQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793377558;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To:X-Debian-User;
-	bh=SrUZ38ePJApaZU4hoq5eNn9g57aKohpG6k5NTQ4aDfc=;
-	b=Ac8touHuy/YB3MPWtEbF7l3fxOsKYWJeICXynvMs/ANYPfJTifp94tPdXQBi5ijKP/fx
-	 3QIL2D1rbNHA/pxMQUxlvf3/OkUNomTwdc2UjNNGiJTdDfGKJq/rs4chze4RUy0BKAgsi
-	 dmI5qkBF7r1TczX2dn4f1gWBUQ71lIzinKpJWI//ofrWMaCnYRuu0CiFyl5TPU2q5Wf64
-	 m/6WVaYK43gaBPs020inw1fFga1E8p1GYmmS62KAb6dFY6jLx6B+eG7ovloKOQAso5Yr5
-	 Nu5GW67kHsdSuJMNOaZMiIEYbX4dfitdQWK/NdGM5oXsIfZCoM4y5cR3wDJFLJ7QzzQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793377918;
+	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Debian-User;
+	bh=Pq+i8rJi/9ZoV6LFHD0nn/AL1YjVYkhOQnH0yPWO1Xc=;
+	b=EGJVHQbmDc7uAZZz/WFgfgzESn5d7UShSSy9r16UYG7znGbDJQUeIkaKT5gfhBbkAEcT
+	 prgmeD+Pg8QPgX4eCGTOLC7RU+fPgRCy4E5wZxCivcVe3mWMDuCsFDjNnXYcuPOB6KAX2
+	 IHfeG/4ellMyeX6c2WRILoX+h6YJ7uGGQATKtZSsPHNrJxO1BeOB9nhL3YpS1EIv7UNQn
+	 s1+06jRUb/k+Kvof4IF/amknnKokbtubwZZLQJDYySZLMKfOQL6pSyeNjIFCyOPlEV1SS
+	 4iX4Jdv0cmVl1sM1ZfO4qlhzkM61s5Leo1594aGomSHHBO7poW6CH9eDVk8PMbebqxQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=debian.org;
 	spf=pass smtp.mailfrom=debian.org;
-	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=XMEbPqNh;
+	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=kmJA83O+;
 	arc=none smtp.remote-ip=82.195.75.108
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83169606A31C;
-	Fri, 30 Oct 2026 16:25:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83169606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB568606A31F;
+	Fri, 30 Oct 2026 16:31:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BB568606A31F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=XMEbPqNh
+	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=kmJA83O+
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=SrUZ38ePJApaZU4hoq5eNn9g57aKohpG6k5NTQ4aDfc=; b=XMEbPqNhTfg407uIlVFC5re7LV
-	eaMgc8aelmzljGcTc1/Zz4fcCw+Opf3OiNmXuMlBkSNQ4JaLxoqvg/52lywl++RDwbjdK+CMj3Z9Z
-	STdy0hbaW7hHU8TRW25Nm5CgeQJT6JDcDEcVbcLUpag4kBwLF779ZUDwOIfkkk1y+ruEZMfBl+/MV
-	lQD26Joue4/fWBC3DWtT/PMU2gQLBETyaymSoGPIOnlmsqHC27xtTsLccUXuxFc3/o69SYQK8ZbLg
-	X7ZI8V5hZKH5VApjeU/39CO52dKqW47wSAb1x2JpCMO60PrMcEMTYK5BX+3kImM1xwcxoV5bNHs4z
-	3189/WbA==;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description;
+	bh=Pq+i8rJi/9ZoV6LFHD0nn/AL1YjVYkhOQnH0yPWO1Xc=; b=kmJA83O+MQfglZeCpSQOE4P75x
+	ull6C2vVsipPfVK7BWmaTdd7EdxnKHQt8oDYQ8TCBPiJqs1MLx0fQniY1wScXct7QQbo5KpyCT3RY
+	7MV5myrJmIn/Uy+YrNClos9+yKJjrS95t8kBFcatMlO55ehbd6FdoCAQdy1pEtXUlMAjdxtoXIQMj
+	33raxOS/q9ehBseYiDaFuj6l7yrf9LjCBvJgX/0+Uw37xOvOAztuMPcJ3WxlZ52T+oUM00S3oQ/p6
+	cZjJ/gbx1uWUvZ6xPLt9ZSYJUfXII52A3Ubvn8cryTSJDYKKfaWMBmMXy8bRmUnOj89Ebf6HPgRG1
+	gAKUH1Bg==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1xMpQJ-003wqP-1o;
-	Fri, 30 Oct 2026 16:25:48 +0000
-Date: Fri, 30 Oct 2026 09:25:42 -0700
+	id 1xMpWD-003x1v-29;
+	Fri, 30 Oct 2026 16:31:53 +0000
 From: Breno Leitao <leitao@debian.org>
-To: Gustavo Luiz Duarte <gustavold@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Stephen Hemminger <stephen@networkplumber.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v4 3/3] netconsole: recheck device registration after
- waiting for carrier
-Message-ID: <auTEc5tS4-YZ3tYf@gmail.com>
-References: <20261021-netcons-fixes-v4-0-3857120c6340@gmail.com>
- <20261021-netcons-fixes-v4-3-3857120c6340@gmail.com>
- <auBrysA0RUkVlTOA@gmail.com>
- <CAGSyskX4mJJT=VTrS43pWG4UyoJur3hxQ56Qe9MMRL5-c2nnXA@mail.gmail.com>
+Date: Fri, 30 Oct 2026 09:31:43 -0700
+Subject: [PATCH RFC 1/2] net/mlx5: Submit blocking commands from the
+ caller's context
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,84 +63,84 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGSyskX4mJJT=VTrS43pWG4UyoJur3hxQ56Qe9MMRL5-c2nnXA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261030-mlx5-cmd-wq-v1-1-1458b2aed637@debian.org>
+References: <20261030-mlx5-cmd-wq-v1-0-1458b2aed637@debian.org>
+In-Reply-To: <20261030-mlx5-cmd-wq-v1-0-1458b2aed637@debian.org>
+To: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
+ Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Breno Leitao <leitao@debian.org>, 
+ kernel-team@meta.com
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2270; i=leitao@debian.org;
+ h=from:subject:message-id; bh=/85JIr0ETe8f+4pRr4MDFjchmH9gZ5ulHRVINwtreoc=;
+ b=owEBbAKT/ZANAwAIATWjk5/8eHdtAcsmYgBq5MZyYdCWBWfs86LIQZNZeYvPd6p/gMZp20vuj
+ gh2L5AaMM2JAjIEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCauTGcgAKCRA1o5Of/Hh3
+ bQEzD/isKA+azalzoS9OvSRRJzHF5gGcjOoH7b+Xc9CLDP1o16VxdvZ+euLjRzFyAyQmi6WMdS8
+ irl41IIE/jmr1n5e3PfeUEQ77BdH25QaAK3zQ8FpNW1zquaiQ4qjkVk6LBnRQP0HrxTKKDAOA89
+ eNssF9n3IkSMeSzg9hf0EbKM25NHbu5Tv4QZtKnM9/pgdLbJyi6VHkhvvv0RSoO36BO6dPddN41
+ XX7MNVLSxnKz5xGjtsKq57Gx7TJJt9aR+7vSErCq7fcwPbUEv5fZRx7kauIAnLruqp0ykw9bDoR
+ FPgMd0MNFGL/B/Dso/oxH3YUefj9ZgYQWynR31Nzh/JWxwtWNKr1MIVJYb/3fCvNDJ7hYp2d0J9
+ HUnEDxcYOIHlgQWNOJxQDEBZr5o0O266aOo//DWWNJWuTJRcOzEKvQ3OOZ5w5IKWcsljPS7Jmm0
+ cyilxznT5bx+35y0KlaLAb2wquPebkKGcBBS/P6XXD35xzXRDA5n7XFPdDPauexXB0fZLHYDyU+
+ eOiw+H/b4x2WvxRbjFbvTupHaCNXaJz9OvSiw/Jr1y8BjyCTwFRZUY0293wEiU5z3tHJLIMqFV9
+ nwnZzbIDa3aKpO2TsMSnfvUDce58YxtGmPMbgpWrtDgOoy8EpxAVxu1IWNUjWJqgJqKqiZULUWM
+ Pbo1DyBEkdq2q
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
 
-On Thu, Oct 29, 2026 at 09:10:48PM +0000, Gustavo Luiz Duarte wrote:
-> On Tue, Oct 27, 2026 at 9:19 AM Breno Leitao <leitao@debian.org> wrote:
-> >
-> > On Wed, Oct 21, 2026 at 03:19:07PM +0100, Gustavo Luiz Duarte wrote:
-> > > netcons_netpoll_setup() drops RTNL while it waits for carrier when the
-> > > device is not yet up. If the device is unregistered in that window, the
-> > > NETDEV_UNREGISTER notifier runs before np->dev is set and has nothing
-> > > to match.
-> > >
-> > > We might then end up setting up netpoll on a device that is being
-> > > unregistered while holding a reference to it, stalling
-> > > unregister_netdevice() in netdev_wait_allrefs_any().
-> > >
-> > > Add a check to confirm the device is still registered once we retake
-> > > RTNL. Release the device reference and return -ENODEV otherwise.
-> > >
-> > > Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012-netcons-fixes-v3-1-1aac85ed7665@gmail.com
-> > > Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
-> > > ---
-> > >  drivers/net/netconsole.c | 10 ++++++++++
-> > >  1 file changed, 10 insertions(+)
-> > >
-> > > diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-> > > index be7eb632ee42..bd36ebd334aa 100644
-> > > --- a/drivers/net/netconsole.c
-> > > +++ b/drivers/net/netconsole.c
-> > > @@ -534,6 +534,16 @@ static int netcons_netpoll_setup(struct netconsole_target *nt)
-> > >               rtnl_unlock();
-> > >               netcons_wait_carrier(np, ndev);
-> > >               rtnl_lock();
-> > > +
-> > > +             /* Check that ndev hasn't been unregistered when we released
-> > > +              * the RTNL above.
-> > > +              */
-> > > +             if (ndev->reg_state != NETREG_REGISTERED) {
-> > > +                     np_err(np, "%s was unregistered while waiting for carrier, aborting\n",
-> > > +                            netcons_egress_dev(np, buf, sizeof(buf)));
-> > > +                     err = -ENODEV;
-> > > +                     goto put;
-> > > +             }
-> > >       }
-> >
-> > I think there is a better way to do it, inside netcons_wait_carrier().
-> >
-> > netcons_wait_carrier() loops waiting for the carrier, and exit if in
-> > time_after(). I think it will be cleaner to exit there.
-> 
-> Yes, I think it makes sense to bail out of netcons_wait_carrier() if
-> we detect that the device is being unregistered. It doesn't replace
-> the check under RTNL, though, since the device can still be
-> unregistered after the loop exits and before we retake RTNL.
+mlx5_cmd_invoke() queues every command that is not a page-queue command
+on the ordered cmd->wq, and a blocking caller then sleeps in wait_func()
+until the command completes. The work item only takes a command slot,
+writes the descriptor and rings the doorbell, so each blocking command
+pays for a queue_work(), a worker wakeup and a context switch while its
+caller sits idle.
 
-Agree, but we probably don't need to print inside RTNL?
+All ordered workqueues share one unbound worker pool, so the command
+work items of every mlx5 function also contend on a single pool->lock.
+On an arm64 host with a dozen mlx5 functions in switchdev mode, where
+monitoring daemons read /proc/net/dev, lock contention profiling put
+36% of the pool->lock wait in queue_work() called from cmd_exec(), and
+the rest in the workers running the command and stats work items.
 
-> > then netcons_wait_carrier() would return a bool, and you goto 'put' in
-> > both case (ndev->reg_state != NETREG_REGISTERED) or in the
-> > time_after() exit.
-> 
-> Do we really need to check the return value of netcons_wait_carrier()?
-> If it detected that the device is being unregistered, then
-> (ndev->reg_state != NETREG_REGISTERED) will still be true here, since
-> reg_state never goes back to NETREG_REGISTERED, no?
-> 
-> Or do you mean to fail netcons_netpoll_setup() not only when the
-> device is being unregistered but also when the carrier times out? That
-> would be a considerable behavior change, because then a slow link
-> would fail netconsole completely instead of only losing the messages
-> sent before the link comes up.
-> 
-> I'll keep this patch as the fix for the missed NETDEV_UNREGISTER and
-> add a separate patch to bail out of netcons_wait_carrier() early.
+Page-queue commands already call cmd_work_handler() directly. Do the
+same for every command without a callback. Callback commands keep using
+the workqueue, since mlx5_cmd_exec_cb() must not block.
 
-Cool, thanks, bonus point for not printing (np_err) inside the lock. :-)
+Firmware runs up to max_reg_cmds commands concurrently, so callers could
+not rely on the submission order, and the slot semaphore still serves
+its waiters in FIFO order.
 
+With 32 parallel ethtool -S loops on a ConnectX-4 Lx, this removes all
+46.7k mlx5_cmd work items of the run and cuts kworker context switches
+from 50.7k to 3.9k.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+index 84583dc5eb1c05..988518155582a4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+@@ -1301,7 +1301,8 @@ static int mlx5_cmd_invoke(struct mlx5_core_dev *dev, struct mlx5_cmd_msg *in,
+ 
+ 	INIT_DELAYED_WORK(&ent->cb_timeout_work, cb_timeout_handler);
+ 	INIT_WORK(&ent->work, cmd_work_handler);
+-	if (page_queue) {
++	/* A blocking caller waits for the command anyway, submit it inline */
++	if (page_queue || !callback) {
+ 		cmd_work_handler(&ent->work);
+ 	} else if (!queue_work(cmd->wq, &ent->work)) {
+ 		mlx5_core_warn(dev, "failed to queue work\n");
+
+-- 
+2.53.0-Meta
 
