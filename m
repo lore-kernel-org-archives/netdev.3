@@ -1,61 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793328212;
-	b=D0wS47cGe5XA18vxT2YGMMhSaU2hz3Wkaf8raVoqWMsqNxGoVdvRPI/GBMbloDSOshGw
-	 7Xx8BRHVwnE5aUxOoE7Z6kbG16yUXXD6VwboIA8rf+LGGBlSyd3tXc0n57ZmL4hcFZVz/
-	 OUVPnGDcxOc9CPYbfEd1pGbbdYSUeOq/kOmk3PUV0wK6bIWHE5Tgek9X57JOSTvV3TSiN
-	 VY6+EnNSGSCXW3DeZ55KAi4ZmM6PuR9Utuq23fTt4cV9PvPwMO52rPvSPF2MbWganlLkh
-	 GuCpsecGhOeSpr+EmZoiB6vhvNzoYmngS1p0nI6fc85i80/E/C+Ou1ltcO9ZR70+P2w==
+	t=1793329204;
+	b=URXkAwHHqEUr12Jplgv0zhnteSnFhSAkIqItPkOXEUSIndsVV9OQyfjqfy27TGBHoVNa
+	 LAYYZMhCmB967WpEnJzGYoW59gjr5SPFFROcMVu7ke3/25qqCcIdtKhhNNoKrKntA5vwJ
+	 ewF0tzB+VfVSIRpaXUJhqC4aDFzlw/ePwBdzOokUYYwtmaYFiBb0VZYeOU6Jft2DnCaVP
+	 slzZSK2979fh0MW7c5MYwCx+0ZqYnRPNhzU6TZfYTsIFWcKwTEHxttMxDz+90hmRJjW0B
+	 1GjbDy7JWL/isTQm0S4V5hAX25ezxYOjueb/WyT9zUEVRK+p20TDuwr5zR317638wgg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793328212;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=Y2dThDf+Dn0lvUnvp5/AConneAEJqsCfGQF3wE0S0JPGJL5lQ+krMwDZdCpwy23SZqY8
-	 aus1sI3oyXJ4+89tHGU6SrbzLIJM54JrTUhN2pGFPgs6ZgOSOcKUR7aaDgKvyJBVHT/Db
-	 lUggffzgGgdhbbFZaglbgHZBjNTTbKnTwi31nQztRS0DbUwdJ0cWxBaO3z/zmurjJlct1
-	 5p7HgfRf3gg4OhDXqjYQQzuEEyK3UjTnmoRg0qxx6Zli02HoT6bzHg7rYYEb5VojhrfNE
-	 ac89Zt3plvy2ksrEJcEN84k8Z0OMM5vgywlqm9P6SsfXhtPe4RH+ct83tUIWUt7KxKw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793329204;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=hq/4YWC1b796zdvcvOcwCEmulCT+xUiahOe+NXgkySI=;
+	b=Z+ObOQ4azSHy6ndMnoOEMnnD9CrtyLa+u/0ZdgzVw1/IJUgt7+c1xbteFFHRvqBFM4ya
+	 vuNNl/b6l/SVS/suAgyxezfmpUWw0IsFY15uA3/P8ri9xz5n1AcLY49EnqOoQtz2QithI
+	 f1uaIGxG4/2MQuz1tVz9uIVYwnzLdAphNrYAbqfIX0VeBXaWcnCmkAjeaSZbVDq3Gu29s
+	 tEO+670GtQlAa4h66nlJfyMHjM0mIZNXirekxZ5Wg1T8X7b3Zg072Qzn2cl/XbyS27+aL
+	 ATIjBrGTDBncVRPsoBgLu/I+RYDEwj1BO1ZhVIyekcTrneeMXhn1NfbJ9wnc6PJfNTw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DDqpk42V;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=l4XMUV5j;
+	arc=none smtp.remote-ip=95.215.58.71
+Received: from mta1.migadu.com (out-71.mta1.migadu.com [95.215.58.71])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C51606A322;
-	Fri, 30 Oct 2026 02:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1ADF606A31C
+	for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 03:00:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A1ADF606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DDqpk42V
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA161F000C1;
-	Fri, 30 Oct 2026 02:43:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793328211;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DDqpk42VhY+VPvP9KIgpQkENZDNwpE1VryhHgMfuCkfSSgQ1sHqpqy8qGHVcXu5nZ
-	 M1Fug1zXed7UDbVgcj3b3/l4d42yN61lWpD+T0a4rh9ktWF19sL3oYNrR1bxDS0kVj
-	 emY1vIOp45ywM+VJe/JknQmGuIfkRGwMth7Kkdoc2JMkJqgaavoFLzytJoo90CbstU
-	 nmPuvc/Cos8AgIrT91zj9mF86F/xQDSn2GL5sEQftuDBs87SJuwYMIAA+pQWlqZ/06
-	 +X4WXq+n/pcp3ixuzNGhhyK6C467tXEGRunMTK2vDj0X/QbMaDN9nSdbiFeKMLrJcI
-	 WCTuh3Rn0TAWg==
-From: netdev-bot+sinfo@kernel.org
-To: Joas Antonio dos Santos <joasantonio108@gmail.com>
-Cc: David Heidelberg <david@ixit.cz>, Krzysztof Kozlowski <krzk@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, oe-linux-nfc@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] nfc: s3fwrn5: validate the firmware image size
- against the firmware file
-Date: Fri, 30 Oct 2026 02:43:30 +0000
-Message-ID: <179332821053.3327.2621510890857714130@kernel.org>
-In-Reply-To: <179332800288.52644.4206885352837613064@gmail.com>
-References: <179332800288.52644.4206885352837613064@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=l4XMUV5j
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=p+cl6/IcAPPzRu6xYDnXuIfufAoXhxeNqlv/DOQSqyM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793329201; v=1; x=1793934001;
+ b=l4XMUV5jqgBgZ6CG2vgItAxTbvy4TLETZ5ePvpddf2tKiLKZpRi7XkE5fy/MHXDcOrJEwTYX
+ s7D2GTbSX0tv8bWxVfFOjOzT4h1oNrlQaz3Yif3cUIoeARSP65Gb5R0W3+hpQf1EZlSQDt7LGLi
+ VAAvBT08ehqwOvtR7ehSqa1M=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta11.migadu.com with ESMTPS id db5584a886e22652;
+	Fri, 30 Oct 2026 03:00:01 +0000
+X-Mizu-Trace-ID: db5584a886e22652
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 30 Oct 2026 10:59:51 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: ramses@well-founded.dev
+Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jiri Bohac <jbohac@suse.cz>, Eric Dumazet <edumazet@kernel.org>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Nikolay Aleksandrov <razor@blackwall.org>
+Subject: Re: [PATCH net v4 1/2] bonding: fix initial last_rx vs ARP-monitor
+ slack window
+Message-ID: <auQIJ731irNtKSFI@bogon>
+References: <20261028-bonding-last-rx-v4-0-4d8e4cd47467@well-founded.dev>
+ <20261028-bonding-last-rx-v4-1-4d8e4cd47467@well-founded.dev>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,21 +69,106 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261028-bonding-last-rx-v4-1-4d8e4cd47467@well-founded.dev>
 
-Hi!
+On Wed, Oct 28, 2026 at 12:48:07PM +0100, Ramses de Norre via B4 Relay wrote:
+> From: Ramses de Norre <ramses@well-founded.dev>
+> 
+> bond_enslave() seeds a new slave's last_rx so that the ARP monitor does
+> not report it UP before a real ARP reply arrives, see commit
+> f31c7937c254 ("bonding: start slaves with link down for ARP monitor").
+> 
+> The seed is one arp_interval (plus a tick) in the past. That was old
+> enough when the up test was "jiffies <= last_rx + arp_interval". Commit
+> da210f559019 ("bonding: add some slack to arp monitoring time limits")
+> added arp_interval/2 of slack to that test without moving the seed, so
+> the seed now falls inside the up window. For the first half interval
+> after enslavement, bond_ab_arp_inspect() proposes a slave that starts
+> DOWN as UP although it has received nothing. The up test always uses a
+> single interval, so this does not depend on primary_reselect or
+> arp_missed_max.
+> 
+> If that slave is the configured primary, force_primary makes it the
+> active slave. ARP validation fails it shortly after (on SFP+ ports the
+> PHY is often still negotiating) and the bond falls back to the backup.
+> With primary_reselect=always the bond recovers once the port really
+> comes up, but drops traffic until then. With primary_reselect=failure,
+> force_primary is spent and the bond stays on the backup.
+> 
+> Reproducer:
+> 
+>   ip link add bond0 type bond mode active-backup arp_interval 1000 \
+>       arp_validate all arp_ip_target 192.0.2.1 \
+>       primary eth0 primary_reselect failure
+>   # eth0: SFP+ (slow link-up), eth1: RJ45 (fast link-up)
+>   ip link set eth0 master bond0
+>   ip link set eth1 master bond0
+>   ip link set bond0 up
+>   # bond0 lands on eth0 via force_primary, ARP-fails it before the
+>   # SFP+ has carrier, falls to eth1, and stays there.
+> 
+> Move the seed below the initial link state and seed a slave that starts
+> DOWN two intervals in the past, outside the up window. A slave that
+> starts UP keeps its current seed: the up test does not apply to it, and
+> an older seed would only bring its down deadline forward by one
+> interval. The initial link state is unchanged.
+> 
+> Fixes: da210f559019 ("bonding: add some slack to arp monitoring time limits")
+> Signed-off-by: Ramses de Norre <ramses@well-founded.dev>
+> ---
+>  drivers/net/bonding/bond_main.c | 23 ++++++++++++++++-------
+>  1 file changed, 16 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+> index 7019e5d8fdc8e..bfa4cb97e647c 100644
+> --- a/drivers/net/bonding/bond_main.c
+> +++ b/drivers/net/bonding/bond_main.c
+> @@ -2122,13 +2122,6 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+>  	if (res && bond_needs_speed_duplex(bond))
+>  		new_slave->link = BOND_LINK_DOWN;
+>  
+> -	new_slave->last_rx = jiffies -
+> -		(msecs_to_jiffies(bond->params.arp_interval) + 1);
+> -	for (i = 0; i < BOND_MAX_ARP_TARGETS; i++)
+> -		new_slave->target_last_arp_rx[i] = new_slave->last_rx;
+> -
+> -	new_slave->last_tx = new_slave->last_rx;
+> -
+>  	/* check for initial state */
+>  	new_slave->link = BOND_LINK_NOCHANGE;
+>  	if (bond->params.miimon) {
+> @@ -2159,6 +2152,22 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+>  
+>  	if (new_slave->link != BOND_LINK_DOWN)
+>  		new_slave->last_link_up = jiffies;
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Nit: This part could move down and merge with the "else" part.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+> +
+> +	/* The ARP monitor's up test includes arp_interval/2 of slack, see
+> +	 * bond_time_in_interval(). Seed a slave that starts DOWN outside
+> +	 * that window, so it stays DOWN until a real reply arrives.
+> +	 */
+> +	if (new_slave->link == BOND_LINK_DOWN)
+> +		new_slave->last_rx = jiffies -
+> +			(2 * msecs_to_jiffies(bond->params.arp_interval) + 1);
+> +	else
+> +		new_slave->last_rx = jiffies -
+> +			(msecs_to_jiffies(bond->params.arp_interval) + 1);
+> +	for (i = 0; i < BOND_MAX_ARP_TARGETS; i++)
+> +		new_slave->target_last_arp_rx[i] = new_slave->last_rx;
+> +
+> +	new_slave->last_tx = new_slave->last_rx;
+> +
+>  	slave_dbg(bond_dev, slave_dev, "Initial state of slave is BOND_LINK_%s\n",
+>  		  new_slave->link == BOND_LINK_DOWN ? "DOWN" :
+>  		  (new_slave->link == BOND_LINK_UP ? "UP" : "BACK"));
+> 
+> -- 
+> 2.56.0
+> 
+> 
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
