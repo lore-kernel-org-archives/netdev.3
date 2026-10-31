@@ -1,62 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793473551;
-	b=CpTyS2fzBbp3A7j4EyTTDS6TW1bfT+u3QDLDvDBfhcb4fqRDd/Z9RhUiNlTY0FSbTCoL
-	 A+PBFPvkppnApzPveHVdpf9raNx95nfNlyS26++Edz62aVaEwuND5CuOL9yHFIagH5r1h
-	 h7Ds+L8PT7HftMVFLllObjElfmMoKCqUC3e+8WP1gfFrqHLm5GUoxgfToXBP4Ty2x/P0e
-	 +0dgP70LV86oLUrFoGjAIKuCyPu7zBCvEr0WBzVeXehNycVt57FiZvsBPtFnRMfE+4agP
-	 cJo+DdoxaXlylsNEL2mzNZ9pCKmG8RbYw8b3UnGmCT7aWHFRPsgDJ2jMNXPph1QtJ8Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793473551;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=gF9FP3okBGaulujfi92bns4Xp8Ex+d3QT0+PXv65Qbc=;
-	b=CmPewheO0M2tAjkLHdOWPh48o6Ub46C3x7Or4ko3WZhszdPLO7SJKPDT10Up28rNsP4k
-	 cm0My7wB+weGhtxUmkeXf7S/hIP4EVROU6kb9FHiVTKRVtUj9zaxOA+Y1CMoZMA/0w7go
-	 XtpHKabi1T7/ZXoZDN0dKr87xkwjlHflZ3e8wFuIs19bfEpCRBozqduNTxLyYXp9NFdid
-	 TD5/XjP3zUd6ZgEAgqLXvkBlI7Q0FgvhjqQDaqUbqZNhGrJY8wIy4N2lMD2dxRzyMsRJW
-	 P3L0Xt0e4/l+jv74e0xsxoUnUJQiVuJFqnyBx6/k3ahc4sTgjD/FlgJeF4OnoYanmZg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=L+kUzswU;
-	arc=none smtp.remote-ip=91.218.175.124
-Received: from mta0.migadu.com (out-124.mta0.migadu.com [91.218.175.124])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793473981;
+	b=ozQ38U4YFjebsD0YQdGKFOrH1pkTiqtjZ8aWD4y4uxv5Yo3lzZo8m93OCDBq/1F9xmaY
+	 XESBd5M1vIdLWSJ7FQmrF5dpr52kX3a+Dv9WP4aLGugydoQbHrp5oYPZoncFerfzItack
+	 SBPm9S3VJksT/AkycL1PdcJMhpFck4/ofhtxMYP1tnasgp/PZmw18dy5UYFYmJyhVV8kF
+	 5avDb+uQ5LQodkMs9+SyDPHgj1DDuNXjGpMu0oWtyIJh8Dkbi+60NLkx+DFWW3tVacdDt
+	 FS3Aoxu4wemywuQYkd8fZLtFmsrDtn5tgPu7BfTN6MwLpAXKLGh3sKTIQJg0fFrE04A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793473981;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=axLc4hThd98toFERnEK8/2xtxUTHU0DBCagvAmEnenE=;
+	b=0/fC5N2U0M+OIMubvwZKN3LTuB3+6mEJPwbRXNpBz3HMEhSofnjiKhxBnoNET6iq+Gcx
+	 kZTmboX+0G9OKjCieq3ll6AfWWxi3sRaUSJrTyIQ7l+WS02A/UomXQQXIdCdHxdeFWm74
+	 9+zEmVMmthPBzTpT0lE5sV5yaeI5ZKs+DXxNPGLl2RBHmN4+08RIOypFJTgV1BtAQ+fUu
+	 cXuSC5Lf8zOjPaIM1eNvV1vjtkvJXLI0byCO5OXhW3/DkVl5AcKMo8oiFzGD1DQzMFSGg
+	 Jyirt+hXtwPQQnY2tgbvDLNdaxxmJH1ivRq8VfYfEZw6N0jEz/x78vAZGxpnPX1ajxg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nRALHhvK;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D8A606A31E
-	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 19:05:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A0D8A606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7897606A31A
+	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 19:13:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7897606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=L+kUzswU
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=CbfwumJvnyRc/dDe61N2E5Z8vQbZC6EGlE3DNJg/ZIY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793473548; v=1; x=1794078348;
- b=L+kUzswUjTbrCAF3gBbUSurdKdsKj8MZEDq3pv1MtmxPfnmkV6eaP7fpicoaaCg99i7IM0+4
- 7sw4Vg89mBBHSl+qpwa5wyK2IaKINMjmI/qcBAaEpIdAZSjndcegit7olkOzgokYC3dsc1jAwIQ
- F0jRYA0WvxGfcvP7innvIAF8=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 801ab3a65b468602;
-	Sat, 31 Oct 2026 19:05:48 +0000
-X-Mizu-Trace-ID: 801ab3a65b468602
-X-Migadu-Flow: FLOW_OUT
-Date: Sat, 31 Oct 2026 12:05:43 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Aamir Ahmed <elb12345@hotmail.co.uk>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowangio@gmail.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Valentin Schneider <vschneid@redhat.com>, Aaron Lu <ziqianlu@bytedance.com>, 
-	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] vhost: Run TIF_NOTIFY_RESUME work in the vhost_task loop
-Message-ID: <auY6zHDao6R6bFNz@linux.dev>
-References: <AS8P251MB00012469E6ECBEA2B7D87BB0C86C2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nRALHhvK
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso4567a12.1
+        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 12:13:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793473979; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Y3O+1pYq3675gZTR1R0El1n7BYhMRvPtVH9VaJc/KF1i6eaz+GA/fMqUMqgrs0SF2E
+         u/i+bzJ8tmrSM6meW87RGQoctfgg8WLpcYTF6Z74ZDJa6i0qGd0QK4jiqg9qRkJ/le0M
+         1ylrNgIAjHtFNAcVVjHZXps0lpythzs4hhKFpPITLHfgUS5g2XwwTNWdHFdYz1BrSP4w
+         wdT1HM3wNAKxDZguzioaH4ZSBIKBvZdyq0kbCJPZZbjPaSSu00HrNDiNnc26hxeBy4bg
+         /guB4KTedOvELnZJPShJpfLL5LQbZXzbas8sS6yG+tRz6tBZegidtgOrXTr2qF1u4e4x
+         GQ8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=axLc4hThd98toFERnEK8/2xtxUTHU0DBCagvAmEnenE=;
+        fh=URlmdDKXmNqZ2D/xGhcjq6DmcsWA27sJiewCLXIYGJ8=;
+        b=AUBqjnFZ3dzXWOoAyVVuAcpwuLx1Qu/lYmc2oxXYFMiEqFwP8WJsE+MZOGY8xNDRWo
+         GMBSxk7mO4R6DrTySjzGGPFeSdTLEmnselst/Xy2Na3fGQ/h37sDhRyepRueO4xBaUxc
+         QcR2iMvzRPu7x8mLUfgl0udFR+cYW2Mg9Ww8ALsqo4OTUjr//xQ781eco38oXELuiYJW
+         KFCV4RydTdVcYmZT/r+bueI54Cro3is2k3k73zdPv2wqW6iewTuN6no/DHeQzEigyFD9
+         OPt6bjNpQi+NnFcw8RcjmmVYfnRoSI+SxiFL9pdQov0BEFUoudY1eZjyvFAaM1ZNG1Y9
+         pZUQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793473979; x=1794078779; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=axLc4hThd98toFERnEK8/2xtxUTHU0DBCagvAmEnenE=;
+        b=nRALHhvK5EhJYbHjlXVUttUWdDKNNysqUsDmIn3jP7+HkDw5kax2jrebrX2CGf9+3W
+         jrPEhE8AZ9XDYIQWbQBJP/4T/GTY68x0eZCXwBHkuhHlYTZ/KJNJtxCoYbgVASFc1QBa
+         dLJZJxRbXAsl9kKL793uRVMGpWSpY/FQmSyWRKq2+duI8cDs5caa9p7+pb7CGE62dYvN
+         ByAnx9oWxmMz8AHl9tzzkAUjRQsA1mF/wAKWmNYsEe8jfigwNlUuYJ5LtE4Ue/k+2uuu
+         8jYCAWoT5gVT37C5JIoBynn6XDkv1yTzZ/1S+ULM9Qbb2Y8xOqHxfT2D9gKIjdKee8N2
+         E+2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793473979; x=1794078779;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=axLc4hThd98toFERnEK8/2xtxUTHU0DBCagvAmEnenE=;
+        b=MA6mT9JkJ0NpjJUDgqEynu9q4ZNSgeJCTxcg3TyvV+3RH/vQwobp7HxE4fA7Rp0Iqy
+         lDZMOg++sLqHDHmutnwfxf6qXvDFIm8ZXCBwii3F9aR8bxOwDXOkbyYdW5BjHcwYt/BS
+         1k0G3gGRvP/RCen+4Ajx+y1CJwNQTXfE8cMZIYCALd5qnpqIzwPXoVpsntxeP4aPD+0l
+         MaYBkjSO/u0f7TxhcDGS7dNG6i0BJFJJhwXgmHlfu2ycoPoyL2GnVRg7iH9Piz3o71pW
+         xLnHfXQx7l99QXfcLSbEbLrK9g1IRCwK5KMKTuLv/f3pjUmihLAx4pCNOrfcmB1rAXXW
+         jpMg==
+X-Gm-Message-State: AFq9FYL4gurrvnKHZbojqox6AVI8+R9jlIij6p2F6Z/bn5wDjWSMjItE
+	MnJ9JHQPWt/JHS1JrRT64KPw81Pzpa8d1iNp+x4q5d5cvlMGwgeY2pzb9P0aM3+HLfJhD+uNDij
+	P9ssewlnlUZBSPRd0J/lsQUTR6idkzC8gBa7fso2j
+X-Gm-Gg: AYBFou3kIuCnodvDiTDLjFu0RUWJSVhd5Bwl3ZJYpHk6T/honItnnWp2Y1Ydevap/sC
+	xtzLEVYMdiHZHQOKC8eYaY1i38mRE0T298TCFTu3doWkjQm+FT06Vgoip09CvVMKDqJOKvvo6de
+	ZxbavBUGYehiYLASPIwvf30tdHE4HPCoujWborUdpHE3D1657zgDgSIUjflcwxaFNObegM1l0af
+	rJxo8k+gcnr0/fhqbDSWS1YqpNjiRY1Pc6L2szKr1o88UpEZy0gnEYxT3eAIPg4SnfnRQ+gn+vc
+	KYNXui0B1XGIUS8IRRJ7tk+QlVtY1GL2UKCFNU+0E1F1Ux7O5odssu0cKz0jMQbELU35wHwUDsJ
+	2pDShqI9hxZjDVasQtwygtLbkEgpJMwDXdSt9jNo=
+X-Received: by 2002:a05:6402:3247:20b0:6af:afce:184f with SMTP id
+ 4fb4d7f45d1cf-6b4b10d785amr228016a12.3.1793473978761; Sat, 31 Oct 2026
+ 12:12:58 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,46 +103,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AS8P251MB00012469E6ECBEA2B7D87BB0C86C2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+References: <20261031162804.1893-1-maciek@machnikowski.net>
+In-Reply-To: <20261031162804.1893-1-maciek@machnikowski.net>
+From: Mina Almasry <almasrymina@google.com>
+Date: Sat, 31 Oct 2026 12:12:46 -0700
+X-Gm-Features: AclHuK-OpPYwSTlSlojNE59RkkicDzbzvgwnUow5CCaQlqWbb0Qn4Ecbm1sP6rk
+Message-ID: <CAHS8izNQzFyDs0mJJP770xWYXppEQHGKN8LJ-HrfD-f3Q_T5bA@mail.gmail.com>
+Subject: Re: [PATCH v11 net-next 0/3] Implement PTP support in netdevsim
+To: Maciek Machnikowski <maciek@machnikowski.net>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, richardcochran@gmail.com, 
+	milena.olech@intel.com, willemdebruijn.kernel@gmail.com, andrew@lunn.ch, 
+	vadim.fedorenko@linux.dev, horms@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Oct 31, 2026 at 01:33:13AM +0000, Aamir Ahmed wrote:
-> Since commit e1fad12dcb66 ("sched/fair: Switch to task based throttle
-> model"), a throttled task is only dequeued when TWA_RESUME task_work
-> runs on its way back to user mode.
-> 
-> vhost workers never return to user mode, and vhost_task_fn() only runs
-> task_work via get_signal() when a signal is pending. A busy vhost worker
-> therefore ignores its cgroup's cpu.max, while its runtime is still
-> charged to the group, throttling the group's other tasks (typically the
-> VM's vCPUs) harder.
-> 
-> Run pending notify-resume work at the top of the worker loop, as io-wq
-> does in io_run_task_work(). Commit 12013e3d4695 ("KVM: powerpc: Use
-> generic xfer to guest work function") fixed the same problem for KVM.
-> 
-> Fixes: e1fad12dcb66 ("sched/fair: Switch to task based throttle model")
-> Cc: stable@vger.kernel.org # 6.18+
-> Assisted-by: LLM
-> Signed-off-by: Aamir Ahmed <elb12345@hotmail.co.uk>
+On Sat, Oct 31, 2026 at 9:56=E2=80=AFAM Maciek Machnikowski
+<maciek@machnikowski.net> wrote:
+>
+> This patchset adds support to the PTP HW timestamping emulation in the
+> netdevsim. It uses existing binding between netdevsim and ptp_mock
+> driver to generate transmit and receive timestamps.
+>
+> It also adds the selftest to verify the hw timestamping functionality
+> running over netdevsim.
+>
 
-I have this (almost) same patch but for different reasons i.e. memory.high and
-block throtlling. 
+Net-next is closed, so please repost on Nov 9th when it re-opens.
 
-http://lore.kernel.org/20261031181004.4193627-1-shakeel.butt@linux.dev
+But, more importantly, I'm surprised this relatively small patch doing
+something (I think) unobjectionable is on v11. What are you struggling
+with? I looked at the diff log and it seems to address only
+micro-bugs. What can I help with to accelerate this?
 
-If you don't mind, can you update the commit message to also include that it
-will fix memory.high and cgroup block throttling as well?
-
-You can add:
-
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-Tested-by: Shakeel Butt <shakeel.butt@linux.dev>
-
-
-BTW there is a similar issue with io_uring SQPOLL thread which I am fixing
-(testing at the moment), you might be interested.
-
-thanks,
-Shakeel
+--=20
+Thanks,
+Mina
