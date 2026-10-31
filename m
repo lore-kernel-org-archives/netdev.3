@@ -1,96 +1,50 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793440770;
-	b=ReyaQVvcbhAl1n3fWZ2O7/WyYXRF2SOnRLbvpmNglLiTyeElTBnFpoo1uYFcjZ3ONWqJ
-	 Nsv7RBDqeNJsopkhdYcsmDksNMcgGb2P5Uq/3X5Tka+a1115oYwdjnKNWT/MtASvfjoxt
-	 R4o7sXjhCTQ63VN1YMRo6tiD6/jQfhWAa2UYXCORSOukHmqkgSvg+4AaERPCkEmyd30nt
-	 mc4DZqBZDyIVtS4C1LY+fiMb7A0XYFx3EzvAL6qt/p+skd++3rx8NyuEjRQ82iDGsSXlW
-	 tlhmcGZfKPFi2X5HH0oUU7VHphX+IljatfrJCPFxuCA2szqRawOUyiF2sw8l/Uao6SA==
+	t=1793443868;
+	b=lvp1KxwUEvMPtpD6ydChzHBEXPU/j6FKTA9iBKWGjxCxzvxRNAuzIJMlP4fT3Dx0U5sm
+	 21VzVkmDYAGJ/gRfA9d9L7TcQwQiwyuY+h/Si6CKWSwL9hNjqWQUvtPTTE3p8nBx+RAFK
+	 iZXpzU3wcqUvLQn5WoVPAdZbNWkmnMnYLs7lyhwLMcjXCksQqn0C/hGGDg0FDvsOqOKxe
+	 Z7+sK/0yzaEj8u7+6ymfSYFYnNJDzOPJ7vs4x9mNVrGFsVfQJ6c/4XxgGHijzMp8dwmLa
+	 u6wKro/9HO88x+/DR3ZL6V6a4ou4E/wYbek6ixGMtdcCFzvzJNj7orc55AfQpmD6/hg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793440770;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=lrg91VXppCw++dPJi09YCHr1ozvZZtqaDezxwuYyj1c=;
-	b=qOy79Sjvcxkgvkf3UB4OqIs0aGcEDNXt4JLF0X0vOXA9UzgIqx5PwoeoT0gp1bk/xa0e
-	 yKdxsLe77XkcW8UOKRA2j4Z3X4jOCwGxfiUK/WwBzkjxo0nljjlE34kAL8SXO16COrGtM
-	 AqNy0bx47ZJOXtplA+i+IOfBfsVn8OmrF736S9VMiLPb10T5ZSLz2PH/2vQkoKn96LOoc
-	 p/f2m2AyHYxVgcJP5ivmAS1APpoKKJ+AO67mx9RkQfBawrnS3BRDvVUNzZoC+rlDSv3m9
-	 JdqWjyZx4LyjzHrpul8GeIYLOPxlZT14bJv39Kxk8rgsJ/Pg1vTyqOD223jwwfgBvsw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793443868;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=B+jxDJoZ2NJnuhxlFqog+6PCeIn6ndLBhf8KyfLiV6k=;
+	b=Yqum4gK7s9XRSVbOaOiF3WkATic99A5LK2P72yUKh02yiyvsAewJZt68fFmaGts1mPvw
+	 dP0ACmboklmT1GMBo8eG3y5UVSrE7HfA7gTH56oPRuwVkmoqrgyoJ8UwWEjPGzANM8IPw
+	 ZQ+yrA3KPjI2s/ggwKnUSHJj3BV35hT1FL0e2MmLmqHP60mzOa99h1cnzsU5+9h6xLdxx
+	 +FyDZEiVWNEUMGyS3i+MJ9G93EPw/Iu86Rt0MmHvAQYyRsNLdPqLTOM6Zaayk6MbXvQIM
+	 cHBVvq2X5KPoauHfnzn3OxWmf1sQyfgLugyXRoFkCdXmGmuwwGiUAPWomn7hmRvvcBw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VJCloE6b;
-	arc=none smtp.remote-ip=209.85.128.47
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=Jva9haJ+;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07727606A31D
-	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 09:59:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 07727606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D31606A31A;
+	Sat, 31 Oct 2026 10:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VJCloE6b
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a2153c8525so9456155e9.3
-        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 02:59:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793440768; x=1794045568; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lrg91VXppCw++dPJi09YCHr1ozvZZtqaDezxwuYyj1c=;
-        b=VJCloE6b86yvWABy075rF+peJ+s9iHi9Oj8A8xN3AKg90+d9lov+D2SVeH1MIqS5U1
-         fZMPNtsj1CDhKMGFKUhX/Y7SioiFJHDFZxK1BxSniSDdO6XkDzaNITmT2/EfHCNE/VCu
-         EEp1yBILY8uUu/44qbbq0HxUgf1g8gKaFstU+2foeow9x0g5wfA98wGXpn83HWo/jveg
-         kibon7+vRr0Od96+ZX/Uzr5kKCEc3JBcwuMkag/EL2OvqxbAlZU9AdfjPuK2nNyWgA9H
-         33vDNRwhXbsSV/htjoVhUdVWpO/imuheL2Z2PUKcle3/hLWR08BQO1L5n0lsoWKiy37T
-         nb+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793440768; x=1794045568;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lrg91VXppCw++dPJi09YCHr1ozvZZtqaDezxwuYyj1c=;
-        b=pVQOZ0ilAHCQDPrpRCc9cwoYNkCH6qxSwJYNFRlU7wS46Af/WfeSglN8ugY8ZtqjVH
-         2VqrovgAcASstV3vAuucH9GnUIrhPEXEbAZ9nbak6sOFsU1tUFUBEmzebLJIEH/HuQxW
-         CaMmFBgSuR3YxGDElllln8IsrzWZ5LQOUTdPvj+jdRF3YaC2uvQCHZxJygugnrWL9rMK
-         vyrq/ayIekaLaA2D9Cj13QI+7X0qnxkTq+/Khs/XBMh9OMzIRWvBYnUVECiMV8O5HiON
-         /HbDOV67fs2HWzYAZxcVhY7kN8MIaMbSoZsoLMuQpjhp1x/hiTeOuvR/0BuwVBahaf9Y
-         IYkA==
-X-Forwarded-Encrypted: i=1; AKwUvBzPgjmAaMjusFch3RzvMn/PHK65nFAV9CSSvVe7p6czRdh/tlJaVKEI608REIrCfANvDGJNvyI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJjlpMx+pdyywwZGlF8thtmLvX/2F9nEnGrt552Iu5M8dC5W7Xu
-	6uPVqo2lMD23OauUUOGbhhCZrY0G4A/WvqrW68WxMCs7p80pQXTEgkcp
-X-Gm-Gg: AYBFou3yvRyxg6iPJCFBcPg1d5dui37aY9UcdbagUb2lgLkaz7xPxAA37pdLz0921ym
-	E/JI0iO5oocD9eg+Wr+Ex75/r6AElLd38EBzpAz75XrVe9wDqzo7x8oxR04kFvVnUvfP9suo71r
-	yxUG09qMKL77V0mWNtdBbLHCe6kiKtc4fKi6cGyisy9oE1HJGe1rwAMu2AAcZuEjWWoSlni457X
-	BGzCdK9o1IQ/aAL4eVcfmyVcOV5W7TMRpE91W5TO7T/9Q9sLlf8dcnE5kaTOaAEXRb0/msumFrZ
-	mnYMXwqcsKvbArKvT3oyda+Rx7EckYhuClv7WEpazpHEblF/yQYIAPoBWAFiWAb/pawBbAcRGPm
-	DmFsvdqdO0xF/zxR76Ax4l54yuJzksTANk1kbaJ2wBxeHfmcBWAPDRjQt5rsBIkygDhAGOxsvzP
-	bkGyKkHpKyRnl/AmlHnDIR8u6D2NPNUIf8Y9wzrKrMLKbwJtXoK6iTspTOS3xA+i1+cawoai+et
-	NtvhHdnNe7N1ybyn4sxMxRGmHph93F9+1g/dXwAElXErM+DpVKxE5w7jIKTBvlR4/uQrtnJaYWV
-	CZvoMb2HSqElKTJ4oqK8sC18lQCz/jfqraME7FacW/rE
-X-Received: by 2002:a05:600c:8b4c:b0:4a5:1cf1:b7b8 with SMTP id 5b1f17b1804b1-4ac17b2cf8amr106495125e9.28.1793440768232;
-        Sat, 31 Oct 2026 02:59:28 -0700 (PDT)
-Received: from localhost.localdomain ([2a06:c701:4773:6f00:c8d4:ec29:293e:f39])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4abe77053fesm55354435e9.0.2026.10.31.02.59.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Oct 2026 02:59:27 -0700 (PDT)
-From: Avi Weiss <thnkslprpt@gmail.com>
-To: brauner@kernel.org,
-	viro@zeniv.linux.org.uk
-Cc: jack@suse.cz,
-	linux-fsdevel@vger.kernel.org,
-	dhowells@redhat.com,
-	kuba@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Avi Weiss <thnkslprpt@gmail.com>
-Subject: [PATCH] splice, net: avoid MSG_MORE when the bvec array fills
-Date: Sat, 31 Oct 2026 11:59:23 +0200
-Message-ID: <20261031095922.3577591-2-thnkslprpt@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key, unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=Jva9haJ+
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3054C1F000C1;
+	Sat, 31 Oct 2026 10:51:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1793443868;
+	bh=B+jxDJoZ2NJnuhxlFqog+6PCeIn6ndLBhf8KyfLiV6k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Jva9haJ+ipJNYhfANxPztypI3ud9UGF+NpPwp+IoM8fuKJtLIWnQAa12TjZhTMUXm
+	 HXjxlEeIJ6ozR3hBLCnXpnvttKpSekaWRc9uwodgoihZl4uvmOgmD395n47ZWwhsgb
+	 GWnMvciZCDWg1G9JJcNu7MoJew5MJ3MYxwSCgNSM=
+Date: Sat, 31 Oct 2026 11:51:00 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Struan Bartlett <struan.bartlett@newsnow.co.uk>
+Cc: stable@vger.kernel.org, Jay Vosburgh <jv@jvosburgh.net>,
+	Tonghao Zhang <tonghao@bamaicloud.com>,
+	Hangbin Liu <liuhangbin@gmail.com>, netdev@vger.kernel.org
+Subject: Re: [6.18.y] bonding: please apply 11ea9b8a88dd and 70fc6649b36c
+Message-ID: <2026103152-plow-bounding-4370@gregkh>
+References: <20261030225119.40765-1-struan.bartlett@newsnow.co.uk>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,38 +54,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261030225119.40765-1-struan.bartlett@newsnow.co.uk>
 
-splice_to_socket() leaves tail at the last included pipe buffer when
-its 16-entry bvec array fills. If the requested length exceeds the
-available pipe data, pipe_occupancy() counts that buffer again and sets
-MSG_MORE even though the pipe is empty. Small TCP transfers can then be
-delayed until the cork timeout expires.
+On Fri, Oct 30, 2026 at 10:51:18PM +0000, Struan Bartlett wrote:
+> Hello,
+> 
+> Please apply these two mainline commits (v7.0) to 6.18.y, in this
+> order:
+> 
+>   11ea9b8a88dd ("net: bonding: use workqueue to make sure peer notify updated in lacp mode")
+>   70fc6649b36c ("net: bonding: move bond_should_notify_peers, e.g. into rtnl lock block")
+> 
+> 70fc6649b36c fixes a fault from 7a9214f3d88c ("bonding: ARP monitor
+> spams NETDEV_NOTIFY_PEERS notifiers") that is present in 6.18.y: in
+> active-backup mode with the ARP monitor, if bond_ab_arp_commit() fails
+> over while a peer notification is pending, bond_activebackup_arp_mon()
+> decrements send_peer_notif a second time, on the strength of
+> should_notify_peers computed before the failover. The counter wraps
+> from 0 to UINT_MAX, and the bond then sends NETDEV_NOTIFY_PEERS every
+> arp_interval for years. At boot this happens whenever a backup slave's
+> link comes up shortly before the primary's. On our servers FRR's zebra
+> counted each notification as the bond's link coming up, and ntpd never
+> rescanned its interfaces, so the clock went unsynchronised.
+> 
+> 11ea9b8a88dd is a prerequisite: it adds bond_peer_notify_may_events(),
+> which 70fc6649b36c uses. Neither commit is tagged for stable. Both
+> apply cleanly, in this order, to v6.18.60 and v6.18.9.
+> 
+> Testing: Debian's 6.18.9-1~bpo13+1 kernel, booted in a VM, with the
+> bonding module built from v6.18.9 against Debian's headers. A
+> reproducer (two network namespaces: an active-backup bond with the ARP
+> monitor over two veths to a bridge holding the ARP target; it fails
+> over to the backup with num_grat_arp 255, then lets the ARP monitor
+> fail back to the primary with num_grat_arp 1 while a notification is
+> pending) counted the bond's NETDEV_NOTIFY_PEERS events for 3 s just
+> after the failback and, if there were any, for 3 s again 30 s later,
+> after the 255 would have run out. With arp_interval 100, a bond that
+> notifies on every ARP monitor run sends about 30 in 3 s:
+> 
+>   bonding module                         after  30 s later
+>   Debian's                                 29     28
+>   v6.18.9, unchanged                       29     29
+>   v6.18.9 + 11ea9b8a88dd + 70fc6649b36c     0      -
+> 
+> Neither commit applies to 6.12.y, so I am sending a minimal equivalent
+> patch for 6.12.y separately, with the reproducer:
+> "[PATCH 6.12.y] bonding: re-check pending peer notification under RTNL
+> in ARP monitor".
+> 
+> An AI coding assistant (Claude, model claude-opus-5-5) helped trace
+> the fault, wrote this request and the reproducer, and built and ran
+> the tests above under my direction. I have reviewed this request.
+> 
+> Thank you,
+> 
+> Struan Bartlett
+> 
 
-Advance tail before checking the array limit so the occupancy test
-counts only pipe buffers that have not been included in the send.
+Now queued up, thanks.
 
-Fixes: ca2d49f77ce4 ("splice, net: Fix splice_to_socket() to handle pipe bufs larger than a page")
-Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
----
- fs/splice.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/splice.c b/fs/splice.c
-index bc243ab8dc43..7c67e0375ae2 100644
---- a/fs/splice.c
-+++ b/fs/splice.c
-@@ -863,9 +863,9 @@ ssize_t splice_to_socket(struct pipe_inode_info *pipe, struct file *out,
- 
- 			bvec_set_page(&bvec[bc++], buf->page, seg, buf->offset);
- 			remain -= seg;
-+			tail++;
- 			if (remain == 0 || bc >= ARRAY_SIZE(bvec))
- 				break;
--			tail++;
- 		}
- 
- 		if (!bc)
--- 
-2.43.0
-
+greg k-h
