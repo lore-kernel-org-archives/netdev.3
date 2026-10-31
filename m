@@ -1,64 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.40
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793487826;
-	b=eDl3Rixs3rBIsrWBV0o0XPEgqvqL0jdNm/3lE9QotXomtj2hx6x8LiCThGHSRzEk54EC
-	 Al4oWxKcSW1W2eOul/5SkFx/yQGdD4Lu/o3IVZCXg44ZsJTFtt6z3Nz2lfXY3Pq7ZRybP
-	 XEpLEjLw+5sLczcSR2oDkrF3U3p1h26f9jBqoZmGkdT6NcG9BCX/iE7a4mVRAtdhRh5sd
-	 Nqec9+3c4aS7JJhnFjY5RUtKR2kcRyqQhrNBpC1LxJGXhS8Vq12R2Qt9BHc7m1WCNMSz1
-	 zLCGa/ROKJhT15A0Qt3DhgiCBmaWO/CfEg33D5YSmUv/xcY4iW5AxKucq6MKEgB7L1w==
+	t=1793488499;
+	b=EPDHju72Bf0u1HYhChJnb0qb6mcnaBH/tCZQfQnT6TLCPoqk0WVGBCn1WmgcDWucJjxG
+	 CnaDZwkDctaKDwrFBUBdklXklOnfMbhKQ+7RRW+miB5tDciG+sypp0LXvrj24S1HMV8YL
+	 T+xzliqOO+uuae+6OLSJkNffr5QBDl2teezXjzBMT6TJ5Aozvpfi1SUgPKhLcuk4YBLaL
+	 caUC8nuG/KCihOe+pqwqEaTPZCZTZZL4ZUN4iHYwGe05cxgQTCT8pceZuMUJKHnVkFQi/
+	 LaXKQ8MEZoLEx7VLNBj1UjXtLAEYFrM4ZfChk6vchIdfCu7W6VGnLTYHvuhMyfK6pBw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793487826;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	b=FP6teHbx5P37S+tqVi3aeMTFQ1/+8IiXestD5tH9uBsKq8H7Y38WsFRCvUkubvJLuGfM
-	 K9Iiwx3LXhnhlSdCMsAaGrDjgvWtCvbXt3OUkFT3hVPFD6OfeaBuQpy4+UzbhNgDuw0Jn
-	 hNTsLmxfhviY2DPo6oUpdANiPHIwj8aM38NQv/uXb2+IKg6tGh1kfu9kfwTv14hOLiI5v
-	 OeX90QhU+dVwsqWAovcOLGVibNePNGI39YXuEDAJtMIylfzC7KI7Jpi7KDf0Vk+V2kjR6
-	 WaMHAx3opQdEVBPDNzK2h551/T5oqNPCjh4fj1SDaqFjvWli6LYwnlLfDl0vykkAovQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793488499;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-Rspamd-Queue-Id;
+	bh=6TaFZJxPOPZTRQ82YRI0Ny9DAKqeyrjaHJ9g7rMSaMk=;
+	b=f24rNkSLmgjLGaOeMkWjPfcJK+S9wFUex5Eki7dJDFdB/eGgMuaDBEmbdZJi4GU8KAlb
+	 TvSENdJCTyKj09A3ZkyOYRHCqwzANsxWhs4IE1MfSE4gPSykWmqA0ZBqLWaUoWYgZoBAU
+	 zS8SXWU4X4V/4yEdR+DO9DEYeAddu9BWzbjdFb1yY1GVuC23n7ZrwGqF8rQGiFzMXfVpN
+	 BYusOJ6foEMdpgWkJ/PtOZKnxC5gauBqgudUtG46rFh/CXSGdn6CVFTEyU0hEIl/Qv+1A
+	 axOD9b6rclA+12sJLYOBDkoTWS+vILu2H/zV43xYpErE6R3CkteTUdT0w9d1fW1xWBw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PkWUYQan;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=mandelbit.com;
+	spf=pass smtp.mailfrom=mandelbit.com;
+	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=ffJ6esQk;
+	arc=none smtp.remote-ip=195.10.208.40
+Received: from mout-b-210.mailbox.org (mout-b-210.mailbox.org [195.10.208.40])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECA3606A31A;
-	Sat, 31 Oct 2026 23:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8BAA606A31A
+	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 23:14:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C8BAA606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PkWUYQan
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 386211F000C1;
-	Sat, 31 Oct 2026 23:03:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793487826;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PkWUYQanEi8N9CjbIyygd9rk0FHvO8KP8QQ79kuPGnCQD8fgzX3da0jrtE2Sn3daa
-	 9YRCqKWYRupGcYeoEA8RjJIaHn6o33y5ZGz9y4ydgYhqbjuGQj2TRMpE606rN2soJg
-	 B61VUugSf4b5/UHEzRDaMnxlA3GzYuKf19qO3GwKno+sciDEDGjb+UKse/aGs+QdZj
-	 /7c8Akqyhxh0ioTKDpJJgoDFuRzrlO9zKORJPFWcdo9jLjJpF7FQ+6Gf8AskOqin4A
-	 IVHYSHN78MYTpFn5v/2ubOKX4qBJxxPG12Ts0BNK1soXfXFFbpwFHC6VWBkWxExgUB
-	 HZouFu0yhkR4Q==
-From: netdev-bot+sinfo@kernel.org
-To: Prathamesh Deshpande <prathameshdeshpande7@gmail.com>
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, dtatulea@nvidia.com,
- Carolina Jubran <cjubran@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>,
- Erez Shitrit <erezsh@mellanox.com>, Alex Vesker <valex@mellanox.com>,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net/mlx5e: IPOIB, Fix QPN lookup race
-Date: Sat, 31 Oct 2026 23:03:44 +0000
-Message-ID: <179348782476.3286.8725253095821375751@kernel.org>
-In-Reply-To: <20261031225749.14214-1-prathameshdeshpande7@gmail.com>
-References: <20261031225749.14214-1-prathameshdeshpande7@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=ffJ6esQk
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-b-210.mailbox.org (Postfix) with ESMTPS id 4jHDMC4pB5zFqwY;
+	Sun, 01 Nov 2026 00:14:47 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
+	s=MBO0001; t=1793488487;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=6TaFZJxPOPZTRQ82YRI0Ny9DAKqeyrjaHJ9g7rMSaMk=;
+	b=ffJ6esQkluZw/QvoWw73lBofsBeR8jD4okrHy8zRjyCen1/9KVXqHP2LMIQB0eOJVqoKhH
+	SDOD26EHtohyjmsfY2mZamzF2CAEPTfgvb1dh77MeLvK4Ki7KFJq/tGHHdpuCFzgFpyzih
+	oe0RXddsjT5jLMWzCrrYvCIaH+xPxab0tfcT4dsbUC0LTTaZ69XXuA2M7Cd78ckirYY+Lg
+	kFA+oO03XWsr7WGvyuj5gnH5l+HTeELRRS7nU0na5OlCE2mIofFPToquItm08wyFuZmHZr
+	0E044L/k8KTN13RIq90amkEJ5W2p9PXs1whWCUR8Fau0MXam+AqGwigfBdtL1w==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of antonio@mandelbit.com designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=antonio@mandelbit.com
+From: Antonio Quartulli <antonio@mandelbit.com>
+To: willemdebruijn.kernel@gmail.com,
+	jasowangio@gmail.com
+Cc: Antonio Quartulli <antonio@mandelbit.com>,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH net v3] tun: bound the NAPI receive queue
+Date: Sun,  1 Nov 2026 00:14:36 +0100
+Message-ID: <20261031231444.1528758-1-antonio@mandelbit.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,29 +76,154 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4jHDMC4pB5zFqwY
 
-Hi!
+With IFF_NAPI, tun_get_user() queues every written packet for NAPI on
+an unbounded list. When the poll runs asynchronously (threaded NAPI)
+and is slower than the writer, the queue grows until the system runs
+out of memory. An unprivileged user can do this from its own user and
+network namespaces, and the queued skbs are not charged to its memcg:
+in a test VM, a uid 1000 process limited to 128 MB caused a global OOM
+in ~6 seconds. The socket send buffer cannot bound this: tun sets it to
+INT_MAX, and the build_skb() and XDP batch paths do not check it.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Drop packets once more than netdev_max_backlog of them are queued, like
+enqueue_to_backlog() does, and count them as rx_dropped: before
+allocating and copying them where possible, and again under the queue
+lock before queueing. This covers write(), sendmsg() and the batches of
+XDP buffers vhost-net passes to tun_sendmsg(), which share the queue.
+Zerocopy buffers of packets dropped early are completed.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Reproducer, as an unprivileged user in a new user and network
+namespace, without kernel modifications or fault injection:
+  ip tuntap add t0 mode tun; ip addr add 10.11.0.1/24 dev t0
+  ip link add d0 type dummy; ip addr add 10.20.0.1/24 dev d0
+  ip link set t0 up; ip link set d0 up; sysctl net.ipv4.ip_forward=1
+  install ~500 iptables FORWARD rules and a MASQUERADE rule on d0
+  open t0 with IFF_TUN | IFF_NO_PI | IFF_NAPI
+  echo 1 > /sys/class/net/t0/threaded
+  write() 1400-byte IPv4 packets for 10.20.0.2 in a loop
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Tested with the reproducer in an x86-64 VM: memory use stays flat
+and the forwarding rate is unchanged. The vhost-net paths are only
+build-tested, and the kselftests have not been run yet.
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+Still open: the limit counts packets rather than bytes and applies per
+queue, the NAPI poll splices the queue out while it runs so up to about
+twice the limit can be in flight, and the queued skbs are still not
+charged to the writer's memcg.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Found, fixed and tested with the help of an AI coding assistant
+(Claude Code).
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Fixes: 943170998b20 ("tun: enable NAPI for TUN/TAP driver")
+Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
+---
+v3:
+- Also bound the sendmsg() paths, which share the queue: zerocopy
+  buffers are completed when dropped early, and the batched XDP buffers
+  of tun_xdp_one() are covered too (Willem)
+- Drop the IFF_NAPI_FRAGS exclusion: tun_get_user() never queues in
+  that mode (napi_gro_frags() is synchronous), so the early check only
+  fires if tun_xdp_one() filled the same queue, and dropping is fine
+  then too (Willem)
+- Recheck under the queue lock before queueing (Willem)
+- Compare with > like enqueue_to_backlog() (Willem)
+- Keep the includes sorted (Willem)
+- Add the reproducer and a testing statement to the commit message
+
+v2: https://lore.kernel.org/netdev/20261030152540.1409884-1-antonio@mandelbit.com/
+- Cc netdev and the maintainers
+
+Notes:
+- Affected since 943170998b20 (v4.15). Reproduced on mainline
+  7be4bc52fd9e; the code is unchanged in net/main 94cea342e891, which
+  this patch is based on and was build-tested (W=1) against.
+- Mitigation: disallow unprivileged user namespaces or restrict
+  access to /dev/net/tun.
+
+ drivers/net/tun.c | 39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
+
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index 770b8fe085c3..df5f0cbd1b16 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -58,6 +58,7 @@
+ #include <linux/nsproxy.h>
+ #include <linux/virtio_net.h>
+ #include <linux/rcupdate.h>
++#include <net/hotdata.h>
+ #include <net/net_namespace.h>
+ #include <net/netns/generic.h>
+ #include <net/rtnetlink.h>
+@@ -227,6 +228,15 @@ struct veth {
+ static void tun_flow_init(struct tun_struct *tun);
+ static void tun_flow_uninit(struct tun_struct *tun);
+ 
++/* In IFF_NAPI mode written packets wait in the tfile's sk_write_queue for the
++ * NAPI poll, which may run later in a kthread or ksoftirqd. Bound that queue
++ * like the per-CPU backlog of netif_rx().
++ */
++static bool tun_napi_queue_full(const struct sk_buff_head *queue)
++{
++	return skb_queue_len_lockless(queue) > READ_ONCE(net_hotdata.max_backlog);
++}
++
+ static int tun_napi_receive(struct napi_struct *napi, int budget)
+ {
+ 	struct tun_file *tfile = container_of(napi, struct tun_file, napi);
+@@ -1856,6 +1866,20 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+ 			zerocopy = true;
+ 	}
+ 
++	/* Drop before allocating and copying when the NAPI queue is full. The
++	 * check is repeated under the queue lock before queueing.
++	 */
++	if (tfile->napi_enabled &&
++	    unlikely(tun_napi_queue_full(&tfile->sk.sk_write_queue))) {
++		if (msg_control) {
++			struct ubuf_info *uarg = msg_control;
++
++			uarg->ops->complete(NULL, uarg, false);
++		}
++		dev_core_stats_rx_dropped_inc(tun->dev);
++		return total_len;
++	}
++
+ 	if (!frags && tun_can_build_skb(tun, tfile, len, noblock, zerocopy)) {
+ 		/* For the packet that is not easy to be processed
+ 		 * (e.g gso or jumbo packet), we will do it at after
+@@ -2045,6 +2069,14 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+ 			goto free_skb;
+ 		}
+ 
++		if (unlikely(tun_napi_queue_full(queue))) {
++			spin_unlock_bh(&queue->lock);
++			rcu_read_unlock();
++			kfree_skb_reason(skb, SKB_DROP_REASON_FULL_RING);
++			dev_core_stats_rx_dropped_inc(tun->dev);
++			return total_len;
++		}
++
+ 		__skb_queue_tail(queue, skb);
+ 		queue_len = skb_queue_len(queue);
+ 		spin_unlock(&queue->lock);
+@@ -2649,6 +2681,13 @@ static int tun_xdp_one(struct tun_struct *tun,
+ 			return -EBUSY;
+ 		}
+ 
++		if (unlikely(tun_napi_queue_full(queue))) {
++			spin_unlock(&queue->lock);
++			kfree_skb_reason(skb, SKB_DROP_REASON_FULL_RING);
++			dev_core_stats_rx_dropped_inc(tun->dev);
++			return 0;
++		}
++
+ 		__skb_queue_tail(queue, skb);
+ 		spin_unlock(&queue->lock);
+ 		ret = 1;
+-- 
+2.56.0
+
