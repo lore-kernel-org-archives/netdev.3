@@ -1,97 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.173
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793453540;
-	b=MpAo9XPyeoGpwsiI+NBQYgn3ft9myb0iH0jtfZlol4RcrubXWFYAgp6ZYq/1SSA4x3pv
-	 YaGIkGMURDgntAXxWGmNKcqGmeH0k3RU8wnRoMYNv4ahI/MywO2iT10Kgxk9rpUrfmtmy
-	 WGhf42l3IcW4yarRATXQpj62G+tk02fk6h4eEvsX1ua6kGjGu9Rrbm3TBCfDiG9uRuCZl
-	 jCrjnGVk8u48BsXrCvrhhpZ9owaCbRhkDROhXGeBJGqLl6q6yM9b3BUUDAWp3Nvj2rspD
-	 3i5QYscwHqm0qv/3vTZC7vUjDgBEsFoP1SxsiTKHzoBYes4ZBxWa5wukd+wDLdYU64A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793453540;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.171
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793453730;
+	b=NjKzDO+tsPyQBbxLY+6MsB4ju7PavfmkLeBsZworujTsNqk0CoOIwNGMYj5alof5Gx+i
+	 4xzvWuAe79azq8yL/9VNj2E4YTtGW7k/IzOcjdHq8oFLDkaEjEACbNQTXKvu7GeJzBteI
+	 dbuBwTFzai3LdTe+wUvnlADLm56RCnS7qwEAKMt2pzBjsjpw95NP50Ya6W1cS64tClUF2
+	 4yXHvVQ6OrTteSe6x5d5065BC7OBKFq1nNXQ2aREwM/tTrFjhByiZdGizjywqBZguIl4n
+	 rMKk9kjL5P1qdCDQsURyxnqpljEybWsYDyueImXLG1FiB3Mx4BOZLKy62ntXYPNYCQg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793453730;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=QrhJINBYjJTT5louKFAwSUTUsf/5n1vYlK1qTtlzMCY=;
-	b=pA+Fo0N7BxFD/TEhPfpEs2YiU3beAZFPmMCZF4Of2tE6MoXDkNv+i3ENUDJT2rc/gVXp
-	 DL2NGQS2vAWE5UGBLeTY911oi3/li4Q+l0HQysHvtQk2efGPj7BL5XwvW+MFXavQ1Uf2f
-	 g/rWULTLFckCzA2my0uFEFZun8oeQOpvkk+lEQiOKzbBJlZwEMx9jJzzRNRAf6zRgpTL9
-	 QmoxXgxoaEbzNEYCAzVFW/kteoBWCi/HcS7A6WaL0RzBumaG2sDzUu0f8tn0uwruQNleb
-	 yqwZDLOxcQQxH6HImcFWhHw7xFlrgl3vx8McwqL3GLjr+Hfmj0OA+leOYspH78489Dw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=XKnOjMRP;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.173
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=jYABWeDo+AGiod8hgPoggERFln3qmx9KSSnUFrivFQA=;
+	b=axqC0ZUCRCOFm3Rq/U93L57Uph+J9L0dfzuq9NJ+/RuF/VHhQwFUJK/bxx+LnlRK67FI
+	 SnOS0PytJzyvYoQO+QnCPLKkoArwbDb6vugapqD6y0U9Nxdf3SVT1ax7PVloAJGbnkfTw
+	 /fd8FN81+Y2HNzMndQ97nBAHKgr4vC6bKNg+dMvbVTDPsjEgvjetozWJ8jKB5UapO/2Z0
+	 wNUby8u2AJKMrdJr2eBGR/SI8TL6aqJ5QYg8B+vu8mVFp7+jYNf6zAA1rSgdOUXugTzr2
+	 8s27Tuz3nIaiYzL+TbWi0lIFixXsuJdrzJe27r8v2Ww+PPMWojT1V6sYDAlmzgDu61g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mX4wM0Tg;
+	arc=none smtp.remote-ip=209.85.160.171
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9F1606A31A
-	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 13:32:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1E9F1606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A2A606A32C
+	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 13:35:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 50A2A606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=XKnOjMRP
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8a07078200fso668432b3a.2
-        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 06:32:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793453538; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FhPV+9RsTZqMbd/7JDQ90nl58vBSPV3HFZERWOJYTy02Jyx8/jPIT527eInKjSPxcx
-         ksx7y0vdYEdVhQI7aQ6lne1/UD8kwrmhjF+FmupMdNSVmnJOJdDqboXhDGLhIQ3ztV82
-         Qu/QfMFMCQwNcvG2RP5x2Caflp74aIUNoOOH0v9oV9TaiZpYpTqphoNs69nEqQkxiprt
-         0fewXU55puMAEu5V2E6ZQdjn2xAn7oxmMk09ObiBsVcZdsqNRN71TThLRq7SwA9DhF1p
-         sx1dL4gzqmWbeC5vI+bFbkLoB0fS2kq8BYMnAB0ic/ZmKndyP7D9B8sknAs7CZbUy3DK
-         iGow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QrhJINBYjJTT5louKFAwSUTUsf/5n1vYlK1qTtlzMCY=;
-        fh=7QJ9Eis0yvJCrNSsu/t2OUGiYu1/fN7HYuUaSoTARCk=;
-        b=JmK+Nt4oVzFKxT7iBteNbHSxmb2p2hfBimj9+FFAbTHeAi7Feuwu+pxrusf7BUlFrw
-         R3yQGj+3hlG4zVvtiTVl8xbNKBRygpqNaKAO90jTw0l8eteaRQN6w5FitYTNa1GxAVJT
-         Hq3ffFxBjIVxtSVnTyhrQzTRtm8T0816Y9AtI9n/9i29Zm8U5zCaHFBcyzrFfwNOsvfW
-         V4wtcnEiaG+dOvnM1jYT9E9hGE2xUoEkTzbp8/fgjZ/cFAjykKJOtzHqscwMmpU9RwKW
-         w6gJ0U98DmF/8OXMMNTeVVtAvpQXfQPyV5PKcCofr1WlHFJZO+fLph1ahixPO0dOF6dB
-         YppA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mX4wM0Tg
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-536717a4d83so15558731cf.2
+        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 06:35:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1793453538; x=1794058338; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QrhJINBYjJTT5louKFAwSUTUsf/5n1vYlK1qTtlzMCY=;
-        b=XKnOjMRPi1xowFEnisIR1z4LU2wkmPn460uIbnYFo262VHWeQFoTh/HoQdkw60dc1a
-         1zdDrd+OqzuW41lm62mCj7dcoHFjgW2MOlHyj83i9lgrOZCcxL6XKUo55Ov0N0HUDQ5d
-         EdoSbP9yfU2qWOluiS20Xn3hWPcx7/ZppJ26A=
+        d=gmail.com; s=20260707; t=1793453729; x=1794058529; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jYABWeDo+AGiod8hgPoggERFln3qmx9KSSnUFrivFQA=;
+        b=mX4wM0TgZgY0LPbLWGS2TWIQo9dW6F+CNVQtMb4E0wYV0YYJmqABQFQ3n41d8lcMP+
+         ZOf8JTOUJe7wwn9Gm8kVd1HHLlSQwr4dbqz/C56sIucLWkSQescmtjJlptUosOFxdZCT
+         qE8NUff1K8EhMsxf3aJ1HFTEIMMFZrbUxtw1c5eZT9TEYojoV/Dda55eicgHuFh3rfpH
+         oMfYNJU0xPNQLsAt/k6lSoHcDUCym9YL59D6Mz9b/Msvp5lSlWbZ6mOks5x0ZC6I2oAh
+         SJ52DkkTGIb1fRtFKkDyKPs04rKsKJjw+T/665i18LO0eiUA8xB+DQzy5W1JAl3AnwwX
+         ejog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793453538; x=1794058338;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QrhJINBYjJTT5louKFAwSUTUsf/5n1vYlK1qTtlzMCY=;
-        b=Nv+Sb3P50/vcKHyQ7i071gLPoJD5dqTnDPHeC/1NJUJALCqNaIUHTMLQMDIeRa4lDf
-         N1RRrSiRGDAbbpF1O+5YD1yvdArdGZbmZNTvDUjPrMDMmxG00mshMvjvxL6U4HtTiKqM
-         1Hv3+JNLgV0r8nHARR48mk8tGl2qA+ybcqVHtkn0GJIszH8yERLMEkifsFVOuXl/YY8y
-         NAJpGmU1rVhfVoBa7+8oqFwkGVGD2Q3ObIYcdics8nSv/Sn0bCDMlI48tyRW3Ml4vQD4
-         YtyDZ7Opu54X7zLJMsmCR6r1w/y4+/2mVhdqTTw7o20Zo2dpbPm6VH+C3XUAiQXkLLOd
-         tu0g==
-X-Gm-Message-State: AFq9FYK0eGy7gWfJS+Hqr8rkgzbdi5cCvBJDz89ZnIkw1Y8TDHApSRuZ
-	Ye/afEugW0puJE7ZbtSsUOo5vNmLw3bDy1xHZtBb2IzBJjrEWD0Dd5UFaMPygaLrhsYA2kaFGdr
-	wHYhr4klJhtbXmmrjcFrFwkWoT+Iv+4L6st3cJ3/p
-X-Gm-Gg: AYBFou1JLoChvDCDKEVg9qQUUmAO5ON7GRn9SNGQ0iKK5r0wv4y6WjmOxrIlXhShnr1
-	0bOloKmMZWSN3uICYU5VTQW4kQ1YAYNFJs4LTUMheJnek85F2gEA7/YiTjWIbKVXDbx0x698Bwn
-	ttst6BihYusT58fDbesEfm2bOITamiK+m2HZfc3VmPYFEvtZtOTjIRe5Yesx+h4gFigdICjqn8k
-	b5STVP2ZUudn+WFpoDG31kQGO3gZw7Ukes4HYGSdht8eWuOBWiVyd40YeNz5veOrPeD9qz6XuUn
-	/5LInWkhoCjeiicoKBu6l1sVBEWqEPdy+rzVTZbTxeFvVWwHnezz4oL8khBAbQ/C3MNLDWH7cGA
-	uuY0moOU3QIUL/YrBWS/i19mpkbPohKtcAn/KyP0zszo2XZbUv51W+beCkdJFYZGw3eZ9u/3tw2
-	3+2NXPPC5reWahL2g=
-X-Received: by 2002:a05:6a00:4b12:b0:89e:fc56:a25e with SMTP id
- d2e1a72fcca58-8a9bfa02bd4mr4056675b3a.41.1793453538349; Sat, 31 Oct 2026
- 06:32:18 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1793453729; x=1794058529;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jYABWeDo+AGiod8hgPoggERFln3qmx9KSSnUFrivFQA=;
+        b=P/ZxRSChNUCzRO53X+caLGG/ce/HHFf/vtVkl8Aox3JjCjnm2h3qb/SzNGl1DY+TRR
+         AWstsgPLZaVQwjamQlSJhpaI9F389l80nGSlpF6+hQlrnZh/BzvkjVq4X4ki0SFsVCdw
+         lZvdTfIlZge1mynFfCVx56hB5viQUZ2np2fBl5v00NogA1mD8JG7p+6AUs53f1ARR+az
+         26wml0eSzuEgcF9aoQVa7EfHaz7LE6CPvk5+//6dEu7529/o4aasj5zsKjrgUiFq7aVd
+         uRUUeYZYT3t87zvSAhTTzjSdze/LNUt3UF+UlQStSHzFjpzlqZ7KKVUgZm+5QdsflvbE
+         HfxA==
+X-Gm-Message-State: AFq9FYItgvio+M1aWasW1lgMtQqP+x9IQc4KIXIY4Q9FSr+39P8hc694
+	7CcKVuf/B1lDRJ6mx8El5Pxpn8sozXm3U5MHhxu1mEKmwBWX6o+8TCw=
+X-Gm-Gg: AYBFou06/e524FAI6vz7IGO4hlKJTi9xhoJzbCT9/1+0TypvwhkNHra72LDJj2+Xn8K
+	7iQwVeKV8OYgKZi2qHGzEYGK9WgJWVWpAe/9Aqu9BLS75PKb59YuCAa+V3tAcfHdJtE3jz58Qp4
+	NwDJjJJpenFhJsAUHWAu2jhSPxYgXZq/CEhqHqjOCXhwmVMmhuaiw7EDhf2GyzdHWDOFB7T4DWJ
+	YgqS7NHxJhLFTFPledZ8ecFF3tFmhl9K6j5XtK9SWEk3xdU6+XWc8o8uXB/+DIGTnzqfMWx5f6o
+	LyPIQmuf9sbC7gZZxbsUG/sjUlhcfl9IrzUQMYNKgTzM9VMoRQvM4/1lHnrbfeSntGQZ5zDjoMZ
+	LJdHZroL6quZFOM/qzwbF6EZWhXcmdMzyR+Gso+/lIsGCQ9E9OME6kYDg4vyoCxcfSgOsjoY7c7
+	WQhitQxCF3HVRdCGiTJCbpStryusiB/l6YUsRAWjvJMnY8FKe3mWcAgCXpPpGXuNZ56DNQUoXfU
+	vW7RZt/mYMX8eZRXoTowsF4yIoifpw33V2aeFV5+uJUbfxPmAzypNl3d/WADT76JTgxZfKaQQsq
+	xhs0wgaz+IjMcfGtyTFkEmBnRlI0xMprvs7zzIIHWyLzNmZjV8v2laEju3oVKPLFDQ6/Rcr8OdJ
+	tOG7uOPI=
+X-Received: by 2002:ac8:5f08:0:b0:537:83ea:6923 with SMTP id d75a77b69052e-542b714560cmr82010581cf.34.1793453729164;
+        Sat, 31 Oct 2026 06:35:29 -0700 (PDT)
+Received: from phoenix.rocket.std.internal ([2a12:26c0:4608:9602:488f:ea65:c201:8ce2])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-54311f75fd7sm38713741cf.11.2026.10.31.06.35.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 31 Oct 2026 06:35:28 -0700 (PDT)
+From: Rui Salvaterra <rsalvaterra@gmail.com>
+To: pavan.chebbi@broadcom.com,
+	michael.chan@broadcom.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Rui Salvaterra <rsalvaterra@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] tg3: make depend on ZONE_DMA
+Date: Sat, 31 Oct 2026 13:34:56 +0000
+Message-ID: <20261031133455.3070233-2-rsalvaterra@gmail.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,145 +100,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <bpf_redirect_neigh_short_linear.v2.r0.20261028080316-1@mojatatu.com>
- <DMII4JGTEUEG.2WRJPT6ODT6J0@gmail.com>
-In-Reply-To: <DMII4JGTEUEG.2WRJPT6ODT6J0@gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Sat, 31 Oct 2026 09:32:06 -0400
-X-Gm-Features: AclHuK-ddqUaxwQGu_QsdsX_5VreQz3XrjlPaOLjbuJHGuyWX_YBYrjskp5eDDg
-Message-ID: <CAM0EoMn7kvsfZbsOdU3jHiT1Ypc6OHHu_+empy=Fmu33Etfhug@mail.gmail.com>
-Subject: Re: [PATCH net v2] bpf: Fix skb_pull() BUG in __bpf_redirect_neigh()
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@kernel.org>, bpf@vger.kernel.org, 
-	bot+bpf-ci@kernel.org, Daniel Borkmann <daniel@iogearbox.net>, 
-	David Ahern <dsahern@gmail.com>, Martin KaFai Lau <kafai@fb.com>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Andrii Nakryiko <andrii@kernel.org>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Jiri Pirko <jiri@resnulli.us>, 
-	Victor Nogueira <victor@mojatatu.com>, linux-kselftest@vger.kernel.org, 
-	Shuah Khan <shuah@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 30, 2026 at 5:47=E2=80=AFPM Alexei Starovoitov
-<alexei.starovoitov@gmail.com> wrote:
->
-> On Thu, Oct 29, 2026 at 02:36 AM Jamal Hadi Salim <jhs@mojatatu.com> wrot=
-e:
-> > Add egress coverage to tc_redirect_neigh: the existing test only attach=
-es
-> > redirect_neigh at ingress, where mac_len is populated.
->
-> This test cannot hit the BUG.
+Since 614f4d166eee, on systems with ZONE_DMA unavailable, the Tigon3 driver
+fails to initialize, at least on systems with BCM57766 controllers. On a late
+2012 Mac Mini:
 
-It was reachable _before_ the fix, normally useful to include such tests.
-I will drop it, but if you think it is still useful and you catch me
-before i send v3 i can include it (or can be sent afterwards).
+[    1.226623] tg3 0000:01:00.0: Unable to obtain 64 bit DMA for consistent allocations
+[    1.226718] tg3 0000:01:00.0: probe with driver tg3 failed with error -5
 
+Fixes: 614f4d166eee "tg3: Set coherent DMA mask bits to 31 for BCM57766 chipsets"
 
-> Just drop it and respin as [PATCH bpf v3].
->
+Cc: stable@vger.kernel.org
 
-Will do a v3 sometimes today for below...
+Signed-off-by: Rui Salvaterra <rsalvaterra@gmail.com>
+---
+ drivers/net/ethernet/broadcom/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-cheers,
-jamal
-> >  static int __bpf_redirect_neigh(struct sk_buff *skb, struct net_device=
- *dev,
-> >                               struct bpf_nh_params *nh)
-> >  {
-> > -     struct ethhdr *ethh =3D eth_hdr(skb);
-> > +     struct ethhdr *ethh;
-> >
-> >       if (unlikely(skb->mac_header >=3D skb->network_header))
-> >               goto out;
-> > +     if (unlikely(skb_mac_header_len(skb) < ETH_HLEN ||
-> > +                  !pskb_may_pull(skb, ETH_HLEN)))
-> > +             goto out;
-> > +     ethh =3D eth_hdr(skb);
->
-> ETH_HLEN is not enough.
-> __bpf_redirect_neigh_v4() and __bpf_redirect_neigh_v6() read ip_hdr()
-> and ipv6_hdr() right after the pull. Nothing makes these headers linear.
-> Take the AF_PACKET frame from the commit log without pop_eth and
-> bpf_skb_change_head():
->
->   packet_snd()                     headlen =3D=3D 14, IP header in frags
->   skb_pull(skb, ETH_HLEN)          headlen =3D=3D 0
->   skb_reset_network_header(skb)    network header =3D=3D skb->tail
->   ip4h->daddr, ip4h->saddr         read past skb->tail
->
-> The route lookup runs on garbage.
->
-> Eric's skb_network_offset() check also covers
-> mac_header >=3D network_header. No need for two checks.
->
-> Something like this:
->
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -2290,10 +2290,14 @@ static int bpf_out_neigh_v6(struct net *net, stru=
-ct sk_buff *skb,
->  static int __bpf_redirect_neigh_v6(struct sk_buff *skb, struct net_devic=
-e *dev,
->                                    struct bpf_nh_params *nh)
->  {
-> -       const struct ipv6hdr *ip6h =3D ipv6_hdr(skb);
->         struct net *net =3D dev_net(dev);
->         int err, ret =3D NET_XMIT_DROP;
-> +       const struct ipv6hdr *ip6h;
-> +
-> +       if (unlikely(!pskb_may_pull(skb, sizeof(*ip6h))))
-> +               goto out_drop;
-> +       ip6h =3D ipv6_hdr(skb);
->
->         if (!nh) {
->                 struct dst_entry *dst;
->                 struct flowi6 fl6 =3D {
-> @@ -2399,10 +2403,14 @@ static int bpf_out_neigh_v4(struct net *net, stru=
-ct sk_buff *skb,
->  static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_devic=
-e *dev,
->                                    struct bpf_nh_params *nh)
->  {
-> -       const struct iphdr *ip4h =3D ip_hdr(skb);
->         struct net *net =3D dev_net(dev);
->         int err, ret =3D NET_XMIT_DROP;
-> +       const struct iphdr *ip4h;
-> +
-> +       if (unlikely(!pskb_may_pull(skb, sizeof(*ip4h))))
-> +               goto out_drop;
-> +       ip4h =3D ip_hdr(skb);
->
->         if (!nh) {
->                 struct flowi4 fl4 =3D {
->                         .flowi4_flags =3D FLOWI_FLAG_ANYSRC,
-> @@ -2451,15 +2459,14 @@ static int __bpf_redirect_neigh_v4(struct sk_buff=
- *skb, struct net_device *dev,
->  static int __bpf_redirect_neigh(struct sk_buff *skb, struct net_device *=
-dev,
->                                 struct bpf_nh_params *nh)
->  {
-> -       struct ethhdr *ethh =3D eth_hdr(skb);
-> -
-> -       if (unlikely(skb->mac_header >=3D skb->network_header))
-> +       if (unlikely(skb_network_offset(skb) < ETH_HLEN ||
-> +                    !pskb_may_pull(skb, ETH_HLEN)))
->                 goto out;
->         bpf_push_mac_rcsum(skb);
-> -       if (is_multicast_ether_addr(ethh->h_dest))
-> +       if (is_multicast_ether_addr(eth_hdr(skb)->h_dest))
->                 goto out;
->
-> -       skb_pull(skb, sizeof(*ethh));
-> +       skb_pull(skb, ETH_HLEN);
->         skb_unset_mac_header(skb);
->         skb_reset_network_header(skb);
->
->
-> pw-bot: cr
+diff --git a/drivers/net/ethernet/broadcom/Kconfig b/drivers/net/ethernet/broadcom/Kconfig
+index f0bac0dd1439..c9875daa043b 100644
+--- a/drivers/net/ethernet/broadcom/Kconfig
++++ b/drivers/net/ethernet/broadcom/Kconfig
+@@ -124,6 +124,7 @@ config TIGON3
+ 	tristate "Broadcom Tigon3 support"
+ 	depends on PCI
+ 	depends on PTP_1588_CLOCK_OPTIONAL
++	depends on ZONE_DMA
+ 	select CRC32
+ 	select PHYLIB
+ 	help
+-- 
+2.55.0
+
