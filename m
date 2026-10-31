@@ -1,59 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=51.159.188.251
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793483766;
-	b=Wmqnfv/PiPuZHkv17PLDKOgDXnM8IL65yHWqeV4J+SnxtXbfgmRimiTtnNvHMq0imYyF
-	 yv9FvDG0GWvbYgdXRf8YNb354uf7YnzlaKNnvZrceEM5y/wUqjc20DXKpIaOw53x84C30
-	 TMWGUvYY1p0X0AF3wmq/fN6XFVxafqjmUxu0mhQrgPQcf7lFQTj2IdmvNN3ehcI91kT1V
-	 shzf3iSaq4yhm9AsRIhKIp7ubymlfnlNb309LS3eZDavZdLq1cCkL1n9bMDKdxKGpi7jG
-	 imDYS7vP7/lkSCvQlyE9V7Lt/snD5yCP5ZfZIGl4bShvKurOKCnDzzTs03DjUBHKbEw==
+	t=1793484664;
+	b=sY3FlDMHU8UiO3dZSvvyAIKF2Kd1mZ/dzOQMUCMvJDmfA8uk71vvXM73clH50K5+0U13
+	 c4pqRRBj7vuMm2KXLmMTgPLCesnGicg1u9OT84FWDmGmEpJK5J1ZBvohxnwef/E1RLF8H
+	 LAiEfoMphBjOBZYJOOpZ7suaNDPRhIJS45k0OPkHpHdmiSzt1W53uxwQP/YFqUby5MCsF
+	 sMdVHDVEFHqonQAIbbYvpXkPhFOi6yCmSkwNNwD84L7TOvkOHExf48yBNQche55ZxK+aI
+	 jcUj2Hium7f9U0A4UTkKpFZRUI9u1o/aQcnN1dliHOXPXSXn9Cuu8h4RDMbYuPJ+bDA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793483766;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=ykP+MwqA/l/YdXpyZZSFOFQEPMX5a/+ZQKH5JKL7Kd4=;
-	b=J2iaeqeX1QdYgbz5ipgRNP4vzjU2/WHd1HML4rIb38E1Sl2BpV/9qXyH/TB8IFw8NZvI
-	 77rnezvKorGqp4bwxWcXYrBUAeC94BMtEtxKTSzs3sa9xF3+YEihgjUu6/qnu4er4ARwA
-	 UYY1bbnwKAy3bncp+CYGsQeAPf1ndmKfWTPKeG2Br4NMvgCELYB/eCt4pOXv5JRrhVTIG
-	 jJnV31PGiwnf0cuYs2hF9gDJ1jYwn00WpMLxHAjjHME+Nj81TybHXV7iEdOgvEcYKeQkj
-	 hkww0pV6Rt5MFBIm8iFOFxJOwA88Xk2vHUmMhp0JZZULglRkVw8/ML5Xn97cw2fQpNg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793484664;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:
+	 X-AntiAbuse:X-AntiAbuse:X-Get-Message-Sender-Via:
+	 X-Authenticated-Sender:X-Source:X-Source-Args:X-Source-Dir;
+	bh=QbKyi2Y+nX+sO/WAOcqG4XV1ZkwrVE+BhXDx179zkbk=;
+	b=k0SO6GedFt8tHjQXgwUpd+SyYiM5QtvniI8n/TttXVMf93sihAszRQLIRVwVDyDPc4pO
+	 5l/fLCYJ1x6SfnPPum/XLO7On0lNCNkZX3HGg/mlUpczZ8pGpY9j4XL9KXew8wyl+QANu
+	 GxM6nqd2KJFVwKZSXZcd5rHN4iPxuDR3bXDv/hk7MyI1KG6XD8lcIn31i0MSHdZBeI+y2
+	 hhVL095er7CjFQCVjtTZWNNhZ9O58Yj/Yq3mv99auLZF6nJSiiKBoc0oQIP1WfdcQ+pJi
+	 TwgUhIhIk089IUep2RJxudFBKAv1XIMzUANc7NyntQm/8aZEk3CKnYebZDnxZsDmXRw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NtmKAUHZ;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=oss.cyber.gouv.fr;
+	spf=pass smtp.mailfrom=oss.cyber.gouv.fr;
+	dkim=pass header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=oHaRquRf;
+	arc=none smtp.remote-ip=51.159.188.251
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2EB606A32D;
-	Sat, 31 Oct 2026 21:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901E8606A321;
+	Sat, 31 Oct 2026 22:11:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 901E8606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NtmKAUHZ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2071F00A1C;
-	Sat, 31 Oct 2026 21:56:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793483765;
-	bh=ykP+MwqA/l/YdXpyZZSFOFQEPMX5a/+ZQKH5JKL7Kd4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NtmKAUHZGWOTr4/8sBfHtMsD6iJhTcXz/mwTb1j7N1LZr2mh3s0DrUwpkx5wfSJ3g
-	 3e3UmrhV4jlaA25sk1KivPQMq+ruPvnZSiV+FZOKh8hTkZ7mXnse2dmCyKfw9SI5L3
-	 IJf9fYbfAYulsXM5Ygdafa1zGcpsUzIqWKvsqkWC92Lh10TvDA2N4nPHEOmhVOC7Pn
-	 gbLzRJuffyehLPPRNT8e9efDGc8OEwxloVapNEU67YWtM7bYIAHQq6bdUL53dQrrpH
-	 sNA1XdaDWRZ1Qd9suMhvd671KtDEZme95nnwxY9kRhAxcGEFcfjSb0449ffMNMnrzP
-	 euylZRLNLy8xw==
-Subject: Re: [PATCH net v3 6/8] net: dsa: b53: reference count shared mirror
- source bits
-From: netdev-bot+sashiko@kernel.org
-To: florian.fainelli@broadcom.com
-Cc: netdev@vger.kernel.org, jonas.gorski@gmail.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, vivien.didelot@gmail.com, linux-kernel@vger.kernel.org
-Date: Sat, 31 Oct 2026 21:56:04 +0000
-Message-ID: <179348376420.3131.8153125267393893230@kernel.org>
-In-Reply-To: <20261030211617.288562-7-florian.fainelli@broadcom.com>
-References: <20261030211617.288562-7-florian.fainelli@broadcom.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=oHaRquRf
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=QbKyi2Y+nX+sO/WAOcqG4XV1ZkwrVE+BhXDx179zkbk=; b=oHaRquRfqM1lzQBQ62z6vF5cDh
+	V9gvu9yjB03p/U53uV2/ToSAls00gugg0xRORjYXwuS8R5l8+TBV9861lnZ2ttl9al+Mz8jBoUOPs
+	R2x9sLIh3+DLfFlofiQaXoH1LajsJMLyTuGvZy7rj4zpEhSpOVXcktaj1+eN+l65CV6ya2SBEkbs5
+	5HiWtNNLXOSbOPC5zGRLVU3GDNH2qsWesx4VoHs5m9y+oBrQUpZFjd2NwFMlJvY9dx1KIPi5XfyaX
+	ilNI3gGiuv6zRrdNcDOV7OfBoH0pWTTkAYldodV84C+w33BRlNFWSXW7uOhWBL4X/Xo0Y90ja4d0S
+	3+BuyZSw==;
+Received: from [151.115.150.205] (port=46594 helo=gepetto..)
+	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
+	id 1xNHI1-0000000EZr9-2D3q;
+	Sat, 31 Oct 2026 23:11:01 +0100
+From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
+To: Subash Abhinov Kasiviswanathan <subash.a.kasiviswanathan@oss.qualcomm.com>,
+	Sean Tranchetti <sean.tranchetti@oss.qualcomm.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net: qualcomm: rmnet: bound TX aggregates on byte-limit update
+Date: Sat, 31 Oct 2026 22:10:52 +0000
+Message-ID: <20261031221052.1642262-2-Jeremy.Jean@oss.cyber.gouv.fr>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261031221052.1642262-1-Jeremy.Jean@oss.cyber.gouv.fr>
+References: <20261031221052.1642262-1-Jeremy.Jean@oss.cyber.gouv.fr>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,128 +74,76 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+If userspace reduces the TX aggregation byte limit while a buffered skb
+is pending, subtracting the skb length from the new limit underflows.
+The later comparison with unsigned skb->len then lets the buffered skb
+grow past the limit.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Check lengths before subtracting. Flush a buffered skb if it is already
+at or above the new byte limit.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Fixes: 64b5d1f8f2d1 ("net: qualcomm: rmnet: add tx packets aggregation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+---
+ drivers/net/ethernet/qualcomm/rmnet/rmnet_map_data.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-- [Medium] This patch adds a per-port software counter of mirror source
-  references (struct b53_port::mirror_count[2]).
-- [Low] At this commit, the first-reference path in b53_mirror_add()
-  (b53_common.c:2573-2582) ignores the return values of b53_read16(loc),…
-
---
-
-net: dsa: b53: reference count shared mirror source bits
-
-This commit adds a per-port, per-direction reference count for the b53
-mirror source bits. The hardware bit is programmed on the first
-reference and cleared only when the last reference is removed. A
-delete with no matching reference is ignored.
-
-> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-> index 75033b28100ec..b16167c9510b8 100644
-> --- a/drivers/net/dsa/b53/b53_common.c
-> +++ b/drivers/net/dsa/b53/b53_common.c
-
-[ ... ]
-
-> @@ -2559,6 +2560,11 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
->  		return -EOPNOTSUPP;
->  	}
->  
-> +	if (*mirror_count) {
-> +		(*mirror_count)++;
-> +		return 0;
-> +	}
-> +
-
-[Severity: Medium]
-Can mirror_count get out of sync with the hardware after a suspend/resume
-on bcm_sf2?
-
-On resume, the switch is reset and setup runs again:
-
-drivers/net/dsa/bcm_sf2.c:bcm_sf2_sw_resume() {
-    ...
-	ret = bcm_sf2_sw_rst(priv);
-    ...
-	ret = bcm_sf2_cfp_resume(ds);
-    ...
-	ds->ops->setup(ds);
-    ...
-}
-
-bcm_sf2_sw_rst() does a watchdog chip reset, or a reset_control
-assert/deassert on BCM7278. That puts B53_MIR_CAP_CTL, B53_IG_MIR_CTL
-and B53_EG_MIR_CTL back to their defaults. Later in the series,
-bcm_sf2_sw_setup() also calls b53_mirror_init(), which writes 0 to all
-three registers.
-
-The only place dev->ports[] gets cleared is in b53_reset_switch():
-
-	memset(priv->ports, 0, sizeof(*priv->ports) * priv->num_ports);
-
-and only b53_setup() reaches that, not bcm_sf2_sw_setup(). Unlike CFP
-with bcm_sf2_cfp_resume(), nothing replays the mirror configuration.
-DSA also keeps the tc matchall filters installed across resume.
-
-So after resume, a port can have mirror_count[dir] >= 1 while its source
-bit and MIRROR_EN are both clear. If a new matchall mirror filter is
-added on that port and direction, the destination check passes because
-the registers read back as 0. It then reaches the early return above
-and reports success without programming any register.
-
-Wouldn't the filter show as offloaded while nothing is mirrored, until
-every filter on that port and direction is removed?
-
-Before this patch, every add did the full read-modify-write, so adding a
-filter after resume reprogrammed the hardware. The later patches
-"net: dsa: b53: harden mirror register programming" and "net: dsa: b53:
-fix mirror port encoding on BCM5325 and BCM5365" keep this early return.
-
->  	if (ingress)
->  		loc = B53_IG_MIR_CTL;
->  	else
-> @@ -2573,6 +2579,8 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
->  	cap_ctl |= MIRROR_EN;
->  	b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, cap_ctl);
->  
-> +	(*mirror_count)++;
-> +
-
-[Severity: Low]
-At this commit, b53_mirror_add() ignores the return values of
-b53_read16(loc), b53_write16(loc) and b53_write16(B53_MIR_CAP_CTL), and
-then increments mirror_count anyway.
-
-If one of those bus accesses fails, the count says the source is
-programmed when it isn't. Every later add on that port and direction
-then takes the if (*mirror_count) shortcut. Will that keep the source
-unprogrammed?
-
-In b53_mirror_del(), the count is also decremented before the unchecked
-clear.
-
-The later patch "net: dsa: b53: harden mirror register programming" in
-this series fixes this. It checks every read and write and only
-increments mirror_count after programming succeeds. On the delete side
-it logs failures, since .port_mirror_del returns void. A failed clear
-there leaves a stale bit with a count of 0. That can be recovered,
-because the next add goes from 0 to 1 and reprograms the bit.
-
->  	return 0;
->  }
->  EXPORT_SYMBOL(b53_mirror_add);
-
-[ ... ]
-
+diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_data.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_data.c
+index e6f48dc9fe64..205ac81f2c82 100644
+--- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_data.c
++++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_data.c
+@@ -594,7 +594,7 @@ unsigned int rmnet_map_tx_aggregate(struct sk_buff *skb, struct rmnet_port *port
+ 	struct timespec64 diff, last;
+ 	unsigned int len = skb->len;
+ 	struct sk_buff *agg_skb;
+-	int size;
++	unsigned int size;
+ 
+ 	spin_lock_bh(&port->agg_lock);
+ 	memcpy(&last, &port->agg_last, sizeof(struct timespec64));
+@@ -606,13 +606,14 @@ unsigned int rmnet_map_tx_aggregate(struct sk_buff *skb, struct rmnet_port *port
+ 		 */
+ new_packet:
+ 		diff = timespec64_sub(port->agg_last, last);
+-		size = port->egress_agg_params.bytes - skb->len;
++		size = port->egress_agg_params.bytes;
+ 
+-		if (size < 0) {
++		if (skb->len > size) {
+ 			/* dropped */
+ 			spin_unlock_bh(&port->agg_lock);
+ 			return 0;
+ 		}
++		size -= skb->len;
+ 
+ 		if (diff.tv_sec > 0 || diff.tv_nsec > RMNET_AGG_BYPASS_TIME_NSEC ||
+ 		    size == 0)
+@@ -630,9 +631,8 @@ unsigned int rmnet_map_tx_aggregate(struct sk_buff *skb, struct rmnet_port *port
+ 		goto schedule;
+ 	}
+ 	diff = timespec64_sub(port->agg_last, port->agg_time);
+-	size = port->egress_agg_params.bytes - port->skbagg_head->len;
+-
+-	if (skb->len > size) {
++	if (port->skbagg_head->len >= port->egress_agg_params.bytes ||
++	    skb->len > port->egress_agg_params.bytes - port->skbagg_head->len) {
+ 		agg_skb = port->skbagg_head;
+ 		reset_aggr_params(port);
+ 		spin_unlock_bh(&port->agg_lock);
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261030211617.288562-1-florian.fainelli%40broadcom.com
+2.47.3
+
