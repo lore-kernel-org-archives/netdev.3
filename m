@@ -1,72 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793432838;
-	b=Y/FB9RgQBA9/qDbP+LsaFE3ZDp28wFETBXCXXXf4nfk1RuOthqOUvNSYLAHNCSqBGSKu
-	 80obGMjUUtZwAxEQiMe1mlji0Orl52MNhC4xcF5uz5osebtQnHa1HuhwkoItfAVP5A6Ca
-	 28ctSefvGxfWcBwPyZZ3Tfd+J9q3pkJRUoQVcwDiJmZC5FWzf7dnrTbW8Ueikjbqe/uTa
-	 +dzoo4BbFrcue4rPjCaLw1Pu74aABed39qjiFRD1DU/Klxsdqam/DC+egE+T/SmSIjU0g
-	 +4t+iWCvKJRYb7STZCM61jGFtBcQPwxHI7QPnU7jvLU1ega+BlavWfQGpOIcZcT6Jwg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793432838;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=GBaUg8nhg5Dp/odicKAnQbPKQztKEv19Ui9b1WPcV1k=;
-	b=QCTmL7jD9XP8Y1abVdPyxeN5HbniWINK22AWTo4gm6eu9Yo/QphDGdf31DzW4L8xisf+
-	 stasiz9Je/poCcTq2l74LaWGwsmZrK+/Ug7I06SMf4kvEElZPTjH/CShLq9Lo357dzXX8
-	 LfO9goCQqHWgwtxZKsAznpg4TGpZRl/zAwtAtU8tn2Tc4EVoM5tlzV9h4sfF6aZaMF395
-	 3oRbCBefWZ2Ighcw0GUPIac2dG78eePpsAi3eRDICkBGw5B36Tvt5Wlc/GlnQ9sX6XMhY
-	 JlBddIvbJb+MMFUX2iLihMwjVZlt/zdogUOOmAziH/ywUk3mdi5L/10qT8vhLSmiVQw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=CdAhnODb;
-	arc=none smtp.remote-ip=111.22.67.139
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D90606A31A;
-	Sat, 31 Oct 2026 07:47:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3D90606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793433679;
+	b=WVeMVgZlKPaJisnmk6Rpe7VWxcDKfq4qiK/edSROq/NxAG0mH28YVPtivQ1i8MCzc8Ey
+	 dBWSo5PLouA2nOEN0sJyVg9SYhzWrN++DZWTRloXH0NfDJgf8oUC+lql/PXI9MLWMkrbo
+	 OPLxpHuvIMyVMXXm6ElHEv24i5LRFAnkQbyDBcbyJ/lcbIva6etM02xbq3BzpZxFLjiTy
+	 LEbWbKCixMOwS5ernbz331nlBHcxb2acPFbqC3dEjjtYWdRcxNsrA/FmdIyuCdp9glx/F
+	 pexR9AZEBGnjHDaaxb9y4nWLEwLhJ0nbugK7wu19+A9DXhdG7HD6yJAFdnioqUOXGcQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793433679;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=cfbrpU3f0JDjh54iypGpXlQS0daRULfgPZLThbv7g18=;
+	b=A+tty858GN3B1zOR2fipGDCeO+53hjrLjEva4yMaWsQUtdqvnaTf33o8vy/3tkaFWKBq
+	 qQhOAa2Uql4texHiuXEET0H/nwz6djwt9V3GxWsmUs8K5uZzPuDLnvFfbWxzE/qTIheHT
+	 5ZR3ySZimVKfF/c/jXdLlO9zBcKtuTOkdTI5Q1MEaCReIpumKITLRd9kcYahN6svF81OS
+	 1tMZvOhow5NvmHM1UcVEBSUXk50+k1BwdzeVVCxCvyS/3HsZqUPTeYeMtIHZ3k9Gh5Tm/
+	 f4uO1GCMJwJd3dGvm7m08K7uZC9tmgeqVO+aeXXCMnIM6mXcgsnypITw8JzVr9BShiw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j9zoJNz0;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4388606A31A;
+	Sat, 31 Oct 2026 08:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=CdAhnODb
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=CdAhnODblpjQtu/IfDk7hoiEwbG6Rnm3s2ABXRxWr53nET4Ax3dp8wuS3MNm0OHZgvUvIgQ5yPprr
-	 QLPBv+G0AFXUP1O6w2a87Eiyq9bW3XQpS9+eouafn5vime0Ps6b1F091al32uXU9jjVerUyMY2DzX3
-	 gY7PmVV3Rv6g/Rvg=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee16ae59cf5847-555d7;
-	Sat, 31 Oct 2026 15:47:06 +0800 (CST)
-X-RM-TRANSID:2ee16ae59cf5847-555d7
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[222.93.19.82])
-	by rmsmtp-syy-appsvr08-12008 (RichMail) with SMTP id 2ee86ae59cf830c-7c9a8;
-	Sat, 31 Oct 2026 15:47:06 +0800 (CST)
-X-RM-TRANSID:2ee86ae59cf830c-7c9a8
-From: Xia Yan <yanxia@cmss.chinamobile.com>
-To: netdev@vger.kernel.org
-Cc: edumazet@kernel.org,
-	ncardwell@google.com,
-	kuniyu@google.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	torvalds@linux-foundation.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	yana06070@163.com
-Subject: [PATCH net] tcp: fix device binding after failed IPv6 connect
-Date: Sat, 31 Oct 2026 15:46:54 +0800
-Message-ID: <20261031074654.73952-1-yanxia@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j9zoJNz0
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793433678;
+	b=Lt957BAoSXm82O8UgAHBaag+s3kThkWMhobvMelA9jllVtovG/vgHmUR4MS6EwEdhsbr
+	 goXhwY8jPbRjyaizrj+gttkzVflT7qBCJXKaEo1ZWOtZKyTk8+uRXMIbWcN9E2VNj4U/j
+	 R2jcAzw2FvdUyDIge8kAau0AilWv2szbHmdCx8uGBB8gP8zdjQHvF71rx87z0XDCqZoeL
+	 WSqMRtZfT8STnnlSsO5QKkN0V4gNd89rdj/JAAQHJGz5mUpdZiwgpJRmGxbQvKllcuGXX
+	 hBPnmXOHlIlex0W3fM2h/h/hMOmalATe4uHbhqnrxedUVvj4ETZFJvI1Q/v0p96QsIQ==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793433678;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=cfbrpU3f0JDjh54iypGpXlQS0daRULfgPZLThbv7g18=;
+	b=gRwi4nG4SO9YnaDXYGqxvOv6jQ/pQapoA3XMm6UDLK5t6BhR+F1lB3rmne8oBCUJ9faD
+	 qmbw60P1+u8NAbrpREFVG2pSncyFT+rhuDPa91FUGtoX1iAH4ukRtcS/nOlSqgi8K7l0G
+	 0Z4CDXziAgYkiXFd5FgfiSxhFLSSlGGxe9vkR2LtK6S39s0TGfdORcNxPPs+QgJgRJ1Co
+	 YTy49byYoHFGvceupK2Nj5cbnxzBkIaMM+75PtUvelrq04/gW4u3fCyp46/OGhKVx4tr5
+	 nyCJZFR8Vz/c4UsunriABd+ltAf5D0gY4+yzOgm5OkALaj/a3b9R6NmXWdVFgLtiGXg==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id DFCEC1F0093A;
+	Sat, 31 Oct 2026 08:01:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793433678;
+	bh=cfbrpU3f0JDjh54iypGpXlQS0daRULfgPZLThbv7g18=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=j9zoJNz0LBbM3FiMbQMwc7nmHR2wDBFEgxa+JD9/9rQ9Ng99OswzekUq5fgBmKj4c
+	 FurOme8IVRyQRzUExRSxCWGAlsR4l8dG5cuL2ZLPxlpLYmw7C61yY/IddkjNvCN1uk
+	 tlxeS1FaGwqlcSoBQqO5jkmNuoLq+rye2gBQ1y9o8HgsGAC0zlXnvMz9OQXa/PCFDa
+	 /z0Y3xVTB95w8ndeoAciyDGoUkYZUOFf6ddWSisQtP47FHD9HSwYoR44gBo3vW3Nuy
+	 jokJkJmIJ1iXvqj2cF+BvQlYKfEWbvlNARFpX1IV6Z44TW2C6MQavzvRbBWVse6Q/n
+	 uNGGNMSg+j44w==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 65F3845E4E;
+	Sat, 31 Oct 2026 08:01:17 +0000 (UTC)
+From: Igor Velkov via B4 Relay <devnull+iav.iav.lv@kernel.org>
+Date: Sat, 31 Oct 2026 08:01:13 +0000
+Subject: [PATCH net v4 2/5] net: phy: disable the line of a postponed PHY
+ interrupt only once
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,71 +83,143 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261031-b4-phylib-mac-pm-irq-v3-v4-2-5ba23b3ff9a4@iav.lv>
+References: <20261031-b4-phylib-mac-pm-irq-v3-v4-0-5ba23b3ff9a4@iav.lv>
+In-Reply-To: <20261031-b4-phylib-mac-pm-irq-v3-v4-0-5ba23b3ff9a4@iav.lv>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Lukas Wunner <lukas@wunner.de>, 
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
+ Wei Fang <wei.fang@nxp.com>, 
+ =?utf-8?q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, 
+ Paul Barker <paul@pbarker.dev>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Doug Berger <opendmb@gmail.com>, 
+ Thangaraj Samynathan <Thangaraj.S@microchip.com>, 
+ Shenwei Wang <shenwei.wang@nxp.com>, netdev@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Igor Velkov <iav@iav.lv>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4062; i=iav@iav.lv;
+ h=from:subject:message-id;
+ bh=8zXAet3FysmTNcLxuqPvOqbMTt4jhwFxSje2BLOJunQ=;
+ b=owGbwMvMwCVmNH1q96v4SmbG02pJDFlPF3idmVP5ZuGJFTI6xhNNr6mU9/Z9fzSngbvy3K/DE
+ +4ztG6b2VHKwiDGxSArpsgy4ZDGrYwlV//6e5g/gJnDygQyhIGLUwAm8msZw/+Mt6LzdE4a7CsP
+ 9iq+fn/SkZWfO9+93FrpayRgZ/3C5kwKw3+/4xs9XQM/e/BXK904LFQfV7daQcyc+XdfZ5ZT3vo
+ Lt1gA
+X-Developer-Key: i=iav@iav.lv; a=openpgp;
+ fpr=90C228DA68A4D5FD4F4837E03297958BEA5F7903
+X-Endpoint-Received: by B4 Relay for iav@iav.lv/default with auth_id=1060
+X-Original-From: Igor Velkov <iav@iav.lv>
+Reply-To: iav@iav.lv
+Content-Transfer-Encoding: 7bit
 
-tcp_v6_connect() sets sk_bound_dev_if from sin6_scope_id when connecting
-to a link-local address. If the route lookup fails, the failure path
-clears the destination port and route capabilities but leaves the
-device binding in place.
+From: Igor Velkov <iav@iav.lv>
 
-A failed connection through a down interface can therefore leave the
-socket bound to that interface. A subsequent connect() on the same
-socket to ::1 then fails with ENETUNREACH, even though a fresh socket
-can reach the listener.
+phy_interrupt() postpones interrupts during a system sleep transition:
+it sets irq_rerun and disables the line, and mdio_bus_phy_resume()
+re-enables the line once and reruns the handler. On an edge-triggered
+line the IRQ core does not mask a ONESHOT interrupt, so an edge that
+arrives before disable_irq_nosync() runs the thread again. That second
+run disables the line again, and the line stays disabled after resume.
 
-Save the original device binding before processing the destination and
-restore it on failure.
+Make irq_rerun atomic, as the next patch adds a second setter, and let
+only the run that sets it disable the line. Mark the irq_suspended
+accesses with READ_ONCE() and WRITE_ONCE(): the handler reads it while
+the PM callbacks write it.
 
-Found while reviewing the error paths in tcp_v6_connect(). Reproduced
-in UML by connecting to fe80::1 on a down dummy interface, then retrying
-the same socket against a listener on ::1. With the fix, the retry
-succeeds and data flows in both directions. Tests also confirm that
-existing device bindings are retained after failed IPv6, IPv4-mapped
-and link-local connections without an explicit scope ID.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xia Yan <yanxia@cmss.chinamobile.com>
+Fixes: 1758bde2e4aa ("net: phy: Don't trigger state machine while in suspend")
+Signed-off-by: Igor Velkov <iav@iav.lv>
 ---
+ drivers/net/phy/phy.c        | 7 ++++---
+ drivers/net/phy/phy_device.c | 7 +++----
+ include/linux/phy.h          | 5 ++---
+ 3 files changed, 9 insertions(+), 10 deletions(-)
 
-Tested in UML on net fcc00b15cb21. The complete tcp_ipv6.c file is
-unchanged at the base commit. Before the fix, the socket remains
-bound after the failed link-local connect and cannot reconnect.
-With the fix, all 12 checks pass.
-
-Build-tested on x86_64 with W=1 using configurations based on
-allmodconfig and allyesconfig. The corrected tcp_ipv6.o compiles
-without warnings in both configurations, and incremental kernel
-builds complete successfully. WERROR was disabled for both;
-allyesconfig also had KUNIT_ALL_TESTS disabled.
-
- net/ipv6/tcp_ipv6.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index e006a30360eae..7bb8266d9d1b7 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -146,6 +146,7 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
- 	struct flowi6 *fl6;
- 	int addr_type;
- 	int err;
-+	int old_bound_dev_if = READ_ONCE(sk->sk_bound_dev_if);
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index 9af303d60bd6..b47f0d3d99e5 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -1416,7 +1416,7 @@ static irqreturn_t phy_interrupt(int irq, void *phy_dat)
+ 	/* Wakeup interrupts may occur during a system sleep transition.
+ 	 * Postpone handling until the PHY has resumed.
+ 	 */
+-	if (IS_ENABLED(CONFIG_PM_SLEEP) && phydev->irq_suspended) {
++	if (IS_ENABLED(CONFIG_PM_SLEEP) && READ_ONCE(phydev->irq_suspended)) {
+ 		struct net_device *netdev = phydev->attached_dev;
  
- 	if (addr_len < SIN6_LEN_RFC2133)
- 		return -EINVAL;
-@@ -358,6 +359,7 @@ late_failure:
- failure:
- 	inet->inet_dport = 0;
- 	sk->sk_route_caps = 0;
-+	WRITE_ONCE(sk->sk_bound_dev_if, old_bound_dev_if);
- 	return err;
- }
+ 		if (netdev) {
+@@ -1430,8 +1430,9 @@ static irqreturn_t phy_interrupt(int irq, void *phy_dat)
+ 				pm_wakeup_dev_event(parent, 0, true);
+ 		}
+ 
+-		phydev->irq_rerun = true;
+-		disable_irq_nosync(irq);
++		/* Disable the line only once: an edge can rerun the thread. */
++		if (!atomic_xchg(&phydev->irq_rerun, 1))
++			disable_irq_nosync(irq);
+ 		return IRQ_HANDLED;
+ 	}
+ 
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 79dba43d703a..d5d0efc10418 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -344,7 +344,7 @@ static __maybe_unused int mdio_bus_phy_suspend(struct device *dev)
+ 	 * has resumed. Wait for concurrent interrupt handler to complete.
+ 	 */
+ 	if (phy_interrupt_is_valid(phydev)) {
+-		phydev->irq_suspended = true;
++		WRITE_ONCE(phydev->irq_suspended, true);
+ 		synchronize_irq(phydev->irq);
+ 	}
+ 
+@@ -394,14 +394,13 @@ static __maybe_unused int mdio_bus_phy_resume(struct device *dev)
+ 		return ret;
+ no_resume:
+ 	if (phy_interrupt_is_valid(phydev)) {
+-		phydev->irq_suspended = false;
++		WRITE_ONCE(phydev->irq_suspended, false);
+ 		synchronize_irq(phydev->irq);
+ 
+ 		/* Rerun interrupts which were postponed by phy_interrupt()
+ 		 * because they occurred during the system sleep transition.
+ 		 */
+-		if (phydev->irq_rerun) {
+-			phydev->irq_rerun = false;
++		if (atomic_xchg(&phydev->irq_rerun, 0)) {
+ 			enable_irq(phydev->irq);
+ 			irq_wake_thread(phydev->irq, phydev);
+ 		}
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index bbe28ff97e51..48b4e852f230 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -651,8 +651,7 @@ struct phy_oatc14_sqi_capability {
+  * @interrupts: Flag interrupts have been enabled
+  * @irq_suspended: Flag indicating PHY is suspended and therefore interrupt
+  *                 handling shall be postponed until PHY has resumed
+- * @irq_rerun: Flag indicating interrupts occurred while PHY was suspended,
+- *             requiring a rerun of the interrupt handler after resume
++ * @irq_rerun: Set by the postponed interrupt that disabled the line
+  * @default_timestamp: Flag indicating whether we are using the phy
+  *		       timestamp as the default one
+  * @interface: enum phy_interface_t value
+@@ -728,7 +727,7 @@ struct phy_device {
+ 	unsigned interrupts:1;
+ 	/* Written without phydev->lock, so not bitfields */
+ 	bool irq_suspended;
+-	bool irq_rerun;
++	atomic_t irq_rerun;
+ 
+ 	unsigned default_timestamp:1;
  
 
-base-commit: cb284914e749388eef402938bdb3115fe1f6d337
 -- 
-2.39.0.windows.2
-
+2.43.0
 
 
