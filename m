@@ -1,115 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793470548;
-	b=WY7H/tAAM1T368SnilofT4A+KPNxazU3o6WRqndkiR7Kz3bfZjWoBpYchVKlSPIu8eNX
-	 Y9+1FI+NCEwK2ZyayJ4tFqbhBFmGhv4n0ImJfcY2kd95fIdnFnufvcEngTwFjXsq+aq5G
-	 bRUW+S88K6kHtHbGB3zqohJRy9Zm+AQhJjg2d1rY5GZ5rGBCwajyh1CtSUJ8eJ3EEQm0O
-	 OBmlWmWsDQrYAuAU508JxPMbHCgK0evr3TN1QgEzEyAKXMe6ux8dzNvj2IZA11GSA+K9u
-	 pOMjpiSMSX+WaeDbsZGtDXvNH8vnFV4SqT9rMxnHXZXmIARdF6iLe4vxRbDeijOQWdw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793470548;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=Eec5Aouc9wFIQO+NM0GHrs+3vbQHhqX9lnMdXV8EI1A=;
-	b=o56qUFLoId5H0ajPuV+6j0Jri+sA2MWgBwL7BZ4vTWAJOHXQArLSE5rCOOmiZP2Z5lrB
-	 WcPgm1fccI7ukT5uXWvTloT3eRNoO82muIT7/MeM75pB9iyc1aINxEdCVyMaQQVoO+Hk0
-	 AwFThtoynT4KdRyKa2P8x8m8nnkq//1x7OupCDTC52w8CR0Kpj2vNCO4gjPrZvUA+khKT
-	 zxb1TlTrT02vJiDEyLfuGTocvM9al3XukBzQ+eoQUqL5N3fd+jGsQBsHs8S/yms1W+vRK
-	 V0uhRPirXntmfXlF0knPyrkmhdCiHWl6IVQAsp/S2nCYifH0MSBfvpik+cWZtv2pSaw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SIAM12Ao;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="H/fq+Ykn";
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.173
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793470684;
+	b=cqtwO7ziapjOH6JdDny/pujLslqj3CH5ZVTUTyvPNRLTZs/QRW1xpwrjsa+kX2a/aF0L
+	 JUC2C4qWQt5xZg/CPwgSzTMCh9Zr0hDIGbprbxLrzbbs/+mPasQza4FlgfFBta64GTUXq
+	 xhjDtgmkGZfayDroE372o8PSQOz+KfAcZ9OnUADyq2aQrLZpeAXPDaZw5EVccxMOW2n/9
+	 6Uhz6654XxzdQ58a178mS91RWwNdRU63gb6XNBzXHa+9HdIIbufjfl0f3Ddwod2kuQKPK
+	 2OujDXamZYxWboJv5Z9NISvBSkbTls9eYoKcHJodK3hITJAGAszpEJkogFPgHYW7IyQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793470684;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=Xf+2jr2yCEKrSYu/5k7hH7BT6BJHrV0c3wg3u2rwgjQ=;
+	b=PvLHOx+zntr4P/zccNu3ticoxb7tBMF0S2spSs+ojrU/re5kDKhaV6eX5x6E2zUJRhhP
+	 u5RQcEWkPV7LvIAnCqVz3eQxqUKVq95bLSuQutbdkd9ugX7REYPWodlNYYpIyDTq6NDko
+	 syaU+KVzkRDqd7TJNcvKgCCgdckT6lHfHi+XcpGKax/1sIz0IlvPCVnjtJVz65z1UOo86
+	 LM7+3JPor0ORAiz8vVNWAHXawl/+XPc7+V+Hfl96vJnC+OXoRe9bcPr5IrBvdjPXb7Esq
+	 MS5GIZKWubQQMHZvK1jUeUXn6Yc/+gn0cboFrLX9LqlMG9GUTlw8GgsECRLc8ATyJ6g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=rZBvgQKd;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.173
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C9E606A31A
-	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 18:15:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 46C9E606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8991606A31A
+	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 18:18:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B8991606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SIAM12Ao;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=H/fq+Ykn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793470547;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Eec5Aouc9wFIQO+NM0GHrs+3vbQHhqX9lnMdXV8EI1A=;
-	b=SIAM12AolSq6pTkL141wKgFIS/iF3deL2c3a2tQ5ExQ7nw2lBKmzMbRv7ikb1UZ3CWPo7y
-	nApaKKJLMKYkLGv/xEKs8mdJXUqEdhuoajglzgiVVF2f9x+NrBzacxbDuagmB+WOyh66RI
-	pqwr577MZwTtT2Nioe6QlS0Az3luPJo=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-676-TWofj25eMkqIhIJCaSLf4Q-1; Sat, 31 Oct 2026 14:15:46 -0400
-X-MC-Unique: TWofj25eMkqIhIJCaSLf4Q-1
-X-Mimecast-MFC-AGG-ID: TWofj25eMkqIhIJCaSLf4Q_1793470545
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a2063be13dso15812065e9.3
-        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 11:15:45 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=rZBvgQKd
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8a05e3f0d23so805808b3a.0
+        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 11:18:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793470683; cv=none;
+        d=google.com; s=arc-20260327;
+        b=bmFvgFxX7wP0UDvE7blMhXs6NQ6UcgKkATbZ0mYiiuOyDwGNTM3I/l2aczi5f9efiu
+         nRGTuSbXa9sul7ppYZSsgZ5FUjvz7iao0AY6kA3Y+9dCZ3IweHn69wQA4u0Wp5Ix3hJs
+         W2xfn3kRQmgRGFk9MFitMnEV6lj/0cb4EDotOROHatCfasOjeQPRzaql2MMEQcqlT1F9
+         lcxS7n9pIqmtReT/HBOPwM+FEI/ulBMk7q8IW0nLwoBBx9gJCGldaVCpVEq9Gxmja4jm
+         wC9adQblcN16jKVy2MKn79ELRHe+inRS0HT+hyX8KFpfkchaWSufLo7m4lBfP6B/ENcI
+         Yovw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Xf+2jr2yCEKrSYu/5k7hH7BT6BJHrV0c3wg3u2rwgjQ=;
+        fh=xQcTKnSGwzhLr7lZiz8uL7QOkG/FimUkqhZX65QOsC8=;
+        b=ROKmzPoHlJQIADLL5ZowNWan3Jjcn1lxkdMCgx/l0ODMwjY3E+7sGWXmh5sJIO7Eka
+         rUjvbJswzP9KX2X7PLukGnCMhikmVQ/af71IJ0IJevPy1uhYagImdIyQcK9gbIRh/ML6
+         wdHp5jjqhP+4yrvFBvmWzH2iTEuUC/mti0wIlFXHu2y69rf8kZBOuMzVtYvm0bALzgtm
+         f7honGk1Ktw3XAWZG/lXsK8wMhUQ/R9vSodaISEUOPeloHbzZzxQdu2FXaWBxnyqlg6B
+         NpO2KRejV+GLO9EOEZrE4x9Ae+EYamEDEtqD3STHdDGzqKpHD++AK+kQ0Gg+vqduTrbX
+         +cIQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793470545; x=1794075345; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=mojatatu.com; s=google; t=1793470683; x=1794075483; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Eec5Aouc9wFIQO+NM0GHrs+3vbQHhqX9lnMdXV8EI1A=;
-        b=H/fq+Ykn4OXvibmZ58WSymPH6UkvtK1toNLmfG9r7MHqEuGHzGt0A9ihKTFdMqNtlk
-         YDRv1FERKM2oU5FWRr17AhGkbTcViLFILRYTnz2NxuUJqpnvbBL5Pfzm3nxluOBozULg
-         IzVt9RaX6KRRqmvWhNmfGrnDYzRlSs6MrU9VyeEweL91zR0TZByaJQiPILB1r7e5TdKc
-         7KRPrCNbJPgCi0Ng0pxNBh0v7VU4PcwyTnKM6KmVOsCj5/2gcQyENkZWptsRZhv2QVt9
-         WK7nYhlkE6QQcUslLMMBUCcTfFltq8wTNPC98Ak2pfkh5B7aS+BS1XYMZHje1/Nw2rQ+
-         Q9fw==
+        bh=Xf+2jr2yCEKrSYu/5k7hH7BT6BJHrV0c3wg3u2rwgjQ=;
+        b=rZBvgQKd87Txw/Gs3OoRgvbztT8csNg6OK5eT2Ppu9DAGr2tA1RhVR5uYTjP8OhkK8
+         JjVCXXcFz7XhJjFI4/WcHzKPKnrbTejPRe+FKpSVDx2e6jaNxktbzQybNqC3FlJffqEM
+         EhdW7Ht+n6Ev3PNFP3x33p4MeNhG4noxkCggQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793470545; x=1794075345;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793470683; x=1794075483;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Eec5Aouc9wFIQO+NM0GHrs+3vbQHhqX9lnMdXV8EI1A=;
-        b=QXb+wUfjH/kgpCGhCatbtgf7mkEMf9rBKiv++PbphvS50q6rZRnuhuGG2Cd3ehwd1f
-         Bm+WbTw73IAAhw86j55/ilZEgksAsHiHTJwEHlr0Q+MneKK1bm0KUBxDhWD6/EDEvilR
-         C67C7OnZEnzN2UoMlFWqyMkUA16ZvlgjBpQPHHY8TfraWfrg19gkZQCQYn36eRxiSXJX
-         yyKVuKE/5zb/+NGsVLH31E7bHl49T1hiZZS/qQiWKPqEt2T0U2zW8TXKip6Y5YYC/Rxu
-         1q9jPrh/Ia+FAKnRlrS+K2LJnhsPNWPZlIxhpTsw0GrVPDAW8MvTnBr1wXTT/4eA/lIv
-         81NQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwelTT5VvEfQ9BN0SSFEwMkydyFmq32OD15ARD5U6F2/sxJOTlQXLgNQxpKxo7CRLQzZGjtAes=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIIaFHC9Ewki+OLtDBrubNF2Dhut/M5j0E5Eyb7ZMWM5JbbaKa1
-	zqrhZaSscWlEsoenbgtCBlMcdrKcx1Lzp9Uw2fIN/VyP3vHllex/5T4tJ6BcgEgDpXFDs/bcyVB
-	B2WWu1LwrH61hzDwIPicAQacAj589NVkp11CuxhLEYXcPR+mXmVKYq67B7A==
-X-Gm-Gg: AYBFou3xvabF4UB7tLcTRSFpzMzuJpvRNPtqGhWYNlCIj+mRFub71pQddIT45JHHjNS
-	WehIB4KUGOI5ReFjanU7B59aGNXdxycv3rQ5wgkJOin1uGcmqOyS7ITfqupbpmk/v0KWobbEuCq
-	5Ezq/SHnSYDgcc9w8o2x6a82WNyGDoXz+S1RuVfqockfWhg8Z7grjbOQeFvL3l1JS3Ujvf9y8Qi
-	ahrN/bJ3YNps2tZNtYiS/v8iwMoWYOMUgwIJ/Hb2ZWVi1LodmSAVR1fHFmnxbYl42LOsZ/BzQgm
-	QL3WDciCV8/3U1Ma1OOI/cLaxKBOa7FefQXggjgAvXdhKqlfAjrSzakZ4lxWEN1NJt5sbX3KDvZ
-	lrQEkMHiA4LABzPFPcIbCBHFv//kFiSRyqohF0gjbhNON
-X-Received: by 2002:a05:600c:4454:b0:4a3:5a7b:6002 with SMTP id 5b1f17b1804b1-4ac17d19777mr127328065e9.28.1793470544466;
-        Sat, 31 Oct 2026 11:15:44 -0700 (PDT)
-X-Received: by 2002:a05:600c:4454:b0:4a3:5a7b:6002 with SMTP id 5b1f17b1804b1-4ac17d19777mr127327715e9.28.1793470543790;
-        Sat, 31 Oct 2026 11:15:43 -0700 (PDT)
-Received: from redhat.com ([2a06:c701:73c1:fd00:6c8e:5a61:f533:519d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4abeb77af8csm210425925e9.1.2026.10.31.11.15.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Oct 2026 11:15:43 -0700 (PDT)
-Date: Sat, 31 Oct 2026 14:15:40 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Meta kernel team <kernel-team@meta.com>, cgroups@vger.kernel.org,
-	linux-mmc@vger.kernel.org, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vhost_task: do the return-to-userspace work between work
- items
-Message-ID: <20261031141506-mutt-send-email-mst@kernel.org>
-References: <20261031181004.4193627-1-shakeel.butt@linux.dev>
+        bh=Xf+2jr2yCEKrSYu/5k7hH7BT6BJHrV0c3wg3u2rwgjQ=;
+        b=HJy68LBNs+Yhkrf5urT3LXwnuXDl5XQEZ/ls1WYcTJGM+xsI10CcSO6LcosNRiWHHZ
+         YIbD8R9O0oXE79xD+J/R7CldCb0UT1RuR6H9OXoIOvM0DoG/C77sWhL8yIfbpgOYzw2z
+         DgXR7PzThHlrjlboluLyqNGW5aHX7Kf2d4m8eVfmvCFj9aOgoUM1Uxj2XfTCgKCd+93z
+         XiXJy7epblemOrkbPOCA41AvVvyNbRPcOToEW+XNJPYuCBzn1Mv2srFqDxeLPUmI2NzE
+         RRmXl1SU/a57AV7WFWYwlln0B8yCYhxwTxpDf9k+ndcJ27rZKWE7wmp4O2nzIQFfKxqR
+         FdKQ==
+X-Gm-Message-State: AFq9FYJYDy9rDfAxHhTkK9TIu48FJfEH7zLHhqq3jAeCUV38EbIIbXHb
+	c1zSuzoU9esCYZM/dfhUKxJbwlcJYuNgc1M8HDM/yW8Xa/bNUjrng9NeAnz7AQvKiXjHic5cyIx
+	5nReKcTBWK3MPu6wOgr/vCPL7lNQfQZDFVtqo9vbV
+X-Gm-Gg: AYBFou2M5dtURfJSqRdSQznivsE9Ko8omHkDlkhAgomPwGLwAgJo5iFU3O+omPAAmyM
+	3ainmkraBSj8r29YHKrVD9GX+bD6ldtuGSXo8STg5FM6V7FShGltiXyRMLshGEygPk0EN+NyZ5C
+	ukSVpIkVpsREzruHzhtI1DxypyfNVSa2klK64p8ojDv7CjDHnv/OqJ2xWLeBm21xENJCdDwKV/1
+	DLLZLcrqmB6dcdht0iiQuNSCPddNLZDDm2OmJOuQZ3kprzcBZMJjZdVFqKt/5Bf6K3SxmxdU76I
+	LdiqjPdG+qrn+p1aM6vg68lPtwXRxBnTryDeEA2UtSxr1DKM/BVMtvheEqUZpYvO023mKgEh/md
+	N2gdjyIXQRiJEJjGfM9A6B4ILHMQe47zmHlRlZ9kjyGfwtu50ChZg7t2yI53xxZrrj/jNoMzG4k
+	lCWss45TQr9VvtXH7F
+X-Received: by 2002:a05:6a00:12c2:b0:8a9:95d6:31f4 with SMTP id
+ d2e1a72fcca58-8a9beb69affmr4990553b3a.32.1793470682913; Sat, 31 Oct 2026
+ 11:18:02 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -119,87 +101,168 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261031181004.4193627-1-shakeel.butt@linux.dev>
+References: <QDISC-6HS9.v1.r3.20261027034729-2@mojatatu.com> <20261031165925.780930-1-horms@kernel.org>
+In-Reply-To: <20261031165925.780930-1-horms@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Sat, 31 Oct 2026 14:17:49 -0400
+X-Gm-Features: AclHuK-iYfsqzRZDDx_HCRa4NQIrG7hm6ImBp8-ZBw71JJWJs4Y8qK7bbqFbMzQ
+Message-ID: <CAM0EoMkDCpxtN6EqUMjQ_s7+F--JJQWXviE+wBQjc3vx-+HUjg@mail.gmail.com>
+Subject: Re: [PATCH net 2/2 repost3] net/sched: sch_teql: keep skb->dev
+ consistent on the arp-queue path
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, victor@mojatatu.com, jiri@resnulli.us, 
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
+	stable@vger.kernel.org, sashiko-bot@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Oct 31, 2026 at 11:10:04AM -0700, Shakeel Butt wrote:
-> A vhost task is a user worker: a thread of a user process that runs only
-> kernel code. It never returns to userspace, so it never runs the work
-> that is queued for the way back. resume_user_mode_work() does that work
-> when TIF_NOTIFY_RESUME is set. For a vhost task this means:
-> 
-> - memory.high is handled at the wrong time. When a charge goes over
->   memory.high, the task counts the pages, and should reclaim, and sleep
->   if needed, on its way back to userspace. A vhost task only reclaims
->   when more than a batch of pages has built up and the charge can block.
->   Then it reclaims and sleeps in the middle of the charge, maybe while
->   it holds a lock. vhost-scsi, for example, can fault in guest memory
->   while it holds vq->mutex. If the charges can't block, nothing is done
->   at all, and the count keeps growing.
-> 
-> - Block cgroup throttling never runs. blkcg_schedule_throttle() asks for
->   it, but only resume_user_mode_work() acts on it.
-> 
-> - Task work queued with TWA_RESUME, like a deferred fput() or a NUMA
->   balancing scan, waits until the task gets a signal or exits.
-> 
-> io_uring workers had the same problem, and io_run_task_work() calls
-> resume_user_mode_work() for them. Do the same in vhost_task_fn(): if
-> TIF_NOTIFY_RESUME is set, call resume_user_mode_work() at the top of the
-> loop. That is between work items, no locks are held there, and the task
-> is running. Passing a NULL regs is fine, io_uring and KVM already do it.
-> 
-> This covers every user of vhost_task_create(): the vhost workers and
-> KVM's NX huge page recovery thread.
-> 
-> Tested in a VM with a version of tools/virtio/vhost_net_test that puts
-> each RX buffer on a new page, so the vhost worker faults in, and
-> charges, 256M while its cgroup has memory.high=64M. Before, all 285
-> calls to __mem_cgroup_handle_over_high() came from try_charge_memcg(),
-> inside handle_rx() with vq->mutex held. After, all 589 came from
-> vhost_task_fn(). memory.peak stayed at 64M, and the run took about the
-> same time (0.66s before, 0.67s after). A lockdep kernel showed no
-> warnings.
-> 
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-
-Is this different from:
-
-Message-ID: <AS8P251MB00012469E6ECBEA2B7D87BB0C86C2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
-
-
+On Sat, Oct 31, 2026 at 1:00=E2=80=AFPM Simon Horman <horms@kernel.org> wro=
+te:
+>
+> This is an AI-generated review of your patch. The human sending this
+> email says "Sorry Jamal, another round of AI-feedback for this one.
+> It is superficually simliar to the \AI-generated feedback for
+> repost2, but does raise some specific points that I think warrant
+> you expressing an opinion on. Thanks!"
+> Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC=
+-6HS9.v1.r3.20261027034729-1@mojatatu.com?part=3D2
 > ---
->  kernel/vhost_task.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
-> index 3717885a5992..f0ab21aa2a1c 100644
-> --- a/kernel/vhost_task.c
-> +++ b/kernel/vhost_task.c
-> @@ -7,6 +7,7 @@
->  #include <linux/sched/task.h>
->  #include <linux/sched/vhost_task.h>
->  #include <linux/sched/signal.h>
-> +#include <linux/resume_user_mode.h>
->  
->  enum vhost_task_flags {
->  	VHOST_TASK_FLAGS_STOP,
-> @@ -38,6 +39,14 @@ static int vhost_task_fn(void *data)
->  				break;
->  		}
->  
-> +		/*
-> +		 * A vhost task never returns to userspace. Do the work that
-> +		 * would run on the way back, like memory.high reclaim, here
-> +		 * between work items, while no locks are held.
-> +		 */
-> +		if (test_thread_flag(TIF_NOTIFY_RESUME))
-> +			resume_user_mode_work(NULL);
-> +
->  		/* mb paired w/ vhost_task_stop */
->  		set_current_state(TASK_INTERRUPTIBLE);
->  
-> -- 
-> 2.53.0-Meta
+> net/sched: sch_teql: keep skb->dev consistent on the arp-queue path
+>
+> This patch makes teql_master_xmit() set skb->dev to the slave before
+> calling teql_resolve(). An skb parked on the slave's arp_queue then no
+> longer points at the teql master. It also makes
+> neigh_update_process_arp_queue() set skb->dev =3D n1->dev before it
+> reinjects queued skbs.
+>
 
+Man, this thing is relentless (double edged sword, i like it's
+improving the code but on the other side it's sucking my time with
+more pedantry than I have ever been subjected to by any human, and i
+have met human pedantry).
+Like ive said in other emails: No good deed goes unpunished by this thing.
+
+To be fair: nipa's repost2 review was on the mark already - i should
+have invested more time analyzing.
+
+cheers,
+jamal
+
+(I am finding myself using that word now and other annoying words like
+"shape", etc)
+> Link: https://lore.kernel.org/netdev/20260824115928.4099988-1-victor@moja=
+tatu.com/
+>
+> > The master can be freed while the slave lives, so the
+> > queued skb can dereference freed memory.
+>
+> [Severity: Low]
+> Could the commit message say how the master gets freed? As far as I can
+> tell, teql_exit() is the only place that frees the master net_device, and
+> it only runs on module unload:
+>
+> net/sched/sch_teql.c:teql_exit() {
+>     ...
+>         unregister_qdisc(&master->qops);
+>         unregister_netdev(master->dev);
+>         free_netdev(master->dev);
+>     ...
+> }
+>
+> teql_master_setup() never sets rtnl_link_ops, so rtnl_delete_link()
+> refuses to delete the master:
+>
+>         ops =3D dev->rtnl_link_ops;
+>         if (!ops || !ops->dellink)
+>                 return -EOPNOTSUPP;
+>
+> default_device_exit_net() moves devices like this back to init_net
+> instead of freeing them, so destroying a netns doesn't free it either.
+>
+> That leaves one window. Every teql qdisc has been removed from the
+> slaves, an skb is still sitting on a slave neighbour's arp_queue with
+> skb->dev pointing at the master, and then sch_teql is unloaded. The
+> unload needs CAP_SYS_MODULE.
+>
+> This is the justification for a stable-bound change to shared neighbour
+> reinjection. Would it help to describe this rmmod-only trigger in the
+> message?
+>
+> > diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+> > index d6e9c7c59a892..120c3369406fb 100644
+> > --- a/net/core/neighbour.c
+> > +++ b/net/core/neighbour.c
+> > @@ -1339,6 +1339,7 @@ static void neigh_update_process_arp_queue(struct=
+ neighbour *neigh)
+> >                       if (n2)
+> >                               n1 =3D n2;
+> >               }
+> > +             skb->dev =3D n1->dev;
+> >               READ_ONCE(n1->output)(n1, skb);
+> >               if (n2)
+> >                       neigh_release(n2);
+>
+> [Severity: Medium]
+> This runs for every neighbour user, not only sch_teql. Here n1 isn't
+> always the neighbour the skb was queued on. It comes from
+> dst_neigh_lookup_skb() on the skb's retained dst, and
+> ipv4_dst_neigh_lookup() looks it up on dst_dev_rcu(dst).
+>
+> Two existing parkers set skb->dev to a target device B but leave an
+> original route dst whose device is A.
+>
+> The first is bpf_redirect_neigh() with explicit nexthop params.
+> __bpf_redirect_neigh_v4() and __bpf_redirect_neigh_v6() replace the dst
+> only when nh is NULL. bpf_out_neigh_v4() and bpf_out_neigh_v6() then set
+> skb->dev =3D B and call neigh_output() on B's nexthop neighbour.
+>
+> The second is nft fwd ... neigh. nft_fwd_neigh_eval() decrements
+> TTL/hop_limit, sets skb->dev =3D B and calls neigh_xmit(), and it never
+> touches the dst. nft_fwd_validate() allows NF_NETDEV_EGRESS.
+>
+> In __dev_queue_xmit(), nf_hook_egress() and sch_handle_egress() run
+> before the IFF_XMIT_DST_RELEASE skb_dst_drop(). __neigh_event_send()
+> also calls skb_dst_force() before queueing. So the dst is still attached
+> when the skb is parked on B's arp_queue.
+>
+> The resulting sequence looks like this:
+>
+> egress on A
+>   bpf_redirect_neigh(B, params) or nft fwd ... neigh
+>     skb->dev =3D B, skb_dst(skb)->dev =3D=3D A
+>     __neigh_event_send() on B's NUD_INCOMPLETE neighbour, skb queued
+>
+> B's neighbour resolves
+>   neigh_update_process_arp_queue()
+>     dst_neigh_lookup_skb() -> n1 is A's gateway neighbour
+>     skb->dev =3D n1->dev;    /* now A */
+>     n1->output() -> dev_queue_xmit(A)
+>       nf_hook_egress() / sch_handle_egress() on A again
+>
+> Doesn't this run A's egress hooks a second time on packets they already
+> handled? With nft fwd neigh the TTL is decremented twice, and a packet
+> that arrived with TTL 2 would hit this in nft_fwd_neigh_eval():
+>
+>         if (iph->ttl <=3D 1) {
+>                 verdict =3D NF_DROP;
+>                 goto out;
+>         }
+>
+> Counters and quotas would also count the packet twice. Tc egress BPF
+> programs would run twice and could apply encap or NAT twice.
+>
+> The second pass might not redirect again, for example if the first pass
+> changed a mark the rule depends on. In that case, would the packet leave
+> on A toward the original gateway instead of the nexthop the policy chose?
+>
+> Before this patch skb->dev stayed B. These packets went out on B with A's
+> L2 header. That was already wrong, but they did not go back through A's
+> egress path.
+>
+> The bpf_redirect_neigh uAPI docs still say the packet is redirected to
+> ifindex, and NFTA_FWD_SREG_DEV is still documented as the output
+> interface. The commit message says only "This is a behaviour change for
+> those paths", and the patch is Cc: stable.
+>
+> Could the skb->dev restore be limited to the teql case, or handled in
+> sch_teql itself, rather than applied to every neighbour user here?
