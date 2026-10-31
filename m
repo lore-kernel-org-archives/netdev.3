@@ -1,59 +1,73 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793455159;
-	b=a2c41YMO/3gJQZSnNZ0Vq8NZQrxMWJqReWdp0lTdeFAVMln6rET3GLrO8n7mTIRMkr3R
-	 ehbmBAL1oErDdmsplUMByco/3Ik2OJSH08ofOPpUMSc1aBUSPJX/Rt1+U/BV/xyKCqOHR
-	 1WzzGTdj2JaS851Nk8h+9GkIQK+yeNBcptbFAFO8Va3mSg2kH5JenFuC4ydqJ2HN4nv3i
-	 RtJ5QcQzeFxZ7A8ximHOrjLCl3SYyRy6ww3BTnFsAEZVTErPUem9QKHZSGiTUY/n5nyNL
-	 1TWltG+swwijI/HqEWPDSNQsvNDKajTEbdIZE+6aHPag5hk4hyYXnWdA1vmCWsi6jHw==
+	t=1793455297;
+	b=YTxxtlAA6kP8unyEFR83L0yTremm6SsEg2VpPsadqUYRUoegtcDJDy2LiZm+vj+hPDo5
+	 98RX3FDVZUmx865sROdnBOxaHkvUVbHcbgs52la/biYABBTHcjPkmQkZUwtNzyIQG8pVw
+	 WusLJOo+WMdVjMQDqDZChAjyn8aF+XDzB2Fz7pS+n17lBEqbsFZPDhDjdMNtmwbT8p6WS
+	 wyyZKltC6vw083tOaVGVO74kK6qLqTdj4jPgwSgKnIetKFbnLZg++607bd7xqST87zvQ0
+	 4IBPQsolLCs8JiF49sHnM2zQ+1mu0tCK9dcLtrpEvBBb1gmfngakBsxoN3sgmDRWAMA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793455159;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=dtLCixWDiT1+hGYs6nBz6SS7t/DkQnRXN9xHdqHJSxJtSrTjXQpG8Si5+o2VomUN20p+
-	 shRn3oSjZZLn3nd9INM26CHWqmhAb9HOo4BK0Hu1Sxp+I57qm3qyNAG+eHAPzRtWMh5KY
-	 U7ToWLsCq9ceqP7IDJXBZ2pfdBFPgp/RchI+uCmaYvfnXLPd/+GwqgMDS0BSklbutjziH
-	 6T5JT3Xl2eRSV6Vk8a1liClyCkaa8Vtpa4MutZDm4PKJJjDg57Nrmv2ht2jVzBkBVFDo5
-	 GycMxUqShTDY77IkGcH+L4enwgRhb+6dMIPfNJbNWkpFFYEsG3cHgtbfI6oBrkBzLQQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793455297;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
+	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
+	 References:Subject:Content-Type:Content-Transfer-Encoding;
+	bh=qlxETbMEjoAzP8XM9VVKvs0aq198sYaqIYGCvv4J8aM=;
+	b=Gfe/zUWJ9AAb3EmzTTqtyPZMwuT+S+6rhi2UOGDNT5aDLESABeWZ+2JGYeXC3XH+0rap
+	 mjZwvR0AkDzNXa1suXn/6Fcg5X+ticnFcbVqGoVBp1Djpyd1hKGXbuLq6wAd8cnJ5HWpj
+	 mEroLgWu0XHnnTkt8kEENJjZbrnHPxOH8JTFglQt4qMU34ptjQTFmsQS60iappOYZafu9
+	 Ec8JIvgbm62AtRUNJosreeN8Sf0dRtOtz0KECTmQ2HBsbv31ixehynWzoHPbSLEV2P3we
+	 087BQLHL52ZLvXlX9NT0n33RW3Zn0lCrbstzmSTems74v0cApkTj8084CwYWiKkLewg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iWmokqQ0;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KdSrTV0T;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCBA8606A31A;
-	Sat, 31 Oct 2026 13:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC3A606A31A
+	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 14:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iWmokqQ0
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901AA1F000C1;
-	Sat, 31 Oct 2026 13:59:17 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KdSrTV0T
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB4311F00919;
+	Sat, 31 Oct 2026 14:01:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793455158;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iWmokqQ0wkjPMsU92at39nKO9rwfFQ3LSKsRx0DocuDovgtnWj6GBaM8VbdA0QDK3
-	 ulbvdHvQIexqocotmqY0XN58e/LJRyOioXJh8VdesC56E2HiLO3sgA2z6fwSBpXMSo
-	 TDMCvynT8aCXYihmwCUPBhYWwtq3nj6UHiu9VOXMZ5F+KFy8FfRB6x3nqPXTgz5yHN
-	 q5QSs524IUdvM0Xyn/1gAsRiUW3ci8BkxXqz0T7L4rDBx+g7iJlbrbtr3gNSm6UBPG
-	 C7KEoBXfEQ6V6KY5ZuaUijDBO5ZyUG26EYbPnCl1WoEMPRtdJlQNFg9mk2DjYyTWQE
-	 JMCcL2gBMocTg==
-From: netdev-bot+sinfo@kernel.org
-To: Avi Weiss <thnkslprpt@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, willemb@google.com,
- kerneljasonxing@gmail.com, almasrymina@google.com, josef@toxicpanda.com,
- jiayuan.chen@linux.dev, toke@toke.dk, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: parse the eighth nested VLAN tag
-Date: Sat, 31 Oct 2026 13:59:17 +0000
-Message-ID: <179345515710.3286.5345760675746189369@kernel.org>
-In-Reply-To: <20261031135507.3970551-2-thnkslprpt@gmail.com>
-References: <20261031135507.3970551-2-thnkslprpt@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1793455297;
+	bh=qlxETbMEjoAzP8XM9VVKvs0aq198sYaqIYGCvv4J8aM=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=KdSrTV0TE1H6slCwCQjATUxv7oux6CVS9eVctew258Dmcjegqamx6DhOKaek6YzFs
+	 xBxRNY18yOVZ3RHuZBcDMek+X8c5hdnxrqawwfGMD4832U11RBYWP+4032cmoVj26u
+	 0YnkbdbuJHDpNPUSVd3F9k8l/QvaG1TAbLcK0oChMB1q3+Acx4fSAMwiQVBjcNDurF
+	 0dy2nNM1Y/UhxISbWUbeoXAFrE3GfdsUjT6MGM5/x3KrPqo4Hf0GvhpfO5zKcQbjxV
+	 2BuL0r1SGZwKnym7QIg04LiiouM2wyNiJMX6uCwyRVK9jSAgIFk8cEJgLCMlzs4F6i
+	 F8qAkJTEj3GOQ==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 1000BF40066;
+	Sat, 31 Oct 2026 10:01:36 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Sat, 31 Oct 2026 10:01:36 -0400
+X-ME-Sender: <xms:v_Tlaib5Yib547iuUSIk_ndMzf-YUuNLv4KofcaWK3M_kU2mcq7ihg>
+    <xme:v_TlagMNk8KwMFDpqaW4g5RiQaMMuMA9pGGLJYZL_kT27ayojOIN2LXxW4wTAscPB
+    gbokRTDjvXrnRI_k2JwYMpH-Ve-RTI7dltMrFrylWXMJ9dTmn0anQ>
+X-ME-Proxy-Cause: dmFkZTFbnwXPtfUJ8TOIh/2YtHnqlVp+wY0Lc4pIVwZ1MqbZW4KTXu1pZrx7Cd5LCrmRK+
+    RbTH7wiFeWIi0ZG4+rSLatRSXg8soJu9J/dLSesI0u+30a1VP7fSze3kiaUkq4gpKh8E4O
+    k6Q6k1X3ZjO8gir323OR58KtmV+AA/xCHwEjyiAPe/8kZSqbhgiDVVcCpSCD84A1azOBTN
+    G3KtwfoWQyMQLEW64q7hWp35tZTyc186DhYS5g6bgc1vdTC5Cw2ariX2I06hpIt0iuptba
+    bXpTLGH5dv92jLOYf8EjurjZpgFS3fY6vfFnGfZpYCN8ZvZXnGnB1+AMIEaCn0ssv7eMdE
+    kerMulL04F/rsVFIEiYbns6xnND+DzfPuPgjoUUFA0sgmvCvI4duSn8bMiyjbPKXkk6VE3
+    /f6GHFWd7/7t4s99SxZmhWT4NTFE2ir+w5VKVK7WNS4SRw868jkrTnS/R0ZGOBIVglqcu5
+    +uPFnzUfMbko2OBM6v2V5QFkyC/VhtAqDfSVHJISEkgdy6nvIaOYVf1iusxmcjrrTeHz8w
+    b8Hj3PTEydvOMAvP+b8Z31c67aU3pJ2gncUX86ypRLjPb/ZaRauPy1ADNpW5JsW8n0w7pp
+    GXz1nzZj/dV5K8oaK27A2FZSZ+iJ16spTklrHvzuDXOIZA7FouoBh/9sjLeg
+X-ME-Proxy: <xmx:v_Tlaj3GHLzRa0W6w_2BixaYdWX1qGD7bO88XnmGbQPok7ChaWWAHw>
+    <xmx:wPTlas9Rkw4-mx2GbL09dK75cjOJc2uyB09TwzcI-U7nsfqs-y8t4g>
+    <xmx:wPTlauEadE4JQrLU4vqppEzPDoX5M3G6200z-Hb2KYLXVRwT44Ximg>
+    <xmx:wPTlaqjVAG2yA_DRkagNKsHPKobQGDyLlhjQ0fNG9goENFvBTIg-0A>
+    <xmx:wPTlar9maAxbWeGYJdB5f85BK3jCzq-wMvhYVySOLBENkaoE4u9mvT-R>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id CE4E878273B; Sat, 31 Oct 2026 10:01:35 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,21 +77,145 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+X-ThreadId: Am0AR9z1Vk8F
+Date: Sat, 31 Oct 2026 10:01:15 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: NeilBrown <neil@brown.name>, "Kal Cutter Conley" <kalcutterc@nvidia.com>
+Cc: "Trond Myklebust" <trondmy@kernel.org>,
+ "Anna Schumaker" <anna@kernel.org>, "Jeff Layton" <jlayton@kernel.org>,
+ "Olga Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
+ "Tom Talpey" <tom@talpey.com>, "David S. Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
+ linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Message-Id: <44664d64-3694-49d1-ad17-ca70221ed327@app.fastmail.com>
+In-Reply-To: <179340033904.269288.4611945330659974906@noble.neil.brown.name>
+References: <20261030130629.103716-1-kalcutterc@nvidia.com>
+ <179340033904.269288.4611945330659974906@noble.neil.brown.name>
+Subject: Re: [PATCH] sunrpc: fix lost wakeups when stopping service threads
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Hi!
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+On Fri, Oct 30, 2026, at 6:45 PM, NeilBrown wrote:
+> On Sat, 31 Oct 2026, Kal Cutter Conley wrote:
+>> Stopping NFS can leave rpc.nfsd 0 in an uninterruptible wait with
+>> this stack:
+>> 
+>>   svc_stop_kthreads [sunrpc]
+>>   svc_set_num_threads [sunrpc]
+>>   nfsd_svc [nfsd]
+>>   write_threads [nfsd]
+>>   nfsctl_transaction_write [nfsd]
+>> 
+>> SP_NEED_VICTIM and SP_VICTIM_REMAINS remain set while all remaining
+>> nfsd threads sleep in svc_recv() and none has RQ_VICTIM set.
+>> 
+>> The stop request is published with unordered set_bit() operations.
+>> svc_pool_wake_idle_thread() checks the idle list and task state before
+>> calling wake_up_process(). If it sees an empty list or TASK_RUNNING,
+>> it skips the wakeup and its memory barrier. The requester can therefore
+>> miss a sleeping worker while that worker misses the stop request.
+>> 
+>> Order work publication before both lockless checks, even when no
+>> wakeup occurs. Pair with set_current_state() and llist_add() in
+>> svc_thread_wait_for_work(), so the worker observes the pending work or
+>> the requester observes the idle worker and wakes it.
+>> 
+>> Fixes: 60749cbe3d8a ("sunrpc: change sp_nrthreads from atomic_t to unsigned int.")
+>> Signed-off-by: Kal Cutter Conley <kalcutterc@nvidia.com>
+>> ---
+>>  net/sunrpc/svc.c | 9 +++++++++
+>>  1 file changed, 9 insertions(+)
+>> 
+>> diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
+>> index af8d87c1de83..f3cc63acc5e1 100644
+>> --- a/net/sunrpc/svc.c
+>> +++ b/net/sunrpc/svc.c
+>> @@ -29,6 +29,8 @@
+>>  #include <linux/sunrpc/clnt.h>
+>>  #include <linux/sunrpc/bc_xprt.h>
+>>  
+>> +#include <asm/barrier.h>
+>> +
+>>  #include <trace/events/sunrpc.h>
+>>  
+>>  #include "fail.h"
+>> @@ -693,6 +695,13 @@ void svc_pool_wake_idle_thread(struct svc_pool *pool)
+>>  	struct svc_rqst	*rqstp;
+>>  	struct llist_node *ln;
+>>  
+>> +	/*
+>> +	 * Order work publication before the idle-list and task-state checks,
+>> +	 * even when wake_up_process() is skipped. Pairs with the barriers in
+>> +	 * set_current_state() and llist_add() in svc_thread_wait_for_work().
+>> +	 */
+>> +	smp_mb();
+>> +
+>
+> I don't like this.  Stand-alone barriers are, I think, harder to read
+> than barriers combined with operations, like smp_load_acquire() or
+> similar.  And this one seems quite detached from anything.
+>
+> If I understand correctly, the possible race is between
+> svc_thread_wait_for_work which includes:
+>
+> 		llist_add(&rqstp->rq_idle, &pool->sp_idle_threads);
+> 		if (likely(svc_thread_should_sleep(rqstp)))
+>
+> and svc_stop_kthread which includes:
+>
+> 		set_bit(SP_NEED_VICTIM, &pool->sp_flags);
+> 		svc_pool_wake_idle_thread(pool);
+>
+> The first sets ->sp_idle_threads.first and then checks SP_NEED_VICTIM
+> and the second sets SP_NEED_VICTIM and then checks
+> ->sp_idle_threads.first.
+>
+> So we need barriers to ensure the values are seen is the expected order.
+> Have I missed anything?
+>
+> llist_add() always calls try_cmpxchg() which is fully ordered, so no
+> extra barriers are needed there.
+>
+> There is no barrier between the set_bit)( and the READ_ONCE() in
+> svc_pool_wake_idle_thread(), so you added one.  I agree that is correct
+> and solves the problem.
+> But it is only this call to svc_pool_wake_idle_thread() that needs a
+> barrier, not all calls.  So I would prefer the barrier went in
+> svc_stop_kthreads().   Do you have a reason for not including it there?
+>
+> We do need a full memory barrier - a "release" on the set_bit and an
+> "acquire" on the test of ->sp_idle_threads.first
+>
+> I would be happy with smp_load_acquire(->sp_idle_theads_first) in
+> svc_pool_wake_idle_thread().  I'm not sure it is needed though.
+>
+> I would like set_bit_release(SP_NEED_VICTIM) in svc_stop_kthreads()
+> but we don't have that.
+> We could do
+>    atomic_long_fetch_or_release(BIT(SP_NEED_VICTIM), 
+> (atomic_long_t*)&pool->sp_flags)
+> but that is ugly.
+>
+> So I think the best solution is
+>
+> 		set_bit(SP_NEED_VICTIM, &pool->sp_flags);
+> 		/* Order SP_NEED_VICTIM before testing sp_idle_threads,
+>                  * matching svc_thread_wait_for_work() which orders
+>                  * setting sp_idle_threads before testing the bit
+> 		 */
+> +               smp_mb__after_atomic();
+> 		svc_pool_wake_idle_thread(pool);
+>
+> We probably need the same in svc_wake_up() after the set_bit().
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Kal's patch as written adds an mfence-class instruction to every transport
+enqueue (a common case) for no ordering benefit. So let's go with Neil's
+proposed solution. Kal, can you send a v2?
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+
+-- 
+Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
