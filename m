@@ -1,110 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.139.74
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793468761;
-	b=e6xSaXbYmTDBs2/LRbtU+tdfPC67UiQi+eEiUyH4tD3lSiBfbYJJNtUR3+C5mM2e66ZX
-	 c/EsJ/znRHdRATv9xu4yTk4ugSyo88bG+oGamrFCKiPDE0/qblR2cnPlVWtaA6qbaCxP+
-	 ixr6McNP7r7nmcHDYUG4mQZtMbglZyxXpw3yRVrmrHq1VvDFWg8SnbCA1w5i4ZCtWqzot
-	 Ep5DkFwXx3hLVyKhULnWm+GDKWIm0RSe6BGeiv2tDU984dY9AbgWYB6gLvkZPd6s7urkZ
-	 vHZ82uTlspdBqQutRusDS4rFzKVRA7MzfL/bQD2sc97HKHc83SBRBoUv9w0PRGRF2mw==
+	t=1793468754;
+	b=p2ws1EuOls8tTa4KJtUMlHU0hb6QhxE0gD94y72afbkihPBH4FlKvnh6NPGAUnKsJisw
+	 8AXDK4M275vxfiwwkMHr2u46iFOP70RiMxFPv01dBxUuzn8MkfPlU2r8SWbxJvzHxQYwz
+	 9GIOp79RRWrwkX6mCLfvLdXS2kqdT0caoGSuEE+f5zTj5C+3+DYUAsGd2qO7FXn4fIHXZ
+	 ylgdHuki98olYFcdM/ZCd1e3cgPGz8Sr14cxiYqq1w1nQxRdsXIST4rHAZsaQvkyH47iY
+	 ZVGkagOvDl8ECBTB3V88UlTyf90Mjm+OAuqQ/7BdNK7OHQo9TmInWTLhrk0gTT8GXGw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793468761;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:
-	 Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Proofpoint-Spam-Info:
-	 X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=12TO2e0T31cSdEte/htfI+5i3smqp4TVqWraSxvTy3w=;
-	b=rcLq8NwQdjUoKOlF7ZEV+NphqkUnft45bd00fxBx2nYTKW5kZ0GzBmzVb1N6yqG2oW4v
-	 xxrjJkl1EB4aD3IwvvVoEEgvxK257RdQ1UUmpdyFahUWT7TKg1opK5wtg07G26MkNj/ak
-	 YEBJuiWd9RlxvL5LbtB8psY8+J+/q84Vl1aevrdkqV/mOVUEPEtrv/Z3GUF0CCdGQhl1H
-	 aKp71qw6rwFPH0b63W31ysokwx1nNHadU8ivYkOQ3NGX2ie9ksTMZrjN6GZDTrAKRqGf4
-	 FOGGBs+CzjiVgIlk+IRxNmtFoIsewyWJkfxcGMvu6tpDSpnDPPaGujcvusF1p9MJM/w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793468754;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
+	bh=FW3M40bAUPpiu6dtg9ihV+GCZPA7IqkpRgmTwP06LZs=;
+	b=bCvrXu6TaTUfB5UMW/n/212oxE56q+E2Jh3VyORVFoMc9Arv7QN0P7LTrnKq2btJ5vWK
+	 heQgDCWxR269PT1uXyVX9jHwOQgGdeRYzh1lowqrOv5j1mDjKlZNPU/E5bjOWs8SreexN
+	 1N9uGUNdyHjf4kCvJPBMIWrx4T94NX0tkQkfWWspHU+SLNOD90gQ3J3HgnvfscDgY0rFa
+	 +YdH+iQEvD5lixpjNPV6RyOwtMkyzsoaeDESwkoKwPYQfaCzVCCLxq4Bb2Ic0JHxvzgtc
+	 Zt/GaPvK1tZ1UVVWyqGJvxnHkE3n7fSJG915kukZAaM7I6YdpOAzQOu7js7HlFYHDsw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=columbia.edu;
-	spf=pass smtp.mailfrom=columbia.edu;
-	dkim=pass header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=jrv2nOZ1;
-	dkim=pass header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b="neP/A2aO";
-	arc=none smtp.remote-ip=148.163.139.74
-Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=osNMDLr3;
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB6C60A260C
-	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 17:45:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ABB6C60A260C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=columbia.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=columbia.edu
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 172DC606A31E;
+	Sat, 31 Oct 2026 17:45:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 172DC606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=jrv2nOZ1;
-	dkim=pass (2048-bit key, unprotected) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=neP/A2aO
-Received: from pps.filterd (m0167074.ppops.net [127.0.0.1])
-	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69VDkro1559732
-	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 13:45:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pps01; bh=12TO2e0T31cSdEte/htfI+5i3s
-	mqp4TVqWraSxvTy3w=; b=jrv2nOZ1hp7gZbhO1vM3/PcfFfO2Eo+JrSCQRcC1ob
-	JZIOAFdqM7Cv70L7PuIETHnhd9trPMvIE4Vhr5Ze645lh6+3Z3Yyu4d6HgjnPR+W
-	LnQeSKOap9tnbXCFr2Yu+24s9nG4SHxLCy42p6uCdErv6i+HSk+zX7/YTMo7Mmyo
-	X56d+LUijffqg2f4G3pQC6yxJs/PWK5DGOYbNI1t2gXcFbRO6bSo1OdlXPsvhW1J
-	dRz2RdOGf5rWwSJFVdPkSwT6YDcnZiNKaiOWQrdff+vERJPAujUGw0u8QERN1//v
-	tFTTHhwz6oVCE1EidtJ61Jgic9T/tAcuIp2psuzp8EXA==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4hn9ccatsp-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 13:45:54 -0400 (EDT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-93f33438950so341335085a.1
-        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 10:45:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=columbia.edu; s=lionmail; t=1793468754; x=1794073554; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=12TO2e0T31cSdEte/htfI+5i3smqp4TVqWraSxvTy3w=;
-        b=neP/A2aOSquMz2IRM3GwjWt3KSLmQ+sHBLc0gTN024tS1j2Ga1TlfzM0rbhUpalhBb
-         MaMW0UySxvH6gCKTLWrXP1KvoUMJMyxZq6Kh87F6QViiC8q1HcJrGWj491QxL2ztzQid
-         xYUcuWjDr6H5ykt/DYN3+8zpB3VcZ9uhk/KMyB3bH58mz9r3g4a7L1if8mbhw1ERRZs7
-         29JUjpUrRNh9L/MmkOIbrleXFGUhDt5/NDUouq/1mRCJcYqL+EtlH0zqjLJ1UYSvL76p
-         UM3mdFlMF1wfPmxDpHYtD3dXpRphcm0GeIwJ1geGp1JFt/9ftzdUPzhDxbSemzHyklBe
-         PK+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793468754; x=1794073554;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=12TO2e0T31cSdEte/htfI+5i3smqp4TVqWraSxvTy3w=;
-        b=lC8akOCg/7gz7UF/JxCrdcgJbxfBGk9UfYRBvJcjBlxIfJhNfZQPaX04X0CprtnQ6B
-         +AHywlBIFNzpQY14AxJRMouQqbapDOGepFgm5wckwZMR8OVMjsLpjALZRuKDDDLIRNkW
-         cmp3TDuHxQIbhiDXsgvkbA6EIppt4aWDFv9JSnwOev8ZQv89ExnMQMu2rL/pE7V4SPW2
-         rBq2JAtg5ukWoWvIMNDj5mol8/kBRG3J4KAsxvNU1n1WgnS7GYi8H8nwp8DJHL9GwVKu
-         OEdQ92ccC4sbkb28RM56BfZbh8tJerL/chOxR4l/unzlXSTJGYSj4Q8ecFMzTntQJVsj
-         HOkg==
-X-Forwarded-Encrypted: i=1; AKwUvBzbYo60nTK74xC7FFdHDiSdDB4d24m3vje7dm1YbT9bKZx6l0YBcSPLGeIlxpEA43NS2LQFMQA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIYeYNkmpJb4pV7lz9l2OQ4goaoClJ5ldVazOM8vMWoDJJ5c44K
-	pgVCKusX0fwqR6JCrA1aKvrXg5aF0sVO40xnY0jQhwMbjIqIH5oyd9Ehqdk6ZPriYX12GerrDfe
-	0iYqv3ZpqxyIfMj6N5+Q0u2qjaDGpedjkEcjJhgkFdoITauTBaS4RTg==
-X-Gm-Gg: AYBFou3ZMhQQ/j42hx0LDhGwID2fgWFTiO77UCtCkPgTtzbpbDzpQItSVlspD/fa9H8
-	a2ELxAsBho09XiUe+2hOtjUJpmYnH5fwTtdVo0H2lhcTVRo7DsAp6n2UX3SV4ZKdt3KDE3RyEcb
-	HW7zpn37iHKdrTal47QXgjTi+LPkzZylNplfKe1ynqCzHiH6kBgU/H2pwtFQRRV8p9IcMdiR6qC
-	LyjekPnGRVXWJ7O3rPTMB3FfaodlgH85VStr/8vhGsxkDdEmXmI9eTuChlBXHVQjV1FeXClNoW+
-	kFuAHjkGT+lQqVkRcK7NvOujv8yOTixlMVboT8+P5BaCzlPc8W2ut9ptyJxJL3+Ts82iMlHa0Jy
-	OYBNGIBdiONA8BJk3ynqNGlVEOqoaIoxMOiu1/LDAromVelmE62H6L4gbRw==
-X-Received: by 2002:a05:620a:270b:b0:93f:565f:e40 with SMTP id af79cd13be357-944217dc91fmr882364985a.65.1793468753911;
-        Sat, 31 Oct 2026 10:45:53 -0700 (PDT)
-X-Received: by 2002:a05:620a:270b:b0:93f:565f:e40 with SMTP id af79cd13be357-944217dc91fmr882361285a.65.1793468753266;
-        Sat, 31 Oct 2026 10:45:53 -0700 (PDT)
-Received: from [127.0.1.1] ([37.142.159.89])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b79059sm10220667f8f.30.2026.10.31.10.45.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Oct 2026 10:45:52 -0700 (PDT)
-From: Tal Zussman <tz2294@columbia.edu>
-Subject: [PATCH 0/2] vhost-vdpa: fix a pin leak and unpin mappings by range
-Date: Sat, 31 Oct 2026 13:45:33 -0400
-Message-Id: <20261031-vhost-vdpa-unpin-v1-0-94ffc9683256@columbia.edu>
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=osNMDLr3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1793468750;
+	bh=FW3M40bAUPpiu6dtg9ihV+GCZPA7IqkpRgmTwP06LZs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=osNMDLr3OcmDU9BVzLikVYLYpyvo22MJjhzKJgoLClYYXq7oVJ9ZJipE7un6Ya7Yk
+	 LM1+vUlI3gwLOD2XiGnBBM30U2AQYMY4exFuV1H3glNt9Ns+EHoAY+x+i+86Tkbfxb
+	 5Uhse7dHzyVbbJk8osxmTogGw+TdwU8RM2yGYYYSPwnJ0G4zN/GBa6FwXqW6256VuL
+	 c7y+TPrnTN/R0QHddx6/b1ma2yNAfEtBpAz8k/FwCcFVj0YBWFrio1HN9kHmF3skRc
+	 ZFjmJn1nY0TERlaKBy2fwrA9WEePqOxvqcvts5UJQqYh4yJye0J5tFMkv2PPwV6rjV
+	 gW6AmLoT77aTQ==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 8784B6005C;
+	Sat, 31 Oct 2026 18:45:50 +0100 (CET)
+Date: Sat, 31 Oct 2026 18:45:47 +0100
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: syzbot <syzbot+e1a88d8b7e4cf6b51d85@syzkaller.appspotmail.com>
+Cc: coreteam@netfilter.org, davem@davemloft.net, edumazet@kernel.org,
+	fw@strlen.de, horms@kernel.org, kuba@kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel.org, pabeni@redhat.com, phil@nwl.cc,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [netfilter?] WARNING in nf_flow_offload_gc_step
+Message-ID: <auYpS96ihQOAR_UP@chamomile>
+References: <6ae61c88.6552420f.2a0efc.0003.GAE@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -114,74 +66,102 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAD0p5moC/yXMTQ5AMBBA4avIrE3SSvxeRSyKwVhU06GRiLsrl
- t/ivQuEPJNAk1zgKbDwZiN0msCwGDsT8hgNmcoKrXSOYdlkxzA6g4d1bLGoiMoqN0rXBmLmPE1
- 8fsu2+y1Hv9Kwvx+47wdX36AmdAAAAA==
-X-Change-ID: 20261015-vhost-vdpa-unpin-68ee785a019a
-To: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>,
-        =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
-        Si-Wei Liu <si-wei.liu@oracle.com>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Tal Zussman <tz2294@columbia.edu>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793468749; l=869;
- i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
- bh=yEsTLW5bz4gADvidYrxq5nthN1/BGAv4JgsFze3VSmg=;
- b=jeyY9hiphQ8blprG87I1oONkrIN8Q7ZL/IGjRLJbSRY/hU0x0AZTh7Gso9PmhW412uIWzzlh+
- JxQxyJSbDs9CNUNDmGS7lxZEUsybN2nVwItY57qixt33KLSfa4cYQmD
-X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
- pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMxMDA3MCBTYWx0ZWRfXx0w+vbMXSJkE
- JgbjQm7pK3ydpYqmNqspzRBlsL/nvKyrq1S2xExjZaUFN4+CCEN5RcoIVcI5qZxJ70by8HnzOSs
- N9fOr2lRU0xPevEt5iE06U8zsN9Sa78LLylI4r80F3xs80cd8Zvm
-X-Authority-Analysis: v=2.4 cv=ZIxCCn7b c=1 sm=1 tr=0 ts=6ae62952 cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=P+xgYyhW+KadpqoI50EQPQ==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=azVShVRs0zEubeQ0wG0L:22
- a=mS1D9im87lyf6bhA-bcA:9 a=QEXdDO2ut3YA:10 a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-ORIG-GUID: 0jxMZH1btvLUye9kGSjNASWP3WWuoloX
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMxMDA3MCBTYWx0ZWRfX/B6PRXIx7rbo
- njWBSdc8GmjDWfCgSfrIgftE7jHlT08jfV0wNQ14z6qynX+V708nnhlFA3Vs6tSv6dcuty0IVX5
- tmZYgU30q3KoeIHc2ClyqB9iPgAhLAO9PoiC0TmkP2yHeQmalA6ZiIKUcCO7awT5/UKpdmE96Yl
- P4RA+W0pY+rlsig4BhAp3mXeLpFWgnOtIqG9HbhCNPRPH50u636yLU7DNnzYIu9mqKp4l68F4Uv
- aW0d/R8fHPkwlHKlqcAEPKIrAbVnrR65u2cIROHL4ieCb1O50NJGgNcu5O0yk2RuZNezSfsDCH8
- puRD1wbEK1plXmFAkVBu+Lbg65wdErocFIgoRnC1yelIPxlXcU1/EDCNXQS6RfW8XhHzfpdYfl7
- brHypYgDYz0XH7eeZKKICOgHhGVO/0G1vLUTbpcbScUD8wO61M9ccjSrdOCc1gTMSv5G9iPgLIo
- bx+6F5+zpGGzMJ62QEw==
-X-Proofpoint-GUID: 0jxMZH1btvLUye9kGSjNASWP3WWuoloX
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11952
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0 clxscore=1011 priorityscore=1501 suspectscore=0
- bulkscore=10 phishscore=0 adultscore=0 lowpriorityscore=10 impostorscore=10
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2610310070
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <6ae61c88.6552420f.2a0efc.0003.GAE@google.com>
 
-While testing the second patch I ran into a pinned page leak in the
-vhost_vdpa_pa_map() error path. The first patch fixes that and is
-tagged for stable.
+On Sat, Oct 31, 2026 at 09:51:20AM -0700, syzbot wrote:
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    d135ab453a74 Merge tag 'backlight-next-7.4' of git://git.k..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=13a51259580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=6f2905533069b0f5
+> dashboard link: https://syzkaller.appspot.com/bug?extid=e1a88d8b7e4cf6b51d85
+> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14020995580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=100c4f0d580000
+> 
+> Downloadable assets:
+> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-d135ab45.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/6c39e8158fba/vmlinux-d135ab45.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/7fb9f97c1f88/bzImage-d135ab45.xz
+> 
+> AI-generated root cause summary:
+> In the Netfilter flowtable subsystem, nf_flow_table_extend_ct_timeout() only
+> accounts for IPPROTO_UDP and IPPROTO_TCP when refreshing conntrack timeouts
+> during garbage collection. However, both tc act_ct and nftables flow offload
+> support offloading IPPROTO_GRE connections to the flowtable. When the garbage
+> collector checks an offloaded GRE connection whose timeout has dropped below
+> min_timeout, the missing case in nf_flow_table_extend_ct_timeout() triggers the
+> default: WARN_ON_ONCE(1) branch. In a production kernel without panic_on_warn,
+> the warning does not crash the system and no memory corruption occurs.
+> 
+> full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=e1a88d8b7e4cf6b51d85
 
-The second patch unpins each IOTLB mapping as a range with
-unpin_user_page_range_dirty_lock(), which marks each folio dirty once
-and drops its pins in one go, instead of a set_page_dirty_lock() and
-unpin_user_page() per page. It removes the last use of
-set_page_dirty_lock() in vhost.
+There is a patch already for this, it will come in the next nf.git PR.
 
----
-Tal Zussman (2):
-      vhost-vdpa: fix pinned page leak in vhost_vdpa_pa_map() error path
-      vhost-vdpa: unpin mappings by range
-
- drivers/vhost/vdpa.c | 28 ++++++++--------------------
- 1 file changed, 8 insertions(+), 20 deletions(-)
----
-base-commit: c69023b5e16e5ffe9368603dca76d85bd544ee57
-change-id: 20261015-vhost-vdpa-unpin-68ee785a019a
-
-Best regards,
---  
-Tal Zussman <tz2294@columbia.edu>
-
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+e1a88d8b7e4cf6b51d85@syzkaller.appspotmail.com
+> 
+> ------------[ cut here ]------------
+> 1
+> WARNING: net/netfilter/nf_flow_table_core.c:553 at nf_flow_table_extend_ct_timeout net/netfilter/nf_flow_table_core.c:553 [inline], CPU#2: kworker/2:2/1358
+> WARNING: net/netfilter/nf_flow_table_core.c:553 at nf_flow_offload_gc_step+0xd84/0xf60 net/netfilter/nf_flow_table_core.c:593, CPU#2: kworker/2:2/1358
+> Modules linked in:
+> CPU: 2 UID: 0 PID: 1358 Comm: kworker/2:2 Not tainted syzkaller #0 PREEMPT(full) 
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> Workqueue: events_power_efficient nf_flow_offload_work_gc
+> RIP: 0010:nf_flow_table_extend_ct_timeout net/netfilter/nf_flow_table_core.c:553 [inline]
+> RIP: 0010:nf_flow_offload_gc_step+0xd84/0xf60 net/netfilter/nf_flow_table_core.c:593
+> Code: f8 e9 82 fd ff ff 4c 89 f7 e8 28 e1 6a f8 e9 12 fc ff ff 48 c7 c7 80 f2 c0 8f e8 17 e1 6a f8 e9 ae fc ff ff e8 1d cb f1 f7 90 <0f> 0b 90 41 be 01 00 00 00 e9 7d fc ff ff e8 09 cb f1 f7 48 8b 04
+> RSP: 0018:ffffc9000618fa88 EFLAGS: 00010293
+> RAX: 0000000000000000 RBX: ffff88803e161380 RCX: 0000000000000000
+> RDX: ffff88802c392580 RSI: ffffffff8a1c51f3 RDI: ffff88802c392580
+> RBP: ffff88803e161488 R08: 0000000000000001 R09: 0000000000000011
+> R10: 000000000000002f R11: 0000000000000000 R12: 1ffff92000c31f56
+> R13: ffff88803818f868 R14: 000000000000002f R15: ffffffff8fc0f280
+> FS:  0000000000000000(0000) GS:ffff8880d469c000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 0000200000012000 CR3: 000000002f277000 CR4: 0000000000352ef0
+> Call Trace:
+>  <TASK>
+>  nf_flow_table_iterate net/netfilter/nf_flow_table_core.c:459 [inline]
+>  nf_flow_table_gc_run net/netfilter/nf_flow_table_core.c:616 [inline]
+>  nf_flow_offload_work_gc+0x11e/0x1e0 net/netfilter/nf_flow_table_core.c:624
+>  process_one_work+0xac7/0x1b10 kernel/workqueue.c:3495
+>  process_scheduled_works kernel/workqueue.c:3578 [inline]
+>  worker_thread+0x5ef/0xe50 kernel/workqueue.c:3659
+>  kthread+0x373/0x450 kernel/kthread.c:436
+>  ret_from_fork+0x730/0xd60 arch/x86/kernel/process.c:158
+>  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+>  </TASK>
+> 
+> 
+> ---
+> This report is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+> 
+> syzbot will keep track of this issue. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+> 
+> If the report is already addressed, let syzbot know by replying with:
+> #syz fix: exact-commit-title
+> 
+> If you want syzbot to run the reproducer, reply with:
+> #syz test: git://repo/address.git branch-or-commit-hash
+> If you attach or paste a git patch, syzbot will apply it before testing.
+> 
+> If you want to overwrite report's subsystems, reply with:
+> #syz set subsystems: new-subsystem
+> (See the list of subsystem names on the web dashboard)
+> 
+> If the report is a duplicate of another one, reply with:
+> #syz dup: exact-subject-of-another-report
+> 
+> If you want to undo deduplication, reply with:
+> #syz undup
+> 
