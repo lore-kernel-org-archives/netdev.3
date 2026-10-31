@@ -1,80 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793444926;
-	b=k1KhpmEUGOJXUbeRlrU73+WMfoncScrrBOKMJP20SZ03CCkpcRXH7yXtUHVvupSPRXZE
-	 hrU3kIDrHe4uozwF//TCxjfc0DOl0B60JA2/aM9+tREJUctgnFAM7p2vTCOxGC4+nBszc
-	 kSb6xv/KUYHK1M04WTxZwugNgU1DewB6z6JuCVo+694vFpJVp7aJqW6HbMqmR/8MFVSdO
-	 M2Jw6Yo93jGd8WaG8yKp+Dsh3slDwB3eIJjH1gmL/jxhgJUz+mz9KvLWkrGecofXbMyAH
-	 9jNPKNVuB6TjTdB27OVDAr21lXReaQHZuEn+/Zm9oQbdEsYHEcqH5oSwyQnDIAWnyDw==
+	t=1793444954;
+	b=Q4J5MbP0w1VYadMjA84sx4Zu/i6e5oJITeRTCGKgB7F3fy7jHP1Qs/FP4wKVCHiMicEV
+	 c5gA7d8YP4OHJVwQ2uoZwoHiAn147hevqOdyFsNnXH6ML/FgzfinYAnfsDRXS1Rm45wuA
+	 kENExn7QVSBKnQHm8x+1vltLBhmLHP97LdsECAJsO2GwoP/6PVq4UG+Kx90lZ/dsD+xo8
+	 0250w9CjBtJRAhlrXicnyQmuG3VmyMCCuRqchULjN5rRsEU/lOgdFFOz603xfRFRj+xmg
+	 de1in/k2VcX6/5gy/WanJrZZV/mW1NQ2HOkigkHcTX2HlAYP43aL3E2LnWIRa4CYtUw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793444926;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793444954;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=qn1VaOGofv/ujd8ZvwN7vtgFnr5O801uRmpZaOHHctg=;
-	b=dXlv2fNWqKAeQ174G74EsYOp1Qj97cmYHUyTxTuDONYFXndamLZ8SpqKznPSIAywsVyu
-	 UdaG1uRTJi5kQffXn4GwXlloB4X/+yHMMvrpBuppwtY7Ml/n8q3t0AMRKJTBkyxJQzfHC
-	 0tX46RWGBl7Bl3OV87yZZ+iGcYD7f6fBfA0GQTSieKz6O5eXIUSzNwkXcidwQJbejw3tw
-	 PvjUXjvaReVRWWOAuYi9HrU8rFrcfTdg0KsME6XKPruzdItjBHzmMESo42NRXFw+yzUhW
-	 1jk4q7fS2sWowhyCr6WzEw/WnBi/GTdViTOCOQwAqsueewcQvXqOZoBqVmDjwdTQ+sA==
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=dBEoy5iqEE1c+mW/hlhl+h0UQlikvbw3e87Ek3myWuU=;
+	b=EBn/hIImGL6MtFfF93+VdOz4pm+tYxrDQX9hLLYhfmn0rO9ZwuKsfOWxn1P4YSW4UXvz
+	 pFOMRdEz0kPEB/T7GrVaOd0cKHCuB7HhMc/NMUFbdwCFilto31AFLexPm+MXOFMZRmKn5
+	 qIcX6rnGa7IBmghW6Qdn2V/3wvTnR9Lxg77RxaNP84rkjrQJ8w73dwPyg1BlX/KIv0WWE
+	 OxYhb4fX+bs1uDJBPVKi4arrQw6uOVm/go+BRJrEMqAVkYHA6emLPVyjm3mpUdsf/V1Q7
+	 NVAz2JTs389DDNT12smeT2mMu9/VLq+FDHeundTfIz6yXrmcrP45ZtgdnZAp2iC2BjA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EIMQ7ych;
-	arc=none smtp.remote-ip=209.85.128.47
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ezJTXjiW;
+	arc=none smtp.remote-ip=209.85.221.52
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A927D606A31C
-	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 11:08:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A927D606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA9E606A31A
+	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 11:09:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDA9E606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EIMQ7ych
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a4d7ae1ae9so14177695e9.1
-        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 04:08:45 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ezJTXjiW
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48e00eee27dso759767f8f.0
+        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 04:09:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793444924; x=1794049724; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qn1VaOGofv/ujd8ZvwN7vtgFnr5O801uRmpZaOHHctg=;
-        b=EIMQ7ycheZTgXQbRjcokmpZmK/CLPHtHH2SfHppIfhg2oKERKmSzR7izvPkjWhe74x
-         JtC85StnC4zSC+HggZdELNK4281l1dAisngx+zfIAY6Qu+2H7ma1noI0MeSUNAh2dkWN
-         tHXY0IBTqo3993BBJsPrPrHzwlvDcxMNJEc6bgMA4BOrQRLMTJwOVcBQ2y1fw/1Djr7W
-         NdJklECyUwPZHY1sHxiqOfAG2Pu/6pi4TrfMLcYmj2qMObldWiiA/NrEcKR8pKUkdae1
-         Qr3WBG91dtg2IhgBcP1taAgips5v+ROTywpFHCCvAAVR5jULGSVMpbySJVrfjBSSUQKw
-         tEiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793444924; x=1794049724;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1793444952; x=1794049752; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=qn1VaOGofv/ujd8ZvwN7vtgFnr5O801uRmpZaOHHctg=;
-        b=WLcYeTxSS7pjuP8ImBBjFas8D7QeVJr1Rz4IhzSYBuMc5LKXEDSk+PiiafotMOY8ja
-         2gvkkbfcOoj8xrEvDH+1vXdMFh96lRanAzev3SFBi7+TcfJONyl3HNcWYefN+uLYvCWs
-         uu7wzDHn0uQcFyH/BbIau3OAP137CqgwJBLlAQRjk+k79yfhbq16C5bbnj3NVh/yGork
-         GWr8gdGb481iLkcga+3AX+ZWM8bD2cS5AyFTVAaNAiWOvuOyQ9tvuSmvxMMKgXRwYdcp
-         BVYiT3hvCgjwNPWfE9gejT8koy5IzQYlRhr7D6h/nrGGGJO35IVzLC1TWALsQgQydU6T
-         CvjQ==
-X-Gm-Message-State: AFq9FYJMSfZeb2OAzUdkWGISaKUlKG9Rbl/YQIl38bLJUvDFN/9NocgN
-	yqxbDhupvAjpZ8PjHAUZMSgSLZGc17RM+NdCvXM5dN5vmBY3w9s1EXsAZILGtJZXE8JMYg==
-X-Gm-Gg: AYBFou0WF6gbvgVjuUHFwqgKFWMBOxd2jbXJNEQZfZvuzTbGkeFvcHXFNOhKKcYNZsu
-	8K7gBpBp4KHuBLuxfBXibP5fNc//Agu3bBLHwuEsXDsf4bopn2Vg+PAEvYDSCvR2ExRzZr9D/bp
-	NtlkxFYgMZDSR86s+EsK3bBeANzsyh2WgBk2RPk0diZweFfWu1LUIYOHFG/P0Rh01k9jZ/pDcm1
-	ResCPTmBxu6N8RVl0YQvIDsXwq1/BA3c0nusHGNFB6RZAejlvQ1LzvTTKlRX/AksZivuoeliyJT
-	Qgut9su/gJDTFzQOV8dcn3EH0qpQMBVyrBTDlkXYMPWZgxjX4k+J0xE8QzXhxfP4nHXiLyFYtQs
-	QeRD/Gae8z4glisPQOpsapnvg+qenQ9sb12+/N+Fw7FZit4s5kqMLRw44a6ZyN1pzVLYXHcuLIr
-	90NvWCs0BuDFoIMIdiuzBRaocNC0KH7v6mpthQXf0e8lN4StfyJzcJHDKB931uW+ss7Di/zRnTc
-	oubK+i6K04n95SiyUGwEJveM072c8EyfMvDckxBuPoB7hNU5HeSZ5r0Uxg59mUMvApOxHjA9kji
-	VmJgM4NffeewIdvaGk0mSmaAnKpcPIDq4+ZbxjVriincs94xzi/y4fMCP5oVBt+zSw==
-X-Received: by 2002:a05:600c:138c:b0:4a1:f90d:6f4c with SMTP id 5b1f17b1804b1-4ac17ffaff2mr107425825e9.7.1793444923989;
-        Sat, 31 Oct 2026 04:08:43 -0700 (PDT)
+        bh=dBEoy5iqEE1c+mW/hlhl+h0UQlikvbw3e87Ek3myWuU=;
+        b=ezJTXjiWRX8u+57GIh7lc8J3gcmuICa9M7RIvDGzkt0/p5VD5AbZAA2FwdQpjtbuhs
+         DGx44hX8P5+dpvioF9cVeF/+hb76i62fTCVxjZi/X17CwRKjhL+4XvYTGlG7cgASRHz0
+         QWuN5OIxzwoPZllg6vSVrsvNqQ+R8ZC5Nq4H5MrwBxDE9tDIk7IgBvVGTB1PATvSuK2Q
+         txtV5ekYGFUU12sYQdighPpchg+Q4iSU/YU3WCL4VUubYe4PeRss1juPO0EX8q8XTcJK
+         ZSQMNq/+LryLcLwci96Q73ed8JCe0dD0IgAN0Z33BKcs5ZysNrOHMxK0yva/T6hEv1kV
+         6AcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793444952; x=1794049752;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dBEoy5iqEE1c+mW/hlhl+h0UQlikvbw3e87Ek3myWuU=;
+        b=sc3VxPSQm2Qrme+y5l24O8FKxxx8A4CpQrF8kx7G14UfRAHYGrrIJ5DU/kPIPxedzP
+         IG9ndSkwZR7+E9jYFeAQn/3MlkwHir9N4+htAsGfQ/aleWijGnsCvmq9AjNy/3DdlzXn
+         hwg5H1XAKnqlu32aSV3r1Ui3a6yI9c5EOtxF0zuYl+C9Wved7s22QBzY0TppHI1MOEow
+         cuJZeLuqKI4ZBf+5mmF1L9JEELLu5/v6v2k96b76slwbc8ofO74ZswEN7pBsM1yDqrwQ
+         sQQUlLFdaMpHuP5DGAiTp+plnuCszkrTPeJlgOMHYlXaq8cv9A/zpoXIDNTxIMdlpZdn
+         ho9w==
+X-Gm-Message-State: AFq9FYLR3ValM1eL7sGcGiLY/Oe1Tt86iuxVLSLZ2UddVLslssdK+83Q
+	tPdDl4JTH2amdtqaafbfqeVTY+vsFZSrvjyr7uKe++FVPm6zS0wGXyv3yVneK4SyzzXIjg==
+X-Gm-Gg: AYBFou3doUhPfvISOCHAwKDtJzVLEQHuPqqLnrwv80J2d6N8n2jTqung5v9CvGxRqAS
+	RHcddwhL8c47CsE8wUa6++tJjPuI3J1o0cD0qgD/gZ7+txN3OrIyi4AbjxmSe7373nAtVsy1FE5
+	nRxhW/mD2efeJvIfYXN/4NUnvponsQZa8e9zU7SHaRSW7tKLTDtrgEKoWfjheQZqj2Wv4VbAe4O
+	Vm/ZM7blq0WfNU+yuotDXiWlaZJRll/sGsEmKYGY/uXt0DMYGu/hb8kG1bN0mAtnGy0K5iO7cxJ
+	ggCGhGvPH6WR/wDn9RS5nS2Cav1/jLJda2orsELwUVA2b01FP2cIvlNzQPF6Na4d0gLevdxGCX1
+	55p1YZeu9zlRjRSmPz/4I4Kv5s23KcINPWKNdENhobYqRNL9Ou4PeuF334WK4kBXNSCYClMlz7B
+	P5ZwVt0QwH3TTenq2ECvXhYAvwrLfebywEW7qmqfMZVdPDHLrqXNcDjTaHfKe2tURhvfYB5D1EU
+	XLSlGWSNbEgJeSjWT2i6Vg9VMmWdisgAl9RS+Ox7eRG2ZSMtIihZSVbUarehSUT3sQZ+/pzdazI
+	X1tre6Ut6jOGR0fBFet4JIhxJIkWGu98AcYJHCsA/qF4xj8hTTgM22ixUQ5UKGeQKw==
+X-Received: by 2002:a5d:64e4:0:b0:48d:bae6:d7ba with SMTP id ffacd0b85a97d-48e6e3041edmr11132647f8f.26.1793444952037;
+        Sat, 31 Oct 2026 04:09:12 -0700 (PDT)
 Received: from localhost.localdomain ([2a06:c701:4773:6f00:c8d4:ec29:293e:f39])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b728f9sm8190774f8f.10.2026.10.31.04.08.42
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b728f9sm8190774f8f.10.2026.10.31.04.09.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Oct 2026 04:08:43 -0700 (PDT)
+        Sat, 31 Oct 2026 04:09:11 -0700 (PDT)
 From: Avi Weiss <thnkslprpt@gmail.com>
 To: netdev@vger.kernel.org
 Cc: edumazet@kernel.org,
@@ -86,10 +88,12 @@ Cc: edumazet@kernel.org,
 	horms@kernel.org,
 	linux-kernel@vger.kernel.org,
 	Avi Weiss <thnkslprpt@gmail.com>
-Subject: [PATCH net 1/2] net: check the sendmsg LSM hook for every batched message
-Date: Sat, 31 Oct 2026 13:08:40 +0200
-Message-ID: <0b1a91e7fa0de128c6e2bd3ae2f5c960a5c0f883.1793444262.git.thnkslprpt@gmail.com>
+Subject: [PATCH net 2/2] net: check the recvmsg LSM hook for every recvmmsg entry
+Date: Sat, 31 Oct 2026 13:08:41 +0200
+Message-ID: <edbdf4f4075565b1fb5925d7e311d6f315151a48.1793444262.git.thnkslprpt@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <0b1a91e7fa0de128c6e2bd3ae2f5c960a5c0f883.1793444262.git.thnkslprpt@gmail.com>
+References: <0b1a91e7fa0de128c6e2bd3ae2f5c960a5c0f883.1793444262.git.thnkslprpt@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,34 +105,48 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-sendmmsg() skips security_socket_sendmsg() when two consecutive
-messages have the same explicit destination address. The comparison
-does not account for the message size, so a BPF LSM policy that denies
-large sends can be bypassed by placing an allowed message first.
+do_recvmmsg() passes the number of received datagrams as the nosec
+argument to ___sys_recvmsg(). After the first datagram, this bypasses
+security_socket_recvmsg() even when a later entry requests a larger
+receive buffer that would be rejected by an LSM policy.
 
-Use __sock_sendmsg() for the cached-destination case as well, so that
-every message undergoes the LSM check. Keep the remainder of the
-address-caching logic unchanged in this minimal correction.
+Pass zero for both native and compat entries so each receive goes
+through the security check. Remove the first-datagram-only comment.
 
-Fixes: 228e548e6020 ("net: Add sendmmsg socket system call")
+Fixes: a2e2725541fa ("net: Introduce recvmmsg socket syscall")
 Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
 ---
- net/socket.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/socket.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
 diff --git a/net/socket.c b/net/socket.c
-index 2e3b5737c481..c2a85224ab55 100644
+index c2a85224ab55..fff80fbca1a8 100644
 --- a/net/socket.c
 +++ b/net/socket.c
-@@ -2709,7 +2709,7 @@ static int ____sys_sendmsg(struct socket *sock, struct msghdr *msg_sys,
- 	    used_address->name_len == msg_sys->msg_namelen &&
- 	    !memcmp(&used_address->name, msg_sys->msg_name,
- 		    used_address->name_len)) {
--		err = sock_sendmsg_nosec(sock, msg_sys);
-+		err = __sock_sendmsg(sock, msg_sys);
- 		goto out_freectl;
- 	}
- 	err = __sock_sendmsg(sock, msg_sys);
+@@ -3057,13 +3057,10 @@ static int do_recvmmsg(int fd, struct mmsghdr __user *mmsg,
+ 	compat_entry = (struct compat_mmsghdr __user *)mmsg;
+ 
+ 	while (datagrams < vlen) {
+-		/*
+-		 * No need to ask LSM for more than the first datagram.
+-		 */
+ 		if (MSG_CMSG_COMPAT & flags) {
+ 			err = ___sys_recvmsg(sock, (struct user_msghdr __user *)compat_entry,
+ 					     &msg_sys, flags & ~MSG_WAITFORONE,
+-					     datagrams);
++					     0);
+ 			if (err < 0)
+ 				break;
+ 			err = put_user(err, &compat_entry->msg_len);
+@@ -3072,7 +3069,7 @@ static int do_recvmmsg(int fd, struct mmsghdr __user *mmsg,
+ 			err = ___sys_recvmsg(sock,
+ 					     (struct user_msghdr __user *)entry,
+ 					     &msg_sys, flags & ~MSG_WAITFORONE,
+-					     datagrams);
++					     0);
+ 			if (err < 0)
+ 				break;
+ 			err = put_user(err, &entry->msg_len);
 -- 
 2.43.0
 
