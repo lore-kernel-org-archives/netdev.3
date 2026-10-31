@@ -1,82 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793417338;
-	b=MR0u5RwKSPW3+DNJSW0ntJeDOYG8ln90cqpGF0ntTU3100tGpLEwTECPIYVVgaQArpBu
-	 yZCdmJn2j4dsLn6YtKA3NV00gEZ+TqtXYN2xnl6/cOt9yP3pqOS9p8PJPKP1FbP2szB4H
-	 IukD3MtXzjIBNBkv/967MGkdnld30UBk2vOUD5r1O+ZhxZ+KpepwWEHPUxrOezD9MqDsf
-	 YKWVCgjLri4wTeN59JMjBEc00nyeAHmnxF4q9LwI76yFSJfBDvte3314uuqofWBxB89LQ
-	 aAVkpvDTBlNZLi1F5zgmQScIi05VveQYhFC/sOxT4PLugDVkZarDFkghf5UZ8ISJHaQ==
+	t=1793417347;
+	b=RBubTeyo8aVGM68Lg8gDfz1n3p7fU0Ju/JVoyBizyOWTLuR8VihkqBKlZKGnlBUiJEeO
+	 tVLWYfxLzFXzOryOe4Wmx3vN/KlCLwYh5Ah0JLX5HutbAoulpVBwiGzJbqbQGxYwrk2xI
+	 zlSCgZib0SeCz+6JbosUegLD5Z+hqK4iF/f7wgZeHUT/1wjRJHmoXLaRHvQrlKtfVMPeD
+	 zeXcdtSZ4CTUBhL9gJLVoMoWUqIKI36TZ7Kmp1pHmjblEP8J/pBYTq12IR1PBJNTZaNn4
+	 jqYNMf4fho0R9eAaxRCFN188RgUKO96yaMrM+PC8uxmrsn1QbxtOfBaFBJdDBrRqi/Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793417338;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793417347;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=M808A8cdafbHu3PCH0DvbgfosKGzLw5TjgtHg7aUNV8=;
-	b=u8V+XETG9fcyowlgtgF+P2+Zzwf1PJZpHiotUw1m5H+8N4QEv1J91YvWClO/q01gIlUe
-	 6gqD+Nj3r7Qr/eG+8x6Etkwp2rdmDMZD5HIWITWL2HZSlUdjD/3VzjAEirv0uy+FSgKcN
-	 QQjCrA44/7k9qOU1LHGbghRCYtVrNVZ2GZ0XmXgy2dpUXN+oZaYPka2VjrTO8GlkvmJiA
-	 y1IZGVR6nHFhA6fNqMkzzdxM0knWs+Dh5vIEuC0ddJgX/9LcQ/1JU/2MEFyHGWtv+1sN4
-	 7tMMZv4JFPkbLcIuO0AZPkxLt5XTA+d3V40OP6jIxSfF+wzUEFFsxOXamOUmKEUeyCw==
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=VOq7ZgXUCXWxUh5Tbv14sjkPSXL9OgmAdnHY1/BKfeE=;
+	b=lh/8G7vZeHvBJG+TYUXwCBnM8bc+mshJDgpf9PVmR9X7Xhwg+pLVOhhu1qKH51s+EbIX
+	 awnr7+/+7B9bTMvgKgVljrS7swclmdFmiF5BROQ0p6FGosB5NjmiwREoQTT4MIemDzHx6
+	 gYW3OAio8SMCSJIjpDLC8eNBN9IpRuoQipEw3x2LYuCyM4l3yNdURqYwU0OeSiTw2MtAq
+	 Z9aQk155gufE3KBn5YoIiPNspjK2nU7f0bztAt8YKqSiU4LZ4UBjgLwZe93cnsI0wGbyb
+	 2HSlypVwGGucmCwxLZiiwUPzfOhDTEjQTWH1SOUAaKKxnosMOdpy1w4TnsTdpSVOwPg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w+Fvv+XB;
-	arc=none smtp.remote-ip=209.85.214.172
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=s0Nwc50X;
+	arc=none smtp.remote-ip=209.85.215.169
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FB0606A31A
-	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 03:28:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27FB0606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222F4606A31E
+	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 03:29:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 222F4606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w+Fvv+XB
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2e977109392so9664905ad.0
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 20:28:56 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=s0Nwc50X
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cd3310348d2so1087512a12.1
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 20:29:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793417336; x=1794022136; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=M808A8cdafbHu3PCH0DvbgfosKGzLw5TjgtHg7aUNV8=;
-        b=w+Fvv+XBYkX7ai02Vc4XIlsGlhWcFO1aMMn1edEw45FUatWNt4VkrYjSIejMFF+TKL
-         qKHtwo/dp9AhCZZp68T2WugeQqe4Br8c/LQqjL96LA9B+OQ1A41kDxt2u/CkpZOoR8D9
-         /x4fOMW+VJ2IGluH/ftfC/zGggeJ8pwKdfccmh4Asn7h8ywNlXA/xmslGHDXc9iNoXYC
-         hOOTrAM65wlZKq4arnnPdGmQE0XGs7yMuHcRcaZo8Zc57yQbRPa9Yg7cM+F14SEs/4qx
-         dPZG7Q2hf/nt/RMxoNTxiYP6vfYz0evdntPFW7G6cfH7LA4BA/UmhK6HdZ8T7kGeYIp5
-         5Cxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793417336; x=1794022136;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1793417346; x=1794022146; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=M808A8cdafbHu3PCH0DvbgfosKGzLw5TjgtHg7aUNV8=;
-        b=QirjvJcr1JmpynnfHX/DLfry/UIk2KRYieBSv3rHH1egg9DHdsX2u7W8qngtiuj1LN
-         eJjjidp6ln3T0gKC5lnKf2v5KpJF6PgcC+aSGGP3QtIzw5WzBsDKzoVodpbD0Jj8VtJO
-         tMIouy4OPfqqEAtWCqpdSQiktEf+hzcLwXh665PaTksIglnDD/+RuR9trQf6//izM0EP
-         lp2kCObU9uZoh6NK7pbgxD8tSM4IslUUVvgAWePbkkLQJnb/KHv7LJLzluscwTa/Idrk
-         rqAPSmlqwFgVThZ1Orz9ZAp42uMCB3dNevCu6cJ04KzgnLF5swa20ooHaypEPhn3EaHy
-         DXJA==
-X-Forwarded-Encrypted: i=1; AKwUvBxBYuavhof87EOnBVWTIKFD28n7QggY0N8JRtHqTA5z/B5LN/rvSdKaXsI9pjUBm1Rq0I6ZcJ0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLTv0kj0NONDOOATzPictD/nseEFawT94nQHGfemKhxYTgp5dGH
-	BdD3/kIY7tC/AgSI5Y8aglJCeO+CGlo4YUHnui5zoao0QJUUT339K4of
-X-Gm-Gg: AYBFou37GvA4p1Grt9GZct+F5TSEpdOggeA1sIQvIpmdtohqrArl7drOjRFD0JetK9w
-	6iDC97spFwOpfTNwVn1FfJswnmiFDZeBWckVehIiXTkg1wYFRTVsLORVd0XsbUF/0Qpxj0FR74T
-	BwwY9O9oeMxFrqwL4ZHoNGwJZ8EVcNHsuEVXCfaDVoSteuHcVt/q9Xt7Mzqis+gxiLEAKNvGU6S
-	sTGrFl97VS5oGsL3EtTU49H96BvXXggQSgbJu1TMV3SZTrEXuQMY7/n9bff22TT4Lxt5e8Dltub
-	vyiytU3XvhEIYZCIcIeJusUEJ8Muof3h/nilG7bePgxnSUTXdimF0Xvzfl0DWLxmsvTw/OEWK/6
-	FDIkpJt52dG77bc35vEiovkn3YaPaCNZg/GJbd8Khstm0OvIYhHZHbN8bwe3OX49tQrpuPoPDdr
-	0IacJaTOl7ksiCCu/THyk2e2sXGP9UkyxyBLJVRAPs84R2x8wliFkQ1mG9dYkJQVc5DbDIQYBd6
-	zx2+DCTwdf3aWW/aOYzoju7emxlOy9sqOX8HU6Qd0qG62CVo2jw5zJ0alSY4PAufD63eAVODOy/
-	aDwmvant2qHtRVdM6MqhYzsU
-X-Received: by 2002:a17:90b:28c7:b0:3ac:83c1:2bd with SMTP id 98e67ed59e1d1-3ae897f33cemr3295046a91.28.1793417336425;
-        Fri, 30 Oct 2026 20:28:56 -0700 (PDT)
+        bh=VOq7ZgXUCXWxUh5Tbv14sjkPSXL9OgmAdnHY1/BKfeE=;
+        b=s0Nwc50X8TuoMH3sQVIthhvnvDSYX/A99zFYV4ARkAP/govku/xTJxlFZE5SrI1xgZ
+         Le013SMoPW0IDL+liS9OH75Xu4ALVIxsFRF0YLLIk7L9skI1u/0SGZe2aJ6g11dzoZnM
+         mWhKHzFZMtpluBP1IBPYYFMMvLUDxUn1PPEy97Zf/tUhQtsDqoNALLfTPBLVlGVoJ6px
+         D7xdUT+V/sw64nXuBmZ9ZWtTpEwNDP2VnBkED99mWMSxamrZ7CXoJqGZRfLW73NL6Rwf
+         Qtx/IfuEMx1ZzMRyeUKdaf9fGhcEeRlxvzf9WqchM/dNrTReWClerAte2h2YYhSkvmQw
+         Pb5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793417346; x=1794022146;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=VOq7ZgXUCXWxUh5Tbv14sjkPSXL9OgmAdnHY1/BKfeE=;
+        b=lgBgxFJlAXj3y6TIOrhhH7m5Bjzg0LBHk0tQmTaMjgCQ+V3ZO6qaKO3WjBXc8vGj8w
+         YeijyrXoRDtR0z9VqRSEduageml7YqIUtKdXFQvtIdNbc4W0pOvgG37KOlbzNlBj8/5H
+         9ip2tYy9oCiIYcsWRYDYHU62cUfuik70DGLdOweh4QftAp+K24ChUikUXoeXDCOWOIEq
+         l+asBrpdtpYGzDRpWTaLyeL673veY8HXldR6wYG6QXeLUclmFzJJJCUYTTHz9tRKdsHx
+         O0vqYP0/0gTQEsk2F+uqqVv/Ylcp0u4JRXzDYOHCrEeR9jj7c4mF/6fpEcD8xLv+o+I+
+         UR8w==
+X-Forwarded-Encrypted: i=1; AKwUvBxxqtzcPZFdmIkr0I8OhTAoP0UUgqeYPYwBBjsxS790fFSERhXJl71HygE5Wpiwcp6rEpnGc/Q=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ2xzMLz0Zr/oV7pqQ466nyan2yupyJ/E7/UomyJ5Ai8AE1Aj+W
+	Bto+G2Oo3uwhJY5tu3rvbGVl+N526M17on/RzZdjPBX+VTRyZ9LBtZ2P
+X-Gm-Gg: AYBFou1kS2Ml3q6TtBOCdz6nIPj9W6AYHqjV29IXrsYdCCg2oZ7i4kBdUaHIERq7D6F
+	VP0GM+/7gx1Q7yLTzvNKuCy5hikCSal05NWObU5bibXMKSgQRi9NCexNFe2nVSJuDPm1s+77Cgw
+	DpuEinaN3s/d84QPxps3XPys9dFyI58FYAumZCtShejvQvY48raSpMSBGb3tahPWWT4GbWqrwFm
+	O7q3Cm/g5RrFZbhXBQPto2B95RIrQ1jjcGvQnl4DvXqvgq4KIlpae0yGB9rMeAniLZSB71rOKI6
+	e8/yL8QjVl+fwdm6S5h3QQFsrJ2Sych+AyufL4OuqGO9gVo9vX4ySX3hjG7fjEqG8mgdJ6/sAJe
+	DhL//qz6wzELrJP896JOs87gU7gpSYIyhewTkCMy7aR/u/f6Q3PoEJl31iXirgPnMx+0zJT8JNh
+	Avq90+MZjR+n9W3ui50Ni4dwUTHQGBrjDfaFlPaLsqi9g78TZX0yOt/rIKejT9ugT+9jPyq2PRV
+	IGU5/LGRtco+tw92ukPYrf37Cohz8+v08Gz+Ss5NCYgtqPOiCECMt7QqaOo3dQtAcBFuwFEtXGr
+	4ifcSFCNK9ix+PgOBG6PFwcKgNTEufxVYS8Ha1RuwD+mpg==
+X-Received: by 2002:a17:90b:564e:b0:3ab:b764:8256 with SMTP id 98e67ed59e1d1-3ae897276a1mr2527847a91.17.1793417346367;
+        Fri, 30 Oct 2026 20:29:06 -0700 (PDT)
 Received: from localhost ([111.228.63.84])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae87ee7765sm3212773a91.2.2026.10.30.20.28.51
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae87ee7765sm3212773a91.2.2026.10.30.20.29.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 20:28:56 -0700 (PDT)
+        Fri, 30 Oct 2026 20:29:06 -0700 (PDT)
 From: Cen Zhang <zzzccc427@gmail.com>
 To: steffen.klassert@secunet.com,
 	herbert@gondor.apana.org.au,
@@ -91,10 +92,12 @@ Cc: horms@kernel.org,
 	baijiaju1990@gmail.com,
 	jjzuming@gmail.com,
 	zzzccc427@gmail.com
-Subject: [PATCH ipsec v2 0/2] xfrm: fix offload state use racing with device teardown
-Date: Sat, 31 Oct 2026 11:28:47 +0800
-Message-Id: <pm-xfrm-core-objects-candidate-0050-v4-3c6b8c5369a802e9be0e-0@gmail.com>
+Subject: [PATCH ipsec v2 2/2] xfrm: use cached offload ifindex when migrating an SA
+Date: Sat, 31 Oct 2026 11:28:49 +0800
+Message-Id: <pm-xfrm-core-objects-candidate-0050-v4-3c6b8c5369a802e9be0e-2@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <pm-xfrm-core-objects-candidate-0050-v4-3c6b8c5369a802e9be0e-0@gmail.com>
+References: <pm-xfrm-core-objects-candidate-0050-v4-3c6b8c5369a802e9be0e-0@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,38 +109,85 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-NETDEV_DOWN and NETDEV_UNREGISTER flush a device's offloaded SAs with
-xfrm_dev_state_flush(). It deletes each SA under x->lock and then frees
-its offload binding with xfrm_dev_state_free() without that lock: the
-driver frees its offload state, xso.dev is cleared and the device
-reference is dropped. Netlink requests that hold only a reference to
-the SA can still be using the binding after they checked xso.dev:
+An xfrm_state reference keeps its offload record alive, but does not
+prevent xfrm_dev_state_free() from clearing xso.dev and dropping the
+device reference. xfrm_do_migrate_state() checks xso.dev before
+xso_to_xuo() dereferences it to obtain the offload ifindex.
 
-  1/2 The offload statistics refresh in GETSA, ALLOCSPI replies and SA
-      notifications, and in the expiry timer, calls into the driver.
-      Refresh the statistics only of SAs that are not dead, under
-      x->lock, which orders the refresh with the teardown.
+With XFRM offload and migration enabled, XFRM_MSG_MIGRATE_STATE inherits
+the old SA's offload configuration if the request omits
+XFRMA_OFFLOAD_DEV and does not set XFRM_MIGRATE_STATE_CLEAR_OFFLOAD.
+Device unregister can flush that SA between the check and the read.
+The supplied report used a scheduling probe to delay migration in this
+interval while in-tree netdevsim was removed through sysfs.
 
-  2/2 XFRM_MSG_MIGRATE_STATE reads the ifindex through xso.dev. Use the
-      ifindex cached at attachment, as state dumps already do.
+    Migration (xfrm_cfg_mutex)       Device unregister (RTNL)
+    xfrm_state_lookup(): hold x
+    test x->xso.dev != NULL
+                                    xfrm_dev_state_flush()
+                                      xfrm_state_delete(x)
+                                      xfrm_dev_state_free(x)
+                                        xso->dev = NULL
+                                        netdev_put(dev)
+    xso_to_xuo(&x->xso, &xuo)
+      xso->dev->ifindex: NULL deref
 
-Cen Zhang (2):
-  xfrm: protect offload statistics updates from device teardown
-  xfrm: use cached offload ifindex when migrating an SA
+The netlink configuration mutex does not serialize with the notifier,
+and migration takes the state lock only after this read. The result is
+a NULL pointer dereference even though migration still holds the SA.
 
- net/xfrm/xfrm_state.c |  4 ++--
- net/xfrm/xfrm_user.c  | 14 +++++++++++---
- 2 files changed, 13 insertions(+), 5 deletions(-)
+Use the ifindex cached in the offload record at attachment, as state
+dumps already do. The SA reference protects this snapshot throughout
+the read, so serialization no longer depends on the device lifetime.
+Annotate the binding check with READ_ONCE() to match the concurrent
+WRITE_ONCE() in xfrm_dev_state_free().
 
+Oops report as below:
+
+    Oops: general protection fault, probably for non-canonical address
+    0xdffffc000000001c: 0000 [#1] SMP KASAN NOPTI
+    KASAN: null-ptr-deref in range [0x00000000000000e0-0x00000000000000e7]
+    RIP: 0010:xfrm_do_migrate_state+0x1f06/0x2c50
+    Call Trace:
+     <TASK>
+     xfrm_user_rcv_msg+0x3b3/0xc20
+     netlink_rcv_skb+0x133/0x390
+     xfrm_netlink_rcv+0x76/0x90
+     netlink_unicast+0x504/0x840
+     netlink_sendmsg+0x7f7/0xcf0
+     __sys_sendto+0x425/0x470
+     __x64_sys_sendto+0xe5/0x1c0
+     do_syscall_64+0x115/0x6a0
+     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+     </TASK>
+
+Fixes: a9d155ea9b44 ("xfrm: add XFRM_MSG_MIGRATE_STATE for single SA migration")
+Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
 ---
-Changes in v2:
-- Address the incomplete RCU protection raised by Sashiko:
-  https://sashiko.dev/#/patchset/97864
-- Patch 1: refresh the statistics under x->lock and only for SAs that are
-  not dead, instead of using RCU, which covered neither the driver offload
-  state nor the cleared xso.dev; fix the same race in the expiry timer.
-- Add patch 2 for the same race in xfrm_do_migrate_state(), also raised by
-  Sashiko.
-- Trim the crash reports.
+Assisted-by: LLM
 
-Link to v1: https://lore.kernel.org/r/pm-xfrm-core-objects-candidate-0050-v3-dbfb7194ffb750193d02@gmail.com
+ net/xfrm/xfrm_user.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 781d4ec565aa..1cea24380797 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -1240,7 +1240,7 @@ static void xso_to_xuo_ifindex(const struct xfrm_dev_offload *xso, int ifindex,
+ static void xso_to_xuo(const struct xfrm_dev_offload *xso,
+ 		       struct xfrm_user_offload *xuo)
+ {
+-	xso_to_xuo_ifindex(xso, xso->dev->ifindex, xuo);
++	xso_to_xuo_ifindex(xso, READ_ONCE(xso->ifindex), xuo);
+ }
+ #endif
+ 
+@@ -3462,7 +3462,7 @@ static int xfrm_do_migrate_state(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	} else {
+ 		bool inherit_offload = !(um->flags & XFRM_MIGRATE_STATE_CLEAR_OFFLOAD);
+ 
+-		if (inherit_offload && x->xso.dev) {
++		if (inherit_offload && READ_ONCE(x->xso.dev)) {
+ 			xso_to_xuo(&x->xso, &xuo);
+ 			m.xuo = &xuo;
+ 		}
