@@ -1,98 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793436213;
-	b=BSucIVLWYTY9Hxsl8h4vVj7RkSQUlSxG4MhQ6jaIDC+qcgo0mUXSAnvrukVIPQhfSp5Z
-	 pPu4QaXic60i9F8BI1T2WvAjXbQSosJ3m5gogJemkHtyBSimR3FlF7RrB6uMNKkBWLdPi
-	 X1yLglpsupt6iwm4luJYw57RmYQUqadhNBTqie+gZ9Y/cle0WAJv/Z78SFrVTvyLQWDRN
-	 6y44x4l8jkiwoOXR+igse10ScTDTNu30Q77kfxEbcAL2QVsDzyg/5KL0mfBwLh6oTrF3p
-	 mgl6q74ps1VHJtx9GXCToe4YfFu7kyUMAkScYEmIU5iDZOw2tIYzZRimvQ2t/kgxLCg==
+	t=1793436760;
+	b=f7GBHOMdNJHl4edo4Vej84ZDra+CsqPJLYq3Ug3pX0PYnCwDf5pL4tkYO8KWpSxOmCTq
+	 ysnCFkpG/E7zv2rt1XRSgHK9QTHvGYQA4Gi+nM0nqg66ku2lm+cfg8YwGnhJa5DnXD0vj
+	 NchM3J31pYqyrk4K9u3zPeiefF480AmQM3DZFKS9R2HpmxmXknSOhsgvCPKJ/PLVQQAOA
+	 6PfgFp/A+etO+1xsFWQ/hza+pdKwiYExBxwMQWACB7+oL/nGjwJgczEF4V2hw0cqydDsH
+	 xTkesHL09qfP2lqbn2ht3wBjSaemac5702ENzk6xfYh9fz1Cb7EqD6PSBIIFuqxVzzA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793436213;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=ad7gFIQdBQZKzkKCsOE/9mkrFdAk1a3efziNmDQqoYk=;
-	b=kwAXTzWzFm4KOgvb/1YqAOSjz9VOXSA9O0IEeM0WX5xZIHemmfQZez7dG4DSzYZmjWkm
-	 rBIckIbhstL38vc0xsQDfLXDZsMQN44m4ML9mkUF5wphs2goRYg8n2Kbn4bAILu1nR3iS
-	 oeqQdpB+pFFF3N9E1CHl8yIL9vyGihUgb7CsE9jOnKwT1aMHtzqmOmu8ogrfbqqk1aMP2
-	 0fZWhbnf3Aaa2+MyvlLf7LKsGiaEigbAZP0uYuLBV6cRRwoSG+r9c1V24z+cwXlRP/FsD
-	 zdVUrOHWtGmaxPxizblJbU9AMEogrsEA7ZhP86T73GJtdnOvLPEi1nlbxdpXuvd9iqw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793436760;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:MIME-Version:X-Received:Date:
+	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
+	 Subject:From:To:Content-Type:Content-Transfer-Encoding;
+	bh=T54JHojtNznOOiHI0falihSPn5TxrG175B8BVl0MzMs=;
+	b=3KWZ3bu5I0wsE0omSao2Ayv5lMtLlAk5uQfE9T8NxPM5d9ewLfV6BWBLOMkjFxF+HZvm
+	 8cAtuEudPnGxG2Tk7y0/NKA1XzztUbOI5VZRXDSIUgvz7cDYaj0ssiCKM/rUVgmIl30r5
+	 9/uskxl9RTorg4cymbPz6Rl4pRn71qAwy9zyLIclL9H2/Cm65cLFMRoHrSV7rmFRoBHgz
+	 nn8tOg99RtIPygoGylD9EIYFbZo05VWw42rhS5W6Dm0/D5eNwNEGqa9XggTKczdiNPmJu
+	 Rls5KLgOFIEKgrq4jwJ9tJjPmbxyHH21GpH2nghbNZuerQhGSlMGQRCvknr5BQaaWaA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gDWGI5ul;
-	arc=none smtp.remote-ip=209.85.221.51
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	dmarc=fail header.from=syzkaller.appspotmail.com;
+	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	arc=none smtp.remote-ip=209.85.167.197
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E39606A31A
-	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 08:43:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 56E39606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gDWGI5ul
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-48c45111bebso625686f8f.0
-        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 01:43:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793436212; x=1794041012; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ad7gFIQdBQZKzkKCsOE/9mkrFdAk1a3efziNmDQqoYk=;
-        b=gDWGI5ul7OPLpHwRY/foqogofpQSVG6INHe0USsjKb961EtCT7nDj4a6B3yTS+dW0Z
-         /RETt4vAROFvGI3DRN21HTlVMvmp4CIUi7Th+/xnvj8M3r3MEoqMTKPBpe9S+tCaTb73
-         n/XlQdOgT9i3vU5S5U98/LhcnIXq9LDWrX5adZUrxam995+tiFurTBecyqeA6abOh8TF
-         WdauYPBz6UActVTI59z18M4Th380HWDSyVFx7s9b8J5MYqClAZ/YKR4lrh62lNMJw/yA
-         LngZV2B2l3ZSfprlljxsu0nCNCUvo8FYjNm9lwunW1xLJBhPU4m5P63MJD31M5YkIXzU
-         5xCg==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7090B606A31D
+	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 08:52:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7090B606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-54213290993so1182248b6e.0
+        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 01:52:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793436212; x=1794041012;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1793436759; x=1794041559;
+        h=content-transfer-encoding:content-type:to:from:subject:message-id
+         :date:mime-version:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ad7gFIQdBQZKzkKCsOE/9mkrFdAk1a3efziNmDQqoYk=;
-        b=XB+gquUZaaVcmSlzmL0E+5qs/jqFuksSgruII7B3EBTK44vEPDgSuKfgubw/x5Z8Id
-         8ZYj+ykPFj5vcCPKbj9y0GIwPtoNTs0urdlCXm1+JjmcbxoBtK8FCKytttZ+v+I/ljXc
-         eiXAMJeTaFYrg3PY9o4smDUI5LYwWAlkM2DL2l/GdPwOpnemoXjkkayP6xEK0x9Fb6f1
-         JsBdIDnwqoOpuGdHLbq/LjsXhO8qsPjGpr5pONAhtba1ABaYWknJLxrDon7rQYTXb+GJ
-         xahJS6RIPluzzGFXR7u2orsgeIEIbQip413oZ/MhfO0bUapubyb+4lgmmFoMVgXXK6P4
-         PPdw==
-X-Forwarded-Encrypted: i=1; AKwUvByh76rPkaV+wbjbtrejqNBDyAttP4Udi+iGFGGCJi+lHkptesuHgQn/f15e+0hKxkU33rabom0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKD8O5toRM33+j7k8lgtARP5rg6eAdJLOgt3ZnfbgTZGnuW98Ql
-	dG8acQddQykB2pNOdMXJRFh3UV59F4ohZApCWTCJficttJ8wl/zy3qP1
-X-Gm-Gg: AYBFou0NhuuwLGFCidfydRUMKXEX5Ku8Nf6mRiZsbs3PMHetUc0MRE6c5HE5kfXwQaR
-	hsBhgueKodvQDCDFBT+dRJJJHaNKwO3ZfzElPAN68BcM/hhSkeOIZyRMtDnTynFjxq4ZayAVI71
-	xLNBFqM5d6YC3wg54cyUEHf++LwnPTYowg0tmEIC0VLqum440e6hWqhz3K11Htoa9W0TANtK/xI
-	DE7MMkzd47Lp5G5akNUwyk/J3gLAGMnCrJnMDDlVYVvxRoSKw5DI7hIMJidDX8twqYo+UCKRCsW
-	wNPB5y6zFeD9VbrEkxUM13hmam+qyKrOc7j9du5txnJuFftY2kQOEMtULwH20imoXr7x+3mwk+g
-	tgQ/5pQWtpje+pitr5C0OsZ7MDwnyjKY89k07eJZDpcKGpXuF0jLLnOaNeDjTMflZ62SDbtFDhW
-	cqYCA31WQ2FZQGoK2FzAaguI6O6Q+ZxRZKBzlu8R41+vhhuVfh1+JkNvlDcsp/vveuaPfUVcGv4
-	Rk84byVX4ibM5lpWPCTZejEY8QLQAXGh4IgfWP0LSUn3T8IANbDygu1msZBem8sKR3BqKJT5MMv
-	kzQQKRnXkM+hDT007IWjjetgjimgHwepeVJMYc3yIDVAz1wqp/bFUmGzVQ6WOrwvonV9SEJ6EJR
-	OSVlCScc=
-X-Received: by 2002:a5d:5e01:0:b0:48e:296a:27f7 with SMTP id ffacd0b85a97d-48e6e4fae29mr10390799f8f.24.1793436211428;
-        Sat, 31 Oct 2026 01:43:31 -0700 (PDT)
-Received: from pop-os.. ([51.36.40.122])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71a4d5dfsm8772221f8f.3.2026.10.31.01.43.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Oct 2026 01:43:30 -0700 (PDT)
-From: Ahmad AG <ahmadag1001@gmail.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: kuba@kernel.org,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable+noautosel@kernel.org,
-	Ahmad AG <ahmadag1001@gmail.com>
-Subject: [PATCH net v3] net/packet: account user-triggered allocations to memcg
-Date: Sat, 31 Oct 2026 11:43:16 +0300
-Message-ID: <20261031084316.387533-1-ahmadag1001@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=T54JHojtNznOOiHI0falihSPn5TxrG175B8BVl0MzMs=;
+        b=p1nzBx9WTdckahiq/O7woHhvUHbPc6EITv4VifeG195ipYOue5nfuDLmVBdZlSYEKt
+         t4gqOzQYF/cmdBu6xlrtaay2q1WkcyPfW29IZbcKJs46wtaftRUREjN9mwW29OAcxhAq
+         UZpFi6QFxRAKb6QQOKvqNnDrvSl0r0V+9O/YDKs2NC/nn7TbBG+7Jcfrd9jZxOUIVbhf
+         x6CzWZOJFPcsyQk5dNQZIEfp4RccrILsrVrV/ESUKm5SF9nCQ7iZ9hP4lsO3CIhaSmPW
+         eqwyKDZb8qp68xBExsOsBaD7Wq4v/iDOKdqMHEm5aFxKxGMYl2MzpwUtE1txac5Ogcni
+         KoBA==
+X-Forwarded-Encrypted: i=1; AKwUvBxES20jX4yjTZBL2aiUPqGT1sL5zhTx1LJOm6w4Y9270r2oIO4+moCg+YrSkdhxW+30oyQTKiA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLkEKn9SJb/wGqD5lJCd5XNhuxzEhJ4hrqbh//0skBshflQrrty
+	co8SJyBcyXSFIYsbfH6KLsgFNPEFU4GFzT1g8mrkPJZskVsXO6oO/Nzqw4te5ysHVh4hgZP+1Nz
+	4dAsFKb8/8sTcbL7xZMMdbhUr4f/8Ex4nF97+r6ffel3HU3JeMJ/iaKWF+kw=
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,176 +58,178 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6808:c2c7:b0:531:7f68:842e with SMTP id
+ 5614622812f47-5640dbd6258mr3317562b6e.8.1793436759449; Sat, 31 Oct 2026
+ 01:52:39 -0700 (PDT)
+Date: Sat, 31 Oct 2026 01:52:39 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ae5ac57.88e51036.1515fd.0003.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING in rfkill_dev_uevent
+From: syzbot <syzbot+56f5119a6b206041a6b7@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-A packet socket allocates memory for its user that is not charged to
-the user's memory cgroup:
+Hello,
 
-- PACKET_RX_RING and PACKET_TX_RING: the ring blocks themselves
-  (alloc_one_pg_vec_page(), both the page allocation and the vmalloc
-  fallback), the block array (alloc_pg_vec()), and the rx_owner_map
-  bitmap of a TPACKET_V1/V2 RX ring. The size comes from the
-  tpacket_req passed to setsockopt() and has no limit other than
-  available memory.
-- PACKET_FANOUT: the group created by fanout_add(), about 1 MB per
-  group with max_num_members = 65536 (a 512 KB array, rounded up to an
-  order-8 allocation) since commit 9c661b0b8544 ("net/packet: make
-  packet_fanout.arr size configurable up to 64K").
-- PACKET_ADD_MEMBERSHIP: one struct packet_mclist per distinct entry
-  (packet_mc_add()), with no limit on the number of entries.
+syzbot found the following issue on:
 
-A process with CAP_NET_RAW, which an unprivileged user has in its own
-user and network namespace, can therefore pin kernel memory far beyond
-the memory.max of its cgroup. With memory.max set to 16M, a test
-running as uid 1000 took 525508 KB of system memory with 64 sockets
-each mapping an 8 MB TPACKET_V2 RX ring (1 MB blocks) while
-memory.current grew by 1024 KB; 264832 KB with 256 sockets each
-creating a fanout group with max_num_members = 65536 (memory.current
-+512 KB); and 46000 KB with 100 sockets holding 2000 PACKET_MR_PROMISC
-entries each on lo (memory.current +124 KB).
+HEAD commit:    dda51b737216 tcp: check congestion control restriction firs=
+t
+git tree:       net
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=3D12607259580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3Dd0f4f48df8e34eb=
+3
+dashboard link: https://syzkaller.appspot.com/bug?extid=3D56f5119a6b206041a=
+6b7
+compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D10e3188d58000=
+0
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D169b9135580000
 
-Allocate these with GFP_KERNEL_ACCOUNT, as other allocations a user
-can make on demand in the networking stack already do, for example the
-AF_XDP rings since commit b0057c68df71 ("xsk: account ring allocations
-to memcg"). vzalloc() takes no gfp mask, so the vmalloc fallback becomes
-__vmalloc() with __GFP_ZERO; it also takes __GFP_NOWARN, like the page
-allocation before it and the pg_vec allocation, so that a ring that does
-not fit, in the cgroup or in the system, fails with -ENOMEM and no
-allocation warning. These
-allocations scale with sizes or counts the user chooses. The small
-fixed-size ones, the rollover state, the per-CPU TX pending counter and
-the deferred-free work of a TX ring, are left unaccounted: there is at
-most one of each per socket or ring, so the socket bounds them. skbs
-are bounded by sk_rcvbuf and sk_sndbuf and are left as they are, as is
-the per-packet zerocopy state in tpacket_snd(), which lives only as
-long as its skb. struct packet_sock itself comes from sk_alloc(), and
-the netdev_hw_addr entries that PACKET_MR_MULTICAST and
-PACKET_MR_UNICAST add through dev_mc_add() and dev_uc_add() live in
-net/core; neither is changed here.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/69fc30a54172/disk-=
+dda51b73.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/6fd8743be1c2/vmlinux-=
+dda51b73.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/1aa0f93cd3c4/bzI=
+mage-dda51b73.xz
 
-With the change each of the three tests in the 16M cgroup is stopped
-by the cgroup's OOM killer. With memory.max at 1G the rings charge
-525436 KB for 525536 KB of system memory used, the fanout groups
-262400 KB for 264608 KB, and the membership entries 26880 KB for 200000
-entries. These figures are from a KASAN kernel, which inflates the small
-objects. With 8 MB blocks, which always take the vmalloc fallback, a
-32 MB ring charges 32636 KB for 32768 KB used (1G). In the 16M cgroup
-the cgroup's OOM killer then acts; with oom_score_adj -1000, so that
-nothing can be killed, ring setup fails with -ENOMEM and no vmalloc
-allocation warning. A workload whose memory.max leaves no room for its
-rings now sees ring setup fail or the cgroup's OOM killer act.
+AI-generated root cause summary:
+In mac80211_hwsim and cfg80211, the netlink attribute HWSIM_ATTR_RADIO_NAME=
+ is
+accepted without a length limit, and cfg80211 does not bound requested_name=
+ when
+setting the device and rfkill names. When a user creates a virtual radio wi=
+th an
+excessively long name via netlink, rfkill registration triggers a uevent wh=
+ere
+RFKILL_NAME exceeds the fixed 2048-byte UEVENT_BUFFER_SIZE in add_uevent_va=
+r(),
+triggering a WARN. In production kernels, add_uevent_var() safely returns
+-ENOMEM and drops the uevent without memory corruption or system crashes.
 
-The missing charges were found by code inspection of net/packet/ with
-the help of an LLM and then triggered with a small test program that
-creates the sockets, rings, groups and entries and reads
-memory.current; the numbers above are from that program. Tested in a
-QEMU/KVM guest on the net tree (x86_64_defconfig plus kvm_guest.config,
-KASAN, MEMCG, PACKET), running the test as uid 1000 in a cgroup v2
-memory cgroup. tools/testing/selftests/net/psock_fanout, psock_tpacket
-and psock_snd.sh pass before and after.
+full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=3D56f5119a6=
+b206041a6b7
 
-Reproducer, as uid 1000 in a cgroup v2 memory cgroup with memory.max
-16M: unshare(CLONE_NEWUSER | CLONE_NEWNET), then 64 times:
-socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL)); PACKET_VERSION
-TPACKET_V2; PACKET_RX_RING with tp_block_size 1 MB, tp_block_nr 8,
-tp_frame_size 2048, tp_frame_nr 4096; mmap the 8 MB ring and write
-one byte per block. Compare the growth of memory.current with the
-drop in MemFree. The other two tests replace the ring with one
-PACKET_FANOUT group per socket (max_num_members 65536, 256 sockets)
-or 2000 PACKET_MR_PROMISC entries on lo per socket (100 sockets).
+IMPORTANT: if you fix the issue, please add the following tag to the commit=
+:
+Reported-by: syzbot+56f5119a6b206041a6b7@syzkaller.appspotmail.com
 
-The ring pages have never been charged to memcg, and the membership
-entries and block array not since commit a9bb7e620efd ("memcg: only
-account kmem allocations marked as __GFP_ACCOUNT"); neither has a
-culprit commit. The Fixes tag covers only the fanout array growth.
+workqueue
+workqueue: name exceeds WQ_NAME_LEN. Truncating to: =14=EF=BF=BD=EF=BF=BD=
+=EF=BF=BDe=EF=BF=BD45=EF=BF=BD8) r1 +=3D -8
+     15: .
+------------[ cut here ]------------
+add_uevent_var: buffer size too small
+WARNING: lib/kobject_uevent.c:688 at add_uevent_var+0x2db/0x460 lib/kobject=
+_uevent.c:688, CPU#0: syz-executor353/5646
+Modules linked in:
+CPU: 0 UID: 0 PID: 5646 Comm: syz-executor353 Not tainted syzkaller #0 PREE=
+MPT(full)=20
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Goo=
+gle 10/07/2026
+RIP: 0010:add_uevent_var+0x2db/0x460 lib/kobject_uevent.c:688
+Code: 48 8b 44 24 40 42 0f b6 04 38 84 c0 48 8b 5c 24 18 0f 85 73 01 00 00 =
+44 01 33 31 c0 eb 20 e8 0c 1c dd f5 48 8d 3d 35 df a3 05 <67> 48 0f b9 3a b=
+8 f4 ff ff ff 49 bf 00 00 00 00 00 fc ff df 66 43
+RSP: 0018:ffffc90003996a00 EFLAGS: 00010293
+RAX: ffffffff8beb4a14 RBX: 1ffff1100efa0443 RCX: ffff88807f68be80
+RDX: 0000000000000000 RSI: 0000000000001770 RDI: ffffffff918f2950
+RBP: ffffc90003996b38 R08: ffff88807f68be80 R09: 0000000000000008
+R10: 0000000000000007 R11: 0000000000000000 R12: 0000000000001770
+R13: 1ffff92000732d50 R14: 000000000000079e R15: 0000000000000062
+FS:  000055556e425400(0000) GS:ffff888123a6b000(0000) knlGS:000000000000000=
+0
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000000069e000 CR3: 00000000713cc000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ rfkill_dev_uevent+0x2f/0x1f0 net/rfkill/core.c:875
+ dev_uevent+0x4ab/0x870 drivers/base/core.c:2774
+ kobject_uevent_env+0x475/0x9e0 lib/kobject_uevent.c:576
+ device_add+0x544/0xb80 drivers/base/core.c:3742
+ rfkill_register+0x170/0x9b0 net/rfkill/core.c:1100
+ wiphy_register+0x2a5f/0x3290 net/wireless/core.c:1310
+ ieee80211_register_hw+0x3d72/0x4b30 net/mac80211/main.c:1634
+ mac80211_hwsim_new_radio+0x32f1/0x5990 drivers/net/wireless/virtual/mac802=
+11_hwsim_main.c:6186
+ hwsim_new_radio_nl+0xd8b/0xf90 drivers/net/wireless/virtual/mac80211_hwsim=
+_main.c:7062
+ genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
+ genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
+ genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
+ netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2580
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
+ netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
+ netlink_unicast+0x8ef/0xa80 net/netlink/af_netlink.c:1361
+ netlink_sendmsg+0x7f0/0xb20 net/netlink/af_netlink.c:1920
+ sock_sendmsg_nosec+0x14e/0x190 net/socket.c:800
+ __sock_sendmsg net/socket.c:818 [inline]
+ ____sys_sendmsg+0x54e/0x850 net/socket.c:2715
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2769
+ __sys_sendmsg net/socket.c:2801 [inline]
+ __do_sys_sendmsg net/socket.c:2806 [inline]
+ __se_sys_sendmsg net/socket.c:2804 [inline]
+ __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2804
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fbc181e2649
+Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48 89 f7 =
+48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff f=
+f 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffc9f9d5c88 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fbc181e2649
+RDX: 0000000000000084 RSI: 0000200000000a00 RDI: 0000000000000004
+RBP: 0000000000000000 R08: 0000000000000006 R09: 0000000000000006
+R10: 0000000000000006 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007fbc18275c40 R15: 0000000000000002
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	48 8b 44 24 40       	mov    0x40(%rsp),%rax
+   5:	42 0f b6 04 38       	movzbl (%rax,%r15,1),%eax
+   a:	84 c0                	test   %al,%al
+   c:	48 8b 5c 24 18       	mov    0x18(%rsp),%rbx
+  11:	0f 85 73 01 00 00    	jne    0x18a
+  17:	44 01 33             	add    %r14d,(%rbx)
+  1a:	31 c0                	xor    %eax,%eax
+  1c:	eb 20                	jmp    0x3e
+  1e:	e8 0c 1c dd f5       	call   0xf5dd1c2f
+  23:	48 8d 3d 35 df a3 05 	lea    0x5a3df35(%rip),%rdi        # 0x5a3df5f
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	b8 f4 ff ff ff       	mov    $0xfffffff4,%eax
+  34:	49 bf 00 00 00 00 00 	movabs $0xdffffc0000000000,%r15
+  3b:	fc ff df
+  3e:	66                   	data16
+  3f:	43                   	rex.XB
 
-Fixes: 9c661b0b8544 ("net/packet: make packet_fanout.arr size configurable up to 64K")
-Cc: <stable+noautosel@kernel.org> # changes memcg charging of existing packet rings; not stable material
-Signed-off-by: Ahmad AG <ahmadag1001@gmail.com>
+
 ---
-Tool use: an LLM coding assistant (Claude Code) found the missing
-charges by code inspection, drafted the patch, the test program and this
-message, and ran the tests in the QEMU guest; I reviewed every hunk, the
-results and this message before sending.
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-v3:
-  - target net as Willem suggested; stable+noautosel instead of a stable Cc
-  - Fixes: 9c661b0b8544 instead of 1da177e4c3f4
-  - leave the fixed-size per-socket allocations (rollover, per-CPU pending
-    counter, deferred TX ring free) unaccounted
-  - add __GFP_NOWARN to the vmalloc fallback like the pg_vec allocation
-  - give the reproduction steps and reword the Fixes rationale
-v2: https://lore.kernel.org/netdev/20261030100504.23498-1-ahmadag1001@gmail.com/
-  - cover all user-triggered allocations in one patch; sent with git send-email
-v1: https://lore.kernel.org/netdev/CAASqGyZ-9hqZGWNJShxnrSiXDO==51SVsQW_x_mk993y1pNO8A@mail.gmail.com/
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
- net/packet/af_packet.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index cf6429f0947..3cec23a505b 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -1778,7 +1778,8 @@ static int fanout_add(struct sock *sk, struct fanout_args *args)
- 			/* legacy PACKET_FANOUT_MAX */
- 			args->max_num_members = 256;
- 		err = -ENOMEM;
--		match = kvzalloc_flex(*match, arr, args->max_num_members);
-+		match = kvzalloc_flex(*match, arr, args->max_num_members,
-+				      GFP_KERNEL_ACCOUNT);
- 		if (!match)
- 			goto out;
- 		write_pnet(&match->net, sock_net(sk));
-@@ -3773,7 +3774,7 @@ static int packet_mc_add(struct sock *sk, struct packet_mreq_max *mreq)
- 		goto done;
- 
- 	err = -ENOBUFS;
--	i = kmalloc_obj(*i);
-+	i = kmalloc_obj(*i, GFP_KERNEL_ACCOUNT);
- 	if (i == NULL)
- 		goto done;
- 
-@@ -4494,7 +4495,7 @@ static void packet_free_tx_ring(struct sock *sk, struct pgv *pg_vec,
- static char *alloc_one_pg_vec_page(unsigned long order)
- {
- 	char *buffer;
--	gfp_t gfp_flags = GFP_KERNEL | __GFP_COMP |
-+	gfp_t gfp_flags = GFP_KERNEL_ACCOUNT | __GFP_COMP |
- 			  __GFP_ZERO | __GFP_NOWARN | __GFP_NORETRY;
- 
- 	buffer = (char *) __get_free_pages(gfp_flags, order);
-@@ -4502,7 +4503,8 @@ static char *alloc_one_pg_vec_page(unsigned long order)
- 		return buffer;
- 
- 	/* __get_free_pages failed, fall back to vmalloc */
--	buffer = vzalloc(array_size((1 << order), PAGE_SIZE));
-+	buffer = __vmalloc(array_size((1 << order), PAGE_SIZE),
-+			   GFP_KERNEL_ACCOUNT | __GFP_ZERO | __GFP_NOWARN);
- 	if (buffer)
- 		return buffer;
- 
-@@ -4523,7 +4525,8 @@ static struct pgv *alloc_pg_vec(struct tpacket_req *req, int order, bool tx_ring
- 	struct pgv *pg_vec;
- 	int i;
- 
--	vec = kzalloc_flex(*vec, pg_vec, block_nr, GFP_KERNEL | __GFP_NOWARN);
-+	vec = kzalloc_flex(*vec, pg_vec, block_nr,
-+			   GFP_KERNEL_ACCOUNT | __GFP_NOWARN);
- 	if (unlikely(!vec))
- 		return NULL;
- 	vec->order = order;
-@@ -4648,7 +4651,8 @@ static int packet_set_ring(struct sock *sk, union tpacket_req_u *req_u,
- 		default:
- 			if (!tx_ring) {
- 				rx_owner_map = bitmap_alloc(req->tp_frame_nr,
--					GFP_KERNEL | __GFP_NOWARN | __GFP_ZERO);
-+					GFP_KERNEL_ACCOUNT | __GFP_NOWARN |
-+					__GFP_ZERO);
- 				if (!rx_owner_map)
- 					goto out_free_pg_vec;
- 			}
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
-base-commit: 7b29287b182fc50518e9e65c41f86d24a05b7205
--- 
-2.43.0
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
