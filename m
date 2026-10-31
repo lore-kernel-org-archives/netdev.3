@@ -1,66 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793469007;
-	b=D5oRgAYSd/JuUqR0qAga5O+G1c6+x+a8MV+WlP7jq1YKRCqUdn5i/1XYkK61+tVS7E+8
-	 do38af2ywxntuU2hdvMvGf6nafvEVpT1fvPsju9ikSWEOfVZAgkJosivsLlukiz2JsCeW
-	 RsBQ+cmGsBygZMGjl/DxDR0hfHihBslkv0wzNTHj4f4C+OAKJm8PC/ou6GCvg3GA1UwnM
-	 yNCOKxlXPNSTM38eaynZUwWo3M7Hj87sfXhfZLufKMs2nN5K2H3d97ZvuwiJzpfaMgIYd
-	 X66p1jZh/Kbhw2obU1FpBQlJZa+Mv0mqRH3i8Pao7cyKcDC27/oLOQlwJbfXm8XxgeA==
+	t=1793469244;
+	b=kEAECIpqxqsBmW2pOW4V4NOeLpXshBf/IIDw6MLMmPlR/B6ahgRGLggLQ8jQxOpvkRk8
+	 478CXItMVutktO9enJ6Ax7TQgacL7h6YwexNebVJ091z6xFeBMRj0jUfal4SZ+3bqVHKN
+	 3dVKfMwJVOm/k3WFYUk8MIqEltW9eaQ4xdLgAWL7s2r9HXaIhbfg+ZMOBtEWxixRCqS7s
+	 BqROWjB31xZfOfJhPRSxFV+HR3iFs/JBKiT/fysPmwkKxzomIB4EIehRd2zSB4241NHx/
+	 cjFnewuuwyv/gU7cW//db7/Tfpp/Im+7IOGIAsak7uA8rhiOoNkEy97hxK2TZeDF9oQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793469007;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
-	bh=a6S6zBkzaXWw79IkNdAVgoQcByVNihqtZsvrPAeoS6Q=;
-	b=lgD5ybxJBMil+dUnDmnh9S8YXrTikcpVdP5hcPXL85nmgFsPJv881BxRTIzjFZUvmfcd
-	 Fk+il2TnzwqoIeaJ36Vxne6PPHi+ZDko+9Q5fX6bTDI1OzhUGo3Jq73GFIY9CbEymrqnG
-	 0jPd2A48F694/XuFdsC9qxYGO/UhaqX0xSUhU13ZbN4AJLQeofYgPwIgAt9MAnjZocjS5
-	 yVGFREmzgZNHXdbq93UIn/ut0XiMwDUmWJv8Huh6/R4LD7uQalrRCOAQjGSzGEy7HDhKz
-	 vBl3n0IXhprjJJPtgsmItYjSV75DSX352sLJr9jV38/FQxuANMiTERe7Y//f+dpZ46A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793469244;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=/MwNJYTzhevleVLT0wB4o/dVQzk0Vd5QdLxqWEpD0FQ=;
+	b=TGQz558JAF0AykvsM0JBOaygPyZ0bGlv9sZf9fYkoWMhtj/MFWtbrPSR+k2WaH2pmlOR
+	 MDmlcggPyxe23brVNmSkXDpk8ic/JNSHDjvt0hB7EOF6oLq/yN2DQ5SXo1LFWj0ALwc8j
+	 wNHKXVkYzduRrBnQLYtENqpjs79DWhUqWdC8X0IGr0wct8iZMNby7FjrtzjZ+Hx6arC1z
+	 /ITJevEQentgAz9D0kQPUErUk+F46M+AJZ/xCZGt9e392R1CtBZ9eRWH4dkAG2ftDa4Dh
+	 ubEfUCKLJVeNSArzzCC87J1NwnNLH8z1MYrJsD3KjZ/p7EbuU7z+1NrbpDrnllRa1lA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=netfilter.org;
-	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=GZ3a7I38;
-	arc=none smtp.remote-ip=217.70.190.124
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kTCFNsmG;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id CEC0D606A323;
-	Sat, 31 Oct 2026 17:50:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CEC0D606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1540D606A31A;
+	Sat, 31 Oct 2026 17:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=GZ3a7I38
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793469004;
-	bh=a6S6zBkzaXWw79IkNdAVgoQcByVNihqtZsvrPAeoS6Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GZ3a7I38eKFp561vuK/AXhasrUP+s7dSRtqh05f2QJWxzo/kuHQZdTcYJQg4gD587
-	 pJPihY0p/mXlSkYcEE+z/vfltlZglXFsufYDfR1BVamzp8s0iYvZFgeVqx3HM2BJIp
-	 3LJmYEIcm/0bROUm7RZuExGue9L4P5++P2jxLxNYjMcnhtket2iq2BHbIZ/zoRhYT8
-	 Lw5D3e/EOh83AdB8rqpzLQQrDhzOy9jzmEjsHej2+3QWX391Gr6r9fi4buh196ckm1
-	 B0K1hiNxIK45JvtHJeBzHicO9G3k8vKbVFYXc44nW/ICF1rbOeCU/bM8fkC3m/BGtP
-	 kKdGHPTdDc73w==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 460A96007C;
-	Sat, 31 Oct 2026 18:50:04 +0100 (CET)
-Date: Sat, 31 Oct 2026 18:50:02 +0100
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: joasantonio108@gmail.com
-Cc: Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kTCFNsmG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 594DB1F000C1;
+	Sat, 31 Oct 2026 17:54:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793469243;
+	bh=/MwNJYTzhevleVLT0wB4o/dVQzk0Vd5QdLxqWEpD0FQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kTCFNsmGcTJfyOV1keEj1/p0CdrFp2vaz+QLyJrN5JCQVApzXwW2K3eOn1LFIPLKt
+	 eox3mYq5wnO/o1+BUQ/N6UDTQ2RBbkteTpg0UMFwyS++Lc1xr3ZoHLcoV1lz/m/qV1
+	 0cTyQWCDJfoGDFMVwJ/NvMZOdHsFLAX0yfQPnARVrnFPlVZ3YjqbzgUQFQIYbnXO4w
+	 VDCuMuUX2BWe8Mlav84GNSKYeoZGh0g0MvICYdxirCX+jsqv5p2paC5UuDvyikBjqP
+	 xjngLZl2Ep2eGBRYY810aGFUm0fFFYZ+eEaikyNY6JtfcBrPNlSopJNv7eqU1z3rfO
+	 PeWW7LSZVo7JQ==
+Date: Sat, 31 Oct 2026 17:53:59 +0000
+From: Simon Horman <horms@kernel.org>
+To: Tristan Madani <tristmd@gmail.com>
+Cc: David Heidelberg <david@ixit.cz>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH nf] netfilter: nft_set_rbtree: do not pair an expired
- start with another interval's end
-Message-ID: <auYqSpBFtC0nTDDd@chamomile>
-References: <20261031-b4-nft-rbtree-gc-v1-1-51d087c187a6@gmail.com>
- <auYpCzdrOsoWr84Z@chamomile>
+	"John W . Linville" <linville@tuxdriver.com>,
+	Samuel Ortiz <sameo@linux.intel.com>, oe-linux-nfc@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Tristan Madani <tristan@talencesecurity.com>
+Subject: Re: [PATCH v2 net] nfc: llcp: use disable_work_sync and
+ timer_shutdown_sync in local_cleanup
+Message-ID: <20261031175359.GT257209@horms.kernel.org>
+References: <20261029162419.2420980-1-tristmd@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,165 +64,56 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <auYpCzdrOsoWr84Z@chamomile>
+In-Reply-To: <20261029162419.2420980-1-tristmd@gmail.com>
 
-On Sat, Oct 31, 2026 at 06:44:43PM +0100, Pablo Neira Ayuso wrote:
-> On Sat, Oct 31, 2026 at 03:54:05PM +0000, Joas Antonio dos Santos via B4 Relay wrote:
-> > From: Joas Antonio dos Santos <joasantonio108@gmail.com>
-> > 
-> > Garbage collection of an expired interval start element also removes its
-> > end element. Both the insertion path, nft_rbtree_gc_elem(), and the
-> > commit path, nft_rbtree_gc_scan(), find that end element by its position
-> > in the tree, and both can pick the end element of a different, live
-> > interval:
-> >
-> > - nft_rbtree_gc_elem() walks towards higher keys and skips end elements
-> >   that are not active in both generations. If the end element of the
-> >   expired interval is being deleted in the same transaction, the walk
-> >   skips it, passes the start element of the next interval and takes that
-> >   interval's end element instead.
-> > 
-> > - nft_rbtree_gc_scan() remembers the last end element it visited in
-> >   rbe_end, but does not clear it when it visits a live start element. An
-> >   expired start element without an end element (a start-only element, or
-> >   an interval whose end element was already removed) then takes the end
-> >   element of the live interval above it.
-> > 
-> > In both cases the live interval [S, E) loses E: the set no longer holds
-> > the interval that userspace added, and deleting [S, E) later fails with
-> > ENOENT.
-> > 
-> > In the insertion path, stop the walk at the first element that is active
-> > in the current generation. Elements added by this transaction are still
-> > skipped, as intended by commit 60c0c230c6f0 ("netfilter: nft_set_rbtree:
-> > skip end interval element from gc"). If that element is a start element,
-> > the expired interval has no end element. If it is an end element that
-> > this transaction is removing, leave it to the transaction. In the commit
-> > path, clear rbe_end when a live start element is visited.
-> > 
-> > Reproduced on current mainline under QEMU (arm64, KASAN), from an
-> > unprivileged user in a new user and network namespace:
-> > 
-> > - insertion path: add [10,20) with a 50ms timeout and [30,40), wait,
-> >   then in one batch delete the end element 20 and add [12,13).
+On Thu, Oct 29, 2026 at 04:24:19PM +0000, Tristan Madani wrote:
+> From: Tristan Madani <tristan@talencesecurity.com>
 > 
-> I don't follow.
+> local_cleanup() tears down timers and work items before
+> local_release_work() frees the nfc_llcp_local structure.  The current
+> code has two ordering problems:
 > 
-> You add [10,20) with 50ms...
+> 1) timer_delete_sync() does not prevent timer callbacks from re-arming
+>    the timer via mod_timer().  nfc_llcp_tx_work() unconditionally
+>    re-arms link_timer, and nfc_llcp_sdreq_timeout_work() conditionally
+>    re-arms sdreq_timer.  A work callback that runs during
+>    cancel_work_sync() and calls mod_timer() causes the timer to fire
+>    after the structure is freed.
 > 
-> and [30,40) with... what timeout?
+> 2) cancel_work_sync() does not prevent work items from being
+>    re-queued.  nfc_llcp_rx_work() queues tx_work via
+>    schedule_work(), and the timer callbacks queue their associated
+>    work items.  Since tx_work is cancelled before rx_work, a
+>    running rx_work instance can re-queue tx_work after its
+>    cancel_work_sync() has returned.  The re-queued tx_work then
+>    runs on the freed structure.
 > 
-> you wait how long?
+> Switch the timers to timer_shutdown_sync() which rejects subsequent
+> mod_timer() calls.  Switch the work items to disable_work_sync()
+> which rejects subsequent schedule_work() calls.
 > 
-> You follow up with another batch an you only delete 20?
+> Reorder the teardown sequence so that both timers are shut down
+> first (their callbacks queue work items), rx_work is disabled
+> before tx_work (rx_work queues tx_work), and data structures are
+> freed only after all asynchronous callbacks are quiesced.
 > 
-> >   Before: a GET for 45 finds an element, the end element 40 is gone and
-> >   deleting [30,40) fails with ENOENT. After: 45 is not found, 40 is
-> >   present and the delete succeeds.
-> > 
-> > - commit path: add [30,40) and a start-only element 10 with a 50ms
-> >   timeout to a set with a 100ms gc interval, wait, then add [200,201),
-> >   whose insertion walk stops at the highest element, so only the
-> >   commit-time scan reaches 10. Before: the end element 40 is gone and
-> >   deleting [30,40) fails with ENOENT. After: both work.
-> > 
-> > Normal expiry, and a new interval whose end element shares the key of an
-> > expired start element (the case handled by 60c0c230c6f0), behave the same
-> > before and after. About 39000 random batches on interval sets with
-> > timeouts, with and without slab/page allocation fault injection, showed
-> > no KASAN, lockdep or WARN reports with the patch applied.
+> Fixes: d646960f7986 ("NFC: Initial LLCP support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+> ---
+> v2:
+>   - Switch work items from cancel_work_sync() to disable_work_sync()
+>     to prevent re-queuing after cancellation, as identified by the
+>     automated review and confirmed by Simon Horman
+>   - Reorder teardown: shut down both timers first (their callbacks
+>     queue work items), then disable rx_work before tx_work (rx_work
+>     queues tx_work), then disable remaining work items
+>   - Move data structure cleanup (skb_queue_purge, kfree_skb) after
+>     all asynchronous callbacks are quiesced
 
-Hm, no KASAN, no splat, what's the issue, really?
+Thanks for the updates.
 
-> > The insertion path issue was found with a small nfnetlink fuzzer. Both
-> > paths had been pointed out earlier by the netdev AI review of commit
-> > 86b6471e690c ("netfilter: nft_set_rbtree: skip transaction elements
-> > during GC"), see the Link below.
-> > 
-> > Fixes: f718863aca46 ("netfilter: nft_set_rbtree: fix overlap expiration walk")
-> > Fixes: 8d8540c4f5e0 ("netfilter: nft_set_rbtree: add timeout support")
-> > Link: https://lore.kernel.org/all/179063970372.3145.17414936987144600093@kernel.org/
-> > Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
-> > ---
-> > Tool-use note: the fuzzer, the directed tests and the analysis were
-> > prepared with help from an LLM-based assistant; I reviewed the change
-> > and built and ran all tests myself. Test harness available on request.
-> > 
-> > This is a resend through the kernel.org web endpoint: my earlier
-> > submission of this patch was blocked by my mail provider and never
-> > reached the lists.
-> > ---
-> >  net/netfilter/nft_set_rbtree.c | 23 +++++++++++++++++++----
-> >  1 file changed, 19 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-> > index fbe1750f1..086823067 100644
-> > --- a/net/netfilter/nft_set_rbtree.c
-> > +++ b/net/netfilter/nft_set_rbtree.c
-> > @@ -215,17 +215,25 @@ nft_rbtree_gc_elem(const struct nft_set *__set, struct nft_rbtree *priv,
-> >  	struct nft_set *set = (struct nft_set *)__set;
-> >  	struct rb_node *prev = rb_prev(&rbe->node);
-> >  	struct net *net = read_pnet(&set->net);
-> > +	u8 cur_genmask = nft_genmask_cur(net);
-> >  	struct nft_rbtree_elem *rbe_prev;
-> >  
-> >  	/* search for end interval coming before this element.
-> >  	 * end intervals don't carry a timeout extension, they
-> >  	 * are coupled with the interval start element.
-> > +	 *
-> > +	 * Skip elements added in this transaction. The first element
-> > +	 * that is active in the current generation is either the end
-> > +	 * element of this interval or the start element of another
-> > +	 * interval, in which case this interval has no end element.
-> >  	 */
-> >  	while (prev) {
-> >  		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
-> > -		if (nft_rbtree_interval_end(rbe_prev) &&
-> > -		    nft_set_elem_active(&rbe_prev->ext, NFT_GENMASK_ANY))
-> > +		if (nft_set_elem_active(&rbe_prev->ext, cur_genmask)) {
-> > +			if (!nft_rbtree_interval_end(rbe_prev))
-> > +				prev = NULL;
-> >  			break;
-> > +		}
-> >  
-> >  		prev = rb_prev(prev);
-> >  	}
-> > @@ -233,7 +241,11 @@ nft_rbtree_gc_elem(const struct nft_set *__set, struct nft_rbtree *priv,
-> >  	rbe_prev = NULL;
-> >  	if (prev) {
-> >  		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
-> > -		nft_rbtree_gc_elem_move(net, set, priv, rbe_prev);
-> > +		/* end element is being removed by this transaction */
-> > +		if (nft_set_elem_active(&rbe_prev->ext, NFT_GENMASK_ANY))
-> > +			nft_rbtree_gc_elem_move(net, set, priv, rbe_prev);
-> > +		else
-> > +			rbe_prev = NULL;
-> >  	}
-> >  
-> >  	nft_rbtree_gc_elem_move(net, set, priv, rbe);
-> > @@ -911,8 +923,11 @@ static void nft_rbtree_gc_scan(struct nft_set *set)
-> >  			rbe_end = rbe;
-> >  			continue;
-> >  		}
-> > -		if (!__nft_set_elem_expired(&rbe->ext, tstamp))
-> > +		if (!__nft_set_elem_expired(&rbe->ext, tstamp)) {
-> > +			/* rbe_end belongs to this live interval */
-> > +			rbe_end = NULL;
-> >  			continue;
-> > +		}
-> >  
-> >  		/* end element needs to be removed first, it has
-> >  		 * no timeout extension.
-> > 
-> > ---
-> > base-commit: c339f4010dea8b0d754f84ace70cd1b089878ef8
-> > change-id: 20261031-b4-nft-rbtree-gc-1d9c72dba2bd
-> > 
-> > Best regards,
-> > -- 
-> > Joas Antonio dos Santos <joasantonio108@gmail.com>
-> > 
-> > 
-> 
+Reviewed-by: Simon Horman <horms@kernel.org>
+
