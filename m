@@ -1,92 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.135
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793447081;
-	b=OI6G67OCKTQnVf5FkTATggW+7uDEAE9l5l7DssHlQe28DWgcSND0nhgrZiQ3lp34q0kw
-	 a1lbtGdtEujmsLGTCGQfN0PqK3ZvinEK4R0HfyovNOAZa6qkg9siHm7n/lBh8QzjU05lE
-	 RgZgc2ra67NXtDgkbsy21PlXbCug2rq6lX7cHoJvz7WVCd7PnL715c7YoRNzbUxhIAxoG
-	 TNsMC99V527RvZ1c5cy8t/80shjv7/hNzBdxQeM+17sbYqdm14IX5LI9W6+8rOgrjL740
-	 AjWbgjFdT3oquMLUvCgmUAtsU9O9RWXBk5fpMVrm6fXJIXBMW0Oc/2a9qNDcXuki2DQ==
+	t=1793447090;
+	b=0Avh/TVmBvHOImTyNN0uVi1GUDWKYdVWYdVepjEKacl/BCE+n3TcwQaipc45kc8AUgJM
+	 +rCVg0dDKsC7n+e7MVXEfz9aBv1FAeOvQ82SUChxKfYdQftLgm+0Ipai3DGuMsam6UxFd
+	 0ln4+jzwtN0AI0VWghM6jKZ/09ur7zqeEuYtGkV8sSh+DSZ2MhQ9Kbz+dY38+WYGPmdg0
+	 tEMuly2ldHxn/RIHLj1z1v6VHTul7jdNyZA7Gce2vJKIPSjOGvnzWPYUjZGdJXv1SGs50
+	 jS36h8sTnc/S4NFX420AWtSwluWFXP6OC3Ey/qxMSf25nk6aLbbd8PDHM8SVgZwm/rw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793447081;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=rtkwj2aNUl3brz8yXx8iIT0RsCKwrOnzD6bl0O+bC2c=;
-	b=IVs62rqKNHN6y81VPJ+zazLmoRkhMTtIVMzdR8imJgtqhUVguFti5HckeTRkk1hO4rAr
-	 QEYcOdbZmlEgxaZLLxJvr0HQrdWJE9u4An7Z42mfu0V/vybV3/fSZ+f7AFdKOFKPba7Zs
-	 YFyr2xPnAFCbbSmtvM4Jh3pORM54RaRlUM7cN2pUUS7vDI6Ll1Z4C10smyT1GTQeiHWST
-	 NgmCCS6c+kf+dh+/U+Esk3GJqv5HD5CBY+BV9/HO3SOx3eZbeLNmzjRA9Daz32OUfXAJM
-	 tErmZPyDT8Fn4LrYyJE7eeAnmFa1AoHsQO+l4jyPaQYJmQTG1fbkJ8e7fo0YPn8/hnw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793447090;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=CVHGbPYBXbnlGmadd7sg4ULsHDVkzLKJ1bNCGoljV8I=;
+	b=WDaLaKQXkqp0m12Byi1XW4/vjTGYsHYzQnbCq/59XghBWR/X3rnz6ShhQhXQrcOkLoJW
+	 9hjdSXf1vCjmp5asV7EnWfWb+2KwPjMHI/W6ERTDX3bwxkqGIyH1+s/P04vmHDa1wzNLk
+	 nwxSq1E5bvlIJ48653iZG0jrEDfLbe7byy+VclLd4zoazC3c93oNqkjW5xDQQmP8M7YVD
+	 xKkzRMMgcxX7Wbm4MNA9KVyJaACo2g76SUosYebtY7qtPGUDXmwpbHBTdlTJfyvlES507
+	 eS1oLxqUgdnOilE9HmIyrxmOhBdarAw+ikD240/JT+kOUfthc4/JZ6pxw/gDNGspY8g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wNRVhdOE;
-	arc=none smtp.remote-ip=74.125.82.176
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E7C606A31E
-	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 11:44:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 95E7C606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=xbyOkOlu;
+	arc=none smtp.remote-ip=111.22.67.135
+Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4073606A31A;
+	Sat, 31 Oct 2026 11:44:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A4073606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wNRVhdOE
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-369f33df08eso3147542eec.0
-        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 04:44:40 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=xbyOkOlu
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793447080; x=1794051880; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rtkwj2aNUl3brz8yXx8iIT0RsCKwrOnzD6bl0O+bC2c=;
-        b=wNRVhdOESz7HbXHeX+lUT7zBM/Sdy2ZaS8KMpUB1CH5uN718jHgBvyAqzp/a71NQj2
-         hwRH0UFlempMiiUrS0PvyC+1vDm+mkIOA3ooyAgUuwb1ZJqhvUO3TFLcq8vvqIf8pPoj
-         jLRTApohA4ojOpidpJopsOXKXDFTBg2s/Fqjb7mmtvW1sghIXSRwIoOn9yW2fZJBKnrE
-         YxsFvXr0FbOXy/OYsec2zRmcm3lc3VEe+zE8GIcVlZSg9C1TQqwNC76BAPKUNdv8dWqX
-         gTwb8V4oKiX7PpFaQaLJ0SwVxXzmxXciVC6wsGUVj3LKLLg08kBUf/eJl2isRYfX+wQW
-         PxjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793447080; x=1794051880;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rtkwj2aNUl3brz8yXx8iIT0RsCKwrOnzD6bl0O+bC2c=;
-        b=LX+2WALBIKlHYbKkcCFgEF9odM9qqlR7Mfi2suoNIgKhJ/z8ByzDcERXXBP88a33+b
-         2Ok+AbXjN/3Nqc7zUITWHO8fTB9swdRPP1fZNis2ohp7datmNe8Yh1B8DbQxJcNkOcwf
-         yu8cgYIihXQtvGpjhoqNXtHDeLMFRt1OuhzGTWtCXl7FAL13DD4UDNxojtRzY7G2XJH5
-         vamVrO6BGPetdweKIY0m1cv+ZGgZ6MFHS3zsMlDzu+z4dbiIOU76We1gP0Y3C2gtG7Oe
-         TMLvNW2d8hrR7gbL8dduz/6te/fGgf69ooJ0Lm00qlOiEOiRzWLBiu0WicD3zV5QbhEH
-         VuFg==
-X-Forwarded-Encrypted: i=1; AKwUvBxNjazU0NFzOUlw3njW0rbP1jIQkKj7xzN8+VWTLMYGfan6cDg5G27ZSN2Iw7yNM/+qagWkeqE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLssV0XtUCLk4YFK/gO0Dd+pOAssb6jKIqfmH+vAfYpAV7q5mrb
-	DtDIi6nGdq52qtEG8YHxi1LFY7h5O5NizMbCFDD+39l8pD0ggO11qxQXcXEB+0eIKno=
-X-Gm-Gg: AYBFou1ftIxHrm6b4pQtcNrlZJ7gz2ULQJugp163VMBpnjbWkRFo4G2JMJZpClNgHwX
-	BVbdoHeqqV7Bn7zFgqFgLkm5eKd3VYeAVTwi69sHIbgUxPob0DXOZuZpDROKEZ6J2VOHiA7yG0U
-	NoxY2DloVx+kOOYGHICFrAvZNkqBvM/Q9AIcvWaroYjP3pUW+WIsriqYPYLiR6mAkCy7d1EjIBL
-	e6qwaC0kFt/pVP646yY3Ic1txHEjZ38e0+2JPYuzVMwACz5l90bG/7CMQA3wAgr0JiFULaH1f3j
-	s5yDQCMZywTVtb4Os2AJ/Q9w9NgZDTUNySCjlmfcZ3ff8vf+9CX9fnICnD62s0yXSEKhZVElBrC
-	4apUsYDjDblbpqWajX9rxa28W9zrlU+D7Fsh3uvS5DUnrZb4bSmwFGT7ILFRzfzNT3SkoOy/NmL
-	mT7VG4OWXEYAoj9i0Q5+zDsLbjKdjN2256e998JmopWBPdnWylCWFFKaN91pWOcnZkDdu2Eda0l
-	8zb0LhLXEY3gbK1flJyP+WNxI+A+C/NpxeBnKTdW6SjKglb+dsJBhaKe7yCTFIHAbW7LRQpAx6H
-	p/myCebYC05vYaHh8MSqm48PdntMoz8XvOdZY1PMFButvg==
-X-Received: by 2002:a05:693c:2409:b0:369:b75e:d24f with SMTP id 5a478bee46e88-36a423ed004mr7318546eec.24.1793447079579;
-        Sat, 31 Oct 2026 04:44:39 -0700 (PDT)
-Received: from asahi.tail4da9e3.ts.net ([218.48.198.193])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a42a98f65sm15960512eec.28.2026.10.31.04.44.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Oct 2026 04:44:39 -0700 (PDT)
-From: "Baek Kyu, Kim" <pocj8ur4in@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	netfilter-devel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH] netfilter: cthelper: report absent filtered deletes
-Date: Sat, 31 Oct 2026 20:44:36 +0900
-Message-ID: <20261031114436.31788-1-pocj8ur4in@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=xbyOkOluZiPxoxtnXmeMntgSXkhHxsiL+Q9xChsHip2tg8YB3dPxFZ2wxTPTxoJTKOIr3DuZlEbj1
+	 V2oTC/Xby5YWJPG20AIRSOIxvHN7KaTxRws/CmaXgdSkzxHlvJCBiXm0jLwjnHZf21P4XdmkdnF3zF
+	 tcIAWGxE0KESy99g=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app07-12007 (RichMail) with SMTP id 2ee76ae5d49b899-7ba42;
+	Sat, 31 Oct 2026 19:44:38 +0800 (CST)
+X-RM-TRANSID:2ee76ae5d49b899-7ba42
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from [198.18.0.33] (unknown[222.93.19.82])
+	by rmsmtp-syy-appsvr07-12007 (RichMail) with SMTP id 2ee76ae5d4a4b6b-82117;
+	Sat, 31 Oct 2026 19:44:38 +0800 (CST)
+X-RM-TRANSID:2ee76ae5d4a4b6b-82117
+From: Xia Yan <yanxia@cmss.chinamobile.com>
+To: Yingjie Wang <1075151112@qq.com>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, alexhenrie24@gmail.com, linux-kernel@vger.kernel.org,
+ yana06070@163.com
+Subject:
+ Re: [PATCH net v3] ipv6: reject wrapped temporary address preferred lifetimes
+Date: Sat, 31 Oct 2026 19:44:36 +0800
+Message-ID: <179344707641.114606.12665582704521593779@cmss.chinamobile.com>
+In-Reply-To: <tencent_7A270291DDE5CD89DAFFE8A745D094D5BD06@qq.com>
+References: <tencent_C2E4FE9B7C0A05615861782611715EAA9C0A@qq.com>
+ <tencent_7A270291DDE5CD89DAFFE8A745D094D5BD06@qq.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -96,62 +74,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-nfnl_cthelper_del() returns success when the helper list is empty, even
-if the request names a helper that does not exist. The same request
-returns -ENOENT when an unrelated helper is present. This makes the
-ACK depend on unrelated list contents.
+Hi,
 
-The empty-list success case is needed only for an unfiltered flush.
-Return success when a helper was deleted or when neither a name nor a
-tuple filter was supplied. Otherwise return the existing -ENOENT.
+One question on the clamp added by f4bcbf360ac8, separate from the
+wrap fixed here - I don't think this patch needs to address it. I have
+only followed the source and have not run this case.
 
-Fixes: 12f7a505331e ("netfilter: add user-space connection tracking helper infrastructure")
-Signed-off-by: Baek Kyu, Kim <pocj8ur4in@gmail.com>
----
-An arm64 QEMU/KVM kernel received NETLINK_NETFILTER cthelper DEL,
-NEW and GET requests. Deleting an absent named helper from an empty
-list returned success before the change and -ENOENT afterward.
-Deleting an existing helper and an unfiltered empty-list flush kept
-their success responses. Tuple-only deletion and packet traffic were
-not exercised.
+As far as I can tell the clamp's termination relies on cfg.valid_lft
+and if_public_preferred_lft being finite. Consider a public address
+with both lifetimes at INFINITY_LIFETIME and a large regen_advance,
+with no wrap involved. For example with regen_min_advance=2,
+regen_max_retry=3, dad_transmits=1, an RA Retrans Timer around
+28,600,000 ms and HZ=1000, regen_advance is around 85802; raising
+regen_max_retry via sysctl has the same effect.
 
- net/netfilter/nfnetlink_cthelper.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+If temp_prefered_lft is set below regen_advance, the effective
+max_desync_factor goes negative, desync_factor is reset to 0, and the
+clamp engages on every creation. The clamped preferred lifetime
+regen_advance + age + 1 then passes all three checks, including the
+new one. But the temporary address inherits the public address's
+tstamp, so addrconf_verify_rtnl() finds it due for regeneration one
+second after each creation: one new temporary address per second,
+each living about temp_valid_lft. Creation is only refused once age
+grows enough that regen_advance + age + 1 exceeds cfg.valid_lft,
+which here is just temp_valid_lft, so the accumulation is bounded,
+but with the numbers above it can still reach tens of thousands of
+addresses.
 
-diff --git a/net/netfilter/nfnetlink_cthelper.c b/net/netfilter/nfnetlink_cthelper.c
-index 5b6a09f46903f..774edb07fb1a3 100644
---- a/net/netfilter/nfnetlink_cthelper.c
-+++ b/net/netfilter/nfnetlink_cthelper.c
-@@ -700,7 +700,7 @@ static int nfnl_cthelper_del(struct sk_buff *skb, const struct nfnl_info *info,
- 	struct nf_conntrack_tuple tuple;
- 	bool tuple_set = false, found = false;
- 	struct nfnl_cthelper *nlcth, *n;
--	int j = 0, ret;
-+	int ret;
- 
- 	if (!capable(CAP_NET_ADMIN))
- 		return -EPERM;
-@@ -719,7 +719,6 @@ static int nfnl_cthelper_del(struct sk_buff *skb, const struct nfnl_info *info,
- 	ret = -ENOENT;
- 	list_for_each_entry_safe(nlcth, n, &nfnl_cthelper_list, list) {
- 		cur = nlcth->helper;
--		j++;
- 
- 		if (helper_name &&
- 		    strncmp(cur->name, helper_name, NF_CT_HELPER_NAME_LEN))
-@@ -738,7 +737,9 @@ static int nfnl_cthelper_del(struct sk_buff *skb, const struct nfnl_info *info,
- 	}
- 
- 	/* Make sure we return success if we flush and there is no helpers */
--	return (found || j == 0) ? 0 : ret;
-+	if (found || (!helper_name && !tuple_set))
-+		return 0;
-+	return ret;
- }
- 
- static const struct nla_policy nfnl_cthelper_policy[NFCTH_MAX+1] = {
--- 
-2.55.0
+Is this finite-lifetime assumption part of the intended behavior of
+the clamp, or would it be worth tightening separately?
+
+Thanks,
+Xia
+
 
