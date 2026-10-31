@@ -1,80 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793413625;
-	b=lAAhb8Qn+vqvnFONouFNWqwCpFEJVfc5O8slVqnNHgsrF9GT35HmLoFfjkYgrku61Bj6
-	 nw1tQtnzQ5MpDDX0i3Zz2YJgpf5H/8pFCToFX8TsWYx1QgFz3U5QCEbEbVwxSskTWFNkM
-	 pKW5fGHOuBhrU1elRExh2UI+Ib/cLq1U+O0kZBvKADi5mLdA5WA7P7mlovlLl2rRVTlyo
-	 I6RBrtiiQeKJArMq0U4mUpG6kKqE0ha1zJ9MVTKZ7hJt8FYBTVz/EThoPVcYyHBnS2YQN
-	 HMi2xUlqkvdo5j47HIdTVOaHr5skMSKKRZf6UHXnEukVzwmyJ2u1TJ9NnO6jIGR+XFw==
+	t=1793414367;
+	b=ZO1K78xjESVLiVLMFiDQCp841ZhNeGkI9r+nXdT2TUfcoxW3E/Wt89km5XOC6yY/DItC
+	 jJ1lGidQk2bYjEFqEt/fhfYMVOv/XQzDwg1Q5CI0kbpEmfH8WfZXBYegOhTevJNji7mXR
+	 DrOTb5uEQl7x50g1dS2gx/nAsgT9Wc4IPID+ztUzWftwGUuoFKfxaNBSrrB/mJomN/MGo
+	 kI+mzjhE8zDJD+MIUwHC7gNNeKk7EH3UWMfWSrp4X3uvsgDRSSMKOsgen0nd4T4DPbolF
+	 60kh4wcTL7MGLOY9iOAa21iTsmG6YhXKVfoI5jB6Lcfusw0gCIT6qoNpUi5VZ7KsIgw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793413625;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=29lzrQDKQhJkd273yOHGbx0kds4ErzcM/57QFd0LIGI=;
-	b=wTjkc4tg9vs2e3BFwJ2jbHXHfOyPfcinKJKsKykUqvwARZJ0hsO0RVtP+rJaPqq9BkN5
-	 87SJFKhYMLGs1D+PTnlawHMmG04bWdSEmpVONMN7HNa/TDUnDNZrGn7QgyqKDmpqayXHa
-	 vECdn2GNa0Jza3O225eqSebygfoxUWcKsX6fsDdkX8kJVmmUZclst8PozHFp52ua8+J9e
-	 6Vbcs78FK5Doc6PzZwsisFJABW9+Sblp5knVcT34+9JxkaF6ZlivWBEPrvnA5je5mNx7T
-	 QQe4BLkd0bYVJmlkKChY+UF3qiMc4Tt1R2nuMILSeXI91EDmG/61KgCjlXzRS0O3Gbw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793414367;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=gVc9TPj/IZ8w9n5WydoWXS0s1Ds7y5JXsgUbicbXJYI=;
+	b=SBE/+jxgF/qdQsUgIhT7xCGyHj1IOPtvNK03nbkLCTjHiRgXC6mjOznU35jmF7sGc5YI
+	 Pm2igW2/lEK/IfwmtFXIG/2PdqREOQ+AWyl8oZh+oc6DCyGx4qpgml/B++zCNs+U997T8
+	 4H9ASLUAswBE8BE24eKboiFxHUBgBXGkPDhmRYr3fErK9VAwDXvL6o24gVZTtCF/BxIOg
+	 rcxKknC23Jm0PHoGMc8QvyOFHFoCI1imubgPw79PSNWHy1Tcx15NKprQUjsLpIprONUR5
+	 2ISRi2OI5gWPjK1Aix+zHCcCYllDEQlbmL2JWdfnpWTJdX6baSCQZ/LlyQDGcYY0p7g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="Iu/N8xG2";
-	arc=none smtp.remote-ip=192.198.163.15
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=MBVj60KG;
+	arc=none smtp.remote-ip=209.85.216.69
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217F9606A330
-	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 02:27:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 217F9606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FF2606A31A
+	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 02:39:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B7FF2606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Iu/N8xG2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793413622; x=1824949622;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=BycSqTNFSvvJvts+gcHeLU/qGm1sRGULL4Af3Kj5hw0=;
-  b=Iu/N8xG2f6t9V4gBep9Zj+kFnaDJ2NjQ0MeWLjmF6exbWH9NgxrGORNe
-   IAGRjsJ6uwOP2NNH8BN/7JNuuRXGe8CVLXLdnIYDQtSnLEmHOGpoXvW1v
-   sm6jaFuv58hHPTgREEoU57CJrsXGsLc38EBLoLA3/MuaHeJ+SBVnui4OR
-   N159X4FyhW7maID2dyNEyw8hlkiUxCtveqHYQqcBK+sz6/zXu7WetSFM4
-   dp+KPm9SaGVEK/JXh/w7Y3zhoJ4Us0my1dIzpVGzqdN4lEFPaFnO6Qn6r
-   qceIZ42unoDdiqH6CBY4TIN2wnZqoKohD7MobS6hMGV9yPbPVAb/3tFgD
-   w==;
-X-CSE-ConnectionGUID: gL1sZB8gRWqOW8h7zPay4g==
-X-CSE-MsgGUID: b1dUggBZTC2NFS0jUKc3zg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11951"; a="2186560"
-X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="2186560"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 19:26:56 -0700
-X-CSE-ConnectionGUID: vx2Kve73R0S6Cyy0HVnGxg==
-X-CSE-MsgGUID: x6pKkIznRuKREOvxK1IfTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="5476450"
-Received: from liyifan1-desk.bj.intel.com ([10.238.152.46])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 19:26:54 -0700
-From: Li Yifan <yifan2.li@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Dima Ruinskiy <dima.ruinskiy@intel.com>,
-	Li Lili <lili.li@intel.com>,
-	Wang Jie <jie.wang@intel.com>
-Subject: [PATCH iwl-net] igc: Disable PTM after the last device reset on remove
-Date: Sat, 31 Oct 2026 10:19:28 +0800
-Message-ID: <20261031021928.1714612-1-yifan2.li@intel.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=MBVj60KG
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ab67ff8ec3so912060a91.0
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 19:39:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793414366; x=1794019166; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gVc9TPj/IZ8w9n5WydoWXS0s1Ds7y5JXsgUbicbXJYI=;
+        b=MBVj60KGgHaQYZ3+ECHf1GPcKDSZUfnm5AnNmCKn6HW1PEcXTIswuuYwcrQ6uj3NTh
+         HJMoJJCVEiVVFjGokuOqhQNqA1GC1SqjhLwYXjN4Ygp26IkqAvkNbRVY4+QgFsL3GtAd
+         I8WCpx0pifPWuxBB+hT20sXfJ6otXyyCzAsxfH1HRs/uB0yfpUFjiTfvA2rRXYbTl12g
+         lCy/PO/SNI3ZJyd9fj66HSQMCQi5Ap+13kXC0fvPk6GS5uybLXWykpPc+tA0NZ9rmTjf
+         hEOX4GlB4sP8HXMqUw86zoumHDF4EM+AbIznAIz4/WkY7YgVB9mU7WrVGaB5RnOO8YAZ
+         mObA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793414366; x=1794019166;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gVc9TPj/IZ8w9n5WydoWXS0s1Ds7y5JXsgUbicbXJYI=;
+        b=m5gAFf+zG8yiiASUSp5UhTW23Ua29b0utdXBp8srQ2LFQsqxfqNivhTw0DwzgBPNQJ
+         mkwQpfuqwva+h1ZFZv8CmSmQnIQN91m1x3ouQ1eeH7EH3eFuOdy/ZKmzSG8IJyK26uch
+         VzU3aG4/+R61UAp2omzfxY3SUFWQjHglMyn7kJ5uMsBfNsm5l819YGuajWZr8U5NGpPC
+         f70jHMSoRv85QQVXhJXWMgKgSo7my3BnMIZlPkstBd8faKlPUgKYTEuUBaniJfsWSh4r
+         1AmWopOC0s9IVKK3WVjaeDyinF7NipPjJzuTCyRDa5UCAB/z2xWggL5nbzZ/mMbTBmK+
+         KkRw==
+X-Forwarded-Encrypted: i=1; AKwUvBxMKnellkrX+BSCxEL8tflM0do1euzleA7pfk63gVYebq8CauwzeYFjKJONtuNYRj9z23kUTYY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKu1FyJ4VEecP88AdpeXv0A2aGcltJYz5M9LHQH0HpY63kC+lNc
+	cf+7kRxsFjfmoAhOw71picMJyu7C1u7Ht4Sw+D3JHap4xj6EkGE9U+o0yuiPDLuSCVaROjFF8kZ
+	se3hMvQ==
+X-Received: from pgby23-n1.prod.google.com ([2002:a05:6a02:6517:10b0:cc7:4919:5ed9])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1dc3:b0:3a0:b312:1fbe
+ with SMTP id 98e67ed59e1d1-3ae897cfe51mr3298740a91.23.1793414365763; Fri, 30
+ Oct 2026 19:39:25 -0700 (PDT)
+Date: Sat, 31 Oct 2026 02:39:25 +0000
+In-Reply-To: <20261030075843.2567707-1-edumazet@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,115 +77,73 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20261030075843.2567707-1-edumazet@kernel.org>
+Message-ID: <auVUox0QAYELIm3b@google.com>
+Subject: Re: [PATCH v2 net] tcp: wait for TIME_WAIT teardown before freeing
+ per-netns ehash
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, Kyle Zeng <kylebot@openai.com>, 
+	Jiayuan Chen <jiayuan.chen@linux.dev>
+Content-Type: text/plain; charset="us-ascii"
 
-I225/I226 have a hardware issue: after a PTM dialog, the next device
-reset through the RST bit of the Device Control register (CTRL.RST)
-can make the device send a PTM Request. The device sends it even if
-PTM is disabled in its PTM Control register (PCI config space), the EN
-bit of its PTM_CTRL register (MMIO) is clear and Bus Master Enable is
-clear, so the driver cannot stop it. Commit c080fe262f9e ("igc: Fix
-possible system crash when loading module") disables PTM before bus
-mastering because of a related issue (PTM Requests with bus mastering
-disabled), but that does not stop the request at CTRL.RST.
+On Fri, 30 Oct 2026 08:58:43 +0100, Eric Dumazet wrote:
+> From: Kyle Zeng <kylebot@openai.com>
+> 
+> inet_twsk_kill() removes a TIME_WAIT socket from the established hash
+> before it finishes using the ehash lock, hashinfo and bind tables, and
+> before it drops the death-row reference. A running timer can therefore
+> unhash its socket before inet_twsk_purge() reaches it. The purge cannot
+> synchronize with that timer, and tcp_sk_exit_batch() can free the
+> private ehash and hashinfo while inet_twsk_kill() is still using them.
+> 
+> An unprivileged reproducer using user and network namespaces, a private
+> TCP ehash and a FIN_WAIT2 timer triggers a KASAN slab-use-after-free in
+> inet_twsk_kill(). The allocation and free stacks point to
+> inet_pernet_hashinfo_alloc() and inet_pernet_hashinfo_free().
+> 
+> Wait for an RCU grace period after purging the whole batch, if one
+> netns in the batch uses a private ehash. TIME_WAIT removal runs with
+> bottom halves disabled, so this also waits for removers that were
+> already invisible to the purge. Keep the wait under
+> tcp_exit_batch_mutex, before freeing any private hashinfo.
+> 
+> The same window exists with the shared tcp_hashinfo. There, the
+> hashinfo memory stays valid, but tcp_sk_exit_batch() can decrement
+> tcp_death_row.tw_refcount from 2 to 1 before inet_twsk_kill() drops its
+> own reference. This triggers the WARN_ON_ONCE() in tcp_sk_exit_batch(),
+> then a refcount_t "decrement hit 0" warning from inet_twsk_kill().
+> 
+> Adding a grace period for the shared case would be costly on busy
+> hosts. It is not needed: struct net is freed by a later cleanup_net(),
+> after the synchronize_rcu() in ops_undo_list(), so inet_twsk_kill()
+> can safely drop the last tw_refcount reference itself.
+> Use refcount_dec_if_one() and only warn if tw_refcount is not 1
+> after a grace period.
+> 
+> Fixes: d1e5e6408b30 ("tcp: Introduce optional per-netns ehash.")
+> Signed-off-by: Kyle Zeng <kylebot@openai.com>
+> [edumazet: only call synchronize_net() if one netns in the batch uses a private ehash,
+>  use refcount_dec_if_one() to avoid a false WARN with the shared ehash]
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> ---
+> Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+> ---
+> v2: [edumazet]
+>     Avoid a false WARN_ON_ONCE() in tcp_sk_exit_batch() when a concurrent
+>     inet_twsk_kill() still holds a tw_refcount reference, as reported by
+>     Jiayuan Chen and Sashiko. Use refcount_dec_if_one() and only warn
+>     after a grace period, instead of adding synchronize_net() for the
+>     shared ehash, which would be costly on busy hosts.
+> 
+>     When net-next reopens, I plan to free the private hashinfo after
+>     an RCU grace period (call_rcu()), so that tcp_sk_exit_batch() no
+>     longer needs synchronize_net(). This would also cover request
+>     sockets and RCU lookups that could still touch a private ehash.
 
-The request is harmless while the upstream port has PTM enabled. Since
-commit e1092d5e15e6 ("PCI/PTM: Do not enable PTM automatically for Root
-and Switch Upstream Ports"), pci_disable_ptm() also disables PTM on the
-upstream port when the last user goes away. igc_remove() calls
-pci_disable_ptm() before unregister_netdev(). If the interface is up,
-unregister_netdev() then resets the device through igc_close() ->
-igc_down() -> igc_reset(). The upstream port now handles the PTM
-Request as an Unsupported Request. On an Intel Nova Lake-S system with
-an I226-LM, this triggers DPC on "modprobe -r igc". Recovery fails
-because the driver is unbinding, and the next probe fails:
+Sounds good, thanks !
 
-  pcieport 0000:80:1d.0: DPC: containment event, status:0x1f01: unmasked uncorrectable error detected
-  pcieport 0000:80:1d.0:    [20] UnsupReq               (First)
-  pcieport 0000:80:1d.0: AER:   TLP Header: 0x34000000 0x81000052 0x00000000 0x00000000
-
-Message code 0x52 in the TLP header is a PTM Request from 81:00.0.
-
-Reset the device while the upstream port still has PTM enabled, so
-that the PTM Request gets a response. Then disable PTM and bus
-mastering. With this order, a later reset sends no PTM Request (tested
-on I226-LM). igc_ptp_stop() has already cleared IGC_PTP_ENABLED, so no
-new PTM dialog starts after this reset. If the interface is down,
-unregister_netdev() does not reset the device, so reset it explicitly.
-PTM is still disabled before bus mastering, as the related fix above
-requires.
-
-Skip the reset if the device cannot respond: error recovery is in
-progress or has failed (pci_channel_offline()), the device is gone
-(pci_device_is_present()), or igc_rd32() has already reported "PCIe
-link lost" (IGC_REMOVED()). Otherwise the reset accesses a device in
-error recovery, or polls all-ones register values for about two
-seconds until igc_disable_pcie_master() times out.
-
-Call pci_disable_ptm() only if PTM is enabled. pci_enable_ptm() can
-fail in probe, for example if the upstream port does not support
-PTM, and probe continues without PTM. The PCI/PTM change above
-also made pci_disable_ptm() use a reference count: it decrements
-dev->ptm_enable_cnt without a check, and then does the same for the
-upstream port. Before, it did nothing if PTM was not enabled. After
-a failed pci_enable_ptm(), the count of the device becomes negative
-and stays negative after the driver unbinds. pcie_ptm_enabled()
-returns true for a negative count, so after the next probe
-igc_is_crosststamp_supported() reports PTM support and igc_ptp_reset()
-starts PTM cycles on a device that does not have PTM enabled. Commit
-650f197d8ea6 ("idpf: disable PTM on probe failure and on remove")
-adds the same check to idpf.
-
-Fixes: e1092d5e15e6 ("PCI/PTM: Do not enable PTM automatically for Root and Switch Upstream Ports")
-Suggested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Co-developed-by: Li Lili <lili.li@intel.com>
-Signed-off-by: Li Lili <lili.li@intel.com>
-Signed-off-by: Li Yifan <yifan2.li@intel.com>
-Tested-by: Wang Jie <jie.wang@intel.com>
----
- drivers/net/ethernet/intel/igc/igc_main.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index b8ac2f4fea5a..3ee8b05f0515 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -7406,9 +7406,6 @@ static void igc_remove(struct pci_dev *pdev)
- 
- 	igc_ptp_stop(adapter);
- 
--	pci_disable_ptm(pdev);
--	pci_clear_master(pdev);
--
- 	set_bit(__IGC_DOWN, &adapter->state);
- 
- 	timer_delete_sync(&adapter->watchdog_timer);
-@@ -7427,6 +7424,22 @@ static void igc_remove(struct pci_dev *pdev)
- 	igc_release_hw_control(adapter);
- 	unregister_netdev(netdev);
- 
-+	/* After a PTM dialog, I225/I226 can send a PTM Request at the next
-+	 * CTRL.RST, even with PTM and bus mastering disabled on the device.
-+	 * Reset the device while PTM is still enabled on the upstream port,
-+	 * so that the request gets a response. unregister_netdev() resets the
-+	 * device only if the interface was up. Skip the reset if the device
-+	 * cannot respond (error recovery, surprise removal or an earlier
-+	 * "PCIe link lost"). Then disable PTM before bus mastering.
-+	 */
-+	if (!pci_channel_offline(pdev) && pci_device_is_present(pdev) &&
-+	    !IGC_REMOVED(adapter->hw.hw_addr))
-+		adapter->hw.mac.ops.reset_hw(&adapter->hw);
-+
-+	if (pcie_ptm_enabled(pdev))
-+		pci_disable_ptm(pdev);
-+	pci_clear_master(pdev);
-+
- 	igc_clear_interrupt_scheme(adapter);
- 	pci_iounmap(pdev, adapter->io_addr);
- 	pci_release_mem_regions(pdev);
-
-base-commit: c550c1c9727726dcae121221c252013153fa5945
--- 
-2.43.0
-
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
