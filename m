@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.17
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793408105;
-	b=H3mpk4yqTGscVWKRAp9CPCTG33EzO8KalkGgqPlmuRpotzBgt/VdJcjGd+CUZaam8kHN
-	 iNJol9N9mDUROeCBIXMi6CK3et7Dhq/wuCHSakET7UxdMOBhnxArZaaUp0ptBTQ7k1xoE
-	 yZoKXkNfuIFzfrZlnSDTRVos+Q73Z4gayDFwiwNwHxEvd71b7Nmo9Jft9Hje8MMtzxDB+
-	 tziD/G/+UYBcxWDKb8Wlo/3jJV08pI3bLmLDh1X+GEYotADXXip1cIYixrxRiTteqflP5
-	 a7B4qcMF1lMAjQRFzcTeaLx4YI/nF5zgBBoSTWL6VICSBsx2nwY4gb6IUTW6DKnr2fg==
+	t=1793408549;
+	b=nZujeIzhYcmAWAdpcwiEgk+NB62iEZSySLS0kug2KJkhwCcdJg9HqDoURcBSqrFKpMKB
+	 tBQQC+6oBMr54GrKfFdA/WtBwwtgO6KakNBO4J3y3iOzDei0Ajt+VnP/bjhklIlYkzidB
+	 zgM6RkvXYpl3C6Gw8vC5XbfAqaGLM0WnSVXordqeM+wMCouLWPhYbuv1WsP4C4yrOk3Rf
+	 Nnp8NGpNJPEeXoyQPL6bSljImPZHmf4U7K1CkUnIw+UoAOB5XwyBVl+hlbqseljWOx8Z/
+	 ArXQ7rV0Gt7usL9jPx+sg8KPt9xk8EVuEHBBY3WBr2rD+I9BA63W6wAtu9nbflDtd4w==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793408105;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793408549;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
@@ -28,92 +28,92 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=YklPiFNk6cku1rmxA+QoU1/RFVmJ3rOZ0+geD04tzxM=;
-	b=iSO4ARq3M9y0hFL3MzJDPZexM0JyPZnPFn1mWtpsByF/K5FI184O98TvHZucq72t0CwV
-	 J1c5pFG0KzhFImrWQ2sVGIrQCEbrEyuEEdYLWjVTEl+ejnYzt/jKHfPpUtSHQWCxDbUzr
-	 MFUIrkD+JzskWcD8vap4mmUDMNPpJYiKfurd39Y8/WDIGOI9nRFE6rxulf50wROon+a6X
-	 oUka54UAJwb7tbq0VnkFArFd5G+acN/2tA6/UPIRe6NF9RoOy+r82P35LAtD7i/0M/qio
-	 +X7cvv76UAci9Hk2pcZA8BoQ5N7xT3pna3WvjKRsXxqqkMMhdgafHW7cwDjuge1qZ7A==
+	bh=JOf6TTB/ys/QsWGE4IIjvhx0vSkDIp4wYN6iZK9qK14=;
+	b=N04BPk7eSNzDZFp9jmnloci1fgCtsOw87YpxzXvHN5SuiCpdWeDNFTUax/DobTGHN9L8
+	 BKDAAlbA/R0Ifvk7EZ2HZwULMBQgIdP+NEjN5zsmRY1t9jTxoXMMX+jInImlbCijhRbXy
+	 wYYnTHtA2mdQmA10xwrTyjxV9FYaBpIhl3uHCgIh9Bcp46o0A2V5b6a6zP1Ox9+ldSwI0
+	 +3dU4vRS7FT9ncRrGrA2xq/8h89/TBlyBup0FqK0RgwURcwA9JuQXoSsU7Hxk3o6khiS7
+	 5FvBXwC7YB116mi8KNcKud1cthZ7EO6WSXXzrPykH7C8lP4kThLsqIzgKHaTSMiTfhA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="dhSNRsE/";
-	arc=fail smtp.remote-ip=192.198.163.14
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="JY/n8arx";
+	arc=fail smtp.remote-ip=198.175.65.17
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CDC7606A31A
-	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 00:55:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6CDC7606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDF2606A31A
+	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 01:02:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4DDF2606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dhSNRsE/
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JY/n8arx
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793408105; x=1824944105;
+  t=1793408547; x=1824944547;
   h=message-id:date:subject:to:cc:references:from:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=T/I24D0TZSQz9sb25B1NGsZrpOtjYBPK6JIlYNFT6vM=;
-  b=dhSNRsE/RhwdNuJZG+zeQBf3RRIk4BeCIGuQLkZnTdfCf2onEzcYlKxf
-   8Is0tNwnunq4miyFZc/YMIIJCFqRgOYD9LtI0U3aeMU0kHXFT98xJuuXD
-   dfOODeB+eW2i4mZvPjBNeRDfFh18JSrK16NIWmmZtMXLetUrWndgvuIoa
-   Rw5qXdWJXACs1KAXV/nrq5EfWdocBDxSd0ZgQ9W2p8pQEFhEkjsn3nNQM
-   vnYY7RpOOJ+KKqxlC3MVf5eWJ76ewz7e31ppjtcYVk4tBGuV8mGRrD1uk
-   9fJ8MXDxqo7SjE3MHwRTP/x4/vYoBKiONYu20rFfJcF/rtZ34ntIhud6k
-   A==;
-X-CSE-ConnectionGUID: BozR1YebTrWySZT0IdNeoQ==
-X-CSE-MsgGUID: Z1THNVawQ2SnkMh1amnwHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11951"; a="2212012"
+  bh=8zEbTa1G/8yyHZ2plh+tazy3cGmMavA5cdV4cU1AY6A=;
+  b=JY/n8arxtiFwWp+9AeodVxz9BYIZkMANJxonfXGnZKA3+1Kj80VfYBAj
+   a/YSt7fnnlD4WFSTESvkY/jOr0JMWmMVFabwX+9SkX8m64zliS6cMZJfU
+   rK1PbpBzNhzPWw3IMajUg5AZ4SLvwZnDblpwy66JMUrYTThq4Cis7WX38
+   3NkCuScxqumhLuv7iFXDKXVDljm+6TTSpRJs0JIoqPr4mCDDO6ukWW0/l
+   Ba2lJ4ZigXl8vwRpk+/p1LrsQ2XEW9i+otKRVKL0PLdnVc/VtKcx+8I7A
+   1C/Jv2hTDqNWV6GmGFodFD7B6bAEgrSve8/2LThqKfiGX7B+Efq2ZiXa4
+   w==;
+X-CSE-ConnectionGUID: VZKuEc68Tg6LVj54SoL6fA==
+X-CSE-MsgGUID: fntDxjBiTQOrknkYcZEzcg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11951"; a="2192326"
 X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="2212012"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 17:55:04 -0700
-X-CSE-ConnectionGUID: VMp/EvXrT1O+7mccbN9olA==
-X-CSE-MsgGUID: aqdM3UG5Sjau/qUPrpH4Vg==
+   d="scan'208";a="2192326"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 18:02:26 -0700
+X-CSE-ConnectionGUID: e3CZbxhwR7GLQTQmBCAltQ==
+X-CSE-MsgGUID: 646HXgFgTEay8Ale+l+Lng==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="5655133"
+   d="scan'208";a="5678515"
 Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 17:55:03 -0700
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2026 18:02:26 -0700
 Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
  ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Fri, 30 Oct 2026 17:55:03 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ 15.2.2562.56; Fri, 30 Oct 2026 18:02:25 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
  ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Fri, 30 Oct 2026 17:55:03 -0700
-Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.41) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.2562.56 via Frontend Transport; Fri, 30 Oct 2026 18:02:25 -0700
+Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.15) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Fri, 30 Oct 2026 17:55:02 -0700
+ 15.2.2562.56; Fri, 30 Oct 2026 18:02:25 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rQxDA7+kx0LyHCV768go7BUv2k3LCSCm+EFaPHLCVYk1/SVXO5/M5PjzFI1GdrBB9Q0L+cMDbmmrFa5ndMGi+s4KjmGEXeAZCCu7TQz6ZOAMRFhSRp09QxlObFZR8A1OthkmUVD2DgiIa0IxAVhq/Hi/Lcj011n44KoeQjYK/WF6hRB5JJRE9jjyJN4aci1/cK9bPvDF7pDITbwqlKA5oQrVNO4ux0gUj1RmDGhOR321wUJr1UqGHLmtI7X8yAgpu/vR6wZ8vJVR+8Te4j5zGjRsp5C2Tj8WgVY13EZe5o2TfHwje3DdY5N0zceFrXBFMt/XxC/NITZwDcJUI+0IwA==
+ b=G5LXRMjPEXPB7Phr0WPsjz4oPTaEnxreCzDK1U/rFGwJeUy0unm6zu+z8ton7EglUcM7ODq24D0Vi2ZZb3cjJ0yBBpW3+8Tg59w2Jyxk2VRiV1VNXilerPlyseqS+4OMrWoX4XTu7DzKH3XcW6bPFDhd4gVKpvHCAoYk4CrpTKVfR5R74oxAQ+Jftlk5i5qZ9OQ0Wv827Z0WUv+Qx0hRLwn4lK1df9O2D/1SvKrnWSsTdSN2AMAEoOS4xSArvR+vDurThMwXqzRTpUV59ij+tD1DxtVjftEYDYBDbIzcCMKDhYuaR0/CmeoCsHiQY0PLHwi+jh+1XlSKnOSpJ9oBVw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YklPiFNk6cku1rmxA+QoU1/RFVmJ3rOZ0+geD04tzxM=;
- b=vdGweovlF4XZeKdVQ89l0cUT1cYjpilreUt3VK0AwJyvxcfqlzx2O7QpCi7Sw3JL4MtJ5Vq9U2UwnPAONCd0JQgxw9KlT9VYAc7TiJxhyT9YppBpkqNGPy0EnKCj/9bgHxwiEVEi9/3eBHXuGGfoG763T+ayTlOxeM9eXl+rRw//3owRVHhiPILUPLgJJYLntm2fMwo2UcC1b1DUpohRYVwZO+ncs+SUQVo1knoCX574sawSagegaqcHztdc2lkUlYMoED233SrhD93hrSJFKVnhvmal1LlJ9iIJsv7JxbxhCZUUnF3spe7lg7Cyk4862fC4uo2HBRHDzTONVnry9A==
+ bh=JOf6TTB/ys/QsWGE4IIjvhx0vSkDIp4wYN6iZK9qK14=;
+ b=nR1nZC77cxdgkQLdVtAQFfrAXOlESEY979OW4iKGO+Dk1gaBXrkQtfyh4vldTeX28armH3qLRTWNtaM9PhS55v1H7SEXg4XpYiQlhkuMxohhCboYFJzQGEyGkJKQfZ1HdcXy6bZvRwnkmjON3khoeLP5XgLGjVbiZTE3Apxor+OpWbaDmBCRXfRr+oCnpgYD80TtIuLNtVIylhNQrNROIHE+Gk8rjOVorzibYW3u2bARejKP7xV4XJtdIULvpteyCM8sv0B9v/AbVP2HyOeHTIWmZsVvkmWzlVQ9BLm3slfeiYaBbpLzzWHJX5vzxbCqq2bdso1SqhoF+0Vsf1/y/g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
- by PH0PR11MB7166.namprd11.prod.outlook.com (2603:10b6:510:1e9::15) with
+ by PH8PR11MB8257.namprd11.prod.outlook.com (2603:10b6:510:1c0::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.10; Sat, 31 Oct
- 2026 00:54:54 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.9; Sat, 31 Oct
+ 2026 01:02:02 +0000
 Received: from DS0PR11MB7381.namprd11.prod.outlook.com
  ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
  ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0569.009; Sat, 31 Oct 2026
- 00:54:53 +0000
-Message-ID: <4239c9d0-734a-4a58-82b3-6663ba90123a@intel.com>
-Date: Fri, 30 Oct 2026 17:54:51 -0700
+ 01:02:02 +0000
+Message-ID: <b0f30a78-4f23-47c4-9ea1-dedc45abf2c5@intel.com>
+Date: Fri, 30 Oct 2026 18:01:59 -0700
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 2/3] ice: E825: clear PHY_TSTAMP memory prior to soft
- reset
+Subject: Re: [PATCH net 3/3] ice: E825: perform a soft reset when starting the
+ PHY timer
 To: <netdev-bot+sashiko@kernel.org>
 CC: <przemyslaw.kitszel@intel.com>, <andrew+netdev@lunn.ch>,
 	<davem@davemloft.net>, <edumazet@kernel.org>, <kuba@kernel.org>,
@@ -123,15 +123,15 @@ CC: <przemyslaw.kitszel@intel.com>, <andrew+netdev@lunn.ch>,
 	<maciej.machnikowski@intel.com>, <przemyslaw.korba@intel.com>,
 	<sergey.temerkhanov@intel.com>, <arkadiusz.kubalewski@intel.com>,
 	<richardcochran@gmail.com>, <horms@kernel.org>
-References: <20261029-jk-e825c-critical-timestamping-fixes-v1-2-72128d1dd928@intel.com>
- <179339643733.3131.11053424586570802270@kernel.org>
+References: <20261029-jk-e825c-critical-timestamping-fixes-v1-3-72128d1dd928@intel.com>
+ <179339643889.3131.9026864983755179552@kernel.org>
 From: Jacob Keller <jacob.e.keller@intel.com>
 Content-Language: en-US
-In-Reply-To: <179339643733.3131.11053424586570802270@kernel.org>
+In-Reply-To: <179339643889.3131.9026864983755179552@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4PR02CA0006.namprd02.prod.outlook.com
- (2603:10b6:303:16d::12) To DS0PR11MB7381.namprd11.prod.outlook.com
+X-ClientProxiedBy: MW4PR02CA0026.namprd02.prod.outlook.com
+ (2603:10b6:303:16d::25) To DS0PR11MB7381.namprd11.prod.outlook.com
  (2603:10b6:8:134::14)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -143,185 +143,258 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|PH0PR11MB7166:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7c6425c1-b300-4a29-d14a-08df36e99306
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|PH8PR11MB8257:EE_
+X-MS-Office365-Filtering-Correlation-Id: 48e55f9c-4d86-49cb-b0dc-08df36ea9298
 X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|23010399003|7416014|376014|1800799024|261028144727099003|261021121427099003|261022075727099003|261022105027099003|261009223027099003|261026140227099003|261026121527099003|10067099003|4143699003|11063799006|22082099003|18002099003|56012099006;
-X-Microsoft-Antispam-Message-Info: xg7cMPX5f1hfaVcTETO+YjQKrtpyr3htGalSwxMiol98IHRDPm9NgzTuEjNp1fz+Ailxm3IokURYWwxPhgqX7+Bi1GtXuWjtLAuBFlrgfBq/WgCEj0vNXX0nvlOpwY8fwj7+YGUHpNWxtO2QRczeM9jypTeDZxuDsb3BiBXv2eBz0f/cB6Y/d+8wifypBqmTJr2YpKCDyDRP90O182sYRBkUSY0aaiI+WFBaczhWal9WOzrsu2dD5jggI1zimMhDV2773SnYUY710WcmWeyNDC/om5fwKKo2vBXFq6bwreYEJyGwgAsY+w5U7sMgVZZIwx+NV9HEAOotnJ7dlze7FuKEgOUA5LPEFKw8ihYuidOOtNtHnHWgQn2+JEOEHoI+9EfkHv3fzN/DRvnhIDgHIhxdo+3MwsnLY6dKz+eKTwGtyMybd21DZgk4iOf9mQ5X+uDv+XJSCCyCUPyF5vtipQ/8f8RtJcNS8+KMMg0XwSAY8YNrVEN/CvNn3jnuoJwAISFS8xeB2/uUHuUCrQs8p9EE/oGx0w4rdFvxg+DNaY6cYL5AyphPLdXtEnRWXGVMgY+yGhEpvkQppdvzzME89Vfr+Q67u0iV8kWWmzC+PuH+5ge0ZXIaInMRMzv99smKo81CBUE6ULAXVsXdBP0widVhM0b7C0p0G7VH+Q2j128=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(376014)(1800799024)(261028144727099003)(261021121427099003)(261022075727099003)(261022105027099003)(261009223027099003)(261026140227099003)(261026121527099003)(10067099003)(4143699003)(11063799006)(22082099003)(18002099003)(56012099006);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|23010399003|1800799024|18002099003|22082099003|56012099006|11063799006|4143699003|261021123027099003|261028144727099003|261022075727099003|261022105027099003|10067099003|261021121427099003|261009223027099003|261026121527099003|261026140227099003;
+X-Microsoft-Antispam-Message-Info: iC4/tSGj33mtgfr6hC7YCPZrATbXoozuMElvNVXGzg++J7qMxCO1vxzZ0idHLDKc/agDOWtYq8YFNvqd5kjTXKD4ZcmbKpuEOr3hY8yT3+5SZG4QGDn9mhCi78BfIbC+re13PndHHurBnVUxi4862UTuw27tuV55T/bNGIao/7jQGYFgcDAyLw5RVXckFxPuPJmB8B9OfPboFOKyfDr5ZK+Pv4UXF7vNA19p9U6asov0ozdYkU1oW39k6XQaOrxdLeehvQ4fxCmQZb+56/yEQRs4dqjgtpjI7g5jC0SaAwGWgYdv0hfhAm4hgRMzFxnRDCU0eY4/+aKmdvGaLP5N9uma4oVTllC/hnAM2KjbS4dgblyQ3h7mIXkR5D3OgPkzbRaKmNdoe/y6+37f+Mzz8A2Qb8VjxYUxbsNMXWb1zVoEoe8hyR2HXW3UPbOscMYgIHmH8zGuxdegSmo/69+RQPFn7OqOJAF+uPZzV2L/k9iwt0GOO1WJdTNagvN3L83ktxO4nvgWr/DXYLXGFBnNwkryEKv7TzG4NSLGj+bYaG2Jgh6NlU494j+pHEzfMsJm5JfnV0Yqh11iwDzeHLMN5xd/imSzOAmAWNvuReAi6OdvPjS41SMnmS1H80rDZ/F175lX63YXxNmhPYd2naNI8dUuoo+65S/9E5bXnIrSlfU=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(23010399003)(1800799024)(18002099003)(22082099003)(56012099006)(11063799006)(4143699003)(261021123027099003)(261028144727099003)(261022075727099003)(261022105027099003)(10067099003)(261021121427099003)(261009223027099003)(261026121527099003)(261026140227099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dTJsK1B6dlY3U1c2RXFDRXpscS83NlJ3OWF0YkRvcURJdG9jOXZLcjdXVW5k?=
- =?utf-8?B?cUI1Ry8yWHhwYk5QcWplMVdhRXVtS3NmN1RVbEVYUGc5Q3BYdUxHSGRIOStj?=
- =?utf-8?B?a1ZOTVdaRVM5UGhNc3h2Yk93bDNuQ0FKejAzWE9VbzRKRU4yQkJmbW1kdE1J?=
- =?utf-8?B?WE9oVTVUdWx6M004bGFCSjNiQjM4Yk5MUWUra3RGMnhXemRoRDhPY1JuS2c1?=
- =?utf-8?B?VEdOQ2ZBVjBHK05Xd1lKRWdOMkRscEpJeU0zNzliOXBscHI4NFdvcWFUZnBK?=
- =?utf-8?B?WGVGZUd0Q0V1a0g5US9ETU44NFRWd3RmaTU5UXFCTnZ0dTVQSmJkSmJIYjN3?=
- =?utf-8?B?Z05vWVBVcEdxRVF0SXFmbmxMZXlvaUJQUmRGZWpUbmtGY0p6Qk54cGplQ2N1?=
- =?utf-8?B?M1QrMTRVeHBIZDF3b3FKc1BPOXN2cnlZVGZkd0wyRlFsVUJqYUs3dy9jVFBU?=
- =?utf-8?B?N09HZDhmQTAxUmdtSWFJTXIvVldESmRYelZTUmVNcjYzY0xUTkZwWTdkVGQx?=
- =?utf-8?B?UnJzNzc5VC9uNlB3bG1SdHh5S0FVWVV5MUZoMU9paHBpQkFBbTFRTGo5ZXBl?=
- =?utf-8?B?OFRMeWZCQkZ0UnBsUStCTEpKRml0c0U3NWk4T3VhWEQvZVFuZGUxRGxOMVB6?=
- =?utf-8?B?ZXljeURVTVYzQlRML2U4dTR4TWtIWlh5WURnZTZVenM4MkJUMEhJazIxZEp0?=
- =?utf-8?B?ODBGL2xlejVnQVVFOFdGeHVPY0NIT3FpVDdDUjRValZldW90WmNNTHB4UWpk?=
- =?utf-8?B?Z1RaNDRhV3EzcUNtMVlGUndEV2NLV09PU3FWWWM4U1FBQmV3dlBzVDZCdzRR?=
- =?utf-8?B?R0JidTB0ZDRpQnR4NlVzV0JKYkxZTEV6c2VzenVwRUJjaVhxY0xnNGpBNVdl?=
- =?utf-8?B?anhURWlWSWdJaHNzYmxyNTE5NEhqckNCTS8rTDQ2dFR3T1BqNk1neHdvOVFk?=
- =?utf-8?B?NEhUQ29Sbm5tdnlFMGlpWkExZEZPd1Jsc1l4a1ZCSlBHby9VMGUzZEZXWGJS?=
- =?utf-8?B?OENRQllDaWM1MnlxVStob1YyMWFpLzlONUE5SU1YWHY0RWlTMVRxK0hCNkdP?=
- =?utf-8?B?N21haGFyOE1nWFE1NGI2cHdaaWRPelBVbXl3cFBpUG1ZWGR0YURPdm5qZXU5?=
- =?utf-8?B?UDdOUVhOdjZUYnFJck81cm9DVFFHU1pVSHRKVmFrUG1FMDRIbDUrNjJRMjhs?=
- =?utf-8?B?Y0dOcm0wTUIvMW9CbmRrbzJGcDJRRzlUOFI1TCsxMWJ5bWZURnZFN0YxWDcx?=
- =?utf-8?B?aDlTbDhLaExIQlNPeXNNQ2lyTDNCbDJaS3JwQ2xUQ0FNVWZzdHdsbkZVMWpz?=
- =?utf-8?B?aXBDWE1YOWF0VlNmMktCbElTUXpucmY2YldpWDh2MzMweFFwSEUybkpYREly?=
- =?utf-8?B?bTdLSHg0VDk5Ti9DVkd5MzBmN3hWT1dUWGJ2N1k0c1ZnRHpuY3lpUCtwT0ts?=
- =?utf-8?B?dUdIY3RBSDBRb1BsbDlVWDZKQjNTU3gyODRndElkcXFtMzNJaHJaaHhhVWJB?=
- =?utf-8?B?YTZqU0hMRldhQ2IxSUd1YmFXR0dkcjNEYnQyS1A3ZFJXVlBDT1E4OXUweGFy?=
- =?utf-8?B?U3hOYlpKODd6UUZ3VzdjTHg5eGgvVDFjSi90b1JOejd4SWZwOWJlVk9sZmVR?=
- =?utf-8?B?VGg0cEZwRXcwaXFKc2ZtUGNSYUQ3UTN0MTgrL0RwNE9jR0I3NVVPdjlBczI0?=
- =?utf-8?B?STN0dG93Z0p5bENKUTNiOEZ1Qmh4a25kNCt5N0hPb0FPaHpvTjdqYmY3Q3RV?=
- =?utf-8?B?ZUQ0aGt0Vi80elA0emxFMHViMUFVZEttNHhrWmF0WkVRM1BXeFNGbXJsQW43?=
- =?utf-8?B?QnVYOFJSWDFvM0R2dWlUeXdVNk9ETHNZbStSRGpld2g0ckFIMnpwbUt1ZElz?=
- =?utf-8?B?TUVuU1pkWWdxSjVENUF3VUR1U1dIZkRiQU9SSWxtY2JVVjV3bmF6Zng1U3Ay?=
- =?utf-8?B?QmJ2NzNqY0duQTB3dk5OMGhXM2JUN0lTRkhCV1BFWFlMTmVHOXh3ZjdOdGpR?=
- =?utf-8?B?eDNTZUVaT2VQVnR5Q2xNb0tZb280MWJTMEVjK0szVzFtRHB5NnN0Zng0N1Nh?=
- =?utf-8?B?UVFKOXV5ZDUwRFpVVlZSU01UQjlubFVtc3JqUkU4K2R4K3hLREpQRWxJSE91?=
- =?utf-8?B?OXF1WDdRWUwyRjV5TTJwSFFPbitGR3h2aWFpcjROc015SndoUFN4eGwzOWFM?=
- =?utf-8?B?SWl2TlZ5c2k2Y1BtNUVjNHJ6UFhJQ0NwZ05aWXcvWVh2dFFudzRQckd1SWNx?=
- =?utf-8?B?SWhEZ2FvVlU0MnNnQzJDTHJoSkY2Z05BeTJQLzRQNXcvZ3k4VmY4Z1ZxQUo1?=
- =?utf-8?B?aDZaMkVRS3FLRXdCL0dMdzMwUEliMzg0R3gwQ3Nld1AxYjl5aU96QT09?=
-X-Exchange-RoutingPolicyChecked: v1jeqP52mEQkPaSdwcDDRGSVWrBnGYBCAxgAEtqm0xt+Syq/LSnmhWXjQoTz+duJgygfWscrGK6ZVMGpSmtddZZ/PzhZI6MnhpRJdCr5mOJfTqCBi/VgsL5MJ+LrdHROXnv2Q8mKEQ4/OUZ3R9VR88rhmgsndQplGpBGmZyTVJ9VG/llD3m70Rm+AvRDNWMd64CuYwrlHgODqMtLr2I8ARzq4allFwhgEfWlgGBCmjGVRtDmAoWBQsmZx92y6VkOaePz+7qpfqPXuKhfgMtrShLcOzAlVe1oc4mFIhK5OdHdpiSidYV7kXmd7n78jdXE2MgGMDhoAlcLHSWXmrc9cA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7c6425c1-b300-4a29-d14a-08df36e99306
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Z0tadnAydFNnV0tXWmlsaFJjaytkWUE2WkZwdE5CVUZ4d2pxdXkxWlNMeHgv?=
+ =?utf-8?B?aEFaLzZoeklaeDB2TUs3djdGeEZCeXpWcUtEemZNOUFJb1pCck5aOFpxdW5r?=
+ =?utf-8?B?dzNCaW5IYUtxVHQvWnFGOElIMGlPdStWbWs4VmlOU0pDb2h6dUo4eU1aQzc0?=
+ =?utf-8?B?bmMrQVpKRENOK2VnZVhNM0FuT245Y01sT0p1NzBXSm1EdXRyVlZmdWlRSVN4?=
+ =?utf-8?B?dWZmSkJBb2o3b0F5a3ExMFgrVVJXZDN1bTZDRXhrdFhXWnlhS0JpWi9KYUsr?=
+ =?utf-8?B?TXl0QnNoczZnaFREZkVsM1ZuS1M0SXBLemxsSmQyV0dCM3RYKzhPTC90V0NP?=
+ =?utf-8?B?OHB6QUZkeXdrRGw5d2FuZjMyYXNCaUYrTmlIRERrOE9nSTk4Y2ZKbHVRaGV5?=
+ =?utf-8?B?VzFsbGxnTmxVaGVwbVNuN0svQVhnNGhoU0RwNFEyU3JSb3F6cHgzVkk5NVZB?=
+ =?utf-8?B?a3ZBMEhZTlZtdFdnUVQzUDZtWVRoN0ZXeXBuU3ZwUHhDMmFTRWFobmJZWTNo?=
+ =?utf-8?B?M1BTVEkrRDZhSmpxZHFoTFp4RW9YWFByL1R6UjhSbTJWVERnYXlRTm5Dait3?=
+ =?utf-8?B?U24rR3VDUDBCRHU3U3R3WUt3cG9mOVpJZElPYVNFREhoTFRXTmlyT3JOS2R0?=
+ =?utf-8?B?VDBPdkVmK2xmc0pIeXJzVDAxQVNEN1VNY3BlRUJqeVNiTm9hZWlvN0hJL3J3?=
+ =?utf-8?B?WHNUd3NCZnBSZFFpSFNsazRmVEJwa3g2NmFCcWZ5Yk9aU2RIR2JFS0djTERy?=
+ =?utf-8?B?c0FJMjFkc3ZaUS9JS2hkUjYvSmhKTXErL0NaVDZQbEtwOFpBWlN3OXMveGg2?=
+ =?utf-8?B?b1JFMFREa0wvci9lK1Y3SDdsbDFVK0U2cmFsL0lITmIwUGhnSVROTTNScFBB?=
+ =?utf-8?B?MEhNM2tmQWgxQnN2V2VUSFpGek1TbmxQTG5qejMvY3ViMlMvVVUzNlBWRWh5?=
+ =?utf-8?B?TzlNSTQ4d1ZMemhibXRjLzFuVjhkdDFxbUxOaDYxYW95U2x0Q1NqRkpNRUlw?=
+ =?utf-8?B?eGR4YVVDcG9TZjg3UkJJa3RMYUpNYlVheTBkT01KRFZRY2NBRXowb2NBV1U5?=
+ =?utf-8?B?a3R5SU1WT20yK2N5ajFrUVNPUWUxUVBoZytlUTVyWC9paWVaTnpXdldyS2Rl?=
+ =?utf-8?B?YVZQeWZZQmxLRGsvMkVmTitXSVZnQmZMR1pYdEdJVDZVZjlSUXJhclc1cDRX?=
+ =?utf-8?B?SVpKSTc0OElZSDJQZHppRFI3ZnNyOGJ0ZDFXazRUY2Y1djIxZVdRRUx0WUxp?=
+ =?utf-8?B?RDJodkluN2NweXlpU2NubW9ES3NXamRuUkw3bS9rZkhhaHpFTlBZZnRDRUsr?=
+ =?utf-8?B?MzFkN2RwZ0Y1alJqMVIzckRTZ1grNjNRU3lUMHgvSjdvMndGZktqemhvVE5y?=
+ =?utf-8?B?dWlucVEvSlBkc2Z0Y0ZNRjltUnYydDZZbFdzRHQzaHhYbnFqelI3Q1kwTTdo?=
+ =?utf-8?B?QVpuek95a3Q4UUE1cnJabDJLV3hqK0oxYitqT055NEw1VXdNaUszaEkvM3pJ?=
+ =?utf-8?B?ZFBTbUVMQ0h4NjVWeWtyT3N0cEkzaXBlUDBlcEJOZ2VuOEJ2ZUxKcFlFYUxs?=
+ =?utf-8?B?RWhUN0w1L3B5MndpVnhaN2RPMEN2b0NxZEVvajArbmV1elJGQmZpQndnVmM2?=
+ =?utf-8?B?K09DOFc1Y3Y1M2NuMFF1VTlTM2pSMmtaWHlmRGxNRDQ5Z244dkRDVFhrZDhy?=
+ =?utf-8?B?cjZCTDlPZVlNQXFDcVBMc3FnZEtqM2ZLU085U3ViKzUreHZlQkg1Wk9JZEEw?=
+ =?utf-8?B?VXVqT2MrQnkyTnBaQ1NGK3pvUjlmUnJQNmxVSmF0aEk2eDJ6S2xTN3hpSkJX?=
+ =?utf-8?B?QmIvYjMrbFZKNnduRVBXdXMxT3k3UGhsRWZQYzdCc3NvQVE4V2xYRWxlZS8v?=
+ =?utf-8?B?Zk4zbk5CNmxzbm8zMERPSFV5V0ZHVXlsMjRaMDBOS1FBZGdPVmgrUzlETnRz?=
+ =?utf-8?B?di90M3FEWGE0bVNpcXJBYzhIZ0pVVkVrdG9USjg4U2tlKy9RSG11K0R0YXNj?=
+ =?utf-8?B?enk0ellMNVF3bWhEVTVZeTBOUTFXL0w4QnV0eTduVWoxMjVmenhiQ0tKZkpM?=
+ =?utf-8?B?OUFXcXhRR3VDV2VFb0hlUXJFOW1FRVV6MVFBNERFQ3FVRXA3SWhOVzdwU2pv?=
+ =?utf-8?B?QkdTQjB1blZ4NGVheHptd0tSRWt3R2dEOTlBWUxxZjNJTjg2WW9vVStrbDNL?=
+ =?utf-8?B?clRRQTNPN0RBWUlNdTN0VEVneGpBUmRxZit4Q2M1OWdoSFJlaGZnYnR6M2Zj?=
+ =?utf-8?B?WHRRdmEweFhIZVZkeitnRy9iQUpiZHBVZndQY1NiM1JCRHk4aHNLQnhCVVlL?=
+ =?utf-8?B?VEU4eXJJNnIrUUpXQjNnUHFNYjc1VTVvZXZOVWE3Uk5Rb3NsN2Erdz09?=
+X-Exchange-RoutingPolicyChecked: VymiXuqEVc6MI9kBOBeynfk2acVLZR8kUIcEvlhS3obI6uhVGUuW0aAWrrvMLXA/XiPclufqYlo8SPnrJntcpYUVqNufyKEvmb/OP4eC0N4sRa9PdTc8MrYBo57g0NwUVjKoGYmMHCGggUItMaHPL8oO/WaD/o7LUmA/dh416r9XHxPoa93W8zva9ocBB7/Ji/6gyZ6D5d5Ct2UzYSm6BwI3DVK9dr8px+KHcBb9Gt2wZ2q/+MOZpIqYjro8cH5u1aKJ+srK2DIAP0+vumvgiZQyPLBp6QuI2mFk6PbKyO4gFBKRB6tg0Ch0bzUW80AEwDpLDrWpLmvzv4ZjZ8NXCw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 48e55f9c-4d86-49cb-b0dc-08df36ea9298
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Oct 2026 00:54:53.5364
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Oct 2026 01:02:02.2404
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RcyJU4RMOPaLiC6MTfzIr6tM2zUANWtcDZp+Y+swdV7C2VO6i0WvSBzZXqv3HCkPxiNAl/KyGwb4sLbmGxvCYahvt0znK1ZKXSe3kwjzRew=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB7166
+X-MS-Exchange-CrossTenant-UserPrincipalName: SKtd037zew0Lmvsk9Uu0VGXcq6eTc6eyECXituZxVCLFXZaA5tPyZ0uO5irgNBf4Qa8oYfqhQxg7elsU+BqVKc7kP+DA3135dw3nPUTPNzc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB8257
 X-OriginatorOrg: intel.com
 
 On 10/30/2026 2:40 PM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in case
-> you want to address the nit picks below when you respin.
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
 > 
-> Low priority / nit picks for your consideration:
+> Critical: 0 · High: 0 · Medium: 2 · Low: 0
 > 
-> - [Low] The loop in ice_ptp_clear_tx_memory_status_eth56g() (`for (idx =
->   0; idx < INDEX_PER_PORT; idx++)`, INDEX_PER_PORT = 64) only counts…
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] In the E825 link-change restart path, the software Tx
+>   timestamp tracker is not flushed, yet the PHY timestamp memory it…
+> - [Medium] ice_ptp_phy_soft_reset_eth56g() now runs on every E825 PHY
+>   restart, including while Tx traffic is live, but in-flight timestamp…
 > 
 > --
 > 
-> ice: E825: clear PHY_TSTAMP memory prior to soft reset
+
+I believe these remaining issues are not realistic, or minor and not
+something that should be holding us up from getting these fixes landed.
+I had originally tried to mitigate some of these but have gotten so many
+complaints and run in circles by Sashiko here. I do not know how to
+modify this so that it won't complain....
+
+Trying to break things into smaller pieces seems to get complaints about
+the things that we had planned to fix with the full series. :\
+
+> ice: E825: perform a soft reset when starting the PHY timer
 > 
-> This commit replaces the E825 timestamp memory reset with a sweep. The old
-> code wrote zeros to PHY_REG_TX_MEMORY_STATUS. The new code reads every
-> PHY_TSTAMP index on the port, and the sweep only runs from within
-> ice_ptp_phy_soft_reset_eth56g(), so the soft reset puts the internal counter
-> and ready bitmap back in a consistent state. Read failures during the sweep
-> are counted and reported with a warning but are not treated as fatal.
+> This commit adds a call to ice_ptp_phy_soft_reset_eth56g() in
+> ice_start_phy_timer_eth56g(), so the E825 PHY timer block starts in a
+> clean state. The soft reset sweeps the Tx timestamp memory and resets the
+> PHY timestamp counter before the PHY is programmed.
 > 
 >> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
->> index 07b55fbb88dde..ef59b34ba52dc 100644
+>> index ef59b34ba52dc..ee945ce08eb72 100644
 >> --- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
 >> +++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
 > 
 > [ ... ]
 > 
->> +static void ice_ptp_clear_tx_memory_status_eth56g(struct ice_hw *hw, u8 port)
->> +{
->> +	int err, failed = 0;
->> +	u8 idx;
->> +
->> +	for (idx = 0; idx < INDEX_PER_PORT; idx++) {
->> +		err = ice_clear_ptp_tstamp_eth56g(hw, port, idx);
->> +		if (err)
->> +			failed++;
->>  	}
->> +
->> +	if (failed)
->> +		dev_warn(ice_hw_to_dev(hw), "Failed to clear %d PHY timestamp registers for port %u\n",
->> +			 failed, port);
->>  }
-> 
-> [ ... ]
-> 
->> @@ -2311,6 +2320,8 @@ int ice_ptp_phy_soft_reset_eth56g(struct ice_hw *hw, u8 port)
->>  	u32 global_val;
->>  	int err;
+>> @@ -2150,6 +2152,10 @@ int ice_start_phy_timer_eth56g(struct ice_hw *hw, u8 port)
+>>  	if (err)
+>>  		return err;
 >>  
->> +	ice_ptp_clear_tx_memory_status_eth56g(hw, port);
+>> +	err = ice_ptp_phy_soft_reset_eth56g(hw, port);
+>> +	if (err)
+>> +		return err;
 >> +
->>  	err = ice_read_ptp_reg_eth56g(hw, port, PHY_REG_GLOBAL, &global_val);
->>  	if (err) {
 > 
-> [Severity: Low]
-> What happens here if the sideband queue fails persistently instead of
-> transiently?
+> [Severity: Medium]
+> 
+> On the link change path, should the software Tx timestamp tracker be
+> flushed before this runs?
 > 
 
-On a previous version I got asked to change to this method because of
-possible transient failures. I think this is best since these reads and
-side effects aren't entirely critical to functional device.
+I tried that in a previous version and the AI pointed out all kinds of
+possible races that might occur then.
 
-I would rather leave this as-is and not waffle back and forth about such
-read/write failures that are entirely unexpected in practice.
+> ice_start_phy_timer_eth56g() is also called at runtime. The chain is
+> ice_link_event() or ice_up_complete() -> ice_ptp_link_change() ->
+> ice_ptp_port_phy_restart(). For E825, that path only marks the
+> outstanding entries as stale:
+> 
+> drivers/net/ethernet/intel/ice/ice_ptp.c:ice_ptp_port_phy_restart() {
+>     ...
+> 	case ICE_MAC_GENERIC_3K_E825:
+> 		...
+> 		ice_ptp_mark_tx_tracker_stale(&ptp_port->tx);
+> 
+> 		err = ice_start_phy_timer_eth56g(hw, port);
+>     ...
+> }
+> 
+> ice_ptp_mark_tx_tracker_stale() only ORs in_use into stale. Both in_use
+> and tstamps[idx].skb stay set.
+> 
+> With this patch, ice_ptp_phy_soft_reset_eth56g() then calls
+> ice_ptp_clear_tx_memory_status_eth56g(). That function reads all 64
+> entries of the port, which clears their valid and ready bits. The soft
+> reset then clears the ready bitmap and the counter.
+> 
+> Take an in_use index whose timestamp the PHY has already captured but the
+> IRQ thread has not yet read. Its ready bit is now gone, so
+> ice_ptp_process_tx_tstamp() skips that index on every pass:
+> 
+> 	if (tx->has_ready_bitmap &&
+> 	    !(tstamp_ready & BIT_ULL(phy_idx))) {
+> 		if (drop_ts)
+> 			goto skip_ts_read;
+> 
+> 		continue;
+> 	}
+> 
+> This continues until the 2 second timeout fires, and the timeout also
+> increments pf->ptp.tx_hwtstamp_timeouts.
+> 
 
-> The loop in ice_ptp_clear_tx_memory_status_eth56g() runs for all 64
-> INDEX_PER_PORT entries. It counts failures and never stops early. It also
-> runs before the PHY_REG_GLOBAL read, and that read is the first access in
-> ice_ptp_phy_soft_reset_eth56g() that would catch an unreachable PHY.
-> 
-> Each index takes this path:
-> 
-> ice_clear_ptp_tstamp_eth56g()
->   ice_read_ptp_tstamp_eth56g()
->     ice_read_port_mem_eth56g()
->       ice_read_phy_eth56g()
->         ice_sbq_rw_reg()
->           ice_sq_send_cmd()
->             ice_sq_done()
-> 
-> ice_sq_done() polls with ICE_CTL_Q_SQ_CMD_TIMEOUT, which is USEC_PER_SEC.
-> 
-> If the sideband queue head stops advancing, each low read waits the full
-> 1 second and then returns an error. A failed low read skips the high read,
-> so this costs one timeout per index. Fast -ENOSPC failures only start once
-> the 64 entry ring (ICE_SBQ_LEN) fills up.
-> 
-> That could mean about a minute of stall in the sweep before the
-> PHY_REG_GLOBAL read fails and the error is returned. Before this patch, the
-> same condition was caught after a single timeout on PHY_REG_GLOBAL.
-> 
-> ice_ptp_init_phc_e825c() calls ice_ptp_phy_soft_reset_eth56g(). That makes
-> this reachable from both ice_ptp_init_owner() during probe and
-> ice_ptp_rebuild_owner() during reset rebuild.
-> 
-> After the later commit in this series, "ice: E825: perform a soft reset
-> when starting the PHY timer", it is also reachable from
-> ice_start_phy_timer_eth56g() via ice_ptp_port_phy_restart(), which holds
-> ptp_port->ps_lock.
-> 
-> Because the sweep runs before PHY_REG_GLOBAL is checked, its read side
-> effects can also land on a port whose soft reset then fails. The new kdoc
-> does tell callers to treat a soft reset failure as a non-functional
-> timestamp block.
-> 
-> Would it make sense to stop the sweep after consecutive failures, or on a
-> timeout class error? Another option is to read PHY_REG_GLOBAL before
-> starting the sweep.
+Yes. This is the expected path in the current logic.
 
-I will change this if the maintainers demand, but otherwise I would much
-rather see my actual issues fixed than continue to be stalled endlessly
-by this AI looping me between different versions.
+> Until then, ice_misc_intr_thread_fn() keeps re-arming the interrupt,
+> because ice_ptp_tx_tstamps_pending() sees a non-empty in_use. Each pass
+> does a sideband read of the ready bitmap. The skb reference taken in
+> ice_ptp_request_ts() is also held for that whole time.
+> 
+> Before this patch, those entries stayed ready in hardware. They were read
+> and dropped right away through the stale bit, and were not counted as
+> timeouts.
+> 
+> ice_ptp_rebuild_owner() already flushes the tracker before
+> ice_ptp_restart_all_phy():
+> 
+> 	/* Flush software tracking of any outstanding timestamps since we're
+> 	 * about to flush the PHY timestamp block.
+> 	 */
+> 	ice_ptp_flush_all_tx_tracker(pf);
+> 
 
+Yes, but I am now certain that if we added this today it would get
+rejected because the flushing appears to be problematic at run time. In
+fact part of the other areas of the previous series was done to help
+prevent this, but was undergoing its own challenges.
+
+> Does the link change path need the same flush? The timeout does
+> eventually release these entries, so the slots are not lost for good.
 > 
->>  		ice_debug(hw, ICE_DBG_PTP, "Failed to read PHY_REG_GLOBAL for port %d, err %d\n",
+> [Severity: Medium]
 > 
-> [ ... ]
+> Could a timestamp captured during the soft reset window leave the PHY
+> counter and the timestamp memory out of sync?
+> 
+
+I do not believe that the hardware will actually perform timestamps
+while the soft reset is active.
+
+> On E825, the Tx queues can be live when this runs. ice_up_complete()
+> starts the queues before it restarts the PHY:
+> 
+> 	netif_tx_start_all_queues(vsi->netdev);
+> 	netif_carrier_on(vsi->netdev);
+> 	ice_ptp_link_change(pf, true);
+> 
+> ice_link_event() also restarts on a speed change while the link stays up.
+> 
+> ice_ptp_port_phy_restart() sets tx.disabled, but descriptors already
+> posted with ICE_TX_FLAGS_TSYN can still be sent.
+> ice_stop_phy_timer_eth56g() also leaves PHY_REG_TX_OFFSET_READY set, so
+> such a packet is captured as valid.
+> 
+> Inside ice_ptp_phy_soft_reset_eth56g(), the memory sweep runs about 5 ms
+> before the reset is asserted, and the reset is deasserted about 5 ms
+> after that:
+> 
+> 	ice_ptp_clear_tx_memory_status_eth56g(hw, port);
+> 	...
+> 	usleep_range(5000, 6000);
+> 
+> 	global_val |= PHY_REG_GLOBAL_SOFT_RESET_M;
+> 
+> Suppose a packet is captured after the sweep but before the reset is
+> deasserted. The kernel-doc of ice_ptp_clear_tx_memory_status_eth56g()
+> says "the soft reset does not clear the timestamp memory", so that valid
+> entry stays in memory. Meanwhile the reset zeroes the counter and the
+> ready bitmap.
+> 
+
+Again, this is working on the assumption that hardware will actually
+perform a timestamp while the soft reset is asserted.
+
+> Only the 2 second timeout would free that software entry. The entry could
+> still be read, for example by a concurrent reader, or depending on how the
+> hardware handles reuse of an index that is already valid. Would that read
+> underflow the counter and stop Tx timestamp interrupts, as that kernel-doc
+> warns?
+> 
+> Should in-flight timestamp requests be quiesced before the soft reset?
+> Packets captured after the reset but before ice_sync_phy_timer_eth56g()
+> look like they are dropped safely through the stale bitmap.
+> 
+
+We did have changes in the rest of the full series to address this by
+having the driver stop new requests while the timer was stopped, and
+marking things as stale ensures that the indexes won't get released. I
+had also tried to make sure that stale packets didn't increase the
+timeout counter unexpectedly, and to change so that the skb was freed
+earlier. Those were all delayed because of other issues on the full series.
+
+>>  	ice_ptp_src_cmd(hw, ICE_PTP_NOP);
+>>  
+>>  	err = ice_phy_cfg_parpcs_eth56g(hw, port);
 > 
 
