@@ -1,63 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793478819;
-	b=gq64/tNCBZd05IzsIx5gsw3Y2RQnpqzBNhLV899UV8//+xV5H87flbuipIPoBQ7n2gSd
-	 0JfqJMURVJpcLn9IfK7tbt6/jaNecpWv8Sq/8jNj7Bz/yg1zXCi/JhfMnoiEZAhYIHRMZ
-	 ugfSYV9cmpuK18D+XXsvJi+BQ1KRFTz0QEDOZAseC+tEx+cxtMdQNpYCBwvLxfs5JCm4p
-	 h32ydLvhxq/hFRqKZ6H0kgIrkGM5FZmH37XT3YmBPQUGxLf/SVUkfvcOFPfFbgAiCBDZJ
-	 +BQNshHQTZcwR8e1zbLvKTCXhs+EpORxzxcN+Rc8Ipl12v7iTDp/cSW39RyyS3xQ9SA==
+	t=1793479971;
+	b=J+Ka+vfZHFGY6yt6t5OKhPvwvCM+8vmQxWqrwhNqGGpPOcGFElqhacqbqkDe7jniKI7j
+	 nR2ikxbsvvrvgmmh9iUw5HXf0dhwsHVGu4YZ23RjT7SfT8Lgba8msVSftLcgG5+fSy4ep
+	 81TRimCgCxQvizy3HX6y+k2Cdj0Gd6KozFqMGXc3tyY3StChVpIljq00a3dejdxCbSFna
+	 Rkwf7ZG9EuAZLBWxGb3hgY6njAaaEtcnhO3NguDADfhjksP9XIXaiqYSG39on2q1HuUfm
+	 8jKhSZPxZNHP4YVK5zcQfUJhf7jXmNBD1is+EX63heg+Mk9irP6Nd3CBbH3FzaAD/1Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793478819;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=RIWag5OiJhTtLBTo3JY/WRR8ZO4h9xWnLfyk2+s6cm8=;
-	b=LwOQqceiOaENvuRooLfFcU344TjTqD3J/3acB1DX0wum+WO71MMhOeeo0Ppo8NNyEIzk
-	 JyXZyO+KqpIzW8GBYMvHYWlqY95zD7EMD4JlpnWDDI0qUQFk3Tg6NZI01WdvTq6hFD/HS
-	 15FXZdoj8z5sJdW+6M8XlH9OBkw8CKl29xzZ7iUF9Fgo9nGVM2W8eoBQ3TRnUccIafyFj
-	 Tz3xFHobNR79KIiExTYm81677H/m8TmiFVYcZxDjIVtzzLRsoGzq6MubwPaYfGc9+yHqL
-	 elYkhJ06qd1tWv4WkV+yMWJb3JyFV5aqcRiN2xym/rOMETAcUnVj6rWhU+4JTAZG4rA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793479971;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
+	 References:Content-Transfer-Encoding:MIME-Version;
+	bh=icWN3ojVey3UJz1wKnjFg1vmnm5rM6DbNVOsG/C6lg0=;
+	b=XAKkAoebhhKLjb+cYr9cbgwmeBWpjAs60lwZPjqA7NKx4PviBQ3C/1z2ivmO18pq+jay
+	 HcS0Me370hLElQ/eRcM7ngxBCUnBFE+JuhNxV2NbRo11DA0LtFQGiyfapeatovVtk1lVa
+	 W3cNyv4IlRAhcGmsmZ+C98EZgNgAFf7XCXnMxBjWloaBW4S0MDiWB5kLfawP5jk60RgvO
+	 HxsD5PML2cJprh692TlGT93xn1so4egWB4LPG+toR78WHUY+uCWdmaGiwX3emi+j1ljVf
+	 jmgrYPAb4y9mXtq90A8KQ5g4pKmZM8YpHcDlh/pkDX3/oCoyu/ISfB9AY9jZ1DBk9AQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Lm6QF7Sm;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JFRaYJYW;
+	arc=none smtp.remote-ip=209.85.215.182
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D26E606A326;
-	Sat, 31 Oct 2026 20:33:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2D26E606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96254606A31A
+	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 20:52:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 96254606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Lm6QF7Sm
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=RIWag5OiJhTtLBTo3JY/WRR8ZO4h9xWnLfyk2+s6cm8=; b=Lm6QF7Sm2VEHfKCsNAMMRykqZu
-	eC/OsvSibVHYKRKxkZ2nS6uynT7gjgIUtU497uLg5qIsTV3BHQ4j/w0/A4Luoxd5cY0qRnpBUAk9o
-	phMntR9M7m2CGFBMSylgyDEImmtqHhZEp2uTHs1hs9eRyX5N2CXLpA3fJXdZP2dB4md0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xNFlW-00DZL9-C2; Sat, 31 Oct 2026 21:33:26 +0100
-Date: Sat, 31 Oct 2026 21:33:26 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: YuanZhe Liu <25031212351@stu.xidian.edu.cn>
-Cc: Thangaraj Samynathan <Thangaraj.S@microchip.com>,
-	UNGLinuxDriver@microchip.com, netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Russell King <linux@armlinux.org.uk>,
-	Oleksij Rempel <o.rempel@pengutronix.de>, stable@vger.kernel.org,
-	Bin Yu <byu@xidian.edu.cn>, Cheng Wen <wencheng@xidian.edu.cn>
-Subject: Re: [PATCH net v2] net: usb: lan78xx: let unregister_netdev() stop
- phylink
-Message-ID: <e71cccdf-59e5-407c-b536-9dd47a49b0a7@lunn.ch>
-References: <20261031165213.2738-1-25031212351@stu.xidian.edu.cn>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JFRaYJYW
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cdab6ae1ee9so754448a12.1
+        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 13:52:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793479970; x=1794084770; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=icWN3ojVey3UJz1wKnjFg1vmnm5rM6DbNVOsG/C6lg0=;
+        b=JFRaYJYWcWvVTuMPIHDNfHW5cO1myvPNw8qm7zKdksl9asXKdRL5Y1lcuTsaTuSK/U
+         LaDnk9h1oGuzA8qtB430ysb28YWho44jdiUmY1xTne5OhDWrormWHWRk9XFBqB5wjsxq
+         1IUJTGn/qhD8nRgoGngaf7zx3O85hWtD9HgwsSE70gqaz/VS9TvZyJ43UgXBhMgnXOK2
+         LvQrPvVCQaIT3OAL5eeIACZNi8jRe/kCkJCp/CRCR+lwh86UQ5zt6agNrI5HC9ZfKWFI
+         RYhoKf58O+4sNa5zL/MnEIWowiygs5mGmYibwHqy6udPQBL0FNFcMDG65Jele+6B2VME
+         k7xQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793479970; x=1794084770;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=icWN3ojVey3UJz1wKnjFg1vmnm5rM6DbNVOsG/C6lg0=;
+        b=hPDaZIK7NBvL21oC+aAz4xLKnwAhXON1wpznzcA8lOo8a/RjZB5Zias62Ke7jPFH0J
+         spHa8DVVpoKirR5w7aoiyaXJXTF+tRD7AUdVuZZ6lEbjmyR1pltotZhWUEugabmhca5l
+         tPer50DKSlJwTBrz2MlhbTfeb6UdY8bS3/Y2iZZJOqC3NjnrFqrqfmHjEGRgolpvXr+P
+         vehOKL8PeDJIY0HffgP48IZ98dKDAgFJbwmA9lpYwP+shHHSo/Rpa9N0MtR1ds5eLH2d
+         dohQr9S/8IJ1FRSyrmdyFOImVIdnAsFUYFtMcSmudWzWflR3MSZoRTVz5mhnJES6SZvj
+         vLoQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzW0OlA3fyvrnGt7QYOsxsVPJkyHj9LHNIunOYbxY0UX9qCOmF967tRtELZX50yFwsycKrhInI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLhVEEvpK/h6t9jslpBZ5AEYyLzVh/XMkIBRUJ41/AetG8VIpgn
+	0KuTMz0ZRi9Gw3WEtduCHukdLCL9/Rh+iLD6y8EBX4g5CUPOp5ne64pd
+X-Gm-Gg: AYBFou1a182gNtb1a1o9AfUSOfWkRcmKsLwlrWGwKL843te5OqKILDTekMap7fTktON
+	mINhlimpakKruy6ujvRyJwQ3PlBOoqR4LgIeJ6TmBqKu0793S+KXOChplP17AtgWDrgjnoKqn0F
+	OnQHx58jNGwDIbByIcPBdToOegjipy7yKRcL5i24b0bHdMwQ3lu/vf6iVbBMfd45rRN8seiFg5N
+	iX/pSVRLJ2ptmAbVwrrm+9V8r7H3kXB2r52ez+sOkMMP7lzuTFnGap/CERsdqDYYpS563EXIfIm
+	mKRtooAy4lnKFDvNv7sFlCJ1RO5K2rE98gffk2kDDrTGqr0kAtA70evQsxolcdzgkcOyVmQtKZ/
+	2IKbRXsMAGT+CcpJ6W/gz1MOPTb+Ygdnj126xe3/P8S59zHa5rfqJH3v/B2RC+uuqZo1ByfN27W
+	CKEXdO3ovoOK94OrXMR6HtazC8jsYEvA2KmznGYr4yaLfmADZp1zNjoYTVyhOr1bPaJ1XELJOlA
+	bMgxpdUkreae6B8f5fekTW59/e4mlc78PL4oS60lkC5nT8/qBw/7Kdy/HcrvTyonz0YAN2xW6kf
+	qPrS1CehlpZCapBsZkm2xmvW8y4gkxCNMM4ykgARvZVD+jxXHWPe25CCssIYbrSzjTHUvHMdYtr
+	oqMslnofuGyxRUhAHI+RsffbvnQGZMz5/SQ==
+X-Received: by 2002:a17:90b:3f84:b0:3ab:b39f:41da with SMTP id 98e67ed59e1d1-3ae89776af6mr4824088a91.11.1793479969985;
+        Sat, 31 Oct 2026 13:52:49 -0700 (PDT)
+Received: from localhost ([153.61.198.249])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae8454327esm8389084a91.4.2026.10.31.13.52.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 31 Oct 2026 13:52:49 -0700 (PDT)
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 31 Oct 2026 20:52:48 +0000
+Message-Id: <DMJBL7GLZGTF.CLA7HQ8IGYF3@gmail.com>
+Cc: <bpf@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <kernel-team@cloudflare.com>
+Subject: Re: [PATCH bpf-next 0/2] Fix psock update-side data races on
+ sk->sk_prot and progs
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Jakub Sitnicki" <jakub@cloudflare.com>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "Andrii Nakryiko" <andrii@kernel.org>, "Eduard
+ Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
+ <memxor@gmail.com>, "Martin KaFai Lau" <martin.lau@linux.dev>, "Song Liu"
+ <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa"
+ <jolsa@kernel.org>, "Emil Tsalapatis" <emil@etsalapatis.com>, "Ihor
+ Solodrai" <ihor.solodrai@linux.dev>, "Shuah Khan" <shuah@kernel.org>, "Eric
+ Dumazet" <edumazet@kernel.org>, "Kuniyuki Iwashima" <kuniyu@google.com>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Willem de Bruijn" <willemb@google.com>,
+ "John Fastabend" <john.fastabend@gmail.com>, "Jiayuan Chen"
+ <jiayuan.chen@linux.dev>, "David S. Miller" <davem@davemloft.net>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Simon Horman" <horms@kernel.org>
+In-Reply-To: <20261030-bpf-next-v1-0-035eabf8eae7@cloudflare.com>
+References: <20261030-bpf-next-v1-0-035eabf8eae7@cloudflare.com>
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,12 +112,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261031165213.2738-1-25031212351@stu.xidian.edu.cn>
 
-> Fixes: e110bc825897 ("net: usb: lan78xx: Convert to PHYLINK for improved PHY and MAC management")
+On Fri, Oct 30, 2026 at 05:01 AM Jakub Sitnicki <jakub@cloudflare.com> wrote:
+> Follow up to the thread at [1]. See individual patches for details.
 
-I asked why you picked this Fixes: tag. Did you reply?
+Thanks for taking it over.
+Applied the fix to bpf tree.
+The selftest that only triggers with KCSAN is imo not worth it.
 
-  Andrew
