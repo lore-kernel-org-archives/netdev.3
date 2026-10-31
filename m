@@ -1,54 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.200
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.243.164.118
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793465482;
-	b=diOSpSg0oCaV0lQNXtE+MArSHpjFMp6fRK2Rcl6reuE9TClCY6Iy9SaF4/7CZJYHVOVV
-	 BMfvfcGL3GMDlRNnTBoyWYDKllhmJ/8YSdf/4NuhG/3UXbxUBCWFuxwAIIkFEar1jrzkG
-	 n0tsGjVHfUUqVVeUFFV7NzqusVUN6d5EShlA5zIG2BGZnYHrPUWCSNxorXUg8L0WyjMEu
-	 iR+CvSEMliPE8GEH/oi+OXUfr3YNpFe/F+EAxSpn1kqdW3cTOot7geKI1OgXcnLCx72UF
-	 C+eDQi6Tq8TCdVohkXiyARXXjPRXH0oFGIarTOneUIFjZZ5G3cwQbSHxSxkg4aiTyqA==
+	t=1793465556;
+	b=BxC4PZJYhOeNYU2HOLYMrVMYniMnONk26dMuKMsryYN5WaGPoBJVaCUJG8LFCu72Cox/
+	 krkQc6pnmtANuUg5I7niTnfRKtk50qBAM0ZJ7EuEtNkDTEzmPrUL/YqX2Jh86Uo93ofD0
+	 XoK/GMYpBpOlKUIlhOtw3gbG9zv/gnx+ibNtKg/YiEgKVT5hQf8Qe407RqTuSeJaiAsl6
+	 ohuI3pJyxqqhMF0g1ajPbTbY2gmpxqnLgLClwctcvh2XMoNkd24VjKkgJnQyp96a62rI2
+	 QJflioVqn9XPYjFj5QR05lqWO/RSDjy10L3ZVHkcR0HBGEOt5QMIRV+WLGfG4+57Lug==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793465482;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:MIME-Version:X-Received:Date:
-	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
-	 Subject:From:To:Content-Type;
-	bh=ZccZDmwpaj/O6pbTWegE+l+s9MNeeSWtqXGKbSCxwYE=;
-	b=oFNAdBWYs1ioKrd0EiIgGlQAsLpiPiyI/SD8/FRG3RXZVNg80aJMLilH1HrxMC/Y6RA/
-	 SsVVud/IZGBdJBIB5Vbq9PxvgA8jsLONMYY5EHvZp6/LRWY5Pg32Wia2+hzKtrlvuXP+W
-	 nLgjHwOtMqcAf9zDmAukYp4Y5OY/rPe8oZYs9lj3A9/QhdrzmywALnQeAEAUntsunAZDu
-	 UL7pjo4HLVs/3VI7CisOc0o7k6zXUAvvUu2/1gef3yxLqyiL6v7Mdrgkb0thsEV7YRHsz
-	 97xs7xtl62x4/DrDMUM0L0QPeLaS4eO4YJN0TCOO14m4/WEl2oFCsZ+G8AVHsNZZCkA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793465556;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=v+y6TvZyfAi7jMcHGnrG1M01lrtsY7nvRZmenSZzNE8=;
+	b=EUSsrH8sQOMwAyOiiEqmNGM7lSMn1nbm8ujWGa4mcmHmvTqU400FAYiDtuVXTr/UhiVu
+	 qPa3Y19esjNWyxG+ov77skK3lUMQK0L+J3mL3t2AvQlYn2gSAHMwoW6WFUgd8oG1EdHvL
+	 3Nf1pR4ldg/wOdjQuXNyUb12gPoWvc6GG9wH9HMrRT4HXanWoHVpGhoWh4CasVcEfxs5g
+	 a+UTGTlHwfrSXkqjxIXp05qcQwHYF8PxwHVpiwDCigKbbYwo7S2XeJJZF3wsq+sPY5oVR
+	 WKOfbJi7SgvL0qLs/TNdXYClUlaTTztQZbGJgRHOYpPIZ7W9S8G78ckh6bLOc9hxCzQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=syzkaller.appspotmail.com;
-	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	arc=none smtp.remote-ip=209.85.167.200
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C6C606A31A
-	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 16:51:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A9C6C606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-5640a2d9708so2470897b6e.1
-        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 09:51:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793465480; x=1794070280;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZccZDmwpaj/O6pbTWegE+l+s9MNeeSWtqXGKbSCxwYE=;
-        b=Xi/UugU4kewVPa6xtOndaF99m97JLR9mh2goo1PrOuJ0xv0fwn/iMBuHvCAyETWDzh
-         R/Oxaq57WYXhfH01cQ97hnvebjG1HI0Be/2mzYYXAEDTeKfud+5MHhcYtXRuAvQ1oJ21
-         Z0o7QVdUH1EfDnktqd61iPmRii/2tg6AFQF77z69UIPCWQEYwcjXb0fX09T0U8S8+Fan
-         hKHGZWpf6qwcf0W1YO/cjLqFRpA+6xGl5mnWqhkqYT5nllw3AzdzPPMq02Z1Qi5Vh8Pl
-         8eJfwgcw0Ay1PTG0+a5Agu/1Z0vq2bWwzaR70hcsVAIB299b3sBzJuKB7E8C2CEMbjkH
-         9hkg==
-X-Forwarded-Encrypted: i=1; AKwUvBzvFAiolDYc8FyhcPluGTj+1/p2mQrR5SiOe9Hfkm6xpo4dWGliUtItkpa0GPj7i/Zo8oOYSK4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKVw+9KYSTJ7CcLOe+y56EKlkBo0MXMFGCgBvJ5ek5jJoTxdbdS
-	XsR07ti2Bbj/JsvHp185IZI9WJ3GHWdu4jLJVvSx6dMWqRef1nN2aEfOkZ+K/sVSKpLgtmJQPPM
-	TLlsHV6Q6/oCqVRO9LTfJIwplpT4srKZYa822puC0ALZzSKApSj6ZxEs8sS4=
+	dmarc=pass header.from=stu.xidian.edu.cn;
+	spf=pass smtp.mailfrom=stu.xidian.edu.cn;
+	arc=none smtp.remote-ip=162.243.164.118
+Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72539606A31A;
+	Sat, 31 Oct 2026 16:52:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 72539606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.xidian.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stu.xidian.edu.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=stu.xidian.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
+	Message-Id:MIME-Version:Content-Transfer-Encoding; bh=v+y6TvZyfA
+	i7jMcHGnrG1M01lrtsY7nvRZmenSZzNE8=; b=dQ31JVYMKncRqQbmiwvF9MgVLL
+	GEJygIiMd1WZ9GJmFfDywKCYS4KLQEaarY2w6wp4RM5+UnBF6I64eIDQMvT2Jrqk
+	Vxx9mUqqCUkjYKFmPjKo+yVB1iLh4KMJlpJm9M4dTYfH88ZZ7tq94/WGNZpy2C5/
+	sylGnYLDWbHiB+Pic=
+Received: from user-virtual-machine.localdomain (unknown [113.200.174.19])
+	by hzbj-edu-front-4.icoremail.net (Coremail) with UTF8SMTPA id BrQMCkBmigC9HOZqRVESAQ--.14215S2;
+	Sun, 01 Nov 2026 00:52:14 +0800 (CST)
+From: YuanZhe Liu <25031212351@stu.xidian.edu.cn>
+To: Thangaraj Samynathan <Thangaraj.S@microchip.com>,
+	UNGLinuxDriver@microchip.com
+Cc: netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Russell King <linux@armlinux.org.uk>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	stable@vger.kernel.org,
+	Bin Yu <byu@xidian.edu.cn>,
+	Cheng Wen <wencheng@xidian.edu.cn>
+Subject: [PATCH net v2] net: usb: lan78xx: let unregister_netdev() stop phylink
+Date: Sun,  1 Nov 2026 00:52:13 +0800
+Message-Id: <20261031165213.2738-1-25031212351@stu.xidian.edu.cn>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,109 +62,85 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:3206:b0:4f7:d324:bc3a with SMTP id
- 5614622812f47-5640ddfb115mr4220012b6e.18.1793465480685; Sat, 31 Oct 2026
- 09:51:20 -0700 (PDT)
-Date: Sat, 31 Oct 2026 09:51:20 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ae61c88.6552420f.2a0efc.0003.GAE@google.com>
-Subject: [syzbot] [netfilter?] WARNING in nf_flow_offload_gc_step
-From: syzbot <syzbot+e1a88d8b7e4cf6b51d85@syzkaller.appspotmail.com>
-To: coreteam@netfilter.org, davem@davemloft.net, edumazet@kernel.org, 
-	fw@strlen.de, horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, pabeni@redhat.com, 
-	pablo@netfilter.org, phil@nwl.cc, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:BrQMCkBmigC9HOZqRVESAQ--.14215S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxXw1fGr4rAw17Zr4rZry3twb_yoW5Jw13pa
+	yUCFWa9ryDtr1DuF9xAa17ZF15Z3ZrJry7Cry5W3yFqr4DJFyIv3yxKrW7Z3W5CrW8AFWI
+	vF13Ja1UuayrC3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBmb7Iv0xC_KF4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4
+	A2jsIEc7CjxVAFwI0_Gr0_Gr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x2
+	0xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17Mc
+	Ij6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l
+	FIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67AK6r1l42
+	xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWU
+	GwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI4
+	8JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4U
+	MIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I
+	8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUIZ2aDUUUU
+X-CM-SenderInfo: ysvqjiysrsjkur6v33wo0lvxldqovvfxof0/1tbiAQUDD2rmBFQNYAABs4
 
-Hello,
+lan78xx_disconnect() stops phylink before unregistering the net device.
+phylink_start() is only called from lan78xx_open(), so when the device is
+unplugged before the interface has been brought up, the attached PHY is
+still in PHY_READY and phy_stop() reports:
 
-syzbot found the following issue on:
+  called from state READY
+  WARNING: drivers/net/phy/phy.c:1670 at phy_stop+0xad/0x380
 
-HEAD commit:    d135ab453a74 Merge tag 'backlight-next-7.4' of git://git.k..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=13a51259580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=6f2905533069b0f5
-dashboard link: https://syzkaller.appspot.com/bug?extid=e1a88d8b7e4cf6b51d85
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14020995580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=100c4f0d580000
+The same warning is emitted after an ifup/ifdown cycle, where the PHY is
+already in PHY_HALTED.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-d135ab45.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/6c39e8158fba/vmlinux-d135ab45.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/7fb9f97c1f88/bzImage-d135ab45.xz
+unregister_netdev() already closes a running device, which calls
+lan78xx_stop() and phylink_stop() with dev->dev_mutex held and after the
+URBs have been terminated. Unregister first and disconnect the PHY
+afterwards, so the interface is stopped exactly once and only while it is
+running, and the net device can no longer be opened while its phylink
+instance has no PHY attached.
 
-AI-generated root cause summary:
-In the Netfilter flowtable subsystem, nf_flow_table_extend_ct_timeout() only
-accounts for IPPROTO_UDP and IPPROTO_TCP when refreshing conntrack timeouts
-during garbage collection. However, both tc act_ct and nftables flow offload
-support offloading IPPROTO_GRE connections to the flowtable. When the garbage
-collector checks an offloaded GRE connection whose timeout has dropped below
-min_timeout, the missing case in nf_flow_table_extend_ct_timeout() triggers the
-default: WARN_ON_ONCE(1) branch. In a production kernel without panic_on_warn,
-the warning does not crash the system and no memory corruption occurs.
-
-full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=e1a88d8b7e4cf6b51d85
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+e1a88d8b7e4cf6b51d85@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-1
-WARNING: net/netfilter/nf_flow_table_core.c:553 at nf_flow_table_extend_ct_timeout net/netfilter/nf_flow_table_core.c:553 [inline], CPU#2: kworker/2:2/1358
-WARNING: net/netfilter/nf_flow_table_core.c:553 at nf_flow_offload_gc_step+0xd84/0xf60 net/netfilter/nf_flow_table_core.c:593, CPU#2: kworker/2:2/1358
-Modules linked in:
-CPU: 2 UID: 0 PID: 1358 Comm: kworker/2:2 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Workqueue: events_power_efficient nf_flow_offload_work_gc
-RIP: 0010:nf_flow_table_extend_ct_timeout net/netfilter/nf_flow_table_core.c:553 [inline]
-RIP: 0010:nf_flow_offload_gc_step+0xd84/0xf60 net/netfilter/nf_flow_table_core.c:593
-Code: f8 e9 82 fd ff ff 4c 89 f7 e8 28 e1 6a f8 e9 12 fc ff ff 48 c7 c7 80 f2 c0 8f e8 17 e1 6a f8 e9 ae fc ff ff e8 1d cb f1 f7 90 <0f> 0b 90 41 be 01 00 00 00 e9 7d fc ff ff e8 09 cb f1 f7 48 8b 04
-RSP: 0018:ffffc9000618fa88 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff88803e161380 RCX: 0000000000000000
-RDX: ffff88802c392580 RSI: ffffffff8a1c51f3 RDI: ffff88802c392580
-RBP: ffff88803e161488 R08: 0000000000000001 R09: 0000000000000011
-R10: 000000000000002f R11: 0000000000000000 R12: 1ffff92000c31f56
-R13: ffff88803818f868 R14: 000000000000002f R15: ffffffff8fc0f280
-FS:  0000000000000000(0000) GS:ffff8880d469c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000012000 CR3: 000000002f277000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- nf_flow_table_iterate net/netfilter/nf_flow_table_core.c:459 [inline]
- nf_flow_table_gc_run net/netfilter/nf_flow_table_core.c:616 [inline]
- nf_flow_offload_work_gc+0x11e/0x1e0 net/netfilter/nf_flow_table_core.c:624
- process_one_work+0xac7/0x1b10 kernel/workqueue.c:3495
- process_scheduled_works kernel/workqueue.c:3578 [inline]
- worker_thread+0x5ef/0xe50 kernel/workqueue.c:3659
- kthread+0x373/0x450 kernel/kthread.c:436
- ret_from_fork+0x730/0xd60 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-
+Fixes: e110bc825897 ("net: usb: lan78xx: Convert to PHYLINK for improved PHY and MAC management")
+Cc: stable@vger.kernel.org
+Co-developed-by: Bin Yu <byu@xidian.edu.cn>
+Signed-off-by: Bin Yu <byu@xidian.edu.cn>
+Co-developed-by: Cheng Wen <wencheng@xidian.edu.cn>
+Signed-off-by: Cheng Wen <wencheng@xidian.edu.cn>
+Signed-off-by: YuanZhe Liu <25031212351@stu.xidian.edu.cn>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+v2:
+ - Drop the explicit phylink_stop() and call unregister_netdev() first, as
+   pointed out in review. A running interface is stopped by lan78xx_stop()
+   with dev->dev_mutex held and after the URBs have been terminated; an
+   interface that was never started is not stopped at all.
+ - The PHY interrupt mapping is released by lan78xx_remove_irq_domain() in
+   lan78xx_unbind(), not by phylink_disconnect_phy(); that ordering is
+   unchanged by this patch.
+ - Link: https://lore.kernel.org/r/20261029160204.2567-1-25031212351@stu.xidian.edu.cn
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+ drivers/net/usb/lan78xx.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 5655941f1478..c1f3141326ac 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -4580,13 +4580,12 @@ static void lan78xx_disconnect(struct usb_interface *intf)
+ 
+ 	net = dev->net;
+ 
++	unregister_netdev(net);
++
+ 	rtnl_lock();
+-	phylink_stop(dev->phylink);
+ 	phylink_disconnect_phy(dev->phylink);
+ 	rtnl_unlock();
+ 
+-	unregister_netdev(net);
+-
+ 	timer_shutdown_sync(&dev->stat_monitor);
+ 	set_bit(EVENT_DEV_DISCONNECT, &dev->flags);
+ 	cancel_delayed_work_sync(&dev->wq);
+-- 
+2.34.1
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
