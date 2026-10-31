@@ -1,98 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.46.75
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793410401;
-	b=wzmUhxDgFfdfFKPUp2ZV4jd0g7fma+9dsLUZOOmkHYDbJ1UQgFN6bvb63pf0pQj6BNFR
-	 1fEg6vpxvwvnByezffFNJZ+Gvu5YOXNsMqx2MeffFUIUo1recK1gWnEfyHozLThvGkYVH
-	 Kpxls+ImBGB7WK2UGGXv51qMDPV1Z0s6JbdgivKIkyNaF0qOzqfwTPBuo/ovms7V7760Q
-	 n0fuU2gP48sopKse91WMG19ILLpGiyUm5KkVcY06cJcve3Ee4oCLTIh8qtYOg6UVWHt9b
-	 HYnhMU/2tQJBgeCqvD+Y+Ewb16TKrxKGSqS7+4i/hHj51Lro1ep8yha8VxP3FmK1wVA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793410401;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
-	 X-ClientProxiedBy:X-Microsoft-Original-Message-ID:MIME-Version:
-	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=685QK07If3Oqid6ffzxzhornPQoDnxE4gCjMTKpDYyI=;
-	b=3XotnSa1/Adom8TAjoxfBd6a0AekmaEKHQETjNT+HWQpZEWXvDX3TiU0sAdmEhvkMUJb
-	 DQdVtlPKyx07bItLZTGcuMMzQiL13LOp3ufLln3K3z0Pa+4YLgLZ6V5ZYqQvnyfX7Y/y5
-	 vC4M3g+OgLSnKPkGcboRHm5Tv5aZqB0my3mP01KoNl8okK4gQtaBf04klrItojch9aMIz
-	 LAHbNZvk6o+ISeYRY1gvgyNXn+2JKqM5UQ0Rx5zg7lHmMnBGuVedOYk2WHnF5ZrV+dBQj
-	 66DEM1iU0QtBnFvg9Spop0tOh1ZMHtejqGNpdGlKD6sMMmDH6FMmo/1Vy9sSDzMQvlw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=hotmail.co.uk;
-	spf=pass smtp.mailfrom=hotmail.co.uk;
-	dkim=pass header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.a=rsa-sha256 header.s=selector1 header.b=ih1mT1Ym;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.46.75
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazolkn19013075.outbound.protection.outlook.com [52.103.46.75])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793412200;
+	b=Vym8jyeC+g7HmpKw7qD2II0jpZKJPA1Ijy18ynFJnVAfYljAiK6Irt4BXCkR74oglC/U
+	 PYHg2bBP9EODt8YuuGIFAMpu5eQxdFz/jkFLGP8zLG66E/0zmmkXJpdyXhqA21WqdMJR9
+	 eJEEH880JtmnGVYOLQBMDNh66VWfk4eYaOopur+mRecs/2xj9XuE1EVmghJ1FFFJe9ZAS
+	 AeGb6GJzpO8jS5TL4bfBYjVUy95k4n0nZ+DaTbAGYTalTWmPldBytPFru03sim5yBFTia
+	 Jvld/l2FgBXTm3EWMC0hvCINykKJh7IiffJ/4DiaW2q++pLlm6QNqFnC3+wDcXpU1eA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793412200;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=hzSX30RmV1UJ0okdb7ZKFGl0A04LAcVrBA3XFv058cc=;
+	b=sPOq5UHY4C4l2VY6RYgLtQsBRItcLYEqmRDO77XBBQAayRYz7sKW56gYb08TLUlYxgCp
+	 LTSQ4yeexi2K3ts/MU07NBci9Sp/gCvXCGj36TU9FF7Flw/xIFCTIa/VG2lgu8kDZ1yW6
+	 5Fad2qNeTifzYfaDsrTwHCrwKn7/rV9n6dQUU7LXcuhtVP+rBzL0e4ec5ZYJ3nwrF9MpF
+	 Vh30ywhei2FycRLg8xDEeIClytZd5MNKTGxnu2VQ/alpgXopNkZfSEajecKmgJVScu2pP
+	 7E4X+PIyWRB9ydN10TCMqGV5vvK4hGl9TWRacKShplzwYu/uKPcS/5nZ9SBZfroy6KQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NxC4iAkG;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A864B606A31C;
-	Sat, 31 Oct 2026 01:33:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A864B606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.co.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8439606A31C
+	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 02:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.a=rsa-sha256 header.s=selector1 header.b=ih1mT1Ym
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cv0UDeyi63dt3B63zw8Cw3gu/qp551UeucidpNiKDMIMoGMZInAkj2dZ6zv2VEWVC7mlTJki/GUOczUgiC+zaqRCCwEmL5mRbNGjR765GP66LerTAM4yKOMggf+G7+ovdzIWcm8oYcM83CQYEOGqDHgMNZdfpqJ5AeNCpIVq8omY5qm3+Kju7sDgLPQzFe5o6HGAcPujv7dmpMd1EdvUThe4HQ1+sqE/gbX5nnLOrULr6dWwwdx/fgfcM6kfW4IaljViqslbsfpBJYnQJWWdkyYwFIP05oZGg6cTS1BOtPwlBLGBMIRjnPQSYsfCi5T9OVG1TFNNSTUR2tm2ZXL3hA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=685QK07If3Oqid6ffzxzhornPQoDnxE4gCjMTKpDYyI=;
- b=I3eE0SSI2YOnab+yp8HRloMFMBXKIIj9P/HrijIOdBejU0YUoc8VMkH6+PYdMBf6vySzYs87Rk3tTdcV/QJDN2BrDaXZoQ/IeLQnRjTlhOFXSDaiSTVhqtZN5A+Ycm3alJof+H3lmR9hq0pWcurww2yLfwdNsbxhy0zTphjeQ8fITX38//e11/r4sEBiGKPMn9Os6wKUtEdTuKt7+4rRUwy+AU0z7tIbSpaMrx2SnPpjye6NknoXAIdAlq+RYe/iL+R22se4YfOakafZyji7km/eEOzw+2t/lukaVu6GTVLHdnwwdwvMIyu37Swq8AYWBcbIkywCrlbyPmC5MU2yFw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.CO.UK;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=685QK07If3Oqid6ffzxzhornPQoDnxE4gCjMTKpDYyI=;
- b=ih1mT1YmhDzB7YybjoaZcIWKjcMYTEnRm3pLqbdbK5qYQk6IRuGgdf4RJZn4auvEMKp57hUgdqBIQ3i8Ki/G1PR9dm/YLDtEOob/Hrdr8HpIqQNAmtQjZGdzS7GPyZzkpkFycF3ZpxZWAvGOX3CYmU+ahxxs0B8xdLoD7klN30S6KVgVNHnBSI3YRb6VscCS+nXAPau7Z4sySKzszvWGQsCul7YhVGgpAeJtWYI3reX4RdmMm5xPZckuqjMbEnkjC46aFMGJ5elu1b82drYdsqmUYo2du7PXdXHhenjy8I3d2EjXQQK7VspzLO1wwrZsAgocRTZv2YKWdhJyQucOUg==
-Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:344::22)
- by DU7PPF563096915.EURP251.PROD.OUTLOOK.COM (2603:10a6:18:3::b96) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.10; Sat, 31 Oct
- 2026 01:33:18 +0000
-Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- ([fe80::2952:d4d0:4ba:8352]) by AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- ([fe80::2952:d4d0:4ba:8352%3]) with mapi id 15.21.0569.009; Sat, 31 Oct 2026
- 01:33:17 +0000
-From: Aamir Ahmed <elb12345@hotmail.co.uk>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-Cc: Valentin Schneider <vschneid@redhat.com>,
-	Aaron Lu <ziqianlu@bytedance.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NxC4iAkG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394521F000C1;
+	Sat, 31 Oct 2026 02:03:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793412199;
+	bh=hzSX30RmV1UJ0okdb7ZKFGl0A04LAcVrBA3XFv058cc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=NxC4iAkG/fR0dYHElrdK18uFoXw1j3p0fY5Mdtb7WkEycEIl4+3NLjffL92vXXEDx
+	 hhDAIJZhYxsgwfFKwYKdVhTnuC3vx8rsXPLowc1vF+FNpsV5q1QbEN+oo7N2fK6Wyl
+	 sqWRj/L4l31TmxvIDtxmXzs4jfiHDBmN1wTs7iE/2M4vz9fsx5llK4DCr8OkIB7sJo
+	 VRcbNwwLUkDIMf9K5x+GFrI4wjaE6W42S40U84/s/Z/gJ542vaBq9Z/BnN56OFTHvR
+	 CacmcAILUoXcFh7ecv6yLIuTubSykcz66ENZdy/HoHZqeK+YqvxljyySwjADGTXid5
+	 nT5mIFe5pFx/g==
+From: Jakub Kicinski <kuba@kernel.org>
+To: omniameasunt@proton.me
+Cc: Jakub Kicinski <kuba@kernel.org>,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Aamir Ahmed <elb12345@hotmail.co.uk>,
-	stable@vger.kernel.org
-Subject: [PATCH] vhost: Run TIF_NOTIFY_RESUME work in the vhost_task loop
-Date: Sat, 31 Oct 2026 01:33:13 +0000
-Message-ID:
- <AS8P251MB00012469E6ECBEA2B7D87BB0C86C2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.55.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO4P123CA0279.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:195::14) To AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20b:344::22)
-X-Microsoft-Original-Message-ID:
- <20261031013313.55954-1-elb12345@hotmail.co.uk>
+	paul@paul-moore.com
+Subject: Re: [PATCH net v2] cipso_v4: fail the walk on malformed options
+Date: Fri, 30 Oct 2026 19:03:17 -0700
+Message-ID: <20261031020317.3415448-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <uOcTaW7-g5e97ng6BG_DcH5mlMnpw7KzU25SZjL69pkAVINTMiL26FryLAuYPSNowDo8qwfb9hm_I4dQ1BwpiRe62E-I2TyUkJZ_eBeuLoo=@proton.me>
+References: <uOcTaW7-g5e97ng6BG_DcH5mlMnpw7KzU25SZjL69pkAVINTMiL26FryLAuYPSNowDo8qwfb9hm_I4dQ1BwpiRe62E-I2TyUkJZ_eBeuLoo=@proton.me>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,126 +59,285 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8P251MB0001:EE_|DU7PPF563096915:EE_
-X-MS-Office365-Filtering-Correlation-Id: bdbb345c-ebf4-4fa2-f12e-08df36eef086
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|5072599009|25010399006|4140399003|260925184616899003|8060799015|19110799012|37011999003|23021999003|25031999004|5062599005|15080799012|24021099003|55001999006|41001999006|52005399003|40105399003|26104999009|440099028|3412199025|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?PJi040LwEhSonbgJQedY2WRjYO0FkMF6a7gOvGAWdBERWT1mqGV75ESUgRhI?=
- =?us-ascii?Q?uBjuzM9gVE5oLVDmqccx5AXnUhxYho5EntnBhXB+QLAwKgXKcXNPWkOHkn+d?=
- =?us-ascii?Q?0QDN8cMx8uL36uAvd9Xcf9r9frGicOQM1VIzQC4qAUP61ZJL8HQsE60OmU59?=
- =?us-ascii?Q?dlLoyaAmzVreLm9gkSgVrL5Mtg77WZLjQJnpNVAjkZN8biUujsnFthpvj5xR?=
- =?us-ascii?Q?rlNmvtmg0UYl6kNa3yiEzGhEkec5F7vavJhBMIjtvy+VzzA0o2MBFIIYxr2l?=
- =?us-ascii?Q?TbOS5SRNdn37FQ9B0Elt5VsRymsJm64ZhrnnGm75Y4fRPM3OlTAhYmnyZqW2?=
- =?us-ascii?Q?VNMtpd6e9rEut7geTyn7gXcH2JPi8L6D06DMjctP7URBse1Q9PnQSnaTWAZN?=
- =?us-ascii?Q?v9Qnqd7wG1v3Y2O2+B4jZlhO1cKavhd415yclC/32+LiEaAWM7ZTGatxxZ0W?=
- =?us-ascii?Q?Mwa3PGawYQ7ff0+eSengRhxiyW1kU7kM9drlvPwgpLK+n8PRP5sI1BDnLl5G?=
- =?us-ascii?Q?35koRs7DPzyHpXz20LH5z+b2EBG77E4mfp5OFYLdt/ZMpg9hKP61BldO1dIU?=
- =?us-ascii?Q?TEpvjUqePnedcXqJbB/CU6br/MYLX9Tv10VmW1Jh1Vg9MNystQ8abiH3dDUA?=
- =?us-ascii?Q?VfxCi4cLuXheuwso2IrnGeqTdY8Y+6x31X4tl+FMKWlmufulamVCv82AsMRo?=
- =?us-ascii?Q?ti+caqf44ZacoC4D+jo4VIFxMr5pCGeCIpQvt2iDovp/rY90S5oZWZGAecqK?=
- =?us-ascii?Q?7beJpNL6dIL5bZPfmEayodafUGhrnnsA62rTV+Ct2Co+uD7+MflqNgO00S7O?=
- =?us-ascii?Q?ZPUFNltqYvEjVGCMt/OShTHL935y5E1kXlQBtyanbOedn0RVgZuwe0CYsppJ?=
- =?us-ascii?Q?YlrFp50hQxdwxLKVbTJMAcjuZfFA+E74LXJWzJkpg7xjt59aHYgBGR3w4C5u?=
- =?us-ascii?Q?ixu8ZRjA11KEBsIp1a92T7inplfWaK6MFATQ97kVMa8TcQH/Ia86k6pXZYGj?=
- =?us-ascii?Q?Cbl1Ov7Jh/pNy4VtXixlimf5D+tZQn6pS4SCUW8LHSWfCqWKfgQ7MMlQaFxw?=
- =?us-ascii?Q?Jc3qtZnHJkeHcL7J0YOsg3lfHr4EXy9L9SvqTF/sva3hyJU39dxP0xOWeSeL?=
- =?us-ascii?Q?7sRgSRiZNFgW?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?b7kN7GPuwUAfc/S47U2YU07p82m4LRZroo6Te3OaTu2FdEydKzFzVAwz5hIU?=
- =?us-ascii?Q?3uVmKrdsUfHJ9t1Z9jEtvh5tJcNlNcRrCvLAHt9KM7QjWL6cSM9+v6QsEkNj?=
- =?us-ascii?Q?V+H0o4byHVG3YqXvw8TkwFbL54DXnaEKIuXxU0pu5lCI9k1+lYx3NOkeMIyn?=
- =?us-ascii?Q?bTjndkl8H0TiRMOQ6XH0Tj8zmP0sgZXLtLCRCx+MrADaag/pnrGWdEK9HQd/?=
- =?us-ascii?Q?7iCBhfhCYiVQdda7gvD25/WVNalsKiYc2isGTqweoIFwMuuuUd5icuUOWq9I?=
- =?us-ascii?Q?BKbkGm0ZTcbWvTUcNpo7nIo61iwukxGJJ2tysLF65HrEbyJHiht9H6RPj32X?=
- =?us-ascii?Q?vnK3bTg/j4dK9TwEmhHbZkc11POfCpZ4/a+uyloclxZY9cEZTCNlLOvbEO16?=
- =?us-ascii?Q?y1x6cozijG2WWvG55DuwOCyHXe6206O1Okc+zngfh1wCXz8KeRMKlf7GuEYY?=
- =?us-ascii?Q?jn7bDDCx78Y5aR1Q8ddTwZumffWvYkYkL4SBxwsHnwQISkwI+HbYZ1SbRto0?=
- =?us-ascii?Q?uwQFVoA5AlsVoPvnmfFAJwkjsuCvmemD3VACoW3DmDzq3zTKXo6RELYhigrq?=
- =?us-ascii?Q?GK9FDseE1DyCefqfQwkgewGynws0u0EAZFucQXaYTQzQknNCJ7P5xSfyexPb?=
- =?us-ascii?Q?fJ+tMfJ68Nl7t49txBX1mzbZ983fC5dAiRg2QcTd+YcM/Et1Y/Azzts5HHlR?=
- =?us-ascii?Q?QjDfj4K7C3Cxf1ftHb9HiNr/rImT8S7m6BD2y+BdXu9FOzBQvubTyBciZjC7?=
- =?us-ascii?Q?jV6d2djR0fTZXVFs0+2FQDFy/eLWHiWvFbMzChCPGeyYCQFPlaHA/jp5LSWa?=
- =?us-ascii?Q?22ln4knxpMWa71hk6Oyve9UMb8NcgufxzUtNg1CSelAz1mpLaqkdFkwWeWGa?=
- =?us-ascii?Q?tGSOiHmzn35wS8lPR5B2a8WFPb0/FF7D893sYMBH3PNn8tbOTDXrBPMijKHu?=
- =?us-ascii?Q?+Aq2gxW1ugdVp2E1B2ksG7+PcIg4r13pisBCmVLwxWjdwT+rHWH/uadPaQPH?=
- =?us-ascii?Q?9lyqyZob5WgTf4a0VG+by+BveOaExsuVcfmKX9we3BBWI0MYReSuz5vdigR4?=
- =?us-ascii?Q?wJzviMwipLSdyd9mL06VMUDbOxKw4l2iUcLjR8dL4z28COMG6WwBbBxpKgF5?=
- =?us-ascii?Q?X8383q7zqxb88knSiv+aEtJ63MEku9hJab9/lvHcvsIbcmGICnlROtXmwjga?=
- =?us-ascii?Q?+Go4/TzpJPYz6/bCbuYUiEau8fC6VZF60ae5CMdEp2OvIUs+XyMc1o6sEWso?=
- =?us-ascii?Q?PHL9eLsMhBwvil/fyVsN0Vknu5uXLt097irw/zZMPeeg5psYWoAdq5GX1Adq?=
- =?us-ascii?Q?rzDw8ipKsLv4JUOpxCj8Lw5kukYQzUxehUXFvrSUVSl+Nsh91pLnjO++YKm7?=
- =?us-ascii?Q?Ll0u6LhRB0kvNuj22G8+ROKXofkBUWWKouBbC6KeSxpFS73Ol9uK/vDkJFP4?=
- =?us-ascii?Q?nSrqM7OYTx1nG/DfR9i4s7j1MErCPc3l?=
-X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: bdbb345c-ebf4-4fa2-f12e-08df36eef086
-X-MS-Exchange-CrossTenant-AuthSource: AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Oct 2026 01:33:17.9359
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU7PPF563096915
+Content-Transfer-Encoding: 8bit
 
-Since commit e1fad12dcb66 ("sched/fair: Switch to task based throttle
-model"), a throttled task is only dequeued when TWA_RESUME task_work
-runs on its way back to user mode.
-
-vhost workers never return to user mode, and vhost_task_fn() only runs
-task_work via get_signal() when a signal is pending. A busy vhost worker
-therefore ignores its cgroup's cpu.max, while its runtime is still
-charged to the group, throttling the group's other tasks (typically the
-VM's vCPUs) harder.
-
-Run pending notify-resume work at the top of the worker loop, as io-wq
-does in io_run_task_work(). Commit 12013e3d4695 ("KVM: powerpc: Use
-generic xfer to guest work function") fixed the same problem for KVM.
-
-Fixes: e1fad12dcb66 ("sched/fair: Switch to task based throttle model")
-Cc: stable@vger.kernel.org # 6.18+
-Assisted-by: LLM
-Signed-off-by: Aamir Ahmed <elb12345@hotmail.co.uk>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 ---
-Tested on x86_64 with a vhost_task-based reproducer: in a 0.2-CPU cgroup
-a busy worker drops from 100% to 19% of a CPU. Reproducer available on
-request.
+cipso_v4: fail the walk on malformed options
 
- kernel/vhost_task.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+This patch makes cipso_v4_get_actual_opt_len() return -EINVAL when an
+option is truncated or malformed. It also makes cipso_v4_delopt() and
+cipso_v4_skbuff_delattr() bail out on malformed streams. In addition,
+cipso_v4_delopt() now builds the compacted options in a new
+ip_options_rcu, publishes it with rcu_assign_pointer() and retires the
+old object with kfree_rcu().
 
-diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
-index 3717885a599..7fa96e1b85b 100644
---- a/kernel/vhost_task.c
-+++ b/kernel/vhost_task.c
-@@ -6,6 +6,7 @@
- #include <linux/completion.h>
- #include <linux/sched/task.h>
- #include <linux/sched/vhost_task.h>
-+#include <linux/resume_user_mode.h>
- #include <linux/sched/signal.h>
- 
- enum vhost_task_flags {
-@@ -31,6 +32,14 @@ static int vhost_task_fn(void *data)
- 	for (;;) {
- 		bool did_work;
- 
-+		/*
-+		 * We never return to user mode, so TWA_RESUME task_work (e.g. CFS
-+		 * bandwidth throttling) would otherwise never run. Run it here,
-+		 * where no locks are held, like io-wq workers do.
-+		 */
-+		if (test_thread_flag(TIF_NOTIFY_RESUME))
-+			resume_user_mode_work(NULL);
-+
- 		if (signal_pending(current)) {
- 			struct ksignal ksig;
- 
+>   * a stack buffer overflow when optlen exceeds the 60-byte scratch
+>     buffer (return-address overwrite; exploitable for privilege
+>     escalation on kernels built without stack protector).
 
-base-commit: c03c1a14507dfaf8b856c2608f9ac216021fc222
--- 
-2.43.0
+[Severity: Low]
+
+Is the buffer size right here? In do_ip_getsockopt() the buffer is:
+
+	unsigned char optbuf[sizeof(struct ip_options)+40];
+
+struct ip_options is 16 bytes: two __be32 fields plus eight one-byte
+fields, and the flexible __data[] adds nothing. That makes optbuf 56
+bytes.
+
+The copy into it is:
+
+	memcpy(optbuf, &inet_opt->opt,
+	       sizeof(struct ip_options) +
+	       inet_opt->opt.optlen);
+
+This goes through the fortified memcpy(), and the destination size is
+known at compile time. Wouldn't CONFIG_FORTIFY_SOURCE also trap the
+oversized write? The stated exploitability condition seems incomplete
+without that.
+
+> cipso_v4_delopt() then drops the
+> socket's entire option set (reusing the existing branch that frees the
+> ip_options_rcu when CIPSO was the only option)
+
+The patch doesn't reuse that branch. It adds a new drop_all label that
+copies the same logic. Could the wording be adjusted?
+
+> Well-formed option streams are unaffected: a socket whose options
+> survive the compaction intact keeps them; only malformed streams now
+> lose all options instead of carrying a partially parsed set.
+
+[Severity: Medium]
+
+Is this accurate? cipso_v4_delopt() now walks only the compacted region
+and fills the stale tail with IPOPT_END:
+
+	optlen = new->opt.optlen - cipso_len;
+	memset(new->opt.__data + optlen, IPOPT_END, cipso_len);
+	optlen_new = cipso_v4_get_actual_opt_len(new->opt.__data, optlen);
+
+Before the patch the walk covered the old optlen. If no IPOPT_END was
+left in the compacted region, the walk ran into the stale tail and
+counted those bytes a second time.
+
+Well-formed options can hit this. ip_options_echo() writes rr/ts/srr
+first and CIPSO last, and pads only up to a 4-byte boundary. Suppose
+CIPSO ends exactly on that boundary:
+
+  - memmove() copies 0 bytes
+  - the CIPSO bytes get walked again
+  - optlen_new equals the old optlen and hdr_delta is 0
+  - opt.cipso is cleared, but the CIPSO bytes stay in the options and
+    go out on the wire
+
+Socket options such as CIPSO(8)+RR(8) with no padding behave the same
+way: RR ends up duplicated and optlen does not shrink.
+
+With this patch CIPSO really is removed in those cases. That looks like
+a second bug being fixed. Could the commit message mention it?
+
+The message also leaves out the request socket path. There,
+cipso_v4_delopt() runs on options echoed from a remote SYN when the peer
+maps to an unlabeled domain:
+
+netlbl_req_setattr()
+  netlbl_req_delattr()
+    cipso_v4_req_delattr()
+      cipso_v4_delopt()
+
+Would it be worth describing that caller too?
+
+> diff --git a/net/ipv4/cipso_ipv4.c b/net/ipv4/cipso_ipv4.c
+> index 1aacbbeffbc64..e618cbbd56c6a 100644
+> --- a/net/ipv4/cipso_ipv4.c
+> +++ b/net/ipv4/cipso_ipv4.c
+
+[ ... ]
+
+> @@ -1992,53 +1996,79 @@ int cipso_v4_req_setattr(struct request_sock *req,
+>   *
+>   * Description:
+>   * Deletes the CIPSO IP option from a set of IP options and makes the necessary
+> - * adjustments to the IP option structure.  Returns zero on success, negative
+> - * values on failure.
+> + * adjustments to the IP option structure.  Returns zero or a positive header
+> + * length delta on success, negative values on failure.
+>   *
+>   */
+>  static int cipso_v4_delopt(struct ip_options_rcu __rcu **opt_ptr)
+>  {
+>  	struct ip_options_rcu *opt = rcu_dereference_protected(*opt_ptr, 1);
+> +	struct ip_options_rcu *new;
+
+[ ... ]
+
+> +	new = kzalloc(sizeof(*new) + opt->opt.optlen, GFP_ATOMIC);
+> +	if (!new)
+> +		return -ENOMEM;
+
+[Severity: Medium]
+
+Before this patch cipso_v4_delopt() could not fail. Can the callers
+handle the new -ENOMEM return? On this path *opt_ptr is not touched, so
+the ip_options_rcu that still carries CIPSO stays published.
+
+None of the callers check for a negative value:
+
+net/ipv4/cipso_ipv4.c:cipso_v4_sock_delattr() {
+    ...
+	hdr_delta = cipso_v4_delopt(&sk_inet->inet_opt);
+	if (inet_test_bit(IS_ICSK, sk) && hdr_delta > 0) {
+    ...
+}
+
+net/ipv4/cipso_ipv4.c:cipso_v4_req_delattr() {
+	cipso_v4_delopt(&inet_rsk(req)->ireq_opt);
+}
+
+The layers above don't see the failure either:
+
+  - netlbl_sock_delattr() and netlbl_req_delattr() return void.
+  - netlbl_conn_setattr() and netlbl_req_setattr() set ret_val = 0 in
+    the NETLBL_NLTYPE_UNLABELED case.
+  - selinux_netlbl_socket_connect_helper() and smack_netlbl_delete()
+    (which sets SMK_NETLBL_UNLABELED) then update their state as if
+    the label had been removed.
+
+After a GFP_ATOMIC failure, wouldn't packets to an unlabeled destination
+still carry the CIPSO option? The same question applies to the SYN-ACK
+and the child socket on the request path.
+
+The updated kernel-doc says negative values mean failure, but no caller
+acts on that. The drop_all fallback below needs no allocation. Would
+using it here keep the CIPSO option always removed, as before?
+
+> +	memcpy(&new->opt, &opt->opt, sizeof(new->opt) + opt->opt.optlen);
+
+[ ... ]
+
+> +	hdr_delta = opt->opt.optlen;
+> +	new->opt.optlen = (optlen_new + 3) & ~3;
+> +	hdr_delta -= new->opt.optlen;
+> +	rcu_assign_pointer(*opt_ptr, new);
+> +	kfree_rcu(opt, rcu);
+
+[Severity: High]
+
+In the multi-option branch, the old ip_options_rcu used to be modified
+in place and was never freed. It is now replaced and passed to
+kfree_rcu(). Is every writer of inet->inet_opt serialized against this?
+
+The Smack caller doesn't seem to be. smk_ipv4_check() is called from
+smack_socket_connect() and smack_socket_sendmsg() without lock_sock(),
+and it gets here through:
+
+smack_netlbl_delete()
+  netlbl_sock_delattr()
+    cipso_v4_sock_delattr()
+      cipso_v4_delopt()
+
+Only the socket spinlock is held:
+
+security/smack/smack_lsm.c:smack_netlbl_delete() {
+    ...
+	local_bh_disable();
+	bh_lock_sock_nested(sk);
+	netlbl_sock_delattr(sk);
+	bh_unlock_sock(sk);
+	local_bh_enable();
+	ssp->smk_state = SMK_NETLBL_UNLABELED;
+}
+
+bh_lock_sock_nested() takes only sk_lock.slock.
+do_ip_setsockopt(IP_OPTIONS) holds socket ownership through
+sockopt_lock_sock(), which has already released slock. So the two paths
+don't exclude each other:
+
+CPU1: smack_netlbl_delete()->...->cipso_v4_delopt()
+    opt = rcu_dereference_protected(*opt_ptr, 1);
+
+CPU2: do_ip_setsockopt(IP_OPTIONS)
+    old = rcu_dereference_protected(inet->inet_opt, ...);
+
+CPU1:
+    rcu_assign_pointer(*opt_ptr, new);
+    kfree_rcu(opt, rcu);
+
+CPU2:
+    rcu_assign_pointer(inet->inet_opt, opt);
+    if (old)
+        kfree_rcu(old, rcu);
+
+Here opt and old point to the same object. Could this queue call_rcu()
+twice on the same rcu_head and free that object twice? It would also
+leak one of the two replacement objects.
+
+Because cipso_v4_delopt() uses rcu_dereference_protected(*opt_ptr, 1),
+lockdep can't flag the missing exclusion either.
+
+The Smack locking predates this patch, and so does the same free pattern
+in the only-CIPSO branch. This patch extends the free to every option
+set that includes CIPSO. One example is CIPSO+RR set through
+setsockopt(IP_OPTIONS) with CAP_NET_RAW in a user namespace.
+
+> +	return hdr_delta;
+> +
+> +drop_all:
+> +	kfree(new);
+> +	rcu_assign_pointer(*opt_ptr, NULL);
+> +	hdr_delta = opt->opt.optlen;
+> +	kfree_rcu(opt, rcu);
+>  	return hdr_delta;
+>  }
+
+[Severity: Low]
+
+The kernel-doc for cipso_v4_delopt() still says it "Deletes the CIPSO IP
+option from a set of IP options". The kernel-doc for
+cipso_v4_sock_delattr() says it "Removes the CIPSO option from a socket".
+
+The drop_all path frees the whole option set, srr/rr/ts/router_alert
+included, and returns a positive hdr_delta. The updated Returns sentence
+reserves negative values for failure. Yet a malformed stream is reported
+as success, and only an allocation failure returns a negative value.
+
+Should the kernel-doc describe this behaviour? drop_all looks
+unreachable for options that went through ip_options_compile() or
+ip_options_echo(), so this only affects the documentation.
+
+[ ... ]
+
+> @@ -2263,12 +2297,19 @@ int cipso_v4_skbuff_delattr(struct sk_buff *skb)
+>  		return ret_val;
+>  
+>  	iph = ip_hdr(skb);
+> +	if (opt->optlen > (iph->ihl << 2) - sizeof(struct iphdr))
+> +		return -EINVAL;
+
+[Severity: Low]
+
+sizeof(struct iphdr) is a size_t, so this comparison is unsigned. When
+iph->ihl < 5, (iph->ihl << 2) - sizeof(struct iphdr) wraps to a huge
+value and the check always passes. Is that intended?
+
+The code further down relies on this guard to keep hdr_len_delta
+non-negative:
+
+	hdr_len_delta = (iph->ihl << 2) - new_hdr_len;
+	...
+	memmove((unsigned char *)iph + hdr_len_delta, iph, new_hdr_len_actual);
+	...
+	skb_pull(skb, hdr_len_delta);
+
+With a negative delta, memmove() would write below the network header
+and skb_pull() would be passed a huge length.
+
+ip_rcv_core() drops packets with ihl < 5, and the local output paths
+always build ihl >= 5. Reaching this would need something like
+privileged netfilter payload mangling. Would a signed comparison, or an
+explicit iph->ihl < 5 check, make the new guard cover the case it was
+added for?
+
+[ ... ]
