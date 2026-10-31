@@ -1,78 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793465281;
-	b=1kKJXiw+lKoshZnXCNZtogcqjwmj3WTdnl7CImYZxKUYKzim8wECZikfbDvYG3huCyrZ
-	 I/2XRMPkQxgITd8zAuOJFixOSz+YFwkIiJPjuu2fHuL2mxwnKZAZ9rOp7OzPYFJWqYlde
-	 1W41bvo0jMf6AOMlJhr4Rkr8cg55GhKX/sxUsO/ZuouMKsCwVJS0CWpaOjzhA9/02ve0E
-	 01QNhoPVQSgp+go6SGqepcMZpYoSj5iUOh7c2MOD2l06LkwlN9SOKye/lzZ+iHr6N86Vc
-	 SKUq+W9ioTuIRvFSVaZSbp939M/ioOe+v+b00zN8wv/BgLAM9HHRgS1qcrEGV7Lk/cg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793465281;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=Sh2Havs12iJQp69ousMTmRccv7SUfekdL8f3htWvZ4s=;
-	b=2rr8VC5jBTVMcfXpiVUrhCdrH6ViCx8Sxk//El8P3DEOWhV8fwMTwnzg0pA9U3IoTdy3
-	 5V+Zl4Xzp+qdEUCSeMrvz3vwAVgtDTJSfrsAUaQO1Ha4PGYa1GbrMrci2tkER1r73NBvs
-	 4f82xwy6OwAGCO0XiKbDOb0/OfdzB3oL7S4wkdBDXJ8etJqld6fVSx0pwF2NNRVTGxbQ3
-	 SYmKuOglxnp8Vy3XwT/9gc0m8Idr8TPcm7589+MJgGxQ2VEIeof4QVTXcWlJPx7eb8ab7
-	 WrJPT/6eL3A17LUnj+cYv47UjfcFmNidgnsmvKMTBx/ePyeB5JSzi85sFi676wzjwVQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MpaGljiT;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC06606A31A;
-	Sat, 31 Oct 2026 16:48:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MpaGljiT
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793465281;
-	b=TfNW11pmZ8vLXIhB8IBVW6pDf3yE9m03iSGxcQHOVuEC/nJjtEltFkEaaywy06BCH1AG
-	 op4JnlYG5dY1wdOVfg/c4SnuZIBCJnF3VBBfNc0n6l5gdNH3Afihj5qbGpDvVwTM4SUI/
-	 sRZizuIHSbLfITRJodZTPx2ImJ3QjZQc8rdQTKRsG0KtHb1u9Ny55C/qoMVCnpGnsOCSY
-	 YZ4TGJw+EsrfXaGnEO3FMOFI8ud4dN6fVNCBYOsTIXeHmIQj542/trXbdaMbX2hriPbfH
-	 x2JK5XG50QetOejTM3ViAjfahqYr0kJ2ec2gkT5nWpMXrTB+tiCy4QQQ+kdQ8RRMekg==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793465281;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=Sh2Havs12iJQp69ousMTmRccv7SUfekdL8f3htWvZ4s=;
-	b=vIdypm3Zx2GjNxKUHB4UJRcQSynLtPOEa1BXutmkZmB1qnRH95P2qEPBEnCspNvf3PbX
-	 J2e+G3W/SWwMPJBK0H8OA22b8E//aWxSYgXJrPfsugvwMkBce8oStwzTncPBGouD0db64
-	 Q6md6WGGwEjaMwq+4+m/oSRyWQiybPtNfxLpmY55bxfMDlXjydOLG2CjwM4SyPTRtF1TD
-	 2y9/zaJ9WqNRIfVPN7FjZycmVUGdWkv8TqlfQPY8h65qycFut3TZph9qs20Arj/PCHrwJ
-	 52GGuxiUHMKuueYzzUPoTTkys++7PT8g0QKkmSXhKl2U6CLGsWrUBSTRIKpdr8YqoiA==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.200
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793465482;
+	b=diOSpSg0oCaV0lQNXtE+MArSHpjFMp6fRK2Rcl6reuE9TClCY6Iy9SaF4/7CZJYHVOVV
+	 BMfvfcGL3GMDlRNnTBoyWYDKllhmJ/8YSdf/4NuhG/3UXbxUBCWFuxwAIIkFEar1jrzkG
+	 n0tsGjVHfUUqVVeUFFV7NzqusVUN6d5EShlA5zIG2BGZnYHrPUWCSNxorXUg8L0WyjMEu
+	 iR+CvSEMliPE8GEH/oi+OXUfr3YNpFe/F+EAxSpn1kqdW3cTOot7geKI1OgXcnLCx72UF
+	 C+eDQi6Tq8TCdVohkXiyARXXjPRXH0oFGIarTOneUIFjZZ5G3cwQbSHxSxkg4aiTyqA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793465482;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:MIME-Version:X-Received:Date:
+	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
+	 Subject:From:To:Content-Type;
+	bh=ZccZDmwpaj/O6pbTWegE+l+s9MNeeSWtqXGKbSCxwYE=;
+	b=oFNAdBWYs1ioKrd0EiIgGlQAsLpiPiyI/SD8/FRG3RXZVNg80aJMLilH1HrxMC/Y6RA/
+	 SsVVud/IZGBdJBIB5Vbq9PxvgA8jsLONMYY5EHvZp6/LRWY5Pg32Wia2+hzKtrlvuXP+W
+	 nLgjHwOtMqcAf9zDmAukYp4Y5OY/rPe8oZYs9lj3A9/QhdrzmywALnQeAEAUntsunAZDu
+	 UL7pjo4HLVs/3VI7CisOc0o7k6zXUAvvUu2/1gef3yxLqyiL6v7Mdrgkb0thsEV7YRHsz
+	 97xs7xtl62x4/DrDMUM0L0QPeLaS4eO4YJN0TCOO14m4/WEl2oFCsZ+G8AVHsNZZCkA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=fail header.from=syzkaller.appspotmail.com;
+	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	arc=none smtp.remote-ip=209.85.167.200
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 81ADA1F000C1;
-	Sat, 31 Oct 2026 16:48:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793465281;
-	bh=Sh2Havs12iJQp69ousMTmRccv7SUfekdL8f3htWvZ4s=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=MpaGljiTYrT01rLMfJbAZ5axZWVtoZS9I17uAnoMpJZ0fRdPhDkDe33P7bkdBkuHX
-	 x4pjzYGXdl/rAnv4Q4WUgLfZBzcdHq5iwD1uDSjvcTCXivmj427Ig9g9LR0yxj7cJT
-	 zSENkkF0TxbUFShDp6LwGmCUysdSeCMyk91XlzFEfTYFGQb5Un0BAABijrKCHkKAQ6
-	 UyfCojKh0YesqjztflqpcZ+0orff8lSDRQKL1XCZscvgRtRqe3+OZky7+kG7Jh4rAi
-	 Oy49AQMd1yhsDvMb14m08eWMVQCAlgrwHj5T1JxDnwDEZGF7mXHG8RKObrv8IDVchk
-	 +GkW7xZq6HdTA==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id D206645F61;
-	Sat, 31 Oct 2026 16:47:59 +0000 (UTC)
-From: Colton Pawielski via B4 Relay <devnull+colton.pawielski.gmail.com@kernel.org>
-Date: Sat, 31 Oct 2026 11:47:23 -0500
-Subject: [PATCH net v2] net: 8139cp: keep Rx masked while NAPI is scheduled
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C6C606A31A
+	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 16:51:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A9C6C606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-5640a2d9708so2470897b6e.1
+        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 09:51:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793465480; x=1794070280;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZccZDmwpaj/O6pbTWegE+l+s9MNeeSWtqXGKbSCxwYE=;
+        b=Xi/UugU4kewVPa6xtOndaF99m97JLR9mh2goo1PrOuJ0xv0fwn/iMBuHvCAyETWDzh
+         R/Oxaq57WYXhfH01cQ97hnvebjG1HI0Be/2mzYYXAEDTeKfud+5MHhcYtXRuAvQ1oJ21
+         Z0o7QVdUH1EfDnktqd61iPmRii/2tg6AFQF77z69UIPCWQEYwcjXb0fX09T0U8S8+Fan
+         hKHGZWpf6qwcf0W1YO/cjLqFRpA+6xGl5mnWqhkqYT5nllw3AzdzPPMq02Z1Qi5Vh8Pl
+         8eJfwgcw0Ay1PTG0+a5Agu/1Z0vq2bWwzaR70hcsVAIB299b3sBzJuKB7E8C2CEMbjkH
+         9hkg==
+X-Forwarded-Encrypted: i=1; AKwUvBzvFAiolDYc8FyhcPluGTj+1/p2mQrR5SiOe9Hfkm6xpo4dWGliUtItkpa0GPj7i/Zo8oOYSK4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKVw+9KYSTJ7CcLOe+y56EKlkBo0MXMFGCgBvJ5ek5jJoTxdbdS
+	XsR07ti2Bbj/JsvHp185IZI9WJ3GHWdu4jLJVvSx6dMWqRef1nN2aEfOkZ+K/sVSKpLgtmJQPPM
+	TLlsHV6Q6/oCqVRO9LTfJIwplpT4srKZYa822puC0ALZzSKApSj6ZxEs8sS4=
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -82,128 +58,109 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261031-b4-8139cp-napi-v2-1-5824797c0fe6@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNwQ6CMBBEf4Xs2TW0xQqc/A/DgZYF1kghLRIN4
- d8tePb4JjPzVgjkmQKUyQqeFg48ugjylIDta9cRchMZZCq1SKVAk2EuVGEndPXEmFOEVip5VRr
- iaPLU8vs4vIOjGapfGF7mQXber/Zaz2Ee/efQLuIo/zMsAgXawuhcNcVFZ+bWDTU/z3YcoNq27
- QuHENalwwAAAA==
-X-Change-ID: 20261021-b4-8139cp-napi-8e139f232736
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Daniel Palmer <daniel@0x0f.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
- Karl Mehltretter <kmehltretter@gmail.com>, 
- Colton Pawielski <colton.pawielski@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793465279; l=4242;
- i=colton.pawielski@gmail.com; s=20261021; h=from:subject:message-id;
- bh=7Gdp49sTAj7nx7xBdYxeqxP8MqCpA92+96SZGvd7Q0Y=;
- b=R3RavTVmBCmEDdIZtTFe4FLSJklOZ8fxT+SGt27gal/R3PnDuCPY47HdMsg7Y3UIkWclJLca9
- 5xCJonZxqfRBLCBBv2u+2PbX8zMhaWygevqxH+qDCA2KJlmKlqofVnQ
-X-Developer-Key: i=colton.pawielski@gmail.com; a=ed25519;
- pk=QFoKkkRiV70QY509+evUr/DtmgPqjU3fLV0TaScMuE4=
-X-Endpoint-Received: by B4 Relay for colton.pawielski@gmail.com/20261021
- with auth_id=1266
-X-Original-From: Colton Pawielski <colton.pawielski@gmail.com>
-Reply-To: colton.pawielski@gmail.com
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a05:6808:3206:b0:4f7:d324:bc3a with SMTP id
+ 5614622812f47-5640ddfb115mr4220012b6e.18.1793465480685; Sat, 31 Oct 2026
+ 09:51:20 -0700 (PDT)
+Date: Sat, 31 Oct 2026 09:51:20 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ae61c88.6552420f.2a0efc.0003.GAE@google.com>
+Subject: [syzbot] [netfilter?] WARNING in nf_flow_offload_gc_step
+From: syzbot <syzbot+e1a88d8b7e4cf6b51d85@syzkaller.appspotmail.com>
+To: coreteam@netfilter.org, davem@davemloft.net, edumazet@kernel.org, 
+	fw@strlen.de, horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, pabeni@redhat.com, 
+	pablo@netfilter.org, phil@nwl.cc, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Colton Pawielski <colton.pawielski@gmail.com>
+Hello,
 
-cp_rx_poll() calls napi_complete_done() and only then takes cp->lock
-with interrupts disabled to unmask the Rx interrupts. An interrupt
-that is not masked while polling (TxOK, TxErr, ...) can arrive in
-between. cp_interrupt() then sees the Rx status bits, which are still
-set, finds NAPI no longer scheduled, masks Rx and schedules NAPI again.
-cp_rx_poll() then carries on and unmasks Rx anyway.
+syzbot found the following issue on:
 
-From that point Rx interrupts are enabled while NAPI is scheduled:
-cp_interrupt() leaves the Rx bits for the poll routine, does not mask
-them because napi_schedule_prep() fails, and the level-triggered
-interrupt fires again as soon as it returns. On an SH7751 LANDISK
-under combined Tx/Rx load this interrupt storm was captured with a RAM
-trace right before the board locked up hard.
+HEAD commit:    d135ab453a74 Merge tag 'backlight-next-7.4' of git://git.k..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=13a51259580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=6f2905533069b0f5
+dashboard link: https://syzkaller.appspot.com/bug?extid=e1a88d8b7e4cf6b51d85
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14020995580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=100c4f0d580000
 
-Mask Rx in cp_interrupt() whenever Rx status is pending, not only when
-NAPI gets scheduled. If the race leaves Rx unmasked, the next interrupt
-masks it again, and the pending poll unmasks it when it completes.
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-d135ab45.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/6c39e8158fba/vmlinux-d135ab45.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/7fb9f97c1f88/bzImage-d135ab45.xz
 
-Fixes: ab1e7e1d2666 ("8139cp: use napi_complete_done()")
-Signed-off-by: Colton Pawielski <colton.pawielski@gmail.com>
----
-An AI coding assistant (Claude Opus 5.5, in Claude Code) did most of the
-debugging: it instrumented the driver with a RAM-backed trace of register
-accesses and IRQ entry/exit that survives the power cycle, and decoded
-the trace after the hang.
+AI-generated root cause summary:
+In the Netfilter flowtable subsystem, nf_flow_table_extend_ct_timeout() only
+accounts for IPPROTO_UDP and IPPROTO_TCP when refreshing conntrack timeouts
+during garbage collection. However, both tc act_ct and nftables flow offload
+support offloading IPPROTO_GRE connections to the flowtable. When the garbage
+collector checks an offloaded GRE connection whose timeout has dropped below
+min_timeout, the missing case in nf_flow_table_extend_ct_timeout() triggers the
+default: WARN_ON_ONCE(1) branch. In a production kernel without panic_on_warn,
+the warning does not crash the system and no memory corruption occurs.
 
-Tested on I-O DATA LANDISK boards (SH7751R, RTL8139C+ rev 0x20).
-Without a fix, pulling 300 MB over ssh while reading the disk
-(concurrent IDE and network DMA) hard-hung the board in 7 of 8 runs.
-With this version that test passed every run on two boards over several
-sessions (16/16 and 24/24), as did the runs that also pushed 100 MB to
-the board at the same time (6/6 and 9/9).
+full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=e1a88d8b7e4cf6b51d85
 
-The LANDISK is UP, so SMP was tested on a Raspberry Pi CM4 (4x
-Cortex-A72, arm64, PROVE_LOCKING) with an RTL8139C+ on a PCI card
-behind a PCIe-to-PCI bridge, pulling TCP data from the far end of the
-card's link:
-- without a fix: the CM4 hard-hung during the first 100 MB transfer
-  (2 of 2 boots)
-- v1: lockdep warning within seconds ("HARDIRQ-safe -> HARDIRQ-unsafe
-  lock order", cp->lock held in cp_rx_poll() across
-  napi_complete_done())
-- v2: 32/32 transfers (16x 100 MB, 16x 500 MB) and 12/12 runs with a
-  concurrent push, about 14 million interrupts, no lockdep warnings
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+e1a88d8b7e4cf6b51d85@syzkaller.appspotmail.com
 
-It was also checked in QEMU: x86_64, -smp 4, PROVE_LOCKING, with
-QEMU's emulated rtl8139 (which binds to 8139cp). Ping plus 1.5 GB of
-TCP downloads ran without any lockdep warnings. v1 hard-locked there
-shortly after link up.
----
-Changes in v2:
-- v1 moved napi_complete_done() under cp->lock, but it flushes GRO into
-  the stack, and a reply sent from there (ARP, TCP ACK) re-enters
-  cp_start_xmit() and deadlocks on cp->lock on SMP. Reported by the
-  Sashiko review, reproduced in QEMU and flagged by lockdep on the
-  CM4. Leave cp_rx_poll() alone and keep Rx masked from
-  cp_interrupt() instead.
-- Reworded the subject, since the race is now recovered from rather than
-  closed.
-- Dropped Daniel's and Geert's Tested-by since the fix is different.
-- Link to v1: https://patch.msgid.link/20261021-b4-8139cp-napi-v1-1-c9b683d9564b@gmail.com
----
- drivers/net/ethernet/realtek/8139cp.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+------------[ cut here ]------------
+1
+WARNING: net/netfilter/nf_flow_table_core.c:553 at nf_flow_table_extend_ct_timeout net/netfilter/nf_flow_table_core.c:553 [inline], CPU#2: kworker/2:2/1358
+WARNING: net/netfilter/nf_flow_table_core.c:553 at nf_flow_offload_gc_step+0xd84/0xf60 net/netfilter/nf_flow_table_core.c:593, CPU#2: kworker/2:2/1358
+Modules linked in:
+CPU: 2 UID: 0 PID: 1358 Comm: kworker/2:2 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Workqueue: events_power_efficient nf_flow_offload_work_gc
+RIP: 0010:nf_flow_table_extend_ct_timeout net/netfilter/nf_flow_table_core.c:553 [inline]
+RIP: 0010:nf_flow_offload_gc_step+0xd84/0xf60 net/netfilter/nf_flow_table_core.c:593
+Code: f8 e9 82 fd ff ff 4c 89 f7 e8 28 e1 6a f8 e9 12 fc ff ff 48 c7 c7 80 f2 c0 8f e8 17 e1 6a f8 e9 ae fc ff ff e8 1d cb f1 f7 90 <0f> 0b 90 41 be 01 00 00 00 e9 7d fc ff ff e8 09 cb f1 f7 48 8b 04
+RSP: 0018:ffffc9000618fa88 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff88803e161380 RCX: 0000000000000000
+RDX: ffff88802c392580 RSI: ffffffff8a1c51f3 RDI: ffff88802c392580
+RBP: ffff88803e161488 R08: 0000000000000001 R09: 0000000000000011
+R10: 000000000000002f R11: 0000000000000000 R12: 1ffff92000c31f56
+R13: ffff88803818f868 R14: 000000000000002f R15: ffffffff8fc0f280
+FS:  0000000000000000(0000) GS:ffff8880d469c000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000012000 CR3: 000000002f277000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ nf_flow_table_iterate net/netfilter/nf_flow_table_core.c:459 [inline]
+ nf_flow_table_gc_run net/netfilter/nf_flow_table_core.c:616 [inline]
+ nf_flow_offload_work_gc+0x11e/0x1e0 net/netfilter/nf_flow_table_core.c:624
+ process_one_work+0xac7/0x1b10 kernel/workqueue.c:3495
+ process_scheduled_works kernel/workqueue.c:3578 [inline]
+ worker_thread+0x5ef/0xe50 kernel/workqueue.c:3659
+ kthread+0x373/0x450 kernel/kthread.c:436
+ ret_from_fork+0x730/0xd60 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
-diff --git a/drivers/net/ethernet/realtek/8139cp.c b/drivers/net/ethernet/realtek/8139cp.c
-index 9016527e229a..8f81dc7deef1 100644
---- a/drivers/net/ethernet/realtek/8139cp.c
-+++ b/drivers/net/ethernet/realtek/8139cp.c
-@@ -600,11 +600,11 @@ static irqreturn_t cp_interrupt (int irq, void *dev_instance)
- 		goto out_unlock;
- 	}
- 
--	if (status & (RxOK | RxErr | RxEmpty | RxFIFOOvr))
--		if (napi_schedule_prep(&cp->napi)) {
--			cpw16_f(IntrMask, cp_norx_intr_mask);
-+	if (status & (RxOK | RxErr | RxEmpty | RxFIFOOvr)) {
-+		cpw16_f(IntrMask, cp_norx_intr_mask);
-+		if (napi_schedule_prep(&cp->napi))
- 			__napi_schedule(&cp->napi);
--		}
-+	}
- 
- 	if (status & (TxOK | TxErr | TxEmpty | SWInt))
- 		cp_tx(cp);
 
 ---
-base-commit: cb284914e749388eef402938bdb3115fe1f6d337
-change-id: 20261021-b4-8139cp-napi-8e139f232736
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-Best regards,
---  
-Colton Pawielski <colton.pawielski@gmail.com>
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
