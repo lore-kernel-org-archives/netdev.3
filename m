@@ -1,61 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.23
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793469714;
-	b=js1sk3+Gr8QoaMFW8jNn4SoKtjmKPpNrlW3DL//u2WI8E9i9IG27/TBR9P6e5m0IxTYR
-	 lP5GK90tbAsqcSeDjLpUPF/E/b/ePVWE5y1I2LeLMcNy7i3dWMHJ44oRGtvKHE8UwEyGO
-	 QVyvH3fxcMPcf865NdoxtFOtpevacG/tJ9ZUMFFf3h+VjGMhQShjlZhsxN5eWKb3v87Yd
-	 uGeIwP+tbqdAuDwnetTT+oqlesvG8Gy8lvze8SX7C7qHXEadiSm180PKtOwlP9yTUEbBb
-	 ed/gK60aCxXxfs8W/N9vCfsl4dhgn0LgjMBkpgKe7RZrXXKhP+kr/iHt5wCK0y0J2bQ==
+	t=1793470248;
+	b=I+4489meFn5ZeJezGU4a8IZpT2cl44sKH/Voq/kBMdyslN75PM5vf4INudvsRPN7eJVk
+	 9aNH+8t1BM6P8+x3cAQMiSsefIt5NVlZNrN0dZuF+qVQfYPSt+MY64cyYfzMkWfMQE/il
+	 75Hb8SWGRC8dbiool1XnsALfftP4f7IucWHMtWjsNp3wjF1ocrLhAEmfWzTgRDJBRnNqf
+	 +41yDkYI3Qa32k4vvujbgT/OZBWMLm2YfeMjSWqKSgvBZqohd+aRH9bW+39+IOkVuhQ8H
+	 ZKPz2UmJ7l5SUszm/DsxeB9KnLj2Pxr5lslkD+/YeuaSQuZqspBSLXVomoRRjOJnKew==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793469714;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=Pen3Zlr7aIaQk09axMhhSnVK2DNRhje2dWtlxBkoclU=;
-	b=muOycxR0U2E8AjvdKms2Ut1EMpIdA8rCU87JAV9vTmES0skAHE3DB64MdnTZVUc5n3a8
-	 SVQQA3SacGMsbPLrGN7kbrq7saE12YpPeRZcmxgbxk7QTKTx/9w6QEIo9AQj6dgDlbQDn
-	 o/2lhP4LVlGgN0mahRpyA8VUavceGy2m8qfoam/5+fTEiZB0mH54c3EksYkVKSylo3IGl
-	 i2Xz/iRiaMhRiQKLdiLhhyxBiRVI76FOCZf4xXRt4IyCEh7sIgSxCnEXm9JANJp/MT1LT
-	 WeMdTOxR5FHMSMoQAgXJP6K1Fq9DM2w+G/eX15bN7T/IIsbFx96ZbFkVMScwwleYtUg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793470248;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=gasBqSAnV3vmniUcbI9YXZHfc6XeNj1p84CcMezMQsQ=;
+	b=g6luenDZ102pysAgw8SsryY5eIWdfiMQRxK8g3Wsmcd2RlLzSH78Bq1Zo2d/P4clEDiw
+	 JBjh28Wrg/VfrxsTamilsZJO1hwdEMh+nyFa+syKZwxEw7iJBTKR2u6oAMAd1C07Xvglg
+	 Vgz3S3vXyjNe9WMWGAa9PDzxfnbZxeDhMkghmplhUk80mVN6/QQNWuKjshXEM9NLRBgmc
+	 +UF1F//qHz3Z5O3oarbXIv4+c/nBK4CmuvfiojBIyh5my5ZYGGafBOtmRQitiyBW1TKfQ
+	 1sSDEalttiHF7OmIKvxTWv5lc9KZnoklRlOVMr28T5D/8bCNbyq9AXTw6SrrQT9sOzg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aqzJwBgk;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kD69zA82;
+	arc=none smtp.remote-ip=95.215.58.23
+Received: from mta1.migadu.com (out-23.mta1.migadu.com [95.215.58.23])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23760606A31A;
-	Sat, 31 Oct 2026 18:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6FC6606A321
+	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 18:10:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6FC6606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aqzJwBgk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CAF41F000C1;
-	Sat, 31 Oct 2026 18:01:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793469713;
-	bh=Pen3Zlr7aIaQk09axMhhSnVK2DNRhje2dWtlxBkoclU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aqzJwBgkF1qLEYqE0ZLRwIBBFs3pEkU7NJH06n0MPcdtbginECtkK+WP4Dn9uFl1C
-	 SnpaBAILOwozbDB69Rw33lTvGDConn/zbCojejRYWi3n2SJotJpCnJ4m5cyNcH/80H
-	 MgCW14kpp9Eh6v1L72BPJHIsrg+hgFmLZgQuKB9zOM7UmKY3QfTN1lVCxD28mD8Oh0
-	 s/tb8WCTJH0u1mSdL/4LTljfV/O9kKSNOx9J7MElwmKUWXeZIGm8kC6OEAadSGVCTN
-	 1o+SoLxItBMm74Bf0XG0BgmvJijpduYROUSLCP2jIgaALA0HlVs5Pl496VJl/+JYs3
-	 Fph8e+hZ4VlUw==
-Date: Sat, 31 Oct 2026 18:01:49 +0000
-From: Simon Horman <horms@kernel.org>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	stable@vger.kernel.org, shaos <shawnq1@163.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Sashiko <sashiko-bot@kernel.org>, Vega <vega@nebusec.ai>
-Subject: Re: [PATCH net 0/3] net/sched: fix short-skb metadata and namespace
- boundaries
-Message-ID: <20261031180149.GU257209@horms.kernel.org>
-References: <SER-NSBD.v1.r0.20261029191634@mojatatu.com>
- <20261029165943.41fc74c0@kernel.org>
- <CAM0EoM=WYGMNxc=n3j+nwyXA41SHq8o+bVvTR6uYp6HUeEa5aA@mail.gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kD69zA82
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=HAspga3z+Ons/LXwua+up+NOY/bhAKhpJxJzMMgbKTU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793470240; v=1; x=1794075040;
+ b=kD69zA82aL13dIVOgPDMaa97S0xY3rSHZ8E/Nt5Cldac9PcgCiOR9fXGuQ/gLcn1zZ1DOVZ5
+ efcLegUmq03LmVs/rvWgSK9kyRNcqbNmYEJ3rS0Ey0vB62JhJ9M/EPPq0gBUKtOTM6mUgEycmWr
+ 3Eb4YmOsPGShOSF5n3DGnfiQ=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 5926407d61842773;
+	Sat, 31 Oct 2026 18:10:39 +0000
+X-Mizu-Trace-ID: 5926407d61842773
+X-Migadu-Flow: FLOW_OUT
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: "Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
+Cc: Meta kernel team <kernel-team@meta.com>,
+	cgroups@vger.kernel.org,
+	linux-mmc@vger.kernel.org,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] vhost_task: do the return-to-userspace work between work items
+Date: Sat, 31 Oct 2026 11:10:04 -0700
+Message-ID: <20261031181004.4193627-1-shakeel.butt@linux.dev>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,33 +70,78 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAM0EoM=WYGMNxc=n3j+nwyXA41SHq8o+bVvTR6uYp6HUeEa5aA@mail.gmail.com>
 
-On Thu, Oct 29, 2026 at 08:07:18PM -0400, Jamal Hadi Salim wrote:
-> On Thu, Oct 29, 2026 at 7:59 PM Jakub Kicinski <kuba@kernel.org> wrote:
-> >
-> > On Thu, 29 Oct 2026 19:27:36 -0400 Jamal Hadi Salim wrote:
-> > > Subject: [PATCH net 0/3] net/sched: fix short-skb metadata and namespace boundaries
-> >
-> > Please fix your setup, Jamal, all your recent postings have patches
-> > posted in reply to the previous patch:
-> >
-> > Patch 2 is in-reply-to patch 1, patch 3 replying to patch 2.
-> > They should all be in-reply-to the cover letter.
-> 
-> I know this is what you asked for before - but then Sashiko started
-> getting weird and i went backwards and saw it accepted this format. I
-> will resend this in 24 hours and stick to having it reply to patch 0.
-> Maybe the sashiko issue is not even related to this but it was getting
-> a little frustrating. In any case , sorry ;->
+A vhost task is a user worker: a thread of a user process that runs only
+kernel code. It never returns to userspace, so it never runs the work
+that is queued for the way back. resume_user_mode_work() does that work
+when TIF_NOTIFY_RESUME is set. For a vhost task this means:
 
-Hi Jamal,
+- memory.high is handled at the wrong time. When a charge goes over
+  memory.high, the task counts the pages, and should reclaim, and sleep
+  if needed, on its way back to userspace. A vhost task only reclaims
+  when more than a batch of pages has built up and the charge can block.
+  Then it reclaims and sleeps in the middle of the charge, maybe while
+  it holds a lock. vhost-scsi, for example, can fault in guest memory
+  while it holds vq->mutex. If the charges can't block, nothing is done
+  at all, and the count keeps growing.
 
-Please also be sure to rebase.
-It looks like this series does not apply cleanly to current net.
+- Block cgroup throttling never runs. blkcg_schedule_throttle() asks for
+  it, but only resume_user_mode_work() acts on it.
 
+- Task work queued with TWA_RESUME, like a deferred fput() or a NUMA
+  balancing scan, waits until the task gets a signal or exits.
+
+io_uring workers had the same problem, and io_run_task_work() calls
+resume_user_mode_work() for them. Do the same in vhost_task_fn(): if
+TIF_NOTIFY_RESUME is set, call resume_user_mode_work() at the top of the
+loop. That is between work items, no locks are held there, and the task
+is running. Passing a NULL regs is fine, io_uring and KVM already do it.
+
+This covers every user of vhost_task_create(): the vhost workers and
+KVM's NX huge page recovery thread.
+
+Tested in a VM with a version of tools/virtio/vhost_net_test that puts
+each RX buffer on a new page, so the vhost worker faults in, and
+charges, 256M while its cgroup has memory.high=64M. Before, all 285
+calls to __mem_cgroup_handle_over_high() came from try_charge_memcg(),
+inside handle_rx() with vq->mutex held. After, all 589 came from
+vhost_task_fn(). memory.peak stayed at 64M, and the run took about the
+same time (0.66s before, 0.67s after). A lockdep kernel showed no
+warnings.
+
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+---
+ kernel/vhost_task.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
+index 3717885a5992..f0ab21aa2a1c 100644
+--- a/kernel/vhost_task.c
++++ b/kernel/vhost_task.c
+@@ -7,6 +7,7 @@
+ #include <linux/sched/task.h>
+ #include <linux/sched/vhost_task.h>
+ #include <linux/sched/signal.h>
++#include <linux/resume_user_mode.h>
+ 
+ enum vhost_task_flags {
+ 	VHOST_TASK_FLAGS_STOP,
+@@ -38,6 +39,14 @@ static int vhost_task_fn(void *data)
+ 				break;
+ 		}
+ 
++		/*
++		 * A vhost task never returns to userspace. Do the work that
++		 * would run on the way back, like memory.high reclaim, here
++		 * between work items, while no locks are held.
++		 */
++		if (test_thread_flag(TIF_NOTIFY_RESUME))
++			resume_user_mode_work(NULL);
++
+ 		/* mb paired w/ vhost_task_stop */
+ 		set_current_state(TASK_INTERRUPTIBLE);
+ 
 -- 
-pw-bot: cr
+2.53.0-Meta
+
