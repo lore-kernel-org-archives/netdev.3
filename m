@@ -1,66 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.206.16.166
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793417130;
-	b=qDiTYpw2T4hAv3ZVf8pTMYPG4OkMWi3+kEcOzzlhy4wHfu6EBAlFXEjKwqK3YXoPNbq/
-	 iQhQ4EzzLaHtW/DC5WKBqW9guVNrSX7OE961rUmDlaZY57u65SQF51hPjjOEkFGcRV1/Y
-	 JKeg40AcNHKn2t0iyiE2+pOUYIIdyKdGm7TgunJIuOP/yEuYK3oF4emI9ZFQ2p57j98XA
-	 6Lbe4Frgc1kLOc7iBvpIJushWlUa8OqW9EGDEQONpm6Jee9K8VSfKefzzWiVH0MslYjg4
-	 ytq3egbodhhWTZ/PLbP0Rt70ISkF2UKC8FuUFDtRifeiKSxx28QM4YXk6VXv7CaKIzA==
+	t=1793417295;
+	b=ToYZ9h0xAOTe4/pU0Ocp4XPSLc9w+HTT8T0/Rb92q5fbaeZzLIzaHkmy3H9/oEBfRL6/
+	 CJnkrXsfPJNfC0d1h0vc9GH/0nAa2bampS6zMjjhJ7HGuvOmNSbbH6mlSSLTcpf9uH5t2
+	 gOAuZDQOg6A4pWBS6OGuOugJh/a21dZmgIj1u3cGHULnlvdyPOPRsqpHNxYYUMEfoq9zd
+	 W6gEvS2Pnd3n6c1v1hzIiefBi1V5croGLslxlviv+K6kZJWuYHTG4JlEpK1D75lEtauRf
+	 hSX2UZhKzjqKKj2cu5hDQzrUFiCZ6afFFXQNciTCKHlKUnr08vn2XOyANStxOKfFoVw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793417130;
-	h=DMARC-Filter:DKIM-Signature:X-QQ-mid:X-QQ-Originating-IP:Received:
-	 X-QQ-SSF:X-QQ-GoodBg:X-BIZMAIL-ID:From:To:Cc:Subject:Date:Message-Id:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding:X-QQ-SENDSIZE:
-	 Feedback-ID:X-QQ-XMAILINFO:X-QQ-XMRINFO:X-QQ-RECHKSPAM;
-	bh=JWFtuB8p/nC8iRQ5tDviTJ407yr+c+xO46BSQyzl+w8=;
-	b=IkAViMyYYf9mRSjvR6mfZZRWFeNjwFubJb32x8f/jG4jsob45OJ6arRNE1IFdhMg5eaT
-	 OhcKlyornXH2bJEDAvttCdZ6+VGPNTj5vCubnOAf3INDgP7EyDT/rCtIUT4G3xyuw4d8+
-	 yL3bBKTdH6LfsBAeZnEtY1M4G0Q4oWC4Jq/8iYxKR8B/a22Gv3c6khbQ2KhyNZyxX1Hbc
-	 hACjuKne1x81FVSl+uYSANhIYK6CqarfA2GqZBeeIjiY9qIl284MzBjgh5ovWdrOHfvTT
-	 qEPENrxF81C9eHgpdQTVtSbtAeeO4ex20t/1aNrQaXA5qJP7hkAKuH8/QX8Wwbah/dg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793417295;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=JOUfXRcikYW9u7KTVEt4MRIJ4ALs6TSrzjsUtuiLhEk=;
+	b=g+rjVMwO7/0QzxA8yaY86KriJbq8J4glf1q4pJa6SbIXNm6wgqRzZZcOzq3J67LGDa9d
+	 vuBOMrQ0hnP5Y5GmhgTjERT2ooumfH1Ak1M2Ck489S1HB7DHkHsK8+eYuFyt2S6bPlg8Q
+	 rADdihPQ8RbYRTRWercbneDdvtOIrRgkj/lnw3wbX4D6WXN1jn6BUOj3H/6vkQOoCV6Lc
+	 qqEddfFvL3jgdK/4OMEB/GiLGXA6HQRQiCoPAHM/OM19wlvlWk+Pe5ixpyXBo8Vb8IlnD
+	 2ZlpA7CmngMf5Co0XtCqJ6IU9VrVWXnSRQleuxvvueNN9dOmGubWyC4orhFDOElW3ng==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ugreen.com;
-	spf=pass smtp.mailfrom=ugreen.com;
-	dkim=pass header.d=ugreen.com header.i=@ugreen.com header.a=rsa-sha256 header.s=pkvm2402 header.b="LQEFaYf/";
-	arc=none smtp.remote-ip=54.206.16.166
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=nebusec.ai;
+	spf=pass smtp.mailfrom=nebusec.ai;
+	dkim=pass header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=QF8bLc+T;
+	arc=none smtp.remote-ip=74.125.82.174
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E70C606A31A;
-	Sat, 31 Oct 2026 03:25:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1E70C606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ugreen.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ugreen.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FAD606A31A
+	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 03:28:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 38FAD606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=ugreen.com header.i=@ugreen.com header.a=rsa-sha256 header.s=pkvm2402 header.b=LQEFaYf/
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ugreen.com;
-	s=pkvm2402; t=1793417002;
-	bh=JWFtuB8p/nC8iRQ5tDviTJ407yr+c+xO46BSQyzl+w8=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=LQEFaYf/BfzVIyMHUAsqnRFUFbscctXRWVQi+Ej1cPv4cGy68XAJj2bhggKISHbRx
-	 Li9HI94e/dzUcsL1aTigt2ZSLMZALEKhXwK6RxUkVNrlAAGnJZchjU5UfdpH8J00RV
-	 h2cc+p6BaxY4ptFlFwA0C3/XIrharEFJOwbvlgNg=
-X-QQ-mid: zesmtpsz3t1793416996t4be89f10
-X-QQ-Originating-IP: OjaJ8OvjxXAVJODd93Fr5lnT3csinDR4LetREcZD+do=
-Received: from exmail.qq.com ( [113.89.160.251])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sat, 31 Oct 2026 11:23:10 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 16540221932053630440
-From: Hanson Wang <hanson.wang@ugreen.com>
-To: netdev@vger.kernel.org
-Cc: Igor Russkikh <irusskikh@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: atlantic: stop TX again before freeing rings
-Date: Sat, 31 Oct 2026 11:23:08 +0800
-Message-Id: <20261031032308.2991494-1-hanson.wang@ugreen.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key, unprotected) header.d=nebusec.ai header.i=@nebusec.ai header.a=rsa-sha256 header.s=google header.b=QF8bLc+T
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-369f33df08eso2749590eec.0
+        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 20:28:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1793417294; x=1794022094; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JOUfXRcikYW9u7KTVEt4MRIJ4ALs6TSrzjsUtuiLhEk=;
+        b=QF8bLc+TkDbb/G4QSSWzhvroxhdK1yz/N5T2wzcayT1fuLX3ZgU9lyMHey3HQvRK3f
+         RXdsKCotCc/emtDJpmiSEZGiZ305UKfrQLL2GSIXoBUcHpdwwu86VMYZbXyoSMlVAtiV
+         xiggi+jdFjND6PzSe0NFHJqCZioK09JyuDQtIGmEy8ZnnXYTypxZH/TqwPrXvRYPyFUp
+         2KVraTAgKe/HYSaoobij7bR7TVVFgF1/4lXSG96FOnAaMvbrz0KNYQc1RPTB1uoEJCN4
+         OLxqkS1BBd91qPO4TfyvaDdPaNB3HZtzdRCNBIFwRAPk4lqcia3vkO+O+VZOlwFXSRCW
+         BgGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793417294; x=1794022094;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JOUfXRcikYW9u7KTVEt4MRIJ4ALs6TSrzjsUtuiLhEk=;
+        b=eKwt7J3INNQ9YFHSNFJrZVDH7O4MRcd62XLuY7XvmJUwaSgW25ty+AWhwubdYd/ZGy
+         jCS2euOUWvnj3OKg5/DvsW88kovlC2Xc5qq8Y6MQfsXEXZ8srW/dUlfp/C4jfqJzaGv1
+         JlLtjohADxNxrv7ABwl7BZ2OYIXDTGBfdrriuF469uOYfaq6pg/hklbnaQnJXnRlvLwp
+         FgcuQiRshMD3aBSOehmz582Ho9E//uCG1EPIXdyIHoarPjqVyersB+DkSzAC/ZIKTun1
+         83RPVPChBNTW69BGxlmgQeyndLeaMga0d4WtbguyA4etTxY0qJpE3PSi5rLVRzULHKrL
+         rfqw==
+X-Gm-Message-State: AFq9FYJeO/zcSdMzpN/+IWwfvM0hR/nPKMcdEEcJT0ed4gQTA1E4gVyL
+	3TuwmqaNsNJt7FyXvHjvaMcwo+t/jKvyRzRdhCRTCG9wjdAXTTHUWy986e+hudfHyjcGcyxRrhE
+	Afm4dRRRw
+X-Gm-Gg: AYBFou3PzlmvDgqoHxqlM79pOh185olxGjq92HJAMT3wkTF647KdFspDo354sht6Aam
+	gQJis0SELEwxXYxTTdErj0D+09M41RtPSMzlEOhQeF4a+uktV4MshQMYZqxfxXji8pw3y+bMQ+1
+	HXpyEp0EZXW4Z0RmEow/6rnsQVFW0Sz/y9vX1OZW65OxyMCb62YRiQfu0YcRqWFA+PiZRm3hLdT
+	nexOdGHALCBpxXJ8qQMg0lpBW5LJCQt+C2B70Kg6wkpzlJwg7MkW3JKbhTIiRFtjivzGX75uegX
+	8oIXTgBBIWt7im3nmhbVsGiQvJyfwX29ohU1bIgiAHsAwJmVLAz96AkhpUTOgWmltN3dimRRoC+
+	007QmHHMXrSF+pTzk2ad4XFtfv83lZXr+P8Syl9VYxEJo77rilFvTVQiqKcHwJa6UkUNYelx430
+	MHmRRE6BEbjubUI4wGPI0aCRlXSNYJW+SCuHdaT60My4zpy1/vtED7XggHFko/xJCbkFwrzOFYF
+	crFC7HGNyhtst70vlIUrbBi9r/qtnw2kf03d+bZWECA6FXxFtkBjVugEGiCY2YgVy/env2kCwv+
+	R0olIudZBWe0hn9WU64OdWXV
+X-Received: by 2002:a05:7300:c39f:b0:368:3568:9866 with SMTP id 5a478bee46e88-36a42203e20mr6151534eec.5.1793417293957;
+        Fri, 30 Oct 2026 20:28:13 -0700 (PDT)
+Received: from enjou-Legion-Y7000P-2019 ([2a05:dfc1:8bc4:feda::14])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a4294419dsm11740841eec.18.2026.10.30.20.28.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2026 20:28:13 -0700 (PDT)
+From: Ren Wei <weir@nebusec.ai>
+To: netdev@vger.kernel.org,
+	andrea.mayer@uniroma2.it,
+	pabeni@redhat.com
+Cc: davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	horms@kernel.org,
+	pablo@netfilter.org,
+	contact@proelbtn.com,
+	vega@nebusec.ai,
+	sashiko-bot@kernel.org,
+	petalzu987@gmail.com,
+	weir@nebusec.ai,
+	liuhangbin@kylinos.cn
+Subject: [PATCH net v4] seg6: validate state in netfilter continuations
+Date: Sat, 31 Oct 2026 11:26:44 +0800
+Message-ID: <c9ec4da483c6c17dda703bcd6fc425ef2b53e320.1793207060.git.petalzu987@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,99 +105,272 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:ugreen.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: MYcyYH/A/+tCGs5QprDqVHvqisRP025A6kGk6KEOSzijvZ27VCw5fMbV
-	crVx1hdH8k9rr9Q8YCST/HKX5UNLJt6knoa4egXzOR/pc/v7jlhLzk2K3S4pOw0oxwK0UpQ
-	ezyNToO6509x4ao3RHJJai4cPTaqsyHU+vc2HUxaq3Tb1sfRlGaeNRX4yWiXv9iRgw2Y+KB
-	5eT9hIb+kJXGp7HUA+iewHSM5ZdfyM6wr7m6NziAckObjQS2Bj/1tNT2hqioIdC1f4O3IE4
-	loonUvQeR+4zpipU24mYoaFg24H1yd7/Rh6+KL/npmy/AODb7ZMsc+jCvqLPa4z1CFAsdIE
-	Yd6Yv/0U5idU64vLORyhjzYMvT8/czcLC4FYzgm98D+ew6hUG7XtEpiRHnfD6mCq3bzZFki
-	VI6wM79U3Js4cMSVjeSad1zifuvLr1SwkEZ+IPdDDEz7/zwHQqtchNE93DINnk/abPhSMPs
-	8Vicb98E9ujLWYFL968aqwklJpq7Sd20xGoWvy2aWP1B0RtZMXTfHRlNZrgSdyiDVj+sdnh
-	3YtXYW4Uj3PbhicNJYnXIqDjn17TebbxGTXaCY7vfmEJDIHgt5b+6qJAf4b4YzyM/gYod6W
-	5o2MNoGkZ8ptVhnPOQRQCb3HkjyJxaK7CtvttZkBwfyYrn7zXzKhTZyGafX+bd+KPo9VBtC
-	C8EiA0CWZoCt/YUzBq3TBwyQ5f1OKVCNVwfBWpjtPY5ZeuAtzStxvdExtnnn+120cJ+Rv3+
-	YHVU8JgG1mwsvP9SAmXfEAC6ddUcqNxS/yTjtoLusS/MJZdAQ+H5icrPiUJQew0Jyu3OWcM
-	+2SZlL+rJR4drwhl0dlwChIBUrv/1dFTMrB8+RZNYB2+SNL00wODcoBChZKAjZEF1h+zFoU
-	cck25j+nNoEZAkUG1EJv8YEV9I5ly33alOFRdrks6IZnGalCrgvwvMdGZtwukhbvKTH8jF8
-	bmNUskkEpVwGbTZYmDPM0TTxoREFERJLpylGqoGJB6cn2lkR3qLyyLmG+Zae89qIc4bsUEg
-	nThkWLsh3giq4bbA3WCwj3DId7Z8n8wMFcf5cmtn3yl6vfFVA8
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-X-QQ-RECHKSPAM: 0
 
-aq_nic_stop() disables TX and drops the carrier, then cancels the
-service work, frees the link IRQ and disables NAPI. A link update or
-TX completion can turn the carrier back on and wake queues after that
-first netif_tx_disable(). ndo_set_features, ethtool ring changes and
-XDP setup call aq_ndev_close() directly, without dev_deactivate(), so
-a re-woken queue is still reached from ndo_start_xmit. aq_nic_deinit()
-then frees buff_ring and leaves sw_tail unchanged.
+From: Zixuan Chai <petalzu987@gmail.com>
 
-On a UGREEN DXP2800 GT running 6.18.15 this oopses in aq_nic_map_skb()
-from the IGMP timer softirq. The faulting store is dx_buff->flags = 0
-at R10+0x28 with R10 == 0xc00: buff_ring is NULL and sw_tail is still
-non-zero. Every module is unsigned, so the kernel is tainted E; the
-atlantic driver itself is the in-tree one.
+Netfilter hooks can replace or drop skb_dst() before SRv6 continuation
+callbacks resume. Validate the current destination and lwtstate in each
+hook continuation, dropping packets with missing or incompatible state
+while preserving direct no-hook paths.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000c28
- #PF: supervisor write access in kernel mode
- Oops: Oops: 0002 [#1] SMP NOPTI
- CPU: 4 UID: 0 PID: 0 Comm: swapper/4 Tainted: G E 6.18.15
- Hardware name: UGREEN DXP2800 GT/DXP2800 GT, BIOS APS15021 04/14/2026
- RIP: 0010:aq_nic_map_skb+0x302/0x570 [atlantic]
- Code: 44 0f b6 78 06 <49> c7 42 28 00 00 00 00
- R10: 0000000000000c00
- CR2: 0000000000000c28
- Call Trace:
-  <IRQ>
-  aq_nic_xmit+0xc6/0x150 [atlantic]
-  dev_hard_start_xmit+0x63/0x1c0
-  sch_direct_xmit+0x154/0x3a0
-  __dev_queue_xmit+0xb8c/0xe80
-  ip_finish_output2+0x25f/0x580
-  ip_output+0x65/0x100
-  igmp_ifc_timer_expire+0x1d5/0x420
-  ...
-
-Stop and drain SKB transmit again after those wake sources are gone,
-and drop the carrier in the same place, before hw_stop(). The rings
-are freed by the caller only after aq_nic_stop() returns.
-netif_tx_disable() holds each queue lock, so it waits until
-sch_direct_xmit() has left ndo_start_xmit; the stopped bit then keeps
-later SKB transmits out. hw_stop() only masks interrupts and does not
-wake queues.
-
-ndo_xdp_xmit is a separate path and is not covered.
-
-The barrier below has not been booted on the failing NAS. The oops is
-from the unpatched kernel. The diagnosis and this changelog were
-prepared with an AI coding assistant from that oops and the driver
-sources.
-
-Fixes: 3aec6412e007 ("aquantia: Fix Tx queue hangups")
+Fixes: 7a3f5b0de364 ("netfilter: add netfilter hooks to SRv6 data plane")
 Cc: stable@vger.kernel.org
-Signed-off-by: Hanson Wang <hanson.wang@ugreen.com>
+Reported-by: Vega <vega@nebusec.ai>
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260720204430.1886091-1-xmei5@asu.edu
+Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
+Signed-off-by: Ren Wei <weir@nebusec.ai>
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Acked-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
- drivers/net/ethernet/aquantia/atlantic/aq_nic.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Changes in v4:
+- Keep seg6_input_core() and seg6_output_core() unchanged; validate state
+  only in their NF_HOOK() continuation wrappers, addressing the review
+  comment on the unnecessary core refactoring.
+- Remove the Assisted-by: LLM trailer as requested.
+- Preserve the original NF_HOOK() continuation indentation.
+- Omit the cover letter.
+- v3 Link:
+  https://lore.kernel.org/netdev/cover.1792660496.git.petalzu987@gmail.com/
 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
-index 42e0fe9248f2..a6ceec0a22da 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
-@@ -1448,6 +1448,12 @@ int aq_nic_stop(struct aq_nic_s *self)
- 
- 	aq_ptp_ring_stop(self);
- 
-+	/* Link updates and TX completion may have woken queues after the
-+	 * first disable. Drain SKB transmit again before the rings are freed.
-+	 */
-+	netif_tx_disable(self->ndev);
-+	netif_carrier_off(self->ndev);
-+
- 	return self->aq_hw_ops->hw_stop(self->aq_hw);
+Changes in v3:
+- Move the five dst/lwtstate checks into NF_HOOK() okfn
+	wrappers; preserve direct no-hook calls.
+- Fix the stale orig_dst reference in the seg6_input_core()
+	comment.
+- Add clean XFRM and End.DX4 results plus independent
+	forwarding tests.
+- Remove the private tracker Closes URL.
+- v2 Link:
+  https://lore.kernel.org/netdev/cover.1792230570.git.petalzu987@gmail.com/
+
+Changes in v2:
+- Add unlikely() to the new checks.
+- Validate the current dst/lwtstate type in both seg6local and
+	seg6_iptunnel continuations; drop invalid state.
+- Do not walk through XFRM dsts or take an extra lwtstate
+	reference.
+- Retain the seg6_input_core() loop-detection comment.
+- Document both reproducer setups and clean/patched KASAN
+	results.
+- v1 Link:
+  https://lore.kernel.org/all/cover.1790748418.git.petalzu987@gmail.com/
+
+ net/ipv6/seg6_iptunnel.c | 46 ++++++++++++++++++++++++++++++---
+ net/ipv6/seg6_local.c    | 55 +++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 94 insertions(+), 7 deletions(-)
+
+diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+index 0d39a38a5dd2..846df1fef0ae 100644
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -18,6 +18,7 @@
+ #include <net/ip6_fib.h>
+ #include <net/route.h>
+ #include <net/seg6.h>
++#include <net/dst_metadata.h>
+ #include <linux/seg6.h>
+ #include <linux/seg6_iptunnel.h>
+ #include <net/addrconf.h>
+@@ -60,6 +61,21 @@ static inline struct seg6_lwt *seg6_lwt_lwtunnel(struct lwtunnel_state *lwt)
+ 	return (struct seg6_lwt *)lwt->data;
  }
  
++static struct lwtunnel_state *seg6_lwt_state_from_skb(struct sk_buff *skb)
++{
++	struct dst_entry *dst;
++
++	if (unlikely(!skb_valid_dst(skb)))
++		return NULL;
++
++	dst = skb_dst(skb);
++	if (unlikely(!dst->lwtstate ||
++		     dst->lwtstate->type != LWTUNNEL_ENCAP_SEG6))
++		return NULL;
++
++	return dst->lwtstate;
++}
++
+ static inline struct seg6_iptunnel_encap *
+ seg6_encap_lwtunnel(struct lwtunnel_state *lwt)
+ {
+@@ -622,6 +638,17 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+ 	return err;
+ }
+ 
++static int seg6_input_core_nf(struct net *net, struct sock *sk,
++			      struct sk_buff *skb)
++{
++	if (unlikely(!seg6_lwt_state_from_skb(skb))) {
++		kfree_skb(skb);
++		return -EINVAL;
++	}
++
++	return seg6_input_core(net, sk, skb);
++}
++
+ static int seg6_input_nf(struct sk_buff *skb)
+ {
+ 	struct net_device *dev = skb_dst_dev(skb);
+@@ -630,10 +657,10 @@ static int seg6_input_nf(struct sk_buff *skb)
+ 	switch (skb->protocol) {
+ 	case htons(ETH_P_IP):
+ 		return NF_HOOK(NFPROTO_IPV4, NF_INET_POST_ROUTING, net, NULL,
+-			       skb, NULL, dev, seg6_input_core);
++			       skb, NULL, dev, seg6_input_core_nf);
+ 	case htons(ETH_P_IPV6):
+ 		return NF_HOOK(NFPROTO_IPV6, NF_INET_POST_ROUTING, net, NULL,
+-			       skb, NULL, dev, seg6_input_core);
++			       skb, NULL, dev, seg6_input_core_nf);
+ 	}
+ 
+ 	return -EINVAL;
+@@ -726,6 +753,17 @@ static int seg6_output_core(struct net *net, struct sock *sk,
+ 	return err;
+ }
+ 
++static int seg6_output_core_nf(struct net *net, struct sock *sk,
++			       struct sk_buff *skb)
++{
++	if (unlikely(!seg6_lwt_state_from_skb(skb))) {
++		kfree_skb(skb);
++		return -EINVAL;
++	}
++
++	return seg6_output_core(net, sk, skb);
++}
++
+ static int seg6_output_nf(struct net *net, struct sock *sk, struct sk_buff *skb)
+ {
+ 	struct net_device *dev = skb_dst_dev(skb);
+@@ -733,10 +771,10 @@ static int seg6_output_nf(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 	switch (skb->protocol) {
+ 	case htons(ETH_P_IP):
+ 		return NF_HOOK(NFPROTO_IPV4, NF_INET_POST_ROUTING, net, sk, skb,
+-			       NULL, dev, seg6_output_core);
++			       NULL, dev, seg6_output_core_nf);
+ 	case htons(ETH_P_IPV6):
+ 		return NF_HOOK(NFPROTO_IPV6, NF_INET_POST_ROUTING, net, sk, skb,
+-			       NULL, dev, seg6_output_core);
++			       NULL, dev, seg6_output_core_nf);
+ 	}
+ 
+ 	return -EINVAL;
+diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+index 0c3d1be7f129..234bc2e2f284 100644
+--- a/net/ipv6/seg6_local.c
++++ b/net/ipv6/seg6_local.c
+@@ -24,6 +24,7 @@
+ #include <net/addrconf.h>
+ #include <net/ip6_route.h>
+ #include <net/dst_cache.h>
++#include <net/dst_metadata.h>
+ #include <net/ip_tunnels.h>
+ #ifdef CONFIG_IPV6_SEG6_HMAC
+ #include <net/seg6_hmac.h>
+@@ -213,6 +214,21 @@ static struct seg6_local_lwt *seg6_local_lwtunnel(struct lwtunnel_state *lwt)
+ 	return (struct seg6_local_lwt *)lwt->data;
+ }
+ 
++static struct seg6_local_lwt *seg6_local_lwt_from_skb(struct sk_buff *skb)
++{
++	struct dst_entry *dst;
++
++	if (unlikely(!skb_valid_dst(skb)))
++		return NULL;
++
++	dst = skb_dst(skb);
++	if (unlikely(!dst->lwtstate ||
++		     dst->lwtstate->type != LWTUNNEL_ENCAP_SEG6_LOCAL))
++		return NULL;
++
++	return seg6_local_lwtunnel(dst->lwtstate);
++}
++
+ static struct ipv6_sr_hdr *get_and_validate_srh(struct sk_buff *skb)
+ {
+ 	struct ipv6_sr_hdr *srh;
+@@ -1028,6 +1044,17 @@ static int input_action_end_dx6_finish(struct net *net, struct sock *sk,
+ 	return dst_input(skb);
+ }
+ 
++static int input_action_end_dx6_finish_nf(struct net *net, struct sock *sk,
++					  struct sk_buff *skb)
++{
++	if (unlikely(!seg6_local_lwt_from_skb(skb))) {
++		kfree_skb(skb);
++		return -EINVAL;
++	}
++
++	return input_action_end_dx6_finish(net, sk, skb);
++}
++
+ /* decapsulate and forward to specified nexthop */
+ static int input_action_end_dx6(struct sk_buff *skb,
+ 				struct seg6_local_lwt *slwt)
+@@ -1048,7 +1075,7 @@ static int input_action_end_dx6(struct sk_buff *skb,
+ 	if (static_branch_unlikely(&nf_hooks_lwtunnel_enabled))
+ 		return NF_HOOK(NFPROTO_IPV6, NF_INET_PRE_ROUTING,
+ 			       dev_net(skb->dev), NULL, skb, skb->dev,
+-			       NULL, input_action_end_dx6_finish);
++			       NULL, input_action_end_dx6_finish_nf);
+ 
+ 	return input_action_end_dx6_finish(dev_net(skb->dev), NULL, skb);
+ drop:
+@@ -1082,6 +1109,17 @@ static int input_action_end_dx4_finish(struct net *net, struct sock *sk,
+ 	return dst_input(skb);
+ }
+ 
++static int input_action_end_dx4_finish_nf(struct net *net, struct sock *sk,
++					  struct sk_buff *skb)
++{
++	if (unlikely(!seg6_local_lwt_from_skb(skb))) {
++		kfree_skb(skb);
++		return -EINVAL;
++	}
++
++	return input_action_end_dx4_finish(net, sk, skb);
++}
++
+ static int input_action_end_dx4(struct sk_buff *skb,
+ 				struct seg6_local_lwt *slwt)
+ {
+@@ -1098,7 +1136,7 @@ static int input_action_end_dx4(struct sk_buff *skb,
+ 	if (static_branch_unlikely(&nf_hooks_lwtunnel_enabled))
+ 		return NF_HOOK(NFPROTO_IPV4, NF_INET_PRE_ROUTING,
+ 			       dev_net(skb->dev), NULL, skb, skb->dev,
+-			       NULL, input_action_end_dx4_finish);
++			       NULL, input_action_end_dx4_finish_nf);
+ 
+ 	return input_action_end_dx4_finish(dev_net(skb->dev), NULL, skb);
+ drop:
+@@ -1741,6 +1779,17 @@ static int seg6_local_input_core(struct net *net, struct sock *sk,
+ 	return rc;
+ }
+ 
++static int seg6_local_input_core_nf(struct net *net, struct sock *sk,
++				    struct sk_buff *skb)
++{
++	if (unlikely(!seg6_local_lwt_from_skb(skb))) {
++		kfree_skb(skb);
++		return -EINVAL;
++	}
++
++	return seg6_local_input_core(net, sk, skb);
++}
++
+ static int seg6_local_input(struct sk_buff *skb)
+ {
+ 	if (skb->protocol != htons(ETH_P_IPV6)) {
+@@ -1751,7 +1800,7 @@ static int seg6_local_input(struct sk_buff *skb)
+ 	if (static_branch_unlikely(&nf_hooks_lwtunnel_enabled))
+ 		return NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_IN,
+ 			       dev_net(skb->dev), NULL, skb, skb->dev, NULL,
+-			       seg6_local_input_core);
++			       seg6_local_input_core_nf);
+ 
+ 	return seg6_local_input_core(dev_net(skb->dev), NULL, skb);
+ }
+-- 
+2.34.1
 
-base-commit: 21a7f44fd0765fcc5194130b28767786eba1d1e7
