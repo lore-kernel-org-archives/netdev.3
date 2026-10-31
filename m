@@ -1,79 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793462047;
-	b=pcqti/yKHKDeKqhJJrfDQUKbQ8PODF7S0vfbv4lwVRcqgw3Xc+EwaCwCwF8QXYltGB0w
-	 ugXbEe43uICkK3ADZ/oRqbQ6a9cWjFPpRJYAxmdqH6aiXWYtMTqHaGqNoOAspkGTEbo3S
-	 /thNBDH7PES8MeuibgCEgMS2WQ3PrLRmuV8SxmWbPy5YuscXb9PRDp9fhtJr2MVe+oXNu
-	 EW8eD/vjPzhNqU1booI83ZBttBFFHFU0yRrT2zxi2n3zJGkXz56e+3LjlzIo21XvUZ96e
-	 KK/kpDM1/Tx9k4OyLGZ8euuDTZ/WWwymMyYvTezzGwm/QCaDvv9PgT1UtZ6j94knrZw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793462047;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=Ap1THHwprcvvPpcpEr48EzhOSj8jQxbUx0lCFpj9fSg=;
-	b=Tb/7ZkXkXlTnI+lf8m39xdvmjo99t8SoVinEtEZlvamMrerQY1jJqbYQTrAC8bGYGKHH
-	 T2FM832Py9xonRQKk0secOQTWCH7tHMdgndpx3/nuEmnJL0VX8A6DnpZM7OepxI8nIPDn
-	 3Vn89L78C5Hqp/rU/lLjXerdZszbzXEsXu7aZbZ2sChyP7QwLLDWP559La9VIpFBLkp6d
-	 Frh3qJnm2zmfuYdz0bjWaklmdQnge19Qy0/rfRK3RolGLYGe/r97W/Qpf6YDRYWDwiURq
-	 29hiWLYq3JSO3SfcgH46+7lacMbzBS10lyWnifOUuVUv6W3DpNfORigFH3HcvhvrEEg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rk4jeYmj;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76EB606A31A;
-	Sat, 31 Oct 2026 15:54:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rk4jeYmj
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793462046;
-	b=qHCoqKyIud9ankdDKVPRv3kPaZWAkhwMw3gThypHx5nFNxXL9dNbXmHkZY9HZBk4dGni
-	 Oqywbiab0fobzwjPEHQGTHbdmiKazSdXhvL9Mafe1kv5YxaIVzGnf2bhOTz+dP2K6Lvk5
-	 zPKqYyT3FxlxOlEQ7C+SwuotL+SVgfeP6GrIyyCIW/esY1xtuRy3kN5hUM7NEZ4+T92pv
-	 8NGthvWS6n8MdD3hd3T4QbKvQZq30LiCvjYxk7tJD96XDGKlZkDaRokSzrvIUkdg2g/MD
-	 GTPe3yXf8p7ctKFstr0sFxYnMmvz/4ADVhOh/6P7vG7iA8yvozWCN8z3rkkwMhYHuHA==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793462046;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:To:Cc:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key:X-Endpoint-Received:X-Original-From:Reply-To:
-	 Content-Transfer-Encoding;
-	bh=Ap1THHwprcvvPpcpEr48EzhOSj8jQxbUx0lCFpj9fSg=;
-	b=yNbCEoa6JT0We21VPaABUiEr41AB+NTqbSBokZcVSQOoN7PovgW7SkVy9se/2ZvEaSbp
-	 /6qQdhsJN9xtvN1OAIIgIvdbrTCzb77eeKQiaPqe1BbjFMRRf29okhDo00tbpArs5jFK/
-	 vis/2Yni+BiHhOutACAvEr5BTUQOEDkUueT+6vH79kVLprLvC+OYUKwa9badsQfjRDmac
-	 FX6FXdd9K40pxptuK4pG58YSHoq342XpFAObDcUnfAbeMNw+W3LL1+89kAayfPyvEe9Eq
-	 q88Nwx97JGzkpWsftuPPu2ExCkIPxYRTWKig+Kp91GkRXXTluFf86FsxLfwCR1N075w==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.178
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793464292;
+	b=UDu/LuJwq6oALy04+nhpM+rh8O7yS9jbWEtBUBL+KuRW18lP3V0qAiS1PI5w5WKKtbA4
+	 yEOrbAd7gnZW4ygQJjTpPU9Bb7Fxyc30p/JISU0r4Wr4akGie9EFI4EZGh61nIB5c8iQ3
+	 e0b2UGk307oSy+ojP3NXg0g+PLwjY9sVoIKKSVwBjVP6mxJhHEM25O8uERbB/bf7iVNd2
+	 7Tz7nE68UVrXqYfrLdpICel5Kpv0MN6xRcoiBy7i1myZlBfPPzsfsE0CR6dg/iwxTLaGk
+	 wkjHWwH88BUoJdOOGp7mPKUtzM+oPns2JJNsVT0vfI3IzmS2NNutaqOTQzJW3vYXFfQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793464292;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=SCL+ExvyxTDNNteFin+VBl38Uc6A50cRx/B+LfB0KAg=;
+	b=Wvs8P0IvsRvkpQ+E/ggmjYKHo82fJAid5ZuqcWh01wSsvUqDKgSK+EvPmNQbXCv65Qtw
+	 anB5zuqNpRnILJ97RsBxXDNGxcFptdczUl2JUFZl8oZh11ETbNrJdB07hKSLW06CV9MV8
+	 pWOyHm4VwRr1XPMRoi/JfmT0VPNzMfg/rT5dtVJzTJaPRMLuIb2hSuCy0vTJ4l25yUsyr
+	 T89BMZXAMzpfrSUzY7t3veN9jAcwDxPZOX06bkoPxDTBMHScztpkJaM77dgqV284q/52y
+	 9OT5TZe42cqhNNI5JfuWes1AhBKpdsFpNDPFQkq1uRnyBUms5G0DoWzTH8ipV523v2Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kDQP3B5Z;
+	arc=none smtp.remote-ip=209.85.221.178
+Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id C25111F000C1;
-	Sat, 31 Oct 2026 15:54:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793462046;
-	bh=Ap1THHwprcvvPpcpEr48EzhOSj8jQxbUx0lCFpj9fSg=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=Rk4jeYmj2TqA8WYuJ7O5v4lxoitZ0tJRKLlflsDdldQxbttrnAbYX4NOk6wpm5t72
-	 Uqku29GoLGMiag4okPBCSWCrQLqAI/ri6DzLXR6UJsSOFvAGvBUZzE7W2ZHWx/bZ2e
-	 +o5GpEiSg2Nn9LlnHWooZdLZGqSXlfKOy7raB+KI3VvdSeR0ouhhmmh+4AM4K13zN6
-	 NfWewSdDpCllFCOE1bPna6h2LDkauC334y+9ZlVEFo/3p9xM2G6cDdnCQnzGRVnr0e
-	 4IcGVeojLxgKU+BXNqZPsoZ7pDRiiP3TSKMAlulaiElTyI7qCBnotUXaMwJn4jC7DM
-	 rB9d6eoJiOfHA==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 210B645F38;
-	Sat, 31 Oct 2026 15:54:05 +0000 (UTC)
-From: Joas Antonio dos Santos via B4 Relay <devnull+joasantonio108.gmail.com@kernel.org>
-Date: Sat, 31 Oct 2026 15:54:05 +0000
-Subject: [PATCH nf] netfilter: nft_set_rbtree: do not pair an expired start
- with another interval's end
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28DC606A31D
+	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 16:31:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F28DC606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kDQP3B5Z
+Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-5eadadf23e5so1324551e0c.2
+        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 09:31:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793464291; x=1794069091; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=SCL+ExvyxTDNNteFin+VBl38Uc6A50cRx/B+LfB0KAg=;
+        b=kDQP3B5ZdkHbVHc6cJ2piQiKyFLHblfXj7KSJqwC8YL8J4kky6PeLNg3dynltGF/Zs
+         FS4/iKuJZKgS8G0ZLy6KTasm84VTyVVn1p0tZ5yoC91ymmxTSBREnUhJpggntd7zRLZJ
+         GQ9XTfoXJQhHy5O1eSFd6/tu5nIVlvZ9UgUJbHxUG+xbFn/6hIuB2m/nfw7R8gsGoMvn
+         pF/N9+p1asVVP1vPdUU+osZPvseBPu2Gi41wQOtcZKfEzLyFRroXV5bXdFSUs3dGTYPp
+         R0so57YAFz/ULjy9IYIGWuPOlPjpw41WwX9QDuxE2D7wTmK2URUMXmw+/W0hYmq1Chlb
+         ms7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793464291; x=1794069091;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SCL+ExvyxTDNNteFin+VBl38Uc6A50cRx/B+LfB0KAg=;
+        b=KM8t+L5qRRB/PWb8QVGXt+fHBwjKsGCyCFlVvSWe8V3K/ZL41KEYp2J+3AOw/jkN8s
+         V1LgiM0/6LWUbbz4Ki6pELcQjGZCaZ5eXu6DlP6I+hx9Adn4aWf1KE8qVI+z+OqJjUrK
+         OF93nQfK+5nAktyS1Vc2aDJgpUh1M4tz+nMy80aEqcwiX3nstcpx23R6YlIj9K8rVUbU
+         qQd4l7o11CXUYtInoGLC1HoaoUU34tlOy2F+Z0vmncBTxuv8O2wBcwFynF8sYTr/s6oL
+         jCJNx4Suv+cApVkVSmCNFIQbjQVUUDo8c4IJRaW/p+54NG8i3xwZ6ESo4SD1mR9rFRvr
+         XFqA==
+X-Forwarded-Encrypted: i=1; AKwUvBwD2O4LPG+p+Xr7WWGo39Ks7+aHN3dTe8x3uWSdDSxy9MtMnpsqOxx27LKk3X8iRUXxUzEj7ug=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJs01L/7QIHPMCe9w1aaUJRqT56YfIMdUP0nZgXUA41KGEk4fLb
+	5/KZGJSkBzPECKDe8GNji5bNc4CrAeePWLfd9rLLSN1GaHEDas/VW3m8
+X-Gm-Gg: AYBFou3XHz3nWhj1g2LEKljltRAqRI+WeQhCp7u0r54Aat9LqfKfvu3Ckwu6ZVqfsDV
+	6tAF3UdTchOxeLoXoduc/yXJWAntA0p4qcObF5bIFyMRr501BIgjHwHAbZUqsDMQhWEsFQD64ZQ
+	BgRe9y9daCmwbMSx7wKAlonmTuzvZXW1Hed/HiK3RYWuSQv/qOPBXcSQlPwDC58tAPq1YIknrl/
+	0VwAyT0NOK1A6mjqJ3n31Y9cQOOPzkZ6md45p3Pw2eDBJMdb9RMgc3glr0uXCtLLGcN/JXUg3sU
+	kZG+oZdlzSXWC0+Yl++r9g4cdkFiXWJu1J0BjCoAsPBhAodTU8eoXtfDWEBQx1SKfTF5mgJxeam
+	xM/ZK2KZ2mbKOmDPoj3nI232ov3n4aGiwl3dnm3nPhgECMw6NUSkGwZtEVtV1qCfCpAUq0qa012
+	6w4ZHnB2aaBmIjj6SqbnxIwgzmkzr1j/NC9X6Vz+9A25+lPW4BoVo4qGvaHuciP4XuzyhQZbfDz
+	JBiEtzWTO+R9+vST3XE23gklPklL9HwEVInQJS9boAnJm8iXn2cBkd6gkPl1umVzRwJ2jSAT1t9
+	+95uzZHa+gF0jzopeK2se3vG8dIA+LmAf6XhpM47KVd4nHQwEDaN8swfmMzA+Fi76kSQgTxp07Q
+	w+fPdzc0d5FKtN6dyI0SmLUXnqZ1S/YVTwnJlDmJlVc1bsEgl4rQowXBPQf/Xz8vY8V7U
+X-Received: by 2002:a05:6102:3706:b0:7bb:c382:2ff4 with SMTP id ada2fe7eead31-7d0726ca2femr2413661137.20.1793464290850;
+        Sat, 31 Oct 2026 09:31:30 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-992ee41f108sm7037066241.7.2026.10.31.09.31.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 31 Oct 2026 09:31:29 -0700 (PDT)
+Date: Sat, 31 Oct 2026 12:31:29 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jingxuan Xie <jingxuanxie@deeproute.ai>, 
+ netdev@vger.kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ "David S . Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Clark Williams <clrkwllms@kernel.org>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ John Ogness <john.ogness@linutronix.de>, 
+ linux-kernel@vger.kernel.org, 
+ linux-rt-devel@lists.linux.dev
+Message-ID: <willemdebruijn.kernel.54d115047658@gmail.com>
+In-Reply-To: <20261030081704.251652-3-jingxuanxie@deeproute.ai>
+References: <20261030081704.251652-1-jingxuanxie@deeproute.ai>
+ <20261030081704.251652-3-jingxuanxie@deeproute.ai>
+Subject: Re: [RFC net v2 2/2] af_packet: retire TPACKET_V3 blocks without
+ waiting for copiers
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,172 +111,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261031-b4-nft-rbtree-gc-v1-1-51d087c187a6@gmail.com>
-X-B4-Tracking: v=1; b=H4sIABwP5moC/x3MPQqAMAxA4atIZgNtFUWvIg79SWuWKqmIIN7d4
- vgN7z1QSJgKzM0DQhcX3nOFbhvwm82JkEM1GGUGrTqNrsccTxR3ChEmjzpMfjTBWeMC1OwQinz
- /ywVyhPV9P2GHHG1mAAAA
-To: Pablo Neira Ayuso <pablo@netfilter.org>, 
- Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Joas Antonio dos Santos <joasantonio108@gmail.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793462044; l=6188;
- i=joasantonio108@gmail.com; s=20261031; h=from:subject:message-id;
- bh=TXKOw0AxzyY7cMw4G7eFALzoeAvz3Y6zIv9RayVZTE4=;
- b=/rn2K5I4dav/QPkX0MaECT7axMWE8jro/pg2Q2KvcLdtZwbnQSGzDkOufsj8iPvvWTppNgxGE
- dk97FoPqZCiC6VN2jy53gJEmH+KX3tZjDswEu4TfzD/oZHO8eBxe3Yt
-X-Developer-Key: i=joasantonio108@gmail.com; a=ed25519;
- pk=ZxAznJT/FcPPdzLrDDFJQm4LLjjHVGBBqDSG3TXS23w=
-X-Endpoint-Received: by B4 Relay for joasantonio108@gmail.com/20261031 with
- auth_id=1371
-X-Original-From: Joas Antonio dos Santos <joasantonio108@gmail.com>
-Reply-To: joasantonio108@gmail.com
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
 
-From: Joas Antonio dos Santos <joasantonio108@gmail.com>
+Jingxuan Xie wrote:
+> From: jingxuanxie <jingxuanxie@deeproute.ai>
+> 
+> TPACKET_V3 waits for a ring-wide read lock while holding the receive
+> queue lock before retiring a block. On PREEMPT_RT a preempted copier
+> can delay another packet path or the retirement timer until it runs
+> again. This was investigated after an approximately 355 ms retirement
+> wait in a PREEMPT_RT deployment.
+> 
+> Keep copy accounting in each block's existing private pgv descriptor.
+> Seal a full or expired block and advance to the next block without
+> waiting. Retain the original descriptor across copying and release its
+> copy reference after all packet data and headers have been written.
+> Publish sealed blocks in order when an acquire read observes no copies.
+> 
+> Publication runs under the existing receive queue lock in packet
+> allocation and timer paths. Completion does not reacquire that lock.
+> No worker or publication budget is needed. When traffic stops, completed
+> blocks may remain unpublished until the next timer callback; this does
+> not promise a hard capture delivery deadline. Ring exhaustion can still
+> drop capture copies.
+> 
+> Use each retired block's saved last packet and its own cache-flush range,
+> and exclude sealed blocks from allocation and fanout space checks. Poll
+> uses the publication cursor instead of the producer cursor. Widen the
+> producer index to cover the same block count as the publication index.
+> Allow an exactly fitting record so a maximum-size first record cannot
+> cause an empty block to be reopened instead of advancing publication.
+> 
+> Reproduction uses a QEMU ARM64 SMP PREEMPT_RT kernel with validation-only
+> instrumentation delaying an outgoing copier after frame reservation.
+> The instrumentation is excluded from these patches.
+> 
+> Fixes: 632ca50f2cbd ("af_packet: TPACKET_V3: replace busy-wait loop")
+> Assisted-by: LLM
+> Signed-off-by: Jingxuan Xie <jingxuanxie@deeproute.ai>
+> ---
+>  net/packet/af_packet.c | 140 ++++++++++++++++++++---------------------
+>  net/packet/internal.h  |   9 ++-
+>  2 files changed, 76 insertions(+), 73 deletions(-)
 
-Garbage collection of an expired interval start element also removes its
-end element. Both the insertion path, nft_rbtree_gc_elem(), and the
-commit path, nft_rbtree_gc_scan(), find that end element by its position
-in the tree, and both can pick the end element of a different, live
-interval:
+This is still a very large change across many chunks, for a fairly
+small well defined problem.
 
-- nft_rbtree_gc_elem() walks towards higher keys and skips end elements
-  that are not active in both generations. If the end element of the
-  expired interval is being deleted in the same transaction, the walk
-  skips it, passes the start element of the next interval and takes that
-  interval's end element instead.
+Let's try to a find a smaller solution to this problem.
 
-- nft_rbtree_gc_scan() remembers the last end element it visited in
-  rbe_end, but does not clear it when it visits a live start element. An
-  expired start element without an end element (a start-only element, or
-  an interval whose end element was already removed) then takes the end
-  element of the live interval above it.
+For instance, switch to a non-blocking write_trylock for block
+retirement. If it fails, it will retry in 8ms.
 
-In both cases the live interval [S, E) loses E: the set no longer holds
-the interval that userspace added, and deleting [S, E) later fails with
-ENOENT.
+Or, if spillover to the next block is really needed (explain why),
+at least simplify. Do not allow running N blocks ahead.
 
-In the insertion path, stop the walk at the first element that is active
-in the current generation. Elements added by this transaction are still
-skipped, as intended by commit 60c0c230c6f0 ("netfilter: nft_set_rbtree:
-skip end interval element from gc"). If that element is a start element,
-the expired interval has no end element. If it is an end element that
-this transaction is removing, leave it to the transaction. In the commit
-path, clear rbe_end when a live start element is visited.
-
-Reproduced on current mainline under QEMU (arm64, KASAN), from an
-unprivileged user in a new user and network namespace:
-
-- insertion path: add [10,20) with a 50ms timeout and [30,40), wait,
-  then in one batch delete the end element 20 and add [12,13).
-  Before: a GET for 45 finds an element, the end element 40 is gone and
-  deleting [30,40) fails with ENOENT. After: 45 is not found, 40 is
-  present and the delete succeeds.
-
-- commit path: add [30,40) and a start-only element 10 with a 50ms
-  timeout to a set with a 100ms gc interval, wait, then add [200,201),
-  whose insertion walk stops at the highest element, so only the
-  commit-time scan reaches 10. Before: the end element 40 is gone and
-  deleting [30,40) fails with ENOENT. After: both work.
-
-Normal expiry, and a new interval whose end element shares the key of an
-expired start element (the case handled by 60c0c230c6f0), behave the same
-before and after. About 39000 random batches on interval sets with
-timeouts, with and without slab/page allocation fault injection, showed
-no KASAN, lockdep or WARN reports with the patch applied.
-
-The insertion path issue was found with a small nfnetlink fuzzer. Both
-paths had been pointed out earlier by the netdev AI review of commit
-86b6471e690c ("netfilter: nft_set_rbtree: skip transaction elements
-during GC"), see the Link below.
-
-Fixes: f718863aca46 ("netfilter: nft_set_rbtree: fix overlap expiration walk")
-Fixes: 8d8540c4f5e0 ("netfilter: nft_set_rbtree: add timeout support")
-Link: https://lore.kernel.org/all/179063970372.3145.17414936987144600093@kernel.org/
-Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
----
-Tool-use note: the fuzzer, the directed tests and the analysis were
-prepared with help from an LLM-based assistant; I reviewed the change
-and built and ran all tests myself. Test harness available on request.
-
-This is a resend through the kernel.org web endpoint: my earlier
-submission of this patch was blocked by my mail provider and never
-reached the lists.
----
- net/netfilter/nft_set_rbtree.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
-
-diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-index fbe1750f1..086823067 100644
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -215,17 +215,25 @@ nft_rbtree_gc_elem(const struct nft_set *__set, struct nft_rbtree *priv,
- 	struct nft_set *set = (struct nft_set *)__set;
- 	struct rb_node *prev = rb_prev(&rbe->node);
- 	struct net *net = read_pnet(&set->net);
-+	u8 cur_genmask = nft_genmask_cur(net);
- 	struct nft_rbtree_elem *rbe_prev;
- 
- 	/* search for end interval coming before this element.
- 	 * end intervals don't carry a timeout extension, they
- 	 * are coupled with the interval start element.
-+	 *
-+	 * Skip elements added in this transaction. The first element
-+	 * that is active in the current generation is either the end
-+	 * element of this interval or the start element of another
-+	 * interval, in which case this interval has no end element.
- 	 */
- 	while (prev) {
- 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
--		if (nft_rbtree_interval_end(rbe_prev) &&
--		    nft_set_elem_active(&rbe_prev->ext, NFT_GENMASK_ANY))
-+		if (nft_set_elem_active(&rbe_prev->ext, cur_genmask)) {
-+			if (!nft_rbtree_interval_end(rbe_prev))
-+				prev = NULL;
- 			break;
-+		}
- 
- 		prev = rb_prev(prev);
- 	}
-@@ -233,7 +241,11 @@ nft_rbtree_gc_elem(const struct nft_set *__set, struct nft_rbtree *priv,
- 	rbe_prev = NULL;
- 	if (prev) {
- 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
--		nft_rbtree_gc_elem_move(net, set, priv, rbe_prev);
-+		/* end element is being removed by this transaction */
-+		if (nft_set_elem_active(&rbe_prev->ext, NFT_GENMASK_ANY))
-+			nft_rbtree_gc_elem_move(net, set, priv, rbe_prev);
-+		else
-+			rbe_prev = NULL;
- 	}
- 
- 	nft_rbtree_gc_elem_move(net, set, priv, rbe);
-@@ -911,8 +923,11 @@ static void nft_rbtree_gc_scan(struct nft_set *set)
- 			rbe_end = rbe;
- 			continue;
- 		}
--		if (!__nft_set_elem_expired(&rbe->ext, tstamp))
-+		if (!__nft_set_elem_expired(&rbe->ext, tstamp)) {
-+			/* rbe_end belongs to this live interval */
-+			rbe_end = NULL;
- 			continue;
-+		}
- 
- 		/* end element needs to be removed first, it has
- 		 * no timeout extension.
-
----
-base-commit: c339f4010dea8b0d754f84ace70cd1b089878ef8
-change-id: 20261031-b4-nft-rbtree-gc-1d9c72dba2bd
-
-Best regards,
--- 
-Joas Antonio dos Santos <joasantonio108@gmail.com>
-
-
+There are also bugs introduced in this patch, which is to be expected
+given its complexity. Instead of focusing on those, let's try to move
+to a much simpler fix.
