@@ -1,99 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793473981;
-	b=ozQ38U4YFjebsD0YQdGKFOrH1pkTiqtjZ8aWD4y4uxv5Yo3lzZo8m93OCDBq/1F9xmaY
-	 XESBd5M1vIdLWSJ7FQmrF5dpr52kX3a+Dv9WP4aLGugydoQbHrp5oYPZoncFerfzItack
-	 SBPm9S3VJksT/AkycL1PdcJMhpFck4/ofhtxMYP1tnasgp/PZmw18dy5UYFYmJyhVV8kF
-	 5avDb+uQ5LQodkMs9+SyDPHgj1DDuNXjGpMu0oWtyIJh8Dkbi+60NLkx+DFWW3tVacdDt
-	 FS3Aoxu4wemywuQYkd8fZLtFmsrDtn5tgPu7BfTN6MwLpAXKLGh3sKTIQJg0fFrE04A==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793473981;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=axLc4hThd98toFERnEK8/2xtxUTHU0DBCagvAmEnenE=;
-	b=0/fC5N2U0M+OIMubvwZKN3LTuB3+6mEJPwbRXNpBz3HMEhSofnjiKhxBnoNET6iq+Gcx
-	 kZTmboX+0G9OKjCieq3ll6AfWWxi3sRaUSJrTyIQ7l+WS02A/UomXQQXIdCdHxdeFWm74
-	 9+zEmVMmthPBzTpT0lE5sV5yaeI5ZKs+DXxNPGLl2RBHmN4+08RIOypFJTgV1BtAQ+fUu
-	 cXuSC5Lf8zOjPaIM1eNvV1vjtkvJXLI0byCO5OXhW3/DkVl5AcKMo8oiFzGD1DQzMFSGg
-	 Jyirt+hXtwPQQnY2tgbvDLNdaxxmJH1ivRq8VfYfEZw6N0jEz/x78vAZGxpnPX1ajxg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nRALHhvK;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793474604;
+	b=L/wyNEtTBq1ngSoC+e3YDsQdxZUJSdhV4lzRQeWkWMBxbfH4le6fKh9pS3LsztEXiYw6
+	 H89wA7nkTa4o8nZpu68dSUQJO6OXxPMXwOkytpsykl48kJ0GTt+CKpFZHTUHOA87i0+KL
+	 8vhw5sA6n11VPEUZOX3F5E89mtrX/Gi+/tZLLF9aXry83u6ny5OEj1ZpfO2VfIQBf9n4x
+	 W2z/loMOW7z/bUCdRc5ijpOw6UVKn3WGg8veVVRl1iiDdYx3Moxfh6vD1hlZlsFEhbN2s
+	 VDgjDXy9qVqhjGpjYI/My+z4aEpOkJfjpr97e98DCmXV86W/6GCLmm5LKv4a895Fd7A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793474604;
+	h=Received:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
+	 User-Agent:MIME-Version;
+	bh=wiIzSjn+mtGawNfvo8XnzlYZC4Y8Z4jY/HqNPQcZhLE=;
+	b=V5oIZKB0OhxkopMBOdBfcxJ+45Q8PIfM87jkcslXvr/Ro+F3wSY7NDnu9zKmxhwZWPVH
+	 6TfeRskf7MhnNjcitmMwhJNU90u4qamEAtAUkQqhVjaOz5/y15BA+jgv+/cL7OTV9FSWS
+	 8kR+f5QVIePMDwWmRKLuBZtA6CS9HTYljMxso2hagB5IIDMk8EIYaPSSFr2cH6ba4bHl9
+	 1vZqkZBUVZV1Ts3GIDWXPaJEuUPIpJ45smRsdef57hzEbu1lUDegF+QgWlND0h77XmAKk
+	 iRY2tkt8UmATrdGszSXFgXFje3rjSRJTBIDBArwTm/YDwkPwIntWIS438zz41XAPMNA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YczLZU9N;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7897606A31A
-	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 19:13:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7897606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CD2606A31A;
+	Sat, 31 Oct 2026 19:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nRALHhvK
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso4567a12.1
-        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 12:13:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793473979; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Y3O+1pYq3675gZTR1R0El1n7BYhMRvPtVH9VaJc/KF1i6eaz+GA/fMqUMqgrs0SF2E
-         u/i+bzJ8tmrSM6meW87RGQoctfgg8WLpcYTF6Z74ZDJa6i0qGd0QK4jiqg9qRkJ/le0M
-         1ylrNgIAjHtFNAcVVjHZXps0lpythzs4hhKFpPITLHfgUS5g2XwwTNWdHFdYz1BrSP4w
-         wdT1HM3wNAKxDZguzioaH4ZSBIKBvZdyq0kbCJPZZbjPaSSu00HrNDiNnc26hxeBy4bg
-         /guB4KTedOvELnZJPShJpfLL5LQbZXzbas8sS6yG+tRz6tBZegidtgOrXTr2qF1u4e4x
-         GQ8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=axLc4hThd98toFERnEK8/2xtxUTHU0DBCagvAmEnenE=;
-        fh=URlmdDKXmNqZ2D/xGhcjq6DmcsWA27sJiewCLXIYGJ8=;
-        b=AUBqjnFZ3dzXWOoAyVVuAcpwuLx1Qu/lYmc2oxXYFMiEqFwP8WJsE+MZOGY8xNDRWo
-         GMBSxk7mO4R6DrTySjzGGPFeSdTLEmnselst/Xy2Na3fGQ/h37sDhRyepRueO4xBaUxc
-         QcR2iMvzRPu7x8mLUfgl0udFR+cYW2Mg9Ww8ALsqo4OTUjr//xQ781eco38oXELuiYJW
-         KFCV4RydTdVcYmZT/r+bueI54Cro3is2k3k73zdPv2wqW6iewTuN6no/DHeQzEigyFD9
-         OPt6bjNpQi+NnFcw8RcjmmVYfnRoSI+SxiFL9pdQov0BEFUoudY1eZjyvFAaM1ZNG1Y9
-         pZUQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793473979; x=1794078779; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=axLc4hThd98toFERnEK8/2xtxUTHU0DBCagvAmEnenE=;
-        b=nRALHhvK5EhJYbHjlXVUttUWdDKNNysqUsDmIn3jP7+HkDw5kax2jrebrX2CGf9+3W
-         jrPEhE8AZ9XDYIQWbQBJP/4T/GTY68x0eZCXwBHkuhHlYTZ/KJNJtxCoYbgVASFc1QBa
-         dLJZJxRbXAsl9kKL793uRVMGpWSpY/FQmSyWRKq2+duI8cDs5caa9p7+pb7CGE62dYvN
-         ByAnx9oWxmMz8AHl9tzzkAUjRQsA1mF/wAKWmNYsEe8jfigwNlUuYJ5LtE4Ue/k+2uuu
-         8jYCAWoT5gVT37C5JIoBynn6XDkv1yTzZ/1S+ULM9Qbb2Y8xOqHxfT2D9gKIjdKee8N2
-         E+2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793473979; x=1794078779;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=axLc4hThd98toFERnEK8/2xtxUTHU0DBCagvAmEnenE=;
-        b=MA6mT9JkJ0NpjJUDgqEynu9q4ZNSgeJCTxcg3TyvV+3RH/vQwobp7HxE4fA7Rp0Iqy
-         lDZMOg++sLqHDHmutnwfxf6qXvDFIm8ZXCBwii3F9aR8bxOwDXOkbyYdW5BjHcwYt/BS
-         1k0G3gGRvP/RCen+4Ajx+y1CJwNQTXfE8cMZIYCALd5qnpqIzwPXoVpsntxeP4aPD+0l
-         MaYBkjSO/u0f7TxhcDGS7dNG6i0BJFJJhwXgmHlfu2ycoPoyL2GnVRg7iH9Piz3o71pW
-         xLnHfXQx7l99QXfcLSbEbLrK9g1IRCwK5KMKTuLv/f3pjUmihLAx4pCNOrfcmB1rAXXW
-         jpMg==
-X-Gm-Message-State: AFq9FYL4gurrvnKHZbojqox6AVI8+R9jlIij6p2F6Z/bn5wDjWSMjItE
-	MnJ9JHQPWt/JHS1JrRT64KPw81Pzpa8d1iNp+x4q5d5cvlMGwgeY2pzb9P0aM3+HLfJhD+uNDij
-	P9ssewlnlUZBSPRd0J/lsQUTR6idkzC8gBa7fso2j
-X-Gm-Gg: AYBFou3kIuCnodvDiTDLjFu0RUWJSVhd5Bwl3ZJYpHk6T/honItnnWp2Y1Ydevap/sC
-	xtzLEVYMdiHZHQOKC8eYaY1i38mRE0T298TCFTu3doWkjQm+FT06Vgoip09CvVMKDqJOKvvo6de
-	ZxbavBUGYehiYLASPIwvf30tdHE4HPCoujWborUdpHE3D1657zgDgSIUjflcwxaFNObegM1l0af
-	rJxo8k+gcnr0/fhqbDSWS1YqpNjiRY1Pc6L2szKr1o88UpEZy0gnEYxT3eAIPg4SnfnRQ+gn+vc
-	KYNXui0B1XGIUS8IRRJ7tk+QlVtY1GL2UKCFNU+0E1F1Ux7O5odssu0cKz0jMQbELU35wHwUDsJ
-	2pDShqI9hxZjDVasQtwygtLbkEgpJMwDXdSt9jNo=
-X-Received: by 2002:a05:6402:3247:20b0:6af:afce:184f with SMTP id
- 4fb4d7f45d1cf-6b4b10d785amr228016a12.3.1793473978761; Sat, 31 Oct 2026
- 12:12:58 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YczLZU9N
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 216DD1F000C1;
+	Sat, 31 Oct 2026 19:23:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793474603;
+	bh=wiIzSjn+mtGawNfvo8XnzlYZC4Y8Z4jY/HqNPQcZhLE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=YczLZU9NpkjU9wmqof2jos1q9/iRyf8vM+JLnDIj993oHoTpDSuv2SIj4Tc1/UFAZ
+	 ITiFlieiA9eaAF/zw/PpxBHhoUW3SkEO0pjoUhRHVpxKIwE0C/dgqwxM1PqIcrDTJf
+	 Jxf6YMZW2xYYQAo7B2WXCnCyYLxODmzrrMtQoC5ajUdicAYuIdXuUXShpBWnvAT7pq
+	 u7JxXTWMld7l63bJOfhVeSQT2a1N3QgYgvHaO5L04t831wyEIuPRX0Uw9JgbgRGKq/
+	 ntzDE7TSDqSsUFDw/iG5vszYGQ6B2uVr+g3vTv1MK+Jc1+JfaTKXKIjzdao9ju8csi
+	 WT5Bl4r2KeHYg==
+Message-ID: <24b80e47c623063ee9d717ff051a746b9d226a86.camel@kernel.org>
+Subject: Re: [PATCH] net/rds: Do not unpin a page after a failed atomic pin
+From: Allison Henderson <achender@kernel.org>
+To: Kyle Zeng <kylebot@openai.com>, rds-devel@oss.oracle.com
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, outbounddisclosures@openai.com
+Date: Sat, 31 Oct 2026 12:23:21 -0700
+In-Reply-To: <20261030042110.73571-1-kylebot@openai.com>
+References: <20261030042110.73571-1-kylebot@openai.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,38 +61,85 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261031162804.1893-1-maciek@machnikowski.net>
-In-Reply-To: <20261031162804.1893-1-maciek@machnikowski.net>
-From: Mina Almasry <almasrymina@google.com>
-Date: Sat, 31 Oct 2026 12:12:46 -0700
-X-Gm-Features: AclHuK-OpPYwSTlSlojNE59RkkicDzbzvgwnUow5CCaQlqWbb0Qn4Ecbm1sP6rk
-Message-ID: <CAHS8izNQzFyDs0mJJP770xWYXppEQHGKN8LJ-HrfD-f3Q_T5bA@mail.gmail.com>
-Subject: Re: [PATCH v11 net-next 0/3] Implement PTP support in netdevsim
-To: Maciek Machnikowski <maciek@machnikowski.net>
-Cc: netdev@vger.kernel.org, kuba@kernel.org, richardcochran@gmail.com, 
-	milena.olech@intel.com, willemdebruijn.kernel@gmail.com, andrew@lunn.ch, 
-	vadim.fedorenko@linux.dev, horms@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Oct 31, 2026 at 9:56=E2=80=AFAM Maciek Machnikowski
-<maciek@machnikowski.net> wrote:
->
-> This patchset adds support to the PTP HW timestamping emulation in the
-> netdevsim. It uses existing binding between netdevsim and ptp_mock
-> driver to generate transmit and receive timestamps.
->
-> It also adds the selftest to verify the hw timestamping functionality
-> running over netdevsim.
->
+On Thu, 2026-10-29 at 21:21 -0700, Kyle Zeng wrote:
+> rds_cmsg_atomic() assumes that a non-NULL output from rds_pin_pages()
+> represents a pin that it owns. However, pin_user_pages_fast() can roll
+> back a fast-GUP pin after racing fork() and then fail in the slow path,
+> for example after a concurrent mprotect(PROT_NONE). The output slot can
+> still contain the already-unpinned page.
+>=20
+> The common error path calls unpin_user_page() on that stale pointer.
+> This can consume another subsystem's pin and allow the page to be
+> freed while it is still in use.
+>=20
+> Clear page when rds_pin_pages() does not return one. The error path
+> continues to release the page on errors after a successful pin, and
+> successful requests retain their existing ownership and behavior. All
+> four RDS atomic ancillary operations share this path.
+>=20
+> Signed-off-by: Kyle Zeng <kylebot@openai.com>
 
-Net-next is closed, so please repost on Nov 9th when it re-opens.
+Hi Kyle,
 
-But, more importantly, I'm surprised this relatively small patch doing
-something (I think) unobjectionable is on v11. What are you struggling
-with? I looked at the diff log and it seems to address only
-micro-bugs. What can I help with to accelerate this?
+Thanks for the patch, the fix itself looks good to me.  Some things we need
+add to move you forward:  First, your subject line specify which branch the
+patch is applied to.  Since this is a fix for code already in mainline, we=
+=C2=A0
+should target the net tree.  So rebase the patch on the latest net branch a=
+nd
+format the subject line like this:
 
---=20
-Thanks,
-Mina
+  [PATCH net v2] net/rds: Do not unpin a page after a failed atomic pin
+
+Also, since this patch is a bug fix, it should cc=C2=A0stable@vger.kernel.o=
+rg and
+carry a fixes tag that identifies which commit the patch is fixing.  For th=
+is
+fix, I think we want 15133f6e67d8:
+
+  Fixes: 15133f6e67d8 ("RDS: Implement atomic operations")
+
+Lastly, remember to add a short change log below the --- line.  Just someth=
+ing
+brief like this:
+
+  v2: Target net, add Fixes and Cc stable tags
+
+
+> ---
+> I have a reproducer for this issue and can share via DM
+
+Thanks, could you post it on-list with the v2?  Either below the --- line o=
+r as
+a reply.  That way others can see and verify the fix too.
+
+Thank you!
+Allison
+
+>=20
+>  net/rds/rdma.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/net/rds/rdma.c b/net/rds/rdma.c
+> index 078090d292fa..71b57abb96c4 100644
+> --- a/net/rds/rdma.c
+> +++ b/net/rds/rdma.c
+> @@ -957,8 +957,11 @@ int rds_cmsg_atomic(struct rds_sock *rs, struct rds_=
+message *rm,
+>  	}
+> =20
+>  	ret =3D rds_pin_pages(args->local_addr, 1, &page, 1);
+> -	if (ret !=3D 1)
+> +	if (ret !=3D 1) {
+> +		/* A failed pin can leave a stale page pointer. */
+> +		page =3D NULL;
+>  		goto err;
+> +	}
+>  	ret =3D 0;
+> =20
+>  	sg_set_page(rm->atomic.op_sg, page, 8, offset_in_page(args->local_addr)=
+);
+>=20
+> base-commit: d89e1d186ec9271bf78e62771779e9fc03bf0fc3
+
