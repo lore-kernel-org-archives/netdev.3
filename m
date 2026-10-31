@@ -1,47 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.123
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793472616;
-	b=4k2glpix+wNWXSmw+7x+VPvpOnaZ0tkTIV3cKpSnNlrYnh/E+AT9fdEZWN+2p2nMY4KQ
-	 qyFgMYV/wLZsItgAjgP+4XyttK4f/OLj1kRvZQig0Iwoc9GQJuGAwOq7I7AI0Sr0Ukwv0
-	 kM4/6lqgCzrNpWfsCQOoUD9PwvlI36Z6XOovA5ek5wqjAseZz/tE016mxKdgWx+Cmyd0+
-	 bAZdad7Eh+YR6THitGlxRs/V6B7VuFRqESIrCxGbWLcjz6pcK8032JciUEQN9A4fQxT+E
-	 1IPxmYNCPHwrYFAar7VP5PCFpDO6HSAm+GXlivLEqV9UPceGEVurdbu6O0InfOcHkJg==
+	t=1793473121;
+	b=KX6Yd65/xdxPXgRdS9qboYuaHCv5w41/Ay5hrAAis+g+tnH7GT9PokRsbR8a52QI11KH
+	 FqFaJIa1e6vlcaQxm3e2aCktGsxq4/6ap+kvgiAdIwqGt98hCrxuyqO9ySt9FnSu4lRPi
+	 cg/HriXyVzuKZ5dreCS4OLflwCyOjC/NlvMIfb/TWb04etxzWX9inR0kKSonw1rA2MH1e
+	 nmvG6W9Hpib5H4PLD4/jVAo3cbEBywPYy15p3kFLJ3ftVrJvhTbCQBOLTc5v7rPZsCUep
+	 YXJKf3dMyeeg/lJOxW2Q9zJXaWIwXgM2Anz4IsSTM8nyvlZwBDr87HapMy2H3FD/IFg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793472616;
-	h=DMARC-Filter:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=mxsr/9eM9IT7x56XlFJqaM4VoKdjWeJUE5kFLUzsU1c=;
-	b=R73xDyP2CsIvqhuKtEGvZHhoh04Ukwp45pxpkyLw4TGZabwiuH19BdxdzTFnkqIyMdh8
-	 d+CTDMqw06Awyx2WPPviBRm2I+p6X7i6iijbRmfatRqljQTd/intgZ7wWSI/dkC/SGxi2
-	 b6YpcKCDs/O2BUasz6n0r/6BBjfFHulclPMWVkFIzP0FDUsur0jUss7ofKvADksXZ1QsH
-	 SnScU4BLZMCFY3akQ2u1G9f8fY7Hhpfijz+Fnoemu3ouLRs48Nkli5bAjcWdAz6onuQWN
-	 lcnfdU6JZ862tCR7EWIki2OHhVnWu75ScNn89KQgUltNFpgPufCC8Kz3SS9GUqgK0Xg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793473121;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=WTXPO9m21ChhSJhJsMR1jm9N3k/S9PtVs0GDOD3AsIY=;
+	b=PIVa0jQDfGqLy6bJHMm38cuA5qxI9+sUr1yVADAg1TFM+Bxi0OxvFQB/qzGulR9ttfoI
+	 16jbqj6wRvP40nm9XuZA8NEFPk97bIm+U2XQCMNYUWfAJkkDHYYFpKvmmwirltVlJA6DJ
+	 gdB+eLexnRjWe8eY8CZyXwqeX+Voamd8BbJfA3ElNRanyGx/P6GMb6XI/THGeeinHYWXL
+	 6t/3zSfIMHh6AC27TkJrcBZEIRhgjlVg07kWPY7r1YMdUsGUIMPHWjEPJYzDS14IQtq5s
+	 I79Yq5u/xBeIdA+JNi7FyskDQH7/N3CkXDBhEgEZvCLLel8C2QCGD65sEU8VvvhGJtQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=strlen.de;
-	spf=pass smtp.mailfrom=strlen.de;
-	arc=none smtp.remote-ip=91.216.245.30
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	arc=none smtp.remote-ip=95.215.58.123
+Received: from mta1.migadu.com (out-123.mta1.migadu.com [95.215.58.123])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B287606A31C;
-	Sat, 31 Oct 2026 18:50:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5B287606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id DE3DA60796; Sat, 31 Oct 2026 19:50:12 +0100 (CET)
-Date: Sat, 31 Oct 2026 19:50:12 +0100
-From: Florian Westphal <fw@strlen.de>
-To: Kyle Zeng <kylebot@openai.com>
-Cc: netfilter-devel@vger.kernel.org,
-	Pablo Neira Ayuso <pablo@netfilter.org>, coreteam@netfilter.org,
-	bridge@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, outbounddisclosures@openai.com
-Subject: Re: [PATCH] netfilter: br_netfilter: reject unsafe neighbour devices
- for DNAT
-Message-ID: <auY4ZAZWQfQtX3oe@strlen.de>
-References: <20261030042155.73844-1-kylebot@openai.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53AFB606A31F
+	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 18:58:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53AFB606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=nhn60L6iDcU1tEzuh3dkIqEoHLNq1R18VibAiPoFZc4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793473113; v=1; x=1794077913;
+ b=FgLPquBtbge3POVC+2Dr8m+4QENK0dVztMZkqUikUBrZvJtE6H91VKKswJxIsBJL67pY6Jz9
+ 6g8qzsLTfA9LttvrY33jPtsEM+SjPu1YN01qWSJr0tzgcny6phbIpfbk016/wYEPf6rRAq9FOJQ
+ UmOda5mSHbWZxP2yJv5ZIimA=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id d88e81d4557f9af7;
+	Sat, 31 Oct 2026 18:58:33 +0000
+X-Mizu-Trace-ID: d88e81d4557f9af7
+X-Migadu-Flow: FLOW_OUT
+Date: Sat, 31 Oct 2026 11:58:31 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowangio@gmail.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Meta kernel team <kernel-team@meta.com>, cgroups@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] vhost_task: do the return-to-userspace work between work
+ items
+Message-ID: <auY57Gu5NBtLWKoY@linux.dev>
+References: <20261031181004.4193627-1-shakeel.butt@linux.dev>
+ <20261031141506-mutt-send-email-mst@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,34 +66,54 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261030042155.73844-1-kylebot@openai.com>
+In-Reply-To: <20261031141506-mutt-send-email-mst@kernel.org>
 
-Kyle Zeng <kylebot@openai.com> wrote:
-> The IPv4 and IPv6 bridge prerouting callbacks classify DNAT traffic using
-> the logical input device saved in skb->dev. The physical input port can
-> have a different bridge master when prerouting resumes, for example after
-> an NFQUEUE verdict. Netfilter reassembly can also combine the first
-> fragment's bridge information with a different fragment's input device.
+On Sat, Oct 31, 2026 at 02:15:40PM -0400, Michael S. Tsirkin wrote:
+> On Sat, Oct 31, 2026 at 11:10:04AM -0700, Shakeel Butt wrote:
+> > A vhost task is a user worker: a thread of a user process that runs only
+> > kernel code. It never returns to userspace, so it never runs the work
+> > that is queued for the way back. resume_user_mode_work() does that work
+> > when TIF_NOTIFY_RESUME is set. For a vhost task this means:
+> > 
+> > - memory.high is handled at the wrong time. When a charge goes over
+> >   memory.high, the task counts the pages, and should reclaim, and sleep
+> >   if needed, on its way back to userspace. A vhost task only reclaims
+> >   when more than a batch of pages has built up and the charge can block.
+> >   Then it reclaims and sleeps in the middle of the charge, maybe while
+> >   it holds a lock. vhost-scsi, for example, can fault in guest memory
+> >   while it holds vq->mutex. If the charges can't block, nothing is done
+> >   at all, and the count keeps growing.
+> > 
+> > - Block cgroup throttling never runs. blkcg_schedule_throttle() asks for
+> >   it, but only resume_user_mode_work() acts on it.
+> > 
+> > - Task work queued with TWA_RESUME, like a deferred fput() or a NUMA
+> >   balancing scan, waits until the task gets a signal or exits.
+> > 
+> > io_uring workers had the same problem, and io_run_task_work() calls
+> > resume_user_mode_work() for them. Do the same in vhost_task_fn(): if
+> > TIF_NOTIFY_RESUME is set, call resume_user_mode_work() at the top of the
+> > loop. That is between work items, no locks are held there, and the task
+> > is running. Passing a NULL regs is fine, io_uring and KVM already do it.
+> > 
+> > This covers every user of vhost_task_create(): the vhost workers and
+> > KVM's NX huge page recovery thread.
+> > 
+> > Tested in a VM with a version of tools/virtio/vhost_net_test that puts
+> > each RX buffer on a new page, so the vhost worker faults in, and
+> > charges, 256M while its cgroup has memory.high=64M. Before, all 285
+> > calls to __mem_cgroup_handle_over_high() came from try_charge_memcg(),
+> > inside handle_rx() with vq->mutex held. After, all 589 came from
+> > vhost_task_fn(). memory.peak stayed at 64M, and the run took about the
+> > same time (0.66s before, 0.67s after). A lockdep kernel showed no
+> > warnings.
+> > 
+> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 > 
-> br_nf_pre_routing_finish_bridge() replaces skb->dev with the port's
-> current bridge master, but looks up the neighbour using the existing
-> route. This can put an skb with skb->dev pointing to bridge B on an
-> unresolved neighbour of bridge A. Deleting B and resolving the neighbour
-> on A then causes a use-after-free in __dev_queue_xmit().
+> Is this different from:
 > 
-> Before calling the neighbour output method, check that the neighbour
-> keeps skb->dev alive. A neighbour holds its device, and a VLAN device
-> also holds its real device, so allow a VLAN whose real device is the
-> bridge. Release the neighbour and drop the skb on a mismatch.
-> 
-> Doing this in the shared continuation covers both protocol families,
-> including a queue in the remaining bridge prerouting hooks. Leave the
-> cached-header path unchanged since it does not enqueue the skb.
-> 
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
-> ---
-> I have a reproducer for this issue and can share via DM
+> Message-ID: <AS8P251MB00012469E6ECBEA2B7D87BB0C86C2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
 
-Please do.  I'd like to understand if that needs to be addressed
-from nfqueue side instead, or if we can avoid neigh layer to
-begin with.
+Oh wow, it is same but somewhat for different reasons. I am fine that patch, I
+will comment on it.
+
