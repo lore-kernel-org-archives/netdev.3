@@ -1,82 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=43.163.128.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.216.245.30
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793471810;
-	b=jPAe8KQ4QKOfkoqlVB1qwXsj6DSy4QCqTyP4monEuTUDPl9LHo73l55sScJKtoTnOPIr
-	 KrweX0rBQw1893Zr1wRCvFnqR1MmtAwds57FBAUjrzDwVh/NwRYztj+k9DG/bGw/O7c+L
-	 8HB8cYqaMPmeyqoWWqTYzzHcV71e1ha5WMVFmwN8v0ipbYgXflgSlFdN/l1nkohbBCdR1
-	 SujpOfDmtmFifR+1AuZCWWQhGhPDC4X5rA1CcfKEZHFiyFVsODy4qjE/VxXaExfGhX9Qa
-	 IOJalSdjJ5u7qowZGrUMrazA8OGC1AVO5s2Rp3kWheuTM/bWlAJAgz5fBCv13zALDDg==
+	t=1793472616;
+	b=4k2glpix+wNWXSmw+7x+VPvpOnaZ0tkTIV3cKpSnNlrYnh/E+AT9fdEZWN+2p2nMY4KQ
+	 qyFgMYV/wLZsItgAjgP+4XyttK4f/OLj1kRvZQig0Iwoc9GQJuGAwOq7I7AI0Sr0Ukwv0
+	 kM4/6lqgCzrNpWfsCQOoUD9PwvlI36Z6XOovA5ek5wqjAseZz/tE016mxKdgWx+Cmyd0+
+	 bAZdad7Eh+YR6THitGlxRs/V6B7VuFRqESIrCxGbWLcjz6pcK8032JciUEQN9A4fQxT+E
+	 1IPxmYNCPHwrYFAar7VP5PCFpDO6HSAm+GXlivLEqV9UPceGEVurdbu6O0InfOcHkJg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793471810;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=6nzAVwFzrriiPAkOBNvkvTODQ7DAYj7j6hOeNHJihso=;
-	b=opxxcitHdPbAH+uLBb0KvnBSE6D3DWO7Fdqh6UJqkACf4ggqGqHjo7jWP/L4y120t1Gz
-	 hwZste/s7OpwFKiMYpEork1Uhg2atR+Zwso/an1gsE5GPeeTpfDEUW35+xQ+0k0Zr5TLt
-	 XTlTsyTQN1WFl3I9T5oXch6cBZZEvNNqQ2Ju/TGXbiZBoLpqnHHbERsW+WUycJu8QZq3k
-	 3CBvHK5wcdS2FjOWDtPU6GsnXzcuLuCvn8olNkfbTn/g1/osMgeatnn4oeKXKZdrg6QI0
-	 Jjs514rLAPhjX6yOS4vTpvprzo8yYiKAibXatWbwZ3wmtkC6ccNFYEqycWl79JaT+Yw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793472616;
+	h=DMARC-Filter:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=mxsr/9eM9IT7x56XlFJqaM4VoKdjWeJUE5kFLUzsU1c=;
+	b=R73xDyP2CsIvqhuKtEGvZHhoh04Ukwp45pxpkyLw4TGZabwiuH19BdxdzTFnkqIyMdh8
+	 d+CTDMqw06Awyx2WPPviBRm2I+p6X7i6iijbRmfatRqljQTd/intgZ7wWSI/dkC/SGxi2
+	 b6YpcKCDs/O2BUasz6n0r/6BBjfFHulclPMWVkFIzP0FDUsur0jUss7ofKvADksXZ1QsH
+	 SnScU4BLZMCFY3akQ2u1G9f8fY7Hhpfijz+Fnoemu3ouLRs48Nkli5bAjcWdAz6onuQWN
+	 lcnfdU6JZ862tCR7EWIki2OHhVnWu75ScNn89KQgUltNFpgPufCC8Kz3SS9GUqgK0Xg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	arc=none smtp.remote-ip=43.163.128.43
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.43])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=none header.from=strlen.de;
+	spf=pass smtp.mailfrom=strlen.de;
+	arc=none smtp.remote-ip=91.216.245.30
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B38606A31C
-	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 18:36:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B6B38606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1793471790; bh=6nzAVwFzrriiPAkOBNvkvTODQ7DAYj7j6hOeNHJihso=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g6+ioPth9/Ch5VVkZD9fDOIoMHGcnPKceN37F/9KmVKD3xCXsa1cJlVb1Yd+rGAx8
-	 quKW0JNOmrXqvKQ3xmUpgm+mz/Z3I1Legky5tscP7uVCxg/MItF+NtjPvmw3WYyB7M
-	 Y9genKZ9Dj/dNXrslO6NQvH2OZy0GirTaFWhuITM=
-Received: from kernel-lab.tail5e91bb.ts.net ([2409:8950:57d:63:6833:326:ef1e:ba71])
-	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
-	id 91B946ED; Sun, 01 Nov 2026 02:36:27 +0800
-X-QQ-mid: xmsmtpt1793471787taxbxfhij
-Message-ID: <tencent_49563D9E7F44599779272CFF719F54418F08@qq.com>
-X-QQ-XMAILINFO: N/WmRbclY25Gtq/EWKSesU26xD36uVauzBeVFPnWMnWv/iRjbKWL1KrzocJ/nQ
-	 nell1/cXYisi/mj9LVuBVdp0xUjF9BL9Qlz+ZPm6TjMTjbxyloMUSmLo3om4nJPc5RgYItbmEuaF
-	 8CCCc3P4X6xMTHGcn2zG95voma0otrqVhzoDISRaMeTfstS0BuhaimEbKk/hj/mqDse4KwsduBUi
-	 xKRyzXewW8GkeW+EFjE9oj+uYV1OceGMuExFycyXii2p6xm05CDg1KiMsDKRHsIJrSje2RjH9cLL
-	 q/LMwHUwXSoQD4GZenHOGDuJhEpbJGvIWfehPgKKcpyrJL4zM4vdAJJYpbQTa9SMB9DSieslRKY9
-	 +8Q95sPG1Dc+nxazVVYPoYVuXKV4+fJRU0NR3XtzC2Sat6yn3IG4HFB7wrwjD16sCQI+0aQD/WV5
-	 VQpS32jW2x7rELn1OGlVKToEBh8Is/ATmK3ggI6rN+ftVwKxuEAsbBad6o7k6qeaasfBazogjUeR
-	 Glv6N1ftAYazUDkB662XtvbcQ4Nt0reO9O3+iIEnM9EYA03msxhfuHoQGaz7VcCfjG4T+74bklt1
-	 PJDo22ZnZ0QYBrA7AsQJ/QyZiLFgyLhrsTycQgbBmak93aDzs2UsUukU1oQCtjSUywiHS0fBvU4n
-	 ACQLN7xmVO9aQeEae7P7HE5umNWVC++kK+8uH8NGx1U4TpyrQAaR4QrUW1eyiAUNUB0Iz3q9zfSE
-	 A/WDvaiOqpo6yJnovBH2tJLZX+iwp/hYhc0iml4wiJ7dXeG/LvYOUbhf6dc1+cFE+Spx8Z2wX/m8
-	 zaOw1d8piMbOC0ILTJJE9Mpt0f5zpq/2DOShgOm+mp5Nf8aavS0g7GJi+Uv4mInSlIS29Xp2IuHV
-	 KdAmdDirFmKgs8PyLiqFAhfFkJ+XLQm/sluFue21QocFFNRMGunHzuZF2MOS4CDGac8FUlfVAyv4
-	 LSxUSAhND6aCIfLFPVQQmTgpzXNzmMK9iGJqnHu2MVCVTV7lyVrnm7fYp49v/kLWyLVBnt3RESaZ
-	 k3Ih6SJxMh+gDzDvEO9uuiZRJu8tjr9c/227G/oNI8BpvCg1uOzL8rnorRu9oOvJ0dleE8/aibj2
-	 2BZickih197+IytAEw1A5hshGdMQ==
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-From: Yingjie Wang <1075151112@qq.com>
-To: Xia Yan <yanxia@cmss.chinamobile.com>
-Cc: netdev@vger.kernel.org,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Alex Henrie <alexhenrie24@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	yana06070@163.com
-Subject: Re: [PATCH net v3] ipv6: reject wrapped temporary address preferred lifetimes
-Date: Sun,  1 Nov 2026 02:36:27 +0800
-X-OQ-MSGID: <20261031183627.3756897-1-1075151112@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <179344707641.114606.12665582704521593779@cmss.chinamobile.com>
-References: <tencent_C2E4FE9B7C0A05615861782611715EAA9C0A@qq.com> <tencent_7A270291DDE5CD89DAFFE8A745D094D5BD06@qq.com> <179344707641.114606.12665582704521593779@cmss.chinamobile.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B287606A31C;
+	Sat, 31 Oct 2026 18:50:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5B287606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id DE3DA60796; Sat, 31 Oct 2026 19:50:12 +0100 (CET)
+Date: Sat, 31 Oct 2026 19:50:12 +0100
+From: Florian Westphal <fw@strlen.de>
+To: Kyle Zeng <kylebot@openai.com>
+Cc: netfilter-devel@vger.kernel.org,
+	Pablo Neira Ayuso <pablo@netfilter.org>, coreteam@netfilter.org,
+	bridge@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, outbounddisclosures@openai.com
+Subject: Re: [PATCH] netfilter: br_netfilter: reject unsafe neighbour devices
+ for DNAT
+Message-ID: <auY4ZAZWQfQtX3oe@strlen.de>
+References: <20261030042155.73844-1-kylebot@openai.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,18 +51,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261030042155.73844-1-kylebot@openai.com>
 
-Hi Xia,
+Kyle Zeng <kylebot@openai.com> wrote:
+> The IPv4 and IPv6 bridge prerouting callbacks classify DNAT traffic using
+> the logical input device saved in skb->dev. The physical input port can
+> have a different bridge master when prerouting resumes, for example after
+> an NFQUEUE verdict. Netfilter reassembly can also combine the first
+> fragment's bridge information with a different fragment's input device.
+> 
+> br_nf_pre_routing_finish_bridge() replaces skb->dev with the port's
+> current bridge master, but looks up the neighbour using the existing
+> route. This can put an skb with skb->dev pointing to bridge B on an
+> unresolved neighbour of bridge A. Deleting B and resolving the neighbour
+> on A then causes a use-after-free in __dev_queue_xmit().
+> 
+> Before calling the neighbour output method, check that the neighbour
+> keeps skb->dev alive. A neighbour holds its device, and a VLAN device
+> also holds its real device, so allow a VLAN whose real device is the
+> bridge. Release the neighbour and drop the skb on a mismatch.
+> 
+> Doing this in the shared continuation covers both protocol families,
+> including a queue in the remaining bridge prerouting hooks. Leave the
+> cached-header path unchanged since it does not enqueue the skb.
+> 
+> Signed-off-by: Kyle Zeng <kylebot@openai.com>
+> ---
+> I have a reproducer for this issue and can share via DM
 
-Agreed, this is separate from the wrapped or truncated lifetime handled
-by this patch. In the case you describe, the stored preferred lifetime
-does not wrap, so the new check is not intended to reject it.
-
-I have not tested that case or established whether the repeated
-regeneration is intended. Thanks for the detailed analysis.
-
-Thanks,
-Yingjie
-
+Please do.  I'd like to understand if that needs to be addressed
+from nfqueue side instead, or if we can avoid neigh layer to
+begin with.
