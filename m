@@ -1,60 +1,127 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.176
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793459402;
-	b=XGil1yqZwCcIOyY5Gbyeq7GUZKrMsmTG9VzNjke2Pp/Sk7353i8mCOzvfvQBIop/1nYd
-	 2Vc28Me9LVmisiJ5WF17bq0BY/fKa7XT0lQ17cwKqhYqghV/4cWGWnqZ11NyLdGPy24sd
-	 56s3GqpYCd0gM5Bv7LK+IqYU62vf9lcGGhNuJUA7GYdediFlI+j6wF7kVMJ7LuRzXS7q2
-	 TJ8S0JXxB6ehpk97fmEepX5VNZioP5pF/6mHGG0EHYABb7wIHVejTsujxK7WvPbPuunTX
-	 ReK01/u8uO0l3sBp/oXAMronGbaLjtg6SuNYjK/iKclu1BBCt2wJGJplaFsV3glWWiw==
+	t=1793459706;
+	b=bup4l7sPiZT+kfgxVJa78ELWfurrSlPdDuLMYYfd27wo9OhFzAy/b8/8OxIpOdO7AtUj
+	 G3N2cqx5ZXEZKECivsvcE8ZbXDVm+xWRtsjCkOl27Ach8LH0xFW/JAO8moIJC38PPyWa2
+	 +h+1/5uFOsjoUuu8UE6tlap+D8HhfYeqw7z4abCHVOcRSE8dfpd1uBPkAQKbA+y62OsXe
+	 F/ayg71dGx11aSZmGJcCCadme9FkrFD7kNvoaxoi/cHG9xuI+quY7arlGfZ8seHwSuNxx
+	 kczWgb4v6SbNjzzRCggXmzTTykh9+xPA4wj61b5UMUNTDtQBVHerDIyhkr+BdXv3HvA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793459402;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=tUdEIw+Gn+fWQ0tHnZvYlvV9bBy5X27vM3HRMicDgjc=;
-	b=jO/xwDToHexuTLHtoZ2gk7FD0qO5IHhhQ/i42tJvpFrkATqHfIQLE2emfPWf4JI6ef1O
-	 4DSp8bsR88kLTJxDJpFIBMw39koW2dGIE3HCIEYe4BqrEwsK75+l5ACyIbZ91MYEzuh+L
-	 gMVn4HqZ9ozDkvjQMPlpOmLlJkQLS6XE5w03xg/NhieZbzg4+KMVhP5ZPie3pdjjqRIai
-	 pM+c2jsHaCPwJJWHIVp6qYelvnF2A4JmAUJHidJfn2+vyk+K8WuJjOC2Nk/Jn7uqFETwN
-	 gBOzOMkOOFcoz6oJ65VPr87EH992DJod0j+aWbc3u94Wa8NbUlkcMD5Vq3R8KTKowYQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793459706;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=u4AoREHEWHwqK+9vsy9N5I/xo3mEZgUmU5DSaNM6uCY=;
+	b=XRecMf/wXwNYEXhxXSK2hCNELQqGK36LlksJavWUmsSAH3Q23acty1W8PWUryvDhELLn
+	 Vue+CwiXNxhG5OuMSejF2MlQRzB3IAznqCilmnDt0czTdIBaIhZHLe644hqfoSBkJ/JlC
+	 Ej+eAguAfqs5h7OIcmm2oC+94K46fdDawLZkPovfjXF8BhdTXFdUeNHhn2+yis1cRoRI/
+	 qysjNwnFZi4L6vDUuTDy6PzVDqPw6p+gkcGfXPcut4ildxaeiNPi0TzpKxQIgSgNsPp6s
+	 jveC3liwj/1wiT5by6yhHjbtPxyQtvpyQek5XmZean5A/XUAwE5fGypLvFdmAPoineQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D9OcB0dc;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="PhqPg/E2";
+	arc=none smtp.remote-ip=209.85.221.176
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E300606A31A;
-	Sat, 31 Oct 2026 15:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87644606A325
+	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 15:15:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87644606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D9OcB0dc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B591F000C1;
-	Sat, 31 Oct 2026 15:10:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793459402;
-	bh=tUdEIw+Gn+fWQ0tHnZvYlvV9bBy5X27vM3HRMicDgjc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=D9OcB0dcZJ+FlSj7BG1D0EUKb4/fBWom7iWuezRYJYHq+vgG09+o1guJ+AXAQpmSy
-	 8+cFwPo2aaR5vu8L4/MPrBm4G7caFRsZe3vmZX9Am0hx2U9Z8GJ+PTXoXELc10uBm9
-	 c5NgrGdoMtsjdKDVScpcNVpsq5OIYBpsIbuillPkWlqb+P2JSanitm8klgZ/9qRBq0
-	 67FpgdGSGYjVjDRykrr1EwdNCvpWcJV1DMj9OsuzJL+YlYm7+7hMo+eAQ+NFAgqJ0m
-	 hrxfEN/xqjYb2RfU3RCvMpklf/GRp8Pdl8gzs7r0xrPXuv2DsC/7FzQgerw17Fr/0r
-	 Kj5WagX3j8hmQ==
-Subject: Re: [PATCH net v2] net: fix self-deadlock when an upper disables a
- feature of its lower
-From: netdev-bot+sashiko@kernel.org
-To: eva.kurchatova@virtuozzo.com
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, sd@queasysnail.net, cratiu@nvidia.com,
- sdf@fomichev.me, linux-kernel@vger.kernel.org,
- syzbot+c6c86a1c56b5131f2d97@syzkaller.appspotmail.com, netdev@vger.kernel.org
-Date: Sat, 31 Oct 2026 15:10:01 +0000
-Message-ID: <179345940111.3131.17680940160354830709@kernel.org>
-In-Reply-To: <20261027140121.1192299-1-eva.kurchatova@virtuozzo.com>
-References: <20261027140121.1192299-1-eva.kurchatova@virtuozzo.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PhqPg/E2
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-5eae12762c9so753363e0c.1
+        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 08:15:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793459704; x=1794064504; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=u4AoREHEWHwqK+9vsy9N5I/xo3mEZgUmU5DSaNM6uCY=;
+        b=PhqPg/E24VOKRLpfl1ae1ubh4CKpCn29JqhLZjBp/MR26TAAiPCusNfbhZKqTqe7Xj
+         KcQq5Lydqkv/yxQqi5C7ZY3ZDqurJIdEnXH0ucUJaLRRdFFYKlc9/hSNt/FBOqLJJqI7
+         p6jj64s7228VWY/vk1afOCOip01plUgqwJps6dk4WwMDU5fMSszkrzQk+rwDSKDYE+HI
+         68LbUdDAtL6NWwfUTf5zsmuxjMBjVb0I019RVHKueoF64p2AswdpFejX62Xr+afWIrOW
+         DgPY165zFFs16BXhBuygZX7vyRNjKllQEoev9+VtxIjjr17scodCqljZafdWsq6sK09A
+         Fhwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793459704; x=1794064504;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=u4AoREHEWHwqK+9vsy9N5I/xo3mEZgUmU5DSaNM6uCY=;
+        b=L2rcFI38vYchwYs096ZZi/w/c2Yxq5KrSfTYPe0TnHAzRiRB4JpW4gItDmihJ8l74B
+         +e9ietb2n1/etTd6QrHb2GDm2BFa2zzOL5oqoh1cWXwbapfgdAljeIZ4HIhznrs3Uf8P
+         TtjAS/Ownoox1yu35/uxwhiTS+TRZVJi6T2ed86zL1Xyq7Ynt5hCzqTIqKsPoGtY/B0+
+         x+NZ5rjCeJqL5azzzSJC08tndbvwYG3USSGueJPH+SBhqQBlXxS6bIb+VtfBxrzBnKFQ
+         2oMD+I3Lkhi5IRc1ebNWJxX5n6AOrd/RSnBaATVWUjKBu2eHUPN53aMvRKpJkNwEByyj
+         QpQg==
+X-Forwarded-Encrypted: i=1; AKwUvBwBEeSHrBUB4JItW9ikL2T3ahDrb846hRrv2h5VrgCu4dGG17ET2/RNWmL9ZYfldxi5f8PCWOo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJhUzWp0bEBHzOosTpXGjRpdeIDBPEjjyxsOMe4Tmb+ZKw8fUvv
+	sxHP0q7XPzm04wl5cazfdHc/pC+HDwN2tYBwRcsHDi2wrxhVZs28EKfS
+X-Gm-Gg: AYBFou0HemPAw6YmBkRc5c/BEanjQbfuxt5+qAqxCHyh+Befitr50Q/nc6oKE8UJt4b
+	WxhiGqwsjkcoSahkkZ/4rkyQAJ/Xjn6zeeHeJiOXcGEEvRFTVRSWV8abks9WNPiNDeS5x9iNz9v
+	7vgpg/Fo9A7NSiHkYVaHRa0mQyg2kSPS5L8dIz0fTHGLDHzRB0TC7mlbSLHM/r0map0qMVK4pdn
+	2OPxiMY41G9SpI+0b+LcS6cacmB8E+R2vwmdJJ0mbPA8X7HS7xNqJ0qg9gYA5gzfu/iB6LnxAhX
+	2ozMrTb72Lg045g9L7boP1w0fMPCevfisY4hojR6MWLHZYd+CYGEt4UjDjDsrDbAkQXTzL+NurY
+	AUkLnBVd5hgAhJlkrOftXU+2/2lSXc2g5Yao0qHGASESxTi19ZiLUH6tXzFNdZSdCdtv49gESqO
+	OBH4svBlVq3YE9NZxp8JGyGJwufQ62i4p5jYqYLhazaqEurmVfhyoj1IlJs+/uotJlVPrPrKVv9
+	PvXqvlGVLn5FN1u/n18H0U2oW3y6HWlGPst0P2j9AQBS47RfUJ7GUG/D5HM1Poy/GTJkR03HoN6
+	QqAGSplrQ4/YrZ4/dcEVfx1DwXhWbq28lB4hiUTPpd2zSbBD4lWRq1JNj3Ll/X0F+o/xkJCy4bx
+	9zu6s6zMRumdNjK6pzsm/Yks5UwMZ1vZ5wGtzqWs3UrUY9Uzc+Qk7Fqa5cYcWrRIoURFn
+X-Received: by 2002:a67:e116:0:b0:7a1:fa0f:1106 with SMTP id ada2fe7eead31-7d072d759a9mr2050864137.36.1793459704527;
+        Sat, 31 Oct 2026 08:15:04 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec69c5d183sm6032016e0c.13.2026.10.31.08.15.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 31 Oct 2026 08:15:03 -0700 (PDT)
+Date: Sat, 31 Oct 2026 11:15:03 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Vitaly Zuevsky <vitaly.zuevsky@gcore.com>, 
+ netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Matt Turner <mattst88@gmail.com>, 
+ Magnus Lindholm <linmag7@gmail.com>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ Helge Deller <deller@gmx.de>, 
+ Andreas Larsson <andreas@gaisler.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ Arnd Bergmann <arnd@arndb.de>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Andrew Halaney <andrew@amutable.com>, 
+ Jori Koolstra <jkoolstra@xs4all.nl>, 
+ Alexander Mikhalitsyn <alexander@mihalicyn.com>, 
+ Tariq Toukan <tariqt@nvidia.com>, 
+ Saeed Mahameed <saeedm@nvidia.com>, 
+ Chuang Wang <nashuiliang@gmail.com>, 
+ linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ linux-alpha@vger.kernel.org, 
+ linux-mips@vger.kernel.org, 
+ linux-parisc@vger.kernel.org, 
+ sparclinux@vger.kernel.org, 
+ linux-arch@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.e08dc63db124@gmail.com>
+In-Reply-To: <20261031113330.45704-2-vitaly.zuevsky@gcore.com>
+References: <20261031113330.45704-1-vitaly.zuevsky@gcore.com>
+ <20261031113330.45704-2-vitaly.zuevsky@gcore.com>
+Subject: Re: [RFC PATCH net-next v1 1/2] net: add SO_NO_RFS to exclude a
+ socket from RFS and aRFS
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,118 +131,97 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Vitaly Zuevsky wrote:
+> RFS and accelerated RFS are enabled per host and per rx queue, but
+> whether steering helps is a property of the flow. A host that carries
+> a few long-lived flows which benefit from steering alongside a large
+> churn of short-lived flows has no way to express that today.
+> 
+> Add a boolean socket option, SO_NO_RFS. When set, sock_rps_record_flow()
+> does not record the socket in rps_sock_flow_table, so get_rps_cpu()
+> finds no match and neither software RFS nor ndo_rx_flow_steer() acts
+> on the flow; it stays on the CPU chosen by RSS or RPS.
+> 
+> The option is kept in sk_flags so that sk_clone_lock() copies it to
+> accepted children: setting it on a listening socket excludes every
+> connection accepted from it, while sockets the same process connects
+> itself remain eligible.
+> 
+> sock_rps_delete_flow() is skipped as well, because a socket that never
+> recorded itself must not clear a table slot that may belong to another
+> flow.
+> 
+> The test sits after the TCP_ESTABLISHED check and inside the
+> rfs_needed static branch, so hosts without RFS pay nothing and hosts
+> with RFS pay one test_bit() on a cache line tcp_recvmsg() already
+> touches.
+> 
+> Signed-off-by: Vitaly Zuevsky <vitaly.zuevsky@gcore.com>
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+The Documentation change can/should be included in the main patch.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> ---
+>  arch/alpha/include/uapi/asm/socket.h  |  2 ++
+>  arch/mips/include/uapi/asm/socket.h   |  2 ++
+>  arch/parisc/include/uapi/asm/socket.h |  2 ++
+>  arch/sparc/include/uapi/asm/socket.h  |  2 ++
+>  include/net/rps.h                     | 13 +++++++++++++
+>  include/net/sock.h                    |  1 +
+>  include/uapi/asm-generic/socket.h     |  2 ++
+>  net/core/sock.c                       |  8 ++++++++
+>  8 files changed, 32 insertions(+)
+> 
 
-- [High] When the trylock fails, the patch moves the 'disable features
-  the uppers lack' job into netdev_work, but that worker never holds…
+> diff --git a/include/net/rps.h b/include/net/rps.h
+> index e33c6a2fa8bb..5afa48868236 100644
+> --- a/include/net/rps.h
+> +++ b/include/net/rps.h
+> @@ -98,6 +98,13 @@ static inline void _sock_rps_record_flow(const struct sock *sk)
+>  	 * [1] : sk_state and sk_prot are in the same cache line.
+>  	 */
+>  	if (sk->sk_state == TCP_ESTABLISHED) {
+> +		/* SO_NO_RFS: application asked us to never steer this flow.
+> +		 * Tested after sk_state so the common case stays on one
+> +		 * cache line.
+> +		 */
 
---
+Avoid verbose comments. Bots comment a lot more than kernel style.
 
-net: fix self-deadlock when an upper disables a feature of its lower
+Also arguably incorrect as TCP_ESTABLISHED is the common case.
 
-This patch fixes a self-deadlock in netdev_sync_lower_features() when the
-caller already holds the lower device's instance lock. It now tries to take
-the lock with a trylock, and on failure defers the work to netdev_work as
-NETDEV_WORK_SYNC_UPPERS. netdev_features_change() steals that work and runs
-it inline, and in other cases the worker runs it asynchronously.
+> +		if (unlikely(sock_flag(sk, SOCK_NO_RFS)))
+> +			return;
+> +
+>  		/* This READ_ONCE() is paired with the WRITE_ONCE()
+>  		 * from sock_rps_save_rxhash() and sock_rps_reset_rxhash().
+>  		 */
+> @@ -111,6 +118,12 @@ static inline void _sock_rps_delete_flow(const struct sock *sk)
+>  	rps_tag_ptr tag_ptr;
+>  	u32 hash, index;
+>  
+> +	/* Never recorded, so never clear a slot that may belong to
+> +	 * another flow.
 
-Closes: https://lore.kernel.org/all/6a6be82b.77639fcc.3d4fd0.0014.GAE@google.com/
+Never is too strong here: can be set during socket lifetime.
 
-> diff --git a/net/core/netdev_work.c b/net/core/netdev_work.c
-> index 1b11bcbeb196e..3859ca9087584 100644
-> --- a/net/core/netdev_work.c
-> +++ b/net/core/netdev_work.c
-> @@ -117,6 +117,10 @@ __netdev_work_core_cancel(struct net_device *dev, unsigned long mask)
->  static void netdev_work_run(struct net_device *dev, unsigned long events,
->  			    unsigned long core)
->  {
-> +	/* Not gated on presence: the caller used to wait only for the lock */
-> +	if (core & NETDEV_WORK_SYNC_UPPERS)
-> +		netif_sync_upper_disables(dev);
+Even if it had been correct, still another example of unnecessary
+verbosity.
+
+> +	 */
+> +	if (sock_flag(sk, SOCK_NO_RFS))
+> +		return;
 > +
 
-[Severity: High]
-Does the worker run netif_sync_upper_disables() without RTNL?
+Both here and _sock_rfs_record_flow: probably should be in their
+callers, like the other precondition check rfs_is_needed.
 
-netdev_sync_lower_features() only queues NETDEV_WORK_SYNC_UPPERS when
-netdev_need_ops_lock(lower) is true. For those devices, netdev_work_proc()
-takes only the instance lock:
+>  	hash = READ_ONCE(sk->sk_rxhash);
 
-netdev_work_proc()
-    netdev_lock_ops_compat(dev);
-    ...
-    netdev_work_run(dev, events, core);
+Optionally maybe also skip writing sk_rxhash if this is the only user.
 
-include/net/netdev_lock.h:netdev_lock_ops_compat() {
-	if (netdev_need_ops_lock(dev))
-		netdev_lock(dev);
-	else
-		rtnl_lock();
-}
-
-With only dev->lock held, netif_sync_upper_disables() then does three
-things.
-
-First, it walks dev->adj_list.upper with netdev_for_each_upper_dev_rcu()
-while holding neither rcu_read_lock() nor RTNL. That should trigger the
-lockdep WARN_ON_ONCE() in netdev_upper_get_next_dev_rcu(). A concurrent
-RTNL-only __netdev_upper_dev_unlink(), for example from macvlan_dellink(),
-can also list_del_rcu() and kfree_rcu() the netdev_adjacent entry while this
-preemptible worker is walking it. Could that lead to a use-after-free of
-the adjacency entry or of the upper device?
-
-Second, it calls __netdev_update_features(dev), which starts with
-ASSERT_RTNL().
-
-Third, it calls netdev_features_change(dev), which reaches
-call_netdevice_notifiers_info(). That function has ASSERT_RTNL() and walks
-the raw notifier chains, which RTNL protects. Handlers such as
-macvlan_device_event() would then call netdev_update_features() on uppers
-that are not ops-locked, without RTNL. This also contradicts the new
-kernel-doc for netdev_features_change(), which says the caller must hold
-RTNL.
-
-The commit message says the work "only runs asynchronously if an unrelated
-task held the lock". Several contexts hold the lower's instance lock
-without RTNL. One is netdev_work_proc() itself, running rx_mode or
-ndo_work for the lower. Another is the netdev-genl ops that take only the
-instance lock.
-
-For example, the worker could be running NETDEV_WORK_RX_MODE for an
-ops-locked lower while an RTNL holder runs TUNSETOFFLOAD on a macvtap on
-top of it. The trylock in netdev_sync_lower_features() then fails and
-SYNC_UPPERS is queued on the lower:
-
-netdev_sync_lower_features()
-    if (netdev_need_ops_lock(lower) && !netdev_trylock(lower)) {
-        __netdev_work_core_sched(lower, NETDEV_WORK_SYNC_UPPERS);
-        continue;
-    }
-
-The later netdev_features_change(upper) only cancels work pending on the
-upper, so nothing steals the lower's job. The worker then runs it while
-holding only lower->lock. Before this patch, this caller blocked on the
-lock and kept RTNL for the whole operation.
-
-Taking rtnl_lock() inside the worker after the instance lock would invert
-the rtnl -> instance lock order. Would this event need to be handled
-differently? One option is to take rtnl_lock() before the instance lock
-for SYNC_UPPERS. Another is to reschedule the work when rtnl_trylock()
-fails.
-
->  	if (!netif_device_present(dev))
+>  	if (!hash)
 >  		return;
->
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261027140121.1192299-1-eva.kurchatova%40virtuozzo.com
