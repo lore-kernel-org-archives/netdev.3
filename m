@@ -1,69 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.254.200.128
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793434158;
-	b=am8Lpj2WAQiGoTKjbaA+dy1d1mf7siAvEI39u/WX2H2Yo/J25B9tO+NuUFs0J+lUHU9Q
-	 HXB08YQ1xWckkNBUNubUgehJrCqVzuMbw4vTnAtAZNrzSxpOOVA+Eu3yJ1sSZfyMMw8gL
-	 iPBjJnp9P4czR9VvVt5iQ44zFXhOp/vI7fwxE2JUY3w6or1w1c1ed7nuFVPz1GEiQYqqS
-	 muDr774gAzheogpfc2FirHdnGPxbZSbQA4w86ui2OAd7D/oWlIX5WmK1V56rjcggz1fvH
-	 iZHNf8R4RxcI16URObNVNiG7NPlwT70FjAyWQaKMlKhJsO5mIjyjnFS56gOjf2sPLuA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793434158;
-	h=DMARC-Filter:DKIM-Signature:X-QQ-mid:X-QQ-Originating-IP:Received:
-	 X-QQ-SSF:X-QQ-GoodBg:X-BIZMAIL-ID:From:To:Cc:Subject:Date:Message-Id:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-QQ-SENDSIZE:Feedback-ID:X-QQ-XMAILINFO:
-	 X-QQ-XMRINFO:X-QQ-RECHKSPAM;
-	bh=RnvqgoSrjWtcRaf+Oi9x1iTIppA0pS994IV9buzFW1s=;
-	b=qtLno47KPp5HFGbe1Gstdy6HmJD/JSYUQEprjSoK/OPFt9cy96MbgtiQdkA5FEgMsNRR
-	 GTo+lhcUVFFaWmnaw4gw1GDNs3IKyx4PNGQp7sgb6vURKZklWc68CUjWXeu4ATH3iToha
-	 CKV9G4eGSJl0fuJctJjjd9KLIsVxjq1nypfDzMCqqJPCEBq+5uqI5Jyt9eNesKmoQsA/e
-	 uKRBpIxhVEL0836thXyAa63DMCXaf38Y25Bbe96wz3lC6G6cvykkh9KjmsvpGx6e6g5Tx
-	 4gf2MEjb/pMfDWjb/oaW1M3NoihD4qO0SzgWTvIjosIwMbY7yfNXnm7Uy4SoSMD2P+Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ugreen.com;
-	spf=pass smtp.mailfrom=ugreen.com;
-	dkim=pass header.d=ugreen.com header.i=@ugreen.com header.a=rsa-sha256 header.s=pkvm2402 header.b=tGHCZvBU;
-	arc=none smtp.remote-ip=54.254.200.128
-Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=136.143.169.15
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793434510;
+	b=VnXDvJ7IhA2Wf2fDMhojU0l+EXp1XbuYkT3J9sd/Uoi+dn7zi/iBcQ3UtWEvpsaqVyjB
+	 84WQwdNrAGOSc051MOcu+1Ztx90EaP68jALfE7KrVNCl4S8InZJN5WyJgRqFiJEwGJTl1
+	 spcx8JXq7MBgeQe9sgkwil10VPevEFkYwiZHr6jO5m7Lx71aOOpYi0GOeauPzowXKIaoB
+	 BzulkU6OugMs2iV9N4ee34lFdQa+mgoBt4lwElK2qA7FqjNFNXj71HmJfAWnIBq5rujTG
+	 yrLjNB1uFcHL13dXobw5JsdTcsC6QHVBVLkipkfCU8s29NqrywH33EqZU3uCXTGXudQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793434510;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=uT6v4Xn0ekRQ/dccyYyJtT8xDye8PelpFDuIVEmaRz0=;
+	b=Q7OAC0HGBIcP+f2mEW43KUTuSZNTun8elJ/k+PDTK3lRN3myZh4cfwUhIgpB5/tiF3Pe
+	 HxS787snWcbbMLzjukzq40QaipvrnkHRXt9wfv9aILtwuWPHPf7xX2LSx0dSxqJAjYdxG
+	 JH1HMgm7O6hEA6M/oxEqZSmnzTtdoJKlp4S48CngylPDqNWAIboEEQATSVlcznJ1Cd7/O
+	 akcpjCpGcVsichi0HQU20frfufRO/X39yQlq9lQgNHU/VUf4FlRjVBekg239rmpGo+iv0
+	 QZjbpoGT9YbWg53qPlbsGELX/90XGtfJOflUqQpsls3WBzQXaSvD1O4P1JXXBzdj1vA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=iav.lv;
+	spf=pass smtp.mailfrom=iav.lv;
+	dkim=pass header.d=iav.lv header.i=@iav.lv header.a=rsa-sha256 header.s=zoho header.b=KMvX8Nkp;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=136.143.169.15
+Received: from sender-op-o15.zoho.eu (sender-op-o15.zoho.eu [136.143.169.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF68606A31A;
-	Sat, 31 Oct 2026 08:09:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CAF68606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ugreen.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ugreen.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50756606A31C;
+	Sat, 31 Oct 2026 08:15:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 50756606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iav.lv
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iav.lv
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=ugreen.com header.i=@ugreen.com header.a=rsa-sha256 header.s=pkvm2402 header.b=tGHCZvBU
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ugreen.com;
-	s=pkvm2402; t=1793434084;
-	bh=RnvqgoSrjWtcRaf+Oi9x1iTIppA0pS994IV9buzFW1s=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=tGHCZvBUxYwfGQYKElZjMKZBk8eLryqTfJzbCKGnakvz9FqcbW14OR8pVmlCqELzv
-	 kpQhd3KCv2jZHkT79bv/cIS8LfpKdPkLqsGkD2gzlBfUPySiEwouFxIyn5n+xeFmqd
-	 fYGtHIguZRoYdIWzprJptq6b2nLtMA7AytB+Hugs=
-X-QQ-mid: esmtpsz18t1793434078t1649ccbb
-X-QQ-Originating-IP: c8GaQ2EYajltn3AmncXnv8Yt3WeNED7CfE6+ZY7iBSs=
-Received: from exmail.qq.com ( [14.153.241.169])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sat, 31 Oct 2026 16:07:52 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 5247943412128054743
-From: Hanson Wang <hanson.wang@ugreen.com>
-To: netdev@vger.kernel.org
-Cc: Sukhdeep Singh <sukhdeeps@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: atlantic: stop TX again before freeing rings
-Date: Sat, 31 Oct 2026 16:07:49 +0800
-Message-Id: <20261031080749.3688666-1-hanson.wang@ugreen.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261031032308.2991494-1-hanson.wang@ugreen.com>
-References: <20261031032308.2991494-1-hanson.wang@ugreen.com>
+	dkim=pass (1024-bit key, unprotected) header.d=iav.lv header.i=@iav.lv header.a=rsa-sha256 header.s=zoho header.b=KMvX8Nkp
+ARC-Seal: i=1; a=rsa-sha256; t=1793434452; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=Yify8tmgdYSbVopsJlydWtpeI2UXkOOfXuiazwE1AvrvVzXAFnRZj6gTSwZ5cUlnyC4GRDcnZ2iKJF53NHeN+1pDWW/oHjNk6XGJ9BRarminH1Haz/dYyl9rVvtGCUTvdHfMAxcbGVMse9Bm5G+dXjcc+HvMpHI84qEP+stJFMc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1793434452; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=uT6v4Xn0ekRQ/dccyYyJtT8xDye8PelpFDuIVEmaRz0=; 
+	b=eDaI+n91ZLzQa3uHrnFlgx3omj5Ba1M6q4Tk9Ai5/y4nl+Wr7TzscOOvcfT6Q/RlKamKhCv1ZlxIs7kn+ZXWVmEDiwgXYNuOXU0FyaX+V53iyFg0b87Ob/4YWHODTBFTqlaP6jkpT+RQ1QycGiimdvo3612WG/HBu+56l9Dq5vQ=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=iav.lv;
+	spf=pass  smtp.mailfrom=iav@iav.lv;
+	dmarc=pass header.from=<iav@iav.lv>
+DKIM-Signature: a=rsa-sha256; b=KMvX8NkpogJBvnAgF++pM8jAAuNhJUUBIYMvuBPLaVSzjLK2Kgbnk4WvjXszmUrbl7SFAU4ytlQjw9UzxncCFIoUOAUjZk0G2xETrbwZe/FkqTpE1pPw1rqbW3wRDTs6Z6AUjil6+wGc4xXUQ8lD1iyASjW4vsTG2v42onGy004=; c=relaxed/relaxed; s=zoho; d=iav.lv; v=1; bh=uT6v4Xn0ekRQ/dccyYyJtT8xDye8PelpFDuIVEmaRz0=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zoho.eu with SMTPS id 1793434451622317.1807577626872;
+	Sat, 31 Oct 2026 09:14:11 +0100 (CET)
+From: Igor Velkov <iav@iav.lv>
+To: netdev-bot+sinfo@kernel.org
+Cc: Igor Velkov <iav@iav.lv>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Lukas Wunner <lukas@wunner.de>,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Wei Fang <wei.fang@nxp.com>,
+ Niklas =?utf-8?q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+ Paul Barker <paul@pbarker.dev>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Doug Berger <opendmb@gmail.com>,
+ Thangaraj Samynathan <Thangaraj.S@microchip.com>,
+ Shenwei Wang <shenwei.wang@nxp.com>, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v4 0/5] net: phy: postpone PHY interrupts during sleep
+ with MAC-managed PM
+Date: Sat, 31 Oct 2026 08:13:51 +0000
+Message-ID: <179343443172.2895107.13605713175307417010.phylib-v4-sinfo@iav.lv>
+In-Reply-To: <179343389984.3286.809839136574794731@kernel.org>
+References: <20261031-b4-phylib-mac-pm-irq-v3-v4-0-5ba23b3ff9a4@iav.lv>
+ <179343389984.3286.809839136574794731@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,26 +82,16 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:ugreen.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: NdaCjfXsdP3wlt1RKLf7jtqv97F5vtNq70Fvrawe+X+PK3yNWyFzsAxh
-	yGoQVA4N4uGwjp2mxlKTRGcz2isIyzn6Lo2J4JEMML25Gq/zizrfbMTbVs9MvQBDOuyWzEN
-	VVZuj+Gjt/00d+XEz3aaQzSMSr2EJH1v9Z/h6upRL6V4AxekCb1LNIyRY0F6S70x9JXSaV8
-	UliBrBf95fGa0R0PiFhyAZcp1/WU/0bihgzdsIz+G3g+t35+iN55tFGQYOflf2bQq8HsInz
-	5wf35inqvNRMkYm7k5Ff3qktDPYzLxfII1WDujYO2PljxLNAFiehxXFa79SYte3pUbEIMmj
-	sjLNW839NIoNJesayEe3yMZwFJMDOWi/o0mV31bccnImnJ+cevOdYJ1vo+Xk6XPJHz0EPmq
-	YEeqQg7LTPVALip7KGd9AZAzMklJaIOcJZlBLpguKOMk2pkUeyORb5DTSCFplRjJt71oU1g
-	JCYUOWSwpocSIVoXHRQyW644mZ/GQPDsRSjzkSHXAww//J6V3cnuLR22GmnJ5GwSaAPCO7m
-	80CYBrDuK08OLWbUmVvRSB6nyDyOuJktcliEHl4BH3sRE1gV9TpdsPjaRyrSe6wxOwu+VRS
-	hZAv6YCyRDpySSfUcshZh1uGSzD3Vjh/TMgcbvwcDKIyLkQz9LXKbcji/2boxfZX8zgrelS
-	L8Vob7peJtOES039iE9odh38Dkqw93r9MF8JXYEH27NJ0hFjwQclwCj4fGYqPTu0USQpoxo
-	2dTkdoH/OhCcyb9ngSeC87wsbLIIR4vJ28gGHLcFhhns6LVy4caIAwhj6Y5NH7V9AFZeq1f
-	W1SyuXP4szqQ3CgmcqTTMcahu9gl6Fc+rheuOM/3jGYQij4ynuMiizjgI+aPIQET1KtewzR
-	w6sRk62XJm/vbVX52weuknz/oql3MtnncJu/HvPJTtkccfahzV9VPd6CaDZnucZ4lrKdihs
-	ZURpan/67ru+0SJsTI19txF/4B4JzHlOLolvYSJQaN13a853Bgzw0CZOYb7OBURXmm2Z8Jk
-	K2ybPR5VduMWjvOKEU
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-X-QQ-RECHKSPAM: 0
 
-Igor Russkikh is no longer at Marvell. Cc'ing the current atlantic maintainer.
+> - Whether the issue was actually triggered, or is only theoretical
+
+Patch 5 fixes a hang seen on Helios64 (dwmac-rk, RTL8211F): in s2idle
+without WoL the board hung or reset 10 of 10 times without the series.
+The PHY IRQ thread stalls its CPU on an MDIO read while the GMAC clocks
+are off, so that CPU never answers the NMI:
+
+  watchdog: CPU0: Watchdog detected hard LOCKUP on cpu 1
+  After 10 seconds, these CPUS still haven't responded to the NMI: 1
+
+Patches 1-4 fix defects found by code inspection and Sashiko review;
+they were not triggered.
