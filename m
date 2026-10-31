@@ -1,54 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793436760;
-	b=f7GBHOMdNJHl4edo4Vej84ZDra+CsqPJLYq3Ug3pX0PYnCwDf5pL4tkYO8KWpSxOmCTq
-	 ysnCFkpG/E7zv2rt1XRSgHK9QTHvGYQA4Gi+nM0nqg66ku2lm+cfg8YwGnhJa5DnXD0vj
-	 NchM3J31pYqyrk4K9u3zPeiefF480AmQM3DZFKS9R2HpmxmXknSOhsgvCPKJ/PLVQQAOA
-	 6PfgFp/A+etO+1xsFWQ/hza+pdKwiYExBxwMQWACB7+oL/nGjwJgczEF4V2hw0cqydDsH
-	 xTkesHL09qfP2lqbn2ht3wBjSaemac5702ENzk6xfYh9fz1Cb7EqD6PSBIIFuqxVzzA==
+	t=1793440770;
+	b=ReyaQVvcbhAl1n3fWZ2O7/WyYXRF2SOnRLbvpmNglLiTyeElTBnFpoo1uYFcjZ3ONWqJ
+	 Nsv7RBDqeNJsopkhdYcsmDksNMcgGb2P5Uq/3X5Tka+a1115oYwdjnKNWT/MtASvfjoxt
+	 R4o7sXjhCTQ63VN1YMRo6tiD6/jQfhWAa2UYXCORSOukHmqkgSvg+4AaERPCkEmyd30nt
+	 mc4DZqBZDyIVtS4C1LY+fiMb7A0XYFx3EzvAL6qt/p+skd++3rx8NyuEjRQ82iDGsSXlW
+	 tlhmcGZfKPFi2X5HH0oUU7VHphX+IljatfrJCPFxuCA2szqRawOUyiF2sw8l/Uao6SA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793436760;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:MIME-Version:X-Received:Date:
-	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
-	 Subject:From:To:Content-Type:Content-Transfer-Encoding;
-	bh=T54JHojtNznOOiHI0falihSPn5TxrG175B8BVl0MzMs=;
-	b=3KWZ3bu5I0wsE0omSao2Ayv5lMtLlAk5uQfE9T8NxPM5d9ewLfV6BWBLOMkjFxF+HZvm
-	 8cAtuEudPnGxG2Tk7y0/NKA1XzztUbOI5VZRXDSIUgvz7cDYaj0ssiCKM/rUVgmIl30r5
-	 9/uskxl9RTorg4cymbPz6Rl4pRn71qAwy9zyLIclL9H2/Cm65cLFMRoHrSV7rmFRoBHgz
-	 nn8tOg99RtIPygoGylD9EIYFbZo05VWw42rhS5W6Dm0/D5eNwNEGqa9XggTKczdiNPmJu
-	 Rls5KLgOFIEKgrq4jwJ9tJjPmbxyHH21GpH2nghbNZuerQhGSlMGQRCvknr5BQaaWaA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793440770;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=lrg91VXppCw++dPJi09YCHr1ozvZZtqaDezxwuYyj1c=;
+	b=qOy79Sjvcxkgvkf3UB4OqIs0aGcEDNXt4JLF0X0vOXA9UzgIqx5PwoeoT0gp1bk/xa0e
+	 yKdxsLe77XkcW8UOKRA2j4Z3X4jOCwGxfiUK/WwBzkjxo0nljjlE34kAL8SXO16COrGtM
+	 AqNy0bx47ZJOXtplA+i+IOfBfsVn8OmrF736S9VMiLPb10T5ZSLz2PH/2vQkoKn96LOoc
+	 p/f2m2AyHYxVgcJP5ivmAS1APpoKKJ+AO67mx9RkQfBawrnS3BRDvVUNzZoC+rlDSv3m9
+	 JdqWjyZx4LyjzHrpul8GeIYLOPxlZT14bJv39Kxk8rgsJ/Pg1vTyqOD223jwwfgBvsw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=syzkaller.appspotmail.com;
-	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	arc=none smtp.remote-ip=209.85.167.197
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VJCloE6b;
+	arc=none smtp.remote-ip=209.85.128.47
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7090B606A31D
-	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 08:52:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7090B606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-54213290993so1182248b6e.0
-        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 01:52:40 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07727606A31D
+	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 09:59:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 07727606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=VJCloE6b
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a2153c8525so9456155e9.3
+        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 02:59:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793440768; x=1794045568; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lrg91VXppCw++dPJi09YCHr1ozvZZtqaDezxwuYyj1c=;
+        b=VJCloE6b86yvWABy075rF+peJ+s9iHi9Oj8A8xN3AKg90+d9lov+D2SVeH1MIqS5U1
+         fZMPNtsj1CDhKMGFKUhX/Y7SioiFJHDFZxK1BxSniSDdO6XkDzaNITmT2/EfHCNE/VCu
+         EEp1yBILY8uUu/44qbbq0HxUgf1g8gKaFstU+2foeow9x0g5wfA98wGXpn83HWo/jveg
+         kibon7+vRr0Od96+ZX/Uzr5kKCEc3JBcwuMkag/EL2OvqxbAlZU9AdfjPuK2nNyWgA9H
+         33vDNRwhXbsSV/htjoVhUdVWpO/imuheL2Z2PUKcle3/hLWR08BQO1L5n0lsoWKiy37T
+         nb+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793436759; x=1794041559;
-        h=content-transfer-encoding:content-type:to:from:subject:message-id
-         :date:mime-version:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1793440768; x=1794045568;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=T54JHojtNznOOiHI0falihSPn5TxrG175B8BVl0MzMs=;
-        b=p1nzBx9WTdckahiq/O7woHhvUHbPc6EITv4VifeG195ipYOue5nfuDLmVBdZlSYEKt
-         t4gqOzQYF/cmdBu6xlrtaay2q1WkcyPfW29IZbcKJs46wtaftRUREjN9mwW29OAcxhAq
-         UZpFi6QFxRAKb6QQOKvqNnDrvSl0r0V+9O/YDKs2NC/nn7TbBG+7Jcfrd9jZxOUIVbhf
-         x6CzWZOJFPcsyQk5dNQZIEfp4RccrILsrVrV/ESUKm5SF9nCQ7iZ9hP4lsO3CIhaSmPW
-         eqwyKDZb8qp68xBExsOsBaD7Wq4v/iDOKdqMHEm5aFxKxGMYl2MzpwUtE1txac5Ogcni
-         KoBA==
-X-Forwarded-Encrypted: i=1; AKwUvBxES20jX4yjTZBL2aiUPqGT1sL5zhTx1LJOm6w4Y9270r2oIO4+moCg+YrSkdhxW+30oyQTKiA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLkEKn9SJb/wGqD5lJCd5XNhuxzEhJ4hrqbh//0skBshflQrrty
-	co8SJyBcyXSFIYsbfH6KLsgFNPEFU4GFzT1g8mrkPJZskVsXO6oO/Nzqw4te5ysHVh4hgZP+1Nz
-	4dAsFKb8/8sTcbL7xZMMdbhUr4f/8Ex4nF97+r6ffel3HU3JeMJ/iaKWF+kw=
+        bh=lrg91VXppCw++dPJi09YCHr1ozvZZtqaDezxwuYyj1c=;
+        b=pVQOZ0ilAHCQDPrpRCc9cwoYNkCH6qxSwJYNFRlU7wS46Af/WfeSglN8ugY8ZtqjVH
+         2VqrovgAcASstV3vAuucH9GnUIrhPEXEbAZ9nbak6sOFsU1tUFUBEmzebLJIEH/HuQxW
+         CaMmFBgSuR3YxGDElllln8IsrzWZ5LQOUTdPvj+jdRF3YaC2uvQCHZxJygugnrWL9rMK
+         vyrq/ayIekaLaA2D9Cj13QI+7X0qnxkTq+/Khs/XBMh9OMzIRWvBYnUVECiMV8O5HiON
+         /HbDOV67fs2HWzYAZxcVhY7kN8MIaMbSoZsoLMuQpjhp1x/hiTeOuvR/0BuwVBahaf9Y
+         IYkA==
+X-Forwarded-Encrypted: i=1; AKwUvBzPgjmAaMjusFch3RzvMn/PHK65nFAV9CSSvVe7p6czRdh/tlJaVKEI608REIrCfANvDGJNvyI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJjlpMx+pdyywwZGlF8thtmLvX/2F9nEnGrt552Iu5M8dC5W7Xu
+	6uPVqo2lMD23OauUUOGbhhCZrY0G4A/WvqrW68WxMCs7p80pQXTEgkcp
+X-Gm-Gg: AYBFou3yvRyxg6iPJCFBcPg1d5dui37aY9UcdbagUb2lgLkaz7xPxAA37pdLz0921ym
+	E/JI0iO5oocD9eg+Wr+Ex75/r6AElLd38EBzpAz75XrVe9wDqzo7x8oxR04kFvVnUvfP9suo71r
+	yxUG09qMKL77V0mWNtdBbLHCe6kiKtc4fKi6cGyisy9oE1HJGe1rwAMu2AAcZuEjWWoSlni457X
+	BGzCdK9o1IQ/aAL4eVcfmyVcOV5W7TMRpE91W5TO7T/9Q9sLlf8dcnE5kaTOaAEXRb0/msumFrZ
+	mnYMXwqcsKvbArKvT3oyda+Rx7EckYhuClv7WEpazpHEblF/yQYIAPoBWAFiWAb/pawBbAcRGPm
+	DmFsvdqdO0xF/zxR76Ax4l54yuJzksTANk1kbaJ2wBxeHfmcBWAPDRjQt5rsBIkygDhAGOxsvzP
+	bkGyKkHpKyRnl/AmlHnDIR8u6D2NPNUIf8Y9wzrKrMLKbwJtXoK6iTspTOS3xA+i1+cawoai+et
+	NtvhHdnNe7N1ybyn4sxMxRGmHph93F9+1g/dXwAElXErM+DpVKxE5w7jIKTBvlR4/uQrtnJaYWV
+	CZvoMb2HSqElKTJ4oqK8sC18lQCz/jfqraME7FacW/rE
+X-Received: by 2002:a05:600c:8b4c:b0:4a5:1cf1:b7b8 with SMTP id 5b1f17b1804b1-4ac17b2cf8amr106495125e9.28.1793440768232;
+        Sat, 31 Oct 2026 02:59:28 -0700 (PDT)
+Received: from localhost.localdomain ([2a06:c701:4773:6f00:c8d4:ec29:293e:f39])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4abe77053fesm55354435e9.0.2026.10.31.02.59.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 31 Oct 2026 02:59:27 -0700 (PDT)
+From: Avi Weiss <thnkslprpt@gmail.com>
+To: brauner@kernel.org,
+	viro@zeniv.linux.org.uk
+Cc: jack@suse.cz,
+	linux-fsdevel@vger.kernel.org,
+	dhowells@redhat.com,
+	kuba@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Avi Weiss <thnkslprpt@gmail.com>
+Subject: [PATCH] splice, net: avoid MSG_MORE when the bvec array fills
+Date: Sat, 31 Oct 2026 11:59:23 +0200
+Message-ID: <20261031095922.3577591-2-thnkslprpt@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,178 +100,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:c2c7:b0:531:7f68:842e with SMTP id
- 5614622812f47-5640dbd6258mr3317562b6e.8.1793436759449; Sat, 31 Oct 2026
- 01:52:39 -0700 (PDT)
-Date: Sat, 31 Oct 2026 01:52:39 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ae5ac57.88e51036.1515fd.0003.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in rfkill_dev_uevent
-From: syzbot <syzbot+56f5119a6b206041a6b7@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hello,
+splice_to_socket() leaves tail at the last included pipe buffer when
+its 16-entry bvec array fills. If the requested length exceeds the
+available pipe data, pipe_occupancy() counts that buffer again and sets
+MSG_MORE even though the pipe is empty. Small TCP transfers can then be
+delayed until the cork timeout expires.
 
-syzbot found the following issue on:
+Advance tail before checking the array limit so the occupancy test
+counts only pipe buffers that have not been included in the send.
 
-HEAD commit:    dda51b737216 tcp: check congestion control restriction firs=
-t
-git tree:       net
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=3D12607259580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3Dd0f4f48df8e34eb=
-3
-dashboard link: https://syzkaller.appspot.com/bug?extid=3D56f5119a6b206041a=
-6b7
-compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D10e3188d58000=
-0
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D169b9135580000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/69fc30a54172/disk-=
-dda51b73.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/6fd8743be1c2/vmlinux-=
-dda51b73.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/1aa0f93cd3c4/bzI=
-mage-dda51b73.xz
-
-AI-generated root cause summary:
-In mac80211_hwsim and cfg80211, the netlink attribute HWSIM_ATTR_RADIO_NAME=
- is
-accepted without a length limit, and cfg80211 does not bound requested_name=
- when
-setting the device and rfkill names. When a user creates a virtual radio wi=
-th an
-excessively long name via netlink, rfkill registration triggers a uevent wh=
-ere
-RFKILL_NAME exceeds the fixed 2048-byte UEVENT_BUFFER_SIZE in add_uevent_va=
-r(),
-triggering a WARN. In production kernels, add_uevent_var() safely returns
--ENOMEM and drops the uevent without memory corruption or system crashes.
-
-full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=3D56f5119a6=
-b206041a6b7
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit=
-:
-Reported-by: syzbot+56f5119a6b206041a6b7@syzkaller.appspotmail.com
-
-workqueue
-workqueue: name exceeds WQ_NAME_LEN. Truncating to: =14=EF=BF=BD=EF=BF=BD=
-=EF=BF=BDe=EF=BF=BD45=EF=BF=BD8) r1 +=3D -8
-     15: .
-------------[ cut here ]------------
-add_uevent_var: buffer size too small
-WARNING: lib/kobject_uevent.c:688 at add_uevent_var+0x2db/0x460 lib/kobject=
-_uevent.c:688, CPU#0: syz-executor353/5646
-Modules linked in:
-CPU: 0 UID: 0 PID: 5646 Comm: syz-executor353 Not tainted syzkaller #0 PREE=
-MPT(full)=20
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Goo=
-gle 10/07/2026
-RIP: 0010:add_uevent_var+0x2db/0x460 lib/kobject_uevent.c:688
-Code: 48 8b 44 24 40 42 0f b6 04 38 84 c0 48 8b 5c 24 18 0f 85 73 01 00 00 =
-44 01 33 31 c0 eb 20 e8 0c 1c dd f5 48 8d 3d 35 df a3 05 <67> 48 0f b9 3a b=
-8 f4 ff ff ff 49 bf 00 00 00 00 00 fc ff df 66 43
-RSP: 0018:ffffc90003996a00 EFLAGS: 00010293
-RAX: ffffffff8beb4a14 RBX: 1ffff1100efa0443 RCX: ffff88807f68be80
-RDX: 0000000000000000 RSI: 0000000000001770 RDI: ffffffff918f2950
-RBP: ffffc90003996b38 R08: ffff88807f68be80 R09: 0000000000000008
-R10: 0000000000000007 R11: 0000000000000000 R12: 0000000000001770
-R13: 1ffff92000732d50 R14: 000000000000079e R15: 0000000000000062
-FS:  000055556e425400(0000) GS:ffff888123a6b000(0000) knlGS:000000000000000=
-0
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000000069e000 CR3: 00000000713cc000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- rfkill_dev_uevent+0x2f/0x1f0 net/rfkill/core.c:875
- dev_uevent+0x4ab/0x870 drivers/base/core.c:2774
- kobject_uevent_env+0x475/0x9e0 lib/kobject_uevent.c:576
- device_add+0x544/0xb80 drivers/base/core.c:3742
- rfkill_register+0x170/0x9b0 net/rfkill/core.c:1100
- wiphy_register+0x2a5f/0x3290 net/wireless/core.c:1310
- ieee80211_register_hw+0x3d72/0x4b30 net/mac80211/main.c:1634
- mac80211_hwsim_new_radio+0x32f1/0x5990 drivers/net/wireless/virtual/mac802=
-11_hwsim_main.c:6186
- hwsim_new_radio_nl+0xd8b/0xf90 drivers/net/wireless/virtual/mac80211_hwsim=
-_main.c:7062
- genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
- genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
- genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
- netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2580
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
- netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
- netlink_unicast+0x8ef/0xa80 net/netlink/af_netlink.c:1361
- netlink_sendmsg+0x7f0/0xb20 net/netlink/af_netlink.c:1920
- sock_sendmsg_nosec+0x14e/0x190 net/socket.c:800
- __sock_sendmsg net/socket.c:818 [inline]
- ____sys_sendmsg+0x54e/0x850 net/socket.c:2715
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2769
- __sys_sendmsg net/socket.c:2801 [inline]
- __do_sys_sendmsg net/socket.c:2806 [inline]
- __se_sys_sendmsg net/socket.c:2804 [inline]
- __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2804
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fbc181e2649
-Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48 89 f7 =
-48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff f=
-f 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffc9f9d5c88 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fbc181e2649
-RDX: 0000000000000084 RSI: 0000200000000a00 RDI: 0000000000000004
-RBP: 0000000000000000 R08: 0000000000000006 R09: 0000000000000006
-R10: 0000000000000006 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007fbc18275c40 R15: 0000000000000002
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	48 8b 44 24 40       	mov    0x40(%rsp),%rax
-   5:	42 0f b6 04 38       	movzbl (%rax,%r15,1),%eax
-   a:	84 c0                	test   %al,%al
-   c:	48 8b 5c 24 18       	mov    0x18(%rsp),%rbx
-  11:	0f 85 73 01 00 00    	jne    0x18a
-  17:	44 01 33             	add    %r14d,(%rbx)
-  1a:	31 c0                	xor    %eax,%eax
-  1c:	eb 20                	jmp    0x3e
-  1e:	e8 0c 1c dd f5       	call   0xf5dd1c2f
-  23:	48 8d 3d 35 df a3 05 	lea    0x5a3df35(%rip),%rdi        # 0x5a3df5f
-* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2f:	b8 f4 ff ff ff       	mov    $0xfffffff4,%eax
-  34:	49 bf 00 00 00 00 00 	movabs $0xdffffc0000000000,%r15
-  3b:	fc ff df
-  3e:	66                   	data16
-  3f:	43                   	rex.XB
-
-
+Fixes: ca2d49f77ce4 ("splice, net: Fix splice_to_socket() to handle pipe bufs larger than a page")
+Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ fs/splice.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/fs/splice.c b/fs/splice.c
+index bc243ab8dc43..7c67e0375ae2 100644
+--- a/fs/splice.c
++++ b/fs/splice.c
+@@ -863,9 +863,9 @@ ssize_t splice_to_socket(struct pipe_inode_info *pipe, struct file *out,
+ 
+ 			bvec_set_page(&bvec[bc++], buf->page, seg, buf->offset);
+ 			remain -= seg;
++			tail++;
+ 			if (remain == 0 || bc >= ARRAY_SIZE(bvec))
+ 				break;
+-			tail++;
+ 		}
+ 
+ 		if (!bc)
+-- 
+2.43.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
