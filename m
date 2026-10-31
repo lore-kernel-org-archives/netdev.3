@@ -1,56 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.151
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793447356;
-	b=e2vJNrzB1vwtwjsP3P5TYc/+3DnseJ4yWsKQzZnF5U5NxFW4ZK4rBRfFNectLq32P4w+
-	 CSDIU7cZYlSbw/3D8tiz1QMAiSz9WJC+Hzfkk6fVl9ea6UQFMiSqtygRsnMlaEay4D/qt
-	 FocxufpcQhc9APSNNGbgqP3gcskVUrIkbGLEckAWodMdT3dYaUd5afvcSo8WwhLkULwh1
-	 eIUQuCzOOP+AkHrPobyPqbjK6bi92h82Yd6Uy7Fyx4/lGu38bRB+rfcbJo0p9pptvNubz
-	 t1gSJ9SZD+dozoAmskLKQSyqLMq6YKla66wR0JLJVO++BHid+siwusP5MCITKKL1V6A==
+	t=1793450936;
+	b=uFGTbvfGJj+6LP3E+orM1+nIyPcJFr18ApXCt3h2ngGGbrWp6FIDkwdtEoNfpCM+Xx0/
+	 tYwkZfyqWzsIHILZMis+9PIuX4+R/eGWkW3s5a0rbv/h++AhQkE7ONZOQyh9Il7+37uZd
+	 hx5EuS18zYMtU7pZsVAl312ekLM6UN3H+Ntt6ZZXWTSq+HhfkCnT55BXRs2JkcP1qccof
+	 N+EDybsLVJGaQ1TokIuogKQ69akEDXEhbTW8f2NkoLt2GUXh5sWJeUbPde3jAgJ4R3/7j
+	 fmW4DA5zXvwIhG1PYBd9v83y45Xj0fWfwLb+FF2cO4B+u+4KSZbv2OGAEKPs1iNB3qw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793447356;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793450936;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:In-Reply-To:References:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=mANONhhdZKoBtgoMUercS/GoISV+5AaavOMokQDJz1GPBCB/WjvaCXo0vWvFdcjyHlGa
-	 ug6faPTAqI2Ar7mLKMF4UdH8nMwM0UtHalU7ycZN7+uOnNgsiZ6KCqqo2h/Pe/H0IOFOg
-	 t1v4kS70K8wmX1u8E2nfdOIDhF4bTp8NpZbGnAvrZGLwRT7bnUraQJPXC5nO5tN01Dtkt
-	 x4ubz0tLT1kJ5wOfNMzACtFAGMf+uAIAeKqd4ZpfeJQkgovNsJYjMm9FwprowgGWw21dn
-	 8taa6+Piq46rYrzPzGgJFAdAyAUaS3CE/52G6nBDyteWSY/DXdy1+5f6/OFUcjMIfUA==
+	bh=TH1d29AZCliQEyGyMsOxICcozWzAriuf3DJT8Qo9/dE=;
+	b=E6cY4J29gXkDes7CK/OtotRUc+0yw+T7RRs7DqM9okOdT/piVXmM+2XzkU9SZQAh1PtR
+	 03/5h3q81szPKa/b9d3mEw0n23jb5VUizWvMS7rbjgy490+rF4t5rKr1zDr/7R+UTAnCz
+	 +TMYMC/BzIhhoVKBZZMuJo7MhHIQ0oZKF8qAf7FmbJcH5ZafGkWDKIK4NS6FaHJ6ZVlmb
+	 1KTKnGcNEkOpTG9SDqMoQ/dZshiRLyzZt8xHu6vvaCF22uMpyeogyW25nWM6R5ZbvnBSJ
+	 vwLob3/PatWHchSiwlfjqpNJWFUjrGMrWJi+fjwrR1uksHeRErRebZDUk1SVBp3CL3g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="GU/cbaEo";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD9C606A31A;
-	Sat, 31 Oct 2026 11:49:15 +0000 (UTC)
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=XGHBFV3u;
+	arc=none smtp.remote-ip=111.22.67.151
+Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E474B606A31A;
+	Sat, 31 Oct 2026 12:48:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E474B606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GU/cbaEo
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75ED61F000C1;
-	Sat, 31 Oct 2026 11:49:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793447355;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GU/cbaEoA/AMRS9U8oKLMXHMzqGQweVw2RqzwdNol+LUqjVOPQAqkxOsvaAKkkAw2
-	 0yEjug9lWiGzG4ymPYOmJtpkAaRFP6TdIT5baeME6z0FMCRI1WY9wEfUN2fPjTyvh8
-	 BV/qA7enmciwrETf/8tnYvpXrXm66Jh4XbVlu70KVhh6I//7e0HRgWP30l+1kNGZs2
-	 2x/bzNkkwPsX375G671ySQF43qKH9drgWfhS9EOr8PaXX2yLcCCxvxlVSuhVwB1jgu
-	 HgISSkPITLmO/MtuIPfXpHsNj5PLEaQgzt//iDkQeBzNaZu+eLJ3IvGRE3rsVm2ahC
-	 bGNCP1RZFgmOQ==
-From: netdev-bot+sinfo@kernel.org
-To: "Baek Kyu, Kim" <pocj8ur4in@gmail.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
- Phil Sutter <phil@nwl.cc>, netfilter-devel@vger.kernel.org,
- netdev@vger.kernel.org
-Subject: Re: [PATCH] netfilter: cthelper: report absent filtered deletes
-Date: Sat, 31 Oct 2026 11:49:15 +0000
-Message-ID: <179344735502.3286.1270571604287311699@kernel.org>
-In-Reply-To: <20261031114436.31788-1-pocj8ur4in@gmail.com>
-References: <20261031114436.31788-1-pocj8ur4in@gmail.com>
-Auto-Submitted: auto-generated
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=XGHBFV3u
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=XGHBFV3unaR+zfEWoql3mKNAHeMdgzq/ID5A/2fCdC24TJCir09F3qwtA21jA7AoTSvP3q3yc4xq4
+	 iBk/EgDkkJUjasIK8sWuJZV6mI+q1EkFbDpsnefPoBcp3mj0UqDy53XQkBINhhEON29rvf8w+Yw2Ec
+	 OJ9vGx1BscWNGQAQ=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app02-12002 (RichMail) with SMTP id 2ee26ae5e3a147f-b6ad3;
+	Sat, 31 Oct 2026 20:48:43 +0800 (CST)
+X-RM-TRANSID:2ee26ae5e3a147f-b6ad3
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from [198.18.0.33] (unknown[222.93.19.82])
+	by rmsmtp-syy-appsvr07-12007 (RichMail) with SMTP id 2ee76ae5e3a92f6-838b3;
+	Sat, 31 Oct 2026 20:48:43 +0800 (CST)
+X-RM-TRANSID:2ee76ae5e3a92f6-838b3
+From: Xia Yan <yanxia@cmss.chinamobile.com>
+To: Avi Weiss <thnkslprpt@gmail.com>, netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
+ "Jason Xing" <kerneljasonxing@gmail.com>,
+ "Willem de Bruijn" <willemb@google.com>,
+ "Mina Almasry" <almasrymina@google.com>, "Josef Bacik" <josef@toxicpanda.com>,
+ "Jiayuan Chen" <jiayuan.chen@linux.dev>,
+ "John Hurley" <john.hurley@netronome.com>,
+ "Cong Wang" <xiyou.wangcong@gmail.com>, linux-kernel@vger.kernel.org,
+ yana06070@163.com
+Subject: Re: [PATCH net] net: skbuff: reject zero MPLS TTL before decrementing
+Date: Sat, 31 Oct 2026 20:48:41 +0800
+Message-ID: <179345092130.132560.5590780813492711780@cmss.chinamobile.com>
+In-Reply-To: <20261031114135.3784868-2-thnkslprpt@gmail.com>
+References: <20261031114135.3784868-2-thnkslprpt@gmail.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -63,20 +79,29 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Hi!
+On 10/31/26 11:41, Avi Weiss wrote:
+> skb_mpls_dec_ttl() decrements the u8 TTL before checking whether it
+> expired. An incoming TTL of zero wraps to 255, causing the TC MPLS
+> dec_ttl action to pass an expired packet instead of dropping it.
+>
+> Reject a zero TTL before the decrement while preserving the existing
+> behavior for TTL one and valid TTL values.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Nice catch. I checked the wraparound against the C promotion and
+conversion rules: with ttl being a u8, a zero TTL on the old path
+decrements to 255 and the packet passes with a revived TTL. The new
+check catches exactly that case, TTL one still returns -EINVAL, and
+values of two and above are unchanged bit for bit.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+The only in-tree caller I see is the TC dec_ttl action in
+tcf_mpls_act(), which maps the error to TC_ACT_SHOT, so the rejected
+packet is dropped. mpls_forward() already rejects TTL zero and one
+(`dec.ttl <= 1`), so the two MPLS decrement paths now agree.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+One minor observation, no change requested: `!ttl || !--ttl` is
+equivalent to `ttl <= 1`, the form mpls_forward() uses. Stylistic
+only; the patch is correct as posted.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Reviewed-by: Xia Yan <yanxia@cmss.chinamobile.com>
+
+
