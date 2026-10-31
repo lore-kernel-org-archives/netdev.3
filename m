@@ -1,104 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.3
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793425609;
-	b=GpEH/5jdu2XbAGCfrQlAa1rag0sFO8UF/EU3EK2LCM4G21gwr8bq+5Oz05NbYV/iTf/D
-	 +f4gprk3sQS2T0tpqCssscIy6H6Ihbn+TzTC2bAI3EsMIkxthvwC8j2Mn/Am4fK181E3E
-	 lg/MPNvtY6nZbDMbs9O7DGP+NN8xe5BjBkUWZKxAmQ/H0h7Rq6nKZF/U/R4ce+e0cYwTZ
-	 FQ1cwM3ZYQ44Bjz16pGSTztnWmZyH1ZDR8AQ+QNZeMsxRqk/U9KNgfS2oJbnVUD99kRgY
-	 8aqNF3+kihKJywV+3wRKGxNT6JsqkDZtrDdw947g9zf0Ccxsfn21LaqTi/FgbI7YpkA==
+	t=1793428746;
+	b=SQicW/82a/mx+mjwv1y+oMSOBKa7t2WotPJP5cztugxCltxsmsE+0ldB/kYMpChV5tAX
+	 wc/ZLXNQZlZqa0ZYFczaGeAsIFjADv6MVjN1j/F1NTRyvtwZdSkMYjwGhEJVAKVmEBN+a
+	 nTCFWvrdT3Cv79QxxhcyZE9Tp0SMkYY+Txdl9ov6Ko3ky/FIpodz4OIyu14p+gmgQvksd
+	 MVfTR2ll89nFX/X5qHxSot57A/l4fgqvhHEkD5YocKPV2FPatD4+l+eo/91/XNjzKe5BS
+	 +keNYpQ1kcLaqVTX5d3ojWxQYTORz7m/8LI+lm6bnZLn+XWPmTEcd4+cp2eJsjPXL+Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793425609;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=UW3BQ/Y5PiheRrkEpcONiNTmtPHiTfQrc+Cn+a3/JAE=;
-	b=RxxdoHXbbFyA4YgIAELG6rN1iYOo1UEFWMnLUohoY7cN6cdMwinR4Egd21Uj9LPxEcV9
-	 +MhVzL78ZvH87qMO5H4B1s6UlaF7IjTsNE4W9jXUiE+V0Nxd0Dm4GhG9tVnRTehEz/9AV
-	 Lt5PgHoXYvpGX4ycqIAfEtJjTuYoOG7kjD+7i3WgHJgg+7Ci40PtxJbnnZjbbRxvzugHt
-	 qdBuZbDMygI/ySY9Rsgt7nlkcRlhydc9a+Gy22V3ayGXI4TocAAC8uNuVM+BOTsWnwAeT
-	 m4UUAGbFHzRMvwQN4DKtY4Kw4naebysNYq1rwmyGQY/NEYpp02cEpEfRi5yN7NlPC5Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793428746;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
+	 X-CM-SenderInfo;
+	bh=LYnyOHvC5Bif32h/JnLdLhaS59dZvHk6unATAY9XyAA=;
+	b=s9Zc5I4mKcjDOm7S8BWBn3dSPpVMH5YtrGndylm3g2A47LZmOdU0ESKr2AChCA0VMPTj
+	 CohLdBbzC7MmV8tZYcrN/Xn4st1jNEeHm14Bqz6B2rvFpFM5PpFF6VdiChD2arpCP047l
+	 hk2viUFeWBejgD8v6cMyfKrRdqgXE592GokSnhlXjgR3W5NY7AtLUoW0C+znVWLIb4K0B
+	 DfhteoQ8x5NY7cGOthUS7/dWuE78GyOkV7/GRaXrL11AETcexhnAOgqMbXMFe8V3LAyxu
+	 L9JuZm/ZCBeLM9ladmtMEe5I+ohXx7gjxbbTTK7TV0ZkUGg5HNLwKgDa5H0tzVHH8Pw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=O5oaTt9Q;
-	arc=none smtp.remote-ip=74.125.82.181
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=fx7xmGB+;
+	arc=none smtp.remote-ip=117.135.210.3
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6809E606A31E
-	for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 05:46:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6809E606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2931606A31A;
+	Sat, 31 Oct 2026 06:39:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D2931606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=O5oaTt9Q
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-353804b591eso2238615eec.0
-        for <netdev@vger.kernel.org>; Fri, 30 Oct 2026 22:46:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793425608; x=1794030408; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UW3BQ/Y5PiheRrkEpcONiNTmtPHiTfQrc+Cn+a3/JAE=;
-        b=O5oaTt9Q4TqZOVrT2B9SV76ivfBonsnDWXbr8gc+d75/IBvHLUOr2ZCt9Z4mzI/J9i
-         vR9reN6cLhhyx679o4IwXW9GMGC4LI1Bd5oyVh6Ttq3umuBSLzOhzxZEn0ybaHQQ7SlE
-         B1X/6LKEDA5UK+HRO9TliPtsajk/+17mVJycrHt26tyuL2pExAFVsIdJAO3tS8BLiKjd
-         BdnU6ATNqcyBAtoEM9FY5kKib9NfWpZ6vkwtUer/d9eMRFsWYW9voLYfG9frPly0UMz0
-         PKVCoHLIs0sp7WaPe7jMUSMIxsjSH4hhm8i34ExT20pvmwaEo1/QCRU3geYkw9nLeIPf
-         LnQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793425608; x=1794030408;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UW3BQ/Y5PiheRrkEpcONiNTmtPHiTfQrc+Cn+a3/JAE=;
-        b=0Sdau8zOhLnDKUvQY6ezDQhHi7SQuNLXnw8j8541hVfl3TScb5ViAlBTYr7udgtj2V
-         +YRbAQUjmmaT09Oug/xMoD+lAEg5buDSwYGZzmKBb+XNeRUo8nlofqYIBZjWs8utI+Ar
-         E99FXp7PXcfqL6g3S83DoKCpCArDINQONTjjq6gImMzG8E2N0YT2rY9aapJGa7/Ls0zG
-         P618HYM81FyfedViaWINuSD4EB7Hx3pFf8hFxC44fZcDz+OpSKVApssh9x3MrCoYiXKL
-         9mm44NcyvOvFfTV5mmlz6zAHtozAI6AjTCt2lYT+Tc33ZnaCdC0abJXvhYbTK/u6Ln09
-         1Ltw==
-X-Gm-Message-State: AFq9FYJwsJmSp+JoguddXa7aIiD87m3J4MfSd9Fduzk/OT6kq9+vP9ux
-	Qgk9SSgqdZPSkn42iZQM1eKa+BcA+Hu9L/suS9dldd6tkgklmGfTa4dJ+FN7Eg==
-X-Gm-Gg: AYBFou2gAnduBLyW1qUkao5wWyauCLtEtyYOSEFSgVOPYYYkzzmLicR6TcjMDEpDlyd
-	iPQNvFYl8YrqHSAiPySCCQzxpHpVvFPNOgTt4b19lxlYfT+rMjoUg1AMAYYdYBGUH08jmefPX16
-	iC3+Y5JpBMHub8ZDYk7IKYl6pVMRMHQ3++0ZDJfhlqR2VQNsVONTmkgnVK3R1fU9nfMdJcjXxVI
-	af7/E/n3fKS0WwfBpdm0+usiPCSF+FsdeqPM1llBajdfirZs9j5DuieFpWAAmx6Mpg3dew3183R
-	p/8QpW87AkDgeTPmO7S/bCM4SHM3skOa02dhmmJb8q6MhSWIKfDBiEPcTWbMM+aBH3dwqwUZdwO
-	qfK6q74x3uXaLdbdAM7YWibOPx+aUHWRtx4eirLHl0DRRDlCn4UwlQG+YzgMNXqU6AX5IFu+T7C
-	mNFkGZSFUfUtDHiGX9SsDjvtk8KbxNlfr/7FBM/kL0tlgo7fmpNSou8SYJEw49ikIdlQBHO1OjB
-	9H1s9hYLra6/YhHhWgqnpi/BWBELEPSDe6X02ocb6XNBC5XZfqpH5Iypo68T98vPNO26378/qwH
-	C/Hma1TfJQ0E2JUxPlMyEJcfMmsHTXMDr2GaRlQmng2CFIuFe8bEMKnlR96rmFFwpBcjA5ji7Oq
-	MOCUSfKoqOlizwNvy5dzlaLELtsPO6bYuWEbir4E8ZJMvS9s3aSqUe2TVPZz58EhA8ErJuyYM8A
-	==
-X-Received: by 2002:a05:7301:f8b:b0:36a:2383:eb51 with SMTP id 5a478bee46e88-36a423c4070mr5816413eec.26.1793425608219;
-        Fri, 30 Oct 2026 22:46:48 -0700 (PDT)
-Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a429018casm11668877eec.14.2026.10.30.22.46.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 22:46:47 -0700 (PDT)
-From: Anil Kaushik <anilkaushikwireless@gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=fx7xmGB+
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=LY
+	nyOHvC5Bif32h/JnLdLhaS59dZvHk6unATAY9XyAA=; b=fx7xmGB+h1Y14brqia
+	yMnrqjD/hkC8JUgj4FSxa6g3dOjv0nq4/C1qft3pg4By/PXrBSGjYn07ATftfkJE
+	t8CFCurqa45d5IPCZdlnqkGLP3/tpCKxPI7ohaM4WJhcDADLjXkZNObtKpU7yS9P
+	banVDofU4kesvbFUmjLco7hgU=
+Received: from flipped.. (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wDXv9jfjOVqDwKbDg--.29841S3;
+	Sat, 31 Oct 2026 14:38:26 +0800 (CST)
+From: Sicong Huang <congei42@163.com>
 To: netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	XingWang Xiang <v3rdant.xiang@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
+Cc: ecree.xilinx@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	kees@kernel.org,
+	linux-net-drivers@amd.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 2/2] genetlink: Clear stale members when assigning multicast group IDs
-Date: Sat, 31 Oct 2026 05:46:32 +0000
-Message-Id: <20261031054632.3697295-3-anilkaushikwireless@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261031054632.3697295-1-anilkaushikwireless@gmail.com>
-References: <20261031054632.3697295-1-anilkaushikwireless@gmail.com>
+Subject: [PATCH net v3 1/2] sfc: fix use-after-free of filter_work in efx_realloc_channels()
+Date: Sat, 31 Oct 2026 14:38:22 +0800
+Message-Id: <20261031063823.876645-2-congei42@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261031063823.876645-1-congei42@163.com>
+References: <20261031063823.876645-1-congei42@163.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -109,82 +70,149 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDXv9jfjOVqDwKbDg--.29841S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Xr1xCry5GrWDXrW8ur1rJFb_yoW7WF15pF
+	W5t3yjvr45XF9xG3Z7Jw4kAa15Jw48G34jgryDtw1rZwn8ArnxCrsYq34Ygr4DtrWxAr4a
+	vr4Yvr48W3Z8J3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jemhrUUUUU=
+X-CM-SenderInfo: 5frqwvrlusqiywtou0bp/xtbC0wJvYmrljOIftAAA3W
 
-genl_bind() checks a group under cb_lock, but netlink_setsockopt() and
-netlink_bind() set the membership bit only after it returns and the lock
-is dropped. If the family is unregistered in between, its members are
-cleared before this socket is one, and the socket stays a member of a
-group ID that no family owns. A family registered later can get that ID
-and its GENL_MCAST_CAP_* flags are never checked for the socket.
+With CONFIG_RFS_ACCEL, efx_poll() queues the per-channel aRFS expiry
+work. The work also re-arms itself every 30 seconds so that filters
+can expire even when the channel receives no more NAPI polls.
 
-Clear the members of the group IDs when a family is given them, the
-same way genl_unregister_mc_groups() does when they are freed. No socket
-can be a valid member at that point: cb_lock is held for writing, so
-genl_bind() cannot see the new family yet.
+efx_realloc_channels(), called by ethtool -G, copies the channels and
+frees the old structures without cancelling their filter_work. A queued
+or running expiry callback can therefore access the freed channel and
+re-arm a timer in freed memory. The work lifetime problem dates back to
+the introduction of asynchronous filter operations; the later periodic
+re-arm makes it possible even without recent receive activity.
 
-Link: https://lore.kernel.org/netdev/179340003139.3131.11274717768928642724@kernel.org/
-Fixes: e03781879a0d ("drop_monitor: Require 'CAP_SYS_ADMIN' when joining "events" group")
-Signed-off-by: Anil Kaushik <anilkaushikwireless@gmail.com>
+Introduce efx_free_channel() to cancel filter_work synchronously before
+freeing its channel. Use it for ring reallocation and final channel
+teardown, keeping this requirement inside the deallocation helper.
+
+The copied channels retain the installed filters but start with an idle
+filter_work. Re-arm expiry on the channels that still have filters at
+the common reallocation exit, so expiry continues without another NAPI
+poll. This also covers allocation failure and probe rollback, when the
+original channels remain in use. Apply the same changes to Siena.
+
+Identified by code inspection. The missing expiry re-arm was pointed
+out by Sashiko review and Paolo Abeni. Neither the issue nor the fix
+has been tested on hardware.
+Compile-tested on x86_64 with CONFIG_RFS_ACCEL enabled and disabled.
+
+Fixes: 3af0f34290f6 ("sfc: replace asynchronous filter operations")
+Link: https://lore.kernel.org/netdev/179310908138.3134.11515982039281965575@kernel.org/
+Signed-off-by: Sicong Huang <congei42@163.com>
 ---
- net/netlink/genetlink.c | 31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/sfc/efx_channels.c       | 23 +++++++++++++++++--
+ drivers/net/ethernet/sfc/siena/efx_channels.c | 23 +++++++++++++++++--
+ 2 files changed, 42 insertions(+), 4 deletions(-)
 
-diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
-index f038f04ef4ea..0ddebd828585 100644
---- a/net/netlink/genetlink.c
-+++ b/net/netlink/genetlink.c
-@@ -452,6 +452,22 @@ static int genl_allocate_reserve_groups(int n_groups, int *first_id)
- 
- static struct genl_family genl_ctrl;
- 
-+static void genl_clear_mc_users(const struct genl_family *family)
-+{
-+	struct net *net;
-+	int i;
-+
-+	netlink_table_grab();
-+	rcu_read_lock();
-+	for_each_net_rcu(net) {
-+		for (i = 0; i < family->n_mcgrps; i++)
-+			__netlink_clear_multicast_users(net->genl_sock,
-+							family->mcgrp_offset + i);
-+	}
-+	rcu_read_unlock();
-+	netlink_table_ungrab();
-+}
-+
- static int genl_validate_assign_mc_groups(struct genl_family *family)
- {
- 	int first_id;
-@@ -527,23 +543,18 @@ static int genl_validate_assign_mc_groups(struct genl_family *family)
- 			clear_bit(family->mcgrp_offset + i, mc_groups);
- 	}
- 
-+	/* drop sockets that joined the IDs while no family owned them */
-+	if (!err)
-+		genl_clear_mc_users(family);
-+
- 	return err;
+diff --git a/drivers/net/ethernet/sfc/efx_channels.c b/drivers/net/ethernet/sfc/efx_channels.c
+index f4dc3f3f4416..44943345fa87 100644
+--- a/drivers/net/ethernet/sfc/efx_channels.c
++++ b/drivers/net/ethernet/sfc/efx_channels.c
+@@ -561,6 +561,14 @@ static struct efx_channel *efx_alloc_channel(struct efx_nic *efx, int i)
+ 	return channel;
  }
  
- static void genl_unregister_mc_groups(const struct genl_family *family)
++static void efx_free_channel(struct efx_channel *channel)
++{
++#ifdef CONFIG_RFS_ACCEL
++	cancel_delayed_work_sync(&channel->filter_work);
++#endif
++	kfree(channel);
++}
++
+ int efx_init_channels(struct efx_nic *efx)
  {
--	struct net *net;
- 	int i;
+ 	unsigned int i;
+@@ -589,7 +597,7 @@ void efx_fini_channels(struct efx_nic *efx)
  
--	netlink_table_grab();
--	rcu_read_lock();
--	for_each_net_rcu(net) {
--		for (i = 0; i < family->n_mcgrps; i++)
--			__netlink_clear_multicast_users(
--				net->genl_sock, family->mcgrp_offset + i);
--	}
--	rcu_read_unlock();
--	netlink_table_ungrab();
-+	genl_clear_mc_users(family);
+ 	for (i = 0; i < EFX_MAX_CHANNELS; i++)
+ 		if (efx->channel[i]) {
+-			kfree(efx->channel[i]);
++			efx_free_channel(efx->channel[i]);
+ 			efx->channel[i] = NULL;
+ 		}
+ }
+@@ -898,10 +906,21 @@ int efx_realloc_channels(struct efx_nic *efx, u32 rxq_entries, u32 txq_entries)
+ 		if (channel && channel->type->copy) {
+ 			efx_fini_napi_channel(channel);
+ 			efx_remove_channel(channel);
+-			kfree(channel);
++			efx_free_channel(channel);
+ 		}
+ 	}
  
- 	for (i = 0; i < family->n_mcgrps; i++) {
- 		int grp_id = family->mcgrp_offset + i;
++#ifdef CONFIG_RFS_ACCEL
++	/* Re-arm the expiry work on the channels now in use: the copies on
++	 * success, the originals after a rollback.  The copies inherit the
++	 * aRFS filters, so they must inherit the expiry too, or a channel
++	 * that gets no further NAPI polls would never expire its filters.
++	 */
++	efx_for_each_channel(channel, efx)
++		if (channel->rfs_filter_count)
++			schedule_delayed_work(&channel->filter_work, 30 * HZ);
++#endif
++
+ 	efx->ptp_data = ptp_data;
+ 	rc2 = efx_soft_enable_interrupts(efx);
+ 	if (rc2) {
+diff --git a/drivers/net/ethernet/sfc/siena/efx_channels.c b/drivers/net/ethernet/sfc/siena/efx_channels.c
+index 1fc343598771..388bef4be468 100644
+--- a/drivers/net/ethernet/sfc/siena/efx_channels.c
++++ b/drivers/net/ethernet/sfc/siena/efx_channels.c
+@@ -563,6 +563,14 @@ static struct efx_channel *efx_alloc_channel(struct efx_nic *efx, int i)
+ 	return channel;
+ }
+ 
++static void efx_free_channel(struct efx_channel *channel)
++{
++#ifdef CONFIG_RFS_ACCEL
++	cancel_delayed_work_sync(&channel->filter_work);
++#endif
++	kfree(channel);
++}
++
+ int efx_siena_init_channels(struct efx_nic *efx)
+ {
+ 	unsigned int i;
+@@ -591,7 +599,7 @@ void efx_siena_fini_channels(struct efx_nic *efx)
+ 
+ 	for (i = 0; i < EFX_MAX_CHANNELS; i++)
+ 		if (efx->channel[i]) {
+-			kfree(efx->channel[i]);
++			efx_free_channel(efx->channel[i]);
+ 			efx->channel[i] = NULL;
+ 		}
+ }
+@@ -932,10 +940,21 @@ int efx_siena_realloc_channels(struct efx_nic *efx, u32 rxq_entries,
+ 		if (channel && channel->type->copy) {
+ 			efx_fini_napi_channel(channel);
+ 			efx_siena_remove_channel(channel);
+-			kfree(channel);
++			efx_free_channel(channel);
+ 		}
+ 	}
+ 
++#ifdef CONFIG_RFS_ACCEL
++	/* Re-arm the expiry work on the channels now in use: the copies on
++	 * success, the originals after a rollback.  The copies inherit the
++	 * aRFS filters, so they must inherit the expiry too, or a channel
++	 * that gets no further NAPI polls would never expire its filters.
++	 */
++	efx_for_each_channel(channel, efx)
++		if (channel->rfs_filter_count)
++			schedule_delayed_work(&channel->filter_work, 30 * HZ);
++#endif
++
+ 	rc2 = efx_soft_enable_interrupts(efx);
+ 	if (rc2) {
+ 		rc = rc ? rc : rc2;
 -- 
-2.25.1
+2.34.1
 
