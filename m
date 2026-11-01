@@ -1,52 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=57.103.64.143
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793556131;
-	b=g17zT6S5iUr09KsTE0qMfQz5uKVpT16nUhD9z3o0ZA41fYei0O47GfwiKEqc7ZwkOB4R
-	 8qCQ5+UfMB1QsoT4r5Iavsp5gYMMi09pR8mcLainZCoheeivhajs1AfzmFyUtSvpj325A
-	 IHsKBpRGYKtYv1Ota3VZN7xedlYX/IwjPObQXfEeLGUZ4JvFHonpmJbGfCiiCUH3Ve5zq
-	 6vWXDFXl8RR0Au/LkP/oEkfTabXIv3S+bTNJ1yBYV+dHlOkfbTDe0H9etJqXmG4M7eSi3
-	 /xnMV9uIknJpD+VVMLYVQavFBPzP4OiEPDlPc6MhQIgudDfoleskRyTNOFAm2txoHag==
+	t=1793557154;
+	b=XcBoUk2hDYDeBns51pKJyVOemqPDVlJxCF2QPMaCsgoODYwjfZgwosVFihkhovsFXjRE
+	 ER0LO37FwcDYKjQGLGbhlTE0VsZgryV+HJEj10jG2S1B5kiVRFPzERE0Mya/h9r7A1UMg
+	 couy2tlFkb6jLq2lPid+piXwlZF0r6eWlNo2ExcF1Z5fhxhtF8il992dpqfCU/QKOedi0
+	 LB61cueceOKmRChyTNb0dd1Me61WspsJeZ4kyZ8bFn/ZLVBX/DeBUVObdxEjyX99X9T5G
+	 Kt7xY/AcdsMo1lNzdox9JBHFD7IR+ysfVup9fCPbChaLToBE61j0VycOqFzEU4Pe1EA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793556131;
-	h=DMARC-Filter:Received:X-ICL-RepId:X-ICL-Out-Info:Dkim-Signature:
-	 mail-alias-created-date:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Content-Language:To:Cc:From:Subject:Content-Type:
-	 Content-Transfer-Encoding:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-ORIG-GUID:X-Authority-Info-Out:X-Proofpoint-GUID:X-JNJ;
-	bh=Go0vgQixrlIvwWGOI2mg7rY8Ni9A0LnfNhEK2C3rBuI=;
-	b=FgE+KKPm07/zZxUkZaQFLD4+Mq58QgULZEAeTMcWy2H2sOvJ0JZY9YHtzz6eKlkb5r6c
-	 PJWXaksd6JCIBIcjQgTzkcDalc46CpOeJQ93zP2O+gQchgIyM2xnhVhtZmt67TwyLIIpQ
-	 ywrfh6bWLLSY3UJ0lgY+ysZ3FYap8orsm/5AwjEtM0LfjYILLPsamXVuEvWBMTYjZXaB2
-	 zKYKss168rJCazIydhBzc9O/VSEcYkz7DIGtRrZ08xas0QPC6Sx43mGwqOanY+bDBMj5m
-	 Ih1d8pkD2uOeq51g+OSMcu4usl8tqPVqnJEgAb5u9t8K0xzVSdyEApH+yHsKnrg9Qmg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793557154;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Aftig2Ne/3CxSWuKKfD95dH4T81sYzdzYxbLhLJC1hI=;
+	b=hsWCZsZhVCb+khQCc1R2R7tShVycTVu+k0oUn+wXbiNRQlyW0Ogmqe0NEECP0Y+BzMPI
+	 n5vH+4n9lPxgVJBVG1UwP/oj934TC7Rs01EX0Q+GABz5BtYiUie2RtwcmYjDGsedrH5B+
+	 EOnB364wofwtN4Ne/iyQhktY2KOU7PlfPl6CgZxVm6lEgy30JNwjx+dyKCLk1YYZO+Hta
+	 ZlEx9ldCII1mw/+7xwbXSrf7HZ84Ug13fvFBcMMBkF4SZ6r9hJGrsoY7UnE+qUotAsxeB
+	 gi16MixX3JSKmIWmF6nRdj98gRQTA3UE/7z6RBKDKdtEM4AcV6MydPvbYhjnf9R9Gvg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=damex.org;
-	spf=pass smtp.mailfrom=damex.org;
-	dkim=pass header.d=damex.org header.i=@damex.org header.a=rsa-sha256 header.s=sig1 header.b=peR3t7qt;
-	arc=none smtp.remote-ip=57.103.64.143
-Received: from outbound.pv.icloud.com (pv-2002j-snip4-2.eps.apple.com [57.103.64.143])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GhMLtvVC;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59198606A324
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 18:02:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 59198606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=damex.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=damex.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D08606A325;
+	Sun,  1 Nov 2026 18:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=damex.org header.i=@damex.org header.a=rsa-sha256 header.s=sig1 header.b=peR3t7qt
-Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-1a-100-percent-5 (Postfix) with ESMTPS id C826E1800955;
-	Sun, 01 Nov 2026 18:02:07 +0000 (UTC)
-X-ICL-RepId: 01a19846-9fcf-75d5-a7fc-9e01a745205b
-X-ICL-Out-Info: HUtFAUMEWwJACUgATUQeDx5WFlZNRAJCTQhMHV8EWRxBDE0dXBcOVk1LF14MWStWEVQdS0NYGVVQXxwOCVYGVwgXF0EKFxlRTQ5YWwhbBA8fTAxRAkIFVl5JDh0EVAddBV1WUAJaS0IES0VoXAVcHEAXSB1faktWFAQcUgBSExwfSx8TAF4PD0wJSwNYAg1UFBQcA1wCRgZICEgeVVVTU10PTwtVBVpUEQ8cUA53D1MdXAAdAkUMDFBNAUMICghHA00XXjJTBF8RUBY=
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=damex.org; s=sig1; t=1793556129; x=1825092129; bh=Go0vgQixrlIvwWGOI2mg7rY8Ni9A0LnfNhEK2C3rBuI=; h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type:x-icloud-hme; b=peR3t7qtS29CElIdi4t0ByBERT3s11mhd9b9atSn20sBWApv495b/rjAcJFLTfhRNLXTjbjcFmbcdkbY8gXSUa19Syf9ikFtNeyy88napD/DpBs+8J/p9CyOqBDCrS4+SWdv5ztmEZvo+QAvsraXUp+9VVJ+o+N80ZEsakaYOFNIMb7YeEIxwwPWqhytRY7WxwR2e1Ll9dJ6/wdCv6CMBn2kCFgQZY+uLPr/LriLOF9sWRgEyQ+uKSCsx3adjwm3v5pEFhJvRJ+MeCYxhfyCPj6dcCzpppci3fLO68Vb6JuGA6WlO151Mmc+3RVe4tNjBin3sJs3Wv+PUPoLym0TTg==
-mail-alias-created-date: 1762459955661
-Received: from [10.12.209.253] (unknown [17.156.192.29])
-	by p00-icloudmta-asmtp-us-west-1a-100-percent-5 (Postfix) with ESMTPSA id 8498A180097C;
-	Sun, 01 Nov 2026 18:02:05 +0000 (UTC)
-Message-ID: <03055ffd-d015-4810-8b8a-678821fa6dcc@damex.org>
-Date: Mon, 2 Nov 2026 01:02:02 +0700
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GhMLtvVC
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C8301F000C1;
+	Sun,  1 Nov 2026 18:19:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793557153;
+	bh=Aftig2Ne/3CxSWuKKfD95dH4T81sYzdzYxbLhLJC1hI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=GhMLtvVCJPf/sZKo0J2zfkg1OzOJgOYVnjkCfiGTGzVpAslztG0KTsclnh3sEsUJT
+	 WZu9P5Ta3xVBztTYoV8KqxYgEJSHRrd5Gk8dpFAvGc8JSQaj9Z1ACgmcrSOwe0pj3J
+	 K0piCcSM2VVjd/JypHXnXX4dqAjud9XNdhZNxCTzsPWzeqVz8X+E4kXzSa1BCc0JqS
+	 VN9lRG7ey+hNaZM4SBsGcD/2+/5Hvm58EfeX/Y/tKlyPD7QF1v/qw5/YKfld0UuGsb
+	 I/UfYG1oILMJsV7N1SDplDExWn3yH2kwu+3CKDsBFgzMFlGo/RBsJu3Sx+x2BSwCUk
+	 8MODb0i8URwPw==
+Subject: Re: [PATCH net] gve: leave refcount headroom in the RX page bias
+From: netdev-bot+sashiko@kernel.org
+To: amaan.cheval@gmail.com
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, joshwash@google.com, hramamurthy@google.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, zhilinz@nebusec.ai,
+ jiayuan.chen@linux.dev, kuniyu@google.com
+Date: Sun, 01 Nov 2026 18:19:12 +0000
+Message-ID: <179355715214.3131.12199411268855919850@kernel.org>
+In-Reply-To: <20261031173449.2439047-1-amaan.cheval@gmail.com>
+References: <20261031173449.2439047-1-amaan.cheval@gmail.com>
+X-sashiko-severity: Critical
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -56,71 +64,172 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: linux-hwmon@vger.kernel.org, netdev@vger.kernel.org
-Cc: robert.marko@sartura.hr, luka.perkov@sartura.hr, linux@roeck-us.net,
- o.rempel@pengutronix.de, kory.maincent@bootlin.com
-From: Roman Kuzmitskii <roman@damex.org>
-Subject: [RFC] hwmon: (tps23861) PSE-PD support, extend hwmon driver or move
- to pse-pd?
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAxMDA3MSBTYWx0ZWRfX29RmuVEedYbM
- aw5G8JYN1HOsjNWl6i8ZckcFhOyzWY2jcN06aOIOhH5XssA8L00Dus7AHrRCjuGEu/faf3tgg1z
- 5aM7JmsxwJp2v0qz6yHkC1n/fJnPegt6oP6QRZTtSwnLOI5nQBeI7e8RcbMPLoazU6sfX3fsKlj
- viNA1ZKBzhVD0PyPhD+CW/kyYeiQYw9i/guNVGjo35wZePOn7LnwEHpGJTCgL/V4gcjjfedU71K
- Oy7a57ZxK6tEYw9ufepX8Ff1i/Lx2y+oyt7jOBc6AUpABDVHuiNf/QT3XX+pyS2zMnjpPXTCUww
- HTMt6m0pdU7tIIWDEfmwHkdJXAjz6T+K4vMDbj9/qqWFKD3aswYE7xNmUnB00k=
-X-Proofpoint-ORIG-GUID: D4HnDuayFh6tlQZLiKfCrOlYwfAxX5VX
-X-Authority-Info-Out: v=2.4 cv=RofI7SmK c=1 sm=1 tr=0 ts=6ae77ea0
- cx=c_apl:c_pps:t_out a=aW9mcIavGNWWFvFFKOxBSA==:117
- a=aW9mcIavGNWWFvFFKOxBSA==:17 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=NEAV23lmAAAA:8 a=UuZIIuYS88Jd6fZmK9IA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: D4HnDuayFh6tlQZLiKfCrOlYwfAxX5VX
-X-JNJ: AAAAAAAB3UZu4E1nN6oDWq12J+JbBkeISoyGsoXHniuJoAYf45qYRI+85CB2IQJGFtuRnp
- UOTnJkpsvzldo+zPvGSSiB2eVZLHLKo4RoW6sGEQ787NVn6N/HAAzeZIWZPYCoqrNMtRIU
- tUqguvL7dfW7X5vuow2K7gSEurKSFPeKS8+WL/dX4CVzevM+szpNgF55O0oCouCKIxPdXk
- dnc+NXSPzIlTfS6MJw+cuBf61YDtSTSeqcEE2hWVZZJSRL13nFl0C/lEOHdRjLsGNy+M0/
- bI11OAFRgmEMDri05pcLnPWIYFYTCn6DBiqjBxHDVdlToq+DyPqUql8OjqrfxjCXjNWlRJ
- fjxcnEYg51Fw2Sh124rfUKSAvAlnf7GOGPhmisfAE12VhaevZryaO+y4a97E7kUHZjkUrw
- KBnVMF7DvD3AsfxwiKfP+5h3iwyNIzsKolI5Q8mNvD0sa4sobWIormq63+DBuYmd4wKS+e
- 9rmOTbEz8U7zXZcA8ICjMwZ5ZbN1bQVegUVN0dtZl2BZSFoWcb25vU3YoGFV69Ld2wtZ+j
- SaMQdBYcmMVMQoZJH5L42IQUVzgn61ZWMBp/oG3ekiyOrCyNiU9yhC0m5c0K472TpbKY8w
- ym0SZ9h8p7R0Z5pxWzWMcWSeRJYmMR6RBQzbGA1B1Y2jTO1SJewJooSSJ2Uo0K9IMv5103
- IBK2eRaSbFQC6OXK/fJNHl32YX6GAFoj99QRf6JTee9k4S5MpuuwjLpNFnclIpvENYPF1O
- gc/T9hp1AHOqZkmPZ9o0p9BClEorpfQ2Ttsotl5hxbP4nkA9sQDh3lkrAfDHXTr/VayGGj
- IA2X4tulAGnMit5m+cB1w4y/J41aMyljR8Ib1HYyklUo78DaCBr82jxNpCjPgoGQoksExm
- l2vz3JHcVo+ArSwc5HMDLTX4Yksd5S9asNQBzNmWy5HMPLzppmY7gu1kDe7XGhGIpSB82r
- YwvAo+OWLle2AvUxPhlQAPJaZRkNnjvKT3w2wL4bg3q/VOn0uFnXkF4qsDgmGfn02iOAG2
- mRsFYVbj/wsL7QZBtcsRPa6TKXz0X7BqqDvh5/zrVTXvB1iPzu23+6WzGfcgLSVNI+M/0x
- QW2IZLk1bH/QOOyTqld1TUr8ik3cwMHp+pH3QsG2Z8Sfoa0u6TCMD0YrMGPYaJXSqDFWOL
- 0UPVFTCEgA3RG2zpW+nKQq0oiIcw5wylBEiuxYeaJSOPyHLi5Z/USpXfJjhmwrBUCU1LXV
- 7NcbjdDQo4b3sQPLPxIAJMXN0M3WCsflx1MyUYH0of8MM52VJZPKCgNECCo7ewre6w5xJv
- FCAWUTCFSJEg9cAK+t9DALJPGta1tnTrW8izF1l2RRxsu9iLvH0O/0Q+0=
 
-hi,
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-TP-Link TL-SG2210P v3 (realtek rtl838x, openwrt) has two tps23861 for PoE.
-driver is hwmon only. ports can be enabled via in*_enable sysfs, rest is 
-only reachable by poking i2c directly.
-i would like to control them through PSE-PD instead (ethtool --set-pse).
+Critical: 1 · High: 0 · Medium: 0 (1) · Low: 0
 
-i made patch for openwrt which registers pse_controller_dev from hwmon 
-driver when node has pse-pis.
-it does c33 admin state, power status, enable/disable, voltage and power 
-class.
-events are polled.
-only ports with pse-pi node go to auto mode, and in*_enable is hidden 
-while PSE is registered.
-https://github.com/openwrt/openwrt/pull/26330 (tested on openwrt 6.18 
-kernel)
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-openwrt reviewers asked me to check with you first which way you prefer:
-1. extend hwmon driver with PSE-PD (like it is done right now)
-2. move driver to drivers/net/pse-pd and extend it with PSE-PD
-3. something else
+- [Critical] This patch moves gve's RX page bias from INT_MAX to
+  USHRT_MAX, but keeps the old refill rule in gve_dec_pagecnt_bias()…
 
-thanks,
-Roman
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but in
+  gve_rx_copy_to_pool() (drivers/net/ethernet/google/gve/gve_rx.c) the…
+
+--
+
+gve: leave refcount headroom in the RX page bias
+
+This patch changes the GQI and DQO-QPL RX page bias from INT_MAX to
+USHRT_MAX and stores pagecnt_bias in a u16. A get_page() from the stack
+therefore no longer wraps the page refcount negative.
+gve_dec_pagecnt_bias() now adds a fixed batch of GVE_PAGECNT_BIAS
+references when the bias reaches zero.
+
+Link: https://github.com/amaanc/kernel-bias
+
+> diff --git a/drivers/net/ethernet/google/gve/gve_rx.c b/drivers/net/ethernet/google/gve/gve_rx.c
+> index 81ea800e66e94..6533fff061555 100644
+> --- a/drivers/net/ethernet/google/gve/gve_rx.c
+> +++ b/drivers/net/ethernet/google/gve/gve_rx.c
+> @@ -152,8 +152,8 @@ static void gve_setup_rx_buffer(struct gve_rx_ring *rx,
+>  	page_info->buf_size = rx->packet_buffer_size;
+>  	*slot_addr = cpu_to_be64(addr);
+>  	/* The page already has 1 ref */
+> -	page_ref_add(page, INT_MAX - 1);
+> -	page_info->pagecnt_bias = INT_MAX;
+> +	page_ref_add(page, GVE_PAGECNT_BIAS - 1);
+> +	page_info->pagecnt_bias = GVE_PAGECNT_BIAS;
+>  }
+
+[Severity: Medium]
+This is a pre-existing issue and was not introduced by this patch. While
+looking at the GQI-QPL copy pool, does gve_rx_copy_to_pool() leak the
+fallback page?
+
+drivers/net/ethernet/google/gve/gve_rx.c:gve_rx_copy_to_pool() {
+    ...
+		page = alloc_page(GFP_ATOMIC);
+		if (!page)
+			return NULL;
+
+		alloc_page_info.page = page;
+    ...
+		skb = gve_rx_add_frags(napi, &alloc_page_info,
+				       PAGE_SIZE,
+				       len, ctx);
+    ...
+		return skb;
+    ...
+}
+
+gve_rx_add_frags() can return NULL before skb_add_rx_frag() attaches
+the page:
+
+		skb = napi_get_frags(napi);
+		if (unlikely(!skb))
+			return NULL;
+    ...
+			skb = napi_alloc_skb(napi, 0);
+			if (!skb)
+				return NULL;
+
+In that case the only pointer to the page is in the stack-local
+alloc_page_info. gve_rx_copy_to_pool() then returns NULL without calling
+put_page(page).
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/google/gve/gve_utils.c b/drivers/net/ethernet/google/gve/gve_utils.c
+> index caed38cd5f2b3..cb6fba3122d5b 100644
+> --- a/drivers/net/ethernet/google/gve/gve_utils.c
+> +++ b/drivers/net/ethernet/google/gve/gve_utils.c
+> @@ -93,15 +93,9 @@ void gve_dec_pagecnt_bias(struct gve_rx_slot_page_info *page_info)
+>  {
+>  	page_info->pagecnt_bias--;
+>  	if (page_info->pagecnt_bias == 0) {
+> -		int pagecount = page_count(page_info->page);
+> -
+> -		/* If we have run out of bias - set it back up to INT_MAX
+> -		 * minus the existing refs.
+> -		 */
+> -		page_info->pagecnt_bias = INT_MAX - pagecount;
+> -
+> -		/* Set pagecount back up to max. */
+> -		page_ref_add(page_info->page, INT_MAX - pagecount);
+> +		/* Out of bias: take another batch of references. */
+> +		page_info->pagecnt_bias = GVE_PAGECNT_BIAS;
+> +		page_ref_add(page_info->page, GVE_PAGECNT_BIAS);
+>  	}
+>  }
+
+[Severity: Critical]
+Can this page_ref_add() run on a QPL page that has already been freed?
+
+The top-up only happens once the bias has reached zero, which is after
+the last driver-held reference was handed off. igb, one of the drivers
+the commit message cites, refills while the bias is still 1, before the
+handoff:
+
+drivers/net/ethernet/intel/igb/igb_main.c:igb_can_reuse_rx_page() {
+    ...
+	if (unlikely(pagecnt_bias == 1)) {
+		page_ref_add(page, USHRT_MAX - 1);
+		rx_buffer->pagecnt_bias = USHRT_MAX;
+	}
+    ...
+}
+
+On DQO-QPL, gve_xdp_done_dqo() calls xdp_do_redirect() first and only
+then drops the bias:
+
+	case XDP_REDIRECT:
+		err = xdp_do_redirect(priv->dev, xdp, xprog);
+		if (unlikely(err))
+			goto err;
+		gve_reuse_buffer(rx, buf_state);
+
+gve_reg_xdp_info() registers MEM_TYPE_PAGE_SHARED for QPL queues. With
+an AF_XDP socket in copy mode, the redirect target returns the buffer
+before xdp_do_redirect() comes back to the driver:
+
+gve_xdp_done_dqo()
+  xdp_do_redirect()
+    __xsk_map_redirect()
+      xsk_rcv()
+        xdp_return_buff()        /* MEM_TYPE_PAGE_SHARED */
+          page_frag_free()
+            put_page_testzero() -> free_frozen_pages()
+  gve_reuse_buffer()
+    gve_dec_pagecnt_bias()
+      page_ref_add()             /* page already freed */
+
+Each redirect lowers page_count and pagecnt_bias by one together. After
+65534 redirects from one QPL page, both are 1, and the remaining
+reference is the QPL's own base reference. The next redirect frees the
+page in page_frag_free(), even though the page is still registered with
+the NIC and still listed in qpl->pages[].
+
+gve_dec_pagecnt_bias() then sets the bias to 65535 and adds references
+to the freed page. The device keeps DMA-ing received packets into it,
+and the driver keeps handing it to XDP and to skbs.
+
+Nothing appears to block this setup. gve_verify_xdp_configuration() does
+not reject DQO-QPL, and dev_xdp_attach() does not check xdp_features.
+
+The same ordering problem existed with INT_MAX, but then it took about
+2^31 handoffs per page. With USHRT_MAX it takes 65535, which sustained
+traffic can reach quickly.
+
+Should the refill happen at pagecnt_bias == 1, before the buffer is
+handed off, as igb does?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261031173449.2439047-1-amaan.cheval%40gmail.com
