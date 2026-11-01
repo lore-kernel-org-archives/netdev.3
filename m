@@ -1,87 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793528587;
-	b=QSRF0G9zH4Ta82leWazJs17za/XLEN29UkYaejWdQ70111tcLl6HkvDzKD0v/kK4fOCn
-	 IRc5xSL4WkED0SjVWpqxsiKuGqLozr5gR0I0OehvxzI1PoR50iP31/78g7n84+Qm9WWHt
-	 wUGaL35flfYtH6xSt7zo2dFRx499d7Ra0b2fjvla/SUITFdKu2tVXZmyFu6NK4OueJexG
-	 cnZsY4Vw6/jhzNjcT9E6esqikfOwCU2Kw22jGQOY5hSaxkOmhF9hvxEzD5Gw/YAeFyZeX
-	 g8TsmR3v8ysNcqrlF8cg3t0bOP+wZxrp24QiBKNgzzK4i3nkJ+Mt6Ecv0R3/fwE9FWQ==
+	t=1793528864;
+	b=KQSSESnkA3PM84NBendz7Xjrhh4XLNsNxIf6drINBF61cYiwaevc68sR1vK+KplTMfh+
+	 Hj5+eSn9chnmMzjvbkAL8AFRca1K/2vk7PSKPAB0B8qUGHRP+nlZ8T43IZoQMmH6bjae6
+	 kCrYEgcVyEbUtZXq8Q1alqXzwW07D7UR7VrNqD4gzv6IPH+iOJ01cdx85mPhPQbdbQhRI
+	 yGqOZA5h6ttlrcbwLeTNVncLAqzKCIhbuhcx9VLEUANR/0qFA5leeBy5gE0s6ygbScmaH
+	 ib30UVTTErh0o6kH7fZk7wptCUG34gY+By8kqWPrPx0i3K/wfX31IrizPJqpTSHQEyg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793528587;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793528864;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:Content-Language:To:
-	 Cc:References:From:In-Reply-To:Content-Type:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=msvOHl/vwSgu8PRO+tkgo4NL+2qt01hm6ZSBcN1ALqQ=;
-	b=M/cYFZt17j2XdGG+cSA9kR0isTVkb3nma58RYds5a7WUgfxiFh8mZkZkoAo4EYuXX8hU
-	 A5hCKB+9tTMstJXUICaCpjBXBVQFmgocwuSkNHG5iIuEc3z2xuhK9xmCfPt1Nb+R2R0/H
-	 G0eN3dHmoAeKPTz+BCa3o48tOfblbHD3l4KC9UClLHFP3FCxr2g1LO9agog1ly+FgmlCC
-	 BxgWzrj4+JK8fZTjz+Zuu3bx2UL3uLkgrNsuLOx/m9fMZKKDdThn3n5MvYK0kCgjC6EKV
-	 GHik/rksszHRcLt/WTHKXM6jv7939+tweJdKMsB0dJs+4ZlBhZrxee4GyidiBB2S15A==
+	bh=GAbxTLtn8KLNWZOq5PdgC059WvyP0mvclyC7teVViSU=;
+	b=jVUBin5lKllvFmK9ljE918d1+v1p71HDaPDrom36HszHGA/+bIrEsVqT03/lFNqZ2X3u
+	 1pquooHi10gILbiY2MNWO4z1rms5QdCC4yPM0rqees0MOIbddwrqT2svsMiKNHeNYM2oR
+	 kjzpXB9G7cV+/eMKL9xG4H8K08QKPeoZv9xQS27sq0e5wfGUCeX3KPiGdKqLeYlb98d9X
+	 gBBRjXf4ySYRE92rCutXVs9fgz2fSNquX0QJaYHdTr/Xhg0hq/mKC6/LLgaYBN0ZUiQhg
+	 KZ2rNLxLpPMgtM5Rrr0PsjWwFq9flM3bnXWjUDYVV4aKoMDmd78hoO/XAQmEi1w21BQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=blackwall.org;
-	spf=none smtp.mailfrom=blackwall.org;
-	dkim=pass header.d=blackwall.org header.i=@blackwall.org header.a=rsa-sha256 header.s=google header.b=IbBQEbE7;
-	arc=none smtp.remote-ip=209.85.128.45
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	dmarc=pass header.from=luxonis.com;
+	spf=pass smtp.mailfrom=luxonis.com;
+	dkim=pass header.d=luxonis.com header.i=@luxonis.com header.a=rsa-sha256 header.s=google header.b=QwTr8sUv;
+	arc=none smtp.remote-ip=209.85.221.48
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E470606A325
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 10:23:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6E470606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C384606A324
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 10:27:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4C384606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=luxonis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luxonis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=blackwall.org header.i=@blackwall.org header.a=rsa-sha256 header.s=google header.b=IbBQEbE7
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a2069b9710so17565465e9.2
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 02:23:06 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=luxonis.com header.i=@luxonis.com header.a=rsa-sha256 header.s=google header.b=QwTr8sUv
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-48e00eee27dso926680f8f.0
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 02:27:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1793528585; x=1794133385; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=msvOHl/vwSgu8PRO+tkgo4NL+2qt01hm6ZSBcN1ALqQ=;
-        b=IbBQEbE7feKVZTBcHrbcmXeLAJoNrm+yN//hxFKgtmcm3daxC97LETn7Po6C6wjVOI
-         n7OAsHkd4fJTGHumh0e7J5PQSfLnBEgMt+twh8xAhLbGWA4AW3iTvM8JJ/VOL2KpNifz
-         flc0/3HDjXu7SPviS92yKsjlzUhMDMbeupymAhrZxJioYV0qg5eR2w3pyXvSbbzTpCJI
-         R2X6mgOW5hwasaKBXsGaw4zKdZ9rfT+QFixNR4rT+Ylth8u6GCa+71rD41AMZ7HlHSxl
-         Fb4MrOXS3sd6t0Z96W6k4xi2g0HwPJ9uZEXvpLCKYZZ01ROU7TX/WCCy40SjRjBzVnzD
-         85Jg==
+        d=luxonis.com; s=google; t=1793528863; x=1794133663; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=GAbxTLtn8KLNWZOq5PdgC059WvyP0mvclyC7teVViSU=;
+        b=QwTr8sUv/KGodkbL1m2zWyQ3JuqhHoYSM4qSetyyOTxnNv2im5wD3XXg3GAg8BJz9s
+         12ykLdCsjW/71rZYQTVdeCkwweBxODh9VoLAo4VSoKvm2BZ0xSo5i0NHP8gf3kguLn79
+         AXoNVZHpJTbErtL1kC6iENjo2pqZXXW13IlW4gQKsrSkPSlkIT1xprLFPFMU1TLXYF3L
+         8tTZNnAlfWkaix5mBzqDdKcuRRvx0VQ+V6abrAI+Tm/s5Eae7UjZx4HDhd92Oq8EIMNM
+         bUUD9+76Tbi7oTN/6KbVsuIkzil6O6aoP5e435fWlnhSEc6avM6xEgR/uLV6pPpRXA7L
+         tOTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793528585; x=1794133385;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1793528863; x=1794133663;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=msvOHl/vwSgu8PRO+tkgo4NL+2qt01hm6ZSBcN1ALqQ=;
-        b=hKsVgWqQnOfkiTStP2JVD8hmD+yPDwzXw9IuxG3gqMy9rL8WH5GKwenPJCUlKTA/hF
-         78GaOmffMcj9d838sA7WAsJ8OTxv7n0gBz/MqluV4HQ/ppKDypA9D1o5vOQGYdwMZlkE
-         W2Jvr5ZSKU+BWyWwkHiBFkHHeA0Hj8vYaFphYqiJwrQvnoiP+rp9BzOVlH4oMTK1Dl9B
-         FuvcbHNDr6VsseYl794AWS4XYp72IntZZv3W2IjFLEUdLITp2rngaIKpPHP/1eyKfOQQ
-         4cZk3XrDtbO1tuBSjJXx6uUPFVjH+9Gux0T1klLVFYeK9mi74Ts+ReMIV+AJyeihP+Tf
-         18+w==
-X-Forwarded-Encrypted: i=1; AKwUvBy7nSnhhBCXI0KUX3vdkr5V4SNED8hfkmWPOiBAydiGPb5eCRYbLId/KE/cQzMd1oZiKbqR3oQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJgCTVCvF2BskdNGcyHswpyYlZAdluDbezlKk5p+bik//FrDJSK
-	XweNQMii09k7oYIoAVEOBVtdAzZfLnDkCspTOk9ZQPuQvs0Glj7Qm36lO1EqJdj45v0=
-X-Gm-Gg: AYBFou2Vmp8qEzNRpPK8TZKVufliYXi8NNOF7rsxv2wkyaxAJ1C4vKh+Ae6Ycml2rst
-	ggBA7IdF5O64payzbXeuBbXOQ2dfoAg6rI2MLyoDa5Aj204fUINpYKlmtjscNyd0xvXxOvo2LGw
-	8R/Go8WIlDES3bGMRP3D71VkokeG0w2HSYIzsXRzmlDrakaRkzPYtfxYWK6iufrx3gebXe40xx3
-	rTWl0WyE1gUirWLszq+7HgsGK9fmV8ja8AZ4o8pCGCYUAXBTyT3PJWbAq7nHyQNEL94+voskd7B
-	kgBUICWkRNLelcGHAzonQWUoFsf7ONg+CC6f5gsuoh97mPL2bTRCmre/I2sgG46NAD5cTerygaY
-	SMyFR+o+I+I+FBkzObW+/4wLOxywRy1Z0a59m2wDS2WXZB5A0NcXf3LKQ1wRACvahLRzb1v3tEL
-	k+lccFxW5FfFJuWmticTb8IWgcyZg3wTqk4GngV7TJSI1kjgb3NfAl9zsQA99tp27ZQX91hbc59
-	Vwm3GElbI3wpxDhh4uQngUHLUw2exCrjzvLKTJ/0t41Mb/QhbitJ+ja6epa03pXskEcVkqb5O2T
-	eUmSvb5DUbWvwSEmYeKj81OY5ibgVZugbLoff6oFEVnbVJhZ0KMRVGYbUA==
-X-Received: by 2002:a05:600c:46d2:b0:4a1:7ec7:a479 with SMTP id 5b1f17b1804b1-4ac1980118cmr155693645e9.33.1793528584150;
-        Sun, 01 Nov 2026 02:23:04 -0800 (PST)
-Received: from [192.168.0.161] (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ac0a66caefsm151902005e9.5.2026.11.01.02.23.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 01 Nov 2026 02:23:03 -0800 (PST)
-Message-ID: <f7e54e22-c117-455b-9bfb-9dc728dce740@blackwall.org>
-Date: Sun, 1 Nov 2026 12:23:01 +0200
+        bh=GAbxTLtn8KLNWZOq5PdgC059WvyP0mvclyC7teVViSU=;
+        b=zMvF4eFQmu0uwYha1FSmXm0lEXQbHyDBW3FYmph9Es8OtfTUT/4eLjCrtnIPGrymaj
+         8LrfBU3g/FzjsdkImGLIEz6ImpoQcbMt1rO8KsttSZufR5JWAYy9y3dnr/CgZ4RVwO15
+         YkgoppSpsei6tDOyanQzP0PkMxm2pEeR4JqAm+ArzQ17AyxG3WfctPRfeYMuyIsxXTYl
+         jMigdoJfhZdF40K92spp4P9RXWKQF4maOQw1KeAoDDn/d9rMl7dhY1lb2LuFLN7lonnG
+         NY07PKWadl9juqLoEf1mtMVcZmNK8fEScRhmCJhCXXBviquFJ5HTV/VavMlVIo+Jpak1
+         RKUQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwlHmFfaqFfd/JcNASh782WPauX5UqFAO7E6DbJrBCqpootWMyJDBtBOkZGlbGRVkhF84a3NfM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/QCQCLrrRlUzOVZjtRg1jDaDXFnxfMHLFaY35kVJfQEjsZL/jN
+	TFK9JXiudJWNcqd16kQboenf4R5QbhnSmbFtlhw6+2ZjAA0lknYZ3U/9WA3GNWpRcVQRjeedJlO
+	XgSz6uEo=
+X-Gm-Gg: AYBFou07vJxhC3/WtrslrSu5LdgIUbqHXNWHP8ycx0zEPAqW/dcTTvbI0jPfXoERdrt
+	T62+MQ/bvpVFSXCsQqSol0Gqhk8dsKyYEEUE266RSRx9sq600jkqpVLpTgXlSOx/raxDHFVI1nI
+	O7OshoZGBYt9NWgJk8RQPyDPbMCNiUf9jOQzIxczpNP4pvyZdKIbNee8RzmhGOveSCi9eXJ7t3J
+	8VFqJmyY+WmZDiQOtP9TFvZthPcYDEhSiN4ClHG0mxECoNkf9VnST8QY41MQFE1RyBnAzYg9kXP
+	t4I6CooBDxG8rl0qIdynaNYJF/oV+OCFMLiFESigtIbkFqzH/OD/TmJpLfWCssqkEgji5KZyNNr
+	5DnGcK3UDpLsZbHBuj+3cBz/IUrcSZLdYMgWio93N9aejo+HGhZMkENMzSAv85M9gI12xHmlIN/
+	VkdH+YYLp8XzkQXVSPmg+Zo01BxACra0zBkX8YBAVrUt4e3Wnc92WCgl/Q4YnEwcU1XJb97x+XQ
+	LITkae0bq4dwGlHWQ6mk/vRHHIgBRY9GyhzBll7lX+tC5twPU2VkpGk20tWVhhVrec79NR0YZ0D
+	0siiuW0jxUUZWzNkuHc1OSmDFCDBG/Qv48zzYW+QXDEdLdJz4VHNMtQwuBbeF3Mn/oLJ0fM=
+X-Received: by 2002:a05:6000:4909:b0:48e:7eeb:4634 with SMTP id ffacd0b85a97d-48e7eeb466emr5258359f8f.49.1793528862631;
+        Sun, 01 Nov 2026 02:27:42 -0800 (PST)
+Received: from JureBuildPC (46-150-36-237.static.telemach.net. [46.150.36.237])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b80306sm14521191f8f.33.2026.11.01.02.27.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Nov 2026 02:27:42 -0800 (PST)
+From: Jure Rebernik <jure.rebernik@luxonis.com>
+To: Heiner Kallweit <hkallweit1@gmail.com>,
+	nic_swsd@realtek.com,
+	netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Jure Rebernik <jure.rebernik@luxonis.com>
+Subject: [PATCH net] r8169: enable the RxOverflow interrupt again
+Date: Sun,  1 Nov 2026 11:27:20 +0100
+Message-ID: <20261101102720.702600-1-jure.rebernik@luxonis.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -91,125 +103,79 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 3/5] ipv6: restrict mld_qrv to 255
-Content-Language: en-US, bg
-To: Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org
-Cc: stable@vger.kernel.org, Fernando Fernandez Mancera <fmancera@suse.de>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, David Ahern <dsahern@kernel.org>,
- Ido Schimmel <idosch@nvidia.com>, Thomas Gleixner <tglx@kernel.org>,
- Joel Granados <joel.granados@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, Maoyi Xie <maoyi.xie@ntu.edu.sg>,
- Gerd Rausch <gerd.rausch@oracle.com>, Oleg Nesterov <oleg@redhat.com>,
- Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
- Yung Chih Su <yuuchihsu@gmail.com>, Wyatt Feng
- <bronzed_45_vested@icloud.com>,
- Hannes Frederic Sowa <hannes@stressinduktion.org>,
- Flavio Leitner <fbl@redhat.com>, "Paul E. McKenney" <paulmck@kernel.org>,
- Petr Mladek <pmladek@suse.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261101061331.286404-1-jiayuan.chen@linux.dev>
- <20261101061331.286404-4-jiayuan.chen@linux.dev>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20261101061331.286404-4-jiayuan.chen@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 01/11/2026 08:12, Jiayuan Chen wrote:
-> net.ipv6.mld_qrv only has a lower bound, but ipv6_mc_reset() stores it
-> into the u8 inet6_dev::mc_qrv, so 256 wraps to 0 and the first MLDv2
-> Query received on the interface trips the WARN_ON() in mld_update_qrv():
-> 
-> 	WARN_ON(idev->mc_qrv == 0);
-> 
->    WARNING: net/ipv6/mcast.c:1327 at mld_query_work+0x1fd2/0x2cb0, CPU#3: kworker/3:1/2688
->    Workqueue: mld mld_query_work
->    RIP: 0010:mld_query_work+0x1fd2/0x2cb0
->    Call Trace:
->     <TASK>
->     process_one_work+0x93a/0x1b20
->     worker_thread+0x6d0/0x11d0
->     kthread+0x358/0x470
->     ret_from_fork+0x5b3/0x820
->     ret_from_fork_asm+0x1a/0x30
->     </TASK>
-> 
-> Make the sysctl a u8 like mc_qrv and switch to proc_dou8vec_minmax(),
-> which rejects anything above 255, and document it.
-> 
-> Fixes: 2f711939d2ea ("ipv6: add sysctl_mld_qrv to configure query robustness variable")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-> ---
-> v2: switched to u8 and proc_dou8vec_minmax(), as suggested by Kuniyuki
-> Iwashima.
-> ---
->   Documentation/networking/ip-sysctl.rst | 2 ++
->   include/net/ipv6.h                     | 2 +-
->   net/ipv6/mcast.c                       | 2 +-
->   net/ipv6/sysctl_net_ipv6.c             | 4 ++--
->   4 files changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
-> index 4b19c8d3efda7..71f334f27004e 100644
-> --- a/Documentation/networking/ip-sysctl.rst
-> +++ b/Documentation/networking/ip-sysctl.rst
-> @@ -2515,6 +2515,8 @@ mld_qrv - INTEGER
->   
->   	Minimum: 1 (as specified by RFC6636 4.5)
->   
-> +	Maximum: 255
-> +
->   max_dst_opts_number - INTEGER
->   	Maximum number of non-padding TLVs allowed in a Destination
->   	options extension header. If this value is less than zero
-> diff --git a/include/net/ipv6.h b/include/net/ipv6.h
-> index 3de07e738538f..4901a92066e61 100644
-> --- a/include/net/ipv6.h
-> +++ b/include/net/ipv6.h
-> @@ -205,7 +205,7 @@ struct sk_buff *ip6_frag_next(struct sk_buff *skb,
->   
->   /* sysctls */
->   extern int sysctl_mld_max_msf;
-> -extern int sysctl_mld_qrv;
-> +extern u8 sysctl_mld_qrv;
->   
->   #define _DEVINC(net, statname, mod, idev, field)			\
->   ({									\
-> diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-> index ecef55f261890..13f31132e0f97 100644
-> --- a/net/ipv6/mcast.c
-> +++ b/net/ipv6/mcast.c
-> @@ -106,7 +106,7 @@ static int __ipv6_dev_mc_inc(struct net_device *dev,
->   #define IPV6_MLD_MAX_MSF	64
->   
->   int sysctl_mld_max_msf __read_mostly = IPV6_MLD_MAX_MSF;
-> -int sysctl_mld_qrv __read_mostly = MLD_QRV_DEFAULT;
-> +u8 sysctl_mld_qrv __read_mostly = MLD_QRV_DEFAULT;
->   
->   #define mc_assert_locked(idev)			\
->   	lockdep_assert_held(&(idev)->mc_lock)
-> diff --git a/net/ipv6/sysctl_net_ipv6.c b/net/ipv6/sysctl_net_ipv6.c
-> index 1a0a36dcdabc1..f3ac04dbc71d0 100644
-> --- a/net/ipv6/sysctl_net_ipv6.c
-> +++ b/net/ipv6/sysctl_net_ipv6.c
-> @@ -226,9 +226,9 @@ static struct ctl_table ipv6_rotable[] = {
->   	{
->   		.procname	= "mld_qrv",
->   		.data		= &sysctl_mld_qrv,
-> -		.maxlen		= sizeof(int),
-> +		.maxlen		= sizeof(u8),
->   		.mode		= 0644,
-> -		.proc_handler	= proc_dointvec_minmax,
-> +		.proc_handler	= proc_dou8vec_minmax,
->   		.extra1		= SYSCTL_ONE
->   	},
->   #ifdef CONFIG_NETLABEL
+Commit 6994520a3328 ("r8169: disable interrupt source RxOverflow")
+removed RxOverflow (RxDescUnavail in the vendor driver) from the
+interrupt mask on the grounds that NAPI is scheduled anyway when the
+chip runs out of RX descriptors. On RTL8125B that does not hold.
 
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+When the RTL8125B runs out of RX descriptors it sets RxOverflow and
+stops receiving. It does not start again when the driver returns
+descriptors to it, only when RxOverflow is cleared in IntrStatus.
+rtl8169_interrupt() clears only the bits it read on entry. If the ring
+fills while NAPI runs with the interrupt mask cleared, RxOverflow is
+set after that read and stays set: NAPI empties the ring, unmasks the
+interrupts and completes, the stopped receiver raises no RxOK, and
+RxOverflow is no longer an interrupt source. Reception stays stopped,
+and every frame is counted in rx_missed, until another event such as
+TxOK makes the handler clear all status bits.
+
+This was observed on a machine in real use: an RTL8125B (XID 641) on
+the PCIe bus of an arm64 Qualcomm QCS8550, running v7.2.6. With UDP
+at 800 Mbit/s inbound and nothing sent by the host, reception stopped
+for seconds in 13 of 20 30 s runs, losing 5% to 31% of the datagrams,
+and a single transmitted packet restarted it. To confirm the cause,
+a debugfs dump added to a test build of the driver showed, during each
+stop, IntrMask 0x2f, IntrStatus 0x50, NAPI idle and all 256 RX
+descriptors owned by the NIC. Writing only RxOverflow to IntrStatus
+from user space, through the sysfs PCI resource mapping and with
+nothing transmitted, restarted reception in 17 of 17 stops.
+Reproducing the stall itself needs no kernel modification.
+
+With this change backported to v7.2.6, 0 of 20 runs stopped and the
+worst run lost 0.03%, on two RTL8125B boards. It was build-tested,
+not run, on this tree, where the single-vector path RTL8125B uses
+is the same as in v7.2. The multi-vector mapping used by RTL8127 is
+not changed and was not tested.
+
+Restore the mask of the chips that had RxOverflow before that commit.
+Only RTL8125B was tested.
+
+The investigation was done with an AI coding assistant (Claude Code):
+it wrote the HIL test scripts, the debugfs instrumentation and the
+register tools used above, proposed this change and drafted this
+changelog. I reviewed the change and the evidence, and the test
+results above come from runs on our hardware.
+
+Fixes: 6994520a3328 ("r8169: disable interrupt source RxOverflow")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jure Rebernik <jure.rebernik@luxonis.com>
+---
+
+Notes:
+    This restores RxOverflow for every chip that had it before 6994520a3328,
+    but I could only test RTL8125B. If you prefer, I can send a v2 that sets
+    it for the RTL8125 family only (rtl_is_8125()).
+
+ drivers/net/ethernet/realtek/r8169_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index cd4ebc654dd0..62709160d354 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -6086,7 +6086,9 @@ static void rtl_set_irq_mask(struct rtl8169_private *tp)
+ 		tp->irq_mask = RxOK | RxErr | TxOK | TxErr | LinkChg;
+ 
+ 		if (tp->mac_version <= RTL_GIGA_MAC_VER_06)
+-			tp->irq_mask |= SYSErr | RxFIFOOver;
++			tp->irq_mask |= SYSErr | RxOverflow | RxFIFOOver;
++		else
++			tp->irq_mask |= RxOverflow;
+ 	}
+ }
+ 
+-- 
+2.39.5
 
