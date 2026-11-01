@@ -1,58 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793575383;
-	b=xH+/GXFDQWX6HjSTv5LKrBaWSBZ0ybqIwzoUr1xvl0uK9i0pYmtoXp/Ue+5PH9fz8Of7
-	 Rf+FtCmyAbv9uhqhehbUSpqpr2+sIZsZ2HNGkKIqpFA/oH/EDliUY/OJp5E3pn1Y1Myno
-	 sgD0ygTfDTxwwvJ6MiAAK00fpJhOdMfrG6QtpPR4KX0wkmCFlMkTsOxeemRkXNbZLY1Ye
-	 L8dB1e9sk9nF/4JKOY/4GSbNsPA2VY8xVDPgHRwuCQMM7Z2w11mPkE3xcjefSSY1dqxc4
-	 r+6cVn/dSJVQCL55P4s+ewfjbrFvAyKBP8P0i+oZzXFPW2Iouai2FRWRUvrYjW2U38g==
+	t=1793575442;
+	b=TMtDGlTbljt5zGCZHkr+mXZnDo3NnaCROOw3/KZb/Trz266BHKSDLhmvt+LKEsE3tKY7
+	 0+eioznLEwzd76jjt5lJfhRwdoDsXSTUgVLS5B3B+a2R6WQMnoSZ2LQv49F0XtmAzkEqd
+	 ens9UUkMC2+zfqKlnWoaVZMSRwRXg5TIt6VJKc/h5daOOMTsuULNMB0TViW+T7MOiOE+D
+	 bYK7wTYGnPyBKYZGpk6rkj1CoISyi6nGOMr3rH6+5zrqVt1PWJFbxO9UKwThh+tA5hyOz
+	 rxU0hLs3jozCOpSUj6n2bPuYpBQ6X//YE6bysnTZULvXMF8o0azqJfvBMAzAy91RXqQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793575383;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=neA9HbOUFeZdfaIBf1NrRXdCi9YOxGphTdPUH8xzr5Y=;
-	b=nPgMJmQjrGzuuxuFblcizV3J8tboSLfpz+KK6g8JYzXwiiGUFzlBdhzZ2EEhGnlrdLUi
-	 JMqtfEkImBVH0ITe7MKEFsKhDtJtt2k0+cT4Jb7KQH5pIMSMLoO3Sl6w42r9StB1FRStq
-	 9WwMoz6TZ9xayWA1RFFnem39rvjI1DCHpTlhKF6DkcQpwy/ibOtqwY3QlbWXo0k7y8KkN
-	 OG+uwnPdmwjuyoyTvHCxnc/FdbOKfwuJ1n7mjKu4WHA/V9EKwp/JPzFJrl8BV2nsvEwb5
-	 JrqXxmciK9gmjU51wzmdh3PTR/8uY7s2qXlU7GBFN0ZTEzdUE/dsx+Dd4qdXNcLhY/w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793575442;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
+	bh=Ge9MIPB42VbouvDG+bVn+6h7dY6h9nMEzIi4vXf4uCU=;
+	b=r0GB5lY3JkW7Jy0VaTsydlZk7ZBObAPGtZIrMl90uPJzKeHlfd2QZYxzPrqhks7W1s7N
+	 sUxLIHYbUCMMWMWH0gfAi4zIoT6Sr9mPI9ATpz+yndId70imn2+q/bvLRg/etVf3eonRu
+	 ca9/OCDy4o5EdrGbNIlfLsfuvWhYQJKtPmzmBLmNZP0sccirgc8elr52Ui2LoVCYljBQd
+	 i1q0fm9+ZyKVKWVhiWSXX2c3LNYIhiDlZlRusEzGvmL++AbA5phEamLJE3d6r8vBC5CnP
+	 y7Zdhxc3gH8wK66ScD3J4AArfANimsZFNd0Ja/nrAG7+wV/HjeaLtxGEFvow1XrZOrg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DZCcZyHL;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=GtuIWiEH;
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB440606A324
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 23:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 5C40F606A324;
+	Sun,  1 Nov 2026 23:24:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5C40F606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DZCcZyHL
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCABE1F000C1;
-	Sun,  1 Nov 2026 23:23:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793575382;
-	bh=neA9HbOUFeZdfaIBf1NrRXdCi9YOxGphTdPUH8xzr5Y=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=DZCcZyHLg7hXMopjpW377Ns2sTrXeDK0S8ACxcReMkhvrnNm960iRNES9cOe/ggjI
-	 HLkehCMaZJYf12C9H07d0z39LFnYFPxZHRCXJRwP8/9uL8XX3i185zDDvu2DKj6lIr
-	 vs2pjJl04/q0CrbBaqfFYCqy+zzOx9Nn9giyj3uJDImSz7TFHY5rJ9iENBqDHblnNl
-	 tfoxXy/tTVt+A5e5edf1IXw6sDHo+4vXhtXgGVhaU9XP5ncYuC+Gia1GDQXMx7F72l
-	 fXl2NJuamHl/oJqy8W/ywVRO+ZmCvcPFVyUMT+gwZwqYWryeMnTmJO29RpDIWmoDKq
-	 xTku+ivuXi2aA==
-Subject: Re: [PATCH net v3] tun: bound the NAPI receive queue
-From: netdev-bot+sashiko@kernel.org
-To: antonio@mandelbit.com
-Cc: willemdebruijn.kernel@gmail.com, jasowangio@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org
-Date: Sun, 01 Nov 2026 23:23:01 +0000
-Message-ID: <179357538131.3131.13550708149751579907@kernel.org>
-In-Reply-To: <20261031231444.1528758-1-antonio@mandelbit.com>
-References: <20261031231444.1528758-1-antonio@mandelbit.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=GtuIWiEH
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1793575438;
+	bh=Ge9MIPB42VbouvDG+bVn+6h7dY6h9nMEzIi4vXf4uCU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GtuIWiEH+TEt4WOI6KMRoYXq78BIB6FQO4enG0iZPWcUr0DUilzAHoTcXl2ezriUz
+	 0ahO428Rox8GqDoGv/bjHuLRKsDfMgnbHot4m7h1LmXTt2xaZ9EixAm0uuFfP/UpoI
+	 4vIiysVYik55P+8Czf02TpV7q+8GZECC5eRULDREKcCIJhJvp32mZcao2bgx4k0Fwk
+	 L/YBdE1XleEAwT3g865vKkcBhprRlUNKk1VxmB2bLxijhGZJHzNUbrRPNix7fu7Xym
+	 sY4SE2of6zvcT5vtxc2SO/FBAwftf4E6r1NspPhvT3wuaj5vns+ut/wG1GdgmREIu0
+	 Vq+SwuhFL0IVA==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 6790260078;
+	Mon,  2 Nov 2026 00:23:58 +0100 (CET)
+Date: Mon, 2 Nov 2026 00:23:55 +0100
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Xingyuan Mo <hdthky0@gmail.com>
+Cc: Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	"open list:NETFILTER" <netfilter-devel@vger.kernel.org>,
+	"open list:NETFILTER" <coreteam@netfilter.org>,
+	"open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH nf] netfilter: nf_tables: fix flow rule leak in
+ nft_delrule() error path
+Message-ID: <aufKCw9iv5pMj2fy@chamomile>
+References: <20261028062204.1079089-1-hdthky0@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,189 +71,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261028062204.1079089-1-hdthky0@gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Wed, Oct 28, 2026 at 02:22:42PM +0800, Xingyuan Mo wrote:
+> On the nf_tables_delrule_deactivate() failure path, nft_trans_destroy()
+> frees the transaction but not the attached HW offload flow rule. Destroy
+> the flow after the transaction to avoid memory leak.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+For the record, alternative proposed patch:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+https://patch.msgid.link/netfilter-devel/20261028112535.115054-1-pablo@netfilter.org
 
-- [High] The new limit does not bound the IFF_NAPI queue in the case the
-  patch is meant to fix: a threaded NAPI poll on another CPU that is…
-- [Medium] The new full-queue drop paths return before NAPI is scheduled,
-  which can leave queued skbs stuck.
-
---
-
-tun: bound the NAPI receive queue
-
-In IFF_NAPI mode, packets written with write() or sendmsg() wait on the
-tfile's sk_write_queue for the NAPI poll. That queue has had no limit.
-This patch drops packets once more than netdev_max_backlog are queued.
-The check runs before allocation and again under the queue lock, and
-each dropped packet is counted as rx_dropped.
-
-> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> index dcec7311e6011..410efa8ce5d91 100644
-> --- a/drivers/net/tun.c
-> +++ b/drivers/net/tun.c
-
-[ ... ]
-
-> @@ -227,6 +228,15 @@ struct veth {
->  static void tun_flow_init(struct tun_struct *tun);
->  static void tun_flow_uninit(struct tun_struct *tun);
+> Fixes: 63b48c73ff56 ("netfilter: nf_tables_offload: undo updates if transaction fails")
+> Assisted-by: opencode:deepseek-v4
+> Signed-off-by: Xingyuan Mo <hdthky0@gmail.com>
+> ---
+>  net/netfilter/nf_tables_api.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+> index 59ac623e6805..ec56ea8c8436 100644
+> --- a/net/netfilter/nf_tables_api.c
+> +++ b/net/netfilter/nf_tables_api.c
+> @@ -752,7 +752,7 @@ static struct nft_trans *nft_trans_rule_add(struct nft_ctx *ctx, int msg_type,
 >  
-> +/* In IFF_NAPI mode written packets wait in the tfile's sk_write_queue for the
-> + * NAPI poll, which may run later in a kthread or ksoftirqd. Bound that queue
-> + * like the per-CPU backlog of netif_rx().
-> + */
-> +static bool tun_napi_queue_full(const struct sk_buff_head *queue)
-> +{
-> +	return skb_queue_len_lockless(queue) > READ_ONCE(net_hotdata.max_backlog);
-> +}
-
-[Severity: High]
-Does this bound the queue in the case the patch is meant to fix, where a
-threaded NAPI poll on another CPU is slower than the writer?
-
-tun_napi_queue_full() only looks at the length of sk_write_queue. But
-tun_napi_receive() moves the whole queue out before it starts:
-
-drivers/net/tun.c:tun_napi_receive() {
-    ...
-	spin_lock(&queue->lock);
-	skb_queue_splice_tail_init(queue, &process_queue);
-	spin_unlock(&queue->lock);
-
-	while (received < budget && (skb = __skb_dequeue(&process_queue))) {
-		napi_gro_receive(napi, skb);
-		++received;
-	}
-
-	if (!skb_queue_empty(&process_queue)) {
-		spin_lock(&queue->lock);
-		skb_queue_splice(&process_queue, queue);
-		spin_unlock(&queue->lock);
-	}
-    ...
-}
-
-While the poll works through process_queue, the qlen of sk_write_queue
-is 0. Writers in tun_get_user() and tun_xdp_one() can therefore queue up
-to max_backlog + 1 new skbs. The poll then splices the unprocessed
-leftovers back in front of them.
-
-If L skbs are queued and W skbs are written during the poll, the queue
-holds (L - 64) + W afterwards. Since received == budget, tun_napi_poll()
-does not call napi_complete_done(). The next poll splices everything out
-again right away and the window reopens.
-
-Doesn't that let the backlog grow by up to about max_backlog + 1 - 64
-skbs per poll, for as long as the writer is faster than the poll?
-
-The commit message says:
-
-    the NAPI poll splices the queue out while it runs so up to about
-    twice the limit can be in flight
-
-That 2x bound holds for enqueue_to_backlog() and process_backlog() in
-net/core/dev.c. There, leftovers stay in sd->process_queue, and
-input_pkt_queue is only spliced over once process_queue is empty. tun
-puts its leftovers back on the shared queue, so does the statement
-apply here?
-
-Would the leftovers need to stay off sk_write_queue, or be counted
-against the limit, for the bound to hold?
-
-> +
->  static int tun_napi_receive(struct napi_struct *napi, int budget)
+>  static int nft_delrule(struct nft_ctx *ctx, struct nft_rule *rule)
 >  {
->  	struct tun_file *tfile = container_of(napi, struct tun_file, napi);
-> @@ -1856,6 +1866,20 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
->  			zerocopy = true;
+> -	struct nft_flow_rule *flow;
+> +	struct nft_flow_rule *flow = NULL;
+>  	struct nft_trans *trans;
+>  	int err;
+>  
+> @@ -773,6 +773,8 @@ static int nft_delrule(struct nft_ctx *ctx, struct nft_rule *rule)
+>  	err = nf_tables_delrule_deactivate(ctx, rule);
+>  	if (err < 0) {
+>  		nft_trans_destroy(trans);
+> +		if (flow)
+> +			nft_flow_rule_destroy(flow);
+>  		return err;
 >  	}
->  
-> +	/* Drop before allocating and copying when the NAPI queue is full. The
-> +	 * check is repeated under the queue lock before queueing.
-> +	 */
-> +	if (tfile->napi_enabled &&
-> +	    unlikely(tun_napi_queue_full(&tfile->sk.sk_write_queue))) {
-> +		if (msg_control) {
-> +			struct ubuf_info *uarg = msg_control;
-> +
-> +			uarg->ops->complete(NULL, uarg, false);
-> +		}
-> +		dev_core_stats_rx_dropped_inc(tun->dev);
-> +		return total_len;
-> +	}
-
-[ ... ]
-
-> @@ -2045,6 +2069,14 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
->  			goto free_skb;
->  		}
->  
-> +		if (unlikely(tun_napi_queue_full(queue))) {
-> +			spin_unlock_bh(&queue->lock);
-> +			rcu_read_unlock();
-> +			kfree_skb_reason(skb, SKB_DROP_REASON_FULL_RING);
-> +			dev_core_stats_rx_dropped_inc(tun->dev);
-> +			return total_len;
-> +		}
-> +
->  		__skb_queue_tail(queue, skb);
->  		queue_len = skb_queue_len(queue);
->  		spin_unlock(&queue->lock);
-
-[Severity: Medium]
-Can these early returns leave skbs on sk_write_queue with no NAPI
-scheduled? In tun_get_user(), NAPI is only scheduled after a successful
-enqueue:
-
-	if (!more || queue_len > NAPI_POLL_WEIGHT)
-		napi_schedule(&tfile->napi);
-
-net.core.netdev_max_backlog is handled by proc_dointvec with no lower
-bound. An admin can set it below NAPI_POLL_WEIGHT (64), or lower it at
-runtime while skbs are already queued.
-
-vhost-net sets MSG_MORE while batching (tx_can_batch()). So a vhost-net
-sender can fill the queue to max_backlog + 1 skbs without queue_len
-ever going above 64.
-
-The send that ends the batch, without MSG_MORE, then hits either the
-early check or this locked check. Both return total_len before the
-napi_schedule() call, and every later send is dropped the same way.
-
-The batch path has the same problem. tun_xdp_one() returns 0 on the new
-drop, and tun_sendmsg() only schedules when something was queued:
-
-	if (tfile->napi_enabled && queued > 0)
-		napi_schedule(&tfile->napi);
-
-So a batch in which every buffer is dropped never schedules NAPI
-either.
-
-Before this patch, the next send without MSG_MORE would queue a packet
-and schedule NAPI. With the patch, does RX on that queue stop until the
-queue is detached or purged?
-
-With vhost-net zerocopy, the stuck skbs also keep their ubuf_info
-references. vhost_net_flush()->vhost_net_ubuf_put_and_wait() does an
-uninterruptible wait_event() on those references.
-vhost_net_release() calls it before the sockfd_put() of the tx socket,
-so the tun detach that would purge the queue cannot happen.
-
-Could releasing or resetting the vhost backend then hang until the tun
-device is deleted?
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261031231444.1528758-1-antonio%40mandelbit.com
+>  	nft_rule_expr_deactivate(ctx, rule, NFT_TRANS_PREPARE);
+> -- 
+> 2.43.0
+> 
