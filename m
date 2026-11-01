@@ -1,60 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=136.143.169.15
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793560301;
-	b=v5lrOXLE4iy2wdGGMIM+AQJuKi/0uEm58q2EkPOcVH/2tTv5KhfZnDMYbXwc6TWIi2Nf
-	 UiMSSEJymYBLx4f31TUL9Qn42H+jY1sbtXy2TPR98NXK1bEncG1eGPFS0S7xaf7jbQR+j
-	 BHLCjsLA+X0NesqeaoKZ32pbJy2elAwU8ZU86mpAYJt7araXav3wqUUGOIX/OZgTltgFM
-	 hN6DvsT0Od9aedX1zDf8SBb2cg3elU6DU6l55l5ABkW67edP1h1PGTkbv/CVkz6v9QyOB
-	 NB0UwsEBk0bmMaI/aDuilIhlsfj0DhI8E3vZcYMW6LAK1/+rQyttHGDW+dx2HYVznpQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793560301;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.41
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793560861;
+	b=Qss/bKsRv91Cegp7MUTEakdPljGNVqe43e+yMOyZPlJi7kddf9i1iRqy6JJ/Q2J2Lnv2
+	 d9BTdwjQndfywRR8VogoFmfSHtSqlJHsxIMpiu8ZxBNjQIg6aQ9/qbPfduxSPkfCMSQyL
+	 K72pKFSEu/cHNxoRGYF1u4PxUYvBZ5RYvucYzUo8XJ8BzRMu2Y+RjIxNrQIx1uWm6ieB3
+	 vFqvbSn53nuFOjfWJlrOeHCNlbTCF5PtkXtNMIKjt/NTGz79KWJGBX8yzGJ/0kRkjTsr8
+	 vnGuHnDJvmZRApilnTdnmQ2YEkU6GAab4k1eT+eLLWi9KTdAOhXPvva/ZrE2aMj2xKA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793560861;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=mPcWOwuHmd2vb2lc/1veBqXCg/9uHVaMceIoosx5SG8=;
-	b=HjfIxqbsWE6v6aFd/qDitqwVZFeZpadACNwLVCvGbtDBolFYqsthBVT6PgjEto0K2v6H
-	 VyIzm4XEELfFFdJfKLnLfts8/Yzbd+HgsSCpRSPFc33ppn9sA3GC8uHWDarLvYjSAR2M3
-	 b0uSoAVdkFjKk02XggmUitMuvMBY/BLUlRvboBZKEaqxiApitU+YwpVtlnYhH/094dqdU
-	 LuyFKnpJaf3A0QgpmLDfS/xf0eJvci8h9n8jN/RSsSAEcXQGO8r9Dyl9le2Rzk05Vlssm
-	 m1fhX2xfMuhMDDOKboGtuSW5RbSpQ15pDRjn85uYQJYgONAhMRf5d/3okxOy/XPnFJg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=iav.lv;
-	spf=pass smtp.mailfrom=iav.lv;
-	dkim=pass header.d=iav.lv header.i=@iav.lv header.a=rsa-sha256 header.s=zoho header.b=VxAMb9Yk;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=136.143.169.15
-Received: from sender-op-o15.zoho.eu (sender-op-o15.zoho.eu [136.143.169.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	bh=iAeiSOPaaWkQBppOUsktRtMkprnZmaPxcUrEefFlWVc=;
+	b=QyAYsLL4OSGHsKdhnU/53XQp+ewxGbBzRH2fvvD9CoS1VWX4JzxCaq99NcMzZsNHwIws
+	 oZfAEQ79EnZCyJw0vcVlpyEwKn72w/sgNb8uH818OFooO+ZsMbhznjolliyO9xL3L/TCL
+	 OpeIXClznYGTArysKN9y5ZzaxP+n+ubiy+ZrzjpFVn0h2q3tQYjPOTu8TBRBwPzSSPuCT
+	 emuLnAw2gqtHeyjwyCch8eKu/5KOLcEnCqg+avQESAp91TjiLFGTv2XEtkEXixiYGgeCE
+	 gO9KoFQ6FVCEaU0hsAKBpFBX4AX9UjkmJy0I7lbCtJGGmRaavvUnKKAB+isSChH6EFw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=G7r1Pb0P;
+	arc=none smtp.remote-ip=209.85.216.41
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E111D606A324;
-	Sun,  1 Nov 2026 19:11:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E111D606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iav.lv
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iav.lv
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9B8606A324
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 19:21:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6B9B8606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=iav.lv header.i=@iav.lv header.a=rsa-sha256 header.s=zoho header.b=VxAMb9Yk
-ARC-Seal: i=1; a=rsa-sha256; t=1793560235; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=iRBtL5ZI127nRPDqqbTqjRcbsDS30mPeVHezXgaqcjUFMkQDqoK8sp0ijTBCmafp/flXvwvfocEKXG6gqj9RTAhrFG7X6e6PqPbMiPY+ZQKGq+3Uy6mFnYxWh9c6qf3xJwGMrnom/aDUk+LAwkjhpyQjzaWduNH2LiXxDDtZj1M=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1793560235; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=mPcWOwuHmd2vb2lc/1veBqXCg/9uHVaMceIoosx5SG8=; 
-	b=V9p49xnybzD+e3S8j1KhS/QP1iZM8Qkb2xIwizMus9rJS4YRbKeP/jFbaZwVwRaiMzJaLTSKo6lT+f5izvfYny9BInMU6MJOsy2DIsWxpJxsnMgz1isgcTzmVyA5qte7msiZOtUB8Lj75msKPXTYRmW4veWRqcIbsM0jlbIomS4=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=iav.lv;
-	spf=pass  smtp.mailfrom=iav@iav.lv;
-	dmarc=pass header.from=<iav@iav.lv>
-DKIM-Signature: a=rsa-sha256; b=VxAMb9YkFS0HWxIAL9v0QH3eV836oDrQf3tt3baPOt8693zNFZPNp1MlPM0j8dZAgVWcHVzmB2Eor+Q691r/iKGybzsFXRXVcPnGSLheFezn/xMsRaZHqLXZEDyQIiceVoSNrTionsswenYr487X/bcDE33WAf8HieHx4WNrtPQ=; c=relaxed/relaxed; s=zoho; d=iav.lv; v=1; bh=mPcWOwuHmd2vb2lc/1veBqXCg/9uHVaMceIoosx5SG8=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zoho.eu with SMTPS id 1793560234157386.45816168150634;
-	Sun, 1 Nov 2026 20:10:34 +0100 (CET)
-From: Igor Velkov <iav@iav.lv>
-To: netdev-bot+sashiko@kernel.org
-Cc: iav@iav.lv, andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, maxime.chevallier@bootlin.com, lukas@wunner.de, rafael.j.wysocki@intel.com, wei.fang@nxp.com, niklas.soderlund@ragnatech.se, paul@pbarker.dev, florian.fainelli@broadcom.com, opendmb@gmail.com, Thangaraj.S@microchip.com, shenwei.wang@nxp.com, netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v4 5/5] net: phy: postpone PHY interrupts during sleep with MAC-managed PM
-Date: Sun, 01 Nov 2026 21:09:52 +0200
-Message-ID: <179356019298.3385307.17700170309730679223@iav.lv>
-In-Reply-To: <179352219781.3131.16504721138901563596@kernel.org>
-References: <20261031-b4-phylib-mac-pm-irq-v3-v4-5-5ba23b3ff9a4@iav.lv> <179352219781.3131.16504721138901563596@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=G7r1Pb0P
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3ae1da332bcso1045817a91.2
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 11:21:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793560861; x=1794165661; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=iAeiSOPaaWkQBppOUsktRtMkprnZmaPxcUrEefFlWVc=;
+        b=G7r1Pb0PM8rKvbabZG6DbUaHrypMYxZIEigHQRNUZCKYZjRfQ0WRO5sZ6lr3XGqnT1
+         edU3+biJcSM4yJNPLx50J7uFtFqDxEb+GFxnGSBciBokdfKTYjaRGW1KlVI9yGkVZFIU
+         pdfCopUucfGlW2Bss4OEuWrnSEhiKHjIx/FM1qVmbqJ5d0J07EJ3OpuOty4yf133VOl6
+         se1JvscppLBxRPyHRQTM8IIENG4MqK5C+k0fmy6WhURdpjEK6gLG12LWlqPupqAMpCTa
+         nJqO2iXQF/mxo9QV+v/69gXFvAiOMvu+EWo7j5NXrECeHisdT3CDkOnwwrkMhxSyhhTe
+         JHtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793560861; x=1794165661;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iAeiSOPaaWkQBppOUsktRtMkprnZmaPxcUrEefFlWVc=;
+        b=uohpLPgnfiParjxDxgpXAvtrrR1WWfxr2i2mO5On3BjN2oUR+ceyMvl5rd2N8XdAQE
+         89UGWW9/h6HBW4EuF5OMmpl1XSyOJizOm+ibxhnunvzfTrgB/ge+rN+A3zycEeL3SE17
+         xWkDLBrqyDscVQyGL3mr/LemYTowoI9ar78NOhoSSEJcKnRjgkJJ4YeEbl1H/Qn9S0LH
+         6nEJffD88R9iOJ++BFUywKFy3pJD88Ejkir5xzO0CzxKqX2DQ9PHYTipsOL+ijzOHMkk
+         qkr3G1I4Q/m1eCIuuN+B7ae3eWhnjPk7aFQKKgvVcuoy2yxSaskKx6fEme33mXcEvE2h
+         IaVQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwWQ+FIcMWFJcTJBKTZGKTBSRCAc3ig7cRVjyNf2GhKYncJ/73jTCUE8YN+Jy75VDYh4ojwTiE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9Ri0lpzp6CKfq2tl4QLJwQbZNqWPM+Ksj/x7RoJ/3fiXQYji8X
+	V91zIOajcwIdsccO8snWL7QJ185YQ6P1/I/PZViOzBiYVdKjcWBpM1HI
+X-Gm-Gg: AYBFou1f/82IAwe6MONh6idp9UvZSHcajygc6LWFKk7iiTLw7WqELD0LPphxfko8Lzc
+	t2IbCMkV4lEwaqYzUgeid6RcQR7c/6QnExIyqaYZYBLAqI8HllyanAWTiUGDIriz3cvrAO5KK67
+	BNG8FNAqqcoYgoPMl2fR3DsN2ALrAFqmwahnPQvxCTZsuXUDmRPsZRQnTsAQJc8RR8y8kixUU/U
+	V+2zyQUmGrDp73Hjt1xHbfKD0sGMTGGMShZo78tb3bHtiIAruMTn6XnBfcwLwL3rz+j/WhDXcwD
+	YHcjWiGaa5zA6hLyOlh1IjRsD0EhRagKlaoEiiVHX0g0SYAxmD+/QtzVBJtsWMaihE1Ce2WgBUe
+	BSuTad3EKWGVy9NnLVVhHYLNJ3lwIrpv87sWvaA5zINABPqu8Adiau7xMVBzvJrHgU8ZgFQBArX
+	LV27O9ooSoy85MsTcoxOHM2LA3T87eGIb39HTqMVJUZWhfj9LPThw4/oDh3+KheDIwDZj6ZL8fC
+	em00rw49uoNQCeXZh6IE10cN4KaKdP+hxBCgp2frMMdehnRRWrWZ6gxnWijnvnkVNedBsOo8j2a
+	3qWNP3ZsXkuCnOsoKEloeZRbqCZ7k9WcAYKj7LwPUL76VGsTiK0E8nQ6xRZe7NsslloA4Rz6KpO
+	HZ0kORwukk9hDabUiXr+0eNcp4Ovtn/OqrbYQ4CDrn0ESCoDXdCPzdjnn+g2zIQo08wo7+Z/ZHg
+	==
+X-Received: by 2002:a17:90b:4a02:b0:3a7:9e3d:b3 with SMTP id 98e67ed59e1d1-3ae8987e31dmr6107376a91.66.1793560860808;
+        Sun, 01 Nov 2026 11:21:00 -0800 (PST)
+Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.251])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae845984absm11157692a91.10.2026.11.01.11.21.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Nov 2026 11:21:00 -0800 (PST)
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+To: bpf@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: daniel@iogearbox.net,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	john.fastabend@gmail.com,
+	jakub@cloudflare.com,
+	jiayuan.chen@linux.dev,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	kuniyu@google.com,
+	willemb@google.com,
+	matttbe@kernel.org,
+	mptcp@lists.linux.dev,
+	mason@kernel.org,
+	josef@toxicpanda.com
+Subject: [PATCH bpf 00/15] bpf, sockmap: Fixes for verdicts, redirects, corks and recvmsg()
+Date: Sun,  1 Nov 2026 19:20:42 +0000
+Message-ID: <20261101192057.2296489-1-alexei.starovoitov@gmail.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,21 +113,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 
-Path 1 is real for a PHY that keeps its link interrupt enabled while
-armed for WoL. phylink_suspend() calls phylink_stop() before
-phylink_speed_down(), so the driver's suspend runs first. RTL8211F and
-AN8801R mask the link interrupt there; on Helios64 (stmmac + RTL8211F,
-wakeup-source) WoL suspend passed 4/4, though I did not log the link
-speed. Of the wakeup-capable PHYs in drivers/net/phy, BCM54210E leaves
-it enabled. Before this series, the link-up after the downshift could
-arrive after stmmac gated its clocks, and phy_interrupt() would read the
-PHY over a dead MDIO bus: the hang this series fixes. An aborted suspend
-is the safer failure.
+From: Alexei Starovoitov <ast@kernel.org>
 
-Path 2: phy_stop() with wol_enabled leaves the copper link up
-(rtl821x_suspend() skips genphy_suspend()), so the MAC causes no link
-interrupt. Counting netdev->ethtool->wol_enabled as a system wakeup is
-what phy_interrupt() already does for PHYs without mac_managed_pm.
+These patches fix bugs in sockmap:
+
+  patches  area
+  -------  ----------------------------------------------------------------
+  01       recvmsg() after a fault
+  02-04    the verdict of an sk_msg prog and the return value of sendmsg()
+  05       the backlog of a stopped psock
+  06       TCP listeners
+  07-08    the target of an egress redirect
+  09       the TCP state in recvmsg()
+  10-14    corks and the redirect target
+  15       bpf_msg_push_data() and bpf_msg_pop_data()
+
+8 of the patches are from Chris Mason and Josef Bacik.
+
+Patch 08 changes net/core/stream.c. Patch 09 moves tcp_can_send_ack() from
+net/mptcp/protocol.c to include/net/tcp.h. Patches 10 and 15 change the
+sk_msg helpers in net/core/filter.c.
+
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+
+Alexei Starovoitov (7):
+  bpf, sockmap: Don't let an SK_PASS verdict cover the next message
+  bpf, sockmap: Subtract all dropped bytes from the return value
+  net: Leave sk_stream_wait_memory() once the socket is dead
+  bpf, sockmap: Clear the redirect target before the sk_msg prog runs
+  bpf, sockmap: Check that the redirected message is the cork
+  bpf, sockmap: Keep the rest of the cork after a redirect
+  bpf, sockmap: Clear the end mark of elements added by push and pop
+
+Chris Mason (5):
+  bpf, sockmap: Give no progs to a TCP listener
+  bpf, sockmap: Check the target of an egress redirect before each send
+  bpf, sockmap: Check the TCP state in recvmsg()
+  bpf, sockmap: Reset the copy position when corking
+  bpf, sockmap: Don't copy 0 bytes into a full cork
+
+Josef Bacik (3):
+  bpf, sockmap: Write sg.start when recvmsg() faults
+  bpf, sockmap: Don't let an SK_DROP verdict stick
+  bpf, sockmap: Clear the resume state of a stopped psock
+
+ Documentation/bpf/map_sockmap.rst |  4 +-
+ include/linux/skmsg.h             | 19 +++++++
+ include/net/tcp.h                 |  6 +++
+ net/core/filter.c                 | 17 ++-----
+ net/core/skmsg.c                  | 13 ++++-
+ net/core/sock_map.c               |  9 ++++
+ net/core/stream.c                 |  6 ++-
+ net/ipv4/tcp_bpf.c                | 85 +++++++++++++++++++++++++++----
+ net/mptcp/protocol.c              |  6 ---
+ 9 files changed, 133 insertions(+), 32 deletions(-)
+
+
+base-commit: 5b96632457e4ccae88ecb751cf48176b2e3629a7
+-- 
+2.55.0
+
