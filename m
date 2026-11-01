@@ -1,60 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793544328;
-	b=sgnyHga4rRvWH7OpodD+RmKB6Gb83mKtKkxJCWREuugO9JNX0VsLVaunTcHLo528xdda
-	 i+UpN5tIKJEtsmWKlrKvdytGtwANyBgmw6r/hXgbKt4AQVpYwXu21vKv0YtML1bjRvdaK
-	 aTjmRLB35PzQVm5592SURMZ2p3G4xxUksIYP4Ps4/by01v+Y7utbFHPbUAb1IZ5Mom+IS
-	 fgL74tgEd4ODU6VYLV9P19cwZPgeLb0AvW9aD1kPQ7UvpepnJTGMIpN+YS/dEr3sjkjFr
-	 rDMTwsAuyOnZosKaovyxGXOwL9/FpwxarAjzzAgqjaGYy6vm4q5EzX4UiIhER/KjfWg==
+	t=1793545023;
+	b=gliLfId4kBy1EvQYkN0sFzJCNFqVR2Oj1NwKAQ1E+pT+qwKym/ZayaaqPcd4F1bhTq9q
+	 gRSUafjQwXW96XxBJHLId/kFOjzFjDqvaA4pWnTkUv2BuCN6eutOJYMu50AK3fb4JfrXh
+	 X1xoOmKuFuqioalHLqH1lUhXqcIJRxKUK4iQgSKJyuxmNJfY5ljQekdJmjBpIFqpYTXxY
+	 HOU7WfJ3mPUpfKnNzrtJn3apWQWUuHCptJHJQveEQLzsToQHknA0uv3rWMrtaWQDofdox
+	 UTYtmvYqzdrWPwfHEHz2fwPS0xGyxHBrJCOh2nr+tl3WUPFBpqCEcp+CT61QOEehr7A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793544328;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=44s04JgPecTtm6NhDjYX2WlJHWZ2E+d8hRSUAWRiAAQ=;
-	b=LYfR6lTqy+tOi9LiBYXBqS6mbx1Gzk35O639LEZo8LrUVvMRRJdX2tuoY6wcKqzHzybx
-	 WBnmZ2N96G089u1fRu5ViZMq/kmmYGE4x6LBbcaYq+SJSes42RAYzDISP02B+KsiQYrts
-	 WZfVAA+EfWWIosA5KgM5D4euhgiWLTxXft2d3GcqDA5X62qy5qdYe2vP9i+jYXR6J1x+6
-	 rlmgeG2Lfpw/hDq0RFAEDyHyzCqK3sdoPbicJ4mMlsdDCY1kqBaZDln1aBBIhOQtJkH1+
-	 Yr/0O42r9VijqVTWzRLBP72WpyStQ/8WzFU2caDuzklqzaCtds6GF8gHn3g6hEmSgZw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793545023;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=L5lhL2beYV7BhyhbK9ACbFrNrJXtxDi/4b3LA9oMRFA=;
+	b=Zqc+XltOH48ECRyMRDr0q0Y99B2P16DtXdBBOOxSNCwO5EkkkiJ1chktk2ft8ErEaCEO
+	 bmQcxv1jSTNrXFo2+eUr5hKlMAOVvba3gPqyeHz9HOyeHE+vDZFACQJt5OPC0Y2nCKXa7
+	 0OdCWQMdAX+3u0NeYnweR6SLpXwy844NH11M5PCvyHMz76qfUFgtrYMKbgxoc/x5GfRBQ
+	 XmEF/cAkz0i1VhBnh08rBEIeufANojHy+I6xJXDN8PLjt6PcvNg1Xgm5cP3LJEgEyWFuh
+	 J5DPE0/tg43B6U4JYZIfxr8dcEuW2mN/n5Euxk2rmu20G6zZ4XRdkeHcBeRMZn8TEKw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MBWLt1AF;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QILQC8FE;
+	arc=none smtp.remote-ip=209.85.208.52
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BF6606A325;
-	Sun,  1 Nov 2026 14:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB90606A325
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 14:57:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0BB90606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MBWLt1AF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E851B1F000C1;
-	Sun,  1 Nov 2026 14:45:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793544327;
-	bh=44s04JgPecTtm6NhDjYX2WlJHWZ2E+d8hRSUAWRiAAQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MBWLt1AFnyDdYSwLLQ/T3kR47lm5EWNitJQwhPQ7IygtOyWnbbCrCNnyqc606rFj0
-	 8Y9Pi7zipDkNKoopHJtxJtFo85ePgz3XOzX3f2U3qWFOPtFhRKJgA4lJnsOx/PzLIW
-	 eG2opP5MH9zd0UWSYxW1I8/mZa030UoKrVvYVUj+jmzV4VrjNlhEdK/hhYyuZyorL8
-	 X4Jpuhd01xfcaj1RgBxWgmKBD16GZRlxLYIszJ7lHN4ybPy/AAJFWg+WilMZ7g0wcL
-	 VQfwcQ4ufT2EHtx9jZkK4DPc8c+qjf2bJ6ujjzSpQmqV7tUcHE8m6tYjSkIiw//Ccj
-	 j7oRyLHYSYFWw==
-Subject: Re: [PATCH ipsec] xfrm: use software GSO for inner tunnels without
- crypto offload
-From: netdev-bot+sashiko@kernel.org
-To: usmanmalik@engineer.com
-Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- cratiu@nvidia.com, leon@kernel.org, stable@vger.kernel.org
-Date: Sun, 01 Nov 2026 14:45:26 +0000
-Message-ID: <179354432643.3131.245171497251536441@kernel.org>
-In-Reply-To: <20261028-xfrm-inner-gso-v1-1-1908f0eb7313@engineer.com>
-References: <20261028-xfrm-inner-gso-v1-1-1908f0eb7313@engineer.com>
-X-sashiko-severity: Critical
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QILQC8FE
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6acb57c2b88so2784744a12.2
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 06:57:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793545021; x=1794149821; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=L5lhL2beYV7BhyhbK9ACbFrNrJXtxDi/4b3LA9oMRFA=;
+        b=QILQC8FE1WP2+aAvEV5glCxGnqssHHiRDH4Bu+bW8/rLzjezvWaIscoeNvwWY0XwtV
+         sWHqhXZPQ7neMkYKtck2VSHZNgGryHhvszLlcaHpX0eKJG6x3qHlVq9spSPe2Eil1bUU
+         ypGY9bWkGdrR8srF791MX7a7V0FS9IIiPee37U+7B6IWG4XhsP9cp10JcNJ/9+wFWwU7
+         M8jGKwrD9Lpywn53jH4enEhA23ZsaSkSfLkffVHQyYINkGxF+Ur6zXpiBpUN/DV2Fd6s
+         F0lDxNiSGF3vi/jU/N0VwGR+acvhKAnc6eL9NLSuuBxEyCrXlfBU7OUqVeW8AYRX5yRO
+         9P+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793545021; x=1794149821;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=L5lhL2beYV7BhyhbK9ACbFrNrJXtxDi/4b3LA9oMRFA=;
+        b=VaeFctq2XE5JJKncDw7wtJYuUQq8KHpd+AYpelNtGijPH0ROOjo6JkAPHkWbSJuoHx
+         OYkTEBYaq2BrDMipZLi4RJX0+IdKMsdGKQf+zvrVLPpyEn/vrduCnTjW7xgFxW/+ZbCF
+         DX4QlpDbAip1gxfPDolV6XqIQz/qfHCZGKqeaMDEVcBSiicvsYDLzsUqzNxyDHEzruNA
+         plQR/aanaT6hFpB1Gv7Y3tch6XkmTFF/E3JoIusIUXmD07RZpu1mHEBZADyUQaNPb2zN
+         JGqMxxMgZ8JPIm13YejNRscU8Nf9bhyWcM0+HiDbyQRZ5VEiiyf/3hF6QOxQ8pP2sDea
+         f5xA==
+X-Gm-Message-State: APuU4Z/GPE8kB02t6iSRW4MqPGjvYgjKpnEL28AziupbBvE2u07vk3+R
+	quMwB2HTpC8BI0MT4dvH1vCFxq5ApCWbdwvujBcL8vjqsNLtWTevMh5CWG8gSg==
+X-Gm-Gg: AYBFou3h8Wr5YMTsvidq1rlm0sBCDKRYTjNSO/5FGlTxnHVHxN0Ilj7jXGjacNgYZX/
+	5GYjqzTcTVox/7yGMVcF6Kf+YxY6OV1g6FqUPtZFINrXk5+Athly4R5zGtgqx0e9xARwVdDVdLW
+	d0ohtX5jegFTPrp2Nzrdh41bQzWPLA0v5aSvCh2XxC63f2aQCbs62k+Vv56qqMx1z9hIIhaVulS
+	24lXlSklDKA5TPMrHA7+N8ov4ZE2nutd7ZsmFDO4CRF/ufJ4M88OAp8K53mPIXiDlOzkfLMPT4a
+	pwBb+2LDJD3xjEhmInDuGvX3ggsfyOVikKwr/daGpq54m7bPCg/RcRgTk4vfQboTT6ezGbPivyQ
+	7hL44MY7jNWZ03HtD79HKoaRzmRv6BT99tEvoReXyojgyDrAprhcJuesMHktuHnsWj8rINGL5aE
+	lxUyWhiyJLwISmeHwrfKOhVyWs0b692IVRavA75OwYGcVdUIEoZv7mEb6wXb4H51/A5YxcAesUF
+	C1YCdO2GGUhbsYvEiejxo6T5CCjXb+Hdb9BpB4b4hLZBj7tGgG8haNqqlAtaxJt5ubQFfJw/u1n
+	9GOTOjScFhA1Uj7aIyx6YRzbtBYEDaAXIkQ+N67T0zNO
+X-Received: by 2002:a05:6402:a50b:10b0:6b4:27a:38f7 with SMTP id 4fb4d7f45d1cf-6b4d46841c0mr3541426a12.22.1793545021117;
+        Sun, 01 Nov 2026 06:57:01 -0800 (PST)
+Received: from stukan.bbrouter ([46.201.91.224])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b4ec9ee975sm2166587a12.13.2026.11.01.06.56.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Nov 2026 06:56:59 -0800 (PST)
+From: Timur Stukan <timur.stukan.linux@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Hangbin Liu <hangbin.liu@linux.dev>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Timur Stukan <timur.stukan.linux@gmail.com>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jarod Wilson <jarod@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] bonding: 3ad: don't set BOND_LINK_FAIL on a slave that is not up
+Date: Sun,  1 Nov 2026 16:56:53 +0200
+Message-ID: <20261101145653.63648-1-timur.stukan.linux@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,189 +102,78 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+In 802.3ad mode, when bond_update_speed_duplex() fails on NETDEV_UP or
+NETDEV_CHANGE, bond_slave_netdev_event() sets the slave link to FAIL if
+the slave has ever been up (last_link_up != 0), and to DOWN otherwise,
+so that miimon can set it right once speed/duplex are valid.
 
-Critical: 1 · High: 0 · Medium: 0 (1) · Low: 0 (1)
+last_link_up is never cleared, so a slave that is currently DOWN but
+was up before is set to FAIL as well. miimon then treats it as a slave
+that is still in use and takes it through the full down path again:
+the link failure count is incremented, "link status definitely down"
+is logged and the 802.3ad port is disabled a second time, although the
+slave has not been up since it went down.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Reproduced in 802.3ad mode with miimon=100 by setting a slave down and
+up again. On NETDEV_UP the speed is still unknown, so the notifier sets
+FAIL, and the next miimon pass sees no carrier and proposes DOWN:
 
-- [Critical] The patch sends more traffic into xfrm_output_gso(), and on
-  that path AES-GCM IVs can repeat.
+	ip link add bond0 type bond mode 802.3ad miimon 100 lacp_rate 1
+	ip link set enp0s3 down
+	ip link set enp0s4 down
+	ip link set enp0s3 master bond0
+	ip link set enp0s4 master bond0
+	ip link set enp0s3 up
+	ip link set enp0s4 up
+	ip link set bond0 up
+	# wait for LACP to settle
+	ip link set enp0s3 down
+	ip link set enp0s3 up
 
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but transport-
-  mode SAs that have a crypto offload device (x->xso.dev != NULL) still…
-- [Low] This problem wasn't introduced by this patch, but xfrm_output()
-  reads x->xso.dev with plain, unmarked loads: in xfrm_dev_offload_ok()…
+procfs then shows "Link Failure Count: 2" in enp0s3 slave part. Also in
+dmesg wrote twice: "link status definitely down, disabling slave".
 
---
+Fix this by setting FAIL only for a slave that is currently UP and
+leaving other states alone. An up slave that loses speed/duplex still
+goes through FAIL as before, and DOWN/BACK slaves are left to miimon,
+as in the other modes.
 
-xfrm: use software GSO for inner tunnels without crypto offload
+Fixes: ea53abfab960 ("bonding/802.3ad: fix link_failure_count tracking")
+Signed-off-by: Timur Stukan <timur.stukan.linux@gmail.com>
+---
+ drivers/net/bonding/bond_main.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-This commit changes xfrm_output() to use xfrm_output_gso() for GSO
-packets with skb->inner_protocol set. Before, that only happened in
-tunnel mode. Now it also happens when the SA has no offload device. The
-goal is to stop the SKB_GSO_ESP path from producing malformed ESP packets
-for ipip/ip6tnl traffic over transport-mode software SAs when
-esp4_offload/esp6_offload are loaded.
-
-> diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
-> index e305ba32e356b..c370d28a83f50 100644
-> --- a/net/xfrm/xfrm_output.c
-> +++ b/net/xfrm/xfrm_output.c
-> @@ -808,7 +808,8 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
->  		skb->encapsulation = 1;
->  
->  		if (skb_is_gso(skb)) {
-> -			if (skb->inner_protocol && x->props.mode == XFRM_MODE_TUNNEL)
-> +			if (skb->inner_protocol &&
-> +			    (x->props.mode == XFRM_MODE_TUNNEL || !x->xso.dev))
->  				return xfrm_output_gso(net, sk, skb);
-
-[Severity: Critical]
-Can this cause AES-GCM IV reuse for the transport-mode software SA
-traffic that this change sends to xfrm_output_gso()?
-
-Before this point, xfrm_output() has attached a sec_path with
-sp->olen = 1, so the skb carries an xfrm_offload. xfrm_output_gso() then
-calls skb_gso_segment(). In skb_segment()->__copy_skb_header(),
-__skb_ext_copy() only takes a reference on the extension:
-
-include/linux/skbuff.h:__skb_ext_copy() {
-	...
-		refcount_inc(&ext->refcnt);
-		dst->extensions = ext;
-	...
-}
-
-So all segments seem to share one struct xfrm_offload.
-
-For each segment, xfrm_output2()->...->xfrm_replay_overflow_offload()
-writes to that shared xo:
-
-net/xfrm/xfrm_replay.c:xfrm_replay_overflow_offload() {
-	...
-		if (!skb_is_gso(skb)) {
-			XFRM_SKB_CB(skb)->seq.output.low = ++oseq;
-			xo->seq.low = oseq;
-	...
-}
-
-The XFRM_SKB_CB() copy belongs to each skb, but xo->seq.low is in the
-shared extension.
-
-Encryption happens later, at qdisc dequeue time, in
-validate_xmit_skb()->validate_xmit_xfrm()->esp_xmit(). That code reads
-the shared value:
-
-net/ipv4/esp4_offload.c:esp_xmit() {
-	...
-	seq = xo->seq.low;
-	...
-	esp.seqno = cpu_to_be64(seq + ((u64)xo->seq.hi << 32));
-	...
-}
-
-XFRM_GSO_SEGMENT is not set on this path, so nothing advances
-xo->seq.low per segment. esp_output_tail() then copies esp->seqno into
-the AEAD IV. esp6_xmit() does the same.
-
-Segments can wait in the qdisc while the xfrm_output_gso() loop keeps
-running. For example, dequeue_skb() returns nothing while a
-TCQ_F_ONETXQUEUE txq is stopped by BQL or a full ring, or another CPU
-may already be running the qdisc. In that case, won't later segments
-overwrite xo->seq.low before the earlier ones are encrypted?
-
-Each packet would still have a distinct esph->seq_no on the wire, but
-the explicit IVs would be the same. That is GCM nonce reuse under one
-key. The receiver takes the IV from the packet, so decryption still
-succeeds and nothing reports the problem.
-
-veth is noqueue, so in the test setup validate_xmit_skb() runs before
-the next segment's xfrm_output_one(). That would hide this.
-
-Tunnel-mode software SAs already use this mechanism today. In the base
-tree, however, these transport-mode packets, including the vxlan and
-geneve traffic that worked, went down the SKB_GSO_ESP path. There,
-xo->seq.low advances per segment within one validate_xmit_xfrm() call,
-on an extension owned by a single GSO skb.
-
-Could the sec_path be unshared per segment, or the IV be taken from the
-per-skb XFRM_SKB_CB() sequence? Another option would be to fix
-xfrm{4,6}_transport_gso_segment() instead of rerouting these packets.
-
-[Severity: Low]
-This is a pre-existing issue, but x->xso.dev is read here with a plain
-load, and xfrm_dev_state_free() can clear it at the same time:
-
-net/xfrm/xfrm_state.c:xfrm_dev_state_free() {
-	...
-		WRITE_ONCE(xso->dev, NULL);
-		xso->type = XFRM_DEV_OFFLOAD_UNSPECIFIED;
-		netdev_put(dev, &xso->dev_tracker);
-	...
-}
-
-The new !x->xso.dev test is only used as a boolean, and either value
-leads to a valid path. At worst it is a data race that KCSAN can see,
-like the one already in xfrm_dev_offload_ok():
-
-	struct net_device *dev = x->xso.dev;
-
-Further down in xfrm_output(), the check-then-dereference also uses two
-plain loads. This patch does not touch it:
-
-	if (x->xso.dev && x->xso.dev->features & NETIF_F_HW_ESP_TX_CSUM)
-
-Would it make sense to read x->xso.dev once with READ_ONCE() into a
-local variable and use that for these checks?
-
->  
->  			skb_shinfo(skb)->gso_type |= SKB_GSO_ESP;
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but transport-mode SAs with
-a crypto offload device (x->xso.dev != NULL) still set SKB_GSO_ESP here
-for packets with skb->inner_protocol set.
-
-The commit message says:
-
-  "An SA with crypto offload that falls back to software
-  segmentation in validate_xmit_xfrm() takes the same path."
-
-Is the reroute/overflow fallback in validate_xmit_xfrm() the only way to
-get there? validate_xmit_skb() also does this:
-
-net/core/dev.c:validate_xmit_skb() {
-	...
-	if (netif_needs_gso(skb, features)) {
-		struct sk_buff *segs;
-
-		segs = skb_gso_segment(skb, features);
-	...
-}
-
-That runs whenever the device's hw_enc_features don't cover the whole
-gso_type, for example SKB_GSO_ESP | SKB_GSO_IPXIP4. The call chain would
-then be:
-
-skb_gso_segment()
-  esp4_gso_segment()
-    xfrm4_transport_gso_segment()
-      inet_gso_segment()   /* inner IPIP, transport header at inner L4 */
-
-followed by validate_xmit_xfrm()->__xfrm_transport_prep()->esp_xmit().
-That writes the ESP header 4 bytes into the inner IP header, which is
-the same malformed layout the commit message describes.
-xfrm6_transport_gso_segment() has the same limitation.
-
-Could the commit message mention this fallback as well?
-
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 7019e5d8fdc8..8212d406f3bc 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -3973,18 +3973,13 @@ static int bond_slave_netdev_event(unsigned long event,
+ 	case NETDEV_CHANGE:
+ 		/* For 802.3ad mode only:
+ 		 * Getting invalid Speed/Duplex values here will put slave
+-		 * in weird state. Mark it as link-fail if the link was
+-		 * previously up or link-down if it hasn't yet come up, and
+-		 * let link-monitoring (miimon) set it right when correct
+-		 * speeds/duplex are available.
++		 * in weird state. Mark an up slave as link-fail and let
++		 * miimon set it right when correct speed/duplex are available.
+ 		 */
+ 		if (bond_update_speed_duplex(slave) &&
+-		    BOND_MODE(bond) == BOND_MODE_8023AD) {
+-			if (slave->last_link_up)
+-				slave->link = BOND_LINK_FAIL;
+-			else
+-				slave->link = BOND_LINK_DOWN;
+-		}
++		    BOND_MODE(bond) == BOND_MODE_8023AD &&
++		    slave->link == BOND_LINK_UP)
++			slave->link = BOND_LINK_FAIL;
+ 
+ 		if (BOND_MODE(bond) == BOND_MODE_8023AD)
+ 			bond_3ad_adapter_speed_duplex_changed(slave);
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028-xfrm-inner-gso-v1-1-1908f0eb7313%40engineer.com
+2.43.0
+
