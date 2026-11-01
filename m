@@ -1,63 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=23.83.222.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793563051;
-	b=aFbv7d/Mr6y/GjOcHwKoJKaIhNhCYw08ovamgkTX9oVgELXCoCyKiSqo4vk2oBcngzWG
-	 ISaTUkzJJpKscOj9B7BIkNxpBMwGpH6+s6gzVHELjY5Rspr05AGmW8rFsZ1ljoFbXgjLC
-	 WI6wIwXLj/LQ/b3O/Sw0U1fAVyaXeVgG6P8lAztMEZB33r5F+nVN9CmZ27zRU9KtOrOjx
-	 HpDbGasbleIf0qHSNfSwXSHdN8q4g1SWDKknow5rUE7G7mb0HFJOaHkaGqhzMxx/ITMEN
-	 0N0frm+LXd9MZqI7dF5KLzQhSKgTTWm4zatE3InPb8VxZVp/0cN3B74FjEZOO7DN71w==
+	t=1793563428;
+	b=wrheg5aJuCqpHJhZZq3MIv4fRmNrrTSmxV0MBJA1lapep5YGsgZPCOVOIROQMfjJWays
+	 Jo6xFawdAxyqdQaFFBIHs1oVSBRWjGKHVbU2bvsf/7iLSZYm7XxytVcAl2UaQFkAXKo49
+	 twNOH2cnx8xJKqiTSkZ4cNHvaFpEl3AF9zgiSiO944Nk6hrP3jLmHWq6v/f+o9oim42N/
+	 ChNCy+IwRckMENmKy5OVEom05cr8Vzg1HMDOgvd5D/o+puDgFHczWm1Zqo9Svw2OM6JzK
+	 e2Y1yGtM1o87z2An4kbe8yEHCrWsl9MrY/33vJP1+kg+0ETfDFPe2Wd9FiRcEDVTY5A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793563051;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=XNlEHs0fm6A7AjdQOswonMr8zgR2fWy9NIraQgELwNo=;
-	b=ls2/EPUm8w8KhWgiEaPgvGDRj2jo7f5tjUt7RRICtyj3qeZ3c4Aj8K5pKVGX/vSkolGA
-	 a+j/vs4zsNBklnmQOKAjyGOI3vv1pIF626698Vh//KRLLcRf/sKG9m6YAU6uCjDlDbkyL
-	 eXcRqs0TeQtzpul+dFcxgUbbuyl8yE1Z4AwZMXnS3V6Z247Y7IfUHaKHjTbMHJpT31WCT
-	 4w/v8TO9+EvCI9Xo9zCqQGjuoDoUfQ1Jzbk4VDns7aOuUvpegfACGjUdhkSuD4FLGZMEO
-	 QGk4GVLORzhig+2ApjS2Hw9RWvV5w97AmOGvL7hgbCztLZXk0RwfhApO36T4jhCcXKQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793563428;
+	h=DMARC-Filter:X-Sender-Id:Received:Received:X-Sender-Id:X-MC-Relay:
+	 X-MailChannels-SenderId:X-MailChannels-Auth-Id:X-Desert-Share:
+	 X-MC-Loop-Signature:X-MC-Ingress-Time:Received:Received:
+	 DKIM-Signature:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=twrovwkisuWHeA+hGeSowB1A1+M8W4ArMTje1ckj7P4=;
+	b=OK0Xzl5KuPIhqfJAM3YJmDVtOxmNWqiCfQm0k7zd27E29EV7NFiavG54pMDSMFIUmB5W
+	 ZfrNz1uiy/jfWjjcuSZSi3g2YFwPt06hV0a9FPH5MJuPELgnujipc8c5Wmro3K19dhCtE
+	 2Jwh/vGeOFtqjQKBVTequrawTfz9rEX47ESSOrR8j9EgL0loOYe854T80QrRvLIEU11la
+	 wgMI7mK/KAMp1FrL2gvrriQ9cbVkeV3ZmBEOJLpQnZ0G3AxRJeUL75GsHBAcwD+6+hA2c
+	 HU6rGXb5V50/xk15Ba7TqBxE5IdaikhXJPNUn6b45ra3rkQ/tpOIwqRRBUt6dTOEuug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=OEkdE66g;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dmarc=none header.from=stgolabs.net;
+	spf=fail smtp.mailfrom=stgolabs.net;
+	dkim=pass header.d=stgolabs.net header.i=@stgolabs.net header.a=rsa-sha256 header.s=dreamhost header.b="KiCyJ8/0";
+	arc=none smtp.remote-ip=23.83.222.44
+Received: from crimson.ash.relay.mailchannels.net (crimson.ash.relay.mailchannels.net [23.83.222.44])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96E5606A326;
-	Sun,  1 Nov 2026 19:57:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A96E5606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26592606A324;
+	Sun,  1 Nov 2026 20:03:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 26592606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stgolabs.net
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=stgolabs.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=OEkdE66g
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=XNlEHs0fm6A7AjdQOswonMr8zgR2fWy9NIraQgELwNo=; b=OEkdE66gA1hN8MtHKuiu+Pq7OO
-	0fZX1a0f9ePVaMxB+KkExFGmA1eyZP17RmU+CIlYXY+IUCjCHbFC+GrihKXyI1d20oOQmRpdzHJpR
-	lUm+kPyHnlQ1Uj1gUeQUu/4kuQxhoIA7u3W2SGQCxYnThdL27HWjykY6ixlx3eQfPtoc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xNbg5-00Dfb4-6l; Sun, 01 Nov 2026 20:57:17 +0100
-Date: Sun, 1 Nov 2026 20:57:17 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Roman Kuzmitskii <roman@damex.org>, linux-hwmon@vger.kernel.org,
-	netdev@vger.kernel.org, robert.marko@sartura.hr,
-	luka.perkov@sartura.hr, o.rempel@pengutronix.de,
-	kory.maincent@bootlin.com
-Subject: Re: [RFC] hwmon: (tps23861) PSE-PD support, extend hwmon driver or
- move to pse-pd?
-Message-ID: <d126b3d3-33b9-405c-9839-db492d874ece@lunn.ch>
-References: <03055ffd-d015-4810-8b8a-678821fa6dcc@damex.org>
- <92e3383e-26f8-4bed-b487-1c52f6c4f420@roeck-us.net>
- <8cd41211-b026-4158-8e18-454a9ac0bae4@damex.org>
- <4d12314e-56db-412c-a558-e4026cd03528@roeck-us.net>
+	dkim=pass (2048-bit key, unprotected) header.d=stgolabs.net header.i=@stgolabs.net header.a=rsa-sha256 header.s=dreamhost header.b=KiCyJ8/0
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 627C0460A5F;
+	Sun, 01 Nov 2026 20:03:40 +0000 (UTC)
+Received: from pdx1-sub0-mail-a223.dreamhost.com (trex-green-6.trex.outbound.svc.cluster.local [100.99.180.32])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id D342F46086B;
+	Sun, 01 Nov 2026 20:03:39 +0000 (UTC)
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Desert-Share: 40ee79c8278133a1_1793563420106_1682441540
+X-MC-Loop-Signature: 1793563420106:220483257
+X-MC-Ingress-Time: 1793563420105
+Received: from pdx1-sub0-mail-a223.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.99.180.32 (trex/8.0.2);
+	Sun, 01 Nov 2026 20:03:40 +0000
+Received: from offworld.tailf5af7a.ts.net (unknown [76.167.199.67])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dave@stgolabs.net)
+	by pdx1-sub0-mail-a223.dreamhost.com (Postfix) with ESMTPSA id 4jHm4C1hTLz2l;
+	Sun,  1 Nov 2026 12:03:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+	s=dreamhost; t=1793563419;
+	bh=twrovwkisuWHeA+hGeSowB1A1+M8W4ArMTje1ckj7P4=;
+	h=From:To:Cc:Subject:Date:Content-Transfer-Encoding;
+	b=KiCyJ8/0g7uHk3/o5RRKkMQ8FX6ukey6J3ji3gM+q6blmCjzCyWwHpyug4EwT+Vk2
+	 JPSGF0lk+jSIMZXFN/LE9s2b6yS6ZppjMXGVhICnaEi7316+DheRXGz1NgDdB1pAxP
+	 rsjwdrkpgBDesRxkTEmTGkJUgf9rk5cCBeU1O5Xz2U874PfmrlyKw7UvgkEj5iafac
+	 77Lc60QEP0275/5+MowuU05ou4gUNWahRwSf6IZJ9qFFp06CKz3EFfrZzibDNujbgb
+	 M10ufZopKzEjW6Szlfy4SP0NKA993bMeym4+drtrSaS1I1As99Er1iabUNcMIRLRaA
+	 gw6FynCAk2SSA==
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: jk@codeconstruct.com.au,
+	matt@codeconstruct.com.au,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: anisa.su@samsung.com,
+	dave@stgolabs.net,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mctp: accept MSG_CMSG_COMPAT in recvmsg
+Date: Sun,  1 Nov 2026 12:03:31 -0800
+Message-Id: <20261101200331.1956836-1-dave@stgolabs.net>
+X-Mailer: git-send-email 2.39.5
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,38 +94,32 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4d12314e-56db-412c-a558-e4026cd03528@roeck-us.net>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Nov 01, 2026 at 11:09:42AM -0800, Guenter Roeck wrote:
-> On 11/1/26 10:50, Roman Kuzmitskii wrote:
-> > On 11/2/26 1:38 AM, Guenter Roeck wrote:
-> > > On 11/1/26 10:02, Roman Kuzmitskii wrote:
-> > > > openwrt reviewers asked me to check with you first which way you prefer:
-> > > > 1. extend hwmon driver with PSE-PD (like it is done right now)
-> > > > 2. move driver to drivers/net/pse-pd and extend it with PSE-PD
-> > > > 3. something else
-> > > > 
-> > > The hardware monitoring "enable" attribute is supposed to enable monitoring,
-> > > not to enable some power delivery or network (or any other) port. That "port
-> > > enable" feature using the hwmon ABI was sneaked in, and I am inclined to just
-> > > remove the upstream driver for severe ABI violation.
-> > > 
-> > > Guenter
-> > 
-> > thanks, does second option look okay with taking tps23861 to drivers/net/pse-pd
-> > with enable attribute going away?
-> > 
-> A perfect solution would be to move the driver to drivers/net/pse-pd (or elsewhere)
-> and implement the hwmon part as auxiliary driver, but I am also ok with moving it all.
-> Note that I do not review hwmon drivers outside drivers/hwmon, so if you move the
-> driver to drivers/net/pse-pd you can abuse the hwmon ABI as much as you want.
+32-bit userspace running on a 64-bit kernel is unable to receive MCTP
+messages on an AF_MCTP socket, even though sending succeeds. There is
+nothing for MCTP to do with it beyond not rejecting it, as af_packet,
+af_key and can/isotp already do, for example.
 
-Although some network maintainers do have a basic understanding of
-hwmon, and might push back on such abuse.
+Fixes: 833ef3b91de6 ("mctp: Populate socket implementation")
+Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
+---
+ net/mctp/af_mctp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Does the tps23861 share anything with the tps23881? It already has a
-pse-pd driver.
+diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
+index 8af5e2b3c8d1..aa22c0860712 100644
+--- a/net/mctp/af_mctp.c
++++ b/net/mctp/af_mctp.c
+@@ -292,8 +292,7 @@ static int mctp_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 	u8 type;
+ 	int rc;
+ 
+-	if (flags & ~(MSG_DONTWAIT | MSG_TRUNC | MSG_PEEK))
++	if (flags & ~(MSG_DONTWAIT | MSG_TRUNC | MSG_PEEK | MSG_CMSG_COMPAT))
+ 		return -EOPNOTSUPP;
+ 
+ 	skb = skb_recv_datagram(sk, flags, &rc);
+--
+2.39.5
 
-       Andrew
