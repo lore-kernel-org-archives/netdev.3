@@ -1,59 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793572396;
-	b=Ysvem0kiSrmGH8TMI6+DdN2q289CiCh/fur0FLNaJwnN5E15BgTlT/5odI0Bvjhblp0r
-	 YDslTvlbegk9ZPvLoXW2vpA1Y8L0L/TNPU9YlKci0F7Swn/aFJH9GOybTdUdoD23jN5jl
-	 0dx9VkUpbM0TFKhRHY4UVWsZegMvu1/86To6n1NBZX9OxyrTBLvbIA/cYFN6dEqj3IoSf
-	 o0bhLnam/mDVLPjhIrFh48nFgnUyFpEd46ow80W42Xh26anhJluxSei304tvcE1zs8CNy
-	 BqvFy3XaSdQv4BG/P1y/fEI9pzZDChaLgi58Q1PFzW7NElLTDURjAqvNVlswXq/Bb1g==
+	t=1793572397;
+	b=tUnSqMoxLxHhbKpFUShu/fBJgnciVRKQytUszaK4ug9w0UWcn/s0bJQf2FQDqoQvBy+e
+	 gr9JWdOJW/Oda1XpbmKz+qiJTPbTAL+U1pMAolxHBCyuy4thWeLBcUTPoJY63xPS237ej
+	 p+S6Gp6BDo20lWheI2J2htub5cqyAsnxlzCcHzwbe+LBCCbPRkv14w0qdGTLP1uAuLA1o
+	 pLF1L2h/lqRcufEpSR5J5oXTYDepQYmvGxtYNgtMVwuilaOBSqHG762R/n6igUYRj2Awc
+	 kK3ahse+T24KI2pdb8QQKH2a5A4bJjQ2NgDptrfsZ7JHqhwRhkvZBKwjqDVAkFru28g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793572396;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793572397;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=iqBmhgJE4xY3IEg0XNHN66UMVsn+ddrhekbMptwp6Jk=;
-	b=KzQ6dyw0Ey8krRlMR/Mbb/KvtJGP2Oi5Ool150F0QpAlZ+GfLt8Sh5KfpLIa914++qJH
-	 ilKHIPKd+l+F4FdILY0ASUijFB4eW3keDqkL6t14HQmR7TPZ3ibW149NilhHC8UcYFFU4
-	 hGKwKcK3oxzrPxzFbtRTTJYKbQm0FWERVmpqyz8U/Jyz0IlzLtM96QoGt19wtjyclFM2k
-	 7Wstc985E6SRqi+XXlpf2fbfOmo2i8dDOej/nfqds4hdQCim8L9aSu4nGDC96qGbAZAzZ
-	 iGdypXChgvFNVm1GYdpVZ1dQewwZD13A/YbFKzDmTXiVFLeJssb7585WvYKhY9NWjkA==
+	bh=p1X70UjbxdLHWuH0p2EV9qJuGGy2CKshRTRf+Bp9O8g=;
+	b=Qkc98ComBx8ESc28wYTsdTp0Eu4j0pyxUnX8Nwsgahr5Mpt11tV9TICF3Yvo9iWRKydv
+	 JfGnxMLXKTTCJzTmraiU5WfwxOhnyhgGd5C8GQs/U1v6dR2rC4ECahIrYa2uGSQFCVFUp
+	 4tuUovRtlx47aiFdJTT1BS8tt7Ui+AcglKkR7rgKJz1Vs445qzsf2LwCwk2/bxMZCmxI0
+	 HTxCPlBXdmWzgMndKgZiM9uOtCCBN87Zh/k/pZoDoVB7KJEjx7qJmw9ZG9hpLalqjPSun
+	 HCwqXePq/gllWj08kIFK9J5ct5WKyCwtEXa5kGoHFqmfKq1o/49rrFmkM76GDZXGXGg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Pye4YDxP;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MD8mpgvM;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60CD606A32E
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 22:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A19606A327
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 22:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Pye4YDxP
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B0431F000C1;
-	Sun,  1 Nov 2026 22:33:14 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MD8mpgvM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1C81F000C1;
+	Sun,  1 Nov 2026 22:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793572395;
-	bh=iqBmhgJE4xY3IEg0XNHN66UMVsn+ddrhekbMptwp6Jk=;
+	s=k20260515; t=1793572396;
+	bh=p1X70UjbxdLHWuH0p2EV9qJuGGy2CKshRTRf+Bp9O8g=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Pye4YDxPeu7OhKuyKaEqidyaEBf3JqIDbUQIlOyW3aWCISXYU+WLfsblCZPqHQoN+
-	 daFQXxV3sHSYfwTG1c1LJGEhkSXvfPSm6m8MGoW3r92lg/JO5FLhgBqdh7EJ7HviOb
-	 aOxUy/ObHCuJY6+uoboSr/8ifqF4GARkBOQW9r+uJG2L/2w6NozfFx+bVT+MQyF1JI
-	 1WRO31fciU5iJKoCfsu9zA0Xz/oHP7rI18jtpDAHJ0rJcwN+SpyXL7bHqNCHjLCn32
-	 +wgWWtomLVQT26z0Ps0dbYPn/r9kHRFYbUaa0Ykjx0KEPhwM/R01p548LC8oN5AN12
-	 9bZ8Jeo7MRR1w==
-Subject: Re: [net PATCH 03/13] fbnic: Keep the all-multi MACDA entry out of
- the address lists
+	b=MD8mpgvMHB053iE8GlDXhm7NJou+WtjI5ePJH7Bawe9x76VpTN9fay6+2d6jtp9Iw
+	 VVdZ9Ojvho8iy9gBT19DkOGL8L9/KowAPCsPSaG4Xf/kGhfnmkx3ASXEEDhaVOVFLk
+	 n6+z+1W7YYzGR6aa7Y1bpAEn/AK1+DdE7e4X+gSAyE8Mg9dZbEN7f0tkCHC6wFQOnA
+	 JnhJ9SCeQKOHCoa3t0+ndT5S0adX9zZ5wDSCML6bwZlPA2G9aapKn8USxr+CWyL1t7
+	 DYte2DCtkwyfhcgeTlZqFsXfdScKDPLKa9uTsUHmb2Lp0Zlfmk12XG95/uf+9FmM9h
+	 kbv/CxyUwyOog==
+Subject:
+ Re: [net PATCH 04/13] fbnic: Retry the MACDA sync to firmware if it fails
 From: netdev-bot+sashiko@kernel.org
 To: alexander.duyck@gmail.com
 Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
  edumazet@google.com, horms@kernel.org, kernel-team@meta.com, kuba@kernel.org,
  pabeni@redhat.com
-Date: Sun, 01 Nov 2026 22:33:14 +0000
-Message-ID: <179357239458.3131.3765676855851618737@kernel.org>
+Date: Sun, 01 Nov 2026 22:33:15 +0000
+Message-ID: <179357239570.3131.6726877389205316280@kernel.org>
 In-Reply-To:
- <179322337944.40667.340791169611814458.stgit@ahduyck-xeon-server.home.arpa>
+ <179322338727.40667.9687403297682768724.stgit@ahduyck-xeon-server.home.arpa>
 References:
- <179322337944.40667.340791169611814458.stgit@ahduyck-xeon-server.home.arpa>
-X-sashiko-severity: Low
+ <179322338727.40667.9687403297682768724.stgit@ahduyck-xeon-server.home.arpa>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -66,149 +66,104 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] The rewritten layout comment in
-  drivers/net/ethernet/meta/fbnic/fbnic_rpc.h says the reserved entry…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but a BMC
-  multicast address can be silently dropped when the host fills the…
-- [Low] This problem wasn't introduced by this patch, but the comments on
-  the multicast scan loops in __fbnic_mc_sync…
+- [Medium] The patch makes fbnic_bmc_rpc_check()
+  (drivers/net/ethernet/meta/fbnic/fbnic_rpc.c:345-356) set…
 
 --
 
-fbnic: Keep the all-multi MACDA entry out of the address lists
+fbnic: Retry the MACDA sync to firmware if it fails
 
-The MACDA entry just below mac_addr_boundary is now kept for the BMC
-all-multi wildcard. Before this, either the unicast or the multicast list
-could take that entry, and the BMC rule then matched a host address. The
-unicast scan now starts at mac_addr_boundary, and the multicast sync and
-unsync scans start one entry below it.
+When fbnic_fw_xmit_rpc_macda_sync() fails, fbnic_bmc_rpc_check() now sets
+FBNIC_FW_CAP_F_BMC_MACDA_SYNC again, so the next service task pass retries
+the MACDA table sync. The failure warning is switched to
+dev_warn_ratelimited() because it can now repeat.
 
 > diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c b/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c
-> index dc86b51f35830..0be71e6fd3d4e 100644
+> index 0be71e6fd3d4e..d69c91066508f 100644
 > --- a/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c
 > +++ b/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c
-
-[ ... ]
-
-> @@ -507,9 +508,10 @@ struct fbnic_mac_addr *__fbnic_mc_sync(struct fbnic_dev *fbd,
->  
->  	/* Scan from middle of list to top, filling top down.
->  	 * Skip over the address reserved for the BMC MAC and
-> -	 * exclude index 0 as that belongs to the broadcast address
-> +	 * exclude index 0 as that belongs to the broadcast address.
-> +	 * The entry below the boundary is reserved for all-multi.
->  	 */
-
-[Severity: Low]
-This is a pre-existing issue, but the comment says the scan excludes
-"index 0 as that belongs to the broadcast address". Broadcast is at
-FBNIC_RPC_TCAM_MACDA_BROADCAST_IDX (4), and index 0 is
-FBNIC_RPC_TCAM_MACDA_BMC_ADDR_IDX. The loop stops at:
-
-	--i > FBNIC_RPC_TCAM_MACDA_BROADCAST_IDX
-
-Since this comment is being edited anyway, could the index be fixed too?
-
-fbnic_mc_unsync() in fbnic_netdev.c has the same text. This patch changes
-the start of that loop, but its comment does not get the new reservation
-sentence.
-
-> -	for (i = fbd->mac_addr_boundary;
-> +	for (i = fbd->mac_addr_boundary - 1;
->  	     --i > FBNIC_RPC_TCAM_MACDA_BROADCAST_IDX;) {
->  		struct fbnic_mac_addr *mac_addr = &fbd->mac_addr[i];
->  
+> @@ -345,9 +345,14 @@ void fbnic_bmc_rpc_check(struct fbnic_dev *fbd)
+>  	if (test_and_clear_bit(FBNIC_FW_CAP_F_BMC_MACDA_SYNC,
+>  			       &fbd->fw_cap.state)) {
+>  		err = fbnic_fw_xmit_rpc_macda_sync(fbd);
+> -		if (err)
+> -			dev_warn(fbd->dev,
+> -				 "Writing MACDA table to FW failed, err: %d\n", err);
+> +		if (err) {
+> +			dev_warn_ratelimited(fbd->dev,
+> +					     "Writing MACDA table to FW failed, err: %d\n",
+> +					     err);
+> +			/* Leave FW to be synced on the next pass */
+> +			set_bit(FBNIC_FW_CAP_F_BMC_MACDA_SYNC,
+> +				&fbd->fw_cap.state);
 
 [Severity: Medium]
-This isn't a bug introduced by this patch, but the shared multicast
-region is now 5..22. If the host fills it, can a BMC multicast address
-get dropped?
+Will this retry ever stop if the error is permanent rather than transient?
 
-When the first scan finds no free entry, the second scan in
-__fbnic_mc_sync() walks BMC indices 3..1 and only matches entries that
-already exist:
+The bit is set again for any non-zero return, and that includes -ENODEV
+after the device goes away. When fbnic_rd32() or fbnic_fw_rd32() sees
+all-ones reads, they do:
 
-	while (--i) {
-		...
-		/* Only move on if we find a match */
-		if (!ether_addr_equal(mac_addr->value.addr8, addr))
-			continue;
+    WRITE_ONCE(fbd->uc_addr0, NULL);
+    WRITE_ONCE(fbd->uc_addr4, NULL);
+    ...
+    netif_device_detach(fbd->netdev);
 
-So __fbnic_mc_sync() returns NULL even when BMC slots 1-3 are free.
-fbnic_bmc_rpc_init() then logs the failure and skips the address:
+This leaves mbx[FBNIC_IPC_MBX_TX_IDX].ready set and netif_running() true.
+fbnic_fw_xmit_rpc_macda_sync() only bails out early on:
 
-		if (!mac_addr) {
-			netdev_err(fbd->netdev,
-				   "No slot for BMC MAC address[%d]\n", j);
-			continue;
-		}
+    if (!fbd->mbx[FBNIC_IPC_MBX_TX_IDX].ready)
+        return 0;
 
-By this point fbnic_bmc_rpc_check() has already cleared
-FBNIC_FW_CAP_F_BMC_TCAM_REINIT, and nothing schedules a retry. If the
-host addresses are already synced, __fbnic_set_rx_mode() never sees
--ENOSPC, so neither the host nor the BMC falls back to all-multi. With BMC
-all-multi off, the BMC address stays unprogrammed until the next firmware
-reinit.
+So on every call it allocates a page, builds the TLV message, and gets
+-ENODEV back from fbnic_mbx_map_tlv_msg()->fbnic_mbx_map_msg():
 
-This patch lowers the trigger from 19 host multicast entries to 18.
+    if (!mbx->ready || !fbnic_fw_present(fbd))
+        return -ENODEV;
 
-Later in the series, "fbnic: Rebuild the BMC rules from scratch on every
-reinit" adds fbnic_bmc_mc_reserved(). That only keeps a copy that is
-already in the BMC region, so a new, distinct BMC multicast address would
-still fail.
+It then frees the page.
 
-> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_rpc.h b/drivers/net/ethernet/meta/fbnic/fbnic_rpc.h
-> index 3d4925b2ac75d..679ba0a1058d9 100644
-> --- a/drivers/net/ethernet/meta/fbnic/fbnic_rpc.h
-> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_rpc.h
-> @@ -156,9 +156,9 @@ enum {
->   * always go top-down with unicast, and bottom-up with multicast so that
->   * there should be free-space in the middle between the two.
->   *
-> - * The entry at MADCA_DEFAULT_BOUNDARY is a special case as it can be used
-> - * for the ALL MULTI address if the list is full, or the BMC has requested
-> - * it.
-> + * The entry just below the boundary is reserved for the ALL MULTI address,
-> + * used if the list is full, or the BMC has requested it. Neither the unicast
-> + * nor the multicast list allocates it.
->   */
+fbnic_service_task() calls fbnic_bmc_rpc_check() and reschedules itself
+with schedule_delayed_work(&fbd->service_task, HZ) while netif_running().
+If MACDA_SYNC is pending when the device is lost, this loop runs about once
+a second until the interface is downed, the device is removed, or AER
+recovery runs.
 
-[Severity: Low]
-Is "used if the list is full, or the BMC has requested it" accurate? The
-only place that fills this entry is fbnic_bmc_rpc_all_multi_config(), and
-it does so only when BMC all-multi is on:
+The same thing happens with -EBUSY if firmware hangs with the TX mailbox
+full.
 
-	mac_addr = &fbd->mac_addr[fbd->mac_addr_boundary - 1];
-	if (fbnic_bmc_all_multi(fbd)) {
+About the commit message, which says:
 
-If the host multicast list is full and BMC all-multi is off,
-fbnic_promisc_sync() puts the wildcard at PROMISC_IDX instead:
+    rate limit the warning now that it can repeat.
 
-	mac_addr = &fbd->mac_addr[FBNIC_RPC_TCAM_MACDA_PROMISC_IDX];
-	...
-	} else if (mc_promisc && !fbnic_bmc_all_multi(fbd)) {
+Does the rate limit actually suppress anything here?
+dev_warn_ratelimited() uses DEFAULT_RATELIMIT_INTERVAL (5 * HZ) and
+DEFAULT_RATELIMIT_BURST (10), which allows 2 messages per second. The
+service task fires once per second, so every warning would be printed.
 
-That agrees with the comment a few lines further down:
+Before this patch, this condition logged one warning. With the patch, it
+logs one warning per second for as long as the condition lasts.
 
-/* Reserved for use to record Multicast promisc, or Promiscuous */
-#define FBNIC_RPC_TCAM_MACDA_PROMISC_IDX	31
+For comparison, fbnic_fw_check_heartbeat() warns once, clears
+fw_heartbeat_enabled, and stops. Could the retry skip setting the bit on
+-ENODEV (or check fbnic_fw_present() first), and/or back off between
+attempts?
 
-The host only shares this entry, through FBNIC_MAC_ADDR_T_ALLMULTI, when
-the BMC has already asked for all-multi. Otherwise the entry is unused.
-
-Could the comment say "and" instead of "or", so it does not contradict
-the PROMISC_IDX comment?
-
->  #define FBNIC_RPC_TCAM_MACDA_MULTICAST_IDX	5
->  #define FBNIC_RPC_TCAM_MACDA_DEFAULT_BOUNDARY	24
+> +		}
+>  	}
+>  
+>  	netdev_unlock(fbd->netdev);
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179322311834.40667.5383039334126572422.stgit%40ahduyck-xeon-server.home.arpa
