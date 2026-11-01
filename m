@@ -1,92 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793545127;
-	b=WznsZmV9JezbeWh+jKFD5Kb8JJIYDpL7DxbQzGbj+wU6D2q8bvxI87MzP4uwjLaNiwUs
-	 BK1N+SOXM3z3k6NWtbt7Af3Ffdp0I0YQ+LTLh6ZNLOrXnRLQTV6tdt3MsbMGEV6vUFAnY
-	 svEkyIIOZ1MZiODMTo2+RFsVFgXdz1rtVJjjwI7qzDeAN7xZIH/xU8A1VisKE68rF48tO
-	 2LC38Q6EN5ovh4YkIUlqoSqWUV0UFIsIBqraDHjbvf7MH5c7UNS94rrB3dNDjB8qNaGZZ
-	 pau6+1LnLcp60QZynCbDC5Oibn+wkouR5sphTv7erPpcQHnQ/+JREcsTd5GybN+orBQ==
+	t=1793545373;
+	b=hpbSKwg7kv7gw196QEx169+rlYc1m65BF9hjIABSHnquTDugKJaPJd9ztOX1caxbkOpF
+	 pFx0ZKQtKzi0jHgTCPZPW0dPNctRcHzolphEpIhsgC02jo4qaoJ+pFaxhnvjOdAzpkR4p
+	 cL+oALkTFX7kcF5DLbnBpV2XOg6PdPQcZS1vkjd5vfnen2HiK3pLLBy2gdc49FYtFJ1NY
+	 1R0p/LyMycOsivpBbievvp3FY2u/0FUfT/8gLdQKm/ZskQYfZ5iDePG5Umthxla1EKRI+
+	 utyZjdHfpep6SkopioEU4BK72w7ZY3YijTws1UgeOfUuX9N2/nzBkKZVnyitjE9sTeg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793545127;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793545373;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=7fwCP5WiERcu+uoo4sVa26KzOzhIOdBQE6cn+WBX1uw=;
-	b=thAOQP246MIaInIug0Bw5k7mDsL5hPSi5y58hTQlmmWQ/ei3KmZNr6Y1reiGHy695xbU
-	 p4fKAm11pMRitF0oveDMLmEs0NcPtAGkkTUjizs/9nHRFC0JAFR9bYn610cthCi7bfga1
-	 /ZHfw/3ywDtLy/OC0EidFH2rbj0HSFzjcTDT+FXAp0J+GpU1QCfRB4Y34ob+gp+JVNsEO
-	 kQdh2ZsvdAK/7Zpu/+oWRs14QS3y5InZmP5uF1QB6IAuIbsubfe8MYXGZDV5CB1Hbz3VX
-	 +n+h7JhDMlEanH9z8D4MX3GXeWtZU3wworVLaeoh8BWRr6hRTVp0kokN9JYm3Vk2BAA==
+	bh=n526eF796VsVK0te1y2BUvy07jmqYe5zbpzfr00FB+I=;
+	b=TS+Cdpa5gwRUb0sVRhW//Z02a5tx+ianH/kUiZ6dm9YsDkdNfyKHG02tEbE8G583j2iH
+	 bvYISvPADgcbO4b9t0lWpf1YgZQ4rQVR6p6dpIs23TXMK950gVDJ87ZnX5b3IDJsi+WUF
+	 g4J7oJ8WLp8Z7jQzGu2BSS+TANo9q0yHhXE1fkrC+T0IwHfhVruBlHptXefsvtkq48JBq
+	 GVE8tsrifRbZAZwc5z3FElUBH4acKpXx2IbO3+2h7tKgWmcbpXJP3mEKYRVNEo9I8OF5U
+	 CGILdslqOLTjtpbt9yb3VLSoOqyu/grVEt1D6b238QNs/+4H62W1JKrC1w6YTLjfbFg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mnpyeGRd;
-	arc=none smtp.remote-ip=209.85.128.41
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WYISqS9W;
+	arc=none smtp.remote-ip=209.85.128.43
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC31606A324
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 14:58:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CCC31606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3235A606A324
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 15:02:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3235A606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=mnpyeGRd
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a59100fa83so18676405e9.0
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 06:58:46 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WYISqS9W
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a5b2be99a8so13913245e9.2
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 07:02:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793545125; x=1794149925; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793545371; x=1794150171; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7fwCP5WiERcu+uoo4sVa26KzOzhIOdBQE6cn+WBX1uw=;
-        b=mnpyeGRdFNhhWjgw+oG5a5Kdr4/rsnSfmY8Ve/XeIV/4nf5PKKB4p2i27bS4JFxZu/
-         f6AysxzfzGa/66fp816CL/qO1CGdMl+VrV3PSgkBUGgoWArtISCXADd12Lq5yVfkI36C
-         WtfkJnKd9metzcrDxWwDL20xHHCc1JxMAY3UPypOXtRiyAfSuB1BsUlUKEGxJRYpIqMX
-         VDpDwrEvlSKXB/10iQYNprR5+Dc0Y/G2j2sT99F07g8WlZKsrTpKexybaunoC/K27Gju
-         AaKWiAsaexDzeOEEvgz0a+p4SnVluaQw/C3c3+d0XHy7/QyTwm54u3lgJxaU0a32CLNk
-         xyew==
+        bh=n526eF796VsVK0te1y2BUvy07jmqYe5zbpzfr00FB+I=;
+        b=WYISqS9WQ40IsqY5xG5yW+LDrBE4+wMrDHEK0lqbYfZtkPi/rdsEVlbJum4eaRRoeS
+         PwBPe9Gl86JgrSt/OCkxoJQpRyH52Y2+NmJzi21fscZI6yOhbJOgO2sPeqlq1c167M/i
+         womkYkjs+WKe37jK2L7Ph4m2QRiEqp1Jg/yuhs2V16YBFYfddEtMOXJ+ToqA+lk7dgXI
+         vUEvo5Khe0akIDRvkhrlETegbz2ATOhMnwUHN6mgc/cZz6ciMYJNWP4Utkdqewt9y6tB
+         lCfG5e5wlmk5UUV19HfvTr6fBbWZkX9nOqwCsv2WF0B9rH27mZyyuHVIqSQoa6i6Znkc
+         V0vA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793545125; x=1794149925;
+        d=1e100.net; s=20260707; t=1793545371; x=1794150171;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=7fwCP5WiERcu+uoo4sVa26KzOzhIOdBQE6cn+WBX1uw=;
-        b=T7MCevOdw1Azkm44REEGjxSo5dfNJ7K79VHZt2TpkBF+XKXULiKw2JmPqGawpPuwg9
-         5PPovbEsSaferjfWMOOqysPDP4UKeaOmLVI/blVRnyNN8dOp6evgkr41eWanJ9tAxD8D
-         boNUjxnRod2IN/1WDJ6MYE0gwF8QJeMVPksAu6SoAyWMDt1sgFDExOgRqqGDV1YuENQd
-         +LD7NywnyNPC8ucle7BFxFSsABUE8nJve+r8CNAdwueOjfBbdDFKVLTNjyQ2ki+ptTkd
-         Y8HP+DzofssIHF5/8QCAEDpk6Pc4kfM/SC1eXeiGGcDV0O9b9tFAOIIlPA7k6RxvLwvG
-         G8xg==
-X-Gm-Message-State: AFq9FYKJbfAEmgg0QKvKAq8JzfDPeNsAnssFjk+UNBiuxgecFgWADeFN
-	zw0DG9QyBtGjsJu0VSyPp+g+J1eU7B0SPaFM6hVWr2DbJhYiBU7H0Cz8CV21KA==
-X-Gm-Gg: AYBFou2mFjabMy9A73oZyl0cY2l23VMFgFzrdZxZIkRSj12CNR/ktwBbWGTm5bW3PJ0
-	aoBB97TGuZBwc3zKReHDSF70I2x8ba/m39g1ksINiTpWA4IgRB+bRM6jO8dhQeOhTHf+yzVtEGS
-	0ydG6va8yo6z2bh+Z0U3cSObL12TOZDRa58asQ47uhyNTzn4T/gHIoeuxMw+X+WaDLoqGmZ90rJ
-	WlqzyKBTFM5Ac7BwaZLM2gg+cXLkYyBkcLcr+jBFPaS0A0silTSVatjm9XZ/gh2ciBVYJo/pP33
-	qVNX5uC8fAMGb7Gq6ZDHlTDMr93gaojdGvbAAr97vVZbBkzutAxjArYfaeYozEpQysWr4ADxfFZ
-	8GX/k7kO0LxZIsCiQo2h8q7NKjuNorqwRD9EjvtkeUG+8qY6ZCBWX5eq4hr6NqFB/wh8OdGHCuZ
-	p1ZiRySawe8CIxOZcz1fXl26k7qbo5ts/gUIhywuN9wRZLCrlqI0fZke/i/0ILpkETSD31n5/SA
-	jwujilGlkFTkmTXYaMvt1Ka5wkn8d3mRFH3fLVxFD4TZTEYGyWfprt8EBdJmgu9nCNfvwsZtYbL
-	+OCPVSQezFL3tESa3pbhLUJHQdYcTpcpe9ge
-X-Received: by 2002:a05:600c:a00b:b0:4a7:b304:253e with SMTP id 5b1f17b1804b1-4ac1765d8abmr182141725e9.22.1793545125214;
-        Sun, 01 Nov 2026 06:58:45 -0800 (PST)
-Received: from LAPTOP-AVI.lan ([2a06:c701:4773:6f00:9c55:89d4:b00d:2bbe])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4aa81b7fe80sm314811015e9.11.2026.11.01.06.58.44
+        bh=n526eF796VsVK0te1y2BUvy07jmqYe5zbpzfr00FB+I=;
+        b=TcobM55l4sx1HUBKo5V2tPrgPLZ3eZouk/G8nqxhozXW0OWnRdf6G6Wf8YFYdd4h8K
+         lqgLyZH0d4jtI57+4WfhPpyQb4ttaSHsKUIt79hLvVjh6rmDju9ZYHCMIEoOT6n32Pmj
+         lm+wW0ct2XM9YLh4Z9ALK28ZLPRofz4nPofayA55LcvYc6Gx/4YHlqHjsdbeCf/33VpZ
+         XNOOfLbnc6Fy++93LNK77RrXQyLzgNGAQeWyhmG+m/7eAdYDKf5c6ClWVFNmB82KSWJy
+         UQbhDDgr8yS0OHsAY9nN/zPHzaDPqcSS0RfGYIPHOOrdq4si/bNMaOerC22MXZeU/x8C
+         ydcQ==
+X-Gm-Message-State: AFq9FYJAQeKiYa01qr8i+5lXgKqQCN6Fpv85pT4PbzL5eCdttKKHh+P3
+	o8dGA4FoOdVzpEd2Fnq1bowqF1kYJ3rszYOISx54jhHnDvDd6J0XgZt79GaggQ==
+X-Gm-Gg: AYBFou3I2sTtant7OnMx4uRcbU/I3mvpBmEIMCXv5e4tfO71wM2qkPgnSEOeMOqCZxy
+	w/4FDQAQlwn+/tr4zRPkzEBU57hnksiJgY3IzgD3NUsoT9uOvOKa38O4cY810URqb924V5k2Foi
+	+EAfHL8b4pBlwHDJ+TQLg1wVuhr46QHvOHgSl7N56tmhALIgfe18eHkm9npBxg9GUAdv+rmqTwZ
+	DHvH22VDO0Qjdc842IDcCHYKhvDJvd2w5opLjBlKfvsqQ6qOUDba6mfRxeWylSXllau7J6gJgfr
+	lzG++jpC+kajDarDdmsjBQQ6bfBiLm/XuTk7Fw0Dt/tqF3zQePdT2lO6gwjdtYmGtdg7rrc0yhY
+	Ioy4zEw6CF93gLAK6Mz7zEGk8+2t0xg1aZyJ0Y02BS7aW8uv4UNkzmjBB9mKpTiyerJH88EYi94
+	Cr/O13KQtYYvFGLrNcHjs4ie9lqL9VByMkNAnQran+pmGUwVhMLnPqistiZjjKbFDmI41XDjjHC
+	On4KgIRq2tiBWRhXWCZAoGtFu3FSrl4oihpTQUFGnU2cj4TfzTfv7TTG3nJDeD5i8xOEhfd3hUt
+	ohbdiEnf6QzDau77SRVUhXj7c6baO7aa6zALiUDWMLcK
+X-Received: by 2002:a05:600c:19c8:b0:4a3:59c9:a743 with SMTP id 5b1f17b1804b1-4ac1913ef8fmr177099825e9.27.1793545371461;
+        Sun, 01 Nov 2026 07:02:51 -0800 (PST)
+Received: from stukan.bbrouter ([46.201.91.224])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ac09fadb75sm135018375e9.3.2026.11.01.07.02.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 06:58:44 -0800 (PST)
-From: Avi Weiss <thnkslprpt@gmail.com>
+        Sun, 01 Nov 2026 07:02:49 -0800 (PST)
+From: Timur Stukan <timur.stukan.linux@gmail.com>
 To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	toke@toke.dk,
-	Avi Weiss <thnkslprpt@gmail.com>
-Subject: [PATCH net v2] net: parse the eighth nested VLAN tag
-Date: Sun,  1 Nov 2026 16:58:42 +0200
-Message-ID: <20261101145841.687905-2-thnkslprpt@gmail.com>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Timur Stukan <timur.stukan.linux@gmail.com>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v3] bonding: fix missing down path on speed/duplex failure after FAIL->UP
+Date: Sun,  1 Nov 2026 17:02:39 +0200
+Message-ID: <20261101150240.66292-1-timur.stukan.linux@gmail.com>
 X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -99,50 +103,186 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-__vlan_get_protocol_offset() starts with VLAN_MAX_DEPTH (8) but
-pre-decrements parse_depth before checking it. This rejects the eighth
-VLAN header and returns protocol 0 instead of the encapsulated EtherType.
+In bond_miimon_commit(), when a slave is proposed as BOND_LINK_UP but
+bond_update_speed_duplex() fails in bonding mode that needs speed/duplex
+(802.3ad, tlb, alb), the slave is set to BOND_LINK_DOWN directly. This
+bypasses bond_set_slave_link_state(), bond_miimon_link_change() and
+failover.
 
-When skb->mac_len is ETH_HLEN, the first iteration rereads the outer
-EtherType, so eight VLAN tags require nine iterations. Check the counter
-before decrementing it and allow one extra iteration in this case.
+This is fine for slave that coming from BOND_LINK_BACK, which was never
+brought up and is not in use. But since commit 1899bb325149 ("bonding:
+fix state transition issue in link monitoring") the commit phase also
+handles BOND_LINK_FAIL -> BOND_LINK_UP which means a slave that is still
+in use and may be curr_active_slave.
 
-Fixes: 469aceddfa3e ("vlan: consolidate VLAN parsing code and limit max parsing depth")
-Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
+If the link recovers within downdelay and goes down again before the
+commit phase reads speed/duplex, the slave is silently marked down while
+remaining the active slave in worst cases. In alb/tlb the bond MAC stays
+on the dead port, no failover happens and TLB/RLB state is not cleaned,
+so the bond stops passing traffic until that link comes back even though
+other slaves are up. A non-active slave is affected too, in alb, RLB
+clients assigned to it are not reassigned and become unreachable.
+
+Reproduced in tlb and alb mode with miimon=100 and downdelay=10000 by
+flapping a slave within downdelay and dropping it again before commit
+(a longer delay was added between inspect and commit to make window
+wider and easier to test):
+  bond0: (slave enp0s3): link status down for interface, disabling it in 10000 ms
+  bond0: (slave enp0s3): link status up again after 3400 ms
+  bond0: (slave enp0s3): failed to get link speed/duplex
+
+procfs then shows the active slave with "MII Status: down" and "Link
+Failure Count: 0", and all traffic is lost.
+
+Fix this by dropping the loop in bond_mii_monitor() that applied all
+proposed link states before bond_miimon_commit(). bond_miimon_commit()
+now applies each state itself: UP after the speed/duplex check, as it
+already did, DOWN in the down path, and FAIL/BACK directly. So when the
+speed/duplex check runs, slave->link still holds the previous state. If
+the check fails for a slave that is FAIL or UP, take it through the
+regular down path, including failover. DOWN and BACK slaves were
+never brought up and are still just reverted to DOWN. The down path is
+moved into bond_miimon_slave_down() so both callers share it.
+
+After the fix:
+  bond0: (slave enp0s3): failed to get link speed/duplex
+  bond0: (slave enp0s3): link status definitely down, disabling slave
+  bond0: (slave enp0s4): making interface the new active one
+
+Fixes: 1899bb325149 ("bonding: fix state transition issue in link monitoring")
+Signed-off-by: Timur Stukan <timur.stukan.linux@gmail.com>
 ---
-v2:
-  - account for the extra iteration when mac_len is ETH_HLEN
-  - validated the 7/8/9-tag cases with mac_len 0, 14 and 18
-v1: https://lists.openwall.net/netdev/2026/10/31/78
 
- net/core/skbuff.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Notes:
+    Changes in v3:
+    - Drop the loop in bond_mii_monitor() and apply FAIL/BACK in
+      bond_miimon_commit() with bond_commit_link_state() (Jay, Hangbin)
+    - Also take the full down path for a slave that is already UP when
+      the speed/duplex update fails (Sashiko)
+    - The 802.3ad notifier issue reported by Sashiko is fixed separately:
+      https://lore.kernel.org/netdev/20261101145653.63648-1-timur.stukan.linux@gmail.com/
+    - v2: https://lore.kernel.org/netdev/20261028104758.299129-1-timur.stukan.linux@gmail.com/
+    
+    Changes in v2:
+    - Drop link_prev_state. Instead, don't commit UP proposals in
+      bond_mii_monitor() and let bond_miimon_commit() commit them after
+      the speed/duplex check, so no extra state is needed (Jay)
+    - v1: https://lore.kernel.org/netdev/20261022103821.89552-1-timur.stukan.linux@gmail.com/
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 48f676411724..8eb5cf532d00 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -7687,6 +7687,9 @@ struct vlan_type_depth __vlan_get_protocol_offset(const struct sk_buff *skb,
- {
- 	unsigned int vlan_depth = skb->mac_len, parse_depth = VLAN_MAX_DEPTH;
+ drivers/net/bonding/bond_main.c | 63 +++++++++++++++++++--------------
+ 1 file changed, 37 insertions(+), 26 deletions(-)
+
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 7019e5d8fdc8..d6b6c125470f 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2779,6 +2779,27 @@ static void bond_miimon_link_change(struct bonding *bond,
+ 	}
+ }
  
-+	if (vlan_depth == ETH_HLEN)
-+		parse_depth++;
++static bool bond_miimon_slave_down(struct bonding *bond,
++				   struct slave *slave)
++{
++	if (slave->link_failure_count < UINT_MAX)
++		slave->link_failure_count++;
 +
- 	/* if type is 802.1Q/AD then the header should already be
- 	 * present at mac_len - VLAN_HLEN (if mac_len > 0), or at
- 	 * ETH_HLEN otherwise
-@@ -7703,7 +7706,7 @@ struct vlan_type_depth __vlan_get_protocol_offset(const struct sk_buff *skb,
++	bond_set_slave_link_state(slave, BOND_LINK_DOWN,
++				  BOND_SLAVE_NOTIFY_NOW);
++
++	if (BOND_MODE(bond) == BOND_MODE_ACTIVEBACKUP ||
++	    BOND_MODE(bond) == BOND_MODE_8023AD)
++		bond_set_slave_inactive_flags(slave,
++					      BOND_SLAVE_NOTIFY_NOW);
++
++	slave_info(bond->dev, slave->dev, "link status definitely down, disabling slave\n");
++
++	bond_miimon_link_change(bond, slave, BOND_LINK_DOWN);
++
++	return slave == rcu_access_pointer(bond->curr_active_slave);
++}
++
+ static void bond_miimon_commit(struct bonding *bond)
+ {
+ 	struct slave *slave, *primary, *active;
+@@ -2807,10 +2828,22 @@ static void bond_miimon_commit(struct bonding *bond)
+ 			err = bond_update_speed_duplex(slave);
+ 			netdev_unlock_ops(slave->dev);
+ 			if (err && bond_needs_speed_duplex(bond)) {
+-				slave->link = BOND_LINK_DOWN;
+ 				if (net_ratelimit())
+ 					slave_warn(bond->dev, slave->dev,
+ 						   "failed to get link speed/duplex\n");
++				/* Coming from FAIL/UP, the slave may still be
++				 * in use and may be curr_active_slave, so take
++				 * it through the full down path. Coming from
++				 * DOWN/BACK, it was never brought up, so just
++				 * revert it to DOWN.
++				 */
++				if (slave->link == BOND_LINK_FAIL ||
++				    slave->link == BOND_LINK_UP) {
++					if (bond_miimon_slave_down(bond, slave))
++						do_failover = true;
++					continue;
++				}
++				slave->link = BOND_LINK_DOWN;
+ 				continue;
+ 			}
+ 			bond_set_slave_link_state(slave, BOND_LINK_UP,
+@@ -2839,28 +2872,13 @@ static void bond_miimon_commit(struct bonding *bond)
+ 			continue;
  
- 		vh = skb_header_pointer(skb, mac_offset + vlan_depth,
- 					sizeof(vhdr), &vhdr);
--		if (unlikely(!vh || !--parse_depth))
-+		if (unlikely(!vh || !parse_depth--))
- 			return (struct vlan_type_depth) { 0 };
+ 		case BOND_LINK_DOWN:
+-			if (slave->link_failure_count < UINT_MAX)
+-				slave->link_failure_count++;
+-
+-			bond_set_slave_link_state(slave, BOND_LINK_DOWN,
+-						  BOND_SLAVE_NOTIFY_NOW);
+-
+-			if (BOND_MODE(bond) == BOND_MODE_ACTIVEBACKUP ||
+-			    BOND_MODE(bond) == BOND_MODE_8023AD)
+-				bond_set_slave_inactive_flags(slave,
+-							      BOND_SLAVE_NOTIFY_NOW);
+-
+-			slave_info(bond->dev, slave->dev, "link status definitely down, disabling slave\n");
+-
+-			bond_miimon_link_change(bond, slave, BOND_LINK_DOWN);
+-
+-			if (slave == rcu_access_pointer(bond->curr_active_slave))
++			if (bond_miimon_slave_down(bond, slave))
+ 				do_failover = true;
+-
+ 			continue;
  
- 		type = vh->h_vlan_encapsulated_proto;
-
-base-commit: cb284914e749388eef402938bdb3115fe1f6d337
+ 		case BOND_LINK_FAIL:
+ 		case BOND_LINK_BACK:
++			bond_commit_link_state(slave, BOND_SLAVE_NOTIFY_LATER);
+ 			slave_dbg(bond->dev, slave->dev, "link_new_state %d on slave\n",
+ 				  slave->link_new_state);
+ 			continue;
+@@ -2894,8 +2912,6 @@ static void bond_mii_monitor(struct work_struct *work)
+ {
+ 	struct bonding *bond = container_of(work, struct bonding,
+ 					    mii_work.work);
+-	struct list_head *iter;
+-	struct slave *slave;
+ 	unsigned long delay;
+ 	bool commit;
+ 
+@@ -2917,13 +2933,8 @@ static void bond_mii_monitor(struct work_struct *work)
+ 			goto re_arm;
+ 		}
+ 
+-		if (commit) {
+-			bond_for_each_slave(bond, slave, iter) {
+-				bond_commit_link_state(slave,
+-						       BOND_SLAVE_NOTIFY_LATER);
+-			}
++		if (commit)
+ 			bond_miimon_commit(bond);
+-		}
+ 
+ 		if (bond->send_peer_notif)
+ 			bond_peer_notify_may_events(bond, true);
 -- 
 2.43.0
 
