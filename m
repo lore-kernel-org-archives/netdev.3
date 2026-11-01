@@ -1,101 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.170
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793555527;
-	b=wC/ZFkLVGyFhVw6Vic7L+EU+7iU2AcJEtKqyEcUjGLzm4R56TCC20YEvUNJLPNJtIeGL
-	 EdtQHdPgvZUq5T6HRTo6sZgvws4zEgsRITv+JrsLm15OeQdiATx3GxCJ1/11kGOui4IEN
-	 yqXzESsb9/KviNY8UR3qBXeYEB0ytmXJRC45nIEe1oAdWoNpxgUPPoKJZD55I6naQXTdd
-	 cH8Djr2TiVyfAldy54OpZYmbJJbbEQdjFozjnvKIRdVEilN3X2jfA34AQVQVeslfnQj3J
-	 wFF+WepAK2O5y6L+m+3Elgi3G16MUa4mt1BTB8HWgdi4+Gb5hXQ35FS2ma8yOQGGOuA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793555527;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=dW1mzaspx9sbyMYPqoIn8n6kH4dJWWly5cyH9qGVB7Q=;
-	b=U8aL223ncYB/ghEQrXOIU5mp44vx62u150pn5BXx25rxgupIuFjYImco64lLJ+dbiKyw
-	 Y7IbmmRL6ricthGN9joBIQnEy+OkrPnkRyEL0Ps3AGstZxfyy3461CIX+Yn4e2YD5PruO
-	 taJvrXCH8vsjHpK/xHwZJbM6ZfOQ5tqLwFy6poVP5azkA99l3R6MNVtLADj+DN3XF+zrU
-	 gMTAX+b03xEB7EhTcrhyhIByMWPWV2UmhTfFp3lo/8DYmLoSWZ8kLEeGDx0BYdlDMNH27
-	 q0puVwGqctODpKP21LVAF/NDersIaUSZcfOxoP7lX68lucmD7wLjNcVRX4HH/L5ciSg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DjBEpGmI;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.170
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=57.103.64.143
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793556131;
+	b=g17zT6S5iUr09KsTE0qMfQz5uKVpT16nUhD9z3o0ZA41fYei0O47GfwiKEqc7ZwkOB4R
+	 8qCQ5+UfMB1QsoT4r5Iavsp5gYMMi09pR8mcLainZCoheeivhajs1AfzmFyUtSvpj325A
+	 IHsKBpRGYKtYv1Ota3VZN7xedlYX/IwjPObQXfEeLGUZ4JvFHonpmJbGfCiiCUH3Ve5zq
+	 6vWXDFXl8RR0Au/LkP/oEkfTabXIv3S+bTNJ1yBYV+dHlOkfbTDe0H9etJqXmG4M7eSi3
+	 /xnMV9uIknJpD+VVMLYVQavFBPzP4OiEPDlPc6MhQIgudDfoleskRyTNOFAm2txoHag==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793556131;
+	h=DMARC-Filter:Received:X-ICL-RepId:X-ICL-Out-Info:Dkim-Signature:
+	 mail-alias-created-date:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Content-Language:To:Cc:From:Subject:Content-Type:
+	 Content-Transfer-Encoding:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-ORIG-GUID:X-Authority-Info-Out:X-Proofpoint-GUID:X-JNJ;
+	bh=Go0vgQixrlIvwWGOI2mg7rY8Ni9A0LnfNhEK2C3rBuI=;
+	b=FgE+KKPm07/zZxUkZaQFLD4+Mq58QgULZEAeTMcWy2H2sOvJ0JZY9YHtzz6eKlkb5r6c
+	 PJWXaksd6JCIBIcjQgTzkcDalc46CpOeJQ93zP2O+gQchgIyM2xnhVhtZmt67TwyLIIpQ
+	 ywrfh6bWLLSY3UJ0lgY+ysZ3FYap8orsm/5AwjEtM0LfjYILLPsamXVuEvWBMTYjZXaB2
+	 zKYKss168rJCazIydhBzc9O/VSEcYkz7DIGtRrZ08xas0QPC6Sx43mGwqOanY+bDBMj5m
+	 Ih1d8pkD2uOeq51g+OSMcu4usl8tqPVqnJEgAb5u9t8K0xzVSdyEApH+yHsKnrg9Qmg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=damex.org;
+	spf=pass smtp.mailfrom=damex.org;
+	dkim=pass header.d=damex.org header.i=@damex.org header.a=rsa-sha256 header.s=sig1 header.b=peR3t7qt;
+	arc=none smtp.remote-ip=57.103.64.143
+Received: from outbound.pv.icloud.com (pv-2002j-snip4-2.eps.apple.com [57.103.64.143])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E87A606A326
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 17:52:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3E87A606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59198606A324
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 18:02:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 59198606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=damex.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=damex.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DjBEpGmI
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-533202fe429so272211cf.0
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 09:52:06 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793555526; cv=none;
-        d=google.com; s=arc-20260327;
-        b=N6OxKbDfBlihX7FtvdGAhUdGivLTl5GUmSFfas48vvFBcxaF5GIIUSDrKwmz7HJCUB
-         cXQAwNEepivmg7hqb24nOGjXHsuyYTTf8TxTxY92xyJcHOiQDofjn8WhBXcdv7sw++0W
-         F63vEVck9BGiP66eb17mjtFUjpt9JrjgMxV4dSoJWD36XKs+SAyOf072UYvtcEFLvgmq
-         dCX/XdeTZf+FKQM6qMqVwvKFYd/fNpceSN0nAYybwlK6bVRG8ACUMioBh+YcbdKj7mVO
-         8HQBPfcVxCl+NohBGXDvLhMz358hYjZyzvtV8JOfKHH3F1K7YM09GPAW+B6yvKglFpem
-         ajfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dW1mzaspx9sbyMYPqoIn8n6kH4dJWWly5cyH9qGVB7Q=;
-        fh=IrrhpjiqdAcakG/NTPdPyIITbF1g2/feWaEMCi+hKpo=;
-        b=lN8SQQzcQEVZ3vSnVWHQi4lXrktD8SxyFZ4ed1x5SKIrdW+alTEHuh65Wj19ehlkCN
-         YztPaNIF6p/1Uh3FAr9sigee5eWTsHcA/i7cD+9klag+tzPXOsaT388IylIPnydybFuc
-         uQ9cvmXB1vsPmkQWDeAywhlM7d3VrU/VBj9mEGM3XTYakP1fSJyZg8RBKO0vu7Fam62Q
-         JbCQcY/ry2Y/eM5Ifo85pqyKrNwlG88gCEmv5HWHJh+H/BbY4g/k6sC0YxoTobPViH8a
-         eCNU3kIVcmMRljuG2CdPSFo/QhQq3+NvgsWHFAGMwZ1qgRhYmoLrJntzuidxJmf3Sbnf
-         DVAg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793555526; x=1794160326; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dW1mzaspx9sbyMYPqoIn8n6kH4dJWWly5cyH9qGVB7Q=;
-        b=DjBEpGmI+r7dfQKyiQrqGnPNTRMC4LJRPaSiGGCX45yrLB1LzkLmP/xKJGHyEAEqUP
-         1OlZBuolem3VW+ZPZRl624U/BufDFEFOlZe5+IUpHzA7oxT3puds5PMGm1yjiQG1OoXp
-         XxU0zy0a8Lsg23CmhQMSCRrQktNWpiKtw1ME3y+3gBl7ilOIUm2vMTByKqpq2LHwecq3
-         kRwZP0wvzCTpqgoSk1/84ba3z8p+4E5gsheB3skt8if31Zb0xZJkPoCZHHBYcKzM176A
-         t+K5krY0QgfnAskum5GOi/SV2pBRHV1ldu5MaNdGsVThH/MYXQ2XSW77Y5WFpFHcy+96
-         c1oQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793555526; x=1794160326;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dW1mzaspx9sbyMYPqoIn8n6kH4dJWWly5cyH9qGVB7Q=;
-        b=aTq/FOGldLcQUzJl1nstEeI3MaEDnp/fewZeeJVjvDdmJztOvdkVO1b0zNxX3QniPW
-         d++RgXrWBk5RZ7OehnOZFTXK7AJfyG1SFl4Ce8ZRILIUd0f+FKbbdH4tdHsUglQi/9EX
-         C5ILTBig1TMIDxe9G+++zr6RX9unHCMYXdw99MZAEpdrfdaBLmlEQF4cMFltFus69SVO
-         Ccx5x7grEvdEDIeE4KndMjwzekfSr51t4EwsBqfIm56GnCF7liIqppEEQj93EKWm6bJY
-         /rCPuwlNv1UvR2NJJtVMHMA6dpUmfQdLY3Yb9+oDz/AQhQ9a0rAuCt+l+rsjRipEtPzi
-         FaRw==
-X-Forwarded-Encrypted: i=1; AKwUvBzkL9pwcD92PmBtfWJz/N8eJJvwGtnD/eJeANoCPfO3/mNmQew+0hvYyDy3CXj6Pg6JLbO6XIU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ9NT+QrzTWui/nFgDL5e+U8UzAzhAeTZ9hJuGCER0VF2Fco8gB
-	0utGnQgLpv4KqgjTlR6+ljJJhAmwWwUcuDAahqNyuG0cyUcrb5ZpP/8fAkWFBCcyvK3F8+sRlHu
-	kyvIUvZLTNmCv7Lf+Rb6qmVDR5jf7oVJksLyid4qH
-X-Gm-Gg: AYBFou1u3ir6lFXoN5wH+lTIwC+ukx/ks/271z1MGyZc220pR2x83gS08raECSNZVwh
-	heJvVbo4OMDrWD56lXXgm2F/jvBOWeljGRwuNywrAZUHCgiU63Q/hrB7gVuR8dpmYl+hr5aAQ1u
-	NfMKtidibqlBmb5ehjgjP7Seiaei7VOYnShHYoOhXAuf7NvQxGx1YlidG2Q1Xe5FkNRXSbPO02B
-	5MbrZ1LdELgxpdkmIX4BIinkUqtCPUeofFXO+ODBTvE0Bktk+5+LU774k+o/YWU3Ldvtt2LWD0V
-	LVic+PRfIs+DbYddFJ4n0gi9gPK+vdRIfNw1SQjbojJRz10g4APfj5RIe1h9vCsUyiWkqh3mykD
-	5VdA1UpvNKpC1ECqQzTDqVNFcuKp4M6L/yB2dBC8POPxz0wpolkHM61mh1qYo7w+eVzINWdsikL
-	8gj7F0ohts9SqFfOpJCyxXEENFiq8=
-X-Received: by 2002:ac8:6982:0:b0:545:7949:80a5 with SMTP id
- d75a77b69052e-54579498560mr14717631cf.12.1793555525329; Sun, 01 Nov 2026
- 09:52:05 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=damex.org header.i=@damex.org header.a=rsa-sha256 header.s=sig1 header.b=peR3t7qt
+Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-1a-100-percent-5 (Postfix) with ESMTPS id C826E1800955;
+	Sun, 01 Nov 2026 18:02:07 +0000 (UTC)
+X-ICL-RepId: 01a19846-9fcf-75d5-a7fc-9e01a745205b
+X-ICL-Out-Info: HUtFAUMEWwJACUgATUQeDx5WFlZNRAJCTQhMHV8EWRxBDE0dXBcOVk1LF14MWStWEVQdS0NYGVVQXxwOCVYGVwgXF0EKFxlRTQ5YWwhbBA8fTAxRAkIFVl5JDh0EVAddBV1WUAJaS0IES0VoXAVcHEAXSB1faktWFAQcUgBSExwfSx8TAF4PD0wJSwNYAg1UFBQcA1wCRgZICEgeVVVTU10PTwtVBVpUEQ8cUA53D1MdXAAdAkUMDFBNAUMICghHA00XXjJTBF8RUBY=
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=damex.org; s=sig1; t=1793556129; x=1825092129; bh=Go0vgQixrlIvwWGOI2mg7rY8Ni9A0LnfNhEK2C3rBuI=; h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type:x-icloud-hme; b=peR3t7qtS29CElIdi4t0ByBERT3s11mhd9b9atSn20sBWApv495b/rjAcJFLTfhRNLXTjbjcFmbcdkbY8gXSUa19Syf9ikFtNeyy88napD/DpBs+8J/p9CyOqBDCrS4+SWdv5ztmEZvo+QAvsraXUp+9VVJ+o+N80ZEsakaYOFNIMb7YeEIxwwPWqhytRY7WxwR2e1Ll9dJ6/wdCv6CMBn2kCFgQZY+uLPr/LriLOF9sWRgEyQ+uKSCsx3adjwm3v5pEFhJvRJ+MeCYxhfyCPj6dcCzpppci3fLO68Vb6JuGA6WlO151Mmc+3RVe4tNjBin3sJs3Wv+PUPoLym0TTg==
+mail-alias-created-date: 1762459955661
+Received: from [10.12.209.253] (unknown [17.156.192.29])
+	by p00-icloudmta-asmtp-us-west-1a-100-percent-5 (Postfix) with ESMTPSA id 8498A180097C;
+	Sun, 01 Nov 2026 18:02:05 +0000 (UTC)
+Message-ID: <03055ffd-d015-4810-8b8a-678821fa6dcc@damex.org>
+Date: Mon, 2 Nov 2026 01:02:02 +0700
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,92 +56,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <6426d558e45fc6ab724c40af62e4a8793215dd8a.1793219189.git.gnault@redhat.com>
- <audm81hsgydhfWn3@google.com>
-In-Reply-To: <audm81hsgydhfWn3@google.com>
-From: Neal Cardwell <ncardwell@google.com>
-Date: Sun, 1 Nov 2026 12:51:48 -0500
-X-Gm-Features: AclHuK_qGJpWCKHWf9TmzkJm5PfQse5u8fQBhEyA-3gTPxC9fkZLUM7kk9hyU8A
-Message-ID: <CADVnQyke=Xhtt3XFBstE5oDiZAXq0zqyN1XtCa_fe3iRYzKdDQ@mail.gmail.com>
-Subject: Re: [PATCH net v2] tcp: Fix dup-ack detection on non-SACK
- bidirectional data transfer.
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Guillaume Nault <gnault@redhat.com>, David Miller <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@kernel.org>, 
-	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>, 
-	Tom Williams <Tom.D.Williams@morganstanley.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: linux-hwmon@vger.kernel.org, netdev@vger.kernel.org
+Cc: robert.marko@sartura.hr, luka.perkov@sartura.hr, linux@roeck-us.net,
+ o.rempel@pengutronix.de, kory.maincent@bootlin.com
+From: Roman Kuzmitskii <roman@damex.org>
+Subject: [RFC] hwmon: (tps23861) PSE-PD support, extend hwmon driver or move
+ to pse-pd?
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAxMDA3MSBTYWx0ZWRfX29RmuVEedYbM
+ aw5G8JYN1HOsjNWl6i8ZckcFhOyzWY2jcN06aOIOhH5XssA8L00Dus7AHrRCjuGEu/faf3tgg1z
+ 5aM7JmsxwJp2v0qz6yHkC1n/fJnPegt6oP6QRZTtSwnLOI5nQBeI7e8RcbMPLoazU6sfX3fsKlj
+ viNA1ZKBzhVD0PyPhD+CW/kyYeiQYw9i/guNVGjo35wZePOn7LnwEHpGJTCgL/V4gcjjfedU71K
+ Oy7a57ZxK6tEYw9ufepX8Ff1i/Lx2y+oyt7jOBc6AUpABDVHuiNf/QT3XX+pyS2zMnjpPXTCUww
+ HTMt6m0pdU7tIIWDEfmwHkdJXAjz6T+K4vMDbj9/qqWFKD3aswYE7xNmUnB00k=
+X-Proofpoint-ORIG-GUID: D4HnDuayFh6tlQZLiKfCrOlYwfAxX5VX
+X-Authority-Info-Out: v=2.4 cv=RofI7SmK c=1 sm=1 tr=0 ts=6ae77ea0
+ cx=c_apl:c_pps:t_out a=aW9mcIavGNWWFvFFKOxBSA==:117
+ a=aW9mcIavGNWWFvFFKOxBSA==:17 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=NEAV23lmAAAA:8 a=UuZIIuYS88Jd6fZmK9IA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: D4HnDuayFh6tlQZLiKfCrOlYwfAxX5VX
+X-JNJ: AAAAAAAB3UZu4E1nN6oDWq12J+JbBkeISoyGsoXHniuJoAYf45qYRI+85CB2IQJGFtuRnp
+ UOTnJkpsvzldo+zPvGSSiB2eVZLHLKo4RoW6sGEQ787NVn6N/HAAzeZIWZPYCoqrNMtRIU
+ tUqguvL7dfW7X5vuow2K7gSEurKSFPeKS8+WL/dX4CVzevM+szpNgF55O0oCouCKIxPdXk
+ dnc+NXSPzIlTfS6MJw+cuBf61YDtSTSeqcEE2hWVZZJSRL13nFl0C/lEOHdRjLsGNy+M0/
+ bI11OAFRgmEMDri05pcLnPWIYFYTCn6DBiqjBxHDVdlToq+DyPqUql8OjqrfxjCXjNWlRJ
+ fjxcnEYg51Fw2Sh124rfUKSAvAlnf7GOGPhmisfAE12VhaevZryaO+y4a97E7kUHZjkUrw
+ KBnVMF7DvD3AsfxwiKfP+5h3iwyNIzsKolI5Q8mNvD0sa4sobWIormq63+DBuYmd4wKS+e
+ 9rmOTbEz8U7zXZcA8ICjMwZ5ZbN1bQVegUVN0dtZl2BZSFoWcb25vU3YoGFV69Ld2wtZ+j
+ SaMQdBYcmMVMQoZJH5L42IQUVzgn61ZWMBp/oG3ekiyOrCyNiU9yhC0m5c0K472TpbKY8w
+ ym0SZ9h8p7R0Z5pxWzWMcWSeRJYmMR6RBQzbGA1B1Y2jTO1SJewJooSSJ2Uo0K9IMv5103
+ IBK2eRaSbFQC6OXK/fJNHl32YX6GAFoj99QRf6JTee9k4S5MpuuwjLpNFnclIpvENYPF1O
+ gc/T9hp1AHOqZkmPZ9o0p9BClEorpfQ2Ttsotl5hxbP4nkA9sQDh3lkrAfDHXTr/VayGGj
+ IA2X4tulAGnMit5m+cB1w4y/J41aMyljR8Ib1HYyklUo78DaCBr82jxNpCjPgoGQoksExm
+ l2vz3JHcVo+ArSwc5HMDLTX4Yksd5S9asNQBzNmWy5HMPLzppmY7gu1kDe7XGhGIpSB82r
+ YwvAo+OWLle2AvUxPhlQAPJaZRkNnjvKT3w2wL4bg3q/VOn0uFnXkF4qsDgmGfn02iOAG2
+ mRsFYVbj/wsL7QZBtcsRPa6TKXz0X7BqqDvh5/zrVTXvB1iPzu23+6WzGfcgLSVNI+M/0x
+ QW2IZLk1bH/QOOyTqld1TUr8ik3cwMHp+pH3QsG2Z8Sfoa0u6TCMD0YrMGPYaJXSqDFWOL
+ 0UPVFTCEgA3RG2zpW+nKQq0oiIcw5wylBEiuxYeaJSOPyHLi5Z/USpXfJjhmwrBUCU1LXV
+ 7NcbjdDQo4b3sQPLPxIAJMXN0M3WCsflx1MyUYH0of8MM52VJZPKCgNECCo7ewre6w5xJv
+ FCAWUTCFSJEg9cAK+t9DALJPGta1tnTrW8izF1l2RRxsu9iLvH0O/0Q+0=
 
-On Sun, Nov 1, 2026 at 11:22=E2=80=AFAM Kuniyuki Iwashima <kuniyu@google.co=
-m> wrote:
->
-> On Wed, 28 Oct 2026 21:32:35 +0100, Guillaume Nault wrote:
-> > When receiving a pure ack from a peer that also sends data, we can
-> > have SEG.SEQ > SND.WL1, even though the segment contains no data. This
-> > makes tcp_may_update_window() return true (because of the
-> > "after(ack_seq, tp->snd_wl1)" condition), and tcp_ack_update_window()
-> > then adds FLAG_WIN_UPDATE to the segment set of flags, even when
-> > there's no window update.
-> >
-> > Since FLAG_WIN_UPDATE prevents the segment from being considered as
-> > dup-ack (as it's part of FLAG_NOT_DUP), this can inhibit fast
-> > retransmit on non-SACK connections, making recovery very slow as it
-> > now entirely relies on RTO.
-> >
-> > The "DUPLICATE ACKNOWLEDGMENT" definition of RFC 5681, section 2,
-> > says that lack of window update is a necessary condition for a dup ack:
-> > "(e) the advertised window in the incoming acknowledgment equals the
-> > advertised window in the last incoming acknowledgment.". Spurious
-> > window updates can thus prevent dup ack detection and, in the end, fast
-> > retransmit.
-> >
-> > Avoid this scenario by setting FLAG_WIN_UPDATE only when a window
-> > update actually occurs. Pure acks with SEG.SEQ > SND.WL1 can now
-> > be detected as dup-ack and trigger fast retransmission.
-> >
-> > Also, stop setting FLAG_WIN_UPDATE in tcp_ack()'s header prediction
-> > path. One of the conditions for header prediction to happen is that
-> > received segments don't trigger a window update. This flag update was
-> > thus wrong to begin with. Now that tcp_ack_update_window() sets
-> > FLAG_WIN_UPDATE only if a window update actually occurred, we need the
-> > header prediction path to stop reporting spurious window updates too.
-> > Otherwise BPF programs would get inconsistent window update information
-> > (CA_ACK_WIN_UPDATE) between fast an slow paths.
-> >
-> > Finally, add FLAG_SND_UNA_ADVANCED to the definition of FLAG_NOT_DUP.
-> > This is necessary for the case where an incoming segment acknowledges
-> > less than a full segment of the retransmit queue. Such segments were
-> > not considered dubious by tcp_ack_is_dubious() because of the spurious
-> > FLAG_WIN_UPDATE flag, which prevented the segment from being seen as a
-> > duplicate ack. Now that FLAG_WIN_UPDATE doesn't cover this scenario
-> > anymore, we need another way to mark these acks as non-duplicate.
-> > Adding FLAG_SND_UNA_ADVANCED to FLAG_NOT_DUP is the natural way of
-> > doing this, since, by definition, a segment advancing SND.UNA, even by
-> > a small amount, cannot be a duplicate ack.
-> >
-> > A side effect of this patch is that repeated zero window acks received
-> > from peer can now be considered duplicate acks (because of the the
-> > "|| !win" condition in tcp_may_update_window()). Therefore, they can
-> > now trigger fast retransmission and fast recovery, including congestion
-> > window reduction, when the peer is stalled. This is RFC compliant and
-> > shouldn't have any negative effect.
-> >
-> > Add packetdrill selftest. Before this patch, the 1001:2001 segment was
-> > retransmitted upon RTO, now it's sent right after reception of the
-> > third duplicate ack.
-> >
-> > Thanks to Tom Williams for the investigation help and initial
-> > reproducer.
-> >
-> > Reported-by: Tom Williams <Tom.D.Williams@MorganStanley.com>
-> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> > Signed-off-by: Guillaume Nault <gnault@redhat.com>
->
-> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+hi,
 
-Reviewed-by: Neal Cardwell <ncardwell@google.com>
+TP-Link TL-SG2210P v3 (realtek rtl838x, openwrt) has two tps23861 for PoE.
+driver is hwmon only. ports can be enabled via in*_enable sysfs, rest is 
+only reachable by poking i2c directly.
+i would like to control them through PSE-PD instead (ethtool --set-pse).
 
-Thanks!
+i made patch for openwrt which registers pse_controller_dev from hwmon 
+driver when node has pse-pis.
+it does c33 admin state, power status, enable/disable, voltage and power 
+class.
+events are polled.
+only ports with pse-pi node go to auto mode, and in*_enable is hidden 
+while PSE is registered.
+https://github.com/openwrt/openwrt/pull/26330 (tested on openwrt 6.18 
+kernel)
 
-neal
+openwrt reviewers asked me to check with you first which way you prefer:
+1. extend hwmon driver with PSE-PD (like it is done right now)
+2. move driver to drivers/net/pse-pd and extend it with PSE-PD
+3. something else
+
+thanks,
+Roman
