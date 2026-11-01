@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793569621;
-	b=OJkn7z2Un5T7Qs8kxRC5TnpNVhqF6ZzLLIAljMzii1mgeS+bSYOzJmlm9Kf3JztVej7d
-	 lyptnA2Vq38vwf7ANxld9Y/2qcDTfOUVXqbDwCSYBW/iUyZhyQawlNmiHMgiWG+3aK/ZS
-	 1DYgLMc9iQTqM4sRLDThk1bTpwhdDGdluQiYRTr3+QRmeHdwZkJ2lsXCVkiYAitkkBhXp
-	 ojzDVS7D7HtO+Z1jnZgfmJsLetDfyckI4vW3DMznY2yry9DNkxURvpiFfxI6wBXOyuuZq
-	 1GxaGCta46pAs4Up1KLqGm9EMaJXE/+up4TXmkDik2KU/47GqV2GWL0cn4OpiILqEqQ==
+	t=1793569620;
+	b=LWFX0Neng26DhXvW9uASf12+YRjY0k8IoC+QNIfaQrYlRhBWjLOuv68T+6zjx258a3AT
+	 O3uMW7Qn74h1YxF8+LJq11iFYQiMC8HWdOydaYdsR5dqR+a3wtgXwSYTm6GWeS8Skhbyy
+	 GtqEpoIUe0JkO3JSCjsluMdL8Tn0kTyKQhp5fErW57byuNPUaUxz0GGCwLv4iC93Pf1jd
+	 c83/I/FhLrJyNc1p6Hb5zpHoqajArGco7wbp5+Gn2YQPtqrx7rVf6og158iTLSfFVEHTD
+	 CehHTKLMVxvmXUFBomZv76M9JpK2OAFHCSsMnoVa4GYDR5sfa626FuOYJ47ryz33wQw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793569621;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793569620;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=OnEbti8Lyvb6OrP0RkQ8UVvs1b0OjU43bHIMsskyVEc=;
-	b=c1LOeYarRj7vW3o+m8Wje6roAw32oGeVxCXeQ2T/VaPh/RWL85ve3hdKgbzPZflo4BZg
-	 LpJSke6AsDxb/dfYHWqrcGNo1m5VbQ/1vCzR89GWR/v64iowJXyTUs80lroBSZ9wBSATx
-	 McX8JNL1LgZJuZWfs4c16Pz2S0Hlr8rFQPZI35HUD0p2txxKkvdkJl635hwNNFCSZleU1
-	 osQ1lGcKbS1GBiFWkvKuibBnGdBxzztUuByndPFTXt2fxrbD22nMpWx46uZPzQ0FNvEMu
-	 piaxdKbvSx7pu/3NLCWDQ7jMZHfhlG60f+R/hXyZftPjJ70nqb8Mw3vABUyXlR4R63A==
+	bh=uk9492nY2Z6AZT74vYyROopjR/2FFVIMtzAYStpAoSY=;
+	b=eDXIYhUBFrXbDYEfO0jINv2SRFIehR3FTj8dhRbqFV8VKsE60ipTnxK8uNWahapAW0Uw
+	 UIGiBmJsXGPR0toDoT4vjr7iroFla0oJ7X1FVK1bCYPLIwVFDhSFgHZfkf0k8JYvpdsJu
+	 /4ZAEuvSIXSP2Ym8oygH4BP7JVIG+KRaWrtWf5vDbXtUkiI33J9s6u/h10Rg9vxhJERvh
+	 U0/LDI2jGMhofMlxLBR+rrUAOANTiL4r06WBpDs8RHqGo2cyXYD6IRGiLrmW3D6AKqZQ6
+	 4OU6jnATRWPyhhzz/9vBn6N693SEv8gqxOrqsvR+XWe9ZlSJ0PtxxBOmMkxINA9+ECg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nqjCJMsL;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LdjK2vne;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D0D606A331;
-	Sun,  1 Nov 2026 21:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09216606A330;
+	Sun,  1 Nov 2026 21:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nqjCJMsL
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FBB31F00A02;
-	Sun,  1 Nov 2026 21:47:00 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LdjK2vne
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED8731F00919;
+	Sun,  1 Nov 2026 21:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793569621;
-	bh=OnEbti8Lyvb6OrP0RkQ8UVvs1b0OjU43bHIMsskyVEc=;
+	s=k20260515; t=1793569619;
+	bh=uk9492nY2Z6AZT74vYyROopjR/2FFVIMtzAYStpAoSY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=nqjCJMsLWAhAH7wXjwg/t8uf0w7aGTxFzvMjWNanzqUIcA8XJaqJrrbIe4eVh3xy4
-	 IDvaSCeUJOndEZuvGN/LPaHiNkfjo3oRzt9KWft1MLIhN45bL4+YHtvc9YnvnnkYUy
-	 vMPZxN7LaNHadNsOea5J98YOtMEmVz3yxFAfsE5t6O3IfjsNhQhLz7ZKBxDdIWCIWK
-	 qGWFQOELUYyRQAjN/UJmzlmno7dXbuoPPHsC2ZWixy5Hsb4WQVeE0Pmm+Bm651pWoj
-	 w0hnlJDzckpphAwHd4BXkJn0sMTMZlctGmYdrvuwzRF/nWGj+tII29uckuWHIuqhGB
-	 UUIpMQV8Fi7JQ==
-Subject:
- Re: [PATCH net v2 4/5] net: dsa: b53: reject conflicting mirror destinations
+	b=LdjK2vne0p8pZm+XRGfSotz6w/ZxSZQUB2YOfoze+X7J2e9kBQs1VBJ3N6nXlzTdI
+	 /tuw3f9Uxb27gJaEL/nt1GyRsSEB/ayUNcqZqZv5+LEAp6zxiLQkxxnacKemfN7ovK
+	 efTPws4n3hVlo7xbmzykoEUWFgTphK7sDX/u97uRrnUdLGgPCqjjdut53vCDk2/LHE
+	 7him/tpEldBckmrvktlPKPLtMsI/qR5WpjMoWzuz49OpovDTjC/h62wNe+NSXBCtrd
+	 sLHZh4cEdNTmc6t12UK/Uo9rrPmUPXIbhKVHItzVGPlxwER+buETrxG1Vddm0CV48g
+	 Ev1NCV4j+mqww==
+Subject: Re: [PATCH net v2 3/5] net: dsa: b53: clear stale state when creating
+ an ARL entry
 From: netdev-bot+sashiko@kernel.org
 To: florian.fainelli@broadcom.com
 Cc: netdev@vger.kernel.org, jonas.gorski@gmail.com, andrew@lunn.ch,
  olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
  pabeni@redhat.com, linux@armlinux.org.uk, rmk+kernel@armlinux.org.uk,
  linux-kernel@vger.kernel.org
-Date: Sun, 01 Nov 2026 21:46:59 +0000
-Message-ID: <179356961978.3131.2192890787102914987@kernel.org>
-In-Reply-To: <20261028212310.3847553-5-florian.fainelli@broadcom.com>
-References: <20261028212310.3847553-5-florian.fainelli@broadcom.com>
+Date: Sun, 01 Nov 2026 21:46:58 +0000
+Message-ID: <179356961852.3131.14443659841627836744@kernel.org>
+In-Reply-To: <20261028212310.3847553-4-florian.fainelli@broadcom.com>
+References: <20261028212310.3847553-4-florian.fainelli@broadcom.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -68,7 +68,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 (3) · Low: 0
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -76,190 +76,136 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] b53_mirror_add() now treats the live B53_MIR_CAP_CTL contents
-  (MIRROR_EN plus CAP_PORT_MASK) as a record of rules this driver…
+- [Medium] In b53_arl_op() (drivers/net/dsa/b53/b53_common.c), the patch
+  changes the result of deleting an ARL entry that is not present (op ==…
 
 Pre-existing issues:
-- [Medium] Only the first B53_MIR_CAP_CTL read in b53_mirror_add() is
-  checked.
-- [Medium] Mirror register writes are still unchecked, so a failed write
-  can leave the source masks and the shared capture control out of sync.
-- [Medium] b53_mdio_read16() (drivers/net/dsa/b53/b53_mdio.c:95-106)
-  assigns the int result of mdiobus_read_nested(bus,…
+- [Medium] This problem wasn't introduced by this patch, but in
+  b53_arl_op() (drivers/net/dsa/b53/b53_common.c) the unicast delete…
 
 --
 
-net: dsa: b53: reject conflicting mirror destinations
+net: dsa: b53: clear stale state when creating an ARL entry
 
-b53_mirror_add() now reads B53_MIR_CAP_CTL first. If mirroring is
-already enabled with a different capture port, it rejects the new rule
-with an extack, and it returns an error if that read fails.
-b53_mirror_del() now clears the whole CAP_PORT_MASK field when the last
-mirror source is removed.
+This patch clears the b53_arl_entry in b53_arl_op() before creating a new
+ARL entry. As a result, a multicast add no longer ORs the port into an
+unrelated bin's forwarding bitmap. It also makes b53_arl_op() return early,
+without writing anything, when asked to delete an entry that is not
+present.
 
 > diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-> index c38e8c5838bd8..378f47e7250cd 100644
+> index 559d4b360c828..c38e8c5838bd8 100644
 > --- a/drivers/net/dsa/b53/b53_common.c
 > +++ b/drivers/net/dsa/b53/b53_common.c
-> @@ -2543,7 +2543,19 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
->  		   struct netlink_ext_ack *extack)
->  {
->  	struct b53_device *dev = ds->priv;
-> -	u16 reg, loc;
-> +	u16 reg, loc, cap_ctl;
-> +	int ret;
+> @@ -1990,11 +1990,15 @@ static int b53_arl_op(struct b53_device *dev, int op, int port,
+>  	case -ENOSPC:
+>  		dev_dbg(dev->dev, "{%pM,%.4d} no space left in ARL\n",
+>  			addr, vid);
+> -		return is_valid ? ret : 0;
+> +		return is_valid ? ret : -ENOENT;
+>  	case -ENOENT:
+> +		if (!is_valid)
+> +			return ret;
 > +
-> +	ret = b53_read16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, &cap_ctl);
-> +	if (ret)
-> +		return ret;
 
 [Severity: Medium]
-This isn't a bug introduced by this patch, but on switches attached over
-MDIO, can cap_ctl still hold a bogus value even when this returns 0?
+Is it intended that deleting an absent entry now fails with -ENOENT?
 
-drivers/net/dsa/b53/b53_mdio.c:b53_mdio_read16() {
-	...
-	ret = b53_mdio_op(dev, page, reg, REG_MII_ADDR_READ);
+Before this patch, the -ENOSPC delete case returned 0. The -ENOENT delete
+case returned the result of b53_arl_rw_op(), which is normally 0.
+
+The commit message only says the function will "return without writing
+anything". In practice both paths now return -ENOENT to b53_fdb_del() and
+b53_mdb_del(), and from there to the DSA core for both b53 and bcm_sf2.
+
+On BCM5325/BCM5365, b53_mdb_add() never programs anything:
+
+	if (is5325(priv) || is5365(priv))
+		return -EOPNOTSUPP;
+
+b53_mdb_del() has no matching check. Every RTM_DELMDB that comes through
+br_switchdev_mdb_notify() -> switchdev_port_obj_del() will now hit this
+path and log:
+
 	if (ret)
-		return ret;
+		dev_err(ds->dev, "failed to delete MDB entry\n");
 
-	*val = mdiobus_read_nested(bus, BRCM_PSEUDO_PHY_ADDR, REG_MII_DATA0);
+switchdev_port_obj_del_deferred() then logs a second error, because the
+code is not -EOPNOTSUPP. Ordinary IGMP/MLD group leaves or timeouts on a
+bridged user port would produce these messages.
 
-	return 0;
-}
+The same thing happens when deleting an fdb/mdb entry whose earlier add
+failed with -ENOSPC.
 
-Suppose b53_mdio_op() succeeds and then the REG_MII_DATA0 read fails. The
-negative errno is truncated into the u16 and reported as success. For
-example, -ETIMEDOUT becomes 0xff92, which has MIRROR_EN set and
-CAP_PORT_MASK equal to 2.
+CPU and DSA ports see a further effect. In net/dsa/switch.c,
+dsa_port_do_fdb_del() keeps the tracking record when the driver returns an
+error, and dsa_port_do_mdb_del() does the same:
 
-The new check below would then compare against a capture port of 2. It
-could accept a conflicting rule or reject a valid one.
+	err = ds->ops->port_fdb_del(ds, port, addr, vid, db);
+	trace_dsa_fdb_del_hw(dp, addr, vid, &db, err);
+	if (err) {
+		refcount_set(&a->refcount, 1);
+		goto out;
+	}
 
-b53_mdio_read8/32/48/64 have the same pattern, so this probably needs a
-separate fix in b53_mdio.c: check the signed result before assigning
-*val.
+A later add of the same address finds that record and calls
+refcount_inc(). It never calls port_fdb_add()/port_mdb_add() again, so the
+ARL entry stays missing until teardown. Before this patch, the delete
+returned 0, the record was freed, and the next add reprogrammed the
+hardware.
 
-> +
-> +	if ((cap_ctl & MIRROR_EN) &&
-> +	    (cap_ctl & CAP_PORT_MASK) != mirror->to_local_port) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "Only one mirroring destination is supported");
-> +		return -EOPNOTSUPP;
-> +	}
+There are two ways the hardware can be missing an entry that DSA still
+tracks:
 
-[Severity: Medium]
-Can this check reject valid rules because of mirror state left in the
-hardware from before probe?
+  - bcm_sf2_sw_resume() resets the switch via bcm_sf2_sw_rst() and does
+    not replay the host FDB/MDB lists.
+  - b53 has no FDB isolation. A host entry and a user-port static entry
+    with the same MAC/VID share one ARL slot, so deleting the user-port
+    entry invalidates both.
 
-As far as I can see, b53 probe, setup and reset never put
-B53_MIR_CAP_CTL, B53_IG_MIR_CTL or B53_EG_MIR_CTL into a known state.
-Only b53_mirror_add() and b53_mirror_del() touch them.
+Documentation/networking/dsa/dsa.rst says port_fdb_del/port_mdb_del remove
+the address "if it was mapped". That reads as if a missing entry is not an
+error.
 
-b53_switch_reset() soft-resets only is539x() and BCM58XX/BCM583XX chips:
+Would returning 0 here (perhaps with a dev_dbg()), while still skipping the
+write, keep the fix without these side effects?
 
-	if (is539x(dev)) {
-		b53_write8(dev, B53_CTRL_PAGE, B53_SOFTRESET, 0x83);
-	...
-
-Other chips (5325, 5365, 531x5, 63xx) without a reset GPIO keep their
-earlier register contents.
-
-kexec is one way to get there. device_shutdown()->dsa_switch_shutdown()
-only detaches and unlinks the user ports and never calls
-port_mirror_del. MIRROR_EN and the capture port therefore survive into
-the next kernel.
-
-The new DSA instance starts with an empty mall_tc_list, so userspace has
-no rule it can delete to clear that state. After that, every tc matchall
-mirred rule to a port other than the leftover capture port fails with
--EOPNOTSUPP and "Only one mirroring destination is supported". Before
-this patch, the next add simply overwrote the leftover capture port.
-
-Would it make sense to clear B53_MIR_CAP_CTL and the IG/EG mirror masks
-during setup? Another option is to base the check on state tracked in
-software, as mt7530 does with priv->mirror_rx/mirror_tx.
-
-[ ... ]
-
-> @@ -2554,11 +2566,10 @@ int b53_mirror_add(struct dsa_switch *ds, int port,
->  	reg |= BIT(port);
->  	b53_write16(dev, B53_MGMT_PAGE, loc, reg);
+>  		/* We could not find a matching MAC, so reset to a new entry */
+>  		dev_dbg(dev->dev, "{%pM,%.4d} not found, using idx: %d\n",
+>  			addr, vid, idx);
+> +		memset(&ent, 0, sizeof(ent));
+>  		break;
+>  	default:
+>  		dev_dbg(dev->dev, "{%pM,%.4d} found, using idx: %d\n",
 
 [Severity: Medium]
-This is a pre-existing issue, but only the first B53_MIR_CAP_CTL read is
-checked. Can the other unchecked accesses in the mirror paths still
-write uninitialized or stale values to the hardware?
+This isn't a bug introduced by this patch, but should the unicast delete in
+the found case check that the entry belongs to the requesting port?
 
-In b53_mirror_add(), the read just before this is unchecked:
+After the switch statement, b53_arl_op() does:
 
-	b53_read16(dev, B53_MGMT_PAGE, loc, &reg);
-	reg |= BIT(port);
-	b53_write16(dev, B53_MGMT_PAGE, loc, reg);
+	if (!is_multicast_ether_addr(addr)) {
+		ent.port = port;
+		ent.is_valid = is_valid;
+	} else {
 
-reg is an uninitialized u16, and the SPI and MDIO backends leave *val
-untouched on error (b53_spi_read16() only assigns when !ret). A failed
-read therefore writes garbage | BIT(port) into the IG/EG mirror mask.
-The writes are not checked either, and the function returns 0 either
-way.
+It then writes the bin back as invalid. It never compares the ent.port read
+from hardware against port.
 
-In b53_mirror_del(), none of the three b53_read16() calls are checked:
+dsa.rst says port_fdb_del should delete the address "if it was mapped into
+this port forwarding database".
 
-- If the first read fails, the uninitialized reg & ~BIT(port) is written
-  back to the IG/EG mask.
-- If the read of the other direction fails, other_loc_disable is
-  computed from stale data. With this patch, that decision now also
-  clears CAP_PORT_MASK.
-- If the CAP_CTL read fails, reg still holds the other direction's
-  source mask, and that value is written into B53_MIR_CAP_CTL:
+b53 does not set ds->fdb_isolation, so dsa_port_fdb_del() forces
+info.db.bridge.num to 0 and the driver ignores the dsa_db. Suppose the same
+MAC/VID is added on port A and then on port B. This can happen with two
+VLAN-unaware bridges using vid 0, or with a host FDB entry on the CPU port
+plus a user-port static entry.
 
-	b53_read16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, &reg);
-	/* Both no longer have ports, let's disable mirroring */
-	if (loc_disable && other_loc_disable)
-		reg &= ~(MIRROR_EN | CAP_PORT_MASK);
-	b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, reg);
+The single ARL slot then points at B. A later delete on port A removes B's
+entry, while the bridge and DSA still believe it is installed.
 
-Ignoring register access errors is common in b53_common.c, where only a
-handful of the roughly 180 accesses are checked. The commit message only
-claims to propagate the capture-control read used for the conflict
-decision, and the patch does that.
-
->  
-> -	b53_read16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, &reg);
-> -	reg &= ~CAP_PORT_MASK;
-> -	reg |= mirror->to_local_port;
-> -	reg |= MIRROR_EN;
-> -	b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, reg);
-> +	cap_ctl &= ~CAP_PORT_MASK;
-> +	cap_ctl |= mirror->to_local_port;
-> +	cap_ctl |= MIRROR_EN;
-> +	b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, cap_ctl);
->  
->  	return 0;
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the write results are
-still ignored. Can a failed write leave the source masks and
-B53_MIR_CAP_CTL out of sync in a way that gets past the new check?
-
-Suppose the loc write succeeds and this CAP_CTL write fails.
-b53_mirror_add() still returns 0, dsa_user_add_cls_matchall_mirred()
-records the rule, and MIRROR_EN stays clear. A later rule to a
-different destination then passes the MIRROR_EN check, and both sources
-end up mirrored to the new port.
-
-The opposite case can happen in b53_mirror_del():
-
-	if (loc_disable && other_loc_disable)
-		reg &= ~(MIRROR_EN | CAP_PORT_MASK);
-	b53_write16(dev, B53_MGMT_PAGE, B53_MIR_CAP_CTL, reg);
-
-If this write fails after the source masks were cleared, MIRROR_EN stays
-set with the old port. The new check then rejects other destinations
-even though no sources remain.
-
-Writes can fail before the register is touched. For example,
-b53_spi_write16() returns early when b53_prepare_reg_access() fails.
+This patch only reworks the absent-entry branches, so the found-entry path
+is unchanged.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028212310.3847553-1-florian.fainelli%40broadcom.com
