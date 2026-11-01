@@ -1,66 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=51.159.188.251
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793574084;
-	b=z0pd565ZtXHppU838/AgYM4yPOda51ZAI7w6+VUXoyXTivHqfq89QtCjI4m6Vh4xIHpY
-	 jp3gzqVuqLBg7w3xRidBJsDt429oGXRoVgULeUQN0l41AMc6Wrq1yDzpjnbQEzgpbm5ce
-	 1PRQt9nBU9SDb7gLTrHK4yT8enaOfqWtW8nCtzTXTlY628oHPY29YZZI2R0cMlFGwfqMh
-	 1UQsuXYUSpJHIo2MDvMiykYsGgbXnXiJJqmQ2TIWtdehwTc5a73KryE6wdAT08UJoinLQ
-	 NijCBkH1HFK/2d71MrqVWVemx/UiBGJu+J9xTGVAiILnefHZGAWHBqRI4ttKv0mdmsA==
+	t=1793574525;
+	b=VHCxrDRm4WHK4Mo9PHllNzCmbRia23iSGTi29jTF/dzzMMuqZUnf3woAm4ryEJZiB7nd
+	 gN3HU0JHX6iTqUqA7zLvx74iNI7jO7Kayy6J4pqyZE1huflIeUAZ5uUk1HiIPsCcosxow
+	 I9BET1WNgFSgPnJIN2uPKXMLST+BmS4HTI+6aOiA7LIzk4AmHAcHLategWl/UOXC1DxWq
+	 RjCwwOp9dCPqtZWF9ZAaqkVsooBOMWS4Ccx0nUlIwX9v0wzV/zX8RpHBhjr77t8IFPjXY
+	 olwnmHTUuShkodI+J2fCQFmu31KgVUUa4jKxk06lPyGSh9CjdUCQni6c8mJC7+XUS0Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793574084;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=BPSVnso4oEFqCvt1xPqxZev+hvDlmid64+VAE04eWZU=;
-	b=Rh6zaeV0QachzeQH7WrPmsw3pphz65cUsOUBM9KABzVnqIgj0mE9vqQasM81niHOwRmm
-	 sbwLNQzoY7cTLbOygKECZNr1iFZ2bRqrs42o81lu5RWNiw9oGkb2cY7hL56aXDLOcCVsM
-	 9Z/rU6ZMQ1Z9BIDlDwbU3tMpBQqnoxztFAYrN7k3oktzDSk/CmNEieKO+WIhLM8MS3Cj5
-	 7RxgPBZPkcdsOsqpT5ovw1mALwSTTmRjGkaHkHTRkrpHDRtkkcXokE0GdD1k13FerYNQD
-	 ZdOOzbDofr5BBoUh9U+u+BISuK8VJ+8b4psE+SKAsrwEe8JV8zil7fmdFCsWOSJCkcA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793574525;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:
+	 X-AntiAbuse:X-AntiAbuse:X-Get-Message-Sender-Via:
+	 X-Authenticated-Sender:X-Source:X-Source-Args:X-Source-Dir;
+	bh=EDyFzLWJAx3/EEHiJ5QGNpTHFe63F8uemUyzw+u6ROs=;
+	b=VoqjzvSP7KkcjV6QGyP5wvOxNBamV6NjVtQ4gNUzl7bxxdC6MDZQP8KPOGAhZ+TdQKcn
+	 aVuiwDW2VoAxY6fBrTjXHiRd+nau4SDSpIvyKlWddkMI3qhrJqdYaLyk0fU+eYk+rwFPC
+	 NoTrHZanu1guQHsdg4zMlxOOLHTTqrYy+7pytwJrIEsK4zFYPOGuNkgjP0+oJJI+Pi69s
+	 sYllMJBtXy90qeKgyZ0bxGWjCYoUhrdFqP/asvUFgeJhZS6JLHMCfQOFnyTS3SHjieiHN
+	 kqIh4a+G0GnTlgbjhbt7H6sOqqfSCeH8fYe++E4JTkz2q9hKw22pWzbkmfSikCsXDQg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cXWTxYAc;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=oss.cyber.gouv.fr;
+	spf=pass smtp.mailfrom=oss.cyber.gouv.fr;
+	dkim=pass header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=Unjni+PT;
+	arc=none smtp.remote-ip=51.159.188.251
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D220D606A324;
-	Sun,  1 Nov 2026 23:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E562606A324;
+	Sun,  1 Nov 2026 23:08:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E562606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cXWTxYAc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E825E1F000C1;
-	Sun,  1 Nov 2026 23:01:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793574083;
-	bh=BPSVnso4oEFqCvt1xPqxZev+hvDlmid64+VAE04eWZU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=cXWTxYAc09HjtO/v2x8wJl1A3vpPnQu4XURrpMEGf25Ho9paKJlJ/sV+LjPRA6XWv
-	 NFIvBouVCFEusyVeqMvDhIJK8tcSAFbR9fLZycsiy4yB4NEn8x19YP7H8+rSOumaPX
-	 jd1tGm+0sRa4dxl8fbo4I3cDBO3/h96x+1dGsIB0B+bWA0+xFmslqeveOlQS7jTelt
-	 1L6po2NUqwOgtQ9BX0ys7Bwgxu9v/9XLzXrFKO1LWFXw5XUCekx3Y0ZYjL5RaiLD3S
-	 0CODRHJQuVurRVyY4zUVAdf9ZLI/efrl+f0jqqMiNmOSz4B+IrGFpWsHP6CfQj2A3G
-	 1RSbalBd8E1zA==
-Subject: Re: [PATCH net v5 1/4] net: devmem: unmap dma_buf synchronously on
- queue uninstall
-From: netdev-bot+sashiko@kernel.org
-To: almasrymina@google.com
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, pabeni@redhat.com, sdf@fomichev.me,
- kaiyuanz@google.com, kuba@kernel.org, bobbyeshleman@meta.com,
- asml.silence@gmail.com, dw@davidwei.uk, ap420073@gmail.com,
- davem@davemloft.net, edumazet@kernel.org, horms@kernel.org, shuah@kernel.org,
- sumit.semwal@linaro.org, christian.koenig@amd.com, phasta@kernel.org,
- andrew+netdev@lunn.ch, sdf.kernel@gmail.com, hawk@kernel.org,
- ilias.apalodimas@linaro.org, daniel@iogearbox.net, razor@blackwall.org,
- tariqt@nvidia.com, kaifengw@google.com, dtatulea@nvidia.com
-Date: Sun, 01 Nov 2026 23:01:21 +0000
-Message-ID: <179357408146.3131.2882435952119280563@kernel.org>
-In-Reply-To: <20261030083539.777877-2-almasrymina@google.com>
-References: <20261030083539.777877-2-almasrymina@google.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=Unjni+PT
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Sender:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=EDyFzLWJAx3/EEHiJ5QGNpTHFe63F8uemUyzw+u6ROs=; b=Unjni+PT3jPu/98GYZyI+I8IPB
+	E6HA8M+Y1cv70Yu5s0LAebIlVxlHfo3SWFE0B8SsF2Rw/+hkDu/fi/P+7yhRIXrxi4LqLHrIkOBe1
+	+7oDuezC2gjeP96dfcQAP0ymV0vZqG04i0IZpm8PXjMs7nn0O6smbjRU253a47heIntpm0gE1ANiQ
+	dOxHbneVFqlLMdLMtQBwcNevhU69VRD17p9OwCRlJIyjhbxmCM/QTammkFj5XUmm/AYqSUAIQpaW6
+	3FTudW2DxJ0XAmhw77d9x0vllYOeBgq8ipDtt8kigDBNVCFzMiqs8eHY8cEb+qgLSeXtlIu54ThCV
+	cbaq1bow==;
+Received: from [151.115.150.205] (port=40718 helo=gepetto..)
+	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
+	id 1xNefL-00000004S7h-0IAK;
+	Mon, 02 Nov 2026 00:08:43 +0100
+From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
+To: Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>,
+	stable@vger.kernel.org
+Subject: [PATCH net] xfrm: fix IPv6 first-fragment protocol decode
+Date: Sun,  1 Nov 2026 23:07:45 +0000
+Message-ID: <20261101230745.2043474-2-Jeremy.Jean@oss.cyber.gouv.fr>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,214 +73,83 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Commit 7a0207094f1b ("xfrm: policy: replace session decode with flow
+dissector") replaced XFRM session decoding with the flow dissector.
+While the old IPv6 decoder kept walking past an IPv6 Fragment
+extension header, the flow dissector stops unless the caller sets
+FLOW_DISSECTOR_F_PARSE_1ST_FRAG. For an atomic fragment followed by
+extension headers, inbound policy lookup can therefore see the header
+after Fragment instead of the actual upper-layer protocol and miss
+protocol selectors.
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0
+Make the dissector continue through first IPv6 fragments. Keep GRE and
+ICMPv6 selector fields unset for fragmented packets, matching the old
+decoder's behavior.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Fixes: 7a0207094f1b ("xfrm: policy: replace session decode with flow dissector")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+---
+ net/xfrm/xfrm_policy.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-- [High] The dma_dev use-after-free this patch says it fixes can still
-  happen for RX bindings made on a virtual device that leases queues,…
-
-Pre-existing issues:
-- [Medium] At this commit, net_devmem_dev_unregister() skips TX
-  (DMA_TO_DEVICE) bindings.
-
---
-
-net: devmem: unmap dma_buf synchronously on queue uninstall
-
-This commit unmaps RX devmem dma_buf bindings earlier: when the last
-bound RX queue is uninstalled, when the binding is unbound, or on
-NETDEV_UNREGISTER. Previously the unmap waited until the final binding
-free. Bindings now stay in the global xarray until they are freed, with
-an xarray mark hiding unbound ones from TX lookups, and
-netif_mp_close_rxq() now reports queue restart failures. The aim is to
-avoid a use-after-free of dma_dev in dma_unmap_sg_attrs() after the
-device is removed.
-
-> diff --git a/net/core/devmem.c b/net/core/devmem.c
-> index 32fafbfa1359e..4610de805ef08 100644
-> --- a/net/core/devmem.c
-> +++ b/net/core/devmem.c
-
-[ ... ]
-
-> @@ -143,12 +228,45 @@ void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding)
->  
->  		rxq_idx = get_netdev_rx_queue_index(rxq);
->  
-> -		netif_mp_close_rxq(binding->dev, rxq_idx, &mp_params);
-> +		if (netif_mp_close_rxq(binding->dev, rxq_idx, &mp_params))
-> +			busy = true;
-> +	}
-> +
-> +	if (binding->direction == DMA_FROM_DEVICE && binding->dev && !busy) {
-> +		net_devmem_dmabuf_binding_unmap(binding);
-> +		WRITE_ONCE(binding->dev, NULL);
->  	}
->  
->  	percpu_ref_kill(&binding->ref);
->  }
->  
-> +void net_devmem_dev_unregister(struct net_device *dev)
-> +{
-> +	struct net_devmem_dmabuf_binding *binding;
-> +	unsigned long xa_idx;
-> +
-> +	netdev_assert_locked(dev);
-> +
-> +	if (dev->reg_state != NETREG_UNREGISTERING)
-> +		return;
-> +
-> +	xa_lock(&net_devmem_dmabuf_bindings);
-> +	xa_for_each(&net_devmem_dmabuf_bindings, xa_idx, binding) {
-> +		if (binding->direction != DMA_FROM_DEVICE ||
-> +		    READ_ONCE(binding->dev) != dev ||
-> +		    xa_get_mark(&net_devmem_dmabuf_bindings, xa_idx,
-> +				NET_DEVMEM_BINDING_LIVE))
-> +			continue;
-
-[Severity: Medium]
-This issue was not introduced by this patch, but at this commit TX
-(DMA_TO_DEVICE) bindings are skipped here. Their binding->dev is never
-cleared, and they stay mapped until __net_devmem_dmabuf_binding_free().
-
-That has three consequences. The deferred dma_unmap_sg_attrs() can run
-on a freed dma_dev. netdev_nl_sock_priv_destroy()->net_devmem_lock_dev()
-can call netdev_hold() and netdev_lock() on a freed net_device. And the
-invariant in the new net_devmem_lock_dev() kernel-doc does not hold for
-TX bindings.
-
-The old netdev_nl_sock_priv_destroy() already called netdev_hold() on a
-stale TX binding->dev, so this predates the patch. The next patch in the
-series, "net: devmem: detach TX bindings on NETDEV_UNREGISTER", appears
-to fix it. That patch clears the LIVE mark, unmaps the binding and
-clears dev and vdev for TX bindings with binding->dev == dev. It also
-calls net_devmem_lock_dev() in __net_devmem_dmabuf_binding_free() for
-both directions.
-
-> +
-> +		xa_unlock(&net_devmem_dmabuf_bindings);
-> +		if (!netif_is_queue_leasee(dev))
-> +			net_devmem_dmabuf_binding_unmap(binding);
-> +		xa_lock(&net_devmem_dmabuf_bindings);
-> +		WRITE_ONCE(binding->dev, NULL);
-> +	}
-> +	xa_unlock(&net_devmem_dmabuf_bindings);
-> +}
-
-[ ... ]
-
-> @@ -551,16 +669,17 @@ static void mp_dmabuf_devmem_uninstall(void *mp_priv,
->  	unsigned long xa_idx;
->  
->  	xa_for_each(&binding->bound_rxqs, xa_idx, bound_rxq) {
-> -		if (bound_rxq == rxq) {
-> -			xa_erase(&binding->bound_rxqs, xa_idx);
-> -			if (xa_empty(&binding->bound_rxqs)) {
-> -				mutex_lock(&binding->lock);
-> -				ASSERT_EXCLUSIVE_WRITER(binding->dev);
-> -				WRITE_ONCE(binding->dev, NULL);
-> -				mutex_unlock(&binding->lock);
-> -			}
-> -			break;
-> +		if (bound_rxq != rxq)
-> +			continue;
-> +
-> +		xa_erase(&binding->bound_rxqs, xa_idx);
-> +		if (xa_empty(&binding->bound_rxqs)) {
-> +			if (!rxq->lease)
-> +				net_devmem_dmabuf_binding_unmap(binding);
-> +			ASSERT_EXCLUSIVE_WRITER(binding->dev);
-> +			WRITE_ONCE(binding->dev, NULL);
->  		}
-> +		break;
->  	}
->  }
-
-[Severity: High]
-Can the dma_dev use-after-free still happen for an RX binding made on a
-virtual device that leases queues, such as netkit leasing from a
-physical NIC?
-
-In that case binding->dev is the netkit device and bound_rxqs holds the
-netkit rxq. dma_dev is the physical NIC's DMA device, which
-netdev_queue_get_dma_dev() finds by following the lease.
-
-On unlease, the call chain is:
-
-netkit_uninit()
-  netkit_queue_unlease()
-    netdev_rx_queue_unlease()
-      netif_rxq_cleanup_unlease()
-        __netif_mp_close_rxq(phys_rxq->dev, rxq_idx, &p);
-        __netif_mp_uninstall_rxq(virt_rxq, &p);
-          mp_dmabuf_devmem_uninstall()
-
-The lease pointers are cleared only after the cleanup returns:
-
-net/core/netdev_rx_queue.c:netdev_rx_queue_unlease() {
-    ...
-	netif_rxq_cleanup_unlease(rxq_src, rxq_dst);
-
-	WRITE_ONCE(rxq_src->lease, NULL);
-	WRITE_ONCE(rxq_dst->lease, NULL);
-    ...
-}
-
-So rxq->lease is always non-NULL here. The unmap is skipped, but
-binding->dev is still set to NULL. netif_rxq_cleanup_unlease() also
-ignores the new return value of __netif_mp_close_rxq(), so even a
-successful close of the physical queue leaves the mapping in place.
-
-After this, which path unmaps the binding?
-
-net_devmem_unbind_dmabuf() unmaps only when binding->dev is non-NULL.
-
-net_devmem_dev_unregister() on the physical device matches only
-binding->dev == dev, so it never finds this binding.
-
-dev_memory_provider_uninstall() on the physical device calls uninstall
-with the physical rxq. That never matches the netkit rxq stored in
-bound_rxqs.
-
-The binding then stays mapped until __net_devmem_dmabuf_binding_free().
-If the NIC was removed before that, the call to
-dma_buf_unmap_attachment()->dma_unmap_sg_attrs() uses the freed physical
-dma_dev. This is the same KASAN trace quoted in the commit message.
-
-There are two ways to reach this:
-
-Remove the physical NIC while the netlink socket is still open.
-netkit_check_lease_unregister() runs from the physical device's
-NETDEV_UNREGISTER and unregisters netkit. The unlease therefore runs
-while the physical device is NETREG_UNREGISTERING, which seems to
-contradict this part of the commit message:
-
-  "except when a leased queue is unleased: the physical device is
-  still registered and, if restarting its queue failed, may still be
-  using the binding."
-
-Delete netkit first. The physical queue close succeeds, but the unmap
-is skipped anyway. If the physical NIC is removed later, while the
-socket or RX tokens still hold the binding, the deferred unmap runs on
-the freed device.
-
-The leasee branch in net_devmem_dev_unregister() has the same problem.
-It skips the unmap when netif_is_queue_leasee(dev) is true but still
-clears binding->dev, so nothing can unmap the binding before the
-physical device goes away.
-
-Could the lease case decide whether to unmap based on whether the
-physical queue close succeeded, instead of skipping the unmap whenever
-rxq->lease is set?
-
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 9ea60c7717ff..c9c2370b07cc 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -3489,14 +3489,16 @@ decode_session6(const struct xfrm_flow_keys *flkeys, struct flowi *fl, bool reve
+ 		fl6->fl6_dport = flkeys->ports.dst;
+ 	}
+ 
+-	switch (flkeys->basic.ip_proto) {
+-	case IPPROTO_GRE:
+-		fl6->fl6_gre_key = flkeys->gre.keyid;
+-		break;
+-	case IPPROTO_ICMPV6:
+-		fl6->fl6_icmp_type = flkeys->icmp.type;
+-		fl6->fl6_icmp_code = flkeys->icmp.code;
+-		break;
++	if (!(flkeys->control.flags & FLOW_DIS_IS_FRAGMENT)) {
++		switch (flkeys->basic.ip_proto) {
++		case IPPROTO_GRE:
++			fl6->fl6_gre_key = flkeys->gre.keyid;
++			break;
++		case IPPROTO_ICMPV6:
++			fl6->fl6_icmp_type = flkeys->icmp.type;
++			fl6->fl6_icmp_code = flkeys->icmp.code;
++			break;
++		}
+ 	}
+ 
+ 	fl6->flowi6_proto = flkeys->basic.ip_proto;
+@@ -3507,10 +3509,13 @@ int __xfrm_decode_session(struct net *net, struct sk_buff *skb, struct flowi *fl
+ 			  unsigned int family, int reverse)
+ {
+ 	struct xfrm_flow_keys flkeys;
++	unsigned int flags = FLOW_DISSECTOR_F_STOP_AT_ENCAP;
+ 
+ 	memset(&flkeys, 0, sizeof(flkeys));
++	if (family == AF_INET6)
++		flags |= FLOW_DISSECTOR_F_PARSE_1ST_FRAG;
+ 	__skb_flow_dissect(net, skb, &xfrm_session_dissector, &flkeys,
+-			   NULL, 0, 0, 0, FLOW_DISSECTOR_F_STOP_AT_ENCAP);
++			   NULL, 0, 0, 0, flags);
+ 
+ 	switch (family) {
+ 	case AF_INET:
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261030083539.777877-1-almasrymina%40google.com
+2.47.3
+
