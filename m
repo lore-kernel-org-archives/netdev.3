@@ -1,107 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793528046;
-	b=o+iargkWK0ec0DYhLQWIO39x+GS+Q+VBJDv8O939kKQMs/S9vYL8tDOFKhDz2OzTiRQX
-	 woax40wneOPg91rhbBjYiGGbiHcFWFgzPCZUsoe3W2+ER6CWR9R8fBJfXn2DvPTq7816G
-	 58mwAlbQE93qE3VVErv7Gi9qo7fDaMDI4oPHMhMpq4UenfGXiihwgoNE42dIslMhliM1y
-	 UBuI0v/5dkdtp8JpPkkpltT4AUjFmfIouoCTmhpvRmKxZit8x1pIVTW3fcop8tsZxk051
-	 Xx6InKR4CqzqMSqdfyw7LCSzGS/fin/KI2dnWEBPYd+hGLnTYQtX1QvVEb4pR92WMpw==
+	t=1793528587;
+	b=QSRF0G9zH4Ta82leWazJs17za/XLEN29UkYaejWdQ70111tcLl6HkvDzKD0v/kK4fOCn
+	 IRc5xSL4WkED0SjVWpqxsiKuGqLozr5gR0I0OehvxzI1PoR50iP31/78g7n84+Qm9WWHt
+	 wUGaL35flfYtH6xSt7zo2dFRx499d7Ra0b2fjvla/SUITFdKu2tVXZmyFu6NK4OueJexG
+	 cnZsY4Vw6/jhzNjcT9E6esqikfOwCU2Kw22jGQOY5hSaxkOmhF9hvxEzD5Gw/YAeFyZeX
+	 g8TsmR3v8ysNcqrlF8cg3t0bOP+wZxrp24QiBKNgzzK4i3nkJ+Mt6Ecv0R3/fwE9FWQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793528046;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793528587;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:Content-Language:To:
+	 Cc:References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=nNYlNFeeZkLPD3oIEioU7XoDwSaoK+RX30RYfFQaNjM=;
-	b=crSFfpSuHf2/P4NNI7Q0wXpid2qDKR9wqgpcQMaO4Psh6/US+4m4hVX+c4JCgDy/pY/M
-	 XLJM6gCO0mZA89wsY8ouxmcVPulQyODm2W/gsZyfGYImqsOf4pFoT0NXaDpjyn0RJSk2u
-	 C8FwYVIdNqhjNfMZV4FCGaTCW7R2hIW+N2M9oRYnIWLtE2iBFtex5U4tqwX1Rr4r/m6Dt
-	 9/75bmNmwioaXJlTydQuLzaREh1nkmC6T6d97dOZ4D46of/PoplisIyd6vUd98BqaLZ3Z
-	 Qzm3wIxz9XsDCJrth/U+DXSHxSDtR3rOjGYNNcCP4DX4pA9aRke9xBuh8JRhChwRIqg==
+	bh=msvOHl/vwSgu8PRO+tkgo4NL+2qt01hm6ZSBcN1ALqQ=;
+	b=M/cYFZt17j2XdGG+cSA9kR0isTVkb3nma58RYds5a7WUgfxiFh8mZkZkoAo4EYuXX8hU
+	 A5hCKB+9tTMstJXUICaCpjBXBVQFmgocwuSkNHG5iIuEc3z2xuhK9xmCfPt1Nb+R2R0/H
+	 G0eN3dHmoAeKPTz+BCa3o48tOfblbHD3l4KC9UClLHFP3FCxr2g1LO9agog1ly+FgmlCC
+	 BxgWzrj4+JK8fZTjz+Zuu3bx2UL3uLkgrNsuLOx/m9fMZKKDdThn3n5MvYK0kCgjC6EKV
+	 GHik/rksszHRcLt/WTHKXM6jv7939+tweJdKMsB0dJs+4ZlBhZrxee4GyidiBB2S15A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=L4N2vD9s;
-	arc=none smtp.remote-ip=74.125.82.47
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+	dmarc=none header.from=blackwall.org;
+	spf=none smtp.mailfrom=blackwall.org;
+	dkim=pass header.d=blackwall.org header.i=@blackwall.org header.a=rsa-sha256 header.s=google header.b=IbBQEbE7;
+	arc=none smtp.remote-ip=209.85.128.45
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BCD606A326
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 10:14:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 46BCD606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E470606A325
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 10:23:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6E470606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=L4N2vD9s
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-1a3c08d6928so2439673c88.0
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 02:14:06 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=blackwall.org header.i=@blackwall.org header.a=rsa-sha256 header.s=google header.b=IbBQEbE7
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a2069b9710so17565465e9.2
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 02:23:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793528045; x=1794132845; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nNYlNFeeZkLPD3oIEioU7XoDwSaoK+RX30RYfFQaNjM=;
-        b=L4N2vD9sKaN65CeM48/SmKhr3rNLIZeiMnTXzFPH6P0RKCuPWbtGEkOeH1cBC4smTM
-         B60xqS9Ty1CP+PSNrVfbtlZSoY2f5xY56qc5r0FiWeeh0sWfJ1lc9q7KXaErLXsQD8qg
-         73B3Y2lvT4lOo5cl8oGe2LiJ7Hezw8v9Xc5v9OmjRy+rdqg0RhcP/Erh/1I1S8iRFbJz
-         Fmbb6pYoppU/HsukYf/Fk0UMGNuMHYTvuQWPQTfiRmttGG6qIGIsaRWgxqLtMPjkCL4y
-         i+VGuD/7N6zvLqYWuUx7z0yS8SZlPDuuEUtnG8b8/owmeZwfBsuGJQluLmlvmeD+OJcq
-         jV9w==
+        d=blackwall.org; s=google; t=1793528585; x=1794133385; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=msvOHl/vwSgu8PRO+tkgo4NL+2qt01hm6ZSBcN1ALqQ=;
+        b=IbBQEbE7feKVZTBcHrbcmXeLAJoNrm+yN//hxFKgtmcm3daxC97LETn7Po6C6wjVOI
+         n7OAsHkd4fJTGHumh0e7J5PQSfLnBEgMt+twh8xAhLbGWA4AW3iTvM8JJ/VOL2KpNifz
+         flc0/3HDjXu7SPviS92yKsjlzUhMDMbeupymAhrZxJioYV0qg5eR2w3pyXvSbbzTpCJI
+         R2X6mgOW5hwasaKBXsGaw4zKdZ9rfT+QFixNR4rT+Ylth8u6GCa+71rD41AMZ7HlHSxl
+         Fb4MrOXS3sd6t0Z96W6k4xi2g0HwPJ9uZEXvpLCKYZZ01ROU7TX/WCCy40SjRjBzVnzD
+         85Jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793528045; x=1794132845;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nNYlNFeeZkLPD3oIEioU7XoDwSaoK+RX30RYfFQaNjM=;
-        b=uJKBVggJtSM79ceM/k3yqNYY8zB78e18EmGfRDm+cuPNT1rHaeogx463y4xXtmCHOP
-         ywsFHEmVMPhoj0V4HF+m8zgMr+M+ep3uXYHJyDg3ZRuxHEgu5krb4XOcqNaqca2Dl83e
-         Ukp+G4LUMS9oZo50ZaH2BQhC3LlXoH2vrIIujooS1SQpwuqENOdMZQbAW4WiHQz9qJJ5
-         YNyQ+Dr7f/+C6X9D2WhKvwl/j8ddqzaaFZuMAY8x5AzB87JplAAbQcW0E/Gno1z9dsG9
-         nGxIzXHDDC2PI6QONzxsa7K6GrjfN16joM+t4x/NKTqMToROAxmaQ7ZOjsQn9U17qwTd
-         TL7w==
-X-Gm-Message-State: AFq9FYJXZJgN5Eq2E6Me6neM26bGft1QFGM6XsR+i4LTUR3vOuKfe5fS
-	Mcsnis18ATmqZtE8Ww4dMLvUZsZ9aUWh5F8VPYAzVvQP3vyg03NXcdRL5UzeUg==
-X-Gm-Gg: AYBFou2Eg7Y7t0b2A2DOrQ2VoRWZSFFhXNNToSmSiX6fMmVuCe4weZ2CwfGYgz/G3qy
-	uaPgADx0nsFEMDISN7fXZW8p6RAXSOyzJkWTQ9QAgBk0M+J3duM7GOU2WAtGFc60s4H+muIYZvq
-	0cabm5wvDZycI9RZWF58K67SLzVEQ4sB2Ju53NczsKf6C6AR4/Fyx0Xc6CtzqE+Ao1ceLWa4Xqn
-	CTgtPwGOUp3Bwmxh2g/l0yQpCDmGL2QScbCvQDM09FsJEVAM4z2ia87x8yASWqqQgV8FeadgUwT
-	Tm+ljb0wLUzl0AHts0/5EG77qc0SNSOi/xIFN5N5I7ipCscA85/2paqKDBcoFFnisBug17Khlit
-	ho1PyZOloxC1K5T990ouTMLBXIL6CwG1eo3poKwtkTIyevPr9EAfWSsJ/KvkFzxNEudE+oNh6f+
-	ti/QLX/CSIQtkdskaQ3iEHEiXPSVyh2EZZBxCrcO5Jw3YfR5EJq+lvnUVkzOq2Gdsm4QhOZ6Bkn
-	5CHqrLBQ5+OkMJXMktvZPE5h/PgH+JTL9N/e0JqWKg39O6T2meEz7VEpSQ3fvoiM0nGj71YPUYf
-	M5gTCBccHbitzATht98TLgSYvEJxWP++nguzW78VRO0ceXVLAH79MLUD5oWGFLtLeg1Spy/9mS+
-	2DJMi1hKziSmJ0zxIIzTYCiGbpgTpJ6FeagqFHRi+137jbSGCFBzcpweRq24sg0pOANKpZYNpFg
-	==
-X-Received: by 2002:a05:7023:90c:b0:16e:c820:b20d with SMTP id a92af1059eb24-1ac56ca0005mr11334862c88.5.1793528045113;
-        Sun, 01 Nov 2026 02:14:05 -0800 (PST)
-Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a42662f23sm29799664eec.2.2026.11.01.02.14.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 02:14:04 -0800 (PST)
-From: Anil Kaushik <anilkaushikwireless@gmail.com>
-To: netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Florian Westphal <fw@strlen.de>,
-	Mat Martineau <martineau@kernel.org>,
-	XingWang Xiang <v3rdant.xiang@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	linux-kernel@vger.kernel.org,
-	Anil Kaushik <anilkaushikwireless@gmail.com>
-Subject: [PATCH net v3 2/2] netlink: Check a group again if it was released while joining it
-Date: Sun,  1 Nov 2026 10:13:47 +0000
-Message-Id: <20261101101347.3910654-3-anilkaushikwireless@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261101101347.3910654-1-anilkaushikwireless@gmail.com>
-References: <20261101101347.3910654-1-anilkaushikwireless@gmail.com>
+        d=1e100.net; s=20260707; t=1793528585; x=1794133385;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=msvOHl/vwSgu8PRO+tkgo4NL+2qt01hm6ZSBcN1ALqQ=;
+        b=hKsVgWqQnOfkiTStP2JVD8hmD+yPDwzXw9IuxG3gqMy9rL8WH5GKwenPJCUlKTA/hF
+         78GaOmffMcj9d838sA7WAsJ8OTxv7n0gBz/MqluV4HQ/ppKDypA9D1o5vOQGYdwMZlkE
+         W2Jvr5ZSKU+BWyWwkHiBFkHHeA0Hj8vYaFphYqiJwrQvnoiP+rp9BzOVlH4oMTK1Dl9B
+         FuvcbHNDr6VsseYl794AWS4XYp72IntZZv3W2IjFLEUdLITp2rngaIKpPHP/1eyKfOQQ
+         4cZk3XrDtbO1tuBSjJXx6uUPFVjH+9Gux0T1klLVFYeK9mi74Ts+ReMIV+AJyeihP+Tf
+         18+w==
+X-Forwarded-Encrypted: i=1; AKwUvBy7nSnhhBCXI0KUX3vdkr5V4SNED8hfkmWPOiBAydiGPb5eCRYbLId/KE/cQzMd1oZiKbqR3oQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJgCTVCvF2BskdNGcyHswpyYlZAdluDbezlKk5p+bik//FrDJSK
+	XweNQMii09k7oYIoAVEOBVtdAzZfLnDkCspTOk9ZQPuQvs0Glj7Qm36lO1EqJdj45v0=
+X-Gm-Gg: AYBFou2Vmp8qEzNRpPK8TZKVufliYXi8NNOF7rsxv2wkyaxAJ1C4vKh+Ae6Ycml2rst
+	ggBA7IdF5O64payzbXeuBbXOQ2dfoAg6rI2MLyoDa5Aj204fUINpYKlmtjscNyd0xvXxOvo2LGw
+	8R/Go8WIlDES3bGMRP3D71VkokeG0w2HSYIzsXRzmlDrakaRkzPYtfxYWK6iufrx3gebXe40xx3
+	rTWl0WyE1gUirWLszq+7HgsGK9fmV8ja8AZ4o8pCGCYUAXBTyT3PJWbAq7nHyQNEL94+voskd7B
+	kgBUICWkRNLelcGHAzonQWUoFsf7ONg+CC6f5gsuoh97mPL2bTRCmre/I2sgG46NAD5cTerygaY
+	SMyFR+o+I+I+FBkzObW+/4wLOxywRy1Z0a59m2wDS2WXZB5A0NcXf3LKQ1wRACvahLRzb1v3tEL
+	k+lccFxW5FfFJuWmticTb8IWgcyZg3wTqk4GngV7TJSI1kjgb3NfAl9zsQA99tp27ZQX91hbc59
+	Vwm3GElbI3wpxDhh4uQngUHLUw2exCrjzvLKTJ/0t41Mb/QhbitJ+ja6epa03pXskEcVkqb5O2T
+	eUmSvb5DUbWvwSEmYeKj81OY5ibgVZugbLoff6oFEVnbVJhZ0KMRVGYbUA==
+X-Received: by 2002:a05:600c:46d2:b0:4a1:7ec7:a479 with SMTP id 5b1f17b1804b1-4ac1980118cmr155693645e9.33.1793528584150;
+        Sun, 01 Nov 2026 02:23:04 -0800 (PST)
+Received: from [192.168.0.161] (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ac0a66caefsm151902005e9.5.2026.11.01.02.23.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 01 Nov 2026 02:23:03 -0800 (PST)
+Message-ID: <f7e54e22-c117-455b-9bfb-9dc728dce740@blackwall.org>
+Date: Sun, 1 Nov 2026 12:23:01 +0200
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -111,214 +91,125 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 3/5] ipv6: restrict mld_qrv to 255
+Content-Language: en-US, bg
+To: Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org
+Cc: stable@vger.kernel.org, Fernando Fernandez Mancera <fmancera@suse.de>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, David Ahern <dsahern@kernel.org>,
+ Ido Schimmel <idosch@nvidia.com>, Thomas Gleixner <tglx@kernel.org>,
+ Joel Granados <joel.granados@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, Maoyi Xie <maoyi.xie@ntu.edu.sg>,
+ Gerd Rausch <gerd.rausch@oracle.com>, Oleg Nesterov <oleg@redhat.com>,
+ Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
+ Yung Chih Su <yuuchihsu@gmail.com>, Wyatt Feng
+ <bronzed_45_vested@icloud.com>,
+ Hannes Frederic Sowa <hannes@stressinduktion.org>,
+ Flavio Leitner <fbl@redhat.com>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Petr Mladek <pmladek@suse.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261101061331.286404-1-jiayuan.chen@linux.dev>
+ <20261101061331.286404-4-jiayuan.chen@linux.dev>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20261101061331.286404-4-jiayuan.chen@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-genl_bind() checks a group under cb_lock, but netlink_setsockopt() and
-netlink_bind() set the membership bit only after it returns and the lock
-is dropped. If the family is unregistered in between, its members are
-cleared before this socket is one. The socket then becomes a member of a
-group ID that no family owns, or that a family registered in the
-meantime got, and the GENL_MCAST_CAP_* flags of that family are never
-checked for it.
+On 01/11/2026 08:12, Jiayuan Chen wrote:
+> net.ipv6.mld_qrv only has a lower bound, but ipv6_mc_reset() stores it
+> into the u8 inet6_dev::mc_qrv, so 256 wraps to 0 and the first MLDv2
+> Query received on the interface trips the WARN_ON() in mld_update_qrv():
+> 
+> 	WARN_ON(idev->mc_qrv == 0);
+> 
+>    WARNING: net/ipv6/mcast.c:1327 at mld_query_work+0x1fd2/0x2cb0, CPU#3: kworker/3:1/2688
+>    Workqueue: mld mld_query_work
+>    RIP: 0010:mld_query_work+0x1fd2/0x2cb0
+>    Call Trace:
+>     <TASK>
+>     process_one_work+0x93a/0x1b20
+>     worker_thread+0x6d0/0x11d0
+>     kthread+0x358/0x470
+>     ret_from_fork+0x5b3/0x820
+>     ret_from_fork_asm+0x1a/0x30
+>     </TASK>
+> 
+> Make the sysctl a u8 like mc_qrv and switch to proc_dou8vec_minmax(),
+> which rejects anything above 255, and document it.
+> 
+> Fixes: 2f711939d2ea ("ipv6: add sysctl_mld_qrv to configure query robustness variable")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> ---
+> v2: switched to u8 and proc_dou8vec_minmax(), as suggested by Kuniyuki
+> Iwashima.
+> ---
+>   Documentation/networking/ip-sysctl.rst | 2 ++
+>   include/net/ipv6.h                     | 2 +-
+>   net/ipv6/mcast.c                       | 2 +-
+>   net/ipv6/sysctl_net_ipv6.c             | 4 ++--
+>   4 files changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
+> index 4b19c8d3efda7..71f334f27004e 100644
+> --- a/Documentation/networking/ip-sysctl.rst
+> +++ b/Documentation/networking/ip-sysctl.rst
+> @@ -2515,6 +2515,8 @@ mld_qrv - INTEGER
+>   
+>   	Minimum: 1 (as specified by RFC6636 4.5)
+>   
+> +	Maximum: 255
+> +
+>   max_dst_opts_number - INTEGER
+>   	Maximum number of non-padding TLVs allowed in a Destination
+>   	options extension header. If this value is less than zero
+> diff --git a/include/net/ipv6.h b/include/net/ipv6.h
+> index 3de07e738538f..4901a92066e61 100644
+> --- a/include/net/ipv6.h
+> +++ b/include/net/ipv6.h
+> @@ -205,7 +205,7 @@ struct sk_buff *ip6_frag_next(struct sk_buff *skb,
+>   
+>   /* sysctls */
+>   extern int sysctl_mld_max_msf;
+> -extern int sysctl_mld_qrv;
+> +extern u8 sysctl_mld_qrv;
+>   
+>   #define _DEVINC(net, statname, mod, idev, field)			\
+>   ({									\
+> diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
+> index ecef55f261890..13f31132e0f97 100644
+> --- a/net/ipv6/mcast.c
+> +++ b/net/ipv6/mcast.c
+> @@ -106,7 +106,7 @@ static int __ipv6_dev_mc_inc(struct net_device *dev,
+>   #define IPV6_MLD_MAX_MSF	64
+>   
+>   int sysctl_mld_max_msf __read_mostly = IPV6_MLD_MAX_MSF;
+> -int sysctl_mld_qrv __read_mostly = MLD_QRV_DEFAULT;
+> +u8 sysctl_mld_qrv __read_mostly = MLD_QRV_DEFAULT;
+>   
+>   #define mc_assert_locked(idev)			\
+>   	lockdep_assert_held(&(idev)->mc_lock)
+> diff --git a/net/ipv6/sysctl_net_ipv6.c b/net/ipv6/sysctl_net_ipv6.c
+> index 1a0a36dcdabc1..f3ac04dbc71d0 100644
+> --- a/net/ipv6/sysctl_net_ipv6.c
+> +++ b/net/ipv6/sysctl_net_ipv6.c
+> @@ -226,9 +226,9 @@ static struct ctl_table ipv6_rotable[] = {
+>   	{
+>   		.procname	= "mld_qrv",
+>   		.data		= &sysctl_mld_qrv,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>   		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec_minmax,
+> +		.proc_handler	= proc_dou8vec_minmax,
+>   		.extra1		= SYSCTL_ONE
+>   	},
+>   #ifdef CONFIG_NETLABEL
 
-Count per group in the netlink table how many times its members were
-cleared, which genetlink does when it frees the group IDs of a family.
-Read the count before ->netlink_bind() and again once the table is
-grabbed. If it changed, the group was released, so check it again
-against its current owner. ->netlink_unbind() is not called for it: the
-family that ->netlink_bind() checked it against is gone.
-
-bind() can then fail after it gave the socket its port ID. This only
-happens when a family is unregistered meanwhile.
-
-genl_bind() was added, with its first capability check, in the commit
-in the Fixes tag.
-
-Link: https://lore.kernel.org/netdev/179340003139.3131.11274717768928642724@kernel.org/
-Fixes: 4d54cc32112d ("mptcp: avoid lock_fast usage in accept path")
-Signed-off-by: Anil Kaushik <anilkaushikwireless@gmail.com>
----
- net/netlink/af_netlink.c | 61 +++++++++++++++++++++++++++++++++++++++-
- net/netlink/af_netlink.h |  1 +
- 2 files changed, 61 insertions(+), 1 deletion(-)
-
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index fec2879c497d..e1af3ac4bf6d 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -780,6 +780,8 @@ static int netlink_release(struct socket *sock)
- 			old = nl_deref_protected(nl_table[sk->sk_protocol].listeners);
- 			RCU_INIT_POINTER(nl_table[sk->sk_protocol].listeners, NULL);
- 			kfree_rcu(old, rcu);
-+			kfree(nl_table[sk->sk_protocol].mc_gen);
-+			nl_table[sk->sk_protocol].mc_gen = NULL;
- 			nl_table[sk->sk_protocol].module = NULL;
- 			nl_table[sk->sk_protocol].bind = NULL;
- 			nl_table[sk->sk_protocol].unbind = NULL;
-@@ -990,6 +992,8 @@ static int netlink_bind(struct socket *sock, struct sockaddr_unsized *addr,
- 	struct net *net = sock_net(sk);
- 	struct netlink_sock *nlk = nlk_sk(sk);
- 	struct sockaddr_nl *nladdr = (struct sockaddr_nl *)addr;
-+	struct netlink_table *tbl = &nl_table[sk->sk_protocol];
-+	unsigned int gen[BITS_PER_TYPE(u32)];
- 	int err = 0;
- 	unsigned long groups;
- 	bool bound;
-@@ -1023,9 +1027,14 @@ static int netlink_bind(struct socket *sock, struct sockaddr_unsized *addr,
- 			return -EINVAL;
- 	}
- 
-+retry:
- 	if (nlk->netlink_bind && groups) {
- 		int group;
- 
-+		netlink_lock_table();
-+		memcpy(gen, tbl->mc_gen, sizeof(gen));
-+		netlink_unlock_table();
-+
- 		/* nl_groups is a u32, so cap the maximum groups we can bind */
- 		for (group = 0; group < BITS_PER_TYPE(u32); group++) {
- 			if (!test_bit(group, &groups))
-@@ -1057,6 +1066,22 @@ static int netlink_bind(struct socket *sock, struct sockaddr_unsized *addr,
- 	netlink_unlock_table();
- 
- 	netlink_table_grab();
-+	if (nlk->netlink_bind && groups) {
-+		unsigned long released = 0;
-+		int group;
-+
-+		for_each_set_bit(group, &groups, BITS_PER_TYPE(u32))
-+			if (gen[group] != tbl->mc_gen[group])
-+				__set_bit(group, &released);
-+		/* see netlink_setsockopt(), undo the others and retry all */
-+		if (released) {
-+			netlink_table_ungrab();
-+			netlink_undo_bind(BITS_PER_TYPE(u32), groups & ~released,
-+					  sk);
-+			bound = true;
-+			goto retry;
-+		}
-+	}
- 	netlink_update_subscriptions(sk, nlk->subscriptions +
- 					 hweight32(groups) -
- 					 hweight32(nlk->groups[0]));
-@@ -1686,6 +1711,8 @@ static int netlink_setsockopt(struct socket *sock, int level, int optname,
- 		break;
- 	case NETLINK_ADD_MEMBERSHIP:
- 	case NETLINK_DROP_MEMBERSHIP: {
-+		struct netlink_table *tbl = &nl_table[sk->sk_protocol];
-+		unsigned int gen = 0;
- 		int err;
- 
- 		if (!netlink_allowed(sock, NL_CFG_F_NONROOT_RECV))
-@@ -1695,12 +1722,25 @@ static int netlink_setsockopt(struct socket *sock, int level, int optname,
- 			return err;
- 		if (!val || val - 1 >= nlk->ngroups)
- 			return -EINVAL;
-+retry:
- 		if (optname == NETLINK_ADD_MEMBERSHIP && nlk->netlink_bind) {
-+			netlink_lock_table();
-+			gen = tbl->mc_gen[val - 1];
-+			netlink_unlock_table();
- 			err = nlk->netlink_bind(sock_net(sk), val);
- 			if (err)
- 				return err;
- 		}
- 		netlink_table_grab();
-+		/* The group was released after ->netlink_bind() checked it, and
-+		 * may have a new owner now. The old one is gone, so check the
-+		 * group again without ->netlink_unbind().
-+		 */
-+		if (optname == NETLINK_ADD_MEMBERSHIP && nlk->netlink_bind &&
-+		    gen != tbl->mc_gen[val - 1]) {
-+			netlink_table_ungrab();
-+			goto retry;
-+		}
- 		netlink_update_socket_mc(nlk, val,
- 					 optname == NETLINK_ADD_MEMBERSHIP);
- 		netlink_table_ungrab();
-@@ -2031,6 +2071,7 @@ __netlink_kernel_create(struct net *net, int unit, struct module *module,
- 	struct sock *sk;
- 	struct netlink_sock *nlk;
- 	struct listeners *listeners = NULL;
-+	unsigned int *mc_gen = NULL;
- 	unsigned int groups;
- 
- 	BUG_ON(!nl_table);
-@@ -2052,7 +2093,8 @@ __netlink_kernel_create(struct net *net, int unit, struct module *module,
- 		groups = cfg->groups;
- 
- 	listeners = kzalloc(sizeof(*listeners) + NLGRPSZ(groups), GFP_KERNEL);
--	if (!listeners)
-+	mc_gen = kcalloc(groups, sizeof(*mc_gen), GFP_KERNEL);
-+	if (!listeners || !mc_gen)
- 		goto out_sock_release;
- 
- 	sk->sk_data_ready = netlink_data_ready;
-@@ -2069,6 +2111,7 @@ __netlink_kernel_create(struct net *net, int unit, struct module *module,
- 	if (!nl_table[unit].registered) {
- 		nl_table[unit].groups = groups;
- 		rcu_assign_pointer(nl_table[unit].listeners, listeners);
-+		nl_table[unit].mc_gen = mc_gen;
- 		nl_table[unit].module = module;
- 		if (cfg) {
- 			nl_table[unit].bind = cfg->bind;
-@@ -2079,6 +2122,7 @@ __netlink_kernel_create(struct net *net, int unit, struct module *module,
- 		nl_table[unit].registered = 1;
- 	} else {
- 		kfree(listeners);
-+		kfree(mc_gen);
- 		nl_table[unit].registered++;
- 	}
- 	netlink_table_ungrab();
-@@ -2086,6 +2130,7 @@ __netlink_kernel_create(struct net *net, int unit, struct module *module,
- 
- out_sock_release:
- 	kfree(listeners);
-+	kfree(mc_gen);
- 	netlink_kernel_release(sk);
- 	return NULL;
- 
-@@ -2113,6 +2158,17 @@ int __netlink_change_ngroups(struct sock *sk, unsigned int groups)
- 	if (groups < 32)
- 		groups = 32;
- 
-+	if (tbl->groups < groups) {
-+		unsigned int *mc_gen;
-+
-+		mc_gen = kcalloc(groups, sizeof(*mc_gen), GFP_ATOMIC);
-+		if (!mc_gen)
-+			return -ENOMEM;
-+		memcpy(mc_gen, tbl->mc_gen, tbl->groups * sizeof(*mc_gen));
-+		kfree(tbl->mc_gen);
-+		tbl->mc_gen = mc_gen;
-+	}
-+
- 	if (NLGRPSZ(tbl->groups) < NLGRPSZ(groups)) {
- 		new = kzalloc(sizeof(*new) + NLGRPSZ(groups), GFP_ATOMIC);
- 		if (!new)
-@@ -2157,6 +2213,9 @@ void __netlink_clear_multicast_users(struct sock *ksk, unsigned int group)
- 	struct netlink_table *tbl = &nl_table[ksk->sk_protocol];
- 	struct hlist_node *tmp;
- 
-+	/* the group can be given to another user, see netlink_setsockopt() */
-+	tbl->mc_gen[group - 1]++;
-+
- 	sk_for_each_bound_safe(sk, tmp, &tbl->mc_list) {
- 		/* bitmap predates the group, can't be a member */
- 		if (group - 1 >= nlk_sk(sk)->ngroups)
-diff --git a/net/netlink/af_netlink.h b/net/netlink/af_netlink.h
-index 778a3809361f..d5e2e404fd11 100644
---- a/net/netlink/af_netlink.h
-+++ b/net/netlink/af_netlink.h
-@@ -64,6 +64,7 @@ struct netlink_table {
- 	struct listeners __rcu	*listeners;
- 	unsigned int		flags;
- 	unsigned int		groups;
-+	unsigned int		*mc_gen;
- 	struct mutex		*cb_mutex;
- 	struct module		*module;
- 	int			(*bind)(struct net *net, int group);
--- 
-2.25.1
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
 
