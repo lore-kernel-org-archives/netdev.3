@@ -1,101 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.177
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793512133;
-	b=ha45tf+Cj8Ho6eo0qZvemSyS1jkra7QUMUqUA4c9Q+qmykbr1dnHXLrQDeGxbVKd+XpU
-	 sZkGnncrdb08ZYr4bka744B+zA3w15T7vJr/bY4Ee6yIfKD4akrMD4z6w8YJHNnj82uRP
-	 O+0rLfvJB962TfCI+SfkhSKO1hcVryjtuw/8W1uBzY5ceYM3s8lRqL+LUFmAEP+Y3ONob
-	 NEy3aMDC7jAkIbLwHBtjY1MkURQ8jYuFHW4Xy7zt4WtVmFoqq9S8piQSV/aHRSgdzDAdP
-	 OH2qTLGfbFonYvshQTqJvEzrztaGicWqEXbwx/wCyfWsub7KaQAAq4nhedN5FQTRXQw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793512133;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=EGfxVHVkcrYrQKGYWR3trZufepOrJ+7eV2izdTVo0N0=;
-	b=j9td9qoEenKj4DQrOMkn790Mq/dm72mnTyEQ06YAGu9A3sLOIRA1hEqItMgXjawPwLAW
-	 nwgfHviZTB0XP8d5zSj4FpSVNQFjxzNKZwoaF7tCG8xFkrCO8sQJhU3QnvPBIynaF/Ieg
-	 ONrimvelkNpB9gs2QdSebJFR20zKgJFXeALx1NsjThLhhIofLT0Wl0W+21fsgCnPViKgj
-	 Jvljf47xBD9B0eg3KIKaiTFjwRL0MOt1DGIdOJ2soyN11XCd7jY2v/ZApsuzJJ8FxUsAJ
-	 fu3UvuDM3bAmJYAQ1qet0YmHRC6WdJ5ppMlQDm4SW5K/tiCDPgVNc8arYBRGlBETgeQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=weyO2K2Z;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.177
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.223
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793513672;
+	b=B2/QMqyN47dlnyTfekXJSr5OuSYCGy8sKpujWKt+6SwnStagiADhIEk3fPLKjhV/rtZA
+	 xUEg457ZZePHWvpc1avEqf9s9yiVi2ZUlck03m236sTGiCG68HUkSFL380geIfgoicfMl
+	 jPm56lsyqlIpdil823dZgywSA4sqShirjDK6Bs00pvAgtn1YF7Z4kkjR7BRaZ6ZepiMGK
+	 bf5vgyxXXztMwyq6XF13+9M8msHJk9z4R3xyuNMObIUIdUqstiaq6EfAVA7ly78aOhMnK
+	 nZXF9tqSo4MAmBIx/V50y+BkZd54wZiRI+3P731QHkQxQOz6doSow9kru2MFJRTLbXw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793513672;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=BZ+qxJq3th4ghv/HaIFllJHWs6fjP2dPXQ9z2rOuZd8=;
+	b=ozoPfwZIKX4ecPAfjfGLyMb4+8GORtxBcXBnw1zAVObEJQ5e1rVKS9nJUnZUqBT1nft2
+	 s05mazoKYiqe47aa5bHYVw5G/kWevJjYpUDsCv0wdsKC1QE6LVMLjjaGeuI1MO5KDfeR5
+	 T4ZxsjvzPtGxW0kTI166DCM3BYxcyDD+meUhGlJ8VgZ1YO3X+hwYxHXoap73qRt4xPftS
+	 xuaq7fq2Fict6sTJFne1NGdNTJE/6JfyEbF/GDi6xitwjd+IlxnTelZJ/0c3xopt1DGFU
+	 F9JWQAWni3xDT5dY2Ui4JTEsc4llKgS0+99mjhGqdyhqvXGjU5mEkTzigel8AxgYMKQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=NV5AmE1F;
+	arc=none smtp.remote-ip=95.215.58.223
+Received: from mta1.migadu.com (out-223.mta1.migadu.com [95.215.58.223])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7C4606A326
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 05:48:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BD7C4606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01626606A324
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 06:14:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 01626606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=weyO2K2Z
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3a1f628b1d1so17380821fa.0
-        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 22:48:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1793512131; cv=none;
-        d=google.com; s=arc-20260327;
-        b=n2GBKy7lo5qG21Z4gF4MgDYdLfMRNsqW5qoPZaH5U0mgOV/uP+S82qagVN+sCh2u6n
-         XISPQZI0zcvEJ6Pf/af+QI/+bWWwMkLFv+rVpESHQzBUR5qlH7dsHQF4X8YQF691ReSE
-         It5XVP+8n/Aht1hIKNVQ6m7EiF+Rq1hPFE1Iz/mjAQ+XvuQnz7E4P7Rycf2OZ9xXLPj+
-         aLSKqMkG/jHjMTJwjY3lk2tGnLLKjQZki9omLk7s/N6SPXIlUm7CU0JdFDEaso9OdUT3
-         hfx0tffv0PSeblqcZGEhHfUp8+Qldqczb/8JljxElt6SlGNJa2AQhE12zz455NFujc9X
-         Vprw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=EGfxVHVkcrYrQKGYWR3trZufepOrJ+7eV2izdTVo0N0=;
-        fh=a49iLzkEryX2XQEFLUQgXI1XGY+sBnY0dKX5WDBXgfI=;
-        b=UgRNd8dxkT3/ksiqYlptxsJx9WqeW4pzclXadxAuYh9d6G91uzPwCe1fRaSBGzQnvh
-         ozjhGbzwk+2UUqHybc9AdA0IBHlAfWcGcY0VduZJi4OcyKshCfWfMOSn2s9JP38AiVuA
-         gta8QGijB+j9jY/hs09mR4M6uRk2BByj7mKT4IJJpyZ9lmJk18aKocRcVbP+F2PZNhlT
-         H62myLp2/18Opqfwx4/MvaUilOULxRz3Hi8EdA21vWNgTtrR6438acz3mZxCDmeT02Ge
-         R7jrwFsA9Aw/q70/YpNy7G/HSwAlADBktRCQ5q5CRvmGOLzdWB+Xe07rHaoV96cy8lcO
-         2R4w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793512131; x=1794116931; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=EGfxVHVkcrYrQKGYWR3trZufepOrJ+7eV2izdTVo0N0=;
-        b=weyO2K2Z3b0LzD/hEyODcUaTMjso5EY+pHzgpgsO36+Go7wri9KGFzwbOpt11QlPm2
-         hM6VRrvJCFcWqLlRbdvtdLrcIYxwb1is/W2btLLeBpycRVMvHNZbAnya2ep3XFu7aQHp
-         tr2F1uocntttl9YlKlF6ntEWPU/tKGg+OIUkiDbF+AutxMPipzwlq+Ki0KkZRJU0bWo5
-         yal59Z9UAq/4hrOU00lGv0fUtxZ3/op2fEx+6Vk9zJlgyxOAYmvwVQGH+7vACMaGArG7
-         4TVwXsSvd9lVy+56qYxm0lfSpTgf9Qllc7GxU4poZR+lZM95d7xWc4aNnJqwwVpoJqMk
-         QpQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793512131; x=1794116931;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EGfxVHVkcrYrQKGYWR3trZufepOrJ+7eV2izdTVo0N0=;
-        b=yLUGe/W3EICGTxdPv5HqlB2YZ0sttQpgAEgb/ElydNEveLbhxilfjZgWpj3ipCgM6A
-         XOZMlW2Dp4NuxKp3o3GSVxVIF7U46N9W7JYFTnhvmEbyuA+oVfGHQV7g+c6UaZ6aRzS8
-         cN/X0AJ24akTlEl/fozBFW1TrD7bkMkMdtd8YpGG9dGwaM6jJWIBZ+TDj/Mo0AgOcx7A
-         qQXJRKx5O0M3a810RpQNVrpYwkcw62es87GUMUxuolZFYO+Xb5CdiE40gHnWZXvOOy/W
-         /6RxvDQq/cFe6kZpNJuTlEieA7Ky5+T7ObD5iK6terHZ+ezDD/D2yEm+tI6P9tHx1U4I
-         E2vg==
-X-Forwarded-Encrypted: i=1; AKwUvBw3eS/+0fe27FX2DUsN1q1Af+O186mAhcYRTphwgyACbTfa4u0EMfVTwPxVznMoqS0SdsZeZE8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLPfSGagJ3eMDfowfR6pg3IzY6UHnu0W8G7r7Lc/QrDchJFe5Z3
-	wbVfPQQFEAwmdXbK3VycN5yTLEPmV5j11t5EaRrEmF4A/3C71tdYpOO/ikH6NzhC43AWlZxihnX
-	K+pxHau3I0zXgZrqYhmLL675PBWPSq8GKJA==
-X-Gm-Gg: AYBFou2MyrFoPyeERxFUumKrarhhqRScmdCgLUGnUMuvhOdOjorT5zFF0X18RIwUxWX
-	O2RA8CDdpPOUxmRaw/WNR+DytLM6YpRbz4WRXuO430nqtTJoqmVz6zSHlX/dRZAauScIX1kwFQX
-	mXqPOr4o/7CUJsObbRQo1vEGC61WlDXHWV0La9qGHp8GWESgVGMtpZLq/cZJtK9Ud5FinRuQBbW
-	hZae5/p9pt9lF6fazziltZYkdvoGEBZRxAoZkfMx0J/tOUF5MC43HwQfj40wBClyzguoALpEOcb
-	M/uTHYZu8hclqLzmN7lyK1mwhLBKwlf9GBreywxremx6t0zuQBWd34a/Mj7+TMAf8WbeeDC/2L2
-	1qMNMrVfkj/zWZtRrSeZYzU5BP49vUm2Ob9kFkfWZ9TXJH4g57plDy4hM9m4HcAxufYYKogQ2LW
-	55go508MT4aMPQA7kw9oeaA/oN4EQJOw+xlK0Z+bixW5Fla0tyLM8=
-X-Received: by 2002:a05:6512:1252:b0:5bf:d938:b808 with SMTP id
- 2adb3069b0e04-5bfd954bb21mr2075584e87.1.1793512130701; Sat, 31 Oct 2026
- 22:48:50 -0700 (PDT)
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=NV5AmE1F
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=vvNq7kxpfhjhHJQl3xgXHJx+UgUXDgNtOsyO934aHlA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793513663; v=1; x=1794118463;
+ b=NV5AmE1Fgzxuwixd6wST2ECaY9sCOkEBlcoTfgQ2Ms3QM18nCtMKiznkM6O/HRPBz/SVUBgz
+ 5TGC57VaEJ84qPYuBGKU7lB77VxrfBjoA4zDmhedzQnaqDoJM6xJCYkZ95NSrmtVF/Ai73+OUSs
+ EgtHPHYTp2cDXVFm9WJ75Fmk=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 3a49dc99ca7b4b25;
+	Sun, 01 Nov 2026 06:14:23 +0000
+X-Mizu-Trace-ID: 3a49dc99ca7b4b25
+X-Migadu-Flow: FLOW_OUT
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: netdev@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Joel Granados <joel.granados@kernel.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Zhan Xusheng <zhanxusheng1024@gmail.com>,
+	Gerd Rausch <gerd.rausch@oracle.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
+	Wyatt Feng <bronzed_45_vested@icloud.com>,
+	Hannes Frederic Sowa <hannes@stressinduktion.org>,
+	Flavio Leitner <fbl@redhat.com>,
+	Petr Mladek <pmladek@suse.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v3 0/5] net: fix misc signed overflows caused by bad sysctl values
+Date: Sun,  1 Nov 2026 14:11:58 +0800
+Message-ID: <20261101061331.286404-1-jiayuan.chen@linux.dev>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,72 +91,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261031133455.3070233-2-rsalvaterra@gmail.com>
-In-Reply-To: <20261031133455.3070233-2-rsalvaterra@gmail.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Sun, 1 Nov 2026 13:48:13 +0800
-X-Gm-Features: AclHuK9Oijgn2EhPzsnGywVMmHQSWFg3blfXJ7nFJaMnQXGzRvyU2SOiQm3Go7g
-Message-ID: <CAL+tcoB6vg+-w1JZdND_cTN_zPeh76_+-W_NU34jkunJUFwrrA@mail.gmail.com>
-Subject: Re: [PATCH] tg3: make depend on ZONE_DMA
-To: Rui Salvaterra <rsalvaterra@gmail.com>
-Cc: pavan.chebbi@broadcom.com, michael.chan@broadcom.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, Oct 31, 2026 at 9:36=E2=80=AFPM Rui Salvaterra <rsalvaterra@gmail.c=
-om> wrote:
->
-> Since 614f4d166eee, on systems with ZONE_DMA unavailable, the Tigon3 driv=
-er
-> fails to initialize, at least on systems with BCM57766 controllers. On a =
-late
-> 2012 Mac Mini:
->
-> [    1.226623] tg3 0000:01:00.0: Unable to obtain 64 bit DMA for consiste=
-nt allocations
-> [    1.226718] tg3 0000:01:00.0: probe with driver tg3 failed with error =
--5
->
-> Fixes: 614f4d166eee "tg3: Set coherent DMA mask bits to 31 for BCM57766 c=
-hipsets"
+Recently I have reviewed quite a few fixes for variable overflows caused
+by config values, i.e. a value set from sysctl, module params or netlink
+that is accepted as valid but later overflows when it is used in a
+calculation. I believe there are more of these still out there, so I
+used an LLM to dig through the code and it found the issues fixed in
+this series.
 
-The format is not right. And please target net branch if it's a fix by
-changing your title to ']PATCH net]'.
+All of them have been reproduced and verified in QEMU.
 
->
-> Cc: stable@vger.kernel.org
->
-> Signed-off-by: Rui Salvaterra <rsalvaterra@gmail.com>
-> ---
->  drivers/net/ethernet/broadcom/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/net/ethernet/broadcom/Kconfig b/drivers/net/ethernet=
-/broadcom/Kconfig
-> index f0bac0dd1439..c9875daa043b 100644
-> --- a/drivers/net/ethernet/broadcom/Kconfig
-> +++ b/drivers/net/ethernet/broadcom/Kconfig
-> @@ -124,6 +124,7 @@ config TIGON3
->         tristate "Broadcom Tigon3 support"
->         depends on PCI
->         depends on PTP_1588_CLOCK_OPTIONAL
-> +       depends on ZONE_DMA
+v3:
+ - gc_elasticity: make the max bound an unsigned int, matching how
+   proc_dou8vec_minmax() reads extra2 (Kuniyuki)
+ - message_cost: kernel-doc "Return:" section (Jakub)
+ - picked up Fernando's Reviewed-by on redirect and message_cost
+v2: https://lore.kernel.org/netdev/20261027104701.296240-1-jiayuan.chen@linux.dev/
+v2:
+ - gc_elasticity, mld_qrv, igmp_qrv: store the sysctl as u8 and use
+   proc_dou8vec_minmax(), as suggested by Kuniyuki
+ - docs: add the missing "Maximum: 255" to the mld_qrv and igmp_qrv
+   entries in ip-sysctl.rst
+ - message_cost: add proc_dointvec_jiffies_minmax() instead of a local
+   handler, as Joel suggested
+ - redirect_load: reject negative values as well
+ - kept Fernando's Reviewed-by on gc_elasticity, mld_qrv and igmp_qrv:
+   v2 narrows the storage type to u8, the fix itself is the same
+v1: https://lore.kernel.org/netdev/20261023091419.167088-1-jiayuan.chen@linux.dev/
 
-Did you verify it possibly affects those kernels without DMA config?
+Jiayuan Chen (5):
+  ipv6: restrict gc_elasticity to 31
+  ipv4: fix shift-out-of-bounds in ip_rt_send_redirect()
+  ipv6: restrict mld_qrv to 255
+  ipv4: restrict igmp_qrv to 255
+  net: restrict message_cost and message_burst to non-negative values
 
-The blamed patch seems correct, so I think you need to root cause it
-instead of adding a global dependency here.
+ Documentation/networking/ip-sysctl.rst        |  4 ++
+ .../net_cachelines/netns_ipv4_sysctl.rst      |  2 +-
+ include/linux/jiffies.h                       |  2 +
+ include/net/ipv6.h                            |  2 +-
+ include/net/netns/ipv4.h                      |  2 +-
+ include/net/netns/ipv6.h                      |  2 +-
+ kernel/time/jiffies.c                         | 40 +++++++++++++++++++
+ net/core/sysctl_net_core.c                    |  6 ++-
+ net/ipv4/route.c                              | 10 +++--
+ net/ipv4/sysctl_net_ipv4.c                    |  4 +-
+ net/ipv6/mcast.c                              |  2 +-
+ net/ipv6/route.c                              |  7 +++-
+ net/ipv6/sysctl_net_ipv6.c                    |  4 +-
+ 13 files changed, 70 insertions(+), 17 deletions(-)
 
-Thanks,
-Jason
+-- 
+2.43.0
 
->         select CRC32
->         select PHYLIB
->         help
-> --
-> 2.55.0
->
->
