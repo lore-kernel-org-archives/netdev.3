@@ -1,56 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793533742;
-	b=CfODO5RZL7DOzkVNbLfaloJZRUUm6tabvKcofB3cSjGJ+S+hcAUk7oVrD4ohFkELtLvp
-	 PUaWy7uedrhVYwnWHv8ihOFHa2MIe+bgsyvL0d2ZS5w4APmT3sJR286+fbGtCXY/Y+6fH
-	 gNeLTV2QYyJtpu2U5M/hdBj7UwcqM217y/TRNKB9WeV5yKJkzx20WljG8b8uU2OgkO9CH
-	 RzcRV3y4oX+US/iQsabPZpNXc/ZOiObBq1APbRaXPF+U99ry/RS+tsIj/bmaQzVQasMP+
-	 Tgxb08bUz1cRJMSKhdiR82OPwI0cv12i9vdgLusx3+O9I3Xq+GckGt4uSN7Ys+MsOSA==
+	t=1793535039;
+	b=1gED/VvhlTim+K1GgAndvR2PbvGYsBnzjG+tpoUy2iq0CvOCcqMGPgNRvFA3Hoeq1Gb7
+	 SieDzbm36bfcQTjShWMxB4txxa9bgk/KfNYJt7siKpIPwE3JYkShZ/MX7BW+NtG+B2WhH
+	 NHfEiTP7+8HiTZBZjPX5EI2iy2ElYaddHE+dz7rWj689Cro+2rTimh9Sa85kH0cKUGoZo
+	 8DR+LS4A8e9EtN53O9+jtMFNr0T/FYdIYROB3Of/+FyzdtEPeIMYtyPpsFt4cbj6riOXB
+	 aSMLoGBIs9gERbFB3hwZ3Vbejnql2Rs3BXZ+TAp9hvkoKzfdFhQ3pVufggnvKYyl6ew==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793533742;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793535039;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=uhqQZWYhQfQseqw3TWhQ06TGIfzrnlFvPN/L9zUwqpE=;
-	b=y0/8LU4ChWARF+3Lvofwq55U5vmt+apgIneJDGdv8gShuHAFnSkbm9eNzVU8rnHkqJ55
-	 iEKW5fyc2tQHR6CZyVLa4rQ5ndS2H03TIOcdejS0x9iaRf9sw71JEqiOi63wTwgkvrMoL
-	 bEmLZNOhY4CgnxcImmANJsx05lhqr3osg/FkXcryhPlK9sbW3DJi5NCKUFHmgwglUS3BQ
-	 aY5cawQKtlKw5FDaGPGfppzdnHQ4PAM76AWqGElK9G7zPbRPkhq6OWvHNw0PUgxIy4FIC
-	 +iRbs2BdjDQFiE91aW6a6wm04+WiMovaMEBqrsTUZiolcpUvqZAwqdcbnMfEyMWMJRQ==
+	bh=3CAGqxHDzH5gPKRDzvc+9sP4UxKCwz3ISyZgTHK2sZo=;
+	b=HjJmi5nVcLXPd4mbvNXTSt1DPO8lbFe4lyRkWG7ASZXECS5LnJEaVJaXRbbkl1gt0wBI
+	 oUnt5k6owRO7WSjhw8eP0k4jjFtrm10NcJCbeMe1t4HKoV/mW7H4aL36kNx+aqnHKqk9/
+	 bQzff50gngYGW6IxLV7TrRSSpANfUZmwR8fM3iU6ym0XJv9zetrZyxk1Uw7Uu/iKXUmpV
+	 GxfFHhxrbgiWKDG5u1REbZYlSVMByoA29J5yyun4EchWlzt/hoIhWQb48+BhEBJiT/sQm
+	 dN2h1+xyqB2BEoSVT36S8vQG1BqFbgApEURUcfZY+70ynjbvOu8xHmbo71lGlIojhYw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ldkaxfbS;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NhB79Tip;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17FC606A324;
-	Sun,  1 Nov 2026 11:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEC3606A324;
+	Sun,  1 Nov 2026 12:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ldkaxfbS
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF6E21F000C1;
-	Sun,  1 Nov 2026 11:49:00 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NhB79Tip
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2E81F000C1;
+	Sun,  1 Nov 2026 12:10:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793533741;
-	bh=uhqQZWYhQfQseqw3TWhQ06TGIfzrnlFvPN/L9zUwqpE=;
+	s=k20260515; t=1793535038;
+	bh=3CAGqxHDzH5gPKRDzvc+9sP4UxKCwz3ISyZgTHK2sZo=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ldkaxfbSysz0X0K2rHj+IB3XF9NOWWt/iLkNc8wNpYpF5HYGrfK3hFE/eTf4ztgGM
-	 hNaKxknKioNxk/kZMqQKItDTezc9UAFTBbfc/FPXheupCV+pbci/IHAsWWcD9kowau
-	 VBddHTzLkS1Ihf/nVpV5cgdbEHqMILE7CCRri6+Gmi5M0cKu0sCblKpsWigrnIrGws
-	 FZ91SDb7GLF/WjuXsWJt3gSekZA1ZaErAe3iQDx+vIQozD6pwywuB1lAyWpy3+gBho
-	 rl77ZHRQ8gq3nz7oJWmkWSRSURJ2YCc/7PC3uAHPlqbzBHudBUauH0rFLENloB56HE
-	 LS4kx6VWblE5w==
-Subject:
- Re: [PATCH] seg6: fix OOB read in advance_nextseg when segments_left is 0
+	b=NhB79TipwC2CEPOKxsNWnxP3JcwDiaCmCs+jmnRZPE8MVOmTserHlpl/QchLpelw8
+	 dH904Qxjj/cz45cPF9yY4EVYipFagPJ/hKjECdgbudyaEcdKLxHNIL15RTdaF0NwOq
+	 q0AuxV9Wzmm0tCVF9AqqnSPwaJY/HWCH71eled6+XesY7LBXz1BpNMdfB9Z9ZKSvDJ
+	 /1VOE/LZMR6qvOHjlDk7tQY2b3MDwbzx3J2K2rRZ7v4UCkf/w5tQ0LCYXq+rIY/rtq
+	 Ju5jDXWGuYfEoftWWvBa5Q2746SKZ2sEjWLb61s2AhN/UTpNP3vrLkOSr0Ew2mHpy1
+	 0l55a7Wvi0kMw==
+Subject: Re: [PATCH net v2] bnxt_en: Don't keep MSI-X vectors added before FW
+ reserves them
 From: netdev-bot+sashiko@kernel.org
-To: tangbin@cmss.chinamobile.com
-Cc: andrea.mayer@uniroma2.it, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Sun, 01 Nov 2026 11:49:00 +0000
-Message-ID: <179353374041.3131.16148032694599738830@kernel.org>
-In-Reply-To: <20261028113141.2111-1-tangbin@cmss.chinamobile.com>
-References: <20261028113141.2111-1-tangbin@cmss.chinamobile.com>
+To: vlad.wing@gmail.com
+Cc: netdev@vger.kernel.org, michael.chan@broadcom.com,
+ pavan.chebbi@broadcom.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ andrew.gospodarek@broadcom.com, tglx@kernel.org, maz@kernel.org,
+ yangjinqian1@huawei.com, apreece@meta.com, regressions@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Date: Sun, 01 Nov 2026 12:10:37 +0000
+Message-ID: <179353503740.3131.17689939110178639939@kernel.org>
+In-Reply-To: <20261028114933.256298-1-vlad.wing@gmail.com>
+References: <20261028114933.256298-1-vlad.wing@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -67,7 +70,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 0 (1) · Medium: 1 (1) · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -75,129 +78,216 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The commit message describes a bug that the current tree does
-  not have.
-- [Low] The patch adds a second NULL return to advance_nextseg() in
-  net/ipv6/seg6_local.c, for segments_left == 0, with drop reason…
+- [Medium] In bnxt_reserve_rings()
+  (drivers/net/ethernet/broadcom/bnxt/bnxt.c), the new recompute in the…
+- [Low] With BNXT_NEW_RM, bnxt_check_rings() now allocates the extra
+  dynamic MSI-X vectors only to test availability, then frees them at…
+
+Pre-existing issues:
+- [High] bnxt_clear_int_mode() frees the vectors and sets bp->irq_tbl =
+  NULL but leaves bp->total_irqs stale.
+- [Medium] bnxt_hwrm_check_pf_rings() does not check the return value of
+  __bnxt_hwrm_reserve_pf_rings().
 
 --
 
-seg6: fix OOB read in advance_nextseg when segments_left is 0
+bnxt_en: Don't keep MSI-X vectors added before FW reserves them
 
-This commit adds a segments_left == 0 check to advance_nextseg() in
-net/ipv6/seg6_local.c. The check runs before the field is decremented and
-used to index srh->segments. The commit message says the End, End.X,
-End.T, End.B6.Encap and End.BPF paths can reach advance_nextseg() with
-segments_left == 0 and read out of bounds.
+When BNXT_NEW_RM is set, bnxt_check_rings() now frees the dynamically
+allocated MSI-X vectors right after the availability check.
+bnxt_reserve_rings() then allocates them after __bnxt_reserve_rings(),
+sized from bnxt_get_num_msix(). It also grows the vectors when no
+reservation is needed but FW already holds one, and clears
+irq_tbl[].vector when trimming.
 
-> advance_nextseg() decrements srh->segments_left and uses it to index
-> srh->segments without checking it is non-zero. seg6_validate_srh() permits
-> segments_left == 0, so a packet with SRH segments_left==0 reaching an End*
-> action underflows the u8 (255) and reads srh->segments[255] (~4KB out of
-> bounds); the read bytes are then used as the new IPv6 destination address
-> (info leak) or crash on unmapped memory. The decap path
-> (decap_and_validate) already checks segments_left > 0, but the standard
-> End/End.X/End.T/End.B6.Encap/End.BPF paths do not. Reject segments_left ==
-> 0 before decrementing.
+Closes: https://lore.kernel.org/all/20261022193620.2152038-1-vlad.wing@gmail.com/
+
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> index 0682060b048ce..55b11c7684313 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+
+[ ... ]
+
+> @@ -11701,8 +11702,23 @@ int bnxt_reserve_rings(struct bnxt *bp, bool irq_re_init)
+>  	int irqs_required;
+>  	int rc;
+>  
+> -	if (!bnxt_need_reserve_rings(bp))
+> +	if (!bnxt_need_reserve_rings(bp)) {
+> +		/* FW may already hold the reservation from an earlier
+> +		 * reservation that was not followed by growing the dynamic
+> +		 * MSI-X vectors, e.g. because the allocation failed.
+> +		 */
+> +		if (irq_re_init && BNXT_NEW_RM(bp) && bp->irq_tbl &&
+> +		    pci_msix_can_alloc_dyn(bp->pdev)) {
+
+[ ... ]
+
+> @@ -11728,6 +11744,10 @@ int bnxt_reserve_rings(struct bnxt *bp, bool irq_re_init)
+>  			rc = bnxt_init_int_mode(bp);
+>  		bnxt_ulp_irq_restart(bp, rc);
+>  	} else if (irq_change && !rc) {
+> +		/* Size the vectors from what FW actually reserved, which
+> +		 * can be less than what was requested.
+> +		 */
+> +		irqs_required = bnxt_get_num_msix(bp);
 
 [Severity: Medium]
-Can any of these paths actually reach advance_nextseg() with
-segments_left == 0?
+The comment says this sizes the vectors from what FW actually reserved.
+Under BNXT_NEW_RM, though, bnxt_get_num_msix() returns
+bnxt_nq_rings_in_use(), which is bp->cp_nr_rings +
+bnxt_get_ulp_msix_num(bp). It is not hw_resc->resv_irqs.
 
-input_action_end_core(), input_action_end_x_core(), input_action_end_t(),
-input_action_end_b6_encap() and input_action_end_bpf() all get the SRH
-from get_and_validate_srh(), which asks for IP6_FH_F_SKIP_RH:
+Can this still activate unreserved MSI-X entries when the RoCE driver is
+registered?
 
-net/ipv6/seg6_local.c:get_and_validate_srh() {
-	srh = seg6_get_srh(skb, IP6_FH_F_SKIP_RH);
-	if (!srh)
-		return NULL;
-    ...
+In __bnxt_reserve_rings(), the FW IRQ grant (copied into hwr.cp by
+bnxt_copy_reserved_rings()) only bounds the L2 count:
+
+	hwr.cp = min_t(int, hwr.cp, bp->cp_nr_rings);
+
+The re-clamp of the ULP vectors against resv_irqs is skipped when a ULP
+is registered:
+
+	if (!bnxt_ulp_registered(edev) && BNXT_NEW_RM(bp)) {
+		...
+		resv_msix = hw_resc->resv_irqs - bp->cp_nr_rings;
+		ulp_msix = min_t(int, resv_msix, ulp_msix);
+		bnxt_set_ulp_msix_num(bp, ulp_msix);
+
+Take 8 ULP vectors, 32 L2 NQs and a FW grant of resv_irqs = 34.
+bnxt_get_num_msix() returns 40, and bnxt_change_msix(bp, 40) activates
+entries 34-39 while rc stays 0.
+
+bnxt_alloc_cp_rings() maps L2 NQ i to MSI-X index ulp_msix + i. That
+puts L2 NQs 26-31 on entries FW never reserved, which is the
+lost-completion case this patch is fixing.
+
+The commit message limits this with "at least while no RoCE driver is
+registered" and says the accounting predates the patch. The in-code
+comment doesn't mention the RoCE case.
+
+Could the sizing be bounded by hw_resc->resv_irqs here? Or could the
+registered ULP vectors be counted against resv_irqs in
+__bnxt_reserve_rings()?
+
+>  		if (bnxt_change_msix(bp, irqs_required) != irqs_required)
+>  			rc = -ENOSPC;
+>  	}
+
+[Severity: High]
+This is a pre-existing issue, but can this branch call bnxt_change_msix()
+while bp->irq_tbl is NULL?
+
+bnxt_clear_int_mode() frees the table but leaves bp->total_irqs as it
+is:
+
+static void bnxt_clear_int_mode(struct bnxt *bp)
+{
+	pci_free_irq_vectors(bp->pdev);
+
+	kfree(bp->irq_tbl);
+	bp->irq_tbl = NULL;
 }
 
-When that flag is set, ipv6_find_hdr() skips any routing header with
-segments_left == 0:
+It is called from bnxt_hwrm_if_change() on fw_reset or caps_change, just
+before bnxt_cancel_reservations(). It is also called from
+bnxt_io_slot_reset().
 
-net/ipv6/exthdrs_core.c:ipv6_find_hdr() {
-    ...
-			if (flags && (*flags & IP6_FH_F_SKIP_RH) &&
-			    rh->segments_left == 0)
-				found = false;
-    ...
-}
+The next bnxt_reserve_rings(bp, true) call comes from __bnxt_open_nic()
+or bnxt_io_resume(). At that point bnxt_need_reserve_rings() is true and
+pci_msix_can_alloc_dyn() is still true. So irq_change is set whenever
+irqs_required differs from the stale bp->total_irqs.
 
-So these callers never get back an SRH with segments_left == 0. Nothing
-between the lookup and advance_nextseg() writes segments_left, and the
-HMAC check only reads it.
+If the count passed to bnxt_change_msix() is below the stale
+bp->total_irqs, the trim loop then runs through a NULL bp->irq_tbl:
 
-end_flv8986_core() is the only caller that uses seg6_get_srh(skb, 0).
-There, seg6_get_srh_pktinfo() maps segments_left == 0 to
-SEG6_LOCAL_PKTINFO_SL_ZERO. flv8986_act_tbl only has entries for SL_ONE
-and SL_MORE:
+		map.virq = bp->irq_tbl[i - 1].vector;
+		pci_msix_free_irq(bp->pdev, map);
+		bp->irq_tbl[i - 1].vector = 0;
 
-static const u8 flv8986_act_tbl[FLV8986_ACT_TBL_SIZE] = {
-	/* PSP variant for packet where SRH with SL = 1 */
-	tbl_cfg(PSP, SL_ONE, F_PSP),
-	/* End for packet where the SRH with SL > 1*/
-	tbl_cfg(END, SL_MORE, F_PSP),
-};
+This could already happen when the pre-reservation count was below the
+stale total. The recompute after __bnxt_reserve_rings() adds a new
+trigger: pre-reservation count > stale total_irqs > post-reservation
+count.
 
-So SL_ZERO resolves to SEG6_LOCAL_FLV_ACT_UNSPEC, and the packet is
-dropped before advance_nextseg() is called.
+Before this patch that case took the grow loop instead. There,
+pci_msix_alloc_irq_at() failed cleanly and the result was -ENOSPC.
 
-The commit named in the Fixes: tag, d7a669dd2f8b ("ipv6: sr: add helper
-functions for seg6local"), also already rejected segments_left == 0
-explicitly in get_and_validate_srh().
+The new !bnxt_need_reserve_rings() branch above checks bp->irq_tbl.
+Should this branch check it as well?
 
-Given that, is it accurate to say the standard End* paths "do not" check
-segments_left? The SKIP_RH lookup flag appears to do that check.
+[ ... ]
 
-If no path reaches this code with segments_left == 0, should the patch be
-described as hardening, without the Fixes: and Cc: stable tags? As
-written, it would likely be backported and triaged as a remotely
-triggerable OOB read and info leak.
-
-> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-> index 0c3d1be7f1299..0f72b7fe3ac14 100644
-> --- a/net/ipv6/seg6_local.c
-> +++ b/net/ipv6/seg6_local.c
-> @@ -310,6 +310,10 @@ static struct ipv6_sr_hdr *advance_nextseg(struct sk_buff *skb,
->  	/* skb_ensure_writable() may change skb pointers; evaluate srh again */
->  	srh = (struct ipv6_sr_hdr *)(skb->data + srhoff);
+> @@ -15093,6 +15113,7 @@ int bnxt_check_rings(struct bnxt *bp, int tx, int rx, bool sh, int tcs,
+>  			hwr.cp = min_t(int, hwr.cp, bnxt_get_max_func_irqs(bp));
+>  		}
+>  		if (hwr.cp > bp->total_irqs) {
+> +			int old_total = bp->total_irqs;
+>  			int total_msix = bnxt_change_msix(bp, hwr.cp);
 >  
-> +	if (srh->segments_left == 0) {
-> +		*reason = SKB_DROP_REASON_NOT_SPECIFIED;
-> +		return NULL;
-> +	}
+>  			if (total_msix < hwr.cp) {
+> @@ -15100,6 +15121,17 @@ int bnxt_check_rings(struct bnxt *bp, int tx, int rx, bool sh, int tcs,
+>  					    hwr.cp, total_msix);
+>  				rc = -ENOSPC;
+>  			}
+> +			/* FW has not reserved the new vectors yet, and writes to
+> +			 * MSI-X table entries beyond the reserved IRQs don't
+> +			 * stick (seen on BCM57508).  Free them again;
+> +			 * bnxt_reserve_rings() allocates them after
+> +			 * __bnxt_reserve_rings().  Without the new resource
+> +			 * manager there is no IRQ reservation and
+> +			 * bnxt_reserve_rings() does not grow the vectors, so
+> +			 * keep them.
+> +			 */
+> +			if (BNXT_NEW_RM(bp))
+> +				bnxt_change_msix(bp, old_total);
 
 [Severity: Low]
-Should the kernel-doc above advance_nextseg() be updated for this new
-NULL return? It still says:
+With the vectors freed again here, a 0 return from bnxt_check_rings() no
+longer means they will still be available at reopen. Callers such as
+bnxt_set_channels() act on that result:
 
- *  - NULL when the skb cannot be made writable. In this case, the function
- *    sets the drop reason to SKB_DROP_REASON_NOMEM.
+bnxt_set_channels()
+  bnxt_check_rings()          <- allocates, then frees the vectors
+  bnxt_close_nic()
+  (rx/tx ring counts updated)
+  bnxt_open_nic()
+    bnxt_reserve_rings()
+      __bnxt_reserve_rings()  <- FW reservation committed
+      bnxt_change_msix()      <- can now fail with -ENOSPC
 
-The callers follow that contract and turn any NULL into -ENOMEM. For
-example, in input_action_end_core():
+Suppose the second allocation fails, for example because IRQ descriptor
+allocation fails. Would an ethtool -L request that was already accepted
+leave the interface down with "ring reservation/IRQ init failure"?
 
-	srh = advance_nextseg(skb, srh, &reason);
-	if (!srh) {
-		err = -ENOMEM;
-		goto drop;
-	}
+Before this patch, that failure would have come back from
+bnxt_check_rings() before the device was closed.
 
-The same pattern appears in input_action_end_x_core(), in both the END
-and PSP cases of end_flv8986_core(), in input_action_end_t() and in
-input_action_end_b6_encap(). input_action_end_bpf() returns -ENOMEM
-directly.
+The commit message notes that the allocation can now fail after FW has
+committed the reservation, and the next open retries it.
 
-If this branch ever fired, a malformed SRH would be reported as -ENOMEM
-with drop reason SKB_DROP_REASON_NOT_SPECIFIED. As noted above, no
-current caller appears able to reach it.
+>  		}
+>  	}
+>  	return rc;
 
->  	srh->segments_left--;
->  	addr = srh->segments + srh->segments_left;
->  	ipv6_hdr(skb)->daddr = *addr;
+[Severity: Medium]
+This isn't a bug introduced by this patch, but bnxt_check_rings() goes
+through bnxt_hwrm_check_rings()->bnxt_hwrm_check_pf_rings(), which uses
+the request without a NULL check:
+
+	req = __bnxt_hwrm_reserve_pf_rings(bp, hwr);
+	flags = FUNC_CFG_REQ_FLAGS_TX_ASSETS_TEST;
+	...
+	req->flags = cpu_to_le32(flags);
+
+__bnxt_hwrm_reserve_pf_rings() returns NULL when
+bnxt_hwrm_func_cfg_short_req_init() fails. That happens, for example,
+when dma_pool_alloc() fails in __hwrm_req_init().
+
+Can this dereference a NULL req under memory pressure?
+bnxt_hwrm_check_vf_rings() appears to follow the same pattern.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028113141.2111-1-tangbin%40cmss.chinamobile.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028114933.256298-1-vlad.wing%40gmail.com
