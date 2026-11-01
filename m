@@ -1,73 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793547724;
-	b=BhH4cJSMQ8Y8g+PLHU3tAvMWvVVJzudsqrZVFLpD6KUHdsOVecSydZW3eMvsjl0efapt
-	 ox6NEW9pHoxpxxMaPPsYe7e8ax/F8GDCJdZuCeoAN6OsUxctA9KAk0CAkFZOmpNY3MlVy
-	 ddjuD7hAFKohK5732/GFBjitcAM/pdfrFtU8761Njv3ueJ8eyZKeO3U5o3D1Mhc/YAzgA
-	 Zi1m9TILFQlOYkP8o/CiDcYORL50zYyiJ68q7go4IZWRa/KYB2RsEqRYN17S22W4/eB+s
-	 ri5mJ4OFytf8JySG80+OSQuAKfHpx0JQH8BXRBE8iCNrImyTPiFFqBGUEH6dhYaW77Q==
+	t=1793548798;
+	b=xT8ZqyN26cYLHt9Al6Mc7gMV59DePJQx75W+7l5tksQMO7u/sRpOnHwr4mnAEbRRWWeE
+	 M6GkqMPpA1l1sKJIYROSnmiK6lud5A15vpf6HuWa2Jks2HLAwiM95dr8Pq1jH6RfN4Idl
+	 YIlEVnI0ji2bkgq+w+GOLqBIoDLrjwc8xNoqqQXd4HUNXxvpwZe585O9vJWXTlAt6a5RV
+	 ZH2R77JnWojW9qLdiFfGpTOuzL0GXc6Lf7oYb6qsp1yYNN1Xz0colI9IMdjTvhPc2ge+5
+	 /UJvInqfxsaqqwJACfUV8R7cs2n4VR0yZbLIpBiVbSv6RC3xOVbIPcP+YUK6VSRc/eQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793547724;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793548798;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=7D17qXi3Tw0c7OsVGynV0oeKo9zjydflACAeqDBE66Q=;
-	b=fPFtI8VyP1FDKzNW9zYMCnNtnzoyQ5aQaaXJvDK0nHNFmxOnSf2dOsB/Z/91KLOvPgSy
-	 fuC0YfxKeHGqHa1b5bFLSPn4tDvKZp4ELnzqTRyyzKmMbEzaBENL4ivFvzXc6/i0wgm3k
-	 1NVO+v+gSLq+XmggsgGZn8ekZzy8kjdVxuT1XJDw7Qr0XaCXL7QYT2nIi3zWxQBTE0ift
-	 CVEr8UjSIsGlTkcIffsKZFmKWuo7TmYEtwPTeeb0Nl6huLrFJsBoRRSOGd8fq2VOkFxO/
-	 RKAwfr3tAin3mZ10TFOzVfEXIucSqFpkfRhGuxmsKbRfZSYInW6E4ZxL1dBOeZSk8rw==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=I/3KNWEEu6IZN+CXs23fsbkAyCG4qcqp3COErszDAAU=;
+	b=STlHx7j+WK+wbaKMoAeRrfZn1B7YkZueiTNEyjA2R75DAN/t/NJ+NvZ2Yxb5xCMSFYJS
+	 dn6x8ChVlJZLlfVguDO7A3ZUaSjcMXqRfgJp4l7AJN6HVacWEwRFBs8KSg8cxbmwRkevt
+	 VJsRIwnwLIbOC5xuwTtA5shEFYtJihy99q3sGPRBk0GWSBsZWA+uRrLSL5Vsqm8g5wFgW
+	 BegeOlwG08KtxZB9cR0JjDkOZBbcY4pGEyPStSsYkDsbKMGEAnCWstwRxoeTx3vBjStfY
+	 iefSAeNx/E9pOPeoKQsox4yNScK8qpERUCBdEpz2SDlxzw5IIARN9xm6qclwBtUu7WQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PHMvp3ae;
-	arc=none smtp.remote-ip=209.85.210.199
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="I3/SxCb9";
+	arc=none smtp.remote-ip=209.85.215.199
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B0D606A327
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 15:42:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41B0D606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825B2606A325
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 15:59:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 825B2606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PHMvp3ae
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-89f84753b43so1434271b3a.1
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 07:42:04 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=I3/SxCb9
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc1cdfb337eso1353595a12.0
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 07:59:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793547723; x=1794152523; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793548798; x=1794153598; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7D17qXi3Tw0c7OsVGynV0oeKo9zjydflACAeqDBE66Q=;
-        b=PHMvp3ae3ljxZAel8iJvmJOkoaGczK6G+iEju6I1EU6Pmx50daS+OpBLU0YGWEgqHw
-         AxnaKxN42E6RHfVIaFXsNYlqrBd0ZFJvc1HPnBfkKpMnc0KnFwWLDHREl8HDMjDN0vk9
-         JIQm74pC15pIjEGsaOc9oilpQUBqojq5hWTB0Q88mtnz4bxhhH8ieCUXaq1Q99h/us45
-         xrEHIBtFWr/+ZKVh0quRPaPYFtJiaLwuAUrQg5n2FES1TwzYk/+kz2H8HMOwMvLQVKMG
-         +Gq7fIOOgbayoTCziG3R1YqXAmFRaA05ksbiU/zShCiwarLmQaLC/gHP06p+gUsXnOlq
-         6QUA==
+        bh=I/3KNWEEu6IZN+CXs23fsbkAyCG4qcqp3COErszDAAU=;
+        b=I3/SxCb9r8isKAZuyi8zggBKTG9izfADqSnDe8BsNCPcv6urpOKu715L0wIp5ZDSzg
+         iyOSc9qrMULYv8W9eZPP0mT8DgXreddeqZIF6ay99VMHR8MMBPYNQVs0apHttn6pQnVM
+         m8XvOrnYbVE9PT2rGQ+zcJ6hu09DCZzCbZCysKlJ2V8kaSzw0l2eUSZg7efO5vRBhMry
+         uYmIBNQVNioWG6TQX7giEpQn9A0cJ5LSpIxy3tKrwak1ckvOfrzgN2ZW8PAtKV2Yt0n1
+         NgHSWKDrZM7JifhfuzdMLYeSbL9EPv8F6nlNeMoCKPzfCF9VfZCQBnxDBm/CbsnAs0ve
+         v9zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793547723; x=1794152523;
+        d=1e100.net; s=20260707; t=1793548798; x=1794153598;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=7D17qXi3Tw0c7OsVGynV0oeKo9zjydflACAeqDBE66Q=;
-        b=DjHSPZEo38iNCcNd8/tu7N1fWr6FMR9B8jS8rnpunfaQYKIVHXeC5moOAmmhBrbag1
-         lRlPVoMjaIH11yKqeiwKwCG277Fcnd/mrio8Xyk9JyjiuYI0NKqGQw5uXRtVKblCxroJ
-         b1v2VzYSMzAqEYxqB7vdttnK8GB4tJun0VCTyuHrOyp5fWZHYJ9SBZqKbpZpe25DmO1i
-         Ek9bSoR67MxEm2xaCTAmW2Gzt4qXWc2lG2PJg/61OX/Dkf0zJQDRrH9HQCgE39cJMfyc
-         Roi1Co3nla93/RdWz2TJDA5y9HsRcVURzgQhghAB1sAQ4NX+SoKi1T0q2nwK3nAJhIp1
-         W5FQ==
-X-Gm-Message-State: AFq9FYJqm0H2dSxlxEG/TnImA88bFTktJwjsHbnIVHdgeT0tPrTn0wxQ
-	H8ECyFW7RdO8aTIil1HnK5fs6BlRsE65YKVjbNZGyqJA5lnh4HGVMExtsbFJPA155JhEZM9mS/1
-	BL2w7vw==
-X-Received: from pfbeb25.prod.google.com ([2002:a05:6a00:4c99:b0:8a2:1bc3:8884])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4652:b0:880:f278:6af1
- with SMTP id d2e1a72fcca58-8a9b9a4ec9amr5296046b3a.7.1793547723237; Sun, 01
- Nov 2026 07:42:03 -0800 (PST)
-Date: Sun, 1 Nov 2026 15:42:02 +0000
-In-Reply-To: <edbdf4f4075565b1fb5925d7e311d6f315151a48.1793444262.git.thnkslprpt@gmail.com>
+        bh=I/3KNWEEu6IZN+CXs23fsbkAyCG4qcqp3COErszDAAU=;
+        b=ReU9i/vTrafF0GSLJmjiHzij3pmP/IwXNYvNpkjm5uUv4EgBhQ5TOnk0qZ3H4PQC5C
+         zPeXopyZ2gn4E4Au18oDCqWtHS3YLcfoSo5nCOTAhQ2UzYd/8B55EQGitNYXXlkueSms
+         N3yjjMyMa9XephCdBJ+h+XfD4L2zHCaBRO83H1rhkQv69jrWI29Y8exgc0daDaB+tmh8
+         LCtOimvgaT5f9KwYY6AyM0nXW7DjbwS8nqUmfedNa/tecbuNuwn0Zq4mgV331RP4v9ny
+         dSgInZmrNGoRH4lU3Hu2bXJehaQEgLd5oeN+oGR0uxv8RYfnBuYZuzDgndBGk0j1ACGw
+         N6JQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwsIkpvUX2AJrRZQ/x0uU2v63ZY52TphwQ7AXiKKoQmBzqMQ8tbjPkf9kbuxhEc0CmXz8Cg/KM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKSCFXMXXLZAkilz1paOgMcCXUQWkq1qbiXd/BeNjFJQrkoEmYE
+	c+TijygTnoy6Y3eHGsQ5C+P/0QlCLcvJ5r7LOeK5gocX+oh86smIvtr8GSz86zkKdxgiFUa4xro
+	fDpFNqw==
+X-Received: from pgbd16-n1.prod.google.com ([2002:a05:6a02:64d0:10b0:cd8:b7a7:1171])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:a96:b0:3e2:b17e:40e6
+ with SMTP id adf61e73a8af0-3e928ab246cmr6424437637.4.1793548797553; Sun, 01
+ Nov 2026 07:59:57 -0800 (PST)
+Date: Sun, 1 Nov 2026 15:59:57 +0000
+In-Reply-To: <20261030032314.1978575-1-zhiyuzhang999@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,75 +78,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <0b1a91e7fa0de128c6e2bd3ae2f5c960a5c0f883.1793444262.git.thnkslprpt@gmail.com>
- <edbdf4f4075565b1fb5925d7e311d6f315151a48.1793444262.git.thnkslprpt@gmail.com>
-Message-ID: <auddRPy5o927NtZH@google.com>
-Subject: Re: [PATCH net 2/2] net: check the recvmsg LSM hook for every
- recvmmsg entry
+References: <20261030032314.1978575-1-zhiyuzhang999@gmail.com>
+Message-ID: <audeGRiIR1JE1Yk_@google.com>
+Subject: Re: [PATCH net] tcp: restore IPv6 af_ops on disconnect of a v4-mapped socket
 From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Avi Weiss <thnkslprpt@gmail.com>
-Cc: netdev@vger.kernel.org, edumazet@kernel.org, pabeni@redhat.com, 
-	willemb@google.com, davem@davemloft.net, kuba@kernel.org, horms@kernel.org, 
-	linux-kernel@vger.kernel.org
+To: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+Cc: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Matthieu Baerts <matttbe@kernel.org>, 
+	Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, netdev@vger.kernel.org, 
+	mptcp@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Tong Liu <lyutoon@gmail.com>, Qi Tang <tpluszz77@gmail.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Sat, 31 Oct 2026 13:08:41 +0200, Avi Weiss wrote:
-> do_recvmmsg() passes the number of received datagrams as the nosec
-> argument to ___sys_recvmsg(). After the first datagram, this bypasses
-> security_socket_recvmsg() even when a later entry requests a larger
-> receive buffer that would be rejected by an LSM policy.
-
-Same question, what is the real use case ?
-
+On Thu, 29 Oct 2026 23:23:14 -0400, Zhiyu Zhang wrote:
+> From: Eric Dumazet <edumazet@kernel.org>
 > 
-> Pass zero for both native and compat entries so each receive goes
-> through the security check. Remove the first-datagram-only comment.
+> A successful connect() of an IPv6 socket to a v4-mapped address switches
+> icsk_af_ops, sk_backlog_rcv and af_specific to their IPv4-mapped variants.
+> These are only restored if the connect() fails.
 > 
-> Fixes: a2e2725541fa ("net: Introduce recvmmsg socket syscall")
-
-Remove this.
-
-
-> Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
-> ---
->  net/socket.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
+> After connect(AF_UNSPEC), the socket can be reused for listen() or for a
+> native IPv6 connect while still using the mapped handlers. IPv6 packets
+> processed from the socket backlog are then handled by tcp_v4_do_rcv().
+> tcp_v4_send_reset() and tcp_v4_send_ack() interpret
+> TCP_SKB_CB(skb)->header.h6 as IPv4 options, and __ip_options_echo() can
+> overflow its 40-byte destination buffer.
 > 
-> diff --git a/net/socket.c b/net/socket.c
-> index c2a85224ab55..fff80fbca1a8 100644
-> --- a/net/socket.c
-> +++ b/net/socket.c
-> @@ -3057,13 +3057,10 @@ static int do_recvmmsg(int fd, struct mmsghdr __user *mmsg,
->  	compat_entry = (struct compat_mmsghdr __user *)mmsg;
->  
->  	while (datagrams < vlen) {
-> -		/*
-> -		 * No need to ask LSM for more than the first datagram.
-> -		 */
->  		if (MSG_CMSG_COMPAT & flags) {
->  			err = ___sys_recvmsg(sock, (struct user_msghdr __user *)compat_entry,
->  					     &msg_sys, flags & ~MSG_WAITFORONE,
-> -					     datagrams);
-> +					     0);
->  			if (err < 0)
->  				break;
->  			err = put_user(err, &compat_entry->msg_len);
-> @@ -3072,7 +3069,7 @@ static int do_recvmmsg(int fd, struct mmsghdr __user *mmsg,
->  			err = ___sys_recvmsg(sock,
->  					     (struct user_msghdr __user *)entry,
->  					     &msg_sys, flags & ~MSG_WAITFORONE,
-> -					     datagrams);
-> +					     0);
-
-This makes nosec dead in every path.
-
----
-pw-bot: cr
-
-
->  			if (err < 0)
->  				break;
->  			err = put_user(err, &entry->msg_len);
-> -- 
-> 2.43.0
+> Commit 8cc3aef0cb19 ("tcp: Do not allow buggy transitions between ehash
+> and lhash2.") prevents listen() after connect(AF_UNSPEC), but a native IPv6
+> connect is still allowed.
 > 
+> Add tcp_v6_disconnect() to restore the IPv6 handlers when a v4-mapped
+> socket is disconnected, and use the same helper in the connect error path.
+> 
+> MPTCP subflows override sk_prot, and two teardown paths call
+> tcp_disconnect() directly. Route those calls through the protocol-specific
+> disconnect operation so IPv6 MPTCP subflows receive the same restoration.
+> 
+> Tested with TCP and MPTCP by reconnecting an AF_INET6 socket from a
+> v4-mapped peer to a native IPv6 peer after connect(AF_UNSPEC).
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: Tong Liu <lyutoon@gmail.com>
+> Reported-by: Qi Tang <tpluszz77@gmail.com>
+> Reported-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+
+This is not needed when you add Co-developed-by.
+
+> Closes: https://lore.kernel.org/netdev/CALf2hKvp0NPVLwr=a3+jUHtPohxbra8gox+aYAfWathJnn-J+Q@mail.gmail.com/
+> Link: https://lore.kernel.org/netdev/CAL4WiiqFJpmcV4=TWRpukCq6q=-729658FwGvieNcPXe97kLvQ@mail.gmail.com/
+> Link: https://lore.kernel.org/lkml/20261029054136.1174216-1-zhiyuzhang999@gmail.com/
+
+This link is not directly related, remove it.
+
+
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> Co-developed-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+> Signed-off-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+
+Otherwise looks good.
+
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
