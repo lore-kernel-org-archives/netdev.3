@@ -1,100 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.48
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793540041;
-	b=yF/pfVIjRwDJcwWwu1xBGlpbnaPeLkAZrJuIb3k3XtfZUy4EPysaqJcVZ+4yeWSbKedx
-	 70R8AHLP1WgfSI7n5q9wzyQKlmZOWiXuO2af0a8GeUjTF7hqqRl872VkVYb+P2ciwItHT
-	 WEMOrXVaBatZefPiYge9QfDQwbvwCALhJB7bQNnL+I2J7sPtDyRPHBJt2gJbRqp9pEvSJ
-	 h2s5tYABRtGH8w7KInICWyfCVfqppmvNMEJ3jQBV+StZSgnLXdx6CANXcwzfasMstfr8K
-	 t6A7Lf/IfgmWworYpTOC/dDlRGrtMpT5qSQZVZjpWC4gUs0dKP8pk3Eja8vbWh/nfxQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793540041;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=4FoSNuo4120zGj2L29GeDCwMhfV0RCk5eABERU3r5fE=;
-	b=QKo5ckZsTa1K+5RQsQbO+W96nr4f5VPfUjQDIXMyI0ZdE9sjTjEPkpE2FrAPe03XBBCd
-	 pAXTRo7Bd6E0X8bm9xrxSzK5o65NSByfKOhlQU6n6ELIb4o/cdZeS9E1ujIpubUzrWNK+
-	 m0ZuB3uVCSAlucJx3O2jyJ/2YBSL0Y5L/jAgDXq0SLsoLMW4J/9Yv8MYQqW3ltje6iz5F
-	 qtDiAwu19Zmpf3HQitWSwglfwuMaSAAc1AGcQGPThDvWUdWNQ+4bmH7KDw66wAD40Tty7
-	 meKsxI2C2jlVr1VWUQiLmny4oswSKBNQHSfnep/WiRkBzl7W/GDFruUjFtRCRGgyGPA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ap7tarRd;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.48
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793541150;
+	b=rtBQA69BCY+dOBfcsAF8Wq20wOUFCDu+VJZG6J3cJkbvXHd5Ly5EAROc9ZxT7tLmeQhC
+	 FqwS7H34KrKczlkBD5v2UNmpBe11djlcFlqDvI6Qh7zQ7UVyaAUpP/iFXTNG2ktsiCCvG
+	 Frpr5JLgEQqxkxSGDJL3JfPOlx7/A2doCx0FCbZkBTXFeOFcAgTe9bJ0lgLjbNriBnRGV
+	 Jh+BJxTpBthYlBIKmYVfkkSsVV1payJ0KXP4ntklHLhMEL2C8EjdKpIuJ0dU4v27wZBk8
+	 8gWTt4FL5Xb/LdqMmKO69fWsr5maMio7QICGDKywsIUNvIawH7xeLMgdpcKRAVHukyA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793541150;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=deb38tc0CgShiFlGF5y7hmWXUTuA2F88Y7i/kEhYh3M=;
+	b=dPA74r0RgNahsRBrVgKQHbtS+O2YQLHfxzQVBfxMcIdrF/815bG/HpZ55JrGzpA2oJoK
+	 O+klHRj79igrie0f0bF5bBRlr76Fg+sva2O812WaOchw5s6AzjJIqfkqsCd+bMHqowxaR
+	 tT8UplhdJgp7sg2Dyd8MgSeYhLhNukzzzSPbwzNm2fx9/vgoE1LaAtdiplFt2KS/zG5an
+	 oo4OaxfTc3xW/I8jGemBLbU1cEvedaB51cS20KrVEWBMO+kP4urQZws511pjTEvAUv5Vw
+	 S2ibwVHZUQ+SxYzxRcASPQasb+W0PfsHmHPJEOYMEgKeQTKYu77l6XLmMxag9fMxEuQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UlZV96RB;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C5D606A325
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 13:34:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 84C5D606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B77D606A329;
+	Sun,  1 Nov 2026 13:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ap7tarRd
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-170135e43c7so338595c88.0
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 05:34:01 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793540040; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nrdWdOw/gxJwv0xnfixhKjWAn/bX8AbdrNXRUVEm0/CUxLSSr2TcWqS+cDCMqpu3RQ
-         BPM2Vva8ndlz5eQVXLsrCD1CHHQhYsWfRozUfgJGSmMrU1W97IOJQWyZKhJsO6tqhY3l
-         WYg5Xss6muS75u0IQ0sfpl+jh9rG3dGLFFLQMODOmhEJC47zweqV5FipKcPfOIGazHjz
-         Xp0bZXguz6Ugq+aBa5on0p9ZTnp1eJrqGgLx3m1SBqwcGMwJ/QTDNGS9NDRWtebZg5N7
-         JbpjWZWilaXBqjY/9UtwCGUrHtOFJjmjVBF5eEaDVJgKAcJZgXREItAKjffazVq9OAE1
-         8BmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4FoSNuo4120zGj2L29GeDCwMhfV0RCk5eABERU3r5fE=;
-        fh=6KKJVqTM+l4nywH1DdSQY5OOq+FwQg7wGD+Xkds8lI4=;
-        b=olwV9jRtMsy5KacGG8yRtqbT2BDfjmhqJKbLFjlbJhOHQJoQj03sYNJoQeGEIAreD3
-         nxKUyPOzzOqs7M/DZrAQUGKkhH7OMBCOrMZt705BcLFpVexwbqiacfSSDzSVc1mF7AE9
-         7PQKcqEHkgA7Ltvkq19qAowzXI8hHBetE2Oly4Lft+qENCge1U58HLaS0Zmwt7K5f1vH
-         eph8azNxhMTU6kS5rAX2LX8R3BDcCPM+mRI+cFt/oiIlaKZXzpdCF8VFT2ojeM1tJ0O1
-         nsMR7E+0/YDP4UK2lZsP6Fd1xTQvI/Y9nE+g2Tkx43sg/BXCa3fhHOKs9JSW1tOikRgK
-         ZVIA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793540040; x=1794144840; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4FoSNuo4120zGj2L29GeDCwMhfV0RCk5eABERU3r5fE=;
-        b=ap7tarRdmcn/+khd6TzQJW9GI+QtvqC5RDzR8lYDIZBlpvZiswV/ixdPDrRq0/6hrx
-         NQkdG90oIDk64ppXy7XzeNmB2ZmG1Nh5VY045BTIiVb2n1sXE/s6g08pb7RMQpa461bY
-         sA/WibAfd7/NsMe4U5S6WcNHuK5n+pqcJmS+T8mFEekPGgsPpUdJovv8g/DPHOYZ3GwO
-         2aVoLAaEdAXAzBeGEO1YBMIKzTY5wAiwIpp4IDM5b021VHJ7zZboT2EkBBrzTK9W794d
-         bmhxTSk/fcpMQ/H9VJ4L/XTiedsc9Cukx2j2nPFoAUBeOLiRi5x66y6p/2UBXe2FYQjt
-         nYUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793540040; x=1794144840;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4FoSNuo4120zGj2L29GeDCwMhfV0RCk5eABERU3r5fE=;
-        b=IqpsNhcywlo62eekKy2WFZIioLl/mlvNrk2BoCuvKRDcAKg8c+ogyCgkvLTWZ82wSD
-         EMeJmNoKdUEiZzI3dxO8YT+yMXEvPr84mmz40BZDribMn0GyA5QHFkSM1+vkmWSYgkQX
-         6Ug+fqOG+6eVjVxaXjYoIOqNR9Xivdxk7ysAAAznTxTEoETs+IW8stA6D6m1qXbaxY/s
-         VtA+PAPa7EpfmSzIBv9HSLZqx66Tn3bD9XIpPoGI2pF7YXgaYZEivZIHnU+6nxfvyItJ
-         r4UbuL1hdVlCh3GDFbzlis0KADJLL7Qcpivjo/ABBJK6zcrboV2KWaprg3sJt3TjE89o
-         Pzlw==
-X-Forwarded-Encrypted: i=1; AKwUvBzjXjrryS9ET5PrAVaBloVAX16Vl2qtV/IZxzYguQymAfb0LwREiUZ1dYC2+UxBWPFSEKNeFyA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKiRKkAIsH2JzzVZSWJvus6muu2rxvTzJl16Db0awCZpDDsp1nx
-	GeGaZgtGkdSX1wBrSGJyZNK0hce+ghRz9mVqE2uLCSmsi3YXa4OmDI5UhgkrxToYdSW42+tcpGX
-	HnhmF361g6hXqMl2HpcqFie18YSSWDMMQjp9cjeo=
-X-Gm-Gg: AYBFou3a8SxIA62eCE3aEaKp7aIbO6UnN24mDmkeIOlg2Fcqx2WZwLXK+mOzZu1WNgD
-	rixtNhjm8vqbCOdw7+oQCC3dq1psVHy8KV9v/eiQVqFEiCcRM6D9bxItf1VnTt8Rx7BAtGlI2TC
-	WQxQw6o1gey4Q+l4ZqjXEK83wSKcyP7X9K8ZDzB2P0hpY3J83+6Bhr2gOcS+CKCWx3aSTwGJVS7
-	RxWoAt2XBytSyxzzbVEapv0Y5aePtLmwr8jrzhpfqA2VhOBM5w0Vy61ZRnGLx2K7iHBja1MX4Q7
-	ighoOfDjfNFyBbTGEaUgB99lPj8ZA83iqAkLTXz2geErt+/c5BfNe4TGWiNI8WxqMkA5bCutm8R
-	5U4tc6wt3fIgPMuoOCTkMflUhYCmFLSA3WANkN1XAIRJu+jFQNKu0FBPcUOHzZ3wYKFYVY2Tq
-X-Received: by 2002:a05:7022:b047:20b0:1a3:bfb6:44ad with SMTP id
- a92af1059eb24-1ac5da797d4mr12358096c88.32.1793540040375; Sun, 01 Nov 2026
- 05:34:00 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UlZV96RB
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F8781F00919;
+	Sun,  1 Nov 2026 13:52:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793541149;
+	bh=deb38tc0CgShiFlGF5y7hmWXUTuA2F88Y7i/kEhYh3M=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=UlZV96RBa96zsrI7RFMGrUd8i1Ob8IZtOTlfGFPhJxCZEtVQthfeXaWyJM8HxDmQz
+	 kPXnoGJmPFdKFtMuiGMtqrkHiMp2i/3gc3WIAnLbM+P1iP4nPBwPSHQO0/I6MKNn6H
+	 lkqHcRwhMfJhGOY+gIYrroKl0hl7OvcvEF4BCZrTApsd0n4Cn/RF7PWkBd9zJn9GYc
+	 r/CNYGxOXBzkkxD+GslCJJPPfWWcAXpS+23ohDQjsrFsLYeChqEMeEueMJ9RBLtsBl
+	 kSNxSluRAACSHvTZ9zgFnVautGO20+Q6EPqgaYa4CXS2/buLNWff8e8SdUN53rxMer
+	 O4pB1AWLu6tIA==
+Subject: Re: [PATCH net v2 14/14] batman-adv: tt: limit local table to single
+ TVLV response size
+From: netdev-bot+sashiko@kernel.org
+To: sw@simonwunderlich.de
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ b.a.t.m.a.n@lists.open-mesh.org, sven@narfation.org, stable@vger.kernel.org,
+ sashiko-bot@kernel.org
+Date: Sun, 01 Nov 2026 13:52:28 +0000
+Message-ID: <179354114897.3131.2074837253295301799@kernel.org>
+In-Reply-To: <20261030135105.2555887-15-sw@simonwunderlich.de>
+References: <20261030135105.2555887-15-sw@simonwunderlich.de>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,129 +64,220 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260927131838.6774-1-demyansh@gmail.com> <20260927184414.6c0c8867@pumpkin>
-In-Reply-To: <20260927184414.6c0c8867@pumpkin>
-From: Demian Shulhan <demyansh@gmail.com>
-Date: Sun, 1 Nov 2026 14:33:49 +0100
-X-Gm-Features: AclHuK-VTVK2Zx9itCVd1q2fYcmda4QQ21q-m0eczAKCyG7Q3SKFRADCEFBZaD8
-Message-ID: <CAOLeWCt+yFs29yWg6DrRH42HD9ConLgTEbW=wMKtEoTW5ROHvw@mail.gmail.com>
-Subject: Re: [PATCH 0/2] arm64: csum: Add fused copy and Internet checksum
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Eric Biggers <ebiggers@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Marco Elver <elver@google.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Robin Murphy <robin.murphy@arm.com>, David Gow <davidgow@google.com>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, Nathan Chancellor <nathan@kernel.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	kunit-dev@googlegroups.com, netdev@vger.kernel.org, llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi David,
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Sorry for the delay, I was in the middle of a company change.
+Low priority / nit picks for your consideration:
 
-You are right about SG and TX csum, but only when the traffic goes
-straight to a NIC that offloads them. There is another side: software
-GSO (skb_segment() with !sg && !csum) hits this path on 100% of TCP
-payload over WireGuard (wg_xmit() -> skb_gso_segment(skb, 0)), and on
-drivers without SG/TX csum (u_ether/f_ncm, cdc_ncm, mt76, rtw88/89,
-ath9k).
+- [Low] The commit message describes the pre-patch behaviour wrongly.
+- [Low] Two kernel-doc comments no longer match the code after this
+  patch.
 
-So in general the software copy+csum path is still alive.
+Pre-existing issues:
+- [Low] This problem wasn't introduced by this patch, but the same 16-bit
+  tvlv_len limit is still not enforced when a node answers a TT_REQUEST…
+- [Low] This problem wasn't introduced by this patch, but the size limit
+  is read before the lock is taken.
 
-On the other hand, NEON is useless here. skb_segment() splits GSO
-packets into 1-MSS segments before copying, so on these paths calls
-never exceed 1448 bytes (1368 on WireGuard). At that size
-kernel_neon_begin()/end() costs more than NEON saves, on real hardware
-v1 was ~3% slower in cycles/byte than the scalar loop on the slower
-cores. So that part can go.
+--
 
-I would prefer to keep only the scalar version of the fused copy+csum.
-It reads the data once instead of twice, and on real Armv9 hardware it
-cuts end-to-end cycles/byte for bulk TCP over WireGuard by 3-12%
-depending on the core (+6-8% throughput). It uses only general-purpose
-registers, so there is no FPSIMD state to save and it is safe in any
-context.
+batman-adv: tt: limit local table to single TVLV response size
 
-If you are OK with the scalar path, I can send v2 with NEON dropped,
-the scalar path only, and the KUnit fix for the x86 zero-length case
-Jakub reported.
+This patch adds batadv_tt_local_transmit_size_max(). It caps the local TT
+reservation and the resize-to-MTU limit at the smaller of packet_size_max
+and the largest full table response that fits in a single unicast TVLV
+packet with a 16 bit tvlv_len. The reservation logic now computes the new
+totals in locals and writes the counters only when the reservation
+succeeds.
 
-Thanks,
-Demian
+> The size limit was already missing the 16 bit tvlv_len cap since the
+> original packet_size_max check was introduced. But this check was only
+> reachable with fragmentation disabled and a hard interface MTU larger than
+> the maximum unicast TVLV packet. In this case,
+> batadv_tt_prepare_tvlv_local_data() refuses to build the full table
+> response and no oversized packet is created.
 
-=D0=BD=D0=B4, 27 =D0=B2=D0=B5=D1=80. 2026=E2=80=AF=D1=80. =D0=BE 19:44 Davi=
-d Laight <david.laight.linux@gmail.com> =D0=BF=D0=B8=D1=88=D0=B5:
->
-> On Sun, 27 Sep 2026 15:17:56 +0200
-> Demian Shulhan <demyansh@gmail.com> wrote:
->
-> > arm64 currently uses the generic csum_partial_copy_nocheck(), which
-> > performs memcpy() followed by a second pass for csum_partial(). This
-> > double pass exerts unnecessary pressure on the L1 cache.
->
-> Which workload actually needs this?
-> Most modern ethernet MAC support checksum setting on transmit and
-> checking on receive.
-> So the software checksum shouldn't be needed very often.
->
-> IIRC there is also code to defer UDP checksum validation until the
-> copy_to_user().
-> I'd bet (a few pints of beer) that the complication this adds isn't
-> actually worth while.
-> Even Linus can't remember why it was done, my guess is it improved the
-> performance of the userspace NFS (over UDP) daemon that would be
-> doing 8k UDP send/receive (fragmented by IP).
->
-> There is certainly still code to checksum data during copy_from_user()
-> in send().
-> Last time I looked I couldn't see why send on TCP sockets didn't go throu=
-gh it.
-> On x86 (in particular) copies can be done far faster than ones that
-> include a checksum.
->
-> David
->
-> >
-> > Replace it with a single-pass implementation. The new implementation
-> > provides a general-purpose register path for short buffers and atomic
-> > contexts, and a kernel-mode NEON path for lengths >=3D 1024 bytes.
-> >
-> > Measured in-kernel on an Ampere Altra (Neoverse-N1):
-> > - Scalar path: 1.2x-1.6x faster for lengths < 1024 bytes.
-> > - NEON path: 1.2x faster at 1024 bytes, scaling up to 1.6x-1.8x at
-> >   4096 bytes.
-> > On Apple M-series cores, gains are 1.3-1.7x below 1024 bytes and
-> > 1.6-2.4x above. No length or alignment regresses on either
-> > microarchitecture.
-> >
-> > Patch 1 implements the fused routines and the dispatcher.
-> > Patch 2 adds KUnit test coverage for the new API and internal paths.
-> >
-> > Tested: in-kernel benchmark module on Neoverse-N1 with both
-> > implementations cross-checked (0 mismatches); KUnit suite under QEMU
-> > (with/without KASAN, with PREEMPT_RT), exhaustive and random userspace
-> > testing of both routines against a naive reference with PROT_NONE guard
-> > pages, gcc 13 and clang 18 W=3D1 builds, checkpatch --strict.
-> >
-> > Demian Shulhan (2):
-> >   arm64: csum: Add fused copy and Internet checksum
-> >   lib/tests: checksum: Add KUnit tests for csum_partial_copy_nocheck()
-> >
-> >  arch/arm64/include/asm/checksum.h |   3 +
-> >  arch/arm64/lib/Makefile           |   7 +-
-> >  arch/arm64/lib/csum-copy-neon.c   | 168 +++++++++++
-> >  arch/arm64/lib/csum-copy.c        | 108 +++++++
-> >  arch/arm64/lib/csum-copy.h        |  84 ++++++
-> >  arch/arm64/lib/csum.c             |  54 ++++
-> >  lib/Kconfig.debug                 |  10 +
-> >  lib/tests/checksum_kunit.c        | 463 ++++++++++++++++++++++++++++++
-> >  8 files changed, 896 insertions(+), 1 deletion(-)
-> >  create mode 100644 arch/arm64/lib/csum-copy-neon.c
-> >  create mode 100644 arch/arm64/lib/csum-copy.c
-> >  create mode 100644 arch/arm64/lib/csum-copy.h
-> >
-> >
-> > base-commit: 93f51579e7df248780214094418f205253383cc5
->
+[Severity: Low]
+
+Does this describe the old behaviour accurately?
+
+batadv_tt_prepare_tvlv_local_data() only bounds the TT value with a u16,
+and does not count the 4 byte struct batadv_tvlv_hdr:
+
+	if (check_add_overflow(*tt_len, change_offset, &tvlv_len)) {
+
+batadv_tvlv_unicast_send() then adds the header and stores the result
+without a range check:
+
+	tvlv_len = sizeof(*tvlv_hdr) + tvlv_value_len;
+	...
+	unicast_tvlv_packet->tvlv_len = htons(tvlv_len);
+
+All TT components are multiples of 4, so a 65532 byte TT value is
+reachable. For example, 1 VLAN and 5460 entries gives 4 + 8 + 65520.
+
+Before this patch, the reservation allowed that table whenever
+packet_size_max >= 65556. The full table response would then be built and
+sent with tvlv_len = 65536, which htons() truncates to 0. So an oversized,
+malformed packet does seem to have been created. The receiver in
+batadv_recv_unicast_tvlv() then just processes no TVLVs.
+
+The code change handles this for the local table: table_size includes the
+TVLV header and is capped at sizeof(struct batadv_unicast_tvlv_packet) +
+U16_MAX.
+
+The stable+noautosel reasoning depends on how the old behaviour is
+described. Could the commit message be made more precise here?
+
+> diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+> index f0100ccf93deb..46304069b3b75 100644
+> --- a/net/batman-adv/translation-table.c
+> +++ b/net/batman-adv/translation-table.c
+
+[ ... ]
+
+> @@ -266,6 +269,25 @@ static int batadv_tt_local_transmit_size(u16 num_vlan, u16 num_entries)
+>  	return hdr_size + batadv_tt_len(num_entries);
+>  }
+>  
+> +/**
+> + * batadv_tt_local_transmit_size_max() - get the maximum size of a full local table
+> + *  response
+> + * @bat_priv: the bat priv with all the mesh interface information
+> + *
+> + * The full table response is sent as a single unicast TVLV packet. Its
+> + * tvlv_len, which covers the TVLV header and the TT TVLV, is only 16 bit wide.
+> + * This limits the response size even when packet_size_max is larger.
+> + *
+> + * Return: maximum size of a full local table response in bytes
+> + */
+> +static int batadv_tt_local_transmit_size_max(struct batadv_priv *bat_priv)
+> +{
+> +	int tvlv_size_max = sizeof(struct batadv_unicast_tvlv_packet) + U16_MAX;
+> +	int packet_size_max = READ_ONCE(bat_priv->packet_size_max);
+> +
+> +	return min(packet_size_max, tvlv_size_max);
+> +}
+
+[Severity: Low]
+
+This is a pre-existing issue and was not introduced by this patch. The
+same 16 bit tvlv_len limit does not seem to be enforced when a node
+answers a TT_REQUEST on behalf of another originator.
+batadv_send_other_tt_response() only checks this:
+
+	/* Don't send the response, if larger than fragmented packet. */
+	tt_len = sizeof(struct batadv_unicast_tvlv_packet) + tvlv_len;
+	if (tt_len > READ_ONCE(bat_priv->packet_size_max)) {
+
+That check leaves out the 4 byte batadv_tvlv_hdr. It also has no cap at
+sizeof(struct batadv_unicast_tvlv_packet) + U16_MAX.
+batadv_tt_prepare_tvlv_global_data() has the same u16-only
+check_add_overflow() as the local variant.
+
+A remote originator's global entries come from OGM TT diffs. The local
+reserve_lock accounting does not limit them.
+
+Take fragmentation disabled and a hard interface MTU >= 65552. A relayed
+table with a 65532 byte TT value (1 VLAN and 5460 entries) passes both
+checks. batadv_tvlv_unicast_send() then sends it with tvlv_len truncated
+from 65536 to 0.
+
+Only the local reservation and resize paths use the new
+batadv_tt_local_transmit_size_max(). Would a check in
+batadv_tvlv_unicast_send() that rejects tvlv_value_len >
+U16_MAX - sizeof(struct batadv_tvlv_hdr) cover every caller?
+
+> @@ -290,22 +312,23 @@ static int batadv_tt_local_transmit_size(u16 num_vlan, u16 num_entries)
+>  static bool batadv_tt_local_reserve(struct batadv_priv *bat_priv, u16 num_vlan,
+>  				    u16 num_entries, int *table_size)
+>  {
+> -	int packet_size_max = READ_ONCE(bat_priv->packet_size_max);
+> +	int size_max = batadv_tt_local_transmit_size_max(bat_priv);
+> +	unsigned int entries;
+> +	unsigned int vlans;
+>  
+>  	scoped_guard(spinlock_bh, &bat_priv->tt.reserve_lock) {
+
+[Severity: Low]
+
+This isn't a bug introduced by this patch, but the limit is still read
+before reserve_lock is taken. The old code had the same READ_ONCE() before
+the guard. batadv_tt_local_resize_to_mtu() also reads the limit before
+taking commit_lock.
+
+Can a concurrent MTU decrease leave the local table larger than the new
+packet_size_max?
+
+CPU0                                CPU1
+batadv_tt_local_add()
+ batadv_tt_local_reserve_entry()
+  batadv_tt_local_reserve()
+   size_max = <old, larger limit>
+                                    batadv_update_min_mtu()
+                                     batadv_hardif_min_mtu()
+                                      WRITE_ONCE(packet_size_max, ...)
+                                     batadv_tt_local_resize_to_mtu()
+                                      /* table fits, nothing purged */
+   scoped_guard(reserve_lock)
+    reservation committed against
+    the stale size_max
+ entry inserted
+
+The purge decision uses batadv_tt_local_table_transmit_size(), which only
+counts vlan->tt.num_entries. It does not see in-flight reservations
+(tt.reserved_entries and tt.reserved_vlans) or entries that still carry
+BATADV_TT_CLIENT_NEW.
+
+Nothing checks the table again until entries age out, so full table
+responses may be dropped until then.
+
+[ ... ]
+
+> @@ -4727,16 +4752,16 @@ void batadv_tt_local_resize_to_mtu(struct net_device *mesh_iface)
+>  	struct batadv_priv *bat_priv = netdev_priv(mesh_iface);
+>  	int timeout = BATADV_TT_LOCAL_TIMEOUT / 2;
+>  	bool reduced = false;
+> -	int packet_size_max;
+>  	int table_size;
+> +	int size_max;
+>  
+> -	packet_size_max = READ_ONCE(bat_priv->packet_size_max);
+> +	size_max = batadv_tt_local_transmit_size_max(bat_priv);
+>  
+>  	spin_lock_bh(&bat_priv->tt.commit_lock);
+>  
+>  	while (timeout) {
+>  		table_size = batadv_tt_local_table_transmit_size(bat_priv);
+> -		if (packet_size_max >= table_size)
+> +		if (size_max >= table_size)
+>  			break;
+
+[Severity: Low]
+
+Should the kernel-doc be updated to match? The kernel-doc for
+batadv_tt_local_resize_to_mtu() still says:
+
+ * batadv_tt_local_resize_to_mtu() - resize the local translation table fit the
+ *  maximum packet size that can be transported through the mesh
+
+The loop now compares against batadv_tt_local_transmit_size_max(), and the
+log message below already says "maximum table response size".
+
+The kernel-doc for batadv_tt_local_reserve() also still describes the old
+add-then-drop handling:
+
+ * Add the requested number of VLANs and local TT entries to the reservation
+ * counters and check whether the local translation table would then still fit
+ * in a single full table response. The reservation is dropped again when it
+ * would not.
+
+The new body computes the totals in vlans and entries and writes the
+counters only on success. Nothing is dropped any more.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261030135105.2555887-2-sw%40simonwunderlich.de
