@@ -1,111 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=173.37.86.74
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.170
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793541391;
-	b=FVnWexaCPAT3aZUcHJh9yH24n0OXkB1+FsWHDfH16R0M+66Hnmg5KHGw49jIGRC2T3Tg
-	 kR73qBY+PenKFUq9w/5tmqGv6AQcoVshGo2UJU4nvmIY23r0muNdAErDJo8nLWXirmTAr
-	 PVhC43MlqhXy8Wf1bH5yBwZmO2daHhLHh5p6PAYHAWXrIXIOyIrhwZ2qTroOIvJ68S9W9
-	 /4hpxKsZZ/PqpyhQXLtJ0vLKW98JLaDpwRlwMB31pt6be/K1V1bId3xGuUCbpQncojHX3
-	 9c4swu1yZIsZyRt/Rwp/kDwzeJHnHh9YyoOeErnfrHaF92+NJQUJsCpXV50LtnmJYbA==
+	t=1793541511;
+	b=BjrPXmGO+5zaZ/NXNKkuAVQjzWMzrMNWZ9CbIdESZ+orTHnhnzWltALcxmRiXTDdnMmk
+	 tm5hqbiG40szKAxLqy4dRuuEAF8TZG9jSiK37s3Wezp1P+HQNO4aE/uqcxpGuZv2IryZe
+	 YLNL3RCD73rpDF60b/Mxk2+9I3CC97ThJE+pZGcgwyMI1e3QtIfoLjmvhiN9EIBpR4xdQ
+	 6cuLgW3hmBUvhLBVjtUG1CuZCTH/DV1Ob9IDOGl+JpCuDEk5oVzIyTf3R7LhsJ30sP5ot
+	 oVDhVCZFbjNfWDM93kSUUnR4ud9qSBuJopNZBLdEGz7UGaqE6K+dyIApaWkPgaRhNuQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793541391;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IPAS-Result:IronPort-Data:IronPort-HdrOrdr:X-Talos-CUID:
-	 X-Talos-MUID:X-IronPort-Anti-Spam-Filtered:X-IronPort-AV:Received:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Outbound-Client-TLS:X-Outbound-SMTP-Client:X-Outbound-Node;
-	bh=XVyrLBiiV1csLSSF54wJLuMu+zNIwoQj7h/h5vPnodI=;
-	b=h+TXdgKZjIeO1lH3ZTBxTRNL7RlPsWmdaYjYET2IMo24f5nWRi42R8wstZ1KPfmEIKLX
-	 2JP9P6Ht7oYrIEYujAUwQr0b00jTbt9Ez7vSqi3CzP3rSk3rOmhPNgE6+gOGGOW/TA7nN
-	 sxVaRM7eqV7uM09PewJ0PpVGPuhqecKvDZBumfSA1j3GCctXi/42H7bZ5H5BAVJR1kWrv
-	 MMyXrjOM+8VP7gOkwkJSeqO2UbbSrVqxU3IjOeyUy8/4UDRDs3OaX8rc7ClvUVE066HB6
-	 YsSE3myspLPURyW1/H+jYQsYqj3CShT7BsGYA1QMT1wJke5vgVMRYCcWQDTwEX0Y4Rw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793541511;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=0N5nUgx8ZMLxJqfyvYD6hcQNRPzT9h9VL4zQ6alvcP0=;
+	b=DJbEGBamf8dMWuolJ3LQfIsO4W59ZZg94sBfM3o0kvg37+KDyGh6DiXwXvDahd/TiAjS
+	 E85DEcDhRxc2Ylt1ZgVcxUjTDOQF8qeC8oITbQtWnBItFy/oUPzf6KZ9ogSRl2j1zb5Sv
+	 kGWXSkTo4NJho/UVl/pH9Y6D7GfAQBcW4GnZRpNA5EhJuG7LKQELZYsrqBO5O4kKwO8OY
+	 QutP9KdTC+gVDzfCItw8O0ija1RjFbZShET4j5DhvDiDn4qlgLZUJq058ZHegzuID7uR6
+	 aosOHEOe/gn1dVGmuZ6+MKp5RxOLePgPnC1m75lg3M0QiPeXmZ7UgL36XN9oxy4bMJw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cisco.com;
-	spf=pass smtp.mailfrom=cisco.com;
-	dkim=pass header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=aLyHM+zz;
-	arc=none smtp.remote-ip=173.37.86.74
-Received: from rcdn-iport-3.cisco.com (rcdn-iport-3.cisco.com [173.37.86.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BlkcUtDn;
+	arc=none smtp.remote-ip=209.85.215.170
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BA1606A324
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 13:56:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D8BA1606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9D5606A324
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 13:58:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC9D5606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=aLyHM+zz
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BlkcUtDn
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cdb15cd8558so276611a12.2
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 05:58:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=1492; q=dns/txt;
-  s=iport01; t=1793541389; x=1794750989;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=XVyrLBiiV1csLSSF54wJLuMu+zNIwoQj7h/h5vPnodI=;
-  b=aLyHM+zzdDJaIgnm5qEBjV2b7+cNkse4vqscp8j+tDf/C2pXX+f3RVt2
-   Yuqj0d67BgHenidxmtjzOUZdSyzC9seuxH9QOIreqnvdUpGis0So8QL1z
-   SBR40/zC7YyNUxw7EBHQH67OjFz9N7PLkTPo09MnfN3XjzOrKemKKHkuI
-   ZAcpaLleKcRp1TdYRyDWnHjmLcq7fRRaUzhNCRymtDkdVSPUWLkvs9xZm
-   Et3chAZXXsNA2UaZ1ag3Exp4BUwSiPW4rK5wK9aWxbfCqfyibEdLAicWa
-   wuHgwnQ1jowxL1dCaC8zv5d6O0SeTLvLqXpezFdtFTQDIS62XEvp6f2fs
-   w==;
-X-CSE-ConnectionGUID: stvnNJqZRXe6m8vRSjK64Q==
-X-CSE-MsgGUID: 0pyyt64eT668c3gVz6Hq5w==
-X-IPAS-Result: =?us-ascii?q?A0BfAwABQ+dq/4z/Ja1aHgEBCxIMggULhCxDhSCRdJ4iF?=
- =?us-ascii?q?IFqDwEBAQ9RBAEBghKCcwKOHAImNAkOAQIEAwIDAQEBAQEBAQEBAQEBCgEBB?=
- =?us-ascii?q?QEBAQIBBwWBDhOGXJATAgEDIw8BQQUQCxoCJgICVoMbgnUDunF6gTKBAd5Jg?=
- =?us-ascii?q?XQVgQouhXKCbQGFA3aEfScbgUlEgRWDKz6EKmaDD4JqBIIigQyXC0gKeBwDW?=
- =?us-ascii?q?SwBVRMNCgsHBYElQwM1EioVI0sFLR2BIyEdFxEeWBsGBRIgKkFDW4EZgQddg?=
- =?us-ascii?q?SspYAECH0YtFYF2AoJRgSNdAgFJQQ4HRVMJJUMSRyQiCBIJARMaLAuBGjU8C?=
- =?us-ascii?q?SZBFQxkCAMaBRomAiAIAgsCDHYoERATHSAmMAUdJh0YDUgRLDcVGQQ9AW4Hl?=
- =?us-ascii?q?B8BD1sIgQMwgSApUDuTDJJIgTWKQ5UXhCmBZ592GjOqcJkIpA4QPYRpgWg8g?=
- =?us-ascii?q?VkzGggbFYMjUhkP4H8mcQcCBw8CkXMEgXoBAQ?=
-IronPort-Data: A9a23:souiK608FuwdDaSzCfbD5RBwkn2cJEfYwER7XKvMYLTBsI5bp2EAm
- DBOWzyAOKuMN2ChL4okYISw90lTvpOAmoJnSwBp3Hw8FHgiRegpqji6wuYcGwvIc6UvmWo+t
- 512huHodZ5yEzmE4Ej9atANlFEkvYmQXL3wFeXYDS54QA5gWU8JhAlq8wIDqtYAbeORXUXX5
- rsen+WFYAX7gmcsazpOg06+gEoHUMra6WtwUmMWPZinjHeG/1EJAZQWI72GLneQauF8Au6gS
- u/f+6qy92Xf8g1FIovNfmHTKxBirhb6ZGBiu1IOM0SQqkEqSh8ajs7XAMEhhXJ/0F1lqTzeJ
- OJl7vRcQS9xVkHFdX90vxNwS0mSNoUekFPLzOTWXcG7lyX7n3XQL/pGF10oO6s649RNMWwQ8
- KwGEgsPTU7fvrfjqF67YrEEasULNsLnOsYb/3pn1zycVa1gSpHYSKKM7thdtNsyrpkRRrCFO
- IxDNGcpNUiYC/FMEg9/5JYWh+60h2L/cD1wo1OOrq1x6G/WpOB0+OWxa4GFJYPSH625mG7Av
- nPX4zqlDy1EaoyUkjW74CyMn7LQyHaTtIU6UefQGuRRqFGa2GEWIBEfS1a+pf63lgi4Vs43A
- 0EY5y8nv6Uu3E+mVN/wW1u/unHslh0BUdN4EOAg7gyJjK3O7G6xAGUYQjNfLdYhqIwtTCcq1
- 1yOt9DkHzpitPuSU3313r6SoSm/JmsTIHMOaDEsSRYD5Z/ooOkblhvFQ9BiOLS4gt38BXf7x
- DXihC4zm7kek+YV2Kihu1PKmTShot7OVAFd2+nMdniu4gU8YMuuYJalrACAq/1BN42eCFKGu
- RDohvSj0QzHNrnV/ATlfQnHNOvBCyqtWNEEvWNSIg==
-IronPort-HdrOrdr: A9a23:/I1ZJaHMbDjHE4yQpLqEzseALOsnbusQ8zAXPo5KJSC9Ffbo8P
- xG/c5rsSMc5wx+ZJhNo7q90ey7MBDhHP1OkOws1NWZPTUO0VHAROpfBMnZsl/d8kbFmdK1u5
- 0MT0EHMr3NJGk/q9rm6w+lFNtl6tyG/Ke0wdr69R5WPGdXg2UK1XYANu5deXcGPTV7OQ==
-X-Talos-CUID: 9a23:F83mnm3QkQdgY/5xkHXLs7xfAdw7dFv/1UXqE0LmDDZ3coaXagHMwfYx
-X-Talos-MUID: 9a23:obaTvQVkSp682Bzq/Gf0lSB+aptl3/rwWEtWnqsU5emdaDMlbg==
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.27,190,1787011200"; 
-   d="scan'208";a="543387702"
-Received: from rcdn-l-core-03.cisco.com ([173.37.255.140])
-  by rcdn-iport-3.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 01 Nov 2026 13:56:22 +0000
-Received: from satishkh-l-mj0bbv6x.cisco.com (unknown [10.25.129.52])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by rcdn-l-core-03.cisco.com (Postfix) with ESMTPS id 04F53180001CD;
-	Sun,  1 Nov 2026 13:56:21 +0000 (GMT)
-From: Satish Kharat <satishkh@cisco.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org,
-	sebaddel@cisco.com,
-	aradhana@cisco.com,
-	rfaucett@cisco.com,
+        d=gmail.com; s=20260707; t=1793541510; x=1794146310; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0N5nUgx8ZMLxJqfyvYD6hcQNRPzT9h9VL4zQ6alvcP0=;
+        b=BlkcUtDnQWw4+c3UyQKCqUQ36H4KdrG0vbQBpOUE8bQMOcK1l2v7e+ai434uK+glT3
+         MIT1zuB1Z2p9GA/+03nkFP2tweBZU71D46he/bVjzOca28p8wVmFHjDRh05/EtHxR31g
+         hv0JE3xyilWlBvfz4T8CxTDTOaP+e6Ohbwc4pUvjnVYFFVmGQwAe6oDoFrGe+e+K8Qlk
+         UIrXSJFNlf7HrgKjpW6n+SAj7Pn7l6+5eQ/QPynAGEdC+Yu5sEWKeZbeNZeLjgYcqfXj
+         1hJC3zl1SKVF8bVO9PDqXwx3Q3j+uYsVIFlVujDE5ypCNiiGRNq0576hocA3Y0d2oCTi
+         T5pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793541510; x=1794146310;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0N5nUgx8ZMLxJqfyvYD6hcQNRPzT9h9VL4zQ6alvcP0=;
+        b=bUL2sYtB0GB5QEyqvcIV5jVWj/bcqJZOA9hnNO26LiR3abDiBgR7u0FAkoEAj7udAt
+         mPA8cc0YPfuc3GcViPBHPuxdzrJuy4gQ2iN0P7fRYuQjidwVnCIAfDoeaIpGC4yAOEgg
+         KdwZY7DnyPoUto5PUiR2QLzvjeLIlM+4T2nhuS+0G56HPDO6BDoOH5AOjhlzlNl3sK28
+         9FZJ80hBZt0BDf9xF3Wn2NA8kgTJtrUeG2gnSQxpXq6V6hcF20ZJHfC9Oz003xl5YoRC
+         eqtBL+Q2xSz2c7qf3yGLB5fQ6mi7MD1rJfXIOY3fP+DWj0ipA024rxv8mNiGczQEVu5s
+         NXpg==
+X-Gm-Message-State: APuU4Z+0ystkOLiNC33CcbBYQ9E+qwBT5/KxjDTyqXPpmmAusvJiOol5
+	a2hRjPpeXO9/2dYYZ7B7nTlEC3Fxjk0y0OfPXSUEpapCy6/yuAd3z1KQ
+X-Gm-Gg: AYBFou0bUE906ChWm38tY+8TmAhEyWW5rGScetUxsfsa0NQa7JM641vkmurPoYbIDIR
+	T5Z7vsrJt1pl/E+l6hnVC/1pZgLBRK3K+rSHfaO7EjOJ0gERUys27ORW3UpbOWQ35yJFRFgaxDZ
+	medpd1hQguY1DIz7bo/PQUIDQ+H7oVHFqrzA1PKTTZudUh4govFZmzlXJOWqs9kpUcWnkPCkqOy
+	SURIrzbyzxyqQvvo3C9uSxdld4NtryiqBOnwTSCkN3DeQhHTyb6VBmshBHbywU8ExktGZOLEToF
+	1jslntTmz9YYUp8O/VRO2OOZz7iMS3//e6iz74fraCd/XB8s6f5ZjiTXbKvZWxP9DSS35SODFYw
+	PB9IjeaS2DcSlP/H/QeYUa3DAcbx0r22BXhGXVuPfV7P1H/jI/B3Dt97BdyLCzCgpi8thgdwiQv
+	70InzaeGn6ap8gqLy5BfkUApltpFrxfIDKnXj6HCHRIsbdUv47FpY00COHL8kYuBaWz15bxu3uz
+	t2OZdAFH65Y8/te08PmomIxOS49fH9jw+eSLJg1eBM5AwNnhfzT6xB67rtM/Z+pfEN4EYVLhGsY
+	EfdisrS1YBdby59oJDPxZWNjp7HolYM=
+X-Received: by 2002:a17:90a:e7d2:b0:3ad:a270:a623 with SMTP id 98e67ed59e1d1-3ae8957452cmr6332189a91.4.1793541510205;
+        Sun, 01 Nov 2026 05:58:30 -0800 (PST)
+Received: from thangnn-ASUS.. ([2a09:bac5:d459:2e1e::498:63])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae845aa27esm9887771a91.11.2026.11.01.05.58.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Nov 2026 05:58:29 -0800 (PST)
+From: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+To: kuba@kernel.org,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
+	edumazet@google.com,
 	pabeni@redhat.com
-Subject: Re: [PATCH net v3 1/2] enic: retain admin-channel DMA until queues stop
-Date: Sun,  1 Nov 2026 05:55:45 -0800
-Message-ID: <20261101135545.2566825-1-satishkh@cisco.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+b3fca27eb4005f0111f4@syzkaller.appspotmail.com,
+	Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+Subject: [PATCH net] netdevsim: check the driver is bound in new_port/del_port
+Date: Sun,  1 Nov 2026 20:58:24 +0700
+Message-ID: <20261101135824.24484-1-ngocthang2710.1999@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <179340002556.3131.229561522947370936@kernel.org>
-References: <20261027-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v3-1-ba237ed71241@cisco.com> <179340002556.3131.229561522947370936@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -115,39 +98,78 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.129.52];TLSv1.3;TLS_AES_256_GCM_SHA384;256
-X-Outbound-SMTP-Client: 10.25.129.52, [10.25.129.52]
-X-Outbound-Node: rcdn-l-core-03.cisco.com
 
-Thanks for the review.
+new_port and del_port are attributes of the bus device, so they stay
+reachable after the driver is unbound. nsim_drv_remove() clears
+drvdata, yet both handlers pass it straight to priv_to_devlink() and
+devl_lock(), which faults on a small negative pointer:
 
-I agree that vf_registered can become true from a late REGISTER_REPLY even
-when the sender subsequently reports a timeout. V4 will clear
-vf_registered after closing the admin channel on both re-registration
-failure paths.
+  BUG: unable to handle page fault for address: fffffffffffffeb0
+  RIP: 0010:__lock_acquire+0x41/0x2de0 kernel/locking/lockdep.c:5140
+  Call Trace:
+   lock_acquire+0x115/0x350
+   mutex_lock_nested+0x55/0x1d0
+   nsim_drv_port_add+0x5a/0x140 drivers/net/netdevsim/dev.c:1760
+   new_port_store+0x1a5/0x280 drivers/net/netdevsim/bus.c:96
+   kernfs_fop_write_iter+0x3a5/0x540
 
-I also agree that removal holds RTNL longer than necessary. V4 will hold RTNL
-only while detaching the netdev. The VF unregister handshake and admin-channel
-close will run after releasing RTNL. The detach, the
-netif_device_present() checks, and synchronous cancellation of the reset and
-MTU workers prevent the datapath from being reopened while removal continues.
+The nsim_bus_dev->init check does not help: it is only cleared when
+the whole device is deleted, not on unbind.
 
-The failed reset/reopen case is also valid, but it predates this series and
-concerns the generic datapath software lifecycle rather than admin DMA
-ownership. After a successful stop followed by a failed reopen, a later
-ndo_stop can repeat NAPI and IRQ teardown.
+Do what sriov_numvfs already does: take device_lock() so the driver
+cannot be unbound underneath us, and return -ENOENT if drvdata is
+NULL.
 
-I do not want to add a partial datapath workaround to this admin-channel
-series. I will address that separately with a consistent fix that makes
-datapath cleanup safe to repeat. I will test the separate fix by forcing
-failures at the major enic_open() stages and then bringing the interface down
-and unbinding the device, verifying that NAPI, IRQs and other datapath
-resources are cleaned exactly once.
+Fixes: 794b2c05ca1c ("netdevsim: extend device attrs to support port addition and deletion")
+Reported-by: syzbot+b3fca27eb4005f0111f4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b3fca27eb4005f0111f4
+Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+---
+Reproduced in QEMU (x86_64, KASAN + lockdep) with the syzbot C repro:
+the unpatched kernel oopses in nsim_drv_port_add() right after unbind.
+With the patch, the write to new_port returns -ENOENT, a 40s stress of
+bind/unbind + new_device/del_device racing with new_port/del_port/
+sriov_numvfs runs clean (no splat, no lockdep report, no hung task),
+and new_port/del_port still work as before on a bound device.
+ drivers/net/netdevsim/bus.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-V4 will retain the check that prevents the admin channel from being reopened
-after datapath reopen fails, and will contain the two series-specific fixes
-described above.
+diff --git a/drivers/net/netdevsim/bus.c b/drivers/net/netdevsim/bus.c
+index 5c55c308487b..d843b3c985cf 100644
+--- a/drivers/net/netdevsim/bus.c
++++ b/drivers/net/netdevsim/bus.c
+@@ -93,8 +93,13 @@ new_port_store(struct device *dev, struct device_attribute *attr,
+ 		return -EINVAL;
+ 	}
+ 
+-	ret = nsim_drv_port_add(nsim_bus_dev, NSIM_DEV_PORT_TYPE_PF, port_index,
+-				addr_set ? eth_addr : NULL);
++	device_lock(dev);
++	ret = -ENOENT;
++	if (dev_get_drvdata(dev))
++		ret = nsim_drv_port_add(nsim_bus_dev, NSIM_DEV_PORT_TYPE_PF,
++					port_index, addr_set ? eth_addr : NULL);
++	device_unlock(dev);
++
+ 	return ret ? ret : count;
+ }
+ 
+@@ -115,7 +120,13 @@ del_port_store(struct device *dev, struct device_attribute *attr,
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = nsim_drv_port_del(nsim_bus_dev, NSIM_DEV_PORT_TYPE_PF, port_index);
++	device_lock(dev);
++	ret = -ENOENT;
++	if (dev_get_drvdata(dev))
++		ret = nsim_drv_port_del(nsim_bus_dev, NSIM_DEV_PORT_TYPE_PF,
++					port_index);
++	device_unlock(dev);
++
+ 	return ret ? ret : count;
+ }
+ 
+-- 
+2.43.0
 
-pw-bot: cr
