@@ -1,59 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793535039;
-	b=1gED/VvhlTim+K1GgAndvR2PbvGYsBnzjG+tpoUy2iq0CvOCcqMGPgNRvFA3Hoeq1Gb7
-	 SieDzbm36bfcQTjShWMxB4txxa9bgk/KfNYJt7siKpIPwE3JYkShZ/MX7BW+NtG+B2WhH
-	 NHfEiTP7+8HiTZBZjPX5EI2iy2ElYaddHE+dz7rWj689Cro+2rTimh9Sa85kH0cKUGoZo
-	 8DR+LS4A8e9EtN53O9+jtMFNr0T/FYdIYROB3Of/+FyzdtEPeIMYtyPpsFt4cbj6riOXB
-	 aSMLoGBIs9gERbFB3hwZ3Vbejnql2Rs3BXZ+TAp9hvkoKzfdFhQ3pVufggnvKYyl6ew==
+	t=1793535224;
+	b=q2FFRzIHpeIFFXOplNM0im5bcAC9N0Fo7pdhZ6k1PERdm4rvi/TvhPtjRZpx+7jTl3sY
+	 RQAFASmBsZU4fYP8rGcxQ9balEF47RTU8DmOAP4zRJ9ebU+WsY2QJrS+urQ7FkEA2e5Fl
+	 EJ56sFVFuO4JFXO/Xmg4ENntazviGFvOjWs00hZ3ztacSVQSbgwakzFV/oc6epdAxUcbE
+	 nVaf670KeA9i50bApFHCKnVveNv8Bt7XLiS89EGFV9/qYt5r158C2yyeeRxndzaWQJlpW
+	 sZPSpJBamYOOY4qlCgM4JUhw/3oh9e4VW6E+R6dNjs0QmNALzMZOdVS488JAxmC0N1g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793535039;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793535224;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=3CAGqxHDzH5gPKRDzvc+9sP4UxKCwz3ISyZgTHK2sZo=;
-	b=HjJmi5nVcLXPd4mbvNXTSt1DPO8lbFe4lyRkWG7ASZXECS5LnJEaVJaXRbbkl1gt0wBI
-	 oUnt5k6owRO7WSjhw8eP0k4jjFtrm10NcJCbeMe1t4HKoV/mW7H4aL36kNx+aqnHKqk9/
-	 bQzff50gngYGW6IxLV7TrRSSpANfUZmwR8fM3iU6ym0XJv9zetrZyxk1Uw7Uu/iKXUmpV
-	 GxfFHhxrbgiWKDG5u1REbZYlSVMByoA29J5yyun4EchWlzt/hoIhWQb48+BhEBJiT/sQm
-	 dN2h1+xyqB2BEoSVT36S8vQG1BqFbgApEURUcfZY+70ynjbvOu8xHmbo71lGlIojhYw==
+	bh=1LUjoU7LhfawNBSFJRVYyEuEFoOTE4Tdh1v5GSHCaYY=;
+	b=gZSlJV682lxa+YTChbLGMRce/j1ilBh2u7jKqV/AtIS0gBW09QyHXAAvdaNrVhoC/pZN
+	 tGUnpjZu9Y7GYmfRwqjNctB1AtHn9GQqXmhGt5CpMPzzYmZUYCcT4kzoF+mUtPELux9GJ
+	 zT6ii4CWNRWqL9bF4Dl4zc7l0nEAbLQt5l4NY3sEOY3W0mu2e/CcYKhQAYkAYSvEOb4fp
+	 SRaGrSs0dFivnYdjK8rfVFY9jJ6JUAUFxTvYbgbRk955TrKYLlJHSP+CcDJ2eIaCOBqFe
+	 q45cfmF1pnoAp2UJec95uO2dAh7E/Gw1Pd6ha0wVO/wXtYRS4zUsvNZmx8CTQrpKiCQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NhB79Tip;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VxWl5M0c;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEC3606A324;
-	Sun,  1 Nov 2026 12:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DBB7606A324;
+	Sun,  1 Nov 2026 12:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NhB79Tip
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2E81F000C1;
-	Sun,  1 Nov 2026 12:10:37 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VxWl5M0c
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B89F1F000C1;
+	Sun,  1 Nov 2026 12:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793535038;
-	bh=3CAGqxHDzH5gPKRDzvc+9sP4UxKCwz3ISyZgTHK2sZo=;
+	s=k20260515; t=1793535223;
+	bh=1LUjoU7LhfawNBSFJRVYyEuEFoOTE4Tdh1v5GSHCaYY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NhB79TipwC2CEPOKxsNWnxP3JcwDiaCmCs+jmnRZPE8MVOmTserHlpl/QchLpelw8
-	 dH904Qxjj/cz45cPF9yY4EVYipFagPJ/hKjECdgbudyaEcdKLxHNIL15RTdaF0NwOq
-	 q0AuxV9Wzmm0tCVF9AqqnSPwaJY/HWCH71eled6+XesY7LBXz1BpNMdfB9Z9ZKSvDJ
-	 /1VOE/LZMR6qvOHjlDk7tQY2b3MDwbzx3J2K2rRZ7v4UCkf/w5tQ0LCYXq+rIY/rtq
-	 Ju5jDXWGuYfEoftWWvBa5Q2746SKZ2sEjWLb61s2AhN/UTpNP3vrLkOSr0Ew2mHpy1
-	 0l55a7Wvi0kMw==
-Subject: Re: [PATCH net v2] bnxt_en: Don't keep MSI-X vectors added before FW
- reserves them
+	b=VxWl5M0cpyPKi6+3dLZ4o12dVvl+ce4mmsw4KPtQlvygPFEHN4UNFgnqrLQtl0lMS
+	 2Ba2vwa8TQr5BBFIFOMV0RGyzKiNqSx1nWvKW6wv0pIgkjTrOhhNytMjp+Zi7XzB7E
+	 TuAlgc7ib0rRIeP6dDOGJF6PqrZQT7IsSOVrHqdhT9dJfYQgY5XbbdqY5EIAHJ4jbe
+	 jdjbRxatZZ7OU79Y2avDzJvjry3nDMyS5HH0eGImvbl5+7FMQH/sEyAwtrfPB8fqPM
+	 zBoC1C27cNfkK2SONEDtC8H5u4uREDE689yzpUwXa0oLnmdN3zkCr4CUT25+0Hddv3
+	 +vUUmakofwgpg==
+Subject:
+ Re: [PATCH net] ip6_gre: fix changelink conflict checks for L2 tunnels
 From: netdev-bot+sashiko@kernel.org
-To: vlad.wing@gmail.com
-Cc: netdev@vger.kernel.org, michael.chan@broadcom.com,
- pavan.chebbi@broadcom.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- andrew.gospodarek@broadcom.com, tglx@kernel.org, maz@kernel.org,
- yangjinqian1@huawei.com, apreece@meta.com, regressions@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Date: Sun, 01 Nov 2026 12:10:37 +0000
-Message-ID: <179353503740.3131.17689939110178639939@kernel.org>
-In-Reply-To: <20261028114933.256298-1-vlad.wing@gmail.com>
-References: <20261028114933.256298-1-vlad.wing@gmail.com>
+To: yanxia@cmss.chinamobile.com
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, kuniyu@google.com, xeb@mail.ru,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, yana06070@163.com
+Date: Sun, 01 Nov 2026 12:13:42 +0000
+Message-ID: <179353522212.3131.3721818848581323546@kernel.org>
+In-Reply-To: <20261028115710.27806-1-yanxia@cmss.chinamobile.com>
+References: <20261028115710.27806-1-yanxia@cmss.chinamobile.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -67,10 +65,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 (1) · Medium: 1 (1) · Low: 1
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -78,216 +76,129 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] In bnxt_reserve_rings()
-  (drivers/net/ethernet/broadcom/bnxt/bnxt.c), the new recompute in the…
-- [Low] With BNXT_NEW_RM, bnxt_check_rings() now allocates the extra
-  dynamic MSI-X vectors only to test availability, then frees them at…
+- [Medium] Changelink on a non-collect_md L2 tunnel (ip6gretap/ip6erspan)
+  can now fail with -EEXIST because an L2 collect_md ("external") tunnel…
 
 Pre-existing issues:
-- [High] bnxt_clear_int_mode() frees the vectors and sets bp->irq_tbl =
-  NULL but leaves bp->total_irqs stale.
-- [Medium] bnxt_hwrm_check_pf_rings() does not check the return value of
-  __bnxt_hwrm_reserve_pf_rings().
+- [Medium] This problem wasn't introduced by this patch, but
+  ip6gre_changelink_common() calls ip6_tnl_encap_setup(nt, &ipencap)…
 
 --
 
-bnxt_en: Don't keep MSI-X vectors added before FW reserves them
+ip6_gre: fix changelink conflict checks for L2 tunnels
 
-When BNXT_NEW_RM is set, bnxt_check_rings() now frees the dynamically
-allocated MSI-X vectors right after the availability check.
-bnxt_reserve_rings() then allocates them after __bnxt_reserve_rings(),
-sized from bnxt_get_num_msix(). It also grows the vectors when no
-reservation is needed but FW already holds one, and clears
-irq_tbl[].vector when trimming.
+This patch changes the duplicate check in ip6gre_changelink_common().
+It used ip6gre_tunnel_locate(net, p_p, 0), which only matches ARPHRD_IP6GRE
+devices. It now uses ip6gre_tunnel_find(net, p_p, dev->type), so
+ip6gretap and ip6erspan devices are checked against other L2 tunnels.
 
-Closes: https://lore.kernel.org/all/20261022193620.2152038-1-vlad.wing@gmail.com/
-
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> index 0682060b048ce..55b11c7684313 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-
-[ ... ]
-
-> @@ -11701,8 +11702,23 @@ int bnxt_reserve_rings(struct bnxt *bp, bool irq_re_init)
->  	int irqs_required;
->  	int rc;
+> diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+> index b5d6ed8f0c369..df490798355de 100644
+> --- a/net/ipv6/ip6_gre.c
+> +++ b/net/ipv6/ip6_gre.c
+> @@ -2055,7 +2055,7 @@ ip6gre_changelink_common(struct net_device *dev, struct nlattr *tb[],
 >  
-> -	if (!bnxt_need_reserve_rings(bp))
-> +	if (!bnxt_need_reserve_rings(bp)) {
-> +		/* FW may already hold the reservation from an earlier
-> +		 * reservation that was not followed by growing the dynamic
-> +		 * MSI-X vectors, e.g. because the allocation failed.
-> +		 */
-> +		if (irq_re_init && BNXT_NEW_RM(bp) && bp->irq_tbl &&
-> +		    pci_msix_can_alloc_dyn(bp->pdev)) {
-
-[ ... ]
-
-> @@ -11728,6 +11744,10 @@ int bnxt_reserve_rings(struct bnxt *bp, bool irq_re_init)
->  			rc = bnxt_init_int_mode(bp);
->  		bnxt_ulp_irq_restart(bp, rc);
->  	} else if (irq_change && !rc) {
-> +		/* Size the vectors from what FW actually reserved, which
-> +		 * can be less than what was requested.
-> +		 */
-> +		irqs_required = bnxt_get_num_msix(bp);
+>  	ip6gre_netlink_parms(data, p_p);
+>  
+> -	t = ip6gre_tunnel_locate(net, p_p, 0);
+> +	t = ip6gre_tunnel_find(net, p_p, dev->type);
+>  
+>  	if (t) {
+>  		if (t->dev != dev)
 
 [Severity: Medium]
-The comment says this sizes the vectors from what FW actually reserved.
-Under BNXT_NEW_RM, though, bnxt_get_num_msix() returns
-bnxt_nq_rings_in_use(), which is bp->cp_nr_rings +
-bnxt_get_ulp_msix_num(bp). It is not hw_resc->resv_irqs.
+Can this reject a valid changelink on a non-collect_md ip6gretap or
+ip6erspan device when an "external" L2 tunnel has the same lookup key?
 
-Can this still activate unreserved MSI-X entries when the RoCE driver is
-registered?
+ip6gre_newlink() and ip6erspan_newlink() skip ip6gre_tunnel_find() for
+collect_md devices. They still link those devices into the hash buckets:
 
-In __bnxt_reserve_rings(), the FW IRQ grant (copied into hwr.cp by
-bnxt_copy_reserved_rings()) only bounds the L2 count:
-
-	hwr.cp = min_t(int, hwr.cp, bp->cp_nr_rings);
-
-The re-clamp of the ULP vectors against resv_irqs is skipped when a ULP
-is registered:
-
-	if (!bnxt_ulp_registered(edev) && BNXT_NEW_RM(bp)) {
-		...
-		resv_msix = hw_resc->resv_irqs - bp->cp_nr_rings;
-		ulp_msix = min_t(int, resv_msix, ulp_msix);
-		bnxt_set_ulp_msix_num(bp, ulp_msix);
-
-Take 8 ULP vectors, 32 L2 NQs and a FW grant of resv_irqs = 34.
-bnxt_get_num_msix() returns 40, and bnxt_change_msix(bp, 40) activates
-entries 34-39 while rc stays 0.
-
-bnxt_alloc_cp_rings() maps L2 NQ i to MSI-X index ulp_msix + i. That
-puts L2 NQs 26-31 on entries FW never reserved, which is the
-lost-completion case this patch is fixing.
-
-The commit message limits this with "at least while no RoCE driver is
-registered" and says the accounting predates the patch. The in-code
-comment doesn't mention the RoCE case.
-
-Could the sizing be bounded by hw_resc->resv_irqs here? Or could the
-registered ULP vectors be counted against resv_irqs in
-__bnxt_reserve_rings()?
-
->  		if (bnxt_change_msix(bp, irqs_required) != irqs_required)
->  			rc = -ENOSPC;
->  	}
-
-[Severity: High]
-This is a pre-existing issue, but can this branch call bnxt_change_msix()
-while bp->irq_tbl is NULL?
-
-bnxt_clear_int_mode() frees the table but leaves bp->total_irqs as it
-is:
-
-static void bnxt_clear_int_mode(struct bnxt *bp)
-{
-	pci_free_irq_vectors(bp->pdev);
-
-	kfree(bp->irq_tbl);
-	bp->irq_tbl = NULL;
+net/ipv6/ip6_gre.c:ip6gre_newlink() {
+    ...
+	if (nt->parms.collect_md) {
+		if (rtnl_dereference(ign->collect_md_tun))
+			err = -EEXIST;
+	} else {
+		if (ip6gre_tunnel_find(net, &nt->parms, dev->type))
+			err = -EEXIST;
+	}
+    ...
+		ip6gre_tunnel_link(net_generic(net, ip6gre_net_id), nt);
+    ...
 }
 
-It is called from bnxt_hwrm_if_change() on fw_reset or caps_change, just
-before bnxt_cancel_reservations(). It is also called from
-bnxt_io_slot_reset().
+ip6gre_tunnel_find() does not check collect_md and stops at the first
+match:
 
-The next bnxt_reserve_rings(bp, true) call comes from __bnxt_open_nic()
-or bnxt_io_resume(). At that point bnxt_need_reserve_rings() is true and
-pci_msix_can_alloc_dyn() is still true. So irq_change is set whenever
-irqs_required differs from the stale bp->total_irqs.
+	hlist_for_each_entry(t, head, hash_node) {
+		if (ipv6_addr_equal(local, &t->parms.laddr) &&
+		    ipv6_addr_equal(remote, &t->parms.raddr) &&
+		    key == t->parms.i_key &&
+		    link == t->parms.link &&
+		    type == t->dev->type)
+			break;
+	}
 
-If the count passed to bnxt_change_msix() is below the stale
-bp->total_irqs, the trim loop then runs through a NULL bp->irq_tbl:
+ip6gre_tunnel_link() uses hlist_add_head_rcu(), so the first match is the
+tunnel that was linked most recently.
 
-		map.virq = bp->irq_tbl[i - 1].vector;
-		pci_msix_free_irq(bp->pdev, map);
-		bp->irq_tbl[i - 1].vector = 0;
+For example, create a wildcard ip6gretap device tap0 with no remote. Then
+create "md0 type ip6gretap external". Both devices end up in the same
+wildcard bucket with all-zero parameters and type ARPHRD_ETHER.
 
-This could already happen when the pre-reservation count was below the
-stale total. The recompute after __bnxt_reserve_rings() adds a new
-trigger: pre-reservation count > stale total_irqs > post-reservation
-count.
+A later changelink on tap0 that only changes ttl would go:
 
-Before this patch that case took the grow loop instead. There,
-pci_msix_alloc_irq_at() failed cleanly and the result was -ENOSPC.
+ip6gre_changelink()
+  ip6gre_changelink_common()
+    ip6gre_tunnel_find(net, p_p, ARPHRD_ETHER)  -> returns md0
+    t->dev != dev                               -> ERR_PTR(-EEXIST)
 
-The new !bnxt_need_reserve_rings() branch above checks bp->irq_tbl.
-Should this branch check it as well?
+Before this patch the lookup used ARPHRD_IP6GRE, so md0 could not match
+and the update went through. The same happens for ip6erspan, and between
+ip6gretap and ip6erspan, since both use ARPHRD_ETHER.
 
-[ ... ]
-
-> @@ -15093,6 +15113,7 @@ int bnxt_check_rings(struct bnxt *bp, int tx, int rx, bool sh, int tcs,
->  			hwr.cp = min_t(int, hwr.cp, bnxt_get_max_func_irqs(bp));
->  		}
->  		if (hwr.cp > bp->total_irqs) {
-> +			int old_total = bp->total_irqs;
->  			int total_msix = bnxt_change_msix(bp, hwr.cp);
->  
->  			if (total_msix < hwr.cp) {
-> @@ -15100,6 +15121,17 @@ int bnxt_check_rings(struct bnxt *bp, int tx, int rx, bool sh, int tcs,
->  					    hwr.cp, total_msix);
->  				rc = -ENOSPC;
->  			}
-> +			/* FW has not reserved the new vectors yet, and writes to
-> +			 * MSI-X table entries beyond the reserved IRQs don't
-> +			 * stick (seen on BCM57508).  Free them again;
-> +			 * bnxt_reserve_rings() allocates them after
-> +			 * __bnxt_reserve_rings().  Without the new resource
-> +			 * manager there is no IRQ reservation and
-> +			 * bnxt_reserve_rings() does not grow the vectors, so
-> +			 * keep them.
-> +			 */
-> +			if (BNXT_NEW_RM(bp))
-> +				bnxt_change_msix(bp, old_total);
-
-[Severity: Low]
-With the vectors freed again here, a 0 return from bnxt_check_rings() no
-longer means they will still be available at reopen. Callers such as
-bnxt_set_channels() act on that result:
-
-bnxt_set_channels()
-  bnxt_check_rings()          <- allocates, then frees the vectors
-  bnxt_close_nic()
-  (rx/tx ring counts updated)
-  bnxt_open_nic()
-    bnxt_reserve_rings()
-      __bnxt_reserve_rings()  <- FW reservation committed
-      bnxt_change_msix()      <- can now fail with -ENOSPC
-
-Suppose the second allocation fails, for example because IRQ descriptor
-allocation fails. Would an ethtool -L request that was already accepted
-leave the interface down with "ring reservation/IRQ init failure"?
-
-Before this patch, that failure would have come back from
-bnxt_check_rings() before the device was closed.
-
-The commit message notes that the allocation can now fail after FW has
-committed the reservation, and the next open retries it.
-
->  		}
->  	}
->  	return rc;
+The commit message says changelink now does what the newlink paths do.
+Newlink never runs this lookup for collect_md devices, though. Should
+changelink handle collect_md tunnels in these buckets in some way, for
+example by skipping entries with t->parms.collect_md set?
 
 [Severity: Medium]
-This isn't a bug introduced by this patch, but bnxt_check_rings() goes
-through bnxt_hwrm_check_rings()->bnxt_hwrm_check_pf_rings(), which uses
-the request without a NULL check:
+This is a pre-existing issue, not one introduced by this patch, but
+the new EEXIST cases here make it reachable in more situations.
 
-	req = __bnxt_hwrm_reserve_pf_rings(bp, hwr);
-	flags = FUNC_CFG_REQ_FLAGS_TX_ASSETS_TEST;
-	...
-	req->flags = cpu_to_le32(flags);
+ip6gre_changelink_common() applies the encap attributes to the live tunnel
+before the duplicate check and the unregistering check run:
 
-__bnxt_hwrm_reserve_pf_rings() returns NULL when
-bnxt_hwrm_func_cfg_short_req_init() fails. That happens, for example,
-when dma_pool_alloc() fails in __hwrm_req_init().
+net/ipv6/ip6_gre.c:ip6gre_changelink_common() {
+    ...
+	if (ip6gre_netlink_encap_parms(data, &ipencap)) {
+		int err = ip6_tnl_encap_setup(nt, &ipencap);
 
-Can this dereference a NULL req under memory pressure?
-bnxt_hwrm_check_vf_rings() appears to follow the same pattern.
+		if (err < 0)
+			return ERR_PTR(err);
+	}
+
+	ip6gre_netlink_parms(data, p_p);
+
+	t = ip6gre_tunnel_find(net, p_p, dev->type);
+    ...
+}
+
+ip6_tnl_encap_setup() clears t->encap, then rewrites t->encap,
+t->encap_hlen and t->hlen.
+
+Suppose the lookup then returns another tunnel (-EEXIST), or the tunnel
+is unregistering (-ENODEV). rtnl_changelink() returns that error with no
+rollback:
+
+	err = ops->changelink(dev, tb, data, extack);
+	if (err < 0)
+		return err;
+
+Could a rejected request that has IFLA_GRE_ENCAP_* attributes (for
+example ENCAP_TYPE=NONE on a FOU/GUE tunnel) plus conflicting addresses
+or key still change the tunnel's encapsulation? Would it make sense to
+run the conflict checks before ip6_tnl_encap_setup()?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028114933.256298-1-vlad.wing%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028115710.27806-1-yanxia%40cmss.chinamobile.com
