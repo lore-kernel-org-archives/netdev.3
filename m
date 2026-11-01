@@ -1,61 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.243.164.118
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793510811;
-	b=A6GbFFzt0iASjrmfLihhZ4ss3hfnNqWU0V0YvYDl0AwceGnboS9WJoLPhdvIzZgtunTe
-	 CU91k8xdpqd6pwTgiShm7AsIN8UgTbHqLyFmJrnHFI6ADBJJD9/ZMPo9p1+LYS5zf/fey
-	 lfsXCT5jfBj5Pdmpo4VU6yAupMqz3BHZ5cSW+emsgE20hBr2p5pSvxOWYNqxnhduxYpxn
-	 VXPPB/STHKsBp2Wwl+uPAC2XjqxgtCypQWC6aDyXHBi2oMZ+HzZwP3bZsLcGI5Bcbka6g
-	 /1LOvwQTpja9hqHWlpmocJXJmfUlRjpPFYfF2XiJ1qrncZQVhsYlRCYy/7w2L/ya1hQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793510811;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:In-Reply-To:References:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:X-CM-TRANSID:
-	 X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=gM3q15/BMiP6EHVsNFcvdv86I1H+gIVZ8AKY9O890iw=;
-	b=tXNEh88p+GWeX3CCex0d5lr7KsLEDfa86YibOQSZKz3OzWdho0OvslidN0iVdxXCeuyK
-	 EwCxWAsbpKaDNiX035Zh0eHeAnUXcSKUsbZquslIr3/cMH/kXdcek1yerl+zt7qluoQah
-	 cWyFJ3RKwYyrLQweRuoBAB1/FcQdTEBer7Y5zCD9ezDmFIXkTpHvmb2rk29vbhM3z6Pit
-	 Jr0pR6JH61q8TZ9r2G0oOOZMCTS1j8JYmsDfpmgJ3BXWL0u8vL9hNV/FI+52ndow9maNa
-	 YPR3cKWgcgHHwECxMXyydVJ+YR7b74KhW3wX8A6NVUPDo7hpbTIjAlLAqe2A9+sAOQA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=stu.xidian.edu.cn;
-	spf=pass smtp.mailfrom=stu.xidian.edu.cn;
-	arc=none smtp.remote-ip=162.243.164.118
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D590606A324;
-	Sun,  1 Nov 2026 05:26:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D590606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.xidian.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stu.xidian.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.177
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793512133;
+	b=ha45tf+Cj8Ho6eo0qZvemSyS1jkra7QUMUqUA4c9Q+qmykbr1dnHXLrQDeGxbVKd+XpU
+	 sZkGnncrdb08ZYr4bka744B+zA3w15T7vJr/bY4Ee6yIfKD4akrMD4z6w8YJHNnj82uRP
+	 O+0rLfvJB962TfCI+SfkhSKO1hcVryjtuw/8W1uBzY5ceYM3s8lRqL+LUFmAEP+Y3ONob
+	 NEy3aMDC7jAkIbLwHBtjY1MkURQ8jYuFHW4Xy7zt4WtVmFoqq9S8piQSV/aHRSgdzDAdP
+	 OH2qTLGfbFonYvshQTqJvEzrztaGicWqEXbwx/wCyfWsub7KaQAAq4nhedN5FQTRXQw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793512133;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=EGfxVHVkcrYrQKGYWR3trZufepOrJ+7eV2izdTVo0N0=;
+	b=j9td9qoEenKj4DQrOMkn790Mq/dm72mnTyEQ06YAGu9A3sLOIRA1hEqItMgXjawPwLAW
+	 nwgfHviZTB0XP8d5zSj4FpSVNQFjxzNKZwoaF7tCG8xFkrCO8sQJhU3QnvPBIynaF/Ieg
+	 ONrimvelkNpB9gs2QdSebJFR20zKgJFXeALx1NsjThLhhIofLT0Wl0W+21fsgCnPViKgj
+	 Jvljf47xBD9B0eg3KIKaiTFjwRL0MOt1DGIdOJ2soyN11XCd7jY2v/ZApsuzJJ8FxUsAJ
+	 fu3UvuDM3bAmJYAQ1qet0YmHRC6WdJ5ppMlQDm4SW5K/tiCDPgVNc8arYBRGlBETgeQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=weyO2K2Z;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.177
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7C4606A326
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 05:48:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BD7C4606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=weyO2K2Z
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3a1f628b1d1so17380821fa.0
+        for <netdev@vger.kernel.org>; Sat, 31 Oct 2026 22:48:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1793512131; cv=none;
+        d=google.com; s=arc-20260327;
+        b=n2GBKy7lo5qG21Z4gF4MgDYdLfMRNsqW5qoPZaH5U0mgOV/uP+S82qagVN+sCh2u6n
+         XISPQZI0zcvEJ6Pf/af+QI/+bWWwMkLFv+rVpESHQzBUR5qlH7dsHQF4X8YQF691ReSE
+         It5XVP+8n/Aht1hIKNVQ6m7EiF+Rq1hPFE1Iz/mjAQ+XvuQnz7E4P7Rycf2OZ9xXLPj+
+         aLSKqMkG/jHjMTJwjY3lk2tGnLLKjQZki9omLk7s/N6SPXIlUm7CU0JdFDEaso9OdUT3
+         hfx0tffv0PSeblqcZGEhHfUp8+Qldqczb/8JljxElt6SlGNJa2AQhE12zz455NFujc9X
+         Vprw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=EGfxVHVkcrYrQKGYWR3trZufepOrJ+7eV2izdTVo0N0=;
+        fh=a49iLzkEryX2XQEFLUQgXI1XGY+sBnY0dKX5WDBXgfI=;
+        b=UgRNd8dxkT3/ksiqYlptxsJx9WqeW4pzclXadxAuYh9d6G91uzPwCe1fRaSBGzQnvh
+         ozjhGbzwk+2UUqHybc9AdA0IBHlAfWcGcY0VduZJi4OcyKshCfWfMOSn2s9JP38AiVuA
+         gta8QGijB+j9jY/hs09mR4M6uRk2BByj7mKT4IJJpyZ9lmJk18aKocRcVbP+F2PZNhlT
+         H62myLp2/18Opqfwx4/MvaUilOULxRz3Hi8EdA21vWNgTtrR6438acz3mZxCDmeT02Ge
+         R7jrwFsA9Aw/q70/YpNy7G/HSwAlADBktRCQ5q5CRvmGOLzdWB+Xe07rHaoV96cy8lcO
+         2R4w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=stu.xidian.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
-	Message-ID:In-Reply-To:References:Content-Type:
-	Content-Transfer-Encoding:MIME-Version; bh=gM3q15/BMiP6EHVsNFcvd
-	v86I1H+gIVZ8AKY9O890iw=; b=DcTmpEt6tu5MPIYYUmzCQvTDZfthEoxo2ZpI8
-	5oir9rrGWoNToWurvWVNwEHj68b2fO49plEFm06tsK1eBQSEp8w5vbFJAzpvvYq5
-	GO03IoZaqsQMupFzAc05qgb3jOj/TFbGiOSvCnEOS2+l7XVIFEU0l+SIczKEfSPx
-	zWHv6E=
-Received: from [127.0.1.1] (unknown [113.200.174.23])
-	by hzbj-edu-front-4.icoremail.net (Coremail) with UTF8SMTPA id BrQMCkD2FPuEzeZq_Z0UAQ--.15833S2;
-	Sun, 01 Nov 2026 13:26:30 +0800 (CST)
-From: YuanZhe Liu <25031212351@stu.xidian.edu.cn>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Thangaraj Samynathan <Thangaraj.S@microchip.com>,
- UNGLinuxDriver@microchip.com, netdev@vger.kernel.org,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- Russell King <linux@armlinux.org.uk>,
- Oleksij Rempel <o.rempel@pengutronix.de>, stable@vger.kernel.org,
- Bin Yu <byu@xidian.edu.cn>, Cheng Wen <wencheng@xidian.edu.cn>
-Subject:
- Re: [PATCH net v2] net: usb: lan78xx: let unregister_netdev() stop phylink
-Date: Sun, 01 Nov 2026 13:26:28 +0800
-Message-ID: <179351078879.2591.15287457752530436149@stu.xidian.edu.cn>
-In-Reply-To: <e71cccdf-59e5-407c-b536-9dd47a49b0a7@lunn.ch>
-References: <20261031165213.2738-1-25031212351@stu.xidian.edu.cn>
- <e71cccdf-59e5-407c-b536-9dd47a49b0a7@lunn.ch>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+        d=gmail.com; s=20260707; t=1793512131; x=1794116931; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EGfxVHVkcrYrQKGYWR3trZufepOrJ+7eV2izdTVo0N0=;
+        b=weyO2K2Z3b0LzD/hEyODcUaTMjso5EY+pHzgpgsO36+Go7wri9KGFzwbOpt11QlPm2
+         hM6VRrvJCFcWqLlRbdvtdLrcIYxwb1is/W2btLLeBpycRVMvHNZbAnya2ep3XFu7aQHp
+         tr2F1uocntttl9YlKlF6ntEWPU/tKGg+OIUkiDbF+AutxMPipzwlq+Ki0KkZRJU0bWo5
+         yal59Z9UAq/4hrOU00lGv0fUtxZ3/op2fEx+6Vk9zJlgyxOAYmvwVQGH+7vACMaGArG7
+         4TVwXsSvd9lVy+56qYxm0lfSpTgf9Qllc7GxU4poZR+lZM95d7xWc4aNnJqwwVpoJqMk
+         QpQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793512131; x=1794116931;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EGfxVHVkcrYrQKGYWR3trZufepOrJ+7eV2izdTVo0N0=;
+        b=yLUGe/W3EICGTxdPv5HqlB2YZ0sttQpgAEgb/ElydNEveLbhxilfjZgWpj3ipCgM6A
+         XOZMlW2Dp4NuxKp3o3GSVxVIF7U46N9W7JYFTnhvmEbyuA+oVfGHQV7g+c6UaZ6aRzS8
+         cN/X0AJ24akTlEl/fozBFW1TrD7bkMkMdtd8YpGG9dGwaM6jJWIBZ+TDj/Mo0AgOcx7A
+         qQXJRKx5O0M3a810RpQNVrpYwkcw62es87GUMUxuolZFYO+Xb5CdiE40gHnWZXvOOy/W
+         /6RxvDQq/cFe6kZpNJuTlEieA7Ky5+T7ObD5iK6terHZ+ezDD/D2yEm+tI6P9tHx1U4I
+         E2vg==
+X-Forwarded-Encrypted: i=1; AKwUvBw3eS/+0fe27FX2DUsN1q1Af+O186mAhcYRTphwgyACbTfa4u0EMfVTwPxVznMoqS0SdsZeZE8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLPfSGagJ3eMDfowfR6pg3IzY6UHnu0W8G7r7Lc/QrDchJFe5Z3
+	wbVfPQQFEAwmdXbK3VycN5yTLEPmV5j11t5EaRrEmF4A/3C71tdYpOO/ikH6NzhC43AWlZxihnX
+	K+pxHau3I0zXgZrqYhmLL675PBWPSq8GKJA==
+X-Gm-Gg: AYBFou2MyrFoPyeERxFUumKrarhhqRScmdCgLUGnUMuvhOdOjorT5zFF0X18RIwUxWX
+	O2RA8CDdpPOUxmRaw/WNR+DytLM6YpRbz4WRXuO430nqtTJoqmVz6zSHlX/dRZAauScIX1kwFQX
+	mXqPOr4o/7CUJsObbRQo1vEGC61WlDXHWV0La9qGHp8GWESgVGMtpZLq/cZJtK9Ud5FinRuQBbW
+	hZae5/p9pt9lF6fazziltZYkdvoGEBZRxAoZkfMx0J/tOUF5MC43HwQfj40wBClyzguoALpEOcb
+	M/uTHYZu8hclqLzmN7lyK1mwhLBKwlf9GBreywxremx6t0zuQBWd34a/Mj7+TMAf8WbeeDC/2L2
+	1qMNMrVfkj/zWZtRrSeZYzU5BP49vUm2Ob9kFkfWZ9TXJH4g57plDy4hM9m4HcAxufYYKogQ2LW
+	55go508MT4aMPQA7kw9oeaA/oN4EQJOw+xlK0Z+bixW5Fla0tyLM8=
+X-Received: by 2002:a05:6512:1252:b0:5bf:d938:b808 with SMTP id
+ 2adb3069b0e04-5bfd954bb21mr2075584e87.1.1793512130701; Sat, 31 Oct 2026
+ 22:48:50 -0700 (PDT)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,58 +105,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-CM-TRANSID:BrQMCkD2FPuEzeZq_Z0UAQ--.15833S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7uw4UCFWktr1UGF4xGr4UArb_yoW8Jw45pa
-	s8ta97Wr4vyw1S93s5ZF1UZw15AFnrZrW3Cr90grWrX345try7Jw40qFykZF1akrsxA342
-	vr13CayUuFZ5J3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Cb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I
-	8E87Iv6xkF7I0E14v26r4UJVWxJr1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8I
-	j28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr
-	4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwAC
-	I402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrw
-	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
-	14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
-	IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
-	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI
-	0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07b5sj8UUUUU=
-X-CM-SenderInfo: ysvqjiysrsjkur6v33wo0lvxldqovvfxof0/1tbiAQUED2rmBFRXBAAAsA
+References: <20261031133455.3070233-2-rsalvaterra@gmail.com>
+In-Reply-To: <20261031133455.3070233-2-rsalvaterra@gmail.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Sun, 1 Nov 2026 13:48:13 +0800
+X-Gm-Features: AclHuK9Oijgn2EhPzsnGywVMmHQSWFg3blfXJ7nFJaMnQXGzRvyU2SOiQm3Go7g
+Message-ID: <CAL+tcoB6vg+-w1JZdND_cTN_zPeh76_+-W_NU34jkunJUFwrrA@mail.gmail.com>
+Subject: Re: [PATCH] tg3: make depend on ZONE_DMA
+To: Rui Salvaterra <rsalvaterra@gmail.com>
+Cc: pavan.chebbi@broadcom.com, michael.chan@broadcom.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Andrew,
+On Sat, Oct 31, 2026 at 9:36=E2=80=AFPM Rui Salvaterra <rsalvaterra@gmail.c=
+om> wrote:
+>
+> Since 614f4d166eee, on systems with ZONE_DMA unavailable, the Tigon3 driv=
+er
+> fails to initialize, at least on systems with BCM57766 controllers. On a =
+late
+> 2012 Mac Mini:
+>
+> [    1.226623] tg3 0000:01:00.0: Unable to obtain 64 bit DMA for consiste=
+nt allocations
+> [    1.226718] tg3 0000:01:00.0: probe with driver tg3 failed with error =
+-5
+>
+> Fixes: 614f4d166eee "tg3: Set coherent DMA mask bits to 31 for BCM57766 c=
+hipsets"
 
-Yes, I did, but it ended up at the bottom of my reply to the sashiko-bot
-review, which was not the right place for it. Here it is directly.
+The format is not right. And please target net branch if it's a fix by
+changing your title to ']PATCH net]'.
 
-e110bc825897 is the commit that introduced the call which warns. Before
-it, lan78xx_disconnect() did:
+>
+> Cc: stable@vger.kernel.org
+>
+> Signed-off-by: Rui Salvaterra <rsalvaterra@gmail.com>
+> ---
+>  drivers/net/ethernet/broadcom/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/net/ethernet/broadcom/Kconfig b/drivers/net/ethernet=
+/broadcom/Kconfig
+> index f0bac0dd1439..c9875daa043b 100644
+> --- a/drivers/net/ethernet/broadcom/Kconfig
+> +++ b/drivers/net/ethernet/broadcom/Kconfig
+> @@ -124,6 +124,7 @@ config TIGON3
+>         tristate "Broadcom Tigon3 support"
+>         depends on PCI
+>         depends on PTP_1588_CLOCK_OPTIONAL
+> +       depends on ZONE_DMA
 
-	unregister_netdev(net);
-	...
-	phydev = net->phydev;
-	phy_disconnect(net->phydev);
+Did you verify it possibly affects those kernels without DMA config?
 
-and phy_stop() only existed in lan78xx_stop(), guarded by
-"if (net->phydev)". So disconnect never called phy_stop() on a PHY that
-had not been started, and the warning was not reachable from this path.
-
-e110bc825897 converted the driver to phylink: it moved
-unregister_netdev() after the phylink teardown and added an
-unconditional phylink_stop() before phylink_disconnect_phy(). Since
-phylink_stop() reaches phy_stop(), which warns unless the PHY is at
-least PHY_UP, unplugging before ifup started producing "called from
-state READY".
-
-	git log -S'phylink_stop(dev->phylink)' -- drivers/net/usb/lan78xx.c
-
-returns e110bc825897 and nothing else apart from my own change, so that
-line has not been touched since it was added.
-
-This is also why v2 puts unregister_netdev() back in front: it restores
-the pre-conversion ordering, so an interface that was never started is
-not stopped at all, and a running one is stopped by lan78xx_stop().
+The blamed patch seems correct, so I think you need to root cause it
+instead of adding a global dependency here.
 
 Thanks,
-YuanZhe
+Jason
 
+>         select CRC32
+>         select PHYLIB
+>         help
+> --
+> 2.55.0
+>
+>
