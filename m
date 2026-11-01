@@ -1,59 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793532632;
-	b=4CAZdsKjGgwPmxiMBvV98fuWf61YWP6zCpx9r04hE1oS7XoNNbtZ/F5QraEnFWFoqYbT
-	 x+hYoeYGehY0sLZnNswntE+A463Fa71n3Cy0/IzkukB47QqKdYJ5Y985i+MwDW1j7jvsr
-	 OhHDGYKrdud8JC30X+UTjesGgNO448cKgkJxrpZb40iCzbKeYX0JuEmpoym+1RZsAkOJH
-	 oeVKXwakykab5loV2bBEJhtq6kYAsiKfT/2EXDcV4NKYU29+CCOLdcway2qNScYxDS+la
-	 +SXS8dNhdG1F+78ySf2xntvkW5Mvd8a3Gklzi3Ze+XOJVB3eoqQ9Yvb8ixxIXnP1cIA==
+	t=1793533742;
+	b=CfODO5RZL7DOzkVNbLfaloJZRUUm6tabvKcofB3cSjGJ+S+hcAUk7oVrD4ohFkELtLvp
+	 PUaWy7uedrhVYwnWHv8ihOFHa2MIe+bgsyvL0d2ZS5w4APmT3sJR286+fbGtCXY/Y+6fH
+	 gNeLTV2QYyJtpu2U5M/hdBj7UwcqM217y/TRNKB9WeV5yKJkzx20WljG8b8uU2OgkO9CH
+	 RzcRV3y4oX+US/iQsabPZpNXc/ZOiObBq1APbRaXPF+U99ry/RS+tsIj/bmaQzVQasMP+
+	 Tgxb08bUz1cRJMSKhdiR82OPwI0cv12i9vdgLusx3+O9I3Xq+GckGt4uSN7Ys+MsOSA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793532632;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793533742;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=QKR+8PYQn0QJC3PYuH+CNGQV8EHuF+fb3PL5Dw961vg=;
-	b=RHcDU9I4PGaYLnpfxFaRUr5AH/0z3oVZSxNXzm7YJ+sC2IsGdgrI696CGoNFVnJTx/As
-	 izeYag296/Nu/uyjJVmHd6GMCAL4AYvcmrlnseBRsaJ8mSay20J7rQw2iJO+YZdIb7zbX
-	 Vtnn2GBb2+0okEsmZOmR8e4sEZtsaScrQwUtCGQxmoi4GHPmYNaB89WCQmA51cHPT3zyG
-	 NhSKaX78EAuCDS+d75pd/j86eaqz2nGQsO4sKm5ymWTtflnmaDAEl9dV7oHaXMy1yDYCu
-	 +fLJwndqSzOxiQj3TMjT8Wa8wc57jo+FP7qCNzeVGY6VrkMhrrNoh4cRt+a4hTv/Bew==
+	bh=uhqQZWYhQfQseqw3TWhQ06TGIfzrnlFvPN/L9zUwqpE=;
+	b=y0/8LU4ChWARF+3Lvofwq55U5vmt+apgIneJDGdv8gShuHAFnSkbm9eNzVU8rnHkqJ55
+	 iEKW5fyc2tQHR6CZyVLa4rQ5ndS2H03TIOcdejS0x9iaRf9sw71JEqiOi63wTwgkvrMoL
+	 bEmLZNOhY4CgnxcImmANJsx05lhqr3osg/FkXcryhPlK9sbW3DJi5NCKUFHmgwglUS3BQ
+	 aY5cawQKtlKw5FDaGPGfppzdnHQ4PAM76AWqGElK9G7zPbRPkhq6OWvHNw0PUgxIy4FIC
+	 +iRbs2BdjDQFiE91aW6a6wm04+WiMovaMEBqrsTUZiolcpUvqZAwqdcbnMfEyMWMJRQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mF7XePRw;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ldkaxfbS;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E583606A324;
-	Sun,  1 Nov 2026 11:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17FC606A324;
+	Sun,  1 Nov 2026 11:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mF7XePRw
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F223D1F00919;
-	Sun,  1 Nov 2026 11:30:30 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ldkaxfbS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF6E21F000C1;
+	Sun,  1 Nov 2026 11:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793532631;
-	bh=QKR+8PYQn0QJC3PYuH+CNGQV8EHuF+fb3PL5Dw961vg=;
+	s=k20260515; t=1793533741;
+	bh=uhqQZWYhQfQseqw3TWhQ06TGIfzrnlFvPN/L9zUwqpE=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=mF7XePRwJmAXD1IHvhoY/4aUME4xWQP9Ugvff8Oroc9ikZ9vVtXz4c+ZQDCvYsoLT
-	 KAJtmcU4zGXYfhEvMrja8QQmZM3f2i4JJSC1cl5atwrUwZimsYu8/1RtLme4sPCIDb
-	 fBsLUn+md9QacA6C4Y5kxJdhOSkeLnaySObzW6uUDRX7j0P0o3cClbkSg1Ws7qARj7
-	 yuOoi8hpmO+/t92HGADdQBKd4WSTbKTlNsD3b6kP44OsY0y+5ulDuBqPENyylTIChb
-	 qfHHUnBWbpCC1CwbpPl21qunheFy/KS/HEIxAPESTwZtDF2P3XIPh8aV/9VdBA5Tej
-	 Ew1UJcMt/xtXg==
-Subject: Re: [PATCH net v5 2/2] vxlan: reject VNI add when the default fdb
- entry is nexthop-backed
+	b=ldkaxfbSysz0X0K2rHj+IB3XF9NOWWt/iLkNc8wNpYpF5HYGrfK3hFE/eTf4ztgGM
+	 hNaKxknKioNxk/kZMqQKItDTezc9UAFTBbfc/FPXheupCV+pbci/IHAsWWcD9kowau
+	 VBddHTzLkS1Ihf/nVpV5cgdbEHqMILE7CCRri6+Gmi5M0cKu0sCblKpsWigrnIrGws
+	 FZ91SDb7GLF/WjuXsWJt3gSekZA1ZaErAe3iQDx+vIQozD6pwywuB1lAyWpy3+gBho
+	 rl77ZHRQ8gq3nz7oJWmkWSRSURJ2YCc/7PC3uAHPlqbzBHudBUauH0rFLENloB56HE
+	 LS4kx6VWblE5w==
+Subject:
+ Re: [PATCH] seg6: fix OOB read in advance_nextseg when segments_left is 0
 From: netdev-bot+sashiko@kernel.org
-To: bsdhenrymartin@gmail.com
-Cc: idosch@nvidia.com, i.maximets@ovn.org, davem@davemloft.net,
- kuba@kernel.org, edumazet@kernel.org, pabeni@redhat.com, andrew@lunn.ch,
- horms@kernel.org, kuniyu@google.com, petrm@nvidia.com, ferruh.yigit@amd.com,
- atenart@redhat.com, qotmddnjs@gmail.com, netdev@vger.kernel.org,
+To: tangbin@cmss.chinamobile.com
+Cc: andrea.mayer@uniroma2.it, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Sun, 01 Nov 2026 11:30:30 +0000
-Message-ID: <179353263054.3131.3806722064671880892@kernel.org>
-In-Reply-To: <20261028111626.3460759-2-bsdhenrymartin@gmail.com>
-References: <20261028111626.3460759-2-bsdhenrymartin@gmail.com>
-X-sashiko-severity: Low
+Date: Sun, 01 Nov 2026 11:49:00 +0000
+Message-ID: <179353374041.3131.16148032694599738830@kernel.org>
+In-Reply-To: <20261028113141.2111-1-tangbin@cmss.chinamobile.com>
+References: <20261028113141.2111-1-tangbin@cmss.chinamobile.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -66,121 +64,140 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-- [Low] The series order leaves a bisect window, and nothing protects the
-  stable backport.
-- [Low] The commit message gets the order of operations in
-  vxlan_vni_add() wrong.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The commit message describes a bug that the current tree does
+  not have.
+- [Low] The patch adds a second NULL return to advance_nextseg() in
+  net/ipv6/seg6_local.c, for segments_left == 0, with drop reason…
 
 --
 
-vxlan: reject VNI add when the default fdb entry is nexthop-backed
+seg6: fix OOB read in advance_nextseg when segments_left is 0
 
-This commit adds vxlan_fdb_entry_nh_backed() and calls it from
-vxlan_vni_add(). A VNI add with a group, or with a device default remote,
-is now rejected when the all-zeros fdb entry for that VNI is backed by a
-nexthop. The check runs before the VNI is installed, so a later
--EOPNOTSUPP from vxlan_fdb_update_existing() can no longer leave the VNI
-half-installed.
+This commit adds a segments_left == 0 check to advance_nextseg() in
+net/ipv6/seg6_local.c. The check runs before the field is decremented and
+used to index srh->segments. The commit message says the End, End.X,
+End.T, End.B6.Encap and End.BPF paths can reach advance_nextseg() with
+segments_left == 0 and read out of bounds.
 
-> vxlan_vni_add() installs the new VNI - hash table insert, group list,
-> socket attach and the RTM_NEWTUNNEL notification - before calling
-> vxlan_vni_update_group(), which in turn calls
-> vxlan_update_default_fdb_entry() to store the group (or the device's
-> default remote) into the all-zeros fdb entry of that VNI.
+> advance_nextseg() decrements srh->segments_left and uses it to index
+> srh->segments without checking it is non-zero. seg6_validate_srh() permits
+> segments_left == 0, so a packet with SRH segments_left==0 reaching an End*
+> action underflows the u8 (255) and reads srh->segments[255] (~4KB out of
+> bounds); the read bytes are then used as the new IPv6 destination address
+> (info leak) or crash on unmapped memory. The decap path
+> (decap_and_validate) already checks segments_left > 0, but the standard
+> End/End.X/End.T/End.B6.Encap/End.BPF paths do not. Reject segments_left ==
+> 0 before decrementing.
 
-[Severity: Low]
-Does this ordering match vxlan_vni_add()? In the code, the notification
-goes out after vxlan_vni_update_group() returns, and it goes out whatever
-the return value is:
+[Severity: Medium]
+Can any of these paths actually reach advance_nextseg() with
+segments_left == 0?
 
-	err = vxlan_vni_update_group(vxlan, vninode, group, true, &changed,
-				     extack);
+input_action_end_core(), input_action_end_x_core(), input_action_end_t(),
+input_action_end_b6_encap() and input_action_end_bpf() all get the SRH
+from get_and_validate_srh(), which asks for IP6_FH_F_SKIP_RH:
 
-	vxlan_vnifilter_notify(vxlan, vninode, RTM_NEWTUNNEL);
+net/ipv6/seg6_local.c:get_and_validate_srh() {
+	srh = seg6_get_srh(skb, IP6_FH_F_SKIP_RH);
+	if (!srh)
+		return NULL;
+    ...
+}
 
-	return err;
+When that flag is set, ipv6_find_hdr() skips any routing header with
+segments_left == 0:
 
-The end state described later in the message is accurate: the VNI is
-installed and announced despite the error. But it is announced after the
-failed update, not before it.
+net/ipv6/exthdrs_core.c:ipv6_find_hdr() {
+    ...
+			if (flags && (*flags & IP6_FH_F_SKIP_RH) &&
+			    rh->segments_left == 0)
+				found = false;
+    ...
+}
 
-Could this paragraph be reworded to match?
+So these callers never get back an SRH with segments_left == 0. Nothing
+between the lookup and advance_nextseg() writes segments_left, and the
+HMAC check only reads it.
 
-> diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-> index 124ba47758e91..07e17f4b93530 100644
-> --- a/drivers/net/vxlan/vxlan_vnifilter.c
-> +++ b/drivers/net/vxlan/vxlan_vnifilter.c
-> @@ -837,6 +837,20 @@ static int vxlan_vni_add(struct vxlan_dev *vxlan,
->  		return err;
->  	}
+end_flv8986_core() is the only caller that uses seg6_get_srh(skb, 0).
+There, seg6_get_srh_pktinfo() maps segments_left == 0 to
+SEG6_LOCAL_PKTINFO_SL_ZERO. flv8986_act_tbl only has entries for SL_ONE
+and SL_MORE:
+
+static const u8 flv8986_act_tbl[FLV8986_ACT_TBL_SIZE] = {
+	/* PSP variant for packet where SRH with SL = 1 */
+	tbl_cfg(PSP, SL_ONE, F_PSP),
+	/* End for packet where the SRH with SL > 1*/
+	tbl_cfg(END, SL_MORE, F_PSP),
+};
+
+So SL_ZERO resolves to SEG6_LOCAL_FLV_ACT_UNSPEC, and the packet is
+dropped before advance_nextseg() is called.
+
+The commit named in the Fixes: tag, d7a669dd2f8b ("ipv6: sr: add helper
+functions for seg6local"), also already rejected segments_left == 0
+explicitly in get_and_validate_srh().
+
+Given that, is it accurate to say the standard End* paths "do not" check
+segments_left? The SKIP_RH lookup flag appears to do that check.
+
+If no path reaches this code with segments_left == 0, should the patch be
+described as hardening, without the Fixes: and Cc: stable tags? As
+written, it would likely be backported and triaged as a remotely
+triggerable OOB read and info leak.
+
+> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+> index 0c3d1be7f1299..0f72b7fe3ac14 100644
+> --- a/net/ipv6/seg6_local.c
+> +++ b/net/ipv6/seg6_local.c
+> @@ -310,6 +310,10 @@ static struct ipv6_sr_hdr *advance_nextseg(struct sk_buff *skb,
+>  	/* skb_ensure_writable() may change skb pointers; evaluate srh again */
+>  	srh = (struct ipv6_sr_hdr *)(skb->data + srhoff);
 >  
-> +	/* A default fdb entry that is backed by a nexthop group can
-> +	 * never take a remote; reject before the VNI is installed,
-> +	 * otherwise a failure in vxlan_vni_update_group() would leave
-> +	 * the VNI half-installed.
-> +	 */
-> +	if ((group && !vxlan_addr_any(group)) ||
-> +	    !vxlan_addr_any(&cfg->remote_ip)) {
-> +		if (vxlan_fdb_entry_nh_backed(vxlan, all_zeros_mac, v)) {
-> +			NL_SET_ERR_MSG(extack,
-> +				       "Cannot add a remote to a nexthop fdb entry");
-> +			return -EOPNOTSUPP;
-> +		}
+> +	if (srh->segments_left == 0) {
+> +		*reason = SKB_DROP_REASON_NOT_SPECIFIED;
+> +		return NULL;
 > +	}
 
 [Severity: Low]
-Does the series order leave a bisect window between this patch and the
-earlier "vxlan: reject adding a remote to a nexthop fdb entry"?
+Should the kernel-doc above advance_nextseg() be updated for this new
+NULL return? It still says:
 
-That earlier patch adds this check to vxlan_fdb_update_existing():
+ *  - NULL when the skb cannot be made writable. In this case, the function
+ *    sets the drop reason to SKB_DROP_REASON_NOMEM.
 
-	if (rcu_access_pointer(f->nh) &&
-	    (flags & NLM_F_APPEND) &&
-	    (is_multicast_ether_addr(f->key.eth_addr) ||
-	     is_zero_ether_addr(f->key.eth_addr))) {
-		NL_SET_ERR_MSG(extack,
-			       "Cannot add a remote to a nexthop fdb entry");
-		return -EOPNOTSUPP;
+The callers follow that contract and turn any NULL into -ENOMEM. For
+example, in input_action_end_core():
+
+	srh = advance_nextseg(skb, srh, &reason);
+	if (!srh) {
+		err = -ENOMEM;
+		goto drop;
 	}
 
-With only that patch applied, a sequence like this:
+The same pattern appears in input_action_end_x_core(), in both the END
+and PSP cases of end_flv8986_core(), in input_action_end_t() and in
+input_action_end_b6_encap(). input_action_end_bpf() returns -ENOMEM
+directly.
 
-  bridge fdb add 00:00:00:00:00:00 dev vx0 nhid X self permanent src_vni N
-  bridge vni add dev vx0 vni N group G
+If this branch ever fired, a malformed SRH would be reported as -ENOMEM
+with drop reason SKB_DROP_REASON_NOT_SPECIFIED. As noted above, no
+current caller appears able to reach it.
 
-goes through this path:
-
-vxlan_vni_add()
-  vxlan_vni_update_group()
-    vxlan_update_default_fdb_entry()
-      vxlan_fdb_update()
-        vxlan_fdb_update_existing() returns -EOPNOTSUPP
-
-By then the VNI is already in the hash table and the group list, and
-RTM_NEWTUNNEL is still sent. That is the half-installed state this patch
-is meant to prevent. Leaving out the group has the same effect when the
-device has a default remote. Before the earlier patch, the same request
-succeeded and appended a stray remote.
-
-Both patches carry Cc: stable and the same Fixes: tag, but neither one
-records the dependency.
-
-The earlier patch only touches vxlan_fdb_update_existing(), so it will
-probably apply cleanly to older trees. This patch was reworked in v5 for
-the RCU conversion of vxlan->cfg (the local cfg from
-rtnl_dereference(vxlan->cfg)), so its context is unlikely to apply there.
-
-Could stable end up taking the earlier patch on its own? This guard does
-not depend on the earlier patch, so would it make sense to put it first
-in the series, or to squash the two?
-
-[ ... ]
+>  	srh->segments_left--;
+>  	addr = srh->segments + srh->segments_left;
+>  	ipv6_hdr(skb)->daddr = *addr;
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028111626.3460759-1-bsdhenrymartin%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028113141.2111-1-tangbin%40cmss.chinamobile.com
