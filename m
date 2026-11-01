@@ -1,87 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793551357;
-	b=xOEbUwiQDtVc2OmsSU+zhK2LKpt+PHIyv4Nr4aG47qT1DRYr3WnCZOeF2uM71hZGXH6Y
-	 ZvxhHNnTlYIt0mIW57d8lIycUaAWJTPdgBGom6Dmkt42WCVVYT7Sp4dTbykJ2A+vSD3fb
-	 GDAss0YbtF7v2x0q8SdhpzQmjGDmw25pUnqg4h+WqiSBP3svuYx3BBfxS52GimtV/0HnU
-	 n21girEV9MMnjaMEmvXDD7wKzBdfnicR4p0pDM4hM7IS+eFSL1jTNkOQEpcFe2gC2DeUg
-	 URtr6cTkCIwbj6PxUmppMYeLnpT3DHi+YRqJpqkrX9yYcb8AxzmEnIeK0KVoGqKcE5g==
+	t=1793551358;
+	b=jYIqrLR3G1CCyzu2YplX8siv9tROfZ8nMQVeiyXNPB0ts5j0naoP/Q7OL5xm5xCSvYbz
+	 M7jQ8GUSFom+Mb7WUfnqevRYIvV8DuDa7ZfCBhRgLCuCq1WR1i8ye5a7RNdvZgaQ0MrQ6
+	 FUgdkmj8024bjeuxM+bJlBOvIyHNMRhDIKJamlM0R4G6Ko6KVS6ju6xq0yLplLy5Z9b9O
+	 B5kVvAdTn/S+dhHXy33jbPvgVFhq3P49or/wN24/aokzQlKPJ3Nj/tGfLSgEhSrvSR0zs
+	 jz7NpC2aDtFPcI7iRBlpWL4ZMQSyQ2dWbBR0xJIwoUf+2F74pjzXuwyty4C5MeF6S3g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793551357;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793551358;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=h3piVyXKbxXF45kzvRxf3YzN7IqLeFtgxZUOFf2nvGw=;
-	b=NQj2N6IvrINEykJnTpJyQgzyO7noGPC9jE52I89vmkgDjCaLGoJX8/TrCGqPNZxDnDrr
-	 UDeJdeEv9xuyFv0QjbuePta/IPEos46B2HN8T3vZY2vGEU0wWHEs0mCo439umpPZQjfVa
-	 cP4h+3WdFQ5jsR+WEw/Ta+FVcEoyV9q+8VpQuElFYIE3+DsmMiIa1QT7hx708SAcwuuNv
-	 WBE/ovT7oerPg+W6OfMdDlAMtWazgB/LkpqdweP5JPWzg8tKJRl6dnTfv7/WLInQHZK9J
-	 gZO7gMjslbyT/kxp7022nLt5hex52QOVRVJ/Rbs9bLWlUfNDmVi3/ORjTyckUzEliWw==
+	bh=TlraSu9AjY+wAsB7GZqoG24SclQpPomTr5qFhEYxo8U=;
+	b=HwaWFwujkkCVp+Aa3eYV+wUZHC6oiEd3+T8JIENg0IXZVAv8R3X7FgOBBomJBTMHaNob
+	 qRWA8HpF3If4Np9yBcli5lyYYHCfvLk/AymQvVO3HJ9CnxJq+LugNgTtY15YRqvNP4kX1
+	 RMgptGa7bYvQKQoIrgDb9VkR/u6p7VqPscz4tOFXUj0hnHaxow+XKPDYXkIFQYO7xQo0q
+	 IF/kMArvxTlPkoRG8Um6avZbWxW+/VONXLYxHYvg5BaXAsi03kyYOL+eXyh/AJwPG66iV
+	 HVt8ZMWOT0OPSJpz44x4Ftl69OD3pANYRdetdSpVT3nPDqLu0ZH4UTg378neZNYdxtQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bairaktaris.de;
 	spf=pass smtp.mailfrom=bairaktaris.de;
-	dkim=pass header.d=bairaktaris.de header.i=@bairaktaris.de header.a=rsa-sha256 header.s=google header.b=r+andFfu;
-	arc=none smtp.remote-ip=209.85.218.50
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	dkim=pass header.d=bairaktaris.de header.i=@bairaktaris.de header.a=rsa-sha256 header.s=google header.b=t+WLQy0B;
+	arc=none smtp.remote-ip=209.85.218.48
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5094860A2605
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 16:42:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5094860A2605
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEDB60A261B
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 16:42:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5BEDB60A261B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bairaktaris.de header.i=@bairaktaris.de header.a=rsa-sha256 header.s=google header.b=r+andFfu
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c43373ae89aso335889566b.3
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 08:42:37 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=bairaktaris.de header.i=@bairaktaris.de header.a=rsa-sha256 header.s=google header.b=t+WLQy0B
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c37b612635bso314234566b.3
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 08:42:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bairaktaris.de; s=google; t=1793551356; x=1794156156; darn=vger.kernel.org;
+        d=bairaktaris.de; s=google; t=1793551357; x=1794156157; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=h3piVyXKbxXF45kzvRxf3YzN7IqLeFtgxZUOFf2nvGw=;
-        b=r+andFfuYmw8tZ/lBNJViy2W2AEcxc6un9UYY5rwNr/Jhvd8dYXvktpWrfuHUdSTIa
-         Rj+FTyXbSeEYNMd9WHo04RID4gHh4ToLGokARfRdSJPVtObzrE5lj4dVRoWkz3KWltWM
-         tduyC8cQAXFXrR2spedEX/2jERqpZV+3PBFKzkVW8MK0Y7eq7/HYLH3WnsOqfVBxTeA0
-         W6X+rBGiJYMNz47X00qO8ibKU7G/gl0eAAKdH3ePWlNQph4Nwf3hhJV64aJPGUtrWmjf
-         cud50d7G7XSl38GfoPDsDhn6+PFioPVvaTuvN6TUwnavvqGREFxUNBnRG6NkGIs6fM/T
-         8m8A==
+        bh=TlraSu9AjY+wAsB7GZqoG24SclQpPomTr5qFhEYxo8U=;
+        b=t+WLQy0BSuGtr5MwiFW+b4clPwk3wSTjU+5yXt6LJzMFRj3AbwtXZNjZ5yqwM+6/5U
+         r6RcbLa9SB0RIU/FmeukHD7Qsh/SPhmC04PJX9Be898pt4rhAqumfA/NKiDz/sp42awz
+         7umJQaQBwZgek5PWiM73Jq5fCjyM7Vja9ncJVOgbR97aDYVe/3tpQ2qfX3vRZ+BIahAo
+         sWJlShjct0wAwCegAVO9OXOq7MCCSMrq10k7M+pTL712SEvwNLV/i6zh3FiXe1feCDU9
+         MHsrD81qz252LKeme69QIcEv6mqWoDmcdXqGrEcoCR74fiZRK53WULOdT1Co588B6Dii
+         eNxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793551356; x=1794156156;
+        d=1e100.net; s=20260707; t=1793551357; x=1794156157;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=h3piVyXKbxXF45kzvRxf3YzN7IqLeFtgxZUOFf2nvGw=;
-        b=nSXq7+ct1qjmT4PMBHczLBEnr8pfkx3TqSmhHSlF0jpAyWJgppC6HGk0FeLZy6PDxL
-         z68/OAsWF88aAfDb8D3GCkSI8MWxPggRLUHjO1ZJljABvSSLMbg17lBn6+zPlTG+NIWv
-         geIuUVkrAVIjpfuOCQv8mlARo4JLhSKBmnmYEQokLonvhIDBWOl7e9rHzFWn9FWyYlid
-         IS+S3cNyb/VsHVyaNA59SFj4vCHhLfIBEPRCzE5bI/IjKcQvVzyja8cSDOzZNFb1EN63
-         iAHjhTwKRkgSm2TCCWHTC2XHmjZ6RQGSAST6RwcuXFnu358RhMb/2vfpjBS9y0xE7u7q
-         PylQ==
-X-Gm-Message-State: AFq9FYJK3/qcwFofFF4/zL8dQbVdXnzK+CdhJoZoTGyGvnTOdU8iw8sl
-	earbc24QfEM9ACIvabDczXMWsXeRbXUoLzSRLmSc1qJqObmlpbepWvtb28c35S5vFOipvRb5E8H
-	iOl/1Yr7s
-X-Gm-Gg: AYBFou136UgYKWKxujaZgHY2aFluwOgIXX67sFlGbpCEbkZWvlccXtYL0Mumcsp4UVl
-	7NIpgyj0Sw+DdXU8IAtnBxuTfIxPywC1J7hEmylXrIj0SzUj6f40x3okp7SswX0f3n/jjy5GeL/
-	gchNeWCAI/Z8AFvtOji8k4fQjokecGJiNxl4tRZ5hh/zv1Y0Ro+sG/mLMmjYvk/VIvAWihC2QhL
-	ER9R1N+ttTK84ueXrYAU2LTxpw9EI2kMuixiw/ln+R0u600v1FoUXSF9PZkXSdz1cZ/Fhj7Mnsz
-	0I62K9pyBSfO3ThlL12nVhqcQvYyN6bLu0n2PgCE9sNW+okbNJt0/m/CP7H/ZaNID4uz8WsIRq8
-	EXip5/Wwe37mXVjuu8M1HbIf1tpe04TdOX0EMzMSc7F2a2tmAuyO8x6PBq72EgGdVp426xMWeP3
-	KgFT0M30qlJzjHVGL88NJo0XZzYvdOnI2R8OM7UWcwCSmuMzN7P7oIPFrDv/Bh2ea6WrcrDGeVi
-	yfluxUWIIwzmIRNyvFHAksVJZsyhPRvArNkifAXvDc9lkiUHckj1Qf9L7Q4MUUJxl2c8oG6M36Y
-	61KaJ26OB7QNkCwty+zAs4rvSufEgrd5wv4tZmHujxPsCYIy5QRq8GK5h5yIRbA421TQhBsDWNa
-	CHNeiSYsvkLyUSVctKtCB9R5VizKdC4qRRNJQ1FJ1VhF9x5UDChIHw9vNf+7WSn6vjTWxICmrKP
-	ykHs/ejoX2RR/wGWxXY0JR8Lcu24ImYrYFC6OA6A5iyk9jWXi+WV180bs0Ul6iow4sFN2Qz9Xtr
-	qkTYww7D4tJdNSqJZGCgXZHazYxY/iEfR3E5vQBZBMwQE1MUVoC6btuAqYm9I6MxpUXfCRNB3Nc
-	4nJ3oVCvC9KfHrcER04=
-X-Received: by 2002:a17:907:3e1f:b0:c42:82ac:b6a9 with SMTP id a640c23a62f3a-c4ca7b411f4mr624706166b.29.1793551355786;
-        Sun, 01 Nov 2026 08:42:35 -0800 (PST)
+        bh=TlraSu9AjY+wAsB7GZqoG24SclQpPomTr5qFhEYxo8U=;
+        b=DkKbXeV/Cbyz4hl9fnRYJzaqc1h3jgROb0zfrEGmrniwrBfHPbuDA1DbP3EozlFWFP
+         zBSfBDeIOwq1VR1KLVGhvTB7VYcl79bnpOOm2w6fG0iluf6jj1cqaHeb0+2uDeoDbCSy
+         XENWQmjw3M2obPyt3eEK3GwnTBG4uZDNwCXaRt1Wm6iD1xVf+Gr9EAr9zw6+OWCtnPP0
+         Kj1YLUTZdPfvP20jmoaIE9FyIrg352Nz386SZS+4Ywu9d6sppYMcWUIkkYWXhOQYIbLI
+         uofM7RZJVkKJ1XQV2wN8Wcs//Kut1aPhXcRVf6Y6bacNWLqLzMi/0t6KGfsMr+j9X/RG
+         AGIA==
+X-Gm-Message-State: AFq9FYIbtYxJL609INZpmRk2/V4F0/kl5o6N6SCpVGugGwdNhdtYkyrw
+	3n2WjQ5DKhD6CqKVPqmmgnGScEcfSzp5SmKXJIKyAScbt3wvCc2rGYKQ3uyLr+xrelniuZwSqrg
+	fORWVzzRG
+X-Gm-Gg: AYBFou3lzdv64X/kNJU9R1Uk9BIvHUsiciE52zAgKkPFwAlPutLxNoe6GGgBR9NqwQZ
+	S0ZQeD2gC3QBiUDGTjKgFxD25eYBF/kZY0bgZopsybKlwPRJiVVrXMuJyzD93VaV+IOV+EbR3Ru
+	mR5P3xJPq0Avky8nBU0hgSgZQMGsL5mNVQqYdybee1xv8Ieslh3jCgQtyZUvxfHxdefpZielzjP
+	oSTtbjRYoQu0ZFy179BarQ1YtS8nbN2fsgbag/R8rO/b3Bv00SQ9yHF6SSZpibPDn6LOTqNalZd
+	GuoDuU8VXqpm6UCA7mt0dzCNQbny98P+TPqk4nGKKBTmPxXXjqhPc+VLJpxwYhb5Sn/U6eJ67Py
+	0EzSQXwivkTOJySLcZ39gFNGRBCE07nMH23LaM7paMtvWSjHmHa2jMqn0sMlApv3HO6afen75fu
+	/sJoEG59g1WNpYDBtA/0R3ko91NNE/zedIrcMXLu/Xuacabp9BMchwfyTUXcedNB/eDZQ/H0tNp
+	aGRrmif9FHERyi/26TCGqP8d5Y/oleaX2TkBSuue0XQh73PNNYYZ9TKqro+u9U/v1mT7NMRIAR0
+	UOk+08nTErGbVQMU34mnNchxxxEkyN/h+LVDNNON7QW8//8Y9RQQJGDGVgURjcwNqLAsAAsKclx
+	vCOnLvUhj71Pn//7Ii8sqsncK2WP6Ll+MbmiOKpjKnbvjQREkyhnB/8M+8RoBVv9RxVTC3UA9WH
+	3pKTm9W98XQlcR4KHCJdGAH3SilZDX73Bh6VsRu5SXBdzbsf0QpLeR2EKomBzeoUpAa2WS+45Zm
+	j6Z7kraeOxk3d6LfNGF4UYio5rX0G9gx5NvcqLcvtZa/4iMukHwtPtunESPQjLO1sbIBXJYQm2j
+	kNYLtHb55Xhla8thB6I=
+X-Received: by 2002:a17:907:2d8e:b0:c42:102f:15df with SMTP id a640c23a62f3a-c4ca7a0dc8cmr673791066b.8.1793551356711;
+        Sun, 01 Nov 2026 08:42:36 -0800 (PST)
 Received: from Desktop (p54aff88b.dip0.t-ipconnect.de. [84.175.248.139])
         by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4cabe0f37esm296622966b.33.2026.11.01.08.42.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 08:42:35 -0800 (PST)
+        Sun, 01 Nov 2026 08:42:36 -0800 (PST)
 From: Julius Bairaktaris <julius@bairaktaris.de>
 To: netdev@vger.kernel.org
 Cc: dsahern@kernel.org,
@@ -100,9 +100,9 @@ Cc: dsahern@kernel.org,
 	richardbgobert@gmail.com,
 	ecree.xilinx@gmail.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v4 2/4] net: gso: count the inner UDP header of encapsulated UDP GSO packets
-Date: Sun,  1 Nov 2026 17:42:30 +0100
-Message-ID: <7b6a12fbe0853f7faf2987610e25957d2017bd54.1792838740.git.julius@bairaktaris.de>
+Subject: [PATCH net v4 3/4] ipmr: set up GSO state for tunnel vifs
+Date: Sun,  1 Nov 2026 17:42:31 +0100
+Message-ID: <529dd7ba1395f17c0b328ab2a597769809cbe720.1792838740.git.julius@bairaktaris.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1792838740.git.julius@bairaktaris.de>
 References: <cover.1792838740.git.julius@bairaktaris.de>
@@ -117,35 +117,81 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-skb_gso_transport_seglen() adds the inner TCP header length for an
-encapsulated GSO packet, but not the inner UDP header for
-SKB_GSO_UDP_L4, whose gso_size covers the payload only. Every segment
-of a UDP GSO packet in a UDP tunnel, built by UDP GRO behind a tunnel
-socket or sent with UDP_SEGMENT over VXLAN, is counted 8 bytes short.
-ip_forward() and ip_finish_output_gso() then let DF segments that
-exceed the MTU by up to 8 bytes leave unfragmented.
+ip_encap() pushes the outer IPv4 header but does not set SKB_GSO_IPXIP4,
+skb->encapsulation or the inner headers. A GSO packet forwarded to a
+VIFF_TUNNEL vif is then rejected by ipip_gso_segment() and dropped in
+validate_xmit_skb(), after being counted as sent. A device with UDP
+segmentation offload is handed a GSO packet whose transport header
+points at the inner IP header.
 
-Add the inner UDP header as the unencapsulated branch does.
+Call iptunnel_handle_offloads() and skb_set_inner_ipproto() as
+ipip_tunnel_xmit() does, reserve one outer IP ID per segment as
+iptunnel_xmit() does, and set the outer length with iph_set_totlen(),
+since a GSO packet plus the outer header can exceed 64 KB. A GSO packet
+that GRE or UDP tunnel GRO marked as encapsulated already uses the inner
+headers for its own tunnel; drop it, as segmentation did before.
 
-Fixes: ee80d1ebe5ba ("udp: add udp gso")
+Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
 Signed-off-by: Julius Bairaktaris <julius@bairaktaris.de>
 ---
- net/core/gso.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/ipmr.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/net/core/gso.c b/net/core/gso.c
-index b5bd269e56e4e..eb95c9d2819b1 100644
---- a/net/core/gso.c
-+++ b/net/core/gso.c
-@@ -156,6 +156,8 @@ static unsigned int skb_gso_transport_seglen(const struct sk_buff *skb)
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index acacaae05cc49..98e38839f8ccb 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -1849,12 +1849,21 @@ static struct notifier_block ip_mr_notifier = {
+  * This avoids tunnel drivers and other mess and gives us the speed so
+  * important for multicast video.
+  */
+-static void ip_encap(struct net *net, struct sk_buff *skb,
+-		     __be32 saddr, __be32 daddr)
++static int ip_encap(struct net *net, struct sk_buff *skb,
++		    __be32 saddr, __be32 daddr)
+ {
++	const struct iphdr *old_iph;
+ 	struct iphdr *iph;
+-	const struct iphdr *old_iph = ip_hdr(skb);
  
- 		if (likely(shinfo->gso_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6)))
- 			thlen += inner_tcp_hdrlen(skb);
-+		else if (shinfo->gso_type & SKB_GSO_UDP_L4)
-+			thlen += sizeof(struct udphdr);
- 	} else if (likely(shinfo->gso_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6))) {
- 		thlen = tcp_hdrlen(skb);
- 	} else if (unlikely(skb_is_gso_sctp(skb))) {
++	/* The inner headers can describe one tunnel only */
++	if (skb_is_gso(skb) && skb->encapsulation)
++		return -1;
++
++	if (iptunnel_handle_offloads(skb, SKB_GSO_IPXIP4))
++		return -1;
++	skb_set_inner_ipproto(skb, IPPROTO_IPIP);
++
++	old_iph = ip_hdr(skb);
+ 	skb_push(skb, sizeof(struct iphdr));
+ 	skb->transport_header = skb->network_header;
+ 	skb_reset_network_header(skb);
+@@ -1868,12 +1877,13 @@ static void ip_encap(struct net *net, struct sk_buff *skb,
+ 	iph->saddr	=	saddr;
+ 	iph->protocol	=	IPPROTO_IPIP;
+ 	iph->ihl	=	5;
+-	iph->tot_len	=	htons(skb->len);
+-	ip_select_ident(net, skb, NULL);
++	iph_set_totlen(iph, skb->len);
++	ip_select_ident_segs(net, skb, NULL, skb_shinfo(skb)->gso_segs ?: 1);
+ 	ip_send_check(iph);
+ 
+ 	memset(&(IPCB(skb)->opt), 0, sizeof(IPCB(skb)->opt));
+ 	nf_reset_ct(skb);
++	return 0;
+ }
+ 
+ static inline int ipmr_forward_finish(struct net *net, struct sock *sk,
+@@ -1982,7 +1992,8 @@ static int ipmr_prepare_xmit(struct net *net, struct mr_table *mrt,
+ 	 * What do we do with netfilter? -- RR
+ 	 */
+ 	if (vif->flags & VIFF_TUNNEL) {
+-		ip_encap(net, skb, vif->local, vif->remote);
++		if (ip_encap(net, skb, vif->local, vif->remote))
++			return -1;
+ 		/* FIXME: extra output firewall step used to be here. --RR */
+ 		DEV_STATS_INC(vif_dev, tx_packets);
+ 		DEV_STATS_ADD(vif_dev, tx_bytes, skb->len);
 -- 
 2.53.0
 
