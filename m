@@ -1,56 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793521819;
-	b=nd5naNIh39NyYra7GX2YSLk9bS06wgrAZbWDewvb25D5hWKk2o0IXildv0tlYvXxJyxs
-	 dY+qG47243q9pNP4WuAC3zAzyESYzZRcZcuuaz/su/hvrB+iRDCI96/IJ6otlseeVzWLi
-	 I73ceM112OFAGX75wjMkNfWF93moW9Db5iyN7Ot6zFkMn2YkFWSXFN1erDwVzNBHkC6QU
-	 txVUYpLVylR/cflp7aaISZ6nZlhXAKP/KIZO559OU4LmgtYAEKp1sTcCjTWT80Aqu7+a2
-	 ERjKliukUgTAW/L95/HYH/Dmq0P8jmjQdqsi0GfckuayjPVoMCUBmGuq9ye+VvRh5WQ==
+	t=1793522200;
+	b=21OSitH5C+GwGUBzWftrfFXU8t2i0BSlP2m52xUDNfod/CA+h8+lmLDcX4T2zTQik/zs
+	 3pYCyBhXVls1mLkTfhKS2w6z72pz1onfCutp//JxkCnP/sg0D+dEfXcGj+jvHEaqnmr7P
+	 5in+FrbqRQkaUpGbHd5GjIiPFaVrjGnxcNHmAWmMK3ssKQvkGrRmbZ85cLTrNVsIY5AL4
+	 4slFOsw9EXOuO8JxfLdTdyQ46DqjHHzFMsB5taHhIzAJu6meHnOx0ieQA86SRFd1eRRD/
+	 DN8YzKhl1xFZk7LclUab3jtSKDPicvb943KrVmQkAdd5MRgcEblX8Sh2OCt6jFCM3Zg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793521819;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793522200;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=sq0GUY/ITn4SQxq/x1kkdeNsQ++qEz4hJvkAkG/WKPU=;
-	b=uHySY9f7c0etHafltNseKZlPF888D5bbSOWQMugeBb16Qv+APIX/6VviQVk3GYo86P0h
-	 r+e1uW9ddm7mNBpVrR/gCUwQsdCWcJC2fva8B/w7k7uw9DAa1Ep34y/tIMvQf0Afg7V6l
-	 vqpQDcJpG461EhgPHS5Y7GP5u6dsRql4PzDRNkLhSkOOTEKsUTwtFb1czFkfWUTSdI3iZ
-	 MKGdIgENs56E1pHHNhsAdnknArKT23XPMfxFdmE1Hx5uvrurfzTQgLZzNMpQXloml+lrq
-	 xPUSl2Kr6o4AUE4lVWJl0/fz0qE4MX+IPyrsrLQU9B5YNNe4ftP8sHsiCm8Q/jaJSKw==
+	bh=LXCicZxC3YM8+qlDZ22L2zoCpC7gbAYtbkXJ6Bwzeew=;
+	b=eeRJw89iTkKcUxYQT0cZnQXFoGTGHoDlRr73NuuXkS6kGjjF7VIM5c40k0Q7UlMM9eS9
+	 /AvJDsYJBIUtu2WApibkCxfPVJb7TtV1UzeqtDeNCpvVb75gJyxRZ/52djKbSyQcUi96I
+	 uM7VndQJpRm/3OAj+fIxSOchDQ8k1b7CJPPl8+uR4pP5vWDz9O5uPDsGFkuDgM01j7g5m
+	 0A9k4BlPYbNZ5T8tgZuBI88n6WDn/Gaaka2jhs50X05aBQRYWcQDbL5/CIv/VRVbD2pSM
+	 kSnMNtiAvYyD/jQF4h/Moy0Odpvv5B1OChaHN750Gv7jUEluPZLIpC0F5n74cKmWQGg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=elw9lDlb;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Tes5Dti/";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10EB606A325;
-	Sun,  1 Nov 2026 08:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C474A606A326;
+	Sun,  1 Nov 2026 08:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=elw9lDlb
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0EF1F000C1;
-	Sun,  1 Nov 2026 08:30:17 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tes5Dti/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420441F00A15;
+	Sun,  1 Nov 2026 08:36:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793521818;
-	bh=sq0GUY/ITn4SQxq/x1kkdeNsQ++qEz4hJvkAkG/WKPU=;
+	s=k20260515; t=1793522199;
+	bh=LXCicZxC3YM8+qlDZ22L2zoCpC7gbAYtbkXJ6Bwzeew=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=elw9lDlbOmEjCZYozD36NQhOlOae9eklhjYFasrHzcrnyMhvUeziCy9CqIujQUs9L
-	 S/ghqD5Xzq8eNRw0xtinzVYmLJjdMFZ/YQUM/ussoNwGcWwhLKCu1t1hW0hn/2mzV6
-	 8pN6cyK1an3Z8Hk7WKPcmHk3Kxxs5uYFIJJWJ+tvek1iWQbhpZFIexG2inf4a2Xtkk
-	 zF2zyPQVSiqskfauYkImEhxKQ9OYW+9oqm03GqLtGDuwaRL4SvHnGmbHadOYgOTMek
-	 d/13500EnpMa5lLKcX67IdPZZhohnjMmugmsuwmcDAhrivBVuKFOgLOFX+LzawLDo9
-	 hp8c26JManPzw==
-Subject: Re: [PATCH net] tcp: fix device binding after failed IPv6 connect
+	b=Tes5Dti/hG/1AhQHhdTiEkH62QiB64z9bqwJPK6OFBMM83BHIUFcSNzY2CLX3rIcR
+	 lLJ3dOUnndz38pX+F1FM9UoKEFTavddL+vK9Q/P1dEkaEqisVrPF4REyRh00JXn2if
+	 LdTJshZ7prnDXXN17DS+ts6H0YTM8XU5uduc2p0DbfdxZBzNMpFy1TDxLM2gUsAEM1
+	 LFF13ZS7cQc+xCyfWj8tG1PMxuFuci9QUebs+hwwQ80sKlfGhGtFTeL5xgepnok/r+
+	 dupu7dyO6IRLe5VZW2roR1iFRwrPZIJRS0QlHyZUm1Bfyppl/vC1tXLo4ho4fy9Ysf
+	 XeT1UuCyoTEIA==
+Subject: Re: [PATCH net v4 5/5] net: phy: postpone PHY interrupts during sleep
+ with MAC-managed PM
 From: netdev-bot+sashiko@kernel.org
-To: yanxia@cmss.chinamobile.com
-Cc: netdev@vger.kernel.org, edumazet@kernel.org, ncardwell@google.com,
- kuniyu@google.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, torvalds@linux-foundation.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, yana06070@163.com
-Date: Sun, 01 Nov 2026 08:30:17 +0000
-Message-ID: <179352181715.3131.4301656429935322614@kernel.org>
-In-Reply-To: <20261031074654.73952-1-yanxia@cmss.chinamobile.com>
-References: <20261031074654.73952-1-yanxia@cmss.chinamobile.com>
+To: iav@iav.lv
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ maxime.chevallier@bootlin.com, lukas@wunner.de, rafael.j.wysocki@intel.com,
+ wei.fang@nxp.com, niklas.soderlund@ragnatech.se, paul@pbarker.dev,
+ florian.fainelli@broadcom.com, opendmb@gmail.com, Thangaraj.S@microchip.com,
+ shenwei.wang@nxp.com, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Date: Sun, 01 Nov 2026 08:36:37 +0000
+Message-ID: <179352219781.3131.16504721138901563596@kernel.org>
+In-Reply-To: <20261031-b4-phylib-mac-pm-irq-v3-v4-5-5ba23b3ff9a4@iav.lv>
+References: <20261031-b4-phylib-mac-pm-irq-v3-v4-5-5ba23b3ff9a4@iav.lv>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -64,10 +69,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 2 · Medium: 0 · Low: 1
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -75,186 +80,113 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The fix is incomplete.
-- [High] tcp: restore sk_bound_dev_if before inet_bhash2_reset_saddr() in
-  tcp_v6_connect()
-- [Low] The restore at the `failure:` label is unconditional.
+- [High] net: phy: false wakeup in phy_interrupt() during mac_managed_pm
+  suspend
 
 --
 
-tcp: fix device binding after failed IPv6 connect
-
-This patch saves sk_bound_dev_if when tcp_v6_connect() is entered and
-restores it at the failure label. The goal is that a binding taken from
-sin6_scope_id for a link-local destination does not stay on the socket
-after a failed connect, so a later connect() to ::1 on the same socket
-can succeed.
-
-> diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-> index e006a30360eae..7bb8266d9d1b7 100644
-> --- a/net/ipv6/tcp_ipv6.c
-> +++ b/net/ipv6/tcp_ipv6.c
-> @@ -146,6 +146,7 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
->  	struct flowi6 *fl6;
->  	int addr_type;
->  	int err;
-> +	int old_bound_dev_if = READ_ONCE(sk->sk_bound_dev_if);
->  
->  	if (addr_len < SIN6_LEN_RFC2133)
->  		return -EINVAL;
-
-[ ... ]
-
-> @@ -358,6 +359,7 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
->  failure:
->  	inet->inet_dport = 0;
->  	sk->sk_route_caps = 0;
-> +	WRITE_ONCE(sk->sk_bound_dev_if, old_bound_dev_if);
->  	return err;
+> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+> --- a/drivers/net/phy/phy_device.c
+> +++ b/drivers/net/phy/phy_device.c
+> @@ -332,16 +332,55 @@ static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
+>  	return !phydev->suspended;
 >  }
+>  
+> +static __maybe_unused enum phy_irq_wake
+> +phy_irq_wake_source(struct phy_device *phydev)
+> +{
+> +	struct net_device *netdev = phydev->attached_dev;
+> +	bool phy_wol;
+> +
+> +	if (!netdev)
+> +		return PHY_IRQ_WAKE_NONE;
+> +
+> +	/* phy_suspend() cached the answer of a suspended PHY, which may
+> +	 * not be reachable over MDIO.
+> +	 */
+> +	if (phydev->suspended && !phy_can_wakeup(phydev))
+> +		phy_wol = phydev->wol_enabled;
+> +	else
+> +		phy_wol = phy_may_wakeup(phydev);
+> +
+> +	if (netdev->ethtool->wol_enabled || phy_wol)
+> +		return PHY_IRQ_WAKE_SYSTEM;
+> +
+> +	/* A MAC that manages PHY PM stops the PHY itself: the link
+> +	 * interrupt that follows is not a wakeup.
+> +	 */
+> +	if (phydev->mac_managed_pm)
+> +		return PHY_IRQ_WAKE_NONE;
+> +
+> +	if (device_may_wakeup(&netdev->dev))
+> +		return PHY_IRQ_WAKE_NETDEV;
+> +
+> +	if (netdev->dev.parent && device_may_wakeup(netdev->dev.parent))
+> +		return PHY_IRQ_WAKE_PARENT;
+> +
+> +	return PHY_IRQ_WAKE_NONE;
+> +}
+> +
+>  /* Wakeup interrupts may occur during the system sleep transition when
+>   * the PHY is inaccessible. Set flag to postpone handling until the PHY
+>   * has resumed. Wait for concurrent interrupt handler to complete.
+> + * Decide which wakeup event a postponed interrupt reports now, while
+> + * the PHY can still be read.
+>   */
+>  static __maybe_unused void mdio_bus_phy_suspend_irq(struct phy_device *phydev)
+>  {
+>  	if (!phy_interrupt_is_valid(phydev))
+>  		return;
+>  
+> -	WRITE_ONCE(phydev->irq_suspended, true);
+> +	phydev->irq_wake = phy_irq_wake_source(phydev);
+> +	/* Pairs with smp_load_acquire() in phy_interrupt() */
+> +	smp_store_release(&phydev->irq_suspended, true);
+>  	synchronize_irq(phydev->irq);
+>  }
+>  
 
 [Severity: High]
-Is the restore placed too late for the late_failure path?
+phy_irq_wake_source() runs from mdio_bus_phy_suspend(), before the
+MAC's suspend callback. For a mac_managed_pm PHY, that callback still
+changes the link afterwards. The mac_managed_pm check below only
+covers the case without Wake-on-LAN. With Wake-on-LAN enabled we
+return PHY_IRQ_WAKE_SYSTEM, so any link interrupt the MAC causes
+itself makes phy_interrupt() call pm_system_wakeup() and abort the
+suspend.
 
-When inet6_hash_connect(), tcp_fastopen_defer_connect() or
-tcp_connect() fails, the code jumps to late_failure. That label calls
-tcp_set_state(sk, TCP_CLOSE) and then inet_bhash2_reset_saddr(sk),
-and only after that falls through to failure. Both calls therefore
-run while sk_bound_dev_if still holds the sin6_scope_id value.
-old_bound_dev_if is written back only at the end.
+I can see two ways to get there.
 
-inet_bhash2_reset_saddr() calls __inet_bhash2_update_saddr(). That
-function computes l3mdev with inet_sk_bound_l3mdev(sk), which reads
-sk_bound_dev_if. It then passes that l3mdev to
-inet_bind2_bucket_find() for the wildcard address, and calls
-inet_bind2_bucket_init() if nothing matches.
+WoL in the PHY on stmmac: stmmac_suspend() calls phylink_suspend(),
+which goes through phylink_stop() -> phy_stop() -> phy_suspend(). With
+wol_enabled set and no PHY_ALWAYS_CALL_SUSPEND, phy_suspend() returns
+-EBUSY without calling the driver's suspend, so the link interrupt
+stays unmasked. phylink_suspend() then calls phylink_speed_down(),
+since stmmac sets wol_phy_speed_ctrl, and phy_speed_down() restarts
+autonegotiation to drop to 10Mbps. The link goes down while
+irq_suspended is set and irq_wake is PHY_IRQ_WAKE_SYSTEM.
 
-Consider a socket bound to [::]:port with no device, so tb->l3mdev
-and tb2->l3mdev are 0. It then connects to a link-local address
-whose sin6_scope_id names a VRF slave, with tcp_l3mdev_accept=0.
-sk_dev_equal_l3scope() passes because sk_bound_dev_if is 0, and the
-scope_id is installed.
+WoL in the MAC only, fec for example: netdev->ethtool->wol_enabled is
+set while phy_wol is false, and fec_suspend() calls phy_stop() and
+gates its clocks. phy_suspend() again leaves the link interrupt of the
+PHY enabled. rtl8211f_suspend(), for one, neither calls
+genphy_suspend() nor masks the link status interrupt when wol_enabled
+is set without driver-model wakeup. So the link-down interrupt is
+reported as a system wakeup, although the PHY interrupt is not a
+wakeup source here at all; the MAC is.
 
-If the connect then fails after inet_bhash2_update_saddr(), the
-reset rehashes the socket into a bind2 bucket keyed on the VRF
-master's l3mdev. The failure label then puts sk_bound_dev_if back to
-0. The socket is left with an icsk_bind2_hash whose l3mdev disagrees
-with both icsk_bind_hash and its own restored binding.
+Before this patch these PHYs did not have irq_suspended set during the
+MAC's suspend callback, so neither case could abort suspend. This
+looks like a regression for anyone using WoL behind a MAC that manages
+PHY PM. Did the Helios64 Wake-on-LAN test go through the speed
+downshift in phylink_suspend()?
 
-A later listen() looks up tb2 with the restored l3mdev in
-inet_csk_get_port() and hits
-WARN_ON(inet_csk(sk)->icsk_bind2_hash != tb2).
-
-If another socket shares the port, things get worse. The reset can
-create a duplicate wildcard bucket, or link this socket into another
-VRF socket's bucket. In the second case, closing the sockets in the
-wrong order can destroy the wrong inet_bind_bucket. The VRF tb is
-then leaked with an empty bhash2 list, which later trips
-WARN_ON(hlist_empty(&tb->bhash2)) in __inet_hash_connect().
-
-Before this patch the binding simply stayed in place. Later bhash2
-lookups then at least used the same l3mdev that the reset used. The
-mismatch between the restored binding and icsk_bind2_hash is new
-with this change.
-
-A smaller side effect is that tcp_set_state(sk, TCP_CLOSE) runs the
-BPF_SOCK_OPS_STATE_CB and bpf_tcp_ops state callbacks while the
-failed scope_id binding is still visible.
-
-Should sk_bound_dev_if be restored at the top of late_failure,
-before tcp_set_state() and inet_bhash2_reset_saddr()? Or is there a
-reason the reset is expected to use the connect-time binding?
-
-[Severity: High]
-
-Does this handle a connect() that fails after tcp_v6_connect() has
-already returned 0?
-
-The restore only runs when tcp_v6_connect() itself returns an error.
-After tcp_connect() queues the SYN, the function returns early:
-
-	err = tcp_connect(sk);
-	if (err)
-		goto late_failure;
-
-	return 0;
-
-Suppose the peer sends RST, the SYN times out, or an ICMPv6 error
-arrives. Then __inet_stream_connect() sees TCP_CLOSE and takes the
-sock_error path:
-
-net/ipv4/af_inet.c:__inet_stream_connect() {
-    ...
-sock_error:
-	err = sock_error(sk) ? : -ECONNABORTED;
-	sock->state = SS_UNCONNECTED;
-	sk->sk_disconnects++;
-	if (sk->sk_prot->disconnect(sk, flags))
-		sock->state = SS_DISCONNECTING;
-    ...
-}
-
-tcp_disconnect() undoes the auto-assigned source address with
-inet_bhash2_reset_saddr() and drops the dst with __sk_dst_reset(). It
-never touches sk_bound_dev_if, so the socket stays bound to the
-interface taken from sin6_scope_id.
-
-On a retry connect() to ::1, sk->sk_bound_dev_if is copied into
-fl6->flowi6_oif. ip6_route_output_flags_noref() then adds
-RT6_LOOKUP_F_IFACE:
-
-	if ((sk && sk->sk_bound_dev_if) || rt6_need_strict(&fl6->daddr) ||
-	    (fl6->flowi6_oif && any_src))
-		flags |= RT6_LOOKUP_F_IFACE;
-
-The lookup then fails with ENETUNREACH, which is the symptom the commit
-message describes. A successful link-local connect followed by
-connect(AF_UNSPEC) ends up the same way.
-
-An unprivileged user cannot clear the stale binding either.
-sock_bindtoindex_locked() returns -EPERM when sk_bound_dev_if is already
-set and the caller lacks CAP_NET_RAW.
-
-So with this patch, the implicit binding is undone after a synchronous
-failure (route lookup) but kept after an asynchronous one (RST, timeout,
-ICMP). Would it make sense to also undo the scope_id binding on the
-disconnect path, or to track it so it can be undone there?
-
-[Severity: Low]
-
-Could this write-back clobber a binding that was set after the snapshot
-was taken?
-
-The restore is unconditional. It runs even when the sin6_scope_id
-branch never changed sk_bound_dev_if. tcp_connect() runs the BPF
-connect hooks before several of its error returns:
-
-net/ipv4/tcp_output.c:tcp_connect() {
-    ...
-	tcp_call_bpf(sk, BPF_SOCK_OPS_TCP_CONNECT_CB);
-	bpf_tcp_ops_call(connect, sk);
-    ...
-			return -EKEYREJECTED;
-    ...
-	if (inet_csk(sk)->icsk_af_ops->rebuild_header(sk))
-		return -EHOSTUNREACH; /* Routing failure or similar. */
-    ...
-	if (unlikely(!buff))
-		return -ENOBUFS;
-    ...
-}
-
-A sock_ops program can call bpf_setsockopt() with SO_BINDTODEVICE or
-SO_BINDTOIFINDEX from CONNECT_CB, and sol_socket_sockopt() in
-net/core/filter.c accepts both.
-
-If tcp_connect() fails after that, the path goes late_failure ->
-failure. The value saved on entry then overwrites the binding the BPF
-program just installed, and no sk_dst_reset() follows. Before this
-patch, that binding would have survived.
-
-Would it be better to restore only when tcp_v6_connect() itself wrote
-sin6_scope_id into sk_bound_dev_if?
+I'm not sure what the right fix is, so two questions. Should the
+mac_managed_pm case count only phy_wol, and not the ethtool flag that
+may describe MAC WoL? And for PHY WoL, can the wakeup be armed only
+after the MAC has finished suspending, for example from a later
+suspend phase, so that link changes the MAC makes itself are not
+reported?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261031074654.73952-1-yanxia%40cmss.chinamobile.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261031-b4-phylib-mac-pm-irq-v3-v4-0-5ba23b3ff9a4%40iav.lv
