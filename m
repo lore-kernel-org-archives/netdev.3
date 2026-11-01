@@ -1,75 +1,45 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.151
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793530123;
-	b=EHGLpp3c9ThriXvBpgOdbAec4T/kHiC3fYwFSRX9XkMFUGyXtJhd3F08Ie74ZkXd+CKv
-	 wdErBIjyhZ/T5fM39TsjUONvTK2L1QUVSwte9wv7DLVSOxnpS/zAnUvMH0DHxXsJokIbz
-	 Y5uwuZMJQAg1KQHI21ucZP5BLrIOCSeMbNEBolXnnMh0E5jkX2Hl+YEgmG9QEYSjdatnp
-	 xIe7lLZEqKJZpWQ17YDMNubUYTZLst+NzZlewq8sbrAxBkxWZwX3wwDtmnsspiY2MFXEw
-	 hh41Xxxdf0u7km5boU0EgRqgCKXZjDiwabKw6W/WPnTbp9G99vcagk+fu1vca4e1/rg==
+	t=1793530328;
+	b=Rar9Gf1jMANl7HOyZI5hpRer8xCgpb5ftEmK5H40k7sgIA8J8jT8YcqV5WQa3hUmfx2H
+	 WJxzgxPvcL68wbQlbIt9aPPzyQ+5+PkfCZnECG2hgnMsJFl3X0bCbLVQR5a2JKtWP8c/U
+	 Ittda2XXcEubmV0du+uvI6Vrd0qdz7ORcoPetT+oGjDHUoMGsFz/qkFC3td2FhikKGepN
+	 KlNtQp9lcdH/4hTJT16FmJ495612Leavj8pu+LBoX/EseOc3xN0/DoCmY5GfQ+6FFkAJq
+	 sdDMilhKLmxFhzmf3OiQGFVhie7PnbHhd3pWMEc2vWHIj1yK91+ZEw92vXhpWGjeHWQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793530123;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=vUuYB/b4qAlVy17rDjkH2MMem8gIyNHOZnxT7q6yqts=;
-	b=D6W4NYnrnqyNlPzVehLTpzUmfUgh42f3n4hPkGUdXemdhDhQBuG7nfnFMHh1Du3cT/BA
-	 JrXunHvDGc8BW4YhEoAt2F8qxZW5sccGXAhaacdvKG6WDc6E8ZmisBI8oqFxZWfKxeGCT
-	 /j15vxWNwQbtILctLo2OGmklNK/iego4ozCi1413R1A0JnOaLQzLNlMh5kbVKD/pCknvb
-	 LiVDsIrLuc/qrX/SmHRJmGRBILnajFsiJ0RNyE2UzPdE0B4gzF+vMN3fLO8mJW/RORNq/
-	 YVAZOskw/RhnbUQutyVMlAZdAiVTdvS4fucZkxE9TpUjSOUAJBgsBJbLminopW6xc7w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793530328;
+	h=Received:DKIM-Signature:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
+	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=pJVVKwHbhmfTEf9BsmBhWwB3UfIBhltnU3zTc/bmdjo=;
+	b=kHjfFcSIkYIZDlZecGeDHWVs4emKYwEiBKB2xZGaGKQwVQempPQPCyeJX9j2KO1Pyzev
+	 C3NVpbRNMD45aDRcK+9I/mg/L650Hy/ur6KknQQYRQI7/DtbTc2vZ6BuAwkt4iBhH4Kox
+	 l+I/rSb4rGtB9ya4furnbNQKsAx6kcVa5T6UErAvuZpx2LW+CFw1QA6Xgqc0t3ecjpnW6
+	 sGqX2KZTnu6XeZKXJOiZoATYBQaYnZnwgsEbmBtKG8wf1ZFdQap3h36r9/wJuJ/fdqGGu
+	 gCuVD8dX2gxoZTTCe+NDs6c4HGx6LRHJBpdNIaS6+cI3G/VzO7CZ3VrwsQlefjDs9KA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=QP4VshIu;
-	arc=none smtp.remote-ip=111.22.67.151
-Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE5C606A324;
-	Sun,  1 Nov 2026 10:48:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DFE5C606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="l0c/lPT/";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6E6606A324;
+	Sun,  1 Nov 2026 10:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=QP4VshIu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=QP4VshIulSWgbtkceG+EikOgflJ+S3jBif/7NR/vCEqUD9TRoA0O6eh7E/oy6RE2nWPnDKK3nCemF
-	 LzXchgh0U6weTAab3xVZ5YvNEiLHWkMkR3LdvnLymmDZmnPpIW0vJoO+Z4du4StmGyAIex8jAeKmtB
-	 cfdR2eoOl8nntq+w=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app02-12002 (RichMail) with SMTP id 2ee26ae71900cb9-bb486;
-	Sun, 01 Nov 2026 18:48:36 +0800 (CST)
-X-RM-TRANSID:2ee26ae71900cb9-bb486
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[112.23.104.16])
-	by rmsmtp-syy-appsvr05-12005 (RichMail) with SMTP id 2ee56ae71902977-a846b;
-	Sun, 01 Nov 2026 18:48:36 +0800 (CST)
-X-RM-TRANSID:2ee56ae71902977-a846b
-From: Xia Yan <yanxia@cmss.chinamobile.com>
-To: netdev@vger.kernel.org
-Cc: dsahern@kernel.org,
-	idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	stable@vger.kernel.org,
-	yana06070@163.com
-Subject: Re: [PATCH net] ipv4/ipv6: preserve multicast filters after a failed source leave
-Date: Sun,  1 Nov 2026 18:48:24 +0800
-Message-ID: <20261101104804.8258-1-yanxia@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261030063603.697510-1-yanxia@cmss.chinamobile.com>
-References: <20261030063603.697510-1-yanxia@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l0c/lPT/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC941F000C1;
+	Sun,  1 Nov 2026 10:51:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793530327;
+	bh=pJVVKwHbhmfTEf9BsmBhWwB3UfIBhltnU3zTc/bmdjo=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=l0c/lPT/eHsnt1tu0zHEi2fcjmyhFiZ/YhFGHrjw3FbL3pYqJvbloIdadawwaB612
+	 FBUXj/oiY0K3qDL8wX/neSpZzhEHZkMFvAKvNkqQTnumEInIkI6/gCd7lKUmkFdqHz
+	 PxfZ7v4jGDpZvZdkWaoBpXrQErbRQXKlIjTIeRWOR5hVqs/5jLB0rcT1poWWRrLIEx
+	 keRC/Y8Be+MNkn9QSHiLWHWKDEisoJA/OWDywAbucKI3nYaJJ9dQt8eIPH0grbMLPQ
+	 t9IDpoyBs4x4Ix9A6NGoqNrAX/wPqbatMCkyFH7cI18gzxBx4BVvfCmGl/YnX8O4C0
+	 1UBl0NAQojcig==
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,41 +49,131 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 21/27] phy: rockchip-inno-usb2: Add RK3572 support
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Cunhao Lu <1579567540@qq.com>
+Cc: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
+ Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Elaine Zhang <zhangqing@rock-chips.com>, Lee Jones <lee@kernel.org>, 
+ Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>, Ulf Hansson <ulfh@kernel.org>, 
+ Andi Shyti <andi.shyti@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>, Jisheng Zhang <jszhang@kernel.org>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ David Wu <david.wu@rock-chips.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>, 
+ Lukasz Luba <lukasz.luba@arm.com>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+ Manivannan Sadhasivam <mani@kernel.org>, 
+ Thinh Nguyen <Thinh.Nguyen@synopsys.com>, 
+ Jaehoon Chung <jh80.chung@samsung.com>, 
+ Shawn Lin <shawn.lin@rock-chips.com>, linux-clk@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ mfd@lists.linux.dev, linux-gpio@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-pm@vger.kernel.org, linux-i2c@vger.kernel.org, 
+ linux-serial@vger.kernel.org, linux-mmc@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, linux-phy@lists.infradead.org, 
+ linux-usb@vger.kernel.org
+In-Reply-To: <20261022-add-board-ok3572-c-v1-21-0b0fd85a31ee@qq.com>
+References: <20261022-add-board-ok3572-c-v1-0-0b0fd85a31ee@qq.com>
+ <20261022-add-board-ok3572-c-v1-21-0b0fd85a31ee@qq.com>
+Date: Sun, 01 Nov 2026 16:21:52 +0530
+Message-Id: <179353031285.2955.4272173079718014092.b4-reply@b4>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2049; i=mani@kernel.org;
+ h=from:subject:message-id; bh=31exuPQfsAOhnwIjmXEjjvAlTRXnnjz1PKLb/yyFj6k=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBq5xnKP2pbzdBpJAuX9SwupspI7yJNwomVsnJuz
+ aOJqq74qKuJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCaucZygAKCRBVnxHm/pHO
+ 9WQAB/96KIbnRgeB00Ab1FYAF1roqbKbj5c0aeRO93f5urNJ5r4URepXfyJP8dOuE9JZMVZcr5b
+ GALeNpvXnpsL49mzVQohe0Sp2GxQbbkDvy3WNXMFLbrkiwoNUew3PXjGrpC+WP0iMwunoMh40sM
+ +FfXLZ/BJbcm4CwP6xP2rbTgKlRX+YBDZ+5anFKAflhI8lyjzOroc6CaQKJWA1uoNR/cCsO3b/7
+ PbLuWLleLh5V6qLB832ZwG0rMmEZomEhcXEuXh11t9ERKG4ysL4hKV6TinMlLU2Ruhu+iLPuGXa
+ eWPJiKBNr/cTl6yoqPDo7ctlFKJ8f+OZjojQUZ/2GmF6FG2F
+X-Developer-Key: i=mani@kernel.org; a=openpgp;
+ fpr=C668AEC3C3188E4C611465E7488550E901166008
 
-Hi,
+On 2026-10-22 00:11 +0800, Cunhao Lu wrote:
+> Support both RK3572 USB2 PHY instances.
+> 
+> Signed-off-by: Cunhao Lu <1579567540@qq.com>
 
-The Sashiko review of this patch has two open Medium concerns [1].
-Both describe behavior this patch does not change. My reading of each:
+Nitpicks below. With those fixed,
 
-1) Empty-filter mode switch before the allocation in ip_mc_source() and
-   ip6_mc_source().
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-   The mode-switch block is untouched. The diff only moves the sflist
-   dereference up and returns early when no source list exists for a
-   deletion. Add requests still reach the block in the original order,
-   so a mode switch followed by a failed allocation is preexisting
-   behavior. Restructuring that path would grow this stable-targeted
-   fix well beyond the bug it addresses. I'm happy to look at it as
-   follow-up work if there is interest.
+> ---
+>  drivers/phy/rockchip/phy-rockchip-inno-usb2.c | 136 ++++++++++++++++++++++++++
+>  1 file changed, 136 insertions(+)
+> 
+> diff --git a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+> index 7d8a533f24aea..16a36e68cb6d3 100644
+> --- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+> +++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+> @@ -1544,6 +1544,49 @@ static int rk3528_usb2phy_tuning(struct rockchip_usb2phy *rphy)
+>  	return 0;
+>  }
+>  
+> +static int rk3572_usb2phy_tuning(struct rockchip_usb2phy *rphy)
+> +{
+> +	u32 reg = rphy->phy_cfg->reg;
+> +	struct clk *refclk;
+> +	unsigned long rate;
+> +	u32 val;
+> +	int ret;
+> +
+> +	refclk = devm_clk_get(rphy->dev, "phyclk");
+> +	if (IS_ERR(refclk))
+> +		return PTR_ERR(refclk);
 
-2) IPv4 leaves a non-NULL, empty sflist after unblock, while IPv6 frees
-   it.
+Please insert a newline between each operation to improve readability.
 
-   This patch changes neither when a source list is freed nor when it
-   is kept. For a non-NULL empty list the new early check is a no-op:
-   the delete path already tested !psl further down, and the mode check
-   keyed on pmc->sflist before this change. The asymmetry predates the
-   patch. Unifying it would alter observable behavior on a long-stable
-   path, so it looks like a separate discussion to me.
+> +	rate = clk_get_rate(refclk);
+> +	if (rate != 24000000 && rate != 26000000)
+> +		return -EINVAL;
+> +
+> +	ret = regmap_write(rphy->grf, reg + 0x0004,
+> +			   GENMASK(18, 16) | (rate == 24000000 ? 2 : 6));
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = regmap_read(rphy->grf, reg + 0x0010, &val);
+> +	if (ret)
+> +		return ret;
+> +	if (val & BIT(13)) {
+> +		ret = regmap_write(rphy->grf, reg + 0x0010, BIT(29));
+> +		if (ret)
+> +			return ret;
+> +		ret = rockchip_usb2phy_reset(rphy);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	/* Set the normal line-state filter interval. */
+> +	ret = regmap_write(rphy->grf, reg + 0x0020, 0x30100);
+> +	if (ret)
+> +		return ret;
 
-No respin planned for these two. I will follow up if a maintainer
-sees them differently.
+Here.
 
-[1] https://sashiko.dev/#/patchset/98602
+> +	/* Increase HS voltage by 5.89% and double pre-emphasis current. */
+> +	ret = regmap_write(rphy->grf, reg + 0x000c, GENMASK(27, 24) | 0x0900);
+> +	if (ret)
+> +		return ret;
 
-Best regards,
-Xia Yan
+And here.
+
+- Mani
 
 
