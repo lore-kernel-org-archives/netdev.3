@@ -1,95 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=31.154.135.10
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=23.83.218.252
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793565581;
-	b=14wqe4rjOjp6Y946OSomOdqoPcEacJFurduWfO0ce4CyWnClo6fBLyGKOBPQGFYoCJmH
-	 gWlMSJZ1foauDz/H97dSd54nUgKDD+yePHgs9JgmMgs3uKr2pi7Luqma3j5tpv1gj4Z0I
-	 oVWQ5khXHXcc1P+qudhOuGRlCl4nCumNrnGtcf0Mdkfrb+c2/zK/semJEgRbPpg7+FTdH
-	 a5zR3x/XE9U+Zl8OBzjVrahCA10bsPtyuum1bbikFzIQV7cpjcrxgf20gZjZ//cb5E36y
-	 s3v8eBkSbiZbLtfSaCoHYAfG1xJ7769zqn5a+q3+q60xaSOoYpMBmR4QfXSR4GydpUw==
+	t=1793565704;
+	b=fqa/6bP9GwfbLaRDsN9B/wqwPNcqwbgUubK36KkRrzHm2g02woeWdaVELv6G/nl3bZZA
+	 kbtCYt/9QGY1g4YmdGDOHJEG/YghLr3CnDawz7GtAi3qvi7rF+Zn90nwb2ZDxLRkGRvfh
+	 3cJdIlglytxzrLvr3KKn3wKObP3j2tz2I126KF7+23BcrOlFIROn2BZYZ6OHCbWoXNAcn
+	 MaAvxY5UmW88LFdzUgrC6WVkpdfP7Tx3JczIH45H6S1waiAc7WtciFt44EIG5Mg6bkNED
+	 RdOmosUL5ntAL38gPtLqllNUuo9QcOzgqz8EtH1qJ6EQAy04g8bYJsxdnuIrQ2sgOfw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793565581;
-	h=DMARC-Filter:Received:Received:Received:Received:Received:
-	 DKIM-Filter:DKIM-Signature:X-Virus-Scanned:Received:Received:From:To:
-	 Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=YO6H2ereBIPQT3H5CjVg3doxANGZzHdBKwqRwpNWnWw=;
-	b=MxBPpe4ebqYkUQhNkr3LUHt9fspX8f5cmcgGjDSsISofPF4mruVQ+ZlYPmHmDgy+pMFw
-	 14GxP/xERrMETRzKeRK2MIRQVPV+zc6KO6zLc5l+HZrcXczRjYTrkTcZQckLua8mRuXS5
-	 Tk1tpqbKUY8JeFh5uHY/yidelphSLIZXotMZAb2sKAwSD2CNes0uamaxyn6VmtvEGTpWV
-	 4m/1CYEIkGBAX34N7tg3NpBmSlOdhTR/iuJUTVmNpNFBBOJhMMnCaLAfKHiqB4g9B0J5x
-	 RxXTVBlDcSLPmveWUpgGFRnS2jSOBEFcoSLYnzoTSxjGtxmQ2+Ut+TruPVS2I4GLsjA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793565704;
+	h=DMARC-Filter:X-Sender-Id:Received:Received:X-Sender-Id:X-MC-Relay:
+	 X-MailChannels-SenderId:X-MailChannels-Auth-Id:X-Unite-Industry:
+	 X-MC-Loop-Signature:X-MC-Ingress-Time:Received:Received:
+	 DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To:User-Agent;
+	bh=OE+bhGYt+JzO0So7FuaUclK5Zg9NdzaN4nwwSetcWfg=;
+	b=fsdKIGM7qJq+vmUeVKT6X15p6oAb6zS9RRHjPB4YB+0xl+wM37ZwSmbXe8UqAE+WinIj
+	 SBsZeCNAUyI2Mr6AqZ1qWyseZvpwIrfkMp3N5NwXyUYTdhcyH+46KU5FFnB/6AETgBxys
+	 R0FvJst63uLyPcwLsuorMYQLhw4rG4DzDY/OpClNRWva/el1u5rP9SbFZPVD7lq1PtZND
+	 9zIrNSQBWw3YnMYoxkJlLuVdVePfWpOuujiUMZD72pOYE1r29coDgSrB255iJ8q9YmBXQ
+	 u/m58JCk/HnhtIGOBktOW2QZyxLKBmAIuAJ1FZqDrsY5VSH4be6FfiGCTzoCYguqhKg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=inango-systems.com;
-	spf=pass smtp.mailfrom=inango-systems.com;
-	dkim=pass header.d=inango-systems.com header.i=@inango-systems.com header.a=rsa-sha256 header.s=45A440E0-D841-11E8-B985-5FCC721607E0 header.b=rYRZSZTU;
-	arc=none smtp.remote-ip=31.154.135.10
-Received: from ksserv.inango.com (ksserv.inango.com [31.154.135.10])
+	dmarc=none header.from=stgolabs.net;
+	spf=fail smtp.mailfrom=stgolabs.net;
+	dkim=pass header.d=stgolabs.net header.i=@stgolabs.net header.a=rsa-sha256 header.s=dreamhost header.b="Up/Ir8lW";
+	arc=none smtp.remote-ip=23.83.218.252
+Received: from rusty.tulip.relay.mailchannels.net (rusty.tulip.relay.mailchannels.net [23.83.218.252])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7956F606A324;
-	Sun,  1 Nov 2026 20:39:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7956F606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=inango-systems.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inango-systems.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02A4606A324;
+	Sun,  1 Nov 2026 20:41:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E02A4606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stgolabs.net
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=stgolabs.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=inango-systems.com header.i=@inango-systems.com header.a=rsa-sha256 header.s=45A440E0-D841-11E8-B985-5FCC721607E0 header.b=rYRZSZTU
-Received: from ksserv.inango.com (localhost [127.0.0.1])
-	by ksserv.inango.com (Proxmox) with ESMTP id 903BF22979;
-	Sun,  1 Nov 2026 22:39:38 +0200 (IST)
-Received: from mail.inango-systems.com (unknown [192.168.70.50])
+	dkim=pass (2048-bit key, unprotected) header.d=stgolabs.net header.i=@stgolabs.net header.a=rsa-sha256 header.s=dreamhost header.b=Up/Ir8lW
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 20438800379;
+	Sun, 01 Nov 2026 20:41:37 +0000 (UTC)
+Received: from pdx1-sub0-mail-a223.dreamhost.com (100-99-198-86.trex-nlb.outbound.svc.cluster.local [100.99.198.86])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id A69258015A5;
+	Sun, 01 Nov 2026 20:41:36 +0000 (UTC)
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Unite-Industry: 7b97c46a0a41dca9_1793565696913_1501605269
+X-MC-Loop-Signature: 1793565696913:402893550
+X-MC-Ingress-Time: 1793565696913
+Received: from pdx1-sub0-mail-a223.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.99.198.86 (trex/8.0.2);
+	Sun, 01 Nov 2026 20:41:36 +0000
+Received: from offworld (unknown [76.167.199.67])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by ksserv.inango.com (Proxmox) with ESMTPS id 4CBBF229FE;
-	Sun,  1 Nov 2026 22:39:38 +0200 (IST)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.inango-systems.com (Postfix) with ESMTP id AC725D645B3;
-	Sun,  1 Nov 2026 22:39:27 +0200 (IST)
-Received: from mail.inango-systems.com ([127.0.0.1])
- by localhost (mail.inango-systems.com [127.0.0.1]) (amavis, port 10032)
- with ESMTP id yjTvLRz2TfHy; Sun,  1 Nov 2026 22:39:27 +0200 (IST)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.inango-systems.com (Postfix) with ESMTP id 7A0D9D645A5;
-	Sun,  1 Nov 2026 22:39:27 +0200 (IST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.inango-systems.com 7A0D9D645A5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=inango-systems.com;
-	s=45A440E0-D841-11E8-B985-5FCC721607E0; t=1793565567;
-	bh=YO6H2ereBIPQT3H5CjVg3doxANGZzHdBKwqRwpNWnWw=;
-	h=From:To:Date:Message-ID:MIME-Version;
-	b=rYRZSZTUiNA89wc5RLZFYc04pyxOA+JBvYzt7/cXDNRvS6SFPI8JQqNCS+4yOY6Cn
-	 n7htdp9gkrRiOz4KFNbi308eTeRej391v/GO8/sltYA+OpijznYJWZCifCi+1ef9UJ
-	 W1HQ6FkQMgCVmTukuRXdJ0YrVWwyUlk0opTPFyeTiYJ58TlowiCer4x3UguCVdQSS0
-	 2oMpqMN/MeUbUE33fYJwkIvm7DDsjKGPU20n2AwvWrkLLaeX+ItD98z9Mf2dboBx3/
-	 TefiHnXRJtcEd4/E/ro3JzOW/FktElftfZqbBh9G47lRRqfblQbIRGb0c3UOY1BHdd
-	 LYuQ6q98jkxSg==
-X-Virus-Scanned: amavis at inango-systems.com
-Received: from mail.inango-systems.com ([127.0.0.1])
- by localhost (mail.inango-systems.com [127.0.0.1]) (amavis, port 10026)
- with ESMTP id 5Q_g32nLDp1E; Sun,  1 Nov 2026 22:39:27 +0200 (IST)
-Received: from steamdeck.inango.loc (unknown [193.37.156.111])
-	by mail.inango-systems.com (Postfix) with ESMTPSA id 68DCED645B3;
-	Sun,  1 Nov 2026 22:39:04 +0200 (IST)
-From: Nikolai Merinov <n.merinov@inango-systems.com>
-To: netfilter-devel@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	coreteam@netfilter.org,
-	linux-kernel@vger.kernel.org,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nikolai Merinov <n.merinov@inango-systems.com>
-Subject: [PATCH 3/3] netfilter: ip6t_NPT: Adding conntrack compatibility to NPT sessions
-Date: Mon,  2 Nov 2026 00:37:16 +0400
-Message-ID: <20261101203716.269343-4-n.merinov@inango-systems.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261101203716.269343-1-n.merinov@inango-systems.com>
-References: <20261101203716.269343-1-n.merinov@inango-systems.com>
+	(Authenticated sender: dave@stgolabs.net)
+	by pdx1-sub0-mail-a223.dreamhost.com (Postfix) with ESMTPSA id 4jHmw00cqxz2l;
+	Sun,  1 Nov 2026 12:41:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+	s=dreamhost; t=1793565696;
+	bh=OE+bhGYt+JzO0So7FuaUclK5Zg9NdzaN4nwwSetcWfg=;
+	h=Date:From:To:Cc:Subject:Content-Type;
+	b=Up/Ir8lWN2rQMEREb9m8BT2/Gff98v+2nGsl/cgAZDz2ChIuaiEd4bTTPDvBe/QB0
+	 QxEyaJ36JbtlQ0ka7IDCx3eXbPi/qG060lQR68Iay9DYJdQu03Nm4Pt/Zu0KGQcWhW
+	 DnRqYDM35R4J3nDd2A8Wi0vSH1rscsPKh9WheC0MnnfoYpMmIrTkOwMzA7oJNZZrOC
+	 TMjjj1MVanaxk3siDJMOoBD25qNQqvqsYkGH+0cr+aK+2EafwC4l1wUTwELekoJCxy
+	 rbfAVT/CQa2kBGMf7TACJonfhoQEWxFss23zvnJUEoHn88/xc6CtvixKj9fEa1Oz8T
+	 kq6lPZdYOcFIQ==
+Date: Sun, 1 Nov 2026 12:41:32 -0800
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: netdev-bot+sinfo@kernel.org
+Cc: jk@codeconstruct.com.au, matt@codeconstruct.com.au, kuba@kernel.org,
+	pabeni@redhat.com, anisa.su@samsung.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mctp: accept MSG_CMSG_COMPAT in recvmsg
+Message-ID: <20261101204132.eifrbvmpjjktdkno@offworld>
+References: <20261101200331.1956836-1-dave@stgolabs.net>
+ <179356374166.3286.2383588037768263377@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,109 +91,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <179356374166.3286.2383588037768263377@kernel.org>
+User-Agent: NeoMutt/20220429
 
-From: Andrey Kuznetsov <a.kuznetsov@inango-systems.com>
+On Sun, 01 Nov 2026, netdev-bot+sinfo@kernel.org wrote:
 
-The ip6t_NPT was implemented without connection tracking support and
-official netfilter documentation for libip6t_DNPT recommends to use
-NOTRACK target to disable connection tracking for translated
-flow. Such solution blocks possibility to use the NPTv6 implementation
-on systems with stateful IPv6 firewall.
+>Hi!
+>
+>This is an automated message. This series looks like a fix, but its
+>commit messages seem to be missing some information:
+>
+> - How the issue was discovered, e.g. hit in production, hit during
+>   development, syzbot report, manual code inspection, LLM or static
+>   analysis tool scan.
+>
+>Please do not repost the series just to address the above. Instead,
+>reply to this email with the missing information, so that reviewers
+>can take it into account. If the series needs another revision for
+>other reasons, please include the information in the commit messages
+>then.
 
-Add function that alters conntrack reply tuple for expected replies in
-both SNPT and DNPT targets. Add optional dependency on NF_CONNTRACK.
+This is not a random fix, I actually ran into this while testing 32-bit
+support for libcxlmi: https://github.com/computexpresslink/libcxlmi/pull/62
 
-Co-developed-by: Andrey Erokhin <a.erokhin@inango-systems.com>
-Signed-off-by: Andrey Erokhin <a.erokhin@inango-systems.com>
-Signed-off-by: Andrey Kuznetsov <a.kuznetsov@inango-systems.com>
-Co-developed-by: Nikolai Merinov <n.merinov@inango-systems.com>
-Signed-off-by: Nikolai Merinov <n.merinov@inango-systems.com>
----
- net/ipv6/netfilter/Kconfig    |  1 +
- net/ipv6/netfilter/ip6t_NPT.c | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+)
-
-diff --git a/net/ipv6/netfilter/Kconfig b/net/ipv6/netfilter/Kconfig
-index 81daf82ddc2d..f5fa62541db8 100644
---- a/net/ipv6/netfilter/Kconfig
-+++ b/net/ipv6/netfilter/Kconfig
-@@ -290,6 +290,7 @@ config IP6_NF_TARGET_MASQUERADE
- config IP6_NF_TARGET_NPT
- 	tristate "NPT (Network Prefix translation) target support"
- 	depends on IP6_NF_NAT || NFT_COMPAT
-+	depends on NF_CONNTRACK || !NF_CONNTRACK
- 	help
- 	  This option adds the `SNPT' and `DNPT' target, which perform
- 	  stateless IPv6-to-IPv6 Network Prefix Translation per RFC 6296.
-diff --git a/net/ipv6/netfilter/ip6t_NPT.c b/net/ipv6/netfilter/ip6t_NPT.=
-c
-index d8cc0cc0339e..6ffe53a9572b 100644
---- a/net/ipv6/netfilter/ip6t_NPT.c
-+++ b/net/ipv6/netfilter/ip6t_NPT.c
-@@ -12,6 +12,10 @@
- #include <linux/netfilter_ipv6/ip6t_NPT.h>
- #include <linux/netfilter/x_tables.h>
-=20
-+#if IS_ENABLED(CONFIG_NF_CONNTRACK)
-+#include <net/netfilter/nf_conntrack.h>
-+#endif
-+
- static int ip6t_npt_checkentry(const struct xt_tgchk_param *par)
- {
- 	struct ip6t_npt_tginfo *npt =3D par->targinfo;
-@@ -121,6 +125,30 @@ static struct ipv6hdr *icmpv6_bounced_ipv6hdr(struct=
- sk_buff *skb,
- 				  _bounced_hdr);
- }
-=20
-+static void ip6t_npt_ct(struct sk_buff *skb, const struct xt_action_para=
-m *par)
-+{
-+#if IS_ENABLED(CONFIG_NF_CONNTRACK)
-+	struct nf_conn *ct;
-+	enum ip_conntrack_info ctinfo;
-+	struct nf_conntrack_tuple new_tuple;
-+
-+	ct =3D nf_ct_get(skb, &ctinfo);
-+
-+	if (!ct || nf_ct_is_confirmed(ct) || nf_ct_is_dying(ct))
-+		return;
-+
-+	new_tuple =3D ct->tuplehash[IP_CT_DIR_REPLY].tuple;
-+
-+	if (xt_hooknum(par) =3D=3D NF_INET_PRE_ROUTING ||
-+	    xt_hooknum(par) =3D=3D NF_INET_LOCAL_OUT)
-+		new_tuple.src.u3 =3D (union nf_inet_addr)ipv6_hdr(skb)->daddr;
-+	else
-+		new_tuple.dst.u3 =3D (union nf_inet_addr)ipv6_hdr(skb)->saddr;
-+
-+	nf_conntrack_alter_reply(ct, &new_tuple);
-+#endif
-+}
-+
- static unsigned int
- ip6t_snpt_tg(struct sk_buff *skb, const struct xt_action_param *par)
- {
-@@ -151,6 +179,7 @@ ip6t_snpt_tg(struct sk_buff *skb, const struct xt_act=
-ion_param *par)
- 			ip6t_npt_map_pfx(npt, &bounced_hdr->daddr);
- 	}
-=20
-+	ip6t_npt_ct(skb, par);
- 	return XT_CONTINUE;
- }
-=20
-@@ -184,6 +213,7 @@ ip6t_dnpt_tg(struct sk_buff *skb, const struct xt_act=
-ion_param *par)
- 			ip6t_npt_map_pfx(npt, &bounced_hdr->saddr);
- 	}
-=20
-+	ip6t_npt_ct(skb, par);
- 	return XT_CONTINUE;
- }
-=20
---=20
-2.55.0
-
-
+>
+>The evaluation is done by an LLM so it may be wrong, if you think
+>that is the case please reply and explain.
