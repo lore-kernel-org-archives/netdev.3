@@ -1,58 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793551959;
-	b=JmaTjcaTquAn9otW4cqFUzy+Hi/yZV7uGPeiM36+SxJ5oO5wEEnW9sALCbkWcZZ/RsFN
-	 e+joYzcm1ST5pn8FewMWQgKAitOqIeI8g3JzwcfclfPzAMo2XKKYDhrkwojM7Hji01UOy
-	 UNwwu5Z/+MIf0NFCAQOqrpElHlCwug1xV2CdIzDeUK8PTjui7rXWpSgiobPNb/hGQABEG
-	 JeeHTC0wUH5qMd1++kYjnHRtCg1zQL7/NVE7+rEesV2PZeZsK+VNybpbOUoFUykdHR7tt
-	 t81QJfwmbuLkJcp+iBDBQzIdUEMX8Q88D1uYn2gX804uipuI+3DGUm7BMoEag8mGT3g==
+	t=1793552516;
+	b=pGnrYMRD2T02p0jZN2KWodgsc7FUBLdoUaptJLw/axA59pmbRlbw79vXQYKv/h+Sz2XI
+	 TmHNHFvNqbeHK62ayd42WC+eAtQNLx17J5rbI5Teim/69ufoRIKYXCf4aImk5WOn3cx/l
+	 3W71lW8bEjj1RHbYvyMBmXg+7eroiTgE7zcb0HGdvYNHPOEw2wIJjlfcPuMSoRI2y1mdK
+	 DjE8c1m30HZdFgBd4GRXnnxRuPA+lgWlRdMg6vjIRokpmxcvKe6lMNTGipdLnPxCXwpmr
+	 jnRYmqPj9yT51Lnb6CDV8JnRM5DX6RiNgfg9UmalSKtdWQcOM/Kf7UarlLJ6EnYlIZQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793551959;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793552516;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=m4Jbx6Bfo1ddm8Iqy1wqgq9WiTU/MIHTtxEsKpTryfA=;
-	b=d0adHRxCSvBJ/fQ8nkVkzIqEN+WEP0tZutVfYQoBw9qgVtjm/Sa/Sn91ypqqsWkmcexL
-	 B9fYS6CQczDrvVtVttec+WQUSUZxhxlQL000f7kHydbiAbbLNujt/jo5ibnQ8yp6Q5m07
-	 doU9eNW5S/hQ8gJLPAsOmccuB/rrCMoyyCotq8IICD/c3lngjBzoK2SiS0t8y1uxs4hNE
-	 qAYRqh0/wmFb6jH17kLTzVDGEZzIRe6Le8NbxPDvfOHPfe5ZrOUv11fLJAxZjrtA0mz79
-	 2dXdT9USfG9uOxAfCxHOrBQezHyEMjWVqlgBNE6yNbDu25VlfSO9Xgy0m8NjkpFu3vw==
+	bh=CC5+I0kQeM4PqmSxLmQU8DWQGU1yHX24IvORForBsa0=;
+	b=IaHb3QAyKoU9vPpJntjkuEIfY00azq9Ev9hJCGB53eIkJLR5n2/VSiPJhTVut5tG36l7
+	 k5hIvlmHzEyTxIgqcOn3057f85wFjvqLBN/D0GwtZjaze9Js72cD6K71ylND5sB8zpCTH
+	 ROfI7v7UwKfPadFd7nH235+xfyF3ohWMhFZ0gBtztDZQAhAlsDFa5VLUOJcl0VRTJjTBz
+	 wlBkq9l/fmOzX2SJiVjhUjC9GVYdbG4ZeFRxZEh0XLZT28LcuGxYLGbl/ofqZuwRM8nke
+	 4n+5uulGuJS7LTqZkTjcfy//D9KRHUUyVEEvvlP4CaxbV+5JR9dJbtCCNLOQabsuNNw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UhoXEZxD;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nh9ujrWV;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87EE7606A324;
-	Sun,  1 Nov 2026 16:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A45606A324;
+	Sun,  1 Nov 2026 17:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UhoXEZxD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1931F000C1;
-	Sun,  1 Nov 2026 16:52:37 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Nh9ujrWV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58581F000C1;
+	Sun,  1 Nov 2026 17:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793551958;
-	bh=m4Jbx6Bfo1ddm8Iqy1wqgq9WiTU/MIHTtxEsKpTryfA=;
+	s=k20260515; t=1793552515;
+	bh=CC5+I0kQeM4PqmSxLmQU8DWQGU1yHX24IvORForBsa0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=UhoXEZxD/lABF3hCCh1uoq03tqfOlcwp5FcWDndtpoLX9o68BYueCl75NL12l7+kA
-	 g8PcKwKSKdbw9zDNvrBUbIM6Rc934HZM2xbmgR/Dt2U5DnWK3r0OwK38puq+IDqSq0
-	 uLm26hUiP54VANmDk5jvuO529HkhKtQ6KATB+n2bmnyHxhLxsxKUsLoUUEZ2nzzLep
-	 KFkg9Oh3T4aJi5y/PVUvmzN8WdY6GR7kQKg4Uwifvhqv7hVMANoRWwFtOCFma1FCev
-	 CDamEpBMxJhvBooj5kY7BKQszBTH4hUcak+QqjqfFEuYppjLklzOVWEGQCHSsIqpJb
-	 skmxTLlYV0lPA==
-Subject:
- Re: [PATCH net v2] net: usb: lan78xx: let unregister_netdev() stop phylink
+	b=Nh9ujrWVh+wqKKdbbtZNThKXD/d1Ks0iTADQbtxYmpslIhD0oMJcPgPmjb84Gp9V6
+	 MxMXC8MpfRB0Le7F3hkIJty+tYOpRKeYiZlJQCVlp3QTyfBa5atrdFbFT28ZJHAEGk
+	 sc/pw7S3aPzttEZdUnnWMJMZ7MyFR/5kZdHJIaliU1RHRlWXoKP5EJq01yB3BQ5RDk
+	 aD8D9tPDjADPfINgjpOjb/nPbs56AI5KjllVtYnEy8wmfE3j+z3rbTHlImkni4Cq1n
+	 NCWvA9lNWzY8vBHfRsEA/29dpMMrUQ7D4OohaYQ39hRaE0fsRC0tLZft8IMI30qxZX
+	 QTRzfxZlpYE9w==
+Subject: Re: [PATCH net v2 1/2] bridge: cfm: Store the new CC configuration
+ before enabling peers
 From: netdev-bot+sashiko@kernel.org
-To: 25031212351@stu.xidian.edu.cn
-Cc: Thangaraj.S@microchip.com, UNGLinuxDriver@microchip.com,
- netdev@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, andrew+netdev@lunn.ch, linux@armlinux.org.uk,
- o.rempel@pengutronix.de, stable@vger.kernel.org, byu@xidian.edu.cn,
- wencheng@xidian.edu.cn, kuba@kernel.org
-Date: Sun, 01 Nov 2026 16:52:37 +0000
-Message-ID: <179355195704.3131.3408534065723152966@kernel.org>
-In-Reply-To: <20261031165213.2738-1-25031212351@stu.xidian.edu.cn>
-References: <20261031165213.2738-1-25031212351@stu.xidian.edu.cn>
+To: pocj8ur4in@gmail.com
+Cc: razor@blackwall.org, idosch@nvidia.com, bridge@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kuba@kernel.org
+Date: Sun, 01 Nov 2026 17:01:54 +0000
+Message-ID: <179355251442.3131.5735013472111110097@kernel.org>
+In-Reply-To: <20261028164730.253238-2-pocj8ur4in@gmail.com>
+References: <20261028164730.253238-2-pocj8ur4in@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -69,7 +66,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0 (1)
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -77,165 +74,121 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The reordered disconnect still calls phy_stop() on a halted
-  PHY after a normal system suspend/resume of an open interface.
+- [Medium] At this commit, cc_peer_disable()
+  (net/bridge/br_cfm.c:156-159) only calls cancel_delayed_work_sync().
 
 Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but lan78xx has an
-  AB-BA lock inversion between dev->dev_mutex and rtnl_mutex.
-- [Low] This problem wasn't introduced by this patch, but lan78xx_stop()
-  uses timer_pending() to decide whether to synchronize with the…
+- [Medium] This problem wasn't introduced by this patch, but the code
+  still mishandles it.
 
 --
 
-net: usb: lan78xx: let unregister_netdev() stop phylink
+bridge: cfm: Store the new CC configuration before enabling peers
 
-This patch reorders lan78xx_disconnect() so that unregister_netdev() runs
-first and phylink_disconnect_phy() runs after it. The explicit
-phylink_stop() call is dropped, so that phylink is only stopped through
-lan78xx_stop() when the interface is running. The aim is to avoid the
-phy_stop() "called from state READY/HALTED" warning on unplug.
+This patch reorders br_cfm_cc_config_set() so that mep->cc_config holds
+the new CC configuration before cc_peer_enable() is called on the
+disabled-to-enabled transition. The goal is for the first RX timer to use
+the new exp_interval instead of the previous one.
 
-> diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-> index 181e8c087655c..4780aef87736e 100644
-> --- a/drivers/net/usb/lan78xx.c
-> +++ b/drivers/net/usb/lan78xx.c
-> @@ -4593,13 +4593,12 @@ static void lan78xx_disconnect(struct usb_interface *intf)
->
->  	net = dev->net;
->
-> +	unregister_netdev(net);
+> diff --git a/net/bridge/br_cfm.c b/net/bridge/br_cfm.c
+> index 9dcc97d63a6fc..28b40dbf40734 100644
+> --- a/net/bridge/br_cfm.c
+> +++ b/net/bridge/br_cfm.c
+
+[ ... ]
+
+> @@ -648,17 +649,20 @@ int br_cfm_cc_config_set(struct net_bridge *br,
+>  	if (memcmp(config, &mep->cc_config, sizeof(*config)) == 0)
+>  		return 0;
+>  
+> -	if (config->enable && !mep->cc_config.enable)
+> -		/* CC is enabled */
+> -		hlist_for_each_entry(peer_mep, &mep->peer_mep_list, head)
+> -			cc_peer_enable(peer_mep);
+> -
+>  	if (!config->enable && mep->cc_config.enable)
+>  		/* CC is disabled */
+>  		hlist_for_each_entry(peer_mep, &mep->peer_mep_list, head)
+>  			cc_peer_disable(peer_mep);
+>  
+> +	enable = config->enable && !mep->cc_config.enable;
 > +
+>  	mep->cc_config = *config;
 
 [Severity: Medium]
-The commit message says the interface is "stopped exactly once and only
-while it is running". Does that still hold after a normal system suspend
-and resume of an open interface?
+This isn't a bug introduced by this patch, but what happens when
+exp_interval changes while CC stays enabled?
 
-Consider this sequence:
+In that case the disable branch and the new enable branch are both false,
+so only the config store runs. No peer is re-armed, and ccm_rx_count_miss
+is not reset.
 
-ifup
-  lan78xx_open()
-    phylink_start()
+ccm_rx_timer_start() reads exp_interval only at the moment it queues the
+work:
 
-system suspend
-  lan78xx_suspend()
-    phylink_suspend(dev->phylink, false)
-      phylink_stop()
-        phy_stop()      /* PHY now PHY_HALTED, IFF_UP still set */
-
-lan78xx_phylink_mac_ops has no .mac_set_wol, so mac_wol is false and
-phylink_suspend() goes through phylink_stop().
-
-normal (non-reset) resume
-  lan78xx_resume()      /* no phylink_resume() or phylink_start() */
-
-phylink_resume() is only called from lan78xx_reset_resume(). Because
-pc->mac_managed_pm = true, phylib does not restart the PHY either.
-
-unplug
-  lan78xx_disconnect()
-    unregister_netdev()
-      dev_close()
-        lan78xx_stop()
-          phylink_stop()
-            phy_stop()
-
-That reaches this check in phy_stop() with the state HALTED:
-
-	if (!phy_is_started(phydev) && phydev->state != PHY_DOWN &&
-	    phydev->state != PHY_ERROR) {
-		WARN(1, "called from state %s\n",
-
-Before this patch the warning fired twice in this sequence. Now it fires
-once.
-
-The same gap also leaves the link down after such a resume, and a plain
-ifdown afterwards hits the same warning.
-
-Would it make sense to also restart phylink on the normal resume path in
-lan78xx_resume(), in addition to this reordering?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but the commit message relies on
-lan78xx_stop() taking dev->dev_mutex under RTNL via unregister_netdev().
-Is there a lock order inversion between dev->dev_mutex and rtnl_mutex?
-
-lan78xx_open() and lan78xx_stop() run as ndo_open/ndo_stop with RTNL
-already held by __dev_open()/__dev_close_many(), and then take dev_mutex:
-
-  rtnl_mutex -> dev->dev_mutex
-
-lan78xx_suspend() does the reverse for an open interface:
-
-	mutex_lock(&dev->dev_mutex);
+ccm_rx_timer_start() {
+	interval_us = interval_to_us(peer_mep->mep->cc_config.exp_interval);
 	...
-		rtnl_lock();
-		phylink_suspend(dev->phylink, false);
-		rtnl_unlock();
+	queue_delayed_work(system_percpu_wq, &peer_mep->ccm_rx_dwork,
+			   usecs_to_jiffies(interval_us / 4));
+}
 
-  dev->dev_mutex -> rtnl_mutex
+So a ccm_rx_dwork that is already pending still fires after the delay
+computed from the old interval. For example, changing from 10 min to
+3.3 ms without disabling CC could leave the next RX check up to 150 s
+away instead of about 825 us.
 
-The rtnl_lock() block in lan78xx_suspend() came in with e110bc825897, the
-commit named in the Fixes tag.
+The 13-tick threshold in ccm_rx_work_expired() would then be counted with
+a mix of old and new intervals.
 
-With CONFIG_PROVE_LOCKING, ifup followed by a system suspend with the
-interface open looks like it would produce a circular locking dependency
-report.
+Should the peer RX timers also be restarted when exp_interval changes on
+an enabled MEP? The follow-up commit "bridge: cfm: ignore CCM while CC is
+disabled" doesn't seem to touch this path either.
 
-A real deadlock would need a non-frozen context holding RTNL to call
-ndo_open/ndo_stop on this device while lan78xx_suspend() holds dev_mutex.
-One example is netns teardown in cleanup_net() moving the device back to
-init_net, which goes through dev_close() and then lan78xx_stop().
+> +
+> +	if (enable)
+> +		/* CC is enabled */
+> +		hlist_for_each_entry(peer_mep, &mep->peer_mep_list, head)
+> +			cc_peer_enable(peer_mep);
 
-[Severity: Low]
-This is a pre-existing issue, but lan78xx_stop() is now the only place
-that stops a running interface on disconnect. lan78xx_stop() uses
-timer_pending() to decide whether to synchronize with the stat_monitor
-timer:
+[Severity: Medium]
+Can ccm_rx_dwork already be pending when this loop runs?
 
-	if (timer_pending(&dev->stat_monitor))
-		timer_delete_sync(&dev->stat_monitor);
+At this commit cc_peer_disable() only calls cancel_delayed_work_sync().
+br_cfm_frame_rx() runs in softirq and does not check
+mep->cc_config.enable. If ccm_defect was still set when CC was disabled,
+a valid CCM that arrives later queues the work again, using the disabled
+config's interval:
+
+br_cfm_frame_rx() {
 	...
-	clear_bit(EVENT_STAT_UPDATE, &dev->flags);
+		if (peer_mep->cc_status.ccm_defect) {
+			peer_mep->cc_status.ccm_defect = false;
+			...
+			ccm_rx_timer_start(peer_mep);
+		}
+	...
+}
 
-	cancel_delayed_work_sync(&dev->wq);
+After that, ccm_rx_work_expired() keeps re-arming the work.
 
-Can the stats timer be re-armed after ifdown?
+On re-enable, cc_peer_enable()->ccm_rx_timer_start()->queue_delayed_work()
+returns false because the work is already pending. The new, shorter delay
+is never programmed.
 
-If lan78xx_delayedwork() has already passed test_bit(EVENT_STAT_UPDATE)
-and is inside lan78xx_update_stats(), the timer is not pending, so the
-sync delete is skipped. cancel_delayed_work_sync() then waits for the
-work, and the work finishes with:
+Take the example from the commit message (disable at 1s, re-enable at
+100ms). The first check could still fire after about 250ms instead of
+25ms, which is the symptom this patch sets out to fix.
 
-		mod_timer(&dev->stat_monitor,
-			  jiffies + (STAT_UPDATE_TIMER * dev->delta));
+The next commit in the series, "bridge: cfm: ignore CCM while CC is
+disabled", appears to close this path. It uses disable_delayed_work_sync()
+in cc_peer_disable(), disables the work at peer add, calls
+enable_delayed_work() in cc_peer_enable(), and checks
+READ_ONCE(mep->cc_config.enable) in br_cfm_frame_rx(). With that commit
+applied, the remaining window looks only theoretical.
 
-lan78xx_delayedwork() has no EVENT_DEV_OPEN check. So the timer and work
-keep cycling while the interface is down, autoresuming the device and
-issuing USB stats reads.
-
-The same thing can happen when lan78xx_stat_monitor() is already running
-on another CPU. Its lan78xx_defer_kevent(dev, EVENT_STAT_UPDATE) can land
-after the clear_bit() or after cancel_delayed_work_sync().
-
-An unconditional timer_delete_sync() would not cover the first case on
-its own. The work would also need to be cancelled before the timer is
-shut down.
-
-On disconnect, timer_shutdown_sync(), EVENT_DEV_DISCONNECT and the
-cancel_delayed_work_sync() in lan78xx_disconnect() still clean this up.
-
->  	rtnl_lock();
-> -	phylink_stop(dev->phylink);
->  	phylink_disconnect_phy(dev->phylink);
->  	rtnl_unlock();
->
-> -	unregister_netdev(net);
-> -
->  	timer_shutdown_sync(&dev->stat_monitor);
->  	set_bit(EVENT_DEV_DISCONNECT, &dev->flags);
->  	cancel_delayed_work_sync(&dev->wq);
+Could the two patches be reordered or squashed, so that this commit fixes
+the re-enable case by itself?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261031165213.2738-1-25031212351%40stu.xidian.edu.cn
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028164730.253238-1-pocj8ur4in%40gmail.com
