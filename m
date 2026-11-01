@@ -1,86 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793551624;
-	b=GM5mpTH0O/TBX2G/PAyEEqZzkWoVBrHPfWHvT3elz1NjQZiXtwe7aJLBZCkkRQ8f0giy
-	 PGSbgdYi+oersT8YqcjS8zRL1VxP4VvwgZnx4k3e98i0vbUVF7nTgiuYzWtaD3qAtmk+H
-	 y+WuuPonN6nXD0NiUi8fCc9TCmGwuYxymgKLnOJZCnKB6DhlechYuGlpR3omhbZ1kPMHe
-	 C4yBfIm3sFWsaHei/Umpz9/gMPNVxSU+WQZBKbYDe2atlKMq+VbwYs9/BuYjluWmri7iD
-	 ZsMSXLS95wGsp6u7htN6BR1UvAH64HTe0Ee7TWVcUnyHn/01mq1LrbmWstmaZAhg/Ig==
+	t=1793551625;
+	b=PuXs4icBBGdEiAo14Ig/oT7DBZFmDkNNITcWXe3zaDbd9Bq/PeHpw2qIJ06hc6OzyQ4v
+	 dgZNeXOb9xZIzxBSMDiOjBhU0I5n5PHMyH/+SciVgSDdYKMr7O/Qg2+Xx8cCrIitlyHFI
+	 Bg1ZSspmKc6k32KOtb2p+xOia9jfSuqwDEHgGE8zH4bXrvU6YErjKr3EqOHr52Gevc4q+
+	 QwlbJNmhQFKpwDYBSCu1uZrWgzN8GodFJudiyHVM+sineIwKEjuAaG4rcqqV9Aml6cqX3
+	 iZpO41KN9jcM4sHx3H4LVP+GrijRBB9nKTqVo+DIKG+ebXLiJ5BsU3wO3llwybamE9Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793551624;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793551625;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=jcWwVvsHGcVV3wfMX+fsnT3+LWyvPrRI8VZs9//T46s=;
-	b=njEpXHLIOESSdRRqwWDO3AwS4jt11HCPiD4I8jgxCyNBwpNOAIZp6O1uaKB1hCvj1TX5
-	 V5Ja/B4trWgEcpND+ydHMvcigYfY4bNMZFKIuNuCqtJ/mEBBL3HcpSqQDzJopxHshw986
-	 vKUq3ZjrG+UwEea7Bh1YMoOzJ/53lcBkW8r9brdF5287IXirdw6uHAcAE3vY7f6/7bR73
-	 PK13b7ntEqcJ5/kpyGi+4UQCgWc+42exWjzxdBOlwbFGGUYiFULbD3456L4Zzhz1Ga2uJ
-	 bCbMbSE7SA16MmYyX5lDnRe2PGu5x1G32Q7s8JkPa0xQBInzqD/bzZr97NPzQCxkN9g==
+	bh=yCpDQ9WkrXKZMxTqAyMxj1pgluHTummJfoylPYQEKjs=;
+	b=BXi0TMSDOZ81NWujpPBkacJl7M4VwNqAuHkldQ/qwLvz59Ur5GP6sdRLnzc2tg6Ri5kO
+	 g6mhxdMih0Wk1NB6CKvX25bQLVL6KNyLKltVpzLzmetaqoR6C5w+OwOc2W/nxwhi4E+Oj
+	 +P4HbJfCUWzndr+LP5OdgBJ5AlvN1gZFUyeFeMIv0oTWuVrzSFIgiLabxgUTFL2TSGGzu
+	 V/9jqb5CLpr8QFRAvTjR1wcUXN1Ozh6jmFhbdj0BnRkjlwAGURy0vPe/4yTCDsUV0EuJC
+	 JCVTbIChiC95Lcg38CLw+3pSIlnZ0wT55D69dssq6sNL9z9a4Teekmm6ZCiJJJmPO7g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bairaktaris.de;
 	spf=pass smtp.mailfrom=bairaktaris.de;
-	dkim=pass header.d=bairaktaris.de header.i=@bairaktaris.de header.a=rsa-sha256 header.s=google header.b="0I5fmee/";
-	arc=none smtp.remote-ip=209.85.218.51
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	dkim=pass header.d=bairaktaris.de header.i=@bairaktaris.de header.a=rsa-sha256 header.s=google header.b=bLMS1MgL;
+	arc=none smtp.remote-ip=209.85.208.46
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C08606A324
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 16:47:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48C08606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B919606A33A
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 16:47:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B919606A33A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bairaktaris.de header.i=@bairaktaris.de header.a=rsa-sha256 header.s=google header.b=0I5fmee/
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c414e5d282eso267426366b.1
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 08:47:04 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=bairaktaris.de header.i=@bairaktaris.de header.a=rsa-sha256 header.s=google header.b=bLMS1MgL
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6ae14eecc64so2875255a12.1
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 08:47:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bairaktaris.de; s=google; t=1793551623; x=1794156423; darn=vger.kernel.org;
+        d=bairaktaris.de; s=google; t=1793551624; x=1794156424; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=jcWwVvsHGcVV3wfMX+fsnT3+LWyvPrRI8VZs9//T46s=;
-        b=0I5fmee/bbK+vJPMwHkrVXTZ0WrA3xaJuu4QUdVw1uC+SxykNpBaiAmZ0/zlcIKZey
-         2XWmVonCdQ4yYx+tTi5IYoJb+WU3a7oDg69/M3DDRyzPUIqY/kyKH+Oe78pP+i3QNn/H
-         0M5CnbZfE4osOoK9hiuqS3Z8s4kH8mkCM3dbWKBjDSa8tKn9cI5kVBhL/9SU8bkS213L
-         YShiHmChcMvC2aqjiSdEXMRcLpqs3cmRAJBGWSs27kCMAM3JzXepqj4X43naeoHCy3HN
-         qTfVm7HYfEDUKL1lloTZ6hraqRfkhRfqBgckwGOBWjmYvTBOteZ5uE9yfEcOb/gob9zZ
-         UllQ==
+        bh=yCpDQ9WkrXKZMxTqAyMxj1pgluHTummJfoylPYQEKjs=;
+        b=bLMS1MgL33QmYJJZIpB4ajm+NZ+eU6AmPNtEFyOZBbZNN7BZa1Yu29rZnVHcF7n1IY
+         EZ1b/nOWDaFwrJ69PnnvvS5Rr4eSaHM0cIuql4cr8BUTxtOT6py1mUGBu92y+XBlBUJt
+         8ZO7RdkY25PlK7SgiG8y9wgXDY9kx+onmRcTynIkvDCedq0mzazX048IOYd1IHVvgBze
+         1pvDzFVKQbvbHDW6S/FCI25uv5G/0NjM3jWXvyz8jB4eAdzw9+l0OuoXx7xPC+8A0m7S
+         mBprsTHYaO6n0igll1j6jlqWCXlrsjweaZGlKkjLdK583BnS9n4i/zrfB2oDeBwUzRad
+         kwBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793551623; x=1794156423;
+        d=1e100.net; s=20260707; t=1793551624; x=1794156424;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jcWwVvsHGcVV3wfMX+fsnT3+LWyvPrRI8VZs9//T46s=;
-        b=MbAA57nuRRSMT5XsskIwlNb1o6s++5rD0lGWbFjbUgquJ6dTC1WX1ZDKnVpuFOHXLp
-         RsNIBXVKLFTUn4ELFqcVnmSTXRmY6jhFRmmNFFN9rKV57/DYbr8Mf3Zka4sSX/oWx8lC
-         7mjhx9sIM33r/V2gtkqjC9ko0VXJ7u88Pk0E2RSTxdukoiyQaSRanam4q8ycQKzG14no
-         iN+gmV6OfkOYvn26U/jTG7VrqPZXdScxRofwxA6Gdr7otrLYKt9+Hlf3h15y11InPLvx
-         UMjTSWMQoQGnM8wRy+LsiovsF87lK2+QnhYbRbGql1lVyUJSn6c9ebdEe0usMpWRbrag
-         gweg==
-X-Gm-Message-State: AFq9FYInLocGugDNLHTks+xQ+z7eFO5V7+TW9tdl0oTY5u8iA8SFvuGW
-	RSs/5AZeffP3+saRaIZ8WvBatuQv1YQYW9VunFGkbZFzHQn4qAB0frT0ophuuNNCnw==
-X-Gm-Gg: AYBFou3w5Z0c9/MaSXZYmHOBMDKkbD3WP7D/QnDEViHJLz5jDIquTdke1VV9iPqMShp
-	GuJ+bI+qD+1rmx1xQ77eIbZ1daN73jgIiJBXqp1hykOD3DVcKRv72fIPomfseMqysPFk34y5Jm5
-	GlpRLaOlS2GcQVAhdWeskL3k5sGr1rU+L3t8q5D2pAKFaxBmjWZ45vLnpHM+QwWDpIsnaoz11Cy
-	BpiwMsjDqHugu653pSXFw2rVkZ2hSRuSswmu59HTpAnf9A4FnjmNsoF5TAaUk9zrNebWJhoJ+x1
-	dcitao9j/GyjZJGSBBeo1eHVaxDfeNdqTRW5JoAWU7tWZAqKQqukY5OfAE2rxv/d9TAmdf4rB7D
-	heDcoeXkoNM4CX3VmE37rusQHjuEKJEeAaQjrAunsE2CNx2BpSRJW7AXAijg9PAdyJDJCwtCpsR
-	9v/vUqg1nRh2OkS6y0da3SG+0tsTPcUKxSkmviAeKlyX+lNqW9hknFasCVTF6y7v2EYCc+yfXam
-	/qGiHAeJvOg8PlKwqgCN45g8TdEmv9xkNHIpZtu2Meuu580MHVquyKVP68wr0mALtkipMW//6jR
-	VxWqSUgzIm3ApV1Sn2nGWMmiwJcKEaUAPxfpUH4gpCV6H6hCkfxokuKjXAuG+Q+Ap6FqT4Qp0KP
-	1TiQLrYIjC8kJBC8ab/ypg0MJOiZLQYf6DRiXneccAhH+SwpBu8rgs5cJAkvZbtzBamZqvA5WUI
-	73T/d7+ZXvx+Lt4a21GzItBTB8EKQmjqJUVzYwF0R+vEdEZ36hclC49zK4lCEdON4JxmbdM7KRp
-	wGNqvtr8SequX2PYbO0qBQNP5yWKRLdhyRA+8yK7scvq4lqF/aIhf1OvqiC0w0VTwCrY0wRpT9H
-	hVG9yWDTzLeIC6o0nTk=
-X-Received: by 2002:a17:907:a88e:b0:c3f:153a:8663 with SMTP id a640c23a62f3a-c4ca7b20cdcmr673840866b.23.1793551622679;
-        Sun, 01 Nov 2026 08:47:02 -0800 (PST)
+        bh=yCpDQ9WkrXKZMxTqAyMxj1pgluHTummJfoylPYQEKjs=;
+        b=Oh1Az8c7pyz84Wz91rk4zIT8GfJXS0HgEh5d/tR+YC4pZPThp1CGPpI5vnQRlDq/KV
+         wgEgvINDteu94UTNouvwVQgtHz09tMY+se+agY2mIkPDp5X0YyhM+rLMR4wHUKiYZ//q
+         V5zo+PL1n4kIqUQVSqWO/1Cf5QMX21oYjCbsMzuEAX4zyhzkF05f+yWiKQuQJ1p0sRKH
+         0YiCqRXXl0MTDesVtE+oD7xtxS3auS7mxQuUwPMLvS3HGi6V2F9ph8YYL5s6f1lrPaBb
+         kcdZzre0tOWa4/XidYb/NcAedxAO8/xBqesCzXPRbeKNkmnqwDZmczDxUS4/Zz5gup7l
+         MGYQ==
+X-Gm-Message-State: APuU4Z+4ebFuVa00WfPbhXcx8EwDGQoe1UTX3D0Okncs1jpfTv6HBaCs
+	IhtWwVdwzO9QLuCHCuBO3BbUGdLOeE5bhmtwQy5ul7DSg5im7hbcAikRzWh2bJKAFg==
+X-Gm-Gg: AYBFou1L+NRmHQtmqQGim+O40rBObuEsSxQh4Z0iwuW+pvQWA8D1tWTP5/6E8kYxlia
+	rsmdzha1JjDqki8n+uvOTDwAmUc/xgt3SLwlzi0aUc9auwiWkRxYwijq34rAU1DZPwzvmNys6ct
+	n7vDLlPqUHIUdGWV9BYeM6vu4vZDRUUc7b9TwcHsDk/xgCjtceY9wbhfW/orxW5b6CHOXOUlgEB
+	llUkF0ZrvI0s8+U5vECldmgp7kONKx/00QNMPwbNBw5XyEXv9+1cyIxBhbrhIgk98IihYev8c1l
+	NAhpq3oXLoa86kJfmyjRks+xp7MIn1qdcbV/Pe8pYpkahhox2gUz6t+zyY3+KeASKjxNueUxw0x
+	2BwaOgGDhRxcvpoJmPZN2Gva+0T0lAtj6P4uxfALEbEftDIKgd3rIQ7evfTqTsU9cDRoOz3puFK
+	noHRONn/jBZSS0PQhkIVIq6MpBQknm9BgyQbk3GSc3TQLDNgzRObqB/PmPMt2fovDoRCbHHvJnz
+	Pk1VCAjv6ySWxDpjQH81AFrapRpFNUVU0DUDWS7c/vBtXnpMTlO9oxBUryL4+xmFgMxqbF+dyhI
+	56tTjgcdiycjbwcM2awyYBH0t0Lom05vVPAQ2O3LZY5EYE6Lk51Z2sizt2m3VurCO9XvKoik4mO
+	W74U6NrL+gJ1DWuRLwUXFewMmobwwdeAFgegE+wdSStvdKSU/TVsysAIa7oVPZ9tXb1ksjCxjU4
+	aW+jJoigspo+9hFECoYt0QGzj4zGF4mAptOAY0JR/PDJwZldBhYIwCqCJLKWgzzZwwuEWLl++5I
+	4qVCYusgUsI/q3Krxzr2eAQyE5qhjADrzs8WG8EHHxWJgFMX2UTifjWpb/O5oZicdlcdUsqcDWm
+	I3N/NBFsNauVSH3xmSVd
+X-Received: by 2002:aa7:d0d9:0:b0:6ac:5c83:bb9f with SMTP id 4fb4d7f45d1cf-6b4d46766e2mr3892238a12.9.1793551623964;
+        Sun, 01 Nov 2026 08:47:03 -0800 (PST)
 Received: from Desktop (p54aff790.dip0.t-ipconnect.de. [84.175.247.144])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4cabcfdc3csm291298166b.17.2026.11.01.08.47.01
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b4eca0f376sm2371052a12.26.2026.11.01.08.47.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 08:47:02 -0800 (PST)
+        Sun, 01 Nov 2026 08:47:03 -0800 (PST)
 From: Julius Bairaktaris <julius@bairaktaris.de>
 To: netdev-bot+sashiko@kernel.org
 Cc: netdev@vger.kernel.org,
@@ -100,12 +100,12 @@ Cc: netdev@vger.kernel.org,
 	richardbgobert@gmail.com,
 	ecree.xilinx@gmail.com,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3 2/4] ip_tunnel: move the TCP fixed-ID flag to the inner header
-Date: Sun,  1 Nov 2026 17:47:01 +0100
-Message-ID: <20261101164701.301997-1-julius@bairaktaris.de>
+Subject: Re: [PATCH net v3 3/4] ipmr: set up GSO state for tunnel vifs
+Date: Sun,  1 Nov 2026 17:47:03 +0100
+Message-ID: <20261101164703.302017-1-julius@bairaktaris.de>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <179241582749.3135.6106878374160339370@kernel.org>
-References: <179241582749.3135.6106878374160339370@kernel.org>
+In-Reply-To: <179241582899.3135.13813714752467284187@kernel.org>
+References: <179241582899.3135.13813714752467284187@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -117,29 +117,17 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-> [Severity: Medium]
-> iptunnel_handle_offloads() is not only used by the IP-in-IP tunnels.
+> What happens here if the GSO skb already has skb->encapsulation set?
 [ ... ]
-> Wouldn't the inner header then get iph->id = htons(id++) on every
-> segment?
+> Would it make sense to segment in software, or reject, GSO skbs that
+> already have skb->encapsulation set before calling
+> iptunnel_handle_offloads()?
 
-Agreed. gre_gso_segment() and __skb_udp_tunnel_segment() reset
-encap_level before the inner inet_gso_segment(), which then tests
-SKB_GSO_TCP_FIXEDID, so for an IPv6 outer header the patch turns kept
-inner IDs into incrementing ones.
+Agreed. v4 drops such a packet in ip_encap() before touching its GSO
+state. It was dropped in ipip_gso_segment() before this series as well,
+so a GRE or VXLAN aggregate sent to a tunnel vif behaves as it did, and
+the inner headers of its own tunnel stay intact for the other vifs.
 
-> [Severity: High]
-> This assumes SKB_GSO_TCP_FIXEDID always describes the current outermost
-> header when skb->encapsulation is 0. Does the decap side keep that true?
+> Should this use iph_set_totlen(iph, skb->len) instead?
 
-Agreed. iptunnel_pull_offloads() and bpf_skb_net_shrink() leave both
-fixed-ID bits where they were, so after a decap SKB_GSO_TCP_FIXEDID still
-describes the removed header. That is older than this patch: GRO sets
-the inner bit for the inner header since 3271f19bf7b9, and nothing moves
-it back on decap.
-
-Multicast routing does not carry TCP, so the ipmr fix does not need this
-patch, and v4 drops it. The fixed-ID state across encap, decap and the
-GRE/UDP segmentation path is fixed separately in "[PATCH net 0/2] net:
-keep the TCP fixed-ID flags on the header they describe":
-https://lore.kernel.org/netdev/cover.1792857378.git.julius@bairaktaris.de/
+Agreed, fixed in v4.
