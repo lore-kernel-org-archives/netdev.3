@@ -1,59 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793572397;
-	b=tUnSqMoxLxHhbKpFUShu/fBJgnciVRKQytUszaK4ug9w0UWcn/s0bJQf2FQDqoQvBy+e
-	 gr9JWdOJW/Oda1XpbmKz+qiJTPbTAL+U1pMAolxHBCyuy4thWeLBcUTPoJY63xPS237ej
-	 p+S6Gp6BDo20lWheI2J2htub5cqyAsnxlzCcHzwbe+LBCCbPRkv14w0qdGTLP1uAuLA1o
-	 pLF1L2h/lqRcufEpSR5J5oXTYDepQYmvGxtYNgtMVwuilaOBSqHG762R/n6igUYRj2Awc
-	 kK3ahse+T24KI2pdb8QQKH2a5A4bJjQ2NgDptrfsZ7JHqhwRhkvZBKwjqDVAkFru28g==
+	t=1793572398;
+	b=RtGl94z9unU5ObddGSO8l99hjiAUj6f33xvNaLe9eXJHzsNjYsVNJ1O/dcRfY1ECKJcI
+	 fnS7uGyhZ5jOrpT3hu0tLQ62qMjAY6jkzOQUImB95SBOIgxXIPop7nuJEFls4eo0iLNb8
+	 ixWbd/7h9uJrPl9Q20IMhsMYoZFj1exbsqI85KoISiJB1LYX7S6shZtKf3Ima0EYn+mTk
+	 Tn+S23beew+GearJ+5Z/Ky7WnVWM3gj5RFtZtW0mWbEKofV6vCCwfwOpJ2T3ETVI2n7S3
+	 n0KrQP62TpLo2pYv1VHuc+X8r0GnsqDiB+Ki+odeuKDJHhGPyz7S7lh3XTX7gapjokg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793572397;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793572398;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=p1X70UjbxdLHWuH0p2EV9qJuGGy2CKshRTRf+Bp9O8g=;
-	b=Qkc98ComBx8ESc28wYTsdTp0Eu4j0pyxUnX8Nwsgahr5Mpt11tV9TICF3Yvo9iWRKydv
-	 JfGnxMLXKTTCJzTmraiU5WfwxOhnyhgGd5C8GQs/U1v6dR2rC4ECahIrYa2uGSQFCVFUp
-	 4tuUovRtlx47aiFdJTT1BS8tt7Ui+AcglKkR7rgKJz1Vs445qzsf2LwCwk2/bxMZCmxI0
-	 HTxCPlBXdmWzgMndKgZiM9uOtCCBN87Zh/k/pZoDoVB7KJEjx7qJmw9ZG9hpLalqjPSun
-	 HCwqXePq/gllWj08kIFK9J5ct5WKyCwtEXa5kGoHFqmfKq1o/49rrFmkM76GDZXGXGg==
+	bh=46T6BFV/iHnX5mChinKdsO0BZDHY+q96TmCPcnLOoWw=;
+	b=VgW6Tpa1sDdWccQk5O/egA/zQt5BnMYOM0tpVOSRL86VevJ/7kM3M7yYqEv7XH+A4D3p
+	 ycSQD17/+u/l4l0l+mWKOYfRj+zqAXoX71YE99FovDY35mv1PETN+uYHRO+3BsRiWNVhu
+	 s+PMRdpVkOufPpJFnNpp0RJO/5lGAexSSgOLwN0jNWzLtE0tUwdeimL//YJ3a0AfpHBwh
+	 ZuH22p5snVbUN9Dzzuh3GrUQG3qFm6G5E7HrRpToR3Vh9zFR2ZdD3fotQ8wsPDWTDWGvC
+	 TzXqpn3dyE7jX/DOlhPLVhxAuaixrsCkhMj+qElVW8/jPQh0tMBKF81sJWIXG3aVHcQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MD8mpgvM;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hH3DZHOn;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A19606A327
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 22:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1ABC60A2600
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 22:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MD8mpgvM
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1C81F000C1;
-	Sun,  1 Nov 2026 22:33:16 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hH3DZHOn
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C9F1F00A15;
+	Sun,  1 Nov 2026 22:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793572396;
-	bh=p1X70UjbxdLHWuH0p2EV9qJuGGy2CKshRTRf+Bp9O8g=;
+	s=k20260515; t=1793572397;
+	bh=46T6BFV/iHnX5mChinKdsO0BZDHY+q96TmCPcnLOoWw=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MD8mpgvMHB053iE8GlDXhm7NJou+WtjI5ePJH7Bawe9x76VpTN9fay6+2d6jtp9Iw
-	 VVdZ9Ojvho8iy9gBT19DkOGL8L9/KowAPCsPSaG4Xf/kGhfnmkx3ASXEEDhaVOVFLk
-	 n6+z+1W7YYzGR6aa7Y1bpAEn/AK1+DdE7e4X+gSAyE8Mg9dZbEN7f0tkCHC6wFQOnA
-	 JnhJ9SCeQKOHCoa3t0+ndT5S0adX9zZ5wDSCML6bwZlPA2G9aapKn8USxr+CWyL1t7
-	 DYte2DCtkwyfhcgeTlZqFsXfdScKDPLKa9uTsUHmb2Lp0Zlfmk12XG95/uf+9FmM9h
-	 kbv/CxyUwyOog==
-Subject:
- Re: [net PATCH 04/13] fbnic: Retry the MACDA sync to firmware if it fails
+	b=hH3DZHOn1kQcdQOxBvs1EgVgeaX/UWMkQRVjgSwYHV2XvMh52RBOu5AwdFzfCo/LY
+	 OUxtuvQGUKSV+QVm2ydBLelQJw0h2K7KLAzAULJ4SLNqSGoT3EUbNPprR2uD2k1sE1
+	 s2QjIlKzSd3m9Ft+6HSO4JYUhfveJecW65ZTmOOrNzenDXrpXd90KvtZaOG0MvBJHo
+	 B8TG88bagC1bO93OsmoO9L0LwP2IcJg1H+xfgw4han8wkiUIA77wQUHOQ81RzZpju8
+	 Cd9ylOeg+J696v8vyGeFn29Zn2nf6kII/pW+EgYVzdVU1Jd3+pFClCYLppk1ILaFW8
+	 IKfzW6iIKlCJQ==
+Subject: Re: [net PATCH 05/13] fbnic: Don't touch host filters from a service
+ task pass after ndo_stop
 From: netdev-bot+sashiko@kernel.org
 To: alexander.duyck@gmail.com
 Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
  edumazet@google.com, horms@kernel.org, kernel-team@meta.com, kuba@kernel.org,
  pabeni@redhat.com
-Date: Sun, 01 Nov 2026 22:33:15 +0000
-Message-ID: <179357239570.3131.6726877389205316280@kernel.org>
+Date: Sun, 01 Nov 2026 22:33:16 +0000
+Message-ID: <179357239672.3131.17410114269530913916@kernel.org>
 In-Reply-To:
- <179322338727.40667.9687403297682768724.stgit@ahduyck-xeon-server.home.arpa>
+ <179322339510.40667.1479012020546652264.stgit@ahduyck-xeon-server.home.arpa>
 References:
- <179322338727.40667.9687403297682768724.stgit@ahduyck-xeon-server.home.arpa>
-X-sashiko-severity: Medium
+ <179322339510.40667.1479012020546652264.stgit@ahduyck-xeon-server.home.arpa>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -69,7 +69,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -77,93 +77,106 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The patch makes fbnic_bmc_rpc_check()
-  (drivers/net/ethernet/meta/fbnic/fbnic_rpc.c:345-356) set…
+- [High] The patch is incomplete.
 
 --
 
-fbnic: Retry the MACDA sync to firmware if it fails
+fbnic: Don't touch host filters from a service task pass after ndo_stop
 
-When fbnic_fw_xmit_rpc_macda_sync() fails, fbnic_bmc_rpc_check() now sets
-FBNIC_FW_CAP_F_BMC_MACDA_SYNC again, so the next service task pass retries
-the MACDA table sync. The failure warning is switched to
-dev_warn_ratelimited() because it can now repeat.
+This commit moves fbnic_health_check() and fbnic_bmc_rpc_check() in
+fbnic_service_task() under the netif_running() check that re-arms the
+task. A pass that was blocked on RTNL during ndo_stop should then skip
+the firmware recovery and BMC TCAM rebuild. The fix relies on
+__dev_close_many() clearing __LINK_STATE_START before it calls ndo_stop.
 
-> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c b/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c
-> index 0be71e6fd3d4e..d69c91066508f 100644
-> --- a/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c
-> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c
-> @@ -345,9 +345,14 @@ void fbnic_bmc_rpc_check(struct fbnic_dev *fbd)
->  	if (test_and_clear_bit(FBNIC_FW_CAP_F_BMC_MACDA_SYNC,
->  			       &fbd->fw_cap.state)) {
->  		err = fbnic_fw_xmit_rpc_macda_sync(fbd);
-> -		if (err)
-> -			dev_warn(fbd->dev,
-> -				 "Writing MACDA table to FW failed, err: %d\n", err);
-> +		if (err) {
-> +			dev_warn_ratelimited(fbd->dev,
-> +					     "Writing MACDA table to FW failed, err: %d\n",
-> +					     err);
-> +			/* Leave FW to be synced on the next pass */
-> +			set_bit(FBNIC_FW_CAP_F_BMC_MACDA_SYNC,
-> +				&fbd->fw_cap.state);
+> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+> index ad234bb0f75d0..e7744915d001c 100644
+> --- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+> @@ -229,18 +229,23 @@ static void fbnic_service_task(struct work_struct *work)
 
-[Severity: Medium]
-Will this retry ever stop if the error is permanent rather than transient?
+[ ... ]
 
-The bit is set again for any non-zero return, and that includes -ENODEV
-after the device goes away. When fbnic_rd32() or fbnic_fw_rd32() sees
-all-ones reads, they do:
+> -	if (netif_running(netdev))
+> +	/* fbnic_service_task_stop() does not wait for a pass that is already
+> +	 * blocked on RTNL, so one can run after ndo_stop. Leave host state
+> +	 * alone in that case; __fbnic_open() reclaims and rebuilds it.
+> +	 */
+> +	if (netif_running(netdev)) {
+> +		fbnic_health_check(fbd);
+> +
+> +		fbnic_bmc_rpc_check(fbd);
+> +
+>  		schedule_delayed_work(&fbd->service_task, HZ);
+> +	}
 
-    WRITE_ONCE(fbd->uc_addr0, NULL);
-    WRITE_ONCE(fbd->uc_addr4, NULL);
+[Severity: High]
+Does this gate cover the ndo_stop call in fbnic_pm_suspend()?
+
+That path calls ndo_stop directly and does not go through
+__dev_close_many(). Before calling it, it only does
+netif_device_detach():
+
+drivers/net/ethernet/meta/fbnic/fbnic_pci.c:fbnic_pm_suspend() {
     ...
-    netif_device_detach(fbd->netdev);
+	rtnl_lock();
+	netdev_lock(netdev);
+    ...
+	netif_device_detach(netdev);
 
-This leaves mbx[FBNIC_IPC_MBX_TX_IDX].ready set and netif_running() true.
-fbnic_fw_xmit_rpc_macda_sync() only bails out early on:
+	if (netif_running(netdev))
+		netdev->netdev_ops->ndo_stop(netdev);
+    ...
+	netdev_unlock(netdev);
+	rtnl_unlock();
+    ...
+}
 
-    if (!fbd->mbx[FBNIC_IPC_MBX_TX_IDX].ready)
-        return 0;
+netif_device_detach() clears __LINK_STATE_PRESENT and leaves
+__LINK_STATE_START set. So netif_running() is still true after
+fbnic_pm_suspend() drops RTNL.
 
-So on every call it allocates a page, builds the TLV message, and gets
--ENODEV back from fbnic_mbx_map_tlv_msg()->fbnic_mbx_map_msg():
+fbnic_pm_suspend() is reached from system suspend, fbnic_shutdown() and
+fbnic_err_error_detected(). On those paths, can the same sequence the
+commit message describes still happen?
 
-    if (!mbx->ready || !fbnic_fw_present(fbd))
-        return -ENODEV;
+CPU1 (fbnic_pm_suspend)              CPU2 (fbnic_service_task)
+rtnl_lock()
+                                     rtnl_lock()  <- blocks
+ndo_stop()
+  fbnic_stop()
+    fbnic_down()
+      fbnic_service_task_stop()
+        cancel_delayed_work()
+    fbnic_fw_xmit_ownership_msg(fbd, false)
+      fw_heartbeat_enabled = false
+rtnl_unlock()
+                                     netif_running() is still true
+                                     fbnic_health_check()
+                                       fbnic_fw_config_after_crash()
+                                     fbnic_bmc_rpc_check()
+                                     schedule_delayed_work()
 
-It then frees the page.
+In that pass, fbnic_health_check() sees fw_heartbeat_enabled == false
+with an empty Tx mailbox. It reports a firmware crash through devlink
+that did not happen. fbnic_fw_config_after_crash() then reclaims
+ownership and writes the host rules back with __fbnic_set_rx_mode()
+while the host queues are disabled.
 
-fbnic_service_task() calls fbnic_bmc_rpc_check() and reschedules itself
-with schedule_delayed_work(&fbd->service_task, HZ) while netif_running().
-If MACDA_SYNC is pending when the device is lost, this loop runs about once
-a second until the interface is downed, the device is removed, or AER
-recovery runs.
+If FBNIC_FW_CAP_F_BMC_TCAM_REINIT is set, fbnic_bmc_rpc_check() also
+runs fbnic_bmc_rpc_init(), fbnic_rss_reinit() and __fbnic_set_rx_mode().
 
-The same thing happens with -EBUSY if firmware hangs with the TX mailbox
-full.
+The pass also re-arms itself through schedule_delayed_work(). After
+fbnic_pm_suspend() drops RTNL, it goes on to call fbnic_fw_free_mbx()
+and fbnic_free_irqs() and to set uc_addr0/uc_addr4 to NULL. It never
+does a synchronous cancel of service_task. Could the task keep running
+every HZ after that teardown, until reboot on shutdown or until
+__fbnic_open() on resume?
 
-About the commit message, which says:
-
-    rate limit the warning now that it can repeat.
-
-Does the rate limit actually suppress anything here?
-dev_warn_ratelimited() uses DEFAULT_RATELIMIT_INTERVAL (5 * HZ) and
-DEFAULT_RATELIMIT_BURST (10), which allows 2 messages per second. The
-service task fires once per second, so every warning would be printed.
-
-Before this patch, this condition logged one warning. With the patch, it
-logs one warning per second for as long as the condition lasts.
-
-For comparison, fbnic_fw_check_heartbeat() warns once, clears
-fw_heartbeat_enabled, and stops. Could the retry skip setting the bit on
--ENODEV (or check fbnic_fw_present() first), and/or back off between
-attempts?
-
-> +		}
->  	}
->  
->  	netdev_unlock(fbd->netdev);
+Would it be more robust to use a driver-owned stop indication? It could
+be set under RTNL in fbnic_down() or fbnic_stop() and checked by the
+service task, or the work could be drained synchronously, instead of
+keying on netif_running().
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179322311834.40667.5383039334126572422.stgit%40ahduyck-xeon-server.home.arpa
