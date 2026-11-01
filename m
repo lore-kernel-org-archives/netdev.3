@@ -1,59 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=173.37.86.74
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793541342;
-	b=AVaVcQV9ACY/oufdV0Qp8P8S2KF5wAm6TATpUGzBu2BhXzadZYREnaT2VdEoVGzezeIB
-	 HFEHGlMJmnsNRxmGsyM1t/rphY7BDbk8OD6wapPMk1TH8w9yS0oBLY1bzRxsdTrjiPTdY
-	 wruxnqozXxsiISxevNdj9mZHpQOc7UXzy5AGF1jGLfQk8McyhE4qdXsRhwPfHjFbw4jXA
-	 NZw1619WM5zXe0RxFs6aC7XbN1xRqVco4S39RTyaNkjwLxhs1tHPDUxXxu7gOHksnpQfu
-	 WwTcV2E29+irLGEVXmfTZZZ0Iwdodpa17nt9l0bYeTOZ7MC0E0141msM17pluV+z1sw==
+	t=1793541391;
+	b=FVnWexaCPAT3aZUcHJh9yH24n0OXkB1+FsWHDfH16R0M+66Hnmg5KHGw49jIGRC2T3Tg
+	 kR73qBY+PenKFUq9w/5tmqGv6AQcoVshGo2UJU4nvmIY23r0muNdAErDJo8nLWXirmTAr
+	 PVhC43MlqhXy8Wf1bH5yBwZmO2daHhLHh5p6PAYHAWXrIXIOyIrhwZ2qTroOIvJ68S9W9
+	 /4hpxKsZZ/PqpyhQXLtJ0vLKW98JLaDpwRlwMB31pt6be/K1V1bId3xGuUCbpQncojHX3
+	 9c4swu1yZIsZyRt/Rwp/kDwzeJHnHh9YyoOeErnfrHaF92+NJQUJsCpXV50LtnmJYbA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793541342;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=SFHUxyTe9QZ6LESJxwmHaoYtyHUY8quRXCEk8ZG4ceE=;
-	b=kSd7D6U3Pci8oKuMGPAR5u4sMr5NkNmYGjAgYO297tcqYtnIHcwlz0LaywjN/ndxIwqX
-	 ra16jgH0GkFZBKsK920VBuugD4lyy9hSeinHo6IrvsPbsHMVMbcmavWNUcvS22NNByBTi
-	 3pNal1FuW3bxVOP99Cq1uxUumFWVju/64F6dR1lS5xXpj6fVxkPltuje83QS4RpWiFSy7
-	 NIS5DKuQucDGevxMM3D83IdOi4Z+rR8QjOiHYJ5pVw1Y9v3U01KcZKdwi8KRyC6okPdNA
-	 nPeGLNUftCi3YdkBiSlXYMeMgMAnqLE10BGewdpQL6zMunDnGtpwfrnGyz0+3nno33A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793541391;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IPAS-Result:IronPort-Data:IronPort-HdrOrdr:X-Talos-CUID:
+	 X-Talos-MUID:X-IronPort-Anti-Spam-Filtered:X-IronPort-AV:Received:
+	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
+	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Outbound-Client-TLS:X-Outbound-SMTP-Client:X-Outbound-Node;
+	bh=XVyrLBiiV1csLSSF54wJLuMu+zNIwoQj7h/h5vPnodI=;
+	b=h+TXdgKZjIeO1lH3ZTBxTRNL7RlPsWmdaYjYET2IMo24f5nWRi42R8wstZ1KPfmEIKLX
+	 2JP9P6Ht7oYrIEYujAUwQr0b00jTbt9Ez7vSqi3CzP3rSk3rOmhPNgE6+gOGGOW/TA7nN
+	 sxVaRM7eqV7uM09PewJ0PpVGPuhqecKvDZBumfSA1j3GCctXi/42H7bZ5H5BAVJR1kWrv
+	 MMyXrjOM+8VP7gOkwkJSeqO2UbbSrVqxU3IjOeyUy8/4UDRDs3OaX8rc7ClvUVE066HB6
+	 YsSE3myspLPURyW1/H+jYQsYqj3CShT7BsGYA1QMT1wJke5vgVMRYCcWQDTwEX0Y4Rw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XOqYYifb;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=cisco.com;
+	spf=pass smtp.mailfrom=cisco.com;
+	dkim=pass header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=aLyHM+zz;
+	arc=none smtp.remote-ip=173.37.86.74
+Received: from rcdn-iport-3.cisco.com (rcdn-iport-3.cisco.com [173.37.86.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E43E606A324;
-	Sun,  1 Nov 2026 13:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BA1606A324
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 13:56:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D8BA1606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XOqYYifb
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397501F000C1;
-	Sun,  1 Nov 2026 13:55:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793541341;
-	bh=SFHUxyTe9QZ6LESJxwmHaoYtyHUY8quRXCEk8ZG4ceE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XOqYYifb+aU+6Q2BqUqC6mJWjn1JXYRoHvgYSH8TPexTqRZkyTU1faOTb+gp5vLNL
-	 Ypw5/RI/sVh4Ngr4QA7nadA808wuD7nZ1+eG6hM4EhpZoQM0GO4TfiF0LsEYuv2hzH
-	 kwGy98TwemCgg3jXfjwqp9E6/1gOULZRJAusOkiAH3yJ9cTGaxALmy2EdObstxAFGs
-	 AUkBeQVT9/amP1V348eGBCTjnbrO29Dt+w8FvYXVowtmeacqEnpI6lFTkhPwE/8bto
-	 nE3grNhHiTKC4/JM3TZiF8WalCl8yBM2hDSHyTW5jZHtnOVTxbhas2doLhszlsj7KL
-	 bbAsFokwsR27A==
-Subject: Re: [PATCH net] net: parse the eighth nested VLAN tag
-From: netdev-bot+sashiko@kernel.org
-To: thnkslprpt@gmail.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, willemb@google.com,
- kerneljasonxing@gmail.com, almasrymina@google.com, josef@toxicpanda.com,
- jiayuan.chen@linux.dev, toke@toke.dk, linux-kernel@vger.kernel.org
-Date: Sun, 01 Nov 2026 13:55:40 +0000
-Message-ID: <179354134078.3131.9650678574145259725@kernel.org>
-In-Reply-To: <20261031135507.3970551-2-thnkslprpt@gmail.com>
-References: <20261031135507.3970551-2-thnkslprpt@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=aLyHM+zz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=cisco.com; i=@cisco.com; l=1492; q=dns/txt;
+  s=iport01; t=1793541389; x=1794750989;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=XVyrLBiiV1csLSSF54wJLuMu+zNIwoQj7h/h5vPnodI=;
+  b=aLyHM+zzdDJaIgnm5qEBjV2b7+cNkse4vqscp8j+tDf/C2pXX+f3RVt2
+   Yuqj0d67BgHenidxmtjzOUZdSyzC9seuxH9QOIreqnvdUpGis0So8QL1z
+   SBR40/zC7YyNUxw7EBHQH67OjFz9N7PLkTPo09MnfN3XjzOrKemKKHkuI
+   ZAcpaLleKcRp1TdYRyDWnHjmLcq7fRRaUzhNCRymtDkdVSPUWLkvs9xZm
+   Et3chAZXXsNA2UaZ1ag3Exp4BUwSiPW4rK5wK9aWxbfCqfyibEdLAicWa
+   wuHgwnQ1jowxL1dCaC8zv5d6O0SeTLvLqXpezFdtFTQDIS62XEvp6f2fs
+   w==;
+X-CSE-ConnectionGUID: stvnNJqZRXe6m8vRSjK64Q==
+X-CSE-MsgGUID: 0pyyt64eT668c3gVz6Hq5w==
+X-IPAS-Result: =?us-ascii?q?A0BfAwABQ+dq/4z/Ja1aHgEBCxIMggULhCxDhSCRdJ4iF?=
+ =?us-ascii?q?IFqDwEBAQ9RBAEBghKCcwKOHAImNAkOAQIEAwIDAQEBAQEBAQEBAQEBCgEBB?=
+ =?us-ascii?q?QEBAQIBBwWBDhOGXJATAgEDIw8BQQUQCxoCJgICVoMbgnUDunF6gTKBAd5Jg?=
+ =?us-ascii?q?XQVgQouhXKCbQGFA3aEfScbgUlEgRWDKz6EKmaDD4JqBIIigQyXC0gKeBwDW?=
+ =?us-ascii?q?SwBVRMNCgsHBYElQwM1EioVI0sFLR2BIyEdFxEeWBsGBRIgKkFDW4EZgQddg?=
+ =?us-ascii?q?SspYAECH0YtFYF2AoJRgSNdAgFJQQ4HRVMJJUMSRyQiCBIJARMaLAuBGjU8C?=
+ =?us-ascii?q?SZBFQxkCAMaBRomAiAIAgsCDHYoERATHSAmMAUdJh0YDUgRLDcVGQQ9AW4Hl?=
+ =?us-ascii?q?B8BD1sIgQMwgSApUDuTDJJIgTWKQ5UXhCmBZ592GjOqcJkIpA4QPYRpgWg8g?=
+ =?us-ascii?q?VkzGggbFYMjUhkP4H8mcQcCBw8CkXMEgXoBAQ?=
+IronPort-Data: A9a23:souiK608FuwdDaSzCfbD5RBwkn2cJEfYwER7XKvMYLTBsI5bp2EAm
+ DBOWzyAOKuMN2ChL4okYISw90lTvpOAmoJnSwBp3Hw8FHgiRegpqji6wuYcGwvIc6UvmWo+t
+ 512huHodZ5yEzmE4Ej9atANlFEkvYmQXL3wFeXYDS54QA5gWU8JhAlq8wIDqtYAbeORXUXX5
+ rsen+WFYAX7gmcsazpOg06+gEoHUMra6WtwUmMWPZinjHeG/1EJAZQWI72GLneQauF8Au6gS
+ u/f+6qy92Xf8g1FIovNfmHTKxBirhb6ZGBiu1IOM0SQqkEqSh8ajs7XAMEhhXJ/0F1lqTzeJ
+ OJl7vRcQS9xVkHFdX90vxNwS0mSNoUekFPLzOTWXcG7lyX7n3XQL/pGF10oO6s649RNMWwQ8
+ KwGEgsPTU7fvrfjqF67YrEEasULNsLnOsYb/3pn1zycVa1gSpHYSKKM7thdtNsyrpkRRrCFO
+ IxDNGcpNUiYC/FMEg9/5JYWh+60h2L/cD1wo1OOrq1x6G/WpOB0+OWxa4GFJYPSH625mG7Av
+ nPX4zqlDy1EaoyUkjW74CyMn7LQyHaTtIU6UefQGuRRqFGa2GEWIBEfS1a+pf63lgi4Vs43A
+ 0EY5y8nv6Uu3E+mVN/wW1u/unHslh0BUdN4EOAg7gyJjK3O7G6xAGUYQjNfLdYhqIwtTCcq1
+ 1yOt9DkHzpitPuSU3313r6SoSm/JmsTIHMOaDEsSRYD5Z/ooOkblhvFQ9BiOLS4gt38BXf7x
+ DXihC4zm7kek+YV2Kihu1PKmTShot7OVAFd2+nMdniu4gU8YMuuYJalrACAq/1BN42eCFKGu
+ RDohvSj0QzHNrnV/ATlfQnHNOvBCyqtWNEEvWNSIg==
+IronPort-HdrOrdr: A9a23:/I1ZJaHMbDjHE4yQpLqEzseALOsnbusQ8zAXPo5KJSC9Ffbo8P
+ xG/c5rsSMc5wx+ZJhNo7q90ey7MBDhHP1OkOws1NWZPTUO0VHAROpfBMnZsl/d8kbFmdK1u5
+ 0MT0EHMr3NJGk/q9rm6w+lFNtl6tyG/Ke0wdr69R5WPGdXg2UK1XYANu5deXcGPTV7OQ==
+X-Talos-CUID: 9a23:F83mnm3QkQdgY/5xkHXLs7xfAdw7dFv/1UXqE0LmDDZ3coaXagHMwfYx
+X-Talos-MUID: 9a23:obaTvQVkSp682Bzq/Gf0lSB+aptl3/rwWEtWnqsU5emdaDMlbg==
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.27,190,1787011200"; 
+   d="scan'208";a="543387702"
+Received: from rcdn-l-core-03.cisco.com ([173.37.255.140])
+  by rcdn-iport-3.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 01 Nov 2026 13:56:22 +0000
+Received: from satishkh-l-mj0bbv6x.cisco.com (unknown [10.25.129.52])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by rcdn-l-core-03.cisco.com (Postfix) with ESMTPS id 04F53180001CD;
+	Sun,  1 Nov 2026 13:56:21 +0000 (GMT)
+From: Satish Kharat <satishkh@cisco.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org,
+	sebaddel@cisco.com,
+	aradhana@cisco.com,
+	rfaucett@cisco.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Subject: Re: [PATCH net v3 1/2] enic: retain admin-channel DMA until queues stop
+Date: Sun,  1 Nov 2026 05:55:45 -0800
+Message-ID: <20261101135545.2566825-1-satishkh@cisco.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <179340002556.3131.229561522947370936@kernel.org>
+References: <20261027-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v3-1-ba237ed71241@cisco.com> <179340002556.3131.229561522947370936@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,108 +115,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.129.52];TLSv1.3;TLS_AES_256_GCM_SHA384;256
+X-Outbound-SMTP-Client: 10.25.129.52, [10.25.129.52]
+X-Outbound-Node: rcdn-l-core-03.cisco.com
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thanks for the review.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+I agree that vf_registered can become true from a late REGISTER_REPLY even
+when the sender subsequently reports a timeout. V4 will clear
+vf_registered after closing the admin channel on both re-registration
+failure paths.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+I also agree that removal holds RTNL longer than necessary. V4 will hold RTNL
+only while detaching the netdev. The VF unregister handshake and admin-channel
+close will run after releasing RTNL. The detach, the
+netif_device_present() checks, and synchronous cancellation of the reset and
+MTU workers prevent the datapath from being reopened while removal continues.
 
-- [High] The patch fixes the counter only when mac_len is 0 or covers the
-  first VLAN header.
+The failed reset/reopen case is also valid, but it predates this series and
+concerns the generic datapath software lifecycle rather than admin DMA
+ownership. After a successful stop followed by a failed reopen, a later
+ndo_stop can repeat NAPI and IRQ teardown.
 
---
+I do not want to add a partial datapath workaround to this admin-channel
+series. I will address that separately with a consistent fix that makes
+datapath cleanup safe to repeat. I will test the separate fix by forcing
+failures at the major enic_open() stages and then bringing the interface down
+and unbinding the device, verifying that NAPI, IRQs and other datapath
+resources are cleaned exactly once.
 
-net: parse the eighth nested VLAN tag
+V4 will retain the check that prevents the admin channel from being reopened
+after datapath reopen fails, and will contain the two series-specific fixes
+described above.
 
-This commit changes the parse_depth check in __vlan_get_protocol_offset()
-from a pre-decrement to a post-decrement. The goal is for a packet with
-eight nested VLAN tags to return the encapsulated EtherType instead of 0,
-while a ninth tag is still rejected.
-
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 48f6764117243..b10ce1d46674b 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -7703,7 +7703,7 @@ struct vlan_type_depth __vlan_get_protocol_offset(const struct sk_buff *skb,
->  
->  		vh = skb_header_pointer(skb, mac_offset + vlan_depth,
->  					sizeof(vhdr), &vhdr);
-> -		if (unlikely(!vh || !--parse_depth))
-> +		if (unlikely(!vh || !parse_depth--))
->  			return (struct vlan_type_depth) { 0 };
-
-[Severity: High]
-Does this allow eight nested tags for every value of skb->mac_len?
-
-parse_depth goes down once per loop pass, not once per VLAN header that is
-actually parsed. What the first pass reads depends on where the loop
-starts:
-
-net/core/skbuff.c:__vlan_get_protocol_offset() {
-    ...
-	if (vlan_depth) {
-		if (WARN_ON_ONCE(vlan_depth < VLAN_HLEN))
-			return (struct vlan_type_depth) { 0 };
-		vlan_depth -= VLAN_HLEN;
-	} else {
-		vlan_depth = ETH_HLEN;
-	}
-    ...
-}
-
-With mac_len == 0 or mac_len == ETH_HLEN + VLAN_HLEN, the first pass
-parses the first tag, and eight tags now work.
-
-With mac_len == ETH_HLEN and the first tag still in-band, vlan_depth
-starts at 10. The first pass reads the last two bytes of the source MAC as
-the TCI and the outer TPID as h_vlan_encapsulated_proto. That only re-reads
-the type that was passed in.
-
-Eight in-band tags then take nine passes. The ninth pass sees
-parse_depth == 0 and returns { 0 }, which is the result the commit message
-says is fixed.
-
-The egress path on a device without VLAN TX offload seems to produce this
-state:
-
-validate_xmit_vlan()
-  __vlan_hwaccel_push_inside()
-    vlan_insert_tag_set_proto()
-      __vlan_insert_inner_tag()
-
-__vlan_insert_inner_tag() pushes the hwaccel tag inline and moves
-skb->mac_header, but it does not update skb->mac_len:
-
-	skb_push(skb, VLAN_HLEN);
-	...
-	if (skb_mac_header_was_set(skb))
-		skb->mac_header -= VLAN_HLEN;
-
-A forwarded skb that arrived with mac_len == ETH_HLEN keeps that value. A
-later vlan_get_protocol() call, such as one in a driver's xmit checksum
-path, would then still get 0 for a frame with eight tags.
-
-On the plain RX path (skb_vlan_untag() followed by skb_reset_mac_len()),
-the extra pass happens to line up with the stripped hwaccel tag, so eight
-tags still work there.
-
-Could parse_depth be decremented only for passes that parse a real VLAN
-header? Alternatively, the start offset could be chosen so that every pass
-parses one.
-
-If the current behaviour is kept, should the commit message and the
-VLAN_MAX_DEPTH comment mention that the result depends on mac_len? The two
-texts in question are "allowing eight nested tags while continuing to
-reject a ninth" and "Max. number of nested VLAN tags parsed".
-
->  
->  		type = vh->h_vlan_encapsulated_proto;
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261031135507.3970551-2-thnkslprpt%40gmail.com
+pw-bot: cr
