@@ -1,61 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793517354;
-	b=zpp68KLEvZPRiXooYriVP31FgE8U8GM3fDFpSmaFKaTOgqCbxUMuMKe6Tw6pbnQvYKPG
-	 rlx6YUMmtjQEL3Ebo4kNDRgFasGEiGaRAPWiHFEruSbtgcAlPDR/YK4tF7inhLR6565eT
-	 BTjsn7JUKg/mOVcWJx0SBxQwD4rhwTFnyejtTpDrfDjzYDKd25DPMrCUEkDvfEDymUoqR
-	 F+/5OB3JQmOOXt7Ca/kC0d4WQIGqSAoS836w3Dm7QTPnAO0B7evchAgjfJT15ZJMzM0Q2
-	 ogsy28xF9CogceU9kQS9TRIZenK4VaGwiQVKKLCFcUhp9SDo4EAMkxYG5mjA6SyVEEw==
+	t=1793519589;
+	b=pA0Fs3v57e1ODjxkmSVaZycWhuRgenSzSg60H4u1xD8fOz9wCOrjbtDeRBSkRLmVhFDy
+	 wXv5brKFM9qhul/BatQtTIq7LyeZzt58ptouxqhX8DejoqYru/lLIioIPDJzGqn3lBbYC
+	 JSGV/Q9Gw2ERUbk+66DVMsSs3mqtPqIz0zmgpKEw+07vlxWWzT2l/8HRb2hBl1BoUHSu7
+	 RkN+WmRP7mqpVKJDs0xiOascCiYlHVDHBYkEMybYPl6r44AqxwRaMR+COaotA7rGFAFWE
+	 3KpCOhKXW4F+obyiQJ7hzsScEZ3pijxhp/0JzraU3qrGmxNwpIwdj3tuLmBZkqhheiQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793517354;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=YvzwzUPJNamEKyfoAp0xhvLbUbROhQ47J0KFrOAYx5U=;
-	b=nqlzp5vM3E6EWzltIAGeCJfx9jUQgBevzSlGgHhrNjOhnf4sS9JX5x9sXB9mdV9h5vT5
-	 4eUgCN1+mW6vIj3KOl+cP9xsyOLWe94OLeTZ24Xz7VT+LiXiRMuJPwjYobJUGcNJCCAYr
-	 kbqLZGpUEpWj1ztYOzJ5xcRdaFAAphcvRUxdcw0tM3P/+Ke6WRKUNkjXvtFOVdXAM1kpE
-	 vmOEiUweGuqGZgPlyfMbqodWp1TetKXrwccTgZ58okWnxZWlNxRH5dmzKqNdTkTB1eJXs
-	 c0OeSy2nDytPI5tlM+EppW236TneavsXp0wKXGlmVrzrbRpMaP1kBYTYKa0jsXukWqw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793519589;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:Mime-Version:X-Mailer:Message-ID:
+	 Subject:From:To:Cc:Content-Type;
+	bh=OuHPb5BnUNYHQ7S5xQzTpeXYGXd1c8j2VbkTuL8vhYQ=;
+	b=FPz+YHKs8MvlZm5ly1lJSbVZ/M6B9m+ISOUkjgW+R2Q2teUgzwcnkeaYJD5wTlbzA+jN
+	 KLeSLFWpvKc2ktMw+Ebr7UvIUO8PSorymr881cgWZfXZWvJOb1OvGiT0910aPg4fqnXHl
+	 TQwKUa/yN0NTOjz4DROh7BXlSyrZAbhL8pXYHOqvpNCnyXsAOLGWtvhP7ErNvSpY6YavO
+	 TO1P4xhQgleMEvXMyT9u2OFc/5sJEqs5OSo2WKm8rrjQ+vvKDPTIVg8+QuyohBUoNWCbs
+	 /EwY46qTwUN8FXH3nuegYIRRC2n0xhbGUPb/Ky/Xi9pd5v3tJnCjcuFOHvfwnOu3omA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XfxBGnwh;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--sgzhang.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=T5AkWNou;
+	arc=none smtp.remote-ip=209.85.215.197
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D455D606A324;
-	Sun,  1 Nov 2026 07:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDABC606A325
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 07:53:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BDABC606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--sgzhang.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XfxBGnwh
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637351F000C1;
-	Sun,  1 Nov 2026 07:15:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793517353;
-	bh=YvzwzUPJNamEKyfoAp0xhvLbUbROhQ47J0KFrOAYx5U=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XfxBGnwhb8vp1blw7XelyO1gyCeW3xZYD2dZT8yw4d+oK/TSPKcWgIh/3xxfjxNMN
-	 UInJRmd3vI3FzYC73yZPyV6Ac8U9Y8ShDt/u+5AdSUx9NZ6MxDAbO8kNyhuP8KAR19
-	 mnnhJckKeAl2uYJroyZEAh6iJvBQCYGbMNIjVnaCQadItC7XlBqdPqsywr3e787A9v
-	 EO8IofPzHBHLdbqKi55s6ZEafjBJcXvWCqQbOr3W65Z3PNJ+yyu64j2lRvbV3pn2/9
-	 fPqw2cpOd4wxRivufRaAXcEp9KqA6MEef4z6j2zKHWKjuOu8SHD29NciOOvAndStgM
-	 0s0sC1ox4zwRQ==
-Subject: Re: [PATCH net v14] net/smc: fix lgr/lnk lifetime vs diag reader race
-From: netdev-bot+sashiko@kernel.org
-To: mjambigi@linux.ibm.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
- dust.li@linux.alibaba.com, sidraya@linux.ibm.com, hidayath@linux.ibm.com,
- pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
- guwen@linux.alibaba.com, stable@vger.kernel.org, netdev@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
-Date: Sun, 01 Nov 2026 07:15:51 +0000
-Message-ID: <179351735189.3131.9219259330792018704@kernel.org>
-In-Reply-To: <20261028070210.1685136-1-mjambigi@linux.ibm.com>
-References: <20261028070210.1685136-1-mjambigi@linux.ibm.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=T5AkWNou
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc7e92f36f9so1508338a12.3
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 00:53:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793519588; x=1794124388; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OuHPb5BnUNYHQ7S5xQzTpeXYGXd1c8j2VbkTuL8vhYQ=;
+        b=T5AkWNouwodDcP4IB/ERF7vG+QYJ998+5MCCQmxB2ZGHS6tXoBOmjNdbUv4FKUM3D8
+         5G9NLLyDQG6+I012g77byWxcIe8w/De1g73KAmFICtWBcN9KWmo2OdD/hIbLa+Ne/jOk
+         AJSqikeX4CCx8IdCyajGJtTV3oTlRy0n1qKC4anRFY7SIjLn5gqpXxd2kdP+9hkYtUTl
+         u9ej/hvWYRPxNSYs68mx0GJHBlMnhiR55cTBh9Jzuo25vW//NasU389GrAw3mbg6WHFu
+         btuISQbbuZVbuJWDosHDCU+vQaOQ5GD5S/ZGTVeIP2ybT7hvxC4Vmg/VNIIGLeyoesXX
+         0CkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793519588; x=1794124388;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OuHPb5BnUNYHQ7S5xQzTpeXYGXd1c8j2VbkTuL8vhYQ=;
+        b=SrH/R0777/DSjLiP06R0ujUN+v5iLrqIQ4yQVvcXQZuB50XjspHL9srWDR61VQA2vD
+         A/sd0MR031CAIPICmFCc65uoaqMaPICsd/EMDlJZpbs0thV/s/sm4/vw5xzfrEbEz91V
+         5rDMp5XmZkjmrFDLrYA0qrlf52eNuXZuXkYOfHtobjz8FhdKlSlboWDO2qLZDACVh7wN
+         L1BDwEJzc9WLdOKhHKkVTyUloiSwPVH9Ub8rctRFLFTc6Kaeaa0JVPEoO8xSYnXePZTD
+         y7Aoz7sPXrgrYyJkzkFY0G6yvLplKroL17WvYJWl8oyI1vRK39KPPgagh+eMqOuyYjT5
+         dqDQ==
+X-Gm-Message-State: APuU4Z9JN/biuCAFhLEeaIf4CkLy+FeoL1SWMYspGIhFLZZtjYqdCBfz
+	HQTFKYD5+C6P0EZDzsY2om8aBlD7+WR9AqtDTf7pafotCLo7UZ15KQ8Awj4cYj/DZQe1CrknKIM
+	1pIS0Bb/9Rc9XiWEnYhFitKBXHnthzgyC+XzlEI5qUT4oWV/bTbw8HoZINri9JWwMKd3LSN4ubf
+	w44DAYa4/dUBXeltOkMZ9LYKclygE8dOFVeZn9LGG4VQ==
+X-Received: from pjyt8.prod.google.com ([2002:a17:90a:e508:b0:3ae:7abe:56ae])
+ (user=sgzhang job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e70c:b0:3ab:2737:3393
+ with SMTP id 98e67ed59e1d1-3ae89835d94mr5728121a91.40.1793519587822; Sun, 01
+ Nov 2026 00:53:07 -0700 (PDT)
+Date: Sun,  1 Nov 2026 00:51:45 -0700
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,333 +75,107 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
-
-Critical: 0 · High: 1 · Medium: 1 (2) · Low: 1
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The fix is incomplete.
-- [Medium] After this patch, __smc_diag_dump() (net/smc/smc_diag.c)
-  reports SMC_DIAG_MODE_SMCR for every non-fallback socket in SMC_INIT…
-- [Low] The commit message's 'Fourth' item says the
-  smp_store_release(&newsmcsk->sk_state, SMC_CLOSED) in…
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but
-  smc_conn_free() (net/smc/smc_core.c:1281-1282) calls…
-- [Medium] This problem wasn't introduced by this patch, but
-  smc_diag_handler_dump() (net/smc/smc_diag.c) never checks that the…
-
---
-
-net/smc: fix lgr/lnk lifetime vs diag reader race
-
-This patch tries to close races between the SMC sock_diag dump and the
-teardown of conn/lgr/lnk state. __smc_diag_dump() now skips the extension
-attributes and the lgr based diag_mode test for sockets in SMC_INIT,
-SMC_CLOSED or fallback, and several teardown paths unhash the socket
-before smc_conn_free() or smcd_buf_detach(). It also adds acquire/release
-ordering on sk_state and copies the cached link->ibname.
-
-> diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-> index d10244af5bd29..ec5980add7a9d 100644
-> --- a/net/smc/af_smc.c
-> +++ b/net/smc/af_smc.c
-
-[ ... ]
-
-> @@ -1971,7 +1971,7 @@ static void smc_listen_out_err(struct smc_sock *new_smc)
->  	this_cpu_inc(net->smc.smc_stats->srv_hshake_err_cnt);
->  	if (newsmcsk->sk_state == SMC_INIT)
->  		sock_put(&new_smc->sk); /* passive closing */
-> -	newsmcsk->sk_state = SMC_CLOSED;
-> +	smp_store_release(&newsmcsk->sk_state, SMC_CLOSED);
-
-[Severity: Low]
-
-The commit message says:
-
-  Fourth, smc_listen_out_err() sets sk_state = SMC_CLOSED with a plain
-  store after smc_conn_abort() -> smc_conn_free() has already cleared
-  alert_token_local under write_lock_bh(). On weakly ordered CPUs a
-  concurrent diag reader using smp_load_acquire() on sk_state can observe
-  SMC_CLOSED while the preceding store to alert_token_local has not yet
-  become visible, causing it to dereference an lgr whose reference was
-  already dropped.
-
-Is this still accurate with the current __smc_diag_dump()?
-
-A reader that sees SMC_CLOSED now skips the conn->lgr dereference in the
-diag_mode test, and the new goto out skips the extension blocks.
-
-Before this store the state is SMC_INIT. smc_listen_work() holds the
-socket lock until smc_listen_out(), so close_work can't change it in
-between, and SMC_INIT is skipped the same way.
-
-So whichever value the reader sees, it never reads alert_token_local or
-conn->lgr, and the release ordering doesn't seem to protect anything the
-reader relies on. The commit message already says this for the
-stale-token case ("the SMC_CLOSED check in __smc_diag_dump() keeps the
-reader from dereferencing conn->lgr").
-
-This reasoning seems to date from v9, before v14 added SMC_CLOSED to the
-diag_mode test. Could the fourth item be described as hardening, or
-dropped, so stable backporters don't treat the barrier as a required
-standalone fix?
-
->  
->  	smc_listen_out(new_smc);
->  }
-> diff --git a/net/smc/smc_close.c b/net/smc/smc_close.c
-> index a8d4b4b65f244..e26586114f802 100644
-> --- a/net/smc/smc_close.c
-> +++ b/net/smc/smc_close.c
-
-[ ... ]
-
-> @@ -437,6 +439,7 @@ static void smc_close_passive_work(struct work_struct *work)
->  		sk->sk_state_change(sk);
->  		if ((sk->sk_state == SMC_CLOSED) &&
->  		    (sock_flag(sk, SOCK_DEAD) || !sk->sk_socket)) {
-> +			sk->sk_prot->unhash(sk);
->  			smc_conn_free(conn);
-
-[Severity: Medium]
-
-This is a pre-existing issue and wasn't introduced by this patch. Does
-smc_conn_free() leak the socket reference held by abort_work when it
-cancels a pending abort_work?
-
-smc_conn_free() in net/smc/smc_core.c does:
-
-	} else {
-		smc_cdc_wait_pend_tx_wr(conn);
-		if (current_work() != &conn->abort_work)
-			cancel_work_sync(&conn->abort_work);
-	}
-
-and ignores the return value. The only code that schedules abort_work is
-smc_cdc_msg_validate(), and it hands a reference to the work:
-
-		sock_hold(&smc->sk); /* sock_put in abort_work */
-		if (!queue_work(smc_close_wq, &conn->abort_work))
-			sock_put(&smc->sk);
-
-smc_conn_abort_work() drops that reference when it runs. Suppose
-abort_work is still pending when an SMC-R connection reaches
-smc_conn_free() from outside abort_work, for example via __smc_release().
-Then cancel_work_sync() returns true, nobody drops the reference, and the
-smc_sock is never freed.
-
-smc_close_cancel_work() handles close_work the same way with:
-
-	if (cancel_work_sync(&smc->conn.close_work))
-		sock_put(sk);
-
-Should smc_conn_free() do the same for abort_work?
-
-[ ... ]
-
-> diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
-> index bf0beaa23bdb6..7b4656d6560a6 100644
-> --- a/net/smc/smc_diag.c
-> +++ b/net/smc/smc_diag.c
-> @@ -87,10 +87,11 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
->  
->  	r = nlmsg_data(nlh);
->  	smc_diag_msg_common_fill(r, sk);
-> -	r->diag_state = sk->sk_state;
-> +	r->diag_state = smp_load_acquire(&sk->sk_state);
->  	if (smc->use_fallback)
->  		r->diag_mode = SMC_DIAG_MODE_FALLBACK_TCP;
-> -	else if (smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
-> +	else if (r->diag_state != SMC_INIT && r->diag_state != SMC_CLOSED &&
-> +		 smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
->  		r->diag_mode = SMC_DIAG_MODE_SMCD;
->  	else
->  		r->diag_mode = SMC_DIAG_MODE_SMCR;
-
-[Severity: Medium]
-
-With this change every non-fallback socket in SMC_INIT or SMC_CLOSED is
-reported as SMC_DIAG_MODE_SMCR. That includes SMC-D connections, which
-used to report SMC_DIAG_MODE_SMCD.
-
-include/uapi/linux/smc_diag.h defines diag_mode as:
-
-/* Mode of a connection */
-enum {
-	SMC_DIAG_MODE_SMCR,
-	SMC_DIAG_MODE_FALLBACK_TCP,
-	SMC_DIAG_MODE_SMCD,
-};
-
-It has no "unknown" value. Is it intended that an SMC-D connection is
-reported as SMC-R here?
-
-Live SMC-D sockets can stay hashed in SMC_CLOSED with a valid lgr and
-alert_token_local. smc_close_passive_work() or
-smc_close_passive_abort_received() can move a socket to SMC_CLOSED while
-the fd is still open. smc_close_passive_work() only unhashes and frees
-when:
-
-		if ((sk->sk_state == SMC_CLOSED) &&
-		    (sock_flag(sk, SOCK_DEAD) || !sk->sk_socket)) {
-
-SMC-D sockets in SMC_INIT after smc_conn_create() are affected the same
-way. A tool that filters by mode (smcss -D / -R style) would put these
-sockets in the wrong group.
-
-Could the race be avoided without misreporting? For example, is_smcd
-could be cached in the smc_sock, or SMC-D could be inferred from
-conn.lgr != NULL && conn.lnk == NULL, which only reads pointers and
-doesn't dereference the lgr.
-
->  	user_ns = sk_user_ns(NETLINK_CB(cb->skb).sk);
->  	if (smc_diag_msg_attrs_fill(sk, skb, r, user_ns))
->  		goto errout;
-> @@ -103,6 +104,10 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
->  	if (nla_put(skb, SMC_DIAG_FALLBACK, sizeof(fallback), &fallback) < 0)
->  		goto errout;
->  
-> +	if (r->diag_state == SMC_INIT || r->diag_state == SMC_CLOSED ||
-> +	    smc->use_fallback)
-> +		goto out;
-> +
-
-[Severity: High]
-
-Can a socket whose connection was already released by smc_conn_abort()
-still move into a state this guard doesn't cover?
-
-The guard only checks the sk_state snapshot. Take a client handshake
-that fails with a negative rc after smc_conn_create():
-
-smc_connect_rdma()
-  connect_abort:
-    smc_conn_abort()
-      smc_conn_free()   /* sets conn->freed, drops lgr/lnk refs */
-
-smc_connect_decline_fallback() returns early without changing the state,
-and smc_connect_work() only does:
-
-	rc = __smc_connect(smc);
-	if (rc < 0)
-		smc->sk.sk_err = -rc;
-
-So the socket stays hashed in SMC_INIT with use_fallback == false.
-
-Suppose smc_lgr_terminate_sched() had already emptied lgr->list, which
-is the stale-token case the changelog mentions. Then smc_conn_free()
-skips the unregister:
-
-	if (!list_empty(&lgr->list)) {
-		smc_buf_unuse(conn, lgr); /* allow buffer reuse */
-		smc_lgr_unregister_conn(conn);
-	}
-
-alert_token_local stays non-zero and the conn stays in lgr->conns_all.
-
-smc_cdc_rx_handler() doesn't check conn->freed:
-
-	conn = smc_lgr_find_conn(ntohl(cdc->token), lgr);
-	if (!conn || conn->out_of_sync) {
-
-So a close or peer-abort CDC can still queue close_work. Once the
-handshake thread drops the socket lock, smc_close_passive_work() does:
-
-	case SMC_INIT:
-		sk->sk_state = SMC_APPCLOSEWAIT1;
-		break;
-
-Or smc_close_passive_abort_received() moves SMC_INIT to
-SMC_PROCESSABORT. Both are plain stores, and neither path reaches the
-new unhash plus smc_conn_free() branch.
-
-A diag reader under read_lock(&h->lock) would then see APPCLOSEWAIT1 or
-PROCESSABORT and pass both new checks. It would find
-smc_conn_lgr_valid() true, because conn->lgr is never cleared. It then
-dereferences smc->conn.lgr->is_smcd, conn->sndbuf_desc, conn->rmb_desc
-and lgr->list.
-
-Meanwhile terminate_work runs
-__smc_lgr_terminate()->smc_conn_kill()->smc_close_active_abort(). Its
-ACTIVE/APPCLOSEWAIT branch goes to SMC_CLOSED without unhashing:
-
-	case SMC_ACTIVE:
-	case SMC_APPCLOSEWAIT1:
-	case SMC_APPCLOSEWAIT2:
-		sk->sk_state = SMC_PEERABORTWAIT;
-		smc_close_cancel_work(smc);
-		if (sk->sk_state != SMC_PEERABORTWAIT)
-			break;
-		sk->sk_state = SMC_CLOSED;
-		sock_put(sk); /* (postponed) passive closing */
-
-So the hash write_lock is never taken before smc_lgr_free() drops the
-last lgr reference. Wouldn't the reader then be dereferencing a freed
-smc_link_group?
-
-There is also a weaker variant, where the token is cleared normally and
-the lgr is freed synchronously via smc_lgr_cleanup_early(). Safety then
-depends on the token clear being visible to a reader that acquire-loads
-an sk_state written with a plain store. This is probably ordered in
-practice through lock_sock()/release_sock(), but the patch doesn't
-establish it.
-
-Separately, after a failed handshake the same SMC_INIT to
-SMC_APPCLOSEWAIT1 transition later runs the "postponed passive closing"
-sock_put() in smc_close_active() or smc_close_active_abort(). But
-smc_connect_decline_fallback() has already dropped that reference.
-
-Would one of these work better?
-
-- unhash a socket whose conn was freed by smc_conn_abort(), or
-  otherwise hide it from diag
-- cancel close_work, or check conn->freed in smc_cdc_rx_handler() and
-  in the diag reader
-- pin the lgr for as long as stale conn state is visible
-
->  	if ((req->diag_ext & (1 << (SMC_DIAG_CONNINFO - 1))) &&
->  	    smc->conn.alert_token_local) {
-
-[Severity: Medium]
-
-This is a pre-existing issue and wasn't introduced by this patch. Is
-req->diag_ext guaranteed to be inside the request payload here?
-
-smc_diag_handler_dump() starts the dump after checking only:
-
-	if (h->nlmsg_type == SOCK_DIAG_BY_FAMILY &&
-	    h->nlmsg_flags & NLM_F_DUMP) {
-
-The generic __sock_diag_cmd() only checks for a struct sock_diag_req:
-
-	if (nlmsg_len(nlh) < sizeof(*req))
-		return -EINVAL;
-
-That struct is 2 bytes. So an unprivileged SOCK_DIAG_BY_FAMILY |
-NLM_F_DUMP request for AF_SMC with a 2 byte payload is accepted. diag_ext
-is at payload offset 3, past skb->len, in tailroom that
-netlink_sendmsg() never initialized.
-
-Those uninitialized bits then decide whether SMC_DIAG_CONNINFO,
-SMC_DIAG_LGRINFO and SMC_DIAG_DMBINFO are emitted. That exposes the bits
-to the requester, and KMSAN would report it as uninit-value.
-
-inet_diag and unix_diag reject requests shorter than their family
-request struct. Should smc_diag_handler_dump() also reject
-nlmsg_len(h) < sizeof(struct smc_diag_req)?
-
-[ ... ]
-
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
+Message-ID: <20261101075145.698399-1-sgzhang@google.com>
+Subject: [PATCH net] net: count last skb of each sk_backlog pass in __release_sock()
+From: Ray Zhang <sgzhang@google.com>
+To: netdev@vger.kernel.org
+Cc: Eric Dumazet <edumazet@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, 
+	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
+	David Decotigny <decot@google.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Ray Zhang <sgzhang@google.com>
+Content-Type: text/plain; charset="UTF-8"
+
+Running 500 concurrent TCPv6 streams (neper "tcp_stream -6 -T 1 -F 500")
+on a 2-core Cortex-A53 (CONFIG_PREEMPT_NONE=y, HZ=1000, LATENCY_WARN)
+triggers resched_latency_warn() in __release_sock():
+
+  [ 3655.311821] sched: CPU 0 need_resched set for > 100006892 ns (100 ticks) without schedule
+  [ 3655.311889] Call trace:
+  ...
+  [ 3655.311944]  resched_latency_warn+0x7c/0x88
+  [ 3655.311958]  sched_tick+0x1c0/0x418
+  ...
+  [ 3655.312578]  net_rx_action+0x238/0x438
+  ...
+  [ 3655.312641]  do_softirq+0x4c/0x90
+  [ 3655.312651]  __local_bh_enable_ip+0x84/0x90
+  [ 3655.312663]  local_bh_enable+0x1c/0x28
+  [ 3655.312674]  __dev_queue_xmit+0x4a8/0xb00
+  ...
+  [ 3655.312782]  tcp_v6_do_rcv+0x240/0x5f8
+  [ 3655.312793]  __release_sock+0x9c/0x188
+  [ 3655.312806]  release_sock+0x150/0x168
+  [ 3655.312817]  tcp_sendmsg+0x4c/0x70
+
+__release_sock() can loop past 100 ms without calling cond_resched():
+
+- Each outer-loop pass drains sk_backlog, but "if (!skb) break;" runs
+  before "++nb", so a pass of B skbs only adds B - 1 to nb (0 for 1 skb).
+- With 500 TCPv6 streams and NAPI sharing two Cortex-A53 cores, runnable
+  tasks keep TIF_NEED_RESCHED set on CPU 0.
+- During spin_unlock_bh() and TX softirqs (__dev_queue_xmit() ->
+  local_bh_enable()), tcp_add_backlog() coalesces arriving pure ACKs into
+  a single tail skb.
+- Repeated 1-skb passes never advance nb or call cond_resched(),
+  triggering resched_latency_warn() after 100 ticks.
+
+Restore the do-while loop and drop "if (!skb) break;" so every skb
+increments nb across passes and calls cond_resched() every 16 skbs.
+
+Reproduced the issue and verified the fix on two 2-core Cortex-A53 hosts
+(CONFIG_PREEMPT_NONE=y, HZ=1000, LATENCY_WARN, latency_warn_once=0) with
+a userspace reproducer over /dev/net/tun:
+
+- CPU 0 runs a TCPv6 sender and a second runnable task while CPU 1 writes
+  pure ACKs to /dev/net/tun (~30k TCPBacklogCoalesce/run), sustaining
+  1-skb sk_backlog refills in __release_sock() for ~400 ms (ftrace).
+- Before: CPU 0 stayed unscheduled in __release_sock(), hitting
+  resched_latency_warn() 293 and 275 times on the two hosts (> 100.9 ms).
+- After: cond_resched() yielded CPU 0 inside __release_sock(), with
+  0 resched_latency_warn() hits on both hosts.
+- Also observed no regression with the workload from
+  commit 16c610162d1f ("net: call cond_resched() less often in
+  __release_sock()"), "super_netperf 4 -H srv -T,10 -l 3000 &".
+
+Fixes: 16c610162d1f ("net: call cond_resched() less often in __release_sock()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ray Zhang <sgzhang@google.com>
+---
+ net/core/sock.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/net/core/sock.c b/net/core/sock.c
+index e7405be8941f..e2401d735c5a 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -3333,7 +3333,7 @@ void __release_sock(struct sock *sk)
+ 
+ 		spin_unlock_bh(&sk->sk_lock.slock);
+ 
+-		while (1) {
++		do {
+ 			next = skb->next;
+ 			prefetch(next);
+ 			DEBUG_NET_WARN_ON_ONCE(skb_dst_is_noref(skb));
+@@ -3341,12 +3341,10 @@ void __release_sock(struct sock *sk)
+ 			sk_backlog_rcv(sk, skb);
+ 
+ 			skb = next;
+-			if (!skb)
+-				break;
+ 
+ 			if (!(++nb & 15))
+ 				cond_resched();
+-		}
++		} while (skb);
+ 
+ 		spin_lock_bh(&sk->sk_lock.slock);
+ 	}
+
+base-commit: cb284914e749388eef402938bdb3115fe1f6d337
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028070210.1685136-1-mjambigi%40linux.ibm.com
+2.56.0.317.g454f8302e1-goog
+
