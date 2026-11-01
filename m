@@ -1,62 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.55
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793564284;
-	b=3ukp3rpUdxU3AvQVEGGYXpePqg8W6sEQKuSdVOqH9DoNSo6xWHqo9lt/NoLLb4y/oFF8
-	 MVRYVmJngH8lWcAR1gWVHPvzr3O/2ZbS5XVhq1qMqlS9R/J3X04nLvWvJN+BOLRj0Rjbr
-	 oJhs/F3i0WGhXSuZvtPyFoHt27GB6gYwpbTI+EmDSTD6fNSilX9iRvXzpM/ecnx/++R18
-	 eJaCcAytCqML9cQBP5Ez14HeyhnHe7kHfr/J+kOgFO4xwJ5Cb+Rw/JSXxpnBBnMp2InR7
-	 g19hD6d1fkhxuqcNHqGbUjMMGlc9NOEyxi6HgfT168U6MoPhQLMs0p4DeCx5QPtF7ZQ==
+	t=1793564419;
+	b=LjQyLYXMmdNM/jqCDdwOXROIUpmRKjUGdZeshRqD3A8WpC4RgR12oZJnFcrW2MS/uOyg
+	 fB1NR7Vxq6LiC5Oikf2I87kJ0/402ChrCqxh42W+75uXvqgRFoT1aYOVfD+zzJdVCbZ03
+	 W7Jcw0OjAKP3UYqJ6oU8e3EfF6yXbBMT6YvL7+HNcpSgQOg2WFa/MVwsaUk2HYjfyyGsr
+	 XJXDjn1hfUgQcoaIfaQdNUvxl7jadqxlx4rZhW0ZRQ0IrAV0Yyfy1bZB519LoTJDI/r+o
+	 0vpbcQSq+WFf40BX8KDga08fa64CTs9/vd2cqmDY1OOwLdaBokFQMIdGuhjs1ItOkIg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793564284;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:
-	 Organization:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Rspamd-Queue-Id;
-	bh=T+DAZYhHZ3A1qaqacQjdw2FiIWYF+HluMV1uZpQB+W4=;
-	b=c3uQM9ZDkcEg9oLQ0Ix9kH8CHmSgdH1s6pVFx9W52sYjlxePO+jUt0ePCJ8PFHJ5Yo9Z
-	 QanbcOuWL7ZK5an1y4HY4EiUaUQsvc6ynL6i5iyPAPc2knjzcBvLUDNaiivGDwSU9p1+w
-	 sQFR6W4NwV8/MXejOMFP+OxrMBfwMSqM9136azJzKYw3S2COXUTwc6sQMWyH/x21B83cv
-	 MT+ntrtQawqxjAKB+nFuOFbVfhTeQNe1MsyUkCVIl/bOyRpuNSGDCXUj6gXU6nG+bEcUc
-	 FHKghvLKUn5b8Pc941jeEHIXTR7iERmDyt1SWrMmSHJ6rqhf2szv/8dPyQjWmH/7+lw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793564419;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=zyRN6kg9/ATn1G8Z14YW7umkFVQ53HKSrppdRtXaoZo=;
+	b=0clZvreO4N3lvvc4eJ5fIeUJFQeuEvJQ78kjqf9i0efy6RL15WYPLFPalmkCPv4WBXRA
+	 TxBbAZfsK/DiaBWTKWP8vqyBTVL3n/kqNjWV/21ZbOhUJeRL7LrgPJrtU97tjRFBQWJal
+	 U/zvhbARqJk/M6xZN0CxMd0W88tjb/ZYkFQY+haGjBSRhUMqOqQIyg6SSggsfWs46QxN4
+	 LdOWefgoS+5Ol1jPuWp+YSTkfLm9Id+2Hz8bB7GvkFM4qXNt9JzqvwIHs5uOpCOJQNUm4
+	 HJXkmWt7EwzQX0c4fcjacrmNkYWzitFjvtq7QicGm2UcK8v8u+zTZ7IGUtZhrCqaRIg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mandelbit.com;
-	spf=pass smtp.mailfrom=mandelbit.com;
-	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=JgN6JTws;
-	arc=none smtp.remote-ip=195.10.208.55
-Received: from mout-b-110.mailbox.org (mout-b-110.mailbox.org [195.10.208.55])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AL+vqfXx;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADF6606A327
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 20:18:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AADF6606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F219606A325;
+	Sun,  1 Nov 2026 20:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=JgN6JTws
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-b-110.mailbox.org (Postfix) with ESMTPS id 4jHmNc4jvyzNlST;
-	Sun, 01 Nov 2026 21:17:52 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1793564272;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T+DAZYhHZ3A1qaqacQjdw2FiIWYF+HluMV1uZpQB+W4=;
-	b=JgN6JTwspkmM1n6hl1C8hIlyXw5GbR+4FfbZWS2/m9ua/tM2KRahJ8pOtJTtpN7378pmF0
-	HDXDvwT1onmFVrRhsJeJSrP5hOFYeRP0vVodDE4dzlWf1OTEuhRu11SM+WhAP8NG/8PYLQ
-	yvi3aVb+qj86TAh1OAh3I042IzJj8nKKk2ADF7JI4tNs2xZVcxudsrh27RYrSmyINSd4ZC
-	cX01oUfsoh2WeXFGfAcRtUkd4B/r7pUCg1NErgZWfHz1WCrgKJGCsIxn/Ec3SuV4SESkQ8
-	4tE+qKCwlZEgHHan3A09RVLUZBaxexlOsqYbLQbjeoq53RYGcv3yYvawfL896g==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=none;
-	spf=pass (outgoing_mbo_mout: domain of antonio@mandelbit.com designates 2001:67c:2050:b231:465::202 as permitted sender) smtp.mailfrom=antonio@mandelbit.com
-Message-ID: <21b92f81-e3f1-44ba-872e-7e860ee92518@mandelbit.com>
-Date: Sun, 1 Nov 2026 21:17:50 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AL+vqfXx
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E6F1F000C1;
+	Sun,  1 Nov 2026 20:20:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793564419;
+	bh=zyRN6kg9/ATn1G8Z14YW7umkFVQ53HKSrppdRtXaoZo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=AL+vqfXx8V+n8mSHlPQBbqJ2wOEM7Y5XMBR5amUzuRNF7eu1Hfs7ssGVCTnImepgv
+	 KsqJNpnBMfG7pbgtDwl/tEJd+CCvFRGR9l0koJI8oSbXGwdkDFHGehfr1tdv1u5Kfm
+	 mxIubGTA4S53kQm5dx92AzD5Wc2y5ADCgUPFnkeOePCT75N9o+eSn97FBiY9eA3OTQ
+	 vlvzh1us+2INW7Bh4KJWEwboaenJbUj/Rew0/6jWt9PMNtLdGvtDCYUPjCdnYbL9PA
+	 MGiR3v4ShcuLf1pmT+Hb5wiIoA4dYi6CqjmsNhk+3nt4ouYHDLAa6qKGhBeuLg1Eh4
+	 5xEKrKN0YhUxg==
+Subject: Re: [PATCH net 3/3 repost2] net/sched: sch_teql: reject qdiscs from
+ another network namespace
+From: netdev-bot+sashiko@kernel.org
+To: jhs@mojatatu.com
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, shawnq1@163.com,
+ davem@davemloft.net, edumazet@kernel.org, horms@kernel.org, jiri@resnulli.us,
+ kuba@kernel.org, pabeni@redhat.com, victor@mojatatu.com,
+ thomas.goff@boeing.com
+Date: Sun, 01 Nov 2026 20:20:17 +0000
+Message-ID: <179356441771.3131.1618449912961461255@kernel.org>
+In-Reply-To: <SER-NSBD.v1.r2.20261031160050-3@mojatatu.com>
+References: <SER-NSBD.v1.r2.20261031160050-3@mojatatu.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,195 +64,121 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3] tun: bound the NAPI receive queue
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, jasowangio@gmail.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org
-References: <20261031231444.1528758-1-antonio@mandelbit.com>
- <willemdebruijn.kernel.10cf6c1afbcd@gmail.com>
-Content-Language: en-US
-From: Antonio Quartulli <antonio@mandelbit.com>
-Organization: Mandelbit SRL
-In-Reply-To: <willemdebruijn.kernel.10cf6c1afbcd@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4jHmNc4jvyzNlST
 
-Hi,
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-On 01/11/2026 03:08, Willem de Bruijn wrote:
-> Antonio Quartulli wrote:
->> With IFF_NAPI, tun_get_user() queues every written packet for NAPI on
->> an unbounded list. When the poll runs asynchronously (threaded NAPI)
->> and is slower than the writer, the queue grows until the system runs
->> out of memory. An unprivileged user can do this from its own user and
->> network namespaces, and the queued skbs are not charged to its memcg:
->> in a test VM, a uid 1000 process limited to 128 MB caused a global OOM
->> in ~6 seconds. The socket send buffer cannot bound this: tun sets it to
->> INT_MAX, and the build_skb() and XDP batch paths do not check it.
->>
->> Drop packets once more than netdev_max_backlog of them are queued, like
->> enqueue_to_backlog() does, and count them as rx_dropped: before
->> allocating and copying them where possible, and again under the queue
->> lock before queueing. This covers write(), sendmsg() and the batches of
->> XDP buffers vhost-net passes to tun_sendmsg(), which share the queue.
->> Zerocopy buffers of packets dropped early are completed.
->>
->> Reproducer, as an unprivileged user in a new user and network
->> namespace, without kernel modifications or fault injection:
->>    ip tuntap add t0 mode tun; ip addr add 10.11.0.1/24 dev t0
->>    ip link add d0 type dummy; ip addr add 10.20.0.1/24 dev d0
->>    ip link set t0 up; ip link set d0 up; sysctl net.ipv4.ip_forward=1
->>    install ~500 iptables FORWARD rules and a MASQUERADE rule on d0
->>    open t0 with IFF_TUN | IFF_NO_PI | IFF_NAPI
->>    echo 1 > /sys/class/net/t0/threaded
->>    write() 1400-byte IPv4 packets for 10.20.0.2 in a loop
->>
->> Tested with the reproducer in an x86-64 VM: memory use stays flat
->> and the forwarding rate is unchanged. The vhost-net paths are only
->> build-tested, and the kselftests have not been run yet.
-> 
-> Let's make sure the tun selftests pass.
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-I went through the tun selftest and it passed.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-However, there was no coverage for vhost-net, so I took care of that 
-with an extra patch (it was actually useful because I caught a hitch in 
-the actual fix).
+- [Medium] The fix checks that a teql slave and its master are in the
+  same netns only once, in teql_qdisc_init() (net/sched/sch_teql.c:211).
+- [Low] tc-testing case 124e ('Try to add teql as a child qdisc',
+  tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json) no…
 
->   
->> Still open: the limit counts packets rather than bytes and applies per
->> queue, the NAPI poll splices the queue out while it runs so up to about
->> twice the limit can be in flight, and the queued skbs are still not
->> charged to the writer's memcg.
->>
->> Found, fixed and tested with the help of an AI coding assistant
->> (Claude Code).
->>
->> Fixes: 943170998b20 ("tun: enable NAPI for TUN/TAP driver")
->> Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
->> ---
->> v3:
->> - Also bound the sendmsg() paths, which share the queue: zerocopy
->>    buffers are completed when dropped early, and the batched XDP buffers
->>    of tun_xdp_one() are covered too (Willem)
->> - Drop the IFF_NAPI_FRAGS exclusion: tun_get_user() never queues in
->>    that mode (napi_gro_frags() is synchronous), so the early check only
->>    fires if tun_xdp_one() filled the same queue, and dropping is fine
->>    then too (Willem)
->> - Recheck under the queue lock before queueing (Willem)
->> - Compare with > like enqueue_to_backlog() (Willem)
->> - Keep the includes sorted (Willem)
->> - Add the reproducer and a testing statement to the commit message
->>
->> v2: https://lore.kernel.org/netdev/20261030152540.1409884-1-antonio@mandelbit.com/
->> - Cc netdev and the maintainers
->>
->> Notes:
->> - Affected since 943170998b20 (v4.15). Reproduced on mainline
->>    7be4bc52fd9e; the code is unchanged in net/main 94cea342e891, which
->>    this patch is based on and was build-tested (W=1) against.
->> - Mitigation: disallow unprivileged user namespaces or restrict
->>    access to /dev/net/tun.
->>
->>   drivers/net/tun.c | 39 +++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 39 insertions(+)
->>
->> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
->> index 770b8fe085c3..df5f0cbd1b16 100644
->> --- a/drivers/net/tun.c
->> +++ b/drivers/net/tun.c
->> @@ -58,6 +58,7 @@
->>   #include <linux/nsproxy.h>
->>   #include <linux/virtio_net.h>
->>   #include <linux/rcupdate.h>
->> +#include <net/hotdata.h>
->>   #include <net/net_namespace.h>
->>   #include <net/netns/generic.h>
->>   #include <net/rtnetlink.h>
->> @@ -227,6 +228,15 @@ struct veth {
->>   static void tun_flow_init(struct tun_struct *tun);
->>   static void tun_flow_uninit(struct tun_struct *tun);
->>   
->> +/* In IFF_NAPI mode written packets wait in the tfile's sk_write_queue for the
->> + * NAPI poll, which may run later in a kthread or ksoftirqd. Bound that queue
->> + * like the per-CPU backlog of netif_rx().
->> + */
->> +static bool tun_napi_queue_full(const struct sk_buff_head *queue)
->> +{
->> +	return skb_queue_len_lockless(queue) > READ_ONCE(net_hotdata.max_backlog);
->> +}
->> +
->>   static int tun_napi_receive(struct napi_struct *napi, int budget)
->>   {
->>   	struct tun_file *tfile = container_of(napi, struct tun_file, napi);
->> @@ -1856,6 +1866,20 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
->>   			zerocopy = true;
->>   	}
->>   
->> +	/* Drop before allocating and copying when the NAPI queue is full. The
->> +	 * check is repeated under the queue lock before queueing.
->> +	 */
->> +	if (tfile->napi_enabled &&
->> +	    unlikely(tun_napi_queue_full(&tfile->sk.sk_write_queue))) {
->> +		if (msg_control) {
->> +			struct ubuf_info *uarg = msg_control;
->> +
->> +			uarg->ops->complete(NULL, uarg, false);
->> +		}
->> +		dev_core_stats_rx_dropped_inc(tun->dev);
->> +		return total_len;
->> +	}
->> +
->>   	if (!frags && tun_can_build_skb(tun, tfile, len, noblock, zerocopy)) {
->>   		/* For the packet that is not easy to be processed
->>   		 * (e.g gso or jumbo packet), we will do it at after
->> @@ -2045,6 +2069,14 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
->>   			goto free_skb;
->>   		}
->>   
->> +		if (unlikely(tun_napi_queue_full(queue))) {
->> +			spin_unlock_bh(&queue->lock);
->> +			rcu_read_unlock();
->> +			kfree_skb_reason(skb, SKB_DROP_REASON_FULL_RING);
->> +			dev_core_stats_rx_dropped_inc(tun->dev);
->> +			return total_len;
-> 
-> consider goto free_skb instead of open coding.
+--
 
-ACK.
+net/sched: sch_teql: reject qdiscs from another network namespace
 
-Regards,
+This patch rejects a teql qdisc in teql_qdisc_init() if its device is in a
+different network namespace from the teql master. It also moves
+skb_queue_head_init() ahead of all validation, so every failure path sees
+an initialized queue.
 
->> +		}
->> +
->>   		__skb_queue_tail(queue, skb);
->>   		queue_len = skb_queue_len(queue);
->>   		spin_unlock(&queue->lock);
->> @@ -2649,6 +2681,13 @@ static int tun_xdp_one(struct tun_struct *tun,
->>   			return -EBUSY;
->>   		}
->>   
->> +		if (unlikely(tun_napi_queue_full(queue))) {
->> +			spin_unlock(&queue->lock);
->> +			kfree_skb_reason(skb, SKB_DROP_REASON_FULL_RING);
->> +			dev_core_stats_rx_dropped_inc(tun->dev);
->> +			return 0;
->> +		}
->> +
->>   		__skb_queue_tail(queue, skb);
->>   		spin_unlock(&queue->lock);
->>   		ret = 1;
->> -- 
->> 2.56.0
->>
-> 
+Link: https://lore.kernel.org/netdev/20261022144830.67948-1-shawnq1@163.com/
+
+> diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+> index 70c948a26f809..c5f171a66060f 100644
+> --- a/net/sched/sch_teql.c
+> +++ b/net/sched/sch_teql.c
+> @@ -200,12 +200,19 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
+
+[ ... ]
+
+>  	if (m->dev == dev)
+>  		return -ELOOP;
+>  
+> +	if (dev_net(dev) != dev_net(m->dev)) {
+> +		NL_SET_ERR_MSG_MOD(extack, "teql master is in a different network namespace");
+> +		return -EOPNOTSUPP;
+> +	}
+> +
+
+[Severity: Medium]
+Is this same-netns rule only checked at attach time? The check compares
+against the current netns of m->dev. But nothing seems to keep the teql
+master in init_net, because teql_master_setup() never sets
+dev->netns_immutable:
+
+net/sched/sch_teql.c:teql_master_setup() {
+    ...
+	dev->flags		= IFF_NOARP;
+	dev->hard_header_len	= LL_MAX_HEADER;
+	netif_keep_dst(dev);
+}
+
+__dev_change_net_namespace() refuses a move only when netns_immutable is
+set. So "ip link set teql0 netns X" would still succeed after slaves on
+init_net devices have attached.
+
+During the move, dev_shutdown() tears down only teql0's own qdiscs. The
+slave qdiscs on the init_net devices stay linked in master->slaves.
+
+After that, CAP_NET_ADMIN in netns X (possibly granted by an unprivileged
+user namespace) can bring teql0 up. teql_master_xmit() would then send
+that netns's packets through netdev_start_xmit() on the init_net slave
+devices. __teql_resolve() would also create neighbour entries on those
+init_net devices.
+
+Moving teql0 needs CAP_NET_ADMIN in init_net, so the unprivileged
+reproducer in the commit message can't reach this path.
+
+The commit message says:
+
+    The teql master devices are created once in the initial network
+    namespace and their Qdisc_ops are global.
+
+They can still be moved to another netns after creation, though. Bonding
+handles the same case in bond_setup():
+
+	/* Don't allow bond devices to change network namespaces. */
+	bond_dev->netns_immutable = true;
+
+Should teql_master_setup() also set dev->netns_immutable = true, so that
+this attach-time check is enough?
+
+>  	if (sch->parent != TC_H_ROOT) {
+>  		NL_SET_ERR_MSG_MOD(extack, "teql can only be used as root");
+>  		return -EOPNOTSUPP;
+
+[Severity: Low]
+Does the new check now hide the root-only check from tc-testing case 124e
+("Try to add teql as a child qdisc") in
+tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json?
+
+That case requires nsPlugin, which moves $DUMMY into the test netns and
+runs every command under "ip netns exec". The teql0 master is registered
+in init_net.
+
+For 124e, the hard_header_len check and the -ELOOP check both pass. The
+new netns check then fires before the sch->parent != TC_H_ROOT check.
+Both checks return -EOPNOTSUPP, so tc exits with 2 either way. The test
+only checks expExitCode 2 and an empty child list.
+
+As a result, 124e would keep passing even if the root-only rejection were
+broken. No tdc case covers the new cross-netns rejection either, since the
+other teql cases run without nsPlugin.
+
+Would it make sense to put the netns check after the parent check, run
+124e in init_net, or match the extack string? A separate test case for
+the cross-netns rejection might also help.
+
+[ ... ]
 
 -- 
-Antonio Quartulli
-
-CEO and Co-Founder
-Mandelbit Srl
-https://www.mandelbit.com
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/SER-NSBD.v1.r2.20261031160050%40mojatatu.com
