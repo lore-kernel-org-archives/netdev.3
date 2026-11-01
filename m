@@ -1,45 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793561949;
-	b=GrcG2jXQmJX3BrHvcANzPKCbYFdQNL4oCsjN+iphGaoFWEWwborsqAAj6OHI5QWlJwpe
-	 gOKYBRcM8zsuU/D4lfHy43bZDMOKY4dm/SUi0CI8Hy1Dk+lF3ocXQohmmGEYx0krvP/YP
-	 +fo7tyON7hssLfZs9ukAPy0E3+MQKU6Q1Xm4cE8Het+VHp8z3K+86F0R5cwspzjFg2dLB
-	 ezBlQTvQP17nLJLZ/GdkD8Z+oRCvUxQEm1g9V/xBJQlg7yJxN/n9RiuhLdWs1GbIQq8Tj
-	 W6ZjLzMsJ1JphTYJt43H4uEBUraxTLJuFGlmIX72wYzH+kgD3xJi6Z1JThUFcKjQjXw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793561949;
-	h=Received:DKIM-Signature:Content-Type:MIME-Version:Message-Id:
-	 In-Reply-To:References:Subject:From:To:Cc:Date;
-	bh=i7u2q9xABEbuGevGg50ejgZjSkxMHnughNz6RLshO9k=;
-	b=plUBQloei65ruK+2YE/I8hI+pzvWDKZRe3uioHqoQ+AIh9UQPV1cvI41ux/SzAv8M9Lb
-	 5GiBrH+duqMz3N/nerTvczx5WPOY/iOKU32K1QAGyShYe+QYk68yoHArE6Ck1hRGsx0Fo
-	 ibDdF0UBBHTjnb0kvbsOtZAMoi50OJETjXOQDRvwrClkESou+7GOjLKoTkHatcwBu0Qau
-	 GUFWoKZVNDA2zA/O3dMtLLeHCnztX8ecgXFIveT4zKODAZZyFlgWc8lb2+ACLgTgK5IP0
-	 JWDUnae8NGQPq4cD7AELsRl1MYCDI/Pis0vo8+yQsMKRp2pQ1kfrPNSU+MNrnE0Lvsg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WNIMmFMh;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.214.170
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1793562110;
+	b=S07Von64iAHXdgE3lNzWN19fZSjZ/atFaqO/kDdLBT34OUQEJ2Fc0AtJniPr5NHsobdH
+	 6ec1u+ULViWnfJW4aaDQDMTNuo234pXie7F+FruFdYMykMvJ6hDTCT0wignPGS5hnpiA0
+	 78uP8PiCwIUTh+CqflTazikL+piVAvvjX/WyQAQbM+lYXCErovlJPmk0tBan/hypqS36N
+	 /DMQMm+VULGzP7LBpcNE9i8SS7DD95uPMbrFL0pAffsGuDlbPttB7FKku71PA58DDO1Yu
+	 i7RI3NoDzZCR1qyQFrApodGlIG2qDgUQTCDwHeQGOU0+WrAi9YWLgKl2TtWQ2wqb4ew==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793562110;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=JA3jX3tndrIW4yCSFoQPJFyHa7m1TQaR2efx9QzdHgU=;
+	b=VVijYjhqu9NPJjPSQJe59ytDDU9NBbMGsvK0kyzrE5HZJYTgJeRdcuo7FODjnsPuXHfd
+	 tJBh/D3p4OKb0PfXbcKFM4rZUjCOeVJyktdgUSnrMHJX7Z+PyH5E15wSnVwTFMaTwJH6M
+	 3EXVME9TJL7xZTkiOEiXX7rAG3DachnwPAUcK7bMwKjK2YYk5l1zWeVZTFUdDxqz5ZXUI
+	 ZkRVBQ7rNEweIhMybaBTspYV6cR/QTd1R/cJx4vWLJOJrXdHmdxsgZyBtCQ1HtcPWWMNU
+	 ZLr+E6Cy/9X4pu428EBBntxYmXV/LAuVXqW0A4aGL2dXqzL1Vsc3/dxMkQ8h5PG1AeA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ot6Gds7T;
+	arc=fail smtp.remote-ip=209.85.214.170
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B212C606A324;
-	Sun,  1 Nov 2026 19:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B9B606A325
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 19:41:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73B9B606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WNIMmFMh
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B141F000C1;
-	Sun,  1 Nov 2026 19:39:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793561948;
-	bh=i7u2q9xABEbuGevGg50ejgZjSkxMHnughNz6RLshO9k=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=WNIMmFMhgDTcI3xilNudvcmzn1RjYkKPCuyVRxaEZ/mXuFYfUPjE+WAtv5B9bUi32
-	 A1N89/VnWAYiSQc38gL6DUAQ3bzo/1IlWpyZuc2XxZe3eflKHyWhyDWh8fe2csqs7w
-	 HjtuSF9DYJMC30ypAkYmAvBNDCO5ffvFtUH01SufuiXrHqSZf+JU1Cd7S9Hr4pgENA
-	 wiwtA81VJdIx6EZEVPLuFbX8DXTQPi0l83FjQeNGkrU4g93Fwkd09NR56uZqv7lTNN
-	 St99v/2BDwjdQF9Wk74u8oy3tMhrmd2AQOzv7NXRhWky0t/kppeOy2f8qWYXpx1ViW
-	 xx9cCBunDolqA==
-Content-Type: multipart/mixed; boundary="===============6320018426206090260=="
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ot6Gds7T
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2eb5251724bso3056075ad.3
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 11:41:50 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793562110; cv=none;
+        d=google.com; s=arc-20260327;
+        b=I875eknVaHy5R+TVTG9J60fjnuztHRoy0lJ90VJ2h/RRQcQ9idTDPPYYqY29YgpdGE
+         9NFPhCNdPagKOslp31UnVGOCGCspYeNRt+2optvUhzWz/p7ohARG75pd3H3Iq0Np8jGM
+         AYuCBioNUdQb4TL2Gv596dmyyP0KmEdUx8DOKd8IVIoNQkijpg+SQbY4xS6PjqHSNtEi
+         Eo+zs5p+qbomwmFQzk4cNPKoKuoy/HqsUHYMnZdulKTnkL7/tmBLCAIClA7f++4Ab28M
+         B4ZP+0sMaH2CkU8gDG+HAgPMB4C0M+AqP/9B6pPjqUj1c2JYWGMufbwHCHNc66V1a2/D
+         Yzxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=JA3jX3tndrIW4yCSFoQPJFyHa7m1TQaR2efx9QzdHgU=;
+        fh=C8Xn/1A/PquGXaZoAK527RxollMD1jpwI92wABqB5F4=;
+        b=sPdH+79tU0CwP+WSSgpDbV6SMQA1Qq35HVRUBcyVsL3NwwBzwKahJqJwGfeAISuIx8
+         roxDxA0I/ZZCkNq6btrMKeaRHyrKpw/dpYWt2lL5384q0jnNDUXynThkJFltAXjkeJQl
+         hw0a6zaQhqpVeSRKlAhqooSqsVUfdYhWrhsAzkl3hnMyAG51SPWSxR/V+H/NkIqrPzhz
+         xWBHspO+fnqzwXlMXV1cSwqoaPFXhv/GxU5HxWyf1QgXFeABWdLZF/orprxTlW3zxpfW
+         jz3RMHXs8mISHcj9SQWzoGbnppT3g7nC5i9aitKIyB1ou+jAcbN+iN2bM2B2mVNGqIra
+         iOkg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793562110; x=1794166910; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JA3jX3tndrIW4yCSFoQPJFyHa7m1TQaR2efx9QzdHgU=;
+        b=Ot6Gds7T+5UmsDwVVpntlzClSyWM0aKqpK4RXwbAj+elqcztjTX1ABwoES4t4j6tsF
+         PcG1/jCUFX8ULqCgxwPOFB53mEIr4k3pNMBPt8A5jJUhhznD3mrn/7zk+8BgjJncKDuW
+         cEXCVwQb4QyqL9MPsd7ovyb+EzQbUePlM1RD/78aWInie7KEY/310H54plu42QP8Jtme
+         mNuUAip/djVFfwy0upN5ObbPCJ4pE1E1ksL5cDXnwcIH2JUnVt7o8HeUY2CZyGAywaoM
+         yPeCxohuqbzK81O1LcmigXaqDAvbEcSkm8nTiRJ3b9CVQRg2JX/nWHcnfqtydoz/ai6a
+         X75w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793562110; x=1794166910;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JA3jX3tndrIW4yCSFoQPJFyHa7m1TQaR2efx9QzdHgU=;
+        b=BClvrCaHsb74BKnRVzUUPOOtcpzC8gpF9tlPFsjZoHcC+xw9UazSZuMiLMURnYLG2g
+         iQrIgTkt184p71MOFWo4TF+cTE+LoUqhRSC7X+j5SIjTftBVe/oJCsTWDYyH3avV6bUK
+         Wi+Tpr6MJ0IFrcQmVKB3XKJr1BwmzCVD9FI1ccPQDSAPehRvYhipu1pn6xVXfQ8Oh0Wk
+         NgEeKpV5u85tNMIWlpGQqcAyMs4dBkzxzj3yCrWy3jXabs3u2/rNT1xCoOzO9YOUCkFo
+         NiOkoK8fxL8j7WFt4IR3E21eYfU2MQ0YuJBBRjJqHNwa2yDguJ1TmGIpM1n1JRm2q7Ln
+         7vag==
+X-Forwarded-Encrypted: i=1; AKwUvBw4j+Kq6Pg+cMSO3ZkGRx1GVpb4qKgCLsLU6x+HE1Us9mUzRV5RJoU5FlWARhFR5fldy605ldM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+rVlrCDn30dPukgUld6aXeA0cwH1OUpS2CRZMMz8E4Y5wL+D+W
+	n2fkYWpX8KUvKYUCzPAcCJRWNDdr0ysx8jAJ+/aVKrq9Joi17/WMelA/ADq6BbaQZu3N5urt8wv
+	x2kfbmv3XBLJlHYEhEyF4BZkJCEcCPYDZ
+X-Gm-Gg: AYBFou3qEPgXpJYYOHrEoNIJg4/4syMLXq6TnV8OeblX/rHiinqBEs4aPtYy2qtrNox
+	pqb9FbQXkWOY0pP8cLD9l/XaK4uKXjKdR8cUYDCZSpzlX94q0IfH6PxQ603URPDcjESB5yzPahc
+	gd7ln1RElDEmwMC47n52nb4+93pQylW2Xa44qi+UILLYEE/505vxf3aj3982Zw4hNCekfofnCg6
+	lKG8Ndw1h46rqWwxlFWgkV62fL1uvdy8Q9nPoe6c1MLihAUa5QV63yBD7JEZmiNwmQM/hlHxFoL
+	9fgKiPoCKGfzZUIJtd9NJkh7rQob89TqnREyBWcuXCJWRptck37majX04Wd9c1kyoQ8DROg5Z86
+	BK1xVHAy1zUe7rMIixKENg6a85zbJGy4CDq1T+7+xeRIXWK6dEib9umJs6/W+YsER4iN27A==
+X-Received: by 2002:a17:902:ecc3:b0:2e9:814c:dccb with SMTP id
+ d9443c01a7336-2eb36520f1amr79989415ad.69.1793562109749; Sun, 01 Nov 2026
+ 11:41:49 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -49,69 +104,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Message-Id: <ece4075cdd214d2797932e4bfd1235d27561ecda973c6935262e18c4a697c278@mail.kernel.org>
-In-Reply-To: <20261101192057.2296489-5-alexei.starovoitov@gmail.com>
-References: <20261101192057.2296489-5-alexei.starovoitov@gmail.com>
-Subject: Re: [PATCH bpf 04/15] bpf, sockmap: Subtract all dropped bytes from the return value
-From: bot+bpf-ci@kernel.org
-To: alexei.starovoitov@gmail.com,bpf@vger.kernel.org,netdev@vger.kernel.org
-Cc: daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,john.fastabend@gmail.com,jakub@cloudflare.com,jiayuan.chen@linux.dev,davem@davemloft.net,edumazet@kernel.org,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,kuniyu@google.com,willemb@google.com,matttbe@kernel.org,mptcp@lists.linux.dev,mason@kernel.org,josef@toxicpanda.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Sun,  1 Nov 2026 19:39:07 +0000 (UTC)
+References: <20261031133455.3070233-2-rsalvaterra@gmail.com> <CAL+tcoB6vg+-w1JZdND_cTN_zPeh76_+-W_NU34jkunJUFwrrA@mail.gmail.com>
+In-Reply-To: <CAL+tcoB6vg+-w1JZdND_cTN_zPeh76_+-W_NU34jkunJUFwrrA@mail.gmail.com>
+From: Rui Salvaterra <rsalvaterra@gmail.com>
+Date: Sun, 1 Nov 2026 19:41:38 +0000
+X-Gm-Features: AclHuK-312lSJcqm_yH_edcVqM-T-ygyAdVyAurMKANlnKwC0cEWpz-W8iElwLU
+Message-ID: <CALjTZvbPacWO+NY62fbFdQEAJemD57zmhdYy+v+BXpxFgntcNw@mail.gmail.com>
+Subject: Re: [PATCH] tg3: make depend on ZONE_DMA
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: pavan.chebbi@broadcom.com, michael.chan@broadcom.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
---===============6320018426206090260==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi, Jason,
 
-> bpf, sockmap: Subtract all dropped bytes from the return value
 
-TL;DR: Commit message only: the Fixes: tag may point at the wrong commit; the
-freed/subtracted byte mismatch seems to date from ca70b8baf2bd, not
-4f738adba30a.
-
-> bpf, sockmap: Subtract all dropped bytes from the return value
+On Sun, 1 Nov 2026 at 05:48, Jason Xing <kerneljasonxing@gmail.com> wrote:
 >
-> When an sk_msg prog returns SK_DROP, tcp_bpf_send_verdict() frees the full
-> message. It then subtracts tosend bytes from *copied, the return value of
-> sendmsg(). But tosend is the number of bytes that the verdict applies to.
-> After bpf_msg_apply_bytes() tosend can be less than the message size. Then
-> sendmsg() reports dropped bytes as sent.
+[snipped]
 >
-> Subtract the number of bytes that sk_msg_free() frees. After an error the
-> SK_PASS branch already does this. The SK_REDIRECT branch does the same if
-> the message is not the cork. Nothing changes when tosend is equal to the
-> message size. Otherwise sendmsg() now returns -EACCES if it sends nothing.
->
-> Fixes: 4f738adba30a ("bpf: create tcp_bpf_ulp allowing BPF to monitor socket TX/RX data")
-> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+> The blamed patch seems correct, so I think you need to root cause it
+> instead of adding a global dependency here.
 
-Is the Fixes: tag pointing at the right commit?
-
-In 4f738adba30a (kernel/bpf/sockmap.c, bpf_exec_tx_verdict()), the
-__SK_DROP case freed only 'send' bytes with free_bytes_sg(sk, send, m) and
-subtracted 'send' from *copied, so the freed and subtracted byte counts
-matched.
-
-The same held after the move to net/ipv4/tcp_bpf.c in 604326b41a6f, where
-the case did sk_msg_free_partial(sk, msg, tosend) and then
-*copied -= tosend (later tosend + delta).
-
-The mismatch appears with ca70b8baf2bd ("tcp_bpf: Fix the sk_mem_uncharge
-logic in tcp_bpf_sendmsg"), which replaced sk_msg_free_partial(sk, msg,
-tosend) with sk_msg_free(sk, msg) in the __SK_DROP case while leaving
-'*copied -= (tosend + delta)' untouched.  That is the point where the whole
-message is freed but only tosend (possibly reduced by apply_bytes) is
-subtracted from the sendmsg() return value.
-
-ca70b8baf2bd is an upstream commit from October 2024 (v6.12) that predates
-this series.  Should the tag be:
-
-  Fixes: ca70b8baf2bd ("tcp_bpf: Fix the sk_mem_uncharge logic in tcp_bpf_sendmsg")
+I'm sorry, perhaps I misunderstood, but *I* need to root cause it? I
+never claimed to fully understand the implications of the patch I
+sent, nor the intricacies of the tg3 driver. What I *do* understand is
+that a supposed "fix" from Broadcom has left the Ethernet controller
+on my late 2012 Mac Mini inoperable since the 24th November 2024, when
+absolutely nothing changed in my kconfig. That is, by definition, a
+regression. I'm entirely available for testing any patches people send
+my way, if whoever fully understands the driver and the hardware is
+unable to reproduce the issue. However, asking the user to fix a
+problem created by a patch from the hardware manufacturer is=E2=80=A6 an
+interesting approach, at best.
 
 
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+Kind regards,
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/41341848185
---===============6320018426206090260==--
+Rui Salvaterra.
