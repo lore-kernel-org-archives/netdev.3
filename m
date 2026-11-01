@@ -1,54 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.51
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.121
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793526688;
-	b=gC7VPEzLlJuE4LKmyMkQJRghU3NgWzCxmn5YZdJMM3hIoMpcdJDV4XQu5WMR1wnMl2CR
-	 GxOODMyeSIhCrvQy8GQEt60/Pkoc70vuv9rJ2eJEHsM6LRWZ+UDFu2Vdq15YsZS2Lp3qn
-	 LqZWriCvI3ztpT5HSxufcXjITPkZj/QoV7uMpB2+d2+UeQ9yRrFVnwN5XzVmV+7NFFt0C
-	 uXwxbQUjzuV1iV9lnUqoGcjWG0k6jupP4a4PRLlz/zJYmezM6HcWMcA/hg+f76RlDoZPF
-	 Bc2wOd1TCqR9ObNdccabCYxVtUysW3MXpiwbhNtCtJyZVz0/HvA5E1iaRnEs2UDO2Kw==
+	t=1793527381;
+	b=fgJ0dvEgB/O/vXj5CbPRJHgFS1V2mjmNIlOsBLAOzYlR8iA51xsOsEZ040n9tUa2Kzwr
+	 LNTPStjcgZpE5SSVx0Bb5NxCItf3lEDI7BqNdGi/WKyQKOLRpp1oU6cxuo6M0foypLdja
+	 +ZYF+Ibo/+2eQQezfdA1UG4aa4riZN0yFsAt4IUJS6XUhR36BLmGDt6vhtVEMLLmF/V0u
+	 jU6sfXKc8/TBB5xWZbcfLca3GrKtah1n/Xa8Gy+8goBRGMxgRSD1a6RNMC5SD1zFx2Koi
+	 TRiB5oov2mqMPO4oLz0XoApF/XuMNgstPBQugWBsnHCshHW5n8fKyXIB71dKYgNiebg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793526688;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793527381;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:References:From:In-Reply-To:Content-Type:
+	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=42mltXfOHa8qQEgF7vx2IvMlukJoJC4Ac1VKSCu6M58=;
-	b=wpU7iYQA7fLYWlVJ3dPk1OyVyh1/+3Et0+5asvigVN/PUt+em6waaHjiPDPh2aRh+cHL
-	 SfqEmC/9hzRI8FhwpXBXB5h4iMWyjBNKUmePUpEiiUbye+h+zWzg4zk8Fa6opNaeLZP6x
-	 fV3sLMGbsvvPJgGSPyBNDa8ZWOCz9s2oj1ixDYI0+cz+B/zvqMebZS109vdCufz/Gl1e7
-	 T779r2y07td1CDT9dYqUJ9pYluKGFJh9vPMVt2ehhXMoWSE6FWGlqH1HPkDQwX+feS7fd
-	 yq7N46Bdg464xFONIOxi2nS7Q3mVObViJFUG5lSY1jIrbtOwIvZn87fMnXCW9oiRK+Q==
+	bh=CcUb3OEvt4a1yV7+AYfYcqheRryY6o0DxYaBOwnyDcA=;
+	b=nwChHectD+fnVCnYHoDuGxyPv0vyX5aiC4ONoAH/4lWPLinRoo7QUIhfse0PpHuKJExh
+	 HPDDBdMlZhanwikPB3HsL2Dis2D1RjJ5FJ8LOhy4e8CZLreftrhKzQyJFsBFZMO/3cCfG
+	 1B+k7/91a9kZ5TOKsWaTWQDbeHdRdiVTV0G3EZhfzWbCbkcE6Rxd8vP8m8KhSpVXSMaSF
+	 PRqyHRxRDSEpDkSLExjWdkiZKtm7Hl1fu5CC9dBNdV3w0R8NtGppkZOawpyhUpCaiiwC1
+	 6DRcT4QZofCzLPcvRM16A1d9e2BZWT0/eyEV1fUMRpxxKv6mTwLdFnvLwlpyeOCgI/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Q34tkcKl;
-	arc=none smtp.remote-ip=95.215.58.51
-Received: from mta1.migadu.com (out-51.mta1.migadu.com [95.215.58.51])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=bkok4EIA;
+	arc=none smtp.remote-ip=95.215.58.121
+Received: from mta1.migadu.com (out-121.mta1.migadu.com [95.215.58.121])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F11606A324
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 09:51:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 58F11606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40579606A32E
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 10:02:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40579606A32E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Q34tkcKl
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=bkok4EIA
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=+LcOo+yzU61N5f/ovbIqmgFP1ag60jqXkCX/q1zSclw=;
+DKIM-Signature: a=rsa-sha256; bh=yYCz03GhobTxtAJpUtamnKh4J2bHZRJOFBYPZ9SOXn0=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793526680; v=1; x=1794131480;
- b=Q34tkcKlbgVeEA19/oLfRhDgHn0n51q7h03Zi8nXZlWgq7chnBC8JxMgHoF3yzURkNd8r7Kq
- ZMOiKmnnKFcY00XKrM8yYOFkwYcoJ2KQtjfGIbBcb9qCWv579aNLAirrAVEuJpTzt+HOqAlzKab
- 3Gu78SHHJJKCK5M/wwMhy+GY=
+ t=1793527376; v=1; x=1794132176;
+ b=bkok4EIA52/J3efDJoMJVfywKr7US22/DAlWiNqZKvXQnnAEwwOsmbWg8vLsWZgXfPE1v1lE
+ 8WWh9/sMEvo7+aoQCBrofccYLf6BWEH5Pp/hXJnfxRqgXISey80Lv3f+mRKsjj88tOZpZq5Brp3
+ NhhDWjlsBG1IszXRmX6Etf3s=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id a8b3a4003f078db1;
-	Sun, 01 Nov 2026 09:51:20 +0000
-X-Mizu-Trace-ID: a8b3a4003f078db1
+Received: by smtp.migadu.com with ESMTPS id 7d86e53af7001ace;
+	Sun, 01 Nov 2026 10:02:56 +0000
+X-Mizu-Trace-ID: 7d86e53af7001ace
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <7ce7a3c9-0e2f-4f01-a29c-f589f03f581c@linux.dev>
-Date: Sun, 1 Nov 2026 17:51:13 +0800
+Message-ID: <062d02ca-e9e1-4f4e-ac57-0de27272a205@linux.dev>
+Date: Sun, 1 Nov 2026 18:02:48 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,48 +59,89 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [syzbot] [net?] BUG: unable to handle kernel paging request in
- nsim_drv_port_add (2)
-To: syzbot <syzbot+b3fca27eb4005f0111f4@syzkaller.appspotmail.com>,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- syzkaller-bugs@googlegroups.com, stitch@zju.edu.cn
-References: <6ae6e3d1.7fe51036.1ecf7.0016.GAE@google.com>
+Subject: Re: [PATCH net] tcp: fix device binding after failed IPv6 connect
+To: Xia Yan <yanxia@cmss.chinamobile.com>, netdev@vger.kernel.org
+Cc: edumazet@kernel.org, ncardwell@google.com, kuniyu@google.com,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ torvalds@linux-foundation.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, yana06070@163.com
+References: <20261031074654.73952-1-yanxia@cmss.chinamobile.com>
 From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <6ae6e3d1.7fe51036.1ecf7.0016.GAE@google.com>
+In-Reply-To: <20261031074654.73952-1-yanxia@cmss.chinamobile.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
 
-On 11/1/26 3:01 PM, syzbot wrote:
-> Hello,
+On 10/31/26 3:46 PM, Xia Yan wrote:
+> tcp_v6_connect() sets sk_bound_dev_if from sin6_scope_id when connecting
+> to a link-local address. If the route lookup fails, the failure path
+> clears the destination port and route capabilities but leaves the
+> device binding in place.
 >
-> syzbot found the following issue on:
+> A failed connection through a down interface can therefore leave the
+> socket bound to that interface. A subsequent connect() on the same
+> socket to ::1 then fails with ENETUNREACH, even though a fresh socket
+> can reach the listener.
 >
-> HEAD commit:    36aad21d50d1 Merge tag 'ksmbd-for-7.4-rc1-part2' of git://..
-> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-> console output: https://syzkaller.appspot.com/x/log.txt?x=1332b159580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=dc4462df6d1062fe
-> dashboard link: https://syzkaller.appspot.com/bug?extid=b3fca27eb4005f0111f4
-> compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1194b795580000
+> Save the original device binding before processing the destination and
+> restore it on failure.
 >
-> AI-generated root cause summary:
-> In netdevsim, sysfs device attributes such as 'new_port' and 'del_port' are
-> exposed at the device level on nsim_bus_dev without holding device_lock or
-> checking if the driver is bound. An access via sysfs after the driver has been
-> unbound, after a failed probe, or concurrently with device removal finds drvdata
-> set to NULL; passing this NULL pointer to priv_to_devlink() computes a negative
-> offset from NULL, triggering a kernel page fault crash when attempting to
-> acquire devlink->lock.
+> Found while reviewing the error paths in tcp_v6_connect(). Reproduced
+> in UML by connecting to fe80::1 on a down dummy interface, then retrying
+> the same socket against a listener on ::1. With the fix, the retry
+> succeeds and data flows in both directions. Tests also confirm that
+> existing device bindings are retained after failed IPv6, IPv4-mapped
+> and link-local connections without an explicit scope ID.
 >
-> full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=b3fca27eb4005f0111f4
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xia Yan <yanxia@cmss.chinamobile.com>
+> ---
+>
+> Tested in UML on net fcc00b15cb21. The complete tcp_ipv6.c file is
+> unchanged at the base commit. Before the fix, the socket remains
+> bound after the failed link-local connect and cannot reconnect.
+> With the fix, all 12 checks pass.
+>
+> Build-tested on x86_64 with W=1 using configurations based on
+> allmodconfig and allyesconfig. The corrected tcp_ipv6.o compiles
+> without warnings in both configurations, and incremental kernel
+> builds complete successfully. WERROR was disabled for both;
+> allyesconfig also had KUNIT_ALL_TESTS disabled.
+>
+>  net/ipv6/tcp_ipv6.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+> index e006a30360eae..7bb8266d9d1b7 100644
+> --- a/net/ipv6/tcp_ipv6.c
+> +++ b/net/ipv6/tcp_ipv6.c
+> @@ -146,6 +146,7 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
+>  	struct flowi6 *fl6;
+>  	int addr_type;
+>  	int err;
+> +	int old_bound_dev_if = READ_ONCE(sk->sk_bound_dev_if);
+>  
 
 
-This looks like the same issue Jiacheng's pending patch addresses,
+Reverse xmas tree please
 
-new_port/del_port don't take device_lock nor check drvdata, so a write
-after unbind hits a NULL nsim_dev:
 
-https://lore.kernel.org/netdev/20261012135941.78329-1-stitch@zju.edu.cn/
+>  	if (addr_len < SIN6_LEN_RFC2133)
+>  		return -EINVAL;
+> @@ -358,6 +359,7 @@ late_failure:
+>  failure:
+>  	inet->inet_dport = 0;
+>  	sk->sk_route_caps = 0;
+> +	WRITE_ONCE(sk->sk_bound_dev_if, old_bound_dev_if);
+
+
+
+inet_bhash2_reset_saddr uses sk_bound_dev_if too.
+  inet_bhash2_reset_saddr
+    __inet_bhash2_update_saddr
+      inet_sk_bound_l3mdev
+
+So I think we should restore it before  inet_bhash2_reset_saddd ?
 
 
