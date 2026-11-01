@@ -1,56 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=51.159.188.251
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793573967;
-	b=GkFLj7LSME2Js7QYkn1CogM9NKA2kt+2hZr/Q5CXJBgag+RFHSUFRsxDzbYKE3aD5SuG
-	 5nClRVSxn+R2tjJGIZI99SrjO1AmlCvNi5U6nLXIAMMFD2jHw+m+MASh+pBu+0b67ZlnZ
-	 +QTn3Dsukv+nK6yhz0EG4I1Rpag1nrwhpl+g/wqmAipOt3ZfYaMGBsU+Umsg1NaYCTCYC
-	 oM5PccGMWg3tMFT4G4WP7PB5LsHxLNcFyVw4DWmAzIokbQUJ27NlpR6ScUeW10V/if4Yq
-	 iWTtNy4eRgCPsLkzKO94B1LD5uwpROr+ZC2zgODJTY1DeQ6cKhszAM94t8xGy5bodBA==
+	t=1793574088;
+	b=AtcKz9Nw/nWmMtB4U9ETzOkVqxCMpjDyxSFv7a1Q2H80/E+AsiTuLGbxMwBrk/RCcA+1
+	 dx95Bv2zoZLTRO9JvdxtB/ublKm0k25NDK3TMI+80W68wDY6GaFePG7wVgzJ3WNL5eXpl
+	 Mx2d8KRkmrMz612+4lgJ4oKcJXUmzH7FM9OO2AlqyVLO34vGu+IdM22WtLmOVH0tM/eu8
+	 tiYLyP6UvVRxVbtRCDAQYkng4bZt6LhQ6qm97zkCzfIsWNnMdpjIiKNW9YQ1yfiJIzBbA
+	 29pWwNRxXZe9453tBPcKtiBhxIHjJdu4wEmnF4R8yxlHxxmmGCGQz7QTenb8PQdW5DA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793573967;
-	h=DMARC-Filter:DKIM-Signature:Received:MIME-Version:Date:From:To:Cc:
-	 Subject:In-Reply-To:References:User-Agent:Message-ID:X-Sender:
-	 Content-Type:Content-Transfer-Encoding:X-AntiAbuse:X-AntiAbuse:
-	 X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:X-Get-Message-Sender-Via:
-	 X-Authenticated-Sender:X-Source:X-Source-Args:X-Source-Dir;
-	bh=UfWjHWL7Sf5149fxouKPsSV+//DCptgJPgsPxN+aK+8=;
-	b=soY8m/2LAuWCnzH9nR4N/3o5mOxxWIWyTGvl+gwmew1rxbRhdLlpvjYkhfUjnUynxBEB
-	 R+i1PLB1YW6yCZm2zL+g4YUVFBKrHsjZqrUVQgJMVTrHQCXEVMb8hF1AhxuHxQ0mQHgvk
-	 dbSMj2lnnO0QA0vpSAWbQAVrGZAkpO6yY6bOE8USWVPnohGNz7MIks5TM5W3pybcFjHYR
-	 gdpjwssLxHoxtN7gsX1+XlBtPiBJkQ8TQ6HWm9etzxfjUkWIoVarnaMnnHMWg7lEJLQl0
-	 UPfqHQCEPiA5Z2FDC0ix5T2UbKyYfJTa8VugxkvleNdKKSXQ7MRk4+y5SsO6QAVOhhg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793574088;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=t2MxZtB2T9Bz2tg5DIt4j1dXYuKYbfcmPZ03Fr/VSko=;
+	b=y74rHxLKMNJ0vpsWxNuLB0xAzi1oYxBdipekDFTqUtSfZ9hHguexhXziQKjlVYVzGoyf
+	 Qkesbs6GpPQzpRyqQWZvbFgaLacuyH5zqH0f4MswlAL/7SatHYSS4LqKcKXPjBWCN58Au
+	 /C5wyyyyV2cuhZi0MHXBzPJr5MYuD5XxbY4u1prnkfsqIldDeR6PUiwC9hdcsW2467Wsj
+	 1kr+96PvhCELjR8llq+D2mz+Q90E8j/98zCTfcuc2X7IF/Fu6Sk/GfFFIB2b4301vjCQj
+	 UzCZiUprOLv/5MEujEFygk/AOMziZ2mwolem2eDmXE/sTlvaWEQxSCTBkXBkwlbGEFA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.cyber.gouv.fr;
-	spf=pass smtp.mailfrom=oss.cyber.gouv.fr;
-	dkim=pass header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=qXhfjLJN;
-	arc=none smtp.remote-ip=51.159.188.251
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=avxvdOrw;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB55606A324;
-	Sun,  1 Nov 2026 22:59:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DFB55606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE2A606A329;
+	Sun,  1 Nov 2026 23:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.a=rsa-sha256 header.s=default header.b=qXhfjLJN
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:
-	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=UfWjHWL7Sf5149fxouKPsSV+//DCptgJPgsPxN+aK+8=; b=qXhfjLJNCxZ7lDoPzewLDwt/vV
-	hhU5dXu5QoUtnf3Oh1oVSOBawYsEOyP7NKdY7xYn2mamekYL7Z4ag/twYP5Uo8KQF8EsUw9VWTIzL
-	juz/jlH/ApyZwXyVJLbPajYtYZf5bU96+vkDdcpV+ojDuU/4OJgMuoixTzYi0LKPSYpTNKFXfZUCR
-	SWHfXHS8pw4aWiODKX90iOJSN5Owum09q6Va+NoZ75d9rbGd7fncN9m37mobYAkneDapBx8U7c1ak
-	R5exQOnAeAMPQunNcWtz7WtvfrgHZ7oq7QabrR1f/qBhwWfQKaiiZNDNfWXveluosAb9AOrdQX6xc
-	6ZFVATtw==;
-Received: from [::1] (port=58476 helo=pf-012.whm.fr-par.scw.cloud)
-	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.100.1)
-	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
-	id 1xNeWF-00000004BUd-1dDV;
-	Sun, 01 Nov 2026 23:59:19 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=avxvdOrw
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D3071F000C1;
+	Sun,  1 Nov 2026 23:01:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793574087;
+	bh=t2MxZtB2T9Bz2tg5DIt4j1dXYuKYbfcmPZ03Fr/VSko=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=avxvdOrwTRHGrZq0iN80QYgJ56/4BguQdjjbV8AQlXIj9kslbw7j1K/EgI2SnSy1Z
+	 OrLwaVBYKoOBqB6oYBUuiNTW1ysAC2jWgZVIteuXetmmSGnp+DwaN4zOYE4CwhcMSn
+	 Ipu9cicjz3lSLSmITRtZ1ojXclq2ZEI3gyrGbc26x8yBkjQqz370PStx0m2Ys1Gf+F
+	 Nw/MrUWeasTOBcDeQFr0dXUqOLiaXicOSR6LF475ZOy395qWm2wtP6FvRj/qXbz7iR
+	 RaT9FHpjc8bVHIvt2oP3XnoLozkgZOL2f5DWUv3vPlihT1ackXnhwXsVP2pe6JmxJf
+	 /46WCm8kf8HPg==
+Subject: Re: [PATCH net v5 3/4] netdevsim: support devmem RX and TX bindings
+From: netdev-bot+sashiko@kernel.org
+To: almasrymina@google.com
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, pabeni@redhat.com, sdf@fomichev.me,
+ kaiyuanz@google.com, kuba@kernel.org, bobbyeshleman@meta.com,
+ asml.silence@gmail.com, dw@davidwei.uk, ap420073@gmail.com,
+ davem@davemloft.net, edumazet@kernel.org, horms@kernel.org, shuah@kernel.org,
+ sumit.semwal@linaro.org, christian.koenig@amd.com, phasta@kernel.org,
+ andrew+netdev@lunn.ch, sdf.kernel@gmail.com, hawk@kernel.org,
+ ilias.apalodimas@linaro.org, daniel@iogearbox.net, razor@blackwall.org,
+ tariqt@nvidia.com, kaifengw@google.com, dtatulea@nvidia.com
+Date: Sun, 01 Nov 2026 23:01:25 +0000
+Message-ID: <179357408589.3131.13149073708335764140@kernel.org>
+In-Reply-To: <20261030083539.777877-4-almasrymina@google.com>
+References: <20261030083539.777877-4-almasrymina@google.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -60,215 +69,85 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Sun, 01 Nov 2026 23:59:19 +0100
-From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
-To: netdev-bot+sashiko@kernel.org
-Cc: subash.a.kasiviswanathan@oss.qualcomm.com,
- sean.tranchetti@oss.qualcomm.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, kuba@kernel.org
-Subject: Re: [PATCH net] net: qualcomm: rmnet: avoid stale VND access on TX
- drop
-In-Reply-To: <179357109791.3131.6434747837427266534@kernel.org>
-References: <20261031221052.1642262-1-Jeremy.Jean@oss.cyber.gouv.fr>
- <179357109791.3131.6434747837427266534@kernel.org>
-User-Agent: Roundcube Webmail/1.6.20
-Message-ID: <1916da9d261bf0094fb5295f10ec6db3@oss.cyber.gouv.fr>
-X-Sender: jeremy.jean@oss.cyber.gouv.fr
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 
-On 2026-11-01 23:11, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let 
-> patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your 
-> reply
-> (one such reply per series is enough).
-> 
-> - [High] The fix is incomplete: the stale port->rmnet_dev UAF described
->   in the commit message can still be reached.
-> 
-> Pre-existing issues:
-> - [High] Teardown race: rmnet_port can be freed while its hrtimer is
->   still armed.
-> 
-> --
-> 
-> net: qualcomm: rmnet: avoid stale VND access on TX drop
-> 
-> This commit changes rmnet_send_skb() so that a TX drop after a failed
-> __skb_linearize() is counted on the lower device with
-> dev_core_stats_tx_dropped_inc(). Before, the drop was counted through
-> port->rmnet_dev, which can still point at a VND that has been deleted.
-> 
->> diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_data.c 
->> b/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_data.c
->> index 39d6d084e73f0..bd68d60b50d35 100644
->> --- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_data.c
->> +++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_data.c
->> @@ -543,10 +543,7 @@ static void rmnet_send_skb(struct rmnet_port 
->> *port, struct sk_buff *skb)
->>  {
->>  	if (skb_needs_linearize(skb, port->dev->features)) {
->>  		if (unlikely(__skb_linearize(skb))) {
->> -			struct rmnet_priv *priv;
->> -
->> -			priv = netdev_priv(port->rmnet_dev);
->> -			this_cpu_inc(priv->pcpu_stats->stats.tx_drops);
-> 
-> [Severity: High]
-> This removes one reader of the stale port->rmnet_dev. Can the stale
-> pointer still be reached another way?
-> 
-> rmnet_newlink() is the only function that writes port->rmnet_dev.
-> rmnet_dellink() does not clear or reassign it when the VND it points to
-> is deleted. rmnet_unregister_bridge() still uses it on the real-device
-> branch:
-> 
-> drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c:rmnet_unregister_bridge() 
-> {
->     ...
-> 	rmnet_dev = port->rmnet_dev;
-> 	if (!port->nr_rmnet_devs) {
->     ...
-> 	} else {
-> 		/* real device */
-> 		bridge_dev = port->bridge_ep;
->     ...
-> 	}
-> 
-> 	netdev_upper_dev_unlink(bridge_dev, rmnet_dev);
->     ...
-> }
-> 
-> This sequence seems to reach it without any race:
-> 
-> 1. Create VNDs A and B on real device R, so port->rmnet_dev = B.
-> 
-> 2. Delete B. nr_rmnet_devs drops to 1 and B is unregistered and freed
->    (needs_free_netdev), but port->rmnet_dev still points at B.
-> 
-> 3. Run "ip link set S master A". rmnet_add_bridge() only rejects
->    nr_rmnet_devs > 1, so the call succeeds. It puts R's port into
->    bridge mode but does not update R's port->rmnet_dev.
-> 
-> 4. Unregister R:
-> 
->    rmnet_config_notify_cb(NETDEV_UNREGISTER)
->      rmnet_force_unassociate_device(R)
->        rmnet_unregister_bridge(port)
->          netdev_upper_dev_unlink(S, B)   <- B already freed
->            __netdev_upper_dev_unlink()
-> 
-> __netdev_upper_dev_unlink() passes B to the PRECHANGEUPPER and
-> CHANGEUPPER notifiers. It then calls __netdev_update_lower_level(B),
-> which writes to B, and __netdev_walk_all_upper_dev(B), which walks B's
-> adjacency lists.
-> 
-> The real S->A adjacency is also never removed. Does that leak the
-> reference on A, so that unregistering A later hangs in
-> netdev_wait_allrefs()?
-> 
-> Should port->rmnet_dev be kept valid in rmnet_dellink() instead? The
-> other option is to stop using it in rmnet_unregister_bridge() as well,
-> for example by using the slave port's rmnet_dev or
-> netdev_master_upper_dev_get(bridge_ep).
-> 
->> +			dev_core_stats_tx_dropped_inc(port->dev);
-> 
-> [Severity: High]
-> This is a pre-existing issue and was not introduced by this patch. Can
-> rmnet_send_skb() run on an rmnet_port that has already been freed? If
-> so, both port->dev->features and the new
-> dev_core_stats_tx_dropped_inc(port->dev) read freed memory.
-> 
-> When the last VND is deleted, rmnet_dellink() tears down the port 
-> before
-> it unregisters the VND:
-> 
-> 	netdev_upper_dev_unlink(real_dev, dev);
-> 	rmnet_unregister_real_device(real_dev);
-> 	unregister_netdevice_queue(dev, head);
-> 
-> rmnet_unregister_real_device() then does:
-> 
-> 	rmnet_map_tx_aggregate_exit(port);
-> 
-> 	netdev_rx_handler_unregister(real_dev);
-> 
-> 	kfree(port);
-> 
-> Nothing marks the port as shutting down. With TX aggregation enabled
-> (egress_agg_params.count > 1, set through ethtool coalesce), a transmit
-> on another CPU at the same time could go like this:
-> 
-> CPU1
-> rmnet_vnd_start_xmit()
->   rmnet_egress_handler()
->     port = rmnet_get_port_rcu(skb->dev);   <- before rx_handler is NULL
->     rmnet_map_egress_handler()
->       rmnet_map_tx_aggregate()
->         spin_lock_bh(&port->agg_lock);     <- waits for CPU2
-> 
-> CPU2
-> rmnet_unregister_real_device()
->   rmnet_map_tx_aggregate_exit()
->     hrtimer_cancel(&port->hrtimer);
->     cancel_work_sync(&port->agg_wq);
->     spin_lock_bh(&port->agg_lock);
->     ... frees skbagg_head ...
->     spin_unlock_bh(&port->agg_lock);
-> 
-> CPU1 then takes agg_lock, sets port->skbagg_head with skb_copy_expand()
-> and re-arms the timer:
-> 
-> 	hrtimer_start(&port->hrtimer,
-> 		      ns_to_ktime(port->egress_agg_params.time_nsec),
-> 		      HRTIMER_MODE_REL);
-> 
-> CPU2 continues:
-> 
->   netdev_rx_handler_unregister()   <- synchronize_net() waits for CPU1
->   kfree(port);                     <- hrtimer still queued
-> 
-> When the timer fires, rmnet_map_flush_tx_packet_queue() calls
-> schedule_work(&port->agg_wq) on the freed port. The work then reaches
-> rmnet_send_skb() through rmnet_map_flush_tx_packet_work(). The
-> aggregated skb also seems to leak.
-> 
-> synchronize_net() waits for the reader to finish, but nothing cancels
-> the timer that the reader armed. Would a shutdown flag checked under
-> agg_lock work here, or a second cancel after
-> netdev_rx_handler_unregister()?
-> 
-> This looks like it comes from the TX aggregation code added by the
-> commit in the Fixes: tag.
-> 
->>  			dev_kfree_skb_any(skb);
->>  			return;
->>  		}
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Both comments from Sashiko seem valid, thanks.
-I will make a v2 for the first one, and create a dedicated patch for
-the second one.
+Low priority / nit picks for your consideration:
 
-Jérémy
+- [Low] Not a bug (baseline: false positive).
 
-pw-bot: cr
+--
+
+netdevsim: support devmem RX and TX bindings
+
+This patch sets a 64-bit DMA mask on the netdevsim bus device and turns on
+NETMEM_TX_DMA on the netdevsim net_device. It also sets up the page pools
+so they can be backed by unreadable netmem, which lets the devmem bind-rx
+and bind-tx netlink operations be tested against netdevsim. pp_hold is
+refused on memory-provider backed pools, and unreadable or net_iov skbs
+are dropped in nsim_start_xmit().
+
+> diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+> index eebc02ccc4a92..0372a9bd63bbb 100644
+> --- a/drivers/net/netdevsim/netdev.c
+> +++ b/drivers/net/netdevsim/netdev.c
+> @@ -133,6 +133,10 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
+>  	int dr;
+>  
+>  	rcu_read_lock();
+> +	if (!skb_frags_readable(skb) ||
+> +	    (skb_shinfo(skb)->nr_frags &&
+> +	     skb_frag_is_net_iov(&skb_shinfo(skb)->frags[0])))
+> +		goto out_drop_any;
+>  	if (!nsim_ipsec_tx(ns, skb))
+>  		goto out_drop_any;
+>  
+
+[ ... ]
+
+> @@ -1059,6 +1078,8 @@ static int nsim_init_netdevsim(struct netdevsim *ns)
+>  	ns->netdev->netdev_ops = &nsim_netdev_ops;
+>  	ns->netdev->stat_ops = &nsim_stat_ops;
+>  	ns->netdev->queue_mgmt_ops = &nsim_queue_mgmt_ops;
+> +	if (ns->nsim_bus_dev->dev.dma_mask)
+> +		ns->netdev->netmem_tx = NETMEM_TX_DMA;
+
+[Severity: Low]
+This isn't a bug, but the docs and the driver don't quite match here.
+Documentation/networking/netmem.rst describes the mode as:
+
+    NETMEM_TX_DMA: for physical devices that perform DMA.
+
+nsim_init_netdevsim() sets NETMEM_TX_DMA, but nsim_start_xmit() above
+drops every unreadable or net_iov skb.
+
+As I understand it, NETMEM_TX_NO_DMA would not work for this test. That
+is because netdev_find_netmem_tx_dev() only resolves a NO_DMA device by
+following leased RX queues to a physical NETMEM_TX_DMA device:
+
+net/core/netdev-genl.c:netdev_find_netmem_tx_dev() {
+    ...
+	if (dev->netmem_tx == NETMEM_TX_DMA)
+		return dev;
+
+	if (dev->netmem_tx != NETMEM_TX_NO_DMA)
+		return NULL;
+    ...
+}
+
+Traffic also behaves the same as before. Under NETMEM_TX_NONE,
+validate_xmit_unreadable_skb() already freed these skbs. Now the driver
+drops them and counts them through dev_dstats_tx_dropped().
+
+Would it help to add a short comment next to this assignment? It could
+say that netdevsim advertises NETMEM_TX_DMA only so the bind-tx control
+path works, and that devmem TX data is dropped in nsim_start_xmit().
+
+>  	netdev_lockdep_set_classes(ns->netdev);
+>  
+>  	err = nsim_udp_tunnels_info_create(ns->nsim_dev, ns->netdev);
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261030083539.777877-1-almasrymina%40google.com
