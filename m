@@ -1,56 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.237
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793513778;
-	b=qW3uFWPhCtVkZmgdZFa/Bsdfgz9mW4rZ3vlL9flWKKBYW5aJPF6oDP8z2LFur5L41Zzd
-	 N0RuFOw8pnBzbDGLNf4YhDOBpbVSfX3pkkBhthvhLY1fHx2oeiwbpKNcM3lJFp3IA9Uh5
-	 tc0nMHJVnL3QrRK+6MxKBlOMuSev+MNKCVgtiOHMPaKMVbWuBmiZndWdcZsoD8QyE3an6
-	 UQB116R9TWJFjFeHAoDm7U1xBaW4VyR3z/H/bSuMlgS/JhhYzfgCdb6IBzidKhI2dHttA
-	 WwX/ptKJA6wB8hjQiHS8MmpkSWFUrbuIqYv5AMiKcHhj/m2zy3HGPyff1YGMS4gzg8A==
+	t=1793513806;
+	b=roJvV7ZaHYOHvmx5Ixt+OVRJr6nhbc3qSFkrRc1f6AoufRNeScI59zfbmzWkEPdF0GWX
+	 7fUFfPq/T9JKsg4TWnHKMg7z4tS43zvyXbuFTRldc9By83ig1dFkFEy9E3tNtLPeW1gAL
+	 guNM/aA7aqbpiB129AQd8J+nsWafTEyLKS2dZcT9oe/TbAVIJix1s+S/Z+vfLogWMdGz9
+	 CbKoG9387lgEaSEwtenJ1UUgnDXVfmakuMn5mAS14YJuL4iM3IKtNjITDN7uUewZIbjS7
+	 tXTQA8OdgeQrg3C8umsXBuaUfjgqqEW2JXY0WfFjKA3z5OXmxTANw7wpRFc2CMbgDug==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793513778;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793513806;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=hP/wufYrzFLIuJAB9Y1+6Fe9O2Um3BU+tPM/w5XHFXA=;
-	b=XVhQi5OVNZQwWH4nOoY5rRUxTCrIMo67f7iwQPJ6nllwN0bSFE4xtRU+KqDA3nF0IJ7t
-	 1yVZNrDpwPvAGECf6TzcAoGcR7wSOZaoLJJZSDUWuDM4gkFgNy3ZlfvYSWZdy/bTTufoh
-	 /pr/tSXNuCi16fRV6eQJ+A2u8Mh5HmBIi1wDNtRHUlzksDzQpb2SqCUZ10vUDVNHx5heq
-	 tB1ZVKIdl99uML5XU+p5L2R2hDaUzP0BC/xKIFoBeEtXjCjzV1CGDkv9GUG5WzptnnDbi
-	 P7iX/Bhm+QWFezRZNEZ/w09e7jAlYqwjK22oQO5sVfaTJwt4auOXl9vrGG8NYWuwifw==
+	bh=mSF7aPql77EvpJK0U6mtu3706TZgUUeYYH541yBj7IQ=;
+	b=0ZzDUn8D+FmiENLeosW7+S3I29cutQe0zqjQYvgcqDar/GSbkmkkvl9DsC2Ue3MFJIlT
+	 RClQYxOZV15ByDT68U55fTXlF9tXOz8aBnKbqyxXw4VkIwEYJb7d3EI41Kszpxuy8j2nq
+	 MQaqyJvFqec8gBFQjxa3as18rA5TJbhrJqr0cFSy1+FYPOBz0ypP269Xg9Ar13dYDTI0B
+	 c/GenqA4GhcMVYzaTy5xkdMzn0N6o77JzB0iGNFxp98pbVX2/kX6T0A+v5iPG10NVqWjn
+	 naR30CW702IX0lFUic2lt5brp3qDw45nWRTWdcrCdOWdLftP5Or6IbpDWdaI7vn4gpQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MFnAF+8G;
-	arc=none smtp.remote-ip=91.218.175.237
-Received: from mta0.migadu.com (out-237.mta0.migadu.com [91.218.175.237])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=h5sh+LSt;
+	arc=none smtp.remote-ip=95.215.58.21
+Received: from mta1.migadu.com (out-21.mta1.migadu.com [95.215.58.21])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBC5606A325
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 06:16:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5DBC5606A325
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D16606A329
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 06:16:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 04D16606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MFnAF+8G
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=h5sh+LSt
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=+jgyQbXsrKaLn9nkl/YpTRZhwiLrtYdg6s8W7kdR5tM=;
+DKIM-Signature: a=rsa-sha256; bh=VEj4AXOvyHq7dn47CDsF3SXWHUAqc4UCTqa5O+MQa+s=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793513775; v=1; x=1794118575;
- b=MFnAF+8GyLoxxXthUq9nkMxYhCujTC1xqC3wKS4b1fwYCoAoc3DZUE1EClXqOMOCPVbaz9OH
- TR7MVF3X9jpBnKYORazMRzqzQpRN60+TqMJT+qgv1fI4G3QBn3C/wL9qd/AVJUlb7wOoQbFAgnZ
- CHwlE2V8XyWhBjWj8HJ8ag3o=
+ t=1793513804; v=1; x=1794118604;
+ b=h5sh+LStSxjWC71XmeS5IkqQAL1f7KnGA2JcxWkR5mo6njZmSZM0GC+lm31bXYBH8Kv98Zdq
+ TvElL5XNLADnzX1yHVj4E8jpyXXIMoppEaJiWDnJhWnDV3+ppOveytqem6w40vclkyBv7fp4HiX
+ sozklZeOGImFAWNf4hENqc/8=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 1f105a6221850481;
-	Sun, 01 Nov 2026 06:16:15 +0000
-X-Mizu-Trace-ID: 1f105a6221850481
+Received: by smtp.migadu.com with ESMTPS id e3c9e97b33ce8185;
+	Sun, 01 Nov 2026 06:16:44 +0000
+X-Mizu-Trace-ID: e3c9e97b33ce8185
 X-Migadu-Flow: FLOW_OUT
 From: Jiayuan Chen <jiayuan.chen@linux.dev>
 To: netdev@vger.kernel.org
 Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
 	stable@vger.kernel.org,
+	Joel Granados <joel.granados@kernel.org>,
 	Fernando Fernandez Mancera <fmancera@suse.de>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
@@ -62,14 +63,12 @@ Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
 	Randy Dunlap <rdunlap@infradead.org>,
 	David Ahern <dsahern@kernel.org>,
 	Ido Schimmel <idosch@nvidia.com>,
-	Joel Granados <joel.granados@kernel.org>,
 	Thomas Gleixner <tglx@kernel.org>,
 	Petr Pavlu <petr.pavlu@suse.com>,
 	Kuniyuki Iwashima <kuniyu@google.com>,
 	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
-	Jiri Wiesner <jwiesner@suse.de>,
+	Zhan Xusheng <zhanxusheng1024@gmail.com>,
 	Oleg Nesterov <oleg@redhat.com>,
-	Gerd Rausch <gerd.rausch@oracle.com>,
 	Neal Cardwell <ncardwell@google.com>,
 	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
 	Yung Chih Su <yuuchihsu@gmail.com>,
@@ -80,9 +79,9 @@ Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
 	Petr Mladek <pmladek@suse.com>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v3 4/5] ipv4: restrict igmp_qrv to 255
-Date: Sun,  1 Nov 2026 14:12:02 +0800
-Message-ID: <20261101061331.286404-5-jiayuan.chen@linux.dev>
+Subject: [PATCH net v3 5/5] net: restrict message_cost and message_burst to non-negative values
+Date: Sun,  1 Nov 2026 14:12:03 +0800
+Message-ID: <20261101061331.286404-6-jiayuan.chen@linux.dev>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261101061331.286404-1-jiayuan.chen@linux.dev>
 References: <20261101061331.286404-1-jiayuan.chen@linux.dev>
@@ -97,94 +96,158 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-net.ipv4.igmp_qrv only has a lower bound, but ip_mc_reset() stores it
-into the u8 in_device::mr_qrv, and the IGMPv3 retransmit counters filled
-from it (crcount, sf_crcount) are u8 as well. Anything above 255
-silently wraps. With 256, mr_qrv becomes 0, every
-"in_dev->mr_qrv ?: sysctl_igmp_qrv" falls back to 256, which truncates
-to 0 again in crcount, and igmpv3_send_cr() never puts the state change
-records for the group into a report. The older version querier present
-timeout (mr_qrv * mr_qi + mr_qri) also collapses to just mr_qri.
+net.core.message_cost and net.core.message_burst feed the interval and
+burst of net_ratelimit_state, but neither rejects negative values:
+message_burst uses plain proc_dointvec, and message_cost uses
+proc_dointvec_jiffies, which happily stores -1 second as -HZ jiffies.
 
-Make the sysctl a u8 like mr_qrv and switch to proc_dou8vec_minmax(),
-which rejects anything above 255, and document it.
+Since commit a940d145cc38 ("ratelimit: Warn if ->interval or ->burst are
+negative"), ___ratelimit() splats on such values, so the next
+net_ratelimit() caller warns, e.g. a martian source log:
 
-Fixes: a9fe8e29945d ("ipv4: implement igmp_qrv sysctl to tune igmp robustness variable")
+  Negative interval (-250) or burst (10): Uninitialized ratelimit_state structure?
+  WARNING: lib/ratelimit.c:43 at ___ratelimit+0x56e/0x960, CPU#1: ping/3218
+  RIP: 0010:___ratelimit+0x578/0x960
+  Call Trace:
+   <IRQ>
+   net_ratelimit+0x1c/0x30
+   ip_handle_martian_source+0x1bb/0x340
+   ip_route_input_slow+0x1057/0x3650
+   ip_route_input_noref+0x104/0x260
+   arp_process+0x109b/0x2510
+   arp_rcv+0x381/0x460
+   __netif_receive_skb_one_core+0x173/0x1c0
+   __netif_receive_skb+0x21/0x150
+   process_backlog+0x37e/0x1200
+   __napi_poll.constprop.0+0xa5/0x5e0
+   net_rx_action+0x4c0/0xf70
+   handle_softirqs+0x204/0x9b0
+   __do_softirq+0x10/0x18
+   do_softirq.part.0+0x49/0xd0
+   </IRQ>
+
+Negative values never meant anything here: 0 already expresses both
+"no limit" (interval) and "suppress everything" (burst).
+
+Reject them at write time. message_burst can simply use
+proc_dointvec_minmax with extra1 = 0. proc_dointvec_jiffies has no
+minmax variant, so add proc_dointvec_jiffies_minmax(), mirroring
+proc_dointvec_ms_jiffies_minmax(), and use it for message_cost with
+extra1 = 0. Note that like the ms variant, extra1/extra2 are compared
+against the converted jiffies value.
+
+Fixes: a940d145cc38 ("ratelimit: Warn if ->interval or ->burst are negative")
 Cc: stable@vger.kernel.org
+Suggested-by: Joel Granados <joel.granados@kernel.org>
 Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
 Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 ---
-For AI review: drivers/net/amt.c writing sysctl_igmp_qrv into the 3-bit
-qrv wire fields is pre-existing and out of scope for this patch.
+ include/linux/jiffies.h    |  2 ++
+ kernel/time/jiffies.c      | 40 ++++++++++++++++++++++++++++++++++++++
+ net/core/sysctl_net_core.c |  6 ++++--
+ 3 files changed, 46 insertions(+), 2 deletions(-)
 
-v2: switched to u8 and proc_dou8vec_minmax(), as suggested by Kuniyuki
-Iwashima.
----
- Documentation/networking/ip-sysctl.rst                        | 2 ++
- Documentation/networking/net_cachelines/netns_ipv4_sysctl.rst | 2 +-
- include/net/netns/ipv4.h                                      | 2 +-
- net/ipv4/sysctl_net_ipv4.c                                    | 4 ++--
- 4 files changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
-index 71f334f27004e..9e282fb046904 100644
---- a/Documentation/networking/ip-sysctl.rst
-+++ b/Documentation/networking/ip-sysctl.rst
-@@ -1906,6 +1906,8 @@ igmp_qrv - INTEGER
+diff --git a/include/linux/jiffies.h b/include/linux/jiffies.h
+index bbd57061802cd..de12920f8e94b 100644
+--- a/include/linux/jiffies.h
++++ b/include/linux/jiffies.h
+@@ -646,6 +646,8 @@ extern unsigned long nsecs_to_jiffies(u64 n);
+ struct ctl_table;
+ int proc_dointvec_jiffies(const struct ctl_table *table, int dir, void *buffer,
+ 			  size_t *lenp, loff_t *ppos);
++int proc_dointvec_jiffies_minmax(const struct ctl_table *table, int dir,
++				 void *buffer, size_t *lenp, loff_t *ppos);
+ int proc_dointvec_ms_jiffies_minmax(const struct ctl_table *table, int dir,
+ 				    void *buffer, size_t *lenp, loff_t *ppos);
+ int proc_dointvec_userhz_jiffies(const struct ctl_table *table, int dir,
+diff --git a/kernel/time/jiffies.c b/kernel/time/jiffies.c
+index 9b3487d40cd6a..1e1dd9f3c48c4 100644
+--- a/kernel/time/jiffies.c
++++ b/kernel/time/jiffies.c
+@@ -165,6 +165,14 @@ static int do_proc_int_conv_jiffies(bool *negp, ulong *u_ptr, int *k_ptr,
+ 			     sysctl_u2k_int_conv_hz, sysctl_k2u_int_conv_hz);
+ }
  
- 	Minimum: 1 (as specified by RFC6636 4.5)
- 
-+	Maximum: 255
++static int do_proc_int_conv_jiffies_minmax(bool *negp, ulong *u_ptr,
++					   int *k_ptr, int dir,
++					   const struct ctl_table *tbl)
++{
++	return proc_int_conv(negp, u_ptr, k_ptr, dir, tbl, true,
++			     sysctl_u2k_int_conv_hz, sysctl_k2u_int_conv_hz);
++}
 +
- force_igmp_version - INTEGER
- 	- 0 - (default) No enforcement of a IGMP version, IGMPv1/v2 fallback
- 	  allowed. Will back to IGMPv3 mode again if all IGMPv1/v2 Querier
-diff --git a/Documentation/networking/net_cachelines/netns_ipv4_sysctl.rst b/Documentation/networking/net_cachelines/netns_ipv4_sysctl.rst
-index 3dc03bff739e4..2833ce6cba1d4 100644
---- a/Documentation/networking/net_cachelines/netns_ipv4_sysctl.rst
-+++ b/Documentation/networking/net_cachelines/netns_ipv4_sysctl.rst
-@@ -143,9 +143,9 @@ int                             sysctl_udp_rmem_min
- u8                              sysctl_fib_notify_on_flag_change
- u8                              sysctl_udp_l3mdev_accept
- u8                              sysctl_igmp_llm_reports
-+u8                              sysctl_igmp_qrv
- int                             sysctl_igmp_max_memberships
- int                             sysctl_igmp_max_msf
--int                             sysctl_igmp_qrv
- struct_ping_group_range         ping_group_range
- atomic_t                        dev_addr_genid
- unsigned_int                    sysctl_udp_child_hash_entries
-diff --git a/include/net/netns/ipv4.h b/include/net/netns/ipv4.h
-index cb7f8bf15671c..3efbc7f4b4f7d 100644
---- a/include/net/netns/ipv4.h
-+++ b/include/net/netns/ipv4.h
-@@ -258,9 +258,9 @@ struct netns_ipv4 {
- #endif
+ static int do_proc_int_conv_userhz_jiffies(bool *negp, ulong *u_ptr,
+ 					   int *k_ptr, int dir,
+ 					   const struct ctl_table *tbl)
+@@ -213,6 +221,13 @@ static int do_proc_int_conv_jiffies(bool *negp, ulong *u_ptr, int *k_ptr,
+ 	return -ENOSYS;
+ }
  
- 	u8 sysctl_igmp_llm_reports;
-+	u8 sysctl_igmp_qrv;
- 	int sysctl_igmp_max_memberships;
- 	int sysctl_igmp_max_msf;
--	int sysctl_igmp_qrv;
++static int do_proc_int_conv_jiffies_minmax(bool *negp, ulong *u_ptr,
++					   int *k_ptr, int dir,
++					   const struct ctl_table *tbl)
++{
++	return -ENOSYS;
++}
++
+ static int do_proc_int_conv_userhz_jiffies(bool *negp, ulong *u_ptr,
+ 					   int *k_ptr, int dir,
+ 					   const struct ctl_table *tbl)
+@@ -263,6 +278,31 @@ int proc_dointvec_jiffies(const struct ctl_table *table, int dir,
+ }
+ EXPORT_SYMBOL(proc_dointvec_jiffies);
  
- 	struct ping_group_range ping_group_range;
- 	u16			ping_port_rover;
-diff --git a/net/ipv4/sysctl_net_ipv4.c b/net/ipv4/sysctl_net_ipv4.c
-index e3760daa34706..09f7fc6771456 100644
---- a/net/ipv4/sysctl_net_ipv4.c
-+++ b/net/ipv4/sysctl_net_ipv4.c
-@@ -975,9 +975,9 @@ static const struct ctl_table ipv4_net_table[] = {
- 	{
- 		.procname	= "igmp_qrv",
- 		.data		= &init_net.ipv4.sysctl_igmp_qrv,
--		.maxlen		= sizeof(int),
-+		.maxlen		= sizeof(u8),
++/**
++ * proc_dointvec_jiffies_minmax - read a vector of integers as seconds with min/max values
++ * @table: the sysctl table
++ * @dir: %TRUE if this is a write to the sysctl file
++ * @buffer: the user buffer
++ * @lenp: the size of the user buffer
++ * @ppos: file position
++ *
++ * Reads/writes up to table->maxlen/sizeof(unsigned int) integer
++ * values from/to the user buffer, treated as an ASCII string.
++ * The values read are assumed to be in seconds, and are converted into
++ * jiffies. The converted values are checked against the optional
++ * table->extra1 (min) and table->extra2 (max) bounds, in jiffies;
++ * a value outside the range is rejected with -EINVAL.
++ *
++ * Return: 0 on success.
++ */
++int proc_dointvec_jiffies_minmax(const struct ctl_table *table, int dir,
++				 void *buffer, size_t *lenp, loff_t *ppos)
++{
++	return proc_dointvec_conv(table, dir, buffer, lenp, ppos,
++				  do_proc_int_conv_jiffies_minmax);
++}
++EXPORT_SYMBOL(proc_dointvec_jiffies_minmax);
++
+ /**
+  * proc_dointvec_userhz_jiffies - read a vector of integers as 1/USER_HZ seconds
+  * @table: the sysctl table
+diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+index 473c162736d69..9226b96f2e89b 100644
+--- a/net/core/sysctl_net_core.c
++++ b/net/core/sysctl_net_core.c
+@@ -544,14 +544,16 @@ static struct ctl_table net_core_table[] = {
+ 		.data		= &net_ratelimit_state.interval,
+ 		.maxlen		= sizeof(int),
  		.mode		= 0644,
--		.proc_handler	= proc_dointvec_minmax,
-+		.proc_handler	= proc_dou8vec_minmax,
- 		.extra1		= SYSCTL_ONE
+-		.proc_handler	= proc_dointvec_jiffies,
++		.proc_handler	= proc_dointvec_jiffies_minmax,
++		.extra1		= SYSCTL_ZERO,
  	},
- #endif
+ 	{
+ 		.procname	= "message_burst",
+ 		.data		= &net_ratelimit_state.burst,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
+ 	},
+ #ifdef CONFIG_RPS
+ 	{
 -- 
 2.43.0
 
