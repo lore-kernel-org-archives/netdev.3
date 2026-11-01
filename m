@@ -1,71 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=44.202.169.39
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793560186;
-	b=u1lkqg59gcSoh65yn+UYew2tjyl3jZ5598KAex3HyVByrvQr3VtFLAtj+XtA2jLz/+wn
-	 mGmzlvU8BRidzsb5l5ALKfgY6yT8x89sTzx9XTxxJ5OQkP9PzKPQwH6VANc0aUOHFJ/nQ
-	 xBfF7++387tJ8boYZ7yApJvpm+Bik9SnlxFXUrR6aGxz5y3z6FdLyXsztFUN4Syn0/uEO
-	 deNoNQnTA4dEc2I9zVu8Edt8ePRziHxrLz5RN+1vLBUGPDAirQBLSkie/lgwPB7MYAvzD
-	 1D/ctdzFyusqJwqT+KdHtKaQyJQpau0/zQaaccd/OJuyRTRxKSRGrEULKO2uw7Y2fMQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793560186;
-	h=DMARC-Filter:Received:Received:X-Authority-Analysis:DKIM-Signature:
-	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
-	 References:Content-Language:From:Autocrypt:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:
-	 X-AntiAbuse:X-AntiAbuse:X-BWhitelist:X-Source-IP:X-Source-L:X-Exim-ID:
-	 X-Source:X-Source-Args:X-Source-Dir:X-Source-Sender:X-Source-Auth:
-	 X-Email-Count:X-Org:X-Source-Cap:X-Local-Domain:X-CMAE-Envelope;
-	bh=VunHcN04PE82MG384vRvxyk8cgSo4EJM/fvpjqkbGAA=;
-	b=wL2vRzKL5uWljO2CCrjmDzhuf2Cgv72k24p9rASQR/p+G4rLIsT8Bp3EFmao1Ku/yq55
-	 OdssEca7scJu+O9kUCyCVIU9uwGXBc6p7FzovkngoPpVcVQ7TjEB8/Tx0zRo8S4p/axyx
-	 ZbI9oOLf+idlTS2yOec6EsDCK5ySRDGwrHrBu5v8eLkre81SSaISdpUh6H4qHxzpYfzfb
-	 GRIM4+aXcdLlHOmc0qAVsLdG+8pGWC+Kkk/xjpNchxIUkooi871t/5iKmtNdxt5Wsu7R+
-	 4pdcjEN3ugPkdvTvIm6vlHEvU247tbuynToinRBC54JArllqnjL3GpI+CzvPavr9y0w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=roeck-us.net;
-	spf=fail smtp.mailfrom=roeck-us.net;
-	dkim=pass header.d=roeck-us.net header.i=@roeck-us.net header.a=rsa-sha256 header.s=default header.b="C/4RnWVd";
-	arc=none smtp.remote-ip=44.202.169.39
-Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=136.143.169.15
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793560301;
+	b=v5lrOXLE4iy2wdGGMIM+AQJuKi/0uEm58q2EkPOcVH/2tTv5KhfZnDMYbXwc6TWIi2Nf
+	 UiMSSEJymYBLx4f31TUL9Qn42H+jY1sbtXy2TPR98NXK1bEncG1eGPFS0S7xaf7jbQR+j
+	 BHLCjsLA+X0NesqeaoKZ32pbJy2elAwU8ZU86mpAYJt7araXav3wqUUGOIX/OZgTltgFM
+	 hN6DvsT0Od9aedX1zDf8SBb2cg3elU6DU6l55l5ABkW67edP1h1PGTkbv/CVkz6v9QyOB
+	 NB0UwsEBk0bmMaI/aDuilIhlsfj0DhI8E3vZcYMW6LAK1/+rQyttHGDW+dx2HYVznpQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793560301;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=mPcWOwuHmd2vb2lc/1veBqXCg/9uHVaMceIoosx5SG8=;
+	b=HjfIxqbsWE6v6aFd/qDitqwVZFeZpadACNwLVCvGbtDBolFYqsthBVT6PgjEto0K2v6H
+	 VyIzm4XEELfFFdJfKLnLfts8/Yzbd+HgsSCpRSPFc33ppn9sA3GC8uHWDarLvYjSAR2M3
+	 b0uSoAVdkFjKk02XggmUitMuvMBY/BLUlRvboBZKEaqxiApitU+YwpVtlnYhH/094dqdU
+	 LuyFKnpJaf3A0QgpmLDfS/xf0eJvci8h9n8jN/RSsSAEcXQGO8r9Dyl9le2Rzk05Vlssm
+	 m1fhX2xfMuhMDDOKboGtuSW5RbSpQ15pDRjn85uYQJYgONAhMRf5d/3okxOy/XPnFJg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=iav.lv;
+	spf=pass smtp.mailfrom=iav.lv;
+	dkim=pass header.d=iav.lv header.i=@iav.lv header.a=rsa-sha256 header.s=zoho header.b=VxAMb9Yk;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=136.143.169.15
+Received: from sender-op-o15.zoho.eu (sender-op-o15.zoho.eu [136.143.169.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34A6606A330
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 19:09:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C34A6606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=roeck-us.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E111D606A324;
+	Sun,  1 Nov 2026 19:11:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E111D606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iav.lv
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iav.lv
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=roeck-us.net header.i=@roeck-us.net header.a=rsa-sha256 header.s=default header.b=C/4RnWVd
-Received: from eig-obgw-6007b.ext.cloudfilter.net ([10.0.30.166])
-	by cmsmtp with ESMTPS
-	id NKrcxLgWiMylkNaw4xsYsY; Sun, 01 Nov 2026 19:09:45 +0000
-Received: from 162-215-252-36.unifiedlayer.com ([208.91.199.152])
-	by cmsmtp with ESMTPS
-	id Naw3xvumHkE4RNaw4xUP6b; Sun, 01 Nov 2026 19:09:44 +0000
-X-Authority-Analysis: v=2.4 cv=LuaSymdc c=1 sm=1 tr=0 ts=6ae78e78
- a=QNED+QcLUkoL9qulTODnwA==:117 a=2cfIYNtKkjgZNaOwnGXpGw==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=M0FbrtG7MMAA:10
- a=FQSCjVPzdfuLLySXQBkA:9 a=QEXdDO2ut3YA:10 a=KPbNTLLc3YvdawN95zVk:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:
-	List-Archive; bh=VunHcN04PE82MG384vRvxyk8cgSo4EJM/fvpjqkbGAA=; b=C/4RnWVdDrBS
-	QYXFcPpuc1k8QcHM90zSmnyab2fFaZx664QDuwbTgCZ0hekbxC1iXFeqAZMQSFiYRD0UUvDcMvCcJ
-	+UJP9dRXT/RV3UCd7bw8nH/uYXUetaFILONTLG+ihHUXF7+8DYZYEy03mXMF4xR/k2H3xXH2BC3D4
-	3sz6XAVmVpGGQCDt/HlhnxSPIa7HslU250z0dCtVXUVvV0NOjnrdtbBLTvdRGwTpriRM0+0hDFAyd
-	dy9vQeTq16hUYVsXZsJ15im0OTE9duaH89mkl+M+Kgo9TLEF1sTS4Xg5EKvSK1GzlGFguIRBvWGtC
-	PjhEiplEltqczJtnUHWHMQ==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:48438)
-	by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <linux@roeck-us.net>)
-	id 1xNaw3-00000000qv7-2Ugb;
-	Mon, 02 Nov 2026 00:39:43 +0530
-Message-ID: <4d12314e-56db-412c-a558-e4026cd03528@roeck-us.net>
-Date: Sun, 1 Nov 2026 11:09:42 -0800
+	dkim=pass (1024-bit key, unprotected) header.d=iav.lv header.i=@iav.lv header.a=rsa-sha256 header.s=zoho header.b=VxAMb9Yk
+ARC-Seal: i=1; a=rsa-sha256; t=1793560235; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=iRBtL5ZI127nRPDqqbTqjRcbsDS30mPeVHezXgaqcjUFMkQDqoK8sp0ijTBCmafp/flXvwvfocEKXG6gqj9RTAhrFG7X6e6PqPbMiPY+ZQKGq+3Uy6mFnYxWh9c6qf3xJwGMrnom/aDUk+LAwkjhpyQjzaWduNH2LiXxDDtZj1M=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1793560235; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=mPcWOwuHmd2vb2lc/1veBqXCg/9uHVaMceIoosx5SG8=; 
+	b=V9p49xnybzD+e3S8j1KhS/QP1iZM8Qkb2xIwizMus9rJS4YRbKeP/jFbaZwVwRaiMzJaLTSKo6lT+f5izvfYny9BInMU6MJOsy2DIsWxpJxsnMgz1isgcTzmVyA5qte7msiZOtUB8Lj75msKPXTYRmW4veWRqcIbsM0jlbIomS4=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=iav.lv;
+	spf=pass  smtp.mailfrom=iav@iav.lv;
+	dmarc=pass header.from=<iav@iav.lv>
+DKIM-Signature: a=rsa-sha256; b=VxAMb9YkFS0HWxIAL9v0QH3eV836oDrQf3tt3baPOt8693zNFZPNp1MlPM0j8dZAgVWcHVzmB2Eor+Q691r/iKGybzsFXRXVcPnGSLheFezn/xMsRaZHqLXZEDyQIiceVoSNrTionsswenYr487X/bcDE33WAf8HieHx4WNrtPQ=; c=relaxed/relaxed; s=zoho; d=iav.lv; v=1; bh=mPcWOwuHmd2vb2lc/1veBqXCg/9uHVaMceIoosx5SG8=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zoho.eu with SMTPS id 1793560234157386.45816168150634;
+	Sun, 1 Nov 2026 20:10:34 +0100 (CET)
+From: Igor Velkov <iav@iav.lv>
+To: netdev-bot+sashiko@kernel.org
+Cc: iav@iav.lv, andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, maxime.chevallier@bootlin.com, lukas@wunner.de, rafael.j.wysocki@intel.com, wei.fang@nxp.com, niklas.soderlund@ragnatech.se, paul@pbarker.dev, florian.fainelli@broadcom.com, opendmb@gmail.com, Thangaraj.S@microchip.com, shenwei.wang@nxp.com, netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v4 5/5] net: phy: postpone PHY interrupts during sleep with MAC-managed PM
+Date: Sun, 01 Nov 2026 21:09:52 +0200
+Message-ID: <179356019298.3385307.17700170309730679223@iav.lv>
+In-Reply-To: <179352219781.3131.16504721138901563596@kernel.org>
+References: <20261031-b4-phylib-mac-pm-irq-v3-v4-5-5ba23b3ff9a4@iav.lv> <179352219781.3131.16504721138901563596@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,107 +64,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] hwmon: (tps23861) PSE-PD support, extend hwmon driver or
- move to pse-pd?
-To: Roman Kuzmitskii <roman@damex.org>, linux-hwmon@vger.kernel.org,
- netdev@vger.kernel.org
-Cc: robert.marko@sartura.hr, luka.perkov@sartura.hr, o.rempel@pengutronix.de,
- kory.maincent@bootlin.com
-References: <03055ffd-d015-4810-8b8a-678821fa6dcc@damex.org>
- <92e3383e-26f8-4bed-b487-1c52f6c4f420@roeck-us.net>
- <8cd41211-b026-4158-8e18-454a9ac0bae4@damex.org>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <8cd41211-b026-4158-8e18-454a9ac0bae4@damex.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-BWhitelist: no
-X-Source-IP: 108.223.40.66
-X-Source-L: No
-X-Exim-ID: 1xNaw3-00000000qv7-2Ugb
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net [108.223.40.66]:48438
-X-Source-Auth: guenter@roeck-us.net
-X-Email-Count: 5
-X-Org: HG=direseller_whb_net_legacy;ORG=directi;
-X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfHoj7fZub9fEWifrYKDzIV8zqvd5pZdPxOE3aH1kWrb2Qyqj2iYOS+r9HddChrMzk9ykyIRhvXPFy7PsI17uS4vNRrKuaZK2tm6nCXvRu66rh2fQ95Od
- Kro7it9q+J3p2DLMWJC3l1zxgd25buaDHZ2GOQZuz6jKWUunwFKd5tn45wcU91oi67rKrOMgGbTGTVxzXrtYrjw9iWv0b/xTR8QKdhjQgR8+4DW0y/917ceU
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 
-On 11/1/26 10:50, Roman Kuzmitskii wrote:
-> On 11/2/26 1:38 AM, Guenter Roeck wrote:
->> On 11/1/26 10:02, Roman Kuzmitskii wrote:
->>> openwrt reviewers asked me to check with you first which way you prefer:
->>> 1. extend hwmon driver with PSE-PD (like it is done right now)
->>> 2. move driver to drivers/net/pse-pd and extend it with PSE-PD
->>> 3. something else
->>>
->> The hardware monitoring "enable" attribute is supposed to enable monitoring,
->> not to enable some power delivery or network (or any other) port. That "port
->> enable" feature using the hwmon ABI was sneaked in, and I am inclined to just
->> remove the upstream driver for severe ABI violation.
->>
->> Guenter
-> 
-> thanks, does second option look okay with taking tps23861 to drivers/net/pse-pd
-> with enable attribute going away?
-> 
-A perfect solution would be to move the driver to drivers/net/pse-pd (or elsewhere)
-and implement the hwmon part as auxiliary driver, but I am also ok with moving it all.
-Note that I do not review hwmon drivers outside drivers/hwmon, so if you move the
-driver to drivers/net/pse-pd you can abuse the hwmon ABI as much as you want.
+Path 1 is real for a PHY that keeps its link interrupt enabled while
+armed for WoL. phylink_suspend() calls phylink_stop() before
+phylink_speed_down(), so the driver's suspend runs first. RTL8211F and
+AN8801R mask the link interrupt there; on Helios64 (stmmac + RTL8211F,
+wakeup-source) WoL suspend passed 4/4, though I did not log the link
+speed. Of the wakeup-capable PHYs in drivers/net/phy, BCM54210E leaves
+it enabled. Before this series, the link-up after the downshift could
+arrive after stmmac gated its clocks, and phy_interrupt() would read the
+PHY over a dead MDIO bus: the hang this series fixes. An aborted suspend
+is the safer failure.
 
-Guenter
-
+Path 2: phy_stop() with wol_enabled leaves the copper link up
+(rtl821x_suspend() skips genphy_suspend()), so the MAC causes no link
+interrupt. Counting netdev->ethtool->wol_enabled as a system wakeup is
+what phy_interrupt() already does for PHYs without mac_managed_pm.
