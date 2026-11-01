@@ -1,60 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=31.154.135.10
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793564419;
-	b=LjQyLYXMmdNM/jqCDdwOXROIUpmRKjUGdZeshRqD3A8WpC4RgR12oZJnFcrW2MS/uOyg
-	 fB1NR7Vxq6LiC5Oikf2I87kJ0/402ChrCqxh42W+75uXvqgRFoT1aYOVfD+zzJdVCbZ03
-	 W7Jcw0OjAKP3UYqJ6oU8e3EfF6yXbBMT6YvL7+HNcpSgQOg2WFa/MVwsaUk2HYjfyyGsr
-	 XJXDjn1hfUgQcoaIfaQdNUvxl7jadqxlx4rZhW0ZRQ0IrAV0Yyfy1bZB519LoTJDI/r+o
-	 0vpbcQSq+WFf40BX8KDga08fa64CTs9/vd2cqmDY1OOwLdaBokFQMIdGuhjs1ItOkIg==
+	t=1793565518;
+	b=kPiM3BqGMBJQlaIAJPZrPe7UgTAcIUOEGbCkWClSEU2+v1U7RZdmo47xcjGlwA+eOoRc
+	 qECJbAXlbb6ygP3mdYCwAaU5S7syEbdwITmII7lBfS6zDYUTPX9zPKibbESfGsOrC+r8M
+	 LaSurpXSBKtGRYNEK6TQR+ToczoP0DVOx2Lkng4Z42avDhQpq9NJlOW8M1jyAwc7HPusF
+	 RSQS7Lhw+qxhOaZ4HCpeKFFjMuqGp+Nc6+1NXti9KIkfTbVBLf9RtXEWvlNnqDCUQlHwr
+	 dyHf4IgGCUIR9TmizlQs1QyKio4w0x1DtJ5GGELtSPqhzYVq1ZyZE8jSWquXuUtr70g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793564419;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=zyRN6kg9/ATn1G8Z14YW7umkFVQ53HKSrppdRtXaoZo=;
-	b=0clZvreO4N3lvvc4eJ5fIeUJFQeuEvJQ78kjqf9i0efy6RL15WYPLFPalmkCPv4WBXRA
-	 TxBbAZfsK/DiaBWTKWP8vqyBTVL3n/kqNjWV/21ZbOhUJeRL7LrgPJrtU97tjRFBQWJal
-	 U/zvhbARqJk/M6xZN0CxMd0W88tjb/ZYkFQY+haGjBSRhUMqOqQIyg6SSggsfWs46QxN4
-	 LdOWefgoS+5Ol1jPuWp+YSTkfLm9Id+2Hz8bB7GvkFM4qXNt9JzqvwIHs5uOpCOJQNUm4
-	 HJXkmWt7EwzQX0c4fcjacrmNkYWzitFjvtq7QicGm2UcK8v8u+zTZ7IGUtZhrCqaRIg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793565518;
+	h=DMARC-Filter:Received:Received:Received:Received:Received:
+	 DKIM-Filter:DKIM-Signature:X-Virus-Scanned:Received:Received:From:To:
+	 Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=FnrqULfI6CxtTlOcsF1R0zdisw/Ss/aYDt79zlSdFFA=;
+	b=D62+m9azCfcuXk3Ph23xewQhjZnSII5/rhSNMeSN2bFbBBFIf1sO6Pc5e35C/E1O9kk3
+	 7NkGCWjQwpEM4Xq9i403o1m88AhnXt0mTH4Y1xdCeD3nXPsRLizAQfoyN0udiB0Iqo4CO
+	 9zXC/+x7IErtz1wQYEIAlXnU3HAxJzJ65at0hJPhR1evQpqXTbDaRuXBblOmBbfGahTvb
+	 olaHZVMSVTI2ztxJyltHiRLMdxTFj5auaw7ntw/DaqyrMMim3UANREQhH6upEKpgRPDTs
+	 WSNqtL8a87kuM3ybYhnfpa4aAn/SwKtZsFDpieFyclBsfEr86knN4wzvLRyQs/rBtDg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AL+vqfXx;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=inango-systems.com;
+	spf=pass smtp.mailfrom=inango-systems.com;
+	dkim=pass header.d=inango-systems.com header.i=@inango-systems.com header.a=rsa-sha256 header.s=45A440E0-D841-11E8-B985-5FCC721607E0 header.b=LuLtQD3l;
+	arc=none smtp.remote-ip=31.154.135.10
+Received: from ksserv.inango.com (ksserv.inango.com [31.154.135.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F219606A325;
-	Sun,  1 Nov 2026 20:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D618606A325;
+	Sun,  1 Nov 2026 20:38:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0D618606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=inango-systems.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inango-systems.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AL+vqfXx
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E6F1F000C1;
-	Sun,  1 Nov 2026 20:20:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793564419;
-	bh=zyRN6kg9/ATn1G8Z14YW7umkFVQ53HKSrppdRtXaoZo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AL+vqfXx8V+n8mSHlPQBbqJ2wOEM7Y5XMBR5amUzuRNF7eu1Hfs7ssGVCTnImepgv
-	 KsqJNpnBMfG7pbgtDwl/tEJd+CCvFRGR9l0koJI8oSbXGwdkDFHGehfr1tdv1u5Kfm
-	 mxIubGTA4S53kQm5dx92AzD5Wc2y5ADCgUPFnkeOePCT75N9o+eSn97FBiY9eA3OTQ
-	 vlvzh1us+2INW7Bh4KJWEwboaenJbUj/Rew0/6jWt9PMNtLdGvtDCYUPjCdnYbL9PA
-	 MGiR3v4ShcuLf1pmT+Hb5wiIoA4dYi6CqjmsNhk+3nt4ouYHDLAa6qKGhBeuLg1Eh4
-	 5xEKrKN0YhUxg==
-Subject: Re: [PATCH net 3/3 repost2] net/sched: sch_teql: reject qdiscs from
- another network namespace
-From: netdev-bot+sashiko@kernel.org
-To: jhs@mojatatu.com
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, shawnq1@163.com,
- davem@davemloft.net, edumazet@kernel.org, horms@kernel.org, jiri@resnulli.us,
- kuba@kernel.org, pabeni@redhat.com, victor@mojatatu.com,
- thomas.goff@boeing.com
-Date: Sun, 01 Nov 2026 20:20:17 +0000
-Message-ID: <179356441771.3131.1618449912961461255@kernel.org>
-In-Reply-To: <SER-NSBD.v1.r2.20261031160050-3@mojatatu.com>
-References: <SER-NSBD.v1.r2.20261031160050-3@mojatatu.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=inango-systems.com header.i=@inango-systems.com header.a=rsa-sha256 header.s=45A440E0-D841-11E8-B985-5FCC721607E0 header.b=LuLtQD3l
+Received: from ksserv.inango.com (localhost [127.0.0.1])
+	by ksserv.inango.com (Proxmox) with ESMTP id 81E502296B;
+	Sun,  1 Nov 2026 22:38:35 +0200 (IST)
+Received: from mail.inango-systems.com (unknown [192.168.70.50])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ksserv.inango.com (Proxmox) with ESMTPS id 52707229E2;
+	Sun,  1 Nov 2026 22:38:35 +0200 (IST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.inango-systems.com (Postfix) with ESMTP id 9F95FD645A5;
+	Sun,  1 Nov 2026 22:38:24 +0200 (IST)
+Received: from mail.inango-systems.com ([127.0.0.1])
+ by localhost (mail.inango-systems.com [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id 6gqVRTePtBzA; Sun,  1 Nov 2026 22:38:24 +0200 (IST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.inango-systems.com (Postfix) with ESMTP id 5E7B4D645B0;
+	Sun,  1 Nov 2026 22:38:24 +0200 (IST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.inango-systems.com 5E7B4D645B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=inango-systems.com;
+	s=45A440E0-D841-11E8-B985-5FCC721607E0; t=1793565504;
+	bh=FnrqULfI6CxtTlOcsF1R0zdisw/Ss/aYDt79zlSdFFA=;
+	h=From:To:Date:Message-ID:MIME-Version;
+	b=LuLtQD3lSUgBR7gUye8LTm5etpUqfbRlxowBE0K4WNvcODPDU/IVcN4ADjsz8EZmH
+	 66bLMlijJPuAFXHPevIBqqKcS+aUIQQ84SwzFIoFz/BGJFx5sQlqMdbCXL40VJlg0h
+	 ZmCP9Fb9IotMD8CBKg6pCujSybsmtcSLcILIrJ/3WKQuyR2Vk4wdu7smyYvqhaNs8W
+	 GxNkc317CrkJdVx53/aO298Gu/pSjwSbdA1Rtkk8PyRl21fdxZmqCkSLFMhJaUYK31
+	 HmE8JPiwlBgi5KhEQ+xydbOofuQejD5UH43A8Pt8MXn87Za27SVbnl5dkJ/Un1ZSDH
+	 csH63hniMmsmg==
+X-Virus-Scanned: amavis at inango-systems.com
+Received: from mail.inango-systems.com ([127.0.0.1])
+ by localhost (mail.inango-systems.com [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id lFvyGayHBQwW; Sun,  1 Nov 2026 22:38:24 +0200 (IST)
+Received: from steamdeck.inango.loc (unknown [193.37.156.111])
+	by mail.inango-systems.com (Postfix) with ESMTPSA id 8F964D645A5;
+	Sun,  1 Nov 2026 22:38:09 +0200 (IST)
+From: Nikolai Merinov <n.merinov@inango-systems.com>
+To: netfilter-devel@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	coreteam@netfilter.org,
+	linux-kernel@vger.kernel.org,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Nikolai Merinov <n.merinov@inango-systems.com>
+Subject: [PATCH 0/3] netfilter: ip6t_NPT: improve NPTv6 implementation for gateway usage scenario
+Date: Mon,  2 Nov 2026 00:37:13 +0400
+Message-ID: <20261101203716.269343-1-n.merinov@inango-systems.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,121 +97,33 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Hi,
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+My team, together with the prplFoundation, is working on NPTv6 support
+in prplOS distribution for home gateways. During this work, we
+encountered two issues with the current NPTv6 implemetnation:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+1. Edge cases described in RFC 6296 are not handled.
+2. A NPTv6 implementation requires integration with a connection
+   tracking, since home gateways use stateful IPv6 firewall.
 
-- [Medium] The fix checks that a teql slave and its master are in the
-  same netns only once, in teql_qdisc_init() (net/sched/sch_teql.c:211).
-- [Low] tc-testing case 124e ('Try to add teql as a child qdisc',
-  tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json) no…
+The integration with the connection tracking mechanism was inspired by
+the IPVS implementation.
 
---
+Andrey Kuznetsov (3):
+  netfilter: ip6t_NPT: Align not mapped packets processing with RFC 6296
+    requirements
+  netfilter: ip6t_NPT: Align ICMPv6 error messages with RFC 6296
+    requirements
+  netfilter: ip6t_NPT: Adding conntrack compatibility to NPT sessions
 
-net/sched: sch_teql: reject qdiscs from another network namespace
+ net/ipv6/netfilter/Kconfig    |   1 +
+ net/ipv6/netfilter/ip6t_NPT.c | 107 +++++++++++++++++++++++++++++-----
+ 2 files changed, 92 insertions(+), 16 deletions(-)
 
-This patch rejects a teql qdisc in teql_qdisc_init() if its device is in a
-different network namespace from the teql master. It also moves
-skb_queue_head_init() ahead of all validation, so every failure path sees
-an initialized queue.
+--=20
+2.55.0
 
-Link: https://lore.kernel.org/netdev/20261022144830.67948-1-shawnq1@163.com/
 
-> diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
-> index 70c948a26f809..c5f171a66060f 100644
-> --- a/net/sched/sch_teql.c
-> +++ b/net/sched/sch_teql.c
-> @@ -200,12 +200,19 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
-
-[ ... ]
-
->  	if (m->dev == dev)
->  		return -ELOOP;
->  
-> +	if (dev_net(dev) != dev_net(m->dev)) {
-> +		NL_SET_ERR_MSG_MOD(extack, "teql master is in a different network namespace");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-
-[Severity: Medium]
-Is this same-netns rule only checked at attach time? The check compares
-against the current netns of m->dev. But nothing seems to keep the teql
-master in init_net, because teql_master_setup() never sets
-dev->netns_immutable:
-
-net/sched/sch_teql.c:teql_master_setup() {
-    ...
-	dev->flags		= IFF_NOARP;
-	dev->hard_header_len	= LL_MAX_HEADER;
-	netif_keep_dst(dev);
-}
-
-__dev_change_net_namespace() refuses a move only when netns_immutable is
-set. So "ip link set teql0 netns X" would still succeed after slaves on
-init_net devices have attached.
-
-During the move, dev_shutdown() tears down only teql0's own qdiscs. The
-slave qdiscs on the init_net devices stay linked in master->slaves.
-
-After that, CAP_NET_ADMIN in netns X (possibly granted by an unprivileged
-user namespace) can bring teql0 up. teql_master_xmit() would then send
-that netns's packets through netdev_start_xmit() on the init_net slave
-devices. __teql_resolve() would also create neighbour entries on those
-init_net devices.
-
-Moving teql0 needs CAP_NET_ADMIN in init_net, so the unprivileged
-reproducer in the commit message can't reach this path.
-
-The commit message says:
-
-    The teql master devices are created once in the initial network
-    namespace and their Qdisc_ops are global.
-
-They can still be moved to another netns after creation, though. Bonding
-handles the same case in bond_setup():
-
-	/* Don't allow bond devices to change network namespaces. */
-	bond_dev->netns_immutable = true;
-
-Should teql_master_setup() also set dev->netns_immutable = true, so that
-this attach-time check is enough?
-
->  	if (sch->parent != TC_H_ROOT) {
->  		NL_SET_ERR_MSG_MOD(extack, "teql can only be used as root");
->  		return -EOPNOTSUPP;
-
-[Severity: Low]
-Does the new check now hide the root-only check from tc-testing case 124e
-("Try to add teql as a child qdisc") in
-tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json?
-
-That case requires nsPlugin, which moves $DUMMY into the test netns and
-runs every command under "ip netns exec". The teql0 master is registered
-in init_net.
-
-For 124e, the hard_header_len check and the -ELOOP check both pass. The
-new netns check then fires before the sch->parent != TC_H_ROOT check.
-Both checks return -EOPNOTSUPP, so tc exits with 2 either way. The test
-only checks expExitCode 2 and an empty child list.
-
-As a result, 124e would keep passing even if the root-only rejection were
-broken. No tdc case covers the new cross-netns rejection either, since the
-other teql cases run without nsPlugin.
-
-Would it make sense to put the netns check after the parent check, run
-124e in init_net, or match the extack string? A separate test case for
-the cross-netns rejection might also help.
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/SER-NSBD.v1.r2.20261031160050%40mojatatu.com
