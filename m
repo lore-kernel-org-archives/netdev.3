@@ -1,57 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793552517;
-	b=c69zGNTM3e+HJnWbEjf/7UVrgjZBKDVgBEnrqCPzzJlCCbMy6JMw2ICxVytud64/ttmz
-	 KED12fSBwQkbeTq0ctpAY+z9CGH7KjqL4kwYXpz7E4Cl+Qfsj4Q4uzfJlBL6A6Ee+LM/m
-	 0DwgPFxKINFnlQZBHTcXSa5dWlNZ/dEMlCJ/Ko4bMCFBLbebiGFBqoODt8aW+c3fxTGL+
-	 cpp/qK0fl5PH79pS0eNyYJhQ++zTZSGtYS0X6SzGXUl1F1gPVsz0P58knu8zKyF/IIkvL
-	 drgSsS/CfSvrSrXChbEXVN9y6lKD+3ngCwQsXWUcOiCOt8Gh2/7mbxbA3+c36OnkFhg==
+	t=1793553357;
+	b=1pd1Rkv9y89HT4c/+19Rbd4DNDzxVKMyp0KRjt5rLMx8wKyoRgF4gcU6WGLk4/3qe91Q
+	 IimK3MY4ZWXdUDvWbLWkNGGM98kdLzGiVsk+svBY7InWOv+HeN2PgNvfcoKdamd0Eu2yC
+	 6p9TLMPKnOyLMWLpC6+3zGuHgAYpXW+B8HrPWLlUyKJ8y9us1Sz1SlDVrYRyIkHnYWB1K
+	 8FTEaGLw3ECmdGII5Vbl04fmAfUSAKOh0bAe5y9JBOUO7a+0AgMpEqqf37/nSdSPpqP5w
+	 NO5O4/D1KWGk3onAtkRz7DwXV6oNir740MMqElfm6N1bZzSDexJuiqAALqeZCBV5ixg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793552517;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=C3LoBN5t64bHrUu7cG47Kku/wEVXrt6OuNyUMHATThI=;
-	b=oVaMY7xleYkXyiGzREMTmOhht8w6X03/8COCF/R0Hk1w3LV2tCruPWQkA0yEfq95DbZ8
-	 fe6/kpcNmgCD7cCbsFsYb3jceJIL28zRZxgqqx6btSDIZa3sB92f0qjVUNS1XG7rnXPpf
-	 8K/uxzoMYsjZpsfTRMFrPLUlNUOD7zmdl1tu7hy7FY5r56oGDEi0zwpenP1RdTkj+EAgZ
-	 H/IDC+OMggOFBIXvINfGiLFR0FRjfufJRrQv63vqAWnWptPc5qJBiZjCICe41FMK2tiCE
-	 5Qf+giuHiP8iwTotdo5ainvGvWMqz37pLgvGVkoj4JhL50jua6d3ica+UZDME/8wrHw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793553357;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=ri6mm4g8aC/HkC6PYUflTSf+2uZxNNs5OIicG2gsEt4=;
+	b=vkrmPUE9HZNJkc9wlSVu8iR3q4i2zt0A7iduAsWxpgl/gHwpVCku4ReZLMTfzK/els2B
+	 BHjfvivlPwOgn5EzV/bqg4ZQ77rbO2I2ERMGfB6E+h4+4+fN0HmtJlH/zcEUzVH0P5bda
+	 dVWoLmUxbb2inYfU+8nALcKW/Vb8PSCk1g46HHhSRKp3vbCbihklBAm4cVUL1CtSnoW1u
+	 pZGZKomk7Al7wAl/4FQnnPu4iEdQtXqWl+jwqvz8hEQ1VNCiv9CaxE1uNwTBuDU1RDwXm
+	 A2IBAPywkPcz54kylEqSrzb86mv/3zQKP/TlvsBWzdsWentE8DTSHY1X/jQ/eiIO0pQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="jQQQk8s/";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="QuEK/AwJ";
+	arc=none smtp.remote-ip=209.85.214.197
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA018606A32E;
-	Sun,  1 Nov 2026 17:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B145606A327
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 17:15:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B145606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jQQQk8s/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78F81F00919;
-	Sun,  1 Nov 2026 17:01:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793552516;
-	bh=C3LoBN5t64bHrUu7cG47Kku/wEVXrt6OuNyUMHATThI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=jQQQk8s/ycZfIU1impLbY4+koomODpq+frVnPk56b5tkm2EbR4lCbD2MYCHSkHZRy
-	 UmdTFkAy5b7Uu1cPDM8Q1i3M8tfdd9Unbb1Lqib9j+fSzogq4EaywaQGs1T5izP1Fx
-	 paYxu2JhhYQytvoY556jNcOz6ySVIFr7MXDo1LTqg71GzQkUpP7/Fr+rMzPUE7mOAM
-	 7U65FzjzP1T2w6mn1mxZqFtOCnxQBprdjGeYR1e4ef8hCEFYhsGKaQ9NFGJU+o34OG
-	 mxamgoYGtEe/x2lKHqHy5gM/HOH9cKzs8B26mJ/aqpAKTt+LeNsWOpjbtHc5ngGpuG
-	 LyB6vdBt4su4A==
-Subject: Re: [PATCH net v2 2/2] bridge: cfm: ignore CCM while CC is disabled
-From: netdev-bot+sashiko@kernel.org
-To: pocj8ur4in@gmail.com
-Cc: razor@blackwall.org, idosch@nvidia.com, bridge@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kuba@kernel.org
-Date: Sun, 01 Nov 2026 17:01:55 +0000
-Message-ID: <179355251548.3131.13821521898777428651@kernel.org>
-In-Reply-To: <20261028164730.253238-3-pocj8ur4in@gmail.com>
-References: <20261028164730.253238-3-pocj8ur4in@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=QuEK/AwJ
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2e869e00005so36115695ad.2
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 09:15:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793553356; x=1794158156; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ri6mm4g8aC/HkC6PYUflTSf+2uZxNNs5OIicG2gsEt4=;
+        b=QuEK/AwJKi2Ixp3yIC2uwMEYm1rKIp/m4C3I3y5ZCuigDFWMM24QOGNikavpmDq+cu
+         fNftJaeLqhSAaV2WDxpGWVzH9XDi2PTm00P4VxgSJMBI03FCfvAoF6wPLw/TPaZoaXUw
+         4RrJpNvVAQQ2z7TLcHOgHKQbvahMnWiE9olc+BFh+pUTaHNO7Pcvl0ffStldf42JsmlE
+         jUcJectpyHQZO2XmvmsiHSWpd1TvCN6ifJ80hUhTlYDAeDZXeEtFL7Mki1V/oHi7dQJG
+         VUsKj/y+DdmOTWWZzOKPxu2dyx3iMJKVMvbeFPZiKsvYXZvH7ArriBxBKiqvUrs7oiUi
+         y7ZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793553356; x=1794158156;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ri6mm4g8aC/HkC6PYUflTSf+2uZxNNs5OIicG2gsEt4=;
+        b=zh/30fVJYrq9Y1Np6lXIoEkeUevQNL+a+FLnKzDEnY5eUU/hLOaWzr3a+Z34z7ti/m
+         LlA+78dbYiWzqQOq/B2fBH2vNAs6WFYrq4tC+ssO+qp/ssuYxwU4uCNlhHVl4BhUsslQ
+         KXu2dLjYlQHaqZEC5mNMwAgQB/MJEISSnlLaiLuBwi6DZzhiQSW9uNE6Q/we3FAo+4S0
+         RnJZFbc7DRvedyk32JxSSTTjkS0+kjo8AK1wkmN69mxkA7fbkIWU7v6+/8t+s4ORtus4
+         KOrVJFIpUjiTEnValrkaIwtZ43mxGXIbHt95xq00D6JE39OAGxlB6d+kO3nQfwJnLl9D
+         VnkA==
+X-Gm-Message-State: APuU4Z+Mj/hmyHvlgwU0aZQw+0QlHYmYt0d53cuPw3QPG7Gy8sbUXOzA
+	zfDZ6V9gxxgVyEoP1EHid4JzRGDPXVuuHPHOtwjbUZMi9Wvtqj9rHmOy0u5X9D7KXnAz5qngdGO
+	GPwekoQ==
+X-Received: from pjbft1.prod.google.com ([2002:a17:90b:f81:b0:3ad:cde0:ea04])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4c08:b0:3ac:8741:e2e8
+ with SMTP id 98e67ed59e1d1-3ae8957cb02mr6841418a91.8.1793553355750; Sun, 01
+ Nov 2026 09:15:55 -0800 (PST)
+Date: Sun, 1 Nov 2026 17:15:55 +0000
+In-Reply-To: <20261101075145.698399-1-sgzhang@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -60,135 +76,78 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20261101075145.698399-1-sgzhang@google.com>
+Message-ID: <audwphXNeZhVItS0@google.com>
+Subject: Re: [PATCH net] net: count last skb of each sk_backlog pass in __release_sock()
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Ray Zhang <sgzhang@google.com>
+Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, 
+	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
+	David Decotigny <decot@google.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Sun, 01 Nov 2026 00:51:45 -0700, Ray Zhang wrote:
+> Running 500 concurrent TCPv6 streams (neper "tcp_stream -6 -T 1 -F 500")
+> on a 2-core Cortex-A53 (CONFIG_PREEMPT_NONE=y, HZ=1000, LATENCY_WARN)
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+I guess you tested it on 6.18, but note that CONFIG_PREEMPT_NONE
+is no longer selectable on arm64 since 7dadeaa6e851.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
 
-- [Medium] The CC-disable path in br_cfm_cc_config_set()
-  (net/bridge/br_cfm.c) does things in the wrong order and does not wait…
-- [Low] The patch adds a lockless reader,
-  READ_ONCE(mep->cc_config.enable) in br_cfm_frame_rx()…
+> triggers resched_latency_warn() in __release_sock():
+> 
+>   [ 3655.311821] sched: CPU 0 need_resched set for > 100006892 ns (100 ticks) without schedule
+>   [ 3655.311889] Call trace:
+>   ...
+>   [ 3655.311944]  resched_latency_warn+0x7c/0x88
+>   [ 3655.311958]  sched_tick+0x1c0/0x418
+>   ...
+>   [ 3655.312578]  net_rx_action+0x238/0x438
+>   ...
+>   [ 3655.312641]  do_softirq+0x4c/0x90
+>   [ 3655.312651]  __local_bh_enable_ip+0x84/0x90
+>   [ 3655.312663]  local_bh_enable+0x1c/0x28
+>   [ 3655.312674]  __dev_queue_xmit+0x4a8/0xb00
+>   ...
+>   [ 3655.312782]  tcp_v6_do_rcv+0x240/0x5f8
+>   [ 3655.312793]  __release_sock+0x9c/0x188
+>   [ 3655.312806]  release_sock+0x150/0x168
+>   [ 3655.312817]  tcp_sendmsg+0x4c/0x70
+> 
+> __release_sock() can loop past 100 ms without calling cond_resched():
+> 
+> - Each outer-loop pass drains sk_backlog, but "if (!skb) break;" runs
+>   before "++nb", so a pass of B skbs only adds B - 1 to nb (0 for 1 skb).
+> - With 500 TCPv6 streams and NAPI sharing two Cortex-A53 cores, runnable
+>   tasks keep TIF_NEED_RESCHED set on CPU 0.
+> - During spin_unlock_bh() and TX softirqs (__dev_queue_xmit() ->
+>   local_bh_enable()), tcp_add_backlog() coalesces arriving pure ACKs into
+>   a single tail skb.
+> - Repeated 1-skb passes never advance nb or call cond_resched(),
+>   triggering resched_latency_warn() after 100 ticks.
+> 
+> Restore the do-while loop and drop "if (!skb) break;" so every skb
+> increments nb across passes and calls cond_resched() every 16 skbs.
+> 
+> Reproduced the issue and verified the fix on two 2-core Cortex-A53 hosts
+> (CONFIG_PREEMPT_NONE=y, HZ=1000, LATENCY_WARN, latency_warn_once=0) with
+> a userspace reproducer over /dev/net/tun:
+> 
+> - CPU 0 runs a TCPv6 sender and a second runnable task while CPU 1 writes
+>   pure ACKs to /dev/net/tun (~30k TCPBacklogCoalesce/run), sustaining
+>   1-skb sk_backlog refills in __release_sock() for ~400 ms (ftrace).
+> - Before: CPU 0 stayed unscheduled in __release_sock(), hitting
+>   resched_latency_warn() 293 and 275 times on the two hosts (> 100.9 ms).
+> - After: cond_resched() yielded CPU 0 inside __release_sock(), with
+>   0 resched_latency_warn() hits on both hosts.
+> - Also observed no regression with the workload from
+>   commit 16c610162d1f ("net: call cond_resched() less often in
+>   __release_sock()"), "super_netperf 4 -H srv -T,10 -l 3000 &".
+> 
+> Fixes: 16c610162d1f ("net: call cond_resched() less often in __release_sock()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ray Zhang <sgzhang@google.com>
 
---
-
-bridge: cfm: ignore CCM while CC is disabled
-
-This patch keeps the per-peer CCM RX delayed work disabled from creation
-until CC is enabled. It switches cc_peer_disable() to
-disable_delayed_work_sync(), and br_cfm_frame_rx() now drops CCM PDUs
-while mep->cc_config.enable is false.
-
-> diff --git a/net/bridge/br_cfm.c b/net/bridge/br_cfm.c
-> index 28b40dbf40734..115cccf1d327d 100644
-> --- a/net/bridge/br_cfm.c
-> +++ b/net/bridge/br_cfm.c
-> @@ -150,12 +150,13 @@ static void cc_peer_enable(struct br_cfm_peer_mep *peer_mep)
->  	memset(&peer_mep->cc_status, 0, sizeof(peer_mep->cc_status));
->  	peer_mep->ccm_rx_count_miss = 0;
->  
-> +	enable_delayed_work(&peer_mep->ccm_rx_dwork);
->  	ccm_rx_timer_start(peer_mep);
->  }
->  
->  static void cc_peer_disable(struct br_cfm_peer_mep *peer_mep)
->  {
-> -	cancel_delayed_work_sync(&peer_mep->ccm_rx_dwork);
-> +	disable_delayed_work_sync(&peer_mep->ccm_rx_dwork);
->  }
-
-[Severity: Medium]
-Can a CCM still change peer status after the RX work has been disabled?
-
-br_cfm_cc_config_set() disables the RX work for every peer first and
-clears the enable flag only after that:
-
-net/bridge/br_cfm.c:br_cfm_cc_config_set() {
-    ...
-	if (!config->enable && mep->cc_config.enable)
-		/* CC is disabled */
-		hlist_for_each_entry(peer_mep, &mep->peer_mep_list, head)
-			cc_peer_disable(peer_mep);
-
-	enable = config->enable && !mep->cc_config.enable;
-
-	mep->cc_config = *config;
-    ...
-}
-
-disable_delayed_work_sync() can sleep while a running
-ccm_rx_work_expired() finishes. For that whole loop,
-mep->cc_config.enable is still true.
-
-br_cfm_frame_rx() runs in softirq under RCU without RTNL, and it checks
-the flag only once. A CCM handled on another CPU during the loop, or one
-that read enable just before the store, passes the new check and then
-does this:
-
-	if (peer_mep->cc_status.ccm_defect) {
-		peer_mep->cc_status.ccm_defect = false;
-		br_cfm_notify(RTM_NEWLINK, port);
-		ccm_rx_timer_start(peer_mep);
-	}
-
-It also updates seen, rdi, seq_unexp_seen and mep->ccm_rx_snumber.
-
-The RX work is already disabled at that point, so ccm_rx_timer_start()
-does nothing and the defect stays cleared while CC is off. Nothing like
-synchronize_net() follows the store, so such a receiver can also finish
-after the netlink request has returned.
-
-This seems to be the case the commit message says it prevents:
-
-    This prevents a later CCM from changing
-    peer status or restarting RX monitoring.
-
-Would it work to clear the flag first with
-WRITE_ONCE(mep->cc_config.enable, false), then call synchronize_net() so
-in-flight RX handlers drain, and only then disable the per-peer RX work?
-
-[ ... ]
-
-> @@ -414,6 +415,9 @@ int br_cfm_frame_rx(struct net_bridge_port *port, struct sk_buff *skb)
->  
->  	if (hdr->opcode == BR_CFM_OPCODE_CCM) {
->  		/* CCM PDU received. */
-> +		if (!READ_ONCE(mep->cc_config.enable))
-> +			return 1;
-> +
-
-[Severity: Low]
-Should the writer side of this flag be annotated too?
-
-This READ_ONCE() is a new lockless reader. The only writer is still the
-plain struct copy in br_cfm_cc_config_set():
-
-	mep->cc_config = *config;
-
-The writer runs under RTNL and the reader runs in softirq under RCU, so
-no common lock serializes them. The copy covers exp_interval, the 48 byte
-exp_maid and enable, and the compiler may emit it as a memcpy. KCSAN can
-then report a data race against this marked read.
-
-Would a separate WRITE_ONCE(mep->cc_config.enable, ...) work here, placed
-at the right point in the disable and enable sequences?
-
-The same RX path also reads exp_maid and exp_interval without annotation
-while they are being rewritten. Those reads were there before this patch.
-
->  		/* MA ID is after common header + sequence number + MEP ID */
->  		maid = skb_header_pointer(skb,
->  					  CFM_CCM_PDU_MAID_OFFSET,
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028164730.253238-1-pocj8ur4in%40gmail.com
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
