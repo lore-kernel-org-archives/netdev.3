@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793548798;
-	b=xT8ZqyN26cYLHt9Al6Mc7gMV59DePJQx75W+7l5tksQMO7u/sRpOnHwr4mnAEbRRWWeE
-	 M6GkqMPpA1l1sKJIYROSnmiK6lud5A15vpf6HuWa2Jks2HLAwiM95dr8Pq1jH6RfN4Idl
-	 YIlEVnI0ji2bkgq+w+GOLqBIoDLrjwc8xNoqqQXd4HUNXxvpwZe585O9vJWXTlAt6a5RV
-	 ZH2R77JnWojW9qLdiFfGpTOuzL0GXc6Lf7oYb6qsp1yYNN1Xz0colI9IMdjTvhPc2ge+5
-	 /UJvInqfxsaqqwJACfUV8R7cs2n4VR0yZbLIpBiVbSv6RC3xOVbIPcP+YUK6VSRc/eQ==
+	t=1793550175;
+	b=bBXFzm7I5GuEKzhEUxkcTqSNdkvAWqS/VQPXsKMbIbrc+2upxdOIUDTUPVockT0h3SrH
+	 C+Lo99ib4+5eCDrqcY1elZ8+tJcCpvOskn7JwnqZ3jfdvd5hXwslLpaMeD24U8Q3yPv7E
+	 lZj/XCs4B8arOEtPSURMVg4iO+sNF7ZRZgq6ealafnC5NVeR2Np3tQeEfBGnCeMBF6GIY
+	 dkSDLEtvuln9XX9kaUgIpxOPzIVrEA5k240hD6ONwlFJNVNdh06RuXvBwJXzyU2au5l3V
+	 O80f5cZ2nGTHXUbI6ouZt/wUrpOVjT9vJN4gbzwooZXMZ8ongapSHouyg4yh0iM6c8g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793548798;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793550175;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=I/3KNWEEu6IZN+CXs23fsbkAyCG4qcqp3COErszDAAU=;
-	b=STlHx7j+WK+wbaKMoAeRrfZn1B7YkZueiTNEyjA2R75DAN/t/NJ+NvZ2Yxb5xCMSFYJS
-	 dn6x8ChVlJZLlfVguDO7A3ZUaSjcMXqRfgJp4l7AJN6HVacWEwRFBs8KSg8cxbmwRkevt
-	 VJsRIwnwLIbOC5xuwTtA5shEFYtJihy99q3sGPRBk0GWSBsZWA+uRrLSL5Vsqm8g5wFgW
-	 BegeOlwG08KtxZB9cR0JjDkOZBbcY4pGEyPStSsYkDsbKMGEAnCWstwRxoeTx3vBjStfY
-	 iefSAeNx/E9pOPeoKQsox4yNScK8qpERUCBdEpz2SDlxzw5IIARN9xm6qclwBtUu7WQ==
+	bh=Q6Kkq6xSR/vy5fD2OpVN5KrXeg6aNXcKuj+lH2cRIUQ=;
+	b=rmy7N2lzYsnzhzEmtdR00YellcxT8lZo8C2KeIX4IESYC8++hPqpkM/zPV+tL9q8hzIL
+	 +0yUmvYRx4tGmAiSZwfsb5EA0C1NlU7b3/3lsDdEvT8sv6JBxIOuyItySS9yqLIoQAiC5
+	 AxtGQB9zuPOyaKWHLuEZY6+PRfYAp3GAfwYIczNp4GChuoZpNLshY9EfDy5LXgpUtE7dN
+	 xh+EazuYNeIytK45bkGtpxuy7XlN+ggj8Qctc0RJH0I2nyN0sP3An1WUYivYmQaz8aJBl
+	 cytd/sLaY2PO6p5oU4bhdSh703LE9H9cg9aj2PBADJ6JIi4cFynkCMZiEsThd+6zT2A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="I3/SxCb9";
-	arc=none smtp.remote-ip=209.85.215.199
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KLW8D878;
+	arc=none smtp.remote-ip=209.85.216.71
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825B2606A325
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 15:59:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 825B2606A325
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF69606A324
+	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 16:22:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7AF69606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=I3/SxCb9
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc1cdfb337eso1353595a12.0
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 07:59:58 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KLW8D878
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3ab926c236aso1807481a91.0
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 08:22:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793548798; x=1794153598; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793550175; x=1794154975; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=I/3KNWEEu6IZN+CXs23fsbkAyCG4qcqp3COErszDAAU=;
-        b=I3/SxCb9r8isKAZuyi8zggBKTG9izfADqSnDe8BsNCPcv6urpOKu715L0wIp5ZDSzg
-         iyOSc9qrMULYv8W9eZPP0mT8DgXreddeqZIF6ay99VMHR8MMBPYNQVs0apHttn6pQnVM
-         m8XvOrnYbVE9PT2rGQ+zcJ6hu09DCZzCbZCysKlJ2V8kaSzw0l2eUSZg7efO5vRBhMry
-         uYmIBNQVNioWG6TQX7giEpQn9A0cJ5LSpIxy3tKrwak1ckvOfrzgN2ZW8PAtKV2Yt0n1
-         NgHSWKDrZM7JifhfuzdMLYeSbL9EPv8F6nlNeMoCKPzfCF9VfZCQBnxDBm/CbsnAs0ve
-         v9zg==
+        bh=Q6Kkq6xSR/vy5fD2OpVN5KrXeg6aNXcKuj+lH2cRIUQ=;
+        b=KLW8D8782PwP8SbqpYB7XktTfuJTSTeA+IK/plAbJCCGMeT9YjViTQ5H60buVPg3ic
+         NwbiRrdxFIcEETuv13hRKTI1PwGi4ff7YW5WerC02J4dItguReszUCSJmCHczKZ8bhQi
+         6s42+g1998ZCxhzELEhqbqY50yeNpOfMkTkIm+OIRAhwNX/UeuIpnLaa211VzvIuijli
+         ZbMjeUGBccCjfQG2jW2pcDQ1a8rTPMg7mFhcm6GeCrpMz6RTnOjPTRBG0hmDHLpDueKL
+         O+v5nt6hCYxNjFiJ86GnJG+v6dNkq6b4DuFbKjzK1AaaI6LXHsDG2myFkCb1TehaASkN
+         lQ4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793548798; x=1794153598;
+        d=1e100.net; s=20260707; t=1793550175; x=1794154975;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=I/3KNWEEu6IZN+CXs23fsbkAyCG4qcqp3COErszDAAU=;
-        b=ReU9i/vTrafF0GSLJmjiHzij3pmP/IwXNYvNpkjm5uUv4EgBhQ5TOnk0qZ3H4PQC5C
-         zPeXopyZ2gn4E4Au18oDCqWtHS3YLcfoSo5nCOTAhQ2UzYd/8B55EQGitNYXXlkueSms
-         N3yjjMyMa9XephCdBJ+h+XfD4L2zHCaBRO83H1rhkQv69jrWI29Y8exgc0daDaB+tmh8
-         LCtOimvgaT5f9KwYY6AyM0nXW7DjbwS8nqUmfedNa/tecbuNuwn0Zq4mgV331RP4v9ny
-         dSgInZmrNGoRH4lU3Hu2bXJehaQEgLd5oeN+oGR0uxv8RYfnBuYZuzDgndBGk0j1ACGw
-         N6JQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwsIkpvUX2AJrRZQ/x0uU2v63ZY52TphwQ7AXiKKoQmBzqMQ8tbjPkf9kbuxhEc0CmXz8Cg/KM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKSCFXMXXLZAkilz1paOgMcCXUQWkq1qbiXd/BeNjFJQrkoEmYE
-	c+TijygTnoy6Y3eHGsQ5C+P/0QlCLcvJ5r7LOeK5gocX+oh86smIvtr8GSz86zkKdxgiFUa4xro
-	fDpFNqw==
-X-Received: from pgbd16-n1.prod.google.com ([2002:a05:6a02:64d0:10b0:cd8:b7a7:1171])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:a96:b0:3e2:b17e:40e6
- with SMTP id adf61e73a8af0-3e928ab246cmr6424437637.4.1793548797553; Sun, 01
- Nov 2026 07:59:57 -0800 (PST)
-Date: Sun, 1 Nov 2026 15:59:57 +0000
-In-Reply-To: <20261030032314.1978575-1-zhiyuzhang999@gmail.com>
+        bh=Q6Kkq6xSR/vy5fD2OpVN5KrXeg6aNXcKuj+lH2cRIUQ=;
+        b=VIeC3BQf53NkLHOLX5rnTipfQLLSweCW3lJQHOzSOVJHyFaTEz3g9a+dDNXT7bvEZ2
+         cmntKYP6rXy+GuTu9PkBILhtF6J0Jk3p2JGDkwrhvZCs6PBA8+3a3fcqOGthHZox6O5u
+         QhyUpLfgLtbQTsIFmbxT3VQpB2hXWnlvgNTzyCp7yvTEWCxwKs11buL7Gb5u0VWWe4Uf
+         GR5HbXVWVgjG/wiwdndot7rrhnR+gipMoReLVeOId028wIaMhJ8+9BICw+ywqlkCpBCX
+         JJ+3JjfncdUi51kxs5OAtUBzAAkPUN9eKOPaHNLK7XNbjG37S9JpTZ6OtNudvzrTLFFA
+         tRvg==
+X-Forwarded-Encrypted: i=1; AKwUvBxyeclWLehrJkRh/30/cXAJ7GBZtpl02THKUOMyAiDPC0D9YxMVBLlKTVNyIKrT8b7Iks5DTPo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+jOYt1ppsnGGPBjSsn6QP7OXBt/5mZRAUcnQcdlrl+xMtJCYIB
+	xgcaSBjkOz/x5BaReotfDGkq2GsfIJKIrnCyYK3z6B/rfh2i/Q6jydG/BEbtejMKd5Z3mNWbvIY
+	xIP1b7g==
+X-Received: from pjbmg2.prod.google.com ([2002:a17:90b:3702:b0:3ab:133b:49b6])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4a46:b0:3aa:f2c4:12e9
+ with SMTP id 98e67ed59e1d1-3ae8953617fmr7052241a91.3.1793550174575; Sun, 01
+ Nov 2026 08:22:54 -0800 (PST)
+Date: Sun, 1 Nov 2026 16:22:53 +0000
+In-Reply-To: <6426d558e45fc6ab724c40af62e4a8793215dd8a.1793219189.git.gnault@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,65 +78,78 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261030032314.1978575-1-zhiyuzhang999@gmail.com>
-Message-ID: <audeGRiIR1JE1Yk_@google.com>
-Subject: Re: [PATCH net] tcp: restore IPv6 af_ops on disconnect of a v4-mapped socket
+References: <6426d558e45fc6ab724c40af62e4a8793215dd8a.1793219189.git.gnault@redhat.com>
+Message-ID: <audm81hsgydhfWn3@google.com>
+Subject: Re: [PATCH net v2] tcp: Fix dup-ack detection on non-SACK
+ bidirectional data transfer.
 From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Zhiyu Zhang <zhiyuzhang999@gmail.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Matthieu Baerts <matttbe@kernel.org>, 
-	Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, netdev@vger.kernel.org, 
-	mptcp@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Tong Liu <lyutoon@gmail.com>, Qi Tang <tpluszz77@gmail.com>
+To: Guillaume Nault <gnault@redhat.com>
+Cc: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@kernel.org>, netdev@vger.kernel.org, 
+	Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Tom Williams <Tom.D.Williams@morganstanley.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Thu, 29 Oct 2026 23:23:14 -0400, Zhiyu Zhang wrote:
-> From: Eric Dumazet <edumazet@kernel.org>
+On Wed, 28 Oct 2026 21:32:35 +0100, Guillaume Nault wrote:
+> When receiving a pure ack from a peer that also sends data, we can
+> have SEG.SEQ > SND.WL1, even though the segment contains no data. This
+> makes tcp_may_update_window() return true (because of the
+> "after(ack_seq, tp->snd_wl1)" condition), and tcp_ack_update_window()
+> then adds FLAG_WIN_UPDATE to the segment set of flags, even when
+> there's no window update.
 > 
-> A successful connect() of an IPv6 socket to a v4-mapped address switches
-> icsk_af_ops, sk_backlog_rcv and af_specific to their IPv4-mapped variants.
-> These are only restored if the connect() fails.
+> Since FLAG_WIN_UPDATE prevents the segment from being considered as
+> dup-ack (as it's part of FLAG_NOT_DUP), this can inhibit fast
+> retransmit on non-SACK connections, making recovery very slow as it
+> now entirely relies on RTO.
 > 
-> After connect(AF_UNSPEC), the socket can be reused for listen() or for a
-> native IPv6 connect while still using the mapped handlers. IPv6 packets
-> processed from the socket backlog are then handled by tcp_v4_do_rcv().
-> tcp_v4_send_reset() and tcp_v4_send_ack() interpret
-> TCP_SKB_CB(skb)->header.h6 as IPv4 options, and __ip_options_echo() can
-> overflow its 40-byte destination buffer.
+> The "DUPLICATE ACKNOWLEDGMENT" definition of RFC 5681, section 2,
+> says that lack of window update is a necessary condition for a dup ack:
+> "(e) the advertised window in the incoming acknowledgment equals the
+> advertised window in the last incoming acknowledgment.". Spurious
+> window updates can thus prevent dup ack detection and, in the end, fast
+> retransmit.
 > 
-> Commit 8cc3aef0cb19 ("tcp: Do not allow buggy transitions between ehash
-> and lhash2.") prevents listen() after connect(AF_UNSPEC), but a native IPv6
-> connect is still allowed.
+> Avoid this scenario by setting FLAG_WIN_UPDATE only when a window
+> update actually occurs. Pure acks with SEG.SEQ > SND.WL1 can now
+> be detected as dup-ack and trigger fast retransmission.
 > 
-> Add tcp_v6_disconnect() to restore the IPv6 handlers when a v4-mapped
-> socket is disconnected, and use the same helper in the connect error path.
+> Also, stop setting FLAG_WIN_UPDATE in tcp_ack()'s header prediction
+> path. One of the conditions for header prediction to happen is that
+> received segments don't trigger a window update. This flag update was
+> thus wrong to begin with. Now that tcp_ack_update_window() sets
+> FLAG_WIN_UPDATE only if a window update actually occurred, we need the
+> header prediction path to stop reporting spurious window updates too.
+> Otherwise BPF programs would get inconsistent window update information
+> (CA_ACK_WIN_UPDATE) between fast an slow paths.
 > 
-> MPTCP subflows override sk_prot, and two teardown paths call
-> tcp_disconnect() directly. Route those calls through the protocol-specific
-> disconnect operation so IPv6 MPTCP subflows receive the same restoration.
+> Finally, add FLAG_SND_UNA_ADVANCED to the definition of FLAG_NOT_DUP.
+> This is necessary for the case where an incoming segment acknowledges
+> less than a full segment of the retransmit queue. Such segments were
+> not considered dubious by tcp_ack_is_dubious() because of the spurious
+> FLAG_WIN_UPDATE flag, which prevented the segment from being seen as a
+> duplicate ack. Now that FLAG_WIN_UPDATE doesn't cover this scenario
+> anymore, we need another way to mark these acks as non-duplicate.
+> Adding FLAG_SND_UNA_ADVANCED to FLAG_NOT_DUP is the natural way of
+> doing this, since, by definition, a segment advancing SND.UNA, even by
+> a small amount, cannot be a duplicate ack.
 > 
-> Tested with TCP and MPTCP by reconnecting an AF_INET6 socket from a
-> v4-mapped peer to a native IPv6 peer after connect(AF_UNSPEC).
+> A side effect of this patch is that repeated zero window acks received
+> from peer can now be considered duplicate acks (because of the the
+> "|| !win" condition in tcp_may_update_window()). Therefore, they can
+> now trigger fast retransmission and fast recovery, including congestion
+> window reduction, when the peer is stalled. This is RFC compliant and
+> shouldn't have any negative effect.
 > 
+> Add packetdrill selftest. Before this patch, the 1001:2001 segment was
+> retransmitted upon RTO, now it's sent right after reception of the
+> third duplicate ack.
+> 
+> Thanks to Tom Williams for the investigation help and initial
+> reproducer.
+> 
+> Reported-by: Tom Williams <Tom.D.Williams@MorganStanley.com>
 > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Reported-by: Tong Liu <lyutoon@gmail.com>
-> Reported-by: Qi Tang <tpluszz77@gmail.com>
-> Reported-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
-
-This is not needed when you add Co-developed-by.
-
-> Closes: https://lore.kernel.org/netdev/CALf2hKvp0NPVLwr=a3+jUHtPohxbra8gox+aYAfWathJnn-J+Q@mail.gmail.com/
-> Link: https://lore.kernel.org/netdev/CAL4WiiqFJpmcV4=TWRpukCq6q=-729658FwGvieNcPXe97kLvQ@mail.gmail.com/
-> Link: https://lore.kernel.org/lkml/20261029054136.1174216-1-zhiyuzhang999@gmail.com/
-
-This link is not directly related, remove it.
-
-
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-> Co-developed-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
-> Signed-off-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
-
-Otherwise looks good.
+> Signed-off-by: Guillaume Nault <gnault@redhat.com>
 
 Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
