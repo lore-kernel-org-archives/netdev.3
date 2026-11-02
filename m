@@ -1,85 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793604111;
-	b=NnxdWWU0rK08cJbEm4RmjV0ShRq18XuF8va0j0h1UlUXmrHwMAxRdFkpVAda+YryJBmx
-	 Ug9PV8ZrWEdU1D0jRBT6cCIr/tBo4o/DrZ7X7mZvObtTCVTtfwjCU1WdcdIGUAtZmPUlK
-	 whDV0QTREuAwHerH6Sg9oiQIW0p9H5pQjvpEPRFcIKwPY8m4+bv44MRmRYjQ+xu+qPqSs
-	 wW/dj5bWz7sE55xcSUXiqe/A/fIDaXNdkqVnDeJrM5/KPpEwy3mqR7iBMjJ5e7IJfT7+y
-	 zii2MaX2uUnHWihUc3bf0uUo1E3Qiycw0q1dg8m2MCp5Wn46oXFVl77RhO5iQz7Zy0g==
+	t=1793604117;
+	b=CJBG6Qm+GN7wRUeRoh/kC5RPKZPXSXo/5GJxZcsSF3Xru2kZf3HKQHWDIqRSlxsL0oor
+	 zrH2gCBr1TmuRJYT+6or6tK5RBxOzlQyt2TxaJYcLZVh37ACF17U1negUZJ4chUSkMaSN
+	 0bpyWaLcFGFVQHNeNJVQxurJSLLQNlIisRw8aF3pGK1gZ9Rxg9mQs+f/gmw5vDM5VSVkE
+	 iu24G5fFPTyi/wT2eeftBs560pDSm591xFcEcdnTreGl64tP2LMeyGH6bf0svcs7HpIiY
+	 3lnQROaL2tFNDnIrSFp20y1rn5Gf8qaz/ZMQw9E77GfEH5m2ELcpRnhJrOr5u55/I6A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793604111;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793604117;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=0ivwDO8RmSZboOluSZSZngxFUW4tZlFEXHx0gIyw2xc=;
-	b=pNrZPL06rY01CVz2hWExAIj1ApOEmzLx0S4mrV3cYDhbkNB+nPyDlueSh2uV8P51WJu1
-	 ccGMWAJqyrZy4OmMsOq6WE0YpATICjGotFCFXR1Nbj1s3imnqWdpRUV7R03rDOOph2lJl
-	 sKZdA+idI5iwkPnENX9vs3Yva8W8/wHhEIfdHwXYZM5zz2tvpt4aCSdBqPbiBEoPP/gKY
-	 2N07gIA1Ds4vR0m0gzEodyKzO/8v+cBAeNsjeGnyHLYPVbjpG4dpFsG4hOhjPwYda5mZY
-	 zztm4HtRexoqPxCXXY0um44aE7cLfQrftOb84nJZI5O2WhVtVsbJJm+IdqO7tiiHfAw==
+	bh=DJmLVVVW+5deakG/rXx9rSWGIQrWi9+mRR7c5J3o35Y=;
+	b=d/GOHaETw8k89gcCmT7SmD05fe18twLcCKzhs4DeWogC7ONx7LbaTJnb5QhjM3PdggDZ
+	 22HsvJEI1KdY8FrYx3Okj53jjMKO8hunvLKz5+XQpOuoneTKD1xS26Z222ofJSj+G3iCr
+	 Rw06PYUCSMj0il+XcFuqlIvJd7lTk5Qxk04XRuzuXBmGxNfvgUCaIwRx159BVlUtFMixe
+	 kS8yFZEM05Ztc9paP9Uxvw5PVQyUSZm6JpfPJdY+fPHh9kNiioadoJQJQof1lqUrUU9sU
+	 7IW6b2WyEgf1pq/CJYIeKgSOB6xa53uhSTrXujNJaV0kZ41oLKtMkSkhOzHRrts18FQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GFg87Apd;
-	arc=none smtp.remote-ip=209.85.214.177
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IdpUE4co;
+	arc=none smtp.remote-ip=209.85.216.48
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF21A606A32C
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 07:21:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CF21A606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA51606A32F
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 07:21:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6AA51606A32F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GFg87Apd
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2e985106c0cso25217795ad.2
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 23:21:50 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IdpUE4co
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3ac7842c17dso1524370a91.3
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 23:21:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793604110; x=1794208910; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793604117; x=1794208917; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=0ivwDO8RmSZboOluSZSZngxFUW4tZlFEXHx0gIyw2xc=;
-        b=GFg87ApdBn73TJ86NfBoPT9YgutNodcefQFgQRBOIe3MMSo/u+i6WYibbpy+LyKgI3
-         Jl6Vd8cphaUlw22wVDB8SC3RyFT07Xoaz2rb0/9R6BcnfWQERLIV6pWSOjdpwj4/B9mc
-         UA+2iAUXxx0nF5RaI2Op/ijrGF6E9qgHYCa9Fn8wgWhC6ZBa0vfhfMcKCVrAuX4ba/Wl
-         ehrOpfAjgpkO7frM4hKubRuSDKJ4kLPQDfyECUleSoGzZhLiHKBBldXPtAthe2hKblbJ
-         b6LsjopF98PuJBaof0/BDf3WuuWRUXBmJhEQEuvyjyGd+gYp3joD3f28IY4PgUS76/VV
-         I82A==
+        bh=DJmLVVVW+5deakG/rXx9rSWGIQrWi9+mRR7c5J3o35Y=;
+        b=IdpUE4co+PiPL+yBruoswBCDY/L7XhxHdcQl33YTywzuQmWl8ALc5aW/xDhTw4XP8v
+         MYzTogUNvP7snu5urYgumlPcJGb27Fy0/lF5xalEmXhMDggU53fxv02ustaGqq45m7/y
+         aGDPAYi+jQTS5gwRwy6HjICy0fgfwW1rxnTtVCsomE3sbpSKZDr9vYFU+g5rE/nZaoKq
+         Gz1gqks4iRsR9YkNY4APSLZzKsAxCxk55JaORcmN2oVuGbPVI42fb1oykSqexreBro+4
+         ce+vhUMVDixgaA8xhTI2sJ5tZ7RHk1WJw8ayNh5kL9lnyIIWLcr3y3DS90vT3LmGLia9
+         YWhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793604110; x=1794208910;
+        d=1e100.net; s=20260707; t=1793604117; x=1794208917;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0ivwDO8RmSZboOluSZSZngxFUW4tZlFEXHx0gIyw2xc=;
-        b=NgzpLgGuLLUcp9GQvmyTkOxtdJXlm3wODYtZ8j3q9ZRMesaR54KFQITfOPyMMcp4VR
-         tamWe9U+4beBcT3N49U/jVDcWUM47CWA4c4Ml3e48rUR2Tg+CB1HKfloEvFbYC2HCiiB
-         s3+ZWvN/E75JRaS1D7Ja3X5gRKQveRlPNG66mOIRtCpK/iKwaxKOtzGKJQnJ7w0x844m
-         l0E1hiecB+x8/j7zadVEtk9oFNh5xnPGBn9GwHMI0xb8Sbokoy5IUS+wLc8KAj8BSyUM
-         wTC5OkVvYC3fpFG5AF+CKB6T9w0fE8biJ+yaATmW2gxW/DVvtA1uS8Gln4MRy5d2WJpR
-         GBKA==
-X-Forwarded-Encrypted: i=1; AKwUvBzKSZZCeZZ1bPgad2MI86HWgJLRR+ti1SB27kGbEAiBVgec+fZ9NdHNFLSYU4dWCsMSp9NxCkE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9HjWIv56Qv1/RXpb81bs5U5WV+1V9jpeVG/pQGywLrZuwR7k61
-	WsHVUjFvWFKeNlef19GT1iLHKppFE/qIbRHKgeVwsljyeG9VRV/xt0Bu
-X-Gm-Gg: AYBFou217PMdPMohtKSwL/uVIdfT/exqPZ0NiXfSHtH5/w+VAcSheF/ArxKVVPc/1k/
-	bjlnFRGy6lRxAvyiXAEBPOlCdwLvYoAU9SYczA1WG4laTceQuJCFLzkROgyXvb+bbAhBrgyrN6f
-	GqNPN+ZqzGjZGzFUXaivM1nDNwwmH8uZQRLzhqb+Lrl+XUcwRMWZx/ndDv5ZeK+U0HeLUfsqkuy
-	YPw6/b5p8/knK7n1irVXUw3kIHIWWg7JS23GpGFanG1lHpWY0yXnyIMVT3x77aWbHTHDt0mo8n7
-	yQ4WUfXgRJAxn+EvZJD64mg3/c8IAS790bXq9rOub1kmKNuE26scTRl05Oa1bs4wC+ECdT8dlhn
-	MJEZ2WWrP2Qu848t7OR5QgXrmWGtjtb72p6CxF3+mI34iv2zaMWBzhiH9Y8x0IfwFU7+gCY7GNT
-	P2pG5+qsmUiaPJz89g/mgL7a6Tz6fnWHKXosttPyFk72+meOQpO49smfhVWpXh4645qnNXcw5l3
-	y0ALSh5UE2fZx384uUDB3ucGHNlTfm6BillmdK9QoAtAFNr27VBlXZ3vndFR8m6M8CXcxYH+xF0
-	waAENiaZ1yk/gJ/dVmBLFX302MydVSDpqvlW/hjsNOrLtxqzRlayA7qA8WQl0oGeBK/zMPFPOWf
-	eTl1+/YlOL2BS/AP1+AbSmp95JWa3+lbknq+oXFTL4Qbj3VbQbEp/J8+kF3JRxwC8L47qSA1mHw
-	==
-X-Received: by 2002:a17:902:fda7:b0:2e9:c569:7050 with SMTP id d9443c01a7336-2eb365116demr91088175ad.47.1793604109917;
-        Sun, 01 Nov 2026 23:21:49 -0800 (PST)
-Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.248])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb392ae546sm23619805ad.70.2026.11.01.23.21.48
+        bh=DJmLVVVW+5deakG/rXx9rSWGIQrWi9+mRR7c5J3o35Y=;
+        b=N1BmMSTanYK2PgeEHzpFZKICSHWkEhD4NkeH0PFDRWaBf4SQobo3F9gDc4DjhtPthE
+         dolUva0Z2GCJFoCauuo/7kXuPpWVsxLgIrzZyaaxmGfKtTdgH2vZTDN96odCAUy0PgeP
+         foKJGOnZlKNrP6nV64Hldg9+ZvUJCh+p55V5qoC80BmzEvlYf+OtvSzhejWlDgiVasfQ
+         Xx0hcfaVSI1fvUiro0fI8GOnijKoF/qpMo3MBD1b98fNuv9lynaT10+RFBFkszC7kOWN
+         ciGS8sjxA6eohFuSwefWhA/7PDgzkfhRKVZymtL0BliW5eLPKlcKT5+VKXi4kdkwFESl
+         0s6Q==
+X-Forwarded-Encrypted: i=1; AKwUvByFr2SrkRVhUz3Q/cDcbt6JUYHCKrx7RKG69td3NysCs6FV8O9DqleuHbn/UtYdhRcs9wlVL9A=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9Jz5kuDlu4KZ6OjjtyUl4ehaYQe3n5uwWpQpPp5KUvJLIy8qW4
+	PbjoStpReOyevoGtepyJHTxONg01adUNh1CQI+GCKL8clwpB4jrZVItJ
+X-Gm-Gg: AYBFou1KraTZBq2x9J/b9j3RjnzVJHXqhLefT1fpLKbeXyrTH8ruSEHP/aKjfVXbi9b
+	BzYb5tpIPcZ9Vm5YjJaP2KJD7GQCKM0YLWCeYkNPwrcE2Q8/C0RDtiTBgXhn/EaeOrBPMOcpe1g
+	xRI9zNzC2JXLCbINl+ju5rMS3f2tbuTMZ3tcWK0mSJEc0Bw3b5mELJydBjTXhJ7B/jCJFfMaukl
+	xiS82oxWP90lHIIzFgDBhSocKLmMrXShP+9xCpPdY1ZvLzjC1PMjdUfTeyDrKUIsqMsCaqRNoTc
+	KQ4BCGo/gxTvz5Miv07tZbv3iQo+QowGuS7pr6/GQeD5C30AK003wlxY0aMOhWmVgPEipvWthp0
+	dFMUz4u7Crw8kTJC14KA7c1+mb3BFE2GO+rbbJbEpDfmR7AortrQ1EJOw91KFicWcns2nAWPZGZ
+	7WH1KwD7tAFQkYDrxaWqs1tJc942sr77aZMKAQBRKrCHS4lCwDaZQL+HsmfA57zong4urOC2TaX
+	DyavV33FkIpv+yibT1VLlGsBRxWQymhOvgZ/3A1ztkSvdy9a91ar9gjXDCdEKtbSAgsW6/QgWdv
+	yvoFk8MQMhy1WYQOjETIDEBOyCmxsY4gVK/3KweiKcVrT+J5GTWzo9c/8/kT9Jddq+qakZOXXe0
+	C6dLSZT0CqbhV2JS8FuLRuXJRs0zvQOpOGKIceft4ZKoR9VhCEr5QwoGwZeqV928iwvr0eA3bn1
+	Q=
+X-Received: by 2002:a17:90b:184f:b0:3ac:83c1:2c0 with SMTP id 98e67ed59e1d1-3ae897e06efmr7231700a91.64.1793604116645;
+        Sun, 01 Nov 2026 23:21:56 -0800 (PST)
+Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.254])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae8826a769sm6098801a91.4.2026.11.01.23.21.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 23:21:48 -0800 (PST)
+        Sun, 01 Nov 2026 23:21:55 -0800 (PST)
 From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
 To: bpf@vger.kernel.org,
 	netdev@vger.kernel.org
@@ -101,9 +101,9 @@ Cc: daniel@iogearbox.net,
 	mptcp@lists.linux.dev,
 	mason@kernel.org,
 	josef@toxicpanda.com
-Subject: [PATCH bpf v2 05/15] bpf, sockmap: Clear the resume state of a stopped psock
-Date: Mon,  2 Nov 2026 07:21:02 +0000
-Message-ID: <20261102072112.4160195-6-alexei.starovoitov@gmail.com>
+Subject: [PATCH bpf v2 06/15] bpf, sockmap: Give no progs to a TCP listener
+Date: Mon,  2 Nov 2026 07:21:03 +0000
+Message-ID: <20261102072112.4160195-7-alexei.starovoitov@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261102072112.4160195-1-alexei.starovoitov@gmail.com>
 References: <20261102072112.4160195-1-alexei.starovoitov@gmail.com>
@@ -118,44 +118,106 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Chris Mason <mason@kernel.org>
 
-sk_psock_backlog() passes the skbs of psock->ingress_skb to the socket of
-the psock. When the socket has no room, the function saves the length and
-offset of the remaining data in psock->work_state. A later run continues at
-this offset and clears the state when the skb is complete.
+A psock with a verdict prog replaces sk_data_ready and sk_write_space of
+its socket. It saves the old callbacks, and the new callbacks call them.
+sock_map_link() does this to a TCP listener too. Its new sk_data_ready
+cannot read and does not call the old one. Thus it does not wake accept().
 
-sk_psock_skb_state() saves and clears the state, but only while
-SK_PSOCK_TX_ENABLED is set. sk_psock_backlog() does not test this flag for
-each skb. If the socket closes during the loop, sk_psock_stop() clears the
-flag. The loop continues, but the state of the completed skb stays. The
-loop uses this state for all subsequent skbs and sends only part of their
-data. A closing socket may lose the end of a stream, but not the middle.
+sk_clone() copies the new callbacks to each child, but not the psock.
+tcp_bpf_clone() restores only sk_prot. Without a psock the child loses data
+or does not wake its reader. If it gets a psock, the psock saves the copies
+as the old callbacks. Then sk_psock_verdict_data_ready() calls itself until
+the stack overflows. sk_psock_write_space() calls itself too, without end.
 
-The state belongs to the skb at the head of ingress_skb. Always clear the
-state when this skb is complete. A stopped psock still saves no new state.
+Give no progs to a TCP listener, as before the first commit below. A
+listener receives and sends no data. It stays in the map and keeps its own
+callbacks. Add this exception to map_sockmap.rst. A listener no longer gets
+-EBUSY from a second map with progs of the same kind.
 
-Fixes: 3b4f14b79428 ("bpf, sockmap: fix duplicated data transmission")
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Since the second commit below, a socket keeps its psock when TCP unhashes
+it. sock_map_link() does not see the state that the socket gets later. Do
+not depend on TCP to keep such a socket out of TCP_LISTEN. Set both
+callbacks in tcp_bpf_clone() to the TCP defaults.
+
+Fixes: 0c48eefae712 ("sock_map: Lift socket state restriction for datagram sockets")
+Fixes: b8b8315e39ff ("bpf, sockmap: Remove unhash handler for BPF sockmap usage")
+Signed-off-by: Chris Mason <mason@kernel.org>
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 ---
- net/core/skmsg.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Documentation/bpf/map_sockmap.rst |  4 +++-
+ net/core/sock_map.c               |  9 +++++++++
+ net/ipv4/tcp_bpf.c                | 15 +++++++++++++--
+ 3 files changed, 25 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index f03519468ad1..a5d498982848 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -664,7 +664,8 @@ static void sk_psock_skb_state(struct sk_psock *psock,
- 			       int len, int off)
- {
- 	spin_lock_bh(&psock->ingress_lock);
--	if (sk_psock_test_state(psock, SK_PSOCK_TX_ENABLED)) {
-+	/* No new state once the psock is stopped, but never keep an old one */
-+	if (!len || sk_psock_test_state(psock, SK_PSOCK_TX_ENABLED)) {
- 		state->len = len;
- 		state->off = off;
+diff --git a/Documentation/bpf/map_sockmap.rst b/Documentation/bpf/map_sockmap.rst
+index 2d630686a00b..eb466b86df17 100644
+--- a/Documentation/bpf/map_sockmap.rst
++++ b/Documentation/bpf/map_sockmap.rst
+@@ -33,7 +33,9 @@ of ``__SK_DROP``, ``__SK_PASS``, or ``__SK_REDIRECT``.
+ 
+ When a socket is inserted into one of these maps, its socket callbacks are
+ replaced and a ``struct sk_psock`` is attached to it. Additionally, this
+-``sk_psock`` inherits the programs that are attached to the map.
++``sk_psock`` inherits the programs that are attached to the map. A TCP listener
++is an exception. It gets a ``struct sk_psock``, but it keeps its callbacks and
++inherits no programs.
+ 
+ A sock object may be in multiple maps, but can only inherit a single
+ parse or verdict program. If adding a sock object to a map would result
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index efe49551caba..282c6a4b2b05 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -228,6 +228,14 @@ static int sock_map_link(struct bpf_map *map, struct sock *sk)
+ 	struct sk_psock *psock;
+ 	int ret;
+ 
++	/*
++	 * A listener receives no data. With the callbacks of a verdict program
++	 * or a parser it would no longer wake accept(), and its children would
++	 * copy them.
++	 */
++	if (sk_is_tcp(sk) && sk->sk_state == TCP_LISTEN)
++		goto no_progs;
++
+ 	stream_verdict = READ_ONCE(progs->stream_verdict);
+ 	if (stream_verdict) {
+ 		stream_verdict = bpf_prog_inc_not_zero(stream_verdict);
+@@ -262,6 +270,7 @@ static int sock_map_link(struct bpf_map *map, struct sock *sk)
+ 		}
  	}
+ 
++no_progs:
+ 	psock = sock_map_psock_get_checked(sk);
+ 	if (IS_ERR(psock)) {
+ 		ret = PTR_ERR(psock);
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index 36d1bf46353a..fd443350f9b8 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -785,7 +785,18 @@ void tcp_bpf_clone(const struct sock *sk, struct sock *newsk)
+ {
+ 	struct proto *prot = newsk->sk_prot;
+ 
+-	if (is_insidevar(prot, tcp_bpf_prots))
+-		newsk->sk_prot = sk->sk_prot_creator;
++	if (!is_insidevar(prot, tcp_bpf_prots))
++		return;
++
++	newsk->sk_prot = sk->sk_prot_creator;
++	/*
++	 * sock_map_link() gives a listener no programs, but a socket which got
++	 * them in another state and listens now has the psock's sk_data_ready
++	 * and sk_write_space, and sock_copy() has copied them.
++	 * sk_psock_init() refuses a socket that has sk_user_data or a ULP, so
++	 * what the psock replaced were the defaults of a TCP socket.
++	 */
++	newsk->sk_data_ready = sock_def_readable;
++	newsk->sk_write_space = sk_stream_write_space;
+ }
+ #endif /* CONFIG_BPF_SYSCALL */
 -- 
 2.55.0
 
