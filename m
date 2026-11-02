@@ -1,55 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793604526;
-	b=sC59ovlRq493CJ8URW0Tlkf2inge/pwr69QJUnzf7hDUxSqFWqRm6yVthTZ/APixBy6P
-	 ecSuBAIHiZ3K/QSZ1pq+6/jmvIcrepm7UG8zs1GQAHwxADzIalnUKBXg4t5nvIvtNwEYN
-	 adIlAseoj+tVCP06n7FFdFJK8/GXCpQ6+3p+1q51sojKS3JHr8FXOzpOVmWYDg0+7+R5l
-	 K2PM/cvt51DkEaqiAw8FlZ/yFSXiMoGN3NsrldzNZRQD4ufMijc3HCcRb1i3odTNjU1Ng
-	 1xH/6wVBOhV6mO27Y/xbeISC4/1pvHgSGd8jd8S/txVT6fF9L1GC0/Po0fJMlCnExPA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793604526;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=If3fE+lQ75xX1Vq7CvfUefIfI5ALcUIEaypG/wi/3sA=;
-	b=ik3gSSsGZcu8LKXQKziqZCPFeDuM1QhKcNC9A9eSLQ/3ZKZ0MpLmLpTIB3EJUw6Ii7cX
-	 rCPlmAaLxvId8E6Hp8bpy0M2n/j7AeidMD/R0mKmd8R4SVWULR0I1s6p8cN5AUxUd93W4
-	 IP8fdiRM1LLk6C00uEfnv9fLdK9FIq0ZRy9D4LblVHpf+jVXT611y4IU84/DkQJVjvVwj
-	 KxQh3fRcoeTsKm3qae9SVkiuHLdnpAag+gjC6kRQ7GBAonzXN3l0AGEJ5qh2Oe2Di9BKi
-	 e6ElYnFI4M1aJ3c/OVrVB1UfONXpwJikeLhcRrYneLrSC5/AkHsRbpnKjkCX7AbJqhw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ANPfABDF;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.34
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793604843;
+	b=XXI9A17Z3/vPwCw1ILt5x2sSqOAYYd3KMYFZQFvjpG3Eb7SsJJ5IC5Ha/2rNxSHlaVmj
+	 ntbXX88TElmr0A2JnysCM4bebaSfiZ0l8DOadds+fsBZTfUk5XtRqhE5VbyJd6/B8pDv2
+	 Wf7eP3qC9/eQGsINUGxZxvvm2VXaf2m6St+kPzjzRfH4U9adMtv7sXiXfPoAFY0nxsIRu
+	 OThtAL2jDqiAdAhZ9AHPVwwBRwdyyKDGSWET9/7bTunxqwVBvHd2SAl77x6vXZKOrq6hB
+	 O5vL2L9kLws2/2Xe3YBs84xXXDbmgsCQnUQXW7Kydel7wX00XoNmps4I98N0Dk3FFsw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793604843;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=6fSnqTvYzbwizhskQVeYnh3ptDK0pQWgg0bHBbxuwpM=;
+	b=S0qMowpWfeEa9386DRd7CUiDsICYUS0XiwY5ASX/Egn9f3ZHmJ4gru/YS/ebgri1oNUG
+	 rsdCkHklQzptCK7OyvcW2Wg4yVg351njsd+uThB8cLY0uZ47CZel0Ngqj2y8uiDBMGfgm
+	 D+MW0oJXoBX29DHJ41s7xLmhFwCG9GftcOqkBqjqfFGvPQMmGXM2p9BSrqZWVtGQzqUj1
+	 M/j7Mwbw1Zod4Fdwt59lFt0TaJavd+vuKEHSZmaYTKjem+4kqhmOHqKyrEPTXecKo8Xn/
+	 dvz5bCkEfh/jheWrQ6ZSTay9ct4oOLG3IJkpSoCgFLhxPHEk9a6+Ht96ELm5AsuqyMA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=kgwakDC+;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.34
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010034.outbound.protection.outlook.com [52.101.201.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E170606A32C
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 07:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC00606A326;
+	Mon,  2 Nov 2026 07:34:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7BC00606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ANPfABDF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 295C71F00A21
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 07:28:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793604525;
-	bh=If3fE+lQ75xX1Vq7CvfUefIfI5ALcUIEaypG/wi/3sA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=ANPfABDFS9h7v/zbtspJG+jpYTY9mf6Dam/W28kcKLm2ElLtClCumMoi7Wt2af5+/
-	 dFHPLET3iKdbIwJzB7VPdp7ycb0T0Ajh7Gmm8+KUhbLlfjEzgNqi5eWUYtFCrAPdML
-	 RQja44X2DHa0nNp70DsTNsvGWogE5vZKhZ2yOFWg9BI+JWay6Vi9wWh/8qado2DYaZ
-	 AouH8S9bo95qcgiW56f8ZpuYHJTmpP3Xwj09585H2XkOi39XFH1/QxaBbJzGE540uR
-	 hwsJx289rCqh7nRomwoAXFNMIRZglGFTSBQHqU/+oFjnvDV7mnRIJUKKzFlkR9Whpk
-	 JNMeU/PVt2dLQ==
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-705cb6ceebaso1752392eaf.3
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 23:28:45 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBzplQd2JNgAP9gc/DeQw/yZ0bt5wazrXbVAaH3GUVAQ+CJfwxZE0Jw8AThua7RYmalokh9Au/0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYICKem/Op3nGUE5P7GBzSiVjauSCuegzIEkeMdpXk2OIAuQYuKT
-	+WI+xOj/E2CAeG/Y8e7HBuOASCOrvduE0n4GWNoUyh3AZV5nrp03z7ii6F5naSNxVpBRyARvybM
-	ko+EQIXaunh7/0io+XIZHDqT4M4hRpjc=
-X-Received: by 2002:a05:6820:5709:10b0:70a:df8e:8f64 with SMTP id
- 006d021491bc7-714f23f7d98mr3415125eaf.22.1793604524395; Sun, 01 Nov 2026
- 23:28:44 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=kgwakDC+
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YB7yyhRNdGrL+LcZKKvTr7sXPVL5LnhITsXWCAQ7Foj3L7HqHjZkdDK7AEJC9lJiNqLb4xfsBoLLdm5bzYOznQj0HOeJdefmEnKLwlyB4RO3gPXo4vSUlKyX9uK5BcN21srp1y8qi0IbaWsQnZoBUxsONXF+7XFrE3qr7HOpPvi2OlGhcZb4qyWynBeriYwcxrClk7iKYu/MqmzKDtgzE0oN1idi+ORrdYmhW+S/QGXvAh0D5IWP+i1yM3kyBv5HHHAuvlYXr9e77M5swg3Z12dNR7Gu7Fz2WQXNyypoARnFnCFRStxoWhN40dmJLWBxIpeqX/NBp6PSPwdavkI++w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6fSnqTvYzbwizhskQVeYnh3ptDK0pQWgg0bHBbxuwpM=;
+ b=DQ5V6qf727c2JylSwKDDsOGL2j2+WM6neF3irgumCOHmlvb2euAa7mSZDOSp65VMKYKkaRm/vC0iifDXUbNpLnfvXo/qeMl7Qp9PwZ0k8Z5DAkA+LAUf5qMC80Ywp5DnNXb66QorP8c/u/jJIPkchRdu7qRCJPjwzGds8nlbQ6rz22Rs8xRSOcs5OG3GoeYK9d2i/14xkNzXnKwwv7xiAs6/8C1Go2BGVnO6dK7GQ+CnsKpdlfu7p4RSDy5YCPXuP7EwTjTIl6Vu6LwRsca8w4NAd3rtMUXz/ZwRsV5zNHjzu6jJ3CZ32hIoSFHhFrmOL2o1Fsu+eA+Iaqhmo1YTZg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6fSnqTvYzbwizhskQVeYnh3ptDK0pQWgg0bHBbxuwpM=;
+ b=kgwakDC+I2UpNtOfKhtKEoWVHvjaxDJxSLQ0HSuQ7ENElTa+SsghWJZuvJPE1iwh4GPhel6cKytLNMB9w8pGShOZ1jz93qtpc8qbxyVz5bqrjtt4co8t/yhAbWcqjYXQzNHg25Z/cEWnVwDkBxqdco03qOXQizESFqyBZoTznhL+O+RaEMPeU13uMDtyqeeW7NGv3qml5dQeegcIO+/boVfQQkwcDOdWUWaW1JK4GV1dqDfm+Ix5BZvMdLWb/hqtDWmmrRxY/+cleBpKMnRNN2/ebMI824RgFi2UQMefAmV14yfVq8LoqUgGZE5rEWBKiOOaZo4oPdlnAFRQpd0t8Q==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by CY5PR12MB6346.namprd12.prod.outlook.com (2603:10b6:930:21::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
+ 2026 07:33:57 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0569.008; Mon, 2 Nov 2026
+ 07:33:57 +0000
+Date: Mon, 2 Nov 2026 09:33:47 +0200
+From: Ido Schimmel <idosch@nvidia.com>
+To: "Cen Zhang (Microsoft)" <cenzhang@linux.microsoft.com>
+Cc: David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Ben Greear <greearb@candelatech.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com
+Subject: Re: [PATCH net v2] ipv6: fix fib6 walker UAF on NLM_F_REPLACE
+Message-ID: <20261102073347.GA765417@shredder>
+References: <20261028160018.73299-1-cenzhang@linux.microsoft.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261028160018.73299-1-cenzhang@linux.microsoft.com>
+X-ClientProxiedBy: TLZP290CA0012.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:9::10) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,133 +102,93 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <82c31e4d5043f3dbd11b44177cfba779d335aae3.1793599929.git.x-professor@outlook.com>
- <aug0tMr2QXRxTWuE@google.com>
-In-Reply-To: <aug0tMr2QXRxTWuE@google.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Mon, 2 Nov 2026 08:28:32 +0100
-X-Gmail-Original-Message-ID: <CAL4WiiqMbiJS07YwNCNKsY6UMLsU+XDoemJMnHvrZz_+ayiOTw@mail.gmail.com>
-X-Gm-Features: AclHuK-qkDj2lomKdPUBIYW2cw33-lPnwEAvc_Rj2h8jY0csV8s3qylZZM4N8nA
-Message-ID: <CAL4WiiqMbiJS07YwNCNKsY6UMLsU+XDoemJMnHvrZz_+ayiOTw@mail.gmail.com>
-Subject: Re: [PATCH net] tcp: ipv6: keep request pktopts alive until request destruction
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Yingjie Wang <x-professor@outlook.com>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "ncardwell@google.com" <ncardwell@google.com>, 
-	"davem@davemloft.net" <davem@davemloft.net>, "kuba@kernel.org" <kuba@kernel.org>, 
-	"pabeni@redhat.com" <pabeni@redhat.com>, "horms@kernel.org" <horms@kernel.org>, 
-	"daniel@iogearbox.net" <daniel@iogearbox.net>, "martin.lau@linux.dev" <martin.lau@linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|CY5PR12MB6346:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3e58660e-0b0b-4ad8-b829-08df38b3a789
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|11063799006|56012099006|261009223027099003|261028144727099003|261021121427099003|261021123027099003|261026121527099003|261026140227099003|261022075727099003|261022105027099003|10067099003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	scWJg1QqpjApkopFiU5C0zqQ0tMEMUwLgAL/1C1jlxzIkHbqx0n5T0keBTcrjf74DF8kCm0PHGTZoVXbT0W29K9qUE4hJ/udHJ4zCz9ofJzKlv3h4burtQOgW0rMAlobUiDKAkFduEdYl9Jp5+iec3I4ZCOpPgIEqY0wkdZScIYij28cLfi6GbTJoizUWM6NySFpgu95sP5Db45v42S7WQzzUQjOxA6NtapFlSvVDRPk9zgtNFPLZZxetsJxoquLlCV+dhLhVed4KfDOCAYlqd6XxK8aBTlMRZeLLRQHZtS+O1pXOeRVa9u6zAoK0WIP1k2s58uetfL7edSO6T5GBHgyMQ81Yzt9KcfOD1cYhuIHlijB4ANJ6kWtzY3s2HlqRgiqqZ0SPENDyVXTmRWJmlW6ZFGH1KdXNpfkD0wnhz1jkHPnGC+6HHeILNxO8BYSQgPlGvyaQ/wBxAJ83Xkz2euuPQDBdQRHQVR+wP4SFS9FDsV7nY4IZSMUAJUc08G8VzIElNevfGoVPN6wjetkuTfKWiegVZcJiyQx1kCJTIlmtgdE9GqLnrw8hRt79ChgvgxQ8AwYApNWz11hHqoWuxdwqZQfPCAE5VUGkYPf0tSJQ+xaLxJCMck3eVmNHZ8O6cwfdkS7WekVdolEew3rQ5Hy2zc55uqAaWlR/jWz4Mg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(11063799006)(56012099006)(261009223027099003)(261028144727099003)(261021121427099003)(261021123027099003)(261026121527099003)(261026140227099003)(261022075727099003)(261022105027099003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?U439p3N3r4WoOjbNiBqUeeKKAspZQzimJAA26GJALC3qM73HJF/iPI3hotzO?=
+ =?us-ascii?Q?08Fwzw23g1Evn3zy0qx9Wr0+KmIhzZoCL/Ar7mqFLzbzx6yxXbhGIiG0yQL1?=
+ =?us-ascii?Q?ugn168qkgTWQVSbWaVSLizIhwcRDT/lvWajlNFYOhUat4OT38xeMP/bxCyUz?=
+ =?us-ascii?Q?p8NdUDcgXTqtWRJ4fsULO/V8HHz83CSGxpAt//GAhp812dC0i/AeikSf3ZLV?=
+ =?us-ascii?Q?SkyjmzkZ58NIDxmLkiQOALDnoAwgve5t3CNghDwsE5r668rGLRZ24LkRn047?=
+ =?us-ascii?Q?VK/PYhYcSjL+SfSKToAqkwMkrGqnCHxlgBJziQJYLqnmU7Xnwca8xiSyRaFp?=
+ =?us-ascii?Q?Yk0+HSeCy5EjbMUCN+kxNnOeL4FDBLXtV71OviNwTag0Fmh6GxX2FYP8dQIP?=
+ =?us-ascii?Q?zcY0mBWzxXsbK0VGE/CfSuVWntGeI0FlQZpRxe+7BnQoswtaecS7+vC3V7vb?=
+ =?us-ascii?Q?qoi8fRj+z6Uvwx5cCZLvyhqfI0bBU4+zO3cn5Mmjq0x1kvjaK+/8irDKCIQp?=
+ =?us-ascii?Q?onirhaTZRNPX4YrDMrvClZCxOMPn0QHaav0zmVoHlOZIYBA4FJ+We+k9d6V2?=
+ =?us-ascii?Q?qAMXvef/wpx7wDbuKZyRC+LlEgbtY/QQFVjJuVHQrl7jEbOH4gDP5cD6iAKn?=
+ =?us-ascii?Q?LiqmExT27RXmlWviEZU+DOXyCk55LDieDtsydIe60VXMC5FAmqirX7ep2GPv?=
+ =?us-ascii?Q?NmV524rfbg4amJLj+wxUtivQgJJ12E+az5Mes1wDfUpRYJ/aE2HmoWOVFR8W?=
+ =?us-ascii?Q?5R6Iyfed80TR5eV6r4KQamk7CBf9pHFxzSGGyOBq7BiNiq6XE+Yg8FFp/YXD?=
+ =?us-ascii?Q?p9w/ezqxn1Q2gSK0Ihy86qMjVrMlgkEAICP7j42TIX6zbrCVceSDovjOLk8c?=
+ =?us-ascii?Q?rVarDJAovSs1stQcPDARzsndU6+JNrBd4ukrdYG7SDluDGsLXMdqowfJBleK?=
+ =?us-ascii?Q?q5BC9MT8hyNjcc+wJy+l3hNafMyLqWrfhKtQyfvb/0DiQ1t3egKErzeGn84Z?=
+ =?us-ascii?Q?8jN/k5OvONm2ajlo3TdrtPYs5An4v/9RqCNTuadZ/+I81DHPx8swkcgcJQR6?=
+ =?us-ascii?Q?WwNDScmpu/bb9T61NVb7IGLdIA1pwQK8d0tFHBDL0z/qGc52nhrTsswEjj3H?=
+ =?us-ascii?Q?yFQqRRzRGe95te3OoagVJ3RmT+begelhUMljVZROSkgaea/ibTt8j9KIZzEs?=
+ =?us-ascii?Q?yt9V6/Lkg8ymw+MmnvO1VJJ36IRX1Tg6mbyKzsgKvyzFgXGhD4a9hSFSHNr8?=
+ =?us-ascii?Q?MQ04Pzwt5hlXvyuurtKwsRJ57b9/YkVpAW8JeO/Nx/7tQGqOEv7Ks+R6ZuoG?=
+ =?us-ascii?Q?oP71vGmtjqfPer+kOTT7KBViWfIJN56Cn9kcIKoBwoelJdcFoIfZbxIWyLlu?=
+ =?us-ascii?Q?SPXKrPLdC1O2azf7jxT9hauce1+nz7BdMWwcF9eG7Mx7R88+H8FNGmJ1ZB7E?=
+ =?us-ascii?Q?SdF2lfZ8CGN36bmFCjPBsHPFjjAPbclD2TIZ9pQRsFPPdOFdTjD8cX/2SHjX?=
+ =?us-ascii?Q?HZZEIkHapj74PGGXCAkgjVEgeW9uCR4RGLLOvWqCZUhtfsIonzAgusPRb5+U?=
+ =?us-ascii?Q?c7RIg7f+U2f4UKh3jMt5hnyE11QA5L/N17V/tZ+QZp+BlYJac0sfTR/GQGpy?=
+ =?us-ascii?Q?edJUGquAQiOESY2FdjDejzvBYumwRF/3RU5UPgb8fKryR3rhzcZNEy+7JsXL?=
+ =?us-ascii?Q?alBJkSqfoscY7YkMJKAFnODGz7cbY4zD2vico91AY9EQOjej?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3e58660e-0b0b-4ad8-b829-08df38b3a789
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 07:33:57.4284
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yOTYCHKTUJBXViS4X0WMnaYyuRXveTdCL4UW1CLxq8BHZqO3b3Wp7JeCizp+FGLlt6etmmaIJoKAXnnLtZxsKg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6346
 
-Le lun. 2 nov. 2026 =C3=A0 08:03, Kuniyuki Iwashima <kuniyu@google.com> a =
-=C3=A9crit :
->
-> On Mon, 02 Nov 2026 06:12:18 +0000, Yingjie Wang wrote:
-> > When IPv6 flow label reflection is enabled, tcp_v6_send_synack() reads
-> > ireq->pktopts to copy the flow label from the initial SYN.
-> >
-> > Request sockets can be processed without the listener lock. A
-> > retransmitted SYN can therefore run tcp_v6_send_synack() while a
-> > concurrent final ACK creates the child in tcp_v6_syn_recv_sock(). The
-> > latter clones ireq->pktopts for the child and immediately consumes the
-> > request's reference. This can free the skb while the retransmit path is
-> > still reading its IPv6 header, causing a use-after-free.
-> >
-> > Request migration has the same ownership problem. inet_reqsk_clone()
-> > copies pktopts without taking an skb reference, and reqsk_migrate_reset=
-()
-> > then clears the old request's pointer. A CPU holding the old request ca=
-n
-> > still be sending a SYNACK when the cloned request releases the only skb
-> > reference.
-> >
-> > Do not consume pktopts while creating the child. Give each cloned reque=
-st
-> > its own skb reference and let every request release its reference from
-> > tcp_v6_reqsk_destructor().
-> >
-> > I found this while testing IPv6 TCP request-socket lifetime handling. T=
-he
-> > reproducer required no source changes, artificial delay, or fault
-> > injection beyond enabling KASAN. It triggered the use-after-free before
-> > this change. With this change, a 2000-round run completed without a KAS=
-AN
-> > report. A separate 10-round test recorded four successful request
-> > migrations and no KASAN report. Networking selftests were not run becau=
-se
-> > none directly exercises this race.
-> >
-> > Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets"=
-)
-> > Fixes: 079096f103fa ("tcp/dccp: install syn_recv requests into ehash ta=
-ble")
-> > Fixes: c905dee62232 ("tcp: Migrate TCP_NEW_SYN_RECV requests at retrans=
-mitting SYN+ACKs.")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Yingjie Wang <x-professor@outlook.com>
-> > ---
-> >  net/ipv4/inet_connection_sock.c | 6 +++++-
-> >  net/ipv6/tcp_ipv6.c             | 7 ++++---
-> >  2 files changed, 9 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection=
-_sock.c
-> > index 93b306d91b6d..66f8ce25aa38 100644
-> > --- a/net/ipv4/inet_connection_sock.c
-> > +++ b/net/ipv4/inet_connection_sock.c
-> > @@ -936,6 +936,11 @@ static struct request_sock *inet_reqsk_clone(struc=
-t request_sock *req,
-> >                     req->rsk_ops->obj_size - offsetof(struct sock, sk_d=
-ontcopy_end),
-> >                     /* alloc is larger than struct, see above */);
-> >
-> > +#if IS_ENABLED(CONFIG_IPV6)
-> > +     if (inet_rsk(nreq)->pktopts)
-> > +             skb_get(inet_rsk(nreq)->pktopts);
-> > +#endif
-> > +
-> >       sk_node_init(&nreq_sk->sk_node);
-> >       nreq_sk->sk_tx_queue_mapping =3D req_sk->sk_tx_queue_mapping;
-> >  #ifdef CONFIG_SOCK_RX_QUEUE_MAPPING
-> > @@ -982,7 +987,6 @@ static void reqsk_migrate_reset(struct request_sock=
- *req)
-> >       req->saved_syn =3D NULL;
-> >  #if IS_ENABLED(CONFIG_IPV6)
-> >       inet_rsk(req)->ipv6_opt =3D NULL;
-> > -     inet_rsk(req)->pktopts =3D NULL;
-> >  #else
-> >       inet_rsk(req)->ireq_opt =3D NULL;
-> >  #endif
-> > diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-> > index e006a30360ea..0b51cb4ad960 100644
-> > --- a/net/ipv6/tcp_ipv6.c
-> > +++ b/net/ipv6/tcp_ipv6.c
-> > @@ -1522,11 +1522,12 @@ static struct sock *tcp_v6_syn_recv_sock(const =
-struct sock *sk, struct sk_buff *
-> >       if (*own_req) {
-> >               tcp_move_syn(newtp, req);
-> >
-> > -             /* Clone pktoptions received with SYN, if we own the req =
-*/
-> > +             /* Clone pktoptions received with SYN. Keep the request's
-> > +              * reference until the request is destroyed, as a concurr=
-ent
-> > +              * SYN retransmit may still read it.
-> > +              */
-> >               if (ireq->pktopts) {
-> >                       newnp->pktoptions =3D skb_clone_and_charge_r(ireq=
-->pktopts, newsk);
-> > -                     consume_skb(ireq->pktopts);
-> > -                     ireq->pktopts =3D NULL;
->
-> This is reported from another person in security@ mailing list
-> yesterday and Eric has a better fix.
->
-> pw-bot: rejected
+On Wed, Oct 28, 2026 at 12:00:18PM -0400, Cen Zhang (Microsoft) wrote:
+> fib6_walker uses w->leaf to remember the next fib6_info to dump, so an
+> RTM_GETROUTE dump can continue there on the next recvmsg().  This
+> assumes that whoever removes a route from the tree also updates the
+> walkers pointing at it.  fib6_del_route() does: it moves w->leaf to
+> the next route.  The NLM_F_REPLACE branch of fib6_add_rt2node() does
+> not: it removes the old route, fib6_add() frees it, and w->leaf keeps
+> pointing at the freed object.
+> 
+> The fn_sernum version check in fib6_dump_table() normally protects
+> against resuming on a stale w->leaf, but it can be bypassed:
+> ip6_link_failure() resets fn_sernum to -1 when the default route
+> fails, which an unprivileged user in a user+net namespace can cause:
+> 
+>   1) link failure            fn_sernum = -1
+>   2) dump pauses on route R
+>   3) replace R               fn_sernum changed, R freed
+>   4) link failure            fn_sernum = -1
+>   5) dump resumes            -1 == -1, reads freed R  <- UAF
+> 
+>   BUG: KASAN: slab-use-after-free in rt6_fill_node+0x1c22/0x2cd0
+>   Read of size 4 at addr ff11000011fa0064 by task poc/101
+>    rt6_fill_node <- rt6_dump_route
+> 
+> Fix by adjusting walkers separately for replacement and deletion.
+> For replacement, add fib6_walkers_replace_leaf() points w->leaf
+> at the new route. For deletion and ECMP sibling removal,
+> fib6_walkers_skip_rt() calls fib6_walkers_replace_leaf() with the
+> next route. Reset w->skip_in_node when updating w->leaf, and set
+> w->state to FWS_U when no next route remains.
+> 
+> Fixes: 4a287eba2de3 ("IPv6 routing, NLM_F_* flag support: REPLACE and EXCL flags support, warn about missing CREATE flag")
+> Cc: AutonomousCodeSecurity@microsoft.com
+> Signed-off-by: Cen Zhang (Microsoft) <cenzhang@linux.microsoft.com>
 
-Indeed, I will add another 'Reported-by: Yingjie Wang
-<x-professor@outlook.com>' tag.
-
-Thanks.
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
