@@ -1,49 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.185.147
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793629815;
-	b=LswkLySDKOjjxjlJlDyXd6Bbyr1EfoxCgmbRIlW53QSqC/RIXV11FdjSSBYhBkmquR26
-	 YauQh/r4DlNMT3BE1rjbFRwkK3/6fePNoqTfg4Fg2OTmObnUv+h8BdxpFnoJ5epPLU/CT
-	 CjDwyg/CUcwiq62GfI8vNJoHiuvJx58fUtw/SeJIPFOKMg2izvogDfhqCj68YjGc/XmRF
-	 c8/UixUmXMcG2oJIETzSwpPDBrNZg/1rXR0yzRjnEymtfmtFqpPZBrbrWHEAFNcVR4+Cl
-	 B4YUdj4r2CclBU59m2t00gHJinJh/iwLbCMWhT3JLDIH6mvoX5EShu1DCifi+UQnuyg==
+	t=1793630103;
+	b=E5ofM1hi9phnXhHMZ7d/elIhSneZQwMZMHvSOsZBHgylvFVgrdS/4XplYh2ejgxur4Br
+	 v7KfnEoyXKutOtRg0biJP0Wz7bO1doObU2+zRp0XK61gzVIMXpONvsxWkwGAuAxBJ465m
+	 25/aJ7GpYOsSeMLME/KZSLWFWl7Tx0B1EMsLIMNsafIGlBdHCFpxEUsCDMbOXjalUiHw4
+	 tAHBtdmygNnmWWM0DipO4ttHN4NMnNj5DtKOzGSBnyr2IPLPYL9KszIS+x1R6gPZIZElG
+	 AUJd7pjnIg/Jyc3YZRJ6MpKdMfl85cwdbphE6cfmJaayO5OgE1Qq3mL9MEk3jsvaEww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793629815;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=3411hkdZbwQNMzi0U+XOI7Na8s43TyvUoc5wijeirGE=;
-	b=KczyhRBPVwIAx2iuF8BUF/wJtj1XcK6r4LAwaev0pZfgPdJlPUE+7/bTIlqrQAagEKsu
-	 ypnzcQ7k1UiNk1oonFZMXqQFrtYSc+9EPj7U62rSp1eKsYZ/XZhlPXAFvSduPULRlCwX7
-	 wo1bULY/F6Mm9V8vuj4rcj7GfZEkwkhDvftKbzJALsdD3XVr6ren1jWvBJC/LoSmItW2l
-	 BX/W739V1l0MPTpItt1O9tb0SITEDTxtkyPIyGB5dEkS4IBC4Vt3oO/ShcvivAkrZOWTK
-	 uhblnliOejYKEieFHhz8jQtV/L2QmOYCNJgg4qulvmL4OLlcOw7B+6GMCjTbbwzQIPg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793630103;
+	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
+	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Content-Language:To:From:Subject:Content-Type:
+	 Content-Transfer-Encoding:References:X-Mailer;
+	bh=ySq05dm8z4HzqOaVAbxN2km0h5tMf6U4qj8TQGG2fbg=;
+	b=0Qc0wCOpCPwMMkKQE7ztfhtMNrlErqIAore7+oqBSCLj3IDUcSRieckaI7e1pZI5ODzd
+	 3yhhmTTTVF2bZsXnwjJq9UN5J2cRHXs4DaizaGuXG1xNw0IeA/Lzbkx6gGga9Gg9lzDuO
+	 7SWa54IKN1yljqt3ZeFbRNY0HYZ24+Tt28jhbq/BBrBAMwMLQTqoeI4aWwdhOzcd+7oLP
+	 JTnqBe72y9vLhS9wgf6lPJq2XXw2QYhD7wjTH21r6K/T00Ar4v9Zf6mxq2jrj9HxZRDrL
+	 eu9Ctl4zY9j014nHf7P9QeO54XjEf5L/7ufchyxZBShPMzMTLQFNmWPo59sDUxyJXRQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="N/zg5Ona";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=yahoo.com;
+	spf=pass smtp.mailfrom=yahoo.com;
+	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=IvQXBVr8;
+	arc=none smtp.remote-ip=66.163.185.147
+Received: from sonic305-21.consmr.mail.ne1.yahoo.com (sonic305-21.consmr.mail.ne1.yahoo.com [66.163.185.147])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595C3608555D;
-	Mon,  2 Nov 2026 14:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C534C606B91C
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 14:35:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C534C606B91C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N/zg5Ona
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 798041F00A16;
-	Mon,  2 Nov 2026 14:29:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793629814;
-	bh=3411hkdZbwQNMzi0U+XOI7Na8s43TyvUoc5wijeirGE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=N/zg5OnaHcMDjHdzYbR6QvnFai7hOwNAnTt2NkY9jA2RApvWKfwTn6mchyUme/onF
-	 ieOMSfn7EOjxy9D5u0vGcVfX6ixkzrWuP14BEk8Dqq6sJoYrNLzk3E0OYlhnVId4pr
-	 18pXAmt3n5kLL/zuxe0A97wY4IR5i4aoPTqrBac5O7Y9xuTkc8NN4MFD1wYjeoqM6/
-	 c2p7xPOe1nl/kZjzUE3FLMYkSrfUbtJT2EygAmFEqgAW+X5RFTbYC1NWxTMeQ+fkhv
-	 Bb1GsbVLMeUTFDG1989JYHy8ooD6KHyoYwdBzXmxmZUmpttNpFOQ3+lzmxFMxqRZuZ
-	 /erP9IfNldJYw==
-From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 15:21:50 +0100
-Subject: [PATCH RFC 35/38] proc: sysctl: don't hold the tables while
- readdir copies to userspace
+	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=IvQXBVr8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793630102; bh=ySq05dm8z4HzqOaVAbxN2km0h5tMf6U4qj8TQGG2fbg=; h=Date:To:From:Subject:References:From:Subject:Reply-To; b=IvQXBVr85tU7eStn2wOFbd4GMDPjocr2kLlNsJ01yOseaNvG6zTM18i3y00CWOyVBIJt8i8W1qSK2ZpPxHwM4/RcbZ5rje5S0494H98nz2JsJPhXhvi8ONembhcB0zrbNnX1O6KpAMCYZQwlH59/565lAlf1wOzY4gmi342hoiHcLPVI/KqLlgiHC/3S/i5CMnkzPlFT3Yesa7MNh+XvHYe+F9fg5KQt6gRf6iQgDMK1TiYFurJqKmi+wVVYdNjpL9pjx2oHf+kE4UlOW4C/o1zBQDpQdlWizIn1IT4LamagcCBfvi8yWmhcdb63hcvkeIx6Vsm4pC8VoYNv/QiuiA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793630102; bh=xLScX3ovoNZzXHhIeMVjmmt+hNh9BYQKVW3eGeDZubN=; h=X-Sonic-MF:Date:To:From:Subject:From:Subject; b=VCUmTfVGe6EuvHO4WDiegrDvNIdrZkiyieJib6LzsbFSD59ppKFEif+E4+Nwf9x3h6CaPT2LuZyePTtf2bNvvGa1vrIBFqjPauucWSlhQoqznHQeS3YRd42tewQe1nYjM/IBRUXvRLsROxDbweTZ+8BM8HXhdTzfYavj2VDPfiiQzCr9BGjLgeaLMRMxenaNvYmFmObTwL67dogpgt8qgIYbpW5tTcbK2UEaX0+WkajOP1E1n39/7sIswLtpIAVoG9xqpKC3JH7YMtoUeAfzeLJQH4porUbXfMPoaV7Kj3+Z0N5mFVMrX/u5kPNUIq9ASgecij1i4OMRLIYBz682vQ==
+X-YMail-OSG: MNllFA8VM1mScRNjYclfBIdttVglK_M4bB1kIeMLIiWRkQUJQo1OBpdWhl4Hdv5
+ jAabuIM_H4ZpdLlrKP1gVY0bTQudpIyyy5MyHMsxuvHJVc6hY0GHsF2Ms4rGHzxARfEcLjMC9YqK
+ VJhQmM_57r_M8muwytGh7.C7Zk2J0LI7KZMl6pQM6lnITUpnvL3hgW3Tf3kO555vZYdr3Jj5T1O_
+ iIDYdocS4fnVD000rJWwKoIXATSAznZod6jx83ohB5z0CSa4Ch.GAxA_GYedZyUv_z3xn6Miz2q8
+ X8tbDOOAhB6Z8xFG_S4c6jYd1bVa3IKS0QO1XiSPGWGyFZeqCZHP9WLxUZYIXm0PT9U98kyeRVz7
+ ZborcE28cJlBzfGZs1SHj5uepZXGZc3NLiMXllVijHh.hB4eq9eIxGeQKUnMqaklGvf.M.zQzenA
+ AbPVCHxUOQJTYio6gkdzo774VJThbiXPtSsqqOetRQLpwqGuSpEf_RC.ZM.IUXe2AhG9rJwqtEtI
+ j6.YeTNW1NFXvsfus6oN47emOv4ymb5efP9fYSG6j.LmikaAkNZSEx8bkSRR8Bc9VK11G72aZVdW
+ QFhicsXArr.InEcKyQy1mLoL3yyRKac8pFQa..4S85m8jjT47.b.GYqn.u3m6sRSakkQioPTX7r1
+ Lu1MsCXZfjD1jL6fp7cZuDiMAyet7bDZq25J7Ub.IuW03Q2R1vWKFIowtFl.dvNSk5EGsFhBzQkG
+ 4Vl7fRhjgRkB6WGddW5CyxwZlRN16N8OMLaIBr09hnOYPsK.8HWde6YHDyI70PUo8izwcnb4vhto
+ 6J80qVhk6ufxX7YJsgoD59MFQeg4169BVo_Vx3.IDIE4M1JQ5LdhsmIfLFAHwqkXJjZRTJTzpk3B
+ t1Oj5CovLuhx2lPQRVZR9qPqS3lR5uTIOGl36uv0f0HaX_2IYOMM1LuqsL_6H9fC4tvo79lZUaUn
+ S5Oys9IRb7R70ayAqQgh3cg9StvUGwam6U3UNGWkGPs9YBLq42_Bi.o8Way_dXGC7avzMt3AVoM1
+ L49GrjfhxKE5sc1SkILCQ0j8UJR.tvh7oApRJ1L8YdU3WQ3fVb_S7BAwTqQCNXIaQtV0ewfZUfCi
+ b2NKj.T7lXKXu3ec3vc6TeEp8uuEQ2OSuTsWmkaSK0.ZpY6RWc8WqeeyHmS1G7BMFDrDq4Llr_zF
+ GUpZEsaDJyRrLsomcRvlBKC2rBDM13vocNKOD4USSNTWl_b2k_xZnbMylXQubi0X8jBE11lqs.Vj
+ SLz8u2843GDgtEgxzlsfo_xIP8IzfhJrx86BZk7ETnrCjdGkuFlFXwpT1FALaB2BWiIVZRVU1G4q
+ 13GNjrolcdcPYJ43X1tEBeye.SM9SaCn9UbMDn5s9hwIhBLhUfGc7AH81reS8WUJbC5Xt1Hot6qS
+ gWfuBrNsKiH0dxlzZDHw8TwZqYFAqNoaBxK9PzgcWtu66N.44s37PDO8Q3fp0UtjJMk5slEq3je7
+ dAcaW5be2JX9bBsHeVKo8EsjUCxCO3kZkPEfc6IuWsuY9w9ylH854sZDYTaastS2a29tOYURyz1J
+ 4faEuZFGcW1Vj.ZE56QXjy2RwxFMLJ2E72i87GLE1PgA2dQ9.3ibDqYlCYDPVDwVf.nwrUzL7nob
+ XDMz4gFoRqQKodnI8KU8byDQU1ka2umtcZbx0s4XcHF_.XRp3SakftcZDHcjHbgdAvoDJRkcfLsj
+ louDdOal59jgN7smwBlxta2fgKZlQsYXg.15lY9GXm2oJhatz00_BIWXeZ5mXMfPnu_wXS9k4jCY
+ e9HKn1YpGs1N.uu6.ZbjVz7UQ3beQ2Ru9BTmtCMPbIEfbt4Yj6OiezI2Z8e5_FObguD29NpHt5K8
+ UBfM8aJhsLZYqLWltEsSRXXdgMh2jHqzTNRAq4pZBbhdRx0MVEF3zriX6WFZLaLwwqDZzH.yAabd
+ epJZQ82UnN9uu8ZopjaG4TIRDbRmnetl4HeHY0Wk276m_9Z1QOnGeDknITOl3m4QFHu0fDrE0neS
+ ocMsSE0P5hIJV9L7tg5bwKMHpq4lJhx39h.4ZNvrL7ILR5Z9iRQO4cDC6x31.D5CpAPro8OYDgnm
+ ttxbArr3SGz3QgLejoEpNiFbLVqHEzEfrcVgahbjcR7pKp1VVD27rZfQmG3Z9yDuDpODIUGOFxst
+ WNRc_CsWS.BQSCwGQ4mmxfmixfnCWf3XFeHfC0ZYxvqzGRFyqMkQKkgP4bKfXS9Rr6rJ3FhRoNup
+ GtNmFo8Rep2AA5VT_Zd9ChDwDtw4A4ifZaVfjuZvthLh7uTd59JGiKc.SP7iKQB1_tXuSYEWRjBf
+ 0UdIwRsBxPW60lrOX49qRBsiRzHKR
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: 9bf6d901-537f-4f20-b35e-20d898e7b5c7
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.ne1.yahoo.com with HTTP; Mon, 2 Nov 2026 14:35:02 +0000
+Received: by hermes--production-ir2-5dd9bf4598-xpdvn (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID bff483e77313253b6b6a88cc3a3c51ea;
+          Mon, 02 Nov 2026 14:34:58 +0000 (UTC)
+Message-ID: <3bf4dd70-9771-497b-8c27-e925e0ef81eb@yahoo.com>
+Date: Mon, 2 Nov 2026 15:34:54 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,508 +84,171 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Content-Language: pl
+To: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Subject: [PATCH net-next v7 0/10] net: dsa: realtek: rtl8365mb: add support
+ for RTL8367S-VB
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-bugfixes-v1-35-59422ed3e465@kernel.org>
-References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
-In-Reply-To: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
- Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
- Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
- NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
- Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
- Greg Kroah-Hartman <gregkh@suse.de>, 
- Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
- Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
- linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
- linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
- linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
- ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
- coreteam@netfilter.org, kexec@lists.infradead.org, 
- linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
- netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
- linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
- linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
- linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
- sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
- linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
- linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
- linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
- linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
- linux-debuggers@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, 
- Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=15345; i=brauner@kernel.org;
- h=from:subject:message-id; bh=awE7OtuLocwwLuG73C7KoqdSIZd97jAzgPGBLfGeaBs=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJOT3hscVVlXMb28cnGS9POEl1M5Z225d2zCpfU2r
- VExHzkWd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzkaCTDf5dUdg1T519xexnC
- NONPiIm2inxrCY2e4v2AQUfiaOWF+YwMD1qNZt6cez3sz76H+Vwh+/ekzE3YYKvrHnRy7vT5ERO
- +sgAA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+References: <3bf4dd70-9771-497b-8c27-e925e0ef81eb.ref@yahoo.com>
+X-Mailer: WebService/1.1.26871 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-proc_sys_readdir() holds the directory's table for the whole readdir
-and the table of each entry while dir_emit() copies its name to
-userspace. Unregistering a table waits until nobody uses it anymore. So
-a getdents64() whose buffer faults for as long as it wants keeps
-unregister_sysctl_table() waiting, just like a stalled read() does.
-Listing /proc/sys/net/ipv6/conf/<dev>/ that way holds up the removal of
-the device under RTNL.
+This series adds support for the RTL8367S-VB (chip ID 0x6642) to the
+rtl8365mb driver. The chip belongs to a new "family D" that differs from
+the existing family C in its VLAN and L2 table layouts, speed/RGMII
+configuration and SerDes (SDS13) handling.
 
-So don't take any table into use for a listing. A header counts what
-refers to its memory, the inodes made for it, and unregistering doesn't
-wait for those. readdir takes one of those references on the entry it
-is at instead, which keeps the header around and nothing else. Under
-sysctl_lock, where unregistering erases an entry, it finds the entry,
-copies its name and mode, follows a link to the entry it stands for and
-pins that. Then it looks the dentry up, creates the inode if there is
-none, which checks for itself under sysctl_lock that the table is still
-registered, and emits the entry with nothing held at all. The next
-entry is the first live one after that name, which is where a listing
-resumes between calls since "proc: sysctl: resume readdir after the
-last name it returned" anyway. kernfs_fop_readdir() and
-proc_readdir_de() work the same way, a reference on the entry and the
-lock only to find the next one.
+Patch 1 documents the chip in the devicetree binding.
+Patch 2 adds the chip family infrastructure (no functional change).
+Patches 3-4 add port speed and RGMII mode configuration for family D.
+Patches 5-6 add VLAN 4k table access and raw-VID PVID handling.
+Patches 7-8 add SDS13 PCS support and re-latching of the SerDes.
+Patch 9 makes the L2 (FDB/MDB) table access work on family D, which has
+a 5-word entry layout, narrower table access fields and no EFID.
+Patch 10 adds the RTL8367S-VB chip table entry. It comes last, so that
+no intermediate commit exposes a family D chip with incomplete
+handling and the series stays bisectable.
 
-While the entry is still registered its node is still in the tree and
-the next one is right behind it, like kernfs_dir_next_pos() continues
-from the node it holds. Only once it went away, and to resume, is the
-next entry found by name. That's one trip through sysctl_lock per entry
-like before, and the link entries of /proc/sys/net no longer take two
-more. The directory isn't
-taken into use either, an entry keeps its directory registered while
-it is used and readdir looks at the directory under the lock. So the
-dots don't wait for anything, a directory that went away lists them and
-then fails with -ENOENT. A seek to an arbitrary position counts the
-entries from the start like before, one trip per entry.
+Family C's functional behaviour is unchanged. Changes in a shared path
+include a mutex serializing SerDes register access, as well as
+.pcs_disable in pcs_ops and .conduit_state_change in dsa_switch_ops
+(both bail out immediately on family C). The L2 table access and FDB/MDB
+code is shared too; the family D handling is selected at runtime with
+rtl8365mb_get_family() (patch 9). The port count is capped at 8 for
+family D only (patch 10). On family D, FDB/MDB offload is available,
+but per-bridge FDB isolation is not (no EFID); bridges are isolated by
+the port isolation masks only (patch 9).
 
-Fixes: 77b14db502cb ("[PATCH] sysctl: reimplement the sysctl proc support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Tested on a TP-Link Archer AX55 v1 (RTL8367S-VB, CPU port over HSGMII
+to an IPQ5018) with bridge VLAN filtering and per-port PVIDs. SGMII has
+also been seen working, but I no longer have the exact link partner and
+speed it was tested with, so treat it as lightly tested. RGMII mode has
+not yet been tested. FDB/MDB offload on family D has not been tested on
+hardware yet.
+
+Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
 ---
- fs/proc/proc_sysctl.c | 307 +++++++++++++++++++++++++++-----------------------
- 1 file changed, 166 insertions(+), 141 deletions(-)
+v7:
+  - 3/10, 6/10: note that the family D path is unreachable until the last
+    patch
+  - 4/10: program EXT_TXC_DLY, the pin mux and the SerDes 1 disable
+    before selecting RGMII; warn when RGMII is disabled because MAC4 owns
+    EXT1
+  - 8/10: act only on the conduit of the CPU port that carries the
+    SerDes; queue the work with schedule_delayed_work() and rename the
+    devres action to rtl8365mb_sds_relatch_disable()
+  - 9/10: new, make L2/LUT access work on family D (5-word entries,
+    narrower table access fields, LUT init, no FDB isolation)
+  - 10/10: update the NET_DSA_REALTEK_RTL8365MB help text
 
-diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
-index a1242247f492..0b7a1e487ed6 100644
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -91,6 +91,8 @@ static void drop_sysctl_table(struct ctl_table_header *header);
- static int sysctl_follow_link(struct ctl_table_header **phead,
- 	const struct ctl_table **pentry);
- static int insert_links(struct ctl_table_header *head);
-+static struct ctl_table_set *lookup_header_set(struct ctl_table_root *root);
-+static struct ctl_dir *xlate_dir(struct ctl_table_set *set, struct ctl_dir *dir);
- static void put_links(struct ctl_table_header *header);
- 
- static void sysctl_print_dir(struct ctl_dir *dir)
-@@ -367,86 +369,97 @@ static const struct ctl_table *lookup_entry(struct ctl_table_header **phead,
- 	return entry;
- }
- 
--static struct ctl_node *first_usable_entry(struct rb_node *node)
--{
--	struct ctl_node *ctl_node;
-+/*
-+ * What readdir takes along for an entry between the trips through
-+ * sysctl_lock: the header pinned, which keeps its memory and nothing else,
-+ * the entry, its name and mode. For a link the header and entry are the
-+ * ones it stands for in the caller's set.
-+ */
-+struct sysctl_dirent {
-+	struct ctl_table_header *head;
-+	const struct ctl_table *table;
-+	struct ctl_node *node;		/* the entry's node in the directory, NULL for a link */
-+	ino_t ino;
-+	unsigned int type;
-+	umode_t mode;
-+	bool skip;
-+	int len;
-+	char name[NAME_MAX + 1];
-+};
- 
--	for (;node; node = rb_next(node)) {
--		ctl_node = rb_entry(node, struct ctl_node, node);
--		if (use_table(ctl_node->header))
--			return ctl_node;
--	}
--	return NULL;
-+/* A reference on the memory of @head, like an inode made for it holds. */
-+static void sysctl_pin(struct ctl_table_header *head)
-+{
-+	lockdep_assert_held(&sysctl_lock);
-+	head->count++;
- }
- 
--static void first_entry(struct ctl_dir *dir,
--	struct ctl_table_header **phead, const struct ctl_table **pentry)
-+static void sysctl_unpin(struct ctl_table_header *head)
- {
--	struct ctl_table_header *head = NULL;
--	const struct ctl_table *entry = NULL;
--	struct ctl_node *ctl_node;
--
--	spin_lock(&sysctl_lock);
--	ctl_node = first_usable_entry(rb_first(&dir->root));
--	spin_unlock(&sysctl_lock);
--	if (ctl_node) {
--		head = ctl_node->header;
--		entry = &head->ctl_table[ctl_node - head->node];
--	}
--	*phead = head;
--	*pentry = entry;
-+	lockdep_assert_held(&sysctl_lock);
-+	if (!--head->count)
-+		kfree_rcu(head, rcu);
- }
- 
--static void next_entry(struct ctl_table_header **phead, const struct ctl_table **pentry)
-+/* the first entry from @node on whose table isn't being unregistered */
-+static struct ctl_node *first_live_entry(struct rb_node *node)
- {
--	struct ctl_table_header *head = *phead;
--	const struct ctl_table *entry = *pentry;
--	struct ctl_node *ctl_node = &head->node[entry - head->ctl_table];
--
--	spin_lock(&sysctl_lock);
--	unuse_table(head);
-+	struct ctl_node *ctl_node;
- 
--	ctl_node = first_usable_entry(rb_next(&ctl_node->node));
--	spin_unlock(&sysctl_lock);
--	head = NULL;
--	if (ctl_node) {
--		head = ctl_node->header;
--		entry = &head->ctl_table[ctl_node - head->node];
-+	lockdep_assert_held(&sysctl_lock);
-+	for (; node; node = rb_next(node)) {
-+		ctl_node = rb_entry(node, struct ctl_node, node);
-+		if (!ctl_node->header->unregistering)
-+			return ctl_node;
- 	}
--	*phead = head;
--	*pentry = entry;
-+	return NULL;
- }
- 
- /*
-- * The first usable entry of @dir after @name, or the first one at all for a
-- * NULL @name. The entries are sorted by name, so that is where a listing
-- * resumes when entries in front of it came or went in between. -ENOENT if
-- * the directory is being unregistered.
-+ * Fill @d with the entry of @dir behind the one it holds, letting go of that
-+ * one, or with the first live entry after @name, or the first one at all for
-+ * a NULL @name. While the entry @d holds is still registered its node is
-+ * still in the tree and the next one is right behind it. Once it is gone the
-+ * entries are found by name, they are sorted by it, so that is also where a
-+ * listing resumes when entries in front of it came or went in between.
-+ * 1 with the next entry pinned in @d, 0 at the end of the directory and
-+ * -ENOENT once @dir itself is being unregistered.
-+ *
-+ * Everything that reads the tables happens under sysctl_lock, where an entry
-+ * is erased when it is unregistered, since nothing holds the tables in use.
-  */
--static int entry_after(struct ctl_dir *dir, const char *name, int namelen,
--		       struct ctl_table_header **phead,
--		       const struct ctl_table **pentry)
-+static int sysctl_dir_next(struct ctl_dir *dir, struct sysctl_dirent *d,
-+			   const char *name, int namelen)
- {
--	struct ctl_table_header *head = NULL;
--	const struct ctl_table *entry = NULL;
- 	struct rb_node *node, *after = NULL;
-+	struct ctl_table_header *head;
-+	const struct ctl_table *entry;
- 	struct ctl_node *ctl_node;
-+	bool by_name = true;
-+	int ret = 0;
- 
- 	spin_lock(&sysctl_lock);
-+	if (d->head) {
-+		if (d->node && !d->head->unregistering) {
-+			after = rb_next(&d->node->node);
-+			by_name = false;
-+		}
-+		sysctl_unpin(d->head);
-+		d->head = NULL;
-+	}
- 	if (unlikely(dir->header.unregistering)) {
--		spin_unlock(&sysctl_lock);
--		return -ENOENT;
-+		ret = -ENOENT;
-+		goto out;
- 	}
--	if (!name) {
-+	if (!by_name) {
-+		/* behind the entry @d held */
-+	} else if (!name) {
- 		after = rb_first(&dir->root);
- 	} else for (node = dir->root.rb_node; node;) {
--		const struct ctl_table *table;
--		struct ctl_table_header *h;
--
- 		ctl_node = rb_entry(node, struct ctl_node, node);
--		h = ctl_node->header;
--		table = &h->ctl_table[ctl_node - h->node];
--		if (namecmp(table->procname, strlen(table->procname),
-+		head = ctl_node->header;
-+		entry = &head->ctl_table[ctl_node - head->node];
-+		if (namecmp(entry->procname, strlen(entry->procname),
- 			    name, namelen) > 0) {
- 			after = node;
- 			node = node->rb_left;
-@@ -454,15 +467,56 @@ static int entry_after(struct ctl_dir *dir, const char *name, int namelen,
- 			node = node->rb_right;
- 		}
- 	}
--	ctl_node = first_usable_entry(after);
--	spin_unlock(&sysctl_lock);
--	if (ctl_node) {
--		head = ctl_node->header;
--		entry = &head->ctl_table[ctl_node - head->node];
-+	ctl_node = first_live_entry(after);
-+	if (!ctl_node)
-+		goto out;
-+	head = ctl_node->header;
-+	entry = &head->ctl_table[ctl_node - head->node];
-+
-+	d->len = strlen(entry->procname);
-+	if (d->len > NAME_MAX) {
-+		ret = -ENAMETOOLONG;
-+		goto out;
- 	}
--	*phead = head;
--	*pentry = entry;
--	return 0;
-+	memcpy(d->name, entry->procname, d->len);
-+	d->mode = entry->mode;
-+	d->skip = false;
-+	d->node = ctl_node;
-+	if (unlikely(S_ISLNK(entry->mode))) {
-+		/* the entry it stands for in the caller's set, or nothing */
-+		struct ctl_table_root *root = entry->data;
-+		struct ctl_table_set *set = lookup_header_set(root);
-+		struct ctl_dir *xdir = xlate_dir(set, head->parent);
-+		struct ctl_table_header *xhead = NULL;
-+		const struct ctl_table *xentry = NULL;
-+
-+		if (!IS_ERR(xdir))
-+			xentry = find_entry(&xhead, xdir, d->name, d->len);
-+		if (!xentry || xhead->unregistering) {
-+			d->skip = true;
-+		} else {
-+			head = xhead;
-+			entry = xentry;
-+		}
-+		d->node = NULL;
-+	}
-+	sysctl_pin(head);
-+	d->head = head;
-+	d->table = entry;
-+	ret = 1;
-+out:
-+	spin_unlock(&sysctl_lock);
-+	return ret;
-+}
-+
-+static void sysctl_dir_done(struct sysctl_dirent *d)
-+{
-+	if (!d->head)
-+		return;
-+	spin_lock(&sysctl_lock);
-+	sysctl_unpin(d->head);
-+	spin_unlock(&sysctl_lock);
-+	d->head = NULL;
- }
- 
- /*
-@@ -765,29 +819,29 @@ static void sysctl_cursor_set(struct file *file, const char *name, int len,
- 	memcpy(cursor->name, name, len);
- }
- 
--static bool proc_sys_fill_cache(struct file *file,
--				struct dir_context *ctx,
--				struct ctl_table_header *head,
--				const struct ctl_table *table)
-+/*
-+ * The inode number and type of the entry @d holds, instantiating its dentry
-+ * if there is none. Needs the header pinned, proc_sys_make_inode() checks
-+ * for itself that the table is still registered.
-+ */
-+static int proc_sys_fill_dirent(struct file *file, struct sysctl_dirent *d)
- {
- 	struct dentry *child, *dir = file->f_path.dentry;
- 	struct inode *inode;
- 	struct qstr qname;
--	ino_t ino = 0;
--	unsigned type = DT_UNKNOWN;
- 
--	qname.name = table->procname;
--	qname.len  = strlen(table->procname);
-+	qname.name = d->name;
-+	qname.len  = d->len;
- 	qname.hash = full_name_hash(dir, qname.name, qname.len);
- 
- 	child = d_lookup(dir, &qname);
- 	if (!child) {
- 		child = d_alloc_parallel(dir, &qname);
- 		if (IS_ERR(child))
--			return false;
-+			return PTR_ERR(child);
- 		if (d_in_lookup(child)) {
- 			struct dentry *res;
--			inode = proc_sys_make_inode(dir->d_sb, head, table);
-+			inode = proc_sys_make_inode(dir->d_sb, d->head, d->table);
- 			res = d_splice_alias_ops(inode, child,
- 						 &proc_sys_dentry_operations);
- 			d_lookup_done(child);
-@@ -795,79 +849,41 @@ static bool proc_sys_fill_cache(struct file *file,
- 				dput(child);
- 
- 				if (IS_ERR(res))
--					return false;
-+					return PTR_ERR(res);
- 
- 				child = res;
- 			}
- 		}
- 	}
- 	inode = d_inode(child);
--	ino  = inode->i_ino;
--	type = inode->i_mode >> 12;
-+	d->ino = inode->i_ino;
-+	d->type = inode->i_mode >> 12;
- 	dput(child);
--	return dir_emit(ctx, qname.name, qname.len, ino, type);
--}
--
--static bool proc_sys_link_fill_cache(struct file *file,
--				    struct dir_context *ctx,
--				    struct ctl_table_header *head,
--				    const struct ctl_table *table)
--{
--	bool ret = true;
--
--	head = sysctl_head_grab(head);
--	if (IS_ERR(head))
--		return false;
--
--	/* It is not an error if we can not follow the link ignore it */
--	if (sysctl_follow_link(&head, &table))
--		goto out;
--
--	ret = proc_sys_fill_cache(file, ctx, head, table);
--out:
--	sysctl_head_finish(head);
--	return ret;
--}
--
--static int scan(struct ctl_table_header *head, const struct ctl_table *table,
--		unsigned long *pos, struct file *file,
--		struct dir_context *ctx)
--{
--	bool res;
--
--	if ((*pos)++ < ctx->pos)
--		return true;
--
--	if (unlikely(S_ISLNK(table->mode)))
--		res = proc_sys_link_fill_cache(file, ctx, head, table);
--	else
--		res = proc_sys_fill_cache(file, ctx, head, table);
--
--	if (res) {
--		ctx->pos = *pos;
--		sysctl_cursor_set(file, table->procname, strlen(table->procname),
--				  ctx->pos);
--	}
--
--	return res;
-+	return 0;
- }
- 
-+/*
-+ * Unregistering a table waits until nobody uses it anymore and a copy to
-+ * userspace can take as long as userspace wants. So a listing doesn't take
-+ * any table into use. It pins the memory of the entry it is at, finds the
-+ * next one under sysctl_lock and emits with nothing held, like
-+ * kernfs_fop_readdir() and proc_readdir_de() do. Between calls a listing
-+ * resumes after the name of the last entry it emitted.
-+ */
- static int proc_sys_readdir(struct file *file, struct dir_context *ctx)
- {
--	struct ctl_table_header *head = grab_header(file_inode(file));
-+	struct ctl_table_header *head = PROC_I(file_inode(file))->sysctl;
- 	struct sysctl_cursor *cursor = file->private_data;
--	struct ctl_table_header *h = NULL;
--	const struct ctl_table *entry;
-+	struct sysctl_dirent d = {};
- 	struct ctl_dir *ctl_dir;
--	unsigned long pos;
--
--	if (IS_ERR(head))
--		return PTR_ERR(head);
-+	int err;
- 
-+	if (!head)
-+		head = &sysctl_table_root.default_set.dir.header;
- 	ctl_dir = container_of(head, struct ctl_dir, header);
- 
- 	if (!dir_emit_dots(file, ctx))
--		goto out;
-+		return 0;
- 
- 	/*
- 	 * Resume after the last entry the previous call emitted. Only a seek
-@@ -875,21 +891,30 @@ static int proc_sys_readdir(struct file *file, struct dir_context *ctx)
- 	 * seeking to an arbitrary position always did.
- 	 */
- 	if (cursor && cursor->pos == ctx->pos) {
--		entry_after(ctl_dir, cursor->name, cursor->len, &h, &entry);
--		pos = ctx->pos;
-+		err = sysctl_dir_next(ctl_dir, &d, cursor->name, cursor->len);
- 	} else {
--		first_entry(ctl_dir, &h, &entry);
--		pos = 2;
-+		loff_t pos = 2;
-+
-+		err = sysctl_dir_next(ctl_dir, &d, NULL, 0);
-+		while (err > 0 && pos++ < ctx->pos)
-+			err = sysctl_dir_next(ctl_dir, &d, d.name, d.len);
- 	}
-+	if (err < 0)
-+		return err;
- 
--	for (; h; next_entry(&h, &entry)) {
--		if (!scan(h, entry, &pos, file, ctx)) {
--			sysctl_head_finish(h);
--			break;
-+	while (err > 0) {
-+		if (!d.skip) {
-+			err = proc_sys_fill_dirent(file, &d);
-+			if (err)
-+				break;
-+			if (!dir_emit(ctx, d.name, d.len, d.ino, d.type))
-+				break;
- 		}
-+		ctx->pos++;
-+		sysctl_cursor_set(file, d.name, d.len, ctx->pos);
-+		err = sysctl_dir_next(ctl_dir, &d, d.name, d.len);
- 	}
--out:
--	sysctl_head_finish(head);
-+	sysctl_dir_done(&d);
- 	return 0;
- }
- 
+v6: https://lore.kernel.org/netdev/5a4715dd-89e0-4868-9ffb-c8fb73b18d04@yahoo.com/
+  - 4/9: do not advertise RGMII for port 7 when MAC4 owns EXT1, instead
+    of returning -EBUSY from mac_config(), which phylink ignores
+  - 5/9: take IVL_EN from vlan4k->ivl_en and leave SVLAN_CHK_IVL_SVL at
+    0, as the vendor API does
+  - 7/9: pcs_get_state(): keep phylink's speed and duplex for SGMII and
+    never report the link up with an unknown speed
+  - 8/9: start the re-latch work when the conduit comes up and stop it
+    when it goes down (.conduit_state_change); serialize it against
+    pcs_config() with sds_cfg_lock; disable it for good on shutdown and
+    unbind
+
+v5: https://lore.kernel.org/netdev/aa5fa12c-e43e-4e5e-9f77-c6eaf477abc4@yahoo.com/
+  - 1/9: fix the subject
+  - 4/9: refuse RGMII on EXT1 with -EBUSY when it is owned by MAC4,
+    before touching any EXT1 register
+  - 5/9: drop the unverified rationale for forcing SVLAN_CHK_IVL_SVL, say
+    that the vendor API leaves it at 0, and note that the family D paths
+    are not reachable until the last patch
+  - 6/9: init prev_accepted_frame to avoid a maybe-uninitialized warning
+  - 7/9: comment the write of the whole RX disable field, as in the vendor
+    sequence; fix two comments that still credit pcs_link_up() on family D
+  - 8/9: cancel the re-latch work from a reboot notifier instead of
+    checking the driver data; fix the RESTORE_TRIES comment and do not
+    sleep after the last failed restore attempt
+  - 9/9: fix the description of the external interface indices. The v4
+    changelog said that only HSGMII is exposed; that was wrong, SGMII is
+    still exposed
+
+v4: https://lore.kernel.org/netdev/38872e6f-1264-4a93-9f81-8212173e909d@yahoo.com/
+  - 1/9: reword the commit message (support is added by the series)
+  - 3/9: document the per-port force enable register
+  - 5/9: document both forced IVL bits, update stale comments
+  - 6/9: clear the family D PVID registers at setup
+  - 7/9: do not override the forced SGMII speed in pcs_get_state(),
+    update stale comments, note that the patch is preparatory
+  - 8/9: remember a failed restore and retry it first; stop the work
+    after shutdown (driver data cleared)
+  - 9/9: expose HSGMII only on the SerDes port, update the SerDes
+    interface comment
+
+v3: https://lore.kernel.org/netdev/e84d76ee-03df-49b0-8c9a-b289dfae8728@yahoo.com/
+  - add a dt-bindings patch (1/9): RTL8367S-VB listed under
+    realtek,rtl8365mb
+  - add chip family infrastructure as its own patch (2/9), no
+    functional change
+  - squash the family D PVID getter and the PVID set/clear patches
+    into one (6/9), so the read and write paths use the same register
+    layout at every point of the series
+  - add the RTL8367S-VB chip table entry last (9/9), after the family
+    D speed, RGMII, VLAN and PCS support, so no intermediate commit
+    can reach the chip with incomplete handling (reported by the
+    automated review)
+  - 6/9: fix the commit message (port p's write lands in port p >> 1)
+    and update the stale kernel-doc and file comments
+  - 8/9: start the re-latch work only for 2500base-x, cancel it from
+    .pcs_disable, from pcs_config() and via a devres action; retry the
+    SDS_MISC restore and come back soon if it fails; rewrite the
+    commit message to match the code (reported by the automated
+    review)
+  - 9/9: document family D in the file header comment and in the
+    learn limit comment (limit confirmed against the Realtek vendor
+    API)
+
+v2: https://lore.kernel.org/netdev/28382f3f-03c1-4606-9b11-86f118abeafe@yahoo.com/
+  - 2/8: mask r_speed to the width of the FORCE_SPEED field before passing
+    it to FIELD_PREP(), so that the family D 2500M value (5) cannot trip
+    the compile-time range check; bit 2 still goes to FORCE_SPEED2
+    (reported by the automated review).
+  - 4/8: the commit message now explains why EXT_TXC_DLY[5:3] is cleared
+    for RGMII on EXT1: the vendor RGMII setup does it, and the init jam
+    table leaves the field at 2, which would add an extra TX delay on top
+    of tx-internal-delay-ps. Add a comment describing the EXT_TXC_DLY
+    layout (Andrew Lunn's review).
+  - 8/8: document the new struct rtl8365mb members in the kernel-doc
+    comment (sds_lock, sds_relatch, sds_relatch_count,
+    sds_misc_target_val), which fixes the kernel-doc warnings.
+  - 1/8, 3/8, 5/8, 6/8, 7/8: no changes.
+
+v1: https://lore.kernel.org/netdev/84fc7483-b22d-45ea-a3b8-3285dc357265@yahoo.com/
+
+Mieczyslaw Nalewaj (10):
+  dt-bindings: net: dsa: realtek: add RTL8367S-VB
+  net: dsa: realtek: rtl8365mb: add chip family infrastructure
+  net: dsa: realtek: rtl8365mb: set speed for family D
+  net: dsa: realtek: rtl8365mb: set RGMII mode for family D
+  net: dsa: realtek: rtl8365mb: set and get vlan 4k for family D
+  net: dsa: realtek: rtl8365mb: use raw VID for PVID on family D
+  net: dsa: realtek: rtl8365mb: add family D SDS13 PCS support
+  net: dsa: realtek: rtl8365mb: re-latch the family D SerDes
+  net: dsa: realtek: rtl8365mb: make L2/LUT access work on family D
+  net: dsa: realtek: rtl8365mb: add support for RTL8367S-VB
+
+ .../devicetree/bindings/net/dsa/realtek.yaml  |   2 +-
+ drivers/net/dsa/realtek/Kconfig               |   3 +-
+ drivers/net/dsa/realtek/rtl8365mb.h           |  14 +
+ drivers/net/dsa/realtek/rtl8365mb_l2.c        | 216 ++++-
+ drivers/net/dsa/realtek/rtl8365mb_main.c      | 872 ++++++++++++++++--
+ drivers/net/dsa/realtek/rtl8365mb_table.c     |  46 +-
+ drivers/net/dsa/realtek/rtl8365mb_vlan.c      | 366 ++++++--
+ drivers/net/dsa/realtek/rtl8365mb_vlan.h      |   1 +
+ 8 files changed, 1348 insertions(+), 172 deletions(-)
+ create mode 100644 drivers/net/dsa/realtek/rtl8365mb.h
 
 -- 
 2.53.0
-
