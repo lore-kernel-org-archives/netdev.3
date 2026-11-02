@@ -1,97 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793576855;
-	b=Jb7HxLHrZMPFAbcK4jBRXWhnzRRaUqc/O4jQWkWPykEkUNQbkZoApJuFTdwFohKSsUO1
-	 n8GVs4TbR2Kbn9cbTc6ATqDr51UB2ESj27ZWnm19nXT59AQuvi6vIJFymtCU/9V6hRWOC
-	 82KLcQ4YVAjsXoRQKDBFlFkfQCgCcHWETs11+mTfBY98br6Zjiu2iIdLfKZvPLQQ/ZSD0
-	 uBEKfm2Sy62oagNziMR0N+foTk2g3V53OFlbTbn/YMrRoP80BQinldK6XJe04LqQPYo9u
-	 A23vqnZX4hMuvUmnwOK4ueoRDoxx+XNzS8m8CrNOyxjILMMLzZ2siqWtmEf7N6QYlJA==
+	t=1793578163;
+	b=pDoudS27Svyj6X3yhMHCdEOFEEYLuQ5+oqouzRF3zy/DXXlY2yROXPbMw8eUU//fAx7+
+	 w+kz2oGut49Vv6eip+M4gXve3Pkj+IXfAprWTR551NJQqxS9p8/MlfZzQ5zAJBDhEmett
+	 IuBFTXLk56gDxtmzpUW576sWlmogS8de7wH+l8VtdmWYs3hh5EflTaAN/4Tv0zSd0Xo6d
+	 etj4D8cZupaQdTF+LVu7CVpEviUFzbpUkK8Wn+l3NCaEjCprPTAIdHHHoLA6XvO1he48L
+	 TqSJkkFUWlryKDaTRVTj+nWubumf55gzkR/ySL3RYSX20qAHgzBBgTAZ2geiVA2mCFw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793576855;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=VjEByB41Ih4tgNv6S4Ay7vXpDo2JBFqNUNi+LJeYuq8=;
-	b=0SRnm+OKaOxme5ate8eKvGP0hbcx4c0ZP7hkqQoOP2k5UTvCpTXiZuJYj7EFkGbSiSs8
-	 rYPCmbYYErfHtWz+Jj2XTpy4FZjt53i2Nu+aGdp/BYSjiDX97o5miLlSwaH7KaBruOmFJ
-	 Ndqoi8T0JmVf/PmqACyAl8mE6E3oQWpnI3JI8eeGF4ziJdDkoajq1AiXuPne8YSli3fl+
-	 ABbr2Si9dngZm4wZ+ZQCgnX/VyrGBDpLsqhwqEaeMJ+z+vtHGnycDehvxFgMZux2G/OIX
-	 0r1hhss76rldTYUHCA5nS1eTP+BW3/NsLbeMGDYylaXPhhBTTWbzf9F+6AByDdGae7g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793578163;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=7J6hEMF3m3bnNGhJeCVy6DNKvCreUC846t3x5pm1zuc=;
+	b=JdRtOsZYFiUO6Ue+gbjEFjI0S68d8GBDdYoMj3D5AYe7keDXOfC+r9zpBuh1Pi3i91Wb
+	 qbacRE/7Rc+1WgMNwfpwCS3tRj/P8Wzsry5GJTMW8XSf52QZ82Ni2ccZj4eiHIrB0Llke
+	 ZTTnWx8WfBtTmAsXXLaaKcWDd7Dw/UNjdCBnPS3S769ZVFu7Ys6C1JJg6bSUnm6xnRkOk
+	 OVrFVx6VjGcfQdnBEFipVWDF0zt+UucJopLLPOyRklVYOcwDiD7ZANmytT5gcAEsvyNNb
+	 2R45XjQZuK/GZWshtepzVFL5/7xKba2145ZSCg07pWGB+T5OR/HkqYxxvDk8ioXhNQQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=korea.ac.kr;
-	spf=pass smtp.mailfrom=korea.ac.kr;
-	dkim=pass header.d=korea.ac.kr header.i=@korea.ac.kr header.a=rsa-sha256 header.s=google header.b=dyL4q9zk;
-	arc=none smtp.remote-ip=209.85.128.180
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bTmmR6bU;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44ADF606A326
-	for <netdev@vger.kernel.org>; Sun,  1 Nov 2026 23:47:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 44ADF606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=korea.ac.kr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=korea.ac.kr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CBAC606A324;
+	Mon,  2 Nov 2026 00:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=korea.ac.kr header.i=@korea.ac.kr header.a=rsa-sha256 header.s=google header.b=dyL4q9zk
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-8ab43af5e97so25799727b3.1
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 15:47:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=korea.ac.kr; s=google; t=1793576851; x=1794181651; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VjEByB41Ih4tgNv6S4Ay7vXpDo2JBFqNUNi+LJeYuq8=;
-        b=dyL4q9zk06aXWa0zDMqTQMuPbl8NGN1GWWLlFtoUQU8k03V3ogGMBmZLqcc6bp65dO
-         M/TDrgEjuZEiL+x9w9e4sCIn6LtT4KMMEDbd0WJN1a8rSZPBtDkr3wsA9HqrZ/OFgdOZ
-         a45RpyG2mFNJuZ+Ii833589gKi7WOZgIk8/79eLMFuFrVcL0FnnJtk4WM5VpDskEUB7M
-         BXdMIc2EGBG0buSXJtAMF6IqODWN0oYGftf5GyYaT1viu586BdThj5gHpc9V05ohf9E0
-         ylPj+rzVmM3BQvD1ACO+klDlUv49Z8qUW/sRhiUvVG5/mMVOgKGs2kV/mVhfLzHEMzgP
-         hJOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793576851; x=1794181651;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=VjEByB41Ih4tgNv6S4Ay7vXpDo2JBFqNUNi+LJeYuq8=;
-        b=ZTjz/MyvfaGdZP8H0jVF7XphrKqIimh00X+Fg8p3X4UP3YZXWZNDWs4Cik2oy6COA9
-         XwwIPNbdSIP6sfIB3T+NiMYiHj02sLidn7zZz6CgeVMrAWihIzgZBebgCMFku+IsLaj9
-         Xc8AhM7nT/bSSwsbE+xyl83CjPYHtsrmXGyBxGPXO4NrQB8+jESHrIqm+BtwdtKHBJEP
-         u1vJboQG+eevEzB9AK20No6h3gQ9zpLq0Iqvn7Q515CnOmXheCYDEKYH2wn5v3dprK6g
-         9nuv7o1DUMrOu6P6PqhTtL/CASytkAoO7I6O5Mqcks+mcF+2Zu6equM4P70OxtFno/lO
-         gRlA==
-X-Forwarded-Encrypted: i=1; AKwUvByS3uGaAXLVyuD3PKDwYwJRNg0aVNWWw5oCBAN+d27eKvAu7vxk4hPhHT/8TIeBy4l2t/HkAso=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIISwzRRVY++SmuKFYhCuRkYqSi9wVdE0DBolmrZatQGYy2DjMW
-	a9HoflLBzvWTNgnS3EQY1tsfVUbXcQchNWmMW08GQLENLPH8DmEIf80tTNwIiPZzCQ==
-X-Gm-Gg: AYBFou2epFCDjKmWc87SbFGX9c2GJv0Ct13TjPIkfFgbKLs3/zXkbBZps5C3K3N1pRp
-	+u6hyCf6tTVn80Pug00ETwsBkZTIm+YXNhn82N+rSoljdgqj9BwsPjgAgQuxw8z4thE1E9wU01U
-	oKorRRRz6ep1dMcd6Da15uPR+u6Ed5WFmxNAPha7eze+ouZIYET4U5DHRPrZlR5m4A67hMsq6yq
-	dZoXbZmxtVtFvqnHIoUmjE/QUKnux6ROe9JGXvIVXvw35ffrsEJv32ViXORoyof/tOcBhpN+I2K
-	XjwWUuFKYe/LhA6+43YXBG34U6WQ6BhpxqYtcRsPOAYPWIuh5jlLHGo6ZnvPeUSytKpVG3815By
-	Xi26UGZ6FPeAiBvRvFMg29E3cv3Kc1o8TaIqNRpVb43RIO8Y47hvDnCILaKUG+O23+Hc7M6U65g
-	KNF5Qdt8ed0RmyF5MTdOv8Jl86IV5+6YPgPNRP3PMW9vQImNSkhL925UZne0fkPVdCBA+9MC8Cn
-	XkT10/erqDmTWxtCkGfpZmFlf1hvUUYlQzRjoJTQl+DZOLhlnuDYzcTV02ccImGVqQw9W1/
-X-Received: by 2002:a05:690c:e1cd:20b0:873:5c7b:c13a with SMTP id 00721157ae682-8b1c68bc542mr54116897b3.34.1793576851220;
-        Sun, 01 Nov 2026 15:47:31 -0800 (PST)
-Received: from s2lab05.. ([163.152.163.130])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b2b71bd543sm43987527b3.45.2026.11.01.15.47.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 15:47:30 -0800 (PST)
-From: Ingyu Jang <ingyujang25@korea.ac.kr>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ingyu Jang <ingyujang25@korea.ac.kr>
-Subject: [PATCH iwl-next] ixgbe: make EEPROM init_params() return void
-Date: Mon,  2 Nov 2026 08:47:25 +0900
-Message-Id: <20261101234725.1414173-1-ingyujang25@korea.ac.kr>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bTmmR6bU
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F5E1F000C1;
+	Mon,  2 Nov 2026 00:09:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793578162;
+	bh=7J6hEMF3m3bnNGhJeCVy6DNKvCreUC846t3x5pm1zuc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=bTmmR6bUKqm4k86t3g55e9ps5OXCAAzhYI7i0cStKIi2WGmvVR0EOsE+Z9rlUPaZl
+	 59o6gbqNXBi6lgpLJZSkSHbIm/9w/wuv82YEG10BQBGVGFIoeM08xAIK9f3tSB1W+f
+	 /93L0Fc21mM3KJrNSlJkA0ZSKOvRur7DJAh4uaXJ8KiGcVBr0gE3nemVwlWRmiKb69
+	 8H3NndWk8ghYFbDJ6AM7WF4rej+b01YhdvOuHXjeghlzsYCMkhFX9VSny8JZCcV29g
+	 0ts/4a6cpv509g4bVA0KpJS+WgIRBXV0YGIeaItWu2mybLsEqK0s92cfqIJ6Jal9re
+	 6cWdBeNoH77vQ==
+Subject:
+ Re: [PATCH net v3 2/2] net: dsa: b53: Enable legacy IGMP snooping controls
+From: netdev-bot+sashiko@kernel.org
+To: florian.fainelli@broadcom.com
+Cc: netdev@vger.kernel.org, jonas.gorski@gmail.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, linux@armlinux.org.uk, rmk+kernel@armlinux.org.uk,
+ linux-kernel@vger.kernel.org
+Date: Mon, 02 Nov 2026 00:09:20 +0000
+Message-ID: <179357816089.3131.2008365378649919842@kernel.org>
+In-Reply-To: <20261028235100.3892374-3-florian.fainelli@broadcom.com>
+References: <20261028235100.3892374-3-florian.fainelli@broadcom.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,236 +64,114 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-All implementations of the EEPROM init_params() operation always
-return 0, so the error checks on its return value in ixgbe_sw_init()
-and the E610 NVM helpers never trigger.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Make init_params() return void and remove the dead checks.
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-Link: https://lore.kernel.org/all/8524c812-b659-4670-b370-35682aba2d2f@intel.com
-Signed-off-by: Ingyu Jang <ingyujang25@korea.ac.kr>
----
- .../net/ethernet/intel/ixgbe/ixgbe_common.c   |  4 +--
- .../net/ethernet/intel/ixgbe/ixgbe_common.h   |  2 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 29 +++++--------------
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h |  2 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c |  5 +---
- drivers/net/ethernet/intel/ixgbe/ixgbe_type.h |  2 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c |  4 +--
- drivers/net/ethernet/intel/ixgbe/ixgbe_x540.h |  2 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c |  4 +--
- 9 files changed, 16 insertions(+), 38 deletions(-)
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_common.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_common.c
-index 3ea6765f9c5d8..ab2c0818f2417 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_common.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_common.c
-@@ -857,7 +857,7 @@ int ixgbe_led_off_generic(struct ixgbe_hw *hw, u32 index)
-  *  Initializes the EEPROM parameters ixgbe_eeprom_info within the
-  *  ixgbe_hw struct in order to set up EEPROM access.
-  **/
--int ixgbe_init_eeprom_params_generic(struct ixgbe_hw *hw)
-+void ixgbe_init_eeprom_params_generic(struct ixgbe_hw *hw)
- {
- 	struct ixgbe_eeprom_info *eeprom = &hw->eeprom;
- 	u32 eec;
-@@ -895,8 +895,6 @@ int ixgbe_init_eeprom_params_generic(struct ixgbe_hw *hw)
- 		hw_dbg(hw, "Eeprom params: type = %d, size = %d, address bits: %d\n",
- 		       eeprom->type, eeprom->word_size, eeprom->address_bits);
- 	}
--
--	return 0;
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_common.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_common.h
-index 6639069ad5283..8d4fd9074938b 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_common.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_common.h
-@@ -25,7 +25,7 @@ int ixgbe_led_on_generic(struct ixgbe_hw *hw, u32 index);
- int ixgbe_led_off_generic(struct ixgbe_hw *hw, u32 index);
- int ixgbe_init_led_link_act_generic(struct ixgbe_hw *hw);
- 
--int ixgbe_init_eeprom_params_generic(struct ixgbe_hw *hw);
-+void ixgbe_init_eeprom_params_generic(struct ixgbe_hw *hw);
- int ixgbe_write_eeprom_generic(struct ixgbe_hw *hw, u16 offset, u16 data);
- int ixgbe_write_eeprom_buffer_bit_bang_generic(struct ixgbe_hw *hw, u16 offset,
- 					       u16 words, u16 *data);
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-index 4d8ae5b56145a..eb20ef11f890b 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-@@ -2267,17 +2267,15 @@ int ixgbe_enter_lplu_e610(struct ixgbe_hw *hw)
-  *
-  * Initialize the EEPROM parameters ixgbe_eeprom_info within the ixgbe_hw
-  * struct in order to set up EEPROM access.
-- *
-- * Return: the operation exit code.
-  */
--int ixgbe_init_eeprom_params_e610(struct ixgbe_hw *hw)
-+void ixgbe_init_eeprom_params_e610(struct ixgbe_hw *hw)
- {
- 	struct ixgbe_eeprom_info *eeprom = &hw->eeprom;
- 	u32 gens_stat;
- 	u8 sr_size;
- 
- 	if (eeprom->type != ixgbe_eeprom_uninitialized)
--		return 0;
-+		return;
- 
- 	eeprom->type = ixgbe_flash;
- 
-@@ -2289,8 +2287,6 @@ int ixgbe_init_eeprom_params_e610(struct ixgbe_hw *hw)
- 
- 	hw_dbg(hw, "Eeprom params: type = %d, size = %d\n", eeprom->type,
- 	       eeprom->word_size);
--
--	return 0;
- }
- 
- /**
-@@ -3681,11 +3677,8 @@ int ixgbe_read_ee_aci_e610(struct ixgbe_hw *hw, u16 offset, u16 *data)
- {
- 	int err;
- 
--	if (hw->eeprom.type == ixgbe_eeprom_uninitialized) {
--		err = hw->eeprom.ops.init_params(hw);
--		if (err)
--			return err;
--	}
-+	if (hw->eeprom.type == ixgbe_eeprom_uninitialized)
-+		hw->eeprom.ops.init_params(hw);
- 
- 	err = ixgbe_acquire_nvm(hw, LIBIE_AQC_RES_ACCESS_READ);
- 	if (err)
-@@ -3714,11 +3707,8 @@ int ixgbe_read_ee_aci_buffer_e610(struct ixgbe_hw *hw, u16 offset,
- {
- 	int err;
- 
--	if (hw->eeprom.type == ixgbe_eeprom_uninitialized) {
--		err = hw->eeprom.ops.init_params(hw);
--		if (err)
--			return err;
--	}
-+	if (hw->eeprom.type == ixgbe_eeprom_uninitialized)
-+		hw->eeprom.ops.init_params(hw);
- 
- 	err = ixgbe_acquire_nvm(hw, LIBIE_AQC_RES_ACCESS_READ);
- 	if (err)
-@@ -3747,11 +3737,8 @@ int ixgbe_validate_eeprom_checksum_e610(struct ixgbe_hw *hw, u16 *checksum_val)
- {
- 	int err;
- 
--	if (hw->eeprom.type == ixgbe_eeprom_uninitialized) {
--		err = hw->eeprom.ops.init_params(hw);
--		if (err)
--			return err;
--	}
-+	if (hw->eeprom.type == ixgbe_eeprom_uninitialized)
-+		hw->eeprom.ops.init_params(hw);
- 
- 	err = ixgbe_nvm_validate_checksum(hw);
- 	if (err)
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h
-index 2cb76a3d30ae6..2bc1210756fe1 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h
-@@ -58,7 +58,7 @@ int ixgbe_setup_phy_link_e610(struct ixgbe_hw *hw);
- int ixgbe_setup_eee_e610(struct ixgbe_hw *hw, bool enable_eee);
- int ixgbe_set_phy_power_e610(struct ixgbe_hw *hw, bool on);
- int ixgbe_enter_lplu_e610(struct ixgbe_hw *hw);
--int ixgbe_init_eeprom_params_e610(struct ixgbe_hw *hw);
-+void ixgbe_init_eeprom_params_e610(struct ixgbe_hw *hw);
- int ixgbe_aci_get_netlist_node(struct ixgbe_hw *hw,
- 			       struct ixgbe_aci_cmd_get_link_topo *cmd,
- 			       u8 *node_part_number, u16 *node_handle);
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index f91856498eb2d..b337e2d4cf1c3 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -7058,10 +7058,7 @@ static int ixgbe_sw_init(struct ixgbe_adapter *adapter,
- 	adapter->tx_work_limit = IXGBE_DEFAULT_TX_WORK;
- 
- 	/* initialize eeprom parameters */
--	if (hw->eeprom.ops.init_params(hw)) {
--		e_dev_err("EEPROM initialization failed\n");
--		return -EIO;
--	}
-+	hw->eeprom.ops.init_params(hw);
- 
- 	/* PF holds first pool slot */
- 	set_bit(0, adapter->fwd_bitmask);
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
-index a461b6542f96b..48a74c89a799c 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
-@@ -3476,7 +3476,7 @@ struct ixgbe_hw;
- 
- /* Function pointer table */
- struct ixgbe_eeprom_operations {
--	int (*init_params)(struct ixgbe_hw *);
-+	void (*init_params)(struct ixgbe_hw *hw);
- 	int (*read)(struct ixgbe_hw *, u16, u16 *);
- 	int (*read_buffer)(struct ixgbe_hw *, u16, u16, u16 *);
- 	int (*write)(struct ixgbe_hw *, u16, u16);
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c
-index e67e2feb045b3..d77c6efd800f2 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c
-@@ -191,7 +191,7 @@ int ixgbe_start_hw_X540(struct ixgbe_hw *hw)
-  *  Initializes the EEPROM parameters ixgbe_eeprom_info within the
-  *  ixgbe_hw struct in order to set up EEPROM access.
-  **/
--int ixgbe_init_eeprom_params_X540(struct ixgbe_hw *hw)
-+void ixgbe_init_eeprom_params_X540(struct ixgbe_hw *hw)
- {
- 	struct ixgbe_eeprom_info *eeprom = &hw->eeprom;
- 
-@@ -210,8 +210,6 @@ int ixgbe_init_eeprom_params_X540(struct ixgbe_hw *hw)
- 		hw_dbg(hw, "Eeprom params: type = %d, size = %d\n",
- 		       eeprom->type, eeprom->word_size);
- 	}
--
--	return 0;
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.h
-index 6ed360c5b605b..282d10b7d4733 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.h
-@@ -19,6 +19,6 @@ int ixgbe_blink_led_stop_X540(struct ixgbe_hw *hw, u32 index);
- int ixgbe_acquire_swfw_sync_X540(struct ixgbe_hw *hw, u32 mask);
- void ixgbe_release_swfw_sync_X540(struct ixgbe_hw *hw, u32 mask);
- void ixgbe_init_swfw_sync_X540(struct ixgbe_hw *hw);
--int ixgbe_init_eeprom_params_X540(struct ixgbe_hw *hw);
-+void ixgbe_init_eeprom_params_X540(struct ixgbe_hw *hw);
- 
- #endif /* _IXGBE_X540_H_ */
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-index 4a0ccbf448a2a..a8d300e3f471a 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-@@ -629,7 +629,7 @@ static int ixgbe_fc_autoneg_fw(struct ixgbe_hw *hw)
-  *  Initializes the EEPROM parameters ixgbe_eeprom_info within the
-  *  ixgbe_hw struct in order to set up EEPROM access.
-  **/
--static int ixgbe_init_eeprom_params_X550(struct ixgbe_hw *hw)
-+static void ixgbe_init_eeprom_params_X550(struct ixgbe_hw *hw)
- {
- 	struct ixgbe_eeprom_info *eeprom = &hw->eeprom;
- 
-@@ -648,8 +648,6 @@ static int ixgbe_init_eeprom_params_X550(struct ixgbe_hw *hw)
- 		hw_dbg(hw, "Eeprom params: type = %d, size = %d\n",
- 		       eeprom->type, eeprom->word_size);
- 	}
--
--	return 0;
- }
- 
- /**
+- [High] The commit message says: 'These legacy classifiers have fixed
+  forwarding behavior, including query flooding which excludes the IMP…
+
+--
+
+net: dsa: b53: Enable legacy IGMP snooping controls
+
+This enables the IP-layer IGMP classifier (bit 3 of the global management
+configuration register) on BCM5325E, BCM5365, BCM5389, BCM5397/5398 and
+BCM63xx, which were previously skipped in b53_enable_mcast_snooping(). On
+BCM6318 and BCM63268 it also clears the IGMP redirection enable to select
+snooping mode. BCM5325M and unidentified BCM5325 variants remain excluded.
+
+> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+> index e54f6d4d1f7bb..957a1501d3f49 100644
+> --- a/drivers/net/dsa/b53/b53_common.c
+> +++ b/drivers/net/dsa/b53/b53_common.c
+> @@ -841,12 +841,29 @@ int b53_enable_mcast_snooping(struct b53_device *dev)
+>  	u16 val16;
+>  	u32 val;
+>  	int ret;
+> +	u8 val8;
+>  
+> -	/* Older switches use different IGMP controls, not HL_PRTC_CTRL. */
+> -	if (is5325(dev) || is5365(dev) || dev->chip_id == BCM5389_DEVICE_ID ||
+> -	    is5397_98(dev) || is63xx(dev))
+> +	/* BCM5325M snooping uses the mirroring engine instead. */
+> +	if (is5325(dev) && !is5325e(dev))
+>  		return 0;
+>  
+> +	/* Older switches classify IGMP in the global management register.
+> +	 * They do not provide the separate MLD controls of newer switches.
+> +	 */
+> +	if (is5325e(dev) || is5365(dev) ||
+> +	    dev->chip_id == BCM5389_DEVICE_ID || is5397_98(dev) || is63xx(dev)) {
+> +		ret = b53_read8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, &val8);
+> +		if (ret)
+> +			return ret;
+> +
+> +		val8 |= GC_IGMP_IP_EN;
+> +		/* Disable the separate IGMP redirection mode on BCM6318/63268. */
+> +		if (is6318_268(dev))
+> +			val8 &= ~GC_IGMP_RED_EN_6318_268;
+> +
+> +		return b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, val8);
+> +	}
+
+[Severity: High]
+The commit message says:
+
+  These legacy classifiers have fixed forwarding behavior, including
+  query flooding which excludes the IMP on BCM5397/5398 and BCM63xx.
+
+The message describes this as fixed hardware behavior. Isn't it actually
+something this patch turns on?
+
+Before this change, b53_enable_mcast_snooping() returned early on
+BCM5397/5398 and BCM63xx, so GC_IGMP_IP_EN stayed clear. IGMP general
+queries to 01:00:5e:00:00:01 were then forwarded as ordinary multicast.
+The IMP has PORT_CTRL_RX_MCST_EN set, and the bridge never installs MDB
+entries for 224.0.0.x, so those queries reached the CPU.
+
+This path now runs unconditionally at setup:
+
+  b53_setup()
+    b53_enable_mcast_snooping()
+      val8 |= GC_IGMP_IP_EN;
+      b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, val8);
+
+On BCM6318/63268, snooping mode is also selected explicitly. With that in
+place, would queries from an external querier on any switch port stop
+reaching the CPU on these chips?
+
+If so, these cases look affected:
+
+  - the bridge can no longer learn multicast router ports or detect other
+    queriers from the queries it receives
+
+  - the host IGMP stack on br0, or on standalone user ports (for example
+    an igmpproxy upstream on a WAN port), never answers general queries,
+    so the upstream router would expire the host's memberships after the
+    group membership interval
+
+  - on standalone ports, where the port VLAN mask only allows the IMP, a
+    query flooded excluding the IMP would reach no port at all
+
+This patch carries a Fixes: tag and would likely be picked up for stable.
+Should BCM5397/5398 and BCM63xx keep returning early until queries can
+still be delivered to the IMP with the classifier enabled?
+
+> +
+>  	/* IGMPv2 and MLDv1 reports use the group's destination MAC. Once
+>  	 * the first listener is offloaded, ordinary multicast forwarding
+>  	 * can keep subsequent reports from reaching the bridge CPU.
+
+[ ... ]
+
 -- 
-2.34.1
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028235100.3892374-1-florian.fainelli%40broadcom.com
