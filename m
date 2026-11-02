@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793581035;
-	b=pA2L00rp8LVtTcAFIyisS3+t0FsTno9SC9w/ncZoTz73ZHLY4g4wUG90aRc3Gl7P0mi0
-	 BqxZkKtllnfWK27nPgP4W3d8fjDr3f/64NBDnypB9J/zdw6WCtqEY0ldUIIHWoxUTCfJf
-	 ynLfzdZEf0kIwiuMfuY1T5gSj8sQT1XHeTzyFfk76AY7kEyMw3WIVEK2QonTOx3S6lK8T
-	 3J0ZH0SvxZTpGHq38wRJsPuGzqHQK02lOK+kFxJXLVn5u0N40HrQ8hqDwQAuwE/i33ehw
-	 hOAbG+ohjeNGxzIrOgjFrgjv2hAhHbHZlwW0gFeCeO47m5/sVDaE3/zJP2aKR1SguxA==
+	t=1793581037;
+	b=sf/6jsuRs/yQEtJ7qigT01d0DS6uRt5EqP5H3uWWoshnuiVh8hm5Zdek5ukIASkF8nA0
+	 p5q7XKjHuVyDCcQRPqqTtATNnJucXLx+gKRSPTDvJt6XJlsuwP3+OwmDtR24Fc+UB7Atg
+	 ToxinlSCINi1bNz8waNyEdmJyQxp7tfq/ztUqIpwPecSh0Bu9SXPtr9oKEUgjcxzsb7F0
+	 1r6AE0lDLpSBHwpZJ1D3RSog4Oueyv5vQISORNZxAISLIc0Wp3jgsLwKq9s11/e0k2tqq
+	 gQYZPflAigC1xWSY6sKhMf7JOhtAPM7pmuouX3oIMgahjMzu42qGw3vfmdbkPOMiZng==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793581035;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793581037;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
-	bh=ibSQ9JHfvR9Id4QKEUfIyq8LCimdbREHW1meXTHVyVo=;
-	b=w+LrVbO/zIdJQXq9XJ2wP+KIiFTyPTe32uxCCUm8LzTnALgqqBVG3UcoS3TKPb3T8mxy
-	 rmC4ZK8HXptzrqhl6VB+JPZ6bFYUuGMIxlqCKd9u95rxJiy7Kqa53sibQbd06YlQStQR4
-	 zi+3PW+RtPM92fRrQpjLci1wxj804s6jmOLGjAeypHT0TCHiYXDR4ne0aeIG8u2u5fH7F
-	 wNOOEzMMZTRSUaKQ+Kh5sJWmWoDYMq3yJZtkp6crTX7+mmrb1HhceuN2614qjcDR0uzSC
-	 e1RIbx59IZBF1adkZYozkL5qwEyg/7unpjMZ3XSkSEZvyCY+DfusBA6nVe/tAZ2NrfA==
+	bh=kuc0tSs2t8YhL7Z9z30YhIe5qV0tfMkKwJx3EJPkeDo=;
+	b=V2myYjRfHmVBMQN77MqZLTr1MHoqR3U3Bw+dUVvnj6cbwbZPuWEzdMNGo4dHYS10Fl4W
+	 ibrGBV5TbDKbh1/U45wgXOFNH75Al9XFgfuT1tgi2+kOZN6eMr1Sj77Yt0OTu5GLfigu+
+	 f5O4joB3gCjhy2s9GUzYV2rqAY9AEm7Obt6ODMcK76xIAkXQktB0cznHcJ1bEqMnYOGm2
+	 dSSCf+tMbF5kT8sCEwFZi5hCs/4Pl8v0bI4wcPeOo88jeylK6344zAkJfA5k7CYw9zsYu
+	 jU0Tq8K0UgKQDPrd/D81eULWiHHQFBqiY2XnejaYyWcpfhLR60uwzbwD1tumw+KyLQQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=netfilter.org;
 	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=C2VyLmv1;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=Si9lSjvw;
 	arc=none smtp.remote-ip=217.70.190.124
 Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEE360A2624;
-	Mon,  2 Nov 2026 00:57:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1EEE360A2624
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D767160A2613;
+	Mon,  2 Nov 2026 00:57:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D767160A2613
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=C2VyLmv1
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=Si9lSjvw
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793581033;
-	bh=ibSQ9JHfvR9Id4QKEUfIyq8LCimdbREHW1meXTHVyVo=;
+	s=2025; t=1793581034;
+	bh=kuc0tSs2t8YhL7Z9z30YhIe5qV0tfMkKwJx3EJPkeDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C2VyLmv106JYuIT2E9pLgom5WuUHLEoVL5XFo84pkQ1QiyFsrjYEVv8JNKzcErUPf
-	 UZ3vGoTuBPJPMFQqCiozW0MlIbd8SjEAX70HcYoFIRaN1s0FtXqiXftW2mPoR8NrYY
-	 SKbSlxfJD9z1BaOfzAIAenTLhcs81PpxaKV208nmlH1iFyV64MNZu3L5xYFra6DAac
-	 KHoboRFvIm1m3RIv/OEet4D00Fk6tJe18G2bWFHslKCC2uxP3C1NkV/SAhMe2HqEAk
-	 yzt1dmgUUktgG9726yVpWvMlCAHgEf9LR40uCx1BKRAzhfo6TV+a5eI4p2a9JPq8gL
-	 ICvIUUDAelTAw==
+	b=Si9lSjvw5hKEgChu+S8gJNJXKcsvFuGdqn8IltiYyCTMH44IsLCl9EEqyzXVA86O0
+	 JjZi3brtuAC0FrK/FWxQrwk65iUAmO7LtVMT26v+dnSdbWIQhTMNZ4IFmdXeY4lYF0
+	 md52iXVFVO/yTEU0vy0OpyTeZBbnd0PRCGF3RTJJbNTeURqBi3AU7s1UUZ20dMUiA9
+	 SY6PukmVkvB4vhgR6+AXirlBlb+ViKOs0/3RQBuwxY/PzEXNHNm1wwWre7Z2w+ExvH
+	 MU8LXS4YRWamog5lUEUxWandUnnJ/SuAzn41yI7PWdHg5OqfS85wITww4LmEzDfrvW
+	 XbtNb9PbtDZGA==
 Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 735136007B;
-	Mon,  2 Nov 2026 01:57:12 +0100 (CET)
+	by mail.netfilter.org (Postfix) with ESMTPSA id 2A8B06005D;
+	Mon,  2 Nov 2026 01:57:14 +0100 (CET)
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 To: netfilter-devel@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -56,9 +56,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	fw@strlen.de,
 	ja@ssi.bg
-Subject: [PATCH net 06/15] netfilter: nf_conntrack: limit expectation master chain depth
-Date: Mon,  2 Nov 2026 01:56:45 +0100
-Message-ID: <20261102005654.532438-7-pablo@netfilter.org>
+Subject: [PATCH net 07/15] netfilter: nf_dup: preserve guard across NFQUEUE reinjection
+Date: Mon,  2 Nov 2026 01:56:46 +0100
+Message-ID: <20261102005654.532438-8-pablo@netfilter.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261102005654.532438-1-pablo@netfilter.org>
 References: <20261102005654.532438-1-pablo@netfilter.org>
@@ -73,171 +73,118 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Florian Westphal <fw@strlen.de>
+From: Zihan Xi <zihanx@nebusec.ai>
 
-A conntrack can point to a master conntrack, which itself may point to
-another master, and so on.  There is currently no bound on how deep this
-chain can grow.
+NFQUEUE can suspend traversal of a duplicated packet while the task-local
+duplication guard is set. The output call then returns and clears the guard
+before a later verdict resumes hook traversal.
 
-Force a max depth in nf_ct_expect_alloc(): walk the master chain and
-reject allocation if it would exceed 2 levels of nesting.
+Save the guard in the queue entry and restore it while reinjection
+continues hook traversal. Preserve and restore the verdict task's prior
+state, including nested synchronous reinjection.
 
-Also add ctnetlink_find_get_master and use it so that ctnetlink create
-paths return -EMLINK instead of falling through to nf_ct_expect_alloc()
-and returning a misleading -ENOMEM.
-
-This prevents unbounded ct->master->master->... chains.
-
+Fixes: cd58bcd9787e ("netfilter: xt_TEE: have cloned packet travel through Xtables too")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
 Assisted-by: LLM
-Reported-by: Daehyeon Ko <4ncienth@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Co-developed-by: Luxing Yin <root@tr0jan.top>
+Signed-off-by: Luxing Yin <root@tr0jan.top>
+Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
- include/net/netfilter/nf_conntrack_helper.h | 15 +++++++++
- net/netfilter/nf_conntrack_expect.c         | 15 +++++++--
- net/netfilter/nf_conntrack_netlink.c        | 36 +++++++++++++++------
- 3 files changed, 53 insertions(+), 13 deletions(-)
+ include/net/netfilter/nf_queue.h |  1 +
+ net/netfilter/nf_queue.c         |  1 +
+ net/netfilter/nfnetlink_queue.c  | 17 ++++++++++++++---
+ 3 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/netfilter/nf_conntrack_helper.h b/include/net/netfilter/nf_conntrack_helper.h
-index 335b8c43694f..617178fd4d8b 100644
---- a/include/net/netfilter/nf_conntrack_helper.h
-+++ b/include/net/netfilter/nf_conntrack_helper.h
-@@ -29,6 +29,8 @@ enum nf_ct_helper_flags {
+diff --git a/include/net/netfilter/nf_queue.h b/include/net/netfilter/nf_queue.h
+index 86021c55ba3c..4a8cefd8398d 100644
+--- a/include/net/netfilter/nf_queue.h
++++ b/include/net/netfilter/nf_queue.h
+@@ -23,6 +23,7 @@ struct nf_queue_entry {
+ 	struct net_device	*physout;
+ #endif
+ 	struct nf_hook_state	state;
++	bool			in_nf_duplicate;
+ 	bool			nf_ct_is_unconfirmed;
+ 	u16			size; /* sizeof(entry) + saved route keys */
  
- #define NF_CT_HELPER_NAME_LEN	16
+diff --git a/net/netfilter/nf_queue.c b/net/netfilter/nf_queue.c
+index 166d05e994ac..bd603e3a99a5 100644
+--- a/net/netfilter/nf_queue.c
++++ b/net/netfilter/nf_queue.c
+@@ -219,6 +219,7 @@ static int __nf_queue(struct sk_buff *skb, const struct nf_hook_state *state,
+ 	*entry = (struct nf_queue_entry) {
+ 		.skb	= skb,
+ 		.skb_dev = skb->dev,
++		.in_nf_duplicate = current->in_nf_duplicate,
+ 		.state	= *state,
+ 		.hook_index = index,
+ 		.size	= sizeof(*entry) + route_key_size,
+diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
+index 90d887546f7d..a8aa7ad832c3 100644
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -44,6 +44,7 @@
+ #include <net/sock.h>
+ #include <net/tcp_states.h>
+ #include <net/netfilter/nf_queue.h>
++#include <net/net_debug.h>
+ #include <net/netns/generic.h>
  
-+#define NF_CT_MAX_EXPECT_CHAIN_LEN	2
-+
- /* Must be kept in sync with the classes defined by helpers */
- #define NF_CT_MAX_EXPECT_CLASSES	4
- 
-@@ -159,6 +161,19 @@ static inline void nf_ct_help_put(const struct nf_conn *ct)
- 		kfree_rcu(helper, rcu);
- }
- 
-+static inline bool nf_ct_master_acceptable(const struct nf_conn *m)
-+{
-+	unsigned int depth = 0;
-+
-+	while (m->master) {
-+		if (++depth >= NF_CT_MAX_EXPECT_CHAIN_LEN)
-+			return false;
-+		m = m->master;
-+	}
-+
-+	return true;
-+}
-+
- int nf_conntrack_helper_init(void);
- void nf_conntrack_helper_fini(void);
- 
-diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
-index 06242c86e1dc..e9e796bda577 100644
---- a/net/netfilter/nf_conntrack_expect.c
-+++ b/net/netfilter/nf_conntrack_expect.c
-@@ -299,13 +299,22 @@ void nf_ct_unexpect_related(struct nf_conntrack_expect *exp)
- }
- EXPORT_SYMBOL_GPL(nf_ct_unexpect_related);
- 
--/* We don't increase the master conntrack refcount for non-fulfilled
-- * conntracks. During the conntrack destruction, the expectations are
-- * always killed before the conntrack itself */
-+/**
-+ * nf_ct_expect_alloc - allocate a new conntrack expectation
-+ * @me: The conntrack to be used as master.
-+ *
-+ * The master conntrack refcount is not incremented; expectations
-+ * are always killed before the master conntrack is destroyed.
-+ *
-+ * Returns a new expectation on success or NULL on failure.
-+ */
- struct nf_conntrack_expect *nf_ct_expect_alloc(struct nf_conn *me)
- {
- 	struct nf_conntrack_expect *new;
- 
-+	if (!nf_ct_master_acceptable(me))
-+		return NULL;
-+
- 	new = kmem_cache_zalloc(nf_ct_expect_cachep, GFP_ATOMIC);
- 	if (!new)
- 		return NULL;
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 1f8d94a05240..30428d520e43 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -2231,6 +2231,26 @@ ctnetlink_change_conntrack(struct nf_conn *ct,
- 	return 0;
- }
- 
-+static struct nf_conn *
-+ctnetlink_find_get_master(struct net *net, const struct nf_conntrack_zone *zone,
-+			  const struct nf_conntrack_tuple *tuple)
-+{
-+	struct nf_conntrack_tuple_hash *master_h;
-+	struct nf_conn *master_ct;
-+
-+	master_h = nf_conntrack_find_get(net, zone, tuple);
-+	if (!master_h)
-+		return ERR_PTR(-ENOENT);
-+
-+	master_ct = nf_ct_tuplehash_to_ctrack(master_h);
-+	if (!nf_ct_master_acceptable(master_ct)) {
-+		nf_ct_put(master_ct);
-+		return ERR_PTR(-EMLINK);
-+	}
-+
-+	return master_ct;
-+}
-+
- static struct nf_conn *
- ctnetlink_create_conntrack(struct net *net,
- 			   const struct nf_conntrack_zone *zone,
-@@ -2356,7 +2376,6 @@ ctnetlink_create_conntrack(struct net *net,
- 	/* setup master conntrack: this is a confirmed expectation */
- 	if (cda[CTA_TUPLE_MASTER]) {
- 		struct nf_conntrack_tuple master;
--		struct nf_conntrack_tuple_hash *master_h;
- 		struct nf_conn *master_ct;
- 
- 		err = ctnetlink_parse_tuple(cda, &master, CTA_TUPLE_MASTER,
-@@ -2364,12 +2383,11 @@ ctnetlink_create_conntrack(struct net *net,
- 		if (err < 0)
- 			goto err2;
- 
--		master_h = nf_conntrack_find_get(net, zone, &master);
--		if (master_h == NULL) {
--			err = -ENOENT;
-+		master_ct = ctnetlink_find_get_master(net, zone, &master);
-+		if (IS_ERR(master_ct)) {
-+			err = PTR_ERR(master_ct);
- 			goto err2;
- 		}
--		master_ct = nf_ct_tuplehash_to_ctrack(master_h);
- 		__set_bit(IPS_EXPECTED_BIT, &ct->status);
- 		ct->master = master_ct;
- 	}
-@@ -3613,7 +3631,6 @@ ctnetlink_create_expect(struct net *net,
- 			u_int8_t u3, u32 portid, int report)
- {
- 	struct nf_conntrack_tuple tuple, mask, master_tuple;
--	struct nf_conntrack_tuple_hash *h = NULL;
- 	struct nf_conntrack_expect *exp;
- 	struct nf_conn *ct;
+ #include <linux/atomic.h>
+@@ -365,21 +366,30 @@ static void nf_reinject(struct nf_queue_entry *entry, unsigned int verdict)
+ 	const struct nf_hook_entry *hook_entry;
+ 	const struct nf_hook_entries *hooks;
+ 	struct sk_buff *skb = entry->skb;
++	bool old_in_nf_duplicate;
+ 	const struct net *net;
+ 	unsigned int i;
  	int err;
-@@ -3633,10 +3650,9 @@ ctnetlink_create_expect(struct net *net,
- 		return err;
+ 	u8 pf;
  
- 	/* Look for master conntrack of this expectation */
--	h = nf_conntrack_find_get(net, zone, &master_tuple);
--	if (!h)
--		return -ENOENT;
--	ct = nf_ct_tuplehash_to_ctrack(h);
-+	ct = ctnetlink_find_get_master(net, zone, &master_tuple);
-+	if (IS_ERR(ct))
-+		return PTR_ERR(ct);
++	DEBUG_NET_WARN_ONCE(current->in_nf_duplicate &&
++			    !entry->in_nf_duplicate,
++			    "%s called with unexpected duplication guard",
++			    __func__);
++	local_bh_disable();
++	old_in_nf_duplicate = current->in_nf_duplicate;
++
+ 	net = entry->state.net;
+ 	pf = entry->state.pf;
  
- 	rcu_read_lock();
- 	exp = ctnetlink_alloc_expect(cda, ct, NULL, &tuple, &mask);
++	current->in_nf_duplicate = entry->in_nf_duplicate;
+ 	hooks = nf_hook_entries_head(net, pf, entry->state.hook);
+ 
+ 	i = entry->hook_index;
+ 	if (!hooks || i >= hooks->num_hook_entries) {
+ 		kfree_skb_reason(skb, SKB_DROP_REASON_NETFILTER_DROP);
+ 		nf_queue_entry_free(entry);
+-		return;
++		goto out;
+ 	}
+ 
+ 	hook_entry = &hooks->hooks[i];
+@@ -402,9 +412,7 @@ static void nf_reinject(struct nf_queue_entry *entry, unsigned int verdict)
+ 	switch (verdict & NF_VERDICT_MASK) {
+ 	case NF_ACCEPT:
+ 	case NF_STOP:
+-		local_bh_disable();
+ 		entry->state.okfn(entry->state.net, entry->state.sk, skb);
+-		local_bh_enable();
+ 		break;
+ 	case NF_QUEUE:
+ 		err = nf_queue(skb, &entry->state, i, verdict);
+@@ -418,6 +426,9 @@ static void nf_reinject(struct nf_queue_entry *entry, unsigned int verdict)
+ 	}
+ 
+ 	nf_queue_entry_free(entry);
++out:
++	current->in_nf_duplicate = old_in_nf_duplicate;
++	local_bh_enable();
+ }
+ 
+ /* return true if the entry has an unconfirmed conntrack attached that isn't owned by us
 -- 
 2.47.3
 
