@@ -1,75 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793641178;
-	b=i7lp6PlsGEeXO0GY5ikRMMMzR944hWS3ABlLIuOseta6CrFjdk7r/6/AdswZcpEKnFBC
-	 ELCmYyAkmKjP2pj9ijcct5yEa22ERjup05WEh9ZWr98tubWelwiExvUroPZDQHrr+vafw
-	 74nbXkcqWeiotgrmWX7Oly/kSgiwXGkrCq5RjzIX1sDj9Vc2WElc7Z0ruTfVZ6dp3Pvi1
-	 h61rkQDpXN59J8LucBQ7Dm6tdaJKchualXLS39Yu6Re+zwgffilLhkPF5hcRvQ53HQkqW
-	 fVB5waLP0fRSqj22osu9igA3crTIlbZAXfCwpTwLnnqv+Sex0Nu5RcVhI8+/o3iZixg==
+	t=1793641454;
+	b=JKJJIdLQ0102z0UnmBAXJdBShu2vD1P3/8AvaJTHnibSGtbwSE+YvgCE+74maFipeeA5
+	 8+IVISlJ04yova+1Qy0YnbKLgOGd6jI4wvoG3yhHtlKrj9K27c+7EhSp1a9zOkBkwVwuK
+	 xhujDJXzo0IlZ5vFF+Ltz6/GgIfOh3VUargGJ6x7s91k4lyaSzxNwSLUVZdc4kVUP/+Wz
+	 9jlulnCNwYJFKIae75gh7f288f4aOwfamTgP6Sd6zU8AsTbSKbnRnyCgxDknFtgch2RzA
+	 4eNxg0GMeIZz2tfctia1yKvfNEPFd/ddO8G0uAQA2JvadHX6rNGliEa8qVSUDONqGbQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793641178;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=M46t8w35UxmCjuKGOfV083QezXATTtv2L3yE3JiuDI8=;
-	b=uU+Q97Y4G376BR/LolJ87/K9nmZx1e7FjLfem/eWKLx5B1i4SRa8+4fJ67zSFv0pXxKx
-	 PrS7/xdQpJMbSwTpmw+jJ9kfHRX+g1lOJqcK4Z4PhltvgWPXL4bsmuZkgVbCtKblea0l9
-	 H/Zehhdf+ri4pEJ4GIsKP4l6xnHoL7u/8H11b+ZIt81+il+QC3qnNe5F4MO9Sk/7mFLz3
-	 8/hvJRFgN+GwLTapLhrUx/4SzKcK79yPG15rGJYTw9kvsdPQFDlp5mlmajhKxRuUaqVzN
-	 9ONUOruBGpKgFtM5UlwBrANnksYswaWixQ2W6OcW8+W49rPw2wt1qxBw4F1wWUGZ+GA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793641454;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	b=BQEYNtnZjp1iISiFeOHvGklXpzNFhZRiClVam2KI+XE5cGAZBJ8lwxdTzOVEWJlrPEAq
+	 rzJVpZUk0i+ODWF1h2D/yYmUmXKye1KXBpwYEDJTxW3OZMGYo/RMMZqCB4+K0rl37ug2P
+	 jBYv4Bh06kqr7psaUjGNlklayIvXx9QgaiKAbGn4gFH+4MKIeSIMlHTab4gLHFbRcuANA
+	 FV0Qh77bkEEvWMBgD8lnIgGMctfhB71ZeXLKp/ZSUNtKr33m4V/5L5c9XhnshonM02Cmb
+	 o4lIGmrOK9zvwNavOuighRcuuL6sKbIM0wHdhmlvVM2HGKufsJHmcMHFOjEh4+/xKhg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=O4pF9ElD;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CFH+9lDm;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF313606A90B;
-	Mon,  2 Nov 2026 17:39:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EF313606A90B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D46C606B1C8
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 17:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=O4pF9ElD
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=M46t8w35UxmCjuKGOfV083QezXATTtv2L3yE3JiuDI8=; b=O4pF9ElDREeZJBt2Twdm9bHx3p
-	RvII/Jl/3ovHIH8t28+GJelDonfwvf549+iV18nBRWLoOfVJeR7EyBScHJ8WVjAOUjBsZVx6dTgtH
-	G8s39MPwWuLKoYTllh8W3tR/UKI1cKV7V/h0GCS1hzakcQ4+afF38zEtzSo/92qgHlWM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xNw08-00DqNp-QN; Mon, 02 Nov 2026 18:39:20 +0100
-Date: Mon, 2 Nov 2026 18:39:20 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Doug Ledford <doug.ledford@hpe.com>
-Cc: Guenter Roeck <linux@roeck-us.net>, Jakub Kicinski <kuba@kernel.org>,
-	Slingshot Open Source Team <slingshot-os-team@groups.ext.hpe.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, Sandeep Bhoot <sandeep.bhoot@hpe.com>,
-	Iraimani P <iraimani.pavadai@hpe.com>,
-	Mamila Santosh <santosh-kumar.mamila@hpe.com>
-Subject: Re: [PATCH 00/23] Subject: [PATCH net-next 00/23] net/hpe: add HPE
- Slingshot NIC drivers
-Message-ID: <a5ed91f4-7d53-41fb-9661-ecb4507089b7@lunn.ch>
-References: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
- <20261030151121.1f232b50@kernel.org>
- <7d4583c2-e8dc-4ffb-bc45-e2121f824b14@lunn.ch>
- <bde936b5-1b3f-4987-a3e5-36ec5c4710e6@hpe.com>
- <71e3083f-c845-4953-80b7-38682a4cd84a@roeck-us.net>
- <f235dd80-477a-44ea-955e-93252ae4e7dc@hpe.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CFH+9lDm
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CED11F00A1A;
+	Mon,  2 Nov 2026 17:44:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793641454;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=CFH+9lDmIhi1EcXtrYDQT2aON1nue/8zrLRncLS1d18qQhA+b53bkrPU0jp9JHYEX
+	 TIwvNW3yrxuazH8Fw9mYNH2UZA65kFCo0Xjnei3jFlJ2qQrtrzdV55O0MTv4YD9cCI
+	 /oriMynOIlayxRjN2t/VoSw0Hrs3wgdrZrAqe3DZ8zdR1kD+TSLq3UuSiCNUPEYFDo
+	 0JgA/8gLlillxhNlDPR+gKt7tV1kc/kJ2l6SsqNN6UydlhiFAnm6FFhNha4g9Idboh
+	 MWC9jQHL9oGMxrmcSXihcLvk8Z8CUMUdJUM99AeYJgJi+DQ7YORF7k+WUzphxrMJ0k
+	 0vjsMMtPP2ibA==
+From: netdev-bot+sinfo@kernel.org
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+Subject: 
+ Re: [PATCH net] net: stmmac: keep est_lock across PTP clock adjustment
+Date: Mon, 02 Nov 2026 17:44:12 +0000
+Message-ID: <179364145292.3286.14851003961835841774@kernel.org>
+In-Reply-To: <20261102-stmmac-ptp-est-lock-v1-1-76fbc0cb230d@oss.qualcomm.com>
+References: <20261102-stmmac-ptp-est-lock-v1-1-76fbc0cb230d@oss.qualcomm.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,16 +67,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f235dd80-477a-44ea-955e-93252ae4e7dc@hpe.com>
 
-> Our only allowed AI inside HPE is Github CoPilot.
+Hi!
 
-Now think about that you are posting the driver to a public mailing
-list, to be archive forever. All your customers have the driver, there
-is nothing secret in the driver. It is GPL licensed code.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Does this policy make any sense, in this case?
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-     Andrew
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
+
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
