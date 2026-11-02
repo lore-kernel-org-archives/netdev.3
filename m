@@ -1,60 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793595052;
-	b=cG2mvkU09gEqOEkDVSsPt6LQwKm1WH8IPF9YtGWmM+9qz1YCdRbLUJVbaePs/8xussTn
-	 K7RRiY9Jueg3FuVbf+SDp3vzDZz+ORFTpVmDuJYIdx7nLCtqthcMdCHSt/arjPxbKYLKt
-	 /bRZk3gaNwvWBLxNGFVdWxEDqs8wNTUhW3v8cZT2/6xSJ0BH7PPPPqCVvNwf4RWrTXpQw
-	 lw911Ya0Bxa5I0r1SqXwq7yrhBK/cK8UppxmyHN65DUI2Q5TXws3a3tlYqNLiRo7koCzD
-	 9khWyJUTQ5u0Zm8nOrJ36K+7SXP0k/NhqzpQFlWfYxsN0vQlVM7Dxa/K0hJJPFoZfWQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793595052;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=9NjwTKigzXyJcNab5AKVuwtkEGTVfIQKZBQ4FCtvQwA=;
-	b=ddpSFxh+83u8S27Pi2l3OvlWt5OSk1wFV9Sv2P4xyZVTPgM8EFf/MXc7g4oAITUmgfmj
-	 Noj3O3BPPy33s5xUeAprd4mnlazysvIeudz/A5Aqn8J36Yn3Xgt0CQjuGwBd62K0sx2HQ
-	 msHz0dp3z9EDydm6yjXQel66kc7VOOpGQXmajmSgLMjrojbXOoulraXztkVhPUMHNAwbB
-	 Fe6nVSf63sx3kfHbmlQJC60B3FmDKPQVuOa8Wfm2vQncO3GZX33a30QtlX1Wgf5Mq2E+u
-	 DKGOgcKzUOaMquUMMjtEbngVugxAcFuAf1maxoA8d60Q7whfCRej2MpfKHRKI+WFX6g==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IOLSLxfQ;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.43
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793597718;
+	b=W04qJXRgSu1AHDGHQpB6ixMIeS4H1vWYLWKriYMx2sBgIorzZBaz6Oo+D3LozakaXFQ3
+	 PaTzRauKTyfDoN3gDHoOTjgGj31qjtLZJz+eyIju031qEOJ+VyJGEiukga90cqiE/9u47
+	 +JQceF+rSBnHEmAmAgIiviVOklpbRpFHO2JCYuhKvpSiVGt+uTlpNEpEJAvcArdEU161Q
+	 BahxcIJtWuFodnz7hwEP7zkOfZkOG2X+FCmEMX3da35iDYZ460HbXAqzHskXoSeA62zfE
+	 D4wqxpY/gnslQ173IhiYwq9qPoR2c4oYZvDbFkpfU4WxtZr04Od0vhRQAMMYMXE2NSA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793597718;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=W+hC4F4hAwm9joqKZ+fH9u/y7V0gzk8Wl/nmjTnVbjo=;
+	b=orOXae7vgY5OUWyDNCpddmFZqRi4O6OGrl8ssuAy5jy1MhFietd4YqM0V3o3gwPWEqK0
+	 4NficRTpD0XfTk/vytcrK/kk35f0ziEtC4slNMXxZ4F3LC0GiUE97+mEwQDrnUysn+LHx
+	 S/wjvfcuyuuCpzNgnI6kZb5tvtcesBOCdVmjGhQf6peQYdcIiadi9XNaFoOMYu8qhQazP
+	 91b9uppLxwfwJOk7W0snK9O8Jf8uML3kng2825ifYk8P3OKt28YZCF1oWnXct7eWTsaI6
+	 tReXMh3vunFo6IIIgDCL2cUc6P1Ctmz/BDh+Wdoo+MmGtaDQeC0hOICUuLS5CkrTBIQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=gfRtvORV;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.43
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE38606A324;
-	Mon,  2 Nov 2026 04:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4AE606A327
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 05:35:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8C4AE606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IOLSLxfQ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A701F000C1;
-	Mon,  2 Nov 2026 04:50:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793595051;
-	bh=9NjwTKigzXyJcNab5AKVuwtkEGTVfIQKZBQ4FCtvQwA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=IOLSLxfQGXSJq1mJoNmIBhj1iuVg335HttuJX0YH0goMJX9+RTkhuipnqvh3VzmRa
-	 nUN3UFGqRlYvmAL4655Eq9Pu0n9Flfk0B+EiIFyzGq9IcovHkkpu6OxjzHGQxLu4yl
-	 wAUgQi6C7iTa/IfMQk9GPSIQd2zuDHtq6U4EdaglhoihP9V5c3/0fJklIsbc/a3+FU
-	 gzK4JQC0KjTLq25/pmRAdGjRdgOcq1oLyH3RKtgnS8u3IJn+0iI88E4FzlbOCUXQfd
-	 zQoUk+6mi1yZaSqjuz6o6oFN1GsGIvt/Dz8yrYZkOdPfdcRh3JT12N/BKSYtzN0SJs
-	 f0GYmxuA//bxA==
-Subject: Re: [PATCH net v3] net: bridge: disable MRP ports before the FDB
- flush in del_nbp()
-From: netdev-bot+sashiko@kernel.org
-To: teel4res@gmail.com
-Cc: idosch@nvidia.com, razor@blackwall.org, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- horatiu.vultur@microchip.com, bridge@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Mon, 02 Nov 2026 04:50:50 +0000
-Message-ID: <179359505012.3131.7814662128826235179@kernel.org>
-In-Reply-To: <20261101044840.1595584-1-1020691186@qq.com>
-References: <20261101044840.1595584-1-1020691186@qq.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=gfRtvORV
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-1ae7fc5681dso4282c88.1
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 21:35:18 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793597718; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Ys1Y8DXJw5uAD+0l4eM7eyPCv2l7E8OExZHP2Eu7jZr5cC1X6TKLjjC+WdDsJtK1rt
+         i4hki+RqSwF0CKMb6fbvR1B+ABkUt8XN4E8XvlkWh65FiFFzY85BqN1e50vGU7QKL/qF
+         6SgyjsRGB6bMn3zwk7y+DK4qOG6bYIoeIOh1yA1eCoeCi12Iqxi0F1Tad+va152wzoh2
+         f3y6CFzSjcJSXrt4uI/b2p9WlZN4549ekc+/t4IuMW9uEjmNMs21ZzOfthYH5ZKR/iQu
+         sZGNhnARC0qPywMz71wRbxWXzkoldDKpk9Fp7bU0cjeCYxn52gzCBKGLuYVhu+HK1u2H
+         NFWA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=W+hC4F4hAwm9joqKZ+fH9u/y7V0gzk8Wl/nmjTnVbjo=;
+        fh=zI4lTI41gBRYVT+U1Z7dZ11rdTX9gzbpOcPVV3PQ/DU=;
+        b=Q+FmwZYYJIH1v0ahJhj5DwWdDMJjeBryvHPeWOt3YUG0N3IzTZjBLaiq01wOY7EIoU
+         WuImtR4IofCdyaqvXk1azQiQEEyrRssegaxnkIiAFbJ+L4Hael5gxdy+ixKw/NAbL4DW
+         1okeslFx7L3YEIKIteV7jK27rll1qgobKhjE411eq6eCoggN379hRBXy6dg2DBR+cm8K
+         5t5+vsoKZmv23Du8CZq08W7vRXPR9hgWPyVG8nbxsBP6DlizJJU+ybQ/NRgQxw0I7+xt
+         5JfwGgFwjH6gNBYSRKz2NPUc3ckE9bxuZbi36134hfPqcG+WdGGjrd0uhT7KEMHmzT6A
+         g5TA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793597718; x=1794202518; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=W+hC4F4hAwm9joqKZ+fH9u/y7V0gzk8Wl/nmjTnVbjo=;
+        b=gfRtvORVMla4nCBA+g1KRdGm5xy2G7i82zYfxIC7+MGS0ahIMJw5JiKT9JWIXkC1tg
+         8b/PHZNBpPoZkQ+obXIaft4EJT4wp/aay3pkTQ9lii/Wf89lli9Y8f5kLXCLw2iPKUS0
+         95vLNFULVmA75kI2rXr7AvEtdNCxPnF3OOtvJT3xxUXbFxJgZMzNH1AqrqGXdEmyjXnC
+         5FkLZabGbUxMjxtJtNHu5aQM9j0sa3SpR2wY3XQV94jk/lGlCkYFJfBt2Ag1TUzRzI90
+         xJaf22bOnYtQpulm09ttHnuLwCSXnmbcqtfmY0rkmw5bs8u/pNfZGmvUCH/wcrRWpgYE
+         WSLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793597718; x=1794202518;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=W+hC4F4hAwm9joqKZ+fH9u/y7V0gzk8Wl/nmjTnVbjo=;
+        b=Z7O9DCj9Ee9gAx9RNNrWjJ0cQZYpaTlUqCD/robB5Oa8vieuCVoMlgUUHl3e+Elb28
+         AazIj2Ko80e2jyjnta0PysBl8SFF4BWKPpg8GTuKljL1lOOmlfeH7Er1V6Yv/Lj8R7sx
+         cTWjbCmlvhvNreK42x/6g7zn0D0gsSEwtLTRXMhx6FhjSX4jPHIRB7XXRQ8WrqKUfeEF
+         c8wDEn3+JH6sg6XJIDnb0Q4zzM5/Tx+3o+/Mh+hSKuajJx+AMRFTpVpL5rN8/7IR9vs1
+         2Vt8gTAERmlxjXALutPg+SBRmIDwZatoo3ZZ6uz5yvWud7MUntTBWrWAFlm54vQkVCiL
+         yuXw==
+X-Gm-Message-State: AFq9FYKZvvOYxrqB0RL72RxWkcRSxJyXhJpK1LyC0za75U5u9meoYQVT
+	iry3ndsPxNqBbCwklNLU5A9rTAwnV0muLrCpjhElNGy49/lC2pSlXF2xLRyafVPcTY6HrWg5x4m
+	qY4GVnbrqUPgkziVMbNrCCjNtN6ZBnnPpoOrjSiBo
+X-Gm-Gg: AYBFou3V1yhA9lOSw9tr4x0jbWwfwb0Ahg6yI2hhOXdqr8BT3vL/xTRbnjNxaSu2XA1
+	jqNIRmhNr+CgHPnM5wp/8vfymulsEgmgDP20EGFOLX5W2sP7ZIgLgRsXMx8PI7LsyAMM1yyRfDY
+	SkH+CnzoBtKE8XBXHuHQmmfHrEFrydEbrtYKFnvUVqBgRnjKmBuj/5hlQRqq6lEVh1Erj8SpEzt
+	J1M0xNd5nmU6y0gEVeZdctihOxxk4uYEU0ijN/g1UkvdA6NN1ZFdcJ71nAx1+y28Xc0UD2AlY8p
+	v3YOJllJ81UBhRv4A/qeKTqxYCPNWYvrVYc01NhcFgny9zCoxVS8MtwszGad2CMZRCyvdU233ON
+	NeNmTF+IC6NaZ9VVNEETi1Va4AuOQ4Z0ZmnE0srBkvUtBD+RT05Axowx+iIIrzuEMy7ZBTxQ=
+X-Received: by 2002:a05:7022:7f0a:b0:149:8916:defc with SMTP id
+ a92af1059eb24-1a9546390a4mr1658978c88.0.1793597716672; Sun, 01 Nov 2026
+ 21:35:16 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,184 +103,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <20261101075145.698399-1-sgzhang@google.com> <audwphXNeZhVItS0@google.com>
+In-Reply-To: <audwphXNeZhVItS0@google.com>
+From: Ray Zhang <sgzhang@google.com>
+Date: Sun, 1 Nov 2026 21:35:05 -0800
+X-Gm-Features: AclHuK9nicuZoXvOoxzdD_K3_bDawbdxZQ3_9KfsA-zXkExzJY5UTfRe7i8Lwvw
+Message-ID: <CAPqVEODgo=mr+3viog+bY1XOKHLcrEVhs4CtZ-SiSYT4Hh+gjg@mail.gmail.com>
+Subject: Re: [PATCH net] net: count last skb of each sk_backlog pass in __release_sock()
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, 
+	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
+	David Decotigny <decot@google.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Sun, Nov 1, 2026 at 9:15=E2=80=AFAM Kuniyuki Iwashima <kuniyu@google.com=
+> wrote:
+>
+> On Sun, 01 Nov 2026 00:51:45 -0700, Ray Zhang wrote:
+> > Running 500 concurrent TCPv6 streams (neper "tcp_stream -6 -T 1 -F 500"=
+)
+> > on a 2-core Cortex-A53 (CONFIG_PREEMPT_NONE=3Dy, HZ=3D1000, LATENCY_WAR=
+N)
+>
+> I guess you tested it on 6.18, but note that CONFIG_PREEMPT_NONE
+> is no longer selectable on arm64 since 7dadeaa6e851.
 
-Critical: 0 · High: 2 · Medium: 0 · Low: 0
+Right, we hit and tested this on 6.18 -- thanks for pointing out
+7dadeaa6e851 and for the review!
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The fix leaves the use-after-free reachable when
-  CONFIG_BRIDGE_VLAN_FILTERING=n.
-- [High] The reorder only clears BR_MRP_AWARE_BIT when br_mrp_find_port()
-  can still find the port in an MRP instance.
-
---
-
-net: bridge: disable MRP ports before the FDB flush in del_nbp()
-
-This patch moves br_mrp_port_del() and br_cfm_port_del() ahead of
-br_stp_disable_port() in del_nbp(). The idea is to clear
-BR_MRP_AWARE_BIT before the port is moved to BR_STATE_DISABLED. That
-should stop frames received during port removal from learning FDB entries
-that still point at the port after the final FDB flush.
-
-Link: https://lore.kernel.org/netdev/20261012123051.GA714215@shredder/
-Closes: https://lore.kernel.org/netdev/20261022090431.3641707-1-teel4res@gmail.com/
-
-> diff --git a/net/bridge/br_if.c b/net/bridge/br_if.c
-> index 2c05ebc1299d1..fb25ce3e5e646 100644
-> --- a/net/bridge/br_if.c
-> +++ b/net/bridge/br_if.c
-> @@ -341,13 +341,13 @@ static void del_nbp(struct net_bridge_port *p)
->  
->  	nbp_delete_promisc(p);
->  
-> +	br_mrp_port_del(br, p);
-> +	br_cfm_port_del(br, p);
-> +
-
-[Severity: High]
-
-Does this reorder cover a port that is still MRP-aware but is no longer
-referenced by any MRP instance?
-
-br_mrp_port_del() only clears BR_MRP_AWARE_BIT when br_mrp_find_port()
-finds an instance whose p_port, s_port or i_port is this port:
-
-br_mrp_port_del() {
-	struct br_mrp *mrp = br_mrp_find_port(br, p);
-
-	/* If the port is not part of a MRP instance just bail out */
-	if (!mrp)
-		return;
-    ...
-}
-
-br_mrp_set_port_role() overwrites the role pointer. It does not clear the
-displaced port's bit, and it does not swap the roles:
-
-br_mrp_set_port_role() {
-    ...
-	switch (role) {
-	case BR_MRP_PORT_ROLE_PRIMARY:
-		rcu_assign_pointer(mrp->p_port, p);
-		break;
-	case BR_MRP_PORT_ROLE_SECONDARY:
-		rcu_assign_pointer(mrp->s_port, p);
-		break;
-    ...
-}
-
-Take an instance with p_port=A and s_port=B. An IFLA_BRIDGE_MRP_PORT_ROLE
-request that makes B primary leaves p_port == s_port == B. Port A stays in
-BR_STATE_FORWARDING with BR_MRP_AWARE_BIT set. A follow-up request to make
-A secondary fails with -EINVAL, because br_mrp_find_port(A) returns NULL.
-
-When A is later removed through br_del_if()->del_nbp(), br_mrp_port_del()
-returns early. br_stp_disable_port()->br_set_state() then still skips the
-state change:
-
-br_set_state() {
-	if (test_bit(BR_MRP_AWARE_BIT, &p->flags))
-		return;
-    ...
-}
-
-With runtime VLAN filtering off, br_allowed_ingress() still returns true
-after the VLAN group is unpublished. So br_handle_frame_finish() can keep
-learning on A after the final br_fdb_cleanup_by_dst(), up until
-netdev_rx_handler_unregister(). That window includes the
-netdev_upper_dev_unlink() notifier chain that the reproducer delays. The
-learned entries outlive destroy_nbp_rcu(), and a later frame to those MACs
-would hit the same br_forward() use-after-free.
-
-The commit message says the reorder means that "br_stp_disable_port()
-actually transitions it to BR_STATE_DISABLED". Does that hold for this
-state?
-
-The role bookkeeping in br_mrp_set_port_role() predates this patch. Still,
-should del_nbp() clear BR_MRP_AWARE_BIT (or force BR_STATE_DISABLED)
-unconditionally? Or should br_mrp_set_port_role() be changed so it cannot
-leave a port orphaned like this?
-
->  	spin_lock_bh(&br->lock);
->  	br_stp_disable_port(p);
->  	spin_unlock_bh(&br->lock);
-
-[Severity: High]
-
-Can the use-after-free still happen when CONFIG_BRIDGE_VLAN_FILTERING=n?
-
-The commit message relies on nbp_vlan_group_unpublish() to drain the
-receive path:
-
-  With CONFIG_BRIDGE_VLAN_FILTERING=y, synchronize_net() in
-  nbp_vlan_group_unpublish() also drains receive paths that could still
-  learn with the old state before the final FDB cleanup.
-
-When VLAN filtering is compiled out, that function is an empty stub in
-br_private.h:
-
-static inline void nbp_vlan_group_unpublish(struct net_bridge_port *port)
-{
-}
-
-CONFIG_BRIDGE_MRP only depends on CONFIG_BRIDGE, and
-CONFIG_BRIDGE_VLAN_FILTERING defaults to n. So a build with MRP=y and
-VLAN_FILTERING=n is valid.
-
-In that build, br_mrp_del_impl() sets the port back to BR_STATE_FORWARDING
-(if the bridge is up) before it clears BR_MRP_AWARE_BIT. A reader in
-br_handle_frame_finish() can read p->state without a lock, see FORWARDING,
-and only reach br_fdb_update() later:
-
-br_handle_frame_finish() {
-    ...
-		if (p->state == BR_STATE_DISABLED) {
-			reason = SKB_DROP_REASON_BRIDGE_INGRESS_STP_STATE;
-			goto drop;
-		}
-
-		state = p->state;
-    ...
-		br_fdb_update(br, p, vlan, eth_hdr(skb)->h_source, 0);
-    ...
-}
-
-Between the DISABLED store and the final flush, del_nbp() never waits for
-such a reader:
-
-del_nbp()
-  br_stp_disable_port()          /* p->state = BR_STATE_DISABLED */
-  br_ifinfo_notify(RTM_DELLINK, ...)
-  list_del_rcu(&p->list)
-  nbp_vlan_group_unpublish(p)    /* empty stub, no synchronize_net() */
-  br_fdb_cleanup_by_dst(br, br_port_to_dst(p), 0, 1)
-  ...
-  netdev_rx_handler_unregister(dev)
-  call_rcu(&p->rcu, destroy_nbp_rcu)
-
-br_fdb_update() does not check whether the source port is being removed.
-If the reader gets to fdb_create() after br_fdb_cleanup_by_dst() has run,
-the new entry points at the dying port. The same happens if the reader was
-spinning on br->hash_lock while the cleanup held it.
-
-netdev_rx_handler_unregister() only waits for the reader to finish. It
-does not remove the entry. A later frame to the learned MAC would then
-reach br_forward() through the freed port. In this configuration, the same
-window seems to apply to ordinary ports as well.
-
-Would an unconditional synchronize_net() between br_stp_disable_port() and
-the final br_fdb_cleanup_by_dst() be needed here, instead of relying on a
-side effect of VLAN filtering?
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261101044840.1595584-1-1020691186%40qq.com
+On mainline, cond_resched() in __release_sock() still applies to
+!ARCH_HAS_PREEMPT_LAZY configs (e.g. CONFIG_PREEMPT_VOLUNTARY on
+32-bit arm/mips/sparc, or CONFIG_PREEMPT_NONE with ARCH_NO_PREEMPT),
+and landing it in net lets 6.18.y stable backport it cleanly.
