@@ -1,113 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.137
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793646887;
-	b=M4yAWDYhnyJS9jPkRJd/+b302Ee3rE5u1KSt9Jmuh88G7Whs2LP2NtmqvLIp01kITv61
-	 E1fCRISALEoKs2YRU6rGZhS/c2L03tX6jQ2A+Ky4pJtupB8IWOAiWduTFdGxmu2UC2V37
-	 2ZVVxCwZXbwGujG/4hwPRIMrO6Agg1cpR5bZmYLPPgGWPfvf+UFbSdI873u2ZD76PsZpe
-	 8ZLo7qXkfER/BS7G9wjvVBIO8H0Q1JNxoopYnHWMxlCq3OTsiGix6aDExDwBpbKpEANOQ
-	 OzPq+3pDtVfxJGrdOC+frlymDsUChkM7nLKNFy0I6fqBu+LRlyVn3QDicG32d1seZsQ==
+	t=1793647068;
+	b=2re+OwCmCuegMUT+2LjAPXUat0ncsacSGkWbv0CnxxRz8hTMQqeIvd6+WfygXBL/R4U/
+	 tZ2E0as84btg8hIrDDQug8TfbNyWYfVZFy9BhduL9JSChELiXHgkrwbuEKG15zoZkS47U
+	 pUGk/YGyEbKDiUxH/xO+rxubFQI4ee4OHag4sbeFhbjcKzVDrQ3KTLCOe10oE6MttMyYh
+	 uNYjOIGCeTPWs5Ir59X1+k+PeM2ONuzyCUdi1NtN+aRjFXGmWg3Wxo68aYqwK3yuRlM6A
+	 BVW935H6bfRXVRQI/RXZkIglhOLk+b9Zd9q1vRZrvlTQWGpWZUOg5iKBFrVd/FuhY5g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793646887;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793647068;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:
-	 X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=x5vucs4W796ZHC+npd6ZnayJC+IA8nom1dy9O9U2Tu0=;
-	b=gZE8xiRYguKYhUtlh/3DbAjCT8nRsSuZyWNCnFoq771HXKtppgXZtsGIIUqkekPA0KDZ
-	 tfvm3nU5ZyVlx7NZBGj5lHGf7F9ZXClpM2TxfmlPtN5KoM7OEV4Z5Jc+3Q66u4+j7tY3U
-	 fNHEkZsm3s80X4pUNe0bsLhTs/RJrbh9A8J5oVzb1juG89eZL2aSRcVLLK/72Nx+CRdFM
-	 6ufoI1h3+wnAOg+6z4Kiq4HFqKCzyFaFOvM4NPmb27ml/XZv78/4KkD7wT6989RDxHq5D
-	 2ZIi5LIc5QCpX8jqO3ZwVobA54nzzukHYPcLsDnIHqKdlrjUVEY40EfFJIvTaitsB9A==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:User-Agent:References:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	bh=d4HU1ZMjQSDjg4zY71Jjjfa2oalRN5eFdZ16rR5uBtk=;
+	b=EciHjOIXFitPn/kcgQCyszTjXmFl+Orq2VIv5aaR+llH2Pj/dudolWn99KJKV1ll1DAJ
+	 vwdOnDwuUUd4buJlwDlmBH7IR3AGGkxJ73PwjW6FuqMk2cfjcPCy1J/EbGvCjgIdaND51
+	 k7p9qaXTp1TOgLATu4620WtYgtTiVtxUN02cyVbCIdTWw8LmIId5W/9zJ8WtOeyID+ZcU
+	 Cy9qh9A7LlArn/J85iDfMwXpVdhoUH6PxY/97mTmWsE38N+mNww+3BaIx3qlVDAYe5Vjm
+	 +lbhnbllRBzavnjp5YktCbnRdJK9k8D5rkBwhJH4Vp2aQJQiSy8C80+lzg9PSNN8n/Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fvBS6lME;
-	arc=none smtp.remote-ip=74.125.229.137
-Received: from mail-dl2-f9.google.com (mail-dl2-f9.google.com [74.125.229.137])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yJaSOX2f;
+	arc=none smtp.remote-ip=209.85.214.174
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5AD606EE9A
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 19:14:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0F5AD606EE9A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A030606A330
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 19:17:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3A030606A330
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fvBS6lME
-Received: by mail-dl2-f9.google.com with SMTP id a92af1059eb24-164f08a9e84so784312c88.1
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 11:14:46 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yJaSOX2f
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2e985106c0cso31962545ad.2
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 11:17:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793646886; x=1794251686; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=x5vucs4W796ZHC+npd6ZnayJC+IA8nom1dy9O9U2Tu0=;
-        b=fvBS6lMELxvPUr0t9WppDBxoZ3YyYAaIn0kwnnJ0T1cQMEU6EHFjYMH4dElyrFVU5H
-         oeH0YlKYaZ1RO+vZCTK4pMgcXVpvIVpwKzkboXMjdim7hCZGLPfjKvxuBCZNnRgOYNxV
-         jfBSfCLum1ZHzk42Peda6hJtD2KVEdtyQK6ftkL8Acpwdleq5KTpfjjpIOSsHYS7r6Or
-         hCz5sq9YL8xFycVBZPLC0KZZOhbjzis9byKNUidkJw4GejbZNz2PxdhWMC1bZ4Wygrg4
-         e2HXMEEhQS730SOZNq3nHadFxd9P2R+AH0lrgqxidRc5bN2/Wji7L+XR2WOMRxezaakg
-         brGA==
+        d=gmail.com; s=20260707; t=1793647067; x=1794251867; darn=vger.kernel.org;
+        h=content-type:content-transfer-encoding:mime-version:message-id
+         :in-reply-to:references:user-agent:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=d4HU1ZMjQSDjg4zY71Jjjfa2oalRN5eFdZ16rR5uBtk=;
+        b=yJaSOX2fHm9Juwmq4JUqoq2YUiIBtyUVoOmlcmVoBrELsNCPbLTMw9rO4vLs0MhZMG
+         HTvB/tLqyscvajIJjgD6/cPDUx/LkVkZPpVEfVxgXmXIlft+0McDPvdaqF6XZOLXacyH
+         Ang6zqa1IQfCrYrT8Md40UVXLxx/Bf/lF4+5eI96hHQ2A4o81YQyVR9/6aST0pq6Gwwl
+         8ozlggmL8sw+3up/7ETIfUKIjVuQlGOuwk+S2+X2nPzSOqDegfLQHFHzkV4iAC02s7WG
+         Fk8JIVPjWmrs3FU2mmVvS4Sy74pzkJgosxvGuJzW3pF40R7QywgdD8b2hRupemNnX/Uw
+         n5ZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793646886; x=1794251686;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=x5vucs4W796ZHC+npd6ZnayJC+IA8nom1dy9O9U2Tu0=;
-        b=hteBzGLNL9aihVpQMvky0Zjk54mBKvEgnbGPQA+mRn9tpbFExTruETY56ufOFpTLQ/
-         yy7jmXjQOP/fVC+H31kAlr7AYexrAv6e6oYvr7/vXw2rGCmdnAIdBVGnyrpe72Trp7Jd
-         qDC2MLFlxvlfgLMTbq74qJA7LxVL8EdDMY/CPd9BTYTIVAQE04kn1/xvpINgXhDpLmB5
-         yR0NcGZvifavEbG7eIZYHtug/rYHQK95UT1q3QB8+RAQJVE+AsNRh64Nuq9tkNwFUKce
-         nJvPob4syOSP3iNqyl3VDBNRawi4WamibUBWTSwmx51ksZJvdPcZqiSraWEDJr0EQE37
-         Ldrg==
-X-Gm-Message-State: AFq9FYKD+vbUaBMoJTF9LtwxWCEPaQAavNGf/EP0EyjeBrvIcbx3/Dqd
-	IS7ke3+nbrKXXsxuHU8wCav8QT+rFUQi1WbAu1EngcciGeCoEQFEbgwrv52Nadck
-X-Gm-Gg: AYBFou0H5lZMdM3BVr0fbHCZ8AGQAPnIXRw6dpUWSUn1+fReuapUDKRzgzON4iwGqt3
-	GVCVd/342Ca/BFus8td1rebyHq6Aaa2th4Ds/T1hjeWLHy95KDyvdEhNn+7Wq9v4hglBM7CmaDq
-	mMwFyP2piv0UEQ4AtXRbXfwDSxv+98KpX6UahbQbwXok27gkTkEY/fCiJ/ZI3DD0Yi6lyEq2nJd
-	LceAydfBUv4J89B1+hb86YMvfxC1IckYX/CQHFXFyGJQATlZ1397PY9EDq3L9R9Ixw589mgQ8eP
-	JcJI9EI0UlzC1bmaFCge2KY8SKPskkPmwWwNstRf2Vc1fDTGcrt44dk+e+BZBclA8eUV0WIZuhv
-	fr7DOAsAymYK8kvIW2pPii/UADm5hTYIPabL+D88s+c7I3exbjkwvkPoqlGFm6eTNNO2yvKnO8h
-	tWJxBldFqDLW3Ykh4rkLtaP0ldPo1n1zW5/hadQ18OY4n0YJXI9vMKXKh2gs8DR2LFV8HXxszCs
-	acra94hEoO3q7XUP58fdbrMNFXjyEWRFDOUEMYc/sQfCKTassd2bVsOMjHsDX/WkO2VyNdjcoqp
-	BqBlaKCx4weY0N8/3W+JofqbSr91jgph7qjqsY6erw2z
-X-Received: by 2002:a05:7022:7f13:b0:144:eab0:9cbc with SMTP id a92af1059eb24-1ac5e8dea62mr15143041c88.37.1793646885926;
-        Mon, 02 Nov 2026 11:14:45 -0800 (PST)
-Received: from localhost ([2a03:2880:9ff:43::])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac1854d925sm62826454c88.7.2026.11.02.11.14.45
+        d=1e100.net; s=20260707; t=1793647067; x=1794251867;
+        h=content-type:content-transfer-encoding:mime-version:message-id
+         :in-reply-to:references:user-agent:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=d4HU1ZMjQSDjg4zY71Jjjfa2oalRN5eFdZ16rR5uBtk=;
+        b=OYsf1zaZ9Pi00Z9Ni/MHtInVsf2TKmaXetVYX+ZyDUt+9gsNCcumeOHM2bJqd2pN8Y
+         sBYoua81V4lvsIoz5IirwDLJZ6NOWqkeo+uu8FIFuBOdod7SfmOh+GhtnLVEXX7mFxGB
+         RzL/s/oFwStpTic+UbPidbk8wFFEurKo9u2y+Kyo21DDmxMHsitum5g7FWtQxedL90Cg
+         HcQqeCSYjYBIHBSrn5c4mSE5JzLz7zUrThQPzDAKWcNiWchS8u4aw7cZ/KEZbkmnb2JP
+         WrI+F4ZHgxGlbKrzvBOxYgN+TWnSpiKjh7JmzFWjnJmOBqoC6TsoSDXebz7+/quSf42h
+         7w+A==
+X-Forwarded-Encrypted: i=1; AKwUvBy+p5MONAOZ6Trb7IJFHyQem7R/xh+K1NVgmfHyeU9RF5avwqSx9kERprHO+ckPIC2R1AJ9nu8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+/KqFZP2N+Qrr7mflFdlh1rQxHiYNGlKgg7eReQFH9UzvGTYHr
+	KwcjPsCPmyireb6tu2ilTgjv9DG874o6WglmTgnskYIh2Sq2terurrOF
+X-Gm-Gg: AYBFou02e4WXIz0vXrLytvcGsHrwQrXhwEQBqmh/RiqvX9zuJADW6LlCQoQwRar6Ur+
+	9/1A/Ml5IGqnSK5Y1kmW+76qOGSdDbZLoTrqcA303hd67uW7JbbVAazXHMz472n1o1tUFkHv6t3
+	ej2Qqw4zwQeWIYeNQPD4ZHgcdjmzPsMiKsEdJipZPkyCykn1IpAuCQEDuc7HYIkEC4z+uogxhIL
+	+ah4N73GdYAfB+zdGmj1jvo91zeBdk+X4Wzt0iCgR9haDw+5Jjo64MX9K4ffIpaCfYAQ5bHN/Up
+	xH+dffjYHCfIaI0rIYof114wMzfg+G9AH9iY6lZGoOdKkljwM5eOPMxdoYXE+OWm5dLqAw5YHKf
+	6R/WdW7QPuIkMn7mGuxVsjp0aB+BQBASgzxn3yfObVopEV9pTUheA/y1KR/lNZ1bhqbN7WLALbp
+	HObvTNGIy4jAV8xV1jo43JvCcAVIsiU619xEksd02zLosS9Gdwf+Tis5ouUKV+E0Dr+T3n4cWT3
+	aACl4iVtoiM+RtHq/fUJRtxO0lgIjoONO5q+ycNNZX9MjrAzydz7o0xLKUhkOR68c2mv4ADxNET
+	cowF7GdmSKaGbXKuL0WhVmfz/kN5ZmAwxtsdQ/3sdyEVMxDTicxwNc1A96sAOcpBHWCr
+X-Received: by 2002:a17:903:1b2c:b0:2ea:a2ea:5f62 with SMTP id d9443c01a7336-2eb364b8c96mr101881445ad.24.1793647066596;
+        Mon, 02 Nov 2026 11:17:46 -0800 (PST)
+Received: from meli-email.org ([98.97.42.147])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb39231422sm32617295ad.23.2026.11.02.11.17.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 11:14:45 -0800 (PST)
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	edumazet@kernel.org,
-	horms@kernel.org,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	rdunlap@infradead.org,
-	michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com,
-	sdf@fomichev.me,
-	almasrymina@google.com,
-	bobbyeshleman@meta.com,
-	asml.silence@gmail.com,
-	daniel@iogearbox.net,
-	razor@blackwall.org,
-	leitao@debian.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net-next 6/7] net: devmem: size TX net_iovs from the dmabuf sg table
-Date: Mon,  2 Nov 2026 11:14:37 -0800
-Message-ID: <20261102191438.1059771-7-sdf@fomichev.me>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261102191438.1059771-1-sdf@fomichev.me>
-References: <20261102191438.1059771-1-sdf@fomichev.me>
+        Mon, 02 Nov 2026 11:17:46 -0800 (PST)
+Date: Mon, 02 Nov 2026 12:16:49 -0700
+From: John Fastabend <john.fastabend@gmail.com>
+To: mptcp@lists.linux.dev, Jiayuan Chen <jiayuan.chen@linux.dev>, Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
+Cc: daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, john.fastabend@gmail.com, jakub@cloudflare.com, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, willemb@google.com, matttbe@kernel.org, mptcp@lists.linux.dev, mason@kernel.org, josef@toxicpanda.com
+Subject: Re: [PATCH bpf v2 05/15] bpf, sockmap: Clear the resume state of a stopped psock
+User-Agent: meli/0.9.0
+References: <20261102072112.4160195-1-alexei.starovoitov@gmail.com> <20261102072112.4160195-6-alexei.starovoitov@gmail.com> <9d399d69-1dfd-4848-bd55-be099b6dd792@linux.dev>
+In-Reply-To: <9d399d69-1dfd-4848-bd55-be099b6dd792@linux.dev>
+Message-ID: <tnw2xl.1p1r2tdvgc3bg@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -118,99 +98,51 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
 
-PAGE_SIZE TX net_iovs cap devmem skbs at MAX_SKB_FRAGS pages (~68KB),
-which makes BIG TCP ineffective.
+On Mon, 02 Nov 2026 04:40, Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+>
+>On 11/2/26 3:21 PM, Alexei Starovoitov wrote:
+>> From: Josef Bacik <josef@toxicpanda.com>
+>>
+>> sk_psock_backlog() passes the skbs of psock->ingress_skb to the socket of
+>> the psock. When the socket has no room, the function saves the length and
+>> offset of the remaining data in psock->work_state. A later run continues at
+>> this offset and clears the state when the skb is complete.
+>>
+>> sk_psock_skb_state() saves and clears the state, but only while
+>> SK_PSOCK_TX_ENABLED is set. sk_psock_backlog() does not test this flag for
+>> each skb. If the socket closes during the loop, sk_psock_stop() clears the
+>> flag. The loop continues, but the state of the completed skb stays. The
+>> loop uses this state for all subsequent skbs and sends only part of their
+>> data. A closing socket may lose the end of a stream, but not the middle.
+>>
+>> The state belongs to the skb at the head of ingress_skb. Always clear the
+>> state when this skb is complete. A stopped psock still saves no new state.
+>>
+>> Fixes: 3b4f14b79428 ("bpf, sockmap: fix duplicated data transmission")
+>> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+>> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+>> ---
+>>  net/core/skmsg.c | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+>> index f03519468ad1..a5d498982848 100644
+>> --- a/net/core/skmsg.c
+>> +++ b/net/core/skmsg.c
+>> @@ -664,7 +664,8 @@ static void sk_psock_skb_state(struct sk_psock *psock,
+>>  			       int len, int off)
+>>  {
+>>  	spin_lock_bh(&psock->ingress_lock);
+>> -	if (sk_psock_test_state(psock, SK_PSOCK_TX_ENABLED)) {
+>> +	/* No new state once the psock is stopped, but never keep an old one */
+>> +	if (!len || sk_psock_test_state(psock, SK_PSOCK_TX_ENABLED)) {
+>>  		state->len = len;
+>>  		state->off = off;
+>>  	}
+>
+>
+>Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-TX net_iovs only need to be DMA contiguous. Use the largest power of 2,
-up to 2MB, which aligns every DMA segment of the dmabuf:
-- 2MB hugepage-backed udmabufs get 2MB net_iovs
-- no UAPI change, TX addresses are dmabuf offsets
-- skbs are still bounded by TCP's size_goal, only frags get larger
-
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
----
- net/core/devmem.c      | 28 ++++++++++++++++++++++++++--
- net/core/netdev-genl.c |  2 +-
- 2 files changed, 27 insertions(+), 3 deletions(-)
-
-diff --git a/net/core/devmem.c b/net/core/devmem.c
-index 19c039ed2cb2..98c9594dbf99 100644
---- a/net/core/devmem.c
-+++ b/net/core/devmem.c
-@@ -181,6 +181,20 @@ int net_devmem_bind_dmabuf_to_queue(struct net_device *dev, u32 rxq_idx,
- 	return err;
- }
- 
-+static bool net_devmem_sgt_aligned(struct sg_table *sgt, size_t size)
-+{
-+	struct scatterlist *sg;
-+	unsigned int i;
-+
-+	for_each_sgtable_dma_sg(sgt, sg, i) {
-+		if (!IS_ALIGNED(sg_dma_address(sg), size) ||
-+		    !IS_ALIGNED(sg_dma_len(sg), size))
-+			return false;
-+	}
-+	return true;
-+}
-+
-+/* niov_shift == 0 picks the net_iov size from the dmabuf, TX only */
- struct net_devmem_dmabuf_binding *
- net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
- 		       struct device *dma_dev,
-@@ -191,11 +205,11 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
- 		       struct netlink_ext_ack *extack)
- {
- 	struct net_devmem_dmabuf_binding *binding;
--	size_t niov_size = 1UL << niov_shift;
- 	static u32 id_alloc_next;
- 	struct scatterlist *sg;
- 	struct dma_buf *dmabuf;
- 	unsigned int sg_idx;
-+	size_t niov_size;
- 	size_t niov_idx;
- 	size_t i;
- 	long err;
-@@ -221,7 +235,6 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
- 	binding->tx_max_frag_size = dev->netmem_tx_max_frag_size;
- 	write_pnet(&binding->net, sock_net(nl_sk));
- 	binding->uid = sk_uid(nl_sk);
--	binding->niov_shift = niov_shift;
- 	xa_init_flags(&binding->bound_rxqs, XA_FLAGS_ALLOC);
- 
- 	err = percpu_ref_init(&binding->ref,
-@@ -266,6 +279,17 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
- 		goto err_unmap;
- 	}
- 
-+	if (!niov_shift) {
-+		niov_size = SZ_2M;
-+		while (niov_size > PAGE_SIZE &&
-+		       (!IS_ALIGNED(dmabuf->size, niov_size) ||
-+			!net_devmem_sgt_aligned(binding->sgt, niov_size)))
-+			niov_size /= 2;
-+		niov_shift = ilog2(niov_size);
-+	}
-+	binding->niov_shift = niov_shift;
-+	niov_size = 1UL << niov_shift;
-+
- 	if (!IS_ALIGNED(dmabuf->size, niov_size)) {
- 		err = -EINVAL;
- 		NL_SET_ERR_MSG_FMT(extack,
-diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-index 384fdc5ae514..bfd229bd31ca 100644
---- a/net/core/netdev-genl.c
-+++ b/net/core/netdev-genl.c
-@@ -1261,7 +1261,7 @@ int netdev_nl_bind_tx_doit(struct sk_buff *skb, struct genl_info *info)
- 	binding = net_devmem_bind_dmabuf(bind_dev,
- 					 bind_dev != netdev ? netdev : NULL,
- 					 dma_dev, DMA_TO_DEVICE, dmabuf_fd,
--					 PAGE_SHIFT, priv, NETLINK_CB(skb).sk,
-+					 0, priv, NETLINK_CB(skb).sk,
- 					 info->extack);
- 	if (IS_ERR(binding)) {
- 		err = PTR_ERR(binding);
--- 
-2.53.0-Meta
-
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
