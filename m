@@ -1,112 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793636853;
-	b=xsK4J4qzio+gLwRq63KKphclfkexDNVqrVm3sDy49HkvSim0Vt7qIjJTdF8Ye8D87HjW
-	 CHAaC014bxUCBf7LR+6o9HP8dJyNYyu2f5qQKQstxeDOaxGWaJ2LJIHvUGn+/ZYyzAN7n
-	 /wwha+K4jVHy8Zy/zuYYPfbHEyQFem8EZBaVNSBa+DquNhmCKk/kjrXWxOYMtultvszke
-	 IzhG5T0O67QSBymVu3NG28IomSNDyjlrWSdeFKKR6fqiTQaBquSh4qkRMrBvrQ1Nbw9bW
-	 MaYi8j5p0hVFxiWndpFe6ZbSZqrlDVpWKZi26jsXnVT6lskE3Fd7YfMXB67HklhP+YQ==
+	t=1793637004;
+	b=PwGmHL5iib1P9vFoJRzW1a0u7SbW2MshtT4u6WJOIhcyNbV3KxZOMQFJqm9Mqu2N73D4
+	 IPgJc3H3v6o84UxQFzrcr+JKSa6UOiKqEnoRYX8KJ3lTgqfNbyGv3GANsYSms+ur3J/Wt
+	 JgpqAMrLdBdJAGpH0roUcfejqPX4tdwPHBGZtVV4UbWpFKZ8uYRef3O4Ot5vbaI4QY19v
+	 fde7Xj+ppuNBj7VuCFIKVqblpZQugnK+XN3w0qYWi7TsslLTmR6xDbE7isCbwJUEHz+yU
+	 w0yOKG4tDc7AdOQi1WB03mF8ajYZ2xl5VzV2tVC8VUFt1wbuSphpkFQEvfV8wmPdUKQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793636853;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:X-Authority-Analysis:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=TFECovovrz1IBCzplEHcZQgm6wJQZNlKH/xJkkihk50=;
-	b=R/8g9CTYq3lN7v2dKWWQEKzGgYRkN92vhG6CWsYtXwtPkOjmAOdl9BKuPPO2Vwd14d73
-	 PmRqNmwu1R7cyu5kNcTOCzpDD5lK7mkB60T6Fmlp5bvZrYPLXC3wz8hLsiQThmp80S4Ot
-	 dPdP1+4yom+WhE7dGrPR2kSbbRa7UeEeyts3XdwXIdCLgHbIr1+JovclNgSFWzJ6jXTC4
-	 UTXIKuAaZs3cMf8kulYB3wzPDW64rV0o/btJwv9zNUbywA9NW0ZKpCiAgkuV74Ngh2u7k
-	 eqW6zYKBgc7cOChKClMIvsRmvc2eOeSnxpQzLJ+D1mFXGb4le/ItFjdyULPwcS2Y1aA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793637004;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=h4kYxvFfAorg4Jasu3Jf/tQfK1V990SC2QcBhguelIE=;
+	b=djXBs6D1CeU8SWe1YYpnFCHmT+Tg3fYy4cWQIj09k4T/cQq6tdZsGABInSRlfJdJtSb4
+	 swkn6PgIzpkA57ecK14ji7h+98v5b0LJS9hwN0vB1kCYsggvOHsevV3kvs+1YqV9aSahU
+	 mMCSryd7t77QdJPTRXiI/D4uGhTUyBzYBpTV78L8zTGQg9fo/WszI5t2JHCCevk4VlfDq
+	 brluc0bn5mOi4la3aDHfFYEfYzHyfDHOcPWeDrxBs79xHowpmRUXgXb/1yKh4eAIMdg/k
+	 fi1bWzUrD5HJmVXQFEh8pQFYWnoeSWaWiDvAZ55e6kfqB7YdgvY7eVp0QgRwOTmbGew==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=MJ1Ttwjl;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=e0yVK81R;
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HyjvVe50;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE066072231
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 16:27:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DFE066072231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873266072ECD;
+	Mon,  2 Nov 2026 16:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=MJ1Ttwjl;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=e0yVK81R
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A2DpMxD4070515
-	for <netdev@vger.kernel.org>; Mon, 2 Nov 2026 16:27:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	TFECovovrz1IBCzplEHcZQgm6wJQZNlKH/xJkkihk50=; b=MJ1TtwjltUBTCZIZ
-	vkdCnWqJp4W0PBWwPG54tU6pylbjungc3QPNB9ChDjaJ945T3KvatiCbw5AGKe1s
-	/1Nxv+PX/ad543VkSES+HpDJFkUjnqq/RNchx5Ul5P8F/5mIfVZAWF0OPgem3lR9
-	eJ62wngM8FimSI2tuaUw/ySPSn9i5+frdXRBTWvubnJmWvysjHzA0+bJrSwm+4e1
-	BOoWkowk7CWJt8sKDi+1uuu7Ft2r/CCkd7lTqT5BqGlsdu6RPVsufcmJdJZlUKL+
-	Nj4GFKHecmuZAeVQlQbzDnVmAihO83FDjQf+XD96aS1gsy26ngY6YpAYyRdDrAqh
-	TCZLEg==
-Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com [209.85.217.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hpss5h9eb-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 16:27:31 +0000 (GMT)
-Received: by mail-vs1-f70.google.com with SMTP id ada2fe7eead31-7d06f3784e2so792816137.3
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 08:27:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1793636851; x=1794241651; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=TFECovovrz1IBCzplEHcZQgm6wJQZNlKH/xJkkihk50=;
-        b=e0yVK81RiZOqFz+eRCJ2H3gRjQEBRUEp7wkw+1UA0PHMSCpVa1+g02eEmOR8bne+Mj
-         o4f43nibMMrIXjZFa9V5v8iIrxYhEoPvNbHKRWj6H8fWzu4LgBYYjPA4aXuC7r+M34Mn
-         1ujjN4RLTtFSJJ8YmVReM08qjoJCDA/erGAje1UUEVt4d8Xn6w4HJBE3MRPmS74H0AAp
-         V/Quht1o3z8SbEz+N2fowmbhH1Z2AK40/j2a2bS5itnamA68519UJn+s+VA838tQ9ogm
-         lRZYpqKxCkMCAfmYwjZMKCwtZ2/HH45CqszRA1tJ8pBEXID6J2Bp2Hr1ZgSQj7OH3oye
-         DTgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793636851; x=1794241651;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TFECovovrz1IBCzplEHcZQgm6wJQZNlKH/xJkkihk50=;
-        b=BibTIdPc/gNnYIrn0C4BFJ2qGoT85dxHnSs4kkyZ9ep7TwOd8fLMGRnvY80fPunW3O
-         JESnmJLDoES1kQFFcLVA/5hkhT9N+uIN0tx/bdvrnOqHDvOkoFWpIJiqgar0b8S0P8A+
-         6lxNUPtsA6zEZAd4Q/9DI6W+YUzBnksiXU4KW49b3VRhDdEticz4D4NqXmHmnZDCaBBw
-         doIooklirqoqZhqzbWUHby6IUcmYjFdjb6QghEMTW9+Y3T5KE5QrgsV+Otx8VLmHaA8Y
-         piX3rJ9hPJIyne0k4X85e6pDys8/Bv2/i+gCDnZ/qemva1rlu9wnUe95azxuLGH7i7nH
-         pJoA==
-X-Forwarded-Encrypted: i=1; AKwUvBzdzBvTgDMpWxxOLAukzhz+i0ppRr95TVsK7cqhXC6NyO3NrDndkAAPyYI4vFRNvkheXEBtmoY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+oz6To7eB9Ji12mfEiHZ7YUT0ajetzWtILm+sUPOl+IiY4FyUg
-	GXND5/6uO5Ae/Kr+/bRFtXoCMjCRSpacNA/zaAEGWYSaxOuBz4SmfGYxYTv8HCJSmGa6zjP89Vs
-	6bdDSBCRIViu6/YQ4VsFaWN09+2f5GNZFRrNtUxy7t5r1uAahNfwO5dpyi0A=
-X-Gm-Gg: AYBFou2fH40+rgIscuMM0dgMcH/VYrqGiEvbi82OP6lb0F1gNigTWuI/jlRifZq/0f2
-	KfN+BIzOVrB+AOznc9cwb18dBjaQdYr0sWyiPfyPeTWse2eMpSqE1cyKvA+OUvaEs3kwn5eFwYl
-	vVRD6Zw9+d/amCcZ/kKbgT6LOeWLoBwSh4aioIb+VeGW/+TXfvrzc/HfWGBgmxnjH1f3Jqwn06G
-	ulQGI6QeaJnPC3BPUjHBb1Glr8Yctt89UZaj1uaOrQ2+M7wgJBTkRte9H2Ngbx3m4jYCfhfUw8B
-	x6AoTYFmcvd5jp4EIWpPSr+FiS0r6a6NDkJRR5Py/HhE2uH2h1Wpj4o99LcH9W/ZmYLFUhjIkzt
-	18cz/Tz1cp2qNC+8wGBh0azFKmge9Fq8IeOuUHmKS/7tZhs7fcKgOOi20Pdeh7h4bGSDXyzk0ml
-	VMvuB9pXvbkB2pxFWzykLDxmhhHN6E7AxqDIt7iUp1rQ6Sq2Pm+3MMNDgkMNpmgqlUoQ0aWon4U
-	+fWcFVVDJXWIIEcbuJvlek78IwL
-X-Received: by 2002:a05:6102:689a:b0:7c3:7286:b7ea with SMTP id ada2fe7eead31-7d072c18c5fmr4049304137.17.1793636851151;
-        Mon, 02 Nov 2026 08:27:31 -0800 (PST)
-X-Received: by 2002:a05:6102:689a:b0:7c3:7286:b7ea with SMTP id ada2fe7eead31-7d072c18c5fmr4049269137.17.1793636850566;
-        Mon, 02 Nov 2026 08:27:30 -0800 (PST)
-Received: from QCOM-eG0v1AUPpu.na.qualcomm.com ([2a01:e0a:830:450:f048:3e89:c517:10cd])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b959c1sm20490695f8f.45.2026.11.02.08.27.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 08:27:29 -0800 (PST)
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Date: Mon, 02 Nov 2026 17:27:21 +0100
-Subject: [PATCH v12 2/2] block: implement NVMEM provider
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HyjvVe50
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A7731F00A17;
+	Mon,  2 Nov 2026 16:30:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793637004;
+	bh=h4kYxvFfAorg4Jasu3Jf/tQfK1V990SC2QcBhguelIE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=HyjvVe50V1qRRZmBvd+x34by7kotPH65/V3/vkTrSkGNb7vwg03xJWIMSwGwDjshO
+	 XkIFoxI3BThH4CYRpKomAxdFGsaB7xGeVlDx3EcwhW34SL4J5H0Lr0OlIww0djo8lc
+	 DbDqwwA6qV0uF/9Q/BaBYBfAgq3uik8P5nivkWyVmfNbl9xRN6FUlf40fmPElkSgyY
+	 rJrsn5+zrz+tE18a+xZSRWH/TcHOzkiAwTfScmHVyeEr9+fOVvmoKD3HjAD/CySky/
+	 f//WYNPwA0Pfw16PASXN+g5e1ZQwTojMPqJ4qSrJ3dDfgAlQbuJ08xr/fvHg7JuSxc
+	 HNuxpVNRa7w4w==
+Subject: Re: [PATCH net v2 2/2] net/sched: sch_teql: keep skb->dev consistent
+ on the arp-queue path
+From: netdev-bot+sashiko@kernel.org
+To: jhs@mojatatu.com
+Cc: netdev@vger.kernel.org, victor@mojatatu.com, jiri@resnulli.us,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, stable@vger.kernel.org, sashiko-bot@kernel.org
+Date: Mon, 02 Nov 2026 16:30:03 +0000
+Message-ID: <179363700308.3131.11778179538290251434@kernel.org>
+In-Reply-To: <QDISC-6HS9.v2.r0.20261101105945-2@mojatatu.com>
+References: <QDISC-6HS9.v2.r0.20261101105945-2@mojatatu.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -116,329 +63,261 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-block-as-nvmem-v12-2-f4a2a681087d@oss.qualcomm.com>
-References: <20261102-block-as-nvmem-v12-0-f4a2a681087d@oss.qualcomm.com>
-In-Reply-To: <20261102-block-as-nvmem-v12-0-f4a2a681087d@oss.qualcomm.com>
-To: Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        Bartosz Golaszewski <brgl@kernel.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-        Rocky Liao <quic_rjliao@quicinc.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Simon Horman <horms@kernel.org>,
-        Srinivas Kandagatla <srini@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Saravana Kannan <saravanak@kernel.org>,
-        Christian Marangi <ansuelsmth@gmail.com>,
-        Eric Dumazet <edumazet@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
-        Eric Dumazet <edumazet@kernel.org>
-Cc: linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath10k@lists.infradead.org, linux-bluetooth@vger.kernel.org,
-        netdev@vger.kernel.org, daniel@makrotopia.org,
-        Loic Poulain <loic.poulain@oss.qualcomm.com>,
-        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Authority-Analysis: v=2.4 cv=VORIDNPX c=1 sm=1 tr=0 ts=6ae8b9f3 cx=c_pps
- a=N1BjEkVkxJi3uNfLdpvX3g==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22 a=EUspDBNiAAAA:8
- a=VT4XjZGOAAAA:8 a=71DuYGxFrHUPmPLwgxgA:9 a=QEXdDO2ut3YA:10
- a=crWF4MFLhNY0qMRaF8an:22 a=6CpsfURP9XNmmWg3j1mJ:22
-X-Proofpoint-ORIG-GUID: Dq3QNCl11iPvyq4jUTQOILcNEbgLmC7M
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAyMDA2NSBTYWx0ZWRfXwWVbt5rmi7HQ
- bSUXn1eJJZ4LYZDpu82Cp7noBtW8u5Ifnz87flI8J9KGixTAnsvlq1JxLH3kpFLi4HhB+BMGjXO
- uHAvLNy2JUR4/wOFkdmAkQeN80dGOKD63UgIPo52Q7NdKJSWeIEqeMMQkH0sJLy1lroCuwyf/3Z
- FkicizIcaT30LJbVjb2d84KOJpXI4T2WGESxf4QjnxfA0z/Wog+p85L6owl7O3opUHYJBJ/bNXD
- TyvKjIUFzY3xynkY30EZA8fP4U4ppgMZpx2gaVuVu9GCMuW6JtQT8jgB1Rd7yfZo6Q7dJLIwWsT
- FnHyNRJwWBjU25Q313hHmXcErxRmAIs5ZdaCT2X+el6FbiUNjc7+1Wh4FaokH8CMxC47dfY8SO9
- r5mXRkfa68ed4XMfPaWc/DrWsebcUhrBgwxmtVGqdbzrRAJn0bFv5GjRmd/uqJ0ffFkpRnhzpBi
- JcvUYioWuKpc5ebZ1fw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAyMDA2NSBTYWx0ZWRfX0GjO4XVQdmdk
- tj695s9l+2zDzX3VTz7kIYJsuHzFE4Gvfv2hja6DA3mLRN1SmAc7ceo48i2HuxHgWY4sMVrZr5b
- 4LGJQCZO5A36fuTlVWi5qvvzn8VoblQ=
-X-Proofpoint-GUID: Dq3QNCl11iPvyq4jUTQOILcNEbgLmC7M
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-02_04,2026-11-02_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0 suspectscore=0
- phishscore=0 malwarescore=0 bulkscore=0 priorityscore=1501 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2611020065
 
-On embedded devices using an eMMC it is common that one or more partitions
-on the eMMC are used to store MAC addresses and Wi-Fi calibration EEPROM
-data. Allow referencing the partition in device tree for the kernel and
-Wi-Fi drivers accessing it via the NVMEM layer.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-NVMEM is registered for a block device whose OF node describes an NVMEM
-layout, either via an "nvmem-layout" child or by being a "fixed-layout"
-node itself (e.g. an eMMC boot partition associated through its mmc-card
-node).
+Critical: 0 · High: 0 (1) · Medium: 2 · Low: 1
 
-The NVMEM device is a read-only side channel onto a block device.
-Each read opens the block device with BLK_OPEN_EXCL to keep other
-exclusive openers away for the duration of the access.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
----
- block/Kconfig             |  11 +++++
- block/Makefile            |   1 +
- block/blk-nvmem.c         | 112 ++++++++++++++++++++++++++++++++++++++++++++++
- block/blk.h               |   8 ++++
- block/genhd.c             |   4 ++
- block/partitions/core.c   |   5 +++
- include/linux/blk_types.h |   4 ++
- 7 files changed, 145 insertions(+)
+- [Medium] The new gate in neigh_update_process_arp_queue()
+  (net/core/neighbour.c:1343-1344), `if (!n1->dev->header_ops) skb->dev…
+- [Medium] teql_master_xmit() now sets skb->dev = slave before
+  teql_resolve() (sch_teql.c:371).
+- [Low] The commit message's reproducer cannot show the use-after-free
+  the patch says it fixes.
 
-diff --git a/block/Kconfig b/block/Kconfig
-index 70e4a66d941ff66ecb0ec34f4f7eff7fd1e4be40..4899ad572c71ffdbb62460d57623216254893ddc 100644
---- a/block/Kconfig
-+++ b/block/Kconfig
-@@ -209,6 +209,17 @@ config BLK_INLINE_ENCRYPTION_FALLBACK
- 	  by falling back to the kernel crypto API when inline
- 	  encryption hardware is not present.
- 
-+config BLK_NVMEM
-+	bool "Block device NVMEM provider"
-+	depends on OF
-+	depends on NVMEM
-+	help
-+	  Allow block devices (or partitions) to act as NVMEM providers,
-+	  exposing factory-provisioned data such as MAC addresses or Wi-Fi
-+	  calibration blobs to the drivers that consume them. This is
-+	  typically used on embedded devices where such data is stored in a
-+	  dedicated area of an eMMC, instead of a separate EEPROM or OTP.
-+
- source "block/partitions/Kconfig"
- 
- config BLK_PM
-diff --git a/block/Makefile b/block/Makefile
-index e7bd320e3d6971a8abf584f5de42776bb54e8216..8200297fbcbab304beb4239d0c33da07011c3ed9 100644
---- a/block/Makefile
-+++ b/block/Makefile
-@@ -39,3 +39,4 @@ obj-$(CONFIG_BLK_INLINE_ENCRYPTION)	+= blk-crypto.o blk-crypto-profile.o \
- 					   blk-crypto-sysfs.o
- obj-$(CONFIG_BLK_INLINE_ENCRYPTION_FALLBACK)	+= blk-crypto-fallback.o
- obj-$(CONFIG_BLOCK_HOLDER_DEPRECATED)	+= holder.o
-+obj-$(CONFIG_BLK_NVMEM)                += blk-nvmem.o
-diff --git a/block/blk-nvmem.c b/block/blk-nvmem.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..69b69184e16303444c9cb2dc816d5679daeb13c4
---- /dev/null
-+++ b/block/blk-nvmem.c
-@@ -0,0 +1,112 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * block device NVMEM provider
-+ *
-+ * Copyright (c) 2024 Daniel Golle <daniel@makrotopia.org>
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-+ *
-+ * Useful on devices using a whole disk or a partition (e.g. an eMMC boot
-+ * partition) to store MAC addresses, Bluetooth addresses or Wi-Fi
-+ * calibration EEPROM data.
-+ *
-+ * The NVMEM device is a side channel onto a block device that stays fully
-+ * usable. This is somewhat mitigated by opening the device exclusively.
-+ */
-+
-+#include <linux/device.h>
-+#include <linux/file.h>
-+#include <linux/fs.h>
-+#include <linux/nvmem-provider.h>
-+#include <linux/nvmem-consumer.h>
-+#include <linux/of.h>
-+#include <linux/property.h>
-+
-+#include "blk.h"
-+
-+static int blk_nvmem_reg_read(void *priv, unsigned int from,
-+			      void *val, size_t bytes)
-+{
-+	struct block_device *bdev = priv;
-+	struct file *bdev_file;
-+	loff_t pos = from;
-+	ssize_t ret;
-+
-+	/* open and prevent other exclusive openers */
-+	bdev_file = bdev_file_open_by_dev(bdev->bd_dev,
-+					  BLK_OPEN_READ | BLK_OPEN_EXCL,
-+					  blk_nvmem_reg_read, NULL);
-+	if (IS_ERR(bdev_file))
-+		return PTR_ERR(bdev_file);
-+
-+	if (file_bdev(bdev_file) != bdev) {
-+		fput(bdev_file);
-+		return -ENODEV;
-+	}
-+
-+	ret = kernel_read(bdev_file, val, bytes, &pos);
-+	fput(bdev_file);
-+
-+	if (ret < 0)
-+		return ret;
-+	if (ret != bytes)
-+		return -EIO;
-+	return 0;
-+}
-+
-+int blk_nvmem_add(struct block_device *bdev)
-+{
-+	struct device *dev = &bdev->bd_device;
-+	struct device_node *np = dev_of_node(dev);
-+	struct nvmem_config config = {
-+		.id		= NVMEM_DEVID_NONE,
-+		.owner		= THIS_MODULE,
-+		.word_size	= 1,
-+		.stride		= 1,
-+		.read_only	= true,
-+		.root_only	= true,
-+		.ignore_wp	= true,
-+	};
-+	struct nvmem_device *nvmem;
-+	struct device_node *child;
-+
-+	/* skip devices which do not have a device tree node */
-+	if (!np)
-+		return 0;
-+
-+	/*
-+	 * The layout is described either by an "nvmem-layout" child node or
-+	 * by the device node itself being a "fixed-layout" container.
-+	 */
-+	child = of_get_child_by_name(np, "nvmem-layout");
-+	if (child)
-+		of_node_put(child);
-+	else if (!of_device_is_compatible(np, "fixed-layout"))
-+		return 0;
-+
-+	if (bdev_nr_bytes(bdev) > INT_MAX) {
-+		dev_warn(dev, "block device too large to be an NVMEM\n");
-+		return 0;
-+	}
-+
-+	config.dev = dev;
-+	config.name = dev_name(dev);
-+	config.priv = bdev;
-+	config.reg_read = blk_nvmem_reg_read;
-+	config.size = bdev_nr_bytes(bdev);
-+	config.of_node = np;
-+
-+	nvmem = nvmem_register(&config);
-+	if (IS_ERR(nvmem))
-+		return dev_err_probe(dev, PTR_ERR(nvmem),
-+				     "Failed to register NVMEM device\n");
-+
-+	bdev->bd_nvmem = nvmem;
-+
-+	return 0;
-+}
-+
-+void blk_nvmem_del(struct block_device *bdev)
-+{
-+	nvmem_unregister(bdev->bd_nvmem);
-+	bdev->bd_nvmem = NULL;
-+}
-diff --git a/block/blk.h b/block/blk.h
-index ed21724726223f777f40be15f82fdeb9da89beb0..4d9e3952b1561a467417482cd516cdc97358d093 100644
---- a/block/blk.h
-+++ b/block/blk.h
-@@ -837,4 +837,12 @@ static inline void blk_debugfs_unlock(struct request_queue *q,
- 	memalloc_noio_restore(memflags);
- }
- 
-+#ifdef CONFIG_BLK_NVMEM
-+int blk_nvmem_add(struct block_device *bdev);
-+void blk_nvmem_del(struct block_device *bdev);
-+#else
-+static inline int blk_nvmem_add(struct block_device *bdev) { return 0; }
-+static inline void blk_nvmem_del(struct block_device *bdev) {}
-+#endif
-+
- #endif /* BLK_INTERNAL_H */
-diff --git a/block/genhd.c b/block/genhd.c
-index 10ca8b4d6eea7ed3910271ca3af74479e2081d6d..6c45b8eb8dfad14fa2fbfa98177154f24af49a07 100644
---- a/block/genhd.c
-+++ b/block/genhd.c
-@@ -417,6 +417,8 @@ static void add_disk_final(struct gendisk *disk)
- 		 */
- 		dev_set_uevent_suppress(ddev, 0);
- 		disk_uevent(disk, KOBJ_ADD);
-+
-+		blk_nvmem_add(disk->part0);
- 	}
- 
- 	blk_apply_bdi_limits(disk->bdi, &disk->queue->limits);
-@@ -708,6 +710,8 @@ static void __del_gendisk(struct gendisk *disk)
- 
- 	disk_del_events(disk);
- 
-+	blk_nvmem_del(disk->part0);
-+
- 	/*
- 	 * Prevent new openers by unlinked the bdev inode.
- 	 */
-diff --git a/block/partitions/core.c b/block/partitions/core.c
-index eee954df1ac6ef7dd4f02ad5c9d49aed778bf015..c83227710584a6feb25c8abae3b319cfae9cce5b 100644
---- a/block/partitions/core.c
-+++ b/block/partitions/core.c
-@@ -289,6 +289,8 @@ void drop_partition(struct block_device *part)
- 	xa_erase(&part->bd_disk->part_tbl, bdev_partno(part));
- 	kobject_put(part->bd_holder_dir);
- 
-+	blk_nvmem_del(part);
-+
- 	device_del(&part->bd_device);
- 	put_device(&part->bd_device);
- }
-@@ -406,6 +408,9 @@ static struct block_device *add_partition(struct gendisk *disk, int partno,
- 	/* suppress uevent if the disk suppresses it */
- 	if (!dev_get_uevent_suppress(ddev))
- 		kobject_uevent(&pdev->kobj, KOBJ_ADD);
-+
-+	blk_nvmem_add(bdev);
-+
- 	return bdev;
- 
- out_del:
-diff --git a/include/linux/blk_types.h b/include/linux/blk_types.h
-index 0cc09b975d8ffbd45ca3dc47533a71f8e8164de6..8026bd763a0710b60b9553a49783efbaf81aeb9f 100644
---- a/include/linux/blk_types.h
-+++ b/include/linux/blk_types.h
-@@ -15,6 +15,7 @@
- struct bio_set;
- struct bio;
- struct bio_integrity_payload;
-+struct nvmem_device;
- struct page;
- struct io_context;
- struct cgroup_subsys_state;
-@@ -73,6 +74,9 @@ struct block_device {
- 	int			bd_writers;
- #ifdef CONFIG_SECURITY
- 	void			*bd_security;
-+#endif
-+#ifdef CONFIG_BLK_NVMEM
-+	struct nvmem_device	*bd_nvmem;
- #endif
- 	/*
- 	 * keep this out-of-line as it's both big and not needed in the fast
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but
+  teql_qdisc_init() (net/sched/sch_teql.c:194-253) never checks that the…
+
+--
+
+net/sched: sch_teql: keep skb->dev consistent on the arp-queue path
+
+This patch moves skb->dev = slave ahead of teql_resolve(). An skb parked
+on the slave's arp_queue then names the slave instead of the teql master.
+It also restores skb->dev = n1->dev in neigh_update_process_arp_queue()
+when the top-level neighbour's device has no header_ops, so the skb goes
+back through teql_master_xmit().
+
+Link: https://lore.kernel.org/netdev/20260824115928.4099988-1-victor@mojatatu.com/
+Link: https://lore.kernel.org/netdev/20261026160747.283702-1-horms@kernel.org/
+Link: https://lore.kernel.org/netdev/20261031165925.780930-1-horms@kernel.org/
+
+> Conditions to recreate the bug:
+> CONFIG_NET_SCH_TEQL=y, CONFIG_VETH=y, run as root. Create a veth pair,
+> make one end a teql slave, give the master an address and a route, flush
+> the slave's neighbour entry and send one packet:
+
+[ ... ]
+
+> On the unfixed tree the skb is parked on v0's arp_queue while skb->dev
+> still names teql0, so the reinjection can reach a master that teql_exit()
+> has freed.
+
+[Severity: Low]
+Can this recipe reach the use-after-free it describes?
+
+With CONFIG_NET_SCH_TEQL=y, teql_exit() is __exit and never runs, so no
+master is ever freed:
+
+net/sched/sch_teql.c:teql_exit() {
+    ...
+		unregister_qdisc(&master->qops);
+		unregister_netdev(master->dev);
+		free_netdev(master->dev);
+    ...
+}
+
+teql_master_setup() installs no rtnl_link_ops, so "ip link del teql0"
+can't free the master either.
+
+Building sch_teql as a module doesn't change this. teql_master_setup()
+sets ops->owner = THIS_MODULE, and qdisc_lookup_ops() takes a module
+reference through bpf_try_module_get() for each slave qdisc. rmmod
+therefore fails while the slave qdisc on v0 exists.
+
+To reach a freed master you seem to need sch_teql as a module, then
+"tc qdisc del dev v0 root", then "rmmod sch_teql". All of this has to
+happen while the skb is still parked on v0's arp_queue. None of these
+steps are in the recipe. Could the recipe be updated to match?
+
+Also, the message only names the reinjection path. Commit dc4b95b8fee9
+showed this KASAN-confirmed path for a stale skb->dev:
+
+neigh_invalidate()->arp_error_report()->ipv4_link_failure()->__icmp_send()
+
+Here __icmp_send() reads skb_in->dev. This patch covers that path too,
+because the parked skb now names the slave. Would it be worth saying so
+in the message?
+
+> diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+> index d6e9c7c59a892..541cf699abae4 100644
+> --- a/net/core/neighbour.c
+> +++ b/net/core/neighbour.c
+> @@ -1339,6 +1339,9 @@ static void neigh_update_process_arp_queue(struct neighbour *neigh)
+>  			if (n2)
+>  				n1 = n2;
+>  		}
+> +		/* headerless outputs (teql, shaper) transmit on skb->dev */
+> +		if (!n1->dev->header_ops)
+> +			skb->dev = n1->dev;
+>  		READ_ONCE(n1->output)(n1, skb);
+
+[Severity: Medium]
+Is this check narrow enough to match only teql?
+
+n1 comes from dst_neigh_lookup_skb() on the skb's retained dst. It does
+not come from neigh, the neighbour the skb was parked on. Nothing checks
+that neigh->dev is a teql slave of n1->dev, so any headerless route
+device matches.
+
+Two producers park the skb on another device Y's neighbour while keeping
+the original route's dst:
+
+- nft "fwd ... neigh", via nft_fwd_neigh_eval(). nft_fwd_validate()
+  allows it at NF_NETDEV_EGRESS.
+- bpf_redirect_neigh() with an explicit nexthop.
+  __bpf_redirect_neigh_v4/v6 only replace the dst when nh == NULL.
+
+Suppose such a forward runs at the egress hook of a headerless device X
+and the neighbour on Y is unresolved:
+
+__neigh_event_send()
+  skb_dst_force(skb)                    /* dst->dev is still X */
+  queue on Y's arp_queue
+
+neigh_update_process_arp_queue()
+  n1 = dst_neigh_lookup_skb(dst, skb)   /* X's neighbour */
+  skb->dev = n1->dev                    /* X */
+  neigh_direct_output()->dev_queue_xmit(X)
+
+nf_skip_egress was reset after sch_handle_egress(), so nf_hook_egress()
+runs X's egress chain a second time.
+
+The forward then runs twice. nft_fwd_neigh_eval() decrements TTL again,
+so a TTL=2 packet that should leave Y with TTL 1 is dropped here on the
+second pass:
+
+		if (iph->ttl <= 1) {
+			verdict = NF_DROP;
+			goto out;
+		}
+
+Quota, limit and counter state are charged twice. The second pass may
+also decide differently, for example with numgen, an expired set element
+or a ruleset change. The packet then leaves through X, the route the
+forward was meant to bypass.
+
+Devices that match as X include:
+
+- point-to-point ipgre with a unicast remote, and collect_md gre
+  (ipgre_tunnel_init() leaves header_ops NULL)
+- ppp, eql and teql
+
+Tunnels using ip_tunnel_header_ops (wireguard, tun, ipip, sit, xfrmi and
+so on) don't match. Before this patch these skbs left Y without a link
+header. That was broken, but they never re-entered X.
+
+The commit message acknowledges this and leaves the producer fix to a
+separate change. This net/core change is going to stable under a
+sch_teql subject. Could the producer fix be included, or the gate
+narrowed, for example by requiring neigh->dev to be a teql slave of
+n1->dev?
+
+> diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+> index ed8faa848f184..4eac1f9c8ddf6 100644
+> --- a/net/sched/sch_teql.c
+> +++ b/net/sched/sch_teql.c
+> @@ -368,13 +368,13 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
+>  			continue;
+>  		}
+>  
+> +		skb->dev = slave;
+>  		switch (teql_resolve(skb, skb_res, slave, slave_txq, &hlen)) {
+
+[Severity: Medium]
+What happens to an skb parked here if the neighbour then fails?
+
+In case 1 of teql_resolve(), teql_master_xmit() returns before the
+skb->dev = dev restore at the bottom of the loop. The skb therefore sits
+on the slave's arp_queue with skb->dev = slave.
+
+Only neigh_update_process_arp_queue() was changed to put the master back.
+The other consumer of the queue passes the skb on unchanged:
+
+net/core/neighbour.c:neigh_invalidate() {
+    ...
+	while (neigh->nud_state == NUD_FAILED &&
+	       (skb = __skb_dequeue(&neigh->arp_queue)) != NULL) {
+		write_unlock(&neigh->lock);
+		neigh->ops->error_report(neigh, skb);
+    ...
+}
+
+For IPv6 the call chain is:
+
+ndisc_error_report()->dst_link_failure()->ip6_link_failure()->
+icmpv6_send()->icmp6_send()
+
+icmp6_send() takes its context from skb->dev:
+
+	net = dev_net_rcu(skb->dev);
+	...
+		iif = l3mdev_master_ifindex(skb->dev);
+
+It also uses ipv6_chk_addr(net, &hdr->daddr, skb->dev, 0), and
+icmp6_iif(skb) for link-local sources. That iif becomes flowi6_oif for
+the route lookup of the error.
+
+These values used to come from the teql master. Now they come from the
+slave, which changes the result in these setups:
+
+- teql0 in a VRF with the slave outside it: the ICMPv6 Destination
+  Unreachable is routed in the main table instead of the VRF table.
+- A link-local source on teql0: the oif becomes the slave.
+- A slave in another netns: the error is built in that netns.
+
+Can the local sender's error be dropped or misrouted in these setups?
+
+Would restoring skb->dev on this path as well avoid this? One option is
+skb_dst(skb)->dev, which dst_dev_put() keeps valid.
+
+[Severity: High]
+This isn't a bug introduced by this patch, but should teql_qdisc_init()
+check that the slave and the master are in the same network namespace?
+
+The teql Qdisc_ops are on the global qdisc_base list, so
+qdisc_lookup_ops() finds "teql0" from any netns. rtnetlink_rcv_msg()
+only checks netlink_net_capable(skb, CAP_NET_ADMIN) against the caller's
+own netns. teql_qdisc_init() then checks only hard_header_len,
+m->dev == dev and the root parent:
+
+net/sched/sch_teql.c:teql_qdisc_init() {
+    ...
+	if (dev->hard_header_len > m->dev->hard_header_len)
+		return -EINVAL;
+
+	if (m->dev == dev)
+		return -ELOOP;
+    ...
+		m->dev->mtu = dev->mtu;
+		m->dev->flags = (m->dev->flags&~FMASK)|(dev->flags&FMASK);
+    ...
+}
+
+As a result, root inside an unprivileged user+net namespace can run
+"tc qdisc add dev <own veth> root teql0". That enslaves its own device
+to the init_net master. If it is the first slave, it also overwrites the
+master's mtu and flags.
+
+teql_master_xmit() then round-robins init_net traffic routed through
+teql0 onto that device. __teql_resolve() creates the neighbour there, so
+the namespace can read or drop that traffic and controls neighbour
+resolution for parked skbs. This needs sch_teql loaded or built in by
+the host. There is no MODULE_ALIAS for autoloading.
+
+With this patch, parked skbs also carry skb->dev = slave. ICMPv6 errors
+from neighbour failure that quote the init_net packet are therefore
+built in that namespace, through dev_net_rcu(skb->dev) in icmp6_send().
+
+[ ... ]
 
 -- 
-2.34.1
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-6HS9.v2.r0.20261101105945%40mojatatu.com
