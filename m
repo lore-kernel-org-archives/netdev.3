@@ -1,88 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.132
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793647610;
-	b=pIBOWTlx9WNXZb4p92vyHavb0LjO1k7AsEhvLsyFjXCyLsxqAVWybRmOfqv1GKQTiEkP
-	 fJFZw2V5AqqkdXsBVWkgiYC312Rgiy1xgL1XrZsdgd6FWfsNBPPijYkt8yz567Z2lcZI/
-	 QWOhpwbjQEvYXL4eV5/cRch50ZwVl6vp5t7ew6hC1yNzW0M99zHsm8qMP0NtBYcflSxBL
-	 Yyrr5kkPE7tun/cpI6ZusxJ+IFTwtdVvflLSOiWWwPEgzqrJ+RjVqIPdQTDphs7fUeiat
-	 J/na7PZIv3EcU4znAV9gjHdJT+jyUlxSaBNhWvOOX5glqqw8G7nacysEaB/D0LBkWWA==
+	t=1793647910;
+	b=HI+CJ5N1Jbzieu6XnmtjfW6N8EU/UIFt+8zYGWG/VyBHeLO8xQ08nqUT4iNXgfG2H9WP
+	 6G3UHATjhPjytg38LT/2jqJL9l5YHfMOz3NhuaqT+3LgG4wPFmw0oU80X8avc72S81xoi
+	 1mWrMvTth9mpV9hfZnAbZIeNHunD/NyDfPQC3idwCIeLl3WpE4WEaH34zs/29XNDEOEND
+	 k2845gDYBJgiuR2hLJj62QTIgNH8mxxe6ofzvEfJ/FvrQGtQLsXz/0KAj6bRjgdv9PRya
+	 934ofksGBxS6rcDKAQhmaIJsLlobBs9fNU9/IEGv7ChN8IPkhDf1/UNxBbbEUzzXG9g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793647610;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793647910;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=GGgFPYYG6oWLUvP1KotHDJ9Xw83iP8ii3ww9kM3hKP0=;
-	b=Jvtkh+LE1/+M9eNWpZOmr+x/mhkVk7dDBWGSRl4mzIdOwbIvaJLu/qfwhKKYgSfiQ+r1
-	 scQXeumrsFH6tljzh1DnQ3tDnsPCYJK0ZojjQ3ndxeuExurG8zVkk5qQ6JF0IcnKLszI6
-	 TS9FAF1fshcqz6gtR4RdKYzo9igbrWvv4ltAjzLVA/HKUWtQAwuKYFMXXoJhB9Ua9/X9g
-	 H2+wVRkBfEYOQtvlOr6mx7sa9e0xVCnzRGg1Ai/zud5mOsQud6fpG/J9mzRRfDEC4Mvsl
-	 Gwnb4eQ/uKq7aQgMiMGDB6YwEUpK0yQyGpikg3MCdVlCNg9wWK7bBx8nMFs1N7jJiGg==
+	 Date:From:To:Cc:Subject:User-Agent:References:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	bh=17T5xkmwSXx3rxRgsFuuietPjSf4dCY3suvqmMRm7Q8=;
+	b=zmxcI+Ir24L1btVgj12S/81Nbwu+zu///JTQksxZE5L578VPc0ZbcvrkiQvYIHWT4oOR
+	 mKopUp9jAfu3+OYuvkqn5ns9bZoiBf/IqcbCEoh/zztGxYjYxLmTphcyhulDsMtPWAwiU
+	 j6/GIj2qDzkE/eFXEOK12Vi2T3FxDMiFKjxjjP/UbghC9NiOWmO91XmJqwWXtixadikLA
+	 lzXgNmX1HrGhxXle1Dw6JeKMOP6uX/0eKjPUePex5cJnLJg7GOT4BTNY3wdqYbLbWtcQ/
+	 N1SF71r9clduL1muwSsZnQKFfuX6N/tzGHj7PkY70G1SeUzJEF+S0eaac3PMQg51S9A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ji5BHOzQ;
-	arc=none smtp.remote-ip=74.125.224.132
-Received: from mail-yx2-f4.google.com (mail-yx2-f4.google.com [74.125.224.132])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GdHSYviw;
+	arc=none smtp.remote-ip=209.85.214.171
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7BDC606A329
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 19:26:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7BDC606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32489606A326
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 19:31:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 32489606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ji5BHOzQ
-Received: by mail-yx2-f4.google.com with SMTP id 956f58d0204a3-679a254a724so1824383d50.0
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 11:26:49 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GdHSYviw
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ea0efd636dso31280475ad.0
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 11:31:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793647609; x=1794252409; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GGgFPYYG6oWLUvP1KotHDJ9Xw83iP8ii3ww9kM3hKP0=;
-        b=ji5BHOzQ1RzwPyqsk2s8cHAViYOWD/O+3bZQY/tAGPh6iajASEYoYfopk4UXn09Dvp
-         a8Y3e2wrg8IO3piRB36K67BsnG7u0nhbSW+8Ju9C2+l8e4PSWFRKG3DHntj+sT/fctga
-         4R6gRl67e2TJBXI2nqrqp02Uj3sBQ8yzPwhNpwHIW8R2V6i2xrLJ0gU3vj79VkfBnMpJ
-         5UoLOdz12VNFiwzSkpjsJT5tWJh95TTv8UHajaoTTo6ciV2sUFHKn09peiEAe3KCubYa
-         gmdR7/rtDT7RHk67imJuw2/NIFZXKHl0hTZH0cbZIjhp8KOT1bA+l8VGOwaPX59+N1dJ
-         pdZQ==
+        d=gmail.com; s=20260707; t=1793647909; x=1794252709; darn=vger.kernel.org;
+        h=content-type:content-transfer-encoding:mime-version:message-id
+         :in-reply-to:references:user-agent:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=17T5xkmwSXx3rxRgsFuuietPjSf4dCY3suvqmMRm7Q8=;
+        b=GdHSYviwd1X+v6uswMpn2cvWX+0O3yEy0F0a3vUT4TyQr3cNjOa4dGxmA9qY01O+nM
+         fcBPAFXhQdCYYQWMVp0smvus0XCiB22mj41VippG/7buLqH4o6Dg1vOduypdzOxHMxII
+         aLdrUCZXth4A6wBn6bjsJ9ER9nwTnIkx8Ic77MtpHrII2fGdzdQ+1hCwQwOvJy7T8A6T
+         OGoYbFdx5jF6Z0N77KzK+bEAyaXq6CUB4O23umbcjg4mbFy1a4dDQ4EU/t51L0I/Dxnm
+         xF4IkD7t/TiA52979g9R6Mfvqy5v29es/RYZOZMa8V1k19nZ7o+Vu53ExjNw/BxcR+h8
+         LT7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793647609; x=1794252409;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=GGgFPYYG6oWLUvP1KotHDJ9Xw83iP8ii3ww9kM3hKP0=;
-        b=mcdeYgV8vb3Mbc2jDc+DQ3TZ4dMAjM/lnC1ldEULLyRH19QlMVXl0dugVCWijDetVV
-         x+hXdwUlmvwv1SdWEb6bD1NpQyqlqzPoJkpSPRPTnDELagOQXrGHsY2PVC42y49uX82S
-         Meznwmc382gJMDOWZ/wVIZ1BaMRX/GmvI1V6DBFectMOJse8dYa1TSbG8wP9KGUjPkXq
-         SsnvEA6WjqLi4TWsn5yVzl/Gq7TzxG+bKLrp/E5Ig6+f5/P6JO3xStkx4JwUhdkybpqB
-         ShSoH9QldhZm0EOUZNylkXbGM+2O6cv3tT98eDcx4KZtk6Tp1Ui7BnA12W/uZknYXnC5
-         +w5Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwQ9BZjMqt4ql6vcWky5pxmooLpI1ZxgaSDZlFGSXmseM2PDqd9J+qCK+JepAgy+Y+mCTX/Dnc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9+Mb6xp6K3TIwL65Brhdh8FO85/S4Rf6O7ozEXxCojPWyw6iGE
-	sBrJSUSryQ5qk97bzEEFVZHJi7VXONut0q6eCbmcLOoibbjknFFy+DmS
-X-Gm-Gg: AYBFou1e4Ts6DE5uNo0JPGu0EsqjuX0wwBQnNAcqSZIY6R5t7IR2s5PTDGetUvyY8yR
-	bBEK2DhRijaDzcadHHecGhMx6NrU3VTctVD+JLlIgyHEcF+LK//mHRimCj3cnYHQPxz0CUMcbGW
-	q6MnyD/6fpm/5FHMvdcX/4Hbj8DvcoQSelKLvmBaEaptlYEHCZoMwb1NVaaHwde/dYy6oJXfuxj
-	4JFSXc3AOVBDLBVgW104bBVhx5ZeCDHgnC8sGVRBo/nukAtt26UqvA65tv7pI+9Pnp+FFdrJqf6
-	zDoCGLoNl4Mx58PwOT6cDc+99Vef0O4eYpyWRHcEC/PApKdF6OMbhkIa7+1q23AVpU9jUjFvzE/
-	D59Mq9RB2q+eMC4xbOMI0dFbv88DY6XqZNYeKP7bD5IEyK/1/3il+oRMXOafc+7uiOG/DXaUL2n
-	3pVwzVVpJmlJAzaMsLLMPB6CrvJLsRqLsg/OPIut48cM4TQo57Xs47eHelsgWgJJnH743lcj382
-	LxLa5sFIKUbkJPEYdkJLXINcUbxR7Ox+hAAvE0/L64TRO+Ry2Jl8FIraSdyL0GRIyV5PtjgVrIn
-	Culo4HfMiwCIpM5z7YGiVrXaFLb8FylpUF8=
-X-Received: by 2002:a53:d148:0:b0:679:93bd:85ee with SMTP id 956f58d0204a3-67ba4ffc1a6mr6007860d50.39.1793647608751;
-        Mon, 02 Nov 2026 11:26:48 -0800 (PST)
-Received: from [10.0.0.48] ([71.69.222.122])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67baf3700b8sm5719489d50.23.2026.11.02.11.26.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Nov 2026 11:26:48 -0800 (PST)
-Message-ID: <d39dfdac-e0e3-4c42-9a55-fbcef6806d77@gmail.com>
-Date: Mon, 2 Nov 2026 14:26:47 -0500
+        d=1e100.net; s=20260707; t=1793647909; x=1794252709;
+        h=content-type:content-transfer-encoding:mime-version:message-id
+         :in-reply-to:references:user-agent:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=17T5xkmwSXx3rxRgsFuuietPjSf4dCY3suvqmMRm7Q8=;
+        b=AUEbbE/260eFcb/uPZG1FnIRdjXWhVYKWzpvJN6Z83Evj2VvlVmJXA9w7BN8FEv4jx
+         BHF0O+gX4U26Qyddkw5iBe3lb4in9GUJHYwPzAdbup3wHe1yRIhlxpePek8LKmGaxLYk
+         ZsiYrw7ExqGMNkosNmSllr7H6eMXicMSXR0vLOhI2CMJC2FMheDEjgAPSFWvBcNxteq6
+         RiMyGP1XEaKCdNyaH/6kdQhuqsBn3rl4sImHkgZCDWQamtzgT0IOe86z7HHvJrUanAyS
+         osb2L8JJ05POUSHt6aQUNNArGRwFiikoRopAS1s7xvPuz19CihV6f1TEc1YqkKPGuQVY
+         fjiQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzKv4sunWmEk7v3vHYofUoENN5BHoykuzvKVQB1j14ebXgYEBHWuOEHL8HYGiPn0vJIUD/dVng=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+lWqVWGPCdmJ7bbPUkzV6kK/MYbI56aLBk7VpFDa2x7/UH8AE2
+	4kgJ3JxzVj0uEGHaJnTmZk+uyOKXg3bUUkF9/ozMTIJF5mufLaxnDZ9nLPaJ/Q==
+X-Gm-Gg: AYBFou1y1gDrycbQD5FZBmAhspWU9TUYbwBAO6vDRXz5YejYWEaIjuWkFYQzpmn6D/y
+	HxaiS4uls3DkWKEDStTTB/eQ9noTwoEbiHJ9Z8CIaJ4DV7XzfEm6iYQkQ4oFlf75mHx4y6TO8JG
+	77XH6NX0aK4Fo+eegi565USVeYEtnDcNBGBQj9Elw1XPkRXdcLo88Tg63CEW9oIdOuxvA/ma54Z
+	ltFy/MRuVZCbsEcTWliMNPKgmq3hfi4eOTUqrnb+qZKix3VlMnd712JjWa47Jzcabn4ajnDbpER
+	tcvaU862BMmkdmEJUXkQ54PhSR7N+aQOQiqkeHj78qH8Zf/SVQZGEh94ci5au0H8rcOzDB4qTku
+	MKAsExCil2Grh0W28bk2zKJBVhCEdv3efeSzXU9gssxr5FFfGz7yLX3TT7AGBxuiHQdVdqQYOhV
+	qfallArOjgQO15ih1sMW07vxTRlM5C9qYnODEtw2VqGy/mYcVUPPQLkL1cH5y0KwTc+z+/wBRwk
+	F4nypQtSrndE81Yt7pfdQyX34+MAnXuJNKICX++o1ZburU+SnTJtVYbLSSWHN6gGzTDMkgk7dcq
+	CiJUkUKdFEaBfKxcOXxrR9kv46sw7/nEHnJ7yNAdOmnfpzPtHD5cubXuSJomDhFu5bVC
+X-Received: by 2002:a17:90b:3c08:b0:3a8:bd51:205b with SMTP id 98e67ed59e1d1-3ae89812f18mr9476854a91.37.1793647909469;
+        Mon, 02 Nov 2026 11:31:49 -0800 (PST)
+Received: from meli-email.org ([98.97.42.147])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c9928d1sm510981a91.14.2026.11.02.11.31.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 11:31:49 -0800 (PST)
+Date: Mon, 02 Nov 2026 12:31:17 -0700
+From: John Fastabend <john.fastabend@gmail.com>
+To: mptcp@lists.linux.dev, Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
+Cc: daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, john.fastabend@gmail.com, jakub@cloudflare.com, jiayuan.chen@linux.dev, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, willemb@google.com, matttbe@kernel.org, mptcp@lists.linux.dev, mason@kernel.org, josef@toxicpanda.com
+Subject: Re: [PATCH bpf v2 06/15] bpf, sockmap: Give no progs to a TCP listener
+User-Agent: meli/0.9.0
+References: <20261102072112.4160195-1-alexei.starovoitov@gmail.com> <20261102072112.4160195-7-alexei.starovoitov@gmail.com>
+In-Reply-To: <20261102072112.4160195-7-alexei.starovoitov@gmail.com>
+Message-ID: <tnw3l0.2z8ao1ckh4em1@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,66 +97,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 0/5] tls: perform TLS 1.3 KeyUpdate in the
- kernel
-To: Chuck Lever <cel@kernel.org>, Martin Belanger <martin.belanger@dell.com>
-Cc: John Fastabend <john.fastabend@gmail.com>,
- Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, Shuah Khan <shuah@kernel.org>,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Hannes Reinecke <hare@kernel.org>, kernel-tls-handshake@lists.linux.dev,
- linux-nvme@lists.infradead.org, Alistair Francis <alistair.francis@wdc.com>
-References: <20261102-keyupdate-rfc-v4-0-f17419972b9f@gmail.com>
- <785aa669-8229-4909-ad33-66f0824687bd@slotpi15m67>
-Content-Language: en-US
-From: Martin Belanger <martin.nvme.dev@gmail.com>
-In-Reply-To: <785aa669-8229-4909-ad33-66f0824687bd@slotpi15m67>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
 
+On Mon, 02 Nov 2026 00:21, Alexei Starovoitov <alexei.starovoitov@gmail.com> wrote:
+>From: Chris Mason <mason@kernel.org>
+>
+>A psock with a verdict prog replaces sk_data_ready and sk_write_space of
+>its socket. It saves the old callbacks, and the new callbacks call them.
+>sock_map_link() does this to a TCP listener too. Its new sk_data_ready
+>cannot read and does not call the old one. Thus it does not wake accept().
+>
+>sk_clone() copies the new callbacks to each child, but not the psock.
+>tcp_bpf_clone() restores only sk_prot. Without a psock the child loses data
+>or does not wake its reader. If it gets a psock, the psock saves the copies
+>as the old callbacks. Then sk_psock_verdict_data_ready() calls itself until
+>the stack overflows. sk_psock_write_space() calls itself too, without end.
+>
+>Give no progs to a TCP listener, as before the first commit below. A
+>listener receives and sends no data. It stays in the map and keeps its own
+>callbacks. Add this exception to map_sockmap.rst. A listener no longer gets
+>-EBUSY from a second map with progs of the same kind.
+>
+>Since the second commit below, a socket keeps its psock when TCP unhashes
+>it. sock_map_link() does not see the state that the socket gets later. Do
+>not depend on TCP to keep such a socket out of TCP_LISTEN. Set both
+>callbacks in tcp_bpf_clone() to the TCP defaults.
+>
+>Fixes: 0c48eefae712 ("sock_map: Lift socket state restriction for datagram sockets")
+>Fixes: b8b8315e39ff ("bpf, sockmap: Remove unhash handler for BPF sockmap usage")
+>Signed-off-by: Chris Mason <mason@kernel.org>
+>Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 
-
-On 11/2/26 13:24, Chuck Lever wrote:
-> On Mon, 02 Nov 2026 11:57:57 -0500, Martin Belanger wrote:
->> The matching tlshd change for ktls-utils is a small patch to be
->> submitted at a later time if this series is accepted.
-> 
-> Recognizing that there may be further API changes, for the series:
-> 
->    Reviewed-by: Chuck Lever <cel@kernel.org>
-> 
-> I don't expect any changes for the sunrpc consumers will be necessary.
-> For tlshd, as far as I can tell the whole change is:
-> 
-> - In tlshd_start_tls_handshake(), register a callback with
->    gnutls_handshake_set_secret_function() before the gnutls_handshake()
->    loop, as quic.c already does. We rely on SSLKEYLOGFILE to decrypt
->    NFS traffic in Wireshark, so that needs to continue to work.
-> 
-> - In tlshd_initialize_ktls(), after the existing TLS_TX and TLS_RX
->    install succeeds and only for a TLS 1.3 session, set
->    TLS_TX_TRAFFIC_SECRET with the write secret, then
->    TLS_RX_TRAFFIC_SECRET with the read secret.
-> 
-> - A configure.ac check for TLS_TX_TRAFFIC_SECRET in the installed
->    uapi header, so the build works against older kernels.
-> 
-> I assume you plan to send tlshd patches, but let me know if instead
-> you'd like the ktls-handshake folks to take care of this.
-> 
-> 
-Thanks for the review.
-
-Yes, I will send the tlshd patches. I have a prototype, but it uses
-gnutls_session_set_keylog_function(). That replaces the default
-SSLKEYLOGFILE writer, so I will switch it to
-gnutls_handshake_set_secret_function() as quic.c does, and add the
-configure.ac check. I will post it to ktls-utils once the kernel uAPI
-is settled.
-
-Martin
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
