@@ -1,75 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793603155;
-	b=VPdPactcWcFqCJWXOMI0GTdt/crc+TwLcxeItU1i5sP+ODWDsjHf8ccU6mi/fh/RstUy
-	 vu9JwaAABHSq0uW0rMetAQXEcXjO48PpZmm+aZTjuovRtMjzeU40kV+9bNQYndJzbr3NR
-	 l0NtS1vwYupahJgiU6W2OfTOhzzkQ4ys5c849x/WYj0bzgVEfZs2sZJ2+80oNfqiAw1ai
-	 WAqSj3n2D1XGFjJ4ZiZ+YNuemFLQ73+kDMCRHBUwOxILoja8elWp66D+hgsI9NzTSDvL4
-	 XBGBxrL9D1pJoEv6k6K3d0w1Dwg5YOzdpku1IhrdKNdtYSahXsHFp7axu+TIwq+IU2w==
+	t=1793603504;
+	b=vJ1uMvBjwFGgx/Yi4v0q95qPlRK99OQKG1NQ1j8MMtcoFeUMVtTErRA/x5ewspKNEiJx
+	 uB4XQjimgyAXX63eJ3kZPy9DBvMo9l9lTIFUt9beFZb+WvomuyYk0/Pdk8PxuTSaEgrmX
+	 ZWJ64Oi4Wcxj4MKjBWX/TMz5EoMR7WdZLFG1nQN1QFWGFyzzq/NE06zG6guF1zAWIxc4O
+	 JZBYXge5gFE76C6RDIls1h7siilxl7zQokEL6u/DOXfkckZGDphviZjO5pWTK/NB4N9AI
+	 hvCgm6SiIyu6Qs2td9i4if+Vqr+Gcig3VfXOdbIeTTrDxob9Hm5T8Fv8dXn9fNY2c2w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793603155;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793603504;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=S2dXtgoINO4jETLhwlkbR6oePZjzayLB0KbxKdo2N4Y=;
-	b=s3QcicJckpG4WvsBMnTYvKy+gfw0Qc7O1levP3krpouPNpOKh4UmDH6TZBZDd9RljDaO
-	 WdociluzUK0XGmZHzzXC5j7TO6gUsZ2/6SNOTifDhUMq7G6j94mZHE3nIAlhh/xfOPf5E
-	 82/UGFHvZVY8UFvF6vRGaGkwXv7LN5VLbCZmProS3GYRiD1WCbAx/38i5gK1lLXxr53V7
-	 a6WnT7zxtZSDjAyrIa5hOl60K94GFcVP+S9q7n810jWShQlCFe4QEYhKncEo+xmtQsM8W
-	 hIuOxeuR1VmkfIPZRbAXNY0kRYBBkrkLs99kjAo/tuAPKQcuUWjodm1vVG26eH8P3QQ==
+	bh=Mb/1g8nYCeIwcAw01UT60I+xXfiBOSX5Y/kTWaVFrFY=;
+	b=jrxqSiuvvpvdPHVxmFnGQEmtsMlFFdrhV8FJ/iSdyTMVC4yxveOPbT0ZgwjYclazqxZG
+	 TqhnClNHVxFfiTVm3b5CRVTzMB2lWDrB92u3W+0zmWaB8feSlKX4+1opB2tncZdL/ztGv
+	 1GWkKzzdYfm0qARS8nHTAuC7Q4/ON15t/gmmXQFdMtLno8rPlu7OZ0pzOEAYqFwtaN/gS
+	 BYGgJWUU7gAAshh2LZxw3JcNZwMU+bP3y9JAnvuNgTMvBB7YAcocxTdQBqoq9VD+RQVHk
+	 CxKOsVZLceevn77XvPT/ejV7S2U9FGe2my+2OkkWnUmIVC8BiKYXYGwMqxCNdnik0kw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--starchang.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=FAEspZHC;
-	arc=none smtp.remote-ip=209.85.215.199
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eT3wYLlN;
+	arc=none smtp.remote-ip=209.85.210.169
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778AA606A326
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 07:05:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 778AA606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--starchang.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3646606A330
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 07:11:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F3646606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=FAEspZHC
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cd60a365440so1744043a12.2
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 23:05:55 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=eT3wYLlN
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8a06b436dffso682521b3a.3
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 23:11:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793603155; x=1794207955; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=S2dXtgoINO4jETLhwlkbR6oePZjzayLB0KbxKdo2N4Y=;
-        b=FAEspZHCbWAm785Gemg9wThR+t7q2ZPqZP2E9PPj43Uu0kn7vvjNsV9wRCBPy8RPe9
-         0gnetozoKglOKincqWsuisrthjYnwO2uFIG24LFxV6lLtOw/jkaSszjaQJDxb3nSrSYr
-         2DnOex+n7K9VwpQgI4+JjCMJ6XjAztLeRg7Aj1FMnVUP/1xe7fVzgfyXt2Ri/eNinN6d
-         6tQCIKYrCPRCG7m/+FzaYT8KM+ZFdi8YJxeIZbrCaa1m1LEgGkG0wOHqlUDH3eB+mhwu
-         b/NAVdUIvQcOZi5JTezWC0j6q6AlZXj/BZB7o3Q2XoL3pNnucK2A6FiWzVtLRYfuy3fA
-         JwFw==
+        d=gmail.com; s=20260707; t=1793603503; x=1794208303; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Mb/1g8nYCeIwcAw01UT60I+xXfiBOSX5Y/kTWaVFrFY=;
+        b=eT3wYLlNjgKoDJgrmPLVf+z53ie/PBrzWlNf3RchnvysF5anw64TyRRgmRH18FfzOV
+         7jivWYbcp0PkW1F6FaEIJPI7U0r4renRH8Nxala5yjWMlzsCJ/beUiSQ4QXzcxewJMyR
+         krwWkhhNWxZeS1AOqf5A/4miQ+h5iAQf+SG85kk9+rBSzFjPlscdJcTOiq70rFpA05oM
+         qn9NXnsQjtS0g1WwJ4AN/4qTj/Uc+fLzGNGvb7TuJuhOCBkCxWyq8JKVugi+4O36rQ09
+         LRax8nRmHSrQgM0RoWu6HSAPUsKFRxEpqCjmyOUmrnukOD9+3RGzyowIZqopDlMr3pWF
+         erew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793603155; x=1794207955;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=S2dXtgoINO4jETLhwlkbR6oePZjzayLB0KbxKdo2N4Y=;
-        b=vgVBWxUTyfFIAeVs40Tc7qI2IakSLc5ixwOdNfr/KP65IUFZGnxVC9b/MYuLPCD7sY
-         ZJaMXJc7IDvuBwA4YYBqEIdqdPxtd4d+ihhJcR+bffKMr0PFWesbKLx0OyxinfRTcelr
-         VPLtWnVtLXF1OOZVfCfkyZ1Sm5ojhq3Z8vjaLtHT6XpRpih5wlWW1UCBFNMhyo5fHdZx
-         HvwwMBZ1L5ggNbeB6RPJPk7pDAl/K0yftn3vflSOWl68sawFO5AjXwOD5KmDNnw6xvnj
-         FWhynSBP31c9edqr4nTgfU7kGtIDS0HnoXSyTPRpYiQXrpXbciDXd2Cla9wtjniLxkko
-         7hEA==
-X-Gm-Message-State: AFq9FYLDJ1jaNn0l1jExPM1/QmOmnB4GqrBaH9GomxTEp67ro9HzynSg
-	NH0Ieksem0eN+RIISlNlNRnl27cTgsUCNd7ff7GhVIM2C8sL7KY8E/LlGNMGNwud+ALUSYNaW7l
-	8A5apOdhgpUXn807OtQ==
-X-Received: from pfbgq43.prod.google.com ([2002:a05:6a00:3beb:b0:8ac:3a52:2231])
- (user=starchang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:9148:b0:3e2:ad7d:382b with SMTP id adf61e73a8af0-3e929019698mr7099554637.83.1793603154652;
- Sun, 01 Nov 2026 23:05:54 -0800 (PST)
-Date: Mon,  2 Nov 2026 07:05:52 +0000
-In-Reply-To: <c2780bb291244cf32c1dbda63f0dcf594d22da30.camel@sipsolutions.net>
+        d=1e100.net; s=20260707; t=1793603503; x=1794208303;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Mb/1g8nYCeIwcAw01UT60I+xXfiBOSX5Y/kTWaVFrFY=;
+        b=ZPQfZaFqPNPwi5bE+YwaqZPitOvaZeAC+N43DTwHtDfDWXD5An4s3Tp9Rvd0QuLhuQ
+         SBBQ7++Nrbh/hNBvuKYGFpnb2caCrjXr058LdJtQvise/zFOH8EOBSXiuhMfn+/NEHfo
+         pmoy2L7bvK35E2ELOk5Ok+qMBvH2ISWUcPPQzegz7DQIDpNHfPDlUoZgQmtIkf6ZLh5t
+         RwePGcuNS1pz3XgZ5PFsoBFUiCRFX2zxKqF2iCNXfsZqMO8d1BMqXZq6K+SA+ZUejhi4
+         pkZdQZ9+HnvYvXH0nUr3CCV13R0oEBiIOiocMpB6iahl317PwqbqeMuYE2nmS/kxnX7x
+         lICA==
+X-Gm-Message-State: APuU4Z/Ui+cYdXuEeOct6WkMTcikwfSyTaKsz+MeRHq0WCBtnYlkzDED
+	imho9pr7LW8WbEBOQc8eRxCGMqHnzC2JZQ1sstMI+mu/TPadjyOLKk08NWlsdhvq
+X-Gm-Gg: AYBFou3SP0XM/8IUiSNRWL64pqqcpuF/PZCY9uh557l8gxFD8P5O4hO3SeWqUbPEzUF
+	Xyamnz9LzFdiJB+RnOzTSM3w1DWfQszgx6tCcC02MNW7SLtOHEdflSaQKz5wMa44rFjkiEkKpIs
+	gwUnRRvqiE1uYfxUtG1fbVHpV2V2Ffo1+sqYY7LPqUPEBgMPygUKAD4Wkmm3TyddRY3s/K1U4Ly
+	wcyv4ansCSO9ko25NSP/pZu3QQhH193uv8NdRxLb+45l+wHqhw2nbrzIfymUt1phP86A3aIzNro
+	qEDhUTetBXbLDuw5C71Ti83PZThW8MTehofs40jZhb74SVnIfqqMVYijeQl/O/6ouLgqge+c0Hh
+	YqPYQGFuj7QJcxmYKD1S0wUwbq0jHA1X5PfyooL2lJrIPaxJPTWOF8HB0G3sbH9/0Xxoyx3jQ1H
+	puYai0mn7pFqw10NTbmpVuYQrJLGBd1/+Oj7OqqTPGwjuh8A7tPsYbYzKPOFvhEcUkY38d1vPoX
+	8nJh4orvq2/5Vv2s/znKMiCuG8VCs9f8vhFtydDVoUT3RpyHD6s6PBATuJMtHF6KKB/FLs289yE
+	4oHz4FuW1CbGbAADpRLFkVG7H4C0OAD/1XncxzwtnT64UNSNeP7U3w==
+X-Received: by 2002:a05:6a00:4f94:b0:89d:ec58:ce47 with SMTP id d2e1a72fcca58-8a9c05ab245mr7894823b3a.55.1793603503283;
+        Sun, 01 Nov 2026 23:11:43 -0800 (PST)
+Received: from d.home.yangfl.dn42 ([2a09:bac1:7680:28::4:396])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8abab0c6c6esm1140566b3a.48.2026.11.01.23.11.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Nov 2026 23:11:42 -0800 (PST)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net 1/4] net: dsa: motorcomm: Fix extack message on unsupported TC actions
+Date: Mon,  2 Nov 2026 15:11:13 +0800
+Message-ID: <20261102071119.3435180-2-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261102071119.3435180-1-mmyangfl@gmail.com>
+References: <20261102071119.3435180-1-mmyangfl@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,63 +101,29 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261026150539.1357037-1-starchang@google.com>
- <20261027015619.1745984-1-starchang@google.com> <5c1fe870-39ff-e83e-e479-0e1f0fed6a83@ssi.bg>
- <20261028061644.2997812-1-starchang@google.com> <f631e178-d9ec-f335-9163-c44a9e6c58af@ssi.bg>
- <20261030030715.604215-1-starchang@google.com> <65cf2338-7bb4-3151-f3b1-ef171bb5723b@ssi.bg>
- <c2780bb291244cf32c1dbda63f0dcf594d22da30.camel@sipsolutions.net>
-X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
-Message-ID: <20261102070552.3516567-1-starchang@google.com>
-Subject: Re: [PATCH net v4] net: Fix Hole-196 vulnerability by dropping
- unicast ARP/IP in L2 BMC
-From: Star Chang <starchang@google.com>
-To: ja@ssi.bg, johannes@sipsolutions.net
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, linux-kernel@vger.kernel.org, wangroger@google.com, 
-	starchang@google.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Julian, Johannes,
+No extack reasons were given to unsupported TC actions. Fix it.
 
-Thank you both for the great discussion and perspectives!
+Fixes: 8eb9e7520b17 ("net: dsa: yt921x: Add ACL support")
+Signed-off-by: David Yang <mmyangfl@gmail.com>
+---
+ drivers/net/dsa/motorcomm/tc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Putting the two points together gives a very clear and coherent picture:
+diff --git a/drivers/net/dsa/motorcomm/tc.c b/drivers/net/dsa/motorcomm/tc.c
+index 9dbd61e48fee..8835907366bf 100644
+--- a/drivers/net/dsa/motorcomm/tc.c
++++ b/drivers/net/dsa/motorcomm/tc.c
+@@ -1122,6 +1122,7 @@ yt921x_acl_rule_ext_parse_flow_action(struct yt921x_acl_rule_ext *ruleext,
+ 			break;
+ 		}
+ 		default:
++			reason = "Unsupported by HW";
+ fallback:
+ 			if (cls->common.skip_sw) {
+ 				NL_SET_ERR_MSG_FMT_MOD(extack,
+-- 
+2.53.0
 
-1. Julian correctly pointed out the real security risk with Hole-196:
-   Attackers can abuse not only unicast ARP replies, but also broadcast GAR=
-P
-   announcements (sip =3D=3D tip =3D=3D gateway_ip) to poison peer caches i=
-n a
-   shared-key network.
-
-2. At the same time, as Johannes reminded, Linux already has a dedicated kn=
-ob
-   for that specific broadcast behavior: `drop_gratuitous_arp`.
-
-Looking at the existing architecture, the two knobs complement each other
-naturally:
-- `drop_unicast_in_l2_multicast`: strictly enforces the L3/L2 boundary by
-  dropping unicast IP and unicast ARP replies (sip !=3D tip) inside L2 BMC.
-- `drop_gratuitous_arp`: drops broadcast GARP (sip =3D=3D tip) without tang=
-ling
-  broadcast filtering logic into the unicast knob.
-
-This means users defending against Hole-196 can achieve complete coverage
-by enabling both knobs on the wireless interface, without needing to overlo=
-ad
-`drop_unicast_in_l2_multicast` or change core neighbor learning behavior.
-
-This also means [PATCH net v5] (which dropped IP changes and strictly filte=
-red
-non-GARP replies) is architecturally aligned. We can document this dual-kno=
-b
-recommendation in ip-sysctl.rst so administrators know how to fully secure
-shared wireless links.
-
-Julian, Johannes =E2=80=94 what do you think about this unified direction?
-
-Best regards,
-Star Chang
