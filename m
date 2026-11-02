@@ -1,49 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793632458;
-	b=3/bDYZ+mZfMMss8GuHh3x7S7PT4apNjWw8gnbWj9Rd8AsovG3i0HZHYCoDSdFv412oHD
-	 BBjO7h9PNvTqeg0UGa5nirJte2gufNlpD9/05wq9dW+btWWM46CB0BeUUGHPepJwKK5Zs
-	 o/xeF5oB41955BUb6Wm0xFfPQqZ4qjefk7Th+WEOcgi2au/8HrKnCv/eXuhgyFIfVAWwU
-	 zOkwL/vccwCU7AaeqyLGym9oXyjX/9dzODiuEVLhhBARsR2MyT81LWba15bF6vMnxR09V
-	 peb367wFXi12g/att9yq+UrkCbWVao2GpyZt2TjOCR8sZTT1bf3vHDTnf/fHef5xdTg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793632458;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=CTj8vGUhriHCrFXvGM0jGNx3xl9ERozaQgV9GXGsY38=;
-	b=42ZCav8ro0wj8Kxs4xXx+sEOvQ1m/v5l17tjithFW192fJqnxeUSynAJP3ukcpqQQtii
-	 v52DJthddjffbyMA2YokaVHUoRP4KQBjbnY2WBwP67uaWMZYssHxofQM57ukvjx+bWVa7
-	 8VhHVLQF7jJXDn8ZrtMBBAvnLksviqIJUYfo3hIHW8RhXL5ITEUKotKI15XlMEnsriHxE
-	 iJkN5HfyFr2J/paGmWwOPMaaDdN/bETY2UR+5OKrTWDq0Vf2aVHJPSs1E3NVSNCcaOxzW
-	 YtU4FZerlVk5GKjWrUpNJIjvZk5qdrxyfINXxtOTFM+BHWMaq5kgYBWh4G84B68FMnA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aoFGcx0p;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.52
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793632459;
+	b=wgt6h1N6OiT8lpndVjsMz5n/WFQN7xMy/toHwQEZ2TOr2V0qoYZ8Y9xHKGsiVZy4PYMy
+	 w7LuEVtpTog8it400ksfvXC9cq/Rxp95y8LGWigAvsqnOJF1ueFUyy9Dl6zPLGK+mNLjh
+	 aX4YadttP9R1BgfFwtX44S4n2VzRy1NdbwvsAJqnVM4rfPXlLQ1KnqNsZ8xK0921iSpTV
+	 eyNVaVpF7fiELLBDM2oDpH1lBfWoHiZLSBvvkOHjIk21M5jpH25wOZiDr5ewXfAdLiQJO
+	 VfJEmdi/byGRVcMs5TJtD4VAyl5HCkXoDQehm7pGiWr9V+Xv2/sMbjcPcsiVLArxf2Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793632459;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=8yUDlmlI3+iGrY/dSFtrVmA03ksQdMmCOwxVGGqFig8=;
+	b=cqePAipUkYHFtVT7SbKnQPhXAYbtNVyQXpm+2ftQXPq7Orcycfs1tpzGN2e9nXPiuQcZ
+	 gUSmxohUTOx9odcDkEQ/O07hOmBDo/j2RO5+mWpi+5nKVIhDmr1mYp433nkyBA5hCN6Yo
+	 crDYfsl4i7SembALbSmtHN+of4DFnGXqVC/hHPRAAsFYf9uv6gXZw+ZzMVgGrQcAOkFGT
+	 FTvN4T7an8rHKq+0Dtamtq2V4FNLYj7/zJGZ9EYUpl83a5Mc19VPLWGq17XrtTMNP1mVi
+	 G2XYVDSpl6Je997g9sFXW2bALxNMcM2FT+0BQsFdkF4AMZLqtM92oouupa+s20C73Kg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UW7VBpmb;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.52
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6387B607990B;
-	Mon,  2 Nov 2026 15:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D007A60913F5
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:14:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D007A60913F5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aoFGcx0p
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8441C1F00A1D;
-	Mon,  2 Nov 2026 15:14:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793632458;
-	bh=CTj8vGUhriHCrFXvGM0jGNx3xl9ERozaQgV9GXGsY38=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=aoFGcx0pELaJ5RYWtke+xC5t7aNB65DB/8p1Zyd+Mct0qYV4hXDTpFdt2jN92OjLm
-	 cm9P26FLH82HHv9uw3dBZcgwAFDEPF2a3BUk5VP4UipyUvYMQBZsfzU8GWvk6Denxt
-	 E+8h+vKxlfMsymem4bXtYNAdw6PVC20yhamxn7bhY3LAKScGG+UHFtjCsk/SsEKeLw
-	 mKt9GtlF0fXNneJBDl1wbvMAkvsv60mfPqz6Wg5a7kgDUDRlelGwablxe1YjuJDu/A
-	 zVy69YNLIhqAiQvfFY8ZlaEu8v/NK9WoKplt79CxDhcQu2uFCnSjhECk0F4Ds7DT4j
-	 Xm4j29KusNR9Q==
-From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:07:19 +0100
-Subject: [PATCH RFC 12/23] scsi: sg: let procfs own the seq_file of
- allow_dio and def_reserved_size
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UW7VBpmb
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-14394530ec6so3873431c88.1
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 07:14:18 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793632458; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LQ1Uf/AN73nWaJU9Mst5NheXj6PG82jhIO6VnnIdEjAKDXhFOhtuYTBV5KBJfjvveI
+         ej+g8qTeTgutWQ3SJM+GU//D3WqSo768/OcA1VEsLcMaRWSL/M09PRGlKMJJunvTAhIY
+         qZbsn0urdr+uz/VnVe/1thIRVluF9G87A9pyCefNQ3iQtIlQ+xc2UWpPOjOclvhuzCZw
+         4yew8JHaUaCd7h4E9SCPdLRqD8HkpEuMQjsCGZFxLMMLdb6j8AfC9eyL0HSPcqAy2uJP
+         CGLrfLnRhliec+NtZfJKUpsQXnt9m9kh66HsI/FGzPHeD0CY5wNbZdjIJw4sn4eJ7wgo
+         Vd1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8yUDlmlI3+iGrY/dSFtrVmA03ksQdMmCOwxVGGqFig8=;
+        fh=SefxRKcBZ0jbxSTE0uRjET4judhSjCLZ4iuL2FJOmF0=;
+        b=QK1FsAweHe7iAYMCKLvpC9/OMeJ9zr4QUnT/vBgxfTqVdVj1184fQTeZ8AnS/JGBKQ
+         LULU/xPcyByvyT+cGJqcqG4sFyu8kx4kP5SoRq2uvMn+kez+l8Snp5KZMYhTundnLBp6
+         wmQ6BYxiBZfmUzJpxEcsij64G21/7jh3WrG/+XfpIK62c2r4X8xBADJ7XPJvhT74haMi
+         S6qXBLyb2dfJ7Fb3fhe8Ulj978elEpiCnZS9cD4aTn1SnTLGsn97SXhLwRVPfyRl60C3
+         jXUA6ddWOK1cymcUq2nKSwGbF+ebwMdnokpxO0P0YksmCuaWCxWPjlXqoqfU7fGgW/6R
+         qoqA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793632458; x=1794237258; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8yUDlmlI3+iGrY/dSFtrVmA03ksQdMmCOwxVGGqFig8=;
+        b=UW7VBpmbA+R7DgWQFPW1YmAY8EEK/fr3Qcz+/ZtZMHh3wLgj23zleU/MciwV0CmwSq
+         IIuqZfkmPs3AwBptvnphkRMLtpt+UDKLbzCQwKa24aSr4rykHGAIvDxlWUmVFi90sfuG
+         uqCU95uYYLJaNtDOyTNUsUnDiQo5qc/zfao6V/KmjKLOsCZ/3hYH42y4QOSYpKqezXAW
+         h9EatqWdNcrVuEnzf2oHuoPVnY0/gmdOge33hsezVh78T9O9R82VQyfICQcF050uYbk/
+         liXbFDcZm4ya6bzjDSVdpj9XHvD/40XIpRvhB7R0ndP09JwC72RtKYUdm0JwMjDu/fTJ
+         T9UQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793632458; x=1794237258;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8yUDlmlI3+iGrY/dSFtrVmA03ksQdMmCOwxVGGqFig8=;
+        b=Ya+RzOmNm3xrhbOiJkHjs8ScTDhtjxOqqsUdcVmOP11AfxPMzeWsqihq4P/k/mqGw2
+         XPVutEIbo3G8wbpX9vEDNE/+wyxWDy57ZopUTlIlF4xXRZOMy2I3zmAFVKdSir3/BFIf
+         CJQtqypbCEv26eDNMHKdPQRTioQz4B2/KDCabmIVNVhOR7WGQKldALhGPEPaj4cia6M3
+         8wdvz48wTM30M1EOyjzS+gPM8thfvevT+TyJN5l3i4JipXE2gcJ/YDDk4q0wBSWcFL7E
+         jQ/1ZZ2Lz46mp4lJZeIgyZfJEtbIJZXBe0oIaOJT1knvNMPaxzoLlo90F15xdGBsuVrc
+         X3Og==
+X-Forwarded-Encrypted: i=1; AKwUvBxsrh8eBMtgNLQeHZrv5us8z8j7mUKvU1tJo0+XYgIqjkAfoZKbxXXlNDuWbsHUIGHgjgCotc8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIX91smr/GWtNG+EfSk0KzrdOVSE8XbaZB3VZ0Vgb85q7E1PtkX
+	2GrRrZjNr8e81ACrRl3Xy7FZaaLRJ0+AaS3a382FOumNRjPSAFGJSg+3nr5sG70pIkqXRmsLlur
+	Fq4zp81h/x7yYzUNKi5am8wklVFxL9U0=
+X-Gm-Gg: AYBFou2Tx1oczHoh/BK4lFvD+5+8jd3IrCBrPhOfL6QN0R/PkFTpLCL4kHCakxCjiKE
+	AsEYYGHxsDBJ2OmqRrTPrwHlBj2fD71XVOIA/LTywS29jd0/FKDntDrzytLyM3k5Tuifa7iXPMs
+	ju5kloPEw+yqm8mMO6c1UIPPfa5Cu4ruSC9Tox80/l0bBF7Ew32w9rUEAgaruEWkBgY/n9x0xbs
+	xguYmCENoDDIkXGCaGwYzKIYn8qwS9LnbcartJ1pjMLHnPZfFNjvSgedJIld5C16DXFEWbscW8l
+	UhCTgt4HkkdGtyHFzx2L7BjGsVckPMHFwtlXeFYC0GBXodr0JGN5u5Vpc0kqcYW5aM52ammlrkE
+	hI8zZeP170E5MicydeDFF6r1o0BKHhoAN2+Lnmv8GVVkTx5NG8Tn94BIgVc3ECIKB7loSs/35XW
+	pQ9TbbAPNpo3R7
+X-Received: by 2002:a05:7022:88:b0:144:fb31:a597 with SMTP id
+ a92af1059eb24-1ac6069cebdmr14582009c88.47.1793632457694; Mon, 02 Nov 2026
+ 07:14:17 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,134 +105,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-drivers-v1-12-a994bd4d3b1a@kernel.org>
-References: <20261102-work-procfs-drivers-v1-0-a994bd4d3b1a@kernel.org>
-In-Reply-To: <20261102-work-procfs-drivers-v1-0-a994bd4d3b1a@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
- Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
- Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
- NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
- Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
- Greg Kroah-Hartman <gregkh@suse.de>, 
- Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
- Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
- linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
- linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
- linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
- ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
- coreteam@netfilter.org, kexec@lists.infradead.org, 
- linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
- netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
- linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
- linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
- linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
- sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
- linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
- linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
- linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
- linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
- linux-debuggers@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, 
- Chuck Lever <cel@kernel.org>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3098; i=brauner@kernel.org;
- h=from:subject:message-id; bh=i7XPA6oQ9lTisv2fJhwkVTww2SSinfY9aqbIviKN0Rk=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG6Qf8grL/vRBPOFfc2hW3RiHI9mZiQELndpn9khL
- RHPWBrfUcrCIMbFICumyOLQbhIut5ynYrNRpgbMHFYmkCEMXJwCMBH+LIZ/Znxfdj0svxz/x0KW
- cdfJXz/uVP2z5WL92Rx27MvazyK/WhgZXtf0pV+c73nSVO8zu/lFWSMbjbVtv7ecN4xQ/S9ns82
- bDwA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+References: <20260927131838.6774-1-demyansh@gmail.com> <20260927184414.6c0c8867@pumpkin>
+ <CAOLeWCt+yFs29yWg6DrRH42HD9ConLgTEbW=wMKtEoTW5ROHvw@mail.gmail.com> <CAHfVqdX4AmqXs_oD5OCjU8R5ts=98=RmgCmJ3D5gLyk=Xtrfkw@mail.gmail.com>
+In-Reply-To: <CAHfVqdX4AmqXs_oD5OCjU8R5ts=98=RmgCmJ3D5gLyk=Xtrfkw@mail.gmail.com>
+From: Demian Shulhan <demyansh@gmail.com>
+Date: Mon, 2 Nov 2026 16:14:06 +0100
+X-Gm-Features: AclHuK9s_qVGMHFu-dL36Q48-lWDPnNvO_Yb6GHSTKkiWePXFsWruUJSaC8neac
+Message-ID: <CAOLeWCu4NiedyXmoLwwnTvJitRwgg6PQq9LApO=k36ktN3-XWA@mail.gmail.com>
+Subject: Re: [PATCH 0/2] arm64: csum: Add fused copy and Internet checksum
+To: saeed bishara <saeed.bishara.os@gmail.com>
+Cc: David Laight <david.laight.linux@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Eric Biggers <ebiggers@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Marco Elver <elver@google.com>, Ard Biesheuvel <ardb@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	David Gow <davidgow@google.com>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	Nathan Chancellor <nathan@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, kunit-dev@googlegroups.com, 
+	netdev@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Pass the integer they show as the data of the entry and declare the
-show function, procfs then opens and frees the seq_file. That makes the
-open functions unnecessary.
+> The scalar path seems like generic C code and not restricted to arm64,
+> curious how that performs against existing (e.g. x86) assembly
+> optimized implementation.
+Depends. I think __builtin_addcll() is needed to get roughly the same
+performance as the asm version. In my tests GCC on arm64 turns it
+into adds + cset instead of adcs like on x86.
+But I will look at it, thanks!
 
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- drivers/scsi/sg.c | 28 ++++++----------------------
- 1 file changed, 6 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
-index 3f9e08725602..c7386fbe5580 100644
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -2287,26 +2287,18 @@ sg_get_dev(int dev)
- #ifdef CONFIG_SCSI_PROC_FS
- static int sg_proc_seq_show_int(struct seq_file *s, void *v);
- 
--static int sg_proc_single_open_adio(struct inode *inode, struct file *file);
- static ssize_t sg_proc_write_adio(struct file *filp, const char __user *buffer,
- 			          size_t count, loff_t *off);
- static const struct proc_ops adio_proc_ops = {
--	.proc_open	= sg_proc_single_open_adio,
--	.proc_read	= seq_read,
--	.proc_lseek	= seq_lseek,
-+	.proc_show	= sg_proc_seq_show_int,
- 	.proc_write	= sg_proc_write_adio,
--	.proc_release	= single_release,
- };
- 
--static int sg_proc_single_open_dressz(struct inode *inode, struct file *file);
- static ssize_t sg_proc_write_dressz(struct file *filp, 
- 		const char __user *buffer, size_t count, loff_t *off);
- static const struct proc_ops dressz_proc_ops = {
--	.proc_open	= sg_proc_single_open_dressz,
--	.proc_read	= seq_read,
--	.proc_lseek	= seq_lseek,
-+	.proc_show	= sg_proc_seq_show_int,
- 	.proc_write	= sg_proc_write_dressz,
--	.proc_release	= single_release,
- };
- 
- static int sg_proc_seq_show_version(struct seq_file *s, void *v);
-@@ -2347,9 +2339,11 @@ sg_proc_init(void)
- 	if (!p)
- 		return 1;
- 
--	proc_create("allow_dio", S_IRUGO | S_IWUSR, p, &adio_proc_ops);
-+	proc_create_data("allow_dio", S_IRUGO | S_IWUSR, p, &adio_proc_ops,
-+			 &sg_allow_dio);
- 	proc_create_seq("debug", S_IRUGO, p, &debug_seq_ops);
--	proc_create("def_reserved_size", S_IRUGO | S_IWUSR, p, &dressz_proc_ops);
-+	proc_create_data("def_reserved_size", S_IRUGO | S_IWUSR, p,
-+			 &dressz_proc_ops, &def_reserved_size);
- 	proc_create_single("device_hdr", S_IRUGO, p, sg_proc_seq_show_devhdr);
- 	proc_create_seq("devices", S_IRUGO, p, &dev_seq_ops);
- 	proc_create_seq("device_strs", S_IRUGO, p, &devstrs_seq_ops);
-@@ -2364,11 +2358,6 @@ static int sg_proc_seq_show_int(struct seq_file *s, void *v)
- 	return 0;
- }
- 
--static int sg_proc_single_open_adio(struct inode *inode, struct file *file)
--{
--	return single_open(file, sg_proc_seq_show_int, &sg_allow_dio);
--}
--
- static ssize_t 
- sg_proc_write_adio(struct file *filp, const char __user *buffer,
- 		   size_t count, loff_t *off)
-@@ -2385,11 +2374,6 @@ sg_proc_write_adio(struct file *filp, const char __user *buffer,
- 	return count;
- }
- 
--static int sg_proc_single_open_dressz(struct inode *inode, struct file *file)
--{
--	return single_open(file, sg_proc_seq_show_int, &def_reserved_size);
--}
--
- static ssize_t 
- sg_proc_write_dressz(struct file *filp, const char __user *buffer,
- 		     size_t count, loff_t *off)
-
--- 
-2.53.0
-
+=D0=BF=D0=BD, 2 =D0=BB=D0=B8=D1=81=D1=82. 2026=E2=80=AF=D1=80. =D0=BE 12:44=
+ saeed bishara <saeed.bishara.os@gmail.com> =D0=BF=D0=B8=D1=88=D0=B5:
+>
+> On Sun, Nov 1, 2026 at 3:34=E2=80=AFPM Demian Shulhan <demyansh@gmail.com=
+> wrote:
+> >
+> > I would prefer to keep only the scalar version of the fused copy+csum.
+> > It reads the data once instead of twice, and on real Armv9 hardware it
+> > cuts end-to-end cycles/byte for bulk TCP over WireGuard by 3-12%
+> > depending on the core (+6-8% throughput). It uses only general-purpose
+> > registers, so there is no FPSIMD state to save and it is safe in any
+> > context.
+> >
+> > If you are OK with the scalar path, I can send v2 with NEON dropped,
+> > the scalar path only, and the KUnit fix for the x86 zero-length case
+> > Jakub reported.
+> >
+> The scalar path seems like generic C code and not restricted to arm64,
+> curious how that performs against existing (e.g. x86) assembly
+> optimized implementation.
+> saeed
