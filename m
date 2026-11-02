@@ -1,93 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793645485;
-	b=Mw4aXE6u6J/RDIfaY9Pb69qU83y8TsIm18hLajK/3HKQsULGaC1qrARelVTp9rSAAaLf
-	 V9QjFnNQbKfNfpCg616twNS0NMPwUp5dSa43a8sSnt+TrOPA5KC3vW7zsbbiRfFkhHCPS
-	 Z4Rd2PpMJJ9GSzvN/nCDrBtnopuN6a1TO1Kf1n0lISKr0BDTACRbeFM6S4E4Z/LJLKsG5
-	 HLs5790rEDWbe9lMhyjp1s/u4Xl0Jm+XZyiALmPUPXxkq+iOnup9g+JRPyY2/T9s6TNvp
-	 KezyPn7sp7Bjh3tShLvXpIuR759PcROuP2Wu7wApjq8OEQxIQaJrDany8ibRawfopBw==
+	t=1793645486;
+	b=r12PtVs7UvJJPG/HsW+6kgDWo1Hsul05jOOxGsARKhdC1TFnzjGGSOIPAsAjx711LwG1
+	 ULbCrDpf4gwtJSdQiHKHAPDAqh68UZ6tVPFn9+1SE6agI1QYif+wkF2dDHSw2hr/q96c4
+	 Lj0PM6OdFwNUyoJlfsPBwWur10huyoyIpSWQdCrKtEsWHqj4XWTa1ZifeZs5KTT01hAfj
+	 JiXI/yPWocvQFsqB+uzLFD0+KUWrq6rV3u5CAjVAR2qrsXZOvJeEMoWQXA+aJ8+nbVqz5
+	 p4H9QjEFvKVY07eUdboctqh8Ia9ec/n8tjSJjVCvpUWrnUotDo5IabK5kNtLMFLeEgQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793645485;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793645486;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=QlHiGf+lt6/lLFvfcn5PBs13x1On6n09Gjxo1myFIdk=;
-	b=NCvFlu0wt0FPBelzFsMvZRtmrJ7CUpov6M9VXI3TQgIj/0jFYWj6OUmhTZM9ZdX6K9e2
-	 hNc/M02cpaZeKWV7IPkz9pVxi+QhhFp/SU29pKnmGp6Bzu/5hTaGFsOhLruC1ThNaB0IS
-	 yBmIu8KM4wYjqOPzxuhhjD8KTkfqBARYuF2GmKMilK617gYbZqVrrUppd4+lQrpAZDuBL
-	 Ad2JQzoz8iuN/vc2Q2K+NvTFIM2pwq0QAe89H0dv68zk5DJLx0pCCucRiosx0hYIaMaOx
-	 pdxE44VQbMOST3HocqldTAuIxeSVDwNOadA2UnUV78Mw/lBfH+BWG7nZQlvePNRzyoA==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=K0QN4y4jnTFtdyn65vGrqyDwOyuHW8lCb5pwYreuDyI=;
+	b=UBMXpfosPDEpcu6u38iUUIumeuqi74v2PbvXg5y36HDRNDHzD4QboKVHqn1Yrejzj0fv
+	 c7fhUCbfT642SRcKR7sKVBcY7TKobjNQfRPEPJB/0694SAWYj7r0ZrA4h+BBFoXUu68qd
+	 hdHT42C6BYD/myoRJI4SBxWs2esAUjjs3qP4lKSpNWFMZi91DXTLXfBY2Hp1RIv4eNNQr
+	 5ddRd0oL++0ZSMCnJnhhmYyDao6uHTvsLB63XcVzIyvbEXFFuUobatfRCC+8/jTC35sKL
+	 CFXl8T4PIjxyydns5OILFfPe3qNxqGfJuJQvyoOxtxtCq2+m29c7PTzpQ5rEekTrixA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vBrS4SZD;
-	arc=none smtp.remote-ip=74.125.82.52
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LHSslzd+;
+	arc=none smtp.remote-ip=74.125.82.42
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CDD606A324
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 18:51:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 18CDD606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146B8606A32D
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 18:51:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 146B8606A32D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vBrS4SZD
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-1438d9363fbso2642195c88.0
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 10:51:24 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LHSslzd+
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1adbf62dd31so3532288c88.0
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 10:51:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793645484; x=1794250284; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QlHiGf+lt6/lLFvfcn5PBs13x1On6n09Gjxo1myFIdk=;
-        b=vBrS4SZDzaYDB61VTJynnuJZcypDpcykiaFHOWQX55fGMHia+iQJWyVnZlQmIwpU4C
-         nBuC+w6bspHmULaJL8SBFdimZcfxZpuDZ+wWbazP/O28WShasGACIYvZrx0KzOcVo5Eh
-         uwjQhSUbtQmD2AY2s670mh/DNVOTkKKu5GZ2f/aVD888fJj4dxsYuWtL6aj1VPqNJDJh
-         PXpxqQNkp+uTsFQfsalVmshJ0zH4X8nt41cCVTa92pR84SyEdvzYwGrtB2oGF4ZHVQX+
-         aFhxkavq6Uen/nOV9p46cNH0fDLbV1WUWGg8cSPV0VgqalzxkG0wdalugMZhfGPQkRo+
-         RFXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793645484; x=1794250284;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1793645485; x=1794250285; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=QlHiGf+lt6/lLFvfcn5PBs13x1On6n09Gjxo1myFIdk=;
-        b=rZskfFlEBcbRfCgjAwdszYLgmzk/sWl8wJ2JRO5c7q6Z2gebltilpgNwNH8x5K8YsV
-         DhdY7STl49OLtlA9z2ZhlP/k+AqXxsG1W2L/wvSnYZYhqNLAUXnp6znicA1SzEBBuNyG
-         imJbDhaeuWKHPXCuxBPyntgmMLGtcZy+98Nlu+E8vI+Gt3ZDEqZlsdCGvEIhS8TwL1Rm
-         CvrWSTERz0PWSng+lyzHTGjXQnkq6Szh0DlNN7Asjor+mttFJVu6z8P6seM3IgEgRQFy
-         wfxGWvL120JgtlID1gXr1R9rASBQW19l+w3WpCGWDAvhl/ESd62uTT5BsUw+WkRB2sOi
-         mNUA==
-X-Forwarded-Encrypted: i=1; AKwUvBxL4Vz5hpug0AjM68JjN0bp4PJNy24YUU935IwAJHF6J9On0uwD8LCTPhuwLYSTeJmfFqyXdBY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKPmAdbc4cbhjFYwzfCeQ7KDKSfkpsWP1hedxZy6pns8w1Q/PQN
-	RWtuSJw+YrFtR+S+xz8pxCJq9JN9bVvr6sWFOflRH1Jg+DDGeI7a0R03
-X-Gm-Gg: AYBFou2Ihwg5cKeccLZGBQD9JLf/Az5dceQibX/xS4JJ+F2MZ3gXqnfAJK38ksAqxBR
-	94UMc23B+n2rhy9bTkJmyyZMQenOTLt2MXeaH4w083WhMBSyegUs0/NChIZZjIsWCDzd4wBWZ8c
-	oJIJuRsID+p8zgG0xFa+5wf9mHNKAS9H2aN78aeAkO2gDoVuPi1UEBqpEAwv5bxBNPOIpUFxsnx
-	R3rE9dk9lVOP5tfFEQakTpDRFPCvYkFN+LJF9orUHCxapoH8nCGYNiR6ZwbQtM6pVBsPnyPbKti
-	+2PGf1NwBm7k/3qB1WHfuqUiTBH8m9TeReUTcVisDTYN3ulfE76mESsPw7TFKSo7EeY2I1TZUnF
-	cDddvjB67FHhXZwNKp7L51fHSJqCqISFRxXHA4nEhw3q0QyLUJ5CovkT1vgX3H0VbwtjWOkmD5O
-	NaiCDcwonmivwFF3eM9JWc8evxmANQfVVftxnfkx4SGLb6VEO/wFJN5gtnZ8RydNI+5karrZDfH
-	k0UQMj1t1O2WHvIuIDoOVUzVc78Fl0VEP9iGiDPv6HIaFZPb+OlED4Ap/oGZs1I5RnkZdYkXjXO
-	xjwxSFBGwZZqLfXUlQLdaq+nP8D8iiUx1Jis3lAmF/CvGu4RcUJwrFJ5whaMiUiTp2p/xQLrWyh
-	kHhxOfw8YCNSVuLpox306gASWIwo+uZJxuU42Zbtq6GLmdw==
-X-Received: by 2002:a05:7022:628d:b0:184:40db:6bb9 with SMTP id a92af1059eb24-1a94876dbd0mr27132117c88.8.1793645484075;
-        Mon, 02 Nov 2026 10:51:24 -0800 (PST)
+        bh=K0QN4y4jnTFtdyn65vGrqyDwOyuHW8lCb5pwYreuDyI=;
+        b=LHSslzd+GXSoMMIs4rr/hOYVBXwaBM5MEy44lC/3WM4aBxQthqpVdVSR9lEntfWR81
+         bB1zPwHzu6rxQr7sHSvsFsVeD2pV1ncGm+YKKAcGShriWqr1ygibYjsYrP1RuIjVWR7m
+         /SqgBOIWevUT9TDl1khaBVBZAgNVl5rrnXkXkE6Jrq+ptCGNXEVuHA2Mq0/vwJcKj2bj
+         4i+mEcsL8Uz/tHBg4B07+RYniOSqC4lAZB1w4tQ8IjaJmcUhv3t0nsxWBX9AnDHvhp93
+         VAAHwPUtc2pVKS18ttsWrntrpefVIm4yFk44VNJiy/+33gBKgnqp3sZft2vcboIKUG3f
+         sucg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793645485; x=1794250285;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=K0QN4y4jnTFtdyn65vGrqyDwOyuHW8lCb5pwYreuDyI=;
+        b=O/RsY4/wVl3IMThgxu6Pu6wKij7RgufLVG+gQzgZq8tvPH0cWEId/lkFLwB5C5RbQJ
+         1DqoFEqrHZ+c1PclcwzvkgwYhtD/eNnNQUQU00p34UhB1zkzJWQ7j/aZdFK4FVB+d0Ow
+         qiBOgaKe53XbfLNk3cKDi1/+aMWjK9bcz7qDwEv3dK/j5FuAI52kH4D3046z9I+EPM3B
+         8gI4ZbrsuUD8tbJQsgdSsr0GSS1j5Q0nchuDlLfKil6KiZ5mjHVn5qeyz2MZEF7OEiC1
+         9cONe2IXaybC8fi2213p7pTEK8UEVxrfK6OyOM1T0BEzu5IhdUnfRTbCN/KjKXvV983v
+         L0sA==
+X-Forwarded-Encrypted: i=1; AKwUvBxVoCejP224BRO7gwET79vIYabgpqB+G8ijYA/Z7vA89ogbplVbORgVS9reGozcciTuybffFEU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLgzPBT+pgFyviRILFA9/UC7W+NUnQ/4KurqW0sShOVEKcw26Ow
+	deoB8kil1vzvDEAQHUaTixXFZQW853WMSUf2Dg1QhsnEZ9mf6/HDxcoo
+X-Gm-Gg: AYBFou2FYqk07UKScJMeZBuDuK8rEhzBy8hHWCO6C9P8JiQrDitgzkb6ty+s/VvFyh/
+	3e9cvTxtne5h3AAz40puEnN3AVbgioE8TjvhMXnQQoFFSY1Hk82nHvO58g98ne1+F0DQSRk3iOv
+	7Ebc/S5sZ6nzcp6FfdD1qHXbFtAhokQtUkcNz8rKdoQMjQDCFRkQjnt93sRpKMbcqBAy167qbI+
+	5r1smjPOrkzfZu28bSxzW849eewZxGxkGb1T6Y0Crt3IKG+aNG3ZGmXkQ3frCz+TQ950fVH3nv9
+	I6M8tsWVyklmqXxNGACB3/LgBkG6UDOCd03QehEPNGBtlyqZyAlU+OIDyypGmRZ9ieVkuuAK/sr
+	4wjTNW7IXdKtqT+gPyuNhZdfDSnGI54UHk86yFfSFT9JDKede70bVUZL8vAGLPl10HqHnKcnr2/
+	42ihKqTgF37LhxVaDjQ7TTC1+v0JYnsA6mJr8s4i2+HIJNOTDRCM0pbfOz+PvC7ZhRyPirkY9uo
+	VozMB8tLPEomEBRxMz3VUmb8qh3lXvV02MvZBTU874KE5042vK0zMRTjHCTJeNKXeDWjp2lhiab
+	HyzADLaEXYc0lfM2h2hnZP2+4WOsZyd74Qfvh3drou8BL1PtC7lMErULDtikxZvpf5ZtZVu9w77
+	CxDZcRCWhlOMahEuoHL9l1K7G1rTvDHY7kWJnzyEAgCKTdw==
+X-Received: by 2002:a05:701b:2091:20b0:148:bc4a:8356 with SMTP id a92af1059eb24-1ac5d5aae1fmr16081901c88.28.1793645485021;
+        Mon, 02 Nov 2026 10:51:25 -0800 (PST)
 Received: from l ([2603:8002:ea00:6800:4808:7aa2:ac97:30e9])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac1abcd6f1sm34625198c88.20.2026.11.02.10.51.23
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac1abcd6f1sm34625198c88.20.2026.11.02.10.51.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 10:51:23 -0800 (PST)
+        Mon, 02 Nov 2026 10:51:24 -0800 (PST)
 From: Dave Seddon <dave.seddon.ca@gmail.com>
 To: Michal Kubecek <mkubecek@suse.cz>,
 	netdev@vger.kernel.org
 Cc: Dave Seddon <dave.seddon.ca@gmail.com>,
 	Taehee Yoo <ap420073@gmail.com>,
 	Andrew Lunn <andrew@lunn.ch>
-Subject: [PATCH ethtool v2 0/2] netlink: require a value for hds-thresh and the TDR parameters
-Date: Mon,  2 Nov 2026 10:51:19 -0800
-Message-ID: <20261102185122.1357927-1-dave.seddon.ca@gmail.com>
+Subject: [PATCH ethtool v2 1/2] netlink: rings: require a value for hds-thresh
+Date: Mon,  2 Nov 2026 10:51:20 -0800
+Message-ID: <20261102185122.1357927-2-dave.seddon.ca@gmail.com>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261102185122.1357927-1-dave.seddon.ca@gmail.com>
+References: <20261102185122.1357927-1-dave.seddon.ca@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,31 +102,42 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-hds-thresh (-G) and first, last, step and pair (--cable-test-tdr) take
-a value but leave min_argc at 0, so a missing value prints
-"invalid value '(null)'" instead of "no value for parameter". Each
-patch sets min_argc to 1 for one command.
+hds-thresh (-G) takes a value, but its parser entry sets min_argc to 0.
+Given as the last word on the line, the value handler reads the NULL
+that ends argv and the error message prints it:
 
-Changes in v2:
-- Split into one patch per command, each with its own Fixes tag
-  (Andrew Lunn).
-- v1: https://lore.kernel.org/netdev/20261102023919.1472495-1-dave.seddon.ca@gmail.com/
+  # ethtool -G eth0 hds-thresh
+  ethtool (-G): invalid value '(null)' for parameter 'hds-thresh'
 
-Checked by hand on a build of each patch on bae2dbd: the parameters
-it covers print "no value for parameter", the others are unchanged.
-make check passes.
+Set min_argc to 1, as every other value-taking parameter does, so the
+parser reports the missing value itself:
 
-Claude found the issue while porting the code from C to Go, and drafted
-the patches; I reviewed them and take responsibility for them.
+  # ethtool -G eth0 hds-thresh
+  ethtool (-G): no value for parameter 'hds-thresh'
 
-Dave Seddon (2):
-  netlink: rings: require a value for hds-thresh
-  netlink: cable_test: require a value for the TDR parameters
+Only the message changes: the exit status was already 1 and no request
+was sent.
 
- netlink/cable_test.c | 4 ++++
- netlink/rings.c      | 2 +-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+Fixes: 66e5dcf295c0 ("ethtool: Add support for configuring hds-thresh")
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Dave Seddon <dave.seddon.ca@gmail.com>
+---
+ netlink/rings.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/netlink/rings.c b/netlink/rings.c
+index 5c695ab..22552df 100644
+--- a/netlink/rings.c
++++ b/netlink/rings.c
+@@ -202,7 +202,7 @@ static const struct param_parser sring_params[] = {
+ 		.arg		= "hds-thresh",
+ 		.type		= ETHTOOL_A_RINGS_HDS_THRESH,
+ 		.handler	= nl_parse_direct_u32,
+-		.min_argc	= 0,
++		.min_argc	= 1,
+ 	},
+ 	{}
+ };
 -- 
 2.56.0
 
