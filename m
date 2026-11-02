@@ -1,77 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793629633;
-	b=Fq7q5XCEhfsxEsb3rmEP+fCJrEQLzuEB7OkJceI3T/Hm2w3lzgKrLsf8j022633OOwOr
-	 NYArzGE/QkkYKGJF/j3yzIWLoDPYBOAx+AoUV/+4bgLJnBd9Pn3cxp5s2oXrJZWQr5GZC
-	 X/w2D+iiAU1zFtD9eQXLWcEChxnJZDB4p6npiMW4qT98b0rdh4i/IMoIrIwZ+SlONzEkT
-	 VqoQTHzqbc4Qb0LepLfL2QXuKwkwmv1KXbojvgAstOSF/zDjgFhVHCAYWUhprWFanRlOC
-	 gTP1Sq7T8WzfbS9uoYDUf+s97DAfKmMhZLQosJLUq/OtE5hhv5OfmVVemQ1Y0GPWDcw==
+	t=1793629641;
+	b=tIQYH0MThFIqfthk3KQNwQ5skdJjUQ74OcG3EOlc6X1U1PLt/LKw6zuN+kPePNOrOSi6
+	 TGJWno/6RBvppP5NzmKgmz4j8O09x+EONEKqZb62xIu7gbNzPKs+ObxgdtLrnuJY4sTCO
+	 KBf3V06zB3SjSj21juNUO8JhDUjNGShyQ0fefTJA8k0sO90d9PxDJFybUShDUXKBx9jZN
+	 Pq5fFxRvh3pzenMvH+/6S210IdNkL73ilCpj9lorcW86PgaquYtfNOI9L8h5q4qIOY1JY
+	 xQ4bXeryXeAix/fHJp6opJW+ve8yw3ooijfvfr4J8tnEzNPYQhyhKrG97oqphvQHP9A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793629633;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=fGdAAPG3/kgbevcrSXbBGlUJfMVBMU/5Awb3Piy6wyk=;
-	b=iZ2AaLjHmOEnGlfktIgEd8dIQOeS1wspklqRRJYBDV9q24vZjV67zU/QxoCWGIw73cD/
-	 UAKH7CBXsTqcnD+Nl+8DBXLIRk9pgKZqNCebOeqabnLabS8wHYxuYI5qZC8wHEPdplCH7
-	 qJHJ6NSTOvcupjWfQb3pXZK1XSP69FD6lr5G6SZaLlumiu6SqHEnaGnh0Q3gaRMtX7IYa
-	 NxUj9HOx0FogoM1K/iZjQ3NBRtIakPhd+YIddv/ilXEq7l7kTKyrpa88RtWcEOyxK5gty
-	 udwMjcaMmzwCIc2kc6rV1kYR65Joo8VaM7AwIlO8mCxbSD5CLV6qI6xnNkF48uiu/QQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793629641;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=xlRe6ByN3zpYNOlJQq83OVbC6fU3d9RayIfuGISBpLE=;
+	b=Y21CVR5nXjzO6Nq0ZIP/7qHKvelij1GHwemzbmNLoURmfGfSkFKV//qMtS71Th4Gdzzl
+	 G0xAX8hioSmvepHE9LWmr06uOv2nQy8NuW8uXMImx37Q6OoBCcoJZXmmB38VzQ6I+wV1c
+	 i+jC8IzKPBVBV02OWkJzvsH0UTF+9mA3cM8Rs1RvK0hXyaI+ygqddV0nKWKPowe4VftM8
+	 Wz76DOSI49ClCAvKIvsFDgB5QTgVChnaKcNVlVRYcwlqrwcoTgZtq/rUwwNi+boEfdjIz
+	 13gQK5c7Fqao8PSUkbds0tv6HDk3AuLrSKMBipyklmRW77ARG0zVVvsUZ0sYISLLlWQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=32VRT5y7;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DrI+PNek;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330C560A3802;
-	Mon,  2 Nov 2026 14:27:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 330C560A3802
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D37607B465;
+	Mon,  2 Nov 2026 14:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=32VRT5y7
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=fGdAAPG3/kgbevcrSXbBGlUJfMVBMU/5Awb3Piy6wyk=; b=32
-	VRT5y7g8A5pbHx3zjUJX9yrQXbqZaTMMT0+mEMXEraa5UH55IHMGKu/inQ8c6Zyug1wcrgam2yxgE
-	RtT8u2JsQBo8WCpxH5wo3AMfLrOsf54aXN1Bkdc9+k0K76ZCc4yeQlhBLw3XtwWI/X1NAXTeh6yk4
-	/Sm1vY5tSk/ST4k=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xNszw-00Do9W-KA; Mon, 02 Nov 2026 15:26:56 +0100
-Date: Mon, 2 Nov 2026 15:26:56 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Doug Ledford <doug.ledford@hpe.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Slingshot Open Source Team <slingshot-os-team@groups.ext.hpe.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Guenter Roeck <linux@roeck-us.net>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	Sandeep Bhoot <sandeep.bhoot@hpe.com>,
-	Iraimani P <iraimani.pavadai@hpe.com>,
-	Mamila Santosh <santosh-kumar.mamila@hpe.com>
-Subject: Re: [PATCH 00/23] Subject: [PATCH net-next 00/23] net/hpe: add HPE
- Slingshot NIC drivers
-Message-ID: <e9937650-1354-4d66-95fa-3492e3821823@lunn.ch>
-References: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
- <20261030151121.1f232b50@kernel.org>
- <7d4583c2-e8dc-4ffb-bc45-e2121f824b14@lunn.ch>
- <bde936b5-1b3f-4987-a3e5-36ec5c4710e6@hpe.com>
- <2f831f13-58ff-40ca-a76f-3aca647012b6@lunn.ch>
- <b260f39e-2ac0-4899-90d9-3e9dbadfacc4@hpe.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DrI+PNek
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2FE31F00A1C;
+	Mon,  2 Nov 2026 14:27:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793629640;
+	bh=xlRe6ByN3zpYNOlJQq83OVbC6fU3d9RayIfuGISBpLE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=DrI+PNekNretHUZ1kn1KtVLM1VAQ4asWCX4darvbDfIiADMbVebIHhgZrW1oD/LQm
+	 ET27Dsfxtbv5Bx6RMcyog3VOgeXPBOtvOh2VXPyT8GPO6Ybp+ewD3KRsx4thesz8VP
+	 QA7RHgKiSLQ1nhgNIeJZ4ihrXQPO5LDA6Zn+C6+rSuuh9NM+5LbiX/ev4owvWjFJK+
+	 w88KxP2goEYkeNG1aUmgx8CoQpiUa0JgLD5JUUs48hMCG8PnbgpkAsa8uZGjQLF3EQ
+	 k2GluFIjmgjBfX+GXD3ZOzpKoAHK50KNKTlCQq/MS76QVFek5Vdqcyn24CZ5KtXYnN
+	 gpYlqS5cSCEuw==
+From: Christian Brauner <brauner@kernel.org>
+Date: Mon, 02 Nov 2026 15:21:39 +0100
+Subject: [PATCH RFC 24/38] proc/vmcore: don't let vmcore_cleanup() run
+ twice at once
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -81,82 +53,95 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b260f39e-2ac0-4899-90d9-3e9dbadfacc4@hpe.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261102-work-procfs-bugfixes-v1-24-59422ed3e465@kernel.org>
+References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
+In-Reply-To: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+ Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+ Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
+ NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+ Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+ Greg Kroah-Hartman <gregkh@suse.de>, 
+ Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
+ Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+ linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+ linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
+ ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+ coreteam@netfilter.org, kexec@lists.infradead.org, 
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+ netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
+ linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+ sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+ linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
+ linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
+ linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+ linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
+ linux-debuggers@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, 
+ Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1758; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=gmON/Vwu30bm66aR7FLjt15bWl4pslPspuVjwp92LoI=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJN9ymzS0mChk/OuHxLcK7hCIChOYcKK3y/vZOxX9
+ hTemFvv2lHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRv4kM/3SchYRYG9b+Xrc8
+ wduJ9XImq3xMwSbxeTeYAicKTFfkvcLIcC/DZqdZ5/W1Oa+zPiduuy4Y56u/3qrMJ2nqgj3fHed
+ 9YgUA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-On Sun, Nov 01, 2026 at 07:45:24PM -0800, Doug Ledford wrote:
-> On 11/1/26 5:35 PM, Andrew Lunn wrote:
-> >> I'll see how fast I can get that done.  But "the bare minimum" is going
-> >> to be more than you are accustomed to.  This hardware does not receive
-> >> Ethernet packets using MAC address like normal Ethernet hardware.  It
-> >> uses a special portal table entry that filters in the Ethernet packets.
-> >> It has the ability to have different filters that receive different
-> >> Ethernet packets and so sorts them before the driver ever sees them.
-> > 
-> > Can you add a single portal entry which matches everything? Or matches
-> > a single MAC address? KISS.
-> 
-> That's a complex question, and one which I need to go talk to one of the
-> hardware engineers about.  It also varies based upon your meaning of
-> "everything".  If, by everything you means essentially promiscuous mode,
-> then that's not a good idea.  On the fabric there is Ethernet traffic,
-> but there is also Slingshot traffic.  They use totally different frame
-> types.  If you truly go for "everything", you'll get Slingshot traffic
-> along with Ethernet traffic and you'll be throwing away tons of garbage
-> and generally wondering what's going on.
+vmcore_cleanup() has a single caller, fadump's release_mem_store() on
+powerpc. That checks fw_dump.dump_active without a lock and calls
+vmcore_cleanup() without one, and kernfs only serializes the writers of
+one open file. So two tasks that write to
+/sys/kernel/fadump/release_mem through different files run
+vmcore_cleanup() at the same time.
 
-The point is you want a very simple driver which it is possible to
-review.
+The first one removes /proc/vmcore and waits for its readers in
+proc_remove(). The second one finds the entry already unlinked, returns
+from proc_remove() right away and frees vmcore_list, the ELF headers
+and the device dumps while those readers still walk them. Or both of
+them free the same lists at once.
 
-This is one of those 0, 1, many cases. Just having one portal entry
-means you don't need any allocation algorithm, you don't need recovery
-when it overflows, you don't need to be able to replace it, reference
-counting, etc. It gives you a starting point to expand later in a
-followup patch set which adds all these things.
+Serialize vmcore_cleanup() with a mutex of its own. It can't be
+vmcore_mutex, removing /proc/vmcore calls release_vmcore() which takes
+it. The second caller then finds nothing left to free.
 
-The network stack is happy to handle promiscuous mode, it does it all
-the time when you use ethtool and put the interface into promisc mode.
-It is clearly not as efficient as having the hardware doing filtering,
-but it works.
+Reported-by: Chris Mason <mason@kernel.org>
+Fixes: b500afff11f6 ("fadump: Invalidate registration and release reserved memory for general use.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ fs/proc/vmcore.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-> If by "everything" you just
-> mean "all Ethernet traffic on a single portal entry", that's when I have
-> to go talk to the hardware engineers.  They have different lists they
-> use for Ethernet and I can't say for certain that the hardware will
-> allow not using those lists.  For instance, one of the lists might be
-> specifically for packets that have been fragmented and if you don't use
-> that list for those packets it may not receive them at all.
+diff --git a/fs/proc/vmcore.c b/fs/proc/vmcore.c
+index 1fe70c4ecc54..ccb795b85509 100644
+--- a/fs/proc/vmcore.c
++++ b/fs/proc/vmcore.c
+@@ -1764,6 +1764,11 @@ fs_initcall(vmcore_init);
+ /* Cleanup function for vmcore module. */
+ void vmcore_cleanup(void)
+ {
++	/* Not vmcore_mutex, removing /proc/vmcore calls release_vmcore(). */
++	static DEFINE_MUTEX(vmcore_cleanup_mutex);
++
++	/* Two writers of fadump's release_mem can get here at once. */
++	guard(mutex)(&vmcore_cleanup_mutex);
+ 	if (proc_vmcore) {
+ 		proc_remove(proc_vmcore);
+ 		proc_vmcore = NULL;
 
-Think about this from the other direction. How does promisc mode work?
+-- 
+2.53.0
 
-> The card has a burned in MAC address.
-
-That is one of the MAC addresses it needs to receive. But when you
-come to implement .ndo_set_rx_mode you are given a list of unicast and
-multicast MAC addresses you are supposed to receive. And if the
-hardware cannot do a perfect match, you do a less perfect match and
-let the stack deal with the rest.
-
-> I did have the AI do a full analysis of what you requested.  A bare
-> minimal driver.  It passed this back (just giving the summary, not the
-> full report):
-> 
-> Estimated total for a C2-only, PF-only Ethernet series:
-> 
-> ss1 about 19–20k
-> SL about 15–20k
-> headers about 15–20k
-> That gives roughly 50–60k lines, or about 65k if C1 support stays.
-
-How does it define bare minimum.
-
-If you have thrown out ethtool, you cannot change or report the link
-speed. If you cannot change the link speed, and you have followed IEEE
-802.3, your PCS will probably just come up when powered on, since the
-standard gives the registers sensible defaults. So all your PCS driver
-needs to do is poll for link. A typical PCS driver is around 2K lines
-of code, and that actually does more.
-
-    Andrew
