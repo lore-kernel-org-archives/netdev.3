@@ -1,181 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=67.231.148.174
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793610529;
-	b=QNeo7eJPVXAJF+26HpGyS3oJT0eMHbVI0SyQWnxQ34PV3qJAXfO5yI8J0s2eFsmX4sA8
-	 MHdgMmRgrIsl6OmZrAxBwNQ0UqAqu9+XOFcR/tw42hvxyBBMmP3kTbsg21qCSNk52dGo2
-	 P/NUQ7sPdyKdhdgAZuKDCa5kEU+n7YFbMjX3/wjlTSUIVzRK5bDRs/6mQp1d79g9gdiks
-	 quHeq8c3GpYCBy3yhJVaNXnEdZHLXEx/rPIBHodKmD4u8K2lCBlGi0tfmfp5hQwqRZo/r
-	 vEPl8kDRunHhLHgD3+IEdJCbuQpi/WqZ19JYlFF75A3Juj2hFOeaQQyd4kIrVCUXPMw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793610529;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Received:Received:From:
-	 To:CC:Subject:Thread-Topic:Thread-Index:Date:Message-ID:References:
-	 In-Reply-To:Accept-Language:Content-Language:X-MS-Has-Attach:
-	 X-MS-TNEF-Correlator:x-ms-publictraffictype:
-	 x-ms-traffictypediagnostic:x-ms-office365-filtering-correlation-id:
-	 x-ms-exchange-senderadcheck:x-ms-exchange-antispam-relay:
-	 x-microsoft-antispam:x-microsoft-antispam-message-info:
-	 x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:
-	 X-Exchange-RoutingPolicyChecked:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-	 X-MS-Exchange-CrossTenant-userprincipalname:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-GUID:X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Virus-Version;
-	bh=VSnttUBnlsCaaEgK5Uc9qenFR4Himos2RfQ9BdnDXIo=;
-	b=s0+TghwNkU9h6pqyTz1AkO5gR+uUfls6epANFXZ1Gz1o/SNFVRlgqi11h2BpnJqd1yGY
-	 ZqKXzME+YXRI6vkAO5NpKvTV8/hz1XeM6aha2MV3nMED33bRl8thl4aMVnpYAL+mIYCb5
-	 zzxCpB+I3lUQDyKDRagGZoxDGjwFu355wb5EZ2vTqhQpoCYFVkiBlMeVSpOoGD4bQDmBt
-	 zyrXshCGy0pvwZqzACOlj+G6Zxt5kkwJiCsV0nz1JDCJO9+L2qCV2lLBBHzG/7cuPc3uO
-	 OjU+blToAALllXaFLCd9Hkm/njMjW7mQdHiHxv1DvvWP7Tm7K4OCzMt1jP3V1U5AUcw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=marvell.com;
-	spf=pass smtp.mailfrom=marvell.com;
-	dkim=pass header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=selector1 header.b=j4uG6z54;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=67.231.148.174
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793610894;
+	b=ohraMiJfrRxMnz9uea63jopLAJ29WqoDpd7mW+IVDsK0fJngpKQKpevZRBk+PFjP2y83
+	 quT6SCJLIYB3wJ+JDHeVq0otbom6IN4Sok24LKWFTKU9v+1f44Zet/wVMDz9S3X4jikps
+	 d6UwiFqZaJsEhlsyMykL1U8MgCOPwzpCS9/fyC4ZzyiMHAAHcyZhakZWOWrN/Zneho03S
+	 YG3m9S+0mK/ak3EHK5n1fJ/lN2f7LzXi01LAcZFY8YkJWW3nQal9CDKfmeVnFD8/45hsW
+	 MFpwjFqBWzGctInE7B8GVp06pGv3lNHKhYlmlcY12gRriv8hL/ytxXpV77ur/HEjgVg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793610894;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
+	bh=b3cWupp/MBqWzOlmajKkVwWoppCoYNRWYWM3JzEQlbs=;
+	b=0Ww/7GYZuxEUPOWHK5t69S4Iy0wjx7m7sTC/9GtYAOMjW6TWWKgA+jSRcC8R1T2/g86J
+	 /ayi8JnHlhI4E9KmR8D7S9pxYF2qqtNjrOXEyma6AWYOeQsPGFRWOz0ummN92C0FNI2v6
+	 t0dtYZJqVB2Vi5cdNwC2GReUpNmeatlh/VduiCYcImBCwJqf3GRBW6gZa7XYP6YoT4x+Z
+	 Rx116nhJgmvxgyg6Wdt/6UXV9751k6mH1svIYqIkBAIIHhzsI8fvO/Ft/SvhNfa9OQPAb
+	 a7fcdrkqZKctjVF1RA8oTQPmP3VheV8V0aDHKTZIwCZqxBklg6mUQJBjGFOnyQqKjrA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=microchip.com;
+	spf=pass smtp.mailfrom=microchip.com;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=IoRHSQ00;
+	arc=none smtp.remote-ip=68.232.154.123
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4CB606A324;
-	Mon,  2 Nov 2026 09:08:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2B4CB606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16EFF606A326;
+	Mon,  2 Nov 2026 09:14:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16EFF606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=selector1 header.b=j4uG6z54
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A242tgh4125624;
-	Mon, 2 Nov 2026 01:08:43 -0800
-Received: from bl0pr03cu003.outbound.protection.outlook.com (mail-eastusazon11022100.outbound.protection.outlook.com [52.101.53.100])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4hp5fd2mqj-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 02 Nov 2026 01:08:42 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FTxhhk+QmxNZxz5kODDQHSEs6jrZiga2ezwpKFA0cXu5w3WBO4rMCX8uknw6sx6D8iEgT6ds6e7bGq/JF0hWBKXa/kJD2gm5PiIqW8eKPvLha/pP62gt8gcfOycIt9bo0Ck675aJodBRl7BMcGRaz/5oAue/x+pFj0MtANukZH1a+ZfXuXUGz+mOsMtgaL1d81VfYQZFIL7hsPQHyQZ/xN3RAGx08Uv2Oc1o6ksd5LeQlsjecFWC2WUKjSz3V4qSyHoJ9jauK5midd2Bml3n2KR1hYtYyO41xixWR+XeaOLgwtZ4pp0r+DAjH239CuvXFWCu633E0rOQa4rHfk4uSg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VSnttUBnlsCaaEgK5Uc9qenFR4Himos2RfQ9BdnDXIo=;
- b=C5/Stl+zYuoqoZwM3H+UFQqWP7/V4doePRAzheU0mve/ETI4k3mvJIo4z3E1ZZ7QhKXkvIQ8cBgbu8qHlWJzlC/rpaBewj4emTUdMPd/jWeElZNamidf+BZOo9dn1r8a5t/At6dzJrJKfdj/mFUe7ifu8UC0FSkIRyYtC0FuiBVN5C++hoypTrHbo0I1ZwLCYYpG4b56atSeFNMCmVPjKrLkcyq3xZ2nHeEFZ7lBperN8NPQsEIWW7VV47BagrHM+GxuBdPnEGFJrB2yIZa75RLR2xLGT821jRC2YxGZxio44vin03v0tZ+/GP4XUeZbufxDXMK2TTx2s43HBhePQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
- dkim=pass header.d=marvell.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VSnttUBnlsCaaEgK5Uc9qenFR4Himos2RfQ9BdnDXIo=;
- b=j4uG6z546VBy1+/QjOhgIPnVmmW6Xt6HD4aBlCH9QKermPXF+cnNgfQvb4Wx/mbS1wrUCo4RzqngREw2+OwgDnS+MKC9HeIfPhBtYV9fTJospzQeS05rAc+tZWlyPYmz6d/Bmse1ypcKIInHs2WijN6rXJHpvbKRdP+gdhoev6E=
-Received: from DS2PR18MB927641.namprd18.prod.outlook.com (2603:10b6:8:334::7)
- by BY3PR18MB4644.namprd18.prod.outlook.com (2603:10b6:a03:3c7::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
- 2026 09:05:37 +0000
-Received: from DS2PR18MB927641.namprd18.prod.outlook.com
- ([fe80::3c54:603d:3dfc:c407]) by DS2PR18MB927641.namprd18.prod.outlook.com
- ([fe80::3c54:603d:3dfc:c407%5]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
- 09:05:37 +0000
-From: "Kalluru Mahammad Rafi [C]" <kmahammadraf@marvell.com>
-To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        Sunil Kovvuri Goutham
-	<sgoutham@marvell.com>,
-        Ratheesh Kannoth <rkannoth@marvell.com>,
-        Geethasowjanya Akula <gakula@marvell.com>,
-        Subbaraya Sundeep Bhatta
-	<sbhatta@marvell.com>,
-        "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@kernel.org"
-	<edumazet@kernel.org>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        Aditya Thapliyal
-	<athapliyal@marvell.com>
-Subject: RE: [EXTERNAL] Re: [PATCH net] octeontx2-af: Fix representor flow
- rule PF_FUNC mask and channel In representor mode, an AF-installed TX rule
- must still match on PF_FUNC, so do not clear the mask when rep_mode is set.
- Also, do not overwrite a channel alrea
-Thread-Topic: [EXTERNAL] Re: [PATCH net] octeontx2-af: Fix representor flow
- rule PF_FUNC mask and channel In representor mode, an AF-installed TX rule
- must still match on PF_FUNC, so do not clear the mask when rep_mode is set.
- Also, do not overwrite a channel alrea
-Thread-Index: AQHdaqlTdNZlU+eNIE6ucEZyhentgg==
-Date: Mon, 2 Nov 2026 09:05:36 +0000
-Message-ID:
- <DS2PR18MB92764109485DF18F564C0027BBC66A2@DS2PR18MB927641.namprd18.prod.outlook.com>
-References: <20261021091736.2406505-1-kmahammadraf@marvell.com>
- <179292714974.3134.12015701378835588497@kernel.org>
-In-Reply-To: <179292714974.3134.12015701378835588497@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=marvell.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS2PR18MB927641:EE_|BY3PR18MB4644:EE_
-x-ms-office365-filtering-correlation-id: 8d51e13f-ce14-4d51-c175-08df38c075df
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|6133799003|22082099003|18002099003|10067099003|56012099006|4133799003|3023799007|261009223027099003|261022115727099003|261022113327099003|261022105027099003|261021133027099003|261021135927099003|261021130227099003|261021123027099003|261021121427099003|261022075727099003|5023799004|4143699003|11063799006|261026130827099003|38070700021|261028144727099003|261026135527099003|261026140227099003|261026121527099003;
-x-microsoft-antispam-message-info:
- qQaol1rAJFv21Kll/j4DQ+zT27nBy/GO2zoBFRtqcTJljmpF/NnidP9DTd7AgdeYZ3WHLaGlj/1l/mwLx2a1LzVzst9lcSbxXQ9nnQIoCKyvRLkt3LqfUdqZgQ9csuDRgGS4rmqfFNiqUAiVjqXMdzg2+TVbYO2U9gxIuE3gWAetrTriOA5vp8igcmKH6A12xGoWEO/T0tsX9+VhCnWlKRo6mhFTGl/eivNQHaAjbKEWPJ/VrnnYOs8MBCd9sgCmtJz4v5XnPYXb9eyIIQy2NQLcWcsbO9HDc7wByQ0Fot7gBzO/gLk3rgf6NQDQnNvyBGjqAYhA8ICmszjyS/vsvo93DDux/BL3UdgT3YewlLchQL+JBDuskKe/bONbvF7NKfL2cZ02LY2CsSqgOF+Oqcb8XHS1fKJ5HQ8sLK5eT3gOisEpeL0povJQcAALJgjQfNE45h5TZaV0X3M8usyGEcb8Y2boBnr6369rYnDGERolv+DFmd4I844TrhUvR2S+sTWi6fZ9t5e87YYKzzDVzfW6M5mjH4Mib5eBnCd/xdfOZtUsQwpWPYnuvsbB61ctdnCQifBgeRHYQYsaoD3D02ssGmS0yB560JgS/QidwCFTl3+naCtc4Yk3/8IzVXHCCWHPnP3bH4G1TbjBeB1l31yAkVe9ELEJdVdQ08HjM7I=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS2PR18MB927641.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(6133799003)(22082099003)(18002099003)(10067099003)(56012099006)(4133799003)(3023799007)(261009223027099003)(261022115727099003)(261022113327099003)(261022105027099003)(261021133027099003)(261021135927099003)(261021130227099003)(261021123027099003)(261021121427099003)(261022075727099003)(5023799004)(4143699003)(11063799006)(261026130827099003)(38070700021)(261028144727099003)(261026135527099003)(261026140227099003)(261026121527099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?Zlc0V1NJOE9sNlNqOEZqMFRyazNuR3llem5QVDFOcFpkZ2FMZTZOUnlqOVd2?=
- =?utf-8?B?QzFDemU1ZXh3RU12eERpTzhObU8vUnFibzZzWURzSlNuYXhUOHNVR0JwN2Y2?=
- =?utf-8?B?UFk0b2lON0R3Ymt4NGQ1bktCVlRueFZMcHo1S3V5dFpiK0t1WGlLMjdHbUJV?=
- =?utf-8?B?RVRhNml5NWhSUld6L3ozNTRCanlvUzFPWXYyMXhTOGlVdFE2b1QyYlk5N0tV?=
- =?utf-8?B?cUFPRVRRK1N4eFNFSW9ibzdMa3BWSUlaTVhJTDVobXJjY0hCemJYejlUR0R3?=
- =?utf-8?B?K0RNTEFnejJ4QnFUQm5nWFhpWW9uOWNWWWtyVDQ3ajJHQmlzZHhDc3JrSGRF?=
- =?utf-8?B?VC9yVFdrMmRsU2dpajNvOXZMZnk3a3VaRm1XVWVQNWJNTUxYcmk5bG9XTnU0?=
- =?utf-8?B?a1hva09NSllORVp2OFdpWXg0cUgrT3R6YzkyazcxM3Z4OVpKOUVvNmk3cmFQ?=
- =?utf-8?B?NG1scEZJeXNObHNNZzZwRWVVOVQybHRZZDVPalJSNVVsTjNuMklRVWVGMGV6?=
- =?utf-8?B?YlBvdzlUK2NFRFNhNlh1Zkh0OW43Z01vNzNVejVpZWFZcDBtL3RtQnFuK2tH?=
- =?utf-8?B?a2d2ekpqRXVGM1k3NHFyQ2dXcTc1TUFTOU9rRnhIVlhNdzI2djM1RUxuemh1?=
- =?utf-8?B?WCtoQ0Rzd1d6RVloc29MWVlrMEM2a2NwYTFqYzNlaXpKNWpFTEl3ZkZrb3Bz?=
- =?utf-8?B?MVhFMXVkdUJXQk4rUmZ6Q3dsOW5XazBZNTdBYUVrRXJ6NXpORWJNZFdLcUpH?=
- =?utf-8?B?YXVNK2JvZlVScm4vSEJhditibzZCQzRqRCt6WWsyTk5icEl2Q1BDMG5lQkpq?=
- =?utf-8?B?bDNISHhJbGtEVmdoR3phMTlJNjd2WkZnZU1VS3lwQk1aU2YxRkZpcnlPdVFP?=
- =?utf-8?B?U3BmMVU0RFdpQVpRVjgzeUZZUGJiRGZ6VVpyVW5SQkoyNzNwNUJrZ2NvLzFm?=
- =?utf-8?B?QStySjRNUE9mRGxWeU5mUDBOeTB3SGIyNTMzanZJQmxkQlM0bitzUFIrVG9S?=
- =?utf-8?B?V1J5OXVySXRXaTdMQVhYbHZuN0dTY3E2UjM0MVliVkVGelYxQ2hZdHlIRkpH?=
- =?utf-8?B?cTdINEpNdkIzY3o0U013c0dkeXR4ZmJhZSszcmZyUEYvSGFPM3RKNXY0bFBR?=
- =?utf-8?B?Zkg3NFVPUERtKzBTclNNbkJTbTNhbEIva3lUMVBqNksyT0pZdWIvNkNJRDdV?=
- =?utf-8?B?V0FQSU9Sb29YWkxVc092QWxhelNkUjhqMGVmWjZSTnRDeUJzaEExcTRMaXdL?=
- =?utf-8?B?cSt0M0c2Y1Fqd3Q2bHY5bEdIS0RzWGZvMnhQdDF5ZTFjcDgvRU5HTlYySm9q?=
- =?utf-8?B?UEYvdDlZeHUzRDE4M0pBYWdUUFEzNlRpVHA0Q2tsbjQ0VFduM0s3VnUzOHRu?=
- =?utf-8?B?QkYrSDllY0JvdEJ2RmcrYVZVaDFMbUFqcXJRbGNaWFpWSU0zWjA1cXVTUXE4?=
- =?utf-8?B?U2hhb3kxWjJDRHJEQzhMQTVBbDBPUkd4c2dpQUZNRENJeXdkQmZYeWJQTUkv?=
- =?utf-8?B?S3FBek9STVFIWGxwZ2Uvd3RzeVZQNDNPaXBteDRhK1I5c1BxMjUzcG4vYncy?=
- =?utf-8?B?UEtYcStxL2JWYWxSVTNCekZrbmVlZjZUWkwxSnp2enprL01WamtVVTk2Ymdz?=
- =?utf-8?B?L0tXajdjNFYvTjRhc012NDJleXdLSkV0eGQ3Z1pGdTFrcHpnM3hidkl4bEFK?=
- =?utf-8?B?dmhJaWltTTY4SS9iYXMwdG5HelVQOWtVd3NFY3JBcXdwVjhqdDJoZVBxQ2k1?=
- =?utf-8?B?SW9nN3RtVlRBY1ExY1A3SW5malcwdHFYQzh1ei9LUTNrUEdDNGFpbWFFdmtz?=
- =?utf-8?B?cGJEU1Faci9qKzdNNHlDYk5QS1dTaGF4VXQ5bjFFMnBwbUs3ZVowRXczWlpL?=
- =?utf-8?B?NFVxT0hLb3M0S2RjWi9pZms0eXUrNlBlaW5JcVlqRzBXbHZ0bW5WR2hFOUNX?=
- =?utf-8?B?OWRjTUhuL1Yvc21qRzVYV2E5Zzk1VDNOZkhzNlg0OGdpMFEydld5RjJCVFds?=
- =?utf-8?B?SVZRbEtBcW55RTlQV0xKZ0h1aFR1bDhaZmFwUFlvSUF4NW1IQUtYcTk1bk5X?=
- =?utf-8?B?N3ltRGd0NDl4K2VkRXR0bGtkbm90M3JyeVpleHZKa2VaT1ZRekpiTE9CVE9x?=
- =?utf-8?B?cVJzQ2JEMkNIZ1RvZFBhRWpDSHlLZkNoTU54V1k3cTllU1RhZlFoVzRQeUxw?=
- =?utf-8?B?bWRRRUxFUitqcUhUb0YxZ2draUtURVd4MGd1cG96REYxL3FhZHRidmk5L2I4?=
- =?utf-8?B?VzBGUklUNW5Zc3ZIYTN5ZXdoZTdGZTlnNFBEemVOSjYxNVRBMjEydWUvSGR0?=
- =?utf-8?B?bTgyUjhVamIrVmtiMlpsVDE0dmVzcDRYUndXR1JXUGNRdXZGWm9sdz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=IoRHSQ00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1793610901; x=1825146901;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=6vIBaEBZObkETdySheea9+MKaVh6i5jqj06UXA9pDbI=;
+  b=IoRHSQ00o1reQMQUJahCCSR2r0A04CPZJHbsCpXc37ezfWyMl9nco9Ps
+   wcdYmywc446x7V/aspXz2HvkpLoojeqZwsJEvMUfX9dD4ODS4Q+jtL1DQ
+   6ufHEFfmG5rUiul9+FSWTSWY+hG1yczjhIyR+jF23PyI4PoEb56fEKFix
+   Nt4FUhlNyVcF5yu5O34HRcL8Vb1zzqBTZJmrSMq3ZYThwUHPnvRYWIJNw
+   bnB7M34ISpmTUx6P1+zHuL5hoWgJLfDbUO36KZGWK582S8t1ivO2XjMvW
+   Yqfu64lQ/zJgS5vTBgeEGH4h88MHEPQNfiIH3qyWrKm9bUIalSSqyyOBn
+   Q==;
+X-CSE-ConnectionGUID: /V9l+2gVTfudp71U3irqEQ==
+X-CSE-MsgGUID: a7RtRfgvR0ae5oswmONU0Q==
+X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
+   d="scan'208";a="64907557"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 02:15:00 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.56; Mon, 2 Nov 2026 02:14:52 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Mon, 2 Nov 2026 02:14:49 -0700
+Date: Mon, 2 Nov 2026 10:14:49 +0100
+From: Daniel Machon <daniel.machon@microchip.com>
+To: <netdev-bot+sashiko@kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@kernel.org>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <Steen.Hegelund@microchip.com>,
+	<UNGLinuxDriver@microchip.com>, <richardcochran@gmail.com>,
+	<horatiu.vultur@microchip.com>, <netdev@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] net: sparx5/lan969x: release the in-flight slot of a
+ stale TX skb
+Message-ID: <20261102091449.oigddj44eapymqua@DEN-DL-M70577>
+References: <20261029-sparx5-ptp-stale-tx-slot-v1-1-ec15f391bbb7@microchip.com>
+ <179339983815.3131.4933059375204484548@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -185,214 +83,284 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked:
-	CbYHrpYEwI4IIgK4pGlRMbYrP3aO2Tm3gneCJqVQqpIHVGlj8ddeKnyvyu9QacheEYE4lkotw7BF7eHtSNFG5MGg0G8g5U1xCStChVm/KRcNgaAMM+bWNy2fPrcpbJ2WbwDGEryzPo++wk2j6UisLB5MT0QtyT9yJmAHwo5Hcoz93r7U+L0SJR40OdzaV0iz3dIWUnd3dJ2sNhBbnR4FfqKAWbOh2ks0fCjLrFyf9meiCWBEerFNq63tiVP2Jl8YAmdj4f0D7anAnpJtXl4qY4orr0sDiFv8cFZZi9tBbcaO+MvjsFXIjksbLtFP1Vfsvf4WL0g/FvWEuiMASL/cJg==
-X-OriginatorOrg: marvell.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS2PR18MB927641.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8d51e13f-ce14-4d51-c175-08df38c075df
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Nov 2026 09:05:37.2193
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: KUqAMwyabiGfG++/9LtQOyFD2wVV0NIXWxMGut0r5JPIVSo26qRLyCepBdF8g3dRg3Tak1iPgjUAT9p3/Pq3gveSLBMcz/Ad1eE0h0ZjrXU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY3PR18MB4644
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAyMDAzNiBTYWx0ZWRfXwpxdYofzAs/G
- /+xaRAmn7PPLf2jlb6amS7q11YMbZtqSrss2Rd+drUbWIXMJ4iAfvkz/hAsGy/FDTNG1XK2Ij11
- 09L/p47BfFm/yR1gb5WaN/B3+Zz0ob6dqhtrvkkPUpNAl+5W8Btjw6UMNNYHILi5uRsI/0qOYec
- +ZfFO7nNddiDs3lgItCKLqxC6ltEMBloHsNMoxxVCxP/5vJObavfawQlTBmivnUpN3qMwAjczKH
- 2SNxJ5CYnM6LxrJSPJtDw51Jyczv98JHWdicRCxWb8waoQea+zfW4+BBqWBCRs9vPcQm+ckL8/p
- GTkmxVdfF1wrboIhlRw4ikFlTG72gwhhEk4RMyettz9XQrtzowPp+nzh0oY4swg+NvQBbHhkn1W
- CxaXRL07leOgpgBYq2YE62IfKFQMy7aN73MHPh4aDZDwotjx37PUK7ij0FlB7n2BiEz9muk3jqh
- Kt9oajtsbpACec9a+6w==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAyMDAzNiBTYWx0ZWRfX4mIzTZrABzJD
- x4woIEhCjFHCofSUxBqLLEI8j6yo4N+GkWnKXBaxhxB2/iGVKP6CmfN/VloYIFAhyORdV9aiBTi
- JBKlJZ0AdmtlZ29tn7YP5YvjcditSHE=
-X-Proofpoint-GUID: niplk4Ue7dNAXZCk485laYA1VpsQixWq
-X-Authority-Analysis: v=2.4 cv=bszZl0ai c=1 sm=1 tr=0 ts=6ae8531a cx=c_pps
- a=DKSSrQ+NYQ8T18zF/YpGLw==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=plskTR94Wlt9jH5Z:21 a=xqWC_Br6kY4A:10
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=-AAbraWEqlQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22 a=TtqV-g6YmW1Jfm2GSLaY:22
- a=uherdBYGAAAA:8 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8 a=J1Y8HTJGAAAA:8
- a=20KFwNOVAAAA:8 a=RpNjiQI2AAAA:8 a=CX8AXm830KLP-krcuEUA:9 a=QEXdDO2ut3YA:10
- a=OBjm3rFKGHvpk9ecZwUJ:22 a=y1Q9-5lHfBjTkpIzbSAN:22
-X-Proofpoint-ORIG-GUID: niplk4Ue7dNAXZCk485laYA1VpsQixWq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-02_02,2026-10-21_02,2025-10-01_01
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179339983815.3131.4933059375204484548@kernel.org>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBuZXRkZXYtYm90K3Nhc2hpa29A
-a2VybmVsLm9yZyA8bmV0ZGV2LWJvdCtzYXNoaWtvQGtlcm5lbC5vcmc+DQo+IFNlbnQ6IFN1bmRh
-eSwgT2N0b2JlciAyNSwgMjAyNiA0OjQ5IFBNDQo+IFRvOiBLYWxsdXJ1IE1haGFtbWFkIFJhZmkg
-W0NdIDxrbWFoYW1tYWRyYWZAbWFydmVsbC5jb20+DQo+IENjOiBsaW51eC1rZXJuZWxAdmdlci5r
-ZXJuZWwub3JnOyBuZXRkZXZAdmdlci5rZXJuZWwub3JnOyBTdW5pbCBLb3Z2dXJpDQo+IEdvdXRo
-YW0gPHNnb3V0aGFtQG1hcnZlbGwuY29tPjsgUmF0aGVlc2ggS2Fubm90aA0KPiA8cmthbm5vdGhA
-bWFydmVsbC5jb20+OyBHZWV0aGFzb3dqYW55YSBBa3VsYSA8Z2FrdWxhQG1hcnZlbGwuY29tPjsN
-Cj4gU3ViYmFyYXlhIFN1bmRlZXAgQmhhdHRhIDxzYmhhdHRhQG1hcnZlbGwuY29tPjsNCj4gYW5k
-cmV3K25ldGRldkBsdW5uLmNoOyBkYXZlbUBkYXZlbWxvZnQubmV0OyBlZHVtYXpldEBrZXJuZWwu
-b3JnOw0KPiBrdWJhQGtlcm5lbC5vcmc7IHBhYmVuaUByZWRoYXQuY29tOyBBZGl0eWEgVGhhcGxp
-eWFsDQo+IDxhdGhhcGxpeWFsQG1hcnZlbGwuY29tPg0KPiBTdWJqZWN0OiBbRVhURVJOQUxdIFJl
-OiBbUEFUQ0ggbmV0XSBvY3Rlb250eDItYWY6IEZpeCByZXByZXNlbnRvciBmbG93IHJ1bGUNCj4g
-UEZfRlVOQyBtYXNrIGFuZCBjaGFubmVsIEluIHJlcHJlc2VudG9yIG1vZGUsIGFuIEFGLWluc3Rh
-bGxlZCBUWCBydWxlDQo+IG11c3Qgc3RpbGwgbWF0Y2ggb24gUEZfRlVOQywgc28gZG8gbm90IGNs
-ZWFyIHRoZSBtYXNrIHdoZW4gcmVwX21vZGUgaXMgc2V0Lg0KPiBBbHNvLCBkbyBub3Qgb3Zlcndy
-aXRlIGEgY2hhbm5lbCBhbHJlYWQuLi4NCj4gDQo+IFRoYW5rIHlvdSBmb3IgeW91ciBjb250cmli
-dXRpb24hIFNhc2hpa28gQUkgcmV2aWV3IGZvdW5kIDQgcG90ZW50aWFsIGlzc3VlKHMpDQo+IHRv
-IGNvbnNpZGVyLiBDcml0aWNhbDogMCDCtyBIaWdoOiAwICgxKSDCtyBNZWRpdW06IDEgwrcgTG93
-OiAzIElmIHlvdSBiZWxpZXZlIG5vbmUgb2YNCj4gdGhlIGlzc3VlcyBhcmUgbGVnaXRpbWF0ZSwg
-cGxlYXNlIHJlcGx5IHRvIGVhY2ggaXNzdWUgb2YgTWVkaXVtIHNldmVyaXR5IG9yDQo+IGhpZ2hl
-ciBaalFjbVFSWUZwZnB0QmFubmVyU3RhcnQgUHJpb3JpdGl6ZSBzZWN1cml0eSBmb3IgZXh0ZXJu
-YWwgZW1haWxzOg0KPiBDb25maXJtIHNlbmRlciBhbmQgY29udGVudCBzYWZldHkgYmVmb3JlIGNs
-aWNraW5nIGxpbmtzIG9yIG9wZW5pbmcNCj4gYXR0YWNobWVudHMgPGh0dHBzOi8vdXMtcGhpc2hh
-bGFybS0NCj4gZXd0LnByb29mcG9pbnQuY29tL0VXVC92MS9DUlZtWGtxVyF0azNadFI1MDQxV2FG
-Qzg5bVQzWnJnVWwyclFHSQ0KPiBEcnlXaXUyQnA1SThOVE52czlUY2Rtak5RQ0w5djNBUXdBWFY1
-d2ctDQo+IE5QWkp4emtScU5FTUllZW5kV3FYWDZzb2NUTFpnZl9vcHJ4JD4NCj4gUmVwb3J0IFN1
-c3BpY2lvdXMNCj4gDQo+IFpqUWNtUVJZRnBmcHRCYW5uZXJFbmQNCj4gVGhhbmsgeW91IGZvciB5
-b3VyIGNvbnRyaWJ1dGlvbiEgU2FzaGlrbyBBSSByZXZpZXcgZm91bmQgNCBwb3RlbnRpYWwNCj4g
-aXNzdWUocykgdG8gY29uc2lkZXIuDQo+IA0KPiBDcml0aWNhbDogMCDCtyBIaWdoOiAwICgxKSDC
-tyBNZWRpdW06IDEgwrcgTG93OiAzDQo+IA0KPiBJZiB5b3UgYmVsaWV2ZSBub25lIG9mIHRoZSBp
-c3N1ZXMgYXJlIGxlZ2l0aW1hdGUsIHBsZWFzZSByZXBseSB0byBlYWNoIGlzc3VlIG9mDQo+IE1l
-ZGl1bSBzZXZlcml0eSBvciBoaWdoZXIgYW5kIGV4cGxhaW4gd2h5IHRoZSBBSSBpcyB3cm9uZy4N
-Cj4gSWYgYW55IG9mIHRoZW0gYXJlIGxlZ2l0aW1hdGUgYW5kIHlvdSBwbGFuIHRvIHJlc3Bpbiwg
-cGxlYXNlIGxldCBwYXRjaHdvcmsNCj4ga25vdyBieSBpbmNsdWRpbmcgInB3LWJvdDogY3IiIGFz
-IGEgc2VwYXJhdGUgbGluZSBhdCB0aGUgZW5kIG9mIHlvdXIgcmVwbHkNCj4gKG9uZSBzdWNoIHJl
-cGx5IHBlciBzZXJpZXMgaXMgZW5vdWdoKS4NCj4gDQo+IC0gW01lZGl1bV0gVGhlIGNoYW5uZWwg
-aHVuayBpbiBydnVfbWJveF9oYW5kbGVyX25wY19pbnN0YWxsX2Zsb3coKSAoYGlmDQo+ICAgKGZy
-b21fcmVwX2RldiAmJiAhcmVxLT5jaGFubmVsKSByZXEtPmNoYW5uZWwgPSBwZnZmLT5yeF9jaGFu
-X2Jhc2U7YCnigKYNCj4gLSBbTG93XSBUaGUgY29tbWl0IGJ1bmRsZXMgdHdvIHVucmVsYXRlZCBm
-aXhlcyBhbmQgZ2l2ZXMgdGhlbSBhIHNpbmdsZQ0KPiAgIEZpeGVzOiB0YWcgdGhhdCBvbmx5IG1h
-dGNoZXMgb25lIG9mIHRoZW0uDQo+IC0gW0xvd10gVGhlIGNvbW1pdCBtZXNzYWdlIGhhcyBubyBi
-bGFuayBsaW5lIGJldHdlZW4gc3ViamVjdCBhbmQgYm9keS4NCj4gLSBbTG93XSBUaGUgY29tbWVu
-dCBhYm92ZSB0aGUgY2hhbmdlZCBjb25kaXRpb24gaW4gbnBjX3VwZGF0ZV90eF9lbnRyeSgpDQo+
-ICAgc3RpbGwgc2F5cyAnSWYgQUYgaXMgaW5zdGFsbGluZyB0aGVuIGRvIG5vdCBjYXJlIGFib3V0
-IFBGX0ZVTkMgaW4gU2VuZOKApg0KPiANCj4gUHJlLWV4aXN0aW5nIGlzc3VlczoNCj4gLSBbSGln
-aF0gVGhpcyBwcm9ibGVtIHdhc24ndCBpbnRyb2R1Y2VkIGJ5IHRoaXMgcGF0Y2gsIGJ1dCBpdCBz
-dGF5cyBpbg0KPiAgIHRoZSByZXByZXNlbnRvciBUWCBwYXRoIHRoaXMgcGF0Y2ggaXMgZml4aW5n
-Lg0KPiANCg0KQUNLIGFsbCBpc3N1ZXMNCnB3LWJvdDogY3INCj4gLS0NCj4gDQo+IG9jdGVvbnR4
-Mi1hZjogRml4IHJlcHJlc2VudG9yIGZsb3cgcnVsZSBQRl9GVU5DIG1hc2sgYW5kIGNoYW5uZWwN
-Cj4gDQo+IFdoZW4gcnZ1LT5yZXBfbW9kZSBpcyBzZXQsIHRoaXMgcGF0Y2gga2VlcHMgdGhlIFBG
-X0ZVTkMgbWF0Y2ggb24gQUYtDQo+IGluc3RhbGxlZCBOUEMgVFggcnVsZXMgaW5zdGVhZCBvZiB3
-aWxkY2FyZGluZyBpdC4gSXQgYWxzbyBjaGFuZ2VzDQo+IHJ2dV9tYm94X2hhbmRsZXJfbnBjX2lu
-c3RhbGxfZmxvdygpIGZvciByZXByZXNlbnRvciByZXF1ZXN0cy4NCj4gcmVxLT5jaGFubmVsIGlz
-IG5vdyByZXBsYWNlZCB3aXRoIHRoZSB0YXJnZXQncyByeF9jaGFuX2Jhc2Ugb25seSB3aGVuDQo+
-IHJlcS0+dGhlDQo+IHJlcXVlc3QgbGVhdmVzIGl0IGF0IHplcm8uDQo+IA0KPiA+IG9jdGVvbnR4
-Mi1hZjogRml4IHJlcHJlc2VudG9yIGZsb3cgcnVsZSBQRl9GVU5DIG1hc2sgYW5kIGNoYW5uZWwg
-SW4NCj4gcmVwcmVzZW50b3IgbW9kZSwgYW4gQUYtaW5zdGFsbGVkIFRYIHJ1bGUgbXVzdCBzdGls
-bCBtYXRjaCBvbiBQRl9GVU5DLCBzbyBkbw0KPiBub3QgY2xlYXIgdGhlIG1hc2sgd2hlbiByZXBf
-bW9kZSBpcyBzZXQuIEFsc28sIGRvIG5vdCBvdmVyd3JpdGUgYSBjaGFubmVsDQo+IGFscmVhZHkg
-cHJvdmlkZWQgaW4gdGhlIHJlcXVlc3Qgd2hlbiB0aGUgcnVsZSBjb21lcyBmcm9tIGEgcmVwcmVz
-ZW50b3INCj4gZGV2aWNlOyBvbmx5IGRlZmF1bHQgdG8gdGhlIFBGL1ZGIHJ4X2NoYW5fYmFzZSB3
-aGVuIG5vbmUgaXMgZ2l2ZW4uDQo+IA0KPiBbU2V2ZXJpdHk6IExvd10NCj4gVGhpcyBpc24ndCBh
-IGJ1ZywgYnV0IHRoZXJlJ3Mgbm8gYmxhbmsgbGluZSBiZXR3ZWVuIHRoZSBzdWJqZWN0IGFuZCB0
-aGUgYm9keS4NCj4gQXMgYSByZXN1bHQsIHRoZSB3aG9sZSBwYXJhZ3JhcGggYmVjb21lcyB0aGUg
-c3ViamVjdCBsaW5lLg0KPiANCj4gVGhlIGZpcnN0IFNpZ25lZC1vZmYtYnkgaXMgYWxzbzoNCj4g
-DQo+ICAgU2lnbmVkLW9mZi1ieToga21haGFtbWFkcmFmIDxrbWFoYW1tYWRyYWZAbWFydmVsbC5j
-b20+DQo+IA0KPiBUaGF0IGRvZXNuJ3QgbG9vayBsaWtlIGEgcmVhbCBuYW1lLCBhbmQgaXQgaXNu
-J3QgdGhlIGF1dGhvci4gSWYga21haGFtbWFkcmFmDQo+IGNvLWRldmVsb3BlZCB0aGUgcGF0Y2gs
-IHNob3VsZCB0aGVyZSBiZSBhIENvLWRldmVsb3BlZC1ieToNCj4gdGFnIG5leHQgdG8gaXQ/IElm
-IGttYWhhbW1hZHJhZiBpcyB0aGUgb3JpZ2luYWwgYXV0aG9yLCBzaG91bGQgdGhlIEZyb206DQo+
-IGxpbmUgc2F5IHNvPw0KPiANCj4gPiBGaXhlczogNmM0MGNhOTU3ZmU1ICgib2N0ZW9udHgyLXBm
-OiBBZGRzIFRDIG9mZmxvYWQgc3VwcG9ydCIpDQo+IA0KPiBbU2V2ZXJpdHk6IExvd10NCj4gVGhl
-IGNoYW5uZWwgb3ZlcnJpZGUgZG9lcyBjb21lIGZyb20gNmM0MGNhOTU3ZmU1LiBJcyB0aGF0IGFs
-c28gdGhlIHJpZ2h0DQo+IHRhcmdldCBmb3IgdGhlIFBGX0ZVTkMgbWFzayBjaGFuZ2U/DQo+IA0K
-PiBUaGUgQUYgVFggcnVsZXMgdGhhdCBuZWVkIHRoZSBQRl9GVU5DIG1hdGNoIHdlcmUgYWRkZWQg
-aW4NCj4gcnZ1X3JlcF9pbnN0YWxsX3R4X3J1bGUoKSBieSBjb21taXQgNjgzNjQ1YTIzMTdlICgi
-b2N0ZW9udHgyLWFmOiBBZGQNCj4gcGFja2V0IHBhdGggYmV0d2VlbiByZXByZXNlbnRvciBhbmQg
-VkYiKS4gVGhvc2UgcnVsZXMgYXJlIGluc3RhbGxlZCB3aXRoDQo+IHJlcS5oZHIucGNpZnVuYyA9
-IDAsIGFuZCBvbmx5IFBGX0ZVTkMgdGVsbHMgdGhlbSBhcGFydC4gVGhlIHdpbGRjYXJkIGl0c2Vs
-Zg0KPiBnb2VzIGJhY2sgdG8gY29tbWl0IGZhMmJmNmJhZjJiMSAoIm9jdGVvbnR4Mi1hZjogRW5h
-YmxlIHRyYW5zbWl0IHNpZGUgTEJLDQo+IGxpbmsiKS4NCj4gDQo+IFdvdWxkIGl0IGJlIGNsZWFu
-ZXIgdG8gc3BsaXQgdGhpcyBpbnRvIHR3byBwYXRjaGVzLCBlYWNoIHdpdGggaXRzIG93bg0KPiBG
-aXhlczogdGFnPyA2ODM2NDVhMjMxN2UgYW5kIDZjNDBjYTk1N2ZlNSB3ZW50IGluIG9uIHRoZSBz
-YW1lIGRheSwgc28NCj4gc3RhYmxlIHNlbGVjdGlvbiBpcyBwcm9iYWJseSBub3QgYWZmZWN0ZWQu
-DQo+IA0KPiBUaGUgY29tbWl0IG1lc3NhZ2UgYWxzbyBkb2Vzbid0IGRlc2NyaWJlIHRoZSBzeW1w
-dG9tLiBCZWZvcmUgdGhpcyBwYXRjaCwNCj4gdGhlIHJ0ZT10cnVlIFRYIHJ1bGUgZnJvbSBydnVf
-cmVwX2luc3RhbGxfdHhfcnVsZSgpIGhhZCBubyBmZWF0dXJlcyBhbmQgYQ0KPiB3aWxkY2FyZGVk
-IFBGX0ZVTkMuIEl0IHRoZXJlZm9yZSBtYXRjaGVkIGV2ZXJ5IFRYIHBhY2tldCBvbiB0aGF0IE5J
-WCBUWA0KPiBpbnRlcmZhY2UsIGFuZCB0aGUgZmlyc3Qgc3VjaCBlbnRyeSAoUEYxKSBzZW50IGFs
-bCBQRi9WRiBlZ3Jlc3MgdG8gdGhlIExCSw0KPiBjaGFubmVsIHdpdGggUEYxJ3MgVkxBTiB0YWcu
-DQo+IA0KPiBDb3VsZCB0aGUgY29tbWl0IG1lc3NhZ2UgbWVudGlvbiB0aGF0Pw0KPiANCj4gPiBk
-aWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvbWFydmVsbC9vY3Rlb250eDIvYWYvcnZ1
-X25wY19mcy5jDQo+ID4gYi9kcml2ZXJzL25ldC9ldGhlcm5ldC9tYXJ2ZWxsL29jdGVvbnR4Mi9h
-Zi9ydnVfbnBjX2ZzLmMNCj4gPiBpbmRleCBkNDIyYmRkNWU4ZjgwLi5hNTY5YTYzYTIxZDlkIDEw
-MDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvbmV0L2V0aGVybmV0L21hcnZlbGwvb2N0ZW9udHgyL2Fm
-L3J2dV9ucGNfZnMuYw0KPiA+ICsrKyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L21hcnZlbGwvb2N0
-ZW9udHgyL2FmL3J2dV9ucGNfZnMuYw0KPiA+IEBAIC0xMzk3LDcgKzEzOTcsNyBAQCBzdGF0aWMg
-aW50IG5wY191cGRhdGVfdHhfZW50cnkoc3RydWN0IHJ2dSAqcnZ1LA0KPiBzdHJ1Y3QgcnZ1X3Bm
-dmYgKnBmdmYsDQo+ID4gIAkvKiBJZiBBRiBpcyBpbnN0YWxsaW5nIHRoZW4gZG8gbm90IGNhcmUg
-YWJvdXQNCj4gPiAgCSAqIFBGX0ZVTkMgaW4gU2VuZCBEZXNjcmlwdG9yDQo+ID4gIAkgKi8NCj4g
-PiAtCWlmIChpc19wZmZ1bmNfYWYocmVxLT5oZHIucGNpZnVuYykpDQo+ID4gKwlpZiAoaXNfcGZm
-dW5jX2FmKHJlcS0+aGRyLnBjaWZ1bmMpICYmICFydnUtPnJlcF9tb2RlKQ0KPiA+ICAJCW1hc2sg
-PSAwOw0KPiANCj4gW1NldmVyaXR5OiBMb3ddDQo+IFRoaXMgaXNuJ3QgYSBidWcsIGJ1dCB0aGUg
-Y29tbWVudCBhYm92ZSBzdGlsbCBzYXlzIEFGLWluc3RhbGxlZCBydWxlcyBkb24ndCBjYXJlDQo+
-IGFib3V0IFBGX0ZVTkMuIFdoZW4gcmVwX21vZGUgaXMgc2V0LCBBRi1pbnN0YWxsZWQgVFggcnVs
-ZXMgbm93IG1hdGNoIG9uDQo+IFBGX0ZVTkMgKG1hc2sgPSB+MFVMTCwgdmFsdWUgaHRvbnModGFy
-Z2V0KSksIGFuZA0KPiBydnVfcmVwX2luc3RhbGxfdHhfcnVsZSgpIHJlbGllcyBvbiB0aGF0Lg0K
-PiANCj4gQ291bGQgdGhlIGNvbW1lbnQgbWVudGlvbiB0aGUgcmVwX21vZGUgZXhjZXB0aW9uPw0K
-PiANCj4gPg0KPiA+ICAJbnBjX3VwZGF0ZV9lbnRyeShydnUsIE5QQ19QRl9GVU5DLCBtZGF0YSwg
-KF9fZm9yY2UNCj4gPiB1MTYpaHRvbnModGFyZ2V0KSwNCj4gDQo+IFtTZXZlcml0eTogSGlnaF0N
-Cj4gVGhpcyBpcyBhIHByZS1leGlzdGluZyBpc3N1ZSwgYnV0IGl0IHJlbWFpbnMgaW4gdGhlIHJl
-cHJlc2VudG9yIFRYIHBhdGggdGhpcyBwYXRjaA0KPiBpcyBmaXhpbmcuIFBGX0ZVTkMgaXMgbm93
-IHRoZSBvbmx5IG1hdGNoZWQgVFgga2V5IGZpZWxkLiBEbyBhbGwgdGhlIHJ0ZT1mYWxzZQ0KPiBy
-dWxlcyBmcm9tIHJ2dV9yZXBfaW5zdGFsbF90eF9ydWxlKCkgdGhlbiBlbmQgdXAgd2l0aCB0aGUg
-c2FtZSBNQ0FNIGtleT8NCj4gDQo+IGRyaXZlcnMvbmV0L2V0aGVybmV0L21hcnZlbGwvb2N0ZW9u
-dHgyL2FmL3J2dV9yZXAuYzpydnVfcmVwX2luc3RhbGxfdHhfcnVsZSgNCj4gKSB7DQo+ICAgICAu
-Li4NCj4gCXJlcS5oZHIucGNpZnVuYyA9IDA7IC8qIEFGIGlzIHJlcXVlc3RlciAqLw0KPiAJaWYg
-KHJ0ZSkgew0KPiAJCXJlcS52ZiA9IHBjaWZ1bmM7DQo+IAl9IGVsc2Ugew0KPiAJCXJlcS52ZiA9
-IHJ2dS0+cmVwX3BjaWZ1bmM7DQo+IAkJcmVxLnBhY2tldC5zcV9pZCA9IHZsYW5fdGNpOw0KPiAJ
-CXJlcS5tYXNrLnNxX2lkID0gMHhmZmZmOw0KPiAJfQ0KPiAgICAgLi4uDQo+IH0NCj4gDQo+IE5v
-IHJlcS5mZWF0dXJlcyBhcmUgc2V0LCBzbyBucGNfdXBkYXRlX2Zsb3coKSByZXR1cm5zIGJlZm9y
-ZSBpdCBwcm9ncmFtcw0KPiBhbnl0aGluZyBmcm9tIHJlcS0+cGFja2V0Og0KPiANCj4gCWlmICgh
-ZmVhdHVyZXMpDQo+IAkJcmV0dXJuOw0KPiANCj4gTm90aGluZyBpbiBhZi8gYXBwZWFycyB0byBw
-dXQgc3FfaWQgaW50byB0aGUga2V5IGVpdGhlcjsgdGhlcmUgaXMgbm8gTlBDX1NRX0lEDQo+IGtl
-eSBmaWVsZC4gVGhlIG9ubHkgbWF0Y2ggbGVmdCBpcyBQRl9GVU5DID0gaHRvbnMocnZ1LT5yZXBf
-cGNpZnVuYyksIGFuZCB0aGF0DQo+IGlzIHRoZSBzYW1lIGZvciBldmVyeSByZXByZXNlbnRlZS4N
-Cj4gDQo+IHJ2dV9yZXBfaW5zdGFsbF9tY2FtX3J1bGVzKCkgaW5zdGFsbHMgb25lIHJ0ZT1mYWxz
-ZSBUWCBlbnRyeSBwZXIgcmVwcmVzZW50ZWUsDQo+IGluIGluZGV4IG9yZGVyLiBydnVfbWJveF9o
-YW5kbGVyX25wY19pbnN0YWxsX2Zsb3coKSBhbHdheXMgZW5hYmxlcyBUWA0KPiBydWxlcy4NCj4g
-DQo+IEFzc3VtaW5nIHRoZSBsb3dlc3QtaW5kZXggZW50cnkgd2lucyB3aGVuIHNldmVyYWwgbWF0
-Y2gsIHdvdWxkbid0IGVncmVzcw0KPiBmcm9tIGV2ZXJ5IHJlcHJlc2VudG9yIG5ldGRldiBoaXQg
-dGhlIGZpcnN0IGVuYWJsZWQgcnRlPWZhbHNlIGVudHJ5PyBJdCB3b3VsZA0KPiB0aGVuIGdldCB0
-aGF0IHJlcHJlc2VudGVlJ3MgdnRhZzBfZGVmIFZMQU4sIGdvIG91dCBvbg0KPiBSVlVfU1dJVENI
-X0xCS19DSEFOLCBhbmQgYmUgZGVsaXZlcmVkIHRvIHRoYXQgc2luZ2xlIHJlcHJlc2VudGVlLg0K
-PiANCj4gRm9yIGV4YW1wbGUsIGZyYW1lcyB0aGF0IGEgYnJpZGdlIGZvcndhcmRzIHRvIHRoZSBS
-cGYxdmYyIHJlcHJlc2VudG9yIHdvdWxkDQo+IHNlZW0gdG8gcmVhY2ggYSBkaWZmZXJlbnQgZnVu
-Y3Rpb24uDQo+IA0KPiBbIC4uLiBdDQo+IA0KPiA+IEBAIC0xODQ2LDcgKzE4NDYsNyBAQCBpbnQg
-cnZ1X21ib3hfaGFuZGxlcl9ucGNfaW5zdGFsbF9mbG93KHN0cnVjdA0KPiBydnUNCj4gPiAqcnZ1
-LA0KPiA+DQo+ID4gIAlwZnZmID0gcnZ1X2dldF9wZnZmKHJ2dSwgdGFyZ2V0KTsNCj4gPg0KPiA+
-IC0JaWYgKGZyb21fcmVwX2RldikNCj4gPiArCWlmIChmcm9tX3JlcF9kZXYgJiYgIXJlcS0+Y2hh
-bm5lbCkNCj4gPiAgCQlyZXEtPmNoYW5uZWwgPSBwZnZmLT5yeF9jaGFuX2Jhc2U7DQo+IA0KPiBb
-U2V2ZXJpdHk6IE1lZGl1bV0NCj4gV2hpY2ggcmVwcmVzZW50b3IgcmVxdWVzdGVyIHNlbmRzIGEg
-bm9uLXplcm8gY2hhbm5lbCBoZXJlPyBUaGUgb25seSBpbi10cmVlDQo+IHNlbmRlciBzZWVtcyB0
-byBiZSBvdHgyX3RjX2FkZF9mbG93KCkuIEl0IGlzIHJlYWNoZWQgdGhyb3VnaA0KPiBydnVfcmVw
-X3NldHVwX3RjX2NiKCksIHdoaWNoIHJldXNlcyB0aGUgcmVwcmVzZW50b3IgUEYncyBvdHgyX25p
-YzoNCj4gDQo+IGRyaXZlcnMvbmV0L2V0aGVybmV0L21hcnZlbGwvb2N0ZW9udHgyL25pYy9vdHgy
-X3RjLmM6b3R4Ml90Y19hZGRfZmxvdygpIHsNCj4gICAgIC4uLg0KPiAJcmVxLT5jaGFubmVsID0g
-bmljLT5ody5yeF9jaGFuX2Jhc2U7DQo+ICAgICAuLi4NCj4gfQ0KPiANCj4gcnhfY2hhbl9iYXNl
-IG5ldmVyIHNlZW1zIHRvIGJlIHNldCBmb3IgdGhlIHJlcHJlc2VudG9yIFBGLg0KPiBydnVfbWJv
-eF9oYW5kbGVyX25peF9sZl9hbGxvYygpIGp1bXBzIHBhc3Qgbml4X2ludGVyZmFjZV9pbml0KCks
-IHdoaWNoIGlzIHRoZQ0KPiBvbmx5IHBsYWNlIHBmdmYtPnJ4X2NoYW5fYmFzZSBpcyBhc3NpZ25l
-ZDoNCj4gDQo+IAlpZiAoaXNfcmVwX2RldihydnUsIHBjaWZ1bmMpKSB7DQo+IAkJcGZ2Zi0+dHhf
-Y2hhbl9iYXNlID0gUlZVX1NXSVRDSF9MQktfQ0hBTjsNCj4gCQlwZnZmLT50eF9jaGFuX2NudCA9
-IDE7DQo+IAkJZ290byBleGl0Ow0KPiAJfQ0KPiANCj4gU28gdGhlIHJ4X2NoYW5fYmFzZSByZXR1
-cm5lZCB0byB0aGUgUEYsIHdoaWNoIGlzIGNvcGllZCBpbnRvDQo+IGh3LnJ4X2NoYW5fYmFzZSwg
-aXMgMC4gRXZlcnkgcmVwcmVzZW50b3IgVEMgcmVxdWVzdCBzdGlsbCBhcnJpdmVzIHdpdGggY2hh
-bm5lbA0KPiA9PSAwLiBJdCBpcyBzdGlsbCByZXBsYWNlZCB3aXRoIHRoZSByZXByZXNlbnRlZSdz
-IHJ4X2NoYW5fYmFzZSwgYXMgYmVmb3JlIHRoaXMNCj4gcGF0Y2guDQo+IA0KPiBEb2VzIHRoaXMg
-aHVuayBjaGFuZ2UgYW55dGhpbmcgZm9yIGluLXRyZWUgY2FsbGVycz8NCj4gDQo+IENhbiAwIHNh
-ZmVseSBtZWFuICJub3QgcHJvdmlkZWQiPyBOSVhfQ0hBTl9MQktfQ0hYKDAsIDApIGV2YWx1YXRl
-cyB0byAwLA0KPiBhbmQgQ04xMEsgdXNlcyBpdCBhcyBody0+bGJrX2NoYW5fYmFzZSwgc28gMCBp
-cyBhIHZhbGlkIExCSyBjaGFubmVsLg0KPiBzdHJ1Y3QgbnBjX2luc3RhbGxfZmxvd19yZXEgYWxz
-byBoYXMgbm8gZmxhZyBhIGNhbGxlciBjb3VsZCB1c2UgdG8gYXNrIGZvcg0KPiBjaGFubmVsIDAg
-ZXhwbGljaXRseS4NCj4gDQo+IElmIHRoZSByZXByZXNlbnRvciBQRiBldmVyIHJlcG9ydHMgYSBu
-b24temVybyByeF9jaGFuX2Jhc2UsIHdvdWxkbid0DQo+IHJlcHJlc2VudGVlIFJYIHJ1bGVzIHRo
-ZW4gbWF0Y2ggdGhlIHJlcHJlc2VudG9yIFBGJ3Mgb3duIGNoYW5uZWwgcmF0aGVyDQo+IHRoYW4g
-dGhlIHJlcHJlc2VudGVlJ3M/IFRoYXQgd291bGQgd2Vha2VuIHRoZSBvdmVycmlkZSB0aGF0IDZj
-NDBjYTk1N2ZlNQ0KPiBhZGRlZC4NCj4gDQo+IC0tDQo+IFNhc2hpa28gQUkgcmV2aWV3IMK3IGh0
-dHBzOi8vdXJsZGVmZW5zZS5jb20vdjMvX19odHRwczovL25ldGRldi0NCj4gYWkuYm90cy5saW51
-eC5kZXYvc2FzaGlrby8qL3BhdGNoc2V0LzIwMjYxMDIxMDkxNzM2LjI0MDY1MDUtMS0NCj4ga21h
-aGFtbWFkcmFmKjQwbWFydmVsbC5jb21fXztJeVUhIUNSVm1Ya3FXIVhyUlRwWE54TWhqZnZTdW84
-NE1nDQo+IC1aWW12bHV0amcwcXZlOVdVamxrbmk3Rms3VV9TSDJJeDJQclNZSkhsTS0NCj4gUDQ5
-Z2xKdHpNQmVlY1R5V2Q2SXR0X0dzUUFhcTY0d3ckDQo=
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 (1) · High: 0 (2) · Medium: 1 (1) · Low: 0 (1)
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] This patch adds a second ptp_skbs decrement path that is not
+>   coordinated with sparx5_ptp_txtstamp_release().
+> 
+> Pre-existing issues:
+> - [Critical] Double free and use-after-free of two-step PTP skbs that go
+>   through the drop path of sparx5_port_xmit_impl().
+> - [High] Use-after-free in lan969x_fdma_tx_clear_buf()
+>   (lan969x/lan969x_fdma.c:70-77) for two-step PTP skbs.
+> - [High] sparx5_ptp_txtstamp_request() adds the skb to port->tx_skbs with
+>   skb_queue_tail() (sparx5_ptp.c:255), which takes and releases…
+> - [Medium] Stale skbs, and their global ptp_skbs slots, are aged only
+>   when the same port issues another two-step request.
+> - [Low] The 10 ms SPARX5_PTP_TIMEOUT used by
+>   sparx5_ptp_txtstamp_old_release() treats a frame held in an egress…
+> 
+> --
+> 
+> net: sparx5/lan969x: release the in-flight slot of a stale TX skb
+> 
+> This patch makes sparx5_ptp_txtstamp_old_release() return how many stale
+> two step TX skbs it freed. sparx5_ptp_txtstamp_request() then subtracts
+> that number from sparx5->ptp_skbs under ptp_ts_id_lock. Without this, an
+> skb whose timestamp never arrived kept one of the SPARX5_MAX_PTP_ID
+> in-flight slots forever.
+> 
+> > diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c b/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
+> > index 2826e48af1033..9f61692b243b7 100644
+> > --- a/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
+> > +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
+> 
+> [ ... ]
+> 
+> > @@ -217,8 +218,11 @@ static void sparx5_ptp_txtstamp_old_release(struct sparx5_port *port)
+> >
+> >               __skb_unlink(skb, &port->tx_skbs);
+> >               dev_kfree_skb_any(skb);
+> > +             purged++;
+> >       }
+> 
+> [Severity: Critical]
+> This isn't a bug introduced by this patch, but can this walk free a two
+> step skb a second time?
+> 
+> In sparx5_port_xmit_impl(), sparx5_ptp_txtstamp_request() has already
+> queued the skb on port->tx_skbs and incremented ptp_skbs. If the backend
+> then fails with anything other than -EBUSY, the drop label only frees the
+> skb:
+> 
+> drivers/net/ethernet/microchip/sparx5/sparx5_packet.c:sparx5_port_xmit_impl() {
+>     ...
+>         if (ret == -EBUSY)
+>                 goto busy;
+>         if (ret < 0)
+>                 goto drop;
+>     ...
+> drop:
+>         stats->tx_dropped++;
+>         sparx5->tx.dropped++;
+>         dev_kfree_skb_any(skb);
+>         return NETDEV_TX_OK;
+> busy:
+>         if (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP &&
+>             SPARX5_SKB_CB(skb)->rew_op == IFH_REW_OP_TWO_STEP_PTP)
+>                 sparx5_ptp_txtstamp_release(port, skb);
+>         return NETDEV_TX_BUSY;
+> }
+> 
+> Only the busy path calls sparx5_ptp_txtstamp_release(). On the drop path
+> the freed skb stays linked on port->tx_skbs.
+> 
+> On sparx5, sparx5_fdma_xmit() returns -EINVAL when the TX ring is full:
+> 
+>         if (!fdma_db_is_done(fdma_db_get(fdma, fdma->dcb_index, 0)))
+>                 return -EINVAL;
+> 
+> On lan969x, lan969x_fdma_xmit() can return -ENOMEM from
+> pskb_expand_head(GFP_ATOMIC) or on dma_mapping_error().
+> 
+> The next two step xmit on that port, at least SPARX5_PTP_TIMEOUT later,
+> would reach sparx5_ptp_txtstamp_old_release(). It would read
+> SPARX5_SKB_CB(skb)->jiffies and skb->next from freed memory, call
+> __skb_unlink() on it, and call dev_kfree_skb_any() on it again. The PTP
+> IRQ handlers also walk this list and read cb->ts_id of the freed skb.
+> 
+> With this patch the double-freed entry is also counted in purged, so its
+> slot gets reclaimed through the double free.
+> 
+> Should the drop path call sparx5_ptp_txtstamp_release() for two step skbs,
+> as the busy path does?
+> 
+> [Severity: High]
+> This is a pre-existing issue, but on lan969x, can the FDMA TX ring still
+> reference the skb freed here?
+> 
+> lan969x_fdma_xmit() stores the two step skb in the ring with
+> db_buf->skb = skb and db_buf->ptp = true, and the PTP code is responsible
+> for freeing it. This function and lan969x_ptp_irq_handler() both free the
+> skb without clearing db->skb or checking whether the DCB has completed.
+> 
+> lan969x_fdma_tx_clear_buf() then dereferences db->skb before it checks
+> db->ptp:
+> 
+> drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_fdma.c:lan969x_fdma_tx_clear_buf() {
+>     ...
+>                 db->dev->stats.tx_bytes += db->skb->len;
+>                 db->dev->stats.tx_packets++;
+>                 sparx5->tx.packets++;
+> 
+>                 dma_unmap_single(sparx5->dev,
+>                                  db->dma_addr,
+>                                  db->skb->len,
+>                                  DMA_TO_DEVICE);
+> 
+>                 if (!db->ptp)
+>                         napi_consume_skb(db->skb, weight);
+>     ...
+> }
+> 
+> The PTP IRQ is a separate threaded IRQ with no ordering against NAPI. A
+> delayed NAPI poll could therefore read skb->len from freed memory.
+> 
+> If old_release frees an skb whose DCB has not completed yet, for example
+> because the FDMA stalled for more than 10 ms, wouldn't the device still
+> DMA-read the freed buffer?
+> 
+> [Severity: Low]
+> This is a pre-existing issue, but is a fixed 10 ms SPARX5_PTP_TIMEOUT long
+> enough here?
+> 
+> A frame held in an egress queue for more than 10 ms, for example behind a
+> closed TAS gate or by pause frames, would be freed here as lost. When it
+> later egresses, sparx5_ptp_irq_handler() and lan969x_ptp_irq_handler()
+> find no matching skb and hit:
+> 
+>                 if (WARN_ON(!skb_match))
+>                         continue;
+> 
+> The continue skips the ptp_skbs decrement, so the counter itself stays
+> consistent with port->tx_skbs.
+> 
+> [ ... ]
+> 
+> > @@ -236,9 +241,10 @@ int sparx5_ptp_txtstamp_request(struct sparx5_port *port,
+> >       if (rew_op != IFH_REW_OP_TWO_STEP_PTP)
+> >               return 0;
+> >
+> > -     sparx5_ptp_txtstamp_old_release(port);
+> > +     purged = sparx5_ptp_txtstamp_old_release(port);
+> 
+> [Severity: Medium]
+> This is a pre-existing issue, and the commit message already mentions it.
+> Stale skbs, and their global ptp_skbs slots, are only aged when the same
+> port sends another two step frame.
+> 
+> sparx5_ptp_hwtstamp_set() with HWTSTAMP_TX_OFF does not purge
+> port->tx_skbs, and neither does port stop. Only sparx5_ptp_deinit() does.
+> A port that stops sending two step frames, because the link went down or
+> TX timestamping was turned off, keeps any lost skbs that had not expired
+> at its last request.
+> 
+> If these leftovers add up to SPARX5_MAX_PTP_ID across ports, two step
+> xmit on every other port gets -EBUSY. sparx5_port_xmit_impl() turns that
+> into NETDEV_TX_BUSY.
+> 
+> Could port->tx_skbs also be purged from a path that does not depend on the
+> port's own traffic, such as HWTSTAMP_TX_OFF or port stop?
+> 
+> >
+> >       spin_lock_irqsave(&sparx5->ptp_ts_id_lock, flags);
+> > +     sparx5->ptp_skbs -= purged;
+> 
+> [Severity: Medium]
+> Can this decrement race with sparx5_ptp_txtstamp_release() and count the
+> same skb down twice?
+> 
+> Each port netdev has SPX5_PRIOS TX queues and there is no
+> ndo_select_queue, so two CPUs can run sparx5_port_xmit_impl() for the same
+> port at the same time. sparx5_ptp_txtstamp_old_release() unlinks while
+> holding only tx_skbs.lock. The busy path decrements without checking
+> whether the skb is still on the list:
+> 
+> drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c:sparx5_ptp_txtstamp_release() {
+>     ...
+>         spin_lock_irqsave(&sparx5->ptp_ts_id_lock, flags);
+>         port->ts_id--;
+>         sparx5->ptp_skbs--;
+>         skb_unlink(skb, &port->tx_skbs);
+>         spin_unlock_irqrestore(&sparx5->ptp_ts_id_lock, flags);
+> }
+> 
+> A possible sequence:
+> 
+> CPU0
+> sparx5_ptp_txtstamp_request()
+>     skb_queue_tail(&port->tx_skbs, X)
+>     sparx5->ptp_skbs++
+> spin_lock(&sparx5->tx_lock)   /* waits */
+> 
+> CPU1
+> sparx5_ptp_txtstamp_request()
+>     sparx5_ptp_txtstamp_old_release()
+>         /* X looks older than SPARX5_PTP_TIMEOUT */
+>         __skb_unlink(X); dev_kfree_skb_any(X); purged++
+>     sparx5->ptp_skbs -= purged
+> 
+> CPU0
+> ops->fdma_xmit() or sparx5_inject() returns -EBUSY
+> sparx5_ptp_txtstamp_release(port, X)
+>     sparx5->ptp_skbs--
+> 
+> At HZ=100, SPARX5_PTP_TIMEOUT is one jiffy, so crossing a single tick is
+> enough for X to look expired.
+> 
+> Before this patch the purge path did not decrement, so X was counted down
+> only once. ptp_skbs is a u16 and the limit check only tests for equality.
+> 
+> If the counter wraps to 65535, does the SPARX5_MAX_PTP_ID limit stop
+> working, so that ts_id values can be reused while they are still
+> outstanding?
+> 
+> The same window already lets CPU0 keep using X after CPU1 has freed it.
+> That part predates this patch; the double decrement is new.
+
+This fixes a leak seen in normal operation. Each lost timestamp keeps
+an in-flight slot, and after SPARX5_MAX_PTP_ID losses, two step
+timestamping stops on all ports. The lan966x twin (074caa30a627) is
+already in net.
+
+AFAICT, the wrong count can never be used. The second decrement is in the busy
+path, which on the very next line unlinks an skb that a purge on
+another TX queue has already freed. That use-after-free is
+pre-existing and crashes before the count matters.
+
+I am working on a net-next series that reworks PTP TX timestamping and fixes
+this and several related issues.
+
+> 
+> >       if (sparx5->ptp_skbs == SPARX5_MAX_PTP_ID) {
+> >               spin_unlock_irqrestore(&sparx5->ptp_ts_id_lock, flags);
+> >               return -EBUSY;
+> 
+> [Severity: High]
+> This isn't a bug introduced by this patch, but a little further down in
+> sparx5_ptp_txtstamp_request() the skb is added to port->tx_skbs before its
+> cb fields are written:
+> 
+>         skb_queue_tail(&port->tx_skbs, skb);
+>         SPARX5_SKB_CB(skb)->ts_id = port->ts_id;
+>         SPARX5_SKB_CB(skb)->jiffies = jiffies;
+> 
+> skb_queue_tail() takes and releases tx_skbs.lock, and the cb writes happen
+> under ptp_ts_id_lock only. sparx5_ptp_txtstamp_old_release() and both PTP
+> IRQ handlers walk the list holding only tx_skbs.lock.
+> 
+> With several TX queues per port, another CPU could run old_release on the
+> same port and read X's cb->jiffies before it is set. That field still
+> holds leftover bytes from earlier layers such as the qdisc. If the value
+> looks expired, would old_release free X while CPU0 is still filling in the
+> cb and passing X to the injector or FDMA? The IRQ handlers could also
+> match a stale cb->ts_id the same way.
+> 
+> Would writing ts_id and jiffies before skb_queue_tail() close this?
+> 
+> --
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261029-sparx5-ptp-stale-tx-slot-v1-1-ec15f391bbb7%40microchip.com
