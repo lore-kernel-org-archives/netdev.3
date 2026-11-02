@@ -1,83 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.243.164.118
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793619017;
-	b=lV8x2t6mYzzPcEk8zlrOhZniuKdhJJuG/2byqkDpawAjIb7aZSA7rq8ejDVlyQsgJBCt
-	 Wdt06hUN6V/egH18tOCfdKy9G7yPQcnuv2uMYwHjG3dYgVSbn3I7oqIrwA6KQx8QtIgtA
-	 D2ovdrxYpboQ4hQwmJA9ZwMa/RiSt6eW9mftDmZeiK8Ofgz2Q8TE3u7ikUbJnXqv46n1o
-	 XbXgoDDbQhtbfbxcFrA39s9gCUdLr6qVw2tksBgXkChWdqoPsvx/u2QgwSICm5YblQXXe
-	 tulRBZrATHAkdNBu6eGI7G1e7Dld0eFGjfq4FRbk+BuTDtiBJiZ54i51y+9aAs76ZRw==
+	t=1793619027;
+	b=iAG0HfgBAik/b6iSsj0waQeSKg52BbPT2Yf69Sl4y/GANQ9IKaNEzh5f2enbniksvCVB
+	 7yuAVDshHsHWDgmcgFlcC9I7EaHq7Q/VkbQRDG21HapblqrN2H8nu7jQ9gMO/NQO54bXB
+	 Oo3k5vJaa7Vrj6kq5fixVYnG7/4xfvpJRxYBQFqtuNxjJQdqcOiXDqH6b8oFdOmidXkdm
+	 IrvSECfHvC1q7Ggsn05iPRNL9zSrCusQjBkXYyjPfacgqS6qqczgVkB7MEJUkxxrSvQJx
+	 V8LUNEaF9Go3gGJfX4AgEs/yBux957tPVIKVn6aknUCdIqPpa2kdnJMM6Bdw4snf4Vg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793619017;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=NZY9BQPDvkxgWE2rv8QDqhUgKPnpRpopG3JlsimKDq0=;
-	b=z7F4CUpgm5cLA5q1RP87MZJOOTYLNcIWm386BT8YgOy3u3fgqGgEIEQ4N6TdAhCNkXoJ
-	 BczgbSgBQeBGE4OfW7SlQ8Su4csmEILfUM9fAiNvEusQ8vj5mykztSbXEJfyMrNhaRrwW
-	 G3nUS80Aoik4x9EDFY+4VQLIeqpXl6JDWKU8d4sN/d8mWLSIrDBPr2TvXv7u+uhAfoq8h
-	 RUVpfR30pdK3xdg+0Xi8k5BtjFA3YOvHNvvrRYxcBmGuJlqL8Zf0lSD/w8Y7H3fAqkP3E
-	 +C7vxR2uiaBQiGAWBsHavcu/jfawKWg0fMps2aNtjWHEUlM646atBoF248YExcgCJQA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793619027;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:X-CM-TRANSID:
+	 X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=Vl3NSKsKg/CSQtal7pauAg6RMNsPj+Y+d5jOU6wQ3IQ=;
+	b=BWClisRx7J9IKv+Es+oBnR3Q+MzaMzn68XGdfPGPXu3nCbxTSwAaGYIJjh0UGQ9ajHMV
+	 lHM0BvxZyS1Elr/gOZIIU68wV1dj8tL/+POJ6Vki+Y3sXOU/pMO/WyiZsM5HKyc+GzqsH
+	 1Vc+zAm2a7YdFlSVybN6yulHuCduDKcTFmm4wmBSMg0kxY4U/o2MngjYbwzLW/luCk3gE
+	 MVR355W0bPbx0M/B6wuOpk5WbvaKkrwBfoP63m5HCeBi9id6rVhvZ883sGzyPqdRLFMMk
+	 LCoWBVtCkSaQlWJ48HvnG9BOnFlrulypI9kvGac7s1CFAOkvwqCkdEx4lpncP04iWpw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=microchip.com;
-	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=WzMuPcPK;
-	arc=none smtp.remote-ip=68.232.153.233
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52948606A333;
-	Mon,  2 Nov 2026 11:30:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 52948606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=WzMuPcPK
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1793619017; x=1825155017;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gdT4nn9wsvJ97/KVddnJOkN3H8mBQrTvIbZBwIumB2M=;
-  b=WzMuPcPK/032P9L1V9430t/lfJY31DvEQr9sV6+tZILwQDTJu0BKNPWs
-   oy1wNMCSGgUsSfsS0/LLVSqtXLFTFGapZ1SJqmPvLfxM5gYScqjALZjFo
-   MRT/0MHN+bPi8dNthbF/ltLHxH441YzCprNjfQ79fEf1beujNRYrn2F6y
-   s9M0PKzey4JecOoFvVySyVeLE3c1ozgX5pDRnuqUD52Jeq9w9klnSRuDK
-   32wIAfoIwXHRjYl3EqwA5fsJ+d2ebs60I44OK3Rn21Klc725PM6gM9n10
-   xOFiiSelwJ8Y2AC57/713lby5sIQnYi86HhrPMVNlBUp+ywu9pXc/FCHg
-   A==;
-X-CSE-ConnectionGUID: xqIXgdQUSxCWNgzIxk5xNg==
-X-CSE-MsgGUID: a63FDLByToyww5QJi8dOKA==
-X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
-   d="scan'208";a="65878815"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 02 Nov 2026 04:30:16 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Mon, 2 Nov 2026 04:30:15 -0700
-Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex02.mchp-main.com
- (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Mon, 2 Nov 2026 04:30:12 -0700
-Date: Mon, 2 Nov 2026 12:30:11 +0100
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-CC: Sunil Goutham <sgoutham@marvell.com>, Geetha sowjanya
-	<gakula@marvell.com>, Ratheesh Kannoth <rkannoth@marvell.com>, Subbaraya
- Sundeep <sbhatta@marvell.com>, Bharat Bhushan <bbhushan2@marvell.com>, Andrew
- Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
-	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
- Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
-	Suman Ghosh <sumang@marvell.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>
-Subject: Re: [PATCH net] octeontx2-pf: fix XDP frames freed as skbs on
- interface down
-Message-ID: <20261102113011.h4gv6z6y3ktab2cq@DEN-DL-M70577>
-References: <20261030-nb-otx2-xdp-cqe-cleanup-net-v1-1-710635c0f504@tipi-net.de>
+	dmarc=pass header.from=stu.xidian.edu.cn;
+	spf=pass smtp.mailfrom=stu.xidian.edu.cn;
+	arc=none smtp.remote-ip=162.243.164.118
+Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5645E60A2604;
+	Mon,  2 Nov 2026 11:30:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5645E60A2604
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.xidian.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stu.xidian.edu.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=stu.xidian.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
+	Message-ID:In-Reply-To:References:Content-Type:
+	Content-Transfer-Encoding:MIME-Version; bh=Vl3NSKsKg/CSQtal7pauA
+	g6RMNsPj+Y+d5jOU6wQ3IQ=; b=L01u+KKXYyEQku6VGiV2GuBf3REy297ILf5NU
+	bLzTolHMDe3mS/DBPWaRL5Mpmo3prSwgR2khUX8AK+tSr9ZUp9OSr+a+7d/25kCN
+	cqJbgpKSIfI06L0pUD1RzsApSAnlP2c9pvUW3LbMWymTmYYpJBQCm1Tp/tZ9eL1N
+	R4H3Zo=
+Received: from [127.0.1.1] (unknown [113.200.174.101])
+	by hzbj-edu-front-3.icoremail.net (Coremail) with UTF8SMTPA id BbQMCkDW2fw3dOhq_AMZAQ--.23074S2;
+	Mon, 02 Nov 2026 19:30:01 +0800 (CST)
+From: YuanZhe Liu <25031212351@stu.xidian.edu.cn>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: sashiko-bot@kernel.org, Thangaraj Samynathan <Thangaraj.S@microchip.com>,
+ UNGLinuxDriver@microchip.com, netdev@vger.kernel.org,
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Russell King <linux@armlinux.org.uk>,
+ stable@vger.kernel.org, Bin Yu <byu@xidian.edu.cn>,
+ Cheng Wen <wencheng@xidian.edu.cn>
+Subject: Re: [PATCH net] net: usb: lan78xx: only stop phylink if the interface
+ is running
+Date: Mon, 02 Nov 2026 19:29:59 +0800
+Message-ID: <179361899931.4450.17435057020255203640@stu.xidian.edu.cn>
+In-Reply-To: <auhgcS6p-HDFYd7x@pengutronix.de>
+References: <20261029160204.2567-1-25031212351@stu.xidian.edu.cn>
+ <sashiko-outbox-191206@kernel.org>
+ <179346555447.2831.9240931140716315096@stu.xidian.edu.cn>
+ <auhgcS6p-HDFYd7x@pengutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,70 +67,76 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261030-nb-otx2-xdp-cqe-cleanup-net-v1-1-710635c0f504@tipi-net.de>
+X-CM-TRANSID:BbQMCkDW2fw3dOhq_AMZAQ--.23074S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxWw48Gw1rAF1kWFWfJr4ruFg_yoW5Xr4xpr
+	W5G3Z8Cr4DJryaga17Xa1UAFy5uwsFk3y5Cwn8G3yYqw4YgFyaqr9Fva4DA3Z8CrZ5Xa4I
+	qr1FvFWrCayUGF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9mb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4
+	A2jsIEc7CjxVAFwI0_GcCE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28I
+	cVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx
+	0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402
+	YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2
+	IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v2
+	6r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67
+	AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IY
+	s7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr
+	0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07b5sj8UUUUU=
+X-CM-SenderInfo: ysvqjiysrsjkur6v33wo0lvxldqovvfxof0/1tbiAQUFD2rnVdSm9wAAsT
 
-Hi Nicolai,
+Hi Oleksij,
 
-> On interface down, the TX completion cleanup also runs on the XDP
-> queues, but treats the pending xdp_frames as skbs. Freeing them with
-> dev_kfree_skb_any() corrupts page pool memory.
-> 
-> This happens when XDP_TX or redirected packets are still in flight on
-> ifdown, or when the XDP program is replaced.
-> 
-> Fixes: 94c80f748873 ("octeontx2-pf: use xdp_return_frame() to free xdp buffers")
-> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-> ---
-> Pre-existing bug, flagged by the clashiko review of my ipsec transmit
-> fixes for this driver [1], which seems reasonable (and fixable) to me.
-> 
-> The other pre-existing findings there (e.g. the SA lifetime in
-> cn10k_ipsec_del_state()) may be worth fixing too, but I'll leave those
-> to the maintainers.
-> 
-> Compile-tested only, I have no octeontx2 hardware.
-> 
-> [1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261027-nb-otx2-ipsec-tx-fixes-net-v1-0-2114c4f10c36%40tipi-net.de
-> ---
->  drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-> index 90af9b9044aa0..e3b07e5335fb8 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-> @@ -1332,6 +1332,7 @@ void otx2_cleanup_tx_cqes(struct otx2_nic *pfvf, struct otx2_cq_queue *cq)
->  	struct nix_cqe_tx_s *cqe;
->  	struct netdev_queue *txq;
->  	int processed_cqe = 0;
-> +	int xsk_frames = 0;
->  	struct sg_list *sg;
->  	int qidx;
->  
-> @@ -1348,6 +1349,10 @@ void otx2_cleanup_tx_cqes(struct otx2_nic *pfvf, struct otx2_cq_queue *cq)
->  
->  		if (!cqe)
->  			continue;
-> +		if (cq->cq_type == CQ_XDP) {
-> +			otx2_xdp_snd_pkt_handler(pfvf, sq, cqe, &xsk_frames);
+Thanks for testing this on real hardware - that is worth much more than
+what I can do here.
 
-Any reason xsk_frames is never handed to xsk_tx_completed()?
+To answer your question first: I have no LAN7800/LAN7850/LAN7801 board.
+I test on a virtual device that closely matches this driver, generated by
+an automated virtual-device generation tool we are developing for this
+purpose; our plan is to run targeted tests against all USB drivers in the
+Linux kernel with it. The WARN reproduces reliably there, but I cannot
+tell you how the patch behaves with a real PHY.
 
-> +			continue;
-> +		}
->  		sg = &sq->sg[cqe->comp.sqe_id];
->  		skb = (struct sk_buff *)sg->skb;
->  		if (skb) {
-> 
-> ---
-> base-commit: d8a4f4c59da52b7c31ae337243b8473a19a3f819
-> change-id: 20261028-nb-otx2-xdp-cqe-cleanup-net-5810d40e1d30
-> 
-> Best regards,
-> --  
-> Nicolai Buchwitz <nb@tipi-net.de>
-> 
+You are right about the interrupt path, and it is a better explanation
+than the one I gave. 30a41ed32d30 removed config_intr() and
+handle_interrupt() from the internal LAN88xx driver, so
+phy_drv_supports_irq() is false and phy_attach_direct() overwrites the
+irq that lan78xx_phy_init() has just set:
 
-/Daniel
+  drivers/net/usb/lan78xx.c:2896	phydev->irq = dev->domain_data.phyirq;
+  drivers/net/phy/phy_device.c:1854	if (!phy_drv_supports_irq(phydev->drv) &&
+  drivers/net/phy/phy_device.c:1855	    phy_interrupt_is_valid(phydev))
+  drivers/net/phy/phy_device.c:1855		phydev->irq = PHY_POLL;
+
+phylink_bringup_phy() then skips phy_request_interrupt() because
+phy_interrupt_is_valid() is false (phylink.c:2213), so nobody calls
+request_threaded_irq() for the mapping, lan78xx_irq_unmask() never runs
+for it and the PHY bit is never programmed into INT_EP_CTL through the
+irqchip. So for the internal PHY the PHY interrupt path is dead, and my
+remark about lan78xx_remove_irq_domain() was describing a path that does
+not execute in this configuration. Thank you for pointing it out.
+
+That does not affect this patch. The warning comes from phy_stop()
+reaching a PHY that was never started, which has nothing to do with how
+the PHY interrupt is delivered, and the patch touches no interrupt
+handling at all. It only moves unregister_netdev() ahead of the phylink
+teardown, so that the interface is stopped by lan78xx_stop() when it was
+running and not stopped when it was not. The dead interrupt path behaves
+exactly as before with the patch applied.
+
+It is also only dead for the internal PHY. For LAN7801 with an external
+RGMII PHY (lan78xx_get_phy(), is_internal = false) the PHY driver can
+provide config_intr and handle_interrupt, and then phyirq is really
+requested.
+
+I kept the change small on purpose so it can go to stable. I would
+rather remove the dead PHY interrupt plumbing for the internal PHY in a
+separate net-next patch than mix it into this fix.
+
+If your test still produces the warning with the patch applied, could you
+send me the trace? Then I can see which path it takes on your board.
+
+Thanks,
+YuanZhe
+
