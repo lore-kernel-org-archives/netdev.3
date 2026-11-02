@@ -1,105 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.51
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793636071;
-	b=vdt//yNHgBMDlI7u9NbfN7Lu2rzfOPyUl7MbgEA/huWQLCax9qfFvlhNED6cW+ohU4re
-	 FfTJnk0iG7QH4L/NBcmbGqS5LQ+WuBWFCRnLZ4+YdNml/YmzKa4M0HGw12pZihkOgRrl4
-	 MBfS2PnDeBpMvSteXryDTQZ0J719FpJswUzlc/d6NAK9UG7PiDY3t+9HqF7/4SxfQClQK
-	 yJDiXR2PS/LHXkKHY4SzMCGoixztQObYpjdP9/ZKcubrbFNwzFuWqmJF29OFfHFnVneH5
-	 K+dxrj1D6bQuvaQyM8f97i7jImy0g1uYzjQKDVBvBaAi5AWhALPW50bfa5tF+npGjAw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793636071;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.47
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793636129;
+	b=qBMXcFh++hY8qyddnNwHyMmdzpxAlUxAIC20mLtoUFXhCy5FnqhXnhHRKy7vVeCTUDVi
+	 HgvgCscktotWUbsvpJYSpi0vv5FPzOJeaIlKyVFw1IAEQLTRc0DunBoCp8pKb4fvYbX8H
+	 xYPLkU/WxpX+qPzMh1fCMxgWzxck/lA1FTa1wRAsbqJPuMVAF5f73qF4c2K1979TvgLLn
+	 JyQrena+aQ/mfeSCAZTmLzpjkrY6ET4S5JcHcTEj6zzSp7eQ4Lq0MkgD6LuNPJkZOJ8DQ
+	 DDprxFVZ3E/20c+k798ymOr2fjOD+zn63nArFxpNo7qRF6ZIa9NRIbpvSFksS8rnhBg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793636129;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:X-Mailer:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=Xq5JtlRc0bd7QYpBrNP/yR1XPt2PV3UUDwsNUvNWTIw=;
-	b=E++Tsnq7JIQT8MU06E3tTD5IoCS6XQysTsaSZ6jAPaaWh6ZkKJa1PdiKpHNsr97dXH/o
-	 GqEvyo2mzgpPdsgqGuN8vvHNEf6Zdx8Rb0R/jw8JjT6lbAvCE5Bvl7juV+Ux5ieChliSw
-	 pXAgSy0GK83sF1H6GO1Doste32TDl9NYUtaP7fKvQVmpazfuvLxWv6x0Eb6feqVA//0JW
-	 UjP/po6z9QgBXTy7TtFMSpq86OcFWJThjMuyOzIEDoqvHeBmzi9FtgPag3EFYRSj/K4Tf
-	 uHrECNYondEjPRZkIpu6BYvihglgWFv/tRxObnzjHmw45q/zXV8FVhYFuJsMm6jO+zg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=3rtlA1RqM0KGrm7tNu8wdRQ24zHOnzxhHT/j4INc3G0=;
+	b=10+Cs7QlZAoqE/xVbF+8gOwV8Zm0Zb61eEiNbiS5BqebfQRVzyKJ34X/6pyueWsr5pPZ
+	 EP8PGfZNxTa+ROGyRwi2bBo4r0DcdCUAnRfiYhF+dsD1ZVtV0EcBzwWi1UIb9Oq/bePfb
+	 bPMbm60J2rhygLxKj8dQy+oxO6IyHJPJp7f23K7Ns9QV5R8Asqaqud6x2JKbzmITfvrDv
+	 /RvoNy9KiAWB5a6By2GqdadW0EtM1U+ROaofi8uzJcKlYIi6yG80lyZ+h2iXijNWYZykT
+	 UigYA2NBas26c7Jo7Xt3qKJIkMM4jJg1+NkdsBHm/N7zLw783PC4x7HyZWkrb8J0LtQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AJ+Bf4sh;
-	arc=none smtp.remote-ip=209.85.128.51
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="yb/lReMR";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.47
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329BC606A910
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 16:14:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 329BC606A910
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2A76070CB1
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 16:15:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7A2A76070CB1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AJ+Bf4sh
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4a207b02a2cso21317255e9.1
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 08:14:30 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yb/lReMR
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-48e6eb21a8fso1265279f8f.1
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 08:15:29 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793636128; cv=none;
+        d=google.com; s=arc-20260327;
+        b=RKxPMLCicf19AMFmfPqB43d/uxFooYgjhyhbsDA65X2eL1TRyL4LGVEjJxmh5HgV5X
+         PSDAx0+uNeGKUl4pPZXeJY16hyYBzkyN324SOXisz1zUFoMVnkt+M2gqcZ0gJAu1agpB
+         yJae1wUpTJR9mCtmApfyMRQGHgZWR23YbPhUN2osy/E+aaINBYRKFGQfTUO5lgh0xrXh
+         XQk6SerwA0nv9VxycwEJ/afv5UQdM8EJMOVV7du7zgjE6CmdFoA35s0peyN1/p2MuMQD
+         Vmuz5hqFVN9wkNuMUnRPoOQOPWvg8tFZe8mmtFXb7RN4O6hwwbpou2apl4/98dUSLncG
+         VqYA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3rtlA1RqM0KGrm7tNu8wdRQ24zHOnzxhHT/j4INc3G0=;
+        fh=sgMlnpPIkoatpKB1xJDHQICPZqesERPploa6LoXqXLk=;
+        b=gtch2uXr0xxKgNghga+FN3bykYNt+kmw46JL94iimqwYdLSKpebjgvHR7+rV8ArJ17
+         D2bhnSKztALdq1n1jc0gIcEC4qUaAI+rXdi5xV3ZZVs7zIljE7LRs6Wmz+LJbEDyAg0G
+         eFcd9T0QuKghH7j0j3KW0sWlFbgKhTBquglL0rg3iLO59+gfVtMi5ddu67dHdSfu4OZ8
+         vDDJnuYeCC41wuUT8bk7plgmonxHLNnCn7WpUSTb5vrL9djTamcqGcJb0nEsxed/4jjw
+         3Za5EMO6Rg/yY41HvNE8pAnVU+k+7uJWMa457xwzrwbzImr1p0BNReIE/5gc6VISswku
+         Yqqg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793636069; x=1794240869; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20260707; t=1793636128; x=1794240928; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Xq5JtlRc0bd7QYpBrNP/yR1XPt2PV3UUDwsNUvNWTIw=;
-        b=AJ+Bf4shabMyjTIBY0O+LXPatqHnqTS127UhZsQaTlHtowQdrqPjokyL/XjHXYqMlt
-         GeLKIB+MzYbgoous0JoqPyEm2FI4uoff4cfGT/jdnGCjay7a8NtdzyaL2onq1O5/xYxh
-         b7ujNy0qFQbVKpr7C7+6l3VyLTbF9V/XXxfuG/EwdP4ciaQkhq/RPT3njAxQL9+g2dud
-         KmdPujr5WcSbefxjEXprbRnrQN7Bxdyiz3GTgtBIlsqmTsqBvi8yHDoeUwVXcDwoMCZ5
-         NpmpLh6QNQtIYsbvFn0j1gjx3URsAcQa4XRTHqISfUswbiSx1KM0p0AtBmgSQkCsrdpk
-         MxUQ==
+        bh=3rtlA1RqM0KGrm7tNu8wdRQ24zHOnzxhHT/j4INc3G0=;
+        b=yb/lReMRlHjZsLb3c60cIXRzI9rmLKz/Ep/K7DOWbGPqk7R2m8FYMPwRH/lxG+lpMI
+         FOxPDKk7wAafZ32iTCH6tSJMvx8ohPMvIfYOs4JRhZo0QJ5rLy5hPic0mF5owHu9JlGx
+         VDlQ8D2zihrUoYJ8AklLUTFPw1itsnpozlVBN0sSznLFNNDQZ6T4zVo6NF5ixgTL3tox
+         JWRp2KaaMFw4iChboFi07aIYB/biD0Z+e5BikRPFnhKGPrDI4CexbLKV+HWle3EQoggL
+         AddVHg72wAtLE3WM0ykSUdR9urv65M0gkP1/M74UaFRxqBPealxM1LhLAsiyrjVRjD6w
+         JPZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793636069; x=1794240869;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793636128; x=1794240928;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Xq5JtlRc0bd7QYpBrNP/yR1XPt2PV3UUDwsNUvNWTIw=;
-        b=RPfP20umAoWEm9Hpk3Oi+5VyWhno1mjXT7iDKciODBDbP1A8obnJPmEQbKUPHpzKDT
-         AVpbc+NOsXVyBCdTp5MpVeJhJ/AtaVkXWVIQ0BruypqmfIk6ggBM/b63fcpySi63EAAk
-         FVp/ltBcbsRFMyQT9I+Ky1gjH31tV9XvCo3pJ8P5MfL/DuSXGjKOawG0Y1Un0PCROKtS
-         ySnotKXUed+NKUFb5KRjqakuNBAP/bNmxZZsSyo1LQW0CLtaH8BqdGsrHGhGNX6vbQbY
-         zePnv8/H8ASibwx4vlmFWK/cgN8lLEOWhgHx4rxPfQpWrP2oVc45VjES1gNzBX1iu74o
-         0Lvw==
-X-Forwarded-Encrypted: i=1; AKwUvBwLkBkUWCwbGFpLDcbyyYL0bH5KO+dBTOf1S5072hPd2/l781h8Y+dsre4vCSnTTK2d0itT9O0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/PaqN7K9760GkeJ+GTnxXPSMa3ix/YTg9AjNK99wP8NKLoK+up
-	VgQy2ptS0Sf+YVaBTFYMRRF0WXsRBBUT3hS3SvO0L8xMeSCEFrYsQqVG
-X-Gm-Gg: AYBFou2a/2e7DKOo8vmAh4GPgiOaa/aPRX3DgRc6Tuecq0Ly9SkzOVkY1Zj7YSY1uOg
-	UnqGviQe6BAAbwRUHWX0z+dTmeC/Ky//PVAry4uC4TsV8mn2CEVpMhCcwwq5WsuNRmMC1C1xciu
-	pGQWJev1g58bDndh04BTsXAVbJ4PEwKO+XFPL7bRTxylmBWqF/oAe5G2HNMsm1LDzkX9nyc4mWp
-	FQs/ka1mon09AdbxyB4u2NE25rznx/UaEHuQPZHDUSyjonqhI61yRLmJHiCqpB5DXaFGs6YtXXI
-	1fCaPck8fCmmOjcefqK/90+G+CBw7HnJIuHJsqBJ0Z+23zISMHO+9SnSJ+5Di6yUJSjkSamEPfN
-	/omdKrmOIbCvJ/a8Rmi/dR4/wgS6EMCDn5emHNgoKPdQJf/a3DcsMwN8Sag7NMRjqo6ZGYX0xjI
-	hP0iWmau8Sp6PLSrpwrGv3/Fw1i+2qOYflqfUi7Gy59sU6XFbzNtrj+GhUOcm3aBuchn/kePfk6
-	9NFEQzZrrX1fTEdnqDpco7JvJYrBh2rqcNNjutA5Yjh6JLHz4T8iBi4s+iccnY78kgaNKTgjGZj
-	9rOaSEtmryGGaQqEb7l/emlucWbk5sf/PaOTJOVkynnxAvJMz79S6Aai24zvsa4e
-X-Received: by 2002:a05:600c:c118:b0:4af:79ee:f660 with SMTP id 5b1f17b1804b1-4af79eef775mr111736695e9.31.1793636069327;
-        Mon, 02 Nov 2026 08:14:29 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4abf0b36853sm267629925e9.0.2026.11.02.08.14.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 08:14:28 -0800 (PST)
-Date: Mon, 2 Nov 2026 16:14:26 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Demian Shulhan <demyansh@gmail.com>
-Cc: saeed bishara <saeed.bishara.os@gmail.com>, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Mark Rutland
- <mark.rutland@arm.com>, Eric Biggers <ebiggers@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, Marco Elver <elver@google.com>, Ard Biesheuvel
- <ardb@kernel.org>, Robin Murphy <robin.murphy@arm.com>, David Gow
- <davidgow@google.com>, Brendan Higgins <brendan.higgins@linux.dev>, Nathan
- Chancellor <nathan@kernel.org>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, kunit-dev@googlegroups.com,
- netdev@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH 0/2] arm64: csum: Add fused copy and Internet checksum
-Message-ID: <20261102161426.2403d308@pumpkin>
-In-Reply-To: <CAOLeWCu4NiedyXmoLwwnTvJitRwgg6PQq9LApO=k36ktN3-XWA@mail.gmail.com>
-References: <20260927131838.6774-1-demyansh@gmail.com>
-	<20260927184414.6c0c8867@pumpkin>
-	<CAOLeWCt+yFs29yWg6DrRH42HD9ConLgTEbW=wMKtEoTW5ROHvw@mail.gmail.com>
-	<CAHfVqdX4AmqXs_oD5OCjU8R5ts=98=RmgCmJ3D5gLyk=Xtrfkw@mail.gmail.com>
-	<CAOLeWCu4NiedyXmoLwwnTvJitRwgg6PQq9LApO=k36ktN3-XWA@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        bh=3rtlA1RqM0KGrm7tNu8wdRQ24zHOnzxhHT/j4INc3G0=;
+        b=XW6lzhO1o4uw43k8MECamaEqp2rq4h9th7u1lQInKbWQe7kT5oLOXMPNswlQpoogfv
+         WiJj/nMH1el4m8cR9+nSuGiscXs5V/+DK/nvWpFn+cHNoo2pYe3lcOcDH2PMK6QI+8aC
+         OvIEO8cFhnbtgK0PC+euMbu7kQRGX5g8exZXD3OwXHmr5IvaLY9IfIvebYlXII40IIud
+         hh5e4YepRG+NkuUarGbaqmdURPEmR1Q5A9VzH6RcdQKtAIsX2YO6eRRvqgt7PVJZvoaW
+         N9/EEPFypi/59HXEdOrWM5p/amUv2941mD2x2XJlfqsB5Nw7Tc+i/KDrZLmSsVgiLyVY
+         yaPw==
+X-Gm-Message-State: APuU4Z806bhpwb+H/9iW5dJO/xASVl/6qGYfKNBAM3butZzzhKQ/D5YS
+	QDuHk4BdvbLodBnx1g+FKTDZE+ztBKt/8VaBoKigDQ18me4Kc+3e5l1BdnEvm0Gv44Z0zSzeQ4z
+	cqI3NR1ul9/MHBbG782dwMLmF1q0bQAY=
+X-Gm-Gg: AYBFou0Tb25iP3eV5vg/l+ub6mM6Se5HMG07/SGfan42A84Vxfd8xFB1DtSDCSiMSwR
+	aHLmUnvH2BDoeV1SWsrYxYfeyboGeEdkn3AZFRUxDKSNHh9DPiZZ2BU9aRBehMGI7eSwILitb2Y
+	3npNOdDDTVRCKxoZhJQ8FLej92BsjaRBgK6/Oh95p/aK83U1tiENNxKP2vDW0175mRRPlbMKkG5
+	SSyJ8igkH0NybfPBLjHxvsY4BOhrYx5XELbI57Vk5xCCBQgzZkUlmbKVMlW6P/gYcB8eBaTwH9Z
+	E52BR342E5qS+qKBzI8hE8UOIqbnO5/6WUpV5EaZSRD07UjBMBwhqLFfZLPKX6KDh/fdBFIjpUL
+	JKHLWLmOd0BUJDilZt3qjp8WFoMcK1q6LNxHVmFNDB3Cp666wAAeKCi4dBHh3+UQuln6PXXVmb0
+	4yOb7CLtVWGkL4PozFlRr1cWZ0z38cXWucw56r1Rate6teBoJ3lCOoOEBKakKlyEoYwAa+G1svL
+	tY=
+X-Received: by 2002:a05:6000:4a19:b0:48a:f8fb:cd49 with SMTP id
+ ffacd0b85a97d-48e6e2fce72mr22163028f8f.22.1793636127567; Mon, 02 Nov 2026
+ 08:15:27 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -109,65 +105,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <179322338727.40667.9687403297682768724.stgit@ahduyck-xeon-server.home.arpa>
+ <179357239570.3131.6726877389205316280@kernel.org>
+In-Reply-To: <179357239570.3131.6726877389205316280@kernel.org>
+From: Alexander Duyck <alexander.duyck@gmail.com>
+Date: Mon, 2 Nov 2026 08:14:51 -0800
+X-Gm-Features: AclHuK_QSCCfC-A9V_k7yIjDGgYMRsGuPRXLJl0xHS-D5hSkACY8SWY9QhuJwk0
+Message-ID: <CAKgT0UdW-UMJPf=ecg4f3GLsMgxEx9KKWWZ0WLA0SkFvcHRjgg@mail.gmail.com>
+Subject: Re: [net PATCH 04/13] fbnic: Retry the MACDA sync to firmware if it fails
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, horms@kernel.org, kernel-team@meta.com, kuba@kernel.org, 
+	pabeni@redhat.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2 Nov 2026 16:14:06 +0100
-Demian Shulhan <demyansh@gmail.com> wrote:
+On Sun, Nov 1, 2026 at 2:33=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wrot=
+e:
+>
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [Medium] The patch makes fbnic_bmc_rpc_check()
+>   (drivers/net/ethernet/meta/fbnic/fbnic_rpc.c:345-356) set=E2=80=A6
 
-> > The scalar path seems like generic C code and not restricted to arm64,
-> > curious how that performs against existing (e.g. x86) assembly
-> > optimized implementation. =20
-> Depends. I think __builtin_addcll() is needed to get roughly the same
-> performance as the asm version. In my tests GCC on arm64 turns it
-> into adds + cset instead of adcs like on x86.
-> But I will look at it, thanks!
-
-The C version I posted earlier has the loop:
-    buf +=3D count;
-    count =3D -count;
-    sum =3D carry =3D 0;
-    do {
-        val =3D *(u64 *)(buf + count);
-        sum +=3D val;
-        carry +=3D sum < val;
-    } while ((count +=3D 8));
-
-for aarch64 you get:
-.L4:
-        ldr     x1, [x0, x4]
-        adds    x2, x2, x1
-        cinc    x3, x3, cs	# adc $0,%rxx on x86
-        adds    x4, x4, 8
-        bne     .L4
-
-I suspect that is close to optimal - especially for fast cpu with
-out of order execution.
-
-https://godbolt.org/z/eso79K7Wq
-
-David
-
->=20
-> =D0=BF=D0=BD, 2 =D0=BB=D0=B8=D1=81=D1=82. 2026=E2=80=AF=D1=80. =D0=BE 12:=
-44 saeed bishara <saeed.bishara.os@gmail.com> =D0=BF=D0=B8=D1=88=D0=B5:
-> >
-> > On Sun, Nov 1, 2026 at 3:34=E2=80=AFPM Demian Shulhan <demyansh@gmail.c=
-om> wrote: =20
-> > >
-> > > I would prefer to keep only the scalar version of the fused copy+csum.
-> > > It reads the data once instead of twice, and on real Armv9 hardware it
-> > > cuts end-to-end cycles/byte for bulk TCP over WireGuard by 3-12%
-> > > depending on the core (+6-8% throughput). It uses only general-purpose
-> > > registers, so there is no FPSIMD state to save and it is safe in any
-> > > context.
-> > >
-> > > If you are OK with the scalar path, I can send v2 with NEON dropped,
-> > > the scalar path only, and the KUnit fix for the x86 zero-length case
-> > > Jakub reported.
-> > > =20
-> > The scalar path seems like generic C code and not restricted to arm64,
-> > curious how that performs against existing (e.g. x86) assembly
-> > optimized implementation.
-> > saeed =20
-
+I agree with the review feedback here. I think I am going to need to
+look at refactoring this patch or possibly dropping it as it would
+just make a bad situation potentially worse.
