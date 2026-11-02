@@ -1,98 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.25
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793607965;
-	b=ACtBGaT1iGEzk1Cy3fj/dOuyqRzg56Jq8rRtVtooF3hq8TYMCrMcKgQQNFtRsQgRzhLe
-	 5vQTY8DN/8PAhFSvyMxm8gj6Hf9vEdvwUpZ5lP++K0IqHUxAbFhliycyOIzBCiphMyprw
-	 MQhuEVHiI4BosstU40WuUGXOPMfFfDBPoJ1uKKCXKWbAPAIwVoiOwpAiByaEjFlbIH/LD
-	 UMCeNSObUnQz7tq+nAeoPH8WZVkHPcS5dRm6Fk9B0/NLfhCTTBic3kMmofRi306l4WLPQ
-	 uDTxCIAcQHfHO0zQQtar6anKTTIuFSCjg/yOdZoAFXvIbLC8lGvE6YkDOB8WHlcMEXw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793607965;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=JWDT/px6SWtAvf6LMThBeS0pk1m1hSRjIWm3EaYLFIY=;
-	b=C86M+sA9KnKyqCsJr6FyeYYAg94gINExRUvP08hylt0gCp1O0SmYuJtOszxyksv1IOMq
-	 osHgYNRvqbmzoQ698qHTm0Hd1ThZqIkBpoOJUfswfZqPHdaDI/oN7Rk5Y90NP1zGqJn3P
-	 d9u/Yh33cc4qE+FVBeUqwzliJHMtOhKsiCQneAagpBnb+gGORoCP1dR14GqSh7E787FeC
-	 yAs/qBlDEMm2izxhqIiMYFEX4UepFxyGmgT8i9h3XzYSD/KQu56YmTWv210yFHqIRsQdH
-	 gT+/sO2zI+niiNF46MvfJG9PUmidSIhCQAs8IMFTp+dtKIdB67Xd6Di3fzr67Z5fw8A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=URLaw2tw;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.25
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012025.outbound.protection.outlook.com [52.101.48.25])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793608174;
+	b=2U+kIUwToV83ZPffN7tlbm8b8W1jopdqxyXkWwuPrp0WNqu1h/8jaGoT6rj3tLM50sgA
+	 aDui79ULmg+idriB2Z3Gxm4r55A8ebA9S5IUYf9Nhl1ZjmvVy6seFvpzkZEgJn9qzExi1
+	 nwPcPCJ1LzNK1vKbe9NipJCTHoEhEo1l/g7mOEZLoxrUurgNWlWYZTlTCrrPsddSOBqMt
+	 +fZsV07TlG2BY4mFcq58/IMxeu5tLM0asG52rdOIDVhaTXO0IkWpBvb2Vx0r3pAmAD67V
+	 lBpeUvGnv3LZ4PstMolGHaCw+l16GSqeOHjg0vHeXrGGF2Kz0hyG83uXzJwVMBLV0VQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793608174;
+	h=DMARC-Filter:Received:DKIM-Signature:MIME-Version:Date:From:To:Cc:
+	 Subject:In-Reply-To:References:Message-ID:X-Sender:Content-Type:
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=SVPciQr1s9BDQkZqo0irUvEcCQ8iKbnU6l79MHO+xgQ=;
+	b=3VZFvRzaDHYUA3WdwAOFgnB4uJwt6yf2BEJtRp+GBLPcXpewsftDzlLp2SFF/3c0IgS9
+	 Pk00X5heOOJgMKcNVZv79Z3W7fbI+/zM0xfSDAeWbUo4wv+JZEvVhKQ25CI2j5HRgd38X
+	 riNn/ZRyxGvjjTQF0y0X+5rkyXrcdMSaGraVbPcupy/lelnK+Phnh1C2GU2JgnZYJLuop
+	 CDnFKwDemJ/WN/4ZRSDTL/RjQa5eGfK3J3ettSQ5/peWZvF+EsXUULs3C083R2su4yupw
+	 DSyNd7wF/IDDU6HL+e2zFlDEgwM3Jcs0jGEnYahpq4nmE1HVh9SQOfCb4WiBNX/u7zw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=hZ6CDGNv;
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1886C606A324;
-	Mon,  2 Nov 2026 08:26:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1886C606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99559606A324;
+	Mon,  2 Nov 2026 08:29:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 99559606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=URLaw2tw
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Yuj2ZQY3ewwLG3lYpalST7d6/mmBuYxN5dBTLNoOWTHKYM401w+kghKHcS2DJ8qeWW7lR0yFTXeM/hpBc3t6+h+40VJ91M4bQSFnh6eun9wNlbFZcNpXqTg2n07opqxd7MuKfsOfHBpa6ZP8NNE2SxdqT7wXOlNeIzhlThjSu8q4cMxKaQrtS/osAZIOH0xkPMYeItHzAiplyj/D0eR8cvKFQBkNaOHvJHcgx7v1hpZecYfUAdBuOivUHzNqy1iUbhE6czWpERoknCtkd6yDbdozF71peHQNJu0VrOyJrmupyXBtcUBtIagR4Yhom2X+tOrfLLb5fPc1mG/l+cqRog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JWDT/px6SWtAvf6LMThBeS0pk1m1hSRjIWm3EaYLFIY=;
- b=umelu7V4P0wsh9JM4tbPvw/qnCH7W/814B7WcZ7Wkbz4danGinMSuL7nOU+2lh4Lgd+pyaBSm8gC6cx1OW30re6iHQnmS/8DT7z1bnD9Sy0bYI8Uw3TlE7Nl04Rdl7yKkDBd4SfwmmenFcrEHVedtiIQaiZVg7sZO7toFp+UIiNUbiB20MC7pxK//Ww3syQm9PpcXApKgRihwhVWX2iyMjlsigw4xOL5d0QCQrayJrIct63G4TBUIRXnLcNIMZrEMa88ohr84xdQEG511WMokglDi00QANFb92cOaRjZavgmTWYHYvY6Yg6t2vlsCWENG71Qrn0v/WWbJ41Yn1rzZg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JWDT/px6SWtAvf6LMThBeS0pk1m1hSRjIWm3EaYLFIY=;
- b=URLaw2twVkR1/OcehhxDyh7D27golYI9uIYLggizvx7KhEnsuhcUtZC06iUGjxAfJ3iP/P4/2+ISeDXgIRIisW/bBrqAI7whYMC1i0v16ikNkNvgpTeAWabVqROLeFykzH151UfGyx+1F1us0AUbnZi2aHlu1kaVUb5liW7dN+Vg20aFo88mO3AMDlg+/B3id6P2P1eNY7wfhbY3ReCvuLoKQfjgU2kkZFaQ5ebBvV7M/QjZ3VRtzHO/gOk2/VhKKivEaEi8gED9DL+jPyYe/MIX4gS2hOkk2v6w0/pFEwjTEQNtxWpvcZEwPeszhB7z1S9d7ofKgC2zuIOJ1cN0VA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by BL3PR12MB6377.namprd12.prod.outlook.com (2603:10b6:208:3b0::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
- 2026 08:26:02 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0569.008; Mon, 2 Nov 2026
- 08:26:02 +0000
-Date: Mon, 2 Nov 2026 10:25:53 +0200
-From: Ido Schimmel <idosch@nvidia.com>
-To: xiaoblac <teel4res@gmail.com>
-Cc: Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	bridge@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3] net: bridge: disable MRP ports before the FDB
- flush in del_nbp()
-Message-ID: <20261102082553.GB778610@shredder>
-References: <20261101044840.1595584-1-1020691186@qq.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261101044840.1595584-1-1020691186@qq.com>
-X-ClientProxiedBy: MR1P264CA0007.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:501:2e::12) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=hZ6CDGNv
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 25664A1587;
+	Mon, 02 Nov 2026 09:29:18 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1793608163; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=SVPciQr1s9BDQkZqo0irUvEcCQ8iKbnU6l79MHO+xgQ=;
+	b=hZ6CDGNvoqmbNZETgMYos71ChglJxAY5D1UMWnFszUL9QlgIvEgwNXd2Fv3qIjv1OBaSoA
+	1hehzwuSyn0Ktu816SVRZmeF0tPvTV0Ra2OJO7KKuYSjQ/ILeONbIIvgrpvcsX/3e3AgcC
+	eZYOvT3CUa9vRaYKueSZrRbJplxNGPexFCAeOf0QfV9xAd2uKHUS/qHrKiQUf92s34ChUI
+	Ofaw9ff8zVFsn+b9KUxUrpBzq/T8hO6kVumu711LTbLtlEX0fW0xagDc2L7cpcJUe7WIkf
+	ygAKn7SkXoYQBj+dDBYxoSETGPoPKAdZycjEiSpajFA/54XP75s8d/05JJeydQ==
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,105 +53,80 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|BL3PR12MB6377:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7f32645f-9d42-479b-d5fa-08df38baedf9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|10067099003|22082099003|18002099003|56012099006|11063799006|5023799004|261021121427099003|261021123027099003|261026140227099003|261022105027099003|261022075727099003|261026121527099003|261009223027099003|261028144727099003|260925021311599003|260925021911599003|260925022911599003;
-X-Microsoft-Antispam-Message-Info:
-	PprgOOF94V4DITFEjEpeCJrwpHH7y/hYrxLWIbq/ZK3YMnCt04pnrKSEEnc+CRPsg7S869j7sdaWyRLgATkGB6VtrmRxdcR8NvAvYAK461YrENi1FJIHZptaWHYjB+p2jX/UmzHwBBpEHGa0Z/vtiyb6tlQI3KCyxJV9GUJw/ThNdAsmBRxUX/g4wb9YMFD/89m/eJ1dOqjFQ2JDbiVBIelnVjjskTzXEMU0iJDv+/fgOfce2MUfy/3IYrV96i8FTqrZaGJn5EzBoOTUWMrz0kkI8zTsH7ilKmcpoQhmYCK+TgEiGr98QgZm6K9ENNSKdJ1FFjucvuabgkU7VfwbNv8dIPdS4ncnCq+GdfcZKWyOkmORRbuij1kMXJ7wVnYf6+z1pnL5ymiOyYRiB3ZNpos6PM4a6shyWl42jStJ0CSAwG1XWKic88vVLBCgbqdZHN59+HzexIWqYhdmcMNLl8fn8Si1zXl0C/OYQ83Sumed/s5Q6QYaPPtWOVNdLOqcSn2A+IL0HoAWBkWcbGsFEY0pwDX2AznovwLCUZrnPcIPqanlcVOf0aWddSee0+YzC/sck+X3u2gxqOzV0k/iJIaCj2KD8oI3OobYSkdlSlVq4ef6uLTLnNptvYJLqaXqyC5dfxwzLHdjFujcNDlrM1n3r2/RjvUNpW0IW6/+rJI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(10067099003)(22082099003)(18002099003)(56012099006)(11063799006)(5023799004)(261021121427099003)(261021123027099003)(261026140227099003)(261022105027099003)(261022075727099003)(261026121527099003)(261009223027099003)(261028144727099003)(260925021311599003)(260925021911599003)(260925022911599003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?W9tgsUf2f+hUWAuPwcgnzoH2GgE5tu5F3kEeZ4JCXzggeq+blteyBc9aWn6n?=
- =?us-ascii?Q?q8oJwgKKN9VViEcd38fCJZb0LGSs/x/mkkN3uCeQFvjk+vVVzusKxme33N0N?=
- =?us-ascii?Q?ApKp/PgFOk4bRn4edMLBvUu6hfeIbi4lB4yTR7B8w4CNL0B6n86HeS50DEio?=
- =?us-ascii?Q?JasnIahS3Bypeb0Qwt90QgeDipHlmfhdDsAzxc04Kk9aqJD5KOqdikb9FH02?=
- =?us-ascii?Q?zOINUKCIXgX71Sw3acHUCSpTfEcyNS1H5PlNIhCYMxWIokEw5+ma2kZ+2Sq1?=
- =?us-ascii?Q?6bY8IjdfKAE+WmuGdLabNHAseT486R+z5Fz8FloHY8LNhQEgen0Jinh758Jo?=
- =?us-ascii?Q?HQMhAlPnADJfT3zQOU2xmlYex5JpQ+8cXK5YiNfTFjPzhDCh+A538/zn54/b?=
- =?us-ascii?Q?95V96n9ga5RQGvhcGMDRxCK43VxPCl8cMJ8433VBFgqPYWpto5C47w+rnZGk?=
- =?us-ascii?Q?3xuc1uVdTrM59njr/1sVgCJpmSKK9DadobvQkugpvKHtLO25626wcF0hfGxJ?=
- =?us-ascii?Q?dvesOUbX9JVOspXTJwHmCfi56ZKm/J01c7zUax0NoBrix6vu5SAbAdJIk85q?=
- =?us-ascii?Q?kTNtpxlGneLkTLo7d6xFjt1Ktgdl2XNGNr19a/4YLEtZq0uq3+ZeADzZkqXY?=
- =?us-ascii?Q?6HYkvN7Q/4yEnmoPtGDZzkE6j5BdqZ61eTXG7N6iT/+nsFruf3bzU1NSkmhJ?=
- =?us-ascii?Q?TDTtwcczuoqwB0n2y9sAVYy+2J1GITSMZTvbimhOwkevNAgNpIli22etTCbK?=
- =?us-ascii?Q?KD1WoCBPIdX7ejNoIowvswlzk6uvt8EqGMNGj6Yw1jsD6P6OsXJ0rq5nvZBj?=
- =?us-ascii?Q?UExIQZSxwPyGvVPIgoTrfp5gacUVExh/wLDq/5DOTy3V0cdV43YfsS3SbFMt?=
- =?us-ascii?Q?S0BVFvdgbRCtIVKBH4omhwFuhxGMSen9ApU1TnjLICyR9oRbzhL13uV+mL4t?=
- =?us-ascii?Q?4JiEyCif0coJraP7w1IjCxNbG+y1uRNV8iBFHu7+Bn14LfV9maQuuZmrj4BA?=
- =?us-ascii?Q?fcKPspzNq4eRIeGgVsnJI7K3GMBr23yrBW9OawE/OkapxDo5nmXD46iuLGhm?=
- =?us-ascii?Q?h1pN6R0wWxwAUzL5kNqwL8YsmQOVAn6sXU7UTHj99W76iEwRNn98F2nkFV5Z?=
- =?us-ascii?Q?J5cdaoq/YhcpAifqg7dsqy0BEDBXlb3VvO5Ds/0d8kGHhKtJByml+web/vf+?=
- =?us-ascii?Q?HAx1aLHm6PGqa4f1NtMCDyCZXgi/oQkeHZE4CkDvoCuyBI45AC7AWKPHKQbW?=
- =?us-ascii?Q?Xr7vCu/wNNFlaPOhpOLi5kSiVRGbEe8D2o5OHP8SMTyCqyGmyNc7ASUmFzIg?=
- =?us-ascii?Q?9ATd2JWqD6LdrDYehDVEMP5NdDw/H2haXwIzWUS82bd6KrxUdEkmz/hTzLk8?=
- =?us-ascii?Q?3fxwVEC7XW5NQMm2Y3IkmHhJik8ut516mpuRTiKbLw/5viL2RyP7wGV+JDM/?=
- =?us-ascii?Q?PPEohSjG303WArfMYC4xUHJTFDAzR4IhHM4dVBoqk12lyUUeVFGnMt1aPnSS?=
- =?us-ascii?Q?n40bDiiNTyLuM/i9ygQGNoKf4uU8Y+CoWOZGsqTF22EzUw+DoCLtRh0fwc2S?=
- =?us-ascii?Q?LZxzUp/FqhToPKGtKfk2Ie5z41qtaiS7yi7SsbJZ17AqSav3JcQaO/8VGPWU?=
- =?us-ascii?Q?yWiNHlXuFXoi1TyZMUKyX+QtWL2Aluh/x1sa/qVCSVU9t4j+nqVaak5aUgnQ?=
- =?us-ascii?Q?pEIRAs2xOW5i0pX31sUwd3UTaJKgUsTqolaRH5WeRtxB/b7P?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7f32645f-9d42-479b-d5fa-08df38baedf9
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 08:26:01.9444
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JudMi8phkOvHt9getJ7uytsvbYqZz3yUx/UOsld34yDDQCrlA+oMpw0H00zsYI2zi7ZVyxqPMIcATFRXUb1CKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6377
+Date: Mon, 02 Nov 2026 09:29:18 +0100
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Magnus Leatti <magnusleatti@kernelriot.com>
+Cc: Yao Zi <me@ziyao.cc>, Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre
+ Torgue <alexandre.torgue@foss.st.com>, "Russell King (Oracle)"
+ <rmk+kernel@armlinux.org.uk>, Nazim Amirul
+ <muhammad.nazim.amirul.nazle.asmade@altera.com>, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: stmmac: dwmac-motorcomm: mask the MISC interrupt
+In-Reply-To: <20261102080938.2955-1-magnusleatti@kernelriot.com>
+References: <20261102080938.2955-1-magnusleatti@kernelriot.com>
+Message-ID: <805aeb73d9e32b237bcb30c8fd44ffed@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Sat, Oct 31, 2026 at 09:48:40PM -0700, xiaoblac wrote:
-> From: Cheng Yongkang <teel4res@gmail.com>
-> 
-> del_nbp() flushes the port's FDB entries before it unregisters the RX
-> handler. For a normal port, br_stp_disable_port() moves the port to
-> BR_STATE_DISABLED before this cleanup.
-> 
-> That does not hold for an MRP ring port. br_set_state() ignores state
-> changes while BR_MRP_AWARE_BIT is set, so br_stp_disable_port() leaves
-> the port state alone. br_mrp_port_del() then restores forwarding when
-> the bridge is up before clearing the bit. A frame received between
-> br_fdb_cleanup_by_dst() and netdev_rx_handler_unregister() can therefore
-> create a new FDB entry referencing the dying port. Nothing removes that
-> entry before destroy_nbp_rcu() frees the port, so a later frame to the
-> learned MAC can be forwarded through the freed port.
-> 
-> Remove the MRP and CFM instances before disabling the port, so that
-> br_stp_disable_port() actually transitions it to BR_STATE_DISABLED.
-> With CONFIG_BRIDGE_VLAN_FILTERING=y, synchronize_net() in
-> nbp_vlan_group_unpublish() also drains receive paths that could still
-> learn with the old state before the final FDB cleanup.
-> 
-> Found through an LLM-assisted source code analysis workflow and
-> reproduced on net with KASAN and CONFIG_BRIDGE_VLAN_FILTERING=y in QEMU.
-> A diagnostic switchdev module accepts MRP objects and delays the
-> NETDEV_CHANGEUPPER callback for 1.5 s, holding del_nbp() after the FDB
-> cleanup and before RX handler removal. The reproducer floods the MRP
-> port with rotating source MACs, waits for the port's RCU callback
-> through the module's rcu_barrier(), then sends frames to those MACs
-> from another port. The unpatched kernel reports:
-> 
->   BUG: KASAN: slab-use-after-free in br_forward+0xb1/0x820
->   Call Trace:
->    <IRQ>
->    br_forward+0xb1/0x820
->    br_handle_frame_finish+0x148b/0x1e50
->    br_handle_frame+0x90a/0x15c0
-> 
-> With this patch, three runs of six cycles each reach the delay without
-> a KASAN report.
-> 
-> Fixes: 6536993371fa ("bridge: mrp: Integrate MRP into the bridge")
-> Suggested-by: Ido Schimmel <idosch@nvidia.com>
-> Link: https://lore.kernel.org/netdev/20261012123051.GA714215@shredder/
-> Closes: https://lore.kernel.org/netdev/20261022090431.3641707-1-teel4res@gmail.com/
-> Signed-off-by: Cheng Yongkang <teel4res@gmail.com>
+Hi Magnus
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+On 2.11.2026 09:09, Magnus Leatti wrote:
+
+> [...]
+
+> Russell, d3265c19b35d ("net: stmmac: xgmac2: disable RBUE in default RX
+> interrupt mask") describes a similar storm on xgmac2. Should dwmac4 do
+> the same? I have only tested the glue change.
+
+AFAIU RBU is the cause. Dropping it in dwmac4, as Russel did in  
+d3265c19b35d,
+would cover all multi-MSI users.
+
+> 
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-motorcomm.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-motorcomm.c 
+> b/drivers/net/ethernet/stmicro/stmmac/dwmac-motorcomm.c
+> index 124fcd55a..610d533b9 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-motorcomm.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-motorcomm.c
+> @@ -30,6 +30,7 @@
+>  #define OOB_WOL_CTRL				0x1010
+>  #define  OOB_WOL_CTRL_DIS			BIT(0)
+>  #define MGMT_INT_CTRL0				0x1100
+> +#define  MGMT_INT_CTRL0_MASK_MISC		BIT(21)
+
+Where is this bit documented? The vendor driver?
+
+>  #define INT_MODERATION				0x1108
+>  #define  INT_MODERATION_RX			GENMASK(11, 0)
+>  #define  INT_MODERATION_TX			GENMASK(27, 16)
+> @@ -172,7 +173,11 @@ static void motorcomm_reset(struct 
+> dwmac_motorcomm_priv *priv)
+> 
+>  static void motorcomm_init(struct dwmac_motorcomm_priv *priv)
+>  {
+> -	writel(0x0, priv->base + MGMT_INT_CTRL0);
+> +	/*
+> +	 * Nothing services the MISC source, and once raised it never
+> +	 * deasserts, so keep it masked.
+> +	 */
+> +	writel(MGMT_INT_CTRL0_MASK_MISC, priv->base + MGMT_INT_CTRL0);
+
+Doesn't this turn off the stmmac MAC irq on vector 5 completely? If so,
+please mention it in the comment.
+
+Also, does the MSI fallback still get RX/TX interrupts with MISC masked?
+
+> [...]
+
+Thanks,
+Nicolai
