@@ -1,74 +1,74 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.96.220.36
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793606690;
-	b=DmsXe+0HBql5BYVAFWjdXuiM7bSdMb69jhBVuc0NxUDc3SQpXyyPi1T1aKZIydoXjhJB
-	 /gzexHUyRXVZpl8d93kGWcwo1M+sYgeTu4Swv/x+3FIHsvojDGqji8bvrYrSJ6UEgG4qe
-	 ngEM6ilnrciBXm9pEaTjP1x0jjxwbtQyVCEEdz43COybRzpb2OrDFo23/Axc+QaSrNLW6
-	 zgobrL3bE9OiD88yC64DkeJH9MEjqSqCAQJcDhxFVvIxL2pVNfYg479kpuBlkQubCwUIk
-	 vOpxmEhinxjnt6YQuVoVvO7YALg0cb+iU/1fhHj+K1ihSbJN6ACZ+xqjz1Uk8b/UW4w==
+	b=OFXKbWyqLoi/GyWEPmMGtqShM51rwONxAaeDR43syVq4A3ro6++L3JNMqMMnRoPhePtg
+	 wtGKByVW2wmbjYcCL7x8gI+xR0FChfbOiQF6SikI6qCICLEpMcoQpDc2VPEUTmNEgZJci
+	 OU4kFWTbHJnDz6Lo0tNy/diU+7zmAFMwldCe9WmAO/RZSEzYVXTt13++hqVL9QjUBLLXi
+	 gMK3vx7OJbYPPU4IrR6T+G2VTzeAPBd2BZSn41YdVFaV5WU4qkQXsJsUA1nQnOy1XlI6H
+	 qGPFMkkW0wNDSSiO7bFnMwASBqDoGWXvJCsiEND1q9k2kEr0crv4iyuVcJR889wDx6g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793606690;
 	h=DMARC-Filter:Received:X-Virus-Scanned:Received:Received:DKIM-Filter:
 	 DKIM-Signature:Received:Received:From:To:CC:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Content-Type:X-ClientProxiedBy;
-	bh=thBVD6OEHrAcgPMGcHGCuTpwhbDxLXvR0Dj8bMZ3KCM=;
-	b=T2FR8syaC1iO2PG2TFVMmE8lk/b683kzgomaTLknMUsatoOBm8VyUajjxVblRsFCXHkH
-	 FOs6RyEEBGqCqjaU1dsWa4nuJTUsvP/63H6Ers5WSoZB/KVxwFVPgMqujF+cjP0AEbfDY
-	 J+MeZVos3rIULhc3Uf1wD3k1WVAOuiDqTKvRCzKsosp48i0ZTXmsSDohZNgk0zJ6gssAF
-	 YimTTLjpMLDwc/9AH0NNYZQe/Mw4+9jsnGAohUzuWaMSoJ4D3D1iM/u5pMwitLipDFMUA
-	 2tBR1M5Mox50AjbXWDSqE9n1fQUUxj3yXAhJAPdi5Efsy40H1Q7E2OgS94+xnGC5GfQ==
+	bh=zg6lvfSQl2e+W0ReaPcjme52b3BQ9rWrEec8k/nRdrc=;
+	b=5gbZyMk5kRomx9cxSZl2LLeo1XQ82Rj5niU+V4Hnoa3z93+yUAGaxKkjLIpUYfPZdz5+
+	 LcQcsdqE4sCeDiaNk2VFrAivS5eKR1+JT8bnKBluqj7IgxyQf6MvFUPIl9wRBe++CgvJO
+	 eAjuPInpHoW8C/JLDtVcFI21hNe7sqCcGZQsFUUffkFt/MRL9SD6O16U4iQiJgeyQt8DN
+	 HLWIxeBeCBdQ6Yz04TWctBsgmcMzGY8iG2Rvg1utrP+RYW0ncSnTJh+zupD8Uril8e4Jr
+	 MSGRX0u50onf2cqwQRYQ05qvnmX0olez7Br87Z909vfuafbrGLtwwNTFAhM9Icrp3Aw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=secunet.com;
 	spf=pass smtp.mailfrom=secunet.com;
-	dkim=pass header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=uoMAiMyr;
+	dkim=pass header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=scmQ+IXR;
 	arc=none smtp.remote-ip=62.96.220.36
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D59606A335
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E30606A336
 	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 08:04:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33D59606A335
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33E30606A336
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=uoMAiMyr
+	dkim=pass (2048-bit key, unprotected) header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=scmQ+IXR
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 691F8207C1;
+	by mx1.secunet.com (Postfix) with ESMTP id 8A80A207A4;
 	Mon,  2 Nov 2026 09:04:42 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 5wmmy2YTnOvJ; Mon,  2 Nov 2026 09:04:40 +0100 (CET)
+ with ESMTP id KHA09_aqY4qO; Mon,  2 Nov 2026 09:04:42 +0100 (CET)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 80D01207A4;
-	Mon,  2 Nov 2026 09:04:40 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 80D01207A4
+	by mx1.secunet.com (Postfix) with ESMTPS id 0AFD1207B0;
+	Mon,  2 Nov 2026 09:04:42 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 0AFD1207B0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1793606680;
-	bh=thBVD6OEHrAcgPMGcHGCuTpwhbDxLXvR0Dj8bMZ3KCM=;
+	s=202301; t=1793606682;
+	bh=zg6lvfSQl2e+W0ReaPcjme52b3BQ9rWrEec8k/nRdrc=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=uoMAiMyrMnoueFcHt7jKQ94TnOO6qc9lv+WGoiRuebx0CRhZ77dJFk4IvbIRO6nHF
-	 9klrfkx+ACkqiPBXBDHSEtAZaog6xIw46CaCmPWNwstauu883eZ23TPTml+RlWPemm
-	 lInjp+lsOYzSsPMXlH0Oqp3qHgrK5NqETgsRceBbpR2x3QjMyjPp3pynK3/mgNhOEr
-	 IUpWNMOpJO28AAsmqwS/I4WVyGKeGTRtK388AziWn31hJ6154WWcBAl8ijmLJZrCHt
-	 x1YC/O0zs/4GSY2Ndvq0fbnHNkQvwoqdDm96okVXjt4zpLnX0ODk+ptr2om/MSrs0S
-	 3pGJFfpzqnK3Q==
+	b=scmQ+IXR0PhEgE5spWNwR2u7boUmPBjBGgygRiVSGYh78Q3QvxHJnH4932l5QclvT
+	 S7PklgHDtUdIp282ni7zx3AUAod1v5Z/UV9YuiELy/q9gufCwLoxt8rY+R4F+GGvEa
+	 rk1zSO80CGBW9WS/j3/gEKTJruPPqB+v8g97VAwo1Wib7UnlmGNR2NHzRK0L00XHtO
+	 95oDFdGdIa8HlP7k3XlvUahDhsUTLh6zCAWY+CHgAJ9vDkf9sfWaVltC73JeokDrsW
+	 RBu5b621Gjc7xrQlHXmJzU8YTV4uqRdg7L4qC7rQhFOXDc/QgwoTa/5KJi9hMD0n0+
+	 NzIG+6cI9whqw==
 Received: from gauss4 (10.182.7.102) by EXCH-01.secunet.de (10.32.0.171) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 2 Nov
- 2026 09:04:39 +0100
-Received: (nullmailer pid 2505930 invoked by uid 1000);
+ 2026 09:04:41 +0100
+Received: (nullmailer pid 2505924 invoked by uid 1000);
 	Mon, 02 Nov 2026 10:04:58 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 14/14] xfrm4: use a full socket for local errors
-Date: Mon, 2 Nov 2026 10:04:12 +0000
-Message-ID: <20261102100451.2505200-15-steffen.klassert@secunet.com>
+Subject: [PATCH 12/14] xfrm: pass extack through to xfrm_init_replay() from xfrm_init_state()
+Date: Mon, 2 Nov 2026 10:04:10 +0000
+Message-ID: <20261102100451.2505200-13-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261102100451.2505200-1-steffen.klassert@secunet.com>
 References: <20261102100451.2505200-1-steffen.klassert@secunet.com>
@@ -83,62 +83,35 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Fourie Zhang <fouriezhang@tencent.com>
+From: Antony Antony <antony.antony@secunet.com>
 
-xfrm4_local_error() passes skb->sk to inet_sk() and ip_local_error()
-without ensuring it points to a full socket. TCP SYN-ACK skbs can be owned
-by TCP_NEW_SYN_RECV request sockets.
+xfrm_init_state() takes an extack parameter but doesn't pass it to
+xfrm_init_replay(), so replay-window errors can't be reported via
+extack.
 
-xfrm4_tunnel_check_size() already checks sk_fullsock() since commit
-1620c88887b1 ("xfrm: Fix the usage of skb->sk"), so iptfs_is_too_big() is
-the only remaining IPv4 caller passing a request socket here: the sk it
-tests is the listener, while skb->sk is the request socket.
-
-When IP-TFS rejects such an skb because it exceeds its payload MTU, the
-local error path treats the request socket as a struct inet_sock. KASAN
-reports a slab-out-of-bounds read in ip_local_error() beyond the
-request_sock_TCP allocation.
-
-Resolve the skb owner with skb_to_full_sk() before accessing inet_sock
-state or reporting the error. This maps a request socket to its listener
-and rejects sockets that cannot be used as full sockets, matching what
-commit 6973a21ee73c ("ipv6: xfrm: use full sockets in local error paths")
-did for xfrm6_local_error().
-
-Fixes: 0e4fbf013fa5 ("xfrm: iptfs: add user packet (tunnel ingress) handling")
-Cc: stable@vger.kernel.org
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Link: https://lore.kernel.org/netdev/20260908224856.1591189-1-kuba@kernel.org/
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
-Assisted-by: tencentos-corvus-ai:hy4-preview
-Signed-off-by: Fourie Zhang <fouriezhang@tencent.com>
+Fixes: 231a1744dc43 ("xfrm: add extack to xfrm_init_state")
+Signed-off-by: Antony Antony <antony.antony@secunet.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/ipv4/xfrm4_output.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/xfrm/xfrm_state.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/xfrm4_output.c b/net/ipv4/xfrm4_output.c
-index 0ae67d537499..fffa3c4f456e 100644
---- a/net/ipv4/xfrm4_output.c
-+++ b/net/ipv4/xfrm4_output.c
-@@ -38,9 +38,12 @@ int xfrm4_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 65663c7ba836..0555e5d796ed 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -3384,7 +3384,7 @@ int xfrm_init_state(struct xfrm_state *x, struct netlink_ext_ack *extack)
+ 	if (err)
+ 		return err;
  
- void xfrm4_local_error(struct sk_buff *skb, u32 mtu)
- {
-+	struct sock *sk = skb_to_full_sk(skb);
- 	struct iphdr *hdr;
+-	err = xfrm_init_replay(x, NULL);
++	err = xfrm_init_replay(x, extack);
+ 	if (err)
+ 		return err;
  
-+	if (!sk)
-+		return;
-+
- 	hdr = skb->encapsulation ? inner_ip_hdr(skb) : ip_hdr(skb);
--	ip_local_error(skb->sk, EMSGSIZE, hdr->daddr,
--		       inet_sk(skb->sk)->inet_dport, mtu);
-+	ip_local_error(sk, EMSGSIZE, hdr->daddr, inet_sk(sk)->inet_dport, mtu);
- }
 -- 
 2.53.0
 
