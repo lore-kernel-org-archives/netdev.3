@@ -1,72 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=162.216.242.36
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793652149;
-	b=NjDCAm5meoFedoc9LYfOob7NeJ4wrEgux/rccLtIiCiCpnnn/13X/mk7GAqzEUqCU0RD
-	 gsfY1dMjBwo7sWNR8pyoZGE4MirgldsF6qURFX07JuQ0c6FGQ138fw+mXmp5fcZmv6Myd
-	 emqasAm8Eu1EEQxWsCGCfOjw/RKL4YjMgrje1Lr5vHaGaUxRPo09kYjzBIO3+p+EQ3/p+
-	 2fHMx1NeiswUhzMdm7FSNkfdLr73FZWgIjl2BYAI2VHXfoLXMRbmrSe2Pz0QKEvpYh2Y/
-	 iJ1xYEX12MbUrb1VRBspt6EcZ4UHIHduoeQDRujIhFfwsROR1ZDyDi8C1guufs39lPQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793652149;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
-	 Date:In-Reply-To:Content-Type:User-Agent:MIME-Version:
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.172
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793652961;
+	b=BCZ6ZO9eLZ62fE1EjnsHmIrRcN41eqwFN9vNJK2rKwUp31JAFVLIT6fiGL6eYgvBq1MT
+	 MAdfXGXKURfGcQHX8nJWxEgRNBCQk3IyJlw1bgPWfT0x7O4o8McWhLAubxhrpijzk8w6X
+	 CaMT3O0tMBih3sVsoxI3DBkO5xkHH7WNR9WAgbJllbtqReVgM1Q8iA0Td8W/HwDehbjSE
+	 ZGONB3Fa8Db4YxfFVppzH+FTmrSsPJybT7ou0QOLNbtLpnnSIxG7HoPTEUhSF/VQ60Tn2
+	 HRcOgXucB+dNNrF/JVt0zPqB+MZHP+TczyD4oJz5c69QYsL0tRkm1nQv+2+9ICZ698A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793652961;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=jdwLej7LRbzV+mefAxs+1tsHzSr5xmWYipR76wcJNxw=;
-	b=Xqzoouooxvm7x1NJDkIhqqoEK0Giqozv7zenizDs7WJFpyPpAafUdi94XRAvcyff0C6n
-	 InY87MIW4hs+sw2A/kqLNNzheLpJcjwA4jMY9aMcf+gcKepkihBh+IEVXYu5j7X4MPn/T
-	 GDHPtdj2m7ndb5hIupYmLLU6KbKyDSvc3QaqUYBLNvockKPKcw22N5G5PZPxKwq5p1vQl
-	 Pc6prDtvcnzwS6SDRn1EwQWlwMmORGoeHuaRUmBWJmrgD3k+94ZKIL9aBAUDFX9TaONUz
-	 kSS7uo+mCaMMIBrYKy/Q2W5+rburepAhsMfZ2G1sJZVJUxCQjGSX5HKS/tw+TNx95xQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=mr-miky.com;
-	spf=pass smtp.mailfrom=mr-miky.com;
-	dkim=pass header.d=mr-miky.com header.i=@mr-miky.com header.a=rsa-sha256 header.s=default header.b=cXrRYpNS;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=162.216.242.36
-Received: from mx1.wiredblade.com (mx1.wiredblade.com [162.216.242.36])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	bh=34/enFLIcr3bLKmEVfWgIj1ncOTd12aTSiQazCvWsF0=;
+	b=vZJGa2WOhsiOc+XuTn07h8bZu/+xz4WB+EYU4WggR8N9lYy6hjGYUE48K5+bGa/P9W7I
+	 LiNqKuuc8Xqkqb90zP9d3ZBMftiwPa0ShWEFG/woqgJqQZ2hEjlep15chYRf0hDUJZYr5
+	 HJBa+4M3CufgVxItv9Z0HHV2ihM73Gh/Cpm3MrKTywoKuf9123Q3xH7zKL4EzvD3URMRc
+	 ojY8FyfyW2hD9TFQN/cLzO2goN8yYRfYe4V7UyjnqD5XKeECGrYXA9SELd63pFreW5Qwz
+	 t2KamHFi1OGfr3cJ/6/D18OBcGFLNZqlO1pVT1GOeCPCP/Yco/P/Hqe3ZOPo8OW7lOQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=is.s.u-tokyo.ac.jp;
+	spf=pass smtp.mailfrom=g.ecc.u-tokyo.ac.jp;
+	dkim=pass header.d=is.s.u-tokyo.ac.jp header.i=@is.s.u-tokyo.ac.jp header.a=rsa-sha256 header.s=google header.b=MaIexn6l;
+	arc=none smtp.remote-ip=209.85.214.172
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3CE606A327;
-	Mon,  2 Nov 2026 20:42:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD3CE606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mr-miky.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mr-miky.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D762606A327
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 20:56:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D762606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=is.s.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=g.ecc.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mr-miky.com header.i=@mr-miky.com header.a=rsa-sha256 header.s=default header.b=cXrRYpNS
-DKIM-Signature: v=1; a=rsa-sha256; d=mr-miky.com; s=default;
-	c=relaxed/relaxed; q=dns/txt; h=From:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To;
-	bh=jdwLej7LRbzV+mefAxs+1tsHzSr5xmWYipR76wcJNxw=;
-	b=cXrRYpNSLR5ds7YhhQHzaV1bmC1swkI/4IdMNIU19EpY55VdDKOrjsW5DHGRslwMIsa2PF8H8McuF7/ekP8Fgc0zyhZYqWzR/IVydUGHMA362+6aidlArK3e4dpbQkTgs5n6JwcevKGODRXcvbktrTJnHBZ6Lsuw9UKanF6iXNN83U8BZyK173psYvEA3fl/4fa8LBGJMvCSVX47guNn3AGAx9AmJMahqGvCdM6nnLv5pOUyh7Fl7On5WG
-	hIz+hlRbH/QuzqaXoGDfBYO9VcojuQC0M4lnhMb61FWz4Q8TVvOEba//GF9YbnCYZ3S6hyn4s2XwBlvk3VEJz7gUXSVw==
-ARC-Seal: i=1; a=rsa-sha256; cv=none;
-	d=dynu.com; s=mail;
-	b=g74vcjJuBFvl4tiPAbHAEdv+S/ayc4ViE3MpREsk6JfpOLbJB1cpGZlPz9XVPau3CYvnjjBewNnalkd61mLGCA3ziMXwB3l280xmJZ+3RlGCWZLKCIC319vVPSA2G98JvJ1OsS05m9FtKsNj/N1x7AcmKBBBW9e8q9ZMz41tt5hh9Iob/ILZmaHmOS5Y28EiezGsylLvfzK+3LaSmdJZy+jSdTqmULIRM8Y9y+BOeLF7UHsDHf6Z5xSn06
-	rYUNgY1sZPHzmtypvtlo27M2iwN2OjpazybRGbJ31mwpuyamBMZg4DVYxVRFwJ0y46kp7fWP6IFFIYfTY4xUjWielEaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=dynu.com; s=mail;
-	h=From:Subject:Date:Message-ID:To:CC:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To;
-	bh=jdwLej7LRbzV+mefAxs+1tsHzSr5xmWYipR76wcJNxw=;
-	b=RgJmdk9E+Su8+DTc8/9oF2WB4/yPEms+x+CxX8p/TCnDKTcPT8aC2xuwCu2622Yn5l15WHf57ZEtwKnr0tFxI9OmBmpk+QbysBq+RKKzsWGpggr++zLZtBWsNEL9L15zTL+zCEApm+GPiCYLsLqNwWcFO1Ivqr9N8Tt/TEvP0BNrA94jDjFKy9LWbNx2E3DWTysZ99997EAjrezH+N575tsmV183QVrM/q3477SduoYBMQX6y4yTLFIXBi
-	kNhf/WHwb6PRn3Vs0ypZGFNK28JVW7xK/peLtM/BwvD3UCWSw7QLIEMYtEG//U4zxriswQNq4aYnn/hWa7gfCXu7LAfg==
-ARC-Authentication-Results: i=1; mx.dynu.com;
-	dkim=none;
-	dmarc=pass
-Received: from [192.168.10.6] (93-40-2-197.ip36.fastwebnet.it [93.40.2.197])
-	by mx1.wiredblade.com with ESMTPSA
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256)
-	; Mon, 2 Nov 2026 20:42:15 +0000
-Message-ID: <0589f056d5fe47703ffb79b37930d3475a8f2faf.camel@mr-miky.com>
-Subject: Re: [REGRESSION][BISECTED] r8169: TX stall with checksum offload on
- VLAN frames with inline tag (REORDER_HDR off) since 1517d1996b52
-From: Michele Giorato <m.giorato@mr-miky.com>
-To: sairon@sairon.cz
-Cc: edumazet@google.com, hkallweit1@gmail.com, kuba@kernel.org, 
-	netdev@vger.kernel.org, nic_swsd@realtek.com, pabeni@redhat.com, 
-	regressions@lists.linux.dev, sashal@kernel.org, stable@vger.kernel.org
-Date: Mon, 02 Nov 2026 21:42:14 +0100
-In-Reply-To: <CAPa5EdCj3v17tB-SF2JNecq5Q8s1Pranr-XzAFWNpNTBPgPG7w@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.58.3 (3.58.3-2.fc43) 
+	dkim=pass (2048-bit key, unprotected) header.d=is.s.u-tokyo.ac.jp header.i=@is.s.u-tokyo.ac.jp header.a=rsa-sha256 header.s=google header.b=MaIexn6l
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2e940d5d2beso13186125ad.0
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 12:56:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=is.s.u-tokyo.ac.jp; s=google; t=1793652960; x=1794257760; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=34/enFLIcr3bLKmEVfWgIj1ncOTd12aTSiQazCvWsF0=;
+        b=MaIexn6l8jhOzO+C90T9YJ1ByGapZzhiobmeq6evgOOlpQ9xt5CKe3eYl4+l3wIf5H
+         WzRd2NhiXSlXSCeMtq4vJaOqMeYxPkO0l/AbAUaFdCZ8Q6uqxX3h8Vz74USgbEVAQSLW
+         JcB03b9pO+bQrTHJsJVZMjRlD6kGqs9CxeeYEh0/PwVZKZcW4+rHraYtbiE3JV4mKIAM
+         jmxqsQChHeLOXTx6qrLrxK5TgysursRrBNWQu0LifOaTu1mSFaeZW9CVxJFTPubh/VsO
+         dKqAiuhiRKcn50ZDObKLL94mfMVujWbaQRwnz8nS2wutTZfENqkm6gz38RcBa4Bte7Ep
+         WNug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793652960; x=1794257760;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=34/enFLIcr3bLKmEVfWgIj1ncOTd12aTSiQazCvWsF0=;
+        b=DTTRxeBhYdmY2uc9UAflmRVf0pzbu/dGflwmUR+EK4lZYwukhqPpKBKyhEZz8iPws7
+         j0YYbs+/A0z8X73r79VJxEFxKYG8u4LsDL9uBkgr0xyH8ynzkdSUqeLTlsO3NJ2KTSGb
+         VD2indkt4VHmtHxVDyVQX8m6CqwoXPUAlY5eogDP0WLJVMic44ECEqL91hZDoH1zbmFy
+         Lph6wY9JcnAwFxbuwT/1las25mbqiXtX35jF5pofTDCvS2IpMm6JgRATRpzU9crgqRC6
+         5Mczcvf9TMcu3A7Ed6wpMNU4F5wkJR1lIoOQ/UnKcXYx0UsXSyPSzS6vbedhOVeCVQh/
+         hJbQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxmBiRdiz+fqdhVc575UPCcf539NjnhMS16NB0MwC+UPIEQKoozFy3eOgKYhl4mmByay0mz3A4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9ioeaUqxLVXT1St1FDV3foJTWIhtm2Gxk2smtRzylbVzxgTigj
+	5ad/Vq9cZ9zAFs4xwws2EIroPIdgGk9gBqUQdMuAYChXSCFZPd9l2aou+opzEnjdSg==
+X-Gm-Gg: AYBFou1DLNLIEHcX6Wq3r5JgkNRqCAVtz8Xjk04b6GLRatNwBq3On5ZGbPydHlexX11
+	Lb5oYHw8k8EB2sUUSJTEGWPQE/Buu3rpmg0G4kItr+xoX2s/GDj/5KAMnbRGGRyC3p+8D+BJjDC
+	LmYbhiNgekKGbkiOV0vOShv1AEwtJFJnABoTQv/CH5jeR1j7RFRZCIFeU6tT+hwzZ3vdNo60z9f
+	+x9FZ826P6kgoqdCmBEMD4c06Wnt4mybYssvCuwWAFk4vx/4b7liKY3d4p1zovNFKK2KNuhcPST
+	nSkHoNAE8DQjw0w3wxFi5/4uPkw7ElpkPPXW6h+oh48G9zYslahBoM4WgZAxX+6ORamnuk5LnNu
+	H0KfBSpNgVB1uCKtCeJYotkrXKdr5cr3KQJB8HNRjusuiAZoCUxaeAMULT5AHei5ahMpXrt8+yN
+	tlVmFNuFZc28xtYRmQtObhIsKUKLr1/gwJCYiOvVqlPEQl/zBC/Dq6eR1abEkqwsu3Hrx1Mznzw
+	2rEAy/qol71IGuNegl6mv6qS2SfwYDIq796XcttSLGEzp8YxJSv0aoVqnUPrDG3ip3JAkacVhFE
+	4YYoyw2ux1BqR2ZL7yz1Ws6AXheK2S9teWG0sQ==
+X-Received: by 2002:a17:903:4b0f:b0:2e9:6645:e99f with SMTP id d9443c01a7336-2eb3642fdc1mr89382025ad.21.1793652959534;
+        Mon, 02 Nov 2026 12:55:59 -0800 (PST)
+Received: from wang0.localdomain ([133.11.33.33])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb3922fc14sm32364015ad.26.2026.11.02.12.55.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 12:55:59 -0800 (PST)
+From: Lianjie Wang <lian@is.s.u-tokyo.ac.jp>
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Lianjie Wang <lian@is.s.u-tokyo.ac.jp>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	netdev@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Takahiro Shinagawa <shina@is.s.u-tokyo.ac.jp>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] virtio_net: reject stats replies for queues outside the request
+Date: Tue,  3 Nov 2026 05:55:50 +0900
+Message-ID: <20261102205550.4148064-1-lian@is.s.u-tokyo.ac.jp>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,92 +106,106 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Authentication-Results: mx.dynu.com;
-	dkim=none;
-	dmarc=pass
+Content-Transfer-Encoding: 8bit
 
+__virtnet_get_hw_stats() passes the vq_index of each record in the
+device's statistics reply to virtnet_fill_stats() without checking it,
+so the device decides where the driver writes the counters.
 
-Hello,
+For ethtool -S, virtnet_fill_stats() uses vq_index as an offset into the
+output array, which the ethtool core sized for curr_queue_pairs. A
+record with the vq_index of a higher queue can make the driver write
+past the end of the array.
 
-I would like to report an additional affected Realtek revision for the
-VLAN TX regression addressed by commit:
+For the per-queue netlink stats, the queue type also comes from
+vq_index. A receive record in reply to a request for a transmit queue
+makes the driver fill the struct netdev_queue_stats_tx on the stack as
+if it were a struct netdev_queue_stats_rx. If the device offers
+VIRTIO_NET_STATS_TYPE_RX_SPEED, this writes one counter to the eight
+bytes after the tx struct.
 
-c2124f80be4ceb6ec566ca3b5fc87f84ea9c36e0
-("vlan: restore HW VLAN tag insertion with reorder_hdr off")
+Fix this by rejecting the reply when the vq_index of a record lies
+outside the range of queues the request asked about. The control vq is
+checked apart from that range, since the vqs of the queue pairs beyond
+curr_queue_pairs lie between that range and the control vq.
 
-The issue is reproducible on a Realtek RTL8168f/8111f (XID 480), not
-only on the previously reported RTL8168h.
+Claude Opus 5.5 was used to audit the driver and draft this patch. To
+reproduce, the virtio-net device in QEMU, which has one queue pair, was
+modified to answer an ethtool -S request with a record for a nonexistent
+receive queue. On an unmodified kernel, KASAN reports a write past the
+ethtool -S output array:
 
-**System:**
-- Distribution: Fedora 43 x86_64
-- Motherboard: ASUS M5A97 LE R2.0
-- Ethernet controller: RTL8168f/8111f, XID 480
-- Driver: r8169
-- Firmware: rtl8168f-1_0.0.5
-- Interface: eth0
-- VLAN interface: eth0.10 (802.1Q, VLAN ID 10)
-- TX checksum offload: enabled
-- TX VLAN offload: enabled
-- TSO: disabled
+  BUG: KASAN: vmalloc-out-of-bounds in virtnet_fill_stats+0xab1/0xec0
+  Write of size 8 at addr ffffc90000066140 by task ethtool_stats/159
+  Call Trace:
+   virtnet_fill_stats+0xab1/0xec0
+   virtnet_get_hw_stats+0x5d6/0x7c0
+   virtnet_get_ethtool_stats+0x11b/0x920
+   ethtool_get_stats+0x150/0x1f0
+   dev_ethtool+0xaaa/0x1be0
+  The buggy address belongs to a 1-page vmalloc region starting at 0xffffc90000066000 allocated at ethtool_get_stats+0x120/0x1f0
 
-**Regression:**
+With this patch, the driver rejects the same reply with "Failed to get
+hw stats.". When ethtool -L leaves queue pairs unused, the driver also
+rejects a record for the first unused receive queue, while a well-formed
+reply fills the statistics as before, those of the control vq included.
+The drivers/net/stats.py selftest passes on a device that reports
+receive and transmit statistics.
 
-Linux 7.1.13-100.fc43.x86_64 works correctly with reorder_hdr=off.
+Fixes: 941168f8b40e ("virtio_net: support device stats")
+Fixes: d888f04c09bb ("virtio-net: support queue stat")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lianjie Wang <lian@is.s.u-tokyo.ac.jp>
+---
+v2:
+- Add a comment and a sentence on why the control vq is checked apart
+  from the range of the other queues.
+- Add the KASAN report and a test with unused queue pairs.
+v1: https://lore.kernel.org/all/20261022182710.2055771-1-karin0.zst@gmail.com/
 
-TX watchdog timeouts were observed with Fedora kernels 7.2.4, 7.2.5,
-7.2.7, 7.2.9 and 7.2.11.
+ drivers/net/virtio_net.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-The issue was reproduced again using 7.2.14-100.fc43.x86_64.
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index dd2c41ef6fbe7..db56f984bb86a 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -4973,7 +4973,8 @@ static void virtnet_fill_stats(struct virtnet_info *vi, u32 qid,
+ static int __virtnet_get_hw_stats(struct virtnet_info *vi,
+ 				  struct virtnet_stats_ctx *ctx,
+ 				  struct virtio_net_ctrl_queue_stats *req,
+-				  int req_size, void *reply, int res_size)
++				  int req_size, void *reply, int res_size,
++				  int first_vq, int last_vq, bool enable_cvq)
+ {
+ 	struct virtio_net_stats_reply_hdr *hdr;
+ 	struct scatterlist sgs_in, sgs_out;
+@@ -4994,6 +4995,13 @@ static int __virtnet_get_hw_stats(struct virtnet_info *vi,
+ 	for (p = reply; p - reply < res_size; p += le16_to_cpu(hdr->size)) {
+ 		hdr = p;
+ 		qid = le16_to_cpu(hdr->vq_index);
++		/* The vqs of the queue pairs beyond curr_queue_pairs lie
++		 * between last_vq and the control vq.
++		 */
++		if ((qid < first_vq || qid > last_vq) &&
++		    !(enable_cvq && qid == vi->max_queue_pairs * 2))
++			return -EINVAL;
++
+ 		virtnet_fill_stats(vi, qid, ctx, p, false, hdr->type);
+ 	}
+ 
+@@ -5073,7 +5081,8 @@ static int virtnet_get_hw_stats(struct virtnet_info *vi,
+ 	if (enable_cvq)
+ 		virtnet_make_stat_req(vi, ctx, req, vi->max_queue_pairs * 2, &j);
+ 
+-	ok = __virtnet_get_hw_stats(vi, ctx, req, sizeof(*req) * j, reply, res_size);
++	ok = __virtnet_get_hw_stats(vi, ctx, req, sizeof(*req) * j, reply, res_size,
++				    first_vq, last_vq, enable_cvq);
+ 
+ 	kfree(req);
+ 	kfree(reply);
 
-**Reproduction on Linux 7.2.14:**
-
-With reorder_hdr=on, no TX watchdog events were observed during the
-initial test.
-
-After switching to reorder_hdr=off at runtime:
-
-```
-ip link set dev eth0.10 type vlan reorder_hdr off
-```
-
-The following events occurred:
-
-```
-Nov 02 21:26:38 r8169 0000:02:00.0 eth0:
-NETDEV WATCHDOG: CPU: 5: transmit queue 0 timed out 5003 ms
-
-Nov 02 21:28:37 r8169 0000:02:00.0 eth0:
-NETDEV WATCHDOG: CPU: 5: transmit queue 0 timed out 5395 ms
-```
-
-The connection becomes temporarily unusable for both tagged and
-untagged traffic, and eventually recovers.
-
-After restoring reorder_hdr=on:
-
-```
-ip link set dev eth0.10 type vlan reorder_hdr on
-```
-
-No further watchdog events were observed during the subsequent
-monitoring interval.
-
-The NetworkManager configuration uses vlan.flags=1 as a persistent
-workaround.
-
-**Conclusion:**
-
-This strongly suggests that RTL8168f/8111f XID 480 is also affected by
-the same VLAN TX regression.
-
-The workaround using reorder_hdr=on preserves TX checksum and hardware
-VLAN offloading.
-
-Could you confirm whether commit c2124f80be4c is scheduled for backport
-into the supported stable kernel series?
-
-I can provide additional logs or run further tests if needed.
-
-Best regards
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+-- 
+2.56.0
 
