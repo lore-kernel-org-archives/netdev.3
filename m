@@ -1,48 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793631915;
-	b=Lo2GAgZvXh0b6vObijxOPVdE8rDbFspFRb/nAHuEBlfm/lJDBXSyZuIWn/ATlMJrSGES
-	 XDULjuLRpjjODx9Jmczh/HnN28i+uHWHWvKSUVAPT20sjUsgTMD204TVfLjICpoVFZ0Ip
-	 LnbUHnj+wr8brTtFsjUZTwhVQli0t0lWRBZqPtd5OAjPAuiuUyNBCl/qzwBViBG+A3w51
-	 TDwAfPvQTILNYBjcVGXv5gEl5OU2lVMqcriRvYcH5VMr8nSByF/tznnGTGwTL/OFKkIK+
-	 KfCZvL/f+thkZjWh9oTu+qAr5a1ezl24lJ5d6bAlZ7Jw16//MbbecBURq0PDz8ingwg==
+	t=1793631939;
+	b=oBcq6HRT0jzOmnnRyfm61HTu3v5tdWOYk1X1WcqIWra4yXrsIqFp6fzo6wx+JybwmDuq
+	 poxDVaPzz1cLKCxAzbwp1JxG9gvPLZY9Wcs9+B028CC7EeCqkrG/5qvJh+dR9CyotAMz/
+	 L3sdYw074hTgmv9vzymYyXsbo+v0yo1cJaLGy70zyiseOSNfTijP2zda+Z/ox0hZxoi4H
+	 p33YbmwDBpVF8WDo77z9ULRXiGudeigIUGouZylJm0XEzlrZRe+FEDUORxIoZmLKceVRa
+	 YQF2ysWg3UFaTdJdcllboLLGcyP2KDkFH8CYjWKRbCdEXN4Nxpntv7wiQ+EgvZY/qvg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793631915;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer;
-	bh=/usm8OdHJAbA2hfj2koEwGvMkvG3A+8dTBDDaCx7vxs=;
-	b=0f9RNaIkHqHTHXXfNtMVQyXi6HHXBqBXERquCXoUIkndbi6kTFxA38Kj/VbWQvDxUYL5
-	 PKcbaecd/6hJYYVI44RlV6o72pxcdg+OVQEPCw2LFUoeLTb53wWN+C7cppImpgrX7uFRI
-	 M+T2l4ITRFJXEVUvhW3ClpM3ic/M0XyBPh7Oxk3qc35CaJSkatBHDI1n7oSwLiM0y2ZZq
-	 /nVrukbUr8E/fjh26QkpDVpXsZpqGJflvh1fA7j6hkZOFUFOk5MsVef/yeUteqCY34ISW
-	 8x3vsGKhyZitfpWkIphUAkZxk32GoTVG1DceeOZ9PQRl31dghGaIK7v+7SoqlI0jVSQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793631939;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=65B+XTjeC/stvy87CSmUplLFJkU9H65YFOEdiLp+FW4=;
+	b=Y0j/BtWJncrbbp62ApR8EwETL6oMHH3fh3sL4QM45zPKRm387Kf5HLCoJsCQ6JUB9nrw
+	 GlkOAIqqkgWEndTZrgFpHFCYtlFGikv6QPeUjlfTLbS/0V1VxnJmEIegvJh8+pl1V0cJv
+	 CE5qfTX50d4tGI2nmYfORejIE39hpWMCsvjW43O0APqvXPFSrWfPFdnPBzOwQLJM/R32T
+	 I+p+jS6FjYTJrKXtIUWI0jcTu5SXjWsKjAQ6K2zctW2MSBr9u/kMbRlxbZ8v2ZnCyYM5w
+	 2NCgZRB4aDmyzxmCyjksUaKRJp7ma7oniBAPaCvdMQvEMqQ7Olhc9Us2jCOX9Q3pKvQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GwaRh4oG;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ZOmYG3+f;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3D5606AB90;
-	Mon,  2 Nov 2026 15:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE4D606A914
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:05:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CBE4D606A914
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GwaRh4oG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1171F00A1B;
-	Mon,  2 Nov 2026 15:05:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793631915;
-	bh=/usm8OdHJAbA2hfj2koEwGvMkvG3A+8dTBDDaCx7vxs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=GwaRh4oGylUX6g6CEqPXd69Ibpr3KQmakI0Nld+n+JLGApofu8ygx4WwNRI60EvYf
-	 DSOWIV++3VospwIjrvRsrg0mfaY7gRgUeihp43Au6D6HgV7Xv8KolBhRU7xFnfQdC1
-	 T7WNrsjJHzUGFZHB3CY8jnJ95TWdIrLVspjluFdHIKRvTNa2WFPvdVn+u5eXib/14W
-	 9Mf7AL8v6CpiYBfwScgPVzymR7ApEayesBtx54t9q1NbuhjbVtR1b4mKqnuDg4Wxmn
-	 KCXgiDmRsG7or4q0U1UicO9HEaUHCZVEQAI8u1qAq9b4HgJ4PMYdAOqXF8iMKD4/CK
-	 FsxoDOM8JDDag==
-From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:01:38 +0100
-Subject: [PATCH RFC 11/22] um: let procfs copy in writes
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ZOmYG3+f
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 309C14E413D3;
+	Mon,  2 Nov 2026 15:05:36 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id F0E8B60750;
+	Mon,  2 Nov 2026 15:05:35 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A7717103290E8;
+	Mon,  2 Nov 2026 16:05:32 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793631935; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=65B+XTjeC/stvy87CSmUplLFJkU9H65YFOEdiLp+FW4=;
+	b=ZOmYG3+fd/zvXV69qvfdiIMJPfct1j57KXFg8/TuyO24nmgDGCs4U7dyZ9+kzpEC2zdb4n
+	VFt5KXBqjwIjGUkyxWjh9RFrlHOKmG+wYw8wHuFiyBmU802FPJ3ZwmPyuhv5JzdQ2fDyKj
+	6ZFvHH+6D8LTKTBMCeA7WqIHJcT/YY6wdn1+n1bxh1dr4dWm/1cA1rroqos6ZfxWJ8rkVF
+	MiQ3qVOzKXFULFiBnrDb8D9OPFtLPBcY1UvXQ2GkWk4hGvnMqnMQJHn4CNdpDAI7j26iu1
+	1ry4w4AFwxVoFtk+Jq8BEJawS85k8zpG9xKtZeMElACrSoHUOqdkWBRcTbKm/Q==
+Message-ID: <1219dc2f-0f96-40db-8268-1a8eb009b152@bootlin.com>
+Date: Mon, 2 Nov 2026 16:05:31 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -52,122 +62,76 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-arch-v1-11-c9492ab08480@kernel.org>
-References: <20261102-work-procfs-arch-v1-0-c9492ab08480@kernel.org>
-In-Reply-To: <20261102-work-procfs-arch-v1-0-c9492ab08480@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
- Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
- Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
- NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
- Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
- Greg Kroah-Hartman <gregkh@suse.de>, 
- Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
- Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
- linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
- linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
- linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
- ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
- coreteam@netfilter.org, kexec@lists.infradead.org, 
- linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
- netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
- linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
- linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
- linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
- sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
- linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
- linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
- linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
- linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
- linux-debuggers@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, 
- Chuck Lever <cel@kernel.org>
-X-Mailer: b4 0.17-dev
+User-Agent: Betterbird (Linux)
+Subject: Re: [RFC] hwmon: (tps23861) PSE-PD support, extend hwmon driver or
+ move to pse-pd?
+To: Guenter Roeck <linux@roeck-us.net>, Andrew Lunn <andrew@lunn.ch>
+Cc: Roman Kuzmitskii <roman@damex.org>, linux-hwmon@vger.kernel.org,
+ netdev@vger.kernel.org, robert.marko@sartura.hr, luka.perkov@sartura.hr,
+ o.rempel@pengutronix.de
+References: <03055ffd-d015-4810-8b8a-678821fa6dcc@damex.org>
+ <92e3383e-26f8-4bed-b487-1c52f6c4f420@roeck-us.net>
+ <8cd41211-b026-4158-8e18-454a9ac0bae4@damex.org>
+ <4d12314e-56db-412c-a558-e4026cd03528@roeck-us.net>
+ <d126b3d3-33b9-405c-9839-db492d874ece@lunn.ch>
+ <9bac0a84-f03d-4fd1-8092-9922c65010bf@bootlin.com>
+ <57516add-01bf-492b-9fd9-2bcb762e3041@roeck-us.net>
+From: Kory Maincent <kory.maincent@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <57516add-01bf-492b-9fd9-2bcb762e3041@roeck-us.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Implement ->proc_write_buf() for the mconsole and exitcode files so
-procfs copies in what is written before it pins the entry. Writes larger
-than PAGE_SIZE - 1 bytes fail with -EINVAL now.
 
-exitcode parses procfs' copy as is, so it no longer stops at the first
-six bytes of what is written.
 
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- arch/um/drivers/mconsole_kern.c | 11 ++---------
- arch/um/kernel/exitcode.c       | 14 ++++----------
- 2 files changed, 6 insertions(+), 19 deletions(-)
+On 11/2/26 15:54, Guenter Roeck wrote:
+> On 11/2/26 01:49, Kory Maincent wrote:
+>>
+>> On 11/1/26 20:57, Andrew Lunn wrote:
+>>> On Sun, Nov 01, 2026 at 11:09:42AM -0800, Guenter Roeck wrote:
+>>>> On 11/1/26 10:50, Roman Kuzmitskii wrote:
+>>>>> On 11/2/26 1:38 AM, Guenter Roeck wrote:
+>>>>>> On 11/1/26 10:02, Roman Kuzmitskii wrote:
+>>>>>>> openwrt reviewers asked me to check with you first which way you 
+>>>>>>> prefer:
+>>>>>>> 1. extend hwmon driver with PSE-PD (like it is done right now)
+>>>>>>> 2. move driver to drivers/net/pse-pd and extend it with PSE-PD
+>>>>>>> 3. something else
+>>
+>> I am currently working on this topic by extending the tps23881 driver.
+>> Please don't do it yourself to avoid working in parallel on the same 
+>> topic. On the other hand, it would be nice if you can test it.
+>> Roman I will add you in CC of my series.
+>>
+>>>>>>>
+>>>>>> The hardware monitoring "enable" attribute is supposed to enable 
+>>>>>> monitoring,
+>>>>>> not to enable some power delivery or network (or any other) port. 
+>>>>>> That "port
+>>>>>> enable" feature using the hwmon ABI was sneaked in, and I am 
+>>>>>> inclined to just
+>>>>>> remove the upstream driver for severe ABI violation.
+>>
+>> Do you think it would be possible to remove the current tps23861 
+>> driver and binding? This would break the backward compatibility.
+>> I am currently using "tps23861-poe" compatible name binding.
+>>
+> ... and you probably also use the hwmon "enable" attribute
+> to enable and disable ports on this chip. Again, that is an ABI abuse.
+> I'll refrain from removing the driver for now, but I will likely
+> remove the attribute if//when I find the time to do it.
 
-diff --git a/arch/um/drivers/mconsole_kern.c b/arch/um/drivers/mconsole_kern.c
-index f01b7d8a07bc..a4370470286f 100644
---- a/arch/um/drivers/mconsole_kern.c
-+++ b/arch/um/drivers/mconsole_kern.c
-@@ -769,21 +769,14 @@ static int __init mconsole_init(void)
- __initcall(mconsole_init);
- 
- static ssize_t mconsole_proc_write(struct file *file,
--		const char __user *buffer, size_t count, loff_t *pos)
-+		char *buf, size_t count, loff_t *pos)
- {
--	char *buf;
--
--	buf = memdup_user_nul(buffer, count);
--	if (IS_ERR(buf))
--		return PTR_ERR(buf);
--
- 	mconsole_notify(notify_socket, MCONSOLE_USER_NOTIFY, buf, count);
--	kfree(buf);
- 	return count;
- }
- 
- static const struct proc_ops mconsole_proc_ops = {
--	.proc_write	= mconsole_proc_write,
-+	.proc_write_buf	= mconsole_proc_write,
- 	.proc_lseek	= noop_llseek,
- };
- 
-diff --git a/arch/um/kernel/exitcode.c b/arch/um/kernel/exitcode.c
-index c71657df38f5..8f76e3b20c18 100644
---- a/arch/um/kernel/exitcode.c
-+++ b/arch/um/kernel/exitcode.c
-@@ -32,18 +32,12 @@ static int exitcode_proc_show(struct seq_file *m, void *v)
- }
- 
- static ssize_t exitcode_proc_write(struct file *file,
--		const char __user *buffer, size_t count, loff_t *pos)
-+		char *buffer, size_t count, loff_t *pos)
- {
--	char *end, buf[sizeof("nnnnn\0")];
--	size_t size;
-+	char *end;
- 	int tmp;
- 
--	size = min(count, sizeof(buf) - 1);
--	if (copy_from_user(buf, buffer, size))
--		return -EFAULT;
--	buf[size] = '\0';
--
--	tmp = simple_strtol(buf, &end, 0);
-+	tmp = simple_strtol(buffer, &end, 0);
- 	if ((*end != '\0') && !isspace(*end))
- 		return -EINVAL;
- 
-@@ -53,7 +47,7 @@ static ssize_t exitcode_proc_write(struct file *file,
- 
- static const struct proc_ops exitcode_proc_ops = {
- 	.proc_show	= exitcode_proc_show,
--	.proc_write	= exitcode_proc_write,
-+	.proc_write_buf	= exitcode_proc_write,
- };
- 
- static int make_proc_exitcode(void)
+I thinks you misread or I was no clear enough. I am working on expanding 
+the tps23881 PSE driver to support the tps23861 version.
+I am not using at all the hwmon framework in that development.
+But as the binding tps23861 is already reserved for hwmon I use a new 
+"tps23861-poe" compatible name binding.
+To me, I agree to remove the hwmon driver but this will break backward 
+compatibility. I am not a hwmon maintainer so it's not my decision to take.
 
 -- 
-2.53.0
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
 
