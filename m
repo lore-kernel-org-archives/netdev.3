@@ -1,48 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793631828;
-	b=ag+1HigokzRXVh4RS3Roo3Cn/rO9yVfO+4diodaqQVhmYvkXeipYR3t/ZuaYXriyiBvQ
-	 xGSEIVQQXjhwtEohZ5STEQRWYbki+sPheadeVkNS7AM5TvcoJg6Y1IwWKbkDlHRO1w9yS
-	 eiOjJEauO3uioAZxAgF5VFc9rxXlVeWi9Cq8gujn+d4s+K3AUrNGMIYB2gKsA/xWX2CcI
-	 myNX02wSkvQDSTtjTw3iaP0o6iInMyq4GLkdMnHxPUDHu6craA0SMynqZz99zGy6fse3q
-	 Xpbm1cvblX00IpOR6XlMs2f2QOfCmpzycC9y+2l1jDGMWyG4LB19lv81jifAEloZ+8Q==
+	t=1793631870;
+	b=Dcc3iFrmRl4DpLUGXvV95baP9tPmQbiS16CbQzTlLLS/Fgys8ulokE+6g7jkkvTsTDWq
+	 8bLRXqSfgmy3UF/+V8HCZtS6uGAg7BXSMP2juJzBPfpDihU8hRxBUVzg8QbxvLFyi8l4u
+	 d5cjAXAU+aLlM4V785P0Pu7hxOPG9LuZhNVBmkV81zYSMUuYMVcIJBRC7QroDmSIkKzTE
+	 CsKEJ+ZHZl8tALY0kWQ/dsTTZ43UH7hTiXk8+bZd3bHwa1HwpOPBqdGNsbOJkfn7vPN6F
+	 5gZw9g5CmOwFr+WChpMU+J4MkaFN/JqAgKS/Hm50CFm48ZIop0CjmH/vgPQqZjMV0rA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793631828;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer;
-	bh=glw1dCbJy4In8cXqUP53v95R3+j+o1Gb2tGtrZFmQOQ=;
-	b=LuwbTzaqhZV3udQrI8ItOLemZNN9O9ZcExprz64BC1WjtoeTZFyso76CrwBSmzISvk7G
-	 WnaAE92tD/GbGQ7fkxWFv1c/TEiYB1NItxyaort7JN+jXqyUMJd0kGMj7WdRsFaFoXSWz
-	 fMKQc9gMg31gQec12ua6ArAP57HUt0oQgJFebrHRSUowtioYhurrMt6FgyNA0KEqjpc2Z
-	 OOYKBJMUNOkLCPmfV5LwHYhfg3J7GF0SdFJDNTr5o9xDB6ZT9sRSr/k2fIr2RmIRpyoBX
-	 Qf3epmdggf9r7g6bBnCXe64s4v0AYshvbhYNj+T3mqAzR0pCNXnyo0eTQAaTqPDcXoQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793631870;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=4fA008cerU78BCHAofvMFL2hjDxFpzl/8zUGrxds54c=;
+	b=CXppzRmJLU4/9H36/n30WFHm4T10+k6pSs+igPfbFPNlSvGy/U9W0Kiuj+pO8+g9Sl0A
+	 duBKwbPWOhm7q/XKmuR5UYzdFdURwK932NWqXL8vyPsVHAobOHpKb0CyTPQTjDX68XXFY
+	 tI6u9Uq0B//jOvnj/2K+bcLXRqULzdY2YmzxhTX3XoVBPESO6n2LAq/asa7MyNTcio0b+
+	 6P+1wtpz7DUvwiaBRUgoSNanmSrOXj3a2xt/ZmTmUnOTkUv25Y4uPvhI64Ipx+SC1VH6+
+	 Spae8Gx1/1oSN6WDAOJfk8WIoTBK3ZoNHZSQzAbOCBtJNyZCvreP+0YQp2T6PxvBgHg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gH1uQceN;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gdxKNWOQ;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=KAXFWBPi;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144B6609B583;
-	Mon,  2 Nov 2026 15:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5196460703BC
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:04:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5196460703BC
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gH1uQceN
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB191F00A1A;
-	Mon,  2 Nov 2026 15:03:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793631827;
-	bh=glw1dCbJy4In8cXqUP53v95R3+j+o1Gb2tGtrZFmQOQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=gH1uQceNT0pe04RugL3tkndtCg/BNWtt8gjyfjkjxpxrv4DD5Kj/ry0K4iVOfTu0T
-	 XyqCfm2AIZe63dMJyEouauqLimhfpL7Ahx9TJUWfLtSMlGm6wbGGbzqxmjJDCoGvoi
-	 8bXwyOHcBtFikAWlZHrtqTOUm7T60Rc1rGMBhy6wte8Tc2C2WHnRkyW6FZfLwJcAlt
-	 QIxSWGPq1Pt9aUCZFw5Fr8TfPzVXromMNqTo4BfW3zJS3GdVdZxJ1jiE4RlzKmMIbu
-	 NMgDHlNBEuimzLNekTMW7U7s+08uLY2Cp7ql1hPbJQuDeycC8awPE3b+o47F+6OePW
-	 BX1NU0ZbhTSrg==
-From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:01:34 +0100
-Subject: [PATCH RFC 07/22] powerpc/pseries: let procfs copy in writes
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gdxKNWOQ;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=KAXFWBPi
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793631869;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4fA008cerU78BCHAofvMFL2hjDxFpzl/8zUGrxds54c=;
+	b=gdxKNWOQEk++S4/1bXtMi507dNZmHMapgdaILo1y7p4sXk39Udy2F++uT3a3D5kre1xrpD
+	1bRjMfIfNzSKS7gVAoIyMd7UJgCGpIAaJADw8BI+uCD8Cib/NtQJ2907zNE+EQHZiVv3Az
+	Ois4/7SyB4i8xy94WrBsQxuo2/mOE/Q=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-296-eapLGiAQNK6M8bNjNKULBQ-1; Mon, 02 Nov 2026 10:04:28 -0500
+X-MC-Unique: eapLGiAQNK6M8bNjNKULBQ-1
+X-Mimecast-MFC-AGG-ID: eapLGiAQNK6M8bNjNKULBQ_1793631867
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a70b42bab0so32833865e9.1
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 07:04:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793631867; x=1794236667; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4fA008cerU78BCHAofvMFL2hjDxFpzl/8zUGrxds54c=;
+        b=KAXFWBPiPvK1zdlOSD7Y6+WhcMNsSPF8TEk90tpnyjlVD1yLrHRLF1ID5BeVYevEsN
+         WS5uyoS3SyJcL1bA5Ojx5M+DHmPCBxIkPqQBf6wGSvelyHORsY/wRNoTeWvfrotXJy5P
+         YnznCVQ7eoSIpBm3BCPwiRakjb+wAOlRQsou2orIRniLZzaa10zvQJpOGPP6IylEkhGD
+         PNA6rG/Oi3zBwqp4ZD7ftqV5HU5+daEZtGZpszMjRsvgCj1u3kj27z64meTN3LcupcEL
+         HVLR1NEKVoZdaWUy0EaNYKjK5TqlhfME1dGoS3VUmGyOM2OvfS0/MsEAVqUFz+Wx7Ly2
+         NZ0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793631867; x=1794236667;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4fA008cerU78BCHAofvMFL2hjDxFpzl/8zUGrxds54c=;
+        b=Sewji8jY6P8QhhYUMx2HZW4JXd0hRBVZi7BA4bHsHuQk+VT0bK9e4+4+p5172OneMu
+         eUri0zfn4leICTQR5W0vxWWCRzWmmn2XRcBSEMYk6daCytZO8RcsJshUfJF4wCjncuQg
+         waCOO3M/JVznjuuEBIaEO9SXrFGN9L/fboIh9tgPDjlkbl12Maq0Ur46J+3lufU2rx+j
+         uD8VEQq9cHjSheXO55VOq18o9GQPKOqBT6cylT+/A+K8SdCAn7abUPcKOenMSWeOjACS
+         JTmAUOeEYP6ROWKoQUttSVha8nWCcAsJe9VcyTr/FvesuUUvv5FHN3Xgms4ZU1TCQrYa
+         IoBg==
+X-Forwarded-Encrypted: i=1; AKwUvBxi2diotLQbOFBkFMavMhMXC2dHNPj5OqyPsXfld7IwJaTlgcIDDUTItRqo4zVLtpQU3PUH0h8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJyo3PYyiF/insxc/MiQgrEk8TRZvFyYaDtmxvly9J0HJkTu8SO
+	MWG6nS2A6gcfohCHlx73rzuCiRSMXwwdaovKHKgz/9HLkJAYDAeOi//ZurLqaQPkLDN4YCiPI+o
+	bTF1FBNwfnLLXS8kWA03dg1iq7AaKz6JgBWmk4VYtxYJbwAreTpBWBe8w7A==
+X-Gm-Gg: AYBFou04DTjItPo2yN36M1pPry2EEmvJ0eO0+KA2J68dYTwdW/ryay6o3TRDAgPU72c
+	A4QUBHpYFVcbR5ibxWx3AYW2PEmFXKylPHmn7aXKk1sNZuD6jsMrg+Ta+Ee8+zry8SPzqkSN5LG
+	r4SHBKUqVkQwPKg7RcGXzKbv0Mpq3jGv+CQmKqjonVUpjNCxdv737/O6TniThVVXy5vn0e8v2mb
+	P3vvfVcMydSIdKMz9vhPaRosf0o3R2Xzy/Lvpdp2SUiHUKMFXmGrpxuXWlegF0NRwhfKyedwtXq
+	M7hoDEWkXpzsMvCP/mzgaIcH8uoaG4UH1C3ZfIX8ru5hoMQklr801E6CQgM7Rw3ASmGG0KhFZj1
+	B7rgRGRFWe/nit0Ve3UQz4aypJ9cFA162pvC6bEMSp9XbEc1CGnS6nDz7lAeyJhifOLGYD4n2iU
+	RgjbO12HFkhtFUXaL+HsNwBC9eCy8dwvveetHvFeDLsnc=
+X-Received: by 2002:a05:600c:4715:b0:49f:ffa2:1c72 with SMTP id 5b1f17b1804b1-4ac17567cc8mr228613935e9.11.1793631865961;
+        Mon, 02 Nov 2026 07:04:25 -0800 (PST)
+X-Received: by 2002:a05:600c:4715:b0:49f:ffa2:1c72 with SMTP id 5b1f17b1804b1-4ac17567cc8mr228613495e9.11.1793631865501;
+        Mon, 02 Nov 2026 07:04:25 -0800 (PST)
+Received: from [192.168.88.29] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4abf5b289f7sm279340495e9.5.2026.11.02.07.04.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Nov 2026 07:04:25 -0800 (PST)
+Message-ID: <24feda7d-ae49-45af-9596-2cc5f149f28e@redhat.com>
+Date: Mon, 2 Nov 2026 16:04:23 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -52,208 +112,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 net] inet: frags: limit the truesize of a reassembly
+ queue
+To: Eric Dumazet <edumazet@kernel.org>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
+ Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org,
+ stable@vger.kernel.org, Kyle Zeng <kylebot@openai.com>,
+ Florian Westphal <fw@strlen.de>
+References: <20261030081225.2575462-1-edumazet@kernel.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261030081225.2575462-1-edumazet@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-arch-v1-7-c9492ab08480@kernel.org>
-References: <20261102-work-procfs-arch-v1-0-c9492ab08480@kernel.org>
-In-Reply-To: <20261102-work-procfs-arch-v1-0-c9492ab08480@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
- Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
- Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
- NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
- Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
- Greg Kroah-Hartman <gregkh@suse.de>, 
- Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
- Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
- linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
- linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
- linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
- ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
- coreteam@netfilter.org, kexec@lists.infradead.org, 
- linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
- netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
- linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
- linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
- linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
- sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
- linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
- linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
- linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
- linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
- linux-debuggers@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, 
- Chuck Lever <cel@kernel.org>
-X-Mailer: b4 0.17-dev
 
-Implement ->proc_write_buf() for lparcfg, ofdt and the vcpudispatch
-files so procfs copies in what is written before it pins the entry, and
-parse what was written from that copy. ofdt takes as much as
-memdup_user_nul() could copy before since device tree updates can be
-large.
+On 10/30/26 09:12, Eric Dumazet wrote:
+> The truesize of fragments in a reassembly queue is only bounded by
+> the per netns ipfrag_high_thresh sysctl, which has no upper limit.
+> 
+> inet_frag_reasm_finish() sums the truesize of all fragments in an int.
+> If this sum reaches 2^32, it wraps, and the final sk_wmem_alloc
+> adjustment of the socket owning the reassembled skb can cancel its own
+> reference, leading to a use-after-free of this socket.
+> 
+> This can be triggered from an unprivileged user/network namespace,
+> raising ipfrag_high_thresh and using padded TUN packets, which keep
+> a large truesize after being trimmed by ip_rcv_core().
 
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- arch/powerpc/platforms/pseries/lpar.c     | 14 ++++++--------
- arch/powerpc/platforms/pseries/lparcfg.c  |  7 +++----
- arch/powerpc/platforms/pseries/reconfig.c | 22 ++++++++--------------
- 3 files changed, 17 insertions(+), 26 deletions(-)
+Clasiko infers a similar scenario is still reachable using multiple
+concurrent frag queues:
 
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index 48fe0be71a89..dfd027cc9047 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -498,7 +498,7 @@ static void dtl_worker_disable(unsigned long *time_limit)
- 	up_write(&dtl_access_lock);
- }
- 
--static ssize_t vcpudispatch_stats_write(struct file *file, const char __user *p,
-+static ssize_t vcpudispatch_stats_write(struct file *file, char *p,
- 		size_t count, loff_t *ppos)
- {
- 	unsigned long time_limit = jiffies + HZ;
-@@ -509,8 +509,7 @@ static ssize_t vcpudispatch_stats_write(struct file *file, const char __user *p,
- 	if (count > 15)
- 		return -EINVAL;
- 
--	if (copy_from_user(buf, p, count))
--		return -EFAULT;
-+	memcpy(buf, p, count);
- 
- 	buf[count] = 0;
- 	rc = kstrtoint(buf, 0, &cmd);
-@@ -586,11 +585,11 @@ static int vcpudispatch_stats_display(struct seq_file *p, void *v)
- 
- static const struct proc_ops vcpudispatch_stats_proc_ops = {
- 	.proc_show	= vcpudispatch_stats_display,
--	.proc_write	= vcpudispatch_stats_write,
-+	.proc_write_buf	= vcpudispatch_stats_write,
- };
- 
- static ssize_t vcpudispatch_stats_freq_write(struct file *file,
--		const char __user *p, size_t count, loff_t *ppos)
-+		char *p, size_t count, loff_t *ppos)
- {
- 	int rc, freq;
- 	char buf[16];
-@@ -598,8 +597,7 @@ static ssize_t vcpudispatch_stats_freq_write(struct file *file,
- 	if (count > 15)
- 		return -EINVAL;
- 
--	if (copy_from_user(buf, p, count))
--		return -EFAULT;
-+	memcpy(buf, p, count);
- 
- 	buf[count] = 0;
- 	rc = kstrtoint(buf, 0, &freq);
-@@ -622,7 +620,7 @@ static int vcpudispatch_stats_freq_display(struct seq_file *p, void *v)
- 
- static const struct proc_ops vcpudispatch_stats_freq_proc_ops = {
- 	.proc_show	= vcpudispatch_stats_freq_display,
--	.proc_write	= vcpudispatch_stats_freq_write,
-+	.proc_write_buf	= vcpudispatch_stats_freq_write,
- };
- 
- static int __init vcpudispatch_stats_procfs_init(void)
-diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-index a6a137ce44ce..43af7f820fab 100644
---- a/arch/powerpc/platforms/pseries/lparcfg.c
-+++ b/arch/powerpc/platforms/pseries/lparcfg.c
-@@ -687,7 +687,7 @@ static ssize_t update_mpp(u64 *entitlement, u8 *weight)
-  * This function should be invoked only on systems with
-  * FW_FEATURE_SPLPAR.
-  */
--static ssize_t lparcfg_write(struct file *file, const char __user * buf,
-+static ssize_t lparcfg_write(struct file *file, char *buf,
- 			     size_t count, loff_t * off)
- {
- 	char kbuf[64];
-@@ -702,8 +702,7 @@ static ssize_t lparcfg_write(struct file *file, const char __user * buf,
- 	if (count == 0 || count > sizeof(kbuf))
- 		return -EINVAL;
- 
--	if (copy_from_user(kbuf, buf, count))
--		return -EFAULT;
-+	memcpy(kbuf, buf, count);
- 
- 	kbuf[count - 1] = '\0';
- 	tmp = strchr(kbuf, '=');
-@@ -799,7 +798,7 @@ static int lparcfg_data(struct seq_file *m, void *v)
- }
- 
- static const struct proc_ops lparcfg_proc_ops = {
--	.proc_write	= lparcfg_write,
-+	.proc_write_buf	= lparcfg_write,
- 	.proc_show	= lparcfg_data,
- };
- 
-diff --git a/arch/powerpc/platforms/pseries/reconfig.c b/arch/powerpc/platforms/pseries/reconfig.c
-index b41c5db726c9..f406e826a03e 100644
---- a/arch/powerpc/platforms/pseries/reconfig.c
-+++ b/arch/powerpc/platforms/pseries/reconfig.c
-@@ -349,7 +349,7 @@ static int do_update_property(char *buf, size_t bufsize)
-  * ofdt_write - perform operations on the Open Firmware device tree
-  *
-  * @file: not used
-- * @buf: command and arguments
-+ * @kbuf: command and arguments
-  * @count: size of the command buffer
-  * @off: not used
-  *
-@@ -357,26 +357,19 @@ static int do_update_property(char *buf, size_t bufsize)
-  * whole nodes along with their properties.  Operations on individual
-  * properties are not implemented (yet).
-  */
--static ssize_t ofdt_write(struct file *file, const char __user *buf, size_t count,
-+static ssize_t ofdt_write(struct file *file, char *kbuf, size_t count,
- 			  loff_t *off)
- {
- 	int rv;
--	char *kbuf;
- 	char *tmp;
- 
- 	rv = security_locked_down(LOCKDOWN_DEVICE_TREE);
- 	if (rv)
- 		return rv;
- 
--	kbuf = memdup_user_nul(buf, count);
--	if (IS_ERR(kbuf))
--		return PTR_ERR(kbuf);
--
- 	tmp = strchr(kbuf, ' ');
--	if (!tmp) {
--		rv = -EINVAL;
--		goto out;
--	}
-+	if (!tmp)
-+		return -EINVAL;
- 	*tmp = '\0';
- 	tmp++;
- 
-@@ -392,13 +385,14 @@ static ssize_t ofdt_write(struct file *file, const char __user *buf, size_t coun
- 		rv = do_update_property(tmp, count - (tmp - kbuf));
- 	else
- 		rv = -EINVAL;
--out:
--	kfree(kbuf);
-+
- 	return rv ? rv : count;
- }
- 
- static const struct proc_ops ofdt_proc_ops = {
--	.proc_write	= ofdt_write,
-+	.proc_write_buf	= ofdt_write,
-+	/* what memdup_user_nul() could copy in */
-+	.proc_write_size = KMALLOC_MAX_SIZE - 1,
- 	.proc_lseek	= noop_llseek,
- };
- 
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261030081225.2575462-1-edumazet@kernel.org
 
--- 
-2.53.0
+I'm unsure if that should be dealt with separately?!?
+
+Thanks,
+
+Paolo
 
