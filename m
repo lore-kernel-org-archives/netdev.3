@@ -1,59 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=168.119.38.16
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793616423;
-	b=DhldSIfdOU9on4WH/TphO1rhNCXMwlUvsk5IAfudqeelURTgQ7Pw7n2wCZYVA4MaepMs
-	 TjOxEXjy0ZkqeYz7WTJ5klYJ7qRCs2rxvNXhjm+LXolFl5nDO1abPG947yYZ+6c48hks+
-	 B6kkU2hvaKXrbpt23tSLTxsUjBOqmvlNhVBFLz3IR96ZziZWjRbp4SfhSPBcCzF5O70Vu
-	 EPpIyXccEEZWKNzQRcs0aZCwohg9Oi3e+avKm3+Sdq3mx7AVE3/3DGs3d15L+gmqjGV6m
-	 MHbT/cfSXorWJpUVTQVZAnV4HX66wypEAbphgb7Aurzj8MDcibZljKKUvJPIBt8Aijw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793616423;
-	h=DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-malware-bazaar;
-	bh=a1hyRsSVfnRQQLUN3WZlL+5K9kv+c3Zmam9PH7DT4ho=;
-	b=l6kLsw+LGW+tWQ/0DIuxZHw2vDf7d0Y0KgkvChsRpYDGgAe/ZEqh21zRZt8XvNEqr80S
-	 eKWs2yC3dLfMwtZVkc1DTk4xu/5H7awSwFwmc+ztJjYcIQ+6M83CYvEUUdzu3Y1ETeDdR
-	 kuWvKeYuIAvsAxd4/PnM+xhtceN9722e718OL3rvAvi6E6/uCVLPpm6NAfTHi5mDfsyw8
-	 FjgT2RQFBoWmEnOQA7JHUj3F/R8v0xqZ+vAOmBUKYYTH1dE6XfSj55CGd/FgDncUO7rFp
-	 KTiOpuHVffiShIzKGo3j4hoOPDiwex3ckGpMazAWw5LwxpSx1D0sfhstazozDqhTvnA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=permerror header.from=sipsolutions.net;
-	spf=pass smtp.mailfrom=sipsolutions.net;
-	dkim=pass header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=d1iDsCPs;
-	arc=none smtp.remote-ip=168.119.38.16
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793616476;
+	b=4qnlLvlrfqvTAAo5qRQGTme/a+1UBTgqw1BtVScdSlKmnJli94DqS9sAKB9S3giUPwLB
+	 aaYmejPj96D9YNj3pRav5SxQwwLQMzzceE8ludOT+qb5wRWBbptcUgAW8KwY8e3uw/JrU
+	 5Pl4mW5v9IiM9XbygO0oxMQGvC6EwIHJn2Z7t5kZfm/fdNZ6Jm5RUPCWpG/g2QT8/RwMP
+	 aoZ+j+Qwkf+477XxZK+wPAqs2NbzfHOJKOvy1gAmn1V5f0AxML/92n/yX8HQshOfolrqk
+	 EOHGcQbL7o0VlZS0z1jsaUOKR8RY6GDA+2LojWIVobZdcKmTnfvNuT70Xd3SDXVN6TA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793616476;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=T+RZI7e7a503JJKBr5TErd2x3kUYSI+ZxpBEoVMoGJM=;
+	b=Wtxp3Es4yASmGU07EGiH8jPeYO7hSnMI7ygYsn9Z79oxoJB0HD7247F4vuCJMdSQo01J
+	 7fDbaeN8lTJ2mAYn+BAx3wKdE72ID3D+cPFFF1aEwoAyvZmRY9EnTGIjbEcS0Xxj2RQdf
+	 yrzuoqVJiPWNzpIInTSXn500Iyei6fbDp/W5nRTLJ9IQvk8E+i8HH7T3TvRKMhWIUQT3X
+	 NXeJFljacNmcE7JRCTL4GbvQufVD7n9LsX+STHxpBFZ34BZnFpWkw2d8U8PwmVaaPyPWk
+	 8xiyBrums8q7gjyiM/Tqinv+IPWtRNBs2MBFFKWFeQoU+sADPUmEkrMxYGu+fNbQXcQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OYzv+WkJ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257D0606A324;
-	Mon,  2 Nov 2026 10:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6975606A324;
+	Mon,  2 Nov 2026 10:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=d1iDsCPs
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=a1hyRsSVfnRQQLUN3WZlL+5K9kv+c3Zmam9PH7DT4ho=; t=1793616421; x=1794826021; 
-	b=d1iDsCPs/btZaYZvvfFoTqe6wCch5misfmPdmLpOOMoU87/o9GXs9g7Y60oLRN/78rPBGjyA8Y8
-	pxmCHX+rpECL+ToQJtqAppYUYe1KZ6XN3VlIVKJhW3EYJ8KVvwht5u2Nl0aC9iLo1nHOMRSAOPOVL
-	XcfKf91At9GJtSrVV2pb3R9ZGzYeTNP+WdGriFRJ7A1IMFuzZN+RaNPFVpFWLvMky1aA/9efUDr2R
-	JnFUDLnK5RxcVTui3d033S/uX/6PuyzKH97scjimmfE3k34ewTiHa+HRKPJvDS/YseeOV8iWDi+3e
-	haftrQukdJRqlyGwLLAiiVtMKVTpIu0fj5nQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1xNpYz-00000001ApN-1FxZ;
-	Mon, 02 Nov 2026 11:46:53 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [GIT PULL] wireless-2026-11-02
-Date: Mon,  2 Nov 2026 11:46:33 +0100
-Message-ID: <20261102104649.727621-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.56.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OYzv+WkJ
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793616475;
+	b=WVqcCGBhTnb6+4fi+rPYGcRTrnak+coOkJ1xiT1KOJzV3WaAwN/T8tY0NpUDKVbm2+D+
+	 72TwDWgAGz0YwnHEzvPWrnclhhzFlMFX20U29e9KclHamqdTgFJ23XUVD3DvrDWSGHa+z
+	 bsfYr/iGkVzMKRs3wFABuwAxZW92suTjKI9Cy82nFuDdF/wysYmiT5Hg8ZRQUZ5lT+Wf2
+	 tIdIXta/HjgXD80fGKT86OP8Bll6MnZSmcWlTRD6izzBWGpv3s2ocoPiYjm4KdZwsNYue
+	 UvT44MlUHVE9Tfq0cHAQ0R2CBO9GDf57iuJa3UiduKNrC2TNnNGRpDXmmLLIFgB8XXw==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793616475;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=T+RZI7e7a503JJKBr5TErd2x3kUYSI+ZxpBEoVMoGJM=;
+	b=VORQTAe3MBh1PuqaJfRMw446M+E7s8kZS4U3qZQZfnpLg8jdbwfGKKfdL6wcBYrDRY8j
+	 AFg+rSkS3852ToaGVBzysiKUgtN441/e/BV+zl26UQli1BYj4y6JWYsAD/pNkTyAadxCQ
+	 5fUHffsL6gscjdtFVLPYkQ7li+SmKuoZiz9NbXxbhirXViVKVvwmMKC1pxtJiMlct9RwO
+	 le9aZbxICwVvfwbQEQ3C3zPkRgMjhQ+Xkvg/8cxFbH8vOV0rgsFjhBSOalKaSaXB0fmY+
+	 ku9FfaBr6IGXwKzxQrdfbjoiMaLdFuNjJU2zRhKzkcf4qttVHsREgF/S4mChVpl94Dw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id 031791F0093A;
+	Mon,  2 Nov 2026 10:47:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793616475;
+	bh=T+RZI7e7a503JJKBr5TErd2x3kUYSI+ZxpBEoVMoGJM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=OYzv+WkJwfrtldpL/Yko5UKJk6OLW+W3iXPGlwipDa0+k3U46hTjh6tVt0L5W9DtA
+	 n32s4TmFFJp9ht6Ya5Rp0ZsIkqovJZtxcT5YJeuUqnMV6KBHt1AvTQ6RM0jP/FTBwS
+	 iA0uv1uiCUxoTZZwWxRgETD/J3NxTs1TA9vjmIQND49ynDDRwFroCjgjedHVwZgWuM
+	 KRUIeJFVGQnJhyXB1AmV0qR+zokSpXrl2vtJm6xU3lhh0JDOqu+o1XX4JCr4W3F6R1
+	 6aW+lRX0Qn5B6AgvvwrkbopWmGbOgsXBTAz/yfef0rddL7ouqA4I2bTp3md49JGo38
+	 SBLegs12OXukw==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 72A964649C;
+	Mon,  2 Nov 2026 10:47:54 +0000 (UTC)
+From: Tjerk Kusters via B4 Relay <devnull+tkusters.aweta.nl@kernel.org>
+Date: Mon, 02 Nov 2026 10:58:14 +0100
+Subject: [PATCH net v4 2/2] igb: only strip Rx timestamp header on the
+ first buffer of a frame
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,68 +83,125 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261102-igb-rx-ts-fix-v4-2-8785124c5d23@aweta.nl>
+References: <20261102-igb-rx-ts-fix-v4-0-8785124c5d23@aweta.nl>
+In-Reply-To: <20261102-igb-rx-ts-fix-v4-0-8785124c5d23@aweta.nl>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, 
+ Sven Auhagen <sven.auhagen@voleatech.de>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Kurt Kanzenbach <kurt@linutronix.de>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Paul Moses <p@1g4.org>, 
+ stable@vger.kernel.org, Piotr Kwapulinski <piotr.kwapulinski@intel.com>, 
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
+ Alexander Nowlin <alexander.nowlin@intel.com>, 
+ Tjerk Kusters <tkusters@aweta.nl>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793616473; l=3972;
+ i=tkusters@aweta.nl; s=20260619; h=from:subject:message-id;
+ bh=0UiloOh6U/B/tS429upH2HnGmu+A3rF/YZDhNcwUk1s=;
+ b=8QWdz2XSCtqtw7EyzLikUTpweynlVp8P122E3NuY6pSby5O4QQwGb2eRS6ULk6G6k4ddNGW/9
+ l/o2v/0bcVzBkRGmHkkvL5sIl5L1P80vvuhk7OZOiXNB9VT1hsY7gbA
+X-Developer-Key: i=tkusters@aweta.nl; a=ed25519;
+ pk=JYRpYQ3+LrphEabgnxcbiOUpwvNP8WDDMcLzz+cwKsk=
+X-Endpoint-Received: by B4 Relay for tkusters@aweta.nl/20260619 with
+ auth_id=831
+X-Original-From: Tjerk Kusters <tkusters@aweta.nl>
+Reply-To: tkusters@aweta.nl
+Content-Transfer-Encoding: 7bit
 
-Hi,
+From: Tjerk Kusters <tkusters@aweta.nl>
 
-Just a handful of fixes I'd collected before, sending
-them so I can get the latest versions once all the
-merging happens.
+When Rx hardware timestamping is enabled (e.g. ptp4l, which configures
+HWTSTAMP_FILTER_ALL), the NIC prepends a 16-byte timestamp header to the
+first Rx buffer of every received frame. igb_clean_rx_irq() strips this
+header inside its per-buffer loop:
 
-Please pull and let us know if there's any problem.
+	if (igb_test_staterr(rx_desc, E1000_RXDADV_STAT_TSIP)) {
+		ts_hdr_len = igb_ptp_rx_pktstamp(rx_ring->q_vector,
+						 pktbuf, &timestamp);
+		pkt_offset += ts_hdr_len;
+		size -= ts_hdr_len;
+	}
 
-Thanks,
-johannes
+For a frame that spans more than one Rx buffer (e.g. a jumbo frame), this
+block runs once per buffer. The timestamp header only exists at the start
+of the first buffer, but igb_ptp_rx_pktstamp() is called for every buffer.
+
+On a continuation buffer the data is packet payload, not a timestamp
+header. igb_ptp_rx_pktstamp() already has two guards against acting on a
+non-header buffer: it returns 0 if PTP is disabled, and returns 0 if the
+reserved dwords (the first 8 bytes) are non-zero. Neither is sufficient
+here: PTP is enabled, and a continuation buffer whose payload happens to
+begin with 8 zero bytes passes the reserved-dword check. In that case the
+payload is mistaken for a valid timestamp header and igb_ptp_rx_pktstamp()
+returns IGB_TS_HDR_LEN, so the caller strips 16 bytes of real data from
+that buffer. A frame spanning N buffers whose continuation buffers start
+with zero bytes therefore loses 16 * (N - 1) bytes from its tail.
+
+This is easily triggered by a GigE Vision camera streaming dark frames
+(mostly 0x00 pixel data) over jumbo UDP with PTP active on the receiver:
+the all-zero frames arrive truncated while frames with non-zero content
+are fine. There is no error indication.
+
+No content-based check can reliably tell a continuation buffer that begins
+with zero bytes from a real timestamp header, because both are all zero.
+Fix it structurally instead: only attempt the strip on the first buffer of
+a frame, which is the only buffer that can contain a timestamp header. In
+igb_clean_rx_irq() skb is NULL until the first buffer has been processed,
+so guarding the strip with !skb restricts it to the first buffer
+regardless of payload content.
+
+This relies on the previous patch. Without it, an XDP program that does
+not return XDP_PASS for the first buffer of a multi-buffer frame leaves
+skb NULL for the rest of that frame. With the receive length limited
+while XDP is attached, such frames no longer reach the XDP path.
+
+igc has the same bug and is fixed the same way.
+
+Link: https://lore.kernel.org/all/20261028083344.3047350-2-p@1g4.org/
+Fixes: 5379260852b0 ("igb: Fix XDP with PTP enabled")
+Cc: stable@vger.kernel.org
+Reviewed-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Tjerk Kusters <tkusters@aweta.nl>
+---
+ drivers/net/ethernet/intel/igb/igb_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index 5bf489cd7b06..c4eb9f589fbe 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -9072,8 +9072,11 @@ static int igb_clean_rx_irq(struct igb_q_vector *q_vector, const int budget)
+ 		rx_buffer = igb_get_rx_buffer(rx_ring, size, &rx_buf_pgcnt);
+ 		pktbuf = page_address(rx_buffer->page) + rx_buffer->page_offset;
+ 
+-		/* pull rx packet timestamp if available and valid */
+-		if (igb_test_staterr(rx_desc, E1000_RXDADV_STAT_TSIP)) {
++		/* pull rx packet timestamp if available and valid; it is only
++		 * present on the first buffer of a frame
++		 */
++		if (!skb &&
++		    igb_test_staterr(rx_desc, E1000_RXDADV_STAT_TSIP)) {
+ 			int ts_hdr_len;
+ 
+ 			ts_hdr_len = igb_ptp_rx_pktstamp(rx_ring->q_vector,
+
+-- 
+2.27.0
 
 
-
-The following changes since commit 045958acaa75205b31578cb22c4345e28dd2e4bf:
-
-  Merge tag 'net-7.3-rc8' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-10-15 08:20:20 -0700)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2026-11-02
-
-for you to fetch changes up to 25e73f1d6868c759c8eb56cad4e411692c5341b4:
-
-  wifi: mac80211: reinstate IEEE80211_TX_CTL_AMPDU flag in ieee80211_tx_prep_agg() (2026-10-26 12:20:45 +0100)
-
-----------------------------------------------------------------
-A few fixes to start with:
- - wext: fix notifier netns interaction
- - rsi: avoid TID OOB access
- - mac80211: reload pointer, fix A-MPDU flags
- - brcmfmac: fix DMA regression
- - cfg80211: fix regdb validation
-
-----------------------------------------------------------------
-Alex Kazinsky (1):
-      wifi: rsi: Skip TX aggregation setup for non-QoS frames
-
-Cosmin Ratiu (1):
-      wifi: wext: Limit notifier event flushes to the device's netns
-
-Jason Perlow (1):
-      wifi: brcmfmac: map msgbuf RX packet IDs bidirectional
-
-Toke Høiland-Jørgensen (1):
-      wifi: mac80211: reinstate IEEE80211_TX_CTL_AMPDU flag in ieee80211_tx_prep_agg()
-
-Weigang He (1):
-      wifi: mac80211: reload TDLS header pointer after skb_linearize()
-
-Zijing Yin (1):
-      wifi: cfg80211: fix out-of-bounds read in valid_rule()
-
- .../wireless/broadcom/brcm80211/brcmfmac/msgbuf.c  |  2 +-
- drivers/net/wireless/rsi/rsi_91x_core.c            |  2 +-
- include/net/iw_handler.h                           |  8 ++++--
- net/mac80211/tdls.c                                |  3 +-
- net/mac80211/tx.c                                  |  2 ++
- net/wireless/core.c                                |  2 +-
- net/wireless/reg.c                                 |  3 ++
- net/wireless/wext-core.c                           | 33 +++++++++++-----------
- 8 files changed, 32 insertions(+), 23 deletions(-)
