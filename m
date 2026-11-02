@@ -1,120 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793640666;
-	b=JmeHnoLOZ/sFImq86LDbFHJHvEBZFZa+wmZNYVL5jG87OdHLpsOVvDzYw3ccan8o+9DO
-	 OTzhyRJr0MvzPBAkelI0AbKadCtTbRg9ya5vsoUxFVHKpB39BWNLa1xS8zbenZ00qI1x9
-	 eN7DOt98NBI+zrSIYFn1mKqMf2rMvuff+BnjCJn1j8/hl11VXlOKAr0bp2KsyFz68QZR7
-	 Q7OaXF2HrwSjA6Zai4JL58TZdnRNR5pCS4zxu2FZCW9Zopv7nl9PMvgxhTJSTe3LzqNZ1
-	 jTvCudyROpA7ow2n/L/a+Hf/eWrz07YKMr4LEhO64qcikZDk7uvzjEJJ1yDkuNXd8og==
+	t=1793640832;
+	b=a09jh+91uUI+S8x2cAmqJQe7xmWWFnkdGJt7jtp0Kx/ttugHUPQflZ37N7qcpEitdApF
+	 tP46pXUYo9Y7FjuF/G07jVIu0KYcaHEosIOdrZEqWVG5AZGJ6fQ5vREXcIJma0GqtfHnG
+	 RAFbWsVvcrKl192a88lQWBQ9KUvRxU2bqPZvV0l49GsZnAn2KbfgkaBquOfS1nipMJ8aO
+	 HlzveglkoMl7+no+OBuK7qdcXibILvtKwGpWnVzCMVlOkGFPcE6IBzjWgi9gXBxrcwJlF
+	 CUDe3rhhGlO3Fh2eQg45oNJ3xLPIIKL4FR0yOZG6YlJq+NWtou00eZm+9ovQ1m9idvg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793640666;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=1RMGM2tdquFW2b2zOYAB2Tk8dbjfkSZIp3K0bLlHl7I=;
-	b=CiiOYECuOACQaAqO9U7wP9WadPKPqBmE0OLlUK9S09UqQ0l8TtktZgDf9HnQ+HHvUH9i
-	 8EZhV1SHzGAmh41VZ9tLzTlhApLqxUuLSUoxO++lIbs5B0UiKbZjLhItazkxTW++44oEA
-	 XGZt7gx0QBvaLzQ33UwvDa7FpZApkPOv+EE1zEocSMckk8G28qUdLIqYlGx0PS1VkJlyM
-	 B8QiUE/NxnD1Oe7SGCqCCqClhgrs1rrFDtSN0sO4o4fQIBwqebWwqCAFnk8XrCedLRKbF
-	 kvmBnvTv3dryKwpgqDzFXMzU9977kG7xP3FErEV1mYdgFQGTLtKtyXQvCCU5IcP6bBw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793640832;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=NW8ZU0sBpbVBOi33hW0BCgeDRWT6riQdrCZk2EpkxOw=;
+	b=WqGt7JecWsUwzOvkfBWStV7Jq6I9JJMNoEG45pMW1aqhOy9HGkBXxBjfI6WX+mBJ2EXg
+	 K58ncSHbRjR0uBdIXG9X6utjG1CWkMFrBiYwkxbBknZ+qnroCsyC9iENkNvmOFAE8nzfp
+	 lx7h2i4Pz3CG1PCFDfJmuBIc2hWeJGfn6gm+FFZD1vhVNUgv+XC97wagt+YxFEpEWXAkv
+	 GPHS10N85NBhZ+uIym8ayfEUJKT7PUSo+NaytKgWK5oMbD7obSZRdWKLmfCtBwQtyfB9N
+	 imymQPcZlBE56ocuoFQ6+RdRwPo9XqMjwu1YrCO3VjuRLAYvTNmDEVYbfdRMmivE/wA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="WO/weqq/";
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=nDV52+Pg;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C1O8e8lm;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8668D606A595
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 17:31:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8668D606A595
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3AA606A326;
+	Mon,  2 Nov 2026 17:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WO/weqq/;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=nDV52+Pg
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793640664;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1RMGM2tdquFW2b2zOYAB2Tk8dbjfkSZIp3K0bLlHl7I=;
-	b=WO/weqq/mBliiL5yMRKjE/qPlDM3IwxJfG5ikevaMuZ7pnw6yd6/1+jmTIh4GuunYICdEp
-	8Eple4CV1QLH5zp1UeweuSzs5djw0Mt2uJjyWXcxt/kb/xD1gmLhtjMxM/N7wl0zKMaRtk
-	q0IoPsf9XfbiqXfQKSJQCYlk6jDthRM=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-93-5EzhO50qOHO73Hnxj45WhA-1; Mon, 02 Nov 2026 12:31:03 -0500
-X-MC-Unique: 5EzhO50qOHO73Hnxj45WhA-1
-X-Mimecast-MFC-AGG-ID: 5EzhO50qOHO73Hnxj45WhA_1793640662
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a2063be13dso29504035e9.3
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 09:31:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793640662; x=1794245462; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1RMGM2tdquFW2b2zOYAB2Tk8dbjfkSZIp3K0bLlHl7I=;
-        b=nDV52+Pg5PDNA7V1QVQKM2uUoSBEq5/BhVNKgQQJ0jEhyHgyBTW3BdAc6ZdiJsVv+M
-         cJ382PbjYgAWqBRtjiDYCtAqHaV7ygbLyJSEZF9f+Zt7Yu7YNASwaXvmYwbqaFFZQHzh
-         Hpg/v2K5MYoGB35N66S2kl5yIFgHuQBPtmtjd9hKeP/zAas5S1Now+bywd0l1DCHZOkE
-         piikiCezukkgW16O2vEVHcn23DQQbyukWIFiTiqC7pqCxMYRxcapQb97oZcHEOxEcYbY
-         V0BQI/tPYp8WuoQV4+DeSpaNDaxZxczCm/BfmpiEuqSVuarNGVNmF7ePo2Ffbwdb52bl
-         TV8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793640662; x=1794245462;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1RMGM2tdquFW2b2zOYAB2Tk8dbjfkSZIp3K0bLlHl7I=;
-        b=Y4zp2DaxEGqqEEhpO7PyfZmh2UdlJK6eV3Ha9g1VIH8zT3TumrVphX7LVXGbSTx/aW
-         GvyVO+UsRmKj2ITK2IYQ/T3YM7IxbupczebX/1AgWTOg2URkbL2baLJMo71WCkTsGzp9
-         kPa9f+5ozlEQfMarLRp0FioNIRMnxfkpVC4cLpYXZWTx+mW5ZpdHj57ttzNKBnTOZuHX
-         yPDFi9V1r/DmgMEstpSrxbHCOD8kPcYmdRit3X9ihY09kmKYiSPVyVJ5bMeEvGasQ0PG
-         Jekj6vg4dswe7+nSQZYJKLX6tYbEGUZ7eMxpsgWrXePzYf+QQ8lTx/nk3RKfe0EqdpH0
-         QbGQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwuqGcS+g4b8LmWqkpak6kAE/riOj61wUtpOqqhSyVsVZcM1d0gcuDa0FpoKuFjbCMBcKIlZn8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIGujQaTxl0kfwEReFqo20ZBK2Q3GZ5GkbTC4vk5AY9BaXP9+nZ
-	lQXw4S500dRSPDU9eAhqa+mEfK3Rd9FV2WK7+wL0YiHcnqEQlYM5fw8LFWxqNe5ECD2ZyAc1e8U
-	5SftKewscLg3pY8b/c4Uew1TNA9NzM7waAbPdZ8yaBY8XWdiLIMwvX3EhGA==
-X-Gm-Gg: AYBFou2FF60KhU2/KAP5zzvzbQGURUs9iJ3Uw9qYUBeGitB/0FCIWY+a3fjAwCsXvMr
-	N4wJQfxsMGYpcptkcXCxQzGyMNvZQUc2Hv2W69pCmKi0GRakHVqTdOYGYiuobP+QfZaucULHI4l
-	eC/gTe2VelPgyuq/GDIl8PrekwyL841YFTh2fhPQtCsokhyP7/zvd8gyNwDWhgiRL54GLjV2UQm
-	5Dz841GsYRT298jKyEQ3a7cv0WrA/50EJpBy9UC4vRwYA3II6N1faVXlmouYaCi9yZfcBLScJwT
-	ZLGOdRxquAiyg4RVI/GRcUYVm/cfYTKlpkkg4CXi6w/MVwSV1iE/JN7qtk14zj9lFgDU7hgzqln
-	YRvPVfr4eqJZ++1819OJF2OlA01mrBCRVwQRXKU5W7w==
-X-Received: by 2002:a05:600c:310e:b0:4a2:10f9:37ce with SMTP id 5b1f17b1804b1-4ac1709ae70mr245615695e9.15.1793640662130;
-        Mon, 02 Nov 2026 09:31:02 -0800 (PST)
-X-Received: by 2002:a05:600c:310e:b0:4a2:10f9:37ce with SMTP id 5b1f17b1804b1-4ac1709ae70mr245615175e9.15.1793640661652;
-        Mon, 02 Nov 2026 09:31:01 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1506:fd00:9e19:9994:44b1:e6f2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b2aa953d35sm1240835e9.9.2026.11.02.09.30.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 09:31:00 -0800 (PST)
-Date: Mon, 2 Nov 2026 12:30:57 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Lianjie Wang <karin0.zst@gmail.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, netdev@vger.kernel.org,
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] virtio_net: reject stats replies for queues outside
- the request
-Message-ID: <20261102123049-mutt-send-email-mst@kernel.org>
-References: <20261022182710.2055771-1-karin0.zst@gmail.com>
- <096bd22b-c569-4998-a943-0381c3fa9998@redhat.com>
- <auCkXHi6IulXgm7v@wang0.localdomain>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C1O8e8lm
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7B41F00A16;
+	Mon,  2 Nov 2026 17:33:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793640831;
+	bh=NW8ZU0sBpbVBOi33hW0BCgeDRWT6riQdrCZk2EpkxOw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=C1O8e8lmOwb8wMV8hZ7tS1FAol7Ms9KBziEIwSqZ0qBWIfb4DXAvbjEkkFw0TWldd
+	 G8YeyTCpCxwus+gpT/Veq5Sfr9FByNm8akxZ1sE3+wrfAW+6bpQyFyv3BNzb3crMQ+
+	 uzgO5oxfC4+7CpjkScv2OQ9uzBMHjm5OA+zVXmjXh8lh8V6BCqTU3fa5rE1SbSvUuW
+	 hSqkFBkxoltUlmzLeZeAH/UTR+rmEe9bYhO/zPxhhoRNuy+BnzTYFJTRI1xFgwKs00
+	 CX5Q/1YBL5iS1uFvcvZKNnlwv30833xlHWWJzI8Pl1okkmc+uldCSUhEU88FzrZmaZ
+	 jxJvsMP3US+Ig==
+Subject: Re: [PATCH net v3] net: bgmac: fix RX frame length check
+From: netdev-bot+sashiko@kernel.org
+To: rosenp@gmail.com
+Cc: netdev@vger.kernel.org, rafal@milecki.pl,
+ bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ nbd@openwrt.org, linux-kernel@vger.kernel.org
+Date: Mon, 02 Nov 2026 17:33:50 +0000
+Message-ID: <179364083073.3131.3402405376014910148@kernel.org>
+In-Reply-To: <20261029173122.29636-1-rosenp@gmail.com>
+References: <20261029173122.29636-1-rosenp@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -124,61 +63,139 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <auCkXHi6IulXgm7v@wang0.localdomain>
 
-On Tue, Oct 27, 2026 at 10:53:16PM +0900, Lianjie Wang wrote:
-> On Tue, Oct 27, 2026 at 01:06:41PM +0100, Paolo Abeni wrote:
-> > On 10/22/26 20:26, Lianjie Wang wrote:
-> > > [...]
-> > > @@ -4976,6 +4977,10 @@ static int __virtnet_get_hw_stats(struct virtnet_info *vi,
-> > >   	for (p = reply; p - reply < res_size; p += le16_to_cpu(hdr->size)) {
-> > >   		hdr = p;
-> > >   		qid = le16_to_cpu(hdr->vq_index);
-> > > +		if ((qid < first_vq || qid > last_vq) &&
-> > > +		    !(enable_cvq && qid == vi->max_queue_pairs * 2))
-> > > +			return -EINVAL;
-> >
-> > I think the above check could be simplified to:
-> > 		if (qid < first_vq || qid > last_vq)
-> > 			return -EINVAL;
-> >
-> > squashing the following in virtnet_get_hw_stats():
-> >
-> > -       if (enable_cvq)
-> > +       if (enable_cvq) {
-> >                 virtnet_make_stat_req(vi, ctx, req, vi->max_queue_pairs * 2, &j);
-> > +               last_vq++;
-> > +       }
-> >
-> > (likely with some meaningful comment).
-> 
-> Thanks for the review!
-> 
-> I looked into this, and I think last_vq + 1 matches the control vq
-> only when all queue pairs are in use. The control vq index is
-> max_queue_pairs * 2, while last_vq is curr_queue_pairs * 2 - 1 for
-> ethtool -S. After ethtool -L lowers the queue count, or when probe caps
-> curr_queue_pairs at num_online_cpus(), last_vq + 1 is the receive vq at
-> index curr_queue_pairs * 2, which is not in the request. The simplified
-> check would accept a record for it. Since the ethtool -S array has
-> slots for only curr_queue_pairs queue pairs, with the transmit slots at
-> its end, virtnet_fill_stats() would write the counters of that record
-> into the transmit slots, and can write past the end of the array.
-> 
-> Would you like me to keep the current check or change it in some
-> other way?
-> 
-> As for the comment, I would add the following above the check in v2:
-> 
-> 		/* The control vq comes after all max_queue_pairs pairs, so it
-> 		 * exceeds last_vq + 1 when fewer pairs are in use.
-> 		 */
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-didn't get v2 yet.
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-> 
-> Thanks,
-> Lianjie Wang
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
+- [High] When bgmac_dma_rx_read() rejects an oversized frame, it only
+  drops the current slot.
+- [Medium] The new upper bound in bgmac_dma_rx_read()
+  (drivers/net/ethernet/broadcom/bgmac.c:463-464, `len >…
+
+--
+
+net: bgmac: fix RX frame length check
+
+This patch tightens the RX length check in bgmac_dma_rx_read(). It now
+compares against BGMAC_RX_MAX_FRAME_SIZE instead of BGMAC_RX_ALLOC_SIZE,
+adds a lower bound of ETH_HLEN + ETH_FCS_LEN, and prints the bad length.
+
+> diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
+> index 669eb7ce7d40b..b5e1d3c0003d6 100644
+> --- a/drivers/net/ethernet/broadcom/bgmac.c
+> +++ b/drivers/net/ethernet/broadcom/bgmac.c
+> @@ -460,10 +460,11 @@ static int bgmac_dma_rx_read(struct bgmac *bgmac, struct bgmac_dma_ring *ring,
+>  				break;
+>  			}
+>  
+> -			if (len > BGMAC_RX_ALLOC_SIZE) {
+> +			if (len < ETH_HLEN + ETH_FCS_LEN ||
+> +			    len > BGMAC_RX_MAX_FRAME_SIZE) {
+
+[Severity: Medium]
+This caps the whole L2 frame at 1536 bytes, Ethernet header and FCS
+included. Do the other limits in the driver still agree with that?
+
+bgmac_enet_probe() still advertises:
+
+	net_dev->max_mtu = BGMAC_RX_MAX_FRAME_SIZE - ETH_FCS_LEN;
+
+That allows an MTU of 1532 and does not account for ETH_HLEN or VLAN/DSA
+tags.
+
+bgmac_chip_init() programs the MAC with this, which is 1550:
+
+	bgmac_umac_write(bgmac, UMAC_MAX_FRAME_LEN, 32 + ETHER_MAX_LEN);
+
+bgmac_change_mtu() programs 32 + mtu, which can be up to 1564.
+
+So the MAC can accept and DMA frames of 1537 to 1564 bytes, or 1537 to
+1550 bytes with the default settings. Won't the new check always drop
+these frames? Each drop bumps rx_length_errors and rx_errors and logs
+"DMA issue", even though the MAC was configured to accept the frame.
+
+With an MTU between 1519 and 1522, frames of 1537 to 1540 bytes used to
+be delivered intact. Only FCS bytes spilled past frame byte 1536, and the
+FCS is stripped. These frames are now always dropped, and the commit
+message doesn't mention this change in behaviour.
+
+The commit message also says:
+
+    A corrupted length between those two limits passes the check, and the
+    following skb_put() runs past the skb tailroom and calls
+    skb_over_panic() instead of dropping the frame.
+
+Is that accurate for the whole range? Lengths up to about 1570 (32 byte
+cache lines) or about 1602 (64 byte cache lines) seem to fit in the
+SKB_DATA_ALIGN tailroom. Those frames were delivered, not panicked on.
+
+Should max_mtu and UMAC_MAX_FRAME_LEN be brought in line with how many
+frame bytes an RX buffer can hold, as part of this fix?
+
+>  				if (net_ratelimit())
+> -					netdev_err(bgmac->net_dev, "Found oversized packet at slot %d, DMA issue!\n",
+> -						   ring->start);
+> +					netdev_err(bgmac->net_dev, "Found packet with invalid length %u at slot %d, DMA issue!\n",
+> +						   len, ring->start);
+>  				put_page(virt_to_head_page(buf));
+>  				bgmac->net_dev->stats.rx_length_errors++;
+>  				bgmac->net_dev->stats.rx_errors++;
+
+[Severity: High]
+When an oversized frame is rejected here, only the current slot is
+dropped. What happens to the continuation descriptors that hold the rest
+of that frame?
+
+bgmac_dma_rx_enable() sets:
+
+	ctl |= BGMAC_DMA_RX_OVERFLOW_CONT;
+
+As noted above, the MAC accepts frames of up to 1550 bytes by default.
+Each buffer only holds 1536 frame bytes after BGMAC_RX_FRAME_OFFSET.
+
+Other drivers for the same Broadcom DMA engine show that such frames
+spill into the next descriptor, with the rest written from offset 0.
+brcmsmac's dma_rx() computes resid = len - (rxbufsize - rxoffset) and
+walks the extra buffers. b43's dma_rx() recycles the continuation
+descriptors:
+
+	/* The data did not fit into one descriptor buffer
+	 * and is split over multiple buffers.
+	 ...
+
+After the break, ring->start moves to the next slot. The loop then reads
+rx->len and rx->flags from offset 0 of that buffer. Those would be bytes
+1536 to 1539 of the oversized frame, which the remote sender controls.
+
+Any len from 18 to 1536 passes the new check, and flags won't be 0xbeef.
+The code then calls build_skb(), skb_put(), eth_type_trans() and
+napi_gro_receive() with up to 1532 bytes.
+
+For a 1550 byte frame the hardware writes only 14 bytes into that second
+buffer. All of them land before the skb data start at offset 30, and
+bgmac_dma_rx_skb_for_slot() poisons only the 4 byte rx header.
+
+Wouldn't this pass stale netdev_alloc_frag() memory, such as old packet
+data or other freed kernel memory, up the stack as a received packet?
+
+The commit message says the change stops eth_type_trans() from parsing
+"bytes the hardware never wrote". This path still seems reachable.
+
+Before this patch, the same continuation slot could also reach the
+skb_over_panic() the commit message describes. The new bounds remove the
+panic, but the stale memory is still passed up.
+
+Could the continuation descriptors be consumed the way b43 does, or
+SOF/EOF be checked? Another option is to cap UMAC_MAX_FRAME_LEN and
+max_mtu so that no frame can exceed BGMAC_RX_MAX_FRAME_SIZE.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261029173122.29636-1-rosenp%40gmail.com
