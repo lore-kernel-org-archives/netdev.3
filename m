@@ -1,54 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=46.14.198.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.181
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793656448;
-	b=4sHeY04IOR4QBXZ66x6wgP02Nrj9nBxcRmmSg3HDruT/h6fN6b0mJ94pwRyET+8JQv9A
-	 3hPtqi7hjDZARUGKwWg9/uy8O+dW8jc2zupE9k5t6QYtoCZjfzLlFfbaaCd7PIZ0UJTdh
-	 34xzy1f8400fWKXQpDyQMw5zDaslaiMNrGQ6lseJFs94z14E3lV24G9Cm0Kgff5UhrZKC
-	 4vWdIaSMflc8QQHTzJrUEwUYvW4v3rPtu94Dhiv0crSrP2Z16cleyxpQvHXsdttjtoJu0
-	 28qUf/N+MFAlL2iHH5A/jCooZqgQsCal+g266zIyKYjc33Wxs9AmY0yZavNdiLea1KQ==
+	t=1793656692;
+	b=hXUFa8gZ/ZZwTaIbVZU43JOrrZp6jMJ1ZcdCHFEfFc7ckB7ltTjvWdQ+4N9HFF3yzgTc
+	 PLdWw/TGYgzeIRoCeP5CMIgW+6zvf16qKH1CF1uGEqM86c0O3TJwT/nx7B27OzVF5rDpr
+	 1hziMT5YgKQYutMVnqkI6H03wlSWCt6UaxijbaGfBKzQ1R4FdyWmxIoCkMtmo+d7edAMY
+	 GcshXksAhw6LLDj5f6zHeQKZRMWTIhfSujBZzBoniLlb8MFPdoJbE7jSVlQOiOOoevUMc
+	 lvODhIy9OfFBveFOXWv/xJjDIqoRN0g4GRBZWt/vHIxvSmcgXJS+w8+4QxkDbI33Y9Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793656448;
-	h=DMARC-Filter:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding:Received:DKIM-Signature;
-	bh=Si1SlwaSuA8jJ/s8kmTXAZJRSzK+WvbYpL5ETHVz/ms=;
-	b=KNyRI4av4yjyn1W9Gwae/ahcFIiwDw+MolH/RLYoR8+VhxtUrDGi6t2a6Nx2htKvRZ5Q
-	 Rabvu1/DZUEj6ezL6e8ywgYQZVB5WuUtAV7Qx6kNneT8228sNA3oQMPEPBWr07SZd/brg
-	 1+iUCbAu5EJGOdLtUhUt5mauaBFKk+eHi3E4MIMvO39iO3t6qk3W0UTuvg1AIHjNwgIxs
-	 7Fh29QcUFMxPpGQxdQTCSsl4tq4oPJETit+iSqbGWRejhd9dcZmwq7c2YfL3P5fBXV4GZ
-	 Okl8RhElQsxbaT4X0Vf/3DAJsEa9ExfQ1JJ5dLCs3c8oSUlq/x3WM2cEgKca3V3BOEQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793656692;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=gebPnQ/HRugxL6nfFyrvMtYAqOFjmGnjd5psHTA3l8E=;
+	b=hvevmSfnsULwyLckqN1u4SOjbL01NipxVEkt6oiPn3d7ADq5gXUUJiCJsJZudIvIzfc4
+	 bJdKfuYb35T+3Y7uhB4b2LkvYi23nD87udju8lCeI6simB+G1oSDO4is+cgoT5zA5D/WC
+	 pmE+s4C5QQ10ADdk2YQj7M5ATIub9uaQLvIKiMEo+nBHhSAkHXN5R4fiMigbG1My/8Qpl
+	 0fopGQsA2GURw8LZEkVEfeQ9N1IuGlqf5stUMcUIbHz6O6edVQJ2+/LWDQ5oOJvV4Hv8f
+	 479XuIjSEbVO2lgQ5jXeY/9WW0Nnl9xSQAVmlZbb2nPx7sEGKf78ApGJhHTegtAKASw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=rimpianto.com;
-	spf=pass smtp.mailfrom=rimpianto.com;
-	dkim=pass header.d=rimpianto.com header.i=@rimpianto.com header.a=rsa-sha256 header.s=s20260314391 header.b=HNENlrZ9;
-	arc=none smtp.remote-ip=46.14.198.178
-Received: from mail.rimpianto.com (mail.rimpianto.com [46.14.198.178])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XpBrACIn;
+	arc=none smtp.remote-ip=209.85.214.181
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41870606A324;
-	Mon,  2 Nov 2026 21:54:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41870606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rimpianto.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rimpianto.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BEB606A324
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 21:58:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83BEB606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=rimpianto.com header.i=@rimpianto.com header.a=rsa-sha256 header.s=s20260314391 header.b=HNENlrZ9
-Authentication-Results: mail.rimpianto.com;
-	auth=pass (plain)
-From: Federico Musto <federico@rimpianto.com>
-To: Chris Snook <chris.snook@gmail.com>,
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XpBrACIn
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2e98798cbddso16949825ad.0
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 13:58:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793656691; x=1794261491; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gebPnQ/HRugxL6nfFyrvMtYAqOFjmGnjd5psHTA3l8E=;
+        b=XpBrACInLlTWuFMMdhFWtpx5vhfJhI1QN7JOShyE7KOeWmDf+zlM8nSXfqdtOAIYmW
+         p2U5e2JgXjCxbcoSGl0NXCEaPwrR1uzsq/NA+2frTqpx0Bej+n8rFz/UzxoFVTSafcZT
+         LDOSkEKrknltPLoqAVXEJshjq1OlvUmLH0wFOF2FFWNBRBTXce61jci2h5V8mTGBy8mb
+         KV+fD451HeBs94vyBm4uJO0XUn9/HLhmyCfFU2zHzID1A1YY8tM/S/brJtcBZosUcZCI
+         7gVEbgUonYzW7Gbqwdbawa5A0+yN0qbZeo5prhNTo3nufbs/9T/vYDtZbseU8Fz9+O2E
+         gVSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793656691; x=1794261491;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gebPnQ/HRugxL6nfFyrvMtYAqOFjmGnjd5psHTA3l8E=;
+        b=e/IcKYEJgQSI9vrXSpvW41i9wX282pb6YPmuUFNU7cDtha9GXVkqMPXoXJP86wAbqJ
+         M0h7PXN9w+bBzSQi3F11B1MuAywthxypQXwmqj6yo42694diC8M/0HjSp8VWxJZSPgNd
+         33M61sFh1iWm3jvfdx3kcLbPp3k/wwkb76SMZVG6hTKcc12LS6Zl7ag3ain/plm6KfbD
+         cHalnHshwgxVlccbOAsGw9TshT6cI69gqCs3qPcmyynSFqQBC2dzqFf94RqfmCFc2Y3p
+         GdqY2Q7hGEs9Bl04Y4EDWDF6Vg59wyLDNqpKty4sFbs6x1Mg9OE2acmZLgLwm6qh+PVp
+         fQjQ==
+X-Gm-Message-State: APuU4Z+z83U7zzKCZppYv2uAhfdPw3L3A8RbfmS/V1D2FPJ18c3EXpc9
+	b8C2fXMba8WWaASaQXU1+RScX7bjhxmWTTuQXWx1+JMLJ9i6GpFxAbb2+Scs5w==
+X-Gm-Gg: AYBFou3CHolnCJEVN40VlASt1+nQyAtIa6U9QwnlMzCaSsSVEXx2WJ/6jgCBhwQn1kr
+	RofaJ3JeXozz3NfucIi+HChPwmiXo9goUiZ0UAT9cWDl3FcsZB5vAPEbuwZos2nA4jDzewTFGfd
+	i/VrfT75v8Wq95PBfkMG719XPQ1DBicvpZlLyZv0+1TyfJPWJuRLtwB2rS7c2j/W/WTqofs8DU2
+	F79eAdFrovCfcB1p54KC84v+Ub6X0L+SxVhoWC1MWIVSjf83//qFOmVZtU5XgS31PRIw4X6CMnh
+	Fp84kmwjPPVJfcD1/TW73JAukVougX9wZ7q1Kq5BsWuwbv3yvQJwrKAdq7teffYYBvAjxC7e4eb
+	fpJ4CtemypjfX+yxgP7/UzDUkBVPdiV4OmBjWrxWprc8MawO0hsrca3xy9YfShTGzVQ1wW3pNc6
+	HQa4YWczkTm9J+0eKRaXCEkxWPMJc6GHjbHdWxOsvnwGBKeTbYivfg71w3rXaMaiRHgjt+8R9I/
+	dMKcNP3Yeo/rKwLWD0sIv6Rb4751ilLiNAicKL+lmhQyTs40g0+TV/3OjiGmC8AEumkyrWXKRKI
+	0Db2fXMFX81mBjvozRcr/0Cnvqg/9v2KJqJCYN2tJ1ZEzsV+auad+UNbtalyRNLkETjroBKRwol
+	VwMjWe1qBd+YKzlEo2EMBU34qoeBQSix1/q6OSomo+cdqFHRQ+TcLRmfvg/jcffd1po0mjB1aaH
+	iedg==
+X-Received: by 2002:a17:903:3804:b0:2e6:1a6c:abcd with SMTP id d9443c01a7336-2eb364026bcmr108654215ad.3.1793656690833;
+        Mon, 02 Nov 2026 13:58:10 -0800 (PST)
+Received: from ryzen.lan ([2601:644:8000:37f::e34])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb39248621sm31840155ad.28.2026.11.02.13.58.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 13:58:09 -0800 (PST)
+From: Rosen Penev <rosenp@gmail.com>
+To: netdev@vger.kernel.org
+Cc: =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Federico Musto <federico@rimpianto.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] net: atl1c: free the RX buffer when the descriptor reports an error
-Date: Mon,  2 Nov 2026 22:52:53 +0100
-Message-ID: <20261102215253.68185-1-federico@rimpianto.com>
-X-Mailer: git-send-email 2.54.0
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net-next] net: bgmac: stop advertising TX checksum offload
+Date: Mon,  2 Nov 2026 13:58:06 -0800
+Message-ID: <20261102215806.13723-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,123 +101,46 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received: from localhost (Unknown [127.0.0.1])
-	by mail.rimpianto.com (Haraka) with ESMTPSA id 428EE241-5021-4E65-9566-B0993DB83854.1
-	envelope-from <federico@rimpianto.com>
-	tls TLS_AES_256_GCM_SHA384 (authenticated bits=0);
-	Mon, 02 Nov 2026 22:52:53 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rimpianto.com;
- h=Content-Transfer-Encoding: MIME-Version: Message-ID: Date: Subject: Cc:
- To: From; q=dns/txt; s=s20260314391; t=1793656373;
- bh=Si1SlwaSuA8jJ/s8kmTXAZJRSzK+WvbYpL5ETHVz/ms=;
- b=HNENlrZ9LBxVy+fUNXnLJtGsaGIM6QZRucljRInITP1uNoIwcEEdzQ4Ivhx8yqx3yrwepaEiN
- z11mY82BRH/xyUGiaDXl1N2Kxg+PrLAi8lIII574OsXz+Iow2UgDUjXWDoXOl/o9Dj27RvzO0Wi
- FcnbUNqcHa+bVH0DCQsQ++StUkcNbN6L8ejGyZL9Op9PKn6tcsTD8Y1WYbGOXFRoMsG1kHyJ4bR
- jwpax6lIIYDnvrVsWdI6M1fNcTl8oevpv2uom12f4rQ6AnOqCTGb4ck3axGeHgWPztow9D0wYL+
- qkqtRh2GLXWrniqLDiEC+hMoQZT0Fkj6KSJ2xtEOaSIA==
 
-atl1c_clean_rx() drops a frame whose return descriptor carries
-RRS_RX_ERR_SUM or RRS_802_3_LEN_ERR by calling atl1c_clean_rfd(), which
-only marks the RFD free and clears the skb pointer.  Nothing unmaps the DMA
-mapping and nothing frees the skb, so every errored frame - CRC, alignment,
-truncation, runt - leaks one skb and one DMA mapping.  The driver uses a
-32-bit DMA mask, so on a host without an IOMMU each of those mappings also
-pins a swiotlb slot.
+The driver advertises NETIF_F_IP_CSUM and NETIF_F_IPV6_CSUM, but
+bgmac_dma_tx_add() calls skb_checksum_help() on every CHECKSUM_PARTIAL
+skb, so the checksum is always computed in software anyway. The return
+value is ignored too, so if skb_checksum_help() fails the frame is sent
+with a bad checksum.
 
-Unmap and free before the RFD is recycled.  Factor the RFD lookup and
-DMA unmap into a helper shared with the good path, using le32_to_cpu() when
-decoding the descriptor index.  The hardware already counts these frames in
-its own error counters, which atl1c_get_stats() reports, so no software
-counter is added here.
+Remove the feature flags and the fallback. The stack then computes the
+checksum before handing the skb to the driver.
 
-Fixes: 43250ddd75a3 ("atl1c: Atheros L1C Gigabit Ethernet driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Federico Musto <federico@rimpianto.com>
+Tested on an ASUS RT-N16.
+
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
 ---
-v1 -> v2, after Paolo Abeni's review:
- - decode rrs->word0 with le32_to_cpu() before extracting the RFD index;
-   this fixes the sparse warning on the new code
- - factor the RFD lookup and DMA unmap into atl1c_unmap_rx_buffer(), shared
-   by the error and good paths instead of duplicating them
+ drivers/net/ethernet/broadcom/bgmac.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-v1: https://lore.kernel.org/netdev/20261027115156.17128-1-federico@rimpianto.com/
-
-Spotted while reviewing a fix for a different problem in the same function
-(skb_over_panic on oversized RX frames), by the Sashiko review bot.  It is
-independent of that patch and applies on its own.
-
-The guard on buffer_info->skb is there because the slot can be empty after a
-reset; rfd_num != 1 stays on the old path, since multi-RFD is not supported
-by this driver anywhere else either.
----
- .../net/ethernet/atheros/atl1c/atl1c_main.c   | 33 +++++++++++++++----
- 1 file changed, 27 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-index eddd840..689941e 100644
---- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-+++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
-@@ -1864,6 +1864,23 @@ static void atl1c_clean_rfd(struct atl1c_rfd_ring *rfd_ring,
- 	rfd_ring->next_to_clean = rfd_index;
- }
+diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
+index 2dff43f540d3..822903a3ac6e 100644
+--- a/drivers/net/ethernet/broadcom/bgmac.c
++++ b/drivers/net/ethernet/broadcom/bgmac.c
+@@ -145,9 +145,6 @@ static netdev_tx_t bgmac_dma_tx_add(struct bgmac *bgmac,
+ 		goto err_drop;
+ 	}
  
-+static struct atl1c_buffer *
-+atl1c_unmap_rx_buffer(struct pci_dev *pdev, struct atl1c_rfd_ring *rfd_ring,
-+		      struct atl1c_recv_ret_status *rrs)
-+{
-+	struct atl1c_buffer *buffer_info;
-+	u16 rfd_index;
-+
-+	rfd_index = (le32_to_cpu(rrs->word0) >> RRS_RX_RFD_INDEX_SHIFT) &
-+		    RRS_RX_RFD_INDEX_MASK;
-+	buffer_info = &rfd_ring->buffer_info[rfd_index];
-+	if (buffer_info->skb)
-+		dma_unmap_single(&pdev->dev, buffer_info->dma,
-+				 buffer_info->length, DMA_FROM_DEVICE);
-+
-+	return buffer_info;
-+}
-+
- /**
-  * atl1c_clean_rx - NAPI Rx polling callback
-  * @napi: napi info
-@@ -1874,7 +1891,7 @@ static int atl1c_clean_rx(struct napi_struct *napi, int budget)
- 	struct atl1c_rrd_ring *rrd_ring =
- 		container_of(napi, struct atl1c_rrd_ring, napi);
- 	struct atl1c_adapter *adapter = rrd_ring->adapter;
--	u16 rfd_num, rfd_index;
-+	u16 rfd_num;
- 	u16 length;
- 	struct pci_dev *pdev = adapter->pdev;
- 	struct net_device *netdev  = adapter->netdev;
-@@ -1908,6 +1925,14 @@ static int atl1c_clean_rx(struct napi_struct *napi, int budget)
- rrs_checked:
- 		atl1c_clean_rrd(rrd_ring, rrs, rfd_num);
- 		if (rrs->word3 & (RRS_RX_ERR_SUM | RRS_802_3_LEN_ERR)) {
-+			/* atl1c_clean_rfd() drops the only pointer to the skb. */
-+			if (likely(rfd_num == 1)) {
-+				buffer_info = atl1c_unmap_rx_buffer(pdev, rfd_ring,
-+								    rrs);
-+				if (buffer_info->skb)
-+					kfree_skb_reason(buffer_info->skb,
-+							 SKB_DROP_REASON_NOT_SPECIFIED);
-+			}
- 			atl1c_clean_rfd(rfd_ring, rrs, rfd_num);
- 			if (netif_msg_rx_err(adapter))
- 				dev_warn(&pdev->dev,
-@@ -1920,11 +1945,7 @@ rrs_checked:
- 				RRS_PKT_SIZE_MASK);
- 		/* Good Receive */
- 		if (likely(rfd_num == 1)) {
--			rfd_index = (rrs->word0 >> RRS_RX_RFD_INDEX_SHIFT) &
--					RRS_RX_RFD_INDEX_MASK;
--			buffer_info = &rfd_ring->buffer_info[rfd_index];
--			dma_unmap_single(&pdev->dev, buffer_info->dma,
--					 buffer_info->length, DMA_FROM_DEVICE);
-+			buffer_info = atl1c_unmap_rx_buffer(pdev, rfd_ring, rrs);
- 			skb = buffer_info->skb;
- 		} else {
- 			/* TODO */
+-	if (skb->ip_summed == CHECKSUM_PARTIAL)
+-		skb_checksum_help(skb);
+-
+ 	nr_frags = skb_shinfo(skb)->nr_frags;
+ 
+ 	/* ring->end - ring->start will return the number of valid slots,
+@@ -1574,7 +1571,7 @@ int bgmac_enet_probe(struct bgmac *bgmac)
+ 		goto err_dma_free;
+ 	}
+ 
+-	net_dev->features = NETIF_F_SG | NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM;
++	net_dev->features = NETIF_F_SG;
+ 	net_dev->hw_features = net_dev->features;
+ 	net_dev->vlan_features = net_dev->features;
+ 
 -- 
-2.54.0 (Apple Git-157)
+2.56.0
 
