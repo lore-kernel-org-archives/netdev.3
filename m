@@ -1,59 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793634312;
-	b=lcAt7WVUXGdy5ISu4AnHc0Lhf6MPR60qv021ZzHuiNwmjAtMKaOljX0YwnINt1Clp31M
-	 tQGwWmeMWvXUPiwFqX0GvGV2kg043UKBx8VfRtfjzif7kp1JZMxfwecApEQq/qUBygg/h
-	 w7iaSDqYlUE+56P9uBFkDi+nUvswB/78Bb2PMpg/wiCT/oVenponZ2cNANZ4vt7TWr56y
-	 jJU7BGPUu5lf+GV00q3a8WnJowSa6i5txLPohJLTORSpt8XVMNtz6B6gJgw5v/AleydKR
-	 xt6GnbtxVT1MWleUAYgHiLy5P2YFX6snCXvKM089jxaZT3DrMlP2yiiFOKYXqbQGwkw==
+	t=1793634460;
+	b=ZvTrKSVfHfX46uCN5e4HEWFsKKCBzsydK7VJ9WBj8ljrN4eHhbNexLVeQsl0Rzku07sc
+	 WEDRWpRJlQCVKDgCLAARSpnmUpkoq4M4apcvDCKakBugSOdxsVJ4FAR26h6OC0YFXEyDN
+	 E+0mOOA/XVqH76THuTCn9p9y9YkKiiCUWBAm2PmKpH9eQFr2qK4eormGO4TMHDSyK5fE9
+	 EMrkP4htKEE+cG/vYxO5owA3pyNtWrcP/LxmF6PptiZE4ZFa7mxVz2dHZbXUnSePuHohy
+	 Rw6LoAzdF+yciEzI6OtPuIxd3ur3RvhTqJJoUlTrpSZYFVFjOzMcFkM6Zw16IvLKDpg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793634312;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=ct6oiKobvIrnIb3iAckehooF4cqkI6Sy4Yhkd14zx4o=;
-	b=5JQBwX/AH4StonRwHxnoD6u+ZpQ3h9xBFNG2wJR4CV/cLtVb1VXc6Lo8AannLdBReIsr
-	 M8y30hjJunRfdFLk/zQZ93CV1suxz7q3DN1l30sQD8saYYoxTJX5pNF1jhEgdcSVu88X0
-	 uavK9ApjH++bX+B7U3+jbahw1tTG9fli6p35GPI6/PitMPgEH5uwSunkFEhirf81VzR/t
-	 pYmnxd2dTb95YWHyRoPRPxGIZKQDRU1ZlRoXp1Q1QWHvcdHc4n8Q6u+AcTKorZIsTRzk6
-	 ypEDsWovJV5cgHA3w+mRCrn0rkFystwMt0+Zi/RiMorGM1TFJXe+tlI2UqS05ro6kAA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793634460;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=6oNFMWCWOpStfYAnMdrje9lXGqu4L1IBJ8dC+bnvLWI=;
+	b=XRNqu2ZxxnVtsbqrL0S8dOUEehWQEEXvtnIFExzlLPM7cS7Nk1GEDfkZTpchs3PTobzx
+	 50U/XI9lEl4EvQw+B/O1brL1j2GwXbOSIyTSeIO5acuzH95RZRLycYyqzwqqw8plPG3US
+	 bgymMtY8iNteu9My6QGC4+x63+RymHX/UiFuOTHQynDu9anrZuTqrInPDWJl01RTFPHgO
+	 e3q5UyIECrNOWQlcKNmVIaCWWgZ9GFFGrhUHB9GTdnVarLZJQq8gbElPj6N5fw8RvF71c
+	 lrMqKtK2h7gEyzhAiajnsVTXfmKT6H0V8Fte2qHXHxQ7Izc5l2dkYoJgds1hSS11+gg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="BnL/RawA";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Iw8RDlD8;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=MObWBwTp;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA16A606DE84;
-	Mon,  2 Nov 2026 15:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F88E6074679
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:47:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F88E6074679
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BnL/RawA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8287D1F00A18;
-	Mon,  2 Nov 2026 15:45:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793634311;
-	bh=ct6oiKobvIrnIb3iAckehooF4cqkI6Sy4Yhkd14zx4o=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=BnL/RawA8PVd3wZPNOUOQ9pfnn6+Fw5OvGN2ySvL30gL26xhlxvMqcRKb1fR7Xu7D
-	 jXr9gBAbPx5EGfNcASBPl2PDQ/2dLRRGq72OTBDKdUD5hiQtjT2pchHwXtaM225sxr
-	 6B0ohf0eQpwT4y67Owg9rak6JWAkY5y3PSoDeHtWXvDd88nsM2y9Q3ehrNsRggqxcL
-	 OijBSIzw9//OS5r1P+NIerTAZ6KC8iEXX2jt+zundY27cOYym15o5i94m52uzNkDOI
-	 STOWFUEBQ6BMsjXua/ux0jd1wBPOzJZGPsqsW0X2W9aySKKpP/K/XLTJ7MQ551CZpe
-	 RFTibNI0IAKSg==
-Subject: Re: [PATCH net v2] tipc: defer local Nagle backlog receive processing
-From: netdev-bot+sashiko@kernel.org
-To: immersa.bartosz.chronowski@gmail.com
-Cc: jmaloy@redhat.com, tung.quang.nguyen@est.tech, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
- linux-kernel@vger.kernel.org
-Date: Mon, 02 Nov 2026 15:45:10 +0000
-Message-ID: <179363431004.3131.12434594335457652597@kernel.org>
-In-Reply-To: <657t6njsrgnpnfs2mc2lv776442fhv5zsosg3vxya5vqrtpag7@nq3uxt6ymw7s>
-References: <657t6njsrgnpnfs2mc2lv776442fhv5zsosg3vxya5vqrtpag7@nq3uxt6ymw7s>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Iw8RDlD8;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=MObWBwTp
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793634458;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6oNFMWCWOpStfYAnMdrje9lXGqu4L1IBJ8dC+bnvLWI=;
+	b=Iw8RDlD89ocGpI+AWDRUUv1nfPxnS2+ljNRRYL36vdQDsTtB1v7bmuPGsCvW/7KD2z+TMl
+	98bxLST/osBVknshIZY/Rldx4Z68ZJuL2KBBlsIFlmRc6Edco0QnMCb7HP85G6/WkT6An0
+	gOODbuMYBN2TfXiJ/9IzvXDt+GCKsXY=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-395-3HSc9UXBPZCA47mq5GVy5A-1; Mon, 02 Nov 2026 10:47:36 -0500
+X-MC-Unique: 3HSc9UXBPZCA47mq5GVy5A-1
+X-Mimecast-MFC-AGG-ID: 3HSc9UXBPZCA47mq5GVy5A_1793634456
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48c430f0f01so2808173f8f.1
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 07:47:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793634455; x=1794239255; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6oNFMWCWOpStfYAnMdrje9lXGqu4L1IBJ8dC+bnvLWI=;
+        b=MObWBwTp7Ynx9mSoZY34Ox3eRHXp0E0x31JMykZiBE48CSh7yK5JH6PQZTI9jcVcGL
+         eEqvsf7RCagBPs9zpoNDOd22ITM+rvCxhncV0bZfPCsMRAXTSzknjZKifZkS2LjwBngA
+         UisfB2TMA/YECFubsCCtT0f2LpPmp3GbXdKvqu7+ZXOINkhfmFCvOmr81/edJAZSMJXd
+         SjvgZumnlts7GKATp5qog+auts1Ap9sOhi6v1DhDqtOr8Q4xTBErYC/Yg2FzRtd/PBfq
+         L0SykiO4BMPZtHb2edr62lux0jpyOFzxuPlHYJW9KsnhPqbiVF2ZwOXS5ACtwfWgxIYC
+         6LAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793634455; x=1794239255;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6oNFMWCWOpStfYAnMdrje9lXGqu4L1IBJ8dC+bnvLWI=;
+        b=LSaBk4BaSky20O+9gGFUgJrHhQrJe4BQ3d3Tsu1v/VHBttRwPrKv/t3PitPh1qW24R
+         Jo7FE6D3wvQ6SmpHn+tCOhgV3bpkbUrhUy6MfXPJ9T5w9FbODB7MPF/r+OG61JpCSEjb
+         jLx61LTMVZ84ZOmT9tURaPjobGtc+VYREepmLXgR0ZL542DnyeTJZKMFYMGKKiycyBX9
+         k+p8rpncY0aCj+6PWaztbCGlKSJ8gFGIoIYfn5NBlsB/0vh45BNqykvFCxTW6KU/6iFW
+         Lz47DBub5LLpx+dIjMRZGtVAKDkIenEraraQBA50p7P4FAayo+zw6Y8gweoMJ/gd4IwN
+         JVEA==
+X-Forwarded-Encrypted: i=1; AKwUvBwKnzTFxawKfCKzUNXymZJMx3Cey+vkaiXoNjuXu9/xEKPnQ6TIDTm8imsy5JhUM45c+ilxU6s=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+GTGCEIuIWDgoUrGiq3crLMFdM/V24/RVXcIznhVY7+gBmqYb/
+	mcItnuH7gA1GRI7uqHbsCnzaCXuaUhh23AnrbZEC7S/zNtCLaMZ1kLSOw89didYYasi1dz8T3Zb
+	oEfXWHN5KDYJ0RFc5B1cL+1pTEJWndeHBQ/bu6FUmuS9vAPJ7IZuBLlgcE2ztLK7qnA==
+X-Gm-Gg: AYBFou3kFjQ43bg2n2yBgTMoNCPqLCZae7Qg3PyP/eo7ceHCq8FEq2hDJ/8/qYp+CFS
+	btiuXgIDR8xikr/HsEbwXWNsXttJw1isYav9nyGBBIPt3qrGzORXm4P6Us2tqawbs98DVO/+h6x
+	RMaGbr378NsUHy4oaezqgRepj5clMDM5TwnN6o6ha2Fc68tXLXTK3Vkea1apGI5qA8nTfgQipJF
+	CIxukk0PDw9VU3P1sQ/LTyptJVt2o+etoyQ6Otbsi3iYGCcwc26bMTI/xma9tupEKxQXO/D1wIw
+	b1k2vGcHYCGB+4dAQZFZbFeD1R2idW9JOJ3NqKqXW8ok13IH5IX763CcvpYOQ4Z80qlr2tSXIBk
+	Hf7YDF8bTuH8t2Rzn+YCGWKaS7n0abP4845EXTqV+bSZfStX4cUXdcj6/+Pggdst6ScZDTeffOa
+	2r1anlwZOwUSj4d3iewMqSl8qsikQMKxyOXljjSRzHgbs=
+X-Received: by 2002:a05:6000:4559:b0:48d:ff71:dd97 with SMTP id ffacd0b85a97d-48e6e2bdd94mr16293259f8f.7.1793634455639;
+        Mon, 02 Nov 2026 07:47:35 -0800 (PST)
+X-Received: by 2002:a05:6000:4559:b0:48d:ff71:dd97 with SMTP id ffacd0b85a97d-48e6e2bdd94mr16293220f8f.7.1793634455206;
+        Mon, 02 Nov 2026 07:47:35 -0800 (PST)
+Received: from [192.168.88.29] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b78a4csm20493214f8f.23.2026.11.02.07.47.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Nov 2026 07:47:34 -0800 (PST)
+Message-ID: <15433a8b-5e5d-44dd-a12f-f2074857c1ad@redhat.com>
+Date: Mon, 2 Nov 2026 16:47:33 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,235 +112,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] net: dsa: clear the conduit RX queue on receive
+To: John Macias <dencity7@gmail.com>, netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ linux-kernel@vger.kernel.org
+References: <CA+KzPspNN14ZEyxisGrOSpgfTqajJfZTXG_iHBRMYd2su1dRKQ@mail.gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <CA+KzPspNN14ZEyxisGrOSpgfTqajJfZTXG_iHBRMYd2su1dRKQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+On 10/28/26 03:51, John Macias wrote:
+> diff --git a/net/dsa/tag.c b/net/dsa/tag.c
+> index 6a5aa7fc3..e53dc3f3c 100644
+> --- a/net/dsa/tag.c
+> +++ b/net/dsa/tag.c
+> @@ -95,6 +95,13 @@ static int dsa_switch_rcv(struct sk_buff *skb,
+> struct net_device *dev,
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 3
+The diff is damaged. Please fix your setup and re-submit.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+/P
 
-- [High] The fix is incomplete.
-- [Low] The deferral condition is broader than the subject and the in-
-  code comment ('A local Nagle backlog may loop back...') say.
-- [Low] Before this patch, an unowned socket handled CONN_MANAGER
-  messages directly in tipc_sk_filter_rcv() -> tipc_sk_proto_rcv(), with…
-- [Low] The new work handler tipc_sk_backlog_work()
-  (net/tipc/socket.c:2435-2444) ends with sock_put(sk), which can drop…
-
---
-
-tipc: defer local Nagle backlog receive processing
-
-This patch targets a soft lockup that happens when a TIPC stream receives
-a packet, pushes queued Nagle data to a local peer while sk_lock.slock is
-held, and the looped-back delivery then spins in tipc_sk_rcv(). When an
-unowned socket has queued output for a local peer, tipc_sk_enqueue() now
-puts the incoming packet on sk_backlog. It then schedules a work item that
-drains the backlog through lock_sock()/release_sock().
-
-Link: https://lore.kernel.org/r/GV1P189MB1988F6301FA670CA9818F7FCC6DB2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
-
-> diff --git a/net/tipc/socket.c b/net/tipc/socket.c
-> index 65cc0c4964b31..b03dd4a3d3ea2 100644
-> --- a/net/tipc/socket.c
-> +++ b/net/tipc/socket.c
-
-[ ... ]
-
-> @@ -2428,6 +2432,17 @@ static int tipc_sk_backlog_rcv(struct sock *sk, struct sk_buff *skb)
->  	return 0;
->  }
->  
-> +static void tipc_sk_backlog_work(struct work_struct *work)
-> +{
-> +	struct tipc_sock *tsk = container_of(work, struct tipc_sock,
-> +					     backlog_work);
-> +	struct sock *sk = &tsk->sk;
-> +
-> +	lock_sock(sk);
-> +	release_sock(sk);
-> +	sock_put(sk);
-> +}
-
-[Severity: Low]
-Can this sock_put() drop the last socket reference while the kworker is
-still running TIPC module text?
-
-If tipc_release() and tipc_sk_callback() have already dropped their
-references, the final put goes:
-
-tipc_sk_backlog_work()
-  sock_put()
-    sk_free()
-      __sk_free()
-        __sk_destruct()
-          sk_prot_free()
-            module_put(prot->owner)
-
-Nothing in net/tipc flushes or cancels backlog_work. The only
-cancel_work_sync() in TIPC is for tn->work. If tipc is removed with rmmod
-at the same moment, could the module text be freed before
-tipc_sk_backlog_work() returns?
-
-A pending work item holds a socket reference, and so a module reference.
-The window is only the tail after the final put. It needs root to unload
-the module, and sk_free() is often emitted as a tail call. The existing
-tipc_sk_timeout() also ends with a trailing sock_put() in the same way.
-
-> +
->  /**
->   * tipc_sk_enqueue - extract all buffers with destination 'dport' from
->   *                   inputq and try adding them to socket or backlog queue
-> @@ -2445,18 +2460,30 @@ static void tipc_sk_enqueue(struct sk_buff_head *inputq, struct sock *sk,
-
-[ ... ]
-
-> +		/*
-> +		 * A local Nagle backlog may loop back into this socket while its
-> +		 * spinlock is held.  Queue the triggering input for processing under
-> +		 * socket ownership, which keeps a concurrent sender from overtaking
-> +		 * the already queued output.
-> +		 */
-> +		owned = sock_owned_by_user(sk);
-> +		local_backlog = !owned && !skb_queue_empty(&sk->sk_write_queue) &&
-> +				in_own_node(sock_net(sk),
-> +					    tsk_peer_node(tipc_sk(sk)));
-
-[Severity: High]
-Does the in_own_node() check cover every case where tipc_node_xmit()
-delivers back into the receive path synchronously?
-
-When the peer node is in another network namespace on the same host,
-n->peer_net is set. In that case tipc_node_xmit() hands the list to
-tipc_lxc_xmit(), which calls tipc_sk_rcv(peer_net, list) inline:
-
-net/tipc/node.c:tipc_node_xmit() {
-    ...
-	if (node_up && peer_net && check_net(peer_net)) {
-		/* xmit inner linux container */
-		tipc_lxc_xmit(peer_net, list);
-    ...
-}
-
-For that kind of peer, in_own_node() is false and local_backlog is false.
-tipc_sk_filter_rcv() still runs with sk_lock.slock held. In
-TIPC_ESTABLISHED this call chain looks possible:
-
-tipc_sk_rcv(net1)                     /* takes socket A's slock */
-  tipc_sk_enqueue()
-    tipc_sk_filter_rcv()
-      tipc_sk_filter_connect()
-        tipc_sk_push_backlog()
-          tipc_node_xmit()
-            tipc_lxc_xmit()
-              tipc_sk_rcv(net2)       /* peer socket B */
-                B sends its Nagle ACK via tipc_node_distr_xmit(),
-                or pushes its own non-empty write queue
-                  tipc_lxc_xmit()
-                    tipc_sk_rcv(net1) /* socket A again */
-
-In the inner tipc_sk_rcv() the trylock fails, because an outer frame on
-the same CPU holds A's slock:
-
-	if (likely(spin_trylock_bh(&sk->sk_lock.slock))) {
-		tipc_sk_enqueue(inputq, sk, dport, &xmitq);
-		spin_unlock_bh(&sk->sk_lock.slock);
-	}
-	...
-	continue;
-
-Wouldn't this retry forever with BH disabled, inside the rcu_read_lock()
-taken in tipc_node_xmit()?
-
-Nagle is active for these peers, because tipc_node_get_mtu() returns
-MAX_MSG_SIZE for peer_net connections. A two-CPU ABBA variant also looks
-possible: each CPU holds one socket's slock and spins on the other's.
-
-The setup is two namespaces linked by a bearer such as veth/UDP.
-TIPC_NL_BEARER_ENABLE uses GENL_UNS_ADMIN_PERM, so an unprivileged user
-with user namespaces could set this up.
-
-Would the guard need to cover peer_net delivery as well, so that the
-lockup described in the commit message cannot happen through the
-cross-netns path?
-
-[Severity: Low]
-This condition doesn't check Nagle or the socket state. Is the deferral
-meant to apply during connection setup too?
-
-__tipc_sendmsg() clones the SYN onto sk_write_queue and sets the phdr
-destnode to the target node:
-
-	if (unlikely(syn && !tipc_msg_skb_clone(&pkts, &sk->sk_write_queue))) {
-
-The clone stays on the queue until tipc_sk_finish_conn() purges it. That
-only happens after the SYN-ACK has been processed.
-
-During a blocking connect (sk_wait_event() drops ownership), or after a
-non-blocking connect, the SYN-ACK reaches tipc_sk_enqueue() unowned. The
-write queue is non-empty and destnode is local, so local_backlog is true.
-The SYN-ACK then goes through sk_backlog and a work item on
-system_percpu_wq.
-
-This also covers SOCK_SEQPACKET, which never uses Nagle because
-tsk_set_nagle() returns early for anything other than SOCK_STREAM. The
-TIPC_CONNECTING case of tipc_sk_filter_connect() never calls
-tipc_sk_push_backlog(), so it cannot cause the recursion.
-
-Would checking for sk_state == TIPC_ESTABLISHED match the intent in the
-comment and the commit message better? The commit message does not
-mention the extra kworker round trip on every local connect.
-
-> +		if (!owned && !local_backlog) {
->  			tipc_sk_filter_rcv(sk, skb, xmitq);
->  			continue;
->  		}
-> @@ -2467,6 +2494,7 @@ static void tipc_sk_enqueue(struct sk_buff_head *inputq, struct sock *sk,
->  			atomic_set(dcnt, 0);
->  		lim = rcvbuf_limit(sk, skb) + atomic_read(dcnt);
->  		if (likely(!sk_add_backlog(sk, skb, lim))) {
-> +			deferred |= !owned;
->  			trace_tipc_sk_overlimit1(sk, skb, TIPC_DUMP_SK_BKLGQ,
->  						 "bklg & rcvq >90% allocated!");
->  			continue;
-
-[Severity: Low]
-Before this patch, an unowned socket handled CONN_MANAGER messages
-directly through tipc_sk_filter_rcv()->tipc_sk_proto_rcv(), with no
-receive buffer limit.
-
-When local_backlog is true, those messages now go through
-sk_add_backlog(). If the limit is exceeded they are rejected later in
-tipc_sk_enqueue():
-
-		/* Overload => reject message back to sender */
-		...
-		if (tipc_msg_reverse(onode, &skb, TIPC_ERR_OVERLOAD)) {
-
-On the peer, tipc_sk_conn_proto_rcv() treats any errcode as fatal:
-
-	if (unlikely(msg_errcode(hdr))) {
-		tipc_set_sk_state(sk, TIPC_DISCONNECTING);
-		tipc_node_remove_conn(sock_net(sk), tsk_peer_node(tsk),
-				      tsk_peer_port(tsk));
-
-Could a CONN_ACK or CONN_PROBE rejected here abort the connection?
-
-The limit for CONN_ACK is sk_rcvbuf << TIPC_SYSTEM_IMPORTANCE. For
-CONN_PROBE it is sk_rcvbuf when TIPC_BLOCK_FLOWCTL is set. Hitting these
-needs a very small SO_RCVBUF, or receive queue plus backlog above
-sk_rcvbuf, which flow control normally prevents.
-
-The owned-socket path already behaves this way. The patch widens the
-window to every unowned period in which output is queued for a local
-peer.
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/657t6njsrgnpnfs2mc2lv776442fhv5zsosg3vxya5vqrtpag7%40nq3uxt6ymw7s
