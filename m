@@ -1,63 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793582302;
-	b=lmp0vH6cuHonB3wxwWZjfzWsaVEKiDCFdzjzGGuSiKLnpmBt/VM3zaBrwJyO4Ob5tudo
-	 vZ/sKYJ9/YJ3B/4+F5LGQ8cD9WhhCWGwWW0lZrX0j8aAbRtAMz43iyDE+9Ku9skgw3pY9
-	 PgSSifculq21j+Nggtk200neYKKs3CRy1I8tQUYZICiLFXtwTn/dL7TaOJGq+lqs3wd38
-	 59ZuumrSkEWAw/33B3YUDqh0cFyIfD++mXh+OLl6wc8Ts6ySYG9k+sGZ3PxNW/7TdQkgy
-	 Uj78BIVD4+7uTPpVrNVmKqdDO8CncQPibWntvLG7m+wMwT647BzGRwA9VVm7F+6tkPA==
+	t=1793582328;
+	b=Vx27OwGuYaPcZOOGHyMMjFS/rpPi8hUwOP1sGdfssb6Wvu//tinecZ1veKYEXYmZliw5
+	 xeIZ9KmN+0yYyeY35FaxIwc3XeN14yJCb6AayyhQfJZYi+I3P/A535JCg9KTHdp82ET1i
+	 rNg1dreCUYjkcAA8Zzys9ixT6vqTZCTV4Cu8b4PcAV4x+u0WbM2cdZj4wfkIrg2BxHCYW
+	 JKPBbwMfocsVWn5NYGDLlOLp5vVfDSbz4d6KfG8EVp5k7AW6HJqJgP/XHpKA46bdj0In6
+	 UZQ9k8zXkmwWcnGRgpQbkeRjm95imLFRnffp0XVTyEdDvvSwhjG1cOSL43eI1z8vhsQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793582302;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
-	bh=abDysjfJOJSeYcrksOHfSG7PBUExgzQghoPikxkeJYw=;
-	b=NPkwBRlsJMT5/GMBckrhgJaJIpvZXo650xqgP8vsj/wiZqjRGwBAZQ+KGDP3kahFSaOk
-	 6QtEGNVzgIxOXhSS4Aa6e3h5W/GpUV/VX5tdNIZnas5Hkz4sGtxKoK7c/9BrbUFBWtzDE
-	 TDpDoqKvyrKNG2K51Gbr2nd24CWZqqKic2ZRchKO42ctdfJRx0fvjEJPt8RR69Z7VTYNK
-	 +D3HxFBi5GS3548A7Pk2YCnVvfhu/f65YNF/qPIoOXn5itrr/HJZh65FzdhHc43n1BSob
-	 ogjxNOAYEksQp/C8jk+SipEYzwm4rw4GWUYQJczkdQ6kL3FBHtbEfUQ9dzy7sa2vJzw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793582328;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=D4Z9hw1h5TRJ5BsgYhWpux1ch96XJn/lw5L3zZBTE5Y=;
+	b=AmyBTl3dxUFM5WYzi+eVy1zBcj9dpfevCsHKfkNsk74AJdlhX8mwokKS7iu6evVJEqjq
+	 QE5m/MXMipl4cDpwdQbHaoZPfHsF+PaUR5FoJTa9nyv7OQfWdjr4rsb1TNVBlXvPFdRvc
+	 tHk1Q6bC6QnJu0fJN0ANOECxOByY1nN1PT5HtLTy2iDc/3zJiEZXYSvTFfBCb3iODi+oj
+	 weqwiHbcr/3Sq3eqINXJPqPacNEe931xkFF7rmKTdfG7F1v+gJRbJLfP1HrFSCcMGExBI
+	 KSa9REfk9pKlIr2rVuOOBzzMeS3pn3jeuvxwdx0oT/8QSFKpY1+e7GPmj3xM6l1t8zQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=rbox.co;
-	spf=pass smtp.mailfrom=rbox.co;
-	dkim=pass header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=QEP3kDFT;
-	arc=none smtp.remote-ip=185.226.149.38
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=mUY2svjr;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB599606A32E;
-	Mon,  2 Nov 2026 01:18:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AB599606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E745606A326;
+	Mon,  2 Nov 2026 01:18:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3E745606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=QEP3kDFT
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1xNggX-00AGXd-7L; Mon, 02 Nov 2026 02:18:05 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=abDysjfJOJSeYcrksOHfSG7PBUExgzQghoPikxkeJYw=; b=QEP3kDFToa87gPnr8gtagi/Agu
-	7v3wk+Nv+ov+Aix46JRYvBB+goLTUmhDPZCxbYHbh7h4DS2RLiIfLmfSvDSrrPqEcTGMsq/tFKDCA
-	5ptVRBQRWQFyHr1UgsBYZDvJJoRWvoFSAvyRbhPLxI4PjLBEhp/I2ALMvP3Z2XYHykR/PNggQCqYo
-	FWIjrq/b9My0Rf1RzwXBVzxt8d36QiPNBL1qbALQbo5Y/cc5giD0kGtsNIsku9YljuKjBhexJ/PEY
-	zc0J1d5Fg38QvVZ3KtJ4aS5Ir4qXOKFoHZ4hkYYIZI/pBciCpuh6vtZF2Ayvz+cWQPBuHxdfbSZvr
-	DCaX7WUw==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1xNggR-0005sF-OW; Mon, 02 Nov 2026 02:17:59 +0100
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.95)
-	id 1xNggM-008JiF-Qe;
-	Mon, 02 Nov 2026 02:17:54 +0100
-From: Michal Luczaj <mhal@rbox.co>
-Date: Mon, 02 Nov 2026 02:16:01 +0100
-Subject: [PATCH RFC v2 4/4] bpf: Mark bpf_iter__sockmap::sk as PTR_TRUSTED
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=mUY2svjr
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=D4Z9hw1h5TRJ5BsgYhWpux1ch96XJn/lw5L3zZBTE5Y=; b=mUY2svjrv6cMF/GBi8xCxI+qRq
+	L51xEAsDZrS0jWjYBGThddCDMXDmosGglMmggBpSXSuE+BVnYHJ0BOsfYemACYIk/U+a2H1EJgEvi
+	8IWTvE3BWjRO0F8dIO9kFxGubxMkwbXF0KMJ8ZAg7JAsU7iVA/4nXEPqbkhrEbX9a6t8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xNggz-00DiVZ-PE; Mon, 02 Nov 2026 02:18:33 +0100
+Date: Mon, 2 Nov 2026 02:18:33 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Lucas Tanure <tanure@linux.com>
+Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net, Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 2/7] dt-bindings: net: amlogic,meson-dwmac: add
+ amlogic,t7-dwmac
+Message-ID: <95418d50-a83f-47da-819b-de04eab449e2@lunn.ch>
+References: <20261022200640.3101932-1-tanure@linux.com>
+ <20261022200640.3101932-3-tanure@linux.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,56 +77,14 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-sockmap-update-limit-iter-v2-4-e96a63c43b39@rbox.co>
-References: <20261102-sockmap-update-limit-iter-v2-0-e96a63c43b39@rbox.co>
-In-Reply-To: <20261102-sockmap-update-limit-iter-v2-0-e96a63c43b39@rbox.co>
-To: Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
- Eduard Zingerman <eddyz87@gmail.com>, 
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
- Emil Tsalapatis <emil@etsalapatis.com>, 
- Ihor Solodrai <ihor.solodrai@linux.dev>, Shuah Khan <shuah@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Lorenz Bauer <lmb@cloudflare.com>, Eric Dumazet <edumazet@kernel.org>, 
- Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
- Willem de Bruijn <willemb@google.com>, 
- Jakub Sitnicki <jakub@cloudflare.com>, 
- Jiayuan Chen <jiayuan.chen@linux.dev>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Simon Horman <horms@kernel.org>
-Cc: bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Michal Luczaj <mhal@rbox.co>, 
- netdev@vger.kernel.org
-X-Mailer: b4 0.15.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261022200640.3101932-3-tanure@linux.com>
 
-In preparation for plain-PTR_TO_BTF_ID removal: allow calling bpf helpers
-with sk provided by iter/sockmap.
+> +        rx-internal-delay-ps:
+> +          enum: [200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000,
+> +                 2200, 2400, 2600, 2800, 3000]
 
-Suggested-by: Alexei Starovoitov <ast@kernel.org>
-Link: https://msgid.link/DM92JCFA4X4U.30MTDH0KCPTJ@gmail.com
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
- net/core/sock_map.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Is 0 possible with the hardware? If so, i would accept it.
 
-diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-index 057e2f3c0265..2a2a07372818 100644
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -1989,7 +1989,7 @@ static struct bpf_iter_reg sock_map_iter_reg = {
- 		{ offsetof(struct bpf_iter__sockmap, key),
- 		  PTR_TO_BUF | PTR_MAYBE_NULL | MEM_RDONLY },
- 		{ offsetof(struct bpf_iter__sockmap, sk),
--		  PTR_TO_BTF_ID_OR_NULL },
-+		  PTR_TO_BTF_ID_OR_NULL | PTR_TRUSTED },
- 	},
- };
- 
-
--- 
-2.56.0
-
+   Andrew
