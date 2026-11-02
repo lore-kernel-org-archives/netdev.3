@@ -1,80 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=168.119.38.16
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793616412;
-	b=f+J1qrVo2rIMw5KRcWADU79NqAJG3ohCpzJAd4rzRWZxJe1UK+/L0Yp4i12Us/2lOo29
-	 23TrB1lJehfmOoD6ZqKOq/ZduoeJNsLCgPXinf4WYPuprXys19cmVFDlDoZdGXYC0FoQ6
-	 129uv0E4JvWiWsj+lFiGRYXoP07ub2CGCXHFPkzvJN7PpnsoaSQz6e61Ni1td2DsNDIvS
-	 38Ohq6FrkkY+W7Ak859WsorvL8BGc13YG4I1yy/+yedeS41lf4oRYENKVsMHty11WZI5j
-	 y9MG8Iq0MNcpFipUIN7Bpede62Lm0EiGTZ9XZ5IppB+nUPPO0MpVZex/5yKE/sEfjiQ==
+	t=1793616423;
+	b=DhldSIfdOU9on4WH/TphO1rhNCXMwlUvsk5IAfudqeelURTgQ7Pw7n2wCZYVA4MaepMs
+	 TjOxEXjy0ZkqeYz7WTJ5klYJ7qRCs2rxvNXhjm+LXolFl5nDO1abPG947yYZ+6c48hks+
+	 B6kkU2hvaKXrbpt23tSLTxsUjBOqmvlNhVBFLz3IR96ZziZWjRbp4SfhSPBcCzF5O70Vu
+	 EPpIyXccEEZWKNzQRcs0aZCwohg9Oi3e+avKm3+Sdq3mx7AVE3/3DGs3d15L+gmqjGV6m
+	 MHbT/cfSXorWJpUVTQVZAnV4HX66wypEAbphgb7Aurzj8MDcibZljKKUvJPIBt8Aijw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793616412;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=SVoFGUf6GXv+tO9V/ODg9yI1Wy2A/J/Aiuj0hfR9kCU=;
-	b=nQSbNR+A58cWa20fAc+iERCFNUQnJXZ1RDxsio834zvrxiy+Ex7mWlv/UWiGgiUOBrWG
-	 LI1le0N0byiJWu35tBlaXLtcn0MHVZ6eHloYYFsfR1OHbfSBvLi4e3Kz14bAdG9VOFeLC
-	 iDQURgcYX8fSVZ3FPS2kp5AoRk572Fxcc5CpL0v8/VGSNN5HDxuSZ6956umPj7C5PgnpP
-	 ncoGVnhU8ee3DXtbr+pmAPLq8ZTjupVK9++thREk0ZVeel+dXwYOlQmVqG5tcKPJ8WKug
-	 BvvqNTe0YgmftZyRlCPz4b+7vCt4xliY8OmxsRb995ukZ6zZK+QqZrpBgI+wr62cm3Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793616423;
+	h=DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-malware-bazaar;
+	bh=a1hyRsSVfnRQQLUN3WZlL+5K9kv+c3Zmam9PH7DT4ho=;
+	b=l6kLsw+LGW+tWQ/0DIuxZHw2vDf7d0Y0KgkvChsRpYDGgAe/ZEqh21zRZt8XvNEqr80S
+	 eKWs2yC3dLfMwtZVkc1DTk4xu/5H7awSwFwmc+ztJjYcIQ+6M83CYvEUUdzu3Y1ETeDdR
+	 kuWvKeYuIAvsAxd4/PnM+xhtceN9722e718OL3rvAvi6E6/uCVLPpm6NAfTHi5mDfsyw8
+	 FjgT2RQFBoWmEnOQA7JHUj3F/R8v0xqZ+vAOmBUKYYTH1dE6XfSj55CGd/FgDncUO7rFp
+	 KTiOpuHVffiShIzKGo3j4hoOPDiwex3ckGpMazAWw5LwxpSx1D0sfhstazozDqhTvnA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=i4jnPdIf;
-	arc=none smtp.remote-ip=192.198.163.15
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=permerror header.from=sipsolutions.net;
+	spf=pass smtp.mailfrom=sipsolutions.net;
+	dkim=pass header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=d1iDsCPs;
+	arc=none smtp.remote-ip=168.119.38.16
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B617B606A330
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 10:46:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B617B606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257D0606A324;
+	Mon,  2 Nov 2026 10:47:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=i4jnPdIf
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793616410; x=1825152410;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=pdw8KmbRx9IBcuVpZ651l8R1Lkf6/VlhieZIT5z+Drw=;
-  b=i4jnPdIfrffWpfNKVyUC5SNJiW2rxhK12o9zEYGE2cakwoaQgkmVH5hn
-   zZmNX/5aK1jab5PAdt+88Ad7lDv5i40K7XRqHev1Zm8YcI/YTUmNN0Q+s
-   gR9iDL/bGbXQh1HXG/R4r0eNj4RGvXdlLCsyS7s7pKrLSI8yzIECnhv/J
-   cBlIS5km3XfX41TgM9Or2Szo/7VBuKD9G4voTBnXcdkPfKdhsibnvCjSS
-   Rpq9eu+q7tpBa0FcpSr1WOmINYHagY5oU4k20yzRZHTi6WtrPQ28vXTiB
-   BciQwTMQAsBtlBWNPQP90pu8CywCmTiK/ZDYNViz+xksbZfw+Cla7pk1J
-   Q==;
-X-CSE-ConnectionGUID: lxrVk6KyTsm9pm4R4ujBmA==
-X-CSE-MsgGUID: OYfygxDMTAyitfUWF4NRbg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11953"; a="2305043"
-X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
-   d="scan'208";a="2305043"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 02:46:33 -0800
-X-CSE-ConnectionGUID: faVRmSJ5Q7m2XBOK8eA+6g==
-X-CSE-MsgGUID: Xh+9+gbTRo+7Qifs5/o1cg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
-   d="scan'208";a="6012017"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by orviesa004.jf.intel.com with ESMTP; 02 Nov 2026 02:46:32 -0800
-Received: from pkitszel-desk1.igk.intel.com (pkitszel-desk1.igk.intel.com [10.217.184.18])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 332422876E;
-	Mon,  2 Nov 2026 10:46:30 +0000 (GMT)
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-To: intel-wired-lan@lists.osuosl.org,
-	Petr Oros <poros@redhat.com>
-Cc: netdev@vger.kernel.org,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH iwl-net 5/6] ice: replace tc_mutex with RTNL
-Date: Mon,  2 Nov 2026 11:50:20 +0100
-Message-ID: <20261102105346.30739-6-przemyslaw.kitszel@intel.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261102105346.30739-1-przemyslaw.kitszel@intel.com>
-References: <20261102105346.30739-1-przemyslaw.kitszel@intel.com>
+	dkim=pass (2048-bit key, unprotected) header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=d1iDsCPs
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=a1hyRsSVfnRQQLUN3WZlL+5K9kv+c3Zmam9PH7DT4ho=; t=1793616421; x=1794826021; 
+	b=d1iDsCPs/btZaYZvvfFoTqe6wCch5misfmPdmLpOOMoU87/o9GXs9g7Y60oLRN/78rPBGjyA8Y8
+	pxmCHX+rpECL+ToQJtqAppYUYe1KZ6XN3VlIVKJhW3EYJ8KVvwht5u2Nl0aC9iLo1nHOMRSAOPOVL
+	XcfKf91At9GJtSrVV2pb3R9ZGzYeTNP+WdGriFRJ7A1IMFuzZN+RaNPFVpFWLvMky1aA/9efUDr2R
+	JnFUDLnK5RxcVTui3d033S/uX/6PuyzKH97scjimmfE3k34ewTiHa+HRKPJvDS/YseeOV8iWDi+3e
+	haftrQukdJRqlyGwLLAiiVtMKVTpIu0fj5nQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1xNpYz-00000001ApN-1FxZ;
+	Mon, 02 Nov 2026 11:46:53 +0100
+From: Johannes Berg <johannes@sipsolutions.net>
+To: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Subject: [GIT PULL] wireless-2026-11-02
+Date: Mon,  2 Nov 2026 11:46:33 +0100
+Message-ID: <20261102104649.727621-3-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,225 +63,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-ice_setup_tc() takes pf->adev_mutex and the RDMA aux device lock, and then
-pf->tc_mutex, for mqprio. dcbnl ops take pf->tc_mutex, and then
-pf->adev_mutex in ice_send_event_to_aux(), when ice_pf_dcb_cfg() notifies
-the RDMA driver about a TC change. Lockdep reports a possible deadlock:
+Hi,
 
-        CPU0                    CPU1
-        ----                    ----
-   lock(&pf->adev_mutex);
-                                lock(&pf->tc_mutex);
-                                lock(&pf->adev_mutex);
-   lock(&pf->tc_mutex);
+Just a handful of fixes I'd collected before, sending
+them so I can get the latest versions once all the
+merging happens.
 
-All users of pf->tc_mutex (dcbnl ops, ndo_setup_tc() for mqprio,
-ice_dcb_rebuild() and the LLDP MIB change handler) already run under
-RTNL, the latter two since they take it first, earlier in this series.
-So the inversion can't deadlock, but lockdep still reports it, and the
-mutex is redundant. Drop it, instead of reordering it against
-pf->adev_mutex.
+Please pull and let us know if there's any problem.
 
-Reproducer, with RDMA enabled on the PF, but irdma not loaded:
-  PF=eth3
-  ethtool --set-priv-flags $PF fw-lldp-agent off
-  dcb ets set dev $PF tc-tsa all:ets tc-bw all:0 0:50 1:50 prio-tc all:0 4:1
-  dcb ets set dev $PF tc-tsa all:ets tc-bw all:0 0:100 prio-tc all:0
-  tc qdisc add dev $PF root mqprio num_tc 2 map 0 0 0 0 1 1 1 1 \
-          queues 4@0 4@4 hw 1 mode channel
+Thanks,
+johannes
 
-Fixes: 4b31fd4d77ff ("ice: Fix RDMA VSI removal during queue rebuild")
-Reported-by: Petr Oros <poros@redhat.com>
-Closes: https://lore.kernel.org/all/20261023070258.730168-3-poros@redhat.com/
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
----
- drivers/net/ethernet/intel/ice/ice.h         |  1 -
- drivers/net/ethernet/intel/ice/ice_dcb_lib.c |  6 ------
- drivers/net/ethernet/intel/ice/ice_dcb_nl.c  | 15 ---------------
- drivers/net/ethernet/intel/ice/ice_main.c    |  4 ----
- 4 files changed, 26 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index 432da05c48c0..12907be77454 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -592,7 +592,6 @@ struct ice_pf {
- 	struct work_struct serv_task;
- 	struct mutex avail_q_mutex;	/* protects access to avail_[rx|tx]qs */
- 	struct mutex sw_mutex;		/* lock for protecting VSI alloc flow */
--	struct mutex tc_mutex;		/* lock to protect TC changes */
- 	struct mutex adev_mutex;	/* lock to protect aux device access */
- 	struct mutex lag_mutex;		/* protect ice_lag struct in PF */
- 	u32 msg_enable;
-diff --git a/drivers/net/ethernet/intel/ice/ice_dcb_lib.c b/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
-index 59fafd296f1c..5355519726df 100644
---- a/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dcb_lib.c
-@@ -555,7 +555,6 @@ void ice_dcb_rebuild(struct ice_pf *pf)
- 	int ret;
- 
- 	rtnl_lock();
--	mutex_lock(&pf->tc_mutex);
- 
- 	ret = ice_query_port_ets(pf->hw.port_info, &buf, sizeof(buf), NULL);
- 	if (ret) {
-@@ -587,16 +586,14 @@ void ice_dcb_rebuild(struct ice_pf *pf)
- 		goto dcb_error;
- 	}
- 
--	mutex_unlock(&pf->tc_mutex);
- 	rtnl_unlock();
- 
- 	return;
- 
- dcb_error:
- 	dev_err(dev, "Disabling DCB until new settings occur\n");
- 	err_cfg = kzalloc_obj(*err_cfg);
- 	if (!err_cfg) {
--		mutex_unlock(&pf->tc_mutex);
- 		rtnl_unlock();
- 		return;
- 	}
-@@ -614,7 +611,6 @@ void ice_dcb_rebuild(struct ice_pf *pf)
- 	ice_pf_dcb_cfg(pf, err_cfg, true);
- 	kfree(err_cfg);
- 
--	mutex_unlock(&pf->tc_mutex);
- 	rtnl_unlock();
- }
- 
-@@ -1077,7 +1073,6 @@ ice_dcb_process_lldp_set_mib_change(struct ice_pf *pf,
- 
- 	/* That a DCB change has happened is now determined */
- 	rtnl_lock();
--	mutex_lock(&pf->tc_mutex);
- 
- 	/* store the old configuration */
- 	tmp_dcbx_cfg = pi->qos_cfg.local_dcbx_cfg;
-@@ -1142,7 +1137,6 @@ ice_dcb_process_lldp_set_mib_change(struct ice_pf *pf,
- 	/* enable previously downed VSIs */
- 	ice_dcb_ena_dis_vsi(pf, true, true);
- out:
--	mutex_unlock(&pf->tc_mutex);
- 	rtnl_unlock();
- 
- 	/* Send Execute Pending MIB Change event if it is a Pending event */
-diff --git a/drivers/net/ethernet/intel/ice/ice_dcb_nl.c b/drivers/net/ethernet/intel/ice/ice_dcb_nl.c
-index 2b9f5e6c1bbe..bc2af975b1e3 100644
---- a/drivers/net/ethernet/intel/ice/ice_dcb_nl.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dcb_nl.c
-@@ -78,8 +78,6 @@ static int ice_dcbnl_setets(struct net_device *netdev, struct ieee_ets *ets)
- 
- 	new_cfg = &pf->hw.port_info->qos_cfg.desired_dcbx_cfg;
- 
--	mutex_lock(&pf->tc_mutex);
--
- 	new_cfg->etscfg.willing = ets->willing;
- 	new_cfg->etscfg.cbs = ets->cbs;
- 	ice_for_each_traffic_class(i) {
-@@ -117,7 +115,6 @@ static int ice_dcbnl_setets(struct net_device *netdev, struct ieee_ets *ets)
- 		err = ICE_DCB_HW_CHG_RST;
- 
- ets_out:
--	mutex_unlock(&pf->tc_mutex);
- 	return err;
- }
- 
-@@ -277,8 +274,6 @@ static int ice_dcbnl_setpfc(struct net_device *netdev, struct ieee_pfc *pfc)
- 		return -EINVAL;
- 	}
- 
--	mutex_lock(&pf->tc_mutex);
--
- 	new_cfg = &pf->hw.port_info->qos_cfg.desired_dcbx_cfg;
- 
- 	if (pfc->pfc_cap)
-@@ -293,7 +288,6 @@ static int ice_dcbnl_setpfc(struct net_device *netdev, struct ieee_pfc *pfc)
- 		ice_dcbnl_devreset(netdev);
- 	if (err == ICE_DCB_NO_HW_CHG)
- 		err = ICE_DCB_HW_CHG_RST;
--	mutex_unlock(&pf->tc_mutex);
- 	return err;
- }
- 
-@@ -774,9 +768,6 @@ static int ice_dcbnl_setapp(struct net_device *netdev, struct dcb_app *app)
- 		return -EINVAL;
- 	}
- 
--	/* grab TC mutex */
--	mutex_lock(&pf->tc_mutex);
--
- 	new_cfg = &pf->hw.port_info->qos_cfg.desired_dcbx_cfg;
- 	old_cfg = &pf->hw.port_info->qos_cfg.local_dcbx_cfg;
- 
-@@ -867,7 +858,6 @@ static int ice_dcbnl_setapp(struct net_device *netdev, struct dcb_app *app)
- 		ret = ICE_DCB_NO_HW_CHG;
- 
- setapp_out:
--	mutex_unlock(&pf->tc_mutex);
- 	return ret;
- }
- 
-@@ -895,7 +885,6 @@ static int ice_dcbnl_delapp(struct net_device *netdev, struct dcb_app *app)
- 		return -EINVAL;
- 	}
- 
--	mutex_lock(&pf->tc_mutex);
- 	old_cfg = &pf->hw.port_info->qos_cfg.local_dcbx_cfg;
- 
- 	ret = dcb_ieee_delapp(netdev, app);
-@@ -978,7 +967,6 @@ static int ice_dcbnl_delapp(struct net_device *netdev, struct dcb_app *app)
- 		ret = ICE_DCB_HW_CHG;
- 
- delapp_out:
--	mutex_unlock(&pf->tc_mutex);
- 	return ret;
- }
- 
-@@ -1003,11 +991,8 @@ static u8 ice_dcbnl_cee_set_all(struct net_device *netdev)
- 
- 	new_cfg = &pf->hw.port_info->qos_cfg.desired_dcbx_cfg;
- 
--	mutex_lock(&pf->tc_mutex);
--
- 	err = ice_pf_dcb_cfg(pf, new_cfg, true);
- 
--	mutex_unlock(&pf->tc_mutex);
- 	return (err != ICE_DCB_HW_CHG_RST) ? ICE_DCB_NO_HW_CHG : err;
- }
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 30de690ecf7c..6b6e5ae533ae 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -3876,7 +3876,6 @@ void ice_deinit_pf(struct ice_pf *pf)
- 	mutex_destroy(&pf->lag_mutex);
- 	mutex_destroy(&pf->adev_mutex);
- 	mutex_destroy(&pf->sw_mutex);
--	mutex_destroy(&pf->tc_mutex);
- 	mutex_destroy(&pf->avail_q_mutex);
- 	mutex_destroy(&pf->vfs.table_lock);
- 
-@@ -3975,7 +3974,6 @@ int ice_init_pf(struct ice_pf *pf)
- 	int err = -ENOMEM;
- 
- 	mutex_init(&pf->sw_mutex);
--	mutex_init(&pf->tc_mutex);
- 	mutex_init(&pf->adev_mutex);
- 	mutex_init(&pf->lag_mutex);
- 
-@@ -9461,9 +9459,7 @@ ice_setup_tc(struct net_device *netdev, enum tc_setup_type type,
- 		}
- 
- 		/* setup traffic classifier for receive side */
--		mutex_lock(&pf->tc_mutex);
- 		err = ice_setup_tc_mqprio_qdisc(netdev, type_data);
--		mutex_unlock(&pf->tc_mutex);
- 
- adev_unlock:
- 		if (locked) {
--- 
-2.54.0
 
+The following changes since commit 045958acaa75205b31578cb22c4345e28dd2e4bf:
+
+  Merge tag 'net-7.3-rc8' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-10-15 08:20:20 -0700)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2026-11-02
+
+for you to fetch changes up to 25e73f1d6868c759c8eb56cad4e411692c5341b4:
+
+  wifi: mac80211: reinstate IEEE80211_TX_CTL_AMPDU flag in ieee80211_tx_prep_agg() (2026-10-26 12:20:45 +0100)
+
+----------------------------------------------------------------
+A few fixes to start with:
+ - wext: fix notifier netns interaction
+ - rsi: avoid TID OOB access
+ - mac80211: reload pointer, fix A-MPDU flags
+ - brcmfmac: fix DMA regression
+ - cfg80211: fix regdb validation
+
+----------------------------------------------------------------
+Alex Kazinsky (1):
+      wifi: rsi: Skip TX aggregation setup for non-QoS frames
+
+Cosmin Ratiu (1):
+      wifi: wext: Limit notifier event flushes to the device's netns
+
+Jason Perlow (1):
+      wifi: brcmfmac: map msgbuf RX packet IDs bidirectional
+
+Toke Høiland-Jørgensen (1):
+      wifi: mac80211: reinstate IEEE80211_TX_CTL_AMPDU flag in ieee80211_tx_prep_agg()
+
+Weigang He (1):
+      wifi: mac80211: reload TDLS header pointer after skb_linearize()
+
+Zijing Yin (1):
+      wifi: cfg80211: fix out-of-bounds read in valid_rule()
+
+ .../wireless/broadcom/brcm80211/brcmfmac/msgbuf.c  |  2 +-
+ drivers/net/wireless/rsi/rsi_91x_core.c            |  2 +-
+ include/net/iw_handler.h                           |  8 ++++--
+ net/mac80211/tdls.c                                |  3 +-
+ net/mac80211/tx.c                                  |  2 ++
+ net/wireless/core.c                                |  2 +-
+ net/wireless/reg.c                                 |  3 ++
+ net/wireless/wext-core.c                           | 33 +++++++++++-----------
+ 8 files changed, 32 insertions(+), 23 deletions(-)
