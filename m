@@ -1,90 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793621222;
-	b=Jt1k7/wsYAVxIctdgbIo7FB6xM5W5X2RY/gV1hOUC6+8a1+1OfZOg2yX7YH6XF2nsUsl
-	 R5JfBQRjVne+Hjigbg9/1XFY01KQAFUX4qP6/ECMliWljZW/8u+Bem3JLmal/dKtxuBoE
-	 QPyRrLFymUCz71w8nlGfHA2uxFP8BHdqaJbzk7QYMkclZPj7RcP+QMbdM7zTHUVeb4508
-	 Mck2Pyp+qFBcgnYEzh1lzwBwF4lSbJUT3cJFQIg2133pXb5uOgO5ajqmx2L43td7MtmA0
-	 Hk+N48xYAqbtBsZyv3TV0+Tg5/cF7gNu/qMK24pHsKoUgnq2EjAuNvqfA+6Dsdh19FQ==
+	t=1793621379;
+	b=StvsHO3IIM1xBfuHkcvrBJECMswuRPgc4ZlXoZm0Kh+Cx7raUPTEcwlVQgBp4EzDs6Pb
+	 QTJRQGOOJZXTOGdtBQB2GGdF6v2ggzFcUeM3vXZeiHpTrk6vUY1MrbmMfthgcEnRzfQqV
+	 hucy3Vdma9HDQGQ21uQd1VHWMgX9s1U5R/dxr1skZwkUOWCLtG2r3BfOM9TfSRVe6V+mF
+	 MBwNx7TaocmKXL9DSCNO/kyl1E3sfB0t9XqhXGBEstLpgQ3Cv6JskSICKxVHd5UAJ5f6Z
+	 BhK7+OLbrJqRX9c7M6SLMdjCgyzXqVh+pu39SB6Fvb5Pv+RFfOh3WLHwilzRlBtpiAA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793621222;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793621379;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=cHxwMczrsd8dG0Mciy8ucuGSBKV5QcduhNoDlOIOkBM=;
-	b=3if+NE5nVDl50SJ5GjCoBKLFoZCyRwu6YT02l7hqKEph97r+JH2i1+WO/rrR4jgB/G38
-	 VBt3pUXMSoiaPS0CX0Ck2h2F45G6WIt6Uo8sWIsMhbvDr4U4p4SlRhCx6rarwk2Sv56Mr
-	 DOTJ1Y+ab6aPm2y7s/KqQhJhN+QcOdZOI+E9cYz4/NGUVVgPgRxEi8TgZWEN6JruAI2Dg
-	 21VUmtiyaaRxAT3daYiS7x2Ktk8D/ZGoT7VjQk/Lawi6IxAlBXUlm9SUDD+fWgJkOqf/e
-	 gLHSmZY5f4ZYAI4EI2u1FpjlhMJK90znJLJYlaTkGJH9Ugvcz3VGG6D9jdKI70JNMfA==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=h4bBhShGgMtgvUcHfjYjgyBrngfAAZXiORF9a57vGdw=;
+	b=lvQyTeH0Fq01u2appHaEiC8WRyxvBbUNpNC1LodtV/O4tjx2KLS/S6v8mVQFztRJrlvh
+	 NXXjIF8GMNfDQbeRpY4RVAMivAYoHsfB9PqtxCVno6482IWK1frJotpuXz5yagytBjaTg
+	 5Liu/Nc8O8K1ZxhCjm6/ZjSCVgdEy20Z6zNXqdLUNqhiJV3jewr5KlAjlw0+VsITIi+jY
+	 h5zH3cf0YkPuyLQU0+N0yRVfkW7MM7NVFOwkvrm/JTMxpTEYxW1ITnlAqKX/2Kjh7261Z
+	 omUbnaMW7mm2YftdZIhDmExtZ5DZG/fyayqaMEWGdESnOKxp5eEd3A2Ymlkf6x48psA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=tftbZa61;
-	arc=none smtp.remote-ip=209.85.218.43
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="fB86neL/";
+	arc=none smtp.remote-ip=209.85.167.173
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBCD606A324
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 12:07:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4DBCD606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7720A606A32D
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 12:09:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7720A606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=tftbZa61
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c445c95d553so385705066b.1
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 04:07:00 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fB86neL/
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-4f699fe49b3so1854062b6e.3
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 04:09:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1793621219; x=1794226019; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cHxwMczrsd8dG0Mciy8ucuGSBKV5QcduhNoDlOIOkBM=;
-        b=tftbZa615LKNryZ9Kc9GKk9ho4fcnAEDTrxb9TcoyLubpthocMG+3lDPU5rQ5HwxUI
-         f4JrDTvh+ehBSlzYTK6OFmWa8kfA8jX9U72WFzXk9dNOIQcdbEPi3jpvRptX5DP4QDE7
-         CARGva8Q2vojgQHvJc5XCo2XM1ri8G+g+t5SiuRWlctSecNHbsO6Em8JRNxIZeLTklvr
-         ix+i72KpefxTp2m9/+nCqb99dnrX6+E+hZQDXfnFhqVFW8gx0NGl4wN8OqJf6Wy6nl93
-         Fb7TMTcltpD1e0Hv9k6iyMBp4Itp//HSNJCRS/tes6P+awsGZfTEKT5oUqRpcxPs7vzF
-         hI1A==
+        d=gmail.com; s=20260707; t=1793621378; x=1794226178; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=h4bBhShGgMtgvUcHfjYjgyBrngfAAZXiORF9a57vGdw=;
+        b=fB86neL/9KY0NOgH68tG86XXv5ZntiyY4QRbMv1Q/zJ1/20+tKVOIgyOG3j+qP+dWf
+         qC36ZFZOEYas9LM2el3mRFDkmLHvZumPInEqCstb93Sa2Jp5fqcsh/8FdwHb6tiuABaA
+         5HpT39BRa4aVs5f+eTRHtbhc1h/n+7kod2VBmW9FQysby5uXYLOCMmyaLmxvRtP8uF2r
+         KCXqp410+TmI5uZCkjCNzm47gNY4Bi7Cd2bnD0nuEEz4eB+i+Q8tTkfkepAYZ5xuWaki
+         wnlSoRlj4icbjoq4n6fp3VgOUGMU1bRfzfy8jLvRFeOuyBO08rZhgzKzOSifbcftpo7c
+         vdXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793621219; x=1794226019;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cHxwMczrsd8dG0Mciy8ucuGSBKV5QcduhNoDlOIOkBM=;
-        b=k7cA3P9FHrJO+RMCUbRA9F9HvlmxhQvCQk0+d3cBGeF6iS/Cj/gKKPLs4OVOEqJ7G0
-         nTfLFfnfFN0govq2SkHT3waeoNO8R8/yb55BPrVZmoxwBFSBvisLtaq4JJA36RiGkjB3
-         BzLjAIEvK8gHL74AZYF10JPSx92XxZQ70e9Al8H25kFii8KedG8gT+CcE+fPVybO9GI9
-         S4YKMMBfAeZVqiYMBP0X3o8VSNWYfIGM+I4D5ow6/O9lTjM96MQrw5CwWuMPG5eAmcTw
-         VY+6Fdgk7edAluxslysQfgO+6B3uiFchG2bNrVZR2/1e76ziGlMAix80beWrB4dMqtQg
-         RXvg==
-X-Gm-Message-State: AFq9FYJcb0KrulaXJo84bqZtjsqsY3h7mzMZy1TpOwB46FqamA27booH
-	iJFdQA0h4V4IlsZ/D2gYBF/XtX9yChbzh5awtuiY6iy8sX8Cusu6TxftRHxvic/E3t4=
-X-Gm-Gg: AYBFou2iY/RhiUDTOIJoaqIqRCFTp7V0AAttXQiNdSdI3+1xYKSnZcqvdcVdNnxnKGr
-	T94nDXwa6wGjoiDga0ohaZEHAJFEGbnSOz5em0xDRTwJbHH09v2lEg9LjzD5GmP1tUEd4T5cNDF
-	BqpFK1GB+qGbG5wgD5BZVHjEE+KX9fO/RDaXYLXTvDO0IjqRlkz0RNTgqJPtPg1yvzxQ7BQYAJG
-	9wFnx5KWnVa+uTUvDcidrma2YGF8JGlsBLqe/rTO+tczhLg5oOfWpF/j7481HKr1e3TkQJmujEK
-	0XPe9poZbEPuNHG2F/O3GGauVgf+qzO+VoL7hpjiJdMpl0P4Y1WYGahq0lIcKrwDfZjE1wxmjQM
-	5blOLTBJCHRRaHfzU9yHKl9lCKT2RzkxklK91OejftWxkX1HT3sQfE2BeyAeYqZqvDm3Fq6ASsX
-	RImGp8WXAyB6UlKC6ShAofXKjsa7nwYUkQ+6oX3VowhL8OTsufQ5RW7+7IJ6G6IJvfgv5zD97PK
-	xeMGsW892tlq5uENVsCaw2pQcdQRQhUgI0VoiJAleyCxHll2/vLeLT0FCQ/yyV2u/ouvT1AlRr5
-	lf4YK8Tm2Er+8fTJn4XJ206e
-X-Received: by 2002:a17:907:60c8:b0:c49:a4b1:9cb1 with SMTP id a640c23a62f3a-c4ca795fa50mr1010874466b.3.1793621219175;
-        Mon, 02 Nov 2026 04:06:59 -0800 (PST)
-Received: from localhost ([140.209.217.212])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4cabe0f5easm381515066b.35.2026.11.02.04.06.58
+        d=1e100.net; s=20260707; t=1793621378; x=1794226178;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=h4bBhShGgMtgvUcHfjYjgyBrngfAAZXiORF9a57vGdw=;
+        b=Wk0NN3rnbUY86FdxqIkE+Hv+PoRPYOsVZ3Tbc3D/0VGJl27Ay9JpJEknc4wzNoFHUA
+         TaLKlYQoUZHYhVBX+lOkqae9iVqeNN8LOOgf/Q3uG/LNJrlpptGlrHxU3pfl32NPHqTJ
+         v0b8BJY2iKoT6o8bmqtiPjJo3zRuP9RJ0/0s3cbATs78/s63qGOLaLnrqNIaay+Zm/+H
+         7Svayr2hMHw+jAtSVb+BYnz/jFDqK0KtEsfiV1JYR2wIPy3YXfALrgNWUOFYAlU5X1Sh
+         ds1STcKF+QiSggaGyYZO8vY5HfRNOePKM9wgurqwbsiGbUBnaT8vhJQ1FCoUQHrgKi+A
+         SHXg==
+X-Gm-Message-State: AFq9FYJKbgByqb4RZEOYDAeMeXEqz1BVwErfEAZhddEW2pgc6sjWbTJZ
+	TlU8PyRsLdqH3QYpe3YSRShx8cDymQMNSr/LHqhFXch3SLfZmqWKAWxCcvZuVA==
+X-Gm-Gg: AYBFou0zGCQ8ocrPkZJ7TAsHj0Nwfg3OCop6J6ChiefttjIDgHentqMBs5U4O28taF/
+	C59/Y+7PJcWjKVEufaRzy0UXSEhi/LWojTTXiJcVDz/7ILYSx1+jtX4nFD0pgQvhm0OJXar/Mq0
+	iJCBawzRaKoGwTc7I2gChCiBgbywyjohTiIZa9Flwo1Du03Fpx3P2g3IuB0mkj8yN1HY+hC+ASC
+	RS4Pk2wSGOFjFoucIbtLja2p1FKVSd9zuVilD9joNFDuggv1ef7tFo3mFNke+mO/tGuZA/a1emo
+	ZXfcl782DfuSc5SsT1wqqP0bnnwL1MK/yvxMsjFuT+2qn22zbl9IflSsndXKkelZJw5fupgkrnU
+	9eI7iFnQvjBJgDuTHEOVSBRm26uKB1eyN/XfuE68D2SNDhEFU5k12oej74pWdMmtcG1hAM3axNV
+	YLsOjgGvHPM7vGtEEf0toL+Q21ip/paVNwb3S2Vkh8mjbGqw9SZy5gv1E294t0jcYbvU4e8pDL9
+	R4laNvoU3EZYY+jsx0eej94+59h5e5SOvlXVJLRYYTq2onJe2/4YtwaDb3a1EXhUNY9j8svQCBr
+	Phze0vUWoY8vzpaAhc6vWyCo9t9oBVBtJ1Bg71pZN+k2FB4kxKoQ8rIWuAiYI3BdFZPsj/FzUsi
+	NcB45X/6mPzVAKl6UkZRSNJsWdYQe2ZgdSU6T2KZ7DGjjK2KL/u4lioerGvmjIfAyQQ9tAvDCRZ
+	Ge8Clgj++453yC/h93vJM=
+X-Received: by 2002:a05:6808:16a8:b0:4e6:e72a:1ba0 with SMTP id 5614622812f47-5640dcb7459mr6360233b6e.12.1793621378085;
+        Mon, 02 Nov 2026 04:09:38 -0800 (PST)
+Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-5640fd95dc0sm8461851b6e.6.2026.11.02.04.09.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 04:06:58 -0800 (PST)
-Date: Mon, 2 Nov 2026 13:06:54 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Zhineng Lim <limzhineng2@gmail.com>
-Cc: netdev@vger.kernel.org
-Subject: Re: Netdev devlink A/B firmware bank selection feature
-Message-ID: <auh8l9JniT6EhK1v@FV6GYCPJ69>
-References: <CAOr6SmEW8ZLjMzqCWdQL3W0DKwZCVaRL+DbhrSEZu7SeZRiVpg@mail.gmail.com>
+        Mon, 02 Nov 2026 04:09:36 -0800 (PST)
+From: Anil Kaushik <anilkaushikwireless@gmail.com>
+To: netdev@vger.kernel.org
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	linux-kernel@vger.kernel.org,
+	Anil Kaushik <anilkaushikwireless@gmail.com>
+Subject: [PATCH net] netlink: Do not call the unbind callback with the table locked
+Date: Mon,  2 Nov 2026 12:09:29 +0000
+Message-Id: <20261102120929.4077030-1-anilkaushikwireless@gmail.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -94,48 +100,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOr6SmEW8ZLjMzqCWdQL3W0DKwZCVaRL+DbhrSEZu7SeZRiVpg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Fri, Oct 30, 2026 at 07:28:52PM +0100, limzhineng2@gmail.com wrote:
->Hi Jiri,
->
->I'm from the FBNIC team at Meta, working on firmware and drivers. I
->realized that devlink core currently lacks a feature for selecting
->which A/B bank to use to activate the firmware, i.e currently we just
->have "devlink dev reload pci/<bdf> action fw_activate" to activate a
->pending image, or reload a current image if none is pending.
->
->I'm thinking of adding a feature that allows for A/B bank selection,
->something like:
->
->devlink dev reload pci/<bdf> action fw_activate bank active
->devlink dev reload pci/<bdf> action fw_activate bank inactive
->
->This will be useful if say we just activated a problematic image, and
->want to immediately roll back to the previous good one.
->
->Before I submit a series, some questions:
->1. Has this feature been proposed before? Were there objections or
->discussions I should read?
+When netlink_bind() fails to insert the socket, it calls
+netlink_undo_bind() with the table locked. genl_unbind() then takes
+cb_lock, while genl_unregister_family() and genl_register_family() take
+cb_lock for writing and then wait in netlink_table_grab() for the table
+users to go away:
 
-I'm not aware of it.
+  netlink_bind()                 genl_unregister_family()
+    netlink_lock_table()           down_write(&cb_lock)
+    netlink_insert() fails
+    netlink_undo_bind()            netlink_table_grab()
+      genl_unbind()                  waits for nl_table_users == 0
+        down_read(&cb_lock)
 
+An unprivileged user can get here by binding to a port ID that is in
+use, with nl_groups set. Lockdep does not see it, as nl_table_users is a
+plain counter.
 
->2. Is extending fw_activate the right interface, or is there an
->existing mechanism already for what I'm trying to achieve?
+Unlock the table first, as the comment in netlink_release() asks for.
 
-Looks like the right place.
+Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261101101347.3910654-1-anilkaushikwireless@gmail.com
+Fixes: 3de21a8990d3 ("genetlink: Add per family bind/unbind callbacks")
+Signed-off-by: Anil Kaushik <anilkaushikwireless@gmail.com>
+---
+ net/netlink/af_netlink.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index fec2879c497d..666a0ba03ca1 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1047,8 +1047,9 @@ static int netlink_bind(struct socket *sock, struct sockaddr_unsized *addr,
+ 			netlink_insert(sk, nladdr->nl_pid) :
+ 			netlink_autobind(sock);
+ 		if (err) {
++			netlink_unlock_table();
+ 			netlink_undo_bind(BITS_PER_TYPE(u32), groups, sk);
+-			goto unlock;
++			return err;
+ 		}
+ 	}
+ 
+-- 
+2.25.1
 
->3. How should userspace discover bank-selection support, so explicit
->selection cannot silently fall back to ordinary activation on older
->kernels?
-
-max_attr?
-
-
->
->Regards,
->Zinc Lim
