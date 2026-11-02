@@ -1,63 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793641454;
-	b=JKJJIdLQ0102z0UnmBAXJdBShu2vD1P3/8AvaJTHnibSGtbwSE+YvgCE+74maFipeeA5
-	 8+IVISlJ04yova+1Qy0YnbKLgOGd6jI4wvoG3yhHtlKrj9K27c+7EhSp1a9zOkBkwVwuK
-	 xhujDJXzo0IlZ5vFF+Ltz6/GgIfOh3VUargGJ6x7s91k4lyaSzxNwSLUVZdc4kVUP/+Wz
-	 9jlulnCNwYJFKIae75gh7f288f4aOwfamTgP6Sd6zU8AsTbSKbnRnyCgxDknFtgch2RzA
-	 4eNxg0GMeIZz2tfctia1yKvfNEPFd/ddO8G0uAQA2JvadHX6rNGliEa8qVSUDONqGbQ==
+	t=1793641589;
+	b=mvCRvvluv2SQrhA+JGg0FwoKQnipieC3js/gTDqMU+YUR9Fwyec1xmKfa3ATYIiD4e1c
+	 m1WLdIgcJetaquY3b71MbU/GWbiz6bKkFyzBz5w1+d4iovgDBG5X5m0xoLdmGk0ZhdfjK
+	 S36E7o8gfgRZvmg17LYHCZSITwpFOlOlGNZ0AU2vdwf3fps9tp9t2BCYqrSSfUbAhJXbW
+	 1MtEH0xHMLuljKpwcnp2A2PxJW8bxYaRkINQlWq+RAkgLSsJuJVGxHkfv1trVOUWrzm7l
+	 BMxKKmD9bPUDb+WW4tsmCNr3QrwzXzjDlBq1joG7Sjn3UKt4CiKkZoEI5aUt1nTBIAw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793641454;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793641589;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	b=BQEYNtnZjp1iISiFeOHvGklXpzNFhZRiClVam2KI+XE5cGAZBJ8lwxdTzOVEWJlrPEAq
-	 rzJVpZUk0i+ODWF1h2D/yYmUmXKye1KXBpwYEDJTxW3OZMGYo/RMMZqCB4+K0rl37ug2P
-	 jBYv4Bh06kqr7psaUjGNlklayIvXx9QgaiKAbGn4gFH+4MKIeSIMlHTab4gLHFbRcuANA
-	 FV0Qh77bkEEvWMBgD8lnIgGMctfhB71ZeXLKp/ZSUNtKr33m4V/5L5c9XhnshonM02Cmb
-	 o4lIGmrOK9zvwNavOuighRcuuL6sKbIM0wHdhmlvVM2HGKufsJHmcMHFOjEh4+/xKhg==
+	bh=qYyD49aeXrQ/bZeNGHoSmAuESNs1lMdSf2HL87qSocs=;
+	b=eiH7O6l8Xv9CLwdSeFepSNGHWtSNHbYl1NYWe7QVRUJadsoUPoL86oPqI+A1xpKJ/nSE
+	 RKwiZCgbzFAoycdnwSv6BfMsCR9WSgIp00nmRVHSiMUhUNDIdu4lDHHCym2OtDGR5nnJr
+	 76aFwd1TWXzjejCyUSHflVofD2klLuzaA15qM5g39cRNiOb3I/KMmaAxyl48yMaLA7A34
+	 +ghu9HSQeuOOM8AYV2cihqmzomw7gg/XIHG7hypqeLeHgOv+aUSvD4D5uEna0xx0B4WL+
+	 qonkw5j1WSlQddsxIYMF4YTx/fCY30osHoTK1GqNLHSMphEtk8rEbWAPcUPokcQfhBg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CFH+9lDm;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GNBwqO2p;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D46C606B1C8
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 17:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1E7606A5A2;
+	Mon,  2 Nov 2026 17:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CFH+9lDm
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CED11F00A1A;
-	Mon,  2 Nov 2026 17:44:13 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GNBwqO2p
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F081F00A16;
+	Mon,  2 Nov 2026 17:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793641454;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CFH+9lDmIhi1EcXtrYDQT2aON1nue/8zrLRncLS1d18qQhA+b53bkrPU0jp9JHYEX
-	 TIwvNW3yrxuazH8Fw9mYNH2UZA65kFCo0Xjnei3jFlJ2qQrtrzdV55O0MTv4YD9cCI
-	 /oriMynOIlayxRjN2t/VoSw0Hrs3wgdrZrAqe3DZ8zdR1kD+TSLq3UuSiCNUPEYFDo
-	 0JgA/8gLlillxhNlDPR+gKt7tV1kc/kJ2l6SsqNN6UydlhiFAnm6FFhNha4g9Idboh
-	 MWC9jQHL9oGMxrmcSXihcLvk8Z8CUMUdJUM99AeYJgJi+DQ7YORF7k+WUzphxrMJ0k
-	 0vjsMMtPP2ibA==
-From: netdev-bot+sinfo@kernel.org
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-Subject: 
- Re: [PATCH net] net: stmmac: keep est_lock across PTP clock adjustment
-Date: Mon, 02 Nov 2026 17:44:12 +0000
-Message-ID: <179364145292.3286.14851003961835841774@kernel.org>
-In-Reply-To: <20261102-stmmac-ptp-est-lock-v1-1-76fbc0cb230d@oss.qualcomm.com>
-References: <20261102-stmmac-ptp-est-lock-v1-1-76fbc0cb230d@oss.qualcomm.com>
-Auto-Submitted: auto-generated
+	s=k20260515; t=1793641588;
+	bh=qYyD49aeXrQ/bZeNGHoSmAuESNs1lMdSf2HL87qSocs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=GNBwqO2px9Jg9kN6VOJHtWHGihyWvqggdiUZXBvqVweYC0y/nkaK9EkT7mU1anu0n
+	 oLDd9Uam8ypHVE5BGHwwJ79x0fReUU3gu6/nFgxBmVU1Au/5aKuh0PM7wU5O2/n5oX
+	 UFlVE69evaUmCgFJL1UtnJuQXyl8AEgV13/OU664LvUIY6eYmF2B14uU/2u/Jgn2wM
+	 x6qAMmAY2JMZPkMuxtVaG+3kGB7O6NaUspPhdMarYYXzYwFP5Gc6xgqWvhzTrcGkFD
+	 sBzudMDSYdtfpufoZ7DP0AV5uxLkaOs4zzAN14ppBdqmXOpgJ2z5ID0oKnFumIVSKB
+	 ivyFg76ze+9ZQ==
+Subject:
+ Re: [PATCH net] net/sched: em_ipt: reject hook values >= NF_INET_NUMHOOKS
+From: netdev-bot+sashiko@kernel.org
+To: hj351016@gmail.com
+Cc: jhs@mojatatu.com, jiri@resnulli.us, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Mon, 02 Nov 2026 17:46:27 +0000
+Message-ID: <179364158761.3131.14745083619044110931@kernel.org>
+In-Reply-To: <20261029163516.2476127-1-hj351016@gmail.com>
+References: <20261029163516.2476127-1-hj351016@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,28 +64,92 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Hi!
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+- [Medium] The patch is redundant.
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+--
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+net/sched: em_ipt: reject hook values >= NF_INET_NUMHOOKS
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+This patch adds a range check on TCA_EM_IPT_HOOK in em_ipt_change(), so
+hook values >= NF_INET_NUMHOOKS are rejected before check_match() uses
+im->hook as a shift amount. According to the commit message, an "addrtype"
+match can otherwise carry any hook value and trigger a UBSAN
+shift-out-of-bounds.
+
+> diff --git a/net/sched/em_ipt.c b/net/sched/em_ipt.c
+> index 26f1c4269a487..53358886a88c5 100644
+> --- a/net/sched/em_ipt.c
+> +++ b/net/sched/em_ipt.c
+> @@ -168,6 +168,11 @@ static int em_ipt_change(struct net *net, void *data, int data_len,
+>  
+>  	im->match = match;
+>  	im->hook = nla_get_u32(tb[TCA_EM_IPT_HOOK]);
+> +	if (im->hook >= NF_INET_NUMHOOKS) {
+> +		ret = -EINVAL;
+> +		goto err;
+> +	}
+> +
+
+[Severity: Medium]
+Can this condition ever be true? The tree already contains commit
+94cea342e891 ("net: sched: em_ipt: validate hook value from netlink").
+That commit added the same check to em_ipt_change(), right after the
+required-attribute check:
+
+net/sched/em_ipt.c:em_ipt_change() {
+    ...
+	if (!tb[TCA_EM_IPT_HOOK] || !tb[TCA_EM_IPT_MATCH_NAME] ||
+	    !tb[TCA_EM_IPT_MATCH_DATA] || !tb[TCA_EM_IPT_NFPROTO])
+		return -EINVAL;
+
+	if (nla_get_u32(tb[TCA_EM_IPT_HOOK]) >= NF_INET_NUMHOOKS)
+		return -EINVAL;
+    ...
+}
+
+That check runs before get_xt_match() and kzalloc(), for every match name,
+"addrtype" included. A hook value of 32 is rejected with -EINVAL long
+before check_match() gets to:
+
+	mtpar.hook_mask	= 1 << im->hook;
+
+So the new branch looks like dead code.
+
+For the same reason, some statements in the commit message don't seem to
+match the current tree:
+
+  "em_ipt_change() reads the TCA_EM_IPT_HOOK netlink attribute into
+  im->hook as an unbounded u32"
+
+  "the only range check on the hook lives in
+  policy_validate_match_data()"
+
+  "A filter using match_name "addrtype" can therefore carry an arbitrary
+  hook value."
+
+Was the v7.3-rc3 reproduction done on a tree without 94cea342e891?
+
+94cea342e891 has no Fixes: or Cc: stable tag. Would it be better to drop
+this patch and ask for 94cea342e891 to be backported to stable instead?
+
+If the range should also be enforced in the netlink policy, em_ipt_policy
+still has a bare NLA_U32 entry:
+
+	[TCA_EM_IPT_HOOK]		= { .type = NLA_U32 },
+
+Could this become NLA_POLICY_MAX(NLA_U32, NF_INET_NUMHOOKS - 1) and replace
+the open-coded check, instead of adding a second copy of it?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261029163516.2476127-1-hj351016%40gmail.com
