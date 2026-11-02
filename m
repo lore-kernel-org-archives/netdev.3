@@ -1,54 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.120
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793632950;
-	b=UKL0RXV6eUut2BQpp75AxqGaZKHNltiZ1n5AHEcwObphh6kqVlhptujpo7LY04CcxUyX
-	 fZnO6CUoE/fypKrANEakkMEPgB5hBo3DKBJ8xiBbtb8I+mDJOmnEaD94zqaZUDuESD/Ir
-	 WObaTBVvhJsRcbffH99tqMg7RPjv7ifDIlLxOiSkrLUCTA5Fcv6EajdB7sP/6e8fBXzdp
-	 7UTevGuTQjoKUOJiPdU3jc22yBAd2PY3efbnWdsTJir2pzu+UcaLCCy1Rqsyp8J3ePBk/
-	 x/oXqkZfLk5pYKnbVKWn001fGALQ5rfZcEz/S4fsaKaX2zjvtiwX2sIPVSnNobhlmlA==
+	t=1793632953;
+	b=pBbNDnwn3qADNtyYXKv7vX5V4IwTcjNUzO1LCiUvvgEkyWrBzpB0SY7KdGzV3UhstZd0
+	 WVhNbkji8tQViirE4+l7LVzfkRUAcn7dHfaj/twR7uTKlyvw8arefShrQn4LVMBtMc1BC
+	 OtAa6PKboIj///+HyfwjPE5ppITK2OCpJAIZy3svln9H+1Xoh49UwtNuiIfb5M6/d1B4V
+	 T07/JpUB0pA1HQaf6wfqvusXjEnYTDWy2TF7/h7gwsFEaLLz8/dLPgOp7/2rbdwAWvB/N
+	 nejZaX1PfItelR/KTDc29h/wS8oRkp/FVC2v/05YlTYDh04biOMToGA3zKvxDz1Td6w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793632950;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=ODeQNKP0UJzemh4mAsPTNTViZ9w8JQQkxq+xVPOOp4A=;
-	b=UC8Gycnp7eRoHuwN16AZGLclm2Ktfb+jfHZ/4sAWSZvqByxytN9KEdfsT3Wb2iF+M8Yc
-	 1VwMWKJ+ptsNvnegSnaohuymyXhwRQGYeM7Q7eFwbVJLoppr+sS+IlVoHl/nu68FVzrNQ
-	 s7hS9wawUlzwW1j01h3l44OSn02AHw+qp0zDQW2EcZxtk7dsnT8JlZEmlYu4jrXIaH6si
-	 WZ7kX8uq0aURkw7fXjdgb7HAGtHGjK8odsQKT6kIm1AnbDF2hRshwftJWwMWqYMEnM+xG
-	 TW7vWdUuoyB0/bdwtm6z8GKGv9Y55hKPuAnWmNHwmjzoFr3CdtBN7+UvWHT7NNpsAMA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793632953;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=lzw2p1lwQVTXGjOVK+O2fRllw6EWFGiyVpP4wwnyOh0=;
+	b=xIlgnUUE6sRo8MIsf4UCALpYHCJLUzpdzfgoCC9Hkcz3ySMhGsld3m/0GRs4dyKb4TXW
+	 gNgfe5U3W8YPKZwLaSQmS2tyN9x5CTWs+vI+CamFOB95IgwuZ/Mae7skRvaiCkKt7HZLf
+	 DgqQ1LaDsGA0ENhS5YFQZp+fRZnckiolU+ihLS0Oa4AyL40KqkR+7I/aN+3sOGpfs/+OQ
+	 5EbctPUHOF3usgcUzyCZ3Ktj5IQYkSchUDtCUONFqSdIipVfcDDSmhK9di3x4LsHEhuNl
+	 WoczQ7qX1svwG76s50gik8kNeMVbmd2L9pX4W04+5HEhSL4UQHiVnvap2+w1CtqueRg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MkPK98Gk;
-	arc=none smtp.remote-ip=91.218.175.120
-Received: from mta0.migadu.com (out-120.mta0.migadu.com [91.218.175.120])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="jam/DikG";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE71B6070DB0
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:22:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AE71B6070DB0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5827A6070DB0;
+	Mon,  2 Nov 2026 15:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MkPK98Gk
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=ODeQNKP0UJzemh4mAsPTNTViZ9w8JQQkxq+xVPOOp4A=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793632947; v=1; x=1794237747;
- b=MkPK98Gk6+VtkxKxcLCiTZ79pZE+KHJ10FDlU0JuKqId69E4Br9BDm2UG5xM2pXu6bh8SDK/
- l/Cyoh85ozVnbJj2YmWmmk2CpYSnM3Uh3ew27r3OqktJwvxXv4J0LhnPVerVbbdrI6+WMLyqwPq
- y8ALbIKiQlQ+YNE2I9BMpwvk=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id e6dff1b99e2386a3;
-	Mon, 02 Nov 2026 15:22:27 +0000
-X-Mizu-Trace-ID: e6dff1b99e2386a3
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <d108788e-bd69-4bc2-aca5-d8080fea818b@linux.dev>
-Date: Mon, 2 Nov 2026 23:22:18 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jam/DikG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE0491F00A17;
+	Mon,  2 Nov 2026 15:22:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793632953;
+	bh=lzw2p1lwQVTXGjOVK+O2fRllw6EWFGiyVpP4wwnyOh0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=jam/DikGbP3IcdUEgRo2CFdrSnYZ/3MSMU4LaHUHhtBAwB6d0wN4GG1MyQdeaC9Ok
+	 wdJM+b/3RRtjlCv8z3tItr1QxtSmH9BkYdSP+SP67oPniRC+yl3OGovJKbnl6vggYQ
+	 Xw6S0FI/uqQMcc4B28EcQ0DDMaWkGXvvD/9rG4J+o8qpnbTPjubCx61OEoREYP+wT+
+	 n2SYcDkpCjIpsbDnXuLn3gvGvJMSkTaaQcGsDZNp5Sixc2gl8PYMoWuRLivBfr0Eti
+	 JYdHka5rVsIFLmn3fwhKKgzdpuCwWerAtbnpQ53n/tpOZi1eZbO6XiCI8qo1rd8OmY
+	 S9C/ymTqVEc8Q==
+From: Christian Brauner <brauner@kernel.org>
+Date: Mon, 02 Nov 2026 16:07:18 +0100
+Subject: [PATCH RFC 08/27] smb: client: let procfs own the seq_file of the
+ smbdirect files
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,48 +53,84 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 net] inet: frags: limit the truesize of a reassembly
- queue
-To: Eric Dumazet <edumazet@kernel.org>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
- Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org,
- stable@vger.kernel.org, Kyle Zeng <kylebot@openai.com>,
- Florian Westphal <fw@strlen.de>
-References: <20261030081225.2575462-1-edumazet@kernel.org>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20261030081225.2575462-1-edumazet@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20261102-work-procfs-fs-v1-8-d09a996317b3@kernel.org>
+References: <20261102-work-procfs-fs-v1-0-d09a996317b3@kernel.org>
+In-Reply-To: <20261102-work-procfs-fs-v1-0-d09a996317b3@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+ Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+ Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
+ NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+ Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+ Greg Kroah-Hartman <gregkh@suse.de>, 
+ Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
+ Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+ linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+ linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
+ ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+ coreteam@netfilter.org, kexec@lists.infradead.org, 
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+ netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
+ linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+ sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+ linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
+ linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
+ linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+ linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
+ linux-debuggers@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, 
+ Chuck Lever <cel@kernel.org>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1034; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=RIZYcDqYt7NhFvt2L4C6pTMn3DylkXBLCyRwuGHjm7I=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG6U8n4ug8YGx1uVNoYGj8zfPCt5xX+/1GRB/J/oU
+ N4J1w72dZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExk8ylGhs/Tfi77dN1/hsfq
+ 9zYVab+vKc/ddURfvDWri+u34qLfrzQY/tm3hDFcuBC2pbSmPpAxdem3TZc/mgiqPk5x3Kp2npv
+ flwsA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
+Declare the show function in PROC_FILE_DEFINE() and let procfs open and
+free the seq_file. That makes the open functions unnecessary.
 
-On 10/30/26 4:12 PM, Eric Dumazet wrote:
-> The truesize of fragments in a reassembly queue is only bounded by
-> the per netns ipfrag_high_thresh sysctl, which has no upper limit.
->
-> inet_frag_reasm_finish() sums the truesize of all fragments in an int.
-> If this sum reaches 2^32, it wraps, and the final sk_wmem_alloc
-> adjustment of the socket owning the reassembled skb can cancel its own
-> reference, leading to a use-after-free of this socket.
->
-> This can be triggered from an unprivileged user/network namespace,
-> raising ipfrag_high_thresh and using padded TUN packets, which keep
-> a large truesize after being trimmed by ip_rcv_core().
->
-> Track the sum of the truesize of fragments in each queue, and refuse
-> a fragment that would make it bigger than INT_MAX / 2. Callers kill
-> the queue on this error. This bound is far above the needs of
-> legitimate traffic.
->
-> Fixes: 18685451fc4e ("inet: inet_defrag: prevent sk release while still in use")
-> Cc: stable@vger.kernel.org
-> Reported-by: Kyle Zeng <kylebot@openai.com>
-> Cc: Florian Westphal <fw@strlen.de>
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ fs/smb/client/cifs_debug.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
+diff --git a/fs/smb/client/cifs_debug.c b/fs/smb/client/cifs_debug.c
+index dfcd2cdbb2a8..664072ab3342 100644
+--- a/fs/smb/client/cifs_debug.c
++++ b/fs/smb/client/cifs_debug.c
+@@ -873,16 +873,9 @@ static int name##_proc_show(struct seq_file *m, void *v) \
+ 	seq_printf(m, "%d\n", name); \
+ 	return 0; \
+ } \
+-static int name##_open(struct inode *inode, struct file *file) \
+-{ \
+-	return single_open(file, name##_proc_show, NULL); \
+-} \
+ \
+ static const struct proc_ops cifs_##name##_proc_fops = { \
+-	.proc_open	= name##_open, \
+-	.proc_read	= seq_read, \
+-	.proc_lseek	= seq_lseek, \
+-	.proc_release	= single_release, \
++	.proc_show	= name##_proc_show, \
+ 	.proc_write	= name##_write, \
+ }
+ 
 
-
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+-- 
+2.53.0
 
