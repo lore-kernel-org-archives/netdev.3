@@ -1,85 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793604097;
-	b=NoN44kmbE/gh93xjL1C9vdjFDcj6dnpVikf1ogOvE7TtRW5nh7zAnrBQV6fz1RLXNA1o
-	 wXI8ipE1irIVkFGgOMt+Xim+feZk0JvEPfzyPDGWjp4XB775QzxgHE4Z38MRoDzLEHaVQ
-	 Kzq4yEBu/NPQopmW1iV2Dd45hLVE6GKtHYxcuVT8skSJPDXsXNXOKeDu/k9dvjyVsbpiF
-	 EIHDtw3K4RWpf0fos+bJpcuS2uycPi6eQVTX/x90C76X21CQ8Dx2etF0ebY4qGYxonIVd
-	 hWMzpXg+cys24nQlYMWl3H8OOy6EvuxhCWPkCiGH+CAeY5nV5s+CPd4St2BYjax0cGA==
+	t=1793604104;
+	b=eaJZ6BzKG+VMZROujTlNgZiQHFph6hmr0VCdrALYA6yW8vccAYPONctTqMEvmTbnfsTG
+	 ryoiXyzGekpW0+MQ58fMLwuhx9bT8vxzsDZLPJ6lQvdCeYLeDyT6YqXcN+At14YSljv4g
+	 DEDrccWO1joNRT9Uwkm2BeFDUKubo16RkYsLpFHz2TaQptgKUn4NnAulSre5lFDW/hnK8
+	 Y+eC5a2+TUCu7gMjXQfnoMUgUJH97gTzyboLUzauHdXgP4fluUZfuOeQJiHrO5mM18BAT
+	 pRenYMZ3kF/0bmH6YWm+dvSRJE/bODS/Kv8MqbTBvj02AYPhkkXbYsYnfxiWV5Jg7GA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793604097;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793604104;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=Z7Peb9UAgZRQMeYI4B90l1wzrMCTNfd6vqfD72GCEUg=;
-	b=s2ryvo4XJfSVzejvSiLkXOHlV0vJ2SqpU3LhB7tn9ep/YbtmXX2ThUXYzYrebekpIuiM
-	 zyAKPqcHi3yRIdHzHPa0W+d2/5Hv1huJyFpPtN4ixV2xWAXw3VtSx7i96pBgOcmZeccbM
-	 PfsAymRf0+HosZ43OwT0K/vRzOEjh/QrJ8iifK+mU+j/S0wCelA+hlbC0ZC/sNLCgmZ9L
-	 xiATiIOpli1VDLimdgNzvGZtuD1UYL1OqbRglWaKDmRH0BMf9tHOc/c4cnhSmjkhUTUDR
-	 relILVKzSh4F0nX8AhDoIfqyEVQJTWdLUuhcXaC85YOXWv6ZZA7RPIdtCOVhBS02BGg==
+	bh=Lw6EOCCC6sbUctDXo+tERpXOU4fD8zFY96sMocjjruQ=;
+	b=J7M4xDfq2//4EYu2z0FAttQd8e75FEKA+u1rcGUcCthK5yRxhxDOcfarzjEsLnrDPthc
+	 fXW40Dvd+GpRuA9sHk4rir+oB+pGu58Ettb7u/eg/vrLAoF/1EKvda1hziot0GTo8MohB
+	 Md4LJ65htizHMp82tMx8C6EhFPV4ZQba0FTttZp6EF+xNJGgzNVDP+k4vvcXm2Obm1U3s
+	 lTCq07cVr7Y8SPm3W8aS5CQAruUUfw5chH4H+RgJio70BJPdlSRy/wu4v2Gem6h+UvLZ5
+	 Xgrjj1GDqdzacBP8HvB6SL4VVb2ipm0+MHdK5fpz3pC3+na7YmSQS+MiiPaDG6Vpj2g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0iMfdFa2;
-	arc=none smtp.remote-ip=209.85.214.178
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="UdU7K/zl";
+	arc=none smtp.remote-ip=209.85.216.49
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92858606A32C
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 07:21:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 92858606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9E2606A326
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 07:21:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF9E2606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0iMfdFa2
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2e8fe8e343fso17596035ad.2
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 23:21:37 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UdU7K/zl
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3ae6b4c669fso2198881a91.0
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 23:21:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793604097; x=1794208897; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793604103; x=1794208903; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Z7Peb9UAgZRQMeYI4B90l1wzrMCTNfd6vqfD72GCEUg=;
-        b=0iMfdFa2E4giR6+L/RbyruUN4ugedAklyuqkewA7kWBIFjtADNmDS7ohqIWv+A18g8
-         Vr5JUv+UxVJ7/BaA9BooLtpJi69L2LS22ew2/4UPxWh+tJQ2RJFAqcRcLrAaPb3kSeAB
-         QyrHU2T/s1Os9GDCrrkN1864+RxS/qYCSiHUshnroVOxbeZwcGW6QeP278+pw8CkbKQF
-         etkP4hJtYvFs+8GoeloS9+bmU4UvMTIroZ7/v/ajesGA2xkkKOSzegcZxgSHJ/jV3LZJ
-         POWRp3Vmx+EjHThxTpb7S8LBtQ6j4JmOZ1scqou4VLy/S9IPVWD5+IWhvG5iO6f+zmHf
-         fXag==
+        bh=Lw6EOCCC6sbUctDXo+tERpXOU4fD8zFY96sMocjjruQ=;
+        b=UdU7K/zl7+AfYut04J2RYdwN/ElOPqf7v48tRRcqux9UpLJONFqejFO1m+Wr99ltvU
+         BHe6ie/S4nOi1B1EbNXX+f3V/4lyKdddQC2Uba8BnuaoGLvZm5PasbW+2YHdUGZfnSEj
+         PicmQbC/ROQCoWPof6Nc/fQFxB1fse3XkRwM8lk0h00M6ZJNjGxZEesPi9rzIRH8zq/b
+         waJV2CqBsLsZmYFeTzvs83oFrL7RA1YuHFwOiArQA/Duej66C5LmFS9SeD+6Pe0/lhC6
+         6W7iKB6N37dLyhdHC/il9yCqk0fZRVmt3A7Wkc2y6XBUbD2IPSkUulrJIhkI03E1CZD9
+         4BZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793604097; x=1794208897;
+        d=1e100.net; s=20260707; t=1793604103; x=1794208903;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Z7Peb9UAgZRQMeYI4B90l1wzrMCTNfd6vqfD72GCEUg=;
-        b=r1tCFGEZgRlWyf+7vy5zX+z+hs2dGkDLrV4HCmnCsO+xj1vTeAqmDR+MmfvQbhSlfX
-         6GvW5zufGC+XkDp7+HPIDEvoMHy5O0uXbfum8CP+IpBZz1Fz4NHjYBa5bzuLXPtTvIA1
-         VCZ4XS/4bAQOs6lwEXRuCamNotcIzDMOUw+GT95WsAlZxNBJSFnxl9lE4xgnOTMnlz1T
-         pQtXeQqvfmPBK0il2lQEuZIIgL41Jmrhjp+czjLp7nD4XZdy/gZMm7R9XDQxN4rcJfry
-         4cIxixHAq7LYjroiATmWlTe0V07KqJL9x8rHsS6QgtetJ6xRvhEiZ7CfomD6tPaVskh/
-         R8Rg==
-X-Forwarded-Encrypted: i=1; AKwUvBwZVbGJFrqPyB266XtQ/h4FnqdW+ABg5wFS4Al3u5y7Yb0K8an4Ci2wu6wfjxG9unetxL5XLB0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z850mgElmMRAsz13+S4nD0wbjBCX3M8wH1rmrYWcLHRYwlw11Q0
-	3BBAqkBMCkR52eZSsgaNX5GESEofo6VyHQg4nx4ipu79ljrfJQUwPRj3
-X-Gm-Gg: AYBFou0tcYIDo2jqzYo+a+n4NexPQ6qbcZM3bE5RZnnjph0uIRR7tlJAeTO9DegdZkG
-	AiHXGg80IXXjIp1AKtaZnDdKq/h2Nc+ZN25jyRK7WSV6yEG+7IDox0lH9REClcSMS/E343N1VPV
-	h7fGCoS9EvRjFdld0tWBMNA/2c79sKY6r+OD4p4sJa9ZD/2QtU3lUYuCa4ixdqQTxK35YY0EU/o
-	NIqirDMTcKQhc9uOKtEnpAQiPxBzqloBeU6SnIw+OW8NgyvqFo70GbWy8DgBUzzAGXfaou3VtU8
-	cqxOhtRpVfvk/Vc7Mw5ttpqvKsCZ5e01GsFpTf15OMsPkSHJ2mbpGvLHFgIyduTQMXpJNuQsnaw
-	Y+3L+nR9BuciOU1dh5KXSCmrvWGRv1HzqGi4oCjxA96nLau5wOnYrjnBEEQ/YrVvoOXxsLJlbtV
-	XzgdDOLO6AXwEJNrfRjF5Fr9QRnHHMoyp/foe4iM/Eu9rbBoPwJE/ddkDSHfXf3dLG0mi4qVeRs
-	9X821SG2V9e6DvLXLXiIBvebCNHBQO8pPw3pix6yhz0Y0n0tme1YCG5J33zfH11W9ycXYEW0WDw
-	wGIwKVxbGlhgCX+yFW12WqAuCpD+JX53xtPuZ4BRqbq75SHV92CI1qxnPKrL73B/2ImYt/XUTyq
-	CiOBDtyrR9/rfGcRFV3duHKP0DFqBebll1ZQ3iFwG6bQ9Qqx95xyRvkP2ThnvzHY3Fop16tkcaR
-	o=
-X-Received: by 2002:a17:903:4b0e:b0:2e9:9a19:c54 with SMTP id d9443c01a7336-2eb3646ee38mr76369615ad.50.1793604096781;
-        Sun, 01 Nov 2026 23:21:36 -0800 (PST)
-Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.247])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb3924c858sm24478145ad.35.2026.11.01.23.21.35
+        bh=Lw6EOCCC6sbUctDXo+tERpXOU4fD8zFY96sMocjjruQ=;
+        b=OTvcC/1XN4NtNcwhTCNwiqP+p1aIHEcMb4z864d9UqOdUL8J0tUlMvVT5eYdJWBfcD
+         HZuUqOxyImu1apmi5GpqyeL524FQl2/BgRoJe4IMkUNjMAgcmD/G9NzUXgD9sE4mcQ84
+         9e4LsBC6BjY38OMPCCptj+1O5rL3w4aVqbjkrU3ZZTllb5KvN8UPHAkXBVbKydEyi3Y5
+         ghIxZXETEdmAH8bUJwEfSlj1owo17VPJFCeeOZc6vic1uBHW3fpzZSsn3ojUQQK0CVC6
+         vVfDsQLgPg/OrRRKooUFop6dNmcJrG5JzYhxDngSNYu2WbxD/q5WzxG3SScvcDHkC/1+
+         etkQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx4fcR4FCLf5cbKYbrz/GhX5ECdt19s1NILg+KEWLVFQLSA2FK9w8NQ2xuaCaK7HXfaEahc+xs=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+tO7LN05l/4W8eqtjtqxQxVBNvpdcQv71mfVDGl+K58LVuq81H
+	3Q5p9+aLQADLxHwfSOzxBeXvFOEGc+H3bZl0Rc7QhQ8In5W1eNKp+7Fp
+X-Gm-Gg: AYBFou1z5dFpDj0SlmZBq/AMN81fWt7hYQRQdsKEuoasavimv/Djqs4nhDUm7aDq/nE
+	Wm/3OngzUm8VIU2EthYyy0VMXf+nBzFeCFN6MrhDvz5teaV1RgWuP7iN6PFUWTfsHkpyMUW/ArX
+	2PDyavipcMtMAQ6HsM7Z9Dwstm6EC1+kmjVe0bLzCLMm6eMJsVLDXu7OQ10TBYbfxOdwGMzkxlv
+	8uTE/tT7+5ZlDj4ofQDv3LyJsJMyB2nrD08dgNK61jAAXCbsmDxop0nBzKUXVFxb+1KkL0df9Hg
+	ZQRhAYYVpzpkFzUiWswmq+BFCKiUwmS2D0nv+jIR6U162lxgF/ymFZ1PbiZDyR14ixFzVxcuV66
+	nySPjGKFppQTgU01hhrs1kyMZR0kEn0FqjYeE164uvqHjVAdpIYWxEFdgQ4UghKqSE2zDjix1+L
+	/QXyhLns+MPfgKhDRcScUzyfQzGvtcaFr6cVKXV7NmjDlOlLGJZuXfu7tTSw5RzDIPUrG74NPue
+	jYzivLkrtm94EWszn7D0t3zEvwZ+AqsSvWYu/DdItzxcuB8Um0IZTA5rwcDWFPmiT0amjPiF6tr
+	4R5T1U9TfN1URRwaW/gTDyeipbZLCgkSjLUk+xZXKn706NT7GYaB5EpSuDhX6ipyqc9fxEKm9gn
+	Yqd1shyLU9gNA1bLqOCSN/Gjesy5Ry6Mlh2rqk5IIxJGzOv3dEjzwePKBd//lJAG0xofJ4ZpDag
+	s=
+X-Received: by 2002:a17:90a:dfc7:b0:3ac:6e91:3f1f with SMTP id 98e67ed59e1d1-3ae6f00cccemr7838997a91.37.1793604103048;
+        Sun, 01 Nov 2026 23:21:43 -0800 (PST)
+Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.246])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb09814cb9sm2753697a12.24.2026.11.01.23.21.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 23:21:35 -0800 (PST)
+        Sun, 01 Nov 2026 23:21:42 -0800 (PST)
 From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
 To: bpf@vger.kernel.org,
 	netdev@vger.kernel.org
@@ -101,9 +101,9 @@ Cc: daniel@iogearbox.net,
 	mptcp@lists.linux.dev,
 	mason@kernel.org,
 	josef@toxicpanda.com
-Subject: [PATCH bpf v2 03/15] bpf, sockmap: Don't let an SK_PASS verdict cover the next message
-Date: Mon,  2 Nov 2026 07:21:00 +0000
-Message-ID: <20261102072112.4160195-4-alexei.starovoitov@gmail.com>
+Subject: [PATCH bpf v2 04/15] bpf, sockmap: Subtract all dropped bytes from the return value
+Date: Mon,  2 Nov 2026 07:21:01 +0000
+Message-ID: <20261102072112.4160195-5-alexei.starovoitov@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261102072112.4160195-1-alexei.starovoitov@gmail.com>
 References: <20261102072112.4160195-1-alexei.starovoitov@gmail.com>
@@ -120,60 +120,42 @@ Content-Transfer-Encoding: 8bit
 
 From: Alexei Starovoitov <ast@kernel.org>
 
-tcp_bpf_send_verdict() keeps the verdict of the sk_msg prog in psock->eval
-and runs the prog only when eval is __SK_NONE. For __SK_PASS it resets eval
-only after tcp_bpf_push() returns 0. But the push can release the socket
-lock in sk_stream_wait_memory(), and it can fail. Then another
-tcp_bpf_sendmsg() sends its message and does not run the prog.
+When an sk_msg prog returns SK_DROP, tcp_bpf_send_verdict() frees the full
+message. It then subtracts tosend bytes from *copied, the return value of
+sendmsg(). But tosend is the number of bytes that the verdict applies to.
+After bpf_msg_apply_bytes() tosend can be less than the message size. Then
+sendmsg() reports dropped bytes as sent.
 
-With bpf_msg_apply_bytes() the verdict covers apply_bytes bytes. After a
-failed push, apply_bytes still includes the sent bytes. Thus the verdict
-covers more bytes than the prog requested.
+Subtract the number of bytes that sk_msg_free() frees. After an error the
+SK_PASS branch already does this. The SK_REDIRECT branch does the same if
+the message is not the cork. Nothing changes when tosend is equal to the
+message size. Otherwise sendmsg() now returns -EACCES if it sends nothing.
 
-Reset eval before the push when apply_bytes is 0. If this push fails, the
-prog now runs for the rest of the message. The same already occurs when a
-message does not fit into one sk_msg.
-
-When the push fails, subtract the sent bytes from apply_bytes. When
-apply_bytes is not 0, eval stays __SK_PASS during the push, and the prog
-does not run for another message, as today. The verdict must still cover
-the bytes that a failed push does not send. But such a message also lowers
-apply_bytes. Thus, if apply_bytes is 0 after the subtraction, end the
-verdict, as after a push that returns 0.
-
-Fixes: 4f738adba30a ("bpf: create tcp_bpf_ulp allowing BPF to monitor socket TX/RX data")
+Fixes: ca70b8baf2bd ("tcp_bpf: Fix the sk_mem_uncharge logic in tcp_bpf_sendmsg")
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 ---
- net/ipv4/tcp_bpf.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ net/ipv4/tcp_bpf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-index d90bcc911b36..b016aa419fb2 100644
+index b016aa419fb2..36d1bf46353a 100644
 --- a/net/ipv4/tcp_bpf.c
 +++ b/net/ipv4/tcp_bpf.c
-@@ -457,8 +457,22 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
+@@ -521,12 +521,12 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
+ 		break;
+ 	case __SK_DROP:
+ 	default:
+-		sk_msg_free(sk, msg);
++		/* All of it is thrown away, not only tosend bytes */
++		*copied -= sk_msg_free(sk, msg) + delta;
+ 		sk_msg_apply_bytes(psock, tosend);
+ 		/* The verdict holds for apply_bytes, not for ever */
+ 		if (!psock->apply_bytes)
+ 			psock->eval = __SK_NONE;
+-		*copied -= (tosend + delta);
+ 		return -EACCES;
+ 	}
  
- 	switch (psock->eval) {
- 	case __SK_PASS:
-+		/* The push may sleep without the socket lock, and it may fail */
-+		if (!psock->apply_bytes)
-+			psock->eval = __SK_NONE;
-+		origsize = msg->sg.size;
- 		ret = tcp_bpf_push(sk, msg, tosend, flags, true);
- 		if (unlikely(ret)) {
-+			/* A part of it may have gone out */
-+			sk_msg_apply_bytes(psock, origsize - msg->sg.size);
-+			/* Another sender can use up the rest during the push */
-+			if (!psock->apply_bytes) {
-+				psock->eval = __SK_NONE;
-+				if (psock->sk_redir) {
-+					sock_put(psock->sk_redir);
-+					psock->sk_redir = NULL;
-+				}
-+			}
- 			*copied -= sk_msg_free(sk, msg);
- 			break;
- 		}
 -- 
 2.55.0
 
