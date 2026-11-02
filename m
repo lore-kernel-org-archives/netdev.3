@@ -1,51 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.215
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.208.142.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793609157;
-	b=ZfxF9qrjTmX/cDGyBzIRoDZwrFhf1w8EeqjfiCsRYYNQyw0ACWb4uToDieWeS1nWO+LI
-	 ToINtXfxDTXziROc/wmJ2hpVsXOr+u6tI6kYceKzHQZqcbjVeXdNSJeU5UTRrnYti4Zof
-	 lVn6Ff98ozv2UQNpkCzYHddoJCpRJ8ZKoRaUemO6hoB1HQJu1Huzq77Aj74qCOHrkVlz5
-	 eChC7MRpuasBe7m2E1RabU87eWoiPLNlgUNgXs07OQDm2wYnCNJUHU/9hzsJXbbFctfMb
-	 gUns1z5V8DL1Y6PWynZkWLQ/7hjNbIST+EjI3OSA4dTK+M91TLJB5q9F65kQEvk5Tew==
+	t=1793609223;
+	b=FPSt6cRMtxmBjiSq8pysdZFN4mTBKhBpRDtDBPsFtJFA+u034v77F8Vomy0AQ+FtUlwg
+	 jN4Q0jD8ifDq7NQEmu4XhM9Cnn39tpDaqO6m6nZzSZ6g8DjgfMtqk9/ajUP9gp4vegadt
+	 5dFUkc7ZFha5weVpIjc7IN4s4S0VPZppqFEovg11JBLULOhnK9rRwjeOzuok3DOIB+pjF
+	 3HhC7dBE23NAi66ToCDiOXvH7bgYWhtfFaZNMhcTFsiV/xUjMliwqsRxZdy6Mcn8Pg+Sv
+	 73ahRNh9/67GII4XAIUP2mxxGauNLNihRhGNewyMhfnz3iw99yM9mq/1H2e191Z6f1A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793609157;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793609223;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=jx4qlQkPxS7DAszsO8FykZUqEui3HDCIXlBMJeUNy0Y=;
-	b=J2rmxOHmlsuNYzHXBoS38hdB3W2Dbe+yv+3vX5gMUaCmtpOTC/t3BXBUYrZkPC/Q7xiT
-	 xAVnz4WiWP6OJnHoR4uaYWEc9QnEJL5i8zZ0eiKuYsdmbo8u/n44h5OUjQ2nalhwUcp/s
-	 SQ2JoJ+lVBvbI+zvxqqRG5tvrlAfjV9sNzM2j2YhFn7dsL4OPNuNsrUenGvOIVqWkWt6r
-	 1bw1yQdlGtx0XLUSn4X0xydSvP73TYJBymP946l1cWePuUd+8SyF/5nCyX4C5fgckzlXJ
-	 lPB2JoKx65ZV5xXJNy/h/9LyvYKcUs/bEJUMBpJz1DV1CRshFB0KUjFVnCfGQWOS12g==
+	bh=yuiWaWQDrq0Vg9DrcjhhGqt3JHN8TGxGS0CrvgppQHM=;
+	b=h3d6LY7sW6/fUyC99LihgX5IhUvkFNooFa+l2cLjt3Mmz0r26DTIT2iulAjcHass9T7m
+	 yHMLXYUKUXEguu/XuuKc7sNJ2LNCcdjmjyS3GuG05YtE8+hn19+NnQiOkKUzrA8QxqF8v
+	 Lv53qoHYWHtYSLAqgtOJ/TUPaFzdWXTAhrF1+CKMJv/6IcEJSqnZw8wSE9jC+CAzlp5WP
+	 TKuCgm6nKvd7mXOCTqskQ0EsTsXAwi/dWB4S9O0LgE6mvGXopUBPH7D6vjkKz1s6ELaIg
+	 0wvG2NVOm3l8UcK6XfNlXnkXELeLlPODucEyZ+xsUGQ1PNRh5ydBXqeMKqrisO6xdqw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	arc=none smtp.remote-ip=95.215.58.215
-Received: from mta1.migadu.com (out-215.mta1.migadu.com [95.215.58.215])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=kernelriot.com;
+	spf=pass smtp.mailfrom=kernelriot.com;
+	dkim=pass header.d=kernelriot.com header.i=@kernelriot.com header.a=rsa-sha256 header.s=kr2026 header.b=Z1HGC3Hk;
+	arc=none smtp.remote-ip=74.208.142.49
+Received: from mail.kernelriot.com (mail.kernelriot.com [74.208.142.49])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D385F606A32F
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 08:45:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D385F606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=xxE5inaPrVu+F+7VswAWI/5YBh6Q8RuY05CNRqyPUa4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793609154; v=1; x=1794213954;
- b=cjHN8xeysAL5ALPxZMu2qazghWYfyhOK3oO2LxRICrgbvHbJaHbAmgL4XyWaCJGsdL+Tp2vw
- NPjjSBXOjlHy6J1rzNqwgbVnEmiwkGBgcI84XPFJTyIe+e5rRR/mXCJtGOFo3arFF94Fw1JW969
- 1LAoqiHbd/H4CLbp7oH8zysY=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 2b7e906160719b9f;
-	Mon, 02 Nov 2026 08:45:53 +0000
-X-Mizu-Trace-ID: 2b7e906160719b9f
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <bc3366e4-3429-4826-b04b-ca1ff20b9686@linux.dev>
-Date: Mon, 2 Nov 2026 16:45:44 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C243606A324;
+	Mon,  2 Nov 2026 08:47:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5C243606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kernelriot.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelriot.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernelriot.com header.i=@kernelriot.com header.a=rsa-sha256 header.s=kr2026 header.b=Z1HGC3Hk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernelriot.com;
+	s=kr2026; t=1793609222;
+	bh=yuiWaWQDrq0Vg9DrcjhhGqt3JHN8TGxGS0CrvgppQHM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:From;
+	b=Z1HGC3HkR8D00Uh0FiLWurch+GQd10bwl2o2HDqhQXQmKVZsWi2pnIo94j6nTnyWI
+	 TePKg9UI0on9soMqJYZ2ICUTB36Ii7//aTV+5o5DRK54lTOlYvhqAfbIgo9+RlVUUh
+	 vXMW9ff3cdv1Jb8B1C8oAJw0+AFj+IvCiYR6Zra9xCqFH+Im3iei2uXeYIlafn+hz5
+	 7/xaJcTPgVCNaaUzNFGJxOQL540GjMq2Xol/1KYHRCGo4Z6ovG5ogoLfPVpTQArYAg
+	 tSDTMGktKaG+xIgwD+RxTVMYCExwE6jmkcCKDjFhRBN3r0PjsfvpyY0xO+mXfMnIvX
+	 5lWwKAUA9c+OA==
+Received: by mail.kernelriot.com (Postfix, from userid 995)
+	id 22D0F81455; Mon,  2 Nov 2026 08:47:02 +0000 (UTC)
+From: Magnus Leatti <magnusleatti@kernelriot.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	thomas.petazzoni@bootlin.com,
+	alexis.lothore@bootlin.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net] net: stmmac: Clear DMA errors for multi-channel interrupts
+Date: Mon,  2 Nov 2026 05:45:58 -0300
+Message-ID: <20261102084558.5105-1-magnusleatti@kernelriot.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261030102251.208929-1-maxime.chevallier@bootlin.com>
+References: <20261030102251.208929-1-maxime.chevallier@bootlin.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -55,61 +80,22 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf v2 02/15] bpf, sockmap: Don't let an SK_DROP verdict
- stick
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org,
- netdev@vger.kernel.org
-Cc: daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com,
- memxor@gmail.com, john.fastabend@gmail.com, jakub@cloudflare.com,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, willemb@google.com,
- matttbe@kernel.org, mptcp@lists.linux.dev, mason@kernel.org,
- josef@toxicpanda.com
-References: <20261102072112.4160195-1-alexei.starovoitov@gmail.com>
- <20261102072112.4160195-3-alexei.starovoitov@gmail.com>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20261102072112.4160195-3-alexei.starovoitov@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+On 10/30/26 11:22, Maxime Chevallier wrote:
+> The Multi-MSI interrupt handler doesn't clear the DMA error interrupts,
+> and this leads to interrupt storms when one of these interrupts starts
+> firing :
 
-On 11/2/26 3:20 PM, Alexei Starovoitov wrote:
-> From: Josef Bacik <josef@toxicpanda.com>
->
-> The verdict of an sk_msg prog is valid for one message, or for the bytes
-> that bpf_msg_apply_bytes() requests. These bytes can come from many
-> sendmsg() calls. Thus tcp_bpf_send_verdict() keeps the verdict in
-> psock->eval and runs the prog only when psock->eval is __SK_NONE. The code
-> that resets psock->eval is after the switch statement, but the __SK_DROP
-> branch returns before that code. Then sendmsg() drops all subsequent
-> messages with -EACCES and does not run the prog.
->
-> Reset psock->eval when apply_bytes is 0, as the __SK_REDIRECT branch does.
->
-> Fixes: 4f738adba30a ("bpf: create tcp_bpf_ulp allowing BPF to monitor socket TX/RX data")
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Tested on a YT6801 (dwmac-motorcomm) with net at cb284914e749 and the
+glue unmodified. Without this patch, a 64-byte UDP flood
+(iperf3 -u -b 0 -l 64 -R -P 4) hangs the machine. On this board the
+stuck RBU also keeps the MISC bit in MGMT_INT_CTRL0 set, so vector 5
+fires about 120k times per second. With the patch, the MAC interrupt
+only fires while the flood runs, about 1k/s, and stops afterwards;
+same with eight streams plus a TX flood for 30 s. Throughput is
+the same.
 
+Tested-by: Magnus Leatti <magnusleatti@kernelriot.com>
 
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-
-
-> ---
->  net/ipv4/tcp_bpf.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-> index 8cf63a9e7fed..d90bcc911b36 100644
-> --- a/net/ipv4/tcp_bpf.c
-> +++ b/net/ipv4/tcp_bpf.c
-> @@ -509,6 +509,9 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
->  	default:
->  		sk_msg_free(sk, msg);
->  		sk_msg_apply_bytes(psock, tosend);
-> +		/* The verdict holds for apply_bytes, not for ever */
-> +		if (!psock->apply_bytes)
-> +			psock->eval = __SK_NONE;
->  		*copied -= (tosend + delta);
->  		return -EACCES;
->  	}
+nit: "YT8601" in the commit message should be YT6801.
