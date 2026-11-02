@@ -1,54 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.127
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793586224;
-	b=OHmbiuvsMNPMXeWOEOH6nEtLqU2jw6eVKhaU82qMKq9l6VeZUL/azv26whau+u3+iXqI
-	 tmpeLFMV2q7TiXUi/9sR9v8z+T9/W3kIJWbyO2ZD3I3ZuZzFZGJYrL77Ev7JS3A+rQLWO
-	 ACYe0KdWzvE5fNBt1n7qJ3jGgBvx9YAq4cCqKwhuwH9Hv7UEoHtiiERIvE4L3QALFrwHH
-	 +eGlBT0qB2/eUUUTMQj5SJZEtYIqfJY7jZq2QcNDKmGdnS/K8p6ay1GufHlu8tL4mgwQg
-	 O1qWm3/amGsQoCZJ79agOmUxja2yMAGZCE8Ko/EssunXa9k3W5IE4xs7NkAm2wHW0cw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793586224;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=o4fSDnmtmbZ30jH6553LXpXrsXHng0trnMhwaBC+PZs=;
-	b=QMpbkezbZBzq+0uI6uf1l+dYtzV0YYVusfteUa8iu2lwfTxEOQe+Slwf26Cnu77FJzpK
-	 gKFb1Asi+Ydmx2/Ah1EYj+oUVIye7oRo0sZFZ9JANeqzeGEF+ZcpkLrBHD10m91EvJ71B
-	 nS8uIlRSOhax90btfCaGP2ZAXwVH4/DM9zhVgkc2zCKmmxsSOKd7z4iFT/wNuN+aCQFJT
-	 i2qRaeTj1Egkr46pZvolmZP50FYn7r2MvIWEI/N7YoNMmK8iXE/XjyAwlNJasNgwazCj9
-	 B02ls2JxtMtLf9OLL/5DLs/ODamo6suGcwLuwk2C0p+L0vYJf/NT9by0zkhiA4gtfXA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=SRqinuuM;
-	arc=none smtp.remote-ip=95.215.58.127
-Received: from mta1.migadu.com (out-127.mta1.migadu.com [95.215.58.127])
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.167.50
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1793586342;
+	b=U0OlCNC8db/v3uGKqAG+9/AZ40YASSzZfTzjDqcmc5ma2SXKudfp3oD8kv3ai1LQLT5T
+	 ykjrnhmOUePVLgTpes+oefU2WoRXLplYjZkLZxQXg3odqnxASiK8y9YQoOddTC8pN8Q2j
+	 FtlgamRrMhQn2yYc8gJ+24o4ZrPyiPEPw+xY5IJgPu2/uchkzHEoqwGoBzQ+JYYbwjmk1
+	 YhqjAayL5TnLGOwlLCkax9Z2SEt/NNiJFoiB/ucLrAoZSVUQUWYUFlw31UuE0dO71khDc
+	 EmfALmU3nnf0p9Tvv5oaTBMXuDSAnoWSKBRl8F42tFGqNMQTEavGVdEXWrY32cymuiQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793586342;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=0m11DqAQsWViOluQPYNzPkQX9NkHKluVITQUvXZ17kE=;
+	b=4lAOcMswx0RKBUwE7Iwq+cLh3xh21Ac123VqKIbt27WKLGDSmgAGQgThdfMz8Szy6q+b
+	 JwxPnYmmqnJd3hmcXoiAzyWYxITXPhbNE0cxb+/mXp7YN6V/ug1svYh54srVfqVEOC7km
+	 UfPFwyCp9wYA7vkOZfZCFemAPY2GHMll4WLz8SqKSqv633dSYKbU1CXyPubL3ykqXq6Au
+	 dA5Zqj1hzw7xo26LvGN+LOhytgyfVdyi5hpm+GhKzG+7a40NtMx9xqGT8EGc3M/jS/D/h
+	 rXtUkaMZIOpQ9BpnJ1EmAx4ahKj9c685I+2nUPnwK6BUv4hoGc2ZUBXfMzkiFv0PRIw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ugDCsvDY;
+	arc=fail smtp.remote-ip=209.85.167.50
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EEB606A32C
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 02:23:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D9EEB606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261B6606A327
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 02:25:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 261B6606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=SRqinuuM
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=ALr5TsAEjuwt2pIJ/IP8K7713x8kUZX1icwbiFIInMI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793586220; v=1; x=1794191020;
- b=SRqinuuMl6gdOXtp9TRbNPvcgF5WtOOqzaWiXWuBanFkmJV9xWmUIEICQ54IcO1dfYLdl/ue
- PBol2C63lhz91+GDFk7CfJhlOz3rzvVlyg07YN9TBKCWvNhCXfAw4f5el0RhCoZZBWuwu2sgdXc
- 3mzifa34+JRcDNllCvqsNviU=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 74277f5059ada402;
-	Mon, 02 Nov 2026 02:23:40 +0000
-X-Mizu-Trace-ID: 74277f5059ada402
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <2fd1dc53-ae46-4163-90a4-f916c9dce29b@linux.dev>
-Date: Mon, 2 Nov 2026 10:23:30 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ugDCsvDY
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5be3d5927ceso2075107e87.3
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 18:25:41 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793586340; cv=none;
+        d=google.com; s=arc-20260327;
+        b=QxVrL1NcrqDiNbagX5hmf8MeXC7S4DSprrctzLfaIXu3f5XgozS4K+PBc5O4cykXJJ
+         Q4f4s8LVWf4OtrrWtg92JBIcfUTjwynsjJyWinjhQtC7zpTdC1wSlGJifQri96eistwS
+         1tF3j336b1zySiJYhU5sqWbFeOmPM/uej0oCc2A6OHXnmBe+rrCvJ0MGNToBA19D9/xq
+         CCNJ/kmwbI57nYwiAQftXlpp9S4LLFv+4DZCTfhOBqdg1L/cwb+A1BsNoZEcpucIQCdn
+         Y5LHahmotpUFv+Sh9rhmhDeFDGf3WJMAYB1dy/a8y1Xi5n6g9GRKTqtETCeH8Nw2o6v3
+         C/HQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0m11DqAQsWViOluQPYNzPkQX9NkHKluVITQUvXZ17kE=;
+        fh=ujgt4mqab1YQFPRIYjkas9JltfrXAKmt7Uz7Ha2oxjc=;
+        b=aCmQeZqoIYR6vbJUccVPcIIxf8XyxwMc+k4cOmcsW6K/ZYlhSj2Wdp0GJ5Pisw67k9
+         pia6AiOmFlPTWqQaqtqiOd1yZclaNLjE6IRWseMWiZWfARNeW/4u7+iORC/m50de8A4P
+         3YR9nx7m5RZAlw1WuFDyEpXNVs0gw6QyNXQQ8afw8FIgFkcOykmErtQOstusret9OJ6A
+         EDp/ryMmWoGB8Dl0sEls1r7tWaTkQCYQtglWL6ARgBHMi1/68QZaN1FRaASs7cWMC8fs
+         JEmb7BzXh0Ey99ItU0JSbhuraavLG2KUeXjZocinrkA/lvls45uWYcjkbVj0TLXf/Tif
+         sVZw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793586340; x=1794191140; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0m11DqAQsWViOluQPYNzPkQX9NkHKluVITQUvXZ17kE=;
+        b=ugDCsvDYCkDc501EStBD45BR0hKilJ3mHh5PLVzf5klKd9eNQ8fs3jIePlTP0KNAPt
+         r5EOByLZmYdmqZO0W7i0VzKXiB+0qwLpqz19LfLPF5WJEU+UOWoJfrFEFqWtVTcBcdiO
+         Tlwwd/Uf+ihgzH2fBeoSDDPZ3lZjk4bXPpSKc0I5mR1pFeRxHgeLLD5R8ZS1mxu0kOV2
+         BwCpFUQHqwcxEKUL9mvZXZJoeUuLNygu5SgxQecFGOYDKPXe+0mVis5idDsh0w8q5nzV
+         Qd9k+zsIG5Jm9agqPdNs43nJzKTLXs25BjQN1v2kKT+jyshNQ3Aa8/U+ONAzCvLzWUj/
+         GKxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793586340; x=1794191140;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0m11DqAQsWViOluQPYNzPkQX9NkHKluVITQUvXZ17kE=;
+        b=vvliYpqj6Bf6DwqOdLXtu5JpsZxTMHnbEMFRciuNEQ+sghmhTkAdfFjbsMkV6TrgID
+         M28TuEAtxj0E4kwrNa3qlxjDmhFCdd9vV/Q96+aKPSOLhp2pOudKnwppuuZcFgFik1ko
+         oT8mnrINyot7ThJuKuedKq7HTP/QiU4QF91Qh09l0VjigxDFjpYOZ7znqhzhDkkvHSed
+         RzYz2zQCkn3R9qwpKUQqIPsOSod190hOXajBYaTeNQa7vSXwo5ONWb+MPYJhorFFWto0
+         nzKo2JhC1NP2XXyj3RFboNlBUppyqEgajHa5Zzj1qc+CQaQGssHoHdzksnTd2/e/nnXR
+         JCGA==
+X-Forwarded-Encrypted: i=1; AKwUvBxSj8RjjD/Sbbojr3lFLAl199GKKG6U8c+D8ickiRyFfxSv88+NBXu8ycgm5fOCzdl6njWWwbo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8x+sEWvV+IU17BZbsEvgsMq1qPX0aMbVuqwwSYXWG7V0uiHWew
+	vgBaIY/3zxpbzmw5fLtroteswhY90Ekga3+82qJ/wB/3b0mzlsgpWFkpFXK0lEpz+V01ZtgBxKq
+	6nBeQG8uDVrqgzopFOH8RU/4sb8/Xs1E=
+X-Gm-Gg: AYBFou10Cn6QEJKMeI7FXeoTRxPbGSL0HPtunL0mIgouLffQhA4BGyQvnZJ3b6/4pOt
+	9pXw9sHtcPMPgcOAb62600jLfhmqRzOJCQEThg5bZPpN9G5rGVaA9HLbu/ydhAxPN/otTYcc71E
+	4B3JzsM7qggeeHEYI+ekgogsDtd1mQ/6lP8I3WOuewVP9RYjUbsqtzt2ITJyVsyVYkdzy/DAhq8
+	+Z5DQKHpoidXP9yFNUT7fKLRHNJDnjNWI7QEEPyYQar51J/rrEw6aw+6ehsC8BsTa4ny8QOUgmV
+	NGgjjzth69bROAd/GNryxxLPqB5q9vECcHN3M8GrwjTVvRbazss5cyEShIi8tdUPJdi3p7Nyh5b
+	RYyjFBWvizLAMh7T1bghzp+YoihkFaluOxH9vJzdQK4WlTihdsNIqtzuqJTh6pMlDxlwTgGItfC
+	1I5csoXDOWSwADNcWxnw8QJ7qgvg3P1edMXNI7K45NYxlW3TOeQLcfOPdhOMRNhYMTELM8s3mO6
+	SFlN5cB+1s=
+X-Received: by 2002:a05:6512:a94:b0:5bf:b246:87a2 with SMTP id
+ 2adb3069b0e04-5bfd957b610mr2907633e87.10.1793586340194; Sun, 01 Nov 2026
+ 18:25:40 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,105 +106,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 5/5] net: restrict message_cost and message_burst
- to non-negative values
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
- Joel Granados <joel.granados@kernel.org>,
- Fernando Fernandez Mancera <fmancera@suse.de>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, David Ahern <dsahern@kernel.org>,
- Ido Schimmel <idosch@nvidia.com>, Thomas Gleixner <tglx@kernel.org>,
- Petr Pavlu <petr.pavlu@suse.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- Maoyi Xie <maoyi.xie@ntu.edu.sg>, Zhan Xusheng <zhanxusheng1024@gmail.com>,
- Oleg Nesterov <oleg@redhat.com>, Neal Cardwell <ncardwell@google.com>,
- Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
- Yung Chih Su <yuuchihsu@gmail.com>, Wyatt Feng
- <bronzed_45_vested@icloud.com>,
- Hannes Frederic Sowa <hannes@stressinduktion.org>,
- Flavio Leitner <fbl@redhat.com>, "Paul E. McKenney" <paulmck@kernel.org>,
- Petr Mladek <pmladek@suse.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261101061331.286404-1-jiayuan.chen@linux.dev>
- <20261101061331.286404-6-jiayuan.chen@linux.dev> <auftqzpuuNFiScrb@fedora>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <auftqzpuuNFiScrb@fedora>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20261031133455.3070233-2-rsalvaterra@gmail.com>
+ <CAL+tcoB6vg+-w1JZdND_cTN_zPeh76_+-W_NU34jkunJUFwrrA@mail.gmail.com> <CALjTZvbPacWO+NY62fbFdQEAJemD57zmhdYy+v+BXpxFgntcNw@mail.gmail.com>
+In-Reply-To: <CALjTZvbPacWO+NY62fbFdQEAJemD57zmhdYy+v+BXpxFgntcNw@mail.gmail.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Mon, 2 Nov 2026 10:25:02 +0800
+X-Gm-Features: AclHuK-ou4PfE1lO6DM3P8nj553WJIIK4Nvl4HbobZUxI6ExZLuUtqWgm0YgoO0
+Message-ID: <CAL+tcoAnw=5vP_s5qTOo8O-8uBntph4MOAxYE3fnw3+K0jhyDQ@mail.gmail.com>
+Subject: Re: [PATCH] tg3: make depend on ZONE_DMA
+To: Rui Salvaterra <rsalvaterra@gmail.com>
+Cc: pavan.chebbi@broadcom.com, michael.chan@broadcom.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-On 11/2/26 9:55 AM, Hangbin Liu wrote:
-> Hi Jiayuan,
-> On Sun, Nov 01, 2026 at 02:12:03PM +0800, Jiayuan Chen wrote:
->> net.core.message_cost and net.core.message_burst feed the interval and
->> burst of net_ratelimit_state, but neither rejects negative values:
->> message_burst uses plain proc_dointvec, and message_cost uses
->> proc_dointvec_jiffies, which happily stores -1 second as -HZ jiffies.
->>
->> Since commit a940d145cc38 ("ratelimit: Warn if ->interval or ->burst are
->> negative"), ___ratelimit() splats on such values, so the next
->> net_ratelimit() caller warns, e.g. a martian source log:
->>
->>   Negative interval (-250) or burst (10): Uninitialized ratelimit_state structure?
->>   WARNING: lib/ratelimit.c:43 at ___ratelimit+0x56e/0x960, CPU#1: ping/3218
->>   RIP: 0010:___ratelimit+0x578/0x960
->>   Call Trace:
->>    <IRQ>
->>    net_ratelimit+0x1c/0x30
->>    ip_handle_martian_source+0x1bb/0x340
->>    ip_route_input_slow+0x1057/0x3650
->>    ip_route_input_noref+0x104/0x260
->>    arp_process+0x109b/0x2510
->>    arp_rcv+0x381/0x460
->>    __netif_receive_skb_one_core+0x173/0x1c0
->>    __netif_receive_skb+0x21/0x150
->>    process_backlog+0x37e/0x1200
->>    __napi_poll.constprop.0+0xa5/0x5e0
->>    net_rx_action+0x4c0/0xf70
->>    handle_softirqs+0x204/0x9b0
->>    __do_softirq+0x10/0x18
->>    do_softirq.part.0+0x49/0xd0
->>    </IRQ>
->>
->> Negative values never meant anything here: 0 already expresses both
->> "no limit" (interval) and "suppress everything" (burst).
-> Will this limit breaks the UAPI on old kernels that supports negative values?
-
-All commits in this series restrict config values, and every one of them
-changes the old behavior to some degree; the question is whether the
-
-change is reasonable.
-
-
-For this one, negative values never did anything that 0 doesn't, and
-since a940d145cc38 setting one already triggers the WARN_ONCE().
-
-
-> As the comment in ___ratelimit() says:
+On Mon, Nov 2, 2026 at 3:41=E2=80=AFAM Rui Salvaterra <rsalvaterra@gmail.co=
+m> wrote:
 >
->         /*
->          * Zero interval says never limit, otherwise, non-positive burst
->          * says always limit.
->          */
+> Hi, Jason,
 >
-> If all others agree to set the limit in this patch. I think the comment
+>
+> On Sun, 1 Nov 2026 at 05:48, Jason Xing <kerneljasonxing@gmail.com> wrote=
+:
+> >
+> [snipped]
+> >
+> > The blamed patch seems correct, so I think you need to root cause it
+> > instead of adding a global dependency here.
+>
+> I'm sorry, perhaps I misunderstood, but *I* need to root cause it? I
+> never claimed to fully understand the implications of the patch I
 
+This is not how things are going here. As long as someone proposes a
+patch, they should at least know what they are doing.
 
-The comment and the WARN_ONCE() are about ratelimit_state in general, not
-net only. There are still other ways to set a negative value,
-printk_ratelimit for example, so updating them is not this net patch's
-job.
+> sent, nor the intricacies of the tg3 driver. What I *do* understand is
+> that a supposed "fix" from Broadcom has left the Ethernet controller
+> on my late 2012 Mac Mini inoperable since the 24th November 2024, when
+> absolutely nothing changed in my kconfig. That is, by definition, a
+> regression. I'm entirely available for testing any patches people send
+> my way, if whoever fully understands the driver and the hardware is
+> unable to reproduce the issue. However, asking the user to fix a
+> problem created by a patch from the hardware manufacturer is=E2=80=A6 an
+> interesting approach, at best.
 
-> and the WARN_ONCE() , and the admin-guide/sysctl/net.rst all need to be updated.
+I see what you meant; I thought you were trying to make your first
+contribution to the kernel :)
 
+With that said, maintainers would pick up this and probably send a fix
+with your credit (reported-by tag). Thanks for your report :)
 
-
-net.rst never documented a range or even the unit for these two, which is
-why I didn't touch it. No strong preference though.
-
-> Thanks
-> Hangbin
+Thanks,
+Jason
