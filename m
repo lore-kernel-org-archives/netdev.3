@@ -1,54 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.233
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793632519;
-	b=E9ldB+UvG8mpDVDlhDwt0g2oP4ncH3TriQtRafNY99cIa4yT9bRF5U5lFzGu46eoenxU
-	 eFVQIN1WIPZGMa95SpakpSfMzE7Xfrjk7qQSeRmS2tdg3OTspUG1XyzY7Vf580cBN9Yvx
-	 6BuV/CLNa2fMvO58KxWDedd272XQNgav9E1bZ7gfO0LKRPI+gGAlI93+4bhW4EdW+CxXN
-	 S1zeJWCmGYgXyEDyIFjbnxI9N5W5HfyiszAXsyYXmBdw0aCl2D/fi6B6IKyJI/8ltKpdG
-	 M75i1Uv9yDva4CFVzkF+XOERkHX0xl6bMiA/X+jMZ3HbovaoFEKyd+iRD23lf8hTAxA==
+	t=1793632514;
+	b=ZaRQs3znL553tXHnMZ8CJbfATvyABotghT8s4WVG2NppVIWQW3dyI7/01A2WNxam9iUu
+	 jg2uYhFEB5PMFdeZl5ynCc/A0iLqVWMK7i//78/544RyFxuFmoykBC38XqMQxC7AEOkvg
+	 s7QOZIAiv73r+Q6EaS35IB7YYw/6XeG1TI27WApuNMCw81kbMh5+GLqVFL2ogJSQ3FIaa
+	 HOwYfsENiU8m4ssM3ChjZPxjxAWdbXYJ4+Ud1GhMgtIg6t8QMEeBYrcsRzMm9Q/lDukud
+	 kaoRAm1NGmcT33lDGlZehluDDJsroqO5+9B6twjAqSPDe995nD6c1sJW8Ioc036RkQQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793632519;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=kwKzSEXHVuEjJqvTeRRPA4mrqN9EE7qy4XgSv3TiNWc=;
-	b=V2RyOd2i1kLNcztaHrjwW/Py7rNrRpDmIkdZ/YA5+8hPWoMJdIOA4xy1qbfe09kth/vq
-	 6QVEhPlkfcMEn76Q+T5399Ukma8vRW9N0LtXdoHTNz4AJRw+3Yc003HUzUay9DOGjfZ4z
-	 Bp8LZhQfmjwUmKpok5qNDpnrnBf+LSI7FmmMdlZN0aTnD8OveTlnjr30AuL7DjrZ71QTI
-	 GCyFVVtheNgpI+62k/GpNHQCxuq/KPsUxzzYGoFbvcGVweFMmvV7HEKjwkiW5Y6RZdwXi
-	 AweaVEGQnvX1AR0J8d4ei+Gnlas/OiRuueO4Hrn9Z/enUMtD8SseiwULkIfh4LZ3jJw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793632514;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=bLxRwCxtJ/P3YNIr6jvbkvrLQvoA3ATHIuHzWzBn2J4=;
+	b=A6EOW6w5WTBEZfJXHNi2vqN6EJW+aF+m+pLKyUhwDVj8112zEUBfV5EgOz4sCCzDh9Gw
+	 bNX+mJNHxbtODLK9VpzRLtMdnGASmWIeHyoRhxJErUUC2gGYgSmjXOoJHwIbTn6vC4tr5
+	 IjCewH70mhNC8dx5QOd5VD4Szc8ynpQa1PjiGWY8qDijsTUU1UxmYl/0qtpOtZr0G5P2e
+	 Vy06s+b/1TOFzofbX62gOPZNoGPhBZlZKXZ9+jbspgup45nDcGl0jWNaMLWd4VC2TTk+k
+	 wIOt6JhILUK9K6J8xUigd4YIa1imllvOT95uK9kWfbXMzlrLE+NFK5txWDPCeD/uzBQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lXGnMHan;
-	arc=none smtp.remote-ip=91.218.175.233
-Received: from mta0.migadu.com (out-233.mta0.migadu.com [91.218.175.233])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="aJGwG/6h";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF3F607A896
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:15:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5AF3F607A896
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389D9607A89B;
+	Mon,  2 Nov 2026 15:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lXGnMHan
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=mD1ETE2e7HukgmRWNL4DzC5n+RUd7grBANDiKh/A4zE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793632515; v=1; x=1794237315;
- b=lXGnMHanafhZqGg5hSi5b0aHqHNEOt+95p8arodvEZyTN6I2DAeOz2rSfSbSa6SPX4rdFcJM
- v+2b+brBN2z05VkWQn/evpTSMbcUbxEPoBCEFhLdC53ue8MiUln9BObndAF0uXXQV2kQgbluKiW
- V8q3BX5VhBkSM0WWuKltgTBc=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id c5af6c99b6d8b8d8;
-	Mon, 02 Nov 2026 15:15:14 +0000
-X-Mizu-Trace-ID: c5af6c99b6d8b8d8
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <ae49619c-d2de-4189-b6ac-2a70f8ef1891@linux.dev>
-Date: Mon, 2 Nov 2026 23:15:03 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aJGwG/6h
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC531F00A1E;
+	Mon,  2 Nov 2026 15:14:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793632513;
+	bh=bLxRwCxtJ/P3YNIr6jvbkvrLQvoA3ATHIuHzWzBn2J4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=aJGwG/6hEIXyLfWmKFvXVRjD3pi6UQH/DTvV3cC7DcTh4N/HcF4nnCkxWMSznc6hy
+	 c7hGsGqmLuhGImmqBA8HQwtIMWkwLQW5HRs4iHh81hTAWhkgs2OvSuIp/lEwm85W9d
+	 uvjIgGTnlZelSY+8QFDOq9mKlCgW8ew05dUZ423oPWs2PbAaXvTVTer1uR+Q19WcSd
+	 saiX/ZfSnReCygXk6xbkfe3Cv4xjGMpF4N4R3qn7AIIGAKhndeoYMRbVau3i5aPogd
+	 WGrsPu5F3Co+ya30mCf7vuh+bnrNlc3JlBctP1nTSWEk8d19qbLvSzIhcB3xtAk5Zz
+	 cTo6R42Iaq1qg==
+From: Christian Brauner <brauner@kernel.org>
+Date: Mon, 02 Nov 2026 16:07:22 +0100
+Subject: [PATCH RFC 15/23] hwmon: (dell-smm) let procfs copy the i8k ioctl
+ arguments
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,103 +53,188 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf v2 09/15] bpf, sockmap: Check the TCP state in
- recvmsg()
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org,
- netdev@vger.kernel.org
-Cc: daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com,
- memxor@gmail.com, john.fastabend@gmail.com, jakub@cloudflare.com,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, willemb@google.com,
- matttbe@kernel.org, mptcp@lists.linux.dev, mason@kernel.org,
- josef@toxicpanda.com
-References: <20261102072112.4160195-1-alexei.starovoitov@gmail.com>
- <20261102072112.4160195-10-alexei.starovoitov@gmail.com>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20261102072112.4160195-10-alexei.starovoitov@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20261102-work-procfs-drivers-v1-15-a994bd4d3b1a@kernel.org>
+References: <20261102-work-procfs-drivers-v1-0-a994bd4d3b1a@kernel.org>
+In-Reply-To: <20261102-work-procfs-drivers-v1-0-a994bd4d3b1a@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+ Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+ Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
+ NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+ Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+ Greg Kroah-Hartman <gregkh@suse.de>, 
+ Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
+ Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+ linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+ linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
+ ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+ coreteam@netfilter.org, kexec@lists.infradead.org, 
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+ netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
+ linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+ sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+ linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
+ linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
+ linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+ linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
+ linux-debuggers@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, 
+ Chuck Lever <cel@kernel.org>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4573; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=negOiIwbpBXFbC2+4UQ2qelUCL0pz2XjdZael8czB8w=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG7wfOvG13Ue+TY6YgY/P8p121v+35fv6PEqSTJv0
+ 6vT9vcUO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbScZnhv8ujWTvu1BYxV1XK
+ sD6t0T6SdbHl9c1T0T8mMq25dlN2gTIjw/ZM+U1cLyxPWnrVKXeXnrv56tyX2eemZWmU1m/Wczw
+ 5jwEA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
+Implement ->proc_ioctl_buf() so procfs copies the arguments in before
+it pins the entry and back out after unpinning it. The command numbers
+in <uapi/linux/i8k.h> encode the wrong sizes, so the table lists what
+is really copied: an int or the 16 bytes of the machine id out, and one
+or two ints in.
 
-On 11/2/26 3:21 PM, Alexei Starovoitov wrote:
-> From: Chris Mason <mason@kernel.org>
->
-> With an sk_skb verdict prog, tcp_bpf_recvmsg_parser() copies data from the
-> psock. Then it calls __tcp_cleanup_rbuf() to calculate the receive window
-> and to send an ACK. The window and the ACK need a connection on the socket.
-> But tcp_disconnect() keeps the socket in the sockmap and the data on the
-> psock. For a TCP socket sock_map_redirect_allowed() rejects only
-> TCP_LISTEN. Thus the psock can also get data after tcp_disconnect().
->
-> __tcp_select_window() divides by icsk_ack.rcv_mss, which can be 0 in
-> TCP_CLOSE. In TCP_SYN_SENT the new peer can get an ACK with the sequence
-> numbers of the old connection.
->
-> Call __tcp_cleanup_rbuf() only when tcp_can_send_ack() returns true.
-> recvmsg() returns the data as before. Move tcp_can_send_ack() from MPTCP to
-> tcp.h. It also returns false for a fastopen child in TCP_SYN_RECV. From its
-> peer the child has only the SYN data, and the SYN-ACK acknowledges it.
->
-> Fixes: e5c6de5fa025 ("bpf, sockmap: Incorrectly handling copied_seq")
-> Signed-off-by: Chris Mason <mason@kernel.org>
-> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+A NULL argument fails with -EFAULT now instead of -EINVAL, and so does
+a bad pointer to SET_FAN from an unprivileged task, which got -EPERM
+before, since procfs copies the argument in before the entry's own
+checks run. 32-bit tasks can use the commands whose numbers don't
+depend on the size of size_t.
 
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ drivers/hwmon/dell-smm-hwmon.c | 48 +++++++++++++++++++++---------------------
+ 1 file changed, 24 insertions(+), 24 deletions(-)
 
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+index 492b2b6c6d7e..67b8c6e5752f 100644
+--- a/drivers/hwmon/dell-smm-hwmon.c
++++ b/drivers/hwmon/dell-smm-hwmon.c
+@@ -549,16 +549,13 @@ static int i8k_get_power_status(const struct dell_smm_data *data)
+  * Procfs interface
+  */
+ 
+-static long i8k_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
++static long i8k_ioctl(struct file *fp, unsigned int cmd, void *arg)
+ {
+ 	struct dell_smm_data *data = pde_data(file_inode(fp));
+-	int __user *argp = (int __user *)arg;
++	int *argp = arg;
+ 	int speed, err;
+ 	int val = 0;
+ 
+-	if (!argp)
+-		return -EINVAL;
+-
+ 	switch (cmd) {
+ 	case I8K_BIOS_VERSION:
+ 		if (!isdigit(data->bios_version[0]) || !isdigit(data->bios_version[1]) ||
+@@ -568,17 +565,13 @@ static long i8k_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
+ 		val = (data->bios_version[0] << 16) |
+ 				(data->bios_version[1] << 8) | data->bios_version[2];
+ 
+-		if (copy_to_user(argp, &val, sizeof(val)))
+-			return -EFAULT;
+-
++		*argp = val;
+ 		return 0;
+ 	case I8K_MACHINE_ID:
+ 		if (restricted && !capable(CAP_SYS_ADMIN))
+ 			return -EPERM;
+ 
+-		if (copy_to_user(argp, data->bios_machineid, sizeof(data->bios_machineid)))
+-			return -EFAULT;
+-
++		memcpy(argp, data->bios_machineid, sizeof(data->bios_machineid));
+ 		return 0;
+ 	case I8K_FN_STATUS:
+ 		val = i8k_get_fn_status(data);
+@@ -593,8 +586,7 @@ static long i8k_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
+ 		break;
+ 
+ 	case I8K_GET_SPEED:
+-		if (copy_from_user(&val, argp, sizeof(int)))
+-			return -EFAULT;
++		val = *argp;
+ 
+ 		if (val > U8_MAX || val < 0)
+ 			return -EINVAL;
+@@ -603,8 +595,7 @@ static long i8k_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
+ 		break;
+ 
+ 	case I8K_GET_FAN:
+-		if (copy_from_user(&val, argp, sizeof(int)))
+-			return -EFAULT;
++		val = *argp;
+ 
+ 		if (val > U8_MAX || val < 0)
+ 			return -EINVAL;
+@@ -616,14 +607,11 @@ static long i8k_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
+ 		if (restricted && !capable(CAP_SYS_ADMIN))
+ 			return -EPERM;
+ 
+-		if (copy_from_user(&val, argp, sizeof(int)))
+-			return -EFAULT;
+-
++		val = argp[0];
+ 		if (val > U8_MAX || val < 0)
+ 			return -EINVAL;
+ 
+-		if (copy_from_user(&speed, argp + 1, sizeof(int)))
+-			return -EFAULT;
++		speed = argp[1];
+ 
+ 		speed = clamp_val(speed, 0, data->i8k_fan_max);
+ 
+@@ -643,12 +631,22 @@ static long i8k_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
+ 	if (val < 0)
+ 		return val;
+ 
+-	if (copy_to_user(argp, &val, sizeof(int)))
+-		return -EFAULT;
+-
++	*argp = val;
+ 	return 0;
+ }
+ 
++/* The command numbers don't encode what is copied, see <uapi/linux/i8k.h>. */
++static const struct proc_ioctl_arg i8k_ioctl_args[] = {
++	PROC_IOCTL_ARG(I8K_BIOS_VERSION, 0, sizeof(int)),
++	PROC_IOCTL_ARG(I8K_MACHINE_ID, 0, sizeof_field(struct dell_smm_data, bios_machineid)),
++	PROC_IOCTL_ARG(I8K_FN_STATUS, 0, sizeof(int)),
++	PROC_IOCTL_ARG(I8K_POWER_STATUS, 0, sizeof(int)),
++	PROC_IOCTL_ARG(I8K_GET_TEMP, 0, sizeof(int)),
++	PROC_IOCTL_ARG(I8K_GET_SPEED, sizeof(int), sizeof(int)),
++	PROC_IOCTL_ARG(I8K_GET_FAN, sizeof(int), sizeof(int)),
++	PROC_IOCTL_ARG(I8K_SET_FAN, 2 * sizeof(int), sizeof(int)),
++};
++
+ /*
+  * Print the information for /proc/i8k.
+  */
+@@ -696,7 +694,9 @@ static int i8k_proc_show(struct seq_file *seq, void *offset)
+ 
+ static const struct proc_ops i8k_proc_ops = {
+ 	.proc_show	= i8k_proc_show,
+-	.proc_ioctl	= i8k_ioctl,
++	.proc_ioctl_buf	= i8k_ioctl,
++	.proc_ioctl_args = i8k_ioctl_args,
++	.proc_nr_ioctl_args = ARRAY_SIZE(i8k_ioctl_args),
+ };
+ 
+ static void i8k_exit_procfs(void *param)
 
+-- 
+2.53.0
 
-> ---
->  include/net/tcp.h    | 6 ++++++
->  net/ipv4/tcp_bpf.c   | 3 ++-
->  net/mptcp/protocol.c | 6 ------
->  3 files changed, 8 insertions(+), 7 deletions(-)
->
-> diff --git a/include/net/tcp.h b/include/net/tcp.h
-> index 3560adddf821..23a22d70718e 100644
-> --- a/include/net/tcp.h
-> +++ b/include/net/tcp.h
-> @@ -1845,6 +1845,12 @@ static inline void tcp_adjust_rcv_ssthresh(struct sock *sk)
->  void tcp_cleanup_rbuf(struct sock *sk, int copied);
->  void __tcp_cleanup_rbuf(struct sock *sk, int copied);
->  
-> +/* Is the socket in a state in which TCP may send an ACK? */
-> +static inline bool tcp_can_send_ack(const struct sock *sk)
-> +{
-> +	return !((1 << inet_sk_state_load(sk)) &
-> +	       (TCPF_SYN_SENT | TCPF_SYN_RECV | TCPF_TIME_WAIT | TCPF_CLOSE | TCPF_LISTEN));
-> +}
->  
->  /* We provision sk_rcvbuf around 200% of sk_rcvlowat.
->   * If 87.5 % (7/8) of the space has been consumed, we want to override
-> diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-> index ef2e15de0fe3..3d703f1517d8 100644
-> --- a/net/ipv4/tcp_bpf.c
-> +++ b/net/ipv4/tcp_bpf.c
-> @@ -343,7 +343,8 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
->  	if (!peek)
->  		WRITE_ONCE(tcp->copied_seq, seq);
->  	tcp_rcv_space_adjust(sk);
-> -	if (copied > 0)
-> +	/* Data on the psock outlives the connection that it came in on */
-> +	if (copied > 0 && tcp_can_send_ack(sk))
->  		__tcp_cleanup_rbuf(sk, copied);
->  
->  unlock:
-> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-> index 7a22e9388e0e..d62cfbf2d490 100644
-> --- a/net/mptcp/protocol.c
-> +++ b/net/mptcp/protocol.c
-> @@ -619,12 +619,6 @@ static void mptcp_set_timeout(struct sock *sk)
->  	__mptcp_set_timeout(sk, tout);
->  }
->  
-> -static inline bool tcp_can_send_ack(const struct sock *ssk)
-> -{
-> -	return !((1 << inet_sk_state_load(ssk)) &
-> -	       (TCPF_SYN_SENT | TCPF_SYN_RECV | TCPF_TIME_WAIT | TCPF_CLOSE | TCPF_LISTEN));
-> -}
-> -
->  void __mptcp_subflow_send_ack(struct sock *ssk)
->  {
->  	if (tcp_can_send_ack(ssk))
