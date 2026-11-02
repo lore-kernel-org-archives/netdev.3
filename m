@@ -1,83 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.136
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.133
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793654738;
-	b=BrwSQK5LaYxeCRmcyD87dAJcan3vDYUh8vFXFdqtcwloqz3vVm9K42ezpT5mX0SyfoKC
-	 otYnC/CoX3JspmiM4Os9vOpyjCoTdhdIpAP0e7ffg6JjLmnwEX1n8l8OaEcjNh7zancsr
-	 6a9EO+/LBN+GlUBjSoFreOAqc7VNWTf6nmk5elbDYcdYvTDLbrWDKF7tgErij0aegcoX4
-	 X+J/JR+RC0vrP2v3vH/nylYyiVMk9fz3DpQ7RGphWe2klO7Hbv+w9Sw2/xJMuAk0QDJZM
-	 VLLjNEpryroFEHV1XGMWow5mFBRhIdTcrUQ19KifWLvrewefTvlxsy4hqe5lnI71ePg==
+	t=1793654745;
+	b=s6TO/dgrl26Mpzo3owSFnf0P+jfQtnUQzUaFPb7DpT23MOuYa2fRxuU8VyvbBsjxgFPS
+	 vfevq7kjfe8XVNHyPTo0ZNAFN/A8Tf3+Yj6cD9Yrs0XxiVkWJ2R/9VkkX9WuZuQWXfc14
+	 Vn9MLXWkLu7wVo7gUL8PRGqrEBww1ggdJxrDGDhaVN2CiAdFEVNrMc+GMLMplZJxhw7nz
+	 xCwcABZbprL1yDydogI2ykmuTYSA2OnOsut32NGPlxgc3nBzk2I4ppa50CbZkp7p4OJAb
+	 q6mVs2/zWyMVPLFfLNwp0OGhNmCfcKxQBp6EmCNZpacMCPw0+OtZ1jJhdz8/yBkHxOA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793654738;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793654745;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=f2iHlmQM8BVjrAqEqrTQxQY1XsehcxpHrx5clmyJcPs=;
-	b=GUqKVxw6msoyqU9OKSmet5MdykJMBS4CrwkXDClD1OhgTUA/vrBMEp84I6NKn9ilHsKf
-	 JfUhop63NRPFbXA8chgaYmAjrfR+gxa6yXV/YntbVty6sW14Z9CoZa1QdTI/GepuVYRIk
-	 txctbEG2Ric7vvAXrKEeuFG2k1MlcN7HgZlN6lvnJImtcblXjfgP56GF/3o6QJXuPiURv
-	 HkjI5ZHjLpvNsswi5d5FzwkHp8jpzqUeLILK4aMyPNwttEjuyafKgk+LIFQwB4mges71f
-	 OUZ08eNlE9QvDK2wFwv8kNhC69ashFOdDDukN2lyhgSzmwJ81ZXIlgSS9sewW6TCjXw==
+	bh=0W+v9PJYl7SX+fCzm/LD8ucD6kmU8nLYTAcfnRV/Egk=;
+	b=IeRQqF7Mzx9ce2BcNaL98LbVPvnEgs+f+4BHxAmiz/RFCR++xxGrpe046wje4NCI0km4
+	 IvflxptTSSPoecyNrfGkT6c3AOyd/uDFxjoiqdSNYA3RIe/BAbaMLYyr2SxhUZMZZEepj
+	 YNnXyI3T8BdBxM9sGEpLfUOhX5YAuIVbMbmFHzJMfZiPQosq+QksXGtjBYY7rKa51DPZQ
+	 ZnJ2tfSehCjzrkJkEsljuj2v00T+BK3w4tkk7kCUvNX456gs8pfo2Izjm2HcskeKqq48a
+	 8xERt/CXL/kwXrCJjXPTs1U+hWFWUpZuqG9ldEgvvm6YE2lq0W0v2msBspyoQdn/Jjg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="qbqvB/Gj";
-	arc=none smtp.remote-ip=74.125.229.136
-Received: from mail-dl2-f8.google.com (mail-dl2-f8.google.com [74.125.229.136])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=E0KTyXh6;
+	arc=none smtp.remote-ip=74.125.229.133
+Received: from mail-dl2-f5.google.com (mail-dl2-f5.google.com [74.125.229.133])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865FB606A324
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 21:25:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 865FB606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03C3606A33E
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 21:25:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F03C3606A33E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qbqvB/Gj
-Received: by mail-dl2-f8.google.com with SMTP id a92af1059eb24-1379d236149so1383922c88.1
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 13:25:38 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=E0KTyXh6
+Received: by mail-dl2-f5.google.com with SMTP id a92af1059eb24-1ac216daf7dso1403223c88.1
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 13:25:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793654738; x=1794259538; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793654744; x=1794259544; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=f2iHlmQM8BVjrAqEqrTQxQY1XsehcxpHrx5clmyJcPs=;
-        b=qbqvB/GjO3e7E1PaLP8+FLSHhuN3anEe3yzjwAOp9wNdlD7DFdJjo9b4fcJooPoSsf
-         yuv5+uKOlAd1+wACJOj71CMJTFkB2O6ZFbHunBhL1P+1I/6bXATlwkSUFy6ScHozekuI
-         F1nmhY6ve7z4VzQYevHyJyOFz7bwDuHCIEzzsxm25he9grCYuGCDx7w/WUmA2G3C7Jgi
-         Oqt+3k9LU/+SN99KAgtNz+csds+tUA7Z2l9BRypViX5muWRBr3fjj4WtVE0IWdOq9CF5
-         5duG/WnTtld87Xa2XvtNHz1vNhFCeMBhgTk+iTeh0Gx63v+4ElghLnfxdm13+cWPDJR5
-         rtVA==
+        bh=0W+v9PJYl7SX+fCzm/LD8ucD6kmU8nLYTAcfnRV/Egk=;
+        b=E0KTyXh6fQjtB4la9A2uFpuvbHgCy2kgN5o//KtUiFjYqUzPuam2QEgKKgUP0jeXiv
+         tAHE3EnHsP849pPrQCQ3cmtBG/HsJ0j4hnUO1YaH8iPZ5SmbNqhTC4Du6J1AwQV6ak4s
+         tFbeGMebYh5ufE3OJtyX44QVTf9t1nS/TrEbzRcjYySnE5mwnMitQXiIwPBxZ2Uq+FCS
+         L7wxwB7+pzTcvEjClyxXu+zjetg7mhiLOKkPwI108jkGDlRQzyWQ7ThDvjwGttx+neEh
+         q+kK86162TVUu5FpbJkIa2oIkNwo+wxTPk0mOG50Ni81Gjh0EALZLV8R8GDVYvYelt5a
+         tnlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793654738; x=1794259538;
+        d=1e100.net; s=20260707; t=1793654744; x=1794259544;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=f2iHlmQM8BVjrAqEqrTQxQY1XsehcxpHrx5clmyJcPs=;
-        b=2dKcYxTx8uPu1wH20kwgiaLuCwpPm4KGytFLBbPnFTO/H/XL1oTRaQ0MBm+OPm5w83
-         TOhdBLyfJ9fvE46XdhnQOiKE/RbJ2345Hur7jwOGQX93KCI9bII+2Z3XOyDDL2CN7W3y
-         jjfjaCo0g9WZNOHyOD0X/nhvohVFoZ/CwGQVdiOT2TRXL8qwCu+w/47r5CJFNxYShZfD
-         lhjcGK5AyUFex8y2N1ufdAGJ57h/vSETKlKPopZ+JRa7AhQltIfh4gCkMj/zvQSYAAIt
-         CeRnhQREl5hI0wGevII3QFUn2kZDJfsyrpxzQ6c4dVuM3zpeKHoW5tsZ+v6C2Z5SXSQf
-         qy3Q==
-X-Forwarded-Encrypted: i=1; AKwUvBw4b+rWqaOBBMnTdQJKiBf8Cc4GURij2RZ4JbP2NY1Nhk+WarrdbM7ATAKQ7Qmf5NPTs2BOZJg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJGv99FZtdrw6ujQrpG1otpOxaMjEQYwcAeheQAJnH8PCA8vd4x
-	Pw+/ESVW2KIIcvdlRT4Kn8+JHM5GIE9FPejBYfTVNMvkGLxTHQFhxolK
-X-Gm-Gg: AYBFou1eSKgzqwoDo74+wibptxJdCWH6MHNUReF0Kz49Zjl4k1yL5dJZW++VuJwFre2
-	eCcccrNCBGSp1Atv0I7wMxGVBlJ6VAxJnkKpzyA/4Ug5Ty1dh46eTBzUq08PJxgJbP82RxCQ9dB
-	ozq7z6IG4p4+wBX63GY6kvI1QqPPz2SfYLYvdTwQUBcWukHR3bFrA9+QMs+puButv0R4FFMFDcL
-	d8V6XBaCMZjxyfUV/bXdFBhqeqffCj8vxQzs4sRbWjtKa9faLZG6lfgvB4iYZAJykfOR5b0Hdd0
-	oycOhZECefqhiLhqE46JCU2mvmVYYpm7mTuZcJuwTJS2hevN/It1XyhF3vUwXcC/O9VKa2u2G+c
-	dfhmT+xeXX0JEMwzQLUnhkgYEVU/imQqD8i/iUixGbuvIgW8uGSv0f7P97zbmS0IPbOdViFpdm2
-	dLsp7zYZ/8kiXWArUoMGRJgQnnFN+PmA/eg00LNCWAU9/1x68e+aEpr2yHxuEWVWORhTSIFhOzq
-	NIj+9B8j6EwFQHsz+l4t8zhn6TZ1RH3ocNfxsJdhMOn0jT/+T2ILFVwD4Ffxn520FDk006PEPhk
-	dzfGOl2TJGOiaRxGxhkbqzUXDQY=
-X-Received: by 2002:a05:7022:b053:10b0:184:19ee:1fdd with SMTP id a92af1059eb24-1ac56302618mr17357629c88.5.1793654737507;
-        Mon, 02 Nov 2026 13:25:37 -0800 (PST)
+        bh=0W+v9PJYl7SX+fCzm/LD8ucD6kmU8nLYTAcfnRV/Egk=;
+        b=w/h0/RrDg046JHYBRl47STmTcFkjcbPn2exYmMoZUer2loM3Bfj59/LiGeH8bo3OLq
+         WbbU0qHSi0Y8SEyxi5l5fO6gJu0AhT/v5ESou2thFxzEE1ncSKvabQjHtGBH4RSbCbmq
+         6LIDAALPn2ukObHBge51q7kDryhhRyjOssxUhLsA7AkOYZXr50/GCuo+pS63wOICvlH+
+         78FGbn7O9y1GOgVBuH5WCEGclE/YHr2NgwAgK9gGiLnTQf34xDknKPSih9oKK4zbdfy8
+         6/cKtONZF77izzf4ycg2I0IEsAKFnGX83JuhJmWQl1gzEqn41HiobBFkfyeXVhUNRegj
+         a4OA==
+X-Forwarded-Encrypted: i=1; AKwUvBw0x6UpuSoVinhhGDgH9tlCvkwFbZ4/55OY17TXtiU6ypmcsu+fpWcUaxMybkxd1u9dAPog0JU=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/NHB1LwDcNnX52jiayTRe0Yfnn5Uut5RXhxNO1I5S5Po3Y7tTg
+	01KT0kAFoeQ3R54xv72SCTUFkYMAc0Br5EHCpqh0h9maXo8/NB8Ib6m/
+X-Gm-Gg: AYBFou0Uk2lE9CNa3fkQsoGcO4kxc7bCxNPkEcvq60dvX8fq6CLat6rt5gTewTFY4l4
+	wRQ+op3U6vvIdvsenLpiAM33YASbXCOTcXKO25mxKWpJs9nC4pJW3e6dbTbmThZaQ8Yg24R+cz7
+	6nfou/ZP7y0XE0KSe9BQi5Ght3EcFmolcT5SSoOFsfEpL+2nN8FvjudSVLlISUli3LPv7Fc2hAK
+	lzb176r41Uq8UmcjKrnHCFBTmTtsakBXX1xsmnTuldMHr+E7UJmyYKImEZvVSl70fuanHZMz5NC
+	BX/S7FusJ2eh/p6m8f1490qQl/GdttTU5pcQcep0kp5HSOh6Pyuxh1MGBVXvXDltTCeqLFNibTX
+	LMBBsa5I1BYfFES58CWrNRf6y5Kt4JSwWZKOJk/12f98rdKeKXD9kymhrQnXzHoYY+ukPzv6ZSK
+	lSr9dvE8xIcIzR7/Bmoq1dn+rMPBhDodzBSxXkvUCBVbHf+USYf5jFOjZcGjikvG6UxfNMXLUSp
+	w9UohGDrxRE6RMf3nKzEOAim1/Hp5VbKt8EJvUUglMZRWll2BhCLg7i1pmbdbl3HCcuMaXvV+b9
+	gz1KR9qN7a/9623DJHoHDViMHk4=
+X-Received: by 2002:a05:7301:4b0a:b0:369:9af5:7bc9 with SMTP id 5a478bee46e88-36a424199eamr17269236eec.23.1793654743982;
+        Mon, 02 Nov 2026 13:25:43 -0800 (PST)
 Received: from server.lan ([168.138.199.194])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a428fa380sm37195851eec.12.2026.11.02.13.25.32
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a428fa380sm37195851eec.12.2026.11.02.13.25.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 13:25:37 -0800 (PST)
+        Mon, 02 Nov 2026 13:25:43 -0800 (PST)
 From: Coia Prant <coiaprant@gmail.com>
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: Jiawen Wu <jiawenwu@trustnetic.com>,
@@ -96,9 +96,9 @@ Cc: Jiawen Wu <jiawenwu@trustnetic.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Coia Prant <coiaprant@gmail.com>
-Subject: [PATCH net v3 1/2] net: phy: move DECLARE_PHY_INTERFACE_MASK_ZERO to core
-Date: Tue,  3 Nov 2026 05:25:06 +0800
-Message-ID: <20261102212506.3348537-3-coiaprant@gmail.com>
+Subject: [PATCH net v3 2/2] net: pcs: xpcs: make supported_interfaces authoritative
+Date: Tue,  3 Nov 2026 05:25:07 +0800
+Message-ID: <20261102212506.3348537-4-coiaprant@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261102212506.3348537-1-coiaprant@gmail.com>
 References: <20261102212506.3348537-1-coiaprant@gmail.com>
@@ -113,49 +113,85 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The txgbe driver currently defines DECLARE_PHY_INTERFACE_MASK_ZERO()
-locally, but incorrectly uses PHY_INTERFACE_MODE_MAX as the array
-length instead of BITS_TO_LONGS().
+pcs.supported_interfaces is the mask of interfaces a given xpcs
+instance actually supports. The compat table describes what the
+Synopsys IP can do in general, but a specific integration may support
+a different subset: the RK3568 XPCS supports 1000BASE-X, SGMII and
+QSGMII in hardware, but does not implement the C73, 10GBASE-R or 2500BASE-X
+modes that the Synopsys compat table advertises.
 
-Move the macro to include/linux/phy.h and use
-DECLARE_PHY_INTERFACE_MASK() to properly size the bitmap, while still
-zeroing the stack variable.
+However, xpcs_find_compat() only walks desc->compat[] and does not look
+at pcs.supported_interfaces. If a caller ever passes an interface
+outside the mask, the core would still find and configure a compat
+entry for it, contradicting the mask the glue already set. This was a
+known gap: the mask was written but never consulted by the core.
 
-Fixes: 47f848aac4e7 ("net: txgbe: initialize PHY interface to 0")
+Fix both sides:
+
+- In xpcs_find_compat(), return NULL when the interface is not in
+  pcs.supported_interfaces, so the mask is authoritative for what the
+  core will configure.
+- In the Rockchip glue, build a platform mask with the three modes
+  supported by RK3568 (1000BASE-X, SGMII, QSGMII) and intersect it
+  with the core's supported_interfaces using phy_interface_and().
+  This narrows the mask inherited from the generic compat table so it
+  reflects the actual SoC capabilities.
+
+This is a logical inconsistency rather than a user-visible bug in a
+released kernel: the affected Rockchip platform is not present in any
+released version, and the MAC side forces the phy mode, so phylink does
+not normally pass an interface outside the mask. The patch makes the
+mask the single source of truth for both the core and the glue.
+
+Fixes: b9e7cb89aac8 ("net: pcs: xpcs: add Rockchip RK3568 platform glue driver")
 Signed-off-by: Coia Prant <coiaprant@gmail.com>
 ---
- drivers/net/ethernet/wangxun/txgbe/txgbe_type.h | 3 ---
- include/linux/phy.h                             | 3 +++
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/pcs/pcs-xpcs-rk.c | 10 ++++++++++
+ drivers/net/pcs/pcs-xpcs.c    |  3 +++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-index 757d1ce8d3ad..8071464c7b90 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-@@ -315,9 +315,6 @@ void txgbe_up(struct wx *wx);
- int txgbe_setup_tc(struct net_device *dev, u8 tc);
- void txgbe_do_reset(struct net_device *netdev, bool reinit);
+diff --git a/drivers/net/pcs/pcs-xpcs-rk.c b/drivers/net/pcs/pcs-xpcs-rk.c
+index 6f0a110e32d2..25fdc9c6b72c 100644
+--- a/drivers/net/pcs/pcs-xpcs-rk.c
++++ b/drivers/net/pcs/pcs-xpcs-rk.c
+@@ -483,6 +483,7 @@ struct dw_xpcs *xpcs_rk_create(struct device *dev, struct device_node *pcs, int
+ 	struct platform_device *pdev;
+ 	struct dw_xpcs_rk *pxpcs;
+ 	struct dw_xpcs *xpcs;
++	DECLARE_PHY_INTERFACE_MASK_ZERO(supported_interfaces);
  
--#define DECLARE_PHY_INTERFACE_MASK_ZERO(name) \
--	unsigned long name[PHY_INTERFACE_MODE_MAX] = { 0, }
--
- #define TXGBE_LINK_SPEED_UNKNOWN        0
- #define TXGBE_LINK_SPEED_10GB_FULL      4
- #define TXGBE_LINK_SPEED_25GB_FULL      0x10
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 21afc2082b17..43aba23109fa 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -159,6 +159,9 @@ typedef enum {
- #define DECLARE_PHY_INTERFACE_MASK(name) \
- 	DECLARE_BITMAP(name, PHY_INTERFACE_MODE_MAX)
+ 	if (!of_device_is_available(pcs))
+ 		return ERR_PTR(-ENODEV);
+@@ -536,6 +537,15 @@ struct dw_xpcs *xpcs_rk_create(struct device *dev, struct device_node *pcs, int
+ 		return xpcs;
+ 	}
  
-+#define DECLARE_PHY_INTERFACE_MASK_ZERO(name) \
-+	DECLARE_PHY_INTERFACE_MASK(name) = { 0, }
++	/*
++	 * The RK3568 XPCS supports 1000BASE-X, SGMII and QSGMII.
++	 */
++	__set_bit(PHY_INTERFACE_MODE_1000BASEX, supported_interfaces);
++	__set_bit(PHY_INTERFACE_MODE_SGMII, supported_interfaces);
++	__set_bit(PHY_INTERFACE_MODE_QSGMII, supported_interfaces);
++	phy_interface_and(xpcs->pcs.supported_interfaces, xpcs->pcs.supported_interfaces,
++			  supported_interfaces);
 +
- static inline void phy_interface_zero(unsigned long *intf)
+ 	xpcs_config_eee_mult_fact(xpcs, pxpcs->eee_mult_fact);
+ 	put_device(&pdev->dev);
+ 	return xpcs;
+diff --git a/drivers/net/pcs/pcs-xpcs.c b/drivers/net/pcs/pcs-xpcs.c
+index 6466e0ff2a98..46878a66064e 100644
+--- a/drivers/net/pcs/pcs-xpcs.c
++++ b/drivers/net/pcs/pcs-xpcs.c
+@@ -169,6 +169,9 @@ xpcs_find_compat(struct dw_xpcs *xpcs, phy_interface_t interface)
  {
- 	bitmap_zero(intf, PHY_INTERFACE_MODE_MAX);
+ 	const struct dw_xpcs_compat *compat;
+ 
++	if (!test_bit(interface, xpcs->pcs.supported_interfaces))
++		return NULL;
++
+ 	for (compat = xpcs->desc->compat; compat->supported; compat++)
+ 		if (compat->interface == interface)
+ 			return compat;
 -- 
 2.47.3
 
