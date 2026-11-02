@@ -1,80 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.191.204
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.184.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793630633;
-	b=h2Rxp7YSN8FrfKY0tte01UMs/QOY73kO1iNz71v83UrIbW9VqC6ObGd+lVTSTadJwgBY
-	 ZJOGI+oOMVXLkDuhbmEYTwURnlvkggf3ATvcWIxxVlAedfXCTAJM2Kny3PiwHHyqFUD0V
-	 ZWkc+vjhw8oIFEjS0jMJFppImW7rtBwqy5bnnnKRDJ5AemqlYbjrHkG6j28vnsQh6fST1
-	 Hyxe/Ki0Mi1v+9/Oug5IQbm2Rq5TY6EZGBnSnoS9rRZy7B3EcPzFB/mZ75yuL+puRENEZ
-	 AQnli4TWquv6jbyKbskc9gqMfX+wEK3zrmsqEulif4LYjRQOlwmdG/JBwlLzpf2/oQA==
+	t=1793630686;
+	b=FkGVjJvlfCVAlEKePuzlWLOOoWykNIWwNf4Y/DgSljNr672W0lpz+Jcr4/as37ayGd9h
+	 +Wqm3Ntfwvzm1Pjeytv9Po22F+UpOyQoEbXSl2roe0vzeIs/6qWtnTYX7x+s1OjIAXA6b
+	 Ede6FywupHx8bQp0J2ZlI3FiNS/YY13yMlTXGO2ZMhc5ccnpIyiphwM/vo09GMNCcXFq5
+	 p6eReZLrvix0z2qGV4gOrdPj+16opwo3cKnJNIZFor1n+44ghELt/D40OKotJWInn5+AT
+	 3m1i7onVSfI5vlW2cbTvgooh1K/mi1IDLx64uoiPu/dUYg7YCctpU280lRrNZmAmETg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793630633;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793630686;
 	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
 	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
 	 Subject:From:To:References:Content-Language:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:X-Mailer;
-	bh=8T9N4l38fHxGVjtUpJZTONFMpuKNyOfZ5ObKMGbdZPo=;
-	b=zKxC4Nwp3fxAdo9qC15uwDspixuyIzbbOixGO33ZvmqigNSkWM+TgCbfexDmJUAz3d4c
-	 87lN2/Lie2BDN03d99+9pP6TMQkpRoCukHCBauCl7OkmBKa5BSWlf7rIhcCo51B5I3olV
-	 3YY83sUt2E6KuJB7NorCZTUFBraIvNmHZ3LmcgvS/6i1LpEbKQfdi71xWuUhmOjJ0KDdR
-	 dTP0UC6Cewk9s+u631eTmmq2BvgkPr31dqazx/TKWihIdA8jeL2+me3gvKntro51S1uXM
-	 LadpI4rCKwIagZseoPVc/vaMgqG24u7mgigEo+RgBqJVf55JkETqUDSoBa8JBbFf2hw==
+	bh=u0XaalBvIVFfrjHFIeL6hw7KxkE01i/dMOQug3Mavao=;
+	b=JHbXhByk50UVZCm7C1VYkgdg15amlHYqe+9Z/lyn4IaRY05BX/x9w8wF2sgRuS6+UQB/
+	 S3sOqzBFMhN4Wi7/TjmRLDWZEBdcpSOd8lIAobAnMYAojRgL1Ao6k/lJ40/J6sVvDeD4V
+	 Q73+N3IaNOFgJ+Ul00pbecSm5+oJXFWSygpmJjAkXnJPsKc+11CNRMpFsm498jVEU1ca+
+	 oRwyd142m7nXxgGXXfFmupLMZL724ARu+cUnW3E1Z5smawtP/YJJjqmf7a/P2MkST45hN
+	 WFVXxHD6Uo16+BRRBWrhwWQLCU9xGeMqkQuQzjG9PMThybc2RpI7/SXXDUEcufVt3UA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=yahoo.com;
 	spf=pass smtp.mailfrom=yahoo.com;
-	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=Hoys87ws;
-	arc=none smtp.remote-ip=66.163.191.204
-Received: from sonic312-23.consmr.mail.ne1.yahoo.com (sonic312-23.consmr.mail.ne1.yahoo.com [66.163.191.204])
+	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b="uQI5H/IJ";
+	arc=none smtp.remote-ip=66.163.184.43
+Received: from sonic317-32.consmr.mail.ne1.yahoo.com (sonic317-32.consmr.mail.ne1.yahoo.com [66.163.184.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E2C606C3CF
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 14:43:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 96E2C606C3CF
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00834606C3DD
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 14:44:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 00834606C3DD
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=Hoys87ws
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793630631; bh=8T9N4l38fHxGVjtUpJZTONFMpuKNyOfZ5ObKMGbdZPo=; h=Date:Subject:From:To:References:In-Reply-To:From:Subject:Reply-To; b=Hoys87wsmvcBfGRIOCyvTk8uBYRQkdYjtCPOaDQfFXO6B6orQEvEMax/eM7Ir8lQ+BdauETyDuK1GgRaxHMele8iQaKT1O4lKp1qoACCM5DsSwI+VfjUnRfW0Rs5aBdPe67fx5LH4VYTDECxFA9xEvLCzCGMbCWdcL+38CS7/pie0xcVeyYCuJdtpPUXDQQUHsAJD6qrlu11zJ2l2gScU0xBFdF9/w1RRpWIvA0SWCXA16ZJzI1vpa7EgxODrMQpGiYcl29wqCTBfsYKzatFOB4S9LMoix3aN6l44jW/ikWZOXIiGcNWJIiunXGarS61pezz4gY53cUYo5iHxFqm8A==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793630631; bh=O8twRAC84G2g6wj8/7CH3GHMAzJhMPEV+S9vzGjW26O=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=g2g5K8L+NmsZB66dyXPl80pJbIhYJldON2Yk3RZHj8btmZUh6OOm6GlO6pJAAlKY6W2PN13QRUWZ9j7ODYlZl+fdN0Oc7/Yjrb3L8kGCz7PUV/f63noVV3wnScI6KAeiuHnbMffsqWt1zpe49zPlMpBreTgn08VdB5xFkDWtKuPKT4kLRz9OB2EOqWzFNpehd9bKeuIublIfhbu/OuQkdNoUUYcwP3N5byuFOV9YmytdGHBpSvr+caXhQuRYleg+CJiE5E0Lm8zg+XAENifu1AZIJ5l/Dyr4CJhMmcZ3yYvpav4Jk25BzYezJJkoUh7XBRJulOPBcSpdSClLOYa8EQ==
-X-YMail-OSG: w.608IYVM1mHiDXyfrqzVb2xRoHZuG4LOVSwtpqCyUhtr_rRRBZb3wpwI7bGmrL
- .B4oJ32gJsxQDzMSd.Co_LN6bW_DWNh9FSgwxgvMcEgJZXsAEUhVWBZ0wAD6iVoke6Q0zkDYxKij
- UBGOzI_qkIZ.utvcVEjaQ68ZAdRCoa6ntRuB80mbfvZzyOm1Xx45_X1XSQtM.PIHaxQT.PAibRJ3
- oXjlOSUlL1Y0JVT14UbSnXeA73.mF6Xz5mcewJi4CLn1NBlU6H7bqxaiD8niBFTWEoZpAKGJ5avg
- MOcO1t8Rw6hyRR0Oq2aIyNdC2YOXA6t4Xej_QP54z5s2zrtDdYxJSDW.Up9.GT7.rWrm1Bqj2Yz9
- Al5vwxM4ruXkT0zsuOw32iFV7c_WbRGozHz8JJA6b9_.EsiKEUETVZB5VjzXrk0n_9PUcweuUN5G
- C11jQXXlqQYM8Q99a0JGxUP5sPqoHhZu_t1l5L2AkBaT3YHfK6oY32HDFPhCTa1.pfIGYKLWlF9Y
- 9YNkz_JoY83Ea6IlUDwZ9qR1qSEBDxAhdsrV_SnQ843A7ocXLBcKtomyiDf6SYAb7edmXj8cN1mx
- E70wWtXQH5r2Wkt4obi9kT9MpPCzCatWHv7gC4koywXZnipdx0bX5sktt9bFCEY6L66qquMsMSAB
- R505HljCK.Z6hf3JFtf.iRigBrH2XzTVFxIecmYI.hsDgMQi8_J7SScz.4UqS06TT2OuLtct1g0x
- IIOjNOVtGrGqO8dfMaXWs9ti0lh6kRckPyo6VjtI8UwovDdBEmjgaBHvcA3_0wLRz2iB1DjXEIrE
- zQpi0qlHv5zJHmTcJs_DwT_L.WO8xHC.2RumJPvcQKWXjNcN9BLdGwhlhpK_aztIBo8cYrGYqKk5
- jy6Efc.8Xkec81mGywhMJCZWggeiOpB6f9zwmnXO8AQquOBTGKZRpzL7lKmmdWLzB2vhwfF8kb9I
- R6uH9_v6B0s5WV9SyilXpIxuYHWkfKYPHBJmTl2a_HMwEecNmPrNpt.AzE.6ARgLAGf9kR4Fozhr
- 7Yox4wzK0HwJV_RSwshi8w9xzm_2KHsTTQ2B6tMpjl1lqOGDO5zRHzNdBk7QYMvhHWA5bf.WBnh0
- ycLq.LzbQoGghCy8VpWIT8WM8ZkuonELaA..FXvJxqKitbX_qN9bhsz_BKYd79vIP2b53beOWJxi
- qLxdW9pKYCrnznczawNRXTt.SWLkFzyy1MM6jr_8c1YvHxlSj7fgz33WYsOfEzBgyVHYWUR8i8BJ
- S.vSXVdCTqUvuZtDKtcL1REcyB9hKbhr0gtfEA3ZChim7XetDOEfwalJ22oPYPmPpHXEuovDODxQ
- eWYGXXhbYUYkGde4S5Z.mfK349Fp3yWbSm2abWrdbDGDu7rPBilF4lTv_bfo8f1pm23_JmGrLuaw
- VskuYLqDKdbT6BEFT3jYC00TLz7F_hYN93DX4aYg1bXgoE.MMxpzHeEZreN.z5LF1RFZKC1lc214
- sk1pPfXJHOPM41Pga104OwP.XKXXKubwCeQZ938jC.XkZs9NZNAuZxN3RGm1r8IonaU4hMPVyJKD
- _TKECAq96QCh7toFiw_KfgOqSr.YVXtDZ1KyxjdgU.xjiZIisc9lMGeJOFFhuuHn_D1klxen3.GC
- bSuP_XIivl4NL39ryt3xgKclA5nsomYo_Mje5CjnVRF4d.8zvORUoImlN0Dt_fReUu.sSWgIysZu
- fOs36wARKACWZMhFrzedFivmDnqr9ZrSFVQnKYz2Z6trNa4PR2fkzrusd5Ih1EAbrg21Jhp.gt5m
- jngR3_hVe63t6Ru5ojkMBfr002c3UN3EnofLGdjJaWvFPpti9Ed3HwkKrmdYZWpYgjsN5M8Fs75H
- xUMzlCIrX1xyZK9EyycKCm5m_ccoMDpSk5wnG0eyXLJ1Q_fCrOTbT_.nsBnoWpIyqSbEeDwv6Wce
- PseilxG2YWVXiXaxcsezRWyAGaPwV0swmfbbk4JSdEvVj9UJdUs2g85jYS2NKcIhH0ZMPgZOeV.c
- WpxMVmMpcZXbN19uRGLemTYeV6gt1hvlWSdE.uWYyI8dyJfpdJ2EJEXUrVSb2Pa_01p.KqBncOVR
- r4JIb84XHCBPVIeB_xdNNq69WXl9S7jMvSYKNlhqztfBe.FLvUF1kOZUikZTCAQzhgETIhCAGJwM
- TWu4Ih5v057cqtEAdsAJHN1N_B0VVG_YOO86o2nortR5AY7.I.F2NP8bmwoFl.xgmx1cEaARDIi6
- yldm7RKvs_csAfrJ5sK09HlH0fIVNzxtuRnZwawkYiJjcb0Qk9OTFy4ilt5OL3GifmwfiJGX3QWL
- DfRtZwCeBPxLeaMzVN0IbImkOYj.na0pbDpFdMuNxnQ--
+	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=uQI5H/IJ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793630684; bh=u0XaalBvIVFfrjHFIeL6hw7KxkE01i/dMOQug3Mavao=; h=Date:Subject:From:To:References:In-Reply-To:From:Subject:Reply-To; b=uQI5H/IJEHHHnnafh9WUiJ5cNhjpFHxRcU4tlxW66r/PLlZHangZO1fGZHAFHF/tDvsalgmpJBj+YXUBukBhOO3tM7GQlEmzMZPXznxD1WyyKv23oT60jakCWC3dMWMTXOgDwrZtK+/BxCPCjTJ9M1BJfhSPUEfHEgA++wLVEKuAsN7E6CACrpHqNpS/kMm5yPQsdZ7e4zO8wXR9JGJVUwEmaOkCIwXPOMdSl6nc7fKFP97WZ/ivC2jEPfeIVoI6Fmv8J3c6mhS7HS3jMXWSMXBaBCVKOOrAeBU/+7fQOa5UsNfMIGsFjJ/ySlCfcoY9HdcAzcdI/MN5UUFTwDSiPg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793630684; bh=wEOYpHnv1wzWZe24nWtzS8c6KTl1/mb9N094oATEjpG=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=LHY/UQEPuuVDZHsQlrr0sFWGTKTyE4gEFm/PiPX40NdvKbwfIo6g1CcXUtLUo8nWnBkuyquPfUrX8CEbOuPzoeF36/0YSFIb2y5W0y44RnvYA69asHDWNhDmaLx+x0eQro+nRiLNeVtYjzAjRCcMfGH7wX42czFl9h75L9F/4FHPgkuyjDjrAXcBnuh13HPpL9Z3ely3Z6MJ7ND8Pse2bkPGBZCXZaYd8buVrWxInqL832FXLkJGpkeb3dTPB24NKWe12jmKtBPbhPgHDZwNXP57etGVbOIlNQMqKrNX89ui4oVCklEVNN9FLp8+6qT2DBfBGCQJ7bJ9nNTuJNd9vA==
+X-YMail-OSG: F3gQx2UVM1m4Tmvh8pOkPu48wa5jgyp1DZAXdmoYtB1EwxTG3cRjT6IClxYMmDn
+ uOC7YCU5JvPwf2bBlZxIcnV45qWDBd9QuLnrguDddsuPjBBAto3bIS3c4wPostyjBIAuQ0ZZtylC
+ uopuzsGdEB5H9TEm514bDjHC49vutoHKmq4xe9lPf1xrjHfTO9C9XN2N5t.UdJ4C9G20.ePhAFDe
+ c9W85zVD200i8sv4A.nIwXS1PlUjia7b8rMAEnvPdbhA.mxaMLnfzUlJ6Ab_bfxenNP6yPyAl5Z7
+ Cejue.TEeHW4e_RkcuwwYrD3kkXdq9FcgW5MMn537g6ohLGyFe2JTEp8CcmqerIjo0o8HDzDlnKw
+ BmXLykhqR0nEv8ths9SyGNwNoF4Vs4MHzyKHJIrrJ3eUjmKu0Xna8uQ3BKo2fwvQ14vHGPxdNRiV
+ TAsnwvF.xugDONWGLdOaqqV1mNVT7z_Hl.D.WEQpFy0jzIYLUA6TWSd7izlGx.DW7UV53bg4Px1W
+ yH.PuBZn5XwY5QHzG_QIUZL4eC.uL5MobEBtpzWwy04_siI0WnsA1qo4P3zQkBLvyl2sF3KH5wKE
+ Yaq_Xq67zOM0lh3DPi.rxMoefCr7.A3xFJi_vfPisFpDPiSVnrCdCk3gC8ngEMS3okn91lTeDKw8
+ rUtHhr06IH_dh8uMT4O3LOb._JWGZh6AOLTK8z4NXu7lqMZN3Fd46fHi7GobQkWF4frYOTsyXaRQ
+ qQ7.JBATO9qa5pBFn3yj03EHj1i.hEsHnGv6W_JCF.B8X9stL1cnC0yL46k9rryVz3LCB54FhGC8
+ .QHSW.FbyPM3dQz2WbhMsrLJGzFJ4T4XGAtVxtbR6M8n.9GLhpJ_t2mfepU3H5FeOgxrFZ_m3w5j
+ aSG.GOhESffwolqI2QVVhpPiBbtnSMajL5QImDDbn8japErRdemVROTbcC0lgj5iy0qu1sCh3r9F
+ bZDmH3sVneMQi97VN0WvVfab3bDIRE8V1IC.ulNx4WxNX7TBlz0tmc7WFjyTKA26BfmWifKDuIPg
+ 3PqUnUHltC._DIk3miSZ_eP7IY0M3ETr1P4JVqRAdiE3G7Niy3RN.1zw0mK_2J8CRonXUfTFb7tN
+ 9fxyFjYF4RnAtOYT4Ge2Lw3DlwAzxtNMtT6nCxcj3JN1lqtdQheFyVcT8geX8EBM5JCy2pbk19YQ
+ hme7THKgTXP4f8zcHP2x_V79.Fh.O83qf58LBrbT4cFtSGWIBPZQqslEhiIkbzkLbNhYIoRYN9VC
+ ibIXVGu54liBTosyQYpg5G_JhkuBK4K07d_DZfNh5uCKANf1iZ0ItLLVnT0U7nNeXdak6iOatHwD
+ CjT8c8tUD0OGAe1YWC0K9.fpLVwUhFeQjjg3isQghKdXrdImwamdZrfyseyt1reczN4luu2f.VP4
+ 5lhyQgYJeezeTUs.dUMJZtVR3w7yM4dZeZOuwcI3yzedTUD1Z.RLiep_ceVa3n42QpPA58rtTnJ0
+ IrtySFHFMs0PYJeoavTKF6Y7H5_Sok2SckWB9Oth3ZyzXeL79bSOaS_G5T4JNMmCfQJRmDTf.ybA
+ KutpFVow_eY1ubLsPN_152CBfc9syupzVMk1kihfLdWZdKGQrp7R8H_wIiZ.IVDYrDVANKrtZ6b3
+ 2TIqbvKKHW5zjmc8rGGejA4BO9filrJ1R1LS5FPQO9CpOOopAWGb4wsWO6EDWsg_a4Y3JFeahLBM
+ 9lQ5m4uC74N0arXBPYleOTrWNMShLnv9Tk_U9NBvoOOPkAYe8AhXkdvLslpQ5tnyamSkQX_iXVrs
+ pD9mNYgZBe.ytKE3fTGH64jcSxHnZXPpUGUNhQbGnXpcADkox3bHBJWaoD88ZWDogmvxJGFDDLEp
+ 8ioNy5mEdcpmR7N_gToK0OHX7RvYhtIxI0kHogaq43N8Fgm_WOhXvxQrQgLgiZ1EL_I6ffXlb3eL
+ YT7Cs5cDPIHk2H7RMxL5x13uoBo.R8hhurbGLcQBPVIpGTNGrBbo7J7NP8CUXxRWF1kcF3epr7vt
+ ypKZ3rUTdUlqYL870XmLFE5_huUr0e7bOBaqRlHLHFE9qJiqJj8qUmKGtYW8YZAnMxpXGakeu8oT
+ Ql1iVqhQJ.g_17SN4l6qtapD7FRhZoSOMKBkbTjDfhlUszDI0CloZvZd6obRkCRBMzLH17HWjEbF
+ SmUqhYgacU5G7wVCeJljkqYumqU5tQ8HqlifUPYKGJbzH3y3HyQM6H7RWfrl76ehamDBSjXSx3x5
+ 0YMw690d.b5m.eCXMmXj6G.UJNUt0BwG3vzs2NG9MPXLIeWi3TFXEHQp4_reF4N9eXcc8KA8T7qZ
+ .vA6cL2YtpLjqC1n4GYwQ2ZcAt.JHrHDnPUc1NDW.TAK3uy4-
 X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: eb6054c3-390b-4e26-953a-36de92caaef5
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic312.consmr.mail.ne1.yahoo.com with HTTP; Mon, 2 Nov 2026 14:43:51 +0000
-Received: by hermes--production-ir2-5dd9bf4598-jgkl4 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID c0bc23f7073c8296605e3249346aac65;
-          Mon, 02 Nov 2026 14:43:47 +0000 (UTC)
-Message-ID: <3ecac0ea-830b-47a0-931a-67fea637f0c3@yahoo.com>
-Date: Mon, 2 Nov 2026 15:43:45 +0100
+X-Sonic-ID: a90f8425-df56-4470-9f55-f58a427dc66c
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.ne1.yahoo.com with HTTP; Mon, 2 Nov 2026 14:44:44 +0000
+Received: by hermes--production-ir2-5dd9bf4598-jnk89 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 793d814d716a6f36d27938eaef22c14f;
+          Mon, 02 Nov 2026 14:44:38 +0000 (UTC)
+Message-ID: <88239c31-e161-4623-8dbb-db39f506af6f@yahoo.com>
+Date: Mon, 2 Nov 2026 15:44:36 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -85,8 +85,8 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH net-next v7 08/10] net: dsa: realtek: rtl8365mb: re-latch the
- family D SerDes
+Subject: [PATCH net-next v7 09/10] net: dsa: realtek: rtl8365mb: make L2/LUT
+ access work on family D
 From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
 To: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
  davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
@@ -99,648 +99,604 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Mailer: WebService/1.1.26871 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-The family D receiver latches on the DISABLE -> HSGMII edge in SDS_MISC
-rather than on the value, and it will not latch until the MAC at the
-other end of the trunk has brought its own half of the link up. If it
-does not latch, the trunk reports 2.5Gbps/Full on both sides but moves
-no frames: the CPU MAC transmits, the switch CPU port counts no octets,
-and there are no CRC, alignment or FIFO errors.
+The L2 lookup table on family D switches (e.g. RTL8367S-VB) differs
+from family C in ways that make the current FDB/MDB code misbehave:
 
-The two ends can be seconds apart, e.g. on an IPQ5018 board:
+ - An L2 entry is 5 words instead of 6, with a different field layout
+   in words 3 and 4 (port, age, static and multicast member bits).
+ - There is no EFID and no per-bridge FDB isolation. The register at
+   0x0A32, used as the per-port EFID register on family C, is the LUT
+   aging timer on family D, so writing an EFID there corrupts it.
+ - In the table access interface, the SPA field is 3 bits wide and the
+   address register is 12 bits wide, with no address extension bit.
+ - Only ports 0..7 are present in the LUT and there is no
+   FLUSH_PORT_EXT register.
 
-  5.27  rtl8365mb: configuring for fixed/2500base-x   <- pcs_config()
-  7.72  ipq5018-gmac-dwmac eth0: configuring for fixed/2500base-x
-  8.02  ipq5018-gmac-dwmac eth0: Link is Up - 2.5Gbps/Full
-  8.56  SerDes latches
+Teach the table and L2 code about these differences, selecting the
+layout at runtime with rtl8365mb_get_family(). Family C behaviour is
+unchanged.
 
-pcs_config() runs seconds before the far-end MAC even starts
-configuring, so a single edge driven from there is not enough: the
-receiver has nothing to latch onto yet. Neither is pcs_link_up(),
-which is seconds early for the same reason. phylink does not help
-either - it never calls rtl8365mb_pcs_get_state() for this port in
-the first place, since mb->pcs.poll only arms phylink's own poll for
-in-band links, and this CPU port is a fixed link.
+Specifically:
 
-There is no local signal that predicts when the far-end MAC will
-bring up its half of the link (bit 8 of the SDS link-status word
-does not change ahead of it), so the work cannot wait for it; it can
-only tell afterwards, from the link-status bit, whether an edge took.
+ - rtl8365mb_table: use the family D port mask and address width, and
+   read the hit address from status bits [11:0].
+ - rtl8365mb_l2: add family D unicast/multicast entry (de)serialisers
+   behind *_any() wrappers, pass the proper entry size to the table
+   layer, reject ports above 7, report SVL (FID) entries with VID 0.
+   Use age 6 for static unicast entries as the vendor code does, and
+   look an entry up before deleting it so that a missing entry is not
+   allocated by the delete.
+ - rtl8365mb_main: make port_set_efid() a no-op on family D, add a LUT
+   init step that clears IPMC_HASH and BCAM_DISABLE and programs the
+   aging timer, and do not advertise fdb_isolation or
+   max_num_bridges. Traffic between bridges is then isolated by the
+   port isolation masks only.
 
-The far-end MAC starts when its conduit is brought up, which DSA
-reports through ->conduit_state_change(), so an episode of re-latch
-attempts starts there. Only the conduit of the CPU port that carries
-the SerDes (port 6) is considered: the chip can have a second CPU
-port on RGMII, and its conduit says nothing about the SerDes link.
-pcs_config() only arms the work, and starts an episode itself if that
-conduit is already up. The work re-arms itself after each edge; the
-next run checks whether the edge took, rather than waiting on a poll
-that will not come. When the conduit goes down the work is stopped, so
-a link without a far end is not reported as lost and not parked every
-10 s.
-
-Each attempt (park for 20 ms, then restore the target mode) is
-performed by a work item rather than from the callbacks, because the
-attempts have to continue for seconds after they have returned.
-pcs_config(), pcs_disable(), teardown() and conduit_state_change() are
-serialized by a new sds_cfg_lock and cancel the work before touching
-SDS_MISC or restarting it, so an attempt never interleaves with a
-reconfiguration. Before parking, the work reads the link status itself
-and does not park if the receiver has already latched, since the
-condition that queued it may be stale by the time it runs; it then ends
-the episode instead.
-
-Attempts are spaced about 1 s apart and capped at
-RTL8365MB_D_SDS_RELATCH_MAX_TRIES (15) per fast episode. After the last
-attempt one more run checks whether it took and only then warns that
-the SerDes did not latch. The work then keeps driving one edge per
-RTL8365MB_D_SDS_HEALTHCHECK_INTERVAL, so a far end that comes up late
-or a link that drops again is recovered without a reconfiguration,
-at a bounded cost of one 20 ms park per interval.
-
-Once the receiver has latched, the work keeps checking the link every
-10 s (RTL8365MB_D_SDS_HEALTHCHECK_INTERVAL). If it finds the link down
-outside a reconfiguration, e.g. after the far end reset its PLL, it
-logs that and starts a new episode.
-
-For family D, pcs_config() keeps the masked update of SDS_MISC and saves
-the value it wrote as the target the work restores. The work parks and
-restores with masked updates over the same fields, so other bits are
-never touched.
-
-The work reads the SerDes link status through the SDS_INDACS indirect
-access window, a multi-register ADR/CMD/DATA sequence that the PCS
-callbacks also use, so those sequences are serialized by a new sds_lock.
-The SDS_MISC updates need no extra locking: each one is a single regmap
-read-modify-write.
-
-The work is only armed for 2500base-x, the mode the re-latch edge was
-observed with. It is cancelled from pcs_disable(), from pcs_config()
-before SDS_MISC is touched, from conduit_state_change() and from
-teardown(), and disabled by a reboot notifier and by a devres action.
-disable_delayed_work_sync() is used in the latter two so that a late
-pcs_config() cannot queue the work again, and so that it never outlives
-the PCS or the driver data and does not touch the bus while it is shut
-down. dsa_switch_shutdown() does not stop the PCS, which is why the
-reboot notifier is needed.
-
-If restoring the target mode fails, the lane stays parked. The mode
-field in SDS_MISC tells so, and the next run of the work puts it back
-before doing anything else. If the work is stopped before that run, the
-lane stays parked until the next pcs_config().
+Register layouts were taken from the family D register description;
+the code itself is an independent implementation.
 
 No chip uses family D before the last patch of the series, so this code
 is unreachable until then.
 
-Co-developed-by: Oleg Gavrilov <gabonpivovich@gmail.com>
-Signed-off-by: Oleg Gavrilov <gabonpivovich@gmail.com>
 Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
 ---
- drivers/net/dsa/realtek/rtl8365mb_main.c | 387 ++++++++++++++++++++++-
- 1 file changed, 372 insertions(+), 15 deletions(-)
+ drivers/net/dsa/realtek/rtl8365mb_l2.c    | 216 ++++++++++++++++++++--
+ drivers/net/dsa/realtek/rtl8365mb_main.c  |  46 ++++-
+ drivers/net/dsa/realtek/rtl8365mb_table.c |  46 ++++-
+ 3 files changed, 276 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-index e297d93..4937ffc 100644
---- a/drivers/net/dsa/realtek/rtl8365mb_main.c
-+++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
-@@ -97,6 +97,9 @@
- #include <linux/irqdomain.h>
- #include <linux/mii.h>
- #include <linux/mutex.h>
-+#include <linux/workqueue.h>
-+#include <linux/reboot.h>
-+#include <linux/cleanup.h>
- #include <linux/of_irq.h>
+diff --git a/drivers/net/dsa/realtek/rtl8365mb_l2.c b/drivers/net/dsa/realtek/rtl8365mb_l2.c
+index 0494d8a..a7613e2 100644
+--- a/drivers/net/dsa/realtek/rtl8365mb_l2.c
++++ b/drivers/net/dsa/realtek/rtl8365mb_l2.c
+@@ -8,9 +8,12 @@
+ 
+ #include "rtl8365mb_l2.h"
+ #include "rtl8365mb_table.h"
++#include "rtl8365mb.h"
  #include <linux/regmap.h>
- #include <linux/if_bridge.h>
-@@ -299,6 +302,29 @@
- #define   RTL8365MB_SDS_MISC_SGMII_SPD_MASK		GENMASK(8, 7)
- #define   RTL8365MB_SDS_MISC_MAC8_SEL_SGMII_MASK	BIT(6)
  
-+/* Re-latch retry interval and attempt budget. Each attempt parks the
-+ * SerDes for 20 ms, so a far end that never comes up must not be retried
-+ * at this rate forever, and the interval must not be so tight that
-+ * back-to-back parks starve a link that is about to latch. The count is
-+ * reset to 1 whenever an episode starts and to 0 whenever the receiver
-+ * latches. Episodes start when the conduit comes up, so with the
-+ * interval below the budget is roughly RELATCH_MAX_TRIES seconds, which
-+ * is generous for a far end that needs a moment to bring up its half of
-+ * the link.
-+ */
-+#define RTL8365MB_D_SDS_RELATCH_INTERVAL	(HZ)
-+#define RTL8365MB_D_SDS_RELATCH_MAX_TRIES	15
-+
-+/* The SerDes stays parked until the restore write succeeds, so the write is
-+ * attempted up to this many times before giving up until the next run.
-+ */
-+#define RTL8365MB_D_SDS_RESTORE_TRIES		3
-+
-+/* How often a latched (or out-of-budget) SerDes is checked, and re-latched
-+ * if still down. Much slower than the re-latch interval.
-+ */
-+#define RTL8365MB_D_SDS_HEALTHCHECK_INTERVAL	(10 * HZ)
-+
- /* SerDes internal registers, accessed via the SDS_INDACS registers. The BMCR
-  * data path reset holds BMCR_ANENABLE | BMCR_ISOLATE while toggling the
-  * vendor-specific low bits from phase 1 to phase 2, which triggers a data path
-@@ -938,10 +964,23 @@ struct rtl8365mb_port {
-  * @chip_info: chip-specific info about the attached switch
-  * @cpu: CPU tagging and CPU port configuration for this chip
-  * @mib_lock: prevent concurrent reads of MIB counters
-+ * @sds_cfg_lock: serializes pcs_config(), pcs_disable(), teardown() and
-+ *		conduit_state_change(), which arm, start and stop the
-+ *		re-latch work
-+ * @sds_lock: serializes access to the shared SDS_INDACS ADR/CMD/DATA window,
-+ *	      reachable both from phylink's PCS callbacks and from the
-+ *	      family D SerDes re-latch work
-  * @ports: per-port data
-  * @pcs: PCS for the SerDes external interface
-  * @sds_supported: SerDes tuning parameters match the chip option, so the
-  *                 SerDes interface modes can be advertised
-+ * @sds_reboot_nb: disables @sds_relatch before the devices are shut down
-+ * @sds_relatch: re-latch edges and link health check (family D)
-+ * @sds_relatch_count: next attempt of the re-latch episode, 0 once latched
-+ * @sds_misc_target_val: SDS_MISC_CFG_MASK fields the re-latch work restores
-+ * @sds_relatch_armed: pcs_config() set up 2500base-x; the re-latch work may run
-+ * @sds_conduit_up: the conduit of the CPU port that carries the SerDes (port 6)
-+ *		    is admin and oper up
-  *
-  * Private data for this driver.
-  */
-@@ -951,9 +990,17 @@ struct rtl8365mb {
- 	const struct rtl8365mb_chip_info *chip_info;
- 	struct rtl8365mb_cpu cpu;
- 	struct mutex mib_lock;
-+	struct mutex sds_cfg_lock;
-+	struct mutex sds_lock;
- 	struct rtl8365mb_port ports[RTL8365MB_MAX_NUM_PORTS];
- 	struct phylink_pcs pcs;
- 	bool sds_supported;
-+	struct notifier_block sds_reboot_nb;
-+	struct delayed_work sds_relatch;
-+	unsigned int sds_relatch_count;
-+	u32 sds_misc_target_val;
-+	bool sds_relatch_armed;
-+	bool sds_conduit_up;
- };
+ #define RTL8365MB_L2_ENTRY_SIZE			6
++#define RTL8365MB_D_L2_ENTRY_SIZE		5
++#define RTL8365MB_D_L2_MAX_PORT			7
  
- #define pcs_to_rtl8365mb(_pcs) container_of((_pcs), struct rtl8365mb, pcs)
-@@ -1357,43 +1404,53 @@ static int rtl8365mb_ext_config_rgmii(struct realtek_priv *priv, int port,
- static int rtl8365mb_sds_write(struct realtek_priv *priv, u8 index,
- 			       u16 addr, u16 data)
- {
-+	struct rtl8365mb *mb = priv->chip_data;
- 	int ret;
+ #define RTL8365MB_L2_UC_D0_MAC5_MSK		GENMASK(7, 0)
+ #define RTL8365MB_L2_UC_D0_MAC4_MSK		GENMASK(15, 8)
+@@ -58,6 +61,21 @@
+ #define RTL8365MB_L2_MC_D5_MBR_HI2_MSK		GENMASK(7, 7)
+ #define   RTL8365MB_L2_MC_MBR_HI2_MSK		GENMASK(10, 10)
  
-+	mutex_lock(&mb->sds_lock);
++/* Family D unicast (auto-learn / static) entry */
++#define RTL8365MB_D_L2_UC_D3_VID_MSK		GENMASK(11, 0)
++#define RTL8365MB_D_L2_UC_D3_IVL_MSK		BIT(13)
++#define RTL8365MB_D_L2_UC_D3_PORT_LO_MSK	GENMASK(15, 14)
++#define RTL8365MB_D_L2_UC_D4_PORT_HI_MSK	BIT(0)
++#define RTL8365MB_D_L2_UC_D4_AGE_MSK		GENMASK(3, 1)
++#define RTL8365MB_D_L2_UC_D4_STATIC_MSK		BIT(6)
 +
- 	ret = regmap_write(priv->map, RTL8365MB_SDS_INDACS_DATA_REG, data);
- 	if (ret)
--		return ret;
-+		goto out_unlock;
- 
- 	ret = regmap_write(priv->map, RTL8365MB_SDS_INDACS_ADR_REG, addr);
- 	if (ret)
--		return ret;
-+		goto out_unlock;
- 
- 	/* The SerDes indirect access engine completes the command within the
- 	 * register write transaction, so there is no need to wait or poll for
- 	 * completion before the next access, matching the vendor driver.
- 	 */
--	return regmap_write(priv->map, RTL8365MB_SDS_INDACS_CMD_REG,
--			    RTL8365MB_SDS_INDACS_CMD_RUN_MASK |
--			    RTL8365MB_SDS_INDACS_CMD_WR_MASK |
--			    FIELD_PREP(RTL8365MB_SDS_INDACS_CMD_INDEX_MASK,
--				       index));
-+	ret = regmap_write(priv->map, RTL8365MB_SDS_INDACS_CMD_REG,
-+			   RTL8365MB_SDS_INDACS_CMD_RUN_MASK |
-+			   RTL8365MB_SDS_INDACS_CMD_WR_MASK |
-+			   FIELD_PREP(RTL8365MB_SDS_INDACS_CMD_INDEX_MASK,
-+				      index));
++/* Family D multicast entry */
++#define RTL8365MB_D_L2_MC_D3_VID_MSK		GENMASK(11, 0)
++#define RTL8365MB_D_L2_MC_D3_IVL_MSK		BIT(13)
++#define RTL8365MB_D_L2_MC_D3_MBR_LO_MSK		GENMASK(15, 14)
++#define RTL8365MB_D_L2_MC_D4_MBR_HI_MSK		GENMASK(5, 0)
++#define RTL8365MB_D_L2_MC_D4_STATIC_MSK		BIT(6)
 +
-+out_unlock:
-+	mutex_unlock(&mb->sds_lock);
-+	return ret;
+ /* Port flush command registers - writing a 1 to the port's MASK bit will
+  * initiate the flush procedure. Completion is signalled when the corresponding
+  * BUSY bit is 0.
+@@ -258,6 +276,130 @@ static void rtl8365mb_l2_mc_to_data(const struct rtl8365mb_l2_mc *mc, u16 *data)
+ 	data[5] |= FIELD_PREP(RTL8365MB_L2_MC_D5_MBR_HI2_MSK, val);
  }
  
- static int rtl8365mb_sds_read(struct realtek_priv *priv, u8 index,
- 			      u16 addr, u16 *data)
- {
-+	struct rtl8365mb *mb = priv->chip_data;
- 	u32 val;
- 	int ret;
- 
-+	mutex_lock(&mb->sds_lock);
-+
- 	ret = regmap_write(priv->map, RTL8365MB_SDS_INDACS_ADR_REG, addr);
- 	if (ret)
--		return ret;
-+		goto out_unlock;
- 
- 	ret = regmap_write(priv->map, RTL8365MB_SDS_INDACS_CMD_REG,
- 			   RTL8365MB_SDS_INDACS_CMD_RUN_MASK |
- 			   FIELD_PREP(RTL8365MB_SDS_INDACS_CMD_INDEX_MASK,
- 				      index));
- 	if (ret)
--		return ret;
-+		goto out_unlock;
- 
- 	/* Wait for the indirect read to complete: the engine clears the BUSY
- 	 * bit once the data register holds the result.
-@@ -1403,15 +1460,19 @@ static int rtl8365mb_sds_read(struct realtek_priv *priv, u8 index,
- 				       !(val & RTL8365MB_SDS_INDACS_CMD_BUSY_MASK),
- 				       10, 1000);
- 	if (ret)
--		return ret;
-+		goto out_unlock;
- 
- 	ret = regmap_read(priv->map, RTL8365MB_SDS_INDACS_DATA_REG, &val);
- 	if (ret)
--		return ret;
-+		goto out_unlock;
- 
- 	*data = val;
- 
--	return 0;
-+	ret = 0;
-+
-+out_unlock:
-+	mutex_unlock(&mb->sds_lock);
-+	return ret;
- }
- 
- /* The vendor driver selects between two sets of SerDes tuning parameters based
-@@ -1512,6 +1573,37 @@ static int rtl8365mb_sds_raise_rate_limits(struct realtek_priv *priv)
- 				  RTL8365MB_PORT6_EGRESSBW_CTRL1_MASK);
- }
- 
-+static void rtl8365mb_sds_relatch_start(struct rtl8365mb *mb)
++static bool rtl8365mb_l2_is_d(struct realtek_priv *priv)
 +{
-+	WRITE_ONCE(mb->sds_relatch_count, 1);
-+	schedule_delayed_work(&mb->sds_relatch, 0);
++	return rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D;
 +}
 +
-+/* Put SDS_MISC back to the target mode. The lane stays parked (mode field
-+ * DISABLE) until this succeeds, so retry a few times before giving up until
-+ * the next run.
-+ */
-+static int rtl8365mb_sds_relatch_restore(struct rtl8365mb *mb)
++static size_t rtl8365mb_l2_entry_size(struct realtek_priv *priv)
 +{
-+	struct realtek_priv *priv = mb->priv;
-+	int ret = 0;
-+	int i;
-+
-+	for (i = 0; i < RTL8365MB_D_SDS_RESTORE_TRIES; i++) {
-+		ret = regmap_update_bits(priv->map, RTL8365MB_SDS_MISC_REG,
-+					 RTL8365MB_D_SDS_MISC_CFG_MASK,
-+					 READ_ONCE(mb->sds_misc_target_val));
-+		if (!ret)
-+			return 0;
-+		if (i < RTL8365MB_D_SDS_RESTORE_TRIES - 1)
-+			usleep_range(1000, 2000);
-+	}
-+
-+	dev_err_ratelimited(priv->dev, "failed to restore SDS_MISC: %pe\n",
-+			    ERR_PTR(ret));
-+	return ret;
++	return rtl8365mb_l2_is_d(priv) ? RTL8365MB_D_L2_ENTRY_SIZE :
++					 RTL8365MB_L2_ENTRY_SIZE;
 +}
 +
- static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
- 				phy_interface_t interface,
- 				const unsigned long *advertising,
-@@ -1533,6 +1625,17 @@ static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
- 
- 	is_d = rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D;
- 
-+	guard(mutex)(&mb->sds_cfg_lock);
++static void rtl8365mb_l2_mac_to_data(const u8 *m, u16 *data)
++{
++	data[0] = (m[4] << 8) | m[5];
++	data[1] = (m[2] << 8) | m[3];
++	data[2] = (m[0] << 8) | m[1];
++}
 +
-+	/* Cancel any in-flight re-latch edge before touching SDS_MISC: the
-+	 * work parks SDS_MISC and restores the target value after a sleep, so
-+	 * it could otherwise write a stale target over the new configuration.
-+	 */
-+	if (is_d) {
-+		WRITE_ONCE(mb->sds_relatch_armed, false);
-+		cancel_delayed_work_sync(&mb->sds_relatch);
-+	}
++static void rtl8365mb_l2_data_to_mac(const u16 *data, u8 *m)
++{
++	m[5] = data[0] & 0xff;
++	m[4] = data[0] >> 8;
++	m[3] = data[1] & 0xff;
++	m[2] = data[1] >> 8;
++	m[1] = data[2] & 0xff;
++	m[0] = data[2] >> 8;
++}
 +
- 	/* Select the appropriate tuning table and SDS mode */
- 	if (interface == PHY_INTERFACE_MODE_2500BASEX) {
- 		if (is_d) {
-@@ -1622,7 +1725,9 @@ static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
++static void rtl8365mb_d_l2_data_to_uc(const u16 *data,
++				      struct rtl8365mb_l2_uc *uc)
++{
++	rtl8365mb_l2_data_to_mac(data, uc->key.mac_addr);
++	uc->key.vid = FIELD_GET(RTL8365MB_D_L2_UC_D3_VID_MSK, data[3]);
++	uc->key.ivl = FIELD_GET(RTL8365MB_D_L2_UC_D3_IVL_MSK, data[3]);
++	uc->key.fid = 0;
++	uc->key.efid = 0;
++	uc->port = FIELD_GET(RTL8365MB_D_L2_UC_D3_PORT_LO_MSK, data[3]) |
++		   (FIELD_GET(RTL8365MB_D_L2_UC_D4_PORT_HI_MSK, data[4]) << 2);
++	uc->age = FIELD_GET(RTL8365MB_D_L2_UC_D4_AGE_MSK, data[4]);
++	uc->is_static = FIELD_GET(RTL8365MB_D_L2_UC_D4_STATIC_MSK, data[4]);
++}
++
++static void rtl8365mb_d_l2_uc_to_data(const struct rtl8365mb_l2_uc *uc,
++				      u16 *data)
++{
++	memset(data, 0, RTL8365MB_L2_ENTRY_SIZE * 2);
++	rtl8365mb_l2_mac_to_data(uc->key.mac_addr, data);
++	data[3] = FIELD_PREP(RTL8365MB_D_L2_UC_D3_VID_MSK, uc->key.vid) |
++		  FIELD_PREP(RTL8365MB_D_L2_UC_D3_IVL_MSK, uc->key.ivl) |
++		  FIELD_PREP(RTL8365MB_D_L2_UC_D3_PORT_LO_MSK, uc->port & 0x3);
++	data[4] = FIELD_PREP(RTL8365MB_D_L2_UC_D4_PORT_HI_MSK,
++			     (uc->port >> 2) & 0x1) |
++		  FIELD_PREP(RTL8365MB_D_L2_UC_D4_AGE_MSK, uc->age) |
++		  FIELD_PREP(RTL8365MB_D_L2_UC_D4_STATIC_MSK, uc->is_static);
++}
++
++static void rtl8365mb_d_l2_data_to_mc(const u16 *data,
++				      struct rtl8365mb_l2_mc *mc)
++{
++	rtl8365mb_l2_data_to_mac(data, mc->key.mac_addr);
++	mc->key.vid = FIELD_GET(RTL8365MB_D_L2_MC_D3_VID_MSK, data[3]);
++	mc->key.ivl = FIELD_GET(RTL8365MB_D_L2_MC_D3_IVL_MSK, data[3]);
++	mc->member = FIELD_GET(RTL8365MB_D_L2_MC_D3_MBR_LO_MSK, data[3]) |
++		     (FIELD_GET(RTL8365MB_D_L2_MC_D4_MBR_HI_MSK, data[4]) << 2);
++	mc->is_static = FIELD_GET(RTL8365MB_D_L2_MC_D4_STATIC_MSK, data[4]);
++	mc->igmpidx = 0;
++	mc->priority = 0;
++	mc->fwd_pri = 0;
++	mc->igmp_asic = 0;
++}
++
++static void rtl8365mb_d_l2_mc_to_data(const struct rtl8365mb_l2_mc *mc,
++				      u16 *data)
++{
++	memset(data, 0, RTL8365MB_L2_ENTRY_SIZE * 2);
++	rtl8365mb_l2_mac_to_data(mc->key.mac_addr, data);
++	data[3] = FIELD_PREP(RTL8365MB_D_L2_MC_D3_VID_MSK, mc->key.vid) |
++		  FIELD_PREP(RTL8365MB_D_L2_MC_D3_IVL_MSK, mc->key.ivl) |
++		  FIELD_PREP(RTL8365MB_D_L2_MC_D3_MBR_LO_MSK, mc->member & 0x3);
++	data[4] = FIELD_PREP(RTL8365MB_D_L2_MC_D4_MBR_HI_MSK,
++			     (mc->member >> 2) & 0x3f) |
++		  FIELD_PREP(RTL8365MB_D_L2_MC_D4_STATIC_MSK, mc->is_static);
++}
++
++static void rtl8365mb_l2_data_to_uc_any(struct realtek_priv *priv,
++					const u16 *data,
++					struct rtl8365mb_l2_uc *uc)
++{
++	if (rtl8365mb_l2_is_d(priv))
++		rtl8365mb_d_l2_data_to_uc(data, uc);
++	else
++		rtl8365mb_l2_data_to_uc(data, uc);
++}
++
++static void rtl8365mb_l2_uc_to_data_any(struct realtek_priv *priv,
++					const struct rtl8365mb_l2_uc *uc,
++					u16 *data)
++{
++	if (rtl8365mb_l2_is_d(priv))
++		rtl8365mb_d_l2_uc_to_data(uc, data);
++	else
++		rtl8365mb_l2_uc_to_data(uc, data);
++}
++
++static void rtl8365mb_l2_data_to_mc_any(struct realtek_priv *priv,
++					const u16 *data,
++					struct rtl8365mb_l2_mc *mc)
++{
++	if (rtl8365mb_l2_is_d(priv))
++		rtl8365mb_d_l2_data_to_mc(data, mc);
++	else
++		rtl8365mb_l2_data_to_mc(data, mc);
++}
++
++static void rtl8365mb_l2_mc_to_data_any(struct realtek_priv *priv,
++					const struct rtl8365mb_l2_mc *mc,
++					u16 *data)
++{
++	if (rtl8365mb_l2_is_d(priv))
++		rtl8365mb_d_l2_mc_to_data(mc, data);
++	else
++		rtl8365mb_l2_mc_to_data(mc, data);
++}
++
+ /*
+  * rtl8365mb_l2_get_next_uc() - get the next Unicast L2 entry
+  * @priv: realtek_priv pointer
+@@ -286,17 +428,23 @@ int rtl8365mb_l2_get_next_uc(struct realtek_priv *priv, u16 *addr, int port,
+ 	struct rtl8365mb_l2_uc uc;
+ 	int ret;
+ 
++	if (rtl8365mb_l2_is_d(priv) && port > RTL8365MB_D_L2_MAX_PORT)
++		return -EINVAL;
++
+ 	ret = rtl8365mb_table_query(priv, RTL8365MB_TABLE_L2,
+ 				    RTL8365MB_TABLE_OP_READ, addr,
+ 				    RTL8365MB_TABLE_L2_METHOD_ADDR_NEXT_UC_PORT,
+-				    port, data, RTL8365MB_L2_ENTRY_SIZE);
++				    port, data, rtl8365mb_l2_entry_size(priv));
  	if (ret)
  		return ret;
  
--	if (!is_d) {
-+	if (is_d) {
-+		WRITE_ONCE(mb->sds_misc_target_val, misc_val);
-+	} else {
- 		val = sds_mode << RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_OFFSET(id);
- 		ret = regmap_update_bits(priv->map,
- 					 RTL8365MB_DIGITAL_INTERFACE_SELECT_REG(id),
-@@ -1670,8 +1775,192 @@ static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
- 	val &= ~RTL8365MB_SDS_NWAY_EN_MASK;
- 	val |= RTL8365MB_SDS_NWAY_RESTART_MASK;
+-	rtl8365mb_l2_data_to_uc(data, &uc);
++	rtl8365mb_l2_data_to_uc_any(priv, data, &uc);
  
--	return rtl8365mb_sds_write(priv, sds_index,
--				   RTL8365MB_SDS_REG_NWAY, val);
-+	ret = rtl8365mb_sds_write(priv, sds_index,
-+				  RTL8365MB_SDS_REG_NWAY, val);
-+	if (ret)
-+		return ret;
-+
-+	/* The re-latch edge has only been observed with HSGMII, so the work is
-+	 * only armed for 2500base-x. It starts once the conduit is up.
+ 	ether_addr_copy(entry->mac_addr, uc.key.mac_addr);
+-	entry->vid = uc.key.vid;
++	/* D has one shared VID/FID field; report SVL (FID) entries with
++	 * vid 0 as they have no VLAN to be shown under
 +	 */
-+	if (is_d) {
-+		WRITE_ONCE(mb->sds_relatch_armed,
-+			   interface == PHY_INTERFACE_MODE_2500BASEX);
-+		/* With the conduit already up no conduit_state_change() will
-+		 * follow, so start the episode here.
++	entry->vid = (rtl8365mb_l2_is_d(priv) && !uc.key.ivl) ? 0 : uc.key.vid;
+ 	entry->is_static = uc.is_static;
+ 
+ 	return 0;
+@@ -311,6 +459,9 @@ int rtl8365mb_l2_add_uc(struct realtek_priv *priv, int port,
+ 	u16 addr;
+ 	int ret;
+ 
++	if (rtl8365mb_l2_is_d(priv) && port > RTL8365MB_D_L2_MAX_PORT)
++		return -EINVAL;
++
+ 	memcpy(uc.key.mac_addr, mac_addr, ETH_ALEN);
+ 	uc.key.efid = efid;
+ 	uc.key.fid = 0;
+@@ -324,15 +475,18 @@ int rtl8365mb_l2_add_uc(struct realtek_priv *priv, int port,
+ 	 * OS's back. As a trade-off, these will show up as permanent to users.
+ 	 */
+ 	uc.is_static = true;
+-	/* age greater than 0 adds/updates entries */
+-	uc.age = 1;
+-	rtl8365mb_l2_uc_to_data(&uc, data);
++	/* age greater than 0 adds/updates entries. D has no EFID, so efid is
++	 * not serialised (bridges are isolated by the port isolation masks only).
++	 * Vendor code writes age 6 for D.
++	 */
++	uc.age = rtl8365mb_l2_is_d(priv) ? 6 : 1;
++	rtl8365mb_l2_uc_to_data_any(priv, &uc, data);
+ 
+ 	/* add the new entry or update an existing one */
+ 	ret = rtl8365mb_table_query(priv, RTL8365MB_TABLE_L2,
+ 				    RTL8365MB_TABLE_OP_WRITE, &addr,
+ 				    0, 0,
+-				    data, RTL8365MB_L2_ENTRY_SIZE);
++				    data, rtl8365mb_l2_entry_size(priv));
+ 
+ 	/* Assume the missing new entry as the table is full */
+ 	if (ret == -ENOENT)
+@@ -358,7 +512,25 @@ int rtl8365mb_l2_del_uc(struct realtek_priv *priv, int port,
+ 	uc.key.vid = vid;
+ 	/* age 0 deletes the entry */
+ 	uc.age = 0;
+-	rtl8365mb_l2_uc_to_data(&uc, data);
++	rtl8365mb_l2_uc_to_data_any(priv, &uc, data);
++
++	if (rtl8365mb_l2_is_d(priv)) {
++		/* Do not blind-write: look the entry up first (as the vendor
++		 * code does) so a missing entry is not (re)allocated.
 +		 */
-+		if (READ_ONCE(mb->sds_relatch_armed) &&
-+		    READ_ONCE(mb->sds_conduit_up))
-+			rtl8365mb_sds_relatch_start(mb);
++		ret = rtl8365mb_table_query(priv, RTL8365MB_TABLE_L2,
++					    RTL8365MB_TABLE_OP_READ, &addr,
++					    RTL8365MB_TABLE_L2_METHOD_MAC, 0,
++					    data,
++					    rtl8365mb_l2_entry_size(priv));
++		if (ret == -ENOENT)
++			return 0;
++		if (ret)
++			return ret;
++
++		/* rebuild the write payload: the read overwrote data[] */
++		rtl8365mb_l2_uc_to_data_any(priv, &uc, data);
 +	}
+ 
+ 	/* it looks like the switch will always add/update the entry,
+ 	 * even when age is 0 or uc.key did not match an existing entry,
+@@ -368,7 +540,7 @@ int rtl8365mb_l2_del_uc(struct realtek_priv *priv, int port,
+ 	ret = rtl8365mb_table_query(priv, RTL8365MB_TABLE_L2,
+ 				    RTL8365MB_TABLE_OP_WRITE, &addr,
+ 				    0, 0,
+-				    data, RTL8365MB_L2_ENTRY_SIZE);
++				    data, rtl8365mb_l2_entry_size(priv));
+ 
+ 	if (ret == -ENOENT) {
+ 		dev_dbg(priv->dev, "%s: %pM vid=%d efid=%d missing\n",
+@@ -388,6 +560,9 @@ int rtl8365mb_l2_flush(struct realtek_priv *priv, int port, u16 vid)
+ 	u32 val, mask;
+ 	int ret;
+ 
++	if (rtl8365mb_l2_is_d(priv) && port > RTL8365MB_D_L2_MAX_PORT)
++		return -EINVAL;
 +
-+	return 0;
-+}
+ 	mutex_lock(&priv->map_lock);
+ 
+ 	/* Configure flushing mode; only flush dynamic entries */
+@@ -455,6 +630,9 @@ int rtl8365mb_l2_add_mc(struct realtek_priv *priv, int port,
+ 	u16 addr;
+ 	int ret;
+ 
++	if (rtl8365mb_l2_is_d(priv) && port > RTL8365MB_D_L2_MAX_PORT)
++		return -EINVAL;
 +
-+static void rtl8365mb_conduit_state_change(struct dsa_switch *ds,
-+					   const struct net_device *conduit,
-+					   bool operational)
+ 	memcpy(mc.key.mac_addr, mac_addr, ETH_ALEN);
+ 	mc.key.vid = vid;
+ 	mc.key.ivl = true;
+@@ -463,16 +641,16 @@ int rtl8365mb_l2_add_mc(struct realtek_priv *priv, int port,
+ 	 */
+ 	mc.member |= BIT(port);
+ 	mc.is_static = 1;
+-	rtl8365mb_l2_mc_to_data(&mc, data);
++	rtl8365mb_l2_mc_to_data_any(priv, &mc, data);
+ 
+ 	/* First look for an existing entry (to get existing port members) */
+ 	ret = rtl8365mb_table_query(priv, RTL8365MB_TABLE_L2,
+ 				    RTL8365MB_TABLE_OP_READ, &addr,
+ 				    RTL8365MB_TABLE_L2_METHOD_MAC, 0,
+-				    data, RTL8365MB_L2_ENTRY_SIZE);
++				    data, rtl8365mb_l2_entry_size(priv));
+ 	if (!ret) {
+ 		/* There is already an entry... */
+-		rtl8365mb_l2_data_to_mc(data, &mc);
++		rtl8365mb_l2_data_to_mc_any(priv, data, &mc);
+ 		dev_dbg(priv->dev,
+ 			"%s: found %pM addr=%d member=0x%x igmpidx=0x%x %s\n",
+ 			__func__, mac_addr, addr, mc.member, mc.igmpidx,
+@@ -487,7 +665,7 @@ int rtl8365mb_l2_add_mc(struct realtek_priv *priv, int port,
+ 			mc.is_static = 1;
+ 		}
+ 
+-		rtl8365mb_l2_mc_to_data(&mc, data);
++		rtl8365mb_l2_mc_to_data_any(priv, &mc, data);
+ 	} else if (ret == -ENOENT) {
+ 		/* New entry, no need to update data again as it already
+ 		 * includes the member.
+@@ -508,7 +686,7 @@ int rtl8365mb_l2_add_mc(struct realtek_priv *priv, int port,
+ 	ret = rtl8365mb_table_query(priv, RTL8365MB_TABLE_L2,
+ 				    RTL8365MB_TABLE_OP_WRITE, &addr,
+ 				    0, 0,
+-				    data, RTL8365MB_L2_ENTRY_SIZE);
++				    data, rtl8365mb_l2_entry_size(priv));
+ 
+ 	/* Assume the missing new entry as the table is full */
+ 	if (ret == -ENOENT)
+@@ -529,13 +707,13 @@ int rtl8365mb_l2_del_mc(struct realtek_priv *priv, int port,
+ 	memcpy(mc.key.mac_addr, mac_addr, ETH_ALEN);
+ 	mc.key.vid = vid;
+ 	mc.key.ivl = true;
+-	rtl8365mb_l2_mc_to_data(&mc, data);
++	rtl8365mb_l2_mc_to_data_any(priv, &mc, data);
+ 
+ 	/* First look for an existing entry (to get existing port members) */
+ 	ret = rtl8365mb_table_query(priv, RTL8365MB_TABLE_L2,
+ 				    RTL8365MB_TABLE_OP_READ, &addr,
+ 				    RTL8365MB_TABLE_L2_METHOD_MAC, 0,
+-				    data, RTL8365MB_L2_ENTRY_SIZE);
++				    data, rtl8365mb_l2_entry_size(priv));
+ 	if (ret == -ENOENT) {
+ 		dev_dbg(priv->dev, "%s: %pM vid=%d missing\n",
+ 			__func__, mac_addr, vid);
+@@ -547,7 +725,7 @@ int rtl8365mb_l2_del_mc(struct realtek_priv *priv, int port,
+ 		/* Return on any other error */
+ 		return ret;
+ 
+-	rtl8365mb_l2_data_to_mc(data, &mc);
++	rtl8365mb_l2_data_to_mc_any(priv, data, &mc);
+ 	dev_dbg(priv->dev,
+ 		"%s: found %pM addr=%d member=0x%x igmpidx=0x%x %s\n",
+ 		__func__, mac_addr, addr, mc.member, mc.igmpidx,
+@@ -565,12 +743,12 @@ int rtl8365mb_l2_del_mc(struct realtek_priv *priv, int port,
+ 		mc.fwd_pri = 0;
+ 		mc.igmp_asic = 0;
+ 	}
+-	rtl8365mb_l2_mc_to_data(&mc, data);
++	rtl8365mb_l2_mc_to_data_any(priv, &mc, data);
+ 
+ 	/* update the existing entry. */
+ 	ret = rtl8365mb_table_query(priv, RTL8365MB_TABLE_L2,
+ 				    RTL8365MB_TABLE_OP_WRITE, &addr,
+ 				    0, 0,
+-				    data, RTL8365MB_L2_ENTRY_SIZE);
++				    data, rtl8365mb_l2_entry_size(priv));
+ 	return ret;
+ }
+diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
+index 4937ffc..1c5f139 100644
+--- a/drivers/net/dsa/realtek/rtl8365mb_main.c
++++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
+@@ -460,6 +460,14 @@
+ #define RTL8365MB_LUT_PORT_LEARN_LIMIT_REG(_physport) \
+ 		(RTL8365MB_LUT_PORT_LEARN_LIMIT_BASE + (_physport))
+ 
++/* Family D LUT configuration */
++#define RTL8365MB_D_LUT_CFG_REG			0x0A30
++#define   RTL8365MB_D_LUT_CFG_BCAM_DISABLE_MASK	BIT(6)
++#define   RTL8365MB_D_LUT_CFG_IPMC_HASH_MASK	BIT(4)
++/* On family C this address is the per-port EFID register! */
++#define RTL8365MB_D_LUT_CFG2_REG		0x0A32
++#define   RTL8365MB_D_LUT_AGING_DEFAULT		3000
++
+ /* Port isolation (forwarding mask) registers */
+ #define RTL8365MB_PORT_ISOLATION_REG_BASE		0x08A2
+ #define RTL8365MB_PORT_ISOLATION_REG(_physport) \
+@@ -2879,6 +2887,10 @@ static int rtl8365mb_port_pre_bridge_flags(struct dsa_switch *ds, int port,
+ static int rtl8365mb_port_set_efid(struct realtek_priv *priv, int port,
+ 				   u32 efid)
+ {
++	/* Family D has no EFID; see RTL8365MB_D_LUT_CFG2_REG. */
++	if (rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D)
++		return 0;
++
+ 	return regmap_update_bits(priv->map, RTL8365MB_PORT_EFID_REG(port),
+ 				  RTL8365MB_PORT_EFID_MASK(port),
+ 				  efid << RTL8365MB_PORT_EFID_OFFSET(port));
+@@ -3615,6 +3627,23 @@ static int rtl8365mb_change_tag_protocol(struct dsa_switch *ds,
+ 	return rtl8365mb_cpu_config(priv);
+ }
+ 
++static int rtl8365mb_d_lut_init(struct realtek_priv *priv)
 +{
-+	struct dsa_port *cpu_dp = conduit->dsa_ptr;
-+	struct realtek_priv *priv = ds->priv;
-+	struct rtl8365mb *mb = priv->chip_data;
-+
-+	if (rtl8365mb_get_family(priv) != RTL8365MB_FAMILY_D)
-+		return;
-+
-+	/* The chip can have two CPU ports (SerDes on port 6, RGMII on
-+	 * port 7) and DSA reports every conduit. Only the one behind the
-+	 * SerDes matters here.
-+	 */
-+	if (cpu_dp->index != RTL8365MB_SDS_EXT_INTERFACE_PORT)
-+		return;
-+
-+	guard(mutex)(&mb->sds_cfg_lock);
-+
-+	WRITE_ONCE(mb->sds_conduit_up, operational);
-+	cancel_delayed_work_sync(&mb->sds_relatch);
-+	if (operational && READ_ONCE(mb->sds_relatch_armed))
-+		rtl8365mb_sds_relatch_start(mb);
-+}
-+
-+/* The family D receiver latches on a DISABLE -> mode edge in SDS_MISC
-+ * rather than on the value, and only once the far-end MAC has brought up
-+ * its half of the link. No local signal predicts that (bit 8 of the SDS
-+ * link-status word does not change ahead of it), so the work cannot wait
-+ * for it, only check afterwards whether an edge took. Nor does phylink
-+ * call rtl8365mb_pcs_get_state() for a link without in-band signalling
-+ * such as the fixed-link CPU trunk (mb->pcs.poll only arms phylink's own
-+ * poll for in-band links), so this cannot rely on being polled at all.
-+ * Instead, an episode starts when the conduit comes up (see
-+ * rtl8365mb_conduit_state_change(), or pcs_config() if it is already up)
-+ * and this work re-arms itself.
-+ *
-+ * An episode is capped at RTL8365MB_D_SDS_RELATCH_MAX_TRIES edges, spaced
-+ * RTL8365MB_D_SDS_RELATCH_INTERVAL apart, so that a far end which never
-+ * comes up costs a bounded burst of 20 ms parks. The run after the last
-+ * edge only checks whether it took and reports failure; from then on one
-+ * edge is driven per RTL8365MB_D_SDS_HEALTHCHECK_INTERVAL, so a far end
-+ * that comes up late is recovered without a reconfiguration. Once the
-+ * receiver has latched the work just polls the link at the same slow
-+ * interval; finding it down then starts a new episode, e.g. after the far
-+ * end reset its PLL without a reconfiguration.
-+ *
-+ * sds_relatch_count is the number of the next attempt of the episode: 0
-+ * while latched, 1..MAX_TRIES in budget, MAX_TRIES + 1 for the run that
-+ * only reports, and above that once out of budget.
-+ */
-+static void rtl8365mb_sds_relatch_work(struct work_struct *work)
-+{
-+	struct rtl8365mb *mb = container_of(to_delayed_work(work),
-+					    struct rtl8365mb, sds_relatch);
-+	struct realtek_priv *priv = mb->priv;
-+	u32 park = (READ_ONCE(mb->sds_misc_target_val) &
-+		    ~RTL8365MB_D_SDS_MISC_MODE_FIELD_MASK) |
-+		   RTL8365MB_D_PORT_SDS_MODE_DISABLE;
-+	unsigned long delay = RTL8365MB_D_SDS_RELATCH_INTERVAL;
-+	unsigned int attempts;
-+	u16 status;
-+	u32 misc;
 +	int ret;
 +
-+	/* An earlier run may have failed to restore the target mode, which
-+	 * leaves the lane parked. The mode field in SDS_MISC says so: put it
-+	 * back before anything else.
++	/* After the jam table: lookup multicast by MAC (not DIP) and keep
++	 * the CAM enabled.
 +	 */
-+	ret = regmap_read(priv->map, RTL8365MB_SDS_MISC_REG, &misc);
-+	if (ret) {
-+		dev_err_ratelimited(priv->dev,
-+				    "failed to read SDS_MISC: %pe\n",
-+				    ERR_PTR(ret));
-+		goto rearm;
-+	}
-+	if ((misc & RTL8365MB_D_SDS_MISC_MODE_FIELD_MASK) ==
-+	    RTL8365MB_D_PORT_SDS_MODE_DISABLE) {
-+		rtl8365mb_sds_relatch_restore(mb);
-+		goto rearm;
-+	}
++	ret = regmap_update_bits(priv->map, RTL8365MB_D_LUT_CFG_REG,
++				 RTL8365MB_D_LUT_CFG_IPMC_HASH_MASK |
++				 RTL8365MB_D_LUT_CFG_BCAM_DISABLE_MASK, 0);
++	if (ret)
++		return ret;
 +
-+	/* The condition that queued this work may already be stale by the
-+	 * time it runs (e.g. an earlier edge from a prior attempt just
-+	 * latched). Parking an already-live link would drop it for no
-+	 * reason.
-+	 */
-+	ret = rtl8365mb_sds_read(priv, RTL8365MB_D_SDS_EXT0_INDEX,
-+				 RTL8365MB_SDS_REG_LINK_STATUS, &status);
-+	if (ret) {
-+		dev_err_ratelimited(priv->dev,
-+				    "failed to read SerDes link status: %pe\n",
-+				    ERR_PTR(ret));
-+		goto rearm;
-+	}
-+	if (status & RTL8365MB_SDS_LINK_STATUS_LINK_MASK) {
-+		/* Latched: end the episode, keep watching for a later loss. */
-+		WRITE_ONCE(mb->sds_relatch_count, 0);
-+		delay = RTL8365MB_D_SDS_HEALTHCHECK_INTERVAL;
-+		goto rearm;
-+	}
-+
-+	attempts = READ_ONCE(mb->sds_relatch_count);
-+	if (!attempts) {
-+		dev_warn(priv->dev,
-+			 "SerDes link lost outside a reconfiguration; re-latching\n");
-+		attempts = 1;
-+	} else if (attempts == RTL8365MB_D_SDS_RELATCH_MAX_TRIES + 1) {
-+		/* This run only checked whether the last in-budget edge
-+		 * took. The first out-of-budget edge comes one healthcheck
-+		 * interval from now, not on this pass.
-+		 */
-+		WRITE_ONCE(mb->sds_relatch_count, attempts + 1);
-+		dev_warn(priv->dev,
-+			 "SerDes did not latch after %u re-latch attempts; still retrying every %d s\n",
-+			 RTL8365MB_D_SDS_RELATCH_MAX_TRIES,
-+			 RTL8365MB_D_SDS_HEALTHCHECK_INTERVAL / HZ);
-+		delay = RTL8365MB_D_SDS_HEALTHCHECK_INTERVAL;
-+		goto rearm;
-+	}
-+
-+	if (attempts <= RTL8365MB_D_SDS_RELATCH_MAX_TRIES)
-+		WRITE_ONCE(mb->sds_relatch_count, attempts + 1);
-+	else
-+		/* Past the fast-retry budget. The receiver latches only on a
-+		 * DISABLE -> mode edge and nothing re-runs pcs_config() for a
-+		 * link without in-band signalling, so keep driving one edge
-+		 * per interval.
-+		 */
-+		delay = RTL8365MB_D_SDS_HEALTHCHECK_INTERVAL;
-+
-+	ret = regmap_update_bits(priv->map, RTL8365MB_SDS_MISC_REG,
-+				 RTL8365MB_D_SDS_MISC_CFG_MASK, park);
-+	if (ret) {
-+		dev_err_ratelimited(priv->dev,
-+				    "failed to park SDS_MISC: %pe\n",
-+				    ERR_PTR(ret));
-+		goto rearm;
-+	}
-+
-+	usleep_range(20000, 21000);
-+
-+	if (rtl8365mb_sds_relatch_restore(mb)) {
-+		/* The SerDes is left parked: come back soon rather than
-+		 * at the (possibly 10 s) pace chosen above.
-+		 */
-+		delay = RTL8365MB_D_SDS_RELATCH_INTERVAL;
-+		goto rearm;
-+	}
-+
-+	dev_dbg(priv->dev, "SerDes re-latch edge driven (attempt %u)\n",
-+		attempts);
-+
-+	/* This edge may not have taken either; the next run checks. */
-+rearm:
-+	schedule_delayed_work(&mb->sds_relatch, delay);
++	return regmap_write(priv->map, RTL8365MB_D_LUT_CFG2_REG,
++			    RTL8365MB_D_LUT_AGING_DEFAULT);
 +}
 +
-+static void rtl8365mb_sds_relatch_disable(void *data)
-+{
-+	struct rtl8365mb *mb = data;
-+
-+	disable_delayed_work_sync(&mb->sds_relatch);
- }
- 
- static bool rtl8365mb_interface_is_serdes(phy_interface_t interface)
-@@ -1825,11 +2114,25 @@ static void rtl8365mb_pcs_link_up(struct phylink_pcs *pcs,
- 	}
- }
- 
-+static void rtl8365mb_pcs_disable(struct phylink_pcs *pcs)
-+{
-+	struct rtl8365mb *mb = pcs_to_rtl8365mb(pcs);
-+
-+	if (rtl8365mb_get_family(mb->priv) != RTL8365MB_FAMILY_D)
-+		return;
-+
-+	guard(mutex)(&mb->sds_cfg_lock);
-+
-+	WRITE_ONCE(mb->sds_relatch_armed, false);
-+	cancel_delayed_work_sync(&mb->sds_relatch);
-+}
-+
- static const struct phylink_pcs_ops rtl8365mb_pcs_ops = {
- 	.pcs_inband_caps = rtl8365mb_pcs_inband_caps,
- 	.pcs_config = rtl8365mb_pcs_config,
- 	.pcs_get_state = rtl8365mb_pcs_get_state,
- 	.pcs_link_up = rtl8365mb_pcs_link_up,
-+	.pcs_disable = rtl8365mb_pcs_disable,
- };
- 
- static int rtl8365mb_ext_config_forcemode(struct realtek_priv *priv, int port,
-@@ -3563,6 +3866,14 @@ out_error:
- static void rtl8365mb_teardown(struct dsa_switch *ds)
- {
- 	struct realtek_priv *priv = ds->priv;
-+	struct rtl8365mb *mb = priv->chip_data;
-+
-+	if (rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D) {
-+		guard(mutex)(&mb->sds_cfg_lock);
-+
-+		WRITE_ONCE(mb->sds_relatch_armed, false);
-+		cancel_delayed_work_sync(&mb->sds_relatch);
-+	}
- 
- 	rtl8365mb_stats_teardown(priv);
- 	rtl8365mb_irq_teardown(priv);
-@@ -3595,6 +3906,23 @@ static int rtl8365mb_get_chip_id_and_ver(struct regmap *map, u32 *id, u32 *ver)
- 	return 0;
- }
- 
-+static int rtl8365mb_sds_reboot_notify(struct notifier_block *nb,
-+				       unsigned long action, void *data)
-+{
-+	struct rtl8365mb *mb = container_of(nb, struct rtl8365mb,
-+					    sds_reboot_nb);
-+
-+	/* Runs before device_shutdown() on reboot, halt, power off and kexec.
-+	 * disable_delayed_work_sync() waits for a running pass and keeps
-+	 * pcs_config() from queueing the work again, so the bus is not
-+	 * touched once it is being shut down. If the last restore failed the
-+	 * lane stays parked until the next pcs_config().
-+	 */
-+	disable_delayed_work_sync(&mb->sds_relatch);
-+
-+	return NOTIFY_DONE;
-+}
-+
- static int rtl8365mb_detect(struct realtek_priv *priv)
+ static int rtl8365mb_switch_init(struct realtek_priv *priv)
  {
  	struct rtl8365mb *mb = priv->chip_data;
-@@ -3630,6 +3958,34 @@ static int rtl8365mb_detect(struct realtek_priv *priv)
+@@ -3704,6 +3733,15 @@ static int rtl8365mb_setup(struct dsa_switch *ds)
+ 		goto out_error;
+ 	}
  
- 	priv->num_ports = RTL8365MB_MAX_NUM_PORTS;
- 	mb->priv = priv;
-+
-+	ret = devm_mutex_init(priv->dev, &mb->sds_lock);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_mutex_init(priv->dev, &mb->sds_cfg_lock);
-+	if (ret)
-+		return ret;
-+
 +	if (rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D) {
-+		/* Registered after sds_lock, so on release the work is
-+		 * disabled before the mutex is destroyed.
-+		 */
-+		INIT_DELAYED_WORK(&mb->sds_relatch,
-+				  rtl8365mb_sds_relatch_work);
-+		ret = devm_add_action_or_reset(priv->dev,
-+					       rtl8365mb_sds_relatch_disable,
-+					       mb);
-+		if (ret)
-+			return ret;
-+
-+		mb->sds_reboot_nb.notifier_call = rtl8365mb_sds_reboot_notify;
-+		ret = devm_register_reboot_notifier(priv->dev,
-+						    &mb->sds_reboot_nb);
-+		if (ret)
-+			return ret;
++		ret = rtl8365mb_d_lut_init(priv);
++		if (ret) {
++			dev_err(priv->dev, "failed to init LUT: %pe\n",
++				ERR_PTR(ret));
++			goto out_error;
++		}
 +	}
 +
- 	mb->cpu.trap_port = RTL8365MB_MAX_NUM_PORTS;
- 	mb->cpu.insert = RTL8365MB_CPU_INSERT_TO_ALL;
- 	mb->cpu.position = RTL8365MB_CPU_POS_AFTER_SA;
-@@ -3714,6 +4070,7 @@ static const struct dsa_switch_ops rtl8365mb_switch_ops = {
- 	.port_vlan_add = rtl8365mb_port_vlan_add,
- 	.port_vlan_del = rtl8365mb_port_vlan_del,
- 	.port_vlan_filtering = rtl8365mb_port_vlan_filtering,
-+	.conduit_state_change = rtl8365mb_conduit_state_change,
- 	.get_strings = rtl8365mb_get_strings,
- 	.get_ethtool_stats = rtl8365mb_get_ethtool_stats,
- 	.get_sset_count = rtl8365mb_get_sset_count,
+ 	if (mb->sds_supported) {
+ 		ret = rtl8365mb_sds_raise_rate_limits(priv);
+ 		if (ret) {
+@@ -3829,9 +3867,11 @@ static int rtl8365mb_setup(struct dsa_switch *ds)
+ 		goto out_teardown_irq;
+ 
+ 	ds->assisted_learning_on_cpu_port = true;
+-	ds->fdb_isolation = true;
+-	/* The EFID is 3 bits, but EFID 0 is reserved for standalone ports */
+-	ds->max_num_bridges = FIELD_MAX(RTL8365MB_EFID_MASK);
++	if (rtl8365mb_get_family(priv) != RTL8365MB_FAMILY_D) {
++		ds->fdb_isolation = true;
++		/* The EFID is 3 bits, but EFID 0 is reserved for standalone */
++		ds->max_num_bridges = FIELD_MAX(RTL8365MB_EFID_MASK);
++	}
+ 
+ 	ds->configure_vlan_while_not_filtering = true;
+ 
+diff --git a/drivers/net/dsa/realtek/rtl8365mb_table.c b/drivers/net/dsa/realtek/rtl8365mb_table.c
+index f3c8749..74a6aa7 100644
+--- a/drivers/net/dsa/realtek/rtl8365mb_table.c
++++ b/drivers/net/dsa/realtek/rtl8365mb_table.c
+@@ -5,6 +5,7 @@
+  */
+ 
+ #include "rtl8365mb_table.h"
++#include "rtl8365mb.h"
+ #include <linux/regmap.h>
+ 
+ /* Table access control register */
+@@ -16,10 +17,13 @@
+ /* Should be one of rtl8365mb_table_l2_method enum members */
+ #define   RTL8365MB_TABLE_CTRL_METHOD_MASK	GENMASK(6, 4)
+ #define   RTL8365MB_TABLE_CTRL_PORT_MASK	GENMASK(11, 8)
++/* Family D: SPA is 3 bits */
++#define   RTL8365MB_D_TABLE_CTRL_PORT_MASK	GENMASK(10, 8)
+ 
+ /* Table access address register */
+ #define RTL8365MB_TABLE_ACCESS_ADDR_REG		0x0501
+ #define   RTL8365MB_TABLE_ADDR_MASK		GENMASK(12, 0)
++#define   RTL8365MB_D_TABLE_ADDR_MASK		GENMASK(11, 0)
+ 
+ /* Table status register */
+ #define RTL8365MB_TABLE_STATUS_REG			0x0502
+@@ -29,6 +33,8 @@
+ #define   RTL8365MB_TABLE_STATUS_HIT_STATUS_MASK	GENMASK(12, 12)
+ #define   RTL8365MB_TABLE_STATUS_BUSY_FLAG_MASK		GENMASK(13, 13)
+ #define   RTL8365MB_TABLE_STATUS_ADDRESS_EXT_MASK	GENMASK(14, 14)
++/* Family D: the address is bits [11:0], there is no EXT bit */
++#define   RTL8365MB_D_TABLE_STATUS_ADDRESS_MASK		GENMASK(11, 0)
+ 
+ /* Table read/write registers */
+ #define RTL8365MB_TABLE_WRITE_BASE			0x0510
+@@ -59,6 +65,7 @@ int rtl8365mb_table_query(struct realtek_priv *priv,
+ {
+ 	bool addr_as_input = true;
+ 	bool write_data = false;
++	bool is_d = rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D;
+ 	int ret = 0;
+ 	u32 cmd;
+ 	u32 val;
+@@ -91,7 +98,15 @@ int rtl8365mb_table_query(struct realtek_priv *priv,
+ 		case RTL8365MB_TABLE_L2_METHOD_ADDR_NEXT_MC:
+ 			break;
+ 		case RTL8365MB_TABLE_L2_METHOD_ADDR_NEXT_UC_PORT:
+-			cmd |= FIELD_PREP(RTL8365MB_TABLE_CTRL_PORT_MASK, port);
++			if (is_d) {
++				if (port > 7)
++					return -EINVAL;
++				cmd |= FIELD_PREP(RTL8365MB_D_TABLE_CTRL_PORT_MASK,
++						  port);
++			} else {
++				cmd |= FIELD_PREP(RTL8365MB_TABLE_CTRL_PORT_MASK,
++						  port);
++			}
+ 			break;
+ 		default:
+ 			return -EINVAL;
+@@ -146,8 +161,9 @@ int rtl8365mb_table_query(struct realtek_priv *priv,
+ 	if (addr_as_input) {
+ 		ret = regmap_write(priv->map_nolock,
+ 				   RTL8365MB_TABLE_ACCESS_ADDR_REG,
+-				   FIELD_PREP(RTL8365MB_TABLE_ADDR_MASK,
+-					      *addr));
++				   is_d ?
++				   FIELD_PREP(RTL8365MB_D_TABLE_ADDR_MASK, *addr) :
++				   FIELD_PREP(RTL8365MB_TABLE_ADDR_MASK, *addr));
+ 		if (ret)
+ 			goto out;
+ 	}
+@@ -177,13 +193,23 @@ int rtl8365mb_table_query(struct realtek_priv *priv,
+ 		}
+ 
+ 		/* If so, extract the address */
+-		*addr = 0;
+-		*addr |= FIELD_GET(RTL8365MB_TABLE_STATUS_ADDRESS_MASK, val);
+-		*addr |= FIELD_GET(RTL8365MB_TABLE_STATUS_ADDRESS_EXT_MASK, val)
+-			 << 11;
+-		/* only set if it is a L3 address */
+-		*addr |= FIELD_GET(RTL8365MB_TABLE_STATUS_ADDR_TYPE_MASK, val)
+-			 << 12;
++		if (is_d) {
++			/* Bit 11 is "TYPE" in the register map, but the entry
++			 * index (2048 hash + 64 CAM) needs 12 bits; the vendor
++			 * code reads [11:0] as well.
++			 */
++			*addr = FIELD_GET(RTL8365MB_D_TABLE_STATUS_ADDRESS_MASK,
++					  val);
++		} else {
++			*addr = 0;
++			*addr |= FIELD_GET(RTL8365MB_TABLE_STATUS_ADDRESS_MASK,
++					   val);
++			*addr |= FIELD_GET(RTL8365MB_TABLE_STATUS_ADDRESS_EXT_MASK,
++					   val) << 11;
++			/* only set if it is a L3 address */
++			*addr |= FIELD_GET(RTL8365MB_TABLE_STATUS_ADDR_TYPE_MASK,
++					   val) << 12;
++		}
+ 	}
+ 
+ 	/* Finally, get the table entry if we were reading */
 -- 
 2.53.0
 
