@@ -1,105 +1,138 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793627487;
-	b=ugLqP7RrZMac3DU/Koi3Ob30Yl/c7zlGVYqVvQTtm2iqWZcsEuqWl+PICqU7lAm3a92J
-	 8zxxMnq7afYhRdmld/SIPH51RDeLs415BKvZCbbqIrTdRnwKOqQUNY6wPR6U56FP1TbEz
-	 cwkHj5Q3z5veSyXNktFy03RfS0rGI7l15lGQDLAVWWC3Ru8RWbsMfTsjXGl4Vey9jxylp
-	 nXXAWPZJT1AlaHnT+eBXj+BrgWchmCWUg0bQUpEsIzByQhMYT6OPZOC7oXLzKVOQI1JRs
-	 fYJyirVRvQ31PVHW5wt7dvHS1pFvmdqiba9tpN4TZNL8F10S5bI24snrJRDL/DRDmew==
+	t=1793627630;
+	b=Boe9xUUse11nkfGBntxph12EOWB4NMqgFjPKlC+r9xCIsOuiWjlODGQUx+AtYlFTc/ls
+	 BnNPLYQrjvn+mfYLS9qImsfSCI+E3doKx41fip17oD31yqQm4AJ5z5Qwy58/g84t1dW/l
+	 neK42cle2pbXlLDt+KVYe1OTyTqjD+wvyuxvMskuyUELfbk437PNkBxLKH05FmcMrVa7I
+	 buvxUCOjN9iixUmyx5498JcukTgwOPudAwYsl9HVwpP5N0qMl2tbol2kag7veSsTT7Av1
+	 AGQx/ksu2aBNzHi8aEzm9c0T3SmarnQf/YL8uV6nICkFRNWmYuuXxgN/tT4qzb9RISw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793627487;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=V7IxO59ArXIiwcrOd75FJlIyl3lLgsqqiNSbmFCZcRk=;
-	b=r3F5k3ndp8KxH3nzz1Tsl7glx6yL9sCU3FJHswbzisXKOSFyQkNaRK0iPghJQt8dmL5O
-	 1Wq6L5IXNzElROf6+inbpbb+HwiH/4S7dmk8Ol5Z0q+0oFm664C+C2L0ILmArFgs2/IpB
-	 S2dkBpdaoqyRDctCvYUWoViV99frC+ICNM8NpO3MLQtbZyTXQytMvaavHFHIF/DPH0bGg
-	 alMROH476NG+IycveKhEsV9PzJxLWDlzCum7R1IN3FEBqRO7WlIk0ybNxsR0EbMHY+Snj
-	 3edPJ7DzA+lkNvqvtgRScNhrgG0ZxeqpLENwpBUOrFcpAFXTziaDekY7nyl5q++0MVw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793627630;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=8PdXPsr0BqbOm4N6slLaJkhJmpRccqZjg1DW7FPgi0w=;
+	b=oGbOSpophlUCyUTL6dpktk3wMcDC0S8sxzMUc5ulQzceyILY42QFNt1sTJwOa3UgUUuk
+	 6H4LrPxQ0qAiokKWdGvxYElaFgyWZiqcCUBC+WehkYuzwHiXZmsoEniVmXXpgJBDIxdZP
+	 z39CoBQBN9KpjtqJRXhakwMcod35xMFCnmIpxuBW8BdMznZtLIu70GFbWU/XAsgtAVR3T
+	 21WgxXM7mLOgPoWSA//sfvwTgYHGa2Ii+D5aqQD6C/xc/3FEMsGSBd+HlPuBs8vu7+HdZ
+	 Te3EbC3FX7iPr3NbMnMPLleCy+fXsjtmq4Dy0RvHUTSeXr415O/WPkiIZsBpnJg69qg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=jclark.com;
-	spf=pass smtp.mailfrom=jclark.com;
-	dkim=pass header.d=jclark-com.20260707.gappssmtp.com header.i=@jclark-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=o2oofwhD;
-	arc=none smtp.remote-ip=209.85.214.169
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jwEEKbee;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5AE60A3802
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 13:51:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4B5AE60A3802
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jclark.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0357D606A32D;
+	Mon,  2 Nov 2026 13:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=jclark-com.20260707.gappssmtp.com header.i=@jclark-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=o2oofwhD
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2eb18f4da15so9866495ad.1
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 05:51:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jclark-com.20260707.gappssmtp.com; s=20260707; t=1793627485; x=1794232285; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=V7IxO59ArXIiwcrOd75FJlIyl3lLgsqqiNSbmFCZcRk=;
-        b=o2oofwhDazZcsQkohyy6kMltyJOm+xseWpmptwEVS5kWnk3e7ZWsDPU4lQvQiT9yQ7
-         g5BoZu626nS6DpeiSTDIq/6Oaw3wjclQTYFKRcEiZPHcvwm0rJKTbzOv103e8NcRSi3d
-         XoPtai2UsQLD/iS3fQfZXIjku4+Z2WLOm4M+juChFlq21jVdZMLjlyZGePpXzZ1kkDBr
-         tHer4QDgALGIktFcBdm3xV6e4qllfKBXHmRQUnPBBk4gZ6g5vqWexRkUpC9/zyGtV+Mn
-         EaG+whSOnTs2ZPZf5NMKEvkRjz+L1auN0YcmjIwEz71cJdp9n9bBDscdWfMN+yBfgs7f
-         ZCSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793627485; x=1794232285;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=V7IxO59ArXIiwcrOd75FJlIyl3lLgsqqiNSbmFCZcRk=;
-        b=jeQ5yGlszSfUXaKHWZJfonQV4Fe4q5gLZzwXjm+HDjekVo5vw0Vj9jeXnzvuiid32B
-         fMreGLQaKIJ/fBzPgyD1CsOzvngyUnOdtYhtVJsptxCMrIKUo9PTjbusPQ6ybOad6Cx6
-         W2bIkeOoT2cGVolZRjj9I/zUlCAF0DA3G+FB/NDTx28tE/IkTPFzoVm1rTZpvrQ6DohT
-         I2spOrKHCOvSYC3faK9YGq455FzckKlqqXSojK/jaGP+m387/hQ9vcHeDPiGAXHYtKrO
-         SBEWE2iTAkC0KWxpVMXIg3O7+mT29jMt6jxueUayT7Nj+UtzyOzq32OV5t6TRCagsgC1
-         o1nQ==
-X-Forwarded-Encrypted: i=1; AKwUvByRPrbzgCZ3kgLoHenJaXDbeGZDfaiyUiqpuOu7XLme6U76njsfTvdDy/caP/S6P/8+H1f0qEo=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9CCsTZfAlOkyPWuC7TcmfGWybj3RB9cOVDZbIOl7kklBVvFxvy
-	T21Bu4KHhls0HUZlhaGoOOSKJHGArzV8YNzEeckI9E33+NoDer5WIjnuJf5Em4IUBw==
-X-Gm-Gg: AYBFou1U4ADwEDQaD7XxGAzvANbAD2fYocoKHt383llYoId9Vxam5SNab/9VAWQ9VhU
-	4QaRQAowOLESQDTe0O1GdIUcQBosvUWhauStxSbkJufwdHDspJhIvUYHjXZpLt0e8xUzyjpm65E
-	2/aGYZzCknkZCNd/D5N4UVJumz3qdxfs8GMmz1RL6DwWY7ncSCUIJ0LxCQyP4EeKgV6ZO8drlzp
-	Aee6EFt2KTu82TswSJv1PVT07XvaQlfBizNQpptiVc2YinGpnpf9/APTABoU/RQVxRXo/FueYwW
-	VKLqMqWegHjvEMw8y5wQCpO7NhK+S+GustcfDlBJiWmIlnTIQ3eg4IfpNw6kHAKLsUMFCY2Xz/A
-	5cgorLKSeAl74i63uWeE7EZVJL8xGgdcOEuQmj/9yYe1i4kiAlUXpRQ+sd+tfTx7jZtJ2Fhp83v
-	Jd3s5HfaEu+wYlPw78nuuz8zWuJmhlIPLryUGNNuuEiJEe5FCOCQ6Fa3xVggW/dsvCGaeOJvKiR
-	AdBs5jBBN5lsdknQ0dHnmqgWhOBtB0WpBktmPhlKVkXl3jDVzLYPCDfsMLz4NSjWciHR9rJjVNV
-	FgRKdXfuoXORRiy9l4Rf+jmSKS1b5KyrTIRovQ+PanHO2l9pId6SULMX4XfvdPT5Vb28W/Npfd9
-	FsQiT8ALxxS9c550nDw==
-X-Received: by 2002:a17:903:2352:b0:2e9:4e83:1979 with SMTP id d9443c01a7336-2eb364b55d5mr86192615ad.32.1793627485430;
-        Mon, 02 Nov 2026 05:51:25 -0800 (PST)
-Received: from cantal.lan ([58.136.77.237])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb3928d821sm28049675ad.56.2026.11.02.05.51.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 05:51:24 -0800 (PST)
-From: James Clark <jjc@jclark.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jwEEKbee
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12FAD1F00A16;
+	Mon,  2 Nov 2026 13:53:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793627629;
+	bh=8PdXPsr0BqbOm4N6slLaJkhJmpRccqZjg1DW7FPgi0w=;
+	h=From:To:Cc:Subject:Date;
+	b=jwEEKbeeZuoCHbxJUlWEtLnIQBYGhOQBxwP+tQtMjvmJi6qzxzYcDukdNtIhOkRXJ
+	 6n+Jh8CeRi0Y/l5/zWC7hrZVP8JXsVNK9PuCOwrcCdOTS5C7i0aq2uOP5WBFmJG4mP
+	 +VSYdrI4Dyorre8UfCZIiuH6uKTkx7HccHlCFrt8dY3IAid0u56LI6rz18RSdj1GvE
+	 Y7s+w6UvyezlKJfl2IcZ+A3XK1IREBodAE5iSWak2WphnGkxKjSdn9F8Jz2Du1gOUp
+	 DOCFjJCW4UbSQ/Ho05urr8RhaF9BhcvDHN3iwkoV1CL/R3S62YltgkRa6WGZF6ApT9
+	 i+0fdXIadN4+A==
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Benson Leung <bleung@chromium.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Lee Jones <lee@kernel.org>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>,
+	Ulf Hansson <ulfh@kernel.org>,
+	Hans Ulli Kroll <ulli.kroll@googlemail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Cc: Chintan Vankar <c-vankar@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Simon Horman <horms@kernel.org>,
-	Daniel Zahka <daniel.zahka@gmail.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Alexander Vassilevski <oss@vassilevski.com>,
-	Nora Schiffer <nora.schiffer@ew.tq-group.com>,
-	Grygorii Strashko <grygorii.strashko@ti.com>,
-	Robert Nelson <robertcnelson@gmail.com>,
-	Miroslav Lichvar <mlichvar@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: ethernet: ti: am65-cpsw-nuss: Enable timestamping of unicast PTP packets
-Date: Mon,  2 Nov 2026 20:51:17 +0700
-Message-ID: <20261102135117.419539-1-jjc@jclark.com>
-X-Mailer: git-send-email 2.56.0
+	Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Ray Jui <rjui@broadcom.com>,
+	Scott Branden <sbranden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Chanh Nguyen <chanh@os.amperecomputing.com>,
+	Alistair Francis <alistair@alistair23.me>,
+	Julius Werner <jwerner@chromium.org>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Dmitry Osipenko <digetx@gmail.com>,
+	Florian Fainelli <f.fainelli@gmail.com>
+Cc: Thierry Reding <thierry.reding@gmail.com>,
+	Ray Jui <ray.jui@broadcom.com>,
+	Scott Branden <scott.branden@broadcom.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	chrome-platform@lists.linux.dev,
+	linux-gpio@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-hwmon@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sound@vger.kernel.org,
+	linux-input@vger.kernel.org,
+	linux-tegra@vger.kernel.org,
+	mfd@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org,
+	linux-mmc@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH] dt-bindings: Use hex unit address patterns
+Date: Mon,  2 Nov 2026 07:53:22 -0600
+Message-ID: <20261102135330.2493332-1-robh@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -111,57 +144,426 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On a BeagleY-AI (J722S), ptp4l as a unicast master (unicast_listen) logs
-"received DELAY_REQ without timestamp" for each unicast Delay_Req, and
-its port goes to FAULTY after "timed out while polling for tx timestamp"
-for the first unicast Sync.
+Unit-addresses by default (and most commonly) are hexadecimal. There's a
+number of cases using decimal patterns. Fix all of them, limiting the
+pattern to match the 'reg' limits if there are any.
 
-am65_cpsw_nuss_hwtstamp_set() does not set the TS_UNI_EN bit (bit 24) of
-the port's TS_CTL_LTYPE2 register. According to the TRM (J722S TRM
-SPRUJB3D, 12.2.1.4.7.13.5.1 Ethernet Port Receive Event and
-12.2.1.4.7.13.5.2 Ethernet Port Transmit Event), this bit must be set
-for the port to timestamp PTP event messages over UDP sent to a unicast
-address; without it, only messages sent to the PTP multicast addresses
-selected by the TS_107 and TS_129 to TS_132 bits are timestamped. TI's
-netcp_ethss driver for the Keystone 2 Ethernet switch, which has the
-same timestamping registers, always sets TS_UNI_EN.
-
-Set TS_UNI_EN along with the other bits. With this change, ptp4l in the
-same setup gets timestamps for the unicast Delay_Req and Sync messages.
-
-Fixes: b1f66a5bee07 ("net: ethernet: ti: am65-cpsw-nuss: enable packet timestamping support")
-Cc: stable@vger.kernel.org
-Signed-off-by: James Clark <jjc@jclark.com>
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 ---
-This was discovered while using ntpperf -D/-N to evaluate PTP hardware
-timestamping performance. The patch was generated by an LLM coding
-assistant.
+ .../bindings/display/xylon,logicvc-display.yaml      |  2 +-
+ .../devicetree/bindings/dpll/dpll-device.yaml        |  2 +-
+ .../bindings/embedded-controller/google,cros-ec.yaml |  4 ++--
+ .../intel,ixp4xx-network-processing-engine.yaml      |  2 +-
+ Documentation/devicetree/bindings/gpio/gpio-mxs.yaml |  4 ++--
+ .../devicetree/bindings/hwmon/maxim,max31790.yaml    |  2 +-
+ .../devicetree/bindings/iio/adc/st,stm32-adc.yaml    |  2 +-
+ .../bindings/iio/adc/st,stm32-dfsdm-adc.yaml         |  6 +++---
+ .../bindings/input/touchscreen/cypress,tt21000.yaml  |  2 +-
+ .../memory-controllers/ddr/jedec,sdram-channel.yaml  | 12 ++++++------
+ .../bindings/memory-controllers/ingenic,nemc.yaml    |  2 +-
+ .../memory-controllers/nvidia,tegra20-emc.yaml       |  4 ++--
+ .../devicetree/bindings/mfd/st,stm32-lptimer.yaml    |  2 +-
+ .../devicetree/bindings/mfd/st,stm32-timers.yaml     |  2 +-
+ .../devicetree/bindings/misc/qcom,fastrpc.yaml       |  2 +-
+ .../bindings/mmc/mmc-controller-common.yaml          |  2 +-
+ .../bindings/net/cortina,gemini-ethernet.yaml        |  2 +-
+ .../bindings/phy/brcm,cygnus-pcie-phy.yaml           |  2 +-
+ .../devicetree/bindings/phy/brcm,sata-phy.yaml       |  2 +-
+ .../bindings/phy/socionext,uniphier-usb2-phy.yaml    |  2 +-
+ .../devicetree/bindings/sound/qcom,q6asm-dais.yaml   |  2 +-
+ .../bindings/sound/qcom,q6dsp-lpass-ports.yaml       |  2 +-
+ .../devicetree/bindings/thermal/sprd-thermal.yaml    |  2 +-
+ 23 files changed, 33 insertions(+), 33 deletions(-)
 
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index 2551554add17..9ed6644fd0bd 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -128,6 +128,7 @@
- #define AM65_CPSW_PN_TS_CTL_LTYPE2_TS_319	BIT(21)
- #define AM65_CPSW_PN_TS_CTL_LTYPE2_TS_320	BIT(22)
- #define AM65_CPSW_PN_TS_CTL_LTYPE2_TS_TTL_NONZERO BIT(23)
-+#define AM65_CPSW_PN_TS_CTL_LTYPE2_TS_UNI_EN	BIT(24)
+diff --git a/Documentation/devicetree/bindings/display/xylon,logicvc-display.yaml b/Documentation/devicetree/bindings/display/xylon,logicvc-display.yaml
+index 76b804b7c880..3dd54636d23d 100644
+--- a/Documentation/devicetree/bindings/display/xylon,logicvc-display.yaml
++++ b/Documentation/devicetree/bindings/display/xylon,logicvc-display.yaml
+@@ -123,7 +123,7 @@ properties:
+         const: 0
  
- /* The PTP event messages - Sync, Delay_Req, Pdelay_Req, and Pdelay_Resp. */
- #define AM65_CPSW_TS_EVENT_MSG_TYPE_BITS (BIT(0) | BIT(1) | BIT(2) | BIT(3))
-@@ -1857,7 +1858,8 @@ static int am65_cpsw_nuss_hwtstamp_set(struct net_device *ndev,
- 			 AM65_CPSW_PN_TS_CTL_LTYPE2_TS_132 |
- 			 AM65_CPSW_PN_TS_CTL_LTYPE2_TS_319 |
- 			 AM65_CPSW_PN_TS_CTL_LTYPE2_TS_320 |
--			 AM65_CPSW_PN_TS_CTL_LTYPE2_TS_TTL_NONZERO;
-+			 AM65_CPSW_PN_TS_CTL_LTYPE2_TS_TTL_NONZERO |
-+			 AM65_CPSW_PN_TS_CTL_LTYPE2_TS_UNI_EN;
+     patternProperties:
+-      "^layer@[0-9]+$":
++      "^layer@[0-9a-f]+$":
+         type: object
  
- 	ts_ctrl = AM65_CPSW_TS_EVENT_MSG_TYPE_BITS <<
- 		  AM65_CPSW_PN_TS_CTL_MSG_TYPE_EN_SHIFT;
+         properties:
+diff --git a/Documentation/devicetree/bindings/dpll/dpll-device.yaml b/Documentation/devicetree/bindings/dpll/dpll-device.yaml
+index fb8d7a9a3693..4b5184500b9f 100644
+--- a/Documentation/devicetree/bindings/dpll/dpll-device.yaml
++++ b/Documentation/devicetree/bindings/dpll/dpll-device.yaml
+@@ -65,7 +65,7 @@ properties:
+         const: 0
+ 
+     patternProperties:
+-      "^pin@[0-9]+$":
++      "^pin@[0-9a-f]+$":
+         $ref: /schemas/dpll/dpll-pin.yaml
+         unevaluatedProperties: false
+ 
+diff --git a/Documentation/devicetree/bindings/embedded-controller/google,cros-ec.yaml b/Documentation/devicetree/bindings/embedded-controller/google,cros-ec.yaml
+index 3ab5737c9a8f..75159078f0ef 100644
+--- a/Documentation/devicetree/bindings/embedded-controller/google,cros-ec.yaml
++++ b/Documentation/devicetree/bindings/embedded-controller/google,cros-ec.yaml
+@@ -155,7 +155,7 @@ patternProperties:
+     type: object
+     $ref: /schemas/i2c/google,cros-ec-i2c-tunnel.yaml#
+ 
+-  "^regulator@[0-9]+$":
++  "^regulator@[0-9a-f]+$":
+     type: object
+     $ref: /schemas/regulator/google,cros-ec-regulator.yaml#
+ 
+@@ -224,7 +224,7 @@ allOf:
+ 
+       patternProperties:
+         "^i2c-tunnel[0-9]*$": false
+-        "^regulator@[0-9]+$": false
++        "^regulator@[0-9a-f]+$": false
+         "^extcon[0-9]*$": false
+ 
+       # Using additionalProperties: false here and
+diff --git a/Documentation/devicetree/bindings/firmware/intel,ixp4xx-network-processing-engine.yaml b/Documentation/devicetree/bindings/firmware/intel,ixp4xx-network-processing-engine.yaml
+index 4d66ef483522..a9f874f201aa 100644
+--- a/Documentation/devicetree/bindings/firmware/intel,ixp4xx-network-processing-engine.yaml
++++ b/Documentation/devicetree/bindings/firmware/intel,ixp4xx-network-processing-engine.yaml
+@@ -44,7 +44,7 @@ properties:
+     const: 0
+ 
+ patternProperties:
+-  hss@[0-9]+$:
++  hss@[0-9a-f]+$:
+     $ref: /schemas/net/intel,ixp4xx-hss.yaml#
+     type: object
+     description: Optional node for the High Speed Serial link (HSS), the
+diff --git a/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml b/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
+index fed1b06495ad..6cab04ebbdd4 100644
+--- a/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
++++ b/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
+@@ -36,7 +36,7 @@ properties:
+     maxItems: 1
+ 
+ patternProperties:
+-  '^(?!gpio@)[^@]+@[0-9]+$':
++  '^(?!gpio@)[^@]+@[0-9a-f]+$':
+     type: object
+     properties:
+       fsl,pinmux-ids:
+@@ -94,7 +94,7 @@ patternProperties:
+ 
+     additionalProperties: false
+ 
+-  '^gpio@[0-9]+$':
++  '^gpio@[0-9a-f]+$':
+     type: object
+     properties:
+       compatible:
+diff --git a/Documentation/devicetree/bindings/hwmon/maxim,max31790.yaml b/Documentation/devicetree/bindings/hwmon/maxim,max31790.yaml
+index 558cbd251b0f..bd30886def5f 100644
+--- a/Documentation/devicetree/bindings/hwmon/maxim,max31790.yaml
++++ b/Documentation/devicetree/bindings/hwmon/maxim,max31790.yaml
+@@ -45,7 +45,7 @@ properties:
+     const: 1
+ 
+ patternProperties:
+-  "^fan@[0-9]+$":
++  "^fan@[0-9a-f]+$":
+     $ref: fan-common.yaml#
+     unevaluatedProperties: false
+ 
+diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
+index c4c4575d3fa9..8e11f769d140 100644
+--- a/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml
+@@ -231,7 +231,7 @@ required:
+   - '#size-cells'
+ 
+ patternProperties:
+-  "^adc@[0-9]+$":
++  "^adc@[0-9a-f]+$":
+     type: object
+     description:
+       An ADC block node should contain at least one subnode, representing an
+diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+index c24ac98bbb3d..22cbc6e52537 100644
+--- a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+@@ -74,7 +74,7 @@ required:
+ additionalProperties: false
+ 
+ patternProperties:
+-  "^filter@[0-9]+$":
++  "^filter@[0-5]$":
+     type: object
+     unevaluatedProperties: false
+     description: child node
+@@ -334,7 +334,7 @@ allOf:
+ 
+     then:
+       patternProperties:
+-        "^filter@[0-9]+$":
++        "^filter@[0-5]$":
+           properties:
+             reg:
+               items:
+@@ -349,7 +349,7 @@ allOf:
+ 
+     then:
+       patternProperties:
+-        "^filter@[0-9]+$":
++        "^filter@[0-5]$":
+           properties:
+             reg:
+               items:
+diff --git a/Documentation/devicetree/bindings/input/touchscreen/cypress,tt21000.yaml b/Documentation/devicetree/bindings/input/touchscreen/cypress,tt21000.yaml
+index 037e5d3c447f..e50adb72f808 100644
+--- a/Documentation/devicetree/bindings/input/touchscreen/cypress,tt21000.yaml
++++ b/Documentation/devicetree/bindings/input/touchscreen/cypress,tt21000.yaml
+@@ -46,7 +46,7 @@ properties:
+   wakeup-source: true
+ 
+ patternProperties:
+-  "^button@[0-9]+$":
++  "^button@[0-9a-f]+$":
+     type: object
+     $ref: ../input.yaml#
+     properties:
+diff --git a/Documentation/devicetree/bindings/memory-controllers/ddr/jedec,sdram-channel.yaml b/Documentation/devicetree/bindings/memory-controllers/ddr/jedec,sdram-channel.yaml
+index 5cdd8ef45100..816c8e8b5713 100644
+--- a/Documentation/devicetree/bindings/memory-controllers/ddr/jedec,sdram-channel.yaml
++++ b/Documentation/devicetree/bindings/memory-controllers/ddr/jedec,sdram-channel.yaml
+@@ -53,7 +53,7 @@ properties:
+     const: 0
+ 
+ patternProperties:
+-  "^rank@[0-9]+$":
++  "^rank@[0-3]$":
+     type: object
+     description:
+       Each physical SDRAM chip may have one or more ranks. Ranks are
+@@ -72,7 +72,7 @@ allOf:
+             const: jedec,ddr4-channel
+     then:
+       patternProperties:
+-        "^rank@[0-9]+$":
++        "^rank@[0-3]$":
+           $ref: /schemas/memory-controllers/ddr/jedec,ddr4.yaml#
+   - if:
+       properties:
+@@ -81,7 +81,7 @@ allOf:
+             const: jedec,lpddr2-channel
+     then:
+       patternProperties:
+-        "^rank@[0-9]+$":
++        "^rank@[0-3]$":
+           $ref: /schemas/memory-controllers/ddr/jedec,lpddr2.yaml#
+   - if:
+       properties:
+@@ -90,7 +90,7 @@ allOf:
+             const: jedec,lpddr3-channel
+     then:
+       patternProperties:
+-        "^rank@[0-9]+$":
++        "^rank@[0-3]$":
+           $ref: /schemas/memory-controllers/ddr/jedec,lpddr3.yaml#
+   - if:
+       properties:
+@@ -99,7 +99,7 @@ allOf:
+             const: jedec,lpddr4-channel
+     then:
+       patternProperties:
+-        "^rank@[0-9]+$":
++        "^rank@[0-3]$":
+           $ref: /schemas/memory-controllers/ddr/jedec,lpddr4.yaml#
+   - if:
+       properties:
+@@ -108,7 +108,7 @@ allOf:
+             const: jedec,lpddr5-channel
+     then:
+       patternProperties:
+-        "^rank@[0-9]+$":
++        "^rank@[0-3]$":
+           $ref: /schemas/memory-controllers/ddr/jedec,lpddr5.yaml#
+ 
+ required:
+diff --git a/Documentation/devicetree/bindings/memory-controllers/ingenic,nemc.yaml b/Documentation/devicetree/bindings/memory-controllers/ingenic,nemc.yaml
+index ee74a362f4ca..ca6426c28990 100644
+--- a/Documentation/devicetree/bindings/memory-controllers/ingenic,nemc.yaml
++++ b/Documentation/devicetree/bindings/memory-controllers/ingenic,nemc.yaml
+@@ -37,7 +37,7 @@ properties:
+     maxItems: 1
+ 
+ patternProperties:
+-  ".*@[0-9]+$":
++  ".*@[0-9a-f]+$":
+     type: object
+     $ref: mc-peripheral-props.yaml#
+     additionalProperties: true
+diff --git a/Documentation/devicetree/bindings/memory-controllers/nvidia,tegra20-emc.yaml b/Documentation/devicetree/bindings/memory-controllers/nvidia,tegra20-emc.yaml
+index 71896cb10692..a0355050a074 100644
+--- a/Documentation/devicetree/bindings/memory-controllers/nvidia,tegra20-emc.yaml
++++ b/Documentation/devicetree/bindings/memory-controllers/nvidia,tegra20-emc.yaml
+@@ -142,7 +142,7 @@ $defs:
+     additionalProperties: false
+ 
+ patternProperties:
+-  "^emc-table@[0-9]+$":
++  "^emc-table@[0-9a-f]+$":
+     $ref: "#/$defs/emc-table"
+ 
+   "^emc-tables@[a-f0-9-]+$":
+@@ -169,7 +169,7 @@ patternProperties:
+         type: object
+ 
+     patternProperties:
+-      "^emc-table@[0-9]+$":
++      "^emc-table@[0-9a-f]+$":
+         $ref: "#/$defs/emc-table"
+ 
+     oneOf:
+diff --git a/Documentation/devicetree/bindings/mfd/st,stm32-lptimer.yaml b/Documentation/devicetree/bindings/mfd/st,stm32-lptimer.yaml
+index 4eabafb8079d..8de82540d231 100644
+--- a/Documentation/devicetree/bindings/mfd/st,stm32-lptimer.yaml
++++ b/Documentation/devicetree/bindings/mfd/st,stm32-lptimer.yaml
+@@ -109,7 +109,7 @@ properties:
+       - compatible
+ 
+ patternProperties:
+-  "^trigger@[0-9]+$":
++  "^trigger@[0-4]$":
+     type: object
+     additionalProperties: false
+ 
+diff --git a/Documentation/devicetree/bindings/mfd/st,stm32-timers.yaml b/Documentation/devicetree/bindings/mfd/st,stm32-timers.yaml
+index 66aa1550a4e5..5853c6019e98 100644
+--- a/Documentation/devicetree/bindings/mfd/st,stm32-timers.yaml
++++ b/Documentation/devicetree/bindings/mfd/st,stm32-timers.yaml
+@@ -128,7 +128,7 @@ properties:
+       - compatible
+ 
+ patternProperties:
+-  "^timer@[0-9]+$":
++  "^timer@([0-9a-f]|1[0-3])$":
+     type: object
+     additionalProperties: false
+ 
+diff --git a/Documentation/devicetree/bindings/misc/qcom,fastrpc.yaml b/Documentation/devicetree/bindings/misc/qcom,fastrpc.yaml
+index 49d2a5e8ba39..d9444f452585 100644
+--- a/Documentation/devicetree/bindings/misc/qcom,fastrpc.yaml
++++ b/Documentation/devicetree/bindings/misc/qcom,fastrpc.yaml
+@@ -79,7 +79,7 @@ properties:
+     const: 0
+ 
+ patternProperties:
+-  "(compute-)?cb@[0-9]*$":
++  "(compute-)?cb@[0-9a-f]+$":
+     type: object
+ 
+     description: >
+diff --git a/Documentation/devicetree/bindings/mmc/mmc-controller-common.yaml b/Documentation/devicetree/bindings/mmc/mmc-controller-common.yaml
+index 3d7195e9461c..f235f3ed1692 100644
+--- a/Documentation/devicetree/bindings/mmc/mmc-controller-common.yaml
++++ b/Documentation/devicetree/bindings/mmc/mmc-controller-common.yaml
+@@ -317,7 +317,7 @@ properties:
+       power sequence must be maintained while initializing the card.
+ 
+ patternProperties:
+-  "^.*@[0-9]+$":
++  "^.*@[0-7]$":
+     type: object
+     description: |
+       On embedded systems the cards connected to a host may need
+diff --git a/Documentation/devicetree/bindings/net/cortina,gemini-ethernet.yaml b/Documentation/devicetree/bindings/net/cortina,gemini-ethernet.yaml
+index f0b5bea2458d..900e4e5ac360 100644
+--- a/Documentation/devicetree/bindings/net/cortina,gemini-ethernet.yaml
++++ b/Documentation/devicetree/bindings/net/cortina,gemini-ethernet.yaml
+@@ -35,7 +35,7 @@ properties:
+ # They are not independent of each other since they share resources
+ # in the parent node, and are thus children.
+ patternProperties:
+-  "^ethernet-port@[0-9]+$":
++  "^ethernet-port@[0-9a-f]+$":
+     type: object
+     unevaluatedProperties: false
+     description: contains the resources for ethernet port
+diff --git a/Documentation/devicetree/bindings/phy/brcm,cygnus-pcie-phy.yaml b/Documentation/devicetree/bindings/phy/brcm,cygnus-pcie-phy.yaml
+index 808e90b2465d..25356f03f4a6 100644
+--- a/Documentation/devicetree/bindings/phy/brcm,cygnus-pcie-phy.yaml
++++ b/Documentation/devicetree/bindings/phy/brcm,cygnus-pcie-phy.yaml
+@@ -30,7 +30,7 @@ properties:
+     const: 0
+ 
+ patternProperties:
+-  "^pcie-phy@[0-9]+$":
++  "^pcie-phy@[0-9a-f]+$":
+     type: object
+     additionalProperties: false
+     description: >
+diff --git a/Documentation/devicetree/bindings/phy/brcm,sata-phy.yaml b/Documentation/devicetree/bindings/phy/brcm,sata-phy.yaml
+index 439bda142764..31d534065d42 100644
+--- a/Documentation/devicetree/bindings/phy/brcm,sata-phy.yaml
++++ b/Documentation/devicetree/bindings/phy/brcm,sata-phy.yaml
+@@ -46,7 +46,7 @@ properties:
+     const: 0
+ 
+ patternProperties:
+-  "^sata-phy@[0-9]+$":
++  "^sata-phy@[0-9a-f]+$":
+     type: object
+     description: |
+       Each port's PHY should be represented as a sub-node.
+diff --git a/Documentation/devicetree/bindings/phy/socionext,uniphier-usb2-phy.yaml b/Documentation/devicetree/bindings/phy/socionext,uniphier-usb2-phy.yaml
+index 19522c54f448..b1a69ed96bb4 100644
+--- a/Documentation/devicetree/bindings/phy/socionext,uniphier-usb2-phy.yaml
++++ b/Documentation/devicetree/bindings/phy/socionext,uniphier-usb2-phy.yaml
+@@ -29,7 +29,7 @@ properties:
+     const: 0
+ 
+ patternProperties:
+-  "^phy@[0-9]+$":
++  "^phy@[0-3]$":
+     type: object
+     additionalProperties: false
+ 
+diff --git a/Documentation/devicetree/bindings/sound/qcom,q6asm-dais.yaml b/Documentation/devicetree/bindings/sound/qcom,q6asm-dais.yaml
+index bc8c8ba24f9c..988a84099790 100644
+--- a/Documentation/devicetree/bindings/sound/qcom,q6asm-dais.yaml
++++ b/Documentation/devicetree/bindings/sound/qcom,q6asm-dais.yaml
+@@ -32,7 +32,7 @@ properties:
+     const: 0
+ 
+ patternProperties:
+-  "^dai@[0-9]+$":
++  "^dai@[0-9a-f]+$":
+     type: object
+     description:
+       Q6ASM Digital Audio Interface
+diff --git a/Documentation/devicetree/bindings/sound/qcom,q6dsp-lpass-ports.yaml b/Documentation/devicetree/bindings/sound/qcom,q6dsp-lpass-ports.yaml
+index 3b03e2acd67e..060487b2b72c 100644
+--- a/Documentation/devicetree/bindings/sound/qcom,q6dsp-lpass-ports.yaml
++++ b/Documentation/devicetree/bindings/sound/qcom,q6dsp-lpass-ports.yaml
+@@ -28,7 +28,7 @@ properties:
+ 
+ # Digital Audio Interfaces
+ patternProperties:
+-  '^dai@[0-9]+$':
++  '^dai@[0-9a-f]+$':
+     type: object
+     description:
+       Q6DSP Digital Audio Interfaces.
+diff --git a/Documentation/devicetree/bindings/thermal/sprd-thermal.yaml b/Documentation/devicetree/bindings/thermal/sprd-thermal.yaml
+index afa551f6185f..222d70baef1e 100644
+--- a/Documentation/devicetree/bindings/thermal/sprd-thermal.yaml
++++ b/Documentation/devicetree/bindings/thermal/sprd-thermal.yaml
+@@ -47,7 +47,7 @@ properties:
+     const: 0
+ 
+ patternProperties:
+-  "^([a-z]*-)?sensor(-section)?@[0-9]+$":
++  "^([a-z]*-)?sensor(-section)?@[0-9a-f]+$":
+     type: object
+     description:
+       Represent one thermal sensor.
 -- 
-2.56.0
+2.53.0
 
