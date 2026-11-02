@@ -1,61 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793608425;
-	b=1gsrm04cy3BYMHhNUsF06baF9grwGsM/5Eicaz56YvcxJSWCXLpxyWPML6VkR4GFFww0
-	 cjWLrDDCyEDABkd/Mcy9gUruUPGIDiseV9jhs/dFE/6OtF2YVNVnc1TUpTzq0v8S9j5pG
-	 0Nyk3BhSoTd+QQsGM0Jxn25W4L1XgacPSj6dc1koZCRHRO0+lxOF6Pt5nMblKMSe3RPO5
-	 JoejIy5nHGzYOtjedMgt0IITcZR80S+K3BC/ODr7AAIMY8YALVxX+te+4mqhtvwt280io
-	 jd1myXmVqaMUmNPvMFoGG+/Rx4n3f4Ok+XP8KNipSb23WupXCu0ifvXYHn4jKBlVzqA==
+	t=1793608626;
+	b=Tcmb6MDJtwmaKfGv+5+Yb9MaZowNrue2BUHSRRCkDBT0zPsppoTkreXob22im4vTe+0T
+	 /f0f9f2L2G2vXx0keECcHr/CfZ+z/4JUbjmpagkSNRy2FKWBwK+5gSTr7no/VHauTShFV
+	 oFEXistRb2XKdZZC6fdChxAneiF1MZNK0jhPKeT9ghoyFcOWVxlFi35XKsz/r0mVSm8p9
+	 IDQGQe40QDzXtwO5LIVtJ7+Pf95H5qrs5mVKgOdnwqYyUjbNa8VI0h0OHkFngfPOZ0Ayt
+	 PDpW6wnebx4sYeVOb5f0Wkb6atfOTDSONlfaOvPL/+RH2fdcg1scTCAq06ZriwQSzSA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793608425;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=SLzhqG8pDEvj6F+5VxWMY4T6vKOHocxnUklCm7H1nM/9ckhNEx0BF2y89hQ15uNddGAY
-	 FMDiynxW6aQSGTUmovubesNcSTRe1Yw7cVrl91Ylg3VTWmI91yAkkC+RvB5VLltsPhhkp
-	 7MA5DYwWZZWIJVE+yUXxNOr7QB7LVyFwRdVe6SGoHahFAHmYFg4d2MP5umvfGlmC73Rfp
-	 3d0kW58Bgz4YrlTZ9kmgZt2SgWlQ4rfPYZBv9eYdzSEbyc5t0o4BqcSpbCiT0a5VdA7ai
-	 xJfW6/3cbg0cDFk5Wm8B3nICIs5aOF4112FLdBiV8HJplPMJaQ6NWO+DHlEwZ9AqIFw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793608626;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=lfr+9f3d0uSXwEEu6qQaZk27BopGzDyuDbKtBIZ0OVU=;
+	b=uKTNxmdg1vs4+FNo9WctF6HWf7Uz2NvEuVL4QNKpYU5YqxAqjdKmBZSB0Qha2Cu07H3A
+	 dJa5mka3T0H40MoEDzbL3TMLJ3yBK2wvmpaJ8/ff0BirDaUFT4LF6/HROoVFmUqbb9sNJ
+	 yNxOYP8dXHTPAumQFEJ5o9Pog32iVfHeFv6JEySfYNQrVZ+0pJBAqSs1Ec0tQoFHbyKww
+	 m15wYYQ0wfw5o0tgmkE8Ut7Z+N6LUjHuKsgPSP8V16vcQc5QhThwxt1+oGpTGVFezmEAK
+	 CWeFvIWIuNlA2B52Wb94HhVypqUL9yMGSga/be8ZGFI0NDnVy56QCD+r/w0cdFwyh2Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QFXqdrNl;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=TCaSoz+D;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4AA606A327;
-	Mon,  2 Nov 2026 08:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8678606A32C
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 08:37:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8678606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QFXqdrNl
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5140B1F00919;
-	Mon,  2 Nov 2026 08:33:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793608425;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QFXqdrNlRVs2GzYsHVrrcBnXHWylh+06W4tOTEpiMSa0atWU3udBa9HHrQ6I0n08V
-	 rdfWH/vtT8iAicqVSNK/xAYSurxwOwMom+V1SMDCMklRsztwixQmhxUmZkh4sFiblz
-	 kcnVngYyhC+f+v2w2ZGyZ7jicdk0SeACksuuyBAXVap73iOfnNuou3WmtL67tgMFtA
-	 q/ucdKIk7Pu18K1KEzRbvAtOGyyQEuOfn9S4XDttZyoMgKwhPOjJIxOl/hvYgm5TaH
-	 Kek7AIykzRdS/Z6DiblEE3E0BPrFjr+GgjseC5DU9KLBLQfjZOJcfh8wiNgOZ5y/yt
-	 XLZ7Eh0g+XCvw==
-From: netdev-bot+sinfo@kernel.org
-To: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
- dust.li@linux.alibaba.com, sidraya@linux.ibm.com, hidayath@linux.ibm.com,
- pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
- guwen@linux.alibaba.com, stable@vger.kernel.org, netdev@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
-Subject: Re: [PATCH net v15] net/smc: fix lgr/lnk lifetime vs diag reader race
-Date: Mon, 02 Nov 2026 08:33:43 +0000
-Message-ID: <179360842382.3286.18382469718020495778@kernel.org>
-In-Reply-To: <20261102083122.1098393-1-mjambigi@linux.ibm.com>
-References: <20261102083122.1098393-1-mjambigi@linux.ibm.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=TCaSoz+D
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id C26F9C8F447;
+	Mon,  2 Nov 2026 08:38:05 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id AE76B60750;
+	Mon,  2 Nov 2026 08:37:01 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6286910329123;
+	Mon,  2 Nov 2026 09:36:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793608620; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=lfr+9f3d0uSXwEEu6qQaZk27BopGzDyuDbKtBIZ0OVU=;
+	b=TCaSoz+DO/wzRp2Sz1lkU5w0pxuYwycMzx9SH1Wr7XPr0oGIz5YdiRmVsK2OlSyy3J2Iaq
+	u6LWiI7sNn1oAwOCtJ9Dtlg+QXv1it/jJANgVoc1F4b2pWU1cIZ+bu/kbBrrm3batPP82X
+	sJkpkvdsXBazNjL3e/tdhA7F1Ij8IVWluJ7WxtrY7kyN7yGACRSQIYwdMa55LZaDmOSFG9
+	1xQ09j4chDBGdeVw1YK1EMJa7fgJKz5beObCjMYp9sB9hQ40kDfFs/jMh7zi+rkJMGlF1S
+	Ao9AjHJOYlDnyVpu4NyOqByLuIaLAqqpgVkrvXCtXGQa4diXJOPaThYcDhoBJw==
+Message-ID: <f5a88825-2d0b-4f5f-863b-e2369d009d24@bootlin.com>
+Date: Mon, 2 Nov 2026 09:36:54 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,25 +62,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: stmmac: dwmac-motorcomm: mask the MISC interrupt
+To: Nicolai Buchwitz <nb@tipi-net.de>,
+ Magnus Leatti <magnusleatti@kernelriot.com>
+Cc: Yao Zi <me@ziyao.cc>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>,
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+ Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20261102080938.2955-1-magnusleatti@kernelriot.com>
+ <805aeb73d9e32b237bcb30c8fd44ffed@tipi-net.de>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <805aeb73d9e32b237bcb30c8fd44ffed@tipi-net.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi!
+Hi,
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+On 11/2/26 09:29, Nicolai Buchwitz wrote:
+> Hi Magnus
+> 
+> On 2.11.2026 09:09, Magnus Leatti wrote:
+> 
+>> [...]
+> 
+>> Russell, d3265c19b35d ("net: stmmac: xgmac2: disable RBUE in default RX
+>> interrupt mask") describes a similar storm on xgmac2. Should dwmac4 do
+>> the same? I have only tested the glue change.
+> 
+> AFAIU RBU is the cause. Dropping it in dwmac4, as Russel did in  d3265c19b35d,
+> would cover all multi-MSI users.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+As I commented, the other solution is to properly ack it. I'm not convinced about
+the RBU interrupt's usefulness TBH, even when ack'd it makes a bad situation even
+worse, but it does have the nice effect of making this visible by incrementing the
+associated counter.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Anyway, this issue should be covered by this :
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+https://lore.kernel.org/all/20261030102251.208929-1-maxime.chevallier@bootlin.com/
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Maxime
+
