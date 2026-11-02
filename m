@@ -1,58 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793638635;
-	b=nVeHtcLbjmV38gwHs2qIVd7vz3ny7Gx7xM3F+pRjxIOCzh2Km+rQZ5jHFkY4tMP/833h
-	 9atFnxSQs37Gplxwg45dovs44CpWS+zOBZN0Fai6pm4JBLnATjS4p9Ab75mxR7Aa7t81E
-	 kMNgpXl58ZNHO8ZQIkGg8YRgqiotejslYqvQmoOWKMp7HQwqDXJzX3L4IDphXv0nXlRx4
-	 3jLmfWuxwi9thgp/BQXWoZ0laEm0kIAMwpxTEFNVuxy4pmyNDK+TZQQjaE1Qm1CHt1Qdo
-	 4tC9FNHJSOoCHbI5u+RFzwLUKzDSJc2xxN3tyoz7+IJNNL4JIr8+VwCbhfFkybum/fg==
+	t=1793638642;
+	b=nTxhICA7fSi0U8Br65vOb7ijBZeiWcppUoEF9RsqtqnYiBX4uDux7BN10ICNdI2HHbJV
+	 Kkew8t1BC2czncocgm1xshNKwGja97F7pYOSgHNDxq8iIJqEKFeqCrInx9HlJF+1uOaY/
+	 dzqbnRvWqdOY4kcpQPWvrvJBlGf1lFgjwPieZ3SylQOtPYmMOlKc8+mcqLRORbCDJtpbl
+	 lVmcKY6vyKuuOxDFMIL63NIoamwPwuimuHr/arojqcd+5mucARECvCvOh60ifv1dTYUim
+	 CqKO6FaVoQRj43ZgPAUgJkEh3/I9gy6FGdludKYcN8DirMHVJ/tPWsk+TLpXQU1Bh6Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793638635;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=MpO7RHOfLKJAP4WejvlEzMmeWorZw/u+tDQ+wr+YWhs=;
-	b=HRJAW2BvC8wu9sLTJauDBHGCcv57jneghoj4KlT/obyqxLXVyJ5mqzru5wW9bNvsVRgf
-	 06T5/b4yXSfARDRQkdnIudJlh0Q4RTjFv4WcpBXs8rwNeTvV6aH7oaG2tt6iDz27WOPt2
-	 Fr/kKP6Q1TN1GZUtUuE2NAA1SqKO1uvSxhItLGM8U63birQq2WzwdXBCPc5ZiNaVMukvb
-	 gexOpI7dgmn8vKWA67mASOC1EBvhae7njO5MOAOduLvrzOaKIWDt0tjbrP8FPDVT+WgOd
-	 2EL/OepWwrRGNl362BmsxioW0lQ2fTjjuoPJsbVD4dv4NKzITgmJjXoFMdfqPaYR9lw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793638642;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:Content-Language:To:Cc:References:From:Autocrypt:Organization:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=+O6Iy0v5LIlh9LxTg5ei7m9/hyPO3svpQLvT7K7vZn4=;
+	b=dFWCZBx51/ohfQK6Uqum7SWfSWuECtVu/wocfQ8pxkMjPvbEHJ7RkGVaVEWNWPdpnWm6
+	 7KsYzNBg1aXPwZiJ1S/bdXpi4Bj4X5LAEJHzuhpN8xwPyaO7hQtJZb+9ct4JduUKESrKr
+	 ZiQX4GnGQRocEIGXE9fxzRP5eQJflOTDMG04vOy7JtK4ru/VTpZrcJKJp1btLew65fIHl
+	 guMUCJiES3l0o5YpgIaaIUJOPtOfcFV1jo2VoyxKrOwZ39XHhE6RVPE5ub8fNn/ydYULx
+	 MGsTxTi38f1nnNnjSlaNW/763kILMOPpRYzDjLkUpLUc5EZ8TDgz8lOFzG9WWQ84IJA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=IvZ4PM3y;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W+YvMTEt;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CD0606A580;
-	Mon,  2 Nov 2026 16:57:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 24CD0606A580
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E65607B421;
+	Mon,  2 Nov 2026 16:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=IvZ4PM3y
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 542AE4E413C5;
-	Mon,  2 Nov 2026 16:57:11 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 22AB3603D7;
-	Mon,  2 Nov 2026 16:57:11 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 164A410328E6F;
-	Mon,  2 Nov 2026 17:57:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793638630; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=MpO7RHOfLKJAP4WejvlEzMmeWorZw/u+tDQ+wr+YWhs=;
-	b=IvZ4PM3yrswwu/IldZkckixMudRaegLNfu8wvtbbuUWxwRCB+C+4ai3apx6cq6+Q0wzGZ3
-	nLNkjBKCbZxSSleMza5UR/mArwt6WAYdeyqIXAFj/JwQSRaBAwqi0G7yQqSDLIMuH9ptPK
-	69Ur4rwakq7ZhEBBKNsdUffhcsSr/ZFw11aHyxWXupMZixyxVahgNwI4cEBn9BezBvfFzn
-	g2Cr90I9cZ/wK2LYaMV9hHuz7kIDrMCXWXCXSh8gJQ+YXhemmDJ4kUY8dDrv8QY93RFXqs
-	bp/o3SQJDzJh2eFWzIn4OBslQaLaFFXq0UH5QdQVaRoXNjhgUJanQCALGqvTuw==
-Message-ID: <d7f5a3b3-a3e9-47bf-8f08-5c8feb0c88e7@bootlin.com>
-Date: Mon, 2 Nov 2026 17:57:06 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W+YvMTEt
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ACF71F00A16;
+	Mon,  2 Nov 2026 16:57:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793638641;
+	bh=+O6Iy0v5LIlh9LxTg5ei7m9/hyPO3svpQLvT7K7vZn4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=W+YvMTEt1D1G5HRvKYZ4cXex2SOu+GwwhlHaH5l4H3Kq2he+dq1DF2nG31bCxInXp
+	 3jz5zkrA467S2Fn3oOv0kxXoDm9Yk2uRKT+KUGvQG1ScOUuxQPFp8sZmk4aPJT4Hed
+	 hubU7cmja5puMMNREDrbl3/yVHAgFw+oWGa4ZFYR0EpuyDIRGxkRfOKcb3WiOcA+Et
+	 fPV0Hz9bdgXG0TfLHP91kuv7ernbYa1NKUZIptSqaT9Y863SBVSZqMyW6+lVEXjgor
+	 Hr26IkrZgB1xsiWXgCvBXdYxdah130vRdBeL8iy08sB1VPjPVLYHs1twbGtYgXy2fQ
+	 wAHWredSeEgfg==
+Message-ID: <c1118f2b-46d4-4ed1-98b2-ff1c5cb00fc2@kernel.org>
+Date: Mon, 2 Nov 2026 17:57:13 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,53 +51,96 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Betterbird (Linux)
-Subject: Re: [RFC] hwmon: (tps23861) PSE-PD support, extend hwmon driver or
- move to pse-pd?
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Guenter Roeck <linux@roeck-us.net>, Roman Kuzmitskii <roman@damex.org>,
- linux-hwmon@vger.kernel.org, netdev@vger.kernel.org,
- robert.marko@sartura.hr, luka.perkov@sartura.hr, o.rempel@pengutronix.de
-References: <03055ffd-d015-4810-8b8a-678821fa6dcc@damex.org>
- <92e3383e-26f8-4bed-b487-1c52f6c4f420@roeck-us.net>
- <8cd41211-b026-4158-8e18-454a9ac0bae4@damex.org>
- <4d12314e-56db-412c-a558-e4026cd03528@roeck-us.net>
- <d126b3d3-33b9-405c-9839-db492d874ece@lunn.ch>
- <9bac0a84-f03d-4fd1-8092-9922c65010bf@bootlin.com>
- <57516add-01bf-492b-9fd9-2bcb762e3041@roeck-us.net>
- <1219dc2f-0f96-40db-8268-1a8eb009b152@bootlin.com>
- <e422d6e8-3385-43f2-bcd3-1c5060a5b45e@lunn.ch>
-From: Kory Maincent <kory.maincent@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <e422d6e8-3385-43f2-bcd3-1c5060a5b45e@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH bpf v2 09/15] bpf, sockmap: Check the TCP state in
+ recvmsg()
+Content-Language: fr
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>, mason@kernel.org
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, daniel@iogearbox.net,
+ andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com,
+ john.fastabend@gmail.com, jakub@cloudflare.com, jiayuan.chen@linux.dev,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, willemb@google.com,
+ mptcp@lists.linux.dev, josef@toxicpanda.com
+References: <20261102072112.4160195-1-alexei.starovoitov@gmail.com>
+ <20261102072112.4160195-10-alexei.starovoitov@gmail.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20261102072112.4160195-10-alexei.starovoitov@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+Hi Alexei, Chris,
 
+Thank you for the fix!
 
-On 11/2/26 17:36, Andrew Lunn wrote:
->> I am not using at all the hwmon framework in that development.
->> But as the binding tps23861 is already reserved for hwmon I use a new
->> "tps23861-poe" compatible name binding.
->> To me, I agree to remove the hwmon driver but this will break backward
->> compatibility. I am not a hwmon maintainer so it's not my decision to take.
+On 02/11/2026 08:21, Alexei Starovoitov wrote:
+> From: Chris Mason <mason@kernel.org>
 > 
-> Is the hwmon code applicable to the tps238XX range of devices?
+> With an sk_skb verdict prog, tcp_bpf_recvmsg_parser() copies data from the
+> psock. Then it calls __tcp_cleanup_rbuf() to calculate the receive window
+> and to send an ACK. The window and the ACK need a connection on the socket.
+> But tcp_disconnect() keeps the socket in the sockmap and the data on the
+> psock. For a TCP socket sock_map_redirect_allowed() rejects only
+> TCP_LISTEN. Thus the psock can also get data after tcp_disconnect().
 > 
-> Can that hwmon code by merged into the PoE driver? Without API
-> changes, apart from dropping the API abuse case? The compatible can
-> then be transplanted into the PoE driver?
+> __tcp_select_window() divides by icsk_ack.rcv_mss, which can be 0 in
+> TCP_CLOSE. In TCP_SYN_SENT the new peer can get an ACK with the sequence
+> numbers of the old connection.
+> 
+> Call __tcp_cleanup_rbuf() only when tcp_can_send_ack() returns true.
+> recvmsg() returns the data as before. Move tcp_can_send_ack() from MPTCP to
+> tcp.h.
 
-Should we really want to add the hwmon framework in the driver only to 
-keep the binding name?
-We are managing PSEs through ethtool why should we add another user 
-interface (sysfs)?
-Anyway old devicetree won't work, all the PSE PIs should be described 
-for the PSE to function properly.
+Good idea!
 
+Acked-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
+Cheers,
+Matt
 -- 
-Köry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+Sponsored by the NGI0 Core fund.
 
