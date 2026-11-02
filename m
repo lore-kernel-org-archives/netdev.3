@@ -1,60 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793578163;
-	b=pDoudS27Svyj6X3yhMHCdEOFEEYLuQ5+oqouzRF3zy/DXXlY2yROXPbMw8eUU//fAx7+
-	 w+kz2oGut49Vv6eip+M4gXve3Pkj+IXfAprWTR551NJQqxS9p8/MlfZzQ5zAJBDhEmett
-	 IuBFTXLk56gDxtmzpUW576sWlmogS8de7wH+l8VtdmWYs3hh5EflTaAN/4Tv0zSd0Xo6d
-	 etj4D8cZupaQdTF+LVu7CVpEviUFzbpUkK8Wn+l3NCaEjCprPTAIdHHHoLA6XvO1he48L
-	 TqSJkkFUWlryKDaTRVTj+nWubumf55gzkR/ySL3RYSX20qAHgzBBgTAZ2geiVA2mCFw==
+	t=1793578284;
+	b=kVBkcVlaXtsvZ9xv5Dxh4Qu6PptvHO9m6F2zQF4l6f4tR3QhP2+Zqg+h1E3Tnf+VKRpd
+	 Te1eWypvM4dB9QhNou9/AlELdiQVReyMXek7Zi3hUKH8b7S4VKOt+PxqLTuoDgNJx8j3v
+	 lJ8vHd6VSw++q79SSsBY76LTRWCVFyh8BPhPBC8wIY/ilKTXyikTKavuy0UCX0hMzgC3M
+	 LsrtUIv/bKucSL9WMxoyGZzU0DjplQnZStISvri++28LPmFrvlF4efywfHfugxKIi0OD8
+	 0yE5JjmsI3kwimeP9r0jadngH4VgWwTYGFinj42govxQqk6qnVC/giXEar2eMhx1GAQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793578163;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=7J6hEMF3m3bnNGhJeCVy6DNKvCreUC846t3x5pm1zuc=;
-	b=JdRtOsZYFiUO6Ue+gbjEFjI0S68d8GBDdYoMj3D5AYe7keDXOfC+r9zpBuh1Pi3i91Wb
-	 qbacRE/7Rc+1WgMNwfpwCS3tRj/P8Wzsry5GJTMW8XSf52QZ82Ni2ccZj4eiHIrB0Llke
-	 ZTTnWx8WfBtTmAsXXLaaKcWDd7Dw/UNjdCBnPS3S769ZVFu7Ys6C1JJg6bSUnm6xnRkOk
-	 OVrFVx6VjGcfQdnBEFipVWDF0zt+UucJopLLPOyRklVYOcwDiD7ZANmytT5gcAEsvyNNb
-	 2R45XjQZuK/GZWshtepzVFL5/7xKba2145ZSCg07pWGB+T5OR/HkqYxxvDk8ioXhNQQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793578284;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=7VWjf8n3WvDFh+c5IGrcgvXEjMEwnWf0FFeeKq0U6ZQ=;
+	b=UgJqjskOnWUBYEYVwdpCiZixRIIw0RDBT9grnccMCQG6cJPecjSW6ImGz2TZZd84b3sB
+	 006pkttMMRs8vgDDa5oGqDrrJZNgdv5bqqclKojH3G28BuN8Mjxu7P5pjZutZFy9XJlv0
+	 B263X7ouA6lkSMpGNc5AKik0enn9JpB8PbVSbFGOKCYsme6/+QysuA9nz7gC5FXz5EXZP
+	 wYLXfSBOnDOIIBHl1ucZmSw2FILkbSxIco2XDXnU6ugjPp89Xa+lc0zLN2DMVCiYc3jR0
+	 vcIqEqwuHBakQSAyYwGz4kksYEx16OpsR32V8Xx4M+sjsxdklRVLUDsPS4RZEBVi/5A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bTmmR6bU;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PKfEHFCL;
+	arc=none smtp.remote-ip=74.125.224.130
+Received: from mail-yx2-f2.google.com (mail-yx2-f2.google.com [74.125.224.130])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CBAC606A324;
-	Mon,  2 Nov 2026 00:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87421606A334
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 00:11:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87421606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bTmmR6bU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F5E1F000C1;
-	Mon,  2 Nov 2026 00:09:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793578162;
-	bh=7J6hEMF3m3bnNGhJeCVy6DNKvCreUC846t3x5pm1zuc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=bTmmR6bUKqm4k86t3g55e9ps5OXCAAzhYI7i0cStKIi2WGmvVR0EOsE+Z9rlUPaZl
-	 59o6gbqNXBi6lgpLJZSkSHbIm/9w/wuv82YEG10BQBGVGFIoeM08xAIK9f3tSB1W+f
-	 /93L0Fc21mM3KJrNSlJkA0ZSKOvRur7DJAh4uaXJ8KiGcVBr0gE3nemVwlWRmiKb69
-	 8H3NndWk8ghYFbDJ6AM7WF4rej+b01YhdvOuHXjeghlzsYCMkhFX9VSny8JZCcV29g
-	 0ts/4a6cpv509g4bVA0KpJS+WgIRBXV0YGIeaItWu2mybLsEqK0s92cfqIJ6Jal9re
-	 6cWdBeNoH77vQ==
-Subject:
- Re: [PATCH net v3 2/2] net: dsa: b53: Enable legacy IGMP snooping controls
-From: netdev-bot+sashiko@kernel.org
-To: florian.fainelli@broadcom.com
-Cc: netdev@vger.kernel.org, jonas.gorski@gmail.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, linux@armlinux.org.uk, rmk+kernel@armlinux.org.uk,
- linux-kernel@vger.kernel.org
-Date: Mon, 02 Nov 2026 00:09:20 +0000
-Message-ID: <179357816089.3131.2008365378649919842@kernel.org>
-In-Reply-To: <20261028235100.3892374-3-florian.fainelli@broadcom.com>
-References: <20261028235100.3892374-3-florian.fainelli@broadcom.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PKfEHFCL
+Received: by mail-yx2-f2.google.com with SMTP id 00721157ae682-8b0fa446a94so7789037b3.1
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 16:11:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793578282; x=1794183082; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7VWjf8n3WvDFh+c5IGrcgvXEjMEwnWf0FFeeKq0U6ZQ=;
+        b=PKfEHFCLO1Pa2cwXivsCSQUdhT3MH+Xe7A3u+cpoivfmVBg9GYcp8AE0qcJZBBGoDc
+         bam19pUfhjf2sypZHGXLnDnzzLLFkiHRDJ2JrbFWIBDrnMU8+KLHlbvlac6gBqGpS8PK
+         VjTIPr38Ne1OrzcRdeexT9SZUpjf9StVawHOIAsvPwBAPD178q4dfSjmYiT1V2HeuNDv
+         wMqt+T292rulJCMlY28IbN1LdqKuqRCbmtK274uv53+uYBQnkRGOK/+cOAZliSvqw2Bu
+         wO+bk4An1XRZmuugQaTUteNyk6uz9rZCdAuNmi3JnnYXV49oUU86s3kt57f56JxxabRn
+         OjAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793578282; x=1794183082;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7VWjf8n3WvDFh+c5IGrcgvXEjMEwnWf0FFeeKq0U6ZQ=;
+        b=XTskzG4zzknwZ7Q3Q0legQD2lr8soGcmlufSY8MViWFvd5Kxi0gpBICur47piPYPg4
+         l2Q1NGXV7thyTDcqHSj8CkTvbDIjwasCnhmZCSfuhkBPlYQ+IvVCQ7VBgDmrSMCrmb4W
+         SQqjoqecqtpr/KyZSCG0X7D0t0K60nFp5rQr4pw3Z2uT68RAMUAROxcsI/StqL1gDcrd
+         j7kohC1aZU3ht+/zqm9KpdzNaSEFT+v8hLL3QUOl9l4yxHL1oeA2YIZTv/K3Bs3M/X+C
+         lMGZs6QmrBGm5ilkkWaaDTUjZf43rLz4UJBLZUC/w6DSnx3WhfIdl1P9MIln8Qp0inM5
+         FkiA==
+X-Gm-Message-State: AFq9FYKjvWjRaaaJh4P5MpJbZg9iLB77/a/sPMwaDsciFgshH9ogjj3E
+	ujoDI8Uw6YaJeasi+TmGZEKRoPKdknBi6FA6V05/++MyNHLViWv+hB0RIW+mSBzO
+X-Gm-Gg: AYBFou0CVRQV7cguioz5CJIm+hx4cpRYjyVDLOsSD4VutOPH52DidnN93GKzng4ZXZK
+	2hFBHBiM13IrfkDm6dz+m9wnjAhNXxM7iKQ0cinDDE346km4tL64QnTZRx0Nx3hMiiaaLvg3/1G
+	6fWjUSiUPAFUm9C4d5fBpHRix+Pa8YdrNgnKr/I9nqmdgO8FHtApLYXcnHMRs42yoVNofoIxQM1
+	u8M+AT5QYRHV+v7NrqKfTLh2ItRPn9+vmBnc8Y5L+gQlvTpYUef5domPrHiwlXTl3ClFqDHE89U
+	ZhNuv3Rx/Y2brr3Q3dbL/uAD5up+nB02r6yEYsWWmDDtQVfl3JB76ApC6OMhQ/vjOZRKYFPsYpQ
+	Nwyrbp+eiML+kjg98V2YPSEhHAuQp2VVJySxvYulrxni+Z0z6VsBN7+jjWfdHb8yh2OepqhCTWL
+	nQtGrWldCnXk8AiwLjQZGAUCc83QTMjnIPzAiCzfKjWeKhRZWtm9k5gVRGoBfccd/5YUGKbCsfq
+	rsTCIxh6Dt9yOkFb7LYVdqa+jhGLguoxMS5+jGPJaybc86WTmZ50sqGlKgYCBt6elOto7psXO5i
+	NCH01eqxL0jifv9XhjTx9FMtHaGXfMZwstbEkvkXIiZ2HRZHaX8J13Qj2vWW06A6PFtQGrmmlUh
+	/+b496Dk=
+X-Received: by 2002:a05:690c:6e87:b0:8b0:ea29:c543 with SMTP id 00721157ae682-8b2b658dfdamr48293017b3.10.1793578282295;
+        Sun, 01 Nov 2026 16:11:22 -0800 (PST)
+Received: from Xinshengs-MBP.attlocal.net ([2600:1702:7d20:7d20:90c2:3933:d321:134f])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b2b714bd57sm43161587b3.23.2026.11.01.16.11.21
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 01 Nov 2026 16:11:21 -0800 (PST)
+From: Xinsheng Zhu <xinsheng.zhu.ny@gmail.com>
+To: netdev@vger.kernel.org
+Cc: linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	oliver@neukum.org
+Subject: [PATCH net-next v3] net: usb: cdc_ncm: reject short GET_NTB_PARAMETERS responses
+Date: Sun,  1 Nov 2026 19:11:14 -0500
+Message-ID: <20261102001114.38144-1-xinsheng.zhu.ny@gmail.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,114 +99,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+usbnet_read_cmd() returns the actual transfer length, but cdc_ncm_init()
+only checks for negative errors when reading the NTB parameters. A short
+response therefore leaves the missing bytes zero-filled, and
+initialization continues with parameters that were not supplied by the
+device.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+CDC NCM 1.1, section 7.2.1, Table 7-3 defines a 28-byte NTB parameter
+structure. The pre-errata structure also contains 28 bytes: NCM 1.0
+Errata 1, Issue K.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Require GET_NTB_PARAMETERS to return the complete structure before
+continuing initialization. Return -EIO for short responses, including
+zero-length responses, and preserve negative errors from
+usbnet_read_cmd().
 
-- [High] The commit message says: 'These legacy classifiers have fixed
-  forwarding behavior, including query flooding which excludes the IMP…
+The issue is theoretical and was found by manual inspection of
+usbnet_read_cmd() callers with LLM assistance.
 
---
+Signed-off-by: Xinsheng Zhu <xinsheng.zhu.ny@gmail.com>
+---
+Changes in v3:
+- Target net-next and drop the Fixes tag, as requested by Andrew Lunn.
+- No changes to logic since v2.
 
-net: dsa: b53: Enable legacy IGMP snooping controls
+v2: https://lore.kernel.org/netdev/20261011035150.53315-1-xinsheng.zhu.ny@gmail.com/
 
-This enables the IP-layer IGMP classifier (bit 3 of the global management
-configuration register) on BCM5325E, BCM5365, BCM5389, BCM5397/5398 and
-BCM63xx, which were previously skipped in b53_enable_mcast_snooping(). On
-BCM6318 and BCM63268 it also clears the IGMP redirection enable to select
-snooping mode. BCM5325M and unidentified BCM5325 variants remain excluded.
+ drivers/net/usb/cdc_ncm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-> index e54f6d4d1f7bb..957a1501d3f49 100644
-> --- a/drivers/net/dsa/b53/b53_common.c
-> +++ b/drivers/net/dsa/b53/b53_common.c
-> @@ -841,12 +841,29 @@ int b53_enable_mcast_snooping(struct b53_device *dev)
->  	u16 val16;
->  	u32 val;
->  	int ret;
-> +	u8 val8;
->  
-> -	/* Older switches use different IGMP controls, not HL_PRTC_CTRL. */
-> -	if (is5325(dev) || is5365(dev) || dev->chip_id == BCM5389_DEVICE_ID ||
-> -	    is5397_98(dev) || is63xx(dev))
-> +	/* BCM5325M snooping uses the mirroring engine instead. */
-> +	if (is5325(dev) && !is5325e(dev))
->  		return 0;
->  
-> +	/* Older switches classify IGMP in the global management register.
-> +	 * They do not provide the separate MLD controls of newer switches.
-> +	 */
-> +	if (is5325e(dev) || is5365(dev) ||
-> +	    dev->chip_id == BCM5389_DEVICE_ID || is5397_98(dev) || is63xx(dev)) {
-> +		ret = b53_read8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, &val8);
-> +		if (ret)
-> +			return ret;
-> +
-> +		val8 |= GC_IGMP_IP_EN;
-> +		/* Disable the separate IGMP redirection mode on BCM6318/63268. */
-> +		if (is6318_268(dev))
-> +			val8 &= ~GC_IGMP_RED_EN_6318_268;
-> +
-> +		return b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, val8);
-> +	}
+diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
+index 19db5a668dcb..5715c4bf732f 100644
+--- a/drivers/net/usb/cdc_ncm.c
++++ b/drivers/net/usb/cdc_ncm.c
+@@ -524,9 +524,9 @@ static int cdc_ncm_init(struct usbnet *dev)
+ 			      |USB_RECIP_INTERFACE,
+ 			      0, iface_no, &ctx->ncm_parm,
+ 			      sizeof(ctx->ncm_parm));
+-	if (err < 0) {
++	if (err != sizeof(ctx->ncm_parm)) {
+ 		dev_err(&dev->intf->dev, "failed GET_NTB_PARAMETERS\n");
+-		return err; /* GET_NTB_PARAMETERS is required */
++		return err < 0 ? err : -EIO; /* GET_NTB_PARAMETERS is required */
+ 	}
+ 
+ 	/* set CRC Mode */
 
-[Severity: High]
-The commit message says:
-
-  These legacy classifiers have fixed forwarding behavior, including
-  query flooding which excludes the IMP on BCM5397/5398 and BCM63xx.
-
-The message describes this as fixed hardware behavior. Isn't it actually
-something this patch turns on?
-
-Before this change, b53_enable_mcast_snooping() returned early on
-BCM5397/5398 and BCM63xx, so GC_IGMP_IP_EN stayed clear. IGMP general
-queries to 01:00:5e:00:00:01 were then forwarded as ordinary multicast.
-The IMP has PORT_CTRL_RX_MCST_EN set, and the bridge never installs MDB
-entries for 224.0.0.x, so those queries reached the CPU.
-
-This path now runs unconditionally at setup:
-
-  b53_setup()
-    b53_enable_mcast_snooping()
-      val8 |= GC_IGMP_IP_EN;
-      b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, val8);
-
-On BCM6318/63268, snooping mode is also selected explicitly. With that in
-place, would queries from an external querier on any switch port stop
-reaching the CPU on these chips?
-
-If so, these cases look affected:
-
-  - the bridge can no longer learn multicast router ports or detect other
-    queriers from the queries it receives
-
-  - the host IGMP stack on br0, or on standalone user ports (for example
-    an igmpproxy upstream on a WAN port), never answers general queries,
-    so the upstream router would expire the host's memberships after the
-    group membership interval
-
-  - on standalone ports, where the port VLAN mask only allows the IMP, a
-    query flooded excluding the IMP would reach no port at all
-
-This patch carries a Fixes: tag and would likely be picked up for stable.
-Should BCM5397/5398 and BCM63xx keep returning early until queries can
-still be delivered to the IMP with the classifier enabled?
-
-> +
->  	/* IGMPv2 and MLDv1 reports use the group's destination MAC. Once
->  	 * the first listener is offloaded, ordinary multicast forwarding
->  	 * can keep subsequent reports from reaching the bridge CPU.
-
-[ ... ]
-
+base-commit: 4dd16e31135ea8437a720222df34e8745f385d6d
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261028235100.3892374-1-florian.fainelli%40broadcom.com
+2.54.0 (Apple Git-157)
+
