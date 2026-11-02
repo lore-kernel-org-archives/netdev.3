@@ -1,78 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.238.174.39
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793654887;
-	b=iaDEBwprcF5zL2A2oQbh8rCxdkkB4lJiIOG7+uao7dfOxHHkMlH+JnP50YxFuTm0GV/a
-	 Y5W1sUKAqAXd3dlYLQi5Rcu/HZlBBrDiJo+JYsNAGDKF4igNYCOf4ZXTJDrLn57NvUhQ4
-	 lp2EPWGheuZPqtuqS3qUPFkVW023EeR7MijFR7GX8xFk6ma52asTROq+p0t0abhXTzaBw
-	 m/vNhJlhP8NV+zPhQLR+zfENaJ+qirPesYIbTZEd/pWqanY9TTboBe+r8bR9FgLyYgiRD
-	 OkYvNSou2qH78o9qW0QffK1Dy32WOPxHQGKWZFZBWxum9CX1bNm6z9yZjhLjGSoCABQ==
+	t=1793654912;
+	b=v7RLKRRJH5PcXmH+nSjdNm8KshuOZ6Gm33yno3YKM6nIO1OT6cWgXM++h4hfhG+SVr+s
+	 D0RuWlBDPi5wZUurj6ycB/sUzig8wORSYzrOmG741u6dq1Wv202u7NW/o85iq573ZKZQE
+	 cpIkTcQ4w64jsrdUSgOOef8HAYzGAIl5qApjg/TX6eJrp2OAxPaJgHT5JOwSZ9dNLi30T
+	 fO3XR898MAs3x50+QcKeElEi22/A49V+LZtNQfGrfdBYeCtDaUfH8CYGih6YQDPDB2aG9
+	 8XgbsPrC5zHwbV572cYIyxRNBq+thp03ghpqhoVATWT/M2eoEJNX76C4PC6nXbZ41Cw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793654887;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:Date:
-	 From:To:cc:Subject:In-Reply-To:Message-ID:References:MIME-Version:
-	 Content-Type;
-	bh=NCltCAZ55I+rnPadfIItMefAN7VtIwIpWZXQP+ldr0c=;
-	b=yYkHIBn6spSkifEgcO5XVtNeNfKfIa0lnAcRZ9pl6Fi9vQ7ekAvLM1ai+ANM4/jHBnd9
-	 kOOOuX9D32DAIj/hZY+baU0O3FFY+fQrXcz5pWpfJag9t2GgdTUQsz7gOk0/6iV77LPPC
-	 vRCM/W7i/a68cjVpAM/d3AO/CNc2rvkV9PIZkwXFN/JVoFnZpdHq7EXmO7sy4nAjfUvK+
-	 7b/kbCjf3HmQ29OtwoUI7TLGVSokA2oNyqFytYJjcHv47u6q9JM5cEBYzbWhA8zKOMVDL
-	 bHYAYnC+l5zAFRd4pN/ADhYpJTAZUYpT88eaUnMiQBe2wRVXOTrAVsN8fnw9O9opJKA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793654912;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=D0L8YmXUsy3VAr5yASjqxojAgTx8Bq8rChpwYZFvnlaTJ2Glmq2O/YEItxYxmDuehNNL
+	 XQz/28h5adw0tUTaftG2/mOdjM/uAJFKfjw6UzyTHPIQSAclOA6zJyblqLdOrZ8Ig/cc0
+	 Ah80CQqc1jYo2CD9o4WDFK+gCAHfhJdRSvT0oxJAaWVfLK/t6XjkbjhZUWHbRYjt9ZFQb
+	 at/5FqGirZc9GOgC0BMVPut2Lkwf8QKjgdKDZOGqbZdID46R+C+0Qj9mNhC9tON+SWAqz
+	 GiZMx2bHwo7wIz5aG/rlHmAAKHMwoxPOcKkhzccTf48DjoekjVOntP3Cwzfe4vQhYnw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=ssi.bg;
-	spf=pass smtp.mailfrom=ssi.bg;
-	dkim=pass header.d=ssi.bg header.i=@ssi.bg header.a=rsa-sha256 header.s=ssi header.b=FO3VU9rf;
-	arc=none smtp.remote-ip=193.238.174.39
-Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Qe5/Svbh";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89BA606A326;
-	Mon,  2 Nov 2026 21:28:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A89BA606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFA7606A324;
+	Mon,  2 Nov 2026 21:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key, unprotected) header.d=ssi.bg header.i=@ssi.bg header.a=rsa-sha256 header.s=ssi header.b=FO3VU9rf
-Received: from mx.ssi.bg (localhost [127.0.0.1])
-	by mx.ssi.bg (Potsfix) with ESMTP id 94C13212A9;
-	Mon, 02 Nov 2026 23:28:02 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
-	 bh=NCltCAZ55I+rnPadfIItMefAN7VtIwIpWZXQP+ldr0c=; b=FO3VU9rfZYUb
-	es20i4d1bQHHN5QXCH3FbEj6yDzuu5chZ43YlVP9/DUdgA9PRcCRk7l3KJQRDF/c
-	kyQWb2IZoNp3+elObjoW2E1mrEn3CSw005kJQQjcGJ/k13wlzeIqWYI2XelImHUj
-	tCpv4ojIdr4tsne4x3LmlfFX6Iv3NO+fiLKg8g18O/AIKYyoHIsLEfO/jT4XldMj
-	w7pRaCh1bMLxUt3WJWhWB044WIv0PrNNr3G25gZS70jQTWUDkpfaEBI+zeDWfWMl
-	Ayt6sK2iU6Zw2fYzFnHS4a0u+EskTmfySRjnFdSd3ARmnO8kfOi6g3OXMfBEq5Lc
-	gnGnifHOmAF+HZ2nli9nANUb8JWFAZynUiIXTK1EW4sLieefrlmVIGJrsF4aNbkY
-	LIxxE8vUjTCyFupbDKqQskl8kj7DjAvQ4UWBeE4OiOZ41hXZ0RZ6z/BhCVa6SzYi
-	b2VOL+FcqYaS/Dw3C8sNStb6xN71D2GLjGIM7G3egE646szgwf5Zfc6Q/GwxYMWD
-	B45+rrduPbCfAVETKkMju+gvWOeAYYMf2p+7II3uAiPgc5tHGV6kzCQtCFsfHz6+
-	dQ1MCzaja9ScihE46Gi7uDNKA1WGPc+htK4ACMpAGy0VH3n6cootRtrDZfUlkGCW
-	6gayIY0e4QdcSs1ZLUbFr287qyPr/n0=
-Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
-	by mx.ssi.bg (Potsfix) with ESMTPS;
-	Mon, 02 Nov 2026 23:28:02 +0200 (EET)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-	by box.ssi.bg (Potsfix) with ESMTPSA id D94FF60538;
-	Mon,  2 Nov 2026 23:28:01 +0200 (EET)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 6A2LRwG0120648;
-	Mon, 2 Nov 2026 23:27:59 +0200
-Date: Mon, 2 Nov 2026 23:27:58 +0200 (EET)
-From: Julian Anastasov <ja@ssi.bg>
-To: Star Chang <starchang@google.com>
-cc: johannes@sipsolutions.net, netdev@vger.kernel.org, dsahern@kernel.org,
-        idosch@nvidia.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-        linux-kernel@vger.kernel.org, wangroger@google.com
-Subject: Re: [PATCH net v4] net: Fix Hole-196 vulnerability by dropping
- unicast ARP/IP in L2 BMC
-In-Reply-To: <20261102070552.3516567-1-starchang@google.com>
-Message-ID: <0f9ce5de-4e1c-52a3-1bee-aecb1cd836db@ssi.bg>
-References: <20261026150539.1357037-1-starchang@google.com> <20261027015619.1745984-1-starchang@google.com> <5c1fe870-39ff-e83e-e479-0e1f0fed6a83@ssi.bg> <20261028061644.2997812-1-starchang@google.com> <f631e178-d9ec-f335-9163-c44a9e6c58af@ssi.bg>
- <20261030030715.604215-1-starchang@google.com> <65cf2338-7bb4-3151-f3b1-ef171bb5723b@ssi.bg> <c2780bb291244cf32c1dbda63f0dcf594d22da30.camel@sipsolutions.net> <20261102070552.3516567-1-starchang@google.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qe5/Svbh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DBA91F00A16;
+	Mon,  2 Nov 2026 21:28:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793654912;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Qe5/SvbhKKwLWj5mfyz5oAv5inKcfZhSP0OYWBMm88v9+hzdwOTsr7Jr4Sy2umJpG
+	 HH2KGPgc5qopGZZu3kEyvdCeDHTEQLkKzNew7Z6L+s7hllfw+UeqExAz/IQ5UJtXef
+	 2xTFkNm6eS7h6RXsoH3f6fXe0yTKThDI+7zgWkaHuXb54bJYVq/sMoXTGQewui6m6P
+	 dUvDRWT0LPLijoGZM9maAAXyiSKwDFaQTkSXrpoM8Hfuq2KvMBaMAevNoBQW46rN6t
+	 Rih2qHeRosl/Xt0AAq0fHkLrrlYZuETLMsqfm02fRTtAvPZyUOZRGxYf8Cf/L0duBK
+	 L2WshtVfSrrbA==
+From: netdev-bot+sinfo@kernel.org
+To: Coia Prant <coiaprant@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, Jiawen Wu <jiawenwu@trustnetic.com>,
+ Mengyuan Lou <mengyuanlou@net-swift.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Heiko Stuebner <heiko@sntech.de>,
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+ Fabio Baltieri <fabio.baltieri@gmail.com>, netdev@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3 0/2] net: phy: fix PHY interface mask
+ initialization and XPCS usage
+Date: Mon, 02 Nov 2026 21:28:30 +0000
+Message-ID: <179365491082.3286.2704718831529133016@kernel.org>
+In-Reply-To: <20261102212506.3348537-1-coiaprant@gmail.com>
+References: <20261102212506.3348537-1-coiaprant@gmail.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -82,67 +69,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="-1463811672-919739469-1793654879=:61730"
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi!
 
----1463811672-919739469-1793654879=:61730
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-	Hello,
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-On Mon, 2 Nov 2026, Star Chang wrote:
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-> Hi Julian, Johannes,
-> 
-> Thank you both for the great discussion and perspectives!
-> 
-> Putting the two points together gives a very clear and coherent picture:
-> 
-> 1. Julian correctly pointed out the real security risk with Hole-196:
->    Attackers can abuse not only unicast ARP replies, but also broadcast GARP
->    announcements (sip == tip == gateway_ip) to poison peer caches in a
->    shared-key network.
-
-	The GARP request is one of the possibilities, the problem
-is that any broadcast request (not just GARP) can poison the cache,
-so by setting the flag and skipping the neigh_event_ns and neigh_update
-we will ignore any changes of the hw addr.
-
-> 2. At the same time, as Johannes reminded, Linux already has a dedicated knob
->    for that specific broadcast behavior: `drop_gratuitous_arp`.
-> 
-> Looking at the existing architecture, the two knobs complement each other
-> naturally:
-> - `drop_unicast_in_l2_multicast`: strictly enforces the L3/L2 boundary by
->   dropping unicast IP and unicast ARP replies (sip != tip) inside L2 BMC.
-> - `drop_gratuitous_arp`: drops broadcast GARP (sip == tip) without tangling
->   broadcast filtering logic into the unicast knob.
-> 
-> This means users defending against Hole-196 can achieve complete coverage
-> by enabling both knobs on the wireless interface, without needing to overload
-> `drop_unicast_in_l2_multicast` or change core neighbor learning behavior.
-
-	The DROP_GRATUITOUS_ARP check catches sip == tip = GWIP but
-not sip = GWIP, tip=VICTIM_OR_OTHER_IP broadcast request.
-
-> 
-> This also means [PATCH net v5] (which dropped IP changes and strictly filtered
-> non-GARP replies) is architecturally aligned. We can document this dual-knob
-> recommendation in ip-sysctl.rst so administrators know how to fully secure
-> shared wireless links.
-> 
-> Julian, Johannes — what do you think about this unified direction?
-> 
-> Best regards,
-> Star Chang
-
-Regards
-
---
-Julian Anastasov <ja@ssi.bg>
----1463811672-919739469-1793654879=:61730--
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
