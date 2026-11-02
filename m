@@ -1,114 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793601808;
-	b=opnyAsSTXBMVo7bDGPj7YaBbDmDdneZLp1Y10TG+zrEMqFtKW/5EIGrkYdvPRhgnbrZc
-	 soZuKrUBr2eTP/mdDmM3dWqdHWwISPX30UGQXLBPl9B+JNtUh30ytvjq1TvU/Egd19RUE
-	 zerF8mkigmNdodnRYGncEYu11S4rlQoJEWR8LPyjjAnrKvmTmztKOrLz8OUtjQhoD8pvL
-	 +XaxS1RGTYISGNK9JDB4WVc4zzH4UKfBSvAjd7QeNoD9zq3Mp67V9kl02GI3aSgsMBwi8
-	 IKIGV7MR/oyIx+NwaUtMfO2cv2iklRq/QQ5nLH9tKKwzkth2N9rdj5FGvgHJ4kulVHw==
+	t=1793602171;
+	b=PxKBgFY7fmTrH/url7ZQjReYOPZHJkn8eHT0sl8v5fktCS/Tfxw7dNENa6dTSFgwakKX
+	 WYZX/a9nhpjYHxNs5KsudoijZjXf/Z1ACamAmkKuk9l/W4VcR6a/VnyrqBAmpuPT6YKOH
+	 zmGM77LPnj1dhsV8BadeFGsHmLTtGP3ZhNvnXmE736RWnsqQBbPC6piBk0PskgaZQDTGD
+	 haYOlS6xBK1R3dU8ArsdxjMnpafu9vajs1aR6lZGpfEl0U1DgYH4N9AE/jqNB/OEuygyM
+	 M8aanTdQe3zRq/tHk+8K8j/D8/08gwjZI1+xf/XhXkTwNSVz4FxqwDlu8yOxMtnCGsQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793601808;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793602171;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=cch0bi9+NbFtuaXErBFOK272My4N6BW/oY3L9VqLD5s=;
-	b=GvdPy7LYMZqBZekAlIUgAgiJ5Bv8HDbGeWRjWOwnU8bqpIO8HcsiXma9/53FmFYaqZw1
-	 TXnz11oDRlaw5GDDOp3eDo+4ns3qYWSBHW2MdZKH+ndTJbKqg5Mv4M4QvnettzaOexWxV
-	 L7uo+d8sbiutwnRWong6rLxIkpUB83vMALral5xkh181gSV9l7J77b3RHVNJswDyM9xR2
-	 osPhi5ozNck8OGlkGnniZ92080SrbAayvQVtT2bHC0fC/Qx6X+2mtOjmgU080325+3nBi
-	 8QIsMk3yIBVKldU6PTJ2TdkTcnvfdiNAa5NCjbaSV+JVjsj121bHwsqXm7xxwP+jF4g==
+	bh=6VjuU2aTLmacVA9KDoSsRlNxzT6VBc/2/KWdoZzBwEw=;
+	b=FQZdxMKTFaC5k+k4K0JK0NO+6nEgYtwieNsUM0DFxBw2kx34zn75az5Jd9JAZoecjiN4
+	 IiNBkGxYOPlt0LDh1k72t3MvmCjrWobrndiOEMQRd3JPeitz8U+VIoMnoFuzSqMzsAvPz
+	 Z2ogn6ErpcE9NcomCai/R3oH5XEkHtydNj9pTcti3pN0NtVNb8SBx+DSQsvbwR+TBEoFX
+	 JF4XrzZ4j1Ee+OtgooY0G7iQaSkZzPZit8miEvmktBVzJQx7va1QIqDW+pcQkgTr2asTu
+	 0uR/P5D3Sv/W0l+IJnyIswTMXs/z+2ty+sd01fnto12PXvEAfLV/1a94ClbcIvW0sdQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Fd2IgLOb;
-	arc=none smtp.remote-ip=209.85.221.48
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Rfka8TN9;
+	arc=none smtp.remote-ip=209.85.214.182
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DD2606A326
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 06:43:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0DD2606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC00606A326
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 06:49:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1CC00606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Fd2IgLOb
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-48df8fe8513so2190236f8f.0
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 22:43:27 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Rfka8TN9
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2eb0f1b592bso8547545ad.1
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 22:49:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793601806; x=1794206606; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793602170; x=1794206970; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cch0bi9+NbFtuaXErBFOK272My4N6BW/oY3L9VqLD5s=;
-        b=Fd2IgLObu+O8EIDuwqEXSbT+Lmt6lkFZ1vGgxdrQyksTyVsALvAxVk34TZsr8GH3zz
-         PPGYvfq9SYbmsff5dWp45lus2GhoaISJMbYsdnZha8HNfZaY34MB7FP0S9OMebo1SWRX
-         DoZF3bkpBFxfSpvqhRT/elcXplgxaCDqUPOLsR5JfJ+kwObifDHqlgAW3lFxdoR+JXMG
-         7iv8IfRgEQZAI6nuskgCXTsP0D6+pudlZ15AW8IZRduFDjfUP3farFxaB5Dj48LMEr6C
-         OpMyu699mFDJR+dwZcmew/L6JtiMvIfDKLHz6EzHcMUAcYMf9OZc5gDZovNxBxaXPG7p
-         z0+g==
+        bh=6VjuU2aTLmacVA9KDoSsRlNxzT6VBc/2/KWdoZzBwEw=;
+        b=Rfka8TN97vWvPfkaIIflW761ov3ZlJdPvWet7UmMNTF4AoSczsdojaq8RakwlCbphK
+         OGgDQN7jTBLf8q66kN6g9Nss6Vp250lTk7KP4s7LMhNybbEz5bONT15VMHmd3y/gkPaP
+         JLmJ433k2CXcmo0liiOF55wXza2eAQqizr2tT0Sg3hXKq3zRklBKbOKcZDq7z7fwZj4w
+         xNh8xdBtAlmPMUejQeQlpe3nDQA+aMbdO1MbU0DcFAt4mKB9kYxVd1TaP82pW2RW0wwb
+         69clgU2OkKzwFMWxbkBAxjMo/QqiYPZmkBDr+8rSwd1rNXYqVnbOLpgFheNb+q0qfoYm
+         Xciw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793601806; x=1794206606;
+        d=1e100.net; s=20260707; t=1793602170; x=1794206970;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=cch0bi9+NbFtuaXErBFOK272My4N6BW/oY3L9VqLD5s=;
-        b=HmBfHQ0xatmw+dD35t0i1j2gHxl4o26F6d53SRSXNfR8Kn/Q6kXCUpF27+atFLdqeb
-         ANQ+sFCymipwStrlSAlViM9Yas89uUF78TUToJociZeE0rcNbx+1pBrs3gqZynDvHMc0
-         +P3oNCUxQUdbQzaJth97k70Jqrx2GD0FpRaNveF+9t+p78R20W8gegfzN5bgQyUuFWWU
-         CjoyaNKNzpX+g4icJf4+DxeRjXQiqHN3nhF25fYH5OTkyWMWWX25ryARYzz2m96F5EhF
-         0vXph2b0x+EYAl7/RSSghjOtsMRdo/QaGfnod9S+KXZC95hOg3yzNB2VMrRxiM+qwbdJ
-         d+aw==
-X-Gm-Message-State: APuU4Z/Bah1jgs/7RV8hTA+AYSWVspqRnr973JObGCFOKCMHseuraMBH
-	9Glz3STaygs4Gq9PwD9b+V6sYNZvcyZYmpQMZvV3ooh5Q4LkhQarq6W/
-X-Gm-Gg: AYBFou1grfz9x/oweZG+f006WsTydQ7l2WH35/oHOxDDLsBC5l0Agls3v+46uWPzJCE
-	6LXe/BVyg0lMzlz+JSVXZFrjGqE5cE3uF5O8jrrQLtdFFDMWcZjl7jMC0ZhH/fzlotX8pvgTsuh
-	u0LFhH/TF4/grsx0JszaDUmMM0qzaMziM1Y1WSNo1Ne4j91mXEycIJhWd7mHJvaG3n65ZRITc5R
-	Ou1wfocXyky+mwGKUybnH7PUFYxLlc2STt0tNoTQIUZuMkdGsiD/l5Gt4nTGBmR37e5p44N1+PL
-	ivnZVqVcjeJ/T4dytWuuaa4aAL3HMJ1E+puVOqCEhwv3AoUGqZv+2HJK8pEexPdg7d8AuRqb/dM
-	hY3r2opVvOFt7+f4pFFCKmI8WK1/HPgt+o8HwuzoWTAaUOM7eYDbRI8mMLWTRoCLVAm1OmG4Uho
-	szSUuDjojoAn6f76bOP1GO59i7I5y4zqFtrzBa92oSMb5lBv3AMHDoOfd7Dy0+7pgM2XWF3JIRq
-	ztjME5nUaYXb4PBuCe8myKQcMPMP9/BhWuhs94jSAVZphJKpI5vH9NS/+scvXmg/clF1CyaWBM3
-	5MGeMLfVTV33a50S9kfE1PoKDLK9KrD743YXWQ+JfPElaxVMng9XC0TwkoiR3NLisdOAKApItvK
-	thVpn/AouOUTh4akfsJSm46o6tGHLCrsWlb0NdeU4Z0CWh1u7EN74vX+X+eY5oSVRJRw3
-X-Received: by 2002:a05:6000:26ce:b0:48a:f454:3d4 with SMTP id ffacd0b85a97d-48e6e52a7e3mr19310220f8f.53.1793601805912;
-        Sun, 01 Nov 2026 22:43:25 -0800 (PST)
-Received: from center.jhjvjihww5qejoy14qwv1cc4td.frax.internal.cloudapp.net ([131.189.143.225])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71ba4ac6sm19305747f8f.52.2026.11.01.22.43.24
+        bh=6VjuU2aTLmacVA9KDoSsRlNxzT6VBc/2/KWdoZzBwEw=;
+        b=YNPqnoPWWNQ+2c3MBh3bIu/hr3UzLW/QVaJzyZhBOnMCjV90qyFpZUBEYqFO1Ip3XU
+         cOv1alTHpB0rwD1qKCZbSSWCVjV3AwH7TvV5vud/n0WbWzPCyy9eigPTvIJcKXGLeTCp
+         XV6vjmE3b/dlIo3t+kz0p7qajaUZvNROsAe4tFjFG3ELHQx5gi01ivkHeok+Wu47fRdC
+         U+0MKrLL5YoPcWUP3crWN/UHgPVlg4mHPSE8JCg8nwgD5smALPXrzM2ra1RxcwNfh5m+
+         9+Gup4PvZNG+q6gUfVbJhIBMWCn2NhU+cqcjKyruFMvZzmOTTkk7LVPa9jcRilUs1t2h
+         er3A==
+X-Gm-Message-State: APuU4Z9MS+iBOTyBSfHVUbBjdHfQJObPb5+WwQolZoZrrPFW/x+VkdTV
+	XHWEUpsDnu5nC7r9rprDDXRZAPx2cJ3edyWLkUU3sPT2cfegJtSooVc1CVeVhw==
+X-Gm-Gg: AYBFou1skc1iaIc+VS9MlpGt0dZcPx+2wdICh3IM6KQPrXOIAaxLw20iKEf11g59MuO
+	aDDpZFYxn/Ko7l49xPEKaAydgIIy8SnmgawIAhaeLTi/+hkk+bJqc6V9WS8aP0fPMmAHvPC1xip
+	dgqtwhuM1a7sngXF3oC9Ol4S35Wll9IOa6V6u2iapYxAfc5hm381JLz5eID9ejaKE72P5N/roSP
+	elmlQZb5JVQnZNEd99ZcekFItHRnA089hCtpFRcmlQVqy6ctMAZ3Xu7NPLAVgOB1u3f/PTmGqBt
+	N4t9M64cNrbgDwzqrnv1Tny2I3qKI5ARzwmbrHv1zh2qLOZJGJOZt2Hi31L1ygvXOwPH3alt6tH
+	PjHMQjEfWHi2A/UWK/XVnEFEHyn+UBEQM5K0BTb9jNeIfObR0xx8GVK2YS3pGb7n7yPGRaZBHX7
+	ySradClEo8fdK77ygo0JwSTur2A4DFdinyz57xzy4PwKhmedZeifOclCzf6zlJT95ziLremeVmO
+	qJf3jcAHtcP19V9aF4QiUdpi3KkaC1aPL033DsYkUPVU9GtjYnV7XqioDqPGLVmTNOUCH6Hxtfp
+	VOg0LEWWMZsVZNMLpGTpNMcEdnPfRLvfOE2qb8rBTum/lgJnikwwy41ARiMRLxoYjRrtcWwNkNV
+	tBorE4b18dJgCr0Mx52CsCE+Z5Ijywz4yNhGPK1S3WDS77OH73xTMnDIbxgv3ClLxPi6cMtkyRQ
+	==
+X-Received: by 2002:a17:902:ef08:b0:2e5:ee16:2f8c with SMTP id d9443c01a7336-2eb36426e30mr90562695ad.16.1793602170134;
+        Sun, 01 Nov 2026 22:49:30 -0800 (PST)
+Received: from coder-ast-ast-dev-ml-0.tail2dda0.ts.net ([153.61.198.240])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb392965fesm23212825ad.59.2026.11.01.22.49.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 22:43:25 -0800 (PST)
-From: Orgad Shaneh <orgads@gmail.com>
-To: Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wei Hu <weh@microsoft.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Long Li <longli@microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
-	Aditya Garg <gargaditya@linux.microsoft.com>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Muhammad Falak R Wani <falakreyaz@gmail.com>,
-	Jesse Brandeburg <jbrandeb@kernel.org>
-Subject: [PATCH net] net: mana: fix XDP_REDIRECT of pre-allocated RX buffers
-Date: Mon,  2 Nov 2026 06:43:24 +0000
-Message-ID: <20261102064324.806414-1-orgads@gmail.com>
-X-Mailer: git-send-email 2.47.3
+        Sun, 01 Nov 2026 22:49:29 -0800 (PST)
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	dsahern@kernel.org,
+	idosch@nvidia.com,
+	bpf@vger.kernel.org
+Subject: [PATCH net] ipv6: Check the Home Address option again before its address is used
+Date: Mon,  2 Nov 2026 06:49:22 +0000
+Message-ID: <20261102064922.2636027-1-alexei.starovoitov@gmail.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -120,147 +102,120 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-mana_pre_alloc_rxbufs() fills the RX rings with plain pages from
-dev_alloc_pages() (from_pool == false), but the rxq is registered with
-MEM_TYPE_PAGE_POOL and mana_run_xdp() builds every xdp_buff with that
-rxq info. mana_rx_skb() frees a !from_pool buffer correctly on
-XDP_PASS, XDP_TX and XDP_DROP, but a redirected buffer is freed through
-its memory model: __xdp_return() hands the plain page to
-page_pool_put_full_netmem(). This triggers the WARN in
-include/net/page_pool/helpers.h, breaks the page refcount, RX refills
-fail and the queue stops receiving.
+From: Alexei Starovoitov <ast@kernel.org>
 
-The pre-allocated buffers fill the whole ring of every rxq created by
-an MTU change, by ethtool -L / -G and, since
-commit 730ff06d3f5c ("net: mana: Use page pool fragments for RX buffers
-instead of full pages to improve memory efficiency."), by every XDP
-attach and detach. So on current kernels the first ring of redirected
-packets after attaching an XDP program always hits this.
+ipv6_dest_hao() checks the Home Address option and sets IP6CB(skb)->dsthao
+to the offset of the destination options header. Later mip6_addr_swap() and
+mip6_destopt_reject() call ipv6_find_tlv() with that offset and use the 16
+address bytes. They assume that the same header is still there.
 
-Reproduced on 7.2.11, and on 6.12.113 after ethtool -L, on an Azure
-MANA VF: an XDP program that redirects UDP to an XSKMAP with an AF_XDP
-socket in copy mode gives WARNINGs at __xdp_return+0x249 (stack
-__xsk_map_redirect, xdp_do_redirect, mana_run_xdp, mana_poll), then
-the queue stops.
+But the seg6 and ioam6 lwtunnels, the End.B6 actions, ipv6_rpl_srh_rcv()
+and BPF lwt progs move or rewrite the IPv6 headers and keep IP6CB(skb).
+Then ipv6_find_tlv() parses other bytes. It returns when the type matches,
+before it checks that the option is inside the header. Nobody checks the
+length of the option again. Thus mip6_addr_swap() can write after the data
+of the skb. mip6_destopt_reject() can copy that memory to an xfrm report.
 
-Give each rxq a second xdp_rxq_info registered with
-MEM_TYPE_PAGE_SHARED, the model these buffers had before the page pool
-was added, and use it for buffers that are not from the pool. Those
-buffers are already DMA-unmapped by mana_refill_rx_oob() before XDP
-runs, and page_frag_free() frees them whatever their order. Allocating
-the pre-allocated buffers from the page pool instead would need the
-pools to exist before the rxqs and to outlive them, a much larger
-change.
+In ipv6_find_tlv(), check the length of an option before its type. The
+returned option is then inside the header, and the header is inside the
+linear data. In both callers, ignore an option with a length other than 16,
+as if ipv6_find_tlv() found none. Then the ICMPv6 error goes to the source
+address of the IPv6 header, and the xfrm report has no XFRMA_COADDR
+attribute. Nothing changes for a header that ip6_parse_tlv() accepted and
+that is still in its place. For the other callers an incomplete option is
+now absent:
 
-Found, fixed and tested with an AI coding assistant (Claude Code).
+ - ip6_find_1stfragopt() and mip6_rthdr_offset() can return another offset
+   for the fragment header or the xfrm header, also in a forwarded packet.
+ - calipso_skbuff_optptr() returns NULL. netlbl_skbuff_getattr() and
+   netlbl_cache_add() then see no option. calipso_skbuff_delattr() returns
+   0 and the packet continues unchanged. Today it returns -EINVAL and
+   SELinux drops the packet. It already returns 0 when an earlier option is
+   incomplete. The receiver drops such a header in ip6_parse_tlv().
 
-Fixes: b1d13f7a3b53 ("net: mana: Add page pool for RX buffers")
-Signed-off-by: Orgad Shaneh <orgads@gmail.com>
+The code that moves the headers still does not reset the offset or the
+other fields of IP6CB(skb). If the bytes there look like a header with a
+Home Address option of length 16, both callers still use its address.
+
+The first tag also covers ipv6_find_tlv(), because its early return did no
+harm before mip6_addr_swap(). The second tag is for mip6_destopt_reject().
+
+Fixes: 793832361fe7 ("[IPV6] MIP6: Revert address to send ICMPv6 error.")
+Fixes: 70182ed23d25 ("[IPV6] MIP6: Report to user-space when home address option is rejected.")
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 ---
-Tested on an Azure D2s_v6 MANA VF, net at cb284914e749 with and
-without this patch (same config), XDP program redirecting UDP to an
-AF_XDP socket in copy mode on queue 0, 25k pps offered right after
-attach:
-- without: 41 WARNINGs at __xdp_return+0x252, 0 packets relayed,
-  hc_rx_discards_no_wqe 301470.
-- with: no WARNING, 25k of 25k pps relayed, 0 loss; also over three
-  more attach/detach cycles, two ethtool -L combined 1/2 cycles and an
-  MTU 4000/1500 change before attach. MemAvailable unchanged.
-W=1 build of the mana directories: no new warnings.
+ net/ipv6/exthdrs_core.c | 7 ++++---
+ net/ipv6/icmp.c         | 7 ++++++-
+ net/ipv6/mip6.c         | 9 ++++++++-
+ 3 files changed, 18 insertions(+), 5 deletions(-)
 
- drivers/net/ethernet/microsoft/mana/mana_bpf.c |  9 +++++++--
- drivers/net/ethernet/microsoft/mana/mana_en.c  | 11 ++++++++++-
- include/net/mana/mana.h                        |  5 ++++-
- 3 files changed, 21 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_bpf.c b/drivers/net/ethernet/microsoft/mana/mana_bpf.c
-index 7c55f8724441..494267b3069a 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_bpf.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_bpf.c
-@@ -78,7 +78,8 @@ int mana_xdp_xmit(struct net_device *ndev, int n, struct xdp_frame **frames,
+diff --git a/net/ipv6/exthdrs_core.c b/net/ipv6/exthdrs_core.c
+index 4a9748338cf4..764c694fb417 100644
+--- a/net/ipv6/exthdrs_core.c
++++ b/net/ipv6/exthdrs_core.c
+@@ -138,9 +138,6 @@ int ipv6_find_tlv(const struct sk_buff *skb, int offset, int type)
+ 		int opttype = nh[offset];
+ 		int optlen;
+ 
+-		if (opttype == type)
+-			return offset;
+-
+ 		switch (opttype) {
+ 		case IPV6_TLV_PAD1:
+ 			optlen = 1;
+@@ -153,6 +150,10 @@ int ipv6_find_tlv(const struct sk_buff *skb, int offset, int type)
+ 				goto bad;
+ 			break;
+ 		}
++		/* Some callers read the option, so it must be in the header. */
++		if (opttype == type)
++			return offset;
++
+ 		offset += optlen;
+ 		len -= optlen;
+ 	}
+diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+index a95b0351824f..d8203ebad882 100644
+--- a/net/ipv6/icmp.c
++++ b/net/ipv6/icmp.c
+@@ -343,7 +343,12 @@ static void mip6_addr_swap(struct sk_buff *skb, const struct inet6_skb_parm *opt
+ 		if (likely(off >= 0)) {
+ 			hao = (struct ipv6_destopt_hao *)
+ 					(skb_network_header(skb) + off);
+-			swap(iph->saddr, hao->addr);
++			/*
++			 * The header can have moved or changed after
++			 * ipv6_dest_hao() checked the length.
++			 */
++			if (hao->length == 16)
++				swap(iph->saddr, hao->addr);
+ 		}
+ 	}
  }
+diff --git a/net/ipv6/mip6.c b/net/ipv6/mip6.c
+index 6a16a5bd0d91..961567972411 100644
+--- a/net/ipv6/mip6.c
++++ b/net/ipv6/mip6.c
+@@ -211,9 +211,16 @@ static int mip6_destopt_reject(struct xfrm_state *x, struct sk_buff *skb,
  
- u32 mana_run_xdp(struct net_device *ndev, struct mana_rxq *rxq,
--		 struct xdp_buff *xdp, void *buf_va, uint pkt_len)
-+		 struct xdp_buff *xdp, void *buf_va, bool from_pool,
-+		 uint pkt_len)
- {
- 	struct mana_stats_rx *rx_stats;
- 	struct bpf_prog *prog;
-@@ -90,7 +91,11 @@ u32 mana_run_xdp(struct net_device *ndev, struct mana_rxq *rxq,
- 	if (!prog)
- 		goto out;
- 
--	xdp_init_buff(xdp, PAGE_SIZE, &rxq->xdp_rxq);
-+	/* A redirected buffer is freed by its memory model, so a buffer not
-+	 * from the page pool must not claim MEM_TYPE_PAGE_POOL.
-+	 */
-+	xdp_init_buff(xdp, PAGE_SIZE,
-+		      from_pool ? &rxq->xdp_rxq : &rxq->xdp_rxq_shared);
- 	xdp_prepare_buff(xdp, buf_va, rxq->headroom, pkt_len, true);
- 
- 	act = bpf_prog_run_xdp(prog, xdp);
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 6b7c027e497e..7547aeb3235d 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -2157,7 +2157,7 @@ static void mana_rx_skb(void *buf_va, bool from_pool,
- 		return;
+ 	if (likely(opt->dsthao)) {
+ 		offset = ipv6_find_tlv(skb, opt->dsthao, IPV6_TLV_HAO);
+-		if (likely(offset >= 0))
++		if (likely(offset >= 0)) {
+ 			hao = (struct ipv6_destopt_hao *)
+ 					(skb_network_header(skb) + offset);
++			/*
++			 * The header can have moved or changed after
++			 * ipv6_dest_hao() checked the length.
++			 */
++			if (hao->length != 16)
++				hao = NULL;
++		}
  	}
  
--	act = mana_run_xdp(ndev, rxq, &xdp, buf_va, pkt_len);
-+	act = mana_run_xdp(ndev, rxq, &xdp, buf_va, from_pool, pkt_len);
- 
- 	if (act == XDP_REDIRECT && !rxq->xdp_rc)
- 		return;
-@@ -2947,6 +2947,9 @@ static void mana_destroy_rxq(struct mana_port_context *apc,
- 	if (xdp_rxq_info_is_reg(&rxq->xdp_rxq))
- 		xdp_rxq_info_unreg(&rxq->xdp_rxq);
- 
-+	if (xdp_rxq_info_is_reg(&rxq->xdp_rxq_shared))
-+		xdp_rxq_info_unreg(&rxq->xdp_rxq_shared);
-+
- 	if (rxq->rxobj != INVALID_MANA_HANDLE)
- 		mana_destroy_wq_obj(apc, GDMA_RQ, rxq->rxobj);
- 
-@@ -3225,6 +3228,12 @@ static struct mana_rxq *mana_create_rxq(struct mana_port_context *apc,
- 	WARN_ON(xdp_rxq_info_reg_mem_model(&rxq->xdp_rxq, MEM_TYPE_PAGE_POOL,
- 					   rxq->page_pool));
- 
-+	/* The pre-allocated buffers (mana_pre_alloc_rxbufs) are plain pages */
-+	WARN_ON(xdp_rxq_info_reg(&rxq->xdp_rxq_shared, ndev, rxq_idx,
-+				 cq->napi.napi_id));
-+	WARN_ON(xdp_rxq_info_reg_mem_model(&rxq->xdp_rxq_shared,
-+					   MEM_TYPE_PAGE_SHARED, NULL));
-+
- 	/* Initialize the DIM work before enabling NAPI, so that a poll
- 	 * cannot reach net_dim() with an uninitialized cq->dim.work.
- 	 */
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index 71d726b1f784..11ceb5946ee0 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -420,6 +420,8 @@ struct mana_rxq {
- 
- 	struct bpf_prog __rcu *bpf_prog;
- 	struct xdp_rxq_info xdp_rxq;
-+	/* For buffers not from the page pool (from_pool == false) */
-+	struct xdp_rxq_info xdp_rxq_shared;
- 	void *xdp_save_va; /* for reusing */
- 	bool xdp_flush;
- 	int xdp_rc; /* XDP redirect return code */
-@@ -695,7 +697,8 @@ void mana_xdp_tx(struct sk_buff *skb, struct net_device *ndev);
- int mana_xdp_xmit(struct net_device *ndev, int n, struct xdp_frame **frames,
- 		  u32 flags);
- u32 mana_run_xdp(struct net_device *ndev, struct mana_rxq *rxq,
--		 struct xdp_buff *xdp, void *buf_va, uint pkt_len);
-+		 struct xdp_buff *xdp, void *buf_va, bool from_pool,
-+		 uint pkt_len);
- struct bpf_prog *mana_xdp_get(struct mana_port_context *apc);
- void mana_chn_setxdp(struct mana_port_context *apc, struct bpf_prog *prog);
- int mana_bpf(struct net_device *ndev, struct netdev_bpf *bpf);
+ 	stamp = skb_get_ktime(skb);
 
-base-commit: cb284914e749388eef402938bdb3115fe1f6d337
+base-commit: 714b7112017fc7f8b2afabccf562acdb12d2ea7d
 -- 
-2.52.0
+2.55.0
 
