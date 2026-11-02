@@ -1,113 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793612158;
-	b=fRhHzO3x/ZkEYEwx5zxsDfoYfIcBIeu+sVOSaVFbJDu6+qXlUAvLnSXQ1PFz1khWEn0l
-	 Lm0moHP/T0cB2Xoaahu1A6li6bt1/z8mFe1n33isUZdg3gTn1GUt+1uzSFYVp0NBF7IWb
-	 AW9zUvjol2y8o0nfZG40zVhYWSdLSJB9cxMVochXGk/XNWxjbC968Mwnp7V+XSDA4jhDA
-	 rGNAmcD8fwTSGrat5yg+sODX9ix9abdLqW23oBZCcFyLciuWG4TMdSO6txh/MNWh6NSrC
-	 3H8ivLr6t5g/uqRFcufWQPpQFWGIlCmFag1hbmAEZ63QbnzN430bWzIWKuSO5ZQARzg==
+	t=1793612360;
+	b=tpBLg87X7EbozDHMXEakqgrq14O0BsXPQKfGgDXuV9GEDkfLE8lqUju5RL46uB7b3Z1z
+	 qJQP/mWdxzkiEM4cCOdg0fPqI6I7U/II1N9F5FPiDeOsjMpjUgj3r5J/x25ha4zKM4XbT
+	 Mu/stizO5xnK7rHIyGfLPzs2PLeH6AYwReAhTM1Kkye+vBSAOeKgbOa+0bWEnVCXMPCmt
+	 lBjnNxh3txVSczlPaFQSjU0vETuN4DTFTCug6i5jXzIUaGg+UfIV6UoT3AG+4FgEkBFUU
+	 0D/JrbMiGQwffGJ5cz+N//Ku2ms2bal/HB60Im0dHVBqtRgVxsF4O7sW+vsDOwcGlBQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793612158;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=Mm9UAeiTDrhCY7oe9mnBBjHCOX4kZjsSHaPe1K0OWSw=;
-	b=WY14pizsgK6wQCzn7vjkHykFij1foc3msc79JWkOkE/HsuGnP6N1hKH7a4OmCnqBqAMt
-	 UjLChxy+Y41p7wMFA0PtMfQ27aApHLeoDpOEuIp3f5FI0AuxCsJaoI0gc7V6H4r8HhcHK
-	 Vc/pokAVl02x25gC/3SnpYFNvsRG2K9CT+IFNb8hq1/hNag2bBmocqeDII9oSzdu6ZFJN
-	 A0Jw6CEiNOHqwPxoUczFuG1BrjeBNO4aMcAWDNFymGxXQ6oHXmF1dLZ5hKD40XhrXvyzt
-	 +070/dbcK9iGu2nnyj89VOFklLwwtSRbm/D3yCHTgARETizoCPcya/R7O4ZTLsRuE7w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793612360;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=idDGnToHTI8V01eTL1ZKlhBmpecIfWRGMl5+8+8jY9k=;
+	b=xqybCVidy1HCmBMxiuf+QLXLcqdHZrHinJvT5KZ0+vivEgvvIHwqerei3r4ZPO8c4ATy
+	 3RDL8LTgfPWF01TgWMIBx+4SOoE8Cp7r2DWqr1DUbUneL4EGTb73gTqm3Re87XIIybrxC
+	 oO/T6fUXpWBeMD7lAXdo/9TF+0mlt3926kIGqtpVMw8efM29lDIGE32zRP9KFVx+IdX4F
+	 rCWHG3fwqFfpcQng04/Rci240Bhl8iPOL+QORIRnA2TFFz86DSYXK0OfBRjiIB88kQJc/
+	 1fuJohlMu8mHbyLRNaClOakXoGBi7nEsMSDGOhcYY58yPi+xuZrQ3giIye7el/ukfaA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UFTkJ+mv;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=nGt8834H;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=qq.com;
+	spf=pass smtp.mailfrom=qq.com;
+	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=VeHNBXJT;
+	arc=none smtp.remote-ip=162.62.57.49
+Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4BD606A336
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 09:35:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B4BD606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62AB606A327;
+	Mon,  2 Nov 2026 09:39:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B62AB606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UFTkJ+mv;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=nGt8834H
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793612156;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Mm9UAeiTDrhCY7oe9mnBBjHCOX4kZjsSHaPe1K0OWSw=;
-	b=UFTkJ+mvX0cSyL7Ru/Ychv8nd/tsyjr4F7N4I953A4u1L4VaNQXzJ2qpFhkAnClSBDjzeT
-	KVsPG/QVtBHzCgKP9q2Yi7TKljoYTf0KAWiMFebpZLFOBqMSM5cjJqkM+3YuMSBUMmYgXC
-	2lNQMWxGLMQrxzxzhLG42nbu2PC7bZg=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-562-jDWiMIyPPS-X8eiNgyprAA-1; Mon, 02 Nov 2026 04:35:55 -0500
-X-MC-Unique: jDWiMIyPPS-X8eiNgyprAA-1
-X-Mimecast-MFC-AGG-ID: jDWiMIyPPS-X8eiNgyprAA_1793612154
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a214a5f8a1so26120055e9.0
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 01:35:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793612154; x=1794216954; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Mm9UAeiTDrhCY7oe9mnBBjHCOX4kZjsSHaPe1K0OWSw=;
-        b=nGt8834HJ1051BE9IIkxb1iFxH6KWri6OHygXgQ9dIsLe7HCfs+dUJNAhiqrHDfG+F
-         dRLgQ32Al/xfeRt9FpMVJ/H5c4wR/74XwkDcukw7rqfh6JUElkHalS4iR1GklHni2HDc
-         c52cgMxwXRZD2piV7tXpqWUalyrzUJY6pXw4uRlTbQ0riCFVMwzUx/PM5+U4ZQwEXY4f
-         7W2SjjvFM5EoUXqHo7CKTHabky6ubWWdVV/6YDnimS/RVi2Ox7NgkRXujCzv75oJ6jGx
-         ehHpZiURKYBj4a+80alZXqMKmUpY3V3+7+C+iTRIg4vAYY3myREErjY7ZTq0yrDR5LAi
-         en2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793612154; x=1794216954;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Mm9UAeiTDrhCY7oe9mnBBjHCOX4kZjsSHaPe1K0OWSw=;
-        b=D6ThL6MUKUwC66PxVcaS5Q8N74eYgBdsL3MTqqSPtrCtnjWbAfUeI/ufrqbIdhLSFd
-         5Rh/5su1JWjZYgZNiKFgP7nV9AJRF7g4PkqtqKLFjDOeEKn0Gfi+3YP4oAAPNJ6sJVem
-         w8M57EcUZ53lO0RavOqJ70znnQ65Sw7CcqBT18sKV1yEMV3yfCxrE3I1ufz4o5QgSoBQ
-         AzT/xzZjbr7d0ZytA3MgLD4oH2L01T7jShqGAIHkjUCNJuOEaX1b+6LgS6UoX9rv8PHr
-         2OYMYkLl7wS4xR5IwiVSidXsJYxyJdYlE3j8uG6iLaMdfhwQ8cwtUKeKR03DYXlpIain
-         EPnw==
-X-Forwarded-Encrypted: i=1; AKwUvBzZssQoSuy2AOAJ9uh6x0f/17S7gPll0ToyIDly/CRS7aXTq6gtbJlNaUVRNVBMDeFPcdO22RQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKRvAXEcvw8PM94SEFxb5SurNNhWGGlr9/+oRZEnEeoZ41/b0B4
-	inGhDJAAki4YoD3guUTrmK6W430coeyRmL4rnngDCn0fcANzHNpxqQH4xV1siQPKYPn+DXluv9C
-	DcZB8ee4w/RG0lXyrwQQc7q0S/a/OHPfwsZIBRRZN5xhp9NNL9GCYsGcgAg==
-X-Gm-Gg: AYBFou1+FSqDjVOH+3iUSWiChBn5rIoOhUg3LwjFdNmlHEn3SvBrpiHKHe/GHW3B7oK
-	ntsJX7emXHo1fIllQXv7l5XQKrct6LRfRE4D6cVwQINNUl/DC/4xLssrVpwMwI19/w2TpWPNobZ
-	+co6wnx1X14CZifz79lIOBmfheCh7i1DQwjHQnzOVuvIewij1iPPx7X4hYhh2bLglNyRnctXR/4
-	5AYPU11kjb9UDtatUOO9+oA1BS3uCif6UUXaKjOyVdep6oKrafheqK28ud5osk/fZfNfCQ1nff/
-	ok6XB/5VLARaCXpU0sRvjtkdBoafS0ofPnkDP7QbftN0A7dq5xqSLFaoaxdxff/tzaG3dqoQAMB
-	s0btMgkceUwdwy7HFybRZ00QqB0n6z/WkZTB/M9BlUw==
-X-Received: by 2002:a05:600c:5397:b0:4a3:5991:719 with SMTP id 5b1f17b1804b1-4ac1899353bmr216599255e9.31.1793612154070;
-        Mon, 02 Nov 2026 01:35:54 -0800 (PST)
-X-Received: by 2002:a05:600c:5397:b0:4a3:5991:719 with SMTP id 5b1f17b1804b1-4ac1899353bmr216598595e9.31.1793612153380;
-        Mon, 02 Nov 2026 01:35:53 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1501:b100:9ea2:fd21:b361:8dab])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4abf6e63e0esm335169085e9.12.2026.11.02.01.35.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 01:35:52 -0800 (PST)
-Date: Mon, 2 Nov 2026 04:35:50 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Hemanth Selam <hemanth.selam@gmail.com>
-Cc: Jason Wang <jasowangio@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
+	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=VeHNBXJT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1793612353; bh=idDGnToHTI8V01eTL1ZKlhBmpecIfWRGMl5+8+8jY9k=;
+	h=From:To:Cc:Subject:Date;
+	b=VeHNBXJT/CFXEafMjdxMDvY5icqoR19231o1XUT0p5HjBno+QzDtmsqYJg+DqRZoc
+	 mIi9cAq6xEGNNY5U3KH7TkpZHZeMutRw3udbtiECRnDcAAcw/edaiP7VBvUny1cTMD
+	 pAxmr2tBzO+8J2X52Gg6kM/iXtqQFhEzaXksoMlE=
+Received: from kernel-lab.tail5e91bb.ts.net ([2409:8950:57d:63:3bd5:e9be:8454:44da])
+	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
+	id 9CA0D2E2; Mon, 02 Nov 2026 17:39:10 +0800
+X-QQ-mid: xmsmtpt1793612350twko5wxud
+Message-ID: <tencent_C567615098D5B2A71811CFE5CB09C9FFC406@qq.com>
+X-QQ-XMAILINFO: MpvrJ5NyRx5i+FftzjWdGeZJywDh85miewFWjFJ9YsCv0nyi2QKfczPHfkMWUY
+	 uuVPPwe96DLLr+l2mB4VYGUSzxmf0idoH8lEVKoIoo4qUB+g4YyhqGDMwkcyjBaxiRe8JGVhX7Ee
+	 Z1QRllWMGxPX8ox5lleEE0XVY+SbsiCrkSaLji1Xz+QrgxrnC/BGEcF6ls88u+u4MAm9vp64aNuu
+	 lB7eLJXg9wrG/grdxSYMZ4g1CrFZl21Y18ePF/P79JRKUP27oZWjLp+krpHrEXvIUQmdzm4UvQ2/
+	 KVhjIb4nNskUXglYhFwaCNWNtiGpfMjDh9L/tVqxYmnya3tZFox0yHf+TcPpGlNOAqP/07Ubq45t
+	 jgpF7L7bcY7/mURr4sa07hDm6n/iZebQP2hLgD7Od6pywXccF6Rfk5qXlYWh8S3LPduFdYv+hFJr
+	 ehwBdXL0hRK51YXfALtQSeLBZJ2w6MFeiJiKia/RhveP/Ogzpq9pvnfozaiL4C3n/JjXIxxvWy7H
+	 8P+5DwEEzRZo44hYUismQ3Hk9nW6kyFH2NWFLpRJXlvIA0npB+jYSz/prL7ZxI/W31u8WCgnuJPH
+	 AOlbzpcjPtTA6lHRrJ7/gged1Lp5JwywKEKw1Sa5lA4bMwHGzrzDdiWvNKmhgWDlOm3Apim15VR7
+	 bMb30njK4eJ3L6uwpBkwfUFlpvxnoPN67Z2MV9AOPoTw3wCt2/ha/JUQOMo+TdpeXFIF3cXELoC5
+	 UzLBPxFJycS7OqrRTWY1gXZwE3MBlCe1uxqM+mhYTWnTWd4NyhIhAEmGMcSeuwW8uCMPVAoTVgyv
+	 QhX52O8dkkBL0+rc6rqpgHJfdqmC53X/+tIpj/JR8VN4luAESdCRXQe759CDPIOWiDh8wD5IBGW/
+	 HMZDZ7EJn65KilunvqSV/EtYg4jBzpdJ8f+/PF6lK36kufqie7iCKSxXl3+uZCPPiSLP10GJkBlu
+	 UZW+UdRKBWh1pO2vGfZ01k2IjznXTkXnR91d0u0aGlZdQra2wF92XrqHFoT23Jpp3cSsPycToxdZ
+	 Lb0Bvk1TDaOKz6oNGx1glA08YrbppzEVIB5HLuCCeIEytBAfsf
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+From: Yingjie Wang <1075151112@qq.com>
+To: lvs-devel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: Re: [PATCH] vdpa: fix typos in comments
-Message-ID: <20261102043526-mutt-send-email-mst@kernel.org>
-References: <20260904104440.18772-1-hemanth.selam@gmail.com>
+Cc: horms@verge.net.au,
+	ja@ssi.bg,
+	pablo@netfilter.org,
+	fw@strlen.de,
+	phil@nwl.cc,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] ipvs: reject negative sync_refresh_period values
+Date: Mon,  2 Nov 2026 17:39:09 +0800
+X-OQ-MSGID: <939bfbcb4fd7692b2fd50515a21b2b9995a5bf1c.1793612333.git.1075151112@qq.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -117,55 +87,106 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260904104440.18772-1-hemanth.selam@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 04, 2026 at 04:14:38PM +0530, Hemanth Selam wrote:
-> Fix typos in comments, reported by scripts/checkpatch.pl using the
-> misspelling list in scripts/spelling.txt.  Only touches comments, no code
-> changes.
-> 
-> Assisted-by: Cursor:claude-opus-5
-> Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
-> ---
->  drivers/vdpa/alibaba/eni_vdpa.c | 2 +-
->  include/uapi/linux/virtio_net.h | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/vdpa/alibaba/eni_vdpa.c b/drivers/vdpa/alibaba/eni_vdpa.c
-> index fd6fdba46094..6bb5f6ef57cf 100644
-> --- a/drivers/vdpa/alibaba/eni_vdpa.c
-> +++ b/drivers/vdpa/alibaba/eni_vdpa.c
-> @@ -273,7 +273,7 @@ static int eni_vdpa_set_vq_state(struct vdpa_device *vdpa, u16 qid,
->  	struct virtio_pci_legacy_device *ldev = vdpa_to_ldev(vdpa);
->  	const struct vdpa_vq_state_split *split = &state->split;
->  
-> -	/* ENI is build upon virtio-pci specfication which not support
-> +	/* ENI is build upon virtio-pci specification which not support
->  	 * to set state of virtqueue. But if the state is equal to the
->  	 * device initial state by chance, we can let it go.
->  	 */
+net.ipv4.vs.sync_refresh_period is documented as an unsigned number of
+seconds.  proc_dointvec_jiffies() accepts a signed integer and converts
+it to jiffies before storing it in an unsigned int field.  Consequently,
+writing -1 stores UINT_MAX - HZ + 1 jiffies and bypasses the finite
+bound applied to ordinary positive writes.
 
+This changes the behavior of ip_vs_sync_conn_needed().  With
+sync_threshold="0 1" (threshold 0, period 1) and
+sync_refresh_period=-1, only the first of twelve packets requests a
+sync message; the zero-refresh control requests all twelve.
 
-given you are bothering - built, not build
+Store the value in seconds, as documented, and convert it at the single
+consumer.  Use proc_douintvec_minmax() to reject negative input.  Cap the
+value at INT_MAX / HZ to preserve the prior jiffies range and avoid
+overflow in secs_to_jiffies().
 
-> diff --git a/include/uapi/linux/virtio_net.h b/include/uapi/linux/virtio_net.h
-> index 1db45b01532b..4a458ebb2567 100644
-> --- a/include/uapi/linux/virtio_net.h
-> +++ b/include/uapi/linux/virtio_net.h
-> @@ -316,7 +316,7 @@ struct virtio_net_ctrl_mac {
->   * Control link announce acknowledgement
->   *
->   * The command VIRTIO_NET_CTRL_ANNOUNCE_ACK is used to indicate that
-> - * driver has recevied the notification; device would clear the
-> + * driver has received the notification; device would clear the
->   * VIRTIO_NET_S_ANNOUNCE bit in the status field after it receives
->   * this command.
->   */
+The issue was reproduced on an affected 7.0 distribution kernel in a
+temporary network namespace.  A patched target kernel was built with W=1
+and exercised in QEMU; -1 is now rejected with EINVAL, zero and positive
+values retain their behavior, and the HZ=1000 boundary accepts 2147483
+while rejecting 2147484.
 
-separate patch pls.
+Fixes: 749c42b620a9 ("ipvs: reduce sync rate with time thresholds")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yingjie Wang <1075151112@qq.com>
+---
+ include/net/ip_vs.h            | 7 ++++---
+ net/netfilter/ipvs/ip_vs_ctl.c | 8 ++++++--
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-> -- 
-> 2.48.1
+diff --git a/include/net/ip_vs.h b/include/net/ip_vs.h
+index 9a83bff32569..66f26c3d1f75 100644
+--- a/include/net/ip_vs.h
++++ b/include/net/ip_vs.h
+@@ -19,6 +19,7 @@
+ 
+ #include <linux/compiler.h>
+ #include <linux/timer.h>
++#include <linux/jiffies.h>
+ #include <linux/bug.h>
+ 
+ #include <net/checksum.h>
+@@ -1267,7 +1268,7 @@ struct netns_ipvs {
+ 	int			sysctl_sloppy_sctp;
+ 	int			sysctl_expire_quiescent_template;
+ 	int			sysctl_sync_threshold[2];
+-	unsigned int		sysctl_sync_refresh_period;
++	unsigned int		sysctl_sync_refresh_period; /* seconds */
+ 	int			sysctl_sync_retries;
+ 	int			sysctl_nat_icmp_send;
+ 	int			sysctl_pmtu_disc;
+@@ -1335,7 +1336,7 @@ struct netns_ipvs {
+ #define DEFAULT_SYNC_VER	1
+ #define DEFAULT_SLOPPY_TCP	0
+ #define DEFAULT_SLOPPY_SCTP	0
+-#define DEFAULT_SYNC_REFRESH_PERIOD	(0U * HZ)
++#define DEFAULT_SYNC_REFRESH_PERIOD	0U
+ #define DEFAULT_SYNC_RETRIES		0
+ #define IPVS_SYNC_WAKEUP_RATE	8
+ #define IPVS_SYNC_QLEN_MAX	(IPVS_SYNC_WAKEUP_RATE * 4)
+@@ -1363,7 +1364,7 @@ static inline int sysctl_sync_period(struct netns_ipvs *ipvs)
+ 
+ static inline unsigned int sysctl_sync_refresh_period(struct netns_ipvs *ipvs)
+ {
+-	return READ_ONCE(ipvs->sysctl_sync_refresh_period);
++	return secs_to_jiffies(READ_ONCE(ipvs->sysctl_sync_refresh_period));
+ }
+ 
+ static inline int sysctl_sync_retries(struct netns_ipvs *ipvs)
+diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
+index ce9fe20d6106..82726b6b5e3a 100644
+--- a/net/netfilter/ipvs/ip_vs_ctl.c
++++ b/net/netfilter/ipvs/ip_vs_ctl.c
+@@ -2369,6 +2369,8 @@ static int ip_vs_zero_all(struct netns_ipvs *ipvs)
+ 
+ #ifdef CONFIG_SYSCTL
+ 
++static unsigned int sync_refresh_period_max = INT_MAX / HZ;
++
+ static int
+ proc_do_conn_max(const struct ctl_table *table, int write,
+ 		 void *buffer, size_t *lenp, loff_t *ppos)
+@@ -2824,9 +2826,11 @@ static struct ctl_table vs_vars[] = {
+ 	},
+ 	{
+ 		.procname	= "sync_refresh_period",
+-		.maxlen		= sizeof(int),
++		.maxlen		= sizeof(unsigned int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec_jiffies,
++		.proc_handler	= proc_douintvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= &sync_refresh_period_max,
+ 	},
+ 	{
+ 		.procname	= "sync_retries",
+
+base-commit: cb284914e749388eef402938bdb3115fe1f6d337
+-- 
+2.43.0
 
