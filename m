@@ -1,57 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.196
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793606085;
-	b=EKGJU3yS1qE0Xa2udNW0XG2ZkWUtW46UCo7UvVDGapaIVJK4Yj/p51CU7XpxxtLbRQdF
-	 yMxuPux4axLIqqUOr06fRxEOTUAGACk62P/0DHYZBVbHfT8HkcThQhD1BBWGSyzofCTPP
-	 Tk0e8DYHvzDsl/L4G3fCPIrokXMCRqrBVqzbXXt4sKL+h9ra+MOHkEMdPRQW6e2VJo+ev
-	 CSZG/NtKWUxbuZlV0AuZN3lCWmNl9UopJ1Zcwm8dRMSEpNqh/xw0zCaJJRCsqEhvAz2Fd
-	 Rv/qYqNANMMHhYtC2+hkuWgT8tXoyifpDLX/b3Yx+tqFVFSVXDHKjljQEENo4gYQxsA==
+	t=1793606365;
+	b=IEah7wcOXYhDWHkAGBQiRKbV83FVK7FvoDpHMLuZqgvKBLqEAum+LzHjDMkA79PVm5RZ
+	 SCRN8YHsQ33CRogWnmB/GkKIvMeeQOaeed+VP0J7NZ5wD99iCglOG54KMn4hg1+JpJTIJ
+	 UOXuIoYjy/4Ah/QJUuTmOzBBNf+1DA87mWEdEk5bgsYKWEFhhKX+SFJ5Lv5bP0BSlkvGo
+	 PVixx0boL+rxpNidfxz7dF8Zw8HkQVvKicWx6OymIu0JQ38r0Ek7REoU3k2y8rph7EDL1
+	 cOtSgGzooQbU2tTyXzkYH9iFlcNhk/QG6DKbvy5v9F4lO/Swc3fGVGQwij51ECm6v8A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793606085;
-	h=DMARC-Filter:X-Alimail-AntiSpam:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=1SaUUYVPQT5NF84iYF4aO0J7hAfboTG9AuH0RnjLyEU=;
-	b=lPLdxa49dfuQnoY/OdLuLUuENbHzXc6k3IQnmUMq4yXwlwv5KJM+SiQWy18LCZ2KMXT8
-	 XIXpbVutEcv5VCkUc2jaPvQO89fxUWPhvI9pUbsUASLNvjDhuhnjraVh13tHgD+uvTyav
-	 pgzamUuw2j6sprLEUWy5jcQHkS9AYLj56v7ou19uShz3VH+9rRtb9F5zfukBagbzl9tBB
-	 sibbcIoxbw8JezTSBCwYNRCF47K+hIxqO7ZE6l0zkUB6s6mm3JJPRg7u0QKizSFdzFSut
-	 ABiBG1DhF3J2v8uPSKvUNiQFv/vHT9Y38FT+tijSQwig/k2vxfHJYjE+Ph3PeMTADsQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793606365;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=4itan0z6idVXJaSwpdgK+pOjvqnAwI1VzxVuhnwVsgQ=;
+	b=HDXfVaWNhDSpvT7ugIYe/rDwClwaXQC/MuN0qmiWgxOccNPm+/4Z6ZFAnAmreLOlff5g
+	 cCRo34vL+z1nxTpcE3IdwZIpdBA0R3dn3gFEtD0WOfGE/gk8e0RNzqEDLTa9gMx70Veuy
+	 MFNtebzjPv5hnx0ZB1XWc5t817RaE22A7dfM2weQydMxmgvOn9N8GbaNJAhmSqJWJArOE
+	 olXz/8OJ17x4NO4RgcYirsLO88cLkmiEIIU6QKuA6KkzeVo4YmF6tgweJ9US4WZSMvYku
+	 MEzWS49MSePACj1q9G2qKqbrdMdV09mkSRkn8ECPWUjrnDqAAGudrHuqCTYkpSWhBYQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=nebula-matrix.com;
-	spf=pass smtp.mailfrom=nebula-matrix.com;
-	arc=none smtp.remote-ip=115.124.28.196
-Received: from out28-196.mail.aliyun.com (out28-196.mail.aliyun.com [115.124.28.196])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jxrixWPh;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41EC2606A339;
-	Mon,  2 Nov 2026 07:54:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41EC2606A339
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0120503-0.00608901-0.981861;FP=16884412938864578194|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033025068124;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=11;RT=11;SR=0;TI=SMTPD_---.jumCpaW_1793606073;
-Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.jumCpaW_1793606073 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Mon, 02 Nov 2026 15:54:34 +0800
-From: "illusion.wang" <illusion.wang@nebula-matrix.com>
-To: dimon.zhao@nebula-matrix.com,
-	illusion.wang@nebula-matrix.com,
-	alvin.wang@nebula-matrix.com,
-	sam.chen@nebula-matrix.com,
-	netdev@vger.kernel.org
-Cc: kuba@kernel.org,
-	andrew+netdev@lunn.ch,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v33 net-next 7/8] net/nebula-matrix: add common/ctrl dev init/remove operation
-Date: Mon,  2 Nov 2026 15:54:08 +0800
-Message-ID: <20261102075424.2165-8-illusion.wang@nebula-matrix.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261102075424.2165-1-illusion.wang@nebula-matrix.com>
-References: <20261102075424.2165-1-illusion.wang@nebula-matrix.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D987606A324;
+	Mon,  2 Nov 2026 07:59:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jxrixWPh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C66F1F000C1;
+	Mon,  2 Nov 2026 07:59:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793606364;
+	bh=4itan0z6idVXJaSwpdgK+pOjvqnAwI1VzxVuhnwVsgQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=jxrixWPh+oWgZe4KYUtQitxUv0q6binfdzYmyLnRhCk+MhMgPu5bBL5s0L1BfZbiA
+	 MefA8HkynGpG7fgoCRg858/9bR4YvS5XNICcI9Yn2xwbBBH0BT8h01hd4dkMfWF4q7
+	 DGwglDJrEWqSoLdzww4gL5O3TJcK61w6bB8dIeJIhbaLgx2MjVdmJhhnZwSgX9uH92
+	 pcLXMoImI9FYvzfxlgDGAJBSTelCPD+uKHA2cec7ShY66A3PwkdlVvMHlr0rT8RPDr
+	 uXSVqxdILMlGkpZ/aOQQ/3F9yaCtTUhV6eiiyt2brm57Of6MOyKUSn4LkdeALaYhSm
+	 gOG3K4lFaGoJA==
+Subject:
+ Re: [PATCH] octeontx2-af: fix TX hang after link mode change under traffic
+From: netdev-bot+sashiko@kernel.org
+To: vmukunda@marvell.com
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, sgoutham@marvell.com,
+ rkannoth@marvell.com, gakula@marvell.com, sbhatta@marvell.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, naveenm@marvell.com
+Date: Mon, 02 Nov 2026 07:59:23 +0000
+Message-ID: <179360636359.3131.7702148387934087179@kernel.org>
+In-Reply-To: <20261029074635.4139111-1-vmukunda@marvell.com>
+References: <20261029074635.4139111-1-vmukunda@marvell.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,533 +64,222 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: illusion wang <illusion.wang@nebula-matrix.com>
+Thank you for your contribution! Sashiko AI review found 6 potential
+issue(s) to consider.
 
-Add nbl_dev.c, nbl_dev.h and nbl_def_dev.h to host device-level
-initialization and teardown logic, and wire the new nbl_dev_init() /
-nbl_dev_remove() entry points into core init/remove.
+Critical: 0 · High: 1 · Medium: 3 · Low: 2
 
-Common device setup allocates per-device state, initializes the mailbox
-cleanup work and creates the mailbox channel queue.  VSI/ETH identity
-lookup and MSI-X vector allocation are deferred to the subsequent start
-routine, so that the control PF mailbox responder is fully ready before
-any cross-PF RPC is issued and each commit in the series can be probed
-on its own.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Control-PF-only setup invokes chip-level module initialization and
-programs the mailbox QINFO routing table entries that map PF bus/devid
-to the mailbox queue.
+- [High] TL1 SW_XOFF is set one way and cleared another, so on some
+  silicon it is never cleared.
+- [Medium] The Fixes: tag points at commit 62945033ea22 ("octeontx2-af:
+  poll for tx link credits before link mode change"), which is not in…
+- [Medium] The credit-return poll in
+  rvu_nix_tl1_xoff_wait_for_link_credits() has a fixed budget: count =…
+- [Medium] Nothing serializes the new TL1 SW_XOFF set -> credit poll ->
+  cgx_set_link_mode() -> clear sequence against FLR teardown.
+- [Low] The commit message says a credit poll timeout 'is only reported
+  with a warning', but rvu_nix_tl1_xoff_wait_for_link_credits() logs it…
+- [Low] The timeout message in rvu_nix_tl1_xoff_wait_for_link_credits()
+  prints two u64 values (tx_credits and ((regval >> 12) & 0xFFFFF)) with…
 
-Init/teardown ordering is dictated by a hardware constraint rather than
-by strict symmetry.  Init: program mailbox QINFO (control PF only),
-create the mailbox queue, then run control device init_module.  Teardown:
-stop the mailbox channel and drain all in-flight DMA first, then call
-deinit_module().  This ordering prevents the firmware from reclaiming
-the routing under a live transfer, which would leave the device DMAing
-into released memory.
+--
 
-The firmware reclaims per-PF state (mailbox QINFO routing, qinfo
-registers and the like) asynchronously once driver status is marked
-inactive.  It does not revert the chip-wide datapath registers
-configured by init_module; those stay valid until chip reset (see
-nbl_hw_deinit_module()).  The device link created during non-control PF
-probe makes the driver core unbind all sibling PFs before the control PF
-is removed.
+octeontx2-af: fix TX hang after link mode change under traffic
 
-Signed-off-by: illusion wang <illusion.wang@nebula-matrix.com>
----
- .../net/ethernet/nebula-matrix/nbl/Makefile   |   1 +
- .../net/ethernet/nebula-matrix/nbl/nbl_core.h |   1 +
- .../nebula-matrix/nbl/nbl_core/nbl_dev.c      | 303 ++++++++++++++++++
- .../nebula-matrix/nbl/nbl_core/nbl_dev.h      |  55 ++++
- .../nebula-matrix/nbl/nbl_core/nbl_dispatch.c |  22 +-
- .../nbl/nbl_include/nbl_def_dev.h             |  14 +
- .../net/ethernet/nebula-matrix/nbl/nbl_main.c |   9 +
- 7 files changed, 404 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
+The patch sets TL1 SW_XOFF and polls for the TX link credits to return
+before a CGX/RPM link mode change. It clears TL1 SW_XOFF afterwards,
+including when the change fails. The aim is to stop the link credits from
+going negative and hanging TX.
 
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-index b7eebd89..71fbe3ee 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-@@ -11,4 +11,5 @@ nbl-objs +=	nbl_common/nbl_common.o \
- 		nbl_hw/nbl_interrupt.o \
- 		nbl_hw/nbl_chip.o \
- 		nbl_core/nbl_dispatch.o \
-+		nbl_core/nbl_dev.o \
- 		nbl_main.o
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-index 4d8cea8d..c3c4dd68 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-@@ -25,6 +25,7 @@ struct nbl_core {
- 	struct nbl_hw_mgt *hw_mgt;
- 	struct nbl_resource_mgt *res_mgt;
- 	struct nbl_dispatch_mgt *disp_mgt;
-+	struct nbl_dev_mgt *dev_mgt;
- 	struct nbl_channel_mgt *chan_mgt;
- };
- 
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-new file mode 100644
-index 00000000..01287c39
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-@@ -0,0 +1,303 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2026 Nebula Matrix Limited.
-+ */
-+#include <linux/device.h>
-+#include <linux/pci.h>
-+#include "nbl_dev.h"
-+
-+static void nbl_dev_init_msix_cnt(struct nbl_dev_mgt *dev_mgt)
-+{
-+	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-+	struct nbl_msix_info *msix_info = &dev_common->msix_info;
-+
-+	/* Reserve one MSI-X vector for the mailbox.  Nothing here
-+	 * allocates or requests it: vectors are allocated and the handler
-+	 * attached when the device is started, after probe, from this
-+	 * count.
-+	 */
-+	msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num = 1;
-+}
-+
-+/* ----------  Channel config  ---------- */
-+static void nbl_dev_setup_chan_qinfo(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
-+{
-+	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-+	struct nbl_channel_mgt *priv = dev_mgt->chan_ops_tbl->priv;
-+	struct nbl_common_info *common = dev_mgt->common;
-+
-+	if (!chan_ops->check_queue_exist(priv, chan_type))
-+		return;
-+
-+	/*
-+	 * common->hw_bus is the control PF's real bus number, captured in
-+	 * nbl_res_ctrl_dev_sriov_info_init() during nbl_res_init_leonis().
-+	 * nbl_core_init() runs resource init before nbl_dev_init(), so the
-+	 * value is always initialized when this control-PF-only path runs;
-+	 * nbl_res_intr_cfg_msix_map() consumes it for cfg_msix_map() the
-+	 * same way.
-+	 */
-+	chan_ops->cfg_chan_qinfo_map_table(priv, common->hw_bus, common->devid);
-+}
-+
-+static int nbl_dev_setup_chan_queue(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
-+{
-+	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-+	struct nbl_channel_mgt *priv = dev_mgt->chan_ops_tbl->priv;
-+	int ret = 0;
-+
-+	if (chan_ops->check_queue_exist(priv, chan_type))
-+		ret = chan_ops->setup_queue(priv, chan_type);
-+
-+	return ret;
-+}
-+
-+static int nbl_dev_remove_chan_queue(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
-+{
-+	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-+	struct nbl_channel_mgt *priv = dev_mgt->chan_ops_tbl->priv;
-+	int ret = 0;
-+
-+	if (chan_ops->check_queue_exist(priv, chan_type))
-+		ret = chan_ops->teardown_queue(priv, chan_type);
-+
-+	return ret;
-+}
-+
-+static void nbl_dev_register_chan_task(struct nbl_dev_mgt *dev_mgt,
-+				       u8 chan_type, struct work_struct *task)
-+{
-+	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-+
-+	if (chan_ops->check_queue_exist(dev_mgt->chan_ops_tbl->priv, chan_type))
-+		chan_ops->register_chan_task(dev_mgt->chan_ops_tbl->priv,
-+					     chan_type, task);
-+}
-+
-+/* ----------  Tasks config  ---------- */
-+static void nbl_dev_clean_mailbox_task(struct work_struct *work)
-+{
-+	struct nbl_dev_common *common_dev =
-+		container_of(work, struct nbl_dev_common, clean_mbx_task);
-+	struct nbl_dev_mgt *dev_mgt = common_dev->dev_mgt;
-+	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-+
-+	chan_ops->clean_queue_subtask(dev_mgt->chan_ops_tbl->priv,
-+				      NBL_CHAN_TYPE_MAILBOX);
-+}
-+
-+/* ----------  Dev init process  ---------- */
-+static int nbl_dev_setup_common_dev(struct nbl_adapter *adapter)
-+{
-+	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-+	struct nbl_dev_common *common_dev;
-+	int ret;
-+
-+	common_dev = devm_kzalloc(&adapter->pdev->dev, sizeof(*common_dev),
-+				  GFP_KERNEL);
-+	if (!common_dev)
-+		return -ENOMEM;
-+	common_dev->dev_mgt = dev_mgt;
-+
-+	/*
-+	 * INIT_WORK must precede nbl_dev_register_chan_task() below:
-+	 * registration publishes the work item to the channel, and the
-+	 * channel may queue it from its send and receive paths as soon
-+	 * as setup_queue() completes.
-+	 */
-+	INIT_WORK(&common_dev->clean_mbx_task, nbl_dev_clean_mailbox_task);
-+
-+	ret = nbl_dev_setup_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
-+	if (ret) {
-+		/*
-+		 * Nothing to unwind: chan_info->active is only set on a
-+		 * successful setup_queue(), so a failed one left no
-+		 * sender, no registered work item and no mailbox
-+		 * traffic.  Calling teardown_queue() here would only
-+		 * take its "channel not active" early exit and emit a
-+		 * misleading duplicate-teardown warning.  The partially
-+		 * allocated DMA rings are intentionally kept until devres
-+		 * releases them at detach (chan_info->dma_allocated
-+		 * blocks a re-setup).
-+		 */
-+		return ret;
-+	}
-+
-+	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX,
-+				   &common_dev->clean_mbx_task);
-+	/*
-+	 * VSI/ETH identity is deliberately not fetched here: it is only
-+	 * known to the control PF, so it has to come from a mailbox RPC,
-+	 * and the control PF's responder may still be probing while this
-+	 * function runs.  The fetch is therefore left to the start path.
-+	 */
-+	dev_mgt->common_dev = common_dev;
-+	nbl_dev_init_msix_cnt(dev_mgt);
-+
-+	return 0;
-+}
-+
-+static void nbl_dev_remove_common_dev(struct nbl_adapter *adapter)
-+{
-+	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-+	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
-+
-+	if (!common_dev)
-+		return;
-+	cancel_work_sync(&common_dev->clean_mbx_task);
-+	/*
-+	 * nbl_chan_teardown_queue() never fails: it returns 0 both on the
-+	 * early exit for a channel that never became active and on the
-+	 * normal path, which drains every inflight sender before
-+	 * returning.  There is therefore no partial-failure state that
-+	 * could leave mailbox DMA in flight and nothing to report here.
-+	 *
-+	 * Unregistering the clean task is the channel layer's job too:
-+	 * teardown_queue() clears clean_task under state_lock and then
-+	 * cancel_work_sync()es it, after shutdn has blocked new queues.
-+	 * No explicit unregistration is needed here precisely because
-+	 * teardown_queue() does that clearing itself.  Passing NULL from
-+	 * here would not be a no-op either: shutdn is only set inside
-+	 * teardown_queue(), so nbl_chan_register_chan_task() would still
-+	 * accept the write - it would just be clearing the same pointer a
-+	 * second time.
-+	 */
-+	nbl_dev_remove_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
-+}
-+
-+static int nbl_dev_setup_ctrl_dev(struct nbl_adapter *adapter)
-+{
-+	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-+	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
-+
-+	return disp_ops->init_module(dev_mgt->disp_ops_tbl->priv);
-+}
-+
-+/*
-+ * Tear down control device: deinit_module sets driver_status=false
-+ * to notify firmware to clean all per-PF hardware state (including
-+ * qinfo registers).  The qinfo map programmed in nbl_dev_init() via
-+ * nbl_dev_setup_chan_qinfo() is not explicitly cleared; firmware
-+ * handles it on driver_status change.
-+ *
-+ * Teardown ordering guarantee: every non-management PF creates a
-+ * consumer->control PF device link in its probe path, so the driver
-+ * core always unbinds all siblings before allowing the control PF to
-+ * be detached (sysfs unbind, driver unregister and hot-unplug alike).
-+ * nbl_probe_chip_deps() defers a sibling's probe until the control PF
-+ * is fully bound (DL_DEV_DRIVER_BOUND), and holds the management PF's
-+ * device lock across both that check and device_link_add(), so a
-+ * supplier cannot slip to DL_DEV_NO_DRIVER or DL_DEV_PROBING in
-+ * between.  A sibling therefore cannot
-+ * reach its mailbox setup before the control PF is fully probed, nor
-+ * race this deinit afterwards - the link forces it to be unbound
-+ * first.  The link is a persistent managed link with
-+ * DL_FLAG_AUTOPROBE_CONSUMER, so binding the control PF again makes
-+ * the core re-probe the siblings; without it they would stay unbound
-+ * until an admin rebound each one by hand.
-+ *
-+ * Direct control-PF FLR (which never runs driver teardown) cannot be
-+ * guarded here.
-+ */
-+static void nbl_dev_remove_ctrl_dev(struct nbl_adapter *adapter)
-+{
-+	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-+	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
-+
-+	disp_ops->deinit_module(dev_mgt->disp_ops_tbl->priv);
-+}
-+
-+static struct nbl_dev_mgt *nbl_dev_setup_dev_mgt(struct nbl_common_info *common)
-+{
-+	struct nbl_dev_mgt *dev_mgt;
-+
-+	dev_mgt = devm_kzalloc(common->dev, sizeof(*dev_mgt), GFP_KERNEL);
-+	if (!dev_mgt)
-+		return ERR_PTR(-ENOMEM);
-+
-+	dev_mgt->common = common;
-+	return dev_mgt;
-+}
-+
-+int nbl_dev_init(struct nbl_adapter *adapter)
-+{
-+	struct nbl_common_info *common = &adapter->common;
-+	struct nbl_dispatch_ops_tbl *disp_ops_tbl =
-+		adapter->intf.dispatch_ops_tbl;
-+	struct nbl_channel_ops_tbl *chan_ops_tbl =
-+		adapter->intf.channel_ops_tbl;
-+	struct nbl_dev_mgt *dev_mgt;
-+	int ret;
-+
-+	dev_mgt = nbl_dev_setup_dev_mgt(common);
-+	if (IS_ERR(dev_mgt)) {
-+		ret = PTR_ERR(dev_mgt);
-+		return ret;
-+	}
-+
-+	dev_mgt->disp_ops_tbl = disp_ops_tbl;
-+	dev_mgt->chan_ops_tbl = chan_ops_tbl;
-+	adapter->core.dev_mgt = dev_mgt;
-+	if (common->has_ctrl)
-+		nbl_dev_setup_chan_qinfo(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
-+	/*
-+	 * Chip hardware initialization is completed by firmware at power-up.
-+	 * Only driver functional table/register config follows here, safe to
-+	 * access hardware registers before ctrl dev setup.
-+	 *
-+	 * The QINFO routing has to be programmed before the mailbox queue is
-+	 * enabled: nbl_dev_setup_common_dev() sets QUEUE_EN, and a queue that
-+	 * is live before its routing is in place would drop or misroute
-+	 * traffic.
-+	 */
-+	ret = nbl_dev_setup_common_dev(adapter);
-+	if (ret)
-+		goto setup_err;
-+
-+	if (common->has_ctrl) {
-+		ret = nbl_dev_setup_ctrl_dev(adapter);
-+		if (ret)
-+			goto setup_ctrl_dev_fail;
-+	}
-+
-+	return 0;
-+/*
-+ * A failure after the QINFO routing was programmed leaves those entries
-+ * in hardware: driver_status never goes 1 -> 0 on these paths, so
-+ * firmware does not reclaim them.  This is harmless - firmware only
-+ * routes once driver_status announces the driver, and no sibling PF can
-+ * bind until this probe succeeds.  The next successful probe overwrites
-+ * the entries, and a chip reset clears them.
-+ */
-+setup_ctrl_dev_fail:
-+	nbl_dev_remove_common_dev(adapter);
-+setup_err:
-+	return ret;
-+}
-+
-+/*
-+ * Teardown order: Stop mailbox channel and drain all inflight DMA first,
-+ * then invoke deinit_module to notify firmware.
-+ *
-+ * This intentionally breaks strict init/teardown mirror symmetry due to
-+ * a hardware constraint: firmware performs asynchronous *per-PF* cleanup
-+ * (mailbox QINFO routing, qinfo registers and the like) once
-+ * driver_status=false is set.  It does not revert the chip-wide
-+ * datapath registers configured by init_module - those stay valid until
-+ * chip reset (see nbl_hw_deinit_module()).  We must guarantee no ongoing
-+ * mailbox DMA before deinit_module so firmware cannot reclaim the
-+ * routing under a live transfer and leave the device DMAing into
-+ * released memory.
-+ *
-+ * Init order: program mailbox QINFO routing (ctrl PF only) ->
-+ *            create mailbox queue/common_dev -> ctrl dev init_module
-+ * Teardown order: destroy mailbox queue/common_dev -> ctrl dev deinit_module
-+ */
-+void nbl_dev_remove(struct nbl_adapter *adapter)
-+{
-+	struct nbl_common_info *common = &adapter->common;
-+
-+	nbl_dev_remove_common_dev(adapter);
-+	if (common->has_ctrl)
-+		nbl_dev_remove_ctrl_dev(adapter);
-+}
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
-new file mode 100644
-index 00000000..24e890fd
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
-@@ -0,0 +1,55 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2026 Nebula Matrix Limited.
-+ */
-+
-+#ifndef _NBL_DEV_H_
-+#define _NBL_DEV_H_
-+
-+#include <linux/types.h>
-+
-+#include "../nbl_include/nbl_include.h"
-+#include "../nbl_include/nbl_def_channel.h"
-+#include "../nbl_include/nbl_def_hw.h"
-+#include "../nbl_include/nbl_def_resource.h"
-+#include "../nbl_include/nbl_def_dispatch.h"
-+#include "../nbl_include/nbl_def_dev.h"
-+#include "../nbl_include/nbl_def_common.h"
-+#include "../nbl_core.h"
-+
-+#define NBL_STRING_NAME_LEN			32
-+
-+enum nbl_msix_serv_type {
-+	NBL_MSIX_NET_TYPE,
-+	NBL_MSIX_MAILBOX_TYPE,
-+	NBL_MSIX_TYPE_MAX
-+};
-+
-+struct nbl_msix_serv_info {
-+	char irq_name[NBL_STRING_NAME_LEN];
-+	u16 num;
-+	u16 base_vector_id;
-+	/* true: hw report msix, hw need to mask actively */
-+	bool hw_self_mask_en;
-+};
-+
-+struct nbl_msix_info {
-+	struct nbl_msix_serv_info serv_info[NBL_MSIX_TYPE_MAX];
-+};
-+
-+struct nbl_dev_common {
-+	struct nbl_dev_mgt *dev_mgt;
-+	struct nbl_msix_info msix_info;
-+	char mailbox_name[NBL_STRING_NAME_LEN];
-+	/* for ctrl-dev/net-dev mailbox recv msg */
-+	struct work_struct clean_mbx_task;
-+};
-+
-+struct nbl_dev_mgt {
-+	struct nbl_common_info *common;
-+	struct nbl_dispatch_ops_tbl *disp_ops_tbl;
-+	struct nbl_channel_ops_tbl *chan_ops_tbl;
-+	struct nbl_dev_common *common_dev;
-+};
-+
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-index cb68544e..59d80066 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-@@ -647,5 +647,25 @@ int nbl_disp_init(struct nbl_adapter *adapter)
- 
- void nbl_disp_remove(struct nbl_adapter *adapter)
- {
--	/* Dispatch structures are allocated via devm */
-+	/*
-+	 * Dispatch structures are devm-allocated and freed at detach.
-+	 *
-+	 * The five responders registered by nbl_disp_setup_msg() are
-+	 * owned by the channel layer (xarray of handlers) and are never
-+	 * unregistered here. This is safe because the teardown order
-+	 * guarantees no responder can run after this point:
-+	 *
-+	 *   mailbox teardown
-+	 *     -> cancel_work_sync(clean_mbx_task)   // drain RX work
-+	 *     -> nbl_chan_teardown_queue()          // stop HW queue,
-+	 *                                                 // join clean task,
-+	 *                                                 // active=false
-+	 *     -> nbl_chan_remove_common()
-+	 *          -> nbl_common_destroy_wq()            // no new work
-+	 *          -> nbl_chan_remove_msg_handler()      // free handler nodes
-+	 *
-+	 * By the time devres frees disp_mgt, the mailbox queue is stopped
-+	 * and the handler xarray is empty, so no responder can touch
-+	 * res_mgt->intr_mgt after nbl_intr_mgt_stop() has cleared it.
-+	 */
- }
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
-new file mode 100644
-index 00000000..51cf04e4
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2026 Nebula Matrix Limited.
-+ */
-+
-+#ifndef _NBL_DEF_DEV_H_
-+#define _NBL_DEF_DEV_H_
-+
-+struct nbl_adapter;
-+
-+int nbl_dev_init(struct nbl_adapter *adapter);
-+void nbl_dev_remove(struct nbl_adapter *adapter);
-+
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-index fc4488fb..a3e599f5 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-@@ -13,6 +13,7 @@
- #include "nbl_include/nbl_def_hw.h"
- #include "nbl_include/nbl_def_resource.h"
- #include "nbl_include/nbl_def_dispatch.h"
-+#include "nbl_include/nbl_def_dev.h"
- #include "nbl_include/nbl_def_common.h"
- #include "nbl_core.h"
- 
-@@ -63,7 +64,14 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
- 	ret = nbl_disp_init(adapter);
- 	if (ret)
- 		goto out_res_remove;
-+
-+	ret = nbl_dev_init(adapter);
-+	if (ret)
-+		goto out_disp_remove;
- 	return adapter;
-+
-+out_disp_remove:
-+	nbl_disp_remove(adapter);
- out_res_remove:
- 	nbl_res_remove_leonis(adapter);
- out_chan_remove:
-@@ -76,6 +84,7 @@ out:
- 
- void nbl_core_remove(struct nbl_adapter *adapter)
- {
-+	nbl_dev_remove(adapter);
- 	nbl_disp_remove(adapter);
- 	nbl_res_remove_leonis(adapter);
- 	nbl_chan_remove_common(adapter);
+> Fixes: 62945033ea22 ("octeontx2-af: poll for tx link credits before link mode change")
+
+[Severity: Medium]
+Is this the right commit for the Fixes: tag? 62945033ea22 does not seem
+to exist in the tree, and git show reports an unknown revision. The
+quoted subject also describes what this patch itself does.
+
+git blame on rvu_mbox_handler_cgx_set_link_mode() shows that the handler
+and its cgx_set_link_mode() call come from 56b6d539861358. Later changes
+came from 25d51ebf0f54f9, 5f21226b79fd8f and 4a3dba48188208.
+
+Could the tag name the upstream commit that introduced this path, or be
+dropped? Stable tooling can't resolve the current SHA.
+
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+> index 41f157ea27f4b..fbcc1038af4b2 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+> @@ -1235,8 +1235,13 @@ int rvu_mbox_handler_cgx_set_link_mode(struct rvu *rvu,
+>  	else
+>  		linkmodes = &rvu->fwdata->cgx_fw_data[cgx_idx][lmac];
+>
+> +	rvu_nix_tl1_xoff_wait_for_link_credits(rvu, req->hdr.pcifunc);
+> +
+>  	rsp->status = cgx_set_link_mode(cgxd, req->args, linkmodes,
+>  					cgx_idx, lmac);
+> +
+> +	rvu_nix_tl1_xoff_clear(rvu, req->hdr.pcifunc);
+> +
+>  	return 0;
+>  }
+
+[Severity: Medium]
+What serializes this set, poll, mode change and clear sequence against
+FLR teardown? The mbox handler holds neither rvu->rsrc_lock nor
+rvu->flr_lock. Meanwhile a VF FLR runs on rvu->flr_wq:
+
+__rvu_flr_handler()
+  rvu_blklf_teardown()
+    rvu_nix_lf_teardown()
+      nix_txschq_free()
+        nix_clear_tx_xoff(rvu, blkaddr, NIX_TXSCH_LVL_TL1,
+                          nix_get_tx_link(rvu, pcifunc));
+
+nix_get_tx_link() maps a VF to its parent PF's link. That makes it the
+same TL1 SW_XOFF register that is held here across cgx_set_link_mode(),
+which can take up to CGX_CMD_TIMEOUT (5000 ms).
+
+If the VF FLR lands during the firmware mode change, TL1 XOFF is cleared
+and PF traffic resumes partway through the change. Could that bring the
+credit loss back?
+
+If the XOFF set here happens after nix_txschq_free() has cleared the
+XOFFs ahead of its SMQ flush, could the flush hit a stopped TL1 and time
+out?
+
+If a PF FLR detaches the NIX LF between the set and the clear,
+rvu_nix_tl1_xoff_clear() repeats the lookup:
+
+	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NIX, pcifunc);
+	if (blkaddr < 0)
+		return NIX_AF_ERR_AF_LF_INVALID;
+
+Would that return without clearing, and leave the shared TL1 stopped for
+the VFs?
+
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+> index 29559db689290..b5122b8647ae2 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+
+[ ... ]
+
+> +int rvu_nix_tl1_xoff_wait_for_link_credits(struct rvu *rvu, u16 pcifunc)
+> +{
+> +	int link, blkaddr, count = 1000;
+> +	u64 tx_credits, regval;
+> +	struct nix_hw *nix_hw;
+
+[ ... ]
+
+> +	/* set TL1 sw_xoff */
+> +	link = nix_get_tx_link(rvu, pcifunc);
+> +	rvu_write64(rvu, blkaddr, NIX_AF_TL1X_SW_XOFF(link), 1);
+> +
+> +	/* wait for link credits to return */
+> +	tx_credits = nix_hw->tx_credits[link];
+> +	while (1) {
+> +		regval = rvu_read64(rvu, blkaddr,
+> +				    NIX_AF_TX_LINKX_NORM_CREDIT(link));
+> +		if (((regval >> 12) & 0xFFFFF) == tx_credits)
+> +			break;
+> +		count--;
+> +		if (!count) {
+> +			dev_info(rvu->dev, "TX link(%d) credit poll timeout, expected=%lld credits=%lld\n",
+> +				 link, tx_credits, ((regval >> 12) & 0xFFFFF));
+
+[Severity: Low]
+The commit message says "A timeout in the credit poll is only reported
+with a warning", but this uses dev_info(). Should this be dev_warn(), or
+should the commit message be changed?
+
+[Severity: Low]
+This isn't a bug, but tx_credits and the masked regval are both u64.
+Should these use %llu, or %#llx like the other register dumps?
+
+> +			return -ETIMEDOUT;
+> +		}
+> +		cpu_relax();
+> +		udelay(1);
+> +	}
+
+[Severity: Medium]
+Is 1000 iterations of an MMIO read plus udelay(1), about 1-2 ms, enough
+for the credits to come back? The expected value is set in
+nix_link_config():
+
+	tx_credits = (lmac_fifo_len - lmac_max_frs) / 16;
+
+So the outstanding credits are bytes still in the LMAC TX FIFO, and those
+only drain at line rate. A full FIFO of tens of KB takes about 5 ms at
+100M and about 50 ms at 10M. If the peer is sending PAUSE/PFC, there is
+no upper bound.
+
+On timeout, rvu_mbox_handler_cgx_set_link_mode() ignores the -ETIMEDOUT
+and starts the firmware mode change with credits still outstanding.
+NIX_AF_TX_LINKX_NORM_CREDIT is only programmed at init by
+nix_link_config(). Can the TX hang this patch targets still happen on
+slow or backpressured links?
+
+nix_smq_flush() handles a similar drain differently. It enables LMAC TX,
+disables RX backpressure and uses a jiffies-based timeout. Would a
+similar approach work here?
+
+> +	return 0;
+> +}
+> +
+> +int rvu_nix_tl1_xoff_clear(struct rvu *rvu, u16 pcifunc)
+> +{
+> +	int blkaddr;
+> +
+> +	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NIX, pcifunc);
+> +	if (blkaddr < 0)
+> +		return NIX_AF_ERR_AF_LF_INVALID;
+> +
+> +	nix_clear_tx_xoff(rvu, blkaddr, NIX_TXSCH_LVL_TL1,
+> +			  nix_get_tx_link(rvu, pcifunc));
+
+[Severity: High]
+Does this clear TL1 SW_XOFF on all silicon?
+rvu_nix_tl1_xoff_wait_for_link_credits() always sets it:
+
+	rvu_write64(rvu, blkaddr, NIX_AF_TL1X_SW_XOFF(link), 1);
+
+However, nix_clear_tx_xoff() returns before writing anything when
+shaping is not supported:
+
+	/* Skip this if shaping is not supported */
+	if (!hw->cap.nix_shaping)
+		return;
+
+rvu_setup_hw_capabilities() sets hw->cap.nix_shaping = false whenever
+is_rvu_pre_96xx_C0() is true. That covers 96XX A0/B0 and 95XX A0/A1/B0.
+
+On those parts, would every CGX_SET_LINK_MODE request from a CGX-mapped
+PF leave the link's TL1 in XOFF? That would stop TX for the PF and all
+of its VFs.
+
+No other path seems to clear it on those parts either.
+handle_txschq_shaper_update() only runs when nix_shaper_toggle_wait is
+set, and that is false on pre-96xx-C0. nix_txschq_free() also goes
+through nix_clear_tx_xoff().
+
+This also seems to contradict the commit message, which says SW_XOFF is
+cleared "so that a failed request does not leave the link stopped".
+
+Could the set and the clear be gated the same way? One option is to
+write 0 directly here. Another is to skip the set when
+!hw->cap.nix_shaping.
+
+> +	return 0;
+> +}
+
 -- 
-2.51.0.windows.1
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261029074635.4139111-1-vmukunda%40marvell.com
