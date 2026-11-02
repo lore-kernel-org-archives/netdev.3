@@ -1,55 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.73
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793607357;
-	b=fNMSqiKwnLows9UtTc6hcV2Ghip/ZKp+CGJ8zUsVg270GEwChTOx65XqXkrgNlfFORaY
-	 +AL+n6gz22WZop799unSMFP8ebhO4ZB+bYZwJqS2k+SYTO5JNfaf6yrgQkYQaR9MPTPvg
-	 wweyhyRuDxJZEkkCGNTUcIjX+YeST/NjMwxrhGtNrg44bcK0R+Xj6ZUrHbHtbEis55/I9
-	 F1NyPry1TVsUxLpUWZzXeMAIKajBXZ8WFs51cxT+yaSKzimf7oiRK9oVFQthDkEeFKGol
-	 C7Ph9mvJh3FHJLLRKCe1GgRijue+gQMDD6E+K1iY+Xnd+vMazVvgUB2AG7X4wIfHYgQ==
+	t=1793607573;
+	b=156ojIlJBw7iL/SKsCTZ09SMnjQe1evqbbpSGSQ6sw/GDhHa+LINPJA++ja8A/8L737l
+	 hGcSsgoWnAboGtHtKt9kTHtCSYF9zl2dGGVgW5SQuaS4zYml520GVONUqBoPeQmAj8cOy
+	 j5spsrkAoxuiZTrkdhmcOM2Ne2iVov1aT4T5VxWG2ApmJ1zUKgO6OjeFG2e1cuMUpfhbf
+	 DWqhw3TzK/9Oq7pK/1PNhdWuFlBGI/SI4WMW6exi1Crfqmf0oRa1rnkb8KXHvY2vOpcZF
+	 Ek3+QXSjgqXW55n4TiAouezN4P47fPu76FtHBel8dfgJ+bDB0BI4QXtoG8+49yDZhKg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793607357;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=ggVpSG/Q2EbzVO8MsL3OxAqR882doyE1OLiyat9CU3Q=;
-	b=qXPG2VLtKVspzBAAIW3fHaAnoVeWDiLBrGs1QsM12yp5ZyWM7W9x/vVNKWUVVuOhgmN+
-	 3q8IyhZxlZeoXSat/wNrF04nfkMeVtzM+yoURnYSwHIKMDJwuTLd0jvYw7vlkSRnt8HFZ
-	 g11oj1RtB1B5ezds+O0hxajss9IQWa1jcFeRsBVHSxvXF4lbt2eOm3TiGRo2M7xze6IRM
-	 HySPyM5nD4HB5AFgA6cZyin5zm3ZNh39guaR6veQrevysGYSyWIv4JFitRN3gu5Ouhtml
-	 MoxgK7eKBrw6nrYu7HfVcETprSKNlY+CP3bkBE6sAvmU3EFQHYa7qNYY/4CzreOGolw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793607573;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=AFkBQiMpQlhW84bwcrPZ9udkYJ4gGU/LT5A6u2zeaHA=;
+	b=C43z2l2eiJuxg9HRayFFOMu4Rztz4DMl7BDvM+i5EwOHpJBBG9peUqfDfwSJZLN1vHmT
+	 1gZA/EqafV7+IQs8UlQ8YNMZ4S9A1CMMBA6jWR1SQ8hloBVVFCLIdwE44nZnRbDObZ7b2
+	 DzRlq3pApjy9jq0HtEZlBm8UpBX5fw0h2hqvVbk13P/c6eqek8XDQ9NGgOLTU6Z4mL2O8
+	 dWtI6zCXBBzrPkNKqFE6WbjdnH0DRhiJWT/yus9iGT9WsY9iTET7WmGdHGFhFoyc7qC49
+	 42E8/ATvPEZTSemCJQ0r9nWcywqREEOiZw2YZ1DQCEZ28Yb2pCbJouw+SlvkTYqWI2w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dooHytXa;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=xiaopeng.com;
+	spf=pass smtp.mailfrom=xiaopeng.com;
+	dkim=pass header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=nCYulSUK;
+	arc=none smtp.remote-ip=115.124.28.73
+Received: from out28-73.mail.aliyun.com (out28-73.mail.aliyun.com [115.124.28.73])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700E1606A32F
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 08:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B4C606A334;
+	Mon,  2 Nov 2026 08:19:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 89B4C606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dooHytXa
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CC51F00A23
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 08:15:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793607356;
-	bh=ggVpSG/Q2EbzVO8MsL3OxAqR882doyE1OLiyat9CU3Q=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=dooHytXaEmX5IvBrV6UTjQdMy8W56tpSkMndQrRdEvjEH5heTpQih4Uo/9f4PXxAZ
-	 mVIRZVdXV0I7idNNg3K/SRuYyrUu/Y0UW8GAi0jQQZZc3Cp+96/3lWSpWu125Lfv9v
-	 J3nzq/NxtEAgt4nYml95Se2JHyrQm6Gu0021Z9hGUxURoiIbDTllDvROjgcWcpSsLQ
-	 71XTl9lTp0TlgnHuiTEIjc/T55hPXYF/U42yWk8NaXEW/8xZaale1pn8Z2UpWjp1la
-	 ALOUrZQPh8nuhq7zc6CIUxSyVoKs7gIhlR8eeTrLiNQyUAYiP2TJ6Uh8X02CeGa1nt
-	 HO5sM4udYbhhg==
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-6df5e315bd1so2459342eaf.2
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 00:15:56 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBwTpbN8cnWdd6YXiPfKbBaMnznoKcggBnWtzpWWfJc0NtpxVoZFTndmafzoRyO3blynr/b1qJ4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIKpZGcVeOwfG7+s04azXLLUmXJivehRhDXOKRR5a+FXjHhIB73
-	EfHf/TAsAQJVJ4G44UmbpgsI2zb9mXHWrxObSE8AFUYtG6g7TvdGVzxIXbuGJkZpKWANGufr4pB
-	W8mTz0Sivz9vIeJOGRYYdRvOYwaM1iKA=
-X-Received: by 2002:a05:6820:1504:b0:713:de09:427c with SMTP id
- 006d021491bc7-714f254b5bbmr5208069eaf.60.1793607355409; Mon, 02 Nov 2026
- 00:15:55 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=nCYulSUK
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xiaopeng.com; s=default;
+	t=1793607563; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=AFkBQiMpQlhW84bwcrPZ9udkYJ4gGU/LT5A6u2zeaHA=;
+	b=nCYulSUK1NSP2oXlOT3cfAcHIsXMFkaMtSoY1euNDfCAbGdPE0ZM2ewjKg+8IxvWcQlWWHmW/5EmxtjCc/n5OlbpBPrnqQGyTSAilQ8/7ld6g3Ri6iQYeJk/5SvzaeFOkljdTRI4wMPsZIp5ErUxxOh5nyaNux6adBWQ+zIDq64=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.114431|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0497418-0.000651247-0.949607;FP=5497953585913824900|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037026024;MF=fangxy@xiaopeng.com;NM=1;PH=DS;RN=12;RT=12;SR=0;TI=SMTPD_---.juoIh3N_1793607560;
+Received: from localhost.localdomain(mailfrom:fangxy@xiaopeng.com fp:SMTPD_---.juoIh3N_1793607560 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Mon, 02 Nov 2026 16:19:22 +0800
+From: Fang Xieyan <fangxy@xiaopeng.com>
+To: Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johannes Berg <johannes@sipsolutions.net>,
+	M Chetan Kumar <m.chetan.kumar@intel.com>,
+	Guanglei Zhu <zhugl3@xiaopeng.com>
+Subject: [PATCH] net: wwan: iosm: fix potential skb leak in MUX DL decode
+Date: Mon,  2 Nov 2026 16:19:20 +0800
+Message-ID: <20261102081920.50288-1-fangxy@xiaopeng.com>
+X-Mailer: git-send-email 2.50.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,46 +68,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261101075145.698399-1-sgzhang@google.com> <audwphXNeZhVItS0@google.com>
- <CAPqVEODgo=mr+3viog+bY1XOKHLcrEVhs4CtZ-SiSYT4Hh+gjg@mail.gmail.com>
-In-Reply-To: <CAPqVEODgo=mr+3viog+bY1XOKHLcrEVhs4CtZ-SiSYT4Hh+gjg@mail.gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Mon, 2 Nov 2026 09:15:43 +0100
-X-Gmail-Original-Message-ID: <CAL4WiioN5-eu3DExHHs75BaK77j+aR3CNr+9p11CRQDd4gpXhg@mail.gmail.com>
-X-Gm-Features: AclHuK8YH8kivFCcxwhh3LmuTY3n9bSMVGRi64ndTBUddMQAOZY_6fQD74nptxU
-Message-ID: <CAL4WiioN5-eu3DExHHs75BaK77j+aR3CNr+9p11CRQDd4gpXhg@mail.gmail.com>
-Subject: Re: [PATCH net] net: count last skb of each sk_backlog pass in __release_sock()
-To: Ray Zhang <sgzhang@google.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
-	Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
-	David Decotigny <decot@google.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Le lun. 2 nov. 2026 =C3=A0 06:35, Ray Zhang <sgzhang@google.com> a =C3=A9cr=
-it :
->
-> On Sun, Nov 1, 2026 at 9:15=E2=80=AFAM Kuniyuki Iwashima <kuniyu@google.c=
-om> wrote:
-> >
-> > On Sun, 01 Nov 2026 00:51:45 -0700, Ray Zhang wrote:
-> > > Running 500 concurrent TCPv6 streams (neper "tcp_stream -6 -T 1 -F 50=
-0")
-> > > on a 2-core Cortex-A53 (CONFIG_PREEMPT_NONE=3Dy, HZ=3D1000, LATENCY_W=
-ARN)
-> >
-> > I guess you tested it on 6.18, but note that CONFIG_PREEMPT_NONE
-> > is no longer selectable on arm64 since 7dadeaa6e851.
->
-> Right, we hit and tested this on 6.18 -- thanks for pointing out
-> 7dadeaa6e851 and for the review!
->
-> On mainline, cond_resched() in __release_sock() still applies to
-> !ARCH_HAS_PREEMPT_LAZY configs (e.g. CONFIG_PREEMPT_VOLUNTARY on
-> 32-bit arm/mips/sparc, or CONFIG_PREEMPT_NONE with ARCH_NO_PREEMPT),
-> and landing it in net lets 6.18.y stable backport it cleanly.
+ipc_mux_dl_decode() owns the received skb and frees it after
+decoding. However, the early return when skb->data is NULL
+bypasses the skb cleanup.
 
-SGTM, thanks!
+Free the skb through ipc_pcie_kfree_skb() before returning
+to ensure that both the DMA mapping and skb are released.
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+Fixes: 3670970dd8c6 ("net: iosm: shared memory IPC interface")
+Reviewed-by: Guanglei Zhu <zhugl3@xiaopeng.com>
+Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
+---
+ drivers/net/wwan/iosm/iosm_ipc_mux_codec.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wwan/iosm/iosm_ipc_mux_codec.c b/drivers/net/wwan/iosm/iosm_ipc_mux_codec.c
+index 0bbd41263cc2..61700688eac9 100644
+--- a/drivers/net/wwan/iosm/iosm_ipc_mux_codec.c
++++ b/drivers/net/wwan/iosm/iosm_ipc_mux_codec.c
+@@ -693,8 +693,10 @@ void ipc_mux_dl_decode(struct iosm_mux *ipc_mux, struct sk_buff *skb)
+ {
+ 	u32 signature;
+ 
+-	if (!skb->data)
++	if (!skb->data) {
++		ipc_pcie_kfree_skb(ipc_mux->pcie, skb);
+ 		return;
++	}
+ 
+ 	/* Decode the MUX header type. */
+ 	signature = le32_to_cpup((__le32 *)skb->data);
+-- 
+2.50.1
+
