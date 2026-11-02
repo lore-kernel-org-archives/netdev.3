@@ -1,61 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793657183;
-	b=pHpbAW5YqMfu7ZsEm15B8G42PYlLwjZlpb5YoSTWCCVniV751P+BrosB5+EloT2vXJk9
-	 RfH1GKt9kIDAs49HZzE8cfxOOsh4IYOySa1pT+mKdU70onkY6s8svOLZWGfr3RblySsIG
-	 +MmLzGgcncCHtGYruB5JBRCfQEIUzsj9+CvjKF+bnMrw6Ias/u3iCBe+gYyeXW9pDIee/
-	 GHCz2PdnQDRYCt9tCNE5yrhl027WuoMAYCz78jioVTLh9Vma3qcvHBef2xBbuwp+v/xWe
-	 SMd747YImARpEVlWDZhjRuHvO8AbDrNFFMJvvwac7S/HHsz+0Bfeb22mqBmrZwthqXg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793657183;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=oHVRwxPlSk/JyNscj6Ule5aI2QG99S1MAEWeHilouBQ=;
-	b=MKmfd2oqdtUUMTq7laortHmF9Yjx4QoFeXZUh+oX7GNVogrMhiDSJT2mTBecS5o1zLz8
-	 M9XJll23pTiHE6ZDQBHgiw2594hqM2KyljFH+twqWtDdIDPIytpU4TdpI8k8JfIGoix8I
-	 Iem/p3NmdsNu1rTiID00bVcVy3AERjFIa987O0QFbypxI7obCBvXcUZ0+0UpmmnSz7+fL
-	 tKYJbh5wGyIly5GWemI6LB1JCoPY/RMHIRR/cmftzv0b72Yk3ymxK4/hBjC6lPfNaggig
-	 FTA3cKb1kcrnLJkoqlt9pN7oPUsX6suvWPW7+YeDcD7wObFbxlz+fxPkGxCAZ17ZZ7A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EHFFcE1t;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793657334;
+	b=bSN+eLfS/oAOoGez+93hBh1irMwzP5m7B+AKc6Dc4nVhiz3b5V1UyMZgI2in3cZhldwu
+	 eS15MHCX6gedULd0mHmdScGj3b08/b/sOOfNv5/mCb3F6Sn1XCYCaq+k+oCw7PYQ5vCjV
+	 w3kSBZcJjAE77R9jQT8Cq7ByX3NW1uEGRuiU2FZMzOMYXovxtaSQqAgxSvdN/cStj5+xD
+	 Xrcr1YR2ZJdof1UfTmeeAnA7xuxU3GKp4WhYl+GNFbR20ncZvwa/rf3D53rthXw0oghhp
+	 j4+MRw2rwzcAGFIQsWQhqB4L/lJ64osps+KqQGKCfClXd0tPJD6VRnR9oTd7z85Kbag==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793657334;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=04iaPr/Q4xOZpTpewylydaBAPbXSsxNLl37nHemVSI4=;
+	b=V4fZykENvyz5b5Sp273PDHthpfCghMLK1QDPaKfjV8yY79rFVvG7t4Q0wp9WJrB+hMDE
+	 UieT0ijPm9+nfwYNUW6Oc2Kjr1mxP/In6u62euOicC34KhsCBA3IYkSQBN/BjSbndCI5d
+	 DRhyeIckZYEvG9ZsP4I+OaJzkJQeBXHpPcf0VAPtjKaQ/PpBM1Lp8lRD2cXoiKQDCKsCy
+	 nK3gZwjcoudYB0Cy+0kBJ0UUvQMXdvG1fgyp61Eckzi0dS7uSziyJlORFmeXQohrCxIhX
+	 PgXMoBU21uB0schFO/4lipOdDypwPaFPN236gh/3Ji4JyaLq7vronMKPu95I9AwlfxQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=NQVmmG6P;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDB7606A324;
-	Mon,  2 Nov 2026 22:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249F0606A337
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 22:08:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 249F0606A337
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EHFFcE1t
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BAA71F00A17;
-	Mon,  2 Nov 2026 22:06:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793657183;
-	bh=oHVRwxPlSk/JyNscj6Ule5aI2QG99S1MAEWeHilouBQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=EHFFcE1tHXMl2BkkcDa8w7TujxxivdQDMsCcsiHWxnwsdqlBzQCByCbnml55EhnVM
-	 iXCGGxJXcUF0jbnrXC4bQY6kzb6uDlWMWZK2MvsEsDcEhDXR67m+/sDHcfSU+aQA4O
-	 ouZE+73rOmTRat0zWuH5QkfQSRrwYlGMW9K95bvKOx12zjHp6HyRRpEsTV0eqIoedH
-	 Tj/7ieTfuZiPce/wg8ykbsg2gtA8ZBHX2aXVExosx/GGPWX9ffWB0BxXlO/r2qZhdU
-	 C2gqfEl6SHTkO8bIarh0a83ARl5J4kgTu8IJbIPAwIiyeAzgXoR66qIOLEbbVBgOrR
-	 +fSgRXOozppOw==
-Subject: Re: [PATCH net v5 2/2] net: restore refcount ordering for lockless
- socket access
-From: netdev-bot+sashiko@kernel.org
-To: imv4bel@gmail.com
-Cc: edumazet@kernel.org, ncardwell@google.com, kuniyu@google.com,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- martin.lau@linux.dev, john.fastabend@gmail.com, weiwan@google.com,
- sd@queasysnail.net, jiayuan.chen@linux.dev, netdev@vger.kernel.org,
- stable@vger.kernel.org
-Date: Mon, 02 Nov 2026 22:06:21 +0000
-Message-ID: <179365718192.3131.3817815695107204474@kernel.org>
-In-Reply-To: <20261029214219.1035176-3-imv4bel@gmail.com>
-References: <20261029214219.1035176-3-imv4bel@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=NQVmmG6P
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6b1b12de661so3164a12.0
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 14:08:53 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793657332; cv=none;
+        d=google.com; s=arc-20260327;
+        b=K0lSjIOOi+vbF5jphmyLZpMTpzkbe/+ChDbks9pZntYgK1RPJ0AdeHj+oKggXB8TcA
+         Z8uMxbS8Hsh7K7gHGyyrJPOlPZasuMegm4wXM3ozldwHe2P+mrlOQrh4XULVy8m0Uv2t
+         ZhB6LqqNUsRjYB9yiBE72B4kAVyGxB+7AsiYkbyA7dXx6E6cuSjnXys7xyEEfrOxMNGn
+         c0226jWt8yugdt0QB+53vjOkP8/cvOK2rUSnIYj+sUs7CDjPhmmyT8UNWBawKWdrLCkQ
+         5FvRnC7nwwIkBjmzVnlLr4B/CK2UuM7Of2TzHrHWCZzdejt0XyJ+VysUBlZaeR842+IF
+         qzwg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=04iaPr/Q4xOZpTpewylydaBAPbXSsxNLl37nHemVSI4=;
+        fh=RTtxDaqV9bWv7Rex2M0l55DmAYcbLshORHTI2wSVkpk=;
+        b=cVK56auMbGFegfAssc+4iM4R7a+J5XB0J6uQogmwX3Oh4czVdEKZyuwTLeK806UKp3
+         dfNQ0e88wVk3L9vgZfjmkYWi14NtbyBlZ0a4vUd+Dz7koykZ1pTCB60zv47owzpQWU9k
+         95NSUiKmEx4CNf6OgIwZXH74qdUTPCVFbPS5aYeJnya2eOsYC4FtcbuWgLlYoznJGW+a
+         sLANCcHaFIZ6i+5vHtv9JXQMUM3q7ndH2IFzN9Sz7VzQGsLCrTh7ZVIhITSPD1kZagc3
+         RssYhXmFD9XlyAqGWdm3zGU6I15Ws3BTPHsjiZhbzQfXJgp6QlBPSC76VfS+U5dAZWSg
+         vM0w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793657332; x=1794262132; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=04iaPr/Q4xOZpTpewylydaBAPbXSsxNLl37nHemVSI4=;
+        b=NQVmmG6PVNjIV2neyCA9M2St1Rsk5SaTQnqw5Z6BjHpTxwxLNWVY8mIkPbVqVv43Ez
+         g1kwACtxFVkWQNTvKZae+D3NXZb1mGV/FYrWMJmL1ujN5VbI0phU2UUIvZ1RySl3e3Zo
+         pSWAqChgMM4wStuo1gtjzteMY/kaOtiT6M570xyqph8/dEsROs5zKnwpOJAET9qepMSV
+         vCdB69pn/VvgSV+86EtlwKhYvkM3M3xgeJW6A9qGry6TY6rHG0YTPrb0+QZyIpwScHCC
+         ZGyoBcYE1XaKnaLT2NSoMPElQaaW3yDHAgebA3x6qLhgrJbVVPEyWmoctHmuVm5Jwrjd
+         9rQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793657332; x=1794262132;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=04iaPr/Q4xOZpTpewylydaBAPbXSsxNLl37nHemVSI4=;
+        b=uVY02rGuLAWgSUK7tt4/g2VcD1+piFyrw3O83vNA1EJ15FmeAtlraNM++ZpQPjAHCJ
+         v3Dmzup3rHtWZz584H9hYOaUvTdaMjtw8pFG6IqzA0JvEr64j32WPwor2Yl2KzqNmhLm
+         x+omTDx5xmXdHALgRSZXJtwgD8skxLrs+VKvZGSVMYcw1kIW51Lui6uMNS8xoQH+nbX7
+         G7PFvS/aMQtgYFZbhNgyleJU1nmC5wCMshnIIga6tBg8248EQIHOFT1X8SD6wM5CnyAz
+         W4WF5/lo+RepGhvoBRz9BkXeSVzjNTNIU56B/Sa941KCigYECyAzE65bXysB1HqgTb2v
+         JDIA==
+X-Forwarded-Encrypted: i=1; AKwUvBzbYU6Z6DYPGN23D7TkuGiV26r8eEWIhshyuyc1QYiA3TL7XHrrWrxSClpwbbgKpJOoXpYLvvU=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8+GVf7BP7fKiavk7ztzqwi3EsfBNz2d8YjnSGxyp9oRgadYdJi
+	Yr+Zpa8OENhdxzvT/w3J14+KdPFpcNfAjYNcZ6dpvj8keymocP9oFXkDeQ71BuTdbeO/YS21QN0
+	u/a09wja0Lu+71fAab4POvF9w8TOkjxn/sjtU2rHt
+X-Gm-Gg: AYBFou3lDxLm7kOp7b80zCSoJ2UwhmZGlSwfQLQcLAh8Q+MgTEFtq7sMsFXVdFQGf/N
+	sFFHedSgO9kA5ecN1HkrvUYu1703q24IjKl2WXfGqiTk4S4FNH0WkxJJIqP13KowuB838P9COTT
+	MsMG5Gz5pZP+ooF9crc4tppP97XnBQUxxoEeCv80UOxV/TpFUZxQFDxRdsPAZbADXATLTpehXaA
+	yfExjlU7lku6FpqZlKyrUkPuvtw9KLHpbl22cHEe+1oawyFMzo5LJmoEq2Ok/2LfvlaodwUv9sd
+	CEHHfc75gBdNxy1YXAlpy/f/R6Si9Ha7JS6iVFgWibpYd8tTrGYmZoF5RrOWNFpFdKMeQUNzNWT
+	9msFlK7dXV582Vp7LBQ/vFXMMc32y/L+FIJasamXUV7upk0Bg7U0oE6sni6GpihTj+vg=
+X-Received: by 2002:a05:6402:438d:b0:6b3:f12d:7405 with SMTP id
+ 4fb4d7f45d1cf-6b53e778d41mr6126a12.14.1793657332128; Mon, 02 Nov 2026
+ 14:08:52 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,153 +104,93 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <20261030083539.777877-2-almasrymina@google.com>
+ <179357408146.3131.2882435952119280563@kernel.org> <CAHS8izMt+5HBjkOOsb-FrwKoXxEBuDn=gf5p+64akYS=SAoQrQ@mail.gmail.com>
+ <9afff44d-f8eb-4549-8aae-f99a53339319@redhat.com> <20261102185856.1824792-1-almasrymina@google.com>
+ <f4f0fbd6-63e4-42d3-87bf-9f888a8de1a8@redhat.com>
+In-Reply-To: <f4f0fbd6-63e4-42d3-87bf-9f888a8de1a8@redhat.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Mon, 2 Nov 2026 14:08:40 -0800
+X-Gm-Features: AclHuK_l2m6u_KEy2pbXoZVvzOwIMj8tI1lJiwLeWg-R9MKJCqxW8rPbMreP4XU
+Message-ID: <CAHS8izNQjF6nzPym-kXO2Nr6jv5oKsnFGCNYWZH_zBTGoT98ew@mail.gmail.com>
+Subject: Re: [PATCH net v5 1/4] net: devmem: unmap dma_buf synchronously on
+ queue uninstall
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, sdf@fomichev.me, 
+	kaiyuanz@google.com, kuba@kernel.org, bobbyeshleman@meta.com, 
+	asml.silence@gmail.com, dw@davidwei.uk, ap420073@gmail.com, 
+	davem@davemloft.net, edumazet@kernel.org, horms@kernel.org, shuah@kernel.org, 
+	sumit.semwal@linaro.org, christian.koenig@amd.com, phasta@kernel.org, 
+	andrew+netdev@lunn.ch, sdf.kernel@gmail.com, hawk@kernel.org, 
+	ilias.apalodimas@linaro.org, daniel@iogearbox.net, razor@blackwall.org, 
+	tariqt@nvidia.com, kaifengw@google.com, dtatulea@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Mon, Nov 2, 2026 at 2:01=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wrot=
+e:
+>
+> On 11/2/26 19:58, Mina Almasry wrote:
+> > On Mon, Nov 2, 2026 at 7:29 AM Paolo Abeni <pabeni@redhat.com> wrote:
+> >> On 11/2/26 00:16, Mina Almasry wrote:
+> >>> On Sun, Nov 1, 2026 at 3:01 PM <netdev-bot+sashiko@kernel.org> wrote:
+> >>>>
+> >>>> - [High] The dma_dev use-after-free this patch says it fixes can sti=
+ll
+> >>>>     happen for RX bindings made on a virtual device that leases queu=
+es,...
+> >>>>
+> >>>
+> >>> I know about the issues with leased devices. That needs a bit of a
+> >>> rework, which I have done locally, and would like to send out as a
+> >>> follow up fix.
+> >> Will such follow-up rework the code touched by  current patch/series?
+> >> how much? I'm under the impression that at least the fix for the issue
+> >> reported here would be quite overlapping.
+> >>
+> >> /P
+> >
+> > I pushed the follow-up branch on top of v5 here so you can see the exac=
+t diff:
+> > https://github.com/mina/linux/compare/devmem-teardown-v4...devmem-lease=
+-bind-map-dev
+> > (commits: https://github.com/mina/linux/commits/devmem-lease-bind-map-d=
+ev)
+> >
+> > There is some overlap (~55 lines of v5 touched across a 6-patch +262/-9=
+9
+> > follow-up): it renames binding->dev/vdev to binding->map_dev/bind_dev, =
+passes
+> > the net_device explicitly to net_devmem_lock_dev(), factors out
+> > net_devmem_close_rxqs(), and replaces the !rxq->lease / !netif_is_queue=
+_leasee()
+> > skips in net_devmem_dev_unregister() and mp_dmabuf_devmem_uninstall().
+> >
+> > I kept it separate only to keep this net fix smaller and easier to revi=
+ew,
+> > since the lease issue is pre-existing. Happy to either land v5 first an=
+d send
+> > those 6 patches right after, or fold them into a v6 if you prefer avoid=
+ing the
+> > churn.
+> I hoped for something smaller :)
+>
+> I definitely would not fold the 2 series.
+>
+> I'm wondering if this could be considered net-next material? pointing to
+> net-next will offer better guarantees for all the work to land in the sam=
+e
+> release (no need to repost in such a case, I can apply this one to net-ne=
+xt
+> directly).
+>
 
-Critical: 0 · High: 2 · Medium: 0 · Low: 0
+I'm more than happy with net-next. Honestly so many AI-foudn fixes
+requiring so many refactors that net-next makes sense most of the time
+now, for me at least. Thank you Paolo!
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The bpf_sk_assign() change in net/core/filter.c does not fix the
-  problem that its Fixes: 27e5203bd9c5 tag points at.
-- [High] The patch is titled "restore refcount ordering for lockless
-  socket access" and converts lockless lookups "where the socket is…
-
---
-
-net: restore refcount ordering for lockless socket access
-
-This patch switches the IPv4/IPv6 established lookups, inet_twsk_purge()
-and bpf_sk_assign() to refcount_inc_not_zero_acquire(). It also uses
-refcount_set_release() when setting refcounts in the SYN cookie, TCP Fast
-Open, request migration and TIME_WAIT paths.
-
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index 09c60a58c82ab..d832d3332c6f9 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -8022,7 +8022,7 @@ BPF_CALL_3(bpf_sk_assign, struct sk_buff *, skb, struct sock *, sk, u64, flags)
->  	if (sk_unhashed(sk))
->  		return -EOPNOTSUPP;
->  	if (sk_is_refcounted(sk) &&
-> -	    unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
-> +	    unlikely(!refcount_inc_not_zero_acquire(&sk->sk_refcnt)))
->  		return -ENOENT;
->  
->  	skb_orphan(skb);
-
-[Severity: High]
-Does acquire ordering here fix the unreferenced BTF pointer case that the
-Fixes: 27e5203bd9c5 tag refers to?
-
-Acquire only orders the accesses that come after the increment. In
-bpf_sk_assign(), every check on the socket runs before it:
-
-    if (unlikely(dev_net(skb->dev) != sock_net(sk)))
-        return -ENETUNREACH;
-    if (sk_unhashed(sk))
-        return -EOPNOTSUPP;
-    if (sk_is_refcounted(sk) &&
-        unlikely(!refcount_inc_not_zero_acquire(&sk->sk_refcnt)))
-        return -ENOENT;
-
-    skb_orphan(skb);
-    skb->sk = sk;
-    skb->destructor = sock_pfree;
-
-After the increment there are only stores. Nothing is checked again.
-
-The verifier's btf_id_sock_common_types accepts plain, untrusted
-PTR_TO_BTF_ID. tcp_prot and tcpv6_prot use SLAB_TYPESAFE_BY_RCU, and
-sk_destruct() frees sockets without SOCK_RCU_FREE right away through
-__sk_destruct().
-
-Given that, can this sequence happen?
-
-  - socket A passes the netns, hashed and sk_is_refcounted() checks
-  - A is freed and its slot is reused as socket B (maybe in another
-    netns, or not hashed yet), and B's refcount is set
-  - refcount_inc_not_zero_acquire() succeeds on B
-  - B is attached to the skb without being checked
-
-inet_steal_sock()/skb_steal_sock() then deliver to the prefetched socket
-without checking the netns. That would get around the -ENETUNREACH check.
-
-sock_pfree() and skb_steal_sock() also call sk_is_refcounted() again
-later. If the reused object's result differs, could the reference taken
-here leak?
-
-This race doesn't depend on memory ordering, and it existed even when the
-increment was fully ordered. The established lookups changed by this
-patch re-check with inet_match()/inet6_match() and
-hlist_nulls_unhashed_lockless() after the increment, then call
-sock_gen_put() and retry. bpf_sk_assign() has no such step.
-
-Would it work better to redo the netns, hashed and refcounted checks after
-taking the reference and call sock_gen_put() on a mismatch? Rejecting
-unreferenced pointers here would be another option.
-
-> diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-> index b0239d203f045..860145d810ed4 100644
-> --- a/net/ipv4/inet_hashtables.c
-> +++ b/net/ipv4/inet_hashtables.c
-> @@ -550,7 +550,7 @@ struct sock *__inet_lookup_established(const struct net *net,
->  		if (sk->sk_hash != hash)
->  			continue;
->  		if (likely(inet_match(net, sk, acookie, ports, dif, sdif))) {
-> -			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
-> +			if (unlikely(!refcount_inc_not_zero_acquire(&sk->sk_refcnt)))
->  				goto out;
->  			if (unlikely(hlist_nulls_unhashed_lockless(&sk->sk_nulls_node) ||
->  				     !inet_match(net, sk, acookie, ports, dif,
-
-[Severity: High]
-The commit message says the change targets lookups "where the socket is
-validated again after taking a reference". Should the MPTCP token lookups
-be converted too? They follow the same pattern but still use plain
-refcount_inc_not_zero():
-
-net/mptcp/token.c:mptcp_token_get_sock() {
-    ...
-		if (!refcount_inc_not_zero(&sk->sk_refcnt))
-			goto not_found;
-
-		if (READ_ONCE(msk->token) != token ||
-		    !net_eq(sock_net(sk), net)) {
-			sock_put(sk);
-			goto again;
-		}
-    ...
-}
-
-mptcp_token_iter_next() does the same thing: it increments and then checks
-net_eq() again.
-
-mptcp_prot uses SLAB_TYPESAFE_BY_RCU, and mptcp_sk_clone_init() clears
-SOCK_RCU_FREE on established msks:
-
-    sock_reset_flag(nsk, SOCK_RCU_FREE);
-
-So an msk can be freed and its slot reused while an RCU reader still holds
-the address.
-
-On weakly ordered CPUs, can the token and sk_net loads in the re-check run
-before the increment? If so, they could see the old object's values, and
-the lookup would return a referenced msk for a different connection or
-netns.
-
-Callers include the userspace PM netlink operations that look up by
-token, MP_JOIN handling in subflow.c and syncookies.c, and the diag and PM
-iterators. HMAC validation would probably reject most of the MP_JOIN
-cases.
-
-mptcp_subflow_reqsk_clone() already uses refcount_inc_not_zero_acquire()
-on the same msk objects.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261029214219.1035176-1-imv4bel%40gmail.com
+--=20
+Thanks,
+Mina
