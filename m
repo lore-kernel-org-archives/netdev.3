@@ -1,49 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.134
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793634607;
-	b=Guv4gBTjoI5zGOWnvTrQAO+Kd8GdJj0boArVveK1WVaf+Rq8cCzHp3R8QVOj1QCmZbTS
-	 JdSsoTn3G30/coJ0TRsDvhg0UUJZKVXFf3j0S3rLkZXjlR423/qx+ydUrXHBQRoPiUfC4
-	 YtFj876Tbv3UNiFcudTR2hhd8ThLLWfeU11wFhFjis53sK5v0SlNAYe/yCk2QhemOdhgJ
-	 mPKi2W9FeFpmDdKmh3kHnkJmlgxZ0W5VRsKaOj4onVG0KU0wy491HEnGXqfcMpavVZqOa
-	 iYcgB/isPsAPCPh1an68h+84uJ8tPJXbKtMjf9zdmm780iU2gL0IrYXf8zv9VLC4hfw==
+	t=1793634716;
+	b=smOtqmn3xz1t1y+HAR/0G8R4ROjxfp+7atwKR6Q6f9Cvx5IIOig8TF343jHV7jUOZq5z
+	 1tw61BQXx4EiHx7lwPEfYWcD8oiw/8P1bazlY+KJXmyrsCtgoWN1ddYi/y2hQqXTwDQcG
+	 ZbGg27meUKYjYci0iP1zUVkAt5TGU1AavOEWXR3Ijo3+m586BJ+pvTEwLk6dflEbCF4c/
+	 5ar3hlw78T5WqCVRyL+Dq4+r+ZSA4rVmHPjUcJ2yHGSW67QYUff6HmW7NpkDlTEtX43xV
+	 7ftqqeL3WCRzYUMzizCq2jr/YLF37o6kJUKBKjmXFK40CzivJQRV33YF1LKctfsnzjw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793634607;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=R2uyw2KBqv+ypQbVU09qhOx2qFtMrReMIQ4NGIDJpHQ=;
-	b=gnYXsx9kDXvVItsWOIWyNGhECqeKlsZvmLB9FTXJhZPnb2r5ogmhVY5lPpB9cPUQMbPt
-	 geAehUaRcYsVvh/ehVy4f7G09pVhON4dOMYR9u4JSHExN/uWZyUAthZP7hvErDhuAjrqO
-	 +4NTFSVXQuWAIWLQVUZ0wkrg00rXnFixiW6eCZ0aCiGWrXo1xysz9fl+YA2WbVrFVe4xo
-	 zlT3rmZhW2WOXjQAEVIYQmbisHM8sCe8U+h6TlTlGkmEm9gc/XkpV0bWccd0++l1z53uj
-	 kK6HABLxLIcFLNbxIZu8405l0ObeAPkB2a68eFF69G5vGHZ7p8AwY9wcDrvrjlBf8Pw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793634716;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
+	 X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=937nX/PE+DRlwUCkxy3kWZwRIlE+7A+DNKEqcWb94TY=;
+	b=bf4UjwvfdEMsHYdcrcWEbk/0rN/GRfKd605Q4eQL2OW0ChJe5xiaoSPbdyEvlecxunfx
+	 QzACoeYxXr3J/z3me2uXagrIwJe41kXFFMrCGXrvwGBwvvn1TVwmYXXuvz1LNE8lq+adn
+	 cPLaz6W0pmHORAmJPsxsQwm664gF72uI6UkFIagAjvuBkt+/PyQZi+DSGQLfI2TYZxnY8
+	 agUTV3RzxV9XuKYx66zys9A6+6r+JFtXvB9UdJGu+ppzyaEtzj0AfjzZsV2JdJNIk9STP
+	 IvO7ahxhqj4a9/5H1ltTERibohjjpwMxID/braqRVNZSarl16VGxz1nhcbHfC718sfg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hS35RL8z;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=fail header.from=foxmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	arc=none smtp.remote-ip=74.125.227.134
+Received: from mail-pj2-f6.google.com (mail-pj2-f6.google.com [74.125.227.134])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2690606E00B;
-	Mon,  2 Nov 2026 15:50:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hS35RL8z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B32E1F00A17;
-	Mon,  2 Nov 2026 15:50:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793634606;
-	bh=R2uyw2KBqv+ypQbVU09qhOx2qFtMrReMIQ4NGIDJpHQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=hS35RL8zc3XafEK4uVAAAOr5x3paiuif0AeEiObrgvShqxfPc+iLC8f/T0qFTQvtV
-	 Nf196dqd+BoVhtXUAOMkMIeolLqu/KTJFoAA6M9KPSiMKkY2VvtpbJdrHpxcbY4Skb
-	 YqG28PMVCYC1uUNDh5XIA6uKEnLec60Dmqg97E4uNzbDMF3IhlX4cp7pC8U1NZQnXy
-	 JjywUBDdOfYqnItbOTO9C8JED8uiB9jqpUN+MuEwrnyxBm2h2kuMnAAr+GSpqQwAHC
-	 okNrU53dAn6ZigTY5aCYkJL717hxDBDtqF/diCjBWbpKpfH4K0fK+qLGOgi1ZbGXcx
-	 N3GU6/lxqDwUA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 401EC380821F;
-	Mon,  2 Nov 2026 15:50:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3295607A885
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:51:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3295607A885
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj2-f6.google.com with SMTP id 98e67ed59e1d1-3ad211ad92bso865336a91.1
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 07:51:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793634715; x=1794239515;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=937nX/PE+DRlwUCkxy3kWZwRIlE+7A+DNKEqcWb94TY=;
+        b=PPUay9gcuv2sUyOnv5K4/O62TOTCGzeJ/RI02oxgjhJcv9AcRjt9Id3hjojaFvxkRq
+         I1xgISmALNMcO/f6BrtUUlCnuHEQtaepoONNkqt4oZZNGLIoHsg/yTn7xBNaAi3t8ZF7
+         G0P3UKlooQZBN50C5w3QoTOYHbx0TXgsrVcvJHzHs3GlMQlPz3GdwK8yyr6CWsiaRJyv
+         YqKYRuTPOi9Z4sja4wBmAVToz6NbRTSoYNVNQRhfAuvQ+2ANBV/y8tR6dXRCa16Ci9Nd
+         m3IQ5YFwQU+zmVy4yxfEkfY74iqnx0ukIJl/Ki3LbqfTZ2xi4xV322kM4yqWLaEhMDKF
+         QFAA==
+X-Gm-Message-State: APuU4Z+hRLuVmi+IASAhQ/xlLqxccQQDM2WEiH5pSMLqZpJ1STsiL2g3
+	hxkX3Qkr9uR1MeO975XmY7A/8ZyEUyoW1mOYhdU4rE8kN3VU+ZoM4lkTK1qtXIcH1/E=
+X-Gm-Gg: AYBFou3CELL+QxZ1fjPkeb+KFRqjKps7gfqn/ePxyZnpV6cog6a+AvZatixl+h91YNC
+	pSMl0bVoCe+8WJQW39vxqCJx1hWNX53J4egMRJHTWWTK5p9CvHJ1vNa7HEU2pt+d6bJb1G31/qk
+	9l2SBwkUMvHHxjH8Idi7O501v7KrNjWEGknYqHuEurrtiXtcekE3EKhKdzwSaWJqR0THLNqwsuw
+	5AUYjk5Ftkes5N67nVBx8cazXSbx9hnu7R+eD9NnClCcCZtHZsl8VEcFt/WkqVwwdhgSIDx/aBg
+	ReqxuGKbeb5bkyTaBfnJvVq/oAK0LBSPj9mlY0ppXlqog7UDy9nF88WDL3M/BUBEivnwnxe58Z2
+	ns9gAzZtNT3M719KY+yornHcsp+iC4mzI8ZzL1GbWmgiPB/PjziJJjpSLB7zb0+pIHzDcEe3w9b
+	qtw3jXeua/65dKl5YOPzbnutP37hPDrApoq2InnEKNFf7DST0A7dWV43kXlZjrdvAl+4UNaeoPR
+	TfxTTo+pk8J14Iz2Q0Q6lnF3Qsn9jyN4WRG3p89CIdSU7qo+TwrMFe7UZSBAEw5QkFkWj9g2LiV
+	2UTBaiI+noS93IHkqh0keEPXJJc+QAZzt4byXdeIvR6czQ==
+X-Received: by 2002:a17:90b:4483:b0:3ac:9259:1234 with SMTP id 98e67ed59e1d1-3ae8979ba8emr8642033a91.39.1793634715031;
+        Mon, 02 Nov 2026 07:51:55 -0800 (PST)
+Received: from localhost.localdomain ([138.199.21.247])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae845aa27esm14267953a91.11.2026.11.02.07.51.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 07:51:54 -0800 (PST)
+From: Jianlin Shi <shijianlin11@foxmail.com>
+To: netdev@vger.kernel.org,
+	virtualization@lists.linux.dev
+Cc: mst@redhat.com,
+	jasowang@redhat.com,
+	eperezma@redhat.com,
+	xuanzhuo@linux.alibaba.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	talgi@nvidia.com,
+	hengqi@linux.alibaba.com,
+	horms@kernel.org
+Subject: [PATCH v2 0/2] virtio-net/dim: fix irq moderation init failure unwind
+Date: Mon,  2 Nov 2026 23:51:43 +0800
+Message-ID: <20261102155145.23144-1-shijianlin11@foxmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1790751008.git.shijianlin11@foxmail.com>
+References: <cover.1790751008.git.shijianlin11@foxmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -54,46 +93,42 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] net: qrtr: announce local services again once our
- HELLO is sent
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179363460505.17619.12560693477467946976.git-patchwork-notify@kernel.org>
-Date: Mon, 02 Nov 2026 15:50:05 +0000
-References: <20261029105142.2503-1-26rote@gmail.com>
-In-Reply-To: <20261029105142.2503-1-26rote@gmail.com>
-To: Joonhoe Kim <26rote@gmail.com>
-Cc: mani@kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- christopher.lew@oss.qualcomm.com, deepak.singh@oss.qualcomm.com,
- pranav.phansalkar@oss.qualcomm.com, andersson@kernel.org,
- effeffe99@gmail.com, linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
- stable@vger.kernel.org
 
-Hello:
+net_dim_init_irq_moder() leaves dev->irq_moder dangling when
+profile allocation fails.  virtio-net probe then skips the
+virtqueue teardown if that init fails after init_vqs(), leaking
+the virtqueues and their DMA mappings.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Patch 1 makes the dim init failure path clear dev->irq_moder, so
+net_dim_free_irq_moder() is a no-op afterwards.  Patch 2 sends the
+virtio-net failure through the existing free_irq_moder unwind
+(reset + del_vqs), matching the page-pool failure path.  Patch 2
+depends on patch 1.
 
-On Thu, 29 Oct 2026 19:51:42 +0900 you wrote:
-> Since commit 544d85de4dc2 ("net: qrtr: Send HELLO message on endpoint
-> register"), qrtr_node_enqueue() drops every packet but HELLO with
-> -EAGAIN until our HELLO has gone out to the node. When the remote's
-> HELLO arrives first, the NEW_SERVER replies from the name service are
-> dropped, and so are the broadcasts for services registered before our
-> HELLO goes out. Nothing announces these services again, so the remote
-> never learns about them.
-> 
-> [...]
+Changes since v1 [1]:
 
-Here is the summary with links:
-  - [net,v3] net: qrtr: announce local services again once our HELLO is sent
-    https://git.kernel.org/netdev/net/c/743b5c86276b
+- Patch 1's commit message now documents the call sequence the
+  maintainer asked for: on current mainline the dangling pointer
+  is never dereferenced by the only in-tree caller (virtio-net
+  probe does "goto free", which only reaches free_netdev()).  It
+  becomes reachable once the caller unwinds through
+  free_irq_moder as patch 2 does, which makes patch 1 a hard
+  prerequisite rather than a standalone bug fix.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+- No functional changes; both patches are identical to v1.
 
+[1] https://lore.kernel.org/netdev/cover.1790751008.git.shijianlin11@foxmail.com/
+
+Jianlin Shi (2):
+  dim: clear irq_moder on init failure
+  virtio-net: unwind VQs when irq moderation init fails
+
+ drivers/net/virtio_net.c | 2 +-
+ lib/dim/net_dim.c        | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+Signed-off-by: Jianlin Shi <shijianlin11@foxmail.com>
+
+--
+2.43.0
 
