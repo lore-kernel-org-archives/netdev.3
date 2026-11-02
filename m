@@ -1,58 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793631939;
-	b=oBcq6HRT0jzOmnnRyfm61HTu3v5tdWOYk1X1WcqIWra4yXrsIqFp6fzo6wx+JybwmDuq
-	 poxDVaPzz1cLKCxAzbwp1JxG9gvPLZY9Wcs9+B028CC7EeCqkrG/5qvJh+dR9CyotAMz/
-	 L3sdYw074hTgmv9vzymYyXsbo+v0yo1cJaLGy70zyiseOSNfTijP2zda+Z/ox0hZxoi4H
-	 p33YbmwDBpVF8WDo77z9ULRXiGudeigIUGouZylJm0XEzlrZRe+FEDUORxIoZmLKceVRa
-	 YQF2ysWg3UFaTdJdcllboLLGcyP2KDkFH8CYjWKRbCdEXN4Nxpntv7wiQ+EgvZY/qvg==
+	t=1793631935;
+	b=19v8rPw2rJUDSo+PSIdmM2HW0mErlwHQ/8l6whqljkEkpSCzbTs5Oir5Ft/CR30DDoPR
+	 4fTXcayYr79z+jxsnwCFniNwPR/KB4ZiOAmz5IVmhyrudQlv6RUNhNgAm+Dg0fSzW6bDo
+	 MnMYXUkDY0IjJKW+mFjhXiNkaerhZS+ip8xGiKWehkSrITD6LEWzVLm9gQz1570hf+ber
+	 Qf748zm8o/Rg+A1Y2vZdvDRSLfpHOhQC1GpLKFGonssuFu7hfZC21N/Jv3WGQw6QgD6Ru
+	 zOGOKYfCcICyTb8Bcqwbhd8NqYzfBBYBNCR8UZaULKd1QPLYuGC3DTLxeSVZzxDXJsw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793631939;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=65B+XTjeC/stvy87CSmUplLFJkU9H65YFOEdiLp+FW4=;
-	b=Y0j/BtWJncrbbp62ApR8EwETL6oMHH3fh3sL4QM45zPKRm387Kf5HLCoJsCQ6JUB9nrw
-	 GlkOAIqqkgWEndTZrgFpHFCYtlFGikv6QPeUjlfTLbS/0V1VxnJmEIegvJh8+pl1V0cJv
-	 CE5qfTX50d4tGI2nmYfORejIE39hpWMCsvjW43O0APqvXPFSrWfPFdnPBzOwQLJM/R32T
-	 I+p+jS6FjYTJrKXtIUWI0jcTu5SXjWsKjAQ6K2zctW2MSBr9u/kMbRlxbZ8v2ZnCyYM5w
-	 2NCgZRB4aDmyzxmCyjksUaKRJp7ma7oniBAPaCvdMQvEMqQ7Olhc9Us2jCOX9Q3pKvQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793631935;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer;
+	bh=2GaZul5nsAkiA2gFzaNhtmiz6cl7FK3FoYt1S3NMwg0=;
+	b=5AhB56NQuFT1i/Q0XwYz9b2reHqKxhO3P5YYooXogdkgdOa54OGAKo+3n9AGoU8eVqrD
+	 4uhaxqvd/zE3ScBmAC/vXRYspCE7Q98OWevZK/f3J6ZIyy3azAon8yer5I6jfjfL6UJ+g
+	 Tfn2gDzfxBJNzph1hC1yW+Wcgah1uuE/W/xZrqMkZrXMFFz+I5Frf0Vlbm3mgqpeHHGFN
+	 gOoEa+8AKMDNwGTnEngMDU4WtoW/9CKStPbTXTCLlQw1agZv0iiwONTPayXiEfXkROxbO
+	 IlE9fYxvGznRmXQyK4zaihGG5xDegayr5JN+d7N91QBioricQMzLLVr/WChu6fRvCwQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ZOmYG3+f;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gPYohCzD;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE4D606A914
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:05:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CBE4D606A914
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=ZOmYG3+f
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 309C14E413D3;
-	Mon,  2 Nov 2026 15:05:36 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id F0E8B60750;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5BF6084434;
 	Mon,  2 Nov 2026 15:05:35 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A7717103290E8;
-	Mon,  2 Nov 2026 16:05:32 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793631935; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=65B+XTjeC/stvy87CSmUplLFJkU9H65YFOEdiLp+FW4=;
-	b=ZOmYG3+fd/zvXV69qvfdiIMJPfct1j57KXFg8/TuyO24nmgDGCs4U7dyZ9+kzpEC2zdb4n
-	VFt5KXBqjwIjGUkyxWjh9RFrlHOKmG+wYw8wHuFiyBmU802FPJ3ZwmPyuhv5JzdQ2fDyKj
-	6ZFvHH+6D8LTKTBMCeA7WqIHJcT/YY6wdn1+n1bxh1dr4dWm/1cA1rroqos6ZfxWJ8rkVF
-	MiQ3qVOzKXFULFiBnrDb8D9OPFtLPBcY1UvXQ2GkWk4hGvnMqnMQJHn4CNdpDAI7j26iu1
-	1ry4w4AFwxVoFtk+Jq8BEJawS85k8zpG9xKtZeMElACrSoHUOqdkWBRcTbKm/Q==
-Message-ID: <1219dc2f-0f96-40db-8268-1a8eb009b152@bootlin.com>
-Date: Mon, 2 Nov 2026 16:05:31 +0100
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gPYohCzD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC891F00A16;
+	Mon,  2 Nov 2026 15:05:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793631935;
+	bh=2GaZul5nsAkiA2gFzaNhtmiz6cl7FK3FoYt1S3NMwg0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=gPYohCzDqrsQn8T7TOjQzO9kH78swG2borvDZMC6jw8GKugG2jigIBNCmf3EfbRog
+	 yxvhj7CSRV/sJqfNt6IzZWz7NbW/xuPFzaZzRxL8W9WId9cYqsYqwOpJnSNHd9Zx00
+	 cVCWJlmHSPUqmOWftRxlfoYvxfeTa2bvDLbr+SmQTCQMClvPyfEa80ucz/9F7McAts
+	 lpUGT6YWauh99d+fYUOnejKSIPRBXooAdLcFwky+UxQUTCrbGWHl0wHARoO6g8KLF4
+	 jS4r3/hO+n7We6evEMM+LHhfwrC3xfWwpo3o7tQV451heeAi+52LI3LZMXaeoL+eQ8
+	 lXFrvyo0JPSLQ==
+From: Christian Brauner <brauner@kernel.org>
+Date: Mon, 02 Nov 2026 16:01:39 +0100
+Subject: [PATCH RFC 12/22] x86/mtrr: let procfs own the seq_file of
+ /proc/mtrr
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,76 +53,84 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Betterbird (Linux)
-Subject: Re: [RFC] hwmon: (tps23861) PSE-PD support, extend hwmon driver or
- move to pse-pd?
-To: Guenter Roeck <linux@roeck-us.net>, Andrew Lunn <andrew@lunn.ch>
-Cc: Roman Kuzmitskii <roman@damex.org>, linux-hwmon@vger.kernel.org,
- netdev@vger.kernel.org, robert.marko@sartura.hr, luka.perkov@sartura.hr,
- o.rempel@pengutronix.de
-References: <03055ffd-d015-4810-8b8a-678821fa6dcc@damex.org>
- <92e3383e-26f8-4bed-b487-1c52f6c4f420@roeck-us.net>
- <8cd41211-b026-4158-8e18-454a9ac0bae4@damex.org>
- <4d12314e-56db-412c-a558-e4026cd03528@roeck-us.net>
- <d126b3d3-33b9-405c-9839-db492d874ece@lunn.ch>
- <9bac0a84-f03d-4fd1-8092-9922c65010bf@bootlin.com>
- <57516add-01bf-492b-9fd9-2bcb762e3041@roeck-us.net>
-From: Kory Maincent <kory.maincent@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <57516add-01bf-492b-9fd9-2bcb762e3041@roeck-us.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261102-work-procfs-arch-v1-12-c9492ab08480@kernel.org>
+References: <20261102-work-procfs-arch-v1-0-c9492ab08480@kernel.org>
+In-Reply-To: <20261102-work-procfs-arch-v1-0-c9492ab08480@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+ Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+ Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
+ NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+ Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+ Greg Kroah-Hartman <gregkh@suse.de>, 
+ Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
+ Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+ linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+ linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
+ ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+ coreteam@netfilter.org, kexec@lists.infradead.org, 
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+ netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
+ linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+ sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+ linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
+ linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
+ linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+ linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
+ linux-debuggers@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, 
+ Chuck Lever <cel@kernel.org>
+X-Mailer: b4 0.17-dev
 
+Declare the show function and let procfs open and free the seq_file.
+->proc_open() only does the checks now and ->proc_release() only drops
+the MTRRs the file added.
 
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ arch/x86/kernel/cpu/mtrr/if.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-On 11/2/26 15:54, Guenter Roeck wrote:
-> On 11/2/26 01:49, Kory Maincent wrote:
->>
->> On 11/1/26 20:57, Andrew Lunn wrote:
->>> On Sun, Nov 01, 2026 at 11:09:42AM -0800, Guenter Roeck wrote:
->>>> On 11/1/26 10:50, Roman Kuzmitskii wrote:
->>>>> On 11/2/26 1:38 AM, Guenter Roeck wrote:
->>>>>> On 11/1/26 10:02, Roman Kuzmitskii wrote:
->>>>>>> openwrt reviewers asked me to check with you first which way you 
->>>>>>> prefer:
->>>>>>> 1. extend hwmon driver with PSE-PD (like it is done right now)
->>>>>>> 2. move driver to drivers/net/pse-pd and extend it with PSE-PD
->>>>>>> 3. something else
->>
->> I am currently working on this topic by extending the tps23881 driver.
->> Please don't do it yourself to avoid working in parallel on the same 
->> topic. On the other hand, it would be nice if you can test it.
->> Roman I will add you in CC of my series.
->>
->>>>>>>
->>>>>> The hardware monitoring "enable" attribute is supposed to enable 
->>>>>> monitoring,
->>>>>> not to enable some power delivery or network (or any other) port. 
->>>>>> That "port
->>>>>> enable" feature using the hwmon ABI was sneaked in, and I am 
->>>>>> inclined to just
->>>>>> remove the upstream driver for severe ABI violation.
->>
->> Do you think it would be possible to remove the current tps23861 
->> driver and binding? This would break the backward compatibility.
->> I am currently using "tps23861-poe" compatible name binding.
->>
-> ... and you probably also use the hwmon "enable" attribute
-> to enable and disable ports on this chip. Again, that is an ABI abuse.
-> I'll refrain from removing the driver for now, but I will likely
-> remove the attribute if//when I find the time to do it.
-
-I thinks you misread or I was no clear enough. I am working on expanding 
-the tps23881 PSE driver to support the tps23861 version.
-I am not using at all the hwmon framework in that development.
-But as the binding tps23861 is already reserved for hwmon I use a new 
-"tps23861-poe" compatible name binding.
-To me, I agree to remove the hwmon driver but this will break backward 
-compatibility. I am not a hwmon maintainer so it's not my decision to take.
+diff --git a/arch/x86/kernel/cpu/mtrr/if.c b/arch/x86/kernel/cpu/mtrr/if.c
+index 4049235b1bfe..9510e01d5103 100644
+--- a/arch/x86/kernel/cpu/mtrr/if.c
++++ b/arch/x86/kernel/cpu/mtrr/if.c
+@@ -349,7 +349,7 @@ static int mtrr_close(struct inode *ino, struct file *file)
+ 		kfree(fcount);
+ 		FILE_FCOUNT(file) = NULL;
+ 	}
+-	return single_release(ino, file);
++	return 0;
+ }
+ 
+ static int mtrr_seq_show(struct seq_file *seq, void *offset)
+@@ -391,13 +391,12 @@ static int mtrr_open(struct inode *inode, struct file *file)
+ 		return -ENXIO;
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EPERM;
+-	return single_open(file, mtrr_seq_show, NULL);
++	return 0;
+ }
+ 
+ static const struct proc_ops mtrr_proc_ops = {
++	.proc_show		= mtrr_seq_show,
+ 	.proc_open		= mtrr_open,
+-	.proc_read		= seq_read,
+-	.proc_lseek		= seq_lseek,
+ 	.proc_write		= mtrr_write,
+ 	.proc_ioctl		= mtrr_ioctl,
+ #ifdef CONFIG_COMPAT
 
 -- 
-Köry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+2.53.0
 
