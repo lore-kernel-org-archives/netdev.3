@@ -1,65 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.58.211
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.252
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793618912;
-	b=fhXMkZdt5AO07tmIuFoE6CWeN2i6/iBFf8x7B+sqeretnMDeFrR4BouD3s15y7eWEnh8
-	 cZ13bQ6D5w5VePa8lCbfl5dxApECWfTL70cCJQ+ZSuLwQmRlsjCpehhXOfKzn539u54jh
-	 NkrSy6YlMW+5LxL423J8frT3ykTD/+HY9+PE5GF2APCDLTsN1K1yK6huRT/IUXc4x2Jha
-	 KuCvKDVEIf/PS4sUA+m/fTSyt6rWyngQItvJdf3btXARuuG5fhOZPS9SFw9N0uu2cfFFU
-	 qmbGZNelW4vXsgzDR2ywYX2gPcRpxySU49yTpDajQzgApIfUiFdcG4T2EiqC81cY0kQ==
+	t=1793618908;
+	b=D7KWTnuEifi2nefK1TLk/IkMXZIVAIkzB7AdF6k9L1SIewb0B9/wd9cGN+nUrmHrB0Ni
+	 XmBoxiYyXTsVoDiX9HSXsTRHG+UEXXMtleq1txvIOii1I0nuvZFYqH6zb6cmhzdaowSrL
+	 iShZaDGBfXwCsOPT/j9QcVPiUhckEtJkNcKfXOpkx5XUmssp4jl3Xn9QHF3gexE9fMKT3
+	 Ix+B9q78M4O0P0ICQmj8WXeCy6z+yiNqDwj6CUnIZGiXsiXO14F/QU4xbwP4jU0VA7+DW
+	 qrRjLQpF2avUsVW79nGRyozVYAGQm1ojV1vGFPiKOSbE92BbGvx9V9hhV3x+fb5RJFA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793618912;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793618908;
 	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
 	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=TQgc/Sv/vVtb4ztVLDjp/apjsYVOlWeJnRW9JmC1NgI=;
-	b=3vXTBjG0c+TVMIE9nFGNm6aZYF/HnfGfCOoHMM48+F18aLiM9rvd6Gy7SuVVF/ie1kTm
-	 shEDE11gPXRpbPZRYU4E4LczD9Pa7zZQxD5wRkodNo/stTUkVVYBHQ8V66fFrnyv3RT7P
-	 ubw1QYdCj3AvLXUUqBu4dfRRbWcQUv2xbFBh4WWSb6GymHwfEZ7/RmnR+9bqVOCyhLRQP
-	 k1shEWVE2npJcu/xAJGQ47tnghdrqcC953miDQOX7ZEiA0nWmvHqVoS3WumWdiwN51oR+
-	 6gd91glbal6DTUYgYXeZol1Bb9J/jaOEZOxRE4lBv3wNvUYKHDh3hbkUeHZ9S8Agg6A==
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=wq2DK5eAxiEl1BnVO/YgIjQxwj/Tl3RqelEhCpvP3Xw=;
+	b=LXW54kCwSkBDokHSEDOq7iMwNUp1TU94AO8mUHXAB1EEK/awlOHPjSZh5WZvikamLbQg
+	 /ooMgs4aGOtjXFRoUz6JQgcAJMbTmQxjzGppe4pWxXsTBs/uYnXMLuqJhcgAEX8Z03OX9
+	 1tmc67Ay18fkc0KTkxYLPbHlBVpbzY2If/HcCSF+oiNzq3r1Ml3J1oSoPRP5o7/i116LM
+	 OfK35yi4U9NHp2UDayii+its7c9n/8jLOb7SsreRSVf/uaQAQGeCgnMM3UBSQUYQRadLs
+	 18f8IPPGTgGtjSETjl86+/Ut48tQVfj0wreBgtoTVcWI6wm/iw3K3TDsdMvOkmCf87Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=qq.com;
 	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=ZnuzoiwZ;
-	arc=none smtp.remote-ip=162.62.58.211
-Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
+	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b="X/g9/kcB";
+	arc=none smtp.remote-ip=162.62.57.252
+Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FCD260A382C
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 11:28:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3FCD260A382C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40628606A329
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 11:28:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40628606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=ZnuzoiwZ
+	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=X/g9/kcB
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1793618901; bh=TQgc/Sv/vVtb4ztVLDjp/apjsYVOlWeJnRW9JmC1NgI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZnuzoiwZyZ4A7dbviuToFpT4xd3xgy4Hndl1bi5mzeFqKwY64L9jk0eXBzG6P3Tpb
-	 aEaW6JsBdBU45/efmn+eIsRtg1inoE4WaysQnElmXIIBNCi+/qpzbV1gXllVhlX9nx
-	 RTGjUw/GfYzwx8YNV2n49+U3Buf94K2T5C1iRamI=
+	t=1793618896; bh=wq2DK5eAxiEl1BnVO/YgIjQxwj/Tl3RqelEhCpvP3Xw=;
+	h=From:To:Cc:Subject:Date;
+	b=X/g9/kcBoT5Hlc0TJ9K5a7ozUq4KAIuHn9uTosi8LdO0sSfv9MhX6DO+UDe9ALcP6
+	 E3bE7arbumvmgxdii2FXLBZZRyGjLFnwA7pLDQ/sBkKDClTCobYRFLtruK1sCqIHpe
+	 q0WcC6i9Q+/CkVJ4FxRk8QDCbMu5AXae0j1RD+p4=
 Received: from CRASHEDROM.localdomain ([117.147.101.47])
 	by newxmesmtplogicsvrszc56-0.qq.com (NewEsmtp) with SMTP
 	id 70D9DAA4; Mon, 02 Nov 2026 19:28:13 +0800
-X-QQ-mid: xmsmtpt1793618898td3x2vkig
-Message-ID: <tencent_309B746FDD0CC5631C016A178C8301E5A90A@qq.com>
-X-QQ-XMAILINFO: NX5lOJh5Otailc7P0JnaA09peI8WHQBfxH9wsQWu2Dpw361Mf5m+lCQPXpGdRq
-	 iEdJcVY65h2PqRWcBepT7LpaYPfFmi1jDJ/c/eNl1Rex6puMEx9EoihjL3g0ISOdRy4LrYlOkvY/
-	 1rioAyMlt0jZHFyliD+6NyUrrSifC7dh3aZxWbKcDUTTf7qdNuAHUyIAp3nfKK37hoIf6FwEhJ0u
-	 qI4PSxbU58dAzerEiXSsKMXP3SXBm3VqtxXr/p4c9WrgnyxlIActAMZQhq63hKs22t1UmGogUIe0
-	 cZrpngojcFHTEU/qeyLjJZOu77caCeU36KEYElFSFZGAWetAJseqA8FfQMDv/JX07jzERsbFzASh
-	 NbjVjv6VyI0kTXkVNRM1oGAtxIWqgs3yehG3pAYc+CkjvvyrXpd+Zimaq+DB5T2ZBIouqG8lE8HN
-	 epq1MkCpjLg/N+vTYtUu189htx9aQJL7ivAARSZH/19L9Y3dSt8KJ5TCBxv0zwJhqKgskIbkj4SA
-	 LmjUwcuygVc5ymFeDu/KmNKtciqdvu4+N0AYxeb4rGsWh0busNzMMOzITQ6999jjAFwVacw92IuK
-	 RsnSqFfARpMBYP32PfsGwygE5cGhnxTCpqI3Sx79eU5TiZcxRIaYd5M0pMKmMsEVPf8qqi6J+y0f
-	 E25a06W5vmoLxruz8qsUjL7TusElb8T7GcY/Q1eml0NbGUjdiW7BcYd2u1Z9e83pjvJVZ9Mo9bLU
-	 CSKO1oabd/ElhA43K09IAHr3PE8AOeXgX5bu5zbFq3jyhUgzdXsum2/4EzQkTLvZxo2vEi8Tr/V7
-	 Y1vK87dP7fWe2FuD/TxIBU0oHd+hjzoYh3zGabpsUz8kWhVs9yRJxsfLexQTsvsWEpdeXf1DngdD
-	 9PyfceBYhCqvV2mzD1oH6lr5JXRDMLbSiA8Jy3I7upxn7juHCL1ibpRCDjxht1oD93sd9rMcWNvP
-	 7Wberw27I8+5816E8vpc3/3XbBSm8ApBXXgR8DfjwIQ5J0j4kVl/+6/SFuzHGqajwCsHYYOyqz1v
-	 0TSx8m+4JSeIVYDNL87chc8r4f7zHUIe3DVZNKa4OpUcBZmuJsbUSMQeDBT1k=
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-mid: xmsmtpt1793618893tmfbg333h
+Message-ID: <tencent_BA6DA4F17D2035F5DEEEA21B9578E2234307@qq.com>
+X-QQ-XMAILINFO: NbgegmlEc3JugXe+UnQHAJdIr2kOu3iQLK2pGmAj/Rt5eZQkpLvUJ+L6cy2vnW
+	 C7Tyf6t+IF3SBhNIHENki8ChVORd0mL/4X/mfRNSC2/qbzz11X64H6PFpgn4nAsTSf6adhM2KqrO
+	 UyiW9bKLWaRWeB0hsnMQeQhWt5X8aRDjva50Yxc+Fd02p+R/s99SI9G0s8cpSUPkJxWraKxIx5t6
+	 z7kYYk2I1oSwJJeBMPDVpzRiuPOpRZz1/p6QjzUNkF3QcyFSPVbaYpe+VwFBn8UQVNSAlrGRisW6
+	 c5QRFuY1K5JzlT21SaaUfjZf8ZNnILG1jkV7cWSUrkVY/7zHCEVNYq41htXM+rSksvmajju5UEdm
+	 vgd5rFHOW0/F45aONcrtzfqpJJt3hwvV+FgeiFEg63pL1jqnB+9SrF6IpSTicNqZJkX6Dcy8FAam
+	 Jw8F7OjakRShfqX1Vw6BBC3UcRjmzYe+i2GMaTdT5UFBGKXU94fErGV5eemf+VwjcHBzJ5pDBuXl
+	 37oS2GYZ1Di0nRsErAy18ydLw9NYxzm/ICg55ifFF5CKMJ7jOyyQXvAYF8FyOlCbN1J92C551et7
+	 jYPMshWXLthHjZWkmhRQAPsboeG7KcG78gX7Bvi7IXMF/lgCkfVopZZpF8AabGVYlG2g9VToNYKp
+	 cjTBobYdy/sUo3EEKfrhEDdrh32XzeEE+EMtJjrvOUOIJPhMMHrrpOgnxl/6iRCxZIEslxH4ZUgv
+	 mtXZLWieAbA/tzETZ+Hm9Pu8JER+RA2/ksoHn80AXTeDdPgxbpveQFK5U37orqap+dwQik+LA+dQ
+	 hatngCz5HzXWwGyxpcw3v1+Ph14p7Klo/1TaLaSuk3iSqBhSmU2ipUL/EpbqAR+Ow5tQL7+M/g11
+	 inN+wAkPjk3tdU7J7IvhoGAE47WPrVgViW0Ag5JtnhvvtJPqjW5VD1umMcDeQEhaJC+xcLNBu7Wn
+	 2HLuZdobhZ9nVSnEXniczJTHrN81j2NYjsN/e7V/XvVVHrlVhYLkfG7BDIFqhqG86AnN5r3EmhKW
+	 LXPe4TxAXU2SnFYdbwjYql2TG6rExb/+osXYFehw==
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
 From: Chengyu Liu <19290937@qq.com>
 To: netdev@vger.kernel.org
 Cc: khc@pm.waw.pl,
@@ -70,12 +69,10 @@ Cc: khc@pm.waw.pl,
 	kuba@kernel.org,
 	andrew+netdev@lunn.ch,
 	Chengyu Liu <19290937@qq.com>
-Subject: [PATCH net-next v2 2/2] hdlc_fr: shut down the LMI timer in fr_destroy()
-Date: Mon,  2 Nov 2026 19:28:07 +0800
-X-OQ-MSGID: <20261102112807.1395951-3-19290937@qq.com>
+Subject: [PATCH net-next v2 0/2] hdlc_cisco/hdlc_fr: shut down protocol timers on ->detach
+Date: Mon,  2 Nov 2026 19:28:05 +0800
+X-OQ-MSGID: <20261102112807.1395951-1-19290937@qq.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261102112807.1395951-1-19290937@qq.com>
-References: <20261102112807.1395951-1-19290937@qq.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,68 +84,34 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-fr_start() arms state(hdlc)->timer when LMI is enabled
-(settings.lmi != LMI_NONE).  The only deletion lives in fr_stop(), which
-is unreachable on the protocol-detach path: detach_hdlc_protocol() calls
-only ->detach() (never ->stop()) and then kfree()s hdlc->state.  FR's
-->detach, fr_destroy(), tears down the PVC list but never touches the
-timer, so unregistering an up FR device with LMI enabled leaves the timer
-armed on top of freed memory; fr_timer() then fires into the dead
-frad_state.
+Both cisco and fr arm a self-re-arming timer in ->start() but never shut
+it down on the protocol-detach path: detach_hdlc_protocol() calls only
+->detach() (never ->stop()) and then kfree()s hdlc->state, so
+unregistering an up device leaves the timer armed on freed memory.  This
+is the same defect class as CVE-2026-63803 ("hdlc_ppp: sync per-proto
+timers before freeing hdlc state").
 
-Shut the timer down at the top of fr_destroy().  Use
-timer_shutdown_sync() so the timer cannot be re-armed afterwards,
-matching the CVE-2026-63803 ppp fix (ppp_timer_release()).
+Each patch shuts the respective timer down with timer_shutdown_sync() and
+moves timer_setup() to the attach ioctl (attach_hdlc_protocol() uses
+kmalloc(), so the timer must be initialized exactly once at attach time).
+Both bugs were found by static analysis and confirmed with a KASAN
+reproducer (slab-use-after-free in the timer softirq after rmmod of an up
+device).
 
-Initialize the timer in fr_ioctl() when the protocol is attached and
-drop the timer_setup() from fr_start(): attach_hdlc_protocol() uses
-kmalloc() (not kzalloc), so state(hdlc)->timer is uninitialized garbage
-until the first timer_setup() and fr_destroy() must never run
-timer_shutdown_sync() on it.
-
-This bug was found by static analysis and confirmed with a KASAN
-reproducer: slab-use-after-free in the timer softirq after rmmod of an
-up Frame Relay HDLC device with LMI enabled.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Chengyu Liu <19290937@qq.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
 ---
 v2: retarget to net-next and drop Cc: stable per maintainer guidance;
-    no code change.  v1: https://lore.kernel.org/netdev/
- drivers/net/wan/hdlc_fr.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+    carry Simon's Reviewed-by; no code change.
+    v1: 2026-10-28 netdev thread "hdlc_cisco/hdlc_fr: shut down protocol
+        timers on ->detach"
 
-diff --git a/drivers/net/wan/hdlc_fr.c b/drivers/net/wan/hdlc_fr.c
-index 5f0e54ed1e..2086ff85b5 100644
---- a/drivers/net/wan/hdlc_fr.c
-+++ b/drivers/net/wan/hdlc_fr.c
-@@ -1009,7 +1009,6 @@ static void fr_start(struct net_device *dev)
- 		state(hdlc)->txseq = state(hdlc)->rxseq = 0;
- 
- 		state(hdlc)->dev = dev;
--		timer_setup(&state(hdlc)->timer, fr_timer, 0);
- 		/* First poll after 1 s */
- 		state(hdlc)->timer.expires = jiffies + HZ;
- 		add_timer(&state(hdlc)->timer);
-@@ -1153,6 +1152,9 @@ static void fr_destroy(struct net_device *frad)
- 	hdlc_device *hdlc = dev_to_hdlc(frad);
- 	struct pvc_device *pvc = state(hdlc)->first_pvc;
- 
-+	/* The LMI timer must not outlive the state being torn down. */
-+	timer_shutdown_sync(&state(hdlc)->timer);
-+
- 	state(hdlc)->first_pvc = NULL; /* All PVCs destroyed */
- 	state(hdlc)->dce_pvc_count = 0;
- 	state(hdlc)->dce_changed = 1;
-@@ -1242,6 +1244,7 @@ static int fr_ioctl(struct net_device *dev, struct if_settings *ifs)
- 				return result;
- 			state(hdlc)->first_pvc = NULL;
- 			state(hdlc)->dce_pvc_count = 0;
-+			timer_setup(&state(hdlc)->timer, fr_timer, 0);
- 		}
- 		memcpy(&state(hdlc)->settings, &new_settings, size);
- 		dev->type = ARPHRD_FRAD;
+Chengyu Liu (2):
+  hdlc_cisco: shut down the keepalive timer on ->detach
+  hdlc_fr: shut down the LMI timer in fr_destroy()
+
+ drivers/net/wan/hdlc_cisco.c | 10 +++++++++-
+ drivers/net/wan/hdlc_fr.c    |  5 ++++-
+ 2 files changed, 13 insertions(+), 2 deletions(-)
+
 -- 
 2.25.1
 
