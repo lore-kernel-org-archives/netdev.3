@@ -1,74 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793583359;
-	b=ufhEAtfmcl5pHXOoi+h3cB1Uu1xLVM+6QKZ+e/orFZlMCHtjQCdi0JFTgchVoeIBdBgW
-	 hsjyWd2bY/ba8hQLA0kI+CCsyGPK0l5Wi6GmhQUcNWaO6p9VTBeBezylNjwBg5G/+O0ZZ
-	 Op28u9tEe7T5OOfsIr5XUxm0j2CMD8y03CM9PjFLhFMzarruX1NeHryG5NBgparwWnQMz
-	 pVhNy75EDvB8Vkno4kogWTqJVYiCwFfU8DGL90bT+CO5lvErWYgsxYORrIHMPoUH16HTY
-	 UopDBHoM0CGe6UHwnl6m/va6XnJFng5LUHBrarCO0rR9MqIgF0KS0HPrSC4SeQm0IuQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793583359;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=dlU73RR5PLs3OxNGnWFwp4gEKCDYj3V/cQaaU2gVSyg=;
-	b=X6fdVUsYQZ2JfEOp74swKkiMv2tbCXgyKUx6UuoCj6R7Bs1h0OaAGA4KaPOllGd9MS8P
-	 vAaT3DrADHIStADEiAMQHpQjAR1EA2HvEWPlrEsySYd3iFRgpnwR7mpom/rvsWthaZeqr
-	 GfyYwmwFDvOw1rz0870+0UytNdk8B9SXFzvAEMGXPmalsYdbet6Up4G5uz3bU4swrw/i2
-	 JSmB10n3nmRVkI/q0XrdJ8Bi0fF5Zo1ZcthoGehejEArDFISm4101rnuXLwGXxmj/A/2e
-	 9hZkKx7G8r71V78qbv4K5yeHaTIJxacKhQmsXlOBSTVe9brNoJWF7S08Q9dWwG0z0Gg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=ujjqRWDL;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793583937;
+	b=tvgXFD8lH6yeqlVDoGObuZLXI55b1Jxp7upYeOwLsl3zc5sHffue0XV/ZYUtgXTTDbgU
+	 /Uay7R08QhrnBwbvDmXct+2675ItrgScLDUc+0zbZJPdK+zcwEGQ5PRbLqG26DqbHfMgW
+	 FFapDzgqoAebC4BhgDOGanWS6FsBtDPfvPX2YxQ4uI6nEoAdLsEv52ETvfKtqtf28XdB8
+	 0GYOMuVbdGkTQ8jqolaDF+n2953Ki13et/aoNiNIbwxvDGm1IbDUtqCHTXL9RJnFgsvwf
+	 ZVs7Eu9mn8X/pgWQOxK0iBfgdrugNMZW3+VswjHvpLvbanEnHSUTg+nrp20/7vdohcQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793583937;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=Eeswh71nQ4eodvDnqz28Zx2VhRFam1DEmTWBcVLFmgE=;
+	b=ZkGAXMyNQ1E4ZLRNIhsZtfOXm9NT8hN7yQ0kmYcCb6huqnrCDaEl482Js0DCMLGkqvDl
+	 xz+88eblrv760/6dZK4+sxOmQ8L+78Jwn7ey20IOR7G0EblhbvV2c6VTzggPHOP5m80pw
+	 dw56iolvkx5SoNsjeXW1U66HoU4nfA3vCqOUPBHBOiBF7loT0KKnZW5QT9KU1Fa+gs4S5
+	 HrJh2TltHEkSnwMboFKItSiWyrYujO/1Qq20Oh5ELYNb2lc5ZxpVo+PvaMig1QUKpKGj9
+	 uEpdawDwuKexLJp+Gv29rZdgtDAHmdQcFNK97XSXwNAHDdiBTscJUoPKjo1O5K8hRbg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a2C6I0nJ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DC9606A324;
-	Mon,  2 Nov 2026 01:35:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61DC9606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD22606A324;
+	Mon,  2 Nov 2026 01:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=ujjqRWDL
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=dlU73RR5PLs3OxNGnWFwp4gEKCDYj3V/cQaaU2gVSyg=; b=ujjqRWDLSM35ZXJrHv4cRciEhX
-	ih9dwrbYjr+X+My4f5gNPokhio5aabBHAsqb8roJ4PwbG1Z1xLY/WUvAozOBpWxoOvxdbCGrmjONl
-	SO9TL3QOPq8+zkMThYRdSkkOs8IpQU3b3cnKxOEcBqyBto4oeiHcq8MSXF8ahZ+f3TjM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xNgxe-00DidV-5x; Mon, 02 Nov 2026 02:35:46 +0100
-Date: Mon, 2 Nov 2026 02:35:46 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Doug Ledford <doug.ledford@hpe.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Slingshot Open Source Team <slingshot-os-team@groups.ext.hpe.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Guenter Roeck <linux@roeck-us.net>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	Sandeep Bhoot <sandeep.bhoot@hpe.com>,
-	Iraimani P <iraimani.pavadai@hpe.com>,
-	Mamila Santosh <santosh-kumar.mamila@hpe.com>
-Subject: Re: [PATCH 00/23] Subject: [PATCH net-next 00/23] net/hpe: add HPE
- Slingshot NIC drivers
-Message-ID: <2f831f13-58ff-40ca-a76f-3aca647012b6@lunn.ch>
-References: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
- <20261030151121.1f232b50@kernel.org>
- <7d4583c2-e8dc-4ffb-bc45-e2121f824b14@lunn.ch>
- <bde936b5-1b3f-4987-a3e5-36ec5c4710e6@hpe.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a2C6I0nJ
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793583936;
+	b=Y2WQBc7XCWNj72+1J0hrDEKkS+xv5xWz2AuCl1HGE96onZfcL0g5j2F4eZB+jp0wnEnK
+	 qS7sXM+cin/C2RyBzlbyXdOJSmt6wkTxxq8gH+MFQ0LA642lpZvSCrFcbqhqalOjm6+f6
+	 OznYMUk1ZAkEYbxCqGsaatt93HjbTLt1Dt/zZpR26drPJlnOhPtCo7b6ZiKWU690Akr7i
+	 ip1H1e89Tr8n6MwlZjl1ux2r731dtu2yCOMxW3flG6QglL7kVLnXb9X+stsiprJFUpQW0
+	 mWo7hIDo7IkFWv+qg5DM9iSgKWQ18S09y9xnS5Hc/z/fkMKXNOWR2RoDWj8Y6BQ1UtQ==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793583936;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:To:Cc:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key:X-Endpoint-Received:X-Original-From:Reply-To:
+	 Content-Transfer-Encoding;
+	bh=Eeswh71nQ4eodvDnqz28Zx2VhRFam1DEmTWBcVLFmgE=;
+	b=npieCHKqPPRmhbwXj02u77QK8pKhS1AKr0E0Ek/o0H/OdrKkh5VHOEnXVGTmbQHCOUMS
+	 4nhq6OM2GDwB1yBeLlFNeVVNItM6zH1gPz13YGt3/NxE96oV+VMgDRpdaA6RF95PFMXgh
+	 9igy6Y/6anNKpnA/s14+yHvDWGvhn39lEswjkWZmoefJdfiePvgl/pXXkA9fhA+uZZmjI
+	 rRbVe1zaTjSoqBy10Or2XoTtyClCYZ10+6CkQjco/T4otZp0xEsqBPal3ULMhiUsI3JBk
+	 Ysz/uU9vR/2DmqtFBmZUgdPPmJPdnX4QxDSMa9N9y71AZfiiAmU80pccFfcUDRtEklQ==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id B6E9F1F000C1;
+	Mon,  2 Nov 2026 01:45:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793583936;
+	bh=Eeswh71nQ4eodvDnqz28Zx2VhRFam1DEmTWBcVLFmgE=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=a2C6I0nJElHZfJN2J3Jv9VEc40zyffVSAj9ZIz+3t3zxdoSTHdvUSs5vAvpKjbPBz
+	 iw2bSc4vaan2GS1d4vxqrvCqapNtfrDVqAN+ibxQaF/wHeTlDMJrXxgu7jJ+OXkVb/
+	 HEjQMGDslzIIbSyUgpPxq4C4bkE/JxOGRDOgiGYXRG5eZdMXFFOKrwuelR3c8Pg7Qe
+	 88ZwVFoDmPA8XE6IMI39C921jTegv31Pb87zqR5OseY5nEZvEvVVF7IMy3HXE2p1KQ
+	 UCQESVyypNt0orDSDoX5OZ1HwmxmR/kNBT+4tzqYFQe0v3LGUEYeQnJzawm4wYbGWj
+	 accUjoZtVArFQ==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 3508346302;
+	Mon,  2 Nov 2026 01:45:35 +0000 (UTC)
+From: Joas Antonio dos Santos via B4 Relay <devnull+joasantonio108.gmail.com@kernel.org>
+Date: Mon, 02 Nov 2026 01:45:35 +0000
+Subject: [PATCH net v2] openvswitch: advance by the real header length in
+ get_ipv6_ext_hdrs()
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,21 +83,146 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bde936b5-1b3f-4987-a3e5-36ec5c4710e6@hpe.com>
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261102-ovs-exthdrs-v2-1-21ceef6a243d@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAD7r52oC/x3MQQqAIBBA0avIrBN0IImuEi1Kx5yNhRMShHdPW
+ r7F/y8IFSaBWb1QqLLwmTtwUODTlg/SHLoBDTprDeqziqbnTqGI9tbYOIVxd+ihF1ehyM9/WyD
+ TDWtrHwUwQcRiAAAA
+To: Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>, 
+ Ilya Maximets <i.maximets@ovn.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, dev@openvswitch.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Joas Antonio dos Santos <joasantonio108@gmail.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793583934; l=4412;
+ i=joasantonio108@gmail.com; s=20261031; h=from:subject:message-id;
+ bh=hupOxG9gfTdg83Q56zynhHUJuMArSkJdz7lPZA5eIFw=;
+ b=sjAGEwAfDl/oGKwvKIn9mFWS2sHBz4fC5dT+I4IDVYbp1Yt2G4YHThpjVkGolAxISJOHufuvn
+ duFFwC6ZeezCQGyhQBOMBK4RxBdWNgdJeREkS4zgx7jrsuR3p59Jf+M
+X-Developer-Key: i=joasantonio108@gmail.com; a=ed25519;
+ pk=ZxAznJT/FcPPdzLrDDFJQm4LLjjHVGBBqDSG3TXS23w=
+X-Endpoint-Received: by B4 Relay for joasantonio108@gmail.com/20261031 with
+ auth_id=1371
+X-Original-From: Joas Antonio dos Santos <joasantonio108@gmail.com>
+Reply-To: joasantonio108@gmail.com
+Content-Transfer-Encoding: 7bit
 
-> I'll see how fast I can get that done.  But "the bare minimum" is going
-> to be more than you are accustomed to.  This hardware does not receive
-> Ethernet packets using MAC address like normal Ethernet hardware.  It
-> uses a special portal table entry that filters in the Ethernet packets.
-> It has the ability to have different filters that receive different
-> Ethernet packets and so sorts them before the driver ever sees them.
+From: Joas Antonio dos Santos <joasantonio108@gmail.com>
 
-Can you add a single portal entry which matches everything? Or matches
-a single MAC address? KISS.
+get_ipv6_ext_hdrs() walks the IPv6 extension header chain to fill
+key->ipv6.exthdrs, but advances to the next header with ipv6_optlen()
+whatever the current header is.  That is only right for Hop-by-Hop,
+Destination Options and Routing headers:
 
-You can then add on the complexity of adding MAC addresses to the
-table in later patchsets.
+ - an Authentication Header is ((hdrlen + 2) << 2) bytes long
+   (ipv6_authlen()), so with hdrlen = 4 the walk skips 40 bytes instead
+   of 24 and reads the next "header" from the ICV and payload;
 
-	Andrew
+ - a Fragment header is always 8 bytes, and the byte read as hdrlen is
+   its Reserved field, which the sender controls and receivers ignore,
+   so a non-zero value makes the walk skip up to 2048 bytes and miss
+   the headers that follow;
+
+ - in a non-first fragment nothing after the Fragment header is a
+   header at all, it is the middle of the fragmentable part, yet the
+   walk keeps parsing it as an extension header chain.
+
+In all cases the OFPIEH12_* bits stored in key->ipv6.exthdrs depend on
+bytes chosen by the sender rather than on the headers that are actually
+present: payload bytes that look like another AH or a Hop-by-Hop header
+add OFPIEH12_UNREP/OFPIEH12_UNSEQ, and real headers after a Fragment
+header can go unreported.  Flows that match on OVS_KEY_ATTR_IPV6_EXTHDRS
+then classify such packets wrongly.  There is no memory safety issue,
+skb_header_pointer() bounds every read.
+
+Advance by sizeof(struct frag_hdr) for Fragment headers and by
+ipv6_authlen() for AH, and stop at the Fragment header if its offset is
+non-zero, as ipv6_find_hdr() does.
+
+Fixes: 28a3f0601727 ("net: openvswitch: IPv6: Add IPv6 extension header support")
+Link: https://lore.kernel.org/all/178905555085.219967.6617611783437228045@kernel.org/
+Cc: stable@vger.kernel.org
+Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
+---
+Changes in v2:
+- Stop the walk at a non-first fragment, nothing after its Fragment
+  header is a header (Ilya).
+- Drop the Assisted-by tag (Ilya).
+
+Found while going through the pre-existing issues the Sashiko review of
+"openvswitch: fix wrong flag value in get_ipv6_ext_hdrs()" pointed out
+(Link above).
+
+Tested by building get_ipv6_ext_hdrs() from net/openvswitch/flow.c
+before and after this patch in a userspace harness (skb_header_pointer()
+replaced by a bounds-checked memcpy from a buffer) and feeding it
+crafted packets:
+
+  AH(hdrlen=4) + DSTOPTS + TCP, payload mimicking AH at old offset
+    before: AUTH DEST UNREP UNSEQ      after: AUTH DEST UNSEQ
+  FRAG(first, Reserved=0xff) + DSTOPTS + ROUTING + TCP
+    before: DEST FRAG UNSEQ            after: DEST FRAG ROUTER UNSEQ
+  FRAG(offset=1000), payload bytes looking like HOP + DSTOPTS
+    before: DEST FRAG UNSEQ            after: FRAG
+  ROUTING + FRAG(offset=16), payload bytes looking like AH
+    before: AUTH FRAG ROUTER UNREP UNSEQ   after: FRAG ROUTER
+  FRAG(first) + ROUTING + TCP, HOP + DST + ROUTING + TCP
+    unchanged
+
+net/openvswitch/ builds cleanly with W=1.  I did not test it on a live
+datapath.
+
+The analysis and testing were done with help from an LLM-based
+assistant; I reviewed the change and ran the tests myself.
+
+v1: https://lore.kernel.org/all/179328922134.76862.10417963652853801970@gmail.com/
+---
+ net/openvswitch/flow.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
+index 1c4f3a079..3734416b5 100644
+--- a/net/openvswitch/flow.c
++++ b/net/openvswitch/flow.c
+@@ -369,11 +369,28 @@ static void get_ipv6_ext_hdrs(struct sk_buff *skb, struct ipv6hdr *nh,
+ 			return;
+ 		}
+ 
++		if (next_type == IPPROTO_FRAGMENT) {
++			struct frag_hdr _fh, *fh;
++
++			fh = skb_header_pointer(skb, start, sizeof(_fh), &_fh);
++			if (!fh)
++				break;
++			/* Only the first fragment has the headers that follow. */
++			if (fh->frag_off & htons(IP6_OFFSET))
++				break;
++			start += sizeof(_fh);
++			next_type = fh->nexthdr;
++			continue;
++		}
++
+ 		hp = skb_header_pointer(skb, start, sizeof(_hdr), &_hdr);
+ 		if (!hp)
+ 			break;
++		if (next_type == IPPROTO_AH)
++			start += ipv6_authlen(hp);
++		else
++			start += ipv6_optlen(hp);
+ 		next_type = hp->nexthdr;
+-		start += ipv6_optlen(hp);
+ 	}
+ }
+ 
+
+---
+base-commit: 94cea342e8915812b45f93c56e134041c7fdb4d7
+change-id: 20261102-ovs-exthdrs-c101f8d5b62c
+
+Best regards,
+-- 
+Joas Antonio dos Santos <joasantonio108@gmail.com>
+
+
