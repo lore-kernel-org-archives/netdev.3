@@ -1,98 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=79.135.106.26
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793603519;
-	b=nTwJwElIp4c0hXficWJLcMucaGDEqdKW3uyiYCigKtFAvVczBOXmyZlCBW1AOtbK9RGk
-	 TFTx6e9HIGdcVBMDhsZXe1ot+aTZxqrowsWgS5hJH+z2ooCG1t3H7HM1LIpCXFw11OfHR
-	 msrwUgXYzd4JC/o+OZfj5BSsKEVkzIe2HaWfzyCjgwDe/0tTKS9JJ4G9cT8dZ4dtPK8Fa
-	 7/CxkdGktb3UBfbZnYcjD3jvx6x6hS96Z/94ILQpOD8zqmsrrMlzSGFxgGxR3jwGrhnk8
-	 JCN7DDQ0KGufgYDDoqfkfrqPOAqXCZcwcg9qus47kObow6seKI2W/1mpzG+udGItWpw==
+	t=1793603609;
+	b=5dVa49hui+FEdoJIh4ksPUXrZ2jAIKk0ALQnquc059euQudkuL1huAvqhWhqdojovFOo
+	 RNp4qbVsaUSDV+hng8FCBhNDpBKbyaj3NOoqMf/MVNkR5BygO3t0e6MvaZ1RAzs88j4wg
+	 cbkzRBH86ExXJ9dLfEUxeEyXAti34cU07BIP4K1MlCKGlTuz4wAUw0uiMnK9ky47NVfNC
+	 NcKYQWZHsiNmGoBIO4Bpy63QTvZeeM/Y0ngs6MV+5eTB5vhJy50dUpxhKdHzpCHP837Da
+	 xTu+b3ZCf07vpZqH2Odrhuo2jC7q34tF+SwWyzRHs6By/lOT6MW4yWV/GYSCfhY1Gyw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793603519;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793603609;
+	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
+	 Feedback-ID:X-Pm-Message-ID:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=oXutaZ4BMILwaNtgFl+rxqGSEtMF1Ey4CTcPPNws+30=;
-	b=yHlhSZxWOrzxCIMKI8OED9974A6sCeGwm/XuvA/T3TznrBU3B2+bai0/nN8bikt2VrDj
-	 kZKLwP1HUp3K2dhKlET69VfufZUHu6veMBn8sBxLC+RDxyF4MWgGAbKrlRdmVo/ud0m50
-	 ZBAeMlz0IKnqJg9NWwzHOQxF6WjGBqnWotsJQ8sbK+UvNvCuCSy3AOJTlABEAd5482oq4
-	 xYv53z96ii4IpU5Avof8O3m3RNJVzPhCpmrG9viVT9oy8I5btR7FPKCH25fZx9RknpooC
-	 JuWfCIeWSQKvKjQz/syV6Hs2UWcf53tf2pdfEN4WCDLj607lHAFcfDbFg8Yns0LCCig==
+	bh=KY9RYXaRnQDli/vu8vgfR6JwdPnkjzpG6Vj3ogcKevs=;
+	b=5scmX5DI3OtscoIkrcbrjFFbR+6GlvNnx5iX8IDT7Hf0+oSGPIhnqT1Z+CfiZ79LlhNN
+	 Tr/9w/PpUopwejG5KAg/k0jS31MjrwI8aKjf56QaXgC67V7uRaLqS6QtYzwY+QvR2uf5c
+	 Vqwr7dnNGs74z7xRfEsfQcLmeVG5plg2kKW5cfRUcmQOzo6iWpNgSVdaNvdz5G+lFvQfv
+	 tkdtHQZiw9f1GMOyHRAY70A4cEXH9S29qYd4Y9S8ElpmyHDWa8CVfZqp/I0noGHlHqbzD
+	 2fORQ/eaRE4scq1q1Wc/wzfeRQ1Vm3v6dNoah3gUkmSBW0gyvsyj3fw9ZIpJIVEiVvg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ibwl4zS+;
-	arc=none smtp.remote-ip=209.85.210.179
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=jaeyeong.cc;
+	spf=pass smtp.mailfrom=jaeyeong.cc;
+	dkim=pass header.d=jaeyeong.cc header.i=@jaeyeong.cc header.a=rsa-sha256 header.s=protonmail2 header.b=kcv8x00D;
+	arc=none smtp.remote-ip=79.135.106.26
+Received: from mail-10626.protonmail.ch (mail-10626.protonmail.ch [79.135.106.26])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039EA606A339
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 07:11:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 039EA606A339
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C76606A324
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 07:13:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88C76606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jaeyeong.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jaeyeong.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ibwl4zS+
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8a070781f63so974977b3a.1
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 23:11:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793603506; x=1794208306; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=oXutaZ4BMILwaNtgFl+rxqGSEtMF1Ey4CTcPPNws+30=;
-        b=Ibwl4zS+0C9odUW5UmG49+17UpcUcCKiK3yfd0AFEZE8/aTCH9ytbd1iHHybTc7scb
-         /lEsd/LZdmUMfSNFm6GFPO+9sP8OugWLIrbQ/urSERbxK8Q+Yq42ns+qFDs1JpSQmmD1
-         gziz75qlfR93bvOcKn2rjh+kMQkDnZ3b44WGENZh3NmxFtzH1sTTauVgkuht0VmPNzWQ
-         cLo3nKT2Lb8WBMdXNPXSUc7bfZ1n68RApf2pg+foD3Rrn45OMJH7ayrKIOQ9oTmJf8wO
-         57dmYImxhjzUO5ED/FZxA6ffC3ymHGRgICZes3jtfvG3OY1epJ8m5BgawOP1JFjxbBPv
-         7Gvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793603506; x=1794208306;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=oXutaZ4BMILwaNtgFl+rxqGSEtMF1Ey4CTcPPNws+30=;
-        b=pJljZbx4gRXUL9u57wEfbl0KDi0AVD4vczjXQpWNAM4G2YbUz1G4X+8H3ABP92wRa8
-         cDCg0Rc/quWMJj2R3bB/tUJTsM67p356emye/TUOgekW14EutK66ollF5lW3dEPDeZW3
-         BYAJSS5HEnJkJSObWFojN9mzJ8cIxcxUwmUbh8JXgNCcrxaa4/YoxuXlL8Lk7uM/YjJt
-         m2DNIrzkrAZdLgQjwwBFu7PHdvwy7Bnv0OSLtq18J3S8QOB8zCTMZ93ZJtejNIbwpSQB
-         JRfekOOBpPLasoczk3fUyZrxnxIAZ5cnVHx3M3UaFc2NPsbEHTeJfZzKY6qB7aRQyvgy
-         msAg==
-X-Gm-Message-State: APuU4Z8UHXR0L4u/vUAPY2RNke/uLTA5GW8DNaO1cFQMbfMmOdhpOMIi
-	bBU0g7piSpjRp/41919HDM2Fz1E2D99jcdM4qhXl131m+bXtKN7ueJpmmzG65E0y
-X-Gm-Gg: AYBFou1aeRMgZ240oyYbkiXd76LEFq4pRJd/XPLaJcAJ68PFvUIHmXRqAz+WIQgybQZ
-	z4WFFfc5WwWgMaopuGGasd8FYmtBcgArepmc1NGGqjOtp4YVf6ZbwuSBfczTrVCU6H+Xthdf1LF
-	aPLRSE6ruo5e1YxO4IoY4+rbuzU/Zz0ysfuDnaG0K85q7Vz7qbsIYpWLYXAEj9eiscJHRXsGlbu
-	k/TPRHP/MuDVrOkqldNevH9JmrM4a/j1XHDE1CkPJrqIqFUZQkXxUo5afEBZGInsdmwpLY6303z
-	7KTMZ8f1tNZA8NwQmp51y6eU97Tm+bxMzOIPPeV/+XlZXEA23jDZ5KCMK+xGrUBRZ+RoIixRBEc
-	hnRRUsErOxLRG4m5PEHVq9iCnHaT5ek1YqwOg7vSg0y2sAVXV2xVAwyv7aDJHv2+Qoma4ldddtA
-	F8A+cKREKr16VzxTaVIuEEMx77M7i1l22/0uxcq5HmeWdYspQfQbgjf3K1ZE8eeoae5U3Uj3f3u
-	e7auvE9QHxlSUh3IgAr5aBvHMDjy8/PH185TBAks0HhpQh92fF621yQ2wP+9tLRdYambBUmvzR1
-	kloM8ojqyt+n14GyTP8Sz+Rb9mFHroqNJRXR+VyMzDEGPtnR5O6j
-X-Received: by 2002:a05:6a00:94f4:b0:880:e4a7:b1aa with SMTP id d2e1a72fcca58-8a9bfaf8ce7mr7350735b3a.55.1793603506365;
-        Sun, 01 Nov 2026 23:11:46 -0800 (PST)
-Received: from d.home.yangfl.dn42 ([2a09:bac1:7680:28::4:396])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8abab0c6c6esm1140566b3a.48.2026.11.01.23.11.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 23:11:46 -0800 (PST)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net 2/4] net: dsa: motorcomm: Fix IPv4/IPv6 address key dispatch in flower
-Date: Mon,  2 Nov 2026 15:11:14 +0800
-Message-ID: <20261102071119.3435180-3-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261102071119.3435180-1-mmyangfl@gmail.com>
-References: <20261102071119.3435180-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=jaeyeong.cc header.i=@jaeyeong.cc header.a=rsa-sha256 header.s=protonmail2 header.b=kcv8x00D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaeyeong.cc;
+	s=protonmail2; t=1793603606; x=1793862806;
+	bh=KY9RYXaRnQDli/vu8vgfR6JwdPnkjzpG6Vj3ogcKevs=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=kcv8x00Ds7p5lYgYo+m3HpAeIS4DnIfGO6h97oJ7/6JrK9yDhsTI4H9B4WObLjR2a
+	 BNpqC2DyR9bs6fHHb/qCEiASLcBauoOQ0qPa9Ce9rm/cIkDuUj5ZtTE39BU8JzxoCE
+	 wToE3YIFgM2utcrtgS3x0msE26r95fZBHFC2COMZ/RbO4eC9J/FzD+lMCaTnOy+w7G
+	 qB6tjOKm0qsUOG2QZMNYW2ENL6h5Bvj+Xkj/qi2V+iDrI18bWxSL6j44+gqK2bPzOe
+	 0LiVCJIou7YhNio+N3EhinnsqgRuRu+jbpbLvzw1IhXCtMAOH1B/H9kP/nhWg0eH1N
+	 sf+FhjdY7CP6Q==
+Date: Mon, 02 Nov 2026 07:13:18 +0000
+To: netdev@vger.kernel.org, Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Jaeyeong Lee <lee@jaeyeong.cc>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH net] dpaa2-switch: fix port cleanup on probe errors
+Message-ID: <20261102071310.3004332-1-lee@jaeyeong.cc>
+Feedback-ID: 177356447:user:proton
+X-Pm-Message-ID: fb738ba593e0085010f36fbc498bff8419c12ce7
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,59 +61,96 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-The IPv4 and IPv6 address keys share the same storage in struct
-flow_rule, so flow_rule_match_key() reports both as present whenever
-either one is. As a result, IPv4 address rule may generated bogus IPv6
-address bins, and vice versa.
+dpaa2_switch_probe() reuses i while probing ports, adding NAPI
+instances, registering netdevs, and unwinding failures. Consequently,
+the value reaching the port removal loop does not always represent the
+number of successfully probed ports.
 
-Dispatch on control.addr_type like other DSA drivers do.
+If IRQ setup fails, i is left equal to DPAA2_SWITCH_RX_NUM_FQS. A
+switch with one interface then causes the unwind path to access
+ports[1] out of bounds, while a switch with more than two interfaces
+leaks all ports after ports[1].
 
-Fixes: 8eb9e7520b17 ("net: dsa: yt921x: Add ACL support")
-Signed-off-by: David Yang <mmyangfl@gmail.com>
+If register_netdev() fails, the unregister loop consumes i down to -1.
+The following port removal loop is therefore skipped, leaking every
+port netdev and its MAC endpoint reference. The NAPI instances attached
+to port 0 also remain linked while their enclosing ethsw is freed.
+
+The issue was discovered by a static analysis tool and confirmed by
+manually tracing the probe error paths.
+
+Track successfully probed and registered ports independently. On
+post-NAPI failures, unregister only successfully registered netdevs,
+delete the NAPI instances, and then remove every successfully probed
+port.
+
+Fixes: 0b1b71370458 ("staging: dpaa2-switch: handle Rx path on control inte=
+rface")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jaeyeong Lee <lee@jaeyeong.cc>
 ---
- drivers/net/dsa/motorcomm/tc.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ .../ethernet/freescale/dpaa2/dpaa2-switch.c    | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/dsa/motorcomm/tc.c b/drivers/net/dsa/motorcomm/tc.c
-index 8835907366bf..5a4459507582 100644
---- a/drivers/net/dsa/motorcomm/tc.c
-+++ b/drivers/net/dsa/motorcomm/tc.c
-@@ -580,6 +580,7 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
- 	unsigned int udfs_cnt = 0;
- 	unsigned int size = 0;
- 	__be16 n_proto = 0;
-+	u16 addr_type = 0;
- 	u8 ip_proto = 0;
- 	bool use_dport;
- 	bool use_sport;
-@@ -603,8 +604,15 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
- 		return -EOPNOTSUPP;
- 	}
- 
-+	if (flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_CONTROL)) {
-+		struct flow_match_control match;
-+
-+		flow_rule_match_control(rule, &match);
-+		addr_type = match.key->addr_type;
-+	}
-+
- 	/* Entries */
--	if (flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_IPV4_ADDRS)) {
-+	if (addr_type == FLOW_DISSECTOR_KEY_IPV4_ADDRS) {
- 		struct flow_match_ipv4_addrs match;
- 
- 		flow_rule_match_ipv4_addrs(rule, &match);
-@@ -630,7 +638,7 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
- 		}
- 	}
- 
--	if (flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_IPV6_ADDRS)) {
-+	if (addr_type == FLOW_DISSECTOR_KEY_IPV6_ADDRS) {
- 		struct flow_match_ipv6_addrs match;
- 
- 		flow_rule_match_ipv6_addrs(rule, &match);
--- 
-2.53.0
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/=
+net/ethernet/freescale/dpaa2/dpaa2-switch.c
+index fe8ac5e85259..0d80706ac41f 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+@@ -4086,6 +4086,8 @@ static int dpaa2_switch_probe(struct fsl_mc_device *s=
+w_dev)
+ {
+ =09struct device *dev =3D &sw_dev->dev;
+ =09struct ethsw_core *ethsw;
++=09int registered_ports =3D 0;
++=09int probed_ports =3D 0;
+ =09int i, err;
+=20
+ =09/* Allocate switch core*/
+@@ -4148,7 +4150,8 @@ static int dpaa2_switch_probe(struct fsl_mc_device *s=
+w_dev)
+ =09for (i =3D 0; i < ethsw->sw_attr.num_ifs; i++) {
+ =09=09err =3D dpaa2_switch_probe_port(ethsw, i);
+ =09=09if (err)
+-=09=09=09goto err_free_netdev;
++=09=09=09goto err_remove_ports;
++=09=09probed_ports++;
+ =09}
+=20
+ =09/* Add a NAPI instance for each of the Rx queues. The first port's
+@@ -4178,19 +4181,22 @@ static int dpaa2_switch_probe(struct fsl_mc_device =
+*sw_dev)
+ =09=09=09dev_err(dev, "register_netdev error %d\n", err);
+ =09=09=09goto err_unregister_ports;
+ =09=09}
++=09=09registered_ports++;
+ =09}
+=20
+ =09return 0;
+=20
+ err_unregister_ports:
+-=09for (i--; i >=3D 0; i--)
+-=09=09unregister_netdev(ethsw->ports[i]->netdev);
++=09while (registered_ports)
++=09=09unregister_netdev(ethsw->ports[--registered_ports]->netdev);
+ =09dpaa2_switch_teardown_irqs(sw_dev);
+ err_stop:
+ =09dpsw_disable(ethsw->mc_io, 0, ethsw->dpsw_handle);
+-err_free_netdev:
+-=09for (i--; i >=3D 0; i--)
+-=09=09dpaa2_switch_remove_port(ethsw, i);
++=09for (i =3D 0; i < DPAA2_SWITCH_RX_NUM_FQS; i++)
++=09=09netif_napi_del(&ethsw->fq[i].napi);
++err_remove_ports:
++=09while (probed_ports)
++=09=09dpaa2_switch_remove_port(ethsw, --probed_ports);
+ =09for (i =3D 0; i < ethsw->sw_attr.num_ifs; i++)
+ =09=09mutex_destroy(&ethsw->lags[i].fdb_lock);
+ =09kfree(ethsw->lags);
+--=20
+2.43.0
+
 
