@@ -1,65 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793651649;
-	b=PzabUkB51xLreLpbEq9vpidoKMK9/GkYZTdj7qoXZNijf16R67/5TLPLK28du9/+N1q+
-	 KTBvmdsse3h0QfbR8kiJIVU/qnSRobNvLDiL9+/2znxnTiFsvkf6pgmbinno4kf80W4GA
-	 uoa97qL79CYWTeQbBIU4CkQFCvsAXuHMOt7LN+ba2cix7MDVfQIBNiLOHbyPm5WI0tTaX
-	 kTm5pwUmxgEPJScbSOUVDXqDTtWO8BvdZwynEa3VLAn2EtPBgKZnFu01Y0BWs27s0wRCI
-	 zuDtOY94jSurPi6GwsXdp83CfI7JgdtNYVPNDNBNMEKx6uB6BNtiSfupzuNzXuLdGzw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793651649;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=3PSUijTUw6iX8c0lN+QnpSmSK0z2YWVF8UoIrBp4Y20=;
-	b=zWuVAIWggKRNkZ5z64VchFfrC1egJQpEXBt7okZUfHyeIj8idZU1pUJuSu1Z3DckvQgy
-	 7lJRosrS7ToCLhKG20zx/l+9gk8bzBMtt2Ui2x7v/0J5yR7NvRDQiJf4KpxWWdS9PvX+R
-	 GnKhGzuptspIsHAlZwjt9oiP7mQFYkRYwiDJ2R1VC7PO8K/xIVEtHwbd2VrEL/hyCmJEm
-	 f1aC3reqx/6Wd1DpRXzzjJEmsu23cEaq8bxgjDdeG4SeRZRw7f2Mw4zoW83zDE0OFw1yG
-	 VhUD2No2jtrcFGBuK2TpB/+vpka4rMeU+cTY5qMtZlWuq3Ow/NnG9yP9nclOv0cKihg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GYRKrlJs;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.46
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793652052;
+	b=bNImhJvPD7t3pfjDhrsq926weecdy5AkDW7PLDAsBOyeHqIAn7OsuHEzhJdS0X43o+E4
+	 MMu2tePtNrTnemPTfwdgYJ3VV1q8r9npZJhxBiUXaOTGfuHU69sqXL/MEeVUUm+2TpiPm
+	 9JtnHNpA05v214lYcmEi3BVO6Ou0uJdghmNdgjSFYfALMwDjt3IGALIX7W5+C36NH8DZk
+	 DzBGT33IEX/9XZKBJ66dhYjyyB065M8ebUcKuY16AT1YXpxX+xf3efGqv4Dn1pmbNQteU
+	 X7yDN2Av8PcE2KUFfQ9DmlJfk2/A2vc8M7MHBdv2RzBYSdtVTw27tftqCuYk0SLWyJg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793652052;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=rii+FZ54nJeZhKcJyKsTY7JZApppPOKhEtvxZ28gkHM=;
+	b=CUyxirx3uwKYZ306zK16E8eamfHorBLDbl5pqbr2+i5tGzUY+RQnllyKd14fBEMgZ6j+
+	 t4CAQVwIQPV/xnclA0y0kgD+hw3UxhlKkICVaUO20glJdvKqZUxCe0bxkMwK0mBk7x2ag
+	 U7+iHHNDWwBwkHqNsEfnJEt+cKtwObLtPX0fc3FwszsXxj2A8cEMEEQV4pqG5Ttp6wP4Z
+	 NQYfCCC7pqLksTCNboEkRblyCKylUa0a2lQlEP2OUJ5TBAPLhTJYhibpX3SyRqYVBwKhj
+	 KMRDxDuUSG5vNk2XkLpy2XHbGaVUh3TWvDOsE9IoMWS18GC+FJS7tjjaq8nTtRqedYw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=eHNNvP4g;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.46
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267B0606A326;
-	Mon,  2 Nov 2026 20:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D85606A32C
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 20:40:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 36D85606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GYRKrlJs
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC45C1F00A16;
-	Mon,  2 Nov 2026 20:34:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793651648;
-	bh=3PSUijTUw6iX8c0lN+QnpSmSK0z2YWVF8UoIrBp4Y20=;
-	h=From:To:Cc:Subject:Date;
-	b=GYRKrlJsTvuIm47HV36H5EA1UiUxVdZDBdpFigbXI2c0NGJRt4a4zHX6kr+qN+wxF
-	 pROygEnsvcTiYkQ0DlOaoAoZhE2UdPTgOsG2EPVYfhU/AFUa8Lvf8bEAJEQ+2hgfAL
-	 IrkQKpWDyIcn2XBuCgOni3f22YxZXszBJsyeugrmWNhX90ltQWMbSgrS9SoBnQ/6Al
-	 mi1GKLd/E64d8UJM9kwiBScBFnTDxhmf4U+MPlyEbOHVscex9V+JBRw+VdRLS5QDVo
-	 01il3SN1k3C5CPfQE+scU97y09WtgMoUxrMRNCQ2ZJzpff0aXQ+c/jFGAN+4WJ/vSD
-	 47UMpdn72Ts2A==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Jose Abreu <joabreu@synopsys.com>
-Cc: netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] dt-bindings: net: Convert snps,dwc-qos-ethernet to DT schema
-Date: Mon,  2 Nov 2026 14:33:50 -0600
-Message-ID: <20261102203353.1384705-1-robh@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=eHNNvP4g
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso2224a12.1
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 12:40:50 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793652049; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rE7aP2IoHtM+G942MikX0sKZM7a0X/1nhH6hgh/AWRf7AStbMnDPozXfUcDVSUPbvW
+         LtXw6yJ9bTkN7/L1G3BwXkYkzh9hHvhdGPCLhovKUZ6TuZO+Wfgq4h4s4kM785kRvmMy
+         dLpB9N+zsD7Vgrq6ej8vBhpH9cC4TplgXeNWjnOQop2/0WJ9SD+Nn93KOsdBsWDeSQ/5
+         1eAqEHdrLEEWl7uFt8Jsp5Pfm7dVw6fe3a9c0hazBzyUC0LgFRUpZbdvOG6pOOa6S4AH
+         gHwLK/1mEtQPNIJ8mcmVLA0jhFx0oJqPtDDpTWEMdHj4jy+1kX8sbG7zeUFTZABd61St
+         vlHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rii+FZ54nJeZhKcJyKsTY7JZApppPOKhEtvxZ28gkHM=;
+        fh=rHhMJW1n6ei3x1OHTNkC63ikr42QCKERzDHZXYfMy74=;
+        b=qS1fmZL70St6qpV0rh4q4Q733vgj0c1pa8YjCdY4HLvySZW7qrdG0TBq31JxT1VcW6
+         e1MjlEULHUwf0TNtitbkGNwDtdfsVWjiWcuGUzCg6GevXvq2CbLvf/wufFWwGgA+xO/n
+         o2fby7Qqotu1Fv8nxWSatoQin53J79Aj7XmnPBrEkkt/ZEHsFZrecmZXn6X5c7LI4BCt
+         ci9AyvABYhb6u6pbPWIZRiKxIVK5CySMs7BjmTRBkztyJSW9BRq1PN0FYdPs75fbvT1P
+         THk04P7YMVAm/OFx1mWDXdkwqcrJMTR3pMZ4ECHsQs3XoALsr9lVzu3XlIyr/pf7JoHu
+         uDGw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793652049; x=1794256849; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rii+FZ54nJeZhKcJyKsTY7JZApppPOKhEtvxZ28gkHM=;
+        b=eHNNvP4gkD3jFrnE5uUMmnf91GgojEokCRr1Bj8d750eNexMgmZ8rGFlp4Hy8j4QU2
+         xzu+6K68aQBmEtnDWqzd2xBxnjfoqOQ8PH0wixFaMipd+67kkunJQyI6z3wo0lQZU2dF
+         vEBKFm1epjhZioAbdqRyYFTxMrL2WVzTSB+oUws9P3VLC66DjXIVql5kKhWMRhk0VQ7i
+         V35M8A8pUeQhtTRXE+rpgK0B2hzGSr305ImakHHS7UF7KMWlRVgXzGQhqJnXZBzKrPC5
+         8JhoSOur9ZOawQyQJJieWAXSotbOjJ39U4r9M+6lnW/94pEbAlntuJC12wSYGCi4e0vp
+         hAhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793652049; x=1794256849;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rii+FZ54nJeZhKcJyKsTY7JZApppPOKhEtvxZ28gkHM=;
+        b=YVDLmpDhApwlrkfYm9LFaBdYL3uvykez4BX0UpRcXPq8vzLYQO9SnoioUEThfjQAjn
+         LZoce7eGkD5PxByS03LxabwCWfpuopjRhRlvR4AZQdmo4JuZCWZpa6zndJcSqUrdco5X
+         MQne/IO2YrLFYaOaR6iCTzdCeSBHtcSd0o1Tq8wZgg3j2+uCqoS4skvhtTpD7cIM6DcB
+         VyUZAdkIg9y2UqhgFP38/fTKLObHfVadpH+UIuCc2gXPJ0gc4546gh7PKlH6SNK72kOG
+         +kzg2lkGtpB8tidsk7eCf0qLjN5Yg7m8gfbxJ+Hojg7JxPUnk8FMD0FMk1oeoV891Ztm
+         lyaA==
+X-Gm-Message-State: APuU4Z9YWCTDYJH8quMt7qaPg1yuGKLGbTBGjxB1LHBxOKScGC3pHDb6
+	Kr3c49JF7MkKwSZvk3wjlfZNkDpw4A6ICme1GUlYQ3j2hGeCif5jSo8gHrP1l8mSys5yf6i/97l
+	aV601YaqtDLvzfUgEX6XR0yIxvrwmJi4nFvvkCLyL
+X-Gm-Gg: AYBFou26bp5sKwYKVfxiKzS0rVJTNBy2erm9JNIpvHm4RUIcntc5tKTsYC6n8T9DhDD
+	gKETRdA2dZK54Aivm0uyLcSfZzumphusyPCEulqzq1iUc5uPa5VgXX+x7zdEwZKXHVw7QvONIGd
+	HmqumHcy7++Kh3kCwAWGjv/8qG7RLjktL2mx6le/tJ3tE0HddFjzsyj2plN5wAtZfxpmaH7accm
+	KPNXlFvq6v8gXeonFWcd1Wzc62hdUwlTGRY/4lxvfAjIsf8+qd1gcT5oitiZMCx7maB8VGRiLPV
+	YV+uQ9Un8ZPtqHEyG8r+8OEcRhdBjBU/M4C1ihl4FwLE7o4F3YbW2qO64jcYzUvkvrCvZ2Yh1D0
+	ZGQKFPRvjpNPUn2egzfyHgwGiAgTZ4JXJX2t1gNxIVWagN2aaB4A1bt+SvmvT+lgnefo=
+X-Received: by 2002:aa7:d794:0:b0:6b4:2188:97d0 with SMTP id
+ 4fb4d7f45d1cf-6b539d22220mr5870a12.6.1793652049063; Mon, 02 Nov 2026 12:40:49
+ -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,501 +103,118 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261102191438.1059771-1-sdf@fomichev.me> <20261102191438.1059771-7-sdf@fomichev.me>
+In-Reply-To: <20261102191438.1059771-7-sdf@fomichev.me>
+From: Mina Almasry <almasrymina@google.com>
+Date: Mon, 2 Nov 2026 12:40:37 -0800
+X-Gm-Features: AclHuK-QHSUFwb7InxS-A8g0MGgfg1Hp3eU1afIQI3kknV9M7EMlKPAHYQ2ow5c
+Message-ID: <CAHS8izMRtaL=kZaM29XQBodT8e+srppnK_DjNSTJnxFfNgG9aw@mail.gmail.com>
+Subject: Re: [PATCH net-next 6/7] net: devmem: size TX net_iovs from the
+ dmabuf sg table
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch, 
+	edumazet@kernel.org, horms@kernel.org, corbet@lwn.net, 
+	skhan@linuxfoundation.org, rdunlap@infradead.org, michael.chan@broadcom.com, 
+	pavan.chebbi@broadcom.com, sdf@fomichev.me, bobbyeshleman@meta.com, 
+	asml.silence@gmail.com, daniel@iogearbox.net, razor@blackwall.org, 
+	leitao@debian.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Convert the "snps,dwc-qos-ethernet-4.10" binding to DT schema format.
-The binding uses several common snps,dwmac properties, so move them to
-the snps,dwmac-common.yaml schema.
+On Mon, Nov 2, 2026 at 11:14=E2=80=AFAM Stanislav Fomichev <sdf.kernel@gmai=
+l.com> wrote:
+>
+> PAGE_SIZE TX net_iovs cap devmem skbs at MAX_SKB_FRAGS pages (~68KB),
+> which makes BIG TCP ineffective.
+>
+> TX net_iovs only need to be DMA contiguous. Use the largest power of 2,
+> up to 2MB, which aligns every DMA segment of the dmabuf:
+> - 2MB hugepage-backed udmabufs get 2MB net_iovs
+> - no UAPI change, TX addresses are dmabuf offsets
+> - skbs are still bounded by TCP's size_goal, only frags get larger
+>
+> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+> ---
+>  net/core/devmem.c      | 28 ++++++++++++++++++++++++++--
+>  net/core/netdev-genl.c |  2 +-
+>  2 files changed, 27 insertions(+), 3 deletions(-)
+>
+> diff --git a/net/core/devmem.c b/net/core/devmem.c
+> index 19c039ed2cb2..98c9594dbf99 100644
+> --- a/net/core/devmem.c
+> +++ b/net/core/devmem.c
+> @@ -181,6 +181,20 @@ int net_devmem_bind_dmabuf_to_queue(struct net_devic=
+e *dev, u32 rxq_idx,
+>         return err;
+>  }
+>
+> +static bool net_devmem_sgt_aligned(struct sg_table *sgt, size_t size)
+> +{
+> +       struct scatterlist *sg;
+> +       unsigned int i;
+> +
+> +       for_each_sgtable_dma_sg(sgt, sg, i) {
+> +               if (!IS_ALIGNED(sg_dma_address(sg), size) ||
+> +                   !IS_ALIGNED(sg_dma_len(sg), size))
+> +                       return false;
+> +       }
+> +       return true;
+> +}
+> +
+> +/* niov_shift =3D=3D 0 picks the net_iov size from the dmabuf, TX only *=
+/
+>  struct net_devmem_dmabuf_binding *
+>  net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+>                        struct device *dma_dev,
+> @@ -191,11 +205,11 @@ net_devmem_bind_dmabuf(struct net_device *dev, void=
+ *vdev,
+>                        struct netlink_ext_ack *extack)
+>  {
+>         struct net_devmem_dmabuf_binding *binding;
+> -       size_t niov_size =3D 1UL << niov_shift;
+>         static u32 id_alloc_next;
+>         struct scatterlist *sg;
+>         struct dma_buf *dmabuf;
+>         unsigned int sg_idx;
+> +       size_t niov_size;
+>         size_t niov_idx;
+>         size_t i;
+>         long err;
+> @@ -221,7 +235,6 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *=
+vdev,
+>         binding->tx_max_frag_size =3D dev->netmem_tx_max_frag_size;
+>         write_pnet(&binding->net, sock_net(nl_sk));
+>         binding->uid =3D sk_uid(nl_sk);
+> -       binding->niov_shift =3D niov_shift;
+>         xa_init_flags(&binding->bound_rxqs, XA_FLAGS_ALLOC);
+>
+>         err =3D percpu_ref_init(&binding->ref,
+> @@ -266,6 +279,17 @@ net_devmem_bind_dmabuf(struct net_device *dev, void =
+*vdev,
+>                 goto err_unmap;
+>         }
+>
+> +       if (!niov_shift) {
+> +               niov_size =3D SZ_2M;
+> +               while (niov_size > PAGE_SIZE &&
+> +                      (!IS_ALIGNED(dmabuf->size, niov_size) ||
+> +                       !net_devmem_sgt_aligned(binding->sgt, niov_size))=
+)
+> +                       niov_size /=3D 2;
+> +               niov_shift =3D ilog2(niov_size);
+> +       }
+> +       binding->niov_shift =3D niov_shift;
+> +       niov_size =3D 1UL << niov_shift;
+> +
 
-Drop support for standalone "snps,dwc-qos-ethernet-4.10" compatible
-and "axis,artpec6-eqos" as there are no users. Also drop the
-"snps,dwc-qos-ethernet-mdio" as it is also unused. Add the interconnects
-and iommus properties. Replaced the example with one from Tegra186.
+How come we're not checknig the largest supported size of the netdev here?
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
----
- .../net/snps,dwc-qos-ethernet-4.10.yaml       | 225 ++++++++++++++++++
- .../bindings/net/snps,dwc-qos-ethernet.txt    | 168 -------------
- .../bindings/net/snps,dwmac-common.yaml       |  20 ++
- .../devicetree/bindings/net/snps,dwmac.yaml   |  20 --
- 4 files changed, 245 insertions(+), 188 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/net/snps,dwc-qos-ethernet-4.10.yaml
- delete mode 100644 Documentation/devicetree/bindings/net/snps,dwc-qos-ethernet.txt
+Also, maybe should clarify in the cl with the largest supported size,
+is it actually only powers of 2 up to that power of 2? Or all sizes up
+to that (not-necassirly) power of 2 size?
 
-diff --git a/Documentation/devicetree/bindings/net/snps,dwc-qos-ethernet-4.10.yaml b/Documentation/devicetree/bindings/net/snps,dwc-qos-ethernet-4.10.yaml
-new file mode 100644
-index 000000000000..65de926af2a2
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/snps,dwc-qos-ethernet-4.10.yaml
-@@ -0,0 +1,225 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/snps,dwc-qos-ethernet-4.10.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Synopsys DWC Ethernet QoS IP version 4.10 (GMAC)
-+
-+maintainers:
-+  - Thierry Reding <treding@nvidia.com>
-+  - Jon Hunter <jonathanh@nvidia.com>
-+
-+description: >
-+  The IP supports multiple options for bus type, clocking and reset structure,
-+  and feature list. Consequently, a number of properties and list entries in
-+  properties are marked as optional, or only required in specific HW
-+  configurations.
-+
-+  This binding is deprecated, but it continues to be supported, but new features
-+  should be preferably added to the stmmac binding document.
-+
-+deprecated: true
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - const: nvidia,tegra186-eqos
-+          - const: snps,dwc-qos-ethernet-4.10
-+      - items:
-+          - const: nvidia,tegra194-eqos
-+          - const: nvidia,tegra186-eqos
-+          - const: snps,dwc-qos-ethernet-4.10
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 5
-+    items:
-+      - description:
-+          The master bus interface clock. Only required in configurations that
-+          use a separate clock for the master and slave bus interfaces. The HW
-+          signal name is hclk_i (AHB) or aclk_i (AXI).
-+      - description:
-+          The CPU/slave-bus (CSR) interface clock. This applies to any bus type;
-+          APB, AHB, AXI, etc. The HW signal name is hclk_i (AHB) or clk_csr_i
-+          (other buses).
-+      - description: >
-+          The EQOS receive path clock. The HW signal name is clk_rx_i. In some
-+          configurations (e.g. GMII/RGMII), this clock is derived from the PHY's
-+          RX clock output. In other configurations, other clocks (such as
-+          rx_125, rmii) may drive the EQOS RX path.
-+
-+          In cases where the PHY clock is directly fed into the EQOS receive
-+          path without intervening logic, the DT need not represent this clock,
-+          since it is assumed to be fully under the control of the PHY
-+          device/driver. In cases where SoC integration adds additional logic to
-+          this path, such as a SW-controlled clock gate, this clock should be
-+          represented in DT.
-+      - description: >
-+          The EQOS transmit path clock. The HW signal name is clk_tx_i.
-+
-+          In some configurations (e.g. GMII/RGMII), this clock also drives the
-+          PHY TX path. In other configurations, other clocks (such as tx_125,
-+          rmii) may drive the PHY TX path.
-+      - description:
-+          The PTP reference clock. The HW signal name is clk_ptp_ref_i.
-+    description: >
-+      Support for additional IP configurations may require adding the following
-+      clocks to this list in the future: clk_rx_125_i, clk_tx_125_i,
-+      clk_pmarx_0_i, clk_pmarx1_i, clk_rmii_i, clk_revmii_rx_i, clk_revmii_tx_i.
-+      Configurations exist where multiple similar clocks are used at once, e.g.
-+      all of clk_rx_125_i, clk_pmarx_0_i, clk_pmarx1_i. For this reason it is
-+      best to extend the binding with a separate clock-names entry for each of
-+      those RX clocks, rather than repurposing the existing "rx" clock-names
-+      entry as a generic/logical clock in a similar fashion to "master_bus" and
-+      "slave_bus". This will allow easy support for configurations that support
-+      multiple PHY interfaces using a mux, and hence need to have explicit
-+      control over specific RX clocks.
-+
-+  clock-names:
-+    items:
-+      - const: master_bus
-+      - const: slave_bus
-+      - const: rx
-+      - const: tx
-+      - const: ptp_ref
-+
-+  interrupts:
-+    minItems: 1
-+    items:
-+      - description: common
-+      - description: power
-+      - description: rx0
-+      - description: tx0
-+      - description: rx1
-+      - description: tx1
-+      - description: rx2
-+      - description: tx2
-+      - description: rx3
-+      - description: tx3
-+
-+  resets:
-+    maxItems: 1
-+
-+  reset-names:
-+    items:
-+      - const: eqos
-+
-+  dma-coherent: true
-+
-+  interconnects:
-+    maxItems: 2
-+
-+  interconnect-names:
-+    items:
-+      - const: dma-mem
-+      - const: write
-+
-+  iommus:
-+    maxItems: 1
-+
-+  phy-reset-gpios:
-+    description: Phandle and specifier for any GPIO used to reset the PHY
-+    maxItems: 1
-+
-+  snps,en-lpi:
-+    description: If present it enables use of the AXI low-power interface
-+    type: boolean
-+
-+  snps,write-requests:
-+    description: Number of write requests that the AXI port can issue
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+  snps,read-requests:
-+    description: Number of read requests that the AXI port can issue
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+  snps,burst-map:
-+    description:
-+      Bitmap of allowed AXI burst lengths, with the LSB representing 4, then
-+      8 etc.
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+  mdio:
-+    $ref: /schemas/net/mdio.yaml#
-+    unevaluatedProperties: false
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - clock-names
-+  - interrupts
-+  - resets
-+  - reset-names
-+  - phy-mode
-+
-+unevaluatedProperties: false
-+
-+allOf:
-+  - $ref: /schemas/net/ethernet-controller.yaml#
-+  - $ref: /schemas/net/snps,dwmac-common.yaml#
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    #include <dt-bindings/gpio/tegra186-gpio.h>
-+    #include <dt-bindings/clock/tegra186-clock.h>
-+    #include <dt-bindings/reset/tegra186-reset.h>
-+    #include <dt-bindings/memory/tegra186-mc.h>
-+
-+    ethernet@2490000 {
-+        compatible = "nvidia,tegra186-eqos",
-+                     "snps,dwc-qos-ethernet-4.10";
-+        reg = <0x02490000 0x10000>;
-+        interrupts = <GIC_SPI 194 IRQ_TYPE_LEVEL_HIGH>, /* common */
-+                     <GIC_SPI 195 IRQ_TYPE_LEVEL_HIGH>, /* power */
-+                     <GIC_SPI 190 IRQ_TYPE_LEVEL_HIGH>, /* rx0 */
-+                     <GIC_SPI 186 IRQ_TYPE_LEVEL_HIGH>, /* tx0 */
-+                     <GIC_SPI 191 IRQ_TYPE_LEVEL_HIGH>, /* rx1 */
-+                     <GIC_SPI 187 IRQ_TYPE_LEVEL_HIGH>, /* tx1 */
-+                     <GIC_SPI 192 IRQ_TYPE_LEVEL_HIGH>, /* rx2 */
-+                     <GIC_SPI 188 IRQ_TYPE_LEVEL_HIGH>, /* tx2 */
-+                     <GIC_SPI 193 IRQ_TYPE_LEVEL_HIGH>, /* rx3 */
-+                     <GIC_SPI 189 IRQ_TYPE_LEVEL_HIGH>; /* tx3 */
-+        clocks = <&bpmp TEGRA186_CLK_AXI_CBB>,
-+                 <&bpmp TEGRA186_CLK_EQOS_AXI>,
-+                 <&bpmp TEGRA186_CLK_EQOS_RX>,
-+                 <&bpmp TEGRA186_CLK_EQOS_TX>,
-+                 <&bpmp TEGRA186_CLK_EQOS_PTP_REF>;
-+        clock-names = "master_bus", "slave_bus", "rx", "tx", "ptp_ref";
-+        resets = <&bpmp TEGRA186_RESET_EQOS>;
-+        reset-names = "eqos";
-+        interconnects = <&mc TEGRA186_MEMORY_CLIENT_EQOSR &emc>,
-+                        <&mc TEGRA186_MEMORY_CLIENT_EQOSW &emc>;
-+        interconnect-names = "dma-mem", "write";
-+        iommus = <&smmu TEGRA186_SID_EQOS>;
-+
-+        snps,write-requests = <1>;
-+        snps,read-requests = <3>;
-+        snps,burst-map = <0x7>;
-+        snps,txpbl = <32>;
-+        snps,rxpbl = <8>;
-+
-+        phy-reset-gpios = <&gpio_aon TEGRA186_AON_GPIO(AA, 6) GPIO_ACTIVE_LOW>;
-+        phy-handle = <&phy>;
-+        phy-mode = "rgmii-id";
-+
-+        mdio {
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-+            phy: ethernet-phy@0 {
-+                compatible = "ethernet-phy-ieee802.3-c22";
-+                reg = <0x0>;
-+                interrupt-parent = <&gpio_aon>;
-+                interrupts = <TEGRA186_AON_GPIO(AA, 7) IRQ_TYPE_LEVEL_LOW>;
-+                #phy-cells = <0>;
-+            };
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/net/snps,dwc-qos-ethernet.txt b/Documentation/devicetree/bindings/net/snps,dwc-qos-ethernet.txt
-deleted file mode 100644
-index bb0224a3e826..000000000000
---- a/Documentation/devicetree/bindings/net/snps,dwc-qos-ethernet.txt
-+++ /dev/null
-@@ -1,168 +0,0 @@
--* Synopsys DWC Ethernet QoS IP version 4.10 driver (GMAC)
--
--This binding is deprecated, but it continues to be supported, but new
--features should be preferably added to the stmmac binding document.
--
--This binding supports the Synopsys Designware Ethernet QoS (Quality Of Service)
--IP block. The IP supports multiple options for bus type, clocking and reset
--structure, and feature list. Consequently, a number of properties and list
--entries in properties are marked as optional, or only required in specific HW
--configurations.
--
--Required properties:
--- compatible: One of:
--  - "axis,artpec6-eqos", "snps,dwc-qos-ethernet-4.10"
--    Represents the IP core when integrated into the Axis ARTPEC-6 SoC.
--  - "nvidia,tegra186-eqos", "snps,dwc-qos-ethernet-4.10"
--    Represents the IP core when integrated into the NVIDIA Tegra186 SoC.
--  - "snps,dwc-qos-ethernet-4.10"
--    This combination is deprecated. It should be treated as equivalent to
--    "axis,artpec6-eqos", "snps,dwc-qos-ethernet-4.10". It is supported to be
--    compatible with earlier revisions of this binding.
--- reg: Address and length of the register set for the device
--- clocks: Phandle and clock specifiers for each entry in clock-names, in the
--  same order. See ../clock/clock-bindings.txt.
--- clock-names: May contain any/all of the following depending on the IP
--  configuration, in any order:
--  - "tx"
--    The EQOS transmit path clock. The HW signal name is clk_tx_i.
--    In some configurations (e.g. GMII/RGMII), this clock also drives the PHY TX
--    path. In other configurations, other clocks (such as tx_125, rmii) may
--    drive the PHY TX path.
--  - "rx"
--    The EQOS receive path clock. The HW signal name is clk_rx_i.
--    In some configurations (e.g. GMII/RGMII), this clock is derived from the
--    PHY's RX clock output. In other configurations, other clocks (such as
--    rx_125, rmii) may drive the EQOS RX path.
--    In cases where the PHY clock is directly fed into the EQOS receive path
--    without intervening logic, the DT need not represent this clock, since it
--    is assumed to be fully under the control of the PHY device/driver. In
--    cases where SoC integration adds additional logic to this path, such as a
--    SW-controlled clock gate, this clock should be represented in DT.
--  - "slave_bus"
--    The CPU/slave-bus (CSR) interface clock. This applies to any bus type;
--    APB, AHB, AXI, etc. The HW signal name is hclk_i (AHB) or clk_csr_i (other
--    buses).
--  - "master_bus"
--    The master bus interface clock. Only required in configurations that use a
--    separate clock for the master and slave bus interfaces. The HW signal name
--    is hclk_i (AHB) or aclk_i (AXI).
--  - "ptp_ref"
--    The PTP reference clock. The HW signal name is clk_ptp_ref_i.
--  - "phy_ref_clk"
--    This clock is deprecated and should not be used by new compatible values.
--    It is equivalent to "tx".
--  - "apb_pclk"
--    This clock is deprecated and should not be used by new compatible values.
--    It is equivalent to "slave_bus".
--
--  Note: Support for additional IP configurations may require adding the
--  following clocks to this list in the future: clk_rx_125_i, clk_tx_125_i,
--  clk_pmarx_0_i, clk_pmarx1_i, clk_rmii_i, clk_revmii_rx_i, clk_revmii_tx_i.
--  Configurations exist where multiple similar clocks are used at once, e.g. all
--  of clk_rx_125_i, clk_pmarx_0_i, clk_pmarx1_i. For this reason it is best to
--  extend the binding with a separate clock-names entry for each of those RX
--  clocks, rather than repurposing the existing "rx" clock-names entry as a
--  generic/logical clock in a similar fashion to "master_bus" and "slave_bus".
--  This will allow easy support for configurations that support multiple PHY
--  interfaces using a mux, and hence need to have explicit control over
--  specific RX clocks.
--
--  The following compatible values require the following set of clocks:
--  - "nvidia,tegra186-eqos", "snps,dwc-qos-ethernet-4.10":
--    - "slave_bus"
--    - "master_bus"
--    - "rx"
--    - "tx"
--    - "ptp_ref"
--  - "axis,artpec6-eqos", "snps,dwc-qos-ethernet-4.10":
--    - "slave_bus"
--    - "master_bus"
--    - "tx"
--    - "ptp_ref"
--  - "snps,dwc-qos-ethernet-4.10" (deprecated):
--    - "phy_ref_clk"
--    - "apb_clk"
--- interrupts: Should contain the core's combined interrupt signal
--- phy-mode: See ethernet.txt file in the same directory
--- resets: Phandle and reset specifiers for each entry in reset-names, in the
--  same order. See ../reset/reset.txt.
--- reset-names: May contain any/all of the following depending on the IP
--  configuration, in any order:
--  - "eqos". The reset to the entire module. The HW signal name is hreset_n
--    (AHB) or aresetn_i (AXI).
--
--  The following compatible values require the following set of resets:
--  (the reset properties may be omitted if empty)
--  - "nvidia,tegra186-eqos", "snps,dwc-qos-ethernet-4.10":
--    - "eqos".
--  - "axis,artpec6-eqos", "snps,dwc-qos-ethernet-4.10":
--    - None.
--  - "snps,dwc-qos-ethernet-4.10" (deprecated):
--    - None.
--
--Optional properties:
--- dma-coherent: Present if dma operations are coherent
--- phy-reset-gpios: Phandle and specifier for any GPIO used to reset the PHY.
--  See ../gpio/gpio.txt.
--- snps,en-lpi: If present it enables use of the AXI low-power interface
--- snps,write-requests: Number of write requests that the AXI port can issue.
--  It depends on the SoC configuration.
--- snps,read-requests: Number of read requests that the AXI port can issue.
--  It depends on the SoC configuration.
--- snps,burst-map: Bitmap of allowed AXI burst lengths, with the LSB
--  representing 4, then 8 etc.
--- snps,txpbl: DMA Programmable burst length for the TX DMA
--- snps,rxpbl: DMA Programmable burst length for the RX DMA
--- snps,en-tx-lpi-clockgating: Enable gating of the MAC TX clock during
--  TX low-power mode.
--- phy-handle: See ethernet.txt file in the same directory
--- mdio device tree subnode: When the GMAC has a phy connected to its local
--    mdio, there must be device tree subnode with the following
--    required properties:
--    - compatible: Must be "snps,dwc-qos-ethernet-mdio".
--    - #address-cells: Must be <1>.
--    - #size-cells: Must be <0>.
--
--    For each phy on the mdio bus, there must be a node with the following
--    fields:
--
--    - reg: phy id used to communicate to phy.
--    - device_type: Must be "ethernet-phy".
--    - fixed-mode device tree subnode: see fixed-link.txt in the same directory
--
--The MAC address will be determined using the optional properties
--defined in ethernet.txt.
--
--Examples:
--ethernet2@40010000 {
--	clock-names = "phy_ref_clk", "apb_pclk";
--	clocks = <&clkc 17>, <&clkc 15>;
--	compatible = "snps,dwc-qos-ethernet-4.10";
--	interrupt-parent = <&intc>;
--	interrupts = <0x0 0x1e 0x4>;
--	reg = <0x40010000 0x4000>;
--	phy-handle = <&phy2>;
--	phy-mode = "gmii";
--	phy-reset-gpios = <&gpioctlr 43 GPIO_ACTIVE_LOW>;
--
--	snps,en-tx-lpi-clockgating;
--	snps,en-lpi;
--	snps,write-requests = <2>;
--	snps,read-requests = <16>;
--	snps,burst-map = <0x7>;
--	snps,txpbl = <8>;
--	snps,rxpbl = <2>;
--
--	dma-coherent;
--
--	mdio {
--		#address-cells = <0x1>;
--		#size-cells = <0x0>;
--		phy2: phy@1 {
--			compatible = "ethernet-phy-ieee802.3-c22";
--			device_type = "ethernet-phy";
--			reg = <0x1>;
--		};
--	};
--};
-diff --git a/Documentation/devicetree/bindings/net/snps,dwmac-common.yaml b/Documentation/devicetree/bindings/net/snps,dwmac-common.yaml
-index a38ff314b3cd..90e5560b6b68 100644
---- a/Documentation/devicetree/bindings/net/snps,dwmac-common.yaml
-+++ b/Documentation/devicetree/bindings/net/snps,dwmac-common.yaml
-@@ -12,6 +12,26 @@ maintainers:
-   - Jose Abreu <joabreu@synopsys.com>
- 
- properties:
-+  snps,en-tx-lpi-clockgating:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    deprecated: true
-+    description:
-+      Enable gating of the MAC TX clock during TX low-power mode
-+
-+  snps,txpbl:
-+    description:
-+      Tx Programmable Burst Length. If set, DMA tx will use this
-+      value rather than snps,pbl.
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [1, 2, 4, 8, 16, 32]
-+
-+  snps,rxpbl:
-+    description:
-+      Rx Programmable Burst Length. If set, DMA rx will use this
-+      value rather than snps,pbl.
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [1, 2, 4, 8, 16, 32]
-+
-   stmmac-axi-config:
-     type: object
-     unevaluatedProperties: false
-diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-index 2c4842404bf6..ddfc32ba29cb 100644
---- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-@@ -460,20 +460,6 @@ properties:
-     $ref: /schemas/types.yaml#/definitions/uint32
-     enum: [1, 2, 4, 8, 16, 32]
- 
--  snps,txpbl:
--    description:
--      Tx Programmable Burst Length. If set, DMA tx will use this
--      value rather than snps,pbl.
--    $ref: /schemas/types.yaml#/definitions/uint32
--    enum: [1, 2, 4, 8, 16, 32]
--
--  snps,rxpbl:
--    description:
--      Rx Programmable Burst Length. If set, DMA rx will use this
--      value rather than snps,pbl.
--    $ref: /schemas/types.yaml#/definitions/uint32
--    enum: [1, 2, 4, 8, 16, 32]
--
-   snps,no-pbl-x8:
-     $ref: /schemas/types.yaml#/definitions/flag
-     description:
-@@ -501,12 +487,6 @@ properties:
-       Force DMA to use the Store and Forward mode for both tx and
-       rx. This flag is ignored if force_thresh_dma_mode is set.
- 
--  snps,en-tx-lpi-clockgating:
--    $ref: /schemas/types.yaml#/definitions/flag
--    deprecated: true
--    description:
--      Enable gating of the MAC TX clock during TX low-power mode
--
-   snps,multicast-filter-bins:
-     $ref: /schemas/types.yaml#/definitions/uint32
-     description:
--- 
-2.53.0
-
+--=20
+Thanks,
+Mina
