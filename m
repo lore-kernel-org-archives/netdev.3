@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.58
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.12
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793591000;
-	b=QWdOiTZMR5l1Ug58pgdFgHun+4AtIlfdm+nCHq+CGqgPCewr10aabyk/lnJUYnjygIeN
-	 8gvImhN7OhNvd1K4/xcuWgXXIID0PwVN+oIvWSN0EyqyvaDEDA1KZtB7CpcwwE3psBvKR
-	 b6ETpzvYjVQabq1op84m8g6trckJK1PaCviIODp70ucNiyFkbnfOjVGlv9BDW8TTDl2WL
-	 xw+1ckOHExEZkg9XK718UUo/GNu9b0O02NfPXNWXRYIRbJDpv6TIV8FZcEAT9z1lq1ck5
-	 RbUr1vleUrVXQ7F5OEvM4MJq7EnbC9WFCV2pJi0Z+4UbW5+9gm8GECQkDuL/bMaSl+Q==
+	t=1793591008;
+	b=MSbHKPdw3Ll50vIrPGWlzApW4rRe0eURte+mC/W83RaJpv0gJK14g2rIJlGL1HusfC4O
+	 yG1gVdqPVEMQGgUmZHNyBS7YQ6hwiP9/LTZX2j8Tq3wCri3NDerX25sIgKvQcPEHp4nlC
+	 dnbwtcX0ALlzi7UBUJoEBnbcwBqEq7MpQh+da7YBiCncQdnkL+dHFofnelJzyBAKSI4oj
+	 ixJfZftS6uvEXuOa9om9K6pii1p5cX8rM2tTxv/sZdpGH+bqtNHwFbmluvoTPAseQE0Kr
+	 TZAB3+BIZLDCQBiPtg0qmiCmoELxkw4xo5PUyouE4vQWAwytEEfbS4zvVgLo7uZE7sg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793591000;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793591008;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 Content-Transfer-Encoding:Content-Type:X-ClientProxiedBy:MIME-Version:
@@ -25,53 +25,53 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=trFHP30XjYbpuxY1GI4eJnr4LdWGDqweAGQwRl+HLwQ=;
-	b=c6cZyXtenxzVdHaS+yTJYx0ovx6YyNiFdgRVXm9o51iIJbAZwHn5zJ9e7+yXBtkWzPNI
-	 X/WHSRwXSt+T8PIwjl+C1QZBS4W+udOSWXWe8zrK4xN4bTjf+AvHt852ei5Vro/riRDmA
-	 YosFsT9fhco9m1B+gOs3BDaRFp08PBwuZAYuQIuhoupcvFSzqXSftbinsehxs7neWBCdt
-	 T9dT80wONDhHjZ0Y8tkjQTISD9sNwBGrZ6MTNRBPZi4986Q5kqLYit7jfvRTV6hBWvXwP
-	 EDsORU4VbMYBGNYj2A9ZEETe10TCpE+Uk79xK0KPHyCihRxUtlRa4CTqTb+euEMO3FA==
+	bh=6yg6j0yPfPW6y8R/wu+pYuUURg65HBzH//flzac2LNc=;
+	b=3HRhpcp+So+s0M+neJQohV3LNxj4X2jKvwrVQXLhUFBmdFD0AJVj45ZgFARNig1AMY5r
+	 vmMbDHHEotfMNQzQtVwVLmzPadbO8GBcCBl938Gk/HbP2uCaEUjsnljw8cocXnz+jloi5
+	 twDfOCVFCbviJ6lf5FuURtmW+sLwUyxeV8a5uwo4iO2CvOATZanXvZhUWz+ceA4grZ3jN
+	 SEB79rm3jHiV/E8geiZ/MvdiEOAkQt7sirMc67bzN73Q5QxmyvoxrcXIwjtWVq2NQAtIP
+	 BGO7IvXPK/jXPVBWJ/5Hl/U9cRMhPX0MuzUq0yyJUutqfE6I9sFxwTKrnQOGMtVz0nQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=none header.from=est.tech;
 	spf=pass smtp.mailfrom=est.tech;
-	dkim=pass header.d=est.tech header.i=@est.tech header.a=rsa-sha256 header.s=selector1 header.b=ke4rlQIt;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.72.58
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013058.outbound.protection.outlook.com [52.101.72.58])
+	dkim=pass header.d=est.tech header.i=@est.tech header.a=rsa-sha256 header.s=selector1 header.b="yUFK/fiW";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.65.12
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011012.outbound.protection.outlook.com [52.101.65.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094B3606A324
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 03:43:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 094B3606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1C9606A329
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 03:43:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4C1C9606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=est.tech header.i=@est.tech header.a=rsa-sha256 header.s=selector1 header.b=ke4rlQIt
+	dkim=pass (2048-bit key, unprotected) header.d=est.tech header.i=@est.tech header.a=rsa-sha256 header.s=selector1 header.b=yUFK/fiW
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cSFCm+Ct9tTRWkSX83swF/7XxsLzIvhDSdwzAZqSYUA+nafCGc/JjCvhdIcsyiKeBsPUwwvDbIMFhvdm1GyXwLe2AiSBkq7ZKPiutAbbUrzV4j8cApw3NOV4GX4Q4tN/HjA3NRo6z34IHcmoWcr3uZrPPsu+Ax46SNbyE2NYb+ciJ7mNilBIo2j5lvkAad1VQlm4uBNTJVE+iW8cc3iBA9Jg8rlNJN/pPV6HQWVWzxWxQQyr4HHOlMc+ghyInieNlPoXc7OhJvLuZ9uzNARnY8LC5yjI705/Q6fpNWh4XPpEZgjGD3m2nTMoR/aEt4xpK8Zt6dzbzT+YPs7BdoMdXQ==
+ b=NM/jGDFqB2w/QbXP1zKB0GvwP8aVCKHe3dKJImu3010qZb8X4nBraWwQ7kkSDVKnXaoLUsAjiibxmc7RHlOze2JRwJd6df3/m74yDUTUf2fwK4nJFVIx3Fc42vv6lORPm4HEyYnppwr3HBJQm5488Bv+/R8AQ1rQ8SbDZDBzUoBCkhkCaxL0eJWQFgshIeFfZidT9jcHN/5dYQj4FE5V3eGZiq3jKyY501zd9epWhGt95/VbDm/8m/BKr8egZ7JoeaOhIlcGRbJtm7/dMZLI5FT5e4pks9Mz1FEplN4SiXzVm95QiHl9UpkTU3MDUOGlPlOF4tT8thzjm2DT8NEvkA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=trFHP30XjYbpuxY1GI4eJnr4LdWGDqweAGQwRl+HLwQ=;
- b=skEgUcXHzmqA6RGHploKO3RvB/kqRnUEFGJMJ8y+7F/RpZk+K2pemW+eLUr2PW5uo1WHU6AkGtgeGYCeH8QkAGT4Y8JUaBeOJulYcwJ8+LvboeWyToYr4TrfxeZDtVKxzvPaBZaonTVCjefzpKwolEwXeqDUKB0TYAVhq/8Owpkg15/nC0nUMOBrh2hZqwnINFkEmTf98Eo1ZV5o0p4rK9nesuLeGFnErk1ex0Byg32c9WIxwvy1ExjwqwnV6B4eSNGgt/WEYPVrWLhhdP5dk6kAD5d/WqQNXnl/BH5nYSRJI7izQSdvLxXWKl4DNqS0MOd0RK2IEDY8okVJCTfg8A==
+ bh=6yg6j0yPfPW6y8R/wu+pYuUURg65HBzH//flzac2LNc=;
+ b=IitRyhOiRCn8kg+kO2qw6Ymfeh1IsoPTcIKlQu/if9uGPcophElamp0aFlMmeqSST55L1JD8r0AY3HEkBg5sCoekDahsL5F+C/V87KLCU0GsyYUmX0S8QnXRi8dLN5DqKMndwvnoQZEGFGVABnTorkJlhZtLyx8vG7ioo6Oo8jKFoypqGY4CQp6wZk2/uS71fPhkzbnVTaLugQLt7EPGfjjgRe0InHBg1VcWcmLlxzQZkiXK659LameHuS0tWLItPmSHLOX94f2pOhPm0mHaZwLFRBzP5aDQMiVAWPNA8tbJdxgZw9Ieji41fBKAsZjcROQTlwEAS5qQKi4IQMDnMg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
  dkim=pass header.d=est.tech; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=trFHP30XjYbpuxY1GI4eJnr4LdWGDqweAGQwRl+HLwQ=;
- b=ke4rlQIt2U5g7Dx8+vSS+S4gzoHYsjRLnrBz/58dGs9tUMBSFmSdgYRw3xsiKARq7O8gDNa2Pim1CdV51UH7a/UQfmRTUUBpo1Y7XdHIhVaHA7tGqcIRXI8Cg1UspgR8RxzY2aLruFI29mMvun/Axn8jfK7fXyumgmbUB+JnX4xUSYHyAixBXl92wIA8qAqNgSImuMzqMztYzEKNxPv1WAsrQth9zdSOzkKZ550eiNd5Np/d4mL9reYxMLrBuK6JEPOBt4ROtJw66ifmAxeiqY668E26lo4ywfKn+fs4Jua9ey/HPBypBBagukfELwWmPO0+mxjHYuyS5yHKdG8sgQ==
+ bh=6yg6j0yPfPW6y8R/wu+pYuUURg65HBzH//flzac2LNc=;
+ b=yUFK/fiWOThX6ls3FTshS7zXQHpuCkK7wD/fwRantEI/yXDwWUxjAi4IF6pdHCGWBLHCEj3wuzYdEcaXZSXavKssGgQRqgSbG3aK0IGSCphDnZey2n830D50t6LVH7mMbMgcQXdtNFpSt09IQDDkvtynFKiK+E+yDWjVjoN46ARdPbl2KuiRTnS/UOmsANBR1fok/n351a4OxMaIdnIVXcVPt7SkhJO9vMMJjqz02oMW9FRQ9iM1tffHBU2CkhwR2lbu4WGz0fSR59SBPtxit7xzYMlfjTE1H/1BzpqIfqN6mfA1rZZWVJmNhmk9bIP154OeDGI1ZA0fOlh2ii2DqA==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=est.tech;
 Received: from AM7P189MB1137.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:17e::23)
  by PA1P189MB3491.EURP189.PROD.OUTLOOK.COM (2603:10a6:102:4f9::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
- 2026 03:43:17 +0000
+ 2026 03:43:25 +0000
 Received: from AM7P189MB1137.EURP189.PROD.OUTLOOK.COM
  ([fe80::86f0:8ce1:a437:b2d5]) by AM7P189MB1137.EURP189.PROD.OUTLOOK.COM
  ([fe80::86f0:8ce1:a437:b2d5%3]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
- 03:43:17 +0000
+ 03:43:25 +0000
 From: Tung Nguyen <tung.quang.nguyen@est.tech>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -82,16 +82,16 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	tipc-discussion@lists.sourceforge.net,
 	Tung Nguyen <tung.quang.nguyen@est.tech>
-Subject: [PATCH net v2 4/6] tipc: fix missing link-up event on memory allocation failure
-Date: Mon,  2 Nov 2026 10:40:30 +0700
-Message-ID: <20261102034207.10639-5-tung.quang.nguyen@est.tech>
+Subject: [PATCH net v2 5/6] tipc: fix self-deadlock in tipc_named_node_up
+Date: Mon,  2 Nov 2026 10:40:31 +0700
+Message-ID: <20261102034207.10639-6-tung.quang.nguyen@est.tech>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261102034207.10639-1-tung.quang.nguyen@est.tech>
 References: <20261102034207.10639-1-tung.quang.nguyen@est.tech>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SI2PR02CA0021.apcprd02.prod.outlook.com
- (2603:1096:4:195::10) To AM7P189MB1137.EURP189.PROD.OUTLOOK.COM
+X-ClientProxiedBy: JH0PR02CA0001.apcprd02.prod.outlook.com
+ (2603:1096:990:5::10) To AM7P189MB1137.EURP189.PROD.OUTLOOK.COM
  (2603:10a6:20b:17e::23)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -104,293 +104,445 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM7P189MB1137:EE_|PA1P189MB3491:EE_
-X-MS-Office365-Filtering-Correlation-Id: b1b241ad-2f50-43a9-c59f-08df38936ea7
+X-MS-Office365-Filtering-Correlation-Id: 7b3c4d6f-f435-4249-55bf-08df389372d4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|10070799003|1800799024|366016|376014|261021123027099003|261021121427099003|261022105027099003|261022075727099003|261009223027099003|261026121527099003|261026140227099003|261028144727099003|11063799006|10067099003|56012099006|22082099003|18002099003|3023799007;
+	BCL:0;ARA:13230040|23010399003|10070799003|1800799024|366016|376014|261021123027099003|261021121427099003|261022105027099003|261022075727099003|261009223027099003|261026121527099003|261026140227099003|261028144727099003|11063799006|10067099003|56012099006|22082099003|18002099003|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	BKU7gUl4ARBlEdn4KNmJeRTmG8MB3SWjJqpNCbUlXdhzC7I2FnuleqNDufnIydHCJ9bpIveolGz2nHYleuHnsUQBK2xm1WvEhHk4hkGjmkE5Lyx9iKqfllbodpvsnA5Cdg2nFjIK63tYvmGW7j18WJXOaef63B3JdjO7tCG24+WUIPeouXiilfze/m4wBhXkPZcxAJ1F7nnY5o/8UfP3bUO1JqdydvGxb8zs1dzPX/wr1ULGg8PFHorVHqqERSJ8WnHoJdAUfi1zgaGfbaxK5cuEQUI67DA+VUpjutq5SqMWA7aokyPq95DEAHUSHEfZdQ3iJcZn0DiTUMut1HoyiQideRAFFuDXrd3wett3iwRdvGU6lyelF46Fln5UOTY/1A4KEKV+xhyKYfxWUCEo8cSu21I+gs+hlDGzct5J1hVcih4yE84l1cZqa0kF0Z5Y12Xetw+nZu7zjFBOAVBb2wYjUd25u8lroU8UQ4ibH753o9EFxuy/3/jhgYofFVT+TDvIccerXhuTRFljoniWp8mM6xMRrC1n8uoDyoXHjSFncWZqO5VN3a84Vyw2oySm2sqQ/xy2EQ94eZKYchO059xUVETSFecfqQ9evGIn6hkMjEgpb+JjToXkSKzeOrmf1LdkJM6nQe8yXaXzOqjrhThF3prLpKHvNDcrNGUbPD0=
+	oom0mAFCjSdZrmsWVQrsQ/NEyB6Las7vfQtwy6szfHehcgtc77Bd2zLVVAIpuBvMwi/pmYeKQ+wQKokq5TSiovS9RrqXLeC0ENJ6uVdmQY+pfRPtxR5WCvuu5TCNXnTIErnJZHecaYRKnvkJimEi6mdIQUPbOr9z/g6p7+U8H8McYSxPWs3C4LMukioDOQrs6fUxwW9F45Xud81ko2hq36GKl73T1bw8RrF1cuyKZ9QcSZMh+Xj/D4AYq/rS1shUYvCpl4ZahsbiwMbFfJWGiUNDDhyWCKpGrLYDIE1WkepbD0ke4CToy6U44rVf8eWM5YEwBg30EIR3n6utA/nxVV0iffG6ekDyUakAPafwuuQoeCyK1L6uRrYNsKL4bPHzroVv8S4dp3jjVu2y7bhY9SdkVYXjycdVAcw2eNzOa+SQTibNf3rVXBFu+0cSgcEAuOmWEPow2VLFC2UCk6k+Fx6yVMfF+vazUbWwm+aXI/N4CvtNvqaaVzIx487Pq7AEuECgIX33JAZ5EXEWxjc3SVlUvu+EPJYXr/mB5eX+qk6rYRPkLj4foyvyLNnzOn8x/alSwd7FhLVn8s//jA9VMQ2Zd3zbbEH/GkVMsrPcupq3IOZxopL73ysuS4BG/uWB
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7P189MB1137.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(1800799024)(366016)(376014)(261021123027099003)(261021121427099003)(261022105027099003)(261022075727099003)(261009223027099003)(261026121527099003)(261026140227099003)(261028144727099003)(11063799006)(10067099003)(56012099006)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7P189MB1137.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(1800799024)(366016)(376014)(261021123027099003)(261021121427099003)(261022105027099003)(261022075727099003)(261009223027099003)(261026121527099003)(261026140227099003)(261028144727099003)(11063799006)(10067099003)(56012099006)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?jrwsGuPwQKVChxMSKgxHzOwcyxGqFxiyGRM4NhYWKwrM+ksMnQMOR2oXOIA3?=
- =?us-ascii?Q?9crSE6aaER2mVEPHLz3Itnff8kFlFyCC7nI6dU2NOVfdxJ8LDozQfoTmixph?=
- =?us-ascii?Q?edMaYzQ67ivo2L6Hg1DLKp8fQM2ptbvkqOkhkxt7w+LEFCJEs66P4+37SORE?=
- =?us-ascii?Q?MaEWvse8K4K1+eaIrmYkk23VeqU5xCRebyWgj93XkJqM7YPWvRNY098lwcr3?=
- =?us-ascii?Q?U8e9wjiQaGGxuxL/LAOamuPLcSGvT9OcI7QFzAs1qsMKhqXP1p/Lv/cjqwO9?=
- =?us-ascii?Q?y7jhnuaN9lf+I42aa6+gfnern/M9N73IqOI+SC4PDCq+hWWDinFmI7CcLoB8?=
- =?us-ascii?Q?3V3GDtAOfskhspkQLudAWEp3BsmFpi53uuPWh6SadNlhq+XdG4+9LzkUgNC/?=
- =?us-ascii?Q?H4oCqPd3byhnSXk5M4oEkqGoEZhBGuLRhEwXswtokpBMp1X+lhnXJv39iZm2?=
- =?us-ascii?Q?P/nbX7bVrwvzg6y4kTObefxikBKQY8ry5YWyRv2Nz6aGZl9likMvKV8wwU6k?=
- =?us-ascii?Q?oQCw6T64LD3jXo0T+YxZUGVjEvzwJ7+mjHuLjrlSRAjejXiJPJ2rf1U8ruk3?=
- =?us-ascii?Q?KDoC4Y/73NBHHchZaDwXM8huTk+izGVnRJQcl2vuJm5oJCFxekpC9OfEAE6j?=
- =?us-ascii?Q?FJ2HpWHXOoF3f3Z0bcdB3LJwLRdVQSBvIJahFYpQUNYpSpm+R1QNVfSZgXIe?=
- =?us-ascii?Q?+cyp9W38Z36KdMJi9+386RTdXjqZFhXIiXLGM/cPgfJZPKWpqrlqyBc1xyQu?=
- =?us-ascii?Q?9xP9Kero1QegC6CSw3D3OXyvXU+NT7Rv7VVC+mEqQNx4awIh3gwVuJlReIGb?=
- =?us-ascii?Q?+RFUg/OaUetNtbSuTh30mQHvVb4m3sr+yOqR2NtJ1OcOstAgIYoDIMAbAYs8?=
- =?us-ascii?Q?AN2kpWwMdl00LH34YVepqnS9kIcVYki37OeKT8gPkSAl5Ee1wX6oXnUGWOZ2?=
- =?us-ascii?Q?VY/bwQcoEdG0w+9a2eVF/dXRs9nDwY63cpqBwPJYlZ5ReYyMxwZtKmOKVRXj?=
- =?us-ascii?Q?HFQNSimvtNB1i9mBE7eNZamg18hFutSx7I3beo1ySACo0OejwEKB1m6b41gi?=
- =?us-ascii?Q?8DEVmmUKw6NivkZbyTXbMBWyw4FUUkK6+v8Z3C9qiWccqnJdz8N3RY+5IZOZ?=
- =?us-ascii?Q?qnv9AhZx39bQLJ7XtIhP2EzDNa2KeDYNZu079rJhmvNPRM4OB2b57Vnmy1uJ?=
- =?us-ascii?Q?nCGpB3UUKAJDV5aLFz+Og6t8iloYUpCirowbLYzM9yhfbYoMlC+5GH/KOnEy?=
- =?us-ascii?Q?GNQKX98OuXjBqEFwHC6wOpbxUr1FJuEF2P7ClDIkSxoAS18rRaHBmfCyGzjI?=
- =?us-ascii?Q?XbTIsTCxyevKTnjfwbxwbYgnQUKoeHHt7NGw7mXX7WpiU3Mcy8oHjhMr4OnQ?=
- =?us-ascii?Q?3LgntXx87yn9wEU+pff7WPz3bX0JTTXYn6kGXKxLrgvVSCLVLZQa/qUa8Y3r?=
- =?us-ascii?Q?Aa0+11Ak5U/Y+nvfwM5KuZv75BCbX85a0BjBUrnWgTwkz+DqUuiDj/UsrrA2?=
- =?us-ascii?Q?G6EKDKXlpvjmiUjgLF6nZN59nXsxMfQ5Ex0NVirl5h4NS548FKL3+isA4nhC?=
- =?us-ascii?Q?COqwLieyTfsq3w5uDjhC49Eg60Uo0mClPORWAhpA5CuvY7PTv6R4HP78Exyl?=
- =?us-ascii?Q?t4WKN/lohV6c61vWjPazQA9ji5aQJjW1HawY/q5NSNmhfVe0AIBGGAbr+vNA?=
- =?us-ascii?Q?pH7NWy3oP9co7g8Rx2qj5dbgIfx0Y72NSht7nU77BarymO1Z1JkSDykdFeg1?=
- =?us-ascii?Q?biils+gIU1Tg1Iv2Umvu8e7aVLy1ph0yvnwhhDpy7qwUMePD6EPTVHaaTSOO?=
-X-MS-Exchange-AntiSpam-MessageData-1: g5d9kfZvA2q3PVedjZUR4PQ4CrU88s1O15g=
+	=?us-ascii?Q?cby+ubwhd1b49twii9uh1i9Muf7cIQouvpUvMBLaq4rQQplVLXHMpbTQKJYm?=
+ =?us-ascii?Q?+X36BjBy+sGzgis9BBst2yzISSXEEu3I2gG+ntvfXyf6TiO7WRcZjIoTmfTk?=
+ =?us-ascii?Q?lmnHtTmJXZN463USQBtgBQrNkVA01YJKUyd9RiQtbbW1UIplMox5CUjj6hUF?=
+ =?us-ascii?Q?FZqIcbrPGxfC4lUz71+PjfRtuVGyGM3Qpfmwd7I3QBlnDBWB6AtfjccqnIsY?=
+ =?us-ascii?Q?amafKiC4cScVH5IwuBHoJ4F/Ow3F5DydYW7pIGQ/ZYbzOw/7QRcU9j0YGoAm?=
+ =?us-ascii?Q?TcFdlYJhQfyNxYh3ybLaAkbSx/9IGUj/HRRKVZXDpxgOC3nq5AtAFg0RhVcR?=
+ =?us-ascii?Q?4fKybvu/6c/PLKZ3pAp4cD1Sm4FjffLJeX2tvoYSoA3kTv2J0jGDaSgoHvp6?=
+ =?us-ascii?Q?skAfvVKD3buJsNVVlaZgtwkTZ7YjBh5WDsRco/6Cj5I0fQTsmfiSTw7zpPAt?=
+ =?us-ascii?Q?wkseOZY7C9UZMURhdV/pr4kZgZyuHsLA8PzdPRPwTgNoLY9mKEevHAIraB2/?=
+ =?us-ascii?Q?p+U/sKojhhV4x2JOXo6nf51ZqR2sPmmF5VTCK+tDfOivKqWLS9j/ZVGrsbHG?=
+ =?us-ascii?Q?hbKe4VTosNbUy7nn1gh9DweiyyqNvKbsHkyHcJqAHtz9mIyVkW2f9WORH+Bp?=
+ =?us-ascii?Q?ot0Fax4IFecBtwZ34bizwEsf3JNbj3/9+NTil2JqNJdJLkDvgqFXpRnTyG9R?=
+ =?us-ascii?Q?woqwTqi0l+GYWx7HOm80TaYwet00/7I9MtUT/iwyTREWJqXNoD/Pt+3dMYIa?=
+ =?us-ascii?Q?SitXW0MqbHdD6/Wk0XVG4+zBPSGthxe3td6h43EuL8HRr70NKwHHdZpdUQVs?=
+ =?us-ascii?Q?K0lbJWfye2b81I1BYNYat6TNyco/BU0+oUwfjV313RXS4Sik8cAXi5x5X8ca?=
+ =?us-ascii?Q?aCcyYBP/H2fyQpF9GFYoEMz/j/mMhRxb3qGA8ugUYTm2TlLeff6/Vt2wEg45?=
+ =?us-ascii?Q?JIDgq3jOdJfjEDYNQVrTgRd5Xb1tRDDffz4zLoVxD7EqEt6s2Yy/iDpWOIJ7?=
+ =?us-ascii?Q?kd4eCBpS9pBWQyqainp+gnmC1jcLvw7/dbE+0EUhCRJ/on1lzzZBy1V7E2oQ?=
+ =?us-ascii?Q?RFUkgWvY+67OpME8szFgxRPOT9BNTqXVvhrgXzy6bHia0uKJHySN97Pdt2/3?=
+ =?us-ascii?Q?xZEHjA1PVKNlbG84ETQnukp8E9JqvlBYwEzCHXm8GKQrvF9GJT/UpF0/EXiR?=
+ =?us-ascii?Q?qaIdxkxnFj9Jp0ktOmzweY1bRsRz1KFisKbojCzvjJUuDl4oXEFWB2QFolrQ?=
+ =?us-ascii?Q?NkDqPheEIbgzi/xSCXKDBzYTty1vMpsi3H7XcKk8et5c3qTYZLznpM1J76k+?=
+ =?us-ascii?Q?Qd8ECsbH0DGooRHZnCO7tycfldbZRbeegFK+TMAvNCDIowfl6mBP72cTL9YF?=
+ =?us-ascii?Q?Su96dc6YlZha0nKus/JHnfGP9LlFPzg8gMoIZujyrquaiYg/ud+51plIL7no?=
+ =?us-ascii?Q?cVWoLsRPu6ZIRzMlJ98/sf/MfRAv8/Pb/yx5vWr3yoPmDO0khaXIk8Jf0sNm?=
+ =?us-ascii?Q?bjkYWG1Kq+N1tbKp6BkvIleLX+g1i1VFZwDL4PcxZqGwLQj/HWXh87UY854f?=
+ =?us-ascii?Q?iO0bLZ8e4znJDREKIkM+SL14fezRcsE7tfBJB6xh7CPFUd2aZle1XtYNSsl/?=
+ =?us-ascii?Q?5iJZTEgINHV+g8DcgIf9nq5E065t3xPoiTPYcABk40obWUrpQ9+HECDmDaWr?=
+ =?us-ascii?Q?V1YMl/Chc5FjydosOcSKZKjnd1aHcn5xLZhasMJHLrFbUwEsxLIfqaOZSJHt?=
+ =?us-ascii?Q?YynF0A6TgOwWiEIMVTdi6Ehg8JsLIGYUiztrn9DBtY7virQgfD6vnkEbCa8k?=
+X-MS-Exchange-AntiSpam-MessageData-1: xr7aaSlHj4QkFmtb2Qnnlqrw+RzhwjmdAiU=
 X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-Network-Message-Id: b1b241ad-2f50-43a9-c59f-08df38936ea7
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7b3c4d6f-f435-4249-55bf-08df389372d4
 X-MS-Exchange-CrossTenant-AuthSource: AM7P189MB1137.EURP189.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 03:43:17.8383
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 03:43:24.9859
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XoGidsDa1YhnsWEjkjkEJeRVqh5TcfVa5vpi2JvcctH2sLvHS7aMNrMgAlvm3nRi/KxcMLDxE5aquxGJbEBemoEvwcarnrjXFzV1VcFbLT4=
+X-MS-Exchange-CrossTenant-UserPrincipalName: WUuSifJ/LBItq/VDZ+NQTQyiFb9/ivmm4fNI1U/bAwqD1oV+d+w8Ve+RiY0dnIklJLS9Rf+OaoHP/0EI9LKyfTiteFA+8kuwlEiXoAxNN8M=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1P189MB3491
 
-When a new TIPC link comes up, a protocol publication of type
-TIPC_LINK_STATE (0) is created and inserted into the name table
-through the following call path:
+The following deadlock can occur, as observed during code inspection:
 
-tipc_node_write_unlock()
- tipc_nametbl_publish()
-  tipc_nametbl_insert_publ()
+tipc_named_node_up()
+ read_lock_bh(&nt->cluster_scope_lock) <-- acquire read lock
+ named_distribute()
+ tipc_node_xmit()
+  tipc_node_link_down()
+   tipc_node_write_unlock()
+    tipc_nametbl_withdraw()
+     spin_lock_bh(&tn->nametbl_lock)
+     tipc_named_withdraw()
+      write_lock_bh(&nt->cluster_scope_lock) <-- acquire write lock
 
-User applications subscribing to this TIPC_LINK_STATE event will
-be notified when the link comes up. However, code inspection
-revealed that if tipc_nametbl_insert_publ() fails due to a memory
-allocation error, the TIPC_LINK_STATE publication is not inserted
-into the name table. As a result, user applications are never
-notified of the link-up event.
+Fix this issue by:
+- Removing cluster_scope_lock, which protects the name table's
+  cluster_scope list. Use nametbl_lock instead to protect the list
+  against races when multiple threads concurrently call
+  tipc_named_publish(), tipc_named_withdraw(), and
+  tipc_named_node_up().
 
-Fix this issue by checking the error code returned through the
-output parameter of tipc_nametbl_publish(). If the error indicates
-a memory allocation failure, reset the link so that the
-TIPC_LINK_STATE publication can be retried.
+- Introducing a new function, tipc_node_distribute(), which is similar
+  to tipc_node_xmit() but does not call tipc_node_link_down().
+  Both functions call the newly introduced tipc_node_build_list(),
+  which clones a list of messages in sequence or delivers the list to
+  the peer namespace. When tipc_named_node_up() returns -ENOBUFS,
+  tipc_node_link_down() is called from tipc_node_write_unlock()
+  instead.
 
-Fixes: b97bf3fd8f6a ("[TIPC] Initial merge")
+Fixes: 988f3f1603d4 ("tipc: eliminate message disordering during binding table update")
 Signed-off-by: Tung Nguyen <tung.quang.nguyen@est.tech>
 ---
- net/tipc/name_distr.c |  2 +-
- net/tipc/name_table.c | 43 ++++++++++++++++++++++++++++++++++---------
- net/tipc/name_table.h |  5 +++--
- net/tipc/net.c        |  2 +-
- net/tipc/node.c       |  6 +++++-
- net/tipc/socket.c     |  2 +-
- 6 files changed, 45 insertions(+), 15 deletions(-)
+v2: Correct the bearer id that needs to be reset.
+v1: https://lore.kernel.org/netdev/20261028033722.125477-2-tung.quang.nguyen@est.tech/
+
+ net/tipc/name_distr.c |  32 +++++----
+ net/tipc/name_distr.h |   3 +-
+ net/tipc/name_table.c |   1 -
+ net/tipc/name_table.h |   2 -
+ net/tipc/node.c       | 149 ++++++++++++++++++++++++++++++++----------
+ net/tipc/node.h       |   2 +
+ 6 files changed, 140 insertions(+), 49 deletions(-)
 
 diff --git a/net/tipc/name_distr.c b/net/tipc/name_distr.c
-index 1dfe8475a75d..22c29b187daf 100644
+index 22c29b187daf..82684bc7399a 100644
 --- a/net/tipc/name_distr.c
 +++ b/net/tipc/name_distr.c
-@@ -299,7 +299,7 @@ static bool tipc_update_nametbl(struct net *net, struct distr_item *i,
- 	sk.node = node;
- 
- 	if (dtype == PUBLICATION) {
--		p = tipc_nametbl_insert_publ(net, &ua, &sk, key);
-+		p = tipc_nametbl_insert_publ(net, &ua, &sk, key, NULL);
- 		if (p) {
- 			tipc_node_subscribe(net, &p->binding_node, node);
- 			return true;
-diff --git a/net/tipc/name_table.c b/net/tipc/name_table.c
-index 962b82956032..0b03d407242f 100644
---- a/net/tipc/name_table.c
-+++ b/net/tipc/name_table.c
-@@ -329,7 +329,7 @@ static struct service_range *tipc_service_create_range(struct tipc_service *sc,
- 
- static bool tipc_service_insert_publ(struct net *net,
- 				     struct tipc_service *sc,
--				     struct publication *p)
-+				     struct publication *p, int *err)
- {
- 	struct tipc_subscription *sub, *tmp;
- 	struct service_range *sr;
-@@ -341,8 +341,11 @@ static bool tipc_service_insert_publ(struct net *net,
- 
- 	spin_lock_bh(&sc->lock);
- 	sr = tipc_service_create_range(sc, p);
--	if (!sr)
--		goto  exit;
-+	if (!sr) {
-+		if (err)
-+			*err = -ENOBUFS;
-+		goto exit;
-+	}
- 
- 	first = list_empty(&sr->all_publ);
- 
-@@ -353,6 +356,8 @@ static bool tipc_service_insert_publ(struct net *net,
- 			pr_debug("Failed to bind duplicate %u,%u,%u/%u:%u/%u\n",
- 				 p->sr.type, p->sr.lower, p->sr.upper,
- 				 node, p->sk.ref, key);
-+			if (err)
-+				*err = -EEXIST;
- 			goto exit;
- 		}
- 	}
-@@ -478,20 +483,30 @@ static struct tipc_service *tipc_service_find(struct net *net,
- struct publication *tipc_nametbl_insert_publ(struct net *net,
- 					     struct tipc_uaddr *ua,
- 					     struct tipc_socket_addr *sk,
--					     u32 key)
-+					     u32 key, int *err)
- {
- 	struct tipc_service *sc;
- 	struct publication *p;
- 
- 	p = tipc_publ_create(ua, sk, key);
--	if (!p)
-+	if (!p) {
-+		if (err)
-+			*err = -ENOBUFS;
+@@ -95,9 +95,7 @@ struct sk_buff *tipc_named_publish(struct net *net, struct publication *p)
+ 		list_add_tail_rcu(&p->binding_node, &nt->node_scope);
  		return NULL;
-+	}
+ 	}
+-	write_lock_bh(&nt->cluster_scope_lock);
+ 	list_add_tail(&p->binding_node, &nt->cluster_scope);
+-	write_unlock_bh(&nt->cluster_scope_lock);
+ 	skb = named_prepare_buf(net, PUBLICATION, ITEM_SIZE, 0);
+ 	if (!skb) {
+ 		pr_warn("Publication distribution failure\n");
+@@ -121,9 +119,7 @@ struct sk_buff *tipc_named_withdraw(struct net *net, struct publication *p)
+ 	struct distr_item *item;
+ 	struct sk_buff *skb;
  
- 	sc = tipc_service_find(net, ua);
-+
- 	if (!sc)
- 		sc = tipc_service_create(net, ua);
--	if (sc && tipc_service_insert_publ(net, sc, p))
--		return p;
-+
-+	if (sc) {
-+		if (tipc_service_insert_publ(net, sc, p, err))
-+			return p;
-+	} else if (err) {
-+		*err = -ENOBUFS;
-+	}
-+
- 	kfree(p);
- 	return NULL;
- }
-@@ -760,7 +775,8 @@ void tipc_nametbl_build_group(struct net *net, struct tipc_group *grp,
- /* tipc_nametbl_publish - add service binding to name table
+-	write_lock_bh(&nt->cluster_scope_lock);
+ 	list_del(&p->binding_node);
+-	write_unlock_bh(&nt->cluster_scope_lock);
+ 	if (p->scope == TIPC_NODE_SCOPE)
+ 		return NULL;
+ 
+@@ -202,25 +198,39 @@ static void named_distribute(struct net *net, struct sk_buff_head *list,
+  * @net: the associated network namespace
+  * @dnode: destination node
+  * @capabilities: peer node's capabilities
++ * @bearer_id: id of the bearer
++ *
++ * Return:
++ * * 0               - Success
++ * * -ENOBUFS        - No buffer space is available
++ * * -EHOSTUNREACH   - Destination node does not exist or cannot be reached
++ * * -EMSGSIZE       - Message's size is too big
++ *
   */
- struct publication *tipc_nametbl_publish(struct net *net, struct tipc_uaddr *ua,
--					 struct tipc_socket_addr *sk, u32 key)
-+					 struct tipc_socket_addr *sk,
-+					 u32 key, int *err)
+-void tipc_named_node_up(struct net *net, u32 dnode, u16 capabilities)
++int tipc_named_node_up(struct net *net, u32 dnode,
++		       u16 capabilities, int *bearer_id)
  {
  	struct name_table *nt = tipc_name_table(net);
- 	u32 max_user_pub = TIPC_MAX_PUBL - 1;
-@@ -768,6 +784,7 @@ struct publication *tipc_nametbl_publish(struct net *net, struct tipc_uaddr *ua,
- 	struct publication *p = NULL;
- 	struct sk_buff *skb = NULL;
- 	bool protocol_type = false;
-+	int error = 0;
- 	u32 rc_dests;
+ 	struct tipc_net *tn = tipc_net(net);
+ 	struct sk_buff_head head;
+-	u16 seqno;
++	int rc = 0;
  
- 	if (ua->sr.type == TIPC_NODE_STATE || ua->sr.type == TIPC_LINK_STATE ||
-@@ -788,7 +805,7 @@ struct publication *tipc_nametbl_publish(struct net *net, struct tipc_uaddr *ua,
- 	}
+ 	__skb_queue_head_init(&head);
+ 	spin_lock_bh(&tn->nametbl_lock);
+ 	if (!(capabilities & TIPC_NAMED_BCAST))
+ 		nt->rc_dests++;
+-	seqno = nt->snd_nxt;
++	named_distribute(net, &head, dnode, &nt->cluster_scope, nt->snd_nxt);
++	if (!skb_queue_empty(&head))
++		rc = tipc_node_distribute(net, &head, dnode, bearer_id, 0);
+ 	spin_unlock_bh(&tn->nametbl_lock);
  
- insert:
--	p = tipc_nametbl_insert_publ(net, ua, sk, key);
-+	p = tipc_nametbl_insert_publ(net, ua, sk, key, &error);
- 	if (p) {
- 		/* Not count node state, link state and topology server types
- 		 * so that maximum nt->local_publ_count does not prevent
-@@ -798,6 +815,14 @@ struct publication *tipc_nametbl_publish(struct net *net, struct tipc_uaddr *ua,
- 		if (!protocol_type)
- 			nt->local_publ_count++;
- 		skb = tipc_named_publish(net, p);
-+		/* Local-scope publication is not published (skb is NULL).
-+		 * For cluster-cope one, skb is NULL when named_prepare_buf()
-+		 * returns NULL in tipc_named_publish().
-+		 */
-+		if (!skb && p->scope == TIPC_CLUSTER_SCOPE && err)
-+			*err = -ENOBUFS;
-+	} else if ((error == -ENOBUFS) && err) {
-+		*err = -ENOBUFS;
- 	}
- 	rc_dests = nt->rc_dests;
- exit:
-diff --git a/net/tipc/name_table.h b/net/tipc/name_table.h
-index 7ff6eeebaae6..3a15dcfcc2cd 100644
---- a/net/tipc/name_table.h
-+++ b/net/tipc/name_table.h
-@@ -126,13 +126,14 @@ bool tipc_nametbl_lookup_group(struct net *net, struct tipc_uaddr *ua,
- void tipc_nametbl_build_group(struct net *net, struct tipc_group *grp,
- 			      struct tipc_uaddr *ua);
- struct publication *tipc_nametbl_publish(struct net *net, struct tipc_uaddr *ua,
--					 struct tipc_socket_addr *sk, u32 key);
-+					 struct tipc_socket_addr *sk,
-+					 u32 key, int *err);
- void tipc_nametbl_withdraw(struct net *net, struct tipc_uaddr *ua,
- 			   struct tipc_socket_addr *sk, u32 key);
- struct publication *tipc_nametbl_insert_publ(struct net *net,
- 					     struct tipc_uaddr *ua,
- 					     struct tipc_socket_addr *sk,
--					     u32 key);
-+					     u32 key, int *err);
- struct publication *tipc_nametbl_remove_publ(struct net *net,
- 					     struct tipc_uaddr *ua,
- 					     struct tipc_socket_addr *sk,
-diff --git a/net/tipc/net.c b/net/tipc/net.c
-index 7e65d0b0c4a8..c4b274320c9c 100644
---- a/net/tipc/net.c
-+++ b/net/tipc/net.c
-@@ -138,7 +138,7 @@ static void tipc_net_finalize(struct net *net, u32 addr)
- 	tipc_named_reinit(net);
- 	tipc_sk_reinit(net);
- 	tipc_mon_reinit_self(net);
--	tipc_nametbl_publish(net, &ua, &sk, addr);
-+	tipc_nametbl_publish(net, &ua, &sk, addr, NULL);
+-	read_lock_bh(&nt->cluster_scope_lock);
+-	named_distribute(net, &head, dnode, &nt->cluster_scope, seqno);
+-	tipc_node_xmit(net, &head, dnode, 0);
+-	read_unlock_bh(&nt->cluster_scope_lock);
++	/* The link is congested after the list is inserted into
++	 * the link's send queue. Return 0, as this is normal.
++	 */
++	if (rc == -ELINKCONG)
++		rc = 0;
++
++	return rc;
  }
  
- void tipc_net_finalize_work(struct work_struct *work)
+ /**
+diff --git a/net/tipc/name_distr.h b/net/tipc/name_distr.h
+index c677f6f082df..767f9f69624d 100644
+--- a/net/tipc/name_distr.h
++++ b/net/tipc/name_distr.h
+@@ -69,7 +69,8 @@ struct distr_item {
+ 
+ struct sk_buff *tipc_named_publish(struct net *net, struct publication *publ);
+ struct sk_buff *tipc_named_withdraw(struct net *net, struct publication *publ);
+-void tipc_named_node_up(struct net *net, u32 dnode, u16 capabilities);
++int tipc_named_node_up(struct net *net, u32 dnode,
++		       u16 capabilities, int *bearer_id);
+ void tipc_named_rcv(struct net *net, struct sk_buff_head *namedq,
+ 		    u16 *rcv_nxt, bool *open);
+ void tipc_named_reinit(struct net *net);
+diff --git a/net/tipc/name_table.c b/net/tipc/name_table.c
+index 0b03d407242f..739450204e5e 100644
+--- a/net/tipc/name_table.c
++++ b/net/tipc/name_table.c
+@@ -946,7 +946,6 @@ int tipc_nametbl_init(struct net *net)
+ 
+ 	INIT_LIST_HEAD(&nt->node_scope);
+ 	INIT_LIST_HEAD(&nt->cluster_scope);
+-	rwlock_init(&nt->cluster_scope_lock);
+ 	nt->rc_dests = 0;
+ 	tn->nametbl = nt;
+ 	spin_lock_init(&tn->nametbl_lock);
+diff --git a/net/tipc/name_table.h b/net/tipc/name_table.h
+index 3a15dcfcc2cd..a66975ef8546 100644
+--- a/net/tipc/name_table.h
++++ b/net/tipc/name_table.h
+@@ -97,7 +97,6 @@ struct publication {
+  * @cluster_scope: all local publications with cluster scope
+  *               - used by name_distr to send bulk updates to new nodes
+  *               - used by name_distr during re-init of name table
+- * @cluster_scope_lock: lock for accessing @cluster_scope
+  * @local_publ_count: number of publications issued by this node
+  * @rc_dests: destination node counter
+  * @snd_nxt: next sequence number to be used
+@@ -107,7 +106,6 @@ struct name_table {
+ 	struct hlist_head services[TIPC_NAMETBL_SIZE];
+ 	struct list_head node_scope;
+ 	struct list_head cluster_scope;
+-	rwlock_t cluster_scope_lock;
+ 	u32 local_publ_count;
+ 	u32 rc_dests;
+ 	u32 snd_nxt;
 diff --git a/net/tipc/node.c b/net/tipc/node.c
-index d84b0274fefc..d99049e67033 100644
+index d99049e67033..95f4284cc434 100644
 --- a/net/tipc/node.c
 +++ b/net/tipc/node.c
-@@ -402,6 +402,7 @@ static void tipc_node_write_unlock(struct tipc_node *n)
+@@ -400,6 +400,7 @@ static void tipc_node_write_unlock(struct tipc_node *n)
+ 	struct net *net = n->net;
+ 	u32 flags = n->action_flags;
  	struct list_head *publ_list;
++	int rc = 0, bearer = 0;
  	struct tipc_uaddr ua;
  	u32 bearer_id, node;
-+	int err = 0;
+ 	int err = 0;
+@@ -426,7 +427,7 @@ static void tipc_node_write_unlock(struct tipc_node *n)
+ 		tipc_publ_notify(net, publ_list, node, n->capabilities);
  
- 	if (likely(!flags)) {
- 		write_unlock_bh(&n->lock);
-@@ -429,12 +430,15 @@ static void tipc_node_write_unlock(struct tipc_node *n)
+ 	if (flags & TIPC_NOTIFY_NODE_UP)
+-		tipc_named_node_up(net, node, n->capabilities);
++		rc = tipc_named_node_up(net, node, n->capabilities, &bearer);
  
  	if (flags & TIPC_NOTIFY_LINK_UP) {
  		tipc_mon_peer_up(net, node, bearer_id);
--		tipc_nametbl_publish(net, &ua, &sk, sk.ref);
-+		tipc_nametbl_publish(net, &ua, &sk, sk.ref, &err);
- 	}
- 	if (flags & TIPC_NOTIFY_LINK_DOWN) {
- 		tipc_mon_peer_down(net, node, bearer_id);
+@@ -437,8 +438,15 @@ static void tipc_node_write_unlock(struct tipc_node *n)
  		tipc_nametbl_withdraw(net, &ua, &sk, sk.ref);
  	}
+ 
+-	if (err == -ENOBUFS)
++	if (rc == -ENOBUFS)
++		tipc_node_link_down(n, bearer, false);
 +
-+	if (err == -ENOBUFS)
-+		tipc_node_link_down(n, bearer_id, false);
++	if (err == -ENOBUFS) {
++		if (rc == -ENOBUFS && bearer == bearer_id)
++			return;
++
+ 		tipc_node_link_down(n, bearer_id, false);
++	}
  }
  
  static void tipc_node_assign_peer_net(struct tipc_node *n, u32 hash_mixes)
-diff --git a/net/tipc/socket.c b/net/tipc/socket.c
-index 65cc0c4964b3..4f204bdcaf21 100644
---- a/net/tipc/socket.c
-+++ b/net/tipc/socket.c
-@@ -2929,7 +2929,7 @@ static int tipc_sk_publish(struct tipc_sock *tsk, struct tipc_uaddr *ua)
- 		return -EADDRINUSE;
- 	skaddr.ref = tsk->portid;
- 	skaddr.node = tipc_own_addr(net);
--	p = tipc_nametbl_publish(net, ua, &skaddr, key);
-+	p = tipc_nametbl_publish(net, ua, &skaddr, key, NULL);
- 	if (unlikely(!p))
- 		return -EINVAL;
+@@ -1686,6 +1694,51 @@ static void tipc_lxc_xmit(struct net *peer_net, struct sk_buff_head *list)
+ 	}
+ }
  
++static int tipc_node_build_list(struct tipc_node *n, struct sk_buff_head *list,
++				struct sk_buff_head *xmitq, int selector,
++				struct tipc_media_addr *maddr,
++				int *bearer_id, bool *lxc)
++{
++	struct tipc_link_entry *le = NULL;
++	bool node_up = false;
++	struct net *peer_net;
++	int rc = 0;
++
++	rcu_read_lock();
++	tipc_node_read_lock(n);
++	node_up = node_is_up(n);
++	peer_net = n->peer_net;
++	tipc_node_read_unlock(n);
++
++	if (node_up && peer_net && check_net(peer_net)) {
++		/* xmit inner linux container */
++		tipc_lxc_xmit(peer_net, list);
++		if (likely(skb_queue_empty(list))) {
++			rcu_read_unlock();
++			*lxc = true;
++			return 0;
++		}
++	}
++	rcu_read_unlock();
++
++	tipc_node_read_lock(n);
++	*bearer_id = n->active_links[selector & 1];
++	if (unlikely(*bearer_id == INVALID_BEARER_ID)) {
++		tipc_node_read_unlock(n);
++		__skb_queue_purge(list);
++		return -EHOSTUNREACH;
++	}
++
++	le = &n->links[*bearer_id];
++	*maddr = le->maddr;
++	spin_lock_bh(&le->lock);
++	rc = tipc_link_xmit(le->link, list, xmitq);
++	spin_unlock_bh(&le->lock);
++	tipc_node_read_unlock(n);
++
++	return rc;
++}
++
+ /**
+  * tipc_node_xmit() - general link level function for message sending
+  * @net: the applicable net namespace
+@@ -1693,17 +1746,16 @@ static void tipc_lxc_xmit(struct net *peer_net, struct sk_buff_head *list)
+  * @dnode: address of destination node
+  * @selector: a number used for deterministic link selection
+  * Consumes the buffer chain.
+- * Return: 0 if success, otherwise: -ELINKCONG,-EHOSTUNREACH,-EMSGSIZE,-ENOBUF
++ * Return: 0 if success, otherwise: -ELINKCONG,-EHOSTUNREACH,-EMSGSIZE,-ENOBUFS
+  */
+ int tipc_node_xmit(struct net *net, struct sk_buff_head *list,
+ 		   u32 dnode, int selector)
+ {
+-	struct tipc_link_entry *le = NULL;
+-	struct tipc_node *n;
++	struct tipc_media_addr maddr;
+ 	struct sk_buff_head xmitq;
+-	bool node_up = false;
+-	struct net *peer_net;
+-	int bearer_id;
++	struct tipc_node *n;
++	int bearer_id = 0;
++	bool lxc = false;
+ 	int rc;
+ 
+ 	if (in_own_node(net, dnode)) {
+@@ -1719,44 +1771,73 @@ int tipc_node_xmit(struct net *net, struct sk_buff_head *list,
+ 		return -EHOSTUNREACH;
+ 	}
+ 
+-	rcu_read_lock();
+-	tipc_node_read_lock(n);
+-	node_up = node_is_up(n);
+-	peer_net = n->peer_net;
+-	tipc_node_read_unlock(n);
+-	if (node_up && peer_net && check_net(peer_net)) {
+-		/* xmit inner linux container */
+-		tipc_lxc_xmit(peer_net, list);
+-		if (likely(skb_queue_empty(list))) {
+-			rcu_read_unlock();
+-			tipc_node_put(n);
+-			return 0;
+-		}
+-	}
+-	rcu_read_unlock();
++	__skb_queue_head_init(&xmitq);
++	rc = tipc_node_build_list(n, list, &xmitq, selector, &maddr,
++				  &bearer_id, &lxc);
+ 
+-	tipc_node_read_lock(n);
+-	bearer_id = n->active_links[selector & 1];
+-	if (unlikely(bearer_id == INVALID_BEARER_ID)) {
+-		tipc_node_read_unlock(n);
++	if (lxc) {
+ 		tipc_node_put(n);
++		return 0;
++	}
++
++	if (unlikely(rc == -ENOBUFS)) {
++		if (!skb_queue_empty(&xmitq))
++			__skb_queue_purge(&xmitq);
++		tipc_node_link_down(n, bearer_id, false);
++	} else {
++		tipc_bearer_xmit(net, bearer_id, &xmitq, &maddr, n);
++	}
++
++	tipc_node_put(n);
++
++	return rc;
++}
++
++/**
++ * tipc_node_distribute() - distribute list of messages to specific destination
++ * @net: the applicable net namespace
++ * @list: chain of buffers containing message
++ * @dnode: address of destination node
++ * @bearer_id: id of the bearer
++ * @selector: a number used for deterministic link selection
++ *
++ * Return:
++ * * 0              - Success
++ * * -ELINKCONG     - Link is congested
++ * * -EHOSTUNREACH  - Host is not reachable
++ * * -EMSGSIZE      - Message's size is too big
++ * * -ENOBUFS       - No buffer space is available
++ *
++ */
++int tipc_node_distribute(struct net *net, struct sk_buff_head *list,
++			 u32 dnode, int *bearer_id, int selector)
++{
++	struct tipc_media_addr maddr;
++	struct sk_buff_head xmitq;
++	struct tipc_node *n;
++	bool lxc = false;
++	int rc;
++
++	n = tipc_node_find(net, dnode);
++	if (unlikely(!n)) {
+ 		__skb_queue_purge(list);
+ 		return -EHOSTUNREACH;
+ 	}
+ 
+ 	__skb_queue_head_init(&xmitq);
+-	le = &n->links[bearer_id];
+-	spin_lock_bh(&le->lock);
+-	rc = tipc_link_xmit(le->link, list, &xmitq);
+-	spin_unlock_bh(&le->lock);
+-	tipc_node_read_unlock(n);
++	rc = tipc_node_build_list(n, list, &xmitq, selector, &maddr,
++				  bearer_id, &lxc);
++
++	if (lxc) {
++		tipc_node_put(n);
++		return 0;
++	}
+ 
+ 	if (unlikely(rc == -ENOBUFS)) {
+ 		if (!skb_queue_empty(&xmitq))
+ 			__skb_queue_purge(&xmitq);
+-		tipc_node_link_down(n, bearer_id, false);
+ 	} else {
+-		tipc_bearer_xmit(net, bearer_id, &xmitq, &le->maddr, n);
++		tipc_bearer_xmit(net, *bearer_id, &xmitq, &maddr, n);
+ 	}
+ 
+ 	tipc_node_put(n);
+diff --git a/net/tipc/node.h b/net/tipc/node.h
+index 154a5bbb0d29..775a8ec240fb 100644
+--- a/net/tipc/node.h
++++ b/net/tipc/node.h
+@@ -100,6 +100,8 @@ int tipc_node_get_linkname(struct net *net, u32 bearer_id, u32 node,
+ 			   char *linkname, size_t len);
+ int tipc_node_xmit(struct net *net, struct sk_buff_head *list, u32 dnode,
+ 		   int selector);
++int tipc_node_distribute(struct net *net, struct sk_buff_head *list,
++			 u32 dnode, int *bearer_id, int selector);
+ int tipc_node_distr_xmit(struct net *net, struct sk_buff_head *list);
+ int tipc_node_xmit_skb(struct net *net, struct sk_buff *skb, u32 dest,
+ 		       u32 selector);
 -- 
 2.53.0
 
