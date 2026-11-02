@@ -1,97 +1,122 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.46
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793624834;
-	b=ADxwdA83DflnEo0TTztUbf2R7YJISeHZ40Xyv13k/NCuwNYPM3wEszem4NoR/FdlXdaS
-	 9k1K40tjOQgFSJvK+2uz/F7gX0JNLOjrihrIvBsD2kRqbeXsxVSK1K0K/cxTUNJRuKmZv
-	 bQqIdLzDlgpW0A2+7elcswU87sjoI2ZP9xLjrfISOzDQRRRPsplz4zfedVx3EcdTfsVKL
-	 drCuwBvda9GOOtSOIMBAwZl96+0qFnVsxcP0zYstaBrC2tylkzbJ0S1BiAqv92PYUXmvR
-	 B/2RufQm3aeEdSsWQmVpmR0+wL/LdCHJo9eeNwBjrx2iCEFt0uFbAJeSPwjOZQHOk8g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793624834;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=SwNyy2LNWUprG7oTiXSP+SGIrZbrnmLxnxw36eC3+jw=;
-	b=NyFB1pT9TkDy2KPt5P7qdnCmZs/A7bJBAu77MdyjOlhUJrsAA3BhnB+Q5GY7/uVF5+oV
-	 7+59jFzvHSMgQjfS8PqAb4v7ZR04zmiNItpbZ600jmWnFpof1vtu0wFhJyuWuWMpGSBGx
-	 c5Qs0X0EUaFPxKv6A5Rv/l4kRQObkmqfmz2z5xXwsyCNCGIiaHcrvYHXTDKMF8EoAaUXl
-	 5gjYnG3IJDvAKRtFxA3hR3e4WldKdwWNyxpo41NpzWFvIvtjLRkdhBm3Ozz1YyTnvJ9vA
-	 BgWP2WKET/zHF9/jmfSSfWFq0ASbULE4ErDlQITWcsuszOmV+TgQI4K2rx+KiPUqTmg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Y0b8k03s;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.46
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010046.outbound.protection.outlook.com [52.101.193.46])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793624968;
+	b=su+88XMvp8FTUo7z6V2ZPzckvB5lAMgnUMJhk4dDA1gLZHuXSR1vrZIf8vHGFEgVdDfH
+	 5cIg8KsDlDWz3JAsADvIK0lVHNq/B6oIIsNn2S6p6f3KvnVawQ/pJNdaOdDpIXEOv5SW6
+	 3eKCHn6Y1mN92GIfEU7ymi77p4gzlzsBKRDQV0Xv64IunhhYakIRJ6LSJlvCVaXK9fP8b
+	 GEc/FcXvQO+pt7yZNM37HfcupN5W9ykEkZqPRS+/UaqO0MbfyDij1S+lrIVRiXSjIb5h8
+	 S+hMzKAfJwP6xXWiVS6jdjxO0CsDurHXpsjDRKXunhzL0RbhjZVgnFxuUZTsk6Wr/tw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793624968;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=lPg1Z+kih2x3BmRrSyzS6hP0pvAD1UHy/E1nPZhrbok=;
+	b=SEjWGEvFVV06U6M8JpZ1ls0GuGSB8BMqCWKd1sPh/WnyyJ79b4P+/lsyQ83+GmQD2Ydg
+	 xp5WyaNMPnuVg9xZHJ/Paeh5l0X0AOISojXIfzNterFWqi8iwte9EUJyYlZfyPnBRC+mR
+	 CFERS+obJ2YUhOd4JldR6FGngqT8kGO6kAYSo8PPw+GAfnSbhyOgKUAOfhJ2qPSPf/vvh
+	 2FSY6iws0z/JAv1MLitdKjr0Bkk1p6X8U7FF1AUsXWhifkFrSIChEbGpMlxC9QS/J1iKz
+	 mxKYgY/7rZpjllsxPj9koGn10S6idBRklus/2zDoash5RDQZOx/C/sKvUXIyKD4Bnlw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Tssq+V3m;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=cL3RR7GZ;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 733D6606A324;
-	Mon,  2 Nov 2026 13:07:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 733D6606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71500606A338
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 13:09:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 71500606A338
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Y0b8k03s
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eyl5t+JIPzgYqCv1mRRqlPAeom2hsQIZB9H3x+P7szBbVYN9+NLae+SrCVr8DdyFJ2vFW+2kLXwVgxU5nV0du8blfh5ysKM7UC5n+wrxK52NKWGU5UpNnrNtswI11knVFXUM1wbRqPRA+Q5ax4G4baS4o/XyxkdFHrbVXjuX0iOltjBWhYvRcMfz67NE71/tJtbSdVJnzftPUk6SBaCAWciRLgiHJLc130hwiSs5C7399NCI8mstA1g7/fO8O3MoHKi7JOI2o9zG+DIV75O5UaobxeH6SYqh0yBYX28v6ih0tTR9G2d7Akje2vIAHhBwwKsKXUbrynuHOl/k9Bi31g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SwNyy2LNWUprG7oTiXSP+SGIrZbrnmLxnxw36eC3+jw=;
- b=HH6qBM+z+tfNU+O7RjtrJAbIcdlhKlrdN0kRnDgg+81XXs10yST8vwlL0ASp37hlb/qPINiwCE+VkVzvCy5S7WrmtmnCzYGI59vuzl2eGJgACcEIvUCRnr+GKNkpk1ir176qUkeRD2s+TEMQwBAZQ8pt7J+9ftjaQPfRVbR5z+5LZYo5vl/mcxGyKd+gTHZ8Dk2Vof/uHoEbvKzwrdQlr8/pJdJLP/Jwc58poMOhCEtrslVq3CorA8xdfb0/1P/ihiDY29s58FStjDhWS43vmV74jxQF+Ji38WL3MHileurAyUw3GfdOjE2hW6TYrigCU+dIsuCqeFfVYedKZW6qcg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SwNyy2LNWUprG7oTiXSP+SGIrZbrnmLxnxw36eC3+jw=;
- b=Y0b8k03sdKFm8XxNGPOslNiOuyn5NkznCjRqJQgDkxUzppYpRN/KDBDrQzjM6LiegZmZ2cA0PFVB1RDBg1FMpBx8KwIxt+urMdIlD8ikLycmSSLdTFhX9EdpUVpcl9k/cS1902X+QTRxjU7rQ6Uzvb0+jVenv+KZDNxmqzMdnHU20TB/WJI/uBYMeQEeJqICMe3t+d50PJT90Lzb5ikJWazOBotnb6RzLHDmwI8hb4RgHn+/8rcGTKsJ7Df0TcgxexZl2PT5M+KKfFnZJQ7u/iiGg4fSP38ezLXSKg9UEZXGYCVNz0fuUNp+F8TbR/EfKJ8S1qnFKs8raYA0xPEC2g==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by SA0PR12MB4432.namprd12.prod.outlook.com (2603:10b6:806:98::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
- 2026 13:07:07 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0569.008; Mon, 2 Nov 2026
- 13:07:07 +0000
-Date: Mon, 2 Nov 2026 15:06:58 +0200
-From: Ido Schimmel <idosch@nvidia.com>
-To: Xia Yan <yanxia@cmss.chinamobile.com>
-Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Tssq+V3m;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=cL3RR7GZ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793624966;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lPg1Z+kih2x3BmRrSyzS6hP0pvAD1UHy/E1nPZhrbok=;
+	b=Tssq+V3m/XH7wBrcP53CxDc3d20bC0g/HtQno7TOudzYWqVwBkPdwRnSmWWNDLy2+VyyOK
+	rInqteqXllWsYCLA6eR+LdsbfAALwdFUUDoe909X8Cl1U5NzPh2GOyzkRMUiYurhRau6cb
+	MEWPHFMYCjNL6ohzmzo0PrObzYL6vYo=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-682-FLksLl2gN5aR68Ea4rKItg-1; Mon, 02 Nov 2026 08:09:23 -0500
+X-MC-Unique: FLksLl2gN5aR68Ea4rKItg-1
+X-Mimecast-MFC-AGG-ID: FLksLl2gN5aR68Ea4rKItg_1793624962
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49febef74e3so27416795e9.0
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 05:09:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793624962; x=1794229762; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lPg1Z+kih2x3BmRrSyzS6hP0pvAD1UHy/E1nPZhrbok=;
+        b=cL3RR7GZBRF6RxRO5aA8KKOgpPdRhYdFFBnb4dctlIcD+KreV6GFg3g03oX3+FRBD6
+         ksSc1cAgMnSVc969CRkchN72goHDtzU3x5azAcE/g61/9FjN6jIzkImyi6aWzFxb+Zpn
+         FnKE1H0uqoyMb3eH2a/b6P5FzSCrti17GbL4Wa3E+VjKO9tcKW5zlxrw5CUWyRwdk5g8
+         ozYLh7OQ5tijJ7kLpxJ6demb5AU1VLByziEzOGiknX4rz/TpdTbF2jOuzXNmNsCiPRYq
+         /bY7NIIAIdCpALH6YVf126irtz8uRkWEnxUoQlAgLaCGGIgcWC+wrTRnMzWc2CV7mgVU
+         zg3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793624962; x=1794229762;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=lPg1Z+kih2x3BmRrSyzS6hP0pvAD1UHy/E1nPZhrbok=;
+        b=nr++M0NVpJN9flHCwtrCt6dZQTSh0z3r2+3ezUplAGU6EMEDgg3ZwppLonZ7/ltl7u
+         H5GQ6vt6YoE1u7l23/FcK5kszDlq8saMStQYmVqmRnVGeBrts3HhIzAnqc16l8Sl8urs
+         lcFggs5paFYYVck6FHL8Ze8LSJ7+zMnJMTk2orCxbha1g7jsxdfUHuM2nF74fwb7huOa
+         hrD37SIX/nvA8qP4aLlN7AqgmDu9Q1tslHvnpjxaob/pTKqOzpKoodfYehINOnoonIxm
+         ZL9k1LgMAgvsEMD7RuiDPLcXtqSdtJzhzXPLo/NlHk8mcST8U2ipD1kyP21p5geGJbJl
+         ArEg==
+X-Forwarded-Encrypted: i=1; AKwUvBw++O2C0uR/b5wAyH4j/UUY5XLOt+DGiHuC0P3wtMhDVPNgmCZf6PRboPsqPNjPwNEnpN7Od/k=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLkkW+EiZT0en9svMb/VIyybNSReW+s+K4iVOb3KPR3XqIoRumg
+	Wl6YHC0SVow632A5VUOxO4y5xG6VX9/QbfJyN2hHtImQ8SRgJ8wEwzZoab/ZjE7LeEi4TxHQB13
+	rsyQ5/oUsyryJTbSPe+BLSLH3+HhqIr2PU1rPM8g1280RiGC+SD1lNMgA+w==
+X-Gm-Gg: AYBFou1BGMq24zwyWE5MpHUhfK0FBv9Y9thMZpu19C6qIlDyfzOJhTtZCokAyjD0Pi5
+	22QasNmgqV+z9F1qTotabQwqkvdZzl/V5hhQVSbAyz+t1iWV/9mzE1CG6XtXnbBdB1/C8ZRiE8s
+	EtaQ6HCdOWUwhKV6I2rqCACt5dGYCPS8ddsM/YNBZUvLaxtnB1Wvvr2+FH7pekC+ZsQB236uzsJ
+	JDPU/IqTpTsqJCS2g1ccI9ciuDQflQ5Y+7oOMs8ZEpW8zJYpsP/81k31k3UcirjzxjhKMsQsfo3
+	Zwng+LqVUbH6PMr00Drn6LF8O/fH/cvfB6fgvsCDOD+UaDJ/C1U9/RM9B04h4yidGsH/qvncq2/
+	cEMxdW9nDm2v902A0A/VesWPV2jpnnI2rSv2wj50olA==
+X-Received: by 2002:a05:600d:1a:b0:4a1:d49e:9ce with SMTP id 5b1f17b1804b1-4aa86e16223mr303262945e9.2.1793624961767;
+        Mon, 02 Nov 2026 05:09:21 -0800 (PST)
+X-Received: by 2002:a05:600d:1a:b0:4a1:d49e:9ce with SMTP id 5b1f17b1804b1-4aa86e16223mr303261555e9.2.1793624961001;
+        Mon, 02 Nov 2026 05:09:21 -0800 (PST)
+Received: from redhat.com ([2a0d:6fc0:1501:b100:9ea2:fd21:b361:8dab])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71bae25dsm18089160f8f.59.2026.11.02.05.09.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 05:09:20 -0800 (PST)
+Date: Mon, 2 Nov 2026 08:09:17 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: =?utf-8?Q?Bart=C5=82omiej?= Dmitruk <bartlomiej.dmitruk@isec.pl>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	stable@vger.kernel.org, yana06070@163.com
-Subject: Re: [PATCH net] ipv4/ipv6: preserve multicast filters after a failed
- source leave
-Message-ID: <20261102130658.GA922454@shredder>
-References: <20261030063603.697510-1-yanxia@cmss.chinamobile.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261030063603.697510-1-yanxia@cmss.chinamobile.com>
-X-ClientProxiedBy: MR1P264CA0035.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:501:2f::22) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	Simon Horman <horms@kernel.org>, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] vsock: keep SOCK_SEQPACKET message boundaries on
+ interrupted send
+Message-ID: <20261102080902-mutt-send-email-mst@kernel.org>
+References: <20260919122916.28226-1-bartlomiej.dmitruk@isec.pl>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,96 +126,167 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|SA0PR12MB4432:EE_
-X-MS-Office365-Filtering-Correlation-Id: c0e10df0-d92b-49f8-2afd-08df38e23276
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|23010399003|6133799003|10067099003|18002099003|22082099003|56012099006|11063799006|261021121427099003|261021130227099003|261026130827099003|261022075727099003|261022105027099003|261022113327099003|261026121527099003|261022115727099003|261026140227099003|261009223027099003|261028144727099003|261021135927099003|261021123027099003;
-X-Microsoft-Antispam-Message-Info:
-	umoTDMV2lyXtqp9hmrkbbxXhTghB79NOPc7UPpyl21nfNm+H9bUG+qLLUjJBNP6Lfpt/EWVmMMrU0ea25fPs4KIL79Uh1bPRtD03A8xsdsimi8HC1u7jlgMNV/MzXdSMX0KF0ZTqAaCsqsZao43HBu3TBIISsi/j8YcbUUoxrT4k/+lJ+kRSmknKKerv3M/pgC7VhbfzHYrJ0UVpZbwilpXRN+IjoxaNhxH+URre9PZ9G+QyrhKITfLe53jcM+bc9HdVhPw4N3RunDC+KHM0rqUb7HnVo1Xpe1PdaGVRMbpRbFK/MJckQW9uvSrJCVGnSIzdjlYnB7y5zgUWdWX0HMhx2UOFffGHWTSjYLV4AUukEUw+tyTWgWpjUK+LH4d+B1vDGhPopLOYgUA0lsDNTkUw7SldsSlPHL2wN/c4/tRxWnNibqmfl95VRyfx2jDyQgi+ySB3/6E2szAQ+cFBs6qpnn1hui7JC9UVCUHLEvOI+8RNVilfW4bQj9v0I38qMJzNwNgDjb17qIglq0f5aKtRkgpmqTZ11AfG1CfQHiKpPFqxH50VxZobf6vlEQoeZ8GuQvMbLzboAMdbQ76L4BQrod7mA1AD8OtS8hEPeTpWBpvUj6WHtjqOLCNWKi/PbPNhED5Z6iAo2ItMbgm+WNP2BUU4//vV9jrw4UZSCOo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(23010399003)(6133799003)(10067099003)(18002099003)(22082099003)(56012099006)(11063799006)(261021121427099003)(261021130227099003)(261026130827099003)(261022075727099003)(261022105027099003)(261022113327099003)(261026121527099003)(261022115727099003)(261026140227099003)(261009223027099003)(261028144727099003)(261021135927099003)(261021123027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?aqpS/ymEACQJQ/Czap2jzWnCHpVkb3YOiYbV62dqDYqLqXcNa6tn8czR677E?=
- =?us-ascii?Q?ifGm0UVBFxDG9gPP7t6D29TOVlLVc6cgVudeoqbEyeVFiBpBM8SFR1ux2Ie1?=
- =?us-ascii?Q?rTBgNjUfzxa0udNItkhpxx+Ktlsy0Em5DXSOGkJ1c8HhTRPKtrwfYntb+PiE?=
- =?us-ascii?Q?KBcXhmNUuDbbXOobKB4pOCbn+n8IeJonfCfNjH3vXhBNvXikZdE4xsPUixdg?=
- =?us-ascii?Q?aKtZ4PSbc3QiunECdpQ+EyBoTB5bn6JNDj6O5uyyCj4apgFkxZ95j1CM+D/X?=
- =?us-ascii?Q?5GSJZiT6ESJ0a0lsIuDk00pK+Q01KalK0pyJfX6QPt0vkKAVZ/0Hdcr6IDCM?=
- =?us-ascii?Q?ZqwxmoHFTkhjx2DyQvMMqxTi2Mz6myQABkmWtqsIOxJAQ66SpHYPXvvLf70K?=
- =?us-ascii?Q?j/dblanhXmZ52nKrXks1TPTe2Q0+R61SwIOMpkwgsxCbF6bPvlYUR3cITGMp?=
- =?us-ascii?Q?EeX4xfD4SFusijVfauuwxRXkc3XzB1V647xSynrsA02k2K9+fr59oKiIbLp8?=
- =?us-ascii?Q?QTYqNp1un+dfv9eoS2dTCMhcfbovzbtlLvBI08blKaMQZIL6YYatNBHvZxyu?=
- =?us-ascii?Q?AvEXKO4wbF9NUYY0eBnl82WHwlfBDKKNJOZeOso+/2p8Mh1sh9vooo6lLSro?=
- =?us-ascii?Q?7hWSrbNQOTkDTL/Jh6OOPveNsTw+vxfgZ25NE5tWbJmG0Lbr8+XwHXwVYwJA?=
- =?us-ascii?Q?TXxKGRNmv7ySZDpc28d4Iw9fgpDlCVyu7jLKg7iJmzja8OtiIF4epPl6vSwp?=
- =?us-ascii?Q?MKningtt4rxhp4NCr9/DzakSOwBvw2+xyJp7Vvnv7QnTQXLHX0Tl1shFV+Bl?=
- =?us-ascii?Q?2dYVss4b3KrleDmNyBPfHeylVlJHYJyzUspF6bx9X8Q3Zs3ag/GGZgux2EBG?=
- =?us-ascii?Q?3bMJqfQnQxnJ/mrVcxNeFG6auEf6RGsXO+U0U5ygXr9ThCvPUIf9FkD4otXs?=
- =?us-ascii?Q?9u3+SkAt9plTc25Gcg9KX7ECoZtMkbyuYUNy689H2NtGsJ7a1p8lhBhvSD8M?=
- =?us-ascii?Q?23jpRUKVMaGr6v1v4v+UG86ji9Q1NuC9iPBa0IM8nRkSdJ2w7YerSX/XsDFb?=
- =?us-ascii?Q?GjpytwcAMMZt1T2plvDdw9vxWpKXpUzJInUiYHFcXD36ILHgvJitpT30fz53?=
- =?us-ascii?Q?zCOeoPogRAVRDImE+ftYj/7zDCdycGiHbp9CcCE5eh176C7+uJp5PIm2M3DY?=
- =?us-ascii?Q?meTB134Zb8jxwByl4TM055pjyYv2uFqX62PXOzDH/ZYaxbwJy3AMxUvE1nYK?=
- =?us-ascii?Q?AeifN5kD4Lhjxcm3JwN4FF3Umk1XOOrAfhBilNud90KXghC/YyT5xw54Km+b?=
- =?us-ascii?Q?NDqIvmLws7quAl0/AK6fpsl7uDSD/xkWwHSIyuhqoYqmJDkw7k/wCUSdynqw?=
- =?us-ascii?Q?B5qisUAr6PncF5zbAcvsnhMEHfrKaRVxannz6LP84rG+J7gjeaE26hBJGb6f?=
- =?us-ascii?Q?KBuo7sSuOIuQO9S/6u26XtjiLvX0KFeupJe4qFAOQhybV2oGMUjHZJun0vt4?=
- =?us-ascii?Q?ntaPCXLEanHB2GRp3LWL4Spu4CZOe5oqCW5O9yhSCoVLQHcyI6W1TU7n4tlW?=
- =?us-ascii?Q?ohMSksZKw6PKkjYgj4K/hacPFFY9/WNy9VdX8pEPnkcap/hlVEWvTCizczVu?=
- =?us-ascii?Q?HOQ0/3BWhP4uePZTDnjhYf4r3aMV0EVWPRN1d4cMhs5EMwh5MQoAGGOxaKnq?=
- =?us-ascii?Q?pe4LxfbIIZ+IxEOpUejZvTqbCQ/O7UXfXoS68CciBHEOXmkU?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c0e10df0-d92b-49f8-2afd-08df38e23276
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 13:07:07.1593
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: n2J5d27NE44xR9nc4dL4eCbxZOfUEPId2lP+kp701x5aeMhB5SaZretuMoASG3y1jgg2QMsbtpKpFel2tphBiQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4432
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260919122916.28226-1-bartlomiej.dmitruk@isec.pl>
 
-On Fri, Oct 30, 2026 at 02:36:03PM +0800, Xia Yan wrote:
-> After joining a group with IP_ADD_MEMBERSHIP or IPV6_JOIN_GROUP,
-> MCAST_LEAVE_SOURCE_GROUP for an unjoined source returns EADDRNOTAVAIL
-> but switches the socket's filter mode, so the existing membership stops
-> receiving. Leaving and rejoining the group restores reception.
-> IP_DROP_SOURCE_MEMBERSHIP has the same problem.
+On Sat, Sep 19, 2026 at 02:29:15PM +0200, Bartłomiej Dmitruk wrote:
+> A credit-limited SOCK_SEQPACKET send transmits fragments as credit becomes
+> available, and the VIRTIO_VSOCK_SEQ_EOM flag is set only on the fragment
+> where msg_data_left() reaches 0. If vsock_connectible_sendmsg() exits via
+> out_err after a partial send -- notably the non-terminal -EINTR path
+> (signal_pending while blocked for credit), but also sk_err / peer
+> RCV_SHUTDOWN -- the already-transmitted fragments carry no EOM. The receiver
+> only advances msg_count / sets msg_ready on an EOM skb, so the orphaned
+> fragments are silently merged into the next message, violating SOCK_SEQPACKET
+> atomicity.
 > 
-> ip_mc_source() and ip6_mc_source() allow an empty-filter mode switch before
-> checking whether a source list exists for deletion. The failed request
-> changes EXCLUDE {} to INCLUDE {}, so the socket no longer accepts packets
-> from any source.
+> Wait until the whole remaining SEQPACKET message fits before enqueuing, so a
+> message is committed atomically (with its EOM) or not started; an error while
+> waiting then leaves nothing on the wire. SOCK_STREAM behaviour is unchanged
+> (min_space == 1 reproduces the old "wait while space == 0").
 > 
-> Check for a missing source list before changing the filter mode. Preserve
-> EADDRNOTAVAIL for the rejected deletion and keep mode switches for valid
-> source additions.
+> To avoid blocking forever on a message that can never fit -- a peer can
+> advertise a small buf_alloc, or the message can simply exceed the transmit
+> buffer -- reject such a message up front with -EMSGSIZE (the same error the
+> transport already returns for an oversized message) instead of waiting. This
+> needs the transport's maximum message size, added as a new optional
+> seqpacket_max_size() transport op implemented by the virtio/loopback
+> transports.
 > 
-> Found while reviewing the error paths of ip_mc_source() and
-> ip6_mc_source().
-> The reproducer uses socket calls without kernel changes or fault injection.
-> 
-> Tested with a UDP socket reproducer under UML using the IPv4 generic and
-> legacy APIs and the IPv6 generic API. All three paths lose reception
-> before this change and keep receiving with the fix. Source joins and
-> leaves, block/unblock, last-source leave, and ordinary leave/rejoin also
-> pass.
-> 
-> W=1 x86_64 builds with derived allmodconfig and allyesconfig configurations
-> also pass, with no changes to the warning sets.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xia Yan <yanxia@cmss.chinamobile.com>
+> Signed-off-by: Bartłomiej Dmitruk <bartlomiej.dmitruk@isec.pl>
+> Assisted-by: Claude (Anthropic)
 
-Same comment as:
+Do you want to address the bot review?
 
-https://lore.kernel.org/netdev/20261030151629.GA85001@shredder/
 
-Not a regression and not a security issue / crash. Please target
-net-next and drop the Fixes and stable tags.
+
+> ---
+> Changes in v2:
+>  - Fix an indefinite wait the v1 approach introduced for oversized
+>    SOCK_SEQPACKET messages (reported by the Sashiko AI review on v1): the
+>    atomic-wait could never be satisfied when len > the transport's max
+>    message size (e.g. a peer advertising a small peer_buf_alloc), so the
+>    sender blocked instead of returning -EMSGSIZE. v2 checks this up front via
+>    the new seqpacket_max_size() op and returns -EMSGSIZE without waiting.
+>  - v1: https://lore.kernel.org/netdev/20260917220101.55744-1-bartlomiej.dmitruk@isec.pl/
+> 
+> Testing (vsock_loopback, unprivileged):
+>  - Interrupted partial send (-EINTR) no longer leaks orphan bytes into the
+>    next message (recv() returns only the next message).
+>  - Oversized message and small-peer_buf_alloc cases return -EMSGSIZE promptly
+>    instead of blocking.
+>  - Normal SEQPACKET send/recv unaffected.
+> 
+> diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
+> index f91704731..e96790c03 100644
+> --- a/include/linux/virtio_vsock.h
+> +++ b/include/linux/virtio_vsock.h
+> @@ -219,6 +219,7 @@ virtio_transport_seqpacket_dequeue(struct vsock_sock *vsk,
+>  s64 virtio_transport_stream_has_data(struct vsock_sock *vsk);
+>  s64 virtio_transport_stream_has_space(struct vsock_sock *vsk);
+>  u32 virtio_transport_seqpacket_has_data(struct vsock_sock *vsk);
+> +u32 virtio_transport_seqpacket_max_size(struct vsock_sock *vsk);
+>  
+>  ssize_t virtio_transport_unsent_bytes(struct vsock_sock *vsk);
+>  
+> diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+> index 5549298c1..d94c613ef 100644
+> --- a/include/net/af_vsock.h
+> +++ b/include/net/af_vsock.h
+> @@ -143,6 +143,7 @@ struct vsock_transport {
+>  				 size_t len);
+>  	bool (*seqpacket_allow)(struct vsock_sock *vsk, u32 remote_cid);
+>  	u32 (*seqpacket_has_data)(struct vsock_sock *vsk);
+> +	u32 (*seqpacket_max_size)(struct vsock_sock *vsk);
+>  
+>  	/* Notification. */
+>  	int (*notify_poll_in)(struct vsock_sock *, size_t, bool *);
+> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> index f840498b5..ac64cb957 100644
+> --- a/net/vmw_vsock/af_vsock.c
+> +++ b/net/vmw_vsock/af_vsock.c
+> @@ -2250,9 +2250,32 @@ static int vsock_connectible_sendmsg(struct socket *sock, struct msghdr *msg,
+>  
+>  	while (total_written < len) {
+>  		ssize_t written;
+> +		s64 min_space;
+> +
+> +		if (sk->sk_type == SOCK_SEQPACKET) {
+> +			/* A SEQPACKET message must be delivered atomically, so
+> +			 * wait until the whole remaining message fits before
+> +			 * enqueuing.  Otherwise a credit-limited partial send that
+> +			 * later errors out (e.g. -EINTR) leaves EOM-less fragments
+> +			 * that the peer merges into the next message.
+> +			 *
+> +			 * Reject a message that can never fit up front so the wait
+> +			 * below cannot block forever (a peer may advertise a small
+> +			 * buf_alloc); this mirrors the -EMSGSIZE the transport
+> +			 * returns for an oversized message.
+> +			 */
+> +			if (transport->seqpacket_max_size &&
+> +			    len > transport->seqpacket_max_size(vsk)) {
+> +				err = -EMSGSIZE;
+> +				goto out_err;
+> +			}
+> +			min_space = len - total_written;
+> +		} else {
+> +			min_space = 1;
+> +		}
+>  
+>  		add_wait_queue(sk_sleep(sk), &wait);
+> -		while (vsock_stream_has_space(vsk) == 0 &&
+> +		while (vsock_stream_has_space(vsk) < min_space &&
+>  		       sk->sk_err == 0 &&
+>  		       !(sk->sk_shutdown & SEND_SHUTDOWN) &&
+>  		       !(vsk->peer_shutdown & RCV_SHUTDOWN)) {
+> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+> index 4f9aa9c4c..b7d587a20 100644
+> --- a/net/vmw_vsock/virtio_transport.c
+> +++ b/net/vmw_vsock/virtio_transport.c
+> @@ -585,6 +585,7 @@ static struct virtio_transport virtio_transport = {
+>  		.seqpacket_enqueue        = virtio_transport_seqpacket_enqueue,
+>  		.seqpacket_allow          = virtio_transport_seqpacket_allow,
+>  		.seqpacket_has_data       = virtio_transport_seqpacket_has_data,
+> +		.seqpacket_max_size       = virtio_transport_seqpacket_max_size,
+>  
+>  		.msgzerocopy_allow        = virtio_transport_msgzerocopy_allow,
+>  
+> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> index f225f53ed..e10e7b958 100644
+> --- a/net/vmw_vsock/virtio_transport_common.c
+> +++ b/net/vmw_vsock/virtio_transport_common.c
+> @@ -994,6 +994,19 @@ virtio_transport_seqpacket_enqueue(struct vsock_sock *vsk,
+>  }
+>  EXPORT_SYMBOL_GPL(virtio_transport_seqpacket_enqueue);
+>  
+> +u32 virtio_transport_seqpacket_max_size(struct vsock_sock *vsk)
+> +{
+> +	struct virtio_vsock_sock *vvs = vsk->trans;
+> +	u32 max_size;
+> +
+> +	spin_lock_bh(&vvs->tx_lock);
+> +	max_size = virtio_transport_tx_buf_size(vvs);
+> +	spin_unlock_bh(&vvs->tx_lock);
+> +
+> +	return max_size;
+> +}
+> +EXPORT_SYMBOL_GPL(virtio_transport_seqpacket_max_size);
+> +
+>  int
+>  virtio_transport_dgram_dequeue(struct vsock_sock *vsk,
+>  			       struct msghdr *msg,
+> diff --git a/net/vmw_vsock/vsock_loopback.c b/net/vmw_vsock/vsock_loopback.c
+> index 8068d1b6e..b9a0cc861 100644
+> --- a/net/vmw_vsock/vsock_loopback.c
+> +++ b/net/vmw_vsock/vsock_loopback.c
+> @@ -90,6 +90,7 @@ static struct virtio_transport loopback_transport = {
+>  		.seqpacket_enqueue        = virtio_transport_seqpacket_enqueue,
+>  		.seqpacket_allow          = vsock_loopback_seqpacket_allow,
+>  		.seqpacket_has_data       = virtio_transport_seqpacket_has_data,
+> +		.seqpacket_max_size       = virtio_transport_seqpacket_max_size,
+>  
+>  		.msgzerocopy_allow        = vsock_loopback_msgzerocopy_allow,
+>  
+
