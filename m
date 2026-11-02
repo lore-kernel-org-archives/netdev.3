@@ -1,59 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793634807;
-	b=cisvb12VIZtnj7ueSkAfKyR8ddipg+4+6qVlsv8ZTq0tvMl2hOHk1E7s49EcH550ohk+
-	 d/70b9qiit/oSZChLmc1pI5246IfIeX7Cvmd8aLq09M3eLkBeJn69PeHwDQCqk+8kw0OV
-	 ERwhkszJWIUo9PGS2AbUDLV3ZIRJvCOdZD9SyWWqbIlOvNSAa8rzdP6Cc+r3EH1g3ZrrL
-	 qOBNlAJlBdY4jjGhr3kOFIeFHocOZ6GSYHFIYm9Gz3knlXIRAKZc5ks/k+XLB4+9Z091s
-	 VkbNJYrAciRt9QnQZ2m4dqFVtmGFiD4fIhZJpAXNaz3W7zhAqAqqtavx7G85+rUze9A==
+	t=1793634836;
+	b=ULKJWvkfUVpeaJkG+ia/POWPvb9ZPRq8hpHA0BM1mqZsIg0YdXcB3PGzv4dbbrS482jz
+	 UIsXiur9rC9iuM8SdvxVixz9yrvHIw2CP/CCol2Yt7/7zutM0lJgPwRX7+a7n8o1mF4RP
+	 R/1mohnFGEMkdbY3Cq71d6crw8J5R7TjXjAr4B2NOX6P1zJUoSTz2ho0NKvRPf1ITnheG
+	 gb6BmjZT/vSRgQqUx6Vyf2Lkm7pTFDzlNG6keZqzvPRX50ZLR9LCdIlB0oNA7cF3tNUsB
+	 8HNqOEEPW++jx0F0GlVQvZ2tCO1vpu36bEWFMM3pokd0u9XuhjRlVd4gTR8zRxpSl5Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793634807;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=XjFbOul/AfljpdG+9e7gMBqa1iZSXAush8G4aABI3ZE=;
-	b=y2S+ajTkxAymteGAf5E/SfiuBu+RN9QlCCERbDz5z08xaQ55g6I8+pUrtO7yiVrg3aQz
-	 Tw2oeqxR7OfSLx/cAdZxXB+Tl3B10jCSWvnrj3Q/R726bXrKH+FPM079gV/9Q3T7qkQSh
-	 iC9sWHg4Xf7lG6ByLmQGDwroUXxmbg5reDyT3a8mh04ys4XVW+LhGf4sWX0K/9p/tLX1k
-	 0OaoQdFY2O8fkGhzCtlg1n4ElmvkCkxwU1qSXsX2BCOCfVrYtbWk/ba8Z6YfmTOf5DHrH
-	 v2u5qcSy910OEqAGiZaVbwEl+tNPjdPPSYVXTBwIoCl1Wu6/ylflPOMdJ/tFpIem3sw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793634836;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=772ZW7xwS5Lb6OoXbHUKU95CKNMFhT7w/NVTOJdJ/Iw=;
+	b=QuAPTigzzdlK1xWgyy+r0Je+Ppxtl+Y/XdMDvuZh/JxQofbTCvd6dcxYmxqlfsVqE4pq
+	 hSuRejS3W181FLFjzuhK1pdRHUQy9bYYabVa4+oW+daS5fLcTf+J3tF2CYlwXgwHDzIV0
+	 sOcrIp8pbyh3Q/eUlPZF1OHKQ7sy5wLWa+9bTWjfIRg6KZ865oyl1/bDhvzS+JwARmlZ2
+	 0crwrLmm8hTraHgWbBoL/R8vUDpHVFwkCEFCN8y7ZbBB9ADgVjtlGm9ViS3XCaTa+c/7+
+	 q519B76jCNC1eHopMwP1rHy+4yqWRKTeU8AcV0uGZFBzai88Xxv6dIS+zMVgqWjtSWg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FrgaYHLo;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="kWw/Ia+Q";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83EE60AED02;
-	Mon,  2 Nov 2026 15:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C6D607B786
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FrgaYHLo
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E3051F01579;
-	Mon,  2 Nov 2026 15:53:24 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kWw/Ia+Q
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A28481F00A1B
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793634806;
-	bh=XjFbOul/AfljpdG+9e7gMBqa1iZSXAush8G4aABI3ZE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FrgaYHLoE0kqDMnh8dClQWdKdQKBr/kCfbbo5QLWmmLlQ3CfhXx5wA3iZKX88tetL
-	 i+RoLiVZGgsnOfj8uWXJYyptOqDBFiUhOe46l0t3sFkUcDvL/d6lMlPw/dyjKkFRK6
-	 keE43Nro9pLLcux7E0rJaTT8LuINmk2c5jokILcb2AahAwi12YovTgcA+gU5/BaHl7
-	 pLVTqwC45905Bq6OrU2Ss87cBbi7SVof32oLIsUuWVNPuZKyrvG89VIuyJWnSo5yyU
-	 vwNPVBMHNIyGtM+K8O1Rx3y3End+UfJdDgLb6XTnPK6/GvAVv2VoPAHWmb8142VIl+
-	 64A0r6EhQzamQ==
-Date: Mon, 2 Nov 2026 15:53:22 +0000
-From: Simon Horman <horms@kernel.org>
-To: Joas Antonio <joasantonio108@gmail.com>
-Cc: David Heidelberg <david@ixit.cz>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Fan Wu <fanwu01@zju.edu.cn>, oe-linux-nfc@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] nfc: st21nfca: complete a pending SE APDU request
- only once
-Message-ID: <20261102155322.GB865646@horms.kernel.org>
-References: <179332800288.52644.8728400883396719965@gmail.com>
- <20261031182504.GW257209@horms.kernel.org>
- <CAOCBhwGBrPxLPukgH7UAoy--sOXyoWL5XsC6CmUroy0T2xujXA@mail.gmail.com>
+	s=k20260515; t=1793634835;
+	bh=772ZW7xwS5Lb6OoXbHUKU95CKNMFhT7w/NVTOJdJ/Iw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=kWw/Ia+QjBzhXnj5i8zWqJ7FJZCWcXqxeK6lp99YwbsXoRBZdVxV7Lm4RD9rVDjzI
+	 YjDIEsgSi/dTSk7E18MHQk+ZXh8i6K59ZfzW8dNCSv8lVh0pqGPuWu1QsN6THQGdY/
+	 FmM/xkCazevo7gxf4zKL1npDrSnNfypDsUytbOZt0ikdOHJJrVw0K6qdDdjJkt3i1y
+	 9DEoIQo7Zg+FZdKHs22Tbmv+0MSWNGnzVFnXNyEF+wHOpAmo5rS3i38Zfj+E5ZZ0ME
+	 EyTiRoTtAItHBuqrc4/FYw8hBLpkAPstO+gE8Ywe+n5XCmNLfTOzXv7m5FPe45+aF7
+	 obbnVv88a8muQ==
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-71528ede7b1so544162eaf.0
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 07:53:55 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBzYldSM/VgMQzUnZ+FxFfK4zpwin4XV+suRh+Iop/tsIrmqOvgW6VUtS3EgYfoI4z5+lKX/ot0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYITv3fAMQfnBuOz6a1+Pb72vk66qbWqDciWqtGS62DvNZ127PTx
+	2MpDQp9uo/Gj7O96gfkaSgpq+I4OTCdH4LpzjaEz5U/EVaTOPS6pLirxWtZBMlYRTmnMDp0B1qH
+	x5rbfQ9cQqQ7+FogJ6PzneCjoE1TpqjA=
+X-Received: by 2002:a05:6820:f033:b0:712:c751:22e4 with SMTP id
+ 006d021491bc7-714f29918demr6803097eaf.35.1793634834935; Mon, 02 Nov 2026
+ 07:53:54 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,53 +59,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOCBhwGBrPxLPukgH7UAoy--sOXyoWL5XsC6CmUroy0T2xujXA@mail.gmail.com>
+References: <20261030081225.2575462-1-edumazet@kernel.org> <24feda7d-ae49-45af-9596-2cc5f149f28e@redhat.com>
+In-Reply-To: <24feda7d-ae49-45af-9596-2cc5f149f28e@redhat.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Mon, 2 Nov 2026 16:53:44 +0100
+X-Gmail-Original-Message-ID: <CAL4Wiio-LDx1Z4uWwmUmTP-Xs+Gt=gaM_9T054ZSdY=t3afQJw@mail.gmail.com>
+X-Gm-Features: AclHuK_-XE5Vpi_c17l84qWtsRUvWrKeAkHo-16LCcc1h6-7Xgfi8MPFo7166qQ
+Message-ID: <CAL4Wiio-LDx1Z4uWwmUmTP-Xs+Gt=gaM_9T054ZSdY=t3afQJw@mail.gmail.com>
+Subject: Re: [PATCH v2 net] inet: frags: limit the truesize of a reassembly queue
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	netdev@vger.kernel.org, stable@vger.kernel.org, 
+	Kyle Zeng <kylebot@openai.com>, Florian Westphal <fw@strlen.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Oct 31, 2026 at 04:44:28PM -0300, Joas Antonio wrote:
-> Hi Simon,
-> 
-> Thanks, you're right.
-> 
-> The two completion paths are serialised against each other:
-> st21nfca_apdu_reader_event_received() does timer_delete_sync() and
-> cancel_work_sync() before it looks at bwi_active, and the timer is only
-> re-armed from the same HCI rx work (EVT_WTX_REQUEST). But
-> st21nfca_hci_se_io() runs from the netlink path under device_lock()
-> only (nfc_se_io() in net/nfc/netlink.c), which neither the rx work nor
-> the timeout work takes. So:
-> 
-> - bwi_active, cb and cb_context are plain fields written by
->   st21nfca_hci_se_io() while the rx work or the timeout work may be
->   reading them;
-> - a second SE_IO issued while one is pending overwrites cb and
->   cb_context, so a completion running at the same time can pair one
->   request's callback with the other's context, and the first context is
->   never completed. That is not new with this patch, but the bwi_active
->   check does not cover it either;
-> - st21nfca_hci_se_io() sets bwi_active only after mod_timer().
-> 
-> For v2 I plan to add a spinlock to se_info that covers bwi_active, cb
-> and cb_context: st21nfca_hci_se_io() fails with -EBUSY (freeing
-> cb_context, as on the existing error path) if a request is already
-> pending, otherwise records it and sets bwi_active before arming the
-> timer; the timeout work and the EVT_TRANSMIT_DATA handler take the
-> pending request out under the lock (test and clear bwi_active, copy cb
-> and cb_context) and call the callback after dropping it, so exactly one
-> of them completes it.
-> 
-> Does that sound reasonable? I'll rerun the emulator tests on it before
-> sending.
+Le lun. 2 nov. 2026 =C3=A0 16:04, Paolo Abeni <pabeni@redhat.com> a =C3=A9c=
+rit :
+>
+> On 10/30/26 09:12, Eric Dumazet wrote:
+> > The truesize of fragments in a reassembly queue is only bounded by
+> > the per netns ipfrag_high_thresh sysctl, which has no upper limit.
+> >
+> > inet_frag_reasm_finish() sums the truesize of all fragments in an int.
+> > If this sum reaches 2^32, it wraps, and the final sk_wmem_alloc
+> > adjustment of the socket owning the reassembled skb can cancel its own
+> > reference, leading to a use-after-free of this socket.
+> >
+> > This can be triggered from an unprivileged user/network namespace,
+> > raising ipfrag_high_thresh and using padded TUN packets, which keep
+> > a large truesize after being trimmed by ip_rcv_core().
+>
+> Clasiko infers a similar scenario is still reachable using multiple
+> concurrent frag queues:
+>
+> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261030081225.257546=
+2-1-edumazet@kernel.org
+>
+> I'm unsure if that should be dealt with separately?!?
 
-Thanks Joas,
+Sashiko is right that this is still reachable, but it's a pre-existing
+issue and the consequence differs:
+the charge per reassembly is now positive and below INT_MAX/2, so
+__refcount_add() saturates (WARN + leaked socket)
+instead of wrapping, and the UAF is gone.
 
-I am wary of scope creep. But as some locking does seem necessary
-for using bwi_active to be non-racy in this patch, then yes, I agree
-this is a good approach.
+I'd like to keep v2 as the minimal stable fix and send a separate
+patch bounding the sk_wmem_alloc
+charge in inet_frag_reasm_prepare() against the socket's sndbuf.
 
-You may want to consider two patches in a patch-set: one to add the lock,
-and another being v2 of this patch, if the changes seem to be distict even
-if one is dependent on the other.
-
-...
+Thanks.
