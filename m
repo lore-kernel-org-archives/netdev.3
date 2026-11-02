@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793656219;
-	b=G3zYNCIu1Fr1wO/wnULRrTTENPvw0WaUP3+XIlbnjrK3VXMOYAd+/bc6mjnphygNyC12
-	 CMZSG0UydYfqetNNfkHxCRJ6+TS4RNhGwfysg2FmYSISWeS7Ekyn4lrca9mnAlae6yo2L
-	 4n6EDiumPs7dLAhdjL5qzA43vMOeyVh/qa5SIIoKmOzv3dLf9FpZO7W2OT/Nihfq+xVvD
-	 RMSMbBetZmKWZah0XDqVs/7cIs4ngUoz3fgUXoj5HbeRiMfMEE8GtbGpgnm2IS67xUs0e
-	 NZzjZ4Oy/YGs8qIGc9ZkBroWWsWi0wkqX5rvZ5ztsmDJN9gkH516MlHIo3wGLG4L+PA==
+	t=1793656217;
+	b=uUJSrVOpypqNtR38cdx8rNmSCJ5UiY2ezMDtFN2TgJupwiuK0fWLJYoRgYWMMMc1xkWz
+	 DnIgnaVpIdfiRI5l7eBHJ1dMmirZ5/Kg/7OcZxWy/RD9SY+2svndFVZmeCLGc3+O7NhNL
+	 VCskUg2RyJy2ooRy87HJOzi64gUOpPtKFp3RCvmAFwms5QoCANOydSmTzF/0bnquK1cbL
+	 pdYcAuBblRQqXyFSxOOfhW1gzq3rZPAMhNt5Kh68nK2nA4rar+H/Qzhc7cQDDyabg1QCF
+	 JrmXrBNCG5CGu/nj8DOSMzpNduSVdiF+6aqL1RkDnHXAyv3wigiEFNO/Lv0X53xxQdg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793656219;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793656217;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=sVJ7WQ6Nb1Qj5W711R3RnpPciF9EixP+LpBJt68TLao=;
-	b=meageSFfqulTJO2FW7QWMOFQpY9BE5A0UDzbu9eP3aiag03JcXxtW5D+ZottGiWEP9I3
-	 Uug1dRW8A669UkXFkisG32MPm0h92NEAC4o6klltKZv1MIoupcSlEPHBkvlDmiK8ctsnN
-	 l18ref5v8gAzEJcFWBU8Bq3zZ/5l+GHaoHNL6W2U7/pkuq8PZGeIvcpPm2jat2AOlbeSM
-	 PiipuG3uJZKgy5Xmi2ITx74FyBvrLDY/MIEQMG2XbQTIX49XTOAbQoCLSlbdxpcMRulS/
-	 uqn7+j2jx7hHVFwf4jS49mlqMCIeTGUhLaNOZXytwEBeWDKh9Ye4GsECLUI5yscGoKQ==
+	bh=goWsG59NVC/9uCSE4c2Wnd+eNXP7IRpR0hDp4+YJmBY=;
+	b=c4/sio5u6v+F4Bc9fAO/Jtah6sQiw8E/nlHFJRXKi+e/VUbUp1RG35muVXqgTxVL0eZH
+	 m5baTB1AQhvH9GeH5jr9K4pANfCyQ89ggBDtdgGUcRjMbXU9lhzV2KT6gazO8UrSutdzn
+	 9sb3cgAChFC2VQFf2mLUuGtThHvZFoir9lga6fZX3FHDkrAcO6BMIR1ZTdJlBLebw+UZk
+	 KLQhvP99V1HgpE5u/LlcNz7YRJO/0YcwdpLJl4RcBcC/kNEtIKZZxPQq65Q3RUZE0A7pP
+	 YWZODcA925LwUpYGKccHXNaEoehCtDc4D6fIVZ21n2n0vYHNAhEvXG6n/PbvhBabMAA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="AnC0z/Cy";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YUrvfVEl;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BCF606A32F;
-	Mon,  2 Nov 2026 21:50:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AnC0z/Cy
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 049251F00A16;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8654F606A324;
 	Mon,  2 Nov 2026 21:50:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YUrvfVEl
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0DE71F00A16;
+	Mon,  2 Nov 2026 21:50:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793656218;
-	bh=sVJ7WQ6Nb1Qj5W711R3RnpPciF9EixP+LpBJt68TLao=;
+	s=k20260515; t=1793656217;
+	bh=goWsG59NVC/9uCSE4c2Wnd+eNXP7IRpR0hDp4+YJmBY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AnC0z/CyuZbIP8MYOTXbguTVy9YBlMQBArUUwFZ8kdhoVUnnqvQBJI1R/01FU+K1t
-	 e75wJHVCWsDXSFXEODrxzW655AUiJ0bTP1YNf+niMc/GY4BJyh3zIwKIJGxaYKgXGo
-	 WqfHMDVuQvMdASbx6Gi9PsV3iijmoThaUM7rBSnl+ZXX2xD3V57yBAK40Ew+v/3g6x
-	 uUGGdsvsv+z7BY4jNQI7DeURJd35DwRKjG2ym21biplFmfkXfSMVp2/Uz1EWwFm/BG
-	 OUuBvvwVwR0baHIwKN0IrZgthjXhHCujbG6kNO/hBf3bQIbC8czjLEJdQ3ggRk+l7W
-	 CGfnVsAixxtyQ==
-Subject:
- Re: [PATCH net v4 2/2] net: dsa: b53: restore the NSP IMP port 2 Gbps mode
+	b=YUrvfVElZN1HDYcankiMblU07kXf5An+8j8aq5rgpPBAbTWALVqRAboejSG0ED9qA
+	 xdlsyvUQQyD0/u1uWDGji7L4L+85SmGMHlkWr23Hq5EyQby8kDp1+4Z2S/JWiu+aK+
+	 I3OiMIJ++zAAOhLE7MRhBTVNAY16p/nEzI4/IeHxAa2PoJV66c4CY8lcNECTdU+sxx
+	 954K9a1HqQhj4B+2KtytWMDCbJ+GvgLN0U7yvF/i6EFfOB2wKvfOYJ1knL6fKAI79j
+	 CQG/lCikM3FRtw/V+pXQjQdbBmo1CauZyZQxmcJk7CjeAhKtaWLc+ToaSQhxtcZOou
+	 nnfrMfGjmaTPA==
+Subject: Re: [PATCH net v4 1/2] net: ethernet: bgmac: preserve forced 2.5 Gbps
+ link speed
 From: netdev-bot+sashiko@kernel.org
 To: florian.fainelli@broadcom.com
 Cc: netdev@vger.kernel.org, jonas.gorski@gmail.com, andrew@lunn.ch,
  olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
  pabeni@redhat.com, rafal@milecki.pl, bcm-kernel-feedback-list@broadcom.com,
  jon.mason@broadcom.com, arnd@arndb.de, linux-kernel@vger.kernel.org
-Date: Mon, 02 Nov 2026 21:50:17 +0000
-Message-ID: <179365621756.3131.9531361745901719210@kernel.org>
-In-Reply-To: <20261029211540.4123250-3-florian.fainelli@broadcom.com>
-References: <20261029211540.4123250-3-florian.fainelli@broadcom.com>
+Date: Mon, 02 Nov 2026 21:50:16 +0000
+Message-ID: <179365621626.3131.8036596501259312595@kernel.org>
+In-Reply-To: <20261029211540.4123250-2-florian.fainelli@broadcom.com>
+References: <20261029211540.4123250-2-florian.fainelli@broadcom.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -65,10 +65,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -76,90 +76,107 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The new code in b53_phylink_mac_link_up()
-  (drivers/net/dsa/b53/b53_common.c) sets speed = 2000 on every…
+- [Medium] After this patch the speed seen by userspace and phylib no
+  longer matches the MAC.
+- [Low] The patch depends on a switch-side change that is not named.
 
 --
 
-net: dsa: b53: restore the NSP IMP port 2 Gbps mode
+net: ethernet: bgmac: preserve forced 2.5 Gbps link speed
 
-On BCM5301x and NSP, fixed-link CPU ports now get forced flow control and a
-2 Gbps speed in b53_phylink_mac_link_up(). The goal is to restore the
-proprietary 2 Gbps mode on the IMP port. That mode was lost because the
-fixed-link description reports 1 Gbps.
+When BGMAC_FEAT_FORCE_SPEED_2500 is set, this commit makes
+bgmac_adjust_link() keep the MAC at SPEED_2500 instead of following the
+fixed PHY's 1 Gbps speed. It also restricts the platform forced-speed
+flag to Northstar Plus via of_machine_is_compatible("brcm,nsp").
 
-> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-> index 0880310c9ce3f..743fc04da0a48 100644
-> --- a/drivers/net/dsa/b53/b53_common.c
-> +++ b/drivers/net/dsa/b53/b53_common.c
-> @@ -1663,9 +1663,15 @@ static void b53_phylink_mac_link_up(struct phylink_config *config,
->  	}
+> diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
+> index 669eb7ce7d40b..9ef7307edd41e 100644
+> --- a/drivers/net/ethernet/broadcom/bgmac.c
+> +++ b/drivers/net/ethernet/broadcom/bgmac.c
+> @@ -1430,11 +1430,15 @@ void bgmac_adjust_link(struct net_device *net_dev)
+>  {
+>  	struct bgmac *bgmac = netdev_priv(net_dev);
+>  	struct phy_device *phy_dev = net_dev->phydev;
+> +	int speed = phy_dev->speed;
+>  	bool update = false;
 >  
->  	if (mode == MLO_AN_FIXED) {
-> -		/* Force flow control on BCM5301x's CPU port */
-> -		if (is5301x(dev) && dsa_is_cpu_port(ds, port))
-> -			tx_pause = rx_pause = true;
-> +		/* Force flow control and 2Gbits/sec on BCM5301x and NSP CPU
-> +		 * ports
-> +		 */
-> +		if ((is5301x(dev) || dev->chip_id == BCM58XX_DEVICE_ID) &&
-> +		    dsa_is_cpu_port(ds, port)) {
-> +			tx_pause = true;
-> +			rx_pause = true;
-> +			speed = 2000;
-> +		}
+> +	if (bgmac->feature_flags & BGMAC_FEAT_FORCE_SPEED_2500)
+> +		speed = SPEED_2500;
 
-[Severity: Medium]
-Does this set up 2 Gbps correctly when the CPU port is not the IMP port?
+[Severity: Low]
+Does this patch depend on the b53 change that puts the IMP port in its
+2 Gbps mode? The commit message says:
 
-The check is dsa_is_cpu_port() rather than port == dev->imp_port, so a
-fixed-link CPU port on port 5 or 7 also gets speed = 2000. Those ports go
-through the GMII override register in b53_force_port_config():
+  Together with configuring the switch IMP port for its 2 Gbps
+  mode, this eliminates the output queue discards ...
+
+but it does not name the commit that makes that change.
+
+With only this patch applied, the AMAC stays at SPEED_2500. Meanwhile
+b53_force_port_config() still programs the IMP port from the DT
+fixed-link (speed = <1000> in bcm-ns.dtsi) and clears the 2G bit:
 
 drivers/net/dsa/b53/b53_common.c:b53_force_port_config() {
     ...
-	} else {
-		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
-		val = GMII_PO_EN;
-	}
-    ...
-	reg &= ~(0x3 << GMII_PO_SPEED_S);
 	if (is5301x(dev) || is58xx(dev))
 		reg &= ~PORT_OVERRIDE_SPEED_2000M;
-
-	switch (speed) {
-	case 2000:
-		reg |= PORT_OVERRIDE_SPEED_2000M;
-		fallthrough;
     ...
 }
 
-The two registers use different bit layouts in b53_regs.h:
+The next patch in this series, "net: dsa: b53: restore the NSP IMP port
+2 Gbps mode", fixes this. It sets speed = 2000 for BCM5301x/BCM58XX CPU
+ports in b53_phylink_mac_link_up(), so both ends match once the whole
+series is applied.
 
-#define   PORT_OVERRIDE_SPEED_2000M	BIT(6)
-#define   PORT_OVERRIDE_EN		BIT(7)
-...
-#define   GMII_PO_EN			BIT(6)
-#define   GMII_PO_SPEED_2000M		BIT(7)
+The two patches have different Fixes: tags, though (f6a95a24957a and
+b6a8a5477fe9). If a stable backport or a bisect picks up only this
+patch, would the MAC run at 2500 while the switch IMP port runs at
+1000? Could the b53 commit be named here as a dependency so both are
+backported together?
 
-So on the GMII register, the 2000 case sets and clears BIT(6), which is
-GMII_PO_EN. GMII_PO_SPEED_2000M (BIT(7)) is never written. The port ends up
-at 1 Gbps, and its 2 Gbps bit keeps whatever value it already had.
+>  	if (phy_dev->link) {
+> -		if (phy_dev->speed != bgmac->mac_speed) {
+> -			bgmac->mac_speed = phy_dev->speed;
+> +		if (speed != bgmac->mac_speed) {
+> +			bgmac->mac_speed = speed;
+>  			update = true;
+>  		}
 
-Some upstream 5301x device trees use port 5 as a fixed-link CPU port, for
-example bcm53015-meraki-mr26.dts and bcm53016-meraki-mr32.dts. bgmac-bcma
-sets BGMAC_FEAT_FORCE_SPEED_2500 for these GMACs, so the speed mismatch the
-commit message describes would remain on those links.
+[Severity: Medium]
+Can phy_print_status() still be reached on these interfaces?
 
-The new comment and the commit message both say 2 Gbps is forced on
-"BCM5301x and NSP CPU ports". Should this either be limited to
-port == dev->imp_port, with the comment updated to match, or should
-b53_force_port_config() use GMII_PO_SPEED_2000M for the GMII override
-register?
+bgmac_open()->bgmac_chip_reset()->bgmac_miiconfig() sets the cached
+speed and duplex before phy_start():
 
->  
->  		b53_force_port_config(dev, port, speed, duplex,
->  				      tx_pause, rx_pause);
+drivers/net/ethernet/broadcom/bgmac.c:bgmac_miiconfig() {
+	if (bgmac->feature_flags & BGMAC_FEAT_FORCE_SPEED_2500) {
+		...
+		bgmac->mac_speed = SPEED_2500;
+		bgmac->mac_duplex = DUPLEX_FULL;
+		bgmac_mac_speed(bgmac);
+    ...
+}
+
+When the fixed PHY reports link up, bgmac_adjust_link() now computes
+speed == SPEED_2500, which equals mac_speed, and the duplex also equals
+mac_duplex. So update stays false and the link-up message is never
+printed. Before this patch, the change from 2500 to 1000 always set
+update.
+
+Also, bgmac_ethtool_ops uses phy_ethtool_get_link_ksettings, which
+reports phydev->speed. That is still SPEED_1000, either from the fixed
+PHY in bgmac_phy_connect_direct() or from the DT fixed-link:
+
+	struct fixed_phy_status fphy_status = {
+		.link = 1,
+		.speed = SPEED_1000,
+		.duplex = DUPLEX_FULL,
+	};
+
+The UniMAC, however, is now programmed for 2500.
+
+Will ethtool and netlink report 1000 Mb/s for a link that is actually
+running at 2.5 Gbps?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261029211540.4123250-1-florian.fainelli%40broadcom.com
