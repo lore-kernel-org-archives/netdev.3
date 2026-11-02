@@ -1,66 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.11
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793623822;
-	b=5E0IwsSVMwtTOvywoBpUZimgxbO4sbPwJlpphi1Yt8wG7LkmdTeWyVq/E0INJ/WLtDZp
-	 EvTFf83aHCJfAhemIzv+qymG2b0dTE6T3LcP/1sqD302mFFfTB4ADicNqd7Uc9ObVc69P
-	 5vbifT09Otcs4T9o6lsU2x3Y0cLFtRVLmK+QMN+R05gnUweCR4vdv/VFvTC0K79Iu5BcM
-	 NKNrp/J+b+89C3U1sCrhW1csnems7I8J+8SI13WJS8+9wQLtDmwXkmEqT7i5/alxbEoT2
-	 irkVfaRjUJnEGGcSdx9X0EXR4U3Rt98IbHd21b1Usw3O0vdvOJBeomgYtL8tFYvCKyw==
+	t=1793623823;
+	b=IBQ2bHmwUGSLerEw53a3v6J1hwWe+ZcpLG8bwM6LsEOqEmY9lk6CJ3jEA/CvRAym9dOV
+	 acYu7a4XI3XC8IkWKDvScPUDVhBX0qxsA/gwN8NmB5Sk5+o6AnxAKzuld3T0QJxQI/0lk
+	 /CWZlmwuL230wrEQ/x9Lo7gyPZcOz0YJ1CYdzONSkDhLHgwiDOB1YF2lCq96rJGYH055W
+	 3MJ8y3tQtWN0SJmpj1N/jOvyJA9bs6nDQYCxxlXWdPTahUKrVMddj4BNGDghICqZf4aP9
+	 DNA1Fb4BmMq6wHXqwYoH+Ea5bl9W0fIa+ifKK3J4FvR8mhgE6gQsE6dosMmYW8amZQA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793623822;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793623823;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
 	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=ARwvuTqWJyf2ZgMAGzDdPyyXdF6Flj5kN/HVKbOs2uA=;
-	b=oijYjwB7b5vVzHo9iaJsM+N7jCJs5cW6f9pJCldcis2iZa8Y3Wjq3ZxuTDcdVpPkD7IC
-	 DsAMyQLk7l6kVsuxlJqax5MZeY+sZ0xg3DWRsAYDefE7NRUnfHzOVSfTZp7WiYA6HE7GD
-	 zJCZokLSbB6mzgZ3uV66TL7PyRLlOf97GqLWTZXepHUeyPX2O/AX4MwAxMk8QU/EOH40n
-	 Cks4HrO+AaXliOCQm3+Is2CaghBtzqxFw8nLacDxzTcx2YMujdq590CZf3zP0dgAtY6al
-	 7IrXF/dgMTKCGdZdoKo4hEMiBw9xDxlxgkRG0P4fKjDfn+Nh3iVTHgmYd4yc8TbXoog==
+	bh=nn8hrJySRz2QsgnOMrsRAY24mOLg0RAn2rZ170XfQmU=;
+	b=sbSd5OYabc/gNFluDxovs6Tq/RoZBjWrcaJ/CBRQCbg0hJg2RPASs8yjnC9twfQzc91j
+	 WcD3qB5E39UY1epOjwYASBnmgca+4nIWaOw6u5pe+Wc85TqNJITgqFRk+pByygK6BJ3hq
+	 lfoJA361w+Vd93bWNBRK2wEm6z0AlzJGPoI3migKja5NLRMV2gQ2ekKeI4k53TpRHJcnY
+	 W4QdLesygYDlQH8DaGOS4/+buwPgF4LawCaZhQWkTlHMwAhNSscohVwnk3sTADufcbNAX
+	 3n/AAC/9bCSRWf/lKxubfLY3UVtaUth2zIUviZmzzu9EQKrEwEjGZ61G3dvTahPBjgg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=czUI0zFI;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XRtF0LF4;
 	arc=none smtp.remote-ip=198.175.65.11
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1AB60A260B
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 12:50:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AB1AB60A260B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E0E60A2610
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 12:50:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E2E0E60A2610
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=czUI0zFI
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XRtF0LF4
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793623821; x=1825159821;
+  t=1793623823; x=1825159823;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=qlpthv2WFaTFwrPP5FBf5U+4r54qzzegRyMHHNLFwSE=;
-  b=czUI0zFILmmL/G0DjfWKWl9ky6iqHi0YX90RmgDyByjodpk1I56iiSIz
-   g8gM86Bhv+9bwT3s1L0Mqa7X2s3T7oh2Q8FcTWaTACOAIX4G6mT+DZTqL
-   CEFqKSkQYoUOzuynhMzpoBQjnzJGkTKX90D38yGd4w9lZvKhx+GMFxC4w
-   1bnwIa0WyVntHZ/TAhTXerFAasDB+7JpTjHyRsN0fbfsbZzrSn7O2Fvsg
-   KN1YA3v5+zMHrbp5uJ9inEMNjWB8AX7Vwus5DrN1EjVLIiMevAZSLiz4x
-   aoWKLtaF8rLZAo2hE/Jqmezpqr0Hdpnio6ZblWcknDTsGKEsXTnop7FYz
-   A==;
-X-CSE-ConnectionGUID: ECLwfPXmTey7RiAtmPEBBA==
-X-CSE-MsgGUID: 9PxmaIxzRJ+mYdTKjvjZ4w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11953"; a="2191885"
+  bh=8x7Lk8HUNqHyKwkRSFueTSNMtFEoKXyP69kya+7ikok=;
+  b=XRtF0LF4WDS8eMDc9SoHT0pr7xs1Bob96J9qHQJye6nih3H6YXGTvxI3
+   OcX4kd4/aQMUSY5DJkwM55xjgfWSASfIf5iagJ3Ouxe4tva23QYtUP7SF
+   0GJCmZl84g+K1LNbeMwk5UACUu7mZl2UofpnrNq5mrqcPlbleIZXAZnou
+   nzMXanu8mbvr7uqL5Zmtlia1R3ZXPMMxtbXJQ7klLN+XyCNColwNoUDlB
+   Ti0SnoqVJtecBGp4B9P9MeWEes8Bvy7hLj1LDx+mh+D+NbylGrrCoR2ak
+   gHY8rBEShQSSZQ/X+2ewlZzYW6c3PIxIhOXaEbY31JHjNL+2FmhECTBwF
+   Q==;
+X-CSE-ConnectionGUID: X7owtS25TLWZp84Zv6Rh7Q==
+X-CSE-MsgGUID: 5bPEQiLGQdqrKpIbkPZfyQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11953"; a="2191889"
 X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
-   d="scan'208";a="2191885"
+   d="scan'208";a="2191889"
 Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 04:50:20 -0800
-X-CSE-ConnectionGUID: BteuTZDGRwehUd7xNeUcKQ==
-X-CSE-MsgGUID: 7uCQWOWBR5uo3VEuCYKsKw==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 04:50:23 -0800
+X-CSE-ConnectionGUID: g/Nw2lMnTmWMWoDbadzBDw==
+X-CSE-MsgGUID: b1siDrbWQ8u4uBVlDNdJcw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
-   d="scan'208";a="7928538"
+   d="scan'208";a="7928556"
 Received: from boxer.igk.intel.com ([10.102.20.173])
-  by fmviesa013.fm.intel.com with ESMTP; 02 Nov 2026 04:50:19 -0800
+  by fmviesa013.fm.intel.com with ESMTP; 02 Nov 2026 04:50:21 -0800
 From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 To: netdev@vger.kernel.org
 Cc: magnus.karlsson@intel.com,
@@ -72,9 +72,9 @@ Cc: magnus.karlsson@intel.com,
 	bjorn@kernel.org,
 	zuomao338@gmail.com,
 	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Subject: [PATCH net 8/9] ice: xsk: free stashed Rx frame when cleaning the ring
-Date: Mon,  2 Nov 2026 13:49:49 +0100
-Message-Id: <20261102124950.958345-9-maciej.fijalkowski@intel.com>
+Subject: [PATCH net 9/9] idpf: free stashed XSk Rx frame when releasing the queue
+Date: Mon,  2 Nov 2026 13:49:50 +0100
+Message-Id: <20261102124950.958345-10-maciej.fijalkowski@intel.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20261102124950.958345-1-maciej.fijalkowski@intel.com>
 References: <20261102124950.958345-1-maciej.fijalkowski@intel.com>
@@ -89,42 +89,43 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ice_clean_rx_irq_zc() stashes a partially received multi-buffer frame
-in rx_ring->xsk, with its frags on pool->xskb_list. next_to_clean is
-already past its buffers, so ice_xsk_clean_rx_ring(), which walks
-next_to_clean..next_to_use, misses the frame, and ice_vsi_cfg_rxq()
-later clears the pointer via ring->xdp.data.
+idpf_xskrq_poll() stashes a partially received multi-buffer frame in
+rxq->xsk, with its frags on pool->xskb_list. Nothing frees or clears
+rxq->xsk on queue release, as idpf_rx_desc_rel() only returns the page
+stash sharing its storage for non-XSk queues.
 
-The buffers are lost to user space and, as the pool outlives the ring
-across ifdown/ifup or a reset, the stale frags are taken as frags of
-the next frame. Before commit 93f53db9f9dc ("ice: switch to Page
-Pool"), the frame was tracked by rx_ring->first_desc and leaked the
-same way.
+On ifdown, the buffers are lost to user space and, as the pool outlives
+the queue, the stale frags are taken as frags of the next frame. If the
+pool is disabled on a running interface, the queue restarts in page
+mode with rxq->xdp.data still pointing to an xskb of the pool, which is
+freed later. The page path then takes it for a partial frame, writes
+frag info through it and returns it to a page pool.
 
-Free the stashed frame when cleaning the ring.
+Free the stashed frame and clear the pointer when the XSk state of the
+queue is cleared, while the pool is still attached.
 
-Fixes: 1bbc04de607b ("ice: xsk: add RX multi-buffer support")
+Fixes: 9705d6552f58 ("idpf: implement Rx path for AF_XDP")
 Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_xsk.c | 5 +++++
+ drivers/net/ethernet/intel/idpf/xsk.c | 5 +++++
  1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
-index bf14ed8f87a3..0c1ce3e86a45 100644
---- a/drivers/net/ethernet/intel/ice/ice_xsk.c
-+++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
-@@ -912,6 +912,11 @@ void ice_xsk_clean_rx_ring(struct ice_rx_ring *rx_ring)
- 	if (xdp_rxq_info_is_reg(&rx_ring->xdp_rxq))
- 		xdp_rxq_info_unreg(&rx_ring->xdp_rxq);
+diff --git a/drivers/net/ethernet/intel/idpf/xsk.c b/drivers/net/ethernet/intel/idpf/xsk.c
+index d95d3efdfd36..5a0a1d8a7a86 100644
+--- a/drivers/net/ethernet/intel/idpf/xsk.c
++++ b/drivers/net/ethernet/intel/idpf/xsk.c
+@@ -134,6 +134,11 @@ void idpf_xsk_clear_queue(void *q, enum virtchnl2_queue_type type)
+ 		if (!idpf_queue_has_clear(XSK, rxq))
+ 			return;
  
-+	if (rx_ring->xsk) {
-+		xsk_buff_free(&rx_ring->xsk->base);
-+		rx_ring->xsk = NULL;
-+	}
++		if (rxq->xsk) {
++			libeth_xsk_buff_free_slow(rxq->xsk);
++			rxq->xsk = NULL;
++		}
 +
- 	while (ntc != ntu) {
- 		struct xdp_buff *xdp = *ice_xdp_buf(rx_ring, ntc);
- 
+ 		rxq->pool = NULL;
+ 		break;
+ 	case VIRTCHNL2_QUEUE_TYPE_RX_BUFFER:
 -- 
 2.43.0
 
