@@ -1,73 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.2
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793610278;
-	b=AqF3OrPAST4wa1U2VQcEVNm+upZKmvio/E9+SOHzkwFOaFnfOutrO3hWompSKrD1jhB1
-	 /96+s3uPboTpg5q3dwkcXsoejDbsJ+1hs0I0hU5pqlq/3Mk7h1sIG57MZ4ogrtDEI2oqo
-	 ieOmCrCN01okoLgJQ0ujmb6/nIgNDa2wqtJyHBL74O4R9z1Cu/jMac7QSHm8+I62oM6Zd
-	 Nzla78vSQNjYmMLKTozYtT8vyNaroMj8lNtyGNXTcIjT/hgJgNpTo9XSZhS4qtpKD44xR
-	 qcP107SFJS57YnqHL1rRRu64uIqmRvorYbESyldg/giux4ZQiVSREk8usKZ8VpUus2Q==
+	t=1793610383;
+	b=fxD/WJLeRZyQ7wwQfUDDnlK4GJFbV8Ap7dcD4u7Ddw1Ko/OAT2ZYRJE33f9xu4a1zUuy
+	 sb+opVOhJZN0FsDMj8CzQZ1R/sU/I0tx2p0f0INfbXQq1uGNuKPpfkQbjF4ClKtxS/VUc
+	 8AyariNk6f7FCKbUvoQfmqwS2vEk4nS+o8ElgHxEjtQq2YC8pdXScJqc0oy+WseTj4E6r
+	 7gqoza5wxoJBe7XV9X/TbwwzM9vji6Dor/Jh5oDl1uf5c5VRpie7AAWq+bFO5gTlMSN+U
+	 630rrmfaUdY5D4V+5GC4rGJo+7/ygdEynMSiE6qfpsSpqJpcgLFu9p7Py+LGPWFUG3w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793610278;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
-	 Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version;
-	bh=Yev0hfaXosEbpEcqTujskpvy3SSpHx96TzRdJOzYIRY=;
-	b=Yw1TjWpb4YmmU44gAIoDqvP+07AqaV9T3pzdCkqfP09t9mAwJG0Bh9wkNkEbp3wCk7Uw
-	 kA5qa87bE2d7rjQRCzy/zCaLRjTJsVcYRO/kQ9BL4EGoAyAo0Iao/HEgHzMwaBbr6WGp/
-	 XB0dpJovWItfoHB2Zg4Sa1TQYu+cgSD/pP7GT0AxytNArNGlKTAf/Ou+dqXE0lTuhxCj5
-	 pfOKnBQlfudtTvqAUopsdUDnhECIXv4CIQDdZZZiopOpHNP+xLvy836KR5fBJ0lvA5Avk
-	 vzF33eBPEYc921WX4zOsAX96zxYbL4dWwoSm6I1pvfXKN719Kl+NtwRR8WrGiLvdVVw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793610383;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=LAGVP2b67YtKhGg8b829H5cq+XWr6wWQhutD+qrpuwI=;
+	b=nLTi27RrvG/VERjYJ9tD+OngctncrKo2wFFSfQd1WmmMZoBTVSp8fHzHtyx+GaZFMNpb
+	 gnAoBr4KWJ38XR3ApEmsARcHsaraNsmYD7l+/UYxiFLR4FW07F1jlWtLHlEPeJaYSlIlv
+	 xRspdVfHDrY1zntGQCguRrgCJng6GzKi59jAeHdblsUwVT1fcW7+804YN5RHVVHzGSCQ+
+	 g7s/54e4zDkxdqOZ0NZT189CLlljIznLUVvbXvo7xqCO+kS9ATaN6aRd32ab5/8cOPN/R
+	 lxQpJq+3BAyxKEd6f+9I5YHSTgh5qoRbCZ/PuHyU7Q9Jl1Gp4uyUFSKC3YJNrN+RUKA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=codeconstruct.com.au;
-	spf=pass smtp.mailfrom=codeconstruct.com.au;
-	dkim=pass header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.a=rsa-sha256 header.s=2022a header.b=NmWwpHqp;
-	arc=none smtp.remote-ip=203.29.241.158
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=ahhHwTBt;
+	arc=none smtp.remote-ip=117.135.210.2
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10D8606A324;
-	Mon,  2 Nov 2026 09:04:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F10D8606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13AF606A336
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 09:06:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A13AF606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.a=rsa-sha256 header.s=2022a header.b=NmWwpHqp
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1793610275;
-	bh=Yev0hfaXosEbpEcqTujskpvy3SSpHx96TzRdJOzYIRY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NmWwpHqpEIHX6LKkKExcC+gdQkrGjuidbolYONWq6psfQ4W9uxLDvj84Gi5aw/6h5
-	 leaUPF7Al1yr3r/hRYrh0F3VGK+0iD/rAQ6va5iEwBToIXG9NtGwugXT6WQt2O+Pue
-	 uxkVgamw6U4LEioXH8bPUBxjhEM55GfkqJJmSouaTVEEU6O3t7sq3uoMDH5el/UWka
-	 c2OBAqjrTiq11sVLLJiWMqvmxtHw2s30PVchtYDhbnnLbtpy3/f8bsABtXT5Q5buLI
-	 DCZLwHmdofLqtTmkfKnCynN+oKtP0/K+sOejbYC2AwQcj5ICRZNSAAzokfuaFmH6QA
-	 7Xgk4wGATQkLg==
-Received: from [192.168.12.105] (unknown [144.6.157.237])
-	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id C47B1648DC;
-	Mon,  2 Nov 2026 17:04:31 +0800 (AWST)
-Message-ID: <7486b1fc4dbcca755dd2f6b6de54d17919af873a.camel@codeconstruct.com.au>
-Subject: Re: [PATCH net-next v2] mctp i2c: add sysfs control for mux child
- netdevs
-From: Matt Johnston <matt@codeconstruct.com.au>
-To: Kenny Hsieh <kenny_hsieh@jabil.com>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
- "jk@codeconstruct.com.au"	 <jk@codeconstruct.com.au>,
- "andi.shyti@kernel.org" <andi.shyti@kernel.org>,  "peda@lysator.liu.se"	
- <peda@lysator.liu.se>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, 
- "davem@davemloft.net"	 <davem@davemloft.net>, "edumazet@kernel.org"
- <edumazet@kernel.org>,  "kuba@kernel.org"	 <kuba@kernel.org>,
- "pabeni@redhat.com" <pabeni@redhat.com>,  "linux-i2c@vger.kernel.org"	
- <linux-i2c@vger.kernel.org>, "linux-kernel@vger.kernel.org"	
- <linux-kernel@vger.kernel.org>
-Date: Mon, 02 Nov 2026 17:04:31 +0800
-In-Reply-To: <DM8PR02MB808768B7D02FF12777B7777E8E602@DM8PR02MB8087.namprd02.prod.outlook.com>
-References: <20261015081341.1262695-1-kenny_hsieh@jabil.com>
-	 <179239912623.3135.11352652156626817288@kernel.org>
-	 <DM8PR02MB808768B7D02FF12777B7777E8E602@DM8PR02MB8087.namprd02.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-9 
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=ahhHwTBt
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=LA
+	GVP2b67YtKhGg8b829H5cq+XWr6wWQhutD+qrpuwI=; b=ahhHwTBtS1+aAGLCb9
+	XBDl+ALjE39kEbg7lvn2H7vD2jTagLISb7+j/oYAu2yY3Bl3pfqrDjhkfpjNzDUM
+	ovdgZlyo1McTXQibfFXmaBw5sNbpsZM82a/96zWYMAmEGHl2giumwLN0EPWqihUK
+	EzpXNT9INXX7cMmmtcurrCNck=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgCnj25zUuhqA4AcDg--.47994S2;
+	Mon, 02 Nov 2026 17:06:12 +0800 (CST)
+From: Fang Jiabao <kaquoin@163.com>
+To: Stephen Hemminger <stephen@networkplumber.org>
+Cc: netdev@vger.kernel.org,
+	Fang Jiabao <kaquoin@163.com>
+Subject: [PATCH iproute2] ip route: check return value of addraw_l() when adding encap
+Date: Mon,  2 Nov 2026 17:05:34 +0800
+Message-ID: <20261102090535.226168-1-kaquoin@163.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,98 +59,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PygvCgCnj25zUuhqA4AcDg--.47994S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uw1DZrWfAw1xtw45ArWrKrg_yoW8Zry3pF
+	ZIgay5Kr90qrW0yayDJayIk34UK395GFW5tF4DC3yqkan8Wa4SvrySy3yY9rWUA397Jw4v
+	qrsrtw4UWFZ7XF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRijjgUUUUU=
+X-CM-SenderInfo: 5ndt30llq6il2tof0z/xtbC1ASK-mroUoTvWQAA3G
 
-Hi Kenny,
+iproute_modify() ignores the return value of addraw_l() when it adds
+the encap attribute. If the attribute does not fit into the request,
+for example a seg6 encap with 60 segments, addraw_l() prints
+"addraw_l ERROR: message exceeded bound of 1024" and returns -1, but
+ip sends the request without the encap attribute and exits with
+status 0. A route without encap is then installed silently.
 
-On Tue, 2026-10-27 at 08:58 +0000, Kenny Hsieh wrote:
-> Hi Andi, Peter, Matt, Jeremy,
->=20
-> > - [High] The store-side guard against adapters being deleted does not
-> >   close the race it claims to close.
->=20
-> > - [High] mctp_i2c_remove() runs mctp_i2c_remove_sysfs_all() while the
-> >   client is still on driver_clients.
->=20
-> > - [Medium] mctp_i2c_probe() now releases driver_clients_lock after
-> >   list_add() and before i2c_for_each_dev(mcli,...
->=20
-> > - [Medium] The new ABI lives on i2c adapter devices, which the I2C core
-> >   owns, but the mctp-i2c driver attaches it with sysfs_update_group() o=
-n...
->=20
-> These races come back to the last point: mctp-i2c bolts the attribute
-> onto adapters the i2c core owns. Before I respin I'd like to check which
-> way to go.
->=20
-> I can keep it in mctp-i2c and fix the races there, mostly by reordering
-> notify_del() and remove(), and adding the attributes after the probe
-> walk so it can hold driver_clients_lock again. That works, but it's more
-> bookkeeping and there's still no uevent for the attribute.
->=20
-> The other option is to declare it on i2c_adapter_type in the core and
-> have mctp-i2c register the show/store callbacks. That's cleaner, the
-> driver core handles the lifetime and most of the races go away, but it
-> adds an i2c API with mctp-i2c as its only user.
->=20
-> I prefer to keep it in mctp-i2c, but happy to go either way.
+Return an error instead of sending the incomplete request.
 
-I agree it would be cleaner to avoid having mctp-i2c create items in i2c co=
-re
-sysfs space.
+Fixes: 1e5293056a02 ("lwtunnel: Add encapsulation support to ip route")
+Assisted-by: Claude:claude-sonnet-5-5
+Signed-off-by: Fang Jiabao <kaquoin@163.com>
+---
+Tested on current main (e4cd9f1d, "json_writer: fix pretty printing of
+arrays"), in a network namespace with a dummy device:
 
-An alternative could be to create sysfs attributes under the mctp-i2c devic=
-e
-instance itself (the i2c slave).
+  ip -6 route add fc00:ff::60/128 encap seg6 mode encap segs <60 SIDs> dev d0
 
-Mux buses could have mctp-i2c netdevs instantiated with
+Before: "addraw_l ERROR: message exceeded bound of 1024", exit status 0,
+and a route without encap was installed.
+After: same message, exit status 1, no route installed.
+With 59 segments the route is still added with encap, exit status 0.
 
-echo "i2c-6" > /sys/bus/i2c/devices/2-1060/add_mctp_controller
+With 63 or more segments the failure happens earlier, in the encap
+parsing, with a different error. That is not addressed here. The same
+addraw_l() pattern exists in ip/ipnexthop.c and is not changed here.
 
-(where i2c-6 is a child mux bus of i2c-2, and i2c-2 0x60 is a mctp-i2c i2c
-device).
+ ip/iproute.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-"echo i2c-6 > .../2-1060/remove_mctp_controller" would remove the mctp-i2c
-netdev.
-Setting a root node as an mctp controller would involve writing its own nam=
-e
-to the attribute file.
+diff --git a/ip/iproute.c b/ip/iproute.c
+index 1ce71f78..35c23801 100644
+--- a/ip/iproute.c
++++ b/ip/iproute.c
+@@ -1525,9 +1525,10 @@ static int iproute_modify(int cmd, unsigned int flags, int argc, char **argv)
+ 			lwt_parse_encap(rta, sizeof(buf), &argc, &argv,
+ 					RTA_ENCAP, RTA_ENCAP_TYPE);
+ 
+-			if (rta->rta_len > RTA_LENGTH(0))
+-				addraw_l(&req.n, 1024
+-					 , RTA_DATA(rta), RTA_PAYLOAD(rta));
++			if (rta->rta_len > RTA_LENGTH(0) &&
++			    addraw_l(&req.n, 1024, RTA_DATA(rta),
++				     RTA_PAYLOAD(rta)) < 0)
++				return -1;
+ 		} else if (strcmp(*argv, "ttl-propagate") == 0) {
+ 			__u8 ttl_prop;
+ 
+-- 
+2.43.0
 
-How does that look to you?
-
-Cheers,
-Matt
-
-
-> > - [High] When mctp_register_netdev() fails, mctp_i2c_add_netdev()
-> >   (drivers/net/mctp/mctp-i2c.c) now always sets `midev =3D NULL`, so th=
-e...
->=20
-> > - [Medium] In the baseline, mctp_i2c_add_netdev() has a real double
-> >   teardown.
->=20
-> This is the known double free, tracked in a separate patch on net, and
-> v3 drops the midev =3D NULL change:
-> https://lore.kernel.org/netdev/20261027053715.1623087-1-kenny_hsieh@jabil=
-.com/
->=20
-> > - [Medium] The new ABI document Documentation/ABI/testing/sysfs-
-> >   bus-i2c-devices-mctp says "The attribute appears only on mux child...
->=20
-> > - [Medium] mctp_i2c_new_client() now calls `write_pnet(&mcli->net,
-> >   get_net(current->nsproxy->net_ns))` before i2c_slave_register().
->=20
-> > - [Low] The commit message says "a rebind reattaches it reading 0".
->=20
-> > - [Low] The commit message gives "an adapter that the devicetree cannot
-> >   describe at all, such as a USB-attached one" as a use case.
->=20
-> Will fix all four in v3.
->=20
-> > - [Medium] Writing 0 to mctp_controller removes a channel's netdev
-> >   through mctp_i2c_remove_netdev() -> mctp_i2c_unregister() ->...
->=20
-> The sel reselection on removal isn't new, removing a mux adapter already
-> goes down that path. I'd rather leave that for a separate patch and just
-> fix the ABI wording here.
->=20
-> pw-bot: cr
