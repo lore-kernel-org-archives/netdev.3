@@ -1,47 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793654322;
-	b=bNP3FOfjpaAxSEYO6Xnnx2QUuWZZ6yRULio+RKzfLeKvY/z6CtpViiU3MZeAA+mXx3qp
-	 JCqCiJVNwsYvHTmr+/P+y+gF27s8UFVscTwekxH1In4cxEWF+69bKlhEPAhcz9G2qyRkn
-	 88bJM7kARtOMBxkwD09RQ1reojE68odZuJ4mJDQblvZrMBGxAGnlIDNW4TwzdnwNr7LQe
-	 pQBsy6loRnLj2055LC5QrmeHl3D7b4/loMCErnRR7EYtrKvdKR3pyDTjBEX3EW91OVEhp
-	 mdKfiK6ARxm+9d203rUXa6lYPtuvekYOhcwh/uCBqCWZvC5jRd2s3sx0EAsrEJ84ejg==
+	t=1793654326;
+	b=OiCaQpJ31KGzXdAnpPGAOW3fesr0d2T0+RnBW0wtXXMV3Fii5hDY3GPBbnXmOiAX95XA
+	 4rJgJ+Nhgq6qKF34UxcWbG8TQtvyl2RsbqmeLmPRY2bJFv2JDYUqnmyz/lxSBfm40b7Hu
+	 VdsxMuGe81mKiI5XP6zL49vOQf+soP9a1YpBfmnk06fE+3rq/H9nKUIvdm1jJBBkHdYhj
+	 GTi1YLOUOU319uenO+OYOjisMMZx54mjKEFq3QI8qUJR0TzuJntSfc2xtkZ5jLkr3BcCa
+	 D6yNwa1843etlF9wSDfwypY/vvsne71g77P2D2VPx3s/1peG6D5X4mLo7KbMElDYhKw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793654322;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793654326;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=iK0bBm29YrOPAyq71JAOJajUy7iZCEfkMr1yytTGjtU=;
-	b=R/A5WvDk3lKM2OYbzJWwq6QRxXcR2jRcpdFd3y+AqTa527ENZEzWzqn6xUDRWh+zmzrl
-	 vRzKws4hb0yroRTjp+KM2954+5KZNTp6PpUJTRhM7sXQFnwjXuFblYxTgFDm7KBYzL6oJ
-	 HmBPNpjzL8qnaqp8ZMYOWcGIKAiegYaKjk8tIG6Fkc3nK6JQzusdhBNqOsI5Q0bIMdgzI
-	 0/rjiD6JKB1uYPPSRlr/aAccRjj3YCgdgmu61oMjJnjWavZRmkWU0R+LnFtY84ZqLQrag
-	 BeQesWmnu1F5Fk8mgkRnX5VcvE68PP1M8njgI6c/f7136ECFnsa+J7eGiyVEgC3vYgg==
+	bh=N8r2SEFBHRm93yES3ouPQTclhmQ3vt6M/44+CDFQ29E=;
+	b=eRq3lzNLM0Dnc2eOnBv6f5eweL604/Ivo2p/dxIFweQ1CfXMiMw0aESMrJUv9aRWNjUc
+	 bFrWmYevikovEsLzjNrLIVD7/zbJRe0vjXyozjbYaBkYXAj6lFu4x9DNezRjlpyOXydiB
+	 IrASwGo++PNkGCtp1mKlP2Kr7o0z5+d7YZqt9WASzh0lgMAFyK9GD8EcNr1I4cE5f2PTE
+	 nMqbgwHfbrXXPrB97OA5YsK72BKqWxZKwcjLUSaEdvSQAoj6G350DmuGzZ0dKYN4NdRzj
+	 5Ul1VX4FObA3dqQA5jIYfgdn85GklicKbFOi/07jA23fHxqI5/bPuw9A3f+Wlnh/KfQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XtGdxjy0;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=og5kmwwk;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247CE606A32F;
-	Mon,  2 Nov 2026 21:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57F6606A33E;
+	Mon,  2 Nov 2026 21:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XtGdxjy0
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06481F00A16;
-	Mon,  2 Nov 2026 21:18:40 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=og5kmwwk
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2981F00A16;
+	Mon,  2 Nov 2026 21:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793654321;
-	bh=iK0bBm29YrOPAyq71JAOJajUy7iZCEfkMr1yytTGjtU=;
+	s=k20260515; t=1793654325;
+	bh=N8r2SEFBHRm93yES3ouPQTclhmQ3vt6M/44+CDFQ29E=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XtGdxjy0L3RwgVzTgMKbe38DuMMj4W/ecDyE+/gXtvtD1JUtjDcFlmKdJRpWSFg6O
-	 2nPjMExsBhUqfoXLLDmeT5kL3Dnuq/anmLSSgOG5ThhwsA9CogR6f2GIUamN6p8kXV
-	 OFNcNXtAQp+Lk/XREFtDmr0/Rx1of9nGqXsAjnJ9IjNN8PV82iV+DMwOZO1PUgiqDu
-	 Zs/4f57vxfxjGZUXaI1fgTq2otkbv6eTGVVG8gpbzlUZj301T3uaIXkyUQ5EC/7k8y
-	 C0FaB3+dROjM6VtGd5EpPXGPLdC9GtL0GI403KW7xIWuCOK9Hl04tCrsbTl6clRCzj
-	 d0I6DJPhJ+RjQ==
-Subject: Re: [PATCH net v4 2/4] gve: Fix backward stats when interface goes
- down or configuration is adjusted
+	b=og5kmwwkzuWONcLGHqiDI6wWAg7YhhEHplwEL8Q50PPyTJHwGPYQ8RoDhaYhhEJxw
+	 qVP6eahiUXdDTw3XYj30Z8a8U9pyqdIcYp226Tg2cNQub6J59NcJ1RAFNYkBkY2fUB
+	 oy0cHV1QC/Tgr53l5XSE4NIrnc1rS2CP/xUe+eCBgnjlBSnXiTA8n89C/jdlBZr6nY
+	 oMZN7JrTolBTeVfEToGUvH75DjIL1B++trZcbbo49C1bVa7NojQuYonyVCgBlVdqcV
+	 DEzhB934Bxn1yaAV82LUe6QKrMGcoluUL7mT5oM0vpQY6vMKq7pQh02hCvWYSDhfKG
+	 zVZmUpsSAz8Ew==
+Subject: Re: [PATCH net v4 4/4] gve: Fix link flap after ethtool ops
 From: netdev-bot+sashiko@kernel.org
 To: hramamurthy@google.com
 Cc: netdev@vger.kernel.org, joshwash@google.com, andrew+netdev@lunn.ch,
@@ -51,10 +50,10 @@ Cc: netdev@vger.kernel.org, joshwash@google.com, andrew+netdev@lunn.ch,
  pkaligineedi@google.com, yangchun@google.com, patricion@google.com,
  awogbemila@google.com, stable@vger.kernel.org, linux-kernel@vger.kernel.org,
  treapking@google.com
-Date: Mon, 02 Nov 2026 21:18:40 +0000
-Message-ID: <179365432027.3131.11809571157881551820@kernel.org>
-In-Reply-To: <20261029211634.2232784-3-hramamurthy@google.com>
-References: <20261029211634.2232784-3-hramamurthy@google.com>
+Date: Mon, 02 Nov 2026 21:18:43 +0000
+Message-ID: <179365432386.3131.15374369453099115031@kernel.org>
+In-Reply-To: <20261029211634.2232784-5-hramamurthy@google.com>
+References: <20261029211634.2232784-5-hramamurthy@google.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -74,229 +73,97 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The commit message and the Fixes tag describe only part of what
-  the patch changes.
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but on 32-bit
-  SMP kernels tx->statss of an XDP TX ring has writers that are not…
-- [Low] This problem wasn't introduced by this patch, but check_down() in
-  tools/testing/selftests/drivers/net/stats.py has the docstring "Test…
-- [Low] This problem wasn't introduced by this patch, but
-  pkt_byte_sum.stat_cmp() in…
-- [Low] This problem wasn't introduced by this patch, but the single-
-  queue RX restart path never calls u64_stats_init() on the new ring's…
-- [Low] This problem wasn't introduced by this patch, but
-  gve_rx_post_buffers_dqo() updates rx->statss (rx_buf_alloc_fail)…
+- [Low] The patch removes `queue_work(priv->gve_wq, &priv->service_task)`
+  from the end of gve_queues_start()…
 
 --
 
-gve: Fix backward stats when interface goes down or configuration is adjusted
+gve: Fix link flap after ethtool ops
 
-This patch keeps baseline rx/tx packet, byte and alloc-fail counters in
-gve_priv. They are saved during full queue teardown in
-gve_queues_mem_remove() and during a single RX queue stop in
-gve_rx_queue_stop(). Both ndo_get_stats64 and the netdev_stat_ops base
-stats report these baselines, and gve_get_base_stats() also reports the
-live XDP TX ring counters.
-
-> gve_get_base_stats() sets all the stats to 0, so the stats go backwards
-> when interface goes down or configuration is adjusted.
-
-[ ... ]
-
-> Fixes: 2e5e0932dff5 ("gve: add support for basic queue stats")
-
-[Severity: Low]
-
-Does this description cover everything the patch changes? The message
-blames gve_get_base_stats(). The patch also changes ndo_get_stats64:
-gve_get_stats() now calls gve_add_base_stats().
-
-That part fixes an older bug. In the tree before 2e5e0932dff5,
-gve_close() already freed the rings on every ifdown:
-
-gve_close()
-    gve_queues_stop(priv);
-    gve_queues_mem_remove(priv);
-
-gve_queues_mem_remove() set priv->tx and priv->rx to NULL, and
-gve_get_stats() only summed the live rings. So the ip -s link and
-/proc/net/dev counters already went back to 0 on ifdown.
-Documentation/networking/statistics.rst says:
-
-  Statistics must persist across routine operations like bringing the
-  interface down and up.
-
-Could the changelog mention the rtnl counter change, and could the
-Fixes: tag be revisited? With the current tag, stable backporters may
-treat trees without netdev_stat_ops (older than 6.13) as unaffected,
-even though they have the rtnl reset on ifdown.
+This patch changes gve_queues_start() to update the carrier state
+synchronously through gve_turnup_and_check_status(), instead of queueing
+the service task to do it. It also takes netdev_lock() around the link
+status update in gve_service_task(), so that update is serialized with
+the synchronous path.
 
 > diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-> index 26fdd22644f4d..b5e2f39a903c5 100644
+> index b5e2f39a903c5..bc7d7c41948c3 100644
 > --- a/drivers/net/ethernet/google/gve/gve_main.c
 > +++ b/drivers/net/ethernet/google/gve/gve_main.c
 
 [ ... ]
 
-> @@ -84,19 +112,41 @@ static void gve_get_stats(struct net_device *dev, struct rtnl_link_stats64 *s)
-
-[ ... ]
-
-> +static void gve_get_stats(struct net_device *dev, struct rtnl_link_stats64 *s)
-> +{
-> +	struct gve_priv *priv = netdev_priv(dev);
-> +
-> +	spin_lock_bh(&priv->stats_lock);
-> +	gve_get_ring_stats(priv, s);
-> +	gve_add_base_stats(priv, s);
->  	spin_unlock_bh(&priv->stats_lock);
->  }
-
-[Severity: Low]
-
-This is a pre-existing issue and was not introduced by this patch. The
-commit message cites the check_down test case in
-tools/testing/selftests/drivers/net/stats.py. Its docstring says:
-
-    """ Test statistics (interface and qstat) are not impacted by ifdown """
-
-However, check_down() only compares qstats from netfam.qstats_get()
-before and after ip link set down. It never reads the rtnl stats64.
-
-If the new gve_add_base_stats() call in gve_get_stats() regressed,
-wouldn't check_down() still pass?
-
-[ ... ]
-
-> @@ -2744,7 +2809,9 @@ static int gve_rx_queue_start(struct net_device *dev,
->  		return -EAGAIN;
+> @@ -1494,8 +1526,7 @@ static int gve_queues_start(struct gve_priv *priv,
+>  			  round_jiffies(jiffies +
+>  				msecs_to_jiffies(priv->stats_report_timer_period)));
 >  
->  	gve_per_q_mem = (struct gve_rx_ring *)per_q_mem;
-> +	spin_lock_bh(&priv->stats_lock);
->  	priv->rx[idx] = *gve_per_q_mem;
-> +	spin_unlock_bh(&priv->stats_lock);
+> -	gve_turnup(priv);
+> -	queue_work(priv->gve_wq, &priv->service_task);
+> +	gve_turnup_and_check_status(priv);
+>  	priv->interface_up_cnt++;
+>  	return 0;
 
 [Severity: Low]
+Commit 3b7cc73628ff added this queue_work() for the link status update,
+and the new synchronous check handles that. Does removing it also drop
+the service task run that used to follow every reset recovery?
 
-This isn't a bug introduced by this patch, but is rx->statss ever
-initialized on the single-queue restart path?
+gve_reset() clears the reset flag first and then disables the service
+task:
 
-gve_rx_queue_mem_alloc() calls gve_rx_alloc_ring_gqi() or
-gve_rx_alloc_ring_dqo(), which zero the ring. The only u64_stats_init()
-calls for RX rings are in gve_init_sync_stats():
+gve_reset() {
+    ...
+	gve_clear_do_reset(priv);
+	gve_set_reset_in_progress(priv);
 
-	for (i = 0; i < priv->rx_cfg.num_queues; i++)
-		u64_stats_init(&priv->rx[i].statss);
+	if (was_up) {
+		gve_turndown(priv);
+		...
+	}
 
-That function only runs on a full queue start. gve_rx_queue_start() then
-copies the uninitialized statss into priv->rx[idx].
+	disable_work(&priv->service_task);
+	...
+	enable_work(&priv->service_task);
+	err = gve_recover(priv, was_up && !skip_queue_setup);
+    ...
+}
 
-On 32-bit kernels with CONFIG_DEBUG_LOCK_ALLOC, the seqcount's lockdep
-map is never initialized. Can later stats updates or reads then trigger
-lockdep warnings? The stats_lock added around this copy doesn't change
-that.
+gve_schedule_reset() could run after gve_clear_do_reset() but before
+disable_work(). One way is gve_tx_timeout() from dev_watchdog racing
+with gve_turndown(). Another is an RX NAPI error path just before
+napi_disable:
 
-[Severity: Low]
+gve_schedule_reset() {
+	gve_set_do_reset(priv);
+	queue_work(priv->gve_wq, &priv->service_task);
+}
 
-This is also a pre-existing issue and not introduced by this patch. Later
-in gve_rx_queue_start(), the DQO path calls gve_rx_post_buffers_dqo()
-from preemptible process context:
+In that case, disable_work() cancels the queued work, or queue_work()
+is rejected while the work is disabled. enable_work() does not queue it
+again.
 
-	else
-		gve_rx_post_buffers_dqo(&priv->rx[idx]);
+Before this patch, gve_recover()->gve_open()->gve_queues_start() ended
+with queue_work(), so a leftover GVE_PRIV_FLAGS_DO_RESET was handled
+right after recovery.
 
-When a buffer allocation fails, that function writes rx->statss:
+After this patch, the service task is not queued again until some
+unrelated event, such as a later gve_mgmnt_intr(). When it does run,
+gve_service_task()->gve_handle_reset() would perform a full gve_reset()
+because of the stale flag. That reset could happen long after, and
+unrelated to, the event that set the flag.
 
-		if (unlikely(gve_alloc_buffer(rx, desc))) {
-			u64_stats_update_begin(&rx->statss);
-			rx->rx_buf_alloc_fail++;
-			u64_stats_update_end(&rx->statss);
+gve_suspend() and gve_resume() seem to have the same gap. They call
+disable_work_sync() in gve_suspend() and enable_work() before
+gve_recover() in gve_resume().
 
-On 32-bit non-RT kernels, __u64_stats_update_begin() uses
-preempt_disable_nested(). That only asserts that preemption is already
-disabled; it does not disable it.
+The other parts of this look fine. A missed device REPORT_STATS request
+only skips a stats_report_trigger_cnt increment, because
+gve_stats_report_schedule() sets do_report_stats on every timer period.
+A device RESET request raised inside the disable window is covered by
+the reset that is already running.
 
-If the writer is preempted while the sequence is odd, can a reader on
-the same CPU spin until the writer runs again? gve_get_stats() under
-spin_lock_bh(&priv->stats_lock) is one such reader. Lockdep builds would
-also warn here. gve_create_rings() reaches the same code regardless of
-this patch.
-
-[ ... ]
-
-> @@ -2844,12 +2913,30 @@ static void gve_get_base_stats(struct net_device *dev,
->  			       struct netdev_queue_stats_rx *rx,
->  			       struct netdev_queue_stats_tx *tx)
->  {
-
-[ ... ]
-
-> +	tx->packets = base_stats->tx_packets;
-> +	tx->bytes = base_stats->tx_bytes;
-> +	/* XDP TX rings are not exposed as netdev queues, so report their live
-> +	 * counters here to keep the device totals consistent with
-> +	 * ndo_get_stats64.
-> +	 */
-> +	if (priv->tx)
-> +		gve_add_tx_ring_range_stats(priv, priv->tx_cfg.num_queues,
-> +					    gve_num_tx_queues(priv),
-> +					    &tx->packets, &tx->bytes);
-> +	spin_unlock_bh(&priv->stats_lock);
->  }
-
-[Severity: Low]
-
-This is a pre-existing issue in the selftest and was not introduced by
-this patch. Does pkt_byte_sum() in stats.py really check that these
-totals match ndo_get_stats64? stat_cmp() returns at the first key that
-differs:
-
-    def stat_cmp(rstat, qstat):
-        for key in ['tx-packets', 'tx-bytes', 'rx-packets', 'rx-bytes']:
-            if rstat[key] != qstat[key]:
-                return rstat[key] - qstat[key]
-        return 0
-
-With live TX traffic, a correctly increasing tx-packets decides the
-result before tx-bytes or the RX counters are compared. The test can
-therefore pass while rtnl and qstats disagree in the later fields. That
-includes the XDP TX contribution added here.
-
-[Severity: Medium]
-
-This isn't a bug introduced by this patch, but are the writers of
-tx->statss on the XDP TX rings serialized on 32-bit SMP kernels?
-
-gve_xdp_xmit_dqo() picks the ring as smp_processor_id() %
-num_xdp_queues, so several CPUs can share one ring. It updates statss
-after releasing the lock that serializes those CPUs:
-
-	spin_unlock(&tx->dqo_tx.xdp_lock);
-
-	u64_stats_update_begin(&tx->statss);
-	tx->xdp_xmit += n;
-	tx->xdp_xmit_errors += n - i;
-	u64_stats_update_end(&tx->statss);
-
-gve_xdp_xmit() in gve_tx.c does the same after
-spin_unlock(&tx->xdp_lock). gve_clean_tx_done_dqo() also updates the
-same statss from NAPI:
-
-	u64_stats_update_begin(&tx->statss);
-	tx->bytes_done += pkt_compl_bytes + reinject_compl_bytes;
-	tx->pkt_done += pkt_compl_pkts + reinject_compl_pkts;
-
-Could overlapping write_seqcount_begin()/end() calls tear the 64-bit
-reads? Could they lose a sequence increment and leave the count odd? If
-so, the retry loop in gve_add_tx_ring_range_stats() would spin forever
-with stats_lock held and BH disabled.
-
-gve_get_stats() and gve_get_ethtool_stats() already read these counters
-before this patch, so the new reader in gve_get_base_stats() neither
-creates nor widens the exposure. Hitting it needs a 32-bit kernel and
-XDP_REDIRECT into gve from several CPUs while completions are running.
+Could gve_reset() and gve_resume() queue the service task again after
+recovery, or re-check gve_get_do_reset() once the work is re-enabled?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261029211634.2232784-1-hramamurthy%40google.com
