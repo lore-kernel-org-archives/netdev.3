@@ -1,94 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793645688;
-	b=b0WZYFcXiatOV6OUHuOoYH+y3d2e9VLR+PxuuwlDdipE0jMhQnjBpJrOWVrcUzugpQQN
-	 kYuAiHxl3K+P1bsQOuj9RF+21mly9FEbWiomCYCMPSEl6cLvie19UOXJCCkbDoPF3js+e
-	 /D5UsBJwYoD3a2B+c/In1WjebqCF/d77tNcAZmwL7hydS39hgs/tz31tYOm+VSNI/zrqr
-	 nPLAk3vJmPoaItz206Q9cla2D1gVU/AO0UcJa8za6E9yP96D65FZb+PjQGfOhLul+xc+q
-	 SXVOneLYTR6/zx0CzIYpAnBsenJNkbIBEnI1XV+BHzM6bbota9ED7K2puFHK1QCpz/Q==
+	t=1793645939;
+	b=NkDrydXV3ifb5ejOcPMOulAlJWpnJwNkfCFpj8UWt/iyDfZdDai1DwpEOwzbNSZh+COZ
+	 m5bGe7vGl7YHvGqy9Ago3fQR4pnoJOCe2XjXrycAPH0FCowAxMXilyrz6onHoe9quMWYk
+	 V5jEARpnDBo1bPxf2CQnY/O16nWS+pSmQTkP0ixl/EmLqA12Ni+e2V4Gqy7nNvNrg98CB
+	 bA5b4DHS+xR5sZ/4HhCJKbF+CUXtrHqS8G5c7txRV8xwX9NZ4qvcR3wNtYWBNOFtX5BG4
+	 m7LScNqGdYVRvWX5fpKEpR3Ql1QXjt3P93ePwoyA9gOVqa/5dxoVIICPv9dnIUx5NJw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793645688;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793645939;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:User-Agent:References:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	bh=6aeVIk6rnbx33zfjOjUUS+2fD1SQ2yd81uhuQUT7lRc=;
-	b=BsXCxOJmYwu7PP3pSH6s3HZUHexvYwdgsfMqZyzPF1SdUTncrg7dlQkQpGGQOAh6D62H
-	 jpf8g9THtZIWTQof0cwsK46ztFs7OjW33d/GLQfAFYhq3as8sID6jBHxo/uPqVvEI9Gmy
-	 0+5uVhz/KCI3S8tD64MVD+n4XH9K6yG+lCIDkfLEqCJ+MDsUKHqARJtIqxR0FnHJgFo7y
-	 U03H4COYidaqzC0xRzLCO7vCxy9k2ZfY83nA0662ugSxy3N7oZOrzaNE5e9rAKrYw96v3
-	 sCpGjSaWm+84+D3vU3hZxjs0bb/8YdQZO8a2QUittQkFqEE8Rz+2oT8+6X78u7j6E4A==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=NbysLIrexph35LgjM0FGUGuc+zi/f3zUiCq428yT1Rk=;
+	b=Ve8Lf50qECRriwnodAJuEFNkhnqsIhwQpaYeHuTYTeXgxtl6kBuRP0FUSNrG8Sf49PyO
+	 RRRt69TNh57YEPVKKsFw44E1xjFJX19PVcblwC1khBot9CznhvfgcEjWnWLyXztlaa0Kd
+	 mF5cHqBo9/jgJvG52hyenJF2bBq89qfC/GN6HFjxSRDHTzL52IUjGWxqu6nhG71BiWlfJ
+	 NW7Bd4Yme9p5omlutNy1bzksNX3rjQmh9GbzS3pOiyFKX1X4nEeThaR3jJbJJGBmP9ld1
+	 mQBEuRRORW1bQs8F5VjI2vj9I8/1eH9ZffxAcvoKx4TNAf2b1YK6KhRp6gxMnGP7ElA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hcfC1PbP;
-	arc=none smtp.remote-ip=209.85.214.172
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PozYLQ4w;
+	arc=none smtp.remote-ip=74.125.82.197
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3659606A32E
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 18:54:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D3659606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0688E606A329
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 18:58:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0688E606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hcfC1PbP
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2eb18f4da15so11329575ad.1
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 10:54:47 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PozYLQ4w
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-36a190c53a3so4522448eec.0
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 10:58:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793645687; x=1794250487; darn=vger.kernel.org;
-        h=content-type:content-transfer-encoding:mime-version:message-id
-         :in-reply-to:references:user-agent:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=6aeVIk6rnbx33zfjOjUUS+2fD1SQ2yd81uhuQUT7lRc=;
-        b=hcfC1PbPoIdiB7FzTh3mEBmRHJNkNfHudgqL5I6jaPuyVN+QtQMg7IlzD0phqrxyec
-         4El+qeRC5so1Y7Lu6P9KU1w/wRz483M6vWWqmPNCbf4tB7P0YqPqikfH91/rxa8qPfTt
-         43H2uy0Hzt9Kv8RHLhx351JhDY/LhumttS2mosfwnFhfugaVHsxGC7xJMrFiAB6TthB6
-         wHe4B9kQzZJCHfFro6PNcEtO61UWFYVa+bBdaGpSC0HNm2d0Csnm/OXxELOcxXhaY4uW
-         rryAUm/26VRK3eMpGD+wEOQ9i/IJz+LNMCAo/I8Y5J5Y47a7CdGSYbtW5NW+QqTGqDWn
-         QAXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793645687; x=1794250487;
-        h=content-type:content-transfer-encoding:mime-version:message-id
-         :in-reply-to:references:user-agent:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1793645938; x=1794250738; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6aeVIk6rnbx33zfjOjUUS+2fD1SQ2yd81uhuQUT7lRc=;
-        b=iSPcbgZFOROYypH0S3N6rXaFgZcLAAPQD6pkCWSe0Z5kirm5ju8QntIYrx9JLsHG2V
-         wj3oqzHfHG73ZYd9HlhrgxktssjceRZ5MxAxrDCpLHal46BneQTqcoDm4dXwIkWEN7gH
-         e+bhRtOrEOhDBrNpoawRZtU+y6DNGSa5gXS369769Fa3yl4kieYnpIHHk0feVOZQ3foT
-         Bv/8EgJm3aBV+uGHWYYH67/jo2uLj2xRmpFyuGEsqht5bZgjXxqyO1Y6No4yv+2vgUFd
-         J+4kOcyQ5yI1X+pfOfSsCXv4SMXxtQnUNm4Mh2PDjEhFoPRXfk9u/pbRwFAy4YgAuGPl
-         nUxg==
-X-Forwarded-Encrypted: i=1; AKwUvBwhvdODKD1/HpkeZcDfr0lRUp7xLddXS/Fe5J86thrhbLIypfT6+r9VSm7OLMe7SE0Z/WFdluc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z99tgmKG03oHGl8pkqib5kxr91XqDznz/l2arR4Y9YhTu8na4W/
-	IzkxTYfniJsBUJP1pJeGfS5NXcjmlcEroBCNnTMAPnthli83btzWFTXV
-X-Gm-Gg: AYBFou0tXbuOIpq6qBiTeDr68B81ZeY62Xp8Bgw87pd0UpjbeKmc0PJ4B3LLaiPE0Qo
-	U+SNGsDsGMLXC12C1d7t3/awiHgEGVD4xeRkoK367//bbe5bO3uCEB9dfdPXlwUCcQ6ae5PHvan
-	I4Zky80xBbnKoKx+/fr1/zI7WvnjuFK9ybipVBlZDqTULIthEhzKd00dKDYtblcRDmreP+0kX/G
-	F1gzlI9Ubuw3xk2jRP8IkGs0V14OqKN8QpAQiqDt8mb6HZYSOkOI3OTnTG0el4fJvR+eVYoH1Sj
-	TDnukPYf3qIES7g4C2KMJIP4nZsgatIVLKhjVS3BtfTzDzHPtootPiAOich7terV2XThG0B6NmM
-	6JExCMDocaEAuicqTiBctdc7Eeds/hmd2kMEi7/ESF3SJRub+8IB8yOhGynjo8hj0U/pEmunV2E
-	GV47OQQUEs2j+6+Azra03kbfHa5zr6Lmp+c0ZCpkoiX80W27u/2TLGVDODby/t3//2clloHjUn6
-	dXB5ohdw9t/SUvuQcLy95Rz/AzJoU0UVcFk51/BM6zlmAQGKysXvx+iTQNUMTbqtM5Jp0RE8Lnz
-	5bYw84OCi5unrbGm3FawX8dA/WxW7pRUpIoF8wRPMMj8TyoTMDN/q1wacBBBmnbaEQpSV0jLXZm
-	VaEox9HMTiOZACg==
-X-Received: by 2002:a17:902:e88d:b0:2e2:c55c:90c with SMTP id d9443c01a7336-2eb3650b7b7mr104071795ad.64.1793645687169;
-        Mon, 02 Nov 2026 10:54:47 -0800 (PST)
-Received: from meli-email.org ([98.97.42.147])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb39266f42sm31215645ad.40.2026.11.02.10.54.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 10:54:46 -0800 (PST)
-Date: Mon, 02 Nov 2026 11:51:58 -0700
-From: John Fastabend <john.fastabend@gmail.com>
-To: mptcp@lists.linux.dev, Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
-Cc: daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, john.fastabend@gmail.com, jakub@cloudflare.com, jiayuan.chen@linux.dev, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, willemb@google.com, matttbe@kernel.org, mptcp@lists.linux.dev, mason@kernel.org, josef@toxicpanda.com
-Subject: Re: [PATCH bpf v2 03/15] bpf, sockmap: Don't let an SK_PASS verdict cover the next message
-User-Agent: meli/0.9.0
-References: <20261102072112.4160195-1-alexei.starovoitov@gmail.com> <20261102072112.4160195-4-alexei.starovoitov@gmail.com>
-In-Reply-To: <20261102072112.4160195-4-alexei.starovoitov@gmail.com>
-Message-ID: <tnw1v9.qyjuvdc9kq45@gmail.com>
+        bh=NbysLIrexph35LgjM0FGUGuc+zi/f3zUiCq428yT1Rk=;
+        b=PozYLQ4wJ91rva5JAu8n7V3l3TRDv+1xTlmu1F5D33tEMCR3nJEayW+q/9H0EOctz+
+         TfaRyKv5C/bbE8DeFK6+i3wBa0qp+pQZcxEeQ4XpZDijoqoiYdBKMgde0/0nwXs7dS1E
+         h2mmTx0ujLGzkGXIv4fph/lIoMxttNu0BT8zNdggyCPDidxiGeCh8VCmIWaQ5UoiK9M5
+         9mDPDUnqV3q5suWt0EGAy2i56UXwy3KlDoUmS6pG9716ehk9wUTcilc0uiQoTz4vkdNP
+         ts4y9t3PqFDZgAbUc5tbQ7Q4zevugRIZLPqimSAhyPDLATEGDCjCZI5vfBxkpBln3N7r
+         zHZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793645938; x=1794250738;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=NbysLIrexph35LgjM0FGUGuc+zi/f3zUiCq428yT1Rk=;
+        b=VfeCMIMv42IwsrCRKFZEzNP7WL62GYPPFTMYC84trp7ns7/gI59UvfFtzTQ16pQyta
+         wMqji+vvsBdI4AFM8/XMxKOkMX/a/neHfokJ33jkcz8TCnzvOT15ZBpGzTXyqPChTiYv
+         +pWr4I16qjp1Oq0J7gOB+GsxoIKWweIzs0HPnyM9ZZoqSd/2q2to6t6cOb3eoCldcV0H
+         z5kceJScvb7+Hl2QE4ID3WGGDmTiRldlsGHfb6TFymHwCnXrBm+OHhw+iDTHMdM/1Ffl
+         inGSnuO8TpHLRNgWzKIEpD0UTc8oizu0IYlb7aHi9tp/eD8N5XNv/0pQKfPFCPerOJw7
+         JKjg==
+X-Forwarded-Encrypted: i=1; AKwUvByXCw7uxYtsKoHrLEO0LJHYUUKR0CKPV0RcWgGJZB/IT+qUYar5HP4YY7Q5LYyayaEa9oHow/s=@vger.kernel.org
+X-Gm-Message-State: APuU4Z87ZaZnCpUbwVohd5jOr6ibbKXdE8452BGowM/y7auz+fM9qVoZ
+	RJnlnYh4cNhbikLypscWc6Yg5FGvanKWoxJXz1j8OZwwHAIcH2oOi9KMk9smeSLVvRM3ER75cM/
+	w6rdGGMxq1+aAAZhx0kl7yU0KOA==
+X-Received: from dyjo24.prod.google.com ([2002:a05:7300:3398:b0:359:198a:8046])
+ (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7301:4d12:b0:369:dc59:7a6f with SMTP id 5a478bee46e88-36a422042d2mr15472016eec.1.1793645937269;
+ Mon, 02 Nov 2026 10:58:57 -0800 (PST)
+Date: Mon,  2 Nov 2026 18:58:56 +0000
+In-Reply-To: <9afff44d-f8eb-4549-8aae-f99a53339319@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -97,62 +78,62 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0
+References: <20261030083539.777877-2-almasrymina@google.com>
+ <179357408146.3131.2882435952119280563@kernel.org> <CAHS8izMt+5HBjkOOsb-FrwKoXxEBuDn=gf5p+64akYS=SAoQrQ@mail.gmail.com>
+ <9afff44d-f8eb-4549-8aae-f99a53339319@redhat.com>
+X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
+Message-ID: <20261102185856.1824792-1-almasrymina@google.com>
+Subject: Re: [PATCH net v5 1/4] net: devmem: unmap dma_buf synchronously on
+ queue uninstall
+From: Mina Almasry <almasrymina@google.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Mina Almasry <almasrymina@google.com>, netdev-bot+sashiko@kernel.org, 
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, sdf@fomichev.me, kaiyuanz@google.com, 
+	kuba@kernel.org, bobbyeshleman@meta.com, asml.silence@gmail.com, 
+	dw@davidwei.uk, ap420073@gmail.com, davem@davemloft.net, edumazet@kernel.org, 
+	horms@kernel.org, shuah@kernel.org, sumit.semwal@linaro.org, 
+	christian.koenig@amd.com, phasta@kernel.org, andrew+netdev@lunn.ch, 
+	sdf.kernel@gmail.com, hawk@kernel.org, ilias.apalodimas@linaro.org, 
+	daniel@iogearbox.net, razor@blackwall.org, tariqt@nvidia.com, 
+	kaifengw@google.com, dtatulea@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 02 Nov 2026 00:21, Alexei Starovoitov <alexei.starovoitov@gmail.com> wrote:
->From: Alexei Starovoitov <ast@kernel.org>
+On Mon, Nov 2, 2026 at 7:29 AM Paolo Abeni <pabeni@redhat.com> wrote:
 >
->tcp_bpf_send_verdict() keeps the verdict of the sk_msg prog in psock->eval
->and runs the prog only when eval is __SK_NONE. For __SK_PASS it resets eval
->only after tcp_bpf_push() returns 0. But the push can release the socket
->lock in sk_stream_wait_memory(), and it can fail. Then another
->tcp_bpf_sendmsg() sends its message and does not run the prog.
+> On 11/2/26 00:16, Mina Almasry wrote:
+> > On Sun, Nov 1, 2026 at 3:01 PM <netdev-bot+sashiko@kernel.org> wrote:
+> >>
+> >> - [High] The dma_dev use-after-free this patch says it fixes can still
+> >>    happen for RX bindings made on a virtual device that leases queues,...
+> >>
+> >
+> > I know about the issues with leased devices. That needs a bit of a
+> > rework, which I have done locally, and would like to send out as a
+> > follow up fix.
+> Will such follow-up rework the code touched by  current patch/series?
+> how much? I'm under the impression that at least the fix for the issue
+> reported here would be quite overlapping.
 >
->With bpf_msg_apply_bytes() the verdict covers apply_bytes bytes. After a
->failed push, apply_bytes still includes the sent bytes. Thus the verdict
->covers more bytes than the prog requested.
->
->Reset eval before the push when apply_bytes is 0. If this push fails, the
->prog now runs for the rest of the message. The same already occurs when a
->message does not fit into one sk_msg.
->
->When the push fails, subtract the sent bytes from apply_bytes. When
->apply_bytes is not 0, eval stays __SK_PASS during the push, and the prog
->does not run for another message, as today. The verdict must still cover
->the bytes that a failed push does not send. But such a message also lowers
->apply_bytes. Thus, if apply_bytes is 0 after the subtraction, end the
->verdict, as after a push that returns 0.
+> /P
 
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+I pushed the follow-up branch on top of v5 here so you can see the exact diff:
+https://github.com/mina/linux/compare/devmem-teardown-v4...devmem-lease-bind-map-dev
+(commits: https://github.com/mina/linux/commits/devmem-lease-bind-map-dev)
 
->
->Fixes: 4f738adba30a ("bpf: create tcp_bpf_ulp allowing BPF to monitor socket TX/RX data")
->Signed-off-by: Alexei Starovoitov <ast@kernel.org>
->---
-> net/ipv4/tcp_bpf.c | 14 ++++++++++++++
-> 1 file changed, 14 insertions(+)
->
->diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
->index d90bcc911b36..b016aa419fb2 100644
->--- a/net/ipv4/tcp_bpf.c
->+++ b/net/ipv4/tcp_bpf.c
->@@ -457,8 +457,22 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
-> 
-> 	switch (psock->eval) {
-> 	case __SK_PASS:
->+		/* The push may sleep without the socket lock, and it may fail */
->+		if (!psock->apply_bytes)
->+			psock->eval = __SK_NONE;
->+		origsize = msg->sg.size;
-> 		ret = tcp_bpf_push(sk, msg, tosend, flags, true);
-> 		if (unlikely(ret)) {
->+			/* A part of it may have gone out */
->+			sk_msg_apply_bytes(psock, origsize - msg->sg.size);
->+			/* Another sender can use up the rest during the push */
+There is some overlap (~55 lines of v5 touched across a 6-patch +262/-99
+follow-up): it renames binding->dev/vdev to binding->map_dev/bind_dev, passes
+the net_device explicitly to net_devmem_lock_dev(), factors out
+net_devmem_close_rxqs(), and replaces the !rxq->lease / !netif_is_queue_leasee()
+skips in net_devmem_dev_unregister() and mp_dmabuf_devmem_uninstall().
 
-Interesting. We've never hit this with http parsers. We do use this to
-skip payloads some times.
+I kept it separate only to keep this net fix smaller and easier to review,
+since the lease issue is pre-existing. Happy to either land v5 first and send
+those 6 patches right after, or fold them into a v6 if you prefer avoiding the
+churn.
 
-Thanks.
+-- 
+Thanks,
+Mina
