@@ -1,93 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793587163;
-	b=hwhjl84PLTkR2xEVe380Xt+28b9YMxMoJDpeSn2j08kGir2bMiQ4nNpUrYdQIJoi5LCA
-	 VRiGni4h7r6p5M3Gk6jnY8o6Jy8oS1FZo4esYMU/zLn106LmB1Dt1bqAD0qB3pX35l1w/
-	 1K18a2jze6AxnONMlb869aXUy/Xb9nQO5tRMlY7lr9YdRVr5O4Fxdyvj0i1Jp0OnpK4kL
-	 8zRAwRxa8wRlGLZ6EUMWXwZTDfNwBsUnf8JI0HQY75KlbKAY1rGzA9I7zVDycehAJ+k7R
-	 9H8Rd4tTWkPfsbrp+4kL/W+ZuSg/VqajAfJlK1V1+jxWO0+sWZkTKGd036zQ8iiJ/gg==
+	t=1793587695;
+	b=otkJne1VT4suZRFTwrtHIyRC3kq45250vt1HmYmInSNZjKRISBu3CBgLRyM2GA1ooOke
+	 T4uM6IpXsClwojqPzw1IYVfO9Z+8HC7A7cQKYhREwxmQnkEamXewrIO7nsHxYBo2j/gB6
+	 vfk0+w/1NOhpIrO4oUerLKobeiMiysVPXSZERtlbIugwLcy3mklU09YJurs4FgPCAI4I+
+	 f+ezimLdkh3z0iPx5s2d3WHo6zRwJ839SsHjbIFF56W3GcxAz1VNKQiqzUEZoqq5/Iaqs
+	 WZ2F44hgRfC6L7Q6y51xTqwLxzQrOyFcvnhZZqvpINA153SfqK3a5z3DWv/ZYcyHrYA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793587163;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793587695;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=KYYsPF3smfmDvFuVNAia89SV+iNatitTLTar5uvX6+M=;
-	b=l/tFBKP0/5DPiCI6dSPEGQesFP4iYAkEf+WL86fYvX5EeM9FXyg5XyXEvg5T6RUL+0uj
-	 +oZM7UI45DxrRFiyQRAIGFiM9xk1XxzHZW97Nxt0qRDsefo2UBPOh6+/Zbe6BuTuSDL/z
-	 WArsFd+A/+BixkKtFVkAJqZWcBedGmdMUyXOwz1Jc8xoDru4STSU4+WBS+21B6bZw1T1H
-	 Zc3gqPKkxw1sp+LZ+8qxc+awijQevJmza4hAaFn+A4klBIwDC73qcpSnGd28SbguPE7T5
-	 AlR0Vuo/QIFvdezIz4P5Q27u8U1Iu4QjA3Dn9gTQ07lza0Vnm80bpN3Nr8INvqWZXUg==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=IxeB/5HUF4xSL5RIyv8FYJykd2NtQvs0eRR/c5Njn30=;
+	b=zKERwk/ks0JD0lHhRutOmJJ+nl3cXrqPvSSpdolAUb6vLSVIVVBMHZhr/tgh3E1eLvSS
+	 f6JFYYB0ZFFM2Nc/Lo9IJ1b7IDvSCg1aCP+yYD5Vz1k6QhguEjqvh+g+q4KFGrBUa5gp0
+	 3diWF/om/pffwt7Gk2myZX1YjbKN/ukcc6/bukX+qpM21VLFSzAIr4NImiDUtxF/qt4N4
+	 c72ZxDs4FYO4qKCtgcG5qsz3Z/3HbA29NXmTMVbL5YWBMN31rBLNVHcv5c18Uzm54zvmS
+	 4EYC3BxBnyYlcQv5ayEOhWkgi1LrDIHlfZlIxnv0mhlwfGg5IC58wo+P/2raQaIlyxQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bKWFUJFH;
-	arc=none smtp.remote-ip=74.125.82.172
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XRk3+SWj;
+	arc=none smtp.remote-ip=74.125.82.45
+Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA72606A324
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 02:39:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2DA72606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB52606A33A
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 02:48:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FB52606A33A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bKWFUJFH
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-33fb4680717so3682894eec.1
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 18:39:22 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XRk3+SWj
+Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-170135e43c7so73325c88.0
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 18:48:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793587162; x=1794191962; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KYYsPF3smfmDvFuVNAia89SV+iNatitTLTar5uvX6+M=;
-        b=bKWFUJFHhIAMisXYjAxSuPuFkB+n1W5wt8aEbUVII2PSW2y8jTpq57TbJrC+v3c9wc
-         Wqny9i/cQ4P83gSIwbCqLyAAMd9yt5EV1kyLL0wAlptB6EByiDq7yAJZC/0ZHRz4Cu8B
-         MtYpKCOaI1+/LQdVApEBmMd+iOCQxMvhvRBhr6x1ZTu9i89HY9xc8lBWmQUnvKTA2Y3l
-         Y0ZkladmKZFvjLw2WcA7VM99aHdBd+yMubSgx7JZu/SrQiFJtyPsBGZBvdDLsJsT05+m
-         gKMFqopdrXaLQ1XWMb3WukH6dF8E1dDzVD7HDI5XEOX9+WIzIAfY9H9RdyPAwgSSW32I
-         Eyxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793587162; x=1794191962;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1793587694; x=1794192494; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KYYsPF3smfmDvFuVNAia89SV+iNatitTLTar5uvX6+M=;
-        b=DRb3X/v/BBIrYunogp+hUZojb9sCz61pCm5U1bUQCmmAFENr/SHQkVDoE2e5wC8dyg
-         mb8tXZARu7AV/HycwAQBDpAL10rTHOUaYvn6zyHHKmkuNlEAudgdLY0MozFOGPRXnnk5
-         JyKh3RbQhQ/eI70v1yjYCxshvF472dp1mGHLdp3JwM91/3TPUpJm0fbJXbHocleAE7nF
-         rZP49gNDecxje+O7dh4I/1p9Jiu+35eiej52KjSxx+mEtvabsi6+yWVyb9R2teAcwvCQ
-         IxDo1XgWdWYWouGuOC0xsrhPtKv9CEh6zCsuhBrJcI/23EX4gKXtGfaclU56h9+iNaDM
-         vuUg==
-X-Forwarded-Encrypted: i=1; AKwUvByVcF21OV+7cI30Q4j3VWYIu9b1rrYfvRP7kWjb8C9VnG9wTRyF+r6L5/2xIMFXaaw6cwP48s4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8wTxSWrE0tRpBDGNl664pCR9mI8t7IKW2/83gctqrKd7ABFQCN
-	Fd30v9ey0DgzJ84+CmSEyGeyteu2tLxzJ0w/ShU15+b+XDrfbX+My701
-X-Gm-Gg: AYBFou2/+oNLsez1A+bE0M6Frk28VWz0sHZ9MNwZWn2+9gWOrKzJPKl+8DwL+jm6/49
-	oLEQlEMH3YQi1kRx02h11BeOFo0CCprxn72rCAx+V9I6xzZjUeAOlgkqzlYBz38E57NLdEgPlIS
-	3poOaG3BcM1+QX1YPz/GjAJgStJIbwzzdkR+0JyhvpC8jnEnzE9eUJGhgS6iFNGDU1Zo5zp9T1Y
-	8aa0mkUvD7KSH/LG5IR0RKayyBlLoovXVpbn9CJ/Nl8K+loY2Qx8n3prFHuBN1qFu8WKpHG5dHi
-	OLCgxsoNgHYtcQAExtaksBn97uIhQ9vcdz7K1qpG8IvRPBJOswtPFUKjdEYZvc/QiKFv5+EFbPa
-	Il9Q8xVkWBCaNvGY+PPgeYSzmf4OV/7PBFVh2vW5b2ge+yVIfTMoh0c9mH7jooQ1yK4sxBXZezz
-	QW9oyTPUFqbro2cLhWyxSKLhq8fouBwT/qR7bSctfNViY/4qI5MmrOF4/DKPlpXkqOWNFeP5Pd4
-	6+b7NQ6mc7S4PRNIbrdzcfYhZANuWKCT9/iUKnFZ9rcygvGKPI6TMR0X1ivvq9QuQPGj7Hh2TmE
-	Ipl5E6dU/bq0cEpDbs2UkYxupjena5GRN7te3rJKlmV/KX3fBl3jSK/FcrnppDy2/BAzv8SIhrs
-	Bh+apkrCaJkea/7v9FKd04sYLWKbVgT4ZpIZ3vHdehXZDbw==
-X-Received: by 2002:a05:7300:cacb:b0:36a:3310:21a8 with SMTP id 5a478bee46e88-36a4238da58mr13728662eec.17.1793587162130;
-        Sun, 01 Nov 2026 18:39:22 -0800 (PST)
-Received: from l ([2603:8002:ea00:6800:4808:7aa2:ac97:30e9])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a42902649sm37008422eec.11.2026.11.01.18.39.21
+        bh=IxeB/5HUF4xSL5RIyv8FYJykd2NtQvs0eRR/c5Njn30=;
+        b=XRk3+SWjrmFi47T+BW8eqendwPWmdwpi9KgXy9BnV+dovb2ge7vNhFjLm16xv6o6ux
+         vs8KDvC4qWMFoI4VY6oH1k/UK5kSFBNZ8kW0FCRmojleyATVsyt6brflCeE3BaU1JCRA
+         eocl1/Qw1fsH5888Sty4t7EL3+OAaWhRKzGUjw4fJTb86AlmQnxXn4S0e1xqRjkKuTRg
+         dWgSi767xghB4fE5WjDkgi88GJeS41ivbBGy9PHocuyHpkdgh2NKpK4zko41yfl0IcFP
+         SMETV76yFrDufnc7iCLlADKB6DwJvqzOnYCQ78An/4Ev/l+ZU0KoKo+GdWmEsBvuqklf
+         /LVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793587694; x=1794192494;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IxeB/5HUF4xSL5RIyv8FYJykd2NtQvs0eRR/c5Njn30=;
+        b=DN9DqQN11i75dlYRYj56NPqEZiaHVLEZ9F7710HXIixa7a5QNETa4k7DqIW2kRQfLW
+         CPjycg3IieOsvQdG8Edb2LSz9sbmfXuJgoSzwK6ZScPBf4r/MYXYjrmMHHVQMLrjKxoN
+         IQ9Mf63F65/w+yi5H2GiiEnBCLBtJ6cDoAUoMVhvEQrg9FWDN5tndAFS17FDYYUctYpN
+         SgAV21acTRcT35gluhSo+VxX1aDd2lLuJuPtuCsgRXWIt54VpuSLeZC4S4tbq+OBG1Di
+         1pv3G2d11sGEdKNdaomYwi6TS8fKR1YfG+etvk3vHFDNtynKVivHvO7mFbM79fq+eLHJ
+         SOdw==
+X-Forwarded-Encrypted: i=1; AKwUvBwGCOIer9T5uuK8eHqQJFupVnIynrU+i8Nw4AHhmN9XpjmkF5xgJNSQRCs++CIgiyJI0tAw0Kk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJZB9MbI/w1NtVbfq9E/1OqLfFGPcKUcMyhIz04GZHvaDQIK+iL
+	SgvL6AtIDfyOtDDmzta0e7fFlEUPjmFCG0FdnvQjwezTLGNgeGjiad9Vbgo3uCtxmi8=
+X-Gm-Gg: AYBFou2+/5ioH4nlIlJXRSLTPXPtYc0e7d52GFs9/zbz58GVtoP9YuR5SYtJr1dtnFx
+	H5SgPLlvNZWVbS5UriPLfUnOVAdnelKME5bEc8BUlVKQS4taSUWg9UFTWeBatKwYmewuIyXitVx
+	jqPMntmftZwOBkzGaRBNgnsc8ZO6EJF1azR3iGUUbpraIVxiP3D4LoT9Su3dfbK6Y9ASFUGGRBa
+	D7bsMVKJI11bUDtxmkshDkOOf3C4pcPsFlDxoNlacxMs0AAUql/uiAoJ541nZ1XJvDyykyPVyaw
+	Ez1oD1J+IIDJjFLsP9zJ1GHn5P0WBb7q7vjfBsLXT/sv//9w8yoCBUvISIwMqIQXkqPYv3zWBpF
+	BM08Teo+lrhknCZJOIKzjwJEtIvbOSJhb93jzvilcd37o23zbtZDqVpEw8DZwS4EUer+hDUb9I4
+	a4DJnlQWvbUH8R82HjAHztg79KBM+a3H/cQK+7AtdcLqBdTwvw6FFULEsHFK1ydvhr8Gnwy8GY6
+	oi66QjpdXwS+eHoFTZ2kTbWfshmJsSll3jlilorDduunpeqfGaJef2eau4Fn+u1Sa/eWOQIT+N5
+	JDGsYOgr/Cve+B6R7B6sKsR5N/k8psdDfCwX
+X-Received: by 2002:a05:701b:4281:20b0:158:1ed2:cb58 with SMTP id a92af1059eb24-1ac5e6f5362mr13936565c88.39.1793587693890;
+        Sun, 01 Nov 2026 18:48:13 -0800 (PST)
+Received: from xploitoverload ([2406:b400:f11:1bac:4040:640b:8a1:8629])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac0e738445sm29930662c88.0.2026.11.01.18.48.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 18:39:21 -0800 (PST)
-From: Dave Seddon <dave.seddon.ca@gmail.com>
-To: Michal Kubecek <mkubecek@suse.cz>,
-	netdev@vger.kernel.org
-Cc: Dave Seddon <dave.seddon.ca@gmail.com>,
-	Taehee Yoo <ap420073@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>
-Subject: [PATCH ethtool] netlink: require a value for hds-thresh and the TDR parameters
-Date: Sun,  1 Nov 2026 18:39:19 -0800
-Message-ID: <20261102023919.1472495-1-dave.seddon.ca@gmail.com>
-X-Mailer: git-send-email 2.56.0
+        Sun, 01 Nov 2026 18:48:11 -0800 (PST)
+From: Kalpesh Solanki <skalpesh942@gmail.com>
+To: andrew@lunn.ch
+Cc: alex.aring@gmail.com,
+	stefan@datenfreihafen.org,
+	miquel.raynal@bootlin.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+9ea34da5ca6100593c90@syzkaller.appspotmail.com,
+	stable@vger.kernel.org,
+	Kalpesh Solanki <skalpesh942@gmail.com>
+Subject: Re: [PATCH] ieee802154: nl-mac: validate device pointers before dereference
+Date: Mon,  2 Nov 2026 08:17:21 +0530
+Message-ID: <20261102024721.28129-1-skalpesh942@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261101092219.1278751-1-skalpesh942@gmail.com>
+References: <20261101092219.1278751-1-skalpesh942@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,87 +111,65 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-hds-thresh (-G) and first, last, step and pair (--cable-test-tdr) take
-a value, but their parser entries leave min_argc at 0. Given as the
-last word on the line, the value handler reads the NULL that ends argv
-and the error message prints it:
+On Mon, Nov 02, 2026 at 01:13:xx +0100, Andrew Lunn wrote:
+> Did you consider the other fix? Is there a use case for setting a TUN
+> interface to ARPHRD_IEEE802154? If not, maybe return EOPNOTSUPP, or
+> EINVAL?
+> 
+> Andrew
 
-  # ethtool -G eth0 hds-thresh
-  ethtool (-G): invalid value '(null)' for parameter 'hds-thresh'
-  # ethtool --cable-test-tdr eth0 first 1 last
-  ethtool (--cable-test-tdr): invalid value '(null)' for parameter 'last'
+Hi Andrew,
 
-Set min_argc to 1, as every other value-taking parameter does, so the
-parser reports the missing value itself:
+Thanks for reviewing and raising this point!
 
-  # ethtool -G eth0 hds-thresh
-  ethtool (-G): no value for parameter 'hds-thresh'
+Regarding whether there is a use case for setting a TUN interface to
+ARPHRD_IEEE802154:
+In real hardware/subsystem usage, virtual 802.15.4 interfaces are typically
+handled via mac802154_hwsim or fakelb (which properly allocate wpan_phy and
+dev->ieee802154_ptr), rather than raw TUN. However, tun.c explicitly recognizes
+ARPHRD_IEEE802154 and ARPHRD_IEEE802154_MONITOR in tun_get_addr_len():
 
-Only the message changes: the exit status was already 1 and no request
-was sent.
+	case ARPHRD_IEEE802154:
+	case ARPHRD_IEEE802154_MONITOR:
+		return IEEE802154_EXTENDED_ADDR_LEN;
 
-Fixes: 66e5dcf295c0 ("ethtool: Add support for configuring hds-thresh")
-Fixes: 9561db9b76f4 ("Add cable test TDR support")
-Assisted-by: Claude:claude-opus-5-5
-Signed-off-by: Dave Seddon <dave.seddon.ca@gmail.com>
----
-Checked by hand on a build of bae2dbd: all five parameters print the
-"(null)" message before and "no value for parameter" after. make check
-passes.
+which sets the hardware address length to IEEE802154_EXTENDED_ADDR_LEN on
+TUNSETLINK for userspace network stacks/simulators (such as IoT testbeds or
+custom TAP-based emulators) that expect 802.15.4 addressing.
 
-Claude found the issue while porting the code from C to Go, and drafted
-the patch; I reviewed it and take responsibility for it.
+Regarding fixing this in drivers/net/tun.c vs net/ieee802154/nl-mac.c:
+We considered returning -EOPNOTSUPP / -EINVAL in TUNSETLINK, but chose to
+guard nl-mac.c for the following reasons:
 
- netlink/cable_test.c | 4 ++++
- netlink/rings.c      | 2 +-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+1. Subsystem robustness / Defense-in-depth:
+   ieee802154_llsec_dump_table(), ieee802154_dump_iface(), and
+   ieee802154_nl_get_dev() assumed that any netdevice in the namespace
+   with dev->type == ARPHRD_IEEE802154 has valid ieee802154_ptr and
+   mlme_ops. When that assumption fails, it triggers a NULL dereference
+   while holding genl_mutex, leaving the mutex permanently locked and
+   deadlocking generic netlink system-wide for unprivileged users.
 
-diff --git a/netlink/cable_test.c b/netlink/cable_test.c
-index fdb046e..648bf74 100644
---- a/netlink/cable_test.c
-+++ b/netlink/cable_test.c
-@@ -544,24 +544,28 @@ static const struct param_parser tdr_params[] = {
- 		.type		= ETHTOOL_A_CABLE_TEST_TDR_CFG_FIRST,
- 		.group		= ETHTOOL_A_CABLE_TEST_TDR_CFG,
- 		.handler	= nl_parse_direct_m2cm,
-+		.min_argc	= 1,
- 	},
- 	{
- 		.arg		= "last",
- 		.type		= ETHTOOL_A_CABLE_TEST_TDR_CFG_LAST,
- 		.group		= ETHTOOL_A_CABLE_TEST_TDR_CFG,
- 		.handler	= nl_parse_direct_m2cm,
-+		.min_argc	= 1,
- 	},
- 	{
- 		.arg		= "step",
- 		.type		= ETHTOOL_A_CABLE_TEST_TDR_CFG_STEP,
- 		.group		= ETHTOOL_A_CABLE_TEST_TDR_CFG,
- 		.handler	= nl_parse_direct_m2cm,
-+		.min_argc	= 1,
- 	},
- 	{
- 		.arg		= "pair",
- 		.type		= ETHTOOL_A_CABLE_TEST_TDR_CFG_PAIR,
- 		.group		= ETHTOOL_A_CABLE_TEST_TDR_CFG,
- 		.handler	= nl_parse_direct_u8,
-+		.min_argc	= 1,
- 	},
- 	{}
- };
-diff --git a/netlink/rings.c b/netlink/rings.c
-index 5c695ab..22552df 100644
---- a/netlink/rings.c
-+++ b/netlink/rings.c
-@@ -202,7 +202,7 @@ static const struct param_parser sring_params[] = {
- 		.arg		= "hds-thresh",
- 		.type		= ETHTOOL_A_RINGS_HDS_THRESH,
- 		.handler	= nl_parse_direct_u32,
--		.min_argc	= 0,
-+		.min_argc	= 1,
- 	},
- 	{}
- };
--- 
-2.56.0
+   Other parts of the ieee802154 subsystem already make this defensive check:
+   - net/ieee802154/6lowpan/core.c (lowpan_newlink):
+       if (wdev->type != ARPHRD_IEEE802154 || !wdev->ieee802154_ptr)
+   - net/ieee802154/socket.c:
+       if (dev->type == ARPHRD_IEEE802154 && dev->ieee802154_ptr && ...)
 
+   Guarding nl-mac.c ensures the IEEE 802.15.4 netlink handlers are safe
+   regardless of how an ARPHRD_IEEE802154 device was created or modified.
+
+2. Userspace ABI compatibility:
+   TUNSETLINK has historically permitted arbitrary link types on down
+   interfaces, and explicitly supports ARPHRD_IEEE802154 address lengths.
+   Disallowing it in TUNSETLINK might break existing user tools or test
+   frameworks that use TAP/TUN with this link type.
+
+That said, if the consensus is that TUNSETLINK should reject
+ARPHRD_IEEE802154 (or arbitrary link types that lack driver backend support),
+I would be more than happy to submit a follow-up patch for tun.c as well.
+
+Do you think we should reject it in tun.c in addition to guarding nl-mac.c,
+or do you prefer restricting TUNSETLINK instead?
+
+Thanks,
+Kalpesh
