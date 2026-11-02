@@ -1,99 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.52
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793630313;
-	b=fUs2oqPZSfmiwNpInxMJ6n5ixMhDkaVWEZ5PGChMqarg/L2AfjYsRnRl2SFuyD+wepeF
-	 JsoKTL4sVGMGclAbIKW5O+4hKVcUwEOcr22WcFjgG4c7UBp0u6exNbbHiiG8XAro6pHtq
-	 +SJk4YadFLJjVwfhA4uPwA2+BZbnCFJ0WDnP7NjnIQ7mchP6UeQmjaHwLxjGZ9nWbDQOv
-	 U7QTevMxANjG8wsHSfajOh85CmN2xvgFQJx4duyZMKI6HNiCo7COlUdJDneUhI5t1HOfa
-	 sbhbp/npH4clNqoVcWrvjqb63LT3UThA00jnHgzVRLjVP7wKqWoMR9ngjrZGd8FBAqg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793630313;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=kdpMoDfxV/kxyd283/cgxJ9yYcL9JRHgCdJXPdOv5hk=;
-	b=r/8GivEzonw94udD5BXPU9m+FJmWn3xrkNic86gJMRWpCiudNR8ndAozOD+hBCiJdTpd
-	 BeHgi6OafVs3cW6V+wt9/nGZFkApcNQyaBexnCq2NsGadC7ZIwkqevZRIgWhpX71CUezh
-	 TCbfvbk9okUy0E/CV7En0vdN2I0Slwht5DWFITs3oTa59oC9OhIFVy9nRw1HQ0S6+XZUL
-	 IfDcoudUKc8Ef5WAf9FJ5DMvJFbcCOs5CTkquf0Z/t8XlKCPey2SazLPgcsFdaCLIj2Gq
-	 zUF2pkQtp1C9KNZQu+1DDt4IMGJroJ+PuQG+k89T1VCzS9lv6CcwKHgxJAudLmeX3oQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bzqFWStZ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.52
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.189.83
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793630340;
+	b=CToxEVuRq9Ml1pDEHJAj6r9+UPf7g/GXOwjRnAaaC6ya0sgaCizn2rwEDO7x//5f9n2A
+	 BzxLUgAnfnGTesOWl6YTGQQ1xvySfIA1MwJNwhP/CzCc6sitcdLX8v1GoCUjsFuDIyShz
+	 +ffNS2QyQiQSBFyjkR+Tdju8tcExP5DQd1iqn8DQyLekUALOJjfmZ9lyNNuaC0Y2fsyr9
+	 k/gFpqp0qnoIhpR1fWELFmpeoyUnnFILrQOBZC3c7OMNIaZlNIDqGzcPiirvpi3PrOqmg
+	 /B/egvDyUXN6+/48v7nnNavC8SWTnlG0SYwoeHK0kP8lbd6NwcC2opD21GopiwHGyNA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793630340;
+	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
+	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:From:To:References:Content-Language:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-Mailer;
+	bh=avVz+7g88klb4HjdD4G58Z9rchyB7vSgeDbHsp8k0Ys=;
+	b=Mvs88CWsRDGOF7Hie04abQX28kSBxyz5YbEmSZ/qYc+pgK07IJTvfTCdySnQVxZaTJ/6
+	 mIie9HXAujFFc23ZaX1BNpMuPsk1Oo76cfq5s0S0KRBeRw1HDSj8PviFhspXQ4S8H6Dnk
+	 6dhAAHOQSQzKPHloD0rQ2lg1hFwM5jC3ZDtNvrCMOr7osTO67q/jMk0hRRUeSbx8rxURk
+	 E7+2FgtrbtXiX88pH3pxmN3GPqki1tXW15pawQ/cDU8KYGATE4s2t65kSfrsuD510LaR+
+	 sBGyMnHKgE7dCLMD7wc9ARs44Q6gx7p6nw16JuvaRPjZU3HmSotnTQcQb6FmTpocNrQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=yahoo.com;
+	spf=pass smtp.mailfrom=yahoo.com;
+	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=Rv8n0JxV;
+	arc=none smtp.remote-ip=66.163.189.83
+Received: from sonic306-21.consmr.mail.ne1.yahoo.com (sonic306-21.consmr.mail.ne1.yahoo.com [66.163.189.83])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866DF606E005
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 14:38:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 866DF606E005
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7759606A32D
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 14:38:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7759606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bzqFWStZ
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5bfc32574e7so1525130e87.0
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 06:38:33 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793630312; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ZfMJHCofVX27tlEDQwAja8VshUGLZkZYc2v3OFh6b+lf0Mbh7btWYwLxRY7qDn7Id5
-         ATiO3w/uevru99/DTLMRu3wtDL9+uncqp2I25ECDwAzbLYjA64jdpcElsF5IFwbCz+tE
-         GfSbYre6ul5Ia2xVVtu5kiNq4IkXLmvbPHfaHxTsvhmPawRf5OzoPihoQc/PoMYBr+MW
-         dceKhZOARyGN8q93QXM1ZqX247DkpnqYs6pVrEjZQ2fv0f1nsVbBA+puI/QeMDNncGbG
-         smqrtepSx9Y9EFHies+ddik71UPlByP9zey9I8rHbVf8LIK7f7tiOArhmpIMEN2BR9+c
-         p+dA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=kdpMoDfxV/kxyd283/cgxJ9yYcL9JRHgCdJXPdOv5hk=;
-        fh=a6kuEAM2ZBzwvjyaJGGzlYYIAS5lsqjFgUwGibpVneY=;
-        b=VJfvDGxLn9vAQBE8WGQf9t/PR/vdqf499Nxu64mXmBpQPnnV0mlPYkXevitw1HA8Y3
-         D8X9kiOE0aO3LBuSfi9vbX51NnyIBoanUngaOppISYeEVBUnJBoOAXTD0ffrO52tTNSf
-         bRbO/ZGILdb5JQjXA0u2WNvVt14EQAL2t/wZ1mbehj8X/bpXHVIAR3EHU8vrLjZo9t4o
-         kgYR2LrgesrpToKdOdbolz7gOHOBu6SkJ8X9xO2qMZyDn7c9hRci/PYcTiL2G2oC2+IZ
-         kpC5wNST0bfoqKde7Gop1sDDMvGwBq5r1Ttpi3jRLmKY8pBdcMqN/fz+HdWHvZw5Sr09
-         pk7Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793630312; x=1794235112; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kdpMoDfxV/kxyd283/cgxJ9yYcL9JRHgCdJXPdOv5hk=;
-        b=bzqFWStZlSeo6uMCrFePWnp49xkQBYilAyy9LG/r319JXqVCyWI5UM2KooV+Qkx68L
-         GDF9MvxzYgoLTcs/3gL2ZUqls62clkJSA0tLMlWsbVjvJPIAb46PE28fcqgTdC8YATlI
-         faIVsn+HOXE40PiVvTuXP99QSueInGhnte46U7HHioMk1yNvtvjtEavGj/p0Vgdx87Sd
-         JzTvavWsUumMt7hlV806pAQNRCp/ZQFvljrHNBoG8N8/CwyLAOf6BuSgHuUgPTqCR080
-         OwVhRaURsC1+QFeiYMjyFxmJuYIixGxBPYI8k0e3mPtsRN8EOjAuWANotfDSMOdTw3YO
-         eUzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793630312; x=1794235112;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kdpMoDfxV/kxyd283/cgxJ9yYcL9JRHgCdJXPdOv5hk=;
-        b=wCLLugphQEEqp+A/50RFerIvPWxXLWYRaZ2WXqe3TH5XJgQU1mRuqhkfgJDPmDi2+c
-         KwCbCqHOVCj0bza6S5E6bpkCiUcMm/coEEsfBDe5UZpTwhqaNVh8g60Ikj90PfGm1Wm6
-         0idNDslAnc1lpR5J8vTM8aKhZKjcN8xyM0jFHvzQCs8BY58zei9ISbRcqB7EgPhwaIrm
-         dgK/9b7BGkg38s17GA8tsx9KzOif6QmI5Wmay/PDCE+WYNtzV03eiDXmHUW3n97G9zLZ
-         Szkcfvf32TZFy2QHj4MIUMjx7ixW1mjBbeonWHs6V71xtSS6d6mdN5bN+/MasuaIaOq4
-         pKEw==
-X-Gm-Message-State: APuU4Z+eSWdxTbyodQpvINUsH4uZUe0aSF14ZNhyRrxcmFrw6MGo5XlT
-	l9Yg24agmI+6TVIsDAsMqUDiu+0QCRWebxNcGCnQVOFN/vAUWA5eJroH6Zop80x0cvTC+2MAPm/
-	chBpGvWEXi0ghgZmj25ugJ3EdMltsIKNm1OqC
-X-Gm-Gg: AYBFou3R+j9ZQI5Lu/LABmd8TD+wbEEUrccP8IYSkmq6iACpwL7DTZWLzeQ2MOgjn6f
-	0R35XV3X2oIdbN9KDJlTd44eLPuVn1MTPrUvvFvH1OsdeUapy8xO38iRdjho4UYIS6TrYRXX6B4
-	TVapg9cRhdXMXf3P/BpQbQUxOl4C77SV0nSPJZiqCNJCJ+iqEA8BwBQkonUIZmP/StV4sQmyUrS
-	Dy7rK3h2aG4N/xbpdXvf6q0W2kww6/ehX403J0qmTUbAft/hHX7ZdJw7PCg2lh4Lxo2S6Z81uKz
-	gabbzQv6dE+aA8wHANzHwistSIC5dctRPfmCk+TfsoCEpnWaZ21NL9fXh66BgCPcTLHxky3RHij
-	W3T9CgL0qtOwpNn224r9eP34nxsl6QTp8HE/yHrTg+Ozm450mQkKF8W96uQ==
-X-Received: by 2002:a05:6512:2383:b0:5bf:d2ab:2db with SMTP id
- 2adb3069b0e04-5bfd95885fbmr2739757e87.21.1793630311537; Mon, 02 Nov 2026
- 06:38:31 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=Rv8n0JxV
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793630338; bh=avVz+7g88klb4HjdD4G58Z9rchyB7vSgeDbHsp8k0Ys=; h=Date:Subject:From:To:References:In-Reply-To:From:Subject:Reply-To; b=Rv8n0JxV0M+IByHMhAcUjgrR+4kmWo6S+yPF21tOf7KeuWOgCO4lNchKlyVmxYsZhlZBG2uOwpbTLyDm0I6DGpeZBG8OZ+Rb/98KvgaTYNXu3oJMgGGEwPb++fgffk/E9hllIIZKtyA9k5/IICnrIH+IaC1VxQPrwWUxdV3OjP988YnOUJM2mSPmE8g8dYTy6SAj8r2tz0bvGHn4PMu7UIeDG7kPAMqbIfQWJT2D9yfTyLGFYGT0xhJEoLEBLmrF+jRphd3Uo2QxuJGDO8Iio+Pjyuddfs0HrEuh9US5RbvyrX1BMlkxHLm7Uxm2l8VwsYE7yWRUuQv5Cnhrx0LxnQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793630338; bh=FMqgTZ4ppemRAH8sY6EwbQ8jg8o/xFP20XC6aQRBxjd=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=g6v9D45MPAu2OtKtt5k8QvMYPWvw7s/cJLUmIhMXGcHxPgDtainnSOs+P5s7zHhK/NNK/GGIEZpv8Qz399ddSD+uWIZ1wV1YNs1ropGJMYyFIWISzL4Afxz1IV9Y89OLy0kEHwZECYPt4DsYHKb30NlAW2Te1W+O11FLrvFQ2yHbeOvGCQCuN98Qk3dhv4TlcF/9X+H62oWmYWFFPWzoT1Gw7IWY/C24L422Q0/7QaIqxbiDLMzMGbiS7Cv7rnXRxxDGdfFHT3j+0T3mOqQcvzCvTPG5KykJJX2Iml/njhMcHiLnL3TZNAxoEBkVNfLSGrUsFRq8RIpo1pxO6XRtPg==
+X-YMail-OSG: lb0kUucVM1kLCWekMMduGVPyh0XPBW6q865e6w4OR9ZykqUq16jiVJsk5Z5kyoC
+ SH7hdCMscwJXlQIWuMG7i2w2hLqR834iZoCDBbk4A4VkmnF8oO30RPMmUhG9xh7n_oYiVNR1oq9a
+ _WtFhm8v_8vaUblldZXvc2ofKAgrFGkuI8TW7hHdI9a5J7xTrBuUY0yQ_QRHwXBAqkuZRiDe0Ipg
+ ElLhlPWbkTvAxb_pGvggiGrm44ftIXpfCujAxlBbRFWXb1EbyehbYdUbFy.HIAI8ZQXOx_JBNBFG
+ aEfO6exgdh_m9YkQS8ueVb4B01v1VskBPplKhgcS8e7s9kXNJfAUUxp.2Ppd8Wsw1thX.S3_Jn3n
+ U6sK8CTvQXBBW3XP6keLuzXf4JAJCZhCaIEkx02.TatL.MZnEDZz9QcI611KJa6801lShbofwG2U
+ Du0.i0jTm5embTSx7wdz4l0N_m4SldKW8rypQXntuQYPlUu_vaZqfRqMGivXwPY1BGjWd0j4t.uG
+ yLVmNdbGnzAVE5izDA5ALbOkPb_BDmYCbdorYJem37bGn.CfYGvCobAhRvEh15U4NPR9eR.LSf4x
+ v2OCYKELSvt.aEwe.b8aaRntQz5MeiWtiNeCULGofsqsD20DHoIW3XbGaJdr0L2B9OKnCcc8cugP
+ h787fimyR.LIdE3MLbtJD358Aop1OCXIt.wSAmJbXG.CVM49jdPFOlOr5BSgj_QQBjZ2YLLPik61
+ 8YThIKAtNGsm_l.FZFyPDjFPLk7CrqSSY2EKBOerso_Oc8K4oy48iY0mOKRq3Ei9VEMgWnFP6N73
+ y4zKrHcRGwEckPWp1EwEQ4em5gZiNAG25vl01VbWfSznR.sDuhP8SvNx_O9arUi9aZfIhTureeI8
+ 924X2zKArtDfjGP3ljVwtahSkZGm2hme2kIhQZzSdkHecZ9j8srrOmUblUpZqGvRRewzvZRJ2THh
+ SywM7Ic7je.78bPcdcpc27OdbHEjjh2ZiDKHoHFmyczvQVYlbjXyPAxpDVC3l.A5Ezw028aCGPNp
+ y8mUeayFA8AZiH6_eaLSHtesbigwtMFfuXAe4tpknWAWESuTQaOWuaWDcVXg9u8s8PMoS9O12ebW
+ rW977nGL0pCg04uV7PNJ0QuqKHHbbwQ.6OJZCBoxdxDVIBaqmR.x2QWDHvooAZx54C4yNp38xAFy
+ d06yswiBrfTrSdMFI8gSrXBLY2EaW_CD4Ln4rdRPsB38ZJ43Nw6dLS_3zxuyr9pXTLJw0oaSGeMn
+ 6A.2pv9Kx0GRppamsJ9VqGnYt7O0DacWCuhwsPV2ZkxVzw3D_YKd4NjEg_VIW95ZFlwbwLGhGIHj
+ O4Hml4TxjFXz3.5uuoTN7u0mAe.XRAhxkOjhJLgT54ay.6s6RwwQ5P31AMy_ElyAlBbguM25xSZc
+ 1cH5CtDBX2ElPjob1CXEaEB12cpIa1EpTyog0BYFrlRkUe683ioFEK2UHPLXsA5OW7RJIbPbvs9h
+ lwkek4aqehPjknfDbdZMH_Q2JeKP3Pjj3U85gfopGVv3QIZJ3esaQTYWaUNITHXoENfhVdJRyP5.
+ aY1RV7iH4HceI_zmSca_Li6I7PxuZWFiHHY105p1pHxPOnDo8PQh2hMDgAHRFK_oInMIZl2uBnDy
+ wmKjiq6U0L1YKc9jDEC1oy9qboMu5mXFdmRtY_x51UyAQK.NivrRt.dSOUVdZDtL0TA9CJwAs1Kf
+ W2ByIlhcpNUS2ocRYVPoSnVA_cW50MT_gZs.0.1pInykRwStbLniIJXoAsXphFzwd6fUpYdr0gxN
+ EYOi02f3wd4Ot8_9eO3XqNXggz91InHzHlIxMSyxzNNDxVJdNbpX6pHREF2Dj_nhp14lq12kiGpQ
+ cFghWpodgWKnc3ngIPaAX6FG7JrRCEuXZujBgtOYbo8X5aJmYX113WlVWAtSjnRSb_5FeEp6KGVk
+ hHhnF7ljs_rIb1CNq.pok4zyAu_iSjWfLjWQJfbH5v0P9ljrx_XqEFLj..Ry4NVywFwVofQ9CPh1
+ aFwPjRao2XTFiflsbMuxKabSsZt0fyVm2Ibth7zZ1BRriKsyxRiBEuVSaOiTd6e4NyEA9vuOz4Ah
+ zyjO76MbyvPGFPR4RrqRTkCbm1zlAJhwKWca_dKapGZ1de6irWlMR3n8uylA60.sbtFXKBhmfjL7
+ KDj.YZLMikFCrA0CUHEiEANfy0e3DRgn3ko6t6QXSIYqkd6leyK1RoqNDw4aDeHRq9xBbvVnWVNB
+ nbcuQiOZ4u5WknbxzmKsL59SU0Gcqu0OS1VGCi7ilX1rD56hT6s.S1f70Y1LF_bpsHkDejDw1f4b
+ 7lyHpb9g5QEuMR_kWXttJ541oXFRvhC4.jZWf3oFe
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: 6f3851a8-82e1-45cb-9f54-f929327fb39a
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ne1.yahoo.com with HTTP; Mon, 2 Nov 2026 14:38:58 +0000
+Received: by hermes--production-ir2-5dd9bf4598-hl2mf (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 14f607e426603152465a6b495217399c;
+          Mon, 02 Nov 2026 14:38:55 +0000 (UTC)
+Message-ID: <d7f64039-b629-48eb-a985-dbcb2cc53774@yahoo.com>
+Date: Mon, 2 Nov 2026 15:38:53 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,270 +84,180 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261101101347.3910654-1-anilkaushikwireless@gmail.com> <20261101101347.3910654-3-anilkaushikwireless@gmail.com>
-In-Reply-To: <20261101101347.3910654-3-anilkaushikwireless@gmail.com>
-From: Anil Kaushik <anilkaushikwireless@gmail.com>
-Date: Mon, 2 Nov 2026 20:08:19 +0530
-X-Gm-Features: AclHuK8he1-L7JBcr8o_ziZkt640nJt1wti4Tfznt5AttnipuCK3bK_mDbQ9j3U
-Message-ID: <CAG0Mgm8Of6wqcBjZbbZ4+moVbPYShBifLsMedC74q8b_j3Tehw@mail.gmail.com>
-Subject: Re: [PATCH net v3 2/2] netlink: Check a group again if it was
- released while joining it
-To: netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Ido Schimmel <idosch@nvidia.com>, Nicolas Dichtel <nicolas.dichtel@6wind.com>, 
-	Jacob Keller <jacob.e.keller@intel.com>, Jiri Pirko <jiri@resnulli.us>, 
-	Florian Westphal <fw@strlen.de>, Mat Martineau <martineau@kernel.org>, 
-	XingWang Xiang <v3rdant.xiang@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: [PATCH net-next v7 03/10] net: dsa: realtek: rtl8365mb: set speed for
+ family D
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+To: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <3bf4dd70-9771-497b-8c27-e925e0ef81eb@yahoo.com>
+Content-Language: pl
+In-Reply-To: <3bf4dd70-9771-497b-8c27-e925e0ef81eb@yahoo.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.26871 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-The Medium is identified correctly, v4 will fix it.
+On family C hardware, forcing a 2.5 Gbps link speed requires relying
+strictly on the HSGMII SerDes configuration block, while forcing a dummy
+1 Gbps value inside the standard digital interface register. Family D
+introduces a dedicated hardware link speed value (5) for 2500M. The speed
+bitfield width has been expanded to 3 bits, splitting the most significant
+bit into a new separate register field (FORCE_SPEED2), which maps directly
+to a distinct per-port digital interface force layout.
 
-The deadlock already exists without this patch, I have sent a separate patc=
-h.
-https://lore.kernel.org/netdev/20261102120929.4077030-1-anilkaushikwireless=
-@gmail.com/
+On family D the forced-mode configuration (link, duplex, pause, speed)
+is written to a per-port register at 0x12c0 + port instead of the
+per-extint register. The bit positions of TXPAUSE, RXPAUSE, LINK, DUPLEX
+and the low two speed bits are the same as on family C; the upper speed
+bits go to bits 13:12 (FORCE_SPEED2), so FORCE_EN (bit 12 on family C)
+is not set. A second per-port register at 0x12c8 + port enables the
+forced mode: the vendor RTL8367D API writes 0xFFFF there when the MAC
+is forced and 0 otherwise. This driver always forces the MAC, as on
+family C, so it writes 0xFFFF on every call, including link down.
 
-On Sun, Nov 1, 2026 at 3:44=E2=80=AFPM Anil Kaushik
-<anilkaushikwireless@gmail.com> wrote:
->
-> genl_bind() checks a group under cb_lock, but netlink_setsockopt() and
-> netlink_bind() set the membership bit only after it returns and the lock
-> is dropped. If the family is unregistered in between, its members are
-> cleared before this socket is one. The socket then becomes a member of a
-> group ID that no family owns, or that a family registered in the
-> meantime got, and the GENL_MCAST_CAP_* flags of that family are never
-> checked for it.
->
-> Count per group in the netlink table how many times its members were
-> cleared, which genetlink does when it frees the group IDs of a family.
-> Read the count before ->netlink_bind() and again once the table is
-> grabbed. If it changed, the group was released, so check it again
-> against its current owner. ->netlink_unbind() is not called for it: the
-> family that ->netlink_bind() checked it against is gone.
->
-> bind() can then fail after it gave the socket its port ID. This only
-> happens when a family is unregistered meanwhile.
->
-> genl_bind() was added, with its first capability check, in the commit
-> in the Fixes tag.
->
-> Link: https://lore.kernel.org/netdev/179340003139.3131.112747177689286427=
-24@kernel.org/
-> Fixes: 4d54cc32112d ("mptcp: avoid lock_fast usage in accept path")
-> Signed-off-by: Anil Kaushik <anilkaushikwireless@gmail.com>
-> ---
->  net/netlink/af_netlink.c | 61 +++++++++++++++++++++++++++++++++++++++-
->  net/netlink/af_netlink.h |  1 +
->  2 files changed, 61 insertions(+), 1 deletion(-)
->
-> diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-> index fec2879c497d..e1af3ac4bf6d 100644
-> --- a/net/netlink/af_netlink.c
-> +++ b/net/netlink/af_netlink.c
-> @@ -780,6 +780,8 @@ static int netlink_release(struct socket *sock)
->                         old =3D nl_deref_protected(nl_table[sk->sk_protoc=
-ol].listeners);
->                         RCU_INIT_POINTER(nl_table[sk->sk_protocol].listen=
-ers, NULL);
->                         kfree_rcu(old, rcu);
-> +                       kfree(nl_table[sk->sk_protocol].mc_gen);
-> +                       nl_table[sk->sk_protocol].mc_gen =3D NULL;
->                         nl_table[sk->sk_protocol].module =3D NULL;
->                         nl_table[sk->sk_protocol].bind =3D NULL;
->                         nl_table[sk->sk_protocol].unbind =3D NULL;
-> @@ -990,6 +992,8 @@ static int netlink_bind(struct socket *sock, struct s=
-ockaddr_unsized *addr,
->         struct net *net =3D sock_net(sk);
->         struct netlink_sock *nlk =3D nlk_sk(sk);
->         struct sockaddr_nl *nladdr =3D (struct sockaddr_nl *)addr;
-> +       struct netlink_table *tbl =3D &nl_table[sk->sk_protocol];
-> +       unsigned int gen[BITS_PER_TYPE(u32)];
->         int err =3D 0;
->         unsigned long groups;
->         bool bound;
-> @@ -1023,9 +1027,14 @@ static int netlink_bind(struct socket *sock, struc=
-t sockaddr_unsized *addr,
->                         return -EINVAL;
->         }
->
-> +retry:
->         if (nlk->netlink_bind && groups) {
->                 int group;
->
-> +               netlink_lock_table();
-> +               memcpy(gen, tbl->mc_gen, sizeof(gen));
-> +               netlink_unlock_table();
-> +
->                 /* nl_groups is a u32, so cap the maximum groups we can b=
-ind */
->                 for (group =3D 0; group < BITS_PER_TYPE(u32); group++) {
->                         if (!test_bit(group, &groups))
-> @@ -1057,6 +1066,22 @@ static int netlink_bind(struct socket *sock, struc=
-t sockaddr_unsized *addr,
->         netlink_unlock_table();
->
->         netlink_table_grab();
-> +       if (nlk->netlink_bind && groups) {
-> +               unsigned long released =3D 0;
-> +               int group;
-> +
-> +               for_each_set_bit(group, &groups, BITS_PER_TYPE(u32))
-> +                       if (gen[group] !=3D tbl->mc_gen[group])
-> +                               __set_bit(group, &released);
-> +               /* see netlink_setsockopt(), undo the others and retry al=
-l */
-> +               if (released) {
-> +                       netlink_table_ungrab();
-> +                       netlink_undo_bind(BITS_PER_TYPE(u32), groups & ~r=
-eleased,
-> +                                         sk);
-> +                       bound =3D true;
-> +                       goto retry;
-> +               }
-> +       }
->         netlink_update_subscriptions(sk, nlk->subscriptions +
->                                          hweight32(groups) -
->                                          hweight32(nlk->groups[0]));
-> @@ -1686,6 +1711,8 @@ static int netlink_setsockopt(struct socket *sock, =
-int level, int optname,
->                 break;
->         case NETLINK_ADD_MEMBERSHIP:
->         case NETLINK_DROP_MEMBERSHIP: {
-> +               struct netlink_table *tbl =3D &nl_table[sk->sk_protocol];
-> +               unsigned int gen =3D 0;
->                 int err;
->
->                 if (!netlink_allowed(sock, NL_CFG_F_NONROOT_RECV))
-> @@ -1695,12 +1722,25 @@ static int netlink_setsockopt(struct socket *sock=
-, int level, int optname,
->                         return err;
->                 if (!val || val - 1 >=3D nlk->ngroups)
->                         return -EINVAL;
-> +retry:
->                 if (optname =3D=3D NETLINK_ADD_MEMBERSHIP && nlk->netlink=
-_bind) {
-> +                       netlink_lock_table();
-> +                       gen =3D tbl->mc_gen[val - 1];
-> +                       netlink_unlock_table();
->                         err =3D nlk->netlink_bind(sock_net(sk), val);
->                         if (err)
->                                 return err;
->                 }
->                 netlink_table_grab();
-> +               /* The group was released after ->netlink_bind() checked =
-it, and
-> +                * may have a new owner now. The old one is gone, so chec=
-k the
-> +                * group again without ->netlink_unbind().
-> +                */
-> +               if (optname =3D=3D NETLINK_ADD_MEMBERSHIP && nlk->netlink=
-_bind &&
-> +                   gen !=3D tbl->mc_gen[val - 1]) {
-> +                       netlink_table_ungrab();
-> +                       goto retry;
-> +               }
->                 netlink_update_socket_mc(nlk, val,
->                                          optname =3D=3D NETLINK_ADD_MEMBE=
-RSHIP);
->                 netlink_table_ungrab();
-> @@ -2031,6 +2071,7 @@ __netlink_kernel_create(struct net *net, int unit, =
-struct module *module,
->         struct sock *sk;
->         struct netlink_sock *nlk;
->         struct listeners *listeners =3D NULL;
-> +       unsigned int *mc_gen =3D NULL;
->         unsigned int groups;
->
->         BUG_ON(!nl_table);
-> @@ -2052,7 +2093,8 @@ __netlink_kernel_create(struct net *net, int unit, =
-struct module *module,
->                 groups =3D cfg->groups;
->
->         listeners =3D kzalloc(sizeof(*listeners) + NLGRPSZ(groups), GFP_K=
-ERNEL);
-> -       if (!listeners)
-> +       mc_gen =3D kcalloc(groups, sizeof(*mc_gen), GFP_KERNEL);
-> +       if (!listeners || !mc_gen)
->                 goto out_sock_release;
->
->         sk->sk_data_ready =3D netlink_data_ready;
-> @@ -2069,6 +2111,7 @@ __netlink_kernel_create(struct net *net, int unit, =
-struct module *module,
->         if (!nl_table[unit].registered) {
->                 nl_table[unit].groups =3D groups;
->                 rcu_assign_pointer(nl_table[unit].listeners, listeners);
-> +               nl_table[unit].mc_gen =3D mc_gen;
->                 nl_table[unit].module =3D module;
->                 if (cfg) {
->                         nl_table[unit].bind =3D cfg->bind;
-> @@ -2079,6 +2122,7 @@ __netlink_kernel_create(struct net *net, int unit, =
-struct module *module,
->                 nl_table[unit].registered =3D 1;
->         } else {
->                 kfree(listeners);
-> +               kfree(mc_gen);
->                 nl_table[unit].registered++;
->         }
->         netlink_table_ungrab();
-> @@ -2086,6 +2130,7 @@ __netlink_kernel_create(struct net *net, int unit, =
-struct module *module,
->
->  out_sock_release:
->         kfree(listeners);
-> +       kfree(mc_gen);
->         netlink_kernel_release(sk);
->         return NULL;
->
-> @@ -2113,6 +2158,17 @@ int __netlink_change_ngroups(struct sock *sk, unsi=
-gned int groups)
->         if (groups < 32)
->                 groups =3D 32;
->
-> +       if (tbl->groups < groups) {
-> +               unsigned int *mc_gen;
-> +
-> +               mc_gen =3D kcalloc(groups, sizeof(*mc_gen), GFP_ATOMIC);
-> +               if (!mc_gen)
-> +                       return -ENOMEM;
-> +               memcpy(mc_gen, tbl->mc_gen, tbl->groups * sizeof(*mc_gen)=
-);
-> +               kfree(tbl->mc_gen);
-> +               tbl->mc_gen =3D mc_gen;
-> +       }
-> +
->         if (NLGRPSZ(tbl->groups) < NLGRPSZ(groups)) {
->                 new =3D kzalloc(sizeof(*new) + NLGRPSZ(groups), GFP_ATOMI=
-C);
->                 if (!new)
-> @@ -2157,6 +2213,9 @@ void __netlink_clear_multicast_users(struct sock *k=
-sk, unsigned int group)
->         struct netlink_table *tbl =3D &nl_table[ksk->sk_protocol];
->         struct hlist_node *tmp;
->
-> +       /* the group can be given to another user, see netlink_setsockopt=
-() */
-> +       tbl->mc_gen[group - 1]++;
-> +
->         sk_for_each_bound_safe(sk, tmp, &tbl->mc_list) {
->                 /* bitmap predates the group, can't be a member */
->                 if (group - 1 >=3D nlk_sk(sk)->ngroups)
-> diff --git a/net/netlink/af_netlink.h b/net/netlink/af_netlink.h
-> index 778a3809361f..d5e2e404fd11 100644
-> --- a/net/netlink/af_netlink.h
-> +++ b/net/netlink/af_netlink.h
-> @@ -64,6 +64,7 @@ struct netlink_table {
->         struct listeners __rcu  *listeners;
->         unsigned int            flags;
->         unsigned int            groups;
-> +       unsigned int            *mc_gen;
->         struct mutex            *cb_mutex;
->         struct module           *module;
->         int                     (*bind)(struct net *net, int group);
-> --
-> 2.25.1
->
+The family D branch is not reachable until the chip table entry is
+added in the last patch.
 
-pw-bot: cr
+Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+---
+ drivers/net/dsa/realtek/rtl8365mb_main.c | 82 ++++++++++++++++++++----
+ 1 file changed, 69 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
+index 840db5a..2dabc4d 100644
+--- a/drivers/net/dsa/realtek/rtl8365mb_main.c
++++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
+@@ -344,6 +344,7 @@
+ #define RTL8365MB_PORT_SPEED_10M	0
+ #define RTL8365MB_PORT_SPEED_100M	1
+ #define RTL8365MB_PORT_SPEED_1000M	2
++#define RTL8365MB_D_PORT_SPEED_2500M	5
+ 
+ /* External interface force configuration registers 0~2 */
+ #define RTL8365MB_DIGITAL_INTERFACE_FORCE_REG0		0x1310 /* EXT0 */
+@@ -361,6 +362,28 @@
+ #define   RTL8365MB_DIGITAL_INTERFACE_FORCE_LINK_MASK		BIT(4)
+ #define   RTL8365MB_DIGITAL_INTERFACE_FORCE_DUPLEX_MASK		BIT(2)
+ #define   RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_MASK		GENMASK(1, 0)
++/* Width of the FORCE_SPEED field, bits[1:0] */
++#define   RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_WIDTH		2
++
++/* bits[13:12]; bit 13 reserved, no defined speed value uses it yet */
++#define   RTL8365MB_D_DIGITAL_INTERFACE_FORCE_SPEED2_MASK	GENMASK(13, 12)
++
++#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG_BASE		0x12c0
++#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG(_port) \
++		(RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG_BASE + (_port))
++
++#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_EN_BASE		0x12c8
++#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG_EN(_port) \
++		(RTL8365MB_D_DIGITAL_INTERFACE_FORCE_EN_BASE + (_port))
++
++/* Per-port force-mode enable. The vendor RTL8367D API
++ * (dal_rtl8367d_port_macForceLink_set()) treats it as an on/off switch for
++ * the whole forced configuration: all bits set when the MAC is forced, zero
++ * when it is not. The meaning of the individual bits is not documented.
++ * This driver always forces the MAC, as on family C, so all bits are set
++ * on every call, including link down.
++ */
++#define RTL8365MB_D_DIGITAL_INTERFACE_FORCE_EN_ALL_MASK	GENMASK(15, 0)
+ 
+ /* CPU port mask register - controls which ports are treated as CPU ports */
+ #define RTL8365MB_CPU_PORT_MASK_REG	0x1219
+@@ -1646,23 +1669,32 @@ static int rtl8365mb_ext_config_forcemode(struct realtek_priv *priv, int port,
+ 	u32 r_duplex;
+ 	u32 r_speed;
+ 	u32 r_link;
++	bool is_d;
+ 	int val;
+ 	int ret;
+ 
+ 	if (!extint)
+ 		return -ENODEV;
+ 
++	is_d = rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D;
+ 	if (link) {
+ 		/* Force the link up with the desired configuration */
+ 		r_link = 1;
+ 		r_rx_pause = rx_pause ? 1 : 0;
+ 		r_tx_pause = tx_pause ? 1 : 0;
+ 
+-		/* The speed field has no value for 2.5 Gbps: the rate is
+-		 * determined by the HSGMII SerDes configuration, and the
+-		 * vendor driver programs the 1 Gbps value here.
+-		 */
+-		if (speed == SPEED_2500 || speed == SPEED_1000) {
++		if (speed == SPEED_2500) {
++			if (is_d) {
++				r_speed = RTL8365MB_D_PORT_SPEED_2500M;
++			} else {
++				/* The speed field has no value for 2.5 Gbps:
++				 * the rate is determined by the HSGMII SerDes
++				 * configuration, and the vendor driver programs
++				 * the 1 Gbps value here.
++				 */
++				r_speed = RTL8365MB_PORT_SPEED_1000M;
++			}
++		} else if (speed == SPEED_1000) {
+ 			r_speed = RTL8365MB_PORT_SPEED_1000M;
+ 		} else if (speed == SPEED_100) {
+ 			r_speed = RTL8365MB_PORT_SPEED_100M;
+@@ -1692,20 +1724,44 @@ static int rtl8365mb_ext_config_forcemode(struct realtek_priv *priv, int port,
+ 		r_duplex = 0;
+ 	}
+ 
+-	val = FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_EN_MASK, 1) |
+-	      FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_TXPAUSE_MASK,
++	val = FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_TXPAUSE_MASK,
+ 			 r_tx_pause) |
+ 	      FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_RXPAUSE_MASK,
+ 			 r_rx_pause) |
+ 	      FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_LINK_MASK, r_link) |
+ 	      FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_DUPLEX_MASK,
+ 			 r_duplex) |
+-	      FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_MASK, r_speed);
+-	ret = regmap_write(priv->map,
+-			   RTL8365MB_DIGITAL_INTERFACE_FORCE_REG(extint->id),
+-			   val);
+-	if (ret)
+-		return ret;
++	      FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_MASK,
++			 r_speed &
++			 RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_MASK);
++
++	if (is_d) {
++		/* Speed is 3 bits on family D: bits[1:0] go into FORCE_SPEED,
++		 * bit[2] goes into FORCE_SPEED2 (bit 12); only 2500M sets it,
++		 * bit 13 of the field is unused.
++		 */
++		val |= FIELD_PREP(RTL8365MB_D_DIGITAL_INTERFACE_FORCE_SPEED2_MASK,
++				  r_speed >>
++				  RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_WIDTH);
++		ret = regmap_write(priv->map,
++				   RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG(port),
++				   val);
++		if (ret)
++			return ret;
++
++		ret = regmap_write(priv->map,
++				   RTL8365MB_D_DIGITAL_INTERFACE_FORCE_REG_EN(port),
++				   RTL8365MB_D_DIGITAL_INTERFACE_FORCE_EN_ALL_MASK);
++		if (ret)
++			return ret;
++	} else {
++		val |= FIELD_PREP(RTL8365MB_DIGITAL_INTERFACE_FORCE_EN_MASK, 1);
++		ret = regmap_write(priv->map,
++				   RTL8365MB_DIGITAL_INTERFACE_FORCE_REG(extint->id),
++				   val);
++		if (ret)
++			return ret;
++	}
+ 
+ 	return 0;
+ }
+-- 
+2.53.0
+
