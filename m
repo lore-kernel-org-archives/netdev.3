@@ -1,99 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793635117;
-	b=gFCyHXuB2q3baHpsHlKLLaEHI94iwLrUofz17JT4Q7eSs7WmWaJo5HI+fBg22VZjg9y5
-	 pthliFDlPWPSVdozmLa9jgQYkq8SKBaUXcivgSkxvttXP8+qFXFMzJwcd9mNGZ89uG7F7
-	 z9Xv/5J8tvUX2Lh/f81frS/JQlVsW6iuNvkaRvEo5ZGKTXrXD2OurABtYWUWZqSJQPaW0
-	 XuQzg3m4aZyjzP/yFhHiyFjsJhG17W3FJLdHLN9HHGxrRt8sI/fmUomExFTy+uhMX2Ddd
-	 94KtMPNUZD6QVra0llF2QEJt9HNREg+I7UFs7pfsOoBEiVg7qFvFAGN+Vxtjf8oHdKg==
+	t=1793635107;
+	b=k3CzawyYcHSudrrWa+mdtGfvEPqY2YNXnnj3uFm6sOl82YdmRnCJcDFSZAh2ZVO3RV6n
+	 Ezgmflh19FkEXcoLlZcnvka8fY4N7+ImU1QjXc7CaBfJMf5RlmxXOlkBfdnxiR8m5Phze
+	 0Z956OTMmcSRtCGgcDTG0b/r9PnpxRHmPW8EwxX7J5Vt3bTpZ7zYOex4CmYEG1f+ER/iU
+	 zIIPfyOWG8/WBRerQVuAVOadyF7vHTQKvs2D/4Nm8bkEb4q08QtL2/V7r8xFM4tyq9GEY
+	 WbR4p0eL3/U5Sq9gO9RuknQBhP3nVxLRe5e6U9MSMuaOOZo6R/LFxmbdoMvYZJ8WO1g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793635117;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793635107;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=4eUqzqxgaskgzb2volApOaC2VlmYkG23yLlDeBP9Vhg=;
-	b=tD8/GNbq+E8KhCjfH8j3rMnEn1UENrR/9e/PmlNSlN+clwliMHH/B2hh1lA3ryIXrYlG
-	 nb4sfXawiCrA8LLSauWb/7z/FRWUmW5KHhhZ0wKQhWquu6tU6DYaCt+IxPNJmJzPtZrrY
-	 at8Rv9Uf3EKMeoSV5Y/2cpSvnsldIngTMujTMlVNg/SwjCM07jbtIpsnaHB5kQTM/us8v
-	 ZC02sbqrLylcjrf3MVuQBJ9lalLfToZJ2NcR5vff4lyHViI21wDHLv+gftiSOg04+flo9
-	 Y7YL9I3wiLCA1Q9DwXt2dSJYX5Hy3fCoEaeTongQbV3gT7zlBetgvYuAxxvjhn0YjPA==
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=ZLAdr+wJraqBBQJZMLxL2JwKTZnl1MAf4rmeB7WLuOw=;
+	b=PT8OMqwGh0poR6jucr427eugmI9BUD1vVjeBKPn5uxRhq2CCvSbGbQ5GwouG5EgXIP3V
+	 FwlUjAzHcI13HMR2wYxFA6wwbWIQ5SLLC1BL1Gb3f/hPdqE82U4kh9lDrFsY4krFxk5xz
+	 pUsnjsiyi3JIKpwQ+twyGNRP1wGefL14R9bEUW2IowH8xfebg9vhqA+yy6wopC3bm69cZ
+	 blf5rTj7iJelFMsokMlZYOXLkn+RMStBp1zpdfntwn/ystb8WlYdKZwBtfIbZicV1+lRz
+	 c2Ddc8Trz4HYHKOdQd5Sw/OZvaU+tCokhl/atabg3BG1Bb/0pnbDvz/EGnyayAyl8Tw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=s93cnhjh;
-	arc=none smtp.remote-ip=209.85.216.41
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=plb0ZRPL;
+	arc=none smtp.remote-ip=74.125.82.50
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CAE60AC6FB
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:58:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 97CAE60AC6FB
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BDC6606EEBB
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:58:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8BDC6606EEBB
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=s93cnhjh
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3adc4590de4so2528355a91.2
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 07:58:36 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=plb0ZRPL
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1b1ce85287aso1100796c88.0
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 07:58:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793635116; x=1794239916; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4eUqzqxgaskgzb2volApOaC2VlmYkG23yLlDeBP9Vhg=;
-        b=s93cnhjhLER8VVXRcDFSD6Yn5w+jsBgTSIebxNT0GtGyLiKJgkKnc05IXZMvrYQDCY
-         hslIby5aGenm3Nk21M2EchnwDKxc1TwJ+KbZq5C+EcvnVnwvTVemqb+dsuESLmkmhZCs
-         ktiowN4nSFalA7G6CV7IDn2yrePEtDMYRuuFdj4rXKse7OBpkj5Gx0a6278AgHLEwBIH
-         x4veqgxF9oHfRLGmA+Y7VOOu7yjNDfZV+vpv0AC9KMYMmbWJf1u32PvPRHg7ecki3pBA
-         Yaj1yB827Fk52MAr5oCOnkj/4f36x7VrHQzcnAedd5LktIL7yVM3dSPiHmTkzOudOnxm
-         tHVg==
+        d=gmail.com; s=20260707; t=1793635107; x=1794239907; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZLAdr+wJraqBBQJZMLxL2JwKTZnl1MAf4rmeB7WLuOw=;
+        b=plb0ZRPLqV81cehr7hYrsYdNFFdgIQVNIOqv5zHeb8a8/h7pC0RbmcVgQhQ6fbeeUC
+         AiPWqyk0hlWsBwhg/vheb9hRcgvln+MCwnzrFiPMTXhGoceORTBGjAtMDdE7Pl1tSM/f
+         c0eV0zT6tq5ajsmY/5cEpqf2m6gNmQVsI/I3bgUS3SCOPkZ3o2NPm3LQpgMEqiAvRPLt
+         SJgmX9Zw08kjNoIiM3cncQ01tEmpA9iKrJ7qymvvZlYgsH/x65kB9xlMrQQ+LRWXFv+H
+         7QHya6c35uvD4ufukQKjNHGi6hCJo0va8FVrMd28hsWh1ZSXq9QLU/tCe77JW4GbV0Rx
+         RFxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793635116; x=1794239916;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4eUqzqxgaskgzb2volApOaC2VlmYkG23yLlDeBP9Vhg=;
-        b=ZEXtl6ZNf9UoiUJyjJbynu1RX2hj270eLvte+4q1GP4/huFDO03eNdkg6W6XdIYZ0x
-         BNkbJZABKHHuBPRUN9K/i0aTAuWXX1S20204yrlDdBMFZAMqI+pXH7Y8IMfFirOx010b
-         Z2wXTXdTccQsE2lBG0uY/8lv47ghPRiiW0iYoJHnMYTyOuLulwMFYUEur+3hdfGu4Qe4
-         HqDEIdw0WHIDF/Rz+UFWMIli2bLtWPJ83dHeKlHfO61uhLvtlUoK29ANUYwXLD/cmEpH
-         AQ8ESXX7UAc62obOOJpHLMUBjW11ld2g1sMB65me8NDLMqzTwkHR+CpbfcIbZ+4us95Y
-         VTgg==
-X-Gm-Message-State: APuU4Z9HtO4RXdlADdNCFc9SJZZNzuWhQcFtbP3xqvzk2NGlZR2v8vN1
-	j8DrRn2zjDjCU1/g7BD6YOIdbw1GnersFdvC+HBUbqgywVee+gXs5sW91+0Lsg==
-X-Gm-Gg: AYBFou2WMTPI2vKh4RURM3c3PARUlUXvWKNJIcYOvrkvQAK3gp0xxxiaUhDUbdms++8
-	cfEkjP9sVA1ueVkH+vvFIhi+PvjDRo0oMaf02WlzMQ0VeaExiGnEEt0jq8JRrxPuZU2mtliFci5
-	RfOuAft9IErObJAuXlY86Ki0412o16nSxfUWVpTo/xNTPrM4b2kkrDCU6QJjYLhZM4VInCsox7m
-	bzCh1kQb29a/b9+B9BmBebujm17iXpgzcXQwASGxRmZTpaxVG1a+jwlQmcy1A2gyLevtjjiefcu
-	I8Qixr1ppCfDwGvynuRR8f47zrWbCTW2GtVJ2Y/iwFbjCM7sD3XFVa6TmNLEomTaRFmidhutnZW
-	GoP+GlNC+HfcqTyjdgnmVVEKcWsKF+s2yLOlDOZ5bBjmR28bNqy7D7xX+8SuZUd/6UwtXKhxad4
-	oa2P42h8E5WCy+Jmxpsh9xe4Hu0PZWqzzYFXwFHqcPWjg0KU/sjZk4fYrV2so7bVv/jXITCW0N+
-	DfARYSKd9d1iJVksXrUjtIwq9HQ7H2JhpmrqdBmWdGhX7tnJUJFpi1tbtbN/hw3wS0BT70cXOj+
-	2BcrKIo8wjrygtdeMbv6vnP4gayNLhX19qcvXKrpELrBD8vjyHxl
-X-Received: by 2002:a17:90b:2252:b0:3a7:8c68:6446 with SMTP id 98e67ed59e1d1-3ae8987d10amr8883371a91.63.1793635115807;
-        Mon, 02 Nov 2026 07:58:35 -0800 (PST)
-Received: from d.home.yangfl.dn42 ([2a09:bac1:7680:28::4:396])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e7d429fsm19183949a91.2.2026.11.02.07.58.31
+        d=1e100.net; s=20260707; t=1793635107; x=1794239907;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZLAdr+wJraqBBQJZMLxL2JwKTZnl1MAf4rmeB7WLuOw=;
+        b=J017V5RDWFTiZyUCiwhNhxU9pIpqcGlKUdnOqz+bEH+gROuHbCOyYDKiobIUOcS8Xo
+         UJr/gEDa0NsJ/8HiJfN4fIo93y1uwb6hYSrMSVLbc1NJP+nlbybwGc5pcn8sGd/5WZRu
+         j/IHl1PA1da/OE8uOwZ/tzPKYvF9NUm6TSwk1O7kidA59uYss6LY/pBnytw0QvirYAFU
+         8LPpJMRuoZG1oABLOOHQV6vJcEmQqMsnqW+xtyOl8BBoRFkVbPxkFpG3+2A47/v38I8k
+         +VBK595v2tSpeXDUCPqet4UzIDKDb9FI7uA1jG0FPFcaMWJxQ68v2kdbtzoVTJeyp138
+         a3TA==
+X-Gm-Message-State: AFq9FYLjJONV2SP1KMmLKVZcTM9VjQM3AqiPeBZWp0DKGkSJxg9oZC4y
+	lJulT/VBBvHcoaetAkO4M1G/2VvPAmjLxD5EdZ5MesoIxR9TMpW7k9dtWJdBUg==
+X-Gm-Gg: AYBFou328XU8pZcW9ILE+SrDL3hwPalUGhL2HsIWHmf8d/4OXg67wGY4oFtnk/KOmhF
+	GcJmcT4Yh08XRvtrs2tf1c4x38LcTVBIyZnfpgxtuYJRUsK+Y7mKbq7ih04C4unoinTYVfS4SV5
+	XlnTYCZXgYlyL6VmZQALrIrX0XyyBzprcfYboU4LfErtYXnj4EXR1Gjg0BXZ73QyWx6HLnoRuTs
+	fSL2OMpzSCxwo8C5p78Josa2nOchaGSeODxGSNzZmO3QBTX2VGBjx2tQSh2hkJCVSMm5GjSTfEV
+	DHzCXR2qMkQ6gH7y0HMZ/2Ltw/evgaxnafspcI6U5kXdghprMzN6Ot/I+bsWuYLeC1ncuhsrcoH
+	n/s6T9+qnqPhz23vctKaWQG4UdLQ+9//EpalQ+bOBJbfvehj0OEYhu37L4kPKqPOTZxzcYQgqWl
+	CWGgI/0LiYAeD3r2KzSiWLa1IWP/bhEqC6arLMZz+NnZjVeXRs11yWIGca2EEb3rRv8WHjQzq+c
+	ef21h01UNuYVdU9GkEJ4cuVBvzYm6Qxmm16+Azv6XznsFNplKxce0Q6OC4FZaIF7hcxbqeN66DC
+	c9L69ioI+kzJD61vLEHCJKMW4zBrxrMqxvx3wTKvk+lNnufOm1VGTbRiRToFeYXw8TwAHjAGtQP
+	fySuHtKS1ZtxRMESJmQWJWucxEbYXfZNq3UjXDPxnJjElO/hPvI9aP8Eio7Qm36+owOM2MQhj5w
+	==
+X-Received: by 2002:a05:7022:4392:b0:1a4:c892:b14f with SMTP id a92af1059eb24-1ac5de53bc8mr25736739c88.29.1793635106285;
+        Mon, 02 Nov 2026 07:58:26 -0800 (PST)
+Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1aed79b3dfcsm35115869c88.12.2026.11.02.07.58.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 07:58:35 -0800 (PST)
-From: David Yang <mmyangfl@gmail.com>
+        Mon, 02 Nov 2026 07:58:25 -0800 (PST)
+From: Anil Kaushik <anilkaushikwireless@gmail.com>
 To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+Cc: "David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 2/6] net: dsa: motorcomm: Rely on port isolation for CPU port
-Date: Mon,  2 Nov 2026 23:56:34 +0800
-Message-ID: <20261102155641.3682626-3-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261102155641.3682626-1-mmyangfl@gmail.com>
-References: <20261102155641.3682626-1-mmyangfl@gmail.com>
+	Ido Schimmel <idosch@nvidia.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Florian Westphal <fw@strlen.de>,
+	Mat Martineau <martineau@kernel.org>,
+	XingWang Xiang <v3rdant.xiang@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	linux-kernel@vger.kernel.org,
+	Anil Kaushik <anilkaushikwireless@gmail.com>
+Subject: [PATCH net v4 0/2] genetlink: fix joining multicast groups no family owns
+Date: Mon,  2 Nov 2026 15:58:17 +0000
+Message-Id: <20261102155819.4100930-1-anilkaushikwireless@gmail.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,115 +109,93 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-With every port fully isolated during chip setup, the CPU port already
-gets its one-way isolation (drop all packets without tag) there, so the
-dedicated handling in port_setup() is redundant. Skip the isolation
-write for CPU ports in yt921x_userport_standalone(), which port_setup()
-also runs for CPU ports, to keep it intact.
+genl_bind() checks the GENL_MCAST_CAP_* flags of a group, but the
+membership bit is set later, after the lock is dropped. A socket can end
+up a member of a group whose flags were never checked for it: when it
+joins a group ID that no family owns, or when the family of the group is
+unregistered between the check and the point where the bit is set.
 
-Consequently the CPU ports no longer need to be excluded from the
-unknown unicast filtering: frames entering a CPU port without a tag are
-now dropped by the port isolation instead of the ACT_UNK action.
+Patch 1 rejects joins to group IDs that no family owns. Patch 2 counts,
+per group, how many times its members were cleared, which genetlink does
+when a family is unregistered. If the count changed after the check, the
+group is checked again against its current owner, after the bind
+callback is undone if that owner is the one it reached. The core cannot
+always tell, see patch 2.
 
-Signed-off-by: David Yang <mmyangfl@gmail.com>
----
- drivers/net/dsa/motorcomm/chip.c | 46 ++++++--------------------------
- 1 file changed, 8 insertions(+), 38 deletions(-)
+Tested as an unprivileged user, with an msleep() added after the bind
+callback in netlink_setsockopt() and netlink_bind(), and a test family
+that registers again with GENL_MCAST_CAP_NET_ADMIN:
 
-diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-index e1fa82c6db95..fb993cc9607c 100644
---- a/drivers/net/dsa/motorcomm/chip.c
-+++ b/drivers/net/dsa/motorcomm/chip.c
-@@ -1164,10 +1164,13 @@ static int yt921x_userport_standalone(struct yt921x_priv *priv, int port)
- 	u32 ctrl;
- 	int res;
- 
--	ctrl = ~priv->cpu_ports_mask;
--	res = yt921x_reg_write(priv, YT921X_PORTn_ISOLATION(port), ctrl);
--	if (res)
--		return res;
-+	if (!(BIT(port) & priv->cpu_ports_mask)) {
-+		ctrl = ~priv->cpu_ports_mask;
-+		res = yt921x_reg_write(priv, YT921X_PORTn_ISOLATION(port),
-+				       ctrl);
-+		if (res)
-+			return res;
-+	}
- 
- 	/* Turn off FDB learning to prevent FDB pollution */
- 	mask = YT921X_PORT_LEARN_DIS;
-@@ -1942,8 +1945,6 @@ yt921x_dsa_phylink_get_caps(struct dsa_switch *ds, int port,
- 
- static int yt921x_port_setup(struct yt921x_priv *priv, int port)
- {
--	struct dsa_switch *ds = &priv->ds;
--	u32 ctrl;
- 	int res;
- 
- 	res = yt921x_userport_standalone(priv, port);
-@@ -1957,27 +1958,6 @@ static int yt921x_port_setup(struct yt921x_priv *priv, int port)
- 	if (res)
- 		return res;
- 
--	if (dsa_is_cpu_port(ds, port)) {
--		/* Egress of CPU port is supposed to be completely controlled
--		 * via tagging, so set to oneway isolated (drop all packets
--		 * without tag).
--		 */
--		ctrl = ~(u32)0;
--		res = yt921x_reg_write(priv, YT921X_PORTn_ISOLATION(port),
--				       ctrl);
--		if (res)
--			return res;
--
--		/* To simplify FDB "isolation" simulation, we also disable
--		 * learning on the CPU port, and let software identify packets
--		 * towarding CPU (either trapped or a static FDB entry is
--		 * matched, no matter which bridge that entry is for), which is
--		 * already done by yt921x_userport_standalone(). As a result,
--		 * VLAN-awareness becomes unrelated on the CPU port (set to
--		 * VLAN-unaware by the way).
--		 */
--	}
--
- 	return 0;
- }
- 
-@@ -2276,10 +2256,8 @@ static int yt921x_chip_reset(struct yt921x_priv *priv)
- static int yt921x_chip_setup_dsa(struct yt921x_priv *priv)
- {
- 	struct dsa_switch *ds = &priv->ds;
--	unsigned long cpu_ports_mask;
- 	u32 ctrls[2];
- 	u32 ctrl;
--	int port;
- 	int res;
- 
- 	/* Enable DSA */
-@@ -2297,7 +2275,7 @@ static int yt921x_chip_setup_dsa(struct yt921x_priv *priv)
- 	if (res)
- 		return res;
- 
--	ctrl = GENMASK(10, 0);
-+	ctrl = GENMASK(10, 0) & ~priv->cpu_ports_mask;
- 	res = yt921x_reg_write(priv, YT921X_FILTER_UNK_UCAST, ctrl);
- 	if (res)
- 		return res;
-@@ -2320,14 +2298,6 @@ static int yt921x_chip_setup_dsa(struct yt921x_priv *priv)
- 	ctrl = 0;
- 	for (int i = 0; i < YT921X_PORT_NUM; i++)
- 		ctrl |= YT921X_ACT_UNK_ACTn_TRAP(i);
--	/* Except for CPU ports, if any packets are sent via CPU ports without
--	 * tag, they should be dropped.
--	 */
--	cpu_ports_mask = priv->cpu_ports_mask;
--	for_each_set_bit(port, &cpu_ports_mask, YT921X_PORT_NUM) {
--		ctrl &= ~YT921X_ACT_UNK_ACTn_M(port);
--		ctrl |= YT921X_ACT_UNK_ACTn_DROP(port);
--	}
- 	res = yt921x_reg_write(priv, YT921X_ACT_UNK_UCAST, ctrl);
- 	if (res)
- 		return res;
+                                         patch 1 only   v4
+  setsockopt:
+  unregister in the window,
+  register later                         member         not member
+  unregister and register in the window  member         not member
+  another family unregistered
+  (must still join)                      member         member
+  bind():
+  unregister and register in the window  member         not member
+
+With the msleep() before the bind callback instead, and a test family
+that registers again without the flag, the family is bound once, and not
+twice as with v3:
+
+                                         v3             v4
+  binds while a member, setsockopt/bind  2              1
+  binds once the socket is closed        1              0
+
+The test family counts its bind and unbind callbacks: they stay
+balanced in all these cases. If the family is replaced just after the
+bind callback returned, and before the second read, with an msleep()
+there, it gets one unbind too many. The socket is still rejected or
+checked against the new family. Normal joins and rtnetlink bind() show
+no change.
+
+The test from v1 (join all free IDs, then load gtp and drop_monitor)
+gives the same result as before.
+
+I used an LLM to help write and review the code, the tests and the
+commit messages of this series. I checked and tested every change
+myself.
+
+Changes in v4:
+- Patch 2: read the count after ->netlink_bind() too, and call
+  ->netlink_unbind() before checking again if the count had already
+  changed: ->netlink_bind() can have reached the new owner, which was
+  then bound twice (netdev Sashiko). The commit message says what the
+  core still cannot tell.
+- Patch 1: no change. It does not close the window on its own, patch 2
+  does, and it keeps its tags (netdev Sashiko asked about the order).
+- The deadlock netdev Sashiko found on the insert failure path of
+  netlink_bind() exists without this series, it has its own patch:
+  https://lore.kernel.org/netdev/20261102120929.4077030-1-anilkaushikwireless@gmail.com/
+
+Changes in v3:
+- Patch 2: check the group again in af_netlink.c instead of clearing
+  the members when a family registers. This also covers the case where
+  the family is unregistered and another one registers, both in the
+  window, does not walk the sockets on every registration, and does not
+  touch the members of a group another family still owns (Sashiko).
+- Fixes: tag of both patches: the race exists since genl_bind() first
+  checked a capability, in 4d54cc32112d (Sashiko).
+
+Changes in v2:
+- New patch 2 (Sashiko).
+- Patch 1: no change, added Reviewed-by tags.
+
+v3: https://lore.kernel.org/netdev/20261101101347.3910654-1-anilkaushikwireless@gmail.com/
+v2: https://lore.kernel.org/netdev/20261031054632.3697295-1-anilkaushikwireless@gmail.com/
+v1: https://lore.kernel.org/netdev/20261029062214.3407223-1-anilkaushikwireless@gmail.com/
+
+Anil Kaushik (2):
+  genetlink: Reject joining multicast groups no family owns
+  netlink: Check a group again if it was released while joining it
+
+ net/netlink/af_netlink.c | 79 +++++++++++++++++++++++++++++++++++++++-
+ net/netlink/af_netlink.h |  1 +
+ net/netlink/genetlink.c  |  3 +-
+ 3 files changed, 81 insertions(+), 2 deletions(-)
+
 -- 
-2.53.0
+2.25.1
 
