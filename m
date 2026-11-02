@@ -1,93 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.174
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.181
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793645361;
-	b=a3/xmCPgr3e1B4jNi6Qk+Stq0SYwW4NJ0JzuqY77l23XPHuSWptXKQgcBuA+K8kK0tXi
-	 SggUgpeTzuNjnbXnt8/VqVEHiE2wGB/WBRdOZzAr7sZqIzxjlNHniXF3NSDArJITbp9iE
-	 OSrcngN26LYnIMicuH3Hx3BHvs6RUNYCwLJasphRKCzjEhDu0oa7ix9itZledR2IEvJgH
-	 eb+cs9GwG0DF0UYnxG39zZe6uwoDcUTt8tqvU2W6rCq11vFJo2yW8oc3wVPyQr6lHjQel
-	 HqkEhoLxJfge4lGvd6Vxm1tQneRMXMrJ5lVMmd8/uoSkPmzVjo/ixCk5zN2N+MFO5hQ==
+	t=1793645421;
+	b=azLHcFi4L6lez6YzMzAn2F6/V0jZpmo1zbg7+X6UU6Bp8Ezq7mmC01rOsZ2Wt4BPbG2N
+	 r1Bnbx9QrdDO6X745voVYqK5bsCz4nkSKMQ6eZkfuq59UFLDd7BqC8zQYoxXEq5AP8a8m
+	 AdUSl+ZnsYrau7Vwn06oPXazPd5KnS8yxt7ohZXN5KXT2Z5pXqeQjW1UiZ+smcjfhulE8
+	 bSpAf4ownVtnocb3XR5ZJYd22EqNTPze3ZdLqEpZCG6XQr9vCJHligQmoYuQBmL85HZqi
+	 IiGwX8aOd7wqrsUXKSrGYMnMiKGaXWQv5Q2XJH7CNSWCONf0pbh+C8rJl1/7nq9Y7Fg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793645361;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793645421;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:User-Agent:References:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	bh=4vMJyvF9u6Lpo0n/jndkN841uR7BcIWd5sMOX8N/aKQ=;
-	b=Kdx6KgdhLUTNfu4wl2c7+NkEqBKxN9oPcHtDbxpIg/EkS0PvqcGss9O4PLixUTvd7lya
-	 W8CiygmD32IaOsb2/N9+6liJCqIzj0+yE68hOlIP8yba5qEDt7f/2+uHoX3XFVQ6OQitm
-	 n1W9OYT97rma69PrRlcfKy+quLUfx9Uav2mv8ZRBG75GgU7dy4cGbDKQNeHs+41zA2+Ey
-	 okngl6UE9+L0h6NNAF1ylG6o+i9SwJ0FT2ALQ/uuFjMvDg0FE0KalvXr7GQGVOha7WjqS
-	 VN0epcYEgD9PLwq7jFlSj5y4CR4pCEjEXdt09kH6RK6ERAeax+jqNFStWvwxj6fCARw==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=1+PqdBY+Kn+vTVD8wBIeE/Wp76LdlfMZhSQGe7/rnXI=;
+	b=qemNtz+t5XVU0PKi4aRT+pf81jIrMTLKgajCMOH72gVr3dPm9ctRNEWJ2a6RmK9XfVx3
+	 EslUgYjuuESr4Gj7aUJ/Iey8Oo+ARSRLelpwbGJgbpJaopi1rD+uOR0/vK1mwuA60izJI
+	 OUfOu6pFOlzXJQaCFJ0x1dilqVS6yMKdobDP632jPkD5wnkyPI9gf4q6JVKbLS5Vo9Eek
+	 EdPH4AWv/ncER7tOU0he8cmg1UvylIFeO7Iya0o7ssJpt0aaKPqCFW1LLeBr5vk+uVJIh
+	 +CwnHwbDoIp/YU2zTor+vpLRtcnb9xwYZviJQR/BolXnIH9eyZNoOfnThbVHTtBsHkg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Pg9NFYks;
-	arc=none smtp.remote-ip=209.85.215.174
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	dmarc=pass header.from=smartx.com;
+	spf=pass smtp.mailfrom=smartx.com;
+	dkim=pass header.d=smartx-com.20260707.gappssmtp.com header.i=@smartx-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=p2+Piy3s;
+	arc=none smtp.remote-ip=74.125.82.181
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C09606A327
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 18:49:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B6C09606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372B3606A327
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 18:50:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 372B3606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Pg9NFYks
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cd61cef87f1so1323267a12.0
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 10:49:20 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=smartx-com.20260707.gappssmtp.com header.i=@smartx-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=p2+Piy3s
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-3535a54bed9so5037636eec.1
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 10:50:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793645360; x=1794250160; darn=vger.kernel.org;
-        h=content-type:content-transfer-encoding:mime-version:message-id
-         :in-reply-to:references:user-agent:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=4vMJyvF9u6Lpo0n/jndkN841uR7BcIWd5sMOX8N/aKQ=;
-        b=Pg9NFYks9gpgqRc8umdDXJ22OFO9Biy/EaNROHoasLmA1XWaVcs4eflGnUPlpeQnit
-         TiR1n5GDgsexOLkUozfAYC8rvCoGwAEKvTnvYXNmaFKUnPcSoxD6nwe6MhyE9ybFnz33
-         TY4vfoY/cDjygnKMnZwVNj82PsqqHBYoRjgXeGXGqLs/vaGxG2v9Cnves+LnlhQJMBae
-         3whtZO73djtKfp/SzHRlw3umBVoFbtIi80uDclaWTouc1dt0bwP3c/u7DxMMrai9/jBj
-         H1JmobJ7pF4M2qkmbm4Pj/QS7ljScOb3sVgR8aCQt/DG/T236kn6R+GdoOFY4nBQ5WGx
-         ReIA==
+        d=smartx-com.20260707.gappssmtp.com; s=20260707; t=1793645419; x=1794250219; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1+PqdBY+Kn+vTVD8wBIeE/Wp76LdlfMZhSQGe7/rnXI=;
+        b=p2+Piy3sAooPGQJVbNsD99Y816ezaXqpod5YbnBem2fq6wIOuOW3ZsHW+jNTagbfZK
+         JPLSW1xihm9pdnsrcrPQWoNmVok3fvK+cX27K8SeproOZJKxvtn2pObWdkr/aTJavyHc
+         fYp5snY7hjz+rKceH+kTDA+BRVTkaashLjqQVUQSU5IdrcxIGeuJC21uSYb1kbYJnU1r
+         Yi829yFsVjhlbCPauZzn4kXivWq5mfqJziwL7B1TuF3sW0ubsYV1bgkSVy3Os7vDgGhJ
+         xX8OPMnDDNxuS5ieQVzgpNHuiFHFXu9XCasJ3nyqMX8VVzG2z2EjYhDpmY6i7ba8Jo0H
+         ZcjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793645360; x=1794250160;
-        h=content-type:content-transfer-encoding:mime-version:message-id
-         :in-reply-to:references:user-agent:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4vMJyvF9u6Lpo0n/jndkN841uR7BcIWd5sMOX8N/aKQ=;
-        b=XC5pRyTna49T02Eoh1PyUnVVvaOGH1S723Qy1bV+vRvjd22JlJsE3xelcZqgUkHyL9
-         q/N1m6g/uWatKbMmRYwatudBfHRjrcZA/TvF26daeohkOkZGKqZddkoLtV8Sd5qbyOCS
-         kVwuTASVfQ35lhiwXRHlZdlhfO5Ph89j1WRDHBWk+/hNbbGCZXZ5x7LdWGBp837e2+2q
-         +k0VuAfuJGiIl2shwOHN7v51GkpLaitjL61u689z4hV5jn29V5qAacDdjHfSpAG7KZXo
-         aF9+HGDPt8ocONv8abCq/ERpbSRm51wYmEV+VK13ASFS1cWlxOCau4yrsGRQxm6iPG0A
-         2xwQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzwoEXXpU1mfrkDGX13cuErPt2bbnBfzWQZAUbCWb/22Fk9bWuQzKh0UOK1Kl/SOVw6QfF3d9E=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9QOKK5H1qTN1v9urof9mbW9QJSwTZE/nguwNi/Wg4NWVeema1x
-	d1T4sFF8D7yonpCrmZbe3P9rdfZrw9p74GmUeHHrQsVO5KexCVpgbJEX
-X-Gm-Gg: AYBFou2WO9ewiWqwWfl3Uy+wr/UhtzTFdIeEATnK7BwKjNkP0QC8KKvTWVNKX/a08yh
-	WMQgj7jXRS4fRP1lFrnCDgNDpACReEl6PefDX4it3D4e49yCwx/nuRfoMtJjCZrSYCJQeYQ8k5w
-	1HMCp7touTZLOMxEpB6ysd9/tegiYANwx+vfb+E2o15J5sDV30i1s9fScwwQUXCOmfgHy5EWn92
-	1538Q2lONKUxjXEbUGPnTWErt+1YxDPZc7jVnswbEr7g27UfgssLBAGIZq0R25+KondJ4aftN9l
-	yEZ9my9heudP+w4Yc2yg5nfn71e/zlQ2gZWzqnpsA5UWJ0gvO8lG30Uj20mA7zGiiULxeizl2wo
-	czpvk5jlePuU3GV+HhnR3OM5lbjOSL2DK6j/Q6Chv3/w7TENWn7m7PNl3zyawy4wFn3R1awH+mn
-	5hp2YSvy4DwD7eeWSWuOlJQdLxD8x2QZKLjXBWqd+MvxNRvv0U+OCZcxl4K95KqgI6GFXsp/x6x
-	83eZTr52ojaJkKIVBCwC7jpB9mwkvbHI3rIg9NcwktWq1fXZfzX5J7FE+FG828XeKe3kUVZjuty
-	6WdxDksQz3hCLNwTBiw0si/qn8wBPcDkZ6l0piR0jkGsrrFZ5HJfj+YlYDDEZZtbwD3U
-X-Received: by 2002:a17:90b:48c6:b0:3a8:6045:5a24 with SMTP id 98e67ed59e1d1-3ae897e0e39mr7985674a91.38.1793645359949;
-        Mon, 02 Nov 2026 10:49:19 -0800 (PST)
-Received: from meli-email.org ([98.97.42.147])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c6271ccsm431541a91.7.2026.11.02.10.49.19
+        d=1e100.net; s=20260707; t=1793645419; x=1794250219;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1+PqdBY+Kn+vTVD8wBIeE/Wp76LdlfMZhSQGe7/rnXI=;
+        b=1NlWPMc0F30vQ5TsgPL3E+fVr93+SDQWzdYqR5DbaLPUo0zsLj42Cc4ZlXmNMMDMm9
+         TyMfpBMQKqdKROeMzLyptLd6gTDeiCW+NsJsXBRY/YGwN35nDQqdGLAzB+FlgU6LMX1M
+         EoxsCJJAJDgvvetnNgZ1XA0x314eTqntM2CvtOCdjKvEAS/hNFNJxLsgsHabmgCzkVT9
+         Sr8v3XbqW88FHn+YZjDrntk1FtDvthgdt4j5EK6dXw/MxUYxjx8CPIrKOMTlpM6TBi2p
+         /mn7WYFhYiFQiMxA0pxcbraDVYvZ3vyZwrrBh6MGUZ6MmvI9mKIgFs4kvV1eMXKwzzYm
+         54dw==
+X-Gm-Message-State: APuU4Z99dY8iQRUTyhEglwgeO+uY8Ct5XJE6ZWuqptikqoOYnnN9Qh1Y
+	C1LZN2+O5Xc8APXxw0fgA3hJUn2BVGrthFXo8PFdUHnJIQ0jevJqdvqlCVR4RMSa3SgueOXhvBi
+	0IFgcqdteD6td5dbjMNI/lvZGRQIa6Sb31KJHuRlTUPHCAczOw/TSb/Z1yyhXSVuiPVKktzZ8
+X-Gm-Gg: AYBFou1zJUFbC/dVDguVsapiJeAh8XXAS36NL8uLFiKyXjPjLMI2cnFE3IQnOKD6HG9
+	zYbDJaZzuWxtnKlgK+F2pAzG6tkGMXJYsRfOBG4uv+1bokdNg36/+7jXbqJSokEPcr2xH/UrwGI
+	0A5WDrMQ7NcIYWRWYkjaiEX9HrI6JPBZPhYx1doL3yrEcQPcfo9OqC0C9YDxYBxPgVk9n5C5qx0
+	7NNSzNNioQnHcSk1KHls8+MVCiVCbLBIr73xVTEElW5aAEiwRA+ArIUdCFsK/HMzp98CtZpt87M
+	DRXvjbRwa2KkKPEs3qeUf+b7EAPpk1LaKBkAZI4dS+uLlavBMuKqWQetI61aHx+Lh64qUkCEIAn
+	OjL9RFxmEOdW4HknK0YmatL7uSJmxWTUg6S+COwD7Tf6fc4C6bSLGiDGutO8shsbdGpSz+EBMK8
+	APxxA4gV00dreVqJerW/o19WDQXmLKGqdkr3S+MiUXbGtpZKpJLkh1sPHW5GH6x76VV8ZEDqRU3
+	1PbhLIhf8ttIAhsCYLTHEEusbXcv1bwKdDE4PgcRxFdNLQELTQaS8on0j/4TPWufFFgdIQuaYmz
+	48Jr1NBYDYyQKpNCh6ZCT2X2dYJ0oI1J3DnQ5exq7A==
+X-Received: by 2002:a05:693c:41d9:20b0:368:4acb:f8a with SMTP id 5a478bee46e88-36a4242f5fdmr16518897eec.17.1793645418844;
+        Mon, 02 Nov 2026 10:50:18 -0800 (PST)
+Received: from localhost.localdomain ([174.136.204.24])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a429000f8sm39651738eec.13.2026.11.02.10.50.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 10:49:19 -0800 (PST)
-Date: Mon, 02 Nov 2026 11:47:50 -0700
-From: John Fastabend <john.fastabend@gmail.com>
-To: mptcp@lists.linux.dev, Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
-Cc: daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, john.fastabend@gmail.com, jakub@cloudflare.com, jiayuan.chen@linux.dev, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, willemb@google.com, matttbe@kernel.org, mptcp@lists.linux.dev, mason@kernel.org, josef@toxicpanda.com
-Subject: Re: [PATCH bpf v2 02/15] bpf, sockmap: Don't let an SK_DROP verdict stick
-User-Agent: meli/0.9.0
-References: <20261102072112.4160195-1-alexei.starovoitov@gmail.com> <20261102072112.4160195-3-alexei.starovoitov@gmail.com>
-In-Reply-To: <20261102072112.4160195-3-alexei.starovoitov@gmail.com>
-Message-ID: <tnw1m6.2g2esuogz4hv6@gmail.com>
+        Mon, 02 Nov 2026 10:50:18 -0800 (PST)
+From: Wang Zhan <wang.zhan@smartx.com>
+To: netdev@vger.kernel.org,
+	Eric Dumazet <edumazet@kernel.org>
+Cc: Wang Zhan <wang.zhan@smartx.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	stable@vger.kernel.org,
+	Kyle Zeng <kylebot@openai.com>,
+	Florian Westphal <fw@strlen.de>
+Subject: Re: [PATCH v2 net] inet: frags: limit the truesize of a reassembly queue
+Date: Tue,  3 Nov 2026 02:50:00 +0800
+Message-ID: <20261102185000.2384364-1-wang.zhan@smartx.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261030081225.2575462-1-edumazet@kernel.org>
+References: <20261030081225.2575462-1-edumazet@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,49 +107,78 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
 
-On Mon, 02 Nov 2026 00:20, Alexei Starovoitov <alexei.starovoitov@gmail.com> wrote:
->From: Josef Bacik <josef@toxicpanda.com>
+On Fri, 30 Oct 2026 09:12:25 +0100 Eric Dumazet wrote:
+> The truesize of fragments in a reassembly queue is only bounded by
+> the per netns ipfrag_high_thresh sysctl, which has no upper limit.
 >
->The verdict of an sk_msg prog is valid for one message, or for the bytes
->that bpf_msg_apply_bytes() requests. These bytes can come from many
->sendmsg() calls. Thus tcp_bpf_send_verdict() keeps the verdict in
->psock->eval and runs the prog only when psock->eval is __SK_NONE. The code
->that resets psock->eval is after the switch statement, but the __SK_DROP
->branch returns before that code. Then sendmsg() drops all subsequent
->messages with -EACCES and does not run the prog.
+> inet_frag_reasm_finish() sums the truesize of all fragments in an int.
+> If this sum reaches 2^32, it wraps, and the final sk_wmem_alloc
+> adjustment of the socket owning the reassembled skb can cancel its own
+> reference, leading to a use-after-free of this socket.
 >
->Reset psock->eval when apply_bytes is 0, as the __SK_REDIRECT branch does.
+> This can be triggered from an unprivileged user/network namespace,
+> raising ipfrag_high_thresh and using padded TUN packets, which keep
+> a large truesize after being trimmed by ip_rcv_core().
 
-So no one has tried to do apply_bytes + DROP I guess. If you want after
-this series is merged I can add some test.
+Another data point: the described trigger also requires ip_defrag() to run
+before skb_orphan(), e.g. via nf_ct_bridge_pre().  In plain TUN local
+delivery, ip_rcv_core() orphans the skb first, so inet_frag_reasm_finish()
+sees sk == NULL.
 
-Thanks.
-
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-
+> Track the sum of the truesize of fragments in each queue, and refuse
+> a fragment that would make it bigger than INT_MAX / 2. Callers kill
+> the queue on this error. This bound is far above the needs of
+> legitimate traffic.
 >
->Fixes: 4f738adba30a ("bpf: create tcp_bpf_ulp allowing BPF to monitor socket TX/RX data")
->Signed-off-by: Josef Bacik <josef@toxicpanda.com>
->Signed-off-by: Alexei Starovoitov <ast@kernel.org>
->---
-> net/ipv4/tcp_bpf.c | 3 +++
-> 1 file changed, 3 insertions(+)
->
->diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
->index 8cf63a9e7fed..d90bcc911b36 100644
->--- a/net/ipv4/tcp_bpf.c
->+++ b/net/ipv4/tcp_bpf.c
->@@ -509,6 +509,9 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
-> 	default:
-> 		sk_msg_free(sk, msg);
-> 		sk_msg_apply_bytes(psock, tosend);
->+		/* The verdict holds for apply_bytes, not for ever */
->+		if (!psock->apply_bytes)
->+			psock->eval = __SK_NONE;
-> 		*copied -= (tosend + delta);
-> 		return -EACCES;
-> 	}
->-- 
->2.55.0
+> Fixes: 18685451fc4e ("inet: inet_defrag: prevent sk release while still in use")
+> Cc: stable@vger.kernel.org
+> Reported-by: Kyle Zeng <kylebot@openai.com>
+> Cc: Florian Westphal <fw@strlen.de>
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+
+Tested on QEMU TCG x86_64:
+Padded fragments traversed tun_get_user() and nf_ct_bridge_pre().
+
+Before this patch:
+
+  [   62.400852] ------------[ cut here ]------------
+  [   62.401690] refcount_t: saturated; leaking memory.
+  [   62.402231] WARNING: lib/refcount.c:22 at refcount_warn_saturate+0x74/0xe0, CPU#0: init/1
+  ...
+  [   62.416741] Call Trace:
+  [   62.417754]  inet_frag_reasm_finish+0x734/0x8c0
+  [   62.419460]  ip_defrag+0x149c/0x25d0
+  [   62.420502]  nf_ct_bridge_pre+0x95c/0x12a0
+  [   62.423684]  br_handle_frame+0x6d9/0xf10
+  [   62.425568]  __netif_receive_skb_core.constprop.0+0x576/0x2bd0
+  ...
+  [   62.430759]  netif_receive_skb+0x7b/0x3c0
+  [   62.431822]  tun_get_user+0x1a1e/0x3a90
+  [   62.435183]  tun_chr_write_iter+0x138/0x260
+  ...
+  [   62.455272] ------------[ cut here ]------------
+  [   62.455348] refcount_t: underflow; use-after-free.
+  [   62.455376] WARNING: lib/refcount.c:28 at refcount_warn_saturate+0x9a/0xe0, CPU#0: init/1
+
+After this patch, inet_frag_queue_insert() returns IPFRAG_TOOBIG:
+
+  # tracer: nop
+  #
+  # entries-in-buffer/entries-written: 8193/8193   #P:1
+  ...
+            init-1 [000] b..1. 44.803126: frag_ret: (ip_defrag <- inet_frag_queue_insert) ret=4
+            init-1 [000] b..1. 44.804161: <stack trace>
+   ...
+   => ip_defrag
+   => nf_ct_bridge_pre
+   => br_handle_frame
+   => __netif_receive_skb_core.constprop.0
+   => __netif_receive_skb_one_core
+   => netif_receive_skb
+   => tun_get_user
+   => tun_chr_write_iter
+
+No refcount warning was observed with v2.
+
+Tested-by: Wang Zhan <wang.zhan@smartx.com>
