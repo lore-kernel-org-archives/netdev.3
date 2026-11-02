@@ -1,63 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793613147;
-	b=ljo0Yag96jeFrtigak+fvxFQKJw3RzSjstH6QXPjQaxACxGt/W2siz7hv0Lk+u/SfcWU
-	 igQYUGbvV7mVQ7lmiqWbBOYoy0jrnTpgevIq28J+re2F+y/j9DWxDVRELo0rvjK63bm3+
-	 ahrHIXnSblcr0z17XDUV9vTX9lXptIxsam6Nrg+BHF/GUfp6dFanktwEJxyHvwf5qL+Yi
-	 owEpcXHUdNA7vZQb7wTD5Gq6Lk4epC4BbNbNl38S3t0grgmGVvT9DzYH2Y08rG1oGQZ32
-	 gaCTAHVvqIrqu8mWygDBiDsRn38PU0HrkU7a9ORvyJ2CW1M9u8doieZqKjDETQZ20hQ==
+	t=1793613148;
+	b=saNbDYlwYsftzmcI3IdxfkLIC9ZlnS1nF9PvXoLPGr/GO+t5XSUAI7C5iWaGSbx0qITS
+	 /ChO5XHfBvkEluXikq0/kA8A7HMr1C8wkADP8bUdnc24rVD9BlznYFMHXLAQFZCBOvhca
+	 3dNC/4/HoB3PNEmUVX2dvXXdYlLYpdEfuDXWkO3Iu/s4GgeYROw9QtZfWx4p9Yb08TTzO
+	 G3jdZJ6X/PqI5x7ZWFidBcEYL9yYD7dzwXy93TzMpkjjGrECfJFgzTsVOy/Ftu4XGj0k9
+	 aK52axYMKg0l67+ILYcXrlA2HPXd/CfdeEQPQsGZntHTUQTBX74CBhkynGA4iA5n9yg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793613147;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793613148;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=0J0BmS8+dLS8Lnfxixm46w2lRSFsoL6zql/BE+pRkys=;
-	b=nUDYbSzWxy4HD81yhjRm7XzqtEl1Ru0hQ/qFaEpXB5NEYN5qcEJdjMq3avtYVk2NwQT8
-	 52ojbtq5giQHJCV/5kP4hsdpEMX59UjiCBXDoS37DMUjUiB/89tOFLfDXDy7BnInH2b9+
-	 IisDfhi8cPLyCmlugISf2RawZQp3A9OFL5qWJ3BuehmG4pt1G8cS5Pcr/O7izYpMwCGrV
-	 ny4zEXoS4QpcH3u8KaOLj/hkiPL0ySk3v1i/IQjwiiYrpljZ6Kp757oUm5M43qGDsYQw7
-	 k1U0z/IctAfhAhECLU63Wtmqk8fMmjC3oVerjGnyuHbBGgwUUK4ZaNY2ZxLdp9t9wWg==
+	bh=rZQZ9LD31fveDUvnNj2TrbO5PJhxMz1G61FB7GoabGg=;
+	b=zB1R/+4RWaA/BAkN/q9IDsq9fq3jpkrerJ/NkW6Yv7fJg6Uujbs4pbgDzabGqySAljLH
+	 5M32ABl1OmLWC6oP/8oABHrlNbFMpgcaeIi6/cSWf80yJQ9+kkRSS+jDEWLeeynJjtj8z
+	 iO7lk0AzCkL88ajhnNMn5cBqsFwNJNCgMkM4GgQkWYqRks6Wd0VWua0dZ/RO78HGgZewU
+	 sXVzu5tDU5p6IPKwKnRiOtGeMfN8ez+nUC7258h++UMqW8ZmKaYlrvquJmcDV9YTxfzox
+	 7ILRhIPYjvZtqK1TvyD3+jiNMbcZhObIVAPYdROZgdTmyw4Dg/nzsaIHFhp5ocgwqtw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fBzi8KrU;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EtTdY4e+;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F6C606A329;
-	Mon,  2 Nov 2026 09:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A4F606A336;
+	Mon,  2 Nov 2026 09:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fBzi8KrU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2F31F000C1;
-	Mon,  2 Nov 2026 09:52:24 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EtTdY4e+
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC991F000C1;
+	Mon,  2 Nov 2026 09:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793613146;
-	bh=0J0BmS8+dLS8Lnfxixm46w2lRSFsoL6zql/BE+pRkys=;
+	s=k20260515; t=1793613147;
+	bh=rZQZ9LD31fveDUvnNj2TrbO5PJhxMz1G61FB7GoabGg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=fBzi8KrUITMMy/FxZ//4IX3xaa7J4BrBosrQDqYydu5b3QpyBV7XxvUVgYG2jH1kM
-	 vdkb8jj1+YPi1tX4nep3zJIWBXYu562KFQpFWBXDQB5yn7RZbwFbPLSgcjVrpJuBIn
-	 bu3snGE6mWq0oQOHlVwfbpUaKGj7CksNuW8S4ql0b+E8T1xO7cYrUldJPpIvE5q3Bi
-	 E6l0KO/EeUHDNsAokeSzu6nEi0iETqU1q8l410eOMLHIZz0qP1Q1AImeCXojDk4Ghs
-	 TRfVKR1ZXEtz4UsP8nlAdKDVUQIBJXHpzsFh/xLGUrij5yWqGnjOOmsyzubjjy6pq7
-	 lnOjSSuVRIlxA==
-Subject: Re: [PATCH net v2] bpf: Fix skb_pull() BUG in __bpf_redirect_neigh()
+	b=EtTdY4e+ymjbKQD5SPt0J1THvc5M1fEsC7Bbyi06gWTWFkRHSSlDa+oKSiYau/6kn
+	 wWt3hXKgFeaaR3uU7HzfkJ1D/yqZWxg4Ld5M6YjOCnTTnp8R6nikvuZAzeG7BNDcLg
+	 zytDvA5sJ8klM8Wb82edshgglXaScig0Nq6V6/wg5po8LtaUS8rGPiB5FN+3ldaGg3
+	 8uMi8niOy24D2Yvpye4HBCs6y5uIt9xc1B0oV3b+kxNAv9tN9ttLPgI5ayAuwOfFgO
+	 h0cDoDJxDq1q7pLHGprMAtnQHgVVMktgKAsxIl05pB703z42mix7RFhMfoKOZpHwVX
+	 Dq2dRf8781ZYQ==
+Subject:
+ Re: [PATCH net v4] net/packet: account user-triggered allocations to memcg
 From: netdev-bot+sashiko@kernel.org
-To: jhs@mojatatu.com
-Cc: netdev@vger.kernel.org, edumazet@kernel.org, bpf@vger.kernel.org,
- bot+bpf-ci@kernel.org, daniel@iogearbox.net, ast@kernel.org,
- dsahern@gmail.com, kafai@fb.com, martin.lau@linux.dev,
- john.fastabend@gmail.com, sdf@fomichev.me, andrii@kernel.org,
- eddyz87@gmail.com, memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev,
- jolsa@kernel.org, emil@etsalapatis.com, ihor.solodrai@linux.dev,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- jiri@resnulli.us, victor@mojatatu.com, linux-kselftest@vger.kernel.org,
- shuah@kernel.org, stable@vger.kernel.org
-Date: Mon, 02 Nov 2026 09:52:24 +0000
-Message-ID: <179361314430.3131.5109011406127069679@kernel.org>
-In-Reply-To:
- <bpf_redirect_neigh_short_linear.v2.r0.20261028080316-1@mojatatu.com>
-References:
- <bpf_redirect_neigh_short_linear.v2.r0.20261028080316-1@mojatatu.com>
+To: ahmadag1001@gmail.com
+Cc: willemdebruijn.kernel@gmail.com, kuba@kernel.org, davem@davemloft.net,
+ edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable+noautosel@kernel.org
+Date: Mon, 02 Nov 2026 09:52:26 +0000
+Message-ID: <179361314688.3131.15505744143383263524@kernel.org>
+In-Reply-To: <20261101094847.664612-1-ahmadag1001@gmail.com>
+References: <20261101094847.664612-1-ahmadag1001@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -71,10 +65,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 (1) · Medium: 1 (1) · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -82,243 +76,85 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The new netns_load_egress_bpf() calls inside
-  test_tc_redirect_neigh() leave the test thread in the test runner's…
-- [Low] No selftest runs the new rejection branch in
-  __bpf_redirect_neigh() (skb_mac_header_len(skb) < ETH_HLEN ||…
-
-Pre-existing issues:
-- [High] The patch closes the ETH_HLEN pull BUG only in
-  __bpf_redirect_neigh().
-- [Medium] __bpf_redirect_neigh() now linearizes only ETH_HLEN bytes,
-  then does skb_pull(ETH_HLEN) and skb_reset_network_header(), and…
+- [Medium] The patch only partly closes the PACKET_ADD_MEMBERSHIP memcg
+  bypass.
 
 --
 
-bpf: Fix skb_pull() BUG in __bpf_redirect_neigh()
+net/packet: account user-triggered allocations to memcg
 
-This commit hardens __bpf_redirect_neigh() before it reads and pulls the
-Ethernet header. The MAC header length (network_header - mac_header) must
-now be at least ETH_HLEN, and pskb_may_pull() must make the header linear.
-It also adds tc egress coverage to the tc_redirect_neigh selftest.
+This commit changes several AF_PACKET allocations whose size or count is
+chosen by user space to use GFP_KERNEL_ACCOUNT, so they are charged to the
+caller's memory cgroup. It covers the ring blocks and block array, the
+rx_owner_map, the fanout group, and the packet_mclist entries created by
+PACKET_ADD_MEMBERSHIP.
 
-Link: https://lore.kernel.org/all/2a0f5ff1d8db81b07fc4b344b8e68e3505fcbf36f72a471d1678b2f1cecd881b@mail.kernel.org/
-Link: https://lore.kernel.org/netdev/20261027082604.1485903-1-edumazet@kernel.org/
-
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index 70dc621672f2e..4925f3e355d46 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -2432,10 +2432,14 @@ static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
->  static int __bpf_redirect_neigh(struct sk_buff *skb, struct net_device *dev,
->  				struct bpf_nh_params *nh)
->  {
-> -	struct ethhdr *ethh = eth_hdr(skb);
-> +	struct ethhdr *ethh;
->  
->  	if (unlikely(skb->mac_header >= skb->network_header))
->  		goto out;
-> +	if (unlikely(skb_mac_header_len(skb) < ETH_HLEN ||
-> +		     !pskb_may_pull(skb, ETH_HLEN)))
-> +		goto out;
-
-[Severity: High]
-This is a pre-existing issue and was not introduced by this patch. Still,
-the skb from the commit message's own reproducer looks like it can BUG
-through the sibling redirect paths. Is that expected?
-
-After vlan pop_eth and bpf_skb_change_head(skb, 1, 0) on the nonlinear
-AF_PACKET skb, len is 8193, data_len is 8192, and one L2 byte is linear.
-__bpf_redirect_common() only checks:
-
-net/core/filter.c:__bpf_redirect_common() {
-    ...
-	if (unlikely(skb->mac_header >= skb->network_header || skb->len == 0)) {
-    ...
-}
-
-so the 1-byte MAC header gets through there. With BPF_F_INGRESS:
-
-bpf_redirect(BPF_F_INGRESS)
-  __bpf_rx_skb()
-    dev_forward_skb_nomtu()
-      __dev_forward_skb2()
-        eth_type_trans()
-          eth_skb_pull_mac()
-            skb_pull_inline(skb, ETH_HLEN)
-              __skb_pull() -> BUG()
-
-Without BPF_F_INGRESS the path is:
-
-__bpf_tx_skb()
-  dev_queue_xmit(lo)
-    loopback_xmit()
-      eth_type_trans()
-
-veth goes through __dev_forward_skb() and ends the same way.
-bpf_clone_redirect() takes the same __bpf_redirect() path. On lo, a plain
-TC_ACT_OK instead of bpf_redirect_neigh() also reaches
-loopback_xmit()->eth_type_trans().
-
-In each case the 14 <= 8193 length check passes. __skb_pull() then leaves
-len at 8179, which is below data_len (8192), and hits BUG().
-
-The commit message calls this a follow-up to Eric's short link-layer
-header fixes. This tree has no pskb_may_pull() in eth_type_trans() or
-eth_skb_pull_mac(), and bpf_skb_change_head() still accepts a header
-shorter than ETH_HLEN.
-
-Should one of those two places be hardened as well? Otherwise stable
-backporters may assume this change fully closes the reproducer.
-
-> +	ethh = eth_hdr(skb);
->  	bpf_push_mac_rcsum(skb);
->  	if (is_multicast_ether_addr(ethh->h_dest))
->  		goto out;
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but only ETH_HLEN bytes are
-made linear here. After skb_pull(skb, sizeof(*ethh)) and
-skb_reset_network_header(), can the L3 header sit entirely in frags?
-
-__bpf_redirect_neigh_v4() reads the header directly from skb->data:
-
-net/core/filter.c:__bpf_redirect_neigh_v4() {
-	const struct iphdr *ip4h = ip_hdr(skb);
-    ...
-			.flowi4_dscp  = ip4h_dscp(ip4h),
-			.flowi4_oif   = dev->ifindex,
-			.flowi4_proto = ip4h->protocol,
-			.daddr	      = ip4h->daddr,
-			.saddr	      = ip4h->saddr,
-    ...
-}
-
-__bpf_redirect_neigh_v6() does the same with ipv6_hdr(skb) for flowinfo,
-nexthdr, saddr and daddr. When the route has no gateway,
-bpf_out_neigh_v4()->ip_neigh_for_gw() reads ip_hdr(skb)->daddr again.
-
-Take an AF_PACKET SOCK_RAW frame where prepad + len >= PAGE_SIZE.
-packet_snd() and packet_alloc_skb() make only hard_header_len (14) bytes
-linear. The frame passes both new checks, and skb_pull(14) leaves
-skb_headlen() == 0.
-
-Wouldn't the 20 or 40 byte L3 reads then come from past skb->tail, from
-the tailroom or skb_shared_info? Those bytes would become the flowi4 or
-flowi6 keys and drive the neighbour lookup. No pop_eth or change_head is
-needed, just bpf_redirect_neigh() on such a packet.
-
-Would a pskb_may_pull() of sizeof(struct iphdr) or sizeof(struct ipv6hdr)
-before calling the v4/v6 helpers be appropriate?
-
-> diff --git a/tools/testing/selftests/bpf/prog_tests/tc_redirect.c b/tools/testing/selftests/bpf/prog_tests/tc_redirect.c
-> index af8968b89ad7c..829f84fb64a30 100644
-> --- a/tools/testing/selftests/bpf/prog_tests/tc_redirect.c
-> +++ b/tools/testing/selftests/bpf/prog_tests/tc_redirect.c
-> @@ -407,6 +407,26 @@ static int netns_load_bpf(const struct bpf_program *src_prog,
->  	return -1;
->  }
->  
-> +static int netns_load_egress_bpf(const struct bpf_program *prog,
-> +				 const char *ns, int ifindex)
-> +{
-> +	LIBBPF_OPTS(bpf_tc_hook, qdisc);
-> +	struct nstoken *nstoken;
-> +	int err;
-> +
-> +	nstoken = open_netns(ns);
-> +	if (!ASSERT_OK_PTR(nstoken, "setns egress"))
-> +		return -1;
-> +
-> +	QDISC_CLSACT_CREATE(&qdisc, ifindex);
-> +	XGRESS_FILTER_ADD(&qdisc, BPF_TC_EGRESS, prog, 0);
-> +	close_netns(nstoken);
-> +	return 0;
+> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+> index cf6429f094772..ec6ab96c4f87c 100644
+> --- a/net/packet/af_packet.c
+> +++ b/net/packet/af_packet.c
 
 [ ... ]
 
-> @@ -1055,6 +1075,12 @@ static void test_tc_redirect_neigh(struct netns_setup_result *setup_result)
->  			   skel->progs.tc_chk, setup_result))
+> @@ -3773,7 +3774,7 @@ static int packet_mc_add(struct sock *sk, struct packet_mreq_max *mreq)
 >  		goto done;
 >  
-> +	if (netns_load_egress_bpf(skel->progs.tc_egress, NS_SRC,
-> +				  setup_result->ifindex_src) ||
-> +	    netns_load_egress_bpf(skel->progs.tc_egress, NS_DST,
-> +				  setup_result->ifindex_dst))
-> +		goto done;
-> +
->  	if (!ASSERT_OK(set_forwarding(false), "disable forwarding"))
+>  	err = -ENOBUFS;
+> -	i = kmalloc_obj(*i);
+> +	i = kmalloc_obj(*i, GFP_KERNEL_ACCOUNT);
+>  	if (i == NULL)
 >  		goto done;
+>  
 
 [Severity: Medium]
-Is the test thread still in NS_FWD when set_forwarding(false) runs here?
+Does this fully close the PACKET_ADD_MEMBERSHIP bypass described in the
+commit message?
 
-test_tc_redirect() runs the tests in a separate pthread. open_netns()
-saves the original namespace with:
+For PACKET_MR_MULTICAST and PACKET_MR_UNICAST, packet_mc_add() then calls
+packet_dev_mc(), which adds the address to the device list:
 
-tools/testing/selftests/bpf/network_helpers.c:open_netns() {
+packet_mc_add()
+  packet_dev_mc()
+    dev_mc_add() / dev_uc_add()
+      __hw_addr_add_ex()
+        __hw_addr_create()
+
+Each distinct address gets a struct netdev_hw_addr, and that allocation
+is not charged:
+
+net/core/dev_addr_lists.c:__hw_addr_create() {
     ...
-	token->orig_netns_fd = open("/proc/self/ns/net", O_RDONLY);
+	ha = kmalloc(alloc_size, GFP_ATOMIC);
     ...
 }
 
-/proc/self resolves to the thread-group leader. So the saved fd points to
-the runner's root netns, not NS_FWD, which the worker entered at the top
-of test_tc_redirect_neigh().
+A struct netdev_hw_addr is about 104 bytes (kmalloc-128). That is larger
+than the packet_mclist that is now charged (about 72 bytes,
+kmalloc-cg-96). Neither packet_mc_add() nor dev_addr_lists.c limits how
+many entries can be added.
 
-The close_netns() calls in netns_load_egress_bpf() therefore setns() the
-worker back into the root netns. set_forwarding(false) then writes the
-ipv4 and ipv6 forwarding sysctls, and those resolve through
-current->nsproxy->net_ns.
+On devices with ndo_set_rx_mode_async, netif_addr_lists_snapshot() ->
+__hw_addr_list_snapshot() also makes two more GFP_ATOMIC copies of each
+uc/mc entry. These copies stay in dev->rx_mode_addr_cache, which is only
+flushed in free_netdev().
 
-Would this turn off forwarding in the host namespace and leave NS_FWD
-unchanged? Nothing restores the setting afterwards. The test would also no
-longer check redirect_neigh with forwarding disabled in NS_FWD.
+So a CAP_NET_RAW user in a user namespace can add many distinct
+MR_MULTICAST or MR_UNICAST addresses on lo. Each one still pins more
+uncharged memory than gets charged.
 
-test_tc_redirect_peer_ing() already has the same pattern via
-netns_attach_nk(). Any of these would avoid it:
+Would it make sense to also add __GFP_ACCOUNT to the allocation in
+__hw_addr_add_ex(), which runs in process context?
 
-- attach the egress programs before entering NS_FWD
-- re-enter NS_FWD before calling set_forwarding()
-- have open_netns() save /proc/thread-self/ns/net
+The commit message says:
 
-> diff --git a/tools/testing/selftests/bpf/progs/test_tc_neigh.c b/tools/testing/selftests/bpf/progs/test_tc_neigh.c
-> index de15155f2609f..e0b6c14a3935e 100644
-> --- a/tools/testing/selftests/bpf/progs/test_tc_neigh.c
-> +++ b/tools/testing/selftests/bpf/progs/test_tc_neigh.c
-> @@ -133,4 +133,14 @@ int tc_src(struct __sk_buff *skb)
->  	return bpf_redirect_neigh(IFINDEX_DST, NULL, 0, 0);
->  }
->  
-> +SEC("tc")
-> +int tc_egress(struct __sk_buff *skb)
-> +{
-> +	if (skb->mark)
-> +		return TC_ACT_OK;
-> +
-> +	skb->mark = 1;
-> +	return bpf_redirect_neigh(skb->ifindex, NULL, 0, 0);
-> +}
+    100 sockets with 2000 PACKET_MR_PROMISC entries each
+    on lo (45220 KB used, 124 KB charged) behave the same. With this change
+    all three are stopped by the cgroup's OOM killer.
 
-[Severity: Low]
-This isn't a bug, but does any packet in this test reach the new rejection
-branch in __bpf_redirect_neigh()?
-
-This program sees ordinary locally generated TCP/ICMP packets at veth
-egress. __dev_queue_xmit() has already reset mac_header there, so
-skb_mac_header_len() is 14 and the header is linear. These packets pass
-both the old and the new checks, so removing the new check would go
-unnoticed.
-
-tc_redirect_neigh is also registered only for veth:
-
-	RUN_TEST(tc_redirect_neigh, MODE_VETH);
-
-so the netkit case mentioned in the changelog is not exercised.
-
-Would a negative test be worth adding? For example,
-bpf_skb_change_head(skb, 1, 0) on a nonlinear skb followed by
-bpf_redirect_neigh(), expecting a drop.
+PACKET_MR_PROMISC only calls dev_set_promiscuity() and never reaches
+__hw_addr_create(), so the reproducer does not exercise this path.
+Should the commit message be narrowed, or should the device address
+entries be covered as well?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/bpf_redirect_neigh_short_linear.v2.r0.20261028080316-1%40mojatatu.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261101094847.664612-1-ahmadag1001%40gmail.com
