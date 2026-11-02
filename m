@@ -1,59 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793637004;
-	b=PwGmHL5iib1P9vFoJRzW1a0u7SbW2MshtT4u6WJOIhcyNbV3KxZOMQFJqm9Mqu2N73D4
-	 IPgJc3H3v6o84UxQFzrcr+JKSa6UOiKqEnoRYX8KJ3lTgqfNbyGv3GANsYSms+ur3J/Wt
-	 JgpqAMrLdBdJAGpH0roUcfejqPX4tdwPHBGZtVV4UbWpFKZ8uYRef3O4Ot5vbaI4QY19v
-	 fde7Xj+ppuNBj7VuCFIKVqblpZQugnK+XN3w0qYWi7TsslLTmR6xDbE7isCbwJUEHz+yU
-	 w0yOKG4tDc7AdOQi1WB03mF8ajYZ2xl5VzV2tVC8VUFt1wbuSphpkFQEvfV8wmPdUKQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793637004;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=h4kYxvFfAorg4Jasu3Jf/tQfK1V990SC2QcBhguelIE=;
-	b=djXBs6D1CeU8SWe1YYpnFCHmT+Tg3fYy4cWQIj09k4T/cQq6tdZsGABInSRlfJdJtSb4
-	 swkn6PgIzpkA57ecK14ji7h+98v5b0LJS9hwN0vB1kCYsggvOHsevV3kvs+1YqV9aSahU
-	 mMCSryd7t77QdJPTRXiI/D4uGhTUyBzYBpTV78L8zTGQg9fo/WszI5t2JHCCevk4VlfDq
-	 brluc0bn5mOi4la3aDHfFYEfYzHyfDHOcPWeDrxBs79xHowpmRUXgXb/1yKh4eAIMdg/k
-	 fi1bWzUrD5HJmVXQFEh8pQFYWnoeSWaWiDvAZ55e6kfqB7YdgvY7eVp0QgRwOTmbGew==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HyjvVe50;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.45
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793637238;
+	b=VdWFnYC5qKz7tw7d13AVsAF2Sfz+St//3RM7Zke8M/7qG2iRe1i3zlnt0kHD+XCOS0VW
+	 v2FD5pBNJdoE5InBaR/NfJrjW2PNGHZ1KnqG5zJG/Kj7UN1yOdCFMX+2/N62E+7wt6X67
+	 Gb3/34waO2zknGdaxZ2gKLfgOfKp03Eqx16vpaBHBhDX1rJb0mLmmlVtZHlSF+8g2SWal
+	 MYet99aDsTjcRWfLtCs1samBT7shRpwZvmcnbOxVtTmtDQ+BIOnIMa8sY1VYeVowgAX8j
+	 sDTCFSFtlZSwHVMaNVQoIsjzV3ZIcZGZqiiFWPps5ZN5/fFCCJ5TbBhY7AmqPQe6RwA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793637238;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=b4Epp6GXX29wADp3IHwfP+1qQXTUzuhpYxT/2bZApoM=;
+	b=ILLOqQ1qu+D963g3PcEP1z+dTtLGWHgVc0Ygyq8PyUxjqEkKFMI4cUo5u2eSmfGZrAyG
+	 Z5V6H4BqJH4aEApCdvLkVb1R4qDMqd5ecjEKsRofZpwTJFCf/zEcb/n5zlQtcWVSRxktw
+	 4U710k/nv4H8DXK43//tV0PY+clHcjpXYGeZr9u3gGZ40ReGNJk1ud3DnUciZ0TF30yNB
+	 aDRx6JL7g/S0T3cFWRpH0MYgR3WL57sM+Vx6LX4NBTqU1FMf/g2QPaJH5uYi/7HX3xVzH
+	 4QH3p6/08rW4cAOzFRestS8zIwOUbAoWlOxVxlmVG31gTgbjlF17k2z3M4Fo7jsXCGw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="ZkD/WsPU";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.45
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873266072ECD;
-	Mon,  2 Nov 2026 16:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6128560A0CA5
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 16:33:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6128560A0CA5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HyjvVe50
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A7731F00A17;
-	Mon,  2 Nov 2026 16:30:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793637004;
-	bh=h4kYxvFfAorg4Jasu3Jf/tQfK1V990SC2QcBhguelIE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HyjvVe50V1qRRZmBvd+x34by7kotPH65/V3/vkTrSkGNb7vwg03xJWIMSwGwDjshO
-	 XkIFoxI3BThH4CYRpKomAxdFGsaB7xGeVlDx3EcwhW34SL4J5H0Lr0OlIww0djo8lc
-	 DbDqwwA6qV0uF/9Q/BaBYBfAgq3uik8P5nivkWyVmfNbl9xRN6FUlf40fmPElkSgyY
-	 rJrsn5+zrz+tE18a+xZSRWH/TcHOzkiAwTfScmHVyeEr9+fOVvmoKD3HjAD/CySky/
-	 f//WYNPwA0Pfw16PASXN+g5e1ZQwTojMPqJ4qSrJ3dDfgAlQbuJ08xr/fvHg7JuSxc
-	 HNuxpVNRa7w4w==
-Subject: Re: [PATCH net v2 2/2] net/sched: sch_teql: keep skb->dev consistent
- on the arp-queue path
-From: netdev-bot+sashiko@kernel.org
-To: jhs@mojatatu.com
-Cc: netdev@vger.kernel.org, victor@mojatatu.com, jiri@resnulli.us,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, stable@vger.kernel.org, sashiko-bot@kernel.org
-Date: Mon, 02 Nov 2026 16:30:03 +0000
-Message-ID: <179363700308.3131.11778179538290251434@kernel.org>
-In-Reply-To: <QDISC-6HS9.v2.r0.20261101105945-2@mojatatu.com>
-References: <QDISC-6HS9.v2.r0.20261101105945-2@mojatatu.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZkD/WsPU
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a59100fa83so28952095e9.0
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 08:33:58 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793637237; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XUOHad1bk5SKbEH8Md19dRUK3weJAiE1d2hDQe2pLqCQM6xIQTSU99D8QgPoKUSytN
+         4OZlXRFBG+Gf7Vo3Z5t/rbq/dQ7PFcClk7UjVbR/jv6El7/TCKDyxNJKJOhRVWFWnKIS
+         WyjgBRC3SW7aWm3wSRk/1FpdTCStVVCsG4TJw4mgURR5R2cn5kSn5THybrphWm9gJEZI
+         luWnTuEO84KzD0INs04859HbDGELDL4Gh837mswI5WeTLiAKKBdGSoeawrqAqCST+y4N
+         YtPrM74k6Qa6M5ahGahCHXMRr6RBdDrI2q8XeY0PfoXKG+oar1ToufWRD3jJm36zWncW
+         r1Aw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=b4Epp6GXX29wADp3IHwfP+1qQXTUzuhpYxT/2bZApoM=;
+        fh=4kbNhq/hHkO8vhMTMfApVNiLQejzT56O8xS6LgQH/w0=;
+        b=BFaDqozj3KOuK8TrmhkuUYiLknIDruKjBC/F1PpJDQBUpruDJ3J9qSDWB3yiw70dIF
+         /34OwZriTp61F0TDUafDlylzVNOm+liWt+8hbBMndmWeo1g6CoPp7fIn9r2nd0yLQ2XK
+         K/POQs43EFAg20GPuIGdUpS8nTUV2xglFpwCUce/uTqzry3QX6I+4kL9XakzriK0viK2
+         pvA92eZ8WaqvS/Ll2V2wBB10uhHsVP7mF7ef1x1kodtfLU1z8qgrCnf86jLdhPstgkrt
+         3kXnFyobDV7wzYWUNaghZPcjokEMQF7eb8DHDSSNu7cLn2/REs4uVSgsoZ6Xi5o7Oj0F
+         r8Kw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793637237; x=1794242037; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=b4Epp6GXX29wADp3IHwfP+1qQXTUzuhpYxT/2bZApoM=;
+        b=ZkD/WsPUfQqqb0Ko9RW5x/5QAVS7r9isZSz23PjR13GeVO/T4ALeRwb8OCo7NYh66J
+         Q5eJMIZ2fqgcnM7QoJ7l2ZA8BMizlSsxYOQniYp3zwAqPxq6Bft1vWGIT3dvFdtx+nMz
+         vVVr9hUxj9WHOk9bWMB1+BHYEIGDK5MCnlsQkYZsMwfy1qRC8vv/FX/4dqgl6cpAOY+1
+         Ef5ZbeRkkWKKTakPB2EB3xHOmkHs+3kfDHaTY0iLlpP/dvp2v89RyeICsJZm9xu5uw76
+         sS513+jN968BmCNohD13d1fYUrlPuLdY6bdTTqJfqyq2vm3s14AwtjgkKKobNgtLwwH3
+         akGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793637237; x=1794242037;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=b4Epp6GXX29wADp3IHwfP+1qQXTUzuhpYxT/2bZApoM=;
+        b=S37S4ylCmeCAiqnc5mYQ8AbXmf26tuUG6WFklHbqp9pAe9GIUiqLc3dg7UpkaC1vB7
+         GV63HImubw3C3g4GgQ+MOMfQct66Nk+bLwKeDHPhifkFQims8fZp+nCG9Ae92ytTobgW
+         ScjeKB+vdIC4sQR6mMvJPKhV1Vm14cvask1vLOpqbzMtrtlyhAHEFtRqXtBPQS5SBDOH
+         FveyKGKX2BjlHvkznSQUy1jNmn1/4nAl5vBhn1oXd0n+C+TChs5KBGNLcl6P8mjLkj45
+         cG5Z8zdq22WjW+jgdT/T7VxNFXq2SbhrO+N8XpcUJmMUIwu1EirpEbgmTpT0CjDtuVcd
+         y4ig==
+X-Gm-Message-State: AFq9FYJ4LN1ibAIs2w3M7l0rH7PA8yxNRdInIQKmLHoC9rWIYZTfUEDV
+	SOpZEJaC1E7vGzzEcte2qdR3nq5YMfpGTqeYJkQqueygaVEs1AqT2h88EZs0XFmqvlmBrHIgCGw
+	NsTROKTWnbcfG3iUjlEmWJrzOciWJjQ9gLg==
+X-Gm-Gg: AYBFou1fClPZ3m8yDl1Qxdg0J74dfx7/NJzMOE7YjknOmpWrRlEsP5+PdWA1Vz6j8Il
+	y2SZsdwBfrR32aP3mwB4PafX/PDS3GNxgUAhqo72CbKYMSisJ2HIvpND4ztaWkRtWec+j4uFj5l
+	iNQSajBS53iplUurkVZ0hN4JQtPoN1LP3kwVNGS67UZbPTz6VjxKYXDwYD7oxmHxjsJIzArUZLX
+	UZUyBS9QL5Rinmub9RW8/5G1f/mg7+LWQ5mnIL2aXu03O5uMI5to0EeT7S9rjSM6j3E0BufJGlC
+	XndQIpUl5GGStjO80H7XT9ciVbpeiU7wDd63wZgUWqxNpuIv0phfIsD3m5cf/M3eJraZZg9liwJ
+	6lzG3iO0QXWjdslL08Qqv+ulwky23i8dUMLmcU0OilJrJR/bbvAiQupDyNI2wdRKHKPAMzPX5gn
+	n/t8xKH6uGKbdoR0A2/bxxKlAbOmYiqmYGnSGmz1oWWpchZJ02AoA5iQ==
+X-Received: by 2002:a05:600c:83c3:b0:4a9:18f4:925e with SMTP id
+ 5b1f17b1804b1-4ac174711afmr236632205e9.18.1793637236634; Mon, 02 Nov 2026
+ 08:33:56 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,261 +104,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <179322311834.40667.5383039334126572422.stgit@ahduyck-xeon-server.home.arpa>
+In-Reply-To: <179322311834.40667.5383039334126572422.stgit@ahduyck-xeon-server.home.arpa>
+From: Alexander Duyck <alexander.duyck@gmail.com>
+Date: Mon, 2 Nov 2026 08:33:19 -0800
+X-Gm-Features: AclHuK_LEJ3H8DEM-8wdkuerMwl07zVW412F-nyfFBxma7CYkAr6UtVVxAbMH6E
+Message-ID: <CAKgT0UdcmFz4VbaO7wJKqqt9OqKonCu=RHkwjsHgqM7Waky5pw@mail.gmail.com>
+Subject: Re: [net PATCH 00/13] fbnic: Fix BMC filter, FW crash restore,
+ teardown and Tx flush bugs
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	horms@kernel.org, kernel-team@meta.com, kuba@kernel.org, pabeni@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+On Wed, Oct 28, 2026 at 2:35=E2=80=AFPM Alexander Duyck
+<alexander.duyck@gmail.com> wrote:
+>
+> Review of the "Rework the BMC state pulled from the capabilities
+> message" and "Remove BMC routing rules when the BMC channel is disabled"
+> pair, d261a371e3b7 and db99b6fae21c, turned up a number of bugs in the
+> surrounding code that the pair did not introduce. This series fixes
+> them, along with the order of the ndo_stop path, the mailbox teardown
+> and the Tx force-flush.
+>
 
-Critical: 0 · High: 0 (1) · Medium: 2 · Low: 1
+[...]
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Based on the Sashiko feedback I think I am going to rework the set and
+submit it as a couple batches of patches instead of just this 1. Seems
+like the work necessary to clean up the BMC/MAC Addr stuff will likely
+need more patches.
 
-- [Medium] The new gate in neigh_update_process_arp_queue()
-  (net/core/neighbour.c:1343-1344), `if (!n1->dev->header_ops) skb->dev…
-- [Medium] teql_master_xmit() now sets skb->dev = slave before
-  teql_resolve() (sch_teql.c:371).
-- [Low] The commit message's reproducer cannot show the use-after-free
-  the patch says it fixes.
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but
-  teql_qdisc_init() (net/sched/sch_teql.c:194-253) never checks that the…
-
---
-
-net/sched: sch_teql: keep skb->dev consistent on the arp-queue path
-
-This patch moves skb->dev = slave ahead of teql_resolve(). An skb parked
-on the slave's arp_queue then names the slave instead of the teql master.
-It also restores skb->dev = n1->dev in neigh_update_process_arp_queue()
-when the top-level neighbour's device has no header_ops, so the skb goes
-back through teql_master_xmit().
-
-Link: https://lore.kernel.org/netdev/20260824115928.4099988-1-victor@mojatatu.com/
-Link: https://lore.kernel.org/netdev/20261026160747.283702-1-horms@kernel.org/
-Link: https://lore.kernel.org/netdev/20261031165925.780930-1-horms@kernel.org/
-
-> Conditions to recreate the bug:
-> CONFIG_NET_SCH_TEQL=y, CONFIG_VETH=y, run as root. Create a veth pair,
-> make one end a teql slave, give the master an address and a route, flush
-> the slave's neighbour entry and send one packet:
-
-[ ... ]
-
-> On the unfixed tree the skb is parked on v0's arp_queue while skb->dev
-> still names teql0, so the reinjection can reach a master that teql_exit()
-> has freed.
-
-[Severity: Low]
-Can this recipe reach the use-after-free it describes?
-
-With CONFIG_NET_SCH_TEQL=y, teql_exit() is __exit and never runs, so no
-master is ever freed:
-
-net/sched/sch_teql.c:teql_exit() {
-    ...
-		unregister_qdisc(&master->qops);
-		unregister_netdev(master->dev);
-		free_netdev(master->dev);
-    ...
-}
-
-teql_master_setup() installs no rtnl_link_ops, so "ip link del teql0"
-can't free the master either.
-
-Building sch_teql as a module doesn't change this. teql_master_setup()
-sets ops->owner = THIS_MODULE, and qdisc_lookup_ops() takes a module
-reference through bpf_try_module_get() for each slave qdisc. rmmod
-therefore fails while the slave qdisc on v0 exists.
-
-To reach a freed master you seem to need sch_teql as a module, then
-"tc qdisc del dev v0 root", then "rmmod sch_teql". All of this has to
-happen while the skb is still parked on v0's arp_queue. None of these
-steps are in the recipe. Could the recipe be updated to match?
-
-Also, the message only names the reinjection path. Commit dc4b95b8fee9
-showed this KASAN-confirmed path for a stale skb->dev:
-
-neigh_invalidate()->arp_error_report()->ipv4_link_failure()->__icmp_send()
-
-Here __icmp_send() reads skb_in->dev. This patch covers that path too,
-because the parked skb now names the slave. Would it be worth saying so
-in the message?
-
-> diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-> index d6e9c7c59a892..541cf699abae4 100644
-> --- a/net/core/neighbour.c
-> +++ b/net/core/neighbour.c
-> @@ -1339,6 +1339,9 @@ static void neigh_update_process_arp_queue(struct neighbour *neigh)
->  			if (n2)
->  				n1 = n2;
->  		}
-> +		/* headerless outputs (teql, shaper) transmit on skb->dev */
-> +		if (!n1->dev->header_ops)
-> +			skb->dev = n1->dev;
->  		READ_ONCE(n1->output)(n1, skb);
-
-[Severity: Medium]
-Is this check narrow enough to match only teql?
-
-n1 comes from dst_neigh_lookup_skb() on the skb's retained dst. It does
-not come from neigh, the neighbour the skb was parked on. Nothing checks
-that neigh->dev is a teql slave of n1->dev, so any headerless route
-device matches.
-
-Two producers park the skb on another device Y's neighbour while keeping
-the original route's dst:
-
-- nft "fwd ... neigh", via nft_fwd_neigh_eval(). nft_fwd_validate()
-  allows it at NF_NETDEV_EGRESS.
-- bpf_redirect_neigh() with an explicit nexthop.
-  __bpf_redirect_neigh_v4/v6 only replace the dst when nh == NULL.
-
-Suppose such a forward runs at the egress hook of a headerless device X
-and the neighbour on Y is unresolved:
-
-__neigh_event_send()
-  skb_dst_force(skb)                    /* dst->dev is still X */
-  queue on Y's arp_queue
-
-neigh_update_process_arp_queue()
-  n1 = dst_neigh_lookup_skb(dst, skb)   /* X's neighbour */
-  skb->dev = n1->dev                    /* X */
-  neigh_direct_output()->dev_queue_xmit(X)
-
-nf_skip_egress was reset after sch_handle_egress(), so nf_hook_egress()
-runs X's egress chain a second time.
-
-The forward then runs twice. nft_fwd_neigh_eval() decrements TTL again,
-so a TTL=2 packet that should leave Y with TTL 1 is dropped here on the
-second pass:
-
-		if (iph->ttl <= 1) {
-			verdict = NF_DROP;
-			goto out;
-		}
-
-Quota, limit and counter state are charged twice. The second pass may
-also decide differently, for example with numgen, an expired set element
-or a ruleset change. The packet then leaves through X, the route the
-forward was meant to bypass.
-
-Devices that match as X include:
-
-- point-to-point ipgre with a unicast remote, and collect_md gre
-  (ipgre_tunnel_init() leaves header_ops NULL)
-- ppp, eql and teql
-
-Tunnels using ip_tunnel_header_ops (wireguard, tun, ipip, sit, xfrmi and
-so on) don't match. Before this patch these skbs left Y without a link
-header. That was broken, but they never re-entered X.
-
-The commit message acknowledges this and leaves the producer fix to a
-separate change. This net/core change is going to stable under a
-sch_teql subject. Could the producer fix be included, or the gate
-narrowed, for example by requiring neigh->dev to be a teql slave of
-n1->dev?
-
-> diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
-> index ed8faa848f184..4eac1f9c8ddf6 100644
-> --- a/net/sched/sch_teql.c
-> +++ b/net/sched/sch_teql.c
-> @@ -368,13 +368,13 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
->  			continue;
->  		}
->  
-> +		skb->dev = slave;
->  		switch (teql_resolve(skb, skb_res, slave, slave_txq, &hlen)) {
-
-[Severity: Medium]
-What happens to an skb parked here if the neighbour then fails?
-
-In case 1 of teql_resolve(), teql_master_xmit() returns before the
-skb->dev = dev restore at the bottom of the loop. The skb therefore sits
-on the slave's arp_queue with skb->dev = slave.
-
-Only neigh_update_process_arp_queue() was changed to put the master back.
-The other consumer of the queue passes the skb on unchanged:
-
-net/core/neighbour.c:neigh_invalidate() {
-    ...
-	while (neigh->nud_state == NUD_FAILED &&
-	       (skb = __skb_dequeue(&neigh->arp_queue)) != NULL) {
-		write_unlock(&neigh->lock);
-		neigh->ops->error_report(neigh, skb);
-    ...
-}
-
-For IPv6 the call chain is:
-
-ndisc_error_report()->dst_link_failure()->ip6_link_failure()->
-icmpv6_send()->icmp6_send()
-
-icmp6_send() takes its context from skb->dev:
-
-	net = dev_net_rcu(skb->dev);
-	...
-		iif = l3mdev_master_ifindex(skb->dev);
-
-It also uses ipv6_chk_addr(net, &hdr->daddr, skb->dev, 0), and
-icmp6_iif(skb) for link-local sources. That iif becomes flowi6_oif for
-the route lookup of the error.
-
-These values used to come from the teql master. Now they come from the
-slave, which changes the result in these setups:
-
-- teql0 in a VRF with the slave outside it: the ICMPv6 Destination
-  Unreachable is routed in the main table instead of the VRF table.
-- A link-local source on teql0: the oif becomes the slave.
-- A slave in another netns: the error is built in that netns.
-
-Can the local sender's error be dropped or misrouted in these setups?
-
-Would restoring skb->dev on this path as well avoid this? One option is
-skb_dst(skb)->dev, which dst_dev_put() keeps valid.
-
-[Severity: High]
-This isn't a bug introduced by this patch, but should teql_qdisc_init()
-check that the slave and the master are in the same network namespace?
-
-The teql Qdisc_ops are on the global qdisc_base list, so
-qdisc_lookup_ops() finds "teql0" from any netns. rtnetlink_rcv_msg()
-only checks netlink_net_capable(skb, CAP_NET_ADMIN) against the caller's
-own netns. teql_qdisc_init() then checks only hard_header_len,
-m->dev == dev and the root parent:
-
-net/sched/sch_teql.c:teql_qdisc_init() {
-    ...
-	if (dev->hard_header_len > m->dev->hard_header_len)
-		return -EINVAL;
-
-	if (m->dev == dev)
-		return -ELOOP;
-    ...
-		m->dev->mtu = dev->mtu;
-		m->dev->flags = (m->dev->flags&~FMASK)|(dev->flags&FMASK);
-    ...
-}
-
-As a result, root inside an unprivileged user+net namespace can run
-"tc qdisc add dev <own veth> root teql0". That enslaves its own device
-to the init_net master. If it is the first slave, it also overwrites the
-master's mtu and flags.
-
-teql_master_xmit() then round-robins init_net traffic routed through
-teql0 onto that device. __teql_resolve() creates the neighbour there, so
-the namespace can read or drop that traffic and controls neighbour
-resolution for parked skbs. This needs sch_teql loaded or built in by
-the host. There is no MODULE_ALIAS for autoloading.
-
-With this patch, parked skbs also carry skb->dev = slave. ICMPv6 errors
-from neighbour failure that quote the init_net packet are therefore
-built in that namespace, through dev_net_rcu(skb->dev) in icmp6_send().
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-6HS9.v2.r0.20261101105945%40mojatatu.com
+I will strip out the more direct stuff and submit it as a set onto itself.
