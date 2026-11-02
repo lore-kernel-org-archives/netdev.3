@@ -1,89 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.133
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793634732;
-	b=S61WtISFA8nOZgANhYFHA6074sBOjeeOGNhOyDDXhwiCjeuTXC2hJUvbnzSnTvdc3Sri
-	 hyS8xIovax/hoUqe1rkVQ1Rv4+LA8Hj4ey+LJhhEtdIXlgPfkKlBqaqZV7/xle0/loFsK
-	 10MvliQFLX5rDaZbDzA0K9zWCpsop8474YQcOptyMgUVcoxsIA9K2Kfv0QUG6o9kWYYCj
-	 wvMZ4HBYyMxRJy9XFssPkZf+/0TizNis073FcWkqotX3eM7rRBivG3d1Cosjb4MQ0/VUX
-	 skW9sMO/5cEEp7uIE19HsYxQ3r76Vo94w3+PZQqHm3Qb1ng9MobY+GpHu6QTDItnzgQ==
+	t=1793634807;
+	b=cisvb12VIZtnj7ueSkAfKyR8ddipg+4+6qVlsv8ZTq0tvMl2hOHk1E7s49EcH550ohk+
+	 d/70b9qiit/oSZChLmc1pI5246IfIeX7Cvmd8aLq09M3eLkBeJn69PeHwDQCqk+8kw0OV
+	 ERwhkszJWIUo9PGS2AbUDLV3ZIRJvCOdZD9SyWWqbIlOvNSAa8rzdP6Cc+r3EH1g3ZrrL
+	 qOBNlAJlBdY4jjGhr3kOFIeFHocOZ6GSYHFIYm9Gz3knlXIRAKZc5ks/k+XLB4+9Z091s
+	 VkbNJYrAciRt9QnQZ2m4dqFVtmGFiD4fIhZJpAXNaz3W7zhAqAqqtavx7G85+rUze9A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793634732;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
-	 X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=wKLrw167uz5vnqL4s9bXN12DEPMpo4oId8hlYp1KDSc=;
-	b=ggxK8yof/A8HwMi1LYuow0tdTuK/0SpLwvhINj94FQo72Rwem7W2qDcKUWx2HPtzrcev
-	 KEtShMcKXcILGT2PMbf9CakjlQhBO3pMP1HDkb8DKtn8nOIPwSr4rtIXhom/jV5klUI/I
-	 b2yQzrXg+RhYYvoMQ/+Z1jzycLRBEcVJl+4GF1GUDu4PMljT/FYbowh72QTNH0oWqiTuc
-	 5CLpr57N99tCWzCtPUbASUeUdqth6lhW8EKdDSHPT/3TYER8joeEntqL5VHqKjzVMpJ0z
-	 Hk8vMbgI5vobgfZFWKGw/rVy9FXP/dowfjC+kM4vaE7EDtyu40pyK43m3pZu6CShsFA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793634807;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=XjFbOul/AfljpdG+9e7gMBqa1iZSXAush8G4aABI3ZE=;
+	b=y2S+ajTkxAymteGAf5E/SfiuBu+RN9QlCCERbDz5z08xaQ55g6I8+pUrtO7yiVrg3aQz
+	 Tw2oeqxR7OfSLx/cAdZxXB+Tl3B10jCSWvnrj3Q/R726bXrKH+FPM079gV/9Q3T7qkQSh
+	 iC9sWHg4Xf7lG6ByLmQGDwroUXxmbg5reDyT3a8mh04ys4XVW+LhGf4sWX0K/9p/tLX1k
+	 0OaoQdFY2O8fkGhzCtlg1n4ElmvkCkxwU1qSXsX2BCOCfVrYtbWk/ba8Z6YfmTOf5DHrH
+	 v2u5qcSy910OEqAGiZaVbwEl+tNPjdPPSYVXTBwIoCl1Wu6/ylflPOMdJ/tFpIem3sw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=foxmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	arc=none smtp.remote-ip=74.125.227.133
-Received: from mail-pj2-f5.google.com (mail-pj2-f5.google.com [74.125.227.133])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FrgaYHLo;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A12F607827D
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:52:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A12F607827D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj2-f5.google.com with SMTP id 98e67ed59e1d1-3ae7c6a2d07so854059a91.1
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 07:52:12 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793634732; x=1794239532;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wKLrw167uz5vnqL4s9bXN12DEPMpo4oId8hlYp1KDSc=;
-        b=YyrS2K+pBoCzjHjhcezHosVunSsl2pV1HkB3jQu2qD9qDRN5lLO0zuINPpSBJPDuaX
-         hZ9S7GTPo0HnPLn1b7LUBhLqZ+gsbo7CksbNHz0LTHGnmNMMSPvz946bUgZ9KYeuIhj2
-         4TvDYxhfatqG+XmVf6g1taUlQdBlsi0HQAOa6UG4uicbEjWskhxu56yh1ah7Fzs61aAH
-         kOBKXO6KidYuy5JoRxYQFEvPXRGpHWAVVSUaCBLVE315ERn3DE3QW+XjqzOGlDhJajF1
-         dqcEvKYlMsPUgoccXZFKfK9ssMJeleS101BoManZlsl5NmD2JDJJLTpJlpkmpD7KSxox
-         cuew==
-X-Gm-Message-State: APuU4Z9e0rfMXo6s3tv9u/EOqwf8TQWXi5xjaWY5WhhXEvPbFwUU3BCJ
-	vSYluRs0tmWJwrF1mVjJP0BIobbX2u2LPIAfWLsnuriaqh6/ltH+sK9omawNBAqb
-X-Gm-Gg: AYBFou2XI3ddYideUCGQ711rGun9SyQC2qupVlZWkz7JgjbTsrlKMESlw08QIxP6S/F
-	18W+FMxx8v+Femt7JYvBCeEyaNC8F/v6cvsTuooJE31yaScVkwwOw6vuptWiBkTTYkIBpZ7kxO0
-	FA92ElhjKrOgvUk3P57sLmp50GUQ+PTf9z0uwRcoIVM5+X5D0duyM6Uzl7YWj/+1gTBk5DNJqTz
-	jwuH8PE8N9GDEFKVoKrY9CXMUzJXc9TM8JmAMhBP5AAIcPXHEvzJfImOaRW4j3qOXWOGK4Q34eW
-	28M82X9zrzignVxMQR0DobNgNbxxxq5D2n3lT6ZV9d8OKq+goB+UOZv1HUAzKxywf/uFrGjrbwL
-	Pzyg2irOwmDUy44eJ9kX8iGluzKCj8o6fXAfPQ3joLe5aK6mCfcdiB+gq0YySq2l5wYdDceia+8
-	/3WnzrG5q19E/Bbv4UPA504AKnrkPC7SwyEBr+n1hAgc/EKjFqB01pcBj96n2z1GbM7ovfv08Jx
-	kIG9kApHslL32dMPIQ4IlVx9pla8i+W8zQtVmSEzMq+j9ce+PEMRq4rH9K/a9Q+CdOMbN3KOh9i
-	CvVtM3D/b/8wQUJKAelzYf2OT/TfdGUn/kphWe4J25GLXoDJexFJt4njn3gMIy+weEo=
-X-Received: by 2002:a17:90a:e7cd:b0:3ac:85be:cd56 with SMTP id 98e67ed59e1d1-3ae897ce1famr8769905a91.12.1793634731895;
-        Mon, 02 Nov 2026 07:52:11 -0800 (PST)
-Received: from localhost.localdomain ([138.199.21.247])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae845aa27esm14267953a91.11.2026.11.02.07.52.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 07:52:11 -0800 (PST)
-From: Jianlin Shi <shijianlin11@foxmail.com>
-To: netdev@vger.kernel.org,
-	virtualization@lists.linux.dev
-Cc: mst@redhat.com,
-	jasowang@redhat.com,
-	eperezma@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	talgi@nvidia.com,
-	hengqi@linux.alibaba.com,
-	horms@kernel.org
-Subject: [PATCH v2 2/2] virtio-net: unwind VQs when irq moderation init fails
-Date: Mon,  2 Nov 2026 23:51:45 +0800
-Message-ID: <20261102155145.23144-3-shijianlin11@foxmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261102155145.23144-1-shijianlin11@foxmail.com>
-References: <cover.1790751008.git.shijianlin11@foxmail.com>
- <20261102155145.23144-1-shijianlin11@foxmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83EE60AED02;
+	Mon,  2 Nov 2026 15:53:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FrgaYHLo
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E3051F01579;
+	Mon,  2 Nov 2026 15:53:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793634806;
+	bh=XjFbOul/AfljpdG+9e7gMBqa1iZSXAush8G4aABI3ZE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FrgaYHLoE0kqDMnh8dClQWdKdQKBr/kCfbbo5QLWmmLlQ3CfhXx5wA3iZKX88tetL
+	 i+RoLiVZGgsnOfj8uWXJYyptOqDBFiUhOe46l0t3sFkUcDvL/d6lMlPw/dyjKkFRK6
+	 keE43Nro9pLLcux7E0rJaTT8LuINmk2c5jokILcb2AahAwi12YovTgcA+gU5/BaHl7
+	 pLVTqwC45905Bq6OrU2Ss87cBbi7SVof32oLIsUuWVNPuZKyrvG89VIuyJWnSo5yyU
+	 vwNPVBMHNIyGtM+K8O1Rx3y3End+UfJdDgLb6XTnPK6/GvAVv2VoPAHWmb8142VIl+
+	 64A0r6EhQzamQ==
+Date: Mon, 2 Nov 2026 15:53:22 +0000
+From: Simon Horman <horms@kernel.org>
+To: Joas Antonio <joasantonio108@gmail.com>
+Cc: David Heidelberg <david@ixit.cz>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Fan Wu <fanwu01@zju.edu.cn>, oe-linux-nfc@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] nfc: st21nfca: complete a pending SE APDU request
+ only once
+Message-ID: <20261102155322.GB865646@horms.kernel.org>
+References: <179332800288.52644.8728400883396719965@gmail.com>
+ <20261031182504.GW257209@horms.kernel.org>
+ <CAOCBhwGBrPxLPukgH7UAoy--sOXyoWL5XsC6CmUroy0T2xujXA@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -93,40 +63,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOCBhwGBrPxLPukgH7UAoy--sOXyoWL5XsC6CmUroy0T2xujXA@mail.gmail.com>
 
-virtnet_probe() calls init_vqs() before virtnet_init_irq_moder().
-When the irq moderation init fails, the error path does "goto
-free", which only reaches free_netdev(): virtio_reset_device() and
-virtnet_del_vqs() are skipped, leaking the virtqueues and their
-DMA mappings.
+On Sat, Oct 31, 2026 at 04:44:28PM -0300, Joas Antonio wrote:
+> Hi Simon,
+> 
+> Thanks, you're right.
+> 
+> The two completion paths are serialised against each other:
+> st21nfca_apdu_reader_event_received() does timer_delete_sync() and
+> cancel_work_sync() before it looks at bwi_active, and the timer is only
+> re-armed from the same HCI rx work (EVT_WTX_REQUEST). But
+> st21nfca_hci_se_io() runs from the netlink path under device_lock()
+> only (nfc_se_io() in net/nfc/netlink.c), which neither the rx work nor
+> the timeout work takes. So:
+> 
+> - bwi_active, cb and cb_context are plain fields written by
+>   st21nfca_hci_se_io() while the rx work or the timeout work may be
+>   reading them;
+> - a second SE_IO issued while one is pending overwrites cb and
+>   cb_context, so a completion running at the same time can pair one
+>   request's callback with the other's context, and the first context is
+>   never completed. That is not new with this patch, but the bwi_active
+>   check does not cover it either;
+> - st21nfca_hci_se_io() sets bwi_active only after mod_timer().
+> 
+> For v2 I plan to add a spinlock to se_info that covers bwi_active, cb
+> and cb_context: st21nfca_hci_se_io() fails with -EBUSY (freeing
+> cb_context, as on the existing error path) if a request is already
+> pending, otherwise records it and sets bwi_active before arming the
+> timer; the timeout work and the EVT_TRANSMIT_DATA handler take the
+> pending request out under the lock (test and clear bwi_active, copy cb
+> and cb_context) and call the callback after dropping it, so exactly one
+> of them completes it.
+> 
+> Does that sound reasonable? I'll rerun the emulator tests on it before
+> sending.
 
-Use the existing free_irq_moder label instead, as
-virtnet_create_page_pools() already does on failure.  This is safe
-only after net_dim_init_irq_moder() clears dev->irq_moder on its
-own failure (previous patch); otherwise virtnet_free_irq_moder()
-would net_dim_free_irq_moder() a dangling pointer, dereferencing
-freed memory and freeing it a second time.
+Thanks Joas,
 
-Fixes: dcb67f6a9ead6 ("virtio-net: support dim profile fine-tuning")
-Signed-off-by: Jianlin Shi <shijianlin11@foxmail.com>
----
- drivers/net/virtio_net.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I am wary of scope creep. But as some locking does seem necessary
+for using bwi_active to be non-racy in this patch, then yes, I agree
+this is a good approach.
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index dd2c41ef6fbe..d3ad1f1334bb 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -7027,7 +7027,7 @@ static int virtnet_probe(struct virtio_device *vdev)
- 
- 		err = virtnet_init_irq_moder(vi);
- 		if (err)
--			goto free;
-+			goto free_irq_moder;
- 	}
- 
- 	/* Create page pools for receive queues.
--- 
-2.43.0
+You may want to consider two patches in a patch-set: one to add the lock,
+and another being v2 of this patch, if the changes seem to be distict even
+if one is dependent on the other.
 
+...
