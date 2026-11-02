@@ -1,100 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.45
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793637238;
-	b=VdWFnYC5qKz7tw7d13AVsAF2Sfz+St//3RM7Zke8M/7qG2iRe1i3zlnt0kHD+XCOS0VW
-	 v2FD5pBNJdoE5InBaR/NfJrjW2PNGHZ1KnqG5zJG/Kj7UN1yOdCFMX+2/N62E+7wt6X67
-	 Gb3/34waO2zknGdaxZ2gKLfgOfKp03Eqx16vpaBHBhDX1rJb0mLmmlVtZHlSF+8g2SWal
-	 MYet99aDsTjcRWfLtCs1samBT7shRpwZvmcnbOxVtTmtDQ+BIOnIMa8sY1VYeVowgAX8j
-	 sDTCFSFtlZSwHVMaNVQoIsjzV3ZIcZGZqiiFWPps5ZN5/fFCCJ5TbBhY7AmqPQe6RwA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793637238;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=b4Epp6GXX29wADp3IHwfP+1qQXTUzuhpYxT/2bZApoM=;
-	b=ILLOqQ1qu+D963g3PcEP1z+dTtLGWHgVc0Ygyq8PyUxjqEkKFMI4cUo5u2eSmfGZrAyG
-	 Z5V6H4BqJH4aEApCdvLkVb1R4qDMqd5ecjEKsRofZpwTJFCf/zEcb/n5zlQtcWVSRxktw
-	 4U710k/nv4H8DXK43//tV0PY+clHcjpXYGeZr9u3gGZ40ReGNJk1ud3DnUciZ0TF30yNB
-	 aDRx6JL7g/S0T3cFWRpH0MYgR3WL57sM+Vx6LX4NBTqU1FMf/g2QPaJH5uYi/7HX3xVzH
-	 4QH3p6/08rW4cAOzFRestS8zIwOUbAoWlOxVxlmVG31gTgbjlF17k2z3M4Fo7jsXCGw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="ZkD/WsPU";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.45
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793637399;
+	b=Pn2kQ+xq9KKC3v/hQTr56L1Wdd19tno84Xra0s3x72YK8WApYn25c7GtvJEik0N421AX
+	 oioCvPfEzjpbdZw0q1gq6VKw0G1uZK0dWeBsu48q9fRI/MDSR2a1J1qgCCkbF1KYHiOgS
+	 9wCv69aV9n5FwzQ02Hx9vZBoFuG413v0i3nc3+xjGjWJfNftRD/xrdDd7Pel1dsK9dG/O
+	 eEgbKJdJaOZtpLActhFRIgCyq/Ht4CHizbsPPGwZf+7RxPEZfpx2vj4dRU2xUcudB/hVB
+	 64D1khtL+NMu2qKmnXKKEXj1b7Y0S7ED1zDmEc93Y4tg1xx+JNvMsgRLc41x8DfQMNA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793637399;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=up80y3aLZUYQS9c1FW8eeNAicDXg19M0Djm1fQd47+E=;
+	b=ww6nl4/oIz5gThp7dQlGK913q3pU11y0OtptqYj5lDBkf3x2F5S2UxKaaAgvQqwF/I6j
+	 48RgNrHMN8TAWhUD+1icCbAz7S/q7TJ7xmPzLAANVmZ6uFMHwpGvVaycjoXfHE5EdLbhf
+	 W0H4VGP3issxf30OBYxETT1/KI0IcnC4yba2bcWdmXOv9Ff7d93251hR2T0XY065JYtqD
+	 JLFzVrt0vgGvBL6/7fznJ3U/RpDKYhSjhosZccVJhIMIU2PkdvXPH7MDcY8IFlRTSQ4l7
+	 XiUXpl7MYu9hSbwoW91cU5B++pusuFvQZi0ZMvjUI61KHyVZFhCxD6rpToVY3eqrHug==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=gKuGdMN+;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6128560A0CA5
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 16:33:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6128560A0CA5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FC6606B0FF;
+	Mon,  2 Nov 2026 16:36:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 91FC6606B0FF
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZkD/WsPU
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a59100fa83so28952095e9.0
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 08:33:58 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793637237; cv=none;
-        d=google.com; s=arc-20260327;
-        b=XUOHad1bk5SKbEH8Md19dRUK3weJAiE1d2hDQe2pLqCQM6xIQTSU99D8QgPoKUSytN
-         4OZlXRFBG+Gf7Vo3Z5t/rbq/dQ7PFcClk7UjVbR/jv6El7/TCKDyxNJKJOhRVWFWnKIS
-         WyjgBRC3SW7aWm3wSRk/1FpdTCStVVCsG4TJw4mgURR5R2cn5kSn5THybrphWm9gJEZI
-         luWnTuEO84KzD0INs04859HbDGELDL4Gh837mswI5WeTLiAKKBdGSoeawrqAqCST+y4N
-         YtPrM74k6Qa6M5ahGahCHXMRr6RBdDrI2q8XeY0PfoXKG+oar1ToufWRD3jJm36zWncW
-         r1Aw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=b4Epp6GXX29wADp3IHwfP+1qQXTUzuhpYxT/2bZApoM=;
-        fh=4kbNhq/hHkO8vhMTMfApVNiLQejzT56O8xS6LgQH/w0=;
-        b=BFaDqozj3KOuK8TrmhkuUYiLknIDruKjBC/F1PpJDQBUpruDJ3J9qSDWB3yiw70dIF
-         /34OwZriTp61F0TDUafDlylzVNOm+liWt+8hbBMndmWeo1g6CoPp7fIn9r2nd0yLQ2XK
-         K/POQs43EFAg20GPuIGdUpS8nTUV2xglFpwCUce/uTqzry3QX6I+4kL9XakzriK0viK2
-         pvA92eZ8WaqvS/Ll2V2wBB10uhHsVP7mF7ef1x1kodtfLU1z8qgrCnf86jLdhPstgkrt
-         3kXnFyobDV7wzYWUNaghZPcjokEMQF7eb8DHDSSNu7cLn2/REs4uVSgsoZ6Xi5o7Oj0F
-         r8Kw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793637237; x=1794242037; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=b4Epp6GXX29wADp3IHwfP+1qQXTUzuhpYxT/2bZApoM=;
-        b=ZkD/WsPUfQqqb0Ko9RW5x/5QAVS7r9isZSz23PjR13GeVO/T4ALeRwb8OCo7NYh66J
-         Q5eJMIZ2fqgcnM7QoJ7l2ZA8BMizlSsxYOQniYp3zwAqPxq6Bft1vWGIT3dvFdtx+nMz
-         vVVr9hUxj9WHOk9bWMB1+BHYEIGDK5MCnlsQkYZsMwfy1qRC8vv/FX/4dqgl6cpAOY+1
-         Ef5ZbeRkkWKKTakPB2EB3xHOmkHs+3kfDHaTY0iLlpP/dvp2v89RyeICsJZm9xu5uw76
-         sS513+jN968BmCNohD13d1fYUrlPuLdY6bdTTqJfqyq2vm3s14AwtjgkKKobNgtLwwH3
-         akGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793637237; x=1794242037;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=b4Epp6GXX29wADp3IHwfP+1qQXTUzuhpYxT/2bZApoM=;
-        b=S37S4ylCmeCAiqnc5mYQ8AbXmf26tuUG6WFklHbqp9pAe9GIUiqLc3dg7UpkaC1vB7
-         GV63HImubw3C3g4GgQ+MOMfQct66Nk+bLwKeDHPhifkFQims8fZp+nCG9Ae92ytTobgW
-         ScjeKB+vdIC4sQR6mMvJPKhV1Vm14cvask1vLOpqbzMtrtlyhAHEFtRqXtBPQS5SBDOH
-         FveyKGKX2BjlHvkznSQUy1jNmn1/4nAl5vBhn1oXd0n+C+TChs5KBGNLcl6P8mjLkj45
-         cG5Z8zdq22WjW+jgdT/T7VxNFXq2SbhrO+N8XpcUJmMUIwu1EirpEbgmTpT0CjDtuVcd
-         y4ig==
-X-Gm-Message-State: AFq9FYJ4LN1ibAIs2w3M7l0rH7PA8yxNRdInIQKmLHoC9rWIYZTfUEDV
-	SOpZEJaC1E7vGzzEcte2qdR3nq5YMfpGTqeYJkQqueygaVEs1AqT2h88EZs0XFmqvlmBrHIgCGw
-	NsTROKTWnbcfG3iUjlEmWJrzOciWJjQ9gLg==
-X-Gm-Gg: AYBFou1fClPZ3m8yDl1Qxdg0J74dfx7/NJzMOE7YjknOmpWrRlEsP5+PdWA1Vz6j8Il
-	y2SZsdwBfrR32aP3mwB4PafX/PDS3GNxgUAhqo72CbKYMSisJ2HIvpND4ztaWkRtWec+j4uFj5l
-	iNQSajBS53iplUurkVZ0hN4JQtPoN1LP3kwVNGS67UZbPTz6VjxKYXDwYD7oxmHxjsJIzArUZLX
-	UZUyBS9QL5Rinmub9RW8/5G1f/mg7+LWQ5mnIL2aXu03O5uMI5to0EeT7S9rjSM6j3E0BufJGlC
-	XndQIpUl5GGStjO80H7XT9ciVbpeiU7wDd63wZgUWqxNpuIv0phfIsD3m5cf/M3eJraZZg9liwJ
-	6lzG3iO0QXWjdslL08Qqv+ulwky23i8dUMLmcU0OilJrJR/bbvAiQupDyNI2wdRKHKPAMzPX5gn
-	n/t8xKH6uGKbdoR0A2/bxxKlAbOmYiqmYGnSGmz1oWWpchZJ02AoA5iQ==
-X-Received: by 2002:a05:600c:83c3:b0:4a9:18f4:925e with SMTP id
- 5b1f17b1804b1-4ac174711afmr236632205e9.18.1793637236634; Mon, 02 Nov 2026
- 08:33:56 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=gKuGdMN+
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=up80y3aLZUYQS9c1FW8eeNAicDXg19M0Djm1fQd47+E=; b=gKuGdMN+qGwhUn6TshH29+x/j4
+	inOJ0c5vurI1sybimS/X0MQM7d3IawJb4x/G7it4+UzPIOvIDGBSSnXPvJxDRyczDmSI4lgEz3qeO
+	XsNZWMy88n9Dw7s6OLBrU1pKvknudzmjgRKtG7XFRHH4o5ijK6fWIMBbVbr19VOlzIko=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xNv1H-00DpWX-Sf; Mon, 02 Nov 2026 17:36:27 +0100
+Date: Mon, 2 Nov 2026 17:36:27 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: Guenter Roeck <linux@roeck-us.net>, Roman Kuzmitskii <roman@damex.org>,
+	linux-hwmon@vger.kernel.org, netdev@vger.kernel.org,
+	robert.marko@sartura.hr, luka.perkov@sartura.hr,
+	o.rempel@pengutronix.de
+Subject: Re: [RFC] hwmon: (tps23861) PSE-PD support, extend hwmon driver or
+ move to pse-pd?
+Message-ID: <e422d6e8-3385-43f2-bcd3-1c5060a5b45e@lunn.ch>
+References: <03055ffd-d015-4810-8b8a-678821fa6dcc@damex.org>
+ <92e3383e-26f8-4bed-b487-1c52f6c4f420@roeck-us.net>
+ <8cd41211-b026-4158-8e18-454a9ac0bae4@damex.org>
+ <4d12314e-56db-412c-a558-e4026cd03528@roeck-us.net>
+ <d126b3d3-33b9-405c-9839-db492d874ece@lunn.ch>
+ <9bac0a84-f03d-4fd1-8092-9922c65010bf@bootlin.com>
+ <57516add-01bf-492b-9fd9-2bcb762e3041@roeck-us.net>
+ <1219dc2f-0f96-40db-8268-1a8eb009b152@bootlin.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,36 +71,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <179322311834.40667.5383039334126572422.stgit@ahduyck-xeon-server.home.arpa>
-In-Reply-To: <179322311834.40667.5383039334126572422.stgit@ahduyck-xeon-server.home.arpa>
-From: Alexander Duyck <alexander.duyck@gmail.com>
-Date: Mon, 2 Nov 2026 08:33:19 -0800
-X-Gm-Features: AclHuK_LEJ3H8DEM-8wdkuerMwl07zVW412F-nyfFBxma7CYkAr6UtVVxAbMH6E
-Message-ID: <CAKgT0UdcmFz4VbaO7wJKqqt9OqKonCu=RHkwjsHgqM7Waky5pw@mail.gmail.com>
-Subject: Re: [net PATCH 00/13] fbnic: Fix BMC filter, FW crash restore,
- teardown and Tx flush bugs
-To: netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	horms@kernel.org, kernel-team@meta.com, kuba@kernel.org, pabeni@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1219dc2f-0f96-40db-8268-1a8eb009b152@bootlin.com>
 
-On Wed, Oct 28, 2026 at 2:35=E2=80=AFPM Alexander Duyck
-<alexander.duyck@gmail.com> wrote:
->
-> Review of the "Rework the BMC state pulled from the capabilities
-> message" and "Remove BMC routing rules when the BMC channel is disabled"
-> pair, d261a371e3b7 and db99b6fae21c, turned up a number of bugs in the
-> surrounding code that the pair did not introduce. This series fixes
-> them, along with the order of the ndo_stop path, the mailbox teardown
-> and the Tx force-flush.
->
+> I am not using at all the hwmon framework in that development.
+> But as the binding tps23861 is already reserved for hwmon I use a new
+> "tps23861-poe" compatible name binding.
+> To me, I agree to remove the hwmon driver but this will break backward
+> compatibility. I am not a hwmon maintainer so it's not my decision to take.
 
-[...]
+Is the hwmon code applicable to the tps238XX range of devices?
 
-Based on the Sashiko feedback I think I am going to rework the set and
-submit it as a couple batches of patches instead of just this 1. Seems
-like the work necessary to clean up the BMC/MAC Addr stuff will likely
-need more patches.
+Can that hwmon code by merged into the PoE driver? Without API
+changes, apart from dropping the API abuse case? The compatible can
+then be transplanted into the PoE driver?
 
-I will strip out the more direct stuff and submit it as a set onto itself.
+     Andrew
