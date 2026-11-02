@@ -1,107 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.133
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793654745;
-	b=s6TO/dgrl26Mpzo3owSFnf0P+jfQtnUQzUaFPb7DpT23MOuYa2fRxuU8VyvbBsjxgFPS
-	 vfevq7kjfe8XVNHyPTo0ZNAFN/A8Tf3+Yj6cD9Yrs0XxiVkWJ2R/9VkkX9WuZuQWXfc14
-	 Vn9MLXWkLu7wVo7gUL8PRGqrEBww1ggdJxrDGDhaVN2CiAdFEVNrMc+GMLMplZJxhw7nz
-	 xCwcABZbprL1yDydogI2ykmuTYSA2OnOsut32NGPlxgc3nBzk2I4ppa50CbZkp7p4OJAb
-	 q6mVs2/zWyMVPLFfLNwp0OGhNmCfcKxQBp6EmCNZpacMCPw0+OtZ1jJhdz8/yBkHxOA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793654745;
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.221.179
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1793654793;
+	b=IReJTSQ/lGF9Y6TR3vuJb/IHr65DYbkFIMZGEyilXShlf4a/Z5LUUHZEy3ocALpcn5qB
+	 IX9PwKsGEYHhSFlaKjX+ltPxFzo288KdXkzuvvGB8WCm4hFpFH5Xvd8T5VTgQzBGDbRUy
+	 aHJs1u4sE083f+Tc+YDBF+4thp9w2RS/Gek9HC8y38Y6nOpFdnGI0u5uRec824IDZegBm
+	 Nb/ekpMTqveEYvAyzw3djQTT196Zz2+Aw4Ug7R5KNtZQl91TEwJTZmoKpD+Up1DrGq7M8
+	 3d/bedYtRINRQbGsTf2oGTjevfLlsozXsQsH67JrEjYv8iiCuJVrPFZkMEpthRQUvmw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793654793;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=0W+v9PJYl7SX+fCzm/LD8ucD6kmU8nLYTAcfnRV/Egk=;
-	b=IeRQqF7Mzx9ce2BcNaL98LbVPvnEgs+f+4BHxAmiz/RFCR++xxGrpe046wje4NCI0km4
-	 IvflxptTSSPoecyNrfGkT6c3AOyd/uDFxjoiqdSNYA3RIe/BAbaMLYyr2SxhUZMZZEepj
-	 YNnXyI3T8BdBxM9sGEpLfUOhX5YAuIVbMbmFHzJMfZiPQosq+QksXGtjBYY7rKa51DPZQ
-	 ZnJ2tfSehCjzrkJkEsljuj2v00T+BK3w4tkk7kCUvNX456gs8pfo2Izjm2HcskeKqq48a
-	 8xERt/CXL/kwXrCJjXPTs1U+hWFWUpZuqG9ldEgvvm6YE2lq0W0v2msBspyoQdn/Jjg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=E0KTyXh6;
-	arc=none smtp.remote-ip=74.125.229.133
-Received: from mail-dl2-f5.google.com (mail-dl2-f5.google.com [74.125.229.133])
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=VQNxh4E09UbuTnsPgF35Q2gxnGUXI30LdDtVm+7397g=;
+	b=PzgEAMKD90lmb+GOfOI+3Hv41ICTVsUT6fPcYjKQ/wTriKx6JNLqHFbsZ6O7gSdGWZdS
+	 3RjJUbAWQjAxhrPIG3wOIWvRSC3WdYKLg+sk7PFDvJmtGHgB16iUJwKnq+6n+eStJggsu
+	 eWoBVEh53EyDMlaJjnZYGG084RdzCqyNd6IPmhmsgtVPnK7YCEBcupteGwM6UmOuOs4A9
+	 35nFVMoYmuoqemXGZNhJe4FPELKL4WfZjUawo6TUWzu3SYsPGEqic+DZP7eUcGF0ZBhdM
+	 DLxnqzRg0XMMeOpWg4o7rc3JMlmfTJbEMjrafJxTI7Qlv/nrrF3uI5SZTBBLjNQeRDQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=everpuredata.com;
+	spf=pass smtp.mailfrom=purestorage.com;
+	dkim=pass header.d=everpuredata.com header.i=@everpuredata.com header.a=rsa-sha256 header.s=google header.b=F9v8zzb8;
+	arc=fail smtp.remote-ip=209.85.221.179
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03C3606A33E
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 21:25:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F03C3606A33E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EF4606A329
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 21:26:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90EF4606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=E0KTyXh6
-Received: by mail-dl2-f5.google.com with SMTP id a92af1059eb24-1ac216daf7dso1403223c88.1
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 13:25:44 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=everpuredata.com header.i=@everpuredata.com header.a=rsa-sha256 header.s=google header.b=F9v8zzb8
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5ec6f271883so2270864e0c.3
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 13:26:32 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793654791; cv=none;
+        d=google.com; s=arc-20260327;
+        b=UkvDmOAyoqhKDID529ElryFF+5DfvzHO19wqfJdi+0hrIU/DVAnWv2OUybaQOKwjKf
+         WpZrRj23wz9Uq+gMES+fIFFz7xjkvsDi8wISMqQXkfNKPYySLkvIycg+yBDY6dhPO9pk
+         dXAxEblum4Hs8fsSeDPzbK7JJSOoWqNNTKJlVhFl+JTjEhoUCq5mCVz/dW34D7BX6k0E
+         e9QLqTlTSOqQx4DKNj2wYazytUF7eL6U5e8kIzqIwCPdu8/L/lc2apZRDJ66uiho4O5O
+         CoSrdQRj+nK07ztVgmFExMZIPe2xzuNJ22Pd54loELoEqhXrQyMTT1s+DKAu3KoyLbGU
+         Xinw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VQNxh4E09UbuTnsPgF35Q2gxnGUXI30LdDtVm+7397g=;
+        fh=2/wyKFmVY2FJ3I1XcmjosZJuuZWZnsL2AdASFNn84FA=;
+        b=OD2AVigVibAoYKNjX+xtIKX8w4DNHPTkxtzzpU/fA+7DvCVqKzdZkNQbdhh2od6KcP
+         GX+7bDo9iprAdiIo/foO+fDOfloRXA7mJdztwy+wfyaImqxMGB9xQOtqIwNUHXc0NV4D
+         WUGCGlGax05p21gSdT39q/6whAkudKXtvJXNx6AgsYp3M0OQRQox5lbPa+DWGjy3Lhm/
+         KA+oI8C60pDMWW/no7TgcI2qW3qugaT4eXAnrrIJb/OpbjwL3sArNgpramm0ele49Y+B
+         s0vhbSsbip9yB4PV8HJS0GOlu07V1k/ubQRYTYhFE8wBtyjhdWB/6xz8fVV6r3pdLqna
+         lIIw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793654744; x=1794259544; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0W+v9PJYl7SX+fCzm/LD8ucD6kmU8nLYTAcfnRV/Egk=;
-        b=E0KTyXh6fQjtB4la9A2uFpuvbHgCy2kgN5o//KtUiFjYqUzPuam2QEgKKgUP0jeXiv
-         tAHE3EnHsP849pPrQCQ3cmtBG/HsJ0j4hnUO1YaH8iPZ5SmbNqhTC4Du6J1AwQV6ak4s
-         tFbeGMebYh5ufE3OJtyX44QVTf9t1nS/TrEbzRcjYySnE5mwnMitQXiIwPBxZ2Uq+FCS
-         L7wxwB7+pzTcvEjClyxXu+zjetg7mhiLOKkPwI108jkGDlRQzyWQ7ThDvjwGttx+neEh
-         q+kK86162TVUu5FpbJkIa2oIkNwo+wxTPk0mOG50Ni81Gjh0EALZLV8R8GDVYvYelt5a
-         tnlw==
+        d=everpuredata.com; s=google; t=1793654791; x=1794259591; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=VQNxh4E09UbuTnsPgF35Q2gxnGUXI30LdDtVm+7397g=;
+        b=F9v8zzb8mKIHR1ATsY4VGzyv5czZzBfUwihwBvEStbjd6IGaWOxvgBy7wXEA5iyGWM
+         EXnQMDfibX7Lx4z/pBy8K8kQLNHIaJq4IRjMNheDHttYW/qEZlb9V67Y5jwEFjjrEI7K
+         xcHDVD1rQXg6wFypM8kP6b9Pa7JS6azZgs55ZDDOsM4AVgXaWCIW9EQMtgqCPWt63qAX
+         +ncHbGFd/X4s4vGvt3eGZN10yzYycx/+h9QG7B2n6YdnA5P78UyNNqMWnXVcKxl7HY5q
+         5zVK+g+tadIXx4gye0wlKBoK6prcvm1ems2RmO8PQpWZJiJYsyIlKreIkQf7jpaD5RRo
+         uq0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793654744; x=1794259544;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0W+v9PJYl7SX+fCzm/LD8ucD6kmU8nLYTAcfnRV/Egk=;
-        b=w/h0/RrDg046JHYBRl47STmTcFkjcbPn2exYmMoZUer2loM3Bfj59/LiGeH8bo3OLq
-         WbbU0qHSi0Y8SEyxi5l5fO6gJu0AhT/v5ESou2thFxzEE1ncSKvabQjHtGBH4RSbCbmq
-         6LIDAALPn2ukObHBge51q7kDryhhRyjOssxUhLsA7AkOYZXr50/GCuo+pS63wOICvlH+
-         78FGbn7O9y1GOgVBuH5WCEGclE/YHr2NgwAgK9gGiLnTQf34xDknKPSih9oKK4zbdfy8
-         6/cKtONZF77izzf4ycg2I0IEsAKFnGX83JuhJmWQl1gzEqn41HiobBFkfyeXVhUNRegj
-         a4OA==
-X-Forwarded-Encrypted: i=1; AKwUvBw0x6UpuSoVinhhGDgH9tlCvkwFbZ4/55OY17TXtiU6ypmcsu+fpWcUaxMybkxd1u9dAPog0JU=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/NHB1LwDcNnX52jiayTRe0Yfnn5Uut5RXhxNO1I5S5Po3Y7tTg
-	01KT0kAFoeQ3R54xv72SCTUFkYMAc0Br5EHCpqh0h9maXo8/NB8Ib6m/
-X-Gm-Gg: AYBFou0Uk2lE9CNa3fkQsoGcO4kxc7bCxNPkEcvq60dvX8fq6CLat6rt5gTewTFY4l4
-	wRQ+op3U6vvIdvsenLpiAM33YASbXCOTcXKO25mxKWpJs9nC4pJW3e6dbTbmThZaQ8Yg24R+cz7
-	6nfou/ZP7y0XE0KSe9BQi5Ght3EcFmolcT5SSoOFsfEpL+2nN8FvjudSVLlISUli3LPv7Fc2hAK
-	lzb176r41Uq8UmcjKrnHCFBTmTtsakBXX1xsmnTuldMHr+E7UJmyYKImEZvVSl70fuanHZMz5NC
-	BX/S7FusJ2eh/p6m8f1490qQl/GdttTU5pcQcep0kp5HSOh6Pyuxh1MGBVXvXDltTCeqLFNibTX
-	LMBBsa5I1BYfFES58CWrNRf6y5Kt4JSwWZKOJk/12f98rdKeKXD9kymhrQnXzHoYY+ukPzv6ZSK
-	lSr9dvE8xIcIzR7/Bmoq1dn+rMPBhDodzBSxXkvUCBVbHf+USYf5jFOjZcGjikvG6UxfNMXLUSp
-	w9UohGDrxRE6RMf3nKzEOAim1/Hp5VbKt8EJvUUglMZRWll2BhCLg7i1pmbdbl3HCcuMaXvV+b9
-	gz1KR9qN7a/9623DJHoHDViMHk4=
-X-Received: by 2002:a05:7301:4b0a:b0:369:9af5:7bc9 with SMTP id 5a478bee46e88-36a424199eamr17269236eec.23.1793654743982;
-        Mon, 02 Nov 2026 13:25:43 -0800 (PST)
-Received: from server.lan ([168.138.199.194])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a428fa380sm37195851eec.12.2026.11.02.13.25.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 13:25:43 -0800 (PST)
-From: Coia Prant <coiaprant@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Jiawen Wu <jiawenwu@trustnetic.com>,
-	Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Fabio Baltieri <fabio.baltieri@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Coia Prant <coiaprant@gmail.com>
-Subject: [PATCH net v3 2/2] net: pcs: xpcs: make supported_interfaces authoritative
-Date: Tue,  3 Nov 2026 05:25:07 +0800
-Message-ID: <20261102212506.3348537-4-coiaprant@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261102212506.3348537-1-coiaprant@gmail.com>
-References: <20261102212506.3348537-1-coiaprant@gmail.com>
+        d=1e100.net; s=20260707; t=1793654791; x=1794259591;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VQNxh4E09UbuTnsPgF35Q2gxnGUXI30LdDtVm+7397g=;
+        b=BPHx8/FCCQekqh2W/JOHfWXKwN99uDQv+5wB2+tgj/ZL97RbwDAZ9n8kq5WxqcAXO8
+         TjkZuLtQCPnLNh0txeUCRwtsz8DuJVTpQYOwUpkB5GlrgR6FzDxiGWm2iS0kFUkPTN0V
+         NIDMlIjPt6KJBFBjV/FqsbLWOCV8g++lqIkVBu5gv6McHouLJ/ToDfi/6giCmgxDViqf
+         yvFDjrEptyKv1d34X3nrY1h90zHm/CGZW/IXCxbcLbEiVV4YizSz2LdjEVVQLyRrQ9kf
+         +/vpGCn9X6l05y/Qqde5gGSuTOTVyeCzYQR5dl6K5bMkOyVf97TvcFq+FILKarEZkJTN
+         S75A==
+X-Gm-Message-State: APuU4Z/HraaiJ2bzMVt1aAEUvHrlTOBYOjEMPOMzChwVjAh8+AUUEs7J
+	phGbenAWULza++zRtefHFQn5vBKA8vGS5oYIleGhiHXXPYArHk5nkJ6GktiJfeIhYd9KxbbRxdX
+	rTPq/1DdUtTj+lk3FbqLlM8X9QLqYyoEPQmuXaGf9JJXizTTjZB2ZHvdSFA==
+X-Gm-Gg: AYBFou218SwfJ+7R75yuBXhly2UwVTOcP+3GyAFkFwgUy2YJU9OQcy1C3tFlR/epCoo
+	jui+Jx+wDUW1LN5DmzEiZ/4YLzw8Y1X0Dr0gs9rQyIh8ngme1xo30jmT6H9IG2+Eku5fZxTyPgL
+	GkNB+IVIXdfIpQihwps92gbaDg2J5ZgBM36m/aC2ELR53hUs0S21oEsQPNAXhQsFvqLl+93arVX
+	oKLaup2sZDjUnvJ9bvCIpffifICyQqGIk9KvBd6JKDwvlkM2X7pk6ZGuduOgxgyKiWJ6pQNfC3m
+	RzduFIg2CHi5BakB1CSWfSj+wgmjf+jJxsjbMWDN3wfM68NjQwMYkQssjW/z6cfoFQS1uaT8Bj7
+	NtJQm2Ol3X4vSBmgiwQQbuoo1SpUBysh63Nf998wGAJXqbskCKtB2/rA2bW7mrLmOV+z5xLLFCs
+	2B4pU0V9C0OucWQlZlxl9gk4rVjYApSYMNuer0VZDG/FtMAI6d6wDnmVEEPcCulH+rT+1un5n8D
+	VIExyvQBH2lyEKF+lJFQeeQ
+X-Received: by 2002:a05:6122:21a3:b0:5cd:590:c22e with SMTP id
+ 71dfb90a1353d-5ec689aed88mr5219637e0c.21.1793654791273; Mon, 02 Nov 2026
+ 13:26:31 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -111,87 +105,237 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261029172302.2944955-2-rjethwani@purestorage.com> <179364254636.3131.4069372250703759332@kernel.org>
+In-Reply-To: <179364254636.3131.4069372250703759332@kernel.org>
+From: Rishikesh Jethwani <rjethwani@everpuredata.com>
+Date: Mon, 2 Nov 2026 13:26:20 -0800
+X-Gm-Features: AclHuK9nHLnDMQvP2qQAOwulgJKfpc9JDvd1vD557sgt5xdTi1XrzG5V8Azu63g
+Message-ID: <CAKaoeS1rw1pB953evvE4H6LC2jTANtJzRWW5kUsteOKOrmDCJg@mail.gmail.com>
+Subject: Re: [PATCH net v4 2/2] selftests: net: add TLS 1.2 hardware offload tests
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, john.fastabend@gmail.com, 
+	kuba@kernel.org, sd@queasysnail.net, davem@davemloft.net, edumazet@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, ilyal@mellanox.com, borisp@mellanox.com, 
+	aviadye@mellanox.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-pcs.supported_interfaces is the mask of interfaces a given xpcs
-instance actually supports. The compat table describes what the
-Synopsys IP can do in general, but a specific integration may support
-a different subset: the RK3568 XPCS supports 1000BASE-X, SGMII and
-QSGMII in hardware, but does not implement the C73, 10GBASE-R or 2500BASE-X
-modes that the Synopsys compat table advertises.
+On Mon, Nov 2, 2026 at 10:02=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 2
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [Medium] The tls12_aes256 variant of test_tls_offload
+>   (tls_hw_offload.py:280) requires HW offload in every DUT direction=E2=
+=80=A6
+> - [Low] Two comments say both helpers' stdout pipes are only drained
+>   after the helper exits: run_tls_test() in tls_hw_offload.py ("Both=E2=
+=80=A6
+> - [Low] When 'Rx' is in tls_hw_directions, check_hw_crypto() asserts that
+>   rx_tls_decrypted_packets grew by at least 1, but nothing makes the=E2=
+=80=A6
+>
+> --
+>
+> selftests: net: add TLS 1.2 hardware offload tests
+>
+> This adds a two-node kTLS hardware offload selftest. A C helper installs
+> fixed AES-GCM keys on both ends; the DUT runs the client and the peer
+> echoes the data back. The test checks the TLS MIB counters and the NIC's
+> ethtool -S TLS counters to confirm HW offload was used in each enabled
+> DUT direction, and it adds handshake and alert record-type regression
+> cases.
+>
+> > diff --git a/tools/testing/selftests/drivers/net/hw/tls_hw_offload.py b=
+/tools/testing/selftests/drivers/net/hw/tls_hw_offload.py
+> > new file mode 100755
+> > index 0000000000000..78fa764a6ef3f
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/drivers/net/hw/tls_hw_offload.py
+> > @@ -0,0 +1,321 @@
+>
+> [ ... ]
+>
+> > +def check_hw_crypto(cfg, nic_before, nic_after, hw_directions):
+> > +    """Check DUT NIC offload-path packet counts and initial key instal=
+ls."""
+> > +    for direction in hw_directions:
+> > +        names =3D HW_NIC_COUNTERS[direction]
+> > +
+> > +        key =3D names['crypto']
+> > +        if key in nic_after:
+> > +            got =3D stat_diff(nic_before, nic_after, key)
+> > +            ksft_ge(got, 1,
+> > +                    comment=3Df"DUT {direction}: NIC reported no TLS "
+> > +                            f"offload packets ({key}=3D{got})")
+>
+> [Severity: Low]
+> When Rx is in hw_directions, can rx_tls_decrypted_packets stay at 0 after
+> a short run, even with working hardware?
+>
+> Nothing waits for the device RX context to become active before the
+> peer's echoes arrive. On mlx5, mlx5e_ktls_add_rx() bumps rx_tls_ctx
+> synchronously and returns after post_rx_param_wqes(). The steering rule
+> that sends the flow to the TLS TIR is installed later, from a workqueue:
+>
+> mlx5e_ktls_handle_ctx_completion()
+>   queue_work(rule->priv->tls->rx_wq, &rule->work)
+>     accel_rule_handle_work()
+>       mlx5e_accel_fs_add_sk()
+>
+> Until that rule is in place, records are decrypted in SW. TlsRxDevice
+> still grows, but mlx5e_ktls_handle_rx_skb() only bumps the counter on
+> the HW-decrypted path:
+>
+>         case CQE_TLS_OFFLOAD_DECRYPTED:
+>                 skb->decrypted =3D 1;
+>                 stats->tls_decrypted_packets++;
+>
+> If the rule lands mid-stream, a resync is also needed before HW
+> decryption starts.
+>
+> client_connect_tls() starts sending as soon as TLS_RX is installed, and
+> cfg.wait_hw_stats_settle() only runs after the traffic has finished.
+> Could the small_buf variant (100 round trips of 512 bytes) finish
+> entirely inside that window and report a false failure?
+>
+> This depends on firmware command and workqueue latency, and the commit
+> message reports passing runs on ConnectX-6 Dx, so it may only show up as
+> an occasional flake.
 
-However, xpcs_find_compat() only walks desc->compat[] and does not look
-at pcs.supported_interfaces. If a caller ever passes an interface
-outside the mask, the core would still find and configure a compat
-entry for it, contradicting the mask the glue already set. This was a
-known gap: the mask was written but never consulted by the core.
+Agreed that on mlx5 the rule is installed asynchronously after the
+context is created.
+I haven't seen this on ConnectX-6 Dx across repeated runs.
+If it does flake, the failure is visible and attributable, and I'd
+rather not add a sleep or a skip.
 
-Fix both sides:
+> [ ... ]
+>
+> > +    # Both helpers run with their stdout captured in a pipe that is on=
+ly
+> > +    # drained once they exit, so the helper keeps its per-connection o=
+utput
+> > +    # small (see the note on verbose in tls_hw_offload.c); do not pass=
+ -V.
+>
+> [Severity: Low]
+> Is this comment accurate for the local client?
+>
+> Only the remote server is started with bkg(), so its ssh pipe is not
+> read until bkg.__exit__() calls process().
+>
+> The client runs in the foreground via cmd(client_cmd). In the non-backgro=
+und
+> case cmd.__init__() calls self.process() right away. _process_terminate()
+> then uses self.proc.communicate(timeout=3Dtimeout), which drains stdout a=
+nd
+> stderr while it waits for the child to exit.
+>
+> The comment on verbose in tls_hw_offload.c makes the same claim:
+>
+>   /* Per-iteration progress output (-V). Off by default: the
+>    * harness captures stdout in a pipe that is not drained until the help=
+er
+>    * exits, ...
+>
+> The -V restriction still makes sense for the server. Should both comments
+> say that only the background server's pipe goes undrained?
 
-- In xpcs_find_compat(), return NULL when the interface is not in
-  pcs.supported_interfaces, so the mask is authoritative for what the
-  core will configure.
-- In the Rockchip glue, build a platform mask with the three modes
-  supported by RK3568 (1000BASE-X, SGMII, QSGMII) and intersect it
-  with the core's supported_interfaces using phy_interface_and().
-  This narrows the mask inherited from the generic compat table so it
-  reflects the actual SoC capabilities.
+Good catch. The foreground cmd() drains through communicate(),
+so only the bkg() server's pipe goes undrained. I'll fix both comments.
 
-This is a logical inconsistency rather than a user-visible bug in a
-released kernel: the affected Rockchip platform is not present in any
-released version, and the MAC side forces the phy mode, so phylink does
-not normally pass an interface outside the mask. The patch makes the
-mask the single source of truth for both the core and the glue.
+> > +    #
+> > +    # Both helpers exit on their own within HELPER_TIMEOUT_S (see
+> > +    # tls_hw_offload.c), so nothing outlives the variant even on failu=
+re.
+> > +    with bkg(server_cmd, host=3Dcfg.remote, exit_wait=3DTrue):
+> > +        wait_port_listen(port, host=3Dcfg.remote)
+> > +        cmd(client_cmd)
+>
+> [ ... ]
+>
+> > +@ksft_variants([
+> > +    KsftNamedVariant("tls12_aes128", "128", "1.2", "4"),
+> > +    KsftNamedVariant("tls12_aes256", "256", "1.2", "4"),
+>
+> [Severity: Medium]
+> Can the tls12_aes256 variant fail on hardware and a kernel that are both
+> working correctly?
+>
+> check_tls_support() only looks for "tls-hw-tx-offload: on" and
+> "tls-hw-rx-offload: on" in ethtool -k. Those flags don't say which
+> ciphers the device accepts, and several in-tree drivers only handle
+> AES-GCM-128:
+>
+>   nfp: nfp_net_cipher_supported() returns false for anything except
+>   TLS_CIPHER_AES_GCM_128, so nfp_net_tls_add() returns -EOPNOTSUPP
+>
+>   chcr: chcr_ktls_save_keys() only handles TLS_CIPHER_AES_GCM_128
+>
+>   funeth: fun_ktls_add() returns -EOPNOTSUPP for anything except 128
+>
+>   mlx5: mlx5e_ktls_type_check() checks a separate firmware capability
+>   for 256:
+>
+>         case TLS_CIPHER_AES_GCM_256:
+>                 if (crypto_info->version =3D=3D TLS_1_2_VERSION)
+>                         return MLX5_CAP_TLS(mdev,  tls_1_2_aes_gcm_256);
+>
+> When the driver declines, do_tls_setsockopt_conf() falls back to SW
+> without reporting an error:
+>
+> net/tls/tls_main.c:do_tls_setsockopt_conf() {
+>     ...
+>                 rc =3D tls_set_device_offload(sk);
+>                 conf =3D TLS_HW;
+>                 if (!rc) {
+>                         TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSTXDEVICE=
+);
+>                         TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSCURRTXDE=
+VICE);
+>                 } else {
+>                         rc =3D tls_set_sw_offload(sk, 1,
+>                                                 update ? crypto_info : NU=
+LL);
+>     ...
+>                                 TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLS=
+TXSW);
+>     ...
+> }
+>
+> check_path() then requires ksft_ge(dev, 1) for that direction and fails
+> with "DUT Tx: HW offload not engaged (Device=3D0, Sw=3D1)".
+>
+> Would it make sense to skip this variant when the DUT falls back to SW
+> for this cipher, rather than reporting a failure?
 
-Fixes: b9e7cb89aac8 ("net: pcs: xpcs: add Rockchip RK3568 platform glue driver")
-Signed-off-by: Coia Prant <coiaprant@gmail.com>
----
- drivers/net/pcs/pcs-xpcs-rk.c | 10 ++++++++++
- drivers/net/pcs/pcs-xpcs.c    |  3 +++
- 2 files changed, 13 insertions(+)
+That's intended. A driver that doesn't support AES-GCM-256 offload
+falls back to SW, and the test reports that as a failure.
+Per Jakub's earlier feedback on this series, HW tests don't try to
+skip for every device capability gap.
+The automated triage separates regressions from failures caused by
+missing support.
 
-diff --git a/drivers/net/pcs/pcs-xpcs-rk.c b/drivers/net/pcs/pcs-xpcs-rk.c
-index 6f0a110e32d2..25fdc9c6b72c 100644
---- a/drivers/net/pcs/pcs-xpcs-rk.c
-+++ b/drivers/net/pcs/pcs-xpcs-rk.c
-@@ -483,6 +483,7 @@ struct dw_xpcs *xpcs_rk_create(struct device *dev, struct device_node *pcs, int
- 	struct platform_device *pdev;
- 	struct dw_xpcs_rk *pxpcs;
- 	struct dw_xpcs *xpcs;
-+	DECLARE_PHY_INTERFACE_MASK_ZERO(supported_interfaces);
- 
- 	if (!of_device_is_available(pcs))
- 		return ERR_PTR(-ENODEV);
-@@ -536,6 +537,15 @@ struct dw_xpcs *xpcs_rk_create(struct device *dev, struct device_node *pcs, int
- 		return xpcs;
- 	}
- 
-+	/*
-+	 * The RK3568 XPCS supports 1000BASE-X, SGMII and QSGMII.
-+	 */
-+	__set_bit(PHY_INTERFACE_MODE_1000BASEX, supported_interfaces);
-+	__set_bit(PHY_INTERFACE_MODE_SGMII, supported_interfaces);
-+	__set_bit(PHY_INTERFACE_MODE_QSGMII, supported_interfaces);
-+	phy_interface_and(xpcs->pcs.supported_interfaces, xpcs->pcs.supported_interfaces,
-+			  supported_interfaces);
-+
- 	xpcs_config_eee_mult_fact(xpcs, pxpcs->eee_mult_fact);
- 	put_device(&pdev->dev);
- 	return xpcs;
-diff --git a/drivers/net/pcs/pcs-xpcs.c b/drivers/net/pcs/pcs-xpcs.c
-index 6466e0ff2a98..46878a66064e 100644
---- a/drivers/net/pcs/pcs-xpcs.c
-+++ b/drivers/net/pcs/pcs-xpcs.c
-@@ -169,6 +169,9 @@ xpcs_find_compat(struct dw_xpcs *xpcs, phy_interface_t interface)
- {
- 	const struct dw_xpcs_compat *compat;
- 
-+	if (!test_bit(interface, xpcs->pcs.supported_interfaces))
-+		return NULL;
-+
- 	for (compat = xpcs->desc->compat; compat->supported; compat++)
- 		if (compat->interface == interface)
- 			return compat;
--- 
-2.47.3
+>
+> > +    KsftNamedVariant("tls12_aes128_ip6", "128", "1.2", "6"),
+> > +])
+> > +def test_tls_offload(cfg, cipher, tls_version, ipver):
+>
+> [ ... ]
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20261029172302.2944955-1-rjethwani%40purestorage.com
 
+pw-bot: cr
