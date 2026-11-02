@@ -1,57 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793606083;
-	b=nl9rxzbT0dB99hiFZ4wgell6L2FY8IMBTq3drsYADzLbnJTNIce29o06iyTEvdMeokcy
-	 JiJN4Hh60bv9eR0U6/ScgZFb5SsWMEc5H5FNX5Z59ILuvFa+KwEnYgfmXNcMFf0M5kYFu
-	 kLoQ0giB7aBF4+fDvBAz5YWuk+FZS8DdH26a2y4dfa3dfu5w0fONpSZ4poCZOCc7283uy
-	 uF1d7/EZzFe4N+j/AfTxb8m6b5nwGmDWkg1N5/zdBQBXpa1E7D6NKRTbtrhHr6jDYV6vD
-	 rVsTkpgyc5F/kV5XiNBcbF/rt5Y032AeG7pKvV8xO1jUfyweasFpxq8mMkim8ulMhMg==
+	t=1793606087;
+	b=O+U+J0uds1PpQQNdct9JukleeVS/MPSXr8XKk3DzB/Mwuck+zVtcXTM0Zc6DTYxZRNK7
+	 bCv6+HNZG2oSsjxpjsVobQj5pfisvYcp8jB06ZYiDPty+6AZkBGBIDAHosMtyG1ScfhaD
+	 1soVMKvets9qH/fTgg9mCxnmROKUYFPea2tT+iOe2u6o9x0VBHIVZrvP0AEQvujgUe9rS
+	 Q3ThxrgKWGre/zR/DJmJkphzgQdgmQS4hfh5YQOzieVomDzRrXC/XG3qDAg4CNaY/xGmh
+	 kVCk5STPp1j485OFwTSIZ01aNM2ylwTExouvPXbbogNd71EVA/SfqNSSiWehFUk4JjA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793606083;
-	h=DMARC-Filter:X-Alimail-AntiSpam:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=loTYYDFpf/M60VzrS2qI1kBuQB2Lx+dVCUsixUWqMCY=;
-	b=sWCOPjzjLeMIBuZ0grkSQ85KlLPSdaH1iUlFFvPxKXmT6gj9kIMiw5Mp40GpFMjHeXqn
-	 K1taXYDzHJnbX5xdRMO/1DehWzJm1Hu7ZZU1hZXnbjWoyxiiVXLb9KkwOB1VZCBIfTxxV
-	 uyLI1R4lO7IdatO1OJl0s07lFFYHQURDKEG3QjDtNHFmnB9p326wi9TW0XPr/bd/m3ch8
-	 OaoefR55OyMPsPfAmHjZkzEBHwZ8BnLs7cwXDG9lwBak09QcOm8O0ooNM0xjLaBlU2C9m
-	 7ivczvmlRye7pe6pjbKN7Dpu8up5+JB0FB/T6vw3vy0Xap6B3XXBVZJoIxq08YiWWIQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793606087;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=F+vRhjkQdcZ/D8AthEQfi6ZgjFSfPqu3F702UwA7h2k=;
+	b=rOBeqQYXDEu+Ykg72uv8yhL4D9Dm4uEpBJEr0p+zm1HGijae57OnJoYuvw8t6Keq7442
+	 +vIEopMH944X7M/9sO/RoP0vQ72t4adIgyP3vqHQocSckEcOU6lki2KwnGG1SDfJPQtbP
+	 r5RUziJ+4pbHuUqcuaXppZK9crIafZR5gHWMctv8heX3taP8jJS+EW4eEtrs9oYrFcbRg
+	 LtzLAZyYT6J7lXci/X29FH9CRAY3Uhmekecjx2/xnrG41Ks4ZpBDg3HtQeof/X+8BZeHJ
+	 p0jDq2/SYoUl2IXrs4b3ybiS2AH/1GfvxhdpMB+M98wqFqDafkKdPhbtKuqi0PK2e/g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=nebula-matrix.com;
-	spf=pass smtp.mailfrom=nebula-matrix.com;
-	arc=none smtp.remote-ip=115.124.28.170
-Received: from out28-170.mail.aliyun.com (out28-170.mail.aliyun.com [115.124.28.170])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=btOUhfIO;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C225606A333;
-	Mon,  2 Nov 2026 07:54:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C225606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0284641-0.00368443-0.967852;FP=11986311137920161282|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033045166233;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=11;RT=11;SR=0;TI=SMTPD_---.jumCpYS_1793606071;
-Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.jumCpYS_1793606071 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Mon, 02 Nov 2026 15:54:32 +0800
-From: "illusion.wang" <illusion.wang@nebula-matrix.com>
-To: dimon.zhao@nebula-matrix.com,
-	illusion.wang@nebula-matrix.com,
-	alvin.wang@nebula-matrix.com,
-	sam.chen@nebula-matrix.com,
-	netdev@vger.kernel.org
-Cc: kuba@kernel.org,
-	andrew+netdev@lunn.ch,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v33 net-next 5/8] net/nebula-matrix: dispatch: add control-level routing core infrastructure
-Date: Mon,  2 Nov 2026 15:54:06 +0800
-Message-ID: <20261102075424.2165-6-illusion.wang@nebula-matrix.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261102075424.2165-1-illusion.wang@nebula-matrix.com>
-References: <20261102075424.2165-1-illusion.wang@nebula-matrix.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0D7606A33E
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 07:54:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=btOUhfIO
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 572A71F00A25;
+	Mon,  2 Nov 2026 07:54:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793606087;
+	bh=F+vRhjkQdcZ/D8AthEQfi6ZgjFSfPqu3F702UwA7h2k=;
+	h=From:To:Cc:Subject:Date;
+	b=btOUhfIOG1AtvMd/t4IOBWGydN9leKK3vFEdiIfqCstbzoVDXxTsV9o090kzWbBRS
+	 ioMRPWRn2TaBmLNYJT7p6OgjIiPXMCWu2nEKR6Fm3U+s6iDvOqd/PxoF1IQLdavqa4
+	 obUoyYZMRyTCtmju3wWMq7eQiTrvUfrxGj3S4KAdYT/xV4HD94CjEOChWhClv+c6CS
+	 k+/93x7v7qcnpdobfCzeegvgZjjZyQnAe9mdIRGpA963OOx+zbyYwM/ls0iZZeQt5y
+	 Xp1GPAETh0048PkRIrF7AmXDpSe/SZgFJjnhrGABAJpP2cQcdiiBFQiwaSmCsGsFtg
+	 lJ3CVmg3mV3Ww==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Neal Cardwell <ncardwell@google.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	Eric Dumazet <edumazet@kernel.org>,
+	Anvik Loitongbam <permissiontogallop@gmail.com>,
+	Yingjie Wang <x-professor@outlook.com>
+Subject: [PATCH net] tcp: ipv6: do not read ireq->pktopts from tcp_v6_send_synack()
+Date: Mon,  2 Nov 2026 08:54:41 +0100
+Message-ID: <20261102075441.3771550-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,301 +65,111 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: illusion wang <illusion.wang@nebula-matrix.com>
+When IPV6_FL_F_REFLECT is set on a listener, or the
+net.ipv6.flowlabel_reflect sysctl has FLOWLABEL_REFLECT_ESTABLISHED,
+tcp_v6_send_synack() reflects the flowlabel of the SYN packet,
+reading it from the skb stored in ireq->pktopts.
 
-Allocate the dispatch management state and ops table and wire the
-init_module and deinit_module wrappers to the resource ops.  Add a
-ctrl_lvl bitmap to track control privileges; only the MGT level is
-defined, and it is enabled only on the control PF.
+Since commit 079096f103fa ("tcp/dccp: install syn_recv requests
+into ehash table"), request sockets are processed without holding
+the listener lock. A cpu can then process a retransmitted SYN for a
+request socket, and send a SYNACK from tcp_check_req(), while another
+cpu receives the ACK completing the 3WHS. tcp_v6_syn_recv_sock()
+consumes ireq->pktopts when it wins the hashdance, and the first cpu
+reads a freed skb:
 
-Signed-off-by: illusion wang <illusion.wang@nebula-matrix.com>
+  BUG: KASAN: slab-use-after-free in tcp_v6_send_synack (include/linux/skbuff.h:3152 include/linux/ipv6.h:110 net/ipv6/tcp_ipv6.c:582)
+  Read of size 8 at addr ffff88802b08b608 by task poc-ipv6-pktopt/5076
+
+  Call Trace:
+   <IRQ>
+   tcp_v6_send_synack (include/linux/skbuff.h:3152 include/linux/ipv6.h:110 net/ipv6/tcp_ipv6.c:582)
+   tcp_rtx_synack (net/ipv4/tcp_output.c:4719)
+   tcp_check_req (net/ipv4/tcp_minisocks.c:762)
+   tcp_v6_rcv (net/ipv6/tcp_ipv6.c:1826)
+   ip6_protocol_deliver_rcu (net/ipv6/ip6_input.c:479)
+   ip6_input_finish (net/ipv6/ip6_input.c:534)
+   ip6_input (include/linux/netfilter.h:325 include/linux/netfilter.h:319 net/ipv6/ip6_input.c:545)
+   ipv6_rcv (include/net/dst.h:481 net/ipv6/ip6_input.c:119 include/linux/netfilter.h:325 include/linux/netfilter.h:319 net/ipv6/ip6_input.c:351)
+
+  Freed by task 5074 on cpu 0 at 15.412249s:
+   kmem_cache_free (include/linux/kasan.h:235 mm/slub.c:2780 mm/slub.c:6630 mm/slub.c:6757)
+   tcp_v6_syn_recv_sock (net/ipv6/tcp_ipv6.c:1528)
+   tcp_check_req (net/ipv4/tcp_minisocks.c:934)
+   tcp_v6_rcv (net/ipv6/tcp_ipv6.c:1826)
+   ip6_protocol_deliver_rcu (net/ipv6/ip6_input.c:479)
+   ip6_input_finish (net/ipv6/ip6_input.c:534)
+
+Request socket migration has the same issue: reqsk_migrate_reset()
+transfers ireq->pktopts to the clone, which can be freed while
+another cpu holding a reference on the old request socket is still
+sending a SYNACK.
+
+The SYNACK timer itself is not an issue, because
+inet_csk_reqsk_queue_drop() calls timer_delete_sync().
+
+Save the flowlabel of the SYN in the request socket instead, so that
+tcp_v6_send_synack() no longer needs ireq->pktopts.
+
+As a side effect, the flowlabel is also reflected for SYN packets
+reusing a TIME_WAIT socket, as ireq->pktopts is not set in this case.
+
+Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
+Fixes: 079096f103fa ("tcp/dccp: install syn_recv requests into ehash table")
+Fixes: c905dee62232 ("tcp: Migrate TCP_NEW_SYN_RECV requests at retransmitting SYN+ACKs.")
+Reported-by: Anvik Loitongbam <permissiontogallop@gmail.com>
+Reported-by: Yingjie Wang <x-professor@outlook.com>
+Closes: https://lore.kernel.org/netdev/82c31e4d5043f3dbd11b44177cfba779d335aae3.1793599929.git.x-professor@outlook.com/
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
 ---
- .../net/ethernet/nebula-matrix/nbl/Makefile   |   1 +
- .../net/ethernet/nebula-matrix/nbl/nbl_core.h |   2 +
- .../nebula-matrix/nbl/nbl_core/nbl_dispatch.c | 117 ++++++++++++++++++
- .../nebula-matrix/nbl/nbl_core/nbl_dispatch.h |  23 ++++
- .../nbl/nbl_include/nbl_def_dispatch.h        |  54 ++++++++
- .../net/ethernet/nebula-matrix/nbl/nbl_main.c |   8 ++
- 6 files changed, 205 insertions(+)
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
+Initially reported to security@ mailing list by Anvik Loitongbam, with a patch.
+Anvik Loitongbam provided a reproducer.
+I was able to trigger the ASAN warning before the patch, and checked
+the warning can no longer trigger.
 
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-index be314b90..b7eebd89 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-@@ -10,4 +10,5 @@ nbl-objs +=	nbl_common/nbl_common.o \
- 		nbl_hw/nbl_resource.o \
- 		nbl_hw/nbl_interrupt.o \
- 		nbl_hw/nbl_chip.o \
-+		nbl_core/nbl_dispatch.o \
- 		nbl_main.o
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-index dd24ebec..4d8cea8d 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-@@ -17,12 +17,14 @@ enum {
- struct nbl_interface {
- 	struct nbl_hw_ops_tbl *hw_ops_tbl;
- 	struct nbl_resource_ops_tbl *resource_ops_tbl;
-+	struct nbl_dispatch_ops_tbl *dispatch_ops_tbl;
- 	struct nbl_channel_ops_tbl *channel_ops_tbl;
+Yingjie Wang also sent a public patch later, very similar to Anvik's one.
+
+ include/linux/tcp.h | 3 +++
+ net/ipv6/tcp_ipv6.c | 5 +++--
+ 2 files changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/tcp.h b/include/linux/tcp.h
+index d18f7bc1e5d0f73c1c7452fbc573fa7cb38b206f..5a4c61fc240ec2d4554795cea7bbd65bbea0ef02 100644
+--- a/include/linux/tcp.h
++++ b/include/linux/tcp.h
+@@ -179,6 +179,9 @@ struct tcp_request_sock {
+ 	u8				ao_rcv_next;
+ 	bool				used_tcp_ao;
+ #endif
++#if IS_ENABLED(CONFIG_IPV6)
++	__be32				syn_flowlabel;
++#endif
  };
  
- struct nbl_core {
- 	struct nbl_hw_mgt *hw_mgt;
- 	struct nbl_resource_mgt *res_mgt;
-+	struct nbl_dispatch_mgt *disp_mgt;
- 	struct nbl_channel_mgt *chan_mgt;
- };
+ #define tcp_rsk(ptr) container_of_const(ptr, struct tcp_request_sock, req.req)
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index e006a30360eae1b43a4d53173b46b931ae668825..d406cd3c8ceabfdbb66f3e1b4f9e9a74754e8d0b 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -578,8 +578,8 @@ static int tcp_v6_send_synack(const struct sock *sk, struct dst_entry *dst,
+ 				    &ireq->ir_v6_rmt_addr);
  
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-new file mode 100644
-index 00000000..966fee2d
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-@@ -0,0 +1,117 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2026 Nebula Matrix Limited.
-+ */
-+#include <linux/device.h>
-+#include <linux/pci.h>
-+#include "nbl_dispatch.h"
-+
-+static void nbl_disp_deinit_module(struct nbl_dispatch_mgt *disp_mgt)
-+{
-+	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
-+	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
-+
-+	if (res_ops->deinit_module)
-+		res_ops->deinit_module(p);
-+}
-+
-+static int nbl_disp_init_module(struct nbl_dispatch_mgt *disp_mgt)
-+{
-+	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
-+	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
-+
-+	if (res_ops->init_module)
-+		return res_ops->init_module(p);
-+	return -EOPNOTSUPP;
-+}
-+
-+static void nbl_disp_set_ctrl_bit(struct nbl_dispatch_mgt *disp_mgt, u32 lvl)
-+{
-+	set_bit(lvl, disp_mgt->ctrl_lvl);
-+}
-+
-+static void nbl_disp_refresh_ctrl_ops(struct nbl_dispatch_mgt *disp_mgt)
-+{
-+	struct nbl_dispatch_ops *disp_ops = disp_mgt->disp_ops_tbl->ops;
-+
-+	if (test_bit(NBL_DISP_CTRL_LVL_MGT, disp_mgt->ctrl_lvl)) {
-+		disp_ops->init_module = nbl_disp_init_module;
-+		disp_ops->deinit_module = nbl_disp_deinit_module;
-+	}
-+}
-+
-+static struct nbl_dispatch_mgt *
-+nbl_disp_setup_disp_mgt(struct nbl_common_info *common)
-+{
-+	struct nbl_dispatch_mgt *disp_mgt;
-+	struct device *dev = common->dev;
-+
-+	disp_mgt = devm_kzalloc(dev, sizeof(*disp_mgt), GFP_KERNEL);
-+	if (!disp_mgt)
-+		return ERR_PTR(-ENOMEM);
-+
-+	disp_mgt->common = common;
-+	return disp_mgt;
-+}
-+
-+static struct nbl_dispatch_ops_tbl *
-+nbl_disp_setup_ops(struct device *dev, struct nbl_dispatch_mgt *disp_mgt)
-+{
-+	struct nbl_dispatch_ops_tbl *disp_ops_tbl;
-+	struct nbl_dispatch_ops *disp_ops;
-+
-+	disp_ops_tbl = devm_kzalloc(dev, sizeof(*disp_ops_tbl), GFP_KERNEL);
-+	if (!disp_ops_tbl)
-+		return ERR_PTR(-ENOMEM);
-+
-+	disp_ops = devm_kzalloc(dev, sizeof(*disp_ops), GFP_KERNEL);
-+	if (!disp_ops)
-+		return ERR_PTR(-ENOMEM);
-+
-+	disp_ops_tbl->ops = disp_ops;
-+	disp_ops_tbl->priv = disp_mgt;
-+
-+	return disp_ops_tbl;
-+}
-+
-+int nbl_disp_init(struct nbl_adapter *adapter)
-+{
-+	struct nbl_common_info *common = &adapter->common;
-+	struct nbl_dispatch_ops_tbl *disp_ops_tbl;
-+	struct nbl_resource_ops_tbl *res_ops_tbl =
-+		adapter->intf.resource_ops_tbl;
-+	struct nbl_channel_ops_tbl *chan_ops_tbl =
-+		adapter->intf.channel_ops_tbl;
-+	struct device *dev = &adapter->pdev->dev;
-+	struct nbl_dispatch_mgt *disp_mgt;
-+	int ret;
-+
-+	disp_mgt = nbl_disp_setup_disp_mgt(common);
-+	if (IS_ERR(disp_mgt)) {
-+		ret = PTR_ERR(disp_mgt);
-+		return ret;
-+	}
-+
-+	disp_ops_tbl = nbl_disp_setup_ops(dev, disp_mgt);
-+	if (IS_ERR(disp_ops_tbl)) {
-+		ret = PTR_ERR(disp_ops_tbl);
-+		return ret;
-+	}
-+
-+	disp_mgt->res_ops_tbl = res_ops_tbl;
-+	disp_mgt->chan_ops_tbl = chan_ops_tbl;
-+	disp_mgt->disp_ops_tbl = disp_ops_tbl;
-+	adapter->core.disp_mgt = disp_mgt;
-+	adapter->intf.dispatch_ops_tbl = disp_ops_tbl;
-+
-+	if (common->has_ctrl)
-+		nbl_disp_set_ctrl_bit(disp_mgt, NBL_DISP_CTRL_LVL_MGT);
-+
-+	nbl_disp_refresh_ctrl_ops(disp_mgt);
-+	return 0;
-+}
-+
-+void nbl_disp_remove(struct nbl_adapter *adapter)
-+{
-+	/* Dispatch structures are allocated via devm */
-+}
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h
-new file mode 100644
-index 00000000..a7e58023
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h
-@@ -0,0 +1,23 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2026 Nebula Matrix Limited.
-+ */
-+
-+#ifndef _NBL_DISPATCH_H_
-+#define _NBL_DISPATCH_H_
-+#include "../nbl_include/nbl_include.h"
-+#include "../nbl_include/nbl_def_channel.h"
-+#include "../nbl_include/nbl_def_resource.h"
-+#include "../nbl_include/nbl_def_dispatch.h"
-+#include "../nbl_include/nbl_def_common.h"
-+#include "../nbl_core.h"
-+
-+struct nbl_dispatch_mgt {
-+	struct nbl_common_info *common;
-+	struct nbl_resource_ops_tbl *res_ops_tbl;
-+	struct nbl_channel_ops_tbl *chan_ops_tbl;
-+	struct nbl_dispatch_ops_tbl *disp_ops_tbl;
-+	DECLARE_BITMAP(ctrl_lvl, NBL_DISP_CTRL_LVL_MAX);
-+};
-+
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
-new file mode 100644
-index 00000000..b5a69516
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
-@@ -0,0 +1,54 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2026 Nebula Matrix Limited.
-+ */
-+
-+#ifndef _NBL_DEF_DISPATCH_H_
-+#define _NBL_DEF_DISPATCH_H_
-+
-+#include <linux/types.h>
-+
-+struct nbl_dispatch_mgt;
-+struct nbl_adapter;
-+enum {
-+	NBL_DISP_CTRL_LVL_MGT,
-+	NBL_DISP_CTRL_LVL_MAX,
-+};
-+
-+/**
-+ * struct nbl_dispatch_ops - dispatch control plane operation callbacks
-+ * @init_module: chip-wide datapath init, forwarded to the resource layer
-+ *               (res_ops->init_module() and then hw_ops->init_module());
-+ *               on leonis it programs the chip-wide datapath registers and
-+ *               sets driver_status=true.  Returns -EOPNOTSUPP if the
-+ *               resource layer installs no init_module op.  Control-PF
-+ *               exclusive: the pointer is NULL on a function without
-+ *               has_ctrl, so the caller must check has_ctrl first.
-+ * @deinit_module: chip-wide teardown, forwarded the same way; on leonis
-+ *               it clears driver_status, which starts an asynchronous
-+ *               firmware per-PF cleanup pass with no completion status
-+ *               bit, waited for best-effort only.  The caller must have
-+ *               stopped the mailbox channel and drained all in-flight
-+ *               mailbox DMA before calling it, see nbl_dev_remove().
-+ *               Returns void.  Control-PF exclusive, same NULL rule as
-+ *               @init_module.
-+ *
-+ * These callbacks are not dispatch-layer setup/teardown: the dispatch
-+ * structures are devm-allocated in nbl_disp_init(), and nbl_disp_remove()
-+ * only documents why no explicit teardown is needed. They forward
-+ * chip/firmware control down to the layers below instead: a control-PF
-+ * function calls the resource ops directly.
-+ */
-+struct nbl_dispatch_ops {
-+	int (*init_module)(struct nbl_dispatch_mgt *disp_mgt);
-+	void (*deinit_module)(struct nbl_dispatch_mgt *disp_mgt);
-+};
-+
-+struct nbl_dispatch_ops_tbl {
-+	struct nbl_dispatch_ops *ops;
-+	struct nbl_dispatch_mgt *priv;
-+};
-+
-+int nbl_disp_init(struct nbl_adapter *adapter);
-+void nbl_disp_remove(struct nbl_adapter *adapter);
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-index 3c711f9d..fc4488fb 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-@@ -12,6 +12,7 @@
- #include "nbl_include/nbl_def_channel.h"
- #include "nbl_include/nbl_def_hw.h"
- #include "nbl_include/nbl_def_resource.h"
-+#include "nbl_include/nbl_def_dispatch.h"
- #include "nbl_include/nbl_def_common.h"
- #include "nbl_core.h"
+ 		fl6->daddr = ireq->ir_v6_rmt_addr;
+-		if (inet6_test_bit(REPFLOW, sk) && ireq->pktopts)
+-			fl6->flowlabel = ip6_flowlabel(ipv6_hdr(ireq->pktopts));
++		if (inet6_test_bit(REPFLOW, sk))
++			fl6->flowlabel = tcp_rsk(req)->syn_flowlabel;
  
-@@ -58,7 +59,13 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
- 	ret = nbl_res_init_leonis(adapter);
- 	if (ret)
- 		goto out_chan_remove;
-+
-+	ret = nbl_disp_init(adapter);
-+	if (ret)
-+		goto out_res_remove;
- 	return adapter;
-+out_res_remove:
-+	nbl_res_remove_leonis(adapter);
- out_chan_remove:
- 	nbl_chan_remove_common(adapter);
- out_hw_remove:
-@@ -69,6 +76,7 @@ out:
+ 		tclass = READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_reflect_tos) ?
+ 				(tcp_rsk(req)->syn_tos & ~INET_ECN_MASK) |
+@@ -789,6 +789,7 @@ static void tcp_v6_init_req(struct request_sock *req,
+ 	ireq->ir_v6_loc_addr = ipv6_hdr(skb)->daddr;
+ 	ireq->ir_rmt_addr = LOOPBACK4_IPV6;
+ 	ireq->ir_loc_addr = LOOPBACK4_IPV6;
++	tcp_rsk(req)->syn_flowlabel = ip6_flowlabel(ipv6_hdr(skb));
  
- void nbl_core_remove(struct nbl_adapter *adapter)
- {
-+	nbl_disp_remove(adapter);
- 	nbl_res_remove_leonis(adapter);
- 	nbl_chan_remove_common(adapter);
- 	nbl_hw_remove_leonis(adapter);
+ 	/* So that link locals have meaning */
+ 	if ((!sk_listener->sk_bound_dev_if || l3_slave) &&
 -- 
-2.51.0.windows.1
+2.53.0
 
