@@ -1,99 +1,100 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793650973;
-	b=V7yWeoRPgyBoZ6c5W/Hi+XXQY2/FA4QZOsNtLSWC03lK0s+j3FgcbBPDKFt0BmAu4M35
-	 0YjpPRY+H/V1WQ8AnPDUXsxvx9vEUWKWiF17DLHoeF22uMItxo0KW19PPtEm1pa5Nv5dJ
-	 uXVfMeu+MIy6B+jY2tHltqL8oXWDQBOK+tLKrXtdyBa6Y9gVeL3yD95/2g1ybT3ldRAm7
-	 21rodSJGrSvNMuVZqtm6JysF6IKML8EURRnA8cB1hbK7IwAdFDOJtlHjaQR52rcN47tYh
-	 3IzZqwLzqDWBNaB40sj6d3rVUXWD+hg/es2fZEhBlkU0gTPxlhG/DxtB0nvI/WcZwTA==
+	t=1793651082;
+	b=NidAjZ8VkeCcuJGZ67SrRAPYxQAaBVLn5zk/eJqTI0PRfYWI2mUKer+zxhQ2hCAHRj1J
+	 jKAXUuXfRzCZGL2gjM8tpSeomfTacV3/goWjHIqL1ldi4KxIYZYcFz6fRES/X3dyQ5wJy
+	 q7p7jYBAPWuuRZfA70b6o9XZqfnQtrNnXq3OwKXHrrdLBU8Bf7QweVFQ6/GxH9mbKnesV
+	 kBM2SJ8OuCn5JBO0tMJsIlWtAIwix+sgAw2ESLcBO5TazFYdmaldSuJhoBf7G06tM6WzI
+	 SvQqJkpwmC3jZA9t6nxFhE3TmmhWVBV+zUMUwofbLngT+AVQ+WBBh1n2SQ9iY6GALuw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793650973;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793651082;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
 	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=nGgNd76Kt0jva/qUzoPfHVBqT3P4/TT41j1U9WFJiKc=;
-	b=Hfk23MzKb7jzREJo/euoEPLSV46eDmQxbmEDdyVEvhqj34m2kiC1Aa8xx3TGg32miD99
-	 bcJpe8eDdXptpg3UL0M7WiQjpvFq5TuZvi14RdLQabrSiSxOrwYZJjGIAYhiNr9h7r3Je
-	 sXN9rHVXtTd3sJ8KvhXRybD9Tvz6Gy9NKV3zZ0PhrgeCNcJPK8w+rp/aUhI8nOhuvI8qY
-	 +FrdoTg1UtGXcvS9JvGi2SmNgWT9m0nBG7q1wXkq5ZeOpWmknB4hf5qJhplRDCzTRcFRB
-	 T4MX1qbXnYJprE5fnfY0pTu+aqqEH91j5kiLKHFwD7MHt9jyp0+17TIHV9D2tt3jTkg==
+	bh=pRkX0U8+HuQCFFzjR90UGSol1Deg6kqBr45BiznV7xw=;
+	b=GPwww/uttk/S00XoBLPCKbIwHXxprwAF995NBFvQCfdeNURKsDNgMpy+RlNwVkw/+5Uk
+	 jgp6DkiATtHj2z33wFNq45OjPAmEHmJWQUXRjM0uEnSZZA8K1M01ZQaV7yira9ON1Nnho
+	 YmOgdTOfL/qH164mNhHg7IHsbtwQ87nEe9ovZBp1Mqs5AlzyIhIPdge9mLvwwLde6fSpQ
+	 1qDg0vMrDsakv288OySbjn9BJSaOmrmpRnINqSz8twC7cQCXPojtX7V9xWPKi6T/fcqQD
+	 rmIRSXHRVj4Y0Jj4Qm/DPx7fn2i08SjkoFGtvAtJUaICeeTODFhmWx+NrKUzYRGWEjQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Xuj0cyZ4;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SvOmcQSh;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
 Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B8D606A32C
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 20:22:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 38B8D606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382C3606A32F
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 20:24:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 382C3606A32F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Xuj0cyZ4
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6afac79b3a3so1649a12.1
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 12:22:53 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793650972; cv=none;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SvOmcQSh
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6b1aa36fc0eso1876a12.0
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 12:24:42 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793651081; cv=none;
         d=google.com; s=arc-20260327;
-        b=RsQbV5GbWv3deDNJPTL7jxbLV6kI9L5SRu3wbeoMKpoZyS9A5xbTiNDs1QR17Gwhkz
-         xIIZvRUoPRbkclJO/bWYMydcFmc3s5Ki56r1nBd/ibAS2cu8FA/pAjTkXfn1QRZYD+MN
-         SZhf2HEwiyOFz1NGf/D50+Wax6DAwcUcAp8wFzMy21iAdWy+aF/ICvEqkg4x4hAKUXR3
-         f4JVkhauSqVrOOwCmx418BjZLvm7fNmVn4cjGy6ND2z4ZFN/ChnN3kKtbyKuOvbEAXIt
-         vD+FlRWXp5nvRS3WLyzHnEAV1hAFY4BJ19HY/N/G2k5ozHViaK2QEOlcog+uVuOs+wjZ
-         kyJQ==
+        b=BP9upePE3TWjomr5EL4kP1p+YKOl0wlrwwYZPTxEp5EznfrAbiSLpkW4V6J6HR/Dx2
+         PQn6LvWj4ITt7gSAv3L65OZWG1TyggFIyQ+/Y28CEylRECu1LFZuyDJhB8WMdQxTxoWq
+         2/kZLnjWT0jZ/N38K2ki6LHi9cyPp6A41S5esP1A7+a5v8Qsas3/f5ap/8E1W7zpKFMs
+         WfKB3drj+TyN2mawujgpcEDMXqXKtMYiV3Up00LK78Jdk4jn72fu5d/qGvy7OzXgQpUp
+         oUUrHA3vxMjOLnOE7mUqQQu7eZMKurRwGQ3oGKgR0yNNJo3uj3ONis8LIXPOuzA9sXwo
+         pApw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=nGgNd76Kt0jva/qUzoPfHVBqT3P4/TT41j1U9WFJiKc=;
+        bh=pRkX0U8+HuQCFFzjR90UGSol1Deg6kqBr45BiznV7xw=;
         fh=rHhMJW1n6ei3x1OHTNkC63ikr42QCKERzDHZXYfMy74=;
-        b=WrDzQRfp8fSwLWVY4i1qlg+yG+pgPuh0SQE4/0SyZykHU8b5zHqsGP3rlEAX2CwHwS
-         FqCId7qWgplbuSoTLkWkDjFh1fd3CsHpb1uZCL01A/jG3rIQkW39zFP6RKaaamx18eR7
-         uYUlyF3VYPjdof/oIAGiV0Y/rtW3AbLTY7YszYlzq7f0AfNmo+LJFn46crZ/L4O0Kss4
-         LMlI0KWJn4Ald333690eAwwmOQxG6Rni2OguLmv75JOfIZBJi5vjdxbF8wdKdQtsfAqQ
-         0LB/qUc608CIWOTkiXSjJkCB3vsA21ERIfGARLQjlY9JIM1gpX8VlH8acA95uA4RGG5U
-         e1Pg==;
+        b=ePGIMwahiKVbcJ+hXf9h59AQLZJqboOD4ohDqlP8XyX66KJ4v6OR24OQGQK3tcVGkw
+         t9uZ03hQnh1bUHCx4ONxbbXVD1GN+0biFnv2TkdxO8G9rZCYOgKSyEVcbKeAj7GSyIEI
+         TaypP5Vkze6HwrK6lzcgRcNGZTCQNf1VgKvw9nAdbVuYFOQLd6RP0nyVxDboIS2UTcIv
+         lIlwcA9ag161wixr9lHZ9rsdmkIZmNhvKNAVfcMpT8jGAZboki2ZRio1uZ+tbrOKNrTm
+         4IziukwziJSdsvHJ29XvvsfEp5OLF3xV4eO2WzeyvzvJ3nqS8UvrbN8BMprgq4YmI7lV
+         j3Og==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793650972; x=1794255772; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793651081; x=1794255881; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=nGgNd76Kt0jva/qUzoPfHVBqT3P4/TT41j1U9WFJiKc=;
-        b=Xuj0cyZ4emQb1iCBxP+MN2UJGJzsbWOms4z/k2g2RQzUR0FwAme4c5ZkYjCgOB2CU7
-         iMeBNnzO9gjmOq3gRDuDFcNiXWDfChvkjvK3wfirDwEPKD+pdNpcVXwwF/ZC9DO6Afxr
-         o5sPOMnYusljsvrxxu5b9Lq/8FpYF1Ka6bLAEWcZlRzMIQe2xe56by117331u530ceb9
-         cHxgyIQ6hUKyUrgJCUfeyP7MyIsw8Sn4fRgo7SLgeEcWb5DYvaKFnFZinrrDjo0eS31t
-         y7kLbmugsHME1CI/r+BjLGWUS4a66mt16RN+QagEcXFyq/NIiGYkBVaG8bqCWz35Fk+c
-         2URQ==
+        bh=pRkX0U8+HuQCFFzjR90UGSol1Deg6kqBr45BiznV7xw=;
+        b=SvOmcQShy/Lt3LE+GpGQ7EhkwoAJ2Oh4dl3DKSKKoUDkMaOirBiVW7+e7Hcr3SqfjR
+         SCzAzbBMhDNqzD5P+3DXQjwFtm84mTA9TiGZW9kYlDPzlPeRS5X6qXrkHLehuL+oXz/v
+         a0tJQ7+URmRTDMS+dmS4t0JA8BOePVO4yJtsuCe/+i68+3svgEdr6NJ+9BSxzhGWJtzX
+         D2+3vrhzSS4IGrh4b2ds0fRUX7ytMKUYob9XWOVLjynhVmM+QgInZDmbS+O7gsLrBccc
+         92P5mgdx9E1rTjlCF23JPDzYMGMAom8d73U2aOxjDZhf2pa+SJ4+HkV7kOYcZ1IkzSGp
+         QoNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793650972; x=1794255772;
+        d=1e100.net; s=20260707; t=1793651081; x=1794255881;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=nGgNd76Kt0jva/qUzoPfHVBqT3P4/TT41j1U9WFJiKc=;
-        b=Mkidw8m/JeqrAFcYTNNL6oc3xHAoPjJyAgeekC3O7ZHNxArvB6jiXok5OrlcM+KgMp
-         Z1ukRSU1e0BBHC1Qy86aSnb1Zc5MAXT0K6jXZIzdXRGro5WoGCfRv3yLXORuOvzT/J04
-         P0q9ZMTgA8QGcio3yyXfjiQr7JyxC2+YoOzdLYN7Y4+T9ZGlSd/yaXux6BjwFHczEe+1
-         /Jp7muZR2THWYBPkNWio7sVfeHKuuBfW1QiluD2egQzPsfb8IasWscPKvYuM4+foWD58
-         i/v+o9utWYpxKPz+4LbVId0bR9fn17vXOtcjPGsn7RQGGTF/uo6r7BNi7n+n3xITp3kN
-         P7Pw==
-X-Gm-Message-State: APuU4Z9KvP5YrUXUuEcOgwAWpjBNb+bDKSgVSBLGQBO0JwZO+oOtuIGW
-	IXbdZJGm83tyRuu1h1DxuRo8G8hn1vm3IJIh9ufQ5phCSEvvFYRVNtxasS9edcSPQ7UCbwf5e5z
-	77pP3trBS7VInl/23M8WIFLgSKoWDEiQBZfWqnd/I
-X-Gm-Gg: AYBFou0VFI26aOT+Mmm/SkPN5xvp/2X+vzlQNjHDVp9fTS8vQl3199G1ElDFJr7WV3r
-	mcJBAIlzIITekCC/YIMx+wue8GN4tiaTCyEZsNF0cEsXp+oq5MbQ9jezr4eCiwf2FRyGMwIf8R/
-	dCddDbNSRQJ3U8kD1AGmQzOjYrbM1uzRNQ/t6SE8d5ezdDCkuvO5BZ/YVjuAUc82AIzqvrT9j++
-	bmtulDXKmgbyZxAxZ8GipQqVTOUIRJ3Y6GMkmA5GX3E76O1epNPQJg265zhpU0+d/cB3ZDlUa0M
-	/3NGzQwOdHd/7ldTZMC/K+msGDmhqLoo5+RGlft6yBKdMabbYdNzUOBJhge4o9DC+stwvPK3px8
-	Cii8zKLt9xf90okQkn6b2CVszbiIebblty+nrnSzj91m4BkXpGmjkEa5xOE3y/7def4Q=
-X-Received: by 2002:a05:6402:15d4:b0:6b1:aa31:a627 with SMTP id
- 4fb4d7f45d1cf-6b539cf5521mr2845a12.4.1793650971061; Mon, 02 Nov 2026 12:22:51
- -0800 (PST)
+        bh=pRkX0U8+HuQCFFzjR90UGSol1Deg6kqBr45BiznV7xw=;
+        b=NDqFt6EQJbUfV5OrCxiG8hOiZjAJT+pPkqt0pMzDmbDypllhytgH+vytTx/uJBqn9W
+         xVnqiXwZkiJ0XU/gSapfHkYHDyiySBT2JbiXbRhMJunrgw9T1tXuWx6IrqN+fyLmntjU
+         CrNPbyIfXcli8P9byVmbiUWTnUH8/zzzymkadO5pNEI7/6qgdGTOt4HgWGFECYzHW3b8
+         grY0mCWmIv9MLpnRqYhHXKd3IOgkEccxU5IuGJ90FbkiukmuJA2lJfzRNnbFsEdH2r3w
+         vvrJgIsOkXOv3B2agdhEZjEqHjpcOEyuXqdvN0jV55pCNkUSH5gfUrfTZG2hK86WZA20
+         6iDQ==
+X-Gm-Message-State: APuU4Z+jY5485fjvlAUFYdpMfczf2pZNG5/YBylnSRKEoAUpusz3MgDH
+	ascekNfUSvgKRfN16niiL1NAcMn/8ps+bSnBN2RbZ0HbFoeBFzf5oJ+IaForTaimTyP+2UK3PTk
+	GWOfP3/QmIKMmuwvoL6DE4EMFNokTQ/SZsBK2dA1C
+X-Gm-Gg: AYBFou3v3wMN+UljIfVoa1gOVB8hYywfX9WQuNJXY39IVn4TrQo9jdSTYsxcvmwB80T
+	s1fPlcdzd9sIQ23V3OWE7JmvmkeChDVlZn4Q7w6glIfs3sGPqc9ZxUuRqjvxf1vG2MJCpx5DS5R
+	NHgmaUVSsCh1Q46gq+FRRfIRXtDEYbtByl4Zv9Ww7paViBH1mPtWBW75jUpMvIKF+jn8LC4BEX5
+	wQnBHki9uPyZKlm5sI/hHPfcCRLQI8A5ee+acHSCBy6RHIhg3e78uG0qKUooxQqWamMahRmJCNx
+	FPUhgK03gESZQJnLGTS7I48lQJ1X6/Gn8RO4bEzLPRRzO3QWXuoCg6wl/OISGskiYUZXn96a9pu
+	+a9veLuK7OcYYLPZ6OkJoh/8AF07KJQFY8vDM7JB7G3baih36m8ZtQvmOL5fQEyrKT4wVWpVopy
+	IrJKKZkh/4Hg6/
+X-Received: by 2002:a05:6402:a20c:10b0:6b4:6725:f2c6 with SMTP id
+ 4fb4d7f45d1cf-6b539d6a214mr5220a12.13.1793651080182; Mon, 02 Nov 2026
+ 12:24:40 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,14 +104,13 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261102191438.1059771-1-sdf@fomichev.me> <20261102191438.1059771-3-sdf@fomichev.me>
-In-Reply-To: <20261102191438.1059771-3-sdf@fomichev.me>
+References: <20261102191438.1059771-1-sdf@fomichev.me> <20261102191438.1059771-4-sdf@fomichev.me>
+In-Reply-To: <20261102191438.1059771-4-sdf@fomichev.me>
 From: Mina Almasry <almasrymina@google.com>
-Date: Mon, 2 Nov 2026 12:22:39 -0800
-X-Gm-Features: AclHuK-QodshQH_GCQKz7_frUweWOEIBaSlwEKwxSIRLVgKwE5w2Aav3CTXsWCY
-Message-ID: <CAHS8izPefhGytGNeDWZzgZOi=gLeigZ63nFnkq1ERXXGwrNkeg@mail.gmail.com>
-Subject: Re: [PATCH net-next 2/7] net: devmem: charge the frag length to TX
- skb truesize
+Date: Mon, 2 Nov 2026 12:24:28 -0800
+X-Gm-Features: AclHuK9HmthtDhK5Se7ln97xEjRHJQkrIbx6CEUxI-rYHFFjq-AxT46s87UOWio
+Message-ID: <CAHS8izNMpH-RJm7mk=-MpMMT6nc1_AukmLVHmh2r=AoyBmZPmQ@mail.gmail.com>
+Subject: Re: [PATCH net-next 3/7] net: devmem: use niov_shift in net_devmem_get_niov_at()
 To: Stanislav Fomichev <sdf.kernel@gmail.com>
 Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
 	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch, 
@@ -126,39 +126,31 @@ Content-Transfer-Encoding: quoted-printable
 On Mon, Nov 2, 2026 at 11:14=E2=80=AFAM Stanislav Fomichev <sdf.kernel@gmai=
 l.com> wrote:
 >
-> truesize isn't well defined for devmem TX frags: they point into a
-> dmabuf which stays mapped for the lifetime of the binding, and freeing
-> the skb releases no memory. The charge only feeds sk_sndbuf and TSQ,
-> which limit queued bytes.
+> TX bindings use PAGE_SIZE net_iovs, and the TX lookup hard-codes it.
+> Derive the index and offset from binding->niov_shift instead, so TX
+> bindings can use larger net_iovs. No functional change, TX bindings are
+> still created with PAGE_SHIFT.
 >
-> Charge the frag length instead of PAGE_SIZE:
-> - TCP uncharges in bytes (tcp_trim_head(), tcp_fragment(),
->   tso_fragment()), so the charge must not be smaller than the frag.
->   PAGE_SIZE only guarantees that while net_iovs are PAGE_SIZE.
-> - Frags shorter than a page now count their length, not a page.
+> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+> ---
+>  net/core/devmem.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
 >
+> diff --git a/net/core/devmem.c b/net/core/devmem.c
+> index 32fafbfa1359..6339f221bc82 100644
+> --- a/net/core/devmem.c
+> +++ b/net/core/devmem.c
+> @@ -455,13 +455,15 @@ struct net_iov *
+>  net_devmem_get_niov_at(struct net_devmem_dmabuf_binding *binding,
+>                        size_t virt_addr, size_t *off, size_t *size)
+>  {
+> +       size_t niov_size =3D 1UL << binding->niov_shift;
 
-I don't know about this patch. The justification reads a bit like.
-"net-iov charging is weird and broken anyway, so we can do whatever we
-want. Charge size instead of PAGE_SIZE for no reason."
+I always dreamed of net-iovs can be non-power of 2 and also can vary
+in size inside the same binding (no reason why not), but this is
+providing excellent value anyway.
 
-I agree that charging for net-iov is extremely weird. Neither of
-today's net-iov types actually allocates any memory. Of course when I
-was developing the original infra, I took every shortcut I could and
-just charged net-iov as regular memory, but that doesn't mean we can
-do whatever we want.
-
-I think either:
-
-1. say net-iovs are not really occupied memory, so do a global cleanup
-that charges 0 for all net-iovs (optionally making it conditional on
-the net-iov type, so in the future someone can easily add a net-iov
-that actually can be charged)", or
-2. change the net-iov size to be actually size instead of PAGE_SIZE,
-and keep the current 'we charge net-iovs even though they're not
-really memory', and then this patch makes sense.
-
-But I welcome disagreements.
+Reviewed-by: Mina Almasry <almasrymina@google.com>
 
 --=20
 Thanks,
