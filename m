@@ -1,96 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793645488;
-	b=m/OXcH/7ako+imI/RUj1YQwv/2twWOtXz7Hifz4nAr9i6kYpo2azkFqLZBvAaPXRB8ny
-	 y/LL3vc50PrQ1KNrmhpuWk+iypYK8Vx61xRAHdvXEKs6mTJi/hxoB7q5kuwn7oVPbdtbj
-	 wGF22ubIiVlrUkpHEyludmr28JImlfrNSV5mtwEqseqd8oH8aBD9+Rktm6RlCMPgSGWwx
-	 wynSvhYP3drTJC55n1jn9dr3g/N4l6TF9zgao4fLOxx+x+B+1rlOoUDXWG9nRVCgmA+8F
-	 Fu60Gq7oMupiiclKcHrfgjchiQIsSYih43UBW2Q617HiGRjOPtv2r8AK3payuhInwuQ==
+	t=1793645688;
+	b=b0WZYFcXiatOV6OUHuOoYH+y3d2e9VLR+PxuuwlDdipE0jMhQnjBpJrOWVrcUzugpQQN
+	 kYuAiHxl3K+P1bsQOuj9RF+21mly9FEbWiomCYCMPSEl6cLvie19UOXJCCkbDoPF3js+e
+	 /D5UsBJwYoD3a2B+c/In1WjebqCF/d77tNcAZmwL7hydS39hgs/tz31tYOm+VSNI/zrqr
+	 nPLAk3vJmPoaItz206Q9cla2D1gVU/AO0UcJa8za6E9yP96D65FZb+PjQGfOhLul+xc+q
+	 SXVOneLYTR6/zx0CzIYpAnBsenJNkbIBEnI1XV+BHzM6bbota9ED7K2puFHK1QCpz/Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793645488;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793645688;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=SXPkWwMAg9cJscI73YNbUORrN9g22TD5t6FqXWJ2g0I=;
-	b=AxFpP8xGB5QOo44/3R67D19BrtoP6jPCvE5lJHhotuZf7NeLrWQ9jdr3k31dsHljL0cR
-	 XSN6Zs1mCrvgw+BetoXi7X8FLngp+pr2kI5XiOQn666zjdRMOcK+buDkammNrOZ/6hurZ
-	 rfMMWBYATMrRGrHnx8NcSELW51/SJwOCs0wDiKOTEGeFimqex7Lc8Psmutm3sN6eve5Tl
-	 oFWyy8uhnNNikyU+ni61mlYa0rce9853YdC0FlMFj8LM4IbsdXLx9rODpxTmNONuBaDNo
-	 kvabfBMo0JbEISWeJQBw4nqbBkAg5PG5YTtI6dSXDfg7F/7t5NZBeOsFK19BbBxCpUA==
+	 Date:From:To:Cc:Subject:User-Agent:References:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	bh=6aeVIk6rnbx33zfjOjUUS+2fD1SQ2yd81uhuQUT7lRc=;
+	b=BsXCxOJmYwu7PP3pSH6s3HZUHexvYwdgsfMqZyzPF1SdUTncrg7dlQkQpGGQOAh6D62H
+	 jpf8g9THtZIWTQof0cwsK46ztFs7OjW33d/GLQfAFYhq3as8sID6jBHxo/uPqVvEI9Gmy
+	 0+5uVhz/KCI3S8tD64MVD+n4XH9K6yG+lCIDkfLEqCJ+MDsUKHqARJtIqxR0FnHJgFo7y
+	 U03H4COYidaqzC0xRzLCO7vCxy9k2ZfY83nA0662ugSxy3N7oZOrzaNE5e9rAKrYw96v3
+	 sCpGjSaWm+84+D3vU3hZxjs0bb/8YdQZO8a2QUittQkFqEE8Rz+2oT8+6X78u7j6E4A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Xwy9SS29;
-	arc=none smtp.remote-ip=74.125.82.182
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hcfC1PbP;
+	arc=none smtp.remote-ip=209.85.214.172
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3F6606A33B
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 18:51:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB3F6606A33B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3659606A32E
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 18:54:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D3659606A32E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Xwy9SS29
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-3535bf8b3e0so4768138eec.0
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 10:51:27 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hcfC1PbP
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2eb18f4da15so11329575ad.1
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 10:54:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793645487; x=1794250287; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=SXPkWwMAg9cJscI73YNbUORrN9g22TD5t6FqXWJ2g0I=;
-        b=Xwy9SS29jgEou+dtHJxG2mh+vdvuw1KUXNyxXXSW8PfNwGTSo7i9YXecDhA56dr1lI
-         VQSkUm6nAz5GozRZAApeY0MphO/K9St6pAs8QBF9jFOHEMAwaosewndN+/0LrP7rg52g
-         SXS3uzHWI6i1JGMp8+mlAsQDNuWLKIpDTPCPLIveVnZZGGdlsZ1NR6bT3OqzfivupdQS
-         OQZ56tE3AJazLWr7q/ingbmrTaHQupqGJYGllg+RBvvLL4NpbsFU7swAqHLTP1lonGHR
-         40HvjeguwHxvJBjUGKpbdUhMm0HR1G1F4hqIGlauL3C3MunhFAGAmmJfQNir5FbXvCsd
-         aSKA==
+        d=gmail.com; s=20260707; t=1793645687; x=1794250487; darn=vger.kernel.org;
+        h=content-type:content-transfer-encoding:mime-version:message-id
+         :in-reply-to:references:user-agent:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=6aeVIk6rnbx33zfjOjUUS+2fD1SQ2yd81uhuQUT7lRc=;
+        b=hcfC1PbPoIdiB7FzTh3mEBmRHJNkNfHudgqL5I6jaPuyVN+QtQMg7IlzD0phqrxyec
+         4El+qeRC5so1Y7Lu6P9KU1w/wRz483M6vWWqmPNCbf4tB7P0YqPqikfH91/rxa8qPfTt
+         43H2uy0Hzt9Kv8RHLhx351JhDY/LhumttS2mosfwnFhfugaVHsxGC7xJMrFiAB6TthB6
+         wHe4B9kQzZJCHfFro6PNcEtO61UWFYVa+bBdaGpSC0HNm2d0Csnm/OXxELOcxXhaY4uW
+         rryAUm/26VRK3eMpGD+wEOQ9i/IJz+LNMCAo/I8Y5J5Y47a7CdGSYbtW5NW+QqTGqDWn
+         QAXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793645487; x=1794250287;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SXPkWwMAg9cJscI73YNbUORrN9g22TD5t6FqXWJ2g0I=;
-        b=pJmfYV3bkKw4JjBzJLwitiBnj2M9QEQDvKbmKooBDz4HbL30mr245/a2MyzXqFlJzt
-         Cmn2UMF1KcXm/kSMK6bp0KdKChKimiL+mMF9JbdI6YP3ueDwvvXlwB3uQ+2rfJRcs0ud
-         Bzx5p6cR64+T4CULqxbecgVBEbJBis4BRcSo/L3AB/tKcoKk9CaXFZ5VS1yXW5Q5rl7X
-         J1IBMd2OPBzQk0FQE6kPjJ7knY5mt3KLRoK7pkh5OEE1XpvOUrtfOJnF4d1a0BaFHD20
-         1UpzMIfEl7xiVez+lqPOHwGMSn0QcG6w4QlI6fh6rJwwMylUEd68fQzwgxvBN+lpZcW4
-         zt1Q==
-X-Forwarded-Encrypted: i=1; AKwUvBz1ZLNEUztqf/rl7vzRIJANiWYH2tLwS0U1qW9dXMSuluU9JFWExBH1FWtzGeDgO47QWmjqpBc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI2aLg09zLsiO/ah5Oig1xVW5mM+BpRfk4mfZylnguRhH+at5qX
-	JR182NjDSmdmF4+24e1/9HVgk1WS+qLbtRActU0obhJmucOb57MBLfOx
-X-Gm-Gg: AYBFou3IPo7wK3khEd/XPLn9BQF2et8MN3mr14338iEWSk7LQGEKeLr1SiPJb+XcUb8
-	3q1aRl2zONHos9li9I8swH3kwcyesSbTfblnoYQ19gkyk9SdcWnWi5pS2OOlFk7yPwUcINGNGnt
-	+LdmzHCFOOKywmBKTQuB+sCzICb2o3xz7pXLUqt+aalbxHcJAYEWdRhHwf1Ye1RWOhUr80kplF0
-	7cZMaS+reNozRGjQwpGavmsnkM84S91ZS8LFX3a0E6gG33Qmigo8IxxxvuiI6+oQkjfmbz+199F
-	4r5DywIGJT8Xp2HwyPUx9IVo3O+LT2httAPjnLJCuKotqNT3OFVFP8/x2wJW0BQ86+cOFUw1Lpj
-	ZAHvIex9WO8j4CQJGWeatP/8FcwzFhNmLLumGkVQk9eVLY/QKivZwRWxclLhpnfqH8IKMiizLXY
-	Dwbawekj6r+Xql2WTvXK27iXAQWAgvlPR+rTUDmZcQz4A3py3/fDp4AtOenR3EViMCEPRl8U/1d
-	c0MZI83Fn7KACy5f22yjByf6A6RytEAq2AHwHYL5kP6XQmKlC+ApcNBGRqinTsvkVYU3Xdi3h19
-	TojZzpT4/cDSg42OFhY0M9ZAgJ+C1CeJITgt7lVUYmqC7+yS5bGEz6DNdC2Ond1UzGzBPbs2Ou3
-	1ej7ENi8wQyIkqT+3/cKs51wyB5keLLwtqiTv4ng5mpkbFg==
-X-Received: by 2002:a05:7022:3f0a:b0:151:6e80:ba7e with SMTP id a92af1059eb24-1ac56c9ff26mr17469296c88.4.1793645485933;
-        Mon, 02 Nov 2026 10:51:25 -0800 (PST)
-Received: from l ([2603:8002:ea00:6800:4808:7aa2:ac97:30e9])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac1abcd6f1sm34625198c88.20.2026.11.02.10.51.25
+        d=1e100.net; s=20260707; t=1793645687; x=1794250487;
+        h=content-type:content-transfer-encoding:mime-version:message-id
+         :in-reply-to:references:user-agent:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6aeVIk6rnbx33zfjOjUUS+2fD1SQ2yd81uhuQUT7lRc=;
+        b=iSPcbgZFOROYypH0S3N6rXaFgZcLAAPQD6pkCWSe0Z5kirm5ju8QntIYrx9JLsHG2V
+         wj3oqzHfHG73ZYd9HlhrgxktssjceRZ5MxAxrDCpLHal46BneQTqcoDm4dXwIkWEN7gH
+         e+bhRtOrEOhDBrNpoawRZtU+y6DNGSa5gXS369769Fa3yl4kieYnpIHHk0feVOZQ3foT
+         Bv/8EgJm3aBV+uGHWYYH67/jo2uLj2xRmpFyuGEsqht5bZgjXxqyO1Y6No4yv+2vgUFd
+         J+4kOcyQ5yI1X+pfOfSsCXv4SMXxtQnUNm4Mh2PDjEhFoPRXfk9u/pbRwFAy4YgAuGPl
+         nUxg==
+X-Forwarded-Encrypted: i=1; AKwUvBwhvdODKD1/HpkeZcDfr0lRUp7xLddXS/Fe5J86thrhbLIypfT6+r9VSm7OLMe7SE0Z/WFdluc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z99tgmKG03oHGl8pkqib5kxr91XqDznz/l2arR4Y9YhTu8na4W/
+	IzkxTYfniJsBUJP1pJeGfS5NXcjmlcEroBCNnTMAPnthli83btzWFTXV
+X-Gm-Gg: AYBFou0tXbuOIpq6qBiTeDr68B81ZeY62Xp8Bgw87pd0UpjbeKmc0PJ4B3LLaiPE0Qo
+	U+SNGsDsGMLXC12C1d7t3/awiHgEGVD4xeRkoK367//bbe5bO3uCEB9dfdPXlwUCcQ6ae5PHvan
+	I4Zky80xBbnKoKx+/fr1/zI7WvnjuFK9ybipVBlZDqTULIthEhzKd00dKDYtblcRDmreP+0kX/G
+	F1gzlI9Ubuw3xk2jRP8IkGs0V14OqKN8QpAQiqDt8mb6HZYSOkOI3OTnTG0el4fJvR+eVYoH1Sj
+	TDnukPYf3qIES7g4C2KMJIP4nZsgatIVLKhjVS3BtfTzDzHPtootPiAOich7terV2XThG0B6NmM
+	6JExCMDocaEAuicqTiBctdc7Eeds/hmd2kMEi7/ESF3SJRub+8IB8yOhGynjo8hj0U/pEmunV2E
+	GV47OQQUEs2j+6+Azra03kbfHa5zr6Lmp+c0ZCpkoiX80W27u/2TLGVDODby/t3//2clloHjUn6
+	dXB5ohdw9t/SUvuQcLy95Rz/AzJoU0UVcFk51/BM6zlmAQGKysXvx+iTQNUMTbqtM5Jp0RE8Lnz
+	5bYw84OCi5unrbGm3FawX8dA/WxW7pRUpIoF8wRPMMj8TyoTMDN/q1wacBBBmnbaEQpSV0jLXZm
+	VaEox9HMTiOZACg==
+X-Received: by 2002:a17:902:e88d:b0:2e2:c55c:90c with SMTP id d9443c01a7336-2eb3650b7b7mr104071795ad.64.1793645687169;
+        Mon, 02 Nov 2026 10:54:47 -0800 (PST)
+Received: from meli-email.org ([98.97.42.147])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb39266f42sm31215645ad.40.2026.11.02.10.54.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 10:51:25 -0800 (PST)
-From: Dave Seddon <dave.seddon.ca@gmail.com>
-To: Michal Kubecek <mkubecek@suse.cz>,
-	netdev@vger.kernel.org
-Cc: Dave Seddon <dave.seddon.ca@gmail.com>,
-	Taehee Yoo <ap420073@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>
-Subject: [PATCH ethtool v2 2/2] netlink: cable_test: require a value for the TDR parameters
-Date: Mon,  2 Nov 2026 10:51:21 -0800
-Message-ID: <20261102185122.1357927-3-dave.seddon.ca@gmail.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261102185122.1357927-1-dave.seddon.ca@gmail.com>
-References: <20261102185122.1357927-1-dave.seddon.ca@gmail.com>
+        Mon, 02 Nov 2026 10:54:46 -0800 (PST)
+Date: Mon, 02 Nov 2026 11:51:58 -0700
+From: John Fastabend <john.fastabend@gmail.com>
+To: mptcp@lists.linux.dev, Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
+Cc: daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, john.fastabend@gmail.com, jakub@cloudflare.com, jiayuan.chen@linux.dev, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, willemb@google.com, matttbe@kernel.org, mptcp@lists.linux.dev, mason@kernel.org, josef@toxicpanda.com
+Subject: Re: [PATCH bpf v2 03/15] bpf, sockmap: Don't let an SK_PASS verdict cover the next message
+User-Agent: meli/0.9.0
+References: <20261102072112.4160195-1-alexei.starovoitov@gmail.com> <20261102072112.4160195-4-alexei.starovoitov@gmail.com>
+In-Reply-To: <20261102072112.4160195-4-alexei.starovoitov@gmail.com>
+Message-ID: <tnw1v9.qyjuvdc9kq45@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,64 +99,60 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
 
-first, last, step and pair (--cable-test-tdr) take a value, but their
-parser entries leave min_argc at 0. Given as the last word on the
-line, the value handler reads the NULL that ends argv and the error
-message prints it:
+On Mon, 02 Nov 2026 00:21, Alexei Starovoitov <alexei.starovoitov@gmail.com> wrote:
+>From: Alexei Starovoitov <ast@kernel.org>
+>
+>tcp_bpf_send_verdict() keeps the verdict of the sk_msg prog in psock->eval
+>and runs the prog only when eval is __SK_NONE. For __SK_PASS it resets eval
+>only after tcp_bpf_push() returns 0. But the push can release the socket
+>lock in sk_stream_wait_memory(), and it can fail. Then another
+>tcp_bpf_sendmsg() sends its message and does not run the prog.
+>
+>With bpf_msg_apply_bytes() the verdict covers apply_bytes bytes. After a
+>failed push, apply_bytes still includes the sent bytes. Thus the verdict
+>covers more bytes than the prog requested.
+>
+>Reset eval before the push when apply_bytes is 0. If this push fails, the
+>prog now runs for the rest of the message. The same already occurs when a
+>message does not fit into one sk_msg.
+>
+>When the push fails, subtract the sent bytes from apply_bytes. When
+>apply_bytes is not 0, eval stays __SK_PASS during the push, and the prog
+>does not run for another message, as today. The verdict must still cover
+>the bytes that a failed push does not send. But such a message also lowers
+>apply_bytes. Thus, if apply_bytes is 0 after the subtraction, end the
+>verdict, as after a push that returns 0.
 
-  # ethtool --cable-test-tdr eth0 first 1 last
-  ethtool (--cable-test-tdr): invalid value '(null)' for parameter 'last'
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
 
-Set min_argc to 1, as every other value-taking parameter does, so the
-parser reports the missing value itself:
+>
+>Fixes: 4f738adba30a ("bpf: create tcp_bpf_ulp allowing BPF to monitor socket TX/RX data")
+>Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+>---
+> net/ipv4/tcp_bpf.c | 14 ++++++++++++++
+> 1 file changed, 14 insertions(+)
+>
+>diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+>index d90bcc911b36..b016aa419fb2 100644
+>--- a/net/ipv4/tcp_bpf.c
+>+++ b/net/ipv4/tcp_bpf.c
+>@@ -457,8 +457,22 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
+> 
+> 	switch (psock->eval) {
+> 	case __SK_PASS:
+>+		/* The push may sleep without the socket lock, and it may fail */
+>+		if (!psock->apply_bytes)
+>+			psock->eval = __SK_NONE;
+>+		origsize = msg->sg.size;
+> 		ret = tcp_bpf_push(sk, msg, tosend, flags, true);
+> 		if (unlikely(ret)) {
+>+			/* A part of it may have gone out */
+>+			sk_msg_apply_bytes(psock, origsize - msg->sg.size);
+>+			/* Another sender can use up the rest during the push */
 
-  # ethtool --cable-test-tdr eth0 first 1 last
-  ethtool (--cable-test-tdr): no value for parameter 'last'
+Interesting. We've never hit this with http parsers. We do use this to
+skip payloads some times.
 
-Only the message changes: the exit status was already 1 and no request
-was sent.
-
-Fixes: 9561db9b76f4 ("Add cable test TDR support")
-Assisted-by: Claude:claude-opus-5-5
-Signed-off-by: Dave Seddon <dave.seddon.ca@gmail.com>
----
- netlink/cable_test.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/netlink/cable_test.c b/netlink/cable_test.c
-index fdb046e..648bf74 100644
---- a/netlink/cable_test.c
-+++ b/netlink/cable_test.c
-@@ -544,24 +544,28 @@ static const struct param_parser tdr_params[] = {
- 		.type		= ETHTOOL_A_CABLE_TEST_TDR_CFG_FIRST,
- 		.group		= ETHTOOL_A_CABLE_TEST_TDR_CFG,
- 		.handler	= nl_parse_direct_m2cm,
-+		.min_argc	= 1,
- 	},
- 	{
- 		.arg		= "last",
- 		.type		= ETHTOOL_A_CABLE_TEST_TDR_CFG_LAST,
- 		.group		= ETHTOOL_A_CABLE_TEST_TDR_CFG,
- 		.handler	= nl_parse_direct_m2cm,
-+		.min_argc	= 1,
- 	},
- 	{
- 		.arg		= "step",
- 		.type		= ETHTOOL_A_CABLE_TEST_TDR_CFG_STEP,
- 		.group		= ETHTOOL_A_CABLE_TEST_TDR_CFG,
- 		.handler	= nl_parse_direct_m2cm,
-+		.min_argc	= 1,
- 	},
- 	{
- 		.arg		= "pair",
- 		.type		= ETHTOOL_A_CABLE_TEST_TDR_CFG_PAIR,
- 		.group		= ETHTOOL_A_CABLE_TEST_TDR_CFG,
- 		.handler	= nl_parse_direct_u8,
-+		.min_argc	= 1,
- 	},
- 	{}
- };
--- 
-2.56.0
-
+Thanks.
