@@ -1,74 +1,74 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.96.220.36
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793606691;
-	b=nrYoBIe8JxopHGqgAQBZN2bncEN9nUw7MOsj/d6PjLQWVQIkBTkCg1GFJ28x6XEclsBQ
-	 xnoybLZur/jXB2oJu1OIVDP+jDpDl6vAtf+nVpH0OAxrnERoivwrvzdkT353epDIoHwcl
-	 8WXQrgsJUMi1V2SRPpajpQXF+cPifjgn4ncePQw5XvqVG2WgfkudNJzHlxNUvVxFIgapg
-	 XSuekvWVsttJlbTr8/S/VbQ5eWGUTxrSWdmtxzOW27gN44J8oVBHHFOLuJz8QrXdHO2aV
-	 FAlE3PB0xFwwGmIELXq8LJQdHnzufZ/jbQCF9SRfltUU3F5xuG6dSrvQ87yglsn/Fsg==
+	t=1793606692;
+	b=3cuCql03fAfwaKAx1MmA1bEoA3nokf5h4UsQ4vUdnciMiygY0f+wKsiChFd/XnXM7QnT
+	 dniGlZpSpmFAEPQRaw9asRRwJp0X40u/QhFdzhJSmdGIjqvXuqSfQXnEObFYdLEL3s9nl
+	 VPGlmZg3hbMqP5hLa5y+/JXw40ojXtutqtArjNEWAcTHbqm0v++/7J3fX9XCQdEJ3Wkoj
+	 Wy3JziyXOPsVrzbtNoD1nGShb6riFyAPs/LnnjnTUylKzKHCuHDlNMT+tl5E1HKQfeO/q
+	 n7VigVFyEbynoRdHy3B3Q22T+mAsbjEmE/paQ3toB1UyHhc3PVkhVKgsb2S/ggg7luA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793606691;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793606692;
 	h=DMARC-Filter:Received:X-Virus-Scanned:Received:Received:DKIM-Filter:
 	 DKIM-Signature:Received:Received:From:To:CC:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Content-Type:X-ClientProxiedBy;
-	bh=Z28FTFDQOS5c5X6nFViW3Ykrm9XnnWLENM+RZYavkXc=;
-	b=d6yvyfE5JNYDFwmzgschucq9wljh3wLqWVUBkntIwdLVWa/ICpdgwkokEx8xDfRZnZj3
-	 9G2iAMLenVXIbYbZhqBHIbzLj05aACnmUj10tpAi5rsJ/VdUf70otujeDd2c7zxZ0u7oG
-	 vMGZ5329g+zMOa8mmXnLEvg7ag/4waaYLjKjnECxJ7s3edga6/3lsaj144eOeVXK9u14B
-	 FDZ9CgXO1UMXdOG096GSB2DM7SgHjxWJ1Flz0qEQNTUoJV8hnLYet/k+S78R9DRUhnrv/
-	 kkE/QM6TzhJKiaxjhvmhhdFHf9fEPXDF3HjGXycMyx7wXc7pg1piQUi5hBLjRYj61Rg==
+	bh=Bhm5K5pgZZqGM+JSJ1uY6OfgTehxKhHFC60i5E2xYII=;
+	b=qws+b1c0+1dLWHEtMdFSGfzF0LdVy6dE4UeMIeMuHZfwdE4ziVzHoiEmj6OZwJF+sKfd
+	 UzBBuOC5p1kJfoLRDTlFlINgUHpdQNrmFA44DNtZ9oL69NdNAnNx5o7VwalcCrISLWoc1
+	 h8h4OE84VE4ViUm/lgcsy1Tk7StbTmWONR2brcejDvZGnNe9ZM7TlzYpKapyUa4Ee/Qwy
+	 I50eDK4WppwSBVV61atwyNMf+2HNvikJDJHoDhn0mKHfRIykJr9XvSSZpZMV1yNnZwobb
+	 E6znnOePlqJgzq9qF4Qs/yj1tqpK94sauo3Vteatr2xI2znilM9Ce0L8jpyhpmvr7wA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=secunet.com;
 	spf=pass smtp.mailfrom=secunet.com;
-	dkim=pass header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=tszmte9T;
+	dkim=pass header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=gCtQtDBL;
 	arc=none smtp.remote-ip=62.96.220.36
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7078060A2604
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 08:04:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7078060A2604
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDDE60A2611
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 08:04:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3CDDE60A2611
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=tszmte9T
+	dkim=pass (2048-bit key, unprotected) header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=gCtQtDBL
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 4819520520;
-	Mon,  2 Nov 2026 09:04:49 +0100 (CET)
+	by mx1.secunet.com (Postfix) with ESMTP id 68AAA207BB;
+	Mon,  2 Nov 2026 09:04:44 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id OKoCepaINEkh; Mon,  2 Nov 2026 09:04:45 +0100 (CET)
+ with ESMTP id rLl6jszmYsnY; Mon,  2 Nov 2026 09:04:43 +0100 (CET)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 924E5207D8;
-	Mon,  2 Nov 2026 09:04:45 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 924E5207D8
+	by mx1.secunet.com (Postfix) with ESMTPS id BA2B1207B0;
+	Mon,  2 Nov 2026 09:04:43 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com BA2B1207B0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1793606685;
-	bh=Z28FTFDQOS5c5X6nFViW3Ykrm9XnnWLENM+RZYavkXc=;
+	s=202301; t=1793606683;
+	bh=Bhm5K5pgZZqGM+JSJ1uY6OfgTehxKhHFC60i5E2xYII=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=tszmte9ToaCXFEsi2o2ZH/UkgsTBgDp+QyyKxSaR+ENEiuNwRqC6EDFtfF7xJOsez
-	 91/yYbNQhcxxp1A9vTuJJq82Iq3XD1enHSrccuFRu0CKK/mR7CGTD4NPlwrjmr7Lge
-	 j8ni7U/uZPhfFPvpriaNFT0QBAQhTfOs7tVAAWBjnJJhdQ4V8h8MZyal31xyVSCL+N
-	 yqjG7jgk0+90N1sIZahrymbn1pOgPsUT/gpoLYUbxwrMP/ab9qwaHErmOlRV5UeyCN
-	 RywP8SscZzVtKPXtpTUwRUe11inftOzyWlFrk9BZzOXdNDvNFH9RT9PbZk3UrSDfxD
-	 mOZTMcI0HA/oQ==
+	b=gCtQtDBL1Iyvx1gTPo/WDYYoIntuP079LxBFwJt+0TBNqiqvWt4f7fTKjEHcaLD2m
+	 lM8TzI2cKoEaNZCxRBFT2pr1UmeIu117DptlZWSJVD3LpMvqgjXv4ivytBYhSBH7Yg
+	 GWPoSuEK0mUIm9mUdkvI/U0LH/RmWQ43DG6JXbJtdUwU40UYmJ9fXJzy+oXkWVl45o
+	 n33sqqg6XmJJFy52VbRfbNrT9L7YKE9buTYK/Trm9xAU4bcPY9Qx6FBetgFIhppIsI
+	 gXOAf2FN9DfJpKyIvmq3eXIeLM0yZBaFmOfPLznK2nwiDrqxN+WbQO3rq4cK799c05
+	 OryHkUj7U57RQ==
 Received: from gauss4 (10.182.7.102) by EXCH-01.secunet.de (10.32.0.171) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 2 Nov
- 2026 09:04:44 +0100
-Received: (nullmailer pid 2505900 invoked by uid 1000);
+ 2026 09:04:42 +0100
+Received: (nullmailer pid 2505927 invoked by uid 1000);
 	Mon, 02 Nov 2026 10:04:58 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 04/14] xfrm: espintcp: reorder operations within espintcp_init_sk
-Date: Mon, 2 Nov 2026 10:04:02 +0000
-Message-ID: <20261102100451.2505200-5-steffen.klassert@secunet.com>
+Subject: [PATCH 13/14] docs: xfrm: include mark in XFRM_MSG_MIGRATE_STATE EEXIST tuple
+Date: Mon, 2 Nov 2026 10:04:11 +0000
+Message-ID: <20261102100451.2505200-14-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261102100451.2505200-1-steffen.klassert@secunet.com>
 References: <20261102100451.2505200-1-steffen.klassert@secunet.com>
@@ -86,124 +86,72 @@ Content-Type: text/plain
 X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Antony Antony <antony.antony@secunet.com>
 
-When enabled on a socket, espintcp sets the socket callbacks to its
-own before it has finished setting up its context and published it as
-icsk_ulp_data. Any one of those callbacks that gets called before will
-dereference a NULL icsk_ulp_data.
+Document mark as part of the EEXIST tuple and update the SA lookup
+description to match.
 
-Fix this by reording the operations, and add memory barriers to ensure
-callers will have a struct espintcp_ctx available. Add a few
-WRITE_ONCE/READ_ONCE too while we're there.
-
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-Cc: stable@vger.kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reported-by: Peihan Liu <ronbogo@outlook.com>
-Reported-by: Yilin Zhu <zylzyl2333@gmail.com>
-Reported-by: Ren Wei <n05ec@lzu.edu.cn>
-Reported-by: Eulgyu Kim <eulgyukim@snu.ac.kr>
-Reported-by: Jaeyoung Chung <jjy600901@snu.ac.kr>
-Link: https://lore.kernel.org/all/c30b645074a1b379e0f7fe297f917c66137d9964.1778464688.git.zylzyl2333@gmail.com/
-Link: https://lore.kernel.org/all/20260819155349.3555804-1-jjy600901@snu.ac.kr
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Fixes: c13c0cc6f52e ("xfrm: add documentation for XFRM_MSG_MIGRATE_STATE")
+Signed-off-by: Antony Antony <antony.antony@secunet.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- include/net/espintcp.h |  5 +++--
- net/xfrm/espintcp.c    | 43 +++++++++++++++++++++++++-----------------
- 2 files changed, 29 insertions(+), 19 deletions(-)
+ .../networking/xfrm/xfrm_migrate_state.rst    | 25 +++++++++++++------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/include/net/espintcp.h b/include/net/espintcp.h
-index c70efd704b6d..7cad3c6822df 100644
---- a/include/net/espintcp.h
-+++ b/include/net/espintcp.h
-@@ -34,7 +34,8 @@ static inline struct espintcp_ctx *espintcp_getctx(const struct sock *sk)
- {
- 	const struct inet_connection_sock *icsk = inet_csk(sk);
+diff --git a/Documentation/networking/xfrm/xfrm_migrate_state.rst b/Documentation/networking/xfrm/xfrm_migrate_state.rst
+index 9d53cb22b007..ca2c9e5aaf33 100644
+--- a/Documentation/networking/xfrm/xfrm_migrate_state.rst
++++ b/Documentation/networking/xfrm/xfrm_migrate_state.rst
+@@ -27,15 +27,20 @@ SA Identification
+ =================
  
--	/* RCU is only needed for diag */
--	return (__force void *)icsk->icsk_ulp_data;
-+	/* pairs with smp_wmb() in espintcp_init_sk() */
-+	smp_rmb();
-+	return (__force void *)READ_ONCE(icsk->icsk_ulp_data);
- }
- #endif
-diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
-index 3e72b9f067b9..4052ae5bbb2e 100644
---- a/net/xfrm/espintcp.c
-+++ b/net/xfrm/espintcp.c
-@@ -434,7 +434,9 @@ static void espintcp_destruct(struct sock *sk)
- 
- bool tcp_is_ulp_esp(struct sock *sk)
- {
--	return sk->sk_prot == &espintcp_prot || sk->sk_prot == &espintcp6_prot;
-+	const struct proto *prot = READ_ONCE(sk->sk_prot);
+ The struct is defined in ``include/uapi/linux/xfrm.h``. The SA is looked
+-up using ``xfrm_state_lookup()`` with ``id.spi``,
+-``id.daddr``, ``id.proto``, ``id.family``, and
+-``old_mark.v & old_mark.m`` as the mark key::
++up using ``xfrm_state_lookup_exact()`` with ``id.spi``, ``id.daddr``,
++``id.proto``, ``id.family``, and an exact match against ``old_mark.v``
++and ``old_mark.m``. Unlike the data path, which uses a masked
++comparison, this requires the SA's mark and mask to equal ``old_mark``
++exactly, so a broad-mask SA is never matched when a more specific one
++was intended. If no such SA exists, ``-ESRCH`` is returned.
 +
-+	return prot == &espintcp_prot || prot == &espintcp6_prot;
- }
- EXPORT_SYMBOL_GPL(tcp_is_ulp_esp);
++The layout is::
  
-@@ -466,34 +468,41 @@ static int espintcp_init_sk(struct sock *sk)
+     struct xfrm_user_migrate_state {
+         struct xfrm_usersa_id  id;       /* spi, daddr, proto, family */
+         xfrm_address_t         new_daddr;
+         xfrm_address_t         new_saddr;
+-        struct xfrm_mark       old_mark; /* SA lookup: key = v & m */
++        struct xfrm_mark       old_mark; /* SA lookup key (exact v/m match) */
+         struct xfrm_selector   new_sel;  /* new selector (see Flags) */
+         __u32                  new_reqid;
+         __u32                  flags;    /* XFRM_MIGRATE_STATE_* */
+@@ -72,8 +77,8 @@ inherits the value from the existing SA (omit-to-inherit).
+      - Description
+    * - ``XFRMA_MARK``
+      - Mark on the migrated SA (``struct xfrm_mark``). Absent inherits
+-       ``old_mark``. To use no mark on the new SA, send ``XFRMA_MARK``
+-       with ``{0, 0}``.
++       the mark of the existing SA. To use no mark on the new SA, send
++       ``XFRMA_MARK`` with ``{0, 0}``.
+    * - ``XFRMA_ENCAP``
+      - UDP encapsulation template; only ``UDP_ENCAP_ESPINUDP`` is supported.
+        Set ``encap_type=0`` to remove encap.
+@@ -259,8 +264,12 @@ Attributes in the notification
+ Error Handling
+ ==============
  
- 	__sk_dst_reset(sk);
- 
--	strp_check_rcv(&ctx->strp);
- 	skb_queue_head_init(&ctx->ike_queue);
- 	skb_queue_head_init(&ctx->out_queue);
-+	INIT_WORK(&ctx->work, espintcp_tx_work);
-+
-+	ctx->saved_data_ready = sk->sk_data_ready;
-+	ctx->saved_write_space = sk->sk_write_space;
-+	ctx->saved_destruct = sk->sk_destruct;
-+
-+	/* avoid using task_frag */
-+	sk->sk_allocation = GFP_ATOMIC;
-+	sk->sk_use_task_frag = false;
-+
-+	rcu_assign_pointer(icsk->icsk_ulp_data, ctx);
-+
-+	/* pairs with smp_rmb() in espintcp_getctx() */
-+	smp_wmb();
-+
-+	WRITE_ONCE(sk->sk_data_ready, espintcp_data_ready);
-+	WRITE_ONCE(sk->sk_write_space, espintcp_write_space);
-+	sk->sk_destruct = espintcp_destruct;
- 
- 	if (sk->sk_family == AF_INET) {
--		sk->sk_prot = &espintcp_prot;
--		sk->sk_socket->ops = &espintcp_ops;
-+		WRITE_ONCE(sk->sk_prot, &espintcp_prot);
-+		WRITE_ONCE(sk->sk_socket->ops, &espintcp_ops);
- 	} else {
- 		mutex_lock(&tcpv6_prot_mutex);
- 		if (!espintcp6_prot.recvmsg)
- 			build_protos(&espintcp6_prot, &espintcp6_ops, sk->sk_prot, sk->sk_socket->ops);
- 		mutex_unlock(&tcpv6_prot_mutex);
- 
--		sk->sk_prot = &espintcp6_prot;
--		sk->sk_socket->ops = &espintcp6_ops;
-+		WRITE_ONCE(sk->sk_prot, &espintcp6_prot);
-+		WRITE_ONCE(sk->sk_socket->ops, &espintcp6_ops);
- 	}
--	ctx->saved_data_ready = sk->sk_data_ready;
--	ctx->saved_write_space = sk->sk_write_space;
--	ctx->saved_destruct = sk->sk_destruct;
--	sk->sk_data_ready = espintcp_data_ready;
--	sk->sk_write_space = espintcp_write_space;
--	sk->sk_destruct = espintcp_destruct;
--	rcu_assign_pointer(icsk->icsk_ulp_data, ctx);
--	INIT_WORK(&ctx->work, espintcp_tx_work);
- 
--	/* avoid using task_frag */
--	sk->sk_allocation = GFP_ATOMIC;
--	sk->sk_use_task_frag = false;
-+	strp_check_rcv(&ctx->strp);
- 
- 	return 0;
+-If the target SA tuple (new daddr, SPI, proto, new family) is already
+-occupied, the operation returns ``-EEXIST`` before the migration begins.
++If the target SA tuple (new daddr, SPI, proto, new family, mark) is
++already occupied, the operation returns ``-EEXIST`` before the migration
++begins. "Occupied" includes wildcard shadowing: an existing SA with a
++broader mask (e.g. mark 0/0) claims every mark value, so it blocks
++migrating to any more specific mark at the same tuple, not just an
++exact mark/mask duplicate.
+ The old SA remains intact and the operation is safe to retry after
+ resolving the conflict.
  
 -- 
 2.53.0
