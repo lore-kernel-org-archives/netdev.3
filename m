@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793581044;
-	b=vZqYEJ9eUJyWaEiyiE0fL6j6hVbF1VxUAV8YKBI0/M3jK8tu8PC/5CDSNNB7tNjbGCPf
-	 hIM0Ns6zIQJK67ZtCpREJKxgEXx96Mif67PegTfca7EUrTdQRGnRc0t6e7lCi6xLRFZ7x
-	 c0f6cD1ZWFpTfz5FxTnt3yHzaVZDxk3ZBSRlAFn6cHn1Wi3gChfdopXwlX+y98Ev4ZlA1
-	 pm6yx9kJlLGlwlfyN4S3UpI8+2oQjd4cgmxwHU0NvIOQ4FBYDP9WP4f52nn007AhZ2Yn/
-	 8mFTGSYRkUbN9GSjjYMJX/+t9PC9Yi3Vq3pk0g5by1yfvcXdHegNNznXgPL2v2CltNA==
+	t=1793581050;
+	b=BrdFoUbeYR5104l6Qq0IN6iZF9UphZeqsQuIbbDpjiDCv/0n+9iH06+hQCQW4Sn9uYsg
+	 O4QYKcL9+34jgwQdhVfKuA0QV/DF3Y0ZwovUYB/N6fhg3t1J0kOJiNr2ToCIOhJCTPfrk
+	 PM/pR/pIoMnzhjPQUUw3vMT4saS10HWignF5RQzWUvY7Bhjb/AryIJvSIisFYHWFH7svP
+	 Ugk5FL+8Ucfjt7IfyKDGlFLahj5R7fNey3ArHCPw3nRRiG4BDPxxlWi+l3hWWG0PS+ILO
+	 wrCtwfYDdO7VwyMSMIppU9GDygXGauEiB4mQPg3P30++kcU84G+SE/JKsMHvceYa7qA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793581044;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793581050;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
-	bh=XClvt/H6YMd9+Exyu1R4Oy60MLFqQ2fw95DTYxl2feU=;
-	b=D64ZGiaODWK5DaYyM0ygW9nMGgtZ1AV+965+a5+5vaK1EXkZBfwjm5v5OQ5PSg6WySn1
-	 4peWdjWRm2mYomfcUI8QwKHt0NU0wb8ZRQvcijFPhC8ZLvFb+ae913JOGyB5eGD791GZy
-	 e3GWvFPXaDWW5+tiRRLEYi1sF+1GNpaZn4It2v4tlgMqeB9Ng8QN5+ryuYauPwOYOqg6z
-	 hPthg/2okk/dfK+a6oR86WJiv+JOXpDmcZGsmrHTG6UE9ijuq2qlepU2MqvUqyktbGT2c
-	 L/ijB1mMz5O7xCnQh7lwdg89baiepW0CXo8AXd5qic+ZYQucgKvfbJbffCAgtk2lTUQ==
+	bh=0GlfH3e3DvVlPjKTJC55ueYHxXbJqUklbkL29/+8PgM=;
+	b=Fc3j3hev2fAgRGKAeDi9Dxw0KmrPL5k3xHzimKJ/jHgansNSmHp/ccFPi9Za4xKYCxdk
+	 +jlHxH5AMs7HrgMI+BQXs9tORhZRHNEtLm/CvKAHG49rvWUxCyooiUGbgbVTogC6QPIug
+	 hKL9H/0RkwEQ6k04W0QpsB2drDjR+vVxoXAkB1BnP8n4659xOIn4N41Kvhb4xUgKz3lZy
+	 Kwqa2/pYe6CuFEJ7TrNRwwdZZCUW1YpYjjLTcF0g8rpB92gwVCJgC1tBiqlFcGXgNHwoD
+	 +PP5itfJpmTCDUvosVVMYE9+9LeTqbUl4aDkPi8jtSUN7ReC5v5wO2IdDFkxdfkR+Vg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=netfilter.org;
 	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=bY4IxbW+;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=gIyNkobO;
 	arc=none smtp.remote-ip=217.70.190.124
 Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807FD60A2613;
-	Mon,  2 Nov 2026 00:57:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 807FD60A2613
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EE5606A339;
+	Mon,  2 Nov 2026 00:57:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3EE5606A339
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=bY4IxbW+
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=gIyNkobO
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793581041;
-	bh=XClvt/H6YMd9+Exyu1R4Oy60MLFqQ2fw95DTYxl2feU=;
+	s=2025; t=1793581048;
+	bh=0GlfH3e3DvVlPjKTJC55ueYHxXbJqUklbkL29/+8PgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bY4IxbW+3eQJqmiZ0pMUPXI8fl0ARrX8V3vZLUygczqzIXSikYSIePZ1lRnCDh4cB
-	 5BqsI61zlCm5So30T3H+XFMedQRsuUi1w+6iWNmu/vfZcLbfwJPSkLqw7Le7pU8EBA
-	 h5Jgx2lcz4t7f3BED7xnAnvfgeACM1JszqL50/0huQUSVbd0mxd9vbfsxnY1lR3xqj
-	 Wi0WTZTudyO7X/YBuSr8bt53/wjDUML5JlEh7zhVX4edEduw8X0OwNHuwfQbBMJU7H
-	 C6TQXPTGmURlFbWhop3pTxKJFgqXObrSXkl7vukeSkmjLNN5OUJHEpul62nfahqbRc
-	 A9IXPKv8szg/A==
+	b=gIyNkobOIICACJN6p5DXRNXqaItQezgxjIoMuZ0Gr0bbBJ0GWoc+NN9mr2udxL0rT
+	 tkxsLNlGEZYgLFIDAO2X83Vz1yqWrUoJz/HPIkYpNI6YyaLW5vWtmlN8Zsz5qxq/qj
+	 cv61M/n3rEoUI8sib/6WkzDrZUS54Ol0UhwbO5hLl6dsKRyGg3BwvrMbT5Y76NkEhX
+	 BlpkbqK5Mfvg3tJZ80/zhuhIgrJLjpYrcTNDeFV3HOPMq7zdnv0UGBst+gUslMnjnd
+	 GCXrYK0eZBK45N7JXz3k1T2jEtDnPcuOImrteoC0DmnAN7F6F5zFBKrycyv9JTKBWy
+	 eQNIhYSFhH8+w==
 Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 43C806005D;
-	Mon,  2 Nov 2026 01:57:21 +0100 (CET)
+	by mail.netfilter.org (Postfix) with ESMTPSA id 7926D6007D;
+	Mon,  2 Nov 2026 01:57:27 +0100 (CET)
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 To: netfilter-devel@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -56,9 +56,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	fw@strlen.de,
 	ja@ssi.bg
-Subject: [PATCH net 11/15] netfilter: x_tables: check target name before accessing verdict
-Date: Mon,  2 Nov 2026 01:56:50 +0100
-Message-ID: <20261102005654.532438-12-pablo@netfilter.org>
+Subject: [PATCH net 15/15] netfilter: nat: zero newrange before filling it in
+Date: Mon,  2 Nov 2026 01:56:54 +0100
+Message-ID: <20261102005654.532438-16-pablo@netfilter.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261102005654.532438-1-pablo@netfilter.org>
 References: <20261102005654.532438-1-pablo@netfilter.org>
@@ -73,112 +73,87 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Florian Westphal <fw@strlen.de>
 
-Non-standard targets may contain only struct xt_entry_target.
-mark_source_chains() nevertheless reads the target as an
-xt_standard_target before checking its name, potentially reading four
-bytes beyond a header-only target.
+nf_nat_masquerade_ipv4(), nf_nat_masquerade_ipv6(), netmap_tg4() and
+netmap_tg6() each build a stack-local struct nf_nat_range2 from the
+caller-supplied range, inheriting range->flags unmodified. Two of them
+only memset() the min_addr/max_addr members, the other two don't
+memset() anything at all, so newrange.base_proto is left as stack
+garbage.
 
-Check that the target is standard before reading its verdict.
-Non-standard targets remain handled as fallthrough rules.
+If the inherited flags include NF_NAT_RANGE_PROTO_OFFSET,
+nf_nat_l4proto_unique_tuple() reads range->base_proto.all to compute
+the NAT port offset. Neither the NETMAP nor the MASQUERADE targets
+mask the flags field in their checkentry callback, so this
+uninitialized stack value can end up feeding the NAT port selection.
 
-See the following KASAN trace:
+The per-member memset()s are not enough: they have to enumerate every
+field that must be cleared, and base_proto was missed when
+NF_NAT_RANGE_PROTO_OFFSET/base_proto was added to the struct. memset()
+the whole struct instead, so every member is covered regardless of
+which ones get explicitly assigned afterwards.
 
-BUG: KASAN: slab-out-of-bounds in translate_table+0x1660/0x1a40 [ip6_tables]
-Read of size 4 at addr ffff88800ed56ff8 by task rep/432
+There are other places that miss this, but those hardcode .flags so
+nat core won't read from the uninitialized fields.
 
-Call Trace:
- kasan_report+0xfa/0x120
- translate_table+0x1660/0x1a40 [ip6_tables]
- do_ip6t_set_ctl+0x667/0xa76 [ip6_tables]
- nf_setsockopt+0x77/0xd0
- do_sock_setsockopt+0x118/0x490
- __sys_setsockopt+0xe4/0x160
- __x64_sys_setsockopt+0xbd/0x190
- do_syscall_64+0xde/0x4f0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+C99 initializers would be preferrable, but this is a more intrusive
+change.  Lets followup in nf-next and convert others as well.
 
-Allocated by task 432:
- kasan_save_stack+0x2f/0x50
- __kasan_kmalloc+0x7f/0x90
- __kvmalloc_node_noprof+0x1b1/0x5c0
- xt_alloc_table_info+0x3c/0xa0
- do_ip6t_set_ctl+0x5ee/0xa76 [ip6_tables]
- nf_setsockopt+0x77/0xd0
- do_sock_setsockopt+0x118/0x490
- __sys_setsockopt+0xe4/0x160
- __x64_sys_setsockopt+0xbd/0x190
- do_syscall_64+0xde/0x4f0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+This is an LLM finding.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: VEGA <vega@nebusec.ai>
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Fixes: 2eb0f624b709 ("netfilter: add NAT support for shifted portmap ranges")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
- net/ipv4/netfilter/arp_tables.c | 5 +++--
- net/ipv4/netfilter/ip_tables.c  | 5 +++--
- net/ipv6/netfilter/ip6_tables.c | 5 +++--
- 3 files changed, 9 insertions(+), 6 deletions(-)
+ net/netfilter/nf_nat_masquerade.c | 4 ++--
+ net/netfilter/xt_NETMAP.c         | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
-index cf747e1e17a3..7ff3d1f0ffd4 100644
---- a/net/ipv4/netfilter/arp_tables.c
-+++ b/net/ipv4/netfilter/arp_tables.c
-@@ -371,11 +371,12 @@ static int mark_source_chains(const struct xt_table_info *newinfo,
- 				e->counters.pcnt = pos;
- 				pos += size;
- 			} else {
--				int newpos = t->verdict;
-+				int newpos;
+diff --git a/net/netfilter/nf_nat_masquerade.c b/net/netfilter/nf_nat_masquerade.c
+index 4de6e0a51701..c2a85bd84af1 100644
+--- a/net/netfilter/nf_nat_masquerade.c
++++ b/net/netfilter/nf_nat_masquerade.c
+@@ -62,8 +62,7 @@ nf_nat_masquerade_ipv4(struct sk_buff *skb, unsigned int hooknum,
+ 		nat->masq_index = out->ifindex;
  
- 				if (strcmp(t->target.u.user.name,
- 					   XT_STANDARD_TARGET) == 0 &&
--				    newpos >= 0) {
-+				    t->verdict >= 0) {
-+					newpos = t->verdict;
- 					/* This a jump; chase it. */
- 					if (!xt_find_jump_offset(offsets, newpos,
- 								 newinfo->number))
-diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
-index 809441cedced..b302bd77180a 100644
---- a/net/ipv4/netfilter/ip_tables.c
-+++ b/net/ipv4/netfilter/ip_tables.c
-@@ -422,11 +422,12 @@ mark_source_chains(const struct xt_table_info *newinfo,
- 				e->counters.pcnt = pos;
- 				pos += size;
- 			} else {
--				int newpos = t->verdict;
-+				int newpos;
+ 	/* Transfer from original range. */
+-	memset(&newrange.min_addr, 0, sizeof(newrange.min_addr));
+-	memset(&newrange.max_addr, 0, sizeof(newrange.max_addr));
++	memset(&newrange, 0, sizeof(newrange));
+ 	newrange.flags       = range->flags | NF_NAT_RANGE_MAP_IPS;
+ 	newrange.min_addr.ip = newsrc;
+ 	newrange.max_addr.ip = newsrc;
+@@ -242,6 +241,7 @@ nf_nat_masquerade_ipv6(struct sk_buff *skb, const struct nf_nat_range2 *range,
+ 	if (nat)
+ 		nat->masq_index = out->ifindex;
  
- 				if (strcmp(t->target.u.user.name,
- 					   XT_STANDARD_TARGET) == 0 &&
--				    newpos >= 0) {
-+				    t->verdict >= 0) {
-+					newpos = t->verdict;
- 					/* This a jump; chase it. */
- 					if (!xt_find_jump_offset(offsets, newpos,
- 								 newinfo->number))
-diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
-index 313c4aac377a..010baaa60665 100644
---- a/net/ipv6/netfilter/ip6_tables.c
-+++ b/net/ipv6/netfilter/ip6_tables.c
-@@ -440,11 +440,12 @@ mark_source_chains(const struct xt_table_info *newinfo,
- 				e->counters.pcnt = pos;
- 				pos += size;
- 			} else {
--				int newpos = t->verdict;
-+				int newpos;
++	memset(&newrange, 0, sizeof(newrange));
+ 	newrange.flags		= range->flags | NF_NAT_RANGE_MAP_IPS;
+ 	newrange.min_addr.in6	= src;
+ 	newrange.max_addr.in6	= src;
+diff --git a/net/netfilter/xt_NETMAP.c b/net/netfilter/xt_NETMAP.c
+index 7da065a472e0..8bcb3f716d68 100644
+--- a/net/netfilter/xt_NETMAP.c
++++ b/net/netfilter/xt_NETMAP.c
+@@ -44,6 +44,7 @@ netmap_tg6(struct sk_buff *skb, const struct xt_action_param *par)
+ 				   netmask.ip6[i];
+ 	}
  
- 				if (strcmp(t->target.u.user.name,
- 					   XT_STANDARD_TARGET) == 0 &&
--				    newpos >= 0) {
-+				    t->verdict >= 0) {
-+					newpos = t->verdict;
- 					/* This a jump; chase it. */
- 					if (!xt_find_jump_offset(offsets, newpos,
- 								 newinfo->number))
++	memset(&newrange, 0, sizeof(newrange));
+ 	newrange.flags	= range->flags | NF_NAT_RANGE_MAP_IPS;
+ 	newrange.min_addr	= new_addr;
+ 	newrange.max_addr	= new_addr;
+@@ -91,8 +92,7 @@ netmap_tg4(struct sk_buff *skb, const struct xt_action_param *par)
+ 		new_ip = ip_hdr(skb)->saddr & ~netmask;
+ 	new_ip |= mr->range[0].min_ip & netmask;
+ 
+-	memset(&newrange.min_addr, 0, sizeof(newrange.min_addr));
+-	memset(&newrange.max_addr, 0, sizeof(newrange.max_addr));
++	memset(&newrange, 0, sizeof(newrange));
+ 	newrange.flags	     = mr->range[0].flags | NF_NAT_RANGE_MAP_IPS;
+ 	newrange.min_addr.ip = new_ip;
+ 	newrange.max_addr.ip = new_ip;
 -- 
 2.47.3
 
