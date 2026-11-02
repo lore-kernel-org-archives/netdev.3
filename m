@@ -1,66 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.11
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793623805;
-	b=sqeDPRO9b/RiM9HFuCevioo7uAoKVsIkT3prKXMrdkBFNpcWI0ZuWJNqPlMTfWdJp8/i
-	 D98hkU+FgC5kkCEu02TI4uf38knNbyoCpRcaQTOvxqNWCMKmAuh803m5p/oMPPDIzf/ZZ
-	 bX+EUIozv36j2iX50xxKF9ZVtPyxzfiQDlYSYVFcS19DdN7fmqaa05EObwtZ5U/3VzQIJ
-	 bpHREZ/jZOAKDdMgh2/rXDUnqrIefTl/qf1gVTmDjJY8r0UKKxtpsY6Scs3qDOff54O9d
-	 KDU0toxbhqTKJuyTznA9YjmNl5Z0a2ZcFD90ZyNjXJQdnI/ThFyUFrdB1IptJbRM42Q==
+	t=1793623807;
+	b=JNRAIT7atQFGlMDNPeIxJsAwGWujOZjk0m1MNAI78kxr/ryA7SoytRkPpMH2ksk3e5Uu
+	 QqgfbeG7GjI4TTt74hsAXYcCWeFEMCsi1wLIyLgbpsFpv/Cbbh5HO+j94ZHUt+UkWKItc
+	 J+zExOKhV0uRmDY5NXMaJ87PoZU68zH1IHcnahQDD2wpSzCM6fZmkgFIhFSgs2U72rW8j
+	 dOrPDnK5nMMJzHd+RtS4jbaXOGFfFHZshWTKLi3IVwrGS5wCGnCuldrBexCFzZEcVCUrZ
+	 ITaiWzdBRuqPQV3hu8VA0FLhEUJ9EifD1itjZQRROrsx24xAqGLD5nKeFlmcrtfViNg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793623805;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793623807;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
 	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=SRw/fWwP1x6toUWZnFv2rG12o/c967R/fKYAGDVCATY=;
-	b=gwqG/x9DegtIvdvNZYY2KcYQyPCM9rnJ1cFso7dmBgr+dbvzXG15SPYO/KBmgck8wyX0
-	 geNzYdChIXhl4JfWy5nU33cj4m7mb8tKWALVk1XOZcmyAZzf6JHePsWS0efgJ31oMbus3
-	 /cF8t0Tl0cSVP6OP7OitHhuWo8Jxj6MWZc+NtzALXHTcK8KY+v2Jghfr1b75cdRXyvvSn
-	 gO7dUeXqZ6xdGslDhsnd/iQpcIuuncReXuFIFgDzliAtKWw8uqJmGo7hYjgB64wEaEAuD
-	 Pm4Wt4kfpjZXuBFyMmFDdeC8SPtuUdNFl01jL/ISPtiDHqTmpB4egg8Pq6WVfFametg==
+	bh=TaLXpRiiAqQvussAdJ0W57PubYGFD/fOjHKHTXr2nsA=;
+	b=etUubaLjvTuPmsFf5ivurL3elhNyHd0Cx2+8kYTH76QYCld4oYCS+ywYGv6O+BHWS8fh
+	 i4Cbxnth6xL6uZJQmmTLs+lPnRZibdbCLKvPUSlwLkP79JAAcT2svoKnKYhpAi0sWa2n4
+	 pbUjmMCRkNmWts9Ww68+/5vfNgZSwCHeucG8DP7jEMcDE+A0SzJwp0ARkS78FpM4Ar/sT
+	 2SkKphX3W4/LqN3n3K+wV7sbHhmvbB2NLJErk8kwmXCU5gmTs6K6cfdzWby+LV8m1zzj4
+	 K0LNC1YMIJHNtzpoGsJtidvKoq6qNhkoqqiO8rbZA+Re8Tr4F983t7NUyNKOiMKS42g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="K/P1n+io";
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="K+I10/m4";
 	arc=none smtp.remote-ip=198.175.65.11
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FC9606A326
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 12:50:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73FC9606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF60606A332
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 12:50:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7BF60606A332
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=K/P1n+io
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=K+I10/m4
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793623804; x=1825159804;
+  t=1793623806; x=1825159806;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Ln+Z8zU+zsF8tte/cw1wXmgactMyqWnSIzwWLUK/EPE=;
-  b=K/P1n+iotBsMYsGDuWB16ts8OB6rylbFr6iNyXcr4qKwKU5WLe0/AsJI
-   BLHVYMup5iI2Q9NGyNVdoAyBonWWqt8gYAcWrMYYWqpiu47Ag4EadkzXQ
-   OmuJ5OToOkdk7WvVLNTooWhbnU2eiDu+MicNfkiof5XU3rEExxbEMdhD5
-   aM29JpDFhXQGWip0sny+4Ann1+f5iEQbDMJNpmtHRsUXv1qIooTRp1+HO
-   axMjVGAxnBTcFI/st9ECRsWjpdzoX+QUgY4JbvcBQP+WjkqavPt40je6O
-   j9DymLwuG2haDsYzn9DuEvE+kRhLi/izAa5Wuq+N0oBdjWb+/tDkc26vI
-   Q==;
-X-CSE-ConnectionGUID: X1oM4TrYTo6+Ir1DAIYKgA==
-X-CSE-MsgGUID: 857GWCtKRnG4mppbh3PcOA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11953"; a="2191824"
+  bh=iYTpDMA821YLH+wqX2htnyg78liIcEFPiYMMZcdASl0=;
+  b=K+I10/m4C8AC0IatdFNmjQC9wIjt+a83tuJTcOj1W6jkPWP2iMNoRrp1
+   17RkuVy3Pmx6Qog1fP1599l6hAMbgxKPzhVP3e7FTb0SMqHzh2GsCk5Im
+   6Z5JArkG+9SAJNyjlGSaqgxnOIIEppftKBX0uWMuPeb0m7kd0I9+H7Vzo
+   2m2cZTBSXzuIOaart31T28lyOLgF4Lv6YFSPHroF2OR9ngbipqr+OrugY
+   hkpY4/Gr3eVi7Tha7/uUklaczMZl5/KTjPLgt2afCfvwS0+SHSviTH8ua
+   OdIhU1WYefXXEJqbVvA3/8TTxVikr5mIDjUK2ztp6pdedxzcGzBx4YatM
+   w==;
+X-CSE-ConnectionGUID: YrKckiMrT+SSzlsLyMJdjA==
+X-CSE-MsgGUID: +fGuRV70SVa/vXg3OBXVBA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11953"; a="2191828"
 X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
-   d="scan'208";a="2191824"
+   d="scan'208";a="2191828"
 Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 04:50:04 -0800
-X-CSE-ConnectionGUID: g2QLcP87RZihG4aTe4jDtQ==
-X-CSE-MsgGUID: zprGQ2WYRk+Ct894WnQ60g==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 04:50:06 -0800
+X-CSE-ConnectionGUID: wMEIlxuIRdyDcz5x0LOiEA==
+X-CSE-MsgGUID: FtS0VQlcSUmNQob0vdsO1g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
-   d="scan'208";a="7928442"
+   d="scan'208";a="7928457"
 Received: from boxer.igk.intel.com ([10.102.20.173])
-  by fmviesa013.fm.intel.com with ESMTP; 02 Nov 2026 04:50:02 -0800
+  by fmviesa013.fm.intel.com with ESMTP; 02 Nov 2026 04:50:05 -0800
 From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 To: netdev@vger.kernel.org
 Cc: magnus.karlsson@intel.com,
@@ -72,9 +72,9 @@ Cc: magnus.karlsson@intel.com,
 	bjorn@kernel.org,
 	zuomao338@gmail.com,
 	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Subject: [PATCH net 1/9] xsk: fix list corruption in xsk_buff_add_frag()
-Date: Mon,  2 Nov 2026 13:49:42 +0100
-Message-Id: <20261102124950.958345-2-maciej.fijalkowski@intel.com>
+Subject: [PATCH net 2/9] i40e: xsk: fix xsk_buff_add_frag() error handling in Rx
+Date: Mon,  2 Nov 2026 13:49:43 +0100
+Message-Id: <20261102124950.958345-3-maciej.fijalkowski@intel.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20261102124950.958345-1-maciej.fijalkowski@intel.com>
 References: <20261102124950.958345-1-maciej.fijalkowski@intel.com>
@@ -89,68 +89,58 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In aligned mode, a fill ring address maps straight to its pool->heads[]
-entry. If user space posts the same address twice, a driver can pass
-xsk_buff_add_frag() a buffer that is the head of the frame or is
-already on pool->xskb_list or pool->free_list.
+When xsk_buff_add_frag() fails, i40e_clean_rx_irq_zc() frees the frame
+but stays on the current descriptor, so the next poll restarts from the
+freed head. If the frags array was full, the retry passes on a frame
+missing the freed frags, with its head already on the free list. If the
+buffer is a duplicate, every poll fails the same way and the queue
+stalls.
 
-Re-adding a linked node corrupts the list. With buffers A, B, C, B,
-xsk_rcv_zc() emits two descriptors instead of four and leaves the list
-head pointing at a self-linked B. When the Rx ring later has no room
-for a frame, the xsk_buff_free() cleanup follows B into pool->free_list
-and passes the list head to xp_free():
+Free the current buffer along with the frame and move on to the next
+descriptor, as ice does. The rest of the dropped frame is received as
+a new frame. xp_free() skips a duplicate already freed with the frame.
 
-  BUG: kernel NULL pointer dereference, address: 00000000000000c0
-  RIP: 0010:xp_free+0x1a/0x50
-  Call Trace:
-   xsk_rcv_zc+0xca/0x200
-
-The head is not on any list and needs a separate check. Adding it as
-its own frag lets bpf_xdp_adjust_tail() free the in-use head and wrap
-sinfo->nr_frags to 255.
-
-Reject such buffers before adding them to the frags array, as commit
-e37b2abca804 ("xsk: fix NULL pointer dereference in __xsk_rcv()") does
-in the copy path. Callers already drop the frame on failure.
-
-Unaligned mode is not affected, as each fill ring entry gets its own
-xskb from pool->free_heads[].
-
-Reproduced with a KUnit test feeding synthetic buffers to xsk_rcv_zc(),
-by Nagato Shiratana.
-
-Fixes: 24ea50127ecf ("xsk: support mbuf on ZC RX")
-Reported-by: Nagato Shiratana <zuomao338@gmail.com>
+Fixes: 1c9ba9c14658 ("i40e: xsk: add RX multi-buffer support")
 Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 ---
- include/net/xdp_sock_drv.h | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_xsk.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/include/net/xdp_sock_drv.h b/include/net/xdp_sock_drv.h
-index d94aeb506379..29965e369598 100644
---- a/include/net/xdp_sock_drv.h
-+++ b/include/net/xdp_sock_drv.h
-@@ -160,15 +160,18 @@ static inline void xsk_buff_free(struct xdp_buff *xdp)
- static inline bool xsk_buff_add_frag(struct xdp_buff *head,
- 				     struct xdp_buff *xdp)
- {
-+	struct xdp_buff_xsk *frag = container_of(xdp, struct xdp_buff_xsk, xdp);
- 	const void *data = xdp->data;
--	struct xdp_buff_xsk *frag;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_xsk.c b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+index 51a05ce4c7ce..e6ae4c7a5cb3 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+@@ -469,16 +469,24 @@ int i40e_clean_rx_irq_zc(struct i40e_ring *rx_ring, int budget)
+ 		xsk_buff_set_size(bi, size);
+ 		xsk_buff_dma_sync_for_cpu(bi);
+ 
+-		if (!first)
++		if (++next_to_process == count)
++			next_to_process = 0;
 +
-+	/* Duplicate fill ring entries map to the same xskb in aligned mode */
-+	if (unlikely(xdp == head || !list_empty(&frag->list_node)))
-+		return false;
++		if (!first) {
+ 			first = bi;
+-		else if (!xsk_buff_add_frag(first, bi)) {
++		} else if (!xsk_buff_add_frag(first, bi)) {
++			/* Drop what has been gathered so far. xp_free() skips
++			 * @bi if it duplicates a buffer that is already on a
++			 * pool list. Remaining buffers of this packet, if any,
++			 * will be processed as a new packet.
++			 */
+ 			xsk_buff_free(first);
+-			break;
++			xsk_buff_free(bi);
++			next_to_clean = next_to_process;
++			first = NULL;
++			continue;
+ 		}
  
- 	if (!__xdp_buff_add_frag(head, virt_to_netmem(data),
- 				 offset_in_page(data), xdp->data_end - data,
- 				 xdp->frame_sz, false))
- 		return false;
+-		if (++next_to_process == count)
+-			next_to_process = 0;
+-
+ 		if (i40e_is_non_eop(rx_ring, rx_desc))
+ 			continue;
  
--	frag = container_of(xdp, struct xdp_buff_xsk, xdp);
- 	list_add_tail(&frag->list_node, &frag->pool->xskb_list);
- 
- 	return true;
 -- 
 2.43.0
 
