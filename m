@@ -1,67 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793640066;
-	b=PkEbv00YJ5GYhfWCx2A8wGnmGIAor7YTx6RnyilDPdEDj4Hn4gJKQ4bSBb1bB+XRS05X
-	 xp2JSuMUoDrmg6W2h1jw7medfpLpeY37XT/UviGkNz5dFmnY4FiJWbdCdHgyuP9IoGpH/
-	 Vsp5gHSW9hWj8RoSLaBeC1Q6BlUKs3oSC8KTLw3P82FVGnStTPbNNU2U7SURlVtSMIHTE
-	 sNi9waz2vlQFn+WGQYyBJ101g2IWEEU5xoF0eQlcakIvRb7ZH08/s6xIrZm07SvQ22mox
-	 xRFkToglzRXwCv+S+Hc8e54smoaooD5FxqjCTqSxhGvAJkNZSIIjYkh92I/ZzOoasdA==
+	t=1793640613;
+	b=t/F2a19/oAlhu2MasC6iOnDWoqvXd3M9tiaIH4rbINMZ6rz386qxCsm/M6pB9i16Pv+Y
+	 zixGUDhRUp8hZ1aj+lxCN0VW3nIWyGitWIgFMoqDexL1ipC8oEZpdOnmbX4Qtx2zJBivO
+	 QbUDggskGocYN/3mqPyxMeW9+F7MvssHaLBHHg9Dt29faCtCqwRojKgzTdzCk8B0ebSsQ
+	 O/2TI/phqJeQjebhbNGMFpbKPhHWLsiXY5R6kJkreNd76n9YhZyqRPP49f/o1HDXBiA13
+	 WlKuHIqNwR1iwrzO/dRkz6Ymip0hC26aZeeF0okjoljY+InGAruO+30ya/FM/qSfZTA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793640066;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=/pFPFJHaHSGvC04TAAFnHJVXri/6byTcIoteC2lWvuc=;
-	b=fPFfC1JOnaXNtnlUQRUOq2wNtw7koExE3k6EuTb2uw9bsVWFXKpHAonQ4Hh6DrcRAZjg
-	 eTgbUHLXCQ6EgHPBru3AKK6aornjL25c9xFU0sJ2QEnQvCFZikrs00oBPURCYA2SjtVUy
-	 RteAY722mFybrSK2g5mCE7kQ3R7vmO59YpUakKsW2Ywz0cOO8MCKsK42dV34YUhPrwIRT
-	 6OQ/TalXFXhYAmK8MpBZNGrUK9uphBaFLrS5jhprQUD8NX5kJnrKB6LwNUvexiAbXQwuQ
-	 jpAjYYWaPlCPDnglX1B5PCLRjKKTeguKNT4qS8jteAI/WCWNdHYams9vkvzDyfjAUHQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793640613;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=6iS3CAxGQE93xDrvwr4yw98qv93SkzvwRHW7OrIP7aI=;
+	b=NYVPKgkve4yAI+lTfsDYYWXIjpuK43hYWX1wBttQ/Hz0bSK63xTgRELg2oRyKEV4CR/C
+	 r1jknKaDOdFmhYsIpw2wn5DzPCyE9CHjpoVVtI+KUPK6TbJ9ukM2Ma56Wqs98sQemtWBH
+	 mT7saE4ZiCpNhm6FrOwhYgOZY3NsI57G4xuNrAwT1JIFQUeriXGxRyl1M9IuSqZsw1sk9
+	 1abKrT78aKtu7ieNJ3QkgdUBRAtA7dosCBMH7iMDFiIwy1z9ZKZIWYA+AgW9ZfUQpVb2q
+	 a6Pbqh4xsK11GxKHlZKkqkVVGfkQjgtlvMR+PEVB56+gOHVX3suM9nfoXd7RP7gjf8g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hZ9+gCl8;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cVHqKo+c;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=O4pI9YlU;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFF760A34EB;
-	Mon,  2 Nov 2026 17:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686DA606A5AC
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 17:30:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 686DA606A5AC
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hZ9+gCl8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEEF1F00A16;
-	Mon,  2 Nov 2026 17:21:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793640065;
-	bh=/pFPFJHaHSGvC04TAAFnHJVXri/6byTcIoteC2lWvuc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=hZ9+gCl8bIhiQf8qfLRJRScAEGXiDYTUEipY2YRbT7ImrU8XyhnK29u9xyGGSvUmF
-	 fnt/19NEUP2In078KjMoqO8xgtJnPLqCU4Fp0CBqLxbvASrC4ZwJobP2CpBaQAeBX3
-	 Rd4av9fjy0MScmvzqmjdmZUkM7UEVrroZ9JaDXSmMRMEQVyzfGGz/8I3Rh+FIQPaQf
-	 AYTDFrl8XxdBZq9pBX2eIzwSm+zfuPv46U+ZH+4AXRkkZRRG5priEBGeFBJqVhK+4E
-	 J6vQyilc1UOnk4kjor/rkMifI+MD7zcSw+mAdavnLFvVwBCzwiiKI70n2ddOzOkpD8
-	 5q8GdUOx2o/2g==
-Subject: Re: [PATCH net 1/2] net: keep the TCP fixed-ID flags on the header
- they describe
-From: netdev-bot+sashiko@kernel.org
-To: julius@bairaktaris.de
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
- idosch@nvidia.com, richardbgobert@gmail.com, willemb@google.com,
- ecree.xilinx@gmail.com, daniel@iogearbox.net, john.fastabend@gmail.com,
- sdf@fomichev.me, martin.lau@linux.dev, ast@kernel.org, andrii@kernel.org,
- eddyz87@gmail.com, memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev,
- jolsa@kernel.org, emil@etsalapatis.com, ihor.solodrai@linux.dev,
- shuah@kernel.org, bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Mon, 02 Nov 2026 17:21:03 +0000
-Message-ID: <179364006336.3131.6485270170756612370@kernel.org>
-In-Reply-To: =?utf-8?q?=3Cf689def2f03965d7e4c48455c3926d7475044910=2E1792857?=
- =?utf-8?q?378=2Egit=2Ejulius=40bairaktaris=2Ede=3E?=
-References: =?utf-8?q?=3Cf689def2f03965d7e4c48455c3926d7475044910=2E17928573?=
- =?utf-8?q?78=2Egit=2Ejulius=40bairaktaris=2Ede=3E?=
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cVHqKo+c;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=O4pI9YlU
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793640611;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6iS3CAxGQE93xDrvwr4yw98qv93SkzvwRHW7OrIP7aI=;
+	b=cVHqKo+cR9hVdRp1gzTzOB/gO+4Bn1DxpQ+r2nfHdNNUg5zRVkKpD20/bc3WGMp0fvGXlG
+	knCu3vQkM2t5YKrQ+cYMcP9d5UYUz02NU4LTexEoVGZ8B4et0ohJ3ujfCrnc1iSS8jCBHK
+	UJilzCTU6vlv7xjzgyVpBGjgif7jB/s=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-325-DktwE9_CPyqar3fYHdPYWQ-1; Mon, 02 Nov 2026 12:30:10 -0500
+X-MC-Unique: DktwE9_CPyqar3fYHdPYWQ-1
+X-Mimecast-MFC-AGG-ID: DktwE9_CPyqar3fYHdPYWQ_1793640609
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48c7fe9736eso2880213f8f.0
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 09:30:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793640609; x=1794245409; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6iS3CAxGQE93xDrvwr4yw98qv93SkzvwRHW7OrIP7aI=;
+        b=O4pI9YlU92DDxrrSy6abElpco/qX3degbuogWx2SVyZyGnQ8Ljm8FwI4vtxoPyfDyC
+         rhCe1JAnalublysmvZ6emIRr4ywccBIFc/TvwrdeH/FMuISwOSIg5cHb6MSYJ7MzZu0y
+         yFsgAi16SjhXDtpLRy7vETL/sUyNwc/N2NMNodNJ1l9y/dGEvLTF4VA2p5XJdmE7+kzQ
+         kEebFLK9C9ODAhgFXrTA1Gqx4IU7k9Bj9P3/jQPyW7Kmze2YxH2EFHVfP2KGGOCElP4M
+         G9zeKnZ7EUvP59V4zJiHeV/v/BkOMR99FE1/Bjog31DElcdlOg1M5UQSgwPTzPtD52Vm
+         ZixA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793640609; x=1794245409;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6iS3CAxGQE93xDrvwr4yw98qv93SkzvwRHW7OrIP7aI=;
+        b=jkuDUUd7X5+gRbfaZ8njhmWvzauTFMvNfofPxP0aOp21WwXMKi7Ev2KhThwTPXz4pw
+         jTvlBmYIxM7ev26gjihDgZigEwVvoxAuMmsR66X8By3enaxu2BIYESy744a1eK67H8YE
+         rw9JlpT0k8XjQrvf+JtPVzxhjGDWXzblSAoRlPvkxDXLolms9K4afbhYLDwZDUVC6R2/
+         5DHfWh2JlIYZ1hZ4ehkcLq2OWgVs469TKV4T0v1wWQfxiwGbh7N/pxtpcAiBP/MBFlPR
+         eYSE2TgUydJ+tciIzHoNkyM7iXOys1D+BDaL2WsdqmNkOdMYQD6OBzr38uOXZohZh4IV
+         1zQA==
+X-Forwarded-Encrypted: i=1; AKwUvBy+l0jtYKzMNKpyF78JLdDwAcNFWUAf5LtKA4IQUF7XQe8HmIFBqpB1fozH1QOl/U0aoaP9Wzo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKw49Ad6urSo8A2vL7QsvDE27i8cb4h8h5Tinqk5sWEJWcpeNiR
+	W2wq7wfCUXpbMhLDH3uls2d+fxPbZSVzENjjRQR/2eMlpC4dswVH+Hl+pY1F3vQNMcCSrCxPmQG
+	/xv5oygyrsBu2WrDJ/vJPR8sBgB3TUFMiyyUrfns0yUaqe47Sv3NHUeC7BA==
+X-Gm-Gg: AYBFou3yRcNtUOPVdsPHdCifoQiUWp2hMgsxxngPgdpdQ05w1sRI1wCvuelBCps9CwE
+	oYcWpqBI02GR2AjPYwlwsGKSFXqS5dZ5BiycN40N9wt8JmsV8srEHhz0jSCBqt6mYQdmu/yqDLT
+	BFdZukSri1LA8JI3ZGoGcZZ02oeLNmAY25KjOOpbbJBx+ToJBZUWmPGekAOClM7JX60Ew/Ynw5s
+	X6X2lxKSoQOgxq87MWBFSP4D+3nqVPbP+RBDC9/qB4iFRHOiWSSxMH+4AuniOLzuWDCS//3Hs4w
+	dt9BFu1u6cOPoVPJs0PE3qmq26o/TIAaYHsXQLJLsXH1hzWTr91C5a1+8PDzKZHg5gp9Ecd8DlO
+	rXSm+3F7MIHwaIj3Lr7I4KNrhQ/Uu9tsvF7xfSLO5pA==
+X-Received: by 2002:a05:600c:c088:b0:4ac:da92:2bd4 with SMTP id 5b1f17b1804b1-4acda922e24mr165297285e9.1.1793640608987;
+        Mon, 02 Nov 2026 09:30:08 -0800 (PST)
+X-Received: by 2002:a05:600c:c088:b0:4ac:da92:2bd4 with SMTP id 5b1f17b1804b1-4acda922e24mr165296615e9.1.1793640608457;
+        Mon, 02 Nov 2026 09:30:08 -0800 (PST)
+Received: from redhat.com ([2a0d:6fc0:1506:fd00:9e19:9994:44b1:e6f2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b2a8d60ca0sm1461205e9.7.2026.11.02.09.30.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 09:30:07 -0800 (PST)
+Date: Mon, 2 Nov 2026 12:30:04 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Fang Xieyan <fangxy@xiaopeng.com>
+Cc: Jason Wang <jasowang@redhat.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	virtualization@lists.linux.dev, kvm@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Guanglei Zhu <zhugl3@xiaopeng.com>
+Subject: Re: [PATCH] vhost/vringh: reject zero-length indirect descriptor
+ tables
+Message-ID: <20261102122942-mutt-send-email-mst@kernel.org>
+References: <20261021070242.75009-1-fangxy@xiaopeng.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,438 +119,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261021070242.75009-1-fangxy@xiaopeng.com>
 
-Thank you for your contribution! Sashiko AI review found 6 potential
-issue(s) to consider.
+On Wed, Oct 21, 2026 at 03:02:42PM +0800, Fang Xieyan wrote:
+> move_to_indirect() accepts an indirect descriptor with a zero length,
+> setting desc_max to 0. __vringh_iov() then reads descs[0] before
+> checking the descriptor bounds, resulting in an out-of-bounds read.
+> 
+> Reject a zero-length indirect table in move_to_indirect() so the
+> caller returns -EINVAL before dereferencing the table. Also use the
+> converted length in the warning to report invalid lengths correctly
+> when the vring byte order differs from the CPU byte order.
+> 
+> Fixes: f87d0fbb5798 ("vringh: host-side implementation of virtio rings.")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Guanglei Zhu <zhugl3@xiaopeng.com>
+> Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
 
-Critical: 0 · High: 2 · Medium: 4 (1) · Low: 0 (1)
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Isn't this already addressed by
+Subject: [PATCH v2] vringh: reject empty / undersized indirect descriptor tables
+that you posted previously?
 
-- [High] Use-after-free read in ipv6_srh_rcv() (net/ipv6/exthdrs.c).
-- [High] One encapsulation site was missed: IPsec tunnel mode with device
-  ESP offload.
-- [Medium] The patch removes `SKB_GSO_CB(skb)->encap_level = 0;` from
-  __skb_udp_tunnel_segment() (and gre_gso_segment()).
-- [Medium] iptunnel_handle_offloads() (net/ipv4/ip_tunnel_core.c) moves
-  the fixed-ID flag only on the 0 -> 1 transition of skb->encapsulation…
-- [Medium] BPF L3-only decapsulation now loses fixed IDs on a round trip
-  that worked before.
-- [Medium] net: geneve_post_decap_hint() leaves fixed-ID flag on outer
-  header after decap
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but
-  handle_gso_encap() (net/core/lwt_bpf.c) matches `case IPPROTO_IP:` (0)…
-- [Low] This problem wasn't introduced by this patch, but
-  bpf_lwt_seg6_action() SEG6_LOCAL_ACTION_END_DT6 (net/core/filter.c)…
-
---
-
-net: keep the TCP fixed-ID flags on the header they describe
-
-This patch adds skb_gso_fixedid_encap() and skb_gso_fixedid_decap(). They
-move SKB_GSO_TCP_FIXEDID between the outer and inner bit when a GSO packet
-gains or loses an outer header, and the IP tunnel, BPF and segment routing
-encap/decap paths now call them. The patch also stops gre_gso_segment()
-and __skb_udp_tunnel_segment() from resetting SKB_GSO_CB(skb)->encap_level.
-
-> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-> index 6787fcf6ac3e4..00df57cbc05c2 100644
-> --- a/include/linux/skbuff.h
-> +++ b/include/linux/skbuff.h
-> @@ -5337,6 +5337,36 @@ static inline void skb_decrease_gso_size(struct skb_shared_info *shinfo,
->  	shinfo->gso_size -= decrement;
->  }
->  
-> +/**
-> + * skb_gso_fixedid_encap - move the TCP fixed-ID flag to the inner header
-> + * @shinfo: shared info of a GSO packet that becomes encapsulated
-> + *
-> + * The IPv4 header that SKB_GSO_TCP_FIXEDID describes becomes the inner one,
-> + * and the new outer header gets an incrementing ID.
-> + */
-> +static inline void skb_gso_fixedid_encap(struct skb_shared_info *shinfo)
-> +{
-> +	unsigned int fixedid = shinfo->gso_type & SKB_GSO_TCP_FIXEDID;
-> +
-> +	shinfo->gso_type &= ~(SKB_GSO_TCP_FIXEDID | SKB_GSO_TCP_FIXEDID_INNER);
-> +	shinfo->gso_type |= fixedid << 1;
-> +}
-
-[Severity: High]
-Does one more encapsulation site need this helper? IPsec tunnel mode with
-ESP device offload seems to make a GSO packet encapsulated without moving
-the flag.
-
-In xfrm_output(), when xfrm_dev_offload_ok() succeeds for a GSO skb
-without inner_protocol:
-
-net/xfrm/xfrm_output.c:xfrm_output() {
-    ...
-	skb->encapsulation = 1;
-
-	if (skb_is_gso(skb)) {
-		if (skb->inner_protocol && x->props.mode == XFRM_MODE_TUNNEL)
-			return xfrm_output_gso(net, sk, skb);
-
-		skb_shinfo(skb)->gso_type |= SKB_GSO_ESP;
-		goto out;
-	}
-    ...
-}
-
-xfrm4_tunnel_encap_add() then turns the original IPv4 header into the
-inner one and builds a new outer header:
-
-net/xfrm/xfrm_output.c:xfrm4_tunnel_encap_add() {
-    ...
-	top_iph->frag_off = (flags & XFRM_STATE_NOPMTUDISC) || small_ipv6 ?
-		0 : (XFRM_MODE_SKB_CB(skb)->frag_off & htons(IP_DF));
-    ...
-	ip_select_ident(dev_net(dst->dev), skb, NULL);
-    ...
-}
-
-Neither function calls skb_gso_fixedid_encap(), so SKB_GSO_TCP_FIXEDID
-still describes the old header. With software segmentation, the outer
-inet_gso_segment() pass runs with encap_level == 0 and reads:
-
-	fixedid = !!(skb_shinfo(skb)->gso_type & (SKB_GSO_TCP_FIXEDID << encap));
-
-Every segment would then get the same outer ID, possibly with DF clear.
-
-The inner pass goes through
-esp4_gso_segment()->xfrm4_tunnel_gso_segment()->skb_eth_gso_segment()
-with encap_level > 0. It finds FIXEDID_INNER clear, so the inner IDs
-increment.
-
-The commit message describes this same result for
-iptunnel_handle_offloads(). Should the xfrm tunnel output path also call
-skb_gso_fixedid_encap()?
-
-[ ... ]
-
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index 09c60a58c82ab..4f87a827b25be 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -3718,6 +3718,9 @@ static int bpf_skb_net_grow(struct sk_buff *skb, u32 off, u32 len_diff,
->  	if (skb_is_gso(skb)) {
->  		struct skb_shared_info *shinfo = skb_shinfo(skb);
->  
-> +		if (encap)
-> +			skb_gso_fixedid_encap(shinfo);
-> +
->  		/* Header must be checked, and gso_segs recomputed. */
->  		shinfo->gso_type |= gso_type;
->  		shinfo->gso_segs = 0;
-> @@ -3809,9 +3812,11 @@ static int bpf_skb_net_shrink(struct sk_buff *skb, u32 off, u32 len_diff,
->  						  SKB_GSO_GRE_CSUM |
->  						  SKB_GSO_IPXIP4 |
->  						  SKB_GSO_IPXIP6 |
-> -						  SKB_GSO_ESP)))
-> -				if (skb->encapsulation)
-> -					skb->encapsulation = 0;
-> +						  SKB_GSO_ESP)) &&
-> +			    skb->encapsulation) {
-> +				skb_gso_fixedid_decap(shinfo);
-> +				skb->encapsulation = 0;
-> +			}
->  		}
-
-[Severity: Medium]
-Can a BPF encap/decap round trip now lose fixed IDs?
-
-bpf_skb_net_grow() moves the flag to SKB_GSO_TCP_FIXEDID_INNER for any L3
-encap. That includes BPF_F_ADJ_ROOM_ENCAP_L3_IPV6 or _IPV4 with no L4
-flag.
-
-In bpf_skb_net_shrink(), the flag is only moved back inside:
-
-	if (flags & (BPF_F_ADJ_ROOM_DECAP_L4_MASK |
-		     BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK)) {
-
-bpf_skb_adjust_room() still accepts a shrink with only
-BPF_F_ADJ_ROOM_DECAP_L3_IPV4/IPV6 set, or with no decap flags at all.
-Programs written before the L4/IPXIP decap flags existed do this.
-
-After such a decap the bit stays in FIXEDID_INNER. The top-level
-inet_gso_segment() then sees SKB_GSO_TCP_FIXEDID clear, and the segments
-get incrementing IDs.
-
-Before this patch, grow left SKB_GSO_TCP_FIXEDID where it was, so the
-round trip kept fixed IDs. The commit message says the change avoids
-losing fixed IDs for "a packet encapsulated and decapsulated again without
-segmentation".
-
-Should the fixed-ID move in bpf_skb_net_shrink() also cover L3-only
-decaps?
-
-[Severity: Low]
-This isn't a bug introduced by this patch. The segment routing paths in
-exthdrs.c are converted to iptunnel_pull_offloads(), but the
-SEG6_LOCAL_ACTION_END_DT6 case in bpf_lwt_seg6_action() still
-decapsulates IPv6-in-IPv6 by hand:
-
-net/core/filter.c:bpf_lwt_seg6_action() {
-    ...
-		__skb_pull(skb, hdroff);
-		skb_postpull_rcsum(skb, skb_network_header(skb), hdroff);
-		skb_reset_network_header(skb);
-		skb_reset_transport_header(skb);
-		skb->encapsulation = 0;
-    ...
-}
-
-Tunnel GSO types such as SKB_GSO_IPXIP6 stay set on a packet that is no
-longer encapsulated. Both headers are IPv6, so the fixed-ID bits don't
-matter here.
-
-Could the leftover gso_type force software GSO on devices without
-GSO_IPXIP6? Would iptunnel_pull_offloads() fit here as well?
-
-> diff --git a/net/core/lwt_bpf.c b/net/core/lwt_bpf.c
-> index da49364ec63de..4d9faf2cc5de5 100644
-> --- a/net/core/lwt_bpf.c
-> +++ b/net/core/lwt_bpf.c
-> @@ -539,6 +539,7 @@ static int handle_gso_type(struct sk_buff *skb, unsigned int gso_type,
->  {
->  	struct skb_shared_info *shinfo = skb_shinfo(skb);
->  
-> +	skb_gso_fixedid_encap(shinfo);
->  	gso_type |= SKB_GSO_DODGY;
->  	shinfo->gso_type |= gso_type;
->  	skb_decrease_gso_size(shinfo, encap_len);
-
-[Severity: Medium]
-This is a pre-existing issue, not one introduced by this patch.
-handle_gso_encap() matches IPPROTO_IP (0) instead of IPPROTO_IPIP (4):
-
-net/core/lwt_bpf.c:handle_gso_encap() {
-    ...
-	case IPPROTO_IP:
-	case IPPROTO_IPV6:
-		if (ipv4)
-			return handle_gso_type(skb, SKB_GSO_IPXIP4, encap_len);
-    ...
-}
-
-Take a TCP GSO packet pushed by bpf_lwt_push_ip_encap() with an outer IPv4
-header whose protocol is IPPROTO_IPIP. Does it fall through to the default
-case and fail with -EPROTONOSUPPORT, even though the same header works for
-non-GSO packets?
-
-Should this be case IPPROTO_IPIP?
-
-[ ... ]
-
-> diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
-> index 6c2855adff289..59050229e3499 100644
-> --- a/net/ipv4/ip_tunnel_core.c
-> +++ b/net/ipv4/ip_tunnel_core.c
-> @@ -182,9 +182,10 @@ EXPORT_SYMBOL_GPL(iptunnel_metadata_reply);
->  int iptunnel_handle_offloads(struct sk_buff *skb,
->  			     int gso_type_mask)
->  {
-> +	bool encap = !skb->encapsulation;
->  	int err;
->  
-> -	if (likely(!skb->encapsulation)) {
-> +	if (likely(encap)) {
->  		skb_reset_inner_headers(skb);
->  		skb->encapsulation = 1;
+> ---
+>  drivers/vhost/vringh.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
+> index 9066f9f12ba1..ce4f5a02c8d2 100644
+> --- a/drivers/vhost/vringh.c
+> +++ b/drivers/vhost/vringh.c
+> @@ -197,8 +197,8 @@ static int move_to_indirect(const struct vringh *vrh,
 >  	}
-> @@ -193,6 +194,8 @@ int iptunnel_handle_offloads(struct sk_buff *skb,
->  		err = skb_header_unclone(skb, GFP_ATOMIC);
->  		if (unlikely(err))
->  			return err;
-> +		if (encap)
-> +			skb_gso_fixedid_encap(skb_shinfo(skb));
->  		skb_shinfo(skb)->gso_type |= gso_type_mask;
->  		return 0;
->  	}
-
-[Severity: Medium]
-What happens here when the GSO skb is already encapsulated?
-
-Forwarded GRE or IPIP traffic merged by gre_gro_complete() or
-ipip_gro_complete() arrives with skb->encapsulation = 1. Its
-SKB_GSO_TCP_FIXEDID describes its outer header.
-
-Suppose a router sends it into another IPv4 tunnel, for example through
-ipip_tunnel_xmit(). Then encap is false here and the flag stays where it
-is.
-
-The new outermost header is segmented by inet_gso_segment() with
-encap_level == 0, which reads the stale SKB_GSO_TCP_FIXEDID. Every segment
-then gets the single ID from ip_select_ident(), possibly with DF clear.
-
-That is the wire behaviour the commit message lists as fixed: "forwarded
-into a tunnel gets one outer ID for all segments, also with DF clear".
-
-Two bits can't describe three headers. Would clearing SKB_GSO_TCP_FIXEDID
-for the newly pushed outer header in the nested case avoid this? If not,
-could the commit message mention the limitation?
-
-> diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-> index cf07c3c6611a2..edcabe1115a60 100644
-> --- a/net/ipv4/udp_offload.c
-> +++ b/net/ipv4/udp_offload.c
-> @@ -205,7 +205,6 @@ static struct sk_buff *__skb_udp_tunnel_segment(struct sk_buff *skb,
 >  
->  	/* setup inner skb. */
->  	skb->encapsulation = 0;
-> -	SKB_GSO_CB(skb)->encap_level = 0;
->  	__skb_pull(skb, tnl_hlen);
->  	skb_reset_mac_header(skb);
->  	skb_set_network_header(skb, skb_inner_network_offset(skb));
-
-[Severity: Medium]
-Does keeping encap_level here undo the feature override for remote
-checksum offload?
-
-With SKB_GSO_TUNNEL_REMCSUM, __skb_udp_tunnel_segment() masks with
-hw_enc_features and then adds NETIF_F_HW_CSUM on purpose for the inner
-pass:
-
-	features &= skb->dev->hw_enc_features;
-	...
-	if (remcsum) {
-		features &= ~NETIF_F_CSUM_MASK;
-		if (!need_csum || offload_csum)
-			features |= NETIF_F_HW_CSUM;
-	}
-
-encap_level is no longer reset, so the inner inet_gso_segment() (and
-ipv6_gso_segment()) masks a second time:
-
-	encap = SKB_GSO_CB(skb)->encap_level > 0;
-	if (encap)
-		features &= skb->dev->hw_enc_features;
-
-The second mask removes NETIF_F_HW_CSUM whenever hw_enc_features lacks
-it. Examples are the register_netdevice() default and NICs that only
-advertise IP_CSUM or IPV6_CSUM.
-
-skb_segment() then runs with csum == false, which has three effects:
-
-- It skips the GSO_PARTIAL path.
-- It linearizes every segment with shared frags. If __skb_linearize()
-  fails, the whole GSO packet is dropped.
-- It computes a software checksum per segment. remcsum_offload keeps
-  CHECKSUM_PARTIAL, so tcp_gso_segment() throws that checksum away in
-  gso_reset_checksum().
-
-The commit message says "the inner pass then also masks the features with
-hw_enc_features, which the tunnel handlers have done already". Does that
-still hold in the remcsum case?
-
-> diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-> index 96c8402a27a54..126058772bc5a 100644
-> --- a/net/ipv6/exthdrs.c
-> +++ b/net/ipv6/exthdrs.c
-
-[ ... ]
-
-> @@ -406,7 +407,10 @@ static int ipv6_srh_rcv(struct sk_buff *skb, struct inet6_dev *idev)
->  
->  			skb_reset_network_header(skb);
->  			skb_reset_transport_header(skb);
-> -			skb->encapsulation = 0;
-> +			if (iptunnel_pull_offloads(skb)) {
-> +				kfree_skb(skb);
-> +				return -1;
-> +			}
->  			if (hdr->nexthdr == NEXTHDR_IPV4)
-                            ^^^^^^^^^^^^
-
-[Severity: High]
-Can hdr be stale at this point? It is set at the top of ipv6_srh_rcv():
-
-	hdr = (struct ipv6_sr_hdr *)skb_transport_header(skb);
-
-For a GSO skb, iptunnel_pull_offloads() calls skb_unclone(). If
-skb_cloned() is true, that reaches pskb_expand_head(), which allocates a
-new head, drops this skb's reference on the old one and switches
-skb->head:
-
-iptunnel_pull_offloads()
-  skb_unclone(skb, GFP_ATOMIC)
-    pskb_expand_head()
-      skb_release_data(skb, SKB_CONSUMED)
-      skb->head = data
-
-After that, hdr->nexthdr reads a buffer that only the other clone holder
-still references. For example, when a packet tap is active, an AF_PACKET
-socket on another CPU may already have freed it.
-
-The segments_left != 0 path in this function already reloads hdr after its
-own pskb_expand_head().
-
-Should hdr->nexthdr be saved before the iptunnel_pull_offloads() call, or
-hdr reloaded after it? ipv6_rpl_srh_rcv() doesn't use hdr after the new
-call, so it looks unaffected.
-
-[ ... ]
-
-> diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-> --- a/include/net/ip_tunnels.h
-> +++ b/include/net/ip_tunnels.h
-> @@ -665,6 +665,8 @@ static inline int iptunnel_pull_offloads(struct sk_buff *skb)
->  		err = skb_unclone(skb, GFP_ATOMIC);
->  		if (unlikely(err))
->  			return err;
-> +		if (skb->encapsulation)
-> +			skb_gso_fixedid_decap(skb_shinfo(skb));
->  		skb_shinfo(skb)->gso_type &= ~(NETIF_F_GSO_ENCAP_ALL >>
->  					       NETIF_F_GSO_SHIFT);
+>  	len = vringh32_to_cpu(vrh, desc->len);
+> -	if (unlikely(len % sizeof(struct vring_desc))) {
+> -		vringh_bad("Strange indirect len %u", desc->len);
+> +	if (unlikely(!len || len % sizeof(struct vring_desc))) {
+> +		vringh_bad("Strange indirect len %u", len);
+>  		return -EINVAL;
 >  	}
+>  
+> -- 
+> 2.50.1
 
-[Severity: Medium]
-Does the Geneve GRO hint path need a matching skb_gso_fixedid_encap()?
-
-geneve_udp_encap_recv() calls iptunnel_pull_header() and then
-geneve_post_decap_hint(). Take a GRO-merged packet that carries a GRO
-hint for a nested UDP tunnel. GRO completed the innermost TCP/IPv4
-header with encap_mark set, so that header's fixed-ID state sits in
-SKB_GSO_TCP_FIXEDID_INNER.
-
-With this patch, iptunnel_pull_offloads() sees skb->encapsulation set
-and calls skb_gso_fixedid_decap(), which moves the bit down to
-SKB_GSO_TCP_FIXEDID. geneve_post_decap_hint() then does two things:
-
-- It sets skb->encapsulation = 1 again.
-- It adds SKB_GSO_UDP_TUNNEL or SKB_GSO_UDP_TUNNEL_CSUM for the nested
-  tunnel.
-
-skb->inner_network_header still points at the innermost IPv4 header,
-and nothing moves the bit back to SKB_GSO_TCP_FIXEDID_INNER.
-
-When the packet is segmented, the top-level inet_gso_segment() pass
-runs with encap_level == 0 on the nested tunnel's outer IPv4 header.
-It reads SKB_GSO_TCP_FIXEDID, which really describes the innermost
-header. If that outer header has DF set, all segments get the same
-ID. If DF is clear, the fixed-ID check in inet_gso_segment() fails the
-segmentation and the packet is dropped.
-
-The inner pass then finds SKB_GSO_TCP_FIXEDID_INNER clear. The
-innermost IDs that GRO saw as fixed come out incrementing.
-
-If the nested tunnel is decapsulated later instead, the next
-iptunnel_pull_offloads() shifts the now clear
-SKB_GSO_TCP_FIXEDID_INNER down. The fixed-ID state of the innermost
-header is then lost.
-
-Should geneve_post_decap_hint() call skb_gso_fixedid_encap() where it
-restores skb->encapsulation? That would put the bit back on the
-innermost header and give the nested outer header incrementing IDs.
-Or would you rather keep iptunnel_pull_offloads() from moving the flag
-when a GRO hint is present?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1792857378.git.julius%40bairaktaris.de
