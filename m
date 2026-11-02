@@ -1,49 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793608174;
-	b=2U+kIUwToV83ZPffN7tlbm8b8W1jopdqxyXkWwuPrp0WNqu1h/8jaGoT6rj3tLM50sgA
-	 aDui79ULmg+idriB2Z3Gxm4r55A8ebA9S5IUYf9Nhl1ZjmvVy6seFvpzkZEgJn9qzExi1
-	 nwPcPCJ1LzNK1vKbe9NipJCTHoEhEo1l/g7mOEZLoxrUurgNWlWYZTlTCrrPsddSOBqMt
-	 +fZsV07TlG2BY4mFcq58/IMxeu5tLM0asG52rdOIDVhaTXO0IkWpBvb2Vx0r3pAmAD67V
-	 lBpeUvGnv3LZ4PstMolGHaCw+l16GSqeOHjg0vHeXrGGF2Kz0hyG83uXzJwVMBLV0VQ==
+	t=1793608206;
+	b=iGDkjnwjrib//dlUDOyYczkNt8bkvpUzRqQyYpa+sYbipvlrC2VqgI4qjnu0Xsk2gm6X
+	 bqQfTtWMK7GkHmDIq+D8otvYfhNfCBlftSzUz5ZIP3FX1MoCBQKvo+Ehd8IA+fH4sphxd
+	 3HS6hO5xfQ7Nkm+HN76lsJuSx8cgXO5b2Gq+iirUQMBExIGO18A8wqmRzHNGHQvZxCqzy
+	 pVTHsY43ApiEHrsPa9sjwsc1ymWyUa/EP8Fqjgkj45iAAmw3NrD9Ee/otuo2iC4Lz07cN
+	 wdyu59E8y64i6tDkSOJ2EzKFWeHxJUBYGpMQiha0f11blF1SRRiEhsPKrV55aPO3iQQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793608174;
-	h=DMARC-Filter:Received:DKIM-Signature:MIME-Version:Date:From:To:Cc:
-	 Subject:In-Reply-To:References:Message-ID:X-Sender:Content-Type:
-	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=SVPciQr1s9BDQkZqo0irUvEcCQ8iKbnU6l79MHO+xgQ=;
-	b=3VZFvRzaDHYUA3WdwAOFgnB4uJwt6yf2BEJtRp+GBLPcXpewsftDzlLp2SFF/3c0IgS9
-	 Pk00X5heOOJgMKcNVZv79Z3W7fbI+/zM0xfSDAeWbUo4wv+JZEvVhKQ25CI2j5HRgd38X
-	 riNn/ZRyxGvjjTQF0y0X+5rkyXrcdMSaGraVbPcupy/lelnK+Phnh1C2GU2JgnZYJLuop
-	 CDnFKwDemJ/WN/4ZRSDTL/RjQa5eGfK3J3ettSQ5/peWZvF+EsXUULs3C083R2su4yupw
-	 DSyNd7wF/IDDU6HL+e2zFlDEgwM3Jcs0jGEnYahpq4nmE1HVh9SQOfCb4WiBNX/u7zw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793608206;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=S4bdUGJ6Wq8ONmznrpPJdLbwjjINsUOdaR8Ihv8Nrkk=;
+	b=U1hGMTwUAJmN/xQdoIsN+LTMNTmVXKVLcsJd7x+4MwYsyUr/zK5SoNcjawvzsnhftShb
+	 bq75KDHmeDwrz+wlZqoyyCe3MObNM/0ufgCAoYdKaKttnKQvjv5SbCRuAlSJr62D3yvqu
+	 0y4923DoCgKDShC4LJLDeXX81Y/rim9e/oJM3zYsG8Z1rAnvVHl++jEhygXF76zhecxE1
+	 tEVn9AVtPD0jgSOvxmO9T+frDO9cfvJH9eC07tSRFppU0iRU+ygUrH4/CFz4a4Aml2ZsF
+	 WqskPpZpR2WYId2jjMnDGebLsd2RlKAcLpmvO9yYvo7VWP39aGl6yHZRuBXuKKTPhaA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=tipi-net.de;
-	spf=pass smtp.mailfrom=tipi-net.de;
-	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=hZ6CDGNv;
-	arc=none smtp.remote-ip=194.13.80.246
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f4N+X2HQ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99559606A324;
-	Mon,  2 Nov 2026 08:29:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 99559606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A74606A32F;
+	Mon,  2 Nov 2026 08:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=hZ6CDGNv
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 25664A1587;
-	Mon, 02 Nov 2026 09:29:18 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1793608163; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=SVPciQr1s9BDQkZqo0irUvEcCQ8iKbnU6l79MHO+xgQ=;
-	b=hZ6CDGNvoqmbNZETgMYos71ChglJxAY5D1UMWnFszUL9QlgIvEgwNXd2Fv3qIjv1OBaSoA
-	1hehzwuSyn0Ktu816SVRZmeF0tPvTV0Ra2OJO7KKuYSjQ/ILeONbIIvgrpvcsX/3e3AgcC
-	eZYOvT3CUa9vRaYKueSZrRbJplxNGPexFCAeOf0QfV9xAd2uKHUS/qHrKiQUf92s34ChUI
-	Ofaw9ff8zVFsn+b9KUxUrpBzq/T8hO6kVumu711LTbLtlEX0fW0xagDc2L7cpcJUe7WIkf
-	ygAKn7SkXoYQBj+dDBYxoSETGPoPKAdZycjEiSpajFA/54XP75s8d/05JJeydQ==
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=f4N+X2HQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3FB91F000C1;
+	Mon,  2 Nov 2026 08:30:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793608205;
+	bh=S4bdUGJ6Wq8ONmznrpPJdLbwjjINsUOdaR8Ihv8Nrkk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=f4N+X2HQ3smXcK8NPrzjcX1p5/ap3eN0zPjgQA96kZqBVk2V9aCcl84lbHhFe1KnH
+	 vALnCKpvbI73XU0Zg+5iqW8HjU6xcRyI3BykumxU+wmpCaLx/xwtWwLKBUXqXYNYuM
+	 7liUUIG8va8hgtn7kRuZ0+t36iCsuArz9SZt2C5iip0EFJE9FdaPtJR52m4r0JDH6C
+	 R8wvbBxQxhX1sLvoiS2d815fbrZg48FqgIH1Gg8ZSRWKy1+7+LjIIIjV9kW416jJ1C
+	 XMITvdqgwe/6JxYIx6G10M5YDF6m8d8uZq8d8k3KlVxNdHowIpPL7nG494EfeB8jxj
+	 ZGskUNJcffUcg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA296380821F;
+	Mon,  2 Nov 2026 08:30:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,80 +53,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Mon, 02 Nov 2026 09:29:18 +0100
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Magnus Leatti <magnusleatti@kernelriot.com>
-Cc: Yao Zi <me@ziyao.cc>, Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre
- Torgue <alexandre.torgue@foss.st.com>, "Russell King (Oracle)"
- <rmk+kernel@armlinux.org.uk>, Nazim Amirul
- <muhammad.nazim.amirul.nazle.asmade@altera.com>, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: stmmac: dwmac-motorcomm: mask the MISC interrupt
-In-Reply-To: <20261102080938.2955-1-magnusleatti@kernelriot.com>
-References: <20261102080938.2955-1-magnusleatti@kernelriot.com>
-Message-ID: <805aeb73d9e32b237bcb30c8fd44ffed@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] net: atl1c: drop oversized RX frames instead of
+ panicking
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179360820455.3860315.16760613731907588447.git-patchwork-notify@kernel.org>
+Date: Mon, 02 Nov 2026 08:30:04 +0000
+References: <20261027115151.17092-1-federico@rimpianto.com>
+In-Reply-To: <20261027115151.17092-1-federico@rimpianto.com>
+To: Federico Musto <federico@rimpianto.com>
+Cc: chris.snook@gmail.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
-Hi Magnus
+Hello:
 
-On 2.11.2026 09:09, Magnus Leatti wrote:
+This patch was applied to netdev/net.git (main)
+by Dave Miller <davem@davem-thinkpadp1gen8.ibmlond.csb>:
 
+On Tue, 27 Oct 2026 12:51:51 +0100 you wrote:
+> atl1c sizes its receive buffers from the netdev MTU plus a fixed set of L2
+> overheads, which comes to 1522 bytes at the default MTU.  A link partner
+> that sends a longer frame - in practice a MikroTik CCR2004-1G-2XS-PCIe,
+> whose RouterOS side defaults to l2mtu 1600 while the host stays at MTU 1500
+> - makes the length reported by the RX return descriptor exceed what the
+> hardware wrote, and skb_put() then either includes bytes that were never
+> received or trips skb_over_panic and takes the host down.
+> 
 > [...]
 
-> Russell, d3265c19b35d ("net: stmmac: xgmac2: disable RBUE in default RX
-> interrupt mask") describes a similar storm on xgmac2. Should dwmac4 do
-> the same? I have only tested the glue change.
+Here is the summary with links:
+  - [net,v2] net: atl1c: drop oversized RX frames instead of panicking
+    https://git.kernel.org/netdev/net/c/c4ba1716853d
 
-AFAIU RBU is the cause. Dropping it in dwmac4, as Russel did in  
-d3265c19b35d,
-would cover all multi-MSI users.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-> 
->  drivers/net/ethernet/stmicro/stmmac/dwmac-motorcomm.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-motorcomm.c 
-> b/drivers/net/ethernet/stmicro/stmmac/dwmac-motorcomm.c
-> index 124fcd55a..610d533b9 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-motorcomm.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-motorcomm.c
-> @@ -30,6 +30,7 @@
->  #define OOB_WOL_CTRL				0x1010
->  #define  OOB_WOL_CTRL_DIS			BIT(0)
->  #define MGMT_INT_CTRL0				0x1100
-> +#define  MGMT_INT_CTRL0_MASK_MISC		BIT(21)
 
-Where is this bit documented? The vendor driver?
-
->  #define INT_MODERATION				0x1108
->  #define  INT_MODERATION_RX			GENMASK(11, 0)
->  #define  INT_MODERATION_TX			GENMASK(27, 16)
-> @@ -172,7 +173,11 @@ static void motorcomm_reset(struct 
-> dwmac_motorcomm_priv *priv)
-> 
->  static void motorcomm_init(struct dwmac_motorcomm_priv *priv)
->  {
-> -	writel(0x0, priv->base + MGMT_INT_CTRL0);
-> +	/*
-> +	 * Nothing services the MISC source, and once raised it never
-> +	 * deasserts, so keep it masked.
-> +	 */
-> +	writel(MGMT_INT_CTRL0_MASK_MISC, priv->base + MGMT_INT_CTRL0);
-
-Doesn't this turn off the stmmac MAC irq on vector 5 completely? If so,
-please mention it in the comment.
-
-Also, does the MSI fallback still get RX/TX interrupts with MISC masked?
-
-> [...]
-
-Thanks,
-Nicolai
