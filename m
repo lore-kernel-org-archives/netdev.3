@@ -1,60 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.208
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793624416;
-	b=h16yq/Xw5k3EgH9J/V34eiZ5pLd1SAHeMR4K7Yy/G9032Vf2Rms2g640FFTSSS0mnLpl
-	 ewzC5LdsfNx1/SVIkbWvuH4XcdLKY/pO3bi7BFbulCrBUpJMkIkF7gUYcUAIzChYTxmrH
-	 P77504TwBceBh83daXe2M7rq1iMCa+zkEXx+uLMvWk1Rv7NmDGMmUGNY97BtvxHQTB8ji
-	 MjlGZeKpP1kVhMR1tSg/B/sBLQVNoc3lZgaI0jHipaV1MXRH5v1p3a2MoVh+ZXU4/9iPc
-	 JYwuUm/ZajrAeCsEAqo/hMLclis0j1ll+QM59u/XAUjCKtrbYhRw04xeBq9AJJbe/Mg==
+	t=1793624445;
+	b=sP8XE5BvR/b66bs7cevJs2K2ysIaHlRJfst8CAUQiimfdX21IcRpibCJ83iLe6cnEFDE
+	 lZvayU05SP3Y6I9wTcbXy7AJHSwScnVjhuWt4DoGzmUaq1dfDr/A9baqKtXUD16NZ5Cry
+	 bPFYyHt4Y3aElrkSvyK++bnzu1+OWqplsmgcf9YzogiSw6aV6qwC1Uho6L0OQ3Gijnabk
+	 2TQE48d2u+V2uirz+xDUc2cobhN50ersioVv0+eFlRDKdf2LPhkbJ62ySwbOifcIJwp86
+	 y4ZPwt24z8BehCc3PuXmF/Vijm1IcMNa7BMUdPWWBVUcXNI+SxboJUvtdu42BDDRd+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793624416;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=/z8A8FiI3Y74g57CyXo8FDKptY16TKYdsUYglXNCiV0=;
-	b=5OWrg2KdiYNBjz49UAw1oXexrCxlCSJdfeOkquXkUZR+iM+bJG9hYkdJU9LOLps/FmNQ
-	 OL0PGJvbBRdO3Opx6V17mkWr9z0CjXefj3IVvApTV+r7vJmm29XhVsOJNQpmHimM5zfLp
-	 sJYaJFbY1sNyAAPEZxKblEBoaulbQ/hKyDHhqYrzrkboGYYHs6kW0xcxCme3Djjpvodnq
-	 rEXXyX9ywna44zM7JtH/UfU38LaJzzsbAr/o4F3II2t+7ASAT2WDkwFRXn/OvBIEp7JX4
-	 j5Pb5gQVw1M/GlRgPNfGIHnQDxCUiT9fD2wRWOqUUTTw3TF4MEVnwQ+OJ4Nsr6d4h1g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793624445;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=21gt7xEfR2u3AUi1YN0gEZzmBDhKnP/sCxBQCob5mMg=;
+	b=Drf4J+i0x1/nCLdXKjucEIoZSlsz06AOMLpQsQhsbHkCXZex7YSgRno7u1oO4x4SU4E8
+	 W9pqHv9CZCOorVCDTmBZAYP2BbjwV4PYVGmq2Ew1k1fJnJP0//DH4hTeiprTb4O93Gm8N
+	 iUnX+Aq1wgbZ1jVXWilku1G8HWaeosFjRyrKqgkCuklFzBkmdfop7LdJFbPgFMIH4i90J
+	 2htDGEp5hFXsrsoE4dPaoXlq3DBPNiq1LQDWdzKaysNa62YqW4AM7DQ1fBENIFzCWCsxZ
+	 qfaR6UfOlmtcPDBLf0uqTONF2Yo/VbuSJG/p00MHdtqIcHfDNCiNQ8T7WipCn2YmVkQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CT0SSbgv;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AXMwqlWO;
+	arc=none smtp.remote-ip=91.218.175.208
+Received: from mta0.migadu.com (out-208.mta0.migadu.com [91.218.175.208])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5BB606A32E;
-	Mon,  2 Nov 2026 13:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E78606A326
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 13:00:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16E78606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CT0SSbgv
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA641F00A16;
-	Mon,  2 Nov 2026 13:00:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793624416;
-	bh=/z8A8FiI3Y74g57CyXo8FDKptY16TKYdsUYglXNCiV0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=CT0SSbgv0QAAS4I/bInaHUIlr3Q7JWQk5kjcUS7DFtAMyy+ZzdvEbsWpDxAp+wUjo
-	 GY+D94F9ewWkb5cSIVojMpKz66fUUZqbVs5VLzZ7gSz38FKAzLqSUeUnD+QJC5Z9/9
-	 S2dSaT4K7dIWpM1o32+ffPLsUAK8p7/2rxzIK/bsG6lrUuJg3piDMFPPfZm8jNoQ4+
-	 qQfAO4ZHJQRhKPd1QZiDJplL1hKDQ4v1IOQ9ZpeuZhplpc6q8wDVA/yWqUD9pwGhWQ
-	 BjcA8IuslP5RiPr0mZTYDQPRu75ZMXWdQM4bUjV8rqv6z2qA9H041+oOKA5+pFlLFr
-	 kyMn8Bru7CPTg==
-Subject: Re: [PATCH net v2 1/2] net: gro: do not undo remote checksum offload
- on merged packets
-From: netdev-bot+sashiko@kernel.org
-To: edumazet@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, willemb@google.com, steffen.klassert@secunet.com,
- tom@herbertland.com, cenzhang@linux.microsoft.com,
- AutonomousCodeSecurity@microsoft.com, stable@vger.kernel.org
-Date: Mon, 02 Nov 2026 13:00:14 +0000
-Message-ID: <179362441482.3131.6727826907455197680@kernel.org>
-In-Reply-To: <20261030125955.3107383-2-edumazet@kernel.org>
-References: <20261030125955.3107383-2-edumazet@kernel.org>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AXMwqlWO
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=jThf718hluzGgF+y7XM56/xWJWlb1Eyj+wKob1SacCw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793624442; v=1; x=1794229242;
+ b=AXMwqlWO5jrcsIs1sBO+mlrFosOYHkMf8qzVXdcHOUqSit4ODziPJGp9JhYxthwSQ3itw2n9
+ RYJjnqmkv9Iwt/Ow0C/VmsHh8xhokvcf9MiwT/ctviHxJMaT147C6NtscX05FYzfCqrms9ViHvk
+ IDDOV+1bev4+8a7Pvy/po2Dw=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 96670a589e3b8f7a;
+	Mon, 02 Nov 2026 13:00:30 +0000
+X-Mizu-Trace-ID: 96670a589e3b8f7a
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <3ee84772-9aa6-433e-bac7-40adc599f90d@linux.dev>
+Date: Mon, 2 Nov 2026 21:00:24 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,172 +58,120 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] tcp: ipv6: do not read ireq->pktopts from
+ tcp_v6_send_synack()
+To: Eric Dumazet <edumazet@kernel.org>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org, Anvik Loitongbam <permissiontogallop@gmail.com>,
+ Yingjie Wang <x-professor@outlook.com>
+References: <20261102075441.3771550-1-edumazet@kernel.org>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20261102075441.3771550-1-edumazet@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
 
-Critical: 0 (1) · High: 0 · Medium: 1 · Low: 0
+On 11/2/26 3:54 PM, Eric Dumazet wrote:
+> When IPV6_FL_F_REFLECT is set on a listener, or the
+> net.ipv6.flowlabel_reflect sysctl has FLOWLABEL_REFLECT_ESTABLISHED,
+> tcp_v6_send_synack() reflects the flowlabel of the SYN packet,
+> reading it from the skb stored in ireq->pktopts.
+>
+> Since commit 079096f103fa ("tcp/dccp: install syn_recv requests
+> into ehash table"), request sockets are processed without holding
+> the listener lock. A cpu can then process a retransmitted SYN for a
+> request socket, and send a SYNACK from tcp_check_req(), while another
+> cpu receives the ACK completing the 3WHS. tcp_v6_syn_recv_sock()
+> consumes ireq->pktopts when it wins the hashdance, and the first cpu
+> reads a freed skb:
+>
+>   BUG: KASAN: slab-use-after-free in tcp_v6_send_synack (include/linux/skbuff.h:3152 include/linux/ipv6.h:110 net/ipv6/tcp_ipv6.c:582)
+>   Read of size 8 at addr ffff88802b08b608 by task poc-ipv6-pktopt/5076
+>
+>   Call Trace:
+>    <IRQ>
+>    tcp_v6_send_synack (include/linux/skbuff.h:3152 include/linux/ipv6.h:110 net/ipv6/tcp_ipv6.c:582)
+>    tcp_rtx_synack (net/ipv4/tcp_output.c:4719)
+>    tcp_check_req (net/ipv4/tcp_minisocks.c:762)
+>    tcp_v6_rcv (net/ipv6/tcp_ipv6.c:1826)
+>    ip6_protocol_deliver_rcu (net/ipv6/ip6_input.c:479)
+>    ip6_input_finish (net/ipv6/ip6_input.c:534)
+>    ip6_input (include/linux/netfilter.h:325 include/linux/netfilter.h:319 net/ipv6/ip6_input.c:545)
+>    ipv6_rcv (include/net/dst.h:481 net/ipv6/ip6_input.c:119 include/linux/netfilter.h:325 include/linux/netfilter.h:319 net/ipv6/ip6_input.c:351)
+>
+>   Freed by task 5074 on cpu 0 at 15.412249s:
+>    kmem_cache_free (include/linux/kasan.h:235 mm/slub.c:2780 mm/slub.c:6630 mm/slub.c:6757)
+>    tcp_v6_syn_recv_sock (net/ipv6/tcp_ipv6.c:1528)
+>    tcp_check_req (net/ipv4/tcp_minisocks.c:934)
+>    tcp_v6_rcv (net/ipv6/tcp_ipv6.c:1826)
+>    ip6_protocol_deliver_rcu (net/ipv6/ip6_input.c:479)
+>    ip6_input_finish (net/ipv6/ip6_input.c:534)
+>
+> Request socket migration has the same issue: reqsk_migrate_reset()
+> transfers ireq->pktopts to the clone, which can be freed while
+> another cpu holding a reference on the old request socket is still
+> sending a SYNACK.
+>
+> The SYNACK timer itself is not an issue, because
+> inet_csk_reqsk_queue_drop() calls timer_delete_sync().
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
 
-- [Medium] The commit message says that skipping
-  skb_gro_remcsum_cleanup() for merged skbs is correct, and that…
+Unlike v4, I don't think this part hold here:
+tcp_v6_syn_recv_sock() consumes pktopts before inet_csk_complete_hashdance() calls timer_delete_sync()
 
-Pre-existing issues:
-- [Critical] At this commit, skb_gro_remcsum_cleanup() can still write
-  through a stale NAPI_GRO_CB(skb)->frag0 when a fraglist handler has…
 
---
+> Save the flowlabel of the SYN in the request socket instead, so that
+> tcp_v6_send_synack() no longer needs ireq->pktopts.
+>
+> As a side effect, the flowlabel is also reflected for SYN packets
+> reusing a TIME_WAIT socket, as ireq->pktopts is not set in this case.
+>
+> Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
+> Fixes: 079096f103fa ("tcp/dccp: install syn_recv requests into ehash table")
+> Fixes: c905dee62232 ("tcp: Migrate TCP_NEW_SYN_RECV requests at retransmitting SYN+ACKs.")
+> Reported-by: Anvik Loitongbam <permissiontogallop@gmail.com>
+> Reported-by: Yingjie Wang <x-professor@outlook.com>
+> Closes: https://lore.kernel.org/netdev/82c31e4d5043f3dbd11b44177cfba779d335aae3.1793599929.git.x-professor@outlook.com/
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
 
-net: gro: do not undo remote checksum offload on merged packets
 
-With this patch, skb_gro_remcsum_cleanup() returns early when
-NAPI_GRO_CB(skb)->same_flow is set. A merged skb therefore no longer has
-its remote checksum offload adjustment undone. Once an skb has been
-merged, grc->offset does not point at the original header any more. The
-2-byte write could then land in payload or, with fraglist GRO, in a page
-the skb no longer references.
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-> diff --git a/include/net/gro.h b/include/net/gro.h
-> index 2300b6da05b27..00b49b6b9e74f 100644
-> --- a/include/net/gro.h
-> +++ b/include/net/gro.h
-> @@ -351,7 +351,13 @@ static inline void skb_gro_remcsum_cleanup(struct sk_buff *skb,
->  	void *ptr;
->  	size_t plen = grc->offset + sizeof(u16);
->  
-> -	if (!grc->delta)
-> +	/* Once merged, grc->offset can not be trusted: the frags or head
-> +	 * of this skb now belong to the GRO packet, or skb->data was pulled
-> +	 * past the headers before adding it to a frag_list.
-> +	 * Fraglist members keep their adjusted inner checksum, which is the
-> +	 * value skb_remcsum_process() would have written.
-> +	 */
-> +	if (!grc->delta || NAPI_GRO_CB(skb)->same_flow)
->  		return;
 
-[Severity: Medium]
-The new comment says fraglist members keep "the value
-skb_remcsum_process() would have written". The commit message says
-the same thing:
+> ---
+> Initially reported to security@ mailing list by Anvik Loitongbam, with a patch.
+> Anvik Loitongbam provided a reproducer.
+> I was able to trigger the ASAN warning before the patch, and checked
+> the warning can no longer trigger.
+>
+> Yingjie Wang also sent a public patch later, very similar to Anvik's one.
 
-  grc->delta is only set with VXLAN_F_REMCSUM_NOPARTIAL, where
-  skb_remcsum_process() writes the same adjusted checksum in the non
-  GRO path. Keeping it is the intended result.
+I was just looking at that patch...
 
-Is that still true when skb_segment_list() segments the fraglist train
-before any remote checksum processing runs?
 
-Two paths seem to do this.
+I think that misses the syncookie path:
 
-The first is a transit VXLAN or GUE train that was aggregated because a
-wildcard-bound local tunnel socket matched in udp4_gro_lookup_skb(), and
-is then forwarded. 26c4f7da3e41, the commit named in Fixes:, was written
-for this case: GRO must not change a packet that may be forwarded.
+tcp_v6_do_rcv
+    // skb is final ack
+    cookie_v6_check
+       // inc ref
+       refcount_inc(&skb->users);
+       ireq->pktopts = skb;
+       tcp_get_cookie_sock
+         tcp_v6_syn_recv_sock    <== consume_skb() removed, and ireq->pktopts still point to the ACK
 
-The second is GUE local delivery. fou sockets never call
-udp_allow_gso(), so udp_unexpected_gso() returns true for fraglist
-packets:
 
-include/linux/udp.h:udp_unexpected_gso() {
-    ...
-	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST &&
-	    !udp_test_bit(ACCEPT_FRAGLIST, sk))
-		return true;
-    ...
-}
+Then the same ACK is delivered to the child
+tcp_v6_do_rcv
+   tcp_v6_cookie_check
+   tcp_child_process
+     tcp_data_queue
+        __kfree_skb(skb)       <== frees it regardless of skb->users
 
-As a result, udp_queue_rcv_skb() segments the train before
-gue_udp_recv() runs.
+req->pktopts is now dangling, and tcp_v6_reqsk_destructor() will
+consume_skb() it later at accept() time.
 
-In both cases, skb_segment_list() copies the head's outer and tunnel
-headers onto every member, including the RCO flag and start/offset.
-__copy_skb_header() also copies the head's remcsum_offload bit, which
-skb_gro_flush_final_remcsum() has cleared. That means the check below no
-longer stops the adjustment from running a second time:
 
-net/ipv4/fou_core.c:gue_remcsum() {
-    ...
-	if (skb->remcsum_offload)
-		return guehdr;
-    ...
-}
-
-vxlan_remcsum() on a remote VTEP has the same check. If remcsum_adjust()
-runs on a field that already holds the final checksum, won't it produce
-the pseudo-header sum instead? Every member except the head would then
-carry a bad inner checksum. This requires rx-gro-list enabled on the
-ingress device and a NOPARTIAL remote checksum offload flow.
-
-This patch did not introduce the wrong member checksum. The old cleanup
-never restored the members either; it wrote into the payload or a stale
-frag0 page instead.
-
-Could the comment and the commit message qualify the claim that keeping
-the adjusted value is correct? The member headers still appear to be in
-the linear headroom after skb_pull(), so they could be restored.
-
-Also, GUE sets grc->delta as well:
-
-net/ipv4/fou_core.c:gue_gro_receive() {
-    ...
-			guehdr = gue_gro_remcsum(skb, off, guehdr,
-						 data + doffset, hdrlen, &grc,
-						 !!(fou->flags &
-						    FOU_F_REMCSUM_NOPARTIAL));
-    ...
-}
-
-So is "only set with VXLAN_F_REMCSUM_NOPARTIAL" accurate, or should it
-mention FOU_F_REMCSUM_NOPARTIAL too?
-
->  
->  	ptr = skb_gro_header(skb, plen, grc->offset);
-
-[Severity: Critical]
-This is a pre-existing issue and was not introduced by this patch. At
-this commit, the non-merged case can still write through a stale frag0.
-In udp_gro_receive_segment():
-
-net/ipv4/udp_offload.c:udp_gro_receive_segment() {
-    ...
-	if (NAPI_GRO_CB(skb)->is_flist) {
-		if (!pskb_may_pull(skb, skb_gro_offset(skb))) {
-			NAPI_GRO_CB(skb)->flush = 1;
-			return NULL;
-		}
-		if ((skb->ip_summed != p->ip_summed) ||
-		    (skb->csum_level != p->csum_level)) {
-			NAPI_GRO_CB(skb)->flush = 1;
-			return NULL;
-		}
-    ...
-}
-
-pskb_may_pull() can release a header-only frags[0] through
-__pskb_pull_tail()->skb_frag_unref() without updating frag0 or
-frag0_len.
-
-The function can then return NULL on the ip_summed/csum_level mismatch,
-or skb_gro_receive_list() can fail after its own pull. In either case
-same_flow stays 0, so the new check does not apply.
-
-With the stale frag0_len, skb_gro_header() takes the fast path. Can
-remcsum_unadjust() then do a 2-byte read-modify-write into a page the
-skb no longer holds a reference on? With page_pool, that page may
-already have been recycled into another RX buffer.
-
-The commit message says this case is handled in the following patch.
-"net: gro: invalidate frag0 after a pull" appears to add
-skb_gro_frag0_invalidate() in three places: before the pskb_may_pull()
-calls in udp_gro_receive_segment() and skb_gro_receive_list(), and in
-skb_gro_header_slow(). Once that patch is applied, cleanup on a
-non-merged skb takes the slow path and writes at
-skb->data + grc->offset.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261030125955.3107383-1-edumazet%40kernel.org
