@@ -1,58 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793660966;
-	b=VOJ7WtTej0sRT3uTzNxME0KzP/4axNrYFl6AzpCedwhqfNtYQ4zTgniAq8cQlvsb6EiV
-	 EyU0JcznK7SWM25TrS9PfVuNkS6URHuqIPXqTlG5nSaKj2JPD4bndmYuX468BIcH6AjuF
-	 X9BULOF39nnLUE1w0GdauDcikf3qsutGc3r7VXSxEYrKgAKCq5/FnyvpOBfyGsKe9u5SL
-	 KOAcLSaj3hSpOco7Mz7x/rjpzKiVed2F/v8Ki+dvBhqpWlsfTna0CxH/5TNH4eEvdY2y/
-	 Kk3D7SVtFkLNzIfLGOqYtrHqsVykSX3XRpbeeOrESo8KTMYOHQRcGU9YOcpHN/e/CMg==
+	t=1793661174;
+	b=PYUQMUEdYvK3vobTUSqMFBvSPigMDOM+4OmC70ATsnYx57vRIH0nsToABLymtYirvoCS
+	 /wY+iqiFt6tZjfVs7k4S0c2OJWCq5VhzGVT/24/sXNNP//7e/w9qWOrnmSLPxNL85RL1s
+	 9iW0eGunqL7U2YR096BGxFhiovwllkwFRDTkEIyNWor/mK/afa1KV+vwNdmoi8z24GJOF
+	 YvPzqm+CAZTj0Ew1yJDyxuBy+sGvFomHtxiIwu8YKctutgUJTRjUFopEEGo8AvdWWkGgb
+	 Cc9Urv1WEgfl7SMnCa+ADE40pi1znyg1CwQgeBCYtsRvX61wMor8hbWl1aIsyB8RweQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793660966;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=RfIi8e/km/yTMqBDj5BNJrvMDAONuazl+6BSjcWIbRI=;
-	b=kwu2VFBy0askTt4Cufw+Gg7zaPqoQgUqCDYgCRd6iF8TpywYU25Vta8Xfv0DZgv4xR4f
-	 UFfhHetsxxDOC8J910KnOWN9PjvAs/34al52nb5rBxOORbaChQri0+E9hyIhZIOLPvJGD
-	 aDOaghekPl+pmrZO9MlnmQfT8AeglGyP4Z2zF9ZDBJX3xaNVCnnL2rFVr6cKcVWm1GKj1
-	 dDmcLpGe2+SW7lKVtAo1H5ei+KkslzqNflMyEAAwZEkakx11mWvWU2NIrV/1nqL/lKGxD
-	 R3kDA8APmH61RuODFFU3axR88HIvFastuZR+3fVhdNCKgxK0sOhaEaG2VJB5gkZ4ycQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793661174;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Date:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
+	 References:In-Reply-To:To:Cc:X-Mailer;
+	bh=GPdhfWAD7Ide4EFf7M4rZk0kSAs4c2Xf02rJ8beDsak=;
+	b=owxKr4x8kKvcO+EpuDgZqI4sLzXQBXO77nBoNdxfFpKH3yvZByT0Grqk26gB0IIxMeOZ
+	 cmNEAROfpplPZK5OkmUVfh/5Hqipfd1d8PFxVaj/ik23emOmeOfRuBwPE+e7H+nUkFN/Z
+	 9iiXV7PMDgsOIodW6rdB3Zh6wWHVuVjUZIy19BnBYJ90PziINxAHvQYWPo7Xp3+g4M2II
+	 F2w7WEFQ8EAPq1B0Xo8YE9dpRlNrIZgZDUy1rBORBGtUBmrTujx8NJiPQldqwbNkCbGcc
+	 2O/wrHcYoVsgJebGIc8MZWzefdaLFeVULS7e7BsbxwaI6+IucgiCKZExkpIEWiiL9OA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GtNk3ZMJ;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=amutable.com;
+	spf=pass smtp.mailfrom=amutable.com;
+	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=j+0PQ1n1;
+	arc=none smtp.remote-ip=74.125.224.48
+Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52AB1606A324;
-	Mon,  2 Nov 2026 23:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3B1606A336
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 23:12:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D3B1606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amutable.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amutable.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GtNk3ZMJ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9D31F00A17;
-	Mon,  2 Nov 2026 23:09:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793660966;
-	bh=RfIi8e/km/yTMqBDj5BNJrvMDAONuazl+6BSjcWIbRI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=GtNk3ZMJOF9f7TWz3ZWYjuU12IriyRO0lKLjVq+cRwhGjTk0TLKG4XDs4nZRPPTEY
-	 BV5rV43ArkF4rFvpQl7z4RYsdiWAZQhivmz+2uyeB0QCZXCYLE+H8MDvMBUYdjbjCW
-	 ERoPFs4hOlVks3qbIR98ULsCqyhFsW/95cTytVTktghwOz8oNTxl+KRN9oEWOEoPnl
-	 kFHkNMXwujVZfrsSHhhoPxMnrUGPHEebIfXJPlo1d+wQ7JOK9dir07isJ15NVDkFgO
-	 pnH22AtizzXySuTRAt8LEP95DDppfGnbfAC0nlk8R5IQPrIYwoqtLqegQvCqUcmlGT
-	 2Fk+puIWDrvNA==
-Subject: Re: [PATCH net] xfrm: fix IPv6 first-fragment protocol decode
-From: netdev-bot+sashiko@kernel.org
-To: Jeremy.Jean@oss.cyber.gouv.fr
-Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
- davem@davemloft.net, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, kuba@kernel.org
-Date: Mon, 02 Nov 2026 23:09:25 +0000
-Message-ID: <179366096529.3131.16773351906482343613@kernel.org>
-In-Reply-To: <20261101230745.2043474-2-Jeremy.Jean@oss.cyber.gouv.fr>
-References: <20261101230745.2043474-2-Jeremy.Jean@oss.cyber.gouv.fr>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=j+0PQ1n1
+Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-6767d92cde6so3278478d50.0
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 15:12:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amutable-com.20260707.gappssmtp.com; s=20260707; t=1793661173; x=1794265973; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GPdhfWAD7Ide4EFf7M4rZk0kSAs4c2Xf02rJ8beDsak=;
+        b=j+0PQ1n1kmFQTc+BosPd73pckERKHrhtxYJjj3ZP/1bLRCNZ6qm9O3IOkbwOJ+gmvN
+         c52YIdN61lhz4DzALcQ/xcR8osNMhdFshJIPCtg3QTu/bu2nskQAvDUhO8XdJBMZxyqt
+         uQGQngkXYHf+JHkgrr/JqiX9kYl84+l8GcS/7wWP1t+ev0zlzbVtnfQqpbu4W5LlX4Ef
+         aMxBI2/aWDJIzP04YG0L9UmvGpUJnm3VOd4TRkgdGv+RNzDAJhPJ6j7P23y1Za3eNHOR
+         zk7qXQ+C8La7nDIjKyFS4gUx1Bq/+huALi44jhbM77ykSsm0XFaysNwKa+WbHmjql3lq
+         bxJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793661173; x=1794265973;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GPdhfWAD7Ide4EFf7M4rZk0kSAs4c2Xf02rJ8beDsak=;
+        b=bp6+3/9zaa2cCgVpzpsVOgsjJhjfYJSLgDny0ztZ1MiXgAF9Oi8hxc3gT2NkPhB+K/
+         hz7fTE0LkRNTSAzisg3bzQwqfo96bMDJHdBCUKI8qFsO5g7ax6GUOyVDgWkpS7EqDG6G
+         t29pTntxX0ke89biplsJorsd87PqZSf9sWZLoOyIi4YVDnGRk81L4naFeMxfio2fYUwX
+         jkKRKSR0uctB2hfczgRW4OftuusKqT2JZJXLficHjxHsMM/Yqx+ZA7lLLjmUJFB0VIV6
+         wOSPbcpiQz/BHbHOrrewRUsAJwOcW4591HZGVBBK2NSflKYtnObmH6pjK1ngZqOSsZu7
+         s1hg==
+X-Gm-Message-State: APuU4Z85Apl9G+cmg1znyBNfZpLJ3nlusQeSuszq2KJrsYPalPEZaG7Y
+	t2DXQGDihU2OAwusvC50Of0WYV0i3HM8DRDDkpcP/cfCVyWySaYTsWJ96HC9hRHsvlya
+X-Gm-Gg: AYBFou3fR93r0J094izAytvlGx8Fo7DhiNKDvwzFHm28aQraa6o3JyY8M4wHscfmFpb
+	GU4V3TVnobo6v4Dvz4QFLyFWOnHZ+eQv61bG1aGwO3+f+l9eXkCITYLnRgHtyCwgQ0O6rnrop11
+	dDDQ1HQosqIpMr7DuVZhrNfW+HDCgEkp/grJpO+cIoN+fw6K9p+ENdqqIRZY+dadtti69baW2y/
+	7+V2rBckL3dfDOs0cfy20qVD4XGdB78BehBQwaLIc+MVImUoj91oDhsQyl08SetmufuIMBoobFq
+	CWVBMaIYxaFXILYIov/PBLBCQkoQNY4PPMnTBhcqk1orC1sWKGxr1RQ/3y/2+FrGPHNXjlFU/Rp
+	mCgMneYJaJNzZP9zJfnHNuP1FNaQ21RQEFkn/Ohb9pcokcmLDuDkmu4Jpf0U7CQxi/WYysbBgmi
+	hgjeNjGws+N/q4av8oIWrYW8vtM79Yyr5zwF03z3dIt5ZcJjmMfx7CE9S1PZLqJCNo65QkCOpDo
+	7eT/Q4bgp9EMH08Yt+cwQDzjQma4y7C/TuKA954JYsPDHPpUWOpzBntgjmD8RtLc1Og5os3yNio
+	4SBx2G51DhijvRNDcCPL4eQm+ORZJpvRk2IM0ghNRpwzIpVvxzEvIvrm+vvOq0lX5kbElZtLxFa
+	6wkEED/hzwg==
+X-Received: by 2002:a05:690e:d0e:b0:677:cc34:2f4b with SMTP id 956f58d0204a3-67ba4fb4b08mr8740681d50.22.1793661172549;
+        Mon, 02 Nov 2026 15:12:52 -0800 (PST)
+Received: from [192.168.1.110] (104-53-165-62.lightspeed.stlsmo.sbcglobal.net. [104.53.165.62])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67baf3303ebsm5946481d50.18.2026.11.02.15.12.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 15:12:52 -0800 (PST)
+From: Andrew Halaney <andrew@amutable.com>
+Date: Mon, 02 Nov 2026 17:12:35 -0600
+Subject: [PATCH net-next 2/3] net: add SO_PASSCRED_THREAD to get a
+ thread-specific SCM_CREDENTIALS
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,187 +92,285 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261102-halaney-scm-creds-thread-v1-2-0b4d75dbf35f@amutable.com>
+References: <20261102-halaney-scm-creds-thread-v1-0-0b4d75dbf35f@amutable.com>
+In-Reply-To: <20261102-halaney-scm-creds-thread-v1-0-0b4d75dbf35f@amutable.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ Helge Deller <deller@gmx.de>, Andreas Larsson <andreas@gaisler.com>, 
+ Willem de Bruijn <willemb@google.com>, Arnd Bergmann <arnd@arndb.de>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, 
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
+ sparclinux@vger.kernel.org, linux-arch@vger.kernel.org, 
+ Andrew Halaney <andrew@amutable.com>
+X-Mailer: b4 0.14.3
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Currently, SCM_CREDENTIALS carries the pid of the thread-group leader,
+despite carrying the uid/gid of the actual sending thread.
+SO_PASSPIDFD_THREAD lets a receiver identify the sending thread, but
+only through a pidfd. If you just want to know what the tid of the
+sending thread is you have to do something like:
 
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
+    1. Setup SO_PASSPIDFD_THREAD on the socket
+    2. ioctl(thread_pidfd, PIDFD_GET_INFO) per message
+    3. close(thread_pidfd) per message
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+For example systemd-journald wants to log the tid as "trusted field"
+(aka provided by the kernel) but doesn't have a great way to do so
+right now, unlike the options for uid/gid/pid which are covered by
+SO_PASSCRED currently.
 
-- [Medium] After this patch, decode_session6() stays compatible with the
-  old decoder's fragment behaviour only when the built-in C flow…
+So add SO_PASSCRED_THREAD as a sibling of SO_PASSCRED. It delivers
+SCM_CREDENTIALS_THREAD whose ucred carries the tid of the sending
+thread instead of the thread-group leader. This is completely
+independent of SO_PASSCRED, so a receiver can ask for both. Use
+a new cmsg rather than changing SCM_CREDENTIALS because users
+expect ucred.pid in that context to be the thread-group leader.
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but it is an IPsec
-  policy bypass on the same code path.
+As with SO_PASSPIDFD_THREAD, recvmsg() on SOCK_STREAM sockets stops
+merging data at a thread boundary once SO_PASSCRED_THREAD is set.
 
---
+Signed-off-by: Andrew Halaney <andrew@amutable.com>
+---
+ arch/alpha/include/uapi/asm/socket.h  |  2 ++
+ arch/mips/include/uapi/asm/socket.h   |  2 ++
+ arch/parisc/include/uapi/asm/socket.h |  2 ++
+ arch/sparc/include/uapi/asm/socket.h  |  2 ++
+ include/linux/socket.h                |  1 +
+ include/net/sock.h                    |  4 +++-
+ include/uapi/asm-generic/socket.h     |  2 ++
+ net/core/scm.c                        | 32 +++++++++++++++++++++-----------
+ net/core/sock.c                       | 14 ++++++++++++++
+ net/unix/af_unix.c                    |  6 +++---
+ 10 files changed, 52 insertions(+), 15 deletions(-)
 
-xfrm: fix IPv6 first-fragment protocol decode
-
-For AF_INET6, this commit makes __xfrm_decode_session() pass
-FLOW_DISSECTOR_F_PARSE_1ST_FRAG, so the flow dissector walks past an
-IPv6 Fragment header to the real upper-layer protocol. It also changes
-decode_session6() so the GRE key and ICMPv6 type/code are only set when
-FLOW_DIS_IS_FRAGMENT is clear, which matches the old decoder.
-
-> diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-> index 9ea60c7717ff8..c9c2370b07cc1 100644
-> --- a/net/xfrm/xfrm_policy.c
-> +++ b/net/xfrm/xfrm_policy.c
-> @@ -3489,14 +3489,16 @@ decode_session6(const struct xfrm_flow_keys *flkeys, struct flowi *fl, bool reve
->  		fl6->fl6_dport = flkeys->ports.dst;
->  	}
->  
-> -	switch (flkeys->basic.ip_proto) {
-> -	case IPPROTO_GRE:
-> -		fl6->fl6_gre_key = flkeys->gre.keyid;
-> -		break;
-> -	case IPPROTO_ICMPV6:
-> -		fl6->fl6_icmp_type = flkeys->icmp.type;
-> -		fl6->fl6_icmp_code = flkeys->icmp.code;
-> -		break;
-> +	if (!(flkeys->control.flags & FLOW_DIS_IS_FRAGMENT)) {
-> +		switch (flkeys->basic.ip_proto) {
-> +		case IPPROTO_GRE:
-> +			fl6->fl6_gre_key = flkeys->gre.keyid;
-> +			break;
-> +		case IPPROTO_ICMPV6:
-> +			fl6->fl6_icmp_type = flkeys->icmp.type;
-> +			fl6->fl6_icmp_code = flkeys->icmp.code;
-> +			break;
-> +		}
->  	}
-
-[Severity: High]
-This is a pre-existing issue, not one introduced by this patch, but it is
-on the same path. This path now finds the real L4 protocol for IPv6
-atomic fragments (offset 0, M=0). Could the ports and ICMPv6 type/code be
-recovered as well?
-
-An atomic fragment is a complete datagram. ipv6_frag_rcv() only moves the
-transport header past the Fragment header and returns 1:
-
-net/ipv6/reassembly.c:ipv6_frag_rcv() {
-    ...
-	if (!(fhdr->frag_off & htons(IP6_OFFSET | IP6_MF))) {
-		/* It is not a fragmented frame */
-		skb->transport_header += sizeof(struct frag_hdr);
-		...
-		return 1;
-    ...
-}
-
-After that, udpv6_rcv()/tcp_v6_rcv() -> xfrm6_policy_check() ->
-__xfrm_decode_session() -> __skb_flow_dissect() dissects the packet again
-from the network header. With PARSE_1ST_FRAG, ip_proto is now correct.
-The ports are still skipped, though:
-
-net/core/flow_dissector.c:__skb_flow_dissect() {
-    ...
-	if (!(key_control->flags & FLOW_DIS_IS_FRAGMENT))
-		__skb_flow_dissect_ports(skb, flow_dissector, target_container,
-					 data, nhoff, ip_proto, hlen);
-    ...
-}
-
-So flkeys.ports keeps its memset value of zero, and decode_session6()
-copies zeros into fl6_sport/fl6_dport. The new gate above also leaves the
-ICMPv6 type/code and the GRE key unset. The ICMPv6 type/code share storage
-with the port fields that xfrm_flowi_sport()/xfrm_flowi_dport() read.
-
-As a result, __xfrm6_selector_match() can never match a selector scoped by
-port, ICMPv6 type or GRE key:
-
-	!((xfrm_flowi_dport(fl, &fl6->uli) ^ sel->dport) & sel->dport_mask) &&
-
-Take an inbound "proto udp dport 1701, tmpl ESP level required" policy,
-with no broader policy covering that traffic and a default inbound policy
-of accept. __xfrm_policy_check() then takes its !pol branch and returns 1.
-Could a remote sender put plaintext UDP or TCP inside an atomic Fragment
-header and have it delivered to the socket that policy is meant to
-protect?
-
-The old open-coded decoder behaved the same way (NEXTHDR_FRAGMENT set
-onlyproto = 1), and the commit message keeps this on purpose. For atomic
-fragments (FLOW_DIS_FIRST_FRAG with M=0), the ports are as reliable as
-the protocol. Would it make sense to handle that case here?
-
->  
->  	fl6->flowi6_proto = flkeys->basic.ip_proto;
-> @@ -3507,10 +3509,13 @@ int __xfrm_decode_session(struct net *net, struct sk_buff *skb, struct flowi *fl
->  			  unsigned int family, int reverse)
->  {
->  	struct xfrm_flow_keys flkeys;
-> +	unsigned int flags = FLOW_DISSECTOR_F_STOP_AT_ENCAP;
->  
->  	memset(&flkeys, 0, sizeof(flkeys));
-> +	if (family == AF_INET6)
-> +		flags |= FLOW_DISSECTOR_F_PARSE_1ST_FRAG;
->  	__skb_flow_dissect(net, skb, &xfrm_session_dissector, &flkeys,
-> -			   NULL, 0, 0, 0, FLOW_DISSECTOR_F_STOP_AT_ENCAP);
-> +			   NULL, 0, 0, 0, flags);
-
-[Severity: Medium]
-Is the old fragment behaviour still kept when a BPF flow dissector is
-attached?
-
-decode_session6() copies flkeys->ports into fl6_sport/fl6_dport for every
-packet. Only the GRE/ICMPv6 fields check FLOW_DIS_IS_FRAGMENT. Fragments
-get zero ports only because the C dissector skips
-__skb_flow_dissect_ports() when FLOW_DIS_IS_FRAGMENT is set.
-
-When a BPF_PROG_TYPE_FLOW_DISSECTOR program is attached to init_net or to
-the netns, __skb_flow_dissect() runs it instead of the C code.
-bpf_flow_dissect() passes the new flag through unchanged:
-
-net/core/flow_dissector.c:bpf_flow_dissect() {
-    ...
-	flow_keys->flags = flags;
-    ...
-}
-
-The in-tree reference program, PROG(IPV6FR) in
-tools/testing/selftests/bpf/progs/bpf_flow.c, keeps parsing first
-fragments when PARSE_1ST_FRAG is set:
-
-	return parse_ipv6_proto(skb, fragh->nexthdr);
-
-That fills in sport/dport. __skb_flow_bpf_to_target() then copies them
-into FLOW_DISSECTOR_KEY_PORTS without any fragment check:
-
-		key_ports->src = flow_keys->sport;
-		key_ports->dst = flow_keys->dport;
-
-So with a BPF dissector, IPv6 first fragments now reach the XFRM policy
-lookup with real ports. Later fragments of the same datagram get zero
-ports, and so does every fragment under the C dissector.
-
-The forward path checks fragments one at a time:
-ip6_forward() -> xfrm6_policy_check(XFRM_POLICY_FWD), then
-xfrm6_route_forward(). Could a port-scoped selector match the first
-fragment but not the rest, giving fragments of one datagram different
-policy and routing decisions?
-
-Before this patch PARSE_1ST_FRAG was never passed, so both dissectors
-stopped at the Fragment header. That conflicts with this part of the
-commit message:
-
-  "Keep GRE and ICMPv6 selector fields unset for fragmented packets,
-   matching the old decoder's behavior."
-
-Would putting the port assignment in decode_session6() under the same
-FLOW_DIS_IS_FRAGMENT check used for GRE/ICMPv6 remove this dependency on
-the dissector?
-
->  
->  	switch (family) {
->  	case AF_INET:
+diff --git a/arch/alpha/include/uapi/asm/socket.h b/arch/alpha/include/uapi/asm/socket.h
+index 5d3524c26b2b..430ef65e51ea 100644
+--- a/arch/alpha/include/uapi/asm/socket.h
++++ b/arch/alpha/include/uapi/asm/socket.h
+@@ -161,6 +161,8 @@
+ 
+ #define SO_PEERPIDFD_THREAD    87
+ 
++#define SO_PASSCRED_THREAD     88
++
+ #if !defined(__KERNEL__)
+ 
+ #if __BITS_PER_LONG == 64
+diff --git a/arch/mips/include/uapi/asm/socket.h b/arch/mips/include/uapi/asm/socket.h
+index 245a43f52fb1..7e49b24170d2 100644
+--- a/arch/mips/include/uapi/asm/socket.h
++++ b/arch/mips/include/uapi/asm/socket.h
+@@ -172,6 +172,8 @@
+ 
+ #define SO_PEERPIDFD_THREAD    87
+ 
++#define SO_PASSCRED_THREAD     88
++
+ #if !defined(__KERNEL__)
+ 
+ #if __BITS_PER_LONG == 64
+diff --git a/arch/parisc/include/uapi/asm/socket.h b/arch/parisc/include/uapi/asm/socket.h
+index f23710e1c671..e414c2397224 100644
+--- a/arch/parisc/include/uapi/asm/socket.h
++++ b/arch/parisc/include/uapi/asm/socket.h
+@@ -153,6 +153,8 @@
+ 
+ #define SO_PEERPIDFD_THREAD	0x4055
+ 
++#define SO_PASSCRED_THREAD	0x4056
++
+ #if !defined(__KERNEL__)
+ 
+ #if __BITS_PER_LONG == 64
+diff --git a/arch/sparc/include/uapi/asm/socket.h b/arch/sparc/include/uapi/asm/socket.h
+index b35b25bdefc2..9ca7ec9ba450 100644
+--- a/arch/sparc/include/uapi/asm/socket.h
++++ b/arch/sparc/include/uapi/asm/socket.h
+@@ -154,6 +154,8 @@
+ 
+ #define SO_PEERPIDFD_THREAD      0x0060
+ 
++#define SO_PASSCRED_THREAD       0x0061
++
+ #if !defined(__KERNEL__)
+ 
+ 
+diff --git a/include/linux/socket.h b/include/linux/socket.h
+index b17fdb7d38a7..37ddcdfc0377 100644
+--- a/include/linux/socket.h
++++ b/include/linux/socket.h
+@@ -194,6 +194,7 @@ static inline size_t msg_data_left(const struct msghdr *msg)
+ #define SCM_SECURITY		0x03	/* rw: security label		*/
+ #define SCM_PIDFD		0x04	/* ro: pidfd (int)		*/
+ #define SCM_PIDFD_THREAD	0x05	/* ro: thread pidfd (int)	*/
++#define SCM_CREDENTIALS_THREAD	0x06	/* ro: struct ucred, thread	*/
+ 
+ struct ucred {
+ 	__u32	pid;
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 173b37b2b8bb..344057d3aa74 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -357,6 +357,7 @@ struct sk_filter;
+   *	@sk_scm_pidfd: flagged by SO_PASSPIDFD to recv SCM_PIDFD
+   *	@sk_scm_rights: flagged by SO_PASSRIGHTS to recv SCM_RIGHTS
+   *	@sk_scm_pidfd_thread: flagged by SO_PASSPIDFD_THREAD to recv a thread SCM_PIDFD
++  *	@sk_scm_credentials_thread: flagged by SO_PASSCRED_THREAD to recv SCM_CREDENTIALS_THREAD
+   *	@sk_scm_unused: unused flags for scm_recv()
+   *	@ns_tracker: tracker for netns reference
+   *	@sk_user_frags: xarray of pages the user is holding a reference on.
+@@ -564,7 +565,8 @@ struct sock {
+ 				sk_scm_pidfd : 1,
+ 				sk_scm_rights : 1,
+ 				sk_scm_pidfd_thread : 1,
+-				sk_scm_unused : 3;
++				sk_scm_credentials_thread : 1,
++				sk_scm_unused : 2;
+ 		};
+ 	};
+ 	u8			sk_clockid;
+diff --git a/include/uapi/asm-generic/socket.h b/include/uapi/asm-generic/socket.h
+index 56fed7ab27ab..2e5d9db1c9fa 100644
+--- a/include/uapi/asm-generic/socket.h
++++ b/include/uapi/asm-generic/socket.h
+@@ -156,6 +156,8 @@
+ 
+ #define SO_PEERPIDFD_THREAD	87
+ 
++#define SO_PASSCRED_THREAD	88
++
+ #if !defined(__KERNEL__)
+ 
+ #if __BITS_PER_LONG == 64 || (defined(__x86_64__) && defined(__ILP32__))
+diff --git a/net/core/scm.c b/net/core/scm.c
+index ae38f3c1165c..d0d453fb811d 100644
+--- a/net/core/scm.c
++++ b/net/core/scm.c
+@@ -543,28 +543,34 @@ static void scm_pidfd_recv(struct msghdr *msg, struct scm_cookie *scm,
+ 		fd_install(pidfd, pidfd_file);
+ }
+ 
++static void scm_creds_recv(struct msghdr *msg, struct scm_cookie *scm,
++			   u32 pid, int cmsg_type)
++{
++	struct user_namespace *current_ns = current_user_ns();
++	struct ucred ucreds = {
++		.pid = pid,
++		.uid = from_kuid_munged(current_ns, scm->creds.uid),
++		.gid = from_kgid_munged(current_ns, scm->creds.gid),
++	};
++
++	put_cmsg(msg, SOL_SOCKET, cmsg_type, sizeof(ucreds), &ucreds);
++}
++
+ static bool __scm_recv_common(struct sock *sk, struct msghdr *msg,
+ 			      struct scm_cookie *scm, int flags)
+ {
+ 	if (!msg->msg_control) {
+ 		if (sk->sk_scm_credentials || sk->sk_scm_pidfd ||
+-		    sk->sk_scm_pidfd_thread || scm->fp || scm_has_secdata(sk))
++		    sk->sk_scm_pidfd_thread || sk->sk_scm_credentials_thread ||
++		    scm->fp || scm_has_secdata(sk))
+ 			msg->msg_flags |= MSG_CTRUNC;
+ 
+ 		scm_destroy(scm);
+ 		return false;
+ 	}
+ 
+-	if (sk->sk_scm_credentials) {
+-		struct user_namespace *current_ns = current_user_ns();
+-		struct ucred ucreds = {
+-			.pid = scm->creds.pid,
+-			.uid = from_kuid_munged(current_ns, scm->creds.uid),
+-			.gid = from_kgid_munged(current_ns, scm->creds.gid),
+-		};
+-
+-		put_cmsg(msg, SOL_SOCKET, SCM_CREDENTIALS, sizeof(ucreds), &ucreds);
+-	}
++	if (sk->sk_scm_credentials)
++		scm_creds_recv(msg, scm, scm->creds.pid, SCM_CREDENTIALS);
+ 
+ 	scm_passec(sk, msg, scm);
+ 
+@@ -587,6 +593,10 @@ void scm_recv_unix(struct socket *sock, struct msghdr *msg,
+ 	if (!__scm_recv_common(sock->sk, msg, scm, flags))
+ 		return;
+ 
++	if (sock->sk->sk_scm_credentials_thread)
++		scm_creds_recv(msg, scm, pid_vnr(scm->pid[PIDTYPE_PID]),
++			       SCM_CREDENTIALS_THREAD);
++
+ 	if (scm->fp) {
+ 		struct unix_sock *u;
+ 
+diff --git a/net/core/sock.c b/net/core/sock.c
+index e7405be8941f..6b443bd44581 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1586,6 +1586,13 @@ int sk_setsockopt(struct sock *sk, int level, int optname,
+ 			ret = -EOPNOTSUPP;
+ 		break;
+ 
++	case SO_PASSCRED_THREAD:
++		if (sk_is_unix(sk))
++			sk->sk_scm_credentials_thread = valbool;
++		else
++			ret = -EOPNOTSUPP;
++		break;
++
+ 	case SO_PASSRIGHTS:
+ 		if (sk_is_unix(sk))
+ 			sk->sk_scm_rights = valbool;
+@@ -1952,6 +1959,13 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
+ 		v.val = sk->sk_scm_pidfd_thread;
+ 		break;
+ 
++	case SO_PASSCRED_THREAD:
++		if (!sk_is_unix(sk))
++			return -EOPNOTSUPP;
++
++		v.val = sk->sk_scm_credentials_thread;
++		break;
++
+ 	case SO_PASSRIGHTS:
+ 		if (!sk_is_unix(sk))
+ 			return -EOPNOTSUPP;
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 98fcfd7301f6..d802463cec45 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -800,7 +800,7 @@ static void copy_peercred(struct sock *sk, struct sock *peersk)
+ static bool unix_may_passcred(const struct sock *sk)
+ {
+ 	return sk->sk_scm_credentials || sk->sk_scm_pidfd ||
+-		sk->sk_scm_pidfd_thread;
++		sk->sk_scm_pidfd_thread || sk->sk_scm_credentials_thread;
+ }
+ 
+ static int unix_listen(struct socket *sock, int backlog)
+@@ -2047,8 +2047,8 @@ static int unix_maybe_add_creds(struct sk_buff *skb, const struct sock *sk,
+ static bool unix_skb_scm_eq(const struct sock *sk, struct sk_buff *skb,
+ 			    struct scm_cookie *scm)
+ {
+-	/* Only a thread pidfd receiver can tell threads of one process apart. */
+-	if (sk->sk_scm_pidfd_thread &&
++	/* Only a thread-aware receiver can tell threads of one process apart. */
++	if ((sk->sk_scm_pidfd_thread || sk->sk_scm_credentials_thread) &&
+ 	    UNIXCB(skb).pid[PIDTYPE_PID] != scm->pid[PIDTYPE_PID])
+ 		return false;
+ 
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261101230745.2043474-2-Jeremy.Jean%40oss.cyber.gouv.fr
+2.56.0
+
