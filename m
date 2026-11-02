@@ -1,83 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.158
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793583107;
-	b=oBa1Xy8+55GxJA90BtCHUZqir5D3y7x0tgNvV0SWwUzwovyqdld4eABoDYi6ZI9AlcQk
-	 fbPvcAmDXTT3eXB+KBNCegqZPz+u/KB6X9DjE9+ImSPD9yhOyINrrcgj73fXf0wOa3/6O
-	 NCKD3q4yP9iXZ8nLYyfnwmLY0wCaNIfll+nKMR4S7iaknw7zC4tfZ21rl/aqz9dQ4ipTL
-	 +cDtbKl9K5fnExzfa7XL1VaeAm/Ouh4L+XL5njLmN88Lo2gaAfh3S7Adm/zmdZmuVLNSN
-	 Rytj3c1kqcFeE/iAZdmdMgu76TGD7sKRTdnM27diGy1PmiM7QY8i6tW9ildfiPjF8jw==
+	t=1793583359;
+	b=ufhEAtfmcl5pHXOoi+h3cB1Uu1xLVM+6QKZ+e/orFZlMCHtjQCdi0JFTgchVoeIBdBgW
+	 hsjyWd2bY/ba8hQLA0kI+CCsyGPK0l5Wi6GmhQUcNWaO6p9VTBeBezylNjwBg5G/+O0ZZ
+	 Op28u9tEe7T5OOfsIr5XUxm0j2CMD8y03CM9PjFLhFMzarruX1NeHryG5NBgparwWnQMz
+	 pVhNy75EDvB8Vkno4kogWTqJVYiCwFfU8DGL90bT+CO5lvErWYgsxYORrIHMPoUH16HTY
+	 UopDBHoM0CGe6UHwnl6m/va6XnJFng5LUHBrarCO0rR9MqIgF0KS0HPrSC4SeQm0IuQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793583107;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=L1qln637r4iaxhU6X2qqgXPNtSD5t9x/HzmOPAimvzw=;
-	b=YiPcmb+7Xdzoq9R4PdIHMU8RRKQb3TGM11MOMqb7n+JBwqUcJt7BA+0/vqp2xguHSJkd
-	 lLSoxnO4/Vsb0fEEL+UZUgJGlkcg+DTT6SwH3eFVKbqBlnSuZh1DB2opaLTadx1sdGAXG
-	 d62CU48GeYlx7WfuPOhxqtVHRnnSZNAc7lZThb9Ul7hFr8YzoTs3Pb8v2bBdXTkr0ADAI
-	 Xu/bhox4GeAfn6hBrb6D+5ZTNTPCJiaK3zKh8PtKk0B11To3v+PUtMYR3YBFi1wPCpGMW
-	 FCzN3ScI/aePbD/NMXShVTErauzLu7clH6kxHZ517Zj8d6G7lCdDnfHy7Dr7gUoxTfw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793583359;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=dlU73RR5PLs3OxNGnWFwp4gEKCDYj3V/cQaaU2gVSyg=;
+	b=X6fdVUsYQZ2JfEOp74swKkiMv2tbCXgyKUx6UuoCj6R7Bs1h0OaAGA4KaPOllGd9MS8P
+	 vAaT3DrADHIStADEiAMQHpQjAR1EA2HvEWPlrEsySYd3iFRgpnwR7mpom/rvsWthaZeqr
+	 GfyYwmwFDvOw1rz0870+0UytNdk8B9SXFzvAEMGXPmalsYdbet6Up4G5uz3bU4swrw/i2
+	 JSmB10n3nmRVkI/q0XrdJ8Bi0fF5Zo1ZcthoGehejEArDFISm4101rnuXLwGXxmj/A/2e
+	 9hZkKx7G8r71V78qbv4K5yeHaTIJxacKhQmsXlOBSTVe9brNoJWF7S08Q9dWwG0z0Gg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=KVXFclE1;
-	arc=none smtp.remote-ip=95.215.58.158
-Received: from mta1.migadu.com (out-158.mta1.migadu.com [95.215.58.158])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=ujjqRWDL;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFB9606A326
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 01:31:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CBFB9606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DC9606A324;
+	Mon,  2 Nov 2026 01:35:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61DC9606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=KVXFclE1
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=p/3iXpZzk7ktrVPH1x7dECGM4TyYW5DHZyEDipf4J6M=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793583105; v=1; x=1794187905;
- b=KVXFclE1Z7CTQ/NTKVZrjdsDLbu9qZLu7NmzKY9yBSMHXV5T0GIYhLxfcUgLAkhJTkeWWuX2
- HVjPKgsRUeggtpBT7umyFO0I+3Xa8joYzo+WWg10+oIqr5qTSjQpD7FNQDXVgsmiu+WayUjOyW/
- Qncq0lHgHeFvFtrKH4uG9Rys=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 3bb2a1c69930a0d5;
-	Mon, 02 Nov 2026 01:31:45 +0000
-X-Mizu-Trace-ID: 3bb2a1c69930a0d5
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 2 Nov 2026 09:31:30 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=ujjqRWDL
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=dlU73RR5PLs3OxNGnWFwp4gEKCDYj3V/cQaaU2gVSyg=; b=ujjqRWDLSM35ZXJrHv4cRciEhX
+	ih9dwrbYjr+X+My4f5gNPokhio5aabBHAsqb8roJ4PwbG1Z1xLY/WUvAozOBpWxoOvxdbCGrmjONl
+	SO9TL3QOPq8+zkMThYRdSkkOs8IpQU3b3cnKxOEcBqyBto4oeiHcq8MSXF8ahZ+f3TjM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xNgxe-00DidV-5x; Mon, 02 Nov 2026 02:35:46 +0100
+Date: Mon, 2 Nov 2026 02:35:46 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Doug Ledford <doug.ledford@hpe.com>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Slingshot Open Source Team <slingshot-os-team@groups.ext.hpe.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Joel Granados <joel.granados@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
-	Gerd Rausch <gerd.rausch@oracle.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
-	Yung Chih Su <yuuchihsu@gmail.com>,
-	Wyatt Feng <bronzed_45_vested@icloud.com>,
-	Hannes Frederic Sowa <hannes@stressinduktion.org>,
-	Flavio Leitner <fbl@redhat.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Petr Mladek <pmladek@suse.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3 3/5] ipv6: restrict mld_qrv to 255
-Message-ID: <aufn8jMjBc51dKXO@fedora>
-References: <20261101061331.286404-1-jiayuan.chen@linux.dev>
- <20261101061331.286404-4-jiayuan.chen@linux.dev>
+	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Guenter Roeck <linux@roeck-us.net>, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	Sandeep Bhoot <sandeep.bhoot@hpe.com>,
+	Iraimani P <iraimani.pavadai@hpe.com>,
+	Mamila Santosh <santosh-kumar.mamila@hpe.com>
+Subject: Re: [PATCH 00/23] Subject: [PATCH net-next 00/23] net/hpe: add HPE
+ Slingshot NIC drivers
+Message-ID: <2f831f13-58ff-40ca-a76f-3aca647012b6@lunn.ch>
+References: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
+ <20261030151121.1f232b50@kernel.org>
+ <7d4583c2-e8dc-4ffb-bc45-e2121f824b14@lunn.ch>
+ <bde936b5-1b3f-4987-a3e5-36ec5c4710e6@hpe.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -89,101 +80,19 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261101061331.286404-4-jiayuan.chen@linux.dev>
+In-Reply-To: <bde936b5-1b3f-4987-a3e5-36ec5c4710e6@hpe.com>
 
-On Sun, Nov 01, 2026 at 02:12:01PM +0800, Jiayuan Chen wrote:
-> net.ipv6.mld_qrv only has a lower bound, but ipv6_mc_reset() stores it
-> into the u8 inet6_dev::mc_qrv, so 256 wraps to 0 and the first MLDv2
-> Query received on the interface trips the WARN_ON() in mld_update_qrv():
-> 
-> 	WARN_ON(idev->mc_qrv == 0);
-> 
->   WARNING: net/ipv6/mcast.c:1327 at mld_query_work+0x1fd2/0x2cb0, CPU#3: kworker/3:1/2688
->   Workqueue: mld mld_query_work
->   RIP: 0010:mld_query_work+0x1fd2/0x2cb0
->   Call Trace:
->    <TASK>
->    process_one_work+0x93a/0x1b20
->    worker_thread+0x6d0/0x11d0
->    kthread+0x358/0x470
->    ret_from_fork+0x5b3/0x820
->    ret_from_fork_asm+0x1a/0x30
->    </TASK>
-> 
-> Make the sysctl a u8 like mc_qrv and switch to proc_dou8vec_minmax(),
-> which rejects anything above 255, and document it.
-> 
-> Fixes: 2f711939d2ea ("ipv6: add sysctl_mld_qrv to configure query robustness variable")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-> ---
-> v2: switched to u8 and proc_dou8vec_minmax(), as suggested by Kuniyuki
-> Iwashima.
-> ---
->  Documentation/networking/ip-sysctl.rst | 2 ++
->  include/net/ipv6.h                     | 2 +-
->  net/ipv6/mcast.c                       | 2 +-
->  net/ipv6/sysctl_net_ipv6.c             | 4 ++--
->  4 files changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
-> index 4b19c8d3efda7..71f334f27004e 100644
-> --- a/Documentation/networking/ip-sysctl.rst
-> +++ b/Documentation/networking/ip-sysctl.rst
-> @@ -2515,6 +2515,8 @@ mld_qrv - INTEGER
->  
->  	Minimum: 1 (as specified by RFC6636 4.5)
->  
-> +	Maximum: 255
-> +
->  max_dst_opts_number - INTEGER
->  	Maximum number of non-padding TLVs allowed in a Destination
->  	options extension header. If this value is less than zero
-> diff --git a/include/net/ipv6.h b/include/net/ipv6.h
-> index 3de07e738538f..4901a92066e61 100644
-> --- a/include/net/ipv6.h
-> +++ b/include/net/ipv6.h
-> @@ -205,7 +205,7 @@ struct sk_buff *ip6_frag_next(struct sk_buff *skb,
->  
->  /* sysctls */
->  extern int sysctl_mld_max_msf;
-> -extern int sysctl_mld_qrv;
-> +extern u8 sysctl_mld_qrv;
->  
->  #define _DEVINC(net, statname, mod, idev, field)			\
->  ({									\
-> diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-> index ecef55f261890..13f31132e0f97 100644
-> --- a/net/ipv6/mcast.c
-> +++ b/net/ipv6/mcast.c
-> @@ -106,7 +106,7 @@ static int __ipv6_dev_mc_inc(struct net_device *dev,
->  #define IPV6_MLD_MAX_MSF	64
->  
->  int sysctl_mld_max_msf __read_mostly = IPV6_MLD_MAX_MSF;
-> -int sysctl_mld_qrv __read_mostly = MLD_QRV_DEFAULT;
-> +u8 sysctl_mld_qrv __read_mostly = MLD_QRV_DEFAULT;
->  
->  #define mc_assert_locked(idev)			\
->  	lockdep_assert_held(&(idev)->mc_lock)
-> diff --git a/net/ipv6/sysctl_net_ipv6.c b/net/ipv6/sysctl_net_ipv6.c
-> index 1a0a36dcdabc1..f3ac04dbc71d0 100644
-> --- a/net/ipv6/sysctl_net_ipv6.c
-> +++ b/net/ipv6/sysctl_net_ipv6.c
-> @@ -226,9 +226,9 @@ static struct ctl_table ipv6_rotable[] = {
->  	{
->  		.procname	= "mld_qrv",
->  		.data		= &sysctl_mld_qrv,
-> -		.maxlen		= sizeof(int),
-> +		.maxlen		= sizeof(u8),
->  		.mode		= 0644,
-> -		.proc_handler	= proc_dointvec_minmax,
-> +		.proc_handler	= proc_dou8vec_minmax,
->  		.extra1		= SYSCTL_ONE
->  	},
->  #ifdef CONFIG_NETLABEL
-> -- 
-> 2.43.0
-> 
+> I'll see how fast I can get that done.  But "the bare minimum" is going
+> to be more than you are accustomed to.  This hardware does not receive
+> Ethernet packets using MAC address like normal Ethernet hardware.  It
+> uses a special portal table entry that filters in the Ethernet packets.
+> It has the ability to have different filters that receive different
+> Ethernet packets and so sorts them before the driver ever sees them.
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Can you add a single portal entry which matches everything? Or matches
+a single MAC address? KISS.
+
+You can then add on the complexity of adding MAC addresses to the
+table in later patchsets.
+
+	Andrew
