@@ -1,61 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793636445;
-	b=aNK7paMvUpEbVh8+9kreUWKbDXmRMXugpSwc83vOujzYJoOxOr163q9z1PBHAn9K0VN5
-	 c0GD86oW4KY2LtnZwOca+27YljoRMKc8FWew2bSiR0Ay7XnFXYkDL3QqQHmbJw2e8tyb6
-	 g0iNmH1rJHv3jRfy3C0qkBbMwsRB0H8K7RPnWSDkK+5BI0VssoV5gIgHn/ZbdXU1Vor0v
-	 DKzgh9A26F5ugHebTMzd2UIXAblHz41AkRgJaElPaGs2xPFpDT1J7feGTpD4jPEjj0NXi
-	 HFEia7pBrOrcE9Y9BVsyxZcF95MurL9Q/ruZGvg44HALziFSq99c2Ra/CQixTL+J0xg==
+	t=1793636848;
+	b=jwz726Gfi4PGu/+bKeh2OJ4ybyQs/JCthaEEhjle6HW/0NxyepwtFLZcZW4mHpVcOaWR
+	 4cg5UzoTC8m44I9E4atuL6fU6BMjCf+Mm4UoiM/36Xt76Cf1HZBQXQmMT9nqyrqW2hmjJ
+	 plSc0LqxXTMXYCorkUjNio1CjYovPSG866BtlZqiPweBT4bd0kiZwl49ZRgv0CvVIQbC2
+	 ZmeOq7HwdNWbp0g3HrM/e69BO8VWKw4TrhvUbAU2vGJRZ4tPgaif7LlDF8Y3mkyrK+JPM
+	 KH6ZUnJCG82YG043e6SaKAo3te0zIoLzRalFHNDBtPKbbXnABnLeSRlyVlxpMP6Jsmw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793636445;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Ln7V8Sk/Qk0nXqP+d5oLjL7jmXXBJYXIJ2HBTTc+4dI=;
-	b=Lj1vbBcY2c5z4ogPN8aDrgOqLzlmqOEqPrXiWPMJdms8Yi5P2qLzJ0VdntJgAeKDNuQn
-	 8h0HVi/jfTZtvRvC3QmwPOwsZaJWpWAKrFNtr5xDlFwUnbL0UWvI/IrfCq4AdSMvhxgpv
-	 0nyRNI8jQZLPBFaMX4zK21NmLjMulWTlPSb+te0gFFS+KwRrgtOiwQdBCd4tG27YTZ0i1
-	 PJsa2GFDrjQVVX4ABebKkPykof7DaQrRMCvy0dvP1mxbLK2Rn2N0OrTnvt9zVM7nF3/sA
-	 BBcHyEljMc6kGg5EYNsJI9xLrSbtdpLuaeGWuEKrM2A3KcTr1kRRbvk3IU6y7k1ulPQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793636848;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:
+	 Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=s2E5loI5QzOdo4ew1vQKih9z8VadZE7soKVzNqeQSpk=;
+	b=NQIO5fkVg1CEMsuFUAK+111TUH9XD64qQtsz5/bylwXj32ho4wbl72xk5gvAHOCSYB1a
+	 B7N9HRJe4Et5LiI7Q5a634GGwcR3rz3Oy/Y8B27zs6tQ8CmWP8si9BO2jA0tLFejriJ+v
+	 VMPu1iAxrdWtB5zBDEAHYe//RkSmv33doqlH9x0Ppi4qkMuP+buR+SYnBk3M9kAccXyOz
+	 xtEt3y/1XAggB7OegPca+YbYE4OvYL6kvqv28/PzDromZHCeqxUGL/bUm2Wd47kjJu1Ej
+	 bLqdI9VZYM1qGtqHaT3dFfGUcnMwYHHTEZb/0e3x1bgeA4wyT1Xhy4Hi/XLRp+hJsRA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NaS3OvgY;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=EGDhH31Z;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=f591E5Lz;
+	arc=none smtp.remote-ip=205.220.168.131
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1969E606A908;
-	Mon,  2 Nov 2026 16:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16E9606ABB3
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 16:27:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A16E9606ABB3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NaS3OvgY
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BB21F0180D;
-	Mon,  2 Nov 2026 16:20:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793636444;
-	bh=Ln7V8Sk/Qk0nXqP+d5oLjL7jmXXBJYXIJ2HBTTc+4dI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NaS3OvgYtu5vhnGme7Fhm6/FvE/a2gI7/Sc8pRy83FVuj7eiFyxBByVK5h11PiIiC
-	 Qym7FrGKxY4M3G3uWOzEInnEQ79yASeootpSxCADlTeOu7ICaWWpvU7gleDWtd0dMY
-	 O6cg9SO7fPualGXCjyTNhB4TeoD4XdE/NwoPscgxHeiqV6xFA2oSsiIJtKXn5GC3d7
-	 dPe970eM5gv8EHNQpkxZTrMo0Ri4pV8r9W8pSwJK0W83pK+iCkMX5KJEUrEHeYNmsv
-	 rHCkkgJM3c8h5Z0pVfmvc0WNnyfgZcvJf9q039+Y+QwjVJ6+yRw8dQGhwHB3vpamvk
-	 JQYIOwbfl3iMg==
-Subject: Re: [PATCH net] net: usb: lan78xx: only stop phylink if the interface
- is running
-From: netdev-bot+sashiko@kernel.org
-To: 25031212351@stu.xidian.edu.cn
-Cc: Thangaraj.S@microchip.com, UNGLinuxDriver@microchip.com,
- netdev@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, andrew+netdev@lunn.ch, linux@armlinux.org.uk,
- o.rempel@pengutronix.de, stable@vger.kernel.org, byu@xidian.edu.cn,
- wencheng@xidian.edu.cn, kuba@kernel.org
-Date: Mon, 02 Nov 2026 16:20:43 +0000
-Message-ID: <179363644377.3131.15126043316754328997@kernel.org>
-In-Reply-To: <20261029160204.2567-1-25031212351@stu.xidian.edu.cn>
-References: <20261029160204.2567-1-25031212351@stu.xidian.edu.cn>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=EGDhH31Z;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=f591E5Lz
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A2Dp9EH4033830
+	for <netdev@vger.kernel.org>; Mon, 2 Nov 2026 16:27:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=s2E5loI5QzOdo4ew1vQKih
+	9z8VadZE7soKVzNqeQSpk=; b=EGDhH31ZGDal6o1bjWyNGFzeopWyrBhihaYUAY
+	oTrVhVT85GEo3whpJ3kB5IBaxnRwds9Kf1wrHGyXInPzZ09DQbgLBoa52Xxss/+e
+	WqQyghA//btJ1wUVP21gU9mlbzvPTKDQkGh2p1oBqN4YC+thbsLk7IeAKRv8zAAf
+	pqZc5or66JdQjqN408Ffam+NKwhSdVHaUGmoYIEGwi3whS0qOwMRlmUYxy9bH4iM
+	eDe1oFG+rculWjEIIQUqFsfzc779qxItP6k9W6rLsqCfKf/9Fq8LeMiyPY6Ocb39
+	sYevgYphTWBXSqP14Vf0v8Mm5VoHXUMzdchc3nrVxLWCjaHg==
+Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com [209.85.217.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hppfea51s-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 16:27:26 +0000 (GMT)
+Received: by mail-vs1-f69.google.com with SMTP id ada2fe7eead31-7bf45388253so2938692137.3
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 08:27:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1793636846; x=1794241646; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=s2E5loI5QzOdo4ew1vQKih9z8VadZE7soKVzNqeQSpk=;
+        b=f591E5LzJUT5Thbj/3ZEnOQ/mq+4XhpslppdM05vF7ARIhZuu945F0celsPdKrbnwN
+         JT0C/BYxIdF7XlyM0NPeMgejH6x8qj2mkZYt9n86NkXI/sPvk1/nyVlYHqeKdpVEI8SQ
+         7KQXUZW4Dmqj7dQ5sZiNrvli65DdCl7bRCZfPPgeu19DAFGWQWeclW9nfJaDmH3xxfgc
+         DRF967SScZocehZn5yENh4BF0aX1Zw7gfGLdr2+Wfpq6hJ4xkm8xPhT+VMfvVHhBWPb4
+         D7M9LuTNuf6VP+jNCr81MOSMsDjLi32JHww6+SEniGW5OWBzXmSh9rnHfWLIrgRWZpYr
+         LvVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793636846; x=1794241646;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=s2E5loI5QzOdo4ew1vQKih9z8VadZE7soKVzNqeQSpk=;
+        b=kMGeZCSiiAHcKeI0BOgHgirMSOIEwjDph0pbte9LHgUUccH2QmtOGswa85Ezex6QX/
+         TDuk2pHbKonYSqxw2HywPm9Da6KdYmLHnjuvmZ/aYBrfMuwxfQlB3lmT3niaI5XU5yxg
+         msiZEyCuaASSNj+4xlmfgJXbx6VDNXJueIxj08zI7efOLegjWiToEvWpopwf3WBLG3Oh
+         gsY8HKKUF25ox73gfDUU1oJHZaRl7QOQuhiWTPrYRqNkI8nwP3vtOpIH+IET4dl3Y4zU
+         YbHcIAhB+sGNtszC8f/dGEibJ87KFwEFozXNTwhyX7UpSfiFezuBYRLkUPKstAgcar6q
+         1Xbw==
+X-Forwarded-Encrypted: i=1; AKwUvBxw26601VX4gpcGG07dKZETvgby6LjDUJ4pgfcigRAQVWyIPOMNpDH07paLA8Z7av1V4carvFg=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9B755R9F0vV6uX8/ER6i6E8HRHeJPYg4R6r88lcpSVcKFifCtz
+	EqO2+wpfCfIprEJWq8z7OWcNxmqk+qV8OjnA2TJjhFDF9HcLq8gr7OsbVDc4w/knlnJBBLFWhkS
+	W6PNwh5pq2ADoYbKnydCKyomURca9Vu6TL9jw3AoKCdrW+AXUEQgtvmNNMaA=
+X-Gm-Gg: AYBFou2Zdrb3yzxe0GKNxAqhUnveNs5RvxBDuTtKG6S/5ajiIYGPN9EaVALXQYIbBFm
+	DTjzB+OhbAHdUwAz9uxJTvqbEj5MeMBQl9SqSWIDXLbktMaS5x2PjK+jhsgtHTvLUfMv1zFxdgX
+	4Cq1bGW+gfKjc9rIPkecwvy97bM5km8aFB07AaB49jLqYUrW4lLecpbh8vTett9+U/VCqxblsCs
+	bMVQpYNkCTw1zZqG+xXiguhCUygjOIweVYSRGnZtkW66Aub3hUSWfrTIadhbaFbP0Yefr2wCi0j
+	sTmThe46hgZ/ucAqNf2Bpju369dcBR42s6+N3aJAupGyu1vgkkiWTff3Fyswfe2mxispriLGDIt
+	4EDPWNRcSE9MJbYPjZwgGNiZwXIB7TRCok8vu9GLtN/U7ysp6z1IprWfPRCUVlKX++fMOzm9J4S
+	5clEuD2g/f7ReoinOKQDMCMwHW1NJCEbxwRJnusU1/HlYN2E6XNBu/gX3JGm0AGogIuTO0OqcKY
+	5rGV2FQifwu7HhldVaxNq/hln14
+X-Received: by 2002:a05:6102:512c:b0:7c3:99a3:314a with SMTP id ada2fe7eead31-7d072bc74c1mr4164620137.9.1793636845530;
+        Mon, 02 Nov 2026 08:27:25 -0800 (PST)
+X-Received: by 2002:a05:6102:512c:b0:7c3:99a3:314a with SMTP id ada2fe7eead31-7d072bc74c1mr4164585137.9.1793636844939;
+        Mon, 02 Nov 2026 08:27:24 -0800 (PST)
+Received: from QCOM-eG0v1AUPpu.na.qualcomm.com ([2a01:e0a:830:450:f048:3e89:c517:10cd])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b959c1sm20490695f8f.45.2026.11.02.08.27.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 08:27:23 -0800 (PST)
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Subject: [PATCH v12 0/2] Support for block device NVMEM providers
+Date: Mon, 02 Nov 2026 17:27:19 +0100
+Message-Id: <20261102-block-as-nvmem-v12-0-f4a2a681087d@oss.qualcomm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,168 +115,207 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAOe56GoC/3XSzU7DMAwH8FeZeqaT43zvxHsgDknjsIp1hRYq0
+ LR3x92llUIukWIpvzjO/9bMNPU0N6fDrZlo6ed+vPJG4NOh6c7h+kZtn7jQIKABha6Nl7F7b8P
+ cXpeBhlZFCY5cTMGHhg99TJT7n4f48sr7cz9/jdPv44JFrNUqtYgWWhMSSrJaeAjP4zwfP7/Dp
+ RuH4chLs4oLbooGWyjISszCUkpaSEUVRW6KgbIXyYpD40TWEILUFUXtFV8oihWlrUAyEbEzFUX
+ vFIGFolnxmoBHnXP2UFHMTsGyF8NKBuSZpC4pkyqK3RQLolAsKzKTQ9CUIbiK4vaKLBS3vsgFk
+ hhzp3ztp/1OkVAofn2RRS+1EzbFXFEEbIwDU8YO1sSQ9i5i0Dy8mrPFV4DQpbPmNzsObmdVdva
+ /Cd/v9z833sFUdAMAAA==
+X-Change-ID: 20260428-block-as-nvmem-4b308e8bda9a
+To: Ulf Hansson <ulfh@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Bartosz Golaszewski <brgl@kernel.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
+        Rocky Liao <quic_rjliao@quicinc.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Simon Horman <horms@kernel.org>,
+        Srinivas Kandagatla <srini@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Saravana Kannan <saravanak@kernel.org>,
+        Christian Marangi <ansuelsmth@gmail.com>,
+        Eric Dumazet <edumazet@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
+        Eric Dumazet <edumazet@kernel.org>
+Cc: linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath10k@lists.infradead.org, linux-bluetooth@vger.kernel.org,
+        netdev@vger.kernel.org, daniel@makrotopia.org,
+        Loic Poulain <loic.poulain@oss.qualcomm.com>,
+        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+        Christoph Hellwig <hch@lst.de>
+X-Mailer: b4 0.14.2
+X-Authority-Analysis: v=2.4 cv=SeZi5fRu c=1 sm=1 tr=0 ts=6ae8b9ee cx=c_pps
+ a=5HAIKLe1ejAbszaTRHs9Ug==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22 a=VwQbUJbxAAAA:8
+ a=VT4XjZGOAAAA:8 a=EUspDBNiAAAA:8 a=rVis_EDdIu0y_XEmomoA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=gYDTvv6II1OnSo0itH1n:22 a=6CpsfURP9XNmmWg3j1mJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAyMDA2NSBTYWx0ZWRfX7j3O2/Tiqiap
+ R70YhFgIZrxIGkjMHeF6v5Iv2WnVw2BNTZob97aDCxygTM2h7KowJKCoX6YIywdg07+sfuSzLg8
+ RqG+zTrXhxhuadui6ftBNlfjnDK14g6RzmfhMst0P7vIremc37qWPoLaI7tsBfqCMOxl2PXwx/S
+ 0xW0dK3gMH0N14jRmrF1IuzA3u/5xp9fyfgdr9pxWhZ+ruxICuHnoVF3wvfpajR2h0QkIlWfhiU
+ 2fz6PYLD7K+llOTVRP+p0edRS9oEyXKbH0mbSmszjDMTNdfTTDuQAo7ikNaKTzFLkuwADysWvnd
+ 1E8NP7U/gBdqzzBnAivYsGhccOoz2ZHmjQDSe5nGhWCm4GJKrifN0+iRddT40MWoNa5s9JUurcE
+ OOpAy0byocqU3L9pLqju7XPE46BZX6xYxlRxHk1s5FRJ2r9qeTfbkl2OuA6AfPTrkZVNgNMGyvU
+ 0lRlmaU39B2og6CWruQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAyMDA2NSBTYWx0ZWRfX/kSvM9NhCqAk
+ YuBbu7j2pNiLj82tRUU4zTTS5GHcRQvR/MI4Wa+nF8er6Eygb0TB7AUur8oB1JS016vvt2xTtES
+ /zfBYDdyGwYlO4JSWHskNmTOD78bowo=
+X-Proofpoint-ORIG-GUID: EQGGPIeJtuDRxT-_3BhAGVCpBy_1_ELm
+X-Proofpoint-GUID: EQGGPIeJtuDRxT-_3BhAGVCpBy_1_ELm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-02_04,2026-11-02_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 lowpriorityscore=0 adultscore=0 spamscore=0 bulkscore=0
+ suspectscore=0 priorityscore=1501 clxscore=1015 phishscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2611020065
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On embedded devices, it is common for factory provisioning to store
+device-specific information, such as Ethernet or WiFi MAC addresses,
+in a dedicated area of an eMMC partition. This avoids the need for
+and additional EEPROM/OTP and leverages the persistence of eMMC.
 
-Critical: 0 · High: 1 (1) · Medium: 0 · Low: 1
+One example is the Arduino UNO-Q, where the WiFi MAC address and the
+Bluetooth Device address are stored in the eMMC Boot1 partition.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Until now, accessing this information required a custom bootloader
+to read the data and inject it into the Device Tree before handing
+control over to the kernel. This approach is fragile and leads to
+device-specific workarounds.
 
-- [High] The fix is incomplete.
-- [Low] The commit message says 'phylink_start() is only called from
-  lan78xx_open()'.
+Rather than adding a new NVMEM provider specifically to the eMMC
+subsystem, the new support operates at the block layer, allowing any
+block device to behave like other non-volatile memories such as EEPROM
+or OTP.
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the link does
-  not come back after a normal resume.
+This series builds on earlier work by Daniel Golle that enables block
+devices to act as NVMEM providers:
+https://lore.kernel.org/all/6061aa4201030b9bb2f8d03ef32a564fdb786ed1.1709667858.git.daniel@makrotopia.org/
 
---
+Note that this is currently limited to MMC-backed block devices, as
+only the MMC core associates a firmware node with the block device
+(add_disk_fwnode). This can be easily extended in the future to
+support additional block drivers.
 
-net: usb: lan78xx: only stop phylink if the interface is running
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+---
+Changes in v12:
+- Simplify the series and remove consumer changes (BT/Net) that will be
+  submitted separately.
+- Link to v11: https://lore.kernel.org/r/20261015-block-as-nvmem-v11-0-f890ac74f87d@oss.qualcomm.com
 
-This patch changes lan78xx_disconnect() so it calls phylink_stop() only
-when the net device is running. The goal is to stop the phy_stop()
-warning that fires when the PHY is in PHY_READY or PHY_HALTED at unplug
-time.
+Changes in v11:
+- Rebase on linux-next + resend
+- Link to v10: https://lore.kernel.org/r/20260806-block-as-nvmem-v10-0-be598b2a5606@oss.qualcomm.com
 
-> lan78xx_disconnect() unconditionally calls phylink_stop(), but
-> phylink_start() is only called from lan78xx_open(). When the device is
+Changes in v10:
+- block/blk-nvmem: simplify read error handling (Christoph)
+- block/blk-nvmem: verify dev_t wasn't reassigned before reading (sashiko)
+- block/blk-nvmem: drop __free() cleanup for explicit of_node_put() (Christoph)
+- block/blk-nvmem: init static nvmem_config fields at declaration (Christoph)
+- block/partitions/of: fix fwnode ref leak on skip/abort/error paths (sashiko)
+- Link to v9: https://lore.kernel.org/r/20260730-block-as-nvmem-v9-0-f72935817dbf@oss.qualcomm.com
 
-[Severity: Low]
+Changes in v9:
+- Add nvmem support for partition blocks, not only disk (Christoph)
+- Prevent concurrent exclusive access to the block device on read (Christoph)
+- Add comment about nvmem being a side channel for block device access (Christoph)
+- Link to v8: https://lore.kernel.org/r/20260703-block-as-nvmem-v8-0-98ae32bfc49a@oss.qualcomm.com
 
-Is this statement accurate? In drivers/net/usb/lan78xx.c,
-lan78xx_reset_resume() calls phylink_resume() without checking
-EVENT_DEV_OPEN or netif_running():
+Changes in v8:
+- block: Fix bdev->bd_nvmem on registering failure (sashiko)
+- net: of_net: of_get_nvmem_eui48() now also rejects all-ones cells (sashiko)
+- Bluetooth: mgmt: account for HCI_QUIRK_USE_BDADDR_NVMEM in
+  is_configured() and get_missing_options() (sashiko)
+- Reword blk-nvmem KCONFIG help text to satisfy checkpatch
+- Link to v7: https://lore.kernel.org/r/20260701-block-as-nvmem-v7-0-3fe8205ef0a8@oss.qualcomm.com
 
-lan78xx_reset_resume() {
-    ...
-	rtnl_lock();
-	phylink_resume(dev->phylink);
-	rtnl_unlock();
-    ...
-}
+Changes in v7:
+- Rework bindings/dts so that the eMMC boot partition can be a nvmem fixed-layout
+  and not a child of fixed-partition. (Rob)
+- Add Support for fixed-layout as the nvmem device node itself
+- Remove "block: partitions: of: Skip child nodes without reg property"
+  This is no more required in this series and will be submitted separately (Rob)
+- Add missing linux/cleanup.h and linux/device.h includes (Bartosz)
+- simplify nvmem_register() error path using dev_err_probe() (Bartosz)
+- nvmem_device forward declaration to blk_types.h (Bartosz)
+- Add hci_dev_get_bd_addr_from_nvmem() kernel-doc for return value (Piotr)
+- Link to v6: https://lore.kernel.org/r/20260629-block-as-nvmem-v6-0-f02513dcd46d@oss.qualcomm.com
 
-If the interface was down at suspend time, lan78xx_suspend() never calls
-phylink_suspend(). PHYLINK_DISABLE_MAC_WOL is therefore clear, and
-phylink_resume() calls phylink_start(). That runs phy_start()
-(PHY_READY -> PHY_UP) while netif_running() is false.
+Changes in v6:
+- blk_nvmem_add() returns int, error properly propagated (Bartosz)
+- Redundant if (bdev->bd_nvmem) guard removed in blk_nvmem_del() (Bartosz)
+- Size guard changed from UINT_MAX → INT_MAX to avoid signed overflow in config.size (sashiko)
+- BLK_OPEN_RESTRICT_WRITES removed from blk_nvmem_reg_read() (sashiko)
+- Link to v5: https://lore.kernel.org/r/20260612-block-as-nvmem-v5-0-95e0b30fff90@oss.qualcomm.com
 
-Suppose the adapter is then unplugged or unbound. The new check in
-lan78xx_disconnect() skips the phylink_stop() that used to balance this
-start. phylink_disconnect_phy() and phylink_destroy() then run with
-phylink still started.
+Changes in v5:
+- Fixed ath10k binding issue + extended commit message (Krzysztof)
+- Moved blk-nvmem handling to block core instead of a class_interface
+  This allows correct/robust integration with block device life cycle (Bartosz).
+- block: partitions: of: Skip child nodes without reg property (sashiko)
+- Link to v4: https://lore.kernel.org/r/20260609-block-as-nvmem-v4-0-45712e6b22c6@oss.qualcomm.com
 
-This probably doesn't crash. phy_disconnect() still stops the PHY because
-phy_is_started() is true, and phylink_destroy() cancels the resolve work.
-It does leave phylink's start/stop unbalanced at teardown, since
-mac_link_down() is not run.
+Changes in v4:
+- Fix squash issue (dts commit incorrectly squashed) (Konrad)
+- Use devres for nvmem resources (Bartosz)
+- use __free() destructor helper when possible (Bartosz)
+- Fix value return checking for bdev_file_open_by_dev
+- Link to v3: https://lore.kernel.org/r/20260608-block-as-nvmem-v3-0-82681f50aa35@oss.qualcomm.com
 
-Could the commit message be corrected?
+Changes in v3:
+- Fixed missing 'fixed-partitions' compatible in partition (Rob)
+- Fixed clashing nvmem cells, document calibration along mac (Sashiko)
+- Remove workaround to handle dangling nvmem references after
+  unregistering, this is a generic nvmem framework issue handled
+  in Bartosz's series:
+   https://lore.kernel.org/all/20260429-nvmem-unbind-v3-0-2a694f95395b@oss.qualcomm.com/
+- Validate mac (is_valid_ether_addr) before copying to output buffer
+- Link to v2: https://lore.kernel.org/r/20260507-block-as-nvmem-v2-0-bf17edd5134e@oss.qualcomm.com
 
-> diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-> index 181e8c087655c..6dc622a6ae783 100644
-> --- a/drivers/net/usb/lan78xx.c
-> +++ b/drivers/net/usb/lan78xx.c
-> @@ -4594,7 +4594,8 @@ static void lan78xx_disconnect(struct usb_interface *intf)
->  	net = dev->net;
->  
->  	rtnl_lock();
-> -	phylink_stop(dev->phylink);
-> +	if (netif_running(net))
-> +		phylink_stop(dev->phylink);
+Changes in v2:
+- Fix example nvmem-layout cells to use compatible = "mac-base"
+- Squash WiFi MAC and Bluetooth BD address consumer patches into the nvmem layout patch
+- Fix possible use-after-free in blk-nvmem: bnv (nvmem priv) linked to nvmem lifetime
+- Simplify nvmem-cell-names from items: - const: to plain const:
+- Factor out common NVMEM EUI-48 retrieval logic
+- Reorder changes
+- Link to v1: https://lore.kernel.org/r/20260428-block-as-nvmem-v1-0-6ad23e75190a@oss.qualcomm.com
 
-[Severity: High]
+---
+Loic Poulain (2):
+      block: partitions: of: Attach partition fwnode to the block device
+      block: implement NVMEM provider
 
-Can netif_running() be used as a reliable sign that phylink has been
-started here?
+ block/Kconfig             |  11 +++++
+ block/Makefile            |   1 +
+ block/blk-nvmem.c         | 112 ++++++++++++++++++++++++++++++++++++++++++++++
+ block/blk.h               |   8 ++++
+ block/genhd.c             |   4 ++
+ block/partitions/check.h  |   1 +
+ block/partitions/core.c   |  25 +++++++++--
+ block/partitions/of.c     |   3 ++
+ include/linux/blk_types.h |   4 ++
+ 9 files changed, 166 insertions(+), 3 deletions(-)
+---
+base-commit: 7649ba73f9e7e1e04d0b46213e39c79ae09dd55c
+change-id: 20260428-block-as-nvmem-4b308e8bda9a
 
-If the interface is up during system sleep, lan78xx_suspend() stops
-phylink but does not clear __LINK_STATE_START:
-
-lan78xx_suspend() {
-    ...
-		rtnl_lock();
-		phylink_suspend(dev->phylink, false);
-		rtnl_unlock();
-    ...
-}
-
-lan78xx_phylink_mac_ops has no .mac_wol_set, so phylink_suspend() always
-takes the phylink_stop() branch, and phy_stop() leaves the PHY in
-PHY_HALTED. netif_device_detach() and netif_device_attach() only toggle
-__LINK_STATE_PRESENT.
-
-The only phylink_resume() call is in lan78xx_reset_resume(), and it runs
-only after both lan78xx_reset() and lan78xx_resume() succeed. The plain
-lan78xx_resume() never restarts phylink.
-
-So lan78xx_disconnect() can still run with netif_running() true and the
-PHY halted, for example:
-
-  - the adapter is unplugged while the system sleeps. usb_resume_interface()
-    skips the driver for NOTATTACHED or UNBINDING interfaces.
-  - a normal (non-reset) lan78xx_resume(), then unplug or unbind.
-  - lan78xx_reset() or lan78xx_resume() fails inside
-    lan78xx_reset_resume(), then unplug or unbind.
-
-pl->phydev is still attached at that point because
-phylink_disconnect_phy() runs afterwards, so this happens:
-
-lan78xx_disconnect()
-  phylink_stop()
-    phy_stop()
-      WARN(1, "called from state %s\n", ...)    /* HALTED */
-
-This is the same HALTED warning that the commit message says is fixed.
-
-Would it be simpler to remove the phylink_stop() call from
-lan78xx_disconnect()? phy_disconnect() already checks phy_is_started().
-For a running interface, unregister_netdev()->lan78xx_stop() also calls
-phylink_stop().
-
-The other option is to track the real phylink started state and fix the
-resume path.
-
->  	phylink_disconnect_phy(dev->phylink);
->  	rtnl_unlock();
->  
-
-[Severity: High]
-
-This problem was not introduced by this patch, but does the link ever
-come back after a normal (non-reset) resume?
-
-When the interface is open, lan78xx_suspend() calls
-phylink_suspend(dev->phylink, false). For this driver that always means
-phylink_stop(): PHYLINK_DISABLE_STOPPED is set and the PHY moves to
-PHY_HALTED.
-
-The only matching phylink_resume() is in lan78xx_reset_resume().
-lan78xx_resume() resubmits the interrupt URB and the deferred TX URBs.
-It restarts the TX path, NAPI and the stat timer, and rewrites the wake
-registers. It never calls phylink_resume() or phylink_start().
-
-A plain USB resume happens when the device keeps power, for example with
-s2idle, or with remote wakeup enabled (lan78xx_probe() enables it via
-device_set_wakeup_enable()). In that case the PHY stays halted and the
-phylink resolver stays disabled.
-
-Carrier doesn't return until the interface is cycled. The ifdown in that
-cycle hits the same phy_stop() "called from state HALTED" warning through
-lan78xx_stop()->phylink_stop().
-
-This looks like it dates back to e110bc825897 ("net: usb: lan78xx:
-Convert to PHYLINK for improved PHY and MAC management"). That commit
-notes that PM runtime testing was limited. It is also why the
-netif_running() check above is not enough by itself.
-
-Should lan78xx_resume() pair the phylink_suspend() with a
-phylink_resume()?
-
+Best regards,
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261029160204.2567-1-25031212351%40stu.xidian.edu.cn
+Loic Poulain <loic.poulain@oss.qualcomm.com>
+
