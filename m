@@ -1,55 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.170
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793636309;
-	b=xiew1YZBFu//HHbed019TwUh+YG5dCYiDm6s9SXqx/47AnpXTDzJ8HqusdZUkKQ4Rnjy
-	 8BmCug4F4BRTm8/A0zb1kqEXiGvzWHbMHM10/hSzcDdx/qdb7WCxR0epSRVbl0hSwaRci
-	 DGW0ZC4sshZCAGZCaiuYO5v8YlYcf06r/al8HfQS2EYe/AS3tW1mFUWcrISi/3qiq5Bys
-	 y4KrK98aeRaG6TVEboMzhU4j3O08G2IWkJjJFee16i2UoiWFeZ1DyNOy7SxSOzqc8cl8B
-	 qcxK+6ehtB7eam0smhPaFZUz9zhz5Y7LtdAWvO+V4oVuQJmxEzxiDXfFcv/77EQycRA==
+	t=1793636333;
+	b=zNLvgHD8Ns1JPNIOj7P/muNY49GktEaA6j1GqdZnV6bBhaubqpKneWueiuXU3wXR91iE
+	 bij9fMAtKocp/j9gFDZL664oggRrP8g0Ho3oN/6sPeJaB8aClEtf4IOvaMinC07qbviy/
+	 +h9q861+R3kutAXAUP9ymEsEjxhb2TpUJOb9UWV/qi63p4awIefUz5gqDggl+wmD20PWZ
+	 m24V7ZRgng5vvYlnsce4IHyB6kZOCFTsQgmhQ1BLvo3gZsAa8y4YXDaW6fONM/oKTcfhP
+	 jR9fynxBY1UBpo66R8AYgxqYe3le1tJZef5D1mq20GD+rckZzFY4T0WCn9Y4TFSkbvg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793636309;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=wxOeynVQGn57hjgx4QIPMlYidyQB2taD5lIeYYJfDTQ=;
-	b=fCEo1b0dy1WPUG5oIKZsE7TSp+AuVUdu2e6LFj9jmNWfyKMKLoUj53Szx9MSc65GgB49
-	 JmoIN/nXZpp7yU2rT39bM2U6Ra0HeQo2Fgiw8KP6clWhDXk9i5HOXOUiPo8aD0bdeTymT
-	 MDiT6bql0teS/JAWIEiSLOA4fQfry0YF0Us663rO12UxCpgegZOw7qO8HEDMQW5zWMmfD
-	 7CulX4juyx7S0wnqrlTu/32bAMv7148BkPGz7ZHd95lsbsrnD0n40SAyL3u9NR4XLWgCz
-	 utAPMhccLN3LE84EEkIeWT9vh9yK1PBDF8lxYD/8GdfSpp1VqbjrwOWhnUNwhHP5x6w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793636333;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Content-Type:Date:Message-Id:Cc:Subject:From:To:In-Reply-To:
+	 References:Content-Transfer-Encoding:MIME-Version;
+	bh=FmIcFldBwSvZofS3KE00AHPHUf+fTzDL1zSxVEgBLFU=;
+	b=oyPoYdcvoXeB83GrVP5EBL6FKgVNO0E57YsDmkm8HsbEfu5ayqeMctqezcgGQTvZxkLA
+	 dEiltFDnzANNkaHlRZuSVrseVZ5bJ7aojZGi+iO7kqxnPJ63pYwrb6gr8TMOsAK2EPgwY
+	 FK8lWxNUdiOQmMojdib5AJIvhMumSVhLhHKIzxLG104dOjqn+PDzTSsuNRhF6qtip4ZX7
+	 5MfMlgFITNEpnhg90lAJsCpFQjuztnKMiLXDhjPf0gbOVfDbMmhY/t0whQzQqhFPasrMu
+	 co95EwdQnSgqFINMdxeSH1yhurU4kB73hjC4V9UqMax9Xp+z1Smvdt11VhqJHC3qCWw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aiwSV8pj;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Qr00LX+p;
+	arc=none smtp.remote-ip=209.85.215.170
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA22E6083996
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 16:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30724608362A
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 16:18:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 30724608362A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aiwSV8pj
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D771F00A1A
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 16:18:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793636308;
-	bh=wxOeynVQGn57hjgx4QIPMlYidyQB2taD5lIeYYJfDTQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=aiwSV8pjhOneh7pWpESM/lFliOIOPcx151UCGMgOzMErMnbavonl7IMSgCM2yXhz9
-	 aEd3r7y2Bm36cQqGmFjg2N576eNALcMFMOR2W/qDRvODCYd5fB9ioLgHreJ+h7GKTA
-	 eViiqXmxFJsNdRQMD8QO25Od+6eflrTPzMkaJJslkCtlt8Lm1EI3dP5hTjNc6C9n80
-	 3FZIRYQq+uiYkfwfS3piTI//fIeNHPIm1EL7E+Ti5tnnnECi2warS99oi7zETX4Gg9
-	 Qk4FAUhzIGzzya+u6gE9EOwzGlx9Wk77uMjC5Xp3rfdDMvQot2hIgRKFYJH/Vc63m0
-	 NKnKr9CBX/SkA==
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-7143451981fso2309062eaf.3
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 08:18:28 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvByBcpYX3iQImhd8Nk1rB0DUnD48VxdaDsUkAnTX23SQe+XIBoxO4cHa0aRWzgLRVKFN2pwe+EE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJVVCo7fX5GdkCbAs1/Dk9qpJ6fVH+zJoT/tAQfpRkFZonkETAm
-	0DcY5iygXW+vHCCoG9+rH0zW4td9jA27fSJMTGcvPJl530+XLCV9XsOtE8S0ybGktNalodS9Z/X
-	heN7xpBnnLVJU8vIZ1QM6NnIrrtplL38=
-X-Received: by 2002:a05:6820:a501:10b0:6de:1457:fe27 with SMTP id
- 006d021491bc7-714f29da022mr3867489eaf.57.1793636307818; Mon, 02 Nov 2026
- 08:18:27 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Qr00LX+p
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cd6acc50b8dso1113748a12.3
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 08:18:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793636332; x=1794241132; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=FmIcFldBwSvZofS3KE00AHPHUf+fTzDL1zSxVEgBLFU=;
+        b=Qr00LX+pev5ohEtqTqwX9gkiynVq25vhLr+e0eaMDZhfvf9ZZ/ckaoGlLeNVkzsn3U
+         z3fECQAfpsWMzOpsx+WeUPEk0FHoQSB1IbeBGyH0MiEMgIuRfCiaKZ50Mms8F31V0Y14
+         RETjtUeT68Su92/VmC5kW8OcY2SBCFj+HCwWUzHeuGPGaBmkVk01Wep04XpjWv6o4TTl
+         DSFaAXBHP/MnEQMMLPrWOJCglF5fKifuNvjPw5SIwmd+il1bYxcuhUr744SmNd4Kqa9e
+         MZM76Wa3aQbJcisGnBZWgh2q5LuyGJrx1He8Yfi+4wNbGPjfO81TOTxME4lmJ7dFz0Ke
+         6CPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793636332; x=1794241132;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:to
+         :from:subject:cc:message-id:date:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FmIcFldBwSvZofS3KE00AHPHUf+fTzDL1zSxVEgBLFU=;
+        b=PNGpjfne47iGf61H2RycduT8+Xk845asXhB5FyxEcHVwJ3TXT1lZDHoBzvZZ0BRrlm
+         rpILEkL1o6TSMeYHiz33eWgxSD6N91BOC+mq0gTjKtgNlbhiYdgy8wpFCGl4YHlUl7dM
+         XFZkJBG1nlV9J5GLhHc5XIvSn9MjOXN8hRluBParGkmlusTAiAB2+wDJo46E7HZlioO7
+         SnrMhvq1tWvU/Lv/MsU0aWYOAxBjUAM41jrfZtu+Rf1/7eS37ZeaFqgF2U16pd3dsO6q
+         SMnz4aOJUrnnaZdwS69aj9nzl+VuhXg+6N8FBgeTCtHXT7P5gggxUabXCiqj5uXB8MJs
+         GYuw==
+X-Forwarded-Encrypted: i=1; AKwUvBxRxll5dkPjcZRKH0kR+qgQ7N7cnlGj7ETWIta6tZn2jkoDSHWw6dHAfAK9GsTSYf/CGijw3B0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYItOgwVFHP6vkgBYE3+2V27cHP9whNL1twhPIwC+IcWskFhRyJk
+	nKRX0v47DZnIJxF4mfo/2M5nNOzYmVhiOdArThyez+Iy0t8qi6nebfzf
+X-Gm-Gg: AYBFou07LdSUMhmxwHehet24SETm8XuYjuVRYnA+GaqpmHzpy5ZvzaMoQt0pgCmhALu
+	THfCVP7d+W4g8GqpbLkb4uBKfso8/0MWmNSIVT/zjXUemiuYFprhCtvXxLA7bOTlDh5qj5qjAOC
+	ihfckneP+bRx68lvWMfQUAPhu+V8dnBrOluBciryftrtPKBt2/H65p8mv0ka4JcSU8J8I6aH59w
+	yzM65zMF/YgwbvGJaGxJz51ryYvDQAb471IZRe0e9TNl2I83OfCIKx7o6ZqdjQrGkRwwxbQkt/O
+	LpVAMzmf54EBDJfFD3Tgbgz1/4m+eEUkFn3rkjpv1Tfxbln8T7i33yomeLkr5apODyj5wTqheeH
+	MP29xVJnUg8Ouhw/1Ks0dxBSbrxt89J3I3va6VxDRqW5KbSZuHH7DZKR5xM7LfvZPGe8hkw1SJl
+	pgtVUy2w8Bu7LVrHRndqxDlhVjXzC1aZ8KiLRJu5Yv+fpmaR4uMDM/4JRAEtPLDfxdAbcoiRjfF
+	yum5EfdVIXBOdF5mbPwvuYheXaRjBzmM5dd/qaeWD8UMg4fZwHJQHgnOkaoCGq1db0bmPEuVmmy
+	Mz1xLYkSu9+HddEzNMc67Vj5baxwFTrEMjPjOXZbsQNyXkL3IXrcdqQdgIu52uyHMv6Q13GBaHa
+	zaXg9djsV0g7tNBHEC7n29ZcWFRJI0Ln5D6lYgkQ9svrnSAgHqT13XTI=
+X-Received: by 2002:a05:6300:8047:b0:3e1:7b85:5a95 with SMTP id adf61e73a8af0-3e928ce91b7mr8254146637.28.1793636332340;
+        Mon, 02 Nov 2026 08:18:52 -0800 (PST)
+Received: from localhost ([153.61.198.248])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8aad9d03424sm2308383b3a.24.2026.11.02.08.18.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Nov 2026 08:18:51 -0800 (PST)
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 02 Nov 2026 16:18:50 +0000
+Message-Id: <DMKV0IW3XAU1.3KSPCJSXR3Z3K@gmail.com>
+Cc: <daniel@iogearbox.net>, <andrii@kernel.org>, <eddyz87@gmail.com>,
+ <memxor@gmail.com>, <john.fastabend@gmail.com>, <jakub@cloudflare.com>,
+ <davem@davemloft.net>, <edumazet@kernel.org>, <kuba@kernel.org>,
+ <pabeni@redhat.com>, <horms@kernel.org>, <kuniyu@google.com>,
+ <willemb@google.com>, <matttbe@kernel.org>, <mptcp@lists.linux.dev>,
+ <mason@kernel.org>, <josef@toxicpanda.com>
+Subject: Re: [PATCH bpf v2 07/15] bpf, sockmap: Check the target of an
+ egress redirect before each send
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Jiayuan Chen" <jiayuan.chen@linux.dev>, <bpf@vger.kernel.org>,
+ <netdev@vger.kernel.org>
+In-Reply-To: <69e66c9c-f2ab-41a7-972d-d1562a6387b8@linux.dev>
+References: <20261102072112.4160195-1-alexei.starovoitov@gmail.com> <20261102072112.4160195-8-alexei.starovoitov@gmail.com> <69e66c9c-f2ab-41a7-972d-d1562a6387b8@linux.dev>
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,208 +106,15 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261030125955.3107383-3-edumazet@kernel.org> <179362441613.3131.6007536857643093308@kernel.org>
-In-Reply-To: <179362441613.3131.6007536857643093308@kernel.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Mon, 2 Nov 2026 17:18:07 +0100
-X-Gmail-Original-Message-ID: <CAL4Wiiof_AXXF1q8irJVMnqWDcZeZKtghO1V+37=_PX8gGk4_A@mail.gmail.com>
-X-Gm-Features: AclHuK-B5hrIDoR7c2h8vnwMbz91vdcjzng1h19upT3oyDEMHA8Uei__0DsgavE
-Message-ID: <CAL4Wiiof_AXXF1q8irJVMnqWDcZeZKtghO1V+37=_PX8gGk4_A@mail.gmail.com>
-Subject: Re: [PATCH net v2 2/2] net: gro: invalidate frag0 after a pull
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	netdev@vger.kernel.org, willemb@google.com, steffen.klassert@secunet.com, 
-	tom@herbertland.com, cenzhang@linux.microsoft.com, 
-	AutonomousCodeSecurity@microsoft.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Le lun. 2 nov. 2026 =C3=A0 14:00, <netdev-bot+sashiko@kernel.org> a =C3=A9c=
-rit :
+On Mon, Nov 02, 2026 at 04:32 AM Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+> I can trigger it by redirecting data to a non-accept sk.
 >
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 1 (1) =C2=B7 Medium: 0 =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] net: gro: packet corruption in gro_pull_from_frag0() after
->   failed pull
->
-> Pre-existing issues:
-> - [High] This problem wasn't introduced by this patch, but
->   `napi_gro_frags()` (net/core/gro.c:783-794) never checks the result of=
-=E2=80=A6
->
-> --
->
-> net: gro: invalidate frag0 after a pull
->
-> This patch adds skb_gro_frag0_invalidate(), which clears
-> NAPI_GRO_CB(skb)->frag0_len. It is called before the slow pulls in
-> skb_gro_header_slow(), skb_gro_receive_list(), esp4_gro_receive(),
-> esp6_gro_receive() and udp_gro_receive_segment(). This keeps later GRO
-> header accesses from using a frag0 pointer that the pull may have
-> released or reallocated.
->
-> > diff --git a/include/net/gro.h b/include/net/gro.h
-> > index 00b49b6b9e74f..6f6affc8ab91c 100644
-> > --- a/include/net/gro.h
-> > +++ b/include/net/gro.h
-> > @@ -160,9 +160,19 @@ static inline bool skb_gro_may_pull(const struct s=
-k_buff *skb,
-> >       return likely(hlen <=3D NAPI_GRO_CB(skb)->frag0_len);
-> >  }
-> >
-> > +/* A pull can release the page fragment frag0 points to, or reallocate
-> > + * skb->head, even if it fails. Call this before the pull, to make sur=
-e later
-> > + * skb_gro_header() and skb_gro_network_header() calls no longer use f=
-rag0.
-> > + */
-> > +static inline void skb_gro_frag0_invalidate(struct sk_buff *skb)
-> > +{
-> > +     NAPI_GRO_CB(skb)->frag0_len =3D 0;
-> > +}
-> > +
-> >  static inline void *skb_gro_header_slow(struct sk_buff *skb, unsigned =
-int hlen,
-> >                                       unsigned int offset)
-> >  {
-> > +     skb_gro_frag0_invalidate(skb);
-> >       if (!pskb_may_pull(skb, hlen))
-> >               return NULL;
->
-> [Severity: High]
-> Does clearing frag0_len here, while frag0 itself is left pointing at
-> the old location, break gro_pull_from_frag0() when the slow pull in
-> skb_gro_header_slow() fails?
->
-> Consider an skb that enters GRO with skb_headlen(skb) =3D=3D 0. In that
-> case skb_gro_reset_offset() points frag0 at the start of frags[0],
-> which is packet offset 0.
->
-> Now add remote checksum offload nopartial: vxlan_gro_receive() or
-> vxlan_gpe_gro_receive() with VXLAN_F_REMCSUM_NOPARTIAL, or
-> gue_gro_receive() with FOU_F_REMCSUM_NOPARTIAL. There,
-> skb_gro_remcsum_process() records grc->offset and grc->delta through
-> the frag0 fast path. The inner eth_gro_receive() and
-> inet_gro_receive()/ipv6_gro_receive() handlers then advance
-> skb_gro_offset() through frag0 too, so skb_headlen() is still 0.
->
-> Suppose the next inner header does not fit in frag0_len, for instance
-> in tcp_gro_pull_header() or udp_gro_udphdr(). skb_gro_header_slow()
-> now sets frag0_len to 0 and calls pskb_may_pull(). On a truncated
-> packet where hlen > skb->len, this fails without pulling anything.
-> That leaves skb_headlen() at 0 and frag0_len at 0.
->
-> On the way out, skb_gro_flush_final_remcsum() calls
-> skb_gro_remcsum_cleanup(), which does:
->
->         ptr =3D skb_gro_header(skb, plen, grc->offset);
->
-> Before this patch that was served from frag0. Now skb_gro_may_pull()
-> fails, and pskb_may_pull(skb, plen) really copies plen bytes into the
-> linear area. Here plen =3D grc->offset + sizeof(u16), which is below
-> skb_gro_offset(skb) once the inner headers were pulled. frags[0] is
-> advanced by plen, but NAPI_GRO_CB(skb)->frag0 still points at packet
-> offset 0.
->
-> Since the skb is flushed, dev_gro_receive() ends up in
-> gro_try_pull_from_frag0(). That computes
-> grow =3D skb_gro_offset(skb) - skb_headlen(skb) > 0 and calls
-> gro_pull_from_frag0():
->
->         memcpy(skb_tail_pointer(skb), NAPI_GRO_CB(skb)->frag0, grow);
+> ==================================================================
+> BUG: KASAN: null-ptr-deref in tcp_sendmsg_locked+0xfb8/0x4550
+> Write of size 8 at addr 0000000000000008 by task repro/488
 
-Right, this was added in v2 when moving the invalidation before the
-pull. After a failed pull, skb_gro_remcsum_cleanup() can pull fewer
-bytes than skb_gro_offset(), while frag0 still points to the start
-of the packet.
-
->
-> This copies packet bytes 0..grow to skb->data + plen, then advances
-> frags[0] by grow again. The skb handed up the stack as GRO_NORMAL
-> has its inner headers overwritten with outer header bytes, and the
-> real bytes at plen..skb_gro_offset() are lost. A remote sender can
-> trigger this with a short encapsulated packet.
->
-> gro_pull_from_frag0() assumes frag0 is the current start of frags[0],
-> which only holds while skb_headlen() is 0. Should it copy from
-> skb_frag_address(&pinfo->frags[0]) instead? Or should
-> skb_gro_remcsum_cleanup() and gro_try_pull_from_frag0() handle a
-> partially linearized skb in some other way?
->
-> [Severity: High]
-> This patch didn't introduce this, but since the failure path of
-> skb_gro_header_slow() is being changed here: what happens in
-> napi_gro_frags() when this pull fails for the Ethernet header?
->
-> In net/core/gro.c, napi_frags_skb() takes the slow path and returns
-> NULL when the pull fails:
->
-> net/core/gro.c:napi_frags_skb() {
->     ...
->         if (unlikely(!skb_gro_may_pull(skb, hlen))) {
->                 eth =3D skb_gro_header_slow(skb, hlen, 0);
->                 if (unlikely(!eth)) {
->                         net_warn_ratelimited("%s: dropping impossible skb=
- from %s\n",
->                                              __func__, napi->dev->name);
->                         napi_reuse_skb(napi, skb);
->                         return NULL;
->     ...
-> }
->
-> The caller doesn't check for NULL, though:
->
-> net/core/gro.c:napi_gro_frags() {
->         struct sk_buff *skb =3D napi_frags_skb(napi);
->
->         trace_napi_gro_frags_entry(skb);
->
->         ret =3D napi_frags_finish(napi, skb, dev_gro_receive(&napi->gro, =
-skb));
->     ...
-> }
->
-> dev_gro_receive() starts with skb_get_hash_raw(skb) and then reads
-> skb->protocol. Can this be a NULL pointer dereference in NAPI softirq
-> context? One way to reach it would be skb->len < ETH_HLEN, where
-> pskb_may_pull() fails with PKT_TOO_SMALL. Another would be
-> __pskb_pull_tail() returning NULL.
->
-> napi_gro_frags() used to have an "if (!skb) return GRO_DROP;" check.
-> Commit 1d11fa696733 ("net-gro: remove GRO_DROP") removed it on the
-> grounds that NULL could only come from a failed napi_get_frags()
-> allocation. That reasoning doesn't cover the header pull failure return
-> shown above.
->
-> The drivers checked so far (tun, r8152, e1000) all enforce a minimum
-> frame length before calling napi_gro_frags(). The other callers have
-> not been checked.
->
-> Should napi_gro_frags() check for a NULL skb again?
-
-I do not think this can happen.
-
-napi_get_frags() allocates the skb with GRO_MAX_HEAD bytes of
-tailroom, and these skbs have no frag_list, so __pskb_pull_tail()
-can not fail when pulling ETH_HLEN bytes.
-
-pskb_may_pull() can only fail if skb->len < ETH_HLEN, meaning the
-driver passed a frame shorter than an Ethernet header, which drivers
-must not do. tun, where the length comes from user space, checks it
-in tun_get_user().
-
-This is why napi_frags_skb() calls it an "impossible skb". This
-could be cleaned up in net-next, but is not a stable fix.
-
-pw-bot: cr
+Thanks for testing.
+All patches have reproducers.
+I didn't share them, hough it's a weak defense.
+Anyone can build a repro from the patch.
