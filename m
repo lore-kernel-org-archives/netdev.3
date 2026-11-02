@@ -1,57 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.243.164.118
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793634991;
-	b=x+N35isOe0p3zogQ+4kMEWaIRQktx5o2+yMCXihXyMyESqJP3A05r8jVrugdV3opu5fg
-	 LHXbZN64KZYMLRDw+QaVOX7m3vi92SnkY+Zrjb9WqNDLpaug1p2pl3VgnA87tJlML14Fl
-	 aST03Mk8JhicEd4tcFge+TX13iEp5pLD89LRN6r3UtxxvO9tDwjQ3TxdMC8XVR1gDzSqc
-	 UtHarVg4RTlWf7v47792ym3B1xmNT9tgqFQGyKhVsCRe6tz6HnKqNDPzq8X+684m58iSB
-	 gO+4SfJQb02LFMIiss6bDl8Mc32ZmuRNJJ4Ws0xulIu8P1plo7m7fvfrxmbpsdr/SGg==
+	t=1793635112;
+	b=e6EKWSpj1m+QDQlMswJwduOmnwRxGzBVaLNdYFqSD3/IOp/RCwGo8GrYEz8K034rG1OR
+	 UrEpZP26qXS/vJgzsVE62TASXvN++JcpygOaNqxm+gFGKEBHg8K/gY8XhaFJQtKmL9see
+	 RPGe7nzbCKrSEaLpmFr9VMDDYjNhRyfdEjLpGb8ulSvCJusCvN+YGstq6BqmGEfHgv9v3
+	 9VxJQcbhmCsLfj5JnItfdwygaapr+aR4qXMIlUgQqK/7chN72XXT2ahN0OHYAyy9kOyad
+	 Be9yu/+q1aqE7d5VqISOdM/hDrhOTF2egrdRkT5PxRnfgoGg9SeXo8x/enLAZ3f2Ixg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793634991;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=iw0A/6qXyey37hvqhs6dNwEmzIY1VT/a5QdELgvzmDg=;
-	b=tD1mxxK+frvFjMLKdV3OA/Vglnl0JXERrHUTyR6zusID0Afm4LpN8C38SZQ688pRXQUT
-	 94cjtezF1xibNOgNzeWdJ2SMSO5iwSieOJmHZLSdWeD6OPLg2mA1IoVPmA16Vn4g33efy
-	 /ofCtoeKbpV5r7t0bNRg9HqT1xkBhW9WC+JynVXZK5woVAepSkO0yRBrOGNiYa3nK1SJ+
-	 xr7RQy9QiKAkw1sHMbjn5+qGAf6HqtrvUYpVA6rqg4yAItlfX0GNIuk2L9YNL4AZj8/KQ
-	 8cQ/vIEmthShAYTWGx3OXoK2yR5MHIolaa+XIG0HfPGCtx0cvjh0/aw83PTuPsnE06Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793635112;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=FOJElCsJejkEPEZ90UqbExNeYAKPE4lqsiLwiXZew8Q=;
+	b=X1ztFQZEG3WVdjuE0XW8zBxcGIaTg7T1OsZUFnBTNWwbvks4tvzx8FQlvThSaaYCHwCP
+	 i14c9e5zKMlyJJivEcNScCOXBh/tlsdgvR8JcmSxULEgtWHK6qOFzosz1znKQ364UNdQa
+	 ALgUSYHvT0yD0tSffmTdLAmzFyVxZU4rlmtdP/Mnn99NVD9hPwdbG7Oxoc6tu12EF1luz
+	 iibsouBPys9uduiwKXL7AfufEcZzOXBMceu0q8Uh40AQ79M1jdyG2o4wIqIU8HD5/chd+
+	 Nbxcs7AU1HyXhPCLe0EA8fcmHVYCl4QxP+hblBMRTRSW2xmTRMZyZWfv7C93nBZcdqA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=mails.tsinghua.edu.cn;
-	spf=pass smtp.mailfrom=mails.tsinghua.edu.cn;
-	dkim=pass header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=nt59HVOC;
-	arc=none smtp.remote-ip=162.243.164.118
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00DD606E032;
-	Mon,  2 Nov 2026 15:56:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D00DD606E032
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dAAQBVrc;
+	arc=none smtp.remote-ip=209.85.215.169
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC1B606EEBF
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:58:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CDC1B606EEBF
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=nt59HVOC
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dAAQBVrc
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cc4dbda1e5dso1029975a12.2
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 07:58:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-Id:MIME-Version:Content-Transfer-Encoding; bh=iw0A/
-	6qXyey37hvqhs6dNwEmzIY1VT/a5QdELgvzmDg=; b=nt59HVOCF3BiLHluALOqA
-	xJpjiVE366RtBkK6daL2Scdcmt1Ix1zqTymDxfZcL3FBna2EijoMjWcEHJpZSPOH
-	qPaHFm2WVLUjZdGrRk5+qyJyp2BFYbBA3a//DClZ5djtaGxLhRW9aMiNou9D/bSk
-	g32SIBfieyrKOr4zhymrlo=
-Received: from localhost.localdomain (unknown [202.112.47.69])
-	by web2 (Coremail) with SMTP id yQQGZQCHtGiosuhqKf0BAQ--.27816S2;
-	Mon, 02 Nov 2026 23:56:24 +0800 (CST)
-From: zhangmh25@mails.tsinghua.edu.cn
-To: netfilter-devel@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	pablo@netfilter.org,
-	coreteam@netfilter.org,
-	stable@vger.kernel.org,
-	zhangmh25@mails.tsinghua.edu.cn,
-	jianjun@tsinghua.edu.cn
-Subject: [PATCH net] netfilter: nf_reject: validate TCP header length before sending resets
-Date: Mon,  2 Nov 2026 23:56:22 +0800
-Message-Id: <20261102155622.2658789-1-zhangmh25@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.34.1
+        d=gmail.com; s=20260707; t=1793635111; x=1794239911; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=FOJElCsJejkEPEZ90UqbExNeYAKPE4lqsiLwiXZew8Q=;
+        b=dAAQBVrcwBdaWSb01wI53Zv/Qb9haryq3CcTw0Bie8nY74OUuqnjwfZ/U3E3adNzI5
+         C4JTOlruzFVAjFxGehsiTpJQOVO3iSayoFwiVlMDx1e17fjguMliNn5+rpKom2sxO0ys
+         OHcxG61ZW2aOVD51Hxbl5KuE/xKbZ3x/X/zmpwwrD/z0t9TaqWYKCKU26XTK4Cn54N87
+         eoReodtp3hspi51eNbMWFL5bDZzy3h7tcy7YBTZG4OnIsnc8RuqZVtGOw/oVuO4EtkQZ
+         UuVuotkK77UuzKgEn4FlCqUZpyEovnDw4xjep5Z/NmxXivaIWB/LwkO4Kvn7aPPcChoP
+         gPxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793635111; x=1794239911;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=FOJElCsJejkEPEZ90UqbExNeYAKPE4lqsiLwiXZew8Q=;
+        b=igNagsh4fwKge+tQqdnnnp/Cdq1GNNy/CX6EfLTkxWHqpiq9hW24S7nPtFZfywZDrm
+         MqqU/GVlcCQI8VvNIVa1vSwJ6YjJI2DL6rTn3o6uvIQtRW77vnP+D8AZAyilnSlyp+UB
+         zdxRjiY/tXgW0IfNCZaeERP56HgsIklox9L+BZ3T8J1GkWCGu2w1Ruyc8JcuOvINflWt
+         yXZQnkWNixl4us0CyvgDNHi7QybGk3mcCBwktWWWJjHvJyYCBcNDCz5WZoYdWNprZ4XK
+         bN3mYCzvmKCMHx0Np3JTybNuij/EZ6wkrTUT4/+k37w90E0APlSV96M9YBzRXxFOvsRs
+         j94w==
+X-Gm-Message-State: APuU4Z/0C5yhYNaUg24uQfDjrc/wbg2nVHi+7UoZeH17FHbhUgp3IvGF
+	ZlPEekXmoLL9vosGQe69CtlHW2TNxDTHSza/9L6gZ1Z07fiT/TVzZWpzaHmGaQ==
+X-Gm-Gg: AYBFou0Hti7pspPx0bbDyDV7nsdLJiZ7OuHV7oO5TwFJq+50QHbw4K6bH2iUGxRrXIW
+	ndarE7O2eRasV+RdsvKgaxgPGtTZfTGZ4JAb//QDd8MDHSyjSeKqe19cbRYRlfPGabTnpmYMvzm
+	0qc3kdF6BryH9gVbLB4Ssv7+2VfF+VmQTrgLp/Jc5tBWIBrWCKlvKDQvBF2vFV85ozkdjYUnHJk
+	EO+p/lHqdFuDUtvkgMiv+mHA1Y+bz4jL46cLRV9vqMQZGSNFE1tocx86kX+5r8vDWyPjenJE5dW
+	3A8undlyvfbGxAcim7/tyfT1ZeCp0Qi+h8LjLtLJcaHUswA5O7yMDTvkwQQj5rpT6sjN6VwJiVJ
+	tabwNh2OgFY7P/iLk4dWROueiErrcq5BWVnQ3jInDi9H0XOZfRieRrj3Y0ki7VzCDuOlmVkimrY
+	X9Y8GBDA6VUJBj0yGHISjb6mbj8ALDoIMuOIxnleV4YcBMsOuXA2/F6s6ou3R31oyCwueS25xBw
+	7IJ5s2oKQ5CMDAyNXBpEEXV9sdCkq8YGaF8W8BloR8s9lIQQ6sHRzaOoYAzmrvCQCohhtIq2mJm
+	4gFclVysIToBtE6XaQ2Ha6IiouiQhO/KazIp0GnU8DEm5s3DKEmM
+X-Received: by 2002:a17:90b:1e42:b0:3a0:7261:d58e with SMTP id 98e67ed59e1d1-3ae896f8250mr9163738a91.22.1793635111035;
+        Mon, 02 Nov 2026 07:58:31 -0800 (PST)
+Received: from d.home.yangfl.dn42 ([2a09:bac1:7680:28::4:396])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e7d429fsm19183949a91.2.2026.11.02.07.58.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 07:58:30 -0800 (PST)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next 1/6] net: dsa: motorcomm: Isolate all ports during chip setup
+Date: Mon,  2 Nov 2026 23:56:33 +0800
+Message-ID: <20261102155641.3682626-2-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261102155641.3682626-1-mmyangfl@gmail.com>
+References: <20261102155641.3682626-1-mmyangfl@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,95 +104,52 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:yQQGZQCHtGiosuhqKf0BAQ--.27816S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxurW3Wr1xAr4fGryxXr1fJFb_yoW5AFy5pa
-	47tw1xA39rKryjyFn7uF48JF1rWF4kGF47WFWFy3s3Kwn8Ja18KayS9ry7uayaya1xKF4f
-	XFWjqw4jy3WDJFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBq14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwAKzVCY07xG64k0F24lc7CjxVAaw2AFwI0_JF0_Jw1lc2xSY4AK67AK6ryrMxAIw2
-	8IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4l
-	x2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrw
-	CI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI
-	42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z2
-	80aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjDDG7UUUUU==
-X-CM-SenderInfo: x2kd0wlpkskqxpdlz2oowvx0pjkxthxhgxhubq/1tbiAgMTB2roVIJoagAAsD
 
-From: Minghao Zhang <zhangmh25@mails.tsinghua.edu.cn>
+Chip setup only blocks unknown unicast and unknown multicast frames,
+leaving known multicast and broadcast open, though known multicast
+cannot appear while the FDB is still empty.
 
-The TCP header validation in both nf_reject_ip_tcphdr_get() and
-nf_reject_ip6_tcphdr_get() checks that the TCP segment is at least
-sizeof(struct tcphdr) long, but does not verify that the header
-length claimed via the data offset is actually present in the packet.
-A peer can send a TCP packet claiming a 60-byte header although only
-the fixed 20-byte header is present.
+Isolate every port right after the hardware reset, in preparation for
+the isolation refactoring. Note that this only minimizes the window: a
+reset always brings the hardware back to a dumb switch, so traffic can
+leak before and during it.
 
-The reset generation then computes the ACK number using the claimed
-header length, and the subtraction of the data offset from the TCP
-segment length underflows, producing a wrapped ACK value in the
-generated RST. For a 20-byte segment with doff = 15, ACK bit clear,
-sequence number 0, SYN and FIN clear, the RST carries ack_seq
-0xffffffd8 instead of a meaningful value.
-
-Reject TCP headers whose data offset is smaller than the fixed header
-or exceeds the available TCP segment length. This prevents generating
-resets with an ACK number derived from an invalid TCP header length.
-
-Found during a systematic audit of TCP header validation in the
-netfilter reject paths. Tested in network namespaces with nftables
-"reject with tcp reset" rules: on both IPv4 and IPv6, a probe with
-doff = 15 produced an RST with a wrapped ack_seq; with the fix no
-RST is generated for such packets, while probes with well-formed
-headers still get a correct RST.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Fixes: 764d8a9f2407 ("[NETFILTER]: Add IPv6 REJECT target")
-Reported-by: Minghao Zhang <zhangmh25@mails.tsinghua.edu.cn>
-Reported-by: Jianjun Chen <jianjun@tsinghua.edu.cn>
-Cc: stable@vger.kernel.org
-Signed-off-by: Minghao Zhang <zhangmh25@mails.tsinghua.edu.cn>
+Signed-off-by: David Yang <mmyangfl@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
- net/ipv4/netfilter/nf_reject_ipv4.c | 5 +++++
- net/ipv6/netfilter/nf_reject_ipv6.c | 5 +++++
- 2 files changed, 10 insertions(+)
+ drivers/net/dsa/motorcomm/chip.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
-index 59ec465a9..0e8823a7d 100644
---- a/net/ipv4/netfilter/nf_reject_ipv4.c
-+++ b/net/ipv4/netfilter/nf_reject_ipv4.c
-@@ -189,6 +189,11 @@ nf_reject_ip_tcphdr_get(struct sk_buff *oldskb,
- 	if (oth == NULL)
- 		return NULL;
+diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
+index 33e5fc127244..e1fa82c6db95 100644
+--- a/drivers/net/dsa/motorcomm/chip.c
++++ b/drivers/net/dsa/motorcomm/chip.c
+@@ -2221,6 +2221,7 @@ static int yt921x_chip_reset(struct yt921x_priv *priv)
+ {
+ 	struct device *dev = yt921x_priv_to_device(priv);
+ 	u16 eth_p_tag;
++	u32 ctrl;
+ 	u32 val;
+ 	int res;
  
-+	/* Reject invalid or truncated TCP headers. */
-+	if (oth->doff < sizeof(struct tcphdr) / 4 ||
-+	    oldskb->len - ip_hdrlen(oldskb) < (oth->doff << 2))
-+		return NULL;
-+
- 	/* No RST for RST. */
- 	if (oth->rst)
- 		return NULL;
-diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
-index 07cdaa10d..9dc112e50 100644
---- a/net/ipv6/netfilter/nf_reject_ipv6.c
-+++ b/net/ipv6/netfilter/nf_reject_ipv6.c
-@@ -223,6 +223,11 @@ nf_reject_ip6_tcphdr_get(struct sk_buff *oldskb,
- 	if (otcph == NULL)
- 		return NULL;
+@@ -2258,6 +2259,17 @@ static int yt921x_chip_reset(struct yt921x_priv *priv)
+ 		return -EINVAL;
+ 	}
  
-+	/* Reject invalid or truncated TCP headers. */
-+	if (otcph->doff < sizeof(struct tcphdr) / 4 ||
-+	    *otcplen < (otcph->doff << 2))
-+		return NULL;
++	/* Block all traffic as soon as we reset the hardware since it now acts
++	 * as a dumb switch.
++	 */
++	for (int port = 0; port < YT921X_PORT_NUM; port++) {
++		ctrl = ~(u32)0;
++		res = yt921x_reg_write(priv, YT921X_PORTn_ISOLATION(port),
++				       ctrl);
++		if (res)
++			return res;
++	}
 +
- 	/* No RST for RST. */
- 	if (otcph->rst) {
- 		pr_debug("RST is set\n");
+ 	return 0;
+ }
+ 
 -- 
-2.34.1
+2.53.0
 
