@@ -1,95 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793579840;
-	b=2pqEXV2Jn107DOHvecoAvOaiDZWmouIOgSluwKiFDv4icbcCx4Fq8TUeNEkStgJia6B/
-	 O9lK8BnDrcgynqINgvboXYV0xAXmlBOECRkO0G6cJaocGnviaoNupvVu2FibatydVSVHd
-	 mPRb85ZoU/n6IbcVAKCeRqII+a/AXT6cV3fqJ94AfkWFEuZpt7G/YaijyV6VDg85QFn8T
-	 q+Q4+YRj+3xOakHeIj4SQsuKlY82QXJahpMdZGQ081EHmaainKSgfQpq5rR/nchozt49K
-	 IAsaANbYG1Zlx2SQzFejtfg0lGtDmD/Jpy2WL32vGgfzhTjmvqXdMMtx+7c49yQC0QQ==
+	t=1793581029;
+	b=xZYT4d6x4RHfy5248OrBb0iDHXsaheU9MDAbDuR9P90E90EekzG2Eu5kVmNcJ4xkUjbF
+	 Ns0EKVdSnhViKXHWV9iarQOEtBaSKICSTn+0R9SWSHJ2ePR24AeTA/2NnDZy/PHkNMvjZ
+	 K23pXepQi3LJEW60TXmP7GC5Dgi/9vhc//YIXd4fXpfw5EdlZG2WOOfMbVg3bxOZXxCK+
+	 sfzY+lLlBB2X84qOIeOOYJNzK4lbe588GovMKL9fR22UItjy9w4bxknvPKA9AZTMZwiUN
+	 ezvB6wq2ufIxCHgrYRagtJ36cKWLArgKudtXTXUMecslXRE8zOV+K2RRi4wNQHj2V9g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793579840;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=8U2P0iAh2BG7KjvPP6wqvmh3hv9L2W1VYLUEiGNWDRM=;
-	b=VWvLUDRT4uTs0vL45sVaIdk6SolC89xSDfDk1IdzFvAzcJIsvbHkeeyu+4/axD5pMRhS
-	 f4PeKhp/CMmKC8fGxJsx1OY+V6z/jN6REix8zH5nh7vX2vNvzipbIyMACUVPCrE/ok567
-	 3dvzwdBIHOmM5QTS63W2LsKSAF6njFx2X739aHJFf705tzGRa6tUIrDbuGAb1lwChrKid
-	 DqZbmJa58bY6nzx+IawQ7831bb1mvw7bfnF1lW0W+5aJrGfPft0v2IwyiVDyjY1b4kIeC
-	 wPbgEglN6gEFVm+b9EObbJhlqS60tyFedkK0Zf1DpiTpqX1cPPiz5SR2GuquI9X+XDg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793581029;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
+	bh=Cl2AY7m+a6wt7oi+NbEe27ga14xwjHMo8dbTwxJ3rkE=;
+	b=lbMEs2TsMlyGaeQmAur06VDDAXPTUBs+cHNtGntZpM7DrIpZeyksg7Kjyhs9L52KpByD
+	 248NgqQqgTuh29lDBXT/QxsqHR4/kUiNbECnVZRdhEj75vY+LBXRcwTu60diNXvIuKhBl
+	 pZqG20qh25LygJ39KrJz0nw/ZmVc5aeM5TCbxenF2Ch3tQMLlFCsVWbAUQUjf6mkocqbo
+	 J4ufPer3SanNvDPAuEx7nQOvpiTRMn4RwasVKt/hISws4m+resHeVrTiYe6ZGdjfGuIAZ
+	 A6EdHhPUrDqbo8G5dRhBiaeVfFFhS6idy3o8dPryBq2Hx59N0XcxK16npb3SqyYeVpQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=QcWYu3dF;
-	arc=none smtp.remote-ip=209.85.219.49
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=VYziuGgr;
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0B6606A337
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 00:37:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B0B6606A337
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4059606A333;
+	Mon,  2 Nov 2026 00:57:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C4059606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=QcWYu3dF
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-91b8306b9f8so45012856d6.3
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 16:37:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1793579838; x=1794184638; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8U2P0iAh2BG7KjvPP6wqvmh3hv9L2W1VYLUEiGNWDRM=;
-        b=QcWYu3dF8fE5k6F25sAPvmrZihimPCxUbC4DFTVaeDf1sMJ7pYu2/tpkP8nXiDa1SB
-         shV/LeeL4Y3hhZvtvFQb/YYYgk5J5HuSJOQWh22OoY47Kf/8wag8hjZsPj/eOEucflPR
-         NWK6T/gRcP50O/9nH7z2lzsR+kwdrlHY+oo0o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793579838; x=1794184638;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8U2P0iAh2BG7KjvPP6wqvmh3hv9L2W1VYLUEiGNWDRM=;
-        b=QXz4mj3HYpH5zoBJmwNLQiXOXr7oAu61pL4pQlrH/Ilp58OgZ+MYa3na+j4IiB7GDh
-         8TfWJSqByU+bGkTMmRSo28GQCwjmk2Itsbo6hg2gVtoXxfb+gF/5sl4tGxSzHJDmvXbs
-         WukyXLCF7ISNXymrCWC7DIPnl0HikpAuQL607Y0wVkdFGuknZ9BBp3gbGnuwlGEJjby1
-         jPbpH3obZifGKDQ0KejuWuuVQR5Cw2QTgC/oJnmbmQ2fIfCKW2mCaFs4MRWTkUFuwXOm
-         ZM/E8Kwck3a+tdMj9LzqXc9zFAIswUB5G9aOxtdAM1d9tTnEg3I4BgFrcVk99EILRQAa
-         OKPg==
-X-Gm-Message-State: APuU4Z9/CKnHbVDrMgzkugEtogecan/MAL/cUICEM7bCv8aD6jXOdHf4
-	ILTBGLKMNWcqq/P9iGDIj3tsZjmRR1Hks8yLuOjzUIz3tNRbtyABUjGCf8wweZgjAbPZ62AoH8r
-	IJIk=
-X-Gm-Gg: AYBFou3hQSXGARPf6IOIY8RB2o/GeE46AM4xpDCKiZqnhmrOU3yFqIhrclmrz4JyoJ8
-	nazNdwvKMlvuIsPCTiz3FlEzthCPC25fD1q6BeRxKvVqp1dFleo43sHGrc1GwACJkBlaFL/XqBu
-	z7Bkxh2BTHvaFs9cl3sj4QE+nBfpOEolNft8lLaJ+XfGRNkFl59C6e/zTgwtXewJGw5ELro4EM9
-	92zqY5r7gnXkQovHDhRR9ONhpWuGcbM6KrrL/7GxAARhuX1Diaey+23jPDRJUhN3WfPsBi3f2RK
-	cAs66I13PS8Bq2lm+2ExFgPUp97seYVy/mb/Ajc6plxx3F0DBHvmuNx/F2MqM8Wj5VCj2arVM0V
-	XioaXspcTluOQ6KYaArnhrY05uAawKXR43ROkHVDYhOEoQb3pD1r6wFUyYzRd+HulQ3ZKbgz7h6
-	yxaz/pU6Uj+FD+0zSrvpcFeHu1mjZIAiUdkzsXvSPbyOWrHq3ca33kqGbdKeKYOErGGDYX3kiG8
-	1J5iAHm7F/qm6/j1Zvt/R3bF7rOh4shz3yYNtlVA4oyo96EWnCY4CYjDpyuwclFiZXDMK6MIyYh
-	y7OTIAiIggo7yqI4/OC0qXgGhFxMx6jdNxgaLHnkaJYTKbs/vPrl2ano1Kp4eiPP4k1mbQyQ3tX
-	9XQbrZe1V63WSLwk=
-X-Received: by 2002:a05:6214:3d0d:b0:90e:8221:f1c7 with SMTP id 6a1803df08f44-91ca49e9c82mr156416236d6.1.1793579838604;
-        Sun, 01 Nov 2026 16:37:18 -0800 (PST)
-Received: from mbili.tail33bf8.ts.net ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ca7f23754sm77043066d6.9.2026.11.01.16.37.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 16:37:18 -0800 (PST)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Sashiko <sashiko-bot@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net v2 4/4] selftests: tc-testing: teql: reject attach from another netns
-Date: Sun,  1 Nov 2026 19:37:06 -0500
-Message-Id: <SER-NSBD.v2.r0.20261101171325-4@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <SER-NSBD.v2.r0.20261101171325@mojatatu.com>
-References: <SER-NSBD.v2.r0.20261101171325@mojatatu.com>
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=VYziuGgr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1793581026;
+	bh=Cl2AY7m+a6wt7oi+NbEe27ga14xwjHMo8dbTwxJ3rkE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VYziuGgrfai+SkYKj/cND5CyhLcVnUdiJfVMLo+O/jxbGrsPcpuiIAzuoH9x9MLbD
+	 41HDqZTogBMV3unrtEDlZ4Zo7gcLM6wtvS2fqZjlQohmXo6pPy5CiBeZJwtNt0V2E/
+	 Ac1VSfoDoZ5yVuJtXjqqKrkNHOBESH85P7HCYBv5AVXba4zGG4sKJCqN0LI7AEs19B
+	 H8ugzzJmZ/evDxJR48MNahfEnZ1d0jTcXqX0rs8auFRdbHnDyrwu5w0792HstgfUF0
+	 eU1YFq8bb1LIHvmn/+plL/+nYRGeR7vkiL3LERE8nigdqtGFuAWV4cfC4e2bOY49Ae
+	 k1It14w67stfQ==
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id 693C860076;
+	Mon,  2 Nov 2026 01:57:05 +0100 (CET)
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@kernel.org,
+	horms@kernel.org,
+	fw@strlen.de,
+	ja@ssi.bg
+Subject: [PATCH net 02/15] ipvs: wait grace period while reusing dest from trash
+Date: Mon,  2 Nov 2026 01:56:41 +0100
+Message-ID: <20261102005654.532438-3-pablo@netfilter.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261102005654.532438-1-pablo@netfilter.org>
+References: <20261102005654.532438-1-pablo@netfilter.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,67 +73,315 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Found by Sashiko (nipa) while reviewing the previous posting of the
-cross-netns rejection fix:
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/SER-NSBD.v1.r2.20261031160050-3%40mojatatu.com
+From: Darong Lu <zzyy19904204639@163.com>
 
-The issue:
-Case 124e covers the root-only rejection, but nsPlugin moves the test
-device into its own network namespace, so the namespace check answers it
-first unless the two checks run in the other order. Nothing else covers
-the namespace rejection: the teql0 master is registered in init_net, and
-a root qdisc attach from the test namespace must be refused with
--EOPNOTSUPP. Without a case of its own, a later reordering can make the
-namespace check answer 124e and leave the root check untested.
+Darong Lu and the VEGA team report a problem with the TWOS scheduler
+that manifests as a loop while traversing the list of destinations. The
+problem occurs if destinations are removed and re-added through the
+destination trash before an RCU grace period has elapsed. As destinations
+are re-added to a new service, CPUs traversing the old destination list
+may never reach the old list head and fail to terminate.
 
-The Fix:
-Add a case that attaches a root teql0 qdisc from the test namespace. The
-attach is a root qdisc as well, so only the namespace check can refuse
-it. Without the fix the attach succeeds and the master is mutated from
-the foreign namespace.
+As the problem is not specific to the TWOS scheduler, use a general
+solution. Jiayuan Chen provided an initial solution based on
+get_state_synchronize_rcu() and cond_synchronize_rcu(), where the grace
+period cookie is saved after a destination is unlinked and moved into the
+destination trash. cond_synchronize_rcu() then ensures the grace period
+before the destination is reused.
 
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Use a temporary list for destinations removed together from a service or
+during a flush. A single get_state_synchronize_rcu() call records the
+cookie for all destinations before the temporary list is spliced into the
+public destination trash. This also limits destination-trash locking to
+one acquisition for bulk removal.
+
+Destination edits that remove and re-add an entry to the real-server hash
+table use the same grace-period mechanism. Destinations returned to the
+trash after an estimator failure are put back without recording a new
+cookie.
+
+Fixes: ceec4c381681 ("ipvs: convert services to rcu")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Reported-by: Darong Lu <zzyy19904204639@163.com>
+Link: https://patch.msgid.link/cover.1789117690.git.zzyy19904204639@163.com/
+Co-developed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Darong Lu <zzyy19904204639@163.com>
+Signed-off-by: Ren Wei <weir@nebusec.ai>
+Signed-off-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
- .../tc-testing/tc-tests/qdiscs/teql.json      | 27 +++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ include/net/ip_vs.h            |   4 +-
+ net/netfilter/ipvs/ip_vs_ctl.c | 109 ++++++++++++++++++++++++++-------
+ 2 files changed, 90 insertions(+), 23 deletions(-)
 
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json
-index 0179c57104ad..3df315629d2f 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json
-@@ -106,5 +106,32 @@
-         "teardown": [
-             "$TC qdisc del dev $DUMMY root handle 1:"
-         ]
-+    },
-+    {
-+        "id": "6a06",
-+        "name": "Reject TEQL attach from a different network namespace",
-+        "category": [
-+            "qdisc",
-+            "teql"
-+        ],
-+        "plugins": {
-+            "requires": [
-+                "nsPlugin"
-+            ]
-+        },
-+        "setup": [],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY root handle 3: teql0",
-+        "expExitCode": "2",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc teql0 3: root",
-+        "matchCount": "0",
-+        "teardown": [
-+            [
-+                "$TC qdisc del dev $DUMMY root handle 3:",
-+                0,
-+                1,
-+                2
-+            ]
-+        ]
-     }
- ]
+diff --git a/include/net/ip_vs.h b/include/net/ip_vs.h
+index 9a83bff32569..50a2999beb01 100644
+--- a/include/net/ip_vs.h
++++ b/include/net/ip_vs.h
+@@ -1021,7 +1021,9 @@ struct ip_vs_dest {
+ 
+ 	struct rcu_head		rcu_head;
+ 	struct list_head	t_list;		/* in dest_trash */
+-	unsigned int		in_rs_table:1;	/* we are in rs_table */
++	unsigned long		rcu_state;	/* GP cookie when trashed */
++	unsigned int		in_rs_table:1,	/* we are in rs_table */
++				need_gp:1;	/* Need GP on rehash */
+ };
+ 
+ /* The scheduler object */
+diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
+index ce9fe20d6106..7f10cf5b48c7 100644
+--- a/net/netfilter/ipvs/ip_vs_ctl.c
++++ b/net/netfilter/ipvs/ip_vs_ctl.c
+@@ -64,7 +64,8 @@ int ip_vs_get_debug_level(void)
+ 
+ 
+ /*  Protos */
+-static void __ip_vs_del_service(struct ip_vs_service *svc, bool cleanup);
++static void __ip_vs_del_service(struct ip_vs_service *svc,
++				struct list_head *dest_trash, bool cleanup);
+ 
+ 
+ #ifdef CONFIG_IP_VS_IPV6
+@@ -918,6 +919,11 @@ static void ip_vs_rs_hash(struct netns_ipvs *ipvs, struct ip_vs_dest *dest)
+ 	 */
+ 	hash = ip_vs_rs_hashkey(dest->af, &dest->addr, port);
+ 
++	/* Need RCU grace period when rehashing */
++	if (dest->need_gp) {
++		cond_synchronize_rcu(dest->rcu_state);
++		dest->need_gp = 0;
++	}
+ 	hlist_add_head_rcu(&dest->d_list, &ipvs->rs_table[hash]);
+ 	dest->in_rs_table = 1;
+ }
+@@ -1111,6 +1117,8 @@ ip_vs_trash_get_dest(struct ip_vs_service *svc, int dest_af,
+ 	struct ip_vs_dest *dest;
+ 	struct netns_ipvs *ipvs = svc->ipvs;
+ 
++	lockdep_assert_held(&ipvs->service_mutex);
++
+ 	/*
+ 	 * Find the destination in trash
+ 	 */
+@@ -1144,24 +1152,57 @@ ip_vs_trash_get_dest(struct ip_vs_service *svc, int dest_af,
+ 	return dest;
+ }
+ 
+-/* Put destination in trash */
+-static void ip_vs_trash_put_dest(struct netns_ipvs *ipvs,
++/* Add destination in temp list for trash */
++static void ip_vs_trash_add_dest(struct netns_ipvs *ipvs,
+ 				 struct ip_vs_dest *dest, unsigned long istart,
+-				 bool cleanup)
++				 struct list_head *dest_trash)
+ {
+-	spin_lock_bh(&ipvs->dest_trash_lock);
+ 	IP_VS_DBG_BUF(3, "Moving dest %s:%u into trash, dest->refcnt=%d\n",
+ 		      IP_VS_DBG_ADDR(dest->af, &dest->addr), ntohs(dest->port),
+ 		      refcount_read(&dest->refcnt));
++	/* dest lives in trash with reference */
++	list_add(&dest->t_list, dest_trash);
++	dest->idle_start = istart;
++}
++
++/* Put destinations in trash */
++static void ip_vs_trash_put_dests(struct netns_ipvs *ipvs,
++				  struct list_head *dest_trash, bool cleanup)
++{
++	spin_lock_bh(&ipvs->dest_trash_lock);
+ 	if (list_empty(&ipvs->dest_trash) && !cleanup)
+ 		mod_timer(&ipvs->dest_trash_timer,
+ 			  jiffies + (IP_VS_DEST_TRASH_PERIOD >> 1));
+-	/* dest lives in trash with reference */
+-	list_add(&dest->t_list, &ipvs->dest_trash);
+-	dest->idle_start = istart;
++	list_splice(dest_trash, &ipvs->dest_trash);
+ 	spin_unlock_bh(&ipvs->dest_trash_lock);
+ }
+ 
++/* Put destination back in trash */
++static void ip_vs_trash_put_back(struct netns_ipvs *ipvs,
++				 struct ip_vs_dest *dest)
++{
++	LIST_HEAD(dest_trash);
++
++	ip_vs_trash_add_dest(ipvs, dest, dest->idle_start, &dest_trash);
++	ip_vs_trash_put_dests(ipvs, &dest_trash, false);
++}
++
++/* Put destinations in trash and save the RCU state */
++static void ip_vs_trash_save_dests(struct netns_ipvs *ipvs,
++				   struct list_head *dest_trash, bool cleanup)
++{
++	struct ip_vs_dest *dest;
++	unsigned long rcu_state;
++
++	if (!list_empty(dest_trash)) {
++		/* Remember when dests were removed and added to dest_trash */
++		rcu_state = get_state_synchronize_rcu();
++		list_for_each_entry(dest, dest_trash, t_list)
++			dest->rcu_state = rcu_state;
++		ip_vs_trash_put_dests(ipvs, dest_trash, cleanup);
++	}
++}
++
+ static void ip_vs_dest_rcu_free(struct rcu_head *head)
+ {
+ 	struct ip_vs_dest *dest;
+@@ -1369,8 +1410,16 @@ __ip_vs_update_dest(struct ip_vs_service *svc, struct ip_vs_dest *dest,
+ 	if ((udest->conn_flags & IP_VS_CONN_F_FWD_MASK) !=
+ 	    IP_VS_DFWD_METHOD(dest) ||
+ 	    udest->tun_type != dest->tun_type ||
+-	    udest->tun_port != dest->tun_port)
++	    udest->tun_port != dest->tun_port) {
++		bool unlinked = dest->in_rs_table;
++
+ 		ip_vs_rs_unhash(dest);
++		if (unlinked) {
++			dest->rcu_state = get_state_synchronize_rcu();
++			/* Need grace period in this or next dest update */
++			dest->need_gp = 1;
++		}
++	}
+ 
+ 	/* set the tunnel info */
+ 	dest->tun_type = udest->tun_type;
+@@ -1566,11 +1615,18 @@ ip_vs_add_dest(struct ip_vs_service *svc, struct ip_vs_dest_user_kern *udest)
+ 
+ 		ret = ip_vs_start_estimator(svc->ipvs, &dest->stats);
+ 		/* On error put back dest into the trash */
+-		if (ret < 0)
+-			ip_vs_trash_put_dest(svc->ipvs, dest, dest->idle_start,
+-					     false);
+-		else
++		if (ret < 0) {
++			ip_vs_trash_put_back(svc->ipvs, dest);
++		} else {
++			/* Readers may still follow the n_list/d_list of the
++			 * unlinked dest, wait before linking it again.
++			 */
++			cond_synchronize_rcu(dest->rcu_state);
++			/* need_gp matters only on dest edit, reinit it */
++			dest->need_gp = 0;
++
+ 			__ip_vs_update_dest(svc, dest, udest, 1);
++		}
+ 	} else {
+ 		/*
+ 		 * Allocate and initialize the dest structure
+@@ -1634,7 +1690,7 @@ ip_vs_edit_dest(struct ip_vs_service *svc, struct ip_vs_dest_user_kern *udest)
+  *	Delete a destination (must be already unlinked from the service)
+  */
+ static void __ip_vs_del_dest(struct netns_ipvs *ipvs, struct ip_vs_dest *dest,
+-			     bool cleanup)
++			     struct list_head *dest_trash, bool cleanup)
+ {
+ 	ip_vs_stop_estimator(ipvs, &dest->stats);
+ 
+@@ -1643,7 +1699,7 @@ static void __ip_vs_del_dest(struct netns_ipvs *ipvs, struct ip_vs_dest *dest,
+ 	 */
+ 	ip_vs_rs_unhash(dest);
+ 
+-	ip_vs_trash_put_dest(ipvs, dest, 0, cleanup);
++	ip_vs_trash_add_dest(ipvs, dest, 0, dest_trash);
+ 
+ 	/* Queue up delayed work to expire all no destination connections.
+ 	 * No-op when CONFIG_SYSCTL is disabled.
+@@ -1693,6 +1749,7 @@ ip_vs_del_dest(struct ip_vs_service *svc, struct ip_vs_dest_user_kern *udest)
+ {
+ 	struct ip_vs_dest *dest;
+ 	__be16 dport = udest->port;
++	LIST_HEAD(dest_trash);
+ 
+ 	/* We use function that requires RCU lock */
+ 	rcu_read_lock();
+@@ -1712,7 +1769,9 @@ ip_vs_del_dest(struct ip_vs_service *svc, struct ip_vs_dest_user_kern *udest)
+ 	/*
+ 	 *	Delete the destination
+ 	 */
+-	__ip_vs_del_dest(svc->ipvs, dest, false);
++	__ip_vs_del_dest(svc->ipvs, dest, &dest_trash, false);
++
++	ip_vs_trash_save_dests(svc->ipvs, &dest_trash, false);
+ 
+ 	return 0;
+ }
+@@ -2057,7 +2116,8 @@ ip_vs_edit_service(struct ip_vs_service *svc, struct ip_vs_service_user_kern *u)
+  *	- The service must be unlinked, unlocked and not referenced!
+  *	- We are called under _bh lock
+  */
+-static void __ip_vs_del_service(struct ip_vs_service *svc, bool cleanup)
++static void __ip_vs_del_service(struct ip_vs_service *svc,
++				struct list_head *dest_trash, bool cleanup)
+ {
+ 	struct ip_vs_dest *dest, *nxt;
+ 	struct ip_vs_scheduler *old_sched;
+@@ -2091,7 +2151,7 @@ static void __ip_vs_del_service(struct ip_vs_service *svc, bool cleanup)
+ 	 */
+ 	list_for_each_entry_safe(dest, nxt, &svc->destinations, n_list) {
+ 		__ip_vs_unlink_dest(svc, dest, 0);
+-		__ip_vs_del_dest(svc->ipvs, dest, cleanup);
++		__ip_vs_del_dest(svc->ipvs, dest, dest_trash, cleanup);
+ 	}
+ 
+ 	/*
+@@ -2114,7 +2174,8 @@ static void __ip_vs_del_service(struct ip_vs_service *svc, bool cleanup)
+ /*
+  * Unlink a service from list and try to delete it if its refcnt reached 0
+  */
+-static void ip_vs_unlink_service(struct ip_vs_service *svc, bool cleanup)
++static void ip_vs_unlink_service(struct ip_vs_service *svc,
++				 struct list_head *dest_trash, bool cleanup)
+ {
+ 	ip_vs_unregister_conntrack(svc);
+ 	/* Hold svc to avoid double release from dest_trash */
+@@ -2124,7 +2185,7 @@ static void ip_vs_unlink_service(struct ip_vs_service *svc, bool cleanup)
+ 	 */
+ 	ip_vs_svc_unhash(svc);
+ 
+-	__ip_vs_del_service(svc, cleanup);
++	__ip_vs_del_service(svc, dest_trash, cleanup);
+ }
+ 
+ /*
+@@ -2134,12 +2195,14 @@ static int ip_vs_del_service(struct ip_vs_service *svc)
+ {
+ 	struct netns_ipvs *ipvs;
+ 	struct ip_vs_rht *t, *p;
++	LIST_HEAD(dest_trash);
+ 	int ns;
+ 
+ 	if (svc == NULL)
+ 		return -EEXIST;
+ 	ipvs = svc->ipvs;
+-	ip_vs_unlink_service(svc, false);
++	ip_vs_unlink_service(svc, &dest_trash, false);
++	ip_vs_trash_save_dests(ipvs, &dest_trash, false);
+ 
+ 	/* Drop the table if no more services */
+ 	ns = ip_vs_get_num_services(ipvs);
+@@ -2190,6 +2253,7 @@ static int ip_vs_flush(struct netns_ipvs *ipvs, bool cleanup)
+ 	struct hlist_bl_node *ne;
+ 	struct hlist_bl_node *e;
+ 	struct ip_vs_rht *t, *p;
++	LIST_HEAD(dest_trash);
+ 
+ 	/* Stop the resizer and drop the tables */
+ 	if (!test_and_set_bit(IP_VS_WORK_SVC_NORESIZE, &ipvs->work_flags))
+@@ -2199,8 +2263,9 @@ static int ip_vs_flush(struct netns_ipvs *ipvs, bool cleanup)
+ 	if (ip_vs_get_num_services(ipvs)) {
+ 		ip_vs_rht_walk_buckets(ipvs->svc_table, head) {
+ 			hlist_bl_for_each_entry_safe(svc, e, ne, head, s_list)
+-				ip_vs_unlink_service(svc, cleanup);
++				ip_vs_unlink_service(svc, &dest_trash, cleanup);
+ 		}
++		ip_vs_trash_save_dests(ipvs, &dest_trash, cleanup);
+ 	}
+ 
+ 	/* Unregister the hash table and release it after RCU grace period */
 -- 
-2.43.0
+2.47.3
 
