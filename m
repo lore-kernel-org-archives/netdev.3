@@ -1,99 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793653915;
-	b=GXvfyD2zU2lPJjbJBlQCF2/8parMekGL6WFcRCrkZGXQOOMsiwaXcmCOtyX3zGDUgZTq
-	 gW0BpgZ4HfQdIgpBDMS/a/qjNKgTJkWspnqLEEqnQkt4rTaESPw2BqB2hLIOxMAY2p8SG
-	 2Dxqf7vfW/EvLkVh3cd2A7fvp+bCS95ARKpDI8iPzH9IuoJiK48MMCcZvqLbVGHFh59tv
-	 FHdGhj8Lfc1LoQIwp2ZkSLaRJYbHSyFhrV/Wtq9u4IFBK123Jv2cVdYtfGo+x+Nzippcd
-	 xjaIWKpYoNMCuw1hau9raM5Zk1bvOPu1fLz+jZxbnAEpMTz7SX9FaGY/2ttgi35z8zg==
+	t=1793653906;
+	b=iGL7gUWQk3g6DXh0SwMASLul2JP6hxXu1zazD6wzDDpkUzk0pHDLk72mNNRafj1LTszk
+	 zlwTrBuWQ0f0fGbXhMLO3qK9an3akPhuOuMmYYmuIxNB6pB04ez1vDq8G9Q96ZSGAZvh2
+	 4QRAHCltSWW9vzLwjb+eRxS2n35bbIYEQ2QPcaZxE1OYzA+LR2+poFYDkZGVswt+V7XhP
+	 HijSZcAH2ZcNmz54UIVZL33Mo5wnbXKAD8n4pXdugg92KaXBolP5LR1Q7RcF6TAlgoF9B
+	 fdc1VaV54NgHaSAozWGu3/u8FVUhIzAdxtsIoYoXqyhhjUoZf4L0co+ysDIbWKkKbCg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793653915;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=zp0V6uq9cSdHG3OMQtcSrfjn66ui+Jf9Vm1BV0hp92U=;
-	b=BNo521yqUYPFnLelIPCsOTCVaNx9KBhvS6Gy4F9WLRO4+BJE9Nvh1yN5lQxFfm/0SnmW
-	 XiTxgWS9H3mwcTzo8l4vt2LE/VHwdALZb8zP0j5fp3yMlYhT1MiU4YA9FhbAxQj2qV3ZI
-	 StRltTMJGQX1MFIqlEkPr+XIl+uWjEdkpTBXilUqyTl14TtcjZ5E8tHh7aF6uaf03E9QM
-	 Y8U2JN8YbMG0d8UoGKxxWbtL3evW4Chq6YK2guOWe2wspuoBpO1Azjg5CrmVpu+jP3/RX
-	 3lUNtOHaK5v2ytnDgXID2lcGs/GJqKzhs08QZ+PIq9zW6XdMpft+SfVmI/tccPWHHEw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793653906;
+	h=Received:DKIM-Signature:Received:Received:X-ME-Sender:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
+	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
+	 References:Subject:Content-Type:Content-Transfer-Encoding;
+	bh=xxWoHxsw4VPFqHPAqACZbusTmTkHUnFSnkXXJwnJ4WA=;
+	b=DFJTc1CEvVIBsE/vDp8FgdYWBusDQZHFflIrh5oW/B32SZLIGQe/MLZMUSFRohzpSU2U
+	 xktzhiRHQ5SNoX/FLja7Diuq1gcdHE3UtQTkXK6Nq0OERx4vpa+G2Ww5cuL9xIULnvD3h
+	 y+IFIc4AxDg4dqPSYsOxaL/9xDSfS5m2zkY5J9FtMxLZ+U7la9gNCnmz0OZTmNMAiZHyx
+	 Gz2MoyzXwSTqpYg4XTdf484CQXDUjGN0sTtN94DawulSJSjyDgd9l4K9YRIZV3n9PBlvz
+	 xTrxEZPMOrda1QqTGCvzAsKlorCC9BUbUbkbci++92fUGXEHEQbVVbL7p0GJLU9PkWg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=pw7n9TV3;
-	arc=none smtp.remote-ip=209.85.221.53
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XZe6+tyY;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13664606A333
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 21:11:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13664606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB1D606A329;
+	Mon,  2 Nov 2026 21:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=pw7n9TV3
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48e1d0e5dafso33615f8f.1
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 13:11:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793653912; x=1794258712; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zp0V6uq9cSdHG3OMQtcSrfjn66ui+Jf9Vm1BV0hp92U=;
-        b=pw7n9TV3hXbr93+QK6KCZ4NiaMlSC9VR2NTKxZ2G0KbF5cf0GwPv6+wTsD2HFv5pVF
-         41/qrKMfz9jKsmJZ8B6zEoboqIokpkDk4hzu+vBELk2zJJ+itarOLBYTqepkoemmJL6Y
-         +s3X6mqVytQDAU3hRx4MntWocJJazcWWDfg1ze9l8hGMJhPRDsb9ghwED4Tqp47s4Yvl
-         5q+5uXdv+U2UtaXe5/+l3LWdkvL+on2ieWX92QKKxz0PGib0vx5UxbXbc/kOtIg/2NZf
-         r05xepgHxRbEPNpzHdkgCorevDEHFHAZbZlqVZ5Y50/PKFcyBOVIggBydWpyBRWzYQ/c
-         lWgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793653912; x=1794258712;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zp0V6uq9cSdHG3OMQtcSrfjn66ui+Jf9Vm1BV0hp92U=;
-        b=zvD2qU+yzx2uWMx966e8s8KLM3JRSZlCWG5FE1UW/UDDJWw2FJFlWPS3YaOwfO09uJ
-         LatNfqUdZ7FKb6XMcdBWA74A156blFCRcIYbiPuJk71RLklpYSPeoLO5WO+eFGeld7o3
-         5wf4aSi+QytAQTeLQCJf1pOvkss+U/WJ9DUJtAJdRvoC39c//J2C5wkldQhAW+zOqsyx
-         CoqCRB8I/oKK+fNCo816Oadt+xNgF1LFDyG75XZw7vGEgGGuShfI1Pv50ipj9tpiNxFW
-         C84ND214fx5N2Kn+VpWJbOKaX7MI4UMpctkBvLuwQyZmtqt36qzQJUsgH/YPJfNAIXnM
-         Pxig==
-X-Forwarded-Encrypted: i=1; AKwUvBwtIu6CvM6XgVVDad7IaacXFhHXWbf4yBvZWeffIewFAm4tLGkuInTdsMO5AIqgq+kl8aeQn7c=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/3Ahw0w+0ttl4/uFoiFoykLZ9JXfcRABv1wgey/qNHpGWaoUeh
-	E00HmIqdHVw93Ago8Ynj4OD4lAL+ZDL06ni6nGktZ4eTCndYOaEq06Lx
-X-Gm-Gg: AYBFou1t1KQzguLDSIHJjyeEHylUgU//RXa0JbB+Yjxnn7EqNkGFVvyCWk6GvAXp1C4
-	PHXvxSQCs1vJP71GSibkT8dGbkWRhaMo7PW3DhqtUU0E7wH+ZbeeO0liyP8cAxiu8d271X9pnEl
-	mm5ijImzsWh+pZCSSWNCaEkp6BTVEx7bx6Q8oWL6S6ncS9oN5/4CusDBEBdokMlBnXbc/9D9xDh
-	/CON/cI2H/9vVb3zOsUZC1qB+KukV01u2T+jqkpVJXfD3CBuFwFdTw4uQniNNvZtU/iI1l42LEE
-	xRii2Qj2ZrumoGAXB+XjC6uHaDymJQ8SvM6i+Oc3oyRq4Q4GlAYzmNlBcmIp6WzWy1oNSeAQzII
-	YYXbluMZQ9rJ/qjkxrAzR4LaHV1E813Op5vJxWzNEM/YKdfZ2X7XZEz8JlwZ1GSN6WYDu+eqA0R
-	pjcBNz95vnOD0dRAAxAILG2UMn6OawCy6OtD8m0ecLkIdpjZWoxiNJYzODc7X0/GxzVXba3umNA
-	mWYxI8Wb6+goKiwWKySv56odlR5QNRSGZkheIIp43eBBQD3XlEGTVRrti9rUscIfs1nztWKtJGm
-	iTTXPK30yI14pEtuzWIVjeJMjVAHaJ19ZZ6GEt1O+0dMU2DrSkhlA9uhm57LT1efoPjeKeRKJw=
-	=
-X-Received: by 2002:a5d:584e:0:b0:48e:6669:fefb with SMTP id ffacd0b85a97d-48e6e2e2369mr26875294f8f.22.1793653912530;
-        Mon, 02 Nov 2026 13:11:52 -0800 (PST)
-Received: from fedora.fritz.box ([93.93.22.191])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b728ddsm21535520f8f.9.2026.11.02.13.11.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 13:11:52 -0800 (PST)
-From: Stefano Munari <stefanomunari.sm@gmail.com>
-To: Thangaraj Samynathan <Thangaraj.S@microchip.com>
-Cc: UNGLinuxDriver@microchip.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3] net: usb: lan78xx: fix error handling in lan78xx_open()
-Date: Mon,  2 Nov 2026 22:11:19 +0100
-Message-ID: <20261102211119.8738-1-stefanomunari.sm@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XZe6+tyY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F96B1F00A16;
+	Mon,  2 Nov 2026 21:11:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793653905;
+	bh=xxWoHxsw4VPFqHPAqACZbusTmTkHUnFSnkXXJwnJ4WA=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=XZe6+tyYLswAenBO8yAzFdeWRzKxvbqg1Ev/mg/a4IY5Ykl6dyrcjlnUec04HQhAB
+	 wUqBfr7XNAis1gRkRlwuGTTv/aLI8n5inKL/pOeo0qX2ZMVH6ZsIHjb5NCZh9zUPL2
+	 o/ohakMyhEJMO6zYmevE4LT4/D6JmGaT3h4w7BN89zF2VUs59WIhKi/DP83L+kUnC9
+	 SsDT8nIZxjYMyLxMxFoJC8PTJcen/wSXsZsrKVj0Q0tCq0A7kxVFkRR+wzfD8le+If
+	 Wl/DtyEEVNWoCvyuUqF5srUDKOCiBW/Gb9kIb+nJ5eqrm2qnqAgrPwEWkqx/H5R5yQ
+	 Crn9JOHwAhkOw==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 9A2D2F40069;
+	Mon,  2 Nov 2026 16:11:44 -0500 (EST)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Mon, 02 Nov 2026 16:11:44 -0500
+X-ME-Sender: <xms:kPzoauT46RzZZAtJ9pk6EmeQC8cMELBagB3u1iMeAaHmOjnENab40A>
+    <xme:kPzoaumk-opmRQlpeWeKnkRMlTth_z6pBLrv31d5JNfpKtehryrVtBuG3qfafkapL
+    0UJlxT0ifcf_WdI3louCiTK_NZW_9YRI03kfo2jNxtQamFkpy63zY0b>
+X-ME-Proxy-Cause: dmFkZTGGTt1pQq16zbZlBikp5z2kGCzhIzyCgkLQFgSXoffQhlPZQXfjBFq1ZiXvdSuuXZ
+    LGfrLfwbRgm8cT/TQHLtmkS2wq/scJf8NlSAUsi0B9JpHEGQcArw2onxUgxSVXeSq73Th3
+    +MD0Qi/P+BTULU9VUvoeDDNpVnNmDbD7jQoN3v4l/IoJhT2uLJVTZ+qQoBDMXBdvnbBuoB
+    9tDR+if4J7M64uHI42/0BjtEfvrRTVsfVuGRQKjlc4H4/Tpb6Ukdvkgbe36C9jT+yX7xq2
+    jBGJCbh4CPX6idD2imiKQ6v9tm9bzRUVfoBUnOyYFMrBkFYiOOBWgnG0kr7aHqxli45kQp
+    ohMXmtjBzal9CB+YgOYOkiE9b51wZucg/4Qex1khPYx+JLGLu0NEFrvGtoRmQ6eE2VafNW
+    CY+B7UtOu2dLLX0YzJKc7HKLrBl+UhzkRfMrCHLaMOitCefJUNU2mkw7vcohOcdeMVRCgw
+    TQWRrq9hCVC/B8Rxe6VYHSl8gHOGuRazDUmW6qr5GDwgwEuKJT0vVpSDws8RN4u7/JR2Bw
+    7Q9JGl1Z/LH2lgcMAQgF+wjiqdsKo0vCxpzH21ZsG7KiWO33lqILFRfkvZC562OP5TxBQG
+    hvqFJiKnoaGgu8gvbQah48jOhQq3KspK10b5m5ASEOwP4kkYmm4PvM17d+KA
+X-ME-Proxy: <xmx:kPzoakThPn76RnRib5bZ_FntPITCT1o4Ovwx9E8rstI1voUg5JpAIA>
+    <xmx:kPzoahfEU2tfoiygDyUOVgUPLZrN0jZ-87YF5q5IhIxNwkm1ztvL0w>
+    <xmx:kPzoatetgw6gOoAhlTHOnt-HZbmjY916FiHHIyaUhhTihCSwAOX_gA>
+    <xmx:kPzoaj1ywieDU5FAFn3LFQMJapowgQlEbMPUeurA4l5-zBDlAnyByg>
+    <xmx:kPzoat9Ejs2zX8NiQVdXzLsXpl7UKGdgzTPDTECnMqAK4pso_NRi0RMI>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 7098678273B; Mon,  2 Nov 2026 16:11:44 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,61 +77,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-ThreadId: AFgPYeWZplpR
+Date: Mon, 02 Nov 2026 16:11:23 -0500
+From: "Chuck Lever" <cel@kernel.org>
+To: "Christian Brauner" <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
+Cc: "Linus Torvalds" <torvalds@linux-foundation.org>,
+ "Jann Horn" <jannh@google.com>, "Josef Bacik" <josef@toxicpanda.com>,
+ "Chris Mason" <mason@kernel.org>, "Jeff Layton" <jlayton@kernel.org>,
+ NeilBrown <neil@brown.name>, "Eric Dumazet" <edumazet@kernel.org>,
+ "Thomas Gleixner" <tglx@kernel.org>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Jonathan Corbet" <corbet@lwn.net>, "Christoph Hellwig" <hch@lst.de>,
+ "Greg Kroah-Hartman" <gregkh@suse.de>,
+ "Joel Granados" <joel.granados@kernel.org>, "Kees Cook" <kees@kernel.org>,
+ "Jan Kara" <jack@suse.cz>, "Jan Kara" <jack@suse.com>,
+ linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-s390@vger.kernel.org,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ linux-um@lists.infradead.org, linux-wireless@vger.kernel.org,
+ "Linuxppc Dev" <linuxppc-dev@lists.ozlabs.org>, netdev@vger.kernel.org,
+ ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org,
+ coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org,
+ linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, ibm-acpi-devel@lists.sourceforge.net,
+ jfs-discussion@lists.sourceforge.net, linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org,
+ linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org,
+ linux-sh@vger.kernel.org, linux-usb@vger.kernel.org,
+ samba-technical@lists.samba.org, sparclinux@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org,
+ linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net,
+ "Takashi Iwai" <tiwai@suse.de>, linux-input@vger.kernel.org,
+ linux-raid@vger.kernel.org, linux-ext4@vger.kernel.org,
+ linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org
+Message-Id: <7ee779f9-db3d-4829-bdd8-1d09e3f74c43@app.fastmail.com>
+In-Reply-To: <20261102-work-procfs-net-v1-6-982104a4f592@kernel.org>
+References: <20261102-work-procfs-net-v1-0-982104a4f592@kernel.org>
+ <20261102-work-procfs-net-v1-6-982104a4f592@kernel.org>
+Subject: Re: [PATCH RFC 06/11] SUNRPC: let procfs own the seq_file of the cache content
+ file
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-A failed interrupt URB submission leaves NAPI enabled and EVENT_DEV_OPEN
-set. A subsequent open enables NAPI again, triggering BUG_ON() in
-napi_enable().
 
-Clear EVENT_DEV_OPEN and disable NAPI on the submission error path.
 
-Reproduced using failslab on a Raspberry Pi 3 Model B+ (LAN7515).
-With the fix, the injected allocation failure returns -ENOMEM and a
-subsequent open succeeds. Verified connectivity with ping and SSH.
+On Mon, Nov 2, 2026, at 10:07 AM, Christian Brauner wrote:
+> Declare the seq_operations and let procfs open and free the seq_file of
+> /proc/net/rpc/<cache>/content. ->proc_open() and ->proc_release() only
+> take and drop the module reference and set up ->private now. The
+> rpc_pipefs file is unchanged. Reading the procfs file then no longer
+> holds up its removal when the network namespace goes away.
+>
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-Signed-off-by: Stefano Munari <stefanomunari.sm@gmail.com>
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
----
-v3:
-- Target net-next and drop the Fixes tag as requested by Andrew.
-v2: https://lore.kernel.org/netdev/20261020202614.30277-1-stefanomunari.sm@gmail.com
-- Move cleanup code to err_napi unwind label as suggested by Nicolai.
-- Add Nicolai's Reviewed-by tag.
-v1: https://lore.kernel.org/netdev/20261016000521.92868-1-stefanomunari.sm@gmail.com
----
- drivers/net/usb/lan78xx.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+Acked-by: Chuck Lever <cel@kernel.org>
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 181e8c087..d73002b2c 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -3497,17 +3497,20 @@ static int lan78xx_open(struct net_device *net)
- 		if (ret < 0) {
- 			netif_err(dev, ifup, dev->net,
- 				  "intr submit %d\n", ret);
--			goto done;
-+			goto err_napi;
- 		}
- 	}
- 
- 	phylink_start(dev->phylink);
--
--done:
- 	mutex_unlock(&dev->dev_mutex);
- 
--	if (ret < 0)
--		usb_autopm_put_interface(dev->intf);
-+	return 0;
-+
-+err_napi:
-+	clear_bit(EVENT_DEV_OPEN, &dev->flags);
-+	napi_disable(&dev->napi);
-+	mutex_unlock(&dev->dev_mutex);
-+	usb_autopm_put_interface(dev->intf);
- 
- 	return ret;
- }
+
 -- 
-2.55.0
-
+Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
