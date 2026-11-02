@@ -1,80 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793614294;
-	b=YzpI1mOlwR5inHuSetMkUILPLI9WPYfBBAhTXCjUgtfeoykmwDzxKm+J6CT8ZDoKoRgM
-	 2LYO4nOS0OBn7v6SlOmPrvjBGrdTv2WGIUa3xK6anH3Yb8OrSGZCLsWQVqmg1IK2gFgnm
-	 cLhZ3OhwH1H8aPwwstGCWvwiFe+F1Xg90gAC+gdWyuiHKB9hS4mpTi2/pnflcSaKpoA8a
-	 yECjb4LfYkkgs341cfy/Eqp46vt97lQeEuQvbeShQpFMepbkZ5fEoMpL6LSNdya7urX2x
-	 kk8ftuhyXsqwpcxlwk2Pvx6T1SV2gXoFDrIVNQ3nG+bfl5qeXCrZ79Sw4yDgMyHfnJQ==
+	t=1793614424;
+	b=V0QJljRGB4kAb8fDY//6RAg+OKbDPREe0taeFsA1IoxmnUYPCKQ/bIi7lqOvYBzeLQSB
+	 PBLMobxjFHWoQ2no+dQbDITB7EgmkcXQhv/wBxRFDuK+ZGsU7u450qkp7rCSjPbxpDfdl
+	 hkhsKLtoQbi0QD8OANt6/tBZfcSG90Jx/DyhKS0yuyHyB1bQ6LTin46hCxZETwselXjYR
+	 FYsqU2zkS3b/KlQAEU+tCHL6PdTQhA7x4By4HdsGI9Y61L8IUPgpxv0TUiEi3hqi2lQnH
+	 IF3BSdGk1Op2hVUsVKiL8GynzHap6Luta7RHFZVZqt1Aix2MFekEix9dROK7AnmgDJA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793614294;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793614424;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=2fesLx5j3c6ocneASa5f1jcn6vQE9b0l3vKBizXZuJY=;
-	b=U7yhQfHuTRtVrZS0Z9zgYe573FCP70QwuLNZo/DVeAXpq+y7ykMeU68EHsbW2bvCXgCM
-	 GtOZ6brGpil1VnNzKC1+nja84MQYiWwpfWzNjkxOX5BDOIhrabiN/K4h30of7ACoMHOQH
-	 ieQplmRL2mK87Sb3D0ZiAtd7XzcUSEdjcLQjfBgYGt9S5TAPSjfjgMwS2K1T7LCP0mBcg
-	 t6dPpMZsvtkjNvvdv0R+75uSEFcpUGntdxUfNfmJpX9psotkYteovreVrIsvYdeBinA6F
-	 sHgIgW532GGGXo8svrAXjdCz2MrVuD0G+1AJuLyNXZS5+WzEJJky8RrH0Tb3YmDWDeQ==
+	bh=0/YKtDl3kyknZEf1poD/4hGve8tGLQ14nN7yKL9Ojgs=;
+	b=jl4zVYFRiEqPS3HioYPs8hRzjQki1JhmQXklFTOlXQecATM2g7bIzfWaKxun3Yv/Oq/Z
+	 gbbiQqzPNRwDRz83zA/dBKqg5ZZe7/QPd8stpQSST7qEfD1Tvv8cmgp95u4b3B6CGFClZ
+	 udfI6iAs+QFFV6bEAUH10BPYx+/ArltMOSquRZjvZYC8Al9KBFmJCxnWXYXE3aiQV3r5t
+	 yhVqNB/iGFVXFP/x0K2alwlojL/6ijJOY5C03U/8LXgWUzVmJ1lyU1YPAhblWhWUq9tVB
+	 ZDFZPObQyjnoE9omy5q4ZumUZMxGwnG07VdgPLUvInoTsKhs1msSGmJPuLA95IrZC0A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="BS0P/Yey";
-	arc=none smtp.remote-ip=209.85.214.178
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PGgoNLh0;
+	arc=none smtp.remote-ip=209.85.216.44
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40193606A326
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 10:11:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40193606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F0B606A326
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 10:13:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 36F0B606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BS0P/Yey
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2e9eb579c0eso14191375ad.3
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 02:11:33 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PGgoNLh0
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3adac5c10e3so1730141a91.0
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 02:13:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793614292; x=1794219092; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793614423; x=1794219223; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2fesLx5j3c6ocneASa5f1jcn6vQE9b0l3vKBizXZuJY=;
-        b=BS0P/YeyM6aG6e5heswCcwQeFFffXjiKuRIcmTIFPii2q+J0iRslffoHni+2Vwm2C8
-         sJMXnOrriGjE6i66pL5WItmUwuoyiifPUABVxfHfnAO9zbZ1OL3G31ViFFhACfdZ4vzB
-         ijMq4mz8WlyRKaTTXBwOYag5C5IAxHZEUcwF0g2NJdtzRFEZVVNGNhrWiQN6Xzysgx0r
-         m8Ts/DrsNGnGQOPg8UxvKFBuEysUICKNyh50ACb/K4HhEDoVpMTiccaHPdXnDzfUKaX8
-         l6p507ZWOC9VXDDIA8fdD4ICMnEBkWuPaW6SHHuPXM872/kWcOviS6qBs56I3piNWy7Z
-         zD6g==
+        bh=0/YKtDl3kyknZEf1poD/4hGve8tGLQ14nN7yKL9Ojgs=;
+        b=PGgoNLh0EZlQj4dyv9MgssIQx/bFbr7KGJXYLtareFgZ5/RICqwI1uLgg3BN09QKA8
+         ZGm8OO93Yx0bvbYl8YvMKevNkWkIVmRUo32NRZteidD1Ze/thdX7yjKt/rVD1xR3cdE0
+         Txoc2xuHV6qG+HpiIZrlCKmu1qEs/QUU5syyEKZWJtdi8cnOF/1jE9mc/FzUwLOeJE1a
+         YlKhk2n9g0pBJStgek4JKrTQ0XOByPzb4KCkdEbWQoIkMNHSyBV92/0PYjxtF1ylAWi0
+         JeF/7WHDgL8Z41Zs7DdtPY64TMeN8Dywv4uPGme1gnJFOJoRHMpbgtUg2HQVUwVRefgF
+         eJuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793614292; x=1794219092;
+        d=1e100.net; s=20260707; t=1793614423; x=1794219223;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=2fesLx5j3c6ocneASa5f1jcn6vQE9b0l3vKBizXZuJY=;
-        b=UZH1WAgh0XZ1KGogDPZb70hbKyEJunGG5NRrg9nWxOTOcTM1pd1PYDO6VBbRJiRzie
-         gh4AlBxG4SIojT1fQhWS1kSZAeY20kLHzgXvIfdubIbK8+/4+nMxy+raVxbg/mbVAjSs
-         iRhLTeVUTAXCO787ZAUvEqOqPLegznsabmwSGDogtjIHFyPpUNJct6yl7jifVS56MVvE
-         jSo8YEOfMaDWcZzh4c/8n/JmVwhRvd158iL76bfDbsrX1/8Jwhe5P3I1zfTvUgGnPORB
-         OvvHlN3eU2P7rsNLGIgfzzTxA+3TO0hdthvP5gnHTkLY8yEr39+H2Z4re1id7zRfmq8h
-         hFAA==
-X-Gm-Message-State: APuU4Z8YJzAW3y1yKZLjDIGVfEc+wVreY4yo2n0t8JdQmbCJ6Oj6qukG
-	nXwVc9YcPAX2k0wUMcFAzUGiyReTetgzoGfRXAM+mz0w991VP44JlLnOh0gZhw==
-X-Gm-Gg: AYBFou1Ar4RexW2cyr1o5v4giQuVYp3vmGsmILoaXh4tpX0eIU4bUnE/F8QqEg/Pnl4
-	Kx/uh4Xmili0QwbjaPT0EZvFwO6d9NZWKwNq9qhvBknhPPwhQ5gwkeFvUk0xFmkXQW1NC4dnkUZ
-	VdZ0zdRMQAmTAW+wjww8AIBkjDe0D39Ei1ppWWn+7FKMP56i0q9jcwfOcxHPIBIShrey3opRdp6
-	BUjctCfTDiloc5CAaFyOpEgzBYP/SCk67ePkJSFxADHece1K1HwdYhBFZSwBR5aRaxzWn6vZJFL
-	9/8wN2Vg8KbO6NubnfuiqDHiOcIDovXnMOvTF2ymVt2Rwim2Mn7xsR4UVpHFoMjOYh/ghS4LXC6
-	jxOn+QLSokblJGkWoobtv+kJxIsQim0ZGahLDa6q0FhNatAF2Z0aLJQf8+pUtw+hnG98wDANEfS
-	ND6WpqSIXlDwtG++XDaSrcA292uERYkOJYhrrVaQpsmbvLTGbUvguxK2XKsoqCykCaYJR1IBQHf
-	080St3l7JThFcwtPiDf8sC1hGsF7xIRVU/n9inWiLAEXbijEI7hjdrVLk+O5MqlFKi330kCPQVt
-	FkyyyiWd8yIKbbqO2HzTs/Fp3Eat2st7/caQqrjoXsBAU/dZhdEp
-X-Received: by 2002:a17:902:d510:b0:2df:8d6a:3548 with SMTP id d9443c01a7336-2eb3646e48amr84625755ad.48.1793614292469;
-        Mon, 02 Nov 2026 02:11:32 -0800 (PST)
+        bh=0/YKtDl3kyknZEf1poD/4hGve8tGLQ14nN7yKL9Ojgs=;
+        b=XFnQHwmT7Blakc671Yz6toEoTjXDbuVda7l+bTxkkoob+LinLfKnrTN/JXAH4dMcaD
+         vhqisTj/k0mslhV3fWj27aR3dQrHCFB5ahyUpqNSvta+Jx+4BiXDDaHzCfZwurzNneiC
+         Ba0Gxl/ai7fkZ3CQ0bji0i4ubtZ4kNSNbRFHMqjSQHvE/JmzRmpYOpVKWRiDOf0ZYdFV
+         xds2ElQDAsDipxHz1Iiz3eCCa763hPtDIMnuRjQ8dqS7mR7AnMXlMUD+Aw8GJ20w3A3+
+         wj03AIKLp0v97BkS7T5UW3TBkn3zG2oISs4ZFzf2ryducOEp2MKqJajtU4pqxzM97Fn+
+         Ub/A==
+X-Gm-Message-State: APuU4Z8aleC+KulVl04MBhhPdzBYuxNhQeIi1+jrKTRZRd6ArPhQIB/G
+	nEWKYGObnVrI4LdUX6Nm8zWAAxUVs313tvihCqeW0z+Edh9YX6I4lgeC+86/dg==
+X-Gm-Gg: AYBFou0JkMK5CY5MWdBStgZFcIS8baOkiWcGN5/j1FOIxkDOU0IbzyFeUONhEFNSq1Q
+	geCfiZLnJD9KcRrhTlCi1xnl5S2ZwSk9L9MnQSPiqBuMaS6R6WZcgfBNC1A8M/RtjIo7c81/N8E
+	pK1hVZlJrEA1BqKN8V0kR4WILaVvMcKHyWY/M/DOoN6hI/pMQRegGWM4kJMnlzuGQUQ3bRAC/El
+	0bIamJwPpQZnP9k+Lc/9JxR8vTP2EvNx8TqIBtTMbJOzWu4SmigVR12X1dxHaYQTAsZBfm1zoNB
+	DcqeRiUpYJRS62bzO0hgXO0kZGKo9/VlPj0EA0RFrqWAgA9JDZdIDRHTBLAwXIEO2H1uL+Q6iUr
+	a+su6pNx2D+Fc2l5qP2zt5bxqb6WhDjnDke6SmuGZLtfByUfnxo0rg9wQlExVekV8FbMp1jiZ+Z
+	M2F2wVC0IASG4qmRv138ruB2d3T05/rsSGhz3pX6eTkHo18HapRmMwNgrBZdjluNd8YdhyC6zbs
+	Q+s+d2YnC7VdsEqCP5WXVT6czr+Lcyue7SDQZQTbcFshFRfP7Lmf0SWXda8oniLEMXEN/U4oF+e
+	Hvk1LEGC/qpn2b/+CLcuJUH+xZ6NalHRF2/NMC2RPlcIbi3SQaUXd9nHc3i288oAHzQJCvZbkQ=
+	=
+X-Received: by 2002:a17:90b:2711:b0:3ac:7449:40b4 with SMTP id 98e67ed59e1d1-3ae8981bdebmr6716889a91.45.1793614423391;
+        Mon, 02 Nov 2026 02:13:43 -0800 (PST)
 Received: from d.home.yangfl.dn42 ([2a09:bac1:7680:28::4:396])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eb392492fbsm25667235ad.32.2026.11.02.02.11.28
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e7d5b8csm18762641a91.1.2026.11.02.02.13.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 02:11:31 -0800 (PST)
+        Mon, 02 Nov 2026 02:13:43 -0800 (PST)
 From: David Yang <mmyangfl@gmail.com>
 To: netdev@vger.kernel.org
 Cc: David Yang <mmyangfl@gmail.com>,
@@ -85,9 +86,9 @@ Cc: David Yang <mmyangfl@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: dsa: motorcomm: Clear the MIB buffer on chip reset
-Date: Mon,  2 Nov 2026 18:11:21 +0800
-Message-ID: <20261102101125.3523835-1-mmyangfl@gmail.com>
+Subject: [PATCH net] net: dsa: motorcomm: Do not publish partial MIB sample
+Date: Mon,  2 Nov 2026 18:13:31 +0800
+Message-ID: <20261102101334.3525485-1-mmyangfl@gmail.com>
 X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -100,46 +101,48 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-.setup() can run again within one registration: removing another switch
-from the tree tears the whole tree down, and re-probing sets every
-member switch up again. The hardware reset at the start of .setup()
-brings the MIB counters back to zero, but a MIB block kept across that
-cycle still holds the old software buffer, so the next yt921x_mib_read()
-treats the small value as a 32-bit wrap and adds 2^32 to every counter
-it extends.
+When a register read failed midway, the buffer was published anyway,
+mixing fresh packet counters with stale byte counters; get_stats64 then
+subtracts ETH_FCS_LEN per packet from the stale byte counter and
+underflows on unsigned arithmetic.
 
-.port_teardown() keeps the MIB block on purpose and .port_setup() only
-zeroes a freshly allocated one, so clear the buffer in .setup() together
-with the hardware counters it extends. The published stats need no
-handling; every entry is republished from the buffer.
+Keep the last complete sample instead.
 
 Fixes: 186623f4aa72 ("net: dsa: yt921x: Add support for Motorcomm YT921x")
 Signed-off-by: David Yang <mmyangfl@gmail.com>
 ---
- drivers/net/dsa/motorcomm/chip.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/dsa/motorcomm/mib.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-index 33e5fc127244..ff17233848a8 100644
---- a/drivers/net/dsa/motorcomm/chip.c
-+++ b/drivers/net/dsa/motorcomm/chip.c
-@@ -2458,6 +2458,16 @@ static int yt921x_dsa_setup(struct dsa_switch *ds)
- 		return -ENODEV;
+diff --git a/drivers/net/dsa/motorcomm/mib.c b/drivers/net/dsa/motorcomm/mib.c
+index 6b170fc6e187..bbcc418fcc87 100644
+--- a/drivers/net/dsa/motorcomm/mib.c
++++ b/drivers/net/dsa/motorcomm/mib.c
+@@ -127,6 +127,12 @@ static int yt921x_mib_read(struct yt921x_priv *priv, int port)
+ 		buf[i] = val;
  	}
  
-+	for (int port = 0; port < YT921X_PORT_NUM; port++) {
-+		struct yt921x_port *pp = &priv->ports[port];
-+		struct yt921x_mib *pm = pp->mib;
-+
-+		if (!pm)
-+			continue;
-+
-+		memset(&pm->data, 0, sizeof(pm->data));
++	if (res) {
++		dev_err(dev, "Failed to %s port %d: %i\n", "read stats for",
++			port, res);
++		return res;
 +	}
 +
- 	mask = priv->info->serdes_mask;
- 	for_each_set_bit(port, &mask, YT921X_PORT_NUM) {
- 		struct yt921x_port *pp = &priv->ports[port];
+ 	flags = u64_stats_update_begin_irqsave(&pm->syncp);
+ 	for (size_t i = 0; i < ARRAY_SIZE(yt921x_mib_descs); i++)
+ 		u64_stats_set(&((u64_stats_t *)mib)[i], buf[i]);
+@@ -148,10 +154,7 @@ static int yt921x_mib_read(struct yt921x_priv *priv, int port)
+ 	u64_stats_set(&pm->tx_frames, tx_frames);
+ 	u64_stats_update_end_irqrestore(&pm->syncp, flags);
+ 
+-	if (res)
+-		dev_err(dev, "Failed to %s port %d: %i\n", "read stats for",
+-			port, res);
+-	return res;
++	return 0;
+ }
+ 
+ void yt921x_mib_poll(struct work_struct *work)
 -- 
 2.53.0
 
