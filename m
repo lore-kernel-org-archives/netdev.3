@@ -1,49 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.233
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793632494;
-	b=o8+m0fNt1cB0Gg7JFKLgopUD64nUq4BmkoYcEfQObbMd+JXXmiYuNH08vyM/E7wykBeI
-	 Cp2z0smXNgYRHvbZEYF4z2Rc/QezKk5tuPpLWjiylkHgodn+ALyiOSIIIQjjPIOZNnoZi
-	 LXPhgnmR8TrS5seIu8IE87B2Lw+ylASmdnn89znZffYWlyvVe04hiD9IMrqEsY99oV7Uy
-	 kmI0W3XWjAe/GJ41jSjbD+VKxCsgWlq1vYKFt+hYNnai1i4sRAUL8giODyKBOQTJQJTyT
-	 L5rblIkWcowlDqPYrwkxvHTlsgANBl+jBtIIRqm1Gm+5P+AjqRmLwyt6+RsZuuSR7AQ==
+	t=1793632519;
+	b=E9ldB+UvG8mpDVDlhDwt0g2oP4ncH3TriQtRafNY99cIa4yT9bRF5U5lFzGu46eoenxU
+	 eFVQIN1WIPZGMa95SpakpSfMzE7Xfrjk7qQSeRmS2tdg3OTspUG1XyzY7Vf580cBN9Yvx
+	 6BuV/CLNa2fMvO58KxWDedd272XQNgav9E1bZ7gfO0LKRPI+gGAlI93+4bhW4EdW+CxXN
+	 S1zeJWCmGYgXyEDyIFjbnxI9N5W5HfyiszAXsyYXmBdw0aCl2D/fi6B6IKyJI/8ltKpdG
+	 M75i1Uv9yDva4CFVzkF+XOERkHX0xl6bMiA/X+jMZ3HbovaoFEKyd+iRD23lf8hTAxA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793632494;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=OaqvmKOUiv1o6zEPyWdCe+OAPk6zuu4tkLm1f1iXQ1c=;
-	b=m0GnBt5WSQhNF1ElOFoa0CapW22Cr20XkjrFcUIQxEQuDWNULTI5rq0SKXN4HjFMNSH9
-	 qJv9/NMAQHMzZ20F9Ugb/7VTPWlYjuZOE7BvyJDJ0g6B/CMs2RIEN3oRe/V7b2lC7KsWF
-	 rtTFADiica3hTALQRgob9pX1M/79De4UvL4ya1IV1qv3PMcjQ/c/rUr4NUZci6UNhI/dL
-	 PAO6jY3nvIYO9F4Jc9KA3vHaI9ShiwfEKX5RVJvSPO3u0Yc0I5wo6QjrBZqmQZV4P+GSy
-	 PQGH2LF1qHyKnWnGGsiwePgl0CaSkNc8fd69tVdbsqs3RJWp/J7AKH52WLXMA3rqRPg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793632519;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=kwKzSEXHVuEjJqvTeRRPA4mrqN9EE7qy4XgSv3TiNWc=;
+	b=V2RyOd2i1kLNcztaHrjwW/Py7rNrRpDmIkdZ/YA5+8hPWoMJdIOA4xy1qbfe09kth/vq
+	 6QVEhPlkfcMEn76Q+T5399Ukma8vRW9N0LtXdoHTNz4AJRw+3Yc003HUzUay9DOGjfZ4z
+	 Bp8LZhQfmjwUmKpok5qNDpnrnBf+LSI7FmmMdlZN0aTnD8OveTlnjr30AuL7DjrZ71QTI
+	 GCyFVVtheNgpI+62k/GpNHQCxuq/KPsUxzzYGoFbvcGVweFMmvV7HEKjwkiW5Y6RZdwXi
+	 AweaVEGQnvX1AR0J8d4ei+Gnlas/OiRuueO4Hrn9Z/enUMtD8SseiwULkIfh4LZ3jJw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="nnj/UWP5";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lXGnMHan;
+	arc=none smtp.remote-ip=91.218.175.233
+Received: from mta0.migadu.com (out-233.mta0.migadu.com [91.218.175.233])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B97606E03E;
-	Mon,  2 Nov 2026 15:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF3F607A896
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:15:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5AF3F607A896
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nnj/UWP5
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735E51F00A17;
-	Mon,  2 Nov 2026 15:14:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793632493;
-	bh=OaqvmKOUiv1o6zEPyWdCe+OAPk6zuu4tkLm1f1iXQ1c=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=nnj/UWP5cYvLm3pG7sX885HlKG5y6RNj9kje2FJmMGIOHcssRpwIRraH7M9tG/AF4
-	 Oax/OlHkn40y1sSQ3FV4+tJScw2y8DnO4ndr6hYZdbuPwEfFbiPmJkgLII9zcD8KMu
-	 64bp+M7ftJzOpASSJUF9yjLNUphqYP39nfgEaXm3dI6F5SNWC7BVuMxW7X/XRwSzae
-	 IMUDmGqLdgmTqnjniGJSmOw4/DG5TV8KvaotUEtH46boJ8PHr2fN5f3Siq5KM56Uug
-	 di+bLr92g0HKUkk+IimQp+fgzb/ic0/fUxB75SDyzG6wep3dE8DwDV09xClDNrUgzq
-	 RzJjFB+MfRY5Q==
-From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 16:07:21 +0100
-Subject: [PATCH RFC 14/23] scsi: esas2r: let procfs copy the ioctl argument
- of the ATTONode file
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lXGnMHan
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=mD1ETE2e7HukgmRWNL4DzC5n+RUd7grBANDiKh/A4zE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793632515; v=1; x=1794237315;
+ b=lXGnMHanafhZqGg5hSi5b0aHqHNEOt+95p8arodvEZyTN6I2DAeOz2rSfSbSa6SPX4rdFcJM
+ v+2b+brBN2z05VkWQn/evpTSMbcUbxEPoBCEFhLdC53ue8MiUln9BObndAF0uXXQV2kQgbluKiW
+ V8q3BX5VhBkSM0WWuKltgTBc=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id c5af6c99b6d8b8d8;
+	Mon, 02 Nov 2026 15:15:14 +0000
+X-Mizu-Trace-ID: c5af6c99b6d8b8d8
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <ae49619c-d2de-4189-b6ac-2a70f8ef1891@linux.dev>
+Date: Mon, 2 Nov 2026 23:15:03 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,259 +58,103 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf v2 09/15] bpf, sockmap: Check the TCP state in
+ recvmsg()
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org,
+ netdev@vger.kernel.org
+Cc: daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com,
+ memxor@gmail.com, john.fastabend@gmail.com, jakub@cloudflare.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, willemb@google.com,
+ matttbe@kernel.org, mptcp@lists.linux.dev, mason@kernel.org,
+ josef@toxicpanda.com
+References: <20261102072112.4160195-1-alexei.starovoitov@gmail.com>
+ <20261102072112.4160195-10-alexei.starovoitov@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20261102072112.4160195-10-alexei.starovoitov@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-drivers-v1-14-a994bd4d3b1a@kernel.org>
-References: <20261102-work-procfs-drivers-v1-0-a994bd4d3b1a@kernel.org>
-In-Reply-To: <20261102-work-procfs-drivers-v1-0-a994bd4d3b1a@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
- Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
- Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
- NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
- Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
- Greg Kroah-Hartman <gregkh@suse.de>, 
- Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
- Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
- linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
- linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
- linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
- ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
- coreteam@netfilter.org, kexec@lists.infradead.org, 
- linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
- netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
- linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
- linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
- linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
- sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
- linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
- linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
- linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
- linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
- linux-debuggers@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, 
- Chuck Lever <cel@kernel.org>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7201; i=brauner@kernel.org;
- h=from:subject:message-id; bh=IHmX4nbITi3aS9Kd2qNCv/pj62H7BFgidfocARtwZco=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG5guefJHmeZWyLeN896h99+dPHOM97Fn2fqBhw0M
- 8uMCd5i21HKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCROClGhis3zmZtFgyeMd9k
- jmRWky4ns25kboSQpn7qiw7t/6H1/gx/JfpnaarK/A36KDWXK9hx9ueU601bLM48uWPz81WN8Uk
- FFgA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-Move the work of esas2r_ioctl_handler() into esas2r_ioctl_buf() which
-works on a kernel copy of struct atto_express_ioctl. The SCSI ioctl and
-the character device keep copying in and out in
-esas2r_ioctl_handler().
 
-The procfs file implements ->proc_ioctl_buf() with esas2r_ioctl_buf()
-and lists every command from EXPRESS_IOCTL_MIN to EXPRESS_IOCTL_MAX, so
-procfs copies the struct in before it pins the entry and back out after
-unpinning it. Commands outside of that range fail with -ENOTTY instead
-of -ENOTSUPP now, a NULL argument with -EFAULT.
+On 11/2/26 3:21 PM, Alexei Starovoitov wrote:
+> From: Chris Mason <mason@kernel.org>
+>
+> With an sk_skb verdict prog, tcp_bpf_recvmsg_parser() copies data from the
+> psock. Then it calls __tcp_cleanup_rbuf() to calculate the receive window
+> and to send an ACK. The window and the ACK need a connection on the socket.
+> But tcp_disconnect() keeps the socket in the sockmap and the data on the
+> psock. For a TCP socket sock_map_redirect_allowed() rejects only
+> TCP_LISTEN. Thus the psock can also get data after tcp_disconnect().
+>
+> __tcp_select_window() divides by icsk_ack.rcv_mss, which can be 0 in
+> TCP_CLOSE. In TCP_SYN_SENT the new peer can get an ACK with the sequence
+> numbers of the old connection.
+>
+> Call __tcp_cleanup_rbuf() only when tcp_can_send_ack() returns true.
+> recvmsg() returns the data as before. Move tcp_can_send_ack() from MPTCP to
+> tcp.h. It also returns false for a fastopen child in TCP_SYN_RECV. From its
+> peer the child has only the SYN data, and the SYN-ACK acknowledges it.
+>
+> Fixes: e5c6de5fa025 ("bpf, sockmap: Incorrectly handling copied_seq")
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- drivers/scsi/esas2r/esas2r.h       |  2 ++
- drivers/scsi/esas2r/esas2r_ioctl.c | 58 ++++++++++++++++++++++----------------
- drivers/scsi/esas2r/esas2r_main.c  | 44 +++++++++++++++++++++++------
- 3 files changed, 72 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/scsi/esas2r/esas2r.h b/drivers/scsi/esas2r/esas2r.h
-index 10101f50b282..4d75b8adbb3b 100644
---- a/drivers/scsi/esas2r/esas2r.h
-+++ b/drivers/scsi/esas2r/esas2r.h
-@@ -964,6 +964,8 @@ struct esas2r_adapter {
- const char *esas2r_info(struct Scsi_Host *);
- int esas2r_write_params(struct esas2r_adapter *a, struct esas2r_request *rq,
- 			struct esas2r_sas_nvram *data);
-+int esas2r_ioctl_buf(void *hostdata, unsigned int cmd,
-+		     struct atto_express_ioctl *ioctl);
- int esas2r_ioctl_handler(void *hostdata, unsigned int cmd, void __user *arg);
- int esas2r_ioctl(struct scsi_device *dev, unsigned int cmd, void __user *arg);
- u8 handle_hba_ioctl(struct esas2r_adapter *a,
-diff --git a/drivers/scsi/esas2r/esas2r_ioctl.c b/drivers/scsi/esas2r/esas2r_ioctl.c
-index f99318f61c93..eb39ba8263b3 100644
---- a/drivers/scsi/esas2r/esas2r_ioctl.c
-+++ b/drivers/scsi/esas2r/esas2r_ioctl.c
-@@ -1279,37 +1279,25 @@ int esas2r_write_params(struct esas2r_adapter *a, struct esas2r_request *rq,
- }
- 
- 
--/* This function only cares about ATTO-specific ioctls (atto_express_ioctl) */
--int esas2r_ioctl_handler(void *hostdata, unsigned int cmd, void __user *arg)
-+/*
-+ * This function only cares about ATTO-specific ioctls (atto_express_ioctl).
-+ * @ioctl is a kernel copy of what the caller passed. It goes back to the
-+ * caller unless this fails.
-+ */
-+int esas2r_ioctl_buf(void *hostdata, unsigned int cmd,
-+		     struct atto_express_ioctl *ioctl)
- {
--	struct atto_express_ioctl *ioctl = NULL;
- 	struct esas2r_adapter *a;
- 	struct esas2r_request *rq;
- 	u16 code;
- 	int err;
- 
--	esas2r_log(ESAS2R_LOG_DEBG, "ioctl (%p, %x, %p)", hostdata, cmd, arg);
--
--	if ((arg == NULL)
--	    || (cmd < EXPRESS_IOCTL_MIN)
--	    || (cmd > EXPRESS_IOCTL_MAX))
--		return -ENOTSUPP;
--
--	ioctl = memdup_user(arg, sizeof(struct atto_express_ioctl));
--	if (IS_ERR(ioctl)) {
--		esas2r_log(ESAS2R_LOG_WARN,
--			   "ioctl_handler access_ok failed for cmd %u, address %p",
--			   cmd, arg);
--		return PTR_ERR(ioctl);
--	}
--
- 	/* verify the signature */
- 
- 	if (memcmp(ioctl->header.signature,
- 		   EXPRESS_IOCTL_SIGNATURE,
- 		   EXPRESS_IOCTL_SIGNATURE_SIZE) != 0) {
- 		esas2r_log(ESAS2R_LOG_WARN, "invalid signature");
--		kfree(ioctl);
- 
- 		return -ENOTSUPP;
- 	}
-@@ -1350,7 +1338,6 @@ int esas2r_ioctl_handler(void *hostdata, unsigned int cmd, void __user *arg)
- 			esas2r_adapters[ioctl->header.channel] == NULL) {
- 			ioctl->header.return_code = IOCTL_BAD_CHANNEL;
- 			esas2r_log(ESAS2R_LOG_WARN, "bad channel value");
--			kfree(ioctl);
- 
- 			return -ENOTSUPP;
- 		}
-@@ -1403,7 +1390,6 @@ int esas2r_ioctl_handler(void *hostdata, unsigned int cmd, void __user *arg)
- 
- 		rq = esas2r_alloc_request(a);
- 		if (rq == NULL) {
--			kfree(ioctl);
- 			esas2r_log(ESAS2R_LOG_WARN,
- 			   "could not allocate an internal request");
- 			return -ENOMEM;
-@@ -1515,19 +1501,43 @@ ioctl_done:
- 
- 	}
- 
-+	return 0;
-+}
-+
-+int esas2r_ioctl_handler(void *hostdata, unsigned int cmd, void __user *arg)
-+{
-+	struct atto_express_ioctl *ioctl __free(kfree) = NULL;
-+	int err;
-+
-+	esas2r_log(ESAS2R_LOG_DEBG, "ioctl (%p, %x, %p)", hostdata, cmd, arg);
-+
-+	if ((arg == NULL)
-+	    || (cmd < EXPRESS_IOCTL_MIN)
-+	    || (cmd > EXPRESS_IOCTL_MAX))
-+		return -ENOTSUPP;
-+
-+	ioctl = memdup_user(arg, sizeof(struct atto_express_ioctl));
-+	if (IS_ERR(ioctl)) {
-+		esas2r_log(ESAS2R_LOG_WARN,
-+			   "ioctl_handler access_ok failed for cmd %u, address %p",
-+			   cmd, arg);
-+		return PTR_ERR(ioctl);
-+	}
-+
-+	err = esas2r_ioctl_buf(hostdata, cmd, ioctl);
-+	if (err)
-+		return err;
-+
- 	/* Always copy the buffer back, if only to pick up the status */
- 	err = copy_to_user(arg, ioctl, sizeof(struct atto_express_ioctl));
- 	if (err != 0) {
- 		esas2r_log(ESAS2R_LOG_WARN,
- 			   "ioctl_handler copy_to_user didn't copy everything (err %d, cmd %u)",
- 			   err, cmd);
--		kfree(ioctl);
- 
- 		return -EFAULT;
- 	}
- 
--	kfree(ioctl);
--
- 	return 0;
- }
- 
-diff --git a/drivers/scsi/esas2r/esas2r_main.c b/drivers/scsi/esas2r/esas2r_main.c
-index 75a70ae9441b..720be2a0907d 100644
---- a/drivers/scsi/esas2r/esas2r_main.c
-+++ b/drivers/scsi/esas2r/esas2r_main.c
-@@ -613,14 +613,6 @@ static const struct file_operations esas2r_proc_fops = {
- 	.unlocked_ioctl = esas2r_proc_ioctl,
- };
- 
--static const struct proc_ops esas2r_proc_ops = {
--	.proc_lseek		= default_llseek,
--	.proc_ioctl		= esas2r_proc_ioctl,
--#ifdef CONFIG_COMPAT
--	.proc_compat_ioctl	= compat_ptr_ioctl,
--#endif
--};
--
- static struct Scsi_Host *esas2r_proc_host;
- static int esas2r_proc_major;
- 
-@@ -630,6 +622,42 @@ long esas2r_proc_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
- 				    cmd, (void __user *)arg);
- }
- 
-+static long esas2r_proc_ioctl_buf(struct file *fp, unsigned int cmd, void *arg)
-+{
-+	return esas2r_ioctl_buf(esas2r_proc_host->hostdata, cmd, arg);
-+}
-+
-+#define ESAS2R_PROC_IOCTL(_cmd)						\
-+	PROC_IOCTL_ARG(_cmd, sizeof(struct atto_express_ioctl),		\
-+		       sizeof(struct atto_express_ioctl))
-+
-+/* esas2r_ioctl_buf() takes every command from EXPRESS_IOCTL_MIN to _MAX. */
-+static const struct proc_ioctl_arg esas2r_proc_ioctl_args[] = {
-+	ESAS2R_PROC_IOCTL(EXPRESS_IOCTL_RW_FIRMWARE),
-+	ESAS2R_PROC_IOCTL(EXPRESS_IOCTL_READ_PARAMS),
-+	ESAS2R_PROC_IOCTL(EXPRESS_IOCTL_WRITE_PARAMS),
-+	ESAS2R_PROC_IOCTL(EXPRESS_IOCTL_FC_API),
-+	ESAS2R_PROC_IOCTL(EXPRESS_IOCTL_GET_CHANNELS),
-+	ESAS2R_PROC_IOCTL(EXPRESS_IOCTL_CHAN_INFO),
-+	ESAS2R_PROC_IOCTL(EXPRESS_IOCTL_DEFAULT_PARAMS),
-+	ESAS2R_PROC_IOCTL(EXPRESS_ADDR_MEMORY),
-+	ESAS2R_PROC_IOCTL(EXPRESS_RW_MEMORY),
-+	ESAS2R_PROC_IOCTL(EXPRESS_TSDK_DUMP),
-+	ESAS2R_PROC_IOCTL(EXPRESS_IOCTL_SMP),
-+	ESAS2R_PROC_IOCTL(EXPRESS_CSMI),
-+	ESAS2R_PROC_IOCTL(EXPRESS_IOCTL_HBA),
-+	ESAS2R_PROC_IOCTL(EXPRESS_IOCTL_VDA),
-+	ESAS2R_PROC_IOCTL(EXPRESS_IOCTL_GET_ID),
-+	ESAS2R_PROC_IOCTL(EXPRESS_IOCTL_GET_MOD_INFO),
-+};
-+
-+static const struct proc_ops esas2r_proc_ops = {
-+	.proc_lseek		= default_llseek,
-+	.proc_ioctl_buf		= esas2r_proc_ioctl_buf,
-+	.proc_ioctl_args	= esas2r_proc_ioctl_args,
-+	.proc_nr_ioctl_args	= ARRAY_SIZE(esas2r_proc_ioctl_args),
-+};
-+
- static void __exit esas2r_exit(void)
- {
- 	esas2r_log(ESAS2R_LOG_INFO, "%s called", __func__);
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
--- 
-2.53.0
 
+> ---
+>  include/net/tcp.h    | 6 ++++++
+>  net/ipv4/tcp_bpf.c   | 3 ++-
+>  net/mptcp/protocol.c | 6 ------
+>  3 files changed, 8 insertions(+), 7 deletions(-)
+>
+> diff --git a/include/net/tcp.h b/include/net/tcp.h
+> index 3560adddf821..23a22d70718e 100644
+> --- a/include/net/tcp.h
+> +++ b/include/net/tcp.h
+> @@ -1845,6 +1845,12 @@ static inline void tcp_adjust_rcv_ssthresh(struct sock *sk)
+>  void tcp_cleanup_rbuf(struct sock *sk, int copied);
+>  void __tcp_cleanup_rbuf(struct sock *sk, int copied);
+>  
+> +/* Is the socket in a state in which TCP may send an ACK? */
+> +static inline bool tcp_can_send_ack(const struct sock *sk)
+> +{
+> +	return !((1 << inet_sk_state_load(sk)) &
+> +	       (TCPF_SYN_SENT | TCPF_SYN_RECV | TCPF_TIME_WAIT | TCPF_CLOSE | TCPF_LISTEN));
+> +}
+>  
+>  /* We provision sk_rcvbuf around 200% of sk_rcvlowat.
+>   * If 87.5 % (7/8) of the space has been consumed, we want to override
+> diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+> index ef2e15de0fe3..3d703f1517d8 100644
+> --- a/net/ipv4/tcp_bpf.c
+> +++ b/net/ipv4/tcp_bpf.c
+> @@ -343,7 +343,8 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+>  	if (!peek)
+>  		WRITE_ONCE(tcp->copied_seq, seq);
+>  	tcp_rcv_space_adjust(sk);
+> -	if (copied > 0)
+> +	/* Data on the psock outlives the connection that it came in on */
+> +	if (copied > 0 && tcp_can_send_ack(sk))
+>  		__tcp_cleanup_rbuf(sk, copied);
+>  
+>  unlock:
+> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+> index 7a22e9388e0e..d62cfbf2d490 100644
+> --- a/net/mptcp/protocol.c
+> +++ b/net/mptcp/protocol.c
+> @@ -619,12 +619,6 @@ static void mptcp_set_timeout(struct sock *sk)
+>  	__mptcp_set_timeout(sk, tout);
+>  }
+>  
+> -static inline bool tcp_can_send_ack(const struct sock *ssk)
+> -{
+> -	return !((1 << inet_sk_state_load(ssk)) &
+> -	       (TCPF_SYN_SENT | TCPF_SYN_RECV | TCPF_TIME_WAIT | TCPF_CLOSE | TCPF_LISTEN));
+> -}
+> -
+>  void __mptcp_subflow_send_ack(struct sock *ssk)
+>  {
+>  	if (tcp_can_send_ack(ssk))
