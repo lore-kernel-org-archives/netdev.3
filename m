@@ -1,107 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793635114;
-	b=MCne/kc9UbnP9P0RApxobAyHThg0UUK9ejeH++PTD0dULQW3DJHUW+5Ad+IPFK4eTjjN
-	 vOujQEJa0EuM1hdMgDpvgy23LfZPVkS8b8u/0qbHtc7eAMWFzZFOlmHB7lGOdEzSmb+eu
-	 a9U9S57sLTDuNqinTkyPOYH0ZGdGbidNAk0toA0jUPUigvpm7u76W2PrHLDOJ73fxOlZt
-	 wTMmneotaDAsHI8ZM5eaX2cexnCpePAwJz2ACZfagvsuTs4UYGC047xplQ4PnXNjm7K22
-	 uEmbQheelkmrhVxtPVuuxF34TtfhuWpIm0TxaX9mU4b4N6gGk+hnQvR65MkUYx777JA==
+	t=1793635117;
+	b=gFCyHXuB2q3baHpsHlKLLaEHI94iwLrUofz17JT4Q7eSs7WmWaJo5HI+fBg22VZjg9y5
+	 pthliFDlPWPSVdozmLa9jgQYkq8SKBaUXcivgSkxvttXP8+qFXFMzJwcd9mNGZ89uG7F7
+	 z9Xv/5J8tvUX2Lh/f81frS/JQlVsW6iuNvkaRvEo5ZGKTXrXD2OurABtYWUWZqSJQPaW0
+	 XuQzg3m4aZyjzP/yFhHiyFjsJhG17W3FJLdHLN9HHGxrRt8sI/fmUomExFTy+uhMX2Ddd
+	 94KtMPNUZD6QVra0llF2QEJt9HNREg+I7UFs7pfsOoBEiVg7qFvFAGN+Vxtjf8oHdKg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793635114;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793635117;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=G2n2IA1tkyXWwdIf7yrDgeiQ3S2zukN2iU0KIGIZH14=;
-	b=zwm5XlENPKnzwfMR8VUZaqT73g9FQBxqFjJwAs+9Cgkjds7SX6FozJGdwu4zrxElXNQg
-	 ZzyqhNUgaFgBH9z258JDod12vK1I3aPMsrThKcQ9EjbHR5vhnRp1WGbwd9v5/i1Rh9SXi
-	 zBx7IWiiAHGx+DbAaKhffSmJmgyG+K1TMZaOzQ/wsFo6YsCj+UNuaGF3BTAjYL++fMZ6q
-	 5DCamJgwzj+DtrTpAExNFF/0Ld0FqCsjQ+EwoqVZsCHYxWuEmcO6abiZPn5KK6OaSJ4jk
-	 are45CvItaS5T/geSEhGSkYNII4s2x3vU/H6YSQIfa+f4AmgF1z/HlLf4c0xSwfXZPA==
+	bh=4eUqzqxgaskgzb2volApOaC2VlmYkG23yLlDeBP9Vhg=;
+	b=tD8/GNbq+E8KhCjfH8j3rMnEn1UENrR/9e/PmlNSlN+clwliMHH/B2hh1lA3ryIXrYlG
+	 nb4sfXawiCrA8LLSauWb/7z/FRWUmW5KHhhZ0wKQhWquu6tU6DYaCt+IxPNJmJzPtZrrY
+	 at8Rv9Uf3EKMeoSV5Y/2cpSvnsldIngTMujTMlVNg/SwjCM07jbtIpsnaHB5kQTM/us8v
+	 ZC02sbqrLylcjrf3MVuQBJ9lalLfToZJ2NcR5vff4lyHViI21wDHLv+gftiSOg04+flo9
+	 Y7YL9I3wiLCA1Q9DwXt2dSJYX5Hy3fCoEaeTongQbV3gT7zlBetgvYuAxxvjhn0YjPA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rdPD9jxN;
-	arc=none smtp.remote-ip=74.125.82.41
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=s93cnhjh;
+	arc=none smtp.remote-ip=209.85.216.41
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3E66075291
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:58:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3E3E66075291
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CAE60AC6FB
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:58:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 97CAE60AC6FB
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rdPD9jxN
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-15dd124bbe7so4173594c88.1
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 07:58:32 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=s93cnhjh
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3adc4590de4so2528355a91.2
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 07:58:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793635112; x=1794239912; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793635116; x=1794239916; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=G2n2IA1tkyXWwdIf7yrDgeiQ3S2zukN2iU0KIGIZH14=;
-        b=rdPD9jxNu2N0T82Gl8J9nQQENd2ctR/x2bznXjsaNlXdCoTB2VVbzD6fhENpJRTqjz
-         Hrqx0ihQ68D3VV86eP3lxNWCwqVGV/ILZLlziSG2ZYqzD/ZIZ2Otn0WTHso9Lq5oNOPA
-         /jYvfnpsuhmvPg4ShkLyVw6ONsePyC0c3esWahteZplp3wGNQVLJEhy9AazQaeDW/hye
-         lLbV3r+LTwbG0r0bMKB48tFr9NDfIVKs0aEgRhmrUjyaxk1c6C5wWx228///+U87wSck
-         IOcKb39BkdtCacBHrgfsMndpKTQyoQWVimUmKrYhUmG++Ss17RktEf0ls0JBsS1ji8x6
-         3enw==
+        bh=4eUqzqxgaskgzb2volApOaC2VlmYkG23yLlDeBP9Vhg=;
+        b=s93cnhjhLER8VVXRcDFSD6Yn5w+jsBgTSIebxNT0GtGyLiKJgkKnc05IXZMvrYQDCY
+         hslIby5aGenm3Nk21M2EchnwDKxc1TwJ+KbZq5C+EcvnVnwvTVemqb+dsuESLmkmhZCs
+         ktiowN4nSFalA7G6CV7IDn2yrePEtDMYRuuFdj4rXKse7OBpkj5Gx0a6278AgHLEwBIH
+         x4veqgxF9oHfRLGmA+Y7VOOu7yjNDfZV+vpv0AC9KMYMmbWJf1u32PvPRHg7ecki3pBA
+         Yaj1yB827Fk52MAr5oCOnkj/4f36x7VrHQzcnAedd5LktIL7yVM3dSPiHmTkzOudOnxm
+         tHVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793635112; x=1794239912;
+        d=1e100.net; s=20260707; t=1793635116; x=1794239916;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=G2n2IA1tkyXWwdIf7yrDgeiQ3S2zukN2iU0KIGIZH14=;
-        b=nk83EdjFV3z6q4bwu+jnugHAzWYNcZXY7R9GVHL9HUZpj6Q6y9qIQ1mHNKkgBVh0X9
-         KLK36FOp+jgQ3biQlgwds1yb7EiFK6IegaTpkg/ql3If6kupzCQmOfivkiEkjLRQLvND
-         BnYjdn1wPmaqyMr92gBsw6ZFEr6LKzoBTnkp1a3TS8BQKoVBsVpr4vRIEcES7RxWiCoa
-         bikiFy8YHOdUhdWsuFRbiIY+waGQ7RmkSVb3R8YP9o1xDeCDereRTcpsK6MoIBuJcKE/
-         R+nME9g9hwcMxMv4kJLk7PkoHMwE6qBmNI9GGnxx8SsfzBmwmhgPm3YnQTS1E+IHXEY5
-         sOxA==
-X-Gm-Message-State: AFq9FYLUhwgYPCkLubcj7iXGwlu5oeXMs/DnnQ8CkEcFYYSDAlRzpFJz
-	L8TzkJnlf4Ae0qPkiS8gBbI5fo/P7L6TtA0DbPrbcaizElBiCW3VGJQChBVheA==
-X-Gm-Gg: AYBFou17w/lh5ND2QTBBU/u770ODwGM+iy84zQA4FNHid0dNDu45BxeGRsXQU5vUJxB
-	nFthmj5EsIrfuG30Nvw8i9ovVBIk8Rjd4P4RheZJrP4JuiZEizCqQDBAA/ZcnFaz7ya3M8GYqxW
-	ZZrPapVFs+2UlGFc/Z8q/o4OwzH3jmHZRMFQq1wY2kSyLodNuFpFmuxRcHFweYGJemftWHghw59
-	VRNUa1DNHWZA5vQJVJUz2tLgnBlYIh7Tls6Bh4u0KjCKcyd46vf3wHlyHK0xqoFvY+llMrQlrDT
-	ZAlLtZZDeU3TDanYvjCq2TnGikV3Lju92g9zDpwVp8dcXUrGdYPNmLwwmJWJTMHALBs5yM6bluE
-	iFJSGZt+ywD2jFAwQpys+I4hnimSesrU94To4Sm45MsPHklsJerzpxqPwvC4fRLSoJsOiWCN6eb
-	0vdkimHyNs7ibNxgEhLGqOPq8eyN+BMWqaMn2Fabwq5GzXQKgkLE2cVfyRDF7tZ0PmoGzYXSSz/
-	cUgHsV+4bTuw1VMza58RHUChuhmSnkLKU4Oe4bubEM8ox4Pg+jPWky0/93G89PEfN4FfDbq/mjj
-	n5d1raYi/5yI/ojsSEjx6RYndP7ssCNbvIpsfiIqXZF7CMTQt3BZrRw9nwHgON+ncmygpR8U1Qe
-	P/3VY3oLJiK+aXA0772ConFsXH5qJ55qcifuRJMyhTda5b4OVK8OLU6FvgEL9FYJSta8Rm/5I1A
-	==
-X-Received: by 2002:a05:7022:ea86:b0:17a:e684:b497 with SMTP id a92af1059eb24-1ac55968bc5mr16638846c88.5.1793635111891;
-        Mon, 02 Nov 2026 07:58:31 -0800 (PST)
-Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1aed79b3dfcsm35115869c88.12.2026.11.02.07.58.26
+        bh=4eUqzqxgaskgzb2volApOaC2VlmYkG23yLlDeBP9Vhg=;
+        b=ZEXtl6ZNf9UoiUJyjJbynu1RX2hj270eLvte+4q1GP4/huFDO03eNdkg6W6XdIYZ0x
+         BNkbJZABKHHuBPRUN9K/i0aTAuWXX1S20204yrlDdBMFZAMqI+pXH7Y8IMfFirOx010b
+         Z2wXTXdTccQsE2lBG0uY/8lv47ghPRiiW0iYoJHnMYTyOuLulwMFYUEur+3hdfGu4Qe4
+         HqDEIdw0WHIDF/Rz+UFWMIli2bLtWPJ83dHeKlHfO61uhLvtlUoK29ANUYwXLD/cmEpH
+         AQ8ESXX7UAc62obOOJpHLMUBjW11ld2g1sMB65me8NDLMqzTwkHR+CpbfcIbZ+4us95Y
+         VTgg==
+X-Gm-Message-State: APuU4Z9HtO4RXdlADdNCFc9SJZZNzuWhQcFtbP3xqvzk2NGlZR2v8vN1
+	j8DrRn2zjDjCU1/g7BD6YOIdbw1GnersFdvC+HBUbqgywVee+gXs5sW91+0Lsg==
+X-Gm-Gg: AYBFou2WMTPI2vKh4RURM3c3PARUlUXvWKNJIcYOvrkvQAK3gp0xxxiaUhDUbdms++8
+	cfEkjP9sVA1ueVkH+vvFIhi+PvjDRo0oMaf02WlzMQ0VeaExiGnEEt0jq8JRrxPuZU2mtliFci5
+	RfOuAft9IErObJAuXlY86Ki0412o16nSxfUWVpTo/xNTPrM4b2kkrDCU6QJjYLhZM4VInCsox7m
+	bzCh1kQb29a/b9+B9BmBebujm17iXpgzcXQwASGxRmZTpaxVG1a+jwlQmcy1A2gyLevtjjiefcu
+	I8Qixr1ppCfDwGvynuRR8f47zrWbCTW2GtVJ2Y/iwFbjCM7sD3XFVa6TmNLEomTaRFmidhutnZW
+	GoP+GlNC+HfcqTyjdgnmVVEKcWsKF+s2yLOlDOZ5bBjmR28bNqy7D7xX+8SuZUd/6UwtXKhxad4
+	oa2P42h8E5WCy+Jmxpsh9xe4Hu0PZWqzzYFXwFHqcPWjg0KU/sjZk4fYrV2so7bVv/jXITCW0N+
+	DfARYSKd9d1iJVksXrUjtIwq9HQ7H2JhpmrqdBmWdGhX7tnJUJFpi1tbtbN/hw3wS0BT70cXOj+
+	2BcrKIo8wjrygtdeMbv6vnP4gayNLhX19qcvXKrpELrBD8vjyHxl
+X-Received: by 2002:a17:90b:2252:b0:3a7:8c68:6446 with SMTP id 98e67ed59e1d1-3ae8987d10amr8883371a91.63.1793635115807;
+        Mon, 02 Nov 2026 07:58:35 -0800 (PST)
+Received: from d.home.yangfl.dn42 ([2a09:bac1:7680:28::4:396])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e7d429fsm19183949a91.2.2026.11.02.07.58.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 07:58:30 -0800 (PST)
-From: Anil Kaushik <anilkaushikwireless@gmail.com>
+        Mon, 02 Nov 2026 07:58:35 -0800 (PST)
+From: David Yang <mmyangfl@gmail.com>
 To: netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Florian Westphal <fw@strlen.de>,
-	Mat Martineau <martineau@kernel.org>,
-	XingWang Xiang <v3rdant.xiang@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	linux-kernel@vger.kernel.org,
-	Anil Kaushik <anilkaushikwireless@gmail.com>
-Subject: [PATCH net v4 1/2] genetlink: Reject joining multicast groups no family owns
-Date: Mon,  2 Nov 2026 15:58:18 +0000
-Message-Id: <20261102155819.4100930-2-anilkaushikwireless@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261102155819.4100930-1-anilkaushikwireless@gmail.com>
-References: <20261102155819.4100930-1-anilkaushikwireless@gmail.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next 2/6] net: dsa: motorcomm: Rely on port isolation for CPU port
+Date: Mon,  2 Nov 2026 23:56:34 +0800
+Message-ID: <20261102155641.3682626-3-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261102155641.3682626-1-mmyangfl@gmail.com>
+References: <20261102155641.3682626-1-mmyangfl@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -113,68 +105,115 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-genl_bind() checks the GENL_MCAST_CAP_* flags of a group only when a
-family owns it. For a group ID that no family owns, it returns 0, so any
-user can join it.
+With every port fully isolated during chip setup, the CPU port already
+gets its one-way isolation (drop all packets without tag) there, so the
+dedicated handling in port_setup() is redundant. Skip the isolation
+write for CPU ports in yt921x_userport_standalone(), which port_setup()
+also runs for CPU ports, to keep it intact.
 
-A family registered later can get that ID, and the socket stays a member:
-nothing checks it again. An unprivileged user can join the free IDs, load
-a family module with CTRL_CMD_GETFAMILY, which calls request_module(),
-and then receive the notifications of a group with
-GENL_MCAST_CAP_NET_ADMIN or GENL_MCAST_CAP_SYS_ADMIN. For example the
-drop_monitor "events" group always gets ID 1, and is free until the
-drop_monitor module is loaded.
+Consequently the CPU ports no longer need to be excluded from the
+unknown unicast filtering: frames entering a CPU port without a tag are
+now dropped by the port isolation instead of the ACT_UNK action.
 
-Fix by returning -ENOENT from genl_bind() when no family owns the group.
-Nothing is ever sent to such a group, so joining it has no use.
-
-Found by the Sashiko review of the gtp multicast group fix. Tested as an
-unprivileged user who joins all free IDs, then loads gtp and
-drop_monitor:
-
-Before:
-  joins: ok=62 EPERM=2
-  gtp/gtp (ID 15): member
-  NET_DM/events (ID 1): member
-
-After:
-  joins: ok=19 ENOENT=43 EPERM=2
-  gtp/gtp (ID 15): not member
-  NET_DM/events (ID 1): not member
-
-genl_bind() was added, with its first capability check, in the commit
-in the Fixes tag.
-
-Link: https://lore.kernel.org/netdev/179324692107.3134.14443689892607921337@kernel.org/
-Fixes: 4d54cc32112d ("mptcp: avoid lock_fast usage in accept path")
-Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Anil Kaushik <anilkaushikwireless@gmail.com>
+Signed-off-by: David Yang <mmyangfl@gmail.com>
 ---
- net/netlink/genetlink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/dsa/motorcomm/chip.c | 46 ++++++--------------------------
+ 1 file changed, 8 insertions(+), 38 deletions(-)
 
-diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
-index 5cc1037d4917..f038f04ef4ea 100644
---- a/net/netlink/genetlink.c
-+++ b/net/netlink/genetlink.c
-@@ -1825,7 +1825,7 @@ static int genl_bind(struct net *net, int group)
+diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
+index e1fa82c6db95..fb993cc9607c 100644
+--- a/drivers/net/dsa/motorcomm/chip.c
++++ b/drivers/net/dsa/motorcomm/chip.c
+@@ -1164,10 +1164,13 @@ static int yt921x_userport_standalone(struct yt921x_priv *priv, int port)
+ 	u32 ctrl;
+ 	int res;
+ 
+-	ctrl = ~priv->cpu_ports_mask;
+-	res = yt921x_reg_write(priv, YT921X_PORTn_ISOLATION(port), ctrl);
+-	if (res)
+-		return res;
++	if (!(BIT(port) & priv->cpu_ports_mask)) {
++		ctrl = ~priv->cpu_ports_mask;
++		res = yt921x_reg_write(priv, YT921X_PORTn_ISOLATION(port),
++				       ctrl);
++		if (res)
++			return res;
++	}
+ 
+ 	/* Turn off FDB learning to prevent FDB pollution */
+ 	mask = YT921X_PORT_LEARN_DIS;
+@@ -1942,8 +1945,6 @@ yt921x_dsa_phylink_get_caps(struct dsa_switch *ds, int port,
+ 
+ static int yt921x_port_setup(struct yt921x_priv *priv, int port)
  {
- 	const struct genl_family *family;
- 	unsigned int id;
--	int ret = 0;
-+	int ret = -ENOENT;
+-	struct dsa_switch *ds = &priv->ds;
+-	u32 ctrl;
+ 	int res;
  
- 	down_read(&cb_lock);
+ 	res = yt921x_userport_standalone(priv, port);
+@@ -1957,27 +1958,6 @@ static int yt921x_port_setup(struct yt921x_priv *priv, int port)
+ 	if (res)
+ 		return res;
  
-@@ -1841,6 +1841,7 @@ static int genl_bind(struct net *net, int group)
- 			continue;
+-	if (dsa_is_cpu_port(ds, port)) {
+-		/* Egress of CPU port is supposed to be completely controlled
+-		 * via tagging, so set to oneway isolated (drop all packets
+-		 * without tag).
+-		 */
+-		ctrl = ~(u32)0;
+-		res = yt921x_reg_write(priv, YT921X_PORTn_ISOLATION(port),
+-				       ctrl);
+-		if (res)
+-			return res;
+-
+-		/* To simplify FDB "isolation" simulation, we also disable
+-		 * learning on the CPU port, and let software identify packets
+-		 * towarding CPU (either trapped or a static FDB entry is
+-		 * matched, no matter which bridge that entry is for), which is
+-		 * already done by yt921x_userport_standalone(). As a result,
+-		 * VLAN-awareness becomes unrelated on the CPU port (set to
+-		 * VLAN-unaware by the way).
+-		 */
+-	}
+-
+ 	return 0;
+ }
  
- 		grp = &family->mcgrps[i];
-+		ret = 0;
- 		if ((grp->flags & GENL_MCAST_CAP_NET_ADMIN) &&
- 		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
- 			ret = -EPERM;
+@@ -2276,10 +2256,8 @@ static int yt921x_chip_reset(struct yt921x_priv *priv)
+ static int yt921x_chip_setup_dsa(struct yt921x_priv *priv)
+ {
+ 	struct dsa_switch *ds = &priv->ds;
+-	unsigned long cpu_ports_mask;
+ 	u32 ctrls[2];
+ 	u32 ctrl;
+-	int port;
+ 	int res;
+ 
+ 	/* Enable DSA */
+@@ -2297,7 +2275,7 @@ static int yt921x_chip_setup_dsa(struct yt921x_priv *priv)
+ 	if (res)
+ 		return res;
+ 
+-	ctrl = GENMASK(10, 0);
++	ctrl = GENMASK(10, 0) & ~priv->cpu_ports_mask;
+ 	res = yt921x_reg_write(priv, YT921X_FILTER_UNK_UCAST, ctrl);
+ 	if (res)
+ 		return res;
+@@ -2320,14 +2298,6 @@ static int yt921x_chip_setup_dsa(struct yt921x_priv *priv)
+ 	ctrl = 0;
+ 	for (int i = 0; i < YT921X_PORT_NUM; i++)
+ 		ctrl |= YT921X_ACT_UNK_ACTn_TRAP(i);
+-	/* Except for CPU ports, if any packets are sent via CPU ports without
+-	 * tag, they should be dropped.
+-	 */
+-	cpu_ports_mask = priv->cpu_ports_mask;
+-	for_each_set_bit(port, &cpu_ports_mask, YT921X_PORT_NUM) {
+-		ctrl &= ~YT921X_ACT_UNK_ACTn_M(port);
+-		ctrl |= YT921X_ACT_UNK_ACTn_DROP(port);
+-	}
+ 	res = yt921x_reg_write(priv, YT921X_ACT_UNK_UCAST, ctrl);
+ 	if (res)
+ 		return res;
 -- 
-2.25.1
+2.53.0
 
