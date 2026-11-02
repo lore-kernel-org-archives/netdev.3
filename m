@@ -1,64 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.6
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793625398;
-	b=OyjfkbRIuOhp1SnN997Gx+UlOpuTWBgEdIREgcpDFYtYt3pDmzaxvtJm2DN45ADjFqht
-	 /1SBl5sGjft0O5Bp5U0BZ+H2mwl85AFvNAEOTbqoLO9/xKjeOuI/U45MXBhVVX27elG2/
-	 MLI6RiHiu2qe9MQnA6MdP+aBSnT2xGVoo5ulG7aXDjGSEF3qIrxTML6XQvKYOHPaPBYDT
-	 vemD9W0sm0xa3/LpbJwj7Ke+r4yxnRWlNUjDyyyVt9TLUAnvNrwEnIQo1TTwKEalnYmTF
-	 9Po24ZJ+p60fnPAefd8uCgVY3R/n5T4lSO07xtloXWs68QNQftyhiM1B8j2FckvgMDg==
+	t=1793625526;
+	b=STbnGkR+lqqVhESHywc3CWbX2SA4NkbUwEsvn6/ZuzFduIkPyuNR7HKpFGSJX2OfIHfn
+	 aJfz20TYj+v1xDk2BMfq1Gosk/NTlw3oqykWpoTjhP9SukQ/0LMOyvXbKpjuSqGnHCwnH
+	 OSKcUAYy16mY2dOpDg1HVFZ+3nwX6ixy0R37lsNtLJGhc9p6QleDQSbsJUaBpteU74Uqr
+	 94E3Wtm+6sf5Vf1p2vG5nMQn2jDP0RbUJWewI7OtsBTN5rjTKNIBZa0MPD7vIeUMvhzP+
+	 PyggdEK0qSCzMX9e32mPW7P1xHJ49nLS3qH7bSF+uawRY9PIbkT5T49MVkTO+KBm0KA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793625398;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
-	 X-CM-SenderInfo;
-	bh=SkkH7x9s8JL3yN8w1k76EkVgY7lYJ4FqWf0PrknsMro=;
-	b=vVpdI2bu9BnzWNt22XmzjPvwB4w5wqAoWLSmrYjVPVbSZxC2QpvY7lnJl97bjCyEfPCQ
-	 CCsMBh/aQgFAPdkfz46K78KChxeXw9z6W6mJnIjTkPKpJhvV0oHnXnNfga8P4uZmV9JQ3
-	 PvRY7D1rhB4ZnYmHRLuGCWxSbt8CIPc8T55vl9bnxXlj0tGMJ2+SVivF7SN65p06pglvC
-	 XsIk4lZWWxq9crrS3vxDNhejD1HvufwPdtVgDeannBcxqV/4CemEPwjLz8DvWRVBpwI/I
-	 7jzfth9JYq2UihacIEG9A8905LwPmjWd+uBeNIIYJSmmyfNao0TvnXkEvcxtGoOz5IA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793625526;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=/djIokTma7cGa0Kj/4n5LFRRxYa150VHT4D61l8dCPA=;
+	b=zoY5IQ0V2gECO19laA8cER2E7g5eeZ55TjN48g08AUdOGMpwC4NyR+u62JQjpBy9D/l1
+	 Awx7AxvG0LQDyaRv0n3MOWZHa65ECJIHnveBAzMXYXSNHKD/zfkXYPbAIyMjhhpTzQBMu
+	 g+mBgMYMFoqh7oo2d+/5gqN7vHe6x4Auo3MlO/N16BRt2/5UfMn8NPtKZh+CzMQvveCR1
+	 tcEXI7lZef0O0x+/QzqisA14ryAS2BpEhRrf4wQWnkpx+Az2eCPOco9z/bboKXYJA3A4u
+	 XiN2jGbv9Jm/hIB0BwPafYrCJgqdlsgW7toTw3HwTHTH41Ma1T/m6500xgyfNdn4Xpw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=126.com;
-	spf=pass smtp.mailfrom=126.com;
-	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=S3hk5Egn;
-	arc=none smtp.remote-ip=117.135.210.6
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QaNx9xWq;
+	arc=none smtp.remote-ip=209.85.128.48
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C575B606A332;
-	Mon,  2 Nov 2026 13:16:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C575B606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8C7606A327
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 13:18:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0D8C7606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=S3hk5Egn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Sk
-	kH7x9s8JL3yN8w1k76EkVgY7lYJ4FqWf0PrknsMro=; b=S3hk5EgncOQvqjOru3
-	QCHVB8VQ04NL4vd8lJXdvl5xKRpo+mOugHvvtYmWoIpaM3DszV1rSo+pPfUytm7z
-	P8Vs6NzB+ydsAGJ4WJx7oSk2Rjmg5bL9cS+MShuu2NTScjdAVJ4jK1hWPh/E+6OM
-	Play6z0P5I8JHL5qyeOs5/WGk=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3dz_ajOhqBgW6CA--.35094S3;
-	Mon, 02 Nov 2026 21:15:08 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: jiri@resnulli.us,
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QaNx9xWq
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a218c463d1so19972835e9.0
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 05:18:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793625524; x=1794230324; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/djIokTma7cGa0Kj/4n5LFRRxYa150VHT4D61l8dCPA=;
+        b=QaNx9xWqvk9ifE6aYb5mY+vkxyJcq2ZFy+uOmU953b1hasAz8Mjtr2mgxkH9IFYcPS
+         OvRwjZIgWU9VYZld2h9JWGIfR2vuaqEO9U9KpSiGRmD6tEib32etFg8sg0Qu1seKSsKP
+         MVyLnbJYrht6XhPTK8RQQK03xXeK7ScuZqYw2wldOCeO057MRxtghXDQo6uPhMIor3bB
+         6H9d9XEhQg8sAZBCQA4tQhIH1kOtQ3QxwJLNOj0VQjTl3ScfzDLYBa1saHeSQ5QHXSRu
+         Adl3Dn8/MrnTm7iA74wtvHbnk/ik2es4066wWIGAWGry1Y0wYMEl1o+OwRo13CK55YZZ
+         SEcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793625524; x=1794230324;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/djIokTma7cGa0Kj/4n5LFRRxYa150VHT4D61l8dCPA=;
+        b=AmADBYrVzj10jppfi1d9d6+ZH9vXGeCt3o2hFEPge4/BFhQbaETe64EkxiJmU7vzEE
+         sC2CyCclYV4MgJW6zV/y5kY/dcd6YrN3YceY37vxCRNvmCwWka3+DbsSp57Pxl0Lmk0p
+         cUbrJMVpEyXoDcyb9mY8+IoaoWspDiLL/0LqKlTsuRxGrmfAidpHiFMfKiJkSy0HpQwi
+         m8ilknrdnnDefRhvrv8zKIqRLf05y8clNKQzmi4s46iilTVerkgtf8gbspHVflGcinN6
+         mh72U6tNBQeDDVzrheNB08eegxKD/bRJqlPPGGsny+XJv6xc82n46AdTV6yBh5LZhJGh
+         8pag==
+X-Forwarded-Encrypted: i=1; AKwUvBzIpD4zwbjPSIqxo5lsr88zenluimv6AjM4lVK39AIoWXnb/nTP0C51cxZzoKw5+v2ofMm6NoI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIKWtZnU/A4Dsozz2Rb/92MCVIAeSySPYFM6lbpKpQLj4J7Oady
+	cz0G9HCwiECGYY5qGTb+Le/gQsflZ0RAth36EIXShSxZ8PxYgkJqRoGz
+X-Gm-Gg: AYBFou0jBxc7rXqbHeeXEa3I/ozuXV5/GclTp92Fi9MTO0/EQli4p9B2Z1YYouLDJwu
+	hGd6zrA9UiTzdDcwLv6tZTEg44eRXiSxRNzJc5CZvcc4UyE3MpvWmvm8J/sF0QAQBYjVa+15DcW
+	V7A9GDflkvpYdLTOkV4lwCc94swV8GtgjAIEjGUs0HFD7XWhw7IlXr1409srtiznmsZJIaQRyBp
+	ac+8Rqn2HaUPkyVPyTg633gpWlH34Uk1Up8DZGASibv2JKEf6Spdq6928KqNifqDM8uh6Oh1yEB
+	/vp8Mb+nBY/U20JWSp53CroSkXqO4JbGME2rng054rN1QAc89WFh/cxjNeeSIMtViKj5iJfLH+A
+	A4Ctl9JoG7qBurwfGq1BRHhQzB26dNr1tofG72JT6K/aI91CAE71ZLUgiTu89/4WuxK4e4RxE5V
+	i8BsjyURWFA4eRrvA9RnsqjTSt0AesAbN3cMkohjBTvzYsFcS+oL6H5Nl5D/p8g5k9QQ+celcWc
+	p5mSDCX7Zx22gjMEQiVtgx+kDy3XvQPXGY/mkEQwYmzUZU8QU9R4NaKPcuXO0lj60NkYErp4PAw
+	WLwP2krbFwxzeNk+MOlBPyiB4pDWuUBKz/GnlnVMELhfkx/QtBkx4OPXzkw+K7i5PW+VvkS0RLo
+	Oz4ntsXc=
+X-Received: by 2002:a05:600c:4e43:b0:4ab:e27d:e241 with SMTP id 5b1f17b1804b1-4ac180f28f7mr215180225e9.15.1793625524195;
+        Mon, 02 Nov 2026 05:18:44 -0800 (PST)
+Received: from pop-os.. ([51.36.40.122])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4aa7c5063e3sm336511045e9.0.2026.11.02.05.18.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 05:18:43 -0800 (PST)
+From: Ahmad AG <ahmadag1001@gmail.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	kuba@kernel.org,
 	davem@davemloft.net,
 	edumazet@kernel.org,
-	kuba@kernel.org,
 	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>
-Subject: [PATCH net-next v2 1/2] devlink: param: do not dereference a missing param item
-Date: Mon,  2 Nov 2026 21:15:04 +0800
-Message-Id: <20261102131505.611343-2-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261102131505.611343-1-xiaolinkui@126.com>
-References: <20261102131505.611343-1-xiaolinkui@126.com>
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v4] net/packet: account user-triggered allocations to memcg
+Date: Mon,  2 Nov 2026 16:18:36 +0300
+Message-ID: <20261102131836.1074942-1-ahmadag1001@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <179361314688.3131.15505744143383263524@kernel.org>
+References: <20261101094847.664612-1-ahmadag1001@gmail.com> <179361314688.3131.15505744143383263524@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,53 +105,16 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3dz_ajOhqBgW6CA--.35094S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7WFW7tw1rtry3XF13Aw1kZrb_yoW8Aw4kp3
-	yUKF15Jw12qrWjvr40qr4xZry7u3WUA343tFy7tw1Yya93Aw1vvF15WrySqF1Yy395Gwn3
-	tw1fZ3ZY9a17XrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j0uWdUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqBwvBmrojNxoHAAA37
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+> Does this fully close the PACKET_ADD_MEMBERSHIP bypass described in the
+> commit message?
 
-devl_param_value_changed() looks the param item up by id and only warns
-when the lookup fails. devlink_param_notify() is called with the result
-regardless, and devlink_nl_param_fill() dereferences param_item->param
-in its very first statement, so a driver that passes a param_id which is
-not registered on this instance turns the warning into a NULL pointer
-dereference.
+It covers the packet_mclist entries, which is what the commit message
+claims, and the PACKET_MR_PROMISC numbers measure exactly that path.
 
-Every other user of devlink_param_find_by_id() handles the NULL result:
-devlink_param_unregister() and devl_param_driverinit_value_set() return
-right after the same warning, devl_param_driverinit_value_get() returns
--EINVAL. Do the same here so that a bogus param_id costs a warning
-instead of an oops.
-
-Fixes: ea601e170988 ("devlink: Add devlink notifications support for params")
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/all/20230126075838.1643665-5-jiri@resnulli.us/
-Link: https://lore.kernel.org/r/20261030033332.3685172-2-xiaolinkui@126.com
----
-v2: reposted against net-next at Simon's suggestion; no code change.
-
- net/devlink/param.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/devlink/param.c b/net/devlink/param.c
-index 95ac9db8c993..474fe009f22d 100644
---- a/net/devlink/param.c
-+++ b/net/devlink/param.c
-@@ -1008,7 +1008,8 @@ void devl_param_value_changed(struct devlink *devlink, u32 param_id)
- 	struct devlink_param_item *param_item;
- 
- 	param_item = devlink_param_find_by_id(&devlink->params, param_id);
--	WARN_ON(!param_item);
-+	if (WARN_ON(!param_item))
-+		return;
- 
- 	devlink_param_notify(devlink, 0, param_item, DEVLINK_CMD_PARAM_NEW);
- }
--- 
-2.25.1
-
+The struct netdev_hw_addr entries are a separate case. They are device
+state in net/core, shared and refcounted across every dev_uc_add() and
+dev_mc_add() caller, and allocated with GFP_ATOMIC under
+netif_addr_lock_bh(). Accounting them changes behaviour for all of
+those callers, not just AF_PACKET, so I would rather keep it out of
+this fix and look at it as a separate net/core patch if that is wanted.
