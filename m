@@ -1,68 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.29.241.158
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793591995;
-	b=klTe6n01AdL2sBMmBnnWgWcKM85MeZJT3OyJ8xfVrfmM3OHkvmCwSwfFFv79lNjZD6Us
-	 434+J8RwHnjIDNx90YiqfrdP/kHJCdFDeT5uxTnwFkXjHkT2EoadXUfQECioK17CHOlXY
-	 LwCQgmNQMWq+qCpSChwQvlP72dGDJ0B5ycOwHeLAx5Cf+ChMHjplpxA/RLdk2/R/FsvWZ
-	 Ilaxpx8I02K2PWFnhaqHbHr7Zz5RVfIisf7XUvhOh8gN1nNqST+Ocl+OdfuHQcWhKuxOv
-	 7lcY/GVwQ4KJKD7rUj6QWHQBc6FAEnAvMNmKHtTjl5oUjdNBFaOVrngRsjEp+AiWozQ==
+	t=1793592224;
+	b=vdYXKYBV0lDZiYdSOsM99wfPfG+Er0CzHR32IribKp8My9HM7BkudiZdap++H0r7HvOO
+	 IjaWrpMGk5L3bAUigzmByMiUYveyTubk4hFvsUR11lraezDCf6rBLN/OPm0BZztVrrSK6
+	 LXlDtAVRujPlbaXyJHmqz7UyFkNp4d4HYLO8mmiqfPobLmHzLorHkgLSSMRVd2kfz/yBu
+	 seyW3ModXEMBZ4rNla/lFfwVtZiDg+H3XR4LxCQa6lFhBiDBhMzE0lo3uhlMJDLZwD3yg
+	 nNCVA7EHfl2065RdiH4iLMknraypJelK+aJ06k6nfInCsVwzp4OBTGEU0objLX0sefA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793591995;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=WUOuof5QyeG4h6zDAvzUQGjyJrapVOdsqODDVpd/AzU=;
-	b=fndk2qu9LW+QmtLY3mNV1Bw+A8/TmPynqp72+Xd2Ewd+SKHo7osuUXFwP3wh0NWR3kG3
-	 1CSxB+Ex4ATQwx3r66afwNRc8YqIfmLkKe4KqERIA/AFDatvN7xTAMwbmH4LWOH/2Y/mw
-	 tp7x+AGgazp1bqqmzslJkJuprT2oGdT9Rj3JxpiFJWu699F8Nt8cApxf8jv0X8A+nebxx
-	 H9pBh6mnK/HatMJhzsnYFjbd2fZqI9rHjDyEBGI63YFjV9K2ZOo11imsRbpIKrESJjV9m
-	 WK54NPpM002und7nIRStqxbOX22LIWG2y/voZfxTfFBcgbpZm6XNMo+m7JlVn2IGsOA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793592224;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
+	 Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
+	 User-Agent:MIME-Version;
+	bh=wTsAHM77lcB0bP9i+ePrebONUw/58fDsvo3achhO/jM=;
+	b=DAVy+IxlkEV0xYv2s6j4FIkFyX8L9FON4DgNc/bvcYoioCMbqU/PHWdGzESBM8UE8sl5
+	 xKIG9QQDPLfDinBuE6Zxeo76LoaGvBHqrzrzAtDoCh5Z9NEXttMZVczHm7kd3pwjxiP0M
+	 JRK/CZti6STF3aVoWevLGFDYoa3OPm8+z38OoBH4n+1BDYvLtlENbD6JCHffEZC6boj5R
+	 p5vtJheFzp/j170VVDMlphKZaA6w9t4b2w6kXtHe53WUM97XSFO8bOsDGbhfB9VfPJk6H
+	 buMNp3azD/rXSfAxdMR6wEjIVnx6abI+ulOyS9+/LzL3otNUxuvaPoPSoffGr6l70Wg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=NY32l9RJ;
-	arc=none smtp.remote-ip=91.218.175.172
-Received: from mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=codeconstruct.com.au;
+	spf=pass smtp.mailfrom=codeconstruct.com.au;
+	dkim=pass header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.a=rsa-sha256 header.s=2022a header.b=XqxtgMze;
+	arc=none smtp.remote-ip=203.29.241.158
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60651606A326
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 03:59:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 60651606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9FB606A329;
+	Mon,  2 Nov 2026 04:03:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B9FB606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=NY32l9RJ
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=q83PV9k/7H90lkCx+6f3IVbBsobtHrsCWaMNnm1i8fs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793591991; v=1; x=1794196791;
- b=NY32l9RJ68s2x9k6GR07/i/8hKrmAWD6GObhOLhx/1wMh0G5dUkZLTN90SC4VQdjXLHWvrfy
- ArYm6qJTNuPmVkkoq2P2VyAPQDPywqjDUeFzsynd/VWU+0V58n7W1eYSKhDZOGnYMkZK9NEgJyJ
- QHQI8xhG0hIlBnGEdkijL4QA=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 72094826e2f7c04a;
-	Mon, 02 Nov 2026 03:59:51 +0000
-X-Mizu-Trace-ID: 72094826e2f7c04a
-X-Migadu-Flow: FLOW_OUT
-From: Qingfang Deng <qingfang.deng@linux.dev>
-To: Eric Dumazet <edumazet@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Yuchung Cheng <ycheng@google.com>,
-	Wei Wang <weiwan@google.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Qingfang Deng <qingfang.deng@linux.dev>
-Subject: [PATCH net] tcp: initialize send sequence numbers before deferring TFO
-Date: Mon,  2 Nov 2026 11:59:43 +0800
-Message-ID: <20261102035943.9700-1-qingfang.deng@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.a=rsa-sha256 header.s=2022a header.b=XqxtgMze
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1793592220;
+	bh=wTsAHM77lcB0bP9i+ePrebONUw/58fDsvo3achhO/jM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=XqxtgMzeDPgwCwPFzRFBLbEboxpm+5MEr3r5FtVmgcta9YNoWuFxww9CgnEqqwOTV
+	 l1zS8CAL56VE1l1y5wb2Lb1mabzop5ql/0tbSuL9SSYbanxgslnlQUkMFPP6E+jVvp
+	 sfpaZPFfNwKhdiI/zkEUSpjpjZHU9CMFvB30t5AIjlagxD6sE44X6bIKuP5BYaT9nz
+	 JR22CxQ4fFqhVh/O37LOlYLDWGqapn57IFol+VH+6lwCrknbrYkMCyBJe6yGHtLTy9
+	 3tRRUWVDQxw3DMfwXFmzYiUkjFm06qNIc+UPDS6L83mO7CLZA8FPzvvv2zMO7dmbt8
+	 PjtO16/piol5w==
+Received: from [192.168.12.105] (unknown [144.6.157.237])
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 62127648D1;
+	Mon,  2 Nov 2026 12:03:39 +0800 (AWST)
+Message-ID: <e83e3ae9505a60b58acc960b3256b5970fb5cca1.camel@codeconstruct.com.au>
+Subject: Re: [PATCH v2] mctp i3c: Fix locking in an error path
+From: Matt Johnston <matt@codeconstruct.com.au>
+To: Bart Van Assche <bvanassche@acm.org>, Jeremy Kerr
+ <jk@codeconstruct.com.au>
+Cc: Leo Yang <Leo-Yang@quantatw.com>, Paolo Abeni <pabeni@redhat.com>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Andrew Lunn	
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet	 <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Nathan
+ Chancellor	 <nathan@kernel.org>, Leo Yang <leo.yang.sy0@gmail.com>
+Date: Mon, 02 Nov 2026 12:03:38 +0800
+In-Reply-To: <71e0a880ffe7a83237e501b07884bf54343e76ca.1793296780.git.bvanassche@acm.org>
+References: 
+	<71e0a880ffe7a83237e501b07884bf54343e76ca.1793296780.git.bvanassche@acm.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-9 
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,87 +72,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-TCP_FASTOPEN_CONNECT can return from connect() before tcp_connect_init()
-when a cached cookie or cookieless Fast Open allows deferring the SYN.
-At this point write_seq contains the initial sequence number, while
-snd_una and snd_nxt have not been initialized to that sequence number.
+On Thu, 2026-10-29 at 11:00 -0700, Bart Van Assche wrote:
+> If netdev_alloc_skb() fails, mctp_i3c_read() jumps to a label that
+> unlocks mi->lock although that mutex has not been locked yet. Fix this
+> by returning -ENOMEM directly. This bug has been detected by the Clang
+> thread-safety analyzer.
+>=20
+> Cc: Leo Yang <Leo-Yang@quantatw.com>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Jeremy Kerr <jk@codeconstruct.com.au>
+> Cc: Matt Johnston <matt@codeconstruct.com.au>
+> Cc: netdev@vger.kernel.org
+> Fixes: 2d2d4f60ed26 ("mctp i3c: fix MCTP I3C driver multi-thread issue")
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> ---
+> v1 -> v2:
+> - Return -ENOMEM directly upon allocation failure instead of adding a
+>   free_skb label.
+>=20
+>  drivers/net/mctp/mctp-i3c.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/net/mctp/mctp-i3c.c b/drivers/net/mctp/mctp-i3c.c
+> index 4e857dd5df64..5f225999d715 100644
+> --- a/drivers/net/mctp/mctp-i3c.c
+> +++ b/drivers/net/mctp/mctp-i3c.c
+> @@ -111,8 +111,7 @@ static int mctp_i3c_read(struct mctp_i3c_device *mi)
+>  			       mi->mrl + sizeof(struct mctp_i3c_internal_hdr));
+>  	if (!skb) {
+>  		stats->rx_dropped++;
+> -		rc =3D -ENOMEM;
+> -		goto err;
+> +		return -ENOMEM;
+>  	}
 
-Consequently, inet_diag and /proc/net/tcp{,6} report the initial
-sequence number as the send queue length despite no SYN or payload being
-queued.
+Thank you.
 
-Initialize snd_una and snd_nxt to write_seq before marking the
-connection as deferred. Both sequence-based queue lengths then remain
-zero until the first write starts the connection and runs
-tcp_connect_init().
-
-Fixes: 19f6d3f3c842 ("net/tcp-fastopen: Add new API support")
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
----
-Reproducer:
-
-#define _GNU_SOURCE
-#include <netinet/in.h>
-#include <netinet/tcp.h>
-#include <stdio.h>
-#include <sys/socket.h>
-#include <unistd.h>
-
-int main(void)
-{
-	struct sockaddr_in dst = {
-		.sin_family = AF_INET,
-		.sin_port = htons(9),
-		.sin_addr.s_addr = htonl(INADDR_LOOPBACK),
-	};
-	struct tcp_info info = {0};
-	socklen_t len = sizeof(info);
-	int fd = socket(AF_INET, SOCK_STREAM, 0), one = 1;
-
-	if (fd < 0 ||
-	    setsockopt(fd, IPPROTO_TCP, TCP_FASTOPEN_CONNECT, &one, sizeof(one)) < 0 ||
-	    setsockopt(fd, IPPROTO_TCP, TCP_FASTOPEN_NO_COOKIE, &one, sizeof(one)) < 0 ||
-	    connect(fd, (struct sockaddr *)&dst, sizeof(dst)) < 0 ||
-	    getsockopt(fd, IPPROTO_TCP, TCP_INFO, &info, &len) < 0) {
-		perror("TFO setup");
-		return 1;
-	}
-	if (info.tcpi_state != TCP_SYN_SENT) {
-		fprintf(stderr, "Expected SYN_SENT, got state %u\n", info.tcpi_state);
-		return 1;
-	}
-	printf("PID %ld: deferred SYN_SENT; no SYN or payload sent\n", (long)getpid());
-	fflush(stdout);
-	for (;;)
-		pause();
-}
-
-`ss -ntp state syn-sent` will show a bogus Send-Q number, which is the
-initial sequence number interpreted as signed 32-bit:
-
-Recv-Q          Send-Q                        Local Address:Port                      Peer Address:Port          Process
-0               -1405690727                       127.0.0.1:57290                        127.0.0.1:9              users:(("a.out",pid=63363,fd=3))
-
-Diagnosis and implementation were assisted by GPT Codex.
----
- net/ipv4/tcp_fastopen.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
-index 6dfe40322fb5..ff81e663ac61 100644
---- a/net/ipv4/tcp_fastopen.c
-+++ b/net/ipv4/tcp_fastopen.c
-@@ -545,6 +545,8 @@ bool tcp_fastopen_defer_connect(struct sock *sk, int *err)
- 
- 	if (tp->fastopen_connect && !tp->fastopen_req) {
- 		if (tcp_fastopen_cookie_check(sk, &mss, &cookie)) {
-+			WRITE_ONCE(tp->snd_una, tp->write_seq);
-+			WRITE_ONCE(tp->snd_nxt, tp->write_seq);
- 			inet_set_bit(DEFER_CONNECT, sk);
- 			return true;
- 		}
--- 
-2.43.0
+Acked-by: Matt Johnston <matt@codeconstruct.com.au>
 
