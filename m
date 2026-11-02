@@ -1,83 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793633605;
-	b=dmmRewi7s4+0us4kJTC2QZgDq27Kp3reqs5wDUBzBoZc0/70mYEilusQKG1SHQfTSLrS
-	 FIY9TgPW81yu1DXC2zc++RlV7hP+OXx5vt4U6kwND7kOSe8t/8Dx2crKpK0S2zyIdahOJ
-	 DncxiEI9fa7MRySWCDHn/zER0Ss8606nmDV2zoRZS11A8Ox7gvE5f35ydUkmJEGz03g16
-	 GHPeoOKsRLUHSesgd2Sb7185xidJICAIz1iLkS13Gan0Za9onQw9JZfu/M7/KPfUj9F1U
-	 yF62jevk6ZVYqFdoYXUALwCWLinDOWoPkG+6afbu4LpcxDCOUyNS08zMamMkfwI+0/A==
+	t=1793633596;
+	b=Q9Kmc4OJfGbsXwm+5RpvZNtZ5BGe/lpqlda/dpfR37vwfdwkgbzKXebYRE4Lqybbf7Q0
+	 F/9tVfOk/xf/uaQprhYCUBsKiQmmxqmVKTLGfK44dWPrUnURVhY3BCxg/aBj8loeKVGIL
+	 u0qAnAeN3vwrhEwErCWTvLPc5zkFvKdmiVnsGP+33gCbEj1wrRTKJdcXOs4cqJBZAATcz
+	 xBy4tWBqztzq9Nlb2lDWBP5fzVRPnHTw7bv6NZWZxNqeoR73SIYEHjY8n8rT104HyehZH
+	 /UA9/D85BbaddntEvQ9HlV5mUiE+i1GIjtOquSfwRaQnp9n7KDLXoiyijXvf4B6DeKA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793633605;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=lJHoj9lM3k/CRUYNMR+EIgjIhAXFSpH7YrbBAELRZig=;
-	b=WyY85S6V4MXDZOfn7S/pqql4v+Kyk3PLvebQEWFES6n9jfkL6Q6xDgGY3QeQOSiOhzlh
-	 aqT+8fwYT+XWAWp2hhVJE5KnnpW95tgEI5++Bcxf4qIN483tSyetDdbTDePxkJ67cDh7r
-	 jCCRLg76yuqATsTJyrxv3YEzu2B/eUtT+O7WWO+lVMA2yBVtHGon+8yPBgrma2RlNclbE
-	 EZ9QXRoz7E5K32wAFY0c9cr9CWotKUMLUKJGHzrtjKx8/QsZFAOppj8+UnJ4FHJsmsmVi
-	 R2txeUqeve8oKy3fBtW558BDMgNEG5cg9nPZtbCospbdaCIWMcJ0Pib4YoBdSIIcHmA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793633596;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=I87aXd9DKn5INMWxVGI3L3LJev8psccpA6qjKtl7++0=;
+	b=k6m+u6SwSayyhoI6ku4z3b/5m54KVB2N+izyIdQbmdsnr9FghM5MLM224kcNJQalAtD/
+	 pLR+NHKUlvVTfIEtcr6fuVd349eVTFgGZFJWasnThsIQl1jN5jXWx2o1wd2yEvkJxJ2jA
+	 FBRsKo3eb06cIZCDY3G25XucoOP5aukDU8NWu18lF7RZJ+Xc/GhjAI6lVr4lDNON4RsPr
+	 9kuqZQNeVlvKMaEBw3bsDdnk/dLvbX2Kl8Zb5Q+GbZgjJc5r/hBo2KH/DFlf9gtpSnKNO
+	 T3rsBIbTlkn2VNhm5Q2wFlRznElOUPP0uzEIOk4bqEPYflrxOFgvXvnlyUk1C3h7jAw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="Olrz/LfN";
-	arc=none smtp.remote-ip=192.198.163.14
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lY4jcv6k;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866ED609FAA3
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:33:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 866ED609FAA3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11E8608A35C;
+	Mon,  2 Nov 2026 15:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Olrz/LfN
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793633603; x=1825169603;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=/VrAM8d+OBUPZ1t1z41VtwaZT+cQHgFWWxsqB2NaHcw=;
-  b=Olrz/LfNAhbJDqFt5wthRW2vKzsKS0z2Svv6EgpDuHgEiky/xEYUgHrq
-   szJSb608AH1znNCxLPgaoTieAOOSp3JjgZnebwpq+Iv9128uL2sNjoxp/
-   mR72HlXxn+6Qj/LFSidrD11Z92l8mZAYfjiIa8q8/zqBU1NQ4SPvOuDWS
-   DXZdpboZbtSrTyyVu+sIGQXzeJssCE621rEC23psWu9pWamfGIzN0s1Ho
-   7VdzpL7WjilnD8aMPvPQ1a7g1ddKtkXoZ3YOUopbKwgAy5bPEjpC4hHLk
-   Wayimu+y2roek5oicokKpSZa4J2KZTt8aOOlgBgyoKchajuy2bvv1zfSi
-   A==;
-X-CSE-ConnectionGUID: WckS90gdQieGAN1tTVfEDg==
-X-CSE-MsgGUID: WV3GE3wESh6PAUo0LVIfEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2359994"
-X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
-   d="scan'208";a="2359994"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 07:33:23 -0800
-X-CSE-ConnectionGUID: 3QG/0HqgRrSehrutwxc9VA==
-X-CSE-MsgGUID: W8dxiBUPSMGsfV3iKeM07w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
-   d="scan'208";a="7920912"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa012.fm.intel.com with ESMTP; 02 Nov 2026 07:33:20 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xNu29-00000000hDI-1eW4;
-	Mon, 02 Nov 2026 15:33:17 +0000
-Date: Mon, 2 Nov 2026 23:32:58 +0800
-From: kernel test robot <lkp@intel.com>
-To: Tung Nguyen <tung.quang.nguyen@est.tech>, netdev@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	davem@davemloft.net, kuba@kernel.org, edumazet@kernel.org,
-	pabeni@redhat.com, jmaloy@redhat.com, horms@kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	syzbot+64197f7577a09686ffdb@syzkaller.appspotmail.com
-Subject: Re: [PATCH net v2 6/6] tipc: fix NULL pointer dereference in
- named_distribute()
-Message-ID: <202611022356.UddfVq4D-lkp@intel.com>
-References: <20261102034207.10639-7-tung.quang.nguyen@est.tech>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lY4jcv6k
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99BA1F00A17;
+	Mon,  2 Nov 2026 15:32:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793633595;
+	bh=I87aXd9DKn5INMWxVGI3L3LJev8psccpA6qjKtl7++0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=lY4jcv6krIB7tSgezJZ0V+JS72cdUlJSNkPro3CnXcMDEMbA71z5fLxOwnxG5iNkC
+	 rp3t+Brf19zrcUHbxB4mEw/GXvOdm1oi2xkw2hpPnVuKqF63DhYCdo+P7KrF0k9ySw
+	 q3WnWWnNPvOQjnIIlISDoS4h+NGj1NrV2Jh1P/jEmiGYv49kocMRPrjiUdBmefuqET
+	 1ShVqFtZ3SJTeboI3TL14lRgICjngxPE349v7hPpsjveDK6gezuIAK+69D9q6LdAv9
+	 73twS08QrRhGo6PjTHEfdslbb4r0jzOEE8UMiaU6s9+19ZD/+9Ub+CAZVV3kngpDqS
+	 WLDxb1Y0Pf41w==
+From: Christian Brauner <brauner@kernel.org>
+Date: Mon, 02 Nov 2026 16:07:21 +0100
+Subject: [PATCH RFC 07/11] SUNRPC: let procfs copy in writes
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,85 +52,237 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102034207.10639-7-tung.quang.nguyen@est.tech>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261102-work-procfs-net-v1-7-982104a4f592@kernel.org>
+References: <20261102-work-procfs-net-v1-0-982104a4f592@kernel.org>
+In-Reply-To: <20261102-work-procfs-net-v1-0-982104a4f592@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+ Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+ Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
+ NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+ Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+ Greg Kroah-Hartman <gregkh@suse.de>, 
+ Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
+ Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+ linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+ linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
+ ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+ coreteam@netfilter.org, kexec@lists.infradead.org, 
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+ netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
+ linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+ sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+ linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
+ linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
+ linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+ linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
+ linux-debuggers@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, 
+ Chuck Lever <cel@kernel.org>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6349; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=qIHvvtDF4hd5tLnMryapPJOuLcFfYH/7YZBGB4Dja6Y=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9WG7CdjuxYNKH1PsxikWnjN8tZPqx7Tq7i8/lCrHdJ
+ 97HOtSLdZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExE8xXD/9jUmsqIIw9en38y
+ Z8Vu48gvWjue7r2yq9U2dybrZ1vjReyMDFdXTv0uWTl90SWl4+aLZwnG1ttwHbg+V1jiwIy/pZo
+ V97kA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-Hi Tung,
+Implement ->proc_write_buf() for the procfs channel, flush and
+use-gss-proxy files so procfs copies in what is written before it pins
+the entry. The channel file parses the downcall from that copy and the
+flush files share the parsing with rpc_pipefs in do_write_flush(). The
+rpc_pipefs files keep copying in themselves.
 
-kernel test robot noticed the following build warnings:
+CACHE_DOWNCALL_MAX and CACHE_FLUSH_MAX name the limits both sides
+enforce, procfs through ->proc_write_size. The procfs files are removed
+when the network namespace goes away and that no longer waits for a
+writer that faults on its buffer.
 
-[auto build test WARNING on net/main]
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ net/sunrpc/auth_gss/svcauth_gss.c | 10 +++----
+ net/sunrpc/cache.c                | 63 +++++++++++++++++++++++++++------------
+ 2 files changed, 48 insertions(+), 25 deletions(-)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Tung-Nguyen/tipc-fix-memory-leak-in-tipc_node_xmit/20261102-104027
-base:   net/main
-patch link:    https://lore.kernel.org/r/20261102034207.10639-7-tung.quang.nguyen%40est.tech
-patch subject: [PATCH net v2 6/6] tipc: fix NULL pointer dereference in named_distribute()
-config: sparc64-randconfig-1001-20261102 (https://download.01.org/0day-ci/archive/20261102/202611022356.UddfVq4D-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261102/202611022356.UddfVq4D-lkp@intel.com/reproduce)
+diff --git a/net/sunrpc/auth_gss/svcauth_gss.c b/net/sunrpc/auth_gss/svcauth_gss.c
+index 43839e805531..8d105cd900d4 100644
+--- a/net/sunrpc/auth_gss/svcauth_gss.c
++++ b/net/sunrpc/auth_gss/svcauth_gss.c
+@@ -1408,8 +1408,8 @@ svcauth_gss_proc_init(struct svc_rqst *rqstp, struct rpc_gss_wire_cred *gc)
+ 
+ #ifdef CONFIG_PROC_FS
+ 
+-static ssize_t write_gssp(struct file *file, const char __user *buf,
+-			 size_t count, loff_t *ppos)
++static ssize_t write_gssp(struct file *file, char *buf, size_t count,
++			  loff_t *ppos)
+ {
+ 	struct net *net = pde_data(file_inode(file));
+ 	char tbuf[20];
+@@ -1418,9 +1418,7 @@ static ssize_t write_gssp(struct file *file, const char __user *buf,
+ 
+ 	if (*ppos || count > sizeof(tbuf)-1)
+ 		return -EINVAL;
+-	if (copy_from_user(tbuf, buf, count))
+-		return -EFAULT;
+-
++	memcpy(tbuf, buf, count);
+ 	tbuf[count] = 0;
+ 	res = kstrtoul(tbuf, 0, &i);
+ 	if (res)
+@@ -1468,7 +1466,7 @@ static ssize_t read_gssp(struct file *file, char __user *buf,
+ 
+ static const struct proc_ops use_gss_proxy_proc_ops = {
+ 	.proc_open	= nonseekable_open,
+-	.proc_write	= write_gssp,
++	.proc_write_buf	= write_gssp,
+ 	.proc_read	= read_gssp,
+ };
+ 
+diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
+index 007521e8a57f..a257598768fa 100644
+--- a/net/sunrpc/cache.c
++++ b/net/sunrpc/cache.c
+@@ -924,6 +924,9 @@ static ssize_t cache_do_downcall(char *kaddr, const char __user *buf,
+ 	return ret;
+ }
+ 
++/* 32k is max userland buffer, lets check anyway */
++#define CACHE_DOWNCALL_MAX	(32768 - 1)
++
+ static ssize_t cache_downcall(struct address_space *mapping,
+ 			      const char __user *buf,
+ 			      size_t count, struct cache_detail *cd)
+@@ -931,7 +934,7 @@ static ssize_t cache_downcall(struct address_space *mapping,
+ 	char *write_buf;
+ 	ssize_t ret = -ENOMEM;
+ 
+-	if (count >= 32768) { /* 32k is max userland buffer, lets check anyway */
++	if (count > CACHE_DOWNCALL_MAX) {
+ 		ret = -EINVAL;
+ 		goto out;
+ 	}
+@@ -1508,19 +1511,15 @@ static ssize_t read_flush(struct file *file, char __user *buf,
+ 	return simple_read_from_buffer(buf, count, ppos, tbuf, len);
+ }
+ 
+-static ssize_t write_flush(struct file *file, const char __user *buf,
+-			   size_t count, loff_t *ppos,
+-			   struct cache_detail *cd)
++/* longest number the flush files take */
++#define CACHE_FLUSH_MAX		19
++
++static ssize_t do_write_flush(char *tbuf, size_t count, loff_t *ppos,
++			      struct cache_detail *cd)
+ {
+-	char tbuf[20];
+ 	char *ep;
+ 	time64_t now;
+ 
+-	if (*ppos || count > sizeof(tbuf)-1)
+-		return -EINVAL;
+-	if (copy_from_user(tbuf, buf, count))
+-		return -EFAULT;
+-	tbuf[count] = 0;
+ 	simple_strtoul(tbuf, &ep, 0);
+ 	if (*ep && *ep != '\n')
+ 		return -EINVAL;
+@@ -1551,6 +1550,20 @@ static ssize_t write_flush(struct file *file, const char __user *buf,
+ 	return count;
+ }
+ 
++static ssize_t write_flush(struct file *file, const char __user *buf,
++			   size_t count, loff_t *ppos,
++			   struct cache_detail *cd)
++{
++	char tbuf[CACHE_FLUSH_MAX + 1];
++
++	if (*ppos || count > CACHE_FLUSH_MAX)
++		return -EINVAL;
++	if (copy_from_user(tbuf, buf, count))
++		return -EFAULT;
++	tbuf[count] = 0;
++	return do_write_flush(tbuf, count, ppos, cd);
++}
++
+ static ssize_t cache_read_procfs(struct file *filp, char __user *buf,
+ 				 size_t count, loff_t *ppos)
+ {
+@@ -1559,12 +1572,21 @@ static ssize_t cache_read_procfs(struct file *filp, char __user *buf,
+ 	return cache_read(filp, buf, count, ppos, cd);
+ }
+ 
+-static ssize_t cache_write_procfs(struct file *filp, const char __user *buf,
+-				  size_t count, loff_t *ppos)
++/* procfs copied in what was written */
++static ssize_t cache_write_procfs(struct file *filp, char *buf, size_t count,
++				  loff_t *ppos)
+ {
+ 	struct cache_detail *cd = pde_data(file_inode(filp));
++	struct inode *inode = file_inode(filp);
++	ssize_t ret;
+ 
+-	return cache_write(filp, buf, count, ppos, cd);
++	if (!cd->cache_parse || !count)
++		return -EINVAL;
++
++	inode_lock(inode);
++	ret = cd->cache_parse(cd, buf, count);
++	inode_unlock(inode);
++	return ret ? ret : count;
+ }
+ 
+ static __poll_t cache_poll_procfs(struct file *filp, poll_table *wait)
+@@ -1599,7 +1621,8 @@ static int cache_release_procfs(struct inode *inode, struct file *filp)
+ 
+ static const struct proc_ops cache_channel_proc_ops = {
+ 	.proc_read	= cache_read_procfs,
+-	.proc_write	= cache_write_procfs,
++	.proc_write_buf	= cache_write_procfs,
++	.proc_write_size = CACHE_DOWNCALL_MAX,
+ 	.proc_poll	= cache_poll_procfs,
+ 	.proc_ioctl	= cache_ioctl_procfs, /* for FIONREAD */
+ 	.proc_open	= cache_open_procfs,
+@@ -1653,19 +1676,21 @@ static ssize_t read_flush_procfs(struct file *filp, char __user *buf,
+ 	return read_flush(filp, buf, count, ppos, cd);
+ }
+ 
+-static ssize_t write_flush_procfs(struct file *filp,
+-				  const char __user *buf,
+-				  size_t count, loff_t *ppos)
++static ssize_t write_flush_procfs(struct file *filp, char *buf, size_t count,
++				  loff_t *ppos)
+ {
+ 	struct cache_detail *cd = pde_data(file_inode(filp));
+ 
+-	return write_flush(filp, buf, count, ppos, cd);
++	if (*ppos)
++		return -EINVAL;
++	return do_write_flush(buf, count, ppos, cd);
+ }
+ 
+ static const struct proc_ops cache_flush_proc_ops = {
+ 	.proc_open	= open_flush_procfs,
+ 	.proc_read	= read_flush_procfs,
+-	.proc_write	= write_flush_procfs,
++	.proc_write_buf	= write_flush_procfs,
++	.proc_write_size = CACHE_FLUSH_MAX,
+ 	.proc_release	= release_flush_procfs,
+ };
+ 
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611022356.UddfVq4D-lkp@intel.com/
+-- 
+2.53.0
 
-All warnings (new ones prefixed by >>):
-
->> net/tipc/net.c:147:6: warning: variable 'p' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-     147 |         if (!tn->nt_self_node_exist)
-         |             ^~~~~~~~~~~~~~~~~~~~~~~
-   net/tipc/net.c:150:6: note: uninitialized use occurs here
-     150 |         if (p || err == -EEXIST)
-         |             ^
-   net/tipc/net.c:147:2: note: remove the 'if' if its condition is always true
-     147 |         if (!tn->nt_self_node_exist)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     148 |                 p = tipc_nametbl_insert(net, &ua, &sk, addr, &skb, &err);
-   net/tipc/net.c:132:23: note: initialize the variable 'p' to silence this warning
-     132 |         struct publication *p;
-         |                              ^
-         |                               = NULL
-   1 warning generated.
-
-
-vim +147 net/tipc/net.c
-
-   125	
-   126	static void tipc_net_finalize(struct net *net, u32 addr)
-   127	{
-   128		struct name_table *nt = tipc_name_table(net);
-   129		struct tipc_socket_addr sk = {0, addr};
-   130		struct tipc_net *tn = tipc_net(net);
-   131		struct sk_buff *skb = NULL;
-   132		struct publication *p;
-   133		struct tipc_uaddr ua;
-   134		u32 rc_dests;
-   135		int err = 0;
-   136	
-   137		tipc_uaddr(&ua, TIPC_SERVICE_RANGE, TIPC_CLUSTER_SCOPE,
-   138			   TIPC_NODE_STATE, addr, addr);
-   139	
-   140		if (cmpxchg(&tn->node_addr, 0, addr))
-   141			return;
-   142		tipc_set_node_addr(net, addr);
-   143		tipc_named_reinit(net);
-   144		tipc_sk_reinit(net);
-   145		tipc_mon_reinit_self(net);
-   146		spin_lock_bh(&tn->nametbl_lock);
- > 147		if (!tn->nt_self_node_exist)
-   148			p = tipc_nametbl_insert(net, &ua, &sk, addr, &skb, &err);
-   149	
-   150		if (p || err == -EEXIST)
-   151			tn->nt_self_node_exist = true;
-   152		rc_dests = nt->rc_dests;
-   153		spin_unlock_bh(&tn->nametbl_lock);
-   154	
-   155		if (skb)
-   156			tipc_node_broadcast(net, skb, rc_dests);
-   157	}
-   158	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
