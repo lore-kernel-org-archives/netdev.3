@@ -1,59 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793602419;
-	b=5J/FMAANVdu6qvZBxTGFLzcbGPWFP20fiSU595+nd1DNQcr8lr8AG2UIGuHVsZ07L0sQ
-	 vy4z8qd1hrp/IceFF8kHlmd9DqO/wtzi1QDkkB1Lnbja//f7ptet6DG54Q7z0TTqZ6RzK
-	 xP8XAvUKKjwp0tgPm3B7lduYHRZb5WhueJuTxVgnadEkUpgen+jbLbOvdg5HUcyWxUgdN
-	 3P9bfxHR412GmwMtngeDRnqlltTVvCxYopaFZpNkksQuuZ40w//pX9Z5m9jIfEuu9eb0K
-	 RzlWgP610YpEeryD0gukEb8OBlk8ZkEuwse5qSCI7nXyC1d1kugv1br4cC9+Hs+vlCg==
+	t=1793602983;
+	b=Fu/VCo1Rf9t6aU/OfLIG0KmN4EcgPtssvdDegQLtbJvO1WPA8fr/mCMnfuBuiS2OzsRQ
+	 hhdD78RrtzAiHY7WPyMlG7VwQWTzm73HDK6x43uky7SYr8dEvMOyULTjQcOtMxkbwzJve
+	 ccfq7TuAS37KlUBWgc9JfSG40Z6ZCSF0BwhU1gTmfwTGCnm/DS44uqek6+g0CMdjDSalj
+	 t1W7rjtbmKcSmQuSISX2YJB+RfgJB4kVvRmZhIowNwm5aIVCv9l746etfhMJ/GlFubof1
+	 ueVXRag5+ipjKpLQvtCC34BHgVdIdCh8RABy3Lzx5m2nG8sdtU8r+SOTK44hOGpiApg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793602419;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=DQFBpfIuZAOPErOT1+mfJ2r1j1dUaVfapvVbsc/r20dF73f3yOP6eYogP/mfHqWIuNHt
-	 GggtgzHyxUpRSZk3Xn4BLS4ly3j6fz++3mR3WMKI391zpCDer7mOQYd/kQnVl+NZVAcTp
-	 UeCfZKCy8tKxUAzGl2IClUreR9eqNsBVbp87hLDQb1X1PGmdWSwnVjCcSMdKrfdaMTg1S
-	 bkdN7lPXXoDtGnnrXlBjP8Gfhdn24FKNVVMAn8CT3FC4Se8NfC7Eofqbf53B/5Gf99B4R
-	 crXrTqbmuG6XkP6ud7ElRntK29yhr2lKvzUOt8xk0rqkCHoeEY0p2UrLi570DrZFg6A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793602983;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=aFyPqufKPTRfFHH6kiVo0N40szheXQ5ACKShZcHFEdc=;
+	b=NYc5vbocdGEjRefRzy7UNcawfgAGYMa7ImM0qAJWWag4K/mYomVMNhYr4SL7Earp90cy
+	 YooLxdJTMGDvVxNSGmGaM7wDUZLjhTfUNd2/IcUmgqaOeR99svd5XFrwBVQbfuLiszhvU
+	 wzXVWX8fMnWgS1R3hpClD9LBOpiddAZ+a8l13IsKVGqFZJLWrZXE10LaxDhN7SZfszCDV
+	 MQWP5pP8yjwEywE3YhjzFAW44+5sGkMOoV7zsIAhpJMEKwkBHglJItelueZFFCsweKyUO
+	 FiM7bgljrYhSKvpdI9VVG7rsmxT8a5f0j90WR46E74EBGkoxXYqIABGAz5QkV1xXDQA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fvUJaBs7;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jtJt+6aY;
+	arc=none smtp.remote-ip=209.85.215.198
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7CE606A324;
-	Mon,  2 Nov 2026 06:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDAA606A326
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 07:03:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1EDAA606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fvUJaBs7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B6C1F000C1;
-	Mon,  2 Nov 2026 06:53:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793602418;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fvUJaBs7lfPCACkKBdxWR0Fg5hsNAIRzZ3UcW7g4zZ1cSgwb1CxfWNpRFUDuoToYt
-	 P3h9Zrg1QIZktv2LzyayhTIeQJgKtks6pcvNQZskksNaXUFUcHaPsuMcjth+7gcrsO
-	 f2b+WncZnOO8YtnbAL7543GfW5X3/8Jvb/UVWgYfKdck2TCyqkS+qip+TbZyDZPhKM
-	 l+kFJxCE+NqSq304jpvmOe0krHl7RHez4xF4spAFugoLCGo0N8X+e4X1Z5jrLhhrM1
-	 MeXCStAre2ja9hBn1ZqFPOcra3eAaS2r0X9VKO4OOUisp2XXDf/E1lnaoKKQeXU4W2
-	 afCds6Fcgkzfw==
-From: netdev-bot+sinfo@kernel.org
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
- idosch@nvidia.com, bpf@vger.kernel.org
-Subject: Re: [PATCH net] ipv6: Check the Home Address option again before its
- address is used
-Date: Mon, 02 Nov 2026 06:53:37 +0000
-Message-ID: <179360241747.3286.1195676536832321611@kernel.org>
-In-Reply-To: <20261102064922.2636027-1-alexei.starovoitov@gmail.com>
-References: <20261102064922.2636027-1-alexei.starovoitov@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jtJt+6aY
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc7e92f36f9so2046881a12.3
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 23:03:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793602981; x=1794207781; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aFyPqufKPTRfFHH6kiVo0N40szheXQ5ACKShZcHFEdc=;
+        b=jtJt+6aYbPByuXxUOxALSzqcBfCqep5WAKQ+Mk8/QBES5us1Qq15iqrp8nkRpEaF7C
+         TAb3ErLjuxlY8l+G4NAoyqa/YSHJqTRj3rr1FboPnvyZjTFdo7KiGULsdyLMexpwSjum
+         iJHobQFMrschpujBVY/0UJu/EHl0LYZGj814V7Oi75XQZ0wZLyv61jQpEzyxwDwpn7aj
+         ElhkbcvFlu067KOGpeYkCDeAnIfuaKEOC/Nil1UvmrXzImaGhCnr5vJK7joltytG6+mN
+         d+vUS6Ff9v5Nn2XEQBj3hNRTB19zqfnhW1ftaAdyx3qCvXkdjW5z27Sa7WGQS9waxRbT
+         U1hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793602981; x=1794207781;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=aFyPqufKPTRfFHH6kiVo0N40szheXQ5ACKShZcHFEdc=;
+        b=LlS8e9xASOf8gZuDr3+KDHsnlit6DYXu0hI7Ez6GVGAaucl0VUxiYe+cZ8sa5GKrqk
+         Zer1+tCAEuIocqS5B71Omnq1mt8TSMoPqEcbVtWF5WPBhfNHvciDBcf+VnQDQi4BrZkV
+         O1lOLaMx1bBbb0U3VMmeDB0qkokzkov5J76EUhBrwuVj6G2x1qi/Bw8d37aw4ob6QHi+
+         HWWaXxWyN/jhzstF0yqifqJOYXXKx9CWCLbaxcbt6qXV7xxam400Jt8IySxiZMIng9Lb
+         WMQ7tV5bIC0Ab1YO44bMkCbVur4GKxf/g4hrG7BwFJfOjoyHevW340LwZdyhk2/jhd1d
+         nXxQ==
+X-Gm-Message-State: APuU4Z9z5YJnlnqZWCifUVD8u0MW9NPdNdglcN7G1/4E/wmv8f6J/N2N
+	q75FSg3yNkEXt9qz7u6IJg1BD+Se+fIzycjDOga6gTHRc5PMDRqDfFC7UUl1iigIxPV4jf/7jfs
+	HCSc3Hw==
+X-Received: from pglk11-n1.prod.google.com ([2002:a05:6a02:6b8b:10b0:cca:d82:90fc])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:180d:b0:3ab:2d46:1dd2
+ with SMTP id 98e67ed59e1d1-3ae895a5c46mr7949392a91.6.1793602981199; Sun, 01
+ Nov 2026 23:03:01 -0800 (PST)
+Date: Mon, 2 Nov 2026 07:03:00 +0000
+In-Reply-To: <82c31e4d5043f3dbd11b44177cfba779d335aae3.1793599929.git.x-professor@outlook.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,26 +76,103 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <82c31e4d5043f3dbd11b44177cfba779d335aae3.1793599929.git.x-professor@outlook.com>
+Message-ID: <aug0tMr2QXRxTWuE@google.com>
+Subject: Re: [PATCH net] tcp: ipv6: keep request pktopts alive until request destruction
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Yingjie Wang <x-professor@outlook.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "edumazet@kernel.org" <edumazet@kernel.org>, 
+	"ncardwell@google.com" <ncardwell@google.com>, "davem@davemloft.net" <davem@davemloft.net>, 
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, 
+	"horms@kernel.org" <horms@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>, 
+	"martin.lau@linux.dev" <martin.lau@linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-Hi!
+On Mon, 02 Nov 2026 06:12:18 +0000, Yingjie Wang wrote:
+> When IPv6 flow label reflection is enabled, tcp_v6_send_synack() reads
+> ireq->pktopts to copy the flow label from the initial SYN.
+> 
+> Request sockets can be processed without the listener lock. A
+> retransmitted SYN can therefore run tcp_v6_send_synack() while a
+> concurrent final ACK creates the child in tcp_v6_syn_recv_sock(). The
+> latter clones ireq->pktopts for the child and immediately consumes the
+> request's reference. This can free the skb while the retransmit path is
+> still reading its IPv6 header, causing a use-after-free.
+> 
+> Request migration has the same ownership problem. inet_reqsk_clone()
+> copies pktopts without taking an skb reference, and reqsk_migrate_reset()
+> then clears the old request's pointer. A CPU holding the old request can
+> still be sending a SYNACK when the cloned request releases the only skb
+> reference.
+> 
+> Do not consume pktopts while creating the child. Give each cloned request
+> its own skb reference and let every request release its reference from
+> tcp_v6_reqsk_destructor().
+> 
+> I found this while testing IPv6 TCP request-socket lifetime handling. The
+> reproducer required no source changes, artificial delay, or fault
+> injection beyond enabling KASAN. It triggered the use-after-free before
+> this change. With this change, a 2000-round run completed without a KASAN
+> report. A separate 10-round test recorded four successful request
+> migrations and no KASAN report. Networking selftests were not run because
+> none directly exercises this race.
+> 
+> Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
+> Fixes: 079096f103fa ("tcp/dccp: install syn_recv requests into ehash table")
+> Fixes: c905dee62232 ("tcp: Migrate TCP_NEW_SYN_RECV requests at retransmitting SYN+ACKs.")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yingjie Wang <x-professor@outlook.com>
+> ---
+>  net/ipv4/inet_connection_sock.c | 6 +++++-
+>  net/ipv6/tcp_ipv6.c             | 7 ++++---
+>  2 files changed, 9 insertions(+), 4 deletions(-)
+> 
+> diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+> index 93b306d91b6d..66f8ce25aa38 100644
+> --- a/net/ipv4/inet_connection_sock.c
+> +++ b/net/ipv4/inet_connection_sock.c
+> @@ -936,6 +936,11 @@ static struct request_sock *inet_reqsk_clone(struct request_sock *req,
+>  		      req->rsk_ops->obj_size - offsetof(struct sock, sk_dontcopy_end),
+>  		      /* alloc is larger than struct, see above */);
+>  
+> +#if IS_ENABLED(CONFIG_IPV6)
+> +	if (inet_rsk(nreq)->pktopts)
+> +		skb_get(inet_rsk(nreq)->pktopts);
+> +#endif
+> +
+>  	sk_node_init(&nreq_sk->sk_node);
+>  	nreq_sk->sk_tx_queue_mapping = req_sk->sk_tx_queue_mapping;
+>  #ifdef CONFIG_SOCK_RX_QUEUE_MAPPING
+> @@ -982,7 +987,6 @@ static void reqsk_migrate_reset(struct request_sock *req)
+>  	req->saved_syn = NULL;
+>  #if IS_ENABLED(CONFIG_IPV6)
+>  	inet_rsk(req)->ipv6_opt = NULL;
+> -	inet_rsk(req)->pktopts = NULL;
+>  #else
+>  	inet_rsk(req)->ireq_opt = NULL;
+>  #endif
+> diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+> index e006a30360ea..0b51cb4ad960 100644
+> --- a/net/ipv6/tcp_ipv6.c
+> +++ b/net/ipv6/tcp_ipv6.c
+> @@ -1522,11 +1522,12 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
+>  	if (*own_req) {
+>  		tcp_move_syn(newtp, req);
+>  
+> -		/* Clone pktoptions received with SYN, if we own the req */
+> +		/* Clone pktoptions received with SYN. Keep the request's
+> +		 * reference until the request is destroyed, as a concurrent
+> +		 * SYN retransmit may still read it.
+> +		 */
+>  		if (ireq->pktopts) {
+>  			newnp->pktoptions = skb_clone_and_charge_r(ireq->pktopts, newsk);
+> -			consume_skb(ireq->pktopts);
+> -			ireq->pktopts = NULL;
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+This is reported from another person in security@ mailing list
+yesterday and Eric has a better fix.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+pw-bot: rejected
