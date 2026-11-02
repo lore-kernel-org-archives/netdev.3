@@ -1,59 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.189
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793620574;
-	b=49Yzr3iqgk0hhRRLJDqj0JqQ3jtILIPwWmTH1+fVf8BqZYKFsrZH8zga/wr4ssp/eEBm
-	 2V4Pzk85qcRkJcwNOp1qlG37dhIDwQNiFQNVJ1d+u5HiVebkKAt9e/EnW5E0yEAg0SC99
-	 2Rr1eDycebZ7tK9eKZXJPAiVV3WZuyiH8343P16P/oFeBw0Tlg1E+Rlx4A80iHT4T+QUJ
-	 t+G1uCA8ca537WN/nubCbGCmdolmNRwlvDXrsLkKPHc1j3aNutbHdilK7Ay8a0uLaHGfc
-	 vbZm5I3e/NKemcuTjk8L4CoWqvBpC4+BJnadYSEeTADvnBoC6ZruVxBs033Um5oW34A==
+	t=1793620852;
+	b=n3toLHeTOS7cbFNn2JYygyO+pTeTBqZtTABQ1qx8ulAclU7zFjy1HTTNCNL6PWghOtgW
+	 bPcJdqom6RaRjvanCG7mbaGGbT/1BvLfkq77ZiuJAiNUP5IYPmHtt1fhd69TTeDE7Fne4
+	 Ad6sIKUx+/38RSYeerF631GbI9S0qXaUlIxleQR0Gnm8PNMrnTDO85MkDqH5HlLIC18kL
+	 oIcu3BbzBsLtw0saN1E/wNWJY7GZra8xifQNjrTpwYxv8V7TrhzKabGTknEYwXU+kmnZt
+	 K0YKTd0nckvhMmoLvDz9b41II4M+fxjb7Kay/Rnhji+8SlyivSl8QmRfmcUd8VcbccQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793620574;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=edBP2A68Bu7W9EkTwCHYe8SPLgIZpJkGOjQwcfidHTM=;
-	b=PgpOSObhuAyGw3ENpkAqDQjUB9iXajcCq39hStIg74ln+SbkMrnyeItUmYjT9dZpIsRB
-	 tT5gzsmIAh9Mq1M9n7qL35qYGwtQCWZ3rJT8M2he9gT3OrN3m/6LpKasCKk4Rux6fhki+
-	 ftTtrzFdxl66m86MRPj4CTg3lDRSWsbkDIjavGVAJotG+4Rx0Ykey1+T4fnZEP8gcz5AX
-	 r2Eu36uZxkiG4os0NZ9F2CscvgAgZjSBcBKHvrQV59qQVFjhKEi2IDHVfoJ0/8gBNkbYF
-	 lamplOpNNQiG5CoZSsczMt+azYsKhUl5f8t4Mk5040FzPezMmaWOWBpln7DaQtfzWfg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793620852;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=MEoaEaicZ8UabmGzlYhn/6ARhms0F79uQ8/+EuSSrl0=;
+	b=wE7Q1jD/2IXDpW8NkNI7FgHH1Butdu6gmu814QTmHmUSiN/PrXE8BPvHHV8JjpQbh0uo
+	 6w5Vsr7t922wtyp47zHsSifQwwHeaLxexj0zXLDFLoUGlNMs/ACbjbhIqLaKXYQwnpi3k
+	 05s4YLjrebZARYDR8nsfTvFTrcwcpnw9lrT1N3/cW3DBSrwKD66U84Oz3folMKNPZwFSG
+	 +JVVb1a+AJ7B6Es2GvTxqLAHUc3Qlt4vxnJXteZrfk/aOwn5Y7lwGJ7nJ+ppMzlNkMvR/
+	 fR8uIulGjHUCa+9L0n42JZN6AgyAIg4aDxuojwCJFPSV+QLVgtRgUrZXK/+zYybKrPQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZB9D6Xzw;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=m6VHEImO;
+	arc=none smtp.remote-ip=91.218.175.189
+Received: from mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52384606A329;
-	Mon,  2 Nov 2026 11:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E766606A94B
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 12:00:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3E766606A94B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZB9D6Xzw
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 782D31F00A16;
-	Mon,  2 Nov 2026 11:56:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793620573;
-	bh=edBP2A68Bu7W9EkTwCHYe8SPLgIZpJkGOjQwcfidHTM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZB9D6Xzwd9V0KWzgRay9qxu3z4JVvBe4OPAVsFf203Woxl4RClT/YrnH6K4nBD/na
-	 DXtL9XYKSyieJh/JWVUVynigesvd3ygarNHTnkfg7MrJmJR5YacNNkCNyQQF+c7pJl
-	 3p50jOAr74+5d8wBFkSjxBIpn5fbI4SMJ7/79+4qA1KtDo/zEXZh1igH9a9px8QOHy
-	 wVlqSwLKt1LcsurRaPG7r4LuT1AGaEnWfjXeI13Ikl5Qmhry6E/wsxN3kbfGR4NJ0m
-	 X5b1RKzvfkaGlqz1BXZrPz6dbdxN3LU295cMpqF5lx0H3AXYt+Jfk+3PuemaIss+26
-	 miSzc4QBzyN2A==
-Date: Mon, 2 Nov 2026 11:56:09 +0000
-From: Simon Horman <horms@kernel.org>
-To: Daniel Machon <daniel.machon@microchip.com>
-Cc: netdev-bot+sashiko@kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
-	pabeni@redhat.com, Steen.Hegelund@microchip.com,
-	UNGLinuxDriver@microchip.com, richardcochran@gmail.com,
-	horatiu.vultur@microchip.com, netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: sparx5/lan969x: release the in-flight slot of a
- stale TX skb
-Message-ID: <20261102115609.GA257209@horms.kernel.org>
-References: <20261029-sparx5-ptp-stale-tx-slot-v1-1-ec15f391bbb7@microchip.com>
- <179339983815.3131.4933059375204484548@kernel.org>
- <20261102091449.oigddj44eapymqua@DEN-DL-M70577>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=m6VHEImO
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=7gLJfEV4JiyV472NGbIbZrTv/A7Ww4dsXKKMsPQL+jc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793620849; v=1; x=1794225649;
+ b=m6VHEImOTkeTThdA8cWZkoQG3TcYT2x2HnT3qqxNRLGtBbjXbinH+/LzmUn21dtKQ5c6ISeZ
+ DutDDRta/1ca2Ko4VAHl73xKc9sMFUqMsOW26dsqfJje3zb7C8gKcRveVa9Cnddxe2+IZyPoiUB
+ mPwK5ozgtllNKrBtZPzmKn/o=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 626a1368d0b9c9a1;
+	Mon, 02 Nov 2026 12:00:49 +0000
+X-Mizu-Trace-ID: 626a1368d0b9c9a1
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <dff8a7bd-f819-401e-8dea-04ba2b9415ac@linux.dev>
+Date: Mon, 2 Nov 2026 20:00:39 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,83 +58,134 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102091449.oigddj44eapymqua@DEN-DL-M70577>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf v2 06/15] bpf, sockmap: Give no progs to a TCP
+ listener
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org,
+ netdev@vger.kernel.org
+Cc: daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com,
+ memxor@gmail.com, john.fastabend@gmail.com, jakub@cloudflare.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, willemb@google.com,
+ matttbe@kernel.org, mptcp@lists.linux.dev, mason@kernel.org,
+ josef@toxicpanda.com
+References: <20261102072112.4160195-1-alexei.starovoitov@gmail.com>
+ <20261102072112.4160195-7-alexei.starovoitov@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20261102072112.4160195-7-alexei.starovoitov@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Nov 02, 2026 at 10:14:49AM +0100, Daniel Machon wrote:
 
-...
+On 11/2/26 3:21 PM, Alexei Starovoitov wrote:
+> From: Chris Mason <mason@kernel.org>
+>
+> A psock with a verdict prog replaces sk_data_ready and sk_write_space of
+> its socket. It saves the old callbacks, and the new callbacks call them.
+> sock_map_link() does this to a TCP listener too. Its new sk_data_ready
+> cannot read and does not call the old one. Thus it does not wake accept().
+>
+> sk_clone() copies the new callbacks to each child, but not the psock.
+> tcp_bpf_clone() restores only sk_prot. Without a psock the child loses data
+> or does not wake its reader. If it gets a psock, the psock saves the copies
+> as the old callbacks. Then sk_psock_verdict_data_ready() calls itself until
+> the stack overflows. sk_psock_write_space() calls itself too, without end.
+>
+> Give no progs to a TCP listener, as before the first commit below. A
+> listener receives and sends no data. It stays in the map and keeps its own
+> callbacks. Add this exception to map_sockmap.rst. A listener no longer gets
+> -EBUSY from a second map with progs of the same kind.
+>
+> Since the second commit below, a socket keeps its psock when TCP unhashes
+> it. sock_map_link() does not see the state that the socket gets later. Do
+> not depend on TCP to keep such a socket out of TCP_LISTEN. Set both
+> callbacks in tcp_bpf_clone() to the TCP defaults.
+>
+> Fixes: 0c48eefae712 ("sock_map: Lift socket state restriction for datagram sockets")
+> Fixes: b8b8315e39ff ("bpf, sockmap: Remove unhash handler for BPF sockmap usage")
+> Signed-off-by: Chris Mason <mason@kernel.org>
+> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+> ---
+>  Documentation/bpf/map_sockmap.rst |  4 +++-
+>  net/core/sock_map.c               |  9 +++++++++
+>  net/ipv4/tcp_bpf.c                | 15 +++++++++++++--
+>  3 files changed, 25 insertions(+), 3 deletions(-)
+>
+> diff --git a/Documentation/bpf/map_sockmap.rst b/Documentation/bpf/map_sockmap.rst
+> index 2d630686a00b..eb466b86df17 100644
+> --- a/Documentation/bpf/map_sockmap.rst
+> +++ b/Documentation/bpf/map_sockmap.rst
+> @@ -33,7 +33,9 @@ of ``__SK_DROP``, ``__SK_PASS``, or ``__SK_REDIRECT``.
+>  
+>  When a socket is inserted into one of these maps, its socket callbacks are
+>  replaced and a ``struct sk_psock`` is attached to it. Additionally, this
+> -``sk_psock`` inherits the programs that are attached to the map.
+> +``sk_psock`` inherits the programs that are attached to the map. A TCP listener
+> +is an exception. It gets a ``struct sk_psock``, but it keeps its callbacks and
+> +inherits no programs.
+>  
+>  A sock object may be in multiple maps, but can only inherit a single
+>  parse or verdict program. If adding a sock object to a map would result
+> diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+> index efe49551caba..282c6a4b2b05 100644
+> --- a/net/core/sock_map.c
+> +++ b/net/core/sock_map.c
+> @@ -228,6 +228,14 @@ static int sock_map_link(struct bpf_map *map, struct sock *sk)
+>  	struct sk_psock *psock;
+>  	int ret;
+>  
+> +	/*
+> +	 * A listener receives no data. With the callbacks of a verdict program
+> +	 * or a parser it would no longer wake accept(), and its children would
+> +	 * copy them.
+> +	 */
+> +	if (sk_is_tcp(sk) && sk->sk_state == TCP_LISTEN)
+> +		goto no_progs;
+> +
+>  	stream_verdict = READ_ONCE(progs->stream_verdict);
+>  	if (stream_verdict) {
+>  		stream_verdict = bpf_prog_inc_not_zero(stream_verdict);
+> @@ -262,6 +270,7 @@ static int sock_map_link(struct bpf_map *map, struct sock *sk)
+>  		}
+>  	}
+>  
+> +no_progs:
+>  	psock = sock_map_psock_get_checked(sk);
+>  	if (IS_ERR(psock)) {
+>  		ret = PTR_ERR(psock);
+> diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+> index 36d1bf46353a..fd443350f9b8 100644
+> --- a/net/ipv4/tcp_bpf.c
+> +++ b/net/ipv4/tcp_bpf.c
+> @@ -785,7 +785,18 @@ void tcp_bpf_clone(const struct sock *sk, struct sock *newsk)
+>  {
+>  	struct proto *prot = newsk->sk_prot;
+>  
+> -	if (is_insidevar(prot, tcp_bpf_prots))
+> -		newsk->sk_prot = sk->sk_prot_creator;
+> +	if (!is_insidevar(prot, tcp_bpf_prots))
+> +		return;
+> +
+> +	newsk->sk_prot = sk->sk_prot_creator;
+> +	/*
+> +	 * sock_map_link() gives a listener no programs, but a socket which got
+> +	 * them in another state and listens now has the psock's sk_data_ready
+> +	 * and sk_write_space, and sock_copy() has copied them.
+> +	 * sk_psock_init() refuses a socket that has sk_user_data or a ULP, so
+> +	 * what the psock replaced were the defaults of a TCP socket.
+> +	 */
+> +	newsk->sk_data_ready = sock_def_readable;
+> +	newsk->sk_write_space = sk_stream_write_space;
 
-> > [Severity: Medium]
-> > Can this decrement race with sparx5_ptp_txtstamp_release() and count the
-> > same skb down twice?
-> > 
-> > Each port netdev has SPX5_PRIOS TX queues and there is no
-> > ndo_select_queue, so two CPUs can run sparx5_port_xmit_impl() for the same
-> > port at the same time. sparx5_ptp_txtstamp_old_release() unlinks while
-> > holding only tx_skbs.lock. The busy path decrements without checking
-> > whether the skb is still on the list:
-> > 
-> > drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c:sparx5_ptp_txtstamp_release() {
-> >     ...
-> >         spin_lock_irqsave(&sparx5->ptp_ts_id_lock, flags);
-> >         port->ts_id--;
-> >         sparx5->ptp_skbs--;
-> >         skb_unlink(skb, &port->tx_skbs);
-> >         spin_unlock_irqrestore(&sparx5->ptp_ts_id_lock, flags);
-> > }
-> > 
-> > A possible sequence:
-> > 
-> > CPU0
-> > sparx5_ptp_txtstamp_request()
-> >     skb_queue_tail(&port->tx_skbs, X)
-> >     sparx5->ptp_skbs++
-> > spin_lock(&sparx5->tx_lock)   /* waits */
-> > 
-> > CPU1
-> > sparx5_ptp_txtstamp_request()
-> >     sparx5_ptp_txtstamp_old_release()
-> >         /* X looks older than SPARX5_PTP_TIMEOUT */
-> >         __skb_unlink(X); dev_kfree_skb_any(X); purged++
-> >     sparx5->ptp_skbs -= purged
-> > 
-> > CPU0
-> > ops->fdma_xmit() or sparx5_inject() returns -EBUSY
-> > sparx5_ptp_txtstamp_release(port, X)
-> >     sparx5->ptp_skbs--
-> > 
-> > At HZ=100, SPARX5_PTP_TIMEOUT is one jiffy, so crossing a single tick is
-> > enough for X to look expired.
-> > 
-> > Before this patch the purge path did not decrement, so X was counted down
-> > only once. ptp_skbs is a u16 and the limit check only tests for equality.
-> > 
-> > If the counter wraps to 65535, does the SPARX5_MAX_PTP_ID limit stop
-> > working, so that ts_id values can be reused while they are still
-> > outstanding?
-> > 
-> > The same window already lets CPU0 keep using X after CPU1 has freed it.
-> > That part predates this patch; the double decrement is new.
-> 
-> This fixes a leak seen in normal operation. Each lost timestamp keeps
-> an in-flight slot, and after SPARX5_MAX_PTP_ID losses, two step
-> timestamping stops on all ports. The lan966x twin (074caa30a627) is
-> already in net.
-> 
-> AFAICT, the wrong count can never be used. The second decrement is in the busy
-> path, which on the very next line unlinks an skb that a purge on
-> another TX queue has already freed. That use-after-free is
-> pre-existing and crashes before the count matters.
-> 
-> I am working on a net-next series that reworks PTP TX timestamping and fixes
-> this and several related issues.
 
-Thanks Daniel,
 
-I agree that is a good approach.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-...
+
+I guess the scenario is: connect(AF_UNSPEC) unhashes a connected socket
+that is still in the map, then listen() turns it into a listener. Since
+we no longer have an unhash handler to drop the psock, the callbacks have
+to be reset in tcp_bpf_clone().
+
+
