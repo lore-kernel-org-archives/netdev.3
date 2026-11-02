@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793589040;
-	b=vOG0MpRXzGszUfdOjTHkKyIlvH7ARCuHIof3JSUh+7TEMQW5+WyD/yxeUO4w8JIqaVB1
-	 /KSAhUxDOsMvI15LwPPqrekR8+Qw9a4Ubz+zqC8Zl0rknHnNCBzRsW87YbR4pehxUMaKS
-	 4l5PVeTc8hu6dZWLmNtpDkV+qpK5JIXZ1a7xRwM6wIisTagN6BPQ1d+j0Cb7CX6LG542b
-	 IP+nxIbllNIAaLBc0F2HfEDYs+KWRZWtWMIzbn4xhbQIED1iH6XnnPPPkUjsAGvDhlvwc
-	 huZfwN0xubQi+ZLveYur+n2QYWBqYwn8mhzHnVLC79GK9O5PVY28NvvCU7aVrpCpw5g==
+	t=1793589412;
+	b=17dhaTiBrjzL1xCI7LlTifvqfnPKHT/nMnoJpFc22rFK5kDqEFk1UDfe7AjFERq2aWp9
+	 JexsQV3n18A7yKjnTCDdJq675cN1Bu95Hjk0KhmiwepAd/TuGo39CSMOsONR53KUmlSiF
+	 JV3v6tr1feqCWD7iIumPzD2b5rcBPXp+3Pw/IVJIIyct/tGOWiUyaOC7ycVx/WWrzZeKp
+	 CHtWitHy4eTSrXPFNqbEyS9EvYtRRgct4wrhlceTO5sCTE660U1LD3WSmos4X4+lURZsd
+	 YTNP9DhI/o0db9uBPcprYJJsWCSjhb+Q5OoiVb7taNr42/tXSUfxuWcI5zBUppwvjSw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793589040;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793589412;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=0bvc9XKDVz7r+49t0HxptVElVy1AKePzRnpOEYmBVZM=;
-	b=OmX7KbcFbqCd/azw+wuUWjiqN8cRZrCqdAbzvulXLZ9G6g7eKA2o1CcEXJa2YU+P5ypb
-	 vXrQNLcv2V5RhkSng2xQlvQMOUZ1TFWW2AQPQ+hcKeYMM8k0xZADSeFCL8XvlHxnA6xCM
-	 VNgXw++KyGGthl1xXgpWy+KpiPvPghHjWSSjZKLUmlz1yykY1sfQl5n3oJSFIxM+b9MwV
-	 nRcHAuRI6Y6KV6zR7PJZ3jZBLUvRbQDdjLkD4p4mVxHRGUDO/vYpEIEb0D+2SJiej3PuE
-	 LEfhrBpFjBX9C400EJhhHSZp3LZIc9+FfmkRjmx1KUcP9m6Va/UvS/uj2qx2HiUcdHw==
+	bh=sJw++RZDG5Vo6fmGQWiIhdzPjPtQUuqigtExKkQsQTg=;
+	b=tz/sIwKm2LVZaLXQ/NnCcwUfNBSfyDfRpREaBX2ItAhafH+uUuRJYRzwJVhc8fEmAJXq
+	 p5UIvZIb+qvkWEsGqKY22E8tOvdHVON1gkhfVLVQphblwO5eMBf8bZvCwrw7r+SFH4sSb
+	 SlDmMh1A3Wz/sESpahFrABbFMvbzgVYUie2fv0AHQokR+D/0BnDn4ACUWxgujSxUW00ma
+	 PdtFAVG8N1tII//5XNufzI8q7GSOPLx4q6S6gFSahVX6W+ipu1yiJtKE9fMK7Sg/lmpw9
+	 jg6jXfeaHqPk8da2UsU0Zx/vBHolCzrNjBf+ZBaPlM9tjwNaW6ffynP2BhkIAB7SCxw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TBJi3VcU;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="jtv/+c+R";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781B3606A327
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 03:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B05606A324;
+	Mon,  2 Nov 2026 03:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TBJi3VcU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDAEA1F000C1;
-	Mon,  2 Nov 2026 03:10:39 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jtv/+c+R
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E081F000C1;
+	Mon,  2 Nov 2026 03:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793589040;
-	bh=0bvc9XKDVz7r+49t0HxptVElVy1AKePzRnpOEYmBVZM=;
+	s=k20260515; t=1793589412;
+	bh=sJw++RZDG5Vo6fmGQWiIhdzPjPtQUuqigtExKkQsQTg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=TBJi3VcU8TZBHcakyB4HyHH0sg6+dRC8gcVHv886uEgW3SHUayQm022IvWWWW6Tij
-	 XvMl9McBBWrqNpmwQt+anf1MCFBfIywtdvigFXwRIikivFBK3eQ/39d3br/8GEbMAt
-	 0jH6eS/stSvLZG0YPMbW+Jz5PwAlHCrpD59tspMYnqxtnU6L+900obKq/N9EQU5q4V
-	 UH1Q7tC8cB4cvSiH0nfVE0gJwERgE/BPl4EXZQWysbEWcEO+tY2eH9zlVOG3TBwKA+
-	 JT9seG9mgDIEDb22+jKngQFw9F+9zBoenmb4K+WydSOqnu64Srso8ULetegf6oIfwk
-	 1iht+DhgYCwIg==
-Subject: Re: [PATCH net v4] bonding: 3ad: update transmit arrays without
- waiting for RTNL
+	b=jtv/+c+RFAu3LrhQcovopmFfBljHcvIFsG+hIpTi+A+gMHE/AC/pPExnzKN5fjnDN
+	 p5kZGs30lBMpun61wEvnp2s4li16mkc7f9to16yX3w7b94zytsU0duS9leQmtmLnPp
+	 QaEt9hHL3tK+ACLt8ad2uCx/Aaq8lrELHN+fn+hYWBDH07F5rjVCuPDMforrX8z7RS
+	 VWhX6trkVIf+oEG03qabfgRTn4ISAbhrl1/z7Ya7EOazoswBqnbV+Qc+yneZiRDVKJ
+	 3asg3aRsNy6nCKkDkUqCgQ/5O0jGQhlbb2Ps49AwHZEMC1SM98Hm0f3ulWXXU07SAQ
+	 SUxqoCGM+d8KA==
+Subject: Re: [PATCH net] netdevsim: delete ports added after a failed reload
 From: netdev-bot+sashiko@kernel.org
-To: luyun_611@163.com
-Cc: jv@jvosburgh.net, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, hangbin.liu@linux.dev
-Date: Mon, 02 Nov 2026 03:10:39 +0000
-Message-ID: <179358903930.3131.3436478454047787765@kernel.org>
-In-Reply-To: <20261029025411.1087287-1-luyun_611@163.com>
-References: <20261029025411.1087287-1-luyun_611@163.com>
+To: joasantonio108@gmail.com
+Cc: kuba@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ syzbot+88435e204734072bf39a@syzkaller.appspotmail.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Mon, 02 Nov 2026 03:16:51 +0000
+Message-ID: <179358941115.3131.11140874817222792270@kernel.org>
+In-Reply-To: <179324296598.34505.11070163314749859668@gmail.com>
+References: <179324296598.34505.11070163314749859668@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -64,10 +64,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 (1) · Medium: 1 (3) · Low: 2
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -75,347 +75,106 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The new per-bond slave_arr_lock mutex is held across all of
-  netdev_master_upper_dev_link() in bond_master_upper_dev_link()…
-- [Low] Several comments no longer match the code after this patch.
-- [Low] This patch initialises slave_arr_lock with mutex_init() in
-  bond_setup() (bond_main.c:6019) but never calls mutex_destroy() on it.
-
-Pre-existing issues:
-- [High] In 802.3ad mode, an enslave that fails after
-  bond_master_upper_dev_link() can leave a use-after-free in the…
-- [Medium] Only four call sites rearm slave_arr_work when
-  bond_update_slave_arr() fails: bond_3ad_state_machine_handler,…
-- [Medium] bond_enslave() increments bond->slave_cnt at bond_main.c:2295
-  (`WRITE_ONCE(bond->slave_cnt, bond->slave_cnt + 1);`) before the XDP…
-- [Medium] In broadcast mode, bond_set_slave_arr()
-  (bond_main.c:5147-5150) frees only the newly passed usable_slaves and…
+- [Medium] The fix is incomplete, and the claim it rests on is wrong.
 
 --
 
-bonding: 3ad: update transmit arrays without waiting for RTNL
+netdevsim: delete ports added after a failed reload
 
-This commit makes the 802.3ad state machine rebuild the usable_slaves and
-all_slaves transmit arrays itself. Before, it deferred the rebuild to a
-worker that retried rtnl_trylock(). It adds a per-bond slave_arr_lock
-mutex so array writers are serialized with lower-list link/unlink. It also
-adds a per-slave array_ready flag that keeps half-enslaved slaves out of
-the arrays.
+This patch makes nsim_dev_reload_destroy() call nsim_dev_port_del_all() on
+the early-return path that is taken after a failed devlink reload. Before
+this, ports added through new_port after the failed reload were never
+deleted, which led to WARNs in devlink_free() and a use-after-free on the
+leftover netdev.
 
-> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-> index 7019e5d8fdc8e..883d0cac07a2f 100644
-> --- a/drivers/net/bonding/bond_main.c
-> +++ b/drivers/net/bonding/bond_main.c
+Closes: https://syzkaller.appspot.com/bug?extid=88435e204734072bf39a
 
-[ ... ]
-
-> @@ -1714,19 +1719,22 @@ static int bond_master_upper_dev_link(struct bonding *bond, struct slave *slave,
->  	lag_upper_info.tx_type = type;
->  	lag_upper_info.hash_type = bond_lag_hash_type(bond, type);
->  
-> +	mutex_lock(&bond->slave_arr_lock);
->  	err = netdev_master_upper_dev_link(slave->dev, bond->dev, slave,
->  					   &lag_upper_info, extack);
-> -	if (err)
-> -		return err;
-> +	if (!err)
-> +		slave->dev->flags |= IFF_SLAVE;
-> +	mutex_unlock(&bond->slave_arr_lock);
->  
-> -	slave->dev->flags |= IFF_SLAVE;
-> -	return 0;
-> +	return err;
->  }
->  
->  static void bond_upper_dev_unlink(struct bonding *bond, struct slave *slave)
+> diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
+> index feb88ccbbcedb..a8717908cfb83 100644
+> --- a/drivers/net/netdevsim/dev.c
+> +++ b/drivers/net/netdevsim/dev.c
+> @@ -1697,8 +1697,13 @@ static void nsim_dev_reload_destroy(struct nsim_dev *nsim_dev)
 >  {
-> +	mutex_lock(&bond->slave_arr_lock);
->  	netdev_upper_dev_unlink(slave->dev, bond->dev);
->  	slave->dev->flags &= ~IFF_SLAVE;
-> +	mutex_unlock(&bond->slave_arr_lock);
->  }
+>  	struct devlink *devlink = priv_to_devlink(nsim_dev);
+>  
+> -	if (devlink_is_reload_failed(devlink))
+> +	if (devlink_is_reload_failed(devlink)) {
+> +		/* The failed reload already tore everything down, but ports
+> +		 * can still be added through new_port after that.
+> +		 */
+> +		nsim_dev_port_del_all(nsim_dev);
+>  		return;
+> +	}
 
 [Severity: Medium]
-Is slave_arr_lock meant to be held across the whole of
-netdev_master_upper_dev_link() and netdev_upper_dev_unlink()?
+Is deleting the ports enough on this path? The commit message says:
 
-Those calls run the NETDEV_PRECHANGEUPPER and NETDEV_CHANGEUPPER notifier
-chains (switchdev/LAG offload, bridge, RDMA handlers). They also create
-and remove sysfs links and allocate memory. Every lock those subscribers
-take now nests inside a bonding-private mutex.
+  "The ports are the only thing that can be created after the failed
+  reload, so delete them on the early-return path too."
 
-This patch also makes bond_3ad_state_machine_handler() call the builder
-directly instead of queueing slave_arr_work:
+After a failed reload, user space can apparently still set sriov_numvfs,
+switch the eswitch to switchdev mode, and create devlink rate nodes. None
+of these paths check devlink_is_reload_failed():
 
-    if (update_slave_arr && bond_update_slave_arr(bond, NULL))
-        bond_slave_arr_work_rearm(bond, 1);
+  nsim_bus_dev_numvfs_store()
+    nsim_drv_configure_vfs()
+      nsim_bus_dev_set_vfs(nsim_bus_dev, num_vfs);
+      nsim_esw_switchdev_enable()
 
-bond_update_slave_arr() now does mutex_lock(&bond->slave_arr_lock) and
-two GFP_KERNEL allocations.
+  nsim_devlink_eswitch_mode_set()
+    nsim_esw_switchdev_enable()
+      __nsim_dev_port_add(nsim_dev, NSIM_DEV_PORT_TYPE_VF, i, NULL);
+      nsim_dev->esw_mode = DEVLINK_ESWITCH_MODE_SWITCHDEV;
 
-bond->wq comes from alloc_ordered_workqueue(). While enslave or release is
-inside the notifier chain, ad_work blocks on the mutex, and every other
-bond work item waits behind it.
+  devlink_nl_rate_new_doit()
+    nsim_rate_node_new()
+      if (!nsim_esw_mode_is_switchdev(nsim_dev)) {
+          ...
+          return -EOPNOTSUPP;
+      }
 
-The new slave is already in the lower list before CHANGEUPPER fires.
-ad_agg_selection_logic() sets update_slave_arr on most ticks when the
-active aggregator has no partner. So this looks likely during enslave.
+Before deleting ports, the normal path further down in
+nsim_dev_reload_destroy() resets the VFs and tears down the eswitch state:
 
-Won't this hold up the LACP tick and LACPDU transmission for as long as
-the notifier handlers run?
+	if (nsim_dev_get_vfs(nsim_dev)) {
+		nsim_bus_dev_set_vfs(nsim_dev->nsim_bus_dev, 0);
+		if (nsim_esw_mode_is_switchdev(nsim_dev))
+			nsim_esw_legacy_enable(nsim_dev, NULL);
+	}
 
-There is also a theoretical self-deadlock on the bond_enslave()
-err_upper_unlink path. There, IFF_SLAVE is still set and the rx_handler
-is still registered:
+nsim_esw_legacy_enable() is the only caller of devl_rate_nodes_destroy() in
+netdevsim. The new early-return branch never reaches it.
 
-bond_upper_dev_unlink()
-    mutex_lock(&bond->slave_arr_lock)
-    netdev_upper_dev_unlink()
-        CHANGEUPPER subscriber raises NETDEV_UP/CHANGE/DOWN on lower dev
-            bond_slave_netdev_event()
-                bond_update_slave_arr()
-                    mutex_lock(&bond->slave_arr_lock)
+Take this sequence: fail_reload=1, reload fails, set sriov_numvfs, switch to
+switchdev, run "devlink port function rate add <dev>/node1", then
+del_device. The early branch removes the ports but leaves the rate node on
+devlink->rate_list. Would devlink_free() then hit this check:
 
-No in-tree subscriber appears to do this today.
-
-The commit message doesn't discuss this trade-off. Only the lower-list
-change itself, and its ordering against the rebuild after unlink, need
-the lock. Would a narrower critical section, or a trylock-and-requeue in
-the ad handler, keep the LACP worker from blocking?
-
-[ ... ]
-
-> @@ -2332,10 +2340,17 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
->  			bpf_prog_inc(bond->xdp_prog);
->  	}
->  
-> +	/* Publish only after all fallible setup, including XDP, is complete. */
-> +	mutex_lock(&bond->slave_arr_lock);
-> +	new_slave->array_ready = true;
-> +	mutex_unlock(&bond->slave_arr_lock);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but can a failed 802.3ad
-enslave leave a freed struct port linked into another slave's aggregator?
-
-bond_enslave() calls bond_3ad_bind_slave(new_slave) before linking. Once
-bond_master_upper_dev_link() succeeds, the new slave sits at the tail of
-the RCU lower list. bond_3ad_state_machine_handler() runs under mode_lock
-and RCU, not RTNL, so it will process that port.
-
-The port is not AD_PORT_SELECTED, so ad_port_selection_logic() attaches
-it to the first free aggregator:
-
-    if (!aggregator->lag_ports) {
-        if (!free_aggregator)
-            free_aggregator = aggregator;
-        continue;
-    }
+net/devlink/core.c:devlink_free() {
     ...
-    free_aggregator->lag_ports = port;
-    free_aggregator->num_of_ports++;
+	WARN_ON(devlink_rates_check(devlink, NULL, NULL));
+    ...
+}
 
-Suppose slaves A and B already share A's aggregator. B's aggregator is
-free and is visited before C's, so a new port C joins B's aggregator.
+and leak the devlink_rate and the nsim_rate_node?
 
-A later enslave step can then fail: bond_sysfs_slave_add(),
-dev_set_promiscuity()/dev_set_allmulti(), or the three XDP checks that
-goto err_sysfs_del. The unwind runs bond_sysfs_slave_del(),
-bond_upper_dev_unlink(), netdev_rx_handler_unregister(),
-synchronize_rcu() and kobject_put(). None of those labels calls
-bond_3ad_unbind_slave(). It is only reached from __bond_release_one().
+The commit message also says a successful reload after the failed one is
+fixed. In that case the early branch deletes the VF ports but leaves
+num_vfs set and esw_mode as switchdev. Any remaining rate node would trip
+WARN_ON(devlink_rates_check(...)) in devlink_reload_reinit_sanity_check().
 
-slave_kobj_release() then frees the port:
+After that, nsim_dev_reload_create() re-adds only the PF ports. The device
+then ends up in switchdev mode with VFs configured but no VF representor
+ports. A normal reload never leaves the device in that state.
 
-    if (BOND_MODE(bond) == BOND_MODE_8023AD)
-        kfree(SLAVE_AD_INFO(slave));
+Should the failed branch do the same VF reset and nsim_esw_legacy_enable()
+teardown as the normal path before calling nsim_dev_port_del_all()? If not,
+the "only thing that can be created" sentence in the commit message should
+probably be corrected.
 
-B's aggregator still points at C's port. On every later tick,
-ad_agg_selection_logic() calls __agg_active_ports(agg) and walks
-B.agg->lag_ports into freed memory. __disable_port() and __enable_port()
-can also write through it.
-
-One reliable way to hit the failure: attach an XDP program to the bond,
-then enslave a device that lacks ndo_bpf, or one that already has an XDP
-program loaded. The same error path also leaves slave_cnt incremented
-(see below).
-
-The new array_ready flag keeps this half-enslaved slave out of the TX
-arrays, but the 3AD state machine still sees its port. Should the enslave
-error path undo bond_3ad_bind_slave() and any aggregator attachment?
-
-[ ... ]
-
-> @@ -5068,35 +5086,26 @@ static netdev_tx_t bond_xmit_activebackup(struct sk_buff *skb,
->  	return bond_tx_drop(bond_dev, skb);
->  }
+>  	debugfs_remove(nsim_dev->take_snapshot);
 >  
-> -/* Use this to update slave_array when (a) it's not appropriate to update
-> - * slave_array right away (note that update_slave_array() may sleep)
-> - * and / or (b) RTNL is not held.
-> +/* Retry array updates which failed, or defer them from atomic context.
-> + * bond_update_slave_arr() may sleep but does not require RTNL.
->   */
->  void bond_slave_arr_work_rearm(struct bonding *bond, unsigned long delay)
->  {
->  	queue_delayed_work(bond->wq, &bond->slave_arr_work, delay);
->  }
-
-[Severity: Medium]
-This is a pre-existing issue. The new comment says this work retries
-array updates that failed, but only four callers rearm on failure:
-bond_3ad_state_machine_handler(), bond_enslave() (when running),
-bond_open() and bond_slave_arr_handler().
-
-The other callers ignore the -ENOMEM return:
-
-  bond_3ad_handle_link_change()
-  __bond_release_one(), which only falls back to bond_skip_slave()
-  bond_miimon_link_change() for XOR
-  bond_loadbalance_arp_mon() for XOR
-  bond_slave_netdev_event() on NETDEV_UP/CHANGE/DOWN
-  bond_alb_handle_link_change(), which only logs with pr_err()
-
-If the allocation fails at one of these sites, usable_slaves and
-all_slaves stay stale and nothing retries.
-
-For example, take an XOR bond with no miimon or arpmon whose only slave
-lost carrier. Its array is empty. If the rebuild fails when carrier
-returns, bond_3ad_xor_xmit() keeps dropping packets.
-
-bond_slave_arr_handler() no longer needs RTNL. Would it make sense to
-rearm slave_arr_work from these sites too?
-
-[ ... ]
-
-> @@ -5153,20 +5166,25 @@ static void bond_reset_slave_arr(struct bonding *bond)
->   * (b) BOND_MODE_XOR
->   * (c) (BOND_MODE_TLB || BOND_MODE_ALB) && tlb_dynamic_lb == 0
->   *
-> - * The caller is expected to hold RTNL only and NO other lock!
-> + * Acquires slave_arr_lock to stabilize membership and serialize writers.
-> + * The caller must be in sleepable context without mode_lock or RCU held.
->   */
-
-[Severity: Low]
-This isn't a bug, but a few comments no longer match the code after this
-change.
-
-This doc block still says it builds "the usable slaves array" for
-802.3ad, XOR, and TLB/ALB with tlb_dynamic_lb == 0. But:
-
-  - the function also builds and publishes all_slaves
-  - this patch adds a BOND_MODE_BROADCAST call from bond_open(), and
-    broadcast calls already existed in bond_enslave() and
-    __bond_release_one()
-  - bond_mode_can_use_xmit_hash() is true for TLB and ALB whatever
-    tlb_dynamic_lb is set to
-
-The new comment above bond_slave_arr_work_rearm() says the work can
-"defer them from atomic context". All four callers only use it to retry
-after bond_update_slave_arr() fails.
-
-bond_3ad_handle_link_change() still justifies its call with RTNL:
-
-    /* RTNL is held and mode_lock is released so it's safe
-     * to update slave_array here.
-     */
-    bond_update_slave_arr(slave->bond, NULL);
-
-The new rule is sleepable context without mode_lock or RCU held; RTNL is
-no longer part of it.
-
->  int bond_update_slave_arr(struct bonding *bond, struct slave *skipslave)
->  {
-
-[ ... ]
-
->  	might_sleep();
-> +	mutex_lock(&bond->slave_arr_lock);
->  
-> -	usable_slaves = kzalloc_flex(*usable_slaves, arr, bond->slave_cnt);
-> -	all_slaves = kzalloc_flex(*all_slaves, arr, bond->slave_cnt);
-> +	/* Enslave counts before committing; release unlinks before uncounting. */
-> +	count = READ_ONCE(bond->slave_cnt);
-> +	usable_slaves = kzalloc_flex(*usable_slaves, arr, count);
-> +	all_slaves = kzalloc_flex(*all_slaves, arr, count);
-
-[Severity: Medium]
-This is a pre-existing issue, but this comment assumes slave_cnt follows
-enslave and release, and bond_enslave() can leave it permanently too
-high.
-
-bond_enslave() does this before the XDP block:
-
-    WRITE_ONCE(bond->slave_cnt, bond->slave_cnt + 1);
-
-The XDP block has three goto err_sysfs_del exits:
-
-  - the slave lacks ndo_bpf/ndo_xdp_xmit while bond->xdp_prog is set
-  - dev_xdp_prog_count(slave_dev) > 0
-  - dev_xdp_propagate() fails
-
-None of the labels from err_sysfs_del down to err_undo_flags decrements
-slave_cnt. The only decrement is in __bond_release_one().
-
-Over-allocating here is harmless. But bond_xmit_roundrobin_slave_get()
-does this:
-
-    slave_id = bond_rr_gen_slave_id(bond) % slave_cnt;
-
-After a failed enslave, an id past the real count makes
-bond_get_slave_by_id() fall back to the first tx-capable slave. That
-skews the round-robin distribution. bond_info_query() also reports the
-wrong num_slaves.
-
-Should the XDP error paths undo the slave_cnt increment?
-
-[ ... ]
-
-> @@ -6073,7 +6096,9 @@ static void bond_uninit(struct net_device *bond_dev)
->  	mutex_destroy(&bond->ipsec_lock);
->  #endif /* CONFIG_XFRM_OFFLOAD */
->  
-> +	mutex_lock(&bond->slave_arr_lock);
->  	bond_set_slave_arr(bond, NULL, NULL);
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but does this leak the old
-usable_slaves array if the bond is in broadcast mode at teardown?
-
-bond_set_slave_arr() returns early for broadcast:
-
-    if (BOND_MODE(bond) == BOND_MODE_BROADCAST) {
-        kfree_rcu(usable_slaves, rcu);
-        return;
-    }
-
-So the published bond->usable_slaves is never freed. One sequence that
-triggers it:
-
-  ip link add bond0 type bond mode xor
-  ip link set bond0 up      (bond_open() publishes usable_slaves)
-  ip link set bond0 down    (bond_close() doesn't reset the arrays)
-  ip link set bond0 type bond mode broadcast
-  ip link del bond0
-
-bond_uninit() takes the broadcast early return, and the usable_slaves
-array allocated in XOR mode is lost when the netdev is freed.
-
-> +	mutex_unlock(&bond->slave_arr_lock);
-
-[Severity: Low]
-This isn't a bug, but bond_setup() initializes slave_arr_lock with
-mutex_init() and nothing calls mutex_destroy() on it. ipsec_lock just
-above does get destroyed.
-
-Should a matching mutex_destroy() go here? It would need to come after
-any work that can still call bond_update_slave_arr() has been cancelled.
-
->  
->  	list_del_rcu(&bond->bond_list);
-
-[ ... ]
+>  	if (nsim_dev_get_vfs(nsim_dev)) {
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261029025411.1087287-1-luyun_611%40163.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179324296598.34505.11070163314749859668%40gmail.com
