@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793581030;
-	b=A7YBkXGPGktRA/f7QX6LbiShjbEGYdWSNjTyvloB7YnJXwyRZDJ1E8IgYCcTu6rYb46R
-	 gjLKcne8u3ecOkW3eDywx3rC+MDrycahbStVk6v46SNGDw1si/04l5LFD9zG3tHe2C6ZM
-	 aIcjV5Qa+S2r4n7iJ3OD9bPKE4v9FXeidFEi1eKv8F1ApnihOo3wpwJq+8bOcYAczpjwM
-	 f+W5T8kMyZGgRZb1N2yb/BdgrOy6Ni4ukuDP5yNQ7eCFCCOdkc56uhuQqv/plhLMH3Vod
-	 EqyrAtLYmyeCQkw2Wth8d0j/7X14DRLMlUZT80QO2f/MlUHx+nF0XefYb0FGDbdsnVw==
+	t=1793581032;
+	b=ay4Yyj7J+WwqTxyGY4gEp3lM0bOdXFb1jIbYUJRzISXwYM1uUkoxYWqRpMGWC1GhYht0
+	 wi1Yqn4W/9Kwt8/x/qyf4j++AMKLnmGQbnDEaBalT173zY7vu9NEr5cI/Bv1+/aJOjK6b
+	 x6SRKKjodYibKu1bcfH9wz3rhRmm5eWj8xMKK/Tc2gRDQIMH8TNmPHDip0V8T1k6hD3fJ
+	 nVnow7JLKYs2uxHrp2QTc7C/gArcCm63ihu9dQxWzEYQmp62JkMiqiL51uIkx7XzJi1/+
+	 3ddqjih01MEHkcIx5xYuA3FPFOf+ryEtUD2idu7/YMYOboc0EChn8VZoVWwp3ygOd7A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793581030;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793581032;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
-	bh=tGglPb/JNoW60gebCDiplQzdX4hezWP6upe63JPqTbE=;
-	b=uQazIDPP/KrrqD5nUAeIVp01Rn2+lCOuvdOGduOV1FNFB43h79ZZ2Ycg41Su0ZWTK1sX
-	 Uz+B9lV2LfFwOxiDyTJNZbRZQyimWKXw9/LgGFk2+7B0n7zj1lh/jnMin6Z3bU/RaPxEL
-	 rxtbbOIutWGNKVLMm3Ht72Z6EXBL4pEl7/1ji/uQTO6iCyXKzwGupquynxk/2lpJ1bA1o
-	 NXNRPUljq5s8hJCDAjfoBGCqsFfPjPep+FqV+CdTfxTrIl6psou649yLxKP+/r5lxYk4X
-	 wcQxaocQhNqTp1aeS8MB6H0m7WWkwkUQWLBXLCLVkXsnht2jyQyY6x5+bMBDcuPG86g==
+	bh=ACw4Crf3hJuHvBnGGimGcJkB6r441MIl6lESNzI1wQ8=;
+	b=3Wtd3QXpwFwYPSEfXIIupwWVdAd9OTE1QKWRbAdBu1alVbkyqf77NNu+bHbeaW+Qu4v9
+	 LQ4Bout56hlNsZ8kkIsQZhxGhTCSo+K/A2vGmi8bI9mAMkIzn7ZMIA85zwOf6wvoqn7ck
+	 x7nK99rRLsybmQh+ubaQKV4kAfxL+U79hkUSq91TuXlgNYkdaC7KDEVY42savw7sEcZlH
+	 PDhQys08E40lN98koxu1sSZT7nlPCfPS97Dry5GdsS84UVNwQmQQtdqmuSNil56GjfU/K
+	 pyA74YvhXp78rrKCkKm0/DjzJry2rHJ5lnXkvXZRxWW+U3TEv21ssAbrAI8pnqClaRg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=netfilter.org;
 	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=C2wr2rVM;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=DJ1qAxkE;
 	arc=none smtp.remote-ip=217.70.190.124
 Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD20606A33B;
-	Mon,  2 Nov 2026 00:57:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EFD20606A33B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2BF60A2611;
+	Mon,  2 Nov 2026 00:57:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CF2BF60A2611
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=C2wr2rVM
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=DJ1qAxkE
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793581028;
-	bh=tGglPb/JNoW60gebCDiplQzdX4hezWP6upe63JPqTbE=;
+	s=2025; t=1793581029;
+	bh=ACw4Crf3hJuHvBnGGimGcJkB6r441MIl6lESNzI1wQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C2wr2rVMascRzsHLnRPfoKIyXMDxNx+cz6qw+uuJUctFTS0op95JN7nWReT62PQhe
-	 FUUiEDsWm20jVKPAUoaP7bRgSJr8XLSXKiCKplaoKUVCcgpE9OUDNjOue+QQCuZyl1
-	 i87VzlPXZCoeWHppAxIAPCEcA19D5bYGa4iZgK3bcStpQch3Z0/VrLlYe4xf6tsuC2
-	 CF7Vcm6q4sFKXy7QYWyYbk0jiqrI3X5PFEsYF+prtX+KjbzWZFN9aMVCWofkgc+h65
-	 eboEyjLv0qu+uLV1lyswajnkwABSxU9ta081ufaGZl1JFw0jZWEZZB3D2Lpzu8mJLX
-	 xJ3vJ9hWc3zLw==
+	b=DJ1qAxkEYfi2SQ7aJRN/Nv6yS5DmWe+ke8JU8ya/T9ADbHWOATvqedzA68j5AKVNo
+	 cOIINcj/dU1miC/S3BcyL5I3UtxMmfJB1Ask4wJASXqnZ+JDYXlvwV8Odgq0ocmEJt
+	 PXkIr9vGtWl7/VYWtpPJ/tUV5ZBl2d854rYiqPDs9B7r9/2a/PZWx022WMwqacBBdN
+	 n0hmfsIC3Czfqvii5loDHLBNLu4Vyj9txc/tsWG4GZKbaEkND/aPb/cn+RR93Q2BwY
+	 zoliTCr/6J/5rS1bOcI66WRI4lN74KUX3LrrFAPwvRv47165BMe46max8RJJIfvEfu
+	 Sasi11QsGTL4g==
 Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id C3D0360077;
-	Mon,  2 Nov 2026 01:57:07 +0100 (CET)
+	by mail.netfilter.org (Postfix) with ESMTPSA id 5266460078;
+	Mon,  2 Nov 2026 01:57:09 +0100 (CET)
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 To: netfilter-devel@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -56,9 +56,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	fw@strlen.de,
 	ja@ssi.bg
-Subject: [PATCH net 03/15] ipvs: Defer application parent freeing until after RCU readers
-Date: Mon,  2 Nov 2026 01:56:42 +0100
-Message-ID: <20261102005654.532438-4-pablo@netfilter.org>
+Subject: [PATCH net 04/15] ipvs: fix protocol data lifetime during namespace teardown
+Date: Mon,  2 Nov 2026 01:56:43 +0100
+Message-ID: <20261102005654.532438-5-pablo@netfilter.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261102005654.532438-1-pablo@netfilter.org>
 References: <20261102005654.532438-1-pablo@netfilter.org>
@@ -75,74 +75,88 @@ Content-Transfer-Encoding: 8bit
 
 From: Chengfeng Ye <nicoyip.dev@gmail.com>
 
-unregister_ip_vs_app() removes each incarnation from its protocol list and
-uses call_rcu() to defer freeing it, but frees the parent application
-immediately. An RCU reader that already found an incarnation can still
-access the parent through inc->app in ip_vs_app_inc_get().
+IPVS frees its per-net protocol data before control cleanup cancels
+defense work and unregisters the sysctl table. A defense worker can load
+a protocol data pointer, then namespace cleanup can unlink and free that
+object before the worker dereferences pd->pp or pd->next. The worker's
+securetcp_lock does not serialize with protocol cleanup. A concurrent
+defense-mode sysctl write can reach the same timeout update path.
 
-During FTP helper module unload, the following interleaving is possible:
-
-  CPU 0 (RCU reader)                 CPU 1 (module unload)
-  tcp_app_conn_bind()
-    find inc in protocol list
-                                     unregister_ip_vs_app()
-                                       ip_vs_app_inc_release(inc)
-                                         list_del_rcu(&inc->p_list)
-                                         call_rcu(&inc->rcu_head, ...)
-                                       kfree(a)
-    ip_vs_app_inc_get(inc)
-      try_module_get(inc->app->module)
-
-The helper module is already going away, so try_module_get() would fail,
-but evaluating its argument first reads the freed parent. The subsequent
-rcu_barrier() in pernet unregistration cannot protect this earlier free.
 KASAN reported:
 
-  BUG: KASAN: slab-use-after-free in ip_vs_app_inc_get+0x7c/0x90
+  BUG: KASAN: slab-use-after-free in ip_vs_protocol_timeout_change
+  Workqueue: events_long defense_work_handler
   Call Trace:
-   ip_vs_app_inc_get+0x7c/0x90
-   tcp_app_conn_bind+0x1bc/0x290
-   ip_vs_conn_new+0x1915/0x20d0
-   ip_vs_schedule+0x697/0xea0
-   tcp_conn_schedule+0x489/0x820
-   ip_vs_in_hook+0x7bf/0x1f40
-  Allocated by task 88:
-   kmemdup_noprof+0x20/0x50
-   register_ip_vs_app+0x12d/0x2c0
-   __ip_vs_ftp_init+0x56/0x160 [ip_vs_ftp]
-  Freed by task 104:
-   kfree+0x131/0x3c0
-   unregister_ip_vs_app+0x2f4/0x5b0
-   unregister_pernet_operations+0x232/0x490
-   unregister_pernet_subsys+0x1c/0x30
-   __do_sys_delete_module+0x346/0x510
+   ip_vs_protocol_timeout_change+0x1b4/0x1e0
+   update_defense_level+0x63e/0xd80
+   defense_work_handler+0x1e/0xc0
+  Allocated by task 125:
+   ip_vs_protocol_net_init+0xda/0x2f0
+   __ip_vs_init+0x16b/0x240
+   setup_net+0xfc/0x310
+  Freed by task 12:
+   ip_vs_protocol_net_cleanup+0x1d6/0x2e0
+   __ip_vs_cleanup_batch+0x7d/0x100
+   cleanup_net+0x38c/0x770
 
-Use kfree_rcu() with the existing rcu_head to keep the parent alive until
-these readers finish. Successful helper references already prevent normal
-module unload, and incarnation RCU callbacks do not access the parent.
+Run control cleanup before protocol cleanup so that defense work and
+active sysctl handlers have finished before their protocol data is freed.
+Initialize protocols before exposing the control interface, and unwind
+in reverse order, to enforce the same lifetime on initialization failure.
+Protocol initialization and exit do not depend on control state.
 
-Fixes: 363c97d7435e ("ipvs: convert app locks")
+Fixes: 9330419d9aa4 ("IPVS: netns, use ip_vs_proto_data as param.")
 Cc: stable@vger.kernel.org
 Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
 Acked-by: Julian Anastasov <ja@ssi.bg>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
- net/netfilter/ipvs/ip_vs_app.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/ipvs/ip_vs_core.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_app.c b/net/netfilter/ipvs/ip_vs_app.c
-index 11cbdbaf561d..2c1b47702da2 100644
---- a/net/netfilter/ipvs/ip_vs_app.c
-+++ b/net/netfilter/ipvs/ip_vs_app.c
-@@ -242,7 +242,7 @@ void unregister_ip_vs_app(struct netns_ipvs *ipvs, struct ip_vs_app *app)
- 		}
+diff --git a/net/netfilter/ipvs/ip_vs_core.c b/net/netfilter/ipvs/ip_vs_core.c
+index fd503f0efb57..8a3c880fdb26 100644
+--- a/net/netfilter/ipvs/ip_vs_core.c
++++ b/net/netfilter/ipvs/ip_vs_core.c
+@@ -2502,12 +2502,12 @@ static int __net_init __ip_vs_init(struct net *net)
+ 	if (ip_vs_estimator_net_init(ipvs) < 0)
+ 		goto estimator_fail;
  
- 		list_del(&a->a_list);
--		kfree(a);
-+		kfree_rcu(a, rcu_head);
+-	if (ip_vs_control_net_init(ipvs) < 0)
+-		goto control_fail;
+-
+ 	if (ip_vs_protocol_net_init(ipvs) < 0)
+ 		goto protocol_fail;
  
- 		/* decrease the module use count */
- 		ip_vs_use_count_dec();
++	if (ip_vs_control_net_init(ipvs) < 0)
++		goto control_fail;
++
+ 	if (ip_vs_app_net_init(ipvs) < 0)
+ 		goto app_fail;
+ 
+@@ -2527,10 +2527,10 @@ static int __net_init __ip_vs_init(struct net *net)
+ conn_fail:
+ 	ip_vs_app_net_cleanup(ipvs);
+ app_fail:
+-	ip_vs_protocol_net_cleanup(ipvs);
+-protocol_fail:
+ 	ip_vs_control_net_cleanup(ipvs);
+ control_fail:
++	ip_vs_protocol_net_cleanup(ipvs);
++protocol_fail:
+ 	ip_vs_estimator_net_cleanup(ipvs);
+ estimator_fail:
+ 	net->ipvs = NULL;
+@@ -2547,8 +2547,8 @@ static void __net_exit __ip_vs_cleanup_batch(struct list_head *net_list)
+ 		ipvs = net_ipvs(net);
+ 		ip_vs_conn_net_cleanup(ipvs);
+ 		ip_vs_app_net_cleanup(ipvs);
+-		ip_vs_protocol_net_cleanup(ipvs);
+ 		ip_vs_control_net_cleanup(ipvs);
++		ip_vs_protocol_net_cleanup(ipvs);
+ 		ip_vs_estimator_net_cleanup(ipvs);
+ 		IP_VS_DBG(2, "ipvs netns %d released\n", ipvs->gen);
+ 		net->ipvs = NULL;
 -- 
 2.47.3
 
