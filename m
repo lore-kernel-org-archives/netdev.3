@@ -1,60 +1,65 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793585004;
-	b=xL4loPITYNQMD5hKoBbC5Qh0ZwnLUOgrhZfDxllD0El2U4Jj3MJVV7s33Ldeh4igwRS6
-	 pGols3wb2Z1lNWmZANY/ZyHk/fTIYy6b5hI1NRXETBo/aTGNSBV+0NhZy2LY2rL0lLh5w
-	 AsFvYEFR0BNrPRuwdkX8jkt7gmRwCjk5eOdgCbHJPcXepDI+i80mSWh08SlptuiZLk5qF
-	 s9x+f5dONUpcZAszOya6Ks5km2VuYuZolU/eG7GubSAzd2e1XtqkXsXtcCoNHzKwNI5Rp
-	 LsDF8xIC7asx87V+e84/URph9PfEbi1YyPTtih/sXh2qYWlyeJOKmBvrC5VI6RwwJqw==
+	t=1793585049;
+	b=Jp6ySNy4jKGhh5cABNyJ5Kgwyo5fNsH1O2ncpj0LR/fxJjLqJTzTxi7uJIgPlyevjqjz
+	 6L1UKi2Sm2MqAVHoQ6o6yrITe5hmnEoKkbunnX8Gq4yzF1Iu/U6VOGl4k3Bd2t6hJiJne
+	 AX3wB2Y5VOszbQZNXPaSnlGD4ZnmQWFrGbrJVrYg43rni+AheMi9gJRr0xcz7znjammDz
+	 CqU+bPa/xXMQ/+dfUuPEGD8C9S1ppbWIBWbSZpgZIRiLK1qx/bDUVo3wPqNkOL1jU+keY
+	 Zk++WEqvo+ZgUHFSO0Iz7BRerY3Z++UFQU5vq8JBXhHUpuMPvouD27qNb13SDKqwm9g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793585004;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	b=vbjAxX9Qy4b76rdgzSkrR0jEbOkdVtxQvCiJUr1ahQL/3vpFAMJ8ecDePhoH9t0yGj0T
-	 fpNKw6VB+rcO0Qzc6AiAHlYQkfbSbGv+uBRFfQyMsnQ6CY6CnuIFErVKkrqyX6m4t1MYk
-	 9wsY6LkfEIDiqIG3IC1uTXj+mOx4mOBa9uCO/xabaqG1gUTV2sTG7Qd1+wnzNiG3ewd5Z
-	 +8SVgP3h1z7sFvHAQw8n5Xqc5ZQ1iFzLTEeVgog7Ei3R2FKZJ86YXycBNBr8KkUz6ETZs
-	 HBE1UxMkvEHwPEhBgKjQJKdtdKBhazZh7SgqMvVB7RuavvqoCVl3Gzu36FJS1yfhsVw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793585049;
+	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
+	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=EEbpi7PJ+4q9acxRxZPPipTgrTyR2mdkDd/Q2MjCxUI=;
+	b=hIPYSf5F56IKLXFF+qZc92XOK22keY9UGbbJj9VGe5o0M10huEyDozzbqPJdb1LW2unQ
+	 TNyys52d7RUJd32dRhsrzX2+AvQ+/ox07YDGZlOMk8HtT9FWw7QhabCSaZ3AWAeiEQjn3
+	 sx7wMrXapD0qNK0f+6rMaeMRe90e5+DjHuWojGjSVaQGDP9OGMpmiNWweBeHRP8H7cp5+
+	 oVOVIDebKjMj1u868H1Hqme/8t3qjr4W3mI8dZxtzIHPB9ocT3ftI14dRSIon4zPYrw/l
+	 ijsIFzArVxElZvj1VquVtiAYnPOTMrBQsxkXmTNGtjxwKzicWKCOmxnEsfo6A5bmExQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cmGzi9JC;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="ikpr1yP/";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AB6606A324;
-	Mon,  2 Nov 2026 02:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1B9606A326;
+	Mon,  2 Nov 2026 02:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cmGzi9JC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCB01F000C1;
-	Mon,  2 Nov 2026 02:03:22 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ikpr1yP/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E3C1F000C1;
+	Mon,  2 Nov 2026 02:04:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793585003;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cmGzi9JC/l4trm2uERbpxDwTgJLepMnRLAb6LXkBISWCA5NvhMadbML4XHYhgiypg
-	 N//7uLYm4hQsu+QWZFzwulEP7erDMoV3nrgtEnyufSWIC3vtMk9DvHephD6ztFhFwH
-	 AlMVx3eG0obmBkehNfrOWLtvYauQioeeTGvVcMb248Phq4bKGQ3H9azaPaj1HOKBBe
-	 IDDXf1/x6jqiqD11Chtvkfalt8xtmNkyQkxuIk9O70aJhpJcV2eTDWCNBmYmytFmyA
-	 /KpyNxsdGODW7dO5sYkg2xkyvRUqGT+IPg2O/Vg+GJw/XEWeEisI+J6Cd3b0sXtFO4
-	 e7pvRhErYCixg==
-From: netdev-bot+sinfo@kernel.org
-To: bo cao <treebacker@foxmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- pabeni@redhat.com, dsahern@kernel.org, edumazet@kernel.org, idosch@nvidia.com,
- horms@kernel.org, willemdebruijn.kernel@gmail.com, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v4] ipv6: fix dead half of the MTU guard in
- __ip6_append_data()
-Date: Mon, 02 Nov 2026 02:03:22 +0000
-Message-ID: <179358500215.3286.12801503551646664009@kernel.org>
-In-Reply-To: <tencent_0A4B784EEB3D358B09B43AA2B2F13AE44505@qq.com>
-References: <tencent_0A4B784EEB3D358B09B43AA2B2F13AE44505@qq.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1793585048;
+	bh=EEbpi7PJ+4q9acxRxZPPipTgrTyR2mdkDd/Q2MjCxUI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=ikpr1yP/BDH+G/tY5bVXVH762hJ0j/qXhMh4OLtbq2Jrn35JaxyXC96D6sLsjmrE4
+	 KPbVzJJC+FosJYbfIowK+k57ZRWBuOKbPrYlDbhGAXM4cgtwz9V26qPqPX10VnvMYU
+	 i4UO1TQEjtEIhP4CYVBehDL8o9qxd/8wlU1umuQsgHwFKmphFgiliuWIl/96jYOaBj
+	 VwzHHcQ088BatZNotNpgFGjQvf9uZEuCR6La2nMBhwHEt1DwlncQ2C5otlcnTc+zjr
+	 BtJsCRdyVuqnKMumA54qEtXwIAIWpPxCEksi9NDtf9dGgbiCxySewoIhiBk99wG3rY
+	 Oc9RvZ0f3GYoQ==
+From: Brian Masney <masneyb@kernel.org>
+To: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
+ Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
+ Nicolai Buchwitz <nb@tipi-net.de>
+Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, 
+ Stefan Wahren <wahrenst@gmx.net>, Phil Elwell <phil@raspberrypi.com>, 
+ netdev@vger.kernel.org, James Clark <jjc@jclark.com>
+In-Reply-To: <20261020-devel-bcm2711-gisb-clk-v1-0-a1728724d0f8@tipi-net.de>
+References: <20261020-devel-bcm2711-gisb-clk-v1-0-a1728724d0f8@tipi-net.de>
+Subject: Re: (subset) [PATCH 0/3] clk: bcm2835: describe the BCM2711 GISB
+ clock for the GENET MDIO controller
+Message-Id: <179358503716.355577.9187303706042543606.b4-ty@b4>
+Date: Sun, 01 Nov 2026 21:03:57 -0500
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,21 +69,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev-5d8fe
+X-Developer-Signature: v=1; a=openpgp-sha256; l=790; i=masneyb@kernel.org;
+ s=20250903; h=from:subject:message-id;
+ bh=jTkvZ/L7zswWdeg8kLhuRySRfybPm2VPf54LiwO8r88=;
+ b=owGbwMvMwCW2/dJd9di6A+2Mp9WSGLKev59w/eKliCdHdSStvmwWPsgaJXbK/eeLpokJ3fzFX
+ KsYJAWVO0pZGMS4GGTFFFmW5BoVRKSusr13R5MFZg4rE8gQBi5OAZjItBkM/1O/vdGbIfTsxdZ5
+ Xybucvh/+nWaJe/TeVXnTx05Os/618uzjAzPZDOsm0wfL/v4ZCmn3M3XunJfhV7Lr5TcsPwqz1/
+ 5Y0c5AQ==
+X-Developer-Key: i=masneyb@kernel.org; a=openpgp;
+ fpr=A46D32705865AA3DDEDC2904B7D2DD275D7EC087
 
-Hi!
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+On Tue, 20 Oct 2026 16:58:08 +0200, Nicolai Buchwitz wrote:
+> clk: bcm2835: describe the BCM2711 GISB clock for the GENET MDIO controller
+> 
+> The timestamped MDIO write series [1] needs the reference clock the
+> GENET MDIO controller divides its MDC from. On BCM2711 that clock is
+> not described anywhere, so 5/5 of that series hardcodes 200 MHz behind
+> a compatible match, and mdio-bcm-unimac's clock-frequency handling
+> assumes the 250 MHz of the STB chips.
+> 
+> [...]
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Applied, thanks!
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+[1/3] dt-bindings: clock: bcm2835: add the BCM2711 GISB clock
+      https://git.kernel.org/clk/linux/c/af7994af5228
+[2/3] clk: bcm2835: register the BCM2711 GISB clock
+      https://git.kernel.org/clk/linux/c/ab94dbf30233
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Best regards,
+-- 
+Brian Masney <masneyb@kernel.org>
+
