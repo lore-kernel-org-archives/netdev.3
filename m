@@ -1,81 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793579836;
-	b=bezoqdzo9xSEhdsuojs/6+jLJKGBQcvcXUztDQSiIfSEk2CA4NGhHaT0zyUjzZcohQuk
-	 Z6G/sEiLzxNzbXHv99lj1HxUKQs+2iZfUwaCGyHNjGrhTtxzXTbNN3iSKcU+3b09EbXjX
-	 zHh9EYbdhzXSvcyNycLokteHFlTakvrdkTbHzwo5zMnLO06hzDf8vkne92L07fTgfpbwB
-	 DP3/U2Yz1ZIEEzAE7TGGQ5QDh2KK7sBbtvBxnk7gehFGLO06q2OoYAE1T+1qT9EfSwrpm
-	 5tHaFFXG+zRgvl4i8C69CL5kP6C6ey7OQ/oWlUKcWwbri87RPK+5EhEx0lzs+xssrqA==
+	t=1793579838;
+	b=tkUsiLotf5W+eINvZ86GYkF6nEKjQZ29GVPHNa+KZaahP7esTDJcuhb9oHqI+aFsv/es
+	 f1qVyu8vcsTx+uSx5IxuWvCUFNZ1/7Kt3Vo8qpr0zBvsWs1fMKCp0UCUzoJzU5HHD93AJ
+	 lsuTPKDMkE6Vg2MQXSURQKUHb2b9x1kfdB77Mgmgps63+WNcq4wKiWGcvuBWJgNpGBjbp
+	 gZ6Pnh+rWuf9B7nYQjnoRoE3y18zAroCNU54/pHLj2JosEbRhS8V8s5HkP0gy8qh1bWfZ
+	 tpl49BzvadHHxdQDx41fEobh3D1FYBdEZ9Ge6VFgV1W2VZCrgiOX4E+MeO3wPLJKZgQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793579836;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793579838;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=Fcyt098zqH0vjocBgVntMP3k8zQT1uQko7bTZ4Zabpc=;
-	b=Wj2KLV48Cko+8MgfAtzV3AFEGjJDwYmwME7BjgMmQyhDjDAAdZhiQP6vrMgeXwiXAFGX
-	 1zE6h26Ee7opeIvAAl33wYl17uS19t1/T0xoBrWjygfIWvM7dqdWduEMCaFPx8iPjuirE
-	 UnC5yStZagZxNpc+MNyCKJtj/+eMzGwEV39y3RuncxKwBcBwSfsykQ16WmEhTWBcDw1Ux
-	 ZandNsf4iEL2iQpTI1N1v8EaxRuUtWeqxCmRYerSQXbMJV0qWVTCjuWYbJy1Nkb0j0RGa
-	 KGL+c6EJv41A7NPzRD86XR/ewdjQxdiK37igC1URevpg6UM3yDP4CMfYSXu6LesJ/Dw==
+	bh=aHxNiJHHxEssGSp/2Xs2oy5YS0nrj3YMaZixDHo/tOw=;
+	b=C9XoFMpvOGXdxGdjyynPceW6XPn8AcSNj9VR4esoQhLPss8eNHukTmb7GJX9VbGMyHpZ
+	 MYpVJGAB2tT/tQLH7Or7eM9yqYniqy2lbQruBb/aQtYSfAtZEG4mJXE/JfD9Wv2vTveG5
+	 GQ4MR2TKg2/LrZPNbil+7OwjFiErH5APPVu0PE/SIl9lg241Bczv+b52N5ig35dvYyc4L
+	 8zk7UZycr2jIa3Xas6gV0tiwQvcX+0m4a3d93fWWLmda+OHrmzrXF0+TW0r+4zJFz5NR5
+	 f2aWKlfAHRItp6MHhhmmszlSYBfx0B5p0mTsqatBtXeOTWAUUdw2iGG8rcA73A1D2AA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=mojatatu.com;
 	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=P51eyIq1;
-	arc=none smtp.remote-ip=209.85.160.171
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=A1VpEPx1;
+	arc=none smtp.remote-ip=209.85.219.46
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635A7606A324
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 00:37:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 635A7606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546AB606A326
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 00:37:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 546AB606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=P51eyIq1
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-5364c951da4so25030551cf.1
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 16:37:15 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=A1VpEPx1
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-91c79f306e9so29599396d6.3
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 16:37:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1793579834; x=1794184634; darn=vger.kernel.org;
+        d=mojatatu.com; s=google; t=1793579837; x=1794184637; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Fcyt098zqH0vjocBgVntMP3k8zQT1uQko7bTZ4Zabpc=;
-        b=P51eyIq14uu5yqDIpxAQoZj5PX+xYhhpr0Q8/+/CqxOItoCAAtOvuZblX5Y3HLYvJP
-         BAE0uRgGSTV3H8Ax2bYbgYx8POkk2CndBaZ67v/snj5k5irCZL02ZZZOyG3vrd1Yb19j
-         ycEnUGwFtJsgVQnI1XFHF6FtvAD5vDjc7hmEw=
+        bh=aHxNiJHHxEssGSp/2Xs2oy5YS0nrj3YMaZixDHo/tOw=;
+        b=A1VpEPx1JwWNrUP3+P38+4tfAB5W5YbvAoGRutm3oWD/PL0fybiPt7a/mhpZDr7LGJ
+         D1ObOtnWgXswSTSUXFwFifMQZpIPrBUzoyvKoQ9YSmte4R4xk/tesiSqZkxCahg/dil9
+         fMZAG+Tsw6GjbAmF22Xi4+6jptWRDc60Bb7d4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793579834; x=1794184634;
+        d=1e100.net; s=20260707; t=1793579837; x=1794184637;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Fcyt098zqH0vjocBgVntMP3k8zQT1uQko7bTZ4Zabpc=;
-        b=V57RQVw5wWencNHvVEOZhG7M75N2NVAZ0sQ9Bc9paSIifXfXI0ftAfGxIOA0NkLA98
-         uiakkGnPvO5JnwUwXE+BDkYVgF6v2hufiDLgWBareSgRpT+OkeLnaT9ecg4e7f4MOMIC
-         l37yi5EnMIp8NBFm30y6h8QJU8f262AjSbw8Idr3Egb2nFdXYTcCzPbd18Qbtt9NoCQH
-         Sav3pYtVJWONpsiPnOmy0M06f0Wt71FJu3MPUzCz9mgBk5/s3baLAElJAwWVWin7XYgN
-         r6R7nVeI5fqmW73+Z62iiSUmzetOQlBeqsxXXGnpB+jyRkHIK+qAI+sTeY4n26/Sliwn
-         ro1A==
-X-Gm-Message-State: AFq9FYJuvxvgF01bQRNOYMKJaxD/Bfhtqj5hS1SnAQ33SXBxx9hkGp6d
-	s/Snv108lyNk9vDDZkQ2RedRELeOZguo9KYoltL64TO/GH5Y+J2VT3/11P5F5dcgduQ8X/ZLF/4
-	/sKA=
-X-Gm-Gg: AYBFou27X90bCO314Lecx6g3WELR7wi1IS6Kh12bCm8YSl5lKI66v4L3cepo3uDuvla
-	Hv+d19vQyIz4zOM49LOM0n5hsY21U7BZniJO6C5nIvaoyGgrU+T8snH752/txwvXKfnmH0SKb/d
-	mh5nLPvU6KD/HykH5D/0/VOYvf4MVeSluTat3zvKow70QL75keCz5GXMp9JmZBgfWd+JOWNaIm1
-	1MTWtkE/sn9F8ILeUIZWlSRY7LVA4d4wo4u+R9j+yJ5QZSKOSRw83lEgrekZ0pLIJb8Tx4draK+
-	bytdUwsuEr5gE8O1fHWIz/kDxgyv8rS1W+Ab/hwMB7b0sWIFGn9p/Y/nobT8adzGsCRWzggs+xt
-	eUR9CvgnOD++t8ReumHUf/R77mpVXePHDNo0MNsON4YqPhtEALdcQuyt+cRVAZdDuNJJPiSUdC+
-	yMM9WlS2jEnvaCHdZJgIzF+Wm7I90dX19P0cRKOpMRZLggD9IG0JmK8L+qxWePj+9JQBId4EDUA
-	LANhBtosvGLpWayHMg7rElcF1Qc4f+TtJQWgAsS/nSZ3uRz2b1QKyv3ht8m+qoGDYnD/q3OM0+V
-	6xaOgZQn2YYQEFXdFgcj7UEQjjf8tiYyFaQ19ayrtK93owEf/Iorf4Iu0um72VGnGn22Cb7VJch
-	ExEsNzD1NxWRst5WC
-X-Received: by 2002:ac8:5ac2:0:b0:535:a5fb:6451 with SMTP id d75a77b69052e-542b83f6af2mr144848921cf.75.1793579834332;
-        Sun, 01 Nov 2026 16:37:14 -0800 (PST)
+        bh=aHxNiJHHxEssGSp/2Xs2oy5YS0nrj3YMaZixDHo/tOw=;
+        b=y5A3HwuXB26g2dnTxgkIn5ehIVYiI/3q1JJznMXZ75VL7os0WeiuAjBI1H8kZDF8tK
+         MROhHR/y9ahc2tzHVYH6T+ftBzXqd1Ev+ieXuoNZFbqhjptmZkGCF1vg78aX37QaGjEA
+         ZWq5iZO9lz4nkRaNWvgIyGEO54HkxVgf7mD0wPl5mYvLAqiuQ97uiGDBD9CsQkocFpr8
+         T+4zH8rg+JaJOmJivjy4Ril1/xL7i+LQMuJJ03PMi4OYSH7CeVmsoxYGCoFPQrfP/VKp
+         PrsnPjiCiMUnXqHfUJN8dJh5n3/ma2dSJcvwWuWZgNPfCiWCEjRi1lrz7wzKn7Fd5Jdh
+         fWNw==
+X-Gm-Message-State: AFq9FYKfs62zf2j73yEAXYAbMLptVZA0gMuyKP0jBioPFftc/KalR55M
+	J6qYcs74GQkUP4/8sUfdQdXvfLFc9Ku3XNf/f9YTWvURiMq7N3CJ7CNoC96TYxEblp/BEs7ETjI
+	uEyc=
+X-Gm-Gg: AYBFou0X+C1cYbgxXNQGMg1ncPFnCZrSIx1yGU/VPO5zce0ChoKvHbBzdah/53QKWst
+	TN7U5OwOLroYPRi4o8Ybpyh//ewA288AHwaH6qfDUE7rDYRyzf3uxVTkphCoj9kDfn4Ux8R4jdP
+	+wqRjZb5PmrLYLYEMsipfL28hggWTOczZEOLL46Pwr/oupwKcBrgrGqwtU6FBQ8hC/bGD113rV2
+	1/asPKAM+JeZaaeupI93XatPUNa8CpGSsewfmhRx7HaV3RTokgl3oxTrhnMXtuU3gCGDh2jN7jV
+	4qPKDmsGplEkq37NiCXWrR4Pr5v+TePARJLrNPMNmlByjC7chfocYbZO6ncP4T/VGMhuQ09w0TZ
+	3vamOSiTmHPweLLqaw1LTOy/6lGy9RILXMi5aJF9/brFVIDJWeI5t6BOq34HfftDAz9K2XZjHCX
+	ne7/h+cTGNrRJ21PvmRu6qmJJe8KZqh7eCFfuq1IaILrD0KUaZTYCbscBaFLF/Z1kv/mW2NFiQ8
+	PKM4QIj48DM0OspcULhIVzArJz5hJ26cILuNZbonhkWM8nouKNrJ3WQt+4E/KVoupzmBqvZN4ni
+	rYX4hBbsZ+HZc61d42i1NtKahyv9dyR57n8Bv63Ra7/0I6rHOShzqWJZJkgG6QgD0pfzBM4X0RA
+	rIvZ4hSxB8++MCMI=
+X-Received: by 2002:a05:6214:4346:b0:91c:67a7:1360 with SMTP id 6a1803df08f44-91ca4b1a2f9mr143205086d6.27.1793579837186;
+        Sun, 01 Nov 2026 16:37:17 -0800 (PST)
 Received: from mbili.tail33bf8.ts.net ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ca7f23754sm77043066d6.9.2026.11.01.16.37.12
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ca7f23754sm77043066d6.9.2026.11.01.16.37.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 16:37:13 -0800 (PST)
+        Sun, 01 Nov 2026 16:37:16 -0800 (PST)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -88,11 +88,10 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Victor Nogueira <victor@mojatatu.com>,
-	Sashiko <sashiko-bot@kernel.org>,
-	Vega <vega@nebusec.ai>
-Subject: [PATCH net v2 2/4] net/sched: act_ife: require a full Ethernet header on egress
-Date: Sun,  1 Nov 2026 19:37:04 -0500
-Message-Id: <SER-NSBD.v2.r0.20261101171325-2@mojatatu.com>
+	Tom Goff <thomas.goff@boeing.com>
+Subject: [PATCH net v2 3/4] net/sched: sch_teql: reject qdiscs from another network namespace
+Date: Sun,  1 Nov 2026 19:37:05 -0500
+Message-Id: <SER-NSBD.v2.r0.20261101171325-3@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <SER-NSBD.v2.r0.20261101171325@mojatatu.com>
 References: <SER-NSBD.v2.r0.20261101171325@mojatatu.com>
@@ -107,103 +106,91 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is a followup of commit 5b483f7791b0 ("net/sched: act_ife: Only
-operate on Ethernet frames") as reported by Sashiko.
-
-The finding was raised by both Sashiko providers (nipa and gemini)
-while reviewing the parent patchset. shaos <shawnq1@163.com>
-independently reported the same undersized-egress path with a
-reproducer, which was reproduced and verified in our test environment.
+Reported by shaos <shawnq1@163.com> with a reproducer, which was
+reproduced and verified in our test environment.
 
 The issue:
-On egress tcf_ife_is_eth_skb() only checks the device type; it does not
-check that the skb carries a full Ethernet header. For an Ethernet or
-loopback device it returns true even when the skb has no Ethernet
-header. tcf_ife_encode() then calls ife_encode(), which copies ETH_HLEN
-bytes from skb->data. A short skb therefore reads past its linear data
-and the copied bytes, including stale kernel memory, are emitted in the
-outer Ethernet header.
-
-The parent commit fixed the reported ingress mac_len case but left the
-egress path without a length check.
-
-A total-length test is not sufficient: a non-GSO TUN skb can have a
-large total length while only a single byte sits in the linear area, so
-ife_encode() still reads past the linear header. Require instead that
-the Ethernet header the encoder copies is present in the linear part of
-the skb.
+The teql master devices are created once in the initial network
+namespace and their Qdisc_ops are global. teql_qdisc_init() takes the
+teql_master embedded in the registered sch->ops and uses it without
+checking whether the new qdisc's device lives in the same network
+namespace as the master. A qdisc created in another netns can therefore
+attach to the init-net master and change its MTU and flags.
 
 The Fix:
-On egress require pskb_may_pull(skb, ETH_HLEN) before encoding, which
-ensures the Ethernet header is present in the linear data ife_encode()
-copies from; the ingress mac_len check is unchanged. A short egress skb
-is now dropped instead of being encoded.
+Reject a teql qdisc whose device is not in the master's network
+namespace with -EOPNOTSUPP and an extack message; same-netns teql still
+works.
+
+Initialize the private skb queue before any validation so every
+constructor failure path, including qdisc_create_dflt(), which resets the
+qdisc before destroying it, sees an initialized empty queue.
 
 Conditions to recreate the bug:
-CONFIG_NET_ACT_IFE=y, CONFIG_NET_CLS_MATCHALL=y, CONFIG_NET_SCH_INGRESS=y,
-CONFIG_TUN=y, CONFIG_NET_ACT_MIRRED=y. In two user and network
-namespaces (a victim and an attacker), open a TUN device in IFF_TUN mode
-and attach clsact to it and to lo. Redirect ingress traffic from the TUN
-device to lo egress with mirred, and install an ife encode action on lo
-egress:
+CONFIG_NET_SCH_TEQL=y, CONFIG_DUMMY=y, CONFIG_USER_NS=y, CONFIG_NET_NS=y.
+As an unprivileged UID, unshare a user and network namespace, create a
+dummy device, set its MTU to 60000, and add a root teql0 qdisc:
 
-  tc qdisc add dev <tun> clsact
-  tc qdisc add dev lo clsact
-  tc filter add dev <tun> ingress matchall action mirred egress \
-      redirect dev lo
-  tc filter add dev lo egress matchall action ife encode use mark 1 \
-      action ok
+  unshare -Urn
+  ip link add dummy0 type dummy
+  ip link set dummy0 mtu 60000
+  tc qdisc add dev dummy0 root teql0
 
-Send a TUN packet shorter than ETH_HLEN (a one-byte payload is enough)
-and receive the emitted frame on the other side. Without the fix the
-outer Ethernet header contains bytes copied past the short packet; with
-the fix the short skb is dropped. The attacker needs CAP_NET_ADMIN in
-its user namespace; no init-net privilege is required.
+The init-net teql0 device changes from MTU 1500 to 60000. A pfifo control
+on the same device leaves the MTU unchanged, and a direct MTU change on
+init-net teql0 is denied. The namespace needs CAP_NET_ADMIN; no init-net
+privilege is required. With the fix the attach fails with
+"Operation not supported" and the init-net MTU stays 1500.
 
-The same path is reachable when the total length is large but the
-Ethernet header is not linear: write a non-GSO virtio header with
-hdr_len=1 followed by an 8192-byte packet so that only one byte stays
-linear. Without the fix the copied header reads past the linear data;
-with the fix the header is pulled into the linear area before the copy.
-
-Fixes: ef6980b6becb ("introduce IFE action")
-Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
-Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
+Fixes: 7316ae88c43d ("net_sched: make traffic control network namespace aware")
 Reported-by: shaos <shawnq1@163.com>
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260821164031.32824-1-victor%40mojatatu.com
-Link: https://sashiko.dev/#/patchset/20260821164031.32824-1-victor@mojatatu.com
-Link: https://lore.kernel.org/netdev/20261022144736.61227-1-shawnq1@163.com/
+Link: https://lore.kernel.org/netdev/20261022144830.67948-1-shawnq1@163.com/
+Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/SER-NSBD.v1.r2.20261031160050-3%40mojatatu.com
 Cc: stable@vger.kernel.org
 Reviewed-by: Victor Nogueira <victor@mojatatu.com>
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
 
- net/sched/act_ife.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+v2: considers comments from Sashiko (nipa) on the repost2 posting:
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/SER-NSBD.v1.r2.20261031160050-3%40mojatatu.com
 
-diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
-index 6b23a3965121..5a527da00566 100644
---- a/net/sched/act_ife.c
-+++ b/net/sched/act_ife.c
-@@ -878,13 +878,16 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
-  * is an Ethernet header because the skb could've been redirected with mirred
-  * from a non-Ethernet device.
-  */
--static bool tcf_ife_is_eth_skb(const struct sk_buff *skb)
-+static bool tcf_ife_is_eth_skb(struct sk_buff *skb)
- {
- 	if (skb->dev->type != ARPHRD_ETHER &&
- 	    skb->dev->type != ARPHRD_LOOPBACK)
- 		return false;
+The cross-netns check ran before the "teql can only be used as root"
+check, so every case it did not catch was answered by that check, masking
+the assertion that tc-testing case 124e makes.  The root-parent
+validation now runs first and the namespace check second; 4/4 adds a
+case that covers the namespace rejection on its own.
+
+ net/sched/sch_teql.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+index 70c948a26f80..dc21cd9704a2 100644
+--- a/net/sched/sch_teql.c
++++ b/net/sched/sch_teql.c
+@@ -200,6 +200,8 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
+ 	struct Qdisc *first;
+ 	unsigned long flags;
  
--	return !skb_at_tc_ingress(skb) || skb->mac_len == ETH_HLEN;
-+	if (skb_at_tc_ingress(skb))
-+		return skb->mac_len == ETH_HLEN;
++	skb_queue_head_init(&q->q);
 +
-+	return pskb_may_pull(skb, ETH_HLEN);
- }
+ 	if (dev->hard_header_len > m->dev->hard_header_len)
+ 		return -EINVAL;
  
- TC_INDIRECT_SCOPE int tcf_ife_act(struct sk_buff *skb,
+@@ -211,9 +213,12 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
+ 		return -EOPNOTSUPP;
+ 	}
+ 
+-	q->m = m;
++	if (dev_net(dev) != dev_net(m->dev)) {
++		NL_SET_ERR_MSG_MOD(extack, "teql master is in a different network namespace");
++		return -EOPNOTSUPP;
++	}
+ 
+-	skb_queue_head_init(&q->q);
++	q->m = m;
+ 
+ 	raw_spin_lock_irqsave(&m->slaves_lock, flags);
+ 	first = rcu_dereference_protected(m->slaves, lockdep_is_held(&m->slaves_lock));
 -- 
 2.43.0
 
