@@ -1,65 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.221
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793585049;
-	b=Jp6ySNy4jKGhh5cABNyJ5Kgwyo5fNsH1O2ncpj0LR/fxJjLqJTzTxi7uJIgPlyevjqjz
-	 6L1UKi2Sm2MqAVHoQ6o6yrITe5hmnEoKkbunnX8Gq4yzF1Iu/U6VOGl4k3Bd2t6hJiJne
-	 AX3wB2Y5VOszbQZNXPaSnlGD4ZnmQWFrGbrJVrYg43rni+AheMi9gJRr0xcz7znjammDz
-	 CqU+bPa/xXMQ/+dfUuPEGD8C9S1ppbWIBWbSZpgZIRiLK1qx/bDUVo3wPqNkOL1jU+keY
-	 Zk++WEqvo+ZgUHFSO0Iz7BRerY3Z++UFQU5vq8JBXhHUpuMPvouD27qNb13SDKqwm9g==
+	t=1793585915;
+	b=ycfR3xiJxROtAqbq713QUX3x3xqTK+gwQYeNL6SpD6JPmI3NXDs541XPhtbp+UDRPRRC
+	 wZ3r6lqqmg/lOqaFkyModa1fQC37ENJTZ02TAFYjpQthsUG3WG+0vrkiCCFiamHFgQfIQ
+	 Jks2BMXsqJjkSy/8nuLy8HK8uq2A/s4R45xx7XOSUS1oA26KGia4dojxc9gFL6s0/rnCM
+	 N5J1yBF2OzNA+J27tI70lHb3mD3lJxfTub68Rup8adwm74jHQd+DVycprcDeW2ZkUy4q8
+	 fHxlV4ptAxZr5bbcONEMzEe9gU+RJzE4FWZ6rI5BmiooIWnYKCIWqxxUlRmZ/OgeYIQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793585049;
-	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
-	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=EEbpi7PJ+4q9acxRxZPPipTgrTyR2mdkDd/Q2MjCxUI=;
-	b=hIPYSf5F56IKLXFF+qZc92XOK22keY9UGbbJj9VGe5o0M10huEyDozzbqPJdb1LW2unQ
-	 TNyys52d7RUJd32dRhsrzX2+AvQ+/ox07YDGZlOMk8HtT9FWw7QhabCSaZ3AWAeiEQjn3
-	 sx7wMrXapD0qNK0f+6rMaeMRe90e5+DjHuWojGjSVaQGDP9OGMpmiNWweBeHRP8H7cp5+
-	 oVOVIDebKjMj1u868H1Hqme/8t3qjr4W3mI8dZxtzIHPB9ocT3ftI14dRSIon4zPYrw/l
-	 ijsIFzArVxElZvj1VquVtiAYnPOTMrBQsxkXmTNGtjxwKzicWKCOmxnEsfo6A5bmExQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793585915;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=LzpH6ZlFtWx3iq/V4Ca3j+tPjclLZq1yC4pTJfDWRc8=;
+	b=v3Chs7PQ3F3Kz4VHaC/RpDMvfPLZYfS5V4omRpeZpSJSCnzYu6mSRpHKodVuo+3ErNPh
+	 vIutZV08gN2bZ8R8/6yEd36XzyZQ2MS0yZJeFk50Ljxsrc8YfzwRBcstF+CtAM/wxKKtX
+	 MWISp5qmywkf3yjHUwdXE9KSHe0wqt558lzz0ol6NJSWanqGJjH9GhS9Wasa3RGjIb47d
+	 WGditQNPmoTtcR6anG9vMZHrJb0LNdUh1Sid0iGCNHNDEejw9mlCQQ3TjyeH8RymAUumX
+	 GRlTUTKBhlwZh+t48Kc6ScQx66Il4RyHj5P7dBPagP1Zu8WlJxKnGJZRnr1adriKnaw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="ikpr1yP/";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=foxmail.com;
+	spf=pass smtp.mailfrom=foxmail.com;
+	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=S6zdqfib;
+	arc=none smtp.remote-ip=203.205.221.221
+Received: from out203-205-221-221.mail.qq.com (out203-205-221-221.mail.qq.com [203.205.221.221])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1B9606A326;
-	Mon,  2 Nov 2026 02:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A60C606A324;
+	Mon,  2 Nov 2026 02:18:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A60C606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ikpr1yP/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E3C1F000C1;
-	Mon,  2 Nov 2026 02:04:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793585048;
-	bh=EEbpi7PJ+4q9acxRxZPPipTgrTyR2mdkDd/Q2MjCxUI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=ikpr1yP/BDH+G/tY5bVXVH762hJ0j/qXhMh4OLtbq2Jrn35JaxyXC96D6sLsjmrE4
-	 KPbVzJJC+FosJYbfIowK+k57ZRWBuOKbPrYlDbhGAXM4cgtwz9V26qPqPX10VnvMYU
-	 i4UO1TQEjtEIhP4CYVBehDL8o9qxd/8wlU1umuQsgHwFKmphFgiliuWIl/96jYOaBj
-	 VwzHHcQ088BatZNotNpgFGjQvf9uZEuCR6La2nMBhwHEt1DwlncQ2C5otlcnTc+zjr
-	 BtJsCRdyVuqnKMumA54qEtXwIAIWpPxCEksi9NDtf9dGgbiCxySewoIhiBk99wG3rY
-	 Oc9RvZ0f3GYoQ==
-From: Brian Masney <masneyb@kernel.org>
-To: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
- Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Florian Fainelli <florian.fainelli@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
- Nicolai Buchwitz <nb@tipi-net.de>
-Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, 
- Stefan Wahren <wahrenst@gmx.net>, Phil Elwell <phil@raspberrypi.com>, 
- netdev@vger.kernel.org, James Clark <jjc@jclark.com>
-In-Reply-To: <20261020-devel-bcm2711-gisb-clk-v1-0-a1728724d0f8@tipi-net.de>
-References: <20261020-devel-bcm2711-gisb-clk-v1-0-a1728724d0f8@tipi-net.de>
-Subject: Re: (subset) [PATCH 0/3] clk: bcm2835: describe the BCM2711 GISB
- clock for the GENET MDIO controller
-Message-Id: <179358503716.355577.9187303706042543606.b4-ty@b4>
-Date: Sun, 01 Nov 2026 21:03:57 -0500
+	dkim=pass (1024-bit key, unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=S6zdqfib
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1793585906;
+	bh=LzpH6ZlFtWx3iq/V4Ca3j+tPjclLZq1yC4pTJfDWRc8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=S6zdqfibLP8H6Zdr9umZyiK2q3aifHaVmVT+mJIwGHRyMZ1iwn8x6OiBXEUOw3Q0s
+	 FBF4FEs6/dP2rlHkxmArRQC1L8rDn7rcPl1qe9+b5V8H5GAlUIo7XPCEeSGPowGkiL
+	 cD14CqSnLHr6RgSyXe5wiJQwzyATBjQmczsDcG/0=
+Received: from HAPYCAO-MC1.tencent.com ([61.151.228.151])
+	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
+	id 496A20BF; Mon, 02 Nov 2026 10:18:22 +0800
+X-QQ-mid: xmsmtpt1793585902tmd4v4x7m
+Message-ID: <tencent_F82F58C2455AF9A94D4C0FD52495CAD72308@qq.com>
+X-QQ-XMAILINFO: NiqzJuKCE4mBRyz1QDXp2j/ZkT+xuxIe05NGxcYlTGV8GEezSHfKoryJkXsZJB
+	 1llyNa6yFZVVAWVwGw2fcqVeLmCNexacwb9sjrqMnP1KNLc2zgrOakwYCyeU0NKEalvdlbVslc4A
+	 JQVh0rwZKlLhZ2D8ivvJ6iGPrQLLdGqREiDVaS//QGSItB0EY6IR+lrtvJ5Q98HWxEtBKmmGX6Uq
+	 M+bd/HUqom9qy+6Nqnu9xEQ73N+vIYg0gVIEp8ONZF6VOm/skfCLnMaxa11Y+2Mc5WGpCOrxp9M9
+	 YUswaPHdYazWoLHqPd6cXZoOnVhuyW1o3puWAppADPw532wOt+QKtb+rVAb6s5H5lYabvq0hSpe8
+	 jzRQfAeCkWmkGSSPkPGeGMJ4e6fWkSELkpzlJVA/S3TVkzGlsl2JnKW/biFAfmWtK1/qsxbU2w29
+	 EsO3nDwVNeHNdCO8jGJjapLHkII/0fDa4U1hQq0dsg1n3zjHraJQgbWtvMo+ho681zTOSrFgDf+N
+	 GMDHMPr8Fksc+V0qg69mY/G2gjZpY2gAjJg+m4Uthzs681jKtUrCM6SyBQRwj22gqo3ND7mB/waj
+	 p00aTFP1v9lcFTDv8EXCVVvKX61jp/22RJjg9WB+QqutSo959MJD7C1R2L0kb31hGgAs0YZACt2l
+	 eNAGqHumSaVelopu/qC+DxQe2LORC7qgtzqywZ92cu3um258yLASOCGGqhwNsMjeH2UCobJSt19M
+	 CkrX8JsDMnozeYutGbrTc4Ja+c5lWTv+jrCDjcrq6ly2mfsSsOOcG3q81TqWkTh3AwO5gUNT1QCr
+	 3xMH9loKXjkv3+z88I+4uFZk2F7Em7Rn7jtp0EWiJS90NEEPc5nBMaMmpXpyFaYhCeg7aO4O2inO
+	 N8f3TOSaMNcwZFITlFIhu2fKBFXqyYHr6/hbxcBn7k5Q9jvT4dyQsqUP5d4xPi9JmnVfrX6tbcCS
+	 qVXGc//tb+iFT7PeODR4/LyswXItgIkYnjfjlZqKanvbhkcagXa6V2PLaOvNbJFRRj9Qs7t43G66
+	 CjnKe8OwAvJCWs4OMXMAIy2jNeSwjwkYh/nIN9+TPaiaDFKebLMWuIF1vWBLegcXQdpV6xVNTzkI
+	 dTkdXjTKso12NDPMB0gTLcPslB+Y3uWM7lbE32xr8GXRLs4VM5xN14dD1hAFGiJsJlQs4tUDRx8Y
+	 UkXu4lMyler4tHSn6EBUv3t0bObpYaT2K3sN0CCsyJ5RxxMgs9b2BDJeKiPFxmlZHYHU4=
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+From: bo cao <treebacker@foxmail.com>
+To: netdev-bot+sinfo@kernel.org
+Cc: davem@davemloft.net,
+	dsahern@kernel.org,
+	edumazet@kernel.org,
+	horms@kernel.org,
+	idosch@nvidia.com,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	stable@vger.kernel.org,
+	treebacker@foxmail.com,
+	willemdebruijn.kernel@gmail.com
+Subject: Re: [PATCH net v4] ipv6: fix dead half of the MTU guard in __ip6_append_data()
+Date: Mon,  2 Nov 2026 10:18:22 +0800
+X-OQ-MSGID: <20261102021822.91796-1-treebacker@foxmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <179358500215.3286.12801503551646664009@kernel.org>
+References: <179358500215.3286.12801503551646664009@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,39 +92,26 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev-5d8fe
-X-Developer-Signature: v=1; a=openpgp-sha256; l=790; i=masneyb@kernel.org;
- s=20250903; h=from:subject:message-id;
- bh=jTkvZ/L7zswWdeg8kLhuRySRfybPm2VPf54LiwO8r88=;
- b=owGbwMvMwCW2/dJd9di6A+2Mp9WSGLKev59w/eKliCdHdSStvmwWPsgaJXbK/eeLpokJ3fzFX
- KsYJAWVO0pZGMS4GGTFFFmW5BoVRKSusr13R5MFZg4rE8gQBi5OAZjItBkM/1O/vdGbIfTsxdZ5
- Xybucvh/+nWaJe/TeVXnTx05Os/618uzjAzPZDOsm0wfL/v4ZCmn3M3XunJfhV7Lr5TcsPwqz1/
- 5Y0c5AQ==
-X-Developer-Key: i=masneyb@kernel.org; a=openpgp;
- fpr=A46D32705865AA3DDEDC2904B7D2DD275D7EC087
+Content-Transfer-Encoding: 8bit
 
+Apologies -- this information was already provided in the v3 thread,
+and it was my oversight not to carry it into the v4 commit message as
+the bot had asked.  It will be included in the commit message of any
+future revision.
 
-On Tue, 20 Oct 2026 16:58:08 +0200, Nicolai Buchwitz wrote:
-> clk: bcm2835: describe the BCM2711 GISB clock for the GENET MDIO controller
-> 
-> The timestamped MDIO write series [1] needs the reference clock the
-> GENET MDIO controller divides its MDC from. On BCM2711 that clock is
-> not described anywhere, so 5/5 of that series hardcodes 200 MHz behind
-> a compatible match, and mdio-bcm-unimac's clock-frequency handling
-> assumes the 250 MHz of the STB chips.
-> 
-> [...]
+As replied on the v3 thread:
 
-Applied, thanks!
+The issue was found during an LLM-assisted source audit of the IPv6
+fragmentation path (manual code inspection with an LLM's help, not a
+production hit or a syzbot report).
 
-[1/3] dt-bindings: clock: bcm2835: add the BCM2711 GISB clock
-      https://git.kernel.org/clk/linux/c/af7994af5228
-[2/3] clk: bcm2835: register the BCM2711 GISB clock
-      https://git.kernel.org/clk/linux/c/ab94dbf30233
+It was then verified at runtime with a standalone reproducer: a
+single sendmsg() on a raw IPv6 socket with a 1240-byte HOPOPTS cmsg
+and IPV6_MTU set to fragheaderlen + 1 triggers the skb_over_panic()
+described in the commit message (tested on 6.x, MSG_MORE on a device
+without NETIF_F_SG).  The xfrm transport-mode variant from the v2
+discussion was identified the same way, by inspection of the
+ip6_append_data_mtu() recompute path.
 
-Best regards,
--- 
-Brian Masney <masneyb@kernel.org>
+bo cao
 
