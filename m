@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793581050;
-	b=BrdFoUbeYR5104l6Qq0IN6iZF9UphZeqsQuIbbDpjiDCv/0n+9iH06+hQCQW4Sn9uYsg
-	 O4QYKcL9+34jgwQdhVfKuA0QV/DF3Y0ZwovUYB/N6fhg3t1J0kOJiNr2ToCIOhJCTPfrk
-	 PM/pR/pIoMnzhjPQUUw3vMT4saS10HWignF5RQzWUvY7Bhjb/AryIJvSIisFYHWFH7svP
-	 Ugk5FL+8Ucfjt7IfyKDGlFLahj5R7fNey3ArHCPw3nRRiG4BDPxxlWi+l3hWWG0PS+ILO
-	 wrCtwfYDdO7VwyMSMIppU9GDygXGauEiB4mQPg3P30++kcU84G+SE/JKsMHvceYa7qA==
+	t=1793581040;
+	b=t/cWcUYHMD9MrAx+j072yFZzjPbq/RcFzGwMBG7BCk22TamkQaSEK3MyNBXiJNYUFtA1
+	 Ig32zGFpjKtnE8m5eJiCM1PEClWZSt6Ub6pJ3CbUgO7AxfoWmbE7hhdhVorOZqw1m5OQb
+	 wEZjDPcO84mU6kXpJBduiHQALZfKxqUL86nGdoP/0WwtD3dc/eBxpv3YKM0zyu2Kfoc/+
+	 WCb4ZcNCtEFKg4pGx+icAvIKQZSHjCglRWO7tqv18uUR9MVkmtL+0D4VeaM21B3s1jmeK
+	 LOJ0VORnBJt1LdRTiRFzV0ExDYB/2F/ne43loKpnm9LcojSjG8nfFjd4nSIarPj0iig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793581050;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793581040;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
-	bh=0GlfH3e3DvVlPjKTJC55ueYHxXbJqUklbkL29/+8PgM=;
-	b=Fc3j3hev2fAgRGKAeDi9Dxw0KmrPL5k3xHzimKJ/jHgansNSmHp/ccFPi9Za4xKYCxdk
-	 +jlHxH5AMs7HrgMI+BQXs9tORhZRHNEtLm/CvKAHG49rvWUxCyooiUGbgbVTogC6QPIug
-	 hKL9H/0RkwEQ6k04W0QpsB2drDjR+vVxoXAkB1BnP8n4659xOIn4N41Kvhb4xUgKz3lZy
-	 Kwqa2/pYe6CuFEJ7TrNRwwdZZCUW1YpYjjLTcF0g8rpB92gwVCJgC1tBiqlFcGXgNHwoD
-	 +PP5itfJpmTCDUvosVVMYE9+9LeTqbUl4aDkPi8jtSUN7ReC5v5wO2IdDFkxdfkR+Vg==
+	bh=eI6BYAMtH8gnpfLqrP2oq7QPLneAgWxxYSCOTNnXMiM=;
+	b=Qsgf/LgC5AVqtH5HEfntwQQhUyDy9FyAK+iB3lxIAwcMAWZKU5dD3BERQsZR1UPYKysH
+	 3QNel6LkmrEnzrSdu1a/X80JsZ3lhM+sNKyV2tqSTNM7PEg7ILHN5vTiVPzE818uoM9p0
+	 QPDCbVYwwMRNyFCACazXnMfFXxZ7xqa7w3ej56MVTkdMxSZ1b+Cb9ps6SBix8TIx05I9p
+	 5ZvFk6j+UCn4YODqcdTKvyfXqP8w9vDhHQ4ULRalbS3TSIiUDTjL83hVPsicOQ8xfXgHT
+	 mRHyObPUh2GbJFgcHlevV8QsOiSqXKmD7gW030QMZsuYmkzpNn/+Chau1pftr7WdBtA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=netfilter.org;
 	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=gIyNkobO;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=OszmStZL;
 	arc=none smtp.remote-ip=217.70.190.124
 Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EE5606A339;
-	Mon,  2 Nov 2026 00:57:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3EE5606A339
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337C760A2617;
+	Mon,  2 Nov 2026 00:57:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 337C760A2617
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=gIyNkobO
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=OszmStZL
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793581048;
-	bh=0GlfH3e3DvVlPjKTJC55ueYHxXbJqUklbkL29/+8PgM=;
+	s=2025; t=1793581038;
+	bh=eI6BYAMtH8gnpfLqrP2oq7QPLneAgWxxYSCOTNnXMiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gIyNkobOIICACJN6p5DXRNXqaItQezgxjIoMuZ0Gr0bbBJ0GWoc+NN9mr2udxL0rT
-	 tkxsLNlGEZYgLFIDAO2X83Vz1yqWrUoJz/HPIkYpNI6YyaLW5vWtmlN8Zsz5qxq/qj
-	 cv61M/n3rEoUI8sib/6WkzDrZUS54Ol0UhwbO5hLl6dsKRyGg3BwvrMbT5Y76NkEhX
-	 BlpkbqK5Mfvg3tJZ80/zhuhIgrJLjpYrcTNDeFV3HOPMq7zdnv0UGBst+gUslMnjnd
-	 GCXrYK0eZBK45N7JXz3k1T2jEtDnPcuOImrteoC0DmnAN7F6F5zFBKrycyv9JTKBWy
-	 eQNIhYSFhH8+w==
+	b=OszmStZLi3eINtv6doc+ivC20sRsk4JWGO1t7l0jQXN8qQ+vtzg69T+L1zsHm1j/d
+	 Svzciav4w6/trye5oOpDEFD3kTVQ6OVYuXixowNKE6mPPaEJY8vUXsrQiqh/WALrrD
+	 xWbf96sxzZ/f5kNrgTZE9/p8ZpVgp3rBzwtygd2NUDCPUd4BJFwtEk9ipE/ModOjV6
+	 yIuO9nrttv0NLTzF6NxW6lSDL8RBGPDpg6YRrwn43I5c/9bmFOvvTUe/8WodR5H4uF
+	 6Y2KxYYQDs8W0WSSWZPNQyW3Bn/8QUgFwAcPaoiBohEsVEanPFMUA1FWy3RVRsyqx/
+	 A9u3Ixqh5N7lg==
 Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 7926D6007D;
-	Mon,  2 Nov 2026 01:57:27 +0100 (CET)
+	by mail.netfilter.org (Postfix) with ESMTPSA id F0D0F6005D;
+	Mon,  2 Nov 2026 01:57:17 +0100 (CET)
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 To: netfilter-devel@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -56,9 +56,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	fw@strlen.de,
 	ja@ssi.bg
-Subject: [PATCH net 15/15] netfilter: nat: zero newrange before filling it in
-Date: Mon,  2 Nov 2026 01:56:54 +0100
-Message-ID: <20261102005654.532438-16-pablo@netfilter.org>
+Subject: [PATCH net 09/15] netfilter: nft_set_rbtree: check catchall_sync return before queue_done
+Date: Mon,  2 Nov 2026 01:56:48 +0100
+Message-ID: <20261102005654.532438-10-pablo@netfilter.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261102005654.532438-1-pablo@netfilter.org>
 References: <20261102005654.532438-1-pablo@netfilter.org>
@@ -73,87 +73,36 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Florian Westphal <fw@strlen.de>
+From: Xingyuan Mo <hdthky0@gmail.com>
 
-nf_nat_masquerade_ipv4(), nf_nat_masquerade_ipv6(), netmap_tg4() and
-netmap_tg6() each build a stack-local struct nf_nat_range2 from the
-caller-supplied range, inheriting range->flags unmodified. Two of them
-only memset() the min_addr/max_addr members, the other two don't
-memset() anything at all, so newrange.base_proto is left as stack
-garbage.
+nft_rbtree_gc_queue() passes the result of nft_trans_gc_catchall_sync()
+straight to nft_trans_gc_queue_sync_done(). When the catchall path flushes
+a full GC batch and nft_trans_gc_alloc() fails, catchall_sync returns
+NULL and queue_sync_done dereferences trans->net (NULL+0x10). Guard the
+call like the pipapo GC path already does.
 
-If the inherited flags include NF_NAT_RANGE_PROTO_OFFSET,
-nf_nat_l4proto_unique_tuple() reads range->base_proto.all to compute
-the NAT port offset. Neither the NETMAP nor the MASQUERADE targets
-mask the flags field in their checkentry callback, so this
-uninitialized stack value can end up feeding the NAT port selection.
-
-The per-member memset()s are not enough: they have to enumerate every
-field that must be cleared, and base_proto was missed when
-NF_NAT_RANGE_PROTO_OFFSET/base_proto was added to the struct. memset()
-the whole struct instead, so every member is covered regardless of
-which ones get explicitly assigned afterwards.
-
-There are other places that miss this, but those hardcode .flags so
-nat core won't read from the uninitialized fields.
-
-C99 initializers would be preferrable, but this is a more intrusive
-change.  Lets followup in nf-next and convert others as well.
-
-This is an LLM finding.
-
-Fixes: 2eb0f624b709 ("netfilter: add NAT support for shifted portmap ranges")
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 7d259f021aaa ("netfilter: nft_set_rbtree: prefer sync gc to async worker")
+Assisted-by: opencode:deepseek-v4
+Signed-off-by: Xingyuan Mo <hdthky0@gmail.com>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
- net/netfilter/nf_nat_masquerade.c | 4 ++--
- net/netfilter/xt_NETMAP.c         | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ net/netfilter/nft_set_rbtree.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_nat_masquerade.c b/net/netfilter/nf_nat_masquerade.c
-index 4de6e0a51701..c2a85bd84af1 100644
---- a/net/netfilter/nf_nat_masquerade.c
-+++ b/net/netfilter/nf_nat_masquerade.c
-@@ -62,8 +62,7 @@ nf_nat_masquerade_ipv4(struct sk_buff *skb, unsigned int hooknum,
- 		nat->masq_index = out->ifindex;
- 
- 	/* Transfer from original range. */
--	memset(&newrange.min_addr, 0, sizeof(newrange.min_addr));
--	memset(&newrange.max_addr, 0, sizeof(newrange.max_addr));
-+	memset(&newrange, 0, sizeof(newrange));
- 	newrange.flags       = range->flags | NF_NAT_RANGE_MAP_IPS;
- 	newrange.min_addr.ip = newsrc;
- 	newrange.max_addr.ip = newsrc;
-@@ -242,6 +241,7 @@ nf_nat_masquerade_ipv6(struct sk_buff *skb, const struct nf_nat_range2 *range,
- 	if (nat)
- 		nat->masq_index = out->ifindex;
- 
-+	memset(&newrange, 0, sizeof(newrange));
- 	newrange.flags		= range->flags | NF_NAT_RANGE_MAP_IPS;
- 	newrange.min_addr.in6	= src;
- 	newrange.max_addr.in6	= src;
-diff --git a/net/netfilter/xt_NETMAP.c b/net/netfilter/xt_NETMAP.c
-index 7da065a472e0..8bcb3f716d68 100644
---- a/net/netfilter/xt_NETMAP.c
-+++ b/net/netfilter/xt_NETMAP.c
-@@ -44,6 +44,7 @@ netmap_tg6(struct sk_buff *skb, const struct xt_action_param *par)
- 				   netmask.ip6[i];
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index fbe1750f1ca2..9d685899da70 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -953,7 +953,8 @@ static void nft_rbtree_gc_queue(struct nft_set *set)
  	}
  
-+	memset(&newrange, 0, sizeof(newrange));
- 	newrange.flags	= range->flags | NF_NAT_RANGE_MAP_IPS;
- 	newrange.min_addr	= new_addr;
- 	newrange.max_addr	= new_addr;
-@@ -91,8 +92,7 @@ netmap_tg4(struct sk_buff *skb, const struct xt_action_param *par)
- 		new_ip = ip_hdr(skb)->saddr & ~netmask;
- 	new_ip |= mr->range[0].min_ip & netmask;
+ 	gc = nft_trans_gc_catchall_sync(gc);
+-	nft_trans_gc_queue_sync_done(gc);
++	if (gc)
++		nft_trans_gc_queue_sync_done(gc);
+ }
  
--	memset(&newrange.min_addr, 0, sizeof(newrange.min_addr));
--	memset(&newrange.max_addr, 0, sizeof(newrange.max_addr));
-+	memset(&newrange, 0, sizeof(newrange));
- 	newrange.flags	     = mr->range[0].flags | NF_NAT_RANGE_MAP_IPS;
- 	newrange.min_addr.ip = new_ip;
- 	newrange.max_addr.ip = new_ip;
+ static u64 nft_rbtree_privsize(const struct nlattr * const nla[],
 -- 
 2.47.3
 
