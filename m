@@ -1,63 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.11
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793623052;
-	b=kqGjmLizEdYVWxpoyCRiWP/0j/4dMihYuHto1wAbsATCNQCQBrNCEDlJOXsFJX99K94z
-	 51yzYvk/83u7ybRgx71oNE34kEmv0D2/GFAr5b1HV7CXENolNKV7fiP/HiLAA9dKMsYrV
-	 hkAf85UWtJg2v+JfA7hZGeEHBsC3aF+oCWJ/ecHPbe+BmgC32gslY6IQnLJpatOi8oSBN
-	 oy2ppmkyjuJEFXunNwpyRWb4Vqkxubhvh4J2QAbTjJWb8+2VrID1waMXooAAZM6BluJma
-	 HddH4yC3yYv4LGsRfs1xyo3stRsdS/gEWeJeIZsTpI301rKDpDCvcxR6H+FH0t/tQrA==
+	t=1793623805;
+	b=sqeDPRO9b/RiM9HFuCevioo7uAoKVsIkT3prKXMrdkBFNpcWI0ZuWJNqPlMTfWdJp8/i
+	 D98hkU+FgC5kkCEu02TI4uf38knNbyoCpRcaQTOvxqNWCMKmAuh803m5p/oMPPDIzf/ZZ
+	 bX+EUIozv36j2iX50xxKF9ZVtPyxzfiQDlYSYVFcS19DdN7fmqaa05EObwtZ5U/3VzQIJ
+	 bpHREZ/jZOAKDdMgh2/rXDUnqrIefTl/qf1gVTmDjJY8r0UKKxtpsY6Scs3qDOff54O9d
+	 KDU0toxbhqTKJuyTznA9YjmNl5Z0a2ZcFD90ZyNjXJQdnI/ThFyUFrdB1IptJbRM42Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793623052;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=gccdM5SBnItmENUj+sFwUbujK/STGRaKcAgii696SPA=;
-	b=0c4eTB6NCyL2LI44Vr3M+EtbMDjow6NNI9pYtYaWBmH4xN1wPP9/7oOlLGLlSKBp9Jqa
-	 /jlsf6a9tCVKTjPFIMpYTxAqu5zF9ON49G62XkvWOIEOecwHpC+UgpcIExUXb28K9lVfs
-	 CXF1WubBL0PtNniL3cdT6NCn9T18kAtdTHwufFWvI2A5lGAQ6NyNCsE4sbyP9gGIXBbrx
-	 k0ii+fFDIEU0mF47X6nIccn95ctvq7Du7rTdEBq7YtOW/m/XYeFRqx4XyPTAeF6mplvlH
-	 c4eTc4HGXPbg9TAT8+eusd72lxmAojnUYh3GYJG2hyxwCcButNUJyGW2AvP901efXdQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793623805;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=SRw/fWwP1x6toUWZnFv2rG12o/c967R/fKYAGDVCATY=;
+	b=gwqG/x9DegtIvdvNZYY2KcYQyPCM9rnJ1cFso7dmBgr+dbvzXG15SPYO/KBmgck8wyX0
+	 geNzYdChIXhl4JfWy5nU33cj4m7mb8tKWALVk1XOZcmyAZzf6JHePsWS0efgJ31oMbus3
+	 /cF8t0Tl0cSVP6OP7OitHhuWo8Jxj6MWZc+NtzALXHTcK8KY+v2Jghfr1b75cdRXyvvSn
+	 gO7dUeXqZ6xdGslDhsnd/iQpcIuuncReXuFIFgDzliAtKWw8uqJmGo7hYjgB64wEaEAuD
+	 Pm4Wt4kfpjZXuBFyMmFDdeC8SPtuUdNFl01jL/ISPtiDHqTmpB4egg8Pq6WVfFametg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XaY6mEUI;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="K/P1n+io";
+	arc=none smtp.remote-ip=198.175.65.11
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4BA606A329;
-	Mon,  2 Nov 2026 12:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FC9606A326
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 12:50:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73FC9606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XaY6mEUI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2FA1F00A16;
-	Mon,  2 Nov 2026 12:37:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793623052;
-	bh=gccdM5SBnItmENUj+sFwUbujK/STGRaKcAgii696SPA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XaY6mEUI2EnsGplIHGQHYLYYSyovQZcWYsvh25JSMtIAwk7jMiMVn+ns8JI2KkRjE
-	 yAfY99ATBWhu96/o2OAs5F6t1XA9UHUP9GfXf02AKOUoNy/z3enc0zHwijTPJO1SEU
-	 vSceFqceyBRGhS+bU271Yi0jHcmIVJDcxxOltgMviyy4MG5UseJjvPzoYMncGblNAr
-	 RWVOtauquYjLeSmAaMOsmmmg4M24mG5vLwuMkHliEuJHgkXI4Pot6+LsTENYW4p0y5
-	 RtCLxV20iZTbuNCTf3YmwUVWQhMWH3gmDlujzR+RnGcQzAztldQQLnh0WF23s8sFbo
-	 rj+dtWM6/ctvw==
-Date: Mon, 2 Nov 2026 12:37:27 +0000
-From: Simon Horman <horms@kernel.org>
-To: Xia Yan <yanxia@cmss.chinamobile.com>
-Cc: Avi Weiss <thnkslprpt@gmail.com>, netdev@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	John Hurley <john.hurley@netronome.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>, linux-kernel@vger.kernel.org,
-	yana06070@163.com
-Subject: Re: [PATCH net] net: skbuff: reject zero MPLS TTL before decrementing
-Message-ID: <20261102123727.GE257209@horms.kernel.org>
-References: <20261031114135.3784868-2-thnkslprpt@gmail.com>
- <179345092130.132560.5590780813492711780@cmss.chinamobile.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=K/P1n+io
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793623804; x=1825159804;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Ln+Z8zU+zsF8tte/cw1wXmgactMyqWnSIzwWLUK/EPE=;
+  b=K/P1n+iotBsMYsGDuWB16ts8OB6rylbFr6iNyXcr4qKwKU5WLe0/AsJI
+   BLHVYMup5iI2Q9NGyNVdoAyBonWWqt8gYAcWrMYYWqpiu47Ag4EadkzXQ
+   OmuJ5OToOkdk7WvVLNTooWhbnU2eiDu+MicNfkiof5XU3rEExxbEMdhD5
+   aM29JpDFhXQGWip0sny+4Ann1+f5iEQbDMJNpmtHRsUXv1qIooTRp1+HO
+   axMjVGAxnBTcFI/st9ECRsWjpdzoX+QUgY4JbvcBQP+WjkqavPt40je6O
+   j9DymLwuG2haDsYzn9DuEvE+kRhLi/izAa5Wuq+N0oBdjWb+/tDkc26vI
+   Q==;
+X-CSE-ConnectionGUID: X1oM4TrYTo6+Ir1DAIYKgA==
+X-CSE-MsgGUID: 857GWCtKRnG4mppbh3PcOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11953"; a="2191824"
+X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
+   d="scan'208";a="2191824"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 04:50:04 -0800
+X-CSE-ConnectionGUID: g2QLcP87RZihG4aTe4jDtQ==
+X-CSE-MsgGUID: zprGQ2WYRk+Ct894WnQ60g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
+   d="scan'208";a="7928442"
+Received: from boxer.igk.intel.com ([10.102.20.173])
+  by fmviesa013.fm.intel.com with ESMTP; 02 Nov 2026 04:50:02 -0800
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+To: netdev@vger.kernel.org
+Cc: magnus.karlsson@intel.com,
+	stfomichev@gmail.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	tushar.vyavahare@intel.com,
+	kerneljasonxing@gmail.com,
+	bjorn@kernel.org,
+	zuomao338@gmail.com,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Subject: [PATCH net 1/9] xsk: fix list corruption in xsk_buff_add_frag()
+Date: Mon,  2 Nov 2026 13:49:42 +0100
+Message-Id: <20261102124950.958345-2-maciej.fijalkowski@intel.com>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20261102124950.958345-1-maciej.fijalkowski@intel.com>
+References: <20261102124950.958345-1-maciej.fijalkowski@intel.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,42 +87,70 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <179345092130.132560.5590780813492711780@cmss.chinamobile.com>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Oct 31, 2026 at 08:48:41PM +0800, Xia Yan wrote:
-> On 10/31/26 11:41, Avi Weiss wrote:
-> > skb_mpls_dec_ttl() decrements the u8 TTL before checking whether it
-> > expired. An incoming TTL of zero wraps to 255, causing the TC MPLS
-> > dec_ttl action to pass an expired packet instead of dropping it.
-> >
-> > Reject a zero TTL before the decrement while preserving the existing
-> > behavior for TTL one and valid TTL values.
-> 
-> Nice catch. I checked the wraparound against the C promotion and
-> conversion rules: with ttl being a u8, a zero TTL on the old path
-> decrements to 255 and the packet passes with a revived TTL. The new
-> check catches exactly that case, TTL one still returns -EINVAL, and
-> values of two and above are unchanged bit for bit.
-> 
-> The only in-tree caller I see is the TC dec_ttl action in
-> tcf_mpls_act(), which maps the error to TC_ACT_SHOT, so the rejected
-> packet is dropped. mpls_forward() already rejects TTL zero and one
-> (`dec.ttl <= 1`), so the two MPLS decrement paths now agree.
-> 
-> One minor observation, no change requested: `!ttl || !--ttl` is
-> equivalent to `ttl <= 1`, the form mpls_forward() uses. Stylistic
-> only; the patch is correct as posted.
+In aligned mode, a fill ring address maps straight to its pool->heads[]
+entry. If user space posts the same address twice, a driver can pass
+xsk_buff_add_frag() a buffer that is the head of the frame or is
+already on pool->xskb_list or pool->free_list.
 
-Let's not get bogged down on this one. But FWIIW I think the decrement
-is needed for the happy-path to work correctly. In particular, this line
-which appears after the condition under discussion:
+Re-adding a linked node corrupts the list. With buffers A, B, C, B,
+xsk_rcv_zc() emits two descriptors instead of four and leaves the list
+head pointing at a self-linked B. When the Rx ring later has no room
+for a frame, the xsk_buff_free() cleanup follows B into pool->free_list
+and passes the list head to xp_free():
 
-	lse |= ttl << MPLS_LS_TTL_SHIFT;
+  BUG: kernel NULL pointer dereference, address: 00000000000000c0
+  RIP: 0010:xp_free+0x1a/0x50
+  Call Trace:
+   xsk_rcv_zc+0xca/0x200
 
-> 
-> Reviewed-by: Xia Yan <yanxia@cmss.chinamobile.com>
+The head is not on any list and needs a separate check. Adding it as
+its own frag lets bpf_xdp_adjust_tail() free the in-use head and wrap
+sinfo->nr_frags to 255.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Reject such buffers before adding them to the frags array, as commit
+e37b2abca804 ("xsk: fix NULL pointer dereference in __xsk_rcv()") does
+in the copy path. Callers already drop the frame on failure.
+
+Unaligned mode is not affected, as each fill ring entry gets its own
+xskb from pool->free_heads[].
+
+Reproduced with a KUnit test feeding synthetic buffers to xsk_rcv_zc(),
+by Nagato Shiratana.
+
+Fixes: 24ea50127ecf ("xsk: support mbuf on ZC RX")
+Reported-by: Nagato Shiratana <zuomao338@gmail.com>
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+---
+ include/net/xdp_sock_drv.h | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/include/net/xdp_sock_drv.h b/include/net/xdp_sock_drv.h
+index d94aeb506379..29965e369598 100644
+--- a/include/net/xdp_sock_drv.h
++++ b/include/net/xdp_sock_drv.h
+@@ -160,15 +160,18 @@ static inline void xsk_buff_free(struct xdp_buff *xdp)
+ static inline bool xsk_buff_add_frag(struct xdp_buff *head,
+ 				     struct xdp_buff *xdp)
+ {
++	struct xdp_buff_xsk *frag = container_of(xdp, struct xdp_buff_xsk, xdp);
+ 	const void *data = xdp->data;
+-	struct xdp_buff_xsk *frag;
++
++	/* Duplicate fill ring entries map to the same xskb in aligned mode */
++	if (unlikely(xdp == head || !list_empty(&frag->list_node)))
++		return false;
+ 
+ 	if (!__xdp_buff_add_frag(head, virt_to_netmem(data),
+ 				 offset_in_page(data), xdp->data_end - data,
+ 				 xdp->frame_sz, false))
+ 		return false;
+ 
+-	frag = container_of(xdp, struct xdp_buff_xsk, xdp);
+ 	list_add_tail(&frag->list_node, &frag->pool->xskb_list);
+ 
+ 	return true;
+-- 
+2.43.0
 
