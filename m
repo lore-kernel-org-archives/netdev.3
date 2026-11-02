@@ -1,58 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793663027;
-	b=us1SxY3iv3LaMBKGSuKdL9mQBvpUGqyZwxJfjom6I2bcX9PowqdGhtBZSj4yOOiyELlQ
-	 iGDmYk7tTDUhENIfKp5dU+vaZ68E8gXn2imTiLHG4pRcwpFIF0tMMFTXTfv6UuWwyafbt
-	 hUs6RypgQAqmtdMYL6H/Af0UT3jrddXa1AkXo3wFR1aM+3WosrVzpE7b4t1inf3oeN4Qs
-	 yrYs6tx3xScw7aJICci98u4QEdK8ZzUHCieBHTKMsijcDf7P5lup0EThP9x57uZXpF/mr
-	 lQwcJYMMv/VGGsRNQf1qYqExAkJQOn3ESILkliJZoFMkqq1MacrqhLBhrCZ2cMAIFVw==
+	t=1793663026;
+	b=2tKxbgxJgv3NUYqLXWjwsTvsa8sr+4j6uJfIBp7iS7TOmmoJYMz/S5jr5zs/SEYQeOJp
+	 HXGp6Hrdbe/SWz9Tv9OCcQlqmI3cohrWf1yhE5qdrWf07lpfED2tRWUusgKw0YL9SLmR+
+	 omXXhMa1mBwTlS1uF3YzlRCWofINmYm162XpPHHck6wAOj64GVU0mqK2iT5Bfg197v8dN
+	 U+zx0nomfbkoJIxewrzO48xPanFlRaEHzBBzql1FrrkFYwEqDRVltvy/gZe0BxmdA02Re
+	 5C6/r3RSzpvAmoVCcjrmlOrofeb1WpclEUbI7CO+vAnnL20asdXrI/rjsC1bnTEoNbQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793663027;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793663026;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=fiY9qWgjrYJMpr6GH8v035SqUvzibVkrP6YYRS1LKkU=;
-	b=v5WIFSQ2MuL6SWJ1BXCXJQe/nZYK7ulrWvsbF1YKolAy+x1A4qkR07fBLgFGv7U7i9JY
-	 R9V1YqfZ62G36svEbSAeEKv2HAN4mYQTryayudvZ+UGf4DkGWRxJQ2lP2JpaBKTEfD3ke
-	 uVTvR2i3Yw2ch3/sPB7aQC++CyxRyTUWheTwgR+1sv70gqDkQFxp63I/1InNI0ozeCvtD
-	 J42hgRcAmkpOx3/DUlxlELz4LxnXo0yFURw5yUm3JHYyiWB0ouDBdCaHQ83exiYW4wMvk
-	 KtrgVWS31ZlrUy56fIZQfdpwbTRLMNQjDs9JVmbcl9vhzfw7qGCCH/R2qluaXN0wF7g==
+	bh=4Q+auJPRcijjK3FmxhEyDyKRGdGiI29PIOAGVmK0B2w=;
+	b=cmp/It1Wc9gL/a2J+gVfl29tW74vxuBcGr8BGvELTeQcTL/7tFzYDVOywNHrL+e2qiRL
+	 xcPX36/fKflCpMPiXkP1xzycb7nKQ0GdzCEtQmGUpc9IsmV+JjUVTT1DoDSycnxdu8t0X
+	 7QfCzm3pt8j4HZHNpaJJw8KvH81GD/qAih3V65SvSDo8y7VutTt284Vkz8sw7dc1bOtb3
+	 8D/FU/JYI5gnAJVNv2Aj+iKB34gqCaTokR4dOq9s+i/tnNUOceyw20f0qMoHTluASeloB
+	 rnL7SsvYCShz4Qb5ntCZPJLRscl8HYl6AlsgztMCICG6uuSf4kVN2S769ywtI7vOFNg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VV3fldM5;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SFtiEuez;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32AB3606A32C;
-	Mon,  2 Nov 2026 23:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E46606A330;
+	Mon,  2 Nov 2026 23:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VV3fldM5
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F4C1F00A16;
-	Mon,  2 Nov 2026 23:43:46 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SFtiEuez
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3FF1F00A17;
+	Mon,  2 Nov 2026 23:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793663026;
-	bh=fiY9qWgjrYJMpr6GH8v035SqUvzibVkrP6YYRS1LKkU=;
+	s=k20260515; t=1793663025;
+	bh=4Q+auJPRcijjK3FmxhEyDyKRGdGiI29PIOAGVmK0B2w=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=VV3fldM5z0a/KL0QUT1/KwUVd+V4NJI4+aLLAVoHx9IUlR4WMLLKcQbJpBlcyg4kd
-	 zC5ZxwU7AMjjc7OOTD3EOAOIRx5eWjcxDTM6a/ITr+gNMYpdjYTFyAObV3wPhI8jYv
-	 XgOb2E7RIs8wDBVti0Hoh7vCwLAlBwjz1PFm95xXCl4HF10EUkvQ+0wBJM7N9O/tW4
-	 +OEAFEk6FEARhC4t9qgfAAvYOiEZGszZ5+KtlOGT6L5+I6e8vW9Wqt9yv4djVKdujk
-	 AnLucMr7yrt8XDRnoKSKvUuGVrr8uPIS6TEIEu89faW3Uye1+FRRTWE0WiBb8W9pgK
-	 hIzAbhDVw52zQ==
+	b=SFtiEuezJqws90yp2q8FCHJdJHK8rDKLYBpOGv1vlxYAqdkCmfVNJaqKU+NHPzJwt
+	 HkzeVvx1uyAl4rXgeo7Of1v7BuZRN8YFEzeFjbeAMWKUGHgWRsCUG9+vjXlzC/GD2d
+	 PjWpU6HcIlyJ5BU1guF+IPw8jpFkqos729+pwU7WmQYoSel2spEwjlZ7GvG1R984Fo
+	 GfyN7tnUh3tMeO7BN8rE10EiHJfnqBLqzLckU0+ymY6bnR7DMhdN64Q1lJxycusgyG
+	 gT0a4dVsVwqkAQnQ4LUy9hWPGFMfNrsyqCi8i29y2rnZPu2dwEOQMzJSber+oI+qyT
+	 Yx6yXWdgcE3+Q==
 Subject:
- Re: [PATCH net 3/5] nfc: nci: consume the loopback response exactly once
+ Re: [PATCH net 2/5] nfc: nci: hci: consume the HCP response exactly once
 From: netdev-bot+sashiko@kernel.org
 To: joasantonio108@gmail.com
 Cc: david@ixit.cz, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
  pabeni@redhat.com, horms@kernel.org, kipreyyy@gmail.com,
  sanghyun.park.cnu@gmail.com, oe-linux-nfc@lists.linux.dev,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 02 Nov 2026 23:43:45 +0000
-Message-ID: <179366302585.488856.12804499169587262096@kernel.org>
-In-Reply-To: <179331585573.30322.5511229003943288914@gmail.com>
-References: <179331585573.30322.5511229003943288914@gmail.com>
-X-sashiko-severity: High
+Date: Mon, 02 Nov 2026 23:43:44 +0000
+Message-ID: <179366302460.488856.3883849138274450813@kernel.org>
+In-Reply-To: <179331585573.30322.10620513309471785412@gmail.com>
+References: <179331585573.30322.10620513309471785412@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,10 +65,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -76,145 +76,151 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] nci_nfcc_loopback() (net/nfc/nci/core.c) can still use or write
-  freed memory.
-- [Medium] The patch consumes conn_info->rx_skb only when nci_request()
-  returns NCI_STATUS_OK.
-- [Medium] The read-then-clear the patch adds to nci_nfcc_loopback()
-  (core.c:471-472, `rx_skb = conn_info->rx_skb; conn_info->rx_skb =…
+- [Medium] nci_hci_take_resp() is supposed to return -EPROTO "when the
+  request was completed without a response" and not "reuse whatever skb…
+- [Low] nci_hci_take_resp() detaches the response with a plain load
+  followed by a plain store (`rx_skb = conn_info->rx_skb;…
 
 --
 
-nfc: nci: consume the loopback response exactly once
+nfc: nci: hci: consume the HCP response exactly once
 
-This patch changes nci_nfcc_loopback() so that, after a successful
-nci_request(), it detaches conn_info->rx_skb before using it. The skb is
-freed if the caller passed no resp pointer, and -EPROTO is returned if the
-request completed without a data packet. The goal is to fix a
-use-after-free and double free that happen when a stray zero-status NCI
-response completes a loopback request.
+This patch adds nci_hci_take_resp(). The helper detaches the HCP response
+stored in conn_info->rx_skb, parses it, and either hands it to the caller
+or frees it. It returns -EPROTO when a request completes without a stored
+response. nci_hci_send_cmd(), nci_hci_set_param(), nci_hci_get_param() and
+now nci_hci_open_pipe() all use it, which closes the use-after-free and
+NULL dereference shown in the commit message.
 
-> diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-> index 73e3a96470ace..8e2a755ce2555 100644
-> --- a/net/nfc/nci/core.c
-> +++ b/net/nfc/nci/core.c
+> diff --git a/net/nfc/nci/hci.c b/net/nfc/nci/hci.c
+> index c03e8a0bd3bd6..bdfe9eee6358c 100644
+> --- a/net/nfc/nci/hci.c
+> +++ b/net/nfc/nci/hci.c
+> @@ -107,6 +107,38 @@ static int nci_hci_result_to_errno(u8 result)
+>  	}
+>  }
+>  
+> +/* Take the HCP response stored by nci_hci_resp_received().
+> + *
+> + * The response skb is detached from conn_info so that it is consumed
+> + * exactly once.  A request can also be completed without a response
+> + * being stored (an HCP command or event received while the request is
+> + * pending, or an unrelated NCI response), so a missing response is an
+> + * error rather than a reason to reuse whatever skb was stored last.
+> + */
+> +static int nci_hci_take_resp(struct nci_conn_info *conn_info,
+> +			     struct sk_buff **skb)
+> +{
+> +	const struct nci_hcp_message *message;
+> +	struct sk_buff *rx_skb;
+> +	int r;
+> +
+> +	rx_skb = conn_info->rx_skb;
+> +	conn_info->rx_skb = NULL;
 
-[ ... ]
+[Severity: Low]
+Can this read-and-clear race with nci_hci_resp_received()? Every caller
+runs nci_hci_take_resp() after nci_request() has dropped ndev->req_lock.
+The producer runs from rx_wq and shares no lock with this code.
 
-> @@ -464,8 +464,20 @@ int nci_nfcc_loopback(struct nci_dev *ndev, const void *data, size_t data_len,
->  	ndev->cur_conn_id = conn_id;
->  	r = nci_request(ndev, nci_send_data_req, &loopback_data,
->  			msecs_to_jiffies(NCI_DATA_TIMEOUT));
-> -	if (r == NCI_STATUS_OK && resp)
-> -		*resp = conn_info->rx_skb;
-> +	if (r == NCI_STATUS_OK) {
+Suppose an HCI command is completed early by an HCP event or an OK-status
+NCI notification, and its real response comes in during this window:
 
-[Severity: Medium]
-Can a stale rx_skb from an earlier loopback still be returned here?
+caller                                rx_wq
+nci_hci_take_resp()
+  rx_skb = conn_info->rx_skb; /* NULL */
+                                      nci_hci_resp_received()
+                                        conn_info->rx_skb = skb;
+  conn_info->rx_skb = NULL;
 
-The rx_skb is only consumed when nci_request() returns NCI_STATUS_OK.
-Nothing clears or frees conn_info->rx_skb before the new request is sent.
-The same is true on the -ETIMEDOUT, -ERESTARTSYS and non-zero status
-paths.
+The skb stored by rx_wq would be overwritten and leaked, and the call
+would return -EPROTO. These are also plain, unannotated concurrent
+accesses that KCSAN would report.
 
-data_exchange_cb is never cleared. nci_data_exchange_complete() checks
-NCI_DATA_EXCHANGE only for the static RF connection:
+Two consumers detaching the same skb doesn't look reachable in-tree. The
+nfc generic netlink family doesn't set parallel_ops, so genl_mutex
+serializes the callers.
 
-net/nfc/nci/data.c:nci_data_exchange_complete() {
-    ...
-	if (conn_id == NCI_STATIC_RF_CONN_ID &&
-	    !test_and_clear_bit(NCI_DATA_EXCHANGE, &ndev->flags)) {
-    ...
-}
+Would xchg(), or detaching under a lock shared with the producer, avoid
+the lost store?
 
-Suppose loopback #1 times out and its data packet arrives late.
-nci_nfcc_loopback_cb() still stores the packet:
-
-	conn_info->rx_skb = skb;
-
-Suppose loopback #2 is then completed by a stray zero-status response,
-like the CORE_SET_CONFIG_RSP in the commit message. Wouldn't this code
-return the skb from loopback #1 as the reply to loopback #2?
-st_nci_loopback() would then copy that skb's data to userspace.
-
-If the real data for loopback #2 arrives instead, nci_nfcc_loopback_cb()
-overwrites rx_skb without freeing it. Does that leak the late skb?
-
-nci_core_conn_close_rsp_packet() and nci_unregister_device() also drop
-conn_info without freeing any skb still stored in rx_skb.
-
-st21nfca_hci_loopback(), by comparison, clears its rx_skb before it sends.
-Could conn_info->rx_skb be freed and cleared before nci_request() here,
-and on the error paths too?
-
-> +		/* Consume the stored data packet exactly once, see
-> +		 * nci_nfcc_loopback_cb().
-> +		 */
-> +		rx_skb = conn_info->rx_skb;
-> +		conn_info->rx_skb = NULL;
-
-[Severity: High]
-Is conn_info still valid at this point?
-
-conn_info is looked up before the blocking nci_request() call, and
-ndev->cur_conn_id is set to the loopback conn_id. While the request is
-pending, the NFCC can send an unsolicited CORE_CONN_CLOSE_RSP with
-status 0. nci_rsp_packet() picks the handler by opcode only, and the
-handler does:
-
-net/nfc/nci/rsp.c:nci_core_conn_close_rsp_packet() {
-    ...
-	if (status == NCI_STATUS_OK) {
-		conn_info = nci_get_conn_info_by_conn_id(ndev,
-							 ndev->cur_conn_id);
-		if (conn_info) {
-			list_del(&conn_info->list);
-			...
-			devm_kfree(&ndev->nfc_dev->dev, conn_info->dest_params);
-			devm_kfree(&ndev->nfc_dev->dev, conn_info);
-		}
-	}
-	nci_req_complete(ndev, status);
-}
-
-That completes the loopback request with NCI_STATUS_OK. The code above then
-reads rx_skb from freed memory, and with this patch it also writes NULL
-into that memory.
-
-If the slab object has been reused, could the new NULL store corrupt the
-new owner? If the read returns a non-NULL value, st_nci_loopback() would
-read skb->len and skb->data and then call kfree_skb() on it. That is the
-same skb use-after-free and double free the commit message describes.
-
-Would it be safer to look up conn_info again after nci_request() returns,
-or to check that the completing response belongs to this request?
+> +	if (!rx_skb)
+> +		return -EPROTO;
 
 [Severity: Medium]
-Can this read-then-clear race with nci_nfcc_loopback_cb()?
+Can a request still get an earlier request's response here? The comment
+above says a missing response is an error rather than a reason to reuse
+whatever skb was stored last. However, the only check is for NULL.
 
-These are two plain accesses, and they share no lock with the code that
-stores rx_skb. nci_nfcc_loopback_cb() runs from rx_work and doesn't take
-req_lock:
+Several paths call nci_req_complete(ndev, NCI_STATUS_OK) whenever any
+request is pending:
 
+  nci_hci_hcp_message_rx() for HCP events and commands (run later from
+  msg_rx_work)
+  nci_rf_deactivate_ntf_packet(), nci_nfcee_discover_ntf_packet() and
+  nci_core_reset_ntf_packet() in ntf.c
+  the zero-status NCI response handlers in rsp.c
+
+If one of these completes HCI command R1 early, this correctly returns
+-EPROTO. When R1's real response arrives afterwards,
+nci_hci_resp_received() still stores it unconditionally:
+
+net/nfc/nci/hci.c:nci_hci_resp_received() {
+	...
 	conn_info->rx_skb = skb;
 
+exit:
 	nci_req_complete(ndev, NCI_STATUS_OK);
+}
 
-In the case this patch targets, a stray zero-status response completes
-the request first. rx_work can then handle the real loopback data packet
-while the woken caller is in this code:
+That function doesn't check whether a request is pending or which pipe
+the response is for. It also doesn't free an skb that is already stored.
+The same thing happens when R1 hits NCI_DATA_TIMEOUT in __nci_request()
+and the NFCC answers late.
 
-caller                                rx_work
-rx_skb = conn_info->rx_skb; /* NULL */
-                                      conn_info->rx_skb = skb;
-conn_info->rx_skb = NULL;
-return -EPROTO;
+None of nci_hci_send_cmd(), nci_hci_get_param(), nci_hci_set_param() or
+nci_hci_open_pipe() clears rx_skb before calling nci_request().
 
-Does that leak the skb stored by the callback? This is also an unlocked
-race on a plain pointer, which KCSAN would report.
+For the next command R2, there seem to be two outcomes.
 
-> +		if (!rx_skb)
-> +			return -EPROTO;
+If R2's own response arrives, it overwrites the orphan and the orphaned
+skb leaks. Could an NFCC that keeps sending late or unsolicited responses
+leak skbs without bound this way?
+
+If R2 is also completed early, nci_hci_take_resp() parses R1's HCP result
+code and hands R1's payload to R2's caller. R2's own response then becomes
+the next orphan, so the mismatch carries forward. Callers that would get
+the wrong payload include:
+
+  nci_hci_create_pipe(), which reads resp->pipe at offset 4 with no
+  length check, so a payload-less ANY_OPEN_PIPE response would be read
+  past its data
+  nci_hci_dev_session_init() (session identity)
+  st_nci_hci_load_session() (pipe list)
+  st_nci_control_se() (host list)
+  st_nci_se_get_atr() (ATR)
+
+The commit message says the helper returns -EPROTO "when the request was
+completed without a response". In this sequence the request succeeds with
+the previous request's response.
+
+Would it make sense to drop any stale rx_skb before sending, for example
+in the req callback under req_lock? Separately, nci_hci_resp_received()
+could store a response only while a request is pending, freeing any
+previous skb.
+
+> +
+> +	message = (struct nci_hcp_message *)rx_skb->data;
+> +	r = nci_hci_result_to_errno(NCI_HCP_MSG_GET_CMD(message->header));
+> +	skb_pull(rx_skb, NCI_HCI_HCP_MESSAGE_HEADER_LEN);
+> +
+> +	if (!r && skb)
+> +		*skb = rx_skb;
+> +	else
+> +		kfree_skb(rx_skb);
+> +
+> +	return r;
+> +}
 
 [ ... ]
 
