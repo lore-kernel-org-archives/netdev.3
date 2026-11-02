@@ -1,74 +1,74 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.96.220.36
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793606690;
-	b=K9hoxEjBu6bUPhWKdmZFp1FlOEi12yCfQn4051l5FWhV7cBar3eCC3DlMvEdev/Fnoox
-	 CcdA8IQr40Ib5GjIINn5lBdpQOtLqhcxwZfHH1uKme9oQ3jSN6p5kPzFUDziav9Ku+0hx
-	 ahCa5k8EVv91n+bAEwlWRroD+iBgUweVgBYnRuQUCdrbMmk7jfzV/sJP8om9W033NRrEU
-	 x1TYIzCoo5YOTsLqLhC3qXGIDHHqKirw03L624mKE8Un8i4g18ChIjxXUyx//Bc4TUzx+
-	 9SpNf4Owf2l94zynU1XyS8CeuVKIUnFyt3GJTJ1dtnhPxTgtW5FdKUmqk68H3/CrLcA==
+	t=1793606691;
+	b=Qfo05Tj5+Ada9aNAM94eRBoS44PLPon9Vf2kxjUpizvu3qxndY48CWDB9f1DJbI5tu93
+	 QQaKrXPAk4bAsRw4qfxB9wwFXfKIiQ/NcFE+qA63fy+Xcj0V9QO050ID2iH0bm794jABF
+	 OShpQEt78RXenFG+n1nKCS5gslPPE0AKZo/c8MaJ5QMBIzWCIPgKjxkMyNjE2dvOYOnU2
+	 H/4I8psdvN404MZpRauG9hYC4IYK3GmRlmnOP63MUo2eOrF1MPCbWF4zBAwac6LA9sVdu
+	 WTD2b0gpQea67FqtbON+ghBBah5ChAHZSiTaASFNB90YPNqYUMf7bp6FvlJQu+FRZlA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793606690;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793606691;
 	h=DMARC-Filter:Received:X-Virus-Scanned:Received:Received:DKIM-Filter:
 	 DKIM-Signature:Received:Received:From:To:CC:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Content-Type:X-ClientProxiedBy;
-	bh=03UpySPJVCOP8SE2lkZDKNavFgDv2gCSV/B5O7X4m+w=;
-	b=3rGYehfjtmUTrUB4zW0YP8UdH8tYbKL0ocN2jm/aOXQzTGV1B3bBWEcOgX9j8DdDIOXL
-	 Bnq+LE0ovqB3+iU600MWkXiwOVIkkMcT6blz9AsNYZwEMC5yzUGOjAURpA0pEpwpvXTTZ
-	 OhOPMBme9AECJ1c0nopWQXk8TcXjPX8hYw0n/DAdzdapR9f+76RkSaDDIyoNm+lEYJWxt
-	 LQiKYJFaIbg7etTz23ub+UjcwGVvRbLiQyVcQoNKmwucHil3TeYpg50oG80swkny53x3p
-	 +OXnJarq2Zy4O6iVySdNejutIkzxuBm3fvMeVxk9vlcZeknBLUNTclBtxLVP7VlQamQ==
+	bh=fxT7HXBlhVZyASjDqJy7qF5/OQz1d5UB2n+9b0Tx+a4=;
+	b=WLHhfhZwCIJdTnpSOhX3rFjrS5uUOWc3CLC/jrwV6qebxo/xCfJ1rjRySx9cVr/Wrlpm
+	 B69Z3CWchoUMN3MwMow+J8iOji2DvGIEtsW9zivpFWlCNlUfrTNWLeuVXmV5wmoNQLOFV
+	 NCSqYhxB3JPZ3INPIdHOSa6eRI/trO4oQ90Lc3gCeUIrl+jGLhxW1wXVWLsE6EXIMXPip
+	 +KZuZ1jMBKAFm+W2XsgkswK3w9BKdFgkq5cO3JSM6K09WvudfoEKBhxe0W6CAUvpZjO3q
+	 URTDZSGL+smqW7N60XGQtPl5VRrMc52YFzafbGgoKr8HevhUCFROuM67djdgzqxlbnw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=secunet.com;
 	spf=pass smtp.mailfrom=secunet.com;
-	dkim=pass header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=XXsxjKxV;
+	dkim=pass header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b="zd5I/9L+";
 	arc=none smtp.remote-ip=62.96.220.36
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7609606A33B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7687606A33C
 	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 08:04:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7609606A33B
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C7687606A33C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=XXsxjKxV
+	dkim=pass (2048-bit key, unprotected) header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=zd5I/9L+
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 7A759207C6;
-	Mon,  2 Nov 2026 09:04:47 +0100 (CET)
+	by mx1.secunet.com (Postfix) with ESMTP id D082F207BE;
+	Mon,  2 Nov 2026 09:04:46 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id quBMGhHg-Er7; Mon,  2 Nov 2026 09:04:47 +0100 (CET)
+ with ESMTP id IJaLi-VWLy7M; Mon,  2 Nov 2026 09:04:46 +0100 (CET)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 02843207B0;
-	Mon,  2 Nov 2026 09:04:47 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 02843207B0
+	by mx1.secunet.com (Postfix) with ESMTPS id 50A3B207B0;
+	Mon,  2 Nov 2026 09:04:46 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 50A3B207B0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1793606687;
-	bh=03UpySPJVCOP8SE2lkZDKNavFgDv2gCSV/B5O7X4m+w=;
+	s=202301; t=1793606686;
+	bh=fxT7HXBlhVZyASjDqJy7qF5/OQz1d5UB2n+9b0Tx+a4=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=XXsxjKxVBQBw1OOWKUhVjPqld4+u843zuJN8cxYVjj1rVBaC8dQSqnYk38SDfEasj
-	 y7aGJKIO1iuNUMtqjjX7mxo4tw15VMWt5KcyWa1hbwJ1zmv8nN7vCcDky5yoyomKbB
-	 VPeySvEZyHxCjTzgl3h56SYX/KJcO0gPUVwomJhR6wQT29MlhSJn1a9u4DbqI6FWgE
-	 RiHm42Fw1AwtGuPUIioA3KdDRgD/gWbYsCyU+n4DkcuYDXOYphb8K0Vajup1z/olfr
-	 bznnWV0IqZw/3ZPj52n62nQIEirMfd+EGOiuR+6QBnRTuWPKEuKbg69DQ1jAFl2Esc
-	 9vxeGDKgQj/EA==
+	b=zd5I/9L+M/V86vipqEQ9ayNbtkgUNH0c2CuKcD36ssw1BZYpVjFHotBJ5N8Dozpvm
+	 xHoqfndxF+lyk0+uhuPXY11DaDhOXvCDMB/ZUl4F/CfUH+JGd3J1EGORT60x4VJrix
+	 3+GwCaVkyqGEnbM5iExLJZtRkWQcu6G2dj2K7s+LnuoYWfCHb9hepmuJIrAXRe0bPP
+	 s9spXBt6w/i92I/w7Xpda1Ks7fx7pI5GwrR3XeoMK5WJhT2WFrspXqo9BwuLd6q1A0
+	 N8a+qvDxVONsbhhjCbAPyg4y16EmUrhGeAOpzgDyDFbgeiL1oFD3yXr1bUgQ2XbHm0
+	 ePkIuYWtli/aQ==
 Received: from gauss4 (10.182.7.102) by EXCH-01.secunet.de (10.32.0.171) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 2 Nov
- 2026 09:04:46 +0100
-Received: (nullmailer pid 2505906 invoked by uid 1000);
+ 2026 09:04:45 +0100
+Received: (nullmailer pid 2505915 invoked by uid 1000);
 	Mon, 02 Nov 2026 10:04:58 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 06/14] xfrm: state: reject mark with bits outside its mask on ALLOCSPI
-Date: Mon, 2 Nov 2026 10:04:04 +0000
-Message-ID: <20261102100451.2505200-7-steffen.klassert@secunet.com>
+Subject: [PATCH 09/14] xfrm: fix use-after-free of migrated state in xfrm_do_migrate_state()
+Date: Mon, 2 Nov 2026 10:04:07 +0000
+Message-ID: <20261102100451.2505200-10-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261102100451.2505200-1-steffen.klassert@secunet.com>
 References: <20261102100451.2505200-1-steffen.klassert@secunet.com>
@@ -88,11 +88,11 @@ X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
 
 From: Antony Antony <antony.antony@secunet.com>
 
-Like state add and policy add in this series, ALLOCSPI rejects a mark
-whose value has bits outside its mask.
+A concurrent delete can free the migrated state before
+xfrm_do_migrate_state() finishes using it.
 
-Fixes: bd55775c8dd6 ("xfrm: SA lookups signature with mark")
-Cc: <stable+noautosel@kernel.org> # avoid breaking existing userspace ABI
+Fixes: a9d155ea9b44 ("xfrm: add XFRM_MSG_MIGRATE_STATE for single SA migration")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
 Signed-off-by: Antony Antony <antony.antony@secunet.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
@@ -100,19 +100,33 @@ Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
  1 file changed, 3 insertions(+)
 
 diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 0723d791b8b7..6b53373168b0 100644
+index 5a9f729b4fcb..8640838dcda0 100644
 --- a/net/xfrm/xfrm_user.c
 +++ b/net/xfrm/xfrm_user.c
-@@ -1916,6 +1916,9 @@ static int xfrm_alloc_userspi(struct sk_buff *skb, struct nlmsghdr *nlh,
+@@ -3509,6 +3509,7 @@ static int xfrm_do_migrate_state(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	__xfrm_state_delete(x);
+ 	spin_unlock_bh(&x->lock);
  
- 	x = NULL;
++	xfrm_state_hold(xc);
+ 	err = xfrm_state_migrate_install(x, xc, &m, extack);
+ 	if (err < 0) {
+ 		/*
+@@ -3516,6 +3517,7 @@ static int xfrm_do_migrate_state(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		 * free under xfrm_cfg_mutex. Both SAs are gone if it does;
+ 		 * restoring x would risk SN/IV reuse.
+ 		 */
++		xfrm_state_put(xc);
+ 		goto out;
+ 	}
  
-+	err = verify_mark(attrs, extack);
-+	if (err)
-+		goto out_noput;
- 	mark = xfrm_mark_get(attrs, &m);
+@@ -3534,6 +3536,7 @@ static int xfrm_do_migrate_state(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		err = 0;
+ 	}
  
- 	if (attrs[XFRMA_IF_ID])
++	xfrm_state_put(xc);
+ out:
+ 	xfrm_state_put(x);
+ 	return err;
 -- 
 2.53.0
 
