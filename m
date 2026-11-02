@@ -1,49 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793629338;
-	b=yjdi+dx3LQ/D0tn3KOX7ZQdXjmx45q5d6P1f5AJYvJ+8RQrvO+6jvaMxxmYG/EVTO+Zm
-	 i2d+LXhNc5xfGLSdhBCRKYqmJMwinY1sty75E/4OQcRgtTI2Jg3vquieSI3IvJ7CVbek0
-	 p8PtxkiXy9ctFFJ5f/TTCMb2UxIVaalwXEi8ifu2W14GqaRgymbaGlPMxMElE4PlTi4Yh
-	 5hY0IzbK6zhlAVDfI60GtSdmcBqlg/rMna+x59kpDIjw3kWPR3yqKYI+CceQZhEoThraJ
-	 x3siVHjOCf6OpZYAn5V6uqa11JiWAQHJeC0T9eI8YOI6dtDkOzFpdcliGniSK3OLk/w==
+	t=1793629365;
+	b=bFX9oCva3XDS55XVXvUOGYHyUK+fgzq89mhgR+6TqheWnrksKM+fjHs0ajHJz9NyZqEG
+	 PPd92HKOmu0VRWFQ2bM1LFOyL5VxaK0BrGWHetHb8fUdALCp79ysK1WlaT1Om1Lethzq4
+	 +3e5KVQUuBca+1Ff6nSTLyh1uvc3FtmBe8/8ZeuhjtEzhjXt4gAaXMqw8QfgSGMza9emZ
+	 cFIoVKhNttLZPkocpjbXFvOB5m33KwjeM3sG0kecNmfam4/rvF3t8Sg0Q+RKX1mm76coc
+	 WyeAPcBcZjoVgIxlzF+pBQstTKJH9L1mBNaNxUktoNBJ8dv6DbnQxDcuRu9Oy8QCYAQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793629338;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793629365;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=pGKkc9crGkZecPr8vk7TgMVLcv4DpuQHsFCpp4FMbY8=;
-	b=gjzQKuKozuRR9DDKU970mbzRKSh3WR+8m5T8P/ffTlXDcPc5awWpoGqoU2wBBI0rTbtv
-	 7rgnu33L/mkyQwsqTS8QEYAqJzD1YLB8CErFVb2ofnsSMrSL19Hb5iNyc6YcgEATc0LY9
-	 v0h6/RzU3uukAKWmxuO+e/pYyeOcTRfkhoD/vNnXlTUfX4DkWqCrFZSIXSJkLMwkfNtcJ
-	 KIf3aSFFYIyAtiymNwC4YXC+lrpd66gI6o+/nI5YaWEL85mvl5t3K/cQcgseuxb5v9zqM
-	 vZ/eUC1Zy/gvpHgsbY3O7scrgfhCTfV11XouFOxPRmGaXFMC0gImjjo46TEn40SeFsw==
+	bh=bDYBcNUn+VWuCpTwTZF6KvGO9475Dcj2RU9o+tvUNt0=;
+	b=wqz+QflJgdEW4sPkejdMNIPxv0m71/aXdiVK5CS5lkfvTPdtlLQoiSOPpeSHJF23MoL7
+	 O9lhzwDf0hLK76IxuxXO2RO+S4OPV7kixBdL8Bdt+TkpfGvorEd9m0yO744LUP25tAj4p
+	 Io1xANDuwPk+NFqlYttWdQxqPYKZ+ktdQtokXSe9JgloRIVKtShvp2aWfXQItwdGOz7yo
+	 vW7AuJgLI1tlY8d3LbkoJ+f0Am0p6tcVnc6LVS0C1lHoGaTJTApye8BBwqMaIsLhQ6bn8
+	 XCK9WW0l760hwhD4zcMVbv7P9WR6WzxoX/Um9zWR2D+wsu7XXsP13nG4LdOjPRbHYXQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Df3TZq60;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="l/9K700W";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C7A606A33B;
-	Mon,  2 Nov 2026 14:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53836606A33A;
+	Mon,  2 Nov 2026 14:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Df3TZq60
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B385C1F00A1A;
-	Mon,  2 Nov 2026 14:22:03 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l/9K700W
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5661F00A18;
+	Mon,  2 Nov 2026 14:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793629337;
-	bh=pGKkc9crGkZecPr8vk7TgMVLcv4DpuQHsFCpp4FMbY8=;
+	s=k20260515; t=1793629364;
+	bh=bDYBcNUn+VWuCpTwTZF6KvGO9475Dcj2RU9o+tvUNt0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Df3TZq60vzd3Ud6sHKXoJyOdQDpB0y91AXsdElaLXcBNikKzPy/szHHI0/CwhfdRn
-	 WsM9i5bSUctcGEqYeXI7QRDxIUmUu6UVak83Uv46oMzFfbpgzCr7WVMlJ4BZ9J3HMW
-	 AjiG1/VEQjOOGRPDINpgdmcZyMZLtyj1mgE1Unq9dkmYqFAk/CpLvDVWQcV09cYgAf
-	 ujO/67H0xCQCJ6g61xa0UOqeiUbiLYXf42d70VBXVhX79yB82XPCpH4/p7mnlrDBHD
-	 DpkuL3OCzDyMvDM0Y7nF2tWK4aAoLW1EUN7+2jUNhTpoMsfy3rJmuVaCfP3vQoVnEw
-	 qrmaSSpx2GTbg==
+	b=l/9K700WtETbZbiehxECDLdPCEeiiVRA3kxFDmgS/2nKE79+mMwEbcSj3UAdFTEXx
+	 6DvGrmpdgDVXnGX30oyGp8h1wecxAk4jKzxRW9aGPBdJy0OisIoFIZFTfdpRhDfBXZ
+	 KAYYL329Lr/1W5cMHSII0yRN2tcUg68lTIkupTY2K2vtTItr3nAhe86PuUrEx8QrzH
+	 ZRKhA68sEbKxiE5OFQB7qDtLFMKmYizYX4WKQpNV8RKMwbhLf5julp7cLNgPDZarPP
+	 /qEweKu2GyB/uW3f9G490N5UiUnYW1jY6yf/ITOz6Ini0L9UMQPzrnkmfsWQJTfyzK
+	 rW/DJSvgmGkgg==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 15:21:17 +0100
-Subject: [PATCH RFC 02/38] PNP: isapnp: don't read past the end of the
- buffer on a large pread()
+Date: Mon, 02 Nov 2026 15:21:19 +0100
+Subject: [PATCH RFC 04/38] s390/dasd: don't look in front of the buffer on
+ an empty write
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -55,7 +55,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-bugfixes-v1-2-59422ed3e465@kernel.org>
+Message-Id: <20261102-work-procfs-bugfixes-v1-4-59422ed3e465@kernel.org>
 References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
 In-Reply-To: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -91,52 +91,39 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1282; i=brauner@kernel.org;
- h=from:subject:message-id; bh=r49sdX7Qo0uBjLpgxxQ+IVLBreEaXwT40T2nEujvZRA=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJN1Oevk86ly4dxr5u5ckPH96NsbLxgkniTHLPuY0
- Ppb4oDwx45SFgYxLgZZMUUWh3aTcLnlPBWbjTI1YOawMoEMYeDiFICJ5CsyMpyUnxT0MYT7za6w
- DL3kKeLy+fudHgfx3zRQWh2/9tvz59EM/2MUrjVNN51Y9MLwwibHKsNwxzdPq+cE1u3LTEhIn7J
- PhRUA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=952; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=vNxDJDpmoyfXJahneUuQ9vEH9eL70g/8w71rNTJgUxc=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9mJM1jeXQ3NW7/xZeaxDpdlGIUkjat+D7tG9pahOcr
+ AOsJk6611HKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAnCRCYwMn44HG9tefO3daCl/
+ zObZjudV2/8stZoz4eUdbl4NjbdfLRkZLu1okv36OdkxUVB7scSNP4VzvOQn7V+ZlPZqvbKOm44
+ /IwA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-isapnp_proc_bus_read() truncates the position to an int. A pread() at
-an offset like 0xfffffc00 turns it negative, the check against the size
-of the configuration space passes, and the loop then puts everything
-from that position up to byte 256 into the reader's buffer, no matter
-how few bytes were asked for.
-
-Keep the position as a loff_t and clamp the count against what is left
-of the configuration space.
+dasd_get_user_string() strips a trailing newline by looking at the last
+byte that was written. For an empty write that's the byte in front of
+the buffer it just allocated. Only look if something was written.
 
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/pnp/isapnp/proc.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/s390/block/dasd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pnp/isapnp/proc.c b/drivers/pnp/isapnp/proc.c
-index c1f6e6bd0eb2..8197c7f29743 100644
---- a/drivers/pnp/isapnp/proc.c
-+++ b/drivers/pnp/isapnp/proc.c
-@@ -23,14 +23,12 @@ static ssize_t isapnp_proc_bus_read(struct file *file, char __user * buf,
- 				    size_t nbytes, loff_t * ppos)
- {
- 	struct pnp_dev *dev = pde_data(file_inode(file));
--	int pos = *ppos;
-+	loff_t pos = *ppos;
- 	int cnt, size = 256;
- 
- 	if (pos >= size)
- 		return 0;
--	if (nbytes >= size)
--		nbytes = size;
--	if (pos + nbytes > size)
-+	if (nbytes > size - pos)
- 		nbytes = size - pos;
- 	cnt = nbytes;
- 
+diff --git a/drivers/s390/block/dasd.c b/drivers/s390/block/dasd.c
+index 2ffe404b890f..e97891e58957 100644
+--- a/drivers/s390/block/dasd.c
++++ b/drivers/s390/block/dasd.c
+@@ -933,7 +933,7 @@ char *dasd_get_user_string(const char __user *user_buf, size_t user_len)
+ 		return ERR_PTR(-EFAULT);
+ 	}
+ 	/* got the string, now strip linefeed. */
+-	if (buffer[user_len - 1] == '\n')
++	if (user_len && buffer[user_len - 1] == '\n')
+ 		buffer[user_len - 1] = 0;
+ 	else
+ 		buffer[user_len] = 0;
 
 -- 
 2.53.0
