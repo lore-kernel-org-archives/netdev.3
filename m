@@ -1,49 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793628608;
-	b=3nhi8YQ2yZ+xttBYXOWozBuA2a33KqFX/IawFs0MEsKFKbH7xILdemc+4Z0kgjqFqKN7
-	 6ty25pfgomKf690d2cXJycE+loYDdM12WVc9VCUSbX+0dO0Kws5XWW0XOEzU48WQ5FB9C
-	 wfX5mjvOb+1lmPoAq0Tl3O1CqiH6ua8p1RfBLYUiHrY5JIKvAEMUA6k1fWMG4KPuPCpxf
-	 fhsHCT3wDdp0ib5FX1r6z9uDP2V7Jz7FZXGT9Fd+MsmTX3mCvH01C7KqaJNBLnY8OmAvV
-	 1cX9jQBTQLUOI+hMJXVhY1jd4CfX+dzJvvuYtApsuAiK6CVwXFE09eEi3tityZHdaGQ==
+	t=1793628898;
+	b=yJfeVQo8PhgmG4Cfbn4GNFZ796pewsmHDYllR+LI/dTOYSlmPQxeQCoUNXZtZ5FI+HjO
+	 UnhgCPy4Myxk9avD4NjX6RjDjqDWdiX4IYJ7KxuNxDhiv4ftElOxfWvBRr73fBDG0aKfo
+	 sS+6cYmF6mQBwL9AKmHJMs7rVgylDdh4CJhaeEJc34qAGYkMI+1mLYxKazd5Nl/vSFvLs
+	 BB4skmZH2hklv0GmJixtMuWy/qzIvgEE6etBqSyDnOack749jMIIklNgLs4UNh5zDsE5H
+	 hRpB9lL0iB+BAOeLrj/PuIZO55kh2rqt0ZG8bM57DVLdWgiRAFD786iAWIBUMUzUxeQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793628608;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=4OVeYWfheYH8FtbHuki+QzMAA47RZQV0phvaOV3yvhI=;
-	b=WVje4gClui0RBxMRRONURKyf9uHuEqkLLahEx+gKrMCNNXoBhhBoCU2GfEFEdDU6/eyU
-	 Db3rfU5SCC2QAAC54W0CfNhBifIpNTNjDsvlLNvN++UiKG/b5zomcovxc6B1qpNSSvlW7
-	 uCrCgt8XvQyr9ksU9dhtTwGmKqrMkQsuNH8psk6l9vQiNAo2X1I6iemlfmPkfB5PRUHCk
-	 9QMe0zsNRKPClDEzQMIhZqHrLCo9YqZNTZhSlrM0tzH2bzr91wJGQgH8zgBktoIzGj6qJ
-	 u+3FV3pOmVsvCkV1TZJT18C3vt4zLcXPX63KPtS0xTlzbYEXCoVyX+D5b+hKWa0v32g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793628898;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=8+TUm50QUxPlF6kV8aTnHh7tj4ymOgWQczPXKqcsgps=;
+	b=Npl+0E7eQTVkB86k3mXvcNih27cv/dvFc9fy8z4OFBt4H+2fim1DsTOQI8Hn8sELcTpb
+	 YjbuKdLEvfYi+LmIGufVyNkF07MXZ8Mtd2A+kXTwm4rKGq9Hp16C9in3Sp/Qi+A/Ma4k5
+	 Xaqejm20jncYPVawvvgODcFL0GxdmmrU7biDzdZPVvQBlgEMueQCMM4eJ0WQgZjjMBoo7
+	 WK97IrR6J7bhux2ucpvUSJxMM09FldNlQnxmPUH/cpS+MOl5aX+8F5AlGP7v+4olLTQyA
+	 ZQXgWBI3aL/nKPtOcOQ1BmQrQvlMxIyzjN0aqOyGtZKPSbB66ZnkE96CcHRwgIkUfsA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DA4eeWnk;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF87606A331;
-	Mon,  2 Nov 2026 14:10:08 +0000 (UTC)
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=ycEcgu+s;
+	arc=none smtp.remote-ip=111.22.67.139
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02EA60A3832;
+	Mon,  2 Nov 2026 14:14:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B02EA60A3832
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DA4eeWnk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1068C1F00A16;
-	Mon,  2 Nov 2026 14:10:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793628608;
-	bh=4OVeYWfheYH8FtbHuki+QzMAA47RZQV0phvaOV3yvhI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=DA4eeWnktH8h4sQSoUzbAAHoaSu4bcio9Mt1ehS+VHWLz/dhZfHOFhBKxXjcz78w3
-	 VrBVDlm4s3G51BeT8mku/bHbIOH1Y273D9xA4RofaMam5uU7WJHSb7TX8ux34PTy0g
-	 MprZETbm4SZPmcV86KowhogUiDpsa+++IAhVkqjEyCVlmsP9J/EuyTKxqRN0Fw/Tp2
-	 7K8S38ajx53f+Z/qj2FKWmtnc1V53yCWNmxZ+Vxf486b1LzSUKMOFQ4yeT6QPcfhr2
-	 Hs/1shuPvt9Rr9pSdjVvx9jJfW3d1RDY1zHmfCz9TvtGlrajMC13A1moYUyRHU7a5B
-	 tx5MTtLxWvHlw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 034CE380821F;
-	Mon,  2 Nov 2026 14:10:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=ycEcgu+s
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=ycEcgu+s+neTmnM7TKA1V0bx9kJSLfZbh8EqVAkprnKgSOiRbb7DKfeMevtPMsSflIuAMn26Dy6t1
+	 feXlCCnHLj00Z4SxyM5vnLv3Pn/R2DV+EAo0ARMdJtTm2Qb9YIbZgKNBzxNPLNC/EU2iybj4fPyU8c
+	 pEBlbL46tOwZyvjs=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee56ae89ad3132-88258;
+	Mon, 02 Nov 2026 22:14:52 +0800 (CST)
+X-RM-TRANSID:2ee56ae89ad3132-88258
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[112.23.104.16])
+	by rmsmtp-syy-appsvr02-12002 (RichMail) with SMTP id 2ee26ae89ad9a5a-d4486;
+	Mon, 02 Nov 2026 22:14:52 +0800 (CST)
+X-RM-TRANSID:2ee26ae89ad9a5a-d4486
+From: Xia Yan <yanxia@cmss.chinamobile.com>
+To: jiayuan.chen@linux.dev
+Cc: netdev@vger.kernel.org,
+	edumazet@kernel.org,
+	ncardwell@google.com,
+	kuniyu@google.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	torvalds@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	yana06070@163.com,
+	netdev-bot+sashiko@kernel.org
+Subject: Re: [PATCH net] tcp: fix device binding after failed IPv6 connect
+Date: Mon,  2 Nov 2026 22:14:38 +0800
+Message-ID: <20261102141320.129787-1-yanxia@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <062d02ca-e9e1-4f4e-ac57-0de27272a205@linux.dev>
+References: <20261031074654.73952-1-yanxia@cmss.chinamobile.com> <062d02ca-e9e1-4f4e-ac57-0de27272a205@linux.dev>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,49 +81,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v4 0/3] sfc: fix PTP synchronization races
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179362860680.4057752.1132714652152269394.git-patchwork-notify@kernel.org>
-Date: Mon, 02 Nov 2026 14:10:06 +0000
-References: <20261026123023.3566549-1-alex.austin@amd.com>
-In-Reply-To: <20261026123023.3566549-1-alex.austin@amd.com>
-To: Austin@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
-	Alex (DCCG) <alex.austin@amd.com>
-Cc: ecree.xilinx@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- richardcochran@gmail.com, alucerop@amd.com, pieter.jansen-van-vuuren@amd.com,
- netdev@vger.kernel.org, linux-net-drivers@amd.com,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello:
+Hi Jiayuan,
 
-This series was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+> Reverse xmas tree please
 
-On Mon, 26 Oct 2026 12:30:20 +0000 you wrote:
-> This series fixes PTP synchronization races found by code inspection, and
-> a related frequency-adjustment bug found while reviewing the locking.
-> 
-> efx_ptp_start() resets the driver's cached current_adjfreq as though
-> MC_CMD_PTP_OP_ENABLE also resets the NIC's frequency adjustment on the
-> MC. It does not, so the next time-only adjustment reprograms the clock
-> from a stale cache. Patch 1 removes this reset.
-> 
-> [...]
+Done in v2.
 
-Here is the summary with links:
-  - [net,v4,1/3] sfc: ptp: drop the stale frequency reset in efx_ptp_start()
-    https://git.kernel.org/netdev/net/c/21d4917cfc8b
-  - [net,v4,2/3] sfc: ptp: serialize host and MC synchronization transactions
-    https://git.kernel.org/netdev/net/c/f707347b33fe
-  - [net,v4,3/3] sfc: ptp: avoid racing PPS timestamp updates
-    https://git.kernel.org/netdev/net/c/23d23e6c6517
+> inet_bhash2_reset_saddr uses sk_bound_dev_if too.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Agreed. v2 restores it before tcp_set_state(TCP_CLOSE) and
+inet_bhash2_reset_saddr(). I reproduced the bind2 warning with v1 in
+the VRF test; it's gone with v2.
+
+v2 also restores only a scope binding installed by this call and keeps
+a different binding set by a later callback. It avoids restoring again
+after the TCP_CLOSE callback. The UML tests cover both VRF cleanup and
+BPF binding changes; all 39 checks pass with v2.
+
+On the asynchronous failures from the bot review: those go through
+disconnect after tcp_v6_connect() has returned successfully. Retaining
+the binding there predates v1. Handling it would mean tracking the
+implicit binding across disconnect; v2 is limited to synchronous
+connect errors and makes that scope explicit in the commit message.
+
+Thanks for the review. I'll send v2 as a separate thread.
+
+Best regards,
+Xia Yan
+
+pw-bot: cr
 
 
