@@ -1,58 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793616053;
-	b=r5AbIEduzvWfCahVu7SQovu5LVjYamsJFwKURlrdyfX6KlKCaBTl8h6O0Bca5OOt15Pu
-	 1LZyiZUZOWtJfKa+/Eln4nfqjDi4WRVUUWqzeH4FQVLiV3Rr2BHZGjtIxpe/Av7uZwDQA
-	 nd6AL/g7NbcJpGYc8SOOPyYJI8UGDO0eZ38LDCtbE0H7vFzbvqD/wHV9Dy1n3H+d0o/MO
-	 UXcBz7+VeYan6kdJqfu4XEb6LKkclBsnMbKWfTmLhpOpzPYbPDbNBv5VyXt4dhyWOUc3q
-	 tmVr6CSLhfdsh6fBeergccIbIxYYj73ZYgRIvHqSBKmVBqCKQ3iC0g38MqWE0SbGt5w==
+	t=1793616395;
+	b=sxFNN3sN0HEhXFjmcJLfj1MUUvNcAj0yhYiHiiaBqPws/MIPng/RBn++xuKRzzG80FRZ
+	 JTrBII9+QoI+ayJzul9MluU7gZyMaPoWJqwsg6tPSlzy2JkvmuZZD3FzH6+BZcZKH7l4P
+	 f4XM4j/SKzqzAp2M/piLbMGw2AOtJUZ3P5ejT9VERVpbuKjomNOwrN7zH5Q3HRbtoMe1c
+	 061QpzLjJH1ORPmI8PpwwEFwFsfgOIi87vzm8hCfGLb6kBpQOKs5tyDTyzBRPIx7ITfgT
+	 k5ZpcsUX39vFmE3f/9Y//GwDLGARl/sF+KiBvZXF1HPrqoG5JuWYpxbDfgBdDfOxXPQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793616053;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=S4XqQHkYxMLzJBKd/RIGFP6W6LvgbNjSzobYrrP08ig=;
-	b=nIB6EhotBNCfK/cHeSEkh8i+gECjKp56XGxUqzYN8tUVVB3NGbgsTr0ew+YZMn0+atx/
-	 TN1QlVhXWiw9Ocln401LETgt2J9Eg7pMLQqxi1KcikcI9aBexzlE0l/p908CETJjuvRmF
-	 xCcZlSEC9MK+15Vrk9Z193RJP0hge54RNMoeCGsR5/3w7GUL3hsV0bxKsZZ4zSKiJV25p
-	 1RLkT751x1O2y3tIUmAitSRI6zAMbL2TjmSwccbzEzrfpMmo0Cn5KNZJhAXYZ0TEB5wNK
-	 O32g+q49WMtoEriaEJUq1Wql4xP7Fs57R+CJ9GfOyHnzCOmmQLooKypAJDQo5epaDKg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793616395;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=zHSmpNjZA4OHD0kaKYRjCibed8j1ZDUSgLmnw5VW5yE=;
+	b=yIPj47nOClajWIncHUouFlXoAJusUj0xGxC/zRhHlVeiePnQn5kdv59piqdY6rxLcRGN
+	 FqZvPW7naq22WKjGPu5zVicyBQf0C0Gx+EfxrAHyo/kHippuuVh/3EmaMA8m5mDIhmdrw
+	 MkfIPYbbfBiMEgecWMHWFhxcMj8IvfJ3W4860/AyZrXpEabCilwflAu8r1BYBiJqaaj9z
+	 8QHChZ/olrk6EXFUohu1AbPZGF34U/aycd11VjsjWh5deEgvPyu7ZjQuuxPUG2j6xUa+g
+	 sQjL3ekmn96KhuiX1aagr7tDrxfMVpU/v7fGpakcfgEFNmqRWCJywX5gvz/uxsJwpiA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Pz2OBLgz;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mOn5WUp9;
+	arc=none smtp.remote-ip=192.198.163.15
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C619B606A326
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 10:40:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C619B606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C777606A324
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 10:46:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C777606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Pz2OBLgz
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 1C5E01A1409;
-	Mon,  2 Nov 2026 10:40:50 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D897160750;
-	Mon,  2 Nov 2026 10:40:49 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B9BC810329123;
-	Mon,  2 Nov 2026 11:40:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793616048; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=S4XqQHkYxMLzJBKd/RIGFP6W6LvgbNjSzobYrrP08ig=;
-	b=Pz2OBLgz8P+QXSTBWZA/IZfDReBRnNcdOXtbRSIklIozAgVqN/zs5TyY+bvBNlNBCvwhpz
-	t3Hg95mJtbwX1FfpJqb7T2r8xwwThAYaS8KU2UaHST75vvhpA6Ioufqq6Iyt7zkAyVJgFM
-	VDbf5D6OCR5kqEkFWiC5IVhoLOPh1c+kdqmJqKRGRPT0KdNDvdV/yqs0dfIEDEenHRd+on
-	U+oHLoo+4mucLCiwijpmRuEYV5r0DC6UUi5V/5L5bHhJ8G9/KQl0dOZ4rqEYhPlIRYDfhN
-	5oA5WphUTafQKAgiGEnGrI08Xssmsibe/UleP85uFjEFYTAvAasKyz3l1KKCkg==
-Message-ID: <d9e8d715-fae0-4e81-9ffb-f7ceb0453542@bootlin.com>
-Date: Mon, 2 Nov 2026 11:40:41 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mOn5WUp9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793616392; x=1825152392;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=D4V9gd+Xqwjl12KLRjwuCHhH4KI+pNnwUUv/GRXM4aw=;
+  b=mOn5WUp9vmKwGnRwMYG6kb60p+RjAaMT2+MC67RXmk++Dr5gdTd1vbEf
+   NhZ1w22Oss8zr29Nq0iBEc6y1zfGED2+yRmBarta5cE2re5hqJeEGCJcT
+   YzZV4ZOnrnkEV5HDnucTqRNOSdhgW/S7VpLje6STrvveM13qkLjSmUdyt
+   LSwCBKz3b/54/0zDydjDKy+EIzth+7YTBAHhXm89Yn6LR6wOX2qIho1+X
+   ot97oljgIpyHZOt4vu2dvDUKgqErbmah6T/Pzw9jbX8sSd1i7ejnUnJ3U
+   oUq9I2Cl7GCCJUcj2miWMBJOGqIORb6zn2XpsyZ+B0qp4atZZ8ja5oKUz
+   g==;
+X-CSE-ConnectionGUID: IC9JgP58TH68m0CN9aHrbQ==
+X-CSE-MsgGUID: nbrWnVv7R9WQQu/opy3EiQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11953"; a="2305016"
+X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
+   d="scan'208";a="2305016"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 02:46:31 -0800
+X-CSE-ConnectionGUID: cK87MUbwRJG1TYiUYD7kgQ==
+X-CSE-MsgGUID: GLlgcrQxTSCZmT0RG51kfw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,191,1787036400"; 
+   d="scan'208";a="6011998"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by orviesa004.jf.intel.com with ESMTP; 02 Nov 2026 02:46:28 -0800
+Received: from pkitszel-desk1.igk.intel.com (pkitszel-desk1.igk.intel.com [10.217.184.18])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id EBC1728769;
+	Mon,  2 Nov 2026 10:46:27 +0000 (GMT)
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+To: intel-wired-lan@lists.osuosl.org,
+	Petr Oros <poros@redhat.com>
+Cc: netdev@vger.kernel.org,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: [PATCH iwl-net 0/6] ice: fix DCB lock ordering
+Date: Mon,  2 Nov 2026 11:50:15 +0100
+Message-ID: <20261102105346.30739-1-przemyslaw.kitszel@intel.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,51 +82,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: stmmac: Clear DMA errors for multi-channel
- interrupts
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, kuba@kernel.org, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- linux@armlinux.org.uk, lorenzo.bianconi@oss.qualcomm.com,
- ovidiu.panait.rb@renesas.com, thomas.petazzoni@bootlin.com,
- alexis.lothore@bootlin.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20261030102251.208929-1-maxime.chevallier@bootlin.com>
- <179361503537.3131.1099699821303752523@kernel.org>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <179361503537.3131.1099699821303752523@kernel.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
+Fix deadlocks and lock inversions around ice DCB configuration, between
+RTNL, pf->tc_mutex, the PF devlink lock and pf->vfs.table_lock.
 
-On 11/2/26 11:23, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 1 · Medium: 2 · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [High] The new common-MSI error path runs stmmac_tx_err() without any
->   synchronization against TX NAPI or the transmit path for the same…
-> - [Medium] In multi-MSI mode the patch adds new callers of
->   stmmac_tx_err() for a channel, and nothing serializes them.
-> - [Medium] Use-after-free of the TX ring during AF_XDP pool
->   setup/teardown while the device is up.
+RTNL becomes the outer lock of all DCB configuration paths. dcbnl ops
+and ndo_setup_tc() already run under it; patch 2 makes the LLDP MIB
+change handler and ice_dcb_rebuild() take it too, so patch 5 can drop
+the now redundant pf->tc_mutex. Patch 1 goes first, so that a dcbnl op
+does not wait out a reset, whose rebuild now needs RTNL.
 
-These are unlikely, but real. I'll address that in V2, as well
-as the typo Magnus spotted :)
+Enabling DCB in switchdev tears down the devlink-rate tree, which needs
+the PF devlink lock and pf->vfs.table_lock, both taken before RTNL
+elsewhere. Patch 4 only tries them, and only when a tree is exported,
+which it tells by rate_node pointers, no longer left dangling by patch 3.
 
-Maxime
+Patch 6 is an unrelated fix of the ice_init_lag() error path.
 
-pw-bot: cr
+Reproducers are in the commit messages, each verified to trigger the
+lockdep or KASAN report before its fix and not after it.
+
+Petr's "ice: fix RTNL vs auxiliary device lock inversion" [0] touches
+the same ice_setup_tc() and ice_pf_dcb_cfg() code, so one of the series
+needs a rebase. With this one applied first, his patch 2 is not needed.
+[0] https://lore.kernel.org/intel-wired-lan/20261023070258.730168-1-poros@redhat.com
+
+
+
+Przemek Kitszel (6):
+  ice: don't wait out a reset in ice_dcbnl_devreset()
+  ice: take rtnl before tc_mutex in DCB MIB change and rebuild
+  ice: clear stale rate_node pointers in
+    ice_tear_down_devlink_rate_tree()
+  ice: don't block on locks in ice_tear_down_devlink_rate_tree()
+  ice: replace tc_mutex with RTNL
+  ice: register LAG event handler last in ice_init_lag()
+
+ .../net/ethernet/intel/ice/devlink/devlink.h  |  2 +-
+ drivers/net/ethernet/intel/ice/ice.h          |  1 -
+ drivers/net/ethernet/intel/ice/ice_dcb_lib.h  |  1 +
+ .../net/ethernet/intel/ice/devlink/devlink.c  | 52 +++++++++++++++++--
+ drivers/net/ethernet/intel/ice/ice_dcb_lib.c  | 46 ++++++++++------
+ drivers/net/ethernet/intel/ice/ice_dcb_nl.c   | 35 ++++++-------
+ drivers/net/ethernet/intel/ice/ice_lag.c      | 15 +++---
+ drivers/net/ethernet/intel/ice/ice_main.c     |  8 ++-
+ 8 files changed, 108 insertions(+), 52 deletions(-)
+
+-- 
+2.54.0
 
