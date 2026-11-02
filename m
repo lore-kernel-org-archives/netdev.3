@@ -1,54 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.208
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793624445;
-	b=sP8XE5BvR/b66bs7cevJs2K2ysIaHlRJfst8CAUQiimfdX21IcRpibCJ83iLe6cnEFDE
-	 lZvayU05SP3Y6I9wTcbXy7AJHSwScnVjhuWt4DoGzmUaq1dfDr/A9baqKtXUD16NZ5Cry
-	 bPFYyHt4Y3aElrkSvyK++bnzu1+OWqplsmgcf9YzogiSw6aV6qwC1Uho6L0OQ3Gijnabk
-	 2TQE48d2u+V2uirz+xDUc2cobhN50ersioVv0+eFlRDKdf2LPhkbJ62ySwbOifcIJwp86
-	 y4ZPwt24z8BehCc3PuXmF/Vijm1IcMNa7BMUdPWWBVUcXNI+SxboJUvtdu42BDDRd+g==
+	t=1793624745;
+	b=Z4dm3LQ1eAzGTQsxnbQiDhFyeUI+S1rMit7FR2XZQ+guzs1XzoXSI+VlvQkhkoj5X0fI
+	 tAufmfhZnvebboenUpijRwFE97kM7ZVj3JQBlgJFsTuOtuoOTqqEYXvD0T9tFWLkuZII1
+	 7PJGE4tboXePjYicU/RbDovoqcfZbIkcyZP0rkbjwwYubgl2CLM9k9nHdzbq7hHrovqZt
+	 vmbcjd3xQZ30drubYLyoSLNEG0I9yYwIKWSe9GE8Tc0aIXybnLUKo7c2YUsauZ6qBp6/S
+	 l7WUN0LYDSLkpjaDL8S+O7Qo4anasLgmYmh+OdksCxqbvlLu4r1Kw54y+/fpl/4kvxA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793624445;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793624745;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=21gt7xEfR2u3AUi1YN0gEZzmBDhKnP/sCxBQCob5mMg=;
-	b=Drf4J+i0x1/nCLdXKjucEIoZSlsz06AOMLpQsQhsbHkCXZex7YSgRno7u1oO4x4SU4E8
-	 W9pqHv9CZCOorVCDTmBZAYP2BbjwV4PYVGmq2Ew1k1fJnJP0//DH4hTeiprTb4O93Gm8N
-	 iUnX+Aq1wgbZ1jVXWilku1G8HWaeosFjRyrKqgkCuklFzBkmdfop7LdJFbPgFMIH4i90J
-	 2htDGEp5hFXsrsoE4dPaoXlq3DBPNiq1LQDWdzKaysNa62YqW4AM7DQ1fBENIFzCWCsxZ
-	 qfaR6UfOlmtcPDBLf0uqTONF2Yo/VbuSJG/p00MHdtqIcHfDNCiNQ8T7WipCn2YmVkQ==
+	bh=2/g1xL5iGwG1omHrmHgnmCBZ/PbDFU5IAnXkvWs0rU8=;
+	b=zXYek/TYnAm3pQP0gqv4rhGH7v4RlroMnUsqPhoFhbyotd0ABKGx9NVEoioYa9RpDOrl
+	 Z2rwe1FpIAqtQnTlGG1SUcM3p761Kug2AoiqcJtpHMwy6GvOQYWbvHPc1sewbLikORsHr
+	 EU3WlQHIlbcLwuVcdGEriNTJUacCHcS3t8d02XcrVWBOpA+ljQSQ5wrndX2BVYEJw/2gr
+	 Buo6ICB+GsX62orN3Bmkzk1NfhjiY/plj4nvKEMk9fBVPjplMWzkMV0TRlmMpQqpSHA8o
+	 8PfIMVjoziAdGEfijsmSj0tDcnDc3EUHuhuOfI0PHwlaqMzUNjKhGrM2swIhHqCS8Ew==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AXMwqlWO;
-	arc=none smtp.remote-ip=91.218.175.208
-Received: from mta0.migadu.com (out-208.mta0.migadu.com [91.218.175.208])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="D9/S9EAi";
+	arc=none smtp.remote-ip=209.85.128.45
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E78606A326
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 13:00:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16E78606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3D9606A329
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 13:05:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C3D9606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AXMwqlWO
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=jThf718hluzGgF+y7XM56/xWJWlb1Eyj+wKob1SacCw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793624442; v=1; x=1794229242;
- b=AXMwqlWO5jrcsIs1sBO+mlrFosOYHkMf8qzVXdcHOUqSit4ODziPJGp9JhYxthwSQ3itw2n9
- RYJjnqmkv9Iwt/Ow0C/VmsHh8xhokvcf9MiwT/ctviHxJMaT147C6NtscX05FYzfCqrms9ViHvk
- IDDOV+1bev4+8a7Pvy/po2Dw=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 96670a589e3b8f7a;
-	Mon, 02 Nov 2026 13:00:30 +0000
-X-Mizu-Trace-ID: 96670a589e3b8f7a
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <3ee84772-9aa6-433e-bac7-40adc599f90d@linux.dev>
-Date: Mon, 2 Nov 2026 21:00:24 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=D9/S9EAi
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a20a37703bso23297005e9.1
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 05:05:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793624743; x=1794229543; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2/g1xL5iGwG1omHrmHgnmCBZ/PbDFU5IAnXkvWs0rU8=;
+        b=D9/S9EAiM4U3YwX9Fq+R2/twHKsOr6RHGoCPd6j6+sZL33de8LQ1lj/bFMZ4NaiXRy
+         /K4VnigemD4+VqDY0hchVHT6sPvVLpjM8Z9sq/4t/m+SaM0CJW2VlF2qWQ4nD8zgVzzT
+         ADN2anmU0+N0l93HJhzGF/rn23AaKvUac8zezVVLv7ffba4YhMrIg4yYa7ZW1floAKUD
+         E74hi/fACYkYjv/7C8Lt0IR5C5W4Hph7Ei+hf2dry0AIKw6sWcxcOlO11QQA2vRT43a9
+         POLOaDAbcMBVXf9KOrJ5Q/Wd/gJOKqFdgfv5uVMhn0b7YV40mFY3vlVIBbhHgf9kX1oD
+         CvNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793624743; x=1794229543;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=2/g1xL5iGwG1omHrmHgnmCBZ/PbDFU5IAnXkvWs0rU8=;
+        b=A3YK7ketgnwFm5F11HqiRL+UuIwSCvxHUKovvlklis2cHAlOAeKECmJFsNNM3Zhy0G
+         hWbD7X7AZdgArc6G2X/mNR9xyGk+v8HElxU3NwhukKKVq420TCan22jjAdLtLEtQl4vK
+         v0kLaKCJ765D9ZkDzePhyBEdV+Ftn+0f4AmM6W/m9Jn3UiAwyRQLIIHA4534ASJjQblz
+         1bpWWDtj1ovcwme1Sx2Spx4wTk5JR/QMzoXN6dDqmhfHoO1hJqLSOoHy1TllsSvVvB80
+         jYtZp86n+iKDReGg/2Tbd873ImLn+bstSrSxM4EjumtX6gP5s7KNfI0X3otVwuUz/cHa
+         9vIA==
+X-Forwarded-Encrypted: i=1; AKwUvBwPn6zOmaqkdcLTHlOujk++S/UU9LkGhwk4FKoMcw7ZVb+6C5BfE+rbpj1z2nVscuXo2L918GM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK9glNFWRO5wDOVhAwbxH4EfQnHI2A2w04grNFTYkCHDjqDnk/X
+	aYsFvduB2D3ILGGJa+AADitXvZwhTUkoON2iW2VxurjpMEXZOzkctlUP
+X-Gm-Gg: AYBFou36JjrkCtYCPTiK47hbjRg3LDf/LuX4MEFSJU4cEnrBMiq0W5xgRcDeKSJMSdo
+	+kcNPQTgx++jiyrkqNUIoL4i8hlHjH78mykTfRayZgUZzW56lzpEFrHS+U13Bn4vH4+zQlI+HLu
+	X0Tr7otHaU3IrVPpweLvZJux2uXeWzHq6utjel7gPrtMAVZ36NISdBzwfgWoIoWMjiTIaH0Wdvn
+	1e6aa9fOpq5OZzgimZnHPC0ZAh57M2J8x+mhym8SEWEUn8VrFxvkW8/Ny/AsovABZsvJcAyr6Bz
+	8P9/7ISQv43ybjKowrnSSfG0Z26YRHYGIUiqbA7ehI73L0OYXj2t3CbSupZtWouLyadzFUXRhES
+	F93lkOQmURefPYzRJxJmN7A5KTwvgeFbXngZKrFpC12lZv/r2eUHbvmtq0zTx+9SIsfy38U46oP
+	RZfeD8adTuL+KhRBFpiGldLmDb5A+y94UmxnR8Ki1BPC3TQjCWmsbYeMlpGOkGjESMsIUvOmfNU
+	kAdhR7vnafFb5PyBLghOFUIH2r5N2UPCOaqoXa7DoacYj8U6AVAP4OmVC5eoPS9QkY0r7MfqSEK
+	8ZP5zxgWsZYitNY6WEbqTF1ZpX+CIZQeHXAy27+53+oQmm8WBywHL+2MMl2sKVN2TMztKeNoPxr
+	XqGqZbXD/Bg==
+X-Received: by 2002:a05:600c:6087:b0:49f:f099:6fb1 with SMTP id 5b1f17b1804b1-4ac17753befmr226189025e9.15.1793624743352;
+        Mon, 02 Nov 2026 05:05:43 -0800 (PST)
+Received: from omos-acer.lan (109-81-86-162.rct.o2.cz. [109.81.86.162])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4aa813d2640sm340857865e9.6.2026.11.02.05.05.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 05:05:42 -0800 (PST)
+From: =?UTF-8?q?Ondrej=20Mosn=C3=A1=C4=8Dek?= <omosnacek@gmail.com>
+To: Eric Dumazet <edumazet@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Cc: Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Simon Horman <horms@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	netdev@vger.kernel.org,
+	selinux@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	io-uring@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH] af_unix: introduce MSG_CMSG_SEALED
+Date: Mon,  2 Nov 2026 14:05:40 +0100
+Message-ID: <20261102130540.252894-1-omosnacek@gmail.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,120 +110,396 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] tcp: ipv6: do not read ireq->pktopts from
- tcp_v6_send_synack()
-To: Eric Dumazet <edumazet@kernel.org>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org, Anvik Loitongbam <permissiontogallop@gmail.com>,
- Yingjie Wang <x-professor@outlook.com>
-References: <20261102075441.3771550-1-edumazet@kernel.org>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20261102075441.3771550-1-edumazet@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+Currently, when a process receives a file through AF_UNIX's SCM_RIGHTS
+mechanism, the security_file_receive() LSM hook is calledto allow LSMs
+like SELinux to validate the receiver's access to the received file
+(similarly to a process inheriting file descriptors through execve(2)).
 
-On 11/2/26 3:54 PM, Eric Dumazet wrote:
-> When IPV6_FL_F_REFLECT is set on a listener, or the
-> net.ipv6.flowlabel_reflect sysctl has FLOWLABEL_REFLECT_ESTABLISHED,
-> tcp_v6_send_synack() reflects the flowlabel of the SYN packet,
-> reading it from the skb stored in ireq->pktopts.
->
-> Since commit 079096f103fa ("tcp/dccp: install syn_recv requests
-> into ehash table"), request sockets are processed without holding
-> the listener lock. A cpu can then process a retransmitted SYN for a
-> request socket, and send a SYNACK from tcp_check_req(), while another
-> cpu receives the ACK completing the 3WHS. tcp_v6_syn_recv_sock()
-> consumes ireq->pktopts when it wins the hashdance, and the first cpu
-> reads a freed skb:
->
->   BUG: KASAN: slab-use-after-free in tcp_v6_send_synack (include/linux/skbuff.h:3152 include/linux/ipv6.h:110 net/ipv6/tcp_ipv6.c:582)
->   Read of size 8 at addr ffff88802b08b608 by task poc-ipv6-pktopt/5076
->
->   Call Trace:
->    <IRQ>
->    tcp_v6_send_synack (include/linux/skbuff.h:3152 include/linux/ipv6.h:110 net/ipv6/tcp_ipv6.c:582)
->    tcp_rtx_synack (net/ipv4/tcp_output.c:4719)
->    tcp_check_req (net/ipv4/tcp_minisocks.c:762)
->    tcp_v6_rcv (net/ipv6/tcp_ipv6.c:1826)
->    ip6_protocol_deliver_rcu (net/ipv6/ip6_input.c:479)
->    ip6_input_finish (net/ipv6/ip6_input.c:534)
->    ip6_input (include/linux/netfilter.h:325 include/linux/netfilter.h:319 net/ipv6/ip6_input.c:545)
->    ipv6_rcv (include/net/dst.h:481 net/ipv6/ip6_input.c:119 include/linux/netfilter.h:325 include/linux/netfilter.h:319 net/ipv6/ip6_input.c:351)
->
->   Freed by task 5074 on cpu 0 at 15.412249s:
->    kmem_cache_free (include/linux/kasan.h:235 mm/slub.c:2780 mm/slub.c:6630 mm/slub.c:6757)
->    tcp_v6_syn_recv_sock (net/ipv6/tcp_ipv6.c:1528)
->    tcp_check_req (net/ipv4/tcp_minisocks.c:934)
->    tcp_v6_rcv (net/ipv6/tcp_ipv6.c:1826)
->    ip6_protocol_deliver_rcu (net/ipv6/ip6_input.c:479)
->    ip6_input_finish (net/ipv6/ip6_input.c:534)
->
-> Request socket migration has the same issue: reqsk_migrate_reset()
-> transfers ireq->pktopts to the clone, which can be freed while
-> another cpu holding a reference on the old request socket is still
-> sending a SYNACK.
->
-> The SYNACK timer itself is not an issue, because
-> inet_csk_reqsk_queue_drop() calls timer_delete_sync().
+However, there are cases (such as dbus daemon/dbus-broker) where the
+receiver doesn't intend to access the received file and merely wants to
+forward it to a third process. In this case the forwarding process would
+need to have the appropriate r/w access to the file in order to receive
+it, even though it will never actually acess it. That leads to the
+security policy having to grant the forwarder access to a potentially
+wide range of files (in case of dbus-broker basically all files), which
+is not ideal.
 
+This patch adds a new CMSG flag MSG_CMSG_SEALED that, when passed to
+recvmsg(2), wraps any received files into an opaque anonymous inode with
+the name "[envelope]", skipping the security_file_receive() LSM check.
+The returned "[envelope]" file descriptor can't be used in any
+meaningful way other than being passed forward via sendmsg(2) with the
+MSG_CMSG_SEALED flag. In that case the original file is unwrapped and
+sent via SCM_RIGHTS to the receiver. The receiver can then either
+receive the file as normal (subject to the LSM check) or again "sealed"
+in the "[envelope]" anon inode for further forwarding.
 
-Unlike v4, I don't think this part hold here:
-tcp_v6_syn_recv_sock() consumes pktopts before inet_csk_complete_hashdance() calls timer_delete_sync()
+Note that sending the "[envelope]" file is only allowed with the
+MSG_CMSG_SEALED flag set, to make the unsealing explicit and avoid
+unexpected behavior. Attempting to send it without this flag will fail
+with an error. This also avoids recursive nesting of "[envelope]" files,
+which would only make this feature harder to audit for possible issues.
 
+This patch also adds a simple read-only sockopt for UNIX sockets that
+allows userspace to determine if this feature is present (passing
+unknown CMSG flags unfortunately doesn't lead to an error currently).
+The minimal code to do so can look like this:
 
-> Save the flowlabel of the SYN in the request socket instead, so that
-> tcp_v6_send_synack() no longer needs ireq->pktopts.
->
-> As a side effect, the flowlabel is also reflected for SYN packets
-> reusing a TIME_WAIT socket, as ireq->pktopts is not set in this case.
->
-> Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
-> Fixes: 079096f103fa ("tcp/dccp: install syn_recv requests into ehash table")
-> Fixes: c905dee62232 ("tcp: Migrate TCP_NEW_SYN_RECV requests at retransmitting SYN+ACKs.")
-> Reported-by: Anvik Loitongbam <permissiontogallop@gmail.com>
-> Reported-by: Yingjie Wang <x-professor@outlook.com>
-> Closes: https://lore.kernel.org/netdev/82c31e4d5043f3dbd11b44177cfba779d335aae3.1793599929.git.x-professor@outlook.com/
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+    #ifndef SO_RIGHTS_SEALED_SUPPORTED
+    #define SO_RIGHTS_SEALED_SUPPORTED 88
+    #endif
 
+    #include <sys/socket.h>
+    #include <unistd.h>
+    #include <stdbool.h>
 
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+    bool MSG_CMSG_SEALED_supported(void)
+    {
+        int sock, ret;
+        socklen_t optlen = 0;
 
+        sock = socket(AF_UNIX, SOCK_STREAM, 0);
+        if (sock < 0) {
+            /* handle error */
+            /* ... */
+        }
 
-> ---
-> Initially reported to security@ mailing list by Anvik Loitongbam, with a patch.
-> Anvik Loitongbam provided a reproducer.
-> I was able to trigger the ASAN warning before the patch, and checked
-> the warning can no longer trigger.
->
-> Yingjie Wang also sent a public patch later, very similar to Anvik's one.
+        ret = getsockopt(sock, SOL_SOCKET, SO_RIGHTS_SEALED_SUPPORTED,
+                         NULL, &optlen);
+        close(sock);
 
-I was just looking at that patch...
+        return ret == 0;
+    }
 
+Related: https://github.com/fedora-selinux/selinux-policy/issues/3286
+Related: https://github.com/fedora-selinux/selinux-policy/issues/3287
+Signed-off-by: Ondrej Mosnáček <omosnacek@gmail.com>
+---
+ arch/alpha/include/uapi/asm/socket.h    |  2 +
+ arch/mips/include/uapi/asm/socket.h     |  2 +
+ arch/parisc/include/uapi/asm/socket.h   |  2 +
+ arch/sparc/include/uapi/asm/socket.h    |  2 +
+ include/linux/socket.h                  |  4 +-
+ include/net/scm.h                       |  2 +-
+ include/uapi/asm-generic/socket.h       |  2 +
+ io_uring/net.c                          |  2 +-
+ net/compat.c                            |  3 +-
+ net/core/scm.c                          | 81 +++++++++++++++++++++----
+ net/core/sock.c                         |  9 +++
+ net/socket.c                            |  2 +-
+ tools/include/uapi/asm-generic/socket.h |  2 +
+ 13 files changed, 97 insertions(+), 18 deletions(-)
 
-I think that misses the syncookie path:
-
-tcp_v6_do_rcv
-    // skb is final ack
-    cookie_v6_check
-       // inc ref
-       refcount_inc(&skb->users);
-       ireq->pktopts = skb;
-       tcp_get_cookie_sock
-         tcp_v6_syn_recv_sock    <== consume_skb() removed, and ireq->pktopts still point to the ACK
-
-
-Then the same ACK is delivered to the child
-tcp_v6_do_rcv
-   tcp_v6_cookie_check
-   tcp_child_process
-     tcp_data_queue
-        __kfree_skb(skb)       <== frees it regardless of skb->users
-
-req->pktopts is now dangling, and tcp_v6_reqsk_destructor() will
-consume_skb() it later at accept() time.
-
+diff --git a/arch/alpha/include/uapi/asm/socket.h b/arch/alpha/include/uapi/asm/socket.h
+index 5d3524c26b2b..cd9fce1d9432 100644
+--- a/arch/alpha/include/uapi/asm/socket.h
++++ b/arch/alpha/include/uapi/asm/socket.h
+@@ -161,6 +161,8 @@
+ 
+ #define SO_PEERPIDFD_THREAD    87
+ 
++#define SO_RIGHTS_SEALED_SUPPORTED	88
++
+ #if !defined(__KERNEL__)
+ 
+ #if __BITS_PER_LONG == 64
+diff --git a/arch/mips/include/uapi/asm/socket.h b/arch/mips/include/uapi/asm/socket.h
+index 245a43f52fb1..393898479ce6 100644
+--- a/arch/mips/include/uapi/asm/socket.h
++++ b/arch/mips/include/uapi/asm/socket.h
+@@ -172,6 +172,8 @@
+ 
+ #define SO_PEERPIDFD_THREAD    87
+ 
++#define SO_RIGHTS_SEALED_SUPPORTED	88
++
+ #if !defined(__KERNEL__)
+ 
+ #if __BITS_PER_LONG == 64
+diff --git a/arch/parisc/include/uapi/asm/socket.h b/arch/parisc/include/uapi/asm/socket.h
+index f23710e1c671..055b532ccc14 100644
+--- a/arch/parisc/include/uapi/asm/socket.h
++++ b/arch/parisc/include/uapi/asm/socket.h
+@@ -153,6 +153,8 @@
+ 
+ #define SO_PEERPIDFD_THREAD	0x4055
+ 
++#define SO_RIGHTS_SEALED_SUPPORTED	0x4056
++
+ #if !defined(__KERNEL__)
+ 
+ #if __BITS_PER_LONG == 64
+diff --git a/arch/sparc/include/uapi/asm/socket.h b/arch/sparc/include/uapi/asm/socket.h
+index b35b25bdefc2..e152e2bdf42e 100644
+--- a/arch/sparc/include/uapi/asm/socket.h
++++ b/arch/sparc/include/uapi/asm/socket.h
+@@ -154,6 +154,8 @@
+ 
+ #define SO_PEERPIDFD_THREAD      0x0060
+ 
++#define SO_RIGHTS_SEALED_SUPPORTED	0x0061
++
+ #if !defined(__KERNEL__)
+ 
+ 
+diff --git a/include/linux/socket.h b/include/linux/socket.h
+index b17fdb7d38a7..90e4bc5d3f91 100644
+--- a/include/linux/socket.h
++++ b/include/linux/socket.h
+@@ -345,7 +345,9 @@ struct ucred {
+ #define MSG_SOCK_DEVMEM 0x2000000	/* Receive devmem skbs as cmsg */
+ #define MSG_ZEROCOPY	0x4000000	/* Use user data in kernel path */
+ #define MSG_SPLICE_PAGES 0x8000000	/* Splice the pages from the iterator in sendmsg() */
+-#define MSG_FASTOPEN	0x20000000	/* Send data in TCP SYN */
++#define MSG_CMSG_SEALED  0x10000000	/* Seal file descriptors received
++					   through SCM_RIGHTS */
++#define MSG_FASTOPEN     0x20000000	/* Send data in TCP SYN */
+ #define MSG_CMSG_CLOEXEC 0x40000000	/* Set close_on_exec for file
+ 					   descriptor received through
+ 					   SCM_RIGHTS */
+diff --git a/include/net/scm.h b/include/net/scm.h
+index b68a143f42de..53b999868104 100644
+--- a/include/net/scm.h
++++ b/include/net/scm.h
+@@ -108,7 +108,7 @@ void scm_recv_unix(struct socket *sock, struct msghdr *msg,
+ 		   struct scm_cookie *scm, int flags);
+ 
+ int scm_recv_one_fd(struct file *f, int __user *ufd, unsigned int flags,
+-		    bool notrunc);
++		    bool notrunc, bool sealed);
+ 
+ #endif /* __LINUX_NET_SCM_H */
+ 
+diff --git a/include/uapi/asm-generic/socket.h b/include/uapi/asm-generic/socket.h
+index 56fed7ab27ab..14bf06367ef1 100644
+--- a/include/uapi/asm-generic/socket.h
++++ b/include/uapi/asm-generic/socket.h
+@@ -156,6 +156,8 @@
+ 
+ #define SO_PEERPIDFD_THREAD	87
+ 
++#define SO_RIGHTS_SEALED_SUPPORTED	88
++
+ #if !defined(__KERNEL__)
+ 
+ #if __BITS_PER_LONG == 64 || (defined(__x86_64__) && defined(__ILP32__))
+diff --git a/io_uring/net.c b/io_uring/net.c
+index eeab88e77fd8..b579d542b7e2 100644
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -992,7 +992,7 @@ static int io_recvmsg_multishot(struct socket *sock, struct io_sr_msg *io,
+ 
+ 	if (kmsg->namelen)
+ 		kmsg->msg.msg_name = &hdr.addr;
+-	kmsg->msg.msg_flags = flags & (MSG_CMSG_CLOEXEC|MSG_CMSG_COMPAT);
++	kmsg->msg.msg_flags = flags & (MSG_CMSG_CLOEXEC | MSG_CMSG_SEALED | MSG_CMSG_COMPAT);
+ 	kmsg->msg.msg_namelen = 0;
+ 
+ 	if (sock->file->f_flags & O_NONBLOCK)
+diff --git a/net/compat.c b/net/compat.c
+index 6bdf4a2c9077..29816b47f675 100644
+--- a/net/compat.c
++++ b/net/compat.c
+@@ -296,7 +296,8 @@ void scm_detach_fds_compat(struct msghdr *msg, struct scm_cookie *scm, bool notr
+ 	int err = 0, i;
+ 
+ 	for (i = 0; i < fdmax; i++) {
+-		err = scm_recv_one_fd(scm->fp->fp[i], cmsg_data + i, o_flags, notrunc);
++		err = scm_recv_one_fd(scm->fp->fp[i], cmsg_data + i, o_flags, notrunc,
++				      msg->msg_flags & MSG_CMSG_SEALED);
+ 		if (err < 0)
+ 			break;
+ 	}
+diff --git a/net/core/scm.c b/net/core/scm.c
+index ae38f3c1165c..08822b2a1f22 100644
+--- a/net/core/scm.c
++++ b/net/core/scm.c
+@@ -29,6 +29,7 @@
+ #include <linux/slab.h>
+ #include <linux/errqueue.h>
+ #include <linux/io_uring.h>
++#include <linux/anon_inodes.h>
+ 
+ #include <linux/uaccess.h>
+ 
+@@ -66,7 +67,19 @@ static __inline__ int scm_check_creds(struct ucred *creds)
+ 	return -EPERM;
+ }
+ 
+-static int scm_fp_copy(struct cmsghdr *cmsg, struct scm_fp_list **fplp)
++static int envelope_release(struct inode *inode, struct file *file)
++{
++	struct file *inner = file->private_data;
++
++	fput(inner);
++	return 0;
++}
++
++static const struct file_operations envelope_ops = {
++	.release = envelope_release,
++};
++
++static int scm_fp_copy(struct cmsghdr *cmsg, struct scm_fp_list **fplp, bool sealed)
+ {
+ 	int *fdp = (int*)CMSG_DATA(cmsg);
+ 	struct scm_fp_list *fpl = *fplp;
+@@ -114,10 +127,29 @@ static int scm_fp_copy(struct cmsghdr *cmsg, struct scm_fp_list **fplp)
+ 
+ 		if (fd < 0 || !(file = fget_raw(fd)))
+ 			return -EBADF;
+-		/* don't allow io_uring files */
+-		if (io_is_uring_fops(file)) {
+-			fput(file);
+-			return -EINVAL;
++
++		if (sealed) {
++			/* Only allow sealed files */
++			if (file->f_op != &envelope_ops)
++				return -EINVAL;
++
++			file = (struct file *)file->private_data;
++
++			/*
++			 * No need to check for io_uring files here as the
++			 * underlying file had already successfully passed the
++			 * check when it was first sent.
++			 */
++		} else {
++			/* Don't allow sealed files */
++			if (file->f_op == &envelope_ops)
++				return -EINVAL;
++
++			/* don't allow io_uring files */
++			if (io_is_uring_fops(file)) {
++				fput(file);
++				return -EINVAL;
++			}
+ 		}
+ 		if (unix_get_socket(file))
+ 			fpl->count_unix++;
+@@ -203,7 +235,8 @@ int __scm_send(struct socket *sock, struct msghdr *msg, struct scm_cookie *p)
+ 		case SCM_RIGHTS:
+ 			if (!ops || ops->family != PF_UNIX)
+ 				goto error;
+-			err=scm_fp_copy(cmsg, &p->fp);
++			err = scm_fp_copy(cmsg, &p->fp,
++					  msg->msg_flags & MSG_CMSG_SEALED);
+ 			if (err<0)
+ 				goto error;
+ 			break;
+@@ -365,18 +398,37 @@ static int scm_max_fds(struct msghdr *msg)
+ }
+ 
+ int scm_recv_one_fd(struct file *f, int __user *ufd, unsigned int flags,
+-		    bool notrunc)
++		    bool notrunc, bool sealed)
+ {
++	struct file *f_received;
+ 	int error;
+ 
+ 	if (!ufd)
+ 		return -EFAULT;
+ 
+-	error = security_file_receive(f);
+-	if (error)
+-		return notrunc ? put_user(error, ufd) : error;
++	if (sealed) {
++		/*
++		 * Receive fd sealed in an "envelope" anonymous fd.
++		 * This will install a special file that can be unsealed
++		 * upon sending to another process, otherwise the underlying
++		 * file will not be accessible to this process, avoiding the
++		 * need to pass the LSM check below.
++		 */
++		f_received = anon_inode_getfile("[envelope]", &envelope_ops, f,
++						O_RDONLY);
++		if (IS_ERR(f_received))
++			return PTR_ERR(f_received);
++
++		get_file(f);
++	} else {
++		error = security_file_receive(f);
++		if (error)
++			return notrunc ? put_user(error, ufd) : error;
+ 
+-	FD_PREPARE(fdf, flags, get_file(f));
++		f_received = get_file(f);
++	}
++
++	FD_PREPARE(fdf, flags, f_received);
+ 	if (fdf->fd < 0)
+ 		return fdf->fd;
+ 
+@@ -384,7 +436,9 @@ int scm_recv_one_fd(struct file *f, int __user *ufd, unsigned int flags,
+ 	if (error)
+ 		return error;
+ 
+-	__receive_sock(fdf->file);
++	if (!sealed)
++		__receive_sock(fdf->file);
++
+ 	return fd_publish(fdf);
+ }
+ 
+@@ -407,7 +461,8 @@ void scm_detach_fds(struct msghdr *msg, struct scm_cookie *scm, bool notrunc)
+ 	}
+ 
+ 	for (i = 0; i < fdmax; i++) {
+-		err = scm_recv_one_fd(scm->fp->fp[i], cmsg_data + i, o_flags, notrunc);
++		err = scm_recv_one_fd(scm->fp->fp[i], cmsg_data + i, o_flags, notrunc,
++				      msg->msg_flags & MSG_CMSG_SEALED);
+ 		if (err < 0)
+ 			break;
+ 	}
+diff --git a/net/core/sock.c b/net/core/sock.c
+index e7405be8941f..68a447d8bf52 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1959,6 +1959,15 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
+ 		v.val = sk->sk_scm_rights;
+ 		break;
+ 
++	case SO_RIGHTS_SEALED_SUPPORTED:
++		if (!sk_is_unix(sk))
++			return -EOPNOTSUPP;
++
++		/* Just succeed without returning anything, signaling
++		 * support.
++		 */
++		break;
++
+ 	case SO_PEERCRED:
+ 	{
+ 		struct ucred peercred;
+diff --git a/net/socket.c b/net/socket.c
+index 2e3b5737c481..dbb3c7c6ff66 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -2921,7 +2921,7 @@ static int ____sys_recvmsg(struct socket *sock, struct msghdr *msg_sys,
+ 
+ 	msg_sys->msg_name = &addr;
+ 	cmsg_ptr = (unsigned long)msg_sys->msg_control;
+-	msg_sys->msg_flags = flags & (MSG_CMSG_CLOEXEC|MSG_CMSG_COMPAT);
++	msg_sys->msg_flags = flags & (MSG_CMSG_CLOEXEC | MSG_CMSG_SEALED | MSG_CMSG_COMPAT);
+ 
+ 	/* We assume all kernel code knows the size of sockaddr_storage */
+ 	msg_sys->msg_namelen = 0;
+diff --git a/tools/include/uapi/asm-generic/socket.h b/tools/include/uapi/asm-generic/socket.h
+index f333a0ac4ee4..fb9e98a7b370 100644
+--- a/tools/include/uapi/asm-generic/socket.h
++++ b/tools/include/uapi/asm-generic/socket.h
+@@ -147,6 +147,8 @@
+ 
+ #define SO_PASSRIGHTS		83
+ 
++#define SO_RIGHTS_SEALED_SUPPORTED	88
++
+ #if !defined(__KERNEL__)
+ 
+ #if __BITS_PER_LONG == 64 || (defined(__x86_64__) && defined(__ILP32__))
+-- 
+2.54.0
 
