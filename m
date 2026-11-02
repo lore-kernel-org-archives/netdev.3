@@ -1,63 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793661336;
-	b=tn5RS6fQtDWbCGxjFIEY85tZs/qSxIWMyGCKe+W0xg8kBqxEmGWldSKlC1GzW/75ZPB8
-	 4qUSjDGYGzWsheDcBAYR4pkvt5Kv+umUp8q7/7PJ0bSf9LD1nNtHJCi+eKpTVwTdtnQvi
-	 251mTOQmU3qbx4mjd9pH7Fi/BslVePRGVbhOY6V50/Nb+ReAkr9hVRqIcME+RKZoelO9a
-	 1flCVT3LaEBkIQWGwpbdIZ5godeFHrBuc9gneln9ZVoAkrcdbo77C4XCqTx0w7+gwzT03
-	 NYyFlisJmTtSQ3/JO5doqPIFTuaZ2KylDn4GzpkcKztaAw0NOQs1V+Rw1vNwi46sLog==
+	t=1793661510;
+	b=ZXy/chp8lqJKuFmC+bJKcx1p24WRNckGFanIWwJRDnjJTw7J6Es/eHftBxpsNfv3OMxU
+	 Y3ymNk82UiKDAjhS8joPhKPxe62XfS0GTeX92TV2KlAgVfEgOqB/1IKMiaI3ndzHQyQs0
+	 NMh3THd98Mss0gtqSMJ+1G+RTygzMnHiYRmJHxXwbjr4YhMTt6n+S+yYEG2NocPsjNeUy
+	 7exD6A8Hn1QaXZkgv8tQ8BiO4d2Zew2YrGbxnZ1e1Rj0ixEiG4x7+/hQxVPcwLheCDkjN
+	 HhLMtvHIgYBE9XMNCbvbairu9CPCo9aka1IIDwjhudoAnmByxF+FzLU2cBkwGvvTE0Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793661336;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
-	bh=EMxNL/UewMVZwW9XoJ8tizSZ2fZWJjDE9DftmkLnki8=;
-	b=RNSQicuW6LQnQ8Ew2yJoz2v4YXICHvs+x1Lc7n0atgpN6le9h99Lerr9BAgg7eqIKKwL
-	 YFtquzCpZo8N9612bR7zdGGJ/ZP7pIAMpahmPJFBrZuMmrrRjiVcd6QMEOLRklLZUcsqv
-	 gSwTsh2d6eiF6HaMh29ywYkqfwA6CffUpITpZMdZSNCo/jfkXf4AD9HB6tTEhZloO8Jlw
-	 Al78teryyxdgcy4t81cCZITJQZnXyB3RAii85Y2r6DzR+t3IjkmuWQeZOVGXaJSeHUWm9
-	 jV4Lj9ZOUjh0OQUL/1YDJ7RH/uuB9kIaa+oe/Z84ZV0Sb8MiJLJb/qw/MFzALdrz0IA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793661510;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=fdn28Y1abRWwiiybnob+FFic6b5c6iPaoksPj551sIg=;
+	b=L0jtkpNih3S9WFgKlYl27urFE3Rugmh8Ud9fpCSOB9yIdfWGiBBzqkP8a/KYqovGrnCK
+	 X/STCnTBGr+Kos2PPHRSTl59tqOrAEnAWa/lAW3KkoDXaOIFMgIX4WV0Q53PbbdVWA5Lj
+	 898nx55EYmWfnw3D+TN50RXqmiF3bK9E4bEr6Z4dysKbhA07o61PcN7CRxhKM+Hb8Ajk+
+	 QbAtKDclmV87lFEiQVyIObWB8mTrZ5bg85Y1ABgf89OfyyczGF876zVX+H8MzzJAhCIgF
+	 fRPRyAnkwrNqnYB+KN/y9TeQU9YNJw76kywkOP5h9W/P637NbrPwAnKt5lVH/PBek/w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=netfilter.org;
-	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=tAU0LVUI;
-	arc=none smtp.remote-ip=217.70.190.124
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="Q/Z7oFy8";
+	arc=none smtp.remote-ip=74.125.82.70
+Received: from mail-dl1-f70.google.com (mail-dl1-f70.google.com [74.125.82.70])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 9B9C2606A329;
-	Mon,  2 Nov 2026 23:15:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B9C2606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76320606A337
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 23:18:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76320606A337
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=tAU0LVUI
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793661327;
-	bh=EMxNL/UewMVZwW9XoJ8tizSZ2fZWJjDE9DftmkLnki8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tAU0LVUInlbUZb946+TbPw74xpnHYjx80ryp1pK+lTs59T0wtv4c7BwEbcdYnkfXL
-	 tCW8E9h9TS1yKChcCzUpMoCjCwHs7dyGy14/zzlEO9PVr6A1+nEJaCvtri9ojxDH2s
-	 Xhsb+i7ybVRpU4715Gty80L+4guaYbDzR+P1sYkavuwq6LjPdoXKMzvuPkMhiBVix9
-	 s3AxkTbr5hKm8NKkvquzmbjP4d0AvebYRZ7iD/LAQQe3mweGawlbDFd/EzW7BNo1BM
-	 z9Bp2MPDQB/KsHvFXgbTrPKlXKuBZ9IsL8+5U4+ly4k7J1zIbKJgN0lkuVd7AX3SND
-	 li5RLBKTMnMbA==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id ADD5460054;
-	Tue,  3 Nov 2026 00:15:27 +0100 (CET)
-Date: Tue, 3 Nov 2026 00:15:24 +0100
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netdev-bot+sinfo@kernel.org
-Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
-	netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	edumazet@kernel.org, horms@kernel.org, fw@strlen.de, ja@ssi.bg
-Subject: Re: [PATCH net 01/15] netfilter: nft_reject: prevent unbounded
- recursion in output hooks
-Message-ID: <aukZjB-Jt_UhRCFb@chamomile>
-References: <20261102005654.532438-1-pablo@netfilter.org>
- <20261102005654.532438-2-pablo@netfilter.org>
- <179358116673.3286.17229865634602635672@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Q/Z7oFy8
+Received: by mail-dl1-f70.google.com with SMTP id a92af1059eb24-139b62317d0so7494892c88.0
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 15:18:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793661510; x=1794266310; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fdn28Y1abRWwiiybnob+FFic6b5c6iPaoksPj551sIg=;
+        b=Q/Z7oFy8P1wDPs1o1rGn6C7pTiQdPMLYmfjfcsO/1KB+DuI6LNgjmlt3gzvl4+CJ72
+         NduqVxY/SFEk0DVhBtTzKTyyT3yzL/rND55t+PDwYaJd/vH4+gVVmDXIod/9DopiyKpE
+         88Wm+xV4bRcVADfuNpcCF28JTFMsgt6hjK8ZsCuAPxLTSRp+DwmZkTOuTTJAfqXLlDeK
+         LZ3aRDvvbKIsY8IZcDhdmk8Xo/BzdX2u7t9Q35QfknkAoiPW0DUhzmRb2qnwzl5Skok4
+         vycptMWmui/ebxEjGvYqAfBi1i73ZdQdWpWiPGOvuUIdFoPs1oel8a4poPBkGCYiTReG
+         qXqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793661510; x=1794266310;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fdn28Y1abRWwiiybnob+FFic6b5c6iPaoksPj551sIg=;
+        b=B3TB5Fn6AjJDjoRMJYjNdt2I/tbJ+rOt6SsTX0BoSD2y6DEbX3AOGQ5iOA3JUqKbSm
+         InA4XTxtHZki6IElkZLePNXzkkBt8SyAFmhkplIowt4ZaUH6aeRsn/5GSHGl2U/fRrsD
+         hEniDQwaAX0fD/faff3AHNmcKIGyhXSPqrnTUr+ynwpjBA6+JqIJPOF7m4ldDfk8EzIq
+         jGM54e5UebJC51Fsjd/AQGcqZcPT9xx5LG1+cUrKjoChQRAK5ZZCew2MJAaO9AufPC1W
+         2ewMWRQwudiS6dRPcrh2pBG7U+rJQsxFBu/oE2Elia82NMZxyE8cTamHDMyEbOsbG5yc
+         6ArA==
+X-Gm-Message-State: AFq9FYJdaS5gs63AGxDsIE4fP0Cpixb6k0DWyf8pcewAAcRyPpC18App
+	hypztqgd8kW3bWXmx38Rtv7LD6WhTAexndPOWO36gCecUJ1atQJUQwHX/RHcdnVgrRulb4Sxx6A
+	5VgyZs0UbBuBVK2+m8R2qYfq636BYWYPj3O2SaxwJrVI385EaCo1UxI/yswvQrt4B035jbAmEv+
+	IFGmRDnmeuQl1yW+m9i4GoAn5AHXI5ByFUg1WbbpNB8skSJ6iVs6iy+vrtWcKVbfw=
+X-Received: from dlbtx1.prod.google.com ([2002:a05:7022:fc01:b0:19a:484d:c761])
+ (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:701b:418d:10b0:192:e5a8:6bae with SMTP id a92af1059eb24-1ac5e6f5eaemr17575373c88.40.1793661509182;
+ Mon, 02 Nov 2026 15:18:29 -0800 (PST)
+Date: Mon,  2 Nov 2026 23:18:24 +0000
+In-Reply-To: <20261102231827.4088254-1-almasrymina@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,44 +77,85 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <179358116673.3286.17229865634602635672@kernel.org>
+Mime-Version: 1.0
+References: <20261102231827.4088254-1-almasrymina@google.com>
+X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
+Message-ID: <20261102231827.4088254-2-almasrymina@google.com>
+Subject: [PATCH net-next v2 1/4] net: fix skb->unreadable propagation in
+ skb_split() and skb_shift()
+From: Mina Almasry <almasrymina@google.com>
+To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jakub Kicinski <kuba@kernel.org>, Willem de Bruijn <willemb@google.com>, Eric Dumazet <edumazet@kernel.org>, 
+	Mina Almasry <almasrymina@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>, io-uring@vger.kernel.org, 
+	Stanislav Fomichev <sdf@fomichev.me>, Paolo Abeni <pabeni@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Simon Horman <horms@kernel.org>, 
+	Pavel Begunkov <asml.silence@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
+	Stanislav Fomichev <sdf.kernel@gmail.com>, Bobby Eshleman <bobbyeshleman@meta.com>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Nov 02, 2026 at 12:59:26AM +0000, netdev-bot+sinfo@kernel.org wrote:
-> Hi!
-> 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
-> 
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
-> 
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
+skb_split() and skb_shift() do not accurately maintain skb->unreadable
+when moving fragments between skbs:
 
-Regarding the automated request, this series was primarily identified
-through LLM-assisted analysis.
+- skb_split_inside_header() moves all fragments out of skb into skb1
+  (leaving skb with nr_frags == 0 and only host-readable linear memory),
+  but leaves skb->unreadable set on skb.
+- skb_split_no_header() unconditionally copies skb->unreadable to skb1
+  even if 0 fragments were moved to skb1 (k == 0), and leaves
+  skb->unreadable set on skb when splitting at skb_headlen(skb) moves
+  all fragments into skb1 (!skb_shinfo(skb)->nr_frags).
+- skb_shift() neither propagates skb->unreadable to target skb when
+  shifting unreadable fragments into an empty skb, nor clears
+  skb->unreadable after all fragments are shifted out of skb.
 
-A summary of the discovery and triggering status follows:
+Fix all three cases so skb->unreadable accurately tracks whether the
+remaining fragments in each skb are unreadable.
 
-Issues triggered and verified: Several issues were actively triggered
-and confirmed via automated testing. This includes KASAN reports for
-use-after-free and out-of-bounds access (patches 3, 4, 11), syzbot
-reports for warnings and panics (patches 8 and 10), and a confirmed
-sleeping function call in an atomic context (patch 14). Patch 12 was
-identified via LLM and subsequently verified using a userspace ASan
-harness.
+This issue is theoretical and was found by manual code inspection and
+LLM review; it was not triggered in production. Verified with the
+net_core KUnit test suite; not tested on real hardware.
 
-Issues identified via LLM (Preventative):
-The remaining patches were identified via LLM-assisted review. These
-address edge cases to prevent future issues such as unbounded recursion
-(patch 1), infinite loops (patch 2), stale connection growth (commit
-5), chain depth exhaustion (patch 6), guard loss during reinjection
-(patch 7), NULL pointer dereferences (patch 9), memory leaks (patch 13),
-and uninitialized stack data (patch 15).
+Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
+Signed-off-by: Mina Almasry <almasrymina@google.com>
+---
+ net/core/skbuff.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-This is a LLM answer to this automated message.
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 48f6764117243..dc761ceb4d204 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -4225,6 +4225,7 @@ static inline void skb_split_inside_header(struct sk_buff *skb,
+ 
+ 	skb_shinfo(skb1)->nr_frags = skb_shinfo(skb)->nr_frags;
+ 	skb1->unreadable	   = skb->unreadable;
++	skb->unreadable		   = 0;
+ 	skb_shinfo(skb)->nr_frags  = 0;
+ 	skb1->data_len		   = skb->data_len;
+ 	skb1->len		   += skb1->data_len;
+@@ -4273,7 +4274,10 @@ static inline void skb_split_no_header(struct sk_buff *skb,
+ 	}
+ 	skb_shinfo(skb1)->nr_frags = k;
+ 
+-	skb1->unreadable = skb->unreadable;
++	if (k)
++		skb1->unreadable = skb->unreadable;
++	if (!skb_shinfo(skb)->nr_frags)
++		skb->unreadable = 0;
+ }
+ 
+ /**
+@@ -4447,6 +4451,9 @@ int skb_shift(struct sk_buff *tgt, struct sk_buff *skb, int shiftlen)
+ 	skb->ip_summed = CHECKSUM_PARTIAL;
+ 
+ 	skb_shinfo(tgt)->flags |= skb_shinfo(skb)->flags & SKBFL_SHARED_FRAG;
++	tgt->unreadable |= skb->unreadable;
++	if (!skb_shinfo(skb)->nr_frags && !skb_has_frag_list(skb))
++		skb->unreadable = 0;
+ 
+ 	skb_len_add(skb, -shiftlen);
+ 	skb_len_add(tgt, shiftlen);
+-- 
+2.56.0.385.gac671c819a-goog
+
