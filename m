@@ -1,73 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.226.149.38
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793582061;
-	b=ZtYphaIGDpf+vXRckvtx3B7pv+iTtNZRMsvOVwcRuJJo2TO0MP3oz8Pj/CW8XdIMODWh
-	 KYOLh5m3F1J/3MP/1dNdLjD2k80C8xBZDPeNtzzfYWrB3+HzslEK3LWTghXNw11LSiAar
-	 cdZotx9ItN9iuWcpDn/5IEPW0xZWYBBpClPs1C1G8Nkt6VaYtiNyrrIh9XED0ThrzXHtg
-	 p1y6XpmyPy6kHgQGCjCfVCPzGTPHgbmG3aAHcO1M4sJNqFk87Tst9a9ZT4h0H9uktSHVj
-	 sIFpcY/dlVjZpnxzKK2IOm4E365kndmillVI/Cda9sVU+Sl2qOr2MwGyXV2+adXazAQ==
+	t=1793582301;
+	b=IibRdMk7Qhc3mujfidWZpx3N4bmVb1Klhw9WT5zYh1tXfCqvmSRfuVDsBGL7Jqps50W7
+	 nDl4BC5dP1UmZ3BiBw7A62kmsZ6rZYe1dm79uIIA+iqQ8K8g6lYTaRHsTIQzIkOYyzWUZ
+	 T8jFGfBlmA/a5u2jLm2jeZkJksZ5o5gzh7qUaf3QBEZmRQIADZHoTOrIJw8BqkUbW/E2a
+	 kZwO3eiihR5G+R7zpzPZqWKte0EsqelYEnNJo7hdS+GO1Cxu+e36lcWXSXI0gvJAabtr4
+	 +R167WeA4dSlKlfiL7c6bNNraw9XW4OwHtc6gcRgMjhchKDfni2U+Fsd78rjXlu+kYw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793582061;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=S0Q7MjKWFiLIKrIxH78/CGwgNug5pMrs4qMFldikjPo=;
-	b=fJlnS1rAiUQryNeZc1K+OxSxl5QNRnmZPKGQ1W98IWID/ftNqXIhVb+j4g3brluAlUs8
-	 cDZhXK6YsYZNqIe+3WFHVjwL4n1x336NjJuvP9M65XnFNGfraeEkOl5uYBnn5N4FH0M05
-	 Qr942ilNfVuU2djrVu3cHQRK3+mGljNWOV/fY1AYfw+ivcQJwV0/EXzT/mijqE5b4Bjki
-	 dMUvnBNYoOwk0iuu4VEWfqhHWsWbcllYlPM19rjbfgEPBroEocBDgsFidP/ZesSuHckDR
-	 OBq4jLy5ONbO8lC6OQou30vMtjjhRsjnshTvxQD0Xgbnz66BgoLMI48x4NlEoU5u9fA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793582301;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:Date:
+	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
+	bh=ZddAGYbDrtSr+CZdnQE/HLJuPzfHd++uOjWgRuABxX0=;
+	b=UcsqZXd5mshl2VDenVmJeNfSmuQxwMC7YFXhHhXjk1jYdcmTM9s+0vqxx221wOm5KbhO
+	 ZxEbGeBcBZHYD2EjjhWFO9f1wVQjC/w0HH/jxua0NnDS6ZQnhK0qZkNYqDK/hpzfa9YBq
+	 j5gOcA4JUlneZwZ7gYFfMXuZk77f0WxID2mHNHi6q59CjnwH2y9ePkVhAqLd3vwftLJkx
+	 UNkhUQbjmXykMFsDXhANHjFvnHgyh5zHPC3aXhM6vhqUizy8bjUu2Jx1Gw4gDZY7jgEWa
+	 7eLcYZGkR+s4wQNxU3UK9VLha3+HpL0vobDVthPFwB3fzY/freNwMrfuCAh4R5IaZcQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b="Eud/Q1dp";
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dmarc=pass header.from=rbox.co;
+	spf=pass smtp.mailfrom=rbox.co;
+	dkim=pass header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=AeAuIpu4;
+	arc=none smtp.remote-ip=185.226.149.38
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0AD9606A32F;
-	Mon,  2 Nov 2026 01:14:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E0AD9606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89571606A335;
+	Mon,  2 Nov 2026 01:18:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 89571606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Eud/Q1dp
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=S0Q7MjKWFiLIKrIxH78/CGwgNug5pMrs4qMFldikjPo=; b=Eud/Q1dpcP91kMAdhRdBGv5UiS
-	s/gb8x2fBdhir2tj9Tx5BPqErsCK1Y+JTXmepxsDTIzpt2XH2+H2lfKaJseDZRCZaUOEMbwBx/p8a
-	PjSRTQN4ISB8bzle6CE4I+c7WGT+AZmKdpETOgFNkCfPsZb15KymOM2Jjdu7uA0QnK58=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xNgch-00DiT4-8m; Mon, 02 Nov 2026 02:14:07 +0100
-Date: Mon, 2 Nov 2026 02:14:07 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Lucas Tanure <tanure@linux.com>
-Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>,
-	davem@davemloft.net, Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 3/7] net: stmmac: dwmac-meson8b: add support for the
- Amlogic T7
-Message-ID: <c7d703f1-57fa-42cc-82fc-3e0aab05b71a@lunn.ch>
-References: <20261022200640.3101932-1-tanure@linux.com>
- <20261022200640.3101932-4-tanure@linux.com>
+	dkim=pass (2048-bit key, unprotected) header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=AeAuIpu4
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1xNggX-00AGXf-FN; Mon, 02 Nov 2026 02:18:05 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=ZddAGYbDrtSr+CZdnQE/HLJuPzfHd++uOjWgRuABxX0=; b=AeAuIpu4g5ZaTB05ZogxxfPgy1
+	Ka3aZlbImxCDR3YJU8XtyN2sKHNHFASmcrcpmm0BS25em/4rg+DYzzXYrxZ+xWsIXJRjuLqmo1tBQ
+	wnFaBaX/8roBQ/hjAQIKnhwVv0MK7Y/qevBIxPcVdrnoUaXbsdYZ+usjmnYoLspwUn3jKECS8ymPq
+	0lPi2mvjt54yXUVR7ga8fUMj5lwfAfmeYb9UdAQ4pcRZI+cevY5EoXGQGbI5kF9hvIDEky/UgvKbT
+	6w9stWSTX0clXGCQdIZsG0f6uhpyjKPPRgKbcTRV4CZSIr6LPw/pHUGSMCt/hiZ/u8N0pEXT5uxII
+	BqsUktuA==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1xNggR-0005sJ-VN; Mon, 02 Nov 2026 02:18:00 +0100
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.95)
+	id 1xNggJ-008JiF-1Y;
+	Mon, 02 Nov 2026 02:17:51 +0100
+From: Michal Luczaj <mhal@rbox.co>
+Date: Mon, 02 Nov 2026 02:15:58 +0100
+Subject: [PATCH RFC v2 1/4] selftests/bpf: Remove sockmap update from
+ bpf_iter_unix
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,14 +68,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261022200640.3101932-4-tanure@linux.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261102-sockmap-update-limit-iter-v2-1-e96a63c43b39@rbox.co>
+References: <20261102-sockmap-update-limit-iter-v2-0-e96a63c43b39@rbox.co>
+In-Reply-To: <20261102-sockmap-update-limit-iter-v2-0-e96a63c43b39@rbox.co>
+To: Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+ Eduard Zingerman <eddyz87@gmail.com>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+ Emil Tsalapatis <emil@etsalapatis.com>, 
+ Ihor Solodrai <ihor.solodrai@linux.dev>, Shuah Khan <shuah@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Lorenz Bauer <lmb@cloudflare.com>, Eric Dumazet <edumazet@kernel.org>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ Jakub Sitnicki <jakub@cloudflare.com>, 
+ Jiayuan Chen <jiayuan.chen@linux.dev>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Simon Horman <horms@kernel.org>
+Cc: bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Michal Luczaj <mhal@rbox.co>, 
+ netdev@vger.kernel.org
+X-Mailer: b4 0.15.2
 
-> Without that gate the controller cannot do DMA at all, so it is
-> required rather than optional: a clear probe failure beats an
-> undiagnosable hang later.
+BPF iterator programs that can update sockmaps will be limited to
+iter/sockmap. Remove the update from the unix selftest.
 
-Does the DT binding mark it as required?
+This reverts commit 997b8483d44c ("selftests/bpf: Extend bpf_iter_unix to
+attempt deadlocking").
 
-     Andrew
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+ tools/testing/selftests/bpf/progs/bpf_iter_unix.c | 10 ----------
+ 1 file changed, 10 deletions(-)
+
+diff --git a/tools/testing/selftests/bpf/progs/bpf_iter_unix.c b/tools/testing/selftests/bpf/progs/bpf_iter_unix.c
+index 3061b148f338..90beada0386d 100644
+--- a/tools/testing/selftests/bpf/progs/bpf_iter_unix.c
++++ b/tools/testing/selftests/bpf/progs/bpf_iter_unix.c
+@@ -7,13 +7,6 @@
+ 
+ char _license[] SEC("license") = "GPL";
+ 
+-SEC(".maps") struct {
+-	__uint(type, BPF_MAP_TYPE_SOCKMAP);
+-	__uint(max_entries, 1);
+-	__type(key, __u32);
+-	__type(value, __u64);
+-} sockmap;
+-
+ static long sock_i_ino(const struct sock *sk)
+ {
+ 	const struct socket *sk_socket = sk->sk_socket;
+@@ -82,8 +75,5 @@ int dump_unix(struct bpf_iter__unix *ctx)
+ 
+ 	BPF_SEQ_PRINTF(seq, "\n");
+ 
+-	/* Test for deadlock. */
+-	bpf_map_update_elem(&sockmap, &(int){0}, sk, 0);
+-
+ 	return 0;
+ }
+
+-- 
+2.56.0
+
