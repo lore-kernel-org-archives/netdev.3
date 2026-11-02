@@ -1,102 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793645421;
-	b=azLHcFi4L6lez6YzMzAn2F6/V0jZpmo1zbg7+X6UU6Bp8Ezq7mmC01rOsZ2Wt4BPbG2N
-	 r1Bnbx9QrdDO6X745voVYqK5bsCz4nkSKMQ6eZkfuq59UFLDd7BqC8zQYoxXEq5AP8a8m
-	 AdUSl+ZnsYrau7Vwn06oPXazPd5KnS8yxt7ohZXN5KXT2Z5pXqeQjW1UiZ+smcjfhulE8
-	 bSpAf4ownVtnocb3XR5ZJYd22EqNTPze3ZdLqEpZCG6XQr9vCJHligQmoYuQBmL85HZqi
-	 IiGwX8aOd7wqrsUXKSrGYMnMiKGaXWQv5Q2XJH7CNSWCONf0pbh+C8rJl1/7nq9Y7Fg==
+	t=1793645485;
+	b=Mw4aXE6u6J/RDIfaY9Pb69qU83y8TsIm18hLajK/3HKQsULGaC1qrARelVTp9rSAAaLf
+	 V9QjFnNQbKfNfpCg616twNS0NMPwUp5dSa43a8sSnt+TrOPA5KC3vW7zsbbiRfFkhHCPS
+	 Z4Rd2PpMJJ9GSzvN/nCDrBtnopuN6a1TO1Kf1n0lISKr0BDTACRbeFM6S4E4Z/LJLKsG5
+	 HLs5790rEDWbe9lMhyjp1s/u4Xl0Jm+XZyiALmPUPXxkq+iOnup9g+JRPyY2/T9s6TNvp
+	 KezyPn7sp7Bjh3tShLvXpIuR759PcROuP2Wu7wApjq8OEQxIQaJrDany8ibRawfopBw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793645421;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793645485;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=1+PqdBY+Kn+vTVD8wBIeE/Wp76LdlfMZhSQGe7/rnXI=;
-	b=qemNtz+t5XVU0PKi4aRT+pf81jIrMTLKgajCMOH72gVr3dPm9ctRNEWJ2a6RmK9XfVx3
-	 EslUgYjuuESr4Gj7aUJ/Iey8Oo+ARSRLelpwbGJgbpJaopi1rD+uOR0/vK1mwuA60izJI
-	 OUfOu6pFOlzXJQaCFJ0x1dilqVS6yMKdobDP632jPkD5wnkyPI9gf4q6JVKbLS5Vo9Eek
-	 EdPH4AWv/ncER7tOU0he8cmg1UvylIFeO7Iya0o7ssJpt0aaKPqCFW1LLeBr5vk+uVJIh
-	 +CwnHwbDoIp/YU2zTor+vpLRtcnb9xwYZviJQR/BolXnIH9eyZNoOfnThbVHTtBsHkg==
+	bh=QlHiGf+lt6/lLFvfcn5PBs13x1On6n09Gjxo1myFIdk=;
+	b=NCvFlu0wt0FPBelzFsMvZRtmrJ7CUpov6M9VXI3TQgIj/0jFYWj6OUmhTZM9ZdX6K9e2
+	 hNc/M02cpaZeKWV7IPkz9pVxi+QhhFp/SU29pKnmGp6Bzu/5hTaGFsOhLruC1ThNaB0IS
+	 yBmIu8KM4wYjqOPzxuhhjD8KTkfqBARYuF2GmKMilK617gYbZqVrrUppd4+lQrpAZDuBL
+	 Ad2JQzoz8iuN/vc2Q2K+NvTFIM2pwq0QAe89H0dv68zk5DJLx0pCCucRiosx0hYIaMaOx
+	 pdxE44VQbMOST3HocqldTAuIxeSVDwNOadA2UnUV78Mw/lBfH+BWG7nZQlvePNRzyoA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=smartx.com;
-	spf=pass smtp.mailfrom=smartx.com;
-	dkim=pass header.d=smartx-com.20260707.gappssmtp.com header.i=@smartx-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=p2+Piy3s;
-	arc=none smtp.remote-ip=74.125.82.181
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vBrS4SZD;
+	arc=none smtp.remote-ip=74.125.82.52
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372B3606A327
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 18:50:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 372B3606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CDD606A324
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 18:51:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 18CDD606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=smartx-com.20260707.gappssmtp.com header.i=@smartx-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=p2+Piy3s
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-3535a54bed9so5037636eec.1
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 10:50:19 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vBrS4SZD
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-1438d9363fbso2642195c88.0
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 10:51:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smartx-com.20260707.gappssmtp.com; s=20260707; t=1793645419; x=1794250219; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1+PqdBY+Kn+vTVD8wBIeE/Wp76LdlfMZhSQGe7/rnXI=;
-        b=p2+Piy3sAooPGQJVbNsD99Y816ezaXqpod5YbnBem2fq6wIOuOW3ZsHW+jNTagbfZK
-         JPLSW1xihm9pdnsrcrPQWoNmVok3fvK+cX27K8SeproOZJKxvtn2pObWdkr/aTJavyHc
-         fYp5snY7hjz+rKceH+kTDA+BRVTkaashLjqQVUQSU5IdrcxIGeuJC21uSYb1kbYJnU1r
-         Yi829yFsVjhlbCPauZzn4kXivWq5mfqJziwL7B1TuF3sW0ubsYV1bgkSVy3Os7vDgGhJ
-         xX8OPMnDDNxuS5ieQVzgpNHuiFHFXu9XCasJ3nyqMX8VVzG2z2EjYhDpmY6i7ba8Jo0H
-         ZcjQ==
+        d=gmail.com; s=20260707; t=1793645484; x=1794250284; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QlHiGf+lt6/lLFvfcn5PBs13x1On6n09Gjxo1myFIdk=;
+        b=vBrS4SZDzaYDB61VTJynnuJZcypDpcykiaFHOWQX55fGMHia+iQJWyVnZlQmIwpU4C
+         nBuC+w6bspHmULaJL8SBFdimZcfxZpuDZ+wWbazP/O28WShasGACIYvZrx0KzOcVo5Eh
+         uwjQhSUbtQmD2AY2s670mh/DNVOTkKKu5GZ2f/aVD888fJj4dxsYuWtL6aj1VPqNJDJh
+         PXpxqQNkp+uTsFQfsalVmshJ0zH4X8nt41cCVTa92pR84SyEdvzYwGrtB2oGF4ZHVQX+
+         aFhxkavq6Uen/nOV9p46cNH0fDLbV1WUWGg8cSPV0VgqalzxkG0wdalugMZhfGPQkRo+
+         RFXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793645419; x=1794250219;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1+PqdBY+Kn+vTVD8wBIeE/Wp76LdlfMZhSQGe7/rnXI=;
-        b=1NlWPMc0F30vQ5TsgPL3E+fVr93+SDQWzdYqR5DbaLPUo0zsLj42Cc4ZlXmNMMDMm9
-         TyMfpBMQKqdKROeMzLyptLd6gTDeiCW+NsJsXBRY/YGwN35nDQqdGLAzB+FlgU6LMX1M
-         EoxsCJJAJDgvvetnNgZ1XA0x314eTqntM2CvtOCdjKvEAS/hNFNJxLsgsHabmgCzkVT9
-         Sr8v3XbqW88FHn+YZjDrntk1FtDvthgdt4j5EK6dXw/MxUYxjx8CPIrKOMTlpM6TBi2p
-         /mn7WYFhYiFQiMxA0pxcbraDVYvZ3vyZwrrBh6MGUZ6MmvI9mKIgFs4kvV1eMXKwzzYm
-         54dw==
-X-Gm-Message-State: APuU4Z99dY8iQRUTyhEglwgeO+uY8Ct5XJE6ZWuqptikqoOYnnN9Qh1Y
-	C1LZN2+O5Xc8APXxw0fgA3hJUn2BVGrthFXo8PFdUHnJIQ0jevJqdvqlCVR4RMSa3SgueOXhvBi
-	0IFgcqdteD6td5dbjMNI/lvZGRQIa6Sb31KJHuRlTUPHCAczOw/TSb/Z1yyhXSVuiPVKktzZ8
-X-Gm-Gg: AYBFou1zJUFbC/dVDguVsapiJeAh8XXAS36NL8uLFiKyXjPjLMI2cnFE3IQnOKD6HG9
-	zYbDJaZzuWxtnKlgK+F2pAzG6tkGMXJYsRfOBG4uv+1bokdNg36/+7jXbqJSokEPcr2xH/UrwGI
-	0A5WDrMQ7NcIYWRWYkjaiEX9HrI6JPBZPhYx1doL3yrEcQPcfo9OqC0C9YDxYBxPgVk9n5C5qx0
-	7NNSzNNioQnHcSk1KHls8+MVCiVCbLBIr73xVTEElW5aAEiwRA+ArIUdCFsK/HMzp98CtZpt87M
-	DRXvjbRwa2KkKPEs3qeUf+b7EAPpk1LaKBkAZI4dS+uLlavBMuKqWQetI61aHx+Lh64qUkCEIAn
-	OjL9RFxmEOdW4HknK0YmatL7uSJmxWTUg6S+COwD7Tf6fc4C6bSLGiDGutO8shsbdGpSz+EBMK8
-	APxxA4gV00dreVqJerW/o19WDQXmLKGqdkr3S+MiUXbGtpZKpJLkh1sPHW5GH6x76VV8ZEDqRU3
-	1PbhLIhf8ttIAhsCYLTHEEusbXcv1bwKdDE4PgcRxFdNLQELTQaS8on0j/4TPWufFFgdIQuaYmz
-	48Jr1NBYDYyQKpNCh6ZCT2X2dYJ0oI1J3DnQ5exq7A==
-X-Received: by 2002:a05:693c:41d9:20b0:368:4acb:f8a with SMTP id 5a478bee46e88-36a4242f5fdmr16518897eec.17.1793645418844;
-        Mon, 02 Nov 2026 10:50:18 -0800 (PST)
-Received: from localhost.localdomain ([174.136.204.24])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a429000f8sm39651738eec.13.2026.11.02.10.50.15
+        d=1e100.net; s=20260707; t=1793645484; x=1794250284;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QlHiGf+lt6/lLFvfcn5PBs13x1On6n09Gjxo1myFIdk=;
+        b=rZskfFlEBcbRfCgjAwdszYLgmzk/sWl8wJ2JRO5c7q6Z2gebltilpgNwNH8x5K8YsV
+         DhdY7STl49OLtlA9z2ZhlP/k+AqXxsG1W2L/wvSnYZYhqNLAUXnp6znicA1SzEBBuNyG
+         imJbDhaeuWKHPXCuxBPyntgmMLGtcZy+98Nlu+E8vI+Gt3ZDEqZlsdCGvEIhS8TwL1Rm
+         CvrWSTERz0PWSng+lyzHTGjXQnkq6Szh0DlNN7Asjor+mttFJVu6z8P6seM3IgEgRQFy
+         wfxGWvL120JgtlID1gXr1R9rASBQW19l+w3WpCGWDAvhl/ESd62uTT5BsUw+WkRB2sOi
+         mNUA==
+X-Forwarded-Encrypted: i=1; AKwUvBxL4Vz5hpug0AjM68JjN0bp4PJNy24YUU935IwAJHF6J9On0uwD8LCTPhuwLYSTeJmfFqyXdBY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKPmAdbc4cbhjFYwzfCeQ7KDKSfkpsWP1hedxZy6pns8w1Q/PQN
+	RWtuSJw+YrFtR+S+xz8pxCJq9JN9bVvr6sWFOflRH1Jg+DDGeI7a0R03
+X-Gm-Gg: AYBFou2Ihwg5cKeccLZGBQD9JLf/Az5dceQibX/xS4JJ+F2MZ3gXqnfAJK38ksAqxBR
+	94UMc23B+n2rhy9bTkJmyyZMQenOTLt2MXeaH4w083WhMBSyegUs0/NChIZZjIsWCDzd4wBWZ8c
+	oJIJuRsID+p8zgG0xFa+5wf9mHNKAS9H2aN78aeAkO2gDoVuPi1UEBqpEAwv5bxBNPOIpUFxsnx
+	R3rE9dk9lVOP5tfFEQakTpDRFPCvYkFN+LJF9orUHCxapoH8nCGYNiR6ZwbQtM6pVBsPnyPbKti
+	+2PGf1NwBm7k/3qB1WHfuqUiTBH8m9TeReUTcVisDTYN3ulfE76mESsPw7TFKSo7EeY2I1TZUnF
+	cDddvjB67FHhXZwNKp7L51fHSJqCqISFRxXHA4nEhw3q0QyLUJ5CovkT1vgX3H0VbwtjWOkmD5O
+	NaiCDcwonmivwFF3eM9JWc8evxmANQfVVftxnfkx4SGLb6VEO/wFJN5gtnZ8RydNI+5karrZDfH
+	k0UQMj1t1O2WHvIuIDoOVUzVc78Fl0VEP9iGiDPv6HIaFZPb+OlED4Ap/oGZs1I5RnkZdYkXjXO
+	xjwxSFBGwZZqLfXUlQLdaq+nP8D8iiUx1Jis3lAmF/CvGu4RcUJwrFJ5whaMiUiTp2p/xQLrWyh
+	kHhxOfw8YCNSVuLpox306gASWIwo+uZJxuU42Zbtq6GLmdw==
+X-Received: by 2002:a05:7022:628d:b0:184:40db:6bb9 with SMTP id a92af1059eb24-1a94876dbd0mr27132117c88.8.1793645484075;
+        Mon, 02 Nov 2026 10:51:24 -0800 (PST)
+Received: from l ([2603:8002:ea00:6800:4808:7aa2:ac97:30e9])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1ac1abcd6f1sm34625198c88.20.2026.11.02.10.51.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 10:50:18 -0800 (PST)
-From: Wang Zhan <wang.zhan@smartx.com>
-To: netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@kernel.org>
-Cc: Wang Zhan <wang.zhan@smartx.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	stable@vger.kernel.org,
-	Kyle Zeng <kylebot@openai.com>,
-	Florian Westphal <fw@strlen.de>
-Subject: Re: [PATCH v2 net] inet: frags: limit the truesize of a reassembly queue
-Date: Tue,  3 Nov 2026 02:50:00 +0800
-Message-ID: <20261102185000.2384364-1-wang.zhan@smartx.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261030081225.2575462-1-edumazet@kernel.org>
-References: <20261030081225.2575462-1-edumazet@kernel.org>
+        Mon, 02 Nov 2026 10:51:23 -0800 (PST)
+From: Dave Seddon <dave.seddon.ca@gmail.com>
+To: Michal Kubecek <mkubecek@suse.cz>,
+	netdev@vger.kernel.org
+Cc: Dave Seddon <dave.seddon.ca@gmail.com>,
+	Taehee Yoo <ap420073@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>
+Subject: [PATCH ethtool v2 0/2] netlink: require a value for hds-thresh and the TDR parameters
+Date: Mon,  2 Nov 2026 10:51:19 -0800
+Message-ID: <20261102185122.1357927-1-dave.seddon.ca@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -108,77 +99,31 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Fri, 30 Oct 2026 09:12:25 +0100 Eric Dumazet wrote:
-> The truesize of fragments in a reassembly queue is only bounded by
-> the per netns ipfrag_high_thresh sysctl, which has no upper limit.
->
-> inet_frag_reasm_finish() sums the truesize of all fragments in an int.
-> If this sum reaches 2^32, it wraps, and the final sk_wmem_alloc
-> adjustment of the socket owning the reassembled skb can cancel its own
-> reference, leading to a use-after-free of this socket.
->
-> This can be triggered from an unprivileged user/network namespace,
-> raising ipfrag_high_thresh and using padded TUN packets, which keep
-> a large truesize after being trimmed by ip_rcv_core().
+hds-thresh (-G) and first, last, step and pair (--cable-test-tdr) take
+a value but leave min_argc at 0, so a missing value prints
+"invalid value '(null)'" instead of "no value for parameter". Each
+patch sets min_argc to 1 for one command.
 
-Another data point: the described trigger also requires ip_defrag() to run
-before skb_orphan(), e.g. via nf_ct_bridge_pre().  In plain TUN local
-delivery, ip_rcv_core() orphans the skb first, so inet_frag_reasm_finish()
-sees sk == NULL.
+Changes in v2:
+- Split into one patch per command, each with its own Fixes tag
+  (Andrew Lunn).
+- v1: https://lore.kernel.org/netdev/20261102023919.1472495-1-dave.seddon.ca@gmail.com/
 
-> Track the sum of the truesize of fragments in each queue, and refuse
-> a fragment that would make it bigger than INT_MAX / 2. Callers kill
-> the queue on this error. This bound is far above the needs of
-> legitimate traffic.
->
-> Fixes: 18685451fc4e ("inet: inet_defrag: prevent sk release while still in use")
-> Cc: stable@vger.kernel.org
-> Reported-by: Kyle Zeng <kylebot@openai.com>
-> Cc: Florian Westphal <fw@strlen.de>
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+Checked by hand on a build of each patch on bae2dbd: the parameters
+it covers print "no value for parameter", the others are unchanged.
+make check passes.
 
-Tested on QEMU TCG x86_64:
-Padded fragments traversed tun_get_user() and nf_ct_bridge_pre().
+Claude found the issue while porting the code from C to Go, and drafted
+the patches; I reviewed them and take responsibility for them.
 
-Before this patch:
+Dave Seddon (2):
+  netlink: rings: require a value for hds-thresh
+  netlink: cable_test: require a value for the TDR parameters
 
-  [   62.400852] ------------[ cut here ]------------
-  [   62.401690] refcount_t: saturated; leaking memory.
-  [   62.402231] WARNING: lib/refcount.c:22 at refcount_warn_saturate+0x74/0xe0, CPU#0: init/1
-  ...
-  [   62.416741] Call Trace:
-  [   62.417754]  inet_frag_reasm_finish+0x734/0x8c0
-  [   62.419460]  ip_defrag+0x149c/0x25d0
-  [   62.420502]  nf_ct_bridge_pre+0x95c/0x12a0
-  [   62.423684]  br_handle_frame+0x6d9/0xf10
-  [   62.425568]  __netif_receive_skb_core.constprop.0+0x576/0x2bd0
-  ...
-  [   62.430759]  netif_receive_skb+0x7b/0x3c0
-  [   62.431822]  tun_get_user+0x1a1e/0x3a90
-  [   62.435183]  tun_chr_write_iter+0x138/0x260
-  ...
-  [   62.455272] ------------[ cut here ]------------
-  [   62.455348] refcount_t: underflow; use-after-free.
-  [   62.455376] WARNING: lib/refcount.c:28 at refcount_warn_saturate+0x9a/0xe0, CPU#0: init/1
+ netlink/cable_test.c | 4 ++++
+ netlink/rings.c      | 2 +-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-After this patch, inet_frag_queue_insert() returns IPFRAG_TOOBIG:
+-- 
+2.56.0
 
-  # tracer: nop
-  #
-  # entries-in-buffer/entries-written: 8193/8193   #P:1
-  ...
-            init-1 [000] b..1. 44.803126: frag_ret: (ip_defrag <- inet_frag_queue_insert) ret=4
-            init-1 [000] b..1. 44.804161: <stack trace>
-   ...
-   => ip_defrag
-   => nf_ct_bridge_pre
-   => br_handle_frame
-   => __netif_receive_skb_core.constprop.0
-   => __netif_receive_skb_one_core
-   => netif_receive_skb
-   => tun_get_user
-   => tun_chr_write_iter
-
-No refcount warning was observed with v2.
-
-Tested-by: Wang Zhan <wang.zhan@smartx.com>
