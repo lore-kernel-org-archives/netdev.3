@@ -1,107 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793635118;
-	b=MSP8uVhf1JQ5aec8MHCF65y1EG5qHzKw6y95ePXD/jWLIg5kNGu2rP8SxTa+/CdnGrRQ
-	 14Q4oRBkLyn/r/ck3bATRRGuzgAUg3769kNYgKEshtrS79ifbnGt/OJpZ4xnaLHgN3sq9
-	 tzUKInEgu99tJ9h1ZuSsKnJl37F9wBol0O8MwAEBwoNmVbrcCPdka30pIXhfj+tCLeNFo
-	 fiLpgy7VyVskpL/4r8MvfFtDOVSm1WDjJY3gHCQsbeVLKaF6pRGeDT5AGymXCqa5rX1Oa
-	 u6oLabfMEH0y3WsQt7ZWAJCDZjryrQlYrQx+l32OURDXC8JH5MsOkpBaJCJActFdZaQ==
+	t=1793635130;
+	b=bPo6JzWCwYaSaFR3VUTTzdU9f4l5h2UIZPIEWM8V6e0Jyxf+a8Sf1jP5nmg6xaF0zD5v
+	 MPpX9LviBX016tcDC1K//Kv5yGtVZkw4UFt1L+DMU6I5hZvw07HbUyc36NZHTl9W3CDVF
+	 P4MCA2SVCiNiNkYiOqKMACEAXZmhVku3PguGLkk6Drt8rJCK1Oh1PzaIHC8FPg+sjcrdE
+	 02xN9WlvLA/jsCL91gkNba4nhvgFZEP7ewvLrL7BXWGj/vrrjtPqQhHIrKHuQQ8Q6VJNn
+	 bz1dao+8tdnkx3BQkJTNb8dLO6FpGVT1mm/aLkyUPHUq6uGCGeSYeAtiM83eLCD3pTg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793635118;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793635130;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=RZZZPondBqt3Vp/YWeNv5hJhPOB7ie0frgI1Up6MMS4=;
-	b=E1K4wU0sfkz8yvYOdEbr+MvKGt/8stGRooFGYqKuAai1VAba9Y9MD9FNtufcCU6e9HZt
-	 UiYZWegQ53OixEMh33JQeJwStma51d3GdgFGIOhYySrbFCfBzeoI9ZGyKpAl4hbbAlt12
-	 zpyKmwHB6YgQp977G64bNT3COxlbodqU7Bww/a5rP4Q84JLjaPp8L7s+xIWfdMskKfv0n
-	 7eJqpe261/hhixQiZxHt4ttU889pLQhZa/723S5ZlQBFLRauI/E0KoJ8vsz2Ms3xy6x5O
-	 +KeiEz+Cn2HBRk2FZ75Wy/Pg+AQmvyqC/ol7NxPFDBoboRN0iN3y5pc2TO8L8TPT9RA==
+	bh=ldogGG0L2r7e8E8bTIXHYR/XI5wbEyYJRYKnBDo3pKE=;
+	b=SzXyseooJO8HdZHlK5bcnLditPZgENC0LRidYTVQWjmv2XDfhbFcGACunE9Q9fQ7dwLg
+	 1GVxi8Cy+c18efn/MDfrHiTVi861UnUabJdicq6GD4c3oBeKNWCNW5ooF3aGZAGsmxgVX
+	 Gj1QJ+U5eo7LzxYF2Kap+JGXFokdDQ3/6OoEbKcvXatigVapE0CGrn1fWpvJ3D6CT7WnF
+	 W5Li7YLr9J/zxzJn/6H42hJdfZsNo3PBGJd+xyrCsTChczRcCjPdzpKoG3h71TGKYqBGa
+	 Y9KUfVgNn+uDHWP4V2fOnaoBWaSJ6pJzrBk3DR0lYajVll1scer0h2twPQYqA+iDmtQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fo2nom8b;
-	arc=none smtp.remote-ip=74.125.82.173
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ml45T0Ke;
+	arc=none smtp.remote-ip=209.85.216.41
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8912E60B57FA
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:58:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8912E60B57FA
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491BA60BA926
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 15:58:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 491BA60BA926
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fo2nom8b
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-36a0f27c9f4so5968579eec.1
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 07:58:38 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ml45T0Ke
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3ae6b4c669fso2571119a91.0
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 07:58:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793635118; x=1794239918; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793635130; x=1794239930; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=RZZZPondBqt3Vp/YWeNv5hJhPOB7ie0frgI1Up6MMS4=;
-        b=fo2nom8bxR1lQrtKErd6uSWW6DCvGREDariZr7GiERSjaI0+C6P+t7nzdpbflMyF3A
-         useC5kRSjB/ombrYD2JsIgVi84bOtYdHT7+Vc5GPw01zgdlVxLcw90A1GnwssObbAi4y
-         aV2XOt3wHnzpuLa7wqztDGS1BcZZqnK7LeI/HnjdLpvT0PjdlAqkEkFweq/wkwfmOv9j
-         dFGM/lLo7mpWGjEQvqIplY1oj/juYOLI1fhk+KoxjDrbFN4XjJbRa3IY4sBlXwGBs1f5
-         daVb/d/b09B8vOoy6mlZMNeMF3A9MIX6oZsWtuYacrfy0v58cRHkZKuets0P1SfA0SY8
-         +N2w==
+        bh=ldogGG0L2r7e8E8bTIXHYR/XI5wbEyYJRYKnBDo3pKE=;
+        b=Ml45T0Kefu+066yyNasDniLIxiqDfek1/nxcxm2q4L8QhwL8FMzgRM4zwKURFL1s0U
+         D7sIQug4/Xj6vti6htj+d0lh1m6/98EPuZKYKWpaB47T4xkiKvC9DCQe56feqJOnneLg
+         IyRzUV5V4TRKHS//oFpIdqrBkOYaqMTYPbJgb7mJObAb7UaeYkG+gRFj2VzJQAgxzcdq
+         sl8TI1LgJcQi75sTCD8JvU5Myy/UHpGW8QJ3No936ysg6u94tOf/MeXQ8KvcIHOFEqhC
+         HH5e8eWcMd1zxEUrf5BJE1u2AKqGnGRIPx98wxW49LES+s39CSRhv6P3RyTaW0yv+9x4
+         WbWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793635118; x=1794239918;
+        d=1e100.net; s=20260707; t=1793635130; x=1794239930;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RZZZPondBqt3Vp/YWeNv5hJhPOB7ie0frgI1Up6MMS4=;
-        b=BOrYhjACBrRkYDpsnLCmHztlNxnHtH+u5QSA+GwZn4vbNc0b6oq4b8JD6TNx15CrUF
-         bQLxFgi8kLzsGM2+VMkLo6Bc6Zy6+BL4DL3uBql6KU4U2oFCMTAssY2LGEpY7Q8nzFcb
-         +harzkRtb95BV7OXQr+x5XCwd2MLb4RPSs/Am8HxvSeg5D8+4SU/OR+o+oa3i4FcEOPn
-         t4QC2MOctkc6VJawhAhC12ZRe272pEKgMsVduHvcc0LWUQPKGrgJMcqG14mj1+pLy8UL
-         2lNM7sjC6XPOCYgJ4Qkes5yR07BUZoYD0eFK6Z9F35ShsgHd0KVt/AYp3u5naFayo7+5
-         rbGQ==
-X-Gm-Message-State: AFq9FYKg8arluN/B3cNOZl4Hl+3NTpWIh102oeJfyyqmx31dhP4TCeQw
-	OYkF3rfcKfy6YkCHb3R5D9OuO8xs1+Kndb8A2dUPzAZMyXDfuE9Zfk2ze234qw==
-X-Gm-Gg: AYBFou1i1jvbierOlc/Jx/ANPMH6hNpJElSh69hPI8cs3a0ZyrHFQNfKRXGDuEbWcIO
-	e4/+FgK4ZcJBYQhIAPWFhjgRkXPtGsQxfFIigMBESfn7q33BYZ6i6zD0EobbBrDezudFaEx8u6R
-	gGSno4tpUo9O4BW0R0GV5TW40/iDOxt+zJjFMIcwG6ZKPQcfMLSj4IT3mBynI4z78KW6nPZZjGY
-	MkUvJIuqCHkr1jEadFyPbFW/pBmL0wIYQXyPo8GcD0BXO4Tov7H6hA/V37L0LCbuyW/CkRF14uf
-	pokyBZmFHo8U2XCaf/tkI2wizcDgxaQ1VrQChiU6+v89OgjiHMKCtwXCzohfCj9CT4fwZtHpWzO
-	3hdHvCOI/tpskU5pESmlDviN2OoZMtUiEWtRHzLbg4Vw1KHyva9+0JMzvabrcWbkRFzv9NwwYt3
-	2W0uuTu2jj3XVmy73BCD/wv9dlRJ+Cx0J1nmmsg8LOo+NC65PLXnWVtZiccDk9sY8b0KXKhlnwc
-	zHMpOP1ofSIvi6/B6B/pEuNaACm7VSqmDZCPwdeIIE7Ws2elZNEPdeTppdDLZMrSrPkPfKSpi7V
-	1MWVIKMTrmPvgeP0/7tKaxtlCO16tqQLEixHQfnf6uGe7Fs0/vx+YZ2vqzlwXMkTxE/MT9mVZ/w
-	8JWaMqxwdWGY6LYATkqtc5tAS/OvwqPQ71WpbC8SWSixLJIMUVL5y02wKiHMg7t6u0ygMLdqGCw
-	==
-X-Received: by 2002:a05:7022:f51c:b0:14a:5284:1bf5 with SMTP id a92af1059eb24-1ac5b02881dmr14514852c88.13.1793635117354;
-        Mon, 02 Nov 2026 07:58:37 -0800 (PST)
-Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1aed79b3dfcsm35115869c88.12.2026.11.02.07.58.32
+        bh=ldogGG0L2r7e8E8bTIXHYR/XI5wbEyYJRYKnBDo3pKE=;
+        b=siArTmRrGMd17Er+Z8Ov8d5UV1zYqyVCtvGInPiJQWmcLo+HdjJTxYaHWif062S9ni
+         pBqvHgyEXw1dYcXMM6iPyolpfczNkGWHCqq+AMUKqXcC8h2QNHucrMTP2S4yPpCsIqzk
+         55bzWWql22NFQKqSwFdb7rQRNpne3Kw77juM0UkraqLmrqtDPQuua+qBLvb294906zCK
+         RMjJgNzIDyOZ1WMgTwseXGgCmt6an1SalmHvwcWpnrymEnTd2pySbM25U+/Az7Muc9TP
+         JrVPVTFO7WQ+f0XcLQGMms1rWwTUJwBpKlp/XCQ+6Y44P7jBJj8Z7Qo9Fhc+kOPWcqb+
+         JjBQ==
+X-Gm-Message-State: APuU4Z9uoZzrSR44xzw5VgbILavjmNk6K320nww40W5UeLC2A+Uxfs7y
+	ZCgeV/Jb+XvCRLQsiStC4OcfI2x29cTlOMbzBuTrYNQexx9f+qJPikfBsxFgFQ==
+X-Gm-Gg: AYBFou0jLvXsd2QIKpnV76MXsXSb1ZOWNKJ1OpeDZJToPoGWZMjvEa4j8Tw8gNmln6e
+	JxBqAUwD59eFbsEnvlnyGiWHqmeG9HikGRwmuNyZvkF654ED2IhLjEibDhIu3IuWMpem5xQ7OUW
+	SRCdepuVcyEHWwzDoc03fnogj5xkcRV8/n6MQ6UHPQhcBpeZk/33CYYV5tPQZYGc+Ss8GdZEDXM
+	cjG5JBKqcz5nH6HQkRBk/3QfxSpY39+MBZxW9mw5aE9XQuZ5qO+qJ5+1AVjyFBQ3xx16qrduQS4
+	/ymH6QM5BvbYFaZ+AVOhJd/ceNkkeq8UVBlkOMLYvPuGF6RS4ZrSdDVwBA3N4TFCxpzGUB3hecw
+	TGZ1dmzCIzxMsugSY4ZLGaiYmD9nbC+HmOUfludo3QOQft8254eFLcEL5SVr4va2bdu17YrWVKq
+	7lEOk8blXmyKOaITclQFedF3ZNLTytj7hlZOZJluetLwcmnvBiMS9L5kkLaPEZ1TKo+uwykIkhw
+	7Cf/pds0loXd11S83fYRJ0AiOdxAsWBT6ZiujscoxyQ7KCarpvwYGFzOrDjM72D8dp9+NHFiu4C
+	HFUGbtdc0NLxtXw1zIx3qxw1PGYWud4C4jRgOGD+iqwAj+o9klnG
+X-Received: by 2002:a17:90b:2f0f:b0:3a7:9ec3:ea0e with SMTP id 98e67ed59e1d1-3ae8974a292mr6451704a91.22.1793635129672;
+        Mon, 02 Nov 2026 07:58:49 -0800 (PST)
+Received: from d.home.yangfl.dn42 ([2a09:bac1:7680:28::4:396])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ae6e7d429fsm19183949a91.2.2026.11.02.07.58.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 07:58:36 -0800 (PST)
-From: Anil Kaushik <anilkaushikwireless@gmail.com>
+        Mon, 02 Nov 2026 07:58:49 -0800 (PST)
+From: David Yang <mmyangfl@gmail.com>
 To: netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Florian Westphal <fw@strlen.de>,
-	Mat Martineau <martineau@kernel.org>,
-	XingWang Xiang <v3rdant.xiang@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	linux-kernel@vger.kernel.org,
-	Anil Kaushik <anilkaushikwireless@gmail.com>
-Subject: [PATCH net v4 2/2] netlink: Check a group again if it was released while joining it
-Date: Mon,  2 Nov 2026 15:58:19 +0000
-Message-Id: <20261102155819.4100930-3-anilkaushikwireless@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261102155819.4100930-1-anilkaushikwireless@gmail.com>
-References: <20261102155819.4100930-1-anilkaushikwireless@gmail.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next 6/6] net: dsa: motorcomm: Add BR_PORT_LOCKED and BR_PORT_MAB support
+Date: Mon,  2 Nov 2026 23:56:38 +0800
+Message-ID: <20261102155641.3682626-7-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261102155641.3682626-1-mmyangfl@gmail.com>
+References: <20261102155641.3682626-1-mmyangfl@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -113,257 +105,274 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-genl_bind() checks a group under cb_lock, but netlink_setsockopt() and
-netlink_bind() set the membership bit only after it returns and the lock
-is dropped. If the family is unregistered in between, its members are
-cleared before this socket is one. The socket then becomes a member of a
-group ID that no family owns, or that a family registered in the
-meantime got, and the GENL_MCAST_CAP_* flags of that family are never
-checked for it.
+Program the per-port learn register to implement BR_PORT_LOCKED and
+BR_PORT_MAB offload.
 
-Count per group in the netlink table how many times its members were
-cleared, which genetlink does when it frees the group IDs of a family.
-Read the count before and after ->netlink_bind(), and again once the
-table is grabbed. If it changed since the first read, the group was
-released, so check it again against its current owner.
+Learn-suspended FDB entries (status pending) created by locked ports
+are never aged by the hardware. Add a delayed work to remove all pending
+entries if any locked port exists.
 
-If the count changed only after ->netlink_bind() returned, the family
-that was bound is gone, so ->netlink_unbind() is not called for it.
-Otherwise it is called before the new check, as ->netlink_bind() most
-likely reached the new owner. The core cannot tell for sure: if a family
-is unregistered and another one registers just after ->netlink_bind()
-returned, and before the second read, the new family gets an unbind
-without a bind. The check is still done again. In the tree, only the
-thermal family has these callbacks, and it is never unregistered.
-
-bind() can then fail after it gave the socket its port ID. This only
-happens when a family is unregistered meanwhile.
-
-Found by the Sashiko review of the previous patch, not seen in
-production. Triggered in a VM as an unprivileged user, with a test-only
-msleep() after the bind callback, and a test family that registers again
-with GENL_MCAST_CAP_NET_ADMIN:
-
-Before:
-  setsockopt() and bind(): the socket is a member of the group
-
-After:
-  setsockopt() and bind(): -EPERM, not a member
-  setsockopt(), no family owns the group yet: -ENOENT, not a member
-
-genl_bind() was added, with its first capability check, in the commit
-in the Fixes tag.
-
-Link: https://lore.kernel.org/netdev/179340003139.3131.11274717768928642724@kernel.org/
-Fixes: 4d54cc32112d ("mptcp: avoid lock_fast usage in accept path")
-Signed-off-by: Anil Kaushik <anilkaushikwireless@gmail.com>
+Signed-off-by: David Yang <mmyangfl@gmail.com>
 ---
- net/netlink/af_netlink.c | 79 +++++++++++++++++++++++++++++++++++++++-
- net/netlink/af_netlink.h |  1 +
- 2 files changed, 79 insertions(+), 1 deletion(-)
+ drivers/net/dsa/motorcomm/chip.c | 161 ++++++++++++++++++++++++++++---
+ drivers/net/dsa/motorcomm/chip.h |   9 ++
+ 2 files changed, 158 insertions(+), 12 deletions(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index fec2879c497d..96bfebc57899 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -780,6 +780,8 @@ static int netlink_release(struct socket *sock)
- 			old = nl_deref_protected(nl_table[sk->sk_protocol].listeners);
- 			RCU_INIT_POINTER(nl_table[sk->sk_protocol].listeners, NULL);
- 			kfree_rcu(old, rcu);
-+			kfree(nl_table[sk->sk_protocol].mc_gen);
-+			nl_table[sk->sk_protocol].mc_gen = NULL;
- 			nl_table[sk->sk_protocol].module = NULL;
- 			nl_table[sk->sk_protocol].bind = NULL;
- 			nl_table[sk->sk_protocol].unbind = NULL;
-@@ -990,6 +992,9 @@ static int netlink_bind(struct socket *sock, struct sockaddr_unsized *addr,
- 	struct net *net = sock_net(sk);
- 	struct netlink_sock *nlk = nlk_sk(sk);
- 	struct sockaddr_nl *nladdr = (struct sockaddr_nl *)addr;
-+	struct netlink_table *tbl = &nl_table[sk->sk_protocol];
-+	unsigned int bound_gen[BITS_PER_TYPE(u32)];
-+	unsigned int gen[BITS_PER_TYPE(u32)];
- 	int err = 0;
- 	unsigned long groups;
- 	bool bound;
-@@ -1023,9 +1028,14 @@ static int netlink_bind(struct socket *sock, struct sockaddr_unsized *addr,
- 			return -EINVAL;
- 	}
+diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
+index 447736854870..43e001da634e 100644
+--- a/drivers/net/dsa/motorcomm/chip.c
++++ b/drivers/net/dsa/motorcomm/chip.c
+@@ -822,6 +822,109 @@ yt921x_fdb_join(struct yt921x_priv *priv, const unsigned char *addr, u16 vid,
+ 	return yt921x_fdb_add_index_in12(priv, index, ctrl1, ctrl2);
+ }
  
-+retry:
- 	if (nlk->netlink_bind && groups) {
- 		int group;
- 
-+		netlink_lock_table();
-+		memcpy(gen, tbl->mc_gen, sizeof(gen));
-+		netlink_unlock_table();
++/* Learn-suspended entries are never aged by the hardware, clean them up before
++ * the FDB fills up.
++ */
++static int yt921x_fdb_clean(struct yt921x_priv *priv)
++{
++	u8 status;
++	u16 index;
++	u32 ctrl;
++	u32 val;
++	int res;
 +
- 		/* nl_groups is a u32, so cap the maximum groups we can bind */
- 		for (group = 0; group < BITS_PER_TYPE(u32); group++) {
- 			if (!test_bit(group, &groups))
-@@ -1036,6 +1046,10 @@ static int netlink_bind(struct socket *sock, struct sockaddr_unsized *addr,
- 			netlink_undo_bind(group, groups, sk);
- 			return err;
- 		}
++	ctrl = YT921X_FDB_OP_INDEX(0) | YT921X_FDB_OP_MODE_INDEX |
++	       YT921X_FDB_OP_OP_GET_ONE | YT921X_FDB_OP_START;
++	res = yt921x_reg_write(priv, YT921X_FDB_OP, ctrl);
++	if (res)
++		return res;
 +
-+		netlink_lock_table();
-+		memcpy(bound_gen, tbl->mc_gen, sizeof(bound_gen));
-+		netlink_unlock_table();
- 	}
- 
- 	/* No need for barriers here as we return to user-space without
-@@ -1057,6 +1071,26 @@ static int netlink_bind(struct socket *sock, struct sockaddr_unsized *addr,
- 	netlink_unlock_table();
- 
- 	netlink_table_grab();
-+	if (nlk->netlink_bind && groups) {
-+		unsigned long gone = 0;
-+		bool released = false;
-+		int group;
++	res = yt921x_fdb_wait(priv, &val);
++	if (res)
++		return res;
 +
-+		for_each_set_bit(group, &groups, BITS_PER_TYPE(u32)) {
-+			if (gen[group] != tbl->mc_gen[group])
-+				released = true;
-+			if (bound_gen[group] != tbl->mc_gen[group])
-+				__set_bit(group, &gone);
-+		}
-+		/* see netlink_setsockopt(), undo all but gone and retry all */
-+		if (released) {
-+			netlink_table_ungrab();
-+			netlink_undo_bind(BITS_PER_TYPE(u32), groups & ~gone,
-+					  sk);
-+			bound = true;
-+			goto retry;
-+		}
++	status = YT921X_FDB_ENTRY_STATUS_INVALID;
++	if (!(val & YT921X_FDB_RESULT_NOTFOUND)) {
++		res = yt921x_reg_read(priv, YT921X_FDB_OUT1, &val);
++		if (res)
++			return res;
++		status = FIELD_GET(YT921X_FDB_IO1_STATUS_M, val);
 +	}
- 	netlink_update_subscriptions(sk, nlk->subscriptions +
- 					 hweight32(groups) -
- 					 hweight32(nlk->groups[0]));
-@@ -1686,6 +1720,8 @@ static int netlink_setsockopt(struct socket *sock, int level, int optname,
- 		break;
- 	case NETLINK_ADD_MEMBERSHIP:
- 	case NETLINK_DROP_MEMBERSHIP: {
-+		struct netlink_table *tbl = &nl_table[sk->sk_protocol];
-+		unsigned int gen = 0, bound_gen = 0;
- 		int err;
- 
- 		if (!netlink_allowed(sock, NL_CFG_F_NONROOT_RECV))
-@@ -1695,12 +1731,34 @@ static int netlink_setsockopt(struct socket *sock, int level, int optname,
- 			return err;
- 		if (!val || val - 1 >= nlk->ngroups)
- 			return -EINVAL;
-+retry:
- 		if (optname == NETLINK_ADD_MEMBERSHIP && nlk->netlink_bind) {
-+			netlink_lock_table();
-+			gen = tbl->mc_gen[val - 1];
-+			netlink_unlock_table();
- 			err = nlk->netlink_bind(sock_net(sk), val);
- 			if (err)
- 				return err;
-+			netlink_lock_table();
-+			bound_gen = tbl->mc_gen[val - 1];
-+			netlink_unlock_table();
- 		}
- 		netlink_table_grab();
-+		/* The group was released around ->netlink_bind(), and may have
-+		 * a new owner now, so check it again. If it was released only
-+		 * after ->netlink_bind() returned, the owner that was bound is
-+		 * gone: no ->netlink_unbind() for it. Otherwise assume that the
-+		 * current owner was bound.
++
++	index = 0;
++	while (1) {
++		if (status == YT921X_FDB_ENTRY_STATUS_PENDING) {
++			ctrl = YT921X_FDB_OP_INDEX(index) |
++			       YT921X_FDB_OP_MODE_INDEX | YT921X_FDB_OP_OP_DEL |
++			       YT921X_FDB_OP_START;
++			res = yt921x_reg_write(priv, YT921X_FDB_OP, ctrl);
++			if (res)
++				return res;
++
++			res = yt921x_fdb_wait(priv, &val);
++			if (res)
++				return res;
++		}
++
++		/* Never call GET_NEXT with 4095, otherwise it will hang
++		 * forever until a reset!
 +		 */
-+		if (optname == NETLINK_ADD_MEMBERSHIP && nlk->netlink_bind &&
-+		    gen != tbl->mc_gen[val - 1]) {
-+			bool unbind = bound_gen == tbl->mc_gen[val - 1];
++		if (index >= YT921X_FDB_NUM - 1)
++			break;
 +
-+			netlink_table_ungrab();
-+			if (unbind && nlk->netlink_unbind)
-+				nlk->netlink_unbind(sock_net(sk), val);
-+			goto retry;
-+		}
- 		netlink_update_socket_mc(nlk, val,
- 					 optname == NETLINK_ADD_MEMBERSHIP);
- 		netlink_table_ungrab();
-@@ -2031,6 +2089,7 @@ __netlink_kernel_create(struct net *net, int unit, struct module *module,
- 	struct sock *sk;
- 	struct netlink_sock *nlk;
- 	struct listeners *listeners = NULL;
-+	unsigned int *mc_gen = NULL;
- 	unsigned int groups;
- 
- 	BUG_ON(!nl_table);
-@@ -2052,7 +2111,8 @@ __netlink_kernel_create(struct net *net, int unit, struct module *module,
- 		groups = cfg->groups;
- 
- 	listeners = kzalloc(sizeof(*listeners) + NLGRPSZ(groups), GFP_KERNEL);
--	if (!listeners)
-+	mc_gen = kcalloc(groups, sizeof(*mc_gen), GFP_KERNEL);
-+	if (!listeners || !mc_gen)
- 		goto out_sock_release;
- 
- 	sk->sk_data_ready = netlink_data_ready;
-@@ -2069,6 +2129,7 @@ __netlink_kernel_create(struct net *net, int unit, struct module *module,
- 	if (!nl_table[unit].registered) {
- 		nl_table[unit].groups = groups;
- 		rcu_assign_pointer(nl_table[unit].listeners, listeners);
-+		nl_table[unit].mc_gen = mc_gen;
- 		nl_table[unit].module = module;
- 		if (cfg) {
- 			nl_table[unit].bind = cfg->bind;
-@@ -2079,6 +2140,7 @@ __netlink_kernel_create(struct net *net, int unit, struct module *module,
- 		nl_table[unit].registered = 1;
- 	} else {
- 		kfree(listeners);
-+		kfree(mc_gen);
- 		nl_table[unit].registered++;
- 	}
- 	netlink_table_ungrab();
-@@ -2086,6 +2148,7 @@ __netlink_kernel_create(struct net *net, int unit, struct module *module,
- 
- out_sock_release:
- 	kfree(listeners);
-+	kfree(mc_gen);
- 	netlink_kernel_release(sk);
- 	return NULL;
- 
-@@ -2113,6 +2176,17 @@ int __netlink_change_ngroups(struct sock *sk, unsigned int groups)
- 	if (groups < 32)
- 		groups = 32;
- 
-+	if (tbl->groups < groups) {
-+		unsigned int *mc_gen;
++		ctrl = YT921X_FDB_OP_INDEX(index) | YT921X_FDB_OP_MODE_INDEX |
++		       YT921X_FDB_OP_NEXT_TYPE_UCAST |
++		       YT921X_FDB_OP_OP_GET_NEXT | YT921X_FDB_OP_START;
++		res = yt921x_reg_write(priv, YT921X_FDB_OP, ctrl);
++		if (res)
++			return res;
 +
-+		mc_gen = kcalloc(groups, sizeof(*mc_gen), GFP_ATOMIC);
-+		if (!mc_gen)
-+			return -ENOMEM;
-+		memcpy(mc_gen, tbl->mc_gen, tbl->groups * sizeof(*mc_gen));
-+		kfree(tbl->mc_gen);
-+		tbl->mc_gen = mc_gen;
++		res = yt921x_fdb_wait(priv, &val);
++		if (res)
++			return res;
++		if (val & YT921X_FDB_RESULT_NOTFOUND)
++			break;
++		index = FIELD_GET(YT921X_FDB_RESULT_INDEX_M, val);
++
++		res = yt921x_reg_read(priv, YT921X_FDB_OUT1, &val);
++		if (res)
++			return res;
++		status = FIELD_GET(YT921X_FDB_IO1_STATUS_M, val);
++		if (status == YT921X_FDB_ENTRY_STATUS_INVALID)
++			break;
 +	}
 +
- 	if (NLGRPSZ(tbl->groups) < NLGRPSZ(groups)) {
- 		new = kzalloc(sizeof(*new) + NLGRPSZ(groups), GFP_ATOMIC);
- 		if (!new)
-@@ -2157,6 +2231,9 @@ void __netlink_clear_multicast_users(struct sock *ksk, unsigned int group)
- 	struct netlink_table *tbl = &nl_table[ksk->sk_protocol];
- 	struct hlist_node *tmp;
- 
-+	/* the group can be given to another user, see netlink_setsockopt() */
-+	tbl->mc_gen[group - 1]++;
++	return 0;
++}
 +
- 	sk_for_each_bound_safe(sk, tmp, &tbl->mc_list) {
- 		/* bitmap predates the group, can't be a member */
- 		if (group - 1 >= nlk_sk(sk)->ngroups)
-diff --git a/net/netlink/af_netlink.h b/net/netlink/af_netlink.h
-index 778a3809361f..d5e2e404fd11 100644
---- a/net/netlink/af_netlink.h
-+++ b/net/netlink/af_netlink.h
-@@ -64,6 +64,7 @@ struct netlink_table {
- 	struct listeners __rcu	*listeners;
- 	unsigned int		flags;
- 	unsigned int		groups;
-+	unsigned int		*mc_gen;
- 	struct mutex		*cb_mutex;
- 	struct module		*module;
- 	int			(*bind)(struct net *net, int group);
++static void yt921x_fdb_clean_work(struct work_struct *work)
++{
++	struct yt921x_priv *priv = container_of_const(work, struct yt921x_priv,
++						      fdb_clean.work);
++	struct device *dev = to_device(priv);
++	bool has_locked = false;
++	int res;
++
++	mutex_lock(&priv->reg_lock);
++
++	res = yt921x_fdb_clean(priv);
++
++	for (int port = 0; port < YT921X_PORT_NUM; port++)
++		if (priv->ports[port].locked) {
++			has_locked = true;
++			break;
++		}
++
++	mutex_unlock(&priv->reg_lock);
++
++	if (res)
++		dev_err(dev, "Failed to clean pending FDB entries: %i\n", res);
++
++	if (has_locked)
++		schedule_delayed_work(&priv->fdb_clean,
++				      priv->fdb_clean_interval);
++}
++
+ static int
+ yt921x_dsa_port_fdb_dump(struct dsa_switch *ds, int port,
+ 			 dsa_fdb_dump_cb_t *cb, void *data)
+@@ -1412,6 +1515,30 @@ static int yt921x_bridge_join(struct yt921x_priv *priv, int port)
+ 	return 0;
+ }
+ 
++static int yt921x_port_learn_cfg(struct yt921x_priv *priv, int port)
++{
++	struct yt921x_port *pp = &priv->ports[port];
++	u32 ctrl;
++	u32 mask;
++
++	mask = YT921X_PORT_LEARN_MODE_M | YT921X_PORT_LEARN_DIS |
++	       YT921X_PORT_LEARN_SUSPEND_DROP_EN |
++	       YT921X_PORT_LEARN_SUSPEND_COPY_EN;
++	if (pp->locked) {
++		ctrl = YT921X_PORT_LEARN_MODE_CPU_CONTROL;
++		if (pp->mab)
++			ctrl |= YT921X_PORT_LEARN_SUSPEND_COPY_EN;
++		else
++			ctrl |= YT921X_PORT_LEARN_SUSPEND_DROP_EN;
++	} else if (pp->learning) {
++		ctrl = 0;
++	} else {
++		ctrl = YT921X_PORT_LEARN_DIS;
++	}
++	return yt921x_reg_update_bits(priv, YT921X_PORTn_LEARN(port), mask,
++				      ctrl);
++}
++
+ static int
+ yt921x_bridge_flags(struct yt921x_priv *priv, int port,
+ 		    struct switchdev_brport_flags flags)
+@@ -1420,17 +1547,23 @@ yt921x_bridge_flags(struct yt921x_priv *priv, int port,
+ 	bool change_isolated;
+ 	bool change_flood;
+ 	u32 ports_mask;
+-	u32 mask;
+ 	int res;
+ 
+-	if (flags.mask & BR_LEARNING) {
+-		bool learning = flags.val & BR_LEARNING;
++	if (flags.mask & (BR_LEARNING | BR_PORT_LOCKED | BR_PORT_MAB)) {
++		if (flags.mask & BR_LEARNING)
++			pp->learning = flags.val & BR_LEARNING;
++		if (flags.mask & BR_PORT_LOCKED)
++			pp->locked = flags.val & BR_PORT_LOCKED;
++		if (flags.mask & BR_PORT_MAB)
++			pp->mab = flags.val & BR_PORT_MAB;
+ 
+-		mask = YT921X_PORT_LEARN_DIS;
+-		res = yt921x_reg_toggle_bits(priv, YT921X_PORTn_LEARN(port),
+-					     mask, !learning);
++		res = yt921x_port_learn_cfg(priv, port);
+ 		if (res)
+ 			return res;
++
++		if ((flags.mask & BR_PORT_LOCKED) && pp->locked)
++			schedule_delayed_work(&priv->fdb_clean,
++					      priv->fdb_clean_interval);
+ 	}
+ 
+ 	/* BR_BCAST_FLOOD: we can filter bcast, but cannot trap them */
+@@ -1482,7 +1615,8 @@ yt921x_dsa_port_pre_bridge_flags(struct dsa_switch *ds, int port,
+ 				 struct netlink_ext_ack *extack)
+ {
+ 	if (flags.mask & ~(BR_HAIRPIN_MODE | BR_LEARNING | BR_FLOOD |
+-			   BR_MCAST_FLOOD | BR_ISOLATED))
++			   BR_MCAST_FLOOD | BR_ISOLATED | BR_PORT_LOCKED |
++			   BR_PORT_MAB))
+ 		return -EINVAL;
+ 	return 0;
+ }
+@@ -1610,6 +1744,7 @@ yt921x_dsa_port_stp_state_set(struct dsa_switch *ds, int port, u8 state)
+ 	struct yt921x_priv *priv = dsa_to_yt921x_priv(ds);
+ 	struct device *dev = yt921x_priv_to_device(priv);
+ 	struct dsa_port *dp = dsa_to_port(ds, port);
++	struct yt921x_port *pp = &priv->ports[port];
+ 	bool learning;
+ 	u32 mask;
+ 	u32 ctrl;
+@@ -1644,10 +1779,8 @@ yt921x_dsa_port_stp_state_set(struct dsa_switch *ds, int port, u8 state)
+ 		if (res)
+ 			break;
+ 
+-		mask = YT921X_PORT_LEARN_DIS;
+-		ctrl = !learning ? YT921X_PORT_LEARN_DIS : 0;
+-		res = yt921x_reg_update_bits(priv, YT921X_PORTn_LEARN(port),
+-					     mask, ctrl);
++		pp->learning = learning;
++		res = yt921x_port_learn_cfg(priv, port);
+ 	} while (0);
+ 	mutex_unlock(&priv->reg_lock);
+ 
+@@ -2242,9 +2375,11 @@ static int yt921x_edata_read(struct yt921x_priv *priv, u8 addr, u8 *valp)
+ 
+ static void yt921x_dsa_teardown(struct dsa_switch *ds)
+ {
+-#if IS_ENABLED(CONFIG_NET_DSA_YT921X_LEDS)
+ 	struct yt921x_priv *priv = dsa_to_yt921x_priv(ds);
+ 
++	cancel_delayed_work_sync(&priv->fdb_clean);
++
++#if IS_ENABLED(CONFIG_NET_DSA_YT921X_LEDS)
+ 	yt921x_leds_remove(priv);
+ #endif
+ }
+@@ -2723,6 +2858,8 @@ static int yt921x_mdio_probe(struct mdio_device *mdiodev)
+ 	mdio->switchid = 0;
+ 
+ 	mutex_init(&priv->reg_lock);
++	INIT_DELAYED_WORK(&priv->fdb_clean, yt921x_fdb_clean_work);
++	priv->fdb_clean_interval = 61 * HZ;
+ 
+ 	priv->reg_ops = &yt921x_reg_ops_mdio;
+ 	priv->reg_ctx = mdio;
+diff --git a/drivers/net/dsa/motorcomm/chip.h b/drivers/net/dsa/motorcomm/chip.h
+index 842fd8f83903..81d2e75fe207 100644
+--- a/drivers/net/dsa/motorcomm/chip.h
++++ b/drivers/net/dsa/motorcomm/chip.h
+@@ -465,6 +465,12 @@ struct yt921x_port {
+ 	bool flood:1;
+ 	/* BR_MCAST_FLOOD */
+ 	bool mcast_flood:1;
++	/* BR_PORT_LOCKED */
++	bool locked:1;
++	/* BR_PORT_MAB */
++	bool mab:1;
++	/* BR_LEARNING */
++	bool learning:1;
+ 
+ 	unsigned short acl_cnt;
+ 
+@@ -526,6 +532,9 @@ struct yt921x_priv {
+ 	struct mii_bus *mbus_int;
+ 	struct mii_bus *mbus_ext;
+ 
++	struct delayed_work fdb_clean;
++	unsigned int fdb_clean_interval;
++
+ 	struct yt921x_port ports[YT921X_PORT_NUM];
+ 
+ 	u16 eee_ports_mask;
 -- 
-2.25.1
+2.53.0
 
