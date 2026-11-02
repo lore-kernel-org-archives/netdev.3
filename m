@@ -1,159 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.147.86
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793591195;
-	b=5MEaSi9VLKH9N/QYx+q3NDzX4MAiJwHlbj3X15qe4uynviCyDi5E+T7ZkR7cHVjW+Q0U
-	 60rt2pOWFYLOce1Mmx4Z3TUVDW8Wrk+1LqtyqqUHFyLieOse5ynvV/9e4/zzS+eanjJ0x
-	 VlrTjXG15foZdmTIQsQ0q5CQo27m/aKT1YInwDwSNugfrau0z1Q4cM0PSyGRXMr75B14m
-	 ZplxvHDm2hlMu3axgADnR66bMP3o/q7SsGLPJaDT5MAnr56SUMzl9WwbrNTU0VSZquMHV
-	 24EHq5oRPIB7XZxjb1UQXmzzjDhiUs7QLHSLXFwZ6WWdZr7AUyjub67XfWwxcOtdDpw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793591195;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:CC:References:Content-Language:From:
-	 Organization:In-Reply-To:Content-Type:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-LD-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg:
-	 X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Authority-Analysis:X-HPE-SCL:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=Ck/qit+bcG6Tu7Vy7BGh4BNipAZ5j/s78IRMztOiIM8=;
-	b=00dVVndstYpvCoaFT7TJCXsvQjPt+sKdp9je60YfMq8YtZRo8t4Py03dmrK/IfBspiDQ
-	 +TdxdjCEn63XvitGH9zdAtz1yB9/cOXygoGMTeTyb/i7xRMwxILM6ykSPOtBS+cwx4nHc
-	 JhIwFZBVyiW3lfrjw0zl8l75+AcODW7w2bKEkMmohlcWLbC0aCijpIwMzZXGE1gEbue/W
-	 rLH5Pa3WotFLVu1ERZDJRjtOcBhaMCaBvEiHw+UoKxnaNXqz5sQtEXS98SRTQX6/VXg6W
-	 sa/BmNXuDmPAAXCgNTK2EWMoDylx/mjTwV2zKoN/gJsnfMkxsuEQ+GvBUjjPr1s06qQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=hpe.com;
-	spf=pass smtp.mailfrom=hpe.com;
-	dkim=pass header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=kw3GVYZU;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=148.163.147.86
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.174
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793591290;
+	b=sDWbxwU2otDHwypKzpsBSUwOPGlNF7VMIfUjrHaKbg9bDfN32Eq/z/U4rcJR3WHViPuG
+	 cs7XFHMHlKGVty81pI4V1VCltyQin4X5/uQcF3F2fFk+cHAc/C6UPi2rLQUFVwr8iZtPe
+	 /FSWrFhx+S8rLGoRbFiNVc5bwtlnL6H/CAcy38Cg6WDcicyu/GOx1KAWMeqf6MrK2CQGd
+	 sp7UOHOfT5VR/AmG2vGKNeYsFdTWKopTMw8SuaGt0qX1BxpVx8SZ1vj6+ZQxooVZvN0iY
+	 p+LwH02JykOJ1MTQVRlTO6k1dfRMEEyAvLEUws567Vodb6Jmn1U1ovsjuAsRRyRqrsQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793591290;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=cFPNzUzaEvlmAt2XncHNzP/taiNHYfmBHlXzkk87aOE=;
+	b=uOOjcq/RrO4aRKD1QBX/icLdjbzM5SsEhqReUhcw1m9S0vB7HPOwxHq0Kmup6zdMC0de
+	 2btuF1vRelJ3LPrSUdXaHysvorPLkFW+5q8qi36GJj+IgVGUiI3Nd4MztlhUXz/uK4CJo
+	 oZwRlXGagH3FHTdjqAx56aeDKMeiOlDVmNuL+GB5jcFOclzpz7Y1D6mpoqU9lbkqJqs6x
+	 XCUZlfDh6B2zQayeQFJEPbKsv3WLf3rzh+Bj+4ttbNRbPA8ZnMhu+sL7USgvVHc9GqCwY
+	 RDVcW9D6FszfWibr32VrfswD7quJZTTXOrUaJaYAgtWhVsDxU4ncRsnnSCumLO0OIwQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DvQEHYxo;
+	arc=none smtp.remote-ip=74.125.82.174
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755D8606A326;
-	Mon,  2 Nov 2026 03:46:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 755D8606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0081D606A324
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 03:48:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0081D606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=hpe.com header.i=@hpe.com header.a=rsa-sha256 header.s=pps0720 header.b=kw3GVYZU
-Received: from pps.filterd (m0150242.ppops.net [127.0.0.1])
-	by mx0a-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A20M50g542193;
-	Mon, 2 Nov 2026 03:46:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps0720; bh=Ck/qit+bcG6Tu7Vy7BGh4BNipA
-	Z5j/s78IRMztOiIM8=; b=kw3GVYZURQu9r+f3S/bXeeEnlL9vmOqhfqPEM2IoVm
-	2thGaWDSOhIOtTHJRoCWoJQ8tsio455w3vfoFEIVCURrRyhfzm4Fn8OjLwKi+NUF
-	KrT2uYhsXfK5krJP25cJF48xZLakBBqjRgiE++pWbWTlx675Sn9P9ZFBi+30HL5J
-	PPUOBkk/jyH9WMcBcJitkc8HIyuRgoAV1QGf+OeLdPybwojr5b9vl3UHKiERdqw1
-	hb6yRHvjpQc/sAKxTU57BQ+7po9K+m8XTL3X1oCSJmb1OWXuq+ywYOed+ZP9OsHZ
-	pob9EKrKaK9i3NX8dsqBsanrEVtnOeiX0WRXcOW85Jbg==
-Received: from p1lg14881.it.hpe.com (p1lg14881.it.hpe.com [16.230.97.202])
-	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 4hpbcnb37w-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 02 Nov 2026 03:45:59 +0000 (GMT)
-Received: from p1wg14924.americas.hpqcorp.net (unknown [10.119.18.113])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by p1lg14881.it.hpe.com (Postfix) with ESMTPS id 1833B8047AC;
-	Mon,  2 Nov 2026 03:45:59 +0000 (UTC)
-Received: from p1wg14927.americas.hpqcorp.net (10.119.18.117) by
- p1wg14924.americas.hpqcorp.net (10.119.18.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Sun, 1 Nov 2026 15:45:39 -1200
-Received: from p1wg14925.americas.hpqcorp.net (10.119.18.114) by
- p1wg14927.americas.hpqcorp.net (10.119.18.117) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Sun, 1 Nov 2026 15:45:39 -1200
-Received: from p1wg14921.americas.hpqcorp.net (16.230.19.124) by
- p1wg14925.americas.hpqcorp.net (10.119.18.114) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Sun, 1 Nov 2026 15:45:39 -1200
-Received: from CO1PR08CU001.outbound.protection.outlook.com (192.58.206.38) by
- edge.it.hpe.com (16.230.19.124) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Sun, 1 Nov
- 2026 15:45:30 -1200
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VvpfGQsLnpIwZ7zA+44JE1XkKt/fWKbuGVvWPg2X4LEJgOPf1shA32DIJBDvu4Pf6gXtErLX97I+hO9X6KwCyo8dapF65uHIVWWpg4WMlYGgZIQY0reLy4bJCdWSNZxXMdyQOyhT3BwQyM/fJOoTQtxYBAZUc4E0Fw0GfkM8rcbphVy0b1JAWgV+DoidvGS710VXXJB3qzdZlRLSQIWyFcJanRnMHloshbPLHHMGmfqo1MDLi9P/8NXp5bYggrssA1TgPOIUwLE57hM80wjKQwS4Y1fQSNhDoclr1e9P8MBzTjUxQANRgD+9PNhYFm9TOgOpNK9P4BYnEaQVaE74Pw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ck/qit+bcG6Tu7Vy7BGh4BNipAZ5j/s78IRMztOiIM8=;
- b=n6BWEucslqFOTjfTw5wlYfR1NT6gqXzu4Adu2Z+e0s9aLS6UYWnoydCrna1tm6vKzriz06niC1nIxkmZkn1URUBe/L37rEAWQbnGcJJfSsWvFdxeYOXSqJl3yUwBVWDj4SVhlDtFYln6lS2BcK5HbQsjPDWvPoxEoAUJ/2Az8FbrAg90zR3uisBleYX6j7Bqv+CaNp5bL3ojYx2cO7/9swE/era8fcPQpuwoRzyE/SjIs6+DmKByFZK3HPnK/i8cpCniu/JdDBljECBXK7gk3ZvOUXCAQZ72pFjZlXRHxyJ37n4MRdidY00SZBdHiUEY9f67pBOlmOXVf0HV45wbFA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
- header.d=hpe.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=hpe.com;
-Received: from DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:8:225::20)
- by CYXPR84MB3685.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:930:da::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
- 2026 03:45:29 +0000
-Received: from DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::d136:e75e:53c5:73d8]) by DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::d136:e75e:53c5:73d8%6]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
- 03:45:29 +0000
-Message-ID: <b260f39e-2ac0-4899-90d9-3e9dbadfacc4@hpe.com>
-Date: Sun, 1 Nov 2026 19:45:24 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/23] Subject: [PATCH net-next 00/23] net/hpe: add HPE
- Slingshot NIC drivers
-To: Andrew Lunn <andrew@lunn.ch>
-CC: Jakub Kicinski <kuba@kernel.org>,
-        Slingshot Open Source Team
-	<slingshot-os-team@groups.ext.hpe.com>,
-        Nathan Chancellor
-	<nathan@kernel.org>,
-        Nicolas Schier <nsc@kernel.org>,
-        Richard Cochran
-	<richardcochran@gmail.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S.
- Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        Guenter Roeck
-	<linux@roeck-us.net>, <linux-kernel@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <linux-kbuild@vger.kernel.org>,
-        Sandeep Bhoot
-	<sandeep.bhoot@hpe.com>,
-        Iraimani P <iraimani.pavadai@hpe.com>,
-        "Mamila
- Santosh" <santosh-kumar.mamila@hpe.com>
-References: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
- <20261030151121.1f232b50@kernel.org>
- <7d4583c2-e8dc-4ffb-bc45-e2121f824b14@lunn.ch>
- <bde936b5-1b3f-4987-a3e5-36ec5c4710e6@hpe.com>
- <2f831f13-58ff-40ca-a76f-3aca647012b6@lunn.ch>
-Content-Language: en-US
-From: Doug Ledford <doug.ledford@hpe.com>
-Organization: Hewlett Packard Enterprise
-In-Reply-To: <2f831f13-58ff-40ca-a76f-3aca647012b6@lunn.ch>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------LxDGitb0mAZHQ9omlyXQp31y"
-X-ClientProxiedBy: BY3PR03CA0011.namprd03.prod.outlook.com
- (2603:10b6:a03:39a::16) To DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
- (2603:10b6:8:225::20)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DvQEHYxo
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-35cd4e8bdbdso3328176eec.1
+        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 19:48:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793591289; x=1794196089; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=cFPNzUzaEvlmAt2XncHNzP/taiNHYfmBHlXzkk87aOE=;
+        b=DvQEHYxoXn9OgKghSx0T2iQhJooKYmMi3C4cYuig4RZrGnBeCH1Z3Yt6YrDilgZfSI
+         zMUBSBcU9lvSQe90A4XdpgNZQZ/vSt/FB5GCVAT5egbKCjwvI/0Uih8idz1YZGr3wACx
+         RvumeXINaEw8kkR54Pd+RPkO4xSk/u8VQUSDbhmn8cqhNzQOHEC5H3nSn+HQWrItX3W8
+         uU3tGgC2XSsGmeh9ANWClsYiYGWXaP5EJVQpyBYtmQXAYblmpZZhRnWjvDhJjB5PQI+E
+         8JXiSjPCkTDcJl3ynan9+bNDjcCl+f3uqzu1Kc3imSlZe/VHvZ3ChO610DqoIVWBytbY
+         eDWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793591289; x=1794196089;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cFPNzUzaEvlmAt2XncHNzP/taiNHYfmBHlXzkk87aOE=;
+        b=Hi5f4atPNrvjDkMw1Y0mcCwb55v6n3hWMG5SSwEP+di91mNuag3XPJvgQ23bslfXrB
+         8+Vubz8+yLZCxgP+97t+gCNWPbR2kalICvo0ryTx4YuCmLu6sKaQMHUpLWFt4+0jfTib
+         LWajH+FoJP1SiGs6M6Qm2/VODiqta98nQywaqEZEXutr9fTmN7VwP8UY7VWg+aYgHcMy
+         kR3N0CG0fDgsUgd8yp2cf8kS//TQaDRlMDPwqMyP1iSyUc2VrCn3Z1Ax81oQQpJ/t14j
+         9T5rkvIEpyJDO8LSJudvfj+VvlrM78fa37ldsx72gy70NjrUarkR2GG4WkAyXl2YXuJf
+         ZdYA==
+X-Gm-Message-State: APuU4Z85oxCSr2uvEB3tPslTQxOjVJD6O79ajLLewCG4z4HYimPbyzMn
+	ONDYYE3pM87JybC4aHaNmzq4zQjKJDZa0s4yLU6oT77DLiDRcK4IEbVFATF4Fw==
+X-Gm-Gg: AYBFou37V2pX0pSqt7pKyBKzPtrUOPSAtnQGimtRbnTTqNzLvlO/f/X/qVxaY28CaQU
+	bwe6ZWYAAXghDfT3wSvTzMNhpkx38jNwFQGSXcxKRSXA862bVXRzyE8iZHRKg23qaPrP55jlyBl
+	aIwTNuZ/iezTs80cPmM+aaLBq+36eC8htp2zi447mA5D8HDNrgCxlCJnfk4O9bxb111xoKSZvhE
+	2h6v2umbHL8sQRXN+KPa7dsNutYtcpofGbIVxK/JrgmtLWnFaOHg3PUK97JNqBB2FyJAZEAO+B9
+	gRbjCCQaUD5H9T4Zm+Vjwps8ehrGH6gBKqBoIc3BFLBfGsQTanQzvNU3IXgnikAt2+f2aDGA+WJ
+	HM1PFyu6GSEk2GeCqm/XB4lU47X7adqTW/raSM5EGbqBwiGC0MgXdY3lFUaK34fqTsxE2YvF7aE
+	/1rY0NB2kvC0L55GPnHhkuxX2QeuJzPAypV5WyICTITs2Cxcm3n/JC930Jvti4S8eGamKwFE4Oo
+	7xKS0YkgdBVJ8Y+BxKe/krXlLduKl7kfZB5UIcL4mt/jKyJGiNdTYgDhR1hDQKM9q41yTe+3gxi
+	RVJ4N0zF8/Rclxqc824cnNVR+kqUzIXh10aq5EVAMDu3obzfUu9kLzm5vXY5i4mtQ89XzJjj1KZ
+	Ge2zScXRYgL+k74OzEuP9lxzqDl04KJzbo0bhG5jiyMIU5Pqn6o6v7c5xYvgsk0eIrj7Si83mJb
+	svPg==
+X-Received: by 2002:a05:693c:4153:20b0:358:8f02:e0ca with SMTP id 5a478bee46e88-36a4236903fmr14289283eec.9.1793591288664;
+        Sun, 01 Nov 2026 19:48:08 -0800 (PST)
+Received: from ryzen.lan ([2601:644:8000:37f::e34])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a42669128sm34899514eec.3.2026.11.01.19.48.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Nov 2026 19:48:08 -0800 (PST)
+From: Rosen Penev <rosenp@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net-next] net: ibm: emac: use page_pool for RX buffers
+Date: Sun,  1 Nov 2026 19:48:06 -0800
+Message-ID: <20261102034806.190498-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -163,215 +98,562 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR84MB3970:EE_|CYXPR84MB3685:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3c31259f-5afa-41b6-78c4-08df3893bcd0
-X-LD-Processed: 105b2061-b669-4b31-92ac-24d304d195dc,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|7416014|261021121427099003|261021135927099003|261022105027099003|261022075727099003|261009223027099003|261026121527099003|261026140227099003|261028144727099003|4143699003|10067099003|56012099006|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info: EyWPyUJRwG/JPPhEyQlY7zchK0NMJxnZhfMmDtGr433Iq6uwNNeLWbFyigOxwsSyo6zGQEubNrscYkTtyq0GdUE7iWdf+NmGyoksVnoby6cAFQO1MxpGIyGAlJrPCFRerr6IJtYtobph+7sLkTzEIe8nd1Pap0ig16JTJQIf1buFtCwoxejtRuegLiuGyxJh2SExplXjp+hHuGNNzclQrz6IrlV2F9J8DX3S4O2w3oE2hSSTFsHlPvI5LlrNKl5FH+Ahg7K4tyIQG4TXW7ca8pHIasRM4J/ki2wZvNfkY+cPvGgFqLQODs4SR1pfWz9edJp2tMYjn4BESxJle5awzVduqLNmmWl6yFrRv9oK/Nl+0FyIKnLfPaI6/SVo4HPa79JgI2IvXtw8fMgIhbM/NySaIqaHZn7v/TGoCW2LrInZ4OZc1WZ3JViAaFHJM58ks7PNe29Mu4SmDFmAsifmmCv4AxjWm+kcBfj27UPmZMowSbmubAp5xx3G0ZISBsbaPb+6FytbmFbE9Td1yR31tgmm+7QLdzEmq6PZE9klUCt5aUxqjoxSOqvFHxBtOAZ4YW4Psw8iauHaxxjG2KYYEykZdSDnZ8iEI8JGlwR7PYCZbjRQUcCbPuhO0cSQtwAoD2UHFyqNj9qTyzqLRL/7hyX4kpsBlgS3onSvJCDi6m0=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(7416014)(261021121427099003)(261021135927099003)(261022105027099003)(261022075727099003)(261009223027099003)(261026121527099003)(261026140227099003)(261028144727099003)(4143699003)(10067099003)(56012099006)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aHNoY0Fid0lCRWc2eWRSL3FhbE9TZTFORytSdGZIMERKR1RvWmFkQXNES1Yy?=
- =?utf-8?B?aEIxbzdybzFmS2Q0M3RxWTQ4S3g2dEJaZmFjdHNDUzlFSUc3R2g2Ukd2ajlq?=
- =?utf-8?B?U0JxRE9Xb243SHhoNjdUN2pqa2VXUUJZYWRFbmF2akZ5YXdJdG01R3dvd3Ju?=
- =?utf-8?B?WGNHS21YcWx1MFhYa0dURXJCQ1FEL3RxeW4xNzRrTU54SEd2bWhVd0NzN1pr?=
- =?utf-8?B?YkpsVVZjdTM5M1R4MDVqM0xWN2ZiWHVjUHM1VDU3QnRFaHIvSUREZ3MyNHJD?=
- =?utf-8?B?TW9zeFl3R3MrNmtwaFFxUkZXZC9jOU9hK0RUQUpRS2o3UUxEc1FBUDBaS1Q3?=
- =?utf-8?B?VjBDeElSa05iTlVVclBuSVMzYm5jMTF5TmM0RWhtbXBMOWxxRzdyZEJBbjk1?=
- =?utf-8?B?OEdwREdnajJoNFM2RG45WmxWY2h2aHdJL3VHODd4d3Q4ejNGUFFDYis2bGo4?=
- =?utf-8?B?RXQwUnhRSWFOakVlejVudDhPY2VZK0hSZUkrb3E1NXJYSUFMWUJGT1ZwTWlm?=
- =?utf-8?B?SS9TUG04bGhyUFk3QURkUGN0T3l4VUJybjlYVTlWQk5jWmtFaDBoSTNVZGlR?=
- =?utf-8?B?Y0ZJcjNQMkpKY2tYc2R6Q0pPNVcrU2hlT2dBWG4yRlRHRU5rbzVDT0cwbVB5?=
- =?utf-8?B?UXdoeG1LeUI4RlVnUjJTb0FkUWJpWStsS0lnOFFCSVlBa3RLb29wcTU3NCtl?=
- =?utf-8?B?R3VsTzhGcXJMQmhzbnJIQTBmZllSQjVQeFVySENXK0l6SGxaK3M4cFV4b1BM?=
- =?utf-8?B?YlpoTlk0c2hIOXg1Y3VPcnBiTXQwOWo5RkZUdkdDeFNYaVdreCtWaXZ3dWt6?=
- =?utf-8?B?VGJORlR0WURiazYzQmFPOU9Md1gxd08yb1ltUXFRZzBiYnArZ3ZUL2hrbHJK?=
- =?utf-8?B?T1JIMmw0bTFwRWI5Q2hyWlhuaFJMWnBaSkJjSjR4UmxiQkE4ZC9uWUpTNlZz?=
- =?utf-8?B?UTg1OWJYMkdNSGhDcm1jbmVPakROUi9LNllRMmlnRlQ2RHllMndydFFSdm1I?=
- =?utf-8?B?K0hGRGc2cTI1R054SnFYOWV5eUVGSFBmM29ma1Bkai81UmlxYjNQckFOUzhw?=
- =?utf-8?B?SXR0OUlGb2lUVEJLQmNzMTc2amE3b0Z3R2Qzclh3SVNqVUthUmpXRGpldGlL?=
- =?utf-8?B?VGlVbFlUR3Z0S1NSdGd6M3kwZm5sUVJyU2pMbzdSUVpLS3BxTjM3YzZ0cGNJ?=
- =?utf-8?B?Unp2Vm1jTlA3amlmcEpmQndGOVdvSTZkQ2NSbWVkL0k2cUtFRWZibzc2V0lU?=
- =?utf-8?B?cXhlSWhCOTBoSjF2N0pBdThaU1UwN1F5NE5HRE1pZlJqcmxGcUg3S0dRY0p0?=
- =?utf-8?B?Y2xGazVpS0NoazQ5LzM5TDhQdktnZWpFektQUUx1Y3lvckVsc1d2RWp0U2NR?=
- =?utf-8?B?bG04QWRKZWhVQXlWaEdmczhFYnlvUUN4cTZkZTVqbVpzZjAwT1dEV0tNNEZB?=
- =?utf-8?B?OEl3V01NU08vSjJjVHQyc2U4SnprZlVOb3BlS3RCR2VET0NLYThxTkt4enBT?=
- =?utf-8?B?clRPNTZMZFZXU1pFamVQWGIxQ2JqYUJZNUtiUCt0N2ZvVUdKMk4wVW9SZkpW?=
- =?utf-8?B?ZS9JUzhTa0ZBVW9Ccjd6WTBrNXNvRm13U0E5bjZTc2M0aVZ5VXc3MklHOGJI?=
- =?utf-8?B?YlpSa014SlFrUzBtRUNKZHViTmwyRHhEam9qeGRhZlBBZ0pqUU5DbkdCWjNy?=
- =?utf-8?B?Z2tjbWtNNGlMVUpLM0Q4WG1sQXZITW9xVytyMkxva3lSZmhrUEJqUUx4Zlpp?=
- =?utf-8?B?MU0waS80YmpnWi8zUHo2NHRwdUZDR1JLZGw2My9ENk8xS1EyRWliNlgrUE1W?=
- =?utf-8?B?SlJSRnBia2pSWVY3Q2srWjdWNUNWdlpnNWVyMFNCT25GdVdkYW4wYnk3M0xH?=
- =?utf-8?B?MWVVOXZUMXZmMVhQc1kwRnVxQkUwSmtJTnhuend4bjhQQmNzWW9jM2R3Qk9S?=
- =?utf-8?B?bHQ3aHZqNzdKaDZpVFBnS042cmZaeUs1VmJtaEd3U2pHUk5BK2NnWGNwY01y?=
- =?utf-8?B?RVdFOWxJNnFJdVBOU2l0RXFjZ0wzcEZtY1BYMHcrMEM1RCt3bjhMMmhYdlpq?=
- =?utf-8?B?cjVhTEJPVkhVTUFoTW1iMjg4ZDZmUmtPSGZ4aDlmdVkxUEFTcFVPNGFCa1JV?=
- =?utf-8?B?RXpzenhTRytaZGM5OC9WdWxRQzNuRkNuVjNYYjN6UFVrL1RmZkFMOUNOQmlF?=
- =?utf-8?B?eWVwRDBOK05kcG1nVHl6ZjJ0U1V1LzJ0NmZ3RWJETEU5aWJ3SWFHZi9sL29G?=
- =?utf-8?B?dkZ6RG9FTjNCbEJGTG5wMEMxV3lLMUNHa1BZU1cveGJtbFc2R0IycnJxemFY?=
- =?utf-8?B?VU1hWVNSTVBZZnh5cGIrd21rMDV5aHVaM3JjMEdUS1c5bVhQbU1pQT09?=
-X-Exchange-RoutingPolicyChecked: 1JKWp8ojDLACKYiheY1oTsY5kcQv5RnM1C3jofNH/Au6e7pOAt1X9PkwKHy9Zl4PPH/IcDdMiFatdjpjSi9veEkUkRfgRo6hDh2F+tWJ6WUpoCWwa8H8rf/hroGExyhsOMHhy1Kq1wvwNnbIefmCEnIGAyD8YWcgNVZPd8ZK85AKVaRPbp/iBDhSReJLhXtOP7rJc/XVv4xmQ2tKWhwrdeDC84bVrwPlIf7BF9g+zJ5PS36uI7wje/+XxAMPRRGjjtGrchrOiESJ9V4pW6AIVCx+Qwx78aLpFhU888vKGUk5yBQehq0Z8Z+BYpbU/unT8VMvWvCpb8+Ut9UZtQLJxg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3c31259f-5afa-41b6-78c4-08df3893bcd0
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR84MB3970.NAMPRD84.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 03:45:28.9859
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 105b2061-b669-4b31-92ac-24d304d195dc
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZQbdjKIa1HwOFdPj7nhWBxOQwZEKJiMv9l0cVt3QYx1zOupXLbEKtOCi8mmUPW3GxsjkwMBJ9rwbJFkoTWcK4A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR84MB3685
-X-OriginatorOrg: hpe.com
-X-Proofpoint-GUID: vGYVUnEIwzhuux_K4OcPIbyY2M2Pksr7
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAyMDAxNCBTYWx0ZWRfX1Mz7E5iMBJ2N
- 0TXFEamJoB/bE1cINxVMXemXvlMDmwHidRwzDhsGKk/kV3XIMKRIMm2B0YKoBRQlETBLY4X9RVY
- tSoF9/qTX9ril5mrEaSfTGvTaF3KWhM=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAyMDAxNCBTYWx0ZWRfX0fV7v5jlwFde
- f0ogEiYwI5U8RPmfdvEf6UUK/A4CHwCujFNaJ2mv4y3JVL0brbIDZf75hzB/hAAQfNs4VTeadw5
- bOP4vRx2bmnQz+xmIkJn2LrnQUCskPyvKKIyi2y5mocCBDOj78gCN5PDKtDsywqU8FKYwu9Q+wE
- DQ1g0fz74F15fNH1ii9U1DzaLcNyqVGgMNKFIeFjA8TiK/nmWeRre2qT42CnU/5uJTTHcJBodlm
- bA4PoqLcCSCfKfUa9iKxJ2IkUttv/SHLA6EtVvrobVMnSkTb4/2AONwv6Wl44rsUrN6cGY1k25u
- st8t+fSHwMag9EFsOkCkOWKwrKtk9hx72hC6O4XuBYea1WQMleHtrokLwIENJXuYvkGRZfbc0Nu
- feJii3OOz4OolzWVAVv0Efloz+3EG91ta/nEvyaZBZyKOvqxQ2EHPElXFIfHr8T8kaw4banCliy
- A29mYPP2XRgJepHy0EQ==
-X-Proofpoint-ORIG-GUID: vGYVUnEIwzhuux_K4OcPIbyY2M2Pksr7
-X-Authority-Analysis: v=2.4 cv=X5XHu2Te c=1 sm=1 tr=0 ts=6ae80777 cx=c_pps
- a=FAnPgvRYq/vnBSvlTDCQOQ==:117 a=FAnPgvRYq/vnBSvlTDCQOQ==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=zJRp6_cAMcgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=gQcMVamqm3wCPoSYhaRC:22 a=J0OTuHAx6l5K1fCpvPfz:22
- a=MvuuwTCpAAAA:8 a=KEewAtMq1Rh8BHwz3xUA:9 a=QEXdDO2ut3YA:10
- a=hCFme0j97iLdl2euH7cA:9 a=FfaGCDsud1wA:10
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-02_01,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 phishscore=0 bulkscore=0 adultscore=0
- impostorscore=0 lowpriorityscore=0 spamscore=0 malwarescore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2611020014
+Content-Transfer-Encoding: 8bit
 
---------------LxDGitb0mAZHQ9omlyXQp31y
-Content-Type: multipart/mixed; boundary="------------0GTSvmTJHZKsCT0mQtAOqLk0";
- protected-headers="v1"; hp="clear"
-Message-ID: <b260f39e-2ac0-4899-90d9-3e9dbadfacc4@hpe.com>
-Date: Sun, 1 Nov 2026 19:45:24 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/23] Subject: [PATCH net-next 00/23] net/hpe: add HPE
- Slingshot NIC drivers
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Jakub Kicinski <kuba@kernel.org>,
- Slingshot Open Source Team <slingshot-os-team@groups.ext.hpe.com>,
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
- Richard Cochran <richardcochran@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Sumit Semwal <sumit.semwal@linaro.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Guenter Roeck <linux@roeck-us.net>, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-kbuild@vger.kernel.org,
- Sandeep Bhoot <sandeep.bhoot@hpe.com>, Iraimani P
- <iraimani.pavadai@hpe.com>, Mamila Santosh <santosh-kumar.mamila@hpe.com>
-References: <20261030-cxi-netdev-submission-v1-0-8c2c391cc283@hpe.com>
- <20261030151121.1f232b50@kernel.org>
- <7d4583c2-e8dc-4ffb-bc45-e2121f824b14@lunn.ch>
- <bde936b5-1b3f-4987-a3e5-36ec5c4710e6@hpe.com>
- <2f831f13-58ff-40ca-a76f-3aca647012b6@lunn.ch>
-Content-Language: en-US
-From: Doug Ledford <doug.ledford@hpe.com>
-Organization: Hewlett Packard Enterprise
-In-Reply-To: <2f831f13-58ff-40ca-a76f-3aca647012b6@lunn.ch>
+The RX ring held skbs that were allocated and DMA mapped when a slot was
+refilled. By the time a frame arrived in that slot the skb was cold, and
+every refill paid for a full skb allocation and a dma_map_single().
 
---------------0GTSvmTJHZKsCT0mQtAOqLk0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Take the RX buffers from a page_pool instead and build the skb with
+napi_build_skb() once a frame has arrived. Frames spanning several BDs
+get the following buffers attached as page fragments instead of being
+copied into one large skb. The BD size is capped so that a buffer always
+fits into a page. The driver now syncs the received data for the CPU
+before reading it.
 
-On 11/1/26 5:35 PM, Andrew Lunn wrote:
->> I'll see how fast I can get that done.  But "the bare minimum" is goin=
-g
->> to be more than you are accustomed to.  This hardware does not receive=
+The pool recycles directly into the MAL NAPI instance, so it is
+destroyed while that instance is disabled.
 
->> Ethernet packets using MAC address like normal Ethernet hardware.  It
->> uses a special portal table entry that filters in the Ethernet packets=
-=2E
->> It has the ability to have different filters that receive different
->> Ethernet packets and so sorts them before the driver ever sees them.
->=20
-> Can you add a single portal entry which matches everything? Or matches
-> a single MAC address? KISS.
+Routing a single TCP stream through the qca8k switch of a Meraki MX60
+(iperf3 median of 3):
 
-That's a complex question, and one which I need to go talk to one of the
-hardware engineers about.  It also varies based upon your meaning of
-"everything".  If, by everything you means essentially promiscuous mode,
-then that's not a good idea.  On the fabric there is Ethernet traffic,
-but there is also Slingshot traffic.  They use totally different frame
-types.  If you truly go for "everything", you'll get Slingshot traffic
-along with Ethernet traffic and you'll be throwing away tons of garbage
-and generally wondering what's going on.  If by "everything" you just
-mean "all Ethernet traffic on a single portal entry", that's when I have
-to go talk to the hardware engineers.  They have different lists they
-use for Ethernet and I can't say for certain that the hardware will
-allow not using those lists.  For instance, one of the lists might be
-specifically for packets that have been fragmented and if you don't use
-that list for those packets it may not receive them at all.  That's when
-I have to go verify things with the hardware engineers.
+          LAN->WAN   WAN->LAN  (Mbit/s)
+  before  588        508
+  after   614        528
 
-> You can then add on the complexity of adding MAC addresses to the
-> table in later patchsets.
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ drivers/net/ethernet/ibm/emac/Kconfig |   1 +
+ drivers/net/ethernet/ibm/emac/core.c  | 234 ++++++++++++++++----------
+ drivers/net/ethernet/ibm/emac/core.h  |  39 +++--
+ drivers/net/ethernet/ibm/emac/mal.c   |  18 ++
+ drivers/net/ethernet/ibm/emac/mal.h   |   2 +
+ 5 files changed, 191 insertions(+), 103 deletions(-)
 
-The card has a burned in MAC address.  I wasn't trying to say it
-doesn't.  I was pointing out that how the hardware determines what to
-receive is not by just putting recv buffers on a queue and turning on
-receive mode and letting your MAC address pull them in.  It's more
-complex due to the portals table entries.
+diff --git a/drivers/net/ethernet/ibm/emac/Kconfig b/drivers/net/ethernet/ibm/emac/Kconfig
+index c8e5de5987ac..8779c5b6a2c3 100644
+--- a/drivers/net/ethernet/ibm/emac/Kconfig
++++ b/drivers/net/ethernet/ibm/emac/Kconfig
+@@ -3,6 +3,7 @@ config IBM_EMAC
+ 	tristate "IBM EMAC Ethernet support"
+ 	depends on PPC_DCR
+ 	select CRC32
++	select PAGE_POOL
+ 	select PHYLIB
+ 	help
+ 	  This driver supports the IBM EMAC family of Ethernet controllers
+diff --git a/drivers/net/ethernet/ibm/emac/core.c b/drivers/net/ethernet/ibm/emac/core.c
+index 640618c0a09e..9496c09d7a7c 100644
+--- a/drivers/net/ethernet/ibm/emac/core.c
++++ b/drivers/net/ethernet/ibm/emac/core.c
+@@ -41,6 +41,7 @@
+ #include <linux/of_platform.h>
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
++#include <net/page_pool/helpers.h>
+ 
+ #include <asm/processor.h>
+ #include <asm/io.h>
+@@ -1020,10 +1021,30 @@ static int emac_set_mac_address(struct net_device *ndev, void *sa)
+ 	return 0;
+ }
+ 
++static void *emac_alloc_rx_buf(struct emac_instance *dev, unsigned int size,
++			       gfp_t gfp)
++{
++	return page_pool_alloc_va(dev->rx_pool, &size, gfp);
++}
++
++static void emac_prepare_rx_buf(struct emac_instance *dev, int slot, void *va)
++{
++	struct page *page = virt_to_page(va);
++
++	dev->rx_buf[slot] = va;
++	dev->rx_dma[slot] = page_pool_get_dma_addr(page) + offset_in_page(va) +
++			    NET_SKB_PAD;
++	dev->rx_desc[slot].data_len = 0;
++	dev->rx_desc[slot].data_ptr = dev->rx_dma[slot] + NET_IP_ALIGN;
++	/* Descriptor fields must be visible before MAL sees it as empty */
++	wmb();
++	dev->rx_desc[slot].ctrl = MAL_RX_CTRL_EMPTY |
++	    (slot == (NUM_RX_BUFF - 1) ? MAL_RX_CTRL_WRAP : 0);
++}
++
+ static int emac_resize_rx_ring(struct emac_instance *dev, int new_mtu)
+ {
+-	int rx_sync_size = emac_rx_sync_size(new_mtu);
+-	int rx_skb_size = emac_rx_skb_size(new_mtu);
++	int rx_buf_size = emac_rx_buf_size(new_mtu);
+ 	int i, ret = 0;
+ 	int mr1_jumbo_bit_change = 0;
+ 
+@@ -1051,28 +1072,23 @@ static int emac_resize_rx_ring(struct emac_instance *dev, int new_mtu)
+ 		    (i == (NUM_RX_BUFF - 1) ? MAL_RX_CTRL_WRAP : 0);
+ 	}
+ 
+-	/* Reallocate RX ring only if bigger skb buffers are required */
+-	if (rx_skb_size <= dev->rx_skb_size)
++	/* Reallocate RX ring only if bigger buffers are required */
++	if (rx_buf_size <= dev->rx_buf_size)
+ 		goto skip;
+ 
+-	/* Second pass, allocate new skbs */
++	/* Second pass, allocate new buffers */
+ 	for (i = 0; i < NUM_RX_BUFF; ++i) {
+-		struct sk_buff *skb;
++		void *va;
+ 
+-		skb = netdev_alloc_skb_ip_align(dev->ndev, rx_skb_size);
+-		if (!skb) {
++		BUG_ON(!dev->rx_buf[i]);
++		va = emac_alloc_rx_buf(dev, rx_buf_size, GFP_KERNEL);
++		if (!va) {
+ 			ret = -ENOMEM;
+ 			goto oom;
+ 		}
+ 
+-		BUG_ON(!dev->rx_skb[i]);
+-		dev_kfree_skb(dev->rx_skb[i]);
+-
+-		dev->rx_desc[i].data_ptr =
+-		    dma_map_single(&dev->ofdev->dev, skb->data - NET_IP_ALIGN,
+-				   rx_sync_size, DMA_FROM_DEVICE)
+-				   + NET_IP_ALIGN;
+-		dev->rx_skb[i] = skb;
++		page_pool_free_va(dev->rx_pool, dev->rx_buf[i], false);
++		emac_prepare_rx_buf(dev, i, va);
+ 	}
+  skip:
+ 	/* Check if we need to change "Jumbo" bit in MR1 */
+@@ -1092,6 +1108,8 @@ static int emac_resize_rx_ring(struct emac_instance *dev, int new_mtu)
+ 		emac_full_tx_reset(dev);
+ 	}
+ 
++	/* Must be updated before RX restarts, NAPI refills with this size */
++	dev->rx_buf_size = rx_buf_size;
+ 	mal_set_rcbs(dev->mal, dev->mal_rx_chan, emac_rx_size(new_mtu));
+  oom:
+ 	/* Restart RX */
+@@ -1117,15 +1135,14 @@ static int emac_change_mtu(struct net_device *ndev, int new_mtu)
+ 		/* Check if we really need to reinitialize RX ring. The
+ 		 * jumbo frame settings are only updated by a resize.
+ 		 */
+-		if (emac_rx_skb_size(ndev->mtu) != emac_rx_skb_size(new_mtu) ||
++		if (emac_rx_buf_size(ndev->mtu) != emac_rx_buf_size(new_mtu) ||
+ 		    ndev->mtu > ETH_DATA_LEN || new_mtu > ETH_DATA_LEN)
+ 			ret = emac_resize_rx_ring(dev, new_mtu);
+ 	}
+ 
+ 	if (!ret) {
+ 		WRITE_ONCE(ndev->mtu, new_mtu);
+-		dev->rx_skb_size = emac_rx_skb_size(new_mtu);
+-		dev->rx_sync_size = emac_rx_sync_size(new_mtu);
++		dev->rx_buf_size = emac_rx_buf_size(new_mtu);
+ 	}
+ 
+ 	return ret;
+@@ -1152,10 +1169,10 @@ static void emac_clean_rx_ring(struct emac_instance *dev)
+ 	int i;
+ 
+ 	for (i = 0; i < NUM_RX_BUFF; ++i)
+-		if (dev->rx_skb[i]) {
++		if (dev->rx_buf[i]) {
+ 			dev->rx_desc[i].ctrl = 0;
+-			dev_kfree_skb(dev->rx_skb[i]);
+-			dev->rx_skb[i] = NULL;
++			page_pool_free_va(dev->rx_pool, dev->rx_buf[i], false);
++			dev->rx_buf[i] = NULL;
+ 			dev->rx_desc[i].data_ptr = 0;
+ 		}
+ 
+@@ -1163,6 +1180,9 @@ static void emac_clean_rx_ring(struct emac_instance *dev)
+ 		dev_kfree_skb(dev->rx_sg_skb);
+ 		dev->rx_sg_skb = NULL;
+ 	}
++
++	mal_destroy_page_pool(dev->mal, dev->rx_pool);
++	dev->rx_pool = NULL;
+ }
+ 
+ static void emac_clear_mal_desc(struct mal_descriptor *desc, int count)
+@@ -1176,44 +1196,20 @@ static void emac_clear_mal_desc(struct mal_descriptor *desc, int count)
+ 	}
+ }
+ 
+-static int
+-__emac_prepare_rx_skb(struct sk_buff *skb, struct emac_instance *dev, int slot)
+-{
+-	if (unlikely(!skb))
+-		return -ENOMEM;
+-
+-	dev->rx_skb[slot] = skb;
+-	dev->rx_desc[slot].data_len = 0;
+-
+-	dev->rx_desc[slot].data_ptr =
+-	    dma_map_single(&dev->ofdev->dev, skb->data - NET_IP_ALIGN,
+-			   dev->rx_sync_size, DMA_FROM_DEVICE) + NET_IP_ALIGN;
+-	wmb();
+-	dev->rx_desc[slot].ctrl = MAL_RX_CTRL_EMPTY |
+-	    (slot == (NUM_RX_BUFF - 1) ? MAL_RX_CTRL_WRAP : 0);
+-
+-	return 0;
+-}
+-
+-static int
+-emac_alloc_rx_skb(struct emac_instance *dev, int slot)
++static struct page_pool *emac_create_rx_pool(struct emac_instance *dev)
+ {
+-	struct sk_buff *skb;
+-
+-	skb = __netdev_alloc_skb_ip_align(dev->ndev, dev->rx_skb_size,
+-					  GFP_KERNEL);
++	struct page_pool_params pp = {
++		.flags		= PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
++		.pool_size	= NUM_RX_BUFF,
++		.nid		= NUMA_NO_NODE,
++		.dev		= &dev->ofdev->dev,
++		.napi		= &dev->mal->napi,
++		.netdev		= dev->ndev,
++		.dma_dir	= DMA_FROM_DEVICE,
++		.max_len	= PAGE_SIZE,
++	};
+ 
+-	return __emac_prepare_rx_skb(skb, dev, slot);
+-}
+-
+-static int
+-emac_alloc_rx_skb_napi(struct emac_instance *dev, int slot)
+-{
+-	struct sk_buff *skb;
+-
+-	skb = napi_alloc_skb(&dev->mal->napi, dev->rx_skb_size);
+-
+-	return __emac_prepare_rx_skb(skb, dev, slot);
++	return page_pool_create(&pp);
+ }
+ 
+ static void emac_print_link_status(struct emac_instance *dev)
+@@ -1232,17 +1228,27 @@ static void emac_print_link_status(struct emac_instance *dev)
+ static int emac_open(struct net_device *ndev)
+ {
+ 	struct emac_instance *dev = netdev_priv(ndev);
++	struct page_pool *pool;
+ 	int i;
+ 
+ 	DBG(dev, "open" NL);
+ 
++	pool = emac_create_rx_pool(dev);
++	if (IS_ERR(pool))
++		return PTR_ERR(pool);
++	dev->rx_pool = pool;
++
+ 	/* Allocate RX ring */
+-	for (i = 0; i < NUM_RX_BUFF; ++i)
+-		if (emac_alloc_rx_skb(dev, i)) {
++	for (i = 0; i < NUM_RX_BUFF; ++i) {
++		void *va = emac_alloc_rx_buf(dev, dev->rx_buf_size, GFP_KERNEL);
++
++		if (!va) {
+ 			printk(KERN_ERR "%s: failed to allocate RX ring\n",
+ 			       ndev->name);
+ 			goto oom;
+ 		}
++		emac_prepare_rx_buf(dev, i, va);
++	}
+ 
+ 	dev->tx_cnt = dev->tx_slot = dev->ack_slot = dev->rx_slot = 0;
+ 	clear_bit(MAL_COMMAC_RX_STOPPED, &dev->commac.flags);
+@@ -1661,17 +1667,23 @@ static void emac_poll_tx(void *param)
+ 	netif_tx_unlock_bh(dev->ndev);
+ }
+ 
++static inline void emac_rx_sync_for_cpu(struct emac_instance *dev, int slot,
++					int len)
++{
++	dma_sync_single_for_cpu(&dev->ofdev->dev, dev->rx_dma[slot],
++				SKB_DATA_ALIGN(len + NET_IP_ALIGN),
++				DMA_FROM_DEVICE);
++}
++
+ static inline void emac_recycle_rx_skb(struct emac_instance *dev, int slot,
+ 				       int len)
+ {
+-	struct sk_buff *skb = dev->rx_skb[slot];
+-
+ 	DBG2(dev, "recycle %d %d" NL, slot, len);
+ 
+ 	if (len)
+-		dma_map_single(&dev->ofdev->dev, skb->data - NET_IP_ALIGN,
+-			       SKB_DATA_ALIGN(len + NET_IP_ALIGN),
+-			       DMA_FROM_DEVICE);
++		dma_sync_single_for_device(&dev->ofdev->dev, dev->rx_dma[slot],
++					   SKB_DATA_ALIGN(len + NET_IP_ALIGN),
++					   DMA_FROM_DEVICE);
+ 
+ 	dev->rx_desc[slot].data_len = 0;
+ 	wmb();
+@@ -1717,23 +1729,69 @@ static inline void emac_rx_csum(struct emac_instance *dev,
+ #endif
+ }
+ 
++/* Hand the buffer of the slot to a new skb and refill the slot */
++static struct sk_buff *emac_build_rx_skb(struct emac_instance *dev, int slot,
++					 int len)
++{
++	struct sk_buff *skb;
++	void *va;
++
++	va = emac_alloc_rx_buf(dev, dev->rx_buf_size,
++			       GFP_ATOMIC | __GFP_NOWARN);
++	if (unlikely(!va))
++		return NULL;
++
++	/* napi_build_skb() only writes the skb_shared_info, which is past the
++	 * BD area, so the slot is synced for the CPU only once it is consumed.
++	 */
++	skb = napi_build_skb(dev->rx_buf[slot], dev->rx_buf_size);
++	if (unlikely(!skb)) {
++		page_pool_free_va(dev->rx_pool, va, true);
++		return NULL;
++	}
++
++	emac_rx_sync_for_cpu(dev, slot, len);
++	skb_mark_for_recycle(skb);
++	skb_reserve(skb, EMAC_RX_HEADROOM);
++	skb_put(skb, len);
++	emac_prepare_rx_buf(dev, slot, va);
++
++	return skb;
++}
++
+ static inline int emac_rx_sg_append(struct emac_instance *dev, int slot)
+ {
+-	if (likely(dev->rx_sg_skb != NULL)) {
++	struct sk_buff *skb = dev->rx_sg_skb;
++
++	if (likely(skb)) {
+ 		int len = dev->rx_desc[slot].data_len;
+-		int tot_len = dev->rx_sg_skb->len + len;
++		void *buf = dev->rx_buf[slot];
++		void *va;
+ 
+-		if (unlikely(tot_len + NET_IP_ALIGN > dev->rx_skb_size)) {
++		if (unlikely(skb->len + len >
++			     dev->ndev->mtu + EMAC_MTU_OVERHEAD ||
++			     skb_shinfo(skb)->nr_frags >= MAX_SKB_FRAGS)) {
+ 			++dev->estats.rx_dropped_mtu;
+-			dev_kfree_skb(dev->rx_sg_skb);
+-			dev->rx_sg_skb = NULL;
+-		} else {
+-			memcpy(skb_tail_pointer(dev->rx_sg_skb),
+-					 dev->rx_skb[slot]->data, len);
+-			skb_put(dev->rx_sg_skb, len);
+-			emac_recycle_rx_skb(dev, slot, len);
+-			return 0;
++			goto drop;
+ 		}
++
++		va = emac_alloc_rx_buf(dev, dev->rx_buf_size,
++				       GFP_ATOMIC | __GFP_NOWARN);
++		if (unlikely(!va)) {
++			++dev->estats.rx_dropped_oom;
++			goto drop;
++		}
++
++		emac_rx_sync_for_cpu(dev, slot, len);
++		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
++				virt_to_page(buf),
++				offset_in_page(buf) + EMAC_RX_HEADROOM,
++				len, dev->rx_buf_size);
++		emac_prepare_rx_buf(dev, slot, va);
++		return 0;
++ drop:
++		dev_kfree_skb(skb);
++		dev->rx_sg_skb = NULL;
+ 	}
+ 	emac_recycle_rx_skb(dev, slot, 0);
+ 	return -1;
+@@ -1756,7 +1814,6 @@ static int emac_poll_rx(void *param, int budget)
+ 		if (ctrl & MAL_RX_CTRL_EMPTY)
+ 			break;
+ 
+-		skb = dev->rx_skb[slot];
+ 		mb();
+ 		len = dev->rx_desc[slot].data_len;
+ 
+@@ -1785,15 +1842,19 @@ static int emac_poll_rx(void *param, int budget)
+ 			if (unlikely(!copy_skb))
+ 				goto oom;
+ 
++			emac_rx_sync_for_cpu(dev, slot, len);
+ 			memcpy(copy_skb->data - NET_IP_ALIGN,
+-			       skb->data - NET_IP_ALIGN,
++			       dev->rx_buf[slot] + NET_SKB_PAD,
+ 			       len + NET_IP_ALIGN);
+ 			emac_recycle_rx_skb(dev, slot, len);
+ 			skb = copy_skb;
+-		} else if (unlikely(emac_alloc_rx_skb_napi(dev, slot)))
+-			goto oom;
++			skb_put(skb, len);
++		} else {
++			skb = emac_build_rx_skb(dev, slot, len);
++			if (unlikely(!skb))
++				goto oom;
++		}
+ 
+-		skb_put(skb, len);
+ 	push_packet:
+ 		skb->protocol = eth_type_trans(skb, dev->ndev);
+ 		emac_rx_csum(dev, skb, ctrl);
+@@ -1810,13 +1871,11 @@ static int emac_poll_rx(void *param, int budget)
+ 	sg:
+ 		if (ctrl & MAL_RX_CTRL_FIRST) {
+ 			BUG_ON(dev->rx_sg_skb);
+-			if (unlikely(emac_alloc_rx_skb_napi(dev, slot))) {
++			dev->rx_sg_skb = emac_build_rx_skb(dev, slot, len);
++			if (unlikely(!dev->rx_sg_skb)) {
+ 				DBG(dev, "rx OOM %d" NL, slot);
+ 				++dev->estats.rx_dropped_oom;
+ 				emac_recycle_rx_skb(dev, slot, 0);
+-			} else {
+-				dev->rx_sg_skb = skb;
+-				skb_put(skb, len);
+ 			}
+ 		} else if (!emac_rx_sg_append(dev, slot) &&
+ 			   (ctrl & MAL_RX_CTRL_LAST)) {
+@@ -3097,8 +3156,7 @@ static int emac_probe(struct platform_device *ofdev)
+ 		       np, dev->mal_dev->dev.of_node);
+ 		goto err_rel_deps;
+ 	}
+-	dev->rx_skb_size = emac_rx_skb_size(ndev->mtu);
+-	dev->rx_sync_size = emac_rx_sync_size(ndev->mtu);
++	dev->rx_buf_size = emac_rx_buf_size(ndev->mtu);
+ 
+ 	/* Get pointers to BD rings */
+ 	dev->tx_desc =
+@@ -3113,7 +3171,7 @@ static int emac_probe(struct platform_device *ofdev)
+ 	emac_clear_mal_desc(dev->tx_desc, NUM_TX_BUFF);
+ 	emac_clear_mal_desc(dev->rx_desc, NUM_RX_BUFF);
+ 	memset(dev->tx_skb, 0, NUM_TX_BUFF * sizeof(struct sk_buff *));
+-	memset(dev->rx_skb, 0, NUM_RX_BUFF * sizeof(struct sk_buff *));
++	memset(dev->rx_buf, 0, sizeof(dev->rx_buf));
+ 
+ 	/* Attach to ZMII, if needed */
+ 	if (emac_has_feature(dev, EMAC_FTR_HAS_ZMII) &&
+diff --git a/drivers/net/ethernet/ibm/emac/core.h b/drivers/net/ethernet/ibm/emac/core.h
+index 43578fe97fb2..d77ff352b957 100644
+--- a/drivers/net/ethernet/ibm/emac/core.h
++++ b/drivers/net/ethernet/ibm/emac/core.h
+@@ -53,24 +53,31 @@
+ /* Maximum L2 header length (VLAN tagged, no FCS) */
+ #define EMAC_MTU_OVERHEAD		(6 * 2 + 2 + 4)
+ 
+-/* RX BD size for the given MTU */
+-static inline int emac_rx_size(int mtu)
+-{
+-	return mal_rx_size(max(mtu, ETH_DATA_LEN) + EMAC_MTU_OVERHEAD);
+-}
++/* Headroom in front of the received frame */
++#define EMAC_RX_HEADROOM		(NET_SKB_PAD + NET_IP_ALIGN)
++
++/* Largest RX BD size whose buffer still fits into one page */
++#define EMAC_RX_MAX_SIZE \
++	ALIGN_DOWN(SKB_WITH_OVERHEAD(PAGE_SIZE) - EMAC_RX_HEADROOM, 16)
+ 
+-/* Size of RX skb for the given MTU */
+-static inline int emac_rx_skb_size(int mtu)
++/* RX BD size for the given MTU, larger frames span several BDs */
++static inline int emac_rx_size(int mtu)
+ {
+-	int size = max(mtu + EMAC_MTU_OVERHEAD, emac_rx_size(mtu));
++	int size = mal_rx_size(max(mtu, ETH_DATA_LEN) + EMAC_MTU_OVERHEAD);
+ 
+-	return SKB_DATA_ALIGN(size + NET_IP_ALIGN) + NET_SKB_PAD;
++	return min_t(int, size, EMAC_RX_MAX_SIZE);
+ }
+ 
+-/* RX DMA sync size */
+-static inline int emac_rx_sync_size(int mtu)
++/* Size of an RX buffer for the given MTU, including the headroom and
++ * the skb_shared_info. Buffers above half a page take a whole page.
++ */
++static inline int emac_rx_buf_size(int mtu)
+ {
+-	return SKB_DATA_ALIGN(emac_rx_size(mtu) + NET_IP_ALIGN);
++	int size = SKB_HEAD_ALIGN(NET_SKB_PAD +
++				  SKB_DATA_ALIGN(emac_rx_size(mtu) +
++						 NET_IP_ALIGN));
++
++	return size > PAGE_SIZE / 2 ? PAGE_SIZE : size;
+ }
+ 
+ /* Driver statistcs is split into two parts to make it more cache friendly:
+@@ -238,11 +245,13 @@ struct emac_instance {
+ 	struct mal_descriptor		*rx_desc;
+ 	int				rx_slot;
+ 	struct sk_buff			*rx_sg_skb;	/* 1 */
+-	int 				rx_skb_size;
+-	int				rx_sync_size;
++	int				rx_buf_size;
++	struct page_pool		*rx_pool;
+ 
+ 	struct sk_buff			*tx_skb[NUM_TX_BUFF];
+-	struct sk_buff			*rx_skb[NUM_RX_BUFF];
++	void				*rx_buf[NUM_RX_BUFF];
++	/* DMA address of rx_buf + NET_SKB_PAD, cache line aligned */
++	dma_addr_t			rx_dma[NUM_RX_BUFF];
+ 
+ 	/* Stats
+ 	 */
+diff --git a/drivers/net/ethernet/ibm/emac/mal.c b/drivers/net/ethernet/ibm/emac/mal.c
+index 236603a381bc..f1f7541379bc 100644
+--- a/drivers/net/ethernet/ibm/emac/mal.c
++++ b/drivers/net/ethernet/ibm/emac/mal.c
+@@ -25,6 +25,7 @@
+ #include <linux/of.h>
+ #include <linux/of_irq.h>
+ #include <linux/platform_device.h>
++#include <net/page_pool/types.h>
+ 
+ #include "core.h"
+ #include <asm/dcr-regs.h>
+@@ -86,6 +87,23 @@ void mal_unregister_commac(struct mal_instance	*mal,
+ 	netdev_unlock(mal->napi.dev);
+ }
+ 
++/* A page pool that recycles directly into the MAL NAPI instance can only be
++ * destroyed while that instance is disabled.
++ */
++void mal_destroy_page_pool(struct mal_instance *mal, struct page_pool *pool)
++{
++	bool enabled;
++
++	netdev_lock(mal->napi.dev);
++	enabled = !list_empty(&mal->list);
++	if (enabled)
++		napi_disable_locked(&mal->napi);
++	page_pool_destroy(pool);
++	if (enabled)
++		napi_enable_locked(&mal->napi);
++	netdev_unlock(mal->napi.dev);
++}
++
+ int mal_set_rcbs(struct mal_instance *mal, int channel, unsigned long size)
+ {
+ 	BUG_ON(channel < 0 || channel >= mal->num_rx_chans ||
+diff --git a/drivers/net/ethernet/ibm/emac/mal.h b/drivers/net/ethernet/ibm/emac/mal.h
+index e0ddc41186a2..8264e5f0c9c1 100644
+--- a/drivers/net/ethernet/ibm/emac/mal.h
++++ b/drivers/net/ethernet/ibm/emac/mal.h
+@@ -276,6 +276,8 @@ void mal_disable_rx_channel(struct mal_instance *mal, int channel);
+ void mal_poll_disable(struct mal_instance *mal, struct mal_commac *commac);
+ void mal_poll_enable(struct mal_instance *mal, struct mal_commac *commac);
+ 
++void mal_destroy_page_pool(struct mal_instance *mal, struct page_pool *pool);
++
+ /* Add/remove EMAC to/from MAL polling list */
+ void mal_poll_add(struct mal_instance *mal, struct mal_commac *commac);
+ void mal_poll_del(struct mal_instance *mal, struct mal_commac *commac);
+-- 
+2.56.0
 
-I did have the AI do a full analysis of what you requested.  A bare
-minimal driver.  It passed this back (just giving the summary, not the
-full report):
-
-Estimated total for a C2-only, PF-only Ethernet series:
-
-ss1 about 19=E2=80=9320k
-SL about 15=E2=80=9320k
-headers about 15=E2=80=9320k
-That gives roughly 50=E2=80=9360k lines, or about 65k if C1 support stays=
-=2E
-
-The AI did mention that some of these are estimates and not real
-measurements, so take it with a grain of salt.  If you'd like to see the
-full report I can provide it.
-
---=20
-Doug Ledford <doug.ledford@hpe.com>
-    GPG KeyID: B826A3330E572FDD
-    Key fingerprint =3D AE6B 1BDA 122B 23B4 265B  1274 B826 A333 0E57 2FD=
-D
-
---------------0GTSvmTJHZKsCT0mQtAOqLk0--
-
---------------LxDGitb0mAZHQ9omlyXQp31y
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wsF5BAABCAAjFiEErmsb2hIrI7QmWxJ0uCajMw5XL90FAmroB1UFAwAAAAAACgkQuCajMw5XL91d
-iBAAt9onEbZ66QgMIt2R8c2EqhNqWTnrn1a/f3ust9QjFlteL1USnx88ZDII3onrR/Dt9weywW39
-tiGjNSSA4ecJAl2DyeOrFO99jazD0uUTiLv8jsImMfTb1VH/ywc48YEBJaX0egYkxf97Z2TppHho
-m0LusMCHVmJAq2LIy6GcNLY4D8YGDn+8LfnGSjoj4tauRSP+/6WTQlwHD0vgqjMHHaGCy8r5Wrgi
-JYNPVqcItJgdFY/25N8ua484/fKuzaEDbOjOh0p+mlwzJVkLGi5A8sPQXz4rEW53If9DUUYWdC75
-LflN6NXD+TWbyExow0WbvUOzVetsjzZvp4pAsb+FBSc/I8phlAqsrOBKfdnFOqX/El1/hUGSC2nB
-YS/euzRffrwPSM74jpJajINUalf9ulE62kBaCd/E6dXozRyO0CKk6Wd9CfdZdxk0Pthdrow85kL9
-WMk8H4rPW8L2n65bOHBhCrfJnsEH1wLNmXn/sXtD+KHG846Gtr2Gwmn1Re98KLYOxO22SJk66LcR
-e3dLboY3XT1TOCH5RGSPtRHvARp6TFk9Me6cQy+77y8CCTEYvlzGk4yUgCoeJ50Wr6PlVEeDO+KL
-6lwMzQ3N5FQVQnIZ12r1+8RMUsz3qSwXIfj1/XgmHELEhfGNxr9Vl9RA9Fx0fZ8j1wOiL1mCdIhy
-uPA=
-=B27F
------END PGP SIGNATURE-----
-
---------------LxDGitb0mAZHQ9omlyXQp31y--
