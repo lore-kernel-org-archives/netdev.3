@@ -1,57 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=79.135.106.26
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793603609;
-	b=5dVa49hui+FEdoJIh4ksPUXrZ2jAIKk0ALQnquc059euQudkuL1huAvqhWhqdojovFOo
-	 RNp4qbVsaUSDV+hng8FCBhNDpBKbyaj3NOoqMf/MVNkR5BygO3t0e6MvaZ1RAzs88j4wg
-	 cbkzRBH86ExXJ9dLfEUxeEyXAti34cU07BIP4K1MlCKGlTuz4wAUw0uiMnK9ky47NVfNC
-	 NcKYQWZHsiNmGoBIO4Bpy63QTvZeeM/Y0ngs6MV+5eTB5vhJy50dUpxhKdHzpCHP837Da
-	 xTu+b3ZCf07vpZqH2Odrhuo2jC7q34tF+SwWyzRHs6By/lOT6MW4yWV/GYSCfhY1Gyw==
+	t=1793603979;
+	b=rOE73vX3W8uVe4GWEwDkUFnbjhBkwAXaHdKmLpHVm3WNoxst3xpaohzoOStf94WFVOOg
+	 8s43hEwt8+VrNx11BGH/29iLFeSarIJh/oLjytXqAlym5sC2DViwH2oVbRNQ4bilT1Ga9
+	 RLLi12kKCkv8NhsVPTLgfGl/7WZLGw8xAaLjVtv3KSr8wNNpSv8Fw4EUUfzfbvxYg169y
+	 omj/ghOGeBs6rH6pDRIC5DcEytaq3OvrO8tkVHPOGhvDVX9PvGVBxEndbkBXWD+LHsgMi
+	 vxr7fkSdcORJBjDP9m/jA9G8x8s3xGTwY2ImqnK/C+jxsqw9oRh3916IkLNp8ih2bAA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793603609;
-	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
-	 Feedback-ID:X-Pm-Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=KY9RYXaRnQDli/vu8vgfR6JwdPnkjzpG6Vj3ogcKevs=;
-	b=5scmX5DI3OtscoIkrcbrjFFbR+6GlvNnx5iX8IDT7Hf0+oSGPIhnqT1Z+CfiZ79LlhNN
-	 Tr/9w/PpUopwejG5KAg/k0jS31MjrwI8aKjf56QaXgC67V7uRaLqS6QtYzwY+QvR2uf5c
-	 Vqwr7dnNGs74z7xRfEsfQcLmeVG5plg2kKW5cfRUcmQOzo6iWpNgSVdaNvdz5G+lFvQfv
-	 tkdtHQZiw9f1GMOyHRAY70A4cEXH9S29qYd4Y9S8ElpmyHDWa8CVfZqp/I0noGHlHqbzD
-	 2fORQ/eaRE4scq1q1Wc/wzfeRQ1Vm3v6dNoah3gUkmSBW0gyvsyj3fw9ZIpJIVEiVvg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793603979;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=80POjU5WP6ctS0DqN7hA/63JAQ8Agh1hTny2C1kJcvk=;
+	b=S9vYTzzEPb4qcH4RBv7tjSynh4XscZFtvZPI332k8MF5ZnSamWEwuV1FqoBKgQ1ZKvIM
+	 CkGz45aq1WQFAms5dkR/Uz7E6aiZlDrRaeMNIqyiXBQtxCdMXHevOXO9Lgh54PSvu2W+w
+	 DPSICd0MR/cbFBBW0KV6fTinhApok23pxme6/DYy3Rx0YNpMun2KcHcSXkezlmqtSet9F
+	 /8Ya6Su7v/ITX7qPUfKcrU9abwtUmilrapvYPZggbLphyOZOfDKSyDDwrQgD6IvpfEbTR
+	 cVFRXWX8l0avc11gBBzfbjt10FvZVDtxd4eZoJJvmaAbg8+ntermSBxDl5dRpbGFBgQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=jaeyeong.cc;
-	spf=pass smtp.mailfrom=jaeyeong.cc;
-	dkim=pass header.d=jaeyeong.cc header.i=@jaeyeong.cc header.a=rsa-sha256 header.s=protonmail2 header.b=kcv8x00D;
-	arc=none smtp.remote-ip=79.135.106.26
-Received: from mail-10626.protonmail.ch (mail-10626.protonmail.ch [79.135.106.26])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iGr6Zg1x;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C76606A324
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 07:13:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88C76606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jaeyeong.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jaeyeong.cc
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A59606A324;
+	Mon,  2 Nov 2026 07:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=jaeyeong.cc header.i=@jaeyeong.cc header.a=rsa-sha256 header.s=protonmail2 header.b=kcv8x00D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaeyeong.cc;
-	s=protonmail2; t=1793603606; x=1793862806;
-	bh=KY9RYXaRnQDli/vu8vgfR6JwdPnkjzpG6Vj3ogcKevs=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=kcv8x00Ds7p5lYgYo+m3HpAeIS4DnIfGO6h97oJ7/6JrK9yDhsTI4H9B4WObLjR2a
-	 BNpqC2DyR9bs6fHHb/qCEiASLcBauoOQ0qPa9Ce9rm/cIkDuUj5ZtTE39BU8JzxoCE
-	 wToE3YIFgM2utcrtgS3x0msE26r95fZBHFC2COMZ/RbO4eC9J/FzD+lMCaTnOy+w7G
-	 qB6tjOKm0qsUOG2QZMNYW2ENL6h5Bvj+Xkj/qi2V+iDrI18bWxSL6j44+gqK2bPzOe
-	 0LiVCJIou7YhNio+N3EhinnsqgRuRu+jbpbLvzw1IhXCtMAOH1B/H9kP/nhWg0eH1N
-	 sf+FhjdY7CP6Q==
-Date: Mon, 02 Nov 2026 07:13:18 +0000
-To: netdev@vger.kernel.org, Ioana Ciornei <ioana.ciornei@nxp.com>
-From: Jaeyeong Lee <lee@jaeyeong.cc>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH net] dpaa2-switch: fix port cleanup on probe errors
-Message-ID: <20261102071310.3004332-1-lee@jaeyeong.cc>
-Feedback-ID: 177356447:user:proton
-X-Pm-Message-ID: fb738ba593e0085010f36fbc498bff8419c12ce7
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iGr6Zg1x
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF5F21F00919;
+	Mon,  2 Nov 2026 07:19:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793603979;
+	bh=80POjU5WP6ctS0DqN7hA/63JAQ8Agh1hTny2C1kJcvk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=iGr6Zg1xktbK4WkACZ7DPOhrZHzy/piMgTcXlN6dtZpyhnOW8gSDaFsap9nYImWIN
+	 g4MncaPbc+SouxQ3DAHCd7u8UAa6eZDxgzjdwPDFq1Djeso7MV1TXATnoEDlDDAyx/
+	 HNh6imPBkaYywPBBfS1+8ANeDbAw8ZKG5LqPUyzN6HQ6Jl2FYI6Fx8eYD8Wd/6cqD7
+	 J49h3cv+K+X2zhWXoADHy28igLyXV3tLjFeXVOJg7kACa6vmZR691jryvRjWYeuQbH
+	 79bJex1t9kfDwbloEmkWgDLsG+J6KCIHvFlmvjQzxC/QiW8D+XIGTBu9C1JU77G/iK
+	 5C1TPxnd259zw==
+From: netdev-bot+sinfo@kernel.org
+To: Jaeyeong Lee <lee@jaeyeong.cc>
+Cc: netdev@vger.kernel.org, Ioana Ciornei <ioana.ciornei@nxp.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] dpaa2-switch: fix port cleanup on probe errors
+Date: Mon, 02 Nov 2026 07:19:38 +0000
+Message-ID: <179360397824.3286.4472427559775465393@kernel.org>
+In-Reply-To: <20261102071310.3004332-1-lee@jaeyeong.cc>
+References: <20261102071310.3004332-1-lee@jaeyeong.cc>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,96 +64,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-dpaa2_switch_probe() reuses i while probing ports, adding NAPI
-instances, registering netdevs, and unwinding failures. Consequently,
-the value reaching the port removal loop does not always represent the
-number of successfully probed ports.
+Hi!
 
-If IRQ setup fails, i is left equal to DPAA2_SWITCH_RX_NUM_FQS. A
-switch with one interface then causes the unwind path to access
-ports[1] out of bounds, while a switch with more than two interfaces
-leaks all ports after ports[1].
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-If register_netdev() fails, the unregister loop consumes i down to -1.
-The following port removal loop is therefore skipped, leaking every
-port netdev and its MAC endpoint reference. The NAPI instances attached
-to port 0 also remain linked while their enclosing ethsw is freed.
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
 
-The issue was discovered by a static analysis tool and confirmed by
-manually tracing the probe error paths.
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-Track successfully probed and registered ports independently. On
-post-NAPI failures, unregister only successfully registered netdevs,
-delete the NAPI instances, and then remove every successfully probed
-port.
-
-Fixes: 0b1b71370458 ("staging: dpaa2-switch: handle Rx path on control inte=
-rface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jaeyeong Lee <lee@jaeyeong.cc>
----
- .../ethernet/freescale/dpaa2/dpaa2-switch.c    | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/=
-net/ethernet/freescale/dpaa2/dpaa2-switch.c
-index fe8ac5e85259..0d80706ac41f 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-@@ -4086,6 +4086,8 @@ static int dpaa2_switch_probe(struct fsl_mc_device *s=
-w_dev)
- {
- =09struct device *dev =3D &sw_dev->dev;
- =09struct ethsw_core *ethsw;
-+=09int registered_ports =3D 0;
-+=09int probed_ports =3D 0;
- =09int i, err;
-=20
- =09/* Allocate switch core*/
-@@ -4148,7 +4150,8 @@ static int dpaa2_switch_probe(struct fsl_mc_device *s=
-w_dev)
- =09for (i =3D 0; i < ethsw->sw_attr.num_ifs; i++) {
- =09=09err =3D dpaa2_switch_probe_port(ethsw, i);
- =09=09if (err)
--=09=09=09goto err_free_netdev;
-+=09=09=09goto err_remove_ports;
-+=09=09probed_ports++;
- =09}
-=20
- =09/* Add a NAPI instance for each of the Rx queues. The first port's
-@@ -4178,19 +4181,22 @@ static int dpaa2_switch_probe(struct fsl_mc_device =
-*sw_dev)
- =09=09=09dev_err(dev, "register_netdev error %d\n", err);
- =09=09=09goto err_unregister_ports;
- =09=09}
-+=09=09registered_ports++;
- =09}
-=20
- =09return 0;
-=20
- err_unregister_ports:
--=09for (i--; i >=3D 0; i--)
--=09=09unregister_netdev(ethsw->ports[i]->netdev);
-+=09while (registered_ports)
-+=09=09unregister_netdev(ethsw->ports[--registered_ports]->netdev);
- =09dpaa2_switch_teardown_irqs(sw_dev);
- err_stop:
- =09dpsw_disable(ethsw->mc_io, 0, ethsw->dpsw_handle);
--err_free_netdev:
--=09for (i--; i >=3D 0; i--)
--=09=09dpaa2_switch_remove_port(ethsw, i);
-+=09for (i =3D 0; i < DPAA2_SWITCH_RX_NUM_FQS; i++)
-+=09=09netif_napi_del(&ethsw->fq[i].napi);
-+err_remove_ports:
-+=09while (probed_ports)
-+=09=09dpaa2_switch_remove_port(ethsw, --probed_ports);
- =09for (i =3D 0; i < ethsw->sw_attr.num_ifs; i++)
- =09=09mutex_destroy(&ethsw->lags[i].fdb_lock);
- =09kfree(ethsw->lags);
---=20
-2.43.0
-
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
