@@ -1,54 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.83
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793605266;
-	b=mJQrTH1eMMO27flsvI9zQMcLalFVkJJwHR5+aWbFi5BxO2NEV+HvB8mTDL2Ws07nvKiv
-	 My3dcodnT4hEfJZpCkR+Nd3kacD73EJisC9AKP3P/A9Lt6wHG2HAITe3kM91UgS+/biba
-	 SxrJLag7acUxGWGMSkqTEZfAglWhuwGF/icvkrm23uBI4pU7crhAYi/frdd/EZsnnr3li
-	 x+npC37VOmEWj3V5ai9zx/HMNONsE4YmCKFyFtCfuraMihxFkEuraPU+MBm+Xy8g+eFJO
-	 PCMsyKeK00qcFSsX6UHKzuoclWoHChIUQ5i8I5tvu+EtqlVH7sMh2digN+W9R+7Ye+Q==
+	t=1793605313;
+	b=RYogGWcCyyzMuJyT84/1P4u5skMumWzGBqfT9cfKImyLCrEhiN+h1FS9ZG8JOH0keevL
+	 cdKGS7AU5FJAUFHrcxfsBP4avsq4lWV+CSEHEqaBoKzoWAacVPhKQmDm0Q2olBbleAs9g
+	 fHXNeJx5gmpvBXQ8WV9ZuvnHEOtzcuD+HMPDNCJFyAr5uT666m0VrtQS5a0JT6Jq7xCIb
+	 KEY/4a9fsZjA2b+s7tbkHvaM5bBFAIwmXiA/cIMWJL6tt5Tv1kdzwrfx5Wgx+3XdpbSBN
+	 ftjA4dPTfzlWKq0Gxo0wNkBvs/iT3k9bwm8O4qMVxNAgc7BOP8dE3zvorrhadUFSYlw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793605266;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:References:From:Cc:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=OfgCQoL8h0OQGIBTyFTsKwgv2S5WkrlkH70wsc4VUwU=;
-	b=bZFfkbhw0hRuYIrb4BpmleOZRD2irMBZU41x//qMF+Ybwk1DTwvnvl7NbTxA7SsMsIWR
-	 ZSyJ9JaOYXykOhGWhiKyeXcJz2wKugSn6HZDQce2lDXqUxJWA5MmN7s4l2Dv+2rYjP5oW
-	 GNz4DSN8xROrMbBom/ogTG+XaG5Edb3zMwruqURn3EglLmlXc6ECK80tmmrQJjsFLSVLd
-	 QIeG1UkB2/rVQjSkvNnjt3yrNDMJO3H2rFC1aB2Iyrg/bQbBPqTT8V3A+ShNgCTpczfKA
-	 uWvLoVTwOFfIrZWQbSpJCeoVUq7GqvSz/WuqrhkPlduLM0BGhuCFMuw9MfBtPnDI7lA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793605313;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=7CjleU6AvzaNyn+knfBHfOhhmo2TtUTc2OgSk/49SFk=;
+	b=EDHKLzYUDU7TBeWaZTI6xqvX4tBmRwXnqkG78XI05JGywX3h2KsD3Z63YwmCEQ/8zi5y
+	 TtpLV++4KPsgWcsSD92a2OPZ0CrVtm60+OTSi0o2NrL5JGmvGOFBfz0YKft3GqIGhkm/Q
+	 DSmhFtsUZKZeESHFAL0pHreKodDA75VI+dhKJJmFIk7Pd1IOBWNfOqMta8SmOh0SyyCt0
+	 ElinyONd1jfFJjVb9OobxUKNZ55ExC8rbJ7fVLo4eVLutW0xdvwkNyE4ntTyddW60vJKN
+	 Sc2eF7mqZB/iiVOB4FMUjsXvh3G2NPxmT9zWuzvq5E4O9iZCN8ZJtfRH3szn10LMzsA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=qAaai3dX;
-	arc=none smtp.remote-ip=95.215.58.83
-Received: from mta1.migadu.com (out-83.mta1.migadu.com [95.215.58.83])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=khZ9Jogz;
+	arc=none smtp.remote-ip=117.135.210.5
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F1A60A2617
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 07:41:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 55F1A60A2617
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408DC606A33F;
+	Mon,  2 Nov 2026 07:41:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 408DC606A33F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=qAaai3dX
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=DZgmR+w0hXnF42goaWJ6bzq/W2wIthHLUmetG/gcZXQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793605263; v=1; x=1794210063;
- b=qAaai3dXugNnqaMvqljDfgxrhRbkO6zBMQKdUyeMI+BjMtNlDl6iZwO2qWGjq3U3+neTyY64
- 7QN6YcjyoCXCr0LRSrSRWW5ps5Y/B83buL4GUvOfjLEq53CpvYUx5Zc6Ugl2dOFrhSsojAf9U7u
- EBqRJWAfCGWageqdx7owJBSk=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id ef704eb15b54ecc3;
-	Mon, 02 Nov 2026 07:41:03 +0000
-X-Mizu-Trace-ID: ef704eb15b54ecc3
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <d6ba5426-fbee-49da-b18b-1419fd84fa0f@linux.dev>
-Date: Mon, 2 Nov 2026 15:40:56 +0800
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=khZ9Jogz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=7C
+	jleU6AvzaNyn+knfBHfOhhmo2TtUTc2OgSk/49SFk=; b=khZ9JogzL2nw+bVsPI
+	KgVkMRclJjBdKyyRwNRO1JZN5HZAhkP+eIF59+QeEkD4/4v2FDOnKAdtl8Elz5oY
+	pF4ITw1nENjDkNIiOcrAI8ut9KkK+cDLvkVWkqpjFYUbFB6hbZMUBILfYnJzVQuD
+	Xc4QB5wo3WyRlzzQkj4io2y6Q=
+Received: from colol4bi5.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDnr0OVPuhqKTZdEw--.2020S2;
+	Mon, 02 Nov 2026 15:41:10 +0800 (CST)
+From: Binbin Deng <18983559317@163.com>
+To: saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	mbloch@nvidia.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Binbin Deng <18983559317@163.com>
+Subject: [PATCH v1] net/mlx5e: IPoIB: Fix race in QPN to netdev mapping
+Date: Mon,  2 Nov 2026 15:41:07 +0800
+Message-ID: <20261102074107.32859-1-18983559317@163.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,66 +69,86 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] tcp: initialize send sequence numbers before
- deferring TFO
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-References: <20261102035943.9700-1-qingfang.deng@linux.dev>
- <bfbc4b3c-fe19-4070-97b4-4ff8ded06011@linux.dev>
-From: Qingfang Deng <qingfang.deng@linux.dev>
-Cc: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Yuchung Cheng <ycheng@google.com>, Wei Wang <weiwan@google.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <bfbc4b3c-fe19-4070-97b4-4ff8ded06011@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDnr0OVPuhqKTZdEw--.2020S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCry3WFWrXF15ur4UCr15Arb_yoW5AF47pr
+	W7Ga95ArWkZry29w1vqFs5Wr1avw4DKF47G34fCw1fZwn8Zr95Wr1FkFW2kF9YkFWfArn3
+	Jr45ZayUAFn5Ar7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRJ3kJUUUUU=
+X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC4BaJbWroPpZszgAA3a
 
-On 2026/11/2 14:11, Jiayuan Chen wrote:
-> On 11/2/26 11:59 AM, Qingfang Deng wrote:
->> TCP_FASTOPEN_CONNECT can return from connect() before tcp_connect_init()
->> when a cached cookie or cookieless Fast Open allows deferring the SYN.
->> At this point write_seq contains the initial sequence number, while
->> snd_una and snd_nxt have not been initialized to that sequence number.
->>
->> Consequently, inet_diag and /proc/net/tcp{,6} report the initial
->> sequence number as the send queue length despite no SYN or payload being
->> queued.
->>
->> Initialize snd_una and snd_nxt to write_seq before marking the
->> connection as deferred. Both sequence-based queue lengths then remain
->> zero until the first write starts the connection and runs
->> tcp_connect_init().
->
-> This patch looks good to me. But idiag_wqueue can still go negative
-> on the normal connect path, since the socket is already hashed and
-> diag does not take the socket lock. We always set write_seq first,
-> then init snd_una later:
->
->    tcp_v4_connect
->      WRITE_ONCE(tp->write_seq, st.seq)
->      tcp_connect
->        tcp_connect_init
->          WRITE_ONCE(tp->snd_una, tp->write_seq)
->
-> Can you try this instead?
->
->    r->idiag_wqueue = READ_ONCE(sk->sk_wmem_queued) ?
->                      READ_ONCE(tp->write_seq) - READ_ONCE(tp->snd_una) : 0;
+The QPN-to-netdev hash table is protected by ht_lock, but the NAPI lookup
+path traverses and dereferences nodes without taking that lock.  A child
+interface teardown can therefore remove and free the node while the parent
+RQ is still processing completions for that child:
 
-This does not guarantee the load order on a weakly-ordered CPU. LLM 
-suggests using this load-acquire/store-release sequence:
+CPU0                                    CPU1
+mlx5i_pkey_get_netdev()
+node = mlx5i_find_qpn_to_netdev_node()
+                                        mlx5i_pkey_del_qpn()
+                                        node = mlx5i_find_qpn_to_netdev_node()
+                                        spin_lock_bh(&ht->ht_lock)
+                                        hlist_del_init(&node->hlist)
+                                        spin_unlock_bh(&ht->ht_lock)
+                                        kfree(node)
+read node->netdev or node->hlist.next
 
-r->idiag_wqueue = smp_load_acquire(&sk->sk_wmem_queued) ? 
-READ_ONCE(tp->write_seq) - READ_ONCE(tp->snd_una) : 0;
+At that point CPU0 is reading freed memory.  The race is reachable when a
+PKEY child interface goes down while its completions are still queued on
+the shared parent RQ; this is the same lifetime case already described by
+the RX path comment.  It can lead to a KASAN use-after-free, corruption of
+the RX path, or a panic.
 
-Then in tcp_connect_queue_skb(), replace sk_wmem_queued_add() 
-with smp_store_release():
+Take ht_lock around hash lookups, and keep the deletion lookup and unlink
+in one critical section.  The NAPI path copies the netdev pointer while
+the lock prevents the mapping node from being freed.
 
-/* Paired with smp_load_acquire() in tcp_diag_get_info(). */
-smp_store_release(&sk->sk_wmem_queued, sk->sk_wmem_queued + skb->truesize);
+Found during a static-analysis-assisted audit: candidate sites were
+surfaced by a Coccinelle rule, and the reader/writer paths were
+confirmed by deep code inspection. Due to a lack of hardware
+infrastructure, the issue was not observed at runtime.
 
-What do you think?
+Fixes: 7e7f4780c340 ("net/mlx5e: IPoIB, Use hash-table to map between QPN to child netdev")
+Assisted-by: Coccinelle
+Signed-off-by: Binbin Deng <18983559317@163.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/ipoib/ipoib_vlan.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/ipoib/ipoib_vlan.c b/drivers/net/ethernet/mellanox/mlx5/core/ipoib/ipoib_vlan.c
+index 4120afd097c3..91b203c6d603 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/ipoib/ipoib_vlan.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/ipoib/ipoib_vlan.c
+@@ -109,13 +109,14 @@ int mlx5i_pkey_del_qpn(struct net_device *netdev, u32 qpn)
+ 	struct mlx5i_pkey_qpn_ht *ht = ipriv->qpn_htbl;
+ 	struct qpn_to_netdev *node;
+ 
++	spin_lock_bh(&ht->ht_lock);
+ 	node = mlx5i_find_qpn_to_netdev_node(ht->buckets, qpn);
+ 	if (!node) {
+ 		mlx5_core_warn(epriv->mdev, "QPN to netdev delete from HT failed\n");
++		spin_unlock_bh(&ht->ht_lock);
+ 		return -EINVAL;
+ 	}
+ 
+-	spin_lock_bh(&ht->ht_lock);
+ 	hlist_del_init(&node->hlist);
+ 	spin_unlock_bh(&ht->ht_lock);
+ 	kfree(node);
+@@ -128,10 +129,12 @@ struct net_device *mlx5i_pkey_get_netdev(struct net_device *netdev, u32 qpn)
+ 	struct mlx5i_priv *ipriv = netdev_priv(netdev);
+ 	struct qpn_to_netdev *node;
+ 
++	spin_lock_bh(&ipriv->qpn_htbl->ht_lock);
+ 	node = mlx5i_find_qpn_to_netdev_node(ipriv->qpn_htbl->buckets, qpn);
+ 	if (!node)
+ 		return NULL;
+-
++	spin_unlock_bh(&ipriv->qpn_htbl->ht_lock);
++
+ 	return node->netdev;
+ }
+ 
+-- 
+2.43.0
 
