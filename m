@@ -1,49 +1,154 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793631250;
-	b=H7YJg/ftyPHTKzsN4tfdXhVD+3qg+kc1/GejYgXj6zz2wgopJ6oYepDABjzVdFIcsFui
-	 ksENVNE8Z8Geu8FAhXbDEEWOZW2WCvrxkEyLEy6OsKCk9kTuZePnFeKV13vFAAOMMgMsx
-	 9BWfSVqIcKyUg7txJPA3BNzb3xhhH4FBhPw6oouIc2yhep3ipm8wV+4WqTRG3PhZ+4AkF
-	 L5AVBCJKUIO+PtE2gfBQFeFOzXDG+SfxTJ5ieIkl+aeBlg3/Ut8Ur9ts0DCkAXkXdaVXp
-	 YEF03Zg8kRw6NI1Kvvz885rwcE+Jwz5POPEwUVmTiiNjcr+IF5uNvQVUR6lIuZ1eqIw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793631250;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer;
-	bh=6D+rhj9AMzsL4ZxAMbTTFRqO6BNcfNzlOGN8XoIy1BQ=;
-	b=2GCg/mc9/6AUTHT2gRIauO6of0bto0JieH9xVZq+7ShAP2AyxpUCe1cLOujqQFeXZDoE
-	 lNnERBN4VAxxKmxWs3nP90zWNPhV2ep7m5Ko+hlWn/6Liwg08aCg8ZrqV4rQqJLYXuCTm
-	 YzLcedmIJl+9BK8SO9PrG/KCgj9uL7KcckVuo/GfNTWuoBabia6Ph9hcLQSqPdEoz+Z2O
-	 BlW4Mwe72mCqf4NshKd/QDrIo0nFfPclNlohqlzWHOKU7e5+jbBeNo5FKfgX7d8aN+lkF
-	 cZhyd+aCs/Hyf42OwbC2Hbj3Aikmyr1CilUUWxqPNPj9Pr01RX64TiYQAb+w7Gqo/+g==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KxNpZEKk;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.75
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793631343;
+	b=f+yzW3wP9GuAJgq9VrI1vkMQSSkgbX+IiP/Cj52zOQC3socPUZ16AOtH9iYiA+a8hS8O
+	 ZuAHekP4OJzgTL4GPyzvJtjhMuzKQ44L0TpMJTTYngMlFB2dd1VCNulS+5FC2eJfiJHZv
+	 CxKMS+9ApKe3VhlvrAN05mcyNlH6o1pdO+cxK4ONqWdw7sAb+gktShhr5k5fXiSRh00W5
+	 uJ1X4WnNfedHtspWupPKTDjT+ZKk+fgwJDgRpgwEOuIXsKJJiOIoc21bYiXKOkWD3xn6t
+	 swTL5iPbXDBmabHfnzWjWRURwvAfnzS4O6jSJT2HRro4kU89jVkEkFpDriafV2qLX6A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793631343;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=6cYbllMUUgcOteK9sBqEuzu1jAECqJY26reSHUnh4ks=;
+	b=aw3+8gOxuZ5FwMpEzgnt6ioyCqof6h8JS4lHvpB8xfjAHLd1A24k+RnmjgaDwXdqZnfi
+	 BFr4l660JCyiXTMrku+Q7CImnBjUf4PuN/ShC8KJL40KKKFAvShu5882upbBLsKt7BXCQ
+	 EaQddnlNbA+hjey0i4jHgGiFZZCifiINqM2qDuXHzIZxWrEThAtI4kX6mjoDMk+N9K/eO
+	 8KbPianD9VV5jYJkqCFBf9Rzs61lUgnlmvivNLFfxdqNWRongc/qWB5kNu18BPsunlWZH
+	 5Jv1P/USLgYBTTtXpPyXsMuek1yG7M1MesPu70Yf+6Ktj0yXmW0aSB3zNZTDA12d3lw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=aweta.nl;
+	spf=pass smtp.mailfrom=aweta.nl;
+	dkim=pass header.d=aweta.nl header.i=@aweta.nl header.a=rsa-sha256 header.s=selector1 header.b=FVkQcku1;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.83.75
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11023075.outbound.protection.outlook.com [52.101.83.75])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90BA607905F;
-	Mon,  2 Nov 2026 14:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3787607BDC7;
+	Mon,  2 Nov 2026 14:55:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3787607BDC7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aweta.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aweta.nl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KxNpZEKk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292341F00A16;
-	Mon,  2 Nov 2026 14:53:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793631249;
-	bh=6D+rhj9AMzsL4ZxAMbTTFRqO6BNcfNzlOGN8XoIy1BQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=KxNpZEKkyph0s1VFnWYugNb2QhC01F2/bH2mO62CWQZ+LGZOjH8D13WJhEvaEvssq
-	 ll1kDcMtrg3ROkFYJi4p7/Ri4zQ67sgTvcwZMysRa8udyqg9CDy7DJ1FOKzlD3OUC5
-	 hck0+uoaMFl0apM+ydUoJxSpyX1BiEd45EYN5ZcmyZZdhFNON3LUDyLw+HmFRG6kWj
-	 hKJyb7cb24m5nGVzK7xwTb/BfbuX6mn66mIH+I2qikOKVjpdkTR++4BkGvLnpQYbfU
-	 N42B37TnDt/oZhvY4ym1lTPmywWw6rqu+aAeSl/T4Fq53VdxKX+t4v7df9GH9Jeepm
-	 bu9oR3VWn5S8Q==
-From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 02 Nov 2026 15:48:53 +0100
-Subject: [PATCH RFC 13/16] proc: let procfs copy out reads that don't go
- through seq_file
+	dkim=pass (2048-bit key, unprotected) header.d=aweta.nl header.i=@aweta.nl header.a=rsa-sha256 header.s=selector1 header.b=FVkQcku1
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=J7VwS+tcxVum3r5zvqLMWp9Ydh9qyXTzCl3gLb2Thq3lHW/cW+FoL0lQVhzMy9wq4pxM6zoaL5ec60WtxfK1Tb39ZacjOIv6nGdNlVzF+/xDAOLrQo8OaejQMEm1YWgr1gwm9eP+p1u+RtChhpyXFTHIuCSMyDVxvuOcEY4tnI25OBEHiEYyFVmkX44/lTxoqiYXomCnGPIzc02xsdMQ7J61evJpiruLfenTXX6gYRXUUE7BPSZlLGC270tQRaEP9FPwxx6mVHetJkDoYLiVLH8h0X2U806w64js09gMqdoHJFlfoDK5zpqLK0/VoK6jA8ddhzMboiiGGoJmkH0ZJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6cYbllMUUgcOteK9sBqEuzu1jAECqJY26reSHUnh4ks=;
+ b=j0BtxbJPsPOoORAdOW/4f4gaZJEkzGr1QDuM1zvOhUf2HdXSk2b5L5jKiKp9qtsen2Zpz+1uM9hVdMKzqijfM4i/2lsUyPtTdPWCp94U78R1RQyJ4nz9x2+tU2c+B9JcIUqscKlLR9q/KitEQJauKacC9EqRuQDNOBeslicV9qD+fAkjpjaLcSs8yF4mG5Gp/p2jUR0PGycbuufjXpqiL5BL89Qii/iFV4NZE9gLfEBbQSARncrgYoWCPf1aD9NblxZU/ONjfwxvNijVak8MAZ0xpMUiD75iVuq3swzQLh+iPSr1cp0kyRqXBywH9KMVy1FWjZGcZZO2AHfuq3+Yag==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=aweta.nl; dmarc=pass action=none header.from=aweta.nl;
+ dkim=pass header.d=aweta.nl; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aweta.nl; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6cYbllMUUgcOteK9sBqEuzu1jAECqJY26reSHUnh4ks=;
+ b=FVkQcku1ZiaOCM00sVyyT69ptKbijcanJ0/ohnwKZJBn0p8Muu263bfcOmCLwlUxgN2Lvs5nercZiRGkaaJ/JO94dkDycNwZEZBD7JXvIiHtzQqXTiZ02wgCKumWE2naj+omEP6U4GESKl5C4cZLQ+lLAB5isAet+Q4OqTMWxeFDVETsE60cAQagTinR+RyJ1jyZ60YKzYgEHlt+PoX5WA7T9k6Gi88P/1IUtc5ePWpfrrV+HeTc99O+fhuRT7gk3sQqw7g7sNtt1Zlsn2NaPGF8DCSX4oTZMQNYstRL2qTrnRaaF4WUQR0i29nyC1zZMrDaQlM4PTUvsSzTD/o+Mw==
+Received: from AS5PR05MB11020.eurprd05.prod.outlook.com
+ (2603:10a6:20b:67d::13) by PA6PR05MB12150.eurprd05.prod.outlook.com
+ (2603:10a6:102:51c::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
+ 2026 14:55:36 +0000
+Received: from AS5PR05MB11020.eurprd05.prod.outlook.com
+ ([fe80::2dc4:6bec:d87e:3492]) by AS5PR05MB11020.eurprd05.prod.outlook.com
+ ([fe80::2dc4:6bec:d87e:3492%4]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
+ 14:55:35 +0000
+From: Tjerk Kusters <tkusters@aweta.nl>
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+CC: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
+	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei
+ Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Jesper
+ Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, Sven Auhagen
+	<sven.auhagen@voleatech.de>, Richard Cochran <richardcochran@gmail.com>, Kurt
+ Kanzenbach <kurt@linutronix.de>, "intel-wired-lan@lists.osuosl.org"
+	<intel-wired-lan@lists.osuosl.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	Paul Moses <p@1g4.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Piotr Kwapulinski <piotr.kwapulinski@intel.com>, Aleksandr Loktionov
+	<aleksandr.loktionov@intel.com>, Alexander Nowlin
+	<alexander.nowlin@intel.com>
+Subject: RE: [PATCH net v4 0/2] igb: only strip the Rx timestamp header from
+ the first buffer of a frame
+Thread-Topic: [PATCH net v4 0/2] igb: only strip the Rx timestamp header from
+ the first buffer of a frame
+Thread-Index: AQHdaren9ySRdxgK9kWBZLyUEZubm7caxseAgAAXPZA=
+Date: Mon, 2 Nov 2026 14:55:35 +0000
+Message-ID:
+ <AS5PR05MB11020E486E4254724CA5F99ADB96A2@AS5PR05MB11020.eurprd05.prod.outlook.com>
+References: <20261102-igb-rx-ts-fix-v4-0-8785124c5d23@aweta.nl>
+ <auiQF5ZxaBDza8xq@boxer>
+In-Reply-To: <auiQF5ZxaBDza8xq@boxer>
+Accept-Language: en-US, nl-NL
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=aweta.nl;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS5PR05MB11020:EE_|PA6PR05MB12150:EE_
+x-ms-office365-filtering-correlation-id: 12ca948d-08e0-4789-9bfd-08df38f15a11
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|22082099003|18002099003|10067099003|56012099006|261102123227099002|261009223027099003|261022105027099003|261021121427099003|5023799004|4143699003|38070700021|261028144727099003|261026140227099003|261026121527099003;
+x-microsoft-antispam-message-info:
+ BjDYsey88Cwdu7emq7/wVdwC0yNyt32ayvrnrAAlNhVuEFTqyRZVUKfjkrzfgwi5X4FAnBCtPR1e2gBeMI8jaPWmYrE/ZhSLEbdyTrrjY51r87tIvKsN85do54QXtG+MXl+A8GWt2XvlNEMK5cnLCRZvd5rDgfjzmfb/8Oc3Efo74nWO+9tLcnYMzzfwkisF2aJYuzYOWhhThGOudPXmUSmH7+OXgIc8tOZNY6QTlQytz5BY3KNdUjbjFKuXKbiH7Cu8M/2llHX7mINl74v/rFPzveYOSboPTLsRpLl7PRhFVT78iV+zkiJddm3htQYCg3y6esi4+WjDV1QQlZbsBE4+X0nizzup+BmbXgmgWRQoofmHPrXDe+O+8Dgco0OwBAz0N0V/jn/tVEMuc4jpWIXFx28MjScCct4R7Sgxad9d4S/ERj//LlMzaGeUp3i41nqF4OqXcThpUFTbkeMPSg6uPRP10b+6mNg8V6fT2nSls8uiecUldEW6MMlL4E6ptxafhoA9PoNk74qv9RLNyVImRGFHvAUqFyPurCMEyxpLL6fQ1XzrB4nqZteGn9hfg/KF7VA0BcN8OeqqXMqYHkL3B9M1pb6mxr9Hi6rt0N6Q3hxljK7MYS4audYPqlVewRDwCC4VP8TjORzWeL3Qwy7X+XPad4IVjMum7ntgZJDfsQWyMpcZW1SDpjnvhNraxXwwnJfsZTQv6ty0s/RWpgOkUpbHTnn7GwmBT3YaJTw=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS5PR05MB11020.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(22082099003)(18002099003)(10067099003)(56012099006)(261102123227099002)(261009223027099003)(261022105027099003)(261021121427099003)(5023799004)(4143699003)(38070700021)(261028144727099003)(261026140227099003)(261026121527099003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?e4Ea6zxmt4XnWPn/ZczTmfv3muLcL1EcRptVQPX3HlSNnCPiPyLtdbjJEQ8b?=
+ =?us-ascii?Q?sIlVc+l/WDUbxpAVxZAnJuX+k6OQ4GG2gXP0VEyznf8c1K+mUcJW5f8rJaK2?=
+ =?us-ascii?Q?kqEEZV7N5UP2aSZaqvULn2idVjI0gyIOZiwg0NhDvLGF7Wr7Wi/qbTV3JLzE?=
+ =?us-ascii?Q?qlR6TRis0sK8Yz0hMQzAnKr3rfMJKIaLuws3v49ofR/lu9Y8bNwZh4Wnrb5U?=
+ =?us-ascii?Q?rXIrTYEK0nfFJMjKucCK8SE2QYHdbdWLw0tYTR4d//TTHPUNKfZiVTzK6+74?=
+ =?us-ascii?Q?2Mr8BbKYsemgHwNewDdou93kRRBil4xiu+OWI+g3q16USZvqKJB9lF4+VrIj?=
+ =?us-ascii?Q?mc35Azrk9/9KBCcj341wUZrccJWGhHc8St+KXDJPpzmFPQMDRC7bmvf58Ykn?=
+ =?us-ascii?Q?eXDcLtZkrpkOZql9WgneZy+8NgV9NBvmfNF4aiDZ7iGcA4//WsWy4uAJYGDa?=
+ =?us-ascii?Q?t+pJezv2iNv2Sg91DsNXwJm+mp4fcgPpLsUk4ESlMeHM1AQL0fq6P21BSC63?=
+ =?us-ascii?Q?cISImD+gn+Z1kbgx9KsqVWNiuEGRCjTHG9lq4suW5tKvvBrEUbPgnDm+u+4l?=
+ =?us-ascii?Q?4Kc32HNXSNqR/Ng/p3wh2LHmwZdNE1R8VUOKV7Y2wxQPHU27NMRm9pTxe1Ja?=
+ =?us-ascii?Q?nccnOrQOn36qXYz7/+gJIgkKvs+K5cNlfJM4IQ5pM2Y+77V0D24G3sVjcARs?=
+ =?us-ascii?Q?vGyynL7JdG77Kww3Eo019jsrr4yiv9ZgPhzUleoV+Dwbt/MtzAcpe5290K3K?=
+ =?us-ascii?Q?GELRlVeN3uMmJWqYwEDZtjl9rX5CWJBBWyMCXFNT5eXyd3oc9598hd+UvhF8?=
+ =?us-ascii?Q?ZiYX/QUNwtZmQupsoaq1s4YJLGI+a8hXBPC/6yRLPGBFPgyIxqh5ddmP5kfw?=
+ =?us-ascii?Q?3rwt9jovP1vOI3h/tc5e3Zwe6w1cHL7gM88MKfhaiY9K4Bb97wkOByak1rOl?=
+ =?us-ascii?Q?nAnBu6PG/mSDTC10idTQN9pC9EGvAffpa7zc7sWI1ncESXij4mpsky38aKZN?=
+ =?us-ascii?Q?KvGwSxugM4XJJZPBUMLStpycfq3T8mCQxxo5hvRzs7JF5DCGVothPwUON3/I?=
+ =?us-ascii?Q?3GHUrp+PMDksDElbFKXpkC08az2q4PJH4EJc3Ru/EzHmwtZXkRMtrcfVuWiz?=
+ =?us-ascii?Q?zEGcYVmBCJzHAl6peXixM1VomYCAwDm9uUZP2LQbflKHnBbcnBrggNfcABTB?=
+ =?us-ascii?Q?xrUFiSMXz1a+Ek1Iipr19uqhTL3bMlOZ0QzFftXYh37z+cBNnmlFzw5Dl+Lp?=
+ =?us-ascii?Q?ANAAHQmDMzoW+Th06UDfBIXQ3CnlcJC+sFRQ+UxtgrH7ePW/zfWway5ydEzj?=
+ =?us-ascii?Q?80YnSvQWclSiezFWfzSAynYo/KKki7q8Db/st7w+EaRSCI1leVq9uJjIcdbv?=
+ =?us-ascii?Q?kf3gVhlpQHAZcClHyk0oFFE0RjMFKl6+3CzE1AOSy7Gt8YLXj9k48PeFfpfF?=
+ =?us-ascii?Q?P+TBUAd7HEnY6IxDhm1gE/NrvtlFlp8Y2pdNzShueEqy5CzP5owTXARAYbYh?=
+ =?us-ascii?Q?D9kqrYpkjfXe/2XD+t0piWEl4O5jBGGfA3dqNASElaXsHyVAZ2nDIUakKpPh?=
+ =?us-ascii?Q?FiXZcS7I5OTQGYKLUdzV8rV8GYYmmyCY1Dy/DC333GM5y3JK3b6GNm8giPpr?=
+ =?us-ascii?Q?GTKePg9gW1zUfcU14XU/hmefraRYy/KtDadCUy/EqTuooOn7IJflUTvZ8fdY?=
+ =?us-ascii?Q?RvgDXRJzerU+ocjFftY0f9SOdu+jKml2DwBQXJHS0jqW+ZFM?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,265 +158,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261102-work-procfs-core-v1-13-75df35e4f8b8@kernel.org>
-References: <20261102-work-procfs-core-v1-0-75df35e4f8b8@kernel.org>
-In-Reply-To: <20261102-work-procfs-core-v1-0-75df35e4f8b8@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
- Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
- Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
- NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
- Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
- Greg Kroah-Hartman <gregkh@suse.de>, 
- Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, 
- Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
- linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
- linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
- linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
- ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
- coreteam@netfilter.org, kexec@lists.infradead.org, 
- linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
- netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
- linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org, 
- linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org, 
- linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
- sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
- linux-doc@vger.kernel.org, linux-serial@vger.kernel.org, 
- linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>, 
- linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
- linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
- linux-debuggers@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>, 
- Chuck Lever <cel@kernel.org>
-X-Mailer: b4 0.17-dev
+X-OriginatorOrg: aweta.nl
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS5PR05MB11020.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12ca948d-08e0-4789-9bfd-08df38f15a11
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Nov 2026 14:55:35.8434
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 6546512a-ba20-41bf-9d8d-c076dcbf6fd9
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: S3JIPMqcoqE15nDFc2r+IWCJEs+a2pzLi2nxgcrj1Y+GxupxtpkDra+0nWPrdu2Sx02De6pgMKomyNigjzA8cw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA6PR05MB12150
 
-proc_reg_read() and proc_reg_read_iter() pin the entry and call
-->proc_read() or ->proc_read_iter() which copy to userspace
-themselves. Like for seq_file reads and for writes, a reader can make
-a page fault in that copy take as long as it wants and
-remove_proc_entry() waits for it.
+> Not addressed here: the AF_XDP zero-copy Rx path.
+> igb_clean_rx_irq_zc() has the same unguarded strip, and with 2 KiB
+> UMEM chunks the hardware buffer is rounded down to 1 KiB, so frames
+> span descriptors there. The igc counterpart is Maciej's buffer-size
+> patch in [2]. I do not use AF_XDP and cannot test it, so I would
+> prefer to leave that to someone who can.
 
-So do what kernfs does for these reads as well. An entry that implements
-->proc_read_buf() fills a kernel buffer of at most ->proc_read_size
-bytes, a page if the entry doesn't care, and procfs copies it to
-userspace after unpinning the entry. The entry moves the position like
-it did for ->proc_read() but that only sticks if the copy to userspace
-worked, like in kernfs_file_read_iter(). If the copy fails halfway the
-read fails with -EFAULT and the position stays, where
-simple_read_from_buffer() returned what it had copied until then.
-procfs remembers ->proc_read_size in the entry like ->proc_write_size.
+> I assume review bots will give you a hard time if you don't address
+> this within your series. Seems you have HW handy plus you do use LLM
+> so I don't see why you couldn't ask it to address AF_XDP zc rx ?
+>
+> FWIW blessed user space tool has always been xdpsock:
+> https://github.com/xdp-project/bpf-examples/tree/main/AF_XDP-example
+>
+> so you can ask llm to run this in rxdrop mode on receiver side and
+> feed it with some traffic from peer side and then see that frames
+> were not fragmented.
 
-Larger reads come up short, like with kernfs. An entry whose readers
-want all of a large file in one read asks for PROC_ENTRY_FULL_READS and
-procfs fills the read in pieces of ->proc_read_size, unpinning the entry
-in between. A piece whose copy fails ends the read with what the pieces
-before it returned. kexec-tools treats any short read of /proc/vmcore
-as fatal for example (cf. [1]).
 
-These entries are read through ->read_iter() so readv(), splice(), aio,
-the RWF flags, kernel_read() and io_uring work for them like for the
-->proc_read_iter() ones. io_uring's nonblocking attempt gets -EAGAIN
-though, like loop_rw_iter() gave it for ->proc_read() entries. Neither
-the allocation nor the entry can honor IOCB_NOWAIT, and io_uring would
-take a short read of a record file for an unfinished one and glue the
-next record to it. So it retries from a worker like before.
+OK, fair point. I will look into it, and I will hold v5 until that is done =
+and tested.
 
-An entry that implements ->proc_read_buf() and also declares a seq_file
-or one of the other read methods fails to register.
-
-No users yet.
-
-[1]: https://git.kernel.org/pub/scm/utils/kernel/kexec/kexec-tools.git/tree/util_lib/elf_info.c
-
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- fs/proc/generic.c       |  9 ++++++++
- fs/proc/inode.c         | 60 ++++++++++++++++++++++++++++++++++++++++++++++++-
- fs/proc/internal.h      | 11 +++++++++
- include/linux/proc_fs.h | 16 +++++++++++++
- 4 files changed, 95 insertions(+), 1 deletion(-)
-
-diff --git a/fs/proc/generic.c b/fs/proc/generic.c
-index 83d273778a60..fc4d10c92d7c 100644
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -476,6 +476,15 @@ static int pde_set_flags(struct proc_dir_entry *pde)
- 		if (proc_ops->proc_flags & PROC_ENTRY_SHORT_WRITES)
- 			pde->flags |= PROC_ENTRY_SHORT_WRITES;
- 	}
-+	if (proc_ops->proc_read_buf) {
-+		if (WARN_ON_ONCE(pde_is_seq_file(pde) || proc_ops->proc_read ||
-+				 proc_ops->proc_read_iter))
-+			return -EINVAL;
-+		pde->flags |= PROC_ENTRY_proc_read_buf;
-+		pde->read_size = proc_ops->proc_read_size ?: PAGE_SIZE;
-+		if (proc_ops->proc_flags & PROC_ENTRY_FULL_READS)
-+			pde->flags |= PROC_ENTRY_FULL_READS;
-+	}
- 	return 0;
- }
- 
-diff --git a/fs/proc/inode.c b/fs/proc/inode.c
-index c0bb40e7ff96..3f29a1663d26 100644
---- a/fs/proc/inode.c
-+++ b/fs/proc/inode.c
-@@ -23,6 +23,8 @@
- #include <linux/sysctl.h>
- #include <linux/seq_file.h>
- #include <linux/slab.h>
-+#include <linux/sched/signal.h>
-+#include <linux/uio.h>
- #include <linux/mount.h>
- #include <linux/bug.h>
- 
-@@ -400,11 +402,67 @@ static loff_t proc_reg_llseek(struct file *file, loff_t offset, int whence)
- 	return rv;
- }
- 
-+/*
-+ * The entry fills a kernel buffer and procfs copies that to userspace after
-+ * unpinning the entry. A reader that faults on its buffer then doesn't hold
-+ * up remove_proc_entry().
-+ */
-+static ssize_t pde_read_buf(struct proc_dir_entry *pde, struct kiocb *iocb,
-+			    struct iov_iter *iter)
-+{
-+	struct file *file = iocb->ki_filp;
-+	char *buf __free(kvfree) = NULL;
-+	ssize_t rv, done = 0;
-+	size_t len, count;
-+	loff_t pos;
-+
-+	if (!iov_iter_count(iter))
-+		return 0;
-+	/* neither the allocation nor the entry can honor IOCB_NOWAIT */
-+	if ((iocb->ki_flags & IOCB_NOWAIT) && !(file->f_flags & O_NONBLOCK))
-+		return -EAGAIN;
-+	len = min_t(size_t, iov_iter_count(iter), pde->read_size);
-+	buf = kvmalloc(len, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	/* PROC_ENTRY_FULL_READS fills the read in pieces */
-+	do {
-+		count = min_t(size_t, iov_iter_count(iter), len);
-+		pos = iocb->ki_pos;
-+		if (!pde_pin(pde)) {
-+			rv = -EIO;
-+			break;
-+		}
-+		rv = pde->proc_ops->proc_read_buf(file, buf, count, &pos);
-+		pde_unpin(pde);
-+		if (rv <= 0)
-+			break;
-+		if (WARN_ON_ONCE(rv > count)) {
-+			rv = -EIO;
-+			break;
-+		}
-+		if (copy_to_iter(buf, rv, iter) != rv) {
-+			rv = -EFAULT;
-+			break;
-+		}
-+		iocb->ki_pos = pos;
-+		done += rv;
-+		if (!pde_has_full_reads(pde) || rv < count)
-+			break;
-+		cond_resched();
-+	} while (iov_iter_count(iter) && !fatal_signal_pending(current));
-+
-+	return done ?: rv;
-+}
-+
- static ssize_t proc_reg_read_iter(struct kiocb *iocb, struct iov_iter *iter)
- {
- 	struct proc_dir_entry *pde = PDE(file_inode(iocb->ki_filp));
- 	ssize_t ret;
- 
-+	if (pde_has_proc_read_buf(pde))
-+		return pde_read_buf(pde, iocb, iter);
- 	if (!pde_pin(pde))
- 		return -EIO;
- 	ret = pde->proc_ops->proc_read_iter(iocb, iter);
-@@ -814,7 +872,7 @@ struct inode *proc_get_inode(struct super_block *sb, struct proc_dir_entry *de)
- 		inode->i_op = de->proc_iops;
- 		if (pde_is_seq_file(de))
- 			inode->i_fop = &proc_seq_file_ops;
--		else if (pde_has_proc_read_iter(de))
-+		else if (pde_has_proc_read_iter(de) || pde_has_proc_read_buf(de))
- 			inode->i_fop = &proc_iter_file_ops;
- 		else
- 			inode->i_fop = &proc_reg_file_ops;
-diff --git a/fs/proc/internal.h b/fs/proc/internal.h
-index ed22c6dfb0bf..11bd3fa07705 100644
---- a/fs/proc/internal.h
-+++ b/fs/proc/internal.h
-@@ -52,6 +52,7 @@ struct proc_dir_entry {
- 	void *data;
- 	unsigned int state_size;
- 	unsigned int write_size;
-+	unsigned int read_size;
- 	unsigned int low_ino;
- 	nlink_t nlink;
- 	kuid_t uid;
-@@ -118,6 +119,16 @@ static inline bool pde_has_short_writes(const struct proc_dir_entry *pde)
- 	return pde->flags & PROC_ENTRY_SHORT_WRITES;
- }
- 
-+static inline bool pde_has_proc_read_buf(const struct proc_dir_entry *pde)
-+{
-+	return pde->flags & PROC_ENTRY_proc_read_buf;
-+}
-+
-+static inline bool pde_has_full_reads(const struct proc_dir_entry *pde)
-+{
-+	return pde->flags & PROC_ENTRY_FULL_READS;
-+}
-+
- /* procfs owns the seq_file, see pde_seq_ops */
- static inline bool pde_is_seq_file(const struct proc_dir_entry *pde)
- {
-diff --git a/include/linux/proc_fs.h b/include/linux/proc_fs.h
-index c81c93325044..0f0997898ba3 100644
---- a/include/linux/proc_fs.h
-+++ b/include/linux/proc_fs.h
-@@ -38,6 +38,13 @@ enum {
- 	 * failing with -EINVAL.
- 	 */
- 	PROC_ENTRY_SHORT_WRITES		= 1U << 9,
-+	PROC_ENTRY_proc_read_buf	= 1U << 10,
-+
-+	/*
-+	 * Reads larger than ->proc_read_size are filled in pieces instead of
-+	 * coming up short.
-+	 */
-+	PROC_ENTRY_FULL_READS		= 1U << 11,
- };
- 
- struct proc_ops {
-@@ -84,6 +91,15 @@ struct proc_ops {
- 	 */
- 	ssize_t	(*proc_write_buf)(struct file *, char *, size_t, loff_t *);
- 	unsigned int proc_write_size;
-+	/*
-+	 * procfs calls ->proc_read_buf() to fill a kernel buffer of at most
-+	 * ->proc_read_size bytes, PAGE_SIZE if that's 0, and copies it to
-+	 * userspace afterwards. Larger reads come up short unless the entry
-+	 * asks for PROC_ENTRY_FULL_READS. The position the entry moves to only
-+	 * sticks if the copy works.
-+	 */
-+	ssize_t	(*proc_read_buf)(struct file *, char *, size_t, loff_t *);
-+	unsigned int proc_read_size;
- } __randomize_layout;
- 
- /* definitions for hide_pid field */
-
--- 
-2.53.0
-
+Thanks,
+Tjerk
