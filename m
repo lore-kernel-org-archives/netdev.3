@@ -1,74 +1,74 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.96.220.36
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793606692;
-	b=3cuCql03fAfwaKAx1MmA1bEoA3nokf5h4UsQ4vUdnciMiygY0f+wKsiChFd/XnXM7QnT
-	 dniGlZpSpmFAEPQRaw9asRRwJp0X40u/QhFdzhJSmdGIjqvXuqSfQXnEObFYdLEL3s9nl
-	 VPGlmZg3hbMqP5hLa5y+/JXw40ojXtutqtArjNEWAcTHbqm0v++/7J3fX9XCQdEJ3Wkoj
-	 Wy3JziyXOPsVrzbtNoD1nGShb6riFyAPs/LnnjnTUylKzKHCuHDlNMT+tl5E1HKQfeO/q
-	 n7VigVFyEbynoRdHy3B3Q22T+mAsbjEmE/paQ3toB1UyHhc3PVkhVKgsb2S/ggg7luA==
+	b=QkqDYgD+oqOKRS2sgdEknoPGFyf8eWw44o/OCRmj7v3c1FgjfPTIS2bEXnfp/C2hGvA7
+	 fDEKpk06Lmtd8DsDBjsFU1R71GrIizgXEd8/eJbARZRrGT122HZMc6v5lQgazGCaGBwoE
+	 G1p9UY1nkiPfZrPG854vRU5tDvio3caIR9GVG5N4Q9oc7d3ujfvfxKmRGLLT5m4+60O7N
+	 /IjB/V5iDyebTKlTQZGT2g4IT5goa70jxRK5a7/FSso/O3H4fTtowRfZ20cG49a6NYh24
+	 9cEHww96Jd82F2r1DLONe2uCaQ1rQ/dkVXMPYyphEk6ID0gxHl0Wkbdx385nv4FQGsA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793606692;
 	h=DMARC-Filter:Received:X-Virus-Scanned:Received:Received:DKIM-Filter:
 	 DKIM-Signature:Received:Received:From:To:CC:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Content-Type:X-ClientProxiedBy;
-	bh=Bhm5K5pgZZqGM+JSJ1uY6OfgTehxKhHFC60i5E2xYII=;
-	b=qws+b1c0+1dLWHEtMdFSGfzF0LdVy6dE4UeMIeMuHZfwdE4ziVzHoiEmj6OZwJF+sKfd
-	 UzBBuOC5p1kJfoLRDTlFlINgUHpdQNrmFA44DNtZ9oL69NdNAnNx5o7VwalcCrISLWoc1
-	 h8h4OE84VE4ViUm/lgcsy1Tk7StbTmWONR2brcejDvZGnNe9ZM7TlzYpKapyUa4Ee/Qwy
-	 I50eDK4WppwSBVV61atwyNMf+2HNvikJDJHoDhn0mKHfRIykJr9XvSSZpZMV1yNnZwobb
-	 E6znnOePlqJgzq9qF4Qs/yj1tqpK94sauo3Vteatr2xI2znilM9Ce0L8jpyhpmvr7wA==
+	bh=fs/tI/7GIFfvay52gfHRQyszOipctYdXjIQzABa7pwg=;
+	b=Ze1nmPBrUr52+PcnufvF7+hCrcufbswbbxbtRYNaejoUZfLTl/N/ZuswqhbHk+1FVMXd
+	 sGR91D+1Cj03f+mgnfvond2RVBIo6okMkLh4sQzFVlMUIqE6gybQ7AlfKd72xhOR1x0ZW
+	 A9SN+ymSgXadGO38b42aejatDWXzaHaHVAPVREvSJg2S0CMH3it6wcOaKpiB84Musd4V2
+	 pUBkGqRGcN3sdFdqm8GxKOnBicTGznDtj5wo3kOydY8SRSxjQJL4edoMY2U4Zx/SD0Bhg
+	 hs/5+kuhVGYpoFGZWYflKI6rnJX7pXmoEmygPn1+K4rDabmMxt3yFgcUiy476684XrQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=secunet.com;
 	spf=pass smtp.mailfrom=secunet.com;
-	dkim=pass header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=gCtQtDBL;
+	dkim=pass header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=ipKgWIlF;
 	arc=none smtp.remote-ip=62.96.220.36
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDDE60A2611
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666EA606A329
 	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 08:04:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3CDDE60A2611
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 666EA606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=gCtQtDBL
+	dkim=pass (2048-bit key, unprotected) header.d=secunet.com header.i=@secunet.com header.a=rsa-sha256 header.s=202301 header.b=ipKgWIlF
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 68AAA207BB;
-	Mon,  2 Nov 2026 09:04:44 +0100 (CET)
+	by mx1.secunet.com (Postfix) with ESMTP id 2715A207E4;
+	Mon,  2 Nov 2026 09:04:50 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id rLl6jszmYsnY; Mon,  2 Nov 2026 09:04:43 +0100 (CET)
+ with ESMTP id MSyR7MhZu8nE; Mon,  2 Nov 2026 09:04:49 +0100 (CET)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id BA2B1207B0;
-	Mon,  2 Nov 2026 09:04:43 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com BA2B1207B0
+	by mx1.secunet.com (Postfix) with ESMTPS id 95CA4207B0;
+	Mon,  2 Nov 2026 09:04:49 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 95CA4207B0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1793606683;
-	bh=Bhm5K5pgZZqGM+JSJ1uY6OfgTehxKhHFC60i5E2xYII=;
+	s=202301; t=1793606689;
+	bh=fs/tI/7GIFfvay52gfHRQyszOipctYdXjIQzABa7pwg=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=gCtQtDBL1Iyvx1gTPo/WDYYoIntuP079LxBFwJt+0TBNqiqvWt4f7fTKjEHcaLD2m
-	 lM8TzI2cKoEaNZCxRBFT2pr1UmeIu117DptlZWSJVD3LpMvqgjXv4ivytBYhSBH7Yg
-	 GWPoSuEK0mUIm9mUdkvI/U0LH/RmWQ43DG6JXbJtdUwU40UYmJ9fXJzy+oXkWVl45o
-	 n33sqqg6XmJJFy52VbRfbNrT9L7YKE9buTYK/Trm9xAU4bcPY9Qx6FBetgFIhppIsI
-	 gXOAf2FN9DfJpKyIvmq3eXIeLM0yZBaFmOfPLznK2nwiDrqxN+WbQO3rq4cK799c05
-	 OryHkUj7U57RQ==
+	b=ipKgWIlFBi/wdpaiiPxdlNMPfNde55NTL0UB/eq97jd26nPTuMZbWOpeqNlE4w9Pb
+	 fCELR/SLaDqWyE4QdGAwfb0cEjHOvqQptBsrme67+KoWnjzZiwfleVEy6sOnF9Nmmp
+	 xrnYp37Y9NxgK/rkapCNRec/cQj5So48MDFcHb/+bTn4RTC6sSZZJ/gZi2F8TMDtSA
+	 BgvM/wVOdcBPPlmKCh02EMUzynKCSc3p9odXqj9hKZ6AF9RS6w0KJLBFWWKhFtRi7s
+	 nQP0UMzyO6jvxZBFABGb0j5BwSkJ6MdODSO2zt17adQi2gErmcd9xq/Q0PdZhH5Frn
+	 +BlvICsxg+qxA==
 Received: from gauss4 (10.182.7.102) by EXCH-01.secunet.de (10.32.0.171) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 2 Nov
- 2026 09:04:42 +0100
-Received: (nullmailer pid 2505927 invoked by uid 1000);
+ 2026 09:04:49 +0100
+Received: (nullmailer pid 2505918 invoked by uid 1000);
 	Mon, 02 Nov 2026 10:04:58 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 13/14] docs: xfrm: include mark in XFRM_MSG_MIGRATE_STATE EEXIST tuple
-Date: Mon, 2 Nov 2026 10:04:11 +0000
-Message-ID: <20261102100451.2505200-14-steffen.klassert@secunet.com>
+Subject: [PATCH 10/14] xfrm: fix hw offload state leak on xfrm_do_migrate_state() error path
+Date: Mon, 2 Nov 2026 10:04:08 +0000
+Message-ID: <20261102100451.2505200-11-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261102100451.2505200-1-steffen.klassert@secunet.com>
 References: <20261102100451.2505200-1-steffen.klassert@secunet.com>
@@ -83,76 +83,35 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
  (10.32.0.171)
 
 From: Antony Antony <antony.antony@secunet.com>
 
-Document mark as part of the EEXIST tuple and update the SA lookup
-description to match.
+In the error path, the cloned state is dropped without removing its
+hardware offload, leaking the offloaded SA entry.
 
-Fixes: c13c0cc6f52e ("xfrm: add documentation for XFRM_MSG_MIGRATE_STATE")
+Fixes: a9d155ea9b44 ("xfrm: add XFRM_MSG_MIGRATE_STATE for single SA migration")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
 Signed-off-by: Antony Antony <antony.antony@secunet.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- .../networking/xfrm/xfrm_migrate_state.rst    | 25 +++++++++++++------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ net/xfrm/xfrm_user.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/networking/xfrm/xfrm_migrate_state.rst b/Documentation/networking/xfrm/xfrm_migrate_state.rst
-index 9d53cb22b007..ca2c9e5aaf33 100644
---- a/Documentation/networking/xfrm/xfrm_migrate_state.rst
-+++ b/Documentation/networking/xfrm/xfrm_migrate_state.rst
-@@ -27,15 +27,20 @@ SA Identification
- =================
- 
- The struct is defined in ``include/uapi/linux/xfrm.h``. The SA is looked
--up using ``xfrm_state_lookup()`` with ``id.spi``,
--``id.daddr``, ``id.proto``, ``id.family``, and
--``old_mark.v & old_mark.m`` as the mark key::
-+up using ``xfrm_state_lookup_exact()`` with ``id.spi``, ``id.daddr``,
-+``id.proto``, ``id.family``, and an exact match against ``old_mark.v``
-+and ``old_mark.m``. Unlike the data path, which uses a masked
-+comparison, this requires the SA's mark and mask to equal ``old_mark``
-+exactly, so a broad-mask SA is never matched when a more specific one
-+was intended. If no such SA exists, ``-ESRCH`` is returned.
-+
-+The layout is::
- 
-     struct xfrm_user_migrate_state {
-         struct xfrm_usersa_id  id;       /* spi, daddr, proto, family */
-         xfrm_address_t         new_daddr;
-         xfrm_address_t         new_saddr;
--        struct xfrm_mark       old_mark; /* SA lookup: key = v & m */
-+        struct xfrm_mark       old_mark; /* SA lookup key (exact v/m match) */
-         struct xfrm_selector   new_sel;  /* new selector (see Flags) */
-         __u32                  new_reqid;
-         __u32                  flags;    /* XFRM_MIGRATE_STATE_* */
-@@ -72,8 +77,8 @@ inherits the value from the existing SA (omit-to-inherit).
-      - Description
-    * - ``XFRMA_MARK``
-      - Mark on the migrated SA (``struct xfrm_mark``). Absent inherits
--       ``old_mark``. To use no mark on the new SA, send ``XFRMA_MARK``
--       with ``{0, 0}``.
-+       the mark of the existing SA. To use no mark on the new SA, send
-+       ``XFRMA_MARK`` with ``{0, 0}``.
-    * - ``XFRMA_ENCAP``
-      - UDP encapsulation template; only ``UDP_ENCAP_ESPINUDP`` is supported.
-        Set ``encap_type=0`` to remove encap.
-@@ -259,8 +264,12 @@ Attributes in the notification
- Error Handling
- ==============
- 
--If the target SA tuple (new daddr, SPI, proto, new family) is already
--occupied, the operation returns ``-EEXIST`` before the migration begins.
-+If the target SA tuple (new daddr, SPI, proto, new family, mark) is
-+already occupied, the operation returns ``-EEXIST`` before the migration
-+begins. "Occupied" includes wildcard shadowing: an existing SA with a
-+broader mask (e.g. mark 0/0) claims every mark value, so it blocks
-+migrating to any more specific mark at the same tuple, not just an
-+exact mark/mask duplicate.
- The old SA remains intact and the operation is safe to retry after
- resolving the conflict.
- 
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 8640838dcda0..4de8c401eb44 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -3541,6 +3541,8 @@ static int xfrm_do_migrate_state(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	xfrm_state_put(x);
+ 	return err;
+ out_xc:
++	if (m.xuo)
++		xfrm_dev_state_delete(xc);
+ 	xc->km.state = XFRM_STATE_DEAD;
+ 	xfrm_state_put(xc);
+ 	xfrm_state_put(x);
 -- 
 2.53.0
 
