@@ -1,98 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793590072;
-	b=4evydNRzY7lSaD7YlfTiK1OSENofEdjrPKJ4fQxflxb7DNefkcHgXxM3/KbeGproUhxf
-	 inQOfW502f24YvAstmrWNxzqTm+vUaQpGYc5IlbsUNA0+K3wRUSMbtOEg0XGk7t3g/2u5
-	 qU/yE9Dkawd9y6mYOZPWuS6igiRVPDra4YRrTAo4Z5OaRZ+OkpZ59vVp8Uf46baM7uzYh
-	 EvgCwKX7NrOxch1SgZScxe0Gvx7jKktLbzc2y1NPZi5HfbZ6Rii/pSsEDE7UpR8T+UaX0
-	 fvJLwhj0CTjG3T7Mm8kjv26vGst9k0gNfD41iV2WCt7PLjs8JD4dXIZ/NXQ47HOyUog==
+	t=1793590161;
+	b=eBWzLYfbS5DMfhI84VnSS+5q8Kh9b6f4tdTOSLV8hQHuU4y3vsVzHQeRAxjIKjfxFDTr
+	 qEOTTPhJdB3N3vHBU60dMwdPzwDdU7Ya3g+ajE5qTokmBasWJR+qwEXHots9OOFxWUe59
+	 kOYOtf8s6RjeLEZTwZow6OiLKYBslb8dQgI8iAI66icdeJgZ0Qmmt8R7dQ3DwRFmJJ5QD
+	 +XZ2M5GM/5xRCzj9Dbf2mwoQbjXQZJa2p4LU93rHBx1mP5RywlDHIBwLY+HlmtHFQkZCe
+	 Tcyo7SpRL0VGEGmL/VttgFLTN1T6jzZ6BERyOH9+k8IPSKYVSBqphmABf56M5fLuQSw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793590072;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=8Llr+o6Ts4ECL1b5wY6waQNbg14/hj40EOsrJUW7ozE=;
-	b=rVjly6ydSDOwgQMGYNZFn/+TQZzdRynqkBfYo8OzHk85JNWpm13461qcDm5iQP8i+aqu
-	 K3krIMotJ54TPJPtnepVUAJG2E91MKx/orNGTkA6UDUaqLboxlrtvzvvtSSZN1zk4JEHd
-	 /h+MFqmrXuINfUhqBMRBRoVp+b51Pw4gTQIukx5w+AZCzqcTwo5ZHmhTlCPDT/4Mtdlul
-	 x61gL4DQYlRU47N+E1hnUT4LQcS4D41dfp34aZ5e81hM1YSNhwnF0ZBcyQL8L7b5yxpXA
-	 YnifrPatDkSvKqxmryg6PT5GkAfGFiz2pGCeXgJYeLtx1E+Aux5AXP5MDT1IoGc+17Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793590161;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=CxVfMchF5dsGBfGJzosZhBQYD88YqP9n06Re6kC/c6E=;
+	b=lyT9LF/JP5cOpq6BhKlxZS5zYwiDZZg8QF2WK24A9aAEreSYDK8l3w9gRN64vaUcYtJ8
+	 to3Ay7sMBM1MEUUBfoUmAfVfVrCPe8ZFEpyRjA7289hRrml9MH+eNuixGZ9DqJGqKmKpC
+	 ZjTEw597CeYB1pko5646hWpSia0ammaCgZnEYiiNwKMir0Y8s9iWKKE3/AsZ4WfI8Wdwo
+	 OhOpysAMqFscW7xyFuY+y+Ykx8Pq3lkeRXo79zJK6F7Cco4KBPv3p6aw802txCxqGagql
+	 TMgL8GTZqidIasfnrSZhI+PWIB2UQsyJFEeL/nGeaIpCtmkP3XxBovB0NamiX85DRaA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="hp/763Rg";
-	arc=none smtp.remote-ip=209.85.219.41
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KGjKclDu;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94972606A329
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 03:27:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 94972606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4FA606A324
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 03:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hp/763Rg
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-91c79f306e9so30407956d6.3
-        for <netdev@vger.kernel.org>; Sun, 01 Nov 2026 19:27:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793590070; x=1794194870; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8Llr+o6Ts4ECL1b5wY6waQNbg14/hj40EOsrJUW7ozE=;
-        b=hp/763RgOF/wT8bcAevxBP9ug5KDLc0g3ts+YAgLMuoUBcWcc5nAXIQo4U4Vb7mGC2
-         Ln752RcJgv7sD5UQo/lGCcJL3jjuwwf+KFd6KUHcVQ/Y8si0Ka81q6poUuW7yntj1ha4
-         1AfQWopqakSkNwQLyqlz2ErNU5uJXPkv3Lhfd4B0wTZBojcylZAdOF+mzHrCtjDnKo3m
-         2az3eDoEPMi1fbMFANKLZUk95uEpY9Qai/7YY27guSFumOv6PZGITCWsPRLsvBTkxDRP
-         uYbup6LNU2kQHJDEyuaCsaQ2/gB15wkXVdqGwyuUSjqAQMEdHReq7WKg6fE8NzIbG4z4
-         Dd+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793590070; x=1794194870;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8Llr+o6Ts4ECL1b5wY6waQNbg14/hj40EOsrJUW7ozE=;
-        b=p0GjK122dDJjl3vhqQHYL0ZblTSpBrBzlWgCW1yw/7fvXx3vtQmVANBXQhV4m4KLED
-         SVFNdlsZUQ1ZQW862RFhc1mH6CefEagS1TEPg8Hg8NpU6504DzWqtmAGMxGZ2lVuVbqD
-         kKd1T5jNj0ihbkf87htPryef/A0kYlKsY5Vwew4pI2m/X6qPAdT1BuIYILzrmzmNQZMo
-         LFgXqyr35hvBF4hFUWzTLc8G7KEO/wts0yKdiYiaxhdDss/qnZ3ISb+sNif4DXYkRKCn
-         y3YLY8e9O6m8O2mzDxhfNHTMV/1fW0OialzdlTlxD/RTniPIu5lBQ/30AkjVWhzw2mSH
-         SVng==
-X-Forwarded-Encrypted: i=1; AKwUvBz6OAV3cNRw2+NieK74+1kPVjw93D/8wKsu2pRk4fNbN3MC4RNFlxS0RjYZy2mZLyswV5uQC7U=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/zeEsYNJpB5UtChibwZ9QpVndENBqkM1sZ9ChWQ/CAI+mEgB7K
-	9qBc1waVir+TOGFs2oUjC7Nv/yFf6EVrFC4pGxKOpP3DtOkDPRlWo+9c
-X-Gm-Gg: AYBFou207W1Eujk9Pbu5XYHcq10c3NlNJiH6hOlGQ598A/1SmzltwGA3hnCV+QdVpW+
-	SAxV+nF+Zh9wxFUIxrnYVWWc13VtY92FinwNiBySvv+W7NDZVHyJqqgu0hh2Fl72zM/7KWKpjzK
-	aSfJf+v5hUdC1vp1Tf2n8vb/LU13YlBtqYIJJTg6O+GrDvCS0mGBrSmajPHp7glszyAGkd9YtEV
-	yWKaj3Wo37PQV+7fTCV/8jyCxjcXSUKn0XPh0Ycfx26A0/8LsGe3iE8BQUlHa4OcKchNrW3pLiC
-	zBEEprtaZjiLopbJ8VCUMNPcxHdGuajwTqmwJ+o65eXx6BH/L+3U/zU/TcDAt6gp3aNV98QT32e
-	OxTxMAbPLAp91yovvp+Mr0Bm3wAVlV+Kv7Z/L2YdZUAI+cTti89DVTNOjF4BmhCDyMA3y6T2d92
-	AYDtrfBv3dmsPuAaOHOy5EiQ3SfDRootU7IqIlMSXPBqwq/qqQ18JA53d8FzYzPnIBdg2SFvXPB
-	vg+Hbgm0M19c24UKv7gM4QwJiHEs43cOm8XTLrk1IuLrunMpET5JV6o1cPYsjNMO7gcOVbJjreC
-	6nJg15m2YAIpn9oZrrwep5t8LVYFzGab/1Z8TkJJv2YBnEYS+GFn
-X-Received: by 2002:a05:6214:4518:b0:914:45c3:7920 with SMTP id 6a1803df08f44-91ca4b1cb1amr156083956d6.31.1793590070385;
-        Sun, 01 Nov 2026 19:27:50 -0800 (PST)
-Received: from i4-gl-tmk5904.ad.psu.edu ([130.203.156.186])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ca804eee2sm80737396d6.27.2026.11.01.19.27.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Nov 2026 19:27:49 -0800 (PST)
-From: Yuho Choi <oss.patchbox@gmail.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yuho Choi <oss.patchbox@gmail.com>
-Subject: [PATCH iwl-net v2] iavf: reset the VF instead of freeing rings when queue disable fails
-Date: Sun,  1 Nov 2026 22:27:43 -0500
-Message-ID: <20261102032744.304907-2-oss.patchbox@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KGjKclDu
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E2B1F000C1;
+	Mon,  2 Nov 2026 03:29:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793590161;
+	bh=CxVfMchF5dsGBfGJzosZhBQYD88YqP9n06Re6kC/c6E=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=KGjKclDunLmyO7iL8O4lyI/Fsbc8N9QhhBWaDSJ61perp8DgmhUJn+EacCn8PPeMU
+	 6bNRBMErYwlPOCc+hebW4v2+F5Is8n2lzTQiYwvseLxKWvLLNxCaUvKUt4lgAgh6cd
+	 N4YtSsbe87gzTwzO+6cinvKSXfy2ApY6KIBwXtWW5OYtj99na/vtvQ6U3rMIUZaDaT
+	 291fybWrzt4W9TJwS52K+QUk3ghURRrgP9jEHRsNjoPbqLYjtg493EKPUe/2or1zTe
+	 o/JlxtsT25aQ3d/8rKA1P9212v7fXziSRw7eAY3cjz0H5gY1Xzdz0KqUdtm0Cfz2ax
+	 02wBdgcQC195A==
+Subject:
+ Re: [PATCH ipsec] xfrm: protect offload statistics device access with RCU
+From: netdev-bot+sashiko@kernel.org
+To: zzzccc427@gmail.com
+Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
+ davem@davemloft.net, netdev@vger.kernel.org, baijiaju1990@gmail.com,
+ jjzuming@gmail.com, kuba@kernel.org
+Date: Mon, 02 Nov 2026 03:29:20 +0000
+Message-ID: <179359016018.3131.9644618161410466770@kernel.org>
+In-Reply-To:
+ <pm-xfrm-core-objects-candidate-0050-v3-dbfb7194ffb750193d02@gmail.com>
+References:
+ <pm-xfrm-core-objects-candidate-0050-v3-dbfb7194ffb750193d02@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,103 +65,172 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-iavf_close() leaves the Tx/Rx rings in place because the hardware can
-still DMA into them, and iavf_virtchnl_completion() frees them once the
-PF has answered VIRTCHNL_OP_DISABLE_QUEUES. It does so whatever the PF
-answered: for a non-zero v_retval the error is only logged and the
-DISABLE_QUEUES case runs anyway.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-The PF can fail the request while queues are still running. ice and
-i40e give up before the Rx queues when a Tx queue cannot be stopped,
-and ice also fails when an Rx queue does not stop in time. The rings
-and Rx buffers are then freed while the queues still point at them, and
-received packets and descriptor write-backs land in freed memory.
+Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0 (1)
 
-Keep the rings when the PF reports an error and request a VF reset
-instead. The reset makes the PF stop all queues of the VF, and
-iavf_reset_step() frees the rings once it has completed. Until then
-iavf_close() may warn that the resources are not yet released, and
-iavf_open() returns -EBUSY.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-During removal no reset is scheduled, and iavf_remove() would wait for
-the state to leave __IAVF_DOWN_PENDING forever. As it resets the VF
-itself before it frees the rings, complete the transition to
-__IAVF_DOWN in that case. If the reset never completes,
-iavf_disable_vf() now frees the kept rings as it does for a running VF,
-instead of leaving them with page pools that point to the q_vectors it
-frees.
+- [High] On real offload hardware, the new RCU section does not close the
+  GETSA/dump vs. device-teardown use-after-free that the commit says it…
 
-Fixes: e284fc88dfb6 ("i40evf: delay releasing rings")
-Signed-off-by: Yuho Choi <oss.patchbox@gmail.com>
----
-v2:
-- Let iavf_remove() go on when the failure arrives during removal, where
-  no reset can be scheduled (sashiko).
-- Free the kept rings in iavf_disable_vf() when the reset never
-  completes (sashiko).
-- Rebased on v7.4-rc1.
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but
+  xfrm_do_migrate_state() (net/xfrm/xfrm_user.c:3462-3463) has the same…
+- [Low] This problem wasn't introduced by this patch, but the guard `if
+  (x->xso.dev)` in copy_to_user_state() (net/xfrm/xfrm_user.c:1184) is a…
 
-v1: https://lore.kernel.org/r/20261022192753.69765-2-oss.patchbox@gmail.com
+--
 
-This was found by code inspection as part of ongoing, not yet
-published research. It has not been reproduced, as that needs a PF
-that fails VIRTCHNL_OP_DISABLE_QUEUES.
-Compile-tested only (x86_64 defconfig with IAVF, I40E and ICE, W=1).
+xfrm: protect offload statistics device access with RCU
 
- drivers/net/ethernet/intel/iavf/iavf_main.c    |  7 +++++--
- .../net/ethernet/intel/iavf/iavf_virtchnl.c    | 18 ++++++++++++++++--
- 2 files changed, 21 insertions(+), 4 deletions(-)
+This patch wraps the xfrm_dev_state_update_stats() call in
+copy_to_user_state() in an RCU read-side critical section. The goal is to
+keep the offload net_device alive while GETSA or a dump reads its
+xfrmdev_ops. The commit message relies on synchronize_net() during netdevice
+unregistration to order the device free after any reader that sampled the
+old xso.dev binding.
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 2f8a80a11336..70ee5ae14a64 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -3064,9 +3064,12 @@ static void iavf_disable_vf(struct iavf_adapter *adapter)
- 		iavf_napi_disable_all(adapter);
- 		iavf_irq_disable(adapter);
- 		iavf_free_traffic_irqs(adapter);
--		iavf_free_all_tx_resources(adapter);
--		iavf_free_all_rx_resources(adapter);
- 	}
-+	/* Also release rings that iavf_close() left in place because the
-+	 * PF failed to disable the queues.
-+	 */
-+	iavf_free_all_tx_resources(adapter);
-+	iavf_free_all_rx_resources(adapter);
- 
- 	spin_lock_bh(&adapter->mac_vlan_list_lock);
- 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-index e6b7e8f82c7c..28818319a6df 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-@@ -2718,8 +2718,22 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
- 		adapter->flags &= ~IAVF_FLAG_QUEUES_DISABLED;
- 		break;
- 	case VIRTCHNL_OP_DISABLE_QUEUES:
--		iavf_free_all_tx_resources(adapter);
--		iavf_free_all_rx_resources(adapter);
-+		/* If the PF could not stop the queues, the hardware may still
-+		 * access the rings and Rx buffers. Keep them and request a VF
-+		 * reset; the reset path releases them after the PF has reset
-+		 * the VF. During removal no reset is scheduled, but
-+		 * iavf_remove() resets the VF itself before it releases the
-+		 * rings, so let it stop waiting for the queues to go down.
-+		 */
-+		if (v_retval) {
-+			iavf_schedule_reset(adapter, IAVF_FLAG_RESET_NEEDED);
-+			if (!test_bit(__IAVF_IN_REMOVE_TASK,
-+				      &adapter->crit_section))
-+				break;
-+		} else {
-+			iavf_free_all_tx_resources(adapter);
-+			iavf_free_all_rx_resources(adapter);
-+		}
- 		if (adapter->state == __IAVF_DOWN_PENDING) {
- 			iavf_change_state(adapter, __IAVF_DOWN);
- 			wake_up(&adapter->down_waitqueue);
+> diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+> index a5fbe38839c49..e9dd98c387da9 100644
+> --- a/net/xfrm/xfrm_user.c
+> +++ b/net/xfrm/xfrm_user.c
+> @@ -1179,8 +1179,11 @@ static void copy_to_user_state(struct xfrm_state *x, struct xfrm_usersa_info *p)
+>  	memcpy(&p->id, &x->id, sizeof(p->id));
+>  	memcpy(&p->sel, &x->sel, sizeof(p->sel));
+>  	memcpy(&p->lft, &x->lft, sizeof(p->lft));
+> +	/* Pairs with synchronize_net() in netdevice unregistration. */
+> +	rcu_read_lock();
+>  	if (x->xso.dev)
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but this guard is still a plain
+load of x->xso.dev. The writer in xfrm_dev_state_free() uses
+WRITE_ONCE(xso->dev, NULL). The other readers in this file,
+copy_to_user_state_extra() and xfrm_sa_len(), use READ_ONCE(x->xso.dev).
+
+This line is now inside the new RCU section anyway. Could it use READ_ONCE()
+too, so KCSAN doesn't report it as a data race? At runtime it is harmless,
+because xfrm_dev_state_update_stats() reloads the pointer with READ_ONCE()
+and checks it for NULL.
+
+>  		xfrm_dev_state_update_stats(x);
+> +	rcu_read_unlock();
+
+[Severity: High]
+Does this RCU section close the GETSA vs. device teardown race on real
+offload hardware?
+
+rcu_read_lock() here only delays the final free of the struct net_device.
+The driver callback reached through xfrm_dev_state_update_stats() also uses
+the driver's per-SA state, and that state is freed without a grace period.
+
+In xfrm_dev_state_free(), the driver state is torn down before the binding
+is cleared:
+
+net/xfrm/xfrm_state.c:xfrm_dev_state_free() {
+    ...
+		if (dev->xfrmdev_ops->xdo_dev_state_free)
+			dev->xfrmdev_ops->xdo_dev_state_free(dev, x);
+		WRITE_ONCE(xso->dev, NULL);
+		xso->type = XFRM_DEV_OFFLOAD_UNSPECIFIED;
+		netdev_put(dev, &xso->dev_tracker);
+    ...
+}
+
+For mlx5, xdo_dev_state_free is mlx5e_xfrm_free_state(). It removes the
+flow counters and frees sa_entry right away:
+
+drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c:mlx5e_xfrm_free_state() {
+    ...
+	mlx5e_accel_ipsec_fs_del_rule(sa_entry);
+	mlx5_ipsec_free_sa_ctx(sa_entry);
+    ...
+sa_entry_free:
+	kfree(sa_entry);
+}
+
+A GETSA or SA dump may already have passed the READ_ONCE(xdo->dev) check in
+xfrm_dev_state_update_stats(). In that case it goes on to run
+mlx5e_xfrm_update_stats():
+
+drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c:mlx5e_xfrm_update_stats() {
+	struct mlx5e_ipsec_sa_entry *sa_entry = to_ipsec_sa_entry(x);
+	struct mlx5e_ipsec_rule *ipsec_rule = &sa_entry->ipsec_rule;
+	struct net *net = dev_net(x->xso.dev);
+    ...
+}
+
+Can this read the freed sa_entry through the stale x->xso.offload_handle?
+Can it also reach the destroyed flow counters through
+mlx5_fc_query_cached()?
+
+dev_net(x->xso.dev) is also a new plain load. If WRITE_ONCE(xso->dev, NULL)
+lands between the helper's check and this load, would it dereference NULL?
+
+On the teardown side the call chain is:
+
+NETDEV_DOWN/NETDEV_UNREGISTER notifier
+  xfrm_dev_down() / xfrm_dev_unregister()
+    xfrm_dev_state_flush()
+      xfrm_state_delete(x)
+      xfrm_dev_state_free(x)
+
+xfrm_dev_state_flush() drops xfrm_state_lock before these calls.
+xfrm_state_delete() releases x->lock before it returns, and xfrm_cfg_mutex
+is not held. The reader holds only xfrm_cfg_mutex in xfrm_get_sa(), or
+xfrm_state_lock in the dump walk. Nothing seems to order the two sides.
+
+This is the link-down plus link-delete case described in the commit
+message. Does the free side need to clear the binding and wait for a grace
+period before calling xdo_dev_state_free()? Alternatively, could the reader
+and the free path share a lock such as x->lock?
+
+>  	memcpy(&p->curlft, &x->curlft, sizeof(p->curlft));
+>  	put_unaligned(x->stats.replay_window, &p->stats.replay_window);
+>  	put_unaligned(x->stats.replay, &p->stats.replay);
+
+[Severity: Medium]
+This is a pre-existing issue, not one introduced by this patch.
+xfrm_do_migrate_state() in net/xfrm/xfrm_user.c has a similar unprotected
+xso.dev access:
+
+net/xfrm/xfrm_user.c:xfrm_do_migrate_state() {
+    ...
+		if (inherit_offload && x->xso.dev) {
+			xso_to_xuo(&x->xso, &xuo);
+			m.xuo = &xuo;
+		}
+    ...
+}
+
+net/xfrm/xfrm_user.c:xso_to_xuo() {
+	xso_to_xuo_ifindex(xso, xso->dev->ifindex, xuo);
+}
+
+This path runs for XFRM_MSG_MIGRATE_STATE on an offloaded SA when neither
+XFRMA_OFFLOAD_DEV nor XFRM_MIGRATE_STATE_CLEAR_OFFLOAD is given. It holds
+only xfrm_cfg_mutex. There is no device reference, no RCU read lock, no
+x->lock and no READ_ONCE() snapshot.
+
+xfrm_dev_state_flush() can run from the netdev notifier and clear xso->dev
+between the check and the xso->dev->ifindex load. Can that dereference
+NULL? If unregister then completes, could the ifindex read hit a freed
+net_device?
+
+The state dump path avoids the device pointer by using the cached ifindex:
+
+net/xfrm/xfrm_user.c:copy_user_state_offload() {
+	return copy_user_offload_ifindex(xso, READ_ONCE(xso->ifindex), skb);
+}
+
+Could the migrate path use READ_ONCE(xso->ifindex) as well?
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/pm-xfrm-core-objects-candidate-0050-v3-dbfb7194ffb750193d02%40gmail.com
