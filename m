@@ -1,60 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=85.214.127.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793743367;
-	b=bdri7qRCnMzXttAf7fzRXgbiBHV+gOkiQNuURYd8mad6SGKtCR3HP+8GGnFfpMdZjb22
-	 nDmvOuWeXLt4IkJopKHXZ95sdc+BA9bltrPqNJVgXNfpg6Ouc2z+iXG+yJr2rYUA8mHW2
-	 nHvaFVGsOr5m1Ly3AX2PtaiXmzHmy9zF27oi/arHrkmUhyVj31OCwT7xrNmIFWzhvDQeY
-	 uIz+P7dAyVsqpUm6rFDnkKCbgf5EcKnzWLzFTitokF1JPlWFHEzdn362DOBmUBWalDXM4
-	 wybNaIQrCOgSgx6E8dpH0Ga5Eara+zuKHKPd+y4pyeTpHbrJPxOrBVzwm4yp60w+QoQ==
+	t=1793743368;
+	b=FgNArD5Qy9rb/mRPBb6BaRL/Szn4e66Cs7QiFuFTabQP3Ds4BVOSlxUS1ot56FUQbDgt
+	 QO9MUK2PlQZBI4cvrSwxygU5fi2wHkOsmfvXvbrtRWNgUfGNoFfQMdSVsujnP9fJxICv9
+	 gUbv0YmaluNvUCn7Q671SsESM/dhV5tpP/+bl6ndZ7ovjuJCD5b6r9Wv281Cq3Um71Qau
+	 wYww/MkKUxMkdKHcsJYcrdn5RrcAEGfUajXxeptIHXSih7ShYGSWJdwFE/der7ONwz47s
+	 Sy+qELp3tY6MYQx6lZx1sCmcbcVxukKK2girhXO4YnXCbq0qj7bw1mT7EO8wgvgS+dA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793743367;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793743368;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Virus-Scanned:Received:
 	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
 	 References:MIME-Version:Content-Transfer-Encoding;
-	bh=2kfmdaXcSuOz7RwfaYopIcZepxe7U504MJR/bucejts=;
-	b=Xqche9UnHPfHjHposZr7XP+tiHxNIaDbAWZsQchiDEKq1qoAa12Ef1+PCzjOh9YJu3my
-	 jKOeJDPb0vVzNOGX+YUdShI58li04s52x9lDimuF+SbkpsIg/dHEfICtzHMZZ3IrzUA4H
-	 y1XSgYZqaiJEaIg4aa8YU3PTCloHVPUZhF66PUclQYuKAdlg/O1wCPnAy5O0N5Yo25lJu
-	 Sw8vH1KQCqLs//ughNlcCc5rcYGldwdBpX0aLy77jMLpzV100Cm1p402gkG/nPajFA5xQ
-	 W7r1Ghw84iBb1dSfcp5CIYI0tyWB4/XNdlDpoaSD0B3KbyaA+DEwcvzfiymx8RJBFzA==
+	bh=FX6KKoJf2k5Ej65mMgishCXyJEmNd3pH83A4dCayU0Y=;
+	b=35AlbQL2TBJb/+S5OkeAJM6pjBCMjneGIYV3ISJYqPL6wjXfXkarpaD1YlRXs2UFdKQe
+	 ytxRqlJjPXwZPOwbZCNzyiRbyoyNywxIrCarD8tUYiJrjC8U6A9y8TZFl1lu/vmj3m+rt
+	 /O5ocYGJYSkeghXzKiHVY5QYpIhchbVhn8kT4Egf7LfnurFjCqt1kE48xYwVIN3ryQgK3
+	 6oxVtcki1pRDYE+HI13OMH0pUd18/UT2IJ0jt69YwhlXsy2mkUoqxDxl7Cx10l7Hmr21y
+	 J6uiYDM7E83cm00qJoJsuQgWh8gOCpfcnruKCKgCX1CL8ZjgbLDRdHUqRcz9wx+nuJw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=szelinsky.de;
 	spf=pass smtp.mailfrom=szelinsky.de;
-	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=PeNt7mCo;
+	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=c5FDVJ8Y;
 	arc=none smtp.remote-ip=85.214.127.56
 Received: from szelinsky.de (szelinsky.de [85.214.127.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52505606A32C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63957606D80B;
 	Tue,  3 Nov 2026 22:02:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 52505606A32C
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63957606D80B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=PeNt7mCo
+	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=c5FDVJ8Y
 Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id 50924E836CF;
-	Tue, 03 Nov 2026 23:02:43 +0100 (CET)
+	by szelinsky.de (Postfix) with ESMTP id 3E741E836F3;
+	Tue, 03 Nov 2026 23:02:44 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1793743363;
+	s=mail; t=1793743364;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2kfmdaXcSuOz7RwfaYopIcZepxe7U504MJR/bucejts=;
-	b=PeNt7mCo6zmzOiD+62uuk7FTqUqAUxTwgPXyWCNSVsnk9kUmOHOSt1c/XSO8r2zP2XUcZ5
-	r8NP7sSyDct3YAniRPMC3mfhhwUcn69F645G0dHzL1KsyNwckrst2Iwgol0JxGidNx5QFt
-	D4hoi+J1PX9MxzCfkz7OCZXZHbLSn2iPmQgYB2Ed3GJh7Q2rDj1jQEY+bmKywAONdgWbmb
-	0o1FOBXEYn+oEgNFgQ4mptFccddSbeIfT4iOu6lRwRUoS0aocyPPEPd82IUyQ+zb1z9RDz
-	JthfwqG6xmUxUW3lDUrB7+mRO/v/HNurvyECgNbPa2FBwplAgTLMSJjYaXem1Q==
+	bh=FX6KKoJf2k5Ej65mMgishCXyJEmNd3pH83A4dCayU0Y=;
+	b=c5FDVJ8YftVEbhUve5nD8syhA0ZaHht0kp5onlfjgHwEbD1Q09yWIW94ewUUOGcajCK3JI
+	K3Clc4KOxM5MrEmLdID3abCIOcTwfxb1wLXhhvE8MNsSOzFyI+PefMcjD3e8b7fqfDeMFf
+	y71EuiZkPoVvUyPAsLt/3478DUaVjq8RpIX6OsO4TtDF1NRQ+EZQhjWN3II3cbXY6gKFc+
+	6hsRYrxDYBOQjqTsbxBJ248J9PJS6Zmo3Yr8HmjOLJST+rTzzdC0dSq5jop/EfwzRJrWdf
+	fl4zxK2nAFvjogtvNSufWFFaJaYZnF0Qq5bQ7NxMoLGlJpw2Y1NrQyyT8vPQEw==
 X-Virus-Scanned: Debian amavis at szelinsky.de
 Received: from szelinsky.de ([127.0.0.1])
  by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id JCJ0Bja0Hk2J; Tue,  3 Nov 2026 23:02:43 +0100 (CET)
+ id VlE5DRZkpaiK; Tue,  3 Nov 2026 23:02:44 +0100 (CET)
 Received: from p14sgen5.lanhh (dslb-088-070-183-026.088.070.pools.vodafone-ip.de [88.70.183.26])
 	by szelinsky.de (Postfix) with ESMTPSA;
-	Tue, 03 Nov 2026 23:02:42 +0100 (CET)
+	Tue, 03 Nov 2026 23:02:43 +0100 (CET)
 From: Carlo Szelinsky <github@szelinsky.de>
 To: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Kory Maincent <kory.maincent@bootlin.com>,
@@ -73,9 +73,9 @@ Cc: Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Carlo Szelinsky <github@szelinsky.de>
-Subject: [PATCH net v3 09/14] net: pse-pd: unregister from the controller list before freeing PI data
-Date: Tue,  3 Nov 2026 23:02:12 +0100
-Message-ID: <20261103220217.1131971-10-github@szelinsky.de>
+Subject: [PATCH net v3 10/14] net: pse-pd: keep the PI data until the PI regulators are gone
+Date: Tue,  3 Nov 2026 23:02:13 +0100
+Message-ID: <20261103220217.1131971-11-github@szelinsky.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261103220217.1131971-1-github@szelinsky.de>
 References: <20261103220217.1131971-1-github@szelinsky.de>
@@ -90,53 +90,67 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-pse_controller_unregister() frees the PI array while the controller is
-still on pse_controller_list, and only removes it from the list
-afterwards. of_pse_control_get() walks that list under pse_list_mutex
-and reads pcdev->pi[i].np in of_pse_match_pi(). A consumer that probes
-at that moment can read the freed PI array.
+pse_controller_unregister() frees the PI array, but the PI regulators
+are only unregistered after it, by devres. Until then their ops still
+run, for example on a read of the regulator's sysfs "state" or when a
+consumer enables or disables the PI, and they read the freed array.
 
-Remove the controller from the list first, before the worker is
-drained, the power domains are flushed and the PI array is freed. Both
-sides take pse_list_mutex, so once the controller is off the list, no
-new lookup can find it, and a lookup that is already running finishes
-before the PI array is freed.
+Free the PI array from a devm action that is added before the PI
+regulators, so devres frees it after them. This also frees it when
+registration fails, where it was leaked before.
 
-Found by code inspection. Not reproduced.
+Triggered in QEMU (arm64, KASAN) with a test-only PSE controller:
+reading the PI regulators' sysfs "state" while the controller unbinds
+gives
 
-Fixes: 9be9567a7c59 ("net: pse-pd: Add support for PSE PIs")
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+  BUG: KASAN: slab-use-after-free in pse_pi_is_enabled+0x294/0x2d4
+
+With this patch it is gone.
+
+Fixes: d83e13761d5b ("net: pse-pd: Use regulator framework within PSE framework")
 Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
 ---
- drivers/net/pse-pd/pse_core.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/pse-pd/pse_core.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index 36f8e4e7d191..43f6e304fe5e 100644
+index 43f6e304fe5e..eccbdb3acbee 100644
 --- a/drivers/net/pse-pd/pse_core.c
 +++ b/drivers/net/pse-pd/pse_core.c
-@@ -1185,13 +1185,17 @@ void pse_controller_unregister(struct pse_controller_dev *pcdev)
- 	 */
- 	if (pcdev->irq)
- 		disable_irq(pcdev->irq);
-+	/* Unlink before tearing down: of_pse_control_get() walks the list
-+	 * and reads pcdev->pi[], and must not hand out a new control for a
-+	 * controller that is going away.
+@@ -147,6 +147,11 @@ static void pse_release_pis(struct pse_controller_dev *pcdev)
+ 	kfree(pcdev->pi);
+ }
+ 
++static void devm_pse_release_pis(void *data)
++{
++	pse_release_pis(data);
++}
++
+ /**
+  * of_load_pse_pis - load all the PSE PIs
+  * @pcdev: a pointer to the PSE controller device
+@@ -1123,6 +1128,13 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
+ 	if (ret)
+ 		return ret;
+ 
++	/* The PI regulator ops use pcdev->pi until devres unregisters the
++	 * regulators, so free it from devres too, after them.
 +	 */
-+	mutex_lock(&pse_list_mutex);
-+	list_del(&pcdev->list);
-+	mutex_unlock(&pse_list_mutex);
++	ret = devm_add_action_or_reset(pcdev->dev, devm_pse_release_pis, pcdev);
++	if (ret)
++		return ret;
++
+ 	if (pcdev->ops->setup_pi_matrix) {
+ 		ret = pcdev->ops->setup_pi_matrix(pcdev);
+ 		if (ret)
+@@ -1194,7 +1206,6 @@ void pse_controller_unregister(struct pse_controller_dev *pcdev)
+ 	mutex_unlock(&pse_list_mutex);
  	cancel_work_sync(&pcdev->ntf_work);
  	pse_flush_pw_ds(pcdev);
- 	pse_release_pis(pcdev);
+-	pse_release_pis(pcdev);
  	kfifo_free(&pcdev->ntf_fifo);
--	mutex_lock(&pse_list_mutex);
--	list_del(&pcdev->list);
--	mutex_unlock(&pse_list_mutex);
  }
  EXPORT_SYMBOL_GPL(pse_controller_unregister);
- 
 -- 
 2.43.0
 
