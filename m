@@ -1,56 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793727170;
-	b=s3EOZLkPshh1wF1tSiOwmgnbR1K2LczbJYAYebTb7HQLNqKwIWC0sUGefiIROrwB2db5
-	 9X8IP9NgyUDJ+Gc/qvcw2gfrHRr2vzrhQ8pfz3peuYUQ61vI6kBoD9fdmm0ez1gzm8DtP
-	 4O1P4EoSLtqrJ/r0rrIAMkxTxL3FtJuiER3jXghb0P5O2A87i+LNYr9xAq2QRwSwc+YMn
-	 MGzCRiqNKOZLD140V47Zi8MZ1WD+f9C3NRFf5KJsJTgtCUF46fHxgvWRyccySA1hvJZ6s
-	 wzweFAnpGyvysgnwkhwsFfWjtc3H8rTEJHbDi9Mk/bBjYZq9KTeM2dpOkep4qOiGttQ==
+	t=1793727185;
+	b=QDDimsFdDYyae/hh9xUnwRSlVSV0i1650VveSSiK6fsdXdUjQsvGvv8k892fgX6TFRZx
+	 UsDdIpW0EfQIC8e6pAWMZ9JtzO82+UAO7A0T76a7JcoE+2lnjb3WYOQW9C2r25Nn0DrxA
+	 CDWOnwHkWVPelZh6H9YrK1zVAZXIKGzzBvNYtfHe4gO/t4GeMpogYmb3pA+c1/HBf4Hw7
+	 B0kygPuLbdJHv3UjOAdOIxxadll/n8HNaSeCBdkuIHhuZPOKDUDPQwTNJjvS0ko0amcp/
+	 qgJ4+ATAqT11UIcLAGxOr6vLmN2wAwQ9thkCQMsG63vwbGx5Nd/wi+g/SII2Kk89vBg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793727170;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793727185;
 	h=DMARC-Filter:DKIM-Signature:From:To:Cc:Subject:X-CM-TRANSID:
 	 Message-Id:X-Coremail-Antispam:Date:X-CM-SenderInfo;
-	bh=Aju8KAZFxk/1gaiaPxC01GnHpokhvQUAGgMBB/gWK/U=;
-	b=foEmMHJheam7ER89QosR3mrWyF1t1LxoVhZVtJ3SkGcwD4PqGbwJXBNCXb/wSbPdplq5
-	 gIppu4YEUsW57b8LXqg1dJJCTL79scpCfIsl/Wncr0ncw9GmPnPcPA+oL1pqK+dMgIJEV
-	 mkUVSVlX+P086zAc6n2e9qu38l78vnmfvN3jcvJddd19Tr2y5OfICS49t/riLciOVdHIJ
-	 kCu3OoroESUN6+6FcExQLSiDNjsfxog8+1z131ECaMQjxDmlideh/IX9StzbqQRdl/k7Z
-	 cwoTa1J+j2hIaC/TFeMgpLh2NHOlPk/9vbA9U7frRM0rRQmEQKiipvnWdavAFQirFFw==
+	bh=wx+pTWYe2L1J9TNpz5QtoSwN8J9xEqwWbSaGt++qleY=;
+	b=o9hKHHjz/lxvxJmAA99q9++3NMhMNHcvxotGAnNrTMItLX7g0nP65jvYvqRPv5uaCelH
+	 /u3KOQoR8IH+LYlKIXpEVcTWmDSDcwv/jxlv4ZgrBNHnzSnZA7Xnsj3c/CGog/q8V4WHz
+	 T+CAKM8Ep61DT8QqaTjr4+kL2a/hu3v1eqOCxtwwxNfj+Bfc+C6D85Tlt2/I/vSu/lDwt
+	 dX9FNHISzyiZqwdkC3h1yJNd+cLSw5sG/eb/Pfywlo2aDvc/cM9EYGHBDNlb/+nJB+iyQ
+	 gcH7MPRndvqqqeGkxa2dWbJQjFJLLF44jbpGO1IAr/muvf9oki4xmGD+zsPOmuBgBYA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=163.com;
 	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=JErVdhSt;
-	arc=none smtp.remote-ip=220.197.31.3
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b="PVCHlrY/";
+	arc=none smtp.remote-ip=117.135.210.4
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EDC606A324;
-	Tue,  3 Nov 2026 17:32:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B1EDC606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A854606A328;
+	Tue,  3 Nov 2026 17:33:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A854606A328
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=JErVdhSt
+	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=PVCHlrY/
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Message-Id:Date; bh=Aju8KAZFxk/1gai
-	aPxC01GnHpokhvQUAGgMBB/gWK/U=; b=JErVdhSt4ihPVzXXIXY47062q1JjL0u
-	3qoNBrsviJEU3rlfLHJk5LCVtxZa7rpZoAn332AzXckcsWHchKxSyZnf9YMoW/xA
-	j0Pyibjls2IS/VzoPplYDQaeGjgsroiFNLZm/sPDaY9DeIjZKN7macvskc3N1wl6
-	d+AmNOa+/xwI=
+	s=s110527; h=From:To:Subject:Message-Id:Date; bh=wx+pTWYe2L1J9TN
+	pz5QtoSwN8J9xEqwWbSaGt++qleY=; b=PVCHlrY/Uy5NiugXnsGWzwtaizh87dW
+	f3Q62CpWneg5N2lLggoeW8RO00etsPNV3+HhhDWThP0n5D8pV/TFqpejvX4dbWFA
+	zAEPI2KqjjvxN5u8oaEYEj8j41q1FF95Ech3mLMrwTeIu4uvbvjdZWZkq6jYJFT8
+	XYulfqXr42m0=
 From: shaos <shawnq1@163.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net/sched: fix cls_flow SKUID/SKGID userns mask
-X-CM-TRANSID:PSgvCgCXagqsGupqnkg9Dg--.50703S3
-Message-Id:<6AEA1AAE.2E7978.08739@m16.mail.163.com>
-X-Coremail-Antispam: 1Uf129KBjvJXoWxWr1rur48Jr47ZFy8XFyDAwb_yoWrAF17pF
-	savry3KrZruF18A3s2kF109a1rWrn7GryrCFyDX3ykZ398Gr1j9r4ft3y7K3sFvrWUGayF
-	yF4jv3s7Ka1DZFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j1zuAUUUUU=
-Date: Wed, 4 Nov 2026 01:32:30 +0800 (CST)
-X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbC8g4HFWrqGq5ViQAA3G
+To: Amery Hung <amery.hung@bytedance.com>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+ Toke =?utf-8?q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	netdev@vger.kernel.org, bpf@vger.kernel.org,	linux-kernel@vger.kernel.org
+Subject:
+ [PATCH] bpf: net_sched: reject bpf_throw() in qdisc teardown callbacks
+X-CM-TRANSID:PSgvCgCXagqsGupqnkg9Dg--.50703S2
+Message-Id:<6AEA1AAD.2E7977.08739@m16.mail.163.com>
+X-Coremail-Antispam: 1Uf129KBjvJXoWxuw45ZFW5trWrtFWftry8AFb_yoW7Zr43pa
+	ykZ345Kr4rJr43WFsFyF4DAF13C39xWw4UCryDWry5CwsaqFyjqFWxKa47uFyYkryDCry0
+	qr1qy3W3WF40kFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jsdbbUUUUU=
+Date: Wed, 4 Nov 2026 01:32:29 +0800 (CST)
+X-CM-SenderInfo: pvkd40jtr6il2tof0z/xtbCzw0HFWrqGq3ejAAA31
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,94 +65,133 @@ Precedence: list
 
 Hello,
 
-flow_change() checks FLOW_KEY_SKUID and FLOW_KEY_SKGID as bit values,
-although they are enum indices and TCA_FLOW_KEYS is a bitmask.  The
-current expression tests bits 0 through 3 instead of bits 14 and 15.
+A BPF qdisc's generated reset/destroy epilogue cancels its watchdog
+timer.  bpf_throw() unwinds directly to the exception callback and
+skips that epilogue.  If the timer was armed, qdisc deletion frees the
+qdisc while the embedded timer remains queued.  Later timer-queue
+activity accesses the freed qdisc, producing a KASAN slab-use-after-free
+and a kernel crash.
 
-A process with CAP_NET_ADMIN in a non-initial user namespace can
-therefore install SKUID/SKGID filters despite the user-namespace gate.
-Those keys use initial-user-namespace credentials.  If another user's
-locally generated traffic traverses the attacker's qdisc, the filter
-can expose a property of that UID through class packet counters.  The
-same typo also rejects some ordinary flow keys.  The demonstrated
-cross-namespace inference requires such foreign traffic to reach the
-attacker-owned qdisc; this does not disclose an arbitrary UID or grant
-privileges.
+The reproducer registers a BPF qdisc whose dequeue callback arms the
+watchdog and whose reset/destroy callbacks throw.  Two fresh KASAN boots
+reported use-after-free in rb_insert_color on an object allocated by
+qdisc_alloc() and later freed by qdisc teardown.  An otherwise identical
+no-throw control completed deletion cleanly.  The required BPF and
+network-administration capabilities make this a privileged local kernel
+crash; no privilege escalation or code execution is demonstrated.
 
 HEAD commit:    c03c1a14507dfaf8b856c2608f9ac216021fc222
 Git tree:       30fd2ef82912c26cf3a58ad0ba6afc375fa851ac
 Source version: Linux 7.3
-Compiler:       gcc 11.4.0, GNU ld 2.38
+Compiler:       gcc 11.4.0, GNU ld 2.38, clang 20 (BPF PoC)
 
-The console log, full kernel config, and reproducer are available from
-one fixed-revision Gist:
+The console log, full KASAN kernel config, and BPF C reproducer are
+available from one fixed-revision Gist:
 
 Console output:
-https://gist.githubusercontent.com/shaos26/a5571f1bfcd37c68c7270d296f1c12c0/raw/b3acb75e61d1cb703c7488ce0400651cd8c84b16/console-output.txt
+https://gist.githubusercontent.com/shaos26/9908a8ddac69e303cb5dcc709958537f/raw/3fa043e43683907bcccacdc80a71b150920049da/console-output.txt
 Kernel config:
-https://gist.githubusercontent.com/shaos26/a5571f1bfcd37c68c7270d296f1c12c0/raw/b3acb75e61d1cb703c7488ce0400651cd8c84b16/kernel-config.txt
+https://gist.githubusercontent.com/shaos26/9908a8ddac69e303cb5dcc709958537f/raw/3fa043e43683907bcccacdc80a71b150920049da/kernel-config.txt
 PoC source:
-https://gist.githubusercontent.com/shaos26/a5571f1bfcd37c68c7270d296f1c12c0/raw/b3acb75e61d1cb703c7488ce0400651cd8c84b16/poc.c
+https://gist.githubusercontent.com/shaos26/9908a8ddac69e303cb5dcc709958537f/raw/3fa043e43683907bcccacdc80a71b150920049da/poc.c
 
-Clone this Gist and the exact Linux source revision, then build the
-kernel with the attached config and run the PoC as PID 1 in an
-initramfs:
+Run this as root in a disposable VM booted with the target kernel,
+CONFIG_DEBUG_INFO_BTF=y, bpftool, iproute2, clang 20, and libbpf-dev.
+Build each variant against that kernel's BTF; test them on separate
+fresh boots.  With libbpf headers installed under /usr/include:
 
-    git clone \
-      https://gist.github.com/shaos26/a5571f1bfcd37c68c7270d296f1c12c0.git \
-      cls-flow-repro
-    cd cls-flow-repro
-    git clone \
-      https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git \
-      linux
-    git -C linux checkout c03c1a14507dfaf8b856c2608f9ac216021fc222
-    cp kernel-config.txt linux/.config
-    make -C linux olddefconfig
-    make -C linux -j"$(nproc)" bzImage
-    gcc -static -O2 -Wall -Wextra -Werror -o init poc.c
-    mkdir -p initramfs/dev initramfs/proc initramfs/sys
-    cp init initramfs/init
-    (cd initramfs && find . -print0 | \
-     cpio --null -ov --format=newc | gzip -1 > ../flow-oracle.cpio.gz)
-    timeout 180 qemu-system-x86_64 -m 768M -smp 2 \
-      -kernel linux/arch/x86/boot/bzImage -initrd flow-oracle.cpio.gz \
-      -append 'console=ttyS0 panic=-1 nokaslr rdinit=/init oracle_uid=424243' \
-      -nographic -no-reboot > /tmp/flow-oracle-positive.log 2>&1
+    bpftool btf dump file /sys/kernel/btf/vmlinux format c > vmlinux.h
+    CLANG=/usr/lib/llvm-20/bin/clang
+    LIBBPF_INC=/usr/include
+    "$CLANG" -target bpf -D__TARGET_ARCH_x86 -O2 -g -Wall -Werror \
+      -Wno-missing-declarations -I. -I"$LIBBPF_INC" \
+      -DVARIANT_THROW=1 -c poc.c -o qdisc-throw.bpf.o
+    "$CLANG" -target bpf -D__TARGET_ARCH_x86 -O2 -g -Wall -Werror \
+      -Wno-missing-declarations -I. -I"$LIBBPF_INC" \
+      -DVARIANT_THROW=0 -c poc.c -o qdisc-control.bpf.o
 
-Change oracle_uid to 424242 for the even-UID control.  Run the same
-command with the corrected-mask kernel to check the fixed behavior.
+Mount bpffs if it is not already mounted, register the matching object,
+attach its qdisc to loopback, send one packet to arm the watchdog, and
+delete the qdisc:
 
-The vulnerable kernel accepted both restricted filters in two fresh
-boots.  UID 424243 produced a 7/10 packet split between bands 1 and 2;
-changing only the target to even UID 424242 put all 17 packets in band
-1.  The corrected-mask kernel rejected SKUID and SKGID with -EOPNOTSUPP,
-accepted the ordinary SRC key, and showed all 17 packets in band 2.
-The fixed-kernel harness prints ORACLE_RESULT=FAIL intentionally,
-because its predicate expects the vulnerable behavior.
+    mkdir -p /sys/fs/bpf
+    mount -t bpf bpffs /sys/fs/bpf 2>/dev/null || true
+    bpftool struct_ops register qdisc-throw.bpf.o /sys/fs/bpf
+    ip link set lo up
+    tc qdisc add dev lo root handle 1: agent31_uaf
+    ping -c 1 -W 1 127.0.0.1
+    tc qdisc del dev lo root
+    sleep 10
 
-The guard was added by commit a6c6796c7127
-("userns: Convert cls_flow to work with user namespaces enabled").
-Use shifted enum values when checking the TCA_FLOW_KEYS bitmask:
+For the separate control boot, register qdisc-control.bpf.o and use
+qdisc kind agent31_ctl in the same sequence.
 
-Fixes: a6c6796c7127 ("userns: Convert cls_flow to work with user namespaces enabled")
+On the vulnerable kernel, the two throw runs reproduced the KASAN UAF;
+the no-throw control survived.  With the patch below, the verifier
+rejects bpf_throw() from reset/destroy with -EACCES, before qdisc
+registration.  The patched control object registered, attached, armed
+and deleted normally, then survived the watchdog interval.
+
+Fixes: 7a2dafda950b ("bpf: net_sched: Add a qdisc watchdog timer")
 Signed-off-by: shaos <shawnq1@163.com>
 ---
- net/sched/cls_flow.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/sched/bpf_qdisc.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/cls_flow.c b/net/sched/cls_flow.c
---- a/net/sched/cls_flow.c
-+++ b/net/sched/cls_flow.c
-@@ -433,7 +433,8 @@ static int flow_change(struct net *net, struct sk_buff *in_skb,
- 		if (fls(keymask) - 1 > FLOW_KEY_MAX)
- 			return -EOPNOTSUPP;
+diff --git a/net/sched/bpf_qdisc.c b/net/sched/bpf_qdisc.c
+index 098ca02aed89c..61f0dc93d3856 100644
+--- a/net/sched/bpf_qdisc.c
++++ b/net/sched/bpf_qdisc.c
+@@ -12,6 +12,7 @@
+ #define QDISC_MOFF_IDX(moff)	(moff / sizeof(void (*)(void)))
  
--		if ((keymask & (FLOW_KEY_SKUID|FLOW_KEY_SKGID)) &&
-+		if ((keymask & ((1U << FLOW_KEY_SKUID) |
-+				(1U << FLOW_KEY_SKGID))) &&
- 		    sk_user_ns(NETLINK_CB(in_skb).sk) != &init_user_ns)
- 			return -EOPNOTSUPP;
- 	}
+ static struct bpf_struct_ops bpf_Qdisc_ops;
++static const struct bpf_verifier_ops bpf_qdisc_verifier_ops;
+ 
+ struct bpf_sched_data {
+ 	struct qdisc_watchdog watchdog;
+@@ -131,6 +132,7 @@ static int bpf_qdisc_btf_struct_access(struct bpf_verifier_log *log,
+ }
+ 
+ BTF_ID_LIST_SINGLE(bpf_qdisc_init_prologue_ids, func, bpf_qdisc_init_prologue)
++BTF_ID_LIST_SINGLE(bpf_qdisc_throw_ids, func, bpf_throw)
+ 
+ static int bpf_qdisc_gen_prologue(struct bpf_insn *insn_buf, bool direct_write,
+ 				  const struct bpf_prog *prog)
+@@ -307,20 +309,31 @@ enum qdisc_ops_kf_flags {
+ 	QDISC_OPS_KF_COMMON		= 0,
+ 	QDISC_OPS_KF_ENQUEUE		= 1 << 0,
+ 	QDISC_OPS_KF_DEQUEUE		= 1 << 1,
++	QDISC_OPS_KF_TEARDOWN		= 1 << 2,
+ };
+ 
+ static const u32 qdisc_ops_context_flags[] = {
+ 	[QDISC_OP_IDX(enqueue)]		= QDISC_OPS_KF_ENQUEUE,
+ 	[QDISC_OP_IDX(dequeue)]		= QDISC_OPS_KF_DEQUEUE,
+ 	[QDISC_OP_IDX(init)]		= QDISC_OPS_KF_COMMON,
+-	[QDISC_OP_IDX(reset)]		= QDISC_OPS_KF_COMMON,
+-	[QDISC_OP_IDX(destroy)]		= QDISC_OPS_KF_COMMON,
++	[QDISC_OP_IDX(reset)]		= QDISC_OPS_KF_TEARDOWN,
++	[QDISC_OP_IDX(destroy)]		= QDISC_OPS_KF_TEARDOWN,
+ };
+ 
+ static int bpf_qdisc_kfunc_filter(const struct bpf_prog *prog, u32 kfunc_id)
+ {
+ 	u32 moff, flags;
+ 
++	/* bpf_throw() bypasses the generated watchdog-cancellation epilogue. */
++	if (kfunc_id == bpf_qdisc_throw_ids[0] &&
++	    prog->aux->st_ops &&
++	    prog->aux->st_ops->verifier_ops == &bpf_qdisc_verifier_ops) {
++		moff = prog->aux->attach_st_ops_member_off;
++		flags = qdisc_ops_context_flags[QDISC_MOFF_IDX(moff)];
++		if (flags & QDISC_OPS_KF_TEARDOWN)
++			return -EACCES;
++	}
++
+ 	if (!btf_id_set8_contains(&qdisc_kfunc_ids, kfunc_id))
+ 		return 0;
+ 
 -- 
 2.34.1
 
