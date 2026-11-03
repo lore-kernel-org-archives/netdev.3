@@ -1,113 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.200.9
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793724210;
-	b=RUBOJ7Rn+zDSpPxaUysit4jq3LZ0pPHjq85IUAXtzTjOb+EMpklNajAU5OjvG7dCZVyU
-	 DDisttlvH3E2f3NxdqkfqaaAAlqRT7xGbnJnrLQfepmdISqi0RGL8o1nvZ43Taj0Lr0/u
-	 QSb/4M0DvK9wzYL9iett912afNVufhzPtRaTPTuo/ZKwa0EG9DYkT2sty66E0kO9IoInE
-	 deIxmxG0eFR5o2J6AdE4t7dC/RVrrfheX2wbcnqiOPj9LrVC2C00QGMOQ0bn+KaWKUG9n
-	 TB4r8r5m/UKLRHCOWUGcSeqfNW2+VIbVuSM692+J4Qp2xPRFjz1sAvC5IWg5aGHSWag==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793724210;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Type:X-NV-OnPremToCloud:
-	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=ELfCpWTrvkd1iGqxiStXSVVrPcbQHLMgr2JQB9o+q2E=;
-	b=nDl0unRivCexSnSkXe25iJbjnBZyp98RpY7Gn1zymY+qjR8RS6Ury9hxT1G9T1ryQEBc
-	 eFhbkpgRRvSrrC08jnBDuKTVNQQaOPPY1gal9oMNLOh+H6OZ3onBjgODJM7tdr8nI928f
-	 HOOhKde7dAFRQlOOM6tNDDoqT9D0/10x/dr3ke2cBnxchrTsx5VmfNRT+G8yopg+tpCr5
-	 IdUlHUSHENZSxPZLpuMY9UoDe8lSE3F12heU/8cFm8SYl12NjILWYW7VddD5HY45ekeHv
-	 K/c2vbxN3CPvtsUQE5fSa80XEyfUmYUPXyMTfdVqoMl3Js3Sec7+7ElUb6rtrFExfiQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=FSt7zdNW;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.200.9
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012009.outbound.protection.outlook.com [40.107.200.9])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.189.83
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793724262;
+	b=S/hcZtmxpEKPWutL5oJL2atRgBwtIcFUTS528i15zBRq4ziJSKHTKKA200eTRXok32gx
+	 XpRtktx/BHcHwCjclwS0KM1SdbX2TYFT02yVODh8AE+pQxq1iqeENObV+9VKWT9tmHEZv
+	 XFW62IDco3y7oSJ0tptNAKgrDnUOJ1QWvAf1xW9wL/dr9cDiwmduh01t1lYCvVkaJ9CY/
+	 vaw1WWSKCDbbMR/P3CQFZcNp35Twpx0FWBs9IN88TEfuurowAhRmwJ5X+ldVbyLA1o1Bx
+	 xFKHRPR7IVf4hXk5/jnYJSwvFcmaEqopVuzHIxD5iUrew8yOPmhpTLcQDY/OvwJCWbQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793724262;
+	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
+	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Mailer;
+	bh=jyy+eSHMGuhG+ftQb5hYk8nR13XKGdG8SyhmUryqcT4=;
+	b=ttD1AinfEQjjVdtBG7F+q2oEMhKCoZvIGvbpnXW8damMRKeT2DG1AaOOf0mBoM2PF/1i
+	 /RKI9Qt3aIgQfYO7IuEPKuBj5j+oGPcbcF+BKZhYJfz0vYzaSaBNkppn1t7gBbOy3DIqt
+	 XLjJ3XIfDM9099FkzQtXKCCUVl7VP2BDMFevsEBv6GvI2LnMG+1zJUWugHJET8BBt4c5p
+	 U+tn3BDvhhlKTvsScwQ6BVCIqQRudQz//lXw5msLx+ZD2jG6rDlj+6exVgxA/1+LkbkvB
+	 P5ExGR3y3NMmvk2eKQ1TXVwDrJDTfTV0rrgpZ8mzw2nvUU308evbyEszOMBN3VLau7g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=yahoo.com;
+	spf=pass smtp.mailfrom=yahoo.com;
+	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=Thq8hG9X;
+	arc=none smtp.remote-ip=66.163.189.83
+Received: from sonic306-21.consmr.mail.ne1.yahoo.com (sonic306-21.consmr.mail.ne1.yahoo.com [66.163.189.83])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B961606EEA9;
-	Tue,  3 Nov 2026 16:43:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2B961606EEA9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E80C606A33C
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 16:44:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3E80C606A33C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=FSt7zdNW
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YPpqTJndb77Ygh4asDo2f6n4yZTItaGGrsVym1jUWEW0IePaM6EfAyhUlTLQW4eT1up0pwHN2hFo2P7iwwcjpMJgEUt85WQu3nALPnsZuUI93iiN53On997ZaCXSYMOmdZ/6igDALqhLT/yFT5GO+dDxtXqQKR5x2XPZX345A82SYVAx5GE76VJN4yCYYe4BPGYVgibkKGHnIAlrJwb+7fXhJHRw+h3dpWzgr/9cVb3vH/fz2E9GJBr/FIquQ8PEHkKDHFb2a7DGqqrRBE0J+uGM9z7ke6JNsKspnqPwCd7omCiPASYHy5FP9H7z9PjPPCJTzLIDvqUClpFKv+r+/Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ELfCpWTrvkd1iGqxiStXSVVrPcbQHLMgr2JQB9o+q2E=;
- b=uXXXnUmYvClh/JOF8D2rv89kwAEKdfeB27Wraz8RfA0Mida8l3VEcLxKXnpYn/jvWKzjm/FdHsTC1vlzX4VuqZe4CZmgZj6AiYwk1Zagx4yhmSWh96LgpG8R2w+9OdZq3QPQJ7oSKjJ+jqHvnmIEdbri5DcAjGk5qr4AfUM5onjkDDYp0OHMlhLofXuJXXAGBotd5hLdIvTc50EPWLlmXUGRb+o5yxsWiEMNBNQqTfQ8gCRNNCIFZ+KjwS2V1UJs6SvkNl7hRFTaakmvmqIiZPj2y8WskjklW8QkgQ2tRfdY9+5tkBYk84Gl9+zgPdR+Ox7OuDd/ESrNSSnLQvKcYA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=ziepe.ca smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ELfCpWTrvkd1iGqxiStXSVVrPcbQHLMgr2JQB9o+q2E=;
- b=FSt7zdNWr/3QuW9R/csGSvo+iX7KiyqCrhB185SyOyBB4SDP8JAmm2ulBawfp93FzqKDB4RmyvmKiiewcI+8uWDnmY/1iuUQP0FM3DP5X4qbILPV2B7F0vD6yHG0rBeDv+qmLY/thPfrF/JKi3RK2oqdWMq5xX8lP4sU0cjvCdZZe2xxHEyQvLFmeMs1YwYSmCD4USTRc6/78+QXxPPTtCGa+Vv/FWJG0RVutP1sUfHHXK+CCoWSAgVHsQDfCQK1oYW06SHGHgLgFGFZx1LW0TzETNcX+FqkfWUkkz8T/vmc+/2UTlY8CqFkwsHloT4YBBwEBppFmC37F3yViucwQw==
-Received: from SJ0PR03CA0089.namprd03.prod.outlook.com (2603:10b6:a03:331::34)
- by PH8PR12MB7231.namprd12.prod.outlook.com (2603:10b6:510:225::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Tue, 3 Nov
- 2026 16:41:21 +0000
-Received: from SJ1PEPF000037AC.namprd03.prod.outlook.com
- (2603:10b6:a03:331:cafe::4d) by SJ0PR03CA0089.outlook.office365.com
- (2603:10b6:a03:331::34) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Tue, 3
- Nov 2026 16:41:21 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SJ1PEPF000037AC.mail.protection.outlook.com (10.167.244.186) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.592.5 via Frontend Transport; Tue, 3 Nov 2026 16:41:21 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Tue, 3 Nov
- 2026 08:40:54 -0800
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Tue, 3 Nov
- 2026 08:40:54 -0800
-Received: from vdi.nvidia.com (10.127.8.12) by mail.nvidia.com (10.129.68.10)
- with Microsoft SMTP Server id 15.2.2562.56 via Frontend Transport; Tue, 3 Nov
- 2026 08:40:50 -0800
-From: Yishai Hadas <yishaih@nvidia.com>
-To: <jgg@ziepe.ca>, <leon@kernel.org>
-CC: <linux-rdma@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<saeedm@nvidia.com>, <tariqt@nvidia.com>, <mbloch@nvidia.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <edumazet@kernel.org>,
-	<davem@davemloft.net>, <andrew+netdev@lunn.ch>, <dtatulea@nvidia.com>,
-	<moshe@nvidia.com>, <yishaih@nvidia.com>, <maorg@nvidia.com>
-Subject: [PATCH rdma-next 07/23] RDMA/mlx5: Derive mlx5_ib_adversarial_mode global from mlx5_core adversarial API
-Date: Tue, 3 Nov 2026 18:39:33 +0200
-Message-ID: <20261103163949.1554-8-yishaih@nvidia.com>
-X-Mailer: git-send-email 2.18.1
-In-Reply-To: <20261103163949.1554-1-yishaih@nvidia.com>
-References: <20261103163949.1554-1-yishaih@nvidia.com>
+	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=Thq8hG9X
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793724261; bh=jyy+eSHMGuhG+ftQb5hYk8nR13XKGdG8SyhmUryqcT4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=Thq8hG9XOk93JQlBoZ46PObXmMtgdBEERfxGLovKtZ+J1z7IEKPXMTw95o/p71NIRwQzh9mSFxXABIjUzULOlDaiNm0BYL9erEA9CBiffRC8xB7Fup5I11wsR6ASgxUlo5vtmQuke3auidjmkJZLSjwwnnm5rjaIMjkvrAuNdPlnjHz+dC8E5phObx0v7t2EbOSPbTG1ETbjPgixCtRXZaC+MAboWjYngdmvtw5AC6RexqiKZCjcGjsW/bHtbFL9/P6QJ3EbaKQ88Zbonl7yv9wXnR4V+WPjcXkvgr8548afQ9wVoBa35i9TB+RWBQZF2FmHz/b9xUyBA+EnHwarOw==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793724261; bh=hB1QUTPGhFbf/GBgOAyAZVVD0NFsmoJJvJILLQQ9udm=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=Et+akbQe/QYmTLQKgWeSEXrSrYi12uof3HDl/K8vVhV3uCF6An+RbuhmSWXLBsTE627AOn4zST9kJF+dfDYjfcubMV/6jxsaJ0WmMDPSybL6xNm2/5Ld6Np/wq46Gadx+g8tnWjUkFIkmRVz19ms7N4SIRT5pxUVoy2G3Dj1SZZqpiX1okxae4JQH3lcve5bAD54s6okOwyCjEXXWJYuAzkMjo9r6Bsfb7o0KNr5AwajFU9oxSnE/7D7V8lRjKUocOPowjkFrSWmwLS8gmqmxUnAtb8f2rSnvj0toJo8tUdf7MtNJ9Xvult4fMMY3fzzsLnMbC3zNxmSue0PqZivfg==
+X-YMail-OSG: l..FRJQVM1mnMJuXB5y_FH0Fu_tmU6saHxXg2x7Czbo9lqidiEXIHJOpPyXRVQ1
+ 2GyFGFDfVCSDBGrZfLKqYGvfczlPkKaUKxy0zO6mUStBXIdlb9uVv2sfIs41UDBGCIbvSF5dDIvE
+ 8P0JbpK1iVxgJeH5jBzOjHlzvOK0aJar4wVKU0Y8FQ9yKqSI3CGbpn1C3mvr5CkGGQymNgeA9R9F
+ ocUCUONKmLuTDXH0DdHTYnUDanWb1PBsSnDr427gG..nVPf2rxzwcu0l709rsCvYHHkRVbyGF1x8
+ ZBEJ8qxg8_RZR5zu0M9H9oeD_pfh2t8Ewsf9aXtyfPx1JLtEG4asbJGJ800PvtZeyUqZMkT7JbUO
+ SVYCCVbZzc4K71nLzMkeJjWkXTSYYHVULGv.xi8sJPpGAAZUd7yB9Gwqxe5hyTk9yGyxy0Bwoj_D
+ eG1X9oFNW8WsQ9rUcwTPUttDl7BvVcfNuwIQzjvIHF0oFe185plwB0M0c1vDd_pLXOOFk7S6B3AV
+ kG5afEaUSe13uq_I6CSGoFImQy2JFyJE5sNJvQG4qGSG5hg_YVbuv4d.p1N5HnJKzlnSKKJ1Avzh
+ R5hbJHOKugWrHmOId2SG_dPkD.Lf6Ciu31st7v4tMvwnkwGFxWOxvLeiyQ5LZLfLY.UJMj8H4fh8
+ NQWYlMaohHETyiykK1Y2eW0osGwwXr3Vs1DDnSgAi.J3V.q3ImPTkRNkMUId9miR2jgd1D4Ba_nF
+ 2QQYynaMU1YQzg7dPOgHJFu1Kqr8FB_2YroINuuPfXRolvpSR8SDmJk4C_uPMhkoXSPuKlD7VxJf
+ g0zdyYMM7OSWVbpIlb8ehApJuWgbOMckFLVLgvy62LsTQURwB7kGzCa3N41xpBfly08h.hKW8603
+ evsyFjStogIUHK0pliXcDQGjAi4Fjx9etpmsJ20MICwgB2A6jaeCXLhkYFi.VZq2lWnvshSLZ7wg
+ FnyQ8cDg62ECkLGwz1OJDyfBbWZZIEO8PbdZxW9sUT9OtJfXK.1uFyVPWYYBTDnboiunDFFa150t
+ yKAVxxMXMcGGtiwAYC_ubs1LCNTE4fDk.8OFOyN8JTetRT86crYrXuZcY27wzYGrySatVFuZT.Aq
+ 2X4tyFZgaAxApZupfbOGaxx38HnVzNUV4x9T0KvHafq6ZNIfeoNZsnfKXIhqmfp7BkT53ziqBa7Q
+ IDMWZfh.kVdVs2fJ9gh8XGsfrFsTfuxt6YDERryS3_obNewFRg0ZEVT1ia8D2AGVtc2KTrr4QBUW
+ Q1O5yaromVBIz21CxSei7J6tBc4.jRycAUW6yk9TZMlCqZSsMZmt9wgvsXcALhrn.Ij_3faVCnn4
+ jIRuyAhFW0qFlMnc3YE0pqoLgaRQiIvqEQ41OmYhCAsFHxeOFwJHuLQMTxiE0byOFtDBsWlTO5mR
+ uTF0qsh.1qOYsLKDVFa5XFyP2.02acjBvH5n2WNl8oXh7NJ8_Ol8jMo10LTuPon_sKeagIjED9wm
+ dus2m9gjOWgPWzsR228Pbh3kwRhjuXhAmtR6zh8E6zyetjmP3.dPwrGHYlMv81qFV0s_iP6BzJ1.
+ VxBqNqjvR8m7UsQPnUeHMqQVvqS0XBVaV51m8ASGw_wHkgAVuWbcEsJN_BEj9eZWGfez7086zKNz
+ sBfj2MkNtJIEP4QOLEbIJ.0SD8fkHuRIkfesSL33Aki2rw5YS4oU8tXBncOjaviJfwHVNYOOtfAW
+ dUIqY8AxUJpkg5Mx.lYQZi4gAyJOpQePLTVNFUt_m7AYaOmBs1aiZOBoDFPFbCKcm6z18uPRLs3R
+ 9OamMoPY4kwWnF5SrM3qpQrrsr_WLzNemFII3YyfcJWcbhtc4pu4E_MUBACH2bIPFhI2i384balq
+ 9YZHJbkCI72K54ooomho371v_WjuaDUbCupeDi9E1o0b2y2n8oM9XviZZ4v4..93tUJglCTGH.9r
+ nqZfTFK7g87o7.95UMW5V7BwxpfyMftlrl_HWjmB9_5fPM7BqWdUYzz.OcavCgwyO4VR2pyy3KAW
+ LzpWv1lUSyZ7RCD3xNeYJLtNNtJw_EkW4H9pEGUs3bJFI3tSvMLBHYuGoaRLipSip.bU1nt_88uD
+ 8.TpcVg78CD6.b88HuJsGCSFHZLjk1F4o7kFyLl0MQXl8FvLs6aLZ4BFs2wiPJ7yYnqORUWg6gUs
+ zvQz8jaTrTXo_HDRq5NK026P9i8i8I49vlClN9tLYbmP55CMj2dJIM.tn7TAccT9lmPJLr6.9Liz
+ jti38Hc1F0fZnKruo.YXln7gFzqfAKGelAwpGWwImldSrHihJKrLG3E3IALr.B.u4N2fOdTtQ.dk
+ sHSJjKo7Ppz.exOGVHBaJAK_yU6lYoewxbG83m6gb
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: e3d0571c-efe9-46e3-9d38-9cfdf6596b41
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ne1.yahoo.com with HTTP; Tue, 3 Nov 2026 16:44:21 +0000
+Received: by hermes--production-ir2-5dd9bf4598-ztwl7 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID bc5603c53169c994bfcd0e22eea35b18;
+          Tue, 03 Nov 2026 16:44:17 +0000 (UTC)
+Message-ID: <15ba8390-45c2-4f45-bafa-212a129d2410@yahoo.com>
+Date: Tue, 3 Nov 2026 17:44:13 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -117,80 +84,86 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000037AC:EE_|PH8PR12MB7231:EE_
-X-MS-Office365-Filtering-Correlation-Id: cb56eda1-9849-4b4d-1db4-08df39c94a88
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|376014|36860700016|82310400026|11063799006|261022105027099003|56012099006|261009223027099003|261102123227099003|261028144727099003|261021121427099003|261022075727099003|261026121527099003|261102130727099003|261026140227099003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	YFHCqYm6HIv+JAHMX3H60hFOwxJX6VejB80c7TVWsu+Ys4IJtyHdPPWEx2nJtACUA1PIlHgoDgbPElk1dOuZkVG+wY/RZM+XYqCa8ojCm14F5jH2WwwTNkViXyRhePwK3DDfLIt/n8YKW6LUgTc8e3L9mlDuntEBX5WnQpqCePnNA6w6eWuzzvxsFT/eu/1nfKTGOVc/bAlYvw9cUu6vwJs0wkdwH01ehuYuCcY4JXJYqeoLf00xfSU8Hf6JOoqiXsLyCrXQauaXttbBO/RsmTAHw4P0ARlbYfkI3W2xOsanmw/VAF9MdJeENyIBp0dDuNeH+OroAaPrY49PiFXyQXY04g5GPW/0zW7KGeTO718SBMLmzmOM5M34KgXpksX4IWVZ3XDJEQXZEKVBEgaxaJ1ayCzJ4Dr6q9BIbeFKhdS546YeYp3pZFQw0XaxrAR57LJ6jFkVq8bLI8btKiVeRu1AhEEkDP1uz9yoDQIDvn6Iy0mftraPqrNswBv9eLlNI5L5y49+YIJ+N8FwysHT2HGydjolEyaAsDVFFYMrLnC8nbrc6OvhBheJO60bHSVQP32m4A6FVZp9Ua18iZj/ErVZUN1c4XqHyotnGjY5gpvCy6Wyy4NRMouA3aq/y9TZnO4ExcyrUQETZS289OXeZ7a5GK7/TlJORkXRbdiRfZ/bV9HjYeJvmOAox79jfOSBjQM1lOLVV3RXPOzeGDtM9Q==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(36860700016)(82310400026)(11063799006)(261022105027099003)(56012099006)(261009223027099003)(261102123227099003)(261028144727099003)(261021121427099003)(261022075727099003)(261026121527099003)(261102130727099003)(261026140227099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	e0lM+tOebGDIlYXOxDgIl2wQfgJpbWYkGIXgeLF7PiVdytLyXrQJxOdHGPkn3t58+5IsFV8g6J0FtWg+HHSgYJKBj3jjGttwi7kPaB4LLCWGimGXcfcyNezIwzFG7zuhzxvwmROHd2RG8GpqH9r2HsDNDQB9Lg3rNoH/VCiAucNpm0AN960cSHRtqpwwW/2t9++aY7sEH5T/T3YzxpZMxao5xJNpEZmv72YmH+C2L4mMQfpchBTDSJ1neKeWtfeFXC8waus5BotA3yf5dn3xWLzY/6Qr9v+1Jh/k2MXMjMkV3WkfhjBa/o+rC/FQJCWTOGQPCT6hBxWOD46bK+/od6DmWc9arooXYu3kLbDaBS5KdOK4n9NoaAKuGobzOru3yHctUvc8Sl0+y3RpqWgtcLTe+zx4uIcODldfTx09YpdV49RoqBApF092f/oiNegK
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 16:41:21.1231
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb56eda1-9849-4b4d-1db4-08df39c94a88
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF000037AC.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7231
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v7 09/10] net: dsa: realtek: rtl8365mb: make
+ L2/LUT access work on family D
+To: =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>
+Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <3bf4dd70-9771-497b-8c27-e925e0ef81eb@yahoo.com>
+ <88239c31-e161-4623-8dbb-db39f506af6f@yahoo.com>
+ <aun7hiSq4MF5BXOc@analog.com>
+Content-Language: pl
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+In-Reply-To: <aun7hiSq4MF5BXOc@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.26871 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-Use the mlx5_core mlx5_is_adversarial() exported API to set a
-module-level static bool mlx5_ib_adversarial_mode at init time,
-instead of a per-device bit field. This avoids propagating the flag
-through every mlx5_ib_dev pointer and makes the module-wide policy
-clear at the call sites.
+On Mon, Nov 02, 2026 at 03:44:36PM +0100, Mieczyslaw Nalewaj wrote:
+> +static bool rtl8365mb_l2_is_d(struct realtek_priv *priv)
+> +{
+> +	return rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D;
+> +}
 
-Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
----
- drivers/infiniband/hw/mlx5/main.c    | 3 +++
- drivers/infiniband/hw/mlx5/mlx5_ib.h | 1 +
- 2 files changed, 4 insertions(+)
+On Tue, Nov 03, 2026, Alvin wrote:
+> Shouldn't this be a top-level function, like rtl8365mb_is_d()?
 
-diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
-index 65455aedd559..f4f2ad80e76c 100644
---- a/drivers/infiniband/hw/mlx5/main.c
-+++ b/drivers/infiniband/hw/mlx5/main.c
-@@ -76,6 +76,7 @@ enum {
- 	MLX5_ATOMIC_SIZE_QP_8BYTES = 1 << 3,
- };
- 
-+bool mlx5_ib_adversarial_mode;
- static struct workqueue_struct *mlx5_ib_event_wq;
- static LIST_HEAD(mlx5_ib_unaffiliated_port_list);
- static LIST_HEAD(mlx5_ib_dev_list);
-@@ -5431,6 +5432,8 @@ static int __init mlx5_ib_init(void)
- 		return -ENOMEM;
- 	}
- 
-+	mlx5_ib_adversarial_mode = mlx5_is_adversarial();
-+
- 	ret = mlx5_ib_qp_event_init();
- 	if (ret)
- 		goto qp_event_err;
-diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-index 4a6ee14ffd7d..0f81b8aa487e 100644
---- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
-+++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-@@ -1582,6 +1582,7 @@ static inline int get_uars_per_sys_page(struct mlx5_ib_dev *dev, bool lib_suppor
- }
- 
- extern void *xlt_emergency_page;
-+extern bool mlx5_ib_adversarial_mode;
- 
- int bfregn_to_uar_index(struct mlx5_ib_dev *dev,
- 			struct mlx5_bfreg_info *bfregi, u32 bfregn,
--- 
-2.18.1
+Yes. For v8 I'll add a single rtl8365mb_is_d() static inline to
+rtl8365mb.h (in the patch that introduces the family infrastructure)
+and the L2, table and main code now use it. The l2-local helper will
+gone.
 
+> +static void rtl8365mb_l2_mac_to_data(const u8 *m, u16 *data)
+> +static void rtl8365mb_l2_data_to_mac(const u16 *data, u8 *m)
+[...]
+> From the diff it would seem that this is specific to the D family, since
+> you only use it in those functions. But looking over my crappy original
+> code for the C family, it's quite the same is it not? Can't you update
+> the C family functions to use these helpers too?
+
+Good catch, the packing is identical. For v8 I'll add a preparatory
+patch before this one that moves the two MAC helpers above the C
+serialisers and converts the C functions to use them. It is meant to
+be a no-op refactor, so it can be reviewed on its own.
+
+> +static void rtl8365mb_l2_data_to_uc_any(struct realtek_priv *priv,
+> +					const u16 *data,
+> +					struct rtl8365mb_l2_uc *uc)
+> +{
+> +	if (rtl8365mb_l2_is_d(priv))
+> +		rtl8365mb_d_l2_data_to_uc(data, uc);
+> +	else
+> +		rtl8365mb_l2_data_to_uc(data, uc);
+> +}
+>
+> Can't we have:
+>
+> rtl8365mb_l2_data_to_uc() # same as before at all callsites
+>
+> call into either:
+>
+> rtl8365mb_c_l2_data_to_uc()
+> rtl8365mb_d_l2_data_to_uc()
+>
+> instead?
+> [...]
+> The above comment applies to all these _any() functions.
+
+Agreed. In v8 the existing C serialisers are renamed to
+rtl8365mb_c_l2_*() (in the same preparatory patch, so this patch
+stays purely additive), and rtl8365mb_l2_{data_to_uc,uc_to_data,
+data_to_mc,mc_to_data}() become the per-family dispatchers calling
+the c_ or d_ variant. The _any() wrappers are dropped. The
+dispatchers need to know the family, so the callsites only gain the
+priv argument.
+
+> Even though family C is the originally supported family, I guess D is an
+> equal citizen, so it's good to keep things in this driver symmetric.
+
+Agreed, D should be a peer of C rather than a special case bolted on.
+
+Thanks for the review,
+Mieczyslaw
