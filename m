@@ -1,55 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793693073;
-	b=fIcKkOHcjiB43pR9NPFp2Cl1UQsmpY/NpksT2SUBktjYJmprUR0vDlHaloHkgKyTI8CD
-	 LAdcOoirfUpoS8lNM6uXJyDMpc4jzYouq3S1LuBNXIn6Ano4i4tJp3whSTt9GGuvyKwDn
-	 K8GH8bmzTIShLpxnZRelGtPHE0wUUKsEabZTywI1dsV0gTVO9wABkJGBkv4lH6rVjzzwx
-	 GkAUTTQi2GdApOw75/QZwyFQ6q3iQDonqvMK5nCT6GywaKtguHPr2frJdvl+4S9hVSm9S
-	 7iJyx/4v11TAqBlOAWoESuDGRJj6vXuvAwK7Aeys3/DoDnT/p7r48P9kEiYums03N8Q==
+	t=1793693101;
+	b=Rk1rqdbhmhTvzggUpaarqMYsFEYo7ANKxcHgAJHr9iPg7k9UbfjB8DYmTgTCrJSIiH5I
+	 U1w/apgGLVrkCeSo8Lh7CF87owSUXPbPUh+UIC7Iy9hjTlvvyrMKjnrzIroQ8Nv6QN4AQ
+	 9N1CfLQEaaDA69WqOS7sgavX239DVjlBuc7RlkrV6d3zsIKs4fY2HEFkjG7S25FpmTuuS
+	 /+1kT0UKf54sVlQYdTIa1A39SMG+L86espACA0oyY94VJfYKCYmQsmrQnIFjzM98qW2ie
+	 cRgGUbHxTBL582CT+56aWOjOsjP7KhMm66ljcZpnPfJOT10nmXJMS5QSk9JzNdd647Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793693073;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Message-ID:In-Reply-To:
-	 References:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Correlation-ID;
-	bh=ESE5C0i8J9UtpPkDUVoRquvfOcWKncLg5Vsd6vV7s8w=;
-	b=joVjeOBb8mybwgHIAHbn8jGYPS/yobVu3nYyRymkKNke0AUFEEq8vSUTzNrE20HhCLif
-	 7mtUqh72EvUWXD6NM/9BFgewbb4nkbZA2b3AfBvjbc0/R6bgrU9+2Ar/W5aCFcwM0etMB
-	 eqMf9mmVdsUrvJeS9aQJnKPzd5Ifg9ZSCSGEeAchYnDcVCV7f3W2hGEWxx44qPcEZ7W6I
-	 qIoW2un0QDmS2JsJ0GMI6hi+gwkBMDCDJjKEcasVGTPUvJn1i+iQUpnX5bykrum5E77dM
-	 53l/8LQjOTxPJjY2RiBkf+7O7xWrzrFi90br45fDzsI14Aq5oPl1IRGQDcDnPTBhxwA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793693101;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Is/N+iZUjDfSN1sneuH4OTqgyHfI3K+lOnHcdE9f2kI=;
+	b=J7oeyWXP2HwlUCKp3ZoHZwHLXJLb4b7a07QAAL4z0tdL/duyet52nzpCCatcPt4Ahibr
+	 WtKtBakCXmHEXWNUqIyjsBS4Z5iRUYjm/1Ig6LpJ3Xl5dS5/MHRVlSJYqiYmF+e1ZNCkA
+	 20tSNkjEm++xds+5g/thIVnRrQLUOyCMs5LuBx9I5PvTZSOwwsN4JZ8ycT+fXoOhiXO6G
+	 ka38x5oY/Cw7oJj4xzU8zho2Rv7sr0Ne8c1HlfS2zSr9aGGWcIhVMkv3ZEoisgouGB2By
+	 R52HX5ybloEF/GI4GwYREXhN+R5sCjdVszkoM6dyUcgtRYpsw+ls96PDxnfrDqu9VrA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="ADIiPBj/";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lTeTSc3Q;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57480606A33C;
-	Tue,  3 Nov 2026 08:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D96606A329
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 08:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ADIiPBj/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2187D1F00919;
-	Tue,  3 Nov 2026 08:04:30 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lTeTSc3Q
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C1E1F000C1;
+	Tue,  3 Nov 2026 08:05:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793693073;
-	bh=ESE5C0i8J9UtpPkDUVoRquvfOcWKncLg5Vsd6vV7s8w=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=ADIiPBj/BpFNGQIO4kEgM79Ej94EnBV1zCmPowIQo9cl97zrL0OLkzbgMS9/4jHtF
-	 Xb9JVQE22EwMnOCJoraZkZ31Dvp+WW6GPzIYSdyUSOfcsU2SfA4ba5unyDWfwT0nVJ
-	 OJoiv4rOVXjT/JRBtHxSgE/6InQkJ8+1m3YWqfAHEcJjLeL4oAxQb84Bx/cSQ/MA9/
-	 mWkQ0qRZ72vGCc0p+D/vSz3JmScgdonTB/O2dMp0NYihVI4mhthidRKIs7R5JRbmAQ
-	 y1DV/hq4/bNzEVBOrarbDT7T2uP7BY1+g88NqmQCFpcsdqABwl3VoPjEUemsyG5kqf
-	 3hyLI3WUEQULg==
-Date: Tue, 3 Nov 2026 09:04:25 +0100
-From: Matthieu Baerts <matttbe@kernel.org>
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: martineau@kernel.org, geliang@kernel.org, pabeni@redhat.com,
-	mptcp@lists.linux.dev, netdev@vger.kernel.org
-Message-ID: <abc8a000-caa8-4dd4-9d18-925d1ceda683@kernel.org>
-In-Reply-To: <aumNbD0vtdtLgWN9@v4bel>
-References: <aoWBrkNwebJe-koh@v4bel> <bf25121c-72cf-40a7-bbaf-5db85aee7f59@kernel.org> <aobtmznTdBks0frM@v4bel> <994ecd4f-eaf9-4d2f-95a3-611083207d6c@kernel.org> <aumNbD0vtdtLgWN9@v4bel>
-Subject: Re: [PATCH net] mptcp: fix use-after-free of the subflow context on
- the delegated list
+	s=k20260515; t=1793693101;
+	bh=Is/N+iZUjDfSN1sneuH4OTqgyHfI3K+lOnHcdE9f2kI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=lTeTSc3QfYhWvuPfAwmmfB5lR1QE5T49UChRIxT4UelAEjq5Kvh3RqWFpAPm0RKqm
+	 fKSlWpSz6fHH1eVfOJeiiHC7GCgtEn8f3uMvlkGvEUZrkKyNPoy5ywBOolwNWLzQre
+	 JUH1oBijiFJk4HEFGSFNuIVY5tvXTe8P6tABoVwQM09En4O20hazimhsatFW3R2Boh
+	 uFSjHOtecr+fEONySdblZRn7Iy/1kdrHmQKOBVWvCJu91+AuxkXQ3s6Y/+hKWNzF1j
+	 YZ77toCQIdNdTCJgl7dIJN/FOD27YQSQ/5kh5PkxLA4gstQpQ+t/miYrUGUVnFlD9W
+	 zSQoKkKHWJOAA==
+Subject: Re: [PATCH 02/14] xfrm: interface: validate the IP header on xmit
+From: netdev-bot+sashiko@kernel.org
+To: steffen.klassert@secunet.com
+Cc: davem@davemloft.net, kuba@kernel.org, herbert@gondor.apana.org.au,
+ netdev@vger.kernel.org
+Date: Tue, 03 Nov 2026 08:05:00 +0000
+Message-ID: <179369310046.488856.2145189284558172500@kernel.org>
+In-Reply-To: <20261102100451.2505200-3-steffen.klassert@secunet.com>
+References: <20261102100451.2505200-3-steffen.klassert@secunet.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,100 +61,139 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Correlation-ID: <abc8a000-caa8-4dd4-9d18-925d1ceda683@kernel.org>
 
-Hi Hyunwoo,
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Thank you for your reply.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-03 Nov 2026 08:29:55 Hyunwoo Kim <imv4bel@gmail.com>:
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> On Tue, Sep 08, 2026 at 07:46:19PM +0200, Matthieu Baerts wrote:
->> Hi Hyunwoo,
->>
->> On 20/08/2026 14:05, Hyunwoo Kim wrote:
->>> On Wed, Aug 19, 2026 at 12:22:18PM +0200, Matthieu Baerts wrote:
->>>> Hi Hyunwoo,
->>>>
->>>> On 19/08/2026 12:13, Hyunwoo Kim wrote:
->>>>> mptcp_subflow_delegate() links the subflow context into a per-CPU nap=
-i
->>>>> list and takes a reference on the subflow socket. The context is a
->>>>> separate allocation, reached through icsk_ulp_data, and the list hold=
-s
->>>>> no reference to it.
->>>>>
->>>>> inet_csk_destroy_sock() runs sk_prot->destroy() regardless of the
->>>>> outstanding references. That path ends in tcp_cleanup_ulp(), which ca=
-lls
->>>>> subflow_ulp_release(). subflow_ulp_release() frees the context with
->>>>> kfree_rcu() but does not remove it from the list. Once the grace peri=
-od
->>>>> elapses and the context is actually freed, the next mptcp_napi_poll()
->>>>> dequeues that entry and mptcp_subflow_delegated_next() writes to the
->>>>> freed context with list_del_init(). That is the use-after-free.
->>>>>
->>>>> The freeing path cannot dequeue the entry itself: the list is per-CPU
->>>>> and only the CPU that queued the subflow may touch it, as
->>>>> tcp_release_cb_override() already notes.
->>>>>
->>>>> Delay the free instead. Add MPTCP_DELEGATE_DEAD.
->>>>> mptcp_subflow_free_ctx() sets it and frees the context only if the
->>>>> subflow is not scheduled, while mptcp_napi_poll() frees it if the dea=
-d
->>>>> bit is set when it clears the scheduled bit. Either
->>>>> mptcp_subflow_free_ctx() gets there first, sees the scheduled bit and
->>>>> leaves the free to mptcp_napi_poll(), or mptcp_napi_poll() gets there
->>>>> first, does not see the dead bit and mptcp_subflow_free_ctx() does th=
-e
->>>>> free.
->>>>>
->>>>> Also skip mptcp_subflow_process_delegated() once the dead bit is set.
->>>>> subflow_ulp_release() has already dropped the msk reference by then, =
-so
->>>>> the pending actions must not run.
->>>>>
->>>>> Finally, move delegated_status out of struct_group(reset).
->>>>> mptcp_subflow_ctx_reset() clears that group on disconnect, and cleari=
-ng
->>>>> the scheduled bit while the entry is still queued would let
->>>>> mptcp_subflow_free_ctx() free a context the napi list still points to=
-.
->>>>> delegated_node is already outside the group.
->>>> Thank you for looking at this. Do you have more context about how the
->>>> bug was discovered? Do you have a reproducer and/or a KASAN calltrace =
-or
->>>> similar?
->>>>
->>>> Having this would help the reviewers.
->>>
->>> Sorry for the late reply. The poc was extremely unstable, so I wanted
->>> to improve its reproduction rate a bit before sending it.
->>
->> No delay at all when compared to my reply, sorry!
->>> Attached are the poc, the KASAN log, and the mdelay diff used for
->>> reproduction.
->>
->> By chance, do you have a decoded stack trace? e.g. using the following
->> script with the vmlinux and modules used to generate the KASAN trace:
->>
->> =C2=A0 ./scripts/decode_stacktrace.sh
->>
->> Note that we are still looking at a possible simpler fix, but no luck so
->> far. In any cases, we will take this patch in our tree first, then send
->> it to netdev.
->
-> Ah.. I had missed this mail.
->
-> It seems this issue has not been resolved in netdev yet. May I ask how
-> you plan to handle it?
+- [Medium] In xfrmi_xmit() (net/xfrm/xfrm_interface_core.c), the new
+  header checks look only at skb->protocol.
 
-We didn't find a less "intrusive" way to fix that, and it went down the TOD=
-O list, sorry.
-Do you mind rebasing it, and send a new version including the
-decoded trace (without the timestamps), please?
+--
 
-Cheers,
-Matt
+xfrm: interface: validate the IP header on xmit
+
+This patch adds a pskb_inet_may_pull() call to xfrmi_xmit(). It also
+drops packets whose IP version does not match skb->protocol, and IPv4
+packets with a malformed ihl. The aim is to stop xfrm4_transport_output()
+from working on an unvalidated header when packets are injected into an
+xfrmi device.
+
+> diff --git a/net/xfrm/xfrm_interface_core.c b/net/xfrm/xfrm_interface_core.c
+> index 688306bf62c5a..9835fbe63ccb8 100644
+> --- a/net/xfrm/xfrm_interface_core.c
+> +++ b/net/xfrm/xfrm_interface_core.c
+> @@ -531,8 +531,13 @@ static netdev_tx_t xfrmi_xmit(struct sk_buff *skb, struct net_device *dev)
+>  
+>  	memset(&fl, 0, sizeof(fl));
+>  
+> +	if (!pskb_inet_may_pull(skb))
+> +		goto tx_err;
+> +
+>  	switch (skb->protocol) {
+>  	case htons(ETH_P_IPV6):
+> +		if (ipv6_hdr(skb)->version != 6)
+> +			goto tx_err;
+>  		memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
+>  		xfrm_decode_session(dev_net(dev), skb, &fl, AF_INET6);
+>  		if (!dst) {
+
+[Severity: Medium]
+Can an skb marked ETH_P_IPV6 pass this check and still reach
+xfrm4_transport_output()?
+
+The new check in xfrmi_xmit() looks only at skb->protocol. The transform
+that actually runs is picked by the dst family, and then by
+x->props.family.
+
+When skb_dst(skb) is already set, xfrmi_xmit() skips the route lookup.
+The dst family is never compared with the header that was just checked.
+
+In collect_md mode, xfrmi_xmit2() also swaps in a different dst after
+this check:
+
+net/xfrm/xfrm_interface_core.c:xfrmi_xmit2() {
+    ...
+		if (md_info->dst_orig) {
+			struct dst_entry *tmp_dst = dst;
+
+			dst = md_info->dst_orig;
+			skb_dst_set(skb, dst);
+    ...
+}
+
+xfrm_lookup_with_ifid() then takes the policy/state family from that
+dst, not from the packet:
+
+net/xfrm/xfrm_policy.c:xfrm_lookup_with_ifid() {
+    ...
+	u16 family = dst_orig->ops->family;
+    ...
+}
+
+A tc BPF program could reach this with the following sequence:
+
+bpf_skb_set_xfrm_info()
+    info->dst_orig = skb_dst(skb);    /* IPv4 rtable */
+    attaches the per-cpu metadata dst
+bpf_skb_change_proto(skb, ETH_P_IPV6)
+    skb_valid_dst() is false for DST_METADATA, so the metadata dst
+    and the IPv4 dst_orig are both kept
+program writes an IPv6 header with version 6
+xfrmi_xmit()                  /* dst != NULL, only version check runs */
+  xfrmi_xmit2()               /* collect_md swaps in IPv4 dst_orig */
+    xfrm_lookup_with_ifid()   /* family is AF_INET */
+    ...
+    xfrm_outer_mode_output()
+      xfrm4_transport_output()
+
+A plain IPv4 rtable does not survive bpf_skb_change_proto(), because it
+drops non-metadata dsts. So this appears limited to the metadata dst
+ordering above.
+
+With an AF_INET transport mode state, xfrm4_transport_output() takes ihl
+from the low nibble of the IPv6 header's first byte. That nibble is the
+top four bits of the traffic class, so it can be anything from 0 to 15:
+
+net/xfrm/xfrm_output.c:xfrm4_transport_output() {
+	struct iphdr *iph = ip_hdr(skb);
+	int ihl = iph->ihl * 4;
+    ...
+	__skb_pull(skb, ihl);
+	memmove(skb_network_header(skb), iph, ihl);
+    ...
+}
+
+pskb_inet_may_pull() only made 40 bytes linear for IPv6. For a small
+packet, skb->len can wrap and the memmove() can read past the end of the
+data. If the skb has paged data and a linear length under 60 bytes,
+__skb_pull() hits BUG() instead.
+
+One step has not been confirmed end to end. It is not certain that an
+AF_INET policy/state lookup matches a flowi that xfrm_decode_session()
+filled in as IPv6. It looks plausible with a 0/0 selector, because the
+ip4 address fields overlay ip6 address bytes that the sender controls.
+
+This path also needs CAP_BPF/CAP_NET_ADMIN, a collect_md xfrmi, and an
+AF_INET transport mode SA and policy.
+
+The commit message says:
+
+  "xfrm4_transport_output() uses iph->ihl for __skb_pull() and memmove()
+  and expects the header to be valid."
+
+Would it make sense to also drop packets whose final dst family (after
+the collect_md dst_orig swap) does not match skb->protocol, so this path
+is covered too?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261102100451.2505200-2-steffen.klassert%40secunet.com
