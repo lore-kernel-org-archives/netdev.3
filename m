@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793714606;
-	b=yN0aPR2H1/ScuOnyvj8jBAniDF//CNeZrNygHYoSLFHI9lHo7IdQ8OBTbMnLym5VSmbU
-	 T8apFSpslax4NsCIgllkmtIBpPQ+jnrTYHpedrZGbIJDHCwaIKrR8i19ej86WL22uYwFN
-	 WKoU+uMVqmbmaGMkKKHcq3ftYHq6a520sGgSha6lBCtON6lvsZBsBdmUtWbOq+LDHAKR2
-	 fdYJ5qzctffhNr7O9QL0wl7gxuVPqgnUfQ6EwYq2tC8wR0zyycs6tCWC9rq7up1ITsTFS
-	 gPtyL1vBV/C8c6iI4CORS+j/Vd3o0gpW6nMPYtphWK9hmpakR28eD57J77a2R6PSy3Q==
+	t=1793714611;
+	b=KNP8R+RIjBhzUpCgzczwFmyRy85wUgGKQ1RRaPpf4ap0/ANQ48d2LdQi9fzGyIJJ7y57
+	 JPylEXsuaKn55IhXr/T39ncnQPQN3ytEe+tO84IDPcXU0HMqPMMlNA/nVaE91YqgnR4Du
+	 ZWqOueBgwwBLGoIM3RUVvMxRiRHQlrZR4OauBmdKxbjHMej8eTSO/5jTxs2mutuEmrK+N
+	 lXZVZDs/wMxlFsn24hTB7vqi07x5WoQSxQZoHedD0a3kKjunylnf1F41Ojc50zQuj+Aa7
+	 ETL6lSuMOV/vB24DSZr0G1Tj9+ygWQFjMJKegNYHcxFWKn212Dv9IyjKI+K60oa1Tgg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793714606;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793714611;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
-	bh=rtTKULpTnN+Nv7hj6YAwU1fNR5t0PXlCdJ7mWoX/Fc0=;
-	b=JYId2FZrbkhg5MznFTSYFmw5x0a/ZFR9rEADNngCV01EIkfP/NW+UCJEXIHxo9zc3E6V
-	 9DEa86iiRoFwGbQLsaX78jvo+7PKaxlEYb83vJHLRa1A84a3X6lRAM/NJI3QqU2wg91jD
-	 1jif48Iy2pBG3/7AfWe5fGPiliVvxOb468TctmFmdeDVZwn3ZFokm7EevCAKquQMNKuV6
-	 xV4TUBHrjnoGtxRk3VnTNvL/Dgx0hUvwnpVr9Ww0JP7Bumd4z3XsMQo+9G0Kap0H+dYJn
-	 FJ+HqjHQnGEevIVAU48HIf3CPboplJnfNByi9YuqjkVkCf82dzVyInWehOQwaKlJ19w==
+	bh=eI6BYAMtH8gnpfLqrP2oq7QPLneAgWxxYSCOTNnXMiM=;
+	b=nRNPLYsbxUzfRq04pjJV0LctemQLPZTNQSUQFIKefA5G873R2//3CHse7YGQTHNP0RGV
+	 5qN+rMvuPV0PHk6i4zsOXVsL/xa+MrTXXvMd3miE6zC6fxzoYbWkPjligiPUyqKesHCWo
+	 DjvQwI+e6XFF+jvP40QInTzgtxVJbBvpAgDniIi3nMcCQWTsOAJYunUrddU9loxFqDbMs
+	 O2Lh0ypgpFpJeS5rZDBVGyJn9zjSbPZjSEl9LC5y6bELhLH2Dl6Do796YtMvabkhK0dJI
+	 8UBNQAKJxoLRsKGPxt77QeYLMNwZ9X3tzICIgG6BhJ6znbeVvMZ7TTv5ef0lYqgqphQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=netfilter.org;
 	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=U1snme5x;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=FgRdG9pM;
 	arc=none smtp.remote-ip=217.70.190.124
 Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700296082BF8;
-	Tue,  3 Nov 2026 14:03:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 700296082BF8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345116085083;
+	Tue,  3 Nov 2026 14:03:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 345116085083
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=U1snme5x
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=FgRdG9pM
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793714603;
-	bh=rtTKULpTnN+Nv7hj6YAwU1fNR5t0PXlCdJ7mWoX/Fc0=;
+	s=2025; t=1793714609;
+	bh=eI6BYAMtH8gnpfLqrP2oq7QPLneAgWxxYSCOTNnXMiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U1snme5x6ljIXy0RP5IdwIGkRBY3p7xYILTE0iCc4xO1Tt10Fg1EcEacglu+LzsIs
-	 bTtvM3Hbj5nN2X4wJlrIFXzC1bZUWjuxLAY1sHpCyczvtBMoSO4+mLkA4H44rDmR31
-	 /jnmL+B2Dg5NFJf1qswDPzxOMMkscQ40uujrY7mEs5XAmE81b+euPPVFe74wg/Rrjw
-	 4UI+6rbF6XPKF+bx0TBajzAScJ9OI5cnguryEJZ8Sl2Ey5MvclOuVJt9rccUIVy4KB
-	 d3sSp+3cjUIFihvblQxNAqivec4yBZLYWJ29npHNKZbBFT/O6OVF774tVqyNtJ3MSS
-	 hkbXvQ2YaqCPg==
+	b=FgRdG9pM8SB60UbT7ML/pt/DAONouZayuihH4DBpvJYlI+rlrWU3y9JItN4KwGpxm
+	 KfjpW4sGYrg9LhWlN1WcvPNW9kEPkg1jgHJ7YGgLqkO0jSt/l7lrekHTG8F9nuqF4Q
+	 6hsR4dzA27/HhSJhxKkAvHOLukXR2fOSWXB7uL/CCYsJx7saFL8JR/5DtzG5y5DjLg
+	 5bf2APN0udMfaj058C/w42SWb/XkDg2+8Gsue6T0abIv5rHoCkX8pPGy5zjaJPGOnH
+	 USTOlkFkp9CLVKUBLNGltQxHGyQNYkax4rfwB6KHKHeBqbR7F2TRTrrGxmUkGcs7jr
+	 zItIZXqvjf4AQ==
 Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id D2DCF60085;
-	Tue,  3 Nov 2026 15:03:22 +0100 (CET)
+	by mail.netfilter.org (Postfix) with ESMTPSA id DC9D360090;
+	Tue,  3 Nov 2026 15:03:28 +0100 (CET)
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 To: netfilter-devel@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -56,9 +56,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	fw@strlen.de,
 	ja@ssi.bg
-Subject: [PATCH net 05/15] ipvs: do not create conns from packets with port 0
-Date: Tue,  3 Nov 2026 15:02:58 +0100
-Message-ID: <20261103140308.591690-7-pablo@netfilter.org>
+Subject: [PATCH net 09/15] netfilter: nft_set_rbtree: check catchall_sync return before queue_done
+Date: Tue,  3 Nov 2026 15:03:02 +0100
+Message-ID: <20261103140308.591690-11-pablo@netfilter.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261103140308.591690-1-pablo@netfilter.org>
 References: <20261103140308.591690-1-pablo@netfilter.org>
@@ -73,108 +73,36 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Julian Anastasov <ja@ssi.bg>
+From: Xingyuan Mo <hdthky0@gmail.com>
 
-We should disallow normal connections with cport 0 to be
-created from packets by the scheduler (from clients) or
-by ip_vs_new_conn_out (from real servers) because later
-such traffic can not hit the connection due to the
-NO_CPORT requirement. As result, it can lead to duplicate
-connection for every packet. Do the same for vport 0.
+nft_rbtree_gc_queue() passes the result of nft_trans_gc_catchall_sync()
+straight to nft_trans_gc_queue_sync_done(). When the catchall path flushes
+a full GC batch and nft_trans_gc_alloc() fails, catchall_sync returns
+NULL and queue_sync_done dereferences trans->net (NULL+0x10). Guard the
+call like the pipapo GC path already does.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260925141115.16126-1-axel.mierczuk%401password.com
-Signed-off-by: Julian Anastasov <ja@ssi.bg>
+Fixes: 7d259f021aaa ("netfilter: nft_set_rbtree: prefer sync gc to async worker")
+Assisted-by: opencode:deepseek-v4
+Signed-off-by: Xingyuan Mo <hdthky0@gmail.com>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
- net/netfilter/ipvs/ip_vs_core.c       | 3 ++-
- net/netfilter/ipvs/ip_vs_proto_sctp.c | 5 +++++
- net/netfilter/ipvs/ip_vs_proto_tcp.c  | 5 +++++
- net/netfilter/ipvs/ip_vs_proto_udp.c  | 4 ++++
- 4 files changed, 16 insertions(+), 1 deletion(-)
+ net/netfilter/nft_set_rbtree.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_core.c b/net/netfilter/ipvs/ip_vs_core.c
-index 8a3c880fdb26..f3eb72e95024 100644
---- a/net/netfilter/ipvs/ip_vs_core.c
-+++ b/net/netfilter/ipvs/ip_vs_core.c
-@@ -1305,6 +1305,7 @@ static inline bool is_new_conn_expected(const struct ip_vs_conn *cp,
-  *    In fwmark-VS actual vaddr and vport are unknown to IPVS
-  * 2) Real Server and Virtual Service were NOT configured without port:
-  *    This is to allow match of different VS to the same RS ip-addr
-+ * 3) Client port is not 0
-  */
- struct ip_vs_conn *ip_vs_new_conn_out(struct ip_vs_service *svc,
- 				      struct ip_vs_dest *dest,
-@@ -1328,7 +1329,7 @@ struct ip_vs_conn *ip_vs_new_conn_out(struct ip_vs_service *svc,
- 	/* check pre-requisites are satisfied */
- 	if (svc->fwmark)
- 		return NULL;
--	if (!vport || !dport)
-+	if (!vport || !dport || !cport)
- 		return NULL;
- 
- 	/* for persistent service first create connection template */
-diff --git a/net/netfilter/ipvs/ip_vs_proto_sctp.c b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-index fb8af6b15a39..83d1443ebe01 100644
---- a/net/netfilter/ipvs/ip_vs_proto_sctp.c
-+++ b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-@@ -30,6 +30,7 @@ sctp_conn_schedule(struct netns_ipvs *ipvs, int af, struct sk_buff *skb,
- 			sch = skb_header_pointer(skb, iph->len + sizeof(_sctph),
- 						 sizeof(_schunkh), &_schunkh);
- 			if (sch) {
-+				/* Accept packet without scheduling? */
- 				if (sch->type == SCTP_CID_ABORT ||
- 				    !(sysctl_sloppy_sctp(ipvs) ||
- 				      sch->type == SCTP_CID_INIT))
-@@ -47,6 +48,10 @@ sctp_conn_schedule(struct netns_ipvs *ipvs, int af, struct sk_buff *skb,
- 		return 0;
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index fbe1750f1ca2..9d685899da70 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -953,7 +953,8 @@ static void nft_rbtree_gc_queue(struct nft_set *set)
  	}
  
-+	/* Do not create connection for port 0, skip the packet */
-+	if (!ports[0] || !ports[1])
-+		return 1;
-+
- 	if (likely(!ip_vs_iph_inverse(iph)))
- 		svc = ip_vs_service_find(ipvs, af, skb->mark, iph->protocol,
- 					 &iph->daddr, ports[1]);
-diff --git a/net/netfilter/ipvs/ip_vs_proto_tcp.c b/net/netfilter/ipvs/ip_vs_proto_tcp.c
-index fec0e8b47b71..2e55b62445c6 100644
---- a/net/netfilter/ipvs/ip_vs_proto_tcp.c
-+++ b/net/netfilter/ipvs/ip_vs_proto_tcp.c
-@@ -48,6 +48,7 @@ tcp_conn_schedule(struct netns_ipvs *ipvs, int af, struct sk_buff *skb,
- 	if (likely(!ip_vs_iph_icmp(iph))) {
- 		th = skb_header_pointer(skb, iph->len, sizeof(_tcph), &_tcph);
- 		if (th) {
-+			/* Accept packet without scheduling? */
- 			if (th->rst || !(sysctl_sloppy_tcp(ipvs) || th->syn))
- 				return 1;
- 			ports = &th->source;
-@@ -62,6 +63,10 @@ tcp_conn_schedule(struct netns_ipvs *ipvs, int af, struct sk_buff *skb,
- 		return 0;
- 	}
+ 	gc = nft_trans_gc_catchall_sync(gc);
+-	nft_trans_gc_queue_sync_done(gc);
++	if (gc)
++		nft_trans_gc_queue_sync_done(gc);
+ }
  
-+	/* Do not create connection for port 0, skip the packet */
-+	if (!ports[0] || !ports[1])
-+		return 1;
-+
- 	/* No !th->ack check to allow scheduling on SYN+ACK for Active FTP */
- 
- 	if (likely(!ip_vs_iph_inverse(iph)))
-diff --git a/net/netfilter/ipvs/ip_vs_proto_udp.c b/net/netfilter/ipvs/ip_vs_proto_udp.c
-index f32785682402..92c0b76c1a02 100644
---- a/net/netfilter/ipvs/ip_vs_proto_udp.c
-+++ b/net/netfilter/ipvs/ip_vs_proto_udp.c
-@@ -52,6 +52,10 @@ udp_conn_schedule(struct netns_ipvs *ipvs, int af, struct sk_buff *skb,
- 		return 0;
- 	}
- 
-+	/* Do not create connection for port 0, skip the packet */
-+	if (!ports[0] || !ports[1])
-+		return 1;
-+
- 	if (likely(!ip_vs_iph_inverse(iph)))
- 		svc = ip_vs_service_find(ipvs, af, skb->mark, iph->protocol,
- 					 &iph->daddr, ports[1]);
+ static u64 nft_rbtree_privsize(const struct nlattr * const nla[],
 -- 
 2.47.3
 
