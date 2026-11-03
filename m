@@ -1,99 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.99
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793724037;
-	b=JnLjSLSTUV8uRP9iwEJe4f6Qk4q2mCc1Ea5q/CP80Rka0PgSiRcJqP+T6ZQWU9w+34Ci
-	 lkSePEh5h7ykd7MpLnu1mF7YKr9+gd8fPGtCGxTWhh5UE/80mRn8idiL6wcICKWrspg8Q
-	 j08aKiQ69VexGTqKbqf6dIpUeEUtTFVDLQPMgaSxOHtwG20pqYamSlkbSOxCBSNopjN83
-	 hxpcV7ONXZEhHlOMrQ0eDBc/33trx9uTOWJmpOVvH7nNAnUmErl6jrcxgeYgLvr3pzwex
-	 +KNWM1NUHSDWj0CbAGTf/eyd0QCJb92isD86KtYEqxf+gjP8aGxLw7Ns1a4SGhh0GmA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793724037;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
-	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
-	 DKIM-Signature:X-Received:X-Received:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:Autocrypt:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-DetectorID-Processed;
-	bh=WyneMzdBZQTXt6uP8ULfkQbHSCb7U03Fkta6DFQ6puY=;
-	b=1F7r3reRY7I1BLgXieo+l8HuPny4HqQuLahRfkTebUz+pncRs4G9Gl2K6Cxd0EUmC0ik
-	 GEmm0drZq+2qdFscSoUS/FjRaESNrdI6ABNhWQ3l/xD6pG9YvxCR+f2FDuHr2cBv8HVTj
-	 12On0uRZUzFuimOuHEDdOdBa3CvARuvhbBVHteubQoiletu/TXS/41a/33rtrhX+UaOrn
-	 epLzafbW8ogZe64QIHdLzZYAxG1QmPOgt3SUpWQEtvIRe8dyHociJK0on/NYMu97E2en6
-	 EBCATzoaMAWrz+fgRSL2lst9Bsmk9JDWl6jYxHheyVKr43cAHoQccf1vddvTi+knWeg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=broadcom.com;
-	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=DxoqhKjs;
-	arc=none smtp.remote-ip=209.85.216.99
-Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.46.52
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793724053;
+	b=2zbgaFEX2owRdDkplmXuDM+EMnao337Sto11uvUuVyJgOPuvQHhwxZ9tIW8VXmhaQ9yn
+	 Nr28bYsQaMudBmpni41fs7MonqnRw9KyovSMhmRhwAjdKp9jNz+DMUW7Cl+Gf9VchDHi+
+	 diSJRrm6OVfR/4ojhtQH6n6ORkgyuWsZIKUwDarF4BmH5CyENu7L4Hs/TdOUMvLmwVbMI
+	 JLu7a7GEr4r3KaF2uyCnMcz8w+61fK8ccEgzZafXc2WRCsnnLz+IQXE8YfUd71SD+JNcv
+	 xTRvoNg7Owh0wTOMzg6SquIGXS+ESI34wGc8BVxAPtZ8y5rV6wuToeaevBZjcji6fPQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793724053;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Type:X-NV-OnPremToCloud:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=iZQFQryjCs1qIYRAsOfD9/dHEXSzObW9A2bm3klURwQ=;
+	b=adk3KPVtjF4Ng5OY97d8Hp5n7FR+9Znnt7bw/ZmQvrEbdSWMDmDkFR7lZoh1e8+BUWQo
+	 sADEhbS9MvxlwwBLbwof3mrepdytoGWTNGQqgmF/1ealUjGMVpfnjKSnyNZ4vEdYmXP13
+	 520PHDN1KgmtUQJU/lRK+m5dUym9tH7B2K2ZpfnBFvMCBfIsw6+u7ZH5x/xYQHj5192MW
+	 n3DfwsfH1HQXtC6tgxzmDMkqiDwVgV12cTCjTC/l1tQPiVlIP0SvWoP1QJ2XATeGW3qT2
+	 yFaGdmiUrT6LHVB0bq8eVXy6xCUe5ukiOBRVxDn12DWHIEx+y/UxN7Iwlk0nIYz1Rxg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ZPasoUkS;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.46.52
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010052.outbound.protection.outlook.com [52.101.46.52])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5981606D812
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 16:40:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B5981606D812
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAC7606EE97;
+	Tue,  3 Nov 2026 16:40:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AEAC7606EE97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=DxoqhKjs
-Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-3ac91ac8924so2314206a91.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 08:40:36 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793724036; x=1794328836;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=WyneMzdBZQTXt6uP8ULfkQbHSCb7U03Fkta6DFQ6puY=;
-        b=LFec9uwcNg3N3S4zC+yrfLNJzgqbbScM/+6nwRHqCoWiTxPvmBqZt2xGT6Fzh42QvR
-         tKMxeX/iFBD3ma59G1pLeqzxXLXu0sVRHdCr4oqcafXbdzj5Q8gMtpFTeHcwi4+G6jY5
-         Bo6OW3TKx8nKuD3rlUIW+XFlbBkIF3L476TwMyOc72CU5VLTF9x/D/IuqblTyhxxB4P6
-         0ctV6Ng3fJWUH5LAEIsx1X0NRKpGDRPLR1NxY1LdLVfrcBJs/QbbmnyxUmDASP0xrg7A
-         c4vTcKdDUAFQxIZ0uNyD4r70FzmlrX47Li1uK3qJAYoILGu4UfiF9uwwIdv3GssvqdMJ
-         Q++g==
-X-Gm-Message-State: APuU4Z97SHLtY+LNBVVupqMfBH2qvDtZTEFopLlMNYx9rGLAZP1F8+z/
-	S0+YHsyVWzNTJ2JkAX/bO/PS6P3+wiOPnFmI/feINc7S7FuISlC0buRDE02TZ8hR6BkOHWw2ePz
-	efVR+5w8n2zVuUDw1HGSylwJGgXU+uCQ3GZNYyk//p3Nd9IrDHeTlrPZeqe1loU2HUgxrwwYfOL
-	dFjFS1Xa3rm0n+K7pKTyX9+8Gc8vo2httb87F8Ix+CifAZeXrmjNs8AWcVdtXTV7jAiH8u/nj4y
-	XfDUwQ0Oii4qXa6
-X-Gm-Gg: AYBFou1qrzd8sfGdp0ZsIXavsmXaI2JsKz76FgH9xrKfPVQirEcaYXgSywl5voj6o1U
-	yNS/QPYY5gX2s49yFyO3sVFNHygsHlBVNqrBw54SSVciGG44tSwlF6prG9Xlz5mztKhHpjHzgIj
-	19adqOufiNWM4K5KWIEkcjGCKp8nYO93gG4smF5njh7VkghQ42lmnUMNgqqDfX/5sZSmr+VoqdP
-	BRjoHZxTCzGjS9nFr6AdGfTHFp8tpqRoyOeoPXKVt877vm0kNNDprmnPIfEx2IMfdoJZavcnSAw
-	UGm9Taais029/owGBwBqcN0dp3cAuq0UkFxJj0WDIA5TWiHwZl0JOGqziY6mA7u+wW4cfrPzUbb
-	y/TnvevxKxvgkbZpHWMnmsCqTMyPKklGT/OI5DNIAh/ongZYgJMi1JCIeT2nX7FJWKcoORDXUjy
-	Wzkm1957gt9a2k1s62UqgQNnlAKrYmq5srsyxj0gWf
-X-Received: by 2002:a17:90a:da86:b0:39e:21a7:5df5 with SMTP id 98e67ed59e1d1-3ae897f61aamr11172342a91.24.1793724035968;
-        Tue, 03 Nov 2026 08:40:35 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-13.dlp.protect.broadcom.com. [144.49.247.13])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae87f36f06sm3467987a91.2.2026.11.03.08.40.34
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 03 Nov 2026 08:40:35 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8a0522cdaf3so3295467b3a.0
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 08:40:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1793724033; x=1794328833; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WyneMzdBZQTXt6uP8ULfkQbHSCb7U03Fkta6DFQ6puY=;
-        b=DxoqhKjstIzARwug22HcNqXN45934bkWPKP2kwj9sJ+1L+yxYOV9bT7mmyyAQbkeCP
-         beqIpb6p5TmGm87YGi+gGPEnLM7TKbcn//LT3sdI2LSARJjfh9OJkadHG7gsNycYf83D
-         kPdja4rMAuzPYrWQ/gOpHG08bhMemJUd03s10=
-X-Received: by 2002:a17:90b:4b12:b0:3a8:5fd6:cb6 with SMTP id 98e67ed59e1d1-3ae89173bedmr10995758a91.0.1793724032858;
-        Tue, 03 Nov 2026 08:40:32 -0800 (PST)
-X-Received: by 2002:a17:90b:4b12:b0:3a8:5fd6:cb6 with SMTP id 98e67ed59e1d1-3ae89173bedmr10995726a91.0.1793724032307;
-        Tue, 03 Nov 2026 08:40:32 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c5adc33sm5157831a91.1.2026.11.03.08.40.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Nov 2026 08:40:31 -0800 (PST)
-Message-ID: <f4db7d5d-0c92-4cd5-a933-a64bfe670ccd@broadcom.com>
-Date: Tue, 3 Nov 2026 08:40:29 -0800
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ZPasoUkS
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OW8bp2u9pQu5bgJMOqTH5B7wBV2eB926CtKHw9QRlM1Kc3EGHEhI9GU+wkz+rNYQnTr52eXgbZb1Itw5//WwzWL33BC8l2yaCWCMeBR3FwLDhj2YwB1q2aGBc18IXBjv3psAknzjRzWaCwmcJy73rjB2jLYNGxUUV6n3P5VMco9fSs77Vmnn7aby2OA/JnSvUBkCekCWuK7xUkDWDxytZCpFdUuiSVQwngHVU1pOinLHkdxXciDiggV0+B94z03rAXDThnZ8ogw8FIgcjKBvrEGiiupFebm64z3TSoqHwuWAMiuMyQruf4RvedcF9wJQHBjUnkJMokZa/jUg8Yvn5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iZQFQryjCs1qIYRAsOfD9/dHEXSzObW9A2bm3klURwQ=;
+ b=a1dt57qeeprRmORicVUiItVRz16Ji+sIIuE0mgEwYwg8t+FiurQ+NK3K71rXitpjiD+po2nnGb5NKcsS1bCtZNTyg6IlEiT9mzfJGMMOn6MI6bu7GtZTnfn/9jCQccYijx9SoI4YB48RWt+vaeCwu5FHRMTomOHC0hmy8THuTWMtmkUV3Ua2iucKx8b0DRb2o5IpfJ+qwFVfe/mXM6GPZ6Z8brA6MULIcYLRJEybPCfOFpsGk0Q7itsYtge/fO6kKC0r8WAtDo11849ZDhOG9CKGFupTKmeQ0FUw6fyBI75l/bCoCEZ79ySDhT80TC3phegu/8uyZqzI3o3eYE/MoA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=ziepe.ca smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iZQFQryjCs1qIYRAsOfD9/dHEXSzObW9A2bm3klURwQ=;
+ b=ZPasoUkS99jPKWAv87D2kcyHnAflOx3AcXD3UO3Rb2VNalYHXicD49QU3fU27+PE+6Ua/yGTqr1np2bo2FULsKuk/fAQy4kx8KHwdAx+zyTWWrtt0u7kWRhRAwk/nHh3dVP8O4b09DF1eJt3IHex6thFmWKqUUcQs7iU9MwszQUW9RugEGw8zO+IdfXB/6xEEIsBePYFc66nI3BlWhSXIgTPjpOmj0cL+LLPKyYXwZ/d+0NtOtpKI2KEXcVN2HEEEUc+grr+YsaXYFYdtb/ZmOmw5opdgf9zuTi3UbmUh3JRzhVz0MpufPujvHJ9vWEQNGJytUxj2Qt9MGYJdbjAgQ==
+Received: from SJ0PR03CA0359.namprd03.prod.outlook.com (2603:10b6:a03:39c::34)
+ by SA3PR12MB9108.namprd12.prod.outlook.com (2603:10b6:806:37d::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Tue, 3 Nov
+ 2026 16:40:48 +0000
+Received: from SJ1PEPF000037AB.namprd03.prod.outlook.com
+ (2603:10b6:a03:39c:cafe::32) by SJ0PR03CA0359.outlook.office365.com
+ (2603:10b6:a03:39c::34) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.8 via Frontend Transport; Tue, 3
+ Nov 2026 16:40:48 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SJ1PEPF000037AB.mail.protection.outlook.com (10.167.244.185) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.592.5 via Frontend Transport; Tue, 3 Nov 2026 16:40:48 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Tue, 3 Nov
+ 2026 08:40:24 -0800
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Tue, 3 Nov
+ 2026 08:40:22 -0800
+Received: from vdi.nvidia.com (10.127.8.12) by mail.nvidia.com (10.129.68.10)
+ with Microsoft SMTP Server id 15.2.2562.56 via Frontend Transport; Tue, 3 Nov
+ 2026 08:40:18 -0800
+From: Yishai Hadas <yishaih@nvidia.com>
+To: <jgg@ziepe.ca>, <leon@kernel.org>
+CC: <linux-rdma@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<saeedm@nvidia.com>, <tariqt@nvidia.com>, <mbloch@nvidia.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <edumazet@kernel.org>,
+	<davem@davemloft.net>, <andrew+netdev@lunn.ch>, <dtatulea@nvidia.com>,
+	<moshe@nvidia.com>, <yishaih@nvidia.com>, <maorg@nvidia.com>
+Subject: [PATCH rdma-next 00/23] mlx5: Adversarial mode for confidential computing guests
+Date: Tue, 3 Nov 2026 18:39:26 +0200
+Message-ID: <20261103163949.1554-1-yishaih@nvidia.com>
+X-Mailer: git-send-email 2.18.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,178 +114,167 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 2/2] net: dsa: b53: Enable legacy IGMP snooping
- controls
-To: Paolo Abeni <pabeni@redhat.com>, netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, jonas.gorski@gmail.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, linux@armlinux.org.uk, rmk+kernel@armlinux.org.uk,
- linux-kernel@vger.kernel.org
-References: <20261028235100.3892374-3-florian.fainelli@broadcom.com>
- <179357816089.3131.2008365378649919842@kernel.org>
- <3edcc63f-aed7-47fe-bee3-703c6becbbff@redhat.com>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
- xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
- M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
- JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
- PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
- KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
- AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
- IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
- ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
- bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
- Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
- tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
- TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
- zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
- WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
- IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
- U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
- 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
- pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
- MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
- IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
- gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
- obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
- N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
- CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
- C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
- wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
- EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
- fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
- MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
- 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
- 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <3edcc63f-aed7-47fe-bee3-703c6becbbff@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000037AB:EE_|SA3PR12MB9108:EE_
+X-MS-Office365-Filtering-Correlation-Id: c9bf6f39-99f5-4b48-2c78-08df39c936d1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|82310400026|376014|23010399003|1800799024|6133799003|10067099003|18002099003|3023799007|56012099006|11063799006|261022075727099003|261021123027099003|261021135927099003|261021121427099003|261022105027099003|261009223027099003|261026140227099003|261102123227099003|261028144727099003|261026121527099003|261009221227099003;
+X-Microsoft-Antispam-Message-Info:
+	jnHSZTb6xfKaM+En1gVAcerF+U8kXRMdCYM6ca8Qk0OA9FZALL3jbasqayaKnSzOrfnbhn7UER7e/GtHYWJeNc4SLfz10ehNYyu600RnWtv45Yx7gtjBpUruiHg5hG5TL+Dmd4J4zgRerM6IlgNW8KYQKmLMwK5bBTHaY0u1/GBfmxyvyNSpc9Q0ZyT56z0l/KUjw1TNH3+d9zZPstvPIGWYybEEbMh1Tpkk3fsf3gN8gSBVQBxzz2GSQTXnoDS1FzyTQkabfTZ/TT1VfVnm+zi6y3lMUGZ777pEDsNpzJA0zwNSgiv9gRmtxSOW55xi9IRTLYGZXp3ayaRucrE1c9V5qe8Tj6OFdOyXTh3EAdzJDG5pZVHFANNVGOzuYRSUUNiBnzxWTyf+/JdesnYwVJ3//uYQ3HaVM1DgRVRfIuD0I47RnuY9GREXont3cpDBluQ1NNrz3Oi4XqrmuocJFyAnAHSlCgF3NEJClXGmVvcP1VcZtr65rgV/RKQA7wBG8sM+fmWqM1KMWfhzr0hSIKVgRq1jZ9p2Q34oaufYhbzQCJZuAgqsg9qhG9G+uWQTW06V08C+YJ6ffjpiE6OwC84kbezVK8KrwV5C85lmzBvN7hvd5ax2SnSnzfeNnJKlKItA679Z1kfxA8DPy5DYPpJDgWoW6UWINb262fOyg1QCmZ4z30XjnzYnFssHEp2Oqwg3C4AXIrlYso7R/RSs4Q==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(376014)(23010399003)(1800799024)(6133799003)(10067099003)(18002099003)(3023799007)(56012099006)(11063799006)(261022075727099003)(261021123027099003)(261021135927099003)(261021121427099003)(261022105027099003)(261009223027099003)(261026140227099003)(261102123227099003)(261028144727099003)(261026121527099003)(261009221227099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	k8BYhdYROZ9bkeRorNuULnV8+JsAiujO8TNtPJuedfJSqjcVq+vX9HRgwWhm3aa9ntmQe7bLgqZL9Y7T4nMcNska7oCzIux9jsl2X1a/IzWZR6iyNCarfEOElXULDOQTdnBJ/Hj8ZZKGP1yOXFxzIyTEowQ5BbhS6G1lAsMi5Z7VmeTw/s//yRbp7Hi6WRIugONMGDmm3G5eV9rpFAvCkLpNpGNwjYmXKzehodUEy5d/FqFBJ9ictguADeyAmzh7wh9MJjq3BVoTBuTKfwTPguKnA9dOcGU5v3vuLry3IpvYf4M+mhb/fzsJoUVSXWYkaOORWHMpEHWdCtEoWbx4G4CGIr2OBti67HgcnOsYRplYg0npDXX1+swnXGlOKCo42pzGdriTTQNy1O/mS3wekgRlsC4gIOLASRmJya8cfHiJmFAFT89jqqEBJq05NPfV
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 16:40:48.0384
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9bf6f39-99f5-4b48-2c78-08df39c936d1
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000037AB.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB9108
 
-On 11/3/26 01:16, Paolo Abeni wrote:
-> On 11/2/26 01:09, netdev-bot+sashiko@kernel.org wrote:
->> Thank you for your contribution! Sashiko AI review found 1 potential
->> issue(s) to consider.
->>
->> Critical: 0 · High: 1 · Medium: 0 · Low: 0
->>
->> If you believe none of the issues are legitimate, please reply to each
->> issue of Medium severity or higher and explain why the AI is wrong.
->> If any of them are legitimate and you plan to respin, please let 
->> patchwork
->> know by including "pw-bot: cr" as a separate line at the end of your 
->> reply
->> (one such reply per series is enough).
->>
->> - [High] The commit message says: 'These legacy classifiers have fixed
->>    forwarding behavior, including query flooding which excludes the IMP…
->>
->> -- 
->>
->> net: dsa: b53: Enable legacy IGMP snooping controls
->>
->> This enables the IP-layer IGMP classifier (bit 3 of the global management
->> configuration register) on BCM5325E, BCM5365, BCM5389, BCM5397/5398 and
->> BCM63xx, which were previously skipped in b53_enable_mcast_snooping(). On
->> BCM6318 and BCM63268 it also clears the IGMP redirection enable to select
->> snooping mode. BCM5325M and unidentified BCM5325 variants remain 
->> excluded.
->>
->>> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/ 
->>> b53_common.c
->>> index e54f6d4d1f7bb..957a1501d3f49 100644
->>> --- a/drivers/net/dsa/b53/b53_common.c
->>> +++ b/drivers/net/dsa/b53/b53_common.c
->>> @@ -841,12 +841,29 @@ int b53_enable_mcast_snooping(struct b53_device 
->>> *dev)
->>>       u16 val16;
->>>       u32 val;
->>>       int ret;
->>> +    u8 val8;
->>> -    /* Older switches use different IGMP controls, not HL_PRTC_CTRL. */
->>> -    if (is5325(dev) || is5365(dev) || dev->chip_id == 
->>> BCM5389_DEVICE_ID ||
->>> -        is5397_98(dev) || is63xx(dev))
->>> +    /* BCM5325M snooping uses the mirroring engine instead. */
->>> +    if (is5325(dev) && !is5325e(dev))
->>>           return 0;
->>> +    /* Older switches classify IGMP in the global management register.
->>> +     * They do not provide the separate MLD controls of newer switches.
->>> +     */
->>> +    if (is5325e(dev) || is5365(dev) ||
->>> +        dev->chip_id == BCM5389_DEVICE_ID || is5397_98(dev) || 
->>> is63xx(dev)) {
->>> +        ret = b53_read8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, &val8);
->>> +        if (ret)
->>> +            return ret;
->>> +
->>> +        val8 |= GC_IGMP_IP_EN;
->>> +        /* Disable the separate IGMP redirection mode on 
->>> BCM6318/63268. */
->>> +        if (is6318_268(dev))
->>> +            val8 &= ~GC_IGMP_RED_EN_6318_268;
->>> +
->>> +        return b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, val8);
->>> +    }
->>
->> [Severity: High]
->> The commit message says:
->>
->>    These legacy classifiers have fixed forwarding behavior, including
->>    query flooding which excludes the IMP on BCM5397/5398 and BCM63xx.
->>
->> The message describes this as fixed hardware behavior. Isn't it actually
->> something this patch turns on?
->>
->> Before this change, b53_enable_mcast_snooping() returned early on
->> BCM5397/5398 and BCM63xx, so GC_IGMP_IP_EN stayed clear. IGMP general
->> queries to 01:00:5e:00:00:01 were then forwarded as ordinary multicast.
->> The IMP has PORT_CTRL_RX_MCST_EN set, and the bridge never installs MDB
->> entries for 224.0.0.x, so those queries reached the CPU.
->>
->> This path now runs unconditionally at setup:
->>
->>    b53_setup()
->>      b53_enable_mcast_snooping()
->>        val8 |= GC_IGMP_IP_EN;
->>        b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, val8);
->>
->> On BCM6318/63268, snooping mode is also selected explicitly. With that in
->> place, would queries from an external querier on any switch port stop
->> reaching the CPU on these chips?
->>
->> If so, these cases look affected:
->>
->>    - the bridge can no longer learn multicast router ports or detect 
->> other
->>      queriers from the queries it receives
->>
->>    - the host IGMP stack on br0, or on standalone user ports (for example
->>      an igmpproxy upstream on a WAN port), never answers general queries,
->>      so the upstream router would expire the host's memberships after the
->>      group membership interval
->>
->>    - on standalone ports, where the port VLAN mask only allows the IMP, a
->>      query flooded excluding the IMP would reach no port at all
-> @Florian: could you please comment here? I'm unsure how much legit the 
-> above
-> comment is.
-> 
-> Also this series is IMHO borderline for 'net' as it ends up enabling a 
-> feature
-> that never worked. Would you consider it for net-next without fixes tags?
-> 
-> In any case, if the AI comments is a false positive, no need to repost.
+In a confidential computing (CC) guest, the hypervisor and any device
+assigned to the guest are outside its trust boundary. The mlx5 drivers,
+like most drivers, trust the NIC: they use the capabilities, events and
+completions it reports to size buffers, index arrays and pick the memory
+they work on. A malicious or compromised NIC can turn that trust into
+memory corruption or information leaks inside the guest.
 
-This is not a false positive, I came up with this additional patch to 
-please the preview AI reviews which I found legitimate, however in 
-hindsight this is definitively net-next material.
+This series adds an adversarial mode, in which the mlx5 drivers treat
+the NIC as untrusted. It is enabled automatically in CC guests, based on
+cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT), with no administrator
+configuration. Outside a CC guest the behaviour is unchanged.
 
-Can you pick up patch #1 on its own if you and other reviewers are now 
-happy about it?
+The approach is to keep the attack surface small rather than harden
+every path. In adversarial mode only the uverbs path is exposed: kernel
+ULPs don't bind to the device and unneeded features are not offered.
+The data path is owned by rdma-core, which must be aware of the mode.
+When it opens a context, rdma-core declares that it supports adversarial
+mode, and the kernel reports back that the device is in it, so rdma-core
+validates what the NIC writes to the user queues. An rdma-core that
+doesn't declare support is refused a context, so it can't use the device
+while trusting the NIC. What remains in the kernel validates what it
+gets from the NIC. A NIC can always stop working, so denial of service
+is out of scope.
 
-Thanks!
+We believe that this series provides comprehensive security against an
+adversarial device within rdma. Many teams at NVIDIA have been involved
+in evaluating the various attack vectors and developing a comprehensive
+mitigation, including AI analysis of the driver, fuzzing, and first
+principles architecture review. It chooses to block and disable
+functions that may open risk, and results in a reduction in driver
+functionality rather than leave open potential security holes.
+
+The series is organized as follows:
+
+mlx5_core (patches 1-4)
+- Derive adversarial mode from CC guest memory encryption.
+- Filter the FW capabilities: start from none, pass through an allow
+  list, and validate or clamp the numeric ones, failing the load on
+  unexpected values.
+- Add helpers to read log-encoded capabilities without an undefined
+  shift.
+- Add a forced health recovery, for faults the health sensors can't see,
+  such as a NIC that keeps answering while forging completions.
+
+Attack surface reduction (patches 5-8)
+- Check the FW capability for every QP transport type, and accept the DC
+  vendor flags only on IB_QPT_DRIVER.
+- Keep kernel ULPs off the device by clearing kverbs_provider, so only
+  uverbs binds.
+
+UMR completion verification (patches 9-14)
+- Verify each UMR CQE against a shadow FIFO of the posted requests,
+  instead of trusting its wqe_counter. The UMR CQ is the only CQ the
+  kernel polls.
+- On a forged CQE, keep the UMR path failed and force the health
+  recovery.
+- Refuse the generic CQ poll path, which trusts the CQE.
+
+Validation of FW reported values (patches 15-21)
+- Set the CQ completion handler only once its poll context is set up,
+  and ignore completion events for a CQ without one.
+- Bound port numbers from EQEs and caps.
+- Bound RQ/SQ states from QUERY_RQ and QUERY_SQ.
+- Clamp the log_max_* shifts used for the CQ, QP and device limits.
+
+Userspace interface (patches 22-23)
+The GET_CONTEXT handshake: the new
+UVERBS_ATTR_GET_CONTEXT_FLAG_ADVERSARIAL_SUPPORTED input flag and the
+IB_UVERBS_CORE_SUPPORT_ADVERSARIAL core_support bit, also reported by
+QUERY_CONTEXT.
+
+The matching rdma-core series [1] declares the support and validates
+what it reads from the NIC.
+
+[1] https://github.com/linux-rdma/rdma-core/pull/1844
+
+Yishai
+
+Dragos Tatulea (2):
+  net/mlx5: Add capability filtering in adversarial mode
+  net/mlx5: Add macros for reading log-based caps
+
+Yishai Hadas (21):
+  net/mlx5: Add mlx5_trigger_health_work_force()
+  net/mlx5: Derive adversarial mode from CC guest memory encryption
+  RDMA/mlx5: Reject QP transport types not enabled by FW capability
+  RDMA/mlx5: Require IB_QPT_DRIVER for the DC vendor QP types
+  RDMA/mlx5: Derive mlx5_ib_adversarial_mode global from mlx5_core
+    adversarial API
+  RDMA/core: Suppress kverbs_provider for adversarial_mode devices
+  RDMA/mlx5: Remove duplicate mlx5_ib_umr_context struct
+  RDMA/mlx5: Introduce per-CQ poll_one hook in mlx5_ib_cq
+  RDMA/mlx5: Add shadow FIFO infrastructure for UMR completions
+  RDMA/mlx5: Verify UMR CQ polling against a hostile NIC
+  RDMA/mlx5: Keep the UMR QP failed once a forged CQE is detected
+  RDMA/mlx5: Block generic CQ poll path in adversarial mode
+  RDMA/core: Set the CQ comp_handler after its poll context is set up
+  RDMA/mlx5: Ignore completion events for a CQ without a handler
+  RDMA/mlx5: Validate EQE port and GSI port before indexing devr.ports[]
+  RDMA/mlx5: Validate firmware RQ/SQ state before sqrq_trans[] lookup
+  RDMA/mlx5: Clamp log_max_cq_sz shift in CQ size checks
+  RDMA/mlx5: Clamp log_max_* shifts in QP and WQ limit checks
+  RDMA/mlx5: Clamp log_max_* shifts in query_device and ucontext paths
+  RDMA/core: Report and enforce adversarial mode via GET_CONTEXT
+  RDMA/mlx5: Advertise adversarial mode via ib_device::adversarial_mode
+
+ drivers/infiniband/core/cq.c                  |  19 +-
+ drivers/infiniband/core/device.c              |   8 +
+ drivers/infiniband/core/uverbs_cmd.c          |   5 +
+ .../infiniband/core/uverbs_std_types_device.c |  16 +
+ drivers/infiniband/hw/mlx5/cq.c               | 220 +++++++++-
+ drivers/infiniband/hw/mlx5/gsi.c              |   4 +
+ drivers/infiniband/hw/mlx5/mad.c              |   2 +-
+ drivers/infiniband/hw/mlx5/main.c             |  71 ++--
+ drivers/infiniband/hw/mlx5/mlx5_ib.h          |  24 +-
+ drivers/infiniband/hw/mlx5/qp.c               |  68 ++--
+ drivers/infiniband/hw/mlx5/srq.c              |   2 +-
+ drivers/infiniband/hw/mlx5/umr.c              | 111 ++++-
+ drivers/infiniband/hw/mlx5/umr.h              |   6 +
+ .../net/ethernet/mellanox/mlx5/core/Makefile  |   2 +-
+ .../ethernet/mellanox/mlx5/core/caps_filter.c | 381 ++++++++++++++++++
+ .../net/ethernet/mellanox/mlx5/core/health.c  |  82 +++-
+ .../net/ethernet/mellanox/mlx5/core/main.c    |  15 +-
+ .../ethernet/mellanox/mlx5/core/mlx5_core.h   |   2 +
+ include/linux/mlx5/device.h                   |  20 +
+ include/linux/mlx5/driver.h                   |   3 +
+ include/rdma/ib_verbs.h                       |   2 +
+ include/uapi/rdma/ib_user_ioctl_cmds.h        |   5 +
+ include/uapi/rdma/ib_user_ioctl_verbs.h       |   1 +
+ 23 files changed, 957 insertions(+), 112 deletions(-)
+ create mode 100644 drivers/net/ethernet/mellanox/mlx5/core/caps_filter.c
+
 -- 
-Florian
+2.18.1
+
