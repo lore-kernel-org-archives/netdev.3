@@ -1,90 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.161.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793733971;
-	b=cKwWLwXr7d31nXKTfIVXw44d5XfH+7M6B+oGYH1YngwwRmOJwv4lT4yB1pE4x2EbWXWz
-	 me2BL8txWVYuaDShc0lSWWGLzOA8Zu10BrAOkLYhj6YACp8a1Ceb6r0T4m4KnhdA7iW8Z
-	 ab/Qn8Y+nws3ueqn+xWa6F2GZw5uw9t1oLL/YLq4hPPFB0WwUQstgaP/areQLxnnMtfxk
-	 s9di4+foyMpjb17E7pTxaw1y0RxgACwWBtjklwXGND31e0sCGBLfMi0rLQoJAqp8ih8UM
-	 u00tt16uPDyV67tw8kqSrwNqk0KyvnO1ChyuIuJAUItkGVC9IufgFwbAl5uEOMudnSg==
+	t=1793734402;
+	b=MWRy9ieAXRuwdUQzAhcj5LvTfA/551dp26DENi2cMQL18MVVqqRQKBYjsscqY+D1d85K
+	 GfS5fgKGfzQy77Iu0MlEetV17BJtPnhqeF7bUxmMzS9hK51xDrdhaM79fINrDCGb+j7j7
+	 6ESrxPo8nnokQoptW4clBTBHeTg31vJy8S+p+4+hNd29sE4oHOqCw6uo4VgHKHyVQ473P
+	 urluDamx/9JhjhG8oTkuoSUOuRuRO9dj9boBuLQUxH0Rq3CRK3nlPKLumYQ+0c30dINi5
+	 Lyp0QrS5KhomgC5KZm50POqVOkdNinPIR/ENwic7FyQHK+ZCIDLyNm3PLACqru8cWZg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793733971;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793734402;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=Eo6VmiARCV/E0+lmU5+H4tJMnPB8p2KHdxisaJd5aXg=;
-	b=L34tDRM3nkTpmcKmzNikqHsVcF4DNfc4RWB0yvB/7uobOwSNbuLBKy+OVLE6z0kBRWal
-	 jaH4WVS6XvVyYMq+1NsbtXp/iXpdMmQdS3lUkqVMPExwr/EhOzTYzgu7lEi6RhfFW6uay
-	 nJlo9dxWZ+TmOfs1+WCa3Q6f3Ku5WKXyUjfOQ+shqY+gKC4Dha20ag3YcseuzlPZQQoGX
-	 jmoOGKpTQh5+6qHwmqCbfccg08rtdwD68+8JDoB6YDWRCFd3z228NiJYemJOMvxHhEewV
-	 quJ26pNCYDUSttDWaZpLwfRVjkBHwMQeAub83Q47FRjxZ3F5Y12NUKFt8SsCZS8v31g==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
+	bh=DRpHf+ODgzZxNvjt9ov8aWi7RfHJUlB5TNrAao6dUwk=;
+	b=mWnh44W+proecB4FUkcQUcfDd+7E7gPDoO+/9LqyCuugV0DOGdQY1czxm2QrF6y9SEvl
+	 4YllWzyp82ajnFJgIyYhJq9YQQtt4SwF5clL8Jn5GKeutZqEG3Ojm9HRXZm+lYOc+lIcy
+	 RDb9eQlU39UhUbXnl2SolsplZQIiSp9Z5P8cKuPQvVudNEb7xT/LvV6AJX1ejyDIdIEfK
+	 IsQXhUdp+lBe/GkD4PSoqnNJLPAdYvbSjPTQmgmbcAGnAtK6CUurDwEtHqoaIWoNHQzf5
+	 sYdcPj+ifp8lvH14VzSfUnFJgmgW2OApoB/mzjpiL/9c+jDZ2lcHLdQfYeSX3JIi3OQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=openai.com;
-	spf=pass smtp.mailfrom=openai.com;
-	dkim=pass header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=UGt+GH9y;
-	arc=none smtp.remote-ip=209.85.161.54
-Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="YuXBTCh/";
+	arc=none smtp.remote-ip=74.125.229.131
+Received: from mail-dl2-f3.google.com (mail-dl2-f3.google.com [74.125.229.131])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F28606A326
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 19:26:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8F28606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C99606A31B
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 19:33:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39C99606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=UGt+GH9y
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-6deb848ddd7so3437894eaf.0
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 11:26:09 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YuXBTCh/
+Received: by mail-dl2-f3.google.com with SMTP id a92af1059eb24-1b23f91cd75so325770c88.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 11:33:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1793733968; x=1794338768; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Eo6VmiARCV/E0+lmU5+H4tJMnPB8p2KHdxisaJd5aXg=;
-        b=UGt+GH9yq1ht0NPyjSAI5qXJmJ8w63K4dOhYvT8/8S6e5QDXUZIUvD14Pb8vIY4Vvv
-         q2FVeQuENZUoxFJm4Y2ax5cCNlQBYG7x9wWWMK9tNRbRd7yIX7z+DVpLObbj6DEWZNmd
-         EHiCwQfv7yigz+tn9gtH6xoy8VxOJa8MkFby0=
+        d=gmail.com; s=20260707; t=1793734401; x=1794339201; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DRpHf+ODgzZxNvjt9ov8aWi7RfHJUlB5TNrAao6dUwk=;
+        b=YuXBTCh/9wQHInJCdqQEUZkHSCIwFh0ICAddijMJaVCBVsjZBX627gmzAX82JySlC9
+         3HhEWrguvbwBsj5fhN+Yb7IImHP12s6GC6kb5Arhgl5kfa1z3w4PRFZurkxaZLQk+rZP
+         SgHOLX0ZMcpXMGfZ1yWg3HMoxBmkpUtB1Ydu83/ESgTd9CHt9AF7UQo9bu9B46+kLYVM
+         UaCnBzb6Y0945MBtCs0ad94QtUU6I0t+GBaf2OQ8XjowjSq5xQYR+etSE2zcEd3wpSjo
+         a+0V2tXcwgvi3xPbpyrA7Eecytq7SUdAcoeTwIm2FOWNp1RYaeGPIFQLtpE32ydXq9HX
+         qICA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793733968; x=1794338768;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Eo6VmiARCV/E0+lmU5+H4tJMnPB8p2KHdxisaJd5aXg=;
-        b=tjw/6TDMOc707BJnvDR7h68rKg7SedfqfZWPJkPyoOGPusCQ2wsc6P66/i1RsCqXaT
-         CJAGd1AeTNXrCNVaxbj8Nx9vgv2Rtk3Azru1BRosGzvnhCG6fUcBivAN0mCgmWZGUlzC
-         Z+yUrfusfDnpwX73du1ANkDQle4J7k6mONh7SmCdrIyGcn11jqW0PkTuzmAVtCj6vQWj
-         JO0nwwTtwYRu79phRhxo4XiBgxmMn+FZAwwjowB4uCO37kgtyvstV8yG2Tcd/MkRz7u8
-         i1qeOQaB+yXk8uygHF7GD+IrRIC/EXMg/ZB7UvNl5jDih7OOL2SGbU/dpn7N8SGd24n7
-         7vgA==
-X-Forwarded-Encrypted: i=1; AKwUvBxDvjS2Gs69R8l0OTdz57wfQ5atTUG1Lm6IB1oqN5NY+uHK+i9V8hjDbGi3GlIMxvDoPz03Vko=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/IiUqqHFwAUEh9K3Zq0f7wcfOGSlMrXi3B700zRwG4HwkIVgf2
-	xt5BtwOLp5Y6+LGhVyFFnvYnoR3UED7Lsz2kiAes+nXe1R52uVpCUkvNHmtoHpkBM+Y=
-X-Gm-Gg: AYBFou25RvWqibbM16+FygZris4rw13CT3/LFUC/zN/XcBqGEvYgaVgfeEINGXKiu5T
-	+IJwoVZnTmgENPTnKR/yvAvrCxp5Ljn00IsMqudEF9HhV6kucPULi7FLiTqabPuh0CGvbueNxBJ
-	GBp0u/kt/WcxAbJje+QG5IREJ2L51COAlQJ2XPpVBxbHQGSZhS+vGzACosG1jxikV4qg1l+EydB
-	iGFJWc3N4iAwcMV1JZv+8lY9f3SwgvQrS3kxV1YjIkRqtYanhMiVxAgfrQu6kAvewdvAGtJ4DJB
-	CcBJ7QnsoxTINVJeqHkQ7j6nEcA0yb1NRjmn6Rsy2o0mcP1VtFMffT9ddy59Ry/tRqL2E0N6x/4
-	QaDrpE/ymb6IZRyRIoM3cv89iArdY+MpcDt59/UFdpMFrGP76PYKOzL3kIsY7WBtv1CQUg0nLHl
-	cMbTXP0nbP5xK0fzKXiL+6DgpTMfxXvi2k5xJeEfMcU2MxtkyDrVPLBz0WNHYxcPumchs/XF+YM
-	4Ef/MbCqB4uwxQJnQ9fSzfMsGZUllkHCVxzJBbQfE54RXpb8gTuUdKVIkdz8/UJTb44nP48uyVd
-	HrgR1BS/vOJAiCrYz5gtRP4RmLz7yxogKjHLz8HP2XogPy1NH2oBqpAqHgdY0MaVWSRhTeyHK03
-	X6yxz8D2SyRs4gpCOJntrKQF0gi8ZO80=
-X-Received: by 2002:a05:6820:2203:b0:6d7:a325:35f7 with SMTP id 006d021491bc7-714f27636fbmr7710632eaf.81.1793733968248;
-        Tue, 03 Nov 2026 11:26:08 -0800 (PST)
-Received: from com-75606.corp.openai.org ([199.47.143.14])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-714f2ce869asm12149533eaf.4.2026.11.03.11.26.07
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 03 Nov 2026 11:26:07 -0800 (PST)
-From: Kyle Zeng <kylebot@openai.com>
-To: linux-sctp@vger.kernel.org
-Cc: lucien.xin@gmail.com,
-	marcelo.leitner@gmail.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] sctp: avoid requeueing pending control chunks
-Date: Tue,  3 Nov 2026 11:26:06 -0800
-Message-ID: <20261103192606.92502-1-kylebot@openai.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20260707; t=1793734401; x=1794339201;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=DRpHf+ODgzZxNvjt9ov8aWi7RfHJUlB5TNrAao6dUwk=;
+        b=tCcNJyvCEjiJeotbDWz4TufdAk3aR/a1Mu6Evf260+FDfroS5fO1mNjv8SYOzw38Vb
+         sb0CiUi8wJfDqSuqzcqry2k8Ae+cnszEOi0xH1zFO/llFSMLVT/51E3kbS5JJpeuVgyN
+         cbRHXleBdDIRumdzul4hewcrEcc8VHFaAFkvKsjZMKwuGs9Q3AXpzFWFPoGueLE3B/M7
+         a/MwsymEghKZZf05OSL2rR2QFziaFuzbxPDQhOH0B9q0BQbKdJmPd2BhimUvZMs0/Cjj
+         HWGpRzuMia62nkOO/UI9cTqWobMboAFlOYbD/JoXQYsiVEHDJA60SjDndjVyn74t3cl4
+         ohgw==
+X-Gm-Message-State: APuU4Z/bCJt2yyt8ed2jeM/1TCDJDVyOQOXqnX/fYocgDl8z8K5sDb6E
+	BSgp2i+dGkwW/fsEk3M64iK02rMZkCK5nJahAfwY9UsVK8OxZB/Yh033
+X-Gm-Gg: AYBFou1Zow+t+NvaPCYNTM2QfHQUoQpdfTsDK0JuSDJ4YdcTdzYQJJodZG7kHd7pzuR
+	DU8Zi0V81Tp393jR19mjpn7yPXi6YEvDjYhcIhWaR+h7UIwqcIQJh6t8ycjiHgSxgUbQ1s+Fkfd
+	1jCcB7nekK2bvb1uhvoylg/RshsqM5JmhjlmOvlCy+auv9RqvL9YpkM/5CRBHUMyVcvfOoJxy5B
+	0ceDZTCyH1DcJAQnSJ4eyQXjyXThVOeFRZkl8EQhwIs+IijGKGbabyDPYWhvyM25bYdgDeAKx7h
+	VaKVHp9dcrMAFUsHbfbUTnpH70dWNK286xMOn6QBoQ3ThcM6kRYfT/3MT3jcnIj+ls3BMU6oC1I
+	SVG0v/Ja31QshAs8NWd29bebgloMl7rNWw4AjrWHMmmSTyh/eAg1eW5FJl5T54BqC6WnJUaNtZ/
+	J3VWQJlkk4jYQJMy3QK5M7tm4S3RNfPic6JycaMMqTianpC4hg88CEKBhcEWff2W0l1GZNXidcN
+	Dt3CQtWGRIV79COV0J6aPwGJ5wOFkKlV0RQ20OnknqZoeVrdvpGGT8hEMK4pbvUz97jKYm6lJwx
+	b5ZZv2NI3KA9t7+kGXKOKg==
+X-Received: by 2002:a05:7022:7f13:b0:195:76af:b810 with SMTP id a92af1059eb24-1ac5bf91b35mr20811181c88.25.1793734401028;
+        Tue, 03 Nov 2026 11:33:21 -0800 (PST)
+Received: from localhost ([2a03:2880:9ff:70::])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b245c2c2f7sm954213c88.9.2026.11.03.11.33.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 11:33:20 -0800 (PST)
+Date: Tue, 3 Nov 2026 11:10:51 -0800
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com
+Subject: Re: [PATCH net-next v3 2/4] selftests: drv-net: add an iperf
+ performance test
+Message-ID: <auowsuqDwvC8c24l@devvm16445.scu0.facebook.com>
+References: <20261102190827.989117-1-sdf@fomichev.me>
+ <20261102190827.989117-3-sdf@fomichev.me>
+ <875wye4ie8.fsf@all.your.base.are.belong.to.us>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -94,125 +98,225 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <875wye4ie8.fsf@all.your.base.are.belong.to.us>
 
-The T4 and RE-CONFIG timeout handlers take a reference to their cached
-control chunk and submit it through SCTP_CMD_REPLY. A previous
-transmission can still be on the control outqueue when output is corked
-or suppressed, or when sctp_packet_transmit_chunk() could not append the
-chunk.
+On 11/03, Björn Töpel wrote:
+> Stanislav Fomichev <sdf.kernel@gmail.com> writes:
+> 
+> > Add the drivers/net/perf target, with a lib/py of its own like the one of
+> > drivers/net/hw. Add Iperf3Runner.measure(), which returns an Iperf3Result
+> > that other results can join later, and report its throughput from the test.
+> >
+> > Single-stream iperf3 throughput is flaky and can change considerably
+> > between back-to-back runs on the same hosts.
+> >
+> > Tested on two mlx5 hosts. Captured metric output:
+> >
+> >   # # ktap-metric-json: {"goal":"higher","name":"throughput","value":49.92071602072054}
+> >
+> > Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+> > ---
+> >  tools/testing/selftests/Makefile              |  2 +-
+> >  .../selftests/drivers/net/lib/py/load.py      | 20 ++++++-
+> >  .../selftests/drivers/net/perf/Makefile       | 11 ++++
+> >  .../testing/selftests/drivers/net/perf/config |  1 +
+> >  .../selftests/drivers/net/perf/iperf.py       | 23 ++++++++
+> >  .../drivers/net/perf/lib/py/__init__.py       | 57 +++++++++++++++++++
+> >  .../selftests/drivers/net/perf/settings       |  1 +
+> >  7 files changed, 111 insertions(+), 4 deletions(-)
+> >  create mode 100644 tools/testing/selftests/drivers/net/perf/Makefile
+> >  create mode 100644 tools/testing/selftests/drivers/net/perf/config
+> >  create mode 100755 tools/testing/selftests/drivers/net/perf/iperf.py
+> >  create mode 100644 tools/testing/selftests/drivers/net/perf/lib/py/__init__.py
+> >  create mode 100644 tools/testing/selftests/drivers/net/perf/settings
+> >
+> > diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
+> > index 07c3719f8b04..c55d7792b27c 100644
+> > --- a/tools/testing/selftests/Makefile
+> > +++ b/tools/testing/selftests/Makefile
+> > @@ -159,7 +159,7 @@ TARGETS_HOTPLUG = cpu-hotplug
+> >  TARGETS_HOTPLUG += memory-hotplug
+> >  
+> >  # Networking tests want the net/lib target, include it automatically
+> > -ifneq ($(filter net drivers/net drivers/net/hw,$(TARGETS)),)
+> > +ifneq ($(filter net drivers/net drivers/net/hw drivers/net/perf,$(TARGETS)),)
+> >  ifeq ($(filter net/lib,$(TARGETS)),)
+> >  	INSTALL_DEP_TARGETS := net/lib
+> >  endif
+> > diff --git a/tools/testing/selftests/drivers/net/lib/py/load.py b/tools/testing/selftests/drivers/net/lib/py/load.py
+> > index e24660e5c27f..f337b576c4b4 100644
+> > --- a/tools/testing/selftests/drivers/net/lib/py/load.py
+> > +++ b/tools/testing/selftests/drivers/net/lib/py/load.py
+> > @@ -3,10 +3,18 @@
+> >  import re
+> >  import time
+> >  import json
+> > +from dataclasses import dataclass
+> >  
+> >  from lib.py import ksft_pr, cmd, ip, rand_port, wait_port_listen
+> >  
+> >  
+> > +@dataclass
+> > +class Iperf3Result:
+> > +    """Average throughput (Gbps) of an iperf3 run."""
+> > +
+> > +    throughput: float
+> > +
+> > +
+> >  class Iperf3Runner:
+> >      """
+> >      Sets up and runs iperf3 traffic.
+> > @@ -53,9 +61,9 @@ from lib.py import ksft_pr, cmd, ip, rand_port, wait_port_listen
+> >              kwargs["timeout"] = duration + 5
+> >          return cmd(cmdline, **kwargs)
+> >  
+> > -    def measure_bandwidth(self, reverse=False):
+> > +    def measure(self, reverse=False):
+> >          """
+> > -        Runs an iperf3 measurement and returns the average bandwidth (Gbps).
+> > +        Runs an iperf3 measurement and returns an Iperf3Result.
+> >          Discards the first and last few reporting intervals and uses only the
+> >          middle part of the run where throughput is typically stable.
+> >          """
+> > @@ -78,7 +86,13 @@ from lib.py import ksft_pr, cmd, ip, rand_port, wait_port_listen
+> >  
+> >          avg = sum(stable) / len(stable)
+> >  
+> > -        return avg
+> > +        return Iperf3Result(avg)
+> > +
+> > +    def measure_bandwidth(self, reverse=False):
+> > +        """
+> > +        Runs an iperf3 measurement and returns the average bandwidth (Gbps).
+> > +        """
+> > +        return self.measure(reverse=reverse).throughput
+> >  
+> >  
+> >  class GenerateTraffic:
+> > diff --git a/tools/testing/selftests/drivers/net/perf/Makefile b/tools/testing/selftests/drivers/net/perf/Makefile
+> > new file mode 100644
+> > index 000000000000..31b0b60de4f6
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/drivers/net/perf/Makefile
+> > @@ -0,0 +1,11 @@
+> > +# SPDX-License-Identifier: GPL-2.0
+> > +
+> > +TEST_PROGS := \
+> > +	iperf.py \
+> > +# end of TEST_PROGS
+> > +
+> > +TEST_INCLUDES := \
+> > +	$(wildcard lib/py/*.py ../lib/py/*.py) \
+> > +# end of TEST_INCLUDES
+> > +
+> > +include ../../../lib.mk
+> > diff --git a/tools/testing/selftests/drivers/net/perf/config b/tools/testing/selftests/drivers/net/perf/config
+> > new file mode 100644
+> > index 000000000000..6450f34933e6
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/drivers/net/perf/config
+> > @@ -0,0 +1 @@
+> > +CONFIG_IPV6=y
+> > diff --git a/tools/testing/selftests/drivers/net/perf/iperf.py b/tools/testing/selftests/drivers/net/perf/iperf.py
+> > new file mode 100755
+> > index 000000000000..5b6f0bce2a03
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/drivers/net/perf/iperf.py
+> > @@ -0,0 +1,23 @@
+> > +#!/usr/bin/env python3
+> > +# SPDX-License-Identifier: GPL-2.0
+> > +
+> > +"""Measure TCP throughput with iperf3."""
+> > +
+> > +from lib.py import Iperf3Runner, NetDrvEpEnv, ksft_exit, ksft_metric, ksft_run
+> > +
+> > +
+> > +def tcp(cfg):
+> > +    """Measure TCP throughput."""
+> > +    result = Iperf3Runner(cfg).measure()
+> > +    ksft_metric("throughput", result.throughput, goal="higher")
+> > +
+> > +
+> > +def main():
+> > +    """Run the iperf performance test."""
+> > +    with NetDrvEpEnv(__file__, nsim_test=False) as cfg:
+> > +        ksft_run([tcp], args=(cfg,))
+> > +    ksft_exit()
+> > +
+> > +
+> > +if __name__ == "__main__":
+> > +    main()
+> > diff --git a/tools/testing/selftests/drivers/net/perf/lib/py/__init__.py b/tools/testing/selftests/drivers/net/perf/lib/py/__init__.py
+> > new file mode 100644
+> > index 000000000000..2bb2cd08ff7d
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/drivers/net/perf/lib/py/__init__.py
+> > @@ -0,0 +1,57 @@
+> > +# SPDX-License-Identifier: GPL-2.0
+> > +
+> > +"""
+> > +Driver test environment (performance tests).
+> > +NetDrvEnv and NetDrvEpEnv are the main environment classes.
+> > +NetDrvContEnv extends NetDrvEpEnv with netkit container support.
+> > +Former is for local host only tests, latter creates / connects
+> > +to a remote endpoint. See NIPA wiki for more information about
+> > +running and writing driver tests.
+> > +"""
+> > +
+> > +import sys
+> > +from pathlib import Path
+> > +
+> > +KSFT_DIR = (Path(__file__).parent / "../../../../..").resolve()
+> > +
+> > +try:
+> > +    sys.path.append(KSFT_DIR.as_posix())
+> > +
+> > +    # Import one by one to avoid pylint false positives
+> > +    from net.lib.py import NetNS, NetNSEnter, NetdevSimDev, UserNetNS
+> > +    from net.lib.py import EthtoolFamily, NetdevFamily, NetshaperFamily, \
+> > +        NlError, RtnlFamily, DevlinkFamily, PSPFamily, Netlink
+> > +    from net.lib.py import CmdExitFailure
+> > +    from net.lib.py import bkg, cmd, bpftool, bpftrace, defer, ethtool, \
+> > +        fd_read_timeout, ip, rand_port, rand_ports, wait_port_listen, \
+> > +        wait_file, ctl_file_write, tool
+> > +    from net.lib.py import bpf_map_set, bpf_map_dump, bpf_prog_map_ids
+> > +    from net.lib.py import KsftSkipEx, KsftFailEx, KsftXfailEx
+> > +    from net.lib.py import ksft_disruptive, ksft_exit, ksft_metric, ksft_pr, \
+> > +        ksft_run, ksft_setup, ksft_variants, KsftNamedVariant
+> > +    from net.lib.py import ksft_eq, ksft_ge, ksft_in, ksft_is, ksft_lt, \
+> > +        ksft_ne, ksft_not_in, ksft_raises, ksft_true, ksft_gt, ksft_not_none
+> > +    from drivers.net.lib.py import set_ethtool_feat
+> > +    from drivers.net.lib.py import GenerateTraffic, Remote, Iperf3Runner
+> > +    from drivers.net.lib.py import NetDrvEnv, NetDrvEpEnv, NetDrvContEnv
+> > +
+> > +    __all__ = ["NetNS", "NetNSEnter", "NetdevSimDev", "UserNetNS",
+> > +               "EthtoolFamily", "NetdevFamily", "NetshaperFamily",
+> > +               "NlError", "RtnlFamily", "DevlinkFamily", "PSPFamily", "Netlink",
+> > +               "CmdExitFailure",
+> > +               "bkg", "cmd", "bpftool", "bpftrace", "defer", "ethtool",
+> > +               "fd_read_timeout", "ip", "rand_port", "rand_ports",
+> > +               "wait_port_listen", "wait_file", "ctl_file_write", "tool",
+> > +               "bpf_map_set", "bpf_map_dump", "bpf_prog_map_ids",
+> > +               "KsftSkipEx", "KsftFailEx", "KsftXfailEx",
+> > +               "ksft_disruptive", "ksft_exit", "ksft_metric", "ksft_pr",
+> > +               "ksft_run", "ksft_setup", "ksft_variants", "KsftNamedVariant",
+> > +               "ksft_eq", "ksft_ge", "ksft_in", "ksft_is", "ksft_lt",
+> > +               "ksft_ne", "ksft_not_in", "ksft_raises", "ksft_true", "ksft_gt",
+> > +               "ksft_not_none",
+> > +               "NetDrvEnv", "NetDrvEpEnv", "NetDrvContEnv", "GenerateTraffic",
+> > +               "Remote", "Iperf3Runner", "set_ethtool_feat"]
+> > +except ModuleNotFoundError as e:
+> > +    print("Failed importing `net` library from kernel sources")
+> > +    print(str(e))
+> > +    sys.exit(4)
+> 
+> nit: is there a KSFT_SKIP symbol?
+> 
+> Reviewed-by: Björn Töpel <bjorn@kernel.org>
 
-sctp_outq_tail() then adds the same list node a second time. Re-adding a
-non-tail entry can corrupt the list without being caught by the
-insertion-time list checks. A subsequent flush or association teardown
-can access an already freed chunk. The ASCONF path is reproducible by an
-unprivileged SCTP socket owner in a user/network namespace, with KASAN
-reporting a use-after-free in __sctp_outq_teardown().
-
-Check sctp_chunk_pending() in both timeout handlers before taking the
-extra reference and issuing SCTP_CMD_REPLY. When the chunk is already
-linked, request a deferred outqueue flush instead. Simply omitting the
-reply would also omit its uncork at the end of the timeout event. T4
-would no longer retry the queued ASCONF, and a migrated, pending
-RE-CONFIG could lose its timer until unrelated output flushes the queue.
-
-The flush command acquires a local cork only when the caller has not
-already corked the queue. This preserves the existing flush ordering,
-transport/error accounting and timer handling without changing the
-common enqueue path.
-
-The issue was found by an LLM.
-
-Fixes: 2e3216cd54b1 ("sctp: Follow security requirement of responding with 1 packet")
-Fixes: 7b9438de0cd4 ("sctp: add stream reconf timer")
-Cc: stable@kernel.org
-Suggested-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
----
-v1: https://lore.kernel.org/netdev/20261030042321.74407-1-kylebot@openai.com/
-v2: Check pending chunks in the T4 and RE-CONFIG timeout handlers, as
-requested. Preserve their deferred output flush with a state-machine
-command so pending requests can progress without unrelated traffic.
-The common sctp_outq_tail() path is unchanged.
-
-I have a reproducer for this issue and can share by DM.
-
- include/net/sctp/command.h |  1 +
- net/sctp/sm_sideeffect.c   |  8 ++++++++
- net/sctp/sm_statefuns.c    | 20 ++++++++++++++------
- 3 files changed, 23 insertions(+), 6 deletions(-)
-
-diff --git a/include/net/sctp/command.h b/include/net/sctp/command.h
-index 2058fabffbf6..abd6cc509183 100644
---- a/include/net/sctp/command.h
-+++ b/include/net/sctp/command.h
-@@ -39,6 +39,7 @@ enum sctp_verb {
- 	SCTP_CMD_CHUNK_ULP,	/* Send a chunk to the sockets layer.  */
- 	SCTP_CMD_EVENT_ULP,	/* Send a notification to the sockets layer. */
- 	SCTP_CMD_REPLY,		/* Send a chunk to our peer.  */
-+	SCTP_CMD_OUTQ_FLUSH,	/* Flush pending output when uncorked. */
- 	SCTP_CMD_SEND_PKT,	/* Send a full packet to our peer.  */
- 	SCTP_CMD_RETRAN,	/* Mark a transport for retransmission.  */
- 	SCTP_CMD_ECN_CE,        /* Do delayed CE processing.   */
-diff --git a/net/sctp/sm_sideeffect.c b/net/sctp/sm_sideeffect.c
-index 35f540fb15fc..6f19ac78749d 100644
---- a/net/sctp/sm_sideeffect.c
-+++ b/net/sctp/sm_sideeffect.c
-@@ -1498,6 +1498,14 @@ static int sctp_cmd_interpreter(enum sctp_event_type event_type,
- 			sctp_outq_tail(&asoc->outqueue, cmd->obj.chunk, gfp);
- 			break;
- 
-+		case SCTP_CMD_OUTQ_FLUSH:
-+			/* Request a flush without taking over an outer cork. */
-+			if (!asoc->outqueue.cork) {
-+				sctp_outq_cork(&asoc->outqueue);
-+				local_cork = 1;
-+			}
-+			break;
-+
- 		case SCTP_CMD_SEND_PKT:
- 			/* Send a full packet to our peer.  */
- 			packet = cmd->obj.packet;
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index b2f609f177fb..8b76b7e28504 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -1122,9 +1122,13 @@ enum sctp_disposition sctp_sf_send_reconf(struct net *net,
- 		return SCTP_DISPOSITION_DELETE_TCB;
- 	}
- 
--	sctp_chunk_hold(asoc->strreset_chunk);
--	sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
--			SCTP_CHUNK(asoc->strreset_chunk));
-+	if (!sctp_chunk_pending(asoc->strreset_chunk)) {
-+		sctp_chunk_hold(asoc->strreset_chunk);
-+		sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
-+				SCTP_CHUNK(asoc->strreset_chunk));
-+	} else {
-+		sctp_add_cmd_sf(commands, SCTP_CMD_OUTQ_FLUSH, SCTP_NULL());
-+	}
- 	sctp_add_cmd_sf(commands, SCTP_CMD_STRIKE, SCTP_TRANSPORT(transport));
- 
- 	return SCTP_DISPOSITION_CONSUME;
-@@ -6197,9 +6201,13 @@ enum sctp_disposition sctp_sf_t4_timer_expire(
- 	 * chunk, it MUST be the same (including its serial number) as the last
- 	 * ASCONF sent.
- 	 */
--	sctp_chunk_hold(asoc->addip_last_asconf);
--	sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
--			SCTP_CHUNK(asoc->addip_last_asconf));
-+	if (!sctp_chunk_pending(asoc->addip_last_asconf)) {
-+		sctp_chunk_hold(asoc->addip_last_asconf);
-+		sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
-+				SCTP_CHUNK(asoc->addip_last_asconf));
-+	} else {
-+		sctp_add_cmd_sf(commands, SCTP_CMD_OUTQ_FLUSH, SCTP_NULL());
-+	}
- 
- 	/* ADDIP 4.1 B5) Restart the T-4 RTO timer. Note that if a different
- 	 * destination is selected, then the RTO used will be that of the new
-
-base-commit: 05441d697f7f9a927264f4058cbbc6a03dfcac9d
--- 
-2.55.0.openai.911.g06873a30d2f3
-
+It is a copy-paste from selftests/drivers/net/hw/lib/py/__init__.py (and there
+is a similar code in net/lib/py/ynl.py). I guess I can add "# KSFT_SKIP"
+here instead of doing the real import.
