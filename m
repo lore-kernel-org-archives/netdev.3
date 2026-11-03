@@ -1,100 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.181
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793694811;
-	b=dP8DMBPp5CXbeNMEgpGxkSHAoDG4uLkIz2W5kNF2mduZIC/F2VXXUIOG/wGakc+5ViNQ
-	 l7S6SmVgAENFEEWlhZCtqKSsZ/wHeab2Mi7EeAqSqTpJbbb9Sw3U0u34LdWtY16KcMeQt
-	 iqEFcMsnHwAq7G54YcG+R9qQZkcJ3MsxR7UYLYUOiautGDzMjd0peXoVm8GoFA0RvamWJ
-	 I+cFLHUPNzK3pVZPxdcLAnVpGFD+i7pThhhJYLSKmUoPbZHpT8pRchYlLZ6Z+PobM4Whm
-	 UR0EDVfG0ogrOF+sNOGab55w/N2b9TbBhnOz+trlKyNJlCtTR85qyJzrOoXSnSKOQHA==
+	t=1793694817;
+	b=ydTUgNjnqVmBLe+y+5lasdIe0bTipyy2rhERhkbwg5DzpauwtVinkKY0mUi+FK/o75VA
+	 XtpMCKm8ZWdaCT80Z7UxLK3YnSCJbIoE0xKTU2iDjMmbOQxQdgfdtnzjyaMYWTNf5yecZ
+	 Rk2MMVIY4th9SJrrFl+me0CNV2etLea8NFhIiJffiNkX6fRpXmg+tQnUoVWQEqrpvB3XK
+	 l0IJPrFiGxuupKQdHDRH4PkA9dKPFbxgKMkG0Vk0jhsSkXtumrvKUVre7GRAqMfPiJqMr
+	 p1RP7k5KTO1PsIF6QYG6yNN451CghWRFavQUsPzc6MX/7er9XlNppgwVcgLDGIt/AKA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793694811;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793694817;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=ns5UrpFr+nBqk8VeozAAQ/bQgy/bCK+3qJvpw6jQboQ=;
-	b=3N6vMl4UnrHLflEBArMCNK08tOiY7a7V/KvmZrHYZR2t6KsUcdavlYIiIYzywH1HWhhU
-	 ywZBi/YNAGjVYelbojhINzVe9oWJ7ZtC+KI8QmtGaC7jLkxbdlMuCCCzRVK4pxX+9pCkL
-	 dn+Iy5jJqXOFVG4l0Nxhxau6gdq2AVDRKZpmRkZp10yQQc2Ic34Wn/dgN8t9YfvIrkAVX
-	 nu9kX3gqmeLhWovl8ELpc6xKFxPTUJpmSzIG+bJ6Y7mbL5L3JtaTGc0H6ZfH8fcqj3oN6
-	 Oif2sNXhPlZ8sfk0TzuA50qYHwYlnGobqlxd79I5MihwkxsHwpKFXckHTScRGtiQxEw==
+	bh=ED+K93Toiwvb7ixUy1Vb7Gi9Hcj/hDm1vxqzJpoVcq0=;
+	b=W/7FJj2+Fo/s4uk1n+i/RbKlL2qQnqmyWgb3shKvf4Mka9Z4zQ2DFh3Vvfs0cQyDE4Dh
+	 ZT7XAcLCHzTudOUP0j/NTyZqrQm8cFqExVk+gv6irJzZaG7kJ7QMXDYRqf68jctsgV80P
+	 V5Ru15dwryxNkZTYmy64qoV/qxIESlsIOVtfwJ99yBRJCRb5dZoAVq5X3ZnGOR6oABsHp
+	 am2u0y17qFYMxvIl6f8lWBH763Q0KCOzNSsRMlMI2fYQ3MwdirEwmgYIA1OVbXwvxws4N
+	 TIRVbj3H/SHmzb442tQ8j28HIWmDDgCX2T2j/Rlt7vbYD6yGySDCsn6PXy1jCWyV9xg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=pCg4RMQo;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.173
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ic7SHQHw;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.181
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D50606EE94
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 08:33:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 47D50606EE94
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01F4606A334
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 08:33:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B01F4606A334
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=pCg4RMQo
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2e95bd1c14cso35464745ad.2
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 00:33:31 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793694811; cv=none;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ic7SHQHw
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8a070755c8cso1768466b3a.0
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 00:33:36 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793694816; cv=none;
         d=google.com; s=arc-20260327;
-        b=MEoSN05s4GB13azZptOSNXy9qWrha12ZNcVgavJ0WfqY2aLPfkrI6lRvvtpAFoRngx
-         jnWxPL2I52YKdudrRY3H+mx/v+ClhaQyaMusRZeX2IzDMupdn8UJJdpmeDWQQaDQK/Km
-         D09FxJF6nJbeTis8CS6F6utoGQaZA2VQxDPen7TOqTlcqICV8gyyeqwCvLX2WXwaswTu
-         w31MhU4RosumTKUWK9bIXw8M6tIoOLzbAnol6kI1S1Bjbh0XvteTGV8ie8RbMtJuhb8b
-         D0oYI1OFv8LliT1y+b0SS1BPDPg1qYggyxoMYXnwS9Ps8tPHtn51Xog41WhM/Ovm7QcS
-         bDvQ==
+        b=TEykWH9p9SFsk90OSPVgTzW1fklFL63uYe4yoPMQcwvP7tvwpQZskSVRk9HSoD3r3H
+         b+KUxsf+PGbFw9jdhvGhH7oGHRrGB/TbpxMOo3BMmatD80j8kCkvU+5Rs63uJUIZGBzJ
+         pIzS8ieumXcJP+AB7k2gAdnrczHCCpceRDBbMtEI3bbKxvsi66Ahg5ZjqF8Od1xe3YD6
+         MKq2eovd3sefWLUyt9PZFtRVJb5ZUVptkk8BqnC0tpw9ZgjTaXqceRiJpItxYbCYwkMQ
+         pDxf3hbIkbuOzHlL2CE/TXNWxkU4WH4JNWfCljMLK6q1x7tt1ukjcEKiLViK3n1g/UFj
+         KZxw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ns5UrpFr+nBqk8VeozAAQ/bQgy/bCK+3qJvpw6jQboQ=;
-        fh=TIYJx1dImJddKjAeyZv/A1b9ciOXu+0w0tj5MOHanfk=;
-        b=EBtCC0AI9clL+vbrPRtqTp/PBqaluI+K2r/mH7YX//1iGhUEDAivaG23Qiopg+WJ6/
-         PXNUJMXOZrjargSNz3d3Mk3fd8YFRSA2xw13SpD8ntx9bYmfphMUcEc6iLdU+lc3spkO
-         gDCNxgF+Ucjmb6hRpPrPeQH5HvDqkqBJ+OhNlBUqr1gAARdu2csGDBJkz1uQE4PrFBi4
-         XhovqihwdAPv/fI1xpqtAj7m2YcvXyUgUjeo875P/Vhq2q80QC5t0gciIEaPpVVlgoIe
-         vLWfmhlpOMJmnxqNCGRPvbNXdtDSsfJihaimmRp3Pz9FdjlspjJnmP2PLorJdgwpEHeN
-         noMw==;
+        bh=ED+K93Toiwvb7ixUy1Vb7Gi9Hcj/hDm1vxqzJpoVcq0=;
+        fh=KDNFX80iXSSZuZnpM5k7uY9VZemywCdggwLO+q+vrkU=;
+        b=nE9xRdyJVDV2DfnL0Pht8dpVzg6kPCw0aUTM5bw2OHPJBDN7XOqe/WDgn4LaKxElcz
+         kULm2x2QFWZwk2+NcxSk0iXqk7TfJYoNde4YR7iM/OKU6yyRrHyHZa9wMgvsJnNLBVB8
+         IUMUa7KL1cRCGQdmkoTgY9RGd6DaD09CoaGFEoRb0J0OqZsVJcaw8+rSETwoU4STtcye
+         9C3/YjS+3FTbkalFgPagU+gwcGDKHhj7IPqphVxqgt0tx6h+KW61PqKdB0TkEfxjlPPP
+         odXOJ4xgeG1dguzHJOrqn9OvA+kAiKdma1UQbFgKNajYWo2ZASb+pp9EALyuMGG1Jf9g
+         3wGA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793694811; x=1794299611; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793694816; x=1794299616; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ns5UrpFr+nBqk8VeozAAQ/bQgy/bCK+3qJvpw6jQboQ=;
-        b=pCg4RMQo97Y1LBmF9lm1jx9L1k5JnwwSM15fQw+LIz8alJ19qoAMYYXufZTFjI0Eqy
-         RJv2c+Czx9lyf9RCREUVIUGi+c7vYjBanaq4m4w1AJbkNpL61ZudlF+qUH3ECSEVrVeH
-         d86tSN+PO9tOQl0FAmtqylKYxZJAaWtCohHIvbZCbKi6H9ttb52C/FmIZAU9LidxZueI
-         kz5LF6BwX5bh35hsZEe/ra72Uvrs69TkLf8X75dFGl9ELV+nIn8/7dRaIw8LTz6KaPUt
-         HhQsI9koa7T4MfEMsecjpjhgp3UP7YXQ/TQyJDlihffqbIEDsPUNumCJs/Le0V2+kHce
-         Qi0w==
+        bh=ED+K93Toiwvb7ixUy1Vb7Gi9Hcj/hDm1vxqzJpoVcq0=;
+        b=ic7SHQHw19m3HA1kpS+jGBES4EzxGyStBqNW0b5xP0jHqwOEO+jv2OaN4MDW0sYKnS
+         RzL7lp7IMQwwu9Zc9XS6qAkjqcIMFgWLTQl5LAgeuDKCttaboGKWdJEEYTTSzAjHuabP
+         SDZtAaBdzEyzexaT5gWW+CEH7AEfwUPyksNlUlaXixg+XFGXC0RW81gds2NO5P7059bO
+         INIREr4tDb0WfbuHxKQ8ZAtz5t7ns39YTPVanZYFsMMUyl+TNegaEHJCmW34L4idJTM5
+         Pckn/6sRnRJMfL3MYh9zGTSYyh/o7Wlwh2f9ss+GsUPRKzqLoxDpAg2mqIFkAmERtcGL
+         3czg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793694811; x=1794299611;
+        d=1e100.net; s=20260707; t=1793694816; x=1794299616;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ns5UrpFr+nBqk8VeozAAQ/bQgy/bCK+3qJvpw6jQboQ=;
-        b=U67HoRCSRsIhEuwY1HRmurzbjG+yDC12W+4VNemrscaSeR8X0QkK/2qg1yW9EvEQOE
-         OLhfQud/6za17hZvSCdcsnKERdsAtekV99YGuH4DpPVtFGNMUYX1uiT9dYCYb8TWqffM
-         i354jpOhp8scvG9CMu38f/SfjuEDu0PsT0PoCWm37BuATTUhr86wmWnAj9HNo/2uxsgZ
-         PVMefDFFjHaFO8c1bhZBbKG5XHU7zOjUYfIwRYNJKrJWkSPVtwfqv5nxkvM8nt+HN01K
-         CTlK9fLk1FToek9VqawteOiXtIX3OtBHWmx06f0CHdGwbqcs4Y4hPwBJzLmPQeA9lD6K
-         +djQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz/Slgfj22tUTz7MrLIP2ZVojyIZrVeRQcAV3k5IUFhBP0qH+8itbfsxPiE+pmodndag34ggTA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+bxJAqNveLDZxeSkZw4j8Mdw+yaDPCXer7xZfji6gH0xxlZ//d
-	+aUkHFPRFYg6IZyDEXkznI//+h0fxF2wet+Pl3CWaklDD4VFbrlzc5HHvaxUNO5MXadQrC90ZlQ
-	PI/+dYdYNknWmvQ4isf3bOQ5lcDGOEdxqnJVNXzy2
-X-Gm-Gg: AYBFou1TyEOregPAqcqmJfIhCRV/9ghxEllbSn/zYDFNq+a3l2WBnzQeJ5gZQrG9iBr
-	AjpFLct1h4OdS5bYOb0eW/Wd2c4Pun9IoR0phR4EQ4j0ApZ9I2nPB18sJUwW8kwmtJONI0Ilik4
-	TycNFS4oqJKgEO+w74YSQFqivQ0Okcd7GoGxddP5hR+F0/orQ1sOD2hxVG6jGLxwyiRN2P9gpFK
-	CPe5n5LqTILRxk7xQn0gxZOJhZ+VZAXim+aVC7s3VzKT2n/KLEusCUVVUicMM550kAom4C21bVx
-	52EVZoVowrm7ptTTbyC5GQK0ty0WOcen0BtViA37uKrJjA/iRO93cctelGyRi+BaiY+xOnMwDxc
-	Xs5FWaU3UUBFUslPYgkIDCsLMHWl/FWNRT8+1
-X-Received: by 2002:a17:903:1c1:b0:2e9:6333:fbb8 with SMTP id
- d9443c01a7336-2eb364936fcmr122129865ad.12.1793694809842; Tue, 03 Nov 2026
- 00:33:29 -0800 (PST)
+        bh=ED+K93Toiwvb7ixUy1Vb7Gi9Hcj/hDm1vxqzJpoVcq0=;
+        b=WehZlcB1VviV73MBw1prNjgjsyVukx0mNis6iXJF7ob+FYf4llmndxtORj7Fcd+3u5
+         dJQa1GsiuxFqDbQ9z5oWh/uhdFlcjggRy090SSphfc5cM0LJ7cpaXkIRrFwAqCuYBOCX
+         HfpqOCeFVsPfDmLAdtgjif+uUkzL+q3T4IKcDC2omaOe6YJVeiNszTtQ8eFFX1SJhmQd
+         uC8NSTbkyc8YYv3hsnPaxHIUpAiTXahxxMoCToBz37rb8OnbRiQMKg0n/V3pA6pjM7kF
+         rY/3xXj30eVPbHYpQNLlaInU48ROLIXCh9xADvoVjz999cn7WwuBkC3r61sl70rrxZkA
+         OPjw==
+X-Forwarded-Encrypted: i=1; AKwUvByRIw2d8SelVP/hRt8HYhGiq7VJ21dWr40X88eZwhz/Gtvivpzbtr4bPHVfZVcA7Ore7BLz2aE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/esb0mf6nkefnpUvP6GVxNGUVfLJ9Audp6SfgN8KFyWTg4B7JD
+	iKFYZllrue1jJd3YKAn2wX+Hu6YXGlNV+Iiy/PgNuUpAuWXp5WPDCsfDtqx8KSdsoHGhwb5+eTF
+	fMZDRsnv48og0ic3tj5apIfGu/SGaiGP8w1KbIFZ/
+X-Gm-Gg: AYBFou3HRXZfxF8alQS41enW/r7hbFrvPsiE/3rhWiexmdqnH4NJDTrvQ/xUx+NqiVL
+	AYa2+fOs1jViM5kkcfwYd7peFeSMxlAMy3ITGS+T1Kij9DLDloZsutWjPhyg4TEYB1y3q1FJzt7
+	ChxP4XIMsiFbCx0/MMeCBmf9jxWf0utYuzQrkLcrnjZtRU3ddi9Uqa8z37fR+tGFaNnOyPTjKk9
+	xQsod59XizlbRjW2U2aL2RGtg4OL91Hebqhe8t+D0IReWhb5bkJBQPJun5THzDA1l/h/f0jHf+8
+	J/oTrsedH9qvG37flhMSWY1u8IUgHDUcsr7CO27gfwLvcuSgclO2ypoTmjHz7DIhuV95LLbbWEa
+	talg3c7cr1Lr2WOIBiKl6pUfXO/Xc5a3kXzpk
+X-Received: by 2002:a05:6a21:7988:b0:3e2:2234:62a with SMTP id
+ adf61e73a8af0-3e928dcd3d8mr8688389637.55.1793694815413; Tue, 03 Nov 2026
+ 00:33:35 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,13 +104,14 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261029211634.2232784-2-hramamurthy@google.com> <179365431852.3131.15974768163319773656@kernel.org>
-In-Reply-To: <179365431852.3131.15974768163319773656@kernel.org>
+References: <20261029211634.2232784-3-hramamurthy@google.com> <179365432027.3131.11809571157881551820@kernel.org>
+In-Reply-To: <179365432027.3131.11809571157881551820@kernel.org>
 From: Pin-yen Lin <treapking@google.com>
-Date: Tue, 3 Nov 2026 00:33:18 -0800
-X-Gm-Features: AclHuK822Wf9DTeUoa6mUrIKemK_tfGKzjcfqPnGUM0p_VrNgJWlcfcDSwcas6o
-Message-ID: <CAHwYsirZ8CpNL4QA_ie9EX6WCs=Waq9F3JsPXL+LYPjx=RJ7ZA@mail.gmail.com>
-Subject: Re: [PATCH net v4 1/4] gve: Fix race between stats query and queue reconfig
+Date: Tue, 3 Nov 2026 00:33:24 -0800
+X-Gm-Features: AclHuK-uTwRUWqjeH6O0SjydL7KmsN4mH1_Yc-h01HcY9iplIbcgjsLNyxbxyTY
+Message-ID: <CAHwYsioiPrbhRNQgqywB=TFqTExwPT6UYFVOx4ZBn-yYyzauHw@mail.gmail.com>
+Subject: Re: [PATCH net v4 2/4] gve: Fix backward stats when interface goes
+ down or configuration is adjusted
 To: netdev-bot+sashiko@kernel.org
 Cc: hramamurthy@google.com, netdev@vger.kernel.org, joshwash@google.com, 
 	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, 
@@ -125,145 +126,257 @@ Content-Transfer-Encoding: quoted-printable
 On Mon, Nov 2, 2026 at 1:18=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wrot=
 e:
 >
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
+> Thank you for your contribution! Sashiko AI review found more severe
+> issue(s) in other patches of this series. This mail is only an FYI, in ca=
+se
+> you want to address the nit picks below when you respin.
 >
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 2 =C2=B7 Low: 0
+> Low priority / nit picks for your consideration:
 >
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
+> - [Low] The commit message and the Fixes tag describe only part of what
+>   the patch changes.
 >
-> - [Medium] At this commit, the new priv->stats_lock is not taken by the
->   single-queue (queue-mgmt API) writers of priv->rx[idx].
-> - [Medium] At this commit, the device-level qstats totals drop to 0 once
->   the interface is down.
+> Pre-existing issues:
+> - [Medium] This problem wasn't introduced by this patch, but on 32-bit
+>   SMP kernels tx->statss of an XDP TX ring has writers that are not=E2=80=
+=A6
+> - [Low] This problem wasn't introduced by this patch, but check_down() in
+>   tools/testing/selftests/drivers/net/stats.py has the docstring "Test=E2=
+=80=A6
+> - [Low] This problem wasn't introduced by this patch, but
+>   pkt_byte_sum.stat_cmp() in=E2=80=A6
+> - [Low] This problem wasn't introduced by this patch, but the single-
+>   queue RX restart path never calls u64_stats_init() on the new ring's=E2=
+=80=A6
+> - [Low] This problem wasn't introduced by this patch, but
+>   gve_rx_post_buffers_dqo() updates rx->statss (rx_buf_alloc_fail)=E2=80=
+=A6
 >
 > --
 >
-> gve: Fix race between stats query and queue reconfig
+> gve: Fix backward stats when interface goes down or configuration is adju=
+sted
 >
-> This commit adds priv->stats_lock to serialize the stats readers
-> (gve_get_stats(), gve_handle_report_stats() and the per-queue qstats
-> callbacks) against queue teardown in gve_queues_mem_remove(). Queue
-> pointers are now cleared under the lock before the ring memory is freed.
-> The per-queue callbacks also return early when priv->rx or priv->tx is
-> NULL.
+> This patch keeps baseline rx/tx packet, byte and alloc-fail counters in
+> gve_priv. They are saved during full queue teardown in
+> gve_queues_mem_remove() and during a single RX queue stop in
+> gve_rx_queue_stop(). Both ndo_get_stats64 and the netdev_stat_ops base
+> stats report these baselines, and gve_get_base_stats() also reports the
+> live XDP TX ring counters.
 >
-> > diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/e=
-thernet/google/gve/gve_main.c
-> > index 2437cd8ba6331..26fdd22644f4d 100644
-> > --- a/drivers/net/ethernet/google/gve/gve_main.c
-> > +++ b/drivers/net/ethernet/google/gve/gve_main.c
-> > @@ -69,6 +69,7 @@ static void gve_get_stats(struct net_device *dev, str=
-uct rtnl_link_stats64 *s)
-> >       int num_tx_queues;
-> >       int ring;
-> >
-> > +     spin_lock_bh(&priv->stats_lock);
-> >       num_tx_queues =3D gve_num_tx_queues(priv);
-> >       if (priv->rx) {
-> >               for (ring =3D 0; ring < priv->rx_cfg.num_queues; ring++) =
-{
->
-> [Severity: Medium]
-> Does stats_lock cover every writer of priv->rx[idx]? The single-queue
-> restart path still rewrites the ring contents without taking the lock,
-> and priv->rx stays non-NULL the whole time:
->
-> drivers/net/ethernet/google/gve/gve_main.c:gve_rx_queue_stop() {
->     ...
->         gve_per_q_mem =3D (struct gve_rx_ring *)per_q_mem;
->         *gve_per_q_mem =3D priv->rx[idx];
->         memset(&priv->rx[idx], 0, sizeof(priv->rx[idx]));
->         return 0;
-> }
->
-> drivers/net/ethernet/google/gve/gve_main.c:gve_rx_queue_start() {
->     ...
->         gve_per_q_mem =3D (struct gve_rx_ring *)per_q_mem;
->         priv->rx[idx] =3D *gve_per_q_mem;
->     ...
-> abort:
->     ...
->         memset(&priv->rx[idx], 0, sizeof(priv->rx[idx]));
->         return err;
-> }
->
-> These run under rtnl and the instance lock. gve_get_stats() (via
-> ndo_get_stats64) and gve_handle_report_stats() (from the stats report
-> worker) hold neither of those. They only take stats_lock.
->
-> Suppose a devmem, XSK or page-pool queue restart races with a read of
-> /proc/net/dev or with the stats report worker. Could the reader then see
-> a partly copied or zeroed ring, including its statss? It would then
-> report torn rpackets, rbytes, desc.seqno or fill_cnt values.
->
-> The readers only copy scalar counters, so this looks like wrong
-> statistics, not memory corruption.
->
-> The later patch in this series, "gve: Fix backward stats when interface
-> goes down or configuration is adjusted", wraps these writes in
-> spin_lock_bh(&priv->stats_lock). This patch is tagged for stable. Would
-> it make sense to move that part into this patch?
-
-Agreed. We will move the spin lock to this patch in v5.
+> > gve_get_base_stats() sets all the stats to 0, so the stats go backwards
+> > when interface goes down or configuration is adjusted.
 >
 > [ ... ]
 >
-> > @@ -2786,9 +2796,15 @@ static void gve_get_rx_queue_stats(struct net_de=
-vice *dev, int idx,
-> >                                  struct netdev_queue_stats_rx *rx_stats=
-)
-> >  {
-> >       struct gve_priv *priv =3D netdev_priv(dev);
-> > -     struct gve_rx_ring *rx =3D &priv->rx[idx];
-> > +     struct gve_rx_ring *rx;
-> >       unsigned int start;
-> >
-> > +     spin_lock_bh(&priv->stats_lock);
-> > +     if (!priv->rx)
-> > +             goto unlock;
+> > Fixes: 2e5e0932dff5 ("gve: add support for basic queue stats")
+>
+> [Severity: Low]
+>
+> Does this description cover everything the patch changes? The message
+> blames gve_get_base_stats(). The patch also changes ndo_get_stats64:
+> gve_get_stats() now calls gve_add_base_stats().
+>
+> That part fixes an older bug. In the tree before 2e5e0932dff5,
+> gve_close() already freed the rings on every ifdown:
+>
+> gve_close()
+>     gve_queues_stop(priv);
+>     gve_queues_mem_remove(priv);
+>
+> gve_queues_mem_remove() set priv->tx and priv->rx to NULL, and
+> gve_get_stats() only summed the live rings. So the ip -s link and
+> /proc/net/dev counters already went back to 0 on ifdown.
+> Documentation/networking/statistics.rst says:
+>
+>   Statistics must persist across routine operations like bringing the
+>   interface down and up.
+>
+> Could the changelog mention the rtnl counter change, and could the
+> Fixes: tag be revisited? With the current tag, stable backporters may
+> treat trees without netdev_stat_ops (older than 6.13) as unaffected,
+> even though they have the rtnl reset on ifdown.
+
+Yes, ndo_get_stats64 has dropped to 0 on ifdown since commit
+f5cedc84a30d ("gve: Add transmit and receive support"). We will
+mention the ndo_get_stats64 counters in the commit message and add a
+Fixes tag for it in v5.
+>
+> > diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/e=
+thernet/google/gve/gve_main.c
+> > index 26fdd22644f4d..b5e2f39a903c5 100644
+> > --- a/drivers/net/ethernet/google/gve/gve_main.c
+> > +++ b/drivers/net/ethernet/google/gve/gve_main.c
+>
+> [ ... ]
+>
+> > @@ -84,19 +112,41 @@ static void gve_get_stats(struct net_device *dev, =
+struct rtnl_link_stats64 *s)
+>
+> [ ... ]
+>
+> > +static void gve_get_stats(struct net_device *dev, struct rtnl_link_sta=
+ts64 *s)
+> > +{
+> > +     struct gve_priv *priv =3D netdev_priv(dev);
 > > +
+> > +     spin_lock_bh(&priv->stats_lock);
+> > +     gve_get_ring_stats(priv, s);
+> > +     gve_add_base_stats(priv, s);
+> >       spin_unlock_bh(&priv->stats_lock);
+> >  }
+>
+> [Severity: Low]
+>
+> This is a pre-existing issue and was not introduced by this patch. The
+> commit message cites the check_down test case in
+> tools/testing/selftests/drivers/net/stats.py. Its docstring says:
+>
+>     """ Test statistics (interface and qstat) are not impacted by ifdown =
+"""
+>
+> However, check_down() only compares qstats from netfam.qstats_get()
+> before and after ip link set down. It never reads the rtnl stats64.
+>
+> If the new gve_add_base_stats() call in gve_get_stats() regressed,
+> wouldn't check_down() still pass?
+>
+> [ ... ]
+>
+> > @@ -2744,7 +2809,9 @@ static int gve_rx_queue_start(struct net_device *=
+dev,
+> >               return -EAGAIN;
+> >
+> >       gve_per_q_mem =3D (struct gve_rx_ring *)per_q_mem;
+> > +     spin_lock_bh(&priv->stats_lock);
+> >       priv->rx[idx] =3D *gve_per_q_mem;
+> > +     spin_unlock_bh(&priv->stats_lock);
+>
+> [Severity: Low]
+>
+> This isn't a bug introduced by this patch, but is rx->statss ever
+> initialized on the single-queue restart path?
+>
+> gve_rx_queue_mem_alloc() calls gve_rx_alloc_ring_gqi() or
+> gve_rx_alloc_ring_dqo(), which zero the ring. The only u64_stats_init()
+> calls for RX rings are in gve_init_sync_stats():
+>
+>         for (i =3D 0; i < priv->rx_cfg.num_queues; i++)
+>                 u64_stats_init(&priv->rx[i].statss);
+>
+> That function only runs on a full queue start. gve_rx_queue_start() then
+> copies the uninitialized statss into priv->rx[idx].
+>
+> On 32-bit kernels with CONFIG_DEBUG_LOCK_ALLOC, the seqcount's lockdep
+> map is never initialized. Can later stats updates or reads then trigger
+> lockdep warnings? The stats_lock added around this copy doesn't change
+> that.
+>
+> [Severity: Low]
+>
+> This is also a pre-existing issue and not introduced by this patch. Later
+> in gve_rx_queue_start(), the DQO path calls gve_rx_post_buffers_dqo()
+> from preemptible process context:
+>
+>         else
+>                 gve_rx_post_buffers_dqo(&priv->rx[idx]);
+>
+> When a buffer allocation fails, that function writes rx->statss:
+>
+>                 if (unlikely(gve_alloc_buffer(rx, desc))) {
+>                         u64_stats_update_begin(&rx->statss);
+>                         rx->rx_buf_alloc_fail++;
+>                         u64_stats_update_end(&rx->statss);
+>
+> On 32-bit non-RT kernels, __u64_stats_update_begin() uses
+> preempt_disable_nested(). That only asserts that preemption is already
+> disabled; it does not disable it.
+>
+> If the writer is preempted while the sequence is odd, can a reader on
+> the same CPU spin until the writer runs again? gve_get_stats() under
+> spin_lock_bh(&priv->stats_lock) is one such reader. Lockdep builds would
+> also warn here. gve_create_rings() reaches the same code regardless of
+> this patch.
+>
+> [ ... ]
+>
+> > @@ -2844,12 +2913,30 @@ static void gve_get_base_stats(struct net_devic=
+e *dev,
+> >                              struct netdev_queue_stats_rx *rx,
+> >                              struct netdev_queue_stats_tx *tx)
+> >  {
+>
+> [ ... ]
+>
+> > +     tx->packets =3D base_stats->tx_packets;
+> > +     tx->bytes =3D base_stats->tx_bytes;
+> > +     /* XDP TX rings are not exposed as netdev queues, so report their=
+ live
+> > +      * counters here to keep the device totals consistent with
+> > +      * ndo_get_stats64.
+> > +      */
+> > +     if (priv->tx)
+> > +             gve_add_tx_ring_range_stats(priv, priv->tx_cfg.num_queues=
+,
+> > +                                         gve_num_tx_queues(priv),
+> > +                                         &tx->packets, &tx->bytes);
+> > +     spin_unlock_bh(&priv->stats_lock);
+> >  }
+>
+> [Severity: Low]
+>
+> This is a pre-existing issue in the selftest and was not introduced by
+> this patch. Does pkt_byte_sum() in stats.py really check that these
+> totals match ndo_get_stats64? stat_cmp() returns at the first key that
+> differs:
+>
+>     def stat_cmp(rstat, qstat):
+>         for key in ['tx-packets', 'tx-bytes', 'rx-packets', 'rx-bytes']:
+>             if rstat[key] !=3D qstat[key]:
+>                 return rstat[key] - qstat[key]
+>         return 0
+>
+> With live TX traffic, a correctly increasing tx-packets decides the
+> result before tx-bytes or the RX counters are compared. The test can
+> therefore pass while rtnl and qstats disagree in the later fields. That
+> includes the XDP TX contribution added here.
 >
 > [Severity: Medium]
-> When the interface is down, this early return (and the matching one in
-> gve_get_tx_queue_stats()) leaves rx_stats and tx_stats untouched.
-> netdev_nl_stats_add() then skips them as NETDEV_STAT_NOT_SET. At this
-> commit gve_get_base_stats() still reports zero:
 >
-> static void gve_get_base_stats(struct net_device *dev,
->                                struct netdev_queue_stats_rx *rx,
->                                struct netdev_queue_stats_tx *tx)
-> {
->         rx->packets =3D 0;
->         rx->bytes =3D 0;
->         rx->alloc_fail =3D 0;
+> This isn't a bug introduced by this patch, but are the writers of
+> tx->statss on the XDP TX rings serialized on 32-bit SMP kernels?
 >
->         tx->packets =3D 0;
->         tx->bytes =3D 0;
-> }
+> gve_xdp_xmit_dqo() picks the ring as smp_processor_id() %
+> num_xdp_queues, so several CPUs can share one ring. It updates statss
+> after releasing the lock that serializes those CPUs:
 >
-> After some traffic and then ip link set dev down, does the device-level
-> qstats total drop from the live counters to 0? That looks like it would
-> still fail check_down() in tools/testing/selftests/drivers/net/stats.py.
-> That check requires every qstats key to be non-decreasing across ifdown.
+>         spin_unlock(&tx->dqo_tx.xdp_lock);
 >
-> The NULL dereference is fixed, but the totals now go backwards. The next
-> patch in the series, "gve: Fix backward stats when interface goes down
-> or configuration is adjusted", seems to fix this. It folds the ring
-> counters into priv->base_net_stats and priv->base_ring_err_stats in
-> gve_queues_mem_remove() and reports them from gve_get_base_stats().
+>         u64_stats_update_begin(&tx->statss);
+>         tx->xdp_xmit +=3D n;
+>         tx->xdp_xmit_errors +=3D n - i;
+>         u64_stats_update_end(&tx->statss);
 >
-> Given the stable tag, is it intended that this patch alone leaves the
-> qstats totals non-monotonic across ifdown?
+> gve_xdp_xmit() in gve_tx.c does the same after
+> spin_unlock(&tx->xdp_lock). gve_clean_tx_done_dqo() also updates the
+> same statss from NAPI:
+>
+>         u64_stats_update_begin(&tx->statss);
+>         tx->bytes_done +=3D pkt_compl_bytes + reinject_compl_bytes;
+>         tx->pkt_done +=3D pkt_compl_pkts + reinject_compl_pkts;
+>
+> Could overlapping write_seqcount_begin()/end() calls tear the 64-bit
+> reads? Could they lose a sequence increment and leave the count odd? If
+> so, the retry loop in gve_add_tx_ring_range_stats() would spin forever
+> with stats_lock held and BH disabled.
+>
+> gve_get_stats() and gve_get_ethtool_stats() already read these counters
+> before this patch, so the new reader in gve_get_base_stats() neither
+> creates nor widens the exposure. Hitting it needs a 32-bit kernel and
+> XDP_REDIRECT into gve from several CPUs while completions are running.
 
-Yes, this is intended. This patch focuses on fixing the kernel panic
-and the next patch addresses the stats values across ifdown.
+All the other comments are pre-existing issues and out of scope for this se=
+ries.
 >
 > --
 > Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
@@ -271,7 +384,3 @@ set/20261029211634.2232784-1-hramamurthy%40google.com
 
 Regards,
 Pin-yen
-
----
-
-pw-bot: cr
