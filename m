@@ -1,66 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793708949;
-	b=K6yRpBgsrqM4+bx7dNybtAA4V1CQ++DV9J3yKq8w9GFymhtvUNaprE2kCmeXP7EalKbU
-	 JSQcaIDhCdIhLNIND1HybLnpOZnqdzO/HextlNocl64s86Sj3/1ffrodODbYQmkeY+sHE
-	 DUu2huEuEx6a6AyBX3pFXaZZCZBDQm3z1MlVSeqGv7ezKuWBjVKllaXAWcxCVkwpmEg7S
-	 d84ODEhCskByJPuWzUzkXWdLazSSmfznsP4tAYSQegVxuLzmq02Ufr/xIr9Y43SSNSI8R
-	 CEgDewZtqdJOrgJ+IVJjCg6mR6mra/PnYnXOxdhmyOjagMxl1FvbWAsorstJBpWchvw==
+	t=1793709011;
+	b=GoJtLtkhyuaou+OKTcQ4CaP6pkqppgo77D1FYONo5XQlQh2N8Eu1qdh703q1vfRyGMQE
+	 JOVl60xaZy0Q4oR2Wk28KIyVakPUvwxFi8xn1Mxim4hwAf7qWM5EoEZ+evtsV9WKwHfPH
+	 xa/CkWsG7my1XlIgH3N5Z3DyVsqBkz4aIBYXcsG4yfdvD0aB6Ka2IPdlKQoKgQVf1LFs0
+	 qhwL++CqTkTEil7n+ysysUinu+yO0r+L6QgstiMzm8Fv29QEnpz5VlwmQA9MW7PPr2er7
+	 ZxsW24eQGI5eUL50AVYO/MmocRZVGGkBWFtcmpYOyTtmOVneC1C6kZ0E853pRLQ3gEg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793708949;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Debian-User;
-	bh=dXVOtNhsvETk1ahsPbFZ/MoyUGdtPmlljazR6U0smHQ=;
-	b=dR0c9gDKXi7S/TPaOcJXnaOFw3rlRMGZxuLrwJmUVfJumm0wH4HH/t3xrIgxzVMjzG6u
-	 wkZzJaAeZmP2wqbiJYPY8XZPWO/wWDsEzLDkUSetyxFU2yrNc2o0B/qWWT81sb0gtuSV2
-	 AOGc5DJU6ZhHKNj5hHZsalCgQxzyX8FJBXjJuejK5r79olHklvxDUZ+OmoJgNnIpHcu0J
-	 lcodrJzzjToJChD1Z+k4UBxFLQ/cmRRUZIMqKKplPqnIrG1hFtpEnSSqX3nja6bfafz4S
-	 +/KbN4EOvAv8Evs2Vz1uW9T8gI3WNeQTeDbhmY5aiFpWKF6szNKgUk16sAf4+5BK18A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793709011;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=2LnMDXHrO+yTBk7B4toyYht3V0YzWFUzNXnDJyE8l4M=;
+	b=l5OLcXaV0ciKCG56iZeHKEha5UKVwPHovFIZW04m0HuLiuuZBl6CQUp4aOMUjcIIoFBO
+	 egSIilmlBUI0bXvFwqNLaGpP7HjXX05pvrb+FpSxQ8pl4KzvClnISYAbiGzAl41uXMK6I
+	 Rqm+uPTxsCubql5rQGT9NnPlnQq5dJyxNGqHSYQ9XfaFzz2bLXMEsZVgt0WLipkhd+IFc
+	 aG/qxlWoNT0FjUsCInyrlGnJfVKcxOlq2/JStumZDbNaUT8guHse9HZirk3qnawlBsR7u
+	 XHD7b90cLTfmph+h/sUrE75u+T6JZqBCDAnb+KA67238WyVAwLzLJ1+m8ByAnI6H7ow==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=debian.org;
-	spf=pass smtp.mailfrom=debian.org;
-	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=G8FbTDdI;
-	arc=none smtp.remote-ip=82.195.75.108
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YtI4nABK;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD21F606A327;
-	Tue,  3 Nov 2026 12:29:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD21F606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9502606A333
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 12:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=G8FbTDdI
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=dXVOtNhsvETk1ahsPbFZ/MoyUGdtPmlljazR6U0smHQ=; b=G8FbTDdIdsWdmXJ01ozv5hG06Y
-	18tBkgYaIAwqj3XncFOHtbfyNV8W/nRIfmi2VnPtjMwAFuwYV0CH75MSYQpcJMCwzGDLAjWI/JmXa
-	poVqs5D3yTb7VC/wav2qLKwk4etL9W5u0mstnb/DTt0fwYDRowaOa26u8Bz8LKHPAhTfImOLNBolS
-	xHg9nEHfl9EU7sR0mVW6p4cDtvFHrd6RGLDwdBd0vwBkKRjT6SS9lvRIflCPj6At08lS8BbCZzy4C
-	dNboULkGOqXHO+gjW3iX53rNjrqgooJEpMk5GarVLTin+neTKxO/9mXGxnRfAm56atoJCLuA9rSJW
-	NQRvAAeQ==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xODdN-006vuv-0e;
-	Tue, 03 Nov 2026 12:29:02 +0000
-Date: Tue, 3 Nov 2026 04:28:57 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Gustavo Luiz Duarte <gustavold@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Stephen Hemminger <stephen@networkplumber.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v5 4/4] netconsole: stop waiting for carrier once the
- device is unregistered
-Message-ID: <aunTfNV9n8_eaato@gmail.com>
-References: <20261102-netcons-fixes-v5-0-bdada2f03563@gmail.com>
- <20261102-netcons-fixes-v5-4-bdada2f03563@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YtI4nABK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 546891F000C1;
+	Tue,  3 Nov 2026 12:30:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793709010;
+	bh=2LnMDXHrO+yTBk7B4toyYht3V0YzWFUzNXnDJyE8l4M=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=YtI4nABKFCULJ3C9m335xSW0aNt4SC8pS+NT++ySundAUx3RA+WiZ8jApPTeiLsqu
+	 o9F4gikPSqGXJROba3X42Bcmy+/ZRj1X2YyoYSuacJfmTIsmfr8+cAvm+Z10x/lcMR
+	 max7D9hds5rqHbJ51j4YPp2i/sstd9J15SqF0RivJ9IH0wNLO0oJ8khh15qNyjea4d
+	 z435GJ39p4LSQ4OqUTA6yeoucpD0uWIDgnmgE7nJlKoYUAo5FnLDZgk1qojOwUOnfi
+	 wtPfbPACZpMJwCyNISeEYu0Y+/iPqJP16NajvgLe+/NXhNhC1X7S8GSJo9D1PEEp5Z
+	 CTFm0UhMCUBsA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 404193805CDE;
+	Tue,  3 Nov 2026 12:30:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,20 +53,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102-netcons-fixes-v5-4-bdada2f03563@gmail.com>
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 01/14] xfrm: retry inexact policy lookup after node
+ reinsertion
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179370900905.1097976.13813090912870365680.git-patchwork-notify@kernel.org>
+Date: Tue, 03 Nov 2026 12:30:09 +0000
+References: <20261102100451.2505200-2-steffen.klassert@secunet.com>
+In-Reply-To: <20261102100451.2505200-2-steffen.klassert@secunet.com>
+To: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: davem@davemloft.net, kuba@kernel.org, herbert@gondor.apana.org.au,
+ netdev@vger.kernel.org
 
-On Mon, Nov 02, 2026 at 07:54:52PM +0000, Gustavo Luiz Duarte wrote:
-> netcons_netpoll_setup() releases RTNL and waits in netcons_wait_carrier()
-> for up to carrier_timeout seconds for the device to report carrier. If
-> the device is unregistered in the meantime, the loop keeps polling until
-> the timeout expires.
-> 
-> Stop waiting as soon as the device is no longer NETREG_REGISTERED.
-> 
-> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261021-netcons-fixes-v4-0-3857120c6340@gmail.com
-> Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
+Hello:
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+This series was applied to netdev/net.git (main)
+by Steffen Klassert <steffen.klassert@secunet.com>:
+
+On Mon, 2 Nov 2026 10:03:59 +0000 you wrote:
+> From: Chengfeng Ye <nicoyip.dev@gmail.com>
+> 
+> An inexact policy lookup first records pointers to candidate hlist heads
+> and then traverses the lists.  A concurrent policy insertion can merge
+> inexact tree nodes between those operations:
+> 
+>   lookup                         policy insertion
+> 
+> [...]
+
+Here is the summary with links:
+  - [01/14] xfrm: retry inexact policy lookup after node reinsertion
+    https://git.kernel.org/netdev/net/c/868f63c8bfaf
+  - [02/14] xfrm: interface: validate the IP header on xmit
+    https://git.kernel.org/netdev/net/c/86de3a1118a1
+  - [03/14] xfrm: zero-initialise km_event in the replay-notify path
+    https://git.kernel.org/netdev/net/c/e35a12dffd5d
+  - [04/14] xfrm: espintcp: reorder operations within espintcp_init_sk
+    https://git.kernel.org/netdev/net/c/f9a11716c844
+  - [05/14] xfrm: state: reject mark with bits outside its mask on add
+    https://git.kernel.org/netdev/net/c/c8c2c8a2bbe4
+  - [06/14] xfrm: state: reject mark with bits outside its mask on ALLOCSPI
+    https://git.kernel.org/netdev/net/c/07d7b25224f5
+  - [07/14] xfrm: policy: reject mark with bits outside its mask on add
+    https://git.kernel.org/netdev/net/c/b3056e57b065
+  - [08/14] xfrm: state: exact mark/mask match for SPI-keyed control-plane SA lookups
+    https://git.kernel.org/netdev/net/c/6362f459bfc4
+  - [09/14] xfrm: fix use-after-free of migrated state in xfrm_do_migrate_state()
+    https://git.kernel.org/netdev/net/c/3eb841b771e8
+  - [10/14] xfrm: fix hw offload state leak on xfrm_do_migrate_state() error path
+    https://git.kernel.org/netdev/net/c/da94223774ea
+  - [11/14] xfrm: include mark in MIGRATE_STATE SA collision check
+    https://git.kernel.org/netdev/net/c/a46232c697c8
+  - [12/14] xfrm: pass extack through to xfrm_init_replay() from xfrm_init_state()
+    https://git.kernel.org/netdev/net/c/24bc5e549913
+  - [13/14] docs: xfrm: include mark in XFRM_MSG_MIGRATE_STATE EEXIST tuple
+    https://git.kernel.org/netdev/net/c/dcf413245c8c
+  - [14/14] xfrm4: use a full socket for local errors
+    https://git.kernel.org/netdev/net/c/5def91015ba7
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
