@@ -1,79 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793729959;
-	b=orzpTcVanS2selAuS396wP0XgxIZXpifT/amj8e/+3znVpe6Zj07Y3Ak6IJeoV6y3fHm
-	 T4fZ0ILOwaiz/GKM00PRM9QlCq2euhKNUf1Kp9+tKz5xtaZ9Bi8j3mml3NDsjHJwk/ntj
-	 xeMUxsvcsqQoNJqsiN0q1nJhP/LfY0UGxLLdoYKZZLqwCiAuBuTAteVO9dv/J6OOyxHwl
-	 4ifFiXZcQPTPDG/G2QulBZ0CeAwnY6MbMQHD316CHeV7RtA5VaArdodsepqK9yVdE2DWO
-	 zfr+hjj2rk9KPFyiOKlsKbIaoPi3I+24vuv/tVEVe/zO0pWDiTiGeV3K1jYnvZPUyyw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793729959;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=b5Apdfbysx3UZszHr/cOZmvpYIko3amgTXRkBzLxPAo=;
-	b=HSW6N1m2F0bZud8/Bl5jut4QlaTwXzcH6CPfGG7CWOplwVfdaGZ+7W714C8+gXMhn8P5
-	 eCBzn4JJpYTcyJ6UWH4R3BLs5zdtHxujrkWFK3mY6AmtQ0JVZhE92XJuxNdG4KkyxW90a
-	 59qF59U3GsxAgQ3YtQr1vk0c/WrQT8HWVYucDDo8LhkCNphryVUl0ZVgj2T4xDWaztryg
-	 UCR8/C7M7ICkLvQjOlHUILEXpA7uvRtwOj2atujWih/yLgyb6F58AvfTx/9uNBEdgLPxe
-	 SGhJ86BrRmu/fRttBD8j7Y5xqVfD5t2JD0Qx024XISTHao+r2Woj2+6T2rmQfgnsYwg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i4jNSPJF;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE53606D824;
-	Tue,  3 Nov 2026 18:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i4jNSPJF
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793729958;
-	b=JxvyKQamrHKQPXL49Gzyc4SE4QS8P0ft+3apo/CIjxJgx2QjfRLC2/F4CrcsRRLIdBA2
-	 2gFbAdfiyeqbRCAnQ5/UALxweB+B8EOOgifU6teNNZ1PifEIEds6rnpx7+ND08eIGIgKd
-	 jvrZi5WMmPEr2tdu95n58kfb6WXFdsU4AS6gSM0W2Ba7cepqLPWoGv1EEtAV/uu/8IZ9w
-	 AqqucnDFrF1DtLgY4sIdguFafOlVmoOylbHpD0odouyIwR10jYU/AFG+71Npf5A2t8rgg
-	 GhvpRn6I9pzYwXh9e/VWGYHZqO1tGkFrtbv5+/iwW7iOfYr6D/6mQc/rkyhZiX8VPPg==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793729958;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=b5Apdfbysx3UZszHr/cOZmvpYIko3amgTXRkBzLxPAo=;
-	b=MmpYhZC5Q77yGKD9VOg5/QJdw8SxKnqXFvffqaPdBsEn8UxcKWRsgSzZ+pjoyekmWZ/W
-	 7qR/MmUz/KWA7m9Dx3fXscHsvKFD2GQ7P7Uww37V7pQuaSTYOQhwA7/b/KXELOzwSyFfJ
-	 hYPeye6OHxDDDQJzq69ukXt/D96WqmVculNuX0v0PuPEvfVlGR7sBsKafls6jd9mlGqHL
-	 ciNCvy1Sox8dGrkkc5Il+HfqyBxHeo5JbEEaAyUCdyezdYeNHwpDwQdHQ8A7zJWSH53VD
-	 F1p4qM7VfsTkOozx/qmw1pIklackXpFH7pVT6DGYDT19xaQ5vPWmZyw7xfe03wsK5Jw==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.100
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793730413;
+	b=I9h85Z48Bg2uNz42bOtc1SmGprXMmEwF8CQlZPpe1fzuh2kkfjQJGrO7Wppp8krKhvxe
+	 mMdGJs4ppAAb12DXsJoVE5yY4Ay0q5g0cKssvsYIQXFEK/LGePv0DC9jWig0sRFM39VhQ
+	 Fy+3A8LDGv8Ff+cFRtx1GtXQp/WDM9iDDjnF/oiUsbxs2cUPKSo1+CTk8WoS310zMbRcZ
+	 YusAJfPKi4ZV6cQk/mQLaJlAmp5r1K3TXqjU+utR0VYRwTj3ZMMPJQ0DgMc7boQyqSYB7
+	 w5THU7B0tI0ZtMvNXtpnyWYLfkpzC8+rNI5Y2JatPXXbDxy3EF71difgXA6Po88AzrA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793730413;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
+	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Received:X-Received:MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:X-DetectorID-Processed:
+	 Content-Type;
+	bh=uY7n6Wew9KWOzPuVbXCehURE9wThWbBxMEDmB4ab6dY=;
+	b=dDsbWTkXv3lUEbQIyFthgaXHh9b83ny76whI/MYEy5yr2+VdQMJagrAklBnVteWIWxIc
+	 ZpP4PBT3511xuUglVa1h870pMKDPuvvqk7JJIymXZGBj/eLxmrNpi9otQP4CmxBgbqHkc
+	 bkqPio50Z45WRNPmheBN52kV6v1wT5Yzl0Ny+qkWSPSntQp83pQgNHsYVMlbvXdkzsO9X
+	 xrVd8WTsajZSpoOWvCSgVxltaWysPYDRedj3Uj84rQ7GCvavwpc6B5Ni4LzBGWoOEewhJ
+	 8Ri+QTIr/CyNwT74kAG9PkqxSP3qSTxMJNw7gU1e6TCrQ99YKm8MrR5frgl1WLsF1GQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=broadcom.com;
+	spf=fail smtp.mailfrom=broadcom.com;
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=FkHLUhTI;
+	arc=none smtp.remote-ip=209.85.216.100
+Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 6EE851F00A16;
-	Tue,  3 Nov 2026 18:19:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793729958;
-	bh=b5Apdfbysx3UZszHr/cOZmvpYIko3amgTXRkBzLxPAo=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=i4jNSPJFaLkW6Ofqp75erX029EWCwKlZBxrBUNuHAbiNQBQXga5zcveb6BkWtqs/4
-	 WLM2ybrAELWc4RXN/ny12AkgKlfGxU1U8VNbk5x3rObXF51EChQWA9gU4TMSwKm8g2
-	 9Mlu6SSN5S7axdejTAZCH5NUu5Qq0q8OOXXHUqON04qqeKQmq3YjNUg1/QlmeoUpp4
-	 8QN74PKCcE+AcfZxXe3ieyT5+/Gd7b6dP9iP0k3+8vieS+6krmGoOSbrneGJWB2+06
-	 JJvYfUpPE3050B1zC9X8/F29O5kTvfGgsdqSxI6STuNUPuJEkoljtadjr6SwIs3VMn
-	 Ftf0MZvuYYMHw==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 039ED46A69;
-	Tue,  3 Nov 2026 18:19:16 +0000 (UTC)
-From: Mani Tofigh via B4 Relay <devnull+mt4022.columbia.edu@kernel.org>
-Date: Tue, 03 Nov 2026 13:19:16 -0500
-Subject: [PATCH net] net: cancel napi->timer after the grace period in
- netif_napi_del()
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F033F606A326
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 18:26:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F033F606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=FkHLUhTI
+Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-3b08a162d4bso461828a91.3
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 10:26:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793730412; x=1794335212;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uY7n6Wew9KWOzPuVbXCehURE9wThWbBxMEDmB4ab6dY=;
+        b=gpEKx2ZO4Uza6JuNlWMloSFvZyBb6c4v/kfv4QdKkPwi3j9yOhl+QcqE+hlb4qAxOp
+         12+no1rg1f6lL22m2Nzn2kAUEjP7SPUSwq79GvkvrCvNyErB4TCXPsNuoSkFv09g30RV
+         cW1V2JNCDQxKkFLAj0mlgp06FQPnCPrpm+GHAxDdEaikZpG6UjEFqSLdmKAKkuGtY8Ui
+         LDlhpvZ05m4AplXRYiKApxmQL1/xY88codvXNlhQdagpZditm0xwqnv128RlmAuijJdv
+         tCamBn45/4sX6X6RxjWdud8W6CRFKzH5l+ONlGj7QUBEF+XCoPzc2FO4styweqaaycO5
+         j0og==
+X-Forwarded-Encrypted: i=1; AKwUvBw5Kq+7eyuoObFyHEpKGLeB3tUAy8SMGQMqVnbMXg4ECxaqhzOHv4l2K/BvXFhqnkTkA+p+JuM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9nsSx5Sz6WjTORRG8bd6asW2fuCqsU4xayjuvtTdQ9l9zYFQFj
+	5I8i05IIMl0aER9D8uGgaGNpZJeeIchwljDmu7bXyg1kqPheykKQ3e3tUIh2ArvFEq+hH8jkjSt
+	JCCLDu8JLebp5MuD4jPqCLDISfNyhC0o2dZGEXSEw3YsyExavgC45AdGnxULpHZqK1Oitgletss
+	HosEgD7c4mu6ug/T4ptFAI8DSD8D0OjqW/IVTNWFvc6eM1IacAtN1g4A22WaU2XGFoW5B9/qZra
+	NKzCQXw8xM=
+X-Gm-Gg: AYBFou0+tapXBNmNadu2ec7TAkIhDLBTkO395zzpDdAB2s13ykZmK30vBDigmqJ4CUm
+	5LTzBQ2ncel4P/jQuPAQh9Mt7NIzQpzFYPp8roxRN4xNNPxtb7a0stn9DE0b4OVyB98xM6oV/xA
+	i1g4Leucw/r1XxYpHMbftmaNJlrzkzJ1q95768an0W5sNce3KyxBalgxTVAaHreJRtnyyVSW5Y8
+	O45JIavgOG2DwfDsxDYolowtkivQoiEZ+FlvtoP4KAkoQ5P80ydeLr6VxciksLnav1WM2RIm60i
+	L0swE/GHin38x5LS00ZcRJbcBWCTok1qGtgXc9K7x6NlUn+m5tLx60GudTws4/Up83ZQBF1BEvw
+	P/E/5YWCfwlXNDKv6wePGWtJYlRc1MhxJJ1PVEMeC+tmUxm3/9FCAVr7PKXYzOk2ySK4IJwIHLq
+	iG3wRP9KdEMQQLLYgURRatfj0+Si9QkEq5wHg=
+X-Received: by 2002:a17:90b:164f:b0:3ac:9ed8:f310 with SMTP id 98e67ed59e1d1-3ae8984da7fmr12407360a91.49.1793730412375;
+        Tue, 03 Nov 2026 10:26:52 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-13.dlp.protect.broadcom.com. [144.49.247.13])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3b0947870a2sm53223a91.7.2026.11.03.10.26.50
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 03 Nov 2026 10:26:52 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c37b2763f1bso546120466b.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 10:26:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1793730409; x=1794335209; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uY7n6Wew9KWOzPuVbXCehURE9wThWbBxMEDmB4ab6dY=;
+        b=FkHLUhTIRzyrk11x68zWZ5CsPlCNOChLE2GeXyAHwh6DbMni9e4xgm94IqvfhOF74q
+         AvglLNEqbp/DAhq2S4fQaOMOja1Fh54vCqOJt1B2SYyI9oW9F4wY3qqBAJr4/u/FBQ2G
+         6fFrz55x9j/w4UK4XXav5MV/9uKe1ahStG0/o=
+X-Forwarded-Encrypted: i=1; AKwUvBx6PUHiMCfpNNwRpsztmfr/vkY1BJMy+QPAmjJFBVR2cAvsvbYMzWJXBpkawoit1CmiPt8Xugo=@vger.kernel.org
+X-Received: by 2002:a17:907:1b1b:b0:c46:7ec3:fdfb with SMTP id a640c23a62f3a-c4ca793507emr1100238366b.7.1793730409557;
+        Tue, 03 Nov 2026 10:26:49 -0800 (PST)
+X-Received: by 2002:a17:907:1b1b:b0:c46:7ec3:fdfb with SMTP id
+ a640c23a62f3a-c4ca793507emr1100236666b.7.1793730408996; Tue, 03 Nov 2026
+ 10:26:48 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,166 +98,154 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261103-napi-timer-cancel-v1-1-55c631ad5286@columbia.edu>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMwQrCMBAFf6W8swtJSqX4K+JhTTe6omtJogil/
- 96oxxmYWVAkqxQcugVZ3lr0aQ38rkO8sl2EdGqM4MLee9eT8axU9SGZIluUOyV2HMYhTcPo0bo
- 5S9LP73mEScXpL8vrfJNYvzes6waLWeTzegAAAA==
-X-Change-ID: 20261103-napi-timer-cancel-fa0a285fd581
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- Martin Karsten <mkarsten@uwaterloo.ca>, Joe Damato <joe@dama.to>, 
- Dragos Tatulea <dtatulea@nvidia.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
- Stanislav Fomichev <sdf.kernel@gmail.com>, 
- Sridhar Samudrala <sridhar.samudrala@intel.com>, 
- Cosmin Ratiu <cratiu@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
- Wang Zhan <wang.zhan@smartx.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, tz2294@columbia.edu, 
- Mani Tofigh <mt4022@columbia.edu>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793729955; l=5193;
- i=mt4022@columbia.edu; s=20261026; h=from:subject:message-id;
- bh=D3DRGuFE0EATDQVzQQV5RjgLb6ytoSbotejXuz5TFKc=;
- b=ssRhd2VE5LU/8fFDf9oHRD8iJ0XKlAM1RWeKEnlFASOxuU6corXvDu0kFe6ZGsG7EEOSLCpRM
- /EI/Db8vV0yCH1bPZEHjbW0a+Y5tEYG6c1CgdcmpBFzIh3UK5NqKwMz
-X-Developer-Key: i=mt4022@columbia.edu; a=ed25519;
- pk=gljCMQDuxyKPmd5y37CRpEJGSPXDV1MyAnHBhCgXl0I=
-X-Endpoint-Received: by B4 Relay for mt4022@columbia.edu/20261026 with
- auth_id=1322
-X-Original-From: Mani Tofigh <mt4022@columbia.edu>
-Reply-To: mt4022@columbia.edu
-Content-Transfer-Encoding: 7bit
+References: <20261103042210.2984373-1-bcochrane@google.com>
+In-Reply-To: <20261103042210.2984373-1-bcochrane@google.com>
+From: Michael Chan <michael.chan@broadcom.com>
+Date: Tue, 3 Nov 2026 10:26:36 -0800
+X-Gm-Features: AclHuK9ZvuRVudD2-D-DL4uGiyyrskZ8xnCqFVv8isGOwX7LSjQhTC0siTo5NYI
+Message-ID: <CACKFLimcKWR6Wr9g8xLDQ8p26_TREYz-ZNb2vAvcnz2k5dwnuA@mail.gmail.com>
+Subject: Re: [PATCH net v2] bnxt_en: Take RTNL before netif_close() when
+ aborting FW reset
+To: Bryan Cochrane <bcochrane@google.com>
+Cc: Pavan Chebbi <pavan.chebbi@broadcom.com>, netdev@vger.kernel.org, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Joe Damato <joe@dama.to>, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="000000000000e600a4065f636774"
 
-From: Mani Tofigh <mt4022@columbia.edu>
+--000000000000e600a4065f636774
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-A napi can be freed with its timer still queued.  napi_disable()
-cancels napi->timer, but napi_complete_done(), busy_poll_stop() and
-napi_suspend_irqs() start it without owning the napi and can do so
-right after the cancel.  netif_napi_del() only waits for that start to
-finish:
+On Mon, Nov 2, 2026 at 8:22=E2=80=AFPM Bryan Cochrane <bcochrane@google.com=
+> wrote:
 
-  Task A (epoll_wait)                  Task B (queue reset)
-  napi_suspend_irqs()
-    rcu_read_lock()
-    napi = napi_by_id(id)
-                                       napi_disable_locked(napi)
-                                         hrtimer_cancel(&napi->timer)
-                                         napi_hash_del(napi)
-                                       netif_napi_del_locked(napi)
-                                         synchronize_net()
-                                         /* waits for Task A */
-    hrtimer_start(&napi->timer)
-    rcu_read_unlock()
-                                       kfree(rq)
-                                         /* timer still queued */
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethe=
+rnet/broadcom/bnxt/bnxt.c
+> index 33c4cacc8ffe..1ea1e8266eab 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> @@ -14860,9 +14860,16 @@ void bnxt_fw_reset(struct bnxt *bp)
+>                 if (n < 0) {
+>                         netdev_err(bp->dev, "Firmware reset aborted, rc =
+=3D %d\n",
+>                                    n);
+> +                       /* netif_close() requires RTNL, which must be tak=
+en
+> +                        * before the netdev instance lock.
+> +                        */
+> +                       netdev_unlock(bp->dev);
+> +                       rtnl_lock();
+> +                       netdev_lock(bp->dev);
 
-With netdevsim and debug objects:
+If you need to respin, you should be able to call bnxt_rtnl_lock_sp()
+instead of the 2 locking calls.  But this is fine too.  Thanks.
 
-  [    3.073483] ODEBUG: free active (active state 0) object: 000000001504358f object type: hrtimer hint: napi_watchdog+0x0/0xa0
-  [    3.073515] WARNING: lib/debugobjects.c:629 at debug_print_object+0x1a4/0x3b0, CPU#0: napitimer/66
-  [    3.079603] CPU: 0 UID: 0 PID: 66 Comm: napitimer Tainted: G        W            7.3.0-17087-gd865f2677c44 #1 PREEMPT
-  [    3.084822] RIP: 0010:debug_print_object+0x1ae/0x3b0
-  ...
-  [    3.103822] Call Trace:
-  [    3.104408]  <TASK>
-  [    3.105933]  debug_check_no_obj_freed+0x496/0x5f0
-  [    3.109988]  kfree+0x33a/0x510
-  [    3.110715]  netdev_rx_queue_reconfig+0x357/0x580
-  [    3.111780]  netdev_rx_queue_restart+0x8f/0xc0
-  [    3.113924]  nsim_qreset_write+0x24d/0x350
-  [    3.117832]  full_proxy_write+0x109/0x1d0
-  [    3.118741]  vfs_write+0x1e3/0x1250
-  [    3.124758]  __x64_sys_pwrite64+0x18c/0x250
-  [    3.129645]  do_syscall_64+0xfb/0x590
-  [    3.131385]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
 
-Without debug objects, napi_watchdog() later runs on freed memory.
+--000000000000e600a4065f636774
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-After napi_disable() and a grace period none of the three can reach the
-napi anymore.  Two need SCHED, which napi_disable() keeps, and
-napi_suspend_irqs() needs the napi hash, which napi_disable() removed it
-from.  So cancel the timer again after the grace period that
-netif_napi_del() already waits for, and in free_netdev(), where
-unregister has already waited for one.  With the fix, debug objects
-don't report a freed active timer anymore.
-
-This bug was identified and confirmed with the help of a deterministic
-hypervisor currently under development.  The C reproducer below however
-hits it within about 1s.
-
-Fixes: 6f8b12d661d0 ("net: napi: add hard irqs deferral feature")
-Fixes: 3fcbecbdeb04 ("net: Add control functions for irq suspension")
-Fixes: 58e2330bd455 ("net: napi: Avoid gro timer misfiring at end of busypoll")
-Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
----
-Drivers that call __netif_napi_del{,_locked}() and then their own
-synchronize_net() (eg netdevsim on close, veth, virtio_net, bnxt and
-gro_cells) need the same cancel.  I can send that separately.
-
-Reproducer: https://github.com/manitofigh/files/blob/main/linux-repros/napitimer.c
----
- include/linux/netdevice.h | 9 +++++++++
- net/core/dev.c            | 5 ++++-
- 2 files changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 435be7880d7e..ad3685caf814 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -3013,8 +3013,13 @@ static inline void __netif_napi_del(struct napi_struct *napi)
- 
- static inline void netif_napi_del_locked(struct napi_struct *napi)
- {
-+	bool listed = test_bit(NAPI_STATE_LISTED, &napi->state);
-+
- 	__netif_napi_del_locked(napi);
- 	synchronize_net();
-+	/* napi->timer can be started until a grace period after napi_disable() */
-+	if (listed)
-+		hrtimer_cancel(&napi->timer);
- }
- 
- /**
-@@ -3025,8 +3030,12 @@ static inline void netif_napi_del_locked(struct napi_struct *napi)
-  */
- static inline void netif_napi_del(struct napi_struct *napi)
- {
-+	bool listed = test_bit(NAPI_STATE_LISTED, &napi->state);
-+
- 	__netif_napi_del(napi);
- 	synchronize_net();
-+	if (listed)
-+		hrtimer_cancel(&napi->timer);
- }
- 
- int netif_enable_cpu_rmap(struct net_device *dev, unsigned int num_irqs);
-diff --git a/net/core/dev.c b/net/core/dev.c
-index f32353b0467c..6d6384522a1b 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -12450,9 +12450,12 @@ static void netdev_napi_exit(struct net_device *dev)
- 	if (!list_empty(&dev->napi_list)) {
- 		struct napi_struct *p, *n;
- 
-+		/* unregister has waited for a grace period after napi_disable() */
- 		netdev_lock(dev);
--		list_for_each_entry_safe(p, n, &dev->napi_list, dev_list)
-+		list_for_each_entry_safe(p, n, &dev->napi_list, dev_list) {
-+			hrtimer_cancel(&p->timer);
- 			__netif_napi_del_locked(p);
-+		}
- 		netdev_unlock(dev);
- 
- 		synchronize_net();
-
----
-base-commit: 647b81ddefc6364290e67bf33c89d54971f8995e
-change-id: 20261103-napi-timer-cancel-fa0a285fd581
-
-Best regards,
---  
-Mani Tofigh <mt4022@columbia.edu>
-
-
+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
+DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
+qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
+5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
+rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
+oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
+Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
+BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
+IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
+FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
+hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
+BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
+HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
+qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
+2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
+K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
+H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
+Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
+WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
+q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
+2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
+bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
+R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
+ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
+MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCDHH7XG
+016kuncNyhUJ/xvKAYNKdkW2N7OTd0SxWeo2DzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
+CSqGSIb3DQEJBTEPFw0yNjExMDMxODI2NDlaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
+MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
+SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQATNrjuLvJqv+ZcmHMg+1qk5uLKPEdqHySAtqMjl9t5
+EXFn4zWKZWXglo4dwgNiHBXeIBV9UDEu8gnZGDVnIKuXBdkcL9Na7b9nUCPBWcXIz1esMjnRvPKP
+Z6MLFImBYG1kORV9M3tJDUKvBW8LjKB89MjECqJ7hMfvnrYhZh4PbLHiSDcUOv4ECZ015lgDpc6e
+0KIV1hIdZM+Jsin7zVlwGW5dmuDrvqUCKKAIZh5hRwBUqneWPDq46NlpYB0SI09L4wxJzeQdk7dQ
+VwMiVj/PIW7SrLIv0HrCHxlA7MCLZWSjgnwHqMyGEz2yLOMC9bfYvnmc/ELbRMdwExWOOuJV
+--000000000000e600a4065f636774--
