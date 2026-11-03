@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793712752;
-	b=UmU/1ZQ6Mt/H6cCKnE1js0amU16AxQWYjN3OL/RaXH70AoFM60ZXGC28F2PFFWBzsEgn
-	 MlXV8QaK8ZckvSDvaYO4QS1dOFudqLZhoc6JeOitdLoEvn2l1ebiJ8rm4heZ5ewzTU8Xm
-	 LD14Y5wFkjEnVvuuFyyBHS5281XElHiI20GsvW9lOrFFSeN7z56EbnW4YS6a9pqoVtsBZ
-	 sq9Z+bjDIluSZLYXBZMCP4EYkNDX4jYz4TUapESdbytzjH4ZXxy/HCYjMNA6rTfQuaK9+
-	 z3o2pe3Yur2CqS4wE9sakNF1J4dmdZlqOqyizrSqZ5xL2lLQYmTUJSRrpR8Y/j/lxww==
+	t=1793712753;
+	b=VMBZcbbbQLvtwrDfRUxPY+RYMochuBBdnRyP1Nhd10hCFuajwEIQ+go6HHGbq8MMCab0
+	 KUHD4VUhMYuLeTZIlxGzRnwI+ZS9mStCgmEICLdyRBOvuP94/bshi2y1qwBX8HsSCOw8+
+	 BLA6QrxMn16Y/fZYE7hgdXBQjQReeFdgolSwyoo5SBM5pSjoimQ06B8sRPXCxl+o7JR6D
+	 uOC3oe/7yUfVyCr5BviuDookB8ZF5WVBAqpFm3NjCHDqfXmp4SaWMKJQG78C/gKGOB8fV
+	 69EqITKfNmLNbxcNW9Q1EcSNdDZctKKtldvj5u4osFO4FUcnXO5LoTGwk+SdIkOGzsQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793712752;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793712753;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=kifEBQxt1R1Qa41zx/9bxXDWa/RxanM2HYjLF8TU7JI=;
-	b=m9bw8K/OjJgHVoU1dPAVdEUCGwkuEvgAzG9kjEb2j4q5K35q7VyI32Itju9aeTkY3wF8
-	 Idwmc5VQVUZTVs33NKI1eCewwhuUbkSCq6HLv/PsOvu7X1MgwNuRpI494E7/t4bicKCi5
-	 PSnWBsjCsdY2n1B8PKiJmObQ54kcNR5+sk/qkVFqovXjMY8ofQjUxoLMLXOiBlkzqCaIe
-	 8VDvtEnpJWI70TbvpknBwfuMp2J+EX/Tvwzkofe8RVvRZYin+I4CLtQm0gtrhO49QVz9m
-	 jOnbqFSI+lR9wSNMX84ORfP577JkQ9BoCubir483bgNOo+JbSbY1hulgwqbdCJiJqDw==
+	bh=3IAjmr/zmbR2S1eHfVi3upxEsNfRTP6Y4OyASEJgk+M=;
+	b=YUCe9QN1JgPSEJFsg25ovFx6sSsbX5Mt/LlkDrQu/vyo24h2koNKE7rEHYv81ox1o1ed
+	 7vtt+mwGQh4EX2Pbg2mhw280V4CGwe56Ym+kpGsT4DTCYd1xbJQjf8NfvYSNIazcB0lSW
+	 svo6REAjNrzPVU5dn6U7sxZw+gw469hEvoLRoUcRgR9mo3CcQrISNatf+hhsGnG/GlTaa
+	 lpfHXG59XOM0lmqclX2363Ur4YMW/eJLO/1MAypw0rR7ZlMGp0QpVJh2pv/+lP8lrFPmu
+	 IRy4glFRW9fXS5pOwujTYRO0eDliXdk+qrpaWMzkXriMWXz8sGuIpw0FLaOLwseXcgQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dn1oYpt4;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GNQyc3Cc;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B68606A32C
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 13:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53A5606A338
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 13:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dn1oYpt4
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1C31F00919;
-	Tue,  3 Nov 2026 13:32:30 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GNQyc3Cc
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E88C11F0093A;
+	Tue,  3 Nov 2026 13:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793712751;
-	bh=kifEBQxt1R1Qa41zx/9bxXDWa/RxanM2HYjLF8TU7JI=;
+	s=k20260515; t=1793712752;
+	bh=3IAjmr/zmbR2S1eHfVi3upxEsNfRTP6Y4OyASEJgk+M=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Dn1oYpt4RHvXdj4WVIHVMxGKNGz1mRkySyhNpR0n2x3ceqc0hOulm03KGmUV8+Y1Y
-	 9h90YGyGugKGLKVl56ZCEeBTjRz4GtUrotRh2V8Nxp74Vvqv2Xr3ZZVeET1uaFXWZy
-	 KWGj9W5G5UUwSJ7Y8GgI6A/NGmYfYkugA9ET9SNQKy69+D/yTc86zi/FM8hQLyqG37
-	 FHPmL7YF7a1bCQ6xfJGLeHHQ2JNsZCgtmrsi9J/Cd1ez2rQXtf58oMeKlYiRrD8HOo
-	 rYZJGbpSspxyPHr5v/qJWD091nMsYBu8ObrMSD/W34sM6hkAfVzFWwyAUrSAJX9BLJ
-	 8KYRPNgZ5LYEw==
+	b=GNQyc3CcxIUNXgsvX/Tn85rtouR52rYkKMiuH0jdzYRZYnm3keRcMRKvd5eD2fHkc
+	 HA8AF7cR5/as7vbDvrpynszM2sFGT/4x7B5zfkdmCZ9r8oXe1daoMLLVMe+08W/wPb
+	 l/Bb8/lE87om8jQx6hyK77rvcIkjObYTFx6YBJQ8FsFoy2xBgFjTFz9K5Dlg3gVIHX
+	 ijEM6RO8uoIZ8vaYrVtM9/HU4yYCf6ZDmrj/SOZJVaGADdHQVEVX3TBcNcpRsOvkvY
+	 wkJ0SkLflW9Y8se+kjcqJVmu0co1zTerDOchiR65wN7CVP2izeggM8d6UqkBHufezz
+	 IWyZ1QnvEP0iA==
 Subject:
- Re: [PATCH net 2/9] i40e: xsk: fix xsk_buff_add_frag() error handling in Rx
+ Re: [PATCH net 3/9] ice: xsk: fix leaking Rx buffers in multi-buffer path
 From: netdev-bot+sashiko@kernel.org
 To: maciej.fijalkowski@intel.com
 Cc: netdev@vger.kernel.org, magnus.karlsson@intel.com, stfomichev@gmail.com,
  kuba@kernel.org, pabeni@redhat.com, tushar.vyavahare@intel.com,
  kerneljasonxing@gmail.com, bjorn@kernel.org, zuomao338@gmail.com
-Date: Tue, 03 Nov 2026 13:32:30 +0000
-Message-ID: <179371275039.488856.8029321276858150483@kernel.org>
-In-Reply-To: <20261102124950.958345-3-maciej.fijalkowski@intel.com>
-References: <20261102124950.958345-3-maciej.fijalkowski@intel.com>
+Date: Tue, 03 Nov 2026 13:32:31 +0000
+Message-ID: <179371275153.488856.16170220434241626063@kernel.org>
+In-Reply-To: <20261102124950.958345-4-maciej.fijalkowski@intel.com>
+References: <20261102124950.958345-4-maciej.fijalkowski@intel.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -64,10 +64,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 (1) · Medium: 1 · Low: 0 (1)
+Critical: 0 · High: 2 · Medium: 1 · Low: 0 (1)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -75,196 +75,188 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] In i40e_clean_rx_irq_zc()
-  (drivers/net/ethernet/intel/i40e/i40e_xsk.c), the new error path for a…
-- [Medium] When xsk_buff_add_frag() fails on a non-EOP descriptor, the
-  new drop path in i40e_clean_rx_irq_zc() frees the frame, sets `first =…
+- [High] The new zero-length branch in ice_clean_rx_irq_zc()
+  (drivers/net/ethernet/intel/ice/ice_xsk.c) is `else if…
+- [High] ice: xsk: 0-length buffer assigned to first in
+  ice_clean_rx_irq_zc()
+- [Medium] As of this commit, if xsk_buff_add_frag() fails in
+  ice_clean_rx_irq_zc() because `xdp == first` (aligned-mode duplicate…
 
 Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but it is a high-
-  severity issue in the same ntc/ntp bookkeeping.
-- [Low] Claim: the struct i40e_ring comment 'next_to_clean is updated
-  only on processing EOP descriptor' (i40e_txrx.h:354-356) is now stale,…
+- [Low] When xsk_buff_add_frag() fails on a non-EOP descriptor in
+  ice_clean_rx_irq_zc(), `first` is set to NULL and the loop continues.
 
 --
 
-i40e: xsk: fix xsk_buff_add_frag() error handling in Rx
+ice: xsk: fix leaking Rx buffers in multi-buffer path
 
-When xsk_buff_add_frag() fails, i40e_clean_rx_irq_zc() used to free the
-frame but stay on the current descriptor, which could lead to retrying a
-broken frame or stalling the queue. This patch frees the current buffer
-along with the frame, advances next_to_clean past the failing descriptor
-and treats the remaining buffers as a new frame, as ice does.
+This commit changes ice_clean_rx_irq_zc() to free the xsk buffer of a
+zero-length frag. When xsk_buff_add_frag() fails, it now also frees the
+current descriptor's buffer in addition to the frame head. It relies on
+xp_free() skipping a duplicate buffer that was already freed with the
+frame.
 
-> diff --git a/drivers/net/ethernet/intel/i40e/i40e_xsk.c b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-> index 51a05ce4c7ce8..e6ae4c7a5cb39 100644
-> --- a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-> +++ b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-> @@ -469,16 +469,24 @@ int i40e_clean_rx_irq_zc(struct i40e_ring *rx_ring, int budget)
->  		xsk_buff_set_size(bi, size);
->  		xsk_buff_dma_sync_for_cpu(bi);
+> diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
+> index 0643017541c35..ea8ac0fcdf6ef 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_xsk.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
+> @@ -618,8 +618,11 @@ int ice_clean_rx_irq_zc(struct ice_rx_ring *rx_ring,
 >  
-> -		if (!first)
-> +		if (++next_to_process == count)
-> +			next_to_process = 0;
-> +
-> +		if (!first) {
->  			first = bi;
-> -		else if (!xsk_buff_add_frag(first, bi)) {
-> +		} else if (!xsk_buff_add_frag(first, bi)) {
-> +			/* Drop what has been gathered so far. xp_free() skips
-> +			 * @bi if it duplicates a buffer that is already on a
-> +			 * pool list. Remaining buffers of this packet, if any,
-> +			 * will be processed as a new packet.
-> +			 */
+>  		if (!first) {
+>  			first = xdp;
+> -		} else if (likely(size) && !xsk_buff_add_frag(first, xdp)) {
+> +		} else if (unlikely(!size)) {
+> +			xsk_buff_free(xdp);
+
+[Severity: High]
+Does the zero-length check need to come before the !first check?
+
+With the current ordering, a descriptor with pkt_len 0 is only freed
+when a frame is already in progress. If first is NULL, the zero-length
+buffer becomes the head of a new frame. If that descriptor is also EOP,
+the unlikely(!first) test further down no longer skips it.
+
+One way to get there is the xsk_buff_add_frag() failure path just
+below. When xsk_buff_add_frag() fails on a non-EOP descriptor, first is
+reset to NULL and the loop moves on. Suppose the next descriptor is the
+EOP of the same packet and carries no data. That can happen when the
+hardware strips the FCS and the last buffer held only FCS bytes. The
+empty buffer is then assigned to first with data_end == data, and
+ice_run_xdp_zc() runs on an empty frame.
+
+What happens next depends on the verdict:
+
+- XDP_TX: ice_xmit_xdp_tx_zc() would post a Tx descriptor with a zero
+  buffer size and the EOP bit set. E810 may treat that as a malicious
+  driver event and stop the queue.
+
+- XDP_PASS: xdp_build_skb_from_zc() builds an skb with len 0, so
+  eth_type_trans() has no header to work with. When
+  ICE_RX_FLAGS_MULTIDEV is set, ice_process_skb_fields() may also
+  __skb_push() ETH_HLEN, which moves skb->data in front of the frame.
+
+- XDP_REDIRECT: the user socket gets a spurious empty descriptor.
+
+libeth_xsk_process_buff() checks the length before anything else:
+
+    if (unlikely(!len)) {
+        libeth_xsk_buff_free_slow(xdp);
+        return head;
+    }
+
+This ordering predates this patch. Since this hunk already adds a
+dedicated zero-length branch, would it make sense to test size before
+first here?
+
+Then a zero-length buffer would be freed when no frame is in progress,
+and first would stay NULL so the descriptor is skipped. There is also
+the duplicate fill ring case where xdp aliases first. Given that, the
+zero-length branch would presumably still need to avoid freeing the
+buffer when it is the current head.
+
+[Severity: High]
+Can this free the live head of the frame when xdp == first?
+
+In aligned mode, a duplicate fill ring address maps to the same
+pool->heads[] xskb. xsk_buff_add_frag() guards against this explicitly:
+
+    /* Duplicate fill ring entries map to the same xskb in aligned mode */
+    if (unlikely(xdp == head || !list_empty(&frag->list_node)))
+        return false;
+
+The new zero-size branch has no such check. Suppose the descriptor after
+the head comes back with pkt_len 0 and aliases first. Then
+xsk_buff_set_size() resets the head's flags, and xsk_buff_free() goes
+straight to xp_free(). The head is not on any list, so this:
+
+    void xp_free(struct xdp_buff_xsk *xskb)
+    {
+        if (!list_empty(&xskb->list_node))
+            return;
+
+        xskb->pool->free_list_cnt++;
+        list_add(&xskb->list_node, &xskb->pool->free_list);
+    }
+
+puts it on pool->free_list while first still points at it.
+
+The frame then either goes on to ice_run_xdp_zc() (TX, REDIRECT or PASS)
+or is stashed in rx_ring->xsk. In the same poll,
+ice_alloc_rx_bufs_zc()->xp_alloc_batch()->xp_alloc_reused() can take the
+buffer off free_list with list_del_init() and post it to the hardware Rx
+ring again.
+
+Could the NIC then DMA a later packet into a buffer that is still in use?
+That buffer could be the head of the frame being built, sit on the XDP_TX
+ring, or be on the user Rx ring.
+
+Also, list_del_init() leaves list_node empty again. A later
+xsk_buff_free(first) or XDP_TX completion would then put the buffer back
+on free_list while it is still posted to hardware.
+
+The commit message says "xp_free() skips a duplicate already freed with
+the frame". Here, though, the duplicate is the live head and has not been
+freed yet. Before this patch, the zero-length case did not touch the
+buffer.
+
+Would skipping the free when xdp == first avoid this? That would match the
+guard in xsk_buff_add_frag(). For comparison, i40e_clean_rx_irq_zc() in
+this series does not free a zero-length buffer by itself.
+
+> +		} else if (!xsk_buff_add_frag(first, xdp)) {
 >  			xsk_buff_free(first);
-
-[Severity: High]
-Does this drop the whole frame when the duplicate is the head itself
-(bi == first) and frags are already attached?
-
-Earlier in the loop, xsk_buff_set_size(bi, size) runs, and at this commit
-it does:
-
-include/net/xdp_sock_drv.h:xsk_buff_set_size() {
-    ...
-	xdp->flags = 0;
-}
-
-When bi == first, this clears XDP_FLAGS_HAS_FRAGS on the head before
-xsk_buff_add_frag(first, first) returns false. xsk_buff_free(first) then
-goes down the fast path:
-
-	if (likely(!xdp_buff_has_frags(xdp)))
-		goto out;
-
-So pool->xskb_list is never drained, and only the head goes to xp_free().
-
-With an aligned-mode fill ring such as A, B, A, wouldn't B stay on
-pool->xskb_list? xsk_rcv_zc() walks the whole list:
-
-	list_for_each_entry_safe(pos, tmp, xskb_list, list_node) {
-
-That would emit the leftover frags with the next unrelated frame. It would
-also write more descriptors than the nr_frags + 1 that were reserved.
-
-This looks to be fixed later in the series by "xsk: do not clear frags
-flag when acquiring a buffer". That patch changes xsk_buff_set_size() and
-xp_alloc() to do xdp->flags &= XDP_FLAGS_HAS_FRAGS, and makes
-xsk_buff_free() clear the flag. At this commit, though, the new comment's
-claim that the gathered frame is dropped does not hold for this case.
-Would it make sense to put that patch before this one, so bisection does
-not land on this state?
-
-> -			break;
-> +			xsk_buff_free(bi);
-> +			next_to_clean = next_to_process;
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but the struct i40e_ring
-comment in i40e_txrx.h says:
-
-	/* Next descriptor to be processed; next_to_clean is updated only on
-	 * processing EOP descriptor
-	 */
-
-This assignment now moves next_to_clean forward on a descriptor that may
-not be EOP. The comment was already inaccurate before this patch, because
-the non-ZC i40e_clean_rx_irq() also moves next_to_clean forward on
-programming-status descriptors. Should the comment be updated?
-
-[Severity: High]
-This is a pre-existing issue and was not introduced by this patch. It is
-in the same next_to_clean/next_to_process bookkeeping. The
-programming-status branch earlier in i40e_clean_rx_irq_zc() frees the
-buffer but only advances next_to_process:
-
-		if (i40e_rx_is_programming_status(qword)) {
-			...
-			bi = *i40e_rx_bi(rx_ring, next_to_process);
-			xsk_buff_free(bi);
-			if (++next_to_process == count)
-				next_to_process = 0;
-			continue;
-		}
-
-Suppose no frame is in progress, and the loop then exits through the
-!size break. The ring is left with next_to_clean == X and
-next_to_process == X + 1. On the next poll, the entry code treats this as
-a partial frame:
-
-	if (next_to_process != next_to_clean)
-		first = *i40e_rx_bi(rx_ring, next_to_clean);
-
-Can this make the freed programming-status buffer the head of the next
-frame?
-
-In the meantime, I40E_DESC_UNUSED() is based on next_to_clean, so slot X
-is not refilled. The freed xskb sits on pool->free_list, though, and the
-refill at the end of the poll can post it to hardware in another slot
-through xp_alloc_batch()->xp_alloc_reused().
-
-On XDP_REDIRECT, that UMEM address would go to user space while hardware
-can still DMA into it. On XDP_DROP, it would be freed again while hardware
-still owns it.
-
-The non-ZC i40e_clean_rx_irq() handles this case:
-
-			if (rx_ring->next_to_clean == ntp) {
-				rx_ring->next_to_clean =
-					rx_ring->next_to_process;
-				cleaned_count++;
-			}
-
-Should the ZC path do the same?
-
-> +			first = NULL;
-> +			continue;
->  		}
+> +			xsk_buff_free(xdp);
 
 [Severity: Medium]
-What happens to the rest of the hardware frame when the failing
-descriptor is not EOP?
+Suppose xsk_buff_add_frag() fails because xdp == first, and the head
+already has frags attached. Are those frags freed here?
 
-After first = NULL and continue, the next descriptor of the same frame
-becomes the head of a new packet. i40e only marks the last descriptor
-(EOF), so this new packet starts in the middle of the original payload.
+xsk_buff_set_size() has just run on the aliased head:
 
-The hardware limits a frame to I40E_MAX_CHAINED_RX_BUFFERS, so a full
-frags array cannot happen. The remaining trigger is a duplicate fill ring
-address in a non-final slot, for example A, A, C with jumbo frames.
+    xdp->flags = 0;
 
-At the original frame's EOP, that descriptor goes to
-i40e_handle_xdp_result_zc(). On XDP_PASS, that calls:
+This clears XDP_FLAGS_HAS_FRAGS, so xsk_buff_free(first) takes the early
+exit:
 
-	i40e_process_skb_fields(rx_ring, rx_desc, skb);
+    if (likely(!xdp_buff_has_frags(xdp)))
+        goto out;
 
-This applies the original frame's ptype, checksum verdict, RSS hash and
-VLAN to bytes the hardware never parsed as headers. On XDP_TX or
-XDP_REDIRECT, a tail fragment would be sent out, or delivered to the
-AF_XDP socket as a complete packet.
+It then only calls xp_free() on the head. The earlier frags seem to stay
+on pool->xskb_list with no owner. They are either lost, or xsk_rcv_zc()
+later picks them up as part of another frame. The new zero-size branch
+above has the same flag clearing when xdp == first.
 
-Documentation/networking/af_xdp.rst says:
+This looks to be resolved later in the series by "xsk: do not clear frags
+flag when acquiring a buffer". That patch changes xsk_buff_set_size() to
+preserve XDP_FLAGS_HAS_FRAGS, and makes xsk_buff_free() clear the flag
+after draining.
 
-  AF_XDP guarantees that only a complete packet (all frames in the
-  packet) is sent to the application.
+At this commit, though, the duplicate fill ring case named in the commit
+message still strands frag buffers. The stranding also happened before
+this patch.
 
-The non-ZC path in i40e_clean_rx_irq() keeps the hardware frame boundary:
+>  			first = NULL;
+>  		}
 
-		} else if (i40e_add_xdp_frag(xdp, &nfrags, rx_buffer, size) &&
-			   !neop) {
-			/* Overflowing packet: Drop all frags on EOP */
+[Severity: Low]
+This isn't a bug introduced by this patch, but there is a related
+behavior. When xsk_buff_add_frag() fails on a non-EOP descriptor, first is
+set to NULL and the loop continues. The next descriptor of the dropped
+packet then starts a new frame through:
 
-The commit message says this matches ice, and ice does behave the same
-way. Even so, could the ZC drop path consume descriptors up to EOP before
-starting a new frame?
+    if (!first) {
+        first = xdp;
 
->  
-> -		if (++next_to_process == count)
-> -			next_to_process = 0;
-> -
->  		if (i40e_is_non_eop(rx_ring, rx_desc))
->  			continue;
+So the rest of the dropped frame is assembled and run through XDP as a
+standalone packet that starts mid-frame.
+
+The i40e companion patch in this series says this is intended ("Remaining
+buffers of this packet, if any, will be processed as a new packet.").
+
+Is that also the intended behavior for ice, rather than discarding
+descriptors until EOP?
+
+>
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261102124950.958345-1-maciej.fijalkowski%40intel.com
