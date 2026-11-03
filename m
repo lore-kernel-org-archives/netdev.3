@@ -1,98 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.51
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793712174;
-	b=QPyd5Agx0BfqgWVTRqb72kX9b+h7TSEVS8dLyUhJ5xl2mA7lIBJfW/4Z4BRjKWBSN57k
-	 5elcXW/zZdr2N9PYAcOosNTZQSp/JEmmjKv9k872CIsCCx3l5qbqXq6W+rvJeEy5A9AB4
-	 1uqpVfuUrcLqXYBt6g7/LI63pneg0/4d9IdS4iL+WYgtlHN0ephctquCKZIrcOT5tQFNL
-	 blWz8PXhod+7FTIUXpziGmPgfQr/8+V9gwwYwBByzcB5plpkqJP6o5ZXGhx6D0aUYyJ+8
-	 fZaD+Im63IcDi6F+/KzqZt9vx4ZNmOVwWJIfGqXkvBzmb646D1rM9etVszh7AfRBpiA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793712174;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.47
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793712180;
+	b=mKwWcvT27+wYiEjRYJCw5sxtRA2eIie8q0gOktG32rGoXG88JB8WEhTYFH7e7c0cr+DQ
+	 TFmJ+JzIhvhfn5TVQ+MiEbLddJ6wRfWLr/VKDZJcPkYFCZxcfMPflYA4iwrXPQqsFvF50
+	 Yy/s7jVbCEsWdk8t5TtW0xg4D0z7j1jrU2hgsTXKq/BAOPnrgmGvMz/j66Hvw5ECoi6gl
+	 9OVHuDS68kzqc7KMaEQ9tpDMNUS0BFVtR6ij0B9Uihv1kk1LrXmGzPDzIba+poUHzIcWK
+	 vdS88ZLQs1qNmF/z/yG8p/P+4H0fgoebbR8b9JXSyUJpyee1m7ABo3vSh6e+fQTBMvw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793712180;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type;
-	bh=9KwHQjKFgpi0i5HGrc0Hhrq2/ezRelX2eB7Zkx5u6DY=;
-	b=gbRtfY4QLpMqFx/MfBf4p6hBNz+pzEDdkZIT5zmIFT0R6517w9/O2wYTUnjPdr+mQeUP
-	 FRRi5nXP3VCT7d4kl59un81WlrM2+XchYKyG55jVls5V+BBckzD9UYue5939EIiC95q9H
-	 mz7lG3M8RpYcTUtRydu1iLe3JaaAXyeSLutqvA/jV5YU7jDrhylYJmPCMcfWv68twt57l
-	 EPUd97TI49rxoD8DX0rvAxCKLikoZjVmiI6YH+z/zyvGUG9J15LLUOWwtWKoydHtXZn/m
-	 HOZIrZ2mGWHDFJq92WIPiIH75IbiM9VHkvmPx6w1MW+CEhLHmmxoEV3RM3K/Pzgz2lQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LLh5VG3m;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.51
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding;
+	bh=T0FqMog4IcpWe1YEj5FPSU9w3uh4BL0oNm3nVQw/i0g=;
+	b=On75/Agf3sXqoNt/4/M9vrdygfKpfnUaRKfqLq3dwJyX7dANSPy59xzbKud/V6i1UxHF
+	 OuZTENeXiWGcjDfEWg/NmvmIrSqXzWxzCakIsF8MPAKH99rxtAgf4uRs9bcwNrwPG2juD
+	 5johC/xMTTQ0DbaIKJY8KmQ448742KoKir+hQOBMXf55yQJZQg6wCQeAVqWSTLXohOlts
+	 vtPre+N2YY5bNvnphkGpy7LpOwEjRq84Br3Ki+guUPg8Fznmq0zuUdPTL0PUAKmMxHO9M
+	 i3zE+xTo1Ju8Z17iz8MgvWO2Sk0Brx5CozT68lOY+xBDaPhjtZflbnGSs903O9aVW6A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=baylibre.com;
+	spf=pass smtp.mailfrom=baylibre.com;
+	dkim=pass header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=MZKobFRF;
+	arc=none smtp.remote-ip=209.85.221.47
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4BC606A32F
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 13:22:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4D4BC606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E699606D824
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 13:22:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1E699606D824
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LLh5VG3m
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-15ea896ddc8so7034542c88.0
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 05:22:54 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793712173; cv=none;
-        d=google.com; s=arc-20260327;
-        b=gLyWHWYx1pp+kRto1DEyiTMHbag1bnz6c6aYhuOZ7JUXbP08D0vnOaubr5R55nkEFR
-         TGCjMB8HRwFenFJlpOqT5kUuYqGcRlLllO94rJ9kFQo7CLTqRAUnuSfdTAokCzJn8tnQ
-         WgtH1zMstxx6XhWR8DHCHMzEX8lxIGZidWE7z4xcXALCA7OTpJMJiyY7J3JaI0yuDQcK
-         mcWIkaCjYZk45TslIk+L12looRUv2O5p1T5Efu+mtCUjlSLfVmMSGU1EEeu1QXRMnOtr
-         bFAU/z2BAeVvvX1+lv3OuaWNqp/y6kkZz3M5GgqV4LaplO4Ewbt7+VktYDOGqtZ6yRXH
-         /XMg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=9KwHQjKFgpi0i5HGrc0Hhrq2/ezRelX2eB7Zkx5u6DY=;
-        fh=8mvxw27cMHR1v4Sb56csdvR8zJXEn8t7VsNS/8eHB7Q=;
-        b=c+72IyTLNcDvC5/erZehnWwNQNJCUEzEGBuhk1sfulJMwYG6a1GQ4GAi5YH8aTxlvS
-         IWWpHWjC6joy6mhFm+I9bf8u5CmzTh443dP3TeneydmLITF7qqh8TkVxZrNYNEhDwNx5
-         eGqCwytIsRRGn2njB7rlckI3YSxVVVzQjjH6knsq4IsPuQPgph7NY7TBgi/vd6JM4GQJ
-         IIcd0JvXPkNfcxAYiTO/DbsXoE1940yQFkvodp0nLwW4hTsLK1s6J6nTMw0TN78ks0i6
-         vY2Wrx5IOCQEklNu5+2dIonXa96B0l6p7yhMnLhiXjaGWiNbidFIB8I44hyqhZh3rluT
-         vpXQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=MZKobFRF
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-48df54150dfso2096714f8f.0
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 05:22:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793712173; x=1794316973; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+        d=baylibre.com; s=google; t=1793712178; x=1794316978; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=9KwHQjKFgpi0i5HGrc0Hhrq2/ezRelX2eB7Zkx5u6DY=;
-        b=LLh5VG3mzq6P73mPT2KOAC9nz25lAyw+SDCybhoVaLrd3LAVuKn9AZhFQT8xGoUAd9
-         iQ0eRBok6NHOOLJ2ANEl6qkXp/wt5IFJ/+Qx2f95sa3nhX6NdymbhjVQnrmkJ/AJnFto
-         ZIaj8rqgn2ZwLoTcs5CAJwz/kV3cklSf03nxZajGgeydaiA8pC2fG3kAnmNZPwkGTiar
-         qhI7W8mhvvibw/2NFz4T7Lt6IwCOEsfbpbsMtG1d5ds7bewzjqZ419EleHQXGlcPto1l
-         zCyUnm1bouoFLg00MNC9RnFVmUD61LraI9k0+bE6MoTfmm/dW30/DztVcoNEf+rF0IJg
-         a5+g==
+        bh=T0FqMog4IcpWe1YEj5FPSU9w3uh4BL0oNm3nVQw/i0g=;
+        b=MZKobFRFf2B6nwmZ6eNhe4g2CS9IOmc0lTwHjXT1iu1WmeivllUndpmE3aR7eCJJp5
+         VjGxTBcBIrVXrzNUTMpJd15+jkHywvDgHwuWcfS42Ov8IjGS5X3Jzo3+2V+ijphWzRmD
+         snE/r3vaZy8lcWdmkHGOzOof8kdxjbizFG/mgdZvog2aGlDaH7JfaZ5Yvdylxj+oJDX6
+         f4e+OTxlkrUlR4RVKhOl5ep+B0PQTbxtaRWmXhcK4NH/h4hkf17C74Jzsx+KLtZ8WO1Y
+         UKE1GrBaYandU4Kt6xIRmGYGDoGg2nGxp+jD6f8D11gvFjUmy30dRJoa/YnAvbl6TWHF
+         XDiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793712173; x=1794316973;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=9KwHQjKFgpi0i5HGrc0Hhrq2/ezRelX2eB7Zkx5u6DY=;
-        b=iR1URaUCwth4fH+gVY94ufkL1z//OzRgYItvFAeCk89tEv8u0i2mS0MZ2MakYARjIP
-         NADJCl8VGisNkpttLIrMjkGbcfBKkY82FxcferELkjFvR5abWz+vWRJL+dB9KLJI4Tj7
-         P1AV9kTLzTy+6p7ICLKiuS2eUsJb0nr2L7zYB9n/2peo8tzGpzdG53rnYUA6AnZXwtC2
-         vIzbTkrOHDw3cMSpNVzPXSlb9es3aZj33INAkNEXrMH7ue0LhSynZVAM51gT8ZqDl3lR
-         25r3AvPS9SpWNEyCMmsIG6Zn/Hn9944m8zfnoVMeXmg/TIcFXjnVGfORg0NzyNFCq8ha
-         dPrg==
-X-Gm-Message-State: APuU4Z+bd1JxPAR6DksEUDgkyByriOX/sF8ThgTHiGlxJsEWktne2fo0
-	S7xoVdP272qTeEGpOjpiPQdzRTSIheBKI2B4Qgi5yJ65uhVk3OWDXHAJqPynNy6jGi547K2rog5
-	GEp6xTyhzak4CR+/zi+nKhw6h2wWt+Jo=
-X-Gm-Gg: AYBFou0JSIWQEGmml6y/b1ZW52ZbW3tlfQ4GSWzLqOGDUa6wlYNlqZ7BWTtqhnTTidY
-	Ubb/U0XHQDz8vzjWiAJbI4mBMSwUD0QtazIUh5IjV40RkNElBKP6Tit0OVV9gDEquRh+4Bxoy89
-	Q82QY/7skCTKxDOREiINV+H/7jP2SoQkf8c1pxNOagQ3obE3iJ7FiKyKq4sywpPm1Km0T+BbTFf
-	69wPlBj5SFy1cZiwecSGK0HGZ7BIZDuLetOEaYwITQLYM755C1xcIZkuUqYLBZ43gCbjYnOB/Ki
-	E8kLgcxTTxpSe6/I1rvOe7DuaWSxQaQWzsDj6HFsUqN2VSeMyJqp38T3WyndrEEjEd2hVMXXshR
-	oeMBR9bE3sLNG207N1f+mCATETxyFGT1vkeq2
-X-Received: by 2002:a05:701b:450e:10b0:14c:637d:682d with SMTP id
- a92af1059eb24-1ac5d69f6a1mr19043531c88.43.1793712173117; Tue, 03 Nov 2026
- 05:22:53 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793712178; x=1794316978;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=T0FqMog4IcpWe1YEj5FPSU9w3uh4BL0oNm3nVQw/i0g=;
+        b=QOjp7ObKxfC7p4uhy/oEe8QmCRzPQa3J7NTPcSFkDfaN9nsLWPXtM52HMZp+B1Sk3J
+         KhuCTo0J+LXdIBmCW8AkqfQ8KbRQlDkR7jV+G8fElWPocwNqPeghYI+kggAaIurrmdcq
+         TODJH1c1+77mAWvj0BJa8OHg2GVZyPaRfUdFMSjanr9dZ8YEDmHXP1ZGTZabW6vb3zH/
+         5nJawoMVzuF7Zkx00oPECaL0qFyXjA0hs6NGCRW0+2dz3nyfGQHppbpHbSZ4hkzejhvj
+         TQ4nXbCYatwNIORKYhbCVqWvHOgfbQFddtMx2dxrfzvwIRH3MmIMU8jYYW/ZGXSmVf84
+         6/ew==
+X-Forwarded-Encrypted: i=1; AKwUvBwhck3BDMvvg+zP0qEhaT3DIUelkTj08HnE02HZrWxFBtcmQ8tXKKo6nzryGXjqKW9cPt3RK0c=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8LmTXZV44wymAkZfOhUJNu30BtbwWW6rg+bUeGhIOnMpymo1gJ
+	B3lYav6hIDoYVtoIjDEQoL5WS4beakPCg/AOp38ZGxtHxCE74RSU/cXEwGQ+T+adSdk=
+X-Gm-Gg: AYBFou0oJWjfTENXUYcdCZAaMdonQDmgytGvM8eVFlwcqXon8j9laiaRNoeo6NVfMLZ
+	by10NaPlh9rVzNWvrGr/aLd2t77jPW8h+7y2TR4h/sVT/OIEysMfcDhd/K3tYHeS1Q7Yh22dw+h
+	tYtKcBu3Pn0f1ExJhwk0rtOl+pPQQ/DQwvL1o0iAwm6p7C6pWDKjP8XqoBHafjBcoTso45vcaC1
+	jYHmepQoCexz3xLXOcxwbTmeIGuaz0Q//4cD0gu0MVYc4JxKaq40npzoSlAxwU275Z0Jgt5dR9X
+	nqgVdYR41QwQOjXdB8RoH1VBEgDpKxCrXQWci2VO4doAiEj7iRS1MmNxs/NE/k8THzMn2TsC8lL
+	IcplGsbWJbnK+i+LNhnb5pvtjbqzXr4kOsApXid3EsTesb3pCmf3qtxtEU09cXYqTzIpcb8QtyW
+	wTok4MA3ZE72ePU1pGhgtdMFo1Rf8WJLEztGvcXJbUKou/9U2swsevE79D7fhpphqX5a6WDkHs5
+	ZC2GP66Gg80X7z3vEoEmTgDBuHp2iyrbb26Mw3Hq14oVGa8GDcEKRffVxM9BipHAo/sNILH90Ni
+	bEfyNPmtcYyzLMeerD/4tFcqLLMKcBinybCLDbBu4xRQujlu7CzMPdZnETo8Um8MJcK3jKwMMN9
+	itFVh9t714n+eAAJ7y1RHgN2dTbU2crFsPcQ5
+X-Received: by 2002:a05:6000:178c:b0:487:b50:101c with SMTP id ffacd0b85a97d-48e6e2bc04cmr30304403f8f.5.1793712178173;
+        Tue, 03 Nov 2026 05:22:58 -0800 (PST)
+Received: from localhost (p200300f65f19a9048e0e65dd41210f6d.dip0.t-ipconnect.de. [2003:f6:5f19:a904:8e0e:65dd:4121:f6d])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-48e71bae0f4sm22307781f8f.58.2026.11.03.05.22.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 05:22:57 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Arthur Kiyanovski <akiyano@amazon.com>,
+	David Arinzon <darinzon@amazon.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	Dawei Feng <dawei.feng@seu.edu.cn>,
+	netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] net: ena: Make ena_pci_id_tbl.h self-contained and simplify
+Date: Tue,  3 Nov 2026 14:22:40 +0100
+Message-ID: <20261103132240.442686-2-u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,46 +111,100 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261101150240.66292-1-timur.stukan.linux@gmail.com> <179354572351.3286.5042962273582442842@kernel.org>
-In-Reply-To: <179354572351.3286.5042962273582442842@kernel.org>
-From: Timur Stukan <timur.stukan.linux@gmail.com>
-Date: Tue, 3 Nov 2026 15:22:41 +0200
-X-Gm-Features: AclHuK-C5xGCzX7-O3YYlIZKLZWlvhm5d8m0-ahEBg7449qGEWBHvcs7hKepSTA
-Message-ID: <CAF+_u5DHF4UW-8p+BRKzCPWELOLVqhnO5Jz+WiJR0dL_BWS7rw@mail.gmail.com>
-Subject: Re: [PATCH net v3] bonding: fix missing down path on speed/duplex
- failure after FAIL->UP
-To: netdev-bot+sinfo@kernel.org
-Cc: netdev@vger.kernel.org, Hangbin Liu <hangbin.liu@linux.dev>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, Fernando Fernandez Mancera <fmancera@suse.de>, Jay Vosburgh <jv@jvosburgh.net>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2948; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=+gVsiAK1fNaTWf0SLgLEclzZ7RxZ7QMhU5Ir6dVMJ0o=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBq6eAgL7zVVP7fPFGVhsfUEA1f4G7B+oNrtVkxA PfbgruqQwOJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaungIAAKCRCPgPtYfRL+ TulZB/4oev48ydjymW0ga7XATv51XGwH4LXerAt0rTWGhlkPYIABl+gqDyfAeJ2lfTdJvNquLHs +mJA54G8XKszvK9yGqevwoWdI4NpwXK/acTrH0mVvNb+29pCxyirGFa+j90eQH+6FnIDkGDDKEQ 0P1KFYRJ9+qTb9C4fqh3LdE80BmEZU1te7TcnEzvCcB7Io/0GQwPSq8Jvr5NydLl9Tqtv25y8hZ IzThpm7SyvhSMVzpL6WPk0NK3P2S1OGIW5YlfPT8xn8f93RPRO/Y0azHBZuzCWriF7rWoHjGhKE XO1kqCpEoI8Ab8BV18l8pja/BJCdZOaPVziWru/tzYpPH4pB
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-On Sun, 1 Nov 2026 at 17:08, <netdev-bot+sinfo@kernel.org> wrote:
->
-> Hi!
->
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
->
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+The header makes use of struct pci_device_id and PCI_VENDOR_ID_AMAZON.
+Include the needed header for those and drop the local definition of the
+latter.
 
-Hi,
+While touching this file drop some cpp guards and improve the coding
+style.
 
-This was found by manual code inspection of bond_miimon_commit() while
-working on the bonding driver, and then reproduced in a VM with e1000e
-interfaces.
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+---
+Hello,
 
-Timur.
+(implicit) v1 of this patch had a different subject, so maybe teh
+automatisms won't find it for automatic comparison, but you can find it
+at
+https://lore.kernel.org/netdev/20261102110907.356621-2-u.kleine-koenig@baylibre.com
+. Changes since then:
+
+ - keep the local header and make it self-contained
+ - Do the simplifictions in the header instead of the folded-in copy
+ 
+Note that while keeping the header is fine for me in principle, I still
+consider it a bit ugly to have a variable defined in a header. OK, there
+is only a single user, but if there were two or more, each user would
+get its own copy of that variable. 🤷
+
+Still this patch makes my mod_deviceid.h check script happy because now
+the usage of pci_device_id doesn't depend on ena_netdev.c including
+<linux/device-id/pci.h> before ena_pci_id_tbl.h.
+
+Best regards
+Uwe
+
+ .../net/ethernet/amazon/ena/ena_pci_id_tbl.h  | 31 +++++--------------
+ 1 file changed, 8 insertions(+), 23 deletions(-)
+
+diff --git a/drivers/net/ethernet/amazon/ena/ena_pci_id_tbl.h b/drivers/net/ethernet/amazon/ena/ena_pci_id_tbl.h
+index 3ecdf29160ca..72605991528c 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_pci_id_tbl.h
++++ b/drivers/net/ethernet/amazon/ena/ena_pci_id_tbl.h
+@@ -6,39 +6,24 @@
+ #ifndef ENA_PCI_ID_TBL_H_
+ #define ENA_PCI_ID_TBL_H_
+ 
+-#ifndef PCI_VENDOR_ID_AMAZON
+-#define PCI_VENDOR_ID_AMAZON 0x1d0f
+-#endif
++#include <linux/device-id/pci.h>
++#include <linux/pci_ids.h>
+ 
+-#ifndef PCI_DEV_ID_ENA_PF
+ #define PCI_DEV_ID_ENA_PF	0x0ec2
+-#endif
+-
+-#ifndef PCI_DEV_ID_ENA_LLQ_PF
+ #define PCI_DEV_ID_ENA_LLQ_PF	0x1ec2
+-#endif
+-
+-#ifndef PCI_DEV_ID_ENA_VF
+ #define PCI_DEV_ID_ENA_VF	0xec20
+-#endif
+-
+-#ifndef PCI_DEV_ID_ENA_LLQ_VF
+ #define PCI_DEV_ID_ENA_LLQ_VF	0xec21
+-#endif
+-
+-#ifndef PCI_DEV_ID_ENA_RESRV0
+ #define PCI_DEV_ID_ENA_RESRV0	0x0051
+-#endif
+ 
+ #define ENA_PCI_ID_TABLE_ENTRY(devid) \
+-	{PCI_DEVICE(PCI_VENDOR_ID_AMAZON, devid)},
++	{ PCI_DEVICE(PCI_VENDOR_ID_AMAZON, devid) }
+ 
+ static const struct pci_device_id ena_pci_tbl[] = {
+-	ENA_PCI_ID_TABLE_ENTRY(PCI_DEV_ID_ENA_RESRV0)
+-	ENA_PCI_ID_TABLE_ENTRY(PCI_DEV_ID_ENA_PF)
+-	ENA_PCI_ID_TABLE_ENTRY(PCI_DEV_ID_ENA_LLQ_PF)
+-	ENA_PCI_ID_TABLE_ENTRY(PCI_DEV_ID_ENA_VF)
+-	ENA_PCI_ID_TABLE_ENTRY(PCI_DEV_ID_ENA_LLQ_VF)
++	ENA_PCI_ID_TABLE_ENTRY(PCI_DEV_ID_ENA_RESRV0),
++	ENA_PCI_ID_TABLE_ENTRY(PCI_DEV_ID_ENA_PF),
++	ENA_PCI_ID_TABLE_ENTRY(PCI_DEV_ID_ENA_LLQ_PF),
++	ENA_PCI_ID_TABLE_ENTRY(PCI_DEV_ID_ENA_VF),
++	ENA_PCI_ID_TABLE_ENTRY(PCI_DEV_ID_ENA_LLQ_VF),
+ 	{ }
+ };
+ 
+
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+-- 
+2.56.0.rc1
+
