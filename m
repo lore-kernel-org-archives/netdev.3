@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793702457;
-	b=RvBEqPKFn4ixS8UEiIv3NzQJCyKalpe8lViJ2Bui7vC33QgCfgsB6+oaGFMTPQlS7057
-	 xb/h87D6wg9bATEOgvyDhZ78dStjDOZAFTP7luDHbEcxWpS63DqvhGEha6KO6Hw6Ty8ve
-	 Smbqeb7mxkuDd/eotAyM9jKQdwik2+bt7yMHRSlHDDYv14+3bWcEBqh7F1+04keARJmLv
-	 pZesyt+CPgv7bAv5qncW5F790ylhpxqSPinnxicCu2jJyUiLklItfKdLmwxGq+9LsppjO
-	 l0pwvPDxMi8IgMZcq3KIbyyvmV6gBjpyeni6VkfV5FMbFF/4wMkEYFDhCJo9+zHkobQ==
+	t=1793702454;
+	b=d8OdQXWvHNHfwM48dU872RFUh9TTw3mz+GKBbB9VVpz0R4f9bgNzdfPkWnLDu6iI6nTG
+	 Jwk6ot7u0h5vWuNZaCv/RLeWG5Uv+skHIqehejoePwGtRUaBstSToCL0HU9Ngql9s+InL
+	 UNIwkqG8NGOWHLqX29vCv6jCAQZvL76YLzH4eZDW1s0+4b2n/o4LE8Te0u3dtqJcUt2K9
+	 CXdLZbKsxQHudPf3J/8rZeOj068+MmM2OHqKns8WfBXCogo90m/f5QHdONW7btygdsjAi
+	 MhKgs/r5MK8IDit4EtcLzD4PPp8jLbgzhRRxiRJ0ohub0Y9j6KbASBTMcsGF4a1YzoQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793702457;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793702454;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=9gRTKDN36/4ozZWtGoP7ulX2aHNkplmVxuLYjJ9WOe4=;
-	b=Jou7Cn+IY0/AFACoE7/jraspaGXw3AGwzzN8PcxjWt66kve0/rLF4XojPZDa+CaEHJ07
-	 VoenTfbl45dNXRnzboxuleRskb6XGXFtWxBf4/JAygBICRrQ5LJbGr8ILeaFUtO4XL2mx
-	 5zbR8u9uE9VrfGg2axAl4JUENk14zpOWILVV2dmBCesLoMSE9w/nPkFKcAERI4NT4jA4m
-	 QQ8mZah5gEMudOo4y1B62UPgK81kNx3GsPFRCBFc82xUhM51MjREbLZjYhP/2jhlCNHEl
-	 75ZhqGNd+Uulq26mPQge9xzpcUfPUeOLa3LKDHiy3bUpamnCC2QWYgVVqbTYfKxHcSQ==
+	bh=IYxQu6rRV+yeU/8fjYNJ89G0AYUb0oOfgKRpklW/3u8=;
+	b=1qpjf3ZyohQZB2ReBg2k1cVMjcGDKqMhfOsDine9SDYvt3QRhrFMdyyRlet4hO8UBwP/
+	 2fi1ZQbffA8cWmw2cTMjN95oJ+sRXiqMrVlqdsWNDpIkC+uPTohkn11PRQ+1OEgTICkdC
+	 W3WuhPn8Zg9ifUD9dXBHub1FW4Vo0+OE5g7UBJaRxpZForQeE+8YhX/+oO+5qBbThKEWa
+	 zDKSF6NGTlVEihYbZIljF2FaosoetDSoV8RlomVTvUed2O/5fAPus/YJS+Ub7hKL3dr4l
+	 G6lqEyHAgFIY1ilBy59Ws9PCaCu4aueUhuuue9lpvfGfvnP2SRjrSTLkxysfvrfaTbw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YfSxmpnK;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a1IsFgao;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2EA4606B110;
-	Tue,  3 Nov 2026 10:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4E5606A831;
+	Tue,  3 Nov 2026 10:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YfSxmpnK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC241F000C1;
-	Tue,  3 Nov 2026 10:40:55 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a1IsFgao
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA731F00A02;
+	Tue,  3 Nov 2026 10:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793702456;
-	bh=9gRTKDN36/4ozZWtGoP7ulX2aHNkplmVxuLYjJ9WOe4=;
+	s=k20260515; t=1793702453;
+	bh=IYxQu6rRV+yeU/8fjYNJ89G0AYUb0oOfgKRpklW/3u8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YfSxmpnKzw8lVduPpGEe9IlP7yT+QWryAJnxeEvZwSNINJPlapwroyoNjgrOFvbEc
-	 qhU/jXX1kKETv51KmLCq9a/Py3zICATatDpqBTfCEqxPesRZTVpAa+tdZqLH/fg5by
-	 YyJyQOLmooBvt7jwYXDSRIjPuFgymMY/ghi4QceCZB95FMwxlOV3+mitX61ynitpJB
-	 Fv3Q9jLRknCRRKLn8Iub50+QnEKakZ9zXqjXAaREykRg8Fj9snH1qPphG1RHQvGnK/
-	 me3UhCvEIZLfphpk5LjQPKc3MH8chrZwXaBk2EzqRyD7ETMywUjQngC3REq9TBqWIp
-	 e5YHFgaBm5avg==
-Date: Tue, 3 Nov 2026 11:40:53 +0100
+	b=a1IsFgaocJ/+veS0AT+Uu3h9gCVAOdbP71qRvxqY7UZ8nac3q+Ww5xCIyhw/GCNQF
+	 Wwg3uWGybrOov4FmLlXoSW8tWuw2fQkGMsCuniXx62TdZnvhQIf0PXnezqXlfVwgIR
+	 bRdAoET2uKSQGl/pQeCMNU2MUmjZX/m+j+gUXvrIcXxNJRYy/kOxV3B8nC2ejkMTf4
+	 LY7U7ezH5A6RVtwR27NTf5zO5Kh+L0r3h+OARgRi1zEWFrfTXqC5c9UtDn4Vgob9VS
+	 xROax+kPZlGbYQoT/UMxACOgOiz453rEbzuUGuLeDE/+/N0+a72sQ0PBSJ1azIF6Nj
+	 vLTy+bEflIwSw==
+Date: Tue, 3 Nov 2026 11:40:50 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: Petr Machata <petrm@nvidia.com>, Eric Dumazet <edumazet@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni <pabeni@redhat.com>, stable@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	Ido Schimmel <idosch@nvidia.com>, Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH] mlxsw: spectrum_ptp: release parsing depth on MTPPPC
- write failure
-Message-ID: <20261103-convivial-prehistoric-deer-bcec5f@quoll>
-References: <20261103102851.1340480-1-vulab@iscas.ac.cn>
+Cc: linux-kernel@vger.kernel.org, UNGLinuxDriver@microchip.com, 
+	stable@vger.kernel.org, Bryan Whitehead <bryan.whitehead@microchip.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH] net: lan743x: disconnect the PHY when PTP setup fails
+Message-ID: <20261103-offbeat-polar-starling-3aaa06@quoll>
+References: <20261103102852.1340530-1-vulab@iscas.ac.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,27 +61,27 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261103102851.1340480-1-vulab@iscas.ac.cn>
+In-Reply-To: <20261103102852.1340530-1-vulab@iscas.ac.cn>
 
 
-On Tue, 03 Nov 2026 10:28:51 +0000, Wentao Liang wrote:
-> mlxsw_sp1_ptp_mtpppc_update() increases the global parsing depth
-> reference count before writing the MTPPPC register when timestamping
-> is enabled for the first time. If the register write fails, the
-> reference count remains elevated even though no timestamping
-> configuration was installed, and nothing will ever release it.
+On Tue, 03 Nov 2026 10:28:52 +0000, Wentao Liang wrote:
+> lan743x_netdev_open() connects the PHY before opening PTP, but if
+> lan743x_ptp_open() fails it jumps to close_mac, which skips
+> lan743x_phylink_disconnect(). The reference taken by
+> phylink_connect_phy() is then never released, and the PHY stays
+> attached to the phylink instance.
 > 
-> Drop the reference count again when the write fails. Also only drop it
-> when disabling timestamping after the write succeeded, so that the
-> reference count always matches the programmed state.
+> Add a close_phylink label in front of the phylink disconnect, as the
+> pre-phylink conversion code did with close_phy, and use it on the
+> lan743x_ptp_open() failure path.
 > 
-> Fixes: c6b36bdd04b5 ("mlxsw: spectrum_ptp: Increase parsing depth when PTP is enabled")
+> Fixes: a5f199a8d8a0 ("net: lan743x: Migrate phylib to phylink")
 > Cc: stable@vger.kernel.org
 > Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
 > Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 > ---
->  drivers/net/ethernet/mellanox/mlxsw/spectrum_ptp.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
+>  drivers/net/ethernet/microchip/lan743x_main.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
 
 
