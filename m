@@ -1,101 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.170
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793715766;
-	b=CrLBsv0gPtSyZokOsgFVzr3B8AnxnAf/Lkypf6AUiUcMvg2FYOKqsT8nr1QMQCEn+J2y
-	 5svcqvURBcUW6CLM0K0O72z3t3HAd127dTabtoXmTE4GBDiZ4pUHHVyx16SRxMai/59ze
-	 RzzVlqOpndN4r4a8SWA3AbgOT6KyighYMlFwJTKqNNoXWHWDK0pTO0Ge3RqkUL/33xiiu
-	 /kKu/TzwaZTGYGtn0YvmuEhALBlxZmNACYzmNWlphNDKtAUGTYmqRT+6xKX3t2Mqih4YL
-	 82SV+ca0L323ZhYTNTNi+DTOPjJqSPTrMzPVXS7pYCOM+++pUZL78f2l2DOWPqGVeNA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793715766;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=goUEmUyHzHRn/JAgbYWl2i7yvd0k17zq6RZVq6dJndA=;
-	b=nPgrqRU9A6ncaBFQNb03gX4fhEcGasY5jwLBq7HYDbZ2V00ZuZNJkfv/G2lF46rESVgq
-	 X/0fuWqWPDsxjyN5iXHjrpuD5NMq1Z7VKNhibNMGjYipIcim59/7ycNRRnZ1+vAj9Yr95
-	 cvEphVzgQc6TXVN504qKvY1CQQtHflvIWOTRDlCeSKbrdt3Clkg8Kz6mXuhyVLaZ+Ufa5
-	 scnl7x6OFwR+vbMpncmHf+aEeFVXsXm0QLzXuslm93NY1s+eMD5qAAaUK6O/TsnjgWCd5
-	 o6I3FFPfYebVCTI5D2sqJetthuDyxAQgvr1LwlR3Z2Vv9hYfJmGcJJ8YLkETMvjq9Vw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Jhkisa2S;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.170
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.40
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793715772;
+	b=oB4/vbR8MCx8N1ZlqKbQtkqV4vK7UgfMdqE2ovPLQAK0eptBKZgan1RB2BA10Jz2gmiw
+	 OfrzjNr8inE7YxadGsrERjK5vl5aQnbAziFPQGCPhPj2EfNwOAgwTB9BCsx9Wiqi3S8Tg
+	 8ayEmDSuYK03Wq+0elXbU1NxsKD03MPQzggrJUmelJPB0CfuNIx03/VidDlxrxF7dUNKg
+	 Im8U2Hxmfcv2ZVve8IloJdKVMyDKJnyer5Xjud934mSScto3K3pIk2LyqJMDT0eKH8PlP
+	 q23YnIdNRMDBJNGv193UYIlG6fq2LcBm4ANSLkbJXheByfpkz+ny0czpSECvGEdY+6w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793715772;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-Rspamd-Queue-Id;
+	bh=uRaOOdHNL2jhfSdxi+3Ia5TDewDrCzWyo2m09xbyvCE=;
+	b=pBbu1lxf3+3aKVErTFbSu3ckrQ+l/LsNCfz4/LIMEDoofQ90iZrHcWpfqjIs5AaB1ATM
+	 lYQr+yoWWAn17rPE3fvfgbtRjLc9vPrpkWiKThgOCbVjBEX0CY+jy46trjcAhOONCvccq
+	 5tossu4OCTocnLM+YM4uXzORQkoyxoQgu2yaNit8nEZqCsnrWIYgBiMlDhf0aLQ/vx6fl
+	 GoAdzfa/BW+7oqMKl2ecr3WtxASfBBNTb/J0g205yVYgDAH10YWjPU6exPkZNhZ0CynL+
+	 PvlctLcqUW+RN17OfrfdTk8NAI4GuiNLXdjM8a0+0XhwssjXTubsAI6N/NwHXr41kBg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=mandelbit.com;
+	spf=pass smtp.mailfrom=mandelbit.com;
+	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=1r415yba;
+	arc=none smtp.remote-ip=195.10.208.40
+Received: from mout-b-210.mailbox.org (mout-b-210.mailbox.org [195.10.208.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB72606A329
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 14:22:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9AB72606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801FB606D811;
+	Tue,  3 Nov 2026 14:22:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 801FB606D811
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Jhkisa2S
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cc4be0e5351so1697650a12.0
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 06:22:45 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793715765; cv=none;
-        d=google.com; s=arc-20260327;
-        b=LpBiuuvK0iEQULP40BSPasTz7bRgelvioBVZuDxUtN0UlXtQRLx0KakKW8vnYv2CIH
-         RzIZZ9/ymmV+xybIjE5vNP4+N4Vbb5kt35sbTpA6KGsSTIu6UPtQk3Z3Qo8OM91YfBiq
-         fiLj0eAdQERkewZ86hnvu2h3zwKenLcMalWPKUPw4JkWZ04/RG7EL9jn6oQlI4M7E3zj
-         lJiNeZxsSTy5hy9un96Nq4EdGk0y5iqNJKdm8dss5TNJJJMakXONiOnwJxofoBGA22Gy
-         udyIsMBGObml/gmFr2MdYKGt32M27SE2vL/tijMKV1vGPMHNaEyXRwt8Pr5l0E2RGWgH
-         QgMg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=goUEmUyHzHRn/JAgbYWl2i7yvd0k17zq6RZVq6dJndA=;
-        fh=ybSHhKyUGTpz5z1vpJjlPW5lfzgR1bAh+Z2a7r0KBDc=;
-        b=QOJ29Js9F4md4uvmntTFdxMBoNjj0CM5PdoRSmxw6CIwz+eMjhPjx2t7Hdgt7MDASC
-         Lc9zf+BOxl844fDkVGzezm71hA+IHRY7zwPTL7bEQRBY6TPqz75973wdrLMrsfvxyQY/
-         1Aqwj66QU3/R4mAs3X7j0CCM0R95xWzdHUb8TVKI44lHU2RheOSCMPHfHNdSOG8jFrMX
-         +pb9sHAy1U2aiJNzDAPWF0x58iShMFH40hLY3zwXtafnIoU5Az+h6+pbJcGqr+HkjV6o
-         dbRmfZUYJUPzNtEeKE9+5AsPGV30VbN/7evYnJuzM+M7aeicQfwvK+i40d2nM7/Qo75v
-         yMaA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793715765; x=1794320565; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=goUEmUyHzHRn/JAgbYWl2i7yvd0k17zq6RZVq6dJndA=;
-        b=Jhkisa2S2vXFBSNqqCyZnrR6JpuM5BBpw/U1ykOmBCVbHHAGBHiG59udh4q4ocSZzT
-         B+VLP21mZOHIS1JiMcrm4hn1l7sTaZeW36g+3nwf+SorUXmrDWEMCYf+9/iaAtGkWP2Z
-         jvIaLLuZeQ4HOU+rRp31Qy0Y1c0Y++wgaT0ywmdFgHf/MWUk0f+ANbMLe19dXKYipBm3
-         DqkuIdu20GgR3QdxoXR+SnZkJh1tFg0zTOIXILFVjTGAuUeaaF6fXdUsYCZwgoWvaGzk
-         AFufwdIM3Ds11CGHgak7opO6f4y9wacjoIffPeNer/sXD3iDcQGEv82oJ75qb5JfHozX
-         bmlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793715765; x=1794320565;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=goUEmUyHzHRn/JAgbYWl2i7yvd0k17zq6RZVq6dJndA=;
-        b=yw0yNzq00HL4sdTsbp31LdL2yFb8fxlxUXuGmDteK5W+mZsa080+oU7m0Kj11sq+1U
-         fRT/zPgJtJa+4FpB+Ii+wrtojos2KFNtxkltAuMd9md8rIg+NiMi8s079NCOYvdpjg7O
-         ZGmhkYlgtTrsYeM8JadUXFgbh3Dm/tvQ/k3yzAeXSQVF8jSgFt8TuU2E5s5+AVKw8II7
-         3Bc5U00nk4iFFFerzb66KBYTExQWiyPOgimoQJarMC/nCYWUZxA4wG2dyT19Ib7LwORt
-         kB8ER5JxuuEGn5Apzhr2hqJ4C+3SbDjYZy7GF+gdzyC6Ho+G8D/N+CbOO8QzqBlVStib
-         /6lA==
-X-Forwarded-Encrypted: i=1; AKwUvBxdafduBtLEOVaMM3onm/b60o8E6KjQuh8dDLn0x9l21k58W1qzTkD2c60ZwhXMRDIQUBrkrzA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8kRfhO2DfXUDeog0Drh/X9rqhSPIfCaDplQPLKBa2JfvU3vdIQ
-	PMgnr12D75OqVZOqjHOE5yCTJVMRmpfDBTj+AzfG2+7+q5C4pLqkAt3jxJvPMyibK6vQBMnwsr1
-	oiwwCU8uP2CEnkCNWUEHuJG1zyEyAo/2Eq8e6
-X-Gm-Gg: AYBFou3FlcIlauTg3FExuY3LJvujePhxP22qDzbBEuIOItHNDqP84yWZ8GtnDwpf9+O
-	8yUITuBK7NZn5Hh1XrEU3ZCXm/rcuSii+rgvrWKHcgsW8dPeL9DpSNZ8PI4rz5/RvQFXEibHCkO
-	aowp1b2voOBw1MvJgg01C4ZkOD5WvV9i+IGq5ZO9ba8WsK0mzgkgCDg+L9LfFrgSpx4Pte0Sc01
-	zhwAzv5kRHtul1H4UypVPFBf5Wv5DK7kJD7xNfTd0UoGDBta4wHpV93Q4k0tW2+az9CDw5CP2mH
-	4Y42y8abTjb3fV0ymUqWuiJAblXhkxjgbRw2lkh/xNnmwCrHGhqM1BXF+kUXki3BgjlGSNPkSy8
-	lbtsVgc1mD5EphoEGDtBSUsnDRrJJ4vTOwm1Wua0ObUynNKsaGptkJhufrxgqhcOWo1YxcPV77c
-	GlPOQ212nuXwj3f/FUP4ET4GE9cdKMd8tUWq240A==
-X-Received: by 2002:a05:6a21:3f90:b0:3e1:d119:ee35 with SMTP id
- adf61e73a8af0-3e928d40e11mr9916793637.12.1793715764802; Tue, 03 Nov 2026
- 06:22:44 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=1r415yba
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-b-210.mailbox.org (Postfix) with ESMTPS id 4jJrPt42dvzFr0F;
+	Tue, 03 Nov 2026 15:22:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
+	s=MBO0001; t=1793715762;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uRaOOdHNL2jhfSdxi+3Ia5TDewDrCzWyo2m09xbyvCE=;
+	b=1r415ybabUbWERttLIgSIUOXUYJdcaNy+45+NslmLZle7yqJj5ZboXY7qB9cNsh/70AD1e
+	KfH1sg7Fc2nDyCZRB1mXV+YQyYUHQGgI4h5IAFpdZ4Sw37N3Slx5f22o46Z9s1CsQKPbH5
+	nOBB1YKoHnDKuA/9XP/x/E9SggiN12hentePUykIRa9yMV6c2tx09G9CHfedYOygiJNyEW
+	c4BXss1cy0KWSxydga7YfzaAz9U31ORI4ox2PL3Run9iEhWWFYHib9SHj4py/MSVTbOxGU
+	TIpTQpPZE1ojABDtYdS9W8SPglSF0AnrQdD8IWiYh8togfV463ephZR+aejdZg==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of antonio@mandelbit.com designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=antonio@mandelbit.com
+From: Antonio Quartulli <antonio@mandelbit.com>
+To: willemdebruijn.kernel@gmail.com,
+	jasowangio@gmail.com
+Cc: Antonio Quartulli <antonio@mandelbit.com>,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	mst@redhat.com,
+	eperezma@redhat.com,
+	shuah@kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	maheshb@google.com,
+	peterpenkov96@gmail.com,
+	netdev@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	linux-kselftest@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH net v4 1/2] tun: bound the NAPI receive queue
+Date: Tue,  3 Nov 2026 15:22:29 +0100
+Message-ID: <20261103142232.1869185-2-antonio@mandelbit.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261103142232.1869185-1-antonio@mandelbit.com>
+References: <20261103142232.1869185-1-antonio@mandelbit.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,115 +93,221 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261030042321.74407-1-kylebot@openai.com>
-In-Reply-To: <20261030042321.74407-1-kylebot@openai.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Tue, 3 Nov 2026 09:22:33 -0500
-X-Gm-Features: AclHuK9rygcKHlFq8M3zeAsoFHUWP0OF3Dg8S91AWQVg--msS91soOe9ITJpZK0
-Message-ID: <CADvbK_fwt6s14a0yJjRa5whAT-H+7RtaDXi4cR0-XmrvoJkeQg@mail.gmail.com>
-Subject: Re: [PATCH] sctp: avoid requeueing pending control chunks
-To: Kyle Zeng <kylebot@openai.com>
-Cc: linux-sctp@vger.kernel.org, 
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, outbounddisclosures@openai.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4jJrPt42dvzFr0F
 
-On Fri, Oct 30, 2026 at 12:23=E2=80=AFAM Kyle Zeng <kylebot@openai.com> wro=
-te:
->
-> The T4 and RE-CONFIG timeout handlers take a reference to their cached
-> control chunk and submit it through SCTP_CMD_REPLY. A previous transmissi=
-on
-> can still be on the control outqueue when output is corked or suppressed,
-> or when sctp_packet_transmit_chunk() could not append the chunk.
->
-> sctp_outq_tail() then adds the same list node a second time. In particula=
-r,
-> re-adding a non-tail entry can corrupt the list without being caught by
-> the insertion-time list checks. A subsequent flush or association teardow=
-n
-> can walk the corrupted list and access an already freed chunk. The T4 pat=
-h
-> is reproducible by an unprivileged SCTP socket owner in a user/network
-> namespace, with KASAN reporting a use-after-free in __sctp_outq_teardown(=
-).
->
-> Check sctp_chunk_pending() before adding a control chunk to the outqueue.
-> If it is already linked, release the extra reference supplied for this
-> enqueue and leave the existing queue entry in place. Continue to the usua=
-l
-> flush so that the pending transmission can be retried.
->
-> This also covers RE-CONFIG retransmission after sctp_assoc_rm_peer() move=
-s
-> the request to another transport and starts its timer. Keep the existing
-> timer handling, corking rules and data-chunk path unchanged.
->
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
+With IFF_NAPI, tun_get_user() queues every written packet for NAPI on
+an unbounded list. When the poll runs asynchronously (threaded NAPI)
+and is slower than the writer, the queue grows until the system runs
+out of memory. An unprivileged user can do this from its own user and
+network namespaces, and the queued skbs are not charged to its memcg:
+in a test VM, a uid 1000 process limited to 128 MB caused a global OOM
+in ~6 seconds. The socket send buffer cannot bound this: tun sets it to
+INT_MAX, and the build_skb() and XDP batch paths do not check it.
 
-Please add a "Fixes: " tag for this patch.
+Drop packets once more than netdev_max_backlog of them are queued, like
+enqueue_to_backlog() does, and count them as rx_dropped: before
+allocating and copying them where possible, and again under the queue
+lock before queueing. This covers write(), sendmsg() and the batches of
+XDP buffers vhost-net passes to tun_sendmsg(), which share the queue.
+Zerocopy buffers of packets dropped early are completed.
 
-> ---
-> I have a reproducer for this issue and can share via DM
->
->  net/sctp/outqueue.c | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/net/sctp/outqueue.c b/net/sctp/outqueue.c
-> index e92fb9da4647..a5f9f0fcf5fd 100644
-> --- a/net/sctp/outqueue.c
-> +++ b/net/sctp/outqueue.c
-> @@ -304,6 +304,11 @@ void sctp_outq_tail(struct sctp_outq *q, struct sctp=
-_chunk *chunk, gfp_t gfp)
->                         SCTP_INC_STATS(net, SCTP_MIB_OUTUNORDERCHUNKS);
->                 else
->                         SCTP_INC_STATS(net, SCTP_MIB_OUTORDERCHUNKS);
-> +       } else if (sctp_chunk_pending(chunk)) {
-> +               /* A retransmitted control chunk may still be queued.
-> +                * Drop the extra reference and retry the flush below.
-> +                */
-> +               sctp_chunk_free(chunk);
->         } else {
->                 list_add_tail(&chunk->list, &q->control_chunk_list);
->                 SCTP_INC_STATS(net, SCTP_MIB_OUTCTRLCHUNKS);
->
-Can you try to fix it by not sending it in sctp_sf_t4_timer_expire() and
-sctp_sf_send_reconf(), instead of touching the common path? like:
+The NAPI poll moves the whole queue out, processes up to its budget and
+puts the rest back: while it runs, the queue looks empty to writers, so
+with the poll on another CPU the backlog still grows without limit. Keep
+the leftovers on a queue of their own and take the next batch only once
+it is empty, like process_backlog() does, so that neither queue holds
+more than the limit.
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index 8dc65498763c..7671bb0ce946 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -1122,9 +1122,11 @@ enum sctp_disposition
-sctp_sf_send_reconf(struct net *net,
-                return SCTP_DISPOSITION_DELETE_TCB;
-        }
+Dropping because the queue is full also schedules NAPI, in all three
+places. vhost-net sends with MSG_MORE while it has more packets, and
+tun_get_user() schedules NAPI only after the last one or once more than
+NAPI_POLL_WEIGHT are queued. With a netdev_max_backlog below that, the
+queue would not drain until vhost-net ran out of packets; with zerocopy,
+vhost-net never would, as it stops sending when too many queued buffers
+are pending.
 
--       sctp_chunk_hold(asoc->strreset_chunk);
--       sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
--                       SCTP_CHUNK(asoc->strreset_chunk));
-+       if (!sctp_chunk_pending(asoc->strreset_chunk)) {
-+               sctp_chunk_hold(asoc->strreset_chunk);
-+               sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
-+                               SCTP_CHUNK(asoc->strreset_chunk));
-+       }
-        sctp_add_cmd_sf(commands, SCTP_CMD_STRIKE, SCTP_TRANSPORT(transport=
-));
+Reproducer, as an unprivileged user in a new user and network
+namespace, without kernel modifications or fault injection:
+  ip tuntap add t0 mode tun; ip addr add 10.11.0.1/24 dev t0
+  ip link add d0 type dummy; ip addr add 10.20.0.1/24 dev d0
+  ip link set t0 up; ip link set d0 up; sysctl net.ipv4.ip_forward=1
+  install ~500 iptables FORWARD rules and a MASQUERADE rule on d0
+  open t0 with IFF_TUN | IFF_NO_PI | IFF_NAPI
+  echo 1 > /sys/class/net/t0/threaded
+  write() 1400-byte IPv4 packets for 10.20.0.2 in a loop
 
-        return SCTP_DISPOSITION_CONSUME;
-@@ -6197,9 +6199,11 @@ enum sctp_disposition sctp_sf_t4_timer_expire(
-         * chunk, it MUST be the same (including its serial number) as the =
-last
-         * ASCONF sent.
-         */
--       sctp_chunk_hold(asoc->addip_last_asconf);
--       sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
--                       SCTP_CHUNK(asoc->addip_last_asconf));
-+       if (!sctp_chunk_pending(asoc->addip_last_asconf)) {
-+               sctp_chunk_hold(asoc->addip_last_asconf);
-+               sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
-+                               SCTP_CHUNK(asoc->addip_last_asconf));
-+       }
+Tested in an x86-64 VM with 1 and 2 vCPUs: with the reproducer running
+for 15 seconds, memory use stays flat and the forwarding rate is
+unchanged; the tun kselftest passes, as it does without the patch; and
+the tun_vhost kselftest added by the next patch, which drives the
+vhost-net batch, copy and zerocopy paths, passes, while it fails without
+the patch.
 
-Thanks.
+Still open: the limit counts packets rather than bytes and applies per
+queue, up to about twice the limit can be in flight (queued plus taken
+by the poll), and the queued skbs are still not charged to the writer's
+memcg.
+
+Fixes: 943170998b20 ("tun: enable NAPI for TUN/TAP driver")
+Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
+---
+ drivers/net/tun.c | 82 +++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 68 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index 770b8fe085c3..ea99ee0aee2b 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -58,6 +58,7 @@
+ #include <linux/nsproxy.h>
+ #include <linux/virtio_net.h>
+ #include <linux/rcupdate.h>
++#include <net/hotdata.h>
+ #include <net/net_namespace.h>
+ #include <net/netns/generic.h>
+ #include <net/rtnetlink.h>
+@@ -140,6 +141,8 @@ struct tun_file {
+ 		unsigned int ifindex;
+ 	};
+ 	struct napi_struct napi;
++	/* NAPI poll only: skbs taken off sk_write_queue, not yet received */
++	struct sk_buff_head napi_process_queue;
+ 	bool napi_enabled;
+ 	bool napi_frags_enabled;
+ 	struct mutex napi_mutex;	/* Protects access to the above napi */
+@@ -227,31 +230,40 @@ struct veth {
+ static void tun_flow_init(struct tun_struct *tun);
+ static void tun_flow_uninit(struct tun_struct *tun);
+ 
++/* In IFF_NAPI mode written packets wait in the tfile's sk_write_queue for the
++ * NAPI poll, which may run later in a kthread or ksoftirqd. Bound that queue
++ * like the per-CPU backlog of netif_rx().
++ */
++static bool tun_napi_queue_full(const struct sk_buff_head *queue)
++{
++	return skb_queue_len_lockless(queue) >
++	       READ_ONCE(net_hotdata.max_backlog);
++}
++
+ static int tun_napi_receive(struct napi_struct *napi, int budget)
+ {
+ 	struct tun_file *tfile = container_of(napi, struct tun_file, napi);
++	struct sk_buff_head *process_queue = &tfile->napi_process_queue;
+ 	struct sk_buff_head *queue = &tfile->sk.sk_write_queue;
+-	struct sk_buff_head process_queue;
+ 	struct sk_buff *skb;
+ 	int received = 0;
+ 
+-	__skb_queue_head_init(&process_queue);
+-
+-	spin_lock(&queue->lock);
+-	skb_queue_splice_tail_init(queue, &process_queue);
+-	spin_unlock(&queue->lock);
+-
+-	while (received < budget && (skb = __skb_dequeue(&process_queue))) {
++	while (received < budget) {
++		/* Refill only when empty: leftovers are not put back on the
++		 * queue writers check, so neither queue exceeds the limit.
++		 */
++		if (skb_queue_empty(process_queue)) {
++			spin_lock(&queue->lock);
++			skb_queue_splice_tail_init(queue, process_queue);
++			spin_unlock(&queue->lock);
++			if (skb_queue_empty(process_queue))
++				break;
++		}
++		skb = __skb_dequeue(process_queue);
+ 		napi_gro_receive(napi, skb);
+ 		++received;
+ 	}
+ 
+-	if (!skb_queue_empty(&process_queue)) {
+-		spin_lock(&queue->lock);
+-		skb_queue_splice(&process_queue, queue);
+-		spin_unlock(&queue->lock);
+-	}
+-
+ 	return received;
+ }
+ 
+@@ -572,6 +584,8 @@ static void tun_queue_purge(struct tun_file *tfile)
+ 		tun_ptr_free(ptr);
+ 
+ 	skb_queue_purge(&tfile->sk.sk_write_queue);
++	/* NAPI is disabled by now */
++	__skb_queue_purge(&tfile->napi_process_queue);
+ 	skb_queue_purge(&tfile->sk.sk_error_queue);
+ }
+ 
+@@ -1856,6 +1870,23 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+ 			zerocopy = true;
+ 	}
+ 
++	/* NAPI queue full: drop before allocating, and schedule NAPI, which a
++	 * MSG_MORE sender may not have done yet. Rechecked under the lock.
++	 */
++	if (tfile->napi_enabled &&
++	    unlikely(tun_napi_queue_full(&tfile->sk.sk_write_queue))) {
++		local_bh_disable();
++		napi_schedule(&tfile->napi);
++		local_bh_enable();
++		if (msg_control) {
++			struct ubuf_info *uarg = msg_control;
++
++			uarg->ops->complete(NULL, uarg, false);
++		}
++		dev_core_stats_rx_dropped_inc(tun->dev);
++		return total_len;
++	}
++
+ 	if (!frags && tun_can_build_skb(tun, tfile, len, noblock, zerocopy)) {
+ 		/* For the packet that is not easy to be processed
+ 		 * (e.g gso or jumbo packet), we will do it at after
+@@ -2045,6 +2076,17 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+ 			goto free_skb;
+ 		}
+ 
++		/* NAPI queue full: drop, as above */
++		if (unlikely(tun_napi_queue_full(queue))) {
++			spin_unlock(&queue->lock);
++			napi_schedule(&tfile->napi);
++			local_bh_enable();
++			rcu_read_unlock();
++			dev_core_stats_rx_dropped_inc(tun->dev);
++			drop_reason = SKB_DROP_REASON_FULL_RING;
++			goto free_skb;
++		}
++
+ 		__skb_queue_tail(queue, skb);
+ 		queue_len = skb_queue_len(queue);
+ 		spin_unlock(&queue->lock);
+@@ -2649,6 +2691,17 @@ static int tun_xdp_one(struct tun_struct *tun,
+ 			return -EBUSY;
+ 		}
+ 
++		/* NAPI queue full: drop, and schedule NAPI so that it drains
++		 * even if nothing in this batch gets queued
++		 */
++		if (unlikely(tun_napi_queue_full(queue))) {
++			spin_unlock(&queue->lock);
++			napi_schedule(&tfile->napi);
++			kfree_skb_reason(skb, SKB_DROP_REASON_FULL_RING);
++			dev_core_stats_rx_dropped_inc(tun->dev);
++			return 0;
++		}
++
+ 		__skb_queue_tail(queue, skb);
+ 		spin_unlock(&queue->lock);
+ 		ret = 1;
+@@ -3571,6 +3624,7 @@ static int tun_chr_open(struct inode *inode, struct file * file)
+ 	}
+ 
+ 	mutex_init(&tfile->napi_mutex);
++	__skb_queue_head_init(&tfile->napi_process_queue);
+ 	RCU_INIT_POINTER(tfile->tun, NULL);
+ 	tfile->flags = 0;
+ 	tfile->ifindex = 0;
+-- 
+2.56.0
+
