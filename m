@@ -1,84 +1,84 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793745821;
-	b=VF3i5+2JOnt6yhdVI9NWROyIloIuEqVeKdq8Wt70Dl1CMoYi1vgNYvjCDejyE/HeIcTp
-	 TTCzP2mTspLdB8uqs1P19jEhbzNqicregPu2ydOcxnG1sXt41jdbC96ekDZuT+ueuEkzB
-	 q9aTRodMoyJDlIy1x35u8PLaPT0V97hKLDIwUmZLJs+zvI+N8u6rd5BTS+l0FOJdH3Uwy
-	 CviJwlIHgbFaoWW0tLzutuLczdTZYV/y9+2ebRL6xOMCZH5Jy3Um1TdtaUhh/imceRwWz
-	 xB63O0bxwNGLlDtQXz24aV318/1TvBQ/7Gc1QwpxsCVmvMve59LqFk6M9sva/FWeFUA==
+	t=1793745818;
+	b=fSMqLm4QEnOX5hz/2uecwb2opJf6MoRdkkcnN/HZft6EVBgCg1VPulII2ve9CjWynh1v
+	 0rn+ZFyuufVDjSZERPKwqLMrIZ9ZCWeldT7HVBgPCrRCUkNiFHivgJ9l4itOQr/QfGxYK
+	 cEfTjZ3j9m4HkR4KNjce79PCIrP9x5rgzrxJ9CN2LDvW6MTgY2O8KiF4Tb+ULgPHLzqir
+	 KU122t2R4jM28phGnOfc+N5QRVvhelqYqlN70V2ar8or1/CDucLCjA5usTTzKJfhwyDKu
+	 TV7a+oIQ45hICXMYHa5Mfl2BbVn+0Z4umAzxtMXwG5FHld5BWQS6WFDkXqJK2dmrd3Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793745821;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793745818;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=pSX9ZEKMZwAkn/hCnfPGUTygE8W+cQbUvjzhzK///rY=;
-	b=AVoOYQmq5QRmIkIys2/SVxAf15/Ap1N3LoW0b4uU86poTDq3z0uidbv31cUkqaMXFkKL
-	 oHxMgkdqeW5XVpwnN16xdIEt5DS2k+ikfnSFIPIejun2pSneJA6CfHTj4iwvg63kWW9D1
-	 PCly5LuPJF0V7Vl2g0iDS7GCHQw5zk3OjHFtnlBmCwZSgzyZTaL1lT/6ordLPuDkjs6Rz
-	 xG9tnqMHS8dTfqZkKu3NWdtA7xck+J9O/tQ4RxfybSbqhYOg7lhzQthqH5mDvMjG7QWAu
-	 uJxjlHz5vLoRjVCzVKxIH9+9D0H9B3Z90msq99/zbq4vbLGKbPJvWGAX87lnLqYrVoA==
+	bh=TEsmJhHG6UzOUAsN1CLfuPQCNGFTSJjKfJhnGZfHeUo=;
+	b=Bue3+hQvRh65S5SvyKaq9dxcW+nky0gq0t3yDQynls3kHECE/ErAz2YKctv1gltVL8am
+	 M06AWmJT3rg0dsQFKwQhi7x7EJFX2jD+Sgh5n4I+zPZRhXEdebVwUTqNdmjDz5ewy+wC7
+	 5os/dDQNDPM+jUMdMSNOW7rt9lbIBhKc6FigtkuM0LjcUJlLMRE0S6IMrX9B7RvnlIjUd
+	 NjKdUvOwgrIGKCZzpGt6DF1OgWqcEBPZxdVjvzp/1ZMfvmrGcVN1gWxaMWG7SMuVuHWtI
+	 B7PFe6h9QHoDPb5nEwQ06Ma3jNnhmD1tgdiL2GOsM6o1Vsq61zGnbZdf4gnQl+ll7aw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UbKXYRVS;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="nSm1Ta/L";
 	arc=none smtp.remote-ip=74.125.229.9
 Received: from mail-dy2-f9.google.com (mail-dy2-f9.google.com [74.125.229.9])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0520606D810
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 22:43:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0520606D810
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D40B606A31B
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 22:43:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D40B606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UbKXYRVS
-Received: by mail-dy2-f9.google.com with SMTP id 5a478bee46e88-3678f64d078so38542eec.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 14:43:40 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=nSm1Ta/L
+Received: by mail-dy2-f9.google.com with SMTP id 5a478bee46e88-3678f64d078so38494eec.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 14:43:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793745820; x=1794350620; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793745817; x=1794350617; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=pSX9ZEKMZwAkn/hCnfPGUTygE8W+cQbUvjzhzK///rY=;
-        b=UbKXYRVSlINnceEmcBZLntGOFm5h1Y6u19ZCL2iuz461uXDs/lkJ8Ft30u1wsxAckh
-         0uArEiGHC5YoyKR6MHxSYmrVtUC4+Mc1jZ1wwXud8JXvPGzW9ZHJ7prEerFWXDG+yIEj
-         IBdNNyX9BSdIbvaK2lILsfriI6VNcCRfcQZQuW+Id0c12gRA712+V2iEWSv40j9PRl8z
-         exVtEELSOcZTiT1DYYir9r6Jo54p+p+N43N0fl5xjwnpJFMgnpC9ymb694sKrU4cDrJN
-         dKKSv2VeDdj7NsDmG6DRrPslPYterr51oKQ8QU1ZkP9VZzA2kvNguuvVNGUjoY49y2dq
-         42zg==
+        bh=TEsmJhHG6UzOUAsN1CLfuPQCNGFTSJjKfJhnGZfHeUo=;
+        b=nSm1Ta/LRGVYs7LSmDicg4qmLY+G3QKwOL6aUalRgmoK+cIOBxQOc6eQQ72XYNymGk
+         1WjM6CiaaNZpDFPIYFWywDYD28bYZqKUI1qOJ9/6cCvuKVnmzVEIZtYlWX4uQeL4rDrQ
+         In/H52J/vIpQLculr4W56KeYPDFPpiXr6NGH8+4lDLej8vMr0dCSTMnR7J8/gsJvj5wy
+         fduWdiVgaax7kmUfpEagXnqcGhgF9AnPobHCc9NBLlWIWb5xxZ2OqVEMkisW5E3iVAmj
+         sXonf6pxJ8mRtSHNJK+vrB0K0nak3/2yF3P+RlcjY2hdbBw59GdWH/6OmT+LHjGpWCo7
+         S7iA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793745820; x=1794350620;
+        d=1e100.net; s=20260707; t=1793745817; x=1794350617;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=pSX9ZEKMZwAkn/hCnfPGUTygE8W+cQbUvjzhzK///rY=;
-        b=1xN/6/CEWGQIVUrnAqdgDkmeBk4cBi6f3zsKAMBXf4UAcCggn9Bz3tXYpUmOt4jQBX
-         UNfx4dFLw5Du04dktoJkJWFxIqOB1ApTjYM5JQwKoGf0p8oHtkd09gMKpZ7LI5RoWCLx
-         kGGFqbvAZ00AUZAcplhW/mevlZdvfYvpSJZRcSnlFjcAhl8SuEILqbjmOeMH+zqZx2rO
-         I9Cz49k90Ze0tt6Bep9G8/G30zDiBPmuzt6qaJJj57InFN//K62XU8ohpw1XQ51uaNWe
-         3MSYHw0MUn2LeoX61+GYUPec7r2VxLOILeT2tF1eF7JckrWa6D6R2Kp32C8PySdtYNnl
-         fDaw==
-X-Gm-Message-State: APuU4Z+LNosFGY+f70WTDBsXixAnq6mBWqYk7w+Q0HOjV1H2UpNArg6s
-	+eEpY4lvkdAnv6cPno22wOgneO6FOIzME78Kpu5tWhHtBSeRC/aolNqw
-X-Gm-Gg: AYBFou1rj9I1Ph9gn6vu9/HMplPrPssQ6Ki9Y4yBLo0W0jLRwRK0zmf/tv9cksZ4O0A
-	2rsRfcSsrSxDG2rAtwdL8nb11vDeW2CF025whJN7TRehrVxUBDIy6NQuVuqHMKyI8LQaLYkNhuJ
-	50cVksv+iiuOAT+8ffn39EiUXOUSDwI8pCl8NsF8jhj6L5gJ0kzdiTSiQP8EU4hUrGE+xr4nVYf
-	iu/C5YS1vWZTb6AUxNWOoYNWJzQDbwZzowx5/GfBgd8d+gNDDk+Jz43LO6wG23JCXf2T33gaLeI
-	Mrr9uMobym3hvu224hs3VO8R7TDMN9LfKS3yzLVMuMeyx2UodYxH4VLJzJTimBSUq3rKWWQBzvB
-	o9hbO6OSSXBlRwidAq5ep5a4RF24yZv9q4rGMB/H/cWJTPb/sQpF8U7Ig4QUjXFDZH9SOV9ZPDh
-	hAZFZHbtx71dQHekoaELlBVh3mpBJtWUS4nBYUtT9SNwmG4euyxIquqdBQA+5BmJvX75e5jVh/0
-	qUQUx/DDbABHCDLUwYzu98ppZqPqypC333v9mJ8SzaOV00TZgTjfelM6LHaBvKV0nL3N5iIQfOU
-	/JcPJQ3wT5owWw1EB15DhQ==
-X-Received: by 2002:a05:7300:c39f:b0:366:6644:2839 with SMTP id 5a478bee46e88-36a42203e90mr21867108eec.3.1793745819838;
-        Tue, 03 Nov 2026 14:43:39 -0800 (PST)
-Received: from localhost ([2a03:2880:9ff:6a::])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca3966daasm1484975eec.23.2026.11.03.14.43.39
+        bh=TEsmJhHG6UzOUAsN1CLfuPQCNGFTSJjKfJhnGZfHeUo=;
+        b=hDmGGjIDJVYhjedWYOh+Cqt4sFdhF/VaSK5FYY9GZihgZenXHC5FiScUJWSwdsxcjO
+         H/yxF0xA3lNZolsZuYHgEcz7lCejq+4hxT2lqLPI8KoFyaZtUOb1oSY1i5Qmf6T0ts2n
+         AcuM4+FH9MOaI4g1VR12Gj7gRSXWiLuNDEDzomRvSL8mrg4KfTr9Ku/wZ1jk4nBm+gn6
+         AMYyOdQoKGhU4fP+/w3ggnWQtsddGaLQ0roM4uE4atzDaNHjSNzFQdri7dzQCXab07oR
+         fve7cuTnF/+PhCFEAcx2CO0Q0jU0XP/sM1ibFkpudb+DQIchBFmOTzxmTPGZWUH0//HO
+         tcAw==
+X-Gm-Message-State: APuU4Z8ASWQ+B8etre3ARZSHsOjidv4PpAVi4or8iz+Nb12wnMDgAjK6
+	k5XDNHDblgf8KG0bjOnZ23WfGKqEYawANl4ACcJMDyK000noUbg14CiEIyu9iWms
+X-Gm-Gg: AYBFou03ahMnYLXvTXd9FvVhohxHvcRJpC6SmVTRrBl8RUqbs0Mmq7MAsl2phK/D9z/
+	pvOXXgim3Dw5k5I1yiIqerFSnbdbEBVe7aV3iKZEr5Ys8DYBp4jt/wYk1XmtLeAK4bpc2lcBJ4t
+	2RJAMQDYw5KhfYr8sb0Od/3CBywPKt4nyGoy4zq76leO2az4YIEFGLXYOtXEbpPAof+bbzelH7F
+	ZYB80sMM7AazKyNBmUvNKme2FVcRipeLbgvcXg4efWzbt6F8/EfNKfGLpjO4s5g1WitbWRr0IZe
+	bRTE22DYR88dgB4tqTqo/IouCWA0GkUOZG34tb1iiyGaWBX1FwPLI6qG6uJMzUPRNntnhnl1xgy
+	N0OaMZnWFCimlZ83J7NJoBz9TN1GdBsJZUehcqPNCAFJn3EzetdG8Oa6bio9YpGLpCdyEMS6k2n
+	EBP3gdnZY+Q3snbcbNgtBq5hwLavwOot4cjimG3ZWC1e9xHx4dauisKLGuIu+BMiQp8B/7hF1UQ
+	HsDWwUt6ixjE1FLxZzlDqzMwu4NGnzfvcCW+6BADsjChatH+6JKT0eSiyOdkGJg+ROFrdPcBC6q
+	RwHeTaaDxYNnGmSERSgSgQ==
+X-Received: by 2002:a05:693c:87c2:20b0:36a:6ae5:23e2 with SMTP id 5a478bee46e88-36a6ae52e67mr10824936eec.17.1793745816953;
+        Tue, 03 Nov 2026 14:43:36 -0800 (PST)
+Received: from localhost ([2a03:2880:9ff:64::])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca39b8eb3sm1372736eec.27.2026.11.03.14.43.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 14:43:39 -0800 (PST)
-Date: Tue, 3 Nov 2026 14:43:31 -0800
+        Tue, 03 Nov 2026 14:43:36 -0800 (PST)
+Date: Tue, 3 Nov 2026 14:42:13 -0800
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 To: Mina Almasry <almasrymina@google.com>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -90,10 +90,11 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Bobby Eshleman <bobbyeshleman@meta.com>, Daniel Borkmann <daniel@iogearbox.net>, 
 	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
 	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>
-Subject: Re: [PATCH net-next v2 3/4] net: add skb_frags_can_coalesce() helper
-Message-ID: <aupjezBugEQe_OSC@devvm16445.scu0.facebook.com>
+Subject: Re: [PATCH net-next v2 2/4] netmem: store memory provider private
+ pointer directly in struct net_iov
+Message-ID: <aupiPcDWNkZAucKe@devvm16445.scu0.facebook.com>
 References: <20261102231827.4088254-1-almasrymina@google.com>
- <20261102231827.4088254-4-almasrymina@google.com>
+ <20261102231827.4088254-3-almasrymina@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,19 +106,19 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261102231827.4088254-4-almasrymina@google.com>
+In-Reply-To: <20261102231827.4088254-3-almasrymina@google.com>
 
 On 11/02, Mina Almasry wrote:
-> Add skb_has_net_iovs(skb), assuming skb->unreadable and net_iov-backed
-> frags are equivalent for now (with a comment noting the two can be
-> decoupled in the future if readable net_iovs are introduced).
-> 
-> Also add skb_mem_provider_compat() and skb_frags_can_coalesce() so all
-> multi-skb coalescing, shifting, and GRO paths can share a single check
-> across pp_recycle, skb_zcopy(), and fragment memory providers:
-> - empty 0-length skbs are compatible without mixing readable payload
-> - page vs net_iov is rejected via skb_has_net_iovs() (0 pointer chases)
-> - page vs page is allowed via !skb_has_net_iovs() (0 pointer chases)
-> - net_iov vs net_iov compares mp_priv (walking frag_list if nr_frags is 0)
 
-Maybe squash this and patch #4? Otherwise hard to follow :-(
+[..]
+
+> Resolving the memory provider instance from a struct net_iov currently
+> chases niov->owner (struct net_iov_area) and then dereferences the
+> provider-specific container struct (such as net_devmem_dmabuf_binding
+> or io_zcrx_area->ifq).
+
+Chasing niov->owner is true, but I don't see another dereference you're
+talking about? net_devmem_iov_binding does container_of to get from
+area to the binding (and the area is the first member of the binding,
+so it is a already a nop). And IIRC, iou has a similar arrangement.
+So I'd vote to keep things as is unless you explain what I'm missing.
