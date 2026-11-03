@@ -1,49 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793712102;
-	b=ld/p99km7FyuEUa3mG6WLK+hr5iI/3+uj/sEvMzX58Q2Irp3L+oQmifuvhl7Z8X+QO69
-	 nVbJsuSDioY4+rzhhFKTD7oBxFuIsA0dgpV7Mb79Coaq9q37fHTu62z9ggumlYoq3I/59
-	 vCGOPxxVf9Ea5QJjuVvoUi8eJFD+NVsejabyMVH00HBC9pfcq9aX/9tvLdcxr1oXQdUIZ
-	 NroAoH5cEPOSbopXpHCW93zUd8zPdc//D1bXHsrryO8q3/OZke9C46Au1AnqBX3nnRDaM
-	 CT00r7mosi5topudgPcgYZ4SSaj9XgUvie7KqAqh7Il55Z/nDtmIdxzM2WqjudX52sA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793712102;
-	h=DMARC-Filter:Received:DKIM-Signature:MIME-Version:Date:From:To:Cc:
-	 Subject:In-Reply-To:References:Message-ID:X-Sender:Content-Type:
-	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=4i7JeNgS3PqRN89dO+cpnOVMM3es4j1AZjQVBIQdGUs=;
-	b=Ch7wppAAi3tPECy0zVGzjawA7z0tnN4bb9vPi29mp0CMFE+dBZi/1IQC2ZPYfkhQ0/kH
-	 OG5H2G8Cjxe1qrk5K0wPX9AFtiDy/j6S/PYHSxjB1tCenbDH7vGhu0iuQewDYuPx0CChp
-	 LeTqZOjZJBe4CNVzzeifIgVaGWgRIriBf93B/PZW5VhAL/G840bCAPtdg/wxp8dH0J7SV
-	 q+HzcR/xoli7nyiAfU3CKk81fF+V1RkNtNrhhRunT8ylSkZ6rIDLEiIASq6NoZh1R/bF1
-	 BXISdUNVWOjX4Bf1Npu41lzRIZDVZMm3JgO5W+SSN18bGBBPK8DzY88f4C1y/3+GWlA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=tipi-net.de;
-	spf=pass smtp.mailfrom=tipi-net.de;
-	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b="t+URNc/r";
-	arc=none smtp.remote-ip=194.13.80.246
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.51
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793712174;
+	b=QPyd5Agx0BfqgWVTRqb72kX9b+h7TSEVS8dLyUhJ5xl2mA7lIBJfW/4Z4BRjKWBSN57k
+	 5elcXW/zZdr2N9PYAcOosNTZQSp/JEmmjKv9k872CIsCCx3l5qbqXq6W+rvJeEy5A9AB4
+	 1uqpVfuUrcLqXYBt6g7/LI63pneg0/4d9IdS4iL+WYgtlHN0ephctquCKZIrcOT5tQFNL
+	 blWz8PXhod+7FTIUXpziGmPgfQr/8+V9gwwYwBByzcB5plpkqJP6o5ZXGhx6D0aUYyJ+8
+	 fZaD+Im63IcDi6F+/KzqZt9vx4ZNmOVwWJIfGqXkvBzmb646D1rM9etVszh7AfRBpiA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793712174;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type;
+	bh=9KwHQjKFgpi0i5HGrc0Hhrq2/ezRelX2eB7Zkx5u6DY=;
+	b=gbRtfY4QLpMqFx/MfBf4p6hBNz+pzEDdkZIT5zmIFT0R6517w9/O2wYTUnjPdr+mQeUP
+	 FRRi5nXP3VCT7d4kl59un81WlrM2+XchYKyG55jVls5V+BBckzD9UYue5939EIiC95q9H
+	 mz7lG3M8RpYcTUtRydu1iLe3JaaAXyeSLutqvA/jV5YU7jDrhylYJmPCMcfWv68twt57l
+	 EPUd97TI49rxoD8DX0rvAxCKLikoZjVmiI6YH+z/zyvGUG9J15LLUOWwtWKoydHtXZn/m
+	 HOZIrZ2mGWHDFJq92WIPiIH75IbiM9VHkvmPx6w1MW+CEhLHmmxoEV3RM3K/Pzgz2lQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LLh5VG3m;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.51
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D630E606A32F;
-	Tue,  3 Nov 2026 13:21:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D630E606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4BC606A32F
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 13:22:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4D4BC606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=t+URNc/r
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 12ECFA1648;
-	Tue, 03 Nov 2026 14:21:32 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1793712097; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=4i7JeNgS3PqRN89dO+cpnOVMM3es4j1AZjQVBIQdGUs=;
-	b=t+URNc/r60MoZy96AxoqAKxv0aiqloRdmJ8e59KAjvzK44rrpCrCXMkv5SoSrCNrtzbeAa
-	Vks8GVOW6j9f+vuuDEjqctWXcvSomv0vXToVIMFyptKvJQtvox49KLs9kRYFh42UsWAfSp
-	Rj86BtBBuyrn1m8O29j/zUEqPgfCN/CS0yT1ia1e7HiiXMl0vlEcOs8Th2kR1Ok+sOwDnv
-	BQrsLKs0luXhMQIqI3NqcpJjWvrR7fFScABtyplK2GhaWDrJ3LFYf9ikDPWcXjYQpQqKxN
-	zxHfBgs9QdAF+cA+KtBYYIQtxg7o2WIATF4bMlBoejUxDN2a9ymII9qqmRRdtg==
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LLh5VG3m
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-15ea896ddc8so7034542c88.0
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 05:22:54 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793712173; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gLyWHWYx1pp+kRto1DEyiTMHbag1bnz6c6aYhuOZ7JUXbP08D0vnOaubr5R55nkEFR
+         TGCjMB8HRwFenFJlpOqT5kUuYqGcRlLllO94rJ9kFQo7CLTqRAUnuSfdTAokCzJn8tnQ
+         WgtH1zMstxx6XhWR8DHCHMzEX8lxIGZidWE7z4xcXALCA7OTpJMJiyY7J3JaI0yuDQcK
+         mcWIkaCjYZk45TslIk+L12looRUv2O5p1T5Efu+mtCUjlSLfVmMSGU1EEeu1QXRMnOtr
+         bFAU/z2BAeVvvX1+lv3OuaWNqp/y6kkZz3M5GgqV4LaplO4Ewbt7+VktYDOGqtZ6yRXH
+         /XMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=9KwHQjKFgpi0i5HGrc0Hhrq2/ezRelX2eB7Zkx5u6DY=;
+        fh=8mvxw27cMHR1v4Sb56csdvR8zJXEn8t7VsNS/8eHB7Q=;
+        b=c+72IyTLNcDvC5/erZehnWwNQNJCUEzEGBuhk1sfulJMwYG6a1GQ4GAi5YH8aTxlvS
+         IWWpHWjC6joy6mhFm+I9bf8u5CmzTh443dP3TeneydmLITF7qqh8TkVxZrNYNEhDwNx5
+         eGqCwytIsRRGn2njB7rlckI3YSxVVVzQjjH6knsq4IsPuQPgph7NY7TBgi/vd6JM4GQJ
+         IIcd0JvXPkNfcxAYiTO/DbsXoE1940yQFkvodp0nLwW4hTsLK1s6J6nTMw0TN78ks0i6
+         vY2Wrx5IOCQEklNu5+2dIonXa96B0l6p7yhMnLhiXjaGWiNbidFIB8I44hyqhZh3rluT
+         vpXQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793712173; x=1794316973; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9KwHQjKFgpi0i5HGrc0Hhrq2/ezRelX2eB7Zkx5u6DY=;
+        b=LLh5VG3mzq6P73mPT2KOAC9nz25lAyw+SDCybhoVaLrd3LAVuKn9AZhFQT8xGoUAd9
+         iQ0eRBok6NHOOLJ2ANEl6qkXp/wt5IFJ/+Qx2f95sa3nhX6NdymbhjVQnrmkJ/AJnFto
+         ZIaj8rqgn2ZwLoTcs5CAJwz/kV3cklSf03nxZajGgeydaiA8pC2fG3kAnmNZPwkGTiar
+         qhI7W8mhvvibw/2NFz4T7Lt6IwCOEsfbpbsMtG1d5ds7bewzjqZ419EleHQXGlcPto1l
+         zCyUnm1bouoFLg00MNC9RnFVmUD61LraI9k0+bE6MoTfmm/dW30/DztVcoNEf+rF0IJg
+         a5+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793712173; x=1794316973;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=9KwHQjKFgpi0i5HGrc0Hhrq2/ezRelX2eB7Zkx5u6DY=;
+        b=iR1URaUCwth4fH+gVY94ufkL1z//OzRgYItvFAeCk89tEv8u0i2mS0MZ2MakYARjIP
+         NADJCl8VGisNkpttLIrMjkGbcfBKkY82FxcferELkjFvR5abWz+vWRJL+dB9KLJI4Tj7
+         P1AV9kTLzTy+6p7ICLKiuS2eUsJb0nr2L7zYB9n/2peo8tzGpzdG53rnYUA6AnZXwtC2
+         vIzbTkrOHDw3cMSpNVzPXSlb9es3aZj33INAkNEXrMH7ue0LhSynZVAM51gT8ZqDl3lR
+         25r3AvPS9SpWNEyCMmsIG6Zn/Hn9944m8zfnoVMeXmg/TIcFXjnVGfORg0NzyNFCq8ha
+         dPrg==
+X-Gm-Message-State: APuU4Z+bd1JxPAR6DksEUDgkyByriOX/sF8ThgTHiGlxJsEWktne2fo0
+	S7xoVdP272qTeEGpOjpiPQdzRTSIheBKI2B4Qgi5yJ65uhVk3OWDXHAJqPynNy6jGi547K2rog5
+	GEp6xTyhzak4CR+/zi+nKhw6h2wWt+Jo=
+X-Gm-Gg: AYBFou0JSIWQEGmml6y/b1ZW52ZbW3tlfQ4GSWzLqOGDUa6wlYNlqZ7BWTtqhnTTidY
+	Ubb/U0XHQDz8vzjWiAJbI4mBMSwUD0QtazIUh5IjV40RkNElBKP6Tit0OVV9gDEquRh+4Bxoy89
+	Q82QY/7skCTKxDOREiINV+H/7jP2SoQkf8c1pxNOagQ3obE3iJ7FiKyKq4sywpPm1Km0T+BbTFf
+	69wPlBj5SFy1cZiwecSGK0HGZ7BIZDuLetOEaYwITQLYM755C1xcIZkuUqYLBZ43gCbjYnOB/Ki
+	E8kLgcxTTxpSe6/I1rvOe7DuaWSxQaQWzsDj6HFsUqN2VSeMyJqp38T3WyndrEEjEd2hVMXXshR
+	oeMBR9bE3sLNG207N1f+mCATETxyFGT1vkeq2
+X-Received: by 2002:a05:701b:450e:10b0:14c:637d:682d with SMTP id
+ a92af1059eb24-1ac5d69f6a1mr19043531c88.43.1793712173117; Tue, 03 Nov 2026
+ 05:22:53 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,69 +102,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Tue, 03 Nov 2026 14:21:32 +0100
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Russell King <linux@armlinux.org.uk>,
- Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>, Magnus Leatti
- <magnusleatti@kernelriot.com>, thomas.petazzoni@bootlin.com,
- =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net v2] net: stmmac: Clear DMA errors for multi-channel
- interrupts
-In-Reply-To: <20261103125430.962715-1-maxime.chevallier@bootlin.com>
-References: <20261103125430.962715-1-maxime.chevallier@bootlin.com>
-Message-ID: <4ae868bcfbdbc0f74ea5a9d57094e7fe@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20261101150240.66292-1-timur.stukan.linux@gmail.com> <179354572351.3286.5042962273582442842@kernel.org>
+In-Reply-To: <179354572351.3286.5042962273582442842@kernel.org>
+From: Timur Stukan <timur.stukan.linux@gmail.com>
+Date: Tue, 3 Nov 2026 15:22:41 +0200
+X-Gm-Features: AclHuK-C5xGCzX7-O3YYlIZKLZWlvhm5d8m0-ahEBg7449qGEWBHvcs7hKepSTA
+Message-ID: <CAF+_u5DHF4UW-8p+BRKzCPWELOLVqhnO5Jz+WiJR0dL_BWS7rw@mail.gmail.com>
+Subject: Re: [PATCH net v3] bonding: fix missing down path on speed/duplex
+ failure after FAIL->UP
+To: netdev-bot+sinfo@kernel.org
+Cc: netdev@vger.kernel.org, Hangbin Liu <hangbin.liu@linux.dev>, 
+	Nikolay Aleksandrov <razor@blackwall.org>, Fernando Fernandez Mancera <fmancera@suse.de>, Jay Vosburgh <jv@jvosburgh.net>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Maxime
+On Sun, 1 Nov 2026 at 17:08, <netdev-bot+sinfo@kernel.org> wrote:
+>
+> Hi!
+>
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
+>
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
 
-On 3.11.2026 13:54, Maxime Chevallier wrote:
-> The Multi-MSI interrupt handler doesn't clear the DMA error interrupts,
-> and this leads to interrupt storms when one of these interrupts starts
-> firing :
-> 
->  - The RBU (rx buff unav) which triggers under high traffic load
-> 
->    This triggers easily with iperf3 and small udp packets, and shows
->    when running the netpoll kselftest
-> 
->  - The RPS (rx process stop) which triggers when we stop the DMA RX.
-> 
->    This one shows when restarting the RX logic without doing a down/up
->    cycle, like when attaching an XDP program. The XSK kselftests
->    triggers it.
-> 
-> Let's make sure we clear these interrupts for multi-MSI cases, and call
-> stmmac_global_err() upon tx_hard_error to avoid possible races with
-> other interrupts/napi.
-> 
-> For that introduce an "ERR" DMA dir, as we don't want to touch the
-> RI/TI bits when handling these interrupts.
-> 
-> Both of the above storms have been found on dwmac-motorcomm (YT6801),
-> and are triggered by the xdp.py, xsk_reconfig.py, xdp_features.py,
-> ring_reconfig.py and netpoll_basic kernel selftests.
-> 
-> This seems to only affect dwmac4, there's no multi-msi mode on
-> dwmac1000, and on dwxgmac these interrupts are masked as of today.
-> 
-> Fixes: 6ccf12ae111e ("net: stmmac: use interrupt mode INTM=1 for 
-> multi-MSI")
-> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Hi,
 
-> [...]
+This was found by manual code inspection of bond_miimon_commit() while
+working on the bonding driver, and then reproduced in a VM with e1000e
+interfaces.
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-
-Thanks,
-Nicolai
+Timur.
