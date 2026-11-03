@@ -1,74 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.151
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.140
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793672595;
-	b=j7UObwN459F8TJJwbJZ6GdXOmtMUFO9ZJYyvoUPpbL+i+cmCc0qhGgVFDn2i09G/9ENr
-	 1vd8608q8o46r1yZAXhdfGbMFpuy+H49TZLRslo1HcNwD/8ybbveQFd+57tMUVCZs/kzo
-	 QhA3EV5fbWiHHBFIF4+hTHhJSlii9hDuEZp3HkdOshqM63eHfThXo2yfsebIudwZk+GaM
-	 c1U6U9cUe7EuCfuIHJC2JYXMbdNb8WYoj0fSyypbfK4e7evbpPabMjOBP6HLZnwryVCfb
-	 fEBwhDBOF6T1MZIP3RmBBMQCYqDgDSoj8OoCF0YpL+K51uR2KiSxa3FHkzwy+dxq++g==
+	t=1793672740;
+	b=Cp3pBxPqXzu+Ibg7zaKVauDO/0criSyr78AtWKOsa9YGObTg+9UCS+RLgf9HVz3H83va
+	 MOxPmc7NpsvuQShnrL5xOkN2szR0aLzItoqhrKUnsY319UviTxu3fj46Urt8lKajeXOC/
+	 Fo8RIZGhFUFZQ+MCmnv6mMylOkad/b77V/4HXHpA8XdArqwBoLhx5PHl8eRi7uzub2+1+
+	 48OszoeMzZjqQS2SMTKGIImFgwXh7cKeQyJaBJtVSLvu2/j+/RG3/GPhxMWy0SRLQjvkn
+	 iU4WxWyLFrxIaOffALe+8HNkJ6HItmOcSUWP2vbXYpiP8ebSaeOk8mKNR9J7WGnjjbg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793672595;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=Ob3XsAgfsJ+9EiGif9J+W/rErmfXCX5oRUvF9gj2TmQ=;
-	b=l5uRtWs/JmqC9P1WbWLtpp04HmukjMHC0QtfkECrSm5AVhpFwYa8f/wHielqduk3oJoU
-	 PGw9pTDdc21B4VefnBmKkPnPGlXPNUXZ5oU0vQcoeNN13GGjr4x2nVTwGN/RBGmgIho+G
-	 WddGvrc58nM/FEbJdDs5ikTIXmYGvRfaQS119c9t2GT9UgNkBO0T3Kp+BSxHaGR0qsFzg
-	 Nrnfu874xrMOTpOrsiOVqQRhVrfcJ3qrYyG7fsdxdW0FeQUVgUComChTNNNpwhImj7qAM
-	 5rZ0zP+4Jt4gFn6QUWrPdhzPvFMMH14wqdyuXrPWYxOv8MsWZ7YoKUn3Rmwb2JbVPLA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793672740;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=IvOE97nqCYOuKLVpMLw0btVRPz7o5pR9mipwEI05Wt4=;
+	b=ncmwf/Vtj7EJ4M0YGWogFUmcqXqx/rJvEmEbeeRMQdZX9RxG7lNjUomX+LFDFXPROvpp
+	 Jy67HExYOg+O7+VBGuOR0v3qwHI3wT9eWEFvuowU8mPtuV2zxJJ+E/7T3hssrg7g7p2WC
+	 SyWHvcJuxXECNU/jgeTiU/fIiRDuhW2TS8VAsMkro8rLEUGdU/vwnpvxj8Kfu/df5Z4Oo
+	 wYmJbsty8NgakZL2YUwxscbZHtJHZph4jhf8LJcz9weiiyQbRbeGznvMg3E9WJIUWQrpd
+	 rNRWWD1jygpQMbz7UKLa1KAjruk+niniBf0mhby3aY0yAeN2D6Kyuz8eqHveVgrjNkQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=yDB5L65J;
-	arc=none smtp.remote-ip=111.22.67.151
-Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595A4606A324;
-	Tue,  3 Nov 2026 02:23:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 595A4606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="I5SSa/hB";
+	arc=none smtp.remote-ip=91.218.175.140
+Received: from mta0.migadu.com (out-140.mta0.migadu.com [91.218.175.140])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B41606A324
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 02:25:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 02B41606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=yDB5L65J
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=yDB5L65Jpj39JzxEqgGOsqd9XruEBKWQbCvt7VDnW3M0nV/3OGJk8gFciTa05113A1onxO7vr+Eoa
-	 /Sb6f9quV6YMu7Zonmq0yYF33XdaV35yULngoaQmdYUNZadaSPq/w7v3v4a7BjKQGJNFVSKGnKgIcg
-	 fbyCbl/F/mjUQayM=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee66ae9458e57b-5accd;
-	Tue, 03 Nov 2026 10:23:11 +0800 (CST)
-X-RM-TRANSID:2ee66ae9458e57b-5accd
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[223.108.79.97])
-	by rmsmtp-syy-appsvr05-12005 (RichMail) with SMTP id 2ee56ae9458e919-e695a;
-	Tue, 03 Nov 2026 10:23:11 +0800 (CST)
-X-RM-TRANSID:2ee56ae9458e919-e695a
-From: Xia Yan <yanxia@cmss.chinamobile.com>
-To: idosch@nvidia.com
-Cc: netdev@vger.kernel.org,
-	dsahern@kernel.org,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	yana06070@163.com
-Subject: Re: [PATCH net] ipv4/ipv6: preserve multicast filters after a failed source leave
-Date: Tue,  3 Nov 2026 10:23:00 +0800
-Message-ID: <20261103022224.231647-1-yanxia@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261102130658.GA922454@shredder>
-References: <20261030063603.697510-1-yanxia@cmss.chinamobile.com> <20261102130658.GA922454@shredder>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=I5SSa/hB
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=IvOE97nqCYOuKLVpMLw0btVRPz7o5pR9mipwEI05Wt4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793672736; v=1; x=1794277536;
+ b=I5SSa/hBkeH/5TPTeuN4X07ju8nimjMubtSxy3YDqbsZhEDXwfvyXC6MLzr5m+4WTeH6YWl1
+ 5rQ6R5/95ZCsT+JnqTUDRVVFWUMFrFnuCiHacr9bTC82WWKt8l09zoQx9sGf3T36x3UNzzUPRwl
+ x1p1nzzCBuYxH7Fp8cytOjlc=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 736ecbeae81c178a;
+	Tue, 03 Nov 2026 02:25:36 +0000
+X-Mizu-Trace-ID: 736ecbeae81c178a
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <fc5a153e-f1d8-4b2f-a1ee-646ac5d8d8e4@linux.dev>
+Date: Tue, 3 Nov 2026 10:25:24 +0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,14 +58,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf v2 14/15] bpf, sockmap: Keep the rest of the cork
+ after a redirect
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org,
+ netdev@vger.kernel.org
+Cc: daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com,
+ memxor@gmail.com, john.fastabend@gmail.com, jakub@cloudflare.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, willemb@google.com,
+ matttbe@kernel.org, mptcp@lists.linux.dev, mason@kernel.org,
+ josef@toxicpanda.com
+References: <20261102072112.4160195-1-alexei.starovoitov@gmail.com>
+ <20261102072112.4160195-15-alexei.starovoitov@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20261102072112.4160195-15-alexei.starovoitov@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Ido,
 
-Thanks, I'll drop the Fixes and stable tags and resend this to net-next.
+On 11/2/26 3:21 PM, Alexei Starovoitov wrote:
+> From: Alexei Starovoitov <ast@kernel.org>
+>
+> After bpf_msg_apply_bytes() a verdict can apply to a part of the message.
+> Then tcp_bpf_send_verdict() sends this part and goes to more_data, and the
+> sk_msg prog runs on the rest. The SK_REDIRECT branch does not go there if
+> the message is the cork. It removes the cork from the psock before it
+> releases the socket lock. After the redirect it frees the cork together
+> with the rest. Thus the rest is lost, and sendmsg() reports it as sent.
+>
+> If bytes remain after the redirect, put the cork back into the psock. Then
+> the prog runs on the rest, as after SK_PASS. If the new verdict is SK_DROP
+> or the push fails, sendmsg() now returns a smaller value or the error.
+>
+> msg->cork_bytes keeps its value, thus the rest can stay in the cork. If the
+> psock has a new cork after lock_sock(), the kernel still frees the rest. If
+> the redirect of a cork fails, sendmsg() still returns success and frees it.
+>
+> Fixes: 4f738adba30a ("bpf: create tcp_bpf_ulp allowing BPF to monitor socket TX/RX data")
+> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 
-Best regards,
-Xia Yan
 
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
