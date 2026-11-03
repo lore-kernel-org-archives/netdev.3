@@ -1,97 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793725153;
-	b=EZZfJBiOvCTehNd0zZr85wRbpmshlKKMM7foMZB/DBPJx8Gz6mC/yfZ4ZX5mztMUzQwf
-	 pYZO5EMUJcCfAztrf3v4XtiQe0DnXSlnCezF1kLaY/i6AAITp4sWHLja4T8JAa6JTP0tK
-	 qkphom2i57KH+pLE70kpYZtu4VBuselkeAAMF/PJK9vWxMVegIjr9UrnvfkLUlQAKtec3
-	 1koT7otDlMEQj0fyH0Au4XQdi+b5BVEOcUe/XvyXE2olkh/ClfIQQPJUC1Pj1xtDcxW6k
-	 L4vhWhIsvG30G7QcYQc+QpFCWr30JJVRCN4fPAQhK79vLA+AbONq4LiEGhVpwgAgtow==
+	t=1793725167;
+	b=t4QgCM7Wixe8GjCCrDuRViuCF+hnC4IOHY4fBdtzdGw0YY4JhXzRI5FT7hSMDVCMBBzY
+	 8IZLiCO1pOsmPeY12oEk0wkZjFi9pR24M0QfA0HeMHHd9sqxeISWQJ9auQBMYdgvekYrr
+	 DLkveXjESZrVJ3D5LrS1chAStsYX/mCWdLRWgfY8th2t85YAKigOvtZ9+wYFy4V9oRPyq
+	 sMkGNF7bqniNntALg88CFRybz5o56xF0/NYwOXsBKjFYUQvwWGn/dxNbibeSdpxOwto4C
+	 5f1i8Rrwoaj7wGGi19gf78lx0nOZ3eMqcRG8OHLVblAz3IqxQyM4q5VWK5yUiQjMijg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793725153;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793725167;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=N2nmgAkk9tKVW9ZZZ6y0Nm3a3F6PCdPuD8mrqugKq5U=;
-	b=MLdINILCjeg7iuBIxhKaa0zsvkB3+wAp28MoL77KbggFlprvJKd8zUrwvg2BDFNpMDP6
-	 mMRmIJ0Y8wesTcK3GkIHgiYn4KwnPOeciHoQDdWoOBP1Ee/tB8Ji5Et2rnuAXNaxLl7sC
-	 0J89UYgFVqXQEPxARnz1bo7uszAPF4Ia48OWemNv6Xd4QkmFxavtA/brxmgTD8e8ZTHIO
-	 +Ibe/94ZR7/ZIR+RoD1dMeoV0okjaGGXynn5EeF1gw3AqmMoaLesrjhUKXBF8FlnlIpQK
-	 mFeBgkHXA5JFf0/Axd/ZVvx0UvslJlAG6TUDO5NHAhljKAj8zhGfnyNfxbRRg6jzE0A==
+	bh=30fBqIUk44N3HdvXKXPWYu2PFlzNF8/RtKozuVD1mMQ=;
+	b=HkGwaq83iaVtMMSnLIUHxQqhG2/l0tF32Bah5l7eP0azr605oHk7tm180MRUyGs9q56n
+	 6xfdxpuN+9STxS13tgr+BRoLJsJlqXstZ9e3pqOY4rrviX44O9EAHWpwGtbt7k1Dgd5iX
+	 wfkxe4wrY+zKXcBzAVg7/lyApm7wD+EBI9G+v52IWeld8TwXwQZprQpC/dpduVsnpPeSB
+	 FhSvRPHSFvQldyUreAwGjS3Qsa9bHyX17r/W9SujuPkuhiXHm3LVVhOaKU5Ntj6N1I09u
+	 pCy8WUEkK3WkLFNMvQoVAmn2ta5fkElCpVWrHPMt/EAdSdZg+RnLimGnCbLUMr4i1mQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=1password.com;
-	spf=pass smtp.mailfrom=agilebits.com;
-	dkim=pass header.d=1password.com header.i=@1password.com header.a=rsa-sha256 header.s=google header.b=Z2SC43w2;
-	arc=none smtp.remote-ip=209.85.160.176
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="EtIDaBg/";
+	arc=none smtp.remote-ip=74.125.82.173
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26585606A32F
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 16:59:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 26585606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1password.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=agilebits.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B58606A33D
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 16:59:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 51B58606A33D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=1password.com header.i=@1password.com header.a=rsa-sha256 header.s=google header.b=Z2SC43w2
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-53634b8328eso39406931cf.0
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 08:59:12 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EtIDaBg/
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-36a17a332ecso6641568eec.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 08:59:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1password.com; s=google; t=1793725152; x=1794329952; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793725166; x=1794329966; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=N2nmgAkk9tKVW9ZZZ6y0Nm3a3F6PCdPuD8mrqugKq5U=;
-        b=Z2SC43w2Jegfalwfgu+2q/1oAUA+RXjVC6sKz/YdcFg4UC2x+XgGUs+2ttfIx/923/
-         TdyxACU2F8UKQcE2sl3mLgvVVw/hKOoEYrDeQPuRcLkBkRsFm3B2i/KtCPrBTIQNu3tH
-         T540yzoo+oQoP7XQHaclkUpQQ1a5vIlF4Pc28=
+        bh=30fBqIUk44N3HdvXKXPWYu2PFlzNF8/RtKozuVD1mMQ=;
+        b=EtIDaBg/4JeF3SEyd/fennYexa3s3b14Aso1mQwgf5ZC79pj9WSiR8/nd/DodHTQ3y
+         ujy3VkKnDw6ywAYO/MjUyvdKha7x7UsIF7DejTEN5evpHogOPCY+5U6niz9x0jtboYP9
+         UY02eyKVCeI9oSU0fPYeurN9MaX7M3rqyvwlQvOtfPf621UvSVHhi8WBhLgMpkLI+XeU
+         QWwK5D/c2GVwkrVOsFIYS/xERe+FfDSs4x1GRRfhOD/cGkJCW/+SEf8nLV0tCW0zWN2t
+         7IF+DVilcU8sYVm3rMYSsWOlwsoLVahFoLlpqU65V0HBYo9NeoFstKmn5X5MXd/9Xm+C
+         uezg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793725152; x=1794329952;
+        d=1e100.net; s=20260707; t=1793725166; x=1794329966;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=N2nmgAkk9tKVW9ZZZ6y0Nm3a3F6PCdPuD8mrqugKq5U=;
-        b=T6NBcVUDu3/1ogWlevQ7wlc2BPm5xTD0Ytux5zmtNDvrKW7T0isI6+ng/EEImGsS7V
-         +0xL5/Bzy0nmlJOXNbACGVR93PUBrmErY7AHYiVd56SIcGdtZtt8UNEBmsuC2ITe6dAf
-         IblDhTR9B52bXGoNT4TsIkUBNVcNdLBq0NCLy03We5ZhD0szSKepXA5CRbhCMB4btVa8
-         TxU/28L3XYLcGcE3D04ye0m8o9m3cik+N1LsSlS0gmVgzsHEiu9An0nfAQ297LlDAYc7
-         HvZTzHoClChquq0OdsxORTQNt6dJmvZqtCKJiLpaQvPfzGs4PIglfuxspyqAO75nfLip
-         /c3w==
-X-Forwarded-Encrypted: i=1; AKwUvBwypA4sOwR+dP/ursjuB6TBtAk+oyYFlNld6zflmiYCCFXQ1gSn7iP0505gdHEJ/iDJGCiCIe8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8Kep1ZWEO7uKw6Su73VMzXtNLipdv9B1IWgxRLplOGkRnB6eV9
-	9Ah83lWuUpdVMM0/70+V1yfTjWvfXNBoPld7Paxzol1WchQnebnwhp7ZdvPlm5Yh35O5EV5r3hc
-	FAkLTTPg=
-X-Gm-Gg: AYBFou0Z7Urv63PhAtSQ9vqa6gjhitDRNik5okBSX2JR7Da+sCbEHdSxAIzQPGk1l/R
-	t5gXHmBjkCwnk5yMcuoSWDhBYOrQ6n2Ac9/4iPiIsO9+Jrlha7exegYFodzKF1Jw1xBb3F9KjX6
-	4D6vnbMz4gtsTF+FXtbYKOw/jwJiXCfmzxQ6N5At9GPMoPOAGw37e/Ui0I75p1TYfjACupgM27y
-	YP/HOrgmqBfiRBq0sdZvhdPEUK4lGhrnyDFB9wzgX29aY6mOGmccW1IdqZjyKbLqeFKucnq3YjK
-	hQIg/2+dBAgdxY/WebQ85BQzJPLoCt3DkcMN0Ju8oO9NKtNgZNI1398o/Z5J8MgeB5AjLQhdu0b
-	sKUQGgRoBpmQUw2QWKWs6SQ/akkBefgHGhqS/yTRkxkudcIKiXuPOu/vCAJVK0Db3chBJBEA5kW
-	b3x6pTn4WhITtl7iKQh0C1Yz8+KxN0r8qynVdfc24tXQ+NFW9hhP9T2MWRi+5eTQBj7zCJwsD0A
-	8Dg2/XXXTjtlf6XY1F7UkRmZL29a5+PvlDOrerCClSqusCx5/sDq/C1q7zQRS6E2rVUtljLdGtB
-	KxAksU2E9QsJF89tJzzKLgMQiOnP7xfghFrS2X6z+ZSZcA8vhKoZjPVGHJkae29Mu/IKhTQfIZv
-	nAjctAw==
-X-Received: by 2002:a05:622a:a584:b0:536:6ae9:f581 with SMTP id d75a77b69052e-542b8ad94a8mr237532011cf.67.1793725151850;
-        Tue, 03 Nov 2026 08:59:11 -0800 (PST)
-Received: from localhost ([2600:4041:59c3:300:a850:2af1:eb93:4121])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ca95caf90sm118485686d6.30.2026.11.03.08.59.10
+        bh=30fBqIUk44N3HdvXKXPWYu2PFlzNF8/RtKozuVD1mMQ=;
+        b=I95g5d8Gld9VqbzBq397RbxvI6A/+hu9KOqFjGLv6VLjWboU1YkQ9dQGB3fqmDgtvx
+         XeWLsJpIdm4mWVKPVqf8WNi3xvtC8utuv4MyqrHRohC62NwWB4TGozr8+PwDk25NU2kd
+         fU6+IG7LQ7X62Wz0ldeRhNUWpkjO9GhwdnJ9oKo4Q/bJPvaaw7U8UUavxksjP0+zRpxx
+         QLdlQrN4DBItZ91fNCYeuIhIhslAMNF+B4aIh3ElYj0MCSG01H4HIvHajHq9ZEBXLu7S
+         mykNcNhkaTWkMoLRCqNjogoZExoJCabcNz7UIgX893mdPnfqob7YEJpaQMGpAJ+UMGZr
+         YpGw==
+X-Forwarded-Encrypted: i=1; AKwUvBzsTthhwqD5OV2ZU3B3pP6bT7oujt0n6HJr4P1QmAmWLUJKJh58r240ZXSbt00AosFDWrzdhYE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9aesnS88CAb37azuafOpzwez6rok3hOIAvReADzCe6fEHxXBK5
+	gyiX81JQqWlSEKq5JcEMrX3iR+5NFQ0FCqbrqDv12gSsFTTeNLXeiSF/
+X-Gm-Gg: AYBFou1Sm6V25In6WYuq6SCbhFtJCRfirMjgTzAXGa8iof6/5VfwzDCkv5MM+v4LqVQ
+	+Rem6V+HSA7+AZ+H/xp+CVW40AFoqHIbuUQSMNasA0yPUw/FbftpcEDorKLjYTRjF8pZ1A5gHdz
+	+b4FV+gGkl56cQwnzYP6lLMkft66U/NCfiYnVGQ46Rko7TPeE61yUGsfImg/76+MrWv+gMz+NgJ
+	weOj4FlKBDaA5YIVsgfaAP1T3n+auEHrdZmwBnbx/KcNYNomiHs+yDkn04aH/qqdHhqYDV8TPkm
+	gkFo2Aq+qDD2JqDjA1Tspixh/Co/NWGDbyoEZJFAjHef6ziw41gWjCpI5lqHwBrmrLeICuiXjnJ
+	27v7IQaIcQK3b7tGCrf/363x8eTWeHplPDeEji+dkHBag0brmTOMxNWbJyJUy0PRuiUBYBPDOjN
+	RS4brH4948eUkqptZJdWZ6EIbblbkmYXOUdKnekqCVyAbUJWHOpRXSsF6jzZpisvI7q6ds3AjlP
+	9IB89mulaa2IwD4HXwbi5wUwBZO3/qLy4BD/3V+FU4ZJjPNWwJPla8wiEkom4tRowu7I3KmUI4w
+	7rduiuSWm0tOElulpjxqaR5ORmVLdkE+4HFdnGO8hIt/fpiOpz6FYPccOLppYddaURUIAGEVW8G
+	s4PqgB9EcqmAFYkVj6cI3dsYSiw4WAnAVR0iPt1HfQTD8bYS5Qj4itQm+E+bIVBACz8q01wjPKb
+	40
+X-Received: by 2002:a05:7301:4b0a:b0:369:9af5:7bc9 with SMTP id 5a478bee46e88-36a424199eamr20487749eec.23.1793725166155;
+        Tue, 03 Nov 2026 08:59:26 -0800 (PST)
+Received: from LAPTOP-97G9G880.domain.name ([106.222.203.148])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a4239ca83sm9293247eec.0.2026.11.03.08.59.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 08:59:10 -0800 (PST)
-From: Axel Mierczuk <axel.mierczuk@1password.com>
-To: ja@ssi.bg,
-	horms@verge.net.au,
-	pablo@netfilter.org
-Cc: fw@strlen.de,
-	phil@nwl.cc,
-	netfilter-devel@vger.kernel.org,
-	lvs-devel@vger.kernel.org,
-	coreteam@netfilter.org,
+        Tue, 03 Nov 2026 08:59:25 -0800 (PST)
+From: Karthikeyan KS <karthiproffesional@gmail.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Mike Christie <michael.christie@oracle.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
 	netdev@vger.kernel.org,
-	w@1wt.eu,
-	Axel Mierczuk <axel.mierczuk@1password.com>
-Subject: [PATCH nf v2 0/2] ipvs: keep templates and cport 0 conns away from packet lookups
-Date: Tue,  3 Nov 2026 11:57:44 -0500
-Message-ID: <20261103165746.39516-1-axel.mierczuk@1password.com>
-X-Mailer: git-send-email 2.50.1
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] vhost-scsi: use FOLL_PIN for DMA page pinning
+Date: Tue,  3 Nov 2026 16:59:17 +0000
+Message-ID: <20261103165917.148720-1-karthiproffesional@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,46 +106,198 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A template received over the unauthenticated sync protocol with a
-nonzero cport is matched by data packets in ip_vs_conn_in_get() and
-the protocol state machine runs on it. Patch 1 rejects sync records
-with inconsistent cport and IP_VS_CONN_F_NO_CPORT combinations on
-the backup.
+vhost_scsi_map_to_sgl() takes references on guest buffer pages with
+iov_iter_get_pages2() (FOLL_GET) and then performs DMA to/from them.
+Per Documentation/core-api/pin_user_pages.rst (Case 1: Direct IO),
+pages that are the target of DMA must be pinned with FOLL_PIN instead.
+Only FOLL_PIN pins are visible to folio_maybe_dma_pinned(), which fork()
+uses to copy rather than COW-share anonymous pages under DMA, and only
+FOLL_PIN guarantees a pinned anonymous page is exclusive to the process,
+so a later write fault cannot replace it while DMA is in flight.
 
-Patch 2 applies the cport rule of __ip_vs_conn_in_get() to
-ip_vs_conn_out_get(): a lookup for client port 0 matches only
-connections flagged IP_VS_CONN_F_NO_CPORT, so templates and cport 0
-connections cannot be matched through the out hook, while the
-"update or create" lookup in ip_vs_ftp_out() keeps working.
+Switch to iov_iter_extract_pages(), which pins user-backed iterators,
+and release the pages with unpin_user_page(). Kernel-backed iterators
+take neither a reference nor a pin, so track with
+iov_iter_extract_will_pin() whether an unpin is needed.
 
-The companion patch "ipvs: filter some flags received in the backup
-server" is already applied and rejects template records carrying
-IP_VS_CONN_F_NO_CPORT.
+Cc: Jason Wang <jasowangio@gmail.com>
+Cc: Mike Christie <michael.christie@oracle.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Michael S. Tsirkin <mst@redhat.com>
+Cc: virtualization@lists.linux.dev
+Signed-off-by: Karthikeyan KS <karthiproffesional@gmail.com>
+---
+v1 -> v2:
+ - Rebased on vhost next. Sashiko reported that the revert loop in
+   vhost_scsi_map_to_sgl() leaks a page when the misaligned-I/O check
+   trips on the first page with a non-zero offset. That bug is older
+   than this patch (the loop leaked a put_page() reference) and is fixed
+   in vhost next by Jia Jia's 058fc59326af ("vhost-scsi: fix page
+   reference leak in misaligned I/O fallback"). On top of it, this patch
+   only calls unpin_user_page() instead of put_page() in that loop.
+ - Reworded the commit message to describe FOLL_GET and FOLL_PIN more
+   accurately.
 
-Packets with port 0 are handled separately by Julian's patch "ipvs: do
-not create conns from packets with port 0".
+Testing: in QEMU (fileio backend), a 1 MiB write at page offset 3840 is
+257 pages, more than BIO_MAX_VECS, so the misaligned-I/O check trips on
+the first page and dmesg shows the "vhost-scsi detected misaligned IO"
+warning. On v1 (before 058fc59326af) the nr_foll_pin_acquired and
+nr_foll_pin_released counters end at 257 and 256 for each such command;
+with v2 on vhost next they balance. Plain (256 pages) and T10-PI (260
+pages) writes balance too.
 
-Changes since v1:
-- Patch 1: unchanged, added Acked-by from Julian.
-- Patch 2: test p->vport against IP_VS_CONN_F_NO_CPORT instead of
-  requiring a nonzero cp->cport. The v1 check made the
-  ip_vs_conn_out_get() lookup in ip_vs_ftp_out() always miss, so a
-  duplicate data connection was created for every PASV/EPSV reply,
-  and it read cp->cport twice. Reported by the Sashiko review and
-  Julian. Commit message rewritten.
+v1:       https://lore.kernel.org/20261007163716.707102-1-karthiproffesional@gmail.com
+RESEND:   https://lore.kernel.org/20261020182640.2048506-1-karthiproffesional@gmail.com
+review:   https://lore.kernel.org/sashiko-outbox-180555@kernel.org
+leak fix: https://lore.kernel.org/20261023104035.6686-1-physicalmtea@gmail.com
 
-v1: https://lore.kernel.org/netfilter-devel/20260925141115.16126-1-axel.mierczuk@1password.com/
+ drivers/vhost/scsi.c | 50 +++++++++++++++++++++++++++++++-------------
+ 1 file changed, 35 insertions(+), 15 deletions(-)
 
-Axel Mierczuk (2):
-  ipvs: validate cport in received sync records
-  ipvs: skip cport 0 connections in ip_vs_conn_out_get()
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index e44044449cef..8beeff06a7a7 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -115,6 +115,8 @@ struct vhost_scsi_cmd {
+ 	u32 tvc_sgl_count;
+ 	u32 tvc_prot_sgl_count;
+ 	u32 copied_iov:1;
++	u32 tvc_need_unpin:1;
++	u32 tvc_prot_need_unpin:1;
+ 	const void *read_iov;
+ 	struct iov_iter *read_iter;
+ 	struct scatterlist *sgl;
+@@ -463,8 +465,13 @@ static void vhost_scsi_release_cmd_res(struct se_cmd *se_cmd)
+ 
+ 			if (tv_cmd->copied_iov)
+ 				__free_page(page);
+-			else
+-				put_page(page);
++			else if (tv_cmd->tvc_need_unpin)
++				unpin_user_page(page);
++			/*
++			 * Else: iov_iter_extract_pages() took neither a ref
++			 * nor a pin on this page (ITER_KVEC/BVEC/etc), so
++			 * there is nothing to release here.
++			 */
+ 		}
+ 		kfree(tv_cmd->read_iter);
+ 		kfree(tv_cmd->read_iov);
+@@ -473,8 +480,8 @@ static void vhost_scsi_release_cmd_res(struct se_cmd *se_cmd)
+ 	if (tv_cmd->tvc_prot_sgl_count) {
+ 		for_each_sgtable_sg(&tv_cmd->prot_table, sg, i) {
+ 			page = sg_page(sg);
+-			if (page)
+-				put_page(page);
++			if (page && tv_cmd->tvc_prot_need_unpin)
++				unpin_user_page(page);
+ 		}
+ 		sg_free_table_chained(&tv_cmd->prot_table, vs->inline_sg_cnt);
+ 	}
+@@ -820,7 +827,8 @@ vhost_scsi_get_cmd(struct vhost_virtqueue *vq, u64 scsi_tag)
+ 
+ static void vhost_scsi_revert_map_iov_to_sgl(struct iov_iter *iter,
+ 					     struct scatterlist *curr,
+-					     struct scatterlist *end)
++					     struct scatterlist *end,
++					     bool need_unpin)
+ {
+ 	size_t revert_bytes = 0;
+ 	struct page *page;
+@@ -829,7 +837,8 @@ static void vhost_scsi_revert_map_iov_to_sgl(struct iov_iter *iter,
+ 		page = sg_page(curr);
+ 
+ 		if (page) {
+-			put_page(page);
++			if (need_unpin)
++				unpin_user_page(page);
+ 			revert_bytes += curr->length;
+ 		}
+ 		/* Clear so we can re-use it for the copy path */
+@@ -859,9 +868,9 @@ vhost_scsi_map_to_sgl(struct vhost_scsi_cmd *cmd,
+ 	size_t offset;
+ 	unsigned int n, npages = 0;
+ 
+-	bytes = iov_iter_get_pages2(iter, pages, LONG_MAX,
+-				VHOST_SCSI_PREALLOC_UPAGES, &offset);
+-	/* No pages were pinned */
++	bytes = iov_iter_extract_pages(iter, &pages, LONG_MAX,
++				       VHOST_SCSI_PREALLOC_UPAGES, 0, &offset);
++	/* No pages were extracted */
+ 	if (bytes <= 0)
+ 		return bytes < 0 ? bytes : -EFAULT;
+ 
+@@ -884,7 +893,7 @@ vhost_scsi_map_to_sgl(struct vhost_scsi_cmd *cmd,
+ 		    cmd->tvc_sgl_count > BIO_MAX_VECS) {
+ 			WARN_ONCE(true,
+ 				  "vhost-scsi detected misaligned IO. Performance may be degraded.");
+-			goto revert_iter_get_pages;
++			goto revert_iter_extract_pages;
+ 		}
+ 
+ 		sg_set_page(sg, pages[npages++], n, offset);
+@@ -896,8 +905,10 @@ vhost_scsi_map_to_sgl(struct vhost_scsi_cmd *cmd,
+ 	*sgl = sg;
+ 	return npages;
+ 
+-revert_iter_get_pages:
+-	vhost_scsi_revert_map_iov_to_sgl(iter, *sgl, sg);
++revert_iter_extract_pages:
++	vhost_scsi_revert_map_iov_to_sgl(iter, *sgl, sg,
++					 is_prot ? cmd->tvc_prot_need_unpin :
++						   cmd->tvc_need_unpin);
+ 
+ 	iov_iter_revert(iter, bytes);
+ 	/*
+@@ -907,7 +918,9 @@ vhost_scsi_map_to_sgl(struct vhost_scsi_cmd *cmd,
+ 	while (bytes) {
+ 		n = min_t(unsigned int, PAGE_SIZE - offset, bytes);
+ 
+-		put_page(pages[npages++]);
++		if (is_prot ? cmd->tvc_prot_need_unpin : cmd->tvc_need_unpin)
++			unpin_user_page(pages[npages]);
++		npages++;
+ 		bytes -= n;
+ 		offset = 0;
+ 	}
+@@ -983,6 +996,7 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
+ 	}
+ 
+ 	cmd->copied_iov = 1;
++	cmd->tvc_need_unpin = 0;
+ 	return 0;
+ 
+ err:
+@@ -1007,11 +1021,17 @@ vhost_scsi_map_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
+ 	struct scatterlist *sg = sg_table->sgl;
+ 	int ret;
+ 
++	if (is_prot)
++		cmd->tvc_prot_need_unpin = iov_iter_extract_will_pin(iter);
++	else
++		cmd->tvc_need_unpin = iov_iter_extract_will_pin(iter);
++
+ 	while (iov_iter_count(iter)) {
+ 		ret = vhost_scsi_map_to_sgl(cmd, iter, sg_table, &sg, is_prot);
+ 		if (ret < 0) {
+ 			vhost_scsi_revert_map_iov_to_sgl(iter, sg_table->sgl,
+-							 sg);
++					sg, is_prot ? cmd->tvc_prot_need_unpin :
++						      cmd->tvc_need_unpin);
+ 			return ret;
+ 		}
+ 	}
+@@ -1449,7 +1469,7 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
+ 		/*
+ 		 * If T10_PI header + payload is present, setup prot_iter values
+ 		 * and recalculate data_iter for vhost_scsi_mapal() mapping to
+-		 * host scatterlists via get_user_pages_fast().
++		 * host scatterlists via iov_iter_extract_pages().
+ 		 */
+ 		if (t10_pi) {
+ 			if (v_req_pi.pi_bytesout) {
 
- net/netfilter/ipvs/ip_vs_conn.c |  2 ++
- net/netfilter/ipvs/ip_vs_sync.c | 19 +++++++++++++++++++
- 2 files changed, 21 insertions(+)
-
-
-base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
+base-commit: 1a577f9402c1780cc1e663f48d5dd54c02051b09
 -- 
-2.50.1 (Apple Git-155)
+2.43.0
 
