@@ -1,73 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793683747;
-	b=Xe5SceSOyaUw7qdIXG4zXj1sAXeHpsuR7xBUMRvPeJ+Pdz3nG6yFsYHoY2OBw3mp33BQ
-	 rnQQyeSrn6Km6J4W8WaXwk5r2YovJUNNQ3VC7d282ksK1l6748GvqghYeKZwTgbfjILo4
-	 dL0a6uvk5SMdMfSBkaswDm+pR9i919AKoCbavm+t/Ejx+One1n+FjcR8+pLJ/itgQ0v7b
-	 Wneb3sgLMs1zd2qy02Ok+LdS8Y7xu6FtLbFBQcnJRQrVjtN5kFMT5wgGtbRTa4QRTRiz8
-	 f07NnlkAEtPcuXAZbN66/djYHCJjAa3YjPGC2pGYCLvBml1HR2R3s1IIcEFcobFcLTg==
+	t=1793683773;
+	b=2QhSNhKvAt5jRgfFIGZc4z3R4Au/3MFz5UfSRpSheX4AxYI/Qlul3jQRMve1PR7T9vTS
+	 ksPRT43CB7tt9IPp4/1NFxZNVFqr9ntL1gD2jR+7WWsROV+voq7hl2LTyrnV2g9BnzlSr
+	 iWmyJ02eIvdGAAVjvaDu1ij7zSDqAyN1VJF9HHCZf7cldicPhdPl3/+50ZLTSO15CqkND
+	 TJ1V7sCYkDgQocn3vkVMI0sRbUObUudXiTR5WMUeGzunHbFjL+5NnnwFxgCC8X10AxFsl
+	 rKEGyKD3pxWAUr/h+jv+zLmpN/tMAd+pimuUQspQJtgpawXR8FABr9FtL4l8RJtrDnw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793683747;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793683773;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
 	 References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=kyA6YgN8qGDEZTh7erLhMR/RU8AaJWhDA/nGGj59ABQ=;
-	b=Ndp0rXfFYg2Sp4pL5cP/WPTXUmX/tl+eksZBDMgyLBkgJmKtT3dEpCOlkMgK7jwtPEZb
-	 V25xlBP3pX+hNkY7Kc1AzZLOCEG2caockKu+xoBB6VPCDqj5dZyp0vZG0VnMFK4jrMszU
-	 5ocwiV6RIH8GmmCgDWglhNOYWlhDBSEYz6JqkgWfgi/IkSgw+/PZTAPzZHk46wq/7ZKHi
-	 gLbPolDLGQsevJ4vxuLRv2tVFmkGoVElCiE7EWK66s4Js6hkLxNTvEV1X6M3V9uL02Uoj
-	 NRlhqdESIj8mLLTmghHkjyLyKviLDb2ohSlWT9XfnCHoB0IgPAbVmypkKPcXFbAYJSQ==
+	bh=ke9vhkENAXPfCm1yxHfr+SbOqiszin1sS4qIXy02ijk=;
+	b=zAAH+G4LrxCHlTuxgyn7ErH+KnB/HmrPpHosjacG6eS1hrXYrvU4ytVynKY61NB7MWHR
+	 LZ76QrGVbtVZonN5lN+S+fXnDl3HxL1++XuYYga4LrRafgyRpjod1iC8QDyLVaMJdyJKD
+	 +dv4FwuPZ+RJSz/OqBQQCvOTQAgO/N4w2lG1ku4/AL1V8HWMWeSWbzSONlIm0fa+APHt6
+	 SPGSSAHtHkW9rn4LH8rrc3fdGlAjpe20Gcw/etcK9c41o3eWA6/Jlwbv2JoUDbOQ+SnC6
+	 ukF+nCS2LiOrwYHzvZjKsGqmQF+k15PD4svTIHhONKz7zmDem9B9NHnQrQtVaxUGNNg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AV1uMkMF;
-	arc=none smtp.remote-ip=209.85.214.198
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=UmzAFCtx;
+	arc=none smtp.remote-ip=209.85.214.200
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9E8606A32C
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 05:29:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DF9E8606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F19606A338
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 05:29:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81F19606A338
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=AV1uMkMF
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2e9d52f684fso37931605ad.2
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 21:29:06 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=UmzAFCtx
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2eb362d1f5eso39796635ad.2
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 21:29:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793683746; x=1794288546; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1793683773; x=1794288573; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=kyA6YgN8qGDEZTh7erLhMR/RU8AaJWhDA/nGGj59ABQ=;
-        b=AV1uMkMFV8Qiumc6keDPr+j6sMXlonF9LIML0A2w/wRFHDsaQN4MpgQR0Q2qOLVcCA
-         qtUaKNdOXSx6ADJiCXYU402DFtzPKLGJCIBeJXIWIPfzAxNJt7YNWZukuDllBR0d2SRn
-         Cs5KTulkk3aj1OMwcBeQIWlaNS5qlwzVCurABOd+UHwq4i1mCwaq4h/KB/qm0hwuVWks
-         m8Mes/yRkuWrqcPi2wyCD8loycNPtsY/vPD6yqXIORZMRQIjG7oWTaZGvapPzC0BWIIV
-         E/Nqm4aAchACgSvjhIgFGzoHMZgoSHBeALckhDrrcAGZvITmAQcpt/oWOPUaBZrpWBsm
-         mLOA==
+        bh=ke9vhkENAXPfCm1yxHfr+SbOqiszin1sS4qIXy02ijk=;
+        b=UmzAFCtxp1ZYyFABxl1CisByc7Hr2e969siZsRVUO5jvr9m5lyMi3dsG2NZaa6DbkS
+         Q8filMC2M4hVX6GaGHy3WskJo5Ss81YXxBmHv8Gi3cYWgKeSPF/RHDi5+dirS5fixcse
+         lmlGFAnXepRzUL004qTIZUB77qN5VCnadqWy0pYWfUhEFZZs52UGP/bbyIqea7T6Z9vn
+         DhELoXdUTRArq8p4XtGXSWvwgHHdcbHZOXSSL+egm063O5C4EG5katn0QWTJQvViSFD3
+         fikNYAgztw0YQOL9Nb7azqmVcP8aky6HDdQz0uv/e0/YqjmnYm/mNXTh+9aJgyQVZzM1
+         YQeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793683746; x=1794288546;
+        d=1e100.net; s=20260707; t=1793683773; x=1794288573;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=kyA6YgN8qGDEZTh7erLhMR/RU8AaJWhDA/nGGj59ABQ=;
-        b=EYBiiiXhLPq1C6uUyrrkjK3Tavqg6X1JUzYSeRJT3k0Qaq2K9jNyKMbw+fti7zDG0L
-         sU1kqRPiGw/kSPlWbCw7j/9iQBq7vz8wDKfk9B5H1od/DiGqZIYYzQ5YLp4ORv8Aqxzo
-         lzPkNzc4ScHSmMRJ0TEvuLYWwWC+MXGkW3GeKAx7KHbt4MCw5LI806obKApC8wUzN9IS
-         KIP10v2TrsM3gtj/nit7EnFc3rZV9OKi5E/AUlJ6nsnH5FTY4DgVFSMzAf1bPycT2vBY
-         lqVgmgbmFR5byaCoqwHqIiO8Vl6hfcBZ2TQXYkD0O8IIX0Wbo1rET4OF5KaiNK5Ce8Pa
-         YfPw==
-X-Gm-Message-State: APuU4Z/lVXEuScK0TMEOR/e6JvoI6LbNgAx9clkNS0T3+Gv3mL7iWq7V
-	/604qB1TbJ8GKSH33Y/+zzELcPuDE5MbG+drIS4qJl1TCoIiqTHX+skE/b1QNxEYoBIman+NR1C
-	0mfva7A==
-X-Received: from plhq17.prod.google.com ([2002:a17:903:11d1:b0:2e9:64c:38da])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:245:b0:2eb:a1b:e9e5
- with SMTP id d9443c01a7336-2eb364e7bfdmr113562095ad.52.1793683745906; Mon, 02
- Nov 2026 21:29:05 -0800 (PST)
-Date: Tue, 3 Nov 2026 05:29:05 +0000
-In-Reply-To: <20261101061331.286404-4-jiayuan.chen@linux.dev>
+        bh=ke9vhkENAXPfCm1yxHfr+SbOqiszin1sS4qIXy02ijk=;
+        b=ON9Ius9fXE5Z2wY3EUXOma81Vs19/O4rpz2W/ivcWP9fFlWv0sHnBs33tjtjXgUZit
+         fIxzoy/v1CWRpnAx+pavYHps67kDgWiHoyB5t0+skxHUiwO2BQTj8GhWTV+BnJg9jpFh
+         HrU8yYFzTWoC6VONC7MBhlzXpLIr8uQp68+uf4hnWvS3wXiUZ2qe1y6eGBmbeu6mZyPb
+         hsQXOv7mHvfkhojGz3mKCZSsPMEcMNbJ7ELOn/bccOtAgbVMcL8yLkAT9LCGPFq9qSRn
+         etWJF7bwtVY60pBJkyQVnfSYJnqu06awkMg6H0OJg4zggBo52kp0S1BfRTYOVQosNwQB
+         95Qw==
+X-Gm-Message-State: APuU4Z8tX1pJE5RbfG2IH4Uj1jpPnbiBotB9uWRFSUEiJmd9XyUtq8jL
+	RkwvuuF4usSBQkWLovkjbf0ZtLvs2Qa8J38/7/Tmt5GlcYo4nsZlde/Sj0vUTa91a67FGJkCQRi
+	F6tmNXA==
+X-Received: from plbbb6.prod.google.com ([2002:a17:902:bc86:b0:2e8:18c6:a093])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f712:b0:2e9:5829:9b40
+ with SMTP id d9443c01a7336-2eb3649be7emr111118405ad.9.1793683772335; Mon, 02
+ Nov 2026 21:29:32 -0800 (PST)
+Date: Tue, 3 Nov 2026 05:29:31 +0000
+In-Reply-To: <20261101061331.286404-5-jiayuan.chen@linux.dev>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,9 +77,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261101061331.286404-1-jiayuan.chen@linux.dev> <20261101061331.286404-4-jiayuan.chen@linux.dev>
-Message-ID: <aulxGkfJ-7V8RUZp@google.com>
-Subject: Re: [PATCH net v3 3/5] ipv6: restrict mld_qrv to 255
+References: <20261101061331.286404-1-jiayuan.chen@linux.dev> <20261101061331.286404-5-jiayuan.chen@linux.dev>
+Message-ID: <aulxMqNrVTWFRuv3@google.com>
+Subject: Re: [PATCH net v3 4/5] ipv4: restrict igmp_qrv to 255
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Jiayuan Chen <jiayuan.chen@linux.dev>
 Cc: netdev@vger.kernel.org, stable@vger.kernel.org, 
@@ -88,39 +88,30 @@ Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
 	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
 	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
 	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Joel Granados <joel.granados@kernel.org>, 
+	Joel Granados <joel.granados@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
 	Petr Pavlu <petr.pavlu@suse.com>, Maoyi Xie <maoyi.xie@ntu.edu.sg>, 
-	Gerd Rausch <gerd.rausch@oracle.com>, Oleg Nesterov <oleg@redhat.com>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>, 
+	Jiri Wiesner <jwiesner@suse.de>, Oleg Nesterov <oleg@redhat.com>, Gerd Rausch <gerd.rausch@oracle.com>, 
+	Neal Cardwell <ncardwell@google.com>, Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>, 
 	Yung Chih Su <yuuchihsu@gmail.com>, Wyatt Feng <bronzed_45_vested@icloud.com>, 
 	Hannes Frederic Sowa <hannes@stressinduktion.org>, Flavio Leitner <fbl@redhat.com>, 
 	"Paul E. McKenney" <paulmck@kernel.org>, Petr Mladek <pmladek@suse.com>, linux-doc@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Sun, 01 Nov 2026 14:12:01 +0800, Jiayuan Chen wrote:
-> net.ipv6.mld_qrv only has a lower bound, but ipv6_mc_reset() stores it
-> into the u8 inet6_dev::mc_qrv, so 256 wraps to 0 and the first MLDv2
-> Query received on the interface trips the WARN_ON() in mld_update_qrv():
+On Sun, 01 Nov 2026 14:12:02 +0800, Jiayuan Chen wrote:
+> net.ipv4.igmp_qrv only has a lower bound, but ip_mc_reset() stores it
+> into the u8 in_device::mr_qrv, and the IGMPv3 retransmit counters filled
+> from it (crcount, sf_crcount) are u8 as well. Anything above 255
+> silently wraps. With 256, mr_qrv becomes 0, every
+> "in_dev->mr_qrv ?: sysctl_igmp_qrv" falls back to 256, which truncates
+> to 0 again in crcount, and igmpv3_send_cr() never puts the state change
+> records for the group into a report. The older version querier present
+> timeout (mr_qrv * mr_qi + mr_qri) also collapses to just mr_qri.
 > 
-> 	WARN_ON(idev->mc_qrv == 0);
-> 
->   WARNING: net/ipv6/mcast.c:1327 at mld_query_work+0x1fd2/0x2cb0, CPU#3: kworker/3:1/2688
->   Workqueue: mld mld_query_work
->   RIP: 0010:mld_query_work+0x1fd2/0x2cb0
->   Call Trace:
->    <TASK>
->    process_one_work+0x93a/0x1b20
->    worker_thread+0x6d0/0x11d0
->    kthread+0x358/0x470
->    ret_from_fork+0x5b3/0x820
->    ret_from_fork_asm+0x1a/0x30
->    </TASK>
-> 
-> Make the sysctl a u8 like mc_qrv and switch to proc_dou8vec_minmax(),
+> Make the sysctl a u8 like mr_qrv and switch to proc_dou8vec_minmax(),
 > which rejects anything above 255, and document it.
 > 
-> Fixes: 2f711939d2ea ("ipv6: add sysctl_mld_qrv to configure query robustness variable")
+> Fixes: a9fe8e29945d ("ipv4: implement igmp_qrv sysctl to tune igmp robustness variable")
 > Cc: stable@vger.kernel.org
 > Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
 > Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
