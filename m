@@ -1,95 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793717131;
-	b=WsCkgtl007GyDqc5CydYwDf0FkvYgNGFxlsXaI8pFtFeqkt7vKCpyHpnwtjgdoXzUMIf
-	 YwyjiovnrRxaUXD/j880yZQoArIeBA16M9ixAIi+BC7GhTLN+Z9UvMnwhV/bt4q04281/
-	 PvsZWTDYOziRRiForKQ/AQ1F2/uPQ6FVbXAAeTJxYDo0VAIvKB8ZoHNKFzi/Q0b5N5Ekn
-	 XwI/k2WDm146YSGGwtESCCrrPPLBzb6rgeciMBQ5r7KmEqv/GLs/u2cK4rcSqaU5KyHw3
-	 zRlO2Pjf2nO43umlviGLaWdqvJKYPIOOdb9K1G5QgDsmCPtJJ+sjE6R8voMlnixqfCg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793717131;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=YQYepSwU/cLvIj7VN9avFqZ/rm/JuU/f8/W3WMxlLNo=;
-	b=TRewjwIIlq0fsf/FhHXhjnD3RvL3zC5Vft8tB7K7FXDgBvs7CwZTmSotGjmyZ8dYt6KU
-	 M3gmFXSMHkFdxuqwJEsTuZylDGkakkGCGfeyU+X+M0UYeiMaRtFlkzN2hwzaP+8nR1CpK
-	 b0grj/chsQJ1hvWcAjNWlwwBAGYFbbkJ9q3L2uKrcTYguX7WDqiZuPR3OGbN/xBpU4lSy
-	 TG/blbZySCX1P6Res2CdITEJgC3wYotwzi83X8S9XwQx0EMKoZqxmXWap/b/XCjasb7SK
-	 qtv7GXEJDya0FlGJJS5KWGHMVfvMI8rZcNkTEAqF8xZ8jfV17disESMMejlz4U+n8Fw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=c3Qfgw7g;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.195.13
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012013.outbound.protection.outlook.com [40.93.195.13])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793717210;
+	b=EKklKKRNQF/yGTXuvRhvwcsHcFg85JDaX9MOwMSB6kybXLiiR7c4NPY4BqxBoE4tu105
+	 pVSLSfZK8UytnmNK22jyW1xVTrlC2AsMmI9oqRS5kPfGBpCfGA0Yptc4xo7iWWRFTh1uc
+	 JZckujiopLeqZear1X7uoOzN1tNHps9jzEw4ks6aUMI5FfrlA4Ap6ycA35MUWlpBr5ql4
+	 sM5DWxqRgQgIMJ8tO+lVbk0ZB7JmltInQlWsq7sFcUzh+4YryWfxHDqjEdtAtM9CflqaX
+	 i6epkYadxLL4CqjRrWx1ob0kUS4M6IT01jmKN4RdHe1QeZCMCQLPJ/BPT6bETikqzSw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793717210;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Tjz9g6dlvmvCD0CXPiOmI6DhgTWluUgooEw5+wZVo1I=;
+	b=cmsLsmpVKND4ATul19TuiBxlaNAtS9W+tBm/QVi1sjNCtucOkcGMpyZc/EfeBUgI3k3+
+	 ex+V+peq5etnwA2VSi7ugqScCY3m24twdw8wCUwZ/aE2KHAbFTf6qMRNUS3E2uO4kx7zK
+	 Gmz0V+6IkoQ4wBZqKdpZshI4wBSCbeoThK3pjGHYtq1c13VR72x7U+DWH2KVIp+B+ChCS
+	 Ur3c7Bq0DY0dIcREb0zP3mB35GUZgc/X3Jmb8ez+ZUJ196N6B9dxP5FKRHQ2DlFiQU/mF
+	 Wna5QdY4NkQqPGA13scyOsbGc79tTsbsw00YevlNQw2EZglzDKRdFycdipMgy6GF0yQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=avW3TzCz;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5DB3606A324
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 14:45:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E5DB3606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA831606A33F;
+	Tue,  3 Nov 2026 14:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=c3Qfgw7g
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=o1TU0ColR/Rrs2KwNCNTY8eOYrfRAeiAh1WMR0xcTJbH4WiH065hSr9N9AxrgVfynzIyRWaQLoYA//F9spUPnZGz8qCGB6G5paZgOXhGboLatfZ3dRRo1I0PwAQdyNbasHvwCPA75ewDzdsF6YK5USiXIyLO4yoT9UtchST1+Fc5Td48kA211m32ECtTZje6Y1CcRlRusA3oB0kO90dsY6VKmRF1zGpSyNkRtY4xHNJ1uSOuUK9W9Cu3BZej2ADEDK+MKdKbI+pYk79pwpMVdz4iT1+eQv4RQlOO9qAEajHDAjeJ9MPH8+JL03uQY5E+8EAdM1HkvZ+lPCwdcBZ+eQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YQYepSwU/cLvIj7VN9avFqZ/rm/JuU/f8/W3WMxlLNo=;
- b=c8aDjzHxqK2QjmSu2G/edHRoQ5RRjhxoBpc+acMcsQYqpDcxg0wpy2XEDzYCrWOw/xJay4ktc6fmGqca4UNBwCa1UHpzSbBT8JrM//c3IfWiOEkaZbXuUst6gpC2wbty9FmNNPJP8fn73yPvDiaHAbh5x96erh9tL/YDyyCacNFk/VQn8NnFKQjG6XoDvzLh1Fzbl2w6DoEWXGN7Onwq+/uBBTOZsvSy+scUwTM+7dN7cuS90SwEnZi5JCii51JYLKOQhAkSDBC6bjwXOtxAR8VEmbT3uNZcges3ahj38R9r/j8idZe3UWh+9FUfOMBSyuouAyerS2V2fYNc7jXNzQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YQYepSwU/cLvIj7VN9avFqZ/rm/JuU/f8/W3WMxlLNo=;
- b=c3Qfgw7gqV6f5XiA94F8BpdlNW02oTJXree0fEX+oYd79+gmHuVnexpIo690uhALkLh4PjWfgjTawGbyZ/kn9ITt07xSWlmn7vOGti1C3tCw6qamo10ed6I65DfuQz9M66u4I/dvVuEVHMkn5SXN1fz2+4e/vbudoP96bWW+w9t/RAbFGhs3kp8ZlM+7LNKwaHvRjrhRHQnrQolUQ/O2bQTAXN7skA0g83BzLbEORkGCrPiBRdg/94TBG2kOLouOo0xloi+EGeh9PTtNw26tYvC2We3D2QZFoEwpzUC8dMjhFRuzZKeAnUYFwTDxcCh8i2pK+YopwD287IIUYwJ5vA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from IA4PR12MB932075.namprd12.prod.outlook.com
- (2603:10b6:207:12d::15) by MW4PR12MB6681.namprd12.prod.outlook.com
- (2603:10b6:303:1e1::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Tue, 3 Nov
- 2026 14:45:27 +0000
-Received: from IA4PR12MB932075.namprd12.prod.outlook.com
- ([fe80::5a6f:1f74:6ccb:cf2f]) by IA4PR12MB932075.namprd12.prod.outlook.com
- ([fe80::5a6f:1f74:6ccb:cf2f%5]) with mapi id 15.21.0592.007; Tue, 3 Nov 2026
- 14:45:27 +0000
-Message-ID: <fc0da060-5bf5-4289-8814-d25e6c422673@nvidia.com>
-Date: Tue, 3 Nov 2026 16:45:22 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: Question: net/mlx5e kTLS TX TIS reuse vs in-flight WQEs
-To: Rishikesh Jethwani <rjethwani@purestorage.com>, tariqt@nvidia.com
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Gal Pressman <gal@nvidia.com>, Jakub Kicinski <kuba@kernel.org>,
- Boris Pismenny <borisp@nvidia.com>, Sabrina Dubroca <sd@queasysnail.net>,
- John Fastabend <john.fastabend@gmail.com>, netdev@vger.kernel.org
-References: <20261022181751.1349984-1-rjethwani@purestorage.com>
-Content-Language: en-US
-From: Tariq Toukan <tariqt@nvidia.com>
-In-Reply-To: <20261022181751.1349984-1-rjethwani@purestorage.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TL2P290CA0004.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:2::13) To IA4PR12MB932075.namprd12.prod.outlook.com
- (2603:10b6:207:12d::15)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=avW3TzCz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C1E1F0093A;
+	Tue,  3 Nov 2026 14:46:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793717209;
+	bh=Tjz9g6dlvmvCD0CXPiOmI6DhgTWluUgooEw5+wZVo1I=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=avW3TzCz3PAiG/+VWMT/vtQDlt+F3jZ61IUJRZGn6K9vA8tINxGWd0kCF/+pj3EEQ
+	 DcLVANBDfujXQW3KTvUc7NpaSwnwY9GBaTdUoTRvF74TR5Gt1ToGOqyinC2iehazLt
+	 DNc63w6+7VTK5+byLTuXGum7tBkE7b44Jyi+XGord3FYDGTeCp8lXuvwkNIzVgO7xj
+	 6otk+7hXTSB5v5jQSDFxiVLWKM5u0+AzHBRHWuTcIn1OEc3klK4sdQg4mfFX4wGMHk
+	 0Q3VYTDFX6l1fE3u4CS2BEJHXc63bVMriQ6haXkjw5tNGsraEEeYNTIk2w38m3bxly
+	 bgQs/EdJpBEMg==
+Subject:
+ Re: [PATCH] net: validate checksum start before software fallback on transmit
+From: netdev-bot+sashiko@kernel.org
+To: zeil@nebius.com
+Cc: linux-kernel@vger.kernel.org, NB-CoreTeam@nebius.com,
+ netdev@vger.kernel.org, mst@redhat.com, davem@davemloft.net,
+ willemb@google.com, kuba@kernel.org, pabeni@redhat.com
+Date: Tue, 03 Nov 2026 14:46:48 +0000
+Message-ID: <179371720845.488856.8096850971861020807@kernel.org>
+In-Reply-To: <20261102140633.42564-1-zeil@nebius.com>
+References: <20261102140633.42564-1-zeil@nebius.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,279 +63,238 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA4PR12MB932075:EE_|MW4PR12MB6681:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2a3147cf-dfb1-4092-04f9-08df39b919ac
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|376014|1800799024|261021121427099003|261021123027099003|261022105027099003|261022075727099003|261009223027099003|261026121527099003|261026140227099003|261028144727099003|5023799004|11063799006|22082099003|18002099003|261102123227099003|6133799003|56012099006|10067099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	B6t76T+CkH/pH1DA0NY24eJcxgm4MHv5tYTK5Sey9dMArhnWbHZkN4D20v82tJvyjMq022C1NwDFPyp4t/mFD+Dh7vgbEFW2XM3KPBh4mgv7cyHDK8BLuAw21asM41xZl+fe36v3edwtHtHnTGo6k/z7uYaBXlZ82w2C9GxjcRE5lOKJcdUspIF6xAtZGwdwcWJZWON7I5x5Vvr5rbQbwHeCWtgoPUSNiuPdeTxtRAQoXSm8kqWE97RrFuQEW/LNMECKAMeD+Txhviae+O4E8bk6FjstwfyDu7RTV1Ci2DyqDZvHu2kjEsg0TOl8jytGWASBQentAA5DVX7f+C2AZhGeQswAtULzLrnspDESIr+TCiK0LI5KbFknwCBJhW1DGZL9lmxMEJ0nxaUaPiNgXWKRQmmgsFEMRvjERxf5Y4Cgg4D2nlXR9VcKCUIotZ0k1PFyTiXof6FUoNv6Zo8DC/vvGPB2SzrDKeT7ske+Y8mEmAxhsXC0CgJt4e5b+K5G4C3nIohV/Ix5TnrwwvSdHzdgX+WtzI0omoB2J3w0Klo2TgWZht7RU2p3EoeD0bT39fsA6QuosaTC08Tzu5t1yxSAwsadiC3ukKkWGBHQ2j9GStLl2RBP3gxKpY/1/k++IpAD/hDqy2oaFc4qegOCFxRlYeSFN2xy1A1WAJ/deF0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA4PR12MB932075.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(261021121427099003)(261021123027099003)(261022105027099003)(261022075727099003)(261009223027099003)(261026121527099003)(261026140227099003)(261028144727099003)(5023799004)(11063799006)(22082099003)(18002099003)(261102123227099003)(6133799003)(56012099006)(10067099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UXNXWFZ0N1BSVjQwRXduekZFdkRLc0hsbzdHWDIraWloYUZucGlublNwVDUr?=
- =?utf-8?B?Z3FiMkdBdmx2U0ZpNTZoZytnWEIxelBScjczQyttM2xLS2k4R3NxNUNHOW5p?=
- =?utf-8?B?bmNPVWJxakpoK2c5VThOVUxCNEVaRThIWHAxYzNoSk8xZURSYUluYUtlT1g0?=
- =?utf-8?B?aWNRemlkQ2FETW5WKzA1djlNUWFIK0pvL2psbW9zbnhqSkdaNmVoT2hmL05K?=
- =?utf-8?B?SFpvdlN0dkRBSHorZXNjcWRtdzZ3eHowSkhCQmd0QkRvTlF3M2tXYngrNXc4?=
- =?utf-8?B?QnNOd1JGMGUvdldmekhWQ25LeTY0Z1BVL0x4L1JmU2VISzRsTFVtNTBkRlZQ?=
- =?utf-8?B?NWxJbm1Lcm4xekh1Ukc1K2tqekJLU1Y5TEhHMTUwQ3VaSjZxSExncDRiRGRI?=
- =?utf-8?B?L1dXTndWeEw5amV3d2d1cnh2ckRoSmN3R0NBbG1wVW41SDBrZE1ZdlpWeHBy?=
- =?utf-8?B?eloybEhzMVNpOWFmRzkwNmt0Y1h4bHo1YmdoUmxidUFPNnY4eXNGSUFNcWhw?=
- =?utf-8?B?Nk1JREI2YTFmUkVsWnRIcU9LQUdvd29EVDR2KzNFYzhUc0NEUTlGa3RLeVpO?=
- =?utf-8?B?cWdTTVhucmx5Nm40bkwrcjkvVzNGWXc0Y2M5Rm16SGMrZmFtQW8yZVpjWXlR?=
- =?utf-8?B?aE52R3o3QTBnWHhPekFNbk1PRWZsTzduOVk1WWpWQ0dzMmZnTUFybXkveDhW?=
- =?utf-8?B?cXlJSWJCR3ZhYVp6OENxNkVHRjFxQmliWkRsWTdNaSt3MHUyOVJDTXV4TWUz?=
- =?utf-8?B?ZE54SW1CWEZISjdBME9CbXc2RDdFSzM1NG1JU241MVYzYXdyM2FaS204UHVE?=
- =?utf-8?B?bCtiRFZBRWdQSFBWWlBheUFJdDdEUGFuTDVXVmFLMmxTbE5kL2NXMUVXRjlB?=
- =?utf-8?B?ZG01Rk5ZY05oNFVqYnRvdzYrOHpuKzlGUFc3WVZsYjNtSFgzWjhaZkliZVd3?=
- =?utf-8?B?U1FqekJVb1dnWTVCM1dqaVg5R0lQK2RlVFg3cW8wQ05YRFBJQ3JTajd3cENz?=
- =?utf-8?B?cW1tUWdRZTdwVGx6eXBsNWZ6aXJWTHUrK3hRTm94OGlZemswNUJIRDNjVTh5?=
- =?utf-8?B?Q1hBdnBqTUNWYzZXOFhGUnNvSkNxdmYyazFBR0V4UnNjL1BwWTNUbVUrTlhk?=
- =?utf-8?B?YnlORG0xdk9LN1FCTzhhUDBMQ2hrV1RwM3RlMlowaG9HR28vQTBDQjhRQzYx?=
- =?utf-8?B?V1B3M3Z5SFBZVVhKUTBXb0lDRmRtQjZ0eWNzRHlKNDhmR3E2cjRtOGR6eDNY?=
- =?utf-8?B?aFljM2Vselk2ZXduNG9xY08vRUhZUWVaN3JsYk0wZGI4Q25QbFZseUdOOTgy?=
- =?utf-8?B?QUx1OG8rdGtWa2c5dGl1dkFlVnpldFZZZFA5VGlQMGhkbDJuaTFneTFzL3Ri?=
- =?utf-8?B?N3JybkY0RkgrMlJsR0x4RTFQZ3VuMTRWbWh6SmU0TXI4MW95eHR2R2hSMUU4?=
- =?utf-8?B?YWt3MmRWVHVmMUt4dFNLcmJFekhmMHFiYXJhcElYcmZ3VXR0clJsYWgrWVhz?=
- =?utf-8?B?UjcrcUZaWWE5MzFqWjRTd01VdDQ3ZENEWUdHVjloTmI0QmpyVDRpN29wV0pR?=
- =?utf-8?B?VFBSS0ZoN25VSzQvRkxBMWlyNEFJYjFVdTJlZVNJaW91SGkxdXRGdGhTV0t0?=
- =?utf-8?B?eDZNeVlwMjFKaDZpMWhMZkVjN2Y1ZEc4MndBL2RTMmR1Ym9TRkFVZUp2YzFi?=
- =?utf-8?B?WDNCOEpFOVZISVhPaFhXUkxLb2tCbHU3L0tZaHNGaG5JSk1LK1dra3kyelMv?=
- =?utf-8?B?V0Z6OGNKMGhsVTRycG0wQTd4T2pBQ3RZTUZCVENZdWNUTEQ1bW1lSk1RT1U1?=
- =?utf-8?B?MmJYaGdwdnJlZk50WWRtVmdjYk9CQlVkYlNsUW5XNXZsSHc1eGh0bENxNkZ4?=
- =?utf-8?B?bkliaFpYcTFLYnRnSTBtMEQ1VzNhMWpldzBKRmRaQ0x1L1NnWU9QNG1uNTN1?=
- =?utf-8?B?ZGs5SlNCeThQM2pDSkVNRGxWYzBWVEp4ZDdtQ3MvVy9nc0dDYUZsL3hNWmI2?=
- =?utf-8?B?MDFuRHVJVGpLUmRMMXRkbE9UMXRpakxzcGVoTnNTMDBJWTB5OWdVMVF5RXIx?=
- =?utf-8?B?c3FhL3hGUWx4c0tDblJBUHBjTExuZWw5dEppT0ZDc3RIMTNUUDdTOE1wYitX?=
- =?utf-8?B?ellvQ05KOTRkVkhUaG9nY3d1bUFMSWFYcExSRHhxZlFFSzU0Y1QrbThYb0to?=
- =?utf-8?B?OG9xNXdLakpXWmZPRnowL0xna2sxQ0drVFd6Q2V2ODJ2a25LNFlsTlptZlMw?=
- =?utf-8?B?VmNaZ2R3L0htTFMxQ2RNckJ6NEVUMUd3TmdNd0NHZnV1K3NKU1B0dDJZTXVj?=
- =?utf-8?B?Smlpb05KT2RXV3hoWS9JYzBZVys3amQxQU9SWHFMTFlVVnZVRXVlUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a3147cf-dfb1-4092-04f9-08df39b919ac
-X-MS-Exchange-CrossTenant-AuthSource: IA4PR12MB932075.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 14:45:27.3136
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IRmq3GIdQxyYLWZrrFT7g3wI3IXTxDrRF2zGP4SPUTX9Nnd+tjEBr3uV7kJwDPP0DUGXqjHPFPMeHyQazad1jQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6681
 
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
+Critical: 0 · High: 2 · Medium: 2 · Low: 0
 
-On 22/10/2026 21:17, Rishikesh Jethwani wrote:
-> Hi Tariq,
-> 
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Hi Rishikesh,
+- [High] The new check reads the IPv4 header from a different place than
+  the one it used to decide the packet is IPv4.
+- [High] net: missing iph->ihl >= 5 check in skb_csum_hwoffload_help()
+- [Medium] The patch is narrower than its subject.
+- [Medium] On the PPP channel-bridge path, the new guard drops packets
+  that used to be forwarded.
 
-Good analysis, and thanks for the detailed write-up.
+--
 
-> Could a DUMP/SEND WQE from an old owner on SQ A read or update TIS
-> state after SQ B has reinitialised that TIS for a new owner?
-> 
+net: validate checksum start before software fallback on transmit
 
-Short answer: Yes, in principle it could, once del runs on a live socket 
-as in your series. Today, only parameter/DUMP WQEs of a dropped skb can 
-be left behind (item 1 below): a pending SEND holds sk_wmem_alloc, so 
-the socket is not destructed before it completes.
+This patch extends the IPv4 csum_start validation from 6785011f8b16 to the
+sw_checksum path of skb_csum_hwoffload_help(). For IPv4 packets it pulls
+the fixed IPv4 header and calls ip_check_csum_start(). On failure it
+returns -EINVAL so the caller drops the packet.
 
-The TIS is a function-global object, not bound to an SQ: a WQE that 
-references its TISN reads/updates its state whenever that WQE executes, 
-from whichever SQ it was posted on, and the hardware provides no 
-cross-SQ ordering for such accesses. Details below, and at the end a 
-proposal for the way forward, on which I'd appreciate your feedback.
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index f32353b0467cd..3e737ba094968 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -4130,6 +4130,11 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
+>  	}
+>  
+>  sw_checksum:
+> +	if (vlan_get_protocol(skb) == htons(ETH_P_IP)) {
 
-> The existing TIS pool predates live rekey. My TLS 1.3 TX KeyUpdate
-> series (v17 [1]; v18 in preparation) calls tls_dev_del() and then
-> tls_dev_add() on a live socket, and the question arises through this
-> sequence:
-> 
->    1. A spurious RTO retransmit of old-key data is posted on SQ A.
->    2. While that data remains unacknowledged, setsockopt(TLS_TX) starts
->       rekey and installs the rekey validator, which stops admitting new
->       plaintext to hardware offload. An ACK covering all remaining
->       old-key data marks rekey ready before the driver observes the
->       retransmit's SQ completion. A subsequent sendmsg() enters rekey
->       completion.
->    3. Rekey completion calls synchronize_net(), which waits for CPU
->       transmit paths, not SQ completions, so a WQE on a stalled or
->       backlogged SQ A can still be pending. mlx5e_ktls_del_tx() then
->       releases the DEK and immediately calls pool_push(). DEK
->       reclamation uses batched SYNC_CRYPTO; returning the TIS does not
->       wait for synchronization covering its old DEK.
->    4. Before re-adding the offload, TLS allocates the new SW-fallback
->       AEAD. In that interval another connection's mlx5e_ktls_add_tx()
->       can pop the returned TIS and use it on SQ B. The same socket can
->       also reach SQ B on re-add: with the retransmit queue empty, TCP
->       sets ooo_okay even while the retransmitted skb still holds
->       sk_wmem_alloc, so queue selection may move the flow.
->       mlx5e_ktls_handle_tx_skb() posts the new owner's initial
->       parameters with skip_static_post=false, fence_first_post=false:
->       static parameters unfenced, progress parameters fenced, then a
->       fence NOP.
-> 
+[Severity: High]
 
-Your reading of the driver is accurate on all points. In particular,
-mlx5e_ktls_del_tx() returns the TIS to the pool with no completion
-tracking. The same goes for the DEK: the batched SYNC_CRYPTO guards
-against stale cached keys when a DEK object is reused, but nothing
-waits for pending WQEs before that, and without bulk DEK support the
-DEK is destroyed right away. So the DEK needs the same lifetime
-guarantee as the TIS.
+Can the protocol check and the header read disagree here?
 
-The same-socket exposure is also broader than the ooo_okay disjunct:
-the RTO and PLB rehash paths reset the dst, which clears the cached
-TX queue, and txq_reselection_ms lets a busy flow re-pick its queue
-periodically, both regardless of ooo_okay. So one connection's WQEs
-can be in flight on two SQs today, even without rekey.
+vlan_get_protocol() walks every in-band 802.1Q/802.1AD tag and returns the
+innermost EtherType. pskb_network_may_pull() and ip_check_csum_start()
+both read at skb->network_header instead:
 
-> An unobserved completion does not by itself mean the WQE still accesses
-> the TIS; that is the hardware ordering question. The same question
-> applies on SQ A: resync fences its first parameter update, initial
-> setup does not, and I do not know what either guarantees against
-> earlier WQEs that reference the TIS.
-> 
+include/net/ip.h:ip_check_csum_start() {
+	if (unlikely(skb->csum_start < skb->network_header + ip_hdrlen(skb)))
+		return -EINVAL;
+	...
+}
 
-The fence modes in the WQE ctrl segment (FM field; the parameter WQEs
-use Initiator_Small_Fence) are all defined in terms of previous WQEs
-on the same SQ: a fenced WQE waits until earlier WQEs on that SQ are
-no longer in execution. Even the strongest mode (Strong_Ordering)
-orders only against previous WQEs of the same SQ. No fence mode, and
-no other WQE-level primitive, orders against outstanding work on
-another SQ.
+The sites added by 6785011f8b16 gate on skb->protocol or on the netfilter
+family. For example, nf_queue_checksum_help() checks
+entskb->protocol == htons(ETH_P_IP). With those checks, the protocol and
+network_header always agree.
 
-So within one SQ, the fenced first parameter WQE of a resync does
-guarantee that earlier WQEs referencing the TIS are done executing
-before the context is modified. The unfenced static parameters of the
-initial setup are safe only because, under the current lifetime
-contract, the previous owner's WQEs are known to be complete by the
-time the TIS leaves the pool. Across SQs, nothing is ordered.
+They seem to diverge for a QinQ frame that arrives with CHECKSUM_PARTIAL
+(from a tap/virtio guest with NEEDS_CSUM, or from a veth peer) and is then
+redirected by tc mirred or bpf_redirect:
 
-> The normal close path has additional ordering. tls_dev_del() runs
-> from work queued by tls_device_sk_destruct(), which itself runs from
-> __sk_free(), i.e. only once sk_wmem_alloc reaches zero. For
-> transmitted mlx5 skbs, SQ completion calls napi_consume_skb(), which
-> invokes tcp_wfree() to release that accounting, and parameter and DUMP
-> WQEs preceding a posted SEND on the same SQ are retired by that SEND's
-> completion. For successful transmissions, this gives close-time
-> ordering without an explicit drain in del_tx. WQEs posted without a
-> subsequent SEND, and SQ error/reset paths, need separate lifetime
-> guarantees. Live rekey does not wait for socket destruction.
-> 
+__netif_receive_skb_core()
+  skb_vlan_untag()
+    pops only the outer tag
+    skb_reset_network_header()   <- now points at the inner vlan_hdr
+  sch_handle_ingress()
+    tcf_mirred_to_dev() or bpf_redirect   <- pushes mac_len only
+      __dev_queue_xmit()
+        validate_xmit_skb()
+          vlan_features_check()   <- drops NETIF_F_IP_CSUM, multi-tagged
+          skb_csum_hwoffload_help()
+            sw_checksum:
+              vlan_get_protocol() == ETH_P_IP
+              ip_check_csum_start()   <- ihl read from the inner TCI
 
-Correct, including the completion detail: parameter and DUMP WQEs do
-not request CQEs of their own, so they are retired only when a later
-CQE-generating WQE on the same SQ completes. And you have a point
-about WQEs posted without a subsequent SEND: the error paths of
-mlx5e_ktls_handle_tx_skb(), and a DMA mapping failure of the SEND
-itself in mlx5e_sq_xmit_wqe(), drop the skb after parameter/DUMP WQEs
-were posted for it. Its wmem is then released while those WQEs are
-still pending. That is a narrow, pre-existing hole in the
-destruct-time argument, independent of rekey. SQ error/reset is
-covered: mlx5e_free_txqsq_descs() runs only once the SQ was moved out
-of RDY, when the hardware is done with it.
+At that point ip_hdr(skb)->ihl is the low nibble of the first byte of the
+inner TCI, which is VID bits 11..8.
 
-> Was the recycling fence relying on this socket-lifetime ordering, or
-> does it independently protect against outstanding work on another SQ?
-> c4dfe704f53f ("net/mlx5e: kTLS, Recycle objects of device-offloaded
-> TLS TX connections") says the fence ensures context modification does
-> not interfere with existing traffic. Does that cover old SEND, DUMP
-> and parameter WQEs on another SQ, including work the device has not
-> yet executed?
-> 
+Take a correctly formed TCP packet with csum_start == network_header + 24.
+If the inner VID is 0x700 or higher, ihl is 7 or more. ip_check_csum_start()
+then fails and validate_xmit_skb() drops a packet that skb_checksum_help()
+used to complete correctly. Was this drop intended?
 
-It relies on the socket-lifetime ordering. The fence in c4dfe704f53f
-addresses the same-SQ pipelining: the new owner's data must not be
-transmitted before the context update has completed, and the update
-must not interfere with WQEs in execution on that SQ. It does not, and
-cannot, cover WQEs pending on another SQ; those were assumed complete
-by the destruct-time contract you describe, or stopped by the channel
-teardown. Live rekey via del+add breaks that assumption.
+The reverse also seems possible. With an inner VID that gives ihl 0 or 1,
+a csum_start pointing into the real IPv4 header passes the check, and the
+header overwrite still happens.
 
-> If reuse must wait, would retaining the TIS and DEK until all
-> referencing work has completed or been definitively stopped suffice,
-> including during SQ error/reset?
-> 
+The bridge path looks unaffected, because br_dev_queue_push_xmit() resets
+network_header to the VLAN depth for CHECKSUM_PARTIAL frames. The tc and
+bpf redirect paths have no such fix-up.
 
-Yes, that is the right condition: every WQE referencing the TIS (or
-the DEK) has either completed - a CQE of a later WQE on the same SQ
-retires it, as the completions of an SQ are in order - or its SQ was
-moved out of RDY and its descriptors were reclaimed in
-mlx5e_free_txqsq_descs(), which covers the error/recovery and
-teardown paths.
+Would it help to gate on skb->protocol like the other sites? Another
+option is to locate the IPv4 header at the depth returned by
+vlan_get_protocol_and_depth().
 
-As for how to get there, here is what I have in mind, in three parts.
-Feedback is welcome on all of them, and in particular on the third,
-as it affects your series.
+> +		if (!pskb_network_may_pull(skb, sizeof(struct iphdr)) ||
 
-1. Pre-existing, independent of rekey: the stranded WQEs above.
-    Rather than adding completion tracking for the TIS, I'd restore the
-    socket-lifetime contract in the driver: an skb dropped after WQEs
-    were posted for it is not freed right away, but held by a NOP that
-    requests a completion, so that the skb and its wmem are released
-    only once all WQEs posted ahead of it are retired (or the SQ is
-    reset). mlx5e_ktls_del_tx() stays as is. I intend to send this as a
-    fix to net.
+[Severity: Medium]
 
-2. Pre-existing, and a dependency of rekey: TX queue stability. I'd
-    like to address the queue moves above in the stack, opt-in: a
-    driver whose TX offload keeps per-connection state updated by queue
-    execution declares it with a tlsdev_ops flag, and for sockets
-    offloaded to it, the TX queue is re-selected only once
-    sk_wmem_alloc has drained. That is, ooo_okay keeps only its wmem
-    condition, and while wmem is held, a dst reset does not clear the
-    cached queue and txq_reselection_ms does not expire it. With (1), a
-    drained wmem means that no work referencing the connection state is
-    pending on any SQ. txhash rethink and PLB still fire, and their
-    network-level repathing (e.g. the IPv6 flowlabel) is unaffected;
-    only the local queue switch waits until the driver drains. Other
-    drivers, and non-offloaded sockets, keep today's behavior.
+What happens here when skb_network_offset() is negative?
 
-3. Rekey. Releasing the TIS of a live connection to the pool, as
-    del+add does, requires that no old-key work is still pending, which
-    the driver cannot cheaply tell. I see two directions:
+Take L2TP over UDP/IPv4 on the PPP channel-bridge path. ip_rcv() sets
+skb->protocol to ETH_P_IP and points network_header at the outer IPv4
+header. The outer IPv4, UDP and L2TP headers (and optionally FF03) are
+then pulled, and nothing resets network_header or protocol:
 
-    a. Keep the TIS, and replace the key in place through a new tlsdev
-       op (say, tls_dev_rekey()). With (2), the new parameters are
-       posted on the same SQ as all old-key WQEs, fenced, so they take
-       effect only after them, and the pool is not involved. The driver
-       keeps the replaced key until it is no longer in use. For that,
-       the op would be called only once all data sent with the current
-       key was acknowledged, which, as I understand it, your rekey
-       completion already waits for, and which is needed anyway, as the
-       device cannot retransmit old-key data after the switch.
+l2tp_udp_encap_recv()
+  __skb_pull(skb, sizeof(struct udphdr))
+  l2tp_recv_common()
+    pppol2tp_recv()
+      ppp_input()
+        ppp_channel_bridge_input()   <- keeps CHECKSUM_PARTIAL when
+                                        csum_start >= skb->data
+          ppp_bridge_xmit()
+            skb_csum_hwoffload_help(skb, 0)   <- !chan->xmit_offload
 
-    b. Keep del+add, and have the TLS core call tls_dev_del() only once
-       sk_wmem_alloc has drained. With (1), that guarantees no pending
-       work references the TIS or the DEK. The cost is a potentially
-       long wait on a backlogged or paused queue, during which new data
-       is held back or sent in SW.
+With features set to 0 this reaches sw_checksum, and vlan_get_protocol()
+returns ETH_P_IP.
 
-    Tracking SEND completions per connection in the driver would also
-    work, but means per-packet accounting for a rare event.
+pskb_network_may_pull_reason() then does:
 
-    I lean towards (a). Would it fit your series, or do you see reasons
-    to keep del+add?
+	return pskb_may_pull_reason(skb, skb_network_offset(skb) + len);
 
+With an offset of -34 or less and len of 20, the unsigned sum wraps to
+about 0xFFFFFFF2. On CONFIG_DEBUG_NET kernels this trips
+DEBUG_NET_WARN_ON_ONCE(len > INT_MAX) in pskb_may_pull_reason(). The
+function returns PKT_TOO_SMALL either way, so this path returns -EINVAL
+and ppp_bridge_xmit() frees the skb.
 
-> I have not reproduced a failure; the reuse is visible in the driver,
-> but I have not established the hardware ordering guarantee. A PRM
-> reference, or a statement of which completion must precede reuse,
-> would settle it.
-> 
+Before this patch, skb_checksum_help() completed the inner checksum and
+the packet was forwarded. Is dropping these packets expected?
 
-Thanks,
-Tariq
+Even if the pull succeeded, ip_hdr() would point at the outer header that
+was already stripped, not at the header of the packet being checksummed.
+PPTP-received packets bridged to L2TP or PPTP channels look affected in
+the same way.
 
-> Thanks,
-> Rishikesh
-> 
-> [1] https://lore.kernel.org/netdev/20260917224355.2288021-1-rjethwani@purestorage.com/
+> +		    ip_check_csum_start(skb))
+> +			return -EINVAL;
+> +	}
+>  	return skb_checksum_help(skb);
+>  }
+>  EXPORT_SYMBOL(skb_csum_hwoffload_help);
 
+[Severity: High]
+Does ip_check_csum_start() protect the header here when ihl itself has
+not been validated?
+
+ip_check_csum_start() takes its lower bound from the packet:
+
+	skb->csum_start < skb->network_header + ip_hdrlen(skb)
+
+ip_hdrlen() is ip_hdr(skb)->ihl * 4. The sites added by 6785011f8b16,
+ip_do_fragment() and xfrm_output(), only see headers that ip_rcv_core()
+or the IPv4 output path already checked for ihl >= 5. Nothing on the
+paths into skb_csum_hwoffload_help() does that. pskb_network_may_pull()
+only makes 20 bytes readable and does not look at ihl.
+
+Packets built by AF_PACKET with PACKET_VNET_HDR (packet_snd(),
+tpacket_snd()) or by tap_get_user() with VIRTIO_NET_HDR_F_NEEDS_CSUM
+reach this helper with an ihl chosen by the sender. They can arrive via
+validate_xmit_skb(), ieee80211_tx_skb_fixup() or the openvswitch
+queue_userspace_packet() path.
+
+For VIRTIO_NET_HDR_GSO_NONE, __virtio_net_hdr_to_skb() only requires
+
+	skb_transport_offset(skb) >= sizeof(struct iphdr)
+
+That is measured from skb->data, which still points at the L2 header.
+The lowest accepted csum_start therefore depends on the tagging:
+
+  - untagged Ethernet: 6 bytes into the IPv4 header
+  - one 802.1Q tag: 2 bytes in
+  - QinQ: the network header itself
+
+With ihl between 0 and 4, ip_hdrlen() is 0 to 16. A csum_start inside
+the fixed 20-byte header then passes ip_check_csum_start().
+skb_checksum_help() writes the folded checksum at
+csum_start + csum_offset, which still lands inside struct iphdr.
+
+In the QinQ case, csum_start == network_header with csum_offset == 0
+overwrites the version/ihl byte itself. That is the header overwrite
+the commit message says this change prevents.
+
+Should this path reject ihl < 5 the way ip_rcv_core() does? Another
+option is to compare against max(ip_hdrlen(skb), sizeof(struct iphdr)).
+If the helper in include/net/ip.h were changed instead, the existing
+callers should not notice, since they already guarantee ihl >= 5.
+
+[Severity: Medium]
+
+The subject says:
+
+  net: validate checksum start before software fallback on transmit
+
+However, the only new check is at the sw_checksum label of
+skb_csum_hwoffload_help(). Are the other transmit-side software
+completion sites meant to stay unvalidated?
+
+skb_csum_hwoffload_help() returns 0 before sw_checksum, without looking
+at csum_start, when the device has NETIF_F_HW_CSUM:
+
+	if (features & NETIF_F_HW_CSUM)
+		return 0;
+
+The same early return happens when the device has NETIF_F_IP_CSUM and
+csum_offset is 16 or 6.
+
+Several drivers then fall back to software anyway:
+
+  - wireguard encrypt_packet() calls skb_checksum_help() for
+    CHECKSUM_PARTIAL skbs.
+  - igb_tx_csum() calls skb_checksum_help() in its default case. Other
+    Intel drivers follow the same pattern.
+  - tg3_start_xmit() calls skb_checksum_help() for frames whose
+    skb->protocol is ETH_P_8021Q or ETH_P_8021AD. That is the in-band
+    VLAN case this patch handles with vlan_get_protocol().
+
+Some core-stack callers also complete the checksum directly and set
+CHECKSUM_NONE, so the skb never reaches this helper afterwards:
+
+  - xsk_skb_metadata() with tx_sw_csum only checks
+    csum_start + csum_offset + 2 <= desc->len, which is an upper bound.
+  - netem_enqueue() on the corruption path.
+
+On each of these paths, skb_checksum_help() can still write the folded
+checksum into the IPv4 header when csum_start points inside it.
+6785011f8b16 itself names input-side validation as the eventual complete
+fix.
+
+Should these sites be covered too? Otherwise, could the subject and commit
+message say the change only covers skb_csum_hwoffload_help()?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261102140633.42564-1-zeil%40nebius.com
