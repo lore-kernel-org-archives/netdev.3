@@ -1,96 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.41
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793690995;
-	b=w/44Mkw1QaxC96LKP8+2yltomnP/UctObIF164dgBsbXfICvodg91KHBu3WMWVRbf8r7
-	 1MkdfCkBYzViuj3waYFxQWbOndkJU6E4LnwWUoEJu0gmL7d2n0d51BMFx1LWbno/DAqf4
-	 O+fT3LIfRFW9d1U4iqbc6C9knri1wZNUROhyZ4VEOU6ROs+EVkLlN5AQ3sG0j2U5WTS1G
-	 68b18PoUG7wqd2oiz3gZ0eP4DxqNfcygzoKSlg53QvpO/bf4TgvynKqItyMO0xlNATFtG
-	 lA8XAnxs18leT/HK0I87+zkkMY+mVjn+h2LlcbB5U+nnvXfTlanQ24/HeNFqSHnteog==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793690995;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=WeZ3zEYH3JmududU5goAPn8N7F6wq9GHk4hM30HWx1g=;
-	b=NxHvbJWN/lTYJmAnY4D7fTtWu5+KQIosoZhsB+Xr+L0wxeWjfusKf8FxsJbT6hTAYTQo
-	 8uJ+k31KEkGPWE7viQla+7Qm13zS4nVlzNM2sbheijGKjDdalmXGALmVCNRHJDDHlqkM9
-	 POpvy+xEfCHMRkqxS94dYL5vidq5U+qY59ngJ8CP3sJuO/s0m3DWw54yFR+vX1HAD1C8g
-	 imwBU2JktfoLZ/KWmNwYlOLIAxJuvqzyHYjqtLooqf6LV6hOAwDZMT89sR/Sb3QaMU6dc
-	 Gjp24ZYRe6HCufTDemw+aacpVQx9NG0FTnlSCCxLicGKt+uoQ+/xU25Mbc5c9hhHPAA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=04IoarY8;
-	arc=none smtp.remote-ip=209.85.216.41
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793691461;
+	b=Tyjpg0pF7EdXKXxyHTP9fNVA3QOavbfIn/SzASYb9Yh9H4Pwynvm0viA/5lzYOKLax8N
+	 baWbwjmPbv/5tkhh3uCgLYwVdPQphPnxM0fxcip4xlmA+isAMktlWVRgZVKtVhvRhgtjV
+	 PQoE97J1zW3j3edlx2REnobDJNv3msqmY/6qsE3ZmQg7iqPgCb5+9hwI5tmMpEeCBPYLl
+	 KoXPBPMAYHFoVwb6GexFZZy8kSe84io+heIvzSgEFcElQlEOtbl6mhP2p66KBA6kN1Nlm
+	 c62Fxm3RAyotl/si+xaetZC1xvk7aANn5UCafHRz77JI4fhQ7CZwWhCRZKKxnklDe/Q==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793691461;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Sent-From:X-URL:X-Accept-Language:
+	 X-Accept-Content-Type;
+	bh=85i27vNHcmh26GGO34/PDAduUVAyw2KWb9PQhHoG2mE=;
+	b=UO1q3R/2MwUMAp6H3rHrvjc2I/nzYm+aZJuWcp83wlLxQ2IFthZfR+RNjnwdwAD14jdJ
+	 EP2zOs/WJ5hyaGfoBXITBlHNyjQbdS0jLnWZHWqxG6B6uKGSi7hI9Yb9kL7agaRwtlz2v
+	 bhB/qv6kU+Nm8AF8gX7gNwOdtaGTNV1ZgFxt5zd6ULaMRdu1SOV/kgCBsx7+gocaWn9L3
+	 osWCclXZA76HE8jUSCGR7yHAd2nslZRV8ux2j2l+p3AJ0DWNjRekQFfLSiHxx/lcMx++1
+	 6hrKMyiGvPauAVJ5me8RtZxQzo5CdwzLrvVRfuyD+KxGgk+tspcXTyqSoOltJYAfaSg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=dnggIaTJ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4AC1606A324
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 07:29:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A4AC1606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3086606A324;
+	Tue,  3 Nov 2026 07:37:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D3086606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=04IoarY8
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3ab2cb8d577so2773809a91.1
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 23:29:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793690994; x=1794295794; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WeZ3zEYH3JmududU5goAPn8N7F6wq9GHk4hM30HWx1g=;
-        b=04IoarY8IuNK3qRnte3SsdOSD4Y/4Xz9PEX7/nhs9lY7Y7Dhh8wHc3mwQO1mbR912N
-         HLofL81HUf+x6FG/hYTpNfeLIfEM6lgp7FIhrWMOlB92Xizb5e7cTh0i/a409D/Y1eQC
-         l437U9HM2/+bfq2YloQM6o+lpNQ1K/SGcTuJoK0AZV+CyFi+sF7TCZl8UBQ5QzARauAO
-         U37cxCuZ9uH6Gdsui5c6QvNHrefXuROpByh6tcUIMupmDwUoNR8L3Vt0QRJuQJgC6RwN
-         7KGsqgxR4rl6nJ3PXI4dHhQhRp/5j82kB8dQDbe8UK4OsjIUL8SjnPmhin6wUhLUFJLD
-         LZBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793690994; x=1794295794;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WeZ3zEYH3JmududU5goAPn8N7F6wq9GHk4hM30HWx1g=;
-        b=AY6TUrnRHqdMPYeHkBWP9Bb0X6AAMIAFmwze9WYi9qH5oAgQa5GiE7zrpSGkPQp11R
-         BYYCWCobTAtW2tlYQKR6JiWlVoJL1qza70jgQTZE6UyFSGb56HGkZgq9Zv8ROc7givpd
-         TE7xO8BI/PGfqkgZFtaLjd1MC45J0qvxzfpFiBTXvSKNBTKkniqZLzIi+T1ryl2XC7Om
-         V7VwmwRwgiUez1Zcm4jqwyt+nG03LCehyBgu8KPt8E+lokog+GiJSGbngJTGg7uC0Tqd
-         6q8EMn7eRkzPJcZZY6sBzHKodDDCuMkkDhAVLsROrHXuFUc8smvriH7laUE0NrKu50sr
-         E0gA==
-X-Forwarded-Encrypted: i=1; AKwUvBzrNK6KjiKNVmOYx4L/kVfQJL8vGMoBUxGVVLG5u2FLvcoYeCqSBqV4pT5gpLR3pCddUNSUBjw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/JiOcW/jC7gjwcu7jPJnEKkLCZPZd5RQM+Au2UKZBTpvNB/Aqj
-	PgFqvxUWySxz0F1y2EepJ7KMa4wMcJn359p/v0qIQ/UqJf/ZGBoNd97kLEmKIQ==
-X-Gm-Gg: AYBFou1tN6pmrfLFDGrGt//WfxtuSYp494C5pP44W6pe7R1SLKkFLoMU3xQW0M+f8Qr
-	qgHpVMSmBxC4m8QUkoRZXTqZfJaPdAfpjti2zZXK2oOrrn1R2teakczZ+u+aMZmin6RjSi8HB5U
-	74jQWJCW1Egpc4OstTJy+8K7/gwVtvFuzIoeQZ0aJfBGOueNisWPpC3SIgXhlsPo8E9CPR1SSMw
-	wcdYuHmvDpskx6hRUHxHOdnPr2LKmYNsTjAKRnWP4l7PtSU1+/l3W3Z3kpj7K0iRSUdDYk3AZ8E
-	AVKqw9j4i6EWwrBIpSdbb3a/HBgvXo02xcPI1pG4vamZdO4qOPxJHg088UZjNaGliU287kj9qez
-	xA9yDWLXGsG5fhXdpdmNE3gak8mZ3mFL0f3auutP/SVsgnmszu0S3rR6sAH3J4VEu82t0qaZEFO
-	EdOvqNJQR4qTYiKtdzXYiJ8CWS8vd+q2yaynt7XA8CzQYCCnEsmFxt8UKAi0drve+tdXa3lp5cC
-	MCYSIhzupFodyMcjVcvxORbdz5A8QQsOcJblbTiU4j+8QFshfE8u9lh31+mQEk3+lI1QJ4rBnAS
-	uGBdFbf8GJKu0xcCAckWvZuoplzeHkrMn7oXRYUT+ZW7CnLr8FzhOqdatHVWl9DnD9w5
-X-Received: by 2002:a17:90b:2882:b0:3ac:8897:7b9d with SMTP id 98e67ed59e1d1-3ae89574cd6mr10799919a91.1.1793690993961;
-        Mon, 02 Nov 2026 23:29:53 -0800 (PST)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c627260sm2949385a91.8.2026.11.02.23.29.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 23:29:53 -0800 (PST)
-Date: Tue, 3 Nov 2026 16:29:48 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: martineau@kernel.org, geliang@kernel.org, pabeni@redhat.com,
-	mptcp@lists.linux.dev, netdev@vger.kernel.org, imv4bel@gmail.com
-Subject: Re: [PATCH net] mptcp: fix use-after-free of the subflow context on
- the delegated list
-Message-ID: <aumNbD0vtdtLgWN9@v4bel>
-References: <aoWBrkNwebJe-koh@v4bel>
- <bf25121c-72cf-40a7-bbaf-5db85aee7f59@kernel.org>
- <aobtmznTdBks0frM@v4bel>
- <994ecd4f-eaf9-4d2f-95a3-611083207d6c@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=dnggIaTJ
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id BB6E2200B28;
+	Tue, 03 Nov 2026 08:37:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1793691457;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=85i27vNHcmh26GGO34/PDAduUVAyw2KWb9PQhHoG2mE=;
+	b=dnggIaTJ0kBUxE+Wt/mjxk5/+E1bTENcxd/AVZztDM5hSxVKa8gjQTJiVKqVBqNPYt6cyz
+	9MW9XlpZvPd9/hD2xGbRPhvuRgLneq/PxR+QRdmX36GWo4cHaX2/Lc4Uoaf5KD/js2XY6D
+	Y+raiiGmJluHnUdvP5rFHB54M412wkYgU2XEjPEPetziimkULZ1WHGyUxQk/s8IIW38N3I
+	RuBb1NRmuoPlSPsd0NMx7xp6d+WEiEP+0ifcySuBBdgC8QL/428VLVx0Delq6QfD99iln8
+	qZIk5aHYdVsPoXNLHeapEr34wKypdXVkyrczxSiurfJd1HHTPLtoAEBh/bdj+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1793691457;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=85i27vNHcmh26GGO34/PDAduUVAyw2KWb9PQhHoG2mE=;
+	b=KUF2GQ/GVTK8m/WieoQ0K1gOVitj4vqqucB8jBrNzzXHnBoXO4xf7HBQS4ZA2D4TJCHh8i
+	JGjhZfO5wOmK3XaGmXjxcZEMB0oFhG5EAfICmFvcvV2AnuToRdf9BlVaX/MPiG5C/7E+Ce
+	p1L3//ZxkvKULetehfM3Td8pXAlC0uYRD/0Q40nlK1jMjMXsCjH0Ddw7+htqtwrFg/LF3Y
+	7TI15jH3aogkcKXZ0jQ++eGP3gbbaORmhoDpr7SvGHQHFHwQ9p481pPh8Kk43hissGcavq
+	N4qy3mjSbwn8vQA6ElzF4ZqVGXjj4xd3vh6fZqxym2LxQs5xBV4pG5knLDhn6A==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793691457; a=rsa-sha256;
+	cv=none;
+	b=Pc8IkTKUKWSPJMguNT13h5HSSsDD1AvPjYfGZ70oCF771cg6/lcOqGeZiH3WaHHe83+g4s
+	eQ/5rRz+Ndl8SPqh2H7A8vfCTwdRvjPANiJ6A7TG6bap1o4dh9o/YZGWKUfismrJY5guaM
+	yp7IPWx1pKa62hljX1iLskexLROwGNPhTDRdMqbll0OUAxyRoJ0z9izoj2auxBaXau4lya
+	Y9F/CTiO0KbC50o9iqHrjgNSBZkq/hJA4F/y8ievtAdLT4I9jr4B1uJdDthmc0QTn8sUib
+	r8/ucTgL1cZ1b3Ftxcb+MOJUdvor7RB5K/uKHCTE/2LCu65PICJkOVx4XF4Sww==
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1xO95N-002Pt0-28;
+	Tue, 03 Nov 2026 08:37:37 +0100
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1xO95N-00000008nLW-2Ilh;
+	Tue, 03 Nov 2026 08:37:37 +0100
+Date: Tue, 3 Nov 2026 08:37:37 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Stefano Munari <stefanomunari.sm@gmail.com>
+Cc: Thangaraj Samynathan <Thangaraj.S@microchip.com>,
+	UNGLinuxDriver@microchip.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: usb: lan78xx: resume phylink on non-reset USB
+ resume
+Message-ID: <aumPQeI3lInBvbNT@pengutronix.de>
+References: <20261102235133.23011-1-stefanomunari.sm@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,266 +105,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <994ecd4f-eaf9-4d2f-95a3-611083207d6c@kernel.org>
+In-Reply-To: <20261102235133.23011-1-stefanomunari.sm@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 
-On Tue, Sep 08, 2026 at 07:46:19PM +0200, Matthieu Baerts wrote:
-> Hi Hyunwoo,
+Hi Stefano,
+
+On Tue, Nov 03, 2026 at 12:51:33AM +0100, Stefano Munari wrote:
+> lan78xx_suspend() calls phylink_suspend(dev->phylink, false) on an open
+> interface, which always stops phylink and halts the PHY. The matching
+> phylink_resume() is only called from lan78xx_reset_resume().
+> When the USB device stays powered across system sleep (e.g. s2idle) and
+> the USB core calls .resume instead, the link stays down until the interface
+> is brought down and up by hand. The ifdown triggers:
 > 
-> On 20/08/2026 14:05, Hyunwoo Kim wrote:
-> > On Wed, Aug 19, 2026 at 12:22:18PM +0200, Matthieu Baerts wrote:
-> >> Hi Hyunwoo,
-> >>
-> >> On 19/08/2026 12:13, Hyunwoo Kim wrote:
-> >>> mptcp_subflow_delegate() links the subflow context into a per-CPU napi
-> >>> list and takes a reference on the subflow socket. The context is a
-> >>> separate allocation, reached through icsk_ulp_data, and the list holds
-> >>> no reference to it.
-> >>>
-> >>> inet_csk_destroy_sock() runs sk_prot->destroy() regardless of the
-> >>> outstanding references. That path ends in tcp_cleanup_ulp(), which calls
-> >>> subflow_ulp_release(). subflow_ulp_release() frees the context with
-> >>> kfree_rcu() but does not remove it from the list. Once the grace period
-> >>> elapses and the context is actually freed, the next mptcp_napi_poll()
-> >>> dequeues that entry and mptcp_subflow_delegated_next() writes to the
-> >>> freed context with list_del_init(). That is the use-after-free.
-> >>>
-> >>> The freeing path cannot dequeue the entry itself: the list is per-CPU
-> >>> and only the CPU that queued the subflow may touch it, as
-> >>> tcp_release_cb_override() already notes.
-> >>>
-> >>> Delay the free instead. Add MPTCP_DELEGATE_DEAD.
-> >>> mptcp_subflow_free_ctx() sets it and frees the context only if the
-> >>> subflow is not scheduled, while mptcp_napi_poll() frees it if the dead
-> >>> bit is set when it clears the scheduled bit. Either
-> >>> mptcp_subflow_free_ctx() gets there first, sees the scheduled bit and
-> >>> leaves the free to mptcp_napi_poll(), or mptcp_napi_poll() gets there
-> >>> first, does not see the dead bit and mptcp_subflow_free_ctx() does the
-> >>> free.
-> >>>
-> >>> Also skip mptcp_subflow_process_delegated() once the dead bit is set.
-> >>> subflow_ulp_release() has already dropped the msk reference by then, so
-> >>> the pending actions must not run.
-> >>>
-> >>> Finally, move delegated_status out of struct_group(reset).
-> >>> mptcp_subflow_ctx_reset() clears that group on disconnect, and clearing
-> >>> the scheduled bit while the entry is still queued would let
-> >>> mptcp_subflow_free_ctx() free a context the napi list still points to.
-> >>> delegated_node is already outside the group.
-> >> Thank you for looking at this. Do you have more context about how the
-> >> bug was discovered? Do you have a reproducer and/or a KASAN calltrace or
-> >> similar?
-> >>
-> >> Having this would help the reviewers.
-> > 
-> > Sorry for the late reply. The poc was extremely unstable, so I wanted 
-> > to improve its reproduction rate a bit before sending it.
+>   WARNING: drivers/net/phy/phy.c:1670 at phy_stop+0x44/0xc8
+>   called from state HALTED
 > 
-> No delay at all when compared to my reply, sorry!
-> > Attached are the poc, the KASAN log, and the mdelay diff used for 
-> > reproduction.
+> Move phylink_resume() to the end of lan78xx_resume(), which both resume
+> paths go through, and call it only if the resume succeeded and the
+> interface was open, mirroring lan78xx_suspend(). As a side effect,
+> lan78xx_reset_resume() no longer starts phylink on a closed interface.
 > 
-> By chance, do you have a decoded stack trace? e.g. using the following
-> script with the vmlinux and modules used to generate the KASAN trace:
+> Tested on a Raspberry Pi 3B+ (LAN7515) with s2idle: the link now comes
+> back up on its own after resume and ifdown no longer warns.
 > 
->   ./scripts/decode_stacktrace.sh
-> 
-> Note that we are still looking at a possible simpler fix, but no luck so
-> far. In any cases, we will take this patch in our tree first, then send
-> it to netdev.
+> Fixes: e110bc825897 ("net: usb: lan78xx: Convert to PHYLINK for improved PHY and MAC management")
+> Signed-off-by: Stefano Munari <stefanomunari.sm@gmail.com>
 
-Ah.. I had missed this mail.
+Partially tested on net-next (4dd16e31135e) with a LAN7850 on an
+i.MX8MP. The USB host is reinitialized across s2idle here, so only
+.reset_resume is used. With the interface closed, s2idle resume no
+longer shows "multicast write failed -EACCES" and the WARNING at
+phy.c:1352 in _phy_state_machine() (4/4 without, 0/4 with this patch).
+An open interface still comes back after resume. The plain .resume
+path, which is the main case of this patch, is not tested.
 
-It seems this issue has not been resolved in netdev yet. May I ask how
-you plan to handle it?
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
 
+Thank you!
 
-decode trace:
-
-[   40.361339] ==================================================================
-[   40.361745] BUG: KASAN: slab-use-after-free in __list_del_entry_valid_or_report (lib/list_debug.c:49)
-[   40.362167] Read of size 8 at addr ffff88800cc13cc8 by task poc/88
-[   40.362476]
-[   40.362564] CPU: 3 UID: 65534 PID: 88 Comm: poc Not tainted 7.2.0-rc7 #1 PREEMPT(lazy)
-[   40.362566] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   40.362568] Call Trace:
-[   40.362569]  <IRQ>
-[   40.362570]  dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
-[   40.362574]  print_report (mm/kasan/report.c:378 mm/kasan/report.c:482)
-[   40.362577]  ? __pfx__raw_spin_lock_irqsave (include/asm-generic/qrwlock.h:122 (discriminator 4))
-[   40.362580]  ? __list_del_entry_valid_or_report (lib/list_debug.c:49)
-[   40.362582]  kasan_report (mm/kasan/report.c:595)
-[   40.362584]  ? __list_del_entry_valid_or_report (lib/list_debug.c:49)
-[   40.362586]  __list_del_entry_valid_or_report (lib/list_debug.c:49)
-[   40.362588]  mptcp_napi_poll (include/linux/list.h:132 include/linux/list.h:246 include/linux/list.h:318 net/mptcp/protocol.h:787 net/mptcp/protocol.c:4620)
-[   40.362591]  ? call_timer_fn (kernel/time/timer.c:1748)
-[   40.362593]  __napi_poll (net/core/dev.c:7735)
-[   40.362596]  ? __pfx_delayed_work_timer_fn (include/linux/list.h:404 (discriminator 2))
-[   40.362599]  net_rx_action (net/core/dev.c:7798 net/core/dev.c:7955)
-[   40.362601]  ? __pfx_net_rx_action (include/net/gro.h:525)
-[   40.362603]  ? _raw_spin_lock_irq (include/linux/instrumented.h:55 include/linux/atomic/atomic-instrumented.h:1301 include/asm-generic/qspinlock.h:111 include/linux/spinlock.h:187 include/linux/spinlock_api_smp.h:143 kernel/locking/spinlock.c:174)
-[   40.362605]  ? __pfx__raw_spin_lock_irq (kernel/locking/spinlock.c:183)
-[   40.362607]  ? try_to_wake_up (include/linux/spinlock.h:571 kernel/sched/core.c:4292)
-[   40.362611]  handle_softirqs (kernel/softirq.c:622)
-[   40.362614]  ? __pfx_handle_softirqs (include/linux/wait_bit.h:77)
-[   40.362615]  ? __hrtimer_rearm_deferred (kernel/time/hrtimer.c:707 kernel/time/hrtimer.c:2141 kernel/time/hrtimer.c:2161)
-[   40.362618]  do_softirq (kernel/softirq.c:523 (discriminator 20) kernel/softirq.c:510 (discriminator 20))
-[   40.362619]  </IRQ>
-[   40.362620]  <TASK>
-[   40.362620]  __local_bh_enable_ip (kernel/softirq.c:450)
-[   40.362621]  inet_stream_connect (net/ipv4/af_inet.c:756)
-[   40.362624]  __sys_connect (net/socket.c:2154)
-[   40.362627]  ? __pfx___sys_connect (net/socket.c:2136)
-[   40.362630]  ? __sys_setsockopt (include/linux/file.h:63 include/linux/file.h:83 net/socket.c:2385)
-[   40.362632]  __x64_sys_connect (net/socket.c:2160 net/socket.c:2157 net/socket.c:2157)
-[   40.362633]  ? fpregs_assert_state_consistent (include/linux/instrumented.h:82 include/asm-generic/bitops/instrumented-non-atomic.h:141 include/linux/thread_info.h:133 arch/x86/kernel/fpu/core.c:912)
-[   40.362636]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-[   40.362639]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
-[   40.362641] RIP: 0033:0x4216eb
-[   40.362643] Code: 48 89 e5 48 83 ec 10 89 55 f8 48 89 75 f0 89 7d fc e8 b9 ec 02 00 8b 55 f8 48 8b 75 f0 41 89 c0 8b 7d fc b8 2a 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 2d 44 89 c7 89 45 fc e8 12 ed 02 00 8b 45 fc
-All code
-========
-   0:	48 89 e5             	mov    %rsp,%rbp
-   3:	48 83 ec 10          	sub    $0x10,%rsp
-   7:	89 55 f8             	mov    %edx,-0x8(%rbp)
-   a:	48 89 75 f0          	mov    %rsi,-0x10(%rbp)
-   e:	89 7d fc             	mov    %edi,-0x4(%rbp)
-  11:	e8 b9 ec 02 00       	call   0x2eccf
-  16:	8b 55 f8             	mov    -0x8(%rbp),%edx
-  19:	48 8b 75 f0          	mov    -0x10(%rbp),%rsi
-  1d:	41 89 c0             	mov    %eax,%r8d
-  20:	8b 7d fc             	mov    -0x4(%rbp),%edi
-  23:	b8 2a 00 00 00       	mov    $0x2a,%eax
-  28:	0f 05                	syscall
-  2a:*	48 3d 00 f0 ff ff    	cmp    $0xfffffffffffff000,%rax		<-- trapping instruction
-  30:	77 2d                	ja     0x5f
-  32:	44 89 c7             	mov    %r8d,%edi
-  35:	89 45 fc             	mov    %eax,-0x4(%rbp)
-  38:	e8 12 ed 02 00       	call   0x2ed4f
-  3d:	8b 45 fc             	mov    -0x4(%rbp),%eax
-
-Code starting with the faulting instruction
-===========================================
-   0:	48 3d 00 f0 ff ff    	cmp    $0xfffffffffffff000,%rax
-   6:	77 2d                	ja     0x35
-   8:	44 89 c7             	mov    %r8d,%edi
-   b:	89 45 fc             	mov    %eax,-0x4(%rbp)
-   e:	e8 12 ed 02 00       	call   0x2ed25
-  13:	8b 45 fc             	mov    -0x4(%rbp),%eax
-[   40.362644] RSP: 002b:00007fbe0147b1d0 EFLAGS: 00000293 ORIG_RAX: 000000000000002a
-[   40.362646] RAX: ffffffffffffffda RBX: 000000000000000a RCX: 00000000004216eb
-[   40.362648] RDX: 0000000000000010 RSI: 00007fbe0147b200 RDI: 000000000000000a
-[   40.362648] RBP: 00007fbe0147b1e0 R08: 0000000000000000 R09: 0000000000000000
-[   40.362649] R10: 00007fbe0147b1f8 R11: 0000000000000293 R12: 00007fbe0147b1f8
-[   40.362650] R13: 00007fbe0157b678 R14: 00007fbe0147b1f4 R15: 00007fffd4bc16c0
-[   40.362652]  </TASK>
-[   40.362653]
-[   40.373597] Allocated by task 90:
-[   40.373755]  kasan_save_stack (mm/kasan/common.c:57)
-[   40.373934]  kasan_save_track (mm/kasan/common.c:78)
-[   40.374113]  __kasan_kmalloc (mm/kasan/common.c:398 mm/kasan/common.c:415)
-[   40.374288]  __kmalloc_cache_noprof (include/linux/kasan.h:263 mm/slub.c:5489)
-[   40.374500]  subflow_create_ctx (include/linux/slab.h:988 include/linux/slab.h:1309 net/mptcp/subflow.c:1845)
-[   40.374690]  subflow_ulp_init (net/mptcp/subflow.c:1977)
-[   40.374873]  tcp_set_ulp (net/ipv4/tcp_ulp.c:146 net/ipv4/tcp_ulp.c:167)
-[   40.375043]  mptcp_subflow_create_socket (net/mptcp/subflow.c:1806)
-[   40.375271]  __mptcp_nmpc_sk.part.0 (net/mptcp/protocol.c:111 net/mptcp/protocol.c:143)
-[   40.375479]  mptcp_connect (net/mptcp/protocol.c:139 net/mptcp/protocol.c:4009)
-[   40.375651]  __inet_stream_connect (net/ipv4/af_inet.c:684)
-[   40.375857]  inet_stream_connect (net/ipv4/af_inet.c:755)
-[   40.376046]  __sys_connect (net/socket.c:2154)
-[   40.376218]  __x64_sys_connect (net/socket.c:2160 net/socket.c:2157 net/socket.c:2157)
-[   40.376402]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-[   40.376574]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
-[   40.376805]
-[   40.376884] Freed by task 22:
-[   40.377027]  kasan_save_stack (mm/kasan/common.c:57)
-[   40.377206]  kasan_save_track (mm/kasan/common.c:78)
-[   40.377385]  kasan_save_free_info (mm/kasan/generic.c:584)
-[   40.377579]  __kasan_slab_free (mm/kasan/common.c:253 mm/kasan/common.c:285)
-[   40.377761]  kvfree_rcu_cb (include/linux/kasan.h:235 mm/slub.c:2677 mm/slub.c:6377 mm/slub.c:6662)
-[   40.377936]  rcu_core (kernel/rcu/tree.c:2645 kernel/rcu/tree.c:2897)
-[   40.378098]  handle_softirqs (kernel/softirq.c:622)
-[   40.378280]  run_ksoftirqd (kernel/softirq.c:1076 kernel/softirq.c:1068)
-[   40.378449]  smpboot_thread_fn (kernel/smpboot.c:160)
-[   40.378638]  kthread (kernel/kthread.c:436)
-[   40.378792]  ret_from_fork (arch/x86/kernel/process.c:158)
-[   40.378967]  ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
-[   40.379150]
-[   40.379228] Last potentially related work creation:
-[   40.379453]  kasan_save_stack (mm/kasan/common.c:57)
-[   40.379631]  kasan_record_aux_stack (mm/kasan/generic.c:556)
-[   40.379834]  __call_rcu_common.constprop.0 (kernel/rcu/tree.c:3159)
-[   40.380066]  tcp_cleanup_ulp (net/ipv4/tcp_ulp.c:124)
-[   40.380245]  tcp_v4_destroy_sock (net/ipv4/tcp_ipv4.c:2437)
-[   40.380446]  inet_csk_destroy_sock (net/ipv4/inet_connection_sock.c:1282)
-[   40.380652]  __tcp_close (net/ipv4/tcp.c:3299)
-[   40.380820]  __mptcp_close_ssk (net/mptcp/protocol.c:2648)
-[   40.381013]  mptcp_destroy_common (net/mptcp/protocol.c:3442 (discriminator 1))
-[   40.381216]  mptcp_destroy (net/mptcp/protocol.c:3651)
-[   40.381386]  __mptcp_destroy_sock (net/mptcp/protocol.c:3284)
-[   40.381585]  __mptcp_close (net/mptcp/protocol.c:3386)
-[   40.381759]  mptcp_close (net/mptcp/protocol.c:3401)
-[   40.381920]  inet_release (net/ipv4/af_inet.c:442)
-[   40.382088]  __sock_release (net/socket.c:710)
-[   40.382264]  sock_close (net/socket.c:1501 (discriminator 1))
-[   40.382423]  __fput (fs/file_table.c:512)
-[   40.382574]  fput_close_sync (fs/file_table.c:617)
-[   40.382753]  __x64_sys_close (fs/open.c:1511 fs/open.c:1496 fs/open.c:1496)
-[   40.382929]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-[   40.383100]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
-[   40.383330]
-[   40.383411] Second to last potentially related work creation:
-[   40.383672]  kasan_save_stack (mm/kasan/common.c:57)
-[   40.383850]  kasan_record_aux_stack (mm/kasan/generic.c:556)
-[   40.384053]  kvfree_call_rcu (mm/slab_common.c:1288)
-[   40.384229]  tcp_cleanup_ulp (net/ipv4/tcp_ulp.c:124)
-[   40.384409]  tcp_v4_destroy_sock (net/ipv4/tcp_ipv4.c:2437)
-[   40.384608]  inet_csk_destroy_sock (net/ipv4/inet_connection_sock.c:1282)
-[   40.384815]  __tcp_close (net/ipv4/tcp.c:3299)
-[   40.384982]  __mptcp_close_ssk (net/mptcp/protocol.c:2648)
-[   40.385175]  mptcp_destroy_common (net/mptcp/protocol.c:3442 (discriminator 1))
-[   40.385377]  mptcp_destroy (net/mptcp/protocol.c:3651)
-[   40.385547]  __mptcp_destroy_sock (net/mptcp/protocol.c:3284)
-[   40.385746]  __mptcp_close (net/mptcp/protocol.c:3386)
-[   40.385921]  mptcp_close (net/mptcp/protocol.c:3401)
-[   40.386082]  inet_release (net/ipv4/af_inet.c:442)
-[   40.386250]  __sock_release (net/socket.c:710)
-[   40.386427]  sock_close (net/socket.c:1501 (discriminator 1))
-[   40.386584]  __fput (fs/file_table.c:512)
-[   40.386734]  fput_close_sync (fs/file_table.c:617)
-[   40.386912]  __x64_sys_close (fs/open.c:1511 fs/open.c:1496 fs/open.c:1496)
-[   40.387087]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-[   40.387259]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
-[   40.387491]
-[   40.387570] The buggy address belongs to the object at ffff88800cc13c00
-[   40.387570]  which belongs to the cache kmalloc-512 of size 512
-[   40.388121] The buggy address is located 200 bytes inside of
-[   40.388121]  freed 512-byte region [ffff88800cc13c00, ffff88800cc13e00)
-[   40.388662]
-[   40.388741] The buggy address belongs to the physical page:
-[   40.388994] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0xcc10
-[   40.389344] head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-[   40.389689] flags: 0x100000000000040(head|node=0|zone=1)
-[   40.389932] page_type: f5(slab)
-[   40.390083] raw: 0100000000000040 ffff888007042c80 dead000000000100 dead000000000122
-[   40.390431] raw: 0000000000000000 0000000000100010 00000000f5000000 0000000000000000
-[   40.390777] head: 0100000000000040 ffff888007042c80 dead000000000100 dead000000000122
-[   40.391126] head: 0000000000000000 0000000000100010 00000000f5000000 0000000000000000
-[   40.391477] head: 0100000000000002 ffffffffffffff01 00000000ffffffff 00000000ffffffff
-[   40.391827] head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-[   40.392175] page dumped because: kasan: bad access detected
-[   40.392428]
-[   40.392507] Memory state around the buggy address:
-[   40.392727]  ffff88800cc13b80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   40.393051]  ffff88800cc13c00: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[   40.393376] >ffff88800cc13c80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[   40.393701]                                               ^
-[   40.393953]  ffff88800cc13d00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[   40.394277]  ffff88800cc13d80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[   40.394603] ==================================================================
-
-
-Best regards,
-Hyunwoo Kim
+Best Regards,
+Oleksij
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
