@@ -1,71 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=173.37.86.75
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793709141;
-	b=GbjOebhzRNZtzmpz+Cx5ukDvHtOhZR4Jxc4rhnF54e8i8w+4jjKatmfm1YyMSH841a9n
-	 r1AsWjZrkY7nbcKeTY6YqmdSrE1kOkhxSHNQo3rumEQPnTOrfACYAJzzdumSDFmReAcJ/
-	 jcQyNauAx8mSspHWpfgJ+So7rtB08j0+uqf9kV2MWun+NYvex7YfrUAKlFgiC5Q8NvbHR
-	 frXJtIspJ3RqgjOzugdKvQ40rmg01pox9wV6xYgLaKqeejBjq+J0+KdlECZ1RR86u7YMW
-	 Gkt/dYY4Gz6y7m1v0p69kM8kRY0+hSeZvc83qD+0380G1hoVXmmRrtYGacaF6DalOAA==
+	t=1793709374;
+	b=5jkP7+piSGyl/ExCErT2OSbAkH7RHK8T7o7xXgMqe/c/fAFEdVGWwEAkMQ1jP6kGtnkk
+	 cR4mmNcJ0nC1XsoAbWgBV7epiUh2rpWGvobrIKmcWJ3qJ7b9H/G0h8ZqSDTTuHs/tQC67
+	 6cMvKrAhITVUlFwd/HGa3y+hQ5qDprSKvsNDMvlVrTSHZODU5LQflv/3D4mK7n0ITFX5B
+	 UJnFIJd6D/ZU8ueW5ONs0ghwv5J04VcqLMF9Raux/m+xUmsry7fLnADHn7Jz0CUjOSRsU
+	 45/BcaQlgxOjcdVnHSzzEQhIJ78A7kbyQYpM+bh/NLcorCQAw4FFYPXjl29c9llThTg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793709141;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793709374;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-ID:References:In-Reply-To:To:CC:X-Mailer;
-	bh=s2kzmTplbNP1BFnsiXqXbrmi8DVX2/1BBDKnpzn7p78=;
-	b=OHbGL9an07PQiLgdLw0fea4AdZBUBMS0wpfUWYSA5/mcma5tFfD+ACY8HyKQ0nE9eQQg
-	 R5r/BJs1FowySIb9XMzXII9znsaEI50v4t8BaoFsYu/V+vc9QpelqLCN8hzAQGh2wl4FW
-	 ryfkFRSForBXpsaNuXd/G58KgZPYmcbmAkk0nBpXqtWFuXooK2Sks6eGvkAAqC9VaFjfT
-	 KRMTNDBpuOeI4SvtgyPSsZ2Ch2cyUPRyryTH8yq5bBGNISqfCZIkPGm42R25f1Fd2AORR
-	 UpkvZ8Remxs4kT9NL06P6KnXmu36Thr8RHBwBP4knDX8baaOyEL2knxIlmAE/cQCUFQ==
+	 X-IPAS-Result:IronPort-Data:IronPort-HdrOrdr:X-Talos-CUID:
+	 X-Talos-MUID:X-IronPort-Anti-Spam-Filtered:X-IronPort-AV:Received:
+	 Received:From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Outbound-Client-TLS:
+	 X-Outbound-SMTP-Client:X-Outbound-Node;
+	bh=09qP2VjkRnFhMEMUCsTLL0oKnwwj8d25ssKU29TPNH4=;
+	b=IcigF6+3zNC/C71MfnfGtVPV2EidZIlIH+1uW4fl1otj+G1XVZRiIZ+tZTBbQWLUiyeC
+	 58HF91oAagzDzITWZdZKWr0pczQLhTDsJeqnlejkdqRMEQ6D8aeuxCSd2WSpFtBM2hGFq
+	 xA7f9AlxdHfrghtwjPES467AJweU7+eFRISpg8MpTwFC+hExa5vlwjDm49fLJseJKSo5x
+	 MErFt2wHv30OaP3YNu5LupBeGk/a4lhKz5cdwJaBSIPHMDFoaVE0HPHWYIWbaFH0NgFN8
+	 o5bkPrO+dwwq9kVs8l0sD7V/6xWBpKg+QR3gfw/9yNjECTBEADJDUOIg4BpqOLgWloA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=microchip.com;
-	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=S96mzOkO;
-	arc=none smtp.remote-ip=68.232.154.123
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	dmarc=pass header.from=cisco.com;
+	spf=pass smtp.mailfrom=cisco.com;
+	dkim=pass header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=AJJCWagC;
+	arc=none smtp.remote-ip=173.37.86.75
+Received: from rcdn-iport-4.cisco.com (rcdn-iport-4.cisco.com [173.37.86.75])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE61606A332;
-	Tue,  3 Nov 2026 12:32:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5CE61606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F901606A327
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 12:36:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F901606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=S96mzOkO
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1793709140; x=1825245140;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=ehgSMFjeRzig/IXR5ZkcpPse0PCZJ/mMmzza35BzA1A=;
-  b=S96mzOkOmfxkAR0W4OS0MB11C6RTDizEVU2KmMzDcoLA3XFoev74kKZA
-   ODeF79Vin7mBH0Vqh6XzfAGYhrBlcY2XxRAukD9Vh42P/Qne9BxDd0Tp3
-   r6LfRtCd+W+aUkwWGGCb+hr4VUpGSnusKyC3dMJMYwo3cY7lT4+4X5JIO
-   LVc47OOWBV2Gb0zJrOWs6SecVpS3DKZcYvCdD9ps+qrCNo2zIjZPy6AN9
-   uOX/BJOzzipEAiy+eEiNRijrv1dM6arAdnPU9oziVOx6iZ6MLs14wcz2R
-   Bsf57M8+m0aOgf/MTnFnDn4i4KaWoIfo3p9GyGMhtC2Vu8c3C7YqWYHKf
-   g==;
-X-CSE-ConnectionGUID: iMe/hYKaQo6JJ4y3o6ojyw==
-X-CSE-MsgGUID: FOvsV3akRdyphu6XbAXSfQ==
-X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
-   d="scan'208";a="66194274"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 03 Nov 2026 05:32:19 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 3 Nov 2026 05:32:18 -0700
-Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Tue, 3 Nov 2026 05:32:14 -0700
-From: =?utf-8?q?Jens_Emil_Schulz_=C3=98stergaard?=
-	<jensemil.schulzostergaard@microchip.com>
-Date: Tue, 3 Nov 2026 13:31:59 +0100
-Subject: [PATCH net-next v16 4/4] net: dsa: lan9645x: add basic dsa driver
- for LAN9645X
+	dkim=pass (2048-bit key, unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=AJJCWagC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=cisco.com; i=@cisco.com; l=8987; q=dns/txt;
+  s=iport01; t=1793709373; x=1794918973;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=09qP2VjkRnFhMEMUCsTLL0oKnwwj8d25ssKU29TPNH4=;
+  b=AJJCWagCnpFgRcFCc8YS8S1yTjIBngprtSCWIVTw+cN4J3UL+oM9yaL1
+   HtSOgVwXDHI1viGiCRgJtGWyet1pWKl2QkhnBmxrwr1ZtW+bgOUwQrMGf
+   nklTfojhFa+ZYtr1WhylzcTR4nOtg1chMCrqVsumfNZqvUlgCe9dLDw8E
+   cl4sRL/1w/wXB09O85ji/sRZdQR0tLFYLUTzE+8xv8KE7nIljs1R/mZvR
+   s+4WiXRuGxYpToSpG5Tz+1wle5+BiQljW02LOqZZTm+qu9STjErGE0Sl3
+   /gV/l7jerE/dp6c/uQ7Df69A5RWPCP3zaukY/4X0hyiOD1hlNmpvl1ucx
+   A==;
+X-CSE-ConnectionGUID: BKlMz3G4Rs+W49q3lhuKkw==
+X-CSE-MsgGUID: +S8mDXdWR7ewkY87y0UFSA==
+X-IPAS-Result: =?us-ascii?q?A0ADAACg0+lq/4r/Ja1QChkBAQEBAQEBAQEBAQEBAQEBA?=
+ =?us-ascii?q?QESAQEBAQEBAQEBAQEBTIEwBAEBAQEBCwGDS2BDSYRXiBuHOIIhgRaQOIxUF?=
+ =?us-ascii?q?IFqDwEBAQ9KBwQBAYUFURWNOAImNAkOAQIEAwIDAQEBAQEBAQEBAQEBCgEBB?=
+ =?us-ascii?q?QEBAQIBBwWBDhOGTw2QFSdWNQImAkgpgwIBgnQDEQUBuwR6gTKBAYR+2UuBb?=
+ =?us-ascii?q?gYVgQouAYVxgm0BgXGECIR9JxuBSUSBFAGCKUp2hBYJC4N1gmoEgQ6BFIEMg?=
+ =?us-ascii?q?liFQoQcgTqJIgk/gQIcA1ksAVUTDQoLBwVjgQUDNRIqFW4yHYEjPhcvWBsGB?=
+ =?us-ascii?q?YEdgQcEE4ESgQddgSsoXQEhgQiBdgKCUYIAAgFJQQ4HRVMJJUMSRyQiCBIJA?=
+ =?us-ascii?q?RMaLAqBGjU8CSY/FQxmCAMaBUACHwgCDQx0ORAwHiQvBRwmQBAYDUgRLDcVG?=
+ =?us-ascii?q?QQ9AW4Hkg2CHAEtQwEBBgcIFyMIAQEbBgkLBwwSBhc5KwcPBwEbESMVBQECA?=
+ =?us-ascii?q?gwGGQsRKZJjg3+MKIE2a4E1n1yEKYFnijyVVDOXaJMImQiOCoogiy0cDwyFN?=
+ =?us-ascii?q?oFoPIFZMxoIGxWDIlMZD5V2ywkmMgI7AgcCBw4DC4ZGiyQPFweBTwEB?=
+IronPort-Data: A9a23:G0eJqqkO/ohovfuprxbrTTbo5gyjJ0RdPkR7XQ2eYbSJt1+Wr1Gzt
+ xIbX2CBb6zZNDH1c9xwaYq09xlUuMDUx99lGQJqrHxgE1tH+JHPbTi7wugcHM8zwunrFh8PA
+ xA2M4GYRCwMZiaC4Errav6+/SEUOZigHtLUEPTDNj16WThqQSIgjQMLs+Mii+aEu/Dha++2k
+ Y20+ZK31GONgWYubDtNs/nb8XuDgdyr0N8mlg1mDRx0lAe2e0k9VPo3Oay3Jn3kdYhYdsbSb
+ /rD1ryw4lTC9B4rDN6/+p6jGqHdauePVeQmoiM+t5mK2nCulARrukoIHKZ0hXNsttm8t4sZJ
+ OOhGnCHYVxB0qXkwIzxWvTDes10FfUuFLTveRBTvSEPpqHLWyOE/hlgMK05Fac7/sNlWk4Sz
+ +dbF2xcd0uHh/+Vw63uH4GAhux7RCXqFJkUtnclyXTSCuwrBMiaBa7L/tRfmjw3g6iiH96HO
+ JFfMmUpNkmdJUQUaj/7C7pm9AusrmL2bzxDqFGVjaE2+GPUigd21dABNfKIJofUG50Kzx/wS
+ mTuvF+pBz0qOOOlljea8UP82f6XoA3AcddHfFG/3rsw6LGJ/UQfAQMbUHO3qOe0j0q5Vc4ZL
+ UEIkgIjobU3/V6mUvH+Uge+rXrCuQQTM/JTDuczwAKA0KzZ50CeHGdsZjdHZMYrq4wwSCAm2
+ 0Ghm87vA3pksNW9UXuX+7GVhSm/NSgcMSkJYipsZQ0I/9XuvqktgR/VCNVuCqi4ipvyAz6Y/
+ tyRhDI1i7NWiYsA0L+2uAiexTmtvZPOCAUy4207Q16Y0++wX6b9D6TA1LQRxa8owFqxJrVZg
+ EU5pg==
+IronPort-HdrOrdr: A9a23:DdCIJKyebAnVKaPq56f1KrPwsr1zdoMgy1knxilNoNJuA6ilfq
+ eV/MjztCWUtN9/Yh0dcLy7UpVoIkmzyXcK2+Ys1N6ZNWGMhILCFuxfBOXZsljdMhy73bMY6L
+ xpeap/D9OYNykYse/KpCO4G9EvzJ2m3cmT9IXj5kYoYA10Z6Rn9gtjTiSWAiRNNXB7LKt8OZ
+ aC6s9Avja6PU4WYMOyG2UfU4H41rv2ferdEHk7Li9izhWShjW177O/OR2Z0hACFw5r+94ZgB
+ D4e8iT3NTYjxl9oSWsrFPu0w==
+X-Talos-CUID: =?us-ascii?q?9a23=3Av65Jn2iVHJ7IpyUjFyZSY4tfEDJuWF7Z6WWLDBO?=
+ =?us-ascii?q?CEiVWFOyMEluQ5YBnjJ87?=
+X-Talos-MUID: 9a23:JufxvAuljHa4Tnk1E82nxwoyMetY75uUV00SkqRW5NjcCAJLEmLI
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.27,193,1787011200"; 
+   d="scan'208";a="543660791"
+Received: from rcdn-l-core-01.cisco.com ([173.37.255.138])
+  by rcdn-iport-4.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 03 Nov 2026 12:36:12 +0000
+Received: from [127.0.0.1] (unknown [10.25.129.52])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by rcdn-l-core-01.cisco.com (Postfix) with ESMTPS id EB8DD180001C4;
+	Tue,  3 Nov 2026 12:36:10 +0000 (GMT)
+From: Satish Kharat <satishkh@cisco.com>
+Subject: [PATCH net v5 0/2] enic: retain admin DMA resources and identify
+ V2 VFs
+Date: Tue, 03 Nov 2026 04:36:02 -0800
+Message-Id: <20261103-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v5-0-2501d1223eff@cisco.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,1671 +110,190 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-ID: <20261103-dsa_lan9645x_switch_driver_base-v16-4-781c96d735cf@microchip.com>
-References: <20261103-dsa_lan9645x_switch_driver_base-v16-0-781c96d735cf@microchip.com>
-In-Reply-To: <20261103-dsa_lan9645x_switch_driver_base-v16-0-781c96d735cf@microchip.com>
-To: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew@lunn.ch>, "Vladimir
- Oltean" <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Woojung Huh
-	<woojung.huh@microchip.com>, Russell King <linux@armlinux.org.uk>, "Steen
- Hegelund" <Steen.Hegelund@microchip.com>, Daniel Machon
-	<daniel.machon@microchip.com>, Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>, Eric Dumazet <edumazet@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>, Eric Dumazet
-	<edumazet@kernel.org>
-CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-renesas-soc@vger.kernel.org>,
-	=?utf-8?q?Jens_Emil_Schulz_=C3=98stergaard?=
-	<jensemil.schulzostergaard@microchip.com>
-X-Mailer: b4 0.15-dev
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADLV6WoC/53QzU7DMAwH8FeZcsYocZKm5cR7TDvkw92CtBQ1p
+ Rqa+u54BcHYsbc4sv37y1dRacxUxcvuKkaac81D4cI+7UQ8+XIkyIlrgRIbJZWEYIBKjpDOHuY
+ eckl0gUITHKnwqgh9HusEs4LfkdT50BurpNZW8OL3kfp8WdG94FFx+P6sH+GN4nTjbm2nXKdh/
+ FyjzWpt/lnZbEnBb46CLljbN13b6teYaxye43BeA8x4RyBuIpCJNgXVBeOdMvRI6HvCbSI0E8G
+ jdpScQqMeCfNH8MAmwjDhHaHsUElj/x1qWZYvRKWHPzQCAAA=
+X-Change-ID: 20261010-b4-enic-dma-vf-index-net-generic-first-v1-20261010-d9abf4510335
+To: netdev@vger.kernel.org
+Cc: Sesidhar Baddela <sebaddel@cisco.com>, 
+ Aravind Dhanasekaran <aradhana@cisco.com>, 
+ Reese Faucette <rfaucett@cisco.com>, Satish Kharat <satishkh@cisco.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793709370; l=9066;
+ i=satishkh@cisco.com; h=from:subject:message-id;
+ bh=17QYndtG3zUpXETIdAyFnOjzKLiCrIRluU2W1xeF2Nw=;
+ b=v/kidlOJF7yR1VsBIuwgBw/tIXxbZU7Gvr6+SAf9dSH9zJgP/W+TnBQQmiXrBd3PvaD/Sjv3S
+ fIOuYmXAff6DC95yuwuga2MlBPVYvvbbggCmSMFhXqZUh9kdk8wrcrK
+X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
+ pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
+X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.129.52];TLSv1.3;TLS_AES_256_GCM_SHA384;256
+X-Outbound-SMTP-Client: 10.25.129.52, [10.25.129.52]
+X-Outbound-Node: rcdn-l-core-01.cisco.com
 
-Add the LAN9645X basic DSA driver with initialization, parent regmap
-requests, port module initialization for NPI, CPU ports and front ports,
-and phylink integration for MAC side configuration.
+Fix premature freeing of admin-channel buffers and set the correct V2 VF
+source ID in mailbox messages. This is v5 of the two-patch admin-only
+series. The generic datapath quarantine proposal withdrawn in v2 remains
+out of scope, including its page-pool/device lifetime problem.
 
-The ports operate as standalone ports. Bridges and VLAN uppers on the
-ports are handled in software.
+The first patch releases the admin WQ/RQ/CQ allocation only after both
+complete queue-disable helpers succeed. Give both queues a first attempt,
+then retry once only a helper which timed out. The 500 ms polling bound
+is local to admin shutdown, and both RQ disable/check passes are preserved.
+Ordinary datapath and DEVCMD2 queue timeouts are unchanged. Admin receive
+buffers are driver-owned mappings, not page-pool pages returned later
+from the networking stack.
 
-This patch only wires up the internal CuPHYs (ports 0-4) and the RGMII
-paths for ports 7 and 8. The supported SerDes-based modes: SGMII,
-QSGMII, 1000BASE-X and 2500BASE-X on ports 5-8 are deferred, and support
-will be added in follow-up patches. Port 5-6 have no usable interface
-mode in this patch, and should not be declared in DT until SerDes
-support lands.
+Keep PCI bus mastering enabled during runtime admin quarantine so command
+transport and ordinary teardown can continue. An affected V2 VF is closed
+and cannot reopen while its control channel is quarantined. Detach the
+netdev under RTNL during removal, then perform the VF unregister handshake
+and admin close after releasing RTNL. Skip admin reopen after a failed
+datapath open. Clear local VF registration after channel replies have been
+drained, including after a failed re-registration closes the channel.
 
-If port 5 or 6 is declared in DT as a user port, phylink_create()
-rejects the empty supported_interfaces and dsa_tree_setup_ports() falls
-back to setting the port up as unused, so the switch still probes.
-DSA logs an error including the port number. Declared as a CPU port
-there is no such fallback, and the probe fails, and our driver logs an
-error including the port number.
+Probe unwind and removal finish normal generic teardown and attempt
+CMD_CLOSE before one final direct admin queue check. If that check fails,
+retain the inert owner and unresolved DMA targets rather than free memory
+the device might still reference. This intentionally leaves allocations
+and a BAR reservation behind. It blocks ordinary reprobe while the PCI
+device remains enumerated; PCI remove/rescan is not a supported recovery
+method. A PCI-device reference keeps the reservation name valid, but does
+not preserve IOMMU attachment or establish that DMA stopped. No IRQ, work
+or other CPU callback may enter retained objects after module unload. DMA
+debugging can report pending allocations. Reboot is the supported recovery.
 
-The intended way to bind this driver is using a parent MFD driver,
-responsible for the register IO protocol, and distributing regmaps to
-child devices. The goal is to use the same approach as the MFD driver in
-drivers/mfd/ocelot-spi.c, which also resets the chip before it
-instantiates its children.
+The second patch requires DEVCMD2 for SR-IOV V2 and obtains the VF source
+index from CMD_SRIOV_STATS_GET. A deployed async PF compares that source
+against the CQ-derived sender. After QP enable, obtain and validate the ID
+while receive interrupts remain masked. Publish send readiness before
+unmasking, so queued notifications can be processed and acknowledged with
+a valid source. Sends remain disabled until the ID is valid, using the
+existing send gate. Notification handling does not rely on PF retransmission.
 
-This driver expects to request named regmaps from a parent device. This
-approach is similar to the DSA driver
+Keep the statistics target persistent and observe command completion
+separately from firmware status. A later blocking QP or close result
+fences earlier statistics DMA, including an error result. A pre-post
+failure, posted timeout or NOWAIT posting does not establish completion.
+This command ordering does not replace admin queue-stop proof.
 
-drivers/net/dsa/ocelot/ocelot_ext.c
+Sashiko's feedback prompted this audit. The pre-existing failed-reset
+reopen lifecycle and generic queue-disable error paths remain separate
+follow-up work; this revision does not claim to fix them. Source review
+and testing were assisted by LLM tools. The author is responsible for
+the submitted changes.
 
-which supports being driven by an external CPU via SPI with parent
-device drivers/mfd/ocelot-spi.c.
+Validation:
 
-The MFD driver will come in a later series, because there are
-requirements on the number of child devices before a driver qualifies as
-a MFD device.
+- V5 passed build and static checks at both patch boundaries. Sparse
+  reported the same existing diagnostics as the public base.
+- The uninstrumented V5 candidate successfully bound, opened and closed a V2
+  VF.
+- A test-only overlay exercised admin quarantine during probe failure
+  and removal. Generic teardown and CMD_CLOSE completed before the final
+  queue check released the admin graph, and a clean reprobe succeeded.
+  Keeping the synthetic timeout through that check exercised terminal
+  retention. Guest reboot restored the original module and configuration,
+  after which traffic passed.
+- Full functional and interoperability tests on V4 passed with Cisco VIC
+  PFs and V2 VFs, including a nonzero VF and all four combinations of the
+  development ENIC and deployed async PF/VF drivers. Traffic covered
+  bidirectional ICMP, TCP, UDP and jumbo frames.
+- Tests covered station/address/filter and administrative-MAC policy
+  changes, concurrent address updates and reopen, and multiple module
+  reload, ring resize, interface reopen and VF destroy/recreate cycles.
+- Earlier fault-injection tests covered admin queue retry, reset recovery,
+  queued PF notification delivery after VF-ID discovery and completed-close
+  statistics-buffer cleanup. They let real DMA complete; no test reproduced
+  a physically stuck queue.
 
-Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
-Signed-off-by: Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
+The functional and interoperability tests included later VF/PF feature
+patches. These two fixes alone do not enable in-tree PF SR-IOV support.
+Physical device removal was not tested; a physical DMA-engine failure
+was not reproduced.
+
+Signed-off-by: Satish Kharat <satishkh@cisco.com>
 ---
-Changes in v16:
-- Drop ds->assisted_learning_on_cpu_port, ds->fdb_isolation and
-  ds->max_num_bridges, the reserved VLAN IDs, the general purpose PGID
-  range, PGID_MRP and lan_bulk_rd() which the dropped patches used.
-- Describe the standalone port operation in the commit message.
-
-Changes in v15:
-- Link down now asserts MAC_TX_RST and MAC_RX_RST instead of flushing
-  the queues and asserting PORT_RST, which can hang the port when the
-  MAC cannot transmit the frames still queued.
-
-Changes in v13:
-- Only redirect the CPU extraction queues to the NPI port while the
-  NPI port link is up. This avoids queuing CPU frames to the NPI port
-  while its MAC is held in reset.
-- Configure CPU extraction group 0 for manual extraction, instead of
-  the default where the VRAP engine owns it, so QSYS_SW_STATUS.EQ_AVAIL
-  of the CPU port module can be polled when flushing it on NPI link up.
-
-Changes in v12:
-- Drop lan9645x_port_set_tail_drop_wm(). This tail dropping config
-  is only active under cut through forwarding, which we never enable.
-- lan9645x_reset_switch(): skip the memory init when the switch core is
-  already enabled. We expect parent device to reset before probe, but if
-  it does not, we must skip memory init if switch core is already
-  enabled.
-- Drop unused shared_queue_sz field and LAN9645X_BUFFER_MEMORY define.
-- Set ds->max_num_bridges = 1 next to ds->fdb_isolation. We support a
-  single offloaded bridge, so let the core enforce it.
-- Reject an NPI port with no usable interface mode.
-- Kconfig: select REGMAP.
-- Include the CPU port module in the unicast and multicast flood masks.
-  Host address filtering needs the fdb and mdb operations, and unknown
-  traffic needs port_set_host_flood(), so until bridge support lands the
-  host depends on flooding to receive anything.
-- Describe in the commit what happens if port 5 or 6 is declared in DT.
-- Drop unused register writes from lan9645x_port_cpu_init().
-- Update PGID table comment.
-- Drop the unused PGID_AGGR_NUM, LAN9645X_ISDX_MAX, LAN9645X_ESDX_MAX and
-  LAN9645X_SFID_MAX defines, along with PGID_ENTRIES.
-- Follow the LAN9645X_IFH_LEN rename in the tag driver.
-- Drop ds->dscp_prio_mapping_is_global. It is only consulted after
-  port_add_dscp_prio() or port_del_dscp_prio() succeeds, neither of which
-  this series implements.
-- Program QSYS_RES_CFG through lan9645x_wm_enc().
-- Return -ENOMEM directly, not via dev_err_probe(), and add the missing
-  newlines to the remaining probe messages.
-- lan9645x_npi_port_deinit(): restore the NPI bit in the CPU port module
-  source PGID that lan9645x_npi_port_init() cleared.
-- Spell the part LAN9645x in the Kconfig prompt, the help text and
-  MODULE_DESCRIPTION.
-- Drop the unread NULL sentinel from lan9645x_resource_names[].
-- Resolve the regmap and the register address once in
-  lan9645x_rd_poll_timeout() and lan9645x_rd_poll_slow().
-- lan9645x_get_max_mtu(): drop the NPI case. DSA only asks for the user
-  port limit and adds the tag overhead back itself when it sizes the
-  conduit MTU.
-- lan9645x_phylink_mac_prepare(): drop the port range check. Ports 5 and 6
-  get no phylink instance, and ds->num_ports bounds the rest.
-- lan9645x_phylink_mac_link_up(): drop the unreachable SPEED_2500 case,
-  and the DEV_CLOCK_CFG.LINK_SPEED fixup it forced.
-  lan9645x_phylink_get_caps() does not advertise MAC_2500FD.
-- Fix DEV_MAC_IFG_CFG.TX_IFG, which had its full and half duplex values
-  swapped.
-- Drop the unused afi target regmap request.
-- Name the first per port regmap dev0 rather than dev, so the nine read
-  uniformly.
-- Bound the ANA_PGID_CFG.OBEY_VLAN loop at PGID_AGGR.
-- lan9645x_phylink_mac_prepare(): drop the HSIO_HW_CFG.RGMII_0_CFG write.
-  The field resets to DEV7 and nothing else writes it.
-- lan9645x_phylink_port_down(): restore QSYS_SW_PORT_MODE.AGING_MODE to 2
-  after the flush, which is the reset value, rather than 1. Mode 1 exempts
-  frames from the CPU interface from the transmit ageing that
-  lan9645x_setup() enables, and every port sat in it from probe.
-
-Changes in v9:
-- Drop the DEV4 RGMII muxing support.
-
-Changes in v8:
-- Remove the CPU_PORT macro, which named the chips internal CPU port
-  module and collided with the DSA CPU port terminology. Reference the
-  module as lan9645x->num_phys_ports.
-- Rework the port map comment to distinguish the chip CPU port modules
-  (indices 9-10) from the DSA CPU port (the NPI front port).
-- Derive PGID_GP_START from NUM_PHYS_PORTS instead of CPU_PORT.
-- Add a port_mux_lock mutex to serialize port mux arbitration in
-  lan9645x_phylink_mac_prepare().
-
-Changes in v7:
-- use cpu queue LAN9645X_CPUQ_TRAP for bpdu frames
-
 Changes in v5:
-- remove dd_dis and tsn_dis, and add SKU supported port validation
-  during setup
-- phylink: remove MAC_2500FD
-- phylink: add comment about empty supported_interfaces for port 5-6.
-- phylink: fix 2:1 rgmii port muxing for port module 4 and 7 to be fully
-  dynamic and validate requested mux settings.
-- phylink: add comment about 2:1 rgmii port muxing for port module 4
-  and 7.
-- rx/tx-internal-delay-ps checked against support 2ns value
-- update commit message
-- init lan9645x->npi = -1 at probe and check port < 0 in npi_deinit
+- Remove the redundant mbox_tx_poisoned flag. The channel state owns the
+  allocation lifetime, while mbox_send_disabled gates new sends.
+- Run the final direct admin queue recheck after generic teardown and
+  CMD_CLOSE in both probe unwind and removal.
+- Keep all-ones MMIO reads and recoverable PCI channel-offline states
+  conservative; neither is accepted as queue-stop proof.
+- Validate final release and terminal retention on the exact V5 tree.
+- Link to v4: https://patch.msgid.link/20261101-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v4-0-a7e209210453@cisco.com
 
 Changes in v4:
-- add comment to QSYS_RES_CFG configuration
-- phylink_mac_prepare: fix to make sure we can dynamically change rgmii
-  on port 4
-- move ports allocation to probe
-- tag_npi_setup: reject cascaded setups
-- skip WARN_ON in lan9645x_to_port
+- Clear vf_registered after closing the channel on both failed VF
+  re-registration paths; a late reply may have set it before the send
+  reported a timeout.
+- Hold RTNL only while detaching the netdev during removal. Perform the VF
+  unregister handshake and admin close after releasing RTNL.
+- Keep the valid pre-existing generic datapath repeated-stop problem as
+  separate follow-up work rather than adding a partial fix to this series.
+- Link to v3: https://patch.msgid.link/20261027-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v3-0-ba237ed71241@cisco.com
 
 Changes in v3:
-- move DEV_MAC_TAGS_CFG config to port setup, for vlan overhead in port
-  frame maxlen
-- remove code disabling ipv6 on conduit
-- use of_property_read_u32 for {rx,tx}-internal-delay-ps
-- use dsa_user_ports(ds) instead of
-  GENMASK(lan9645x->num_phys_ports - 1, 0) as base flood mask.
-- update obey vlan comment
+- Use observed blocking CMD_CLOSE completion, including an error result,
+  to fence earlier statistics DMA in probe unwind and removal.
+- Obtain the VF source ID after QP enable but before receive interrupts
+  are unmasked, and permit sends before delivering queued notifications.
+  Use the existing send gate instead of a redundant invalid-ID check.
+- Validate delayed notifications, discovery failures and completed-close
+  cleanup on a VF.
+- Rerun the full functional suite and all four PF/VF driver pairings
+  with the v3 fixes in the later VF/PF feature compositions.
+- Clear local VF registration after channel close in both reset workers.
+- Correct comments and explain quarantine, recovery and retention limits.
+- Link to v2: https://patch.msgid.link/20261022-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v2-0-8db19b4a714e@cisco.com
 
 Changes in v2:
-- source Kconfig from drivers/net/dsa/Kconfig
-- sorting in Kconfig and Makefiles
-- remove unused struct fields
-- remote path delays
-- use port_setup and dp->dn instead of DTS parsing
-- phylink: split rgmii setup into dll and speed config
-- phylink: remove pcs/sgmii/qsgmii related code
-- phylink: simplify mac_prepare
-- phylink: remove phylink_ops wrappers
-- phylink: remove unrelated config from link up
-- phylink: reorder functions according to phylink call order
+- Withdraw v1 patch 1's generic datapath quarantine proposal. Rewrite v1
+  patch 2 as the first patch here, followed by the VF mailbox-source fix.
+- Keep the admin buffers' lifetime separate from generic page pools and
+  notification teardown. Keep bus mastering enabled at runtime.
+- Bound longer polling to the two admin queues, preserve both RQ passes,
+  and retry only a complete disable helper returning -ETIMEDOUT.
+- Serialize remove/open and skip admin reopen after datapath-open failure.
+- Observe DEVCMD2 transport completion independently of command success,
+  including a completed QP error, without treating pre-post errors or
+  NOWAIT posting as a fence.
+- Clarify final remove recheck, terminal retention and reprobe limits.
+- Link to v1: https://patch.msgid.link/20261016-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v1-0-d27b55f69883@cisco.com
+
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+
 ---
- drivers/net/dsa/Kconfig                            |   2 +
- drivers/net/dsa/microchip/Makefile                 |   1 +
- drivers/net/dsa/microchip/lan9645x/Kconfig         |  12 +
- drivers/net/dsa/microchip/lan9645x/Makefile        |   8 +
- drivers/net/dsa/microchip/lan9645x/lan9645x_main.c | 453 +++++++++++++++++++++
- drivers/net/dsa/microchip/lan9645x/lan9645x_main.h | 321 +++++++++++++++
- drivers/net/dsa/microchip/lan9645x/lan9645x_npi.c  | 116 ++++++
- .../net/dsa/microchip/lan9645x/lan9645x_phylink.c  | 316 ++++++++++++++
- drivers/net/dsa/microchip/lan9645x/lan9645x_port.c | 166 ++++++++
- 9 files changed, 1395 insertions(+)
+Satish Kharat (2):
+      enic: retain admin-channel DMA until queues stop
+      enic: require DEVCMD2 and set the V2 VF mailbox source
 
-diff --git a/drivers/net/dsa/Kconfig b/drivers/net/dsa/Kconfig
-index fe8cd5338fda..d62f0cccf13d 100644
---- a/drivers/net/dsa/Kconfig
-+++ b/drivers/net/dsa/Kconfig
-@@ -82,6 +82,8 @@ config NET_DSA_MV88E6060
- 
- source "drivers/net/dsa/microchip/Kconfig"
- 
-+source "drivers/net/dsa/microchip/lan9645x/Kconfig"
-+
- source "drivers/net/dsa/motorcomm/Kconfig"
- 
- source "drivers/net/dsa/mv88e6xxx/Kconfig"
-diff --git a/drivers/net/dsa/microchip/Makefile b/drivers/net/dsa/microchip/Makefile
-index 9347cfb3d0b5..e75f17888f75 100644
---- a/drivers/net/dsa/microchip/Makefile
-+++ b/drivers/net/dsa/microchip/Makefile
-@@ -12,3 +12,4 @@ endif
- obj-$(CONFIG_NET_DSA_MICROCHIP_KSZ9477_I2C)	+= ksz9477_i2c.o
- obj-$(CONFIG_NET_DSA_MICROCHIP_KSZ_SPI)		+= ksz_spi.o
- obj-$(CONFIG_NET_DSA_MICROCHIP_KSZ8863_SMI)	+= ksz8863_smi.o
-+obj-$(CONFIG_NET_DSA_MICROCHIP_LAN9645X)	+= lan9645x/
-diff --git a/drivers/net/dsa/microchip/lan9645x/Kconfig b/drivers/net/dsa/microchip/lan9645x/Kconfig
-new file mode 100644
-index 000000000000..4e3e0d2f5846
---- /dev/null
-+++ b/drivers/net/dsa/microchip/lan9645x/Kconfig
-@@ -0,0 +1,12 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+config NET_DSA_MICROCHIP_LAN9645X
-+	tristate "Microchip LAN9645x switch support"
-+	depends on NET_DSA
-+	select NET_DSA_TAG_LAN9645X
-+	select REGMAP
-+	help
-+	  This driver adds DSA support for Microchip LAN9645x switch chips.
-+	  The lan9645x switch is a multi-port Gigabit AVB/TSN Ethernet Switch
-+	  with five integrated 10/100/1000Base-T PHYs. In addition to the
-+	  integrated PHYs, it supports up to 2 RGMII/RMII, up to 2
-+	  BASE-X/SERDES/2.5GBASE-X and one Quad-SGMII/Quad-USGMII interfaces.
-diff --git a/drivers/net/dsa/microchip/lan9645x/Makefile b/drivers/net/dsa/microchip/lan9645x/Makefile
-new file mode 100644
-index 000000000000..7cc0ae0ada40
---- /dev/null
-+++ b/drivers/net/dsa/microchip/lan9645x/Makefile
-@@ -0,0 +1,8 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+obj-$(CONFIG_NET_DSA_MICROCHIP_LAN9645X) += mchp-lan9645x.o
-+
-+mchp-lan9645x-objs := \
-+	lan9645x_main.o \
-+	lan9645x_npi.o \
-+	lan9645x_phylink.o \
-+	lan9645x_port.o \
-diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-new file mode 100644
-index 000000000000..f91e82534335
---- /dev/null
-+++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-@@ -0,0 +1,453 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/* Copyright (C) 2026 Microchip Technology Inc.
-+ */
-+
-+#include <linux/platform_device.h>
-+
-+#include "lan9645x_main.h"
-+
-+static const char *lan9645x_resource_names[NUM_TARGETS] = {
-+	[TARGET_GCB]          = "gcb",
-+	[TARGET_QS]           = "qs",
-+	[TARGET_CHIP_TOP]     = "chip_top",
-+	[TARGET_REW]          = "rew",
-+	[TARGET_SYS]          = "sys",
-+	[TARGET_HSIO]         = "hsio",
-+	[TARGET_DEV + 0]      = "dev0",
-+	[TARGET_DEV + 1]      = "dev1",
-+	[TARGET_DEV + 2]      = "dev2",
-+	[TARGET_DEV + 3]      = "dev3",
-+	[TARGET_DEV + 4]      = "dev4",
-+	[TARGET_DEV + 5]      = "dev5",
-+	[TARGET_DEV + 6]      = "dev6",
-+	[TARGET_DEV + 7]      = "dev7",
-+	[TARGET_DEV + 8]      = "dev8",
-+	[TARGET_QSYS]         = "qsys",
-+	[TARGET_ANA]          = "ana",
-+};
-+
-+static int lan9645x_tag_npi_setup(struct dsa_switch *ds)
-+{
-+	struct dsa_port *dp, *first_cpu_dp = NULL;
-+	struct lan9645x *lan9645x = ds->priv;
-+	struct phylink_config c = {};
-+
-+	dsa_switch_for_each_user_port(dp, ds) {
-+		if (dp->cpu_dp->ds != ds) {
-+			dev_err(ds->dev,
-+				"NPI port on a remote switch is not supported\n");
-+			return -EINVAL;
-+		}
-+
-+		if (first_cpu_dp && dp->cpu_dp != first_cpu_dp) {
-+			dev_err(ds->dev, "Multiple NPI ports not supported\n");
-+			return -EINVAL;
-+		}
-+
-+		first_cpu_dp = dp->cpu_dp;
-+	}
-+
-+	if (!first_cpu_dp)
-+		return -EINVAL;
-+
-+	lan9645x_phylink_get_caps(lan9645x, first_cpu_dp->index, &c);
-+	if (phy_interface_empty(c.supported_interfaces)) {
-+		dev_err(ds->dev,
-+			"Port %d has no usable interface mode, cannot be NPI port\n",
-+			first_cpu_dp->index);
-+		return -EINVAL;
-+	}
-+
-+	lan9645x_npi_port_init(lan9645x, first_cpu_dp);
-+
-+	return 0;
-+}
-+
-+static enum dsa_tag_protocol lan9645x_get_tag_protocol(struct dsa_switch *ds,
-+						       int port,
-+						       enum dsa_tag_protocol tp)
-+{
-+	return DSA_TAG_PROTO_LAN9645X;
-+}
-+
-+static void lan9645x_teardown(struct dsa_switch *ds)
-+{
-+	struct lan9645x *lan9645x = ds->priv;
-+
-+	lan9645x_npi_port_deinit(lan9645x, lan9645x->npi);
-+}
-+
-+static int lan9645x_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
-+{
-+	return lan9645x_port_set_maxlen(ds->priv, port, new_mtu);
-+}
-+
-+static int lan9645x_get_max_mtu(struct dsa_switch *ds, int port)
-+{
-+	/* Actual MAC max MTU is around 16KB. We set 10000 - overhead which
-+	 * should be sufficient for all jumbo frames. Larger frames can cause
-+	 * problems especially with flow control, since we only have 160K queue
-+	 * buffer.
-+	 *
-+	 * DSA only asks for the user port limit, and adds the tag overhead
-+	 * back when it sizes the conduit MTU, so the CPU port is not a case
-+	 * here.
-+	 */
-+	return 10000 - ETH_HLEN - ETH_FCS_LEN;
-+}
-+
-+static int lan9645x_reset_switch(struct lan9645x *lan9645x)
-+{
-+	u32 val = 0;
-+	int err;
-+
-+	/* The parent must reset the whole chip before instantiating its
-+	 * children, so the switch core is disabled when we get here. The
-+	 * sequence below must not run more than once: initializing the
-+	 * memories on a running core corrupts pointers inside the queue
-+	 * system, which eventually fills up and stops passing traffic. If the
-+	 * core is already enabled the chip was not reset, so skip it.
-+	 */
-+	if (SYS_RESET_CFG_CORE_ENA_GET(lan_rd(lan9645x, SYS_RESET_CFG)))
-+		return 0;
-+
-+	lan_wr(SYS_RESET_CFG_CORE_ENA_SET(0), lan9645x, SYS_RESET_CFG);
-+	lan_wr(SYS_RAM_INIT_RAM_INIT_SET(1), lan9645x, SYS_RAM_INIT);
-+	err = lan9645x_rd_poll_timeout(lan9645x, SYS_RAM_INIT, val,
-+				       SYS_RAM_INIT_RAM_INIT_GET(val) == 0);
-+	if (err) {
-+		dev_err(lan9645x->dev, "Failed to init chip RAM.\n");
-+		return err;
-+	}
-+	lan_wr(SYS_RESET_CFG_CORE_ENA_SET(1), lan9645x, SYS_RESET_CFG);
-+
-+	return 0;
-+}
-+
-+static int lan9645x_setup(struct dsa_switch *ds)
-+{
-+	struct lan9645x *lan9645x = ds->priv;
-+	struct device *dev = lan9645x->dev;
-+	u32 front_ports, res_wm;
-+	int supported, used = 0;
-+	struct dsa_port *dp;
-+	int err;
-+
-+	lan9645x->num_phys_ports = ds->num_ports;
-+	front_ports = dsa_user_ports(ds);
-+	supported = lan9645x->num_phys_ports - lan9645x->num_port_dis;
-+
-+	dsa_switch_for_each_available_port(dp, ds)
-+		used++;
-+
-+	if (used > supported) {
-+		dev_err(ds->dev,
-+			"%d physical ports in use in DT, SKU supports at most %d\n",
-+			used, supported);
-+		return -EINVAL;
-+	}
-+
-+	err = lan9645x_reset_switch(lan9645x);
-+	if (err)
-+		return err;
-+
-+	err = lan9645x_tag_npi_setup(ds);
-+	if (err) {
-+		dev_err(dev, "Failed to setup NPI port.\n");
-+		return err;
-+	}
-+
-+	/* Link Aggregation Mode: NETDEV_LAG_HASH_L2 */
-+	lan_wr(ANA_AGGR_CFG_AC_SMAC_ENA |
-+	       ANA_AGGR_CFG_AC_DMAC_ENA,
-+	       lan9645x, ANA_AGGR_CFG);
-+
-+	/* Flush queues */
-+	lan_wr(GENMASK(1, 0), lan9645x, QS_XTR_FLUSH);
-+
-+	/* Allow to drain */
-+	usleep_range(1000, 2000);
-+
-+	/* All Queues normal */
-+	lan_wr(0x0, lan9645x, QS_XTR_FLUSH);
-+
-+	/* Set MAC age time to default value, the entry is aged after
-+	 * 2 * AGE_PERIOD
-+	 */
-+	lan_wr(ANA_AUTOAGE_AGE_PERIOD_SET(BR_DEFAULT_AGEING_TIME / 2 / HZ),
-+	       lan9645x, ANA_AUTOAGE);
-+
-+	/* Disable learning for frames discarded by VLAN ingress filtering */
-+	lan_rmw(ANA_ADVLEARN_VLAN_CHK_SET(1),
-+		ANA_ADVLEARN_VLAN_CHK,
-+		lan9645x, ANA_ADVLEARN);
-+
-+	/* Queue system frame ageing. We target 2s ageing.
-+	 *
-+	 * Register unit is 1024 cycles.
-+	 *
-+	 * ASIC: 165.625 Mhz  ~ 6.0377 ns period
-+	 *
-+	 * 1024 * 6.0377 ns =~ 6182 ns
-+	 * val = 2000000000ns / 6182ns
-+	 */
-+	lan_wr(SYS_FRM_AGING_AGE_TX_ENA_SET(1) |
-+	       SYS_FRM_AGING_MAX_AGE_SET((2000000000 / 6182)),
-+	       lan9645x,  SYS_FRM_AGING);
-+
-+	/* Setup flooding PGIDs for IPv4/IPv6 multicast. Control and dataplane
-+	 * use the same masks. Control frames are redirected to CPU, and
-+	 * the network stack is responsible for forwarding these.
-+	 * The dataplane is forwarding according to the offloaded MDB entries.
-+	 */
-+	lan_wr(ANA_FLOODING_IPMC_FLD_MC4_DATA_SET(PGID_MCIPV4) |
-+	       ANA_FLOODING_IPMC_FLD_MC4_CTRL_SET(PGID_MC) |
-+	       ANA_FLOODING_IPMC_FLD_MC6_DATA_SET(PGID_MCIPV6) |
-+	       ANA_FLOODING_IPMC_FLD_MC6_CTRL_SET(PGID_MC),
-+	       lan9645x, ANA_FLOODING_IPMC);
-+
-+	for (int prio = 0; prio < NUM_PRIO_QUEUES; ++prio)
-+		lan_wr(ANA_FLOODING_FLD_MULTICAST_SET(PGID_MC) |
-+		       ANA_FLOODING_FLD_UNICAST_SET(PGID_UC) |
-+		       ANA_FLOODING_FLD_BROADCAST_SET(PGID_BC),
-+		       lan9645x, ANA_FLOODING(prio));
-+
-+	/* Allow VLAN table to control whether cpu copy from the pgid table is
-+	 * enabled. Only the destination analysis resolves a CPU copy, so the
-+	 * aggregation and source regions are left at their reset value.
-+	 */
-+	for (int i = 0; i < PGID_AGGR; ++i)
-+		lan_wr(ANA_PGID_CFG_OBEY_VLAN_SET(1),
-+		       lan9645x, ANA_PGID_CFG(i));
-+
-+	/* Disable bridging by default */
-+	for (int p = 0; p < lan9645x->num_phys_ports; p++) {
-+		lan_wr(0, lan9645x, ANA_PGID(PGID_SRC + p));
-+
-+		/* Do not forward BPDU frames to the front ports and trap them
-+		 * to CPU
-+		 */
-+		lan_wr(ANA_CPU_FWD_BPDU_CFG_BPDU_REDIR_ENA,
-+		       lan9645x, ANA_CPU_FWD_BPDU_CFG(p));
-+	}
-+
-+	for (int i = 0; i < 16; i++) {
-+		/* The register instance number corresponds to the
-+		 * address of the extracted frame. For instance:
-+		 * CPUQ_8021_CFG[4].CPUQ_BPDU_VAL
-+		 * is the cpu extraction queue used for BPDU frames
-+		 * with address 01-80-C2-00-00-04
-+		 */
-+		lan_rmw(ANA_CPUQ_8021_CFG_CPUQ_BPDU_VAL_SET(LAN9645X_CPUQ_TRAP),
-+			ANA_CPUQ_8021_CFG_CPUQ_BPDU_VAL,
-+			lan9645x, ANA_CPUQ_8021_CFG(i));
-+	}
-+
-+	/* Reserve 1664 bytes, 26 buffer cells, per (port, prio) for source
-+	 * tracking (resource 0, indices 0..95) and destination tracking
-+	 * (resource 2, indices 512..607). These are access watermarks, not
-+	 * pre-allocations: a flow draws from its reservation first, then
-+	 * from the shared pool. Keeping the reservation above a max-size
-+	 * Ethernet frame prevents a single frame from spilling into the
-+	 * shared pool, and cause pause frames to be emitted without actual
-+	 * congestion.
-+	 */
-+	res_wm = QSYS_RES_CFG_WM_HIGH_SET(lan9645x_wm_enc(QS_SRC_BUF_RSV));
-+	for (int i = 0; i <= QSYS_Q_RSRV; ++i) {
-+		lan_wr(res_wm, lan9645x, QSYS_RES_CFG(i));
-+		lan_wr(res_wm, lan9645x, QSYS_RES_CFG(512 + i));
-+	}
-+
-+	lan9645x_port_cpu_init(lan9645x);
-+
-+	/* Multicast to cpu and all front ports */
-+	lan_wr(BIT(lan9645x->num_phys_ports) | front_ports, lan9645x,
-+	       ANA_PGID(PGID_MC));
-+
-+	/* IP multicast to cpu and all front ports */
-+	lan_wr(BIT(lan9645x->num_phys_ports) | front_ports, lan9645x,
-+	       ANA_PGID(PGID_MCIPV4));
-+	lan_wr(BIT(lan9645x->num_phys_ports) | front_ports, lan9645x,
-+	       ANA_PGID(PGID_MCIPV6));
-+
-+	/* Unicast to cpu and all front ports */
-+	lan_wr(BIT(lan9645x->num_phys_ports) | front_ports, lan9645x,
-+	       ANA_PGID(PGID_UC));
-+
-+	/* Broadcast to cpu and all front ports */
-+	lan_wr(BIT(lan9645x->num_phys_ports) | front_ports, lan9645x,
-+	       ANA_PGID(PGID_BC));
-+
-+	ds->mtu_enforcement_ingress = true;
-+
-+	dev_info(lan9645x->dev,
-+		 "SKU features: max_ports=%d\n",
-+		 lan9645x->num_phys_ports - lan9645x->num_port_dis);
-+
-+	return 0;
-+}
-+
-+static void lan9645x_port_phylink_get_caps(struct dsa_switch *ds, int port,
-+					   struct phylink_config *config)
-+{
-+	lan9645x_phylink_get_caps(ds->priv, port, config);
-+}
-+
-+static const struct dsa_switch_ops lan9645x_switch_ops = {
-+	.get_tag_protocol		= lan9645x_get_tag_protocol,
-+
-+	.setup				= lan9645x_setup,
-+	.teardown			= lan9645x_teardown,
-+	.port_setup			= lan9645x_port_setup,
-+
-+	/* Phylink integration */
-+	.phylink_get_caps		= lan9645x_port_phylink_get_caps,
-+
-+	/* MTU  */
-+	.port_change_mtu		= lan9645x_change_mtu,
-+	.port_max_mtu			= lan9645x_get_max_mtu,
-+};
-+
-+static int lan9645x_request_target_regmaps(struct lan9645x *lan9645x)
-+{
-+	const char *resource_name;
-+	struct regmap *tgt_map;
-+
-+	for (int i = 0; i < NUM_TARGETS; i++) {
-+		resource_name = lan9645x_resource_names[i];
-+		if (!resource_name)
-+			continue;
-+
-+		tgt_map = dev_get_regmap(lan9645x->dev->parent, resource_name);
-+		if (IS_ERR_OR_NULL(tgt_map)) {
-+			dev_err(lan9645x->dev, "Failed to get regmap=%s\n",
-+				resource_name);
-+			return -ENODEV;
-+		}
-+
-+		lan9645x->rmap[i] = tgt_map;
-+	}
-+
-+	return 0;
-+}
-+
-+static void lan9645x_set_feat_dis(struct lan9645x *lan9645x)
-+{
-+	u32 feat_dis;
-+
-+	/* The features which can be physically disabled on some SKUs are:
-+	 * 1) Number of ports can be 5, 7 or 9. Any ports can be used, the chip
-+	 *    tracks how many are active.
-+	 * 2) HSR/PRP. The duplicate discard table can be disabled.
-+	 * 3) TAS, frame preemption and PSFP can be disabled.
-+	 */
-+	feat_dis = lan_rd(lan9645x, GCB_FEAT_DISABLE);
-+
-+	lan9645x->num_port_dis =
-+		GCB_FEAT_DISABLE_FEAT_NUM_PORTS_DIS_GET(feat_dis);
-+}
-+
-+static int lan9645x_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct lan9645x *lan9645x;
-+	struct dsa_switch *ds;
-+	int err = 0;
-+
-+	lan9645x = devm_kzalloc(dev, sizeof(*lan9645x), GFP_KERNEL);
-+	if (!lan9645x)
-+		return -ENOMEM;
-+
-+	dev_set_drvdata(dev, lan9645x);
-+	lan9645x->dev = dev;
-+
-+	err = lan9645x_request_target_regmaps(lan9645x);
-+	if (err)
-+		return dev_err_probe(dev, err, "Failed to request regmaps\n");
-+
-+	ds = devm_kzalloc(dev, sizeof(*ds), GFP_KERNEL);
-+	if (!ds)
-+		return -ENOMEM;
-+
-+	lan9645x->ports = devm_kcalloc(lan9645x->dev, NUM_PHYS_PORTS,
-+				       sizeof(struct lan9645x_port *),
-+				       GFP_KERNEL);
-+	if (!lan9645x->ports)
-+		return -ENOMEM;
-+
-+	for (int port = 0; port < NUM_PHYS_PORTS; port++) {
-+		struct lan9645x_port *p;
-+
-+		p = devm_kzalloc(lan9645x->dev, sizeof(*p), GFP_KERNEL);
-+		if (!p)
-+			return -ENOMEM;
-+
-+		p->lan9645x = lan9645x;
-+		p->chip_port = port;
-+		lan9645x->ports[port] = p;
-+	}
-+
-+	ds->dev = dev;
-+	ds->num_ports = NUM_PHYS_PORTS;
-+	ds->num_tx_queues = NUM_PRIO_QUEUES;
-+
-+	ds->ops = &lan9645x_switch_ops;
-+	ds->phylink_mac_ops = &lan9645x_phylink_mac_ops;
-+	ds->priv = lan9645x;
-+
-+	lan9645x->ds = ds;
-+	lan9645x->npi = -1;
-+
-+	lan9645x_set_feat_dis(lan9645x);
-+
-+	err = dsa_register_switch(ds);
-+	if (err)
-+		return dev_err_probe(dev, err, "Failed to register DSA switch\n");
-+
-+	return 0;
-+}
-+
-+static void lan9645x_remove(struct platform_device *pdev)
-+{
-+	struct lan9645x *lan9645x = dev_get_drvdata(&pdev->dev);
-+
-+	if (!lan9645x)
-+		return;
-+
-+	/* Calls lan9645x DSA .teardown */
-+	dsa_unregister_switch(lan9645x->ds);
-+	dev_set_drvdata(&pdev->dev, NULL);
-+}
-+
-+static void lan9645x_shutdown(struct platform_device *pdev)
-+{
-+	struct lan9645x *lan9645x = dev_get_drvdata(&pdev->dev);
-+
-+	if (!lan9645x)
-+		return;
-+
-+	dsa_switch_shutdown(lan9645x->ds);
-+
-+	dev_set_drvdata(&pdev->dev, NULL);
-+}
-+
-+static const struct of_device_id lan9645x_switch_of_match[] = {
-+	{ .compatible = "microchip,lan96455s-switch" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, lan9645x_switch_of_match);
-+
-+static struct platform_driver lan9645x_switch_driver = {
-+	.driver = {
-+		.name = "lan96455s-switch",
-+		.of_match_table = lan9645x_switch_of_match,
-+	},
-+	.probe = lan9645x_probe,
-+	.remove = lan9645x_remove,
-+	.shutdown = lan9645x_shutdown,
-+};
-+module_platform_driver(lan9645x_switch_driver);
-+
-+MODULE_DESCRIPTION("LAN9645x Switch Driver");
-+MODULE_AUTHOR("Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>");
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h
-new file mode 100644
-index 000000000000..60acb5aec296
---- /dev/null
-+++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h
-@@ -0,0 +1,321 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/* Copyright (C) 2026 Microchip Technology Inc.
-+ */
-+
-+#ifndef __LAN9645X_MAIN_H__
-+#define __LAN9645X_MAIN_H__
-+
-+#include <linux/dsa/lan9645x.h>
-+#include <linux/if_bridge.h>
-+#include <linux/regmap.h>
-+#include <net/dsa.h>
-+
-+#include "lan9645x_regs.h"
-+
-+/* Port modules 0-8 are front (user) ports. The chip additionally has two
-+ * logical CPU port modules at indices 9 and 10. These are not the DSA CPU port.
-+ * The CPU port modules are logical ports in the chip intended for management.
-+ *
-+ * The frame delivery mechanism can vary: direct register injection/extraction,
-+ * or a front port can be used as the management port, called a Node Processor
-+ * Interface (NPI) in the datasheet.
-+ *
-+ * LAN9645X uses the NPI approach, so the DSA CPU port is a front port
-+ * (see lan9645x->npi) configured as NPI port.
-+ *
-+ * Therefore the CPU datapath has two port module indices of interest,
-+ * lan9645x->npi and the cpu port module at index 9.
-+ */
-+#define NUM_PHYS_PORTS		9
-+
-+#define NUM_PRIO_QUEUES		8
-+
-+#define QS_SRC_BUF_RSV		1664
-+
-+/* Reserved amount for (SRC, PRIO) at index 8*SRC + PRIO
-+ * See QSYS:RES_CTRL[*]:RES_CFG description
-+ */
-+#define QSYS_Q_RSRV			95
-+
-+/* Port Group Identifiers (PGID) are port-masks applied to all frames.
-+ *
-+ * The forwarding engine outputs two masks for the forwarding decision, DEST and
-+ * CPUQ. DEST determines which front ports will receive a frame, and CPUQ
-+ * whether the frame is forwarded to the CPU.
-+ *
-+ * The replicated registers are organized like so in HW:
-+ *
-+ * 0-63:         Destination analysis.
-+ * 64-79:        Aggregation analysis
-+ * 80-(80+10-1): Source port analysis
-+ *
-+ * Destination: Destination PGIDs are the result of mac table lookups or
-+ * flooding decisions. The resolved destination PGID will feed into DEST and set
-+ * the bit for ANA_PGID_CFG.CPUQ_DST_PGID in CPUQ, if the CPU port module bit is
-+ * set in the PGID. This is how PGID_CPU and host flooding work.
-+ *
-+ * The first NUM_PHYS_PORTS destination PGIDs can not be used freely, because
-+ * dynamic learning writes mac table entries with DEST_IDX taken from the
-+ * ingress ports ANA_PORT_CFG.PORTID_VAL. They come out of reset as BIT(i)
-+ * for that reason.
-+ *
-+ * PGID NUM_PHYS_PORTS..63 come out of reset as zero and have no reserved
-+ * role. We use them for L2 Multicast and flooding (see FLOODING and
-+ * FLOODING_IPMC) and reserve a few at the end of the range. The CPU port module
-+ * has no reserved destination PGID. It does have a reserved source PGID at
-+ * PGID_SRC + NUM_PHYS_PORTS.
-+ *
-+ * Aggregation: Each frame receives a link aggregation code from the analyzer,
-+ * based on a configurable algorithm. This code picks out one of the 16
-+ * aggregation PGIDs to mask out ports in DEST. If no aggregation is configured,
-+ * these are all-ones. The CPU port module bit is inert here.
-+ *
-+ * Source: Control which ports a given source port can forward to. A frame that
-+ * is received on port n, uses entry PGID_SRC + n to mask out DEST.
-+ * The default values are all bits set except for the index itself
-+ * (no loopback). The CPU port module bit is inert here.
-+ */
-+
-+#define PGID_AGGR			64
-+#define PGID_SRC			80
-+
-+/* Reserved PGIDs. */
-+#define PGID_CPU			(PGID_AGGR - 6)
-+#define PGID_UC				(PGID_AGGR - 5)
-+#define PGID_BC				(PGID_AGGR - 4)
-+#define PGID_MC				(PGID_AGGR - 3)
-+#define PGID_MCIPV4			(PGID_AGGR - 2)
-+#define PGID_MCIPV6			(PGID_AGGR - 1)
-+
-+/* Flooding PGIDS:
-+ * PGID_UC
-+ * PGID_MC*
-+ * PGID_BC
-+ */
-+
-+#define GWM_MULTIPLIER_BIT		BIT(8)
-+#define LAN9645X_BUFFER_CELL_SZ		64
-+
-+#define RD_SLEEP_US			3
-+#define RD_SLEEPTIMEOUT_US		100000
-+#define SLOW_RD_SLEEP_US		1000
-+#define SLOW_RD_SLEEPTIMEOUT_US		4000000
-+
-+/* regmap_read_poll_timeout() re-evaluates its map and address arguments on
-+ * every iteration, so resolve both once up front.
-+ */
-+#define lan9645x_rd_poll_timeout(_lan9645x, _reg_macro, _val, _cond)	\
-+({									\
-+	struct regmap *__map = lan_rmap((_lan9645x), _reg_macro);	\
-+	u32 __addr = lan_rel_addr(_reg_macro);				\
-+									\
-+	regmap_read_poll_timeout(__map, __addr, (_val), (_cond),		\
-+				 RD_SLEEP_US, RD_SLEEPTIMEOUT_US);	\
-+})
-+
-+#define lan9645x_rd_poll_slow(_lan9645x, _reg_macro, _val, _cond)	\
-+({									\
-+	struct regmap *__map = lan_rmap((_lan9645x), _reg_macro);	\
-+	u32 __addr = lan_rel_addr(_reg_macro);				\
-+									\
-+	regmap_read_poll_timeout(__map, __addr, (_val), (_cond),		\
-+				 SLOW_RD_SLEEP_US,			\
-+				 SLOW_RD_SLEEPTIMEOUT_US);		\
-+})
-+
-+/* NPI port prefix config encoding
-+ *
-+ * 0: No CPU extraction header (normal frames)
-+ * 1: CPU extraction header without prefix
-+ * 2: CPU extraction header with short prefix
-+ * 3: CPU extraction header with long prefix
-+ */
-+enum lan9645x_tag_prefix {
-+	LAN9645X_TAG_PREFIX_DISABLED = 0,
-+	LAN9645X_TAG_PREFIX_NONE = 1,
-+	LAN9645X_TAG_PREFIX_SHORT = 2,
-+	LAN9645X_TAG_PREFIX_LONG = 3,
-+};
-+
-+enum {
-+	LAN9645X_SPEED_DISABLED = 0,
-+	LAN9645X_SPEED_10 = 1,
-+	LAN9645X_SPEED_100 = 2,
-+	LAN9645X_SPEED_1000 = 3,
-+	LAN9645X_SPEED_2500 = 4,
-+};
-+
-+/* Rewriter VLAN port tagging encoding for REW:PORT[0-10]:TAG_CFG.TAG_CFG
-+ *
-+ * 0: Port tagging disabled.
-+ * 1: Tag all frames, except when VID=PORT_VLAN_CFG.PORT_VID or VID=0.
-+ * 2: Tag all frames, except when VID=0.
-+ * 3: Tag all frames.
-+ */
-+enum lan9645x_vlan_port_tag {
-+	LAN9645X_TAG_DISABLED = 0,
-+	LAN9645X_TAG_NO_PVID_NO_UNAWARE = 1,
-+	LAN9645X_TAG_NO_UNAWARE = 2,
-+	LAN9645X_TAG_ALL = 3,
-+};
-+
-+struct lan9645x {
-+	struct device *dev;
-+	struct dsa_switch *ds;
-+	struct regmap *rmap[NUM_TARGETS];
-+
-+	/* NPI chip_port */
-+	int npi;
-+
-+	u8 num_phys_ports;
-+	struct lan9645x_port **ports;
-+
-+	int num_port_dis;
-+};
-+
-+struct lan9645x_port {
-+	struct lan9645x *lan9645x;
-+
-+	u8 chip_port;
-+
-+	bool rx_internal_delay;
-+	bool tx_internal_delay;
-+};
-+
-+extern const struct phylink_mac_ops lan9645x_phylink_mac_ops;
-+
-+/* PFC_CFG.FC_LINK_SPEED encoding */
-+static inline int lan9645x_speed_fc_enc(int speed)
-+{
-+	switch (speed) {
-+	case LAN9645X_SPEED_10:
-+		return 3;
-+	case LAN9645X_SPEED_100:
-+		return 2;
-+	case LAN9645X_SPEED_1000:
-+		return 1;
-+	case LAN9645X_SPEED_2500:
-+		return 0;
-+	default:
-+		WARN_ON_ONCE(1);
-+		return 1;
-+	}
-+}
-+
-+/* Watermark encode. See QSYS:RES_CTRL[*]:RES_CFG.WM_HIGH for details.
-+ * Returns lowest encoded number which will fit request/ is larger than request.
-+ * Or the maximum representable value, if request is too large.
-+ */
-+static inline u32 lan9645x_wm_enc(u32 value)
-+{
-+	value = DIV_ROUND_UP(value, LAN9645X_BUFFER_CELL_SZ);
-+
-+	if (value >= GWM_MULTIPLIER_BIT) {
-+		value = DIV_ROUND_UP(value, 16);
-+		if (value >= GWM_MULTIPLIER_BIT)
-+			value = (GWM_MULTIPLIER_BIT - 1);
-+		value |= GWM_MULTIPLIER_BIT;
-+	}
-+
-+	return value;
-+}
-+
-+static inline struct lan9645x_port *lan9645x_to_port(struct lan9645x *lan9645x,
-+						     int port)
-+{
-+	return lan9645x->ports[port];
-+}
-+
-+static inline struct regmap *lan_tgt2rmap(struct lan9645x *lan9645x,
-+					  enum lan9645x_target t, int tinst)
-+{
-+	return lan9645x->rmap[t + tinst];
-+}
-+
-+static inline u32 __lan_rel_addr(int gbase, int ginst, int gcnt,
-+				 int gwidth, int raddr, int rinst,
-+				 int rcnt, int rwidth)
-+{
-+	WARN_ON(ginst >= gcnt);
-+	WARN_ON(rinst >= rcnt);
-+	return gbase + ginst * gwidth + raddr + rinst * rwidth;
-+}
-+
-+/* Get register address relative to target instance */
-+static inline u32 lan_rel_addr(enum lan9645x_target t, int tinst, int tcnt,
-+			       int gbase, int ginst, int gcnt, int gwidth,
-+			       int raddr, int rinst, int rcnt, int rwidth)
-+{
-+	WARN_ON(tinst >= tcnt);
-+	return __lan_rel_addr(gbase, ginst, gcnt, gwidth, raddr, rinst,
-+			      rcnt, rwidth);
-+}
-+
-+static inline u32 lan_rd(struct lan9645x *lan9645x, enum lan9645x_target t,
-+			 int tinst, int tcnt, int gbase, int ginst,
-+			 int gcnt, int gwidth, int raddr, int rinst,
-+			 int rcnt, int rwidth)
-+{
-+	u32 addr, val = 0;
-+
-+	addr = lan_rel_addr(t, tinst, tcnt, gbase, ginst, gcnt, gwidth,
-+			    raddr, rinst, rcnt, rwidth);
-+
-+	WARN_ON_ONCE(regmap_read(lan_tgt2rmap(lan9645x, t, tinst), addr, &val));
-+
-+	return val;
-+}
-+
-+static inline struct regmap *lan_rmap(struct lan9645x *lan9645x,
-+				      enum lan9645x_target t, int tinst,
-+				      int tcnt, int gbase, int ginst,
-+				      int gcnt, int gwidth, int raddr,
-+				      int rinst, int rcnt, int rwidth)
-+{
-+	return lan_tgt2rmap(lan9645x, t, tinst);
-+}
-+
-+static inline void lan_wr(u32 val, struct lan9645x *lan9645x,
-+			  enum lan9645x_target t, int tinst, int tcnt,
-+			  int gbase, int ginst, int gcnt, int gwidth,
-+			  int raddr, int rinst, int rcnt, int rwidth)
-+{
-+	u32 addr;
-+
-+	addr = lan_rel_addr(t, tinst, tcnt, gbase, ginst, gcnt, gwidth,
-+			    raddr, rinst, rcnt, rwidth);
-+
-+	WARN_ON_ONCE(regmap_write(lan_tgt2rmap(lan9645x, t, tinst), addr, val));
-+}
-+
-+static inline void lan_rmw(u32 val, u32 mask, struct lan9645x *lan9645x,
-+			   enum lan9645x_target t, int tinst, int tcnt,
-+			   int gbase, int ginst, int gcnt, int gwidth,
-+			   int raddr, int rinst, int rcnt, int rwidth)
-+{
-+	u32 addr;
-+
-+	addr = lan_rel_addr(t, tinst, tcnt, gbase, ginst, gcnt, gwidth,
-+			    raddr, rinst, rcnt, rwidth);
-+
-+	WARN_ON_ONCE(regmap_update_bits(lan_tgt2rmap(lan9645x, t, tinst),
-+					addr, mask, val));
-+}
-+
-+/* lan9645x_npi.c */
-+void lan9645x_npi_port_init(struct lan9645x *lan9645x,
-+			    struct dsa_port *cpu_port);
-+void lan9645x_npi_port_deinit(struct lan9645x *lan9645x, int port);
-+void lan9645x_npi_cpuq_redirect(struct lan9645x *lan9645x, bool enable);
-+
-+/* lan9645x_port.c */
-+int lan9645x_port_setup(struct dsa_switch *ds, int port);
-+int lan9645x_port_set_maxlen(struct lan9645x *lan9645x, int port, size_t sdu);
-+void lan9645x_port_cpu_init(struct lan9645x *lan9645x);
-+
-+/* lan9645x_phylink.c */
-+void lan9645x_phylink_get_caps(struct lan9645x *lan9645x, int port,
-+			       struct phylink_config *c);
-+void lan9645x_phylink_port_down(struct lan9645x *lan9645x, int port);
-+
-+#endif /* __LAN9645X_MAIN_H__ */
-diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_npi.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_npi.c
-new file mode 100644
-index 000000000000..945fc026b3ca
---- /dev/null
-+++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_npi.c
-@@ -0,0 +1,116 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/* Copyright (C) 2026 Microchip Technology Inc.
-+ */
-+
-+#include "lan9645x_main.h"
-+
-+void lan9645x_npi_port_init(struct lan9645x *lan9645x,
-+			    struct dsa_port *cpu_port)
-+{
-+	int port = cpu_port->index;
-+	struct lan9645x_port *p;
-+
-+	p = lan9645x_to_port(lan9645x, port);
-+	lan9645x->npi = port;
-+
-+	dev_dbg(lan9645x->dev, "NPI port=%d\n", port);
-+
-+	/* Never send injected frames back to the CPU. CPU queues are redirected
-+	 * to the NPI port on link up, see lan9645x_npi_cpuq_redirect().
-+	 */
-+	lan_wr(QSYS_EXT_CPU_CFG_EXT_CPUQ_MSK_SET(0) |
-+	       QSYS_EXT_CPU_CFG_EXT_CPU_PORT_SET(p->chip_port) |
-+	       QSYS_EXT_CPU_CFG_EXT_CPU_KILL_ENA_SET(1) |
-+	       QSYS_EXT_CPU_CFG_INT_CPU_KILL_ENA_SET(1),
-+	       lan9645x, QSYS_EXT_CPU_CFG);
-+
-+	/* Configure IFH prefix mode for NPI port. We can not use an injection
-+	 * prefix, because it requires all frames sent on the port to contain
-+	 * the prefix. Frames without the prefix would get stuck in the queue
-+	 * system rendering the port unusable. Since we do not control
-+	 * what is sent to the NPI port, no prefix is our only option.
-+	 */
-+	lan_rmw(SYS_PORT_MODE_INCL_XTR_HDR_SET(LAN9645X_TAG_PREFIX_LONG) |
-+		SYS_PORT_MODE_INCL_INJ_HDR_SET(LAN9645X_TAG_PREFIX_NONE),
-+		SYS_PORT_MODE_INCL_XTR_HDR |
-+		SYS_PORT_MODE_INCL_INJ_HDR,
-+		lan9645x,
-+		SYS_PORT_MODE(p->chip_port));
-+
-+	/* Rewriting and extraction with IFH does not play nice together. A VLAN
-+	 * tag pushed into the frame by REW will cause 4 bytes at the end of the
-+	 * extraction header to be overwritten with the top 4 bytes of the DMAC.
-+	 *
-+	 * We can not use REW_PORT_CFG_NO_REWRITE=1 as that disabled RTAGD
-+	 * setting in the IFH
-+	 */
-+	lan_rmw(REW_TAG_CFG_TAG_CFG_SET(LAN9645X_TAG_DISABLED),
-+		REW_TAG_CFG_TAG_CFG, lan9645x, REW_TAG_CFG(p->chip_port));
-+
-+	/* Clear rewriter port vid */
-+	lan_wr(0, lan9645x, REW_PORT_VLAN_CFG(p->chip_port));
-+
-+	/* Make sure frames with src_port=<CPU port module> are not reflected
-+	 * back via the NPI port. This could happen if a frame is flooded for
-+	 * instance. The *_CPU_KILL_ENA flags above only have an effect when a
-+	 * frame is output due to a CPU forwarding decision such as trapping or
-+	 * cpu copy.
-+	 */
-+	lan_rmw(0, BIT(port), lan9645x,
-+		ANA_PGID(PGID_SRC + lan9645x->num_phys_ports));
-+}
-+
-+/* Toggle CPU queue redirect to the NPI port, flushing the CPU port module on
-+ * enable
-+ */
-+void lan9645x_npi_cpuq_redirect(struct lan9645x *lan9645x, bool enable)
-+{
-+	int cpu_port = lan9645x->num_phys_ports;
-+	u32 val;
-+	int err;
-+
-+	lan_rmw(QSYS_EXT_CPU_CFG_EXT_CPUQ_MSK_SET(enable ? GENMASK(7, 0) : 0),
-+		QSYS_EXT_CPU_CFG_EXT_CPUQ_MSK,
-+		lan9645x, QSYS_EXT_CPU_CFG);
-+
-+	if (!enable)
-+		return;
-+
-+	lan_wr(QS_XTR_FLUSH_FLUSH_SET(BIT(0)), lan9645x, QS_XTR_FLUSH);
-+
-+	err = lan9645x_rd_poll_slow(lan9645x, QSYS_SW_STATUS(cpu_port), val,
-+				    !QSYS_SW_STATUS_EQ_AVAIL_GET(val));
-+	if (err)
-+		dev_err(lan9645x->dev, "CPU port %d flush timeout\n", cpu_port);
-+
-+	lan_wr(QS_XTR_FLUSH_FLUSH_SET(0), lan9645x, QS_XTR_FLUSH);
-+}
-+
-+void lan9645x_npi_port_deinit(struct lan9645x *lan9645x, int port)
-+{
-+	u32 no_cpu_port = FIELD_MAX(QSYS_EXT_CPU_CFG_EXT_CPU_PORT);
-+	struct lan9645x_port *p;
-+
-+	if (port < 0)
-+		return;
-+
-+	lan9645x->npi = -1;
-+	p = lan9645x_to_port(lan9645x, port);
-+
-+	lan_wr(QSYS_EXT_CPU_CFG_EXT_CPUQ_MSK_SET(0) |
-+	       QSYS_EXT_CPU_CFG_EXT_CPU_PORT_SET(no_cpu_port) |
-+	       QSYS_EXT_CPU_CFG_EXT_CPU_KILL_ENA_SET(1) |
-+	       QSYS_EXT_CPU_CFG_INT_CPU_KILL_ENA_SET(1),
-+	       lan9645x, QSYS_EXT_CPU_CFG);
-+
-+	lan_rmw(SYS_PORT_MODE_INCL_XTR_HDR_SET(LAN9645X_TAG_PREFIX_DISABLED) |
-+		SYS_PORT_MODE_INCL_INJ_HDR_SET(LAN9645X_TAG_PREFIX_DISABLED),
-+		SYS_PORT_MODE_INCL_XTR_HDR |
-+		SYS_PORT_MODE_INCL_INJ_HDR,
-+		lan9645x,
-+		SYS_PORT_MODE(p->chip_port));
-+
-+	lan_rmw(BIT(p->chip_port),
-+		BIT(p->chip_port), lan9645x,
-+		ANA_PGID(PGID_SRC + lan9645x->num_phys_ports));
-+}
-diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_phylink.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_phylink.c
-new file mode 100644
-index 000000000000..4104071d48bd
---- /dev/null
-+++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_phylink.c
-@@ -0,0 +1,316 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/* Copyright (C) 2026 Microchip Technology Inc.
-+ */
-+
-+#include <linux/phy.h>
-+
-+#include "lan9645x_main.h"
-+
-+/* Port 7 is RGMII_0 and port 8 is RGMII_1 */
-+#define RGMII_IDX(port) ((port) == 8 ? 1 : 0)
-+
-+void lan9645x_phylink_get_caps(struct lan9645x *lan9645x, int port,
-+			       struct phylink_config *c)
-+{
-+	c->mac_capabilities = MAC_ASYM_PAUSE | MAC_SYM_PAUSE | MAC_10 |
-+			      MAC_100 | MAC_1000FD;
-+
-+	switch (port) {
-+	case 0 ... 4:
-+		__set_bit(PHY_INTERFACE_MODE_GMII, c->supported_interfaces);
-+		break;
-+	case 5 ... 6:
-+		/* SerDes ports: QSGMII/SGMII/1000BASEX/2500BASEX modes
-+		 * require PCS support which is not yet implemented. With an
-+		 * empty supported_interfaces, phylink_create() fails and
-+		 * dsa_tree_setup_ports() retries the port as unused, so a
-+		 * user port declared in DT is only disabled. A CPU port has
-+		 * no such fallback and fails the probe, which
-+		 * lan9645x_tag_npi_setup() rejects explicitly.
-+		 */
-+		break;
-+	case 7 ... 8:
-+		/* QSGMII mode on ports 7-8 requires SerDes PCS support,
-+		 * which is not yet implemented.
-+		 */
-+		phy_interface_set_rgmii(c->supported_interfaces);
-+		break;
-+	default:
-+		break;
-+	}
-+}
-+
-+static void lan9645x_rgmii_set_speed(struct lan9645x *lan9645x, int port,
-+				     int speed)
-+{
-+	u8 tx_clk;
-+
-+	tx_clk = speed == SPEED_1000 ? 1 :
-+		 speed == SPEED_100  ? 2 :
-+		 speed == SPEED_10   ? 3 : 0;
-+
-+	lan_rmw(HSIO_RGMII_CFG_RGMII_RX_RST_SET(0) |
-+		HSIO_RGMII_CFG_RGMII_TX_RST_SET(0) |
-+		HSIO_RGMII_CFG_TX_CLK_CFG_SET(tx_clk),
-+		HSIO_RGMII_CFG_RGMII_RX_RST |
-+		HSIO_RGMII_CFG_RGMII_TX_RST |
-+		HSIO_RGMII_CFG_TX_CLK_CFG,
-+		lan9645x, HSIO_RGMII_CFG(RGMII_IDX(port)));
-+}
-+
-+static void lan9645x_rgmii_dll_config(struct lan9645x_port *p)
-+{
-+	u32 rx_idx, tx_idx;
-+
-+	/* DLL register layout:
-+	 * (N*2):   RGMII_N_RX
-+	 * (N*2)+1: RGMII_N_TX
-+	 */
-+	rx_idx = RGMII_IDX(p->chip_port) * 2;
-+	tx_idx = RGMII_IDX(p->chip_port) * 2 + 1;
-+
-+	/* Enable DLL in RGMII clock paths, deassert DLL reset, and start the
-+	 * delay tune FSM.
-+	 */
-+	lan_rmw(HSIO_DLL_CFG_DLL_CLK_ENA_SET(1) |
-+		HSIO_DLL_CFG_DLL_RST_SET(0) |
-+		HSIO_DLL_CFG_DLL_ENA_SET(p->rx_internal_delay) |
-+		HSIO_DLL_CFG_DELAY_ENA_SET(p->rx_internal_delay),
-+		HSIO_DLL_CFG_DLL_CLK_ENA |
-+		HSIO_DLL_CFG_DLL_RST |
-+		HSIO_DLL_CFG_DLL_ENA |
-+		HSIO_DLL_CFG_DELAY_ENA,
-+		p->lan9645x, HSIO_DLL_CFG(rx_idx));
-+
-+	lan_rmw(HSIO_DLL_CFG_DLL_CLK_ENA_SET(1) |
-+		HSIO_DLL_CFG_DLL_RST_SET(0) |
-+		HSIO_DLL_CFG_DLL_ENA_SET(p->tx_internal_delay) |
-+		HSIO_DLL_CFG_DELAY_ENA_SET(p->tx_internal_delay),
-+		HSIO_DLL_CFG_DLL_CLK_ENA |
-+		HSIO_DLL_CFG_DLL_RST |
-+		HSIO_DLL_CFG_DLL_ENA |
-+		HSIO_DLL_CFG_DELAY_ENA,
-+		p->lan9645x, HSIO_DLL_CFG(tx_idx));
-+}
-+
-+static struct lan9645x_port *
-+lan9645x_phylink_config_to_port(struct phylink_config *config)
-+{
-+	struct dsa_port *dp = dsa_phylink_to_port(config);
-+
-+	return lan9645x_to_port(dp->ds->priv, dp->index);
-+}
-+
-+static int lan9645x_phylink_mac_prepare(struct phylink_config *config,
-+					unsigned int mode,
-+					phy_interface_t iface)
-+{
-+	struct lan9645x_port *p = lan9645x_phylink_config_to_port(config);
-+	struct lan9645x *lan9645x = p->lan9645x;
-+	int port = p->chip_port;
-+
-+	lan_rmw(HSIO_HW_CFG_GMII_ENA_SET(BIT(port)),
-+		HSIO_HW_CFG_GMII_ENA_SET(BIT(port)), lan9645x, HSIO_HW_CFG);
-+
-+	return 0;
-+}
-+
-+static void lan9645x_phylink_mac_config(struct phylink_config *config,
-+					unsigned int mode,
-+					const struct phylink_link_state *state)
-+{
-+	struct lan9645x_port *p = lan9645x_phylink_config_to_port(config);
-+
-+	if (phy_interface_mode_is_rgmii(state->interface))
-+		lan9645x_rgmii_dll_config(p);
-+}
-+
-+static bool lan9645x_port_is_cuphy(struct lan9645x *lan9645x, int port,
-+				   phy_interface_t interface)
-+{
-+	return port >= 0 && port <= 4 && interface == PHY_INTERFACE_MODE_GMII;
-+}
-+
-+void lan9645x_phylink_port_down(struct lan9645x *lan9645x, int port)
-+{
-+	struct lan9645x_port *p = lan9645x_to_port(lan9645x, port);
-+
-+	/* Disable traffic being sent to or from switch port */
-+	lan_rmw(QSYS_SW_PORT_MODE_PORT_ENA_SET(0),
-+		QSYS_SW_PORT_MODE_PORT_ENA,
-+		lan9645x, QSYS_SW_PORT_MODE(p->chip_port));
-+
-+	/* With MAC_TX_RST and MAC_RX_RST asserted, the queue system treats
-+	 * the MAC as accepting every frame, so the frames queued to the port
-+	 * are discarded also when the MAC cannot transmit them, for example
-+	 * when the PHY is powered down or the MAC is held by a received pause
-+	 * frame. PORT_RST resets the FIFOs between the system and MAC clock
-+	 * domains, and asserting it while they still hold frames hangs the
-+	 * port, so it is kept deasserted.
-+	 */
-+	lan_rmw(DEV_CLOCK_CFG_MAC_TX_RST_SET(1) |
-+		DEV_CLOCK_CFG_MAC_RX_RST_SET(1) |
-+		DEV_CLOCK_CFG_PORT_RST_SET(0),
-+		DEV_CLOCK_CFG_MAC_TX_RST |
-+		DEV_CLOCK_CFG_MAC_RX_RST |
-+		DEV_CLOCK_CFG_PORT_RST,
-+		lan9645x, DEV_CLOCK_CFG(p->chip_port));
-+}
-+
-+static void lan9645x_phylink_mac_link_down(struct phylink_config *config,
-+					   unsigned int link_an_mode,
-+					   phy_interface_t interface)
-+{
-+	struct lan9645x_port *p = lan9645x_phylink_config_to_port(config);
-+	struct lan9645x *lan9645x = p->lan9645x;
-+
-+	/* Stop forwarding all CPU queues to the NPI port before the port is put
-+	 * in reset
-+	 */
-+	if (p->chip_port == lan9645x->npi)
-+		lan9645x_npi_cpuq_redirect(lan9645x, false);
-+
-+	lan9645x_phylink_port_down(lan9645x, p->chip_port);
-+}
-+
-+static void lan9645x_phylink_mac_link_up(struct phylink_config *config,
-+					 struct phy_device *phydev,
-+					 unsigned int link_an_mode,
-+					 phy_interface_t interface, int speed,
-+					 int duplex, bool tx_pause,
-+					 bool rx_pause)
-+{
-+	struct lan9645x_port *p = lan9645x_phylink_config_to_port(config);
-+	int rx_ifg1, rx_ifg2, tx_ifg, gtx_clk = 0;
-+	struct lan9645x *lan9645x = p->lan9645x;
-+	int gspeed = LAN9645X_SPEED_DISABLED;
-+	int port = p->chip_port;
-+	int mode = 0;
-+	int fc_spd;
-+	bool fdx;
-+
-+	/* Configure RGMII TX clock for the negotiated speed */
-+	if (phy_interface_mode_is_rgmii(interface))
-+		lan9645x_rgmii_set_speed(lan9645x, port, speed);
-+
-+	fdx = duplex == DUPLEX_FULL || speed == SPEED_1000;
-+
-+	if (fdx)
-+		mode |= DEV_MAC_MODE_CFG_FDX_ENA_SET(1);
-+
-+	tx_ifg = fdx ? 0x6 : 0x5;
-+	rx_ifg2 = 0x2;
-+
-+	switch (speed) {
-+	case SPEED_10:
-+		rx_ifg1 = 0x2;
-+		gspeed = LAN9645X_SPEED_10;
-+		break;
-+	case SPEED_100:
-+		rx_ifg1 = 0x1;
-+		gspeed = LAN9645X_SPEED_100;
-+		break;
-+	case SPEED_1000:
-+		gspeed = LAN9645X_SPEED_1000;
-+		mode |= DEV_MAC_MODE_CFG_GIGA_MODE_ENA_SET(1);
-+		rx_ifg1 = 0x1;
-+		gtx_clk = 1;
-+		break;
-+	default:
-+		dev_err(lan9645x->dev, "Unsupported speed on port %d: %d\n",
-+			p->chip_port, speed);
-+		return;
-+	}
-+
-+	fc_spd = lan9645x_speed_fc_enc(gspeed);
-+
-+	lan_rmw(mode,
-+		DEV_MAC_MODE_CFG_FDX_ENA |
-+		DEV_MAC_MODE_CFG_GIGA_MODE_ENA,
-+		lan9645x, DEV_MAC_MODE_CFG(p->chip_port));
-+
-+	lan_rmw(DEV_MAC_IFG_CFG_TX_IFG_SET(tx_ifg) |
-+		DEV_MAC_IFG_CFG_RX_IFG1_SET(rx_ifg1) |
-+		DEV_MAC_IFG_CFG_RX_IFG2_SET(rx_ifg2),
-+		DEV_MAC_IFG_CFG_TX_IFG |
-+		DEV_MAC_IFG_CFG_RX_IFG1 |
-+		DEV_MAC_IFG_CFG_RX_IFG2,
-+		lan9645x, DEV_MAC_IFG_CFG(p->chip_port));
-+
-+	if (lan9645x_port_is_cuphy(lan9645x, port, interface)) {
-+		lan_rmw(CHIP_TOP_CUPHY_PORT_CFG_GTX_CLK_ENA_SET(gtx_clk),
-+			CHIP_TOP_CUPHY_PORT_CFG_GTX_CLK_ENA, lan9645x,
-+			CHIP_TOP_CUPHY_PORT_CFG(p->chip_port));
-+	}
-+
-+	lan_rmw(SYS_PAUSE_CFG_PAUSE_ENA_SET(1),
-+		SYS_PAUSE_CFG_PAUSE_ENA,
-+		lan9645x, SYS_PAUSE_CFG(p->chip_port));
-+
-+	/* Flow control */
-+	lan_rmw(SYS_MAC_FC_CFG_FC_LINK_SPEED_SET(fc_spd) |
-+		SYS_MAC_FC_CFG_FC_LATENCY_CFG_SET(0x7) |
-+		SYS_MAC_FC_CFG_ZERO_PAUSE_ENA_SET(1) |
-+		SYS_MAC_FC_CFG_PAUSE_VAL_CFG_SET(0xffff) |
-+		SYS_MAC_FC_CFG_RX_FC_ENA_SET(rx_pause ? 1 : 0) |
-+		SYS_MAC_FC_CFG_TX_FC_ENA_SET(tx_pause ? 1 : 0),
-+		SYS_MAC_FC_CFG_FC_LINK_SPEED |
-+		SYS_MAC_FC_CFG_FC_LATENCY_CFG |
-+		SYS_MAC_FC_CFG_ZERO_PAUSE_ENA |
-+		SYS_MAC_FC_CFG_PAUSE_VAL_CFG |
-+		SYS_MAC_FC_CFG_RX_FC_ENA |
-+		SYS_MAC_FC_CFG_TX_FC_ENA,
-+		lan9645x, SYS_MAC_FC_CFG(p->chip_port));
-+
-+	/* Enable MAC module */
-+	lan_wr(DEV_MAC_ENA_CFG_RX_ENA_SET(1) |
-+	       DEV_MAC_ENA_CFG_TX_ENA_SET(1),
-+	       lan9645x, DEV_MAC_ENA_CFG(p->chip_port));
-+
-+	/* Take out the clock from reset. Note this write will set all these
-+	 * fields to zero:
-+	 *
-+	 * DEV_CLOCK_CFG[*].MAC_TX_RST
-+	 * DEV_CLOCK_CFG[*].MAC_RX_RST
-+	 * DEV_CLOCK_CFG[*].PCS_TX_RST
-+	 * DEV_CLOCK_CFG[*].PCS_RX_RST
-+	 * DEV_CLOCK_CFG[*].PORT_RST
-+	 * DEV_CLOCK_CFG[*].PHY_RST
-+	 *
-+	 * Note link_down will assert MAC_RX_RST and MAC_TX_RST, so
-+	 * we are effectively taking the mac tx/rx clocks out of reset.
-+	 *
-+	 * This linkspeed field has a slightly different encoding from others:
-+	 *
-+	 * - 0 is no-link
-+	 * - 1 is both 2500/1000
-+	 * - 2 is 100mbit
-+	 * - 3 is 10mbit
-+	 *
-+	 */
-+	lan_wr(DEV_CLOCK_CFG_LINK_SPEED_SET(fc_spd),
-+	       lan9645x,
-+	       DEV_CLOCK_CFG(p->chip_port));
-+
-+	/* Core: Enable port for frame transfer */
-+	lan_rmw(QSYS_SW_PORT_MODE_PORT_ENA_SET(1) |
-+		QSYS_SW_PORT_MODE_SCH_NEXT_CFG_SET(1) |
-+		QSYS_SW_PORT_MODE_INGRESS_DROP_MODE_SET(1) |
-+		QSYS_SW_PORT_MODE_TX_PFC_ENA_SET(0),
-+		QSYS_SW_PORT_MODE_PORT_ENA |
-+		QSYS_SW_PORT_MODE_SCH_NEXT_CFG |
-+		QSYS_SW_PORT_MODE_INGRESS_DROP_MODE |
-+		QSYS_SW_PORT_MODE_TX_PFC_ENA,
-+		lan9645x, QSYS_SW_PORT_MODE(p->chip_port));
-+
-+	/* Forward all CPU queues to the NPI port */
-+	if (port == lan9645x->npi)
-+		lan9645x_npi_cpuq_redirect(lan9645x, true);
-+}
-+
-+const struct phylink_mac_ops lan9645x_phylink_mac_ops = {
-+	.mac_prepare			= lan9645x_phylink_mac_prepare,
-+	.mac_config			= lan9645x_phylink_mac_config,
-+	.mac_link_down			= lan9645x_phylink_mac_link_down,
-+	.mac_link_up			= lan9645x_phylink_mac_link_up,
-+};
-diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c
-new file mode 100644
-index 000000000000..4d2d922bacba
---- /dev/null
-+++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c
-@@ -0,0 +1,166 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/* Copyright (C) 2026 Microchip Technology Inc.
-+ */
-+
-+#include <linux/of_net.h>
-+
-+#include "lan9645x_main.h"
-+
-+void lan9645x_port_cpu_init(struct lan9645x *lan9645x)
-+{
-+	u32 cpu_module_mask = BIT(lan9645x->num_phys_ports);
-+
-+	/* Map the 8 CPU extraction queues to the CPU port module (datasheet is
-+	 * wrong)
-+	 */
-+	lan_wr(0, lan9645x, QSYS_CPU_GROUP_MAP);
-+
-+	/* Configure first cpu port for manual extraction. */
-+	lan_rmw(QS_XTR_GRP_CFG_MODE_SET(1),
-+		QS_XTR_GRP_CFG_MODE,
-+		lan9645x, QS_XTR_GRP_CFG(0));
-+
-+	/* The CPU will only use its reserved buffer in the shared queue system
-+	 * and none of the shared buffer space, therefore we disable resource
-+	 * sharing in egress direction. We must not disable resource sharing in
-+	 * the ingress direction, because some traffic test scenarios require
-+	 * loads of buffer memory for frames initiated by the CPU.
-+	 */
-+	lan_rmw(QSYS_EGR_NO_SHARING_EGR_NO_SHARING_SET(cpu_module_mask),
-+		QSYS_EGR_NO_SHARING_EGR_NO_SHARING_SET(cpu_module_mask),
-+		lan9645x, QSYS_EGR_NO_SHARING);
-+
-+	/* The CPU should also discard frames forwarded to it if it has run
-+	 * out of the reserved buffer space. Otherwise they will be held back
-+	 * in the ingress queues with potential head-of-line blocking effects.
-+	 */
-+	lan_rmw(QSYS_EGR_DROP_MODE_EGRESS_DROP_MODE_SET(cpu_module_mask),
-+		QSYS_EGR_DROP_MODE_EGRESS_DROP_MODE_SET(cpu_module_mask),
-+		lan9645x, QSYS_EGR_DROP_MODE);
-+
-+	lan_wr(cpu_module_mask, lan9645x, ANA_PGID(PGID_CPU));
-+
-+	/* Enable switching to/from cpu port. Keep default aging-mode. */
-+	lan_rmw(QSYS_SW_PORT_MODE_PORT_ENA_SET(1) |
-+		QSYS_SW_PORT_MODE_SCH_NEXT_CFG_SET(1) |
-+		QSYS_SW_PORT_MODE_INGRESS_DROP_MODE_SET(1),
-+		QSYS_SW_PORT_MODE_PORT_ENA |
-+		QSYS_SW_PORT_MODE_SCH_NEXT_CFG |
-+		QSYS_SW_PORT_MODE_INGRESS_DROP_MODE,
-+		lan9645x, QSYS_SW_PORT_MODE(lan9645x->num_phys_ports));
-+}
-+
-+/* VLAN tag overhead is handled by DEV_MAC_TAGS_CFG */
-+int lan9645x_port_set_maxlen(struct lan9645x *lan9645x, int port, size_t sdu)
-+{
-+	struct lan9645x_port *p = lan9645x_to_port(lan9645x, port);
-+	int maxlen = sdu + ETH_HLEN + ETH_FCS_LEN;
-+
-+	if (port == lan9645x->npi) {
-+		maxlen += LAN9645X_IFH_LEN_BYTES;
-+		maxlen += LAN9645X_LONG_PREFIX_LEN;
-+	}
-+
-+	lan_wr(DEV_MAC_MAXLEN_CFG_MAX_LEN_SET(maxlen), lan9645x,
-+	       DEV_MAC_MAXLEN_CFG(p->chip_port));
-+
-+	/* Set Pause WM hysteresis */
-+	lan_rmw(SYS_PAUSE_CFG_PAUSE_STOP_SET(lan9645x_wm_enc(4 * maxlen)) |
-+		SYS_PAUSE_CFG_PAUSE_START_SET(lan9645x_wm_enc(6 * maxlen)),
-+		SYS_PAUSE_CFG_PAUSE_START |
-+		SYS_PAUSE_CFG_PAUSE_STOP,
-+		lan9645x,
-+		SYS_PAUSE_CFG(p->chip_port));
-+
-+	return 0;
-+}
-+
-+static void lan9645x_parse_mac_delay(struct lan9645x *lan9645x, int port,
-+				     struct device_node *dn, const char *name,
-+				     bool *out)
-+{
-+	u32 val;
-+
-+	if (of_property_read_u32(dn, name, &val))
-+		return;
-+
-+	if (val != 0 && val != 2000) {
-+		dev_warn(lan9645x->dev,
-+			 "port %d: %s only supports a 2ns delay (on/off), got %u ps\n",
-+			 port, name, val);
-+		return;
-+	}
-+
-+	*out = val == 2000;
-+}
-+
-+int lan9645x_port_setup(struct dsa_switch *ds, int port)
-+{
-+	struct dsa_port *dp = dsa_to_port(ds, port);
-+	struct lan9645x *lan9645x = ds->priv;
-+	struct lan9645x_port *p;
-+
-+	p = lan9645x_to_port(lan9645x, port);
-+
-+	if (dp->dn) {
-+		lan9645x_parse_mac_delay(lan9645x, port, dp->dn,
-+					 "rx-internal-delay-ps",
-+					 &p->rx_internal_delay);
-+
-+		lan9645x_parse_mac_delay(lan9645x, port, dp->dn,
-+					 "tx-internal-delay-ps",
-+					 &p->tx_internal_delay);
-+	}
-+
-+	/* Disable learning on port */
-+	lan_rmw(ANA_PORT_CFG_LEARN_ENA_SET(0),
-+		ANA_PORT_CFG_LEARN_ENA,
-+		lan9645x, ANA_PORT_CFG(p->chip_port));
-+
-+	lan9645x_port_set_maxlen(lan9645x, port, ETH_DATA_LEN);
-+
-+	/* Load HDX backoff seed (fixed per-port, one-shot strobe) */
-+	lan_rmw(DEV_MAC_HDX_CFG_SEED_SET(p->chip_port) |
-+		DEV_MAC_HDX_CFG_SEED_LOAD_SET(1),
-+		DEV_MAC_HDX_CFG_SEED |
-+		DEV_MAC_HDX_CFG_SEED_LOAD, lan9645x,
-+		DEV_MAC_HDX_CFG(p->chip_port));
-+
-+	lan_rmw(DEV_MAC_HDX_CFG_SEED_LOAD_SET(0),
-+		DEV_MAC_HDX_CFG_SEED_LOAD, lan9645x,
-+		DEV_MAC_HDX_CFG(p->chip_port));
-+
-+	/* Set SMAC of Pause frame (00:00:00:00:00:00) */
-+	lan_wr(0, lan9645x, DEV_FC_MAC_LOW_CFG(p->chip_port));
-+	lan_wr(0, lan9645x, DEV_FC_MAC_HIGH_CFG(p->chip_port));
-+
-+	lan9645x_phylink_port_down(lan9645x, port);
-+
-+	/* Drop frames with multicast source address */
-+	lan_rmw(ANA_DROP_CFG_DROP_MC_SMAC_ENA_SET(1),
-+		ANA_DROP_CFG_DROP_MC_SMAC_ENA, lan9645x,
-+		ANA_DROP_CFG(p->chip_port));
-+
-+	lan_rmw(DEV_MAC_TAGS_CFG_VLAN_AWR_ENA_SET(1) |
-+		DEV_MAC_TAGS_CFG_PB_ENA_SET(1) |
-+		DEV_MAC_TAGS_CFG_VLAN_LEN_AWR_ENA_SET(1) |
-+		DEV_MAC_TAGS_CFG_TAG_ID_SET(ETH_P_8021AD),
-+		DEV_MAC_TAGS_CFG_VLAN_AWR_ENA |
-+		DEV_MAC_TAGS_CFG_PB_ENA |
-+		DEV_MAC_TAGS_CFG_VLAN_LEN_AWR_ENA |
-+		DEV_MAC_TAGS_CFG_TAG_ID,
-+		lan9645x, DEV_MAC_TAGS_CFG(p->chip_port));
-+
-+	/* Enable receiving frames on the port, and activate auto-learning of
-+	 * MAC addresses. LEARNAUTO is ignored when LEARN_ENA=0.
-+	 */
-+	lan_rmw(ANA_PORT_CFG_LEARNAUTO_SET(1) |
-+		ANA_PORT_CFG_RECV_ENA_SET(1) |
-+		ANA_PORT_CFG_PORTID_VAL_SET(p->chip_port),
-+		ANA_PORT_CFG_LEARNAUTO |
-+		ANA_PORT_CFG_RECV_ENA |
-+		ANA_PORT_CFG_PORTID_VAL,
-+		lan9645x, ANA_PORT_CFG(p->chip_port));
-+
-+	return 0;
-+}
+ drivers/net/ethernet/cisco/enic/enic.h        |  20 ++-
+ drivers/net/ethernet/cisco/enic/enic_admin.c  | 239 ++++++++++++++++++++------
+ drivers/net/ethernet/cisco/enic/enic_admin.h  |   4 +-
+ drivers/net/ethernet/cisco/enic/enic_dev.c    |  44 +++++
+ drivers/net/ethernet/cisco/enic/enic_dev.h    |   3 +
+ drivers/net/ethernet/cisco/enic/enic_main.c   | 115 ++++++++++++-
+ drivers/net/ethernet/cisco/enic/enic_mbox.c   |  12 +-
+ drivers/net/ethernet/cisco/enic/vnic_dev.c    |  85 ++++++++-
+ drivers/net/ethernet/cisco/enic/vnic_dev.h    |  15 ++
+ drivers/net/ethernet/cisco/enic/vnic_devcmd.h |  34 ++++
+ 10 files changed, 504 insertions(+), 67 deletions(-)
+---
+base-commit: 0df412012a26389582b120844d098e1e961f10a6
+change-id: 20261010-b4-enic-dma-vf-index-net-generic-first-v1-20261010-d9abf4510335
 
--- 
-2.52.0
+Best regards,
+--  
+Satish Kharat <satishkh@cisco.com>
 
