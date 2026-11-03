@@ -1,59 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793700624;
-	b=ONIaHsb3wdKU0EkJl1eVvFi6CWzQESfTZ8kvD5y90+3L1HN06JU5JaEgq0PPvEGfcSci
-	 6ZQ6EPPBk17F1v98r/xSZihz5BdZFU728e11Vjp0udtNzwCntvrkPXPw1KPkuY3k67Iwk
-	 tUXtjhDVHr2BLRKs37L7y4b7imbgGgcYqbm8aauYEwZRV35Gzs9Z7MYHoE6Wf93BR4ijV
-	 IATmofayOjqUNSP0XBYTEWgNFSl3jx9ek9q0X/K9zsPyBVuu4qZWWODlD3lRcrYjPdXGB
-	 s08mT8laBAR3pyizfeO3k4yDNqj1/kgOJiS0GGJYwmIrfJqqu75CVYdHcWn3vuYsFrg==
+	t=1793700603;
+	b=5hRkgcAzePylND//sWd1UrjSc88pRhFrkTQikPk8Yb8iu/1p07DeK8bNP9uaN2pokas/
+	 JHxqTCO3KJcd35PvwPcIxD5sgbrOR9+r3KerGOyoFuHvyUEu0z37xvncnObjwF7NAhJ6g
+	 PBVr/cgOEaPOr8ab9/QKNYEvmcpPZA9cZpOaLjlDTwS/rM3Us46UMCaXqHQRbwGlUNL2S
+	 pJxjLDcRZZClVIKexBgHTrTW0xYYUnHqI3g5Lz9/ZRgfvFhwgbqrQxLmOmyXcXK6VKHmk
+	 vo2jv9rJI9XLMh5ANVZYlyiWDqdL2xorY9mAA2Cott9s7sjFoivw9r52VKzbp3KNHRw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793700624;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793700603;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:Auto-Submitted:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
 	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	b=Se9VnSLz074iSAXFSEvDfGm8BxpK3eBBy0PQtSOd2g33tWi98ckykkhgrJ3UoIHLUdxv
-	 O8gKdkCBCC8dmWDC9tECm/V6HLdp0DUmtvTBaWX7cjY2yIz9BkdGnaxRgtmZSuudcB+DO
-	 XDpn3kjE29jI/3LJEizvBRLJNUZ5aqY1R+XFtKyL7NJn84yAlOutizLWYUiRgLJsjCukP
-	 5iuDuJNLJqDuJP1MnRNmq4tKS2BpMd5JDjKhOj3cUxOyTnDk3bwvRVTw/8Z1COzjMhMGe
-	 e3Vdx5G9JH/8PkkLgnmti+SWJaXUt1o+BCnVXaljoP5LN2T1ELBoOCrZPQ4VT5ns5Og==
+	b=YZvMZU5M259iEwWhJ+T7KTu4mj5QHelzjKjUgIYpOkY0U5fDEDg/xoNROtImwNKb+uWw
+	 6THLlv5qQ7zdC8S6016sWR19GInXdl//nZIQ2ma28XsoBjAWxLX/STCUyXVgE8lHUGg+H
+	 OumsbjPTzT0KhgnZxMP2DZAA4PHno4nqm+MFpKVlc7jCp0gWoqqwqTDoPYgD4+mbi9Z5Q
+	 JV6YyU1iKrq/3Q+DZRretAvlUjCs/kGwCt3G7vldHz9Em70Mi6Jn3+jcxrdniTzVTNmTx
+	 lDZ5eUpUZttoiNkVfwj/wo/j+tivp6QaticfBmARoCB+Wu0ySiaghbRF+N9IE+gIXBw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QzRXHrX9;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aaHchsmK;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B9C60A3802;
-	Tue,  3 Nov 2026 10:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282C9606C57C;
+	Tue,  3 Nov 2026 10:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QzRXHrX9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D55D01F0093A;
-	Tue,  3 Nov 2026 10:10:22 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aaHchsmK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32DAA1F000C1;
+	Tue,  3 Nov 2026 10:10:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793700623;
+	s=k20260515; t=1793700602;
 	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QzRXHrX9ufeaXz0LR2RDzdX8pA+pRgZ06SF3ZyCm7wsOLtwd7fGBh9sueSEAKybaK
-	 ThfwjztZr3au5myV8I5TNTudKoypRJ/EpO3qwMhIqsqEj0elRSwkQCsD6h+/dQzItP
-	 ZuZyckzgQ20/YbM5I/Aw/ULOel8Xa2nGwPXmEcdNF3jjFC9gGHJCIfqmutJLBReoY1
-	 OqgGh9Vo6TwISjHk3R/Y6IUF0Rhk8dnBdZeIWtH45papu9kMjojzufMPzcQumoffK1
-	 /CTzrGver/lvTQjhaaudOuqnSvESdbyjE0ZHnfVgNAB7w5lPo+IQsmN0TF1xw0AD36
-	 ivJZzhK9h2sag==
+	b=aaHchsmKkO0zMlqP84/iDgv+hDRQYchxcOGcePo48lwilaOmpNTsm9RZFP9WL8+RY
+	 Gb3onY3ya8IWZK/WbH7nrezV1zc4u1ud5Cc2gJpmQ1UEDdrhlANVw/fvg9zPSymkIA
+	 +xXZM8PYeL5DPL5Yg2FYY0Lp3Xuy3huEUoRF7t9gkzEraAefvXbfOWasoS3iaZHWt8
+	 4YZP+NW/u/+6X3bEwKo08cSx+0lNOZ8pBNDmsvcsjZQIUI41mC2RaKWC4CVxl7SZSt
+	 o8wf7ldrnfnFcuaMs7jxo/ftgesw0ZudU8tliAP2QOiAC3pAj111yZDoLefU1+uR7n
+	 LkYY6STUf9jJw==
 From: netdev-bot+sinfo@kernel.org
 To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+Cc: Jian Shen <shenjian15@huawei.com>, Jijie Shao <shaojijie@huawei.com>,
  Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
  Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, intel-wired-lan@lists.osuosl.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Subject: 
- Re: [PATCH] net: ixgbevf: drop the SA reference if secpath_set() fails
-Date: Tue, 03 Nov 2026 10:10:22 +0000
-Message-ID: <179370062239.488859.17760478051473372751@kernel.org>
-In-Reply-To: <20261103100534.1310071-1-vulab@iscas.ac.cn>
-References: <20261103100534.1310071-1-vulab@iscas.ac.cn>
+ Re: [PATCH] net: hns3: destroy the page pool if RX buffer allocation fails
+Date: Tue, 03 Nov 2026 10:10:01 +0000
+Message-ID: <179370060166.488859.18036785445567619705@kernel.org>
+In-Reply-To: <20261103100533.1310018-1-vulab@iscas.ac.cn>
+References: <20261103100533.1310018-1-vulab@iscas.ac.cn>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
