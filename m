@@ -1,59 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793700759;
-	b=f7du+VYXPzWZSNpOcZJHxPO4jfWsSIc/1UgrUydq1gOf0Gzqunj8fth4K3l/uxICpNgN
-	 s47f9G/ZHPhtmdG15kKq0zWC+IlDTj1CPMFZmRUNUU+dwK6HO+X8z1u2BN2XkP8kzFpgb
-	 9+CuszdtmkXVg9JNI/faEJIGWyn+fVeRC9zE18P6a8fhNX0HuWKC+GnRvptkna+5nmnis
-	 vWlkRGzKAf32GQq8zevgcbY965itAzbsJCiSYTRpe/PN0LhhvFeN4PSH+A6iXfZ1ZDZBo
-	 m+GfJIKFHwjRY5+6sTTtKqUj2MqOuNCR2Zo6crMMmXvI9ybDKPfUOVkrZIdramtjmJg==
+	t=1793700764;
+	b=XVFEK/SrX1QYl5G/m7ir0+FIw7sNScnD5LdVrMsXLNYwbZTM+LY2gGg+5hdCz+hOxszq
+	 84UgmA+hoZ+LiE0UrQAvsl4zkwSKj0lLO9Y6Kl29/FItl3vpE6SAhPJrBYyVRB+K5dIHN
+	 1Ar91ppL2+T2GFHlVOlicOPlgMH1UNdUzytcym10JyDXNoT5TLDKMPYqeggL/IWXgGHA8
+	 977eRTO7cyhCOslRnIr4+OCK9fXMhxsRLKCa9CqbiE8NsS1kk5K5XCL6tkGMOeLsy1k3I
+	 XTQqJaPwwWH8M6bszL2X+T0+tesep/kOqMpspueeM/v2iDHezm2pdgZBkLfuMjN38MA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793700759;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793700764;
 	h=DMARC-Filter:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=fOFRdn7z24nh5HHdH+lcQ22pYuvFi8+a4KYRKJ+WMTc=;
-	b=ObRYsFNcAAo1pRPd8RzRofmC03A9KwjuRtLhqppdFHzma4gvzzWNzNcNIIyoeCq0ER5D
-	 PJABWTqlLuJjbz+EivT8sobTGJ/CBPkK7AGi24uqO3TWiOUcp0V/HdDcv4qHPet9ZyWL1
-	 a08ZeNb8tWj7FYIxUVs6TX0iLFhmmkNIPfPDR6Iag4e+Bg0a8HENVQyYiPpUoOrOjVrMR
-	 HO4ihGZwI1iKvEhHBtKf7w1+/oOOl82h1p16jlqrc0ZYzXia5BlgxuLq98Hc0DOLcA6xR
-	 BXL8YNyqW4Set2yAfQ+9zW2X66d2AZFDvF1GK8ZGJFhAjHhd+Hz6W/jpqPXsoClIonw==
+	bh=/rd//ZDdO+MZKKO3ezoxvx5OOdgP341hQCUAB+a47OU=;
+	b=AaGedm38zpAn3bsY5ny74kbvwCxEB13o8Ib0cdCxwBDGm8US7UQmvzxSgK5Sv8aR3LjJ
+	 nbOzr5a0LR3b/OfzxT1ZDam3py6rgnUjFT70JMBHym5nlpISiRNkt5+LlInS3Yc+k346n
+	 xFGqQg6YyMRm/McqkHPOajszDNL6l4lQ0Pt8Za8tsIpY55raS2TWU2uc9cZRv6Q3skL4E
+	 jnyX3Kkq4IHXuGE/Q7KigaOIm7tsoZeytGnaeHjmJDQK6WJGPy1JPcsI1bLSQuPeR+WI4
+	 gkXL/tFjChlPgA6ttqSCyV+Y7klSv4TCedjYX0R/bkT5+KmZ4WoMgEw6uHHXMXqatZw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=collabora.com;
 	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=NSSDyWVQ;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=MnaSJxZ9;
 	arc=none smtp.remote-ip=148.251.105.195
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4985606A829;
-	Tue,  3 Nov 2026 10:12:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4985606A829
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D795606C571;
+	Tue,  3 Nov 2026 10:12:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D795606C571
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=NSSDyWVQ
+	dkim=pass (2048-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=MnaSJxZ9
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1793700757;
-	bh=tYsCCetG8oTk0mstJCHvbXche/Jiq/UwGP0ULa31RX4=;
+	s=mail; t=1793700762;
+	bh=EJGN37Ey3EhmvVVvzwrvC1ymlngy/bd0/j1H7VTyw9M=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=NSSDyWVQ+SboGPOtWWwHr3PRN2S/aTU/eEP+oi/EanOb0Rwe/9xnXYptalEHm06Ky
-	 U6l0pEeykQmbsBK6DZv6h7w/c6oCnqMM5OPhvodX6vj6kIPsOkPLZsmZ5EGi4xpDaP
-	 MQDesiNPKnUxuK4p5Zph4VwtdDWb9KgI5eevsC+E7X8QwNCy3cL7LeUoH85a2t7pa7
-	 HGfogEib23D0P4UVvoyvLQ+6AmwJZxtvrZ8GO1BbKYeN/rSJKkF8LVIqH3FJ0w+kUy
-	 HqZ74B0PCP2rRCAMXO6N3inqnPXIQmvH26DICGsgpRZsWVkNOybMVm5qOINp4mvuRs
-	 MozeYC363JUKw==
+	b=MnaSJxZ9xdPkB2mxGOjpKSMNY07Gkr1suFKDP1LNRJn7fcMSdZ7BynlV85sCjpqQH
+	 tzzjRfenPdK5Efg/CwKc5EMar70Fl4+WsIgtPaeJJ35Z5GHufBpWQHMokDy+5i8dy8
+	 STXEidQnz8xzIzKfrGrql8b3Eu5ouQHliohv5JlrxXGfRU14F+MB+T9omY0DFcNCK6
+	 kjrcClcTvDsVhOt/FKdXPHauXLxaRypvgH6/d2YnvKOX4WvZvt2F5cjhUjGsOGDAKr
+	 Edttv2mjBBiPZUz9RCB35K78DvjBdwTE4S3qKn49o5cMkHwe1C8ewCMv98SMIWNjFI
+	 UdQlRqDEnhCxw==
 Received: from yukiji.home (unknown [100.64.0.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: laeyraud)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 5AA8417E0C0A;
-	Tue, 03 Nov 2026 11:12:36 +0100 (CET)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id C8BEC17E0D3B;
+	Tue, 03 Nov 2026 11:12:41 +0100 (CET)
 From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Date: Tue, 03 Nov 2026 11:12:06 +0100
-Subject: [PATCH net-next v4 01/10] dt-bindings: net: mediatek-dwmac: fix
- unit in rx/tx delay property description
+Date: Tue, 03 Nov 2026 11:12:11 +0100
+Subject: [PATCH net-next v4 06/10] net: stmmac: mediatek: use standard
+ internal delay properties
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,7 +65,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261103-dwmac-mediatek-mt8189-v4-1-c86c14fc50f4@collabora.com>
+Message-Id: <20261103-dwmac-mediatek-mt8189-v4-6-c86c14fc50f4@collabora.com>
 References: <20261103-dwmac-mediatek-mt8189-v4-0-c86c14fc50f4@collabora.com>
 In-Reply-To: <20261103-dwmac-mediatek-mt8189-v4-0-c86c14fc50f4@collabora.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -85,54 +85,195 @@ Cc: kernel@collabora.com, netdev@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
  linux-stm32@st-md-mailman.stormreply.com, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
- Andrew Lunn <andrew@lunn.ch>, 
  Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793700755; l=1905;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793700755; l=6731;
  i=louisalexis.eyraud@collabora.com; s=20250113; h=from:subject:message-id;
- bh=tYsCCetG8oTk0mstJCHvbXche/Jiq/UwGP0ULa31RX4=;
- b=ePQymgEkZO2DRGZYIf2qdWHWB4kTcaeUKSCw7o8gZIAiRyUoZvlIoTj5ZBYOpvIjwQ6JXLFD8
- 4G/DBJCQ7JtAMxLkykdBIedOgP31m2IFdoyamjwgumXL0ugUEMrJzJm
+ bh=EJGN37Ey3EhmvVVvzwrvC1ymlngy/bd0/j1H7VTyw9M=;
+ b=IN0zDnnvKMNvGlzFmC72azHT05TcYnFb5vOCey82BhS8qlOrPZq2sUzfL92fboOl4gNP/cDjF
+ f2RbIephHTlCHmApIsd81prRuubRLelEhVjZBJLyizb4e+J0UwdSNIo
 X-Developer-Key: i=louisalexis.eyraud@collabora.com; a=ed25519;
  pk=CHFBDB2Kqh4EHc6JIqFn69GhxJJAzc0Zr4e8QxtumuM=
 
-The "mediatek,rx-delay-ps" and "mediatek,tx-delay-ps" descriptions say
-their values are in nanoseconds but their names with the "ps" suffix
-suggest it is picoseconds.
-They are in fact used in both driver and devicetree as picosecond.
-So, modify the two properties unit description to fix their unit.
+Currently, the mediatek-dwmac driver uses the 'mediatek,rx-delay-ps'
+and 'mediatek,tx-delay-ps' vendor properties for configuring the RX and
+TX internal clock delays for all its supported PHY modes (MII, RMII,
+and RGMII).
 
-Fixes: 150b6adda6b1 ("net: dt-bindings: dwmac: Convert mediatek-dwmac to DT schema")
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+The generic Ethernet controller bindings provide 'rx-internal-delay-ps'
+and 'tx-internal-delay-ps' standard properties to describe the RGMII RX
+and TX internal clock delays. Their use is now recommended, rather than
+existing vendor properties.
+There is no equivalent standard properties for RMII and MII case at the
+moment.
+
+So, add in driver data separate config values for MII/RMII and RGMII
+delays and modify mediatek_dwmac_config_dt, used to parse devicetree
+to populate and check these configs with the following logic:
+ - read vendor properties for MII and RMII delay timings
+ - read standard properties for RGMII delay timings
+ - if not available, fallback to vendor values
+
+Also, modify mt2712/mt8195_set_delay to use these new separate config
+values.
+
 Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 ---
- Documentation/devicetree/bindings/net/mediatek-dwmac.yaml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../net/ethernet/stmicro/stmmac/dwmac-mediatek.c   | 87 +++++++++++++++-------
+ 1 file changed, 62 insertions(+), 25 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml b/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
-index 3aab21b8e8de..14f9683f20fe 100644
---- a/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/mediatek-dwmac.yaml
-@@ -81,7 +81,7 @@ properties:
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
+index cda3f3edde39..b4abc20c8314 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
+@@ -76,6 +76,8 @@
+ struct mac_delay_struct {
+ 	u32 tx_delay;
+ 	u32 rx_delay;
++	u32 rgmii_tx_delay;
++	u32 rgmii_rx_delay;
+ 	bool tx_inv;
+ 	bool rx_inv;
+ };
+@@ -103,8 +105,8 @@ struct mediatek_dwmac_variant {
+ 	const char * const *clk_list;
+ 	int num_clks;
  
-   mediatek,tx-delay-ps:
-     description:
--      The internal TX clock delay (provided by this driver) in nanoseconds.
-+      The internal TX clock delay (provided by this driver) in picoseconds.
-       For MT2712 RGMII interface, Allowed value need to be a multiple of 170,
-       or will round down. Range 0~31*170.
-       For MT2712 RMII/MII interface, Allowed value need to be a multiple of 550,
-@@ -91,7 +91,7 @@ properties:
+-	u32 rx_delay_max;
+-	u32 tx_delay_max;
++	u32 mii_delay_max;
++	u32 rgmii_delay_max;
+ 	u8 dma_bit_mask;
+ };
  
-   mediatek,rx-delay-ps:
-     description:
--      The internal RX clock delay (provided by this driver) in nanoseconds.
-+      The internal RX clock delay (provided by this driver) in picoseconds.
-       For MT2712 RGMII interface, Allowed value need to be a multiple of 170,
-       or will round down. Range 0~31*170.
-       For MT2712 RMII/MII interface, Allowed value need to be a multiple of 550,
+@@ -223,9 +225,9 @@ static int mt2712_set_delay(struct mediatek_dwmac_plat_data *plat)
+ 	case PHY_INTERFACE_MODE_RGMII_TXID:
+ 	case PHY_INTERFACE_MODE_RGMII_RXID:
+ 	case PHY_INTERFACE_MODE_RGMII_ID:
+-		rx_delay_stage_val = mac_delay->rx_delay
++		rx_delay_stage_val = mac_delay->rgmii_rx_delay
+ 				     / MT2712_RGMII_DLY_STAGE_DIV;
+-		tx_delay_stage_val = mac_delay->tx_delay
++		tx_delay_stage_val = mac_delay->rgmii_tx_delay
+ 				     / MT2712_RGMII_DLY_STAGE_DIV;
+ 
+ 		fine_val = ETH_FINE_DLY_GTXC | ETH_FINE_DLY_RXC;
+@@ -257,8 +259,8 @@ static const struct mediatek_dwmac_variant mt2712_gmac_variant = {
+ 	.dwmac_set_delay = mt2712_set_delay,
+ 	.clk_list = mt2712_dwmac_clk_l,
+ 	.num_clks = ARRAY_SIZE(mt2712_dwmac_clk_l),
+-	.rx_delay_max = MT2712_MII_DELAY_MAX,
+-	.tx_delay_max = MT2712_MII_DELAY_MAX,
++	.mii_delay_max = MT2712_MII_DELAY_MAX,
++	.rgmii_delay_max = MT2712_RGMII_DELAY_MAX,
+ 	.dma_bit_mask = 33,
+ };
+ 
+@@ -370,9 +372,9 @@ static int mt8195_set_delay(struct mediatek_dwmac_plat_data *plat)
+ 	case PHY_INTERFACE_MODE_RGMII_TXID:
+ 	case PHY_INTERFACE_MODE_RGMII_RXID:
+ 	case PHY_INTERFACE_MODE_RGMII_ID:
+-		rx_delay_stage_val = mac_delay->rx_delay
++		rx_delay_stage_val = mac_delay->rgmii_rx_delay
+ 				     / MT8195_RGMII_DLY_STAGE_DIV;
+-		tx_delay_stage_val = mac_delay->tx_delay
++		tx_delay_stage_val = mac_delay->rgmii_tx_delay
+ 				     / MT8195_RGMII_DLY_STAGE_DIV;
+ 
+ 		gtxc_delay_val |= FIELD_PREP(MT8195_DLY_GTXC_ENABLE,
+@@ -411,15 +413,18 @@ static const struct mediatek_dwmac_variant mt8195_gmac_variant = {
+ 	.dwmac_set_delay = mt8195_set_delay,
+ 	.clk_list = mt8195_dwmac_clk_l,
+ 	.num_clks = ARRAY_SIZE(mt8195_dwmac_clk_l),
+-	.rx_delay_max = MT8195_MII_DELAY_MAX,
+-	.tx_delay_max = MT8195_MII_DELAY_MAX,
++	.mii_delay_max = MT8195_MII_DELAY_MAX,
++	.rgmii_delay_max = MT8195_RGMII_DELAY_MAX,
+ 	.dma_bit_mask = 35,
+ };
+ 
+ static int mediatek_dwmac_config_dt(struct mediatek_dwmac_plat_data *plat)
+ {
+ 	struct mac_delay_struct *mac_delay = &plat->mac_delay;
+-	u32 tx_delay_ps, rx_delay_ps;
++	u32 rgmii_tx_delay_ps = 0;
++	u32 rgmii_rx_delay_ps = 0;
++	u32 tx_delay_ps = 0;
++	u32 rx_delay_ps = 0;
+ 
+ 	plat->peri_regmap = syscon_regmap_lookup_by_phandle(plat->np, "mediatek,pericfg");
+ 	if (IS_ERR(plat->peri_regmap)) {
+@@ -427,24 +432,56 @@ static int mediatek_dwmac_config_dt(struct mediatek_dwmac_plat_data *plat)
+ 		return PTR_ERR(plat->peri_regmap);
+ 	}
+ 
+-	if (!of_property_read_u32(plat->np, "mediatek,tx-delay-ps", &tx_delay_ps)) {
+-		if (tx_delay_ps < plat->variant->tx_delay_max) {
+-			mac_delay->tx_delay = tx_delay_ps;
+-		} else {
+-			dev_err(plat->dev, "Invalid TX clock delay: %dps\n", tx_delay_ps);
+-			return -EINVAL;
+-		}
++	of_property_read_u32(plat->np, "mediatek,tx-delay-ps", &tx_delay_ps);
++	if (tx_delay_ps >= plat->variant->mii_delay_max) {
++		dev_err(plat->dev, "Invalid TX clock delay: %dps\n",
++			tx_delay_ps);
++		return -EINVAL;
+ 	}
+ 
+-	if (!of_property_read_u32(plat->np, "mediatek,rx-delay-ps", &rx_delay_ps)) {
+-		if (rx_delay_ps < plat->variant->rx_delay_max) {
+-			mac_delay->rx_delay = rx_delay_ps;
+-		} else {
+-			dev_err(plat->dev, "Invalid RX clock delay: %dps\n", rx_delay_ps);
+-			return -EINVAL;
+-		}
++	/* Read RGMII TX internal delay standard property */
++	if (of_property_read_u32(plat->np, "tx-internal-delay-ps",
++				 &rgmii_tx_delay_ps)) {
++		/*
++		 * standard property value not available, fallback on vendor
++		 * value instead
++		 */
++		rgmii_tx_delay_ps = tx_delay_ps;
++	}
++
++	if (rgmii_tx_delay_ps >= plat->variant->rgmii_delay_max) {
++		dev_err(plat->dev, "Invalid RGMII TX clock delay: %dps\n",
++			rgmii_tx_delay_ps);
++		return -EINVAL;
++	}
++
++	of_property_read_u32(plat->np, "mediatek,rx-delay-ps", &rx_delay_ps);
++	if (rx_delay_ps >= plat->variant->mii_delay_max) {
++		dev_err(plat->dev, "Invalid RX clock delay: %dps\n",
++			rx_delay_ps);
++		return -EINVAL;
++	}
++
++	/* Read RGMII RX internal delay standard property */
++	if (of_property_read_u32(plat->np, "rx-internal-delay-ps",
++				 &rgmii_rx_delay_ps)) {
++		/*
++		 * standard property value not available, fallback on vendor
++		 * value instead
++		 */
++		rgmii_rx_delay_ps = rx_delay_ps;
++	}
++
++	if (rgmii_rx_delay_ps >= plat->variant->rgmii_delay_max) {
++		dev_err(plat->dev, "Invalid RGMII RX clock delay: %dps\n",
++			rgmii_tx_delay_ps);
++		return -EINVAL;
+ 	}
+ 
++	mac_delay->rx_delay = rx_delay_ps;
++	mac_delay->tx_delay = tx_delay_ps;
++	mac_delay->rgmii_tx_delay = rgmii_tx_delay_ps;
++	mac_delay->rgmii_rx_delay = rgmii_rx_delay_ps;
+ 	mac_delay->tx_inv = of_property_read_bool(plat->np, "mediatek,txc-inverse");
+ 	mac_delay->rx_inv = of_property_read_bool(plat->np, "mediatek,rxc-inverse");
+ 	plat->rmii_rxc = of_property_read_bool(plat->np, "mediatek,rmii-rxc");
 
 -- 
 2.56.0
