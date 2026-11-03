@@ -1,60 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793702987;
-	b=WEVd8oWam7/iEN4WC0VR6ayG67gOybade6+C5SfguHq6h0Ehl7myFKj4zvh02pWtRHon
-	 60q/8fMicU4RPcvKtPAveIdT1GPsotG65hRXdKwgfuGWfwP635wWH+x/XTnnkwpi+BCp5
-	 iEoUfIwPlg0FEpkSPB02QTCo60RRR6oUgqAYIfNQ9a5rBovLj3Nr8HEg0i9qR22eZiw/S
-	 4dMVUZIn5DoTCs3q3tkd+HcNRjsBQ0E+Tpk2uCor8pEmVOYgnSgrc7agufAwnEsW6tyvd
-	 OGH0iYQty71SzF5Z1EQyUAkYS33jQ7wQ3+ueAc5qmpxNiCBUFSF3axp6qg3FENkQj9g==
+	t=1793703020;
+	b=rVxQPQJfIuNrBLHR6F6xseAF3ZoEfFBOLFlae2LZJ5/78TQea3AICLpfIvNhoI9McOds
+	 NUC78qhAhfST7RQpSLn7yDoYjIB8vGOzxGPJ9xljvFCQH31Ltcc6Z32ZgOTtHFOjNi7gr
+	 nLyKU9FosbQV93z4cJX4vpwftIxDnezZ1VQQBwfEbAgFBX4aZVwiEEaLlenraiuf+qBjZ
+	 AOol58TvERY84FLgyHAIJr/N2LdKwgXBvFQNlfD8EK9B3Ep9TKHn4K8IkfqACbLq8/EgS
+	 4BIA+OU4rhoqEXwVIK3hFGvwgFNa2Npkv+iUNkdeISUYaCsXL94CXiIgimFDTEIOIrQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793702987;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	b=kSE0EGsqJOQd0k3vyKj6Z7vvpfg3UMIAEO+Nr2chvobtf6qvgshH++Hfgsulg43ZUQ+k
-	 cg7owzcv26C1PYgJihuqqk5fSh4RBKS+NxGkyNCqswYVMV+wbF05qCSG8FCuNE2lr/7af
-	 yO56OPMXZ882O3vuvwrM8hS1tW3sJ7DXtRrB5azR4aKKQ74x4zaQCHuee7n38uPEoxJDU
-	 X9yLQbcPhfG1I0xT9eEuKt+BrAyF7LaAtq6gCzVQgm9KoecwKAxSN0kmcJy/ep4iLyoIC
-	 6gndv6wHqu+84r2ITzh5ZD+3bFctKkV260UXBcQYvhBy5vXqMEQ7Cb/0+en/URbmUsA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793703020;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=vP9cXnhN/CQHkOZZzeFccngbm6E+rmE1zRkFYmLZHQU=;
+	b=HV4jRh1inHGCO1pktWkRv4KaClvIlYrUg7UnBycNfMzXK2aKIKas/cOTn6dWr46c5YT8
+	 bZ470bVy2RpYbGoN3ypS7+TaXyV4h/R9QRNVZ2G3d5tVSSjeogeskaQ7j+W7I5scaAOss
+	 NyhLUfW4pKxkNornvDL9nrYlKxXkyMBgyqgX5tR9JmDmLpQxiyVsakuuLZYoF4etLxHIV
+	 rbjmgr9GzoSLnUkRbhl82r8aXFYB+LEczy+stAIyRGg0tkccbnEZnz6/80tshIsyoI7r3
+	 LbSTMCEKLr16B1/Edi347u1Qd4vQI03lSA6+rtYMmYGYM3PYd7OqOLzIr/OrWqv6J4Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vx5KxwKh;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e44FoDIq;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30472606A828;
-	Tue,  3 Nov 2026 10:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5A5606C5F5;
+	Tue,  3 Nov 2026 10:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vx5KxwKh
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62CC31F000C1;
-	Tue,  3 Nov 2026 10:49:46 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e44FoDIq
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5DC1F000C1;
+	Tue,  3 Nov 2026 10:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793702987;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Vx5KxwKh2n86yrd4SJOATo27TrL2RNNSe2jMDBKUQ1ldwm0tojhu+AqM48yRijjoG
-	 /GTOYQLCgM0gQfLiZxW/3LZ0g7aeIltCuSYln7c773oyM1nzj3alyCSXIkjwBObwqV
-	 kvAwwnohGpYGLaaolElrYpSu2oZO37WThxptmycO/iubNt4H3HrJTIm3265Pru9DJR
-	 BDkJ1w8/4SMi802eqo3DFNp+BIi2gfGuT7DFvqs3rAsYBGbugHNgrVPhXbpZ0cz/zq
-	 XlrVmFfl86S+MTkJJRzyk3naP6ja265j4c6EDm+fXviToYTbNNeXGIHfRneJV5uWe/
-	 FjLmaoZhxXQOA==
-From: netdev-bot+sinfo@kernel.org
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: Zhao Qiang <qiang.zhao@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] net: wan: fsl_ucc_hdlc: release the net device on remove
-Date: Tue, 03 Nov 2026 10:49:45 +0000
-Message-ID: <179370298589.488859.8331776188055179026@kernel.org>
-In-Reply-To: <20261103104237.1373675-1-vulab@iscas.ac.cn>
-References: <20261103104237.1373675-1-vulab@iscas.ac.cn>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1793703019;
+	bh=vP9cXnhN/CQHkOZZzeFccngbm6E+rmE1zRkFYmLZHQU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=e44FoDIqjEN0sw2YQY7FMP9FFKKgbkmy2U1yGu0prTZDqpOh/9iCOD5CYFT8oUaww
+	 8R7b/RKW1rZRLh9u0TjAYD1S9t5M6rHqsCHGwah1WwRgnYTTMUPXI3AczeAkJotV5I
+	 Ql6O0S4dOZiCUDFBcxGZAdpIYgd2+thxM40cUJEJLORsxOtrgcbEpAC2TX40AjkKAY
+	 UxeGnNyWAX8CcnqjVLGqBobb1OB5iZ2eoBTxxcPvMShcylHJmH+xCx/zuDbyin7Gpl
+	 iO2yaJvm27vPLsjRRo7Ahz/9U43yoOAplATd57mSK7aZ4LpWKaazbDyz8YeHa0UYpZ
+	 U2NiDHuzUrCUg==
+Date: Tue, 3 Nov 2026 10:50:15 +0000
+From: Simon Horman <horms@kernel.org>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, Victor Nogueira <victor@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Sashiko <sashiko-bot@kernel.org>, bpf@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v6] net/sched: clamp skb->queue_mapping before
+ indexing the tx queue
+Message-ID: <20261103105015.GE865646@horms.kernel.org>
+References: <QDISC-MD1X.v6.r0.20261029162633-1@mojatatu.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,25 +65,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <QDISC-MD1X.v6.r0.20261029162633-1@mojatatu.com>
 
-Hi!
+Hi Jamal,
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+I think this one looks good to be merged.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+NIPA-Sashiko did of course have something to say [1].
+I don't think it should block progress.
+But maybe it is follow-up material.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-MD1X.v6.r0.20261029162633-1%40mojatatu.com
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+...
