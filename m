@@ -1,66 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793713856;
-	b=WsRXNqRDZYket2meQbSl4CiJsMxATq42VF2g7XVaNOAVJ3smDlIYyiYe33ISJ9Ly5dVh
-	 s8PC5CEz7Rm9JD84t8hdUVlk6PC9+RFnYTt6hw1w+WdaQUSTqp7N6JosChGWIklq3uJwr
-	 ZC/FzyoyBFfdi843rYuN/qBC60jwbaJjYkBXf8xdORex4M3CpTG81JlUDJcIejZwLuxKX
-	 bVeKceHSS+CF97RMAkeCzrURPoLbya7Ae7ZUvEBp1Zd2bvL9Wq6M5gtqpw6K1o8QgRu4U
-	 DrrJK4B9JuLWdWALEm60q/QSLVA3AKMyb4y9BSwoT7WZeuzMLucQejsRSE2SaMc0XJw==
+	t=1793713902;
+	b=4p4FqsZ+qut+YFS/MqVpkqC5bVYgWd9n3Z7q3TAlEeTsLS0jGCDfGGnB+Sw4JqXxRWB+
+	 3g5hfRAVBis+z/aG55Vsov5bo3+k4si2p8ZMwMMxpO341rn3OlLPuRHs0IXx60yD+Igja
+	 SGDQnKf5fIuPsHICaiNdMFBwLN1ZfukplfR1PgTKScDaoXAt4aaq/fHLteFTTU47zMz19
+	 CwCZZQ+ZxmhuGn+z+CyGa38/9jArFLO98IWNZcmGpNzEqx6wpWsjAdRR/uabvmNcbR6kF
+	 /eqogrjnQAoOloGbb4zSu4j0vjDGWAZUOR3uA3rntga3iga2HUlhzoCa0WIKhq/VwLA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793713856;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793713902;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=GDNcNC3AhQlf0hAoy/6nNkz+jJ+YBSU86MsQYtwD23Q=;
-	b=OxtckYQ4xjEurNUybGYqNQYOKb/UcaPmzLRxk9AJ/vJ+z+6fM2wstAMeonpQxmjRjjGG
-	 PMVnqAoKQYZDXxGSW7PeV7CQjNhYJ3GqowXnyt/oiIzYzNa2eUrvS5TTwwI15PBuaP/G/
-	 q91xl9MTxoXDVvO6py0X+QwKOx0T8nCAbjVFcoXkipYrLBfaGrFjagWy4BMpqdV1FoOIk
-	 G/ba57sQZGAzTIr1e4GqsgArPWrNXfoiHfu1dx8j7DGkwaB8lMgtX4STTfy/nsb95UD6I
-	 d8KgPiSv1V4H3uXkMoKVGPipoNSxHcrCrCzDrVyKWwnyMkNho0lk9JmvJWwmzot4B3Q==
+	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
+	bh=1QZH9QrkSaB0v/jUckKIgxbNLn9qigD/oJi6yCmD9/4=;
+	b=qPJC7rtkUrHFqtDmUr7eDbg6Hv+W47sGJW1w0XQImh8XdEJ4RPIYtGn62hYneIOXgjh6
+	 WQWmdJ5+bXGYy2nF2/6AXwGT3UlBCY04oASbnEV6O2mVAZoazxfeMJ3LCSXRjfoTRVPnM
+	 YP9a07/mjg/PEcptD6YLi8ISM66dpzO+RSC9MG/U1Uf2W5PyNz7Ex8w4qqgTQLb5fjFxd
+	 8nsWjEyZaWi/qDXB1fF/EhwKly1G2wtlyDq8oWKUNt2dNillqdBKK1RkWB73NJ436jxVa
+	 33hOVOgtdGEJnF1WworGjudtBhBglyL6qNZGGsHrxszQ1yuAUjfN8hU2jHfU2V6sjcg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=umQl8pri;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=fgsG7PLK;
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692E5606EE86;
-	Tue,  3 Nov 2026 13:50:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 692E5606EE86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id E2838606A335;
+	Tue,  3 Nov 2026 13:51:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E2838606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=umQl8pri
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=GDNcNC3AhQlf0hAoy/6nNkz+jJ+YBSU86MsQYtwD23Q=; b=umQl8priBMMRCgcPuDSD3UKeH6
-	vSZRzpTPmnaucDFmasy3DXPCGRjm8t+7gL5xVAvJUPfrAEkiH/zM/RoAM9ujqF6tIQDmpswoKpq1u
-	awL744svSvpXj5DpWOf6JBR0yd7VF5WtlEUMRI+VzbDo8w3ic6JoI37OhNIefyrkp2SU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xOEuU-00E4Sq-BW; Tue, 03 Nov 2026 14:50:46 +0100
-Date: Tue, 3 Nov 2026 14:50:46 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Fang Xieyan <fangxy@xiaopeng.com>
-Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Guanglei Zhu <zhugl3@xiaopeng.com>
-Subject: Re: [PATCH v2] net: wwan: iosm: drop redundant skb->data check in
- MUX DL decode
-Message-ID: <d225d4ad-5ee2-4e48-8eba-99eca3b96283@lunn.ch>
-References: <20261102081920.50288-1-fangxy@xiaopeng.com>
- <20261103111101.39235-1-fangxy@xiaopeng.com>
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=fgsG7PLK
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1793713899;
+	bh=1QZH9QrkSaB0v/jUckKIgxbNLn9qigD/oJi6yCmD9/4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fgsG7PLKXSsuMdrAnymUUDfBeSjhkzCrPf6qnu1DppxUDTtz4ldjZmSVGKcHNPaMb
+	 tgTxAj0VGQcXp0LecEAweOMyrZfaKrrTCsk9i26m6ZNjbe/WHhVkkFNuZiRo5FR73K
+	 8QXl454O5ZMZT2UO8pSixMS+b4Nu2UxkGCwvW5kTzHhPPtzz97tWzLBU4DSyyDueK9
+	 aJBOVdbVnnY0I8YuENbSyoUPbs6mgXS0NSC1N/O11ce+e1PGjPhCQbGGEQHMcQYjrh
+	 3bLbQvgYLsC9fEwtxQpoF4Uak9YojEf2oa4Y2oGQUkEEH11DoKx3OX69B92M67mMWC
+	 /GAZ/9RKMGKIQ==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 66FCB60058;
+	Tue,  3 Nov 2026 14:51:39 +0100 (CET)
+Date: Tue, 3 Nov 2026 14:51:36 +0100
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Florian Westphal <fw@strlen.de>
+Cc: Matthieu Baerts <matttbe@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netfilter-devel@vger.kernel.org, davem@davemloft.net,
+	netdev@vger.kernel.org, kuba@kernel.org, edumazet@kernel.org,
+	horms@kernel.org, ja@ssi.bg
+Subject: Re: [PATCH net 00/15] Netfilter/IPVS fixes for net
+Message-ID: <aunm6Cr1PeBNJlrk@chamomile>
+References: <20261102005654.532438-1-pablo@netfilter.org>
+ <b452b25b-37fd-48ab-a88c-feec6b82e9ec@redhat.com>
+ <5dc1159d-e577-442f-a7b2-8d5dcc8cfb01@kernel.org>
+ <aunc8YgjvFXsPDeo@strlen.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,38 +68,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261103111101.39235-1-fangxy@xiaopeng.com>
+In-Reply-To: <aunc8YgjvFXsPDeo@strlen.de>
 
-On Tue, Nov 03, 2026 at 07:11:01PM +0800, Fang Xieyan wrote:
-> The skb passed to ipc_mux_dl_decode() through the current RX path
-> always has a valid data pointer.
+On Tue, Nov 03, 2026 at 02:09:05PM +0100, Florian Westphal wrote:
+> Matthieu Baerts <matttbe@kernel.org> wrote:
+> > It looks like the patches have not been tested, because of the kdoc
+> > issue on patch 6/15:
+> > 
+> > https://netdev-ctrl.bots.linux.dev/logview.html?f=/logs/build/1198360/14931104/kdoc/stdout
+> > 
+> > I guess this will need to be fixed in the v2. If it is a false positive,
+> > please ping me.
 > 
-> The only caller, ipc_imem_dl_skb_process(), checks for a NULL skb
-> before calling ipc_mux_dl_decode(). The skb is allocated through
-> ipc_pcie_alloc_skb() -> ipc_pcie_alloc_local_skb() ->
-> __netdev_alloc_skb(), which provides a valid data buffer on
-> successful allocation. Allocation or DMA mapping failures return
-> a NULL skb instead.
-> 
-> Remove the redundant skb->data check.
-> 
-> Suggested-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-> Reviewed-by: Guanglei Zhu <zhugl3@xiaopeng.com>
-> Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
-> ---
-> Changes in v2:
+> The only effect this test has is that I will stop making kdoc comments.
 
-Please always start a new thread for a new version of the patch. The
-CI system does not always pick up the patch and run it.
-
-Please also read:
-
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
-
-
-    Andrew
-
----
-pw-bot: cr
+For the record, I have restored the original comment here to please the robot.
