@@ -1,119 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793707933;
-	b=v9Bjd+QaSuPuGmY15JcKTPJhOI29eDyLgFsUtJQWDwOR0D5Y2tefGyjhxCREnpsipaXC
-	 pMMZwEwbA4TiUY2rSeOyKpMJtJmvUaNoGqFa7/qudJHRjanLxZycxq9C+//5fLTliIvFa
-	 jywve4ZpGhB1/G1ZvmN5QbO4opfTl22bdatDudRHoPKyjEIWyeWPmfDo46fiXXFviVtY0
-	 pt/p7WbLjBo2uO9VLdWHWWuY5f+1t8hIYdWguK+mHQ3yRECY4Mctz2NazB6kNuj8Gt50T
-	 zOdRb/Ae/58EI6mtI+vvolRb5mOsWCgPrmQLfw0S7i93HgGP44w4LYRGVbcywprxAuw==
+	t=1793708243;
+	b=qzt0Mf/hXOqvYoLVK9lX5CeWSliSRbWP3JDVeogDSdbDNDTQENL19YQAz6lQPEMzFIw8
+	 7xSVWuNjZ3C6DTxLGFCuBem7tW/IrBxd+gpClIXLsvvJ9v8Hm4ItIhsm0cLanILmpFIj5
+	 vQmEWyhjQeBsN6BNkpouLAa9DSg2ZYJivPWzi/DN96YclT6sjF3EhP7Xu7eyEENSlj4FP
+	 42SDVN5JY2Txqz48EW+Z7jFKwqCGkjBs5/LqiBpCIoWPBz2bOE84rtGZG0A0/5OZd8KHX
+	 AYS4aOXvud4/vnJMvlvkCX19f45UNbtRKw7Fh3ocT3Gu3wBarX7lJlmjmwbYFLxVAAQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793707933;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=p7XwenWdW96OgNgWcGPygbhPSyvm8Dmo6vx2RBl2lPo=;
-	b=muRcQtbNFOQ3A8UU4wDmrpfkMoQGuVOb8PSMcBdDVTeuMGEggYbQtVE1+U01DxnfPc7w
-	 WsofnTP107fsaTohh29oYwAPnIywQYJF7H7Jmao5entTta/kCJ5tVRN/+8qoaHxw6SdSV
-	 onm5YvJ3BHuva2h3UXZIOGLwBv5qqELWiROxgbOYpp+V1H5zEUXe3iw6/Vk1OLcaAYvDL
-	 hhbgUrj2F88/Dzny4FqtZBCoHvy4VqX+8acZt9KGUHAM59+yK6n2OkavaZ1yqHYMlEKJF
-	 1r0cMaT8vxWiYVSo056+EUxbOLyr29nu6vkHtQKVihVuikZeDSwEo1E2DFnQ5O9WHAQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793708243;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=ymJxRce/XjE02+zK1X5IJ9APZi0warqyAJ+7wOyo8UA=;
+	b=z8TC9m7GQEmvpBgliDIKPK5B+VTxqBiDQdyZovQbmZKUAkspSMjakjsFvdrzpBt7H7TG
+	 ctjDmkgrNC0NtwtPpycp1yw+9l9z6NUKZepsqHp3nOHqOuKo3jpLgrTehFaz5ur8l3BU+
+	 9gC7sVT1MA6so2WlOhnntg4oRppQ/ALrU7Bc19oAbSzo6+9/Ug1Nnhg+lcllSrTXVrCXo
+	 z63xPyUsTz08D+8Govnd9sy1EZuYXroMGEAKFf8LbfywNlyTyMztMZN2NIHPxJ1zLj0Jj
+	 kui+f93yIQFO39Q9XX68K968qK0JOF0hvncpbm4D2at99XgVhGpZOi2cLQKLxmmHWYA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DGkxPCLX;
-	arc=none smtp.remote-ip=209.85.222.42
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="JlYh/ZFh";
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=EiEo+QWV;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4134606A327
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 12:12:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F4134606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B434606A324
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 12:17:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B434606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DGkxPCLX
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-98fea7e52b7so2593814241.0
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 04:12:12 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JlYh/ZFh;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=EiEo+QWV
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793708242;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ymJxRce/XjE02+zK1X5IJ9APZi0warqyAJ+7wOyo8UA=;
+	b=JlYh/ZFhLfUn1fUosS+/YWgrRn8S0Nzd+UaoxsVY0kA8TZzkGXJBJj+j3BT4XxGMyNZTsZ
+	jhG4z3Dtb8h9vLZ+UZooQTxYiOVqKWegvS3wPR2EkiRXitIAwJ2A89jv31pfHGQHSibwPv
+	J2hagljR33MIQEUou3vmYwPs4Ce5SdA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-595-0QOQGxP8OtaKjjtPhPe5hQ-1; Tue, 03 Nov 2026 07:17:19 -0500
+X-MC-Unique: 0QOQGxP8OtaKjjtPhPe5hQ-1
+X-Mimecast-MFC-AGG-ID: 0QOQGxP8OtaKjjtPhPe5hQ_1793708239
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48e17d30a79so2193031f8f.3
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 04:17:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793707932; x=1794312732; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=p7XwenWdW96OgNgWcGPygbhPSyvm8Dmo6vx2RBl2lPo=;
-        b=DGkxPCLX5GXvmx7M8dJnArR00vt8VtdGbHun9M0TeHbmz4k8r8YkOtmJx2Ok4rPPHu
-         +IyyaebAkT0PCI9hcq6wWzwfa4+Ir39EyF1hBUB/YTm2aqp/Od1kw10j98TRkpxAOopA
-         /YpE4umx9UMpsxEa3EJScBaoG7kCMx9RaFx0J50OYl0Ug5qm1Iu3MyvpXCjT70amlUX2
-         eF8iQyRRquy4+y3XIOlPL8Ompve33U3UDw4XHE5tjYNsw/J9X0bTDrlWIohLLzjCeAvk
-         g2lrhjn6EqumWcrGC/u0MrminOOvZ+mrLuaBfCngZZajxspfBocPmHuNRO1M1AD2OptY
-         aUAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793707932; x=1794312732;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=redhat.com; s=google; t=1793708238; x=1794313038; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=p7XwenWdW96OgNgWcGPygbhPSyvm8Dmo6vx2RBl2lPo=;
-        b=dMA7LkmBMVzjiPSub4G/5XGuB4byoARU2SSp0UdVRdyMw76Bwbo666FPL+jMgc2imm
-         imnh3+tUZVMRI+x/0tasTKIoJFHb5hC4Ov214j+atXYJx8qLd6oG25+pwoFweMAe+Obi
-         RLbHfcpEH81gl1+Wv2H+J2rrM42jY1JkD8cYHLBO2rstSxE7DO+Dqy7nWWi/9jdgq/Rg
-         PWbyD4CFqiAkp6aBOvuWelD8bN+sdmKBMFl+dtOWYU9U2OYifsWr4u1IdUaj+aRwlRP3
-         w2hsmLd9LkSBhHIBsZQOo2BQqp9GAtQJE467uCdV0yVPQxl7fgaQGZY8Qx/DSrIcCwgn
-         P0MA==
-X-Forwarded-Encrypted: i=1; AKwUvBza0L1V3vkDSfRTrOEZldFVCDMg7YrAfHmqTppvGDPwPo8k9nBvXZAoaI32kE5g188V/dQ3xIs=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/fNVmPoXwWUwqtWdLa60qWKmG5JltjEfI463lxgtQ61MhtyIX9
-	1d4cKdi9gaGtwCqT/tXp2wmEx1wcC0mAau12rOYnKiegyZ3e2UCmkq6a
-X-Gm-Gg: AYBFou3xecy7c2neCuUExtVd98ynKuDBI4DCxHlrkbcNTzXjHGHLKkuK4BdHd7JLsof
-	XtjpxE7qoXBqlNOiAT0gqGgzE9YqMa7Jk6eVrPlnJwBwbfD/fHyKHaEVwBWHGwCjo4uAkvZpwj+
-	vBMANgY3xmSliQQYV2r7E6WHLjzPwiPlbIyquzK5EJSkR0KCZzzByELqNlkWdNEJcGQvN6RO6fl
-	nRhPNVxaWTZf9DQ6+23zjmwU0TWjac84B8HA6KZEB+rhXElVYSxAKamiGDuGslPSmDa6o91oq4n
-	Lb6Py+FOd8c2fv6vHLPnJzMzORPgdeGeOtzT3mIFpVFkWBkmM8kUX1hb1m2Z84MuKK+FLlz1TyW
-	bDkr0UABAOfDz+3wHlE1+adoMU/z9qZUj549ptwzih+yJWb5gzlzNxjb4QhP7UgEbXkI0UxzRjU
-	V+oIFy9IvZMJ1UssjuczzbJhxPaO9Ov1PzXzFGIwId7Iuf5tG28a7s0NvJEezM9rJGImW05Qmv3
-	sj05ls1IZ5a0vYH5CTdNhvwpUpxEhn9+6D56izVY283M16UkEWTOzEfGDf0jc06fbOcPcHZKTJu
-	pjBUdpjO4lcuIuf5+0s6wFkF5cPQYS/aRlW/iGYXcOtbGrIelnu9jkRb/9+fHR2rNEVQiRmn5Pt
-	+sWhSRPbb+1V6I5wY5dt4nzDyzw+BjjAbs1Gj
-X-Received: by 2002:a05:6102:fa0:b0:7c3:9982:67d7 with SMTP id ada2fe7eead31-7d072670942mr5461054137.16.1793707931886;
-        Tue, 03 Nov 2026 04:12:11 -0800 (PST)
-Received: from MaquinaLab.. ([179.179.238.247])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d0775a716dsm12606282137.6.2026.11.03.04.12.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 04:12:11 -0800 (PST)
-From: Vinicius Pedrosa <vinicius.eduardo.pedrosa@gmail.com>
-To: Andre Przywara <andre.przywara@arm.com>
-Cc: Junhui Liu <junhui.liu@pigmoral.tech>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Brian Masney <bmasney+clk@redhat.com>,
-	Jerome Brunet <jbrunet+clk@baylibre.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Richard Cochran <richardcochran@gmail.com>,
-	linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	netdev@vger.kernel.org,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Enzo Adriano <enzo.adriano.code@gmail.com>,
-	Norman Herms <dockseed@proton.me>
-Subject: Re: [PATCH v6 6/8] clk: sunxi-ng: a733: Add mod clocks support
-Date: Tue,  3 Nov 2026 09:11:49 -0300
-Message-ID: <20261103121149.33238-1-vinicius.eduardo.pedrosa@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <30e43e84-e6e8-4024-b415-dedf67070c4f@arm.com>
-References: <20261009-a733-clk-v6-0-ae8178fce7e8@pigmoral.tech> <20261009-a733-clk-v6-6-ae8178fce7e8@pigmoral.tech> <30e43e84-e6e8-4024-b415-dedf67070c4f@arm.com>
+        bh=ymJxRce/XjE02+zK1X5IJ9APZi0warqyAJ+7wOyo8UA=;
+        b=EiEo+QWVs+gDDF+IfDX/P1dmR3Gi5yELMaqqp/e2NZGBjqVek73awkvxuDEpvZkIPl
+         Cfh3VSkAxaGBZuNGMi1b9NjLxsVWKrzZ3G3EMj/j6RPVcwrsxp3H4v52WhrQK4JVLBl1
+         45VOlzpzbVRx5eIT6F4lPOvCqHtaIjT+x12+ZoC4lrfo++brGBb6spNl4wtojNKIHFhl
+         504hgHUVl/9Dfb0phWUpwFQEV6euH8viVxb8PorjhVC+1OFwfzkeBp8a2jFUOgppnbBz
+         b4yCiX6bhGJMc6LKH552O2MXGrPu45lptKb1p6Z27ASiCRc5tYhzsgxHRlcwTsFOgs+x
+         0ynA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793708238; x=1794313038;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ymJxRce/XjE02+zK1X5IJ9APZi0warqyAJ+7wOyo8UA=;
+        b=179V0j0dR6SabBjKI2SwrccykLf8GuolkxiNgRK1dVWCBhyyBRQne3f2NPp3FXY8d0
+         6H/u4FCJnAFx00iI9nks03p7X6QUTq0Fwypaspspajqxb51Dv4f9DWkWA2Kx/BpFRXtK
+         FjXp64ebUMKpWi8RWlubkCxdS/w53WLsaKVhefLx0Z5PhZ73ePCvCHEHaj11Er1cVmrD
+         3wJGluU0lYMZoh4//yA71h2Cecwh1TWI6VwwNV1LzLHju4Mdb5NgnDob85FB3EPQR9sA
+         OAURfMcyNhOLncnq4xa6ZonkhYqNr2ULNvonJDLguVKXkmowNBIafkWsyMDimVwaezYE
+         33ww==
+X-Forwarded-Encrypted: i=1; AKwUvByOlNRHyk89n9/R9d4Psr2hwkLWSMnBkOIufd3OmaudvTKgOxIpWJmbZGfday7aQWkHFW31T7A=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/pfsq1SaPqO/f8cWRvY9DBkz0Z10VY4urc2FmgirbHtF9/e/bE
+	DztAdPZVkqazwd6u3PMYMQ4C+asJfOybVIvuofII+CGkulH7sI37+bRIo1SEmx0UR6pEPf9BM2I
+	42R820IV5wFfhORytYMw1o6DkyQn2VPIXxQ1dj2Pvm0S/lqhm+egO1swkdw==
+X-Gm-Gg: AYBFou3N6vEbtZk2vDe0rKmB9MYdPQ9w99s8GhV2OoEDH3DPcht+hql2OLq3Rn2LOlp
+	Ee8zyLQC+JkORP2Gb+H4+IGnox/parJ78rMRFdLZYIslJGCbFTpqOcn4/+eV2FkmqB02bmgOS1y
+	QPyD3hGpsPrmYcpnDc4fzJyebr6C9gRs3bs3CKh10VTyM6cwShkOL/m1pmhVtqn6MFAeqL3aw3a
+	VGzRusYV/DxPFIvkuu8twWsM0Mxh85/91kQUjSvjWTZLqoeCPY5pwqLhAPHnJN6jvEsb3BIqBzl
+	bgF8WDOou5CXfddtpX4X9RlARz/a/tKplje04J3qj1CPFTsKGD4DcaRTnkrTwSQx8iKmook6g4S
+	hmgNOHsFK95ptBV9DuFmy7uwVXpaXEeSikngG3TF9aFdPxKcmMkr7l5+Ii67onGitkFgmqik2d9
+	VrXkQAmM2cpp1CA1ulYL2LI+hyYl8RtvljprfDHrHc/Uo=
+X-Received: by 2002:adf:e003:0:20b0:48d:f14a:917d with SMTP id ffacd0b85a97d-48e6e2f293dmr21844614f8f.16.1793708238647;
+        Tue, 03 Nov 2026 04:17:18 -0800 (PST)
+X-Received: by 2002:adf:e003:0:20b0:48d:f14a:917d with SMTP id ffacd0b85a97d-48e6e2f293dmr21844563f8f.16.1793708238193;
+        Tue, 03 Nov 2026 04:17:18 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71a4d4f9sm25135025f8f.2.2026.11.03.04.17.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Nov 2026 04:17:17 -0800 (PST)
+Message-ID: <7ea0851e-91ab-456e-8349-5470cc75d188@redhat.com>
+Date: Tue, 3 Nov 2026 13:17:15 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -123,40 +112,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 11/14] xfrm: include mark in MIGRATE_STATE SA collision
+ check
+To: Steffen Klassert <steffen.klassert@secunet.com>,
+ netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, herbert@gondor.apana.org.au,
+ netdev@vger.kernel.org, Antony Antony <antony.antony@secunet.com>
+References: <20261102100451.2505200-12-steffen.klassert@secunet.com>
+ <179369310574.488856.7247083630566929798@kernel.org>
+ <aunB5Kc0Naqn4lx8@gauss4>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <aunB5Kc0Naqn4lx8@gauss4>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Andre,
+On 11/3/26 12:13, Steffen Klassert wrote:
+> On Tue, Nov 03, 2026 at 08:05:05AM +0000, netdev-bot+sashiko@kernel.org wrote:
+>> Before this patch, mark-only migrations used xfrm_state_insert(), which
+>> can't fail. They now reach this path too. The same lockless pre-check
+>> followed by a destructive install already existed for daddr and family
+>> changes.
+> 
+> This looks valid. But as this issue is not new (daddr and family changes
+> have it already), I think we should fix that all together with a
+> followup. Antony?
 
-On 11/2/26 16:32, Andre Przywara wrote:
-[...]
-> > +static const struct clk_parent_data usb01_ref_parents[] = {
-> > +	{ .hw = &sys_24M_clk.hw },
-> > +	{ .fw_name = "hosc" },
-> > +};
-> > +static SUNXI_CCU_MUX_DATA(usb01_ref_clk, "usb01-ref", usb01_ref_parents, 0x1340, 24, 3, 0);
-> > +
-> > +static SUNXI_CCU_MUX_DATA(usb2_u2_ref_clk, "usb2-u2-ref", usb01_ref_parents, 0x1348, 24, 3, 0);
->
-> Don't these two clocks miss the gate at bit 31? So it should be
-> SUNXI_CCU_MUX_DATA_WITH_GATE instead?
+FTR I agree a later follow-up is the way forward.
 
-Yes, both have the gate at bit 31 in the manual, and the vendor CCU
-models 0x1340 with it too. usb2-u2-ref resets to off, which is the one
-I hit on my board. usb01-ref resets to on, so nothing breaks today.
+> Btw. none of these issues were flaged by sashiko on the original
+> patchset submittion.
 
-With the gate added, clk_disable_unused would switch usb01-ref off
-unless something claims it, and in my local DT nothing does (the
-USB0/USB1 PHYs take osc24M like the A523 ones). On my Cubie A7Z,
-clearing bit 31 of 0x1340 at runtime stops the USB1 Wi-Fi traffic, and
-after rebinding EHCI1/OHCI1 the device no longer enumerates (error -62),
-4 out of 4, while it enumerates again with the bit set. So at least USB1
-will need CLK_USB01_REF kept enabled once the gate is added, likely
-through a consumer in the USB controller or PHY, as suggested by the
-vendor DT. I only tested USB1, by writing the register, not the gated
-CCU itself.
+Nipa sashiko instance uses several different frontier models, cross-correlating
+the results. According to our experience the final results are consistently
+more accurate (both less false-positive and less false-negative) WRT the global
+sashiko instance.
 
-Thanks also for your guidance throughout these discussions.
+Hopefully with time even the global sashiko instance will move to the same
+approach.
 
-Thanks,
-Vinicius
+/P
+
