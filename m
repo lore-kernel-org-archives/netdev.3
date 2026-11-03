@@ -1,59 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.226.149.38
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793721445;
-	b=EDDtDNgUHhSFnMyZQVhjVuEfyZWuiBD1h13ojkv1EHqXMTqprtL1YS4dveB2lipGsXge
-	 4b6SBjmk4GSSiP0EofCMQIC2HM4o1tiRi3G86I/9B9AGJIcYkQT7p4I54edQ6ZKLpIw7O
-	 XB//sl3UvGmNkt4naot1WfukMJvE8rs+3wCwe049kh8XpyZEgaCJo5IzdK+cGzwPUgVai
-	 5NNtc5rkQMTxnOli2XUl3o813DN8v11oqiEe0upigyHK3XJF2JaX/HT6zABGQs3Hay0JM
-	 F6e0NqyiTUrn2IfQkHcCsi5kwrEZHg9QeTEVKA+21im/fLdwrY8F5rAmxDKgU3ZxXog==
+	t=1793721512;
+	b=mqCBVHZa2LGgqgvnxmm3ijelyEKrVNU4FBsvpUJScpvt9P/LuN56p1hmYiGElpBWCTyk
+	 GoBMRvC9j3/CksN4SEnpGZYBKkGb6Ow9FE7HFKUmRLjX57h3y8FFbHZc5J1LpXldORAwm
+	 n4CADqXYXLlUwJvAFdpOFAKjlaJyEeV2gaxBVw4ekWNvJqdTam45bie6JAzFZpjOUU6uy
+	 NDWtBoezbWJ3+RK+AaXRM7L0poDDfNySFSolz68mDWiUHIk7h7PLrw4m0+D5UCvs6614h
+	 p1cR8XSa05N+QMzBVNNhMnJEGki1SVkwdYcIV8uAnHQCI0thoJ3uWDY3Ppv7Mg2oTVA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793721445;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=gNzyZBC6D62ObBOksRyz9sJ65IeUrHPgVdzW9BysQek=;
-	b=NpcfIv1ANAlfQzrd8wsraDJZvdMc26Wul4ShgRkwY/C7re52It3OubwL24KFtf3F3Gm7
-	 Meq8Vr2anOn1m5kvNSDLcoSXiscSIkPROB+AO+B8IRFm6gFbQauvdfLATppLZDXDCAk6X
-	 NIThDFy0SRQfr3orHMyVGoPTAvCVQbn0Gv8dyjXx+zZT3bHi5qj+xZcLBhT2lqd0+3gm8
-	 P6ukF4biP3Bq826Q6Wni44KTAPdG/y+JyOgE4HQleP7wDVrEAb+K+mbkdmCGxJreJ2xMX
-	 vlKqdKXx3hC9ewSjwAZzPzLQTO3oVyTrsoGbsoCzD+lxIQ5GV/3kOP110YXupV/rjUQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793721512;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:From:Subject:To:Cc:References:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=eHLjN2pJ45O4GWNQW34u+4wkoWtEbyhvJN6ANTzGZ9Y=;
+	b=BB+h5MgJ8Q6RHE2IGL0VGBUzTxrE9RI2MfYzLFXhADpOeSHi2icfv67kFRZMbkj0zHt6
+	 1zHXynMZ6y4QQpb8RFg1BNkQYOaAac/YATHEOYUlXm9ykIejmeCGhV9VU3zYiU3LumYZM
+	 gtFmW9cli8arPIqBnX/Vz76wigURooqKv0fLoO1EDQxXWXLaOgDMFdFbuoz+jX1P/qZgN
+	 rfl1egPv0/ap4GZnjWP93uD9cCaCeD6BH6Oww69l+nw44rxyOwvkYwUvUVOMv7KjtEYLr
+	 5R7M7fneubN1F9jeEnqnfVV7+YK6PRyH5XsxHpo9vXi9MZV+QiAozr0psldiKtZ97YQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="H6PWEm/Z";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=rbox.co;
+	spf=pass smtp.mailfrom=rbox.co;
+	dkim=pass header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=ySks7D3x;
+	arc=none smtp.remote-ip=185.226.149.38
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD41D606D815;
-	Tue,  3 Nov 2026 15:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0744606D839;
+	Tue,  3 Nov 2026 15:58:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C0744606D839
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H6PWEm/Z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C45A1F000C1;
-	Tue,  3 Nov 2026 15:57:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793721444;
-	bh=gNzyZBC6D62ObBOksRyz9sJ65IeUrHPgVdzW9BysQek=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=H6PWEm/ZPW83hxmsfMz+Ant7GwUD01Z4UOEWjnivIq48H4ArN5Rq7iqfjmNfKObei
-	 Vy1AemAmjLDLatmBo+EygXVVgsOtmMNncps5mSDTLyIn2Dql6vGzaeR3vdZmfmpNxV
-	 ixkRm3knpes5vkDK5TWcX8r6sVJuDQL4FeuQ3KxVnT9iTChgANijOwLzr/n/6bYGJ0
-	 0FcMXLxLRjr6K61bopompM4dqwoFNeBSiahAtzEDOroboY9hFeJQJviJatWR1L4sSG
-	 mSWBU4JnkY2I9ZGSYoBL1noNDDVcVXObYygZ68H7CO4nxJymrnPoWLSd8FsFmwclCl
-	 DC7s12nDF8P6A==
-Subject: Re: [PATCH net] netfilter: nf_reject: validate TCP header length
- before sending resets
-From: netdev-bot+sashiko@kernel.org
-To: zhangmh25@mails.tsinghua.edu.cn
-Cc: netfilter-devel@vger.kernel.org, netdev@vger.kernel.org,
- pablo@netfilter.org, coreteam@netfilter.org, stable@vger.kernel.org,
- jianjun@tsinghua.edu.cn, kuba@kernel.org
-Date: Tue, 03 Nov 2026 15:57:23 +0000
-Message-ID: <179372144385.488856.3773065210102501294@kernel.org>
-In-Reply-To: <20261102155622.2658789-1-zhangmh25@mails.tsinghua.edu.cn>
-References: <20261102155622.2658789-1-zhangmh25@mails.tsinghua.edu.cn>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=ySks7D3x
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1xOGtc-00FA5e-LL; Tue, 03 Nov 2026 16:58:00 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
+	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
+	bh=eHLjN2pJ45O4GWNQW34u+4wkoWtEbyhvJN6ANTzGZ9Y=; b=ySks7D3xZqN9aJFyVj67piYgIB
+	oOYQOoN1W7ezpr9blYnx/5bLQR0BMxnCddzIgp16Yn0HmCcORUng2LdjBRb4Zc4dZZS0gRooF34m0
+	6ipDLUkIHT0dNcZaUmwWIvs29QnXbYomvbn+ylljE44D+6Px3YjDTLFy0j5U6h95QLtI9hNm3IPH8
+	wxJRc/Qn1S1MoW+QOeVug0bDkV57wPHNfr/UFoetZMdvhsfpxh7avNYJ5VxlgoUfZv/qFWwzK0UR8
+	5jYtBivCJTRNINptO1BvLFkRQ47OpDht6t6WcZjA0UX/9/Uy5x6uW8VuIXrBsQopTbKsgU0AGlDxZ
+	I+i+7yoA==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1xOGt5-0001bx-2d; Tue, 03 Nov 2026 16:57:27 +0100
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.95)
+	id 1xOGt2-00EocX-14;
+	Tue, 03 Nov 2026 16:57:24 +0100
+Message-ID: <0fa25128-1300-40f2-8d21-d09e21bcc96e@rbox.co>
+Date: Tue, 3 Nov 2026 16:57:22 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,121 +66,138 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Michal Luczaj <mhal@rbox.co>
+Subject: Re: [PATCH net-next v4 4/7] vsock: add a netlink command to assign
+ the g2h device to a netns
+To: Bobby Eshleman <bobbyeshleman@meta.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Shuah Khan <shuah@kernel.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Donald Hunter
+ <donald.hunter@gmail.com>, Eric Dumazet <edumazet@kernel.org>,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, sargun@sargun.me,
+ jlinbox@meta.com
+References: <20261020-vsock-guest-ns-v4-0-047527cfccfc@meta.com>
+ <20261020-vsock-guest-ns-v4-4-047527cfccfc@meta.com>
+ <atjZZP2ebhXKzMxL@sgarzare-redhat>
+ <atld3+5LKmGxJ8+s@devvm29614.prn0.facebook.com>
+ <atnjOZjKUBagRVWq@sgarzare-redhat>
+ <d946003a-8bec-4e8b-89a3-05eeb96780cc@rbox.co>
+ <auT+YIawHSMPHbJI@devvm29614.prn0.facebook.com>
+ <5a411a67-f550-459d-be9b-5e8e51d3018c@rbox.co>
+ <aujn5/nm9f9YX6bM@devvm29614.prn0.facebook.com>
+Content-Language: pl-PL, en-GB
+In-Reply-To: <aujn5/nm9f9YX6bM@devvm29614.prn0.facebook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On 11/2/26 20:43, Bobby Eshleman wrote:
+> On Mon, Nov 02, 2026 at 02:21:27AM +0100, Michal Luczaj wrote:
+>> On 10/30/26 21:30, Bobby Eshleman wrote:
+>>>>>> Yeah its all kind of a pain. The problem is that we need to hold
+>>>>>> sock_lock to set sk_state and sk_err, but can't acquire it under the
+>>>>>> table lock. Instead, we grab the socket ref sock_hold under the table
+>>>>>> lock to guarantee it stays alive between releasing the table lock and
+>>>>>> grabbing the socket lock.
+>>>>>>
+>>>>>> I was really tempted to not do this lock_sock dance though. The race
+>>>>>> condition I'm avoiding here is that if this reset races with an RST
+>>>>>> receive, then the socket could end up with TCP_CLOSING + sk_err
+>>>>>> ECONNRESET... but I'm not sure this actually propagates up into a real
+>>>>>> problem for any potential user.
+>>>>
+>>>> Right, vsock_connect() is fragile. Two things to be cautious about:
+>>>> 1. Don't let it reset the already connected socket. Because that would
+>>>> allow user to "re-connect()" and make mess in connected_table.
+>>>> 2. Don't let it re-assign transport of an already connected socket. Because
+>>>> that breaks the contract in few places.
+>>>>
+>>>> State 1 is not an issue: vsock_g2h_reset_unreachable() calls
+>>>> __vsock_remove_connected().
+>>>>
+>>>> State 2 may be problematic: if vsock_g2h_reset_unreachable() sets TCP_CLOSE
+>>>> when connect() is scheduled out, then after the wake-up sock may get reset
+>>>> to SS_UNCONNECTED. Then user re-connect()s and hits the transport
+>>>> re-assignment logic. I'm worried that, as we re-assign, someone may be
+>>>> holding a reference to such "connected" (even if not in connected_table
+>>>> anymore) vsock.
+>>>
+>>> I see path you're looking at... after vsock_connect() gets scheduled
+>>> back in we set TCP_CLOSE/SS_UNCONNECTED if sock_error returns non-zero.
+>>> Could you elaborate on your last concern there about someone holding a
+>>> reference? I'm not sure I fully understood.
+>>
+>> Ah, sorry, let me explain. This case reminded me of the vsock's TCP_CLOSING
+>> bug[1]: reporter mentioned vsk->trans getting freed when skb was still in
+>> flight. I did not reproduce the exact scenario, but it did sound plausible
+>> and I thought it applies here: virtio_transport_destruct() frees vsk->trans
+>> the moment vsock_loopback_work() invokes virtio_transport_consume_skb_sent().
+>>
+>> Now, to get there let's start with vsock_connect() setting SS_UNCONNECTED
+>> (on a connected) socket after vsock_g2h_reset_unreachable(). Then user is
+>> able to re-assign the transport, which involves
+>> virtio_transport_destruct(). But since we're dealing with a connected
+>> socket, (before the reset) some send() might have triggered
+>> vsock_loopback_work(). Does this make sense to you?
+> 
+> Ah you're right. I think that your approach of making vsock_connect()
+> more robust is probably the right way to go...
+> 
+> I think this is the new race...
+> 
+> 1) vsock_connect(cid=VMADDR_CID_HOST)
+>    -> enqueue pkt
+>    -> sleep
+> 
+> 2) rx worker receives OP_RESPONSE
+>    ->  sets TCP_ESTABLISHED/SS_CONNECTED
+> 
+>    (vsock_connect() still asleep)
+> 
+> 2) sendmsg()
+>    -> sees SS_CONNECTED
+>    -> enqueues skb
+> 
+> 3) netns reset sets TCP_CLOSE and sk_err=ECONNRESET
+> 
+> 4) vsock_connect()
+>    -> scheduled back in
+>    -> sees sk_err != 0
+>    -> sets SS_UNCONNECTED
+> 
+> 5) vsock_connect(CID=VMADDR_CID_LOCAL) call #2
+>    -> sees SS_UNCONNECTED
+>    -> frees old vsk->trans
+> 
+> 6) sendmsg's skb tx completes
+>    -> tx worker dereferences vsk->trans for the UAF
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Yes, that's exactly what I've meant.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> If connect() checks for SS_CONNECTING before setting SS_UNCONNECTED,
+> then in step 4 sock->state stays as SS_CONNECTING and the second
+> connect() call will hit -EISCONN instead of freeing vsk->trans.
+> 
+> Seems to work for a racing vsock_shutdown() too, where sock->state would
+> become SS_DISCONNECTING, and the second connect() would hit -EINVAL
+> instead of freeing the vsk->trans.
+> 
+> I guess the rule would be that vsock_connect() sets SS_CONNECTING before
+> sleeping and only changes it to SS_UNCONNECTED after waking if and only
+> if it is still SS_CONNECTING.
+> 
+> WDYT?
 
-- [High] The patch does not fully close the case it says it closes.
+I think it's a great idea. Does seem to solve quite a lot.
 
---
+thanks,
+Michal
 
-netfilter: nf_reject: validate TCP header length before sending resets
-
-This adds a check to nf_reject_ip_tcphdr_get() and
-nf_reject_ip6_tcphdr_get(). It rejects TCP headers whose doff is smaller
-than the fixed header or larger than the available TCP segment. The goal
-is to stop sending an RST whose ack_seq comes from an invalid header
-length.
-
-> diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
-> index 7cb33af671e26..5ed97772bbaaf 100644
-> --- a/net/ipv4/netfilter/nf_reject_ipv4.c
-> +++ b/net/ipv4/netfilter/nf_reject_ipv4.c
-> @@ -189,6 +189,11 @@ nf_reject_ip_tcphdr_get(struct sk_buff *oldskb,
->  	if (oth == NULL)
->  		return NULL;
->  
-> +	/* Reject invalid or truncated TCP headers. */
-> +	if (oth->doff < sizeof(struct tcphdr) / 4 ||
-> +	    oldskb->len - ip_hdrlen(oldskb) < (oth->doff << 2))
-> +		return NULL;
-
-[Severity: High]
-Should this check use the length from the IP header instead of
-oldskb->len?
-
-nf_reject_iphdr_validate() only rejects skb->len < tot_len. Also,
-nf_reject_skb_v4_tcp_reset() never trims oldskb:
-
-net/ipv4/netfilter/nf_reject_ipv4.c:nf_reject_iphdr_validate() {
-    ...
-	len = ntohs(iph->tot_len);
-	if (skb->len < len)
-		return 0;
-    ...
-}
-
-The unreach builder in the same file trims before it uses the length:
-
-net/ipv4/netfilter/nf_reject_ipv4.c:nf_reject_skb_v4_unreach() {
-    ...
-	if (pskb_trim_rcsum(oldskb, ntohs(ip_hdr(oldskb)->tot_len)))
-		return NULL;
-    ...
-}
-
-Callers inside the IP stack get an skb that ip_rcv_core() has already
-trimmed. The netdev ingress and bridge reject expressions don't:
-
-nft_do_chain_netdev()
-  nft_reject_netdev_eval()
-    nft_reject_netdev_send_v4_tcp_reset()
-      nf_reject_skb_v4_tcp_reset()
-        nf_reject_ip_tcphdr_get()
-
-nft_reject_br_send_v4_tcp_reset() works the same way. On these paths
-skb->len still counts Ethernet padding and any trailing bytes the sender
-adds.
-
-For those skbs, can a doff that runs past the end of the IP-declared
-segment, but fits inside the trailer, still pass this check?
-
-Take tot_len = 40 (a 20-byte TCP segment), doff = 15 and 40 trailing
-bytes. The check sees 60 >= 60 and passes. nf_ip_checksum() also sums
-over skb->len - dataoff, so it doesn't catch this either. Then
-nf_reject_ip_tcphdr_put() computes:
-
-	tcph->ack_seq = htonl(ntohl(oth->seq) + oth->syn + oth->fin +
-			      oldskb->len - ip_hdrlen(oldskb) -
-			      (oth->doff << 2));
-
-and an RST still goes out. That seems to contradict this part of the
-commit message:
-
-    on both IPv4 and IPv6, a probe with doff = 15 produced an RST with a
-    wrapped ack_seq; with the fix no RST is generated for such packets
-
-A minimum-size frame shows the same thing. With tot_len = 40, 6 bytes of
-padding and doff = 6, the check passes (26 >= 24) and the RST carries
-ack = seq + 2.
-
-The wraparound itself is fixed, because the check and the ack_seq
-calculation now use the same length.
-
-IPv6 looks the same. In nf_reject_ip6_tcphdr_get(), *otcplen is
-oldskb->len - tcphoff. nf_reject_ip6hdr_validate() only rejects
-payload_len + 40 > skb->len, and nf_reject_skb_v6_tcp_reset() never
-trims. The IPv6 unreach path does trim to payload_len, in
-nf_reject_v6_csum_ok(). nft_reject_netdev_send_v6_tcp_reset() and
-nft_reject_br_send_v6_tcp_reset() pass untrimmed skbs into this code.
-
-Would it be better to use ntohs(tot_len) - ip_hdrlen() (and the
-payload_len based length for IPv6) for both this check and the ack_seq
-calculation? Trimming oldskb first, as the unreach paths do, would also
-work.
-
-Either change would also fix an older problem: for well-formed doff = 5
-packets on these paths, ack_seq is off by the padding length.
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261102155622.2658789-1-zhangmh25%40mails.tsinghua.edu.cn
