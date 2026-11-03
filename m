@@ -1,63 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793711884;
-	b=ms3u/jnhuXUcXW1UuqbTV8lMn4ce2qFbugcfoajHSKQkWOAPmhQ7POHAouwggwHjq84G
-	 B7GUeZEOUSVkzpFUTne2j4ZrTnH8ohfZTZMq0xmkCdGX5qEq8Uspswjt51K97pDMeLtNi
-	 lxcRw/H9qG8Ch6V+Xy2ZvBYYNz/cTS1FI1FRkHWNyKlE6ijLCelW3hkXtksmeh50U0pbN
-	 s5U+6I956E/2vcQ9KoWK3230y109svc0zNWE3PY4lsJItJReHIPUBVu+SQ7bJ+V5gKxSz
-	 YrDbj56xOUA8UJ6hOnlifZxIRGWus4Spb1nziW8ItQPAQGdkOUwqkfUHB9qhbrncdUg==
+	t=1793712102;
+	b=ld/p99km7FyuEUa3mG6WLK+hr5iI/3+uj/sEvMzX58Q2Irp3L+oQmifuvhl7Z8X+QO69
+	 nVbJsuSDioY4+rzhhFKTD7oBxFuIsA0dgpV7Mb79Coaq9q37fHTu62z9ggumlYoq3I/59
+	 vCGOPxxVf9Ea5QJjuVvoUi8eJFD+NVsejabyMVH00HBC9pfcq9aX/9tvLdcxr1oXQdUIZ
+	 NroAoH5cEPOSbopXpHCW93zUd8zPdc//D1bXHsrryO8q3/OZke9C46Au1AnqBX3nnRDaM
+	 CT00r7mosi5topudgPcgYZ4SSaj9XgUvie7KqAqh7Il55Z/nDtmIdxzM2WqjudX52sA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793711884;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=K9NjD2+W4U6XlZrh0EAEIVxEbQlkl7AjVMW3Vg/Ub/I=;
-	b=GAfnIth1+8eyCKNKDqd1FO3jvng1lYeB4GfElLK9DbJr2wLpy9MWdQac2JsnQ/10wZpN
-	 GPFjJQal6RFql20XKYo3A2jCaoMqM0c/VqDZZ4O3QNbefeM4oBMGycEozAx5YyGWuqmQX
-	 IFfTQk4l7l9LSmTCfsoNo2i6jqPiXb0GCHEsMxhjIdzxJOhq9dEwzuwi7bNOWe/nLKMGR
-	 qFgZ9WMS/QesjwJSuRW2I/L0vI0+JsfPHcgz+NwNVHavANWFfbk3SR3NqEB+lkDICSSOd
-	 YwLvVAI/c4evDGCAkYNJWcIdxMc8QevcNxTh/vAf/y15ICDEzxq9XFB9oxDp3gBTsFA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793712102;
+	h=DMARC-Filter:Received:DKIM-Signature:MIME-Version:Date:From:To:Cc:
+	 Subject:In-Reply-To:References:Message-ID:X-Sender:Content-Type:
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=4i7JeNgS3PqRN89dO+cpnOVMM3es4j1AZjQVBIQdGUs=;
+	b=Ch7wppAAi3tPECy0zVGzjawA7z0tnN4bb9vPi29mp0CMFE+dBZi/1IQC2ZPYfkhQ0/kH
+	 OG5H2G8Cjxe1qrk5K0wPX9AFtiDy/j6S/PYHSxjB1tCenbDH7vGhu0iuQewDYuPx0CChp
+	 LeTqZOjZJBe4CNVzzeifIgVaGWgRIriBf93B/PZW5VhAL/G840bCAPtdg/wxp8dH0J7SV
+	 q+HzcR/xoli7nyiAfU3CKk81fF+V1RkNtNrhhRunT8ylSkZ6rIDLEiIASq6NoZh1R/bF1
+	 BXISdUNVWOjX4Bf1Npu41lzRIZDVZMm3JgO5W+SSN18bGBBPK8DzY88f4C1y/3+GWlA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=mySeKOCX;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b="t+URNc/r";
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4EC96082BF9;
-	Tue,  3 Nov 2026 13:18:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4EC96082BF9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D630E606A32F;
+	Tue,  3 Nov 2026 13:21:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D630E606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=mySeKOCX
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=K9NjD2+W4U6XlZrh0EAEIVxEbQlkl7AjVMW3Vg/Ub/I=; b=mySeKOCXECat/gT6wlEkO1lhfF
-	HpjH+OZEmSnxM3vAtf7yTXSohM+uGLVgfJvJytF2/CPWdy/oU5tJHuo11rw8b80qkiW95NHDHSUx1
-	olYaPMzL9Wv+xzsCfKhon1tL1J6AIYUg18bOdTiwSDojFU0mYmPd3s6FOP2dZgDv4zz0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xOEOj-00E3ZI-Cg; Tue, 03 Nov 2026 14:17:57 +0100
-Date: Tue, 3 Nov 2026 14:17:57 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: dsa: motorcomm: Clear the MIB buffer on chip
- reset
-Message-ID: <636c7cc0-f4b0-41ae-8cd3-c4bedb70307c@lunn.ch>
-References: <20261102101125.3523835-1-mmyangfl@gmail.com>
- <68a1d47b-e3a1-4353-82a0-89fb2d387f2b@lunn.ch>
- <CAAXyoMOsu0kL9Y=7+BhDizgUbF+tY+i51vdNpeZ6KhQAPovvcg@mail.gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=t+URNc/r
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 12ECFA1648;
+	Tue, 03 Nov 2026 14:21:32 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1793712097; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=4i7JeNgS3PqRN89dO+cpnOVMM3es4j1AZjQVBIQdGUs=;
+	b=t+URNc/r60MoZy96AxoqAKxv0aiqloRdmJ8e59KAjvzK44rrpCrCXMkv5SoSrCNrtzbeAa
+	Vks8GVOW6j9f+vuuDEjqctWXcvSomv0vXToVIMFyptKvJQtvox49KLs9kRYFh42UsWAfSp
+	Rj86BtBBuyrn1m8O29j/zUEqPgfCN/CS0yT1ia1e7HiiXMl0vlEcOs8Th2kR1Ok+sOwDnv
+	BQrsLKs0luXhMQIqI3NqcpJjWvrR7fFScABtyplK2GhaWDrJ3LFYf9ikDPWcXjYQpQqKxN
+	zxHfBgs9QdAF+cA+KtBYYIQtxg7o2WIATF4bMlBoejUxDN2a9ymII9qqmRRdtg==
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,17 +53,69 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAAXyoMOsu0kL9Y=7+BhDizgUbF+tY+i51vdNpeZ6KhQAPovvcg@mail.gmail.com>
+Date: Tue, 03 Nov 2026 14:21:32 +0100
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+ davem@davemloft.net, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Russell King <linux@armlinux.org.uk>,
+ Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>, Magnus Leatti
+ <magnusleatti@kernelriot.com>, thomas.petazzoni@bootlin.com,
+ =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net v2] net: stmmac: Clear DMA errors for multi-channel
+ interrupts
+In-Reply-To: <20261103125430.962715-1-maxime.chevallier@bootlin.com>
+References: <20261103125430.962715-1-maxime.chevallier@bootlin.com>
+Message-ID: <4ae868bcfbdbc0f74ea5a9d57094e7fe@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-> Motorcomm does support cascading, but not in our driver. So yes, this
-> is largely theoretical and I just follow what sashiko said.
+Hi Maxime
 
-Then i would target net-next.
+On 3.11.2026 13:54, Maxime Chevallier wrote:
+> The Multi-MSI interrupt handler doesn't clear the DMA error interrupts,
+> and this leads to interrupt storms when one of these interrupts starts
+> firing :
+> 
+>  - The RBU (rx buff unav) which triggers under high traffic load
+> 
+>    This triggers easily with iperf3 and small udp packets, and shows
+>    when running the netpoll kselftest
+> 
+>  - The RPS (rx process stop) which triggers when we stop the DMA RX.
+> 
+>    This one shows when restarting the RX logic without doing a down/up
+>    cycle, like when attaching an XDP program. The XSK kselftests
+>    triggers it.
+> 
+> Let's make sure we clear these interrupts for multi-MSI cases, and call
+> stmmac_global_err() upon tx_hard_error to avoid possible races with
+> other interrupts/napi.
+> 
+> For that introduce an "ERR" DMA dir, as we don't want to touch the
+> RI/TI bits when handling these interrupts.
+> 
+> Both of the above storms have been found on dwmac-motorcomm (YT6801),
+> and are triggered by the xdp.py, xsk_reconfig.py, xdp_features.py,
+> ring_reconfig.py and netpoll_basic kernel selftests.
+> 
+> This seems to only affect dwmac4, there's no multi-msi mode on
+> dwmac1000, and on dwxgmac these interrupts are masked as of today.
+> 
+> Fixes: 6ccf12ae111e ("net: stmmac: use interrupt mode INTM=1 for 
+> multi-MSI")
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
+> [...]
 
-    Andrew
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
----
-pw-bot: cr
+Thanks,
+Nicolai
