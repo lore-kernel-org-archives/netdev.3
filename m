@@ -1,100 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.173
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793725167;
-	b=t4QgCM7Wixe8GjCCrDuRViuCF+hnC4IOHY4fBdtzdGw0YY4JhXzRI5FT7hSMDVCMBBzY
-	 8IZLiCO1pOsmPeY12oEk0wkZjFi9pR24M0QfA0HeMHHd9sqxeISWQJ9auQBMYdgvekYrr
-	 DLkveXjESZrVJ3D5LrS1chAStsYX/mCWdLRWgfY8th2t85YAKigOvtZ9+wYFy4V9oRPyq
-	 sMkGNF7bqniNntALg88CFRybz5o56xF0/NYwOXsBKjFYUQvwWGn/dxNbibeSdpxOwto4C
-	 5f1i8Rrwoaj7wGGi19gf78lx0nOZ3eMqcRG8OHLVblAz3IqxQyM4q5VWK5yUiQjMijg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793725167;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.48
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793725205;
+	b=ylRzXVou3UeBD9xnu/z0YSCIxpm7CcJwfsrXhGKmYQlhekWd2ga+HGotZ/jTcYVePvjM
+	 GaE835bGs6VGeZo15Fqfu1JAmixeXKpbK49Dc1S4ww8yY+S8tY6mX6Zy5XCQKTQRmcwkb
+	 WlFUVbkoj7Etl/v1G7tITKB1EW/kvUKMHexGgGoHaatIkxYeKr4J8IHo3b9jN+RfAO3tY
+	 qN13ONkTFFt7OwrdebzTVzpzztCNxE4Lt39JddWnLjeTUas6k/Lq026a7P8dx+lKk3nAH
+	 G1P0u/wspajz760/HXJ6pb/LIM+/ofUxCbV7iknx05ckWhtiykWLOy8kG6i9QZDdXZw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793725205;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=30fBqIUk44N3HdvXKXPWYu2PFlzNF8/RtKozuVD1mMQ=;
-	b=HkGwaq83iaVtMMSnLIUHxQqhG2/l0tF32Bah5l7eP0azr605oHk7tm180MRUyGs9q56n
-	 6xfdxpuN+9STxS13tgr+BRoLJsJlqXstZ9e3pqOY4rrviX44O9EAHWpwGtbt7k1Dgd5iX
-	 wfkxe4wrY+zKXcBzAVg7/lyApm7wD+EBI9G+v52IWeld8TwXwQZprQpC/dpduVsnpPeSB
-	 FhSvRPHSFvQldyUreAwGjS3Qsa9bHyX17r/W9SujuPkuhiXHm3LVVhOaKU5Ntj6N1I09u
-	 pCy8WUEkK3WkLFNMvQoVAmn2ta5fkElCpVWrHPMt/EAdSdZg+RnLimGnCbLUMr4i1mQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=IwENZntiJlarlvFQZtJA8Hi2kPGzvUj5L+0sjlz0GhM=;
+	b=EeQHCJ2TnXHLUsBGT0jkrV6R/VOfi4lDZeKSF+p9V9YjLSlbGaUeeWTA1uoYaVOqR/oM
+	 qgxHc+H9KD0JwXrxBeiV1SvsiGrl4mhQrkv3FAEkFWtQ8BUgOmH9/DU4lOMZ6E/N8n1tZ
+	 Eu2EYT8lgIIkh1wdO2B6Pa07Zc1Uhr/7dgDbSQmCLcc5k7ADF6stfmW4IcRcdYMM7aBfI
+	 A0j8W5U0Wg6itifFKXhEzjlGj53727mBPS2agjWen4k11S3sWlLocNnWSjOsu3ZtgI0QV
+	 W68GdhecpEWpJ3KviK13u1TEujtDJs60+5+siwa/exq++UHBewe5ySvwKFys0YH6zBA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="EtIDaBg/";
-	arc=none smtp.remote-ip=74.125.82.173
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=k4H569jS;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.48
+Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B58606A33D
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 16:59:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 51B58606A33D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E98606A32D
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 17:00:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4E98606A32D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EtIDaBg/
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-36a17a332ecso6641568eec.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 08:59:27 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=k4H569jS
+Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-67be6030c9fso363752d50.3
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 09:00:04 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793725204; cv=none;
+        d=google.com; s=arc-20260327;
+        b=KWvjalU2JjWK/UcEjNXOz21Bf93j0l3FFpDpljqHrSeLM3h/juishCxPbYkhZJeS1J
+         xQTUDyACes582DoDVGzgd849ULPGEsG8Spmxc+LmZ+J7m7+wpKQ90GIxUraXIqOuMIAq
+         Xa5YDlAMe3yU8eY0sCId4pcspTvXQVJLqpKpA3c1jmWsw0G8lCL580UAscyKbgW7YchP
+         D40knhS+g27Bk0P5qC3GVlDNuIqxtRZQHSRjUvWd0fWtZ31Ncz9pXwg99uO8JaNNuOt9
+         0n3BQtIfVSF8BeSeFI9UWPachckUmFFedhrUXlyAtGVvcOsHUflt8qOiylzy8B3sFdlO
+         c8Kw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=IwENZntiJlarlvFQZtJA8Hi2kPGzvUj5L+0sjlz0GhM=;
+        fh=p1lSp+eagMvvtUMgtpOxbkIPRWyyOgifvSXsDvQx62U=;
+        b=B4s/2JID42Cm/DikG1v3WW6rcbNmIr6vLhzFRnyRgBJCszdCYa2/u783DRY28U7LuM
+         mAuGdN3bAEiY+DU3yo+tNs6sduKotyDNTsJIsOWzh3AipUSb7s8+je6x+J+v5icYYafX
+         47AlXMi4bmqTYNyUjbYksNvVMOaa27ZAizbGCAChRuFoRfnOXEvginFItog4HF3gBfeM
+         8l5mNKzmEOHJ9NDpY1dV47Ia2kXWPhvMrTpwzUXLK1hvcSf1ZyNAKsJq2vEmtqL1rd8L
+         pRoWKjdxrSy45BBxde8BMMBUodr7c7QGTE6FAtauAfrR4dnqXSl2UN1cjkL45MdoP0kJ
+         ruiA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793725166; x=1794329966; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=30fBqIUk44N3HdvXKXPWYu2PFlzNF8/RtKozuVD1mMQ=;
-        b=EtIDaBg/4JeF3SEyd/fennYexa3s3b14Aso1mQwgf5ZC79pj9WSiR8/nd/DodHTQ3y
-         ujy3VkKnDw6ywAYO/MjUyvdKha7x7UsIF7DejTEN5evpHogOPCY+5U6niz9x0jtboYP9
-         UY02eyKVCeI9oSU0fPYeurN9MaX7M3rqyvwlQvOtfPf621UvSVHhi8WBhLgMpkLI+XeU
-         QWwK5D/c2GVwkrVOsFIYS/xERe+FfDSs4x1GRRfhOD/cGkJCW/+SEf8nLV0tCW0zWN2t
-         7IF+DVilcU8sYVm3rMYSsWOlwsoLVahFoLlpqU65V0HBYo9NeoFstKmn5X5MXd/9Xm+C
-         uezg==
+        d=gmail.com; s=20260707; t=1793725204; x=1794330004; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=IwENZntiJlarlvFQZtJA8Hi2kPGzvUj5L+0sjlz0GhM=;
+        b=k4H569jSNCl7pmw98TBgG0nbexJM78aST+cZIQiq6SpBtwiyvbDsZORQ8P8bhuI0Uz
+         ckpHp7quXXbxiZHFqZrc+iNY/6HcmMAy5gh20AP3xQOLYCMxdY3AYEJxfTKfxlHEz7j8
+         p6liLVWp9qEzHIIJoV+jkW3mzum+kQzNQ+K6EKG9f1EHL5UXr2tELlypFdr1s9/FpqQu
+         /R6q9+4CFmEe6/e9lDzuR7MngJfmG4FFUrJkDRJkS+VdBPL+Tzm/rjXXckE6kLS2tOLk
+         Pye+oyypvdm5kKNAorqaCwXXk1GC35JVwaBdS1PWPrRbXRg9LLS1mYu7tkoND+xM1wJk
+         RGOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793725166; x=1794329966;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=30fBqIUk44N3HdvXKXPWYu2PFlzNF8/RtKozuVD1mMQ=;
-        b=I95g5d8Gld9VqbzBq397RbxvI6A/+hu9KOqFjGLv6VLjWboU1YkQ9dQGB3fqmDgtvx
-         XeWLsJpIdm4mWVKPVqf8WNi3xvtC8utuv4MyqrHRohC62NwWB4TGozr8+PwDk25NU2kd
-         fU6+IG7LQ7X62Wz0ldeRhNUWpkjO9GhwdnJ9oKo4Q/bJPvaaw7U8UUavxksjP0+zRpxx
-         QLdlQrN4DBItZ91fNCYeuIhIhslAMNF+B4aIh3ElYj0MCSG01H4HIvHajHq9ZEBXLu7S
-         mykNcNhkaTWkMoLRCqNjogoZExoJCabcNz7UIgX893mdPnfqob7YEJpaQMGpAJ+UMGZr
-         YpGw==
-X-Forwarded-Encrypted: i=1; AKwUvBzsTthhwqD5OV2ZU3B3pP6bT7oujt0n6HJr4P1QmAmWLUJKJh58r240ZXSbt00AosFDWrzdhYE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9aesnS88CAb37azuafOpzwez6rok3hOIAvReADzCe6fEHxXBK5
-	gyiX81JQqWlSEKq5JcEMrX3iR+5NFQ0FCqbrqDv12gSsFTTeNLXeiSF/
-X-Gm-Gg: AYBFou1Sm6V25In6WYuq6SCbhFtJCRfirMjgTzAXGa8iof6/5VfwzDCkv5MM+v4LqVQ
-	+Rem6V+HSA7+AZ+H/xp+CVW40AFoqHIbuUQSMNasA0yPUw/FbftpcEDorKLjYTRjF8pZ1A5gHdz
-	+b4FV+gGkl56cQwnzYP6lLMkft66U/NCfiYnVGQ46Rko7TPeE61yUGsfImg/76+MrWv+gMz+NgJ
-	weOj4FlKBDaA5YIVsgfaAP1T3n+auEHrdZmwBnbx/KcNYNomiHs+yDkn04aH/qqdHhqYDV8TPkm
-	gkFo2Aq+qDD2JqDjA1Tspixh/Co/NWGDbyoEZJFAjHef6ziw41gWjCpI5lqHwBrmrLeICuiXjnJ
-	27v7IQaIcQK3b7tGCrf/363x8eTWeHplPDeEji+dkHBag0brmTOMxNWbJyJUy0PRuiUBYBPDOjN
-	RS4brH4948eUkqptZJdWZ6EIbblbkmYXOUdKnekqCVyAbUJWHOpRXSsF6jzZpisvI7q6ds3AjlP
-	9IB89mulaa2IwD4HXwbi5wUwBZO3/qLy4BD/3V+FU4ZJjPNWwJPla8wiEkom4tRowu7I3KmUI4w
-	7rduiuSWm0tOElulpjxqaR5ORmVLdkE+4HFdnGO8hIt/fpiOpz6FYPccOLppYddaURUIAGEVW8G
-	s4PqgB9EcqmAFYkVj6cI3dsYSiw4WAnAVR0iPt1HfQTD8bYS5Qj4itQm+E+bIVBACz8q01wjPKb
-	40
-X-Received: by 2002:a05:7301:4b0a:b0:369:9af5:7bc9 with SMTP id 5a478bee46e88-36a424199eamr20487749eec.23.1793725166155;
-        Tue, 03 Nov 2026 08:59:26 -0800 (PST)
-Received: from LAPTOP-97G9G880.domain.name ([106.222.203.148])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a4239ca83sm9293247eec.0.2026.11.03.08.59.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 08:59:25 -0800 (PST)
-From: Karthikeyan KS <karthiproffesional@gmail.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Mike Christie <michael.christie@oracle.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] vhost-scsi: use FOLL_PIN for DMA page pinning
-Date: Tue,  3 Nov 2026 16:59:17 +0000
-Message-ID: <20261103165917.148720-1-karthiproffesional@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20260707; t=1793725204; x=1794330004;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IwENZntiJlarlvFQZtJA8Hi2kPGzvUj5L+0sjlz0GhM=;
+        b=Q7NhkLNG+bYBxyPFAuYDknuta5Hjf2QHk6IYhpD+G+ZZM9WMJWbOqEmL2wKgi5N1xq
+         Qi7/E3d6NQUcAUAx3JIxf366gwNv8n+GtAYAfDF5lT8PFN6uoPzZj+VeRdTeCjbTAHUv
+         2o5gI3rDNrRWjqZasy/UY3K6EHNTUCCAmZTH4Bl2LDkuS8QuMfzW7VP8kaEWnKs6JiBl
+         YVbwn09ELB1W+1KEIluevZ8zKuQSIU94INlfHmIHfpGmyoapdg3utJui5d6tb/v4On8F
+         F92V1Q+BjTn8bgSX9v/sEJepdRd2URGv4Qnh4AxOavqwzIz6hRrUUzmj6BRcsf+OsUdp
+         MgAA==
+X-Forwarded-Encrypted: i=1; AKwUvBzufqj/O66wRAA+Kv/n5W6EcJYkHG6g+xIeS2gibxQBkUFPx+BqlGDCdycjsetnENRh0SqIUqQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9TKT19jynPYfaAcW/U9O/a+KHP3AuJyKaNSLy9xu+b/x590KBl
+	qAc6K4nolB3/srYAl3TGS77+q91B2jl8V2I9pSA91/38yxKKfMzQ5eK7Rx8hy89XwfhfUwpyhLy
+	maxStwabLeB5W5eM5A3dCGDSC1RBpb8s=
+X-Gm-Gg: AYBFou28c1AOSFssJVzw+c7dzQ+n5NTmKSfYBAGiJwuKAPXnFCOhNcuAPjeT1qS0SSZ
+	eSMf3Zo6K8m/x2/qI9YPTpuseHK04gXi5lYtC/WaiZx+0dKdYk8ANorlyzeYbMITdVGdBoqaq8i
+	OC0J9uxb5gruKY9o055G1LHi3tWaVK+zJyY5OheGZlKMbAZRGpxTVSDvC+SjsBDgGlRkTMqoiFx
+	0+r5f6IXRXanvsk8KRhpcoyYGiZ90fAnEsomxLFOfTe7aFi5FITSPblklnp2/37w/L148W9+uoh
+	LmTG1MM4orkRtm4xo7pFcYqFTo1trW3fpKg169V2+KtMbKe65X7GfKktWtdNVALJCxqljuNw9TE
+	/vOazGDvdTxQpfO9ZwtJn4hZ/n0xWBcwYrMNzdSNpXr1ezaJjww6hRoYXNjdog3wn2Vsr+g==
+X-Received: by 2002:a05:690e:11c3:b0:678:d394:76e5 with SMTP id
+ 956f58d0204a3-67ba50b2058mr10515522d50.78.1793725203567; Tue, 03 Nov 2026
+ 09:00:03 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,200 +104,73 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <tencent_7A270291DDE5CD89DAFFE8A745D094D5BD06@qq.com>
+ <179344707641.114606.12665582704521593779@cmss.chinamobile.com>
+ <CAMMLpeQKJO52qhba=G-ZudUA57iAdX4SOapOv7YuprBZ3FzM-w@mail.gmail.com> <1793605892000.83333.5506952827930878398@cmss.chinamobile.com>
+In-Reply-To: <1793605892000.83333.5506952827930878398@cmss.chinamobile.com>
+From: Alex Henrie <alexhenrie24@gmail.com>
+Date: Tue, 3 Nov 2026 09:59:00 -0700
+X-Gm-Features: AclHuK-cYMiCx2wsZWfJ2YNCFTCxFXBS-_OrcxP7_PfeEMQ65pCJAdArhgcDTmM
+Message-ID: <CAMMLpeRtPjuxzJhy-pFe5skx9oUw88NxNi6DfMjoh=+VpGn+jw@mail.gmail.com>
+Subject: Re: [PATCH net v3] ipv6: reject wrapped temporary address preferred lifetimes
+To: Xia Yan <yanxia@cmss.chinamobile.com>
+Cc: Yingjie Wang <1075151112@qq.com>, netdev@vger.kernel.org, dsahern@kernel.org, 
+	idosch@nvidia.com, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, linux-kernel@vger.kernel.org, 
+	yana06070@163.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-vhost_scsi_map_to_sgl() takes references on guest buffer pages with
-iov_iter_get_pages2() (FOLL_GET) and then performs DMA to/from them.
-Per Documentation/core-api/pin_user_pages.rst (Case 1: Direct IO),
-pages that are the target of DMA must be pinned with FOLL_PIN instead.
-Only FOLL_PIN pins are visible to folio_maybe_dma_pinned(), which fork()
-uses to copy rather than COW-share anonymous pages under DMA, and only
-FOLL_PIN guarantees a pinned anonymous page is exclusive to the process,
-so a later write fault cannot replace it while DMA is in flight.
+On Mon, Nov 2, 2026 at 12:51=E2=80=AFAM Xia Yan <yanxia@cmss.chinamobile.co=
+m> wrote:
 
-Switch to iov_iter_extract_pages(), which pins user-backed iterators,
-and release the pages with unpin_user_page(). Kernel-backed iterators
-take neither a reference nor a pin, so track with
-iov_iter_extract_will_pin() whether an unpin is needed.
+> The remaining worry for me is retention. With a short preferred
+> lifetime and temp_valid_lft at its two-day default, deprecated
+> temporary addresses stay on the interface until their valid lifetime
+> expires, and this path does not check max_addresses. Your 90-second
+> configuration ages them out fast; with the default I would expect
+> many more addresses held at once, but I have not tested that or
+> measured the cost. The creation rate also depends on DAD timing, so
+> my earlier one-address-per-second estimate was too definite.
 
-Cc: Jason Wang <jasowangio@gmail.com>
-Cc: Mike Christie <michael.christie@oracle.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: virtualization@lists.linux.dev
-Signed-off-by: Karthikeyan KS <karthiproffesional@gmail.com>
----
-v1 -> v2:
- - Rebased on vhost next. Sashiko reported that the revert loop in
-   vhost_scsi_map_to_sgl() leaks a page when the misaligned-I/O check
-   trips on the first page with a non-zero offset. That bug is older
-   than this patch (the loop leaked a put_page() reference) and is fixed
-   in vhost next by Jia Jia's 058fc59326af ("vhost-scsi: fix page
-   reference leak in misaligned I/O fallback"). On top of it, this patch
-   only calls unpin_user_page() instead of put_page() in that loop.
- - Reworded the commit message to describe FOLL_GET and FOLL_PIN more
-   accurately.
+With the default temp_valid_lft of 2 days, creating 1 temporary
+address per second would result in a maximum of 172,800 temporary
+addresses. If the user explicitly sets temp_prefered_lft=3D1,
+regen_min_advance=3D0, and dad_transmits=3D0, that's exactly what should
+happen. When I tested that scenario on my desktop computer today,
+Firefox worked and overall system stability was fine, but Chromium
+failed to load any pages and NetworkManager became unresponsive. It
+seems that some software doesn't mind that there are tens of thousands
+of IPv6 addresses and other software won't tolerate it.
 
-Testing: in QEMU (fileio backend), a 1 MiB write at page offset 3840 is
-257 pages, more than BIO_MAX_VECS, so the misaligned-I/O check trips on
-the first page and dmesg shows the "vhost-scsi detected misaligned IO"
-warning. On v1 (before 058fc59326af) the nr_foll_pin_acquired and
-nr_foll_pin_released counters end at 257 and 256 for each such command;
-with v2 on vhost next they balance. Plain (256 pages) and T10-PI (260
-pages) writes balance too.
+I'm not convinced that using max_addresses to limit the number of
+temporary addresses is a good idea. The default value of max_addresses
+is 16, so in the worst-case scenario, after 16 seconds temporary
+address creation would be effectively disabled until the addresses
+expire 2 days later. Similarly, if the user sets temp_prefered_lft to
+1 hour (a perfectly reasonable value), the limit would be silently
+reached after 16 hours. If we increase max_addresses to 48 to be sure
+that 1 temporary address per hour can be created for 2 days, a brief
+period of worst-case router advertisements would still use up all of
+the addresses in 48 seconds. To protect the user's privacy, new
+temporary addresses must continue to be created no matter what is
+happening on the network. (With one exception: If the SLAAC address's
+lifetime is so short that it's effectively a temporary address
+already.)
 
-v1:       https://lore.kernel.org/20261007163716.707102-1-karthiproffesional@gmail.com
-RESEND:   https://lore.kernel.org/20261020182640.2048506-1-karthiproffesional@gmail.com
-review:   https://lore.kernel.org/sashiko-outbox-180555@kernel.org
-leak fix: https://lore.kernel.org/20261023104035.6686-1-physicalmtea@gmail.com
+We already have regen_min_advance which specifies the lower limit of
+regen_advance. Maybe we should also have a regen_max_advance to
+specify an upper limit. That way, a misconfigured router could not
+cause a Linux client to create a new temporary address long before the
+current temporary address expires, nor could a misconfigured router
+cause Linux to use a long-lived SLAAC address without creating any
+temporary addresses at all. The maximum number of simultaneous
+temporary addresses would become temp_valid_lft / (temp_prefered_lft -
+max_desync_factor - regen_max_advance), and the user would be expected
+to set temp_prefered_lft to a value larger than max_desync_factor +
+regen_max_advance. With temp_valid_lft=3D172800 (2 days),
+temp_prefered_lft=3D3600 (1 hour), max_desync_factor=3D600 (10 minutes),
+and regen_max_advance=3D300 (5 minutes), there would be a maximum of 64
+temporary addresses at any given time.
 
- drivers/vhost/scsi.c | 50 +++++++++++++++++++++++++++++++-------------
- 1 file changed, 35 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index e44044449cef..8beeff06a7a7 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -115,6 +115,8 @@ struct vhost_scsi_cmd {
- 	u32 tvc_sgl_count;
- 	u32 tvc_prot_sgl_count;
- 	u32 copied_iov:1;
-+	u32 tvc_need_unpin:1;
-+	u32 tvc_prot_need_unpin:1;
- 	const void *read_iov;
- 	struct iov_iter *read_iter;
- 	struct scatterlist *sgl;
-@@ -463,8 +465,13 @@ static void vhost_scsi_release_cmd_res(struct se_cmd *se_cmd)
- 
- 			if (tv_cmd->copied_iov)
- 				__free_page(page);
--			else
--				put_page(page);
-+			else if (tv_cmd->tvc_need_unpin)
-+				unpin_user_page(page);
-+			/*
-+			 * Else: iov_iter_extract_pages() took neither a ref
-+			 * nor a pin on this page (ITER_KVEC/BVEC/etc), so
-+			 * there is nothing to release here.
-+			 */
- 		}
- 		kfree(tv_cmd->read_iter);
- 		kfree(tv_cmd->read_iov);
-@@ -473,8 +480,8 @@ static void vhost_scsi_release_cmd_res(struct se_cmd *se_cmd)
- 	if (tv_cmd->tvc_prot_sgl_count) {
- 		for_each_sgtable_sg(&tv_cmd->prot_table, sg, i) {
- 			page = sg_page(sg);
--			if (page)
--				put_page(page);
-+			if (page && tv_cmd->tvc_prot_need_unpin)
-+				unpin_user_page(page);
- 		}
- 		sg_free_table_chained(&tv_cmd->prot_table, vs->inline_sg_cnt);
- 	}
-@@ -820,7 +827,8 @@ vhost_scsi_get_cmd(struct vhost_virtqueue *vq, u64 scsi_tag)
- 
- static void vhost_scsi_revert_map_iov_to_sgl(struct iov_iter *iter,
- 					     struct scatterlist *curr,
--					     struct scatterlist *end)
-+					     struct scatterlist *end,
-+					     bool need_unpin)
- {
- 	size_t revert_bytes = 0;
- 	struct page *page;
-@@ -829,7 +837,8 @@ static void vhost_scsi_revert_map_iov_to_sgl(struct iov_iter *iter,
- 		page = sg_page(curr);
- 
- 		if (page) {
--			put_page(page);
-+			if (need_unpin)
-+				unpin_user_page(page);
- 			revert_bytes += curr->length;
- 		}
- 		/* Clear so we can re-use it for the copy path */
-@@ -859,9 +868,9 @@ vhost_scsi_map_to_sgl(struct vhost_scsi_cmd *cmd,
- 	size_t offset;
- 	unsigned int n, npages = 0;
- 
--	bytes = iov_iter_get_pages2(iter, pages, LONG_MAX,
--				VHOST_SCSI_PREALLOC_UPAGES, &offset);
--	/* No pages were pinned */
-+	bytes = iov_iter_extract_pages(iter, &pages, LONG_MAX,
-+				       VHOST_SCSI_PREALLOC_UPAGES, 0, &offset);
-+	/* No pages were extracted */
- 	if (bytes <= 0)
- 		return bytes < 0 ? bytes : -EFAULT;
- 
-@@ -884,7 +893,7 @@ vhost_scsi_map_to_sgl(struct vhost_scsi_cmd *cmd,
- 		    cmd->tvc_sgl_count > BIO_MAX_VECS) {
- 			WARN_ONCE(true,
- 				  "vhost-scsi detected misaligned IO. Performance may be degraded.");
--			goto revert_iter_get_pages;
-+			goto revert_iter_extract_pages;
- 		}
- 
- 		sg_set_page(sg, pages[npages++], n, offset);
-@@ -896,8 +905,10 @@ vhost_scsi_map_to_sgl(struct vhost_scsi_cmd *cmd,
- 	*sgl = sg;
- 	return npages;
- 
--revert_iter_get_pages:
--	vhost_scsi_revert_map_iov_to_sgl(iter, *sgl, sg);
-+revert_iter_extract_pages:
-+	vhost_scsi_revert_map_iov_to_sgl(iter, *sgl, sg,
-+					 is_prot ? cmd->tvc_prot_need_unpin :
-+						   cmd->tvc_need_unpin);
- 
- 	iov_iter_revert(iter, bytes);
- 	/*
-@@ -907,7 +918,9 @@ vhost_scsi_map_to_sgl(struct vhost_scsi_cmd *cmd,
- 	while (bytes) {
- 		n = min_t(unsigned int, PAGE_SIZE - offset, bytes);
- 
--		put_page(pages[npages++]);
-+		if (is_prot ? cmd->tvc_prot_need_unpin : cmd->tvc_need_unpin)
-+			unpin_user_page(pages[npages]);
-+		npages++;
- 		bytes -= n;
- 		offset = 0;
- 	}
-@@ -983,6 +996,7 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
- 	}
- 
- 	cmd->copied_iov = 1;
-+	cmd->tvc_need_unpin = 0;
- 	return 0;
- 
- err:
-@@ -1007,11 +1021,17 @@ vhost_scsi_map_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
- 	struct scatterlist *sg = sg_table->sgl;
- 	int ret;
- 
-+	if (is_prot)
-+		cmd->tvc_prot_need_unpin = iov_iter_extract_will_pin(iter);
-+	else
-+		cmd->tvc_need_unpin = iov_iter_extract_will_pin(iter);
-+
- 	while (iov_iter_count(iter)) {
- 		ret = vhost_scsi_map_to_sgl(cmd, iter, sg_table, &sg, is_prot);
- 		if (ret < 0) {
- 			vhost_scsi_revert_map_iov_to_sgl(iter, sg_table->sgl,
--							 sg);
-+					sg, is_prot ? cmd->tvc_prot_need_unpin :
-+						      cmd->tvc_need_unpin);
- 			return ret;
- 		}
- 	}
-@@ -1449,7 +1469,7 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
- 		/*
- 		 * If T10_PI header + payload is present, setup prot_iter values
- 		 * and recalculate data_iter for vhost_scsi_mapal() mapping to
--		 * host scatterlists via get_user_pages_fast().
-+		 * host scatterlists via iov_iter_extract_pages().
- 		 */
- 		if (t10_pi) {
- 			if (v_req_pi.pi_bytesout) {
-
-base-commit: 1a577f9402c1780cc1e663f48d5dd54c02051b09
--- 
-2.43.0
-
+-Alex
