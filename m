@@ -1,94 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.45
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793715632;
-	b=WgqZdbyDfCJHUt/dOhFlog4fkvAFRzf5Rywm+G9oH5qA2z1OgMO/xcBA7ED/UGq6pNtT
-	 SDSDuFE4DFiuMNJ0eMCHFSATEt1OcQXzxQsJQTWFcF1Xa9GudKZswFJk1/sHE67kd+/hc
-	 W4RVR01F8qKmNCMAzw2jQoTuTJp5YJQyVM884NJwse4izy/ghu4vvCzkqZ9yEIVkbBmOr
-	 yt6dibn0jG2NMDFjOrqTpxubYI23OkQ+s/UH1JDBjKzy+KabNgRJpc617oCgea3K9ZOci
-	 VU1C9Wjm+Q7sLqbXgdGeZYznm5TkdlelNhnWeGQdyR2XLHUe8fD/RzOOZV8Tl+BcA/A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793715632;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.170
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793715766;
+	b=CrLBsv0gPtSyZokOsgFVzr3B8AnxnAf/Lkypf6AUiUcMvg2FYOKqsT8nr1QMQCEn+J2y
+	 5svcqvURBcUW6CLM0K0O72z3t3HAd127dTabtoXmTE4GBDiZ4pUHHVyx16SRxMai/59ze
+	 RzzVlqOpndN4r4a8SWA3AbgOT6KyighYMlFwJTKqNNoXWHWDK0pTO0Ge3RqkUL/33xiiu
+	 /kKu/TzwaZTGYGtn0YvmuEhALBlxZmNACYzmNWlphNDKtAUGTYmqRT+6xKX3t2Mqih4YL
+	 82SV+ca0L323ZhYTNTNi+DTOPjJqSPTrMzPVXS7pYCOM+++pUZL78f2l2DOWPqGVeNA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793715766;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=VpMYzPu6u1D1BTikiHVAhLBIAMWB7XVJJHTCsw6VgIU=;
-	b=dlxLG6Xyb02ZZjZJzFRLRhOyRibgIb1nnrCP8NpM1dPypeAyJ4zc5A2NSlprxSW+bGsC
-	 qLeOneVhX4RMDqmUa9JltWt/SUjqsVW+du8dvOrQDj4hbKaHLTXKWFUZQIJYoisZpVSrs
-	 8xETCme1ycsMF1FAYLUKBZ8l676CZF+Y2NFy+nc0/Dw33Buc5psn9O3CJhVoNCDoWVrCD
-	 Gei9yhPR5DfwY8dhWaOxE5UfPv2gdcCMBvaYPL73r3lRHwWIB+6Kbv07fGx26euQBkJXf
-	 9rW+ebC6EdobdJkBzbE1p2JGiIIzsHxEV0yAknae98P2CpHyjWt90Jp8Aeyb+z9tHMA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=goUEmUyHzHRn/JAgbYWl2i7yvd0k17zq6RZVq6dJndA=;
+	b=nPgrqRU9A6ncaBFQNb03gX4fhEcGasY5jwLBq7HYDbZ2V00ZuZNJkfv/G2lF46rESVgq
+	 X/0fuWqWPDsxjyN5iXHjrpuD5NMq1Z7VKNhibNMGjYipIcim59/7ycNRRnZ1+vAj9Yr95
+	 cvEphVzgQc6TXVN504qKvY1CQQtHflvIWOTRDlCeSKbrdt3Clkg8Kz6mXuhyVLaZ+Ufa5
+	 scnl7x6OFwR+vbMpncmHf+aEeFVXsXm0QLzXuslm93NY1s+eMD5qAAaUK6O/TsnjgWCd5
+	 o6I3FFPfYebVCTI5D2sqJetthuDyxAQgvr1LwlR3Z2Vv9hYfJmGcJJ8YLkETMvjq9Vw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=chAInqkO;
-	arc=none smtp.remote-ip=209.85.216.45
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Jhkisa2S;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.215.170
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D856606A331
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 14:20:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2D856606A331
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB72606A329
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 14:22:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9AB72606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=chAInqkO
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3ab2cb02816so606639a91.0
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 06:20:31 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Jhkisa2S
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cc4be0e5351so1697650a12.0
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 06:22:45 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793715765; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LpBiuuvK0iEQULP40BSPasTz7bRgelvioBVZuDxUtN0UlXtQRLx0KakKW8vnYv2CIH
+         RzIZZ9/ymmV+xybIjE5vNP4+N4Vbb5kt35sbTpA6KGsSTIu6UPtQk3Z3Qo8OM91YfBiq
+         fiLj0eAdQERkewZ86hnvu2h3zwKenLcMalWPKUPw4JkWZ04/RG7EL9jn6oQlI4M7E3zj
+         lJiNeZxsSTy5hy9un96Nq4EdGk0y5iqNJKdm8dss5TNJJJMakXONiOnwJxofoBGA22Gy
+         udyIsMBGObml/gmFr2MdYKGt32M27SE2vL/tijMKV1vGPMHNaEyXRwt8Pr5l0E2RGWgH
+         QgMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=goUEmUyHzHRn/JAgbYWl2i7yvd0k17zq6RZVq6dJndA=;
+        fh=ybSHhKyUGTpz5z1vpJjlPW5lfzgR1bAh+Z2a7r0KBDc=;
+        b=QOJ29Js9F4md4uvmntTFdxMBoNjj0CM5PdoRSmxw6CIwz+eMjhPjx2t7Hdgt7MDASC
+         Lc9zf+BOxl844fDkVGzezm71hA+IHRY7zwPTL7bEQRBY6TPqz75973wdrLMrsfvxyQY/
+         1Aqwj66QU3/R4mAs3X7j0CCM0R95xWzdHUb8TVKI44lHU2RheOSCMPHfHNdSOG8jFrMX
+         +pb9sHAy1U2aiJNzDAPWF0x58iShMFH40hLY3zwXtafnIoU5Az+h6+pbJcGqr+HkjV6o
+         dbRmfZUYJUPzNtEeKE9+5AsPGV30VbN/7evYnJuzM+M7aeicQfwvK+i40d2nM7/Qo75v
+         yMaA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793715631; x=1794320431; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=VpMYzPu6u1D1BTikiHVAhLBIAMWB7XVJJHTCsw6VgIU=;
-        b=chAInqkOHc/Y6EPjxq63RIyXfndpv1NSsFcYqT3l27zg9Y8ezSvmsjanVOTU6y6W5Q
-         PLIYQFNv78Gv5TAkN7/tmoXI/i2MrTIMh5f/YAxON5CxJq/TsvgybMbFX/Z3gU/kEpHk
-         uu2FUxqYyfTM6v6v+4k1vMCChg7f3WMPHRuTgE7hEyGlJfPc1ezPITLKDETEog1YXsqf
-         pMLjbhaGLuM8810Q9Hep0IY6Ow+xJDBsPRHcx0FjJmAzAPfCXNqAlYM3lKArwFQbgbDt
-         uNq7U80gsbTcDu9X41K2Yn1de66OuXthsw0xcbmiMRhETKxK/wxPVaHgF7kj3p80pJfe
-         U0WQ==
+        d=gmail.com; s=20260707; t=1793715765; x=1794320565; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=goUEmUyHzHRn/JAgbYWl2i7yvd0k17zq6RZVq6dJndA=;
+        b=Jhkisa2S2vXFBSNqqCyZnrR6JpuM5BBpw/U1ykOmBCVbHHAGBHiG59udh4q4ocSZzT
+         B+VLP21mZOHIS1JiMcrm4hn1l7sTaZeW36g+3nwf+SorUXmrDWEMCYf+9/iaAtGkWP2Z
+         jvIaLLuZeQ4HOU+rRp31Qy0Y1c0Y++wgaT0ywmdFgHf/MWUk0f+ANbMLe19dXKYipBm3
+         DqkuIdu20GgR3QdxoXR+SnZkJh1tFg0zTOIXILFVjTGAuUeaaF6fXdUsYCZwgoWvaGzk
+         AFufwdIM3Ds11CGHgak7opO6f4y9wacjoIffPeNer/sXD3iDcQGEv82oJ75qb5JfHozX
+         bmlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793715631; x=1794320431;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VpMYzPu6u1D1BTikiHVAhLBIAMWB7XVJJHTCsw6VgIU=;
-        b=hgwPMVb48MR2wFcx7QH2wXNC/lsTHobqLw3FA3J9Z2nBIN5Er7EFwmyRqVgpW6WDeQ
-         pE4CVaFjlF6fm0wQc92lmkTMicWiCZI9qQQZ+fIm4ezV40nf6tHQj/RKIn+QCSWGknC7
-         qxVusXYMqtM1eFHFg3KOpG5gce7yKoak+50XnyBuqqpDqp+kmBf2BRqUMxz25ebFi84g
-         sPZZkPpNkJK27jhH8X5Pf6DXl6oBZHN3vOx2NBC/MwNffM9ZBubnbFeJV9x+aXbPUIYR
-         KL6NbqpjvwGJE3qaaKe+aYl1lNHFX7WHZ3FdPGWuxBpkMCl2T41YhMRFh85HHUKAcivu
-         NQBw==
-X-Gm-Message-State: APuU4Z/n+Pif853NGPAJaZLqN46HyRNwyeEieUpaEOmZk0Cw7Ku3pluv
-	LL6TDq3P+iIVvolzse5GdpXX1wtoEBXVqtipRbVSFRj13VG+KQtyzdKhdoUyJw2QPyY=
-X-Gm-Gg: AYBFou3eXoR69CQgqKLDyQ0rwCgB00VRBiCUU1GHj3JPEx8ZzhoaScZJGt0P3J1CN9h
-	VFDtz54D+HLY71l8NHqMpOXcH5Uch2istQFnMFr0vcSpcK5OW1Pt+cKX3CJQ7Fk4RvfKzgbn4TH
-	/lMGBRzjhWWf+YZQXm2Ne/7Me8LdVz1dZXG900noh8ky1WI3+2SU4tL/v7rWw1AbihkrB2IUeZp
-	39zsJvl0gNuradXIv6EkflglC0lrrxSjINtGbeemWZnpYQMNR+nIvZQfPYpam/Xzm4jwSKsjtf6
-	BJ2/eRGcOoHpnprkmapGQloZHeUfUTJrtffHyd/73ptD8QZh00ZkM6+xo8os2e0QWbLT9CzA0ws
-	dGDm1jPNaKkoumcgar+ClLBq72WowGqWNg43zM7V6G+ag69KM6OdIDJZyB3jZ1zEwx2PwO72kVA
-	MmNT/IifcTFIxSx3F2B1YVJf1dq66QgklPNB7VDKBNbqjYFTI7GWGalKludk7r6i+4RlVuEjZH0
-	YWIrznSLaAMamJ73nW+QWnKt7uHTeOhjlXIJZEZ+AMXdQ3TzBIrhqQ7zQaJbcm98EGWeJW9RsUE
-	S1FaN9dNcUr88BKacTqaX6tl/9w3ID3L3UEchfUKZA==
-X-Received: by 2002:a17:90b:46:b0:3ad:a84b:df1e with SMTP id 98e67ed59e1d1-3ae895b53cemr18794831a91.1.1793715631347;
-        Tue, 03 Nov 2026 06:20:31 -0800 (PST)
-Received: from CRASHEDROM.localdomain ([142.249.36.161])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c666cdcsm4536310a91.11.2026.11.03.06.20.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 06:20:30 -0800 (PST)
-From: Chengyu Liu <lui2012qwq@gmail.com>
-To: netdev@vger.kernel.org
-Cc: pabeni@redhat.com,
-	horms@kernel.org,
-	khc@pm.waw.pl,
-	Chengyu Liu <lui2012qwq@gmail.com>
-Subject: [PATCH net-next v3 2/2] hdlc_fr: shut down the LMI timer in fr_destroy()
-Date: Tue,  3 Nov 2026 22:20:15 +0800
-Message-Id: <20261103142015.1588144-3-lui2012qwq@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261103142015.1588144-1-lui2012qwq@gmail.com>
-References: <20261103142015.1588144-1-lui2012qwq@gmail.com>
+        d=1e100.net; s=20260707; t=1793715765; x=1794320565;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=goUEmUyHzHRn/JAgbYWl2i7yvd0k17zq6RZVq6dJndA=;
+        b=yw0yNzq00HL4sdTsbp31LdL2yFb8fxlxUXuGmDteK5W+mZsa080+oU7m0Kj11sq+1U
+         fRT/zPgJtJa+4FpB+Ii+wrtojos2KFNtxkltAuMd9md8rIg+NiMi8s079NCOYvdpjg7O
+         ZGmhkYlgtTrsYeM8JadUXFgbh3Dm/tvQ/k3yzAeXSQVF8jSgFt8TuU2E5s5+AVKw8II7
+         3Bc5U00nk4iFFFerzb66KBYTExQWiyPOgimoQJarMC/nCYWUZxA4wG2dyT19Ib7LwORt
+         kB8ER5JxuuEGn5Apzhr2hqJ4C+3SbDjYZy7GF+gdzyC6Ho+G8D/N+CbOO8QzqBlVStib
+         /6lA==
+X-Forwarded-Encrypted: i=1; AKwUvBxdafduBtLEOVaMM3onm/b60o8E6KjQuh8dDLn0x9l21k58W1qzTkD2c60ZwhXMRDIQUBrkrzA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8kRfhO2DfXUDeog0Drh/X9rqhSPIfCaDplQPLKBa2JfvU3vdIQ
+	PMgnr12D75OqVZOqjHOE5yCTJVMRmpfDBTj+AzfG2+7+q5C4pLqkAt3jxJvPMyibK6vQBMnwsr1
+	oiwwCU8uP2CEnkCNWUEHuJG1zyEyAo/2Eq8e6
+X-Gm-Gg: AYBFou3FlcIlauTg3FExuY3LJvujePhxP22qDzbBEuIOItHNDqP84yWZ8GtnDwpf9+O
+	8yUITuBK7NZn5Hh1XrEU3ZCXm/rcuSii+rgvrWKHcgsW8dPeL9DpSNZ8PI4rz5/RvQFXEibHCkO
+	aowp1b2voOBw1MvJgg01C4ZkOD5WvV9i+IGq5ZO9ba8WsK0mzgkgCDg+L9LfFrgSpx4Pte0Sc01
+	zhwAzv5kRHtul1H4UypVPFBf5Wv5DK7kJD7xNfTd0UoGDBta4wHpV93Q4k0tW2+az9CDw5CP2mH
+	4Y42y8abTjb3fV0ymUqWuiJAblXhkxjgbRw2lkh/xNnmwCrHGhqM1BXF+kUXki3BgjlGSNPkSy8
+	lbtsVgc1mD5EphoEGDtBSUsnDRrJJ4vTOwm1Wua0ObUynNKsaGptkJhufrxgqhcOWo1YxcPV77c
+	GlPOQ212nuXwj3f/FUP4ET4GE9cdKMd8tUWq240A==
+X-Received: by 2002:a05:6a21:3f90:b0:3e1:d119:ee35 with SMTP id
+ adf61e73a8af0-3e928d40e11mr9916793637.12.1793715764802; Tue, 03 Nov 2026
+ 06:22:44 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,70 +105,115 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261030042321.74407-1-kylebot@openai.com>
+In-Reply-To: <20261030042321.74407-1-kylebot@openai.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Tue, 3 Nov 2026 09:22:33 -0500
+X-Gm-Features: AclHuK9rygcKHlFq8M3zeAsoFHUWP0OF3Dg8S91AWQVg--msS91soOe9ITJpZK0
+Message-ID: <CADvbK_fwt6s14a0yJjRa5whAT-H+7RtaDXi4cR0-XmrvoJkeQg@mail.gmail.com>
+Subject: Re: [PATCH] sctp: avoid requeueing pending control chunks
+To: Kyle Zeng <kylebot@openai.com>
+Cc: linux-sctp@vger.kernel.org, 
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, outbounddisclosures@openai.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-fr_start() arms state(hdlc)->timer when LMI is enabled
-(settings.lmi != LMI_NONE).  The only deletion lives in fr_stop(), which
-is unreachable on the protocol-detach path: detach_hdlc_protocol() calls
-only ->detach() (never ->stop()) and then kfree()s hdlc->state.  FR's
-->detach, fr_destroy(), tears down the PVC list but never touches the
-timer, so unregistering an up FR device with LMI enabled leaves the timer
-armed on top of freed memory; fr_timer() then fires into the dead
-frad_state.
+On Fri, Oct 30, 2026 at 12:23=E2=80=AFAM Kyle Zeng <kylebot@openai.com> wro=
+te:
+>
+> The T4 and RE-CONFIG timeout handlers take a reference to their cached
+> control chunk and submit it through SCTP_CMD_REPLY. A previous transmissi=
+on
+> can still be on the control outqueue when output is corked or suppressed,
+> or when sctp_packet_transmit_chunk() could not append the chunk.
+>
+> sctp_outq_tail() then adds the same list node a second time. In particula=
+r,
+> re-adding a non-tail entry can corrupt the list without being caught by
+> the insertion-time list checks. A subsequent flush or association teardow=
+n
+> can walk the corrupted list and access an already freed chunk. The T4 pat=
+h
+> is reproducible by an unprivileged SCTP socket owner in a user/network
+> namespace, with KASAN reporting a use-after-free in __sctp_outq_teardown(=
+).
+>
+> Check sctp_chunk_pending() before adding a control chunk to the outqueue.
+> If it is already linked, release the extra reference supplied for this
+> enqueue and leave the existing queue entry in place. Continue to the usua=
+l
+> flush so that the pending transmission can be retried.
+>
+> This also covers RE-CONFIG retransmission after sctp_assoc_rm_peer() move=
+s
+> the request to another transport and starts its timer. Keep the existing
+> timer handling, corking rules and data-chunk path unchanged.
+>
+> Signed-off-by: Kyle Zeng <kylebot@openai.com>
 
-Shut the timer down at the top of fr_destroy().  Use
-timer_shutdown_sync() so the timer cannot be re-armed afterwards,
-matching the CVE-2026-63803 ppp fix (ppp_timer_release()).
+Please add a "Fixes: " tag for this patch.
 
-Initialize the timer in fr_ioctl() when the protocol is attached and
-drop the timer_setup() from fr_start(): attach_hdlc_protocol() uses
-kmalloc() (not kzalloc), so state(hdlc)->timer is uninitialized garbage
-until the first timer_setup() and fr_destroy() must never run
-timer_shutdown_sync() on it.
+> ---
+> I have a reproducer for this issue and can share via DM
+>
+>  net/sctp/outqueue.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/net/sctp/outqueue.c b/net/sctp/outqueue.c
+> index e92fb9da4647..a5f9f0fcf5fd 100644
+> --- a/net/sctp/outqueue.c
+> +++ b/net/sctp/outqueue.c
+> @@ -304,6 +304,11 @@ void sctp_outq_tail(struct sctp_outq *q, struct sctp=
+_chunk *chunk, gfp_t gfp)
+>                         SCTP_INC_STATS(net, SCTP_MIB_OUTUNORDERCHUNKS);
+>                 else
+>                         SCTP_INC_STATS(net, SCTP_MIB_OUTORDERCHUNKS);
+> +       } else if (sctp_chunk_pending(chunk)) {
+> +               /* A retransmitted control chunk may still be queued.
+> +                * Drop the extra reference and retry the flush below.
+> +                */
+> +               sctp_chunk_free(chunk);
+>         } else {
+>                 list_add_tail(&chunk->list, &q->control_chunk_list);
+>                 SCTP_INC_STATS(net, SCTP_MIB_OUTCTRLCHUNKS);
+>
+Can you try to fix it by not sending it in sctp_sf_t4_timer_expire() and
+sctp_sf_send_reconf(), instead of touching the common path? like:
 
-This bug was found by static analysis and confirmed with a KASAN
-reproducer: slab-use-after-free in the timer softirq after rmmod of an
-up Frame Relay HDLC device with LMI enabled.
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index 8dc65498763c..7671bb0ce946 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -1122,9 +1122,11 @@ enum sctp_disposition
+sctp_sf_send_reconf(struct net *net,
+                return SCTP_DISPOSITION_DELETE_TCB;
+        }
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Chengyu Liu <lui2012qwq@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
----
-v2: retarget to net-next and drop Cc: stable per maintainer guidance;
-    no code change.  v1: https://lore.kernel.org/netdev/
- drivers/net/wan/hdlc_fr.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+-       sctp_chunk_hold(asoc->strreset_chunk);
+-       sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
+-                       SCTP_CHUNK(asoc->strreset_chunk));
++       if (!sctp_chunk_pending(asoc->strreset_chunk)) {
++               sctp_chunk_hold(asoc->strreset_chunk);
++               sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
++                               SCTP_CHUNK(asoc->strreset_chunk));
++       }
+        sctp_add_cmd_sf(commands, SCTP_CMD_STRIKE, SCTP_TRANSPORT(transport=
+));
 
-diff --git a/drivers/net/wan/hdlc_fr.c b/drivers/net/wan/hdlc_fr.c
-index 5f0e54ed1e..2086ff85b5 100644
---- a/drivers/net/wan/hdlc_fr.c
-+++ b/drivers/net/wan/hdlc_fr.c
-@@ -1009,7 +1009,6 @@ static void fr_start(struct net_device *dev)
- 		state(hdlc)->txseq = state(hdlc)->rxseq = 0;
- 
- 		state(hdlc)->dev = dev;
--		timer_setup(&state(hdlc)->timer, fr_timer, 0);
- 		/* First poll after 1 s */
- 		state(hdlc)->timer.expires = jiffies + HZ;
- 		add_timer(&state(hdlc)->timer);
-@@ -1153,6 +1152,9 @@ static void fr_destroy(struct net_device *frad)
- 	hdlc_device *hdlc = dev_to_hdlc(frad);
- 	struct pvc_device *pvc = state(hdlc)->first_pvc;
- 
-+	/* The LMI timer must not outlive the state being torn down. */
-+	timer_shutdown_sync(&state(hdlc)->timer);
-+
- 	state(hdlc)->first_pvc = NULL; /* All PVCs destroyed */
- 	state(hdlc)->dce_pvc_count = 0;
- 	state(hdlc)->dce_changed = 1;
-@@ -1242,6 +1244,7 @@ static int fr_ioctl(struct net_device *dev, struct if_settings *ifs)
- 				return result;
- 			state(hdlc)->first_pvc = NULL;
- 			state(hdlc)->dce_pvc_count = 0;
-+			timer_setup(&state(hdlc)->timer, fr_timer, 0);
- 		}
- 		memcpy(&state(hdlc)->settings, &new_settings, size);
- 		dev->type = ARPHRD_FRAD;
--- 
-2.25.1
+        return SCTP_DISPOSITION_CONSUME;
+@@ -6197,9 +6199,11 @@ enum sctp_disposition sctp_sf_t4_timer_expire(
+         * chunk, it MUST be the same (including its serial number) as the =
+last
+         * ASCONF sent.
+         */
+-       sctp_chunk_hold(asoc->addip_last_asconf);
+-       sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
+-                       SCTP_CHUNK(asoc->addip_last_asconf));
++       if (!sctp_chunk_pending(asoc->addip_last_asconf)) {
++               sctp_chunk_hold(asoc->addip_last_asconf);
++               sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
++                               SCTP_CHUNK(asoc->addip_last_asconf));
++       }
 
+Thanks.
