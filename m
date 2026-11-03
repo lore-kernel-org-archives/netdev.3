@@ -1,61 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793669133;
-	b=QilvyMxTg/cRstNX7vIIWcoFBSQjKA6EEruGVJMn26vU28YVHGH+UCFbrhs/o21PU5sC
-	 EeoMsOsDQc1g4ZroNe5KSXAMZhdw/caoOZPcnDNqLV8dRAdVcCM3OAlbFGtFUULYQ80xZ
-	 zyyvhAb65L0kGoQrnT4fbJqZ1GFkkt68/uA64GQwt0SaEU9OfH8Dwvw1tzHUFTu+gzVKh
-	 ws7vBvasdl5fufcy41UUFuU5Ep9cMdE3CPqmIOzdWr1YwMSpa/mjPBURVP7QjPFH80i4j
-	 zW1QNSPM6WWGfv2ZoIbwKSQpAh8+VKyhNNe16DhwSUvUkcleyUZD1ChNd/GlK5iGYoQ==
+	t=1793669152;
+	b=sKR24t8EfhfPGHz64ICfu961CwrHon2Rg2MdDPqq6eNbBEnBXbvCDuo4/kligaSfCXLE
+	 Yf/uwkK3OZPUrr4xTrkWYar/JIJjrmW0ub9xiPuNj1TM72kGAfJhljzNQ9w9f0vpZpqm7
+	 QXXju+TSmmitnrZ2T4epTrUggxayo+1TmzH5xS1h9mkL96BmdknKDRPeZCtIbJhIme2oG
+	 Odgi5PWNwC4ha7D7thyNNlfYjjzQ5ohtO+u90xjsEvFQTr4ZqyxYVNuljISExLOQcMUEG
+	 VkbBjYWancdMy0jqKWi/fM0Fqsnc5+Y4sWhtMfG3+2Y5DlhwPCMYge/sKwNxB8GU1SQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793669133;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=OTzg4Bp5wkAPLL8TAcLUbsA24w/kgYQwIZKdSllPUZA=;
-	b=lxd5ZCIQzlU4yj1XvedOrVwofuMrO7mZ1GBF9+0ABr9Jchc/NmPM20L9hB4jY2/Ea0E6
-	 +xd4gX4+tHrq4SjcvP2xPtJJyy6GUvDr8FQqHrNIM+E6exIKD3hkpw2EC+UJcGjaDu2SP
-	 BQeMGt5KFwmLtn4Ji/1LC5ZFxsDqQjdTCOJwAeecg3FoEZD6Z1h587Gk0oN1R+PZyc7UB
-	 31YPyPSi7WeU6ngmDx/2HpKvG2cOaWWkOptLUiZXltnn7N1U5FbIOrCDhRgFp49UlcRnO
-	 0ynIF2wT/pj4vI6epldzCqUUpgkmUfoTOOLF57GW8LbVYOAVr5BaMvFg4rmStYW5C0g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793669152;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=GQtsOse1qaHHpOot+MsPd8LDVEFm4Ow2k3IZR+G/F4o=;
+	b=fSqWqJe08JKngZV6ZtidtP2ziumI9Sn8cQhJPF0/DOzUozuRUkyBY7VgouNdPh10b8AS
+	 d7v3xpLj+fV4JlqYZvXz9e6Hy/ayZx9PBByB/PbU5LlAhuhUAg4kP0C3+VaJIsyVwPfI0
+	 DsY7H91tDUG9zTTTeL1tm8SHSxm87rrSKhOHKVuzxKEmiAFE/Tnvr5RezLfzV/wwAyaGg
+	 uHZdAB2Bnu2T4rFugWsbG9aq8fH6xf/GEi/S/ZV819lDGg3mzkOBucDiq2LGofenrFXI6
+	 gD89PUqEYi5RFCMnydt1PIEOxrP8emHrf2itoSZTotfOT+kNCgtqNUCEquB3krwpIYw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=sXYeMUZ3;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lgCB80zu;
+	arc=none smtp.remote-ip=95.215.58.48
+Received: from mta1.migadu.com (out-48.mta1.migadu.com [95.215.58.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EE8606A324;
-	Tue,  3 Nov 2026 01:25:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9EE8606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA5E606A327
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 01:25:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DCA5E606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=sXYeMUZ3
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=OTzg4Bp5wkAPLL8TAcLUbsA24w/kgYQwIZKdSllPUZA=; b=sXYeMUZ3zU61vV6VBsT/w5UwLp
-	kt7+FBHGBw9zqTijv5/VuQQCcV2kdMCBaJPS5Cn50KaZQPqW5l/g3/jzu3zQXUGaEFKY52EWcw0e7
-	TLbgOGx7d+9eHoRhV4K+OLwcgzWzMhCStwuf9Ar4B6bliGiCayaeUw9wAXrTucG/DMZs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xO3HC-00DvyF-UK; Tue, 03 Nov 2026 02:25:26 +0100
-Date: Tue, 3 Nov 2026 02:25:26 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lgCB80zu
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=zAP4af6W/8M6VGTZwGRKoUek7DR1Y9SfEGiGrMO6wuQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793669148; v=1; x=1794273948;
+ b=lgCB80zuW4tSswDe6VDPJYBRdZHEMaJCq0U/2ybazv3A4PqyFLJTEySM8nnYfgeg2OmLVx+F
+ NzXxNLlpUkfrhEOaUc9ou7XlQPSOGJrIxvD6pmIIbLdx1ians2B+KXR8xd8+x15kTlnlihsEi9Z
+ N313ndmnalXWRiF+gLxw/nUA=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta11.migadu.com with ESMTPS id 86b764d73d51d8da;
+	Tue, 03 Nov 2026 01:25:47 +0000
+X-Mizu-Trace-ID: 86b764d73d51d8da
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 3 Nov 2026 09:25:28 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Andrea Mayer <andrea.mayer@uniroma2.it>
+Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] net: phy: acx00: report receive statistics
-Message-ID: <1e9d3060-81f9-4d22-a72c-de3af4f8f196@lunn.ch>
-References: <20261102-submit-acx00-phy-stats-v1-v2-1-3c8a664407c1@gmail.com>
+	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>, Shuah Khan <shuah@kernel.org>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, bpf@vger.kernel.org,
+	David Lebrun <david.lebrun@uclouvain.be>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Mathieu Xhonneux <m.xhonneux@gmail.com>,
+	David Lebrun <dlebrun@google.com>,
+	Stefano Salsano <stefano.salsano@uniroma2.it>,
+	Andrea Mayer <andrea@common-net.org>
+Subject: Re: [PATCH net 1/6] seg6: fix skb checksum update helpers
+Message-ID: <auk4COJzzhbGK-3g@fedora>
+References: <20261031225033.64-1-andrea.mayer@uniroma2.it>
+ <20261031225033.64-2-andrea.mayer@uniroma2.it>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,38 +77,63 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261102-submit-acx00-phy-stats-v1-v2-1-3c8a664407c1@gmail.com>
+In-Reply-To: <20261031225033.64-2-andrea.mayer@uniroma2.it>
 
-On Mon, Nov 02, 2026 at 04:28:28PM -0700, James Hilliard wrote:
-> Expose receive frame and byte totals through the generic PHY statistics
-> interface as rx_packets and rx_bytes, alongside CRC errors in rx_errors.
-> Report the hardware totals directly: the packet and byte counters include
-> errored frames as well as successfully received traffic.
+On Sat, Oct 31, 2026 at 11:50:28PM +0100, Andrea Mayer wrote:
+> With CHECKSUM_COMPLETE, ipv6_srh_rcv() updates skb->csum for the new
+> Segments Left and destination address through seg6_update_csum().
+> Replacing "from" with "to" in the packet must change skb->csum (C) to
+> C - from + to, but update_csum_diff4() and update_csum_diff16() compute:
 > 
-> Collect the free-running 32-bit counters through phylib's
-> update_stats callback and accumulate wrap-safe deltas in 64-bit totals.
-> Read the high half on either side of the low half and retry until both
-> high-half reads agree.
+>   ~csum_partial({ ~from, to }, ~C) = ~(~C + ~from + to) = C + from - to
 > 
-> Hardware testing confirmed that the receive-byte counter wraps at
-> 4,000,000,000, while the receive-packet and CRC-error counters wrap at
-> 2^32. Use the corresponding modulus for each counter so rollover does
-> not inflate the software totals.
+> This does not affect packets forwarded by ip6_forward(), which sets
+> ip_summed to CHECKSUM_NONE. But when the packet is delivered on the same
+> node and skb->csum was computed in software, for instance by conntrack, UDP
+> can drop the packet as a checksum error. With skb->csum computed by the
+> device, TCP can instead log a "hw csum failure", as if the device had
+> computed a wrong skb->csum.
 > 
-> Serialize collection and reporting with the package-state mutex so reads
-> cannot race reset or power-off, and the totals are safe on 32-bit systems.
-> Commit a sample only after all counter reads and page restoration succeed.
-> The reporting callback returns cached totals without accessing MDIO.
+> Fix update_csum_diff4() and update_csum_diff16() to compute C - from + to.
 > 
-> Take a best-effort final snapshot before soft reset and suspend. Invalidate
-> the hardware baseline before reset or power-off, including failed power-off
-> attempts, and establish a fresh baseline after configuration. Preserve the
-> software totals across these transitions and retain the live baseline when
-> resume reconfigures an already active PHY. A failed initial snapshot can be
-> retried by the periodic collector without preventing initialization.
+> Found by manual code inspection, while checking that the skb->csum updates
+> in the SRv6 receive path are consistent. A following commit adds a selftest
+> that reproduces the problem with a tc ct action. The issue was confirmed in
+> a VM without kernel changes or error injection: with the rest of this
+> series and without this patch, that selftest fails, as UDP drops datagrams
+> as checksum errors. Also tested against the srv6 selftests, and with a
+> ConnectX-6 Lx NIC (mlx5) that provides CHECKSUM_COMPLETE.
 > 
-> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+> Fixes: 1ababeba4a21 ("ipv6: implement dataplane support for rthdr type 4 (Segment Routing Header)")
+> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+> ---
+>  include/net/seg6.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/net/seg6.h b/include/net/seg6.h
+> index 82b3fbbcbb93..01d8034e48fc 100644
+> --- a/include/net/seg6.h
+> +++ b/include/net/seg6.h
+> @@ -19,7 +19,7 @@ static inline void update_csum_diff4(struct sk_buff *skb, __be32 from,
+>  {
+>  	__be32 diff[] = { ~from, to };
+>  
+> -	skb->csum = ~csum_partial((char *)diff, sizeof(diff), ~skb->csum);
+> +	skb->csum = csum_partial(diff, sizeof(diff), skb->csum);
+>  }
+>  
+>  static inline void update_csum_diff16(struct sk_buff *skb, __be32 *from,
+> @@ -30,7 +30,7 @@ static inline void update_csum_diff16(struct sk_buff *skb, __be32 *from,
+>  		to[0], to[1], to[2], to[3],
+>  	};
+>  
+> -	skb->csum = ~csum_partial((char *)diff, sizeof(diff), ~skb->csum);
+> +	skb->csum = csum_partial(diff, sizeof(diff), skb->csum);
+>  }
+>  
+>  struct seg6_pernet_data {
+> -- 
+> 2.43.0
+> 
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-
-    Andrew
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
