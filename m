@@ -1,61 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=5.75.144.95
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793706465;
-	b=IinFw4BxOYmpcKJqiLMxx6RI5oYFRdJRWJbXjIMfSlcTvXsTyvXDbntwEfXtEAMq2CQH
-	 ERZTbc/y9Vqga/d2IXuyVZcx6EIpjdYx8bGA+ISdA6h8BAZ9L6De+YcgxlYTsYjyg4jdh
-	 FJJaYJJYCXpE5udcsP4hGOYvUTnxLM/WHWLq/pbBgc4mFQkR5XfV6uG1lHqEKbaHWb+gU
-	 mG1ks/37d+QYve3CEh04R4ucys8aiiVE10XOgoH4CMrC1oQPOymD9GBr6TNGcvIHOiuDi
-	 9RthQCeaFES0Ja9ejZclKYC2lnlpICFBm1WWisrxHVjInr54DZRh1RVrI24cUGd4K4g==
+	t=1793706472;
+	b=3c+LO1YN2PUnAZ36uzBB511L/JUU35ag2OzKIT8i/E8Po3a7CydUPANH5caJB79tkMxj
+	 XL23s76JRLT3LfY99/+0fMGKFHxjKPAwz+bKcGCq/PAKYUZIef1Ks0Qr2HLX0ZhWFPD2O
+	 ej40xvJlebkK5LD5urT2qjSYL9IRyG6KNO77nZSZKV172P10lOtJ4rr3MES9SfrVu6wm3
+	 DbCrbVowy/WUqdl5G/briP8HOPYDlo2JSsMWlCKXmnF+VgtHvm5GaDL4wPpnDQ6mJF6sJ
+	 kT7PILrNA+fGBZUaKVQUp5J0EmpG/iAMUcnv5WpmSVSCxxbU5NWhkCD9DJOZ26Ad6aA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793706465;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Mailer;
-	bh=XlQrV0jM2I1Oz+09ckZcYX5LumOapOvmzWdHtr6kyFY=;
-	b=N+ZyG5RZM5mhefoauvmPHZTP2tzbc7mzJZW0cxGLkGiVTNrsxDGBxU0+tHXsGl7IjfzW
-	 fWocXh7Yo3J2QI6TBmXs0v8HaNIs0wACKH5YOKKE2y8SlzDSbwVXcLRRLFQBKxJvqIxzd
-	 1TTYfCxvOYz+vtM4QdAB0x3SDs4BdsyI9IDxf5fOi2JhgoIqFQzndx1FiZjuOaPyX6WIj
-	 BB7IfzD9CEcDqQuaAcrqOBq3st7WzP0qIzJ2ybtbMXUZ3hIR4hoshSGF8Psg5LrKDtU0q
-	 8npmUlSximBomLWulm7XR/L1uYgflQCes3+Zp7FFug428hbsTBRV/OuMzvU8jJY8Z4w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793706472;
+	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:Date:From:To:CC:Subject:
+	 In-Reply-To:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=dYjrImbKjvTgduATVWv6BpAbZVCe/ugP8SgqQZOZVmk=;
+	b=y9qZ0+/W1f5T3KYoC+GxbyLq8hBAa6/jAmhaexJzybb6B/LfxUiOO0GXBuuyKgaAw74I
+	 AFBHk/fsBHmABmLoyBEBnrOWnzIwczfMMsvAgLGHKQBaOzdhZlZJeY9gFbMj3RXgDloIP
+	 JFRyYjmiH1h0tpGvIhSqolxIiWI3czsyT93X0x8rQ/loVZmQ9Hnxo7tLdO5c0v+vl54RA
+	 Qts17m1wlxE4yfjNHb9JH0kaPdknez18rCALwhhsa7SNfaXk7NT6e3UhgeohIq01dh9c9
+	 KY378dsgZCQa+8ehLwj3n5jNGYJFMTeHZYqez+/pBupP+i9F0Ephm99c8ghRTFCVwYw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=QuNOhR+N;
-	arc=none smtp.remote-ip=111.22.67.139
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2936D606D803;
-	Tue,  3 Nov 2026 11:47:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2936D606D803
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dmarc=pass header.from=mainlining.org;
+	spf=pass smtp.mailfrom=mainlining.org;
+	dkim=pass header.d=mainlining.org header.i=@mainlining.org header.a=rsa-sha256 header.s=202507r header.b="L0/vJzZ4";
+	dkim=pass header.d=mainlining.org header.i=@mainlining.org header.a=ed25519-sha256 header.s=202507e header.b=pZLy0L9d;
+	arc=none smtp.remote-ip=5.75.144.95
+Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8409606D802;
+	Tue,  3 Nov 2026 11:47:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E8409606D802
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=QuNOhR+N
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=QuNOhR+Nh6fKqbTjrnE0zQRx6dNwmWFlVjrfJkZoJl9k2O1k7SMo5y8cZ5EhwUodVoaqpON43jke8
-	 htLN3i3fYfAnxkuTxSejwOuQhRlb+P0MVUUmbkKD1n0f4KIjOINuaBGIDGQgut15zFXvv/9jN2ZPEO
-	 IyqdiM9IAi23ZapY=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app09-12009 (RichMail) with SMTP id 2ee96ae9c9d3f51-99e37;
-	Tue, 03 Nov 2026 19:47:33 +0800 (CST)
-X-RM-TRANSID:2ee96ae9c9d3f51-99e37
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from dsh.local (unknown[10.55.1.72])
-	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee16ae9c9d40d8-f93b9;
-	Tue, 03 Nov 2026 19:47:33 +0800 (CST)
-X-RM-TRANSID:2ee16ae9c9d40d8-f93b9
-From: Yuehong Wu <wuyuehong@cmss.chinamobile.com>
-To: netdev@vger.kernel.org
-Cc: alexandru.tachici@analog.com, linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: ethernet: adi: adin1110: mask the RX IRQ of the port being stopped
-Date: Tue, 03 Nov 2026 19:47:33 +0800
-Message-ID: <20261103-adin1110-net-stop-1-yuehongwu@cmss.chinamobile.com>
+	dkim=pass (2048-bit key, unprotected) header.d=mainlining.org header.i=@mainlining.org header.a=rsa-sha256 header.s=202507r header.b=L0/vJzZ4;
+	dkim=pass header.d=mainlining.org header.i=@mainlining.org header.a=ed25519-sha256 header.s=202507e header.b=pZLy0L9d
+DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
+	h=Message-ID:Subject:To:From:Date; t=1793706468; bh=dYjrImbKjvTgduATVWv6BpA
+	bZVCe/ugP8SgqQZOZVmk=; b=L0/vJzZ4PDtJUHg/9NqgCyT0SCD06oYuI6ze0WnUX2pIj/7J4F
+	ZbWF/ZVJW1netL6/+CyF7HHGjNbR10UKgZxVd57fwVGpyfBaeUibpZiUUZvUYglKsZAqD7/Ovu7
+	AOyLeaPlb6rm0glrzY/ROrF5LqKP58CRb/BnKyD/IlBtlJARmOmtDDkQVi5tQkRI/In+McyHa/o
+	05zYhdfjwzXRs0IrtfIgfoYAGfA2Gq0mCOxmmwpIeNZTIZzz1GQAgAMgZgMfjGomNWeJ4krK6qr
+	oLVLZC1JK7b6CxJi4fx9S8JUfNGoD8Usn9LPYHaaQNirxNqxU+QnRJh3AMHzNP6IuPA==;
+DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
+	h=Message-ID:Subject:To:From:Date; t=1793706468; bh=dYjrImbKjvTgduATVWv6BpA
+	bZVCe/ugP8SgqQZOZVmk=; b=pZLy0L9dPusggIsjur5QpHR6mAHsN/+75f0GGHYOixwM7qv5W1
+	9xBFzkcLjYgY7EZNH0amXuLEKQMJf+DPKrBg==;
+Date: Tue, 03 Nov 2026 11:47:50 +0000
+From: Bradley Morgan <brads@mainlining.org>
+To: elb12345@hotmail.co.uk
+CC: eperezma@redhat.com, jasowangio@gmail.com, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, mst@redhat.com, netdev@vger.kernel.org,
+ peterz@infradead.org, shakeel.butt@linux.dev, stable@vger.kernel.org,
+ virtualization@lists.linux.dev, vschneid@redhat.com, ziqianlu@bytedance.com
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2=5D_vhost=3A_Run_TIF=5FNOTIF?=
+ =?US-ASCII?Q?Y=5FRESUME_work_in_the_vhost=5Ftask_loop?=
+In-Reply-To: <AS8P251MB0001F1EACBED6E7A2AFA8A96C8692@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+Message-ID: <8DACE49B-4588-4419-BB47-4C35F7600AE2@mainlining.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,46 +66,83 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 8bit
-X-Mailer: git-send-email 2.43.0
 
-adin1110_net_stop() programs the RX-ready interrupt mask of the wrong
-port: it uses ADIN2111_RX_RDY_IRQ (the second port's bit) when stopping
-port 0 and ADIN1110_RX_RDY_IRQ (the first port's bit) when stopping
-port 1, while adin1110_port_rx_ready() uses the opposite mapping, port 0
--> ADIN1110_RX_RDY and port 1 -> ADIN2111_P2_RX_RDY.
+On 3 November 2026 10:54:40 GMT, Aamir Ahmed <elb12345@hotmail.co.uk>
+wrote:
+>Since commit e1fad12dcb66 ("sched/fair: Switch to task based throttle
+>model"), a throttled task is only dequeued when TWA_RESUME task_work
+>runs on its way back to user mode.
+>
+>vhost workers never return to user mode, and vhost_task_fn() only runs
+>task_work via get_signal() when a signal is pending. A busy vhost worker
+>therefore ignores its cgroup's cpu.max, while its runtime is still
+>charged to the group, throttling the group's other tasks (typically the
+>VM's vCPUs) harder.
+>
+>This also fixes memory.high and block cgroup throttling for vhost
+>workers, which are handled in resume_user_mode_work() as well.
+>
+>Run pending notify-resume work at the top of the worker loop, as io-wq
+>does in io_run_task_work(). Commit 12013e3d4695 ("KVM: powerpc: Use
+>generic xfer to guest work function") fixed the same problem for KVM.
+>
+>Fixes: e1fad12dcb66 ("sched/fair: Switch to task based throttle model")
+>Cc: stable@vger.kernel.org # 6.18+
+>Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+>Tested-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-The port being stopped therefore keeps its own RX interrupt enabled
-while the peer's is masked.  On ADIN2111 that stalls RX on the peer port;
-on ADIN1110 the RX interrupt is never masked at all.  As the interrupt is
-level triggered and adin1110_read_frames() skips the FIFO while
-netif_oper_up() is false, the stopped port also keeps re-raising its
-interrupt with nobody draining the FIFO.
+Reviewed-by: Bradley Morgan <brads@mainlining.org>
 
-Swap the two bits so the port being stopped masks its own interrupt.
+>Assisted-by: LLM
+>Signed-off-by: Aamir Ahmed <elb12345@hotmail.co.uk>
+>---
+>v2:
+>- Also describe the memory.high and block cgroup throttling fixes
+>  (Shakeel)
+>- Add Shakeel's Reviewed-by and Tested-by
+>- Update the code comment to match
+>- v1: https://lore.kernel.org/AS8P251MB00012469E6ECBEA2B7D87BB0C86C2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+>
+>Tested on x86_64 with a vhost_task-based reproducer: in a 0.2-CPU cgroup
+>a busy worker drops from 100% to 19% of a CPU. Reproducer available on
+>request.
+>
+> kernel/vhost_task.c | 9 +++++++++
+> 1 file changed, 9 insertions(+)
+>
+>diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
+>index 3717885a599..f63ac005214 100644
+>--- a/kernel/vhost_task.c
+>+++ b/kernel/vhost_task.c
+>@@ -6,6 +6,7 @@
+> #include <linux/completion.h>
+> #include <linux/sched/task.h>
+> #include <linux/sched/vhost_task.h>
+>+#include <linux/resume_user_mode.h>
+> #include <linux/sched/signal.h>
+> 
+> enum vhost_task_flags {
+>@@ -31,6 +32,14 @@ static int vhost_task_fn(void *data)
+> 	for (;;) {
+> 		bool did_work;
+> 
+>+		/*
+>+		 * We never return to user mode, so TWA_RESUME task_work and
+>+		 * memory.high/blkcg throttling would otherwise never run. Run
+>+		 * them here, where no locks are held, like io-wq workers do.
+>+		 */
+>+		if (test_thread_flag(TIF_NOTIFY_RESUME))
+>+			resume_user_mode_work(NULL);
+>+
+> 		if (signal_pending(current)) {
+> 			struct ksignal ksig;
+> 
+>
+>base-commit: c03c1a14507dfaf8b856c2608f9ac216021fc222
+>
 
-Fixes: bc93e19d088b ("net: ethernet: adi: Add ADIN1110 support")
-Signed-off-by: Yuehong Wu <wuyuehong@cmss.chinamobile.com>
----
- drivers/net/ethernet/adi/adin1110.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/adi/adin1110.c b/drivers/net/ethernet/adi/adin1110.c
-index 53fac3d..abdc160 100644
---- a/drivers/net/ethernet/adi/adin1110.c
-+++ b/drivers/net/ethernet/adi/adin1110.c
-@@ -945,7 +945,7 @@ static int adin1110_net_stop(struct net_device *net_dev)
- 	u32 mask;
- 	int ret;
- 
--	mask = !port_priv->nr ? ADIN2111_RX_RDY_IRQ : ADIN1110_RX_RDY_IRQ;
-+	mask = !port_priv->nr ? ADIN1110_RX_RDY_IRQ : ADIN2111_RX_RDY_IRQ;
- 
- 	/* Disable RX RDY IRQs */
- 	mutex_lock(&priv->lock);
--- 
-2.43.0
-
-
-
+--- Thanks!
