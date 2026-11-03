@@ -1,53 +1,53 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793700329;
-	b=eHFHUVX/W80Um37X4Fbx2/23n2Ai3DsWOYL9DHAQi/jUy0OJ0sUN2xms9WgBb4pgGDvf
-	 etYv87J2FjSsxoBjg+gyCFLx3zPhVWpMInoNHyN1/jEJvB2m2Gn1bhQhS4JU03XFOE61T
-	 soZWb/o7OpVblofiRAa6feOBK2cXnkHhcsGjzIwGcIDNYJqdjQ0SE5fa9vkacDB78p4ZA
-	 qE51tZaN+J73cWxuWedBR+PrruM+yF0wBoNjQV6RyjbOM6iqixYeT8+sFECGoc7aprPlg
-	 LvrCbQeZlw6fgIJ09fMeFHdcieLpb7Uw09yO6Q9RzDmVIXpFhSqkZtXpXmS6qfLCU5w==
+	t=1793700330;
+	b=glpv0MQoYV0stFqHjIHDJNtLU6HzV4ikjjEVcdHIJKoMn+UnvjAEbeyYWoPDznziI3mF
+	 Tckt20YDBgCztJISII2hLIp7B0A0toLAWGs1Uf9tV7PjAtRiGOD+h8bwaOvoCDwI5DXDM
+	 ic2Wm8K1g7O2Z9qg2cB8PF2reZ6zwCpUdmfWLllo1/GJoWEkTppErod7z7dS/op4L19jh
+	 Yq2rCOmG+Di8YWyZNFbvRZzJwJzLBZZQDbn2fFC7Zah0jIQ+1HfANiLFBJ4OHzCu4smC5
+	 /rSVYvGsIkrd9qjeYmIKyprnfWmZKn4eBOzlSUiigogukEYZTBR59NPzAXsc86qg1iQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793700329;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
-	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=nbe3HCMkE02cNxSbO6fejeM4cYJlJPCFxeXdrIl+taY=;
-	b=vchJaigfA+ioVdeO/LyLNEg+9grJiYyVJuzRhhO6tkCIPj97MaYPYw7NN8UhX+lYuEtu
-	 mrbfkQpJENHHAI0Ef7XaG6qp9CFvbG2Y4vkQcDH6pTcfmxkjxeueG/nNTKKuEhVxMX5Kx
-	 v0HDv1gJ2FIBx4lM5rzz3oif6rS8yRhKkw4ebCWOC8+VwlkD0RuvPvEHKjMfgJRgrG2pQ
-	 LICh4h4LJjlSmJD3eCDViY96qzNLhvaxgrrQdN/ip1UNlcW5epQoWQOSUnVGXg6KWEY58
-	 7dqRzLfRLNyEVND8fP4Dh8I/bkGajHRRgQnbW/gE6oxPs7SoU79PXWxgxwMAqpWu+ZA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793700330;
+	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
+	bh=H+2BP087lEieKM2AjDiKXYcZb/aS702FUpveBjRyJh0=;
+	b=XqjxAhSsxUiXV2p7lFFqdwaIUx1KlwJYnn81Yw1eWa2rf7knCbfc8SZUDi/TBHMMBHxx
+	 BsmtQZHlyH01418Yttgn18PaERX4clnpHXnWyLMykQURInyILQF+gmC0B0LRHAcBnRhyE
+	 uzmWi3NdDAcfirvyTb+unMr+QEhfhzZo/6kWotlj7TODbPBh9N4a055tBwTW+YgIzDu+8
+	 MwpP7BNR5H7tzMBXmsfQl3/v06g2AuT5VlHwJFJYDZAtFSlNcuDJ24D+qf6IHgTzksU5j
+	 Bz5Q3DR+jRnlGtTUO+nuvzp4Sj+HlV0YCykzo7lG97cQWeU4jTAdOnWfDhnxRNYOFMg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=iscas.ac.cn;
-	spf=pass smtp.mailfrom=iscas.ac.cn;
-	arc=none smtp.remote-ip=159.226.251.81
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b="2f/JvA6a";
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C01B606EE8B;
-	Tue,  3 Nov 2026 10:05:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5C01B606EE8B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowADn8JHhselqdXs7AA--.2502S2;
-	Tue, 03 Nov 2026 18:05:22 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: Potnuri Bharat Teja <bharat@chelsio.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: cxgb4: do not leak a PTP skb when the Tx queue is busy
-Date: Tue,  3 Nov 2026 10:05:30 +0000
-Message-Id: <20261103100530.1309928-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30B9606EE97;
+	Tue,  3 Nov 2026 10:05:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F30B9606EE97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=2f/JvA6a
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B850CA164C;
+	Tue, 03 Nov 2026 11:05:26 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1793700327; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=H+2BP087lEieKM2AjDiKXYcZb/aS702FUpveBjRyJh0=;
+	b=2f/JvA6aMTqaeKqjoCOHts+CmXu2qeDnEhy+JFTlx2hA7LlEHuLKK1In5XBI8Z+djFAeOO
+	+iCg9gr62dLE/OoCWh6DGjR+6piKuAVXDW/ffl7Jxr/bl84OBLaroQ2nrU1TlbuUKvdnDz
+	80yXNw/wfiU1dONOehgxOZ6Aw8peJKnkn9QG85yaYmyo2z3Cdc51UqdJQZj8adZpoc/tT1
+	KOTFZ3i9ZyU4YQ3EeUYUjIMw/OhmCfCbPHCj8csuTY+T2mH4N+ESqO+I/krPV42hCrP2uc
+	5gYCqDEZwJGiHBZqLcz8RZ7dUT0wVMso4FtCHjkRbp94C7zf4/JCqYuVrK2YJA==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+Date: Tue, 03 Nov 2026 11:04:57 +0100
+Subject: [PATCH net-next v6 3/9] net: bcmgenet: allow a continuation
+ descriptor without the alignment pad
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -57,75 +57,79 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowADn8JHhselqdXs7AA--.2502S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7CF13Gr13ZF4rJr47Ar1fZwb_yoW8ZFWDpw
-	sakr90k395Jw4Ygayvyw48XFn0qw48t3yfKFyrC3s5u3s0qr1rury8WayjyrWDArWkGay7
-	ArsFyFnrGrs8ArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9214x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUtVWrXwAv7VC2z280aVAFwI0_Cr1j6rxdMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
-	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
-	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr
-	1lIxAIcVC0I7IYx2IY6xkF7I0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_
-	JF4lIxAIcVC2z280aVAFwI0_Cr0_Gr1UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Cr1j6rxdYx
-	BIdaVFxhVjvjDU0xZFpf9x0JjU-B_UUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRMAA2rpnIBh8AAAsX
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261103-nb-genet-mtu-nn-v2-v6-3-61d5631676e5@tipi-net.de>
+References: <20261103-nb-genet-mtu-nn-v2-v6-0-61d5631676e5@tipi-net.de>
+In-Reply-To: <20261103-nb-genet-mtu-nn-v2-v6-0-61d5631676e5@tipi-net.de>
+To: Doug Berger <opendmb@gmail.com>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Nicolai Buchwitz <nb@tipi-net.de>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Pierre-Marin Leclercq <pierremarinleclercq88@gmail.com>
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-cxgb4_eth_xmit() stores the PTP skb in adap->ptp_tx_skb with an extra
-reference before the descriptor credits are checked.  When the PTP
-queue is full the function returns NETDEV_TX_BUSY, and later failures
-such as an unsupported FCoE offload or a failed DMA mapping jump to
-out_free.  None of those paths transmit the packet, so no transmit
-timestamp ever arrives and the extra reference is never released.
+A frame longer than the packet ready threshold arrives in several
+descriptors, each with its own status block. Only the first one also
+carries the two alignment bytes. The length check assumes the pad is always
+there, so a continuation holding a single byte looks a byte too short and
+the whole frame is dropped.
 
-Only take the extra reference once the packet is certain to be queued,
-just before it is handed to the hardware.  The initial check for an
-outstanding PTP skb is kept, and PTP transmits are serialized by
-adap->ptp_lock, so only one PTP packet can be in flight.
+Account for the pad on the first descriptor only.
 
-Fixes: a456950445a0 ("cxgb4: time stamping interface for PTP")
-Cc: stable@vger.kernel.org
-Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+The MTU cannot produce a frame past the threshold yet, so nothing hits this
+today. It is preparation for the larger MTU.
+
+Tested-by: Pierre-Marin Leclercq <pierremarinleclercq88@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- drivers/net/ethernet/chelsio/cxgb4/sge.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/sge.c b/drivers/net/ethernet/chelsio/cxgb4/sge.c
-index 9fccb8ea9bcd..7e83f60bd14e 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/sge.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/sge.c
-@@ -1523,12 +1523,9 @@ static netdev_tx_t cxgb4_eth_xmit(struct sk_buff *skb, struct net_device *dev)
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index bed94f9a79450..9cb0cd7a9a216 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -53,7 +53,8 @@
  
- 	qidx = skb_get_queue_mapping(skb);
- 	if (ptp_enabled) {
--		if (!(adap->ptp_tx_skb)) {
--			skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
--			adap->ptp_tx_skb = skb_get(skb);
--		} else {
-+		if (adap->ptp_tx_skb)
- 			goto out_free;
--		}
-+		skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
- 		q = &adap->sge.ptptxq;
- 	} else {
- 		q = &adap->sge.ethtxq[qidx + pi->first_qset];
-@@ -1707,6 +1704,9 @@ static netdev_tx_t cxgb4_eth_xmit(struct sk_buff *skb, struct net_device *dev)
+ /* Page pool RX buffer layout:
+  * RSB(64) + pad(2) | frame data | skb_shared_info
+- * The HW writes the 64B RSB + 2B alignment padding before the frame.
++ * The HW writes the 64B RSB before every descriptor of a frame. Only the
++ * first one also gets the 2B alignment padding.
+  */
+ #define GENET_RSB_PAD		(sizeof(struct status_64) + 2)
  
- 	skb_tx_timestamp(skb);
+@@ -2349,6 +2350,7 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
+ 		unsigned int rx_offset, rx_size;
+ 		struct status_64 *status;
+ 		struct page *rx_page;
++		unsigned int min_len;
+ 		void *hard_start;
+ 		__be16 rx_csum;
  
-+	if (ptp_enabled)
-+		adap->ptp_tx_skb = skb_get(skb);
+@@ -2385,8 +2387,12 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
+ 			  __func__, p_index, ring->c_index,
+ 			  ring->read_ptr, dma_length_status);
+ 
++		/* Only the first descriptor carries the alignment pad */
++		min_len = dma_flag & DMA_SOP ? GENET_RSB_PAD
++					     : sizeof(struct status_64);
 +
- 	if (immediate) {
- 		cxgb4_inline_tx_skb(skb, &q->q, sgl);
- 		dev_consume_skb_any(skb);
+ 		/* Reject lengths that would underflow the SKB build path. */
+-		if (unlikely(len > RX_BUF_LENGTH || len < GENET_RSB_PAD)) {
++		if (unlikely(len > RX_BUF_LENGTH || len < min_len)) {
+ 			netif_err(priv, rx_status, dev,
+ 				  "invalid packet length %d\n", len);
+ 			BCMGENET_STATS64_INC(stats, length_errors);
+
 -- 
-2.34.1
+2.53.0
 
