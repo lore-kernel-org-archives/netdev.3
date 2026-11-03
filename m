@@ -1,75 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.208.142.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.170
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793725130;
-	b=nvrMtO3Q67bicckOK3SdA42WXjoEoiyeGM+pfGmWk6k5laLdnjdYhOkDCZlUuX8ZYn64
-	 tqdrF9GIFepvqg8N4exqjRMqRJnk0U//iQ+rNZlSvgvMN2KkPeyrYobWXCd2OyiebalKx
-	 ThNk6EfQmBqQoOqJU6rkkSKgx+4jO7anaIJr3vhYyxM2orCV51cZJ7gr7zyzZ+ASk4N4A
-	 Q0giSQ7CdrKoDJK8DxVcmlMOOugrwdj7PAKc2HK2FKy6jbTgsk4ff7VICbEMG070j1Nwj
-	 5FxM0gO8jabkhfBUZcS1OBPPhYdgzSgeyF7vkAt0jGhNCltqMDMJr/GWC3kzBbc00ag==
+	t=1793725161;
+	b=2nZQYj6LEYXiT7l2oSoWu2SexY2c2sRnfdLR4K1a5w0UKehixrWeLTeiKC9UOfaJqRp2
+	 1uk6EGByD+ByfdEEt91EVJgpI0et8zOjDBmi6F4iDEBTiFEqFHwZr6/8oXmHwnpjJvJn6
+	 A9MrNFbWLwDlow3kL1jyOiBJqdiB6a6AuZVRUrq7c1olwxQ6eyRgdbvsF0xYzaCVqtOl0
+	 /28aJ0aQPLT0b27TvRqQAVvyKB2RbrWQ7wyS/flam8+Ati3jDWgpDpSODAtkPysWJ7Iem
+	 at71ichjLTqdUEX9tnx2ySLjnwgU94YiYXceXx9xZvUu5wVfaaZ/AnXzvK5k9FKUfAQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793725130;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=ZMykjE/7l/jsGdfR+n3nXl+yG8LC3pOXTPVPEB8YOmA=;
-	b=mhP4cXPAyXICWv3sgPfKLS/34agGYwl8UNQriQoSdNoLcrSOHHS73/6qoPTD0iRF3fiH
-	 3ybGSng7/QrGdapOONZ3hRDW+l4tkt0DRdMHKomLA+08J2+6ComZ+x/y2UcHfg8wN486j
-	 y5W2TR2zxelFgukJH91tNNjl/ygAcY1JXPGk9oyfwah9QY6IP4yBNgm7vmORo44ddaSEF
-	 9jEsRjgyNd/gCOQgc2g8W/OLynuhlQkAo/ROGkCaRMIjCJAxepD1fq54ixpSU3Mr77BQN
-	 alh+G80SsqsXugO8+e1kp4wMu7D0I+k9W3SBcM5qHY4apbmtHPUdjKXFx8akgkOpw3w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793725161;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=x1NI3skowoAtNdcXptzYo27srndyE5ZnDqWHrHmy4U4=;
+	b=ddtu5+GwEXHmXqH8V4OIOJrJ69VGpm/LWFWpq5Iv/Abmsy0iVlKTo0GouiDHN/jVoOLx
+	 8cSmgDiKd3UPC+y599pEHANpZEp6GUQafQH3BeKllOojeehZwDnqVyXhwP6AlM5Nrd5gU
+	 rXg4gPuu5pNceKQ//mmAWutcEU9orUQrpNDLo5IXd9zo1l0nmsAT75Myc8zY/ruIr9xgU
+	 +LcUWy++KxMKaHfCJgrEbmLCws5hZDd8lp6DVjr9JqTmx30Mm3pyV2/M7omfI2kGLTfYu
+	 JlOQUeUy/N8+DaNydYGKKoSvNtuMqzW3OZ3k63hkUqCUGh1pqbPP69nESll9Nz2z6FQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=kernelriot.com;
-	spf=pass smtp.mailfrom=kernelriot.com;
-	dkim=pass header.d=kernelriot.com header.i=@kernelriot.com header.a=rsa-sha256 header.s=kr2026 header.b="h69B8+/y";
-	arc=none smtp.remote-ip=74.208.142.49
-Received: from mail.kernelriot.com (mail.kernelriot.com [74.208.142.49])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=1password.com;
+	spf=pass smtp.mailfrom=agilebits.com;
+	dkim=pass header.d=1password.com header.i=@1password.com header.a=rsa-sha256 header.s=google header.b=HvE6CnDk;
+	arc=none smtp.remote-ip=209.85.222.170
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8FE606A332;
-	Tue,  3 Nov 2026 16:58:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AB8FE606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kernelriot.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelriot.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A62606A329
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 16:59:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A5A62606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1password.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=agilebits.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernelriot.com header.i=@kernelriot.com header.a=rsa-sha256 header.s=kr2026 header.b=h69B8+/y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernelriot.com;
-	s=kr2026; t=1793725122;
-	bh=kLOhx7Xp1VWwEDJ5YlOdluqX5Krp+Iu/TEbVQCaGCzc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:From;
-	b=h69B8+/yiPfxJltzpSCRsWhjrdhAv1T1htNv6JY8a6Fi7iWIr+n5mGw5eV5u4fhiZ
-	 U3rTaOac/nhkUE941dJOI5Wwa9vi68uz1fQUFg6tALuvD9cG6DFrDjXfjR3zb+65TP
-	 KyNroY/vhYWr0jIoX10WYzLdmlF/zDgX9VclOUAae32i1d6MNU0Vowj/Qeu1FJih1+
-	 mRpfEYu8m2RtOWbDrPWGCYTkVKDFqXVXsLu7WyIuWH/TBQnvgLbtHVVSfdl/fwxu2d
-	 SFMv1wqhU5fBsK1Qku6vTDyqz2lfTwH9ntoebpcxNXx+TA39XytP9M1PADd2RLuR3F
-	 +EwdBgYwNj9mg==
-Received: by mail.kernelriot.com (Postfix, from userid 995)
-	id C0587819E3; Tue,  3 Nov 2026 16:58:42 +0000 (UTC)
-From: Magnus Leatti <magnusleatti@kernelriot.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	thomas.petazzoni@bootlin.com,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	dkim=pass (1024-bit key, unprotected) header.d=1password.com header.i=@1password.com header.a=rsa-sha256 header.s=google header.b=HvE6CnDk
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-93f20c3aaa5so462461485a.2
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 08:59:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1password.com; s=google; t=1793725160; x=1794329960; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=x1NI3skowoAtNdcXptzYo27srndyE5ZnDqWHrHmy4U4=;
+        b=HvE6CnDkjqXySwNnSQZMyeD4DSmhSNJZ5RuJy5b40IJ8vc3t7iydK31t81eeeIpz0e
+         ZBLyyMJH+Z3iDY+sb0OebSLGqPrZy9R9RhUXkFrBvJT0VjU+YQ6c1S/inFLyGnz3EY9t
+         Bdaj8s+/76t7301785EuSYGoocmPSroSPJJNI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793725160; x=1794329960;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=x1NI3skowoAtNdcXptzYo27srndyE5ZnDqWHrHmy4U4=;
+        b=iw5aHsA1L2JoE2tsGWPBwG+uXHb1xAT8D5IJojne1yOxU3Tbdo78drpBPG7S+sOvWd
+         Oaj+eSLCjPkq22MF8Is0skkcw3aag3hGul6np/4LL2NktLRjDQHHHMWMnThT8C5UKtTL
+         82Kf1sFI6MNnEBWAyZi34eZNjZicb5aWUc4uIwZjHw5RsQI+9+JxEscRzLScR/2A2wZt
+         nwZXmNT9NFjjOQa7cALdvH0v6VhAsACisDutufcdwvtdkC7YnIFmZDIxT3p5WtZk8vfI
+         99jYxq3Z0i0FZP/V6g9EMrdUqVpE/ZmImixTZizqYE8WA7kUwZK7w/JbthW9xcKUtbKd
+         OWLA==
+X-Forwarded-Encrypted: i=1; AKwUvBz3Ze0bFUjWM80KPeVEqoLMZ83FWi0DoepN3f7EY1IlFht0UsKnuE9rvdYvcgQFdzAQh4tufXc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/EDpqZR2TyrsjINDz8zdvu5zVlPf0VF1DVxa904uZjnLg/RlwG
+	GaT4z5fvInk1Q8ZoC0zw/rbmiOeTYpV8myC57AuUgSqx7Ht/bd3kf5y8fr+XtAvhFrs=
+X-Gm-Gg: AYBFou1fvSZdOqj3JMAJUxwmFnfdF4tMfya1Ho4eysYp2hcv+mTOqkdF40mtr85jj0a
+	+s1AIR1X+nPeriHmDMIA3zaxXXxkeDgDlaxGzFWaJpGPul3fAUcXg3JHIgNM3TdFbgu0Sz2CcR+
+	LFVumQh8UaSCymL5dg08P6KYaTEkrU2kncX3jJu720cawBFLon+qAv4m4MjBSx2Eo7aGrPRvVi+
+	opZagxjRDqHeGRmp0HMKVgg00wrEJBcJsLLg8q9BMh+AoRfxtpAQOOXiItIvF52k6rTHaN1gs0s
+	hYcWGc14BfWZqQ4vbcplimq1qHzJOF2h6eO3Rs7O0OO25Zx7NcmqMXtxwX4CEeCrLnlq/DQKTaB
+	PKDZYa1txm5LjcpFsqugnWZjzkWqqhc3BItdJMzeU6AEpbF8Iqi9o58t+RlQ+Ndln5re/j/UkK+
+	rDkcv5vgW+6x5+PaRjbdn2GQZ58OPUnMXXBY+9IqPX7LHNYqDJqlJRJ4/gu6zLWXsjiIH9dbEr5
+	zombwd6QYfFFJM87m5PH+b0+SR/rwCol5CRpZCKbt4F7KZQTXggovFz96MDUz8Sa/T5cgLhslyt
+	oxBz244o8vFbjsLWqCp1cpzTNu091gUO6Eock+iQraGnUsfUTvgwfDAWtRW3
+X-Received: by 2002:a05:620a:4385:b0:93e:5eaf:dd87 with SMTP id af79cd13be357-944217c1057mr2138536485a.62.1793725159609;
+        Tue, 03 Nov 2026 08:59:19 -0800 (PST)
+Received: from localhost ([2600:4041:59c3:300:a850:2af1:eb93:4121])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ca8066ba4sm120593986d6.33.2026.11.03.08.59.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 08:59:19 -0800 (PST)
+From: Axel Mierczuk <axel.mierczuk@1password.com>
+To: ja@ssi.bg,
+	horms@verge.net.au,
+	pablo@netfilter.org
+Cc: fw@strlen.de,
+	phil@nwl.cc,
+	netfilter-devel@vger.kernel.org,
+	lvs-devel@vger.kernel.org,
+	coreteam@netfilter.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net v2] net: stmmac: Clear DMA errors for multi-channel interrupts
-Date: Tue,  3 Nov 2026 13:58:08 -0300
-Message-ID: <20261103165808.72113-1-magnusleatti@kernelriot.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261103125430.962715-1-maxime.chevallier@bootlin.com>
-References: <20261103125430.962715-1-maxime.chevallier@bootlin.com>
+	w@1wt.eu,
+	Axel Mierczuk <axel.mierczuk@1password.com>,
+	stable@vger.kernel.org
+Subject: [PATCH nf v2 2/2] ipvs: skip cport 0 connections in ip_vs_conn_out_get()
+Date: Tue,  3 Nov 2026 11:57:46 -0500
+Message-ID: <20261103165746.39516-3-axel.mierczuk@1password.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20261103165746.39516-1-axel.mierczuk@1password.com>
+References: <20261103165746.39516-1-axel.mierczuk@1password.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -81,27 +105,45 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On 11/3/26 13:54, Maxime Chevallier wrote:
-> The Multi-MSI interrupt handler doesn't clear the DMA error interrupts,
-> and this leads to interrupt storms when one of these interrupts starts
-> firing :
+ip_vs_conn_out_get() does not filter templates. A template with
+cport 0 is matched by a packet sent to client port 0 that traverses
+the out hook, and handle_response() then runs ip_vs_set_state() and
+the timeout update on a connection that must never see packets. A
+backup server receives such templates over the unauthenticated sync
+protocol. An ordinary connection scheduled for a client that uses
+source port 0 has cport 0 as well and is matched the same way.
 
-Retested v2 on the YT6801, same setup as v1: net at cb284914e749, glue
-unmodified, so the MISC interrupt stays unmasked.
+Apply the rule used by __ip_vs_conn_in_get(): a lookup for client
+port 0 matches only connections flagged IP_VS_CONN_F_NO_CPORT, which
+still wait for their cport, and a lookup for a nonzero client port
+matches only connections without this flag. Test p->vport, which was
+already compared with cp->cport, instead of reading cp->cport again.
 
-4x 64-byte UDP RX flood for 10 s, same kernel:
+ip_vs_ftp_out() relies on the first case: it looks up the data
+connection with client port 0 to find the IP_VS_CONN_F_NO_CPORT entry
+created for an earlier PASV or EPSV reply. That lookup keeps working.
 
-  without the patch: the MAC interrupt hits about 93k/s within 4 s,
-  stays at about 122k/s after the flood stops, and the machine stops
-  responding.
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Suggested-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Axel Mierczuk <axel.mierczuk@1password.com>
+---
+ net/netfilter/ipvs/ip_vs_conn.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-  with v2: about 300/s during the flood, 0 after.
+diff --git a/net/netfilter/ipvs/ip_vs_conn.c b/net/netfilter/ipvs/ip_vs_conn.c
+index 94f25fb7d87e..29cbe797bb86 100644
+--- a/net/netfilter/ipvs/ip_vs_conn.c
++++ b/net/netfilter/ipvs/ip_vs_conn.c
+@@ -579,6 +579,8 @@ struct ip_vs_conn *ip_vs_conn_out_get(const struct ip_vs_conn_param *p)
+ 				    ip_vs_addr_equal(p->af, p->vaddr,
+ 						     &cp->caddr) &&
+ 				    ip_vs_addr_equal(p->af, p->caddr, saddr) &&
++				    (!p->vport ^
++				     (!(cp->flags & IP_VS_CONN_F_NO_CPORT))) &&
+ 				    p->protocol == cp->protocol) {
+ 					if (__ip_vs_conn_get(cp))
+ 						goto out;
+-- 
+2.50.1 (Apple Git-155)
 
-8x 64-byte UDP RX plus TCP TX for 30 s: about 25/s during, 0 after,
-with TX at 744 Mbit/s alongside.
-
-The 4x flood also runs clean after link down/up, ring resize, an MTU
-change, a 100/1000 speed change and a module reload. Throughput is the
-same as with v1 (TCP RX 941, TCP TX 825 Mbit/s).
-
-Tested-by: Magnus Leatti <magnusleatti@kernelriot.com>
