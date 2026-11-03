@@ -1,55 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793712881;
-	b=qcFUMhpUVbpPe83OdCW0/ICC7lwfmCQnxj5WfnTccErm5dX5i6LxWrq8a26S01l5X+aC
-	 Ep/1odBTapLarnLqRSymOGW6dbHhYBndorLHq2ddy+jVariOaN9EdiidZ+CxcQAcDkahu
-	 kQxlmQbcIcqDQqMlPnF9G/IVzNbn+y9m2fW712+RYEEmtyNtLdcLyQSV/hUIV9PjVqTPC
-	 n5JsNY4uI07AWfjEwDOtPCDN9l4v1EvfG2XMQxzz8WVKCijFexWA/bHHHYraVICPV6PQj
-	 Fm/daLbJGrI8/LTF0WhOyuHf1BggPrcO0u9b3wT+9tADiZ4LWOIN92Ho7qRjojipGTA==
+	t=1793712981;
+	b=4WzJRN5Bz33fyREks+YmXoElalcEUCBVkSZEY0aHHH9O2heQacEFU2Ehjumi2lkLsMSC
+	 eRh+XLEcZQaL/AWt4lB/ZfCsFeJ/ysoZcWzI3hk5BKUDGh6BVaOj8u5wd8ONuEPvVwFUB
+	 XqIyXodqgmAOTeZ8GqGGwb/RqZ4uEneJY9RskFm8yWXMpFTpvzjpQ2ovKfkt8uFDKmVzi
+	 4FD0eNckqmZ/O8CeMjcvrwyUXp7x28DK7jOBzMF+h9LJ2gEVyHXhqhwXEGy1OBPc4XqgX
+	 2VDXm1MdObQwI2puJVv7YlybxLcn/aqXarX8Xmu9p/aM3wiNRCjMvPj5bqct+xDjZnQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793712881;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=IYte/VFkKdCZ4xhpQyoeocuEaTeaOZru7SAHY391uSM=;
-	b=FSol0s572qtF0aXdo6567xjA3UZqL9giLTBR38IOE3ye82f16A/wY4H2wa0yFzTV3i1e
-	 nTvh4N4/4PFsG4VVSaOU09NQaNcXKig2dmm1gtkSNSaBIifJUQvK402TZsmsihxWPIqc0
-	 37hZPv1BGg2HQ51dNMFnUzyMQptvWPtypbxuiYvnfEm0RwS6443nop062N9TSSHq1+i9J
-	 S1l6G5CENfU5sTSgfCI62zd7FY3x/XjFVu884B3bnVmeQx14919+c5dG9MC8kIxGuHVsG
-	 DFha49Q9Lem7NbIURcvC+ksII5hbLDb9yF025pQFA5PjMUVQ3kJpsDpQy/QNqvESXqQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793712981;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=p8pRKIIdkCJcS0p/9hJ1x1TDgrprRrlCDBxylB1bYH8=;
+	b=zF5R4w2iLcM/BachA12tUkppSmyJn11B5NkPTa2aoYshqI5xbdhLXh1D8gZBMGHqxJo2
+	 6hbQnVUNjRtlYvUTGoe7l9XBblpREU+4xPMeuEnEa0jhVSl0IhvA2rHpxbMh6cFafMPAS
+	 soTLWtINQCuBI6XOPvqzumUxHWN2Wo1H5jHP87OCydA4PBxQgpDCeXkSV7qQguoDgIZwz
+	 5ihS2FjAFCmkO+ye9KBXwQRPQF80mNa9cvm7gDdY2oEETZvnHACrBtCngJ4rOySSxRIUX
+	 xvBlgVLxhzQrt9ncklliRggBaLo90H4ZfW2YQygcptiw/vVlyCZx416cWjfQ3ry1Osw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M49GXcet;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=KA6tWNOm;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9629C606A33F
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 13:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C7A606A332;
+	Tue,  3 Nov 2026 13:36:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19C7A606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M49GXcet
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 437C81F0093A
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 13:34:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793712881;
-	bh=IYte/VFkKdCZ4xhpQyoeocuEaTeaOZru7SAHY391uSM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=M49GXcethFCnW6HvRe2g3NkrtCtu1clX2LP4cxnrT72d1Ekz9Hb1qvt7LZOYW2CT8
-	 YCr69FbGGWhVnA7gM6Q+sWgUIuQTQyVogVN383HTmNydnIIP5SfBzQKkrDQFPgg2wc
-	 o0LD16cA5OHfUzxVgQBbXOiGkXk5uQc6kxGBn/A31WnPnlNlOGTi54+uXBGNpoV9RE
-	 cINT8ra2eRhtZN0viLV/sT96scSYjjKOvDat/FES1Gmlz0mfE30wqcwqui/xKrHHyq
-	 ylQv8ENQY7AParmbM53WpGHQShI75Cc+2USJiltmpSWSsBG9w4KnFGiQXH/dHqA8fB
-	 fTTZYvWgrH9sw==
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-4a6fb4040cfso1319632fac.3
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 05:34:41 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBzfa6TYcyqDYraYZDevamY9IMcjBZlorONMT5NMwOXg09VGbdImt1plQkVYpxTYkCWexMdg20Q=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9mXggzzLaA1v1dtP7/yRzTpK3b4rLO79v3mLEiG5nBFTsmSCZL
-	ZtydpRDlDFoTJxyW18SM8dB8NlShEHerXsgTQdkiUdolqVOzBZEYYaF4iFveCxiQXA6AA0b5IVI
-	SWv8iw+3l1n8f/TXpL1tT+yHLbszsRSQ=
-X-Received: by 2002:a05:6870:312a:b0:483:b752:633f with SMTP id
- 586e51a60fabf-4a907714416mr7456463fac.36.1793712880594; Tue, 03 Nov 2026
- 05:34:40 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=KA6tWNOm
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=p8pRKIIdkCJcS0p/9hJ1x1TDgrprRrlCDBxylB1bYH8=; b=KA6tWNOmwewtOpgEmq8Kqtospd
+	KFJSyP3k1zNCZiDKEIebNDAhxpEUdI2rQdxPxhg1KK8Afd4KOK0GQ2STo/w4IXXfmiNGohdE67eXq
+	C6RMhAWq8tuWdhiAHpeZ/EY9iBKJt7fy27ujmeftgqJZ1eST1ATYgglqaDzlnj5w6bbU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xOEgO-00E44o-If; Tue, 03 Nov 2026 14:36:12 +0100
+Date: Tue, 3 Nov 2026 14:36:12 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] net: dsa: loop: release netdev reference on registration
+ failure
+Message-ID: <2bea0e6e-5bff-4a3d-aeb7-5b199924fb3b@lunn.ch>
+References: <20261103100529.1309887-1-vulab@iscas.ac.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,81 +66,27 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261030122045.3035709-1-edumazet@kernel.org> <179362213820.3131.12108035098960840444@kernel.org>
- <c573bbcc-e0d8-4f43-b14b-09c676a6fe38@redhat.com>
-In-Reply-To: <c573bbcc-e0d8-4f43-b14b-09c676a6fe38@redhat.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Tue, 3 Nov 2026 14:34:29 +0100
-X-Gmail-Original-Message-ID: <CAL4WiiobvgoNp3Y-6qEh=OV9truPNn1v8-DoqFxR1rx=rpkZXA@mail.gmail.com>
-X-Gm-Features: AclHuK99zDPGvHkXqxIh5HAxw_r9tpWTX1MGzY_JCyqvRX7nBtPz2wuFdyMsuxE
-Message-ID: <CAL4WiiobvgoNp3Y-6qEh=OV9truPNn1v8-DoqFxR1rx=rpkZXA@mail.gmail.com>
-Subject: Re: [PATCH v2 net] udp: restore hlist_nulls for primary and secondary
- hash tables
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev-bot+sashiko@kernel.org, davem@davemloft.net, kuba@kernel.org, 
-	willemb@google.com, horms@kernel.org, netdev@vger.kernel.org, 
-	bpf@vger.kernel.org, david.laight.linux@gmail.com, 
-	willemdebruijn.kernel@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261103100529.1309887-1-vulab@iscas.ac.cn>
 
-Le mar. 3 nov. 2026 =C3=A0 09:40, Paolo Abeni <pabeni@redhat.com> a =C3=A9c=
-rit :
->
-> On 11/2/26 13:22, netdev-bot+sashiko@kernel.org wrote:
-> > Thank you for your contribution! Sashiko AI review found 1 potential
-> > issue(s) to consider.
-> >
-> > Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
-> >
-> > If you believe none of the issues are legitimate, please reply to each
-> > issue of Medium severity or higher and explain why the AI is wrong.
-> > If any of them are legitimate and you plan to respin, please let patchw=
-ork
-> > know by including "pw-bot: cr" as a separate line at the end of your re=
-ply
-> > (one such reply per series is enough).
-> >
-> > - [High] The hlist_nulls restart does not work when an IPv6 SO_REUSEPOR=
-T
-> >    socket is tail-inserted back into the bucket it was just removed fro=
-m.
->
-> This look real to me. On the flip side the most straight forward fix - av=
-oid
-> tail insertion in udp_lib_get_port() would re-introduce the issue address=
-ed
-> by commit d894ba18d4e449b3a7f6eb491f16c9e02933736e. But rehash already av=
-oids
-> tail insertion...
+On Tue, Nov 03, 2026 at 10:05:29AM +0000, Wentao Liang wrote:
+> dsa_loop_drv_probe() takes a reference on the CPU net_device with
+> dev_get_by_name() before calling dsa_register_switch(). The matching
+> dev_put() is only done in dsa_loop_drv_remove(), which the driver core
+> does not call after a failed probe, so every failed registration leaks
+> the reference.
 
-Agreed, it is real, although not a regression: before this patch,
-hlist_add_tail_rcu() set n->next =3D NULL and a reader parked on the
-socket stopped there as well. v2 simply did not fix this case.
+Please read:
 
-We still need the tail insertion: udp4_lib_lookup2() returns as soon
-as the first matching socket has a reuseport group without connections,
-so a dual-stack IPv6 group placed first would win over AF_INET sockets,
-despite their better score.
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
 
-The problem only exists while a reader can still be parked on the
-socket, that is less than an RCU grace period after udp_lib_unhash().
+You must indicate which tree this is for.
 
-v3 records get_state_synchronize_rcu() in udp_lib_unhash(), and
-udp_lib_get_port() only uses tail insertion if
-poll_state_synchronize_rcu() says the grace period has elapsed,
-otherwise it uses head insertion, as udp_lib_rehash() already does.
-The cookie fits in an existing hole of struct udp_sock.
+And please think carefully about which tree you pick. Does the issue
+actually bother anybody?
 
-The cost is that an IPv6 SO_REUSEPORT socket rebound within a grace
-period of its disconnect keeps its head position, so the v4/v6 ordering
-is not enforced for it, the same as after a rehash today. This needs
-disconnect() then bind() on the same port, with AF_INET and dual-stack
-AF_INET6 reuseport sockets sharing that port.
+    Andrew
 
-I also kept sk_nulls_add_node_rcu() unchanged, the tail insertion logic
-is now local to UDP.
-
-Thanks !
-
+---
 pw-bot: cr
