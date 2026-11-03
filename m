@@ -1,82 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.8
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.133
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793749918;
-	b=DplzP900Kx+QAP2RXY4kGNt0XqhsRZ1J1UO45iMjrpIRmKtI20qNuG3etWJrihob7Wai
-	 he8lSDrtq5P9CHjs0L3/58MJOfpzGUDrqFX5atBFgk1+P/ukDRpobiNfw4ZVf7JlmsML/
-	 8OKdd8DZIYpFM/1eA5OprtDnpgFX6lohiZkCV3YX8Bdk4SD8VjeVaDMYo6mqdS5wXEI5Q
-	 ZLGTOmXV0eeGlwmSlADKj7hIG7aqbv0O9yYLhkxExTZtppuHyJR7GKiOhBiGqoNtiDIP7
-	 iN+dO8BVUe/6eGe6+rCGIHbW7N4UZCE+jcVG5WvlXC2s1izAuT/YVg76TvzhLgHU95w==
+	t=1793749923;
+	b=ODubH3i1gdsTajCGtBNy4YhdprPkG/jxe9NhexrO5nKum4DJWdQ5ID6rqW6wb6Sf8V7Z
+	 QbyUwB0w2VZkJGssRNnI/tgLA1vQkF5xP/GENTX35SQ8damuUpcmVj6USNCKFm0gPypWS
+	 mzqUsWsVMrIhJzndGe2CeOo1/R9HFt3y7tYXlL3VHbiRn+boxG0hjwSE1WdqHe9aYyZa7
+	 e8dOooGLgbwgRg4TMVTQpVOI63T5P5dBrKpLrh6I2IkLDCCPQfEvCLC+KmY0n6uDllena
+	 lq62tETRAmtsjC2yiBwBlFVl8RPfErOhM9vArQRauFYRVwKx5+oAJA7ckgueZcSdbEg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793749918;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793749923;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:
 	 X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=fJ7IQIOXNs//1G8hg9c5EGbjN6OnBWvPLJeIH74gcIY=;
-	b=10B4wEPi4mbwIHPQ47S5b/14EyDE24Ltc576koB+Lnj8Wq4PP0RSi25XKG29oVWwUXxU
-	 Wn0r6/1RSPS6tSRyGjS4A03YzRv+OdTFSxOwacpDgdZslcrW2DoDHvLR+NVhB/DPuQsqg
-	 BrrN4X6z+gR9WA4vsV1vwWT1O3dxv+TbKs67cFId/MuvZuuuGphniKr3f1yCQ71X02mwH
-	 2NipQWZwEOC9viIVsIe9ZpqBYOPqEFxHm5pKvyWPSJSaCqF9q4W86Q0voRmngGyRrIm9S
-	 BqbgvcqYj93YW9sHQHsYvaq6njd4qeU6inAMy7RHwpD4ohY3fXwr4YVDVby6IYPZ2cw==
+	bh=YK0Xr740yMaz303kQAw5xU/hri305+ZpCPlJBa3zu5I=;
+	b=ZWzjr3p8i7aiKiufK/q9NxDq0K79p4ncg0r/rZUe77Kv7IU+6PlB3RrSrY2Yho1V8BrC
+	 1K1G63tq3pkL/q498SMuz3A8ZTOga8AdxZN3EKvKE9rKup2BxsHDU2aHHMxrDq0hHEQIE
+	 xl8xU6W1EtaNoNciS9N6xXb4V+OBX2q+qU9lCT3uDTRyZnNraYwbXjFmFHHHalyP7cZHC
+	 l47zo8+5LXf025fWe5wxNimEAkA1rd0r59ZdpfGPTV1nDlHgmCrFy97wxSyp5ok3am4BW
+	 /kdUBoi+lXPyOBuXiGL88nqlpMGGxi/DbJ0I6KayfNPuu+HMNTIMScWwBvG0XEGW9bg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZWA6wz+g;
-	arc=none smtp.remote-ip=74.125.229.8
-Received: from mail-dy2-f8.google.com (mail-dy2-f8.google.com [74.125.229.8])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ibeH9DzR;
+	arc=none smtp.remote-ip=74.125.229.133
+Received: from mail-dl2-f5.google.com (mail-dl2-f5.google.com [74.125.229.133])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221F5606D81A
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 23:51:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 221F5606D81A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67334606EE99
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 23:52:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67334606EE99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZWA6wz+g
-Received: by mail-dy2-f8.google.com with SMTP id 5a478bee46e88-36c9919c659so93547eec.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 15:51:58 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ibeH9DzR
+Received: by mail-dl2-f5.google.com with SMTP id a92af1059eb24-1ac216daf7dso60596c88.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 15:52:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793749917; x=1794354717; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793749922; x=1794354722; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=fJ7IQIOXNs//1G8hg9c5EGbjN6OnBWvPLJeIH74gcIY=;
-        b=ZWA6wz+gpgHjh1WQ5eaQidrNz4Hzm3YQ8yeDFG++7giIdaEL6V0GQwJaQi1OskRj0k
-         +zip9+d3WalbJESP2kwkC022l+JuQR654DJvkHmcsyNWZMTCvN0ElGkjE2tAcUQYah5/
-         gSpizDmU3DsXOnWZpLiDpfqOmhZ8YQaP/9tWHA1qp5AhqlxO89TPz8gwG04DxQ8lgaan
-         pOiYTu0jO990rh37d2ZAEwe0SqDrBe4tBitHRe7tiwWn0Dmk/K87zRQ2aeznObVW2CHt
-         roz7IHwemorr2dqr8E+YfCKI4huU4b5tkmn1VJDT5U6JVMlV7QRteohMjbiWP3pu9S0p
-         pU5A==
+        bh=YK0Xr740yMaz303kQAw5xU/hri305+ZpCPlJBa3zu5I=;
+        b=ibeH9DzRIx4RfJPxFHevHlDLr/xdu4QlU9YCsTEV7vBw0l4zutu1+wX3cGgEFI0Up+
+         CVu0HBGKpCLnauFhvNuKxdWvE/qXcbaTNrYSZKDwDqF/iH2b7xd0T5PgFqQwR7BDn0pa
+         Rq1D90uB+attIqkpLE2zIEaD5/5JfR0laKPNMuYywldn2ktuZtRARf+yB6gMO6LqXH3a
+         hEFFwo2eCeXcLrFsUYt0aR79LL7Zm/IG9nk+H074IXsetu1oYEevVpEpoge21ZwSDkZe
+         UC9DLBOB+CdzmX6Wz71LszCuBKJN1fdZfHa9hb4u8IeSILYNKVjY8c97A8kW9FbNWbPl
+         fWsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793749917; x=1794354717;
+        d=1e100.net; s=20260707; t=1793749922; x=1794354722;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fJ7IQIOXNs//1G8hg9c5EGbjN6OnBWvPLJeIH74gcIY=;
-        b=KqXF2AK5ZW77gnzvujsROLB5kq1AZlY4ZW29XP+NMCSjei/fnRXYo56HsgAwOHabIa
-         upBqU52CAJ92kvda05VPltmGLiPkurdxFBopj9l+v9bxQQYV+zj3L3X4PgwTGnuSjGZn
-         y2pXu62Cu//qc1oJKJ7MV8bKlYG2oIbEfz5LsW38gkHL/9WTv3nonlQ7ZYentoc/YsKW
-         FUXBz6ykAdh/MByX5q4iumc2s2LfDKycU2sSKWHQlQWAX2rVQsmq6QVFRXOXA2thQV9G
-         DrJTqQ1PH010R39+WT0Ty8ZsJ6kN2QRkH7lXXUjBmdyZAFiCwNc3ij5/3GbXXPEeBjAK
-         r21A==
-X-Gm-Message-State: APuU4Z80tTcU9Vj+4gjlLAoW1xP2DAh+9Cw+h2ZPFM71SZS04bYktgI+
-	xWHIRylrZRLgX2/UljHEhVwARWSyVV5vRDWR5SrQEe6jSLymeIy/5wbwL1Xhc1nC
-X-Gm-Gg: AYBFou254uu9pw2PkW/XYDmdFAkEGp6FjAYRSp7zWadmEJ1eFlBH1JEuxVUVmf4Z118
-	ybSKAVwoVqKdJkJO7NVtWKK7l7UPONk04VYbCNc2TLJxsnfC8SeCKEy279V/sABlvPuhVZEPiML
-	1a9JB/0fwlpFvfOV8gjz0dZH0P0jPf2XZeF5RqGRGAHunTytpZ7pCXQcjMryyZOi0J23ErM84HY
-	9Y/o6oHYtErMez31erI+bYfyn3ZV1XlH0nwPSh8JZ5JEzluCTWlELRuVMlkQZvf9mvXETU91dAs
-	jYb1EgfcYf+118UaPI7aoSjr+5zZqO9PCDLI/v3IhRay1sUH8h2tTKR+F+nB7c216TesTxSHWx7
-	RCGnaBKAm9VYOqVJKATmQh/bofveG/CzoBhwZqXLarFXa6O0R6mlhRRuMOP+SrOYHGDNarBaevQ
-	NkibUhCLr3qoW5I5GUWIVQuNwlEz1f9Kaz7veaYDBVUWw1WrsNrHIKWPUK0gQflTdy1JrJ7pK4E
-	/TJfpGHBGZqK115xP5L4Lir0EQQbQ/ZrecDGNHClS4DHEtaSlT765A48Y6MIJwLzqybvkOn732l
-	MhEn6lZ7YAWLnSctjwRKJNo=
-X-Received: by 2002:a05:693c:87d0:20b0:36a:18a:e00f with SMTP id 5a478bee46e88-36a42406487mr23417013eec.34.1793749916956;
-        Tue, 03 Nov 2026 15:51:56 -0800 (PST)
-Received: from localhost ([2a03:2880:9ff:71::])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca39b8eb3sm1876335eec.27.2026.11.03.15.51.56
+        bh=YK0Xr740yMaz303kQAw5xU/hri305+ZpCPlJBa3zu5I=;
+        b=EWUyn6kiVzwWnCSeSdL46snnfcGSFyVcTIGCtlPRkNH6aX349PAPlmmu4zhNaa/rT4
+         9MJTXMPbz0PCy6J1d+lMAeWVl7YbQlfSQn6fen3a+oURVcmlnAiVqcnd1JhQ//RDW4YL
+         vHL1E2RvOtiW2U2aY+/51q2sd3J67AFHYmzs4wCz3u2EXru8cs+fXyFmSY0bxo4XWkpx
+         sv9dtaz7xcbPZNOs9+lrWqP7fUNSlGoKlSzh4IWCqWU74rUE/adv2dydIvU/h5ZxFJ1U
+         HzvBveg25Q5rNSMWLh3o9qQx7wa3D0+BiV2WN6x9WCZbyMAOhN22cnEZWK9kwsVZ1c0E
+         xU+w==
+X-Gm-Message-State: APuU4Z961OSv4BsJkbwrawTgoE4dNS0iPHbLyBZDZ/ccwMa7Tk5lqgRr
+	/+TVgbW02OuVlQhKYUUv7fmjTTQlHejcBR5K9qGpMUjF7ScACCWhrVBh10KjlIcu
+X-Gm-Gg: AYBFou3v228Pgx0uWZ5K+CfVhL377F1JO8tIt/9TMwcZ2bGLJrCxVXOlg+XAU4wgzIz
+	MZPCXIm9q3D6gjygiWmzu/C+uMMsxC1XJnL4gfL6DYPrar1K6sCZ0qzInTohJsqWJSw0I6KtBdS
+	+EcKLDhHrsFxax88H9qNOeNEYzLbhnwvGOXvbMhhhACjrRpCvPCb0C1ddg5/p6XZcPSsGWeAlKS
+	BwsZQtVnXDWBqtqOXiaBeaMLKu44ex1DzZ8ZaqlNchnYyjibaFd2PEmaW0dP17JRordt10vlJF7
+	CThrCcYgnPnEged8ft/iMonGq0z1clQAtAUhvsCetI/mHNRsChcgMVk9Q1bniSbs3PM3s6Ljw9H
+	EjfAH5qB9xJ7fgTF/3daY1JwMUsalRF7xMfoiNpGlCsiZ5sdZ1cPp7VmHCcLJcU5JoyAGF0H1kx
+	HMpe14xixsRRFdbBXRgCjB4R9uEjkcarcBAsL11sFQOsktBDY0hiApu6oVPXbyDTmAsdlU1gYAS
+	b7NrFO/a8jdv6BJHYIBF5WKIrt0lj8k08x96T5nPk+WXLDwXUCo3hLn+IInMhv8oF1AVoMusaoe
+	i6uBdE1Jp0fE7tAvcaytWyOwqtqihViQbpTtlmyeVteJ
+X-Received: by 2002:a05:7301:6405:b0:366:83dd:4704 with SMTP id 5a478bee46e88-36a423dc7f8mr22151511eec.17.1793749922079;
+        Tue, 03 Nov 2026 15:52:02 -0800 (PST)
+Received: from localhost ([2a03:2880:9ff:6d::])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca39b3b7esm1439560eec.28.2026.11.03.15.52.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 15:51:56 -0800 (PST)
+        Tue, 03 Nov 2026 15:52:01 -0800 (PST)
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
@@ -102,9 +102,9 @@ Cc: davem@davemloft.net,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH net-next v2 2/7] net: devmem: charge the frag length to TX skb truesize
-Date: Tue,  3 Nov 2026 15:51:47 -0800
-Message-ID: <20261103235152.1904727-3-sdf@fomichev.me>
+Subject: [PATCH net-next v2 6/7] net: devmem: size TX net_iovs from the dmabuf sg table
+Date: Tue,  3 Nov 2026 15:51:51 -0800
+Message-ID: <20261103235152.1904727-7-sdf@fomichev.me>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261103235152.1904727-1-sdf@fomichev.me>
 References: <20261103235152.1904727-1-sdf@fomichev.me>
@@ -119,39 +119,104 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Devmem TX charges each frag the net_iov size, PAGE_SIZE today:
-zerocopy_fill_skb_from_devmem() adds PAGE_SIZE to skb->truesize per
-frag and __zerocopy_sg_from_iter() charges it to sk_wmem_queued. TCP
-uncharges in bytes as acked data is trimmed from the skb
-(tcp_trim_head()) and uncharges the rest when the skb is freed. A frag
-shorter than a page leaves the difference charged until then, which is
-small with PAGE_SIZE net_iovs.
+PAGE_SIZE TX net_iovs cap devmem skbs at MAX_SKB_FRAGS pages (~68KB),
+which makes BIG TCP ineffective.
 
-TX net_iovs are about to grow up to 2MB, while frags stay bounded by
-the skb and many frags share a net_iov. Charging the net_iov size would
-charge up to 2MB per frag: a 64KB skb with two frags would charge 4MB
-and fill the default 4MB send buffer on its own.
+TX net_iovs only need to be DMA contiguous. Use the largest power of 2,
+from PAGE_SIZE up to 2MB, which aligns every DMA segment of the dmabuf:
+- 2MB hugepage-backed udmabufs get 2MB net_iovs
+- no UAPI change, TX addresses are dmabuf offsets
+- skbs are still bounded by TCP's size_goal, only frags get larger
 
-Charge the frag length instead, which also matches what TCP uncharges.
+The net_iov size doesn't depend on the device: frags are capped to the
+device limit when they are built, and many frags share a net_iov.
+Capping the net_iov instead would only split frags at net_iov
+boundaries and allocate more net_iovs.
 
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
 ---
- net/core/datagram.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/devmem.c      | 28 ++++++++++++++++++++++++++--
+ net/core/netdev-genl.c |  2 +-
+ 2 files changed, 27 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/datagram.c b/net/core/datagram.c
-index ecc30a6f8302..489d92fe6dae 100644
---- a/net/core/datagram.c
-+++ b/net/core/datagram.c
-@@ -737,7 +737,7 @@ zerocopy_fill_skb_from_devmem(struct sk_buff *skb, struct iov_iter *from,
+diff --git a/net/core/devmem.c b/net/core/devmem.c
+index 19c039ed2cb2..98c9594dbf99 100644
+--- a/net/core/devmem.c
++++ b/net/core/devmem.c
+@@ -181,6 +181,20 @@ int net_devmem_bind_dmabuf_to_queue(struct net_device *dev, u32 rxq_idx,
+ 	return err;
+ }
  
- 		netmem_inc_ref(net_iov_to_netmem(niov));
- 		skb_add_rx_frag_netmem(skb, i, net_iov_to_netmem(niov), off,
--				       size, PAGE_SIZE);
-+				       size, size);
- 		iov_iter_advance(from, size);
- 		length -= size;
- 		i++;
++static bool net_devmem_sgt_aligned(struct sg_table *sgt, size_t size)
++{
++	struct scatterlist *sg;
++	unsigned int i;
++
++	for_each_sgtable_dma_sg(sgt, sg, i) {
++		if (!IS_ALIGNED(sg_dma_address(sg), size) ||
++		    !IS_ALIGNED(sg_dma_len(sg), size))
++			return false;
++	}
++	return true;
++}
++
++/* niov_shift == 0 picks the net_iov size from the dmabuf, TX only */
+ struct net_devmem_dmabuf_binding *
+ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 		       struct device *dma_dev,
+@@ -191,11 +205,11 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 		       struct netlink_ext_ack *extack)
+ {
+ 	struct net_devmem_dmabuf_binding *binding;
+-	size_t niov_size = 1UL << niov_shift;
+ 	static u32 id_alloc_next;
+ 	struct scatterlist *sg;
+ 	struct dma_buf *dmabuf;
+ 	unsigned int sg_idx;
++	size_t niov_size;
+ 	size_t niov_idx;
+ 	size_t i;
+ 	long err;
+@@ -221,7 +235,6 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 	binding->tx_max_frag_size = dev->netmem_tx_max_frag_size;
+ 	write_pnet(&binding->net, sock_net(nl_sk));
+ 	binding->uid = sk_uid(nl_sk);
+-	binding->niov_shift = niov_shift;
+ 	xa_init_flags(&binding->bound_rxqs, XA_FLAGS_ALLOC);
+ 
+ 	err = percpu_ref_init(&binding->ref,
+@@ -266,6 +279,17 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 		goto err_unmap;
+ 	}
+ 
++	if (!niov_shift) {
++		niov_size = SZ_2M;
++		while (niov_size > PAGE_SIZE &&
++		       (!IS_ALIGNED(dmabuf->size, niov_size) ||
++			!net_devmem_sgt_aligned(binding->sgt, niov_size)))
++			niov_size /= 2;
++		niov_shift = ilog2(niov_size);
++	}
++	binding->niov_shift = niov_shift;
++	niov_size = 1UL << niov_shift;
++
+ 	if (!IS_ALIGNED(dmabuf->size, niov_size)) {
+ 		err = -EINVAL;
+ 		NL_SET_ERR_MSG_FMT(extack,
+diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+index 384fdc5ae514..bfd229bd31ca 100644
+--- a/net/core/netdev-genl.c
++++ b/net/core/netdev-genl.c
+@@ -1261,7 +1261,7 @@ int netdev_nl_bind_tx_doit(struct sk_buff *skb, struct genl_info *info)
+ 	binding = net_devmem_bind_dmabuf(bind_dev,
+ 					 bind_dev != netdev ? netdev : NULL,
+ 					 dma_dev, DMA_TO_DEVICE, dmabuf_fd,
+-					 PAGE_SHIFT, priv, NETLINK_CB(skb).sk,
++					 0, priv, NETLINK_CB(skb).sk,
+ 					 info->extack);
+ 	if (IS_ERR(binding)) {
+ 		err = PTR_ERR(binding);
 -- 
 2.53.0-Meta
 
