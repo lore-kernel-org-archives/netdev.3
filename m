@@ -1,72 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.2
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793676416;
-	b=jkWYbJKokjSKp+xfrsDlrDIxmSPQccorFL6uXZ/YzpPPgEjCQ0n7evWE3ye8Mwqnuws7
-	 ao7sRwvbjB1CNpjjId1G7LFlyalcQqJVJI4luxd4O0bLoUgmZse3dCQI5G/XjrcBRJELC
-	 AN4N1mu/ZzvhnJODxHF4/ClIXwsP/wgHzQmnOziUnaGiuIGIBjNBeG3jwXEpzo8XXGe+3
-	 zVKvBKShKE+Z8J7+7PO4yz6SCXCY87sDAKRtjO9KpJckb/OoqvWzW8VAWcFwL6qaui/mz
-	 akZr6F+1I6SgkKhfd7UVaK7OTGTxhrrIQkDLuINlcnhuomrwp2Gpkq0XX/VCxX7+7Mg==
+	t=1793676490;
+	b=cK4HLWfU6o9AvOBMTSa6UYQuZLq/QmEYZQqXoATstqv0goXwYVieIkTMXh3nUzIotqNz
+	 3t9vk4DbRIjJ/RByJ/gKYxLVFdN0ZQGa5J0bUklDbsfkPeC+KtzQnRT0mfwfhvmdqCsoD
+	 FckBiWUAnuMb2xpw+jvASsHh9jt7x/gNR+RzhDnvPS//1oHO1xcVTD+xroQI5E92lm5N6
+	 O5jUlF8kT5OL4x7Th14/i9/H3/dVAtKBE0kxcqkllKFbQsBRMTgnKQJEhhPcfz+Z7QH9R
+	 3Y7OMbX4W0W/ibvQbooMA0bRZNnd/MMlscqw0fUlEFnYa9R05EndrObRzA1u7XCceNA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793676416;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=Pj1JU03F9Laxq6eHx9zjcjJnN4EfO5e/haxBemgdWVs=;
-	b=K5oAhaBuBCJJCiCoUAJ+K6zLnrprRZxgZF8OwhF5JgjW/WykCbP+FzoFfw9dHPflOhDe
-	 iL4QhvXRiNUMqKAtgiT9HUl5HxFtSY9bNbN2m/FcfVeqFtEe5LxZ18kKzUQdOLXsFCg2h
-	 Vc95b4/giq7wm2ZOKMjXXlnd6d2lmX/NwyIsvzPgjR5rxIAGahdG4N6wo/IBup2wuMraI
-	 FSFTx0JIkepaIL2FoWkW5rHZGWlvXJQKVIUek145I4HD99J4ef5jslRKGZAr+ElkLZ3y0
-	 AGZp2daj4hP4zG6werrZ3C4Kra7AXvFgVOcjZVT46xFR9BHtNNn3YOefbFwh+er9Vkg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793676490;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=IT22gR2pwKiJhADmHWP/+r0coNccC8xLlTiDO/rBpoY=;
+	b=MJymJkzU4ma3c/0+txhrMNYMWf+lZEnex67bNkEgfHSDTbEl4GTlDj5rwXhg/YtMtx7q
+	 x6tG3bWRhdMy0VBUCFTTg1T8LHw0qvQmORVFSjGY2w9O1DRzHxcA1e0ilpHkJcndcTwrO
+	 F3M+Oa4NJQ3crIuEUd6o0IoFaugVWZJc3VznuBfvNYCNyR5NOJfRSicTsgu63egF2o1/I
+	 ng/kAPn1AdozNnVebWPjU67eA362mvKHzVLIdXTIGcRZpNAtI7BpwTq65mQgI68XeGR4X
+	 X48fpoogQHZyWOSopIPXg6x8/7GD9DnS3pI0+xR4o6fAHjFWz9oNMYu9zVB/YC7PTaw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=wZ3Vm7l0;
-	arc=none smtp.remote-ip=95.215.58.2
-Received: from mta1.migadu.com (out-2.mta1.migadu.com [95.215.58.2])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dsHluK77;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E83606A329
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 03:26:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03E83606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F004606A324;
+	Tue,  3 Nov 2026 03:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=wZ3Vm7l0
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=wtEVdOVSVnuKwh+DFugaJpr8wQGqhhMMSkFBirTr1Zg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793676414; v=1; x=1794281214;
- b=wZ3Vm7l0mlxhJDHMtn+MSeTkfra8gPRhQ/C9k1Ov7E5B2EKvdeEFGhRIzJ8empktpQHbZLSy
- sWaXtGmxIrM1ilcMcT5/WgFfmCwPB4DJNFpQ7m1N1/QT+Xt/mFQnCB+BUoBPZLv3cUTN8OaZ2W3
- c2PI4w6nCYlqu5dodVSmpQ2Q=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id e74cd1523336b06b;
-	Tue, 03 Nov 2026 03:26:54 +0000
-X-Mizu-Trace-ID: e74cd1523336b06b
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 3 Nov 2026 11:26:35 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>, Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, bpf@vger.kernel.org,
-	David Lebrun <david.lebrun@uclouvain.be>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Mathieu Xhonneux <m.xhonneux@gmail.com>,
-	David Lebrun <dlebrun@google.com>,
-	Stefano Salsano <stefano.salsano@uniroma2.it>,
-	Andrea Mayer <andrea@common-net.org>
-Subject: Re: [PATCH net 6/6] selftests: seg6: add test for skb checksum with
- CHECKSUM_COMPLETE
-Message-ID: <aulUayPCDOYwAm1e@fedora>
-References: <20261031225033.64-1-andrea.mayer@uniroma2.it>
- <20261031225033.64-7-andrea.mayer@uniroma2.it>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dsHluK77
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893541F000C1;
+	Tue,  3 Nov 2026 03:28:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793676490;
+	bh=IT22gR2pwKiJhADmHWP/+r0coNccC8xLlTiDO/rBpoY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=dsHluK7762BZ80/LESPY/xhDZDWPXpmU9W48PG4h3UMez8w68s+LNv80MHWQ0RTac
+	 5XeeVLn5sew2Y3XC7g5qtyA3yu7+r2z++Pc5qpuEHKGLcm+IW4q2BDgoPoCdmSvOqA
+	 GwnhOmGTMQm8tsCk/Ab4Ea5hYSv8kipAB9VIMQBv75X830u0SH7aBclarZ2aRMGZek
+	 WUW8bPm81HISM7t6YfnllVatmV1b2zsRVLUisNRcuafYrYSuUlWwkkfuJD02l1tcSD
+	 R/NNDY+smO/ubpd5Xd0TRx/omX4XiX0+NyKPuj/0ct4dWaiC6/sk1GVDfXpoH0YBNO
+	 PSaO+a83mAadQ==
+Subject: Re: [PATCH net v5] arp: Fix Hole-196 vulnerability by dropping
+ unicast ARP replies in L2 BMC
+From: netdev-bot+sashiko@kernel.org
+To: starchang@google.com
+Cc: netdev@vger.kernel.org, ja@ssi.bg, dsahern@kernel.org, idosch@nvidia.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, johannes@sipsolutions.net, johannes.berg@intel.com,
+ linux-kernel@vger.kernel.org, wangroger@google.com
+Date: Tue, 03 Nov 2026 03:28:09 +0000
+Message-ID: <179367648906.488856.5105608241587328517@kernel.org>
+In-Reply-To: <20261030031136.607720-1-starchang@google.com>
+References: <20261030031136.607720-1-starchang@google.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,78 +64,228 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261031225033.64-7-andrea.mayer@uniroma2.it>
 
-Hi Andrea,
-On Sat, Oct 31, 2026 at 11:50:33PM +0100, Andrea Mayer wrote:
-> Add a selftest for received packets with CHECKSUM_COMPLETE that the SRv6
-> code processes before they are delivered on the same node. The test checks
-> that, after the node changes the packet, UDP does not read a wrong
-> skb->csum.
-> 
-> The test uses a host and a router connected through a veth pair. Since veth
-> does not provide CHECKSUM_COMPLETE, a tc ct action on the router computes
-> skb->csum in software.
-> 
-> The host sends a UDP datagram to the router along five paths: no SRH (the
-> reference), an SRH with local segments, End.B6.Encaps with End.DT6, End
-> with the next-csid flavor, and End.BPF. Each datagram is expected to be
-> delivered, not dropped as a checksum error. Without the previous patches,
-> every path except the reference fails. With them, every path passes.
-> 
-> The host also sends a control datagram. It checks that the test detects a
-> wrong skb->csum after a change to the packet. After the ct action, a BPF
-> program on the router changes the Flow Label of the control datagram
-> without updating skb->csum, and UDP must drop it. If UDP accepts it, the
-> paths above may report a false pass, and the test fails.
-> 
-> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-> ---
->  tools/testing/selftests/net/Makefile          |   1 +
->  .../selftests/net/srv6_csum_complete.bpf.c    |  65 ++
->  .../selftests/net/srv6_csum_complete_test.sh  | 642 ++++++++++++++++++
->  3 files changed, 708 insertions(+)
->  create mode 100644 tools/testing/selftests/net/srv6_csum_complete.bpf.c
->  create mode 100755 tools/testing/selftests/net/srv6_csum_complete_test.sh
-> 
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-[...]
+Critical: 0 · High: 1 · Medium: 2 · Low: 1
 
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] The patch does not close the Hole-196 ARP cache-poisoning attack
+  it claims to fix.
+- [Medium] The patch rests on a false protocol premise, and with the
+  sysctl enabled it breaks legitimate traffic without saying so.
+- [Medium] The patch's GARP exemption does not match the kernel's own
+  GARP definition, and as a result the updated sysctl documentation is…
+- [Low] The patch reuses an IP-specific drop reason and RFC justification
+  for ARP, so both in-tree descriptions now misdescribe the new code.
+
+--
+
+arp: Fix Hole-196 vulnerability by dropping unicast ARP replies in L2 BMC
+
+This patch extends the drop_unicast_in_l2_multicast sysctl to ARP. When
+the sysctl is set, arp_process() drops ARP replies that arrive in L2
+broadcast or multicast frames unless sip == tip. Gratuitous ARP is left
+to drop_gratuitous_arp, ARP requests are not filtered, and the sysctl
+documentation is updated to match.
+
+> diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
+> index d3523c9064a22..0747ff20ba472 100644
+> --- a/Documentation/networking/ip-sysctl.rst
+> +++ b/Documentation/networking/ip-sysctl.rst
+> @@ -2301,8 +2301,8 @@ promote_secondaries - BOOLEAN
+>  	Default: 0 (disabled)
+>  
+>  drop_unicast_in_l2_multicast - BOOLEAN
+> -	Drop any unicast IP packets that are received in link-layer
+> -	multicast (or broadcast) frames.
+> +	Drop any unicast IP packets and non-GARP ARP replies that are
+> +	received in link-layer multicast (or broadcast) frames.
+>  
+>  	This behavior (for multicast) is actually a SHOULD in RFC
+>  	1122, but is disabled by default for compatibility reasons.
+
+[Severity: Low]
+This isn't a bug, but the next paragraph still cites RFC 1122 as the
+reason for this behaviour. RFC 1122 section 3.3.6 covers IP datagrams
+and says nothing about filtering ARP replies.
+
+The new drop in arp_process() has a similar problem. It reports
+SKB_DROP_REASON_UNICAST_IN_L2_MULTICAST, which
+include/net/dropreason-core.h documents as:
+
+	 * @SKB_DROP_REASON_UNICAST_IN_L2_MULTICAST: destination address of L2 is
+	 * multicast, but L3 is unicast.
+
+The ARP check looks at ar_op and sip != tip, not at an L3 destination
+address. So drop_monitor and kfree_skb tracepoint users would see these
+ARP drops described as L3 unicast in L2 multicast.
+
+Would a separate drop reason, or updated kernel-doc, fit better here?
+
+> diff --git a/net/ipv4/arp.c b/net/ipv4/arp.c
+> index 1ca4ced280aef..8736092d5c629 100644
+> --- a/net/ipv4/arp.c
+> +++ b/net/ipv4/arp.c
+> @@ -794,6 +794,26 @@ static int arp_process(struct net *net, struct sock *sk, struct sk_buff *skb)
+>  	    (!IN_DEV_ROUTE_LOCALNET(in_dev) && ipv4_is_loopback(tip)))
+>  		goto out_free_skb;
+>  
+> +/*
+> + * Hole-196 defense for ARP:
+> + * If drop_unicast_in_l2_multicast is enabled, drop ARP Replies received
+> + * in L2 BMC frames unless they are Gratuitous ARP (sip == tip).
+> + *
+> + * Standard ARP Replies are strictly unicast (PACKET_HOST). An ARP Reply
+> + * in an L2 broadcast frame with (sip != tip) is an injected unicast packet.
+
+[Severity: Medium]
+Is this premise accurate? The commit message makes the same claim:
+
+  "Under standard networking behavior, a non-GARP ARP reply is strictly
+  meant to be delivered as an L2 unicast frame (PACKET_HOST) to the
+  requester."
+
+RFC 3927 section 2.5 requires ARP packets whose sender is an IPv4
+link-local (169.254/16) address to be sent as link-layer broadcast, and
+that includes replies. RFC 5227 section 2.6 also discusses broadcast
+ARP replies.
+
+Take a host with drop_unicast_in_l2_multicast=1 that ARPs for such a
+peer. The solicited reply arrives with pkt_type == PACKET_BROADCAST,
+ar_op == ARPOP_REPLY and sip != tip, so the new branch drops it.
+
+Nothing else in arp_process() resolves the entry. Wouldn't the
+neighbour stay INCOMPLETE and then go FAILED, so IPv4 connectivity to
+that peer is lost?
+
+The existing code in arp_process() already treats broadcast replies as
+valid input:
+
+		/* Broadcast replies and request packets
+		   do not assert neighbour reachability.
+		 */
+		if (arp->ar_op != htons(ARPOP_REPLY) ||
+		    skb->pkt_type != PACKET_HOST)
+			state = NUD_STALE;
+
+The sysctl was documented as covering unicast IP packets. This change
+widens it to ARP without mentioning the compatibility impact, and with
+the Fixes: tag it would also go to stable. Should the documentation at
+least call this out?
+
+> + * Legitimate GARP (sip == tip) is preserved and defers to DROP_GRATUITOUS_ARP.
+> + * ARP Requests are left untouched per RFC 826.
+> + */
+> +	if ((skb->pkt_type == PACKET_BROADCAST ||
+> +	     skb->pkt_type == PACKET_MULTICAST) &&
+> +	    IN_DEV_ORCONF(in_dev, DROP_UNICAST_IN_L2_MULTICAST)) {
+> +		if (arp->ar_op == htons(ARPOP_REPLY) && sip != tip) {
+
+[Severity: High]
+Does this close the cache poisoning path described in the commit
+message? Only broadcast replies with sip != tip are dropped. A GTK
+holder can still overwrite the victim's gateway entry with broadcast
+frames that pass this check.
+
+The first way is a broadcast ARP request with sip = gateway IP,
+sha = attacker MAC and tip = victim IP. With the default arp_ignore=0
+and arp_filter off, it takes the RTN_LOCAL branch in arp_process():
+
+			if (!dont_send) {
+				n = neigh_event_ns(tbl, sha, &sip, dev);
+
+neigh_event_ns() then overrides without any condition:
+
+net/core/neighbour.c:neigh_event_ns() {
+    ...
+	if (neigh)
+		neigh_update(neigh, lladdr, NUD_STALE,
+			     NEIGH_UPDATE_F_OVERRIDE, 0);
+    ...
+}
+
+So the LOCKTIME window the commit message relies on doesn't apply on
+this path.
+
+The second way is a broadcast GARP with sip == tip == gateway IP. It
+can be a request, or a reply with tha == sha. It passes the new check,
+and drop_gratuitous_arp defaults to 0.
+
+arp_is_garp() then returns true because the gateway address is
+RTN_UNICAST. That forces the override in the update block:
+
+		override = time_after(jiffies,
+				      n->updated +
+				      NEIGH_VAR(n->parms, LOCKTIME)) ||
+			   is_garp;
+		...
+		neigh_update(n, sha, state,
+			     override ? NEIGH_UPDATE_F_OVERRIDE : 0, 0);
+
+Broadcast requests whose tip is not local also fall through to that
+block. They overwrite an existing sip entry once LOCKTIME has passed,
+which is the same primitive this patch blocks for replies.
+
+With drop_unicast_in_l2_multicast=1 set as the documentation suggests,
+the attack in the commit message still seems possible with these
+frames. RFC 826 requires requests to be merged into the cache, so a
+filter based on opcode and sip may not be enough. Should the subject
+and changelog claim be narrowed, or the approach reworked?
+
+[Severity: Medium]
+Is sip == tip alone the right GARP exemption here? arp_is_garp() is
+stricter for replies:
+
+net/ipv4/arp.c:arp_is_garp() {
+	bool is_garp = tip == sip;
+	...
+	if (is_garp && ar_op == htons(ARPOP_REPLY))
+		is_garp =
+			...
+			tha &&
+			!memcmp(tha, sha, dev->addr_len);
+
+	if (is_garp) {
+		*addr_type = inet_addr_type_dev_table(net, dev, sip);
+		if (*addr_type != RTN_UNICAST)
+			is_garp = false;
+	}
+	...
+}
+
+Consider a broadcast reply with sip == tip == gateway IP,
+sha = attacker MAC and tha != sha. The kernel's own definition says it
+is not GARP, but this check doesn't drop it.
+
+With drop_gratuitous_arp at its default of 0, ipv4_neigh_lookup() finds
+the existing gateway entry. neigh_update() then overwrites it once
+LOCKTIME has passed. If tha == sha as well, arp_is_garp() returns true
+and the overwrite is immediate.
+
+That is the commit message's scenario with tip set equal to sip. The
+updated ip-sysctl.rst text says non-GARP ARP replies are dropped. Does
+that match what is implemented here?
+
+This overlaps with the question above. The separate point is the
+mismatch between the exemption and the documented behaviour. Should
+the documentation also say that drop_gratuitous_arp has to be enabled
+for the described protection?
+
+> +			kfree_skb_reason(skb,
+> +					 SKB_DROP_REASON_UNICAST_IN_L2_MULTICAST);
+> +			return NET_RX_DROP;
+> +		}
+> +	}
 > +
-> +log_test()
-> +{
-> +	log_test_expected "$1" "$2" "$3"
-> +}
 
-We'd better use log_test_expected directly, otherwise the log_test in
-lib.sh will be overwrite.
+[ ... ]
 
-> +
-> +test_command_or_ksft_skip()
-> +{
-> +	local cmd="$1"
-> +
-> +	if [ ! -x "$(command -v "${cmd}")" ]; then
-> +		echo "SKIP: Could not run test without \"${cmd}\" tool"
-> +		exit "${ksft_skip}"
-> +	fi
-> +}
-
-Then we can use require_command() in lib.sh here, which will call
-log_test() in lib.sh.
-
-[...]
-
-> +
-> +if [ "$(id -u)" -ne 0 ]; then
-> +	echo "SKIP: Need root privileges"
-> +	exit "${ksft_skip}"
-> +fi
-
-I wonder if there is any one run the selftest with none root privileges.
-Cause almost all the selftests need ip configurations.
-
-Thanks
-Hangbin
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261030031136.607720-1-starchang%40google.com
