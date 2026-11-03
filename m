@@ -1,59 +1,113 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793702521;
-	b=5EckAz6lX/uFf0XOakGCclEI3StV5VUPXEJnHhbL+41tcTynfwo4Y9QlvBBZgIiwjbXi
-	 skV0aJJt+rigE6hhYTw7dvJClahRDrNECBM53a4y/wYwn1wqkESQKw0nH9YQRfQLH/6P0
-	 YmSMKpnrLaJZY6GO4iWwPXnZGVa37cajNZ8gfVYOFdK+Oovte7wxo37Ss+3BpCSwXlRwk
-	 PTNF27TnV7k16RXAPVM0+yBBZgwKvAL80IMLbNZq1PN3ANG4K0ezaNEhwuYAs8jD+udrp
-	 MUqnPIR7dYPnTEpviigiF3/8kdBN0UeUATdJw/CuUWF0QMNezKMKxeUuu/6/czcRHCA==
+	t=1793702536;
+	b=N4Q6U98NAc89Xkk7HdXCiJuGNSH2mAS4rqLmiUs1jUzCcU3kzbi2+H6PqGCTf4pptMEd
+	 +dSo0NT9EFON8yyEpRMIedG/6aaPxpJClUnidvHLt7aUfB8Pfrtns7WkqQxbo435+AJeh
+	 65bVbOyKusTO9A2TwQiPSBLL1PJ3Vzs+9qKMCaoQ5ld+JPaO/OVc76FngCpyn9zn31kg7
+	 mOLvNyKF3j4JdLvjTARo4OPxlpmQBrjWnbvlCuE2fH7mawFqkPRhHVkdcDMrMQNMkyNQ0
+	 L23Fm3HiaBsaHv1bxbzWrC7oEHszZnuqmocNvbup3gPVQg+yJwz6AdH6hUCZuB9fxog==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793702521;
-	h=DMARC-Filter:DKIM-Signature:Received:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Debian-User;
-	bh=VSDsUrD53VF2t98EvwwDFFjioKsd8qtnZe3AArbBIyM=;
-	b=ChX88Nd9TFwW6hmXyXXy3dl9qciPNHO73o/ej1/4q5obgoDCxVCEUWziUjtd36TMWP5P
-	 CUkCUbYyPPZ5rLIxClC/UhfO51iMOE3PybqCULR+T9pH4JzF+TTcJrVQyUIv1C4bSVOUu
-	 6arGRdxa9ekl15liElRLWbWQImZs/ZC5rJ0Kf+iiR9CyR9ezfdkiPHAV1RjIdm3JQrl1Z
-	 /ygw6kCDpBhppR8djyXg0bhA+JgRiZcnJ+uBf0PSi7uy3Jte76nFsrElTO7VkfGyKHOSQ
-	 nkVuDXfNViL/CXb827WbSl5uU3gbw8qNyQqaRIz0z6YyOOimvu7BWrw6bdWxvjXfheA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793702536;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:Date:
+	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Proofpoint-Spam-Info:
+	 X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=wUky4id+jp8YQ+y/i0f5IenruvHIfgyCfa+AfUKoCwU=;
+	b=anu4k687IybBJFi8gx2AtDVnlHQgfsGZ3P9dSuvbjEzGOoipOH8qZ1iXL9bzI+aTX3X9
+	 /Fq77lUyNTNRa7iO7aegjeedrqqIRv6iX6fDZOlCS2CeOWIJqyfSm+TWwP4s8UV1qkC8V
+	 8zptpsZ08+kVTtGmcoEsdjl0Cn5UofxJ/wKHwmTm7xknJDzdjtGhF5zm4ApCm8Y6CYzOR
+	 cCO+S2Mn1Y54kHawEgIZ6KmxCM2zymQQkhiohd0qmSEIt0kJzbO+NRZXd9U76zB7cUDXj
+	 8eOWysxlfDXFlyGXo4Hss0+Alc0tjzaXdYctEyjo4e6rE3dUi/Z3juFlPDNE52nOSsg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=debian.org;
-	spf=pass smtp.mailfrom=debian.org;
-	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b="Rs/A1rXE";
-	arc=none smtp.remote-ip=82.195.75.108
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=jV+jB2z0;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=QfRLDjEg;
+	arc=none smtp.remote-ip=205.220.180.131
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F279606A33A;
-	Tue,  3 Nov 2026 10:42:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3F279606A33A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D957606D81A
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 10:42:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4D957606D81A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=Rs/A1rXE
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=VSDsUrD53VF2t98EvwwDFFjioKsd8qtnZe3AArbBIyM=; b=Rs/A1rXESEcKVlaN7cF1HsGUaT
-	qX6OkhgpYXsR91gqpuBdIVjO+VRC3x/L7Nsbncg3JdOyWUvjCk04tci0TOptIozchnup97uHeNZEv
-	q2RW63NDa/zICFzEGW4W555ANgkErX7Mp95693+rNKSl07dUkTx3pHE3fV6bgXjFJp58okw5pq/4Y
-	cwRYl/39dNCSB7PlPyTbNMEIsSICnuJv90txY69OfkUJwR5QQR+vP3E9+x7skpHVc632axkVTIq4y
-	B+DRhxL2X3IIcJvPTbuaszEt2qZFQXdwaQG6E2EGr/TGXhi17VqpL7SO3dH3Tw1pEAuB4GQBot1qr
-	zhs3KKCg==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xOBxh-006sN6-0e;
-	Tue, 03 Nov 2026 10:41:54 +0000
-From: Breno Leitao <leitao@debian.org>
-Subject: [PATCH net-next v4 0/5] netconsole: Support messages ratelimit-ing
-Date: Tue, 03 Nov 2026 02:37:45 -0800
-Message-Id: <20261103-netcons_ratelimit-v4-0-b554c27ba27a@debian.org>
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=jV+jB2z0;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=QfRLDjEg
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A3AAMJo2552987
+	for <netdev@vger.kernel.org>; Tue, 3 Nov 2026 10:42:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	wUky4id+jp8YQ+y/i0f5IenruvHIfgyCfa+AfUKoCwU=; b=jV+jB2z00pxoabHh
+	SdiGwrQlLUNusuWkGYEQd5oksX4s5Tvz9qroCiq6rSWoWPPnNGRDgM4crPEVMaaS
+	rLqwgkvvR8hgTfr/S3eypnQFlACByLQur3d9Z0JVTOvOY97talx8qasYYazGDf+n
+	R/o4JuINZEtQkSjKCycLeEmybrG+JHBBanAAnU+2lTTQ8uQ87IBdMQ8ReudNuW4s
+	O9GKEfrxVxrnT51T7PeKN9GmeiyrAD8pKXV5ez27PXyDw5TIfvEfrCHNEHU+U6my
+	+gH6jh9emSmvAC+FKeBZ5kfpICJH0vQ484Ee9gKy9wKhJhEhfRN30no4NIUBPy5x
+	lCXRIg==
+Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com [209.85.221.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hq08739xx-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 10:42:15 +0000 (GMT)
+Received: by mail-vk1-f197.google.com with SMTP id 71dfb90a1353d-5ead43326a7so577476e0c.2
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 02:42:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1793702534; x=1794307334; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wUky4id+jp8YQ+y/i0f5IenruvHIfgyCfa+AfUKoCwU=;
+        b=QfRLDjEgy6SqP5uymwxYKvTIVr4bflcMW1xqhuiTwKXlvm1wOEc3ME8c2EPCK/LVmf
+         4X6kfNW54KTkfkWvG3KlvRVObozV6hZPcBQ7ZTjuNGCq3Ik+kRXqdFVN3cKXMVO4FHc2
+         611lLqCTdmnNvne8GojKGFI0Y/zoHKtmbuKhwcQ7fTRgyBi/JmqopmE/v53l7oG7oHBv
+         ZTQA90rOIBFmWRpsXEdLUEL1d+G/pxIzRFmqKvXWBx33BdDZn0hxkzlUxOkHGv72S0p8
+         9VyaAVFTATfTZ7pGqjlL/bgOVu/qgtGjo5KnvrkMkZwxF7eVuSYqyOMgUis4Pr9HquB5
+         xkEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793702534; x=1794307334;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wUky4id+jp8YQ+y/i0f5IenruvHIfgyCfa+AfUKoCwU=;
+        b=BFeKo2fbm1LGi5/H9XVH/F7x5OpVxVZVKimM68JzhvQKdeT1nzL28NYvNqaVhdIjmI
+         pQZp6eHFyBNEbK9BWYz7AYEyxnOzZMTI2j97w8g+xBBjzIVkgAa5HVejYS7vQvtTIoU0
+         sljAkBHGrVaoR5CA98KFGPjqGOEUfMwbepQy/A+qHafdWkco7rpbyrYbJ7Wd4QP3R4cI
+         blPqXPyGFl1cjII/8oVABf0YfV73jqSuKO8FXu1aDCsQrZ7k3yDWnXClrbZGGKqTwlEN
+         +rBXrENiQb+kGNFFrEHXhT9+n7gg0mcx7beBzrNB3HuRdv/laidZeZPnK3abDkq1iUfF
+         8RWA==
+X-Forwarded-Encrypted: i=1; AKwUvBwxR+7koIJtgyQ/dq/8dt9ZAUGPgzPWaoFd5i1ft/cSpn5haQ/PjwtjbiHxG10LWgsSJb8nK6U=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+YGm6WoHGimvo/RFUoNzdxwPpH9svyt+i1Zpl7l7DE2Hfyhojy
+	lORnBMuirF8PZ+eZpYXlQqxGTF8J1Ii9pgy4LJpRTTciLL/BD/ehien6/tzspbfTwEPXQXitA/3
+	1ZPLwEDkF07fmgUGxUAs4+WG+nwGoZfs6wkAmqzHG5bIHN4wgszrZ5KNz10wLIaB4VZo=
+X-Gm-Gg: AYBFou0lxDjJS3NPISvg6gd4tuyq7/sQ8JZwkiEC+s/w87aZ6qerovT31p+MTpTOCgx
+	ZTTJs6SNPLSuj5IME+JyeXgdAsNnT5hLwHkF9AMC+S5z9I9kDU3JgQO5ISxsXE7zjQUp+iGehVP
+	PnehIRSKRVcEJN2eaew0yznPz6oIoQDKTlzw/gXb2fqAbnLTId6hB/LSvV2z+bVtav89NYc9FXM
+	nKaREfzrWEDVQ1Z3iW21swLzdsCe8GC0oOGdAWwM6Rtzcq5e8rS4BTm2bh4zdNQjs9nsmQ7VGpj
+	UF9E3LBYmj1N7LJCCtepHrN07Zl1HdAjzsAmZ/EhyxB0T7smGYGnx1r+fjhMZNBrufFgrxOT02v
+	4WP1PfJqSf+JD2XpLiTuHQyhZOGcdhI0TERUQGUVgEcstusWBtnNT6w86n2mob6Pzvou8it1s82
+	DGrQ==
+X-Received: by 2002:a05:6102:3eca:b0:7cc:2cd0:e73c with SMTP id ada2fe7eead31-7d072cb04f3mr4044823137.25.1793702528168;
+        Tue, 03 Nov 2026 02:42:08 -0800 (PST)
+X-Received: by 2002:a05:6102:3eca:b0:7cc:2cd0:e73c with SMTP id ada2fe7eead31-7d072cb04f3mr4044813137.25.1793702527720;
+        Tue, 03 Nov 2026 02:42:07 -0800 (PST)
+Received: from brgl-qcom.local ([2a01:cb1d:dc:7e00:8916:7b9b:97a2:6c96])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71bae0f4sm21625057f8f.58.2026.11.03.02.42.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 02:42:06 -0800 (PST)
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Date: Tue, 03 Nov 2026 11:41:59 +0100
+Subject: [PATCH v2 1/2] arm64: dts: qcom: lemans: fix iommus SID mask for
+ ethernet nodes
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,127 +119,102 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAH+56WoC/23O24rCMBSF4VcJ+7qRJK1N0qt5DxHJYasbNB2SU
- BTpu4tF0GF6veBb/wMKZsICA3tAxokKjQkG1jUMwtmlE3KKMDBQQvXCSM0T1jCmcsiu4oWuVHm
- vrBed023YamgY/GY80m0xd5Cw8oS3CvuGwZlKHfN9OZvksr9ds+JOkgtuwjaqKLU2NvxE9OTSZ
- synhZvUh7BSrBGKC47+KGK0ElWP/4j2m+jWiPZVgUZ6bazzrf5DzPP8BGs6O61DAQAA
-X-Change-ID: 20260817-netcons_ratelimit-629b04a73c57
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Shuah Khan <shuah@kernel.org>, Eric Dumazet <edumazet@kernel.org>
-Cc: Randy Dunlap <rdunlap@infradead.org>, paulmck@kernel.org, 
- gustavold@gmail.com, asantostc@gmail.com, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Breno Leitao <leitao@debian.org>, 
- kernel-team@meta.com
-X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4223; i=leitao@debian.org;
- h=from:subject:message-id; bh=iSFr3IO8ZX8tkbgj4TQ8oYkMUZWF0ooVz0A5jscI1B0=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBq6bpqkNy7rrrbt1MpB5f+ec37IsXoxfKu4IGYn
- GCq1ivl54OJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaum6agAKCRA1o5Of/Hh3
- bfLlD/9ZdMq0ay4lnxg/P+cU3WSp24WjEz5O+lnuPEEAaoSWMqk5ixbnVrHe3t2JI8nQVSGgwRS
- sVVxafOPsvksO1R4Ij5sO/ctCf85UOFQW7UQKyUi5V4dEWqamsS4qzF2Ppu6G4MfKSOU9uqDTGM
- WsnqQMT6nHYkEnbzzt/RTqf4+NQC1R5zqnQKunmLt/FQ3Ne54b/V5ONd5zGJiS3lyc4Y41GID3P
- h16wFdvJKJ+lUeeJxMMBvY3HPeJdG7VVDGncEefn6oPaoFKvmsCA1gxSDIn4U03QsR4eCbP8sUp
- kkE13YE8kXKOT4R42KNI373quMPV7cWTl4liO6gQOeUE5jdOQJDrJjoAafLudj8k/khUBnTILcZ
- TG0wv/8DMoJBFg6mXgiZ8T7PzoUi9V/oTwRVAtx7gRFFt+fLDg53cmqRsqZSoIWs4wDOzzaVjN5
- igG5CPfgLbvFXxKql07R3Hqh2t2qcDvwBvUDT7HgPaSRGdyfnr+d7oQfnBx/FbTugyHsJc+Jd8v
- eHIfcL0DkGi89WavK4k5dHeSSo9RPdfEHa3dviKm0mfbUjLUC+73OwCxrskj/GGCWTenTYe9/5H
- xcNA1NAVErUGvYV9efkon4QO1r0tNSCFMKlUHil1YmS5p4mJHzPnNquSUt1Tx0tt0A8kwEn+l+F
- yZYwgd2lTMo2LDA==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+Message-Id: <20261103-sa8255p-emac-dts-v2-1-05f9355df966@oss.qualcomm.com>
+References: <20261103-sa8255p-emac-dts-v2-0-05f9355df966@oss.qualcomm.com>
+In-Reply-To: <20261103-sa8255p-emac-dts-v2-0-05f9355df966@oss.qualcomm.com>
+To: Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Abel Vesa <abelvesa@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bartosz Golaszewski <brgl@kernel.org>,
+        Shawn Guo <shengchao.guo@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1438;
+ i=bartosz.golaszewski@oss.qualcomm.com; h=from:subject:message-id;
+ bh=Jb7Uu8eDKmxeuPJ+cG/Fp+9EJ1Cb1pVCLeiG3jtX670=;
+ b=owEBbQKS/ZANAwAKAQWdLsv/NoTDAcsmYgBq6bp7mxuNVqXHR04a520lmNEQ/flnPb2mkrOMu
+ 7B9m8qjWgSJAjMEAAEKAB0WIQSR5RMt5bVGHXuiZfwFnS7L/zaEwwUCaum6ewAKCRAFnS7L/zaE
+ w5/BD/oCRiPXuFwoeQm1Ic4o4j3gx5oJdO6UGAruazfnh5oiBQDqaBIw4zUI/mYpzrM8DGupgsi
+ RtHcYtr9xsYKDLSB/Zhwlmm3Fahigrb2KqxRajOO+K1GqUIxdovKp+wXsr/LP/PZLOgNVyLWXt4
+ Ju+YlFTQxZQ88cWyKnCzC/Iq68tO7twu9U9OJ36f/P34QQ+kH9f6Dd58DuQ+7mmc22Zb/EEnDIK
+ LSWd2dNXH5kTq/18KrkBzIpJy+pSowCz7+eHvfVIQC3ixE7lbRyzvwJVkMaK17VeEN/JppFjVP5
+ 73R5HIX/cfXrZyT0Ttsr3UBS8ARu0dcJ+HWN+N+3SzL4WGkmBOxO90ZY153VbIFxbQQl2FvRujA
+ FmXiRJGpA/tSOB7vAzICIt70aoaro1Wue64EbqYqCQLL8zZBRfduhzRDQpQTXCPkNRvto/gZdzf
+ 073oboRNCJ/zsl0rGKtOYSIz/Km8xsgJFYmfWKRHH6OwFWvq4Y6iUmoeYSQrWqKlA5t/2DBu8SO
+ 1b/XMdZvKvVip0oqdWuDH2MOpCF2z5GvOw1PTFTFJa/372BxvSJkyLxX5IXbdDQGKpq1Ea19d1f
+ MRuO08OYQQeBZa1XvnTxjltzb4DhsRbsbphBZrf+mlYz1X5mirU8uIaP5Py+Rix2gGqMfMtiti4
+ o6csCIpWeCH99HA==
+X-Developer-Key: i=bartosz.golaszewski@oss.qualcomm.com; a=openpgp;
+ fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAzMDA0MiBTYWx0ZWRfX5RU4BMnVFekb
+ yOxk3dVcB2K4qH8akSuE03zaUmzA7U2HOwOSfg3WSONx4PyPEThxIX2g4bIbEJ07DbWby26+gnn
+ GNFAll60/QBUPUglwKF+A6bkbnQoa3U=
+X-Authority-Analysis: v=2.4 cv=K9m3jCWI c=1 sm=1 tr=0 ts=6ae9ba87 cx=c_pps
+ a=JIY1xp/sjQ9K5JH4t62bdg==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=EUspDBNiAAAA:8
+ a=jHMX-OgH2kBFWhD5V08A:9 a=QEXdDO2ut3YA:10 a=tNoRWFLymzeba-QzToBc:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAzMDA0MiBTYWx0ZWRfX8SZx0mojAYLU
+ Ksn0kWzwoMqI+CWviZj+w+LQ3cjO5/agCQAOAkC9aRDilf8NsUTHrz4r6fRlAJ9vYkiiXgweJlV
+ KFTDhuQNtmhjTYTKrjvaA5hP4tJzN2EgXYZPXlFbulf7VfqoF1xupMbuYf++SgVK/l036I+sqUk
+ jWM5bxAbfUyxR2mVns2gA/a7/7gMkCrmuMDbXwXcCDd+P/31QK7aofs7x3U7jxzFPQNMpH+GJji
+ 6VMLoS4x+IWFxsWKM48NbGDF3p/ESVQWg04P6rrKG8fbPKbxBi7DOf7lvG+BVI9dQGOAMlf2hCr
+ eJQhLEjDmj/mWsROGHwYOPLDJWVELZC30vfxe118laz1Hc7hf+XQxNHFrrrYY2j7oyMm78R50Vy
+ XnGyoXn/DwfKA5UA6Ng7dxYzFeerK8ZygUb4F9he/2xcTSLyyPWApWoTFoU+3YvdK/onVZq3ZN0
+ 5z1qoLVvo5A/j2wnO0A==
+X-Proofpoint-ORIG-GUID: 3cD5g3lWvKLEL5N2tnDe6MGQk0yTOHJl
+X-Proofpoint-GUID: 3cD5g3lWvKLEL5N2tnDe6MGQk0yTOHJl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-03_02,2026-11-02_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 lowpriorityscore=0 clxscore=1015 malwarescore=0
+ bulkscore=0 adultscore=0 spamscore=0 suspectscore=0 phishscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610300000
+ definitions=main-2611030042
 
-netconsole hands every console message to every enabled target, with no
-bound on the rate.
+The iommus mask for ethernet nodes is wrong, it makes the SMMU mask 16
+stream IDs per MAC. We should actually only use 8 SIDs. This has
+triggered a crash on sa8255p after a boot firmware update. Use the
+correct value of 0x7.
 
-At Meta, a few hosts caused some DoS and netconsd was OOM killed in
-some regions, fed by 3 billion RCU messages from thousand hosts and by
-a swap fault that retries forever, which logged 6 million copies of one
-line on a single host in a few hours.
-
-Both floods are being fixed where they are printed, by Paul and me for RCU
-Tasks [1][2] and by me for the swap fault fix [3], but that only ever
-covers the flood already found, not new issues that might be happening.
-
-Use the ratelimit in the kernel to ratelimit messages from netconsole.
-
-Give each target a token bucket, consulted once per message so that a
-message split into several ncfrag packets is sent whole or dropped
-whole.
-
-It starts with a zero interval, which struct ratelimit_state treats as
-unlimited, so nothing changes until ratelimit_interval_ms and
-ratelimit_burst are written.
-
-What the bucket discards leaves nothing on the wire. An extended target
-sees the loss as a gap in the sequence number the header carries:
-
-	7.2.0-rc7-01460-g75848acaf136,13,628,252392647,-;netconsole selftest: netcons_AGujw 1
-	7.2.0-rc7-01460-g75848acaf136,13,629,252392782,-;netconsole selftest: netcons_AGujw 2
-	7.2.0-rc7-01460-g75848acaf136,13,678,254742125,-;netconsole selftest: netcons_AGujw 1
-
-Crash output is exempt. The bucket is skipped once
-netconsole_kernel_dying() is true, which the first patch adds:
-oops_in_progress covers panic(), TAINT_DIE covers an oops or a BUG(),
-whose records only reach netconsole from the printer thread, after
-oops_end() cleared the flag.
-
-A target that has seen the kernel die stays unlimited until reboot.
-
-[1] https://lore.kernel.org/all/anw8Qw8lfeIykski@gmail.com/
-[2] https://lore.kernel.org/all/20260810-rcu_task_shrink_lruvec-v1-1-4d9f7d5251cb@debian.org/
-[3] https://lore.kernel.org/all/20260813-swap-v2-0-4a625ccabdae@debian.org/
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
+Fixes: e952348a7cc7 ("arm64: dts: qcom: sa8775p: add a node for EMAC1")
+Fixes: ff499a0fbb23 ("arm64: dts: qcom: sa8775p: add the first 1Gb ethernet interface")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 ---
-Changes in v4:
-- Rebased and resend, no change at all.
-- Link to v3: https://patch.msgid.link/20260914-netcons_ratelimit-v3-0-8e81b789ab37@debian.org
+ arch/arm64/boot/dts/qcom/lemans.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Changes in v3:
-- New first patch, a fix that stands on its own: oops_only=1 receives
-  nothing on an oops today, because the backtrace reaches netconsole
-  from the printer thread, after oops_end() cleared oops_in_progress.
-  It tests TAINT_DIE too, behind netconsole_kernel_dying(), which the
-  bucket then reuses so that a limit cannot truncate a crash either.
-  (Sashiko)
-- Restart the interval when either knob is written. A target is
-  configured while it floods, with the bucket already empty, and the
-  new limit only applied one interval later. (Sashiko)
-- Reject an interval above INT_MAX ms. msecs_to_jiffies() saturates
-  below INT_MAX on 32-bit, so checking the jiffies value alone took a
-  write there that a 64-bit kernel turns down. (Sashiko)
-- List both files in the target parameter table, and qualify the rule
-  underneath it, which says that only a disabled target can be updated.
-  (Sashiko)
-- Link to v2: https://patch.msgid.link/20260910-netcons_ratelimit-v2-0-ebf0dd91e26e@debian.org
+diff --git a/arch/arm64/boot/dts/qcom/lemans.dtsi b/arch/arm64/boot/dts/qcom/lemans.dtsi
+index 5284030fe69da9323571cf64db218ee2c7169509..915b3be65ff1302e2b05dd2034e73ec4a0970a6e 100644
+--- a/arch/arm64/boot/dts/qcom/lemans.dtsi
++++ b/arch/arm64/boot/dts/qcom/lemans.dtsi
+@@ -4395,7 +4395,7 @@ ethernet1: ethernet@23000000 {
+ 				     <GIC_SPI 781 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "macirq", "sfty";
+ 
+-			iommus = <&apps_smmu 0x140 0xf>;
++			iommus = <&apps_smmu 0x140 0x7>;
+ 			dma-coherent;
+ 
+ 			snps,tso;
+@@ -4416,7 +4416,7 @@ ethernet0: ethernet@23040000 {
+ 				     <GIC_SPI 782 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "macirq", "sfty";
+ 
+-			iommus = <&apps_smmu 0x120 0xf>;
++			iommus = <&apps_smmu 0x120 0x7>;
+ 			dma-coherent;
+ 
+ 			snps,tso;
 
-Changes in v2:
-- Drop the patch that sent a "N messages dropped by rate limit" notice
-  to the target. (Gustavo Luiz Duarte).
-- Link to v1: https://patch.msgid.link/20260818-netcons_ratelimit-v1-0-8c5d2d17789c@debian.org
-
----
-Breno Leitao (5):
-      netconsole: send the oops when oops_only is set
-      netconsole: add a per-target message rate limit
-      netconsole: allow configuring the rate limit interval through configfs
-      netconsole: allow configuring the rate limit burst through configfs
-      docs: netconsole: document rate limit feature
-
- Documentation/networking/netconsole.rst |  71 ++++++++++++++----
- drivers/net/netconsole.c                | 126 +++++++++++++++++++++++++++++++-
- 2 files changed, 181 insertions(+), 16 deletions(-)
----
-base-commit: 2637bdec0535a2044cd830eba9a79363651d9043
-base-tree: git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-change-id: 20260817-netcons_ratelimit-629b04a73c57
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
+-- 
+2.47.3
 
