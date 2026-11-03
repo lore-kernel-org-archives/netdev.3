@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793701541;
-	b=DoiAE0s/32vWgNynkEWI2oLQVvOZ1Lw46VIOGdJlsnDnJhrokPZhz+qGPbH1dAJZMDb3
-	 7KutFZin1RhgvRfU11e1gAL98YLLNWef/LOfge97Ka8gjU3Az2r1d/FV78DEdEhuK4Ufp
-	 gEQiIEbtWFMxWGT9MlQMhaYqXCKyBFWAGItaXQhWNEki7Pwi8QCup7hiZ2hHeWs5fqfqy
-	 /6A/Jm1t/kZNjDvbCeRJ94I+nl5TfG0t5guOEKeALwiQnJ/5Q7bclGGytjAjsCxshUXGD
-	 yefeYiO6NIoAAjiKfPEfMirajYLEphYy5t4/sBWmeSkAVYKKJxxKFL2UgmOrQBqCG7A==
+	t=1793701554;
+	b=kvCD1LLbPS6DOyXnSbLgmusFA3jUYFjkilaHjbCvS2CJb3qHPNDkn7yuaCOO/ghBnDbc
+	 aOA0Yc/VmVuT4LR9q9SsqWP57kkL3PlNt1uFijqKhVnlM51NCnDsI++vj/rk3TPzXq+Tj
+	 wa7mmzrGCIMFttGSnK6r071UxsL9DQH3jbfIE0Je76YePzqB1tvEU40dUIkBAobWlk9ic
+	 FwqbMxOZikBL+dl7wKWcX3gr5Ojxxznj9mTNQrGJ5b/ljPC/ZeFjIFPX60VuNLrkvEygQ
+	 bkDnXGyqiAD6zMhwHj+1Q8H+nMr+pHJ7m2WgMJAv91Elo5l4yKKjJigdEnohD3+soqw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793701541;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793701554;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=s09cCW/s1X0J7CJ+rjy7aM1fbbviBPnk1bCW+56V/Ro=;
-	b=D70YVG06huTdqTwr5si5bQdJ1fM/KFGB+fWRTA9bBkHsvZ6AsWkrkxkVm+bM2JgR+luv
-	 S3ANumf2U8mDEvwV/B+fQozrDOtwBZf0TVZP3M5rA2rbwi5ibqQnsxmvhjMSNBdtx7iul
-	 q4ivBt+XmET/dIkivXHPBeDQJ+Dwb/2hZ6YaWSEIal9AxXBl8A/QHrNIAepBCSwuXknT+
-	 JnOWgYs8OCfj0nG4K1KpCyRsCmtJdNij5Z51pquH5J/B1Xnb58k9MHA1q4565mk2qI4rH
-	 jUMn5xWG+reOwAU637MjqtQq1o/5WjMuLNkzwvJEo1UsBScFjnbNjPuY/w2+z2uQewA==
+	bh=xMnmfPB2x1ONdx8H/7UeU0nSjR+hb66yayecZ+DFW8k=;
+	b=NlYjSbKhhDSXxzE08nQtGrFxXwXfljxaovfBTIkdLKCYqPwPnn0tdiO2pysIms2Alc39
+	 N/zsaAiCK1RMCeEdnBJMF0U8q/6kDod3VdXvmZPvHDoT9eGG3Qc2wDi7cL5/TljTfwM1v
+	 58Xbd5RlvHiNcnBynsgpn4VjCcbTyWQ4IF5hCF5WCFUxNgLEaWXU9ulgElW2EHZlarkBj
+	 8CBT0zHaHWwYgfoeL+KTIgMZaYhIHD58jrKvzoDyk/gIz+RfdsB2/Ct1ku7yNaVKNQFo3
+	 RQQMaQOSSVD0juJTATmDTmompa2mGtNPCk31cBifGJGniMJoZhpYhbnwhjZb5SQ1JzA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bfSdkhnV;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EhM18OIZ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F21C606A335;
-	Tue,  3 Nov 2026 10:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE78606A337;
+	Tue,  3 Nov 2026 10:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bfSdkhnV
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E16C01F00A02;
-	Tue,  3 Nov 2026 10:25:39 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EhM18OIZ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECB91F00A1B;
+	Tue,  3 Nov 2026 10:25:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793701540;
-	bh=s09cCW/s1X0J7CJ+rjy7aM1fbbviBPnk1bCW+56V/Ro=;
+	s=k20260515; t=1793701554;
+	bh=xMnmfPB2x1ONdx8H/7UeU0nSjR+hb66yayecZ+DFW8k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bfSdkhnVwkhceDHXC74zgzm/aZWlTICgn7pULQ8atfWCJaY0TqWDu9Zr3PwnVGB+O
-	 2qmpPlQ8tAfl9Ig3ipx9Wr9aoOuwfn7cUuRrJfMafRJIol0Gyj2JZCCTksqR5SKDOa
-	 5RAAHDmm11w9t7Sq1v7+L7+pl/hxv450c2Nc3C00GK+BnfvLNAvphy42l+fvYyPdEt
-	 /uHcwef9giEu6vXag0J9U1rOgWxhYM+IgK/JFUFx6tLfNbkV5HuoA/+EyIEBHw9yB+
-	 8ffmej69zT+RdQEDCBUIZWm6+22Oxleg6nrMMWtytYWQ7EQadbEYFoxlsBbFPK8fNt
-	 XgC8+ZRmbGG6g==
-Date: Tue, 3 Nov 2026 11:25:36 +0100
+	b=EhM18OIZurDB9UMxnBQ2+8Y3bdlSXHVCebvL6B6JCwTJaui7KXf2IgyCg9tJekK7h
+	 kghIfpSXgSlq97jcXy/B9/sdy86knrpvJU7SyLr5Xe5RJEljE2w21iFE2rbgwaBGBJ
+	 xv/tAY3gm34kHV+t6XLP76+B2xi+fZ/ujXq6eHyFyRPnlImQOWpqz/ci776QsryziC
+	 au5E/DHUdMQy9WRv3xFiKzCPwyLKxTytIoPe+pCNvfUYi9ac3V48dX1yuEcD1/bU4q
+	 Hia0KTNcIGXd8uopntqp4eVDOGyffvZtLIR3AbElRaq68xLDTfUrpQZX2ymvFZ9wLZ
+	 lH59lJZVAfvDw==
+Date: Tue, 3 Nov 2026 11:25:51 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: linux-kernel@vger.kernel.org, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, stable@vger.kernel.org, 
-	Marcin Wojtas <marcin.s.wojtas@gmail.com>, Eric Dumazet <edumazet@kernel.org>, netdev@vger.kernel.org, 
-	Andrew Lunn <andrew+netdev@lunn.ch>
-Subject: Re: [PATCH] net: mvpp2: free pending TX timestamp skbs when the port
- is stopped
-Message-ID: <20261103-poised-ambrosial-trogon-17f02f@quoll>
-References: <20261103100535.1310088-1-vulab@iscas.ac.cn>
+Cc: stable@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
+	Jijie Shao <shaojijie@huawei.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Jian Shen <shenjian15@huawei.com>
+Subject: Re: [PATCH] net: hns3: destroy the page pool if RX buffer allocation
+ fails
+Message-ID: <20261103-melodic-translucent-lemming-6abaac@quoll>
+References: <20261103100533.1310018-1-vulab@iscas.ac.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,27 +62,28 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261103100535.1310088-1-vulab@iscas.ac.cn>
+In-Reply-To: <20261103100533.1310018-1-vulab@iscas.ac.cn>
 
 
-On Tue, 03 Nov 2026 10:05:35 +0000, Wentao Liang wrote:
-> mvpp2_tx_hw_tstamp() takes an extra reference on skbs that need a TX
-> timestamp and stores them in port->tx_hwtstamp_queue[]. The reference is
-> dropped by mvpp2_isr_handle_ptp_queue() when the hardware reports the
-> timestamp. Nothing drains the queues when the port is stopped, so skbs
-> still waiting for a timestamp keep their reference until their queue
-> slot is reused, and are leaked for good when the port is removed.
+On Tue, 03 Nov 2026 10:05:33 +0000, Wentao Liang wrote:
+> hns3_alloc_ring_memory() creates the page pool and then fills the RX
+> ring with buffers from it. If filling the ring fails, the error path
+> only frees the descriptors and the descriptor callbacks, so the page
+> pool created a moment earlier is leaked.
 > 
-> Free the queued skbs in mvpp2_stop(), after the interrupts have been
-> released.
+> The page pool is normally destroyed by hns3_fini_ring(), but
+> hns3_init_all_ring() only cleans up the rings that were set up before
+> the failing one, so the pool of the failing ring is never released.
 > 
-> Fixes: f5015a594c50 ("net: mvpp2: ptp: add support for transmit timestamping")
+> Destroy the page pool on the buffer allocation failure path too.
+> 
+> Fixes: 93188e9642c3 ("net: hns3: support skb's frag page recycling based on page pool")
 > Cc: stable@vger.kernel.org
 > Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
 > Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 > ---
->  drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
+>  drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
 
 
