@@ -1,72 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793680936;
-	b=gjv8HIkdbDjAtMR/r20DkKoMqWWM7joIeDQBbxa4MV5A0yXjtGsY5RgtHtaOOjJavfCm
-	 vPkH7Env6n/Tux7m51zQDgKm2iznqDj2/u9fZazz1sGi1khzo3iiyXGYyJ+MmfAYAG+Mp
-	 ZqOuETHAWs0dB64bX4NyOLmv3GiCvWt7nVR9Tcf95urKx+6c4wrJNqoHX9nPtDRf4WEob
-	 ENZ+UF3wLSjjP/2aVXc9xHxo0uNKP/Wr7XOO/R8B3FzV9FxYNMZ+dQ+xEjrcEIJGc9JwH
-	 mwvKQwnfEYpMrzRI6eUwy+lHoJX5Dt596FHqVuUncwVy/esFVuXdPowwsMc3GowyATA==
+	t=1793681294;
+	b=07csFdZm1PyKfkxs7hICVcb6DDKMIAhtPbEHv0TF98LpEGN6wQjqKDi3ahjzi04xt+AL
+	 JWWEHGPho/u39bX0/V3b1DQWHYIgmDrU/Q8J2qnSwcE6IpIFFLdXTXodauZX4s4OiGHHX
+	 xRVIEUaYJ3EldP9xPCMam9Lw1ENcEjCV5WCW/Fcpl5VuJs6PQykMPgFilwp/ROyuBjZx+
+	 QRiyLJzc8VOmo/KQjyK1BmB4Nvu0PNooubwqsy6Vz7DY6D0tmiJH6XLV2gst9nYTS0Csn
+	 GTkbGp8OsLLrIff1iVa1a3I6sR7DJRqBSiWQAFYUUPbOQnrAeFEfUG65cmkPeY55Ewg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793680936;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
-	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=ybjWfspnAqdGGBNWr2dJAt6iizJ8PYeVMQvsdRJjBSg=;
-	b=ge5LH3G1mRQStHtBDD6JVRdKVvlxB3Hf6M9I6preCJoVSD1WVsRU9tBW0gmzZnzk1f0V
-	 uL0ub68u7LkOrqYb1mlw01ztRckguTl1s51CDfo3zsT5QzF4+1oXV2HxnM5BGlHRtzXg5
-	 VaXOw8JBvuWDc7YIPUYMwNGa+m/W8IuCJomG/4G5ZWlA5w41G1QFmv8HkAtOzroDr106u
-	 h8JAm/3KGq0oYx8n7AxSInX/ZnR3QV/P1k82zEA9T/q265yISfbvlC9QtiW3wU8KqLH0o
-	 4lW8NLutmsk6L+bzwswxTgi6lEC1DtxqWA5YrpsNkpXtnwKIlHHSAT5gGfT/Iz4rKog==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793681294;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=u9aE0kyDPpbMxcU9KpJkb4709+D6SJWWfljxcbO7ZeY=;
+	b=5SHtK4qQDJgA/nJJS4ignL+JYeTM9tLIOhkgOSDOnSddpg0fK08A6e8cz9xcLP68is9J
+	 nFCoIF5lm9QXVj6A9Xmcp84f/AyTMr7TcQdrzK9tfOX+M7NX3sPI6lQVXzhWapRMgjpn7
+	 ZBHYfwpDYjCeREw2HYPl8mTagYDzBw0DBddmB40b6XjFcQ7msP+foj8fiMjaVo0c/T+PZ
+	 ViGvgCkNe4Ecs8oDHBx4Vy94IG03S47/2GB4ZF5ktb1JqXpEWV83BfRtNSasXG7CZlefw
+	 pYBtXaVbPdoo37/FiyS0RZs212i64VpmzkkYea60dcGb/l1EL8b4RVY8QtxJM/24gqw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=QMyMfVWt;
-	arc=none smtp.remote-ip=209.85.210.198
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DEQpDlGk;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A12D606A324
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 04:42:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A12D606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445E4606A324
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 04:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=QMyMfVWt
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-89e05d31e54so2529274b3a.1
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 20:42:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793680935; x=1794285735; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ybjWfspnAqdGGBNWr2dJAt6iizJ8PYeVMQvsdRJjBSg=;
-        b=QMyMfVWtmS92oWX/V0fqS/vzlxoNSPG2JCAlzgPRoqK/SS5lLpT5vio1MhTmKgoG10
-         1r/InManb84f5RSWzM7tqlg2t339xBEqrOZLSFHiZ8wLrh5nHE7J4RMXeD572MtMyptk
-         SshS4c0NeqRIpFTo6JADkmUr3JLsz0A5fRFtpkRUfVz5WIQw6GpEDrUkREXRgwVwL4Ki
-         xEhEcEnm1N5be31hiHUlSiMkVAQdYt7iqF6mrLzOlQda0qxIs4xGs1+TxLrYk8SvzmoP
-         RKLvJmQYF+cHblONZOx7/llOKwJhvWJxfBlJa8ppUYDB/BGd67JDiXsW/o6DUjd0SZ2o
-         B/pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793680935; x=1794285735;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ybjWfspnAqdGGBNWr2dJAt6iizJ8PYeVMQvsdRJjBSg=;
-        b=gPHCu/hZ0D7adBGgKQcQFndvfrjzHH0miAO0Xk6YR7x+kChJA4crcyisfnUeO5AcZa
-         wAP08vJ2LAdJFLU2e94l0colVdgbR9COy0SqMB+kvtY9S4v1Jn3D7kDEwF/b2r2Qd1w9
-         dBE0lFDdAWO8DsXHWm9sRVRbeEkvf4rv4EQuEOO+VpfP2EiUcxxtwKrucGH/h8M0zZEH
-         yDynxUYLuGnggG/e8J+vLC+5c4lDoPhDVAiJYapctcTDTL0qGaW+l9+Ax8h2W9ECAktF
-         9zD/K1AcxGIadJCErCwtkpddE2ZWI3MkC3k2F1SbM6ZDeQYQyMhF345rT2hfkn3GOKNS
-         SFkA==
-X-Forwarded-Encrypted: i=1; AKwUvByb6Y9NC9FAkxaGxv+0GJ2sURhuj7AcGlyyqUAu6JoF9kFwRmmfGPyKb0W2U+rA6umVclqYXHk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+5lVrCix6ydgwscwGZ9zs3E3iAH2A1H86rZfsJ1ePQUxH6OyAl
-	YkiACifGblRE0iwZzSLVR6cH8a3XFtLFe+qgLTEEGr8kgjt6vI1Qk0kjZ40YvopXehRODdvuT3H
-	UJqH8UA==
-X-Received: from pfbeb25.prod.google.com ([2002:a05:6a00:4c99:b0:8a2:1bc3:8884])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a0c:b0:881:e737:8213
- with SMTP id d2e1a72fcca58-8a9ba806f29mr7630119b3a.7.1793680935209; Mon, 02
- Nov 2026 20:42:15 -0800 (PST)
-Date: Tue,  3 Nov 2026 04:42:06 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DEQpDlGk
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C384A1F000C1;
+	Tue,  3 Nov 2026 04:48:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793681293;
+	bh=u9aE0kyDPpbMxcU9KpJkb4709+D6SJWWfljxcbO7ZeY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=DEQpDlGk5AfwwDou9VXIkVttUcNuTmRqPQ3xe/cnwrJxZpzBXCifq9qu+rLcksLf6
+	 NrwkzqOdh5ckMhB+FOPjIOK/zz/RCxtUr6lpTE/9kqvBCDtRgUINaBXaPIvaNgDI1X
+	 g27pFesheG197cnUZlaFndk2TTY5A5woYCliyBjJjO5D4BAp18Mapb4PRDOkbnfAEc
+	 vQjHbAq7dHmi9R3Nr9xNdpae0kqgcm59ugCYgimFzrCqaMHAq6aZTgXTrIH6AtYLsX
+	 TVpUN0AcmrFGUBrZ1arKc0BTuH/uE9PJwKJhhMaRjzImHxE/1B38w5tV06Q9w6pxKE
+	 dWXiyDijzXJ6g==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>, netdev@vger.kernel.org
+Cc: magnus.karlsson@intel.com, stfomichev@gmail.com, kuba@kernel.org,
+ pabeni@redhat.com, tushar.vyavahare@intel.com, kerneljasonxing@gmail.com,
+ zuomao338@gmail.com, Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Subject: Re: [PATCH net 0/9] xsk: ZC mbuf fixes
+In-Reply-To: <20261102124950.958345-1-maciej.fijalkowski@intel.com>
+References: <20261102124950.958345-1-maciej.fijalkowski@intel.com>
+Date: Tue, 03 Nov 2026 05:48:13 +0100
+Message-ID: <87ecd24j1u.fsf@all.your.base.are.belong.to.us>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -75,59 +57,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
-Message-ID: <20261103044213.1336347-1-kuniyu@google.com>
-Subject: [PATCH v1 net-next] net: Shrink skc_reuse:4 to 2 bits.
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-skc_reuse now consumes 4 bits.
+Maciej Fijalkowski <maciej.fijalkowski@intel.com> writes:
 
-However, SK_NO_REUSE, SK_CAN_REUSE, and SK_FORCE_REUSE
-are mutually exclusive and fit in 2 bits.
+> Welcome,
+>
+> Nagato Shiratana reported that duplicate fill ring addresses in aligned
+> mode let a driver pass the same buffer to xsk_buff_add_frag() twice.
+> This corrupts pool->xskb_list and can lead to a NULL pointer
+> dereference in xp_free(). Patch 1 makes xsk_buff_add_frag() reject
+> such buffers.
+>
+> Inspecting the rest of the zero-copy multi-buffer code found more
+> issues:
+>
+> - i40e retries a freed frame, or stalls the queue on a duplicate, when
+>   xsk_buff_add_frag() fails (patch 2)
+> - ice leaks the buffer when a frag is empty or cannot be added (patch 3)
+> - ice and libeth free the frags of a frame still being received when
+>   a multi-buffer XDP_TX frame completes (patches 4-5)
+> - handing out a duplicate of a frame's head clears its frags flag, so
+>   its frags stay on pool->xskb_list and end up in the next frame
+>   (patch 6)
+> - ice and idpf leak a partially received frame on ring cleanup, and
+>   its frags end up in the next frame (patches 8-9)
+>
+> Patch 7 is Chenguang Zhao's fix for i40e building broken skbs from
+> multi-buffer frames. It was posted earlier in an IWL pull request [0]
+> and is included here unchanged.
+>
+> Patches 1 and 6 were tested with KUnit tests based on the reporter's
+> reproducer, plus I verified to-be-upstreamed xsk.py test suite passes
+> on ice driver (back-to-back setup based on netns) with this set applied.
 
-Let's reclaim 2 bits.
+For the series,
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
----
-This is to give a bit to SO_NO_RFS instead of sk_flags.
-https://lore.kernel.org/netdev/20261031113330.45704-2-vitaly.zuevsky@gcore.com/
----
- include/net/sock.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 173b37b2b8bb..4c831eec2045 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -125,6 +125,7 @@ typedef __u64 __bitwise __addrpair;
-  *	@skc_net_refcnt: socket is using net ref counting
-  *	@skc_bypass_prot_mem: bypass the per-protocol memory accounting for skb
-  *	@skc_bound_dev_if: bound device index if != 0
-+ *	@skc_unused: unused bits
-  *	@skc_bind_node: bind hash linkage for various protocol lookup tables
-  *	@skc_portaddr_node: second hash linkage for UDP
-  *	@skc_prot: protocol handlers inside a network family
-@@ -176,11 +177,12 @@ struct sock_common {
- 
- 	unsigned short		skc_family;
- 	volatile unsigned char	skc_state;
--	unsigned char		skc_reuse:4;
-+	unsigned char		skc_reuse:2;
- 	unsigned char		skc_reuseport:1;
- 	unsigned char		skc_ipv6only:1;
- 	unsigned char		skc_net_refcnt:1;
- 	unsigned char		skc_bypass_prot_mem:1;
-+	unsigned char		skc_unused:2;
- 	int			skc_bound_dev_if;
- 	union {
- 		struct hlist_node	skc_bind_node;
--- 
-2.56.0.385.gac671c819a-goog
-
+Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
