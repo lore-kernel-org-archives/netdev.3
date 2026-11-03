@@ -1,97 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.174
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793703520;
-	b=VKbWLQtpWiPtLjrM8zkkch6T7LUj1u6EouiLHgayk0wCabhh/B2e3u45ARDoj6HXMNLG
-	 ml9o0+OLom8OS4O8C/GO2ksLLt865z1fV/lA7EYNz1UE5fIocgCyK9qgYxpQZBzdWVC5O
-	 NVHFpIeO1kDl0OdFamgwgjOX1rE3Rl+v9WZRxFNTEUTNYwPKzxJyDS6WZh4IZTI5JlZIh
-	 7iib7zrhxoi8g5kKY91f3++WLtQBYDyXo0QMd63oTGzQl/N4Lf3V0cJe0sg5OBtGIrWoT
-	 XEAXJ3TPB/Um7DN/bM3q5BXPgk1wVviiuV8EB9kXTDKHoIzZZi1m6Hn7bT9KdZ3VvXQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793703520;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=4SxV/TTUmbx5pwC7iN19KlLB2VY5Hex23bqPEZJhYdQ=;
-	b=1tl/UrcjnFwJiL7E+F5Y/AOSp0CvsZLQnZpllhc0hNkODYcAP3/2WeQrXnBC47GQTM3h
-	 MaoX1kOOyZEEvI1WWAVYF55AxG6LE3JMfDhKABr0Fk9TPXUvlopF06KtBm4V6sIc0Kojv
-	 HwrDMAPkZus1Yyb8RgR6Z8KcBeb/g1fD3hhhLr/5XLAk3OqDlAU7n2N0mbfbqECfa7wPk
-	 3XkWi0VUILh2j+cAeAjELBT1y+a9axysgJ3MOSZLD9exAaFE/dFJIk/ixgVB2zCfdBxj/
-	 AsFf4LrXXm+IvrYyq1sJlctCHOi87Czx+a84jXsi6c0tqNF29VPiqWFKaWUY39DUXgg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=rw9S2U+A;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.174
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793703595;
+	b=DSUptdhLid5eZHzhJDpaldg1vcgGXp/+oC53ibgV+XPqN+0HeYpelWo+zpjOGOzZ/Xn3
+	 YBDLlrC9M0Rch81nrbmyVmWrtRq27UAvZKEIrZeSR47xsx9noTy7yyj0OKETfd/8RZlvS
+	 jkPk1+kVgxnoy036UCe2aEeq8XcPMTrB5CG4cTksy3vyP1a/eJRCEYqJ/WtVQuJ58WH84
+	 KIeXORRE1WCmKXdQrqmrlyCv3G+8Ap3f8Eu8QNdW6WpukX9SI56fgbmUfpssO8D92ycJW
+	 vAwGepyqR89ZR98dJ7UHduZlPfDXiJqZaBTo7ro4b0tm0JM+lTDw0c/3vRQQDtsA4jA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793703595;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=5pKcFRXYhUfRt/NFgpZQiyJq40B9sdnA84VTi8AATL4=;
+	b=4hjaLud8AP/yvURV3/Pk7l9L0ClL4NPnoWKuBCYJV+goe2uA0KzNXFAf/cDyZXA8hCGd
+	 gsvlJZ9aEaeto1+dRlYV2E04r2gAUMueZis8RnoZlKCe97Y80GBUo1BCbNzngpy5FSdWu
+	 tFz6AZ0gLCfMgPtY0vT70AgwVNmatOn5PT2o4FS8rHH8KVChnBW/cXg0w7oDdvRjYHj3i
+	 4jmv+0tAXmHyCoiR+vAA+mbUnwNX+RJJJRvPukye5pdsp2vYIFC1LzV9S2QkrX9FfEP/5
+	 vPkKteC0Oaxljs+0YkC0srkcmYrUnhwfN+Df3n2yTAA24Bd9qA8aO8rG8jK62ab2TIg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YRQ7geCx;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8FD6070099
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 10:58:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5B8FD6070099
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E58C606A332;
+	Tue,  3 Nov 2026 10:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=rw9S2U+A
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8a06b44bd01so2171728b3a.0
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 02:58:39 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793703519; cv=none;
-        d=google.com; s=arc-20260327;
-        b=m64ufzJ6hTZNY5qpdEWbZDs1Bjstq8rqcpqpDvfyxo6V5bzihuDqm45R1mKUTJR3rv
-         KcC4N6g/CgOsxVQY5FgDIZfNcMCOIWOCFMcXGqIZEo3+4rXnR81aJneOuTrjaopNpLXT
-         +tyn25CfpnhaBzOUf8xbVbsYy/8OkM5wO4ETVOnlrBA9FuG5GFRIlijT+Z4U4fSKZFtg
-         xW0huEWQZJtAKSM3khD28PXEycNU+fqSNrE4lWMkw5FoawS5t8mOLIw7xO9w1ENPNmve
-         M0QTyUxw2BEmMLTIr6UV9HDKcw0l2yDorHvGX7RQuKyZmYwQnbyc6RGGEEqeuuJp7/ca
-         qW+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4SxV/TTUmbx5pwC7iN19KlLB2VY5Hex23bqPEZJhYdQ=;
-        fh=Z/MDTq1voyuqw7A1eAydEHvw/EE6XvHuKV5QOlJA/aU=;
-        b=NBd4zYz9lmfBe7eaqN9VEf5vlz4Qe08s9r1yS9WpJ5DJnfQzSXsSTsHjFyaRrdNFKM
-         +OmNXOgz0c4BBlK9walwOXowtkIIZZ6satjdiUC2BrOXymMKoakZO8ZOGbJoyRBFnPlO
-         jgJTuv4DYRQuhUTjAZ1LZT4/PSKD7qUyHZQDBPnVrj86B7LX3rkhPTK20eRmtQyS3ugu
-         IazUEsQTKUxDaRgvG+h9Kaq+Bihny3osFjZsF3gv/VBkKqKGGp5/oYThvDkakRDU4r0/
-         pw8X5qLQWCeOZ/AAMOihQxT6H9mbWO8lHYzA0fP7VHw25avW3YfST5V/QwP+FAT22eSp
-         7Oyg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1793703519; x=1794308319; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4SxV/TTUmbx5pwC7iN19KlLB2VY5Hex23bqPEZJhYdQ=;
-        b=rw9S2U+AlSHzlzFau1E4CEO32us7ZWTI19zuQfIKoKUYkPQTPNp2mBVeYyNI1Peol3
-         r4HPJvCt05Ad8bt0OdqRhZJU/2MGPm1UImx2c1pNBFQeVKjHRt2p0DJtO6VAI8QtPIgR
-         JCd8J6qNyy2qXCpM/YHu8eZfiDculaeAAq1rc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793703519; x=1794308319;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4SxV/TTUmbx5pwC7iN19KlLB2VY5Hex23bqPEZJhYdQ=;
-        b=rDnTvk8n0ksPJFoOU/ZENvGuHSbBLQQKp5h/zVoNFX2WetueIfW95HxQbtOoJrXjN7
-         TAbRC408UmHYgqR9n1nuYknTbY6SEzsZZrPENHQBoIe+rzRVwL0q4t97fVv7RQu3eecX
-         ICEzXeik+rabcqqvM3R6e+j/fAP/mOCMKKv2KNs5YlAMBUolfJFg5/Fs8XN4/avkSscq
-         P1by1sE3YUtwKTCWNPzUxkRhpgWHTHu6sL1jIHrO/JHkX6kn7GtqoIiDuxu01cv1H0GJ
-         wINiUiEIHp6qCxksBKYnWDI8yy7XgP83DPxXs6jmB7UUBzKK5hNBNhgQ/ZOvggcf75AO
-         bS7A==
-X-Gm-Message-State: APuU4Z86WnKb86HTHAzaiMQD60hv95tFgwlW8F/FPz+eoQ1sMtsUUR1H
-	9BocDF6mCKjyVf378DMEh1ov0TbNtAO4rM2RzYsOlvofdfvpUNAcn8+epj0/PzCIb/20lLxGhsO
-	kjmZoBi4X5jJZaEXlhhCL6DtxRG99b/TCf7Ugj4Ns
-X-Gm-Gg: AYBFou2LanNWKpBiVYGOiF4AK2WBLhB85Wsyw8YdcFuPSoQaZ7JPs74abUK5FXYd2DZ
-	akkuOaAYmi85+bNYZO9tb/b3Au5ISub+JgjQAXwtzQMucoB/DmxYNPcBk5ZMm8UkqBoMcEXnCb/
-	Pu69c4ANaKeS+w/4NVB36daOT0+9lgvD6RbOeJay9rR7DqAaECtj9bwVpstPz6Llh9aJlcz4dnE
-	Gam5Dw2AtgDE007J/XJS1+Bz8suiMD+PfZa+ygZFjPjl+6JtueqybGwYaKNpAmx2OSam/jC5eIj
-	BGQhUe8W3tcrBLZmo+QopS0oQ4fowNrL0Avj9P0417Tu7rP5XqySnKQGRXC9OkDXvxxLIXLorg4
-	gaP7fH4m7DxxyB2FSgGCGh8iWjW/+Qy5SPcNnW72xfgb51/2oHH2GMAoqgltMRamNxgY07aDS8v
-	cYI4VRn8IG7qrzpU8=
-X-Received: by 2002:a05:6a00:600d:b0:892:e080:4ed8 with SMTP id
- d2e1a72fcca58-8a9bd7dc8bfmr10230820b3a.47.1793703518719; Tue, 03 Nov 2026
- 02:58:38 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YRQ7geCx
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456CD1F000C1;
+	Tue,  3 Nov 2026 10:59:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793703595;
+	bh=5pKcFRXYhUfRt/NFgpZQiyJq40B9sdnA84VTi8AATL4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YRQ7geCx/qjrzWWDNYRgg6axSKgU5uvHghVLI81Zpn+1oDAhtH6BXWRZ37uqV4pi0
+	 71M5+uhW+qULQlK6pZolWG9o7RpQFg1sPKE9fr8Og1B/p+UOrbEDiHnIvazdTiy62U
+	 0IG3igKkHO0AJHcjPccEOkDbQR9AaS3Sj4E+4C7HMutrmM8WwyZ1Nr3lzaMupa6Wfm
+	 +4riYs4vvmV7kdBlozp13+EuwLkb9x8ATTTbT0aiMCaYkzOBWE++TXkkV7tpqP6iFt
+	 V+2TNl32cMMO2SSbtgLv8D+ahHTaPJ/67imKLF6+srU+qQyncAt6z8YnQYQIjF9yG8
+	 6oZ2tGLfaCZwg==
+Date: Tue, 3 Nov 2026 11:59:52 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Caleb James DeLisle <cjd@cjdns.fr>
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, matthias.bgg@gmail.com, 
+	angelogioacchino.delregno@collabora.com, chester.a.unal@arinc9.com, daniel@makrotopia.org, 
+	linux@armlinux.org.uk, arinc.unal@arinc9.com, Landen.Chao@mediatek.com, 
+	dqfext@gmail.com, sean.wang@mediatek.com, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, naseefkm@gmail.com, b.larsson@gmx.com
+Subject: Re: [PATCH v4 2/7] dt-bindings: net: dsa: mediatek,mt7530: describe
+ 'passthrough' hierarchy
+Message-ID: <20261103-magic-ingenious-buzzard-8bfbc5@quoll>
+References: <20261029184202.1859843-1-cjd@cjdns.fr>
+ <20261029184202.1859843-3-cjd@cjdns.fr>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,44 +64,23 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <QDISC-MD1X.v6.r0.20261029162633-1@mojatatu.com> <20261103105015.GE865646@horms.kernel.org>
-In-Reply-To: <20261103105015.GE865646@horms.kernel.org>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Tue, 3 Nov 2026 05:58:27 -0500
-X-Gm-Features: AclHuK_L3JcYv2zsBzLTiCwrbJ18-SV_6t1OLvaKXCNLVHQqk_NRsSESvoMnaDM
-Message-ID: <CAM0EoM=-bcqRyCoFxNy1W5e0xNierigGe6qbPQ-MCiwqrgj6UQ@mail.gmail.com>
-Subject: Re: [PATCH net v6] net/sched: clamp skb->queue_mapping before
- indexing the tx queue
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, Victor Nogueira <victor@mojatatu.com>, 
-	Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Sashiko <sashiko-bot@kernel.org>, bpf@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261029184202.1859843-3-cjd@cjdns.fr>
 
-On Tue, Nov 3, 2026 at 5:50=E2=80=AFAM Simon Horman <horms@kernel.org> wrot=
-e:
->
-> Hi Jamal,
->
-> I think this one looks good to be merged.
->
-> NIPA-Sashiko did of course have something to say [1].
-> I don't think it should block progress.
-> But maybe it is follow-up material.
->
+On Thu, Oct 29, 2026 at 06:41:57PM +0000, Caleb James DeLisle wrote:
+> Due to hardware limitations, full switch hierarchies are not supported
+> with DSA based on the mt7530 DSA tag, however it does support a simplified
+> hierarchy in which one or more switches act as passthrough conduits with
+> only one CPU port and one DSA port active. Document this capability.
+> 
+> Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
+> ---
+>  .../devicetree/bindings/net/dsa/mediatek,mt7530.yaml         | 5 +++++
+>  1 file changed, 5 insertions(+)
 
-It is pointing to documentation that is certainly followup material.
-Let me review the other sashiko reviews (pun intended).
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-cheers,
-jamal
-> Reviewed-by: Simon Horman <horms@kernel.org>
->
-> [1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-MD1X.v6.r0.=
-20261029162633-1%40mojatatu.com
->
-> ...
+Best regards,
+Krzysztof
+
