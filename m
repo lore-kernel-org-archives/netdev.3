@@ -1,19 +1,20 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=139.219.17.126
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793697969;
-	b=L+l/IyRcWVY728qshUL6Vfx3zpsxkNTmR+kVmHRWEg4tWPIF9rXOQPuCMajUz7NvQQV6
-	 Bna2fKrAbU61416JmqbYDHg9Bj4L0R8QX/3Z8qDRKKp6LVxgjM9G+pUeiEQmN0+etS5Oi
-	 qgLUSZ0KPusnkVPL8+HFbZ/LZf3G0aygWBc64PMa8hp8jfDoMRVmO17qdz8/6Bsap4ISX
-	 VvQAk5MVzwnYuIPIwPWuwmRs+IJCGrF+GoTydWgZkl9M6eeufQW0KP9N8SsL8N6M0juXr
-	 dng3qoz8dlLiNDT0CPIccndlK/jDYv31vzmm2te4lbRv69xnBSoAHziDqNJ9o/r3IKQ==
+	t=1793697971;
+	b=JNB4MbEkkLIipTNPS+AtrfAnw3psbzjp/ik62hlcgfUq5u4L9R1VS22QLpY8OzLS1BJg
+	 VePlNM3OWqj9vyCOdfckYEDq7ZT9G5hj2eXsUYDqgJBwy9Mxs9Un1TvYPkPAHYCAxwN2B
+	 0Rm7hFUY7t6YCoRrRMJ0dIirp9/uv5TvFSMf2OyUq4SYhOZ1KuB0SMAvodHpUio4V/N52
+	 sGUzHfiI4jGN5KC6Zi+6iOpDkQLHUu3hLaAIZGFXFQz3KeUivRqHD3BfPPcTFQzyx37DN
+	 GUxwexgal36ochsWLzRhkNcSKwTAdzANdlUn2chhveeIJ+d4fco0sG/j0RbUKB3H/iA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793697969;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793697971;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
-	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 Content-Transfer-Encoding:Content-Type:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
@@ -23,53 +24,53 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=wea/Xmql/aZnCWfEfd0pIXurimTV1AhdL6Lsye8gs6s=;
-	b=WMIN1P5Es/p4JR0sfJuvaofo1YDUGN2W5LoM2p46bUew6GiHrBw94bemkPEgFOR7RvtN
-	 mfcyGqz4QyoUA592mycsMnn73VnIFQ1YzW72DmtNaoriOnwNsQDa45mOjqACI6lhy++Wc
-	 Otu0t/quoJZZY21M0ZB6QyqM3GA4F1ez4FXndzuK7Tl/kL0JHtvsoBkckOGg3mZ2P58/Z
-	 ojxXlYR52g3Xv4KPTVGNbgmkN3kCJ8kLbbBdEes/4h3TK+2Y2jKMg3DhLKQ/0FVZuToaP
-	 qORW6hBuqQuxSpXrV6cBRjg5gelZjP2hocYEQRHY02F1K4FCrFlvG3SORza7OHmAxwg==
+	bh=8/ac8w0ML3h6ZO7myNngS/092C0glBOWdrbpDSMykVw=;
+	b=Cpb+FpW0vP6AJ+WbUYK/uGMEO9Lu9vqukKU82FzSbvsPqvwTxej7oy0cjZcQgbx4dkkw
+	 72OMUAc5XxlKJS6Z8hO9qTd+cBSEw3Lg+kOiHrKdvonrsVA2yhO1r9/wk3saIC2RyQ4dx
+	 xGqDnMaQ5pX81MO9S5ENkzfVoGTcrYRg1fRa6br/sSvvcj/5Zxf5+SmVrOKsgHGO7Lyp3
+	 ecsfQIuyz0NlBWHkmkM1vaWt5xWU+S44rqvuhp7EgVpgSJDRfC6n1/iXdRdVUCIRgwmhH
+	 xq86Cqcmfc1AQGgAhtip6iVnbabkMn/6NcYhM48zPus01ZZP05A6Kz03jfcSz8FKF7g==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=deeproute.ai;
 	spf=pass smtp.mailfrom=deeproute.ai;
-	dkim=pass header.d=deeproute.ai header.i=@deeproute.ai header.a=rsa-sha256 header.s=selector1 header.b=Z389T15h;
+	dkim=pass header.d=deeproute.ai header.i=@deeproute.ai header.a=rsa-sha256 header.s=selector1 header.b=pHnK9zQb;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=139.219.17.126
 Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2126.outbound.protection.partner.outlook.cn [139.219.17.126])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899F1606A326;
-	Tue,  3 Nov 2026 09:26:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 899F1606A326
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD896606A331;
+	Tue,  3 Nov 2026 09:26:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD896606A331
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=deeproute.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deeproute.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=deeproute.ai header.i=@deeproute.ai header.a=rsa-sha256 header.s=selector1 header.b=Z389T15h
+	dkim=pass (1024-bit key, unprotected) header.d=deeproute.ai header.i=@deeproute.ai header.a=rsa-sha256 header.s=selector1 header.b=pHnK9zQb
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Vg5MGD29KscmrFszA2IjHyssiQSBCyNdL8WhosZEj9ebl/cYOKsrZjUwzxKl3Dytn74UPv8Xo5plJ+5KHFTwCUYSHFBWtpNvNoMQMU/agVl1b6mBGC4ATwNo6/fL1HJX4F//3rFAXykmCmAP/e+J/RgSncA4sZgEWrkVNTb59ovLMHwXqB+nMdM8Xv+d4ahLQ0YI5C7iUK4yOLiz3uZX4CSBdmgl56eqwIkfjp6K13L6VpCCjF9phT+Z0cpKX5JVATvwoi/8fmJOeHiXfdr+WMSU4pGh15pxb9bFSajh0F7Ykn53tq6de8XWbE/cnyA96+YLcnMYGo71iCV1mPXqTQ==
+ b=gX070eQCV9Jhmz7Jt1sGkll8W1cWFYHRoHQuphzb9dc91mtZ50ERH/G2XTP7NcZwviO/tL9py1i3aAIe1lZkDNPdUDO3GH+fYXypMIn9XZwtYSNQU92LlKnfIgMj1lu2Dq9hXnhY+xwukVInJPMmcVuKRxhRn28TkVubylWv00gnY73Q2MwlTP7zq/DqJxnUJZ0sEzOAX2wHLMcVjmItStVHBfbla4OyLJly/DrnM3rYEG+gbCpzh4nPX5PIsrdpkXSwpvWDei9uc5JtBVx1NSCGYimdsD9s5A/0OKXKNnBwKBBSB13cLhjA3hDJ3XQrWBI7VUEs74y/rMqPHRtbFQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wea/Xmql/aZnCWfEfd0pIXurimTV1AhdL6Lsye8gs6s=;
- b=nBHc1Hsq7jEy4AQazrIbHF+mfJRpsAuzJV+fj9CFJoqFjT+0s1MnlFhPOlyBtxi8sPYr+t63lE/uLclBJ1E3X5k2efEKG3II2+260gSgiDCcMgoDZdHfagHKx8//2UTd4Jf2n+sipgABCKBx1EBQeJ0ejGPDZ/Nyxy8eiQWL8t5GRTCJUx1t76OFe+4Vr69Hxa6yZ3N3OK+QMuk+fEIPcKENDvkgPCbTh8P/x/VriFdfDYpcR4pVzvYCS/96L6y162+3L/j+Ifjj3wDwUzI2SJgIrQeLAkjiK+dnIYY+xLG0MmeiCNGtoQNZ0on6qM1B7/+1RTQZPTtHTjeqb0fXSQ==
+ bh=8/ac8w0ML3h6ZO7myNngS/092C0glBOWdrbpDSMykVw=;
+ b=N+i+q5L608yAs8/5tWl9ewkr+6W4unrf9PPKhkCrOWFWD4I14ZDCjjwVUFTgenOJM+8ftmunOR4sEe+A5KAgCKskZSDKPJANI9GguWC55vSF064uW6dKoZfDKKWrMMngYQz6Flac23OP9WUbLjd2NqOY0HpqAsdSvNEZFNNITBmJ2UrkOM1FS9Uwm6Sg0BQg55xYzw8Hl91VIbtZo4o3Yc3X4OzFMjq32BfNFYs88fnDUpoU43fP0ZLXzFXfGccIdduh9cQxbnGCwFUD70L3pwvvaO0pvBns72BPQMzZxzerYroxYWi3wwJaHjKUlTVBbO2LlTuz8zz/JefJUJU93g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=deeproute.ai; dmarc=pass action=none header.from=deeproute.ai;
  dkim=pass header.d=deeproute.ai; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=deeproute.ai;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wea/Xmql/aZnCWfEfd0pIXurimTV1AhdL6Lsye8gs6s=;
- b=Z389T15h6VJMIzh3GHlskeCIAOVBMYUE/Y30lPy5Y6FOWe0tqMTVYq1J/3CoD2eOGymyktBilZZEQxLVX4avXT7QnkaWtbGIeOq5cz5HPZEUGb4wVNcGnVp/deGCRa9Y7VbLdGxsJ24NHAhpWhAVqQ2/2mroAxNMILTpoF2ZW/g=
+ bh=8/ac8w0ML3h6ZO7myNngS/092C0glBOWdrbpDSMykVw=;
+ b=pHnK9zQbqrxYpZpt+Ca7F1KS5evEyQMvxx5YbT+VYFINUW0Nqf5R+xx/eEYmCe+JX5uINHR9MmEVjzQk2DdqMm4DBF+f/RoYs9S/H/GiSGmM4jNPiDWczpZbXH32mXpjdQoW4YD7B3Vxi7GwEvLcWrxGVEn42fvoyArVxbGLebI=
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=deeproute.ai;
 Received: from ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c550:a::9) by ZQZPR01MB1074.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c550:b::8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Tue, 3 Nov
- 2026 09:25:57 +0000
+ 2026 09:25:58 +0000
 Received: from ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn
  ([fe80::2dda:e54d:5a3c:d686]) by
  ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn ([fe80::2dda:e54d:5a3c:d686%7])
- with mapi id 15.21.0592.007; Tue, 3 Nov 2026 09:25:57 +0000
+ with mapi id 15.21.0592.007; Tue, 3 Nov 2026 09:25:58 +0000
 From: Jingxuan Xie <jingxuanxie@deeproute.ai>
 To: netdev@vger.kernel.org
 Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
@@ -84,10 +85,12 @@ Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
 	John Ogness <john.ogness@linutronix.de>,
 	linux-kernel@vger.kernel.org,
 	linux-rt-devel@lists.linux.dev
-Subject: [RFC PATCH net v3 0/1] af_packet: avoid waiting for TPACKET_V3 copies at retirement
-Date: Tue,  3 Nov 2026 09:25:40 +0000
-Message-ID: <20261103092541.273847-1-jingxuanxie@deeproute.ai>
+Subject: [RFC PATCH net v3 1/1] af_packet: avoid waiting for TPACKET_V3 copies at retirement
+Date: Tue,  3 Nov 2026 09:25:41 +0000
+Message-ID: <20261103092541.273847-2-jingxuanxie@deeproute.ai>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261103092541.273847-1-jingxuanxie@deeproute.ai>
+References: <20261103092541.273847-1-jingxuanxie@deeproute.ai>
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain
 X-ClientProxiedBy: SH0PR01CA0004.CHNPR01.prod.partner.outlook.cn
@@ -104,130 +107,169 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: ZQZPR01MB0980:EE_|ZQZPR01MB1074:EE_
-X-MS-Office365-Filtering-Correlation-Id: dec972a5-9ca0-42d3-ec7f-08df398c7791
+X-MS-Office365-Filtering-Correlation-Id: 8ad1c1fe-15d8-4c17-d99d-08df398c7835
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|23010399003|10067099003|261102123227099003|18002099003|3023799007|38350700014|56012099006|261026121527099003|261026140227099003|261021121427099003|261022105027099003|261028144727099003|261009223027099003|261021123027099003;
+	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|23010399003|10067099003|261102123227099003|22082099003|18002099003|38350700014|56012099006|261022075727099003|261026121527099003|261026140227099003|261021121427099003|261022105027099003|261028144727099003|261009223027099003|261021123027099003;
 X-Microsoft-Antispam-Message-Info:
-	1Yg8Yq60ACQPm2Uz4YAAcwyq2lpJKlbchfzMDOMPth9r6aNMPJTafTxgb9wkVDJB9r+1xG5TPhr9P/WOFbc+u/6Fspv5HeZPL3ISRugWQsTg9Gs1Aix/2uHVYSXLQBZL8CtpvIgMvooFnymLDoe+cCRdWLE5rA98owQEVn7WEzlBR8tgsDLOomv2RhVuT/gzCH5s6QheU/JwHZj+1oNKr8DDhKubdNK40iZg8zxsyFndhHzOCGPeeDWsTjafVjUNKmkP0c3PDtU6sdfbjxEhAkIun5QWn1z4ziZBC9Eo3p5JvbFUblFuYZ3yQrNcyfrmJKdzjj26eGtBf0KIg0/BMHg/GebkGBsHxeFeE/2i8ZHAnkCHHB4mEXfUIOK6rEgo0DzIImQwCaCaUw0W21mHcmZrHo41diw8Rd/pL+uSQWsIYNrV2SR1ggDwzRpwOdrqeEA6gvsJVyRSRDB5HjI3z1L7Umj6/6KB3o1uPC0BZyN6m3fzVKAeZK+MrQtRpJSv8apb8KhBcvDNxIGbEfyXE3wqC+StiLZuFg01HNcTef3LJKYafkQihvQCr9G9FLVa
+	Px0CXbO2w1EIXLbFg+/V4sMaz85YUdQsKsp/iTlyKUcJxgOkxfbeb/POEujPalhvh8dgvERUgLO1IDHdBgPeKZh7YBFolBmJ6dWfEd/7JhBcowfSOt+9MkshBtIY3nQvEo3Kur8ZT/fhb0cBNVCfi9KwXRmj9KC9bFJqVpFF/aoHSNRDeHCq71gPM2yEGRIxehN4rcfaFx8edC4mihJknAs47I7eSF6yKzOEaQ62sepUdAit+jOvFPJ4QwnB9CyGsYOuuZUJqjlFZ+j+w+L3ho/MFOkgTJYDjy/2Y1vc8lLkBbgD0n6jk95rHn9EcJdO0B+2QOzkCNsBpQGArdus//oHg6i5P5kapV5v01bSEoY7T3ijgfyHqf3/DA4SKlW51MON0wFnWy2x1JFdcHrNJyzloGHzfRUlsgYO/MI42QgVn9ziCDwZ1FE/bQ7EVP3sWRIbx13Ttq589ahsM5NsXP10vev/0k4n1L0Ji6OeRIyWltzOEHJZpYLw/LtOycWtone5Syc9azm6wlHv6CDzDCAf1hRRMl+z4T1gytqgnpKtscf2i1rMtTjaHOEzWhF1
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(23010399003)(10067099003)(261102123227099003)(18002099003)(3023799007)(38350700014)(56012099006)(261026121527099003)(261026140227099003)(261021121427099003)(261022105027099003)(261028144727099003)(261009223027099003)(261021123027099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(23010399003)(10067099003)(261102123227099003)(22082099003)(18002099003)(38350700014)(56012099006)(261022075727099003)(261026121527099003)(261026140227099003)(261021121427099003)(261022105027099003)(261028144727099003)(261009223027099003)(261021123027099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?u3VyOFUoZkemUYl47vKnUTsYU6R51qgR5+zCATchkuOgQlqrhgchQh574r6g?=
- =?us-ascii?Q?CCY7bMOtABHzMtnpG6uyeNgO7UiHrInbMOoNXClKuAyuo21cKL6Njfildnji?=
- =?us-ascii?Q?hINQ5cnVQBXZLkYLBd/h099l8HZXm8NhkzFG2mg7qVHbme5rHQUdN56DIpDg?=
- =?us-ascii?Q?mzYSIdNsHXNvCoy56ownPZ6BT5NN5sBQ9RusTy6OFKdx0zTOLJxb8YiDcdXp?=
- =?us-ascii?Q?V6vjYYK4YLwfxI+xgMRZ4ctJ6LM5aPDq5lCv93NcQMFFhIXfbMCqv1JiI13w?=
- =?us-ascii?Q?GwQKe5vu8fnRZ4pdT/7cwZDaOD6S/PQ1wiQ6F+93yfFvegGlWV2CWqyLa7jC?=
- =?us-ascii?Q?akcL+293zIGQ5MDaWdMvKSm644+VOADDV6/kJZ3uY5rlh/A8rLjbcm3GurE8?=
- =?us-ascii?Q?jokDcRvSbQ4Gv60WJBO4Bc7S4k0xDt6rWVFIuZ1DbefqfblgBYyRE3x1o2iW?=
- =?us-ascii?Q?eDq2wRLL+qVT8jF4bBSySgY9vIrhejwioryK+NkUr9KQe/YBt5NjaQExGurj?=
- =?us-ascii?Q?VdSnWwpQ1/n0F/W5PQeYUfctlaIXAfnrKUJ+hYcGlHvW37A0rRfgTP2bjVWj?=
- =?us-ascii?Q?pqid1vW4NMw93bhk/UCiv3UA3QthUOMJLr5qm8lvP7lM0gLoQ+XZKv6DzAg/?=
- =?us-ascii?Q?4ZsHDo4rHXz4HFTk28x+rnWL3+n3mR4xpIllDTumW+kWieTG1pReic5zRgyC?=
- =?us-ascii?Q?M/AQTSaTjBuqLVqdHFATGwRKHCL6uZqIThbGsJ/vzoZzoVcl0FMv8OQZ+Ce1?=
- =?us-ascii?Q?5pjKFkkWvOLVHT7cKIxp4f3GpSkvPPl8OBFCKBKvi/2hgbGkIG7nIjWSIUOh?=
- =?us-ascii?Q?ykmPWG6eaD3KLOA8vAD//qAcUm+pV4/29sNikFcO+DaX0ZVDu3ZQrqL2wxzl?=
- =?us-ascii?Q?i7f7Ts3xFn+dDOE7ewXiK47NlcP0AkxVogWTNsm4Q2ChpYHce4XAtCY1hUlH?=
- =?us-ascii?Q?c0EjFUC/VBevSr857mGYdWwElRuccETJh1zgKaNVb4kHDuXnbmz4MU+eSDdZ?=
- =?us-ascii?Q?0T8DGVgaV2W5wuC7RpAlWEn/DmfY+CB0xpRoLmAaOqqXH/Qg7+CS/XVf6e8i?=
- =?us-ascii?Q?MnabN0WkU6/OWRK1byz78a0uQHe5/x0WKpS0El23fbQ1WCQ1gTYJiuU81uId?=
- =?us-ascii?Q?mUjz50xJqvoLvlNUdRpzkZy5GU1TJBDz1PF8ewwW+RZcQwwonPZpopwY1KQi?=
- =?us-ascii?Q?35RhLTAVAyoL4VTAqRs0WvZ70lKd2DAuAd9tFagqUSDTlUt+I3PE4zs1o5H7?=
- =?us-ascii?Q?VNgt7yYKieLAIkkdZs3KVUPTsY9H4ErTtorXUbxVA++hClZIVr0JbClJo+I/?=
- =?us-ascii?Q?MjaOhD7u7eCX3EB5m/PFHK/ehSBnDeIW5qUCu/9bCsmwTvBpLVqGEhUDeHPx?=
- =?us-ascii?Q?KP+HX/ZrLinpI6vM0RzIVwWadx0A+cAZKEO4KOO8AM0nLWl/90S2YFMh0IX9?=
- =?us-ascii?Q?eqx2nnN6Py08ZSqL+iBf1c/Hqr64o3MU1rsTJyDJSuBu/eQmYyWuZBKcsDlm?=
- =?us-ascii?Q?/jQHdKy7hanuyjWhhBQGKAjvte6ax1Scutd56x4NrUiOO2JhSBxkX4nKGnIR?=
- =?us-ascii?Q?bMlTLLwNZu7U/sL93RARqExOhvhW990amOOEG5IyPuytp3wkI59xg1oIw45V?=
- =?us-ascii?Q?6mHIOEhDKOEd0kq45eBsyCLEZ4UayFYTqJenCYl1b+4HcCX+IK7shNHLQLLE?=
- =?us-ascii?Q?bJAlPdI23Q1iAeW5N1/StG979Ml/LbhZTY+Vgd+OgKHgKLcmIJocbWbjt5k8?=
- =?us-ascii?Q?lUr0MmXkOw=3D=3D?=
+	=?us-ascii?Q?MNE9Wyx0VlgnCuNeT4NXwZWDjuf9KGCDEikrq38iChBz6esh89Iap6+aWPWR?=
+ =?us-ascii?Q?bhrktAcz9ynHTXHA6XIHM2APF6Xc8ELQWyZUlgdRMycVCsjZ7vJfBWclWHud?=
+ =?us-ascii?Q?C7smPKj7xJjRvJwLReKgbLuA+ID6cOwWB/OwYrb5Q/LYyaXIllsJ8+MqL2jS?=
+ =?us-ascii?Q?/FHo753JKDReOnf+DysiyEomZGv1dkF3FGeEzkt5lpQDylo2bB9A/FhUEZN/?=
+ =?us-ascii?Q?66Aa69cFiVtBU8I5ZCNXnGGJIDwme3iwQw1ApQgxmryvvOfLYZXdmaE4pCOt?=
+ =?us-ascii?Q?8Z4RR6bqxMdqtWbz7Ez1S4fT26iIdbVClPb5gbWgqx06+A8M6wqKkR34Aa+v?=
+ =?us-ascii?Q?dHcdt5m2Us6pr0SZw3q/75O/pu6dtPZaFV096cABvQHGGxn7Xd0bgFIASZBX?=
+ =?us-ascii?Q?AprizpBjGEFRUUhKGVMwBDl/46A9dCcL+8DxghOP3IM4x6SMQzDOzlEJoNL0?=
+ =?us-ascii?Q?qcPbswy4rcIebIpaOo84iIkO+STCV3DvNWg56EWF8c6zUalJixGNBxEUOvfD?=
+ =?us-ascii?Q?N4bRNKBaikwqJgdGjuVFP/aUtAGuw5JCZB9uN4g2OqpmnW8VzfCjPG98DUNl?=
+ =?us-ascii?Q?pE6flYARwhiRPeYIdZOQObcbIshzz+iL3PxxOaJnZG6NcYjSihk1RYO4B2IW?=
+ =?us-ascii?Q?LgtGD0TN6xFEx2OFkPTL2RvGHm8Y8n96bOzdFiFJbRnkFT+Px6pIi6a+fCYy?=
+ =?us-ascii?Q?73elV0r0tDa151smtSaweX5VbOZn8Xx2DMitbyxPVhLQzAGpBBCGOjBOlnO+?=
+ =?us-ascii?Q?1LsftBd/7ZLdqpp5WfsII2wFZLQf5G7Gn6PmnP3ioyFlrLPVOF823P0Kzdtm?=
+ =?us-ascii?Q?KwV6pqXT8hJnGfv3mqFGWyiwCvTLQPlR7GY/TBI3Vlt0RmcvtY+Wlj0HfNVs?=
+ =?us-ascii?Q?Y8Y+dULnF5XSV99DLDIsEMkV6hKbN3xG1nVsr80SMrNZMyufpSTuGGXTlRMs?=
+ =?us-ascii?Q?umJtrxRiFdWMafCmdDp4hZSM6ib3Fpso2zlCa7Cs0PIKra8R0NxNrULkqmYk?=
+ =?us-ascii?Q?Qvj8m86lumTehiy3QhgdA8znJoWEJo0ijIZDAOEbx4sbGaizU0sqDzB9snS7?=
+ =?us-ascii?Q?aoDrxYjjaX7Ieox06FmSC7EzidmEysOp6Rhq+0UhM9ey7iqerg1+kVSihq1T?=
+ =?us-ascii?Q?I0RIEU7hpZjHD4LHmxzyytXSPegBuuMwHN2NMquJ0FZ1RIV2G1/tA8GkiF8I?=
+ =?us-ascii?Q?A/gC66KfzI/FuD58HPHZ8CFWGvmNHXKbqWUm/3Sc+QPnSvVZpWynbOAjFEmF?=
+ =?us-ascii?Q?JmEKrm2ZnV9DyWvkex9+VIm9CA9Wm3IUWouOF7y1aRlYFa8B361N99mPtEdM?=
+ =?us-ascii?Q?v8UXjisz2HdB2JwWmNY8myWcvJmtR9Ki4/N+RFHRTwlwaQQdOWcCqw9tdDhS?=
+ =?us-ascii?Q?CcoW066PiR8Z7txFa0edAKniiuE4K6qD+oxQwRX1AKd22UHnkG2G/FST3h4t?=
+ =?us-ascii?Q?tclskeiyLtT6qkPPpmvQ7IbnhjN45/cAL0TZGu+4EpPE/rhicb1YQcsK2i9p?=
+ =?us-ascii?Q?AEwyq/oCvYQx/mR6HkGZL7rMzduDrFN35q1AUUqYv4oN4BfAlUVJbaSMEqnV?=
+ =?us-ascii?Q?tMllpzLr9JHSlwspqvmHMCsL6UewTDx3Nulali4TUVUGlhvY0Jyt3OpnnR9f?=
+ =?us-ascii?Q?++H26zT4pv4dW/4k05gwBsCIV5tm4vfgizsrwW1XL/3AnHxzsfQ8dMHNuAsD?=
+ =?us-ascii?Q?4ovbRDCA22OxpQvS/zrlHR/h9oyF/AdlqHX7J5ZiPbwIRh4oldvNqiX++Qap?=
+ =?us-ascii?Q?Aq3SbGwpzg=3D=3D?=
 X-OriginatorOrg: deeproute.ai
-X-MS-Exchange-CrossTenant-Network-Message-Id: dec972a5-9ca0-42d3-ec7f-08df398c7791
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8ad1c1fe-15d8-4c17-d99d-08df398c7835
 X-MS-Exchange-CrossTenant-AuthSource: ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 09:25:57.5354
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 09:25:58.7195
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: df535b4a-68e6-4339-a092-afa4f2c24fcc
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VZvlHazCv8hEnYhN+IPI8ZOSHSRH4eVOVb5D/H3vyuFoPXSnpE2VNuIFGntxHcyG2wIQF5kevvfKYQBf/WSJmM3mipDDRrzeZGjGx4YEnwU=
+X-MS-Exchange-CrossTenant-UserPrincipalName: HOZWvaP9ZWvPd2jZIBv6S9/4bo899w0HRIO0kbqmOzxBv7eY+YWdThir3f0AdSFFW7qziIUA0RCfbHdVwVdU+vlwJHjoogzHDoNxeI8PZXs=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQZPR01MB1074
 
 From: jingxuanxie <jingxuanxie@deeproute.ai>
 
-This is v3 of the TPACKET_V3 block-retirement fix. It replaces both v2
-postings; please review only this thread.
+TPACKET_V3 retires a full or expired block while holding
+sk_receive_queue.lock. prb_retire_current_block() takes
+blk_fill_in_prog_lock for write to wait for in-flight copy_bits()
+before publishing the block.
 
-v2 tried to remove the wait by allowing capture into the next block while
-copies were still in flight. That required per-block copy accounting,
-ordered publication, and handling for a backlog of ready blocks. Willem
-asked for a smaller fix first: make block retirement non-blocking and let
-the existing timer retry.
+On PREEMPT_RT a copier can be preempted while holding the read lock.
+The packet path or the retirement timer then blocks on the write lock
+while holding sk_receive_queue.lock, and the receive path resumes only
+after the copier is scheduled again.
 
-v3 does exactly that, in one patch:
+Try to take the write lock without blocking. If a copy is still in
+progress, leave the current block and its metadata untouched:
 
-- prb_retire_current_block() uses write_trylock() instead of write_lock().
-  If a copier still holds the read lock, the current block and its
-  metadata are left untouched and false is returned.
-- __packet_lookup_frame_in_block() stops instead of dispatching the next
-  block when retirement fails; tpacket_rcv() drops this capture record
-  and accounts it in tp_drops. The original packet is not affected.
-- The retirement timer re-arms and retries if it cannot take the lock.
-- A later packet can also retire the block once the copier has finished.
+- the retirement timer re-arms itself and retries after the configured
+  interval;
+- packet allocation returns NULL, so tpacket_rcv() drops this capture
+  record and accounts it in tp_drops, while the original packet remains
+  in the network stack;
+- a later packet can retire the block once the copier has finished.
 
-There is no spillover into the next block, no per-block state, no worker
-and no publication budget. The existing lock order and rwlock completion
-ordering are preserved.
+Do not dispatch the next block while the current block is still open.
+The existing lock order and completion ordering are preserved, and no
+new state or worker is introduced. The trade-off is a higher capture
+drop rate while a copier is preempted; original traffic is unaffected.
 
-The cost is a higher capture drop rate while a copier is preempted. This
-is a deliberate trade-off to keep the receive path moving on PREEMPT_RT.
-
-The v2 1/2 virtio-header prevalidation patch is not part of v3. It is an
-independent bug fix; I will rework it separately with a concrete
-description of the state left behind and a shared error path, as Willem
-asked.
-
-Testing so far:
-- ARM64 PREEMPT_RT W=3D1 build of af_packet.o: pass
-- QEMU ARM64 SMP PREEMPT_RT (4 CPUs, lockdep, debug spinlocks):
-  psock_tpacket and psock_fanout pass; three consecutive candidate
-  boots pass the delayed-copier tests. The TCG fanout queue-length
-  warning is also present on the unpatched baseline and the program
-  exits 0.
-- Full-block path: with A delayed, B's sendto returned in 0.7 ms, only
-  B's capture record was dropped (tp_drops=3D1), and no block was
-  published. After release, A and the next packet were published, B was
-  absent, and payload and length were verified.
-- Timer-only path: 15 failed timer trylocks while A was delayed; the
-  timer published A after release.
-- Close/unmap while A was delayed: no hang or crash.
-- Baseline contrast: without the patch, B blocked 505 ms until A was
-  released and was captured.
-- Control-flow harness covering rx-busy, timer-busy, recovery, full ring
-  and shutdown: 6/6 pass. checkpatch on the diff: clean.
-
-Not yet run: Orin hardware, KASAN/KCSAN, and capture drop-rate or
-latency measurements. Timings above are QEMU TCG observations, not
-hardware RT guarantees.
-
-v2 thread (second posting):
-https://lore.kernel.org/netdev/20261030081704.251652-1-jingxuanxie@deeprout=
-e.ai/
-
-v2 review:
-- 1/2: https://lore.kernel.org/netdev/willemdebruijn.kernel.17d3748debf8b@g=
-mail.com/
-- 2/2: https://lore.kernel.org/netdev/willemdebruijn.kernel.54d115047658@gm=
-ail.com/
-
-jingxuanxie (1):
-  af_packet: avoid waiting for TPACKET_V3 copies at retirement
-
+Fixes: 632ca50f2cbd ("af_packet: TPACKET_V3: replace busy-wait loop")
+Assisted-by: LLM
+Signed-off-by: Jingxuan Xie <jingxuanxie@deeproute.ai>
+---
  net/packet/af_packet.c | 24 ++++++++++++++----------
  1 file changed, 14 insertions(+), 10 deletions(-)
 
-base-commit: 1f1f8e8c5176234fa31858cd25f2e9b88aac0a45
-
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index cf6429f09477..8fd6372ab59b 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -200,8 +200,8 @@ static void packet_increment_head(struct packet_ring_bu=
+ffer *buff);
+ static int prb_curr_blk_in_use(struct tpacket_block_desc *);
+ static void *prb_dispatch_next_block(struct tpacket_kbdq_core *,
+ 			struct packet_sock *);
+-static void prb_retire_current_block(struct tpacket_kbdq_core *,
+-		struct packet_sock *, unsigned int status);
++static bool prb_retire_current_block(struct tpacket_kbdq_core *,
++				     struct packet_sock *, unsigned int status);
+ static int prb_queue_frozen(struct tpacket_kbdq_core *);
+ static void prb_open_block(struct tpacket_kbdq_core *,
+ 		struct tpacket_block_desc *);
+@@ -711,8 +711,9 @@ static enum hrtimer_restart prb_retire_rx_blk_timer_exp=
+ired(struct hrtimer *t)
+ 	 *
+ 	 */
+ 	if (BLOCK_NUM_PKTS(pbd)) {
+-		/* Waiting for skb_copy_bits to finish... */
+-		write_lock(&pkc->blk_fill_in_prog_lock);
++		/* Retry later if a packet copy is still in progress. */
++		if (!write_trylock(&pkc->blk_fill_in_prog_lock))
++			goto refresh_timer;
+ 		write_unlock(&pkc->blk_fill_in_prog_lock);
+ 	}
+=20
+@@ -738,6 +739,7 @@ static enum hrtimer_restart prb_retire_rx_blk_timer_exp=
+ired(struct hrtimer *t)
+ 		}
+ 	}
+=20
++refresh_timer:
+ 	hrtimer_forward_now(&pkc->retire_blk_timer, pkc->interval_ktime);
+ 	spin_unlock(&po->sk.sk_receive_queue.lock);
+ 	return HRTIMER_RESTART;
+@@ -946,8 +948,8 @@ static void *prb_dispatch_next_block(struct tpacket_kbd=
+q_core *pkc,
+ 	return (void *)pkc->nxt_offset;
+ }
+=20
+-static void prb_retire_current_block(struct tpacket_kbdq_core *pkc,
+-		struct packet_sock *po, unsigned int status)
++static bool prb_retire_current_block(struct tpacket_kbdq_core *pkc,
++				     struct packet_sock *po, unsigned int status)
+ {
+ 	struct tpacket_block_desc *pbd =3D GET_CURR_PBLOCK_DESC_FROM_CORE(pkc);
+=20
+@@ -963,13 +965,14 @@ static void prb_retire_current_block(struct tpacket_k=
+bdq_core *pkc,
+ 		 * the timer-handler already handled this case.
+ 		 */
+ 		if (!(status & TP_STATUS_BLK_TMO)) {
+-			/* Waiting for skb_copy_bits to finish... */
+-			write_lock(&pkc->blk_fill_in_prog_lock);
++			/* Do not wait for copies while holding the queue lock. */
++			if (!write_trylock(&pkc->blk_fill_in_prog_lock))
++				return false;
+ 			write_unlock(&pkc->blk_fill_in_prog_lock);
+ 		}
+ 		prb_close_block(pkc, pbd, po, status);
+-		return;
+ 	}
++	return true;
+ }
+=20
+ static int prb_curr_blk_in_use(struct tpacket_block_desc *pbd)
+@@ -1097,7 +1100,8 @@ static void *__packet_lookup_frame_in_block(struct pa=
+cket_sock *po,
+ 	}
+=20
+ 	/* Ok, close the current block */
+-	prb_retire_current_block(pkc, po, 0);
++	if (!prb_retire_current_block(pkc, po, 0))
++		return NULL;
+=20
+ 	/* Now, try to dispatch the next block */
+ 	curr =3D (char *)prb_dispatch_next_block(pkc, po);
