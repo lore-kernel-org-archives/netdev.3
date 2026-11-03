@@ -1,72 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=213.95.11.211
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793693380;
-	b=1oyWwl0zrhMuhHZdDqC6f/YGNo3XGM74o25ausBtSGiEv+GJzkq3Unp3E9L1TxsXefLY
-	 LHGxR7TLQGzkw2ZzHe7IApbZopdlSMmKsPOzHqrC0+bwuTcpLp6ZXTIUl4YBChO+nCLyh
-	 WE7CmuHPD5CS2vxx00/Lv7rV+RgcKcDJ6F16RTsI1b9L/kvwZkAwhsZ4d33PUgpqyX/DH
-	 KnwKUq76Qa+TH9JohGeB1ah8OzXv9DzYg1Etl7Z97ZfnNqoVHCAbQN6qWaQVBWEPc/YNR
-	 KaPCYhvAmmnDsuBkJCDfQV86qin4l1TmU/0GwV/LeTVMiXms2oF8iMeCd0IQLSo/g4w==
+	t=1793693408;
+	b=qBT9YDKDRpCYtFuQIllvkcguZFWqfGaPvJGzx72L8uL1MKbEtXZV8y3Hyn2vZSWI7Ghk
+	 auwa1dDds8EyFHr7AXM/1QDLKkwmjub259uYSHnaA1mT50yYb5aX3aV8N4g8LVWANG/EV
+	 kvQOxB37ibn9SOEd/uhcznVypPzQcrw7ByyGujC9/lGdZ4PsunlbpWB4MXst2xUj84Aom
+	 Lna1E9NIycFEDU07pCIzKbYZza7iJCiCCu/l9l8pd0+rQr5E/fBtPKjb1h+7EwXw7/YMm
+	 aJAqKBAnyW6uOHWVBGASzWue9HBUDrH0mlL1gVNWM6XYc1kgPulpLdhT1grXqICbFgw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793693380;
-	h=DMARC-Filter:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To:User-Agent;
-	bh=2on3ft6XH1eubxEl0nHP4ZK9AQjcmYaJw++Tp033neA=;
-	b=2ZZxU1TgypeRyTKl0ARemZdE331gz08kvEQox0MfJxN4l42vkBeNyP8QzvZ1SBnhVvg6
-	 7DuTuGLorJvtPfIdX2nL6Vk/Rt0MLjOKOJoYPQd5+hoSCTsOYvxNZtVrfzpdBSQpHC5o6
-	 Tvh0/aPjRsSv7GhhDP1csM2wkMZq7CWvd8eYZfRSS55B02bdQnv0mAN2Snfq8Z5oiH8LP
-	 0dp83o3osc7JlpHs4xbJy9ST5OSvh2DfO/zUZXGBDyOFkc/teJtNsb5aJHZWpwOEQFlom
-	 b6F593/vy46t0VUC77/UU1ksyhbcQhm1jMdwUNn93UVUa+D3u5tcXl49bt20Ve+87lQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793693408;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc;
+	bh=W+rCt5JffqT9igP/FHJlTjxb2JKgyvGadn6kqlftxyg=;
+	b=HUoYsqwHlxSQoLh275fOHXnnQzCzEHl8cYjQTtaJTM/H7ZY8olKDLz/IJGKIVu8cqNej
+	 oVPIslyCSQwP0LAIiXM8bSpTloBJSlAWrEcEO2ZSIVO9JY6QJ4xeLd9pyl2XdNZlUJbVS
+	 n878ZwpO9lS153ATjVYsxNE10+mnzpPgVX4l3A9/KD4pqgl7XYv+YenhV/Qt+3MYg/Tgl
+	 zRJGHUNu93LTOy9fq3vSfa83GIaTNN4ojjJgnhtXxxwjjOLEqY6laKDuNoYCk2u+E6IGz
+	 2r8oDdaiFMaE18rETTSOYnONSNoXcD/ATkiuLPKvm+0+XVz+/RpVWaGHYXiE1moEVVQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lst.de;
-	spf=pass smtp.mailfrom=lst.de;
-	arc=none smtp.remote-ip=213.95.11.211
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Go5owOop;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC50F606A334;
-	Tue,  3 Nov 2026 08:09:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC50F606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 1E82268B05; Tue,  3 Nov 2026 09:09:34 +0100 (CET)
-Date: Tue, 3 Nov 2026 09:09:33 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Luigi Rizzo <lrizzo@google.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Joshua Washington <joshwash@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
-	netdev@vger.kernel.org, linux-mm@kvack.org,
-	driver-core@lists.linux.dev, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-Message-ID: <20261103080933.GA4213@lst.de>
-References: <20261003212241.3432303-1-lrizzo@google.com> <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org> <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com> <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org> <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com> <20261022201229.GH3381610@ziepe.ca> <CAMOZA0KaanmevmvWS=M3gKfBeborzfCQTiF_xbSeYMWbozG7Mg@mail.gmail.com> <20261023140107.GC3977851@ziepe.ca> <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com> <20261023145023.GH3977851@ziepe.ca>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFFC606D801;
+	Tue,  3 Nov 2026 08:10:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Go5owOop
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4981F00919;
+	Tue,  3 Nov 2026 08:10:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793693407;
+	bh=W+rCt5JffqT9igP/FHJlTjxb2JKgyvGadn6kqlftxyg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Go5owOop+lJsQUqur9qbyUb79jlZHreekfAOVjWqHl5+PJSLH1/IDqLr2vU1qMsTq
+	 e/gTUjOte224eNmE672iD7k8DECG4jgF0Gk8pekN/K6BMi2JfOCScPPbnYYeFfwEWu
+	 DfSJI/MOhZ6qWKJK6tbrwvjar3Pwvh2VZp8aU4l6AOInYQKoI4MZu4rJSdQwdO0T6F
+	 zJ4M7T3o9JXVLoCZooDnbpyFrq2efF0JUPzHn/Jm+7Kt6bCgkU7JtLbiDZnQEVhQ43
+	 KsooIqJXse7U6T9Pzv7KTXa2nkNdsJF3T8sgwj1GMLlwXCQdg4DBxONRmMaE5lNVK9
+	 dUvRwZ1BZKQHw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D39A380823A;
+	Tue,  3 Nov 2026 08:10:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,23 +53,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261023145023.GH3977851@ziepe.ca>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v5 0/4] net: devmem: fix RX and TX binding teardown on
+ device unregistration
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179369340630.929695.14145463061574872626.git-patchwork-notify@kernel.org>
+Date: Tue, 03 Nov 2026 08:10:06 +0000
+References: <20261030083539.777877-1-almasrymina@google.com>
+In-Reply-To: <20261030083539.777877-1-almasrymina@google.com>
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, pabeni@redhat.com, sdf@fomichev.me,
+ kaiyuanz@google.com, kuba@kernel.org, bobbyeshleman@meta.com,
+ asml.silence@gmail.com, dw@davidwei.uk, ap420073@gmail.com,
+ davem@davemloft.net, edumazet@kernel.org, horms@kernel.org, shuah@kernel.org,
+ sumit.semwal@linaro.org, christian.koenig@amd.com, phasta@kernel.org,
+ andrew+netdev@lunn.ch, sdf.kernel@gmail.com, hawk@kernel.org,
+ ilias.apalodimas@linaro.org, daniel@iogearbox.net, razor@blackwall.org,
+ tariqt@nvidia.com, kaifengw@google.com, dtatulea@nvidia.com
 
-On Fri, Oct 23, 2026 at 11:50:23AM -0300, Jason Gunthorpe wrote:
-> > Disk I/O is still potentially affected by the same problems
-> > (cost if io mapping/unmapping, iotlb thrashing, bounce buffers
-> > in confidential computing...)
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Fri, 30 Oct 2026 08:35:34 +0000 you wrote:
+> Fix two device-unregistration lifecycle bugs in devmem TCP bindings and
+> add netdevsim support plus selftests covering both RX and TX device
+> unregistration. These issues were found via LLM-assisted code review
+> (Sashiko) and reproduced and verified with the new nl_netdev.py
+> selftests on netdevsim (not tested on real hardware):
 > 
-> The disk folks already have a proposal to address all of this using
-> io_uring and preallocated buffers. I really doubt yet another version
-> is going to be interesting there.
+> 1. net: devmem: unmap dma_buf synchronously on queue uninstall
+>    Synchronously unmap and detach binding->attachment under binding->lock
+>    when the last RX queue is uninstalled in mp_dmabuf_devmem_uninstall()
+>    or closed in net_devmem_unbind_dmabuf(), and unmap remaining unbound RX
+>    bindings on NETDEV_UNREGISTER, preventing slab-use-after-free in
+>    dma_unmap_sg_attrs() when the binding is freed after dma_dev. Factor
+>    out net_devmem_lock_dev() and net_devmem_unlock_dev() to synchronize
+>    netdev_nl_sock_priv_destroy() and __net_devmem_dmabuf_binding_free()
+>    against NETDEV_UNREGISTER.
+> 
+> [...]
 
-Huh?  If you mean the dma-buf I/O it doesn't really have anything
-to do with disks, except that this is the first user.  The dma-buf
-iovec can work for every ->read_iter/->write_iter consumer, and
-should be adopted more broadly.  Including by networking instead of
-their own totally weird different world.
+Here is the summary with links:
+  - [net,v5,1/4] net: devmem: unmap dma_buf synchronously on queue uninstall
+    https://git.kernel.org/netdev/net-next/c/c4466d2c3e77
+  - [net,v5,2/4] net: devmem: detach TX bindings on NETDEV_UNREGISTER
+    https://git.kernel.org/netdev/net-next/c/ede1618064a9
+  - [net,v5,3/4] netdevsim: support devmem RX and TX bindings
+    https://git.kernel.org/netdev/net-next/c/c153da399354
+  - [net,v5,4/4] selftests: net: add devmem RX and TX netdev unregister tests
+    https://git.kernel.org/netdev/net-next/c/121ba2ac7968
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
