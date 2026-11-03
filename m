@@ -1,82 +1,82 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793699765;
-	b=vjZwQJsHG0Jr1+hRlM8jw+AICxRFm5VKQ/NgwWRK9RSgCP8W3O+eJGhU71J8R9Z1eml1
-	 Lw3pxf2Y2qbBAvi7tj2huFzV2/j3icPT6ZhYlGUijXoWDpec4yKSG8PXOGWhQP0RTS51l
-	 IsOrlc1D2lxYKaNFYHTVvgUWJF5FOfF/YmXLvfmZY9s/yR3dkh+/QDOh5CcyGfdaJ04Md
-	 UH5W98sPPiUDHkvnWYm6D+vAcyoANUczseuUucgP4aCEzTKY47+KjwlVfWinIk0qcoNW3
-	 0WC8VvTIzXcpohBimtYBM/S5TJ3p1PkJJT1s7dW6dyhM7GiyAr7LKP6O8Vm6RsBXOxg==
+	t=1793699771;
+	b=YdZ7YBoNGzeKBFNB2Orfu1GhEZeG4jGsEBKzXbxTit3hVpmdBzoON1K0WCXrDJmAbxDg
+	 d+63WhD2Ywua6BpWlH/1re0aK1ktEs2+QMyo3xgQgniuFfRC1TymhkfPI/EMh+XV8GCNe
+	 lojBhmNVdE8CP6G8Pydr+xZBjjeRpnN6LWnjfDey/SrRlmhizHlrWlYmMQajFopDq0Jid
+	 ea7VhA99g3AUeQcRnhQpkO/V8z7x7wykZS4OGwcr1QatREPfYGDaa8UqX8UjiCc4HKHd9
+	 pB0V+1aDlup0lCXnjxcwZ+98Wepd/CctRQ2XMcQqaQ1+j3PfiMccs8tkqAQdNmbt0UA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793699765;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793699771;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=Mb/1g8nYCeIwcAw01UT60I+xXfiBOSX5Y/kTWaVFrFY=;
-	b=1FX0n93U9YwCSZpDx6wO7XVZaJ1XpXHRaqks7M65M00fgjdCwCEoRhFNx5dCZ6vMdTS7
-	 83pkpMcQviGjXXCgjuAoUoMgNi0bXhfxHp+1Jj/UaNhhK5qQCNQBF+WUGvNBPqujNdeuG
-	 zcOKbjsp0xvVrVLdImagWqCipYx//B/AhvR7UQm4YqI+S0xX5viLartdnV8ip6zP9MNA2
-	 qBctgQlkRR9dqThcDxFjwjamTJcI0mejxs7M6ga/76wKwSeJn3BOP89syWijcsgTHXHX9
-	 RB4y4OkyDs2aWHyf5eKAdNQyzA4yyEjhFESLeuDXXTnpBJni3FyIMSakjlc/AvgQrkg==
+	bh=RKc3AxVEeK3hYucX9TDMZhMBcN9uYGhCCb4Gc7p2Cc4=;
+	b=UzAl+ZIGldkIRfSpa7pyUgvDShnd3DNL9jZ2PWb0zNWbl5gUsM2+XbliBy9iu70X872y
+	 +gc5YMcbP2vdzXhwlPyM3pVmkWWJRvodB3P4MXTHrgwUID1B/NDFwFu1SmA1r9Gqo9ScS
+	 2pA4xzZnV3RB1N56BS5FnXDHT/zJvmrAe+dl6JesciA7/PPaN9L8ghZG9NBWi+yPycj+4
+	 HN32f7SNwVqc1iC9SLg3yxTK4FPL6A3Bjj1G7lsYuLcpW1DMdfy5/AmpKNrGtfDv1cKvh
+	 a+X/83U7qkkWnf17PBQq9N69DaeuEMDiwZrARhPGYHIV6kb3kdqgk/7rvdPz6tqk6Hw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="aSKb9a/W";
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QURYRwYR;
 	arc=none smtp.remote-ip=209.85.215.174
 Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440ED6085090
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 09:56:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 440ED6085090
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3BD606A835
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 09:56:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2D3BD606A835
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aSKb9a/W
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cdb2dfcca94so758395a12.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 01:56:05 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QURYRwYR
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cc751eddf25so2344568a12.3
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 01:56:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793699764; x=1794304564; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793699770; x=1794304570; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Mb/1g8nYCeIwcAw01UT60I+xXfiBOSX5Y/kTWaVFrFY=;
-        b=aSKb9a/WJPBri2q8rqFRKhTx7aTwzfBsALEEC+mT6NqNF62bBHjSVGQCrsMWAgg5t3
-         pQhEObgiXwcpkII+A9hoS1+Jqa4ApCyoz4F1N7VBK77DDIgaTtmFqIiYrgz+d7saa3Yf
-         L2czhVqNSe2lMRPTqLwk2c4ljXBtw9TOlYCnZ2UPWOA92vv2pRrJjrlCNU0BT0uYhXVj
-         kPDz1ckmmm6hNzz5MRt4zaoS+76bt14u4BXdMd5k5Dxd2pfgpySUqkogLvbs86aaXYXs
-         35gFgoe656uPWwaRIXZ+76D4pVOuC0tG3CXEllCOCzhufU38ybktYNcI2zuQIKxzEEek
-         o9Ow==
+        bh=RKc3AxVEeK3hYucX9TDMZhMBcN9uYGhCCb4Gc7p2Cc4=;
+        b=QURYRwYRlzlhJ6/y2zjMSzJSSX3Ty5YMdiiM5u9JPSfocAGyjN+SO315am54GjIY0a
+         mSgVYrcz3SWCy6ynvVqts4FmMrzrYg/lYW2hO22I1F4v4FjuE7PkfXKj02TqqEicIqv7
+         sNf46RxLTPZd5p1/ligw1cLt+wuNKoMQtX+C77I2od73PZJSxoyTbksXPJZ4D5vM+84Q
+         M0nB7PDzL6LDsRe9xOi+Wwt+ob2WbRE9Wi5kz/irs3O+ngj9uQ7/nFPFyQUFBlvp3bW1
+         qy0+2PSywCVYgBCvp6waL33ZM+QYndYCUCPM/DSXSQRvx6hD0kpUq4hskF5UuIFXXygy
+         9JBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793699764; x=1794304564;
+        d=1e100.net; s=20260707; t=1793699770; x=1794304570;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Mb/1g8nYCeIwcAw01UT60I+xXfiBOSX5Y/kTWaVFrFY=;
-        b=EK+Ac1QDpIbF0C5CvLW7QVUsNbSvVIw1gS2k8Fyb9j1Wi4ZwuL6Kn0ZeeCmRXomGEg
-         HSN41V0L29D3Ji3IbBApqiMAFm/eJLmriKNu74DmfsaPZ8NmTwjv/sGDYtCpIJ8UhL0O
-         SGBS0JWxH7yumMxcO/3sFuMbz/s8VEY3E1ojZBGUijTrsCMODKwiJ034sc+DSubKfRzd
-         5aW/aVk73+m7eDStdPwjzeXl/MvqqTFlgTo488e9fk1wHoxnc6LfhHPp22sweHeQ1NBT
-         ATJnmCvyBuMjPSQOPyPzIoJqR7qRJUyB6gWCX6M1acYPdWPxqrJyaD5pTW0xw+tgz00x
-         ZBtg==
-X-Gm-Message-State: APuU4Z+GqJAGr8tV46z2oqxeGWMwoXp2p5w/5UmNwpK1fLijVaWP5BK4
-	DjpMLyNzb7s0loivCdM2scnQjuFaXpQA6MuMRGiIXk0jO63lDJ9QKLc4QBh9Ag==
-X-Gm-Gg: AYBFou3TOGCtM90KXF3WIJxfrOFkb5UG6xmgACYCQoD2P3ji3KzQm+p/4qxOmyndMqY
-	GLNXEjlhhi/W+0QUTOy/OskOBkRUU3FZYnVSu3Xj6bae2sO3Pwyyce9NhVpxqAOTWEDD364JUfG
-	Dt0AuX0lFSbbZkTySF7/V9XGCqA5mxh92yeAsa+U7qle9mPfVnENhZfvurO2XW+Z58UrSLysVXV
-	EWy4lMBv0rW3gh+UnGYNib+Z1hlIfV3i9BpnrR+dupPhXBW8lMCwBuKH9ntmn7jPe4tV8yJO8s3
-	j8B1/pSZBn0LCB4Tr0ZARO/vsuitDzjsK21Bj6gZtO8QmdNQ171EPaSveYRpBMg/uSvWvNO9wsP
-	Mkzj875dRb4U0eSiaSUtsm8S7I/8GUhYZ7nZPD/YRzRH4Js2uRAt/9cHcpi25Q4zxVZ8ZfZPpn1
-	m3P1Q2nte9OSTENY1fVWZQqpfWvl67jOFjDbpLx2tIBxxbnyDiGoB/5yTR2EnSv5V7wLx4tn+Rr
-	kkZrD0ZfpVrbwMG0Tz0HrVwc9JyAFRBL5CGAhnCSTxq5QFZSOIJrS3EPBRcdkQ8Xh+tTB5R30Ya
-	8BzDAiuffjaaZOgJWqKny0pkdLyhDxMRj6ZuVtbJjmeJKIKmJ8n/
-X-Received: by 2002:a17:90b:46:b0:3ac:80dc:f41d with SMTP id 98e67ed59e1d1-3ae897497f0mr9660248a91.32.1793699764521;
-        Tue, 03 Nov 2026 01:56:04 -0800 (PST)
+        bh=RKc3AxVEeK3hYucX9TDMZhMBcN9uYGhCCb4Gc7p2Cc4=;
+        b=2iz3LJnxtETLIshpxVtM5SU1axz2tf7FWIWJnDh4ouyXpzF6dF1Q973kCL5KXaH+T6
+         Er3iQA9VF3kR7AB/sj0OxLAPet2K2TZS6IphDR89PpqzR5cXX1gl9xcPTTyMKA5E3MW4
+         DPATtEDBlzyvPjS2mEVc+oVtqcjbSo5ZYfkbd1J5pktV4Rc+y7ZytRTh+REVRWcDXhxh
+         nEA3fBiwVPjPwzh1WnSDNGAIXhKQfVx/6dBmWQYmW5dgcXRb1jsNNlc49ME+d99KvHGB
+         BUqABsJAovGsRea1oaDaGRrQyz0hGnj9I/SslVvsmI0KnFh/bxL/5aL1cTQKxTYrXCsz
+         I2bA==
+X-Gm-Message-State: APuU4Z94PtuIsr9Tb5oNM+P4KWyOiPvHmtim3qFX4VnxDaoiN2DLQ2Zq
+	OvP4UjoqdA6qRA0y7TSI57WlR1/vd65hLZDmPDEUo0OvBSZVajB+9a3VO8yFxQ==
+X-Gm-Gg: AYBFou00axoK7HMu693MGGuwp+kMPnTCku8/vhmcr8EGcsNYWdEOW8GTOdtNtAVt5uW
+	+pZ4btXc6+nrpH5wSGExGXCYcZ3B09QXMSpeyeeMh08+y0hBfUtEKjbwcQVNLaERczB2AFx5e0x
+	FoUSFJHZiNLHTIdWCxaeilIA0jKHMnITR0Qr9CFyR9wKi50mR5fPDsJfQvM14e1R/sE8B7/wmkP
+	XtS6VaC7duNEHMJGaFhE3e5KKpwITXkbeGJeIQ/LbX+PTj2EKvWzBrWf9txTqY2bb6VhEbnTHsz
+	6e55tiaWOufXioAdjcevJnskBHZxQ0b3JCxDloe2wEelMrdWC7cjDGF1B7XVMD063FW5eajs/jQ
+	Fe7dgTWhjGlgpDH/ZbmGYjYl3ziRHPl6RQCON/RopNfoLnG1SJxVYUDbZryJ71c3LgWHR9L1dyF
+	m9yYR/wN+DfHAbEGbJoiNr2McfXwFGVoZryjU02JzTJ3P7G4xnfZQHEF5iJ17FPrFJw8NTZOlIH
+	1Ri7kufjQ0Ws+XhPqEuiBHOtubwJSjfWKdZSdF3dN7NASHribPIwNxbGEPpsyJnv3QDzLUYkOGn
+	58i4SwZCmP9FY597FCLpgytkgmb6L8ZLUjCaNh+XKY6gGMH/Z+gx
+X-Received: by 2002:a17:90b:1188:b0:3ad:b7d1:8631 with SMTP id 98e67ed59e1d1-3ae897eb75bmr7563921a91.17.1793699770359;
+        Tue, 03 Nov 2026 01:56:10 -0800 (PST)
 Received: from d.home.yangfl.dn42 ([2a09:bac1:7680:28::4:396])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c666cdcsm3488954a91.11.2026.11.03.01.56.02
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c666cdcsm3488954a91.11.2026.11.03.01.56.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 01:56:04 -0800 (PST)
+        Tue, 03 Nov 2026 01:56:10 -0800 (PST)
 From: David Yang <mmyangfl@gmail.com>
 To: netdev@vger.kernel.org
 Cc: David Yang <mmyangfl@gmail.com>,
@@ -87,9 +87,9 @@ Cc: David Yang <mmyangfl@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 1/3] net: dsa: motorcomm: Fix extack message on unsupported TC actions
-Date: Tue,  3 Nov 2026 17:55:08 +0800
-Message-ID: <20261103095514.338700-2-mmyangfl@gmail.com>
+Subject: [PATCH net v2 3/3] net: dsa: motorcomm: Delete the ACL rule of the port being unbound
+Date: Tue,  3 Nov 2026 17:55:10 +0800
+Message-ID: <20261103095514.338700-4-mmyangfl@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261103095514.338700-1-mmyangfl@gmail.com>
 References: <20261103095514.338700-1-mmyangfl@gmail.com>
@@ -104,26 +104,72 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-No extack reasons were given to unsupported TC actions. Fix it.
+A flower filter on a block shared across ports is offloaded as one
+hardware rule per port, all carrying the same classifier cookie.
+Deletion looked a rule up by cookie alone and could take another
+port's copy: with skip_sw, a filter silently stopped being enforced
+on a still-bound port, while the detached port kept enforcing it.
+
+Delete the rule matching the port being unbound instead.
 
 Fixes: 8eb9e7520b17 ("net: dsa: yt921x: Add ACL support")
 Signed-off-by: David Yang <mmyangfl@gmail.com>
 ---
- drivers/net/dsa/motorcomm/tc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/dsa/motorcomm/tc.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/dsa/motorcomm/tc.c b/drivers/net/dsa/motorcomm/tc.c
-index 9dbd61e48fee..8835907366bf 100644
+index 5d2db04f3385..159504694158 100644
 --- a/drivers/net/dsa/motorcomm/tc.c
 +++ b/drivers/net/dsa/motorcomm/tc.c
-@@ -1122,6 +1122,7 @@ yt921x_acl_rule_ext_parse_flow_action(struct yt921x_acl_rule_ext *ruleext,
- 			break;
- 		}
- 		default:
-+			reason = "Unsupported by HW";
- fallback:
- 			if (cls->common.skip_sw) {
- 				NL_SET_ERR_MSG_FMT_MOD(extack,
+@@ -1226,7 +1226,7 @@ static u16 yt921x_acl_activated_ports(const struct yt921x_priv *priv)
+ 
+ static unsigned int
+ yt921x_acl_find(const struct yt921x_priv *priv, enum tc_setup_type type,
+-		unsigned long tag)
++		unsigned long tag, u16 ports_mask)
+ {
+ 	for (unsigned int blkid = 0; blkid < YT921X_ACL_BLK_NUM; blkid++) {
+ 		const struct yt921x_acl_blk *aclblk = priv->acl_blks[blkid];
+@@ -1236,7 +1236,10 @@ yt921x_acl_find(const struct yt921x_priv *priv, enum tc_setup_type type,
+ 
+ 		for (unsigned int i = 0; i < YT921X_ACL_ENT_PER_BLK; i++)
+ 			if (aclblk->rules[i] && aclblk->rules[i]->tag == tag &&
+-			    aclblk->rules[i]->type == type)
++			    aclblk->rules[i]->type == type &&
++			    FIELD_GET(YT921X_ACL_KEYb_SPORTS_M,
++				      aclblk->rules[i]->entries[0].key[1]) ==
++			    ports_mask)
+ 				return YT921X_ACL_ENT_PER_BLK * blkid + i;
+ 	}
+ 
+@@ -1364,7 +1367,7 @@ yt921x_acl_commit(struct yt921x_priv *priv, unsigned int entid, u8 entsmask)
+ 
+ static int
+ yt921x_acl_del(struct yt921x_priv *priv, enum tc_setup_type type,
+-	       unsigned long tag)
++	       unsigned long tag, u16 ports_mask)
+ {
+ 	struct yt921x_acl_rule *aclrule;
+ 	struct yt921x_acl_blk *aclblk;
+@@ -1378,7 +1381,7 @@ yt921x_acl_del(struct yt921x_priv *priv, enum tc_setup_type type,
+ 	int res;
+ 	int ret;
+ 
+-	entid = yt921x_acl_find(priv, type, tag);
++	entid = yt921x_acl_find(priv, type, tag, ports_mask);
+ 	if (entid == UINT_MAX)
+ 		return -ENOENT;
+ 
+@@ -1553,7 +1556,7 @@ yt921x_dsa_cls_flower_del(struct dsa_switch *ds, int port,
+ 	int res;
+ 
+ 	mutex_lock(&priv->reg_lock);
+-	res = yt921x_acl_del(priv, TC_SETUP_CLSFLOWER, cls->cookie);
++	res = yt921x_acl_del(priv, TC_SETUP_CLSFLOWER, cls->cookie, BIT(port));
+ 	mutex_unlock(&priv->reg_lock);
+ 
+ 	return res;
 -- 
 2.53.0
 
