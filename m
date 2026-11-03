@@ -1,47 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793719821;
-	b=JRvu7zxEB8xYFvaZDNbucTgt1CZvrl0I+1HqxtcrZ8KCLotJYI7n0vfgGsq79HpfMNiA
-	 HMwLjLYXwftyxntR7w/G1j4uh6wfReRwWbSqv00O/+V28pWhop6q++yAqDxbN0Zepr4sd
-	 uLUtd/9aApkOrRoW26xadI0c0zAfKebeFeTfxv8UN7TJB7ZcG70gMFb5ohA69Sdt85LUF
-	 DqdmFygPwXM/VmeRQIfwZsECKiD+hGjqdOcyvnEDYxCWv7oq1FK4BprZwxQ2W7xS3kLy2
-	 KeFek7KWzIQEZSACBJgVG5hqPdymSuLb9bXDwPstFnE9vkE9P00NjjMF/Z8WAHImB0Q==
+	t=1793720106;
+	b=cBl4jj1hq/jUG9POy5eLx18vMXOFTTm7oHc/lsEYsPxW4WA0fms9HUDPsCKlOVkRD8ni
+	 ndp0A4NHAizEBCoOCkrpEfkk3E1hktLRuncML2KXQh8b3Js9I6lQibhv8AJ3XT4wBVy69
+	 MdkztCZTBM3BnqcF00Q1/f2l1uCFT3hgvrrKzJZOy+WbyXyVyyrNDe6dAFSAfOhohPN4i
+	 4LaiXThOUrqRGEpFPjaC+Gmz0+MHyP9J2qUF/UcpaIVIuB3Vds3ks9NDrQ4Tgoz8Hb/Q8
+	 ybIe0tqTnb9+86r475qYK/kmpaUFnR/LuR1gjejXOXqU9TuWdyqUZA7CymPn0m9rG4Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793719821;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:Content-Language:To:Cc:References:From:Autocrypt:Organization:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=wqMUZYGt8/JtXCLQ/OJktfmQmPOAqO+arF6Ph52aKFc=;
-	b=R2veC8cL+GNss9f2IFFfNubnUAJr6pIJt1VdyocpU6Oq3xuV8IHij+chhL7jjPHSD0XL
-	 4puih06NqEAkiB8dkHIN8WJluMr7+ygJ6Qha7tkkmW+vWfOp46fErRlhoe8bsFv6J6tsq
-	 H7tQBjNqjj/g11hZjP6Brn8h6Qu6Zs83DCIs8mItnhqdNwMD6kQi4jz0IEro4jXpyNalY
-	 bkLRhtmIf6WEgmYmhDppbJvyBuHfKismKKlB1VWicQEI5kkiHm+y7AEbUKXlAEAO6OmjY
-	 JTM5J7niYNWS+8fOYO7l+F9oL7GyK8V8JkAMmiq8Z43Q9G89xe7tIlM2fxsyZIGIong==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793720106;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=ByBzsTjtu0Xeucw6XaWPjQk6GwvLDzsSeav4CJzelcI=;
+	b=ZmVO9XQd7dZshlLDSE7Wgak61zwbQZZ4fuFxmm3yoGhswQ3wOHurAGF9cLmbRItlTC9J
+	 88YYfNTOZ48AacN50WPWyVvjilFSJ0aI2S8GJuwQFtI/sgSA0Hc3dTK+4Eqgtd9DLJpmI
+	 GA77QqPyHLlqab1Pyp/UeAD1kuMcnMcqidoRmg+G8VFOHTbZNc+glWoY4F8wUWfzLJbfb
+	 TChb/4F5BVt3aXOUo8ocyGHY5iQkzyLm2Y4PU+Id10pZYveNsLMlM6bIe6o919dZ+RvOs
+	 6tKBEouE/HPcBaOqtbs8rDebLk12W5w/LkHTm8GM0/5VBiPW9E8PyzU4ggg3/qVCp5A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hcWXlv+9;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ghzLsjgy;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83970606A327;
-	Tue,  3 Nov 2026 15:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038B5606D826
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 15:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hcWXlv+9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841141F00A1A;
-	Tue,  3 Nov 2026 15:30:16 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ghzLsjgy
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54F681F000C1;
+	Tue,  3 Nov 2026 15:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793719821;
-	bh=wqMUZYGt8/JtXCLQ/OJktfmQmPOAqO+arF6Ph52aKFc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hcWXlv+9oWPyFioJIa6usTvwkrkRKDynR3Vu9DHd42MtZSKHdt3+cpP26KoV5K2g1
-	 vPRneIZHt5iRJwGZycjZcjBZH6qMHiW2oJmsJjEVZ0yEpfKxUALmWhHCJROFakvqUn
-	 VFiWDOTLaWLkbUw7LQpc4zPFC1iOFjeUhrMRpu4zjOT2yqum3gI/3a9RzRwEkl4J0X
-	 4aTlzW39ke1wCsEOWixGdIHETUhR9rx8sB+Cygb2pLOakzV68Dvd3QK4repYfU+W2T
-	 4k6JyxjwNYbDKQXjc5WmxqQ0aEIrtJlHbo64ODNt5wBwx9iIf+Nirl4xIVfteljJbS
-	 VmJv4U1hBhdZA==
-Message-ID: <2cd43496-dc97-470f-922a-65bcbbb40529@kernel.org>
-Date: Tue, 3 Nov 2026 16:30:13 +0100
+	s=k20260515; t=1793720105;
+	bh=ByBzsTjtu0Xeucw6XaWPjQk6GwvLDzsSeav4CJzelcI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ghzLsjgycrk6mRPELqXR7lVyRh8pNQT/LQATm48SuyJgVqTuSDO49MHnj84DgpcE4
+	 z9iE3pBrZcUNniSD7vGtmFotKWKeLd0IgO7dlLdVaFLojOtJ9V6ysRFp9rD/cu+xbF
+	 NB8GirfeMHji6Sph6Jwu0W5zCwNYk9I1DXikUcQ+HBrWiTdMqaMQG9TSqc3K8fc7fY
+	 FjRpSS5+6fhwiboNUUF7QrB+fYU+1f8QlozSuaZdR8F4lpbxIecKWxoG5wmywc+0GC
+	 k1gfxAB4TG2j2aGuvP1iRwkmkYwjGNBEuc22ias9VYp9J70vfQyC8pE4IqpDj14S49
+	 pDieX4QB76lqA==
+Subject: Re: [PATCH net v2] tun: bound the NAPI receive queue
+From: netdev-bot+sashiko@kernel.org
+To: antonio@mandelbit.com
+Cc: willemdebruijn.kernel@gmail.com, jasowangio@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org
+Date: Tue, 03 Nov 2026 15:35:04 +0000
+Message-ID: <179372010482.488856.5577526079290532497@kernel.org>
+In-Reply-To: <20261030152540.1409884-1-antonio@mandelbit.com>
+References: <20261030152540.1409884-1-antonio@mandelbit.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,155 +62,262 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net 00/15] Netfilter/IPVS fixes for net
-Content-Language: fr
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Paolo Abeni <pabeni@redhat.com>, netfilter-devel@vger.kernel.org,
- davem@davemloft.net, netdev@vger.kernel.org, kuba@kernel.org,
- edumazet@kernel.org, horms@kernel.org, fw@strlen.de, ja@ssi.bg
-References: <20261102005654.532438-1-pablo@netfilter.org>
- <b452b25b-37fd-48ab-a88c-feec6b82e9ec@redhat.com>
- <5dc1159d-e577-442f-a7b2-8d5dcc8cfb01@kernel.org>
- <aunlVk2Cn7ocgANE@chamomile> <aunmABdLpFILZvGt@chamomile>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
- YBNdx5Xl74NLSgx6y/1NiMQGuKeu+2BmtnkiGxBNanfXcnl4L4Lzz+iXBvvbtCbynnnqDDqU
- c7SPFMpMesgpcu1xFt0F6bcxE+0ojRtSCZ5HDElKlHJNYtD1uwY4UYVGWUGCF/+cY1YLmtfb
- WdNb/SFo+Mp0HItfBC12qtDIXYvbfNUGVnA5jXeWMEyYhSNktLnpDL2gBUCsdbkov5VjiOX7
- CRTkX0UgNWRjyFZwThaZADEvAOo12M5uSBk7h07yJ97gqvBtcx45IsJwfUJE4hy8qZqsA62A
- nTRflBvp647IXAiCcwWsEgE5AXKwA3aL6dcpVR17JXJ6nwHHnslVi8WesiqzUI9sbO/hXeXw
- TDSB+YhErbNOxvHqCzZEnGAAFf6ges26fRVyuU119AzO40sjdLV0l6LE7GshddyazWZf0iac
- nEhX9NKxGnuhMu5SXmo2poIQttJuYAvTVUNwQVEx/0yY5xmiuyqvXa+XT7NKJkOZSiAPlNt6
- VffjgOP62S7M9wDShUghN3F7CPOrrRsOHWO/l6I/qJdUMW+MHSFYPfYiFXoLUZyPvNVCYSgs
- 3oQaFhHapq1f345XBtfG3fOYp1K2wTXd4ThFraTLl8PHxCn4ywARAQABzSRNYXR0aGlldSBC
- YWVydHMgPG1hdHR0YmVAa2VybmVsLm9yZz7CwZEEEwEIADsCGwMFCwkIBwIGFQoJCAsCBBYC
- AwECHgECF4AWIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZUDpDAIZAQAKCRD2t4JPQmmgcz33
- EACjROM3nj9FGclR5AlyPUbAq/txEX7E0EFQCDtdLPrjBcLAoaYJIQUV8IDCcPjZMJy2ADp7
- /zSwYba2rE2C9vRgjXZJNt21mySvKnnkPbNQGkNRl3TZAinO1Ddq3fp2c/GmYaW1NWFSfOmw
- MvB5CJaN0UK5l0/drnaA6Hxsu62V5UnpvxWgexqDuo0wfpEeP1PEqMNzyiVPvJ8bJxgM8qoC
- cpXLp1Rq/jq7pbUycY8GeYw2j+FVZJHlhL0w0Zm9CFHThHxRAm1tsIPc+oTorx7haXP+nN0J
- iqBXVAxLK2KxrHtMygim50xk2QpUotWYfZpRRv8dMygEPIB3f1Vi5JMwP4M47NZNdpqVkHrm
- jvcNuLfDgf/vqUvuXs2eA2/BkIHcOuAAbsvreX1WX1rTHmx5ud3OhsWQQRVL2rt+0p1DpROI
- 3Ob8F78W5rKr4HYvjX2Inpy3WahAm7FzUY184OyfPO/2zadKCqg8n01mWA9PXxs84bFEV2mP
- VzC5j6K8U3RNA6cb9bpE5bzXut6T2gxj6j+7TsgMQFhbyH/tZgpDjWvAiPZHb3sV29t8XaOF
- BwzqiI2AEkiWMySiHwCCMsIH9WUH7r7vpwROko89Tk+InpEbiphPjd7qAkyJ+tNIEWd1+MlX
- ZPtOaFLVHhLQ3PLFLkrU3+Yi3tXqpvLE3gO3LM7BTQRV4/npARAA5+u/Sx1n9anIqcgHpA7l
- 5SUCP1e/qF7n5DK8LiM10gYglgY0XHOBi0S7vHppH8hrtpizx+7t5DBdPJgVtR6SilyK0/mp
- 9nWHDhc9rwU3KmHYgFFsnX58eEmZxz2qsIY8juFor5r7kpcM5dRR9aB+HjlOOJJgyDxcJTwM
- 1ey4L/79P72wuXRhMibN14SX6TZzf+/XIOrM6TsULVJEIv1+NdczQbs6pBTpEK/G2apME7vf
- mjTsZU26Ezn+LDMX16lHTmIJi7Hlh7eifCGGM+g/AlDV6aWKFS+sBbwy+YoS0Zc3Yz8zrdbi
- Kzn3kbKd+99//mysSVsHaekQYyVvO0KD2KPKBs1S/ImrBb6XecqxGy/y/3HWHdngGEY2v2IP
- Qox7mAPznyKyXEfG+0rrVseZSEssKmY01IsgwwbmN9ZcqUKYNhjv67WMX7tNwiVbSrGLZoqf
- Xlgw4aAdnIMQyTW8nE6hH/Iwqay4S2str4HZtWwyWLitk7N+e+vxuK5qto4AxtB7VdimvKUs
- x6kQO5F3YWcC3vCXCgPwyV8133+fIR2L81R1L1q3swaEuh95vWj6iskxeNWSTyFAVKYYVskG
- V+OTtB71P1XCnb6AJCW9cKpC25+zxQqD2Zy0dK3u2RuKErajKBa/YWzuSaKAOkneFxG3LJIv
- Hl7iqPF+JDCjB5sAEQEAAcLBXwQYAQIACQUCVeP56QIbDAAKCRD2t4JPQmmgc5VnD/9YgbCr
- HR1FbMbm7td54UrYvZV/i7m3dIQNXK2e+Cbv5PXf19ce3XluaE+wA8D+vnIW5mbAAiojt3Mb
- 6p0WJS3QzbObzHNgAp3zy/L4lXwc6WW5vnpWAzqXFHP8D9PTpqvBALbXqL06smP47JqbyQxj
- Xf7D2rrPeIqbYmVY9da1KzMOVf3gReazYa89zZSdVkMojfWsbq05zwYU+SCWS3NiyF6QghbW
- voxbFwX1i/0xRwJiX9NNbRj1huVKQuS4W7rbWA87TrVQPXUAdkyd7FRYICNW+0gddysIwPoa
- KrLfx3Ba6Rpx0JznbrVOtXlihjl4KV8mtOPjYDY9u+8x412xXnlGl6AC4HLu2F3ECkamY4G6
- UxejX+E6vW6Xe4n7H+rEX5UFgPRdYkS1TA/X3nMen9bouxNsvIJv7C6adZmMHqu/2azX7S7I
- vrxxySzOw9GxjoVTuzWMKWpDGP8n71IFeOot8JuPZtJ8omz+DZel+WCNZMVdVNLPOd5frqOv
- mpz0VhFAlNTjU1Vy0CnuxX3AM51J8dpdNyG0S8rADh6C8AKCDOfUstpq28/6oTaQv7QZdge0
- JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <aunmABdLpFILZvGt@chamomile>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-Hi Pablo,
+Thank you for your contribution! Sashiko AI review found 6 potential
+issue(s) to consider.
 
-On 03/11/2026 14:47, Pablo Neira Ayuso wrote:
-> On Tue, Nov 03, 2026 at 02:44:57PM +0100, Pablo Neira Ayuso wrote:
->> On Tue, Nov 03, 2026 at 01:27:30PM +0100, Matthieu Baerts wrote:
->>> Hi Paolo, Pablo,
->>>
->>> On 03/11/2026 13:04, Paolo Abeni wrote:
->>>> On 11/2/26 01:56, Pablo Neira Ayuso wrote:
->>>>> Hi,
->>>>>
->>>>> The following batch contains Netfilter/IPVS fixes for net:
->>>>>
->>>>> 1) Add recursion count to nf_reject infrastructure to prevent stack
->>>>>     overflow, from Fernando F. Mancera.
->>>>>
->>>>> 2) Address a infinite loop in RCU list traversal with the TWOS IPVS
->>>>>     scheduler, from Darong Lu and Julian Anastasov.
->>>>>
->>>>> 3) Use kfree_rcu() to release IPVS parent application to fix UaF,
->>>>>     from Chengfeng Ye.
->>>>>
->>>>> 4) Fix UaF in IPVS netns removal path due to releasing per-net protocol
->>>>>     data too early, from Chengfeng Ye.
->>>>>
->>>>> 5) Fix unbounded growth of stale, unmatchable IPVS connection entries,
->>>>>     from Julian Anastasov.
->>>>>
->>>>> 6) Restrict maximum master conntrack chain depth in ctnetlink,
->>>>>     from Florian Westphal.
->>>>>
->>>>> 7) Preserve recursion count on nfqueue reinjection, from Zihan Xi.
->>>>>
->>>>> 8) Restore GRE timeout in the flowtable, otherwise, WARN_ON_ONCE()
->>>>>     is reachable, from Michail Andreas Michalopoulos.
->>>>>
->>>>> 9) Check non-null gc transaction in nft_rbtree before queuing it for
->>>>>     processing, from Xingyuan Mo.
->>>>>
->>>>> 10) Replace WARN_ON_ONCE() by DEBUG_NET_WARN_ON_ONCE() in
->>>>>      nf_conntrack_bridge which is reachable if the protocol of the tag
->>>>>      of a frame differs from the vlan_protocol of the bridge.
->>>>>      From Laveesh Bansal.
->>>>>
->>>>> 11) Check x_tables target name is non-null before accessing it when
->>>>>      building a new table, from Fernando F. Mancera.
->>>>>
->>>>> 12) Fix out-of-bound memory read in nf_conntrack_sip, from
->>>>>      Joas Antonio Dos Santos.
->>>>>
->>>>> 13) Fix a memleak in nf_tables hardware offload when double deleting
->>>>>      the same rule, in the same batch.
->>>>>
->>>>> 14) Use a mutex in xt_recent netns exit path instead of spinlock,
->>>>>      since proc unregistration might sleep. From Cen Zhang.
->>>>>
->>>>> 15) Zero the nf_nat_range2 struct before filling it up, to avoid
->>>>>      using stale uninitialized stack data to configure NAT with
->>>>>      an esoteric NAT flags combination. From Florian Westphal.
->>>>>
->>>>> Please, pull these changes from:
->>>>>
->>>>>    git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git
->>>>> nf-26-11-02
->>>> I'm sorry, but something went very wrong on the nipa side: the tools did
->>>> not pick this PR. Do you mind repost it verbatim?
->>>
->>> It looks like the patches have not been tested, because of the kdoc
->>> issue on patch 6/15:
->>>
->>> https://netdev-ctrl.bots.linux.dev/logview.html?f=/logs/build/1198360/14931104/kdoc/stdout
->>
->> I routinely run checkpath.pl, I will re-check what happened here.
-> 
-> Well, here I have a script that contains checkpatch.pl and the
-> following call as well:
-> 
-> $ scripts/kernel-doc -none net/netfilter/nf_conntrack_expect.c
-> 
-> but it shows nothing here.
+Critical: 0 · High: 2 · Medium: 3 · Low: 1
 
-NIPA uses "-Wall". With it, we can see the issue:
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-  $ scripts/kernel-doc -Wall -none net/netfilter/nf_conntrack_expect.c
-  Warning: net/netfilter/nf_conntrack_expect.c:311 No description found for return value of 'nf_ct_expect_alloc'
-  Warning: net/netfilter/nf_conntrack_expect.c:311 No description found for return value of 'nf_ct_expect_alloc'
+- [High] The new limit does not hold while a NAPI poll is running.
+- [High] Incomplete fix: tun_xdp_one() also adds to the NAPI queue and
+  has no limit.
+- [Medium] The new early drop can leave a tun NAPI queue stuck for good.
+- [Medium] The commit message says "The sendmsg() path, whose callers
+  pass zerocopy buffers, is left alone", but the code does not do that.
+- [Medium] The capacity check in tun_get_user() is lockless (tun.c:1865)
+  and is not repeated under queue->lock before __skb_queue_tail()…
+- [Low] The new comment says the queue is bounded 'like the per-CPU
+  backlog', but the comparison differs by one.
 
-(And with -Werror, the script returns a non-zero RC code.)
+--
 
-Cheers,
-Matt
+tun: bound the NAPI receive queue
 
+This patch adds a check to tun_get_user() for IFF_NAPI tun queues. When
+sk_write_queue already holds netdev_max_backlog skbs, newly written
+packets are dropped before allocation and counted as rx_dropped. The aim
+is to stop an unprivileged user from growing the NAPI queue until the
+system runs out of memory.
+
+> Drop packets written while netdev_max_backlog of them are queued,
+> before allocating them, and count them as rx_dropped. The sendmsg()
+> path, whose callers pass zerocopy buffers, is left alone.
+
+[Severity: Medium]
+Does the code match this description? The exemption depends only on
+!msg_control, and tun_sendmsg() passes:
+
+	ret = tun_get_user(tun, tfile, ctl ? ctl->ptr : NULL, &m->msg_iter,
+
+So every sendmsg() without a control message reaches the new drop. That
+includes single-packet sends from handle_tx_copy() in vhost-net, and
+non-zcopy packets from handle_tx_zerocopy(). Both set
+msg.msg_control = NULL, and neither passes zerocopy buffers.
+
+Only TUN_MSG_UBUF callers are actually exempt. The batched TUN_MSG_PTR
+case gets no limit at all (see below).
+
+These vhost-net sends are now dropped silently. tun_get_user() still
+returns the full length, so vhost treats them as sent.
+
+Could the commit message say which callers are actually affected?
+
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index dcec7311e6011..6e9ce707a2f9c 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
+
+[ ... ]
+
+> @@ -1856,6 +1857,17 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+>  			zerocopy = true;
+>  	}
+>  
+> +	/* In NAPI mode packets are queued here and processed by the NAPI
+> +	 * poll, possibly in a kthread or ksoftirqd. Bound that queue like
+> +	 * the per-CPU backlog, and drop before allocating and copying.
+> +	 */
+> +	if (tfile->napi_enabled && !frags && !msg_control &&
+> +	    unlikely(skb_queue_len_lockless(&tfile->sk.sk_write_queue) >=
+> +		     READ_ONCE(net_hotdata.max_backlog))) {
+
+[Severity: High]
+Does this check still bound the queue while a NAPI poll is running?
+
+Before processing, tun_napi_receive() moves the whole sk_write_queue onto
+an on-stack list, which resets qlen to 0:
+
+drivers/net/tun.c:tun_napi_receive() {
+    ...
+	spin_lock(&queue->lock);
+	skb_queue_splice_tail_init(queue, &process_queue);
+	spin_unlock(&queue->lock);
+
+	while (received < budget && (skb = __skb_dequeue(&process_queue))) {
+		napi_gro_receive(napi, skb);
+		++received;
+	}
+
+	if (!skb_queue_empty(&process_queue)) {
+		spin_lock(&queue->lock);
+		skb_queue_splice(&process_queue, queue);
+		spin_unlock(&queue->lock);
+	}
+    ...
+}
+
+While the poll works through its budget of 64 skbs, writers on other
+CPUs see qlen counting up from 0. They can add up to netdev_max_backlog
+new skbs (call that W). If the poll started with Q skbs, qlen after the
+splice back is (Q - 64) + W.
+
+The poll used its full budget, so it is repolled right away and the
+queue is emptied onto the private list again. Can each pass add up to
+max_backlog - 64 skbs, so the total keeps growing whenever the writer is
+faster than the poll?
+
+That is the case the commit message describes. The skbs are still not
+charged to the writer's memcg, so the global OOM looks reachable. The
+user can slow the receive path from its own netns, for example by
+turning off GRO or adding nft/tc ingress rules.
+
+Could the fix count the skbs the poll holds privately, for example with
+an in-flight counter? Another option is to have tun_napi_receive()
+dequeue only budget skbs, instead of relying on sk_write_queue.qlen
+alone.
+
+[Severity: Medium]
+Can concurrent writers push the queue past the limit here?
+
+The check is lockless, and it is not repeated under queue->lock before
+the enqueue later in tun_get_user():
+
+		spin_lock_bh(&queue->lock);
+		...
+		__skb_queue_tail(queue, skb);
+		queue_len = skb_queue_len(queue);
+		spin_unlock(&queue->lock);
+
+tun_chr_write_iter() takes no per-file lock. Several threads writing to
+the same tun fd can all see qlen < max_backlog, then each allocate, copy
+and enqueue a packet. The queue can then go over the limit by up to the
+number of concurrent writers, and each of those skbs can be large.
+
+enqueue_to_backlog(), which the comment names as the model, checks
+again under the backlog lock:
+
+net/core/dev.c:enqueue_to_backlog() {
+    ...
+	qlen = skb_queue_len_lockless(&sd->input_pkt_queue);
+	max_backlog = READ_ONCE(net_hotdata.max_backlog);
+	if (unlikely(qlen > max_backlog) ||
+	    skb_flow_limit(skb, qlen, max_backlog))
+		goto cpu_backlog_drop;
+	backlog_lock_irq_save(sd, &flags);
+	qlen = skb_queue_len(&sd->input_pkt_queue);
+	if (likely(qlen <= max_backlog)) {
+    ...
+}
+
+Should tun_get_user() check the limit again under queue->lock before
+__skb_queue_tail()?
+
+[Severity: Low]
+The comment says the queue is bounded like the per-CPU backlog, but this
+check uses >=. enqueue_to_backlog() above only drops when
+qlen > max_backlog, and gro_cells_receive() also uses >:
+
+	if (skb_queue_len(&cell->napi_skbs) > READ_ONCE(net_hotdata.max_backlog)) {
+
+So the tun queue holds one packet fewer than the per-CPU backlog. With
+net.core.netdev_max_backlog set to 0, which proc_dointvec accepts, the
+per-CPU backlog and gro_cells still let one packet through at a time.
+Here, every write() to an IFF_NAPI tun queue would be dropped.
+
+Is >= intended, or should this use > like the code the comment refers
+to?
+
+[Severity: High]
+Does tun_xdp_one() also need this limit? It adds to the same NAPI queue
+without checking its length:
+
+drivers/net/tun.c:tun_xdp_one() {
+    ...
+	if (tfile->napi_enabled) {
+		queue = &tfile->sk.sk_write_queue;
+		spin_lock(&queue->lock);
+		...
+		__skb_queue_tail(queue, skb);
+		spin_unlock(&queue->lock);
+		ret = 1;
+    ...
+}
+
+For TUN_MSG_PTR batches, tun_sendmsg() calls it in a loop and then
+schedules NAPI, without going through tun_get_user():
+
+		for (i = 0; i < n; i++) {
+			xdp = &((struct xdp_buff *)ctl->ptr)[i];
+			ret = tun_xdp_one(tun, tfile, xdp, &flush, &tpage);
+			if (ret > 0)
+				queued += ret;
+		}
+		...
+		if (tfile->napi_enabled && queued > 0)
+			napi_schedule(&tfile->napi);
+
+The commit message says sendmsg() is left alone because its callers
+pass zerocopy buffers. For TUN_MSG_PTR that isn't the case:
+vhost_net_build_xdp() copies guest data into page frags.
+
+vhost-net takes this batched path whenever sock_can_batch is true:
+
+drivers/vhost/net.c:handle_tx_copy() {
+    ...
+	bool sock_can_batch = (sock->sk->sk_sndbuf == INT_MAX);
+    ...
+}
+
+INT_MAX is tun's default sndbuf.
+
+/dev/vhost-net needs no capability, and common udev rules give it the
+same mode as the KVM device, often 0666. A user in its own userns/netns
+could then do this:
+
+- create an IFF_NAPI tap
+- attach it with VHOST_NET_SET_BACKEND
+- feed small packets through the TX ring
+
+Can sk_write_queue then grow without bound through this path while the
+threaded NAPI poll falls behind?
+
+> +		dev_core_stats_rx_dropped_inc(tun->dev);
+> +		return total_len;
+
+[Severity: Medium]
+Can this early return leave the queue stuck with NAPI never scheduled?
+
+On this path NAPI is only kicked after an enqueue:
+
+		if (!more || queue_len > NAPI_POLL_WEIGHT)
+			napi_schedule(&tfile->napi);
+
+netdev_max_backlog is a plain proc_dointvec with no lower bound, so
+values of 64 or less are accepted. With such a value, queue_len can
+never exceed NAPI_POLL_WEIGHT. A run of MSG_MORE packets can then fill
+the queue to max_backlog without napi_schedule() ever being called.
+
+>From then on, every packet takes this early return, including the !more
+packet that ends the batch and would have kicked NAPI. Nothing else
+drains sk_write_queue on this path. Would RX on this queue then stay
+dead until detach, with every packet counted as rx_dropped?
+
+vhost-net reaches tun_get_user() with msg_control == NULL and MSG_MORE
+set in two places: handle_tx_copy() when sndbuf != INT_MAX, and
+handle_tx_zerocopy() for non-zcopy packets. Before this patch, the
+!more packet was always queued and scheduled NAPI.
+
+> +	}
+> +
+>  	if (!frags && tun_can_build_skb(tun, tfile, len, noblock, zerocopy)) {
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261030152540.1409884-1-antonio%40mandelbit.com
