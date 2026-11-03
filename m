@@ -1,72 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.8
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793673480;
-	b=XE1QGRCeLPFouHCOu0j9n20Veh3nD3pgQfc6YNqCioK9cbUB/XRaATW+7+Uhe6T+iTu+
-	 Wh21CkDp2PJ80I3El/KZprWk9iraSLzSslIf7JL9JXW7b8nZic2mR+JVkS0EL23oxWyfV
-	 IVezKO9QMqPNZhdTs+aUbbJ8haSp+iClMRHge2Vfd7AjaTZo4sWiZamskuctA0cnolAAw
-	 BRVGN2JMsqaAn0NSc0SSB+uYr6eeRa1uZXAes4kXAmDJg80oBkprIGz1EkemIfWF7Y4Jz
-	 iFAC/51bNi82RrYibADbGCBsRqMj2GQijJcghv04oly2U5WTQ6R355CEzM0ILpuGE9Q==
+	t=1793673535;
+	b=4gTfWUcjY7wiC74Lt34XpK31MYXGZwW9DWW1UBX8QtSP3ISCN9KA+LfH5aqTK0jxv5WK
+	 YizEywQFPyw/UfUhyzzQvWp4cfxL3+JqCnm5tOvD6jpg6Df0c3y6RVNUwmZMg8albwHS7
+	 ZjqgR/YKmToMUpx5Sw3QT65fFPF2R+UxFXrF8MHYhRg5Kvga1nTyyW56sqf8XnTV7kr6r
+	 NPgQn/WYUTJalYAp+f0qG9xDlEN/4CaldGPObdN7SE8n9Evh6I9Sd8M0dGPmVUQgY3IwG
+	 c/nWzWNUOnvD3fOOgpg5C5Xf47OjUuHKrDn/v8dLfSACvWzUu38TIvWTQKUUZzg7IQQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793673480;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=0sRD0l57hfFVgwi/g0tAS1yR0jpVl0PruXeq1WJE2ek=;
-	b=qwtTUwB/6tgOy1YFXdWc8YADk9Gz4QZ/E7ZgbkBGU//OfObxnQo0CeNkrPfaTu2FWlSX
-	 YoNbOfv7JejsJ/05u7LVV56M/OP3w9pCqAWcgx7xoHPr60FJ4dSujPeI8RFRtM468pSkS
-	 pw7k36oDWgSbEZLaVyGNRyASPCmoX5bLi0F2/VN4gOsd9mGD1bNrY9tTIiRgz+Rf/xJwK
-	 wtmSjVGNhdd2y27mUwZAjgPFnPbVzoL4IcB+vUdrKQzpzq0rPmosfabywnYeLh2zB1iBZ
-	 zXDknZA8HxYzaGLWiAJ8z7Ek10Qta2sCsG6j4DK7EKnWIyfWqMRe595O+HzkIrwSbRg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793673535;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
+	bh=TN2SY+XQuLAGFjbX+RbezYmnQEjGJgVOvTaz5eosea4=;
+	b=Kkavp8s1603zDX/6TPX4jwWZ5ScWQL3lAeD/6r8eEMgk8u32/2YH9qikqJkV0BUe0dG7
+	 SccTuD2MeEuw7T3LKAUfS1DZ59hT4F/umvVDPSyRCKLSo2IZ6/qOIjTSw/70U4EXAJHkv
+	 g5xpYOG8zeOL4jGHEOiltpQCGys4z9yPN9ugC9m1prT6Sd5/vjIOdf3vvCj3r1sAyfYJr
+	 nXI41c7E8mDkSABNZ3IQxXScPVmMnEtwV1jw0uKtlgLLLgd46VrFLvsXvLccT1yTcU8lj
+	 ZylVsmgobF+90bJ9P2O7LNPWN7Rb3u8ysL5ea6SQodlikipwopdmT2y3/csY+41hz0A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=BPouTgqF;
-	arc=none smtp.remote-ip=95.215.58.8
-Received: from mta1.migadu.com (out-8.mta1.migadu.com [95.215.58.8])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=NRcYpaC1;
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E8B606A339
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 02:37:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8E8B606A339
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 3B7CE606A327;
+	Tue,  3 Nov 2026 02:38:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B7CE606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=BPouTgqF
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=YB1TgEsc5rIC0KVTq3a2dIhsapr6DQo3zVEdWup7xnE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793673476; v=1; x=1794278276;
- b=BPouTgqFgshjAvhj6sxurvqh1w/QHAmPKM+joIfs4B3j7ii59pHmukgTYDqDVQ/2GHfqzxAO
- qS3cX3U0tkj3jplgCBeU42e+Z7ekg+mAPd2hm8c/SKoaC3ikbaNc5mbpeRJDhq3XFJCyWkYrtZa
- +UnphlWtrr6ojt2ZNHRm6w+4=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 35c4c235a93bf988;
-	Tue, 03 Nov 2026 02:37:56 +0000
-X-Mizu-Trace-ID: 35c4c235a93bf988
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 3 Nov 2026 10:37:34 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: "David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=NRcYpaC1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1793673531;
+	bh=TN2SY+XQuLAGFjbX+RbezYmnQEjGJgVOvTaz5eosea4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NRcYpaC1GOTisuAxhZ6NNwgbD6DtvFqxJcv3GaGqve515uCmdumullbCdwNS4oRGF
+	 lnGEjQovZ+8jNRT0cyumU8cch+D+Kv4LS7LeZFQcLOhcjuIAo2NQeWPlwv8JHcC7IE
+	 Ch7px3vOCEvAMtHoxSQVRs/3N1PwA6v3qqQOwpX4Jm5qur0kWIGxljAXJRNSyT0Xza
+	 kvgTfuMmtdbpdUWcCc2zoxpxOogV5N54m5t2YaFQkwiBOz/4gojgRQaF9/DdyPLQ8B
+	 ATvneEPND4QJGNtnLcZGk9Xwm32spmalXHt7DNxa5PRTZY58YhTIptrysilNCIpUiC
+	 lNBbZMWWYWhlw==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 5F94460054;
+	Tue,  3 Nov 2026 03:38:51 +0100 (CET)
+Date: Tue, 3 Nov 2026 03:38:48 +0100
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Joas Antonio <joasantonio108@gmail.com>
+Cc: Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>, Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, bpf@vger.kernel.org,
-	David Lebrun <david.lebrun@uclouvain.be>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Mathieu Xhonneux <m.xhonneux@gmail.com>,
-	David Lebrun <dlebrun@google.com>,
-	Stefano Salsano <stefano.salsano@uniroma2.it>,
-	Andrea Mayer <andrea@common-net.org>
-Subject: Re: [PATCH net 5/6] seg6: account for the MAC header in skb checksum
- on L2 encapsulation
-Message-ID: <aulI7pl1oWRKzXgt@fedora>
-References: <20261031225033.64-1-andrea.mayer@uniroma2.it>
- <20261031225033.64-6-andrea.mayer@uniroma2.it>
+	Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH nf] netfilter: nft_set_rbtree: do not pair an expired
+ start with another interval's end
+Message-ID: <aulJOKf7dIxP9mJU@chamomile>
+References: <20261031-b4-nft-rbtree-gc-v1-1-51d087c187a6@gmail.com>
+ <auYpCzdrOsoWr84Z@chamomile>
+ <auYqSpBFtC0nTDDd@chamomile>
+ <CAOCBhwHSe7M39Bq6mYuai=gLcq4nfTC2Z5+nm55EUJmpFmRsQg@mail.gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,60 +72,60 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261031225033.64-6-andrea.mayer@uniroma2.it>
+In-Reply-To: <CAOCBhwHSe7M39Bq6mYuai=gLcq4nfTC2Z5+nm55EUJmpFmRsQg@mail.gmail.com>
 
-Hi Andrea,
-On Sat, Oct 31, 2026 at 11:50:32PM +0100, Andrea Mayer wrote:
-> In L2ENCAP and L2ENCAP_RED mode, seg6_do_srh() puts the MAC header back
-> in front of the frame with skb_push(), without adding it to skb->csum.
-> The encapsulation then calls skb_postpush_rcsum() only for the outer
-> headers. With CHECKSUM_COMPLETE the MAC header is missing from
-> skb->csum, which no longer covers the whole packet as required.
+On Sat, Oct 31, 2026 at 02:55:55PM -0300, Joas Antonio wrote:
+> Hi Pablo,
 > 
-> For a forwarded packet, ip6_forward() sets ip_summed to CHECKSUM_NONE with
-> skb_forward_csum(), and End.DX2 does the same before sending the frame.
-> When the packet is delivered on the same node, a raw socket with
-> IPV6_CHECKSUM still reads skb->csum. With skb->csum computed by the device,
-> the kernel can then log a "hw csum failure", as if the device had computed
-> a wrong skb->csum.
+> Sorry, the description was too terse. Answering both mails here.
 > 
-> Use skb_push_rcsum(), which also calls skb_postpush_rcsum() for the MAC
-> header.
+> There is no memory safety issue, and I should have said so explicitly.
+> It is a correctness problem: after GC the set no longer holds what was
+> committed, and the packet path matches keys that were never added.
 > 
-> Found by manual code inspection of the skb->csum updates in the SRv6 code,
-> and observed in a VM without kernel changes or error injection: with
-> skb->csum computed by a tc ct action, a BPF tracing program on
-> ip6_forward() shows skb->csum missing the MAC header. With this patch,
-> skb->csum covers it. Also tested against the srv6 selftests, and with a
-> ConnectX-6 Lx NIC (mlx5) that provides CHECKSUM_COMPLETE.
+> Exact sequence, raw nfnetlink. The set has NFT_SET_INTERVAL |
+> NFT_SET_TIMEOUT, an ipv4_addr key, no default timeout, and
+> NFTA_SET_GC_INTERVAL = 3600000, so the commit-time scan does not run and
+> only the insertion path is involved.
 > 
-> Fixes: 38ee7f2d4756 ("ipv6: sr: add support for encapsulation of L2 frames")
-> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-> ---
->  net/ipv6/seg6_iptunnel.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Batch 1 (NEWSETELEM): start 10 with a 50ms timeout, end 20 with no
+> timeout, start 30 and end 40 with no timeout. Only start 10 expires;
+> [30,40) is permanent.
 > 
-> diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-> index 0d39a38a5dd2..3821d8e1409e 100644
-> --- a/net/ipv6/seg6_iptunnel.c
-> +++ b/net/ipv6/seg6_iptunnel.c
-> @@ -456,7 +456,7 @@ static int seg6_do_srh(struct sk_buff *skb, struct dst_entry *cache_dst)
->  			return err;
->  
->  		skb_mac_header_rebuild(skb);
-> -		skb_push(skb, skb->mac_len);
-> +		skb_push_rcsum(skb, skb->mac_len);
->  
->  		if (tinfo->mode == SEG6_IPTUN_MODE_L2ENCAP)
->  			err = __seg6_do_srh_encap(skb, tinfo->srh,
-> -- 
-> 2.43.0
+> Wait 200ms.
 > 
+> Batch 2: DELSETELEM of end 20 only, then NEWSETELEM of [12,13). This is
+> not something nft(8) generates, but the kernel accepts it. Inserting 12
+> runs nft_rbtree_gc_elem() on the expired start 10. The walk skips end
+> 20 because it is being deleted in this transaction, passes start 30 and
+> takes end 40 as the end of 10. 10 and 40 are removed, and start 30 is
+> left without an end.
+> 
+> At commit, nft_rbtree_commit() turns 30 into an interval with ->from =
+> 30 and ->to = NULL, and nft_array_lookup_cmp() treats ->to == NULL as
+> open-ended. So nft_rbtree_lookup() matches every key >= 30, while
+> userspace believes the set holds only [30,40). Reading back with
+> GETSETELEM, which uses the same array: without the patch 45 is found,
+> end 40 is gone and deleting [30,40) fails with ENOENT; with the patch
+> 45 is not found, 40 is present and the delete succeeds.
+> 
+> To be fair about the limits: the only trigger I have is crafted
+> nfnetlink from whoever already owns the ruleset (CAP_NET_ADMIN in that
+> netns), so it does not cross a privilege boundary, and I have not found
+> an nft(8) command sequence that reaches the insertion-path case.
 
-Should we put the skb_push_rcsum() inside of __seg6_do_srh_encap() and
-seg6_do_srh_encap_red()? They all do skb_mac_header_rebuild() again.
+Ok, then you confirm such sequence makes no sense for nft(8) command.
 
-Thanks
-Hangbin
+> The commit-path case (nft_rbtree_gc_scan() not clearing rbe_end)
+> uses a different sequence without the lone end delete; I can send it
+> in the same detail if useful.
+> 
+> If you consider sets built from such batches unsupported, I think the
+> better fix is to reject deleting a lone interval end element, and I can
+> send that instead; or drop this if it is not worth the churn.
+
+While it would be good if this interface could be tighten in the
+future to reject nonsense, I think it is not worth the churn at this
+stage.
