@@ -1,134 +1,113 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=192.198.163.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1793709401;
-	b=ADoxxsIrb/qH2rPiOPSRlg2KF7aCMyu8ZqvDVpvLi3dVOERpVBOIIuPuXNHSSaCPpp6i
-	 xICblKjH3vGCAouSaq6bxF+xBwMOHYsuLz2h0RgMo9+q5WVqT2SvqwOzD2vwNUNBd13fB
-	 ODImtK2r6pHyYHL5T8Q+NnJHxOABF6Tu/LCjrEzS5euCIS3wcsyDk4Rap/xKxvZpZ/HNU
-	 jPhf7bebx9fmP2k4+WWZgQUpCt317VadmdgnHpbp7Mi/y0+QtBAoa7epOemPk6Ba5cCK+
-	 jY75t4ENrlrYdJgwpz6f4FiVzMvQ+h4o3mUiFPKLkZaJErL2TpC/vsp5DIiLkFNLDrQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793709401;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
-	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
-	 References:From:Content-Language:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-LD-Processed:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
-	bh=xMKtNoJXoBpcWDkQbpJgH7N+X5jzQ8IFV2Vm72XdwVQ=;
-	b=jAp2C/BLOk152SnHsIxgOy+aSVcXIx2eJ+v1kFVKNQq7Asewkl/uQ3X4760MrxhnZyST
-	 BtiD5Uu63bOVxMP6VNu/BlgUvzaV9EEIiQrW6Fe2rjPHUpJ81ffKXU4LlL9+jUZoMbbqx
-	 5hru8P5bvu512N9ksx66SSW/cCHvt2eBbcVOohWE7i8n2B8KBRH0wZTSN3PuCyBfdd+kX
-	 vlma1ZF1KSBAE9R8TGvu6TOYayILHwO9Ol6Jppl2luML6MBRh3P58nnxAkgNVlZW3jD4S
-	 hOQ2R3D+UxdM92AOXT7Hbdb1NHgpdq6gziJIgLmywhhXrPBC9MVFwx59huWjh+gBEFg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OcaObfbJ;
-	arc=fail smtp.remote-ip=192.198.163.13
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.97
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793709427;
+	b=enqk/BkJom8TWqnhEEZuKMCRy6wk6j0dJbEx8oRbFlB3I3FyTuPB0QB+q24vh9KIxoGG
+	 4fiDezp0ilJtcTNM5Pp34jGQciejEFGis8+0tblyf8mm6WwxfB8YuBbpCxo6tn78BSVil
+	 aT4vBS2fAIduE8YpQfAaEebmpE9n7cxB092hnOdzL87PyRT+HL7PHKW9+NPLnq3ZgEZZ2
+	 1tNfA6ZAMy2dassh177zbgS0h9xwS19o9TAReNgiRklHIKYqPONec1ezLWZfex3gbNvOc
+	 c4jc/PipTeVJR2pdzhnsclPyiW3VLO5g0zbzZ5tW+C1jMdtGhJw1C1n/n6cTKRfrtUA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793709427;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
+	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
+	 DKIM-Signature:X-Received:X-Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-DetectorID-Processed;
+	bh=9yi6gOIzZud2vd+UmqWufIHcf5N7plfF2wRET9ypfz4=;
+	b=QqduoT4pNNtTtb148r89EAsD3H6yIctaCdhdcXfL37OqVKe+rjVDujo9CbgxmG30wyQJ
+	 FzBcuvIvHVj4am1x0LsuuX+BtPAWaVQ0aBPUfVaL4t3tHVQLffq8X5I1dsehxTeA7muZo
+	 XUFfh5gHJYf8bvMxA/kdkr543mcYDAvoHV9bXR5smpEIcy+/vdYn7f+YN9mEeaQoyqMcM
+	 6HSn+iDf093asCaLVcMZHiON5EnNrOwiujBmQ3n+HJkM9TGe++YL4Fndgk1VkloMsAjgb
+	 rMKPMS1e+eL8RgMR49mGnsYMwEg82CCMVHA3lE/f2JVJ8Os/IwedCkkjpjpHKIy3wUw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=broadcom.com;
+	spf=fail smtp.mailfrom=broadcom.com;
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=f0hXN4Rb;
+	arc=none smtp.remote-ip=209.85.217.97
+Received: from mail-vs1-f97.google.com (mail-vs1-f97.google.com [209.85.217.97])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9739A606A326
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 12:36:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9739A606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0BB606A324
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 12:37:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F0BB606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OcaObfbJ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793709399; x=1825245399;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=oJUXDhIJdNUMEgWxh+qGitUMzbVDg7sP43RXdj0eu0s=;
-  b=OcaObfbJuR9LljRRQKvrzZaFgrb609OK6+szowwdyDx1W8NmDz7F7gMl
-   yfUiioMTXdHzgjHwG8if6KBRLwavUmUyFJ3JxNNKk+RrGuz6I5RuZB0Q+
-   eP2A1kxjSDOhak6HsOt9HPZvZXF+Voipq09WKPzKOxptWQhTpyO+GH+iU
-   UBG7GG/d+D4/b41FSIaXBd14LwmQweTn981gW1f/hvKcZA29Va27ieSmr
-   8LSUaWM/Ifj4N7YrZL1PbRkHO2b0xqdq5zRyv8lQeBzo24xoff9ahQg1n
-   NAMjkSu0j9Wb2vjxbCfbIBQsvYYADp+V29USwnEZXUNzGPzL1zvzH06VO
-   A==;
-X-CSE-ConnectionGUID: nJRa0vK+QcGi3FCfPWXb4g==
-X-CSE-MsgGUID: p5zNlR1vRtO5XiEdGWyK2A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2427540"
-X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
-   d="scan'208";a="2427540"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 04:36:38 -0800
-X-CSE-ConnectionGUID: vC2M9wJnTkOjIOkzJcvnQg==
-X-CSE-MsgGUID: uRvU4GNXQ8S40t9fRIgwEA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
-   d="scan'208";a="6950666"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 04:36:38 -0800
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Tue, 3 Nov 2026 04:36:37 -0800
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Tue, 3 Nov 2026 04:36:37 -0800
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.44) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Tue, 3 Nov 2026 04:36:37 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OljDKtI923axKXsxxVEs/gdsWh+sooHNcqElxGHPvHM0C+F7Pe7oNiwK3WJOjp5ZHKiAyneL0DZfcNFzYMr5sd5Yhtlff4lgjS/xMItyPrlMNZfF4ptJhfG3khh/BfX+BnbCDlqVJoT9Jc+GAx6L/lQiDw2I3SgfQnIA1kRoQX931GuyFWiBHxTssgvB0r/mx9YNdcF0K3nfpKwuY0Folbk816vsQAnkfN1DwGrd7Ve6r/cgiDcHFGPyQ/AuGC4vOvgxXp4l/s/Gkla6GwwjAsBvBkb8BJSHyfJ/Awfj8bcOB20TJzGC/KjTQLk18sDbAOo/0zsPElZKlbATLssuXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xMKtNoJXoBpcWDkQbpJgH7N+X5jzQ8IFV2Vm72XdwVQ=;
- b=wDp3KoxlHXlG3ltXuwcEN+XbkiyCFNq3DGV6zGsiWCfZxbd7SNnL6uQ6L1gXDF5hMt273+tS91WEJrcBqEYyDuAAsLMXr/ihCYzGoAYeQZERGrWAUQ5BD+4qw+rELj66dpjo1T4g4xTuBZbPU2u+w81Vph13Lo8nZJ6NH838v7zkb+GALMvaW74ykeGIdm50aKEahoTG+gOBjyMeNuO0zAxfI8bhghPk7PSrMW4Xkea8faQihbEGSdPdOSTpLsqp3GutJR3pPxN77iObWrYkoHDrwH6Dmq7hqEec8lsoXHPGOKBsPhQks5z837DHlIeeqhJaPhMUVTtEqHStZIdIgQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from LV3PR11MB8508.namprd11.prod.outlook.com (2603:10b6:408:1b4::8)
- by LV2PR11MB511473.namprd11.prod.outlook.com (2603:10b6:408:415::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Tue, 3 Nov 2026
- 12:36:30 +0000
-Received: from LV3PR11MB8508.namprd11.prod.outlook.com
- ([fe80::a1e8:1786:e5d1:8e51]) by LV3PR11MB8508.namprd11.prod.outlook.com
- ([fe80::a1e8:1786:e5d1:8e51%5]) with mapi id 15.21.0592.007; Tue, 3 Nov 2026
- 12:36:30 +0000
-Message-ID: <3a4b6204-fa1d-4052-a5ee-c0c056b0e3de@intel.com>
-Date: Tue, 3 Nov 2026 13:42:09 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-net 6/6] ice: register LAG event handler last in
- ice_init_lag()
-To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Oros, Petr"
-	<poros@redhat.com>, "intel-wired-lan@lists.osuosl.org"
-	<intel-wired-lan@lists.osuosl.org>, Sashiko <sashiko-bot@kernel.org>
-References: <20261102105346.30739-1-przemyslaw.kitszel@intel.com>
- <20261102105346.30739-7-przemyslaw.kitszel@intel.com>
- <CH3PR11MB566895166EFE8B499CA2AA74AFE5692@CH3PR11MB566895.namprd11.prod.outlook.com>
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Content-Language: en-US
-In-Reply-To: <CH3PR11MB566895166EFE8B499CA2AA74AFE5692@CH3PR11MB566895.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DU7P251CA0030.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:10:551::15) To LV3PR11MB8508.namprd11.prod.outlook.com
- (2603:10b6:408:1b4::8)
+	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=f0hXN4Rb
+Received: by mail-vs1-f97.google.com with SMTP id ada2fe7eead31-78fb1fb9508so446997137.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 04:37:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793709426; x=1794314226;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=9yi6gOIzZud2vd+UmqWufIHcf5N7plfF2wRET9ypfz4=;
+        b=rKFFx/qJkN8noVEE/I2rc/ZWkEAfGL/8QG9dQoRyloSTWu1a2qZyONxEXV5BAI9ukd
+         G/auShV2OQldf/rSLPe89GonbSeScNEatc4dEAMWIpwrQ6IDLYUsuZH8ymbWwrDXbrXZ
+         6n8CD4irks1+rP9EPlpBf6FSVzuQeiA+Cf/mLJHKXTjk6foUoY0D97scfWqmjaFFlkdL
+         nzZoIbotrcnWjrRbkQD7JulLcwzMYFYtDzXqIHfed4+8ZuLwhWJGfMcbzrTCdSPHbX5P
+         RqWA4mLxXCWK/8cE4k9nY4c3BtSmEX9fbsL4XMaD5wBcUfnlGW0v5EmAKxTPcmxhZLoJ
+         qokw==
+X-Gm-Message-State: APuU4Z+Z33nEyHrpiNKgUZzLl2PeE0nT8Jaik8ei+Su7rZe2nRCA/Iul
+	u237OdijGmAa5pO74AjSHfltwyWh5nzm6RA/eItBbMJx6crwNnHqoTnjN3tBMZkpY9DAgSG128P
+	eUPKxIlHvjAHIP0o8mUu+jLWKYpu4ZtrAYKvbLe/QIspwejXROKM/coDa0eIk4HZm1UM7i9SGfc
+	XapeFQ9xGtjAAjLGHZgSF9aPxI1A9SudPNgjGjMko/8Rd+5/2JLpR4f9j18OzzI9K18Z3GEixOs
+	NA18uEs0w==
+X-Gm-Gg: AYBFou1ZMmOx5kvvSe0dRGavBnuSOhjdNZAbYZnFMicquNPOKy+RreXClk5hS1obrNL
+	ELsSe4LmQ9l38j83rLSLvr8/QqmFAKVWWqWfTNF1si3OmnrL9nmm0DeKIDzoIM8j7EU2CmVZV1k
+	Ew6SOxbCEtRF+DmmeVrxS9yLlxc2ggaxQN/OUTsVQSbsVVnq8+TuTits8EhmLTtPgEXykCWP8nW
+	HPLDh8BaJE09pP76YjiXgsOY6hAmvgnGE02NBzT7+3m2/VJUWk3LY1rypZI8P/EVzWhKS5C26yC
+	4EfH1HPifs2kDqL7Do8yCevf9FHPr6yqPRmlHYggEmTj7i+22K4TZS6b5h8nUtngOuhfgBdT/n2
+	m7SiYyAPxwacpgVx+FEsO43pjCw54rlCSZf92ZAe4AosmquO1lVuCQ7kh6MsfpN8nR0bn20Sb7H
+	LCCiowdRBkTDMBJ7EXxdwhEuZNGUEp18yxYw==
+X-Received: by 2002:a05:6102:3ec9:b0:7cb:91a5:7cb1 with SMTP id ada2fe7eead31-7d05439aacamr4628587137.39.1793709426094;
+        Tue, 03 Nov 2026 04:37:06 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-13.dlp.protect.broadcom.com. [144.49.247.13])
+        by smtp-relay.gmail.com with ESMTPS id a1e0cc1a2514c-992ee3b335bsm329441241.7.2026.11.03.04.37.05
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 03 Nov 2026 04:37:06 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3aed37745bcso440348a91.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 04:37:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1793709425; x=1794314225; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9yi6gOIzZud2vd+UmqWufIHcf5N7plfF2wRET9ypfz4=;
+        b=f0hXN4RbdL6zPEUC10ej/8zR7cpZbOaUlNQHaaDqFHwO6tcUUFa5s0hKQyz0e0+xaH
+         MNTXl8PKqME8UErtvqsYeiRqL1ydAu4c1M8YLUQbl/hTrp86LwTBtjPNEc95ClV0vlUL
+         yEbMvS/jbraRPxcdLaMojFEbPqrIzkTWspoqk=
+X-Received: by 2002:a17:90b:5687:b0:3ac:9ad9:6afe with SMTP id 98e67ed59e1d1-3ae897c71e8mr6445124a91.39.1793709424708;
+        Tue, 03 Nov 2026 04:37:04 -0800 (PST)
+X-Received: by 2002:a17:90b:5687:b0:3ac:9ad9:6afe with SMTP id 98e67ed59e1d1-3ae897c71e8mr6445114a91.39.1793709424283;
+        Tue, 03 Nov 2026 04:37:04 -0800 (PST)
+Received: from H5-S1 ([192.19.203.250])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b08759344dsm2131567a91.13.2026.11.03.04.36.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 04:37:03 -0800 (PST)
+From: Vikas Gupta <vikas.gupta@broadcom.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bhargava.marreddy@broadcom.com,
+	rahul-rg.gupta@broadcom.com,
+	vsrama-krishna.nemani@broadcom.com,
+	rajashekar.hudumula@broadcom.com,
+	dharmender.garg@broadcom.com,
+	ajit.khaparde@broadcom.com,
+	Vikas Gupta <vikas.gupta@broadcom.com>
+Subject: [PATCH net-next v5 00/10] add features to bnge
+Date: Tue,  3 Nov 2026 18:06:40 +0530
+Message-ID: <20261103123651.442893-1-vikas.gupta@broadcom.com>
+X-Mailer: git-send-email 2.52.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -138,127 +117,95 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR11MB8508:EE_|LV2PR11MB511473:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7f4a27bc-5356-4b41-231e-08df39a71590
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|10067099003|22082099003|18002099003|56012099006|4143699003|11063799006|261021123027099003|261102123227099003|261009223027099003|261022105027099003|261028144727099003|261026121527099003|261026140227099003|261021121427099003;
-X-Microsoft-Antispam-Message-Info: XK2sNanpZluIUvocZkYHyC+iF7aiw/vJd4C3zq7hhN92DJdM+bAJguB+hNyH+l8JbzYuk1KigUEXXpPcWrXhlbaWIAHMoEIi4eoT6thdWZ9Nq/tMOOFKLbxdUI1DMGZnfOvBQNmr1lIsWgRwZFQDtI4lVe/n/AKP84MnartWY/WUDIlXJUz/WRxYVjpCplNCj8zdxtGkmMy+48wb/96QbHD7t+R+jF16+kwC6wPHE4B6AleoD60Grio0s2PqHlLMItBnFpabtTaPFXom0L6U3xRbZFYwVYgppCSXu9DFA4VXW2tS0vAsGe7XogWewV3JvQmUbsolb+uXAfe8fQbIRTTal8xqOY7D6KIT2JVmlGjvhyhXyAeDiJNaE96rhDWGEJm3syasRkdFqg1/ZwtdPmoxk3DhozVnbOsOIJxB8h8TR0FWRK4OCa9XZHJ5b3jhUNd3hNnF+SRZnNtQkbdPGhBRqoQc0Jn+0eJXqUpECHseM5QOhUSpbaBf3jrbZRun3BqBDHH+lFpKbvCPiD1QE1cczFuYPsbjOYcieJx/i7yBG4+PRzJwVrZkbY+CMUCpmavLOtCQtOauNfYZ52HK3lUofoYPGiDs+6xwcApp6M8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8508.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(10067099003)(22082099003)(18002099003)(56012099006)(4143699003)(11063799006)(261021123027099003)(261102123227099003)(261009223027099003)(261022105027099003)(261028144727099003)(261026121527099003)(261026140227099003)(261021121427099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RDkvU1NyVlcybURTb2JnZU9XeG84Q2piM3o3Uk1xY3dqbW12Z0RxRTN5N2pP?=
- =?utf-8?B?dWJsVmt5L1hYU045SGJ5WllCc0IwZ0xIcUhuVERjaTNTNzk5dXZkeFFFelY5?=
- =?utf-8?B?ekxTY29qQkxzZEwvTkxuMDJVVUJOU1NHNW9DQWw4SG1TSHV5MEI2T2IvTnJ4?=
- =?utf-8?B?NWl4cXRMUXBWT1kvd0RRdGwzb09xMzFFU3I0QUh0MDROYVRKd0xiMUtwVVNn?=
- =?utf-8?B?NldTWTlMWFZuZGhZdjNDZFQzb3YrTGRZekRFaE1UdjIvZFBscVowbnBvT1FJ?=
- =?utf-8?B?RjQ3anRoQkRNd3JZZXJJWDFSRXh5SitCakpVOGZqREg3UEFjYjV5aWo3K0hy?=
- =?utf-8?B?YXJDSWRYYkNmZVphaHYwbHlmcS9oc3MwWVl0dW5OblRVTVNoeUZXNnM0QnV0?=
- =?utf-8?B?U0VtVDc5NW9lSnowL2dmSGFaSHFERFViK1dNbkNlRTdxS0lwbVJRcFlmUHpC?=
- =?utf-8?B?SnF6UE80N0FkNGp6M0tkdS9hdGxBQVdnbHdIaU9uU3Y2WnVyYjk3NlExVTU0?=
- =?utf-8?B?a1c5d3ZKN1hlZHNLb0R3dWlTWEF2RVJZaldvYlU3VGEybDVDZzZ6MVpuUW1R?=
- =?utf-8?B?d1B1Vi9HWkRrVGs0M0FkeEJhRHJyd0RpazYxM3BDYzYrS0YzbzdUMzBrTmk4?=
- =?utf-8?B?WXczcWRLYzJ4bGRxbUdMKzZQUDZndnVBM2ZXcGpGU1haRXJtYWtUUVZtVzV4?=
- =?utf-8?B?aG1ocVFjL3BsajhNcGQ5TVlWcDRWcGVocUNvd1huRmd6NXlmOVc3UGNUTDY3?=
- =?utf-8?B?ZVpORTFUN1NDZ0YxeFVvanhNTHNjaTEzd3g0OWcyWHp1bXBmMFdyVkNvWEo1?=
- =?utf-8?B?UFZMb3JZUDF4bm1PREl0YkpCYjc1SDE1Ym1ZclpsYzdsbFhCWUI1ZldkYlI3?=
- =?utf-8?B?cU16K2R1bXppRzkrekM0MWM5RnhuYlFFWmZnUlBIaDl1OHpqNjl0WGs2VDB5?=
- =?utf-8?B?bkJpRHU1UGVLTjRZc05raktrZEp4RFRuZXRaSDl0TUUvY1UyazVia1g1RGFM?=
- =?utf-8?B?dFFDZURoRU42YlBubHRvUnBTLzlzOXk2bU1BblROcUxLdGtjMWkxTlhOa2hD?=
- =?utf-8?B?ZnVKdjg3TUhka1hIU085S1ZZVENMSnhnZXprK20rUGQ5Rmt2R3AxYTYwWTBx?=
- =?utf-8?B?UlcySytIdW9GWEwzSzhLcHEyWmt0dTByVFU2SW5tQmRmenhPdE9WV2JIM2Rn?=
- =?utf-8?B?Y09JblhvWHMvUWNva1BhOUM1WFlrOER5bWorZ1d4UTRCQ3FPeUlrOEZRL1lL?=
- =?utf-8?B?d0FZK283dzdHaUJoMDVaQ3l3bHBrcXQzbXZpY0NaU1dVMnhvZ0dqLy8vU09l?=
- =?utf-8?B?b2toVG1WVHhKZ3MzRFVpb3liNzVZOEIzTVh4T0tjbVJsdkVMYklwc3UzcmhK?=
- =?utf-8?B?bU5IS1k4S3V0alB3SFNNRDB4QkdrQ3JpOHVoNUJpY0tqVjVXemlhRHFPQllo?=
- =?utf-8?B?YjlidFk3VGVEQkVlNEFwc0NSNGw2QkU5UVRrekpFallBazVWdDdONWl4bWw1?=
- =?utf-8?B?MnNuTkZCanJVRDVmUHdGT2RQMVZRMVU4NkVqc0RseEg5enV0UnJnVHFtNCts?=
- =?utf-8?B?OFNhNk1Rb0Ezd1BQYktMbjhBK2FCRzVlamlnZXB5c2VnNW9GMFkvSHYwdjV6?=
- =?utf-8?B?ZnRjenUwZVRyRjhzdGlEQ0tIcW92Vi85ZnlkMXFOb0hYemZXNmNJR0pMRCtY?=
- =?utf-8?B?MXVGcUxkaEFIa1Ztd3puR0dvbUNIV2wyellZSXgvQWhTZ1N6Zm16WHlrbUhC?=
- =?utf-8?B?WlNaOFJZSmlUYmhCVGFqTFlCOEw3ZjlxVFdaYzBGRGJ1Q282LzNhY253UHpu?=
- =?utf-8?B?MXRPQVlLV2lyWFhEbi9xdysrQW9yakp6L2hYZENnc3BydkN3cURZeDJCbWtM?=
- =?utf-8?B?cHp6dmN5WGRXNzNMRGR3TlhPV1RXcFNUTk5wdS8wMXB2blIyRUx3WUlYclhG?=
- =?utf-8?B?a082WW9YVXorYmhaaCtLTlJMQW5CbXh3b1hHUk00Umt1QklxUE92b3BWaEcy?=
- =?utf-8?B?TDRZaHYvRUFrV3FkWmFlWTV0UXBRY29ac3Y3VlJNY1lCZHl0SGprd3hQR3p1?=
- =?utf-8?B?OWtmS2JGZktveVh2WmtWMU5mMTA0ZVJINVV0b010UjFybUpYNURoMGd4c1Bn?=
- =?utf-8?B?TjJycjlIUzk1ajQwbVNOQm1nM092K2lZemROVVQvYnE2ZjQ1QytkbTh0bUQw?=
- =?utf-8?B?Nk1OLzBoSjNMNmdTbzVoQW4xajN4alV2NHVoUndaYlpjYXM3UUQ2SUhLcDRi?=
- =?utf-8?B?WkRrdzd1aTlGdzB6Y0Voak5ZaElUT2lpSVZISDZ2NHVsODNEU05DR3QxTnVl?=
- =?utf-8?B?cUR2STEyakxpRnNtSk80NU16V3d5NUdiVFVxQXpNODIxU1JZODM4MmZ5dFFj?=
- =?utf-8?Q?2jfZ+c7wmWqvEuFc=3D?=
-X-Exchange-RoutingPolicyChecked: YiaZVdTw7xXMmVUYf4JgmqPl7dRrt8/lvh6vaSG2UkjRjUAG7k7EtCjlyt2OHA6SGCfcUU8cW/zMppQWOULYyYSQljzFvDGQs46SWbuYbXfrow9mTQIpfKKrFrNh1jay3Wp4QAYwhi92QdjdTuFezLyeEJ0efidpJhc34rUXsyf/xaNOHsed61dQJ2JmfjudZRxNSLYKygUgrJgtkY38hGaadvTEQHHnfbf6CMZBYBBBgmdjA5GrR3n4IQVhF41zGZZ5yY9T3hcWC97xMCG8Nh7Jfq/n0n7GFa7GCdibmX/dCLMGPmGBabEiQ4ncoqIUnRQohgZ9drj2fSnrB5iuiw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7f4a27bc-5356-4b41-231e-08df39a71590
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8508.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 12:36:29.8118
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OcSHFrITNFmQg5FZf1KJYCHgvjF9OQfZIvcRExD7f27oW98MFWoTb9Z+9GfgeF22Jw+/uNdEi34UfbG6e3uIOGLAc1VK8Hh2K/N/qYzHwuQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR11MB511473
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On 11/3/26 12:23 PM, Loktionov, Aleksandr wrote:
-> 
-> 
->> -----Original Message-----
->> From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
->> Sent: Monday, November 2, 2026 11:50 AM
->> To: intel-wired-lan@lists.osuosl.org; Oros, Petr <poros@redhat.com>
->> Cc: netdev@vger.kernel.org; Kitszel, Przemyslaw
->> <przemyslaw.kitszel@intel.com>; Sashiko <sashiko-bot@kernel.org>
->> Subject: [PATCH iwl-net 6/6] ice: register LAG event handler last in
->> ice_init_lag()
->>
->> ice_init_lag() registers the netdevice notifier before it creates the
->> LAG recipes, but when creating any of them fails, the error path frees
->> the lag struct without unregistering the notifier. A failure of
->> ice_init_lag() is not fatal to probe, and pf->lag is set to NULL, so
->> ice_deinit_lag() won't unregister it later either. The next netdev event
->> then makes
->> ice_lag_event_handler() use the freed lag struct.
->>
->> Register the notifier last, after the recipes are created and associated
->> with the profiles, so the error paths have no handler, nor queued work
->> for it, that could use the lag struct or its recipes. Free the recipes
->> if the registration itself fails.
->>
->> Fixes: ec5a6c5f79ed ("ice: process events created by lag netdev event
->> handler")
->> Reported-by: Sashiko <sashiko-bot@kernel.org>
->> Closes: https://sashiko.dev/#/bug/linux-e0559bca-fcfd-4435-96f2-
->> 15f7e3d74184
->> Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
->> ---
->>   drivers/net/ethernet/intel/ice/ice_lag.c | 15 +++++++++------
->>   1 file changed, 9 insertions(+), 6 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/intel/ice/ice_lag.c
->> b/drivers/net/ethernet/intel/ice/ice_lag.c
->> index 08a17ded0ad5..c4b8af01e2af 100644
->> --- a/drivers/net/ethernet/intel/ice/ice_lag.c
->> +++ b/drivers/net/ethernet/intel/ice/ice_lag.c
->> @@ -2601,12 +2601,6 @@ int ice_init_lag(struct ice_pf *pf)
->>   	lag->notif_block.notifier_call = NULL;
->>   	memset(lag->sec_vf, 0, sizeof(lag->sec_vf));
->>
->> -	err = ice_register_lag_handler(lag);
->> -	if (err) {
->> -		dev_warn(dev, "INIT LAG: Failed to register event
->> handler\n");
->> -		goto lag_error;
->> -	}
->> -
->>   	err = ice_create_lag_recipe(&pf->hw, &lag->pf_recipe,
->>   				    ice_dflt_vsi_rcp, 1);
-> I'm afraid act_act_recipe is allocated but never released on the normal teardown path.
-> See ice_deinit_lag() it has just kfree(lag);
+Hi,
 
-you are right, the code behaves that way both before and after the patch
-FW resets those via PFR at appropriate moment (appropriate to ensure
-correctness, not to have clean code).
+This series adds ntuple filter, RSS context, and flow steering
+support to bnge driver.
+Patch 1 is a pure refactor (no functional change) that relocates the
+filter and VNIC related code into the appropriate files. Patch 7 drops
+the refcount usage from L2 filters, also with no functional change.
+The subsequent patches then add the ethtool commands for configuring 
+ntuple flows and RSS contexts.
 
-Not going to change that as part of little fix.
+Thanks,
+Vikas
+
+v4->v5:
+    - Addressed comments from Sashiko
+      https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928061307.1172344-1-vikas.gupta%40broadcom.com
+
+v3->v4:
+    - Addressed comments from Sashiko
+      https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917064548.773334-1-vikas.gupta%40broadcom.com
+      https://sashiko.dev/#/patchset/20260917064548.773334-1-vikas.gupta%40broadcom.com
+    - The patch count drops to 10 now that the HSI patches have been merged.
+
+v2->v3:
+   - Build fix.
+   - Addressed comments from Sashiko
+    https://sashiko.dev/#/patchset/20260908093053.2596020-1-vikas.gupta%40broadcom.com
+    Below Sashiko comments are not valid:
+     Patch-8: 
+                Comment under bnge_toeplitz().
+                 Explanation: bnge_toeplitz() is not used for aRFS.
+     Patch-9:
+                Comment regarding bnge_clear_usr_fltrs().
+                 Explanation:
+                  Both bnge_clear_usr_fltrs() (only invoked while the
+                  interface is down) and bnge_grxclsrule() execute
+                  under the netdev instance lock, so they are
+                  serialized and never touch the filter list at the 
+                  same time.
+      Patch-10: 
+                Comment "Does this direct dereference of the MAC
+                header need a linearization ...".
+                 Explanation: ndo_rx_flow_steer runs on the RX path
+                after eth_type_trans(), which already accesses and
+                pulls the Ethernet header.
+
+                Comment Related to bnge_cfg_ntp_filters().
+                 Explanation:
+                   bnge_cfg_ntp_filters() runs from bnge_sp_task(),
+                   which holds the netdev instance lock while executing.
+v1->v2:
+   - Build fixes.
+   - Addressed comments from Sashiko
+   https://sashiko.dev/#/patchset/20260814011435.194631-1-vikas.gupta%40broadcom.com
+
+Vikas Gupta (10):
+  bnge: restructure VNIC and filter code
+  bnge: add NTUPLE/ARFS VNIC
+  bnge: add helper functions for multi RSS contexts
+  bnge: add RXFH ethtool support
+  bnge: add ethtool support to manage RSS contexts
+  bnge: remove refcount from L2 filter
+  bnge: add NTUPLE filter infrastructure
+  bnge: add NTUPLE filter support in ethtool
+  bnge: add aRFS flow steering ndo support
+  bnge: add cpu_rmap support for IRQ affinity
+
+ drivers/net/ethernet/broadcom/bnge/Makefile   |    4 +-
+ drivers/net/ethernet/broadcom/bnge/bnge.h     |   13 +-
+ .../net/ethernet/broadcom/bnge/bnge_ethtool.c | 1126 +++++++++++++++++
+ .../net/ethernet/broadcom/bnge/bnge_filter.c  |  775 ++++++++++++
+ .../net/ethernet/broadcom/bnge/bnge_filter.h  |  129 ++
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.c    |  170 ++-
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.h    |    8 +
+ .../net/ethernet/broadcom/bnge/bnge_netdev.c  |  513 +++++---
+ .../net/ethernet/broadcom/bnge/bnge_netdev.h  |   94 +-
+ .../net/ethernet/broadcom/bnge/bnge_resc.c    |  128 +-
+ .../net/ethernet/broadcom/bnge/bnge_resc.h    |    1 +
+ .../net/ethernet/broadcom/bnge/bnge_vnic.c    |  378 ++++++
+ .../net/ethernet/broadcom/bnge/bnge_vnic.h    |   96 ++
+ 13 files changed, 3115 insertions(+), 320 deletions(-)
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_filter.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_filter.h
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_vnic.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_vnic.h
+
+-- 
+2.52.0
+
