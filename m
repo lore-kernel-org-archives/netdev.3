@@ -1,52 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793700332;
-	b=ZQiaE6W1qbdWATwX3SzAjW81XzAKrlF/MguDlV9rpQOWQwrnRD86qZPaAhvGsX5Uj4ow
-	 zuItu2grmZlnIKRp6s+JOeM/fmg2i70XA1RLFeKCXbGlPkwgpiYdWRekdM1EJ+JAG7fYv
-	 P8OHJXPPT/30G8CCZCl5WlR5QtSCIXWi1gOMmH4sakl9Yr2yjVVUCXXDbqC7S3zftnBbl
-	 laMatZpO58Sg8w9Pol/oXxGyBB8jO+lIJOYr1Ney4EjQJx81B8p0UCor6JV6kgFK5wRjw
-	 NGAOOBuVxk2OIc9I7ra0VFr4bXfwgVN1q5zUG1Bv/bBIkmA28ubNsDmkOg+h0SqAWlQ==
+	t=1793700336;
+	b=xReiPsKhO+GvOOCJv+2CVWTs3WnV1D0QFRFHmzKxFj7fb4c67WZjSYTXjpMv+w9vs9gi
+	 Fy+ldQZhJQC4kS7yom0MipVVgbAFt2Q0PzvXRMm6xpU/ft5O8EU7g3bWQv/ilPK6IDFFu
+	 pscZTW7mbGwhbSFo7emneDT85BY9W9givKD4Vqfuk1v/YNzCt8zRP4MQoLaT9FS/2rg3T
+	 ZVKMFXrtN8g6P40LFwBlUOujwESYjDbKm2foy4zk+c2sU9NcUTu774pFlpek4nZxYvOtZ
+	 F0jWQOUPHTZh96VFpNBneYus1EX/YuDBsOqxU6RQ6gGruejFfAzy5xYLEz51YgZlEdw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793700332;
-	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
-	bh=crorAxXvnKsE7T5XLx1xJ9nM/l4kKcvMxg6tXRH0Qrk=;
-	b=nv7oyp8KeO9vh1ipbftcmZbOw64h9ctOjorE5Kkd3/absZFSmR+HnC1YZUc4vkY5tNYf
-	 w8+FIphTUUsTtdXRp6oFW8K5v/lDgDa9iAJyKu1k6iEXePsXa+COkxkbzGduFt/J6tYL4
-	 7AP1RUoV9QD0rvfuxKiMTUrmyUtKdA5TujujCyoK02a09PSefvALQcAbbvCaFHiP+PK0D
-	 7VcDeXpC88zx3+0ZeQ4dMQWfsEsHSEbfynb71It45Uw4RP/s1qX3bnkRAb/lcY6U5Bn3u
-	 uUh+oDXiNtpiUQ3tgUUbc7XvrGEUxBFsWOXxn8Mo/7OK7tomWC326fhoLYTkqVFDxFA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793700336;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
+	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
+	bh=Yt3HBs83jX9B8IR02MP/6eu/676fqC4Ktt+8AJPnvUs=;
+	b=spYvAxGri2JfQCCellxECTRbkWIUXfVe6x3udgN4yn8SsscIhMOPcTaP1Ea32zd7uWjx
+	 66XopN9KMofYkRHbLL7d0/V2IvmSXxn7JXBG1owCvgBUHevXAcFTJAE4jOv5MPInrWHAO
+	 igpoCefGc1NPV3RlvDuLtR7ErGnf2CGnHAOI0IaZTZDYQQ8KxKY4RrLiqdvy26Si3/M1A
+	 YpS65eoQ9yyO17NxhEwEQycLmegy1oxUzrjHVM7bUJOaouivIuPvYbcErYaCBUV5qBheA
+	 H/aAXwaK4myfJuUaqcEUgNz7VXl3RHvwlU9+HVST3nNk3+dxrjRxL6OtMfrPiXz5ujA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=tipi-net.de;
-	spf=pass smtp.mailfrom=tipi-net.de;
-	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=497tw1HG;
-	arc=none smtp.remote-ip=194.13.80.246
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	dmarc=none header.from=iscas.ac.cn;
+	spf=pass smtp.mailfrom=iscas.ac.cn;
+	arc=none smtp.remote-ip=159.226.251.81
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F55606A827;
-	Tue,  3 Nov 2026 10:05:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33F55606A827
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=497tw1HG
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 08C1FA1651;
-	Tue, 03 Nov 2026 11:05:30 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1793700330; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=crorAxXvnKsE7T5XLx1xJ9nM/l4kKcvMxg6tXRH0Qrk=;
-	b=497tw1HG5tTvPHnKBcyLAHMQUIaLSVTHFgVkIHqnaFIwgR8ebbEXDhdlkHxi9jPN9+84an
-	MBs6izTJyvlsQE7oAqluFd6srtrXEWr4Hcv+k2HiZkutjMEYEZLWombC3ZvWGujIpCjald
-	x4vXIYF396TC1SxAQU4EBuylC3oErp1wJXfRnchjOwei0V/WQBE03v+VLFSSuhLAq3vESz
-	3w6hmPaeTNAfakkI8AyzxR57uoqJQlr6byagRjp3qPEC94AiQvL1bNf3wmHGwMGyIKG4vH
-	8Wwl/xstxV2OAAiPzPvcf0HCIsXFK2kn4QN53VTt1prcIsA+vLp9Hw/iZMVssw==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-Date: Tue, 03 Nov 2026 11:05:02 +0100
-Subject: [PATCH net-next v6 8/9] net: bcmgenet: allow the MTU to be changed
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2672C6083638;
+	Tue,  3 Nov 2026 10:05:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2672C6083638
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
+	by APP-03 (Coremail) with SMTP id rQCowAC3xZblselqkHs7AA--.2541S2;
+	Tue, 03 Nov 2026 18:05:25 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] net: ixgbe: drop the SA reference if secpath_set() fails
+Date: Tue,  3 Nov 2026 10:05:34 +0000
+Message-Id: <20261103100534.1310039-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -56,173 +59,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261103-nb-genet-mtu-nn-v2-v6-8-61d5631676e5@tipi-net.de>
-References: <20261103-nb-genet-mtu-nn-v2-v6-0-61d5631676e5@tipi-net.de>
-In-Reply-To: <20261103-nb-genet-mtu-nn-v2-v6-0-61d5631676e5@tipi-net.de>
-To: Doug Berger <opendmb@gmail.com>, 
- Florian Fainelli <florian.fainelli@broadcom.com>, 
- Nicolai Buchwitz <nb@tipi-net.de>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Dave Stevenson <dave.stevenson@raspberrypi.com>
-X-Mailer: b4 0.16.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAC3xZblselqkHs7AA--.2541S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Wr4Uur18tF4UXr4fuFyrtFb_yoW8JF15pa
+	n8CFy8uFyDXw48Wa4kXw4rCFZI93yIqry5Cr9Yk3Z3Zw1rAry7CrnYvFyjvr18AryrKF43
+	tFy7AFsxC3ZxA3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9a14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE14v26F4UJVW0owAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
+	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFV
+	Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
+	x4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r4j6r
+	yUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIIF0xvE42xK8VAvwI8IcIk0rVWU
+	JVWUCwCI42IY6I8E87Iv67AKxVWxJVW8Jr1lIxAIcVC2z280aVCY1x0267AKxVWxJr0_Gc
+	JvcSsGvfC2KfnxnUUI43ZEXa7VU8jQ6JUUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBggAA2rpnIRi8AAAsE
 
-The driver never sets dev->max_mtu, so the MTU is stuck at ETH_DATA_LEN.
+ixgbe_ipsec_rx() takes a reference on the xfrm_state returned by
+ixgbe_ipsec_find_rx_state(). On success that reference is handed over
+to the skb's security path, which releases it when the skb is freed.
+When secpath_set() cannot allocate the extension it returns NULL, but
+the function returns without releasing the xfrm_state, so the SA
+reference is leaked.
 
-One descriptor reaches as far as the packet ready threshold, so derive the
-maximum from it. The threshold registers are 8 bit in units of 16 bytes and
-want a multiple of the 256 byte burst size. A descriptor is one page and
-also holds skb_shared_info behind the frame. On 4K pages the page is the
-tighter limit and leaves 3564 bytes. That includes room for a VLAN tag so a
-VLAN interface can run at the parent MTU. The MAC accepts a little more
-than one descriptor holds, so a double tagged frame at that maximum is
-dropped as fragmented until a later patch reassembles those.
+Put the reference before bailing out.
 
-The PHY keeps running across the change so the link stays up, with its
-lock held so that a link event cannot enable the MAC while the registers
-change. Two MTUs at or below ETH_DATA_LEN derive the same values, so a
-change between them needs no restart at all.
-
-Only a DMA that refuses to halt still takes the interface down, nothing is
-left to run on then.
-
-Suggested-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Link: https://github.com/raspberrypi/linux/issues/5561
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+Fixes: 92103199f10a ("ixgbe: process the Rx ipsec offload")
+Cc: stable@vger.kernel.org
+Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 88 ++++++++++++++++++++++++++
- 1 file changed, 88 insertions(+)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index f6ed15bb1a91c..e42de63fac14d 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -84,6 +84,12 @@
- 				      ENET_THLD_MAX * ENET_THLD_UNIT, \
- 				      ENET_THLD_PAGE_LEN)
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c
+index bd397b3d7dea..e44d5eed9ab5 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c
+@@ -1197,8 +1197,10 @@ void ixgbe_ipsec_rx(struct ixgbe_ring *rx_ring,
+ 		return;
  
-+/* Largest MTU that fits one descriptor, with room for a VLAN tag so a VLAN
-+ * interface can use the parent MTU.
-+ */
-+#define ENET_MAX_MTU		(ENET_THLD_MAX_LEN - GENET_RBUF_ALIGN - \
-+				 ETH_HLEN - VLAN_HLEN)
-+
- /* Tx/Rx DMA register offset, skip 256 descriptors */
- #define WORDS_PER_BD(p)		(p->hw_params->words_per_bd)
- #define DMA_DESC_SIZE		(WORDS_PER_BD(priv) * sizeof(u32))
-@@ -3965,6 +3971,81 @@ static int bcmgenet_change_carrier(struct net_device *dev, bool new_carrier)
- 	return 0;
- }
- 
-+static int bcmgenet_change_mtu(struct net_device *dev, int new_mtu)
-+{
-+	struct bcmgenet_priv *priv = netdev_priv(dev);
-+	unsigned int old_mtu = dev->mtu;
-+	struct bcmgenet_dma_set set;
-+	int ret;
-+
-+	/* Below ETH_DATA_LEN everything is floored, so there is nothing to
-+	 * reprogram. Same when a failed resume left the datapath down.
-+	 */
-+	if (!netif_running(dev) || !priv->tx_cbs ||
-+	    max_t(unsigned int, old_mtu, ETH_DATA_LEN) ==
-+	    max_t(unsigned int, new_mtu, ETH_DATA_LEN)) {
-+		WRITE_ONCE(dev->mtu, new_mtu);
-+		priv->rx_buf_len = bcmgenet_rx_buf_len(new_mtu);
-+		return 0;
+ 	sp = secpath_set(skb);
+-	if (unlikely(!sp))
++	if (unlikely(!sp)) {
++		xfrm_state_put(xs);
+ 		return;
 +	}
-+
-+	ret = bcmgenet_alloc_dma(priv, bcmgenet_rx_buf_len(new_mtu), &set);
-+	if (ret)
-+		return ret;
-+
-+	/* The watchdog trips on an idle queue once the rings are gone */
-+	netif_device_detach(dev);
-+
-+	/* The PHY stays up, hold its lock. A link event would otherwise take
-+	 * the MAC out of reset and enable it mid rewrite.
-+	 */
-+	mutex_lock(&dev->phydev->lock);
-+	bcmgenet_netif_stop(dev, false);
-+
-+	WRITE_ONCE(dev->mtu, new_mtu);
-+	priv->rx_buf_len = bcmgenet_rx_buf_len(new_mtu);
-+	bcmgenet_set_mtu_regs(priv, new_mtu);
-+
-+	ret = bcmgenet_init_dma(priv, true, &set);
-+	if (ret) {
-+		/* Take it down here, or close and suspend tear it down twice */
-+		netdev_err(dev, "failed to initialize DMA, closing\n");
-+		WRITE_ONCE(dev->mtu, old_mtu);
-+		priv->rx_buf_len = bcmgenet_rx_buf_len(old_mtu);
-+		mutex_unlock(&dev->phydev->lock);
-+		netif_close(dev);
-+
-+		/* __dev_open() refuses a detached device */
-+		netif_device_attach(dev);
-+		return ret;
-+	}
-+
-+	bcmgenet_hfb_restore(priv);
-+	bcmgenet_netif_start(dev, false);
-+	mutex_unlock(&dev->phydev->lock);
-+
-+	/* bcmgenet_netif_start() only restores the link interrupt */
-+	if (bcmgenet_has_mdio_intr(priv))
-+		bcmgenet_intrl2_0_writel(priv, UMAC_IRQ_MDIO_EVENT,
-+					 INTRL2_CPU_MASK_CLEAR);
-+
-+	/* Interrupts were off, so a latched link event is lost. Internal PHYs
-+	 * on v1-v4 are not polled either.
-+	 */
-+	phy_mac_interrupt(dev->phydev);
-+
-+	netif_device_attach(dev);
-+
-+	/* Filter updates that came in while the device was detached got
-+	 * dropped. An IPv6 join does not hold RTNL.
-+	 */
-+	netif_addr_lock_bh(dev);
-+	bcmgenet_set_rx_mode(dev);
-+	netif_addr_unlock_bh(dev);
-+
-+	return 0;
-+}
-+
- static const struct net_device_ops bcmgenet_netdev_ops = {
- 	.ndo_open		= bcmgenet_open,
- 	.ndo_stop		= bcmgenet_close,
-@@ -3976,6 +4057,7 @@ static const struct net_device_ops bcmgenet_netdev_ops = {
- 	.ndo_set_features	= bcmgenet_set_features,
- 	.ndo_get_stats64	= bcmgenet_get_stats64,
- 	.ndo_change_carrier	= bcmgenet_change_carrier,
-+	.ndo_change_mtu		= bcmgenet_change_mtu,
- };
  
- /* GENET hardware parameters/characteristics */
-@@ -4329,8 +4411,14 @@ static int bcmgenet_probe(struct platform_device *pdev)
- 	/* Mii wait queue */
- 	init_waitqueue_head(&priv->wq);
- 	bcmgenet_hfb_init(priv);
-+
- 	priv->rx_buf_len = bcmgenet_rx_buf_len(dev->mtu);
- 	priv->tx_thld_len = bcmgenet_tx_pkt_rdy_thld(dev->mtu) * ENET_THLD_UNIT;
-+
-+	/* v1 cannot program the thresholds, so it stays at the default MTU */
-+	if (!GENET_IS_V1(priv))
-+		dev->max_mtu = ENET_MAX_MTU;
-+
- 	INIT_WORK(&priv->bcmgenet_irq_work, bcmgenet_irq_task);
- 
- 	priv->clk_wol = devm_clk_get_optional(&priv->pdev->dev, "enet-wol");
-
+ 	sp->xvec[sp->len++] = xs;
+ 	sp->olen++;
 -- 
-2.53.0
+2.34.1
 
