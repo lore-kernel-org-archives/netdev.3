@@ -1,60 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793679522;
-	b=kp5PADt9Q5pUPV8WeLCR9a/y8rPuExSanj8U7DlwBtZTHSmF5ogAj9fp2o5K3h4C9698
-	 2Z0VGT3NpHf3EZ0Sql4k4iHq/JFPsn+w8Vfl2cM0dPDKwaWxcOwpZBlt9QURIsy5PBkRs
-	 RWQQdq8iKmeNwSu7IfqYmdL9JcRGkl/78by7ayZ5kL+XjQjdYAUQ7xihtTH/PJAhXjtK1
-	 jhdlkrIGpU/pZCAl48O6YoOaXSwo+OpAjf2SjPfizbCqcdLscEC7PSyO1C4fHdOUpMBjL
-	 T2IJr8mYSd2QFGSkkGQDETZki2DuheiEgqN4mCO9mrkM1r7KpimVwhEvPCWJ8EMmSUw==
+	t=1793679740;
+	b=vS1y8tnuSjldlXQS5872wWnma6k/889xtxdB1GvIrdSOSX3Csc/c+lYDetUXqc1fRWQj
+	 SlnzqqN/XmdJ4IsWdfMmYPdMVTAv5FBmb3xrf7kM2Vl6xt3ydPkJUsubmosMMzOUkH0sr
+	 ckja9ELB3iwRAI+TguUEV9T8wTI5ybjZGfqwvwNRed9NDo1Qlf+FhgsHLf4X6msAqbD/v
+	 9gycjd8YqpuJetdUAgv6FDtfyNuMZIfdtVBGDwBURWlTsqf3UHm9xOK47nyXjCpw3JW7i
+	 0kp7kjBX3a63EpdJGE9JV37lygQ9v+ABuVQjXqHElA7+14Hy/8xoKRwGDISG671W+gA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793679522;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=AJFKR2DVegmCOvKm+XgKiQZC99Uzm4Ks3f9FW73MosI=;
-	b=FXak1FuGGNH5ruK1df4wUxmmWdd8QtvQuPZxK73UY7i95hMu1V3zSsVCs/YFmhSVrKeB
-	 7Ry9uEnOGyU6Gkz2xyV4pX0ymoXPHrDVlUWEuTEnTjLVY5K+1uULE4dbAsHwlAgCxXm+E
-	 0XMiWYiwaVn5797FJTOR3f64J9cv4Z9towaDEmwsyS1G7CAXRNksy0LSnKtM2JdtXcBWq
-	 xFajkkY2kvCWL2J/6oYV2roj7UdqErmOdg4HCOl0D7I4EVh8gK3M9+YSNpGyFdRaIc0b9
-	 A+LzDijtnxh9R8Uwv+2RaWIbZPjo/HRIcULd3WlvcBK+PEQ5E131012jw8pKCfv5uog==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793679740;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=KiEC/iwKsFjuGJG7+7hGX+X7vp7j70ILn+fEpr7GfzY=;
+	b=RKACjDIx2ElxK+hy//y39HyTaEhtaDElVXu/gX3VF+/8XFz+ofmwhFQa/CK7HYkM92bg
+	 4tUZlDr208rNzM6kytKD130k/3+5GN8N+hy6w3RBntzNKuy3m9UD3nuGwozQXt6jBGl0d
+	 WILm7Cjvo9Czpx67PwG9NT0ntjaNHiHioT7XqMDPQOaV/kCUP6gGDXjwbJGnhezthEXpQ
+	 F2MvTRlOxfiHFTgR1LLPIOAn90xnTbL/xNFwM1MuOtXvzt50bkGvurmOAcBvb+5kBVy/g
+	 DGzHdVDzY+16QT3lKDSq5Ny0GZhbC2LgYW85p5BDcVFnwSEdXpQyi9R9JfJuujFNfwA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d2M0IvLc;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--bcochrane.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=c2W0yadR;
+	arc=none smtp.remote-ip=74.125.82.198
+Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADE7606A338;
-	Tue,  3 Nov 2026 04:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57209606A326
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 04:22:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 57209606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bcochrane.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d2M0IvLc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D191F00919;
-	Tue,  3 Nov 2026 04:18:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793679521;
-	bh=AJFKR2DVegmCOvKm+XgKiQZC99Uzm4Ks3f9FW73MosI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=d2M0IvLcWRf9nosJBt3+PWZBmLgaROlN4XFALkCf7RFXZWo3jq6bzyTLqJIcf1RAK
-	 5BdHk33tG7M5c8e0xvOV6YqdFwEj1RmmN3DrleFIxfE23+lsgHMNuT7fe2PQ0r+JQa
-	 KxXLEwKQ8IX6KzY63ldagGkvcmU1aRQ0VC/yQ9V5cTADLzTzhM6ZAZHmqb/IEtcRDv
-	 NqQugqweg2ll4i843lt4p8z0Idug/0UDqtlJ3YLJ2SUsBDkujcRnH031H/4l4LAu1y
-	 l7z339Bv+XIyf5gTKsOccBD9sPA0R/s/9NyQCn0izzAyfhfTbUzFBBEBbwsa3oGvpZ
-	 qiqF1sXbAjjmw==
-Subject: Re: [PATCH net v2] net: bridge: disable MRP ports before the FDB
- flush in del_nbp()
-From: netdev-bot+sashiko@kernel.org
-To: teel4res@gmail.com
-Cc: idosch@nvidia.com, razor@blackwall.org, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- horatiu.vultur@microchip.com, bridge@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Tue, 03 Nov 2026 04:18:40 +0000
-Message-ID: <179367952018.488856.4094824897348236390@kernel.org>
-In-Reply-To: <179333317814.2102764.8780283783548366593@gmail.com>
-References: <179333317814.2102764.8780283783548366593@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=c2W0yadR
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-35c3c370b17so6338162eec.0
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 20:22:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793679738; x=1794284538; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KiEC/iwKsFjuGJG7+7hGX+X7vp7j70ILn+fEpr7GfzY=;
+        b=c2W0yadRBxevsRR27jIMh/vfrXSK5Xm1RZJvDDQGEZg84pBwzWpwXSSfLanDtMIhs0
+         IWXGJecTvskm0P8fyZ2sSTCDMrtWamzGyRuX2Sw2g3zkjjWGMi1pgMSXFOLDz7Tvm6Zp
+         QeQLYfSN79OiLx4afw9dUdQ71rIJjOOYXgdJugoSD5jicyVP5iwN+0/KfL70fqEJl5aV
+         tgkOQ72ohe8kiQeJBC9sHD2on5yypqkSpls+8GqGQwvqyFiWwZeou4oWgIXBWbiEff7m
+         Ff3GeOXglMDUGCuWjJhA37CQhua76+BQZW6Z6WonDhUdsD4yuYc/tMnrvLI02qwkMBa/
+         oOmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793679738; x=1794284538;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KiEC/iwKsFjuGJG7+7hGX+X7vp7j70ILn+fEpr7GfzY=;
+        b=gWVVmHMf86hwOqtgvMEai7eA7MaS+a0frc3uPktyaYuso96yctKIBByMMWzpLrq4kN
+         kgPdtjp0YzHiGgrHvqS7vcNCk1H6+s1JJcqzZt9QKpWtbiCOF8mIRYcy6oIl0a90x8aT
+         woKc9BdWTWTYluLg1OJt7NI+2xGQ9kHOoflBbTr0w68n1/2ujMAv8WToVMaTLZNsfAWN
+         WqtATGqu5U4+65Wtf5KjTT/GdX6DuGIaYfQjVB9FEHgQty8e0lMluZ5o9EZEXw20kE1W
+         A9oEJzF9eHLfk1SCdUUhUp439Q0lzt/YC2fn9DYs/vOVmWQOwBm+ycoqYGWBStzpaIUS
+         hd6w==
+X-Forwarded-Encrypted: i=1; AKwUvBy7u5WYXgoISwTYJpPL5N5AATDl/8KITm9eGqI4o5HzEFITVXKUi+LEqNdu3xtdYPVXAZ2LtmQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9JYdS0WQgDU2DcLJuOLA5XOVC+Ez290OQh5FW51Imavd+idrMv
+	8eS5mHeddj9USy4H9efPA5fXcDHiIZxOnsO+ALsKWSp9KtWUB80GpqAgibcl1vqrodfaBE6SDJ0
+	Kwzh+9foyVR4wSRhDqw==
+X-Received: from dycaa8.prod.google.com ([2002:a05:7301:5408:b0:353:58ae:4c3c])
+ (user=bcochrane job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:693c:69cd:b0:34d:96cb:d75e with SMTP id 5a478bee46e88-36a423bed39mr19071534eec.27.1793679738088;
+ Mon, 02 Nov 2026 20:22:18 -0800 (PST)
+Date: Mon,  2 Nov 2026 20:22:09 -0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,202 +75,139 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
+Message-ID: <20261103042210.2984373-1-bcochrane@google.com>
+Subject: [PATCH net v2] bnxt_en: Take RTNL before netif_close() when aborting
+ FW reset
+From: Bryan Cochrane <bcochrane@google.com>
+To: Michael Chan <michael.chan@broadcom.com>, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
+	netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Joe Damato <joe@dama.to>, linux-kernel@vger.kernel.org, 
+	Bryan Cochrane <bcochrane@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+netif_close() must be called with RTNL held in addition to the netdev
+instance lock: __dev_close_many() asserts it, and the NETDEV_GOING_DOWN
+and NETDEV_DOWN notifier chains it runs rely on it for serialization.
 
-Critical: 0 · High: 2 · Medium: 1 · Low: 0
+Commit 004b5008016a ("eth: bnxt: remove most dependencies on RTNL")
+replaced rtnl_lock() with netdev_lock() in bnxt_fw_reset_task() and
+bnxt_fw_reset(). That is sufficient for the paths that only tear the
+NIC down internally with __bnxt_close_nic(), but the abort paths close
+the netdev via bnxt_fw_reset_abort() -> netif_close(), and the error
+path in bnxt_fw_reset() calls netif_close() directly. Those now run
+without RTNL and trigger a WARN_ONCE() cascade when a firmware reset is
+aborted:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+  RTNL: assertion failed at net/core/dev.c (1740)
+  WARNING: net/core/dev.c:1740 at __dev_close_many+0x1be/0x1f0
+  Workqueue: bnxt_pf_wq bnxt_fw_reset_task [bnxt_en]
+  Call Trace:
+   netif_close_many+0xb5/0x190
+   netif_close+0xa2/0xd0
+   bnxt_fw_reset_task.cold+0x8d/0x213 [bnxt_en]
+   process_one_work+0x19d/0x3a0
+   worker_thread+0x1af/0x320
+   kthread+0xe3/0x120
 
-- [High] The fix needs an RCU grace period between br_stp_disable_port()
-  writing p->state = BR_STATE_DISABLED (br_if.c:348) and the final…
-- [High] The reorder assumes br_mrp_port_del() always clears
-  BR_MRP_AWARE_BIT on the port being deleted, so that…
-- [Medium] The commit message's safety argument describes code that is
-  not in the target tree.
+followed by the same assertion from call_netdevice_notifiers_info(),
+fib_rules_event(), inetdev_event(), rtnl_fill_ifinfo(),
+devlink_compat_phys_port_name_get() and ip_mc_down().
 
---
+This was observed on a machine in real use with a BCM57504 (4 PFs,
+FW 236.1.153.0) running v7.1.6: the firmware crashed, announced a
+"Fatal firmware reset event" and then failed to come back within the
+advertised max wait, so bnxt_fw_reset_task() aborted the reset on all
+ports:
 
-net: bridge: disable MRP ports before the FDB flush in del_nbp()
+  bnxt_en 0000:c1:00.1 eno16905np1: Firmware reset aborted
+  bnxt_en 0000:c1:00.1 eno16905np1: fw_health_status 0x448100
 
-This patch moves br_mrp_port_del() and br_cfm_port_del() ahead of
-br_stp_disable_port() in del_nbp(). An MRP ring port then has
-BR_MRP_AWARE_BIT cleared before STP disables it. The goal is for the port
-to really reach BR_STATE_DISABLED before the FDB flush, so that no frame
-is learned with dst == p and later forwarded to the freed port.
+Take RTNL (before the netdev instance lock, matching the OPENING state
+which already uses rtnl_trylock()) in the fw_reset_abort path of
+bnxt_fw_reset_task() and route the POLL_VF abort through that same
+path.
 
-Link: https://lore.kernel.org/netdev/20261012123051.GA714215@shredder/
+In bnxt_fw_reset() only the error path that closes the device after
+bnxt_get_registered_vfs() fails needs RTNL: drop the instance lock,
+take RTNL and the instance lock, then clear BNXT_STATE_IN_FW_RESET and
+close. The normal reset flow, which may run on many VFs at the same
+time, keeps running without RTNL. BNXT_STATE_IN_FW_RESET stays set
+across the lock switch, so a concurrent close marks the reset aborted
+as it does today and a concurrent recovery request backs off.
 
-> Remove the MRP and CFM instances before disabling the port, so that
-> br_stp_disable_port() actually transitions the port to BR_STATE_DISABLED.
-> The synchronize_net() in nbp_vlan_flush() then drains the receive paths
-> that could still learn with the old state, and the FDB flush that
-> follows removes their entries.  No frame can be learned after that
-> flush and before netdev_rx_handler_unregister().
+The bug was found by inspecting the kernel log of the affected machine
+and the driver source; the fix was prepared with the help of an AI
+coding assistant (Gemini based) and reviewed by the submitter. It is
+build tested (allmodconfig with W=1, plus the same change on top of
+v7.1.6 built as a module for the affected BCM57504 host). The aborted
+reset path itself only runs when the firmware fails to return from a
+reset, which could not be reproduced on demand.
 
-[Severity: Medium]
-Does this description match the tree the patch applies to?
+Fixes: 004b5008016a ("eth: bnxt: remove most dependencies on RTNL")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan Cochrane <bcochrane@google.com>
+---
+v2:
+ - Keep bnxt_lock_sp() in bnxt_fw_reset() and take RTNL only on the
+   bnxt_get_registered_vfs() error path, so that the normal FW reset
+   flow does not add RTNL contention when many VFs recover at the same
+   time (Michael Chan).
+ - Dropped Stanislav's Acked-by because of the change above.
+v1: https://lore.kernel.org/netdev/20261029032832.1511180-1-bcochrane@google.com/
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-Earlier in the message the flush is called br_fdb_delete_by_port(), but
-that function no longer exists under net/bridge/. The current del_nbp()
-does this:
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 33c4cacc8ffe..1ea1e8266eab 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -14860,9 +14860,16 @@ void bnxt_fw_reset(struct bnxt *bp)
+ 		if (n < 0) {
+ 			netdev_err(bp->dev, "Firmware reset aborted, rc = %d\n",
+ 				   n);
++			/* netif_close() requires RTNL, which must be taken
++			 * before the netdev instance lock.
++			 */
++			netdev_unlock(bp->dev);
++			rtnl_lock();
++			netdev_lock(bp->dev);
+ 			clear_bit(BNXT_STATE_IN_FW_RESET, &bp->state);
+ 			netif_close(bp->dev);
+-			goto fw_reset_exit;
++			bnxt_rtnl_unlock_sp(bp);
++			return;
+ 		} else if (n > 0) {
+ 			u16 vf_tmo_dsecs = n * 10;
+ 
+@@ -15547,9 +15554,8 @@ static void bnxt_fw_reset_task(struct work_struct *work)
+ 		bp->fw_reset_timestamp = jiffies;
+ 		netdev_lock(bp->dev);
+ 		if (test_bit(BNXT_STATE_ABORT_ERR, &bp->state)) {
+-			bnxt_fw_reset_abort(bp, rc);
+ 			netdev_unlock(bp->dev);
+-			goto ulp_start;
++			goto fw_reset_abort;
+ 		}
+ 		bnxt_fw_reset_close(bp);
+ 		if (bp->fw_cap & BNXT_FW_CAP_ERR_RECOVER_RELOAD) {
+@@ -15682,9 +15688,11 @@ static void bnxt_fw_reset_task(struct work_struct *work)
+ 		netdev_err(bp->dev, "fw_health_status 0x%x\n", sts);
+ 	}
+ fw_reset_abort:
++	rtnl_lock();
+ 	netdev_lock(bp->dev);
+ 	bnxt_fw_reset_abort(bp, rc);
+ 	netdev_unlock(bp->dev);
++	rtnl_unlock();
+ ulp_start:
+ 	if (!rc)
+ 		bnxt_ulp_start(bp);
 
-	vg = nbp_vlan_group(p);
-	nbp_vlan_group_unpublish(p);
-	br_fdb_cleanup_by_dst(br, br_port_to_dst(p), 0, 1);
-	nbp_vlan_flush(p, vg);
-
-nbp_vlan_flush() contains no synchronize_net(), and it runs after the FDB
-flush:
-
-net/bridge/br_vlan.c:nbp_vlan_flush() {
-	ASSERT_RTNL();
-
-	__vlan_flush(port->br, port, vg);
-	__vlan_group_free(vg);
-}
-
-The only grace period before the flush is in nbp_vlan_group_unpublish():
-
-net/bridge/br_vlan.c:nbp_vlan_group_unpublish() {
-	ASSERT_RTNL();
-
-	RCU_INIT_POINTER(port->vlgrp, NULL);
-	synchronize_net();
-}
-
-This layout came from commit 83edc87a9172 ("net: bridge: vlan: quiesce
-readers before freeing port VLANs"). The testing in the changelog was
-done on v7.3, which still has the older ordering.
-
-Could the message name nbp_vlan_group_unpublish() and
-br_fdb_cleanup_by_dst() instead, or describe both layouts if a stable
-backport is intended? Could the patch also be tested on the target tree?
-
-> diff --git a/net/bridge/br_if.c b/net/bridge/br_if.c
-> index 2c05ebc1299d1..fb25ce3e5e646 100644
-> --- a/net/bridge/br_if.c
-> +++ b/net/bridge/br_if.c
-> @@ -341,13 +341,13 @@ static void del_nbp(struct net_bridge_port *p)
->  
->  	nbp_delete_promisc(p);
->  
-> +	br_mrp_port_del(br, p);
-> +	br_cfm_port_del(br, p);
-> +
-
-[Severity: High]
-Does br_mrp_port_del() always clear BR_MRP_AWARE_BIT on the port being
-deleted?
-
-br_mrp_set_port_role() can leave a port MRP-aware with no instance
-pointing at it. Take a ring with primary A and secondary B. Setting
-IFLA_BRIDGE_MRP_PORT_ROLE=PRIMARY on B is accepted, because B is
-MRP-aware and br_mrp_find_port() finds the instance:
-
-net/bridge/br_mrp.c:br_mrp_set_port_role() {
-	...
-	case BR_MRP_PORT_ROLE_PRIMARY:
-		rcu_assign_pointer(mrp->p_port, p);
-		break;
-	...
-}
-
-Now p_port == s_port == B. A keeps BR_MRP_AWARE_BIT and stays in the
-BR_STATE_FORWARDING state that br_mrp_add() set.
-
-Later, when A is removed from the bridge, br_mrp_find_port(br, A) checks
-only p_port, s_port and i_port. So br_mrp_port_del() returns early:
-
-	if (!mrp)
-		return;
-
-br_stp_disable_port()->br_set_state() also returns early:
-
-	if (test_bit(BR_MRP_AWARE_BIT, &p->flags))
-		return;
-
-As a result, A stays FORWARDING.
-
-If VLAN filtering is disabled at runtime, br_allowed_ingress() returns
-true without looking at the unpublished VLAN group. A frame that arrives
-between br_fdb_cleanup_by_dst() and netdev_rx_handler_unregister() is then
-learned with dst == A. Nothing flushes that entry before
-call_rcu(&p->rcu, destroy_nbp_rcu). A later frame to that MAC would reach
-br_forward() with the freed port.
-
-This looks like the same use-after-free as the one in the changelog. It
-needs no reader preemption, only traffic during the teardown window.
-
-Should teardown force the port out of MRP-aware mode, or disable it
-directly, even when no instance references it? Alternatively, should
-br_mrp_set_port_role() avoid orphaning the port it displaces?
-
->  	spin_lock_bh(&br->lock);
->  	br_stp_disable_port(p);
->  	spin_unlock_bh(&br->lock);
-
-[Severity: High]
-Is there still a window here with CONFIG_BRIDGE_VLAN_FILTERING=n?
-
-The fix needs a grace period between br_stp_disable_port() writing
-BR_STATE_DISABLED and the final br_fdb_cleanup_by_dst(br,
-br_port_to_dst(p), 0, 1) in del_nbp(). The only synchronize_net() in that
-window is in nbp_vlan_group_unpublish(). Without VLAN filtering, that
-function is an empty stub:
-
-net/bridge/br_private.h:
-static inline void nbp_vlan_group_unpublish(struct net_bridge_port *port)
-{
-}
-
-Nothing else in the window synchronizes. That includes br_ifinfo_notify(),
-list_del_rcu(), update_headroom() and netdev_reset_rx_headroom().
-
-One possible interleaving:
-
-CPU1 (RX softirq, br_handle_frame_finish())
-    reads p->state and sees FORWARDING
-    passes the BR_STATE_DISABLED check
-
-CPU0 (del_nbp())
-    br_stp_disable_port()
-        br_set_state(p, BR_STATE_DISABLED)
-    br_fdb_cleanup_by_dst(br, br_port_to_dst(p), 0, 1)
-
-CPU1
-    br_fdb_update(br, p, vlan, eth_hdr(skb)->h_source, 0)
-        fdb_create(br, dst, addr, vid, flags)   /* dst == p */
-
-br_fdb_update() does not check the port state again. No FDB flush runs
-after this point: netdev_rx_handler_unregister() only drains, and
-destroy_nbp() does no FDB cleanup. After call_rcu(destroy_nbp_rcu), a
-frame to the learned MAC would reach br_forward() with the freed port.
-
-BRIDGE_MRP and BRIDGE_CFM depend only on BRIDGE. BRIDGE_VLAN_FILTERING is
-default n and depends on VLAN_8021Q. So MRP=y with VLAN_FILTERING=n is a
-valid configuration. The window is short on !PREEMPT_RT, but on PREEMPT_RT
-the softirq reader can be preempted inside it.
-
-This also seems to contradict this line in the changelog: "No frame can
-be learned after that flush and before netdev_rx_handler_unregister()".
-
-Would an unconditional synchronize_net() after br_stp_disable_port() and
-before the final FDB flush close this window?
-
->  
-> -	br_mrp_port_del(br, p);
-> -	br_cfm_port_del(br, p);
-> -
->  	br_ifinfo_notify(RTM_DELLINK, NULL, p);
->  
->  	list_del_rcu(&p->list);
-
+base-commit: c3e67bd82b9b9b1a5118f09a429ccefe2aab0741
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179333317814.2102764.8780283783548366593%40gmail.com
+2.56.0.385.gac671c819a-goog
+
