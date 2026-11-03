@@ -1,102 +1,136 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793690127;
-	b=CnWperIkHXXxP2aiDtZ5mRmOCtdvxHzzjJE3UybVLukoOHtI+7zwMeElC/gVDL1ffFD8
-	 yChNuJJIzvCIT6oNjNoeFPIlL/fl6lIamvhkSBsYxgR6pu6Ju194suApL4Y4YWlHjQ7Za
-	 ai8XE0B+FX1Hc/qK78ZcIW58qkHcNaYT8uOOWoBFRquYNp2AjeyJOSBrPJd4bd6ban/SV
-	 P9JT8p3aEppBhZCCanlKnEdnKGK6OkpkmegFEGQtXvS6emtHxwlldqkvM3DFtFuDXglTA
-	 a52NQSJSE8Ii2T3caAFcNt58OcsBilXl6pH12VbXFXPareRj2nvJSr2+4ZKEoOLbrDw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793690127;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Spam-Flag:X-Spam-Level:
-	 X-Spamd-Result:X-Spam-Score;
-	bh=811OydeNzYN7nt//0FjlaPrP+tHT92V1t9WCuYGo8E8=;
-	b=MOj7KRF5neo7z3HaTw3dmCeI1RaslYBESk5QSnTpsqOC4I70Qgw5X2lf0yvPFu6c/PHa
-	 8ZHvcLjddEcPGiSVygLiAwvIlPuSBGjUbpgcrHOOAzvTgH8wuTuskVIq+MhcBueXL5o9h
-	 a7wZ2e05KPwq0U31ZM7vK5gmO2ZBk8juSUTJQZ6foLPRPgqYc2kSxAsq7TNV+z5zFqfe0
-	 6sfSJdquonDpRJVDFPIga4V9W3EBQpYAY58VK6fKbID5liH5YD+3EHHRSQ+TWqL4d4ViI
-	 vBllf7ve6r6dtwpqClkMW2iqqog8QjXPTeZdDEXf+0RGDqjyXWIPCG2BrWddo2IjUoA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.de;
-	spf=pass smtp.mailfrom=suse.de;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=qop+LuiR;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CvOiXTIS;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=qop+LuiR;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CvOiXTIS;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=198.175.65.21
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1793690250;
+	b=wgMDE90dlKOhNk/gVTgt07LlFSvgMSYf7PjN4PS+OUVuvr/3s+zPZ/zoce1Ul8fN4Bpd
+	 Arf/01YwFz0vDf0uPgd6l2CPPIDM0fg0Pg5wYOjDW1xgBTMa2FJlo+IIT2/rqozYK5057
+	 wV+Rw3lqJ/vCop37wASgG6i/ozVJHw9VAwunS/+sbFTw1NJ8tL3sb1r9XsULYuIw9lLoR
+	 HCXKA3+uU1zUBq52swk4ujErpdbqHCrT+2HGPL6yRiLHuI/lZaRZCaQKaCrQEyyJxHo1J
+	 KyUzgdca2uLFY2Zm6RE+nS+EZSCNH0EHt9OEXK4dSNKpBLvpAMDMvWxHxjPzTJNm9VA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793690250;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:Message-ID:Date:User-Agent:Subject:To:CC:
+	 References:From:Content-Language:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=trAI6vJUUf0qRpN0TIfwanKcnc4rGli/9pJu9vTFNMY=;
+	b=GTJg7Mat8HEMwjePPnAGHH70+uagzlGnpOR2VUzWYvuRkea12zpgaLy4/+2/Z+8sl8z3
+	 F2oYiVVT4LHctALJ+b9resnm7BmkDVFg3dVG2Yrj10VnkaIUV4K2GpFgHJDBNLJFP06Nb
+	 sDUpru8sRE3sFEqjnko78/sBB9e9f/kLu8C9O0V02jhBkXRCq+wcZFy0qU8qI2VtmmIgN
+	 RgYOrtX/1ozdEbwCLBvgjmS/BAo3e0qVSwyw6u9TBt/jpBU2xoF7qxw7TgbpuV8t6bfZY
+	 O1u4tIhPJ0iYbMjJKZv2YY8nIl0AjtJFwCF2d9WTzT9fu+Le9w5hRJEhQ8ya32ZHDmA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BYSKdE3W;
+	arc=fail smtp.remote-ip=198.175.65.21
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4194606A335;
-	Tue,  3 Nov 2026 07:15:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C4194606A335
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611D8606A32C;
+	Tue,  3 Nov 2026 07:17:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 611D8606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=qop+LuiR;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CvOiXTIS;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=qop+LuiR;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CvOiXTIS
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 001641F889;
-	Tue,  3 Nov 2026 07:15:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793690118; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=811OydeNzYN7nt//0FjlaPrP+tHT92V1t9WCuYGo8E8=;
-	b=qop+LuiR8BFOJHwrFigWAVCqjD897LpO5QU+XqbkHgO/zrLpOpdhGvYNFjFm9EpjqTkCfI
-	wmUotR3YLqNwdIEsirRtUX72EqY/NoQ6XI31EmluWTDB6MR4e6H2TGsAJ2Nu0jBqU+gUCQ
-	JS1bmYXB9h2W4V6VI72WWu50STu0QwE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793690118;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=811OydeNzYN7nt//0FjlaPrP+tHT92V1t9WCuYGo8E8=;
-	b=CvOiXTISdk+WRBm2Wk4q74RcInMQJbGQ7nwiOGwNT5nKdfVCCPpMUwosDVAvG1LS8FqfSv
-	vfqvC0PdHbLKOoCg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793690118; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=811OydeNzYN7nt//0FjlaPrP+tHT92V1t9WCuYGo8E8=;
-	b=qop+LuiR8BFOJHwrFigWAVCqjD897LpO5QU+XqbkHgO/zrLpOpdhGvYNFjFm9EpjqTkCfI
-	wmUotR3YLqNwdIEsirRtUX72EqY/NoQ6XI31EmluWTDB6MR4e6H2TGsAJ2Nu0jBqU+gUCQ
-	JS1bmYXB9h2W4V6VI72WWu50STu0QwE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793690118;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=811OydeNzYN7nt//0FjlaPrP+tHT92V1t9WCuYGo8E8=;
-	b=CvOiXTISdk+WRBm2Wk4q74RcInMQJbGQ7nwiOGwNT5nKdfVCCPpMUwosDVAvG1LS8FqfSv
-	vfqvC0PdHbLKOoCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E4235134B8;
-	Tue,  3 Nov 2026 07:15:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id z18BKwSK6WobPAAAD6G6ig
-	(envelope-from <hare@suse.de>); Tue, 03 Nov 2026 07:15:16 +0000
-Message-ID: <dd6d8c92-a96c-4bb3-aee1-a28f2156fb9d@suse.de>
-Date: Tue, 3 Nov 2026 08:15:16 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BYSKdE3W
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793690249; x=1825226249;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=t+pTFUMhjE7rAEZf+fmE0PSJ0fLvKEisxsCLI5MvQrc=;
+  b=BYSKdE3WVqBZAhfgmJBAjr71j2pLtaoFvZ8P3KOnnqP3q/J4cyB0mF9E
+   ietP5oAEgTCFw6Co6+KWO9n7Jt51OgZwmMqDxQFIwwRa3oz14/kAB0YA7
+   +u9upDbOSsso+4HmgxnX5yOaepkfVdK0UfCEXTOx7emooa05C4eBTZn49
+   DVQT2XWt8dSYSUXK5VLvFQh0vt86CDq0+o+Qj42zv/s+Y3rtJ+HuwifqT
+   u/tHye6X6tSTzHHMI+YYWsANjL3VCSaCkIIFegna2bqDVw8Y/1JMaEVbG
+   s9L2FkcqSeqvJAv+07UxU8b12TBFzONYgPo/6qqzHztzGPKEC9FB0V40S
+   g==;
+X-CSE-ConnectionGUID: LoiOvNWbSwSs9RGXlHlEeA==
+X-CSE-MsgGUID: Apwum+UgQw2LyElH/bYZjQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2493544"
+X-IronPort-AV: E=Sophos;i="6.27,192,1787036400"; 
+   d="scan'208";a="2493544"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 23:17:28 -0800
+X-CSE-ConnectionGUID: KNqOH9+1Q5qUiim/XWVDAA==
+X-CSE-MsgGUID: ibK2bYC0T5mbjJm8/nUIqg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,192,1787036400"; 
+   d="scan'208";a="6461307"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2026 23:17:27 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Mon, 2 Nov 2026 23:17:26 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56 via Frontend Transport; Mon, 2 Nov 2026 23:17:26 -0800
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.41) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Mon, 2 Nov 2026 23:17:26 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JsNKiK27uYrN5OBf8N0qdR8JJ6iuFo/rjAJi2tZABF8J0TdvgqkpQ9ljKNYoohwzWTX52w3mHv0axDT+OdM/6hIxkYUlDTH4TAeQxhJYe+H5Jqx5BOAWbFSAK1xsrvW8BBTxO40NN5W8jU68pE69SaPgQZ4R9LaTCuaEPdmVeKt3J/VPhFKyNvfqGwRaLkLsSpGPhrwouSWMdWiU8LK3SmPLlUiMsT2Uh4X7vFjO6yGxIb3epHfGmqbpZjlDHlNetLizaC7af1P1eE2JBXejubW1QHGDe9CEJTf15mDplMHqWbX1zDX+r98sTpTiSrXFQi366VCB6TNsex3ZV74UvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=trAI6vJUUf0qRpN0TIfwanKcnc4rGli/9pJu9vTFNMY=;
+ b=ix/4tFDxXei+2Sa0Y350nocF/RdO+QmTFW4BH5BYLj59CyRLymUzPttHlTud4bMAkgDUPEYuf6hcjpXKqALf7IBJMAk3Xnz4dfuCW9Y23bbrCDfryOCjUNUuBogLSvCwUjrnDL8GRq5vcybxJw/sfG1hukrDE7QMrmB987IVN9LBMfVah14Ux/ABrOiMnPZZZEIBRsibhNwm/s/sTGL5cxnxKyI3q/Flrbsj71CSE21hT7P4HjESZghirVCW9aSmH++oPtvJYS7sCyl4c/Os0imCX/8tiktVakrur4/lcnH6T/7ypwuHt4rAph43RfyoA2S1QzMSqDRle0bVNxv35A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
+ by SA0PR11MB4621.namprd11.prod.outlook.com (2603:10b6:806:72::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Tue, 3 Nov
+ 2026 07:17:19 +0000
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0569.011; Tue, 3 Nov 2026
+ 07:17:18 +0000
+Message-ID: <84054d1a-9e89-42ff-ba85-f2d04b821415@intel.com>
+Date: Mon, 2 Nov 2026 23:17:15 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 2/5] e1000e: do not cache the hwtstamp config before
+ it is applied
+To: Linkui Xiao <xiaolinkui@126.com>, <anthony.l.nguyen@intel.com>,
+	<przemyslaw.kitszel@intel.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@kernel.org>, <kuba@kernel.org>,
+	<pabeni@redhat.com>
+CC: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Linkui Xiao <xiaolinkui@kylinos.cn>,
+	<stable@vger.kernel.org>
+References: <20261028090455.2291659-1-xiaolinkui@126.com>
+ <c4c4833b-b0e9-4d79-9e7b-7db9eee67535@intel.com>
+ <7f3b08fb-8eec-4ff1-a696-f8a1b3df7b45@126.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
+Content-Language: en-US
+In-Reply-To: <7f3b08fb-8eec-4ff1-a696-f8a1b3df7b45@126.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MW4PR04CA0174.namprd04.prod.outlook.com
+ (2603:10b6:303:85::29) To DS0PR11MB7381.namprd11.prod.outlook.com
+ (2603:10b6:8:134::14)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,402 +140,126 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 3/5] tls: update the RX key when a KeyUpdate
- is received
-To: martin.nvme.dev@gmail.com, John Fastabend <john.fastabend@gmail.com>,
- Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, Shuah Khan <shuah@kernel.org>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Hannes Reinecke <hare@kernel.org>, Chuck Lever <cel@kernel.org>,
- kernel-tls-handshake@lists.linux.dev, linux-nvme@lists.infradead.org,
- Alistair Francis <alistair.francis@wdc.com>,
- Martin Belanger <martin.belanger@dell.com>
-References: <20261102-keyupdate-rfc-v4-0-f17419972b9f@gmail.com>
- <20261102-keyupdate-rfc-v4-3-f17419972b9f@gmail.com>
-Content-Language: en-US
-From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20261102-keyupdate-rfc-v4-3-f17419972b9f@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spamd-Result: default: False [-11.79 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,queasysnail.net,davemloft.net,redhat.com,lwn.net,linuxfoundation.org,infradead.org];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -11.79
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|SA0PR11MB4621:EE_
+X-MS-Office365-Filtering-Correlation-Id: c606c90e-1394-4198-f343-08df397a7ea8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|6133799003|10067099003|18002099003|261102123227099003|22082099003|56012099006|4143699003|261026121527099003|11063799006|261022075727099003|261022105027099003|261021121427099003|261022113327099003|261028144727099003|261026140227099003;
+X-Microsoft-Antispam-Message-Info: JONxv+TAheceY9vXrrs3lf/fkIxQ5Uwt5rZlWCGR/O9725XZ16exAouYpgO4gRKDgJ2FGJP0IgbVlO0H2VdQMN8P8H+L7QTD0VMoA/QWJZFZtd88aDE8bnV6BfD9EdsdVITwrk8Cu7C5kWTs2IDMX8ZeG+m1GGGVoXVS/OIImq4sWnBZscgbY5ZwXiSFebH9nqjVqxF/2YZFtJD9K1okCR+oNAxNgPsuCOYif4EWPGtJrW0GHzTdC/XIL/C+fwi//6OxVweYwov/5GzyaDgwjE5NUgn88FB6YeZnaCb3vnduEDm1e0ye/kWt6IHawyH/+mW9V6oAPMTWgtSH9pWV609AG+s2YZGxNsuCMgWkgj59VlBkXq+u5hboZiDX8GkyPbSL32z9VStBWWueJEUE2FVlOMCCu6jDVs8g1AsVY+0V2xdo5s9ulbL/ML99wWuD0obXX6MFn2LeYfjJVzHGvjVcrtVLU/0pXhqcCKYl35KOnJn0BfYMhCp6NhMN3iB1xHc3TNb4bf16uhabxe9Nafst9gEXxkDmdMl0oDndLhicME5hboJZ3XaKdMDyEhJiOfIZzYpO0jkYjDkJ4wkcrs1jvkkfdVckjYyqmJbcm5UWpTRVggJft1IFJwg4ba+Led6zzSbqrjfCD/Ugnsj5B2yMcX7QtOWIdTftd26MjhY=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(6133799003)(10067099003)(18002099003)(261102123227099003)(22082099003)(56012099006)(4143699003)(261026121527099003)(11063799006)(261022075727099003)(261022105027099003)(261021121427099003)(261022113327099003)(261028144727099003)(261026140227099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?b2lrRWE5bWN2ZUZrQjFjbFF2TzZFOVIwMFQ1a1FzTHpaN3U0MkNCQWZUbDJO?=
+ =?utf-8?B?anJBWXhUb1RjY0dzSFNva2FNcEJlc3BQQ2RESk9KQnRPSVFCREk2OWFMR0Nk?=
+ =?utf-8?B?SDcxR3lSUFU4YXZPYWhsMUpkWTc5djFwKzBmTkZuWE84d016RVhYdVVJZjNi?=
+ =?utf-8?B?TmxUT2VEMU1IK05BUEJoc1BJVzZUd2k2K0Z2Q1V4OFBBekVyRTJZNXNSSWt1?=
+ =?utf-8?B?UUgwS0xhZVFvdkp5amVRT3dFOFRDaS9Na296SHF4WXVESEVmT2pQQWlvdUZM?=
+ =?utf-8?B?MnBBcmNmTjU0eHdnNFRtRHQyc1lab1ZWbVVCc1NnVG4rY1ZkN3hqNHZuMXZI?=
+ =?utf-8?B?N24yWktHT1BiNWFVNi8zTnh3U0EzdkJQSk1ETHhqSUkvaVdKTnBpMWxBOWJn?=
+ =?utf-8?B?bFY4TEV2RHRqbXJtbThhZVE0M2szMEZEaXlWdHVGNUFSZTJkbHA4c1JuejlR?=
+ =?utf-8?B?ZVZlc1dFYVcvVG8xamcwMWNLUEptWWwwL0VZaXlVVjNmM0VkenNxalJRQmxj?=
+ =?utf-8?B?MEVjc2lkYzNTeTI5RG1xVWorUlBCQm9KNEE0OWdnbUFlb0NFRWVuekVLVHN0?=
+ =?utf-8?B?UTdWUTBuWjFDSEVFaXU0N1RDMlhMSWJuOEZwZ1FRR0NzQ25OOTROSzloMHFH?=
+ =?utf-8?B?T0ZzSlQweFBOZVNGWW14VUhtczlHMnNKY1I2T1RhdFZnbEVPRmtTSFVBSWNH?=
+ =?utf-8?B?T0NGNWZieldnM2ZzSW9XTE5xQXlLb0ZhV0pTQWVxN1lZWkVJT1RjbTZ6cC9Z?=
+ =?utf-8?B?SWhBR0I5dHI5bWNhcXRYYnQyZ0xSOVpsUDVVYjJHQVBQb2NGZ1MxSjlVMFVp?=
+ =?utf-8?B?Tzg3Skd5ZlYzc010a2FlWW9PU1hZbUt3NU01UWVpVlJlTnZJUHNnS1lHcGlM?=
+ =?utf-8?B?SXZjVnNMMmx3UGVDMWZIYzgwN1hWZDhmNnhQS1VMdStSbklSeEZ1aWYrS2dl?=
+ =?utf-8?B?bFZIRnR3eVBvNTY5NEtiN1BrQXJiYlMrczl4RmpZUUhMVS9RZzRkRlVVNE9B?=
+ =?utf-8?B?UG1SRy9HNTdJT040SDJjMHVkWHJUU3lHSlNQRnI5ek9lNHUreldiRlVGZHR3?=
+ =?utf-8?B?WVN5RmZ5WjhRUHY4WTNvT2lWb09BZVlTaWxvRHVTUVdvNGZwdEhaWWNnZVhB?=
+ =?utf-8?B?Y0ZxY0Z0V3VXekNzL1p1cEtuRkozY2pBWXpJNXU2Y2I5Uy85MzM5Tk5FeWVt?=
+ =?utf-8?B?UEVoZzdndkpsVHYzOExQM2l6aUViZmRDbXcrRlZyMDFkbDYyOGlrZUppRElu?=
+ =?utf-8?B?RXlvbWF2dUU1OVBLZmw2SGcwUURmMnhpa2FmQTFuYlVlSW9UNUl6QVlxUjNz?=
+ =?utf-8?B?eHEyOFJ0MEpBYkg4TWNZMFFuRmh4RXhkVTlBYUFFSkpPSGVaZHF6czNDekZS?=
+ =?utf-8?B?RitlS2cza3YrQ29aU1ZiYVZoeEM5TkxMTE5VZDRJbGpqU3B2eXFvUzl1MmRH?=
+ =?utf-8?B?QU90TEV0ak1JVTR1L253U21WVC91eWNrd2JJMVJnMXFaMXo5YUhXU0tUU2Z2?=
+ =?utf-8?B?RVJsLzc3enNKUHJyc011Z3ZzQ2NmNG1QTW5ZSnBUUFBOdFMwWm0zR0FDa0Iv?=
+ =?utf-8?B?bVB1NS9RaEdBY0FRWk4vTkpvbGJrUjF2UFhJbEZ6Q3FGdTBFUzhJTERXSzVV?=
+ =?utf-8?B?dVd2MllXVE5qa24vbDRzdFVmaFBlblV0bnlPa3I1OWxISzRuN2tjaGh6cHQz?=
+ =?utf-8?B?dkJpa2M3VnQ1SkE1emVUcEhOaUs5ak9wamRGMHMzSXBMaVJ0eTRTUGprUVVJ?=
+ =?utf-8?B?cHY1RDRZRjZMVE5VN1I0WUVuSFJBRDlrYXBFejdOb3NmWFYzWDI5MllrOXRk?=
+ =?utf-8?B?S0p6cVVXSERkaFoxK2Jvbnp4V2w4K0JjbU5SZVF3a2IyZnZZU2EzU25DZjA3?=
+ =?utf-8?B?N0hDaWUxZWdPdjFXSnEvelo0RFFSL1ZsMS9ldmVuQ0RlcWlkSzBjWXo2WGFj?=
+ =?utf-8?B?NlF5eXlWNWNNK0hnN2RjY3VtMCtXMjM0UUZMZUtWV1hkcWpvZTZnTzZQNFpm?=
+ =?utf-8?B?L3pteVJjUzJYQmlRMnBBSHlzemtqcnhGaEMzWHo0dDBOMGVRanZsOWhsZCtO?=
+ =?utf-8?B?U1k5M3ZiR2lXbGFSSWFIa1JqN1pTNFR3YWdTd1lOYm1tWCt1bmpIT3QyZ1No?=
+ =?utf-8?B?OXhrSUhqM1NGMXdiNEVpOFo5c1pFUDBiV2VvK2t3NTBSOGE4SWZSbFBxcDNz?=
+ =?utf-8?B?cEVEY2NQT0xHTEloMGhGK25TWi9IOUdGSDJmN2hPc3lmcWVRd2NJWlhiNVV4?=
+ =?utf-8?B?SzhkeVhaZGlUOEkycHhLdW9nQ0N3WGRwRzdCQXhxMUNOK245cGxYSVk3S3RZ?=
+ =?utf-8?B?UkJIQTdLWXdxajlOWGxpa3ZLK3FqZVNqRzQ4ZWFETmo1T3JjaWNJUT09?=
+X-Exchange-RoutingPolicyChecked: XAatw2UM6AUQxPFCvNzPLrHnZfo57If9mTNC+V+WQ0OWE4/59LLGCZ3x/22K++LpTrfkVgrE/9KkcStJOwJKOkr3JYsUljAbawVFk7gxTWGMX4+B8vOh0yIjnU8VoOxClCJXrek1SA8uEfzdtgLPHgEaVuXEmwqE96LihYwOP9e/enHytMkX3GFVk+G7ShEKAPo8vDKtF6+clZ7Tv9BgLjB3FLtxY72n3+UBtvkPVpdnXt8BIpHj8A8NQBgg3hjHq70zzmcpWpGomndweRBFpVvj8munMprFtKCtGenwraTAW5kh86/NcifnOyJ8fsPzeQ1kaCRRorrX6KxBjm87SQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: c606c90e-1394-4198-f343-08df397a7ea8
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 07:17:18.5131
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aP7At7YegapxmoayTFp1SH02655nT7VXTqXuQObF18jD/mbk2IWafZ0rd0tXXQwiEzhjaRmPCIYyG1nLuRpIV3vZMdVB+dZHajcs2lh5Vmg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4621
+X-OriginatorOrg: intel.com
 
-On 11/2/26 5:58 PM, Martin Belanger via B4 Relay wrote:
-> From: Martin Belanger <martin.belanger@dell.com>
+On 11/2/2026 5:04 PM, Linkui Xiao wrote:
+> Hi Jake,
 > 
-> When a KeyUpdate arrives, kTLS blocks reads with -EKEYEXPIRED until
-> the user installs the next key. A kernel user such as nvme-tcp or
-> sunrpc never does, so the connection stalls.
+> Thank you for applying the patch and for the review.
 > 
-> For a socket with a registered RX secret, derive the next key and
-> install it when the KeyUpdate is decrypted. The record is not passed to
-> the user, so recvmsg(), splice() and read_sock() go on to the next
-> record. Without a registered secret the behavior is unchanged.
+> On 2026/11/3 06:15, Jacob Keller wrote:
+>> On 10/28/2026 2:04 AM, Linkui Xiao wrote:
+>>> From: Linkui Xiao <xiaolinkui@kylinos.cn>
+>>>
+>>> e1000e_config_hwtstamp() stores the requested configuration in
+>>> adapter->hwtstamp_config right after the rx filter has been
+>>> translated, but the two register writes that follow are verified by
+>>> reading the registers back and each of them can fail with -EAGAIN.
+>>>
+>>> When one of them does, the driver is left holding a configuration the
+>>> hardware never accepted:
+>>>
+>>>   - e1000e_hwtstamp_get() hands it back to user space, so an
+>>>     application that reads the configuration back is told that
+>>>     hardware time stamping is in effect while it is not;
+>>>
+>>>   - e1000e_systim_reset() re-applies it after every reset, including
+>>>     the ones the watchdog triggers, and keeps failing;
+>>>
+>>>   - e1000_watchdog() starts polling TSYNCRXCTL_VALID for the cached rx
+>>>     filter, and e1000_xmit_frame() still parks skbs that ask for a Tx
+>>>     time stamp because it only looks at FLAG_HAS_HW_TIMESTAMP, so they
+>>>     are eventually dropped by e1000e_tx_hwtstamp_work() with a
+>>>     "clearing Tx timestamp hang" warning.
+>>>
+>>> Cache the configuration only once both registers have been verified,
+>>> so that adapter->hwtstamp_config always describes what the hardware
+>>> is programmed with.
+>>>
+>>
+>> Any idea why this got marked as patch 2 out of 5? This doesn't appear on
+>> either netdev or iwl with any other patches.
+> Regarding your question about the "2/5" marking: it was an oversight on
+> my end. I generated this fix from a local branch that contained other
+> commits, and `git format-patch` automatically added the series
+> numbering. The patch is indeed a standalone fix and was not intended to
+> be part of a series posted elsewhere.
 > 
-> A KeyUpdate that is not alone in its record, has a wrong length or an
-> invalid request_update value ends the connection, as RFC 9846 section
-> 4.7.3 requires. So does a peer that sends more than 8 KeyUpdates in one
-> second, the same limit as GnuTLS. That case is counted as
-> TlsRxRekeyError and logged, rate limited.
+> I'll make sure to use a proper invocation for single patches going forward.
 > 
-> Signed-off-by: Martin Belanger <martin.belanger@dell.com>
-> ---
->   include/net/tls.h       |   7 +++
->   net/tls/Makefile        |   3 +-
->   net/tls/tls.h           |   2 +
->   net/tls/tls_keyupdate.c | 154 ++++++++++++++++++++++++++++++++++++++++++++++++
->   net/tls/tls_sw.c        |  43 ++++++++++++--
->   5 files changed, 202 insertions(+), 7 deletions(-)
+> Thanks again for your time and for taking this fix into the Intel Wired
+> LAN tree.
 > 
-> diff --git a/include/net/tls.h b/include/net/tls.h
-> index aacc6d12226e..a5bc28a7d1f5 100644
-> --- a/include/net/tls.h
-> +++ b/include/net/tls.h
-> @@ -63,6 +63,11 @@ struct tls_rec;
->   
->   #define TLS_HANDSHAKE_KEYUPDATE		24	/* rfc8446 B.3: Key update */
->   
-> +/* KeyUpdate: msg_type, 24-bit length, request_update (RFC 9846 4.7.3) */
-> +#define TLS_KEYUPDATE_MSG_SIZE		5
-> +#define TLS_KEY_UPDATE_NOT_REQUESTED	0
-> +#define TLS_KEY_UPDATE_REQUESTED	1
-> +
->   #define TLS_AAD_SPACE_SIZE		13
->   
->   /* SHA-384, the longest hash of a TLS 1.3 cipher suite kTLS supports */
-> @@ -142,6 +147,8 @@ struct tls_sw_context_rx {
->   	u8 zc_capable:1;
->   	u8 reader_contended:1;
->   	bool key_update_pending;
-> +	u8 key_update_count;		/* received in this window */
-> +	unsigned long key_update_window;	/* jiffies */
->   
->   	struct tls_strparser strp;
->   
-> diff --git a/net/tls/Makefile b/net/tls/Makefile
-> index 6edcf1271b75..ce8ac6a59f8c 100644
-> --- a/net/tls/Makefile
-> +++ b/net/tls/Makefile
-> @@ -7,6 +7,7 @@ CFLAGS_trace.o := -I$(src)
->   
->   obj-$(CONFIG_TLS) += tls.o
->   
-> -tls-y := tls_main.o tls_sw.o tls_proc.o trace.o tls_strp.o tls_hkdf.o
-> +tls-y := tls_main.o tls_sw.o tls_proc.o trace.o tls_strp.o tls_hkdf.o \
-> +	 tls_keyupdate.o
->   
->   tls-$(CONFIG_TLS_DEVICE) += tls_device.o tls_device_fallback.o
-> diff --git a/net/tls/tls.h b/net/tls/tls.h
-> index b2061f6bf065..63ece8074985 100644
-> --- a/net/tls/tls.h
-> +++ b/net/tls/tls.h
-> @@ -149,6 +149,8 @@ int init_prot_info(struct tls_prot_info *prot,
->   		   const struct tls_cipher_desc *cipher_desc);
->   int tls_hkdf_expand_label(const u8 *secret, size_t secret_len,
->   			  const char *label, u8 *out, size_t out_len);
-> +int tls_keyupdate_rekey(struct sock *sk, int tx);
-> +int tls_keyupdate_rx(struct sock *sk, struct sk_buff *skb);
->   int tls_set_sw_offload(struct sock *sk, int tx,
->   		       struct tls_crypto_info *new_crypto_info);
->   void tls_update_rx_zc_capable(struct tls_context *tls_ctx);
-> diff --git a/net/tls/tls_keyupdate.c b/net/tls/tls_keyupdate.c
-> new file mode 100644
-> index 000000000000..281c7b13eb82
-> --- /dev/null
-> +++ b/net/tls/tls_keyupdate.c
-> @@ -0,0 +1,154 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/* Copyright (c) 2026 Dell Technologies Inc. or its subsidiaries.
-> + *
-> + * TLS 1.3 KeyUpdate, RFC 9846 sections 4.7.3 and 7.2.
-> + *
-> + * A TLS 1.3 peer can change the key of the direction it sends in at any
-> + * time. It sends a KeyUpdate message, then encrypts all later records
-> + * with the next key. A sender must also change its key before the key
-> + * has protected too many records (section 5.5).
-> + *
-> + * The next key is derived from the application traffic secret, not from
-> + * the current key. User space gives the kernel only the key and IV, so
-> + * the kernel cannot derive the next key on its own. Without the secret,
-> + * a received KeyUpdate goes to the application, and the kernel stops
-> + * decrypting until the application installs the next key with TLS_RX.
-> + *
-> + * With TLS_TX_TRAFFIC_SECRET or TLS_RX_TRAFFIC_SECRET, user space also
-> + * gives the kernel the secret of that direction. The kernel then handles
-> + * KeyUpdate itself. This file derives and installs the next key, and
-> + * processes a received KeyUpdate. tls_sw.c sends KeyUpdate messages.
-> + */
-> +
-> +#include <linux/jiffies.h>
-> +#include <linux/skbuff.h>
-> +#include <net/strparser.h>
-> +#include <net/tls.h>
-> +
-> +#include "tls.h"
-> +
-> +/* A peer that sends more KeyUpdates than this in one second ends the
-> + * connection. Each one costs three HMACs and a new key, and carries no
-> + * data.
-> + */
-> +#define TLS_KEYUPDATE_RX_MAX_PER_SEC	8
-> +
-> +/**
-> + * tls_keyupdate_rekey - install the next key of one direction
-> + * @sk: socket
-> + * @tx: non-zero for the transmit direction
-> + *
-> + * Derive the next application traffic secret from the registered one,
-> + * then its key and IV, and install them. The record sequence number
-> + * restarts at zero.
-> + *
-> + * Return: 0 on success, or a negative errno. On error the installed key
-> + * and the registered secret do not change.
-> + */
-> +int tls_keyupdate_rekey(struct sock *sk, int tx)
-> +{
-> +	struct tls_context *ctx = tls_get_ctx(sk);
-> +	struct tls_traffic_secret *secret;
-> +	const struct tls_cipher_desc *cipher_desc;
-> +	u8 iv[TLS_MAX_SALT_SIZE + TLS_MAX_IV_SIZE];
-> +	u8 next[TLS_MAX_TRAFFIC_SECRET_SIZE];
-> +	union tls_crypto_context tmp = {};
-> +	struct tls_crypto_info *info = &tmp.info;
-> +	int rc;
-> +
-> +	secret = tx ? &ctx->tx_secret : &ctx->rx_secret;
-> +	cipher_desc = get_cipher_desc(ctx->prot_info.cipher_type);
-> +	if (!cipher_desc || !secret->len ||
-> +	    cipher_desc->salt + cipher_desc->iv > sizeof(iv))
-> +		return -EINVAL;
-> +
-> +	/* version and cipher_type; the rest of tmp stays zero */
-> +	*info = tx ? ctx->crypto_send.info : ctx->crypto_recv.info;
-> +
-> +	rc = tls_hkdf_expand_label(secret->data, secret->len, "traffic upd",
-> +				   next, secret->len);
-> +	if (rc)
-> +		goto out;
-> +
-> +	rc = tls_hkdf_expand_label(next, secret->len, "key",
-> +				   crypto_info_key(info, cipher_desc),
-> +				   cipher_desc->key);
-> +	if (rc)
-> +		goto out;
-> +
-> +	rc = tls_hkdf_expand_label(next, secret->len, "iv", iv,
-> +				   cipher_desc->salt + cipher_desc->iv);
-> +	if (rc)
-> +		goto out;
-> +
-> +	memcpy(crypto_info_salt(info, cipher_desc), iv, cipher_desc->salt);
-> +	memcpy(crypto_info_iv(info, cipher_desc), iv + cipher_desc->salt,
-> +	       cipher_desc->iv);
-> +
-> +	rc = tls_set_sw_offload(sk, tx, info);
-> +	if (rc)
-> +		goto out;
-> +
-> +	memcpy(secret->data, next, secret->len);
-> +
-> +out:
-> +	memzero_explicit(next, sizeof(next));
-> +	memzero_explicit(iv, sizeof(iv));
-> +	memzero_explicit(&tmp, sizeof(tmp));
-> +
-> +	return rc;
-> +}
-> +
-> +/**
-> + * tls_keyupdate_rx - process a received KeyUpdate
-> + * @sk: socket
-> + * @skb: the decrypted record, which starts with a KeyUpdate message
-> + *
-> + * Called with the socket locked, for a direction with a registered
-> + * secret. The caller does not pass the record to the user.
-> + *
-> + * Return: 0 on success, or a negative errno if the connection must end.
-> + */
-> +int tls_keyupdate_rx(struct sock *sk, struct sk_buff *skb)
-> +{
-> +	struct tls_context *ctx = tls_get_ctx(sk);
-> +	struct tls_sw_context_rx *rx_ctx = tls_sw_ctx_rx(ctx);
-> +	const struct strp_msg *rxm = strp_msg(skb);
-> +	u8 msg[TLS_KEYUPDATE_MSG_SIZE];
-> +	int rc;
-> +
-> +	/* A KeyUpdate must end its record (section 5.1). Another message
-> +	 * in the same record is not supported.
-> +	 */
-> +	if (rxm->full_len != sizeof(msg) ||
-> +	    skb_copy_bits(skb, rxm->offset, msg, sizeof(msg)))
-> +		return -EBADMSG;
-> +
-> +	/* msg_type, a 24-bit length of 1, then request_update */
-> +	if (msg[1] || msg[2] || msg[3] != 1)
-> +		return -EBADMSG;
-> +	if (msg[4] != TLS_KEY_UPDATE_NOT_REQUESTED &&
-> +	    msg[4] != TLS_KEY_UPDATE_REQUESTED)
-> +		return -EBADMSG;
-> +
-> +	if (!rx_ctx->key_update_count ||
-> +	    time_after(jiffies, rx_ctx->key_update_window + HZ)) {
-> +		rx_ctx->key_update_window = jiffies;
-> +		rx_ctx->key_update_count = 0;
-> +	}
-> +	if (++rx_ctx->key_update_count > TLS_KEYUPDATE_RX_MAX_PER_SEC) {
-> +		TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSRXREKEYERROR);
-> +		net_warn_ratelimited("tls: peer sent more than %d KeyUpdates in one second\n",
-> +				     TLS_KEYUPDATE_RX_MAX_PER_SEC);
-> +		return -EBADMSG;
-> +	}
-> +
-> +	rc = tls_keyupdate_rekey(sk, 0);
-> +	if (rc) {
-> +		TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSRXREKEYERROR);
-> +		return rc;
-> +	}
-> +	TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSRXREKEYOK);
-> +
-> +	return 0;
-> +}
-> diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-> index 771e02bff519..027c32edaf85 100644
-> --- a/net/tls/tls_sw.c
-> +++ b/net/tls/tls_sw.c
-> @@ -1551,15 +1551,28 @@ static int tls_check_pending_rekey(struct sock *sk, struct tls_context *ctx,
->   	if (hs_type == TLS_HANDSHAKE_KEYUPDATE) {
->   		struct tls_sw_context_rx *rx_ctx = ctx->priv_ctx_rx;
->   
-> -		WRITE_ONCE(rx_ctx->key_update_pending, true);
->   		TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSRXREKEYRECEIVED);
-> +
-> +		if (ctx->rx_secret.len) {
-> +			err = tls_keyupdate_rx(sk, skb);
-> +			if (err) {
-> +				tls_err_abort(sk, err);
-> +				/* callers free the record only on success */
-> +				consume_skb(skb);
-> +				return err;
-> +			}
-> +			return 1;
-> +		}
-> +
-> +		WRITE_ONCE(rx_ctx->key_update_pending, true);
->   	}
->   
->   	return 0;
->   }
->   
->   /* On decrypt failure the connection is aborted (sk_err set) before
-> - * returning a negative errno.
-> + * returning a negative errno. Return 1 for a record the kernel consumed
-> + * (a KeyUpdate): the caller frees it and does not pass it to the user.
->    */
->   static int tls_rx_one_record(struct sock *sk, struct msghdr *msg,
->   			     struct tls_decrypt_arg *darg)
-> @@ -1883,6 +1896,11 @@ int tls_sw_recvmsg(struct sock *sk,
->   		err = tls_rx_one_record(sk, msg, &darg);
->   		if (err < 0)
->   			goto recv_end;
-> +		if (err > 0) {
-> +			tls_rx_rec_done(ctx);
-> +			consume_skb(darg.skb);
-> +			continue;
-> +		}
->   
->   		async |= darg.async;
->   
-> @@ -2023,9 +2041,8 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
->   	if (err)
->   		goto splice_read_end;
->   
-> -	if (!skb_queue_empty(&ctx->rx_list)) {
-> -		skb = __skb_dequeue(&ctx->rx_list);
-> -	} else {
-> +	skb = __skb_dequeue(&ctx->rx_list);
-> +	while (!skb) {
->   		struct tls_decrypt_arg darg;
->   
->   		err = tls_rx_rec_wait(sk, nonblock, true, false);
+> Best regards,
+> Linkui
 
-Why this change? Looks a bit out of place here...
+Thanks for clarifying! I mostly wanted to make sure it wasn't some issue
+with mails not hitting the list (spam or other issues), and potential
+fixes being missed.
 
-> @@ -2039,7 +2056,10 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
->   			goto splice_read_end;
->   
->   		tls_rx_rec_done(ctx);
-> -		skb = darg.skb;
-> +		if (err > 0)
-> +			consume_skb(darg.skb);
-> +		else
-> +			skb = darg.skb;
->   	}
->   
->   	rxm = strp_msg(skb);
-> @@ -2121,6 +2141,11 @@ int tls_sw_read_sock(struct sock *sk, read_descriptor_t *desc,
->   			err = tls_rx_one_record(sk, NULL, &darg);
->   			if (err < 0)
->   				goto read_sock_end;
-> +			if (err > 0) {
-> +				tls_rx_rec_done(ctx);
-> +				consume_skb(darg.skb);
-> +				continue;
-> +			}
->   
->   			released = tls_read_flush_backlog(sk, prot, INT_MAX,
->   							  0, decrypted,
-> @@ -2520,6 +2545,12 @@ static void tls_finish_key_update(struct sock *sk, struct tls_context *tls_ctx)
->   {
->   	struct tls_sw_context_rx *ctx = tls_ctx->priv_ctx_rx;
->   
-> +	/* Only a pending KeyUpdate holds poll() back. The in-kernel rekey
-> +	 * runs while the KeyUpdate record is still queued.
-> +	 */
-> +	if (!READ_ONCE(ctx->key_update_pending))
-> +		return;
-> +
->   	WRITE_ONCE(ctx->key_update_pending, false);
->   	/* wake-up pre-existing poll() */
->   	ctx->saved_data_ready(sk);
-> 
+The numbering will get fixed and merged with other patches once our
+review process completes and Tony finds space for submission to netdev.
+That may take a bit.
 
-Otherwise looks good.
+Thanks,
+Jake
 
-Cheers,
-
-Hannes
--- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.de                                +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
