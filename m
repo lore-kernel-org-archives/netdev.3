@@ -1,85 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.181
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793747009;
-	b=PeyLdf23vtpWuB4j0oti4ULUMTuRFyKOtw0+x19FBMKZTSUZvofvUw+qD87nDD/NB2Q/
-	 ZTL/TTGNJQ27W2RvZQnv19BD2qyco1vEq4nvLbGTfgN/u2Sz0Y90oGShizm6apKiejsQ1
-	 CFPlnR8XZ5+2bzeDur4q0HhiuGIFoz+9+asNohmA88TSMnEO+zoXtmV0uMeMLpJ+vrE4o
-	 uf/i/BxntlKCvfZr+VuIw5pMSQKjmv969iYQFi81ZPHJHxfd9DiA31tgy52PAwokOx01r
-	 zbgWMkWLMauWm/gQG+ClgcJqt8FkfAGHQjpiYZc1z8ITr2shyCLlqAxX8G7WrAj3Keg==
+	t=1793747236;
+	b=TUkzELSd7mcUUlKMMd4O0VYNo6/ISH+Y6lfy2STbNbw7fl1pGx2SeSidmdYjRhl6Pmi8
+	 9UOOkRR5XrNzc28o0V2DaIBYktH8bigje10lkSYQ26CDNN/dr3S4uz2gWRj16KW5X8lyg
+	 XoWy8OfFpL/GEvVYhrmL8lkUD7hzwsO8++9tWZjCUiEQaVhdNGJG98eIB6SpQYQM98AZE
+	 6tre6X+1XLx8ogQ71K6scqP4ajTj7hrHuS9oiyNnPd8sgCSVGmdh7SumyCG1tHtAusBV2
+	 +si90O0OyX57SQuNbYuOms6HkBh1mfC0NOBx/ksZ/BILrlhIeYRY1JqBRiIUtrj4NLA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793747009;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793747236;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Date:From:To:Cc:Subject:Message-ID:Mail-Followup-To:References:
 	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=Bc3q5OMwODprZ3tRrHE2dAObJscCTN7oqVxqSs9CQE0=;
-	b=4T0Od5zI1VWaZnush8wX3l6OzPOhdu9FjcadvxWX+bdMKhFR60JrLXZWYBXDs38Yn8Ds
-	 csKXkrTn930gWo0UMIoX/aaImAirT1CwYSDPt7ZeJmpPsfJMZO9+DQvLWbXGjmMnGuXa7
-	 cl+qT08dVWXpCdr8PuoFBeAwsFaRWbV2NL8e+x7kD+iLgKkhf4ZskRZ+je+Lak/+QDoJk
-	 G701tFB+sQZL8fYKXlb7uM0nQ5XPnLQhp226iC8HCukze9VJciWGYf0xw7YzgF8IfaMVH
-	 BimGHtr581fvAAWwtwKoDdOjuyhEQRL5x7Pa9FILqjLuKAU5nendhnvp8yDgHgyE9eA==
+	bh=NEFwsaly/pYEQSMPZ8dIr6fdqKf0QWqwNabPuOPmqrE=;
+	b=wYhETDHnsCtqon8lTc7KuBdWAhp6JCeXsC5tryJim0GN2gRJD+9/8EK8EykHvpghYq+b
+	 0Q0y3t/whdco0zp+olpFSkuZhjPmqz6WaFiPOBzC3Z5tJsWnWtwdLMibzGcT0dwn5akwF
+	 yOOs3CJE1lTlbGBma3gDgV419PbmBbmNH8B6VVy1B+Iqopn7twx748yotM/IA4RGWUZIS
+	 N7y1zpf+fTFLCyMxV6LohDn/Zr0egJ7qSi8cw9raI6O0t57ldDTO4Kt3fejgIrAJvylPd
+	 b/r4e4GK6PjSOSci6699vcz3kmWgSEsQUUZ1loI9I1N+aRe5xNlcGvxQiNah6DLSoBQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=dama.to;
 	spf=none smtp.mailfrom=dama.to;
-	dkim=pass header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=kpwSVOrl;
-	arc=none smtp.remote-ip=209.85.214.178
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	dkim=pass header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=F1hoXgMf;
+	arc=none smtp.remote-ip=209.85.214.181
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D686606A32F
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 23:03:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2D686606A32F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A96C606A32D
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 23:07:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A96C606A32D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=kpwSVOrl
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2e987a2ba0cso271915ad.3
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 15:03:28 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=F1hoXgMf
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2e8fe8e343fso289305ad.2
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 15:07:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20260707.gappssmtp.com; s=20260707; t=1793747008; x=1794351808; darn=vger.kernel.org;
+        d=dama-to.20260707.gappssmtp.com; s=20260707; t=1793747235; x=1794352035; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:mail-followup-to:message-id:subject:cc:to:from:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Bc3q5OMwODprZ3tRrHE2dAObJscCTN7oqVxqSs9CQE0=;
-        b=kpwSVOrlE5nr+/Gbvw2ZwoGd5KDAngbKsPFGSFjG5uZDqDrVI+gLbg5Ff495N25ok1
-         /MWhAAh4jBKMFUNyKUGu2YzW9+2b0TL8VX03ypiXw4ssVIJKJ8NdQIdG9nN2L86viunP
-         0GQeIke56pCMcajWzsKXoEzb3qyZLHuNRs26ySYLuk5afWNHqc2hxHe5Kj87hslle2R9
-         0HqfFeDQeQaCcAimFol3FR5VaxoRVhOlwEu6ZJ0LDsrXDvONJ+G5lXTb5IuudPJXXsHu
-         iX2D7vhnsn0beYOgAG84IpsrPPkPEpqzt74z1aG7nR8CPk+sBemoQJWqRSQwhJAJ/2x4
-         soxA==
+        bh=NEFwsaly/pYEQSMPZ8dIr6fdqKf0QWqwNabPuOPmqrE=;
+        b=F1hoXgMfAF0/YbEteRqywfhn3WDCOe4J+F7YsQfU+D/3o6FmVI2GwIO0WaM1ac3baR
+         35ufkik72WxSbkFRY1fRv5bpxm5vqEkgCD3Ry3wd3KX4fSQ5h3k1T6JTywj8JW1BiUAN
+         BJDk/LfHH0wjrSawD0qSpmMjDcJHLbrEs0pX7M6rHzXtfw6544U58ogzWEn0XlTP9WNI
+         PX70yT6wNU8OUsv6fQPZ3psN/mJhhv4Al/IZiqXWsFzrMdy63A6V/Vq0RQBoDoDCESwX
+         He1opzYj99jkXpfmO09oP2DTaQHyfTbXm3byGlSEnla8MbyTnxubrAvL/NdTbb8kIoEE
+         65nA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793747008; x=1794351808;
+        d=1e100.net; s=20260707; t=1793747235; x=1794352035;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:mail-followup-to:message-id:subject:cc:to:from:date
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=Bc3q5OMwODprZ3tRrHE2dAObJscCTN7oqVxqSs9CQE0=;
-        b=pVgoLu8WAdermZMTnQAdaQjygWCqA5UP+KsybE/rtx/JGjhQxLfpkOV+zmlSAtd/Io
-         kEf0bUiDLJ3AKeAlA8rRRX8ZeI0cxRIPQGFpqneN8Qv2HByLBrGlAL2mkRor5K1GIW/b
-         287Z2odBS4yQe61AD6dhmwsl2q82AUVua36zB7htK90zvlWaXGIAhdEg1T7wt6fA556o
-         qaOt6h+Nafz9s5AKWe0+p0faoL3t13/LG9Zr4PX7eNmjzn+zaMvXAYUIaCgm2/3LRqBe
-         uW3BNL9y0X7RQpmOf3IhcNCF4pvCtxzl9yBUwzIvcKGDLFsqA9y6XvzXpZfj3EZZz5Vo
-         Latg==
-X-Forwarded-Encrypted: i=1; AKwUvBw+PIg0bTDEIru1BYYmr+Sto30zCEGz5ZFqNv9YWWUv5Sl0fXuvdOgtVs1NUEGh5K9mJqHPgjE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+LJsv8g2T4nWTxE5FCFbVYitykarrzSiwSUaFcsG3isstgdw9D
-	ddzJU8mHdNgdqSnYNgbOpvl2f6Fp318KQpxzNV3c8sBRZkyLe/G61Lg4T++yIhrRJK0=
-X-Gm-Gg: AYBFou16y5LaypdQmHGq3t0ZoWTl9zPB6ePGRklyAe8dXfQRsrSE44Iv8r8wnnI6j0I
-	rNj95FfBwfjN0Z0Bn6qty2G4TebZTOfgByNcUARc9PntwQUQ40LFU1UGkAGDM45J65zjB0hrWrL
-	KornoPNBYYyZUMQAFttAhZanjZrZd5XoBgaG7yOQnpKmX9iMAod+CgKZPVSfpFfzw/01g1ob0qS
-	8aj/y8ExPuy+cmnG/9BXnHFZW+h7/2RJv14NKLyg0HaxV6kw269BVeahvQePiTQWSdPF2UiD77L
-	aWsvy1UR2dsu78cbJjLUSdbI4trSHtNlllxIkpDWBiS9xeW7XIm2XI3D4/aikblMCADeZrD4Tu5
-	oxttVnlzSfLehBODAIWO9n6dlUcYejvpKm/QWYGB7anVG6kg3YpoUxg5jZ8TCsrNMJhWQAh3ZZt
-	kOXtDWkuydGQ7rUsab33dnB3j+042XKnisjUjxWAy13ZzelGH7uEDjeqW82Yo2Lt4YDfxv9Sbmy
-	p8FeeNgDYAKyDc99JmryJnLzUVTOEf3ZngJfopBTfPejwXDmij2wlLiQIS7vn9HULVucVJP6GcR
-	vB46kcum3SeTmsluzgb3fS45hgBkkuNR+eIWc0DCKw==
-X-Received: by 2002:a17:903:1cc:b0:2e5:6158:b9c1 with SMTP id d9443c01a7336-2eb364e0730mr142081315ad.47.1793747008425;
-        Tue, 03 Nov 2026 15:03:28 -0800 (PST)
-Received: from localhost ([2a03:2880:2ff:74::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed091207dbsm301785ad.49.2026.11.03.15.03.26
+        bh=NEFwsaly/pYEQSMPZ8dIr6fdqKf0QWqwNabPuOPmqrE=;
+        b=LgGcn+mJE66SzZ/Gmc6d0v3DLr9yfNtmuPY9tL6y4sc5ssB+L3jLnTle+EQE2tZF5G
+         ZkIlxuCxBU9HmkZkhN3s2IAmRSIdeOBwG9FKQ/kV1K4odysiVW/Zi6It1w7F+MmNxDKm
+         iTqrIeXCfJfc1g3GBaa44FKUQ1NGKnCrS8VvWL20P8BW9JEu00zYHplOzFEwJzxu2aNm
+         lNjdyOjcVC8or/Q1LtFRSUQZA3l1f2U/YFtFARot9LvEoCTzGAh8xfISaLM1VCyheMGt
+         Y7IZqhR+RL4vb/Ar20lDSNG9hB5RlZLjNr4MTNMB7FTaAuZPcPoV3S35cQ7S2Q52Hib2
+         AD0Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxG0xjGJjSh81ktPmZzxUgLaYIiQpqqGByf8xWeyr+X3P1axUuTL09TxwpSuZ5DYLj5Z84V62Q=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/HwensTPu1/YV4v6cD0b0eYRQ/r/1xlHY7e0yMa9D/kWMnn/FT
+	HZTxiK5miNUJrruAsfVQKOL5bR1cRGnU9/PCzTp8FegLDtnJ9Hz+Epguf6PYX6WGNjo=
+X-Gm-Gg: AYBFou0dmij7ZnmhsFYYODs06HgHYVsrVRCUKStElWzitu0dXhe4K/u+LPALE7LUqBn
+	4bIDbIxZneWyLNPHxVcKyU1Brw1yeHtMx13rMiBodT2HJBs7s3aYJbvdk7CkQz60B6fCQQ+YVgH
+	KMYieB14Ia8w4UWJEzhHr1U7F89UcPYbZX1VkIVEDtH8Wdxbu6Ln77qE4bnJh1ggamY/8yvFSkM
+	3L1T33PD/2C9fCKZw1BBXJrzq/Q+XpPw5f/0Hu15N3zu5sQKvD59WTra0kuk9t4U2HHh6uzBqBQ
+	jDLelkBTj/e5sjpMR3ZSaq7JREc083Z7zc1M58nhJQnCKYD+r7R1Evi1pgD7i9FdMLqtDHct7gp
+	wRWE2eKEfiaVUDpWaQPaoDST/k+V8dp4SNSULwPlSW8WDAhmu6d1DthRTxP4di4gcQ+sSmEGwrg
+	bHiv00Qrd8WOImWNH6RxrH+BrWMdo6Rrxhne/d9AbHuud6eUotS2uw61EbOTxACInjs54zkw83a
+	cnDzJSZBvrDvaVR9xY1oFBwnxJnIQ6MKJkSScTQOvnBARat0TghOEARQU5coRSC1kwRABtoPrGM
+	EaFYsxHMXAAyJ0sxVdqpB9zDw0jjwcYVFi6mruKyyg==
+X-Received: by 2002:a17:90b:584c:b0:3ac:fe93:a731 with SMTP id 98e67ed59e1d1-3ae8981e640mr10743037a91.56.1793747235227;
+        Tue, 03 Nov 2026 15:07:15 -0800 (PST)
+Received: from localhost ([2a03:2880:2ff:54::])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb46444698sm276077a12.4.2026.11.03.15.07.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 15:03:26 -0800 (PST)
-Date: Tue, 3 Nov 2026 15:03:25 -0800
+        Tue, 03 Nov 2026 15:07:13 -0800 (PST)
+Date: Tue, 3 Nov 2026 15:07:12 -0800
 From: Joe Damato <joe@dama.to>
 To: Breno Leitao <leitao@debian.org>
 Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
@@ -102,9 +102,9 @@ Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
 	netdev@vger.kernel.org, bpf@vger.kernel.org,
 	linux-kselftest@vger.kernel.org, david.laight.linux@gmail.com,
 	kernel-team@meta.com
-Subject: Re: [PATCH net-next v4 4/7] ipv4: igmp: convert ip_mc_gsfget() to
+Subject: Re: [PATCH net-next v4 5/7] ipv4: convert do_ip_getsockopt() to
  sockopt_t
-Message-ID: <aupoPbQlx899hNir@devvm20253.cco0.facebook.com>
+Message-ID: <auppIKnm1NvzBIzH@devvm20253.cco0.facebook.com>
 Mail-Followup-To: Joe Damato <joe@dama.to>,
 	Breno Leitao <leitao@debian.org>, David Ahern <dsahern@kernel.org>,
 	Ido Schimmel <idosch@nvidia.com>,
@@ -128,7 +128,7 @@ Mail-Followup-To: Joe Damato <joe@dama.to>,
 	linux-kselftest@vger.kernel.org, david.laight.linux@gmail.com,
 	kernel-team@meta.com
 References: <20261103-sockopt_expand_out_v2-v4-0-2d36da923578@debian.org>
- <20261103-sockopt_expand_out_v2-v4-4-2d36da923578@debian.org>
+ <20261103-sockopt_expand_out_v2-v4-5-2d36da923578@debian.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -140,46 +140,64 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261103-sockopt_expand_out_v2-v4-4-2d36da923578@debian.org>
+In-Reply-To: <20261103-sockopt_expand_out_v2-v4-5-2d36da923578@debian.org>
 
-On Tue, Nov 03, 2026 at 03:01:03AM -0800, Breno Leitao wrote:
-> MCAST_MSFILTER reads its reply through ip_mc_gsfget(), reached from
-> do_ip_getsockopt() and from nowhere else. Convert it the same way as
-> the ipv6 side, and build the sockopt_t at the call site for as long as
-> the caller still carries a sockptr_t pair.
+On Tue, Nov 03, 2026 at 03:01:04AM -0800, Breno Leitao wrote:
+> Convert the SOL_IP switch and ip_mroute_getsockopt() to sockopt_t, its
+> last leaf on a sockptr_t pair. The IP_MSFILTER and MCAST_MSFILTER
+> bridges go away.
 > 
-> optlen here only has to cover the fixed part, and the real reply size
-> comes from the gf_numsrc field inside it. This is nasty, but userspace
-> relies on it, so sockopt_expand_out() preserves the same mechanism: it
-> grows optval only for a user address, and only far enough for the
-> sources the socket has.
+> ip_getsockopt() builds the sockopt_t with sockopt_init_user() and
+> writes optlen back unconditionally, because IP_OPTIONS and others
+> report a length and can then fail. ip_mc_msfget() therefore stores its
+> length only after its last copy, so a copy failure can't report a
+> changed one.
 > 
-> ip_mc_gsfget() writes the source list, and its two callers write the
-> fixed part afterwards, at the head of optval. iter_out only moves
-> forward, so the callee advances over the fixed part rather than
-> addressing each source by offset.
+> The write-back also happens before the netfilter fallback, so an
+> unwritable optlen turns any error into -EFAULT and skips the fallback.
+> Likewise optlen is now read before the level check and the MRT_*
+> dispatch, so an unreadable or negative one wins over -EOPNOTSUPP.
 > 
-> The callers then rewind. The reply length they already compute is
-> exactly what the callee consumed, ss_offset plus the sources it wrote,
-> so both land back where they used to write: offset 0 for the native
-> reply, gf_fmode for the compat one. The bytes are the same.
+> IP_OPTIONS with no options set and IP_PKTOPTIONS used to return the
+> result of copy_to_sockptr(), the number of bytes not copied, so an
+> unwritable optlen made getsockopt() return 4. They now return -EFAULT.
 > 
-> ip_get_mcast_msfilter() and compat_ip_get_mcast_msfilter() only store
-> *optlen after their own copy succeeds, so a copy failure can't report
-> a changed length: -EINVAL, -EADDRNOTAVAIL and -EFAULT all leave the
-> caller's optlen word unchanged.
-> 
-> The old code stored *optlen before writing the fixed part, so an
-> unwritable optlen word stopped the fixed part from being written. Now
-> the fixed part is written first.
+> sol_ip_sockopt() builds the sockopt_t with sockptr_to_sockopt() and
+> stores optlen back as well. This extra code will go away when we
+> convert sol_ip_sockopt() to talk sockopt as well, but for now we are
+> converting the leaves.
 > 
 > Acked-by: Stanislav Fomichev <sdf@fomichev.me>
 > Acked-by: Ido Schimmel <idosch@nvidia.com>
 > Signed-off-by: Breno Leitao <leitao@debian.org>
 > ---
->  include/linux/igmp.h   |  2 +-
->  net/ipv4/igmp.c        | 20 +++++++++++++-----
->  net/ipv4/ip_sockglue.c | 57 +++++++++++++++++++++++++++++++-------------------
->  3 files changed, 52 insertions(+), 27 deletions(-)
+>  include/linux/mroute.h |  4 +--
+>  include/net/ip.h       |  3 +-
+>  net/core/filter.c      | 18 ++++++++---
+>  net/ipv4/igmp.c        |  3 +-
+>  net/ipv4/ip_sockglue.c | 87 +++++++++++++++++++-------------------------------
+>  net/ipv4/ipmr.c        | 11 +++----
+>  6 files changed, 56 insertions(+), 70 deletions(-)
+
+[...]
+
+> @@ -1711,43 +1707,25 @@ int do_ip_getsockopt(struct sock *sk, int level, int optname,
+>  	case IP_MSFILTER:
+>  	{
+>  		struct ip_msfilter msf;
+> -		struct kvec kvec;
+> -		sockopt_t opt;
+>  
+>  		if (len < IP_MSFILTER_SIZE(0)) {
+>  			err = -EINVAL;
+>  			goto out;
+>  		}
+> -		if (copy_from_sockptr(&msf, optval, IP_MSFILTER_SIZE(0))) {
+> +		if (copy_from_iter(&msf, IP_MSFILTER_SIZE(0), &sopt->iter_in) !=
+> +		    IP_MSFILTER_SIZE(0)) {
+
+The line wrapping is a little weird looking to me. Not sure if there is
+anything that can be done about it and not sure it would be worth a re-spin
+just because I think it's a little ugly :)
 
 Reviewed-by: Joe Damato <joe@dama.to>
