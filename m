@@ -1,60 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793698804;
-	b=v6iufagG4esRZSvJLY6jJRDxSAdYW2zfP83m4/0B+RXYT9ActmedPGbbvDaEpFSetBUV
-	 JqHBP9jyMJ8vIvfP14Dp1U0MmOB7/MLLqzuFq0w1x09TgXoscWrC4RjSgz8kJ694ZubW8
-	 ftfZx/p4AG0RMtCXiq4ZjosivnQ6iHRk9Mvy+tBkkVBRc7+ktEoVNnxp27ufZnnY6EvoO
-	 hhuVv5Hd7xB0xMx3KLR4Ca1ZbPobJs/t1zAsKe+pWdnYJueK9D7PHzYcOTmNh2Wn5l2ZI
-	 +n4J++Izswcy98Vbr7KHhMw/uv3Jd60rejn7e6fgVAbrbUkYo0JMMM3WyWNL1J4s+nA==
+	t=1793698818;
+	b=XCM7C3Bk7ntoDeSh5L55Ml0H8wuiavAnvb7GwhBH4XgoI5A2SNzH6IvTf131JTUOWdcI
+	 4OJdbPZFM5NIBlfYDKZWLUKIe46nSWt54ajKqlYRzv13fXgMRChNNz2jTLJyvVV0Gbsk7
+	 Q0NuQZ6u3BV7XwbsUkk456ecCRGF+vaviJ/Hhjx5+3gaqDQE1o8LR4/5RvvMe3apHSUQG
+	 G89gE4W0FrcqE2uZFBEmWUAxSqkYt1qNs6aqJtKrANw59XsZtK+Sp6bsMZdnr1j5wzAVf
+	 EG7XO2C3HF3hfpWOQL1XG4RJPnswg3Ig6Kez5xm6IDoVyiwZgiOeURPB9R1Sw45hqUA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793698804;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=SxWl47Zl4zSv6hrWucnwr8CzOQ1TbBYqBciLqiXEt4I=;
-	b=hy5sxzT2GVW6NeR8+nz8LIcQ9KKfwvEgO7kJTAd7vqKMQf/MJEjsxa4fz9tk0OOy4cj3
-	 a5aMoO1pfhCv9dTPVRZYpjHseDm0s53FS/ClSj9JUZzeAYcmz5XoP2Uc7ox/mhZkrC3/e
-	 xcK7iIRwWIHJdVEuA2GGuBrz7WRzlWjMbygy8yjdER2w3ipOo3sXnoy25Apr5bMb0mhxI
-	 D5wpIErqHQm08GQ/nfl4UHymsoiel9uObrJ9ME9T0ncS/m9VgH8sBVUFy3hSN/ZaylCJQ
-	 OFS9v+Q0SJcLaURLHfqSfX+5kt08SnUROgfxQLzDARZ+XKZe/RguFTf775Tz1x8ZQCA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793698818;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-Scanned-By;
+	bh=Mx2XMqgF8eug2rq+roYGzDO6Igo6yslKBiLjwdQmkWk=;
+	b=XBdDNTNk2M+SmbqDsjPsE66BMd2x3g/lOBMezaY96ai2rZSU3Xy2o/LxmfbUrpt6Ia25
+	 vP4dinfCYDKMHynQnsXKWwouuQdB0R3UgTUESo67TPVW0usKk2qrg4Qgg2+D3l9LKgK8i
+	 SixmjAj1+AxYEQDXth+GtY8Yewoh5qxrwMwo1x8sxVLroucxxAjyr67Lq3psCgwkBIfuZ
+	 rtWniqgOoktyhKk+qQdiylVczeEdzYKZ46C8EFd4vm6+HqaYV0tzzKW3eYvmT9SGRvWWd
+	 RHWB4r5ut+l9uzZXv/De5y7E5AUaJxhpv3Y3DVMXVyhOdlokdEfVQG6fTwKOxIjfzzA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j0x3VAey;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gzWge7a5;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24898606D805;
-	Tue,  3 Nov 2026 09:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D169606A330
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 09:40:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D169606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j0x3VAey
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6C31F00919;
-	Tue,  3 Nov 2026 09:40:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793698803;
-	bh=SxWl47Zl4zSv6hrWucnwr8CzOQ1TbBYqBciLqiXEt4I=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=j0x3VAeyyNguDXq1IJjZYYg+GvvhKVj3fvRwGxj6NTwPtHsudPFQGdx9DMI9DPGrX
-	 uQE4IvwwRe3RzpEqDw7Fp58QS753x14hObD8t/NZt/lRbtqtlw5ZGS79hajQgiTKUh
-	 FJ076WtpetDHuPyZV9LOX3ZWTyxX6e+iMe0Ezrfq2rmI+hD31h7S1BVUico0ReqK/C
-	 RTzGaXLXwsp4aZosxhCAe8vIokPCduI8XopjPm7Fu/JkYCQl9sype3mH1AfbPzZv5C
-	 PrD4/oIfUhW+KzmPH4rbhR9GGpL5NcwqlWT4DEZMJxUHchi/KYdtm50fakytqv1jUq
-	 y2JjFGnFB1Xiw==
-Subject: Re: [PATCH] net: ti: icssg-prueth: Fix device_node refcount leak in
- prueth_probe()
-From: netdev-bot+sashiko@kernel.org
-To: laixiangwu@cmss.chinamobile.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, danishanwar@ti.com, rogerq@kernel.org,
- linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Tue, 03 Nov 2026 09:40:02 +0000
-Message-ID: <179369880262.488856.8946204452140783033@kernel.org>
-In-Reply-To: <20261030085651.1944-1-laixiangwu@cmss.chinamobile.com>
-References: <20261030085651.1944-1-laixiangwu@cmss.chinamobile.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gzWge7a5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793698816;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Mx2XMqgF8eug2rq+roYGzDO6Igo6yslKBiLjwdQmkWk=;
+	b=gzWge7a5mV1ufb0kfwQsym4LZpm7SaGLTeIe1gZZa9Sf1Sr0FHp+vbaOFjN5F0evHVemi6
+	aZvg3l94IwV7ZOx2dLO5RIv82Ex19aqOl8ND84qxzm0WUqgCvEGaVVcVp0nXqvxSAzJ1eJ
+	Ke/Y58VrSrdku+yFxdJh0CL7QQo1nLQ=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-COqjxwjKPKCf0eZv_xnREw-1; Tue,
+ 03 Nov 2026 04:40:12 -0500
+X-MC-Unique: COqjxwjKPKCf0eZv_xnREw-1
+X-Mimecast-MFC-AGG-ID: COqjxwjKPKCf0eZv_xnREw_1793698810
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3C84F19540D4;
+	Tue,  3 Nov 2026 09:40:10 +0000 (UTC)
+Received: from poros-thinkpadp16vgen1.tpbc.com (unknown [10.44.32.42])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 22E6F7EB;
+	Tue,  3 Nov 2026 09:40:05 +0000 (UTC)
+From: Petr Oros <poros@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Petr Oros <poros@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net-next 08/14] selftests: dpll: add pin priority test
+Date: Tue,  3 Nov 2026 10:39:04 +0100
+Message-ID: <20261103093910.596225-9-poros@redhat.com>
+In-Reply-To: <20261103093910.596225-1-poros@redhat.com>
+References: <20261103093910.596225-1-poros@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,188 +91,251 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Add a test that sets a new priority on an input pin, reads it back and
+restores the original value. The range of priorities a device accepts is
+not advertised over netlink, so the test tries one below the current
+value and then the small values every driver accepts, since a large
+current value may mark an unused pin outside the settable range, as the
+ice driver does with 255. A driver may still refuse all of them for a
+constraint the interface does not tell, so that is a skip on a device
+provided by the user, with the reason the tool reported, and a failure
+on the device the script created, whose simulator accepts every
+priority. The test skips when the dpll tool lacks the prio keyword of
+pin set, and the restore is deferred right after the original value is
+read so that an interrupted run restores it too. A pin that does not
+advertise the priority-can-change capability or does not report a
+priority is a skip on a device provided by the user and a failure on the
+device the script created, whose pins have both.
 
-Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0 (1)
+The dpllsim_add_pin helper gains an optional priority argument, which is
+written only when it is given, so that a pin without one keeps the
+default of the simulator. A priority is accepted for input pins only,
+so the callers pass one for those alone.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+The standard device lays its inputs out as gnss0 with priority 0 and
+ext0 with priority 1, and the stress devices get random priorities on
+their input pins.
 
-- [Medium] The SR1.0 sibling driver keeps the same device_node refcount
-  leak, and this patch does not touch it.
+Signed-off-by: Petr Oros <poros@redhat.com>
+---
+ .../drivers/net/dpll/dpll_features.sh         | 65 +++++++++++++++++++
+ .../selftests/drivers/net/dpll/dpll_stress.sh | 15 +++--
+ .../selftests/drivers/net/lib/sh/dpll_lib.sh  | 32 +++++++--
+ 3 files changed, 100 insertions(+), 12 deletions(-)
 
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but the port-
-  node loop in prueth_probe()…
-- [Low] This problem wasn't introduced by this patch, but the DT binding
-  and the driver disagree on whether "ti,mii-rt" is required.
-
---
-
-net: ti: icssg-prueth: Fix device_node refcount leak in prueth_probe()
-
-In icssg_prueth.c, prueth_probe() returned directly with -ENODEV when the
-ti,mii-g-rt or ti,mii-rt syscon lookup failed. This patch changes both
-returns to goto put_cores, so the eth0_node/eth1_node references are
-dropped on those error paths.
-
-> diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-> index 591be5c8056b4..9b971d1dfd8cf 100644
-> --- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-> +++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-> @@ -2258,13 +2258,15 @@ static int prueth_probe(struct platform_device *pdev)
->  	prueth->miig_rt = syscon_regmap_lookup_by_phandle(np, "ti,mii-g-rt");
->  	if (IS_ERR(prueth->miig_rt)) {
->  		dev_err(dev, "couldn't get ti,mii-g-rt syscon regmap\n");
-> -		return -ENODEV;
-> +		ret = -ENODEV;
-> +		goto put_cores;
->  	}
-
-[Severity: Medium]
-The subject says this fixes the device_node refcount leak in
-prueth_probe(). Does the SR1.0 variant of the driver still have the same
-leak?
-
-drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c has its own
-prueth_probe(). Its port loop takes the same of_node_get() references on
-eth0_node/eth1_node, and it still returns directly here:
-
-drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c:prueth_probe() {
-    ...
-	prueth->miig_rt = syscon_regmap_lookup_by_phandle(np, "ti,mii-g-rt");
-	if (IS_ERR(prueth->miig_rt)) {
-		dev_err(dev, "couldn't get ti,mii-g-rt syscon regmap\n");
-		return -ENODEV;
-	}
-
-	prueth->mii_rt = syscon_regmap_lookup_by_phandle(np, "ti,mii-rt");
-	if (IS_ERR(prueth->mii_rt)) {
-		dev_err(dev, "couldn't get ti,mii-rt syscon regmap\n");
-		return -ENODEV;
-	}
-    ...
-}
-
-That file already has a put_cores label that calls of_node_put() on both
-nodes. prueth_put_cores() checks each pru/rtu/txpru pointer for NULL, and
-at this point those pointers are still zero from devm_kzalloc(). So the
-same "ret = -ENODEV; goto put_cores;" change looks like it would work
-there too.
-
-CONFIG_TI_ICSSG_PRUETH_SR1 builds the SR1 driver, and in-tree DTs use it,
-for example k3-am65-iot2050-common-pg1.dtsi with compatible
-"ti,am654-sr1-icssg-prueth".
-
-Should the SR1 driver get the same fix, perhaps as a companion patch with
-its own Fixes: tag?
-
->  
->  	prueth->mii_rt = syscon_regmap_lookup_by_phandle(np, "ti,mii-rt");
->  	if (IS_ERR(prueth->mii_rt)) {
->  		dev_err(dev, "couldn't get ti,mii-rt syscon regmap\n");
-> -		return -ENODEV;
-> +		ret = -ENODEV;
-> +		goto put_cores;
->  	}
-
-[Severity: Low]
-This is a pre-existing issue and was not introduced by this patch. The
-driver treats ti,mii-rt as mandatory here, but the DT binding does not.
-
-In Documentation/devicetree/bindings/net/ti,icssg-prueth.yaml, ti,mii-rt
-is only listed under properties. The top-level required list has
-ti,mii-g-rt but not ti,mii-rt:
-
-required:
-  - compatible
-  - sram
-  - dmas
-  - dma-names
-  - ethernet-ports
-  - ti,mii-g-rt
-  - interrupts
-  - interrupt-names
-
-The binding's example node sets ti,mii-g-rt, ti,pa-stats and ti,iep, but
-not ti,mii-rt. A DT written from that example would pass schema
-validation and then fail here with "couldn't get ti,mii-rt syscon
-regmap".
-
-All in-tree users (k3-am642-*, k3-am654-*, k3-am65-iot2050-common.dtsi)
-provide ti,mii-rt, so in-tree boards are not affected.
-
-Should ti,mii-rt be added to the binding's required list and to its
-example?
-
-[Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch. While
-looking at the eth0_node/eth1_node references, the port loop earlier in
-prueth_probe() also seems to have a few related problems:
-
-drivers/net/ethernet/ti/icssg/icssg_prueth.c:prueth_probe() {
-    ...
-	for_each_child_of_node(eth_ports_node, eth_node) {
-		u32 reg;
-
-		if (strcmp(eth_node->name, "port"))
-			continue;
-		ret = of_property_read_u32(eth_node, "reg", &reg);
-		if (ret < 0) {
-			dev_err(dev, "%pOF error reading port_id %d\n",
-				eth_node, ret);
-		}
-
-		of_node_get(eth_node);
-
-		if (reg == 0) {
-			eth0_node = eth_node;
-			...
-		} else if (reg == 1) {
-			eth1_node = eth_node;
-			...
-		} else {
-			dev_err(dev, "port reg should be 0 or 1\n");
-		}
-	}
-    ...
-}
-
-When of_property_read_u32() fails, the code only logs the error and
-keeps going. Can the reg == 0 and reg == 1 checks then read an
-uninitialized reg?
-
-In the else branch, is the reference taken by of_node_get(eth_node) ever
-dropped?
-
-If two available port nodes both have reg = <0> (or both have <1>), the
-second assignment to eth0_node (or eth1_node) overwrites the first. Does
-the first node's reference leak in that case?
-
-Related to that, can this check ever fire?
-
-	if (eth0_node == eth1_node) {
-		dev_err(dev, "port0 and port1 can't have same reg\n");
-		of_node_put(eth0_node);
-		return -ENODEV;
-	}
-
-Each iteration stores a different node into at most one slot. The two
-pointers can only be equal when both are NULL, and the earlier
-!eth0_node && !eth1_node check already returns in that case. So a DT with
-duplicate reg values would probe successfully instead of failing.
-
-The SR1 copy of this loop in icssg_prueth_sr1.c has the same pattern.
-
->  
->  	prueth->pa_stats = syscon_regmap_lookup_by_phandle(np, "ti,pa-stats");
-
-[ ... ]
-
+diff --git a/tools/testing/selftests/drivers/net/dpll/dpll_features.sh b/tools/testing/selftests/drivers/net/dpll/dpll_features.sh
+index 42271769b2e706..941b7ee848f951 100755
+--- a/tools/testing/selftests/drivers/net/dpll/dpll_features.sh
++++ b/tools/testing/selftests/drivers/net/dpll/dpll_features.sh
+@@ -16,11 +16,76 @@ source "$SCRIPTDIR/../lib/sh/dpll_lib.sh"
+ 
+ ALL_TESTS="
+ 	test_pin_state_transitions
++	test_pin_priority_get_set
+ "
+ 
+ ##############################################################################
+ # Pin-level feature tests
+ 
++test_pin_priority_get_set()
++{
++	local before target after reason candidate
++
++	RET=0
++
++	if [ -z "$PIN_TUNE_ID" ]; then
++		dpll_log_test_skip_or_fail "DPLL pin priority set/get" \
++		    "no spare input pin"
++		return
++	fi
++	if ! dpll_pin_set_supports prio; then
++		log_test_skip "DPLL pin priority set/get" \
++		    "dpll tool lacks pin set prio"
++		return
++	fi
++	if ! dpll_pin_has_capability "$PIN_TUNE_ID" priority-can-change; then
++		dpll_log_test_skip_or_fail "DPLL pin priority set/get" \
++		    "priority cannot change"
++		return
++	fi
++
++	before=$(dpll_pin_get_prio "$DPLL_DEV_ID" "$PIN_TUNE_ID")
++	if [ -z "$before" ]; then
++		dpll_log_test_skip_or_fail "DPLL pin priority set/get" \
++		    "prio not reported"
++		return
++	fi
++	defer dpll_pin_set_prio "$DPLL_DEV_ID" "$PIN_TUNE_ID" "$before"
++
++	# The accepted range is not advertised, so try one below the current
++	# value and then small values, a refusal of all of them is a skip on
++	# a device the user provided, the simulator accepts every priority.
++	target=""
++	for candidate in $((before - 1)) 1 7; do
++		[ "$candidate" -ge 0 ] && [ "$candidate" != "$before" ] ||
++			continue
++		if dpll_pin_set_prio "$DPLL_DEV_ID" "$PIN_TUNE_ID" \
++				     "$candidate"; then
++			target=$candidate
++			break
++		fi
++		reason=${DPLL_LAST_ERR%%$'\n'*}
++	done
++	if [ -z "$target" ]; then
++		dpll_log_test_skip_or_fail "DPLL pin priority set/get" \
++		    "cannot set a new prio${reason:+, $reason}"
++		return
++	fi
++	after=$(dpll_pin_get_prio "$DPLL_DEV_ID" "$PIN_TUNE_ID")
++	if [ "$after" != "$target" ]; then
++		check_err 1 "priority expected $target, got '$after'"
++	fi
++
++	dpll_pin_set_prio "$DPLL_DEV_ID" "$PIN_TUNE_ID" "$before"
++	check_err $? "cannot restore pin priority"
++	after=$(dpll_pin_get_prio "$DPLL_DEV_ID" "$PIN_TUNE_ID")
++	if [ "$after" != "$before" ]; then
++		check_err 1 "priority not restored, got '$after'"
++	fi
++
++	log_test "DPLL pin priority set/get"
++}
++
+ test_pin_state_transitions()
+ {
+ 	local before state after reason
+diff --git a/tools/testing/selftests/drivers/net/dpll/dpll_stress.sh b/tools/testing/selftests/drivers/net/dpll/dpll_stress.sh
+index ee543e2cd8703c..60e42107c67efe 100755
+--- a/tools/testing/selftests/drivers/net/dpll/dpll_stress.sh
++++ b/tools/testing/selftests/drivers/net/dpll/dpll_stress.sh
+@@ -77,13 +77,13 @@ create_stress_device()
+ 	local clock_id=$1
+ 	local num_pins=$2
+ 	local name="st$clock_id"
+-	local i type freq dir
++	local i type freq dir prio
+ 	local dirs=(input output)
+ 
+ 	dpllsim_create_device "$name" "$clock_id" || return 1
+ 
+ 	# Always have at least one plain input pin, then random ones
+-	if ! dpllsim_add_pin "$name" ext0 ext 10000000 input; then
++	if ! dpllsim_add_pin "$name" ext0 ext 10000000 input 1; then
+ 		dpllsim_delete_device "$name"
+ 		return 1
+ 	fi
+@@ -94,8 +94,11 @@ create_stress_device()
+ 		# output one
+ 		dir=${dirs[RANDOM % 2]}
+ 		[ "$type" = mux ] && dir=input
+-		if ! dpllsim_add_pin "$name" "pin$i" "$type" "$freq" \
+-				     "$dir"; then
++		# Only input pins accept a priority
++		prio=""
++		[ "$dir" = input ] && prio=$((RANDOM % 128))
++		if ! dpllsim_add_pin "$name" "pin$i" "$type" "$freq" "$dir" \
++				     "$prio"; then
+ 			dpllsim_delete_device "$name"
+ 			return 1
+ 		fi
+@@ -205,8 +208,8 @@ test_deploy_cycle()
+ 	fi
+ 	track_device "$name"
+ 
+-	if ! dpllsim_add_pin "$name" gnss0 gnss 1 input ||
+-	   ! dpllsim_add_pin "$name" ext0 ext 10000000 input ||
++	if ! dpllsim_add_pin "$name" gnss0 gnss 1 input 0 ||
++	   ! dpllsim_add_pin "$name" ext0 ext 10000000 input 1 ||
+ 	   ! dpllsim_add_pin "$name" out0 ext 10000000 output; then
+ 		check_err 1 "cannot add pins"
+ 		log_test "DPLL deploy/undeploy cycling"
+diff --git a/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh b/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
+index badb787815d42f..613ed365e3e311 100644
+--- a/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
++++ b/tools/testing/selftests/drivers/net/lib/sh/dpll_lib.sh
+@@ -373,6 +373,11 @@ dpll_pin_has_capability()
+ 	   <<< "$out" &> /dev/null
+ }
+ 
++dpll_pin_get_prio()
++{
++	__dpll_pin_dev_field "$1" "$2" '.prio'
++}
++
+ ##############################################################################
+ # Pin setters
+ #
+@@ -394,6 +399,16 @@ dpll_pin_set_state()
+ 			     state "$state" 2>&1 >/dev/null)
+ }
+ 
++dpll_pin_set_prio()
++{
++	local dev_id=$1
++	local pin_id=$2
++	local prio=$3
++
++	DPLL_LAST_ERR=$(dpll pin set id "$pin_id" parent-device "$dev_id" \
++			     prio "$prio" 2>&1 >/dev/null)
++}
++
+ ##############################################################################
+ # dpllsim configfs interface
+ #
+@@ -475,7 +490,9 @@ dpllsim_create_device()
+ 
+ # $1: device name, $2: pin name (becomes the board-label), $3: type (gnss,
+ # int-oscillator, ext, synce-eth-port, mux), $4: frequency in Hz,
+-# $5: direction (input/output)
++# $5: direction (input/output), $6: prio (optional, input pins only).
++# The priority is written only when one is given, so a pin without one
++# keeps the default of the simulator.
+ dpllsim_add_pin()
+ {
+ 	local dev=$1
+@@ -483,13 +500,16 @@ dpllsim_add_pin()
+ 	local type=$3
+ 	local frequency=$4
+ 	local direction=$5
++	local prio=${6:-}
+ 	local pin_path="$DPLLSIM_CFG/$dev/pins/$pin"
+ 
+ 	mkdir "$pin_path" 2>/dev/null || return 1
+ 
+ 	if ! echo "$type" 2>/dev/null > "$pin_path/type" ||
+ 	   ! echo "$frequency" 2>/dev/null > "$pin_path/frequency" ||
+-	   ! echo "$direction" 2>/dev/null > "$pin_path/direction"; then
++	   ! echo "$direction" 2>/dev/null > "$pin_path/direction" ||
++	   { [ -n "$prio" ] &&
++	     ! echo "$prio" 2>/dev/null > "$pin_path/prio"; }; then
+ 		rmdir "$pin_path" 2>/dev/null
+ 		return 1
+ 	fi
+@@ -537,8 +557,8 @@ dpllsim_alloc_clock_id()
+ # Create a device with the standard 3-pin layout, deploy it and resolve
+ # the netlink device id. Sets DPLLSIM_CREATED_NAME, DPLLSIM_CLOCK_ID and
+ # DPLLSIM_DEV_ID.
+-#   gnss0: GNSS, 1 Hz, input
+-#   ext0: EXT, 10 MHz, input
++#   gnss0: GNSS, 1 Hz, input, prio 0 (active reference)
++#   ext0: EXT, 10 MHz, input, prio 1
+ #   out0: EXT, 10 MHz, output
+ dpllsim_setup_standard_device()
+ {
+@@ -549,8 +569,8 @@ dpllsim_setup_standard_device()
+ 	name="std$clock_id"
+ 	dpllsim_create_device "$name" "$clock_id" || return 1
+ 
+-	if ! dpllsim_add_pin "$name" gnss0 gnss 1 input ||
+-	   ! dpllsim_add_pin "$name" ext0 ext 10000000 input ||
++	if ! dpllsim_add_pin "$name" gnss0 gnss 1 input 0 ||
++	   ! dpllsim_add_pin "$name" ext0 ext 10000000 input 1 ||
+ 	   ! dpllsim_add_pin "$name" out0 ext 10000000 output; then
+ 		dpllsim_delete_device "$name"
+ 		return 1
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261030085651.1944-1-laixiangwu%40cmss.chinamobile.com
+2.56.0
+
