@@ -1,111 +1,145 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793714530;
-	b=Zpldr2Oju+UmkpMI48+f9g50wm2r4l5WfHWhvBX7s8aLXRhpnqvdWigK7Asy097cP3Ak
-	 i4KSn7nPSV6OgpuBamuhOvmvZs0PaWc5cQwnko7tShmacf4vZti46OXDuQJKzkHFBLz6w
-	 bq0nMGJOWvE+qrDKvePoCsIg4mWCK5THzWHxnDzSKz42mYh7duzN8qC6x3ZkKgM016RSA
-	 moADU/qWcN+2VSvEa/EM+PyGaYiBPX11woDUE8Ohg1X+MPauVkIFM2nmq/DWLbSZV4d8x
-	 yVpvoCKyfa865iDnMkB5YRsNeuz5/rUpKmVHQ1cX/S5Qy5+y8XNgW8lRPpNqZ8Ht+sA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793714530;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:X-Authority-Analysis:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-GUID:X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=ET+B6ryXZSjsDmJogt9NhGamDLd5Mr29EJGHgALtRKA=;
-	b=oad7m96wMOqZjEHbUTpAqzq+zYnYtUdXJnO4/UdoyCKFm0KWa8Vil7My4q+5GPS+n+H5
-	 IdNbXciQLIU4p1NxXLNHMB4I8paZ/r4b/bxDTJAvfz48QBrE3USSSq9OsN/PZHQ0QBz/S
-	 N5KxGBBRlX4hjOIdWdmOXabZv+rpoZkTasJeHI/XYxcfX9cSbff4c1G5R3TTExPkqwzYW
-	 ws79l5/1kxty08iZ7MKktbyAlc7BeO1IsnXR1UliuDGue04ToKnANZb9zqW6UkTXiv7WU
-	 1/WDV9C5558TYaawOcawYH9ZZ2G3sqpBLPoJzihu9AWvGb7fqo+R9DV0Sv3yNDwsojQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=jSaVoowX;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=CRQP67cS;
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.25
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793714546;
+	b=deXDJ7oxXVpbnAWpvVt3eGtqEB9ALFLlG2U0GVnEFoAM8olElpHzzSNiSt9MUWmqlkio
+	 y0bZGi3WXwZSNzAb320zXMSkTfL0eem5OhrtP1h8fqkO2+nIFJmXbtBEBvkq3jUCkpYzs
+	 +qLlG+WkggQXHs1eUhqieEA42cnfY835/ArlBilcioslxw5YB5KLoE0ylXuqLVdSqiLWP
+	 L5NtF/BK4BtugXeeyxHbSl/4Q3fTBTmJrCmT2ygbZPManwayq0kxRB5sofhvZDdN+BnhX
+	 N+j9ItXCzzc9etihRr2rlJfieMBLg+tTNpJVHwiN9xptMt5Sckz18uoK2Iw1G5ZJcXA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793714546;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 msip_labels:x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=eJz6V+vCcusw8QUZN3mYCnQieV3SIdJVnZ238VfVRSI=;
+	b=hFxPBgbT8iQjnx4ETRvMy1iN1bdPQtwckBNXkm71hXIWuencC8H+JHEZuYb2uiqkGxoF
+	 S4rysRVKePQJ1TV6gzrvCfRlr7vGCqGDgF1IJHDSkQs3bimMvx48/ezBq8U7CVC4ooESj
+	 F9Ucjb0Qht4DhxA03VvyOgdWV63xtFzk5+zVics4uX6ksq86YFmUcsUrHEmafCXAUtOKO
+	 aJzBT1y78kNuVk4fxdBZL58vtrAPf25ZEy3p1uV5FjTGrjvmScaHL04mxCMC7+IMj+Cfg
+	 XnHQK12I/QniEBZn5pqCjV+pjzhGOOQSRMxv4KboqfhQ9tLIDBblBqQN4efUiisBuNQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nxp.com;
+	spf=pass smtp.mailfrom=nxp.com;
+	dkim=pass header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=HXlDXeL8;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.84.25
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010025.outbound.protection.outlook.com [52.101.84.25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B88606A338
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 14:02:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C0B88606A338
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148FE606EEAC;
+	Tue,  3 Nov 2026 14:02:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 148FE606EEAC
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=jSaVoowX;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=CRQP67cS
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A3DZJkp3581565
-	for <netdev@vger.kernel.org>; Tue, 3 Nov 2026 14:02:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ET+B6ryXZSjsDmJogt9NhGamDLd5Mr29EJGHgALtRKA=; b=jSaVoowXxs9DoOm4
-	+Nk7j53T/b/1qZSTZnDZiHyopZfm33nSdPEIfR2uiXoT0ajmtzZRsWyXFM8p7MMx
-	JBq96hMQjZY3304YncA1fH4Ax2DKmmzkDHZBPOsXfFjIx8A1SFpx+u+v5Yg63JFv
-	3VDLXQGsPYMMYQ1qqcoC72hCsM1L019JYU405zv1t2j+qbRmqQVpmCQh1Hxo2YUV
-	ynD2af9y4Ds9LWLMLEWdPQc4lBL/MgJmO/gqKGWyqcJLsxobCrtlyuZ00Vkt8uOG
-	d/M5+Y9ds4bHFflBVTcII24euNGwfTk4o2X4EIt+bdq+rZWy9e4nhVwnQbsM+5Np
-	ylwc0w==
-Received: from mail-vk1-f198.google.com (mail-vk1-f198.google.com [209.85.221.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hq94ct1jb-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 14:02:08 +0000 (GMT)
-Received: by mail-vk1-f198.google.com with SMTP id 71dfb90a1353d-5ec17386b57so3473769e0c.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 06:02:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1793714528; x=1794319328; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ET+B6ryXZSjsDmJogt9NhGamDLd5Mr29EJGHgALtRKA=;
-        b=CRQP67cSDz/JUAcknysBYuaBtVkR0baUaQoTJqREcjSpkZxLk5Qbs7ip7B0o9QF9TG
-         JBLv+L64MlXP5WWY64BBXaTWJ3AICovvruSWJIqGqe3ld/qY1WY0RMUQzDLGbiZd336T
-         8Al0KLFCK4kxaJ4i/mAqRtzv1aWNZIZGvhWkO1hil+I0Lo8Ib8ubmd30SPmDakisPmGA
-         op7fuoHlQU8w+VUGgneWvhPINip0RbdQ+Sw/3wE6b0ph65K6qpSm91+obFwEEzuGFHdK
-         3jBby+peDuHyCsf4GI/rBWxp73m59EWGKl9Ltd4HIPwJ3t2FPflmUho7ePdguam0lSyh
-         b9WA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793714528; x=1794319328;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ET+B6ryXZSjsDmJogt9NhGamDLd5Mr29EJGHgALtRKA=;
-        b=S/zQmBj38GaQSeYTV4Zn8DSCtxmuHURWodVg9Qbeq/wEeJDpPSE+7Hmhhs09OkdPwb
-         cqUkmF7ep1ZlCCM7Qt22SdrTvZTM+4AoVOcT15t5PU/MjvTJtI/iigDfhZxAg3zK29tY
-         iW2w873+h27nEbur9u/c+lEGBk7ULKne0qSkrhPgv7e2kz0xdOx6jeTU9ppjd1t14sRk
-         d79F8to1nnNVx9IARA2rj5YF+g4ZZKUrOPFuSORyJu3uCi5jGvHfb7hwUY8hCyCOsvaw
-         k2egoi77fxhDaW2UvR/Dghis2UBerGwwn6XtYtqB+qO9IW3xPQ/GULCpnTiOpmPGWEQh
-         1ejQ==
-X-Forwarded-Encrypted: i=1; AKwUvByxWF/im6e+NdjeqYMxbMGcv0jzaaDjZpQnCc8KXz1+wcCNnb828uig16XvGqMG1VUtmprBuMs=@vger.kernel.org
-X-Gm-Message-State: APuU4Z88vu4XYNCNR+UKFf8d+Dhs5yHhKrMsssgUmyiY4K84ozsoxsf0
-	PU2tOAXv5aw/8QDlRdUWJaH5P/q6sBnvTGSACQudFr7z0dxtnVDVaM1+Awvh0XCqQ3q5Mpc3trx
-	7wyHK12O4z/i10iJ+kq6xaWa4MxVaAq6tmKVyZf2wujgFjq5FIy9U9b2TGVI=
-X-Gm-Gg: AYBFou2euFc1Zc5mEfll0vzGPbFsfjNiI2susxmWCS/c5iCOuw4flv+Ey4j0Pd/HijR
-	ey6aMGmzK4D68luM8brWsPzWr9OgXStvx5WOe5N0WUKJ3zVks5TewvqKBlMwjn35CxmDzkXwG0W
-	p2h5BlY4gHHQLdTCxCayspjhMVNr7E+Pv8XvtsTeCenkT1itozq9ddJ1FwtDlu1ElP0F5XPUNrN
-	8lbmVCwPDRpI1BSqLSsXxkPWrAZp8K/YIgbPgIDEZSqLZpJ895ScBMnHa/3kq/tNVZyOHwjX8tk
-	8E0oZNAEPsjI2vYhLjaHnBxRGG2EE6Syhfd4/uwIe9Xthgd2ikHjUbidnkYUYb61FKVHUCnWLEq
-	KziE/ZknAW5pODvipOzmBnNVqwirxpqjjJj7Q0rkTkRKGSnD5HnOMcpwXvAh4kXI=
-X-Received: by 2002:a05:6122:4892:b0:5c9:a7af:8178 with SMTP id 71dfb90a1353d-5ec6851cd6cmr5729578e0c.2.1793714520085;
-        Tue, 03 Nov 2026 06:02:00 -0800 (PST)
-X-Received: by 2002:a05:6122:4892:b0:5c9:a7af:8178 with SMTP id 71dfb90a1353d-5ec6851cd6cmr5724949e0c.2.1793714478743;
-        Tue, 03 Nov 2026 06:01:18 -0800 (PST)
-Received: from localhost ([93.66.104.131])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b81c74sm25057443f8f.36.2026.11.03.06.01.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 06:01:17 -0800 (PST)
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Tue, 03 Nov 2026 15:00:45 +0100
-Subject: [PATCH nf-next v3 4/8] net: netfilter: nf_flow_table: use tunnel
- encap proto for route lookup
+	dkim=pass (2048-bit key, unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=HXlDXeL8
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=w8r3OvT4SViwU9aQGybeeffre9zAO1Ai6tq0qHGgTejYZ04ohkicS6/ULf7THLpTPqlQhWf8ZGAa4R4oLk0zBFJiZ8ee7Fwfqte9t9cqfelg++pYcNPeSEXONyGqFkE2TTvG2kycySg+XfWL0LrpvEe8MEtHontsIkCfe21GGh1MrMQRj3rCxnPDLLXJySSddk/IZ3zb43JP7EjTszC5NF3tHohPKiWruvB6zewG/3D8YD2fRb84v/VOy/O5RYf5r2iqAlvdSrJpOUZ61rN8MOyxtFyqKINAcfA7v9tmi3lbgzvPXYSZtrXgZDxiXnWF+u6oMWG5Rj9vXwlznGJZcg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eJz6V+vCcusw8QUZN3mYCnQieV3SIdJVnZ238VfVRSI=;
+ b=t4h3EqjjrrtIZdOqa+NJUbPq+HnTognJYaSCSFny8Ug2HgtoQdPX+Cdf3N1kanX8gonCrPbgI4qldJJtv+9s1wJCKACOAAUAwwQQp1C3kJRJcX4n8+8XVo5DWHQL8slSN+RKQS5JnpcQPDeAIvTEVvbqFQZWKYXoqr48UvjP6aU9H5oUtmovFedXv+427KzL6AOcAqs9mb8vMHUx7n3i60wZkEamJGibjfWp8zyddLcQRmdNrNWKdey7gmEbRJs60iV9qKXNRGXNa9HHtzpdx3RU8MkzvA1vPuTESB2HViCF7Sve6Hjsld0xqWn0wvC/SKH//H5WdOHZqLE1hjDtMg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eJz6V+vCcusw8QUZN3mYCnQieV3SIdJVnZ238VfVRSI=;
+ b=HXlDXeL8YVrV5tVHyB/UxsAd1v1HjZlZKwsga1x5bbFFm0uR6/SbuuWQUW+QqID+vyUfJI6/TUgBDOvwY9Ah56QUsli9OYQQmOu0rfqopaNyBSnPtL0mgl6pDCcmMAR49LsINo48Tm3/FIIqAdYKRkFAMHzHqXac2fvusZ2AlCEz+YUKOR64svFxwLSYSe/HrekKbLyuv12LGAAg8YsggufJrgzm8jQ2n9czKSjsE+mio17Ftm5Wk4Phh6JpLBqVXCHvQzdoCOKz+/se23i78pzGSK/AorZK0siTbDOIf3G+2ykKjx5odV9zbt+RyaGUwImL80p+azn3UNduQpt5zw==
+Received: from GV2PR04MB11740.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cd::13) by GVXPR04MB9926.eurprd04.prod.outlook.com
+ (2603:10a6:150:11a::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Tue, 3 Nov
+ 2026 14:02:22 +0000
+Received: from GV2PR04MB11740.eurprd04.prod.outlook.com
+ ([fe80::ca5f:7e1c:a67a:a490]) by GV2PR04MB11740.eurprd04.prod.outlook.com
+ ([fe80::ca5f:7e1c:a67a:a490%4]) with mapi id 15.21.0569.011; Tue, 3 Nov 2026
+ 14:02:22 +0000
+From: Claudiu Manoil <claudiu.manoil@nxp.com>
+To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, dl-S32 <S32@nxp.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"bhelgaas@google.com" <bhelgaas@google.com>, "linux-pci@vger.kernel.org"
+	<linux-pci@vger.kernel.org>, "kuba@kernel.org" <kuba@kernel.org>
+Subject: RE: [PATCH net-next v2 5/5] PCI: Create OF node for NXP ENETC
+ pseudo-MAC functions
+Thread-Topic: [PATCH net-next v2 5/5] PCI: Create OF node for NXP ENETC
+ pseudo-MAC functions
+Thread-Index: AQHdXUZ5Jq0x/e3NWkqoB83Xfg0wR7cceldQ
+Date: Tue, 3 Nov 2026 14:02:22 +0000
+Message-ID:
+ <GV2PR04MB117408067A4647C476FAD617596692@GV2PR04MB11740.eurprd04.prod.outlook.com>
+References: =?utf-8?q?=3C2a24aaa96c6a0204e3ff293f2a1d22b58cf2171f=2E17919086?=
+ =?utf-8?q?94=2Egit=2Eclaudiu=2Emanoil=40nxp=2Ecom=3E?=
+ <179213850739.434549.5377140925132800234@kernel.org>
+In-Reply-To: <179213850739.434549.5377140925132800234@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB11740:EE_|GVXPR04MB9926:EE_
+x-ms-office365-filtering-correlation-id: 34357834-3183-4d97-d47a-08df39b31511
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|19092799006|38070700021|56012099006|261021123027099003|261021121427099003|11063799006|5023799004|261009223027099003|261028144727099003|261022105027099003|261026121527099003|261026140227099003|261022075727099003|10067099003|22082099003|18002099003|261102123227099003|6133799003|3023799007;
+x-microsoft-antispam-message-info:
+ RKK3N3d1oEgb809/oMauMZkGDzlSGXKsYPH1XzSBUUagr9icTHK/FAZ/P25rblDdO1ZNEmGsXuv0nPUXjiuETahwoYXRmsS1+G6SAu+8HEXepXQOd5I+Wlm75YbslBo8U2VRnZpAQE+jceUnKvOlorCkFD9nOzplNdTWw4ja/ddLUHDydeEXlcoo1cQPmIGasHBjDEo7PCDTmMBkLEj2mvYlPAvlY40F2m2tzlGH/pHpufyY1xPUZWMCYSbF75xprYcvWgGfeqsjMV8CkMvDU4wwkTgqfeu9dMpWnP+2VYmikzvq9BNv6PYHVhCQJw9tGZ/bD6K4Cy61u5/ufF3ZY+eYsraKBfVBsUl2LPfvK7TOanTCIvQN+I2rsriLaZbCH95TMdSGK02qD9ujsbCH+MC7i6Z+WBV5E+cicWjJ26q5MBqH38P1BiTTtG4bFFRB0lusj1ipkIUOCLkQdT6tqeswsAT73yVhssO7/HiwKDxVn5jXoqLRC5joYoGpOQxOy3Bv22NBH7k270JJlClUOTRdPD8OTbUjkYMI447r2XKS0drLaHpBkvjIcFIfiufBnJH03YsnFIU19MaeZN9pLboqcfQMmrtmjONKq+j/OIqCIkIN8IwknkCMrhe4zJoWZZDuvCjnhDDKFRcqvdWIK6OqihGE9ov5QdSIOfX+sFBwDAORrRnSEhQ75WU6qbuE84skQaZTcErmtBwSsvkl9QjLDSplt7A1hCC6Cm6xp/Y=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11740.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(19092799006)(38070700021)(56012099006)(261021123027099003)(261021121427099003)(11063799006)(5023799004)(261009223027099003)(261028144727099003)(261022105027099003)(261026121527099003)(261026140227099003)(261022075727099003)(10067099003)(22082099003)(18002099003)(261102123227099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?r7PVW+xnD4P3w431DLx+uSfIRr3iQPsbMyUjMp85uMn4oCSQTSidVyx9Deij?=
+ =?us-ascii?Q?UDIABYjfXqrRrZZ5TDTS8Gv8WdRGufs8lY62zbjun/oCi+bR4nkJIFjD9j6i?=
+ =?us-ascii?Q?2s40VHiQ3HFbOloA0xWiHORrFWHo8v0P12jZn3oVvCTHFAyk0jI8jYFcYNk1?=
+ =?us-ascii?Q?ShU8nNqnbBIECryzYK0MTBn8oiJDpy6+Tq2PwJRKIjyzcHYn0pL2uxhUkOP4?=
+ =?us-ascii?Q?kKOtn4yQ5LqxI2OHAYWh9OvqSTwI4osLhhNaxuWRLcNBA/nxvQte8w9xfaE8?=
+ =?us-ascii?Q?W1dQCXvrnjW/epUW9N1Z+cfisz0DBA6T78E6k6hBA2n8qRxcLCB1ahrD3Tyf?=
+ =?us-ascii?Q?T3jlJw515CIHgfct0UrC65ULkyjBesVn5byKGjLsJ/R8Cvgxdw5QXZLCAS7/?=
+ =?us-ascii?Q?9cfkpWcc248pAGBz/HH9Kf/O3nMZRXEIMiN5PBglyypu+YmbcaiGudWBf5z0?=
+ =?us-ascii?Q?xwfF5L2euwjXcMp67S0SHEivtHjfX0C5NxMaRcxk9YDmv/t57gFB59GLQIbx?=
+ =?us-ascii?Q?OpzDby8MLQ3ulku9ZIBPV1bqRmnTxrkSV0wKhMMxJJfU25XTIMJjuwVeM1Ib?=
+ =?us-ascii?Q?7uM9U2f+TCs2/el8UbBVhyWQtuinIJhnRyjz9HfJ/lOFWKsCIpul5JSMO40x?=
+ =?us-ascii?Q?bkO3wjJl1YYNKncs8ETj7XirRZtyQQ4IGoFehPZKxmcG7Mzuh7jQiu1BDnGA?=
+ =?us-ascii?Q?T8ycI7eVNO7Mdfp9d1QUl9oDfyVb9dIx80ezivPlUw3Lw4HJqbdaUVXlk3Ek?=
+ =?us-ascii?Q?vC2RsR7HxLO7JDGPrOswN50xp73O878eIGnwioSRKSz5+HXZ/Vu52eQwBpOD?=
+ =?us-ascii?Q?UEDPE0TsILviyYZbyWdI7KeZ0hpCr4KM+g1v2zh2KGTWcgkEp6z8Sdwg8nOT?=
+ =?us-ascii?Q?eSlSTQJt16aV5oau24wefRDr2gRKMScUEJ5W0S2O1yVtMlvr7fW9uskUsP6e?=
+ =?us-ascii?Q?3ETzrSSJBUo4LhfFr1A8xK/GJz4ROVP5JM8NOEVnFo37spEa9zVYta84ArzS?=
+ =?us-ascii?Q?FcfGQSb3Cmzrq7c9T6SPQa5z29lZQxmjj6Zv08Rij8/WiyiEx1VT+rJcZ+7S?=
+ =?us-ascii?Q?kEGipR9B6emfUCk5rNhgpvrWC9I180MtS0IPyujRIAiSPobDebu0mxmUY6aj?=
+ =?us-ascii?Q?FNWMuBrJc9Kuys1mFxEG1OCb8FRb0Uc99OPAIa09BHmGgpzKtOX8zSgV8Tas?=
+ =?us-ascii?Q?gBiaKuuVYwB2UnpDCNxOKCxND4nxHV/Ft2e7l676b9SFtxAG4xjsiICc4c/3?=
+ =?us-ascii?Q?bwLB16BPQcy3lP9u8ExBL4DLCkRv1SdD9npTHQSrW2hvVIEm2d0ms6GEoDzu?=
+ =?us-ascii?Q?a6EPiFxuBcC5i7wzVFIkGo2w3Y8RCveXIur1memRhWBk4dnywyznan4ZnKXS?=
+ =?us-ascii?Q?g9+awQ1xcWf9ptSnG+lafVKlxzLHm6r0yqAu/Fm0JCfNjuH44Bt2md18O54U?=
+ =?us-ascii?Q?zU2AU3Wv8+Nusm1WlpxNcX6Saw5Kr6Nsbp0WYZkPYtdSlum5WH5tjg4iDY+2?=
+ =?us-ascii?Q?QJuZtCT66CT2uqN3601nPGTDNuRYz7I3UjeGI/r/t8Ik+H/VSm06nyyAd1ck?=
+ =?us-ascii?Q?13F7Q3JWdQ7QgkJ52wZc38Dr9Iw4kQDUpL5xsF76INaBceCiZRbaTLuAh7VD?=
+ =?us-ascii?Q?ZFGyPKXOoCIwtgoblq7KVHy3H02Wy6F/3CsOjjcKKIzn/fKHQ1agHSK9gHJh?=
+ =?us-ascii?Q?9QWFA9+9KxksQmkIl5NEvx8DladfcnNQ+GXk4X4MOD+dVOpknf5A8UyxLbtN?=
+ =?us-ascii?Q?psXXZI/vnA=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -115,116 +149,112 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261103-flowtable-sw-accel-ip6ip-sit-v3-4-60b5f063f1df@oss.qualcomm.com>
-References: <20261103-flowtable-sw-accel-ip6ip-sit-v3-0-60b5f063f1df@oss.qualcomm.com>
-In-Reply-To: <20261103-flowtable-sw-accel-ip6ip-sit-v3-0-60b5f063f1df@oss.qualcomm.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
-        Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-        Shuah Khan <shuah@kernel.org>
-Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Authority-Analysis: v=2.4 cv=O+KsLx9W c=1 sm=1 tr=0 ts=6ae9e960 cx=c_pps
- a=1Os3MKEOqt8YzSjcPV0cFA==:117 a=cAAIdyqZgEis9HJxay2Blw==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
- a=EUspDBNiAAAA:8 a=BwFUO5JFP4DfzLIXruUA:9 a=QEXdDO2ut3YA:10
- a=hhpmQAJR8DioWGSBphRh:22
-X-Proofpoint-ORIG-GUID: rLYUEVYYldVSO5J7rUn4THDZtFyjNKiG
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAzMDA1NSBTYWx0ZWRfX5vbvmRcC/mDQ
- dwd113tXyycznCbt2q1/yJcv5ejR2kjx0ZwH1WsQNQxmMoxpLk9oXmKFo3PIYr+JZzVdmd+HtzN
- x2hthpdZW7dgrijCoJFMPBxRHsDh6ytoBt9tLh2Ka4zqRTJrFdS/UxQtQApmg2Vp9f1FKEfizuN
- RFyPZEHhU06MmfUqYerjbL417ecMPqggRz7XHEI+v4pZX0H8d4vDEXeTGuTEnSnj4mAZqDCzEcW
- 7znzcCbJ9hGOJKzajYRpWb45PZiu9mHBE+nE7SB1mQ+7qsD9+j3r3JGeGQIchk/kvlvvKd5wGJe
- ljhiMmf5DcQNbsdT/NPX9PHiI36ihOatlm3eCOdGPgEFUTjEu7kd4lJc3bRquGTPiO34ap8Fm+u
- cKAjkUNJEb+iYHy5Kqy8ZiC2P71ql+FHvkJot8ulxV9RE54XsnKYbwDdddGeU7jLJb8rHjN+i1Q
- L8d4QStNDY4dsuOw3Kw==
-X-Proofpoint-GUID: rLYUEVYYldVSO5J7rUn4THDZtFyjNKiG
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAzMDA1NSBTYWx0ZWRfX02baMv/G36S9
- v6LO+z5t3Z/3mUoqL28GTs8MVXqbkoFmw9ewoISRqNHDP2N7JGnkFqdY7SzX3NkXxdysVItejQv
- Aoka9BKdoCDnqExciBn86hG5R+MTe+Q=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-03_02,2026-11-03_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 bulkscore=0 spamscore=0 suspectscore=0 clxscore=1015
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610300000
- definitions=main-2611030055
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11740.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 34357834-3183-4d97-d47a-08df39b31511
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Nov 2026 14:02:22.4884
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: eRk3ygh1rpJ8r4Qh0M+ZFoEZ5tfbRwrBTWRpqPi2QPFhtAgVQiCIe853NbAtnU4Be82iDVjj4EPMivtlb7V+sg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9926
 
-For IP tunnels, resolve the MTU and the dst cookie against the tunnel's
-inner IP protocol (tun.encap_proto) instead of the flow's l3proto, so
-the correct header size and route cookie are used when the flow is
-carried over a tunnel.
-This is a preliminary patch to support IPv4 over IPv6 and SIT tunnel
-flowtable offload.
+From: netdev-bot+sashiko@kernel.org <netdev-bot+sashiko@kernel.org>
+Sent: Friday, October 16, 2026 11:15 AM
+> To: Claudiu Manoil <claudiu.manoil@nxp.com>
+[...]
+> Subject: Re: [PATCH net-next v2 5/5] PCI: Create OF node for NXP ENETC
+> pseudo-MAC functions
+>=20
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+>=20
+> Critical: 0 * High: 0 * Medium: 1 * Low: 1
+>=20
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>=20
+> - [Medium] On the in-tree arm64 defconfig, the ENETCv4 pseudo-MAC (PPM)
+>   ports this series adds still fail to probe.
+> - [Low] `enetc4_add_ppm_fixed_link()` and its teardown helper in
+>   drivers/net/ethernet/freescale/enetc/enetc4_pf.c call these changeset..=
+.
+>=20
+> --
+>=20
+> PCI: Create OF node for NXP ENETC pseudo-MAC functions
+>=20
+> This patch registers of_pci_make_dev_node() as a final fixup for the two
+> ENETC4 PCI device IDs (0xe101 and 0xe110). The PCI core can then
+> synthesize an OF node for ENETCv4 pseudo-MAC ports that have no static
+> DT node. The ENETC4 driver needs that node so it can attach a fixed-link
+> child to it.
+>=20
+> > diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> > index de9bbccda21fd..86f0a182224b2 100644
+> > --- a/drivers/pci/quirks.c
+> > +++ b/drivers/pci/quirks.c
+> > @@ -6391,6 +6391,8 @@
+> DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_XILINX, 0x5020,
+> of_pci_make_dev_node);
+> >  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_XILINX, 0x5021,
+> of_pci_make_dev_node);
+> >  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_REDHAT, 0x0005,
+> of_pci_make_dev_node);
+> >  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_EFAR, 0x9660,
+> of_pci_make_dev_node);
+> > +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_PHILIPS, 0xe101,
+> of_pci_make_dev_node);
+> > +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_PHILIPS, 0xe110,
+> of_pci_make_dev_node);
+>=20
+> [Severity: Medium]
+> With the in-tree arm64 defconfig, will the pseudo-MAC ports on
+> S32N79-RDB still fail to probe?
+>=20
+> When CONFIG_PCI_DYNAMIC_OF_NODES is not set, these fixups end up
+> calling the empty stub in drivers/pci/pci.h:
+>=20
+>     static inline void of_pci_make_dev_node(struct pci_dev *pdev) { }
+>=20
+> PCI_DYNAMIC_OF_NODES is a plain bool with no default, and nothing in the
+> tree selects it:
+>=20
+>     config PCI_DYNAMIC_OF_NODES
+>     	bool "Create Device tree nodes for PCI devices"
+>     	depends on OF_IRQ
+>     	select OF_DYNAMIC
+>=20
+> NXP_ENETC4 neither selects nor implies it. arch/arm64/configs/defconfig
+> does not set it, but it does set CONFIG_ARCH_S32=3Dy and
+> CONFIG_NXP_ENETC4=3Dm.
+>=20
+> The series enables &netc_iep18 in s32n79-rdb.dts. The
+> netc_iep18: pcie@241200000 node in s32n79.dtsi has no child function
+> nodes, so on that config each PPM PF enumerates with no OF node.
+> enetc4_link_init() then calls enetc4_add_ppm_fixed_link(), which returns
+> early:
+>=20
+>     if (!np)
+>     	return dev_err_probe(priv->dev, -ENODEV,
+>     			     "Missing of_node for Pseudo-MAC port\n");
+>=20
+> The commit message notes that the quirk "only takes effect when
+> CONFIG_PCI_DYNAMIC_OF_NODES is enabled". The driver patch in this series
+> also deliberately avoids a hard Kconfig dependency.
+>=20
+> Should the series also enable CONFIG_PCI_DYNAMIC_OF_NODES for this
+> board? That could be a defconfig update, or a select/imply that does not
+> break ports described by static DT.
+>=20
 
-Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
----
- net/netfilter/nf_flow_table_core.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
-
-diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
-index 0d72dc8ae47a..aa8e3f42b23f 100644
---- a/net/netfilter/nf_flow_table_core.c
-+++ b/net/netfilter/nf_flow_table_core.c
-@@ -76,9 +76,10 @@ struct flow_offload *flow_offload_alloc(struct nf_conn *ct)
- }
- EXPORT_SYMBOL_GPL(flow_offload_alloc);
- 
--static u32 flow_offload_dst_cookie(struct flow_offload_tuple *flow_tuple)
-+static u32 flow_offload_dst_cookie(struct flow_offload_tuple *flow_tuple,
-+				   u8 l3_proto)
- {
--	if (flow_tuple->l3proto == NFPROTO_IPV6)
-+	if (l3_proto == NFPROTO_IPV6)
- 		return rt6_get_cookie(dst_rt6_info(flow_tuple->dst_cache));
- 
- 	return 0;
-@@ -100,9 +101,15 @@ static int flow_offload_fill_route(struct flow_offload *flow,
- {
- 	struct flow_offload_tuple *flow_tuple = &flow->tuplehash[dir].tuple;
- 	struct dst_entry *dst = nft_route_dst_fetch(route, dir);
-+	u8 l3_proto = flow_tuple->l3proto;
- 	int i, j = 0;
- 
--	switch (flow_tuple->l3proto) {
-+	if (route->tuple[!dir].in.tun.encap_proto) {
-+		/* For IP tunnels we need to consider tunnel IP protocol. */
-+		l3_proto = route->tuple[!dir].in.tun.encap_proto;
-+	}
-+
-+	switch (l3_proto) {
- 	case NFPROTO_IPV4:
- 		flow_tuple->mtu = ip_dst_mtu_maybe_forward(dst, true);
- 		break;
-@@ -130,7 +137,7 @@ static int flow_offload_fill_route(struct flow_offload *flow,
- 		if (route->tuple[!dir].in.num_tuns) {
- 			flow_tuple->dst_cache = dst;
- 			flow_tuple->dst_cookie =
--				flow_offload_dst_cookie(flow_tuple);
-+				flow_offload_dst_cookie(flow_tuple, l3_proto);
- 		} else {
- 			dst_release(dst);
- 		}
-@@ -144,7 +151,8 @@ static int flow_offload_fill_route(struct flow_offload *flow,
- 	case FLOW_OFFLOAD_XMIT_NEIGH:
- 		flow_tuple->ifidx = route->tuple[dir].out.ifindex;
- 		flow_tuple->dst_cache = dst;
--		flow_tuple->dst_cookie = flow_offload_dst_cookie(flow_tuple);
-+		flow_tuple->dst_cookie = flow_offload_dst_cookie(flow_tuple,
-+								 l3_proto);
- 		break;
- 	default:
- 		WARN_ON_ONCE(1);
-
--- 
-2.56.0
-
+CONFIG_PCI_DYNAMIC_OF_NODES is not a hard Kconfig dependency
+because only the newly introduced S32N79 chip make use of this feature
+currently. This is intentional.
