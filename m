@@ -1,54 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793693108;
-	b=zYadw2JEQWn3UJNwwX9QXoXhR3uUtP0dsSxtWLEkhMYvsJ3k06jtUsi+3pqoVlgjGGA3
-	 g4a0LmxZ5LHNYU5uL2tQ5TDJSJgvuwq9Jc9G9rUw5qqbPxqXA2j+zF686uhS01F1Kzu6e
-	 wB+GXDgL8aR8sw29atazd+qnEoRCd4EnVJ1SPyHhRTkPpB+bEfZVU5ueoflvcNwQUiTqX
-	 OfdnBPOjqFQB9w0icx7d/uwZz5t7KuGwIo+usBkO6bo7v28iC4luxzuMdQzW2BWV65s3E
-	 7SEdsphSFKPzyF2rrGOtAlAtKlSeHmfPXRN6MxkW/R0jzyskEZi2AUJVWqUyl4M4YVw==
+	t=1793693103;
+	b=UDizNDbk2XTE1jppOxGKEC/PUC2XTaVdhKls3Y0RoTgs0Vddl8E+ulRAfyc58s5Trmn0
+	 +kuxSnKTKoqpCF0a8XtpmdcD5Bqf4u0wQYfD7UPrVQO1Mzfg02uVJsgesKI8Dyhs6tMXO
+	 Lwt9lSo1HfdVfKHulG8ojtoxsM4yW28RNdaof14HPpXNl8l8pfZXfXZ2QHrCmMEvUS1t8
+	 d1iY5tKwBWqZJXF1QWxJu3Hen/R1COfOJpwu/JWCXJS3Yv7aZG7grUqS6Ht+FybhMYO2M
+	 1Gr41NbTYz3S9uFWHRZz1c8UXtUmAp84iVqFXYDpbDD6nfRqWC4lPG1GNkEGVgzjv/Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793693108;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793693103;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=SCNrFq/IyVeCgzExKAFHfQqPlenHg05qBHN9+qI3/bU=;
-	b=UoBPTncnc2r+VKz3sQf70jbvSEf1J3YNyg9L3NwFqPwDBUnXwcqxpzi1IpxABPNsug+K
-	 XOB9kRvUZ5t8VmxDvGkbHdHq0NooqOtR7yQdyH7UXnWBxbE0JMKYwv8+7MjUdAuiMQpXK
-	 3vGvgm0p/2w9Mdv2h2JGcFkN4iO89VcS76sV2gFl6XWH/5C383GARDw+TCfx8evmmcSKM
-	 /MKvBGGO7tB1bRRKAKiHnkPngN0GOGeS+JtW0XkhtwoUcDOqMFypTRFdAt5PRUWCRbhrV
-	 KpHtUbO0FJ4MciOPWKn8sMUXhiCtaAiXyLTXF9IfF/aVljYTAASy4GAOCH6RWDm6NPQ==
+	bh=SKr8KVYCoXV6nvYY37CvWM/S3f7h+586zXtd/TK+Tos=;
+	b=Spo+IyQM9kJSSuGaOgPbZr5/F9evYK3/PA5J55mbvwksDM+ie4zUBH3wZSTclo/HlhEQ
+	 BuMuTvboABHCto50HhxRTfyCXkx+bd/lnZ6bMoRY7oCyl5D5OZn+oiMPH98PNU07bPTY/
+	 llwrLF36JwVOxeSGdUX0Mqs3C01vUVlofFRBcYlrAF393wN+xkqmTCE6mS45nvigx9yIq
+	 y9tcUFZoKNHVe3j1zubHiP1l/28XUeHmirF7arIIPv63BVG///sZEPantvwjnPky419Lv
+	 wBir86nkt/EpmA5yzunsBDa2Ez8M4oLewtbmckmP/4gj7PX51LEG6ZXar+fwReenRxQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="C1kjPu/Z";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NvEuHClj;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B661606A33F
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 08:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB7A606A332
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 08:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C1kjPu/Z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89081F00A16;
-	Tue,  3 Nov 2026 08:05:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NvEuHClj
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBED41F0093A;
+	Tue,  3 Nov 2026 08:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793693108;
-	bh=SCNrFq/IyVeCgzExKAFHfQqPlenHg05qBHN9+qI3/bU=;
+	s=k20260515; t=1793693102;
+	bh=SKr8KVYCoXV6nvYY37CvWM/S3f7h+586zXtd/TK+Tos=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=C1kjPu/ZBOxehBQZeqakz2dzXQW/iZKO+uUnvTYQhs2tIx0Vb6+1imlCNsdbv4lMC
-	 X2n4C1VQwi4AbyF8Y1Aq0wCYhq+ExtmBL6GKqDQJ+p/hBBDJZcKuz0qaB0ptPvsI9u
-	 crBcXyd6bqo0yIzkYiSkPBECtWZIue8rL9AVj6Pndztho3stAz2MJy3Xr5oQ3pt7YA
-	 DZVhBd0HDM5K0/l6bMlvREHPUQHYwh6sRGci29wUsxfS3CXivyAVhTJ1MAfacXGqUc
-	 s2jUcsgrm09PLlm3dHZuQomLEkPqIuHSPzZ6v3pZbhrhu98k9tEQv7aSyfIYXiCG8A
-	 UrCJd2JGwhwKQ==
-Subject: Re: [PATCH 14/14] xfrm4: use a full socket for local errors
+	b=NvEuHCljGTQ4aP0kmMT5S3Guhg1VS9VGyIz7ntIqfsQFe98+1vJ7qTveuHoVCvKAS
+	 Gr8Rl0f7JMx5gbOP5Dpq1fU2dnnaXsK8fIG3KnXFEFcjobnJYrjVx+JP7UBlq5W4mF
+	 FQzZkHH2P+m/wDc/MTPTQGfmMcNCCgD5AuHfksooi7QjtQ7sFjBLCgpQNatCTiDbnb
+	 cFAve6OED6mXs6t+W1p0sM1gfsfcUTi0uimoLducbHFhcF6zGhnRNy+AF8vBG6DxY4
+	 p0l/dtGOCjplJPts+IZ8lHILiz+duB0l0DOg8fCi+JYSEGY7eo6qGfDDv8lHb4JxUS
+	 fq4iKSgbV+CUQ==
+Subject:
+ Re: [PATCH 04/14] xfrm: espintcp: reorder operations within espintcp_init_sk
 From: netdev-bot+sashiko@kernel.org
 To: steffen.klassert@secunet.com
 Cc: davem@davemloft.net, kuba@kernel.org, herbert@gondor.apana.org.au,
  netdev@vger.kernel.org
-Date: Tue, 03 Nov 2026 08:05:07 +0000
-Message-ID: <179369310739.488856.16665150928122536725@kernel.org>
-In-Reply-To: <20261102100451.2505200-15-steffen.klassert@secunet.com>
-References: <20261102100451.2505200-15-steffen.klassert@secunet.com>
+Date: Tue, 03 Nov 2026 08:05:01 +0000
+Message-ID: <179369310134.488856.11660609562678130680@kernel.org>
+In-Reply-To: <20261102100451.2505200-5-steffen.klassert@secunet.com>
+References: <20261102100451.2505200-5-steffen.klassert@secunet.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -68,176 +69,213 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] This patch adds the full-socket check inside the callee,
-  xfrm4_local_error(), not in the IP-TFS caller.
-- [Low] The commit message's root-cause explanation is wrong for IPv4.
+- [Low] The patch annotates only part of the concurrent access to
+  sk->sk_prot.
 
 Pre-existing issues:
-- [Critical] IPv6 version of the same IP-TFS too-big path: a NULL pointer
-  dereference of skb->sk is still reachable.
+- [Critical] esp_find_tcp_sk() (net/ipv4/esp4.c:138-145) and
+  esp6_find_tcp_sk() (net/ipv6/esp6.c:155-162) drop the lookup reference…
+- [Medium] espintcp_close() (net/xfrm/espintcp.c:536) always restores
+  `sk->sk_prot = &tcp_prot`, even for AF_INET6 sockets.
+- [Medium] On the AF_INET6 path, the first espintcp_init_sk() call after
+  boot fills the static espintcp6_prot/espintcp6_ops with…
 
 --
 
-xfrm4: use a full socket for local errors
+xfrm: espintcp: reorder operations within espintcp_init_sk
 
-This commit changes xfrm4_local_error() so it resolves the skb owner with
-skb_to_full_sk() before it calls inet_sk() and ip_local_error(). A request
-socket is mapped to its listener, and the function returns early when no
-full socket is available. This fixes a slab-out-of-bounds read when IP-TFS
-reports a SYN-ACK that exceeds its payload MTU.
+This commit reorders espintcp_init_sk() so the espintcp_ctx is fully
+set up and published as icsk_ulp_data before the socket callbacks and
+proto/ops are switched to the espintcp versions. An smp_wmb()/smp_rmb()
+pair is added between espintcp_init_sk() and espintcp_getctx(), along
+with some READ_ONCE/WRITE_ONCE annotations on sk_prot, sk_socket->ops
+and the callbacks.
 
-Link: https://lore.kernel.org/netdev/20260908224856.1591189-1-kuba@kernel.org/
+Link: https://lore.kernel.org/all/c30b645074a1b379e0f7fe297f917c66137d9964.1778464688.git.zylzyl2333@gmail.com/
+Link: https://lore.kernel.org/all/20260819155349.3555804-1-jjy600901@snu.ac.kr
 
-> xfrm4_tunnel_check_size() already checks sk_fullsock() since commit
-> 1620c88887b1 ("xfrm: Fix the usage of skb->sk"), so iptfs_is_too_big() is
-> the only remaining IPv4 caller passing a request socket here: the sk it
-> tests is the listener, while skb->sk is the request socket.
-
-[Severity: Low]
-Does this description hold for IPv4?
-
-For IPv4 SYN-ACKs, tcp_make_synack() makes the request socket the owner:
-
-net/ipv4/tcp_output.c:tcp_make_synack() {
-    ...
-	case TCP_SYNACK_NORMAL:
-	case TCP_SYNACK_RETRANS:
-		skb_set_owner_edemux(skb, req_to_sk(req));
-		break;
-    ...
-}
-
-tcp_v4_send_synack()->ip_build_and_send_pkt() then passes skb->sk as the
-dst_output sk:
-
-net/ipv4/ip_output.c:ip_build_and_send_pkt() {
-    ...
-	return ip_local_out(net, skb->sk, skb);
-}
-
-So the sk that reaches iptfs_output_collect()->iptfs_is_too_big() looks
-like the request socket itself, which is the same pointer as skb->sk. The
-listener versus request socket split happens on IPv6, where
-tcp_v6_send_synack() calls ip6_xmit() with the listener.
-
-Would it be more accurate to say that iptfs_is_too_big() only checks that
-sk is non-NULL and never calls sk_fullsock()?
-
-> diff --git a/net/ipv4/xfrm4_output.c b/net/ipv4/xfrm4_output.c
-> index 0ae67d537499a..fffa3c4f456ee 100644
-> --- a/net/ipv4/xfrm4_output.c
-> +++ b/net/ipv4/xfrm4_output.c
-> @@ -38,9 +38,12 @@ int xfrm4_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+> diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
+> index 3e72b9f067b9b..4052ae5bbb2ea 100644
+> --- a/net/xfrm/espintcp.c
+> +++ b/net/xfrm/espintcp.c
+> @@ -434,7 +434,9 @@ static void espintcp_destruct(struct sock *sk)
 >  
->  void xfrm4_local_error(struct sk_buff *skb, u32 mtu)
+>  bool tcp_is_ulp_esp(struct sock *sk)
 >  {
-> +	struct sock *sk = skb_to_full_sk(skb);
->  	struct iphdr *hdr;
->  
-> +	if (!sk)
-> +		return;
+> -	return sk->sk_prot == &espintcp_prot || sk->sk_prot == &espintcp6_prot;
+> +	const struct proto *prot = READ_ONCE(sk->sk_prot);
 > +
-
-[Severity: Low]
-Can this early return drop a too-big packet without sending any feedback?
-
-iptfs_is_too_big() in net/xfrm/xfrm_iptfs.c chooses between a local error
-and ICMP by testing the sk passed to dst_output(), not the skb's own
-socket:
-
-net/xfrm/xfrm_iptfs.c:iptfs_is_too_big() {
-    ...
-	if (sk)
-		xfrm_local_error(skb, pmtu);
-	else if (ip_hdr(skb)->version == 4)
-		icmp_send(skb, ICMP_DEST_UNREACH, ICMP_FRAG_NEEDED, htonl(pmtu));
-    ...
-}
-
-When that sk is non-NULL but skb_to_full_sk(skb) returns NULL, the code
-now returns here. No error is queued, no ICMP_FRAG_NEEDED is sent, and the
-skb is freed with SKB_DROP_REASON_PKT_TOO_BIG. Two IPv4 cases appear to
-reach this:
-
-TIME_WAIT replies: ip_send_unicast_reply() calls
-skb_set_owner_edemux(nskb, orig_sk) with a TW socket, and ip_send_skb()
-passes skb->sk to ip_local_out(). sk_to_full_sk() maps TW to NULL.
-
-UDP tunnels: iptunnel_xmit() calls ip_local_out(net, sk, skb) with the
-tunnel socket for forwarded skbs, where skb->sk is NULL.
-
-Both peer callers gate on the skb's own socket and fall back to ICMP:
-
-net/xfrm/xfrm_output.c:xfrm4_tunnel_check_size() {
-    ...
-		if (skb->sk && sk_fullsock(skb->sk))
-			xfrm_local_error(skb, mtu);
-		else
-			icmp_send(skb, ICMP_DEST_UNREACH,
-				  ICMP_FRAG_NEEDED, htonl(mtu));
-    ...
-}
-
-xfrm6_tunnel_check_size() does the same with sk = skb_to_full_sk(skb).
-
-Before this patch, these paths were a NULL dereference or an
-out-of-bounds inet_sock read, so ICMP was never sent here either.
-
-Could the check go in iptfs_is_too_big() instead, gating on
-skb_to_full_sk(skb) as the peers do, so the ICMP fallback is kept?
-
->  	hdr = skb->encapsulation ? inner_ip_hdr(skb) : ip_hdr(skb);
-> -	ip_local_error(skb->sk, EMSGSIZE, hdr->daddr,
-> -		       inet_sk(skb->sk)->inet_dport, mtu);
-> +	ip_local_error(sk, EMSGSIZE, hdr->daddr, inet_sk(sk)->inet_dport, mtu);
+> +	return prot == &espintcp_prot || prot == &espintcp6_prot;
 >  }
 
-[Severity: Critical]
-This is a pre-existing issue, but is the IPv6 version of this IP-TFS
-too-big path still open to a NULL dereference of skb->sk?
+[Severity: Low]
 
-The commit message points to 6973a21ee73c for xfrm6_local_error(). Before
-that code runs, though, the xfrm_local_error() dispatcher reads
-skb->sk->sk_family without a NULL check:
+tcp_is_ulp_esp() now reads sk->sk_prot with READ_ONCE(), and
+espintcp_init_sk() installs it with WRITE_ONCE(). Should the restore in
+espintcp_close() get the same treatment?
 
-net/xfrm/xfrm_output.c:xfrm_local_error() {
-    ...
-	else if (skb->protocol == htons(ETH_P_IPV6) &&
-		 skb->sk->sk_family == AF_INET6)
-		proto = AF_INET6;
-    ...
+net/xfrm/espintcp.c:espintcp_close() {
+	...
+	strp_stop(&ctx->strp);
+
+	sk->sk_prot = &tcp_prot;
+
+	synchronize_rcu();
+	...
 }
 
-Since iptfs_is_too_big() tests the dst_output sk, there are IPv6 paths
-where that sk is non-NULL but skb->sk is NULL:
+This plain store is the one that actually runs at the same time as the
+lockless reader. espintcp_close() is reached through
+inet_release()->sk->sk_prot->close() without lock_sock. esp_find_tcp_sk()
+and esp6_find_tcp_sk() call tcp_is_ulp_esp() holding only
+rcu_read_lock(). The synchronize_rcu() right after the store exists
+because of those readers.
 
-tcp_v6_send_response() for an RST with no matching socket. buff comes
-from alloc_skb() with no owner and is sent with
-ip6_xmit(ctl_sk, buff, ...).
+The TLS ULP marks its restore path with WRITE_ONCE(sk->sk_prot,
+ctx->sk_proto) in net/tls/tls_main.c. Would WRITE_ONCE(sk->sk_prot,
+&tcp_prot) in espintcp_close() complete the annotation?
 
-tcp_v6_send_synack() in syncookie mode. tcp_make_synack() does not
-attach the skb for TCP_SYNACK_COOKIE, but ip6_xmit() gets the listener.
+[Severity: Critical]
 
-udp_tunnel6_xmit_skb()->ip6tunnel_xmit(sk, ...) for forwarded VXLAN or
-Geneve traffic.
+This is a pre-existing issue, but since this patch touches
+tcp_is_ulp_esp(): can its callers call sock_put() on a minisocket?
 
-In each case skb->protocol is ETH_P_IPV6, and the path is:
+net/ipv4/esp4.c:esp_find_tcp_sk() {
+	...
+	sk = inet_lookup_established(net, x->id.daddr.a4, dport,
+				     x->props.saddr.a4, sport, 0);
+	if (!sk)
+		return ERR_PTR(-ENOENT);
 
-dst_output()
-  iptfs_output_collect(net, sk, skb)
-    iptfs_is_too_big(sk, skb, pmtu)
-      xfrm_local_error()
-        skb->sk->sk_family   <-- skb->sk is NULL
+	if (!tcp_is_ulp_esp(sk)) {
+		sock_put(sk);
+		return ERR_PTR(-EINVAL);
+	}
+	...
+}
 
-This needs an IPv6 IP-TFS SA with XFRMA_IPTFS_DONT_FRAG and a packet
-larger than pmtu. A remote SYN to a closed port or a SYN flood could then
-trigger it from softirq context.
+esp6_find_tcp_sk() in net/ipv6/esp6.c follows the same pattern.
 
-The commit message limits this fix to IPv4, so this was not introduced
-here. Gating iptfs_is_too_big() on skb_to_full_sk(skb), as
-xfrm6_tunnel_check_size() and xfrm4_tunnel_check_size() do, would cover
-both families. Another option is a NULL check on skb->sk in
-xfrm_local_error() before it reads sk_family.
+__inet_lookup_established() walks the ehash chain, which also contains
+TIME_WAIT and NEW_SYN_RECV sockets, and takes a reference with
+refcount_inc_not_zero(). Its own mismatch path drops that reference
+with sock_gen_put().
+
+A timewait socket's tw_prot is sk_prot_creator (tcp_prot or
+tcpv6_prot), so tcp_is_ulp_esp() always returns false for it and the
+sock_put() path runs.
+
+Here is one possible sequence. The espintcp socket was actively closed,
+so its 4-tuple is in TIME_WAIT with tw_refcnt == 3:
+
+CPU1 (ESP output)
+esp_output_tcp_finish()
+  esp_find_tcp_sk()
+    __inet_lookup_established()
+      refcount_inc_not_zero()        /* 3 -> 4 */
+
+CPU2 (tw timer)
+tw_timer_handler()
+  inet_twsk_kill()
+    sk_nulls_del_node_init_rcu()     /* 4 -> 3 */
+    inet_twsk_bind_unhash()          /* 3 -> 2 */
+    inet_twsk_put()                  /* 2 -> 1 */
+
+CPU1
+    tcp_is_ulp_esp(tw) returns false
+    sock_put()                       /* 1 -> 0, sk_free(tw) */
+
+sk_free() then decrements sk_wmem_alloc and may run __sk_free() on
+memory that is not a full struct sock. inet_twsk_free() is skipped.
+
+A NEW_SYN_RECV request socket on the same 4-tuple, which a remote SYN
+can create, would hit the same wrong-destructor path.
+
+Should esp_find_tcp_sk() and esp6_find_tcp_sk() use sock_gen_put()
+here instead?
+
+>  EXPORT_SYMBOL_GPL(tcp_is_ulp_esp);
+>  
+> @@ -466,34 +468,41 @@ static int espintcp_init_sk(struct sock *sk)
+
+[ ... ]
+
+> +	rcu_assign_pointer(icsk->icsk_ulp_data, ctx);
+> +
+> +	/* pairs with smp_rmb() in espintcp_getctx() */
+> +	smp_wmb();
+> +
+> +	WRITE_ONCE(sk->sk_data_ready, espintcp_data_ready);
+> +	WRITE_ONCE(sk->sk_write_space, espintcp_write_space);
+> +	sk->sk_destruct = espintcp_destruct;
+>  
+>  	if (sk->sk_family == AF_INET) {
+> -		sk->sk_prot = &espintcp_prot;
+> -		sk->sk_socket->ops = &espintcp_ops;
+> +		WRITE_ONCE(sk->sk_prot, &espintcp_prot);
+> +		WRITE_ONCE(sk->sk_socket->ops, &espintcp_ops);
+>  	} else {
+>  		mutex_lock(&tcpv6_prot_mutex);
+>  		if (!espintcp6_prot.recvmsg)
+>  			build_protos(&espintcp6_prot, &espintcp6_ops, sk->sk_prot, sk->sk_socket->ops);
+>  		mutex_unlock(&tcpv6_prot_mutex);
+>  
+> -		sk->sk_prot = &espintcp6_prot;
+> -		sk->sk_socket->ops = &espintcp6_ops;
+> +		WRITE_ONCE(sk->sk_prot, &espintcp6_prot);
+> +		WRITE_ONCE(sk->sk_socket->ops, &espintcp6_ops);
+>  	}
+
+[Severity: Medium]
+
+This is a pre-existing issue, but the new smp_wmb() comes before the
+AF_INET6 branch. On the first IPv6 espintcp conversion after boot,
+build_protos() fills espintcp6_prot and espintcp6_ops using memcpy()
+and plain stores. The two WRITE_ONCE() calls above then publish them.
+
+Only mutex_unlock() sits between the two sets of stores. It is a
+release, so it doesn't order the later publication stores after the
+earlier build_protos() stores.
+
+Can another thread on the same socket see the new pointer before the
+struct contents are visible?
+
+sock_recvmsg_nosec() calls READ_ONCE(sock->ops)->recvmsg. inet6_recvmsg()
+and inet6_sendmsg() call prot->recvmsg/sendmsg after
+READ_ONCE(sk->sk_prot). Neither takes lock_sock. If one of them sees a
+still-zero ->recvmsg or ->sendmsg, it calls a NULL function pointer.
+
+Would moving the smp_wmb() after the AF_INET6 build block, or
+publishing with smp_store_release(), order both the ctx and the proto
+contents?
+
+[Severity: Medium]
+
+This isn't a bug introduced by this patch, but for AF_INET6 sockets
+this branch installs espintcp6_prot, which is copied from tcpv6_prot.
+espintcp_close() always restores the IPv4 proto:
+
+net/xfrm/espintcp.c:espintcp_close() {
+	...
+	sk->sk_prot = &tcp_prot;
+	...
+}
+
+struct espintcp_ctx doesn't save the original proto, so close cannot
+restore the per-family one. Does an IPv6 espintcp socket then run
+tcp_close() with tcp_prot?
+
+inet_unhash() and inet_twsk_hashdance_schedule() both call:
+
+	sock_prot_inuse_add(sock_net(sk), sk->sk_prot, -1);
+
+The socket was counted under tcpv6_prot's inuse_idx, which
+espintcp6_prot copies, but it gets decremented on tcp_prot's. "TCP:
+inuse" in /proc/net/sockstat would be undercounted and "TCP6: inuse"
+would leak.
+
+Could the ctx save the original sk_prot, as tls_context->sk_proto
+does, and restore it in espintcp_close()?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261102100451.2505200-2-steffen.klassert%40secunet.com
