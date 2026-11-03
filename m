@@ -1,49 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793740210;
-	b=gTaCgNnf8LP39AAPypjrmvcK2rvkQg6ggSpmwhFJNDPHTYbRYBLKdtMxfPOHah6T2r8g
-	 QOCoHlbfMeKnvEoMJ/LaqAYihhtb1S/MXlzMgFF9atpEw/0MuOzX4tOMaCTHrHEdz2zjX
-	 2IXXV3XKROeKvMx/bNdbmc36l7uREsDG3kQ8yA9Py07P5RqxfmcTTJvIGypv9jMzyaCVB
-	 qCrLQOcIxc8561W/IHZXxAb0+1os7Tiw1wB4uWsyPzCGOOO9RQm5GyME8jwOGKGLnhiq2
-	 q14m1nZKS2NbcB+Q5qrWE7AXzGoVhmFOA21aqD9CQZCfa5nz+RMJwv23MtiCD6NDKEw==
+	t=1793740433;
+	b=TciKzqPO6yxMslSgxvpFszGIOSxrD17QHLssjvwHgJ+Eq1CPlw3UGHXDVhe7Rcw9RuI6
+	 0plA87N6nZgzvXiVvaFx2SNa98ewGZ3DEUeyTDz7e1h7NciZnyL/CFYpFxSgUhk/UPtvt
+	 R3j+Im+ENx67DxJEWv6QfwmW4S5aiVHRd66psJ/+wQXduclI2mczd1f8uqav0Wdntjd5K
+	 AqR+gChdhQGIRBVGEe7a4SsArX72GLbYJDKvtsE2p2mAOwGd8LqCzGeUB1y93RlX3rWkl
+	 0jXnHVKsSiJC2tC4gJssITKE3wHardJLNM3X2W1PyIuAK3OLSF5F85R+HRqfzgc/vuA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793740210;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=zV7Lgp51qEqo2WDFdMLU1p7YBKIQkpPhWHSCGlkZW/M=;
-	b=3XJtHAAz6yW8Ydzp3I6MyQioiKqGLr+psVLUt+zaiN1tGODJ4WC8yquIAh00gQfWWKJK
-	 nSjCtyX8jLxSne25Fr5ufMZqHuDNfDxx1Q4Znqa+px81WhEpE2pGdwAwMKSUb9xKWqTc8
-	 Pkx9DSV3HHuUqIvclRFUxLhwVRCVEik7on1nY/2K145b1gLjuY4SpNAymLMgBdH9fEWat
-	 gBRf346P1xuj/NaWOSWDqsgf8YfoZHhoMzrKI7BKAWH4oHtH+Ny1ei5ZSvjcUU4X7v8Qd
-	 5nZAV+qCAEULVB3IQxzh9bDq4OTRwVpftofuq+tgXO0ULAdVXvcDRdMwaA21L1J3lWg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793740433;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Sender:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=j+CzPDafxCj9fZ8Cq3DLaNwMhYmNWGXJCSroxfgm+X4=;
+	b=vYMGi2Dyl9wBVoTsEj/d59ccJ6vc8KoirakC+P/GeZfcmHtDs4GVt/fsm19b96jUuT1b
+	 XEMr9kkc6jYcU2Wn1RD8wVRn/UuyAmQ0zvEL/uwU48ArXT8kssDYvdAqk+8n1fnYAJz7m
+	 uSMHjXUZI7Y+Ah1kR41xjlnR25bOnz8Goabxyp3aVYc3js1aSV2snGBHhAFNbYPu95xEq
+	 lSxLvFBnBqLSBG2sAYc5KF4zUuHI3GbJmIrBcrIupwCG0mL58oC8DhpdS8LV6zlu9JyTd
+	 LObXYYmqEojRvPJPmSZv0YIeiFeiQsBnc6Ws407078MQkVcIAGw0JBOTFWeYyQHsiUQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=itI0bKYE;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wTsWmL3Z;
+	arc=none smtp.remote-ip=209.85.128.54
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67ED9606A31B;
-	Tue,  3 Nov 2026 21:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2422E606A31B
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 21:13:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2422E606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=itI0bKYE
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D5931F000C1;
-	Tue,  3 Nov 2026 21:10:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793740210;
-	bh=zV7Lgp51qEqo2WDFdMLU1p7YBKIQkpPhWHSCGlkZW/M=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=itI0bKYE8HR4qZE209NCueObkiWZE/j4J+y6T0pvNyc73uwodbpww6WiVfbAUk7GF
-	 HflHM4dhjSu3SM/bL1rPPjw29d4RYXvD17IbVh39sNBL3eijtjAEwR5erZGfCZFcCE
-	 WQAjQTaEFJUmvuMsP9pzgxSdm3tdz0gj3fRRm/NeNv8tuBzZfwXWdz7lfbeBwHrlaR
-	 C87SOPjCx4sCuAJ1zzgLp//rdurQnAhSzvRnOH0yhBk6Rd3ZI1bSiwMs/eNRIMz8JC
-	 52McuFyLET7Q5QgR6zq6scw5bg1JnTMi8k/nrmVqrx8qyXlEIR3f7B+EhT5ZhL+vy9
-	 MB2BikdEIwSQg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 03132391B0A1;
-	Tue,  3 Nov 2026 21:10:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wTsWmL3Z
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a5177d78c7so47069105e9.2
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 13:13:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793740431; x=1794345231; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:sender:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=j+CzPDafxCj9fZ8Cq3DLaNwMhYmNWGXJCSroxfgm+X4=;
+        b=wTsWmL3ZHIIOBiHw3gbuOC52/IfWm3h6XXc4PQN2CH78Q3UkowvPO5Kog2uQbB7sOq
+         CWruA8GaUHCyPy1iczpY4gXbsgHDHpdoCxNHz2JbFS/1n4jzxteldQaZ3u71PlsoeQND
+         PCewtlMU7XT+tlfbL30Nkv2LIUQ014c0DZu1qbyG/7zByfMapztddxKoCovFnxHAVKQZ
+         LTGQ25H0i7zYbKYdIAZ+QcpMKqpBQFtRSQBL+T857cNAPal4c3mCcw9xJ8nEYGDwanyn
+         Tc95G+8jQzNnXB/ikhBOB6ajViTdAczqTH1+v8m9ypBocwyuEbRVCGSegkUM43ZuEk/L
+         W+XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793740431; x=1794345231;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:sender:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=j+CzPDafxCj9fZ8Cq3DLaNwMhYmNWGXJCSroxfgm+X4=;
+        b=F6Qqnao/5xpadW+vFH5E5Se4SjslcG/VqFoROSSVcL3CMr/pIynt24kJ+iBPt5nx0z
+         NBET2SFniRgWgCGMUBG68sC2s/OWbQLxyT6WG5geiqyfRg3nQExTUjYPLTvkkQpMDe3j
+         OoIhMOcdEcgGT50F/Pkjb6qKaOnuM/Sk6LFQLN38QJOL30IRAjyvmv+wkCjNBgHyYwS0
+         ZwdZBc7GvV2MjCTPvhyG1riaWUtRSkt4Q8fFQTLAGPSAdpfU5/M2od3nZkkglpDZqL8r
+         b2yrXHqPRKAnzE0dEMqu5mo2SoCs4vw2q1JW3VrOCDIe9cNiyAF5uRxpkY4xjOPb9J66
+         Nt8g==
+X-Gm-Message-State: APuU4Z/9bkHwF+0RPo+06RpfuPS9Nx3m8oWOtcjcPmIPM8Fd+bahP/Sh
+	eQ6ZlT5QwDBWULxO8f5m6PuZKi4t9+cepKUhEXv56F8ehhVbHTzz+RY=
+X-Gm-Gg: AYBFou1aceYMgPrzSlreorY+S2zxJeIzLQvggAj8j+uUNlbCwQZ24ffOiFUPtKK4Vt4
+	Be2Yix4/kweQ6LsnBfOsYawN44T6vNwZ3hrGj57aVx4XFEBUVJij+FM7xexac/sRUzsuTEqmdQ9
+	ftCAR4bR4QemH9YoxuswoHL8UKyT2bKrtl1qIj5Nxfwg1wE5TrQdXbVLc5gHyDCHZ836HX+hT8u
+	lQKgy50smaO8gg8hzr9/O0Sijy3ADwZjXUrrKfcrkoE6uOx6YoV4lvcILvjEw+frQ1Gb250qFjb
+	KlwvH9+RHjbsP24jfNNAT+csR5nmsO9JVhy3DHdeGgqE/JA885rsgNsr1ouq9EiOktr3aB8rm2t
+	Zir3dhfw4724aZcc29REujaMLqmtsinxWB3h9DdzFR3L3iG/JnBtFHgzOAzbz1forV/STJO0HO5
+	ot8nJcb/wVxWiIS2ZS0LM0vjha73dRVNcJGAAULFxZp3rEPJy7jYy++GRxV5HS9V5cJL0rhi+0g
+	J045Sc3or/r/lw4xiZdOyccpMPQBSn7D526J/o/JNRLHnsMou6gPEIoHPuPjIxO89Ww9bACGPtA
+	fYh3AhCTt4YYfeH+//czO9rgGHyvYX9RFzae3PCXMIyUY1MGTZ+v4Rpq/61ErCSMFtSdrlxUBwE
+	=
+X-Received: by 2002:a05:600c:840e:b0:4a1:813f:2a60 with SMTP id 5b1f17b1804b1-4ac17d168b1mr364511255e9.11.1793740431324;
+        Tue, 03 Nov 2026 13:13:51 -0800 (PST)
+Received: from localhost.localdomain ([2a02:8109:9d9f:2700:6d31:a289:bf62:2372])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b2ab3ea6a9sm125728205e9.15.2026.11.03.13.13.50
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 03 Nov 2026 13:13:51 -0800 (PST)
+Sender: Akshay Ubale <akshayubale.dev@gmail.com>
+From: Akshay Ubale <akshay.ubale001@gmail.com>
+To: netdev-bot+sinfo@kernel.org
+Cc: netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Kees Cook <kees@kernel.org>,
+	Matheos Worku <matheos.worku@sun.com>,
+	linux-kernel@vger.kernel.org,
+	Akshay Ubale <akshay.ubale001@gmail.com>
+Subject: Re: [PATCH net] niu: bounds-check phy-type and model VPD strings
+Date: Tue,  3 Nov 2026 22:13:48 +0100
+Message-ID: <20261103211348.39521-1-akshay.ubale001@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <179253979539.3290.9924821446681218748@kernel.org>
+References: <179253979539.3290.9924821446681218748@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,45 +109,26 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: ethernet: mediatek: preserve sibling PPE
- bindings
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179374020858.1880228.9743953514014477016.git-patchwork-notify@kernel.org>
-Date: Tue, 03 Nov 2026 21:10:08 +0000
-References: <20261030010517.45639-1-alex@goodkind.io>
-In-Reply-To: <20261030010517.45639-1-alex@goodkind.io>
-To: Alexander Goodkind <alex@goodkind.io>
-Cc: nbd@nbd.name, lorenzo@kernel.org, horms@kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- tarick@bedeir.com
 
-Hello:
+Hi,
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Answers to the questions about this patch:
 
-On Thu, 29 Oct 2026 18:05:17 -0700 you wrote:
-> __mtk_ppe_check_skb() clears entry->hash for flows bound to other
-> hardware slots in the same software hash bucket. mtk_flow_offload_stats()
-> then skips their hardware counter updates. L2 cleanup also frees sibling
-> subflows without invalidating their hardware rules.
-> 
-> Restrict both cleanup paths to entries assigned to the inspected slot.
-> 
-> [...]
+- Discovery: manual code inspection. While reviewing unchecked strcpy()
+  calls in the kernel, I found that niu_get_of_props() copies the
+  "phy-type" and "model" device-tree properties into fixed-size buffers
+  without checking their length. No syzbot report, production report,
+  or static analysis tool was involved.
 
-Here is the summary with links:
-  - [net,v2] net: ethernet: mediatek: preserve sibling PPE bindings
-    https://git.kernel.org/netdev/net/c/34cc22a9ce6a
+- Triggered: not triggered. This is theoretical, found by code
+  inspection. No symptoms were observed. Triggering needs a property
+  longer than the destination buffer, which I have not seen reported.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+- Hardware: not tested on real hardware. The change was verified with a
+  SPARC64 cross-build (gcc 13.3, W=1, no warnings) and a standalone test
+  harness for the length-check logic.
 
-
+Thanks,
+Akshay Ubale
