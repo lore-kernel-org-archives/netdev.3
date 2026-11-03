@@ -1,76 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793683921;
-	b=WOjrjC5LiKOO976Tkuu/6LVH1t8eiE5DOFyeSHr8uR6Y1/YvpD1gt/rZXTVwy4Df5CXc
-	 vLTgNn4HE9QvEOm39QQ6idfHsZtcB/TntuO1phSwBklQJ2xFSzHJpNoKihmypMAbUnY4o
-	 p1pwSFiXoyqZnwdK31YmesEaxcWQM56FEy+s9l+1lzn/klK74utHiIUE6MMKaqmljwCh4
-	 Lfp/lPaAlZOi2kvrDy0y2zapXJ/Ldgw2dVKtpu+S+1uRYy08owYzhtjSGyhEc7FBIKFKV
-	 ucWn7ylYF90RNg6YzFA3bYhM/Mnev+u/OJ0k01mPbbp1K4TrDIX9fV/gRp7/yQboUUQ==
+	t=1793684250;
+	b=S0gvpgun81W4HHGg/6a8QGhlOp5WH5iQ/6Cma7xJfVZQj+7sn6cLLNNxeTcpidIA704W
+	 fUiNpCGNl2UVMR38JMa6Gupq+MZfS9sEOhNLg0O6xKif/J0Dca/okxUQybUvMS+WSLidg
+	 3kaalcO0tHKJnelicyP0uPkvaMAvT8N7aHSWlo3rEs3Sho9KXSICQNLS8WSQmFjmZk3EE
+	 n1qAuk9zA9pSQgmXWsHhxztrAMwQk0qWkeu4Rt/X8umXlL7SClpP83wKfoWDvYIOjwiEp
+	 BnpDEPyY0exFXyxwXEucn7/UCLy3BbAc9A3zLd9LnrioID93QMJWNrZ/n+k7ic5SVTQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793683921;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=xIO2p5tYrEpaq2n/QfwjZeXI7kU+eJQ5+b8ckU+HtYU=;
-	b=ddPHF1e65NsnHDNIKMnjEIZ9QYSFsuTLpNeBQ5MeXO7U1ea9oxQaFCm7LML4nOHPMiCT
-	 cuxAV4bX2yK+P8POqa6IIISdjYw27lKt/ALFX5y3h1S+hJhH66uhJ3I853x+KslUzk24T
-	 hFvradcjpqa7nPo+7L3GU3ymiwgpS+3svNIEKfAkzWJOnuRLZ3JnnKSHm2fxx7I9hEawK
-	 Pgmbywkn7FW/QsUtfxEqTNEObo6qnxzSfWrVrA+JSvJ1w0Z+wrjWf3VghwieU+eS560VQ
-	 80m+lgqRHBaFJWOsYcfpysFSQOPpf3VWFFbP1yZGsxwnRPAUwQV5kmhHYnc5Y8GihHw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793684250;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=Z9N045PGX72xkHaVesJTSxEo5HdRSWDD+P7HKyru9AE=;
+	b=asIT0HdK/gqbk21eWuMGYHkrIXi2LdTVe8w9h+uxvMdoeYt0l9iln5PLsPhkJSb6LYG/
+	 vNy7FRQyIg2Ryox2B8fa9ZfYEq3MHWmnIQpEdrqAGwM3TYTYLMGrdY7ThyDE4GZ27lgjM
+	 kubuzfoQ6o9DdsZr01Zo688Ls3UiqKRnRswj90ogaObfwmNpzxu+jo9zCjqh7ts+729t4
+	 BhgcbQ/dzUcC4dW/WMGgSakK/hVc4vcl3RVmi1btSJ4cIwle3fQAcmAnM1gn66NQNBARE
+	 uZ4rusRferV6h1+aWSjTwrSohysRCgMnLvqTISvb83TKOGosce97EXpddENY6dm/Y5g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KHTrgv55;
-	arc=none smtp.remote-ip=209.85.210.197
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fxZDhmJD;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFC4606A324
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 05:32:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8AFC4606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68B2606A32E;
+	Tue,  3 Nov 2026 05:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KHTrgv55
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8a073778890so2597521b3a.1
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 21:32:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793683920; x=1794288720; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=xIO2p5tYrEpaq2n/QfwjZeXI7kU+eJQ5+b8ckU+HtYU=;
-        b=KHTrgv55L5jRUpGS0pkOTtgCHdCehw7SscRH5zb01bTV7n0hSsadRaI2qgUpK3oyl0
-         BB8euP8guD8NlUoDxn256k3h3xrRbMfYGZ3hwqc5RkjSd7OBl07c8PtV6Ftx3TOZ/GdK
-         eDGM9xecKbl8EPM3VynH44kSXIAHmE3qsZxB763j5ZwWVgPRyEkxsbQBX91nH0QpmO65
-         fIjmRVc8TSw9T+O3h67VyHQgEVq3QB9ehXyPvpZJ0M83B1iU494HqctHAcvaIJ7m3+bm
-         +vJLvFpFMWZtcEz7bVBdnhfyzNcTWdqjj1En4TtO7mRWQh5W0R0gdnW/N3HEQ2N3ks1K
-         SybQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793683920; x=1794288720;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xIO2p5tYrEpaq2n/QfwjZeXI7kU+eJQ5+b8ckU+HtYU=;
-        b=mUH/iy/07MPw/MiX6YgoDBxvA6Hzp97xusHNU0MJk0ck66sQY/XKxJIogDyFFDDuHb
-         UYr8RN+mvTn2vEl+v/UWrCl1Zp9moXz4IdmNQsSlVAyD2t63ZBqjsfMtvBmgSaV20scN
-         XVFmi10yLcNvo/mgJjOcDvBKGVvk+FEJeZBRbU4z0u5lLRO6+fy5kj0G+aaimot6II9h
-         MDLikZur+LqBRqicwOAKJ9Kkh8ycBeBJJLAwPexsAo5MdgXlMYzsJZe4SZ5tnduU9tcK
-         DlE6r6dKSGOEn5cKc4Bll7PeF3ct7J21BniOvaxA+BJPwHD0tjO5c4uM7SKuC7xxp6hI
-         wGQw==
-X-Forwarded-Encrypted: i=1; AKwUvBwY+4zR4U7t0xu2Xa33Sryt7AFbTh+BqrcgTnHzJVN8vWMFTJx8rQdyzBCShZ0gMaM/gpSegGc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8be2Z7rcs2sSDQrQaObUMOdW1Oy0AV+G5w9e0+GqjvCvqToXcG
-	u197HsW7H0npZdme4aVFh06rR6lKhByubtueZVvJx0NhO6gZqNGUOa0khxsc6FWAThBpzBi6HFb
-	MS8XQDw==
-X-Received: from pgby21-n2.prod.google.com ([2002:a05:6a02:6515:20b0:cd6:9a9f:f4b9])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:9cc8:b0:3e2:47cf:17f1
- with SMTP id adf61e73a8af0-3e928e66cb3mr10029400637.51.1793683919547; Mon, 02
- Nov 2026 21:31:59 -0800 (PST)
-Date: Tue, 3 Nov 2026 05:31:59 +0000
-In-Reply-To: <CAL4WiioRi2hZRMTv-v=iUpSZhbnj__rh=Uh+g2dOCre-YBa6Ug@mail.gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fxZDhmJD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3FBB1F000C1;
+	Tue,  3 Nov 2026 05:37:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793684249;
+	bh=Z9N045PGX72xkHaVesJTSxEo5HdRSWDD+P7HKyru9AE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=fxZDhmJDNgRkKuV+/q/ETsgBgdTezFC5dL54nTcUZSNJKF6wHleyKFQaecX6MqT4g
+	 LZJ7vMFd5AkEs3KbKy6gn+VDH2Kg5eB2BbRQ77CPUBP7i5ODD4e9IXCkRCAtcplFje
+	 1oTMxLOhFWjODDYq2T6vKjTyl+MOVd6stGmArTngl1MbvbHTZZwaZhCAp8b1U255lj
+	 RH/3k7cHlawE8jiZvVwytCbAvro6g4rsn5dnrg5+Z5StuMvuIbmhMZsHQqmVSGodCA
+	 OXh356L09rVispOj/3PTtcobSipo8ZO0fFwtLyfInvL60/CeXPHykHJXA+gzNESIBu
+	 q/wmq6i/rlUfw==
+Subject: Re: [PATCH net] selftests: drv-net: pause: Skip support tests without
+ link autonegotiation
+From: netdev-bot+sashiko@kernel.org
+To: mohsin.bashr@gmail.com
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org,
+ maxime.chevallier@bootlin.com
+Date: Tue, 03 Nov 2026 05:37:28 +0000
+Message-ID: <179368424817.488856.1260070865221347541@kernel.org>
+In-Reply-To: <20261030173516.1002250-1-mohsin.bashr@gmail.com>
+References: <20261030173516.1002250-1-mohsin.bashr@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,110 +63,134 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261102035943.9700-1-qingfang.deng@linux.dev>
- <bfbc4b3c-fe19-4070-97b4-4ff8ded06011@linux.dev> <d6ba5426-fbee-49da-b18b-1419fd84fa0f@linux.dev>
- <CAL4Wiio9VXUtGg4UrFFU1kG2JENYL8xi0DzsDmhOp=zXs0DiUg@mail.gmail.com>
- <b8595ed2-6e7a-48f1-8240-3d522776e378@linux.dev> <CAL4WiioRi2hZRMTv-v=iUpSZhbnj__rh=Uh+g2dOCre-YBa6Ug@mail.gmail.com>
-Message-ID: <aulxmZNZqmAzK6r1@google.com>
-Subject: Re: [PATCH net] tcp: initialize send sequence numbers before
- deferring TFO
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: Qingfang Deng <qingfang.deng@linux.dev>, Jiayuan Chen <jiayuan.chen@linux.dev>, 
-	Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Yuchung Cheng <ycheng@google.com>, Wei Wang <weiwan@google.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 
-On Mon, 02 Nov 2026 09:20:41 +0100, Eric Dumazet wrote:
-> Le lun. 2 nov. 2026 =C3=A0 09:13, Qingfang Deng <qingfang.deng@linux.dev>=
- a =C3=A9crit :
-> >
-> > On 2026/11/2 16:00, Eric Dumazet wrote:
-> > > Le lun. 2 nov. 2026 =C3=A0 08:41, Qingfang Deng <qingfang.deng@linux.=
-dev> a =C3=A9crit :
-> > >> On 2026/11/2 14:11, Jiayuan Chen wrote:
-> > >>> On 11/2/26 11:59 AM, Qingfang Deng wrote:
-> > >>>> TCP_FASTOPEN_CONNECT can return from connect() before tcp_connect_=
-init()
-> > >>>> when a cached cookie or cookieless Fast Open allows deferring the =
-SYN.
-> > >>>> At this point write_seq contains the initial sequence number, whil=
-e
-> > >>>> snd_una and snd_nxt have not been initialized to that sequence num=
-ber.
-> > >>>>
-> > >>>> Consequently, inet_diag and /proc/net/tcp{,6} report the initial
-> > >>>> sequence number as the send queue length despite no SYN or payload=
- being
-> > >>>> queued.
-> > >>>>
-> > >>>> Initialize snd_una and snd_nxt to write_seq before marking the
-> > >>>> connection as deferred. Both sequence-based queue lengths then rem=
-ain
-> > >>>> zero until the first write starts the connection and runs
-> > >>>> tcp_connect_init().
-> > >>> This patch looks good to me. But idiag_wqueue can still go negative
-> > >>> on the normal connect path, since the socket is already hashed and
-> > >>> diag does not take the socket lock. We always set write_seq first,
-> > >>> then init snd_una later:
-> > >>>
-> > >>>     tcp_v4_connect
-> > >>>       WRITE_ONCE(tp->write_seq, st.seq)
-> > >>>       tcp_connect
-> > >>>         tcp_connect_init
-> > >>>           WRITE_ONCE(tp->snd_una, tp->write_seq)
-> > >>>
-> > >>> Can you try this instead?
-> > >>>
-> > >>>     r->idiag_wqueue =3D READ_ONCE(sk->sk_wmem_queued) ?
-> > >>>                       READ_ONCE(tp->write_seq) - READ_ONCE(tp->snd_=
-una) : 0;
-> > >> This does not guarantee the load order on a weakly-ordered CPU. LLM
-> > >> suggests using this load-acquire/store-release sequence:
-> > >>
-> > >> r->idiag_wqueue =3D smp_load_acquire(&sk->sk_wmem_queued) ?
-> > >> READ_ONCE(tp->write_seq) - READ_ONCE(tp->snd_una) : 0;
-> > >>
-> > >> Then in tcp_connect_queue_skb(), replace sk_wmem_queued_add()
-> > >> with smp_store_release():
-> > >>
-> > >> /* Paired with smp_load_acquire() in tcp_diag_get_info(). */
-> > >> smp_store_release(&sk->sk_wmem_queued, sk->sk_wmem_queued + skb->tru=
-esize);
-> > >>
-> > >> What do you think?
-> > > Please do not do this.
-> > >
-> > > /proc/net/tcp and inet_diag dump sockets without holding the socket
-> > > lock. They provide a best effort snapshot, and transient inconsistent
-> > > values are expected (see the comment about rx_queue in get_tcp4_sock(=
-)).
-> > >
-> > > The window in tcp_v4_connect()/tcp_v6_connect() is a few usec, with t=
-he
-> > > socket lock held by the caller. Adding memory barriers in the TCP sta=
-ck,
-> > > on a field updated in many places, to cover this is not worth it.
-> >
-> > tcp_connect_queue_skb(), as the name suggests, only queues the
-> > connecting SYN. So this adds a small setup cost on weakly-ordered CPUs
-> > (on x86, smp_store_release degrades to a compiler barrier).
-> >
-> > If strong memory ordering is not required, do you prefer Jiayuan's appr=
-oach?
->=20
-> Neither, let's keep v1 as is.
->=20
-> I know tcp_connect_queue_skb() only queues the SYN. The cost is not the
-> problem; sk_wmem_queued has many other writers, and one release store
-> among them is a special ordering rule that nobody will remember the
-> next time this code is changed. This is too much complexity to hide a
-> transient value in a best-effort dump.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-+1.  v1 looks good to me too.
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] The fix is incomplete.
+- [Medium] The new require_link_autoneg(cfg) call in pause_test_support()
+  (pause.py:469) now runs before pause_setup()'s guard for devices that…
+
+--
+
+selftests: drv-net: pause: Skip support tests without link autonegotiation
+
+This commit calls require_link_autoneg() before pause_setup() in
+pause_test_support(), so the test is skipped when either interface lacks
+link autonegotiation. The goal is to stop cleanup failures on fbnic, where
+the deferred restore of unchanged link settings returns EOPNOTSUPP.
+
+> diff --git a/tools/testing/selftests/drivers/net/hw/pause.py b/tools/testing/selftests/drivers/net/hw/pause.py
+> index ca4a55e59c30f..1537f88e0e77e 100755
+> --- a/tools/testing/selftests/drivers/net/hw/pause.py
+> +++ b/tools/testing/selftests/drivers/net/hw/pause.py
+> @@ -466,6 +466,7 @@ def pause_test_support(cfg, pauseparams):
+>      supported fields.
+>      """
+>  
+> +    require_link_autoneg(cfg)
+
+[Severity: Medium]
+Can this turn a SKIP into a failure on devices that don't report link
+modes?
+
+require_link_autoneg() reads the JSON key directly for both interfaces,
+without checking that it exists:
+
+def require_link_autoneg(cfg):
+    ...
+    if not ethtool(f"{cfg.ifname}", json=True)[0]["supports-auto-negotiation"]:
+    ...
+    if not ethtool(f"{cfg.remote_ifname}",
+                   json=True, host=cfg.remote)[0]["supports-auto-negotiation"]:
+
+ethtool fills both "auto-negotiation" and "supports-auto-negotiation" from
+the same LINKMODES_GET reply. If the driver has no get_link_ksettings,
+ethtool still exits 0, but the JSON has neither key.
+
+Before this patch, pause_test_support() reached this guard in pause_setup()
+and skipped:
+
+    link = ethtool(f"{cfg.ifname}", json=True)[0]
+    if "auto-negotiation" not in link:
+        raise KsftSkipEx(f"{cfg.ifname} doesn't report its link modes")
+
+With this patch, require_link_autoneg() runs first and raises KeyError.
+ksft_run() catches that and reports a failure for all four variants.
+
+The other callers of require_link_autoneg() first go through the
+require_pause_supported helpers. Those check "supported-pause-frame-use"
+from the same reply. pause_test_support() is the only caller that has no
+earlier guard.
+
+Would using .get("supports-auto-negotiation") avoid this? Checking for the
+key and skipping would also work.
+
+>      pause_setup(cfg)
+
+[Severity: High]
+Does this fully fix the fbnic CI failure described in the commit message?
+
+pause_setup() always defers a restore of the current link settings. It
+does this for both the local and the remote interface, even when nothing
+will change those settings:
+
+    if link["auto-negotiation"]:
+        defer(cmd, f"ethtool -s {cfg.ifname} autoneg on")
+    elif "speed" in link and "duplex" in link:
+        defer(cmd, f"ethtool -s {cfg.ifname} autoneg off speed {link['speed']} "
+                   f"duplex {link['duplex'].lower()}")
+
+pause_advertising_test() and pause_aneg_resolution() still call
+pause_setup() without a require_link_autoneg() check:
+
+pause_advertising_test():
+    require_pause_supported_allof(cfg, pauseparams["linkmodes"])
+    pause_setup(cfg)
+    lp = controllable_lp(cfg)
+
+pause_aneg_resolution():
+    require_pause_supported_allof(cfg, required_local_linkmodes)
+    require_peer_pause_supported_allof(cfg, required_remote_linkmodes)
+    pause_setup(cfg)
+    require_controllable_lp(cfg)
+
+fbnic has .get_link_ksettings, but it has no .set_link_ksettings and no
+.nway_reset.
+
+Take the "RX off TX off" variant of pause_advertising_test(). Its linkmodes
+list is empty, so the support check passes, and then:
+
+pause_advertising_test()
+  pause_setup()
+    defer(cmd, "ethtool -s ... autoneg off speed X duplex Y")
+  controllable_lp()
+    ethtool -r -> EOPNOTSUPP
+    raise KsftSkipEx(...)
+ksft_flush_defer()
+  ethtool -s -> EOPNOTSUPP
+  KSFT_RESULT = False
+
+The result is "not ok ... # SKIP", and ksft_exit() returns 1.
+
+pause_aneg_resolution() takes the same path through
+require_controllable_lp(), for example in the all-off/all-off variant.
+
+controllable_lp() also does not cache a result when it skips. Every later
+test runs ethtool -r again and fails the same way.
+
+Would it be better to add require_link_autoneg() to these two tests? The
+other option is for pause_setup() to defer the link-settings restore only
+when it actually changes the link settings.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261030173516.1002250-1-mohsin.bashr%40gmail.com
