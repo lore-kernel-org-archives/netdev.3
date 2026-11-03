@@ -1,56 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793701561;
-	b=muXmTLm8jfyClY+cKFPCIpUMN6inIgePkO/LPqWgZrYZxBDZNcnUPyyhvU5jI+rVF++a
-	 18m9opIgEHoU9tls+fVrRW65WwyCq/5R/NbuDOyjiIn1Bfxaesz10YBBxTnvfvgNJ4UUq
-	 pGjCrGQPnZHboe3k4Rype07r89N49YzDtkJTLAaxGP7TeJ+oEPgRUF3WaGOCEm32EX9ss
-	 TSYWZ88Uqev+uJiIyCxl0ZYJPlyDy3NiyqM3PT/VDvsjnlg8T4uSPqFFsQqtthciYrQ+z
-	 QvcOgjucs4BFnX78K7XRjA6c8h5QU/4wptJF+e3O47klw0Td/6S/zR4V+iPv+JVpZnw==
+	t=1793701568;
+	b=NlgmRxDittllU1RLnbEbZejDOVuc3AkMbH0+jYqtD6NQfzfP3ynBzB3Gxco5D9WCckDg
+	 kUvo5vib4jDCHwLWpyQwrchYxS+lAjY3WmIDOZ8Hs+ByeksijJjCUo3aOjMI/RHLcBMI2
+	 cYlKDaj9czY8q+mgV+sRIlIzFlSOMfEl+5RmKKLH++LLjFMMDeirxfE3UyFua40CA+Wvb
+	 7Zt1xshyIJMRYrPJQidySOchT8a21UbET8DZnUTrOVA/yKPRU6aM/mqFfUieGQd0Gi0x8
+	 beStTpUXKSWZqlIbPxxC3H6cG/dRBwK2IYdGBFKkbEgzZOQIC4oj0kfRezcCSkO23Mg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793701561;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793701568;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=LVepNa8MBgnxzOIR4Tx+W3uy/yFi60gYxq1FZlSu/kQ=;
-	b=kMvpr9JE6wjkvB/xj+SeOP3rc46tEI2thOB3BOc8gBOZaX5k9JjHLEZiRV4Ky4vGTlpa
-	 eXMgSBflukhdzljxA9gueEdtGaeRoxSXqcLay66yJNk6cx5nq+1Q4NjbVMtRcnxRFIuQL
-	 Mp8REypgmLUrl/ZKSj70/q2gel4tmJG9msGdGgo6NOnSvc4pu+RISothjConbXbNoeHdW
-	 CNJD2mQCq/zeja243T6xTWPaZY6fdIKixEwTK+EKq5XAPmXFbLuYHhKJo30RcFFl5QWcm
-	 P9E5M0Q/Xg4lVww30eW4xBdowLeip4H00troXcL+eDWUBi4bgZg+5q7UI4xuYllIqyQ==
+	bh=ZuF7fJYmTTru6AFzam/kZmRQYRbtMt5mtJ5Bhl2O7Ns=;
+	b=xqqpZD0GCeNP0eb2A1bNqqCuH4ZBLfVuOkgqPD8EbarIScrFGzGeXkmZsW1NNL9mC8Zn
+	 vTE5+nkIZfefK9J1T9uMNmBmms4njbglvCFfDxyRTXihjccV4mL1NweEefyqcSsLu3Kdq
+	 WRGF+kROLYYCVqg0fNJMuVsPu7VZSf1sZ147oNB5Uv821+bJHOr/PefQ7ilmP/2B1EDSf
+	 z15UQYZYUBhfeuAPVan1k1mfMa1p8lJ67XHBEN91Uq+CvbUMb6ikEOuxCzZxmYAljnSsM
+	 /ZePICU1PTnirzA9vkjVWLkfXBHQR71ZIiCBRGLncC4SWNrinfPdz1STU3+S14cX27Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="YKjrBA/m";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kr5GWY8B;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6CD606D80D;
-	Tue,  3 Nov 2026 10:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3773606D837;
+	Tue,  3 Nov 2026 10:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YKjrBA/m
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957E21F000C1;
-	Tue,  3 Nov 2026 10:26:00 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kr5GWY8B
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA4D1F000C1;
+	Tue,  3 Nov 2026 10:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793701561;
-	bh=LVepNa8MBgnxzOIR4Tx+W3uy/yFi60gYxq1FZlSu/kQ=;
+	s=k20260515; t=1793701567;
+	bh=ZuF7fJYmTTru6AFzam/kZmRQYRbtMt5mtJ5Bhl2O7Ns=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YKjrBA/mej4tTGzq0T8wexaUUvNDO1PFLajq/VyjYTc8bTtvyYP5brGpAOeaT6YFX
-	 dyi3WDtz15/cPCJOfI1SBe1oS4pAHGoYDXl1Y2aMOZx1hBs2Za8+T2U8j7Vuwm8r22
-	 S4NJPmIN+VLIIM0fB3kG/9e0RUaPu8gN/8nGHK/IEMmm31fjGD4G/1R3ejXgCsDYEH
-	 WPww9c/E68B4mbK+0ocCC9SrhhY2M0JAKHW4qC/PsPOAp6uBOmdXR5y6Cqmiz0dNMc
-	 N9WYEUWtyhn4uoWTG84NsEEzZBDxYBmi2+FSeV7Gn6MLo12p4FWCq3KJyQB9Dqi1rM
-	 kfu+QknFBny6A==
-Date: Tue, 3 Nov 2026 11:25:58 +0100
+	b=kr5GWY8B8k9A2Xlh6UV8JUw4/lNOHG5KFxHXewAh+SkTH5QgBoNDrB8KBI/ie6LK0
+	 giaAY3iV9RjcMEkbFnr2p51A/K5476YCgnDARCKFQkdlM8FHMXygP39Rt3oZeduLYm
+	 RILuMBXVjLAIxEMA82qC88imdvvxwC29yl3OCSXw2TNrIbhyS0HoSC9STa4BTLFkD8
+	 Vibih8Xkv39rclW4dNAJvHNwOruq9rZFlRIlZ0Gb7Ora9bE8oTL/42Fk3VOitL2bNW
+	 6njUttuBIbfU5lyY/qME+Xbjby2Q99tghrl2GwMDJsRyLosNKNC9IN8Z2zPMqOZU6Z
+	 KYnVMV4Xx0Adw==
+Date: Tue, 3 Nov 2026 11:26:04 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, Sean Anderson <sean.anderson@linux.dev>, stable@vger.kernel.org, 
-	Madalin Bucur <madalin.bucur@nxp.com>, "David S. Miller" <davem@davemloft.net>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, 
-	Eric Dumazet <edumazet@kernel.org>
-Subject: Re: [PATCH] net: fman: drop the FMan device reference after port
- probe
-Message-ID: <20261103-magnificent-happy-cuttlefish-adbaad@quoll>
-References: <20261103100532.1309969-1-vulab@iscas.ac.cn>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni <pabeni@redhat.com>, 
+	Eric Dumazet <edumazet@kernel.org>, Elad Nachman <enachman@marvell.com>, 
+	linux-kernel@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] net: prestera: release the ruleset in
+ prestera_flower_prio_get
+Message-ID: <20261103-fine-blond-donkey-b4cda2@quoll>
+References: <20261103100532.1309990-1-vulab@iscas.ac.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,27 +61,24 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261103100532.1309969-1-vulab@iscas.ac.cn>
+In-Reply-To: <20261103100532.1309990-1-vulab@iscas.ac.cn>
 
 
 On Tue, 03 Nov 2026 10:05:32 +0000, Wentao Liang wrote:
-> fman_port_probe() looks up the parent FMan platform device with
-> of_find_device_by_node(), which takes a reference on the embedded
-> struct device.  The reference is released on the error paths, but not
-> after a successful probe, and the __devm_request_region() failure path
-> jumps directly to freeing the port.
+> prestera_flower_prio_get() looks up the ruleset with
+> prestera_acl_ruleset_lookup(), which increments its reference count,
+> but returns without calling prestera_acl_ruleset_put().
 > 
-> As a result the reference is never dropped.  Put the FMan device and
-> the port node before returning success, and route the failed region
-> request through the existing cleanup labels as well.
+> The ruleset reference is leaked on every successful priority query.
+> Release it after the priority range has been copied out.
 > 
-> Fixes: 18a6c85fcc78 ("fsl/fman: Add FMan Port Support")
+> Fixes: 44af95718fed ("net: prestera: manage matchall and flower priorities")
 > Cc: stable@vger.kernel.org
 > Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
 > Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 > ---
->  drivers/net/ethernet/freescale/fman/fman_port.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
+>  drivers/net/ethernet/marvell/prestera/prestera_flower.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
 
 
