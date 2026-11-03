@@ -1,58 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793681995;
-	b=mDnbGII9JpILM06g4ILbyDClNo7c+xiJvXbRDnA7XUiB/XgBg+OvlMBy22etfQbougPh
-	 qJ+M3g0CJEtqnG5mTU6dIuj+IbmDggAxcOKHDR97H009i/R5i7Qwtk0KVSqCdntiyaULn
-	 jUZGJ8nkGMOp1ntpdbGxLStK+vLSFWNT9vUJ4mBgTwCmD7mRPSk8LicJXRsCe3PKlkbAy
-	 luIRAQ7G6AIhY6g/iI/E+XMxV2NiG7DkvmQN2hLQfXMcHfq8B+ejf4VWtLcSXc5WH86HO
-	 d4NXBh/BzPnGLAXinSHyd1RjyjcKY2z1k6rNrNYw9z9BraIX192paclUo5tPyxRtRkw==
+	t=1793682144;
+	b=a9fCQf+CK92ON6ApCe1GcS52ZzSGxQv5Gofyzd0PIg/+LeEq0fUgPNwOmvP87nPvIvsq
+	 nXnrRNDsnVsxtbJKzQOm04drIBJouALvc/ih5qYTH+gtm8vkPAKGWFgpfqBcLd8gkrkc4
+	 OSZgkg7ylZtssls0INL0SUnhRWHHxw4auvLM8ryOV9tYpSrw4+s/5YcLwZVSvyUkz0p4Z
+	 AhcWU9qZw89VDfKDaC8KjVnB1Qaxrnqhk6GgDpvXi1toBfgXBRtrmJUZ9s86rgJfARk7o
+	 QjWl0c2BErlyaoazgYiPIZ9I23q6YAgFVwmLtskRWaPlrIQUKNdUPGtUPX+w5fXQzwg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793681995;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=LXajKIsKvudYKoT6Qka57GNOPhZZEEXC9uwxtsOqE7E=;
-	b=w6+LXhwZM1AEsOlkncorSh18meqhhRlAMuNctQF9xoyXXQB4prWHWEM+AU2r6DZKgRy8
-	 s9VNlGC7mWyjyHxIOOWNvSV4msZdasHaYJRzdcC4H4JhYnhjh2SPO3HOZbv6agSuKKmsP
-	 9hQQ3/weNdjEPUo65uK2ToZ4y0rEdPgyuhZZaZlj8RvIcOOISVU5TOmJfGIgxSscJ16Ak
-	 xDEawLFFmTQCzied8g2OudSG+SK3fsoneFZjm0UoUcgkEoZdeOj7biH8ylLZtm7CaF1G/
-	 WdcbRtT1Z1WYnLGVSFVleVlmRf3gVUnfUwrAEjyEQdbeg+wDOavrWMr/RZRzYmxe9Cg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793682144;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=mfatT4OPPaPSKZTpfoKN7zDSgieSV+D5jj3GzfTbTgk=;
+	b=QQQTJzgNRh8DWzEOL+P0IrPrw1g0EMcgQcJS8xC17QJGrN1wBN4oJ4Sxl2rjTLPQ9z3k
+	 zdts/6lQ2LydDABVLkRTY1Hy0pBoVkq6HEihCGHIz4OQBhuj4/kNzJ3T4h0g3iUy7/Se8
+	 b5iPt5iaKcFdWy3SnauyMY+iahhpSB7m4UxFpVJhImC2wA833ZwIlzmtD5HUTagnGF9N2
+	 9pOosLXkIQD9Ao1g9ghjYq5Rs7XJ97c017nA88yi0mk75zSp/U66lX650fM0R4s5bLohN
+	 PXh0yccJNc3gyisl0PvNkzt0ujrV5iy9x6plAySBYXdh0DBCwFcmHyQPXpYdVJ/wgrA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RA9DTIkU;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="kmstBu/k";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288CE606A324;
-	Tue,  3 Nov 2026 04:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E44F606A324
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 05:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RA9DTIkU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E9F1F000C1;
-	Tue,  3 Nov 2026 04:59:54 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kmstBu/k
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61AA1F000C1;
+	Tue,  3 Nov 2026 05:02:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793681994;
-	bh=LXajKIsKvudYKoT6Qka57GNOPhZZEEXC9uwxtsOqE7E=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RA9DTIkUXnFt62mjBEtoaKaPDAq6B/QaT0sMgn1tWpcdt8rQHPyeK7H9AM71UmZGM
-	 9tXGN8tP3npEwi+RlHGqvB7wuWQB4D1NKkm3ooOvEHDPMGuewCcdUuIQW+Ym+h3N4g
-	 l9UDYLvfUivrnQE3drK+MgpBQo/pd/Bz1EBkc9Xvo+O1x4WAQ/cnaF4VzgGxOh89un
-	 awMftiOKDTUvOq50Jlx9OOQLjm9zUg1I9hw0yT/vWen8JCsJlak923dIaFUV6KKwNP
-	 IbvxWnxKpyP/WTN+ec3tUsivNjat9jvRxtAodlgaRGGPLhBYJo+JFLyFWitr/chQJV
-	 L3vghLV6yeD/g==
-Subject: Re: [PATCH] mpls: reject headroom that overflows skb header offsets
-From: netdev-bot+sashiko@kernel.org
-To: kylebot@openai.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org,
- outbounddisclosures@openai.com
-Date: Tue, 03 Nov 2026 04:59:53 +0000
-Message-ID: <179368199381.488856.1269001903165496876@kernel.org>
-In-Reply-To: <20261030042246.74144-1-kylebot@openai.com>
-References: <20261030042246.74144-1-kylebot@openai.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1793682143;
+	bh=mfatT4OPPaPSKZTpfoKN7zDSgieSV+D5jj3GzfTbTgk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=kmstBu/k/rBCuhnZ3hW3btDldq5lFjCRvo5tfCPK9wLUMmh1HVUAyZ9MzqrKfg/DY
+	 8DhyTunZgx9FU7Aqc4a+rmRTbMx5h5w3G48AHiErlB3IiosVyJPBxX/c7MrO8tmH+i
+	 V251H/hk35JguEVo3+GpoOA7BpxxRAPWQ7i46vBIv9/g6D3DXn0BsXv4QlIZqNaUNg
+	 0h8lQzq399DG9a7nCMb3HKmXVdSaYNS1N9Qz1KK1p/NyFY1o9IDWqYl4doDRsYhAcB
+	 HlMvUenBqu9+qFygHK5fzn0Vqfw6Nau2HD1QIeq1vZzG4vpwri/GMvN7QdwktHDuJ/
+	 GdxnGdlufSLIA==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Stanislav Fomichev <sdf.kernel@gmail.com>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com
+Subject: Re: [PATCH net-next v3 2/4] selftests: drv-net: add an iperf
+ performance test
+In-Reply-To: <20261102190827.989117-3-sdf@fomichev.me>
+References: <20261102190827.989117-1-sdf@fomichev.me>
+ <20261102190827.989117-3-sdf@fomichev.me>
+Date: Tue, 03 Nov 2026 06:02:23 +0100
+Message-ID: <875wye4ie8.fsf@all.your.base.are.belong.to.us>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,168 +59,241 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Stanislav Fomichev <sdf.kernel@gmail.com> writes:
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The new `skb_headroom(skb) > U16_MAX` check in mpls_xmit() and
-  mpls_forward() only shows that the data offset (skb->data - skb->head)…
-- [Medium] mpls: mpls_forward() resets network_header before U16_MAX
-  headroom check
-
---
-
-mpls: reject headroom that overflows skb header offsets
-
-This adds a check after skb_cow()/skb_cow_head() in mpls_forward() and
-mpls_xmit(). The check drops the packet if skb_headroom() exceeds U16_MAX.
-The aim is to stop the u16 header offsets from truncating when the aligned
-headroom expansion pushes skb->data more than U16_MAX bytes past skb->head.
-
-> diff --git a/net/mpls/af_mpls.c b/net/mpls/af_mpls.c
-> index ad4ad6f2001ab..4bfdb7c81f046 100644
-> --- a/net/mpls/af_mpls.c
-> +++ b/net/mpls/af_mpls.c
-> @@ -453,6 +453,10 @@ static int mpls_forward(struct sk_buff *skb, struct net_device *dev,
->  	if (skb_cow(skb, hh_len + new_header_size))
->  		goto tx_err;
->  
-> +	/* The aligned expansion must still fit the u16 header offsets. */
-> +	if (unlikely(skb_headroom(skb) > U16_MAX))
-> +		goto tx_err;
+> Add the drivers/net/perf target, with a lib/py of its own like the one of
+> drivers/net/hw. Add Iperf3Runner.measure(), which returns an Iperf3Result
+> that other results can join later, and report its throughput from the tes=
+t.
+>
+> Single-stream iperf3 throughput is flaky and can change considerably
+> between back-to-back runs on the same hosts.
+>
+> Tested on two mlx5 hosts. Captured metric output:
+>
+>   # # ktap-metric-json: {"goal":"higher","name":"throughput","value":49.9=
+2071602072054}
+>
+> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+> ---
+>  tools/testing/selftests/Makefile              |  2 +-
+>  .../selftests/drivers/net/lib/py/load.py      | 20 ++++++-
+>  .../selftests/drivers/net/perf/Makefile       | 11 ++++
+>  .../testing/selftests/drivers/net/perf/config |  1 +
+>  .../selftests/drivers/net/perf/iperf.py       | 23 ++++++++
+>  .../drivers/net/perf/lib/py/__init__.py       | 57 +++++++++++++++++++
+>  .../selftests/drivers/net/perf/settings       |  1 +
+>  7 files changed, 111 insertions(+), 4 deletions(-)
+>  create mode 100644 tools/testing/selftests/drivers/net/perf/Makefile
+>  create mode 100644 tools/testing/selftests/drivers/net/perf/config
+>  create mode 100755 tools/testing/selftests/drivers/net/perf/iperf.py
+>  create mode 100644 tools/testing/selftests/drivers/net/perf/lib/py/__ini=
+t__.py
+>  create mode 100644 tools/testing/selftests/drivers/net/perf/settings
+>
+> diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/M=
+akefile
+> index 07c3719f8b04..c55d7792b27c 100644
+> --- a/tools/testing/selftests/Makefile
+> +++ b/tools/testing/selftests/Makefile
+> @@ -159,7 +159,7 @@ TARGETS_HOTPLUG =3D cpu-hotplug
+>  TARGETS_HOTPLUG +=3D memory-hotplug
+>=20=20
+>  # Networking tests want the net/lib target, include it automatically
+> -ifneq ($(filter net drivers/net drivers/net/hw,$(TARGETS)),)
+> +ifneq ($(filter net drivers/net drivers/net/hw drivers/net/perf,$(TARGET=
+S)),)
+>  ifeq ($(filter net/lib,$(TARGETS)),)
+>  	INSTALL_DEP_TARGETS :=3D net/lib
+>  endif
+> diff --git a/tools/testing/selftests/drivers/net/lib/py/load.py b/tools/t=
+esting/selftests/drivers/net/lib/py/load.py
+> index e24660e5c27f..f337b576c4b4 100644
+> --- a/tools/testing/selftests/drivers/net/lib/py/load.py
+> +++ b/tools/testing/selftests/drivers/net/lib/py/load.py
+> @@ -3,10 +3,18 @@
+>  import re
+>  import time
+>  import json
+> +from dataclasses import dataclass
+>=20=20
+>  from lib.py import ksft_pr, cmd, ip, rand_port, wait_port_listen
+>=20=20
+>=20=20
+> +@dataclass
+> +class Iperf3Result:
+> +    """Average throughput (Gbps) of an iperf3 run."""
 > +
->  	skb->dev = out_dev;
->  	skb->protocol = htons(ETH_P_MPLS_UC);
->  
-> diff --git a/net/mpls/mpls_iptunnel.c b/net/mpls/mpls_iptunnel.c
-> index 1a1a0eb5b787f..4eccbd911fe1f 100644
-> --- a/net/mpls/mpls_iptunnel.c
-> +++ b/net/mpls/mpls_iptunnel.c
-> @@ -109,6 +109,10 @@ static int mpls_xmit(struct sk_buff *skb)
->  	if (skb_cow_head(skb, hh_len + new_header_size))
->  		goto drop;
->  
-> +	/* The aligned expansion must still fit the u16 header offsets. */
-> +	if (unlikely(skb_headroom(skb) > U16_MAX))
-> +		goto drop;
+> +    throughput: float
+> +
+> +
+>  class Iperf3Runner:
+>      """
+>      Sets up and runs iperf3 traffic.
+> @@ -53,9 +61,9 @@ from lib.py import ksft_pr, cmd, ip, rand_port, wait_po=
+rt_listen
+>              kwargs["timeout"] =3D duration + 5
+>          return cmd(cmdline, **kwargs)
+>=20=20
+> -    def measure_bandwidth(self, reverse=3DFalse):
+> +    def measure(self, reverse=3DFalse):
+>          """
+> -        Runs an iperf3 measurement and returns the average bandwidth (Gb=
+ps).
+> +        Runs an iperf3 measurement and returns an Iperf3Result.
+>          Discards the first and last few reporting intervals and uses onl=
+y the
+>          middle part of the run where throughput is typically stable.
+>          """
+> @@ -78,7 +86,13 @@ from lib.py import ksft_pr, cmd, ip, rand_port, wait_p=
+ort_listen
+>=20=20
+>          avg =3D sum(stable) / len(stable)
+>=20=20
+> -        return avg
+> +        return Iperf3Result(avg)
+> +
+> +    def measure_bandwidth(self, reverse=3DFalse):
+> +        """
+> +        Runs an iperf3 measurement and returns the average bandwidth (Gb=
+ps).
+> +        """
+> +        return self.measure(reverse=3Dreverse).throughput
+>=20=20
+>=20=20
+>  class GenerateTraffic:
+> diff --git a/tools/testing/selftests/drivers/net/perf/Makefile b/tools/te=
+sting/selftests/drivers/net/perf/Makefile
+> new file mode 100644
+> index 000000000000..31b0b60de4f6
+> --- /dev/null
+> +++ b/tools/testing/selftests/drivers/net/perf/Makefile
+> @@ -0,0 +1,11 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +TEST_PROGS :=3D \
+> +	iperf.py \
+> +# end of TEST_PROGS
+> +
+> +TEST_INCLUDES :=3D \
+> +	$(wildcard lib/py/*.py ../lib/py/*.py) \
+> +# end of TEST_INCLUDES
+> +
+> +include ../../../lib.mk
+> diff --git a/tools/testing/selftests/drivers/net/perf/config b/tools/test=
+ing/selftests/drivers/net/perf/config
+> new file mode 100644
+> index 000000000000..6450f34933e6
+> --- /dev/null
+> +++ b/tools/testing/selftests/drivers/net/perf/config
+> @@ -0,0 +1 @@
+> +CONFIG_IPV6=3Dy
+> diff --git a/tools/testing/selftests/drivers/net/perf/iperf.py b/tools/te=
+sting/selftests/drivers/net/perf/iperf.py
+> new file mode 100755
+> index 000000000000..5b6f0bce2a03
+> --- /dev/null
+> +++ b/tools/testing/selftests/drivers/net/perf/iperf.py
+> @@ -0,0 +1,23 @@
+> +#!/usr/bin/env python3
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +"""Measure TCP throughput with iperf3."""
+> +
+> +from lib.py import Iperf3Runner, NetDrvEpEnv, ksft_exit, ksft_metric, ks=
+ft_run
+> +
+> +
+> +def tcp(cfg):
+> +    """Measure TCP throughput."""
+> +    result =3D Iperf3Runner(cfg).measure()
+> +    ksft_metric("throughput", result.throughput, goal=3D"higher")
+> +
+> +
+> +def main():
+> +    """Run the iperf performance test."""
+> +    with NetDrvEpEnv(__file__, nsim_test=3DFalse) as cfg:
+> +        ksft_run([tcp], args=3D(cfg,))
+> +    ksft_exit()
+> +
+> +
+> +if __name__ =3D=3D "__main__":
+> +    main()
+> diff --git a/tools/testing/selftests/drivers/net/perf/lib/py/__init__.py =
+b/tools/testing/selftests/drivers/net/perf/lib/py/__init__.py
+> new file mode 100644
+> index 000000000000..2bb2cd08ff7d
+> --- /dev/null
+> +++ b/tools/testing/selftests/drivers/net/perf/lib/py/__init__.py
+> @@ -0,0 +1,57 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +"""
+> +Driver test environment (performance tests).
+> +NetDrvEnv and NetDrvEpEnv are the main environment classes.
+> +NetDrvContEnv extends NetDrvEpEnv with netkit container support.
+> +Former is for local host only tests, latter creates / connects
+> +to a remote endpoint. See NIPA wiki for more information about
+> +running and writing driver tests.
+> +"""
+> +
+> +import sys
+> +from pathlib import Path
+> +
+> +KSFT_DIR =3D (Path(__file__).parent / "../../../../..").resolve()
+> +
+> +try:
+> +    sys.path.append(KSFT_DIR.as_posix())
+> +
+> +    # Import one by one to avoid pylint false positives
+> +    from net.lib.py import NetNS, NetNSEnter, NetdevSimDev, UserNetNS
+> +    from net.lib.py import EthtoolFamily, NetdevFamily, NetshaperFamily,=
+ \
+> +        NlError, RtnlFamily, DevlinkFamily, PSPFamily, Netlink
+> +    from net.lib.py import CmdExitFailure
+> +    from net.lib.py import bkg, cmd, bpftool, bpftrace, defer, ethtool, \
+> +        fd_read_timeout, ip, rand_port, rand_ports, wait_port_listen, \
+> +        wait_file, ctl_file_write, tool
+> +    from net.lib.py import bpf_map_set, bpf_map_dump, bpf_prog_map_ids
+> +    from net.lib.py import KsftSkipEx, KsftFailEx, KsftXfailEx
+> +    from net.lib.py import ksft_disruptive, ksft_exit, ksft_metric, ksft=
+_pr, \
+> +        ksft_run, ksft_setup, ksft_variants, KsftNamedVariant
+> +    from net.lib.py import ksft_eq, ksft_ge, ksft_in, ksft_is, ksft_lt, \
+> +        ksft_ne, ksft_not_in, ksft_raises, ksft_true, ksft_gt, ksft_not_=
+none
+> +    from drivers.net.lib.py import set_ethtool_feat
+> +    from drivers.net.lib.py import GenerateTraffic, Remote, Iperf3Runner
+> +    from drivers.net.lib.py import NetDrvEnv, NetDrvEpEnv, NetDrvContEnv
+> +
+> +    __all__ =3D ["NetNS", "NetNSEnter", "NetdevSimDev", "UserNetNS",
+> +               "EthtoolFamily", "NetdevFamily", "NetshaperFamily",
+> +               "NlError", "RtnlFamily", "DevlinkFamily", "PSPFamily", "N=
+etlink",
+> +               "CmdExitFailure",
+> +               "bkg", "cmd", "bpftool", "bpftrace", "defer", "ethtool",
+> +               "fd_read_timeout", "ip", "rand_port", "rand_ports",
+> +               "wait_port_listen", "wait_file", "ctl_file_write", "tool",
+> +               "bpf_map_set", "bpf_map_dump", "bpf_prog_map_ids",
+> +               "KsftSkipEx", "KsftFailEx", "KsftXfailEx",
+> +               "ksft_disruptive", "ksft_exit", "ksft_metric", "ksft_pr",
+> +               "ksft_run", "ksft_setup", "ksft_variants", "KsftNamedVari=
+ant",
+> +               "ksft_eq", "ksft_ge", "ksft_in", "ksft_is", "ksft_lt",
+> +               "ksft_ne", "ksft_not_in", "ksft_raises", "ksft_true", "ks=
+ft_gt",
+> +               "ksft_not_none",
+> +               "NetDrvEnv", "NetDrvEpEnv", "NetDrvContEnv", "GenerateTra=
+ffic",
+> +               "Remote", "Iperf3Runner", "set_ethtool_feat"]
+> +except ModuleNotFoundError as e:
+> +    print("Failed importing `net` library from kernel sources")
+> +    print(str(e))
+> +    sys.exit(4)
 
-[Severity: Medium]
-Is the new check early enough in mpls_forward()?
+nit: is there a KSFT_SKIP symbol?
 
-Before skb_cow() is reached, the label pop has already moved skb->data
-forward and written the new offset into the u16 network_header:
-
-net/mpls/af_mpls.c:mpls_forward() {
-	...
-	/* Pop the label */
-	skb_pull(skb, sizeof(*hdr));
-	skb_reset_network_header(skb);
-	...
-	if (mpls_pkt_too_big(skb, mtu - new_header_size))
-		goto tx_err;
-	...
-}
-
-Suppose an MPLS skb arrives with skb_headroom() in [65532, 65535]. That
-is still within U16_MAX, so nothing rejects it on the way in. The
-4-byte skb_pull() then takes the headroom to 65536..65539.
-skb_reset_network_header() hits its DEBUG_NET_WARN_ON_ONCE() and
-truncates network_header to 0..3.
-
-One source of such an skb is a previous mpls_forward() hop. With
-nh_labels == 0 and !dec.bos, new_header_size is 0, so the new check
-accepts a headroom of up to 65535 and sends the packet on. After the
-peer's eth_type_trans(), the next hop sees the MPLS header at that same
-offset. AF_PACKET on a netkit device with a near-maximal
-needed_headroom looks like another way to inject one.
-
-The truncated offset is also used before the packet is dropped. For a
-GSO skb larger than mtu - new_header_size, mpls_pkt_too_big() calls
-skb_gso_validate_network_len(). That goes through
-skb_gso_network_seglen(), which computes skb_transport_header() -
-skb_network_header(), so the MTU decision is based on a bogus header
-length.
-
-skb_cow() can only grow the headroom, so the new check after it will
-still drop the skb. By then, though, the warning has already fired. On
-CONFIG_DEBUG_NET kernels with panic_on_warn, that is a crash reachable
-from a user-owned network namespace.
-
-Could the bound be enforced before the pop, for example by rejecting
-an incoming skb whose headroom plus sizeof(*hdr) would exceed U16_MAX,
-before skb_reset_network_header() runs? Or is there a better place to
-catch this for skbs that reach mpls_forward() with headroom close to
-the limit?
-
-[Severity: High]
-
-Does this check cover all of the u16 header offsets that the comment
-refers to?
-
-By the time it runs, skb_cow_head() has already gone through
-__skb_cow()->pskb_expand_head()->skb_headers_offset_update(), and that
-function does unchecked u16 additions:
-
-net/core/skbuff.c:skb_headers_offset_update() {
-	if (skb->ip_summed == CHECKSUM_PARTIAL)
-		skb->csum_start += off;
-	/* {transport,network,mac}_header and tail are relative to skb->head */
-	skb->transport_header += off;
-	skb->network_header   += off;
-	...
-	skb->inner_transport_header += off;
-	skb->inner_network_header += off;
-	skb->inner_mac_header += off;
-}
-
-skb_headroom() only bounds skb->data - skb->head. The transport_header
-and csum_start offsets point past skb->data, so they can wrap while the
-headroom is still at most U16_MAX.
-
-For example, take a netkit device with needed_headroom in [65426, 65441].
-That gives LL_RESERVED_SPACE() = 65456. A UDP packet built by
-__ip_append_data() reserves 65456 bytes of headroom, so transport_header
-is 65476. netkit advertises NETIF_F_HW_CSUM, so udp_send_skb() sets
-CHECKSUM_PARTIAL with csum_start = 65476.
-
-mpls_xmit() then asks for 65460 bytes, and __skb_cow() expands by
-ALIGN(4, NET_SKB_PAD) = 64. The headroom becomes 65520 and passes the new
-check. transport_header and csum_start become 65540, which wraps to 4.
-
-netkit_setup() sets mpls_features to NETIF_F_HW_CSUM | NETIF_F_GSO_SOFTWARE,
-so the skb reaches the peer unchanged. If it is later sent out a device
-without checksum offload, validate_xmit_skb() ends up in
-skb_checksum_help():
-
-net/core/dev.c:skb_checksum_help() {
-	...
-	offset = skb_checksum_start_offset(skb);
-	ret = -EINVAL;
-	if (unlikely(offset >= skb_headlen(skb))) {
-		DO_ONCE_LITE(skb_dump, KERN_ERR, skb, false);
-		WARN_ONCE(true, "offset (%d) >= skb_headlen() (%u)\n",
-	...
-}
-
-The negative offset is compared as a large unsigned value, so skb_dump()
-and WARN_ONCE() fire. A device with checksum offload would instead get a
-bogus checksum start offset.
-
-mpls_forward() has the same headroom-only check after skb_cow(). The
-same window appears to apply there to CHECKSUM_PARTIAL skbs received from
-a netkit peer.
-
-Could the check bound the largest header offset, or refuse the expansion
-before it wraps, instead of testing skb_headroom() after the offsets have
-already been updated?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261030042246.74144-1-kylebot%40openai.com
+Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
