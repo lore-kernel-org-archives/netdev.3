@@ -1,100 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.177
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793697274;
-	b=DGHP/oWinlt51Ik0B2YJHGSfQggAY9PopClCPytXrl7z4bY62KWP4T4kGxAce+wE8KQ0
-	 5mp8DaZ8N5wCUC4F4UnBb1ORriXxGbvLGMdhWwcZnb9oxwEauEywvbSScmXfTYSdXIj5H
-	 sXVZ0XH5+YIVqwFWqG3It1DyEHAhEACDBsdrVjG8kfpwRY2a7UKAXayZ6xtysZ+znfSZu
-	 bUJxR8UvUzjKCAei2bnF94L6Rz4nSHlXyNN/rUxml24rlOQa3HlwDwL3zk87ncmorROJz
-	 uFBPkURX9b454yb0p5lggSvXW475PfkhXDqM1J42NuDIWCk0DmXJ90VRuRGM4gGP3xw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793697274;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=i14dmH5BR+9SimyzQMrEk5iidp8zGrGHl7mp1tLTg74=;
-	b=dyCsymWFZMsJv+gKSqvaAUd/LhWVJSe3smGu8qHKy17pNR2PPOpL/IYXv4UGpZM+jZHW
-	 +xhHrXSEn7VBCdUaEYawIpdb/0eobZnW4yXgS5EJJf7S4+j6T84Zl+gUuPsbQ8reNEcnL
-	 UXIlTA6KxlAnEzhKujmnwjgcFuR3RF9ocWxv9rWKOiioxXos72e5p2TYsYUs9XGDQE+IO
-	 yg+/R++JSwDU6S7XtrUyqIVT83b/5NGoZfYHOrspZlBzbfMWQqBdm5u62TPMzzWzU53LE
-	 zahf93pI0aByW4ydCijY8aJIehtZ5QXglHW6f0KI0iEy7JOdtaGjZ+SZdXtzz6YLisg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=BFRA5WkF;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.177
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793697381;
+	b=kG5Zw85zrlTnOZ2iqkMHECWqO1YijUQWgNMV2lXDIbLFPYDz2rb368iMlpymkQbnwtJg
+	 cXEmXQpMpNkPaysXsPGtTPdqUxe/B3vWG/8L97EUd04yCHDjw/2BMMGaTOSGw3mwPSulX
+	 dGux/yU7VOuzf/23dLqeqyVyHx4JXhptQ84OuwOW2CGDghWUclgMaIdc95VUU49FWx7I8
+	 n7K1jp3E0gJKvzyKYGvwnvXeQBPKmmepsEM/jABpL6r/p5gaSVnG9OYqyZdLBNmgdNm4V
+	 JGgQylg9yLt0M/hYfqH8/zKehRUnCgK+eTvU5vrUbzmBUmkCxJ52AsHS5/bannf/bpA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793697381;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=8KH/UMSE6WEWuRloEtHlnOd9aZBURFFHz40IrIUPGbA=;
+	b=l+qS+EQNLe8mQPLAiFlp+IkuMQrZdEwur0uA05Wm7XZFZ2HuON8ET9SVwOWwH4YXUOqS
+	 aAzcbiS/Wupm9iRf8IK6GUO6zgqbzYnOi519bhEUJfAjzrhX2zlN0/wDEHQiV53H5cEuN
+	 EO/i9ocGFt7rDrdBHWXGCyicomZnobHVdDbKoYDJAfHexTWO+HR6PuJ1dTqJs8UQ0Y/WR
+	 7MYeh6aEtmLoPVBCFYOpbdZRi9vz+y3W+/Ge+bAx/Srx8Ru/j+QrszzbIE2O7aylkcoOu
+	 McDcuB1g9t9JtXnfpDXVKjGF6HDOWO8EIYMPEiVQjWcPso0td4Zg4fTyS8mWHgThmMA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=apiHITAi;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=JfguixSq;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CFF606A339
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 09:14:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 89CFF606A339
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83577606A326
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 09:16:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 83577606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=BFRA5WkF
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5383c97c8cfso140101cf.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 01:14:34 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793697273; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bWxd02VD+FnrdQEIOFnoBI1hgs/rFPW/rBLrI1jwx9XGSNTeoWcRbk4QDWvPff5pb/
-         drJbLYn2PptczgUbTHyCXkGXuuqOL9tZC4B3oQlmMyaZ/XSgV4wNodXgKNKnXys3hPVr
-         WDi/KE4QHkTPNpMyWAnes9hJn2N8zWGECUSVwIsQRd4VlbqzwPKApTkVVAHydYwV/+FB
-         oyQh6HuA+9e53jNAxfjUdQXtWxd7PGGk7hFZNh69Z6LjD/4kgF6hgr/PLpKhV+vOWWZ/
-         k/yh8URJJA5xDvXb8YVO/moBmsw4tJUnB+d9f9h6oDZBWWQeBAN+oLYKFoSYbobuEwmH
-         hW0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=i14dmH5BR+9SimyzQMrEk5iidp8zGrGHl7mp1tLTg74=;
-        fh=juhaRqRwUPrvfrr0amLc5LYdrkOwgvNsasXKnSk+wNk=;
-        b=OX7X8ImwSRffAjedCT+TZl9CYfBpRHJO6efR3YfNYBBD6jYYL7LtBOCVi6aVDT71YT
-         nOMabrFT2OQPUwsJLU22HBJlx7lgbTHBhJjs0tWQBccdwPmfLm31JbA55Ct5XYHVjcIg
-         yWcAbted4Y16K2YzDvujJfs9Gcpuhoss8KBuNLe60pRWo5SUftr3sC1dSzxq6VcSG4Xh
-         g9jg/cJM+X6qAuV1YmCDMOIAoEBsqxy9DAgJR1XQbUiFE7VsYzpVzCiQRcmBsE4fxAZg
-         DAuChUsbKrda7IEYV7Hx+uZSiMu9G3nT89IPzi0QfOgiv+Aaf5xuEBim3QoH31mgA2bg
-         JUrw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=apiHITAi;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=JfguixSq
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793697379;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8KH/UMSE6WEWuRloEtHlnOd9aZBURFFHz40IrIUPGbA=;
+	b=apiHITAi/PIX8iDFwbvOx0CLoES7gUIgKZmGjhOBp1Z0HOEs6Fjr8Q3gauWooiSg+5iPIn
+	kDizAOeOAiDslwdUh05f9+eDOY2Khqo5mWuuyaoE6X9wY6y0R6djQTkaTe+jGfgy9cmgnm
+	s6znA3mG9nFnSG4edFiWvwUOHu7Gcxo=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-59-FHdRVVhIP4qNK5N4jgTcGQ-1; Tue, 03 Nov 2026 04:16:18 -0500
+X-MC-Unique: FHdRVVhIP4qNK5N4jgTcGQ-1
+X-Mimecast-MFC-AGG-ID: FHdRVVhIP4qNK5N4jgTcGQ_1793697377
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a0284121c6so38337985e9.3
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 01:16:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793697273; x=1794302073; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=i14dmH5BR+9SimyzQMrEk5iidp8zGrGHl7mp1tLTg74=;
-        b=BFRA5WkFVzwofI4Y9qPUhFW2qtyO8NlwR48s0vcWHVm26tP/5OcdiQb7uQdbBFJ3l6
-         6eWpgCHaYgj4N1eDLLQrwwhYiXTq7d11vqjE4ug1RgS0ElbGzpDYB2KQ9TkFp2okdQER
-         yFf4tAgPt9WLDcmCO0BQmFV0yYbVZ8lRUw/90MMImfZoLthc1w4BHcofV8LGWl/B54q1
-         nfF6Nupkbu20jzw4PqHlTu1tCWB6DY7rzVVWK6hzYnJCfcxYQPAhj2SwIldQyFdPZHAJ
-         lQvb1sVV0SVYiVnLmhmTyS+xxxRLOhf7PlY2k0ra40cMDEjxCqbzHGepPLgMmkzh219l
-         CA5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793697273; x=1794302073;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=redhat.com; s=google; t=1793697377; x=1794302177; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=i14dmH5BR+9SimyzQMrEk5iidp8zGrGHl7mp1tLTg74=;
-        b=uUJGwdZ9FWCJ/tMryvn+sw7PFLctVCY3hp6Y7LM/JbUAvBYqrAcajQUbfC494sQuHH
-         XQdddwf8lf0Ruij7s2oA6KXIQc09GdfKXLiVo/Lh7YCEeeouVrky+7di9Lj5GgWGz/jY
-         G45kpsMizCBe1pagAuJqzyL5o5KcquRgaiXVWVYNMmP9Rf4kHewPLK8HyKUuqPWsGUZQ
-         a6FlgqFklASqgjBrkD450Hi5ldol8UWg78ojyIX6A7T70trDWsXmoWTq/zdozGmE0fGD
-         WnzMOTbC7gZSbdIUfLGilegTMe2nAWB+g/t9xZ3JkC7h95ri3on7KqDKqQneLmGRoVYh
-         2lbg==
-X-Forwarded-Encrypted: i=1; AKwUvBzcpnJSq4cqKbX7w3uFffRFa7jsho4PjYdMgai2K1SX0WgqQGXYhSs+Hb5w0l3MjEqoZ9D5hIM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+9dPSHoWGnkSUYF8HoyyG1fuWUwfa1pZItjaLbCkeE6DYZ4R0m
-	zBqdl3tZkz2ZRFWr0Lc371UAGmYICU4UnWnK0UCjgF0CjwwsyVhVtl1FkDgcMditmyEMlNnuMxu
-	TactG4HBet0STdF9W8s2UxUwEmxSmzW8HHnMofitU
-X-Gm-Gg: AYBFou3PYmHl+PpV2KF+XCWpy/+0WsyqKSg7RCFAZaELzpHDaostIfcMWyO8Hg7qnop
-	IE6GvlDgoE4NrwOufF29uVL1lDajjjAFTOgOmVWHiLB5XNyPU/+pSCC8054/fGkGOyV3LJkGSTV
-	QiwioMl5aj4Kar0yf7mKk3508SrGYkhWrARUMSrbyKBQSuTdZTagqIfYIeGjh+sTqLkcoOmqGkk
-	40QTFn8H0T2omoYvNfBoxeo7dHDEv7YBUsgPC0ksxDRroQkOFHwEN3C4ck3/GPXWDktPd0qyxiH
-	QLJNk93KGUr3k8Zy7wuaSpUsi6sUqTRQpvm+er96fyUkaNDPk622nUvF6HRE5fDHEfTXqwsPMdW
-	vxdVU+0/ITCuay3VzlBKSxRWC7NSAeBADKpye8rRUmWVpaEtRh/F+Hzsm0hY=
-X-Received: by 2002:a05:622a:598b:b0:535:84ef:2e26 with SMTP id
- d75a77b69052e-549dfce05fdmr11810771cf.7.1793697272817; Tue, 03 Nov 2026
- 01:14:32 -0800 (PST)
+        bh=8KH/UMSE6WEWuRloEtHlnOd9aZBURFFHz40IrIUPGbA=;
+        b=JfguixSqRu0b/OQ0ojH2zl9rAe6iH6XeTCU3kDv5cd8ABPkKOmt7ItpOslzQaCoPpQ
+         KctTQCRBs/r/wt2hlbQHvnsaseuXfWuXx8XXoDO383GRV5qaAX1yAif8CwSyfuFJx9gZ
+         OvPEzOzbJNcj0U+vHi5bCCJYT2AzvGmMZoJbX2cycZoc1MTAcJh4oC63vNqed2OQVAnx
+         JHpM2QiLpkRk93SThUoegCm7BmiiMg1QJfqm+V2OOzufIshtYi7fQyxeR4H86Mu3bSJB
+         UCnOFVtyCD3dUB0aBiBBlVtK3l5hDodfhGjVO1zGUlLK6KomOeGEUDAbuc4K0ypPt5ZD
+         aUDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793697377; x=1794302177;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8KH/UMSE6WEWuRloEtHlnOd9aZBURFFHz40IrIUPGbA=;
+        b=21xSCESYAjEYATW3+PmDKjSqVNrEdqH8ZS8pLMcCMh+QRhzcXRbczUYLOemi85OCWG
+         UYJB4QA1Ygd6ESVKc366mPvFYyF3x07KnAkHga6o+ZH23dwktPyJZH3grM2k12o43RDo
+         Uyb3oe6QYBualnNkaYfVjd5Wu8dWXrV6Ay8w+YpD+uGCDQwZClJOcoLuQh9XtBzoVgqr
+         30+yHEDAuOUBHXnKLWXE6USlAxP5B4R9TndHNExXnVgUCUFTYlLr40JtbdpYkNyiZFpf
+         +pTkBKCQAprU56tKH8MDJiwtToxeR0hrx2IjerjhmQuwMPcAR4buGhKv3RFmxfXYJPhi
+         xmaw==
+X-Gm-Message-State: APuU4Z9V7jsMIs0WgcXXjrwUpHWm7HlzosKbNdTA1tl2F4Ovg/thmm5N
+	gwn/12J8tIowUQCC5VOlDIXBoTBTg9uWYaLU5y15QGPnO9mmwnwnmuEowmuuGDG2pBu+Jy1NujN
+	o/BGwQou1/oMj9Ppyq89yGR6mPqL9fDECEX7Zw8LbvPbjHirTpmixySJVog==
+X-Gm-Gg: AYBFou0jaCIslFFJP6Mg91qqDMJ9WLafvGZE4jx+E918R0+3Y3oBlort/VSENL4xN7P
+	1BVtZAh47lfhfVhX3OmD2JiWM8uGPxXjAeKil3AnQH0y03/rKwp9WOunwwHqcUThvy2J+HFVq8C
+	RtbTnpxR52yqWsZCGgwh0Y6jrj7q8no1UBA9KCNRwACaq5OULuGdF/hUQOAFZFsDVnmUvc5mVgL
+	NmhDjOsJaKlh0VnYKdS6QZlDL39B7hPUGUU9od9l+xvwzEjr3duRbZ9kXXdovdgkNIIEjD88mhX
+	U9LXy/Kv4bM0zCnQ6A1qWu5FEjVb6aa8BpYuT5H/DPi1Aiif7RI7SATKL5UZLgQ055bEyg1wEsT
+	myKMyRUyDe8FIv2rTRz5g6xw0w3QQgjia2hzdhe1+k4SaB4eyar/yw85x59c10x4zox6g5zE79W
+	368NoYxuUGx/ox405sORRWzApLjKYn0m+zgSOeyDDSnr0=
+X-Received: by 2002:a05:600c:3f14:b0:4a3:59ee:86b with SMTP id 5b1f17b1804b1-4ac14ec873emr276978655e9.4.1793697377168;
+        Tue, 03 Nov 2026 01:16:17 -0800 (PST)
+X-Received: by 2002:a05:600c:3f14:b0:4a3:59ee:86b with SMTP id 5b1f17b1804b1-4ac14ec873emr276978255e9.4.1793697376758;
+        Tue, 03 Nov 2026 01:16:16 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b7246fsm24262166f8f.19.2026.11.03.01.16.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Nov 2026 01:16:15 -0800 (PST)
+Message-ID: <3edcc63f-aed7-47fe-bee3-703c6becbbff@redhat.com>
+Date: Tue, 3 Nov 2026 10:16:14 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,76 +111,126 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261003212241.3432303-1-lrizzo@google.com> <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
- <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
- <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org> <CAMOZA0+6kAbwgNwGTsCT5AqpwcZKz4pziEGC9UpHkNCVoqrF-Q@mail.gmail.com>
- <20261022201229.GH3381610@ziepe.ca> <CAMOZA0KaanmevmvWS=M3gKfBeborzfCQTiF_xbSeYMWbozG7Mg@mail.gmail.com>
- <20261023140107.GC3977851@ziepe.ca> <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com>
- <20261023145023.GH3977851@ziepe.ca> <20261103080933.GA4213@lst.de>
-In-Reply-To: <20261103080933.GA4213@lst.de>
-From: Luigi Rizzo <lrizzo@google.com>
-Date: Tue, 3 Nov 2026 10:13:56 +0100
-X-Gm-Features: AclHuK_l2TEIEs7qqznKn-9_c2yONWQ9t4tXrp8CyyoGHrPwnIyHLaBfgdlxlp4
-Message-ID: <CAMOZA0+Fhq0_Pm02xGWpex06vb2y5pVzuFxOk=URZB7aq0xJ5A@mail.gmail.com>
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-To: Christoph Hellwig <hch@lst.de>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, "David Hildenbrand (Arm)" <david@kernel.org>, Luigi Rizzo <rizzo.unipi@gmail.com>, 
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 2/2] net: dsa: b53: Enable legacy IGMP snooping
+ controls
+To: netdev-bot+sashiko@kernel.org, florian.fainelli@broadcom.com
+Cc: netdev@vger.kernel.org, jonas.gorski@gmail.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, linux@armlinux.org.uk, rmk+kernel@armlinux.org.uk,
+ linux-kernel@vger.kernel.org
+References: <20261028235100.3892374-3-florian.fainelli@broadcom.com>
+ <179357816089.3131.2008365378649919842@kernel.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <179357816089.3131.2008365378649919842@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 3, 2026 at 9:09=E2=80=AFAM Christoph Hellwig <hch@lst.de> wrote=
-:
->
-> On Fri, Oct 23, 2026 at 11:50:23AM -0300, Jason Gunthorpe wrote:
-> > > Disk I/O is still potentially affected by the same problems
-> > > (cost if io mapping/unmapping, iotlb thrashing, bounce buffers
-> > > in confidential computing...)
-> >
-> > The disk folks already have a proposal to address all of this using
-> > io_uring and preallocated buffers. I really doubt yet another version
-> > is going to be interesting there.
->
-> Huh?  If you mean the dma-buf I/O it doesn't really have anything
-> to do with disks, except that this is the first user.  The dma-buf
-> iovec can work for every ->read_iter/->write_iter consumer, and
-> should be adopted more broadly.  Including by networking instead of
-> their own totally weird different world.
+On 11/2/26 01:09, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 1 · Medium: 0 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [High] The commit message says: 'These legacy classifiers have fixed
+>    forwarding behavior, including query flooding which excludes the IMP…
+> 
+> --
+> 
+> net: dsa: b53: Enable legacy IGMP snooping controls
+> 
+> This enables the IP-layer IGMP classifier (bit 3 of the global management
+> configuration register) on BCM5325E, BCM5365, BCM5389, BCM5397/5398 and
+> BCM63xx, which were previously skipped in b53_enable_mcast_snooping(). On
+> BCM6318 and BCM63268 it also clears the IGMP redirection enable to select
+> snooping mode. BCM5325M and unidentified BCM5325 variants remain excluded.
+> 
+>> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+>> index e54f6d4d1f7bb..957a1501d3f49 100644
+>> --- a/drivers/net/dsa/b53/b53_common.c
+>> +++ b/drivers/net/dsa/b53/b53_common.c
+>> @@ -841,12 +841,29 @@ int b53_enable_mcast_snooping(struct b53_device *dev)
+>>   	u16 val16;
+>>   	u32 val;
+>>   	int ret;
+>> +	u8 val8;
+>>   
+>> -	/* Older switches use different IGMP controls, not HL_PRTC_CTRL. */
+>> -	if (is5325(dev) || is5365(dev) || dev->chip_id == BCM5389_DEVICE_ID ||
+>> -	    is5397_98(dev) || is63xx(dev))
+>> +	/* BCM5325M snooping uses the mirroring engine instead. */
+>> +	if (is5325(dev) && !is5325e(dev))
+>>   		return 0;
+>>   
+>> +	/* Older switches classify IGMP in the global management register.
+>> +	 * They do not provide the separate MLD controls of newer switches.
+>> +	 */
+>> +	if (is5325e(dev) || is5365(dev) ||
+>> +	    dev->chip_id == BCM5389_DEVICE_ID || is5397_98(dev) || is63xx(dev)) {
+>> +		ret = b53_read8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, &val8);
+>> +		if (ret)
+>> +			return ret;
+>> +
+>> +		val8 |= GC_IGMP_IP_EN;
+>> +		/* Disable the separate IGMP redirection mode on BCM6318/63268. */
+>> +		if (is6318_268(dev))
+>> +			val8 &= ~GC_IGMP_RED_EN_6318_268;
+>> +
+>> +		return b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, val8);
+>> +	}
+> 
+> [Severity: High]
+> The commit message says:
+> 
+>    These legacy classifiers have fixed forwarding behavior, including
+>    query flooding which excludes the IMP on BCM5397/5398 and BCM63xx.
+> 
+> The message describes this as fixed hardware behavior. Isn't it actually
+> something this patch turns on?
+> 
+> Before this change, b53_enable_mcast_snooping() returned early on
+> BCM5397/5398 and BCM63xx, so GC_IGMP_IP_EN stayed clear. IGMP general
+> queries to 01:00:5e:00:00:01 were then forwarded as ordinary multicast.
+> The IMP has PORT_CTRL_RX_MCST_EN set, and the bridge never installs MDB
+> entries for 224.0.0.x, so those queries reached the CPU.
+> 
+> This path now runs unconditionally at setup:
+> 
+>    b53_setup()
+>      b53_enable_mcast_snooping()
+>        val8 |= GC_IGMP_IP_EN;
+>        b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, val8);
+> 
+> On BCM6318/63268, snooping mode is also selected explicitly. With that in
+> place, would queries from an external querier on any switch port stop
+> reaching the CPU on these chips?
+> 
+> If so, these cases look affected:
+> 
+>    - the bridge can no longer learn multicast router ports or detect other
+>      queriers from the queries it receives
+> 
+>    - the host IGMP stack on br0, or on standalone user ports (for example
+>      an igmpproxy upstream on a WAN port), never answers general queries,
+>      so the upstream router would expire the host's memberships after the
+>      group membership interval
+> 
+>    - on standalone ports, where the port VLAN mask only allows the IMP, a
+>      query flooded excluding the IMP would reach no port at all
+@Florian: could you please comment here? I'm unsure how much legit the above
+comment is.
 
-Christoph, is this the dma-buf series you are referring to ?
-https://lore.kernel.org/all/cover.1791975048.git.asml.silence@gmail.com/
+Also this series is IMHO borderline for 'net' as it ends up enabling a feature
+that never worked. Would you consider it for net-next without fixes tags?
 
-I am not claiming that my proposal is a good fit for disk or accelerator I/=
-O,
-but every subsystem has different constraints, so it is not unreasonable
-that a proposal for (N)etwork and a proposal for (D)isk focus on the
-different bottlenecks (still there can be learning from looking at the
-other solution).
+In any case, if the AI comments is a false positive, no need to repost.
 
-As an example, in networking we have to deal with the following:
-- typically at least two buffers per packet (header+payload)
-- often, very small fragments (1400-ish MTU plus crumbles from
-  data in different buffers
-- extremely high I/O rate with almost no spatial locality, which is an IOTL=
-B
-  killer and the main reason behind my proposal and some of its complexity.
-- on tx no good way for the application to pre-reserve buffers
-  (buffers are sliced from a 32K per-task block,
-  going to possibly different destinations)
+/P
 
-cheers
-luigi
