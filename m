@@ -1,56 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.100
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793697707;
-	b=02KUVWkP9F5DeIoUbbD0eCj8HaPE0+wzxpYSEn+rNT926zAEsyy14teRWQC+9kvgwLYB
-	 qW3v81b496NDXK7hhnts/J+S9Wndr08VOIolOgyPbHtK4v/7h7F9Z+vFpXnKA0mI4/7RA
-	 I3ztHZwsatrdwb6c27QEP5SLdfOgQOHMpLaGSlJjDHEFrAkVmN8S7rwD8AmKeQXzGXKhb
-	 cvGPBP4UfhMbxplUlUxK88zoUSxuxwT9FyY056oEX9O6pbAbcEwPwRiy9lDdDui+69AeD
-	 ubAuCybHV9GO1DqkcIEbsBa6YwlCMS+jgkPbn2poVFXAGQ4xiAug1UZJ7ViLeJo6Irg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793697707;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer;
-	bh=+ecSSVU+Z7jC4/9UK3rjYlg7JVHEKjanA1NESCVvnbY=;
-	b=3qMZT+svcLPfZiJsCpINJchqZ0yDPCxboY0trPe90m+Ke6N4cMJmfYmTOa7NKhDLVnX+
-	 VfR7PgYES/tuSmCcWeHtGNiNqUKN1nh7+YqZqMfvvhMj9eOOnUvyFBRyfUfyv7UVN89O4
-	 aQdVyfpqFo64dOiTMK2XqKt4w40HN+Pyl5ir50W/Y9JmamUKsx+0tM7PoHqRoLnjrFXjF
-	 gpz0TjuuSgPhf5iDHPE4NXAaKN1E3tvhY/4oVQxks9lfFvxfqAa4TGuIY6NxelipLRlr3
-	 X7GFgbLLT1iRJJ2HIYLL4UNo2bc6BflNX+DO+OjhgWQSaJDBxcEeWYrtfWrHdXH40SA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=UOT6gbEb;
-	arc=none smtp.remote-ip=95.215.58.100
-Received: from mta1.migadu.com (out-100.mta1.migadu.com [95.215.58.100])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=139.219.17.126
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793697969;
+	b=L+l/IyRcWVY728qshUL6Vfx3zpsxkNTmR+kVmHRWEg4tWPIF9rXOQPuCMajUz7NvQQV6
+	 Bna2fKrAbU61416JmqbYDHg9Bj4L0R8QX/3Z8qDRKKp6LVxgjM9G+pUeiEQmN0+etS5Oi
+	 qgLUSZ0KPusnkVPL8+HFbZ/LZf3G0aygWBc64PMa8hp8jfDoMRVmO17qdz8/6Bsap4ISX
+	 VvQAk5MVzwnYuIPIwPWuwmRs+IJCGrF+GoTydWgZkl9M6eeufQW0KP9N8SsL8N6M0juXr
+	 dng3qoz8dlLiNDT0CPIccndlK/jDYv31vzmm2te4lbRv69xnBSoAHziDqNJ9o/r3IKQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793697969;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=wea/Xmql/aZnCWfEfd0pIXurimTV1AhdL6Lsye8gs6s=;
+	b=WMIN1P5Es/p4JR0sfJuvaofo1YDUGN2W5LoM2p46bUew6GiHrBw94bemkPEgFOR7RvtN
+	 mfcyGqz4QyoUA592mycsMnn73VnIFQ1YzW72DmtNaoriOnwNsQDa45mOjqACI6lhy++Wc
+	 Otu0t/quoJZZY21M0ZB6QyqM3GA4F1ez4FXndzuK7Tl/kL0JHtvsoBkckOGg3mZ2P58/Z
+	 ojxXlYR52g3Xv4KPTVGNbgmkN3kCJ8kLbbBdEes/4h3TK+2Y2jKMg3DhLKQ/0FVZuToaP
+	 qORW6hBuqQuxSpXrV6cBRjg5gelZjP2hocYEQRHY02F1K4FCrFlvG3SORza7OHmAxwg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=deeproute.ai;
+	spf=pass smtp.mailfrom=deeproute.ai;
+	dkim=pass header.d=deeproute.ai header.i=@deeproute.ai header.a=rsa-sha256 header.s=selector1 header.b=Z389T15h;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=139.219.17.126
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2126.outbound.protection.partner.outlook.cn [139.219.17.126])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D47606D826
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 09:21:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4D47606D826
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899F1606A326;
+	Tue,  3 Nov 2026 09:26:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 899F1606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=deeproute.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deeproute.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=UOT6gbEb
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=u41R6CvdjgwQ5RmcVkl25GGYAs8un9CHwXt9ZAdHNvk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793697705; v=1; x=1794302505;
- b=UOT6gbEbq5FnO2xyDmDQ7e7IoyDo3iA64cbQmTuCCiB0mJEfYs3qoM9kK99jIn3sn7avRtTY
- 4N45mwo6NDxRBNvty3HknXGQBNNz06SlnjCOJKDJfe9n7oaeh59HsVHqnkmbXVRH48QPp9c66zU
- UFqQMszlJl4cGdLU8xBO1jso=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id b3b339ac542da68a;
-	Tue, 03 Nov 2026 09:21:44 +0000
-X-Mizu-Trace-ID: b3b339ac542da68a
-X-Migadu-Flow: FLOW_OUT
-From: Hangbin Liu <hangbin.liu@linux.dev>
-Date: Tue, 03 Nov 2026 17:20:52 +0800
-Subject: [PATCH net v2 3/3] selftests: net: add ioam6 ECMP test (RFC 9486
- C2)
+	dkim=pass (1024-bit key, unprotected) header.d=deeproute.ai header.i=@deeproute.ai header.a=rsa-sha256 header.s=selector1 header.b=Z389T15h
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Vg5MGD29KscmrFszA2IjHyssiQSBCyNdL8WhosZEj9ebl/cYOKsrZjUwzxKl3Dytn74UPv8Xo5plJ+5KHFTwCUYSHFBWtpNvNoMQMU/agVl1b6mBGC4ATwNo6/fL1HJX4F//3rFAXykmCmAP/e+J/RgSncA4sZgEWrkVNTb59ovLMHwXqB+nMdM8Xv+d4ahLQ0YI5C7iUK4yOLiz3uZX4CSBdmgl56eqwIkfjp6K13L6VpCCjF9phT+Z0cpKX5JVATvwoi/8fmJOeHiXfdr+WMSU4pGh15pxb9bFSajh0F7Ykn53tq6de8XWbE/cnyA96+YLcnMYGo71iCV1mPXqTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wea/Xmql/aZnCWfEfd0pIXurimTV1AhdL6Lsye8gs6s=;
+ b=nBHc1Hsq7jEy4AQazrIbHF+mfJRpsAuzJV+fj9CFJoqFjT+0s1MnlFhPOlyBtxi8sPYr+t63lE/uLclBJ1E3X5k2efEKG3II2+260gSgiDCcMgoDZdHfagHKx8//2UTd4Jf2n+sipgABCKBx1EBQeJ0ejGPDZ/Nyxy8eiQWL8t5GRTCJUx1t76OFe+4Vr69Hxa6yZ3N3OK+QMuk+fEIPcKENDvkgPCbTh8P/x/VriFdfDYpcR4pVzvYCS/96L6y162+3L/j+Ifjj3wDwUzI2SJgIrQeLAkjiK+dnIYY+xLG0MmeiCNGtoQNZ0on6qM1B7/+1RTQZPTtHTjeqb0fXSQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=deeproute.ai; dmarc=pass action=none header.from=deeproute.ai;
+ dkim=pass header.d=deeproute.ai; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=deeproute.ai;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wea/Xmql/aZnCWfEfd0pIXurimTV1AhdL6Lsye8gs6s=;
+ b=Z389T15h6VJMIzh3GHlskeCIAOVBMYUE/Y30lPy5Y6FOWe0tqMTVYq1J/3CoD2eOGymyktBilZZEQxLVX4avXT7QnkaWtbGIeOq5cz5HPZEUGb4wVNcGnVp/deGCRa9Y7VbLdGxsJ24NHAhpWhAVqQ2/2mroAxNMILTpoF2ZW/g=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=deeproute.ai;
+Received: from ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:a::9) by ZQZPR01MB1074.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:b::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Tue, 3 Nov
+ 2026 09:25:57 +0000
+Received: from ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn
+ ([fe80::2dda:e54d:5a3c:d686]) by
+ ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn ([fe80::2dda:e54d:5a3c:d686%7])
+ with mapi id 15.21.0592.007; Tue, 3 Nov 2026 09:25:57 +0000
+From: Jingxuan Xie <jingxuanxie@deeproute.ai>
+To: netdev@vger.kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: [RFC PATCH net v3 0/1] af_packet: avoid waiting for TPACKET_V3 copies at retirement
+Date: Tue,  3 Nov 2026 09:25:40 +0000
+Message-ID: <20261103092541.273847-1-jingxuanxie@deeproute.ai>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: SH0PR01CA0004.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:5::16) To ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:a::9)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -60,427 +102,132 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261103-ipv6_ioam_ecmp-v2-3-6ef0318bdb5e@kylinos.cn>
-References: <20261103-ipv6_ioam_ecmp-v2-0-6ef0318bdb5e@kylinos.cn>
-In-Reply-To: <20261103-ipv6_ioam_ecmp-v2-0-6ef0318bdb5e@kylinos.cn>
-To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Justin Iurman <justin.iurman@gmail.com>, 
- Shuah Khan <shuah@kernel.org>
-Cc: Hangbin Liu <hangbin.liu@linux.dev>, linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Hangbin Liu <liuhangbin@kylinos.cn>
-X-Mailer: b4 0.16.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: ZQZPR01MB0980:EE_|ZQZPR01MB1074:EE_
+X-MS-Office365-Filtering-Correlation-Id: dec972a5-9ca0-42d3-ec7f-08df398c7791
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|23010399003|10067099003|261102123227099003|18002099003|3023799007|38350700014|56012099006|261026121527099003|261026140227099003|261021121427099003|261022105027099003|261028144727099003|261009223027099003|261021123027099003;
+X-Microsoft-Antispam-Message-Info:
+	1Yg8Yq60ACQPm2Uz4YAAcwyq2lpJKlbchfzMDOMPth9r6aNMPJTafTxgb9wkVDJB9r+1xG5TPhr9P/WOFbc+u/6Fspv5HeZPL3ISRugWQsTg9Gs1Aix/2uHVYSXLQBZL8CtpvIgMvooFnymLDoe+cCRdWLE5rA98owQEVn7WEzlBR8tgsDLOomv2RhVuT/gzCH5s6QheU/JwHZj+1oNKr8DDhKubdNK40iZg8zxsyFndhHzOCGPeeDWsTjafVjUNKmkP0c3PDtU6sdfbjxEhAkIun5QWn1z4ziZBC9Eo3p5JvbFUblFuYZ3yQrNcyfrmJKdzjj26eGtBf0KIg0/BMHg/GebkGBsHxeFeE/2i8ZHAnkCHHB4mEXfUIOK6rEgo0DzIImQwCaCaUw0W21mHcmZrHo41diw8Rd/pL+uSQWsIYNrV2SR1ggDwzRpwOdrqeEA6gvsJVyRSRDB5HjI3z1L7Umj6/6KB3o1uPC0BZyN6m3fzVKAeZK+MrQtRpJSv8apb8KhBcvDNxIGbEfyXE3wqC+StiLZuFg01HNcTef3LJKYafkQihvQCr9G9FLVa
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(23010399003)(10067099003)(261102123227099003)(18002099003)(3023799007)(38350700014)(56012099006)(261026121527099003)(261026140227099003)(261021121427099003)(261022105027099003)(261028144727099003)(261009223027099003)(261021123027099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?u3VyOFUoZkemUYl47vKnUTsYU6R51qgR5+zCATchkuOgQlqrhgchQh574r6g?=
+ =?us-ascii?Q?CCY7bMOtABHzMtnpG6uyeNgO7UiHrInbMOoNXClKuAyuo21cKL6Njfildnji?=
+ =?us-ascii?Q?hINQ5cnVQBXZLkYLBd/h099l8HZXm8NhkzFG2mg7qVHbme5rHQUdN56DIpDg?=
+ =?us-ascii?Q?mzYSIdNsHXNvCoy56ownPZ6BT5NN5sBQ9RusTy6OFKdx0zTOLJxb8YiDcdXp?=
+ =?us-ascii?Q?V6vjYYK4YLwfxI+xgMRZ4ctJ6LM5aPDq5lCv93NcQMFFhIXfbMCqv1JiI13w?=
+ =?us-ascii?Q?GwQKe5vu8fnRZ4pdT/7cwZDaOD6S/PQ1wiQ6F+93yfFvegGlWV2CWqyLa7jC?=
+ =?us-ascii?Q?akcL+293zIGQ5MDaWdMvKSm644+VOADDV6/kJZ3uY5rlh/A8rLjbcm3GurE8?=
+ =?us-ascii?Q?jokDcRvSbQ4Gv60WJBO4Bc7S4k0xDt6rWVFIuZ1DbefqfblgBYyRE3x1o2iW?=
+ =?us-ascii?Q?eDq2wRLL+qVT8jF4bBSySgY9vIrhejwioryK+NkUr9KQe/YBt5NjaQExGurj?=
+ =?us-ascii?Q?VdSnWwpQ1/n0F/W5PQeYUfctlaIXAfnrKUJ+hYcGlHvW37A0rRfgTP2bjVWj?=
+ =?us-ascii?Q?pqid1vW4NMw93bhk/UCiv3UA3QthUOMJLr5qm8lvP7lM0gLoQ+XZKv6DzAg/?=
+ =?us-ascii?Q?4ZsHDo4rHXz4HFTk28x+rnWL3+n3mR4xpIllDTumW+kWieTG1pReic5zRgyC?=
+ =?us-ascii?Q?M/AQTSaTjBuqLVqdHFATGwRKHCL6uZqIThbGsJ/vzoZzoVcl0FMv8OQZ+Ce1?=
+ =?us-ascii?Q?5pjKFkkWvOLVHT7cKIxp4f3GpSkvPPl8OBFCKBKvi/2hgbGkIG7nIjWSIUOh?=
+ =?us-ascii?Q?ykmPWG6eaD3KLOA8vAD//qAcUm+pV4/29sNikFcO+DaX0ZVDu3ZQrqL2wxzl?=
+ =?us-ascii?Q?i7f7Ts3xFn+dDOE7ewXiK47NlcP0AkxVogWTNsm4Q2ChpYHce4XAtCY1hUlH?=
+ =?us-ascii?Q?c0EjFUC/VBevSr857mGYdWwElRuccETJh1zgKaNVb4kHDuXnbmz4MU+eSDdZ?=
+ =?us-ascii?Q?0T8DGVgaV2W5wuC7RpAlWEn/DmfY+CB0xpRoLmAaOqqXH/Qg7+CS/XVf6e8i?=
+ =?us-ascii?Q?MnabN0WkU6/OWRK1byz78a0uQHe5/x0WKpS0El23fbQ1WCQ1gTYJiuU81uId?=
+ =?us-ascii?Q?mUjz50xJqvoLvlNUdRpzkZy5GU1TJBDz1PF8ewwW+RZcQwwonPZpopwY1KQi?=
+ =?us-ascii?Q?35RhLTAVAyoL4VTAqRs0WvZ70lKd2DAuAd9tFagqUSDTlUt+I3PE4zs1o5H7?=
+ =?us-ascii?Q?VNgt7yYKieLAIkkdZs3KVUPTsY9H4ErTtorXUbxVA++hClZIVr0JbClJo+I/?=
+ =?us-ascii?Q?MjaOhD7u7eCX3EB5m/PFHK/ehSBnDeIW5qUCu/9bCsmwTvBpLVqGEhUDeHPx?=
+ =?us-ascii?Q?KP+HX/ZrLinpI6vM0RzIVwWadx0A+cAZKEO4KOO8AM0nLWl/90S2YFMh0IX9?=
+ =?us-ascii?Q?eqx2nnN6Py08ZSqL+iBf1c/Hqr64o3MU1rsTJyDJSuBu/eQmYyWuZBKcsDlm?=
+ =?us-ascii?Q?/jQHdKy7hanuyjWhhBQGKAjvte6ax1Scutd56x4NrUiOO2JhSBxkX4nKGnIR?=
+ =?us-ascii?Q?bMlTLLwNZu7U/sL93RARqExOhvhW990amOOEG5IyPuytp3wkI59xg1oIw45V?=
+ =?us-ascii?Q?6mHIOEhDKOEd0kq45eBsyCLEZ4UayFYTqJenCYl1b+4HcCX+IK7shNHLQLLE?=
+ =?us-ascii?Q?bJAlPdI23Q1iAeW5N1/StG979Ml/LbhZTY+Vgd+OgKHgKLcmIJocbWbjt5k8?=
+ =?us-ascii?Q?lUr0MmXkOw=3D=3D?=
+X-OriginatorOrg: deeproute.ai
+X-MS-Exchange-CrossTenant-Network-Message-Id: dec972a5-9ca0-42d3-ec7f-08df398c7791
+X-MS-Exchange-CrossTenant-AuthSource: ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 09:25:57.5354
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: df535b4a-68e6-4339-a092-afa4f2c24fcc
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VZvlHazCv8hEnYhN+IPI8ZOSHSRH4eVOVb5D/H3vyuFoPXSnpE2VNuIFGntxHcyG2wIQF5kevvfKYQBf/WSJmM3mipDDRrzeZGjGx4YEnwU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQZPR01MB1074
 
-From: Hangbin Liu <liuhangbin@kylinos.cn>
+From: jingxuanxie <jingxuanxie@deeproute.ai>
 
-Add new test ioam6_ecmp.sh, verifying that the ECMP path taken with
-IOAM options is identical to the path of the same packet without them
-under the default hash policy 0, as required by RFC 9486 (C2).
+This is v3 of the TPACKET_V3 block-retirement fix. It replaces both v2
+postings; please review only this thread.
 
-  - transit input hashing: the sender inserts an IOAM Hop-by-Hop option
-    (inline mode), the forwarder has a multipath route;
-  - encapsulating node re-lookup: the forwarder itself encapsulates
-    over a multipath route, with a plain ip6ip6 tunnel as the
-    identical-packet-without-IOAM baseline.
+v2 tried to remove the wait by allowing capture into the next block while
+copies were still in flight. That required per-block copy accounting,
+ordered publication, and handling for a backlog of ready blocks. Willem
+asked for a smaller fix first: make block retirement non-blocking and let
+the existing timer retry.
 
-Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
----
- tools/testing/selftests/net/Makefile      |   1 +
- tools/testing/selftests/net/config        |   2 +
- tools/testing/selftests/net/ioam6_ecmp.sh | 348 ++++++++++++++++++++++++++++++
- 3 files changed, 351 insertions(+)
+v3 does exactly that, in one patch:
 
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 9180b9bec515..d15f118e70a2 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -52,6 +52,7 @@ TEST_PROGS := \
- 	icmp_redirect.sh \
- 	io_uring_zerocopy_tx.sh \
- 	ioam6.sh \
-+	ioam6_ecmp.sh \
- 	ip6_gre_headroom.sh \
- 	ip6_tunnel.sh \
- 	ip_defrag.sh \
-diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
-index d4416f8bdcfd..e1de8c0410ef 100644
---- a/tools/testing/selftests/net/config
-+++ b/tools/testing/selftests/net/config
-@@ -38,6 +38,7 @@ CONFIG_IP_NF_NAT=m
- CONFIG_IP_NF_RAW=m
- CONFIG_IP_NF_TARGET_REJECT=m
- CONFIG_IP_NF_TARGET_TTL=m
-+CONFIG_IP_ROUTE_MULTIPATH=y
- CONFIG_IP_SCTP=m
- CONFIG_IPV6=y
- CONFIG_IPV6_FOU=m
-@@ -52,6 +53,7 @@ CONFIG_IPV6_ROUTER_PREF=y
- CONFIG_IPV6_RPL_LWTUNNEL=y
- CONFIG_IPV6_SEG6_LWTUNNEL=y
- CONFIG_IPV6_SIT=y
-+CONFIG_IPV6_TUNNEL=m
- CONFIG_IPV6_VTI=y
- CONFIG_IPVLAN=m
- CONFIG_IPVTAP=m
-diff --git a/tools/testing/selftests/net/ioam6_ecmp.sh b/tools/testing/selftests/net/ioam6_ecmp.sh
-new file mode 100755
-index 000000000000..35a11f94c422
---- /dev/null
-+++ b/tools/testing/selftests/net/ioam6_ecmp.sh
-@@ -0,0 +1,348 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0+
-+#
-+# Verify RFC 9486 C2 for ECMP: with hash policy 0 (the default), the ECMP
-+# nexthop chosen for a packet carrying IOAM options must be the same as for
-+# the identical packet without them.
-+#
-+# Two scenarios, matching the two places where IOAM changed the hashed
-+# IPv6 nexthdr:
-+#
-+# 1) transit node: alpha inserts an IOAM Hop-by-Hop option (inline mode);
-+#    beta forwards with a multipath route. Policy 0 hashed the raw
-+#    nexthdr (NEXTHDR_HOP vs IPPROTO_ICMPV6), so beta could pick a
-+#    different ECMP sibling than for the same packet without IOAM.
-+#
-+# 2) encapsulating node: beta itself encapsulates over a multipath
-+#    route. The ioam6 re-lookup hashed NEXTHDR_HOP instead of the
-+#    transformed packet's real nexthdr (IPPROTO_IPV6). The baseline is
-+#    the same encapsulation without the IOAM option: a plain ip6ip6
-+#    tunnel (encaplimit none) over the same multipath route, with the
-+#    same outer addresses.
-+#
-+# Hash policy 0 hashes addresses, the flow label and the nexthdr (not L4
-+# ports), so whether both variants land on the same ECMP sibling depends
-+# on the per-netns hash seed. Each test therefore repeats with several
-+# seeds and fails on the first divergence: pre-fix kernels fail with
-+# high probability, fixed kernels always pass.
-+#
-+# Topology:
-+#
-+#   alpha                   beta                      gamma
-+#   veth0 2001:db8:1::2 <-> veth0 2001:db8:1::1
-+#                           veth1 2001:db8:2:1::1 <-> veth0 2001:db8:2:1::2
-+#                           veth2 2001:db8:2:2::1 <-> veth1 2001:db8:2:2::2
-+#
-+# beta's ECMP route: 2001:db8:2:1::2/128
-+#   nexthop via 2001:db8:2:1::2 dev veth1
-+#   nexthop via 2001:db8:2:2::2 dev veth2
-+#
-+# Scenario 1 sends to 2001:db8:2:1::2 (gamma). Scenario 2 sends to
-+# 2001:db8:3::2, which beta encapsulates towards 2001:db8:2:1::2. The
-+# link gamma received the packets on is detected from tc flower
-+# counters (read via jq) on the ingress of gamma's veth0/veth1. The
-+# filters match the exact measurement packets: ICMPv6 echo requests
-+# for scenario 1, and the outer addresses of the ip6ip6 packets for
-+# scenario 2 (flower classifies outer headers only).
-+
-+# shellcheck disable=SC2154,SC2329
-+source lib.sh
-+
-+readonly PKTS=3
-+readonly SEEDS="1 2 3 4 5 6 7 8 9 10 11 12"
-+
-+ip6tnl_loaded=0
-+
-+cleanup()
-+{
-+	cleanup_all_ns
-+
-+	if [ "$ip6tnl_loaded" != 0 ]; then
-+		modprobe -r ip6_tunnel &>/dev/null || true
-+	fi
-+}
-+
-+# Replace the tc measurement filters on gamma's ECMP links. $1 is the
-+# flower match list, e.g. "ip_proto icmpv6 type 128 src_ip <sender>"
-+# for plain IPv6 echo requests, or the outer addresses for ip6ip6
-+# packets (flower classifies the outer header only, see
-+# FLOW_DISSECTOR_F_STOP_BEFORE_ENCAP in cls_flower).
-+set_measure_filters()
-+{
-+	local match=$1
-+	local dev
-+
-+	for dev in veth0 veth1; do
-+		tc -n "$ns_gamma" qdisc del dev "$dev" clsact &>/dev/null
-+		tc -n "$ns_gamma" qdisc add dev "$dev" clsact || return 1
-+		# shellcheck disable=SC2086
-+		tc -n "$ns_gamma" filter add dev "$dev" ingress pref 1 \
-+			protocol ipv6 flower skip_hw $match action pass || return 1
-+	done
-+}
-+
-+# Number of packets counted by the measurement filter on gamma's $1.
-+icmp_packets()
-+{
-+	tc -n "$ns_gamma" -s -j filter show dev "$1" ingress |
-+		jq '[.[] | .options.actions[]?.stats |
-+		    (.packets // .basic.packets // 0)] | add // 0'
-+}
-+
-+# Send PKTS pings from alpha to $1 and report which of gamma's links
-+# received them: "A" (veth0), "B" (veth1), "TIE" or "LOST:<a>:<b>".
-+measure_link()
-+{
-+	local dst=$1
-+	local a0 b0 da db
-+
-+	a0=$(icmp_packets veth0)
-+	b0=$(icmp_packets veth1)
-+
-+	ip netns exec "$ns_alpha" \
-+		ping -6 -q -c "$PKTS" -i 0.2 -W 1 "$dst" &>/dev/null || true
-+
-+	da=$(($(icmp_packets veth0) - a0))
-+	db=$(($(icmp_packets veth1) - b0))
-+
-+	if [ $((da + db)) -lt "$PKTS" ]; then
-+		echo "LOST:$da:$db"
-+		return
-+	fi
-+
-+	if [ "$da" -gt "$db" ]; then
-+		echo "A"
-+	elif [ "$db" -gt "$da" ]; then
-+		echo "B"
-+	else
-+		echo "TIE"
-+	fi
-+}
-+
-+set_alpha_plain()
-+{
-+	ip -netns "$ns_alpha" -6 route replace 2001:db8:2:1::/64 \
-+		via 2001:db8:1::1 dev veth0
-+}
-+
-+set_alpha_ioam()
-+{
-+	ip -netns "$ns_alpha" -6 route replace 2001:db8:2:1::/64 \
-+		encap ioam6 mode inline trace prealloc \
-+		type 0x800000 ns 0 size 12 \
-+		via 2001:db8:1::1 dev veth0
-+}
-+
-+set_beta_tnl()
-+{
-+	# Recreate the tunnel: ip6_tnl caches the outer dst per CPU,
-+	# and neither the route change below nor the fib_multipath_hash_seed
-+	# write resets it. A stale cache would resolve the outer sibling
-+	# under a previous seed (or on another CPU), making the baseline
-+	# flip between attempts of one seed.
-+	ip -netns "$ns_beta" link del ip6tun0 &>/dev/null
-+	ip -netns "$ns_beta" link add name ip6tun0 type ip6tnl \
-+		mode ip6ip6 encaplimit none \
-+		local 2001:db8:2:1::1 remote 2001:db8:2:1::2
-+	ip -netns "$ns_beta" link set ip6tun0 up
-+	ip -netns "$ns_beta" -6 route replace 2001:db8:3::2/128 dev ip6tun0
-+}
-+
-+set_beta_ioam_encap()
-+{
-+	ip -netns "$ns_beta" -6 route replace 2001:db8:3::2/128 \
-+		encap ioam6 mode encap tundst 2001:db8:2:1::2 \
-+		trace prealloc type 0x800000 ns 0 size 12 dev veth1
-+}
-+
-+# $1: description; $2: function installing the without-IOAM variant;
-+# $3: function installing the with-IOAM variant; $4: destination.
-+run_scenario()
-+{
-+	local desc=$1
-+	local plain=$2
-+	local ioam=$3
-+	local dst=$4
-+	local seed pl il
-+
-+	log_info "$desc"
-+
-+	for seed in $SEEDS; do
-+		RET=0
-+		ip netns exec "$ns_beta" \
-+			sysctl -wq net.ipv4.fib_multipath_hash_seed="$seed"
-+
-+		if ! $plain; then
-+			RET=$ksft_fail
-+			log_test "$desc (plain route setup failed, seed $seed)"
-+			continue
-+		fi
-+		pl=$(measure_link "$dst")
-+		if ! $ioam; then
-+			RET=$ksft_fail
-+			log_test "$desc (ioam route setup failed, seed $seed)"
-+			continue
-+		fi
-+		il=$(measure_link "$dst")
-+
-+		case "$pl$il" in
-+		*LOST*)
-+			RET=$ksft_fail
-+			log_test "$desc (lost packets, seed $seed: without=$pl with=$il)"
-+			continue
-+			;;
-+		*TIE*)
-+			RET=$ksft_fail
-+			log_test "$desc (no clear link, seed $seed)"
-+			continue
-+			;;
-+		esac
-+
-+		if [ "$pl" = "$il" ]; then
-+			log_test "$desc (seed $seed: same link $pl)"
-+		else
-+			RET=$ksft_fail
-+			log_test "$desc (diverged on seed $seed: without IOAM via link $pl, with IOAM via link $il)"
-+		fi
-+	done
-+}
-+
-+setup_topology()
-+{
-+	local dev
-+
-+	setup_ns ns_alpha ns_beta ns_gamma || return 1
-+
-+	ip link add veth0 netns "$ns_alpha" type veth \
-+		peer name veth0 netns "$ns_beta" || return 1
-+	ip link add veth1 netns "$ns_beta" type veth \
-+		peer name veth0 netns "$ns_gamma" || return 1
-+	ip link add veth2 netns "$ns_beta" type veth \
-+		peer name veth1 netns "$ns_gamma" || return 1
-+
-+	ip -n "$ns_alpha" addr add 2001:db8:1::2/64 dev veth0 nodad
-+	ip -n "$ns_beta" addr add 2001:db8:1::1/64 dev veth0 nodad
-+	ip -n "$ns_beta" addr add 2001:db8:2:1::1/64 dev veth1 nodad
-+	ip -n "$ns_beta" addr add 2001:db8:2:2::1/64 dev veth2 nodad
-+	ip -n "$ns_gamma" addr add 2001:db8:2:1::2/64 dev veth0 nodad
-+	ip -n "$ns_gamma" addr add 2001:db8:2:2::2/64 dev veth1 nodad
-+
-+	ip -n "$ns_alpha" link set veth0 up
-+	ip -n "$ns_beta" link set veth0 up
-+	ip -n "$ns_beta" link set veth1 up
-+	ip -n "$ns_beta" link set veth2 up
-+	ip -n "$ns_gamma" link set veth0 up
-+	ip -n "$ns_gamma" link set veth1 up
-+
-+	ip netns exec "$ns_alpha" sysctl -wq net.ipv6.auto_flowlabels=0
-+	ip netns exec "$ns_alpha" \
-+		sysctl -wq net.ipv6.conf.veth0.accept_ra=0
-+	ip netns exec "$ns_beta" sysctl -wq net.ipv6.conf.all.forwarding=1
-+	ip netns exec "$ns_beta" \
-+		sysctl -wq net.ipv6.fib_multipath_hash_policy=0
-+	ip netns exec "$ns_gamma" sysctl -wq net.ipv6.conf.veth0.accept_ra=0
-+	ip netns exec "$ns_gamma" sysctl -wq net.ipv6.conf.veth1.accept_ra=0
-+
-+	for dev in veth0 veth1 veth2
-+	do
-+		ip netns exec "$ns_beta" \
-+			sysctl -wq net.ipv6.conf.$dev.accept_ra=0
-+		ip netns exec "$ns_beta" \
-+			sysctl -wq net.ipv6.conf.$dev.ioam6_enabled=1
-+	done
-+
-+	# The ECMP route under test (scenario 1 hashes its selection at
-+	# beta's input; scenario 2 at the encapsulating re-lookup).
-+	ip -netns "$ns_beta" -6 route add 2001:db8:2:1::2/128 \
-+		nexthop via 2001:db8:2:1::2 dev veth1 \
-+		nexthop via 2001:db8:2:2::2 dev veth2 || return 1
-+
-+	ip -netns "$ns_alpha" -6 route add 2001:db8:2:1::/64 \
-+		via 2001:db8:1::1 dev veth0
-+	ip -netns "$ns_alpha" -6 route add 2001:db8:3::/64 \
-+		via 2001:db8:1::1 dev veth0
-+	ip -netns "$ns_gamma" -6 route add 2001:db8:1::/64 \
-+		via 2001:db8:2:1::1 dev veth0
-+
-+	# drop unreachable message when ping 2001:db8:3::2
-+	tc -n "$ns_alpha" qdisc add dev veth0 clsact
-+	tc -n "$ns_alpha" filter add dev veth0 ingress pref 1 \
-+                protocol ipv6 flower skip_hw ip_proto icmpv6 type 1 action drop
-+
-+}
-+
-+check_tunnel()
-+{
-+	if ! lsmod 2>/dev/null | grep -q "ip6_tunnel" && \
-+		! ip a 2>/dev/null | grep -q "ip6tnl0"; then
-+		modprobe ip6_tunnel &>/dev/null
-+		lsmod 2>/dev/null | grep -q "ip6_tunnel" || \
-+			ip a 2>/dev/null | grep -q "ip6tnl0" || return 1
-+		ip6tnl_loaded=1
-+	fi
-+
-+	ip -netns "$ns_beta" link add name ip6tun0 type ip6tnl \
-+		mode ip6ip6 encaplimit none \
-+		local 2001:db8:2:1::1 remote 2001:db8:2:1::2 \
-+		2>/dev/null || return 1
-+	set_beta_ioam_encap || return 1
-+}
-+
-+################################################################################
-+#                                                                              #
-+#                                     MAIN                                     #
-+#                                                                              #
-+################################################################################
-+
-+require_command ip
-+require_command jq
-+require_command ping
-+require_command tc
-+
-+if [ ! -e /proc/sys/net/ipv4/fib_multipath_hash_seed ]; then
-+	log_test_skip "Kernel without CONFIG_IP_ROUTE_MULTIPATH."
-+	exit "${EXIT_STATUS}"
-+fi
-+
-+trap cleanup EXIT
-+setup_topology || { log_test_skip "Setup failed."; exit "${EXIT_STATUS}"; }
-+
-+# Compat check: can this kernel insert an IOAM trace into a route?
-+if ! ip -netns "$ns_alpha" -6 route replace 2001:db8:2:1::/64 \
-+	encap ioam6 mode inline trace prealloc type 0x800000 ns 0 size 12 \
-+	via 2001:db8:1::1 dev veth0 &>/dev/null
-+then
-+	log_test_skip "Cannot attach an IOAM trace to a route"
-+	exit "${EXIT_STATUS}"
-+fi
-+
-+log_info "IOAM + ECMP (RFC 9486 C2, hash policy 0)"
-+
-+# Warm up ECMP links for neighbor/RA activity.
-+set_alpha_plain
-+ip netns exec "$ns_alpha" ping -6 -q -c "$PKTS" -i 0.2 2001:db8:2:1::2 &>/dev/null
-+
-+# Scenario 1 counts the ICMPv6 echo requests sent by alpha.
-+if ! set_measure_filters "ip_proto icmpv6 type 128 src_ip 2001:db8:1::2"; then
-+	log_test_skip "Cannot install tc flower measurement filters"
-+	exit "${EXIT_STATUS}"
-+fi
-+run_scenario \
-+	"Transit input ECMP with/without IOAM" \
-+	set_alpha_plain set_alpha_ioam 2001:db8:2:1::2
-+
-+if check_tunnel; then
-+	# Scenario 2 counts the outer ip6ip6 packets: the echo request is
-+	# not visible to flower (outer headers only), so match the pinned
-+	# tunnel addresses instead. No need to check return value again as
-+	# we have done it at scenario 1
-+	set_measure_filters "src_ip 2001:db8:2:1::1 dst_ip 2001:db8:2:1::2"
-+
-+	run_scenario \
-+		"Encapsulating node re-lookup ECMP with/without IOAM" \
-+		set_beta_tnl set_beta_ioam_encap 2001:db8:3::2
-+else
-+	log_test_skip "Encapsulating node re-lookup ECMP with/without IOAM (no ip6_tunnel)"
-+fi
-+
-+exit "${EXIT_STATUS}"
+- prb_retire_current_block() uses write_trylock() instead of write_lock().
+  If a copier still holds the read lock, the current block and its
+  metadata are left untouched and false is returned.
+- __packet_lookup_frame_in_block() stops instead of dispatching the next
+  block when retirement fails; tpacket_rcv() drops this capture record
+  and accounts it in tp_drops. The original packet is not affected.
+- The retirement timer re-arms and retries if it cannot take the lock.
+- A later packet can also retire the block once the copier has finished.
 
--- 
-2.56.0
+There is no spillover into the next block, no per-block state, no worker
+and no publication budget. The existing lock order and rwlock completion
+ordering are preserved.
+
+The cost is a higher capture drop rate while a copier is preempted. This
+is a deliberate trade-off to keep the receive path moving on PREEMPT_RT.
+
+The v2 1/2 virtio-header prevalidation patch is not part of v3. It is an
+independent bug fix; I will rework it separately with a concrete
+description of the state left behind and a shared error path, as Willem
+asked.
+
+Testing so far:
+- ARM64 PREEMPT_RT W=3D1 build of af_packet.o: pass
+- QEMU ARM64 SMP PREEMPT_RT (4 CPUs, lockdep, debug spinlocks):
+  psock_tpacket and psock_fanout pass; three consecutive candidate
+  boots pass the delayed-copier tests. The TCG fanout queue-length
+  warning is also present on the unpatched baseline and the program
+  exits 0.
+- Full-block path: with A delayed, B's sendto returned in 0.7 ms, only
+  B's capture record was dropped (tp_drops=3D1), and no block was
+  published. After release, A and the next packet were published, B was
+  absent, and payload and length were verified.
+- Timer-only path: 15 failed timer trylocks while A was delayed; the
+  timer published A after release.
+- Close/unmap while A was delayed: no hang or crash.
+- Baseline contrast: without the patch, B blocked 505 ms until A was
+  released and was captured.
+- Control-flow harness covering rx-busy, timer-busy, recovery, full ring
+  and shutdown: 6/6 pass. checkpatch on the diff: clean.
+
+Not yet run: Orin hardware, KASAN/KCSAN, and capture drop-rate or
+latency measurements. Timings above are QEMU TCG observations, not
+hardware RT guarantees.
+
+v2 thread (second posting):
+https://lore.kernel.org/netdev/20261030081704.251652-1-jingxuanxie@deeprout=
+e.ai/
+
+v2 review:
+- 1/2: https://lore.kernel.org/netdev/willemdebruijn.kernel.17d3748debf8b@g=
+mail.com/
+- 2/2: https://lore.kernel.org/netdev/willemdebruijn.kernel.54d115047658@gm=
+ail.com/
+
+jingxuanxie (1):
+  af_packet: avoid waiting for TPACKET_V3 copies at retirement
+
+ net/packet/af_packet.c | 24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
+
+base-commit: 1f1f8e8c5176234fa31858cd25f2e9b88aac0a45
 
