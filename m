@@ -1,62 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793721512;
-	b=mqCBVHZa2LGgqgvnxmm3ijelyEKrVNU4FBsvpUJScpvt9P/LuN56p1hmYiGElpBWCTyk
-	 GoBMRvC9j3/CksN4SEnpGZYBKkGb6Ow9FE7HFKUmRLjX57h3y8FFbHZc5J1LpXldORAwm
-	 n4CADqXYXLlUwJvAFdpOFAKjlaJyEeV2gaxBVw4ekWNvJqdTam45bie6JAzFZpjOUU6uy
-	 NDWtBoezbWJ3+RK+AaXRM7L0poDDfNySFSolz68mDWiUHIk7h7PLrw4m0+D5UCvs6614h
-	 p1cR8XSa05N+QMzBVNNhMnJEGki1SVkwdYcIV8uAnHQCI0thoJ3uWDY3Ppv7Mg2oTVA==
+	t=1793721644;
+	b=t13gA122XIs4NtdE24uFwxmsFuar8FdJk93cruSZJGb7Nyq3pcaKTgSb1tIaViBKMuT6
+	 UwNXo503RCrvAR1nr+y6JdVyPtZcxg1k0+m1Kz9uJAntJfsOGtjcdNhvhQO6hv8xNIFbP
+	 joik2efv5Y+dDxHidtUaypJbpVfW2vZJAzI47H+0R8nTvbjV0vEdRk9zRS/giV6zBxGWx
+	 uqD+pw8iYWWwGm42Qnj5CaaoBS9aXgB+4+0Ykgu1NHlaZZwn53+tgVwbm7qXNg/ASdIxi
+	 Dttj0RzlyZAZCxF0ODgzr65Pk+EgJMyLHyHZimejEewlFUgDyErp94bnJoe71aSqEYQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793721512;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:From:Subject:To:Cc:References:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=eHLjN2pJ45O4GWNQW34u+4wkoWtEbyhvJN6ANTzGZ9Y=;
-	b=BB+h5MgJ8Q6RHE2IGL0VGBUzTxrE9RI2MfYzLFXhADpOeSHi2icfv67kFRZMbkj0zHt6
-	 1zHXynMZ6y4QQpb8RFg1BNkQYOaAac/YATHEOYUlXm9ykIejmeCGhV9VU3zYiU3LumYZM
-	 gtFmW9cli8arPIqBnX/Vz76wigURooqKv0fLoO1EDQxXWXLaOgDMFdFbuoz+jX1P/qZgN
-	 rfl1egPv0/ap4GZnjWP93uD9cCaCeD6BH6Oww69l+nw44rxyOwvkYwUvUVOMv7KjtEYLr
-	 5R7M7fneubN1F9jeEnqnfVV7+YK6PRyH5XsxHpo9vXi9MZV+QiAozr0psldiKtZ97YQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793721644;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=0E6UQY3gxEST2VW1P9Kpl30sQwqu8vQxC0pbeDxJdJ8=;
+	b=qRVYlgwGEJWet1lC0gXBuGdva47gTGTYEFBA0WA/nmpa26sm/TBqXmNn118N7BvuS/4P
+	 2O9+JFpdg9OiwK+v5Q4zWzmHOpV21dTyPM4gJArStHGYTtpi+KysCmh+djPmOYJzPcXZV
+	 +nPm1zuBDpQr9J/6TAr/4WXHjYsz4F5s4LXz6tRizmtC4Dh8l5T6UB+EUtua82G8F7lMZ
+	 wali2+oltGVU/EHWwdX1mGlS+9gi/UkBs4kbSjJt244uNnzOlUbbRy87Iqjn3pnr0C6cX
+	 MJoodWQKvY12/ioGORi9ZGLiTBVr3Khlifu4+I+O+qYSfz2b9p3nPzqyENwIdyS9g5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=rbox.co;
-	spf=pass smtp.mailfrom=rbox.co;
-	dkim=pass header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=ySks7D3x;
-	arc=none smtp.remote-ip=185.226.149.38
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A50gSM3b;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0744606D839;
-	Tue,  3 Nov 2026 15:58:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C0744606D839
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2972F606A32E;
+	Tue,  3 Nov 2026 16:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=ySks7D3x
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1xOGtc-00FA5e-LL; Tue, 03 Nov 2026 16:58:00 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector1; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
-	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
-	bh=eHLjN2pJ45O4GWNQW34u+4wkoWtEbyhvJN6ANTzGZ9Y=; b=ySks7D3xZqN9aJFyVj67piYgIB
-	oOYQOoN1W7ezpr9blYnx/5bLQR0BMxnCddzIgp16Yn0HmCcORUng2LdjBRb4Zc4dZZS0gRooF34m0
-	6ipDLUkIHT0dNcZaUmwWIvs29QnXbYomvbn+ylljE44D+6Px3YjDTLFy0j5U6h95QLtI9hNm3IPH8
-	wxJRc/Qn1S1MoW+QOeVug0bDkV57wPHNfr/UFoetZMdvhsfpxh7avNYJ5VxlgoUfZv/qFWwzK0UR8
-	5jYtBivCJTRNINptO1BvLFkRQ47OpDht6t6WcZjA0UX/9/Uy5x6uW8VuIXrBsQopTbKsgU0AGlDxZ
-	I+i+7yoA==;
-Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1xOGt5-0001bx-2d; Tue, 03 Nov 2026 16:57:27 +0100
-Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.95)
-	id 1xOGt2-00EocX-14;
-	Tue, 03 Nov 2026 16:57:24 +0100
-Message-ID: <0fa25128-1300-40f2-8d21-d09e21bcc96e@rbox.co>
-Date: Tue, 3 Nov 2026 16:57:22 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A50gSM3b
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B4821F00919;
+	Tue,  3 Nov 2026 16:00:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793721644;
+	bh=0E6UQY3gxEST2VW1P9Kpl30sQwqu8vQxC0pbeDxJdJ8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=A50gSM3bB4kkdUUkz2wfK6jKIG6fx3AnvKl3P22gHJiPRl94z0stwjwYDkfswMFYM
+	 wWcSlCRJxEQF/REiGAD9EQT70qFqmsQAwhWSHof7ikDLj0kxrKR77b6SYx3xPMZ2QG
+	 iSJqawNSWs2eAvEzn623en8k99wvNdMqbN7J4OSN86VbWUaWlS3mA+qVSyTOPBS/EV
+	 2cocQy3tJH10CvXaPEJTORvOSnD64Xjtb2wD+7l8CsDwEcuA/zZqlTAuBb1aBXEve8
+	 SBGVhl/dt1ctiaMSGYasNcpARa3ufYmh2vbElnRKzT0HV1DNxzoTXV0Hp6qAi39wk7
+	 wDTR/R6xn13yA==
+Subject: Re: [PATCH net v4 1/2] genetlink: Reject joining multicast groups no
+ family owns
+From: netdev-bot+sashiko@kernel.org
+To: anilkaushikwireless@gmail.com
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, idosch@nvidia.com,
+ nicolas.dichtel@6wind.com, jacob.e.keller@intel.com, jiri@resnulli.us,
+ fw@strlen.de, martineau@kernel.org, v3rdant.xiang@gmail.com,
+ aliceryhl@google.com, linux-kernel@vger.kernel.org
+Date: Tue, 03 Nov 2026 16:00:42 +0000
+Message-ID: <179372164269.488856.17448970060747076034@kernel.org>
+In-Reply-To: <20261102155819.4100930-2-anilkaushikwireless@gmail.com>
+References: <20261102155819.4100930-2-anilkaushikwireless@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,138 +65,181 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Michal Luczaj <mhal@rbox.co>
-Subject: Re: [PATCH net-next v4 4/7] vsock: add a netlink command to assign
- the g2h device to a netns
-To: Bobby Eshleman <bobbyeshleman@meta.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Shuah Khan <shuah@kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>, Donald Hunter
- <donald.hunter@gmail.com>, Eric Dumazet <edumazet@kernel.org>,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, sargun@sargun.me,
- jlinbox@meta.com
-References: <20261020-vsock-guest-ns-v4-0-047527cfccfc@meta.com>
- <20261020-vsock-guest-ns-v4-4-047527cfccfc@meta.com>
- <atjZZP2ebhXKzMxL@sgarzare-redhat>
- <atld3+5LKmGxJ8+s@devvm29614.prn0.facebook.com>
- <atnjOZjKUBagRVWq@sgarzare-redhat>
- <d946003a-8bec-4e8b-89a3-05eeb96780cc@rbox.co>
- <auT+YIawHSMPHbJI@devvm29614.prn0.facebook.com>
- <5a411a67-f550-459d-be9b-5e8e51d3018c@rbox.co>
- <aujn5/nm9f9YX6bM@devvm29614.prn0.facebook.com>
-Content-Language: pl-PL, en-GB
-In-Reply-To: <aujn5/nm9f9YX6bM@devvm29614.prn0.facebook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 11/2/26 20:43, Bobby Eshleman wrote:
-> On Mon, Nov 02, 2026 at 02:21:27AM +0100, Michal Luczaj wrote:
->> On 10/30/26 21:30, Bobby Eshleman wrote:
->>>>>> Yeah its all kind of a pain. The problem is that we need to hold
->>>>>> sock_lock to set sk_state and sk_err, but can't acquire it under the
->>>>>> table lock. Instead, we grab the socket ref sock_hold under the table
->>>>>> lock to guarantee it stays alive between releasing the table lock and
->>>>>> grabbing the socket lock.
->>>>>>
->>>>>> I was really tempted to not do this lock_sock dance though. The race
->>>>>> condition I'm avoiding here is that if this reset races with an RST
->>>>>> receive, then the socket could end up with TCP_CLOSING + sk_err
->>>>>> ECONNRESET... but I'm not sure this actually propagates up into a real
->>>>>> problem for any potential user.
->>>>
->>>> Right, vsock_connect() is fragile. Two things to be cautious about:
->>>> 1. Don't let it reset the already connected socket. Because that would
->>>> allow user to "re-connect()" and make mess in connected_table.
->>>> 2. Don't let it re-assign transport of an already connected socket. Because
->>>> that breaks the contract in few places.
->>>>
->>>> State 1 is not an issue: vsock_g2h_reset_unreachable() calls
->>>> __vsock_remove_connected().
->>>>
->>>> State 2 may be problematic: if vsock_g2h_reset_unreachable() sets TCP_CLOSE
->>>> when connect() is scheduled out, then after the wake-up sock may get reset
->>>> to SS_UNCONNECTED. Then user re-connect()s and hits the transport
->>>> re-assignment logic. I'm worried that, as we re-assign, someone may be
->>>> holding a reference to such "connected" (even if not in connected_table
->>>> anymore) vsock.
->>>
->>> I see path you're looking at... after vsock_connect() gets scheduled
->>> back in we set TCP_CLOSE/SS_UNCONNECTED if sock_error returns non-zero.
->>> Could you elaborate on your last concern there about someone holding a
->>> reference? I'm not sure I fully understood.
->>
->> Ah, sorry, let me explain. This case reminded me of the vsock's TCP_CLOSING
->> bug[1]: reporter mentioned vsk->trans getting freed when skb was still in
->> flight. I did not reproduce the exact scenario, but it did sound plausible
->> and I thought it applies here: virtio_transport_destruct() frees vsk->trans
->> the moment vsock_loopback_work() invokes virtio_transport_consume_skb_sent().
->>
->> Now, to get there let's start with vsock_connect() setting SS_UNCONNECTED
->> (on a connected) socket after vsock_g2h_reset_unreachable(). Then user is
->> able to re-assign the transport, which involves
->> virtio_transport_destruct(). But since we're dealing with a connected
->> socket, (before the reset) some send() might have triggered
->> vsock_loopback_work(). Does this make sense to you?
-> 
-> Ah you're right. I think that your approach of making vsock_connect()
-> more robust is probably the right way to go...
-> 
-> I think this is the new race...
-> 
-> 1) vsock_connect(cid=VMADDR_CID_HOST)
->    -> enqueue pkt
->    -> sleep
-> 
-> 2) rx worker receives OP_RESPONSE
->    ->  sets TCP_ESTABLISHED/SS_CONNECTED
-> 
->    (vsock_connect() still asleep)
-> 
-> 2) sendmsg()
->    -> sees SS_CONNECTED
->    -> enqueues skb
-> 
-> 3) netns reset sets TCP_CLOSE and sk_err=ECONNRESET
-> 
-> 4) vsock_connect()
->    -> scheduled back in
->    -> sees sk_err != 0
->    -> sets SS_UNCONNECTED
-> 
-> 5) vsock_connect(CID=VMADDR_CID_LOCAL) call #2
->    -> sees SS_UNCONNECTED
->    -> frees old vsk->trans
-> 
-> 6) sendmsg's skb tx completes
->    -> tx worker dereferences vsk->trans for the UAF
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Yes, that's exactly what I've meant.
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
 
-> If connect() checks for SS_CONNECTING before setting SS_UNCONNECTED,
-> then in step 4 sock->state stays as SS_CONNECTING and the second
-> connect() call will hit -EISCONN instead of freeing vsk->trans.
-> 
-> Seems to work for a racing vsock_shutdown() too, where sock->state would
-> become SS_DISCONNECTING, and the second connect() would hit -EINVAL
-> instead of freeing the vsk->trans.
-> 
-> I guess the rule would be that vsock_connect() sets SS_CONNECTING before
-> sleeping and only changes it to SS_UNCONNECTED after waking if and only
-> if it is still SS_CONNECTING.
-> 
-> WDYT?
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-I think it's a great idea. Does seem to solve quite a lot.
+- [Medium] In net/netlink/af_netlink.c, netlink_bind() lets one failing
+  group abort the whole bind().
 
-thanks,
-Michal
+Pre-existing issues:
+- [Medium] Kept only because requires_validation=true.
 
+--
+
+genetlink: Reject joining multicast groups no family owns
+
+genl_bind() now returns -ENOENT when no registered family owns the
+requested multicast group ID. Before this change such joins succeeded.
+The socket also stayed a member if a family with privileged-only groups
+later got the same ID.
+
+Link: https://lore.kernel.org/netdev/179324692107.3134.14443689892607921337@kernel.org/
+
+> diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
+> index 5cc1037d4917e..f038f04ef4ead 100644
+> --- a/net/netlink/genetlink.c
+> +++ b/net/netlink/genetlink.c
+> @@ -1825,7 +1825,7 @@ static int genl_bind(struct net *net, int group)
+>  {
+>  	const struct genl_family *family;
+>  	unsigned int id;
+> -	int ret = 0;
+> +	int ret = -ENOENT;
+
+[Severity: Medium]
+Can a bind() with an nl_groups mask now fail as a whole when only one
+bit in the mask has no owner?
+
+netlink_bind() in net/netlink/af_netlink.c calls the bind hook once for
+each set bit. On the first error it undoes the groups it already added
+and returns:
+
+net/netlink/af_netlink.c:netlink_bind() {
+    ...
+		for (group = 0; group < BITS_PER_TYPE(u32); group++) {
+			if (!test_bit(group, &groups))
+				continue;
+			err = nlk->netlink_bind(net, group + 1);
+			if (!err)
+				continue;
+			netlink_undo_bind(group, groups, sk);
+			return err;
+		}
+    ...
+}
+
+Generic netlink group IDs are sparse. mc_group_start reserves only a few
+bits:
+
+static unsigned long mc_group_start = 0x3 | BIT(GENL_ID_CTRL) |
+				      BIT(GENL_ID_VFS_DQUOT) |
+				      BIT(GENL_ID_PMCRAID);
+
+Other IDs are given out only when a family registers. So on a typical
+system most IDs in 1..32 have no owner. genl's nlk->ngroups is at least
+32, so the masking at the top of netlink_bind() does not remove these
+bits.
+
+Before this patch, a bind() on a NETLINK_GENERIC socket with a mask that
+mixed owned and unowned IDs (for example nl_groups = ~0) returned 0 and
+joined the owned groups.
+
+With this patch, will that call return -ENOENT and join none of the
+requested groups, including the valid owned ones?
+
+The netlink core also still treats every ID below ngroups as valid in
+netlink_setsockopt():
+
+		if (!val || val - 1 >= nlk->ngroups)
+			return -EINVAL;
+
+genl_bind() now rejects many of those IDs, so the two layers disagree.
+
+The commit message argues that joining an unowned group has no use, and
+its test counts single-group joins. It does not mention the bind() mask
+case.
+
+The later commit "netlink: Check a group again if it was released while
+joining it" keeps both the -ENOENT return and the all-or-nothing loop.
+So this behaviour change is still there at the end of the series.
+
+Should the bind() mask path skip unowned IDs instead of failing? If not,
+should the commit message mention this uAPI change?
+
+[ ... ]
+
+> @@ -1841,6 +1841,7 @@ static int genl_bind(struct net *net, int group)
+>  			continue;
+>  
+>  		grp = &family->mcgrps[i];
+> +		ret = 0;
+>  		if ((grp->flags & GENL_MCAST_CAP_NET_ADMIN) &&
+>  		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
+>  			ret = -EPERM;
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but is there still a window
+where a socket can become a member of a group ID that was just freed?
+
+genl_bind() checks ownership and the CAP flags under down_read(&cb_lock).
+It drops cb_lock before returning. The caller adds the membership later,
+under netlink_table_grab():
+
+net/netlink/af_netlink.c:netlink_setsockopt() {
+    ...
+		if (optname == NETLINK_ADD_MEMBERSHIP && nlk->netlink_bind) {
+			err = nlk->netlink_bind(sock_net(sk), val);
+			if (err)
+				return err;
+		}
+		netlink_table_grab();
+		netlink_update_socket_mc(nlk, val,
+					 optname == NETLINK_ADD_MEMBERSHIP);
+    ...
+}
+
+netlink_bind() splits the check and the update in the same way for the
+nl_groups mask.
+
+Suppose genl_unregister_family() runs in that gap:
+
+CPU1                                  CPU2
+setsockopt(NETLINK_ADD_MEMBERSHIP)
+  genl_bind() returns 0
+  (cb_lock dropped)
+                                      genl_unregister_family()
+                                        genl_unregister_mc_groups()
+                                          __netlink_clear_multicast_users()
+                                          clear_bit(grp_id, mc_groups)
+  netlink_table_grab()
+  netlink_update_socket_mc()
+
+__netlink_clear_multicast_users() clears only the sockets that are
+members at that moment.
+
+Would the socket on CPU1 then be added to the now-free ID?
+
+A family registered later could get that ID, including one whose groups
+have GENL_MCAST_CAP_NET_ADMIN or GENL_MCAST_CAP_SYS_ADMIN. It would then
+deliver to the socket through do_one_broadcast(), and nothing checks the
+membership again.
+
+The commit message says:
+
+  "A family registered later can get that ID, and the socket stays a
+  member: nothing checks it again."
+
+This patch alone does not close that window. The window is narrow,
+because a family has to be unregistered during it, for example by rmmod
+or by a module init that fails after registration.
+
+The next commit in the series, "netlink: Check a group again if it was
+released while joining it", appears to fix this:
+
+- It adds a per-group generation counter, nl_table[].mc_gen, which
+  __netlink_clear_multicast_users() increments.
+- netlink_setsockopt() and netlink_bind() compare the counter again
+  under netlink_table_grab() and retry if the group was released.
+- On retry, genl_bind() returns -ENOENT for the freed ID.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261102155819.4100930-1-anilkaushikwireless%40gmail.com
