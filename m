@@ -1,80 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.186.148
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=66.163.184.147
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793749066;
-	b=HUcSfO3qclgsvG24SOGMyZnlTJbFmVd2leYj8bdkG0j0WhQYrKFW4/hKcOjAKabkASeW
-	 WuGzVmU9YpC6NQ2Syc7p7P0zjOW7u1WB/5qmtefgkdGGz9yHSmtoxzwz1f6iGUkh0jE2h
-	 PtbEC9TE7b/r3/IEMu3OD1dmqWrnhNuwWVNoXPL81e1JWgTYMQKtutsm91JbppdQyXQW4
-	 8Vg1J26Y/FN+B0/uOCl07/fWKUOY+UU4Xz5+4VM1OhwPUq2OTQChgLj/SAqK4vtSkK4xM
-	 yfnhKfVRc2UUmqTp7TwB4MHi+cJhQihviXBa/58dkmoxU4YNUsMdX2W2QUcjWjkDenw==
+	t=1793749308;
+	b=3QxOpOqz+9NFECP0tTFPo4YUg4lkiQaei1ghZgFGhVoJrf+LApepcFyyCEJ1bB6K9oPR
+	 5UcZWmgx/jGKU+gW4E/ql1AkTmQLD9EGJAF2c2LpjWHc0CzajD0GbLIxhWjNEh+96z+V2
+	 rPiq/R0Yli1PsD8tq83P5Lk74FDztglkv4OrcEihiasMAGC+W/StqW9r78a0OORitfJaC
+	 XyEhy5vvSZVN+Q1ANbB6yrHSd2vkdC0Jz7rtIiSqFqc0qgLOEcQuvssb1D1Nj4QSKBqC+
+	 r4Q1ZOOvzQhkocuFCpf5wZYEZu2ywAuYL/jNKtBezRoajwj2mu6ykuDXLFP9QBtOYCg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793749066;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793749308;
 	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
 	 X-Sonic-ID:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:From:To:References:Content-Language:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Mailer;
-	bh=7bb/iNaYr7YMZ/NIJBb6MuHNrWUyPIHQofrFrJhOIx8=;
-	b=PZ9jELIj/K14Td7o8+TjdmfJV2ghhCOZobf4mnVQrpTghUsBnWTTwOjetfLxk2cLcCmw
-	 uYFAgN6wOSXw2D6PnuzsHzhGiRM5vGOQZTKsvnXs/y+KoWhv2rXW2j2PooZajt/ES3stL
-	 BHWEeCsBF/scsoc3IgeZdqLWQxdy01vCt6kFwFW1zhAQpo4sKvh0j4C7fPWrFi/jB8o+l
-	 wF7+ZLty5bUW8yzzvW4yrzlYDisueLGQOrS7489oCDZWaRmys4Fnsl/NF6AE57vKU6xxK
-	 FDBf3qESFYVDk4927RUlVZy+nrzz+RgY4K4Fx2cgLiU0/7CLWS/SnA3hNBRuo7ZAmFA==
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Mailer;
+	bh=O6sdXePEGQnCUklksv2f3AL3E61fXpQ8dART8Ftimg8=;
+	b=hwp/LqKOxV/Iw6y9ieUpMabOfouoAHuOgiiQG5hK/6LO4LvUOGOmjJOosasvlIBIhBxa
+	 BkNMlaVPjSKGbtog8yjlEENtYD2miUgXKTE286PnjivCT/ZQNL9bWAgNK/pKaSWmWHFnG
+	 NDJ4GiPlgl9vxNvkpOl1427SFh+Cuu1OQzDrP2DLTyKuvbMsI0lYpMQMiS7h2C0HsEsVI
+	 H5n34TrK4LXGekdRGmbot2Fg/34drTf/tGyslY2BLJZqXvf+49Z+ISNLQaFDYwF3gSuC6
+	 xNztZEzZ/v2ECXqvvLd0OMlw190NzSFA7+har9uAbWBjjsxMXDeykPgSr8cDReJsReA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=yahoo.com;
 	spf=pass smtp.mailfrom=yahoo.com;
-	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=k2nJ5G1U;
-	arc=none smtp.remote-ip=66.163.186.148
-Received: from sonic302-22.consmr.mail.ne1.yahoo.com (sonic302-22.consmr.mail.ne1.yahoo.com [66.163.186.148])
+	dkim=pass header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=JoZmsgyc;
+	arc=none smtp.remote-ip=66.163.184.147
+Received: from sonic309-21.consmr.mail.ne1.yahoo.com (sonic309-21.consmr.mail.ne1.yahoo.com [66.163.184.147])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B46C606A33C
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 23:37:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1B46C606A33C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B2E606A31B
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 23:41:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A0B2E606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=k2nJ5G1U
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793749065; bh=7bb/iNaYr7YMZ/NIJBb6MuHNrWUyPIHQofrFrJhOIx8=; h=Date:Subject:From:To:References:In-Reply-To:From:Subject:Reply-To; b=k2nJ5G1U09/HvpNuizhCcFGb/O9kZL8R9qy5ocXLerwErJA/TDlQ8TvK9cEDafGSORq5LfFq8rUOFBW6aDkvfPMUqv9DoZ6NRAPWwk98UBAwART+684lizVwLkp8s1CKf1SzaJZSeSGqrY+KuxsQblZLvLMgE8w8vm+SsiAe0YAkFNjNTrsH9qeCKCqPpNUncusRKP9NicprdX1bQtW6ZkiIosWZJ/VJffUe0zbP3QcVdNHATFdtvq/Fgfujws4crzFKpDx4K/icggJrBhL3y9R/E1w/BvIcxmvrtjiyws1kROA8nFuu24Imj266BI78xM4Rn9uckztmP0Tu4swL1w==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793749065; bh=jg/Ly2s/M7rvQy3oOd0HsYGx6tvlun8yRon+b+D5vxI=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=W7IIPP4gxeBpGcShpxtBZImeefDCENW+gSpTZEVAxCV2owDfZ4TC+o7WABzV0ScUAmON7972RWqLoBJs+PVZiX9Zgbs/uE67jAnPrse6jKNEFrsXkC9BJNE6NhntDf4isKOjxmNy/k6x4jNXzQrsOWoJt3vvdHZ8ZkFtyLDIZO1HZicWB43VM+pib5XrWAGQFD53srmNNAKglxeYjwEcLst2PhU1D/8UONMf8GhbJ/imdgKpojEHHY1xFhzSri7nnJ9ieMPpw9qeO2bW5I5MY4F2mXuGXnkbDbWX45ZNhYb0PvUycJXerh4JPsa+IjdmbGDZ3U71BS3BocyaerOdJg==
-X-YMail-OSG: u70G4qkVM1nqT_tco6IkCdQ6kZNHZQQwU01jj_YdXiUuI3GVFN9dhfYiLmUvMDW
- TbCXJVZq7VtUfTpcKtmGbclIEv_lWVY0FL0cTtEe6Dzvf4yLElFswVb_lSDaEzt94c4_knVxUh8k
- 0ycZCNX50mEs17NKscAw3cakGQGK0hOZrveesa6QQ_mngF3m9v9Jm0y7KJUN9ovDPkqm_K0lZmOi
- la2yO9t6t2HAHcIXy0hJ_tQC.kzAqxaP_LhaWQ1rUbVFIKiNL9LLz1W2I8lwJ1CUyZJ4z.j88Dkz
- vcjeDyhzPi_8E2t1sJHtAccY1KJtqHspcxjFsmOZVdDNshxJ7c99QY61fA4Z7uU8tmE4_YW17Sss
- susf03T98DNAD.M.zA.J7zBTDTWypYhe5GFms1dFyAStA3GFQgY9eoCEGK2LKBzGeYFkZMCSEnt_
- u8GSz8NfEA7riFopG1uz7O7Wq87m0h6kNkphzix4hBUvBUID4OyQIGjWrf1ncUwGtfJgzOYQ72m0
- iupSSikbGCIHt05Mwx6atXDINgVP4A_ZSaIYQunZBqWkDLNKqhk9itcveBJwskeWuYbUl.iS62Se
- br9ObZlNYVrc.YJBxdVZzb0KI_GejQfJPVkH.9rwDlXm3Gvk09xzp_OIGBCIvWpopKjjYZYfI0tw
- NguyB0Df8gwn9m_eQcjjCHTMfPl9kgjmAabw1O3dbzAn.ieHIJsfahg3d9S0Jo2xfZ.WXUNz4yCW
- k6psaF2iWLdg2aaKT.2HW.FFJW8tc6DSPnXMP5.mx_6wN7Kg_4jLBE8swxE4tcBlzzXdH4oF0BAo
- ou4dCU6NVk2bat58nRp1AbMAtLmB90HLOZVsZaSdxV1JlNUbCcC3t_oqu6lHPgHc2209y.WAYGcF
- _DodcK9jzZfTP1Lu13RqBCZw_Am7uCST5HbVIqFNbh1YwVzjxI2Ylcc7daMaXhuhZdnF6bBjrGdT
- HBaZMHRPcg0diSzzIQL5zbNhBIk.RtH6ZMy5EW5S5JHN5QHxGlOvqjOCdXQ3c7IyxY6PPV8tnQdX
- mXmOVo48zj.az6AsZob4ACB20q7BZ7C_ZWO.DvPehMl2oVCXVwMiduiXFq6ETa4IzvHYawfNd91M
- X84cTk3nYkO5HC5qPP9i0jKkf3mNbEVubNIzZ6OUm4yqFTqj4UCOcGWqkkfM21sMqscGR.3sflSS
- D5hS3.ZuYiiJaKEohkkaMp1cir_O7waAUJkEE_j7h0AZm.TQZF14yqXMVyZkfiEI4V2.nl13d9S5
- N1tTSMPT8pClPN_TP3IlQamv1DoIGFy1OVANFreicQOxDqoY8CyPAdnA4DktuehJ9.U.saqLI4ec
- 0Ftb.SYmHYLysxAzuChnaMIlXpVP9c6WTpdJZ.O5cpMTnUT3457v9VKAzFVyDEz4ijLCSQzE_3JC
- qrIdc6n7qJCouVUuFZ24SZITbsyJ2X1GmTtb4fTgaprALlmrwjQrwW.2QcGxJIX32t9J97QxBw2J
- st3atA_flNYkkJHcNWmGZfdaQaoK1S7SatN.0s52HwDGMFjTmHvV4Lh6YP99wkxGPf_5EXuEXYeL
- SAUmgwkNL1Ut9DbF4ToJeeZDOS_wMkm106JSRz1wjMDOvqPDuXbH5_dXWc1kJyW6.3Q6Qy75lcSe
- xFbFB_fClx3Co.wXHzuLuPIfSLpyFIQ_dnH9UcRMuHHxKP6vDJEA3gEfTV6lBcFA1Mrg3nOrrOrw
- Vie_BwguZReBCvg1b4SUlImKiTnO438jmJcsuYmTO5XqDvnj1FfbL9LOzncNnz9QpqitXIEsN0Yf
- 5zAMV5vCzlGS34F6DJ8cpfndgIeD9sHAbmjwsQH6oEuaQfLdu1mRwg7oPW8aPaVvwboiKEsMM3Ax
- nOKSalytN3I14LPdBMyJSv952jKeVI0I72q559bvCuAGAaQQBXMgU1PgqO1jJ0KTR9rgLbYfg1k5
- nc1FmodaL2u8Bn2RQ.to09NASOR1.pZWRgkJ7KjZRqbxyiVEcceqLCkK6IDP_wd3bJbYHKRd0SkV
- J5Z_VtZyuSWsgZRv2rjgHlf7MPD7YnpU7JWU2DJiv9DWO67cavxHkoIen36rDExCz_Gkxf7yeahy
- u4vvDLi1G8sQHhez2Og6ZJJJkr9qHv6XThgC285LJr4lb8YU06z_a90YgIoXHMY3oGOLNJ6eccwU
- fEySBknPo_dzufi7KZQdLkJgDy.b7dxAJ5BqBi97Ct4HUDWVHUrRfMBtscKWv5.ZCQ78zQCpxqKj
- TfgjuxSuZ2cNpD_ziRRytxfX2R8RX49gO8pD7qKrHsGLGRETPM6H8W1zUODl9DMPcQ9W2rYfCA47
- jV_4PGqAEvW.xY70q0gcciKATH2VeFsEo9m0YJ3z0Pg0_WFdZ.vQ-
+	dkim=pass (2048-bit key, unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=JoZmsgyc
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793749306; bh=O6sdXePEGQnCUklksv2f3AL3E61fXpQ8dART8Ftimg8=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=JoZmsgycoO8HAJv8AN/Q7ho0Su6Gh7Tj/kZ7NMTFPL1TU7W691e0XPFnA3DXvkhEiBlcogtuERL0uJavhz5WDxVhwBBnCbYg9cxLlA62Ex5TDKhLf9awu+tC3H0hs6rUtpoUgP9fq6gWLUrZ98OKl6OSG0gAqLgwMxYCFf3SqNthUo8ri4aCovl4aNKBa7bTlrriBo/0agFtD58cOYUx6rIsyTMKK7Z0ycaQQBcOmbyRxn2Kyea0zugphACHDZmbujgIMOmVS5iCCD/RxymfPGkJNKWmk8G7pkvbRc0qFgeSAtFsccus/YJzYzgWL3z/PcV2S8fP1Iqi6W6qP40gvg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1793749306; bh=Fy2ozdKrh9FmRwvnVMyzhD97JBrR7GoS4h7bfoi3fjh=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=AwO74z0jrXxK41IgiUkC0CdyTF65NxDMVX+9pAaImYcbc9fDhDiQLS73iXH5sINtmzxwHl5tU9xWkLYGD1ELQ2CnjHa8Ws8FlSPU84m9GK9tolcFlDyv5NyFSatWZ9ZT4OaqrO1IWQHszLILEQPg+TnquMbOBL+3wuvVm20QDeCE1RUVOvIOTLqli0JhZhG8lCK0BZCMvTd4WF8G29kwd+hGIKL1VDbHo6eVHT2/mjLsCoiJjORv0vvxMUx8tnNXmR4ReMLI5tlUwY60i3gqLiAcQkcySVLVEEIkv+8RLR2W3FlXeCgWXKhPzA9JiDLY6zdHCXnOWzJ1v8FY+OKLJg==
+X-YMail-OSG: 4uCNa08VM1n.s3bofF.YJlLGcKzw95KEQwPgFm3AjaV.0nRk5X961CHzUtXGyxf
+ ezAe8pCG2iFX5NFkx8.W3OcEKJLw38MHc.KBJ_hlPkP5uGSyADKK0tsQTt7FQuwrWaSC1W5DJhyg
+ S2BeObiRUphXHbfDKnJHGejfWupgjifSSzGgW.ovSr.kicAxDU8aSlNQhZwtk1WA_RLy6SS2a4Ve
+ HzI87aNizp_pjhjspV1Kc7dWxuHlkkYWTMr437Ji31knJKnpVkhCJDSTzpmDf8kZ4wl2OtJmLbCH
+ enpgPypxh77JQw9PGbk8wEKmd.mY6CmzcFzVlPs_GGE.EZI.xvoZm5gG9m1R46VRt5eIqXXJYhmV
+ AoZpFh2avIvHPx55vDgACPhVkyQH3d1D.Q22EV3PVQOkJmcvsxos9b7r20JsGxMI1TosYXzBGkWC
+ H59dc2MvLmdU8X5pCOoGEMaS3lfBSxq6VsEguJYYHLVnZGEGfwLMgHA1Cof4Jc4PxSsPsDupFSpz
+ 7T5fQQNZlu9jmcM3Z9L42luIkPI5sUpDLgLlSzMWtDiuzcIZ.DenNy_7ua5AgxnCFtiCwqenY7pt
+ n1jiwCN9C9K_52hDz1q_3Ac8XwJl0jaFoBbhN9GCQCD4Vkv5nXooxWX4jedsThvz11En8dXIOEaW
+ Xqk6BBGQCI5S9LF_MPlsbN7xKGcPSKdfgsnIBaiet5poh8Y6RgEa79_6cmwBluvLNsNBpGSQioho
+ CfRUg72i71OesTKRAhyhoHHRtAJMYk.4902BVPC1UW5zKMF5LsJ2elkmpNivqHchpQY6UeHjA.NJ
+ DQbtAk2r3WNJV_tYmc.tT7OPYUxCf5Vz0swx6qfCxM02iwbMLb_9brpgzgumwLn77fqfFaBlhsyc
+ dVuVHJOlKA4fhLnFWGadqCvY9w8JRn6LOXCWwA76E_NAiKrdRR1gpg7aTODFt.pUVhKrvXqIO8Id
+ MSJx2_DJ8CL85QKIYEKrhA8uQS4GEOK8I1DRyHaBXQArP5ckh.nYZBqPxqEQZ_VBnqIjafXTfb6b
+ kHbtmvQj2T0Qu5KGTNzOwIym5DUwugBiB0PSw4amkIIKQYnb2YLEijSuLakX6XSWwh0SsbRJ9c0S
+ l.Nn02ayEj5LsQuiWG6fq1n4d3eX70u0MJtn_7TPvEmb.0gEIf.AjlAbxS41fVV_6SoSeeLsdjQF
+ Ff99R0hnpiPALYLPKDhtzFzTNd2N5teLLuCeajzMsekDFl.rJOUb9zKePgZ0kj5nmsDqvW524n7n
+ THjeStfmWvryRs6s4NGTS1nEinpm0gJhcGenfNkce.x.S._UtzhE0k9xuMQbtIz418EiYVauI5LS
+ TFWk2g6YJfXYA13vehuL4T7bUIKVbs21LaWSeBc8Sgl4hDDTkVa543LYb90N29eiQiQhy0w.A14O
+ xmsPy8bcoShsN7R0R_7s7kaw6bB0MXswHd3JJ2miOT10IeaAZ4ns0A0L.P.BKOcE8pMRix_rerBF
+ 8K.MPzkCHs.hxVSMFmDLq56jjz6wHKM_6553AYrVcjNyc8hTPxphq73xSHjfZke9Nt3lbyQ0mCbo
+ 1CxoYgMuqWPNbX58Vqt3SQgACtF_2Uk.pTUxWC4EuQjcOltiTsFhna3zSBOb4dvlkHWlaNr5Vh53
+ 03VVqbmhXF9YnRfzaVgvu6cVGvPztwY8eMEYrGDEf_J3CZta0DB2n_XYCUtyOWUCiCXtC3ZK3JjD
+ khhs.EvzwJbe1G9pFMMxLA1J9fbSCnCZmTvU9fSNLCiSZC_WPzH.fFI4PgSTrprGfeYxTlSE2mjX
+ 1Sxz7a6QjF0vajbV4YvunvYZEnjGZPlK7Dk0lAFAEIgLeLU7rXUhHgrj.2Lz02YzrvmP7ZiAL7hX
+ JfYMb1H59Q0mNpCW_IgQjhqogvxtnaedY8oesCk597F.rnOwQREdFfTqvaLUTJW_pyRTlNAEBpO2
+ PTQ7BUmJ4CBLUXU7xjkgKX66siEhLN408IIGRHeBNNCPGsppuZrMp7nIGyYcPjkXpNIghn8LXzZH
+ 3ah3BQzxgWOiUPF4Vu7nyPc_s3bkmOBe4CUa7c2VKXRYAyRDAp7T_FevX3SQc4Nj9brwVUMfTt_w
+ OR.P90IoysHHj.e35BkfdZLcqzKTt_xtC6fBMmgnY4mAWTVb1.JqpL1qQLexDwHBLhk5n8MmwnIK
+ yEHH2CIuhZG3X4iTJH6c7pKTreGKis0tebXNNg_bYizJLkgAzg8FszaR4wsdpmJnUlBF.LWroWI7
+ VlSN7vEovF3XOx2Tha_.l8rXjyFmKgyXTvk1mg49WtLutZi7dLocSmW1J7U54cKpe2tnoJOEXlJJ
+ P7w2uAGo0cwfTgvskdBXcTPJ20kz7dbBnS9pjT5H44quSJqrXEm0-
 X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: 35c52983-ec4c-4de6-8e39-874c9072d13e
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ne1.yahoo.com with HTTP; Tue, 3 Nov 2026 23:37:45 +0000
-Received: by hermes--production-ir2-5dd9bf4598-hrqwh (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 6b8ddbd127f372bc1489dc345a876769;
-          Tue, 03 Nov 2026 23:37:41 +0000 (UTC)
-Message-ID: <e28146b6-3f0e-4553-a0a7-72ddd96a4444@yahoo.com>
-Date: Wed, 4 Nov 2026 00:37:38 +0100
+X-Sonic-ID: 5b17de1b-df8a-42e1-bded-2a3c818cefe7
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ne1.yahoo.com with HTTP; Tue, 3 Nov 2026 23:41:46 +0000
+Received: by hermes--production-ir2-5dd9bf4598-lsjm6 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 07fe932f9edb1c7406d42f3371a6c20c;
+          Tue, 03 Nov 2026 23:41:43 +0000 (UTC)
+Message-ID: <6c6155f0-0431-4ef9-8067-dbc104af710e@yahoo.com>
+Date: Wed, 4 Nov 2026 00:41:40 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -85,130 +85,78 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH net-next v8 11/11] net: dsa: realtek: rtl8365mb: add support
- for RTL8367S-VB
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-To: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
+Subject: Re: [PATCH net-next v7 10/10] net: dsa: realtek: rtl8365mb: add
+ support for RTL8367S-VB
+To: =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>
+Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
  davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
  linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <08611959-c555-46d9-8e7e-20b85d0c4056@yahoo.com>
+References: <3bf4dd70-9771-497b-8c27-e925e0ef81eb@yahoo.com>
+ <c7f88f0e-b174-4715-b148-5f9a2648bc2f@yahoo.com>
+ <auph2uJLrJ6Nj0dh@analog.com>
 Content-Language: pl
-In-Reply-To: <08611959-c555-46d9-8e7e-20b85d0c4056@yahoo.com>
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+In-Reply-To: <auph2uJLrJ6Nj0dh@analog.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Mailer: WebService/1.1.26871 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-Add the RTL8367S-VB (chip ID 0x6642, version 0x0010) to the chip table.
-It is the first chip of family D, whose handling was added in the
-preceding patches, so this is the patch that makes it reachable.
+On Tue, Nov 03, 2026 at 11:52:24PM +0100, Alvin Šipraga wrote:
+> Hi Mieczyslaw,
+>
+> First of all, apologies for such a late review! I hope you appreciate
+> the feedback anyways.
 
-The SGMII/HSGMII SerDes of this chip sits on port 6 and the
-MII/TMII/RMII/RGMII interface on port 7, as on family C, but the external
-interface indices are one lower (EXT0 and EXT1 instead of EXT1 and EXT2).
-The chip reuses the existing initialization jam table.
+Hi Alvin,
 
-The chip has 8 ports, not 11. Limit priv->num_ports to
-RTL8365MB_D_MAX_NUM_PORTS for family D. This is a functional change: it
-sets ds->num_ports, the IRQ domain size and the bound of every loop over
-priv->num_ports.
+Thanks for the review, no need to apologise. Your comments crossed
+with the v8 I had just sent, so they are not included there. I will
+address them in v9.
 
-The L2 learning limit is the same as on family C (2112 entries), as
-given by the Realtek rtl8367 common API (rtl8367_common V1.4.2), so
-RTL8365MB_LEARN_LIMIT_MAX needs no per-family handling; only its
-comment is updated.
+> This is OK, but in the same spirit as my comment to your other patch, I
+> think we want to make the C and D families equal. So why not:
+>
+> -#define RTL8365MB_MAX_NUM_PORTS	11
+> +#define RTL8365MB_C_MAX_NUM_PORTS	11
+> +#define RTL8365MB_D_MAX_NUM_PORTS	8
+>
+> and add a num_ports member to struct rtl8365mb_chip_info. Then below:
+[...]
+> The above becomes something like
+>
+> priv->num_ports = mb->chip_info->num_ports;
 
-Tested on a TP-Link Archer AX55 v1 (RTL8367S-VB, CPU port over HSGMII
-to an IPQ5018) with bridge VLAN filtering and per-port PVIDs. SGMII has
-also been seen working, but I no longer have the exact link partner and
-speed it was tested with, so treat it as lightly tested. RGMII mode has
-not yet been tested.
+Agreed. In v9 I'll rename the constants as you suggest, add num_ports
+to struct rtl8365mb_chip_info and use it in rtl8365mb_detect().
 
-Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
----
- drivers/net/dsa/realtek/Kconfig          |  3 ++-
- drivers/net/dsa/realtek/rtl8365mb_main.c | 32 +++++++++++++++++++++---
- 2 files changed, 30 insertions(+), 5 deletions(-)
+> Another thing I noticed in the L2 patch was that you added a macro:
+>
+> #define RTL8365MB_D_L2_MAX_PORT 7
+[...]
+> Which I wonder, can you even get there if the num_ports is 8? We didn't
+> need that protection for family C. I think you can drop the macro and
+> this check.
 
-diff --git a/drivers/net/dsa/realtek/Kconfig b/drivers/net/dsa/realtek/Kconfig
-index d6eb671..98b1727 100644
---- a/drivers/net/dsa/realtek/Kconfig
-+++ b/drivers/net/dsa/realtek/Kconfig
-@@ -34,7 +34,8 @@ config NET_DSA_REALTEK_RTL8365MB
- 	depends on NET_DSA_REALTEK_SMI || NET_DSA_REALTEK_MDIO
- 	select NET_DSA_TAG_RTL8_4
- 	help
--	  Select to enable support for Realtek RTL8365MB-VC and RTL8367S.
-+	  Select to enable support for Realtek RTL8365MB-VC, RTL8367S and
-+	  RTL8367S-VB.
- 
- config NET_DSA_REALTEK_RTL8366RB
- 	tristate "Realtek RTL8366RB switch driver"
-diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-index 6e52344..46c62a8 100644
---- a/drivers/net/dsa/realtek/rtl8365mb_main.c
-+++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
-@@ -89,6 +89,12 @@
-  * things will work out-of-the-box for other chips, and a careful review of the
-  * vendor driver may be needed to expand support. The RTL8365MB-VC seems to be
-  * one of the simpler chips.
-+ *
-+ * The RTL8367S-VB (chip ID 0x6642) is not part of the family listed above. It
-+ * belongs to a newer generation, which this driver calls family D. Its
-+ * registers differ in the VLAN table, the external interface speed and RGMII
-+ * configuration and the SerDes, so the code paths specific to it are selected
-+ * with rtl8365mb_is_d().
-  */
- 
- #include <linux/bitfield.h>
-@@ -120,9 +126,10 @@
- #define RTL8365MB_NUM_PHYREGS		32
- #define RTL8365MB_PHYREGMAX		(RTL8365MB_NUM_PHYREGS - 1)
- #define RTL8365MB_MAX_NUM_PORTS		11
--/* Valid for the whole family except RTL8370B, which has 4160 entries.
-- * RTL8370B is mentioned in vendor code but it might not even belong
-- * to the same RTL8367C family.
-+#define RTL8365MB_D_MAX_NUM_PORTS	8
-+/* Valid for the whole RTL8367C family (and for family D, RTL8367S-VB)
-+ * except RTL8370B, which has 4160 entries. RTL8370B is mentioned in
-+ * vendor code but it might not even belong to the same RTL8367C family.
-  */
- #define RTL8365MB_LEARN_LIMIT_MAX	2112
- #define RTL8365MB_MAX_NUM_EXTINTS	3
-@@ -895,6 +902,19 @@ static const struct rtl8365mb_chip_info rtl8365mb_chip_infos[] = {
- 		.jam_table = rtl8365mb_init_jam_8365mb_vc,
- 		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
- 	},
-+	{
-+		.name = "RTL8367S-VB",
-+		.chip_id = 0x6642,
-+		.chip_ver = 0x0010,
-+		.family = RTL8365MB_FAMILY_D,
-+		.extints = {
-+			{ 6, 0, PHY_INTF(SGMII) | PHY_INTF(HSGMII) },
-+			{ 7, 1, PHY_INTF(MII) | PHY_INTF(TMII) |
-+				PHY_INTF(RMII) | PHY_INTF(RGMII) },
-+		},
-+		.jam_table = rtl8365mb_init_jam_8365mb_vc,
-+		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
-+	},
- };
- 
- enum rtl8365mb_stp_state {
-@@ -3994,7 +4014,11 @@ static int rtl8365mb_detect(struct realtek_priv *priv)
- 
- 	dev_info(priv->dev, "found an %s switch\n", mb->chip_info->name);
- 
--	priv->num_ports = RTL8365MB_MAX_NUM_PORTS;
-+	if (rtl8365mb_is_d(priv))
-+		priv->num_ports = RTL8365MB_D_MAX_NUM_PORTS;
-+	else
-+		priv->num_ports = RTL8365MB_MAX_NUM_PORTS;
-+
- 	mb->priv = priv;
- 
- 	ret = devm_mutex_init(priv->dev, &mb->sds_lock);
--- 
-2.53.0
+Right, with num_ports capped at 8 the core never passes a port above 7,
+same as on family C. I'll drop the macro and the related checks in v9.
 
+> The reason I'm saying this is that I saw quite a few places where you
+> have a construct of the form:
+>
+> if (family is d)
+>   // use family d constant
+> else
+>   // use family c constant
+>
+> Which can become a bit hard to follow/maintain.
+[...]
+> I hope it's possible to remove most of the if (family is x) { do
+> something } constructs and keep things flat.
+
+Understood. I'll wait for the rest of your comments on v8 and then
+move per-family constants into chip_info where it makes sense, rather
+than branching in the code.
+
+Thanks,
+Mieczyslaw
