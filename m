@@ -1,55 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.227.126.134
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.227.126.187
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793743424;
-	b=TM8W5bHtX4IDDBLbxScBTspWsuB0G0h93fVDmrVz1KKElSUYAK/r1c00xIuGOatCNU5a
-	 ynu90Dp6VINuYOCgb+pjo3YJ8eWfZ5vUwmHErVBGxs6iPH+AHUuvWomisXT4l8mvukCkD
-	 wx+mBAYo4TVOAP+IgBBqhtRnDr2FkOnLKUsZkEWU6RA3wpazbpuVLvvbORids4Gg9mqzs
-	 6pvtwTqDvC5k3gBRfSRb8rQKvKRnWw1vtqHf9ffEi71zsCoAoqGVOQNaJPwc31emXlmmR
-	 TqhUwXw9fIjr/P9Ng+FnXosaoRTyQMOK8TAPousLM6aAcMYO16Xq2bPrFyrMIhaF04w==
+	t=1793743416;
+	b=BkerrDqWMMesFrE/o7jjhXl6kHdWizUAaDdiQr9RVHqFLIoG4YWg9cWMg7DAivxTvpoD
+	 PjqC/plipeVG8jY5Ktb26TGnc5tZQ6nwGGLfm0fiTIcB9tiVr9XGu8CH3RbvpKfV+HNES
+	 zeXCdyL12bibYbeSnVN0eV8OyvyZHRWTr4maT28nhDjcyijCAwydPgbMj9qnAFQm54XJP
+	 u3Z6SEURHyME58TvltTz/dWDrNrLsQWar+hzi5ErE1yAs+qYHyslP48EIj+aQ54shy5WR
+	 3+suMbg/asCPWYRFXVwfnBI0oxsYveP1LwwIEFhP5kgryCDktVhe/K0kzOjcTgwwdAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793743424;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793743416;
 	h=DMARC-Filter:DKIM-Signature:X-UI-Sender-Class:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding:X-Provags-ID:X-Spam-Flag:UI-OutboundReport;
-	bh=jf8hL3+yrNWXn3sUd5oc5BYvo2c+I5ZW2JUQhRAUzew=;
-	b=OzlQGyZVJMrqsRkLY/n1SOiC1tx6I8s9vDgDbrRFanPcW9jTi6y/cPDGGZtbgtUjwmxa
-	 o1tIU/LMbgAB9/BmiQ/TLeM74YON3GmxiF80ZPA2RKzfKpXAieyYJpWnoinch/hnbu3aH
-	 lRWCEuOHqAGBbKQQyoRBnZZzLizG+/vnKORwsPVGznx4amEztFQu6hQO4caFIQHh2Ve1t
-	 Uo2DYZA4USats9IXAf78aDBVrr2GKNnDmjnxJOuAGCiOR5dyJUJu4AfY65u+MUzz79WJv
-	 zjxeuZ3eiKUPGwnLhWyn83BzYDye4dtk57Q6ym9+Bdjy2tW+DGOhAbZgsdgO3HdKxFQ==
+	bh=+1nnuCfUQy069gqVjxq3B5t30dE7pAVScb+d3Nqx+qs=;
+	b=1Lp34K2aLzIaSrj7OJahY5hOTAdDlfIV3iQoyqJH1UV7zVPn38eRYYQL9yBYKSr1FKKz
+	 nvFO7vcBbKSNuzYK9UK7HW2los3X7bhqVOewt0tHMfI0dzS8S5wNZfCuR/adQsnnNYtM9
+	 TgkMGSaRwuPO9el8yzURK7+y4yaOdAhFvqpAnU0gB9p3YQxHNpTTqczjmiqGa6g7GgsPR
+	 HUjf29eTPKty0alvlfMg6PAYTeyAB0UCxDHgmU5aic7oTO8/7O/DxYqT68qziV8G5+cFj
+	 FIqx2NP9MSpMIgoEp/sb5V7Xs7omE0I9eSi6FyAiEosVK9CD7i8yd8tuU4r5DSxSxVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=jonasjelonek.de;
 	spf=pass smtp.mailfrom=jonasjelonek.de;
-	dkim=pass header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.a=rsa-sha256 header.s=s1-ionos header.b=Q5UGTIxR;
-	arc=none smtp.remote-ip=212.227.126.134
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
+	dkim=pass header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.a=rsa-sha256 header.s=s1-ionos header.b=PCuCdzIV;
+	arc=none smtp.remote-ip=212.227.126.187
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673206082BDB;
-	Tue,  3 Nov 2026 22:03:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 673206082BDB
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939D5606EE85;
+	Tue,  3 Nov 2026 22:03:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 939D5606EE85
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jonasjelonek.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jonasjelonek.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.a=rsa-sha256 header.s=s1-ionos header.b=Q5UGTIxR
+	dkim=pass (2048-bit key, unprotected) header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.a=rsa-sha256 header.s=s1-ionos header.b=PCuCdzIV
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jonasjelonek.de;
-	s=s1-ionos; t=1793743404; x=1794348204; i=jonas@jonasjelonek.de;
-	bh=jf8hL3+yrNWXn3sUd5oc5BYvo2c+I5ZW2JUQhRAUzew=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:cc:
+	s=s1-ionos; t=1793743402; x=1794348202; i=jonas@jonasjelonek.de;
+	bh=+1nnuCfUQy069gqVjxq3B5t30dE7pAVScb+d3Nqx+qs=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
+	 MIME-Version:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=Q5UGTIxR2QT0mPZ70cW0TzfB0AAnuMMEwx8aYivjl1BpJp+wAThHlqK2UxZsjT1a
-	 ltexDM6ZcRVFEFnbSdP9lbGC8XhMXYgnMfVfZBNOoOLIzJaVs2ujw8dtgYajSiXTb
-	 CpD1nCs1IOu0igpqJIMVVmYHdcYF3KwHzqHWTnw/u/P7J9zhS+LdAfXk/xEPJZmtS
-	 73D66jllne1bwIGr/xiDDhdiy7A9e0nRPoufVMJmBCBeQZGAhtGz+ns85WEd+T8iO
-	 KVWbTdVJCEQn5GttWrISOnoE08QB0OBYRew+hO6chRx6UqijCCkWAWkXvPha7V7hE
-	 ho7do+78pee0lh38zA==
+	b=PCuCdzIVSPYgxkWWMHHLsCjUgAYO3etqYUnCfrorg0tYekwDNWP2BkpGWiTGs5bv
+	 bifdz0vXFr6rhGb00xwNujJzyp7mjuHTZUkQq9r8ODpeDT0Rpv6dqoE8LFLzcCKGl
+	 K8Ag/VqmyQOEOPA76XSqjqnVgCeKkMxnpnJmTj31YgJ0RQ/vPWmDtZIH4wTQiSjDC
+	 ZlLYCd/8JDiBH/3aZXH8BJvP6f2wC0dMpI0QcROywYJSvvPJIeSUaz8rAx8pyS8b/
+	 rYtLfANjYGRvCscHyy0+FHQEyLNb7iQ3LFZXDZs+G2U6/3dvUdN6vPKa8MHgJpP0t
+	 bqaNGJ5CM2VJ6bVhsA==
 X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
 Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue010
- [213.165.67.97]) with ESMTPSA (Nemesis) id 1MIdS1-1xLMSH14sP-007Seu; Tue, 03
- Nov 2026 23:03:24 +0100
+ [213.165.67.97]) with ESMTPSA (Nemesis) id 1M2w0K-1xNG8U1pHg-009NOr; Tue, 03
+ Nov 2026 23:03:22 +0100
 From: Jonas Jelonek <jonas@jonasjelonek.de>
 To: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Kory Maincent <kory.maincent@bootlin.com>,
@@ -67,12 +67,10 @@ Cc: linux-kernel@vger.kernel.org,
 	Sander Vanheule <sander@svanheule.net>,
 	Russell Senior <russell@personaltelco.net>,
 	Jonas Jelonek <jonas@jonasjelonek.de>
-Subject: [PATCH net-next 2/4] dt-bindings: net: pse-pd: realtek,pse-mcu: add VMAIN supply
-Date: Tue,  3 Nov 2026 22:03:10 +0000
-Message-ID: <20261103220312.860629-3-jonas@jonasjelonek.de>
+Subject: [PATCH net-next 0/4] net: pse-pd: realtek-pse-mcu: establish power management configuration
+Date: Tue,  3 Nov 2026 22:03:08 +0000
+Message-ID: <20261103220312.860629-1-jonas@jonasjelonek.de>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261103220312.860629-1-jonas@jonasjelonek.de>
-References: <20261103220312.860629-1-jonas@jonasjelonek.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,105 +81,98 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:dQjJ8SRBo7ikFFOBkfsfsTVUaeOe3ecOmXAFHeBCor9aqizi40p
- Js5wxLdQb0mG73kFgzsjsr+zLXiK9HE4OftAKob3NiZL7k/9xL/R99FloOXeDO7x+sbh/KE
- EcZFa0WhT03ucqQ6nO7vghPXKzdEHNzFZumZPuQFBhiMTZLQ3aoILDgIm6+pbF20wRvrzqP
- ZIZRvgBdAYlFJEjFbrXtQ==
+X-Provags-ID: V03:K1:Dnta2dm/zfJx1MKj3j3BF9ZXHN9IGzHpz+HwwdXmSLCghfJVZ0w
+ vLnkTzjw79cU4oC2YcSkkcOqrfuc3NHacJLWJFROYCSDlpGblnVi/SFXVr57pwI8kCMwvvr
+ n8VoKdA1VTtm0dxVE2VH/E8pa742zh7hjB5hpO8dkywqesv0x/JZ97g8lChdNX9CqYJAwvP
+ b4SAwss0Dt2wmdTBUR2AQ==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:UrgF5Jh8Eos=;8K0jGZt5YfSNWb+6MfPsIQ11RTq
- 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
- D90JJfnaGjkRdOPmxdjSLYv4AjX0Kg==
+UI-OutboundReport: notjunk:1;M01:P0:PS+vC1hZKTs=;7iDw8YqDZOdgM6LaPq7dgTf8Vm0
+ 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
+ js38rOAK
 
-Describe the VMAIN supply at the MCU controller level. The rail feeds the
-PoE subsystem as a whole rather than an individual PI. Its regulator power
-budget defines the aggregate limit programmed into the MCU.
+Realtek PSE MCUs may start with a power-management configuration inherited
+from firmware defaults or previous host configuration. This series
+establishes an explicit configuration during probe: dynamic power manageme=
+nt
+with port priorities and, when a VMAIN regulator is provided, an aggregate
+limit matching the board's usable PoE allowance.
 
-Require a finite regulator power budget dedicated to this MCU, representin=
-g
-the PoE power allocation of the system.
+Program the budget and select the management mode before ungating ports,
+with managed cleanup for the supply enable reference and budget reservatio=
+n.
+Remove the conditional global-disable cleanup so independently powered MCU=
+s
+can continue autonomous delivery after driver teardown.
 
-Signed-off-by: Jonas Jelonek <jonas@jonasjelonek.de>
-=2D--
- .../bindings/net/pse-pd/realtek,pse-mcu-gen1.yaml          | 7 +++++++
- 1 file changed, 7 insertions(+)
+Validation includes W=3D1 builds and checkpatch.pl. OpenCode assisted with
+review, implementation refinements and drafting this cover letter.
 
-diff --git a/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-=
-gen1.yaml b/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-g=
-en1.yaml
-index 526f8525bb4d..82288bb57b33 100644
-=2D-- a/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.=
-yaml
-+++ b/Documentation/devicetree/bindings/net/pse-pd/realtek,pse-mcu-gen1.ya=
-ml
-@@ -92,6 +92,13 @@ properties:
-       asserted.
-     maxItems: 1
-=20
-+  vmain-supply:
-+    description:
-+      Regulator representing the PoE power allocation of the 44-57V VMAIN
-+      supply. This MCU must be its only power-budget consumer. Its unclai=
-med
-+      power budget is used to configure the MCU global PoE power budget. =
-The
-+      regulator must define a finite regulator-power-budget-milliwatt val=
-ue.
-+
- required:
-   - compatible
-=20
+Jonas Jelonek (3):
+  dt-bindings: net: pse-pd: realtek,pse-mcu: add VMAIN supply
+  net: pse-pd: realtek-pse-mcu: configure global power budget
+  net: pse-pd: realtek-pse-mcu: avoid global disable on teardown
+
+Russell Senior (1):
+  net: pse-pd: realtek-pse-mcu: ensure MCU does dynamic power management
+
+ .../net/pse-pd/realtek,pse-mcu-gen1.yaml      |   7 +
+ drivers/net/pse-pd/realtek-pse-mcu-core.c     | 164 ++++++++++++++++--
+ drivers/net/pse-pd/realtek-pse-mcu.h          |   3 +
+ 3 files changed, 163 insertions(+), 11 deletions(-)
+
+
+base-commit: 4dd16e31135ea8437a720222df34e8745f385d6d
 =2D-=20
 2.53.0
-
