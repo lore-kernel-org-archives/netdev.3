@@ -1,69 +1,69 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793716801;
-	b=JpP+WctEP/n+4gSRTvsiElw2r4EU9IHRVRw8gYzNyILKslJ4YtN1b49B+isefoL0WRi8
-	 DjSNz08uQm5Vry84jvA6az4qmD9EO327HGmgo0EEhVlJD8w9jbE3lBGrYVUF3vj51CNkX
-	 nONNqMXeK+7ESysRYy84FlcF3s3z0/S+NSUulDEgkF83PsIiP5Xar1r3fz4jFg7FTPS5y
-	 GAIODvu0frly0aNJKsVWb4eQ0RmZObJwYgEVkxFjxcu+gxVdgdKXIEsxgjftE6HW0DrOG
-	 BFoB3DA2TV8jeiKYJcCEBTicPdHI9EynU3Vs6cynNvslHUb1TCZGM93qaEDMUUPEXZA==
+	t=1793716807;
+	b=mhbwXEGkdeWXQM/loj6TK5NuguojGNkyJkoVIGXu48IH+a/YwIjuRKl6ClsdLTzfHMGV
+	 CjPXcXan3jkbbfG1BrKFlmNZveDceWN3mSXVJ7i6hKOAodwT9+vdQLeuCzmjgGKlh0JsS
+	 jJj+fTqkpd03JfceBRHvevDkxflqIS43Xe3hoBMrSxGMkysJDtroBXoP7IWqS8DGgZWsN
+	 caWmbqaTnbT/HA7OGy3N6Hw4A2g1hUNJ8dUEv3EqrWdelhGbm7stxe7p4hVQfx9IE9XUm
+	 Yd9Hm0AIK2/eaoRl3qxrDBwTSgoIlyY93S166c1mW3futWPCwL+JmzhvTgPzFtB5P/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793716801;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793716807;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:From:To:Cc:
 	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=OfXi3+MFIaMgDpofgoIZClSjmjJvsfSXCqwfqJEoROs=;
-	b=4rqbYhUb8z/zspl5yfd7USW/aVkZ/WFVj/7/MZcQuznGu0OD20tI4HHGfklnX0xlmzF0
-	 ivapFjwX3sFdS25VUXV8gZa3nAz22CwFRJEDahnIT154mdm3E+AmNTZX2+BSx0Sdiz/Bi
-	 Qq+0hhEZg0vdYBlZYFFPRG8Ik0S2O++JtFYlTRhAzd3ZRGtO3IWwb7eMxAXr1yO2SacgP
-	 QcDGRQa1Tl5DOJfxJ+9VCRCcWTXbbQcN0MoxiG55BhHdHXyHHKrcpM+wdLIbqFl5oQ2XL
-	 Lk4S7u88upmBJt6WI4raSJ1JFZKXNe/QLXX3n8NfiFCMZmVrwcC/JNeNSvo7ohqg2DA==
+	bh=molVHtSV1DK4KoY51YHybqC76E7aoPSoyqlC26p0+jk=;
+	b=Uz1VAHoOEdn5Qnk7IiS0r6qjL9+1r1laJh/f3/siTaKBgx+RzhomOVyUQQqNXeirtpJu
+	 K+jDdv5+d3+ZF+EQaqpeFeR5IXXtloOT+kqJn4Dol6ep0f+DKqFa27L4MjGrcjiXTekB0
+	 T4lWflOcj2LEfL+M74ZnMJPY3oPkzitbIP0I40Mm1btvPC0y1APEmfxy8i1q/xYVGWokH
+	 0kzATL0RUjvitf6s5MDbvzCBBdMgWYAv0s+S4W3A1O6MafPG/HqT2blbDJvpYJG+bWFh7
+	 p2sOSDaDaPh1o0RY2q7bhQJYFALB5Bf/DSQUgGxyn7jgmigxjEnel7ZQiydmukkJStQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nG9ZtcSM;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CepuZmZU;
 	arc=none smtp.remote-ip=198.175.65.12
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B2D606D804
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 14:39:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3B2D606D804
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955E4606EE8A
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 14:40:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 955E4606EE8A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nG9ZtcSM
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CepuZmZU
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793716796; x=1825252796;
+  t=1793716806; x=1825252806;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=/TnIHRq/W5sKXEetYjPiZDzUwmDPtVSF8P8FQxAJqfI=;
-  b=nG9ZtcSMb0D8DWmRijSiEJXPC3ZfnMFsV9x5KTHcin2o1jOllLLzxB5P
-   n8/DIR6PoYVmyhxH0Du/CRQNrCNhPLkeci+VdLVQSuUQYLB1YO+kAweX/
-   w8SKxej7XnV6LHdskKYcOCReC5Nz/hQCqIZ9P5dDsTUNzs1N93+JhopCu
-   WkV1kD0KEQyzQVKChVKdq82zWFcU2u87JAPkbqh2TEy28BfJSXw8DapZA
-   X9lPqTVmFEoxfISUyPdHdANQXwJet49cjBdBscTXdb8x1WScuM4kgVsFj
-   y4ZM9owWOHwU3PVKHOVIxkRTSdlPaGHL3ldMafHEKQN9GKV749rbrbzjk
-   w==;
-X-CSE-ConnectionGUID: aDCLClXbSFiTFREy9QGK2w==
-X-CSE-MsgGUID: ti7+8TCESdKuBxapnBdJDA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2324041"
+  bh=jw5uTUrnrNLPcSCTl/81ShNzbtoKE9D1eO/dAW7Fz4o=;
+  b=CepuZmZUkabFevoBVS0FtXYFk02G3PEebU6knb/ZeGkd0L35W0Sugxvt
+   5/Pfa0cC2XLWU84eCKUQ+ZNMfXt4IqyYAu8xEEKzM1l6t7jp5zMsaEhuS
+   nF8swzSMLNTgyKD0VFEnbUJ5G3Gw3HeK0sJCiKYffCDgUPvqlAmcP/FJr
+   6xr2dINOjmfgya5iuD3CpSjm79Zhz2LRhb9x9GguAfK13b+HR1Y6x8uhG
+   N8CML6RXZ/X5GnT+6negHG3l0aKpi2jE48uJ5U2Z1PiuZFjLdKaBz1FMv
+   X+6bay3yUM+JDRoyhX5isAbIXk8iTv4vpXRyMjDehBgI0YUem0xa9QuAb
+   g==;
+X-CSE-ConnectionGUID: u5YMO7F+SSOPoV42VX0TgA==
+X-CSE-MsgGUID: /eA/l4DnT92L/oIrRUw77g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2324104"
 X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
-   d="scan'208";a="2324041"
+   d="scan'208";a="2324104"
 Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 06:39:55 -0800
-X-CSE-ConnectionGUID: I3+CryFSQb2tdSHDutWYVg==
-X-CSE-MsgGUID: IyzJtfKCRJK27iV6tsNoww==
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 06:40:06 -0800
+X-CSE-ConnectionGUID: EwzQWmxuRw27ZqqdjY4o9Q==
+X-CSE-MsgGUID: x+EQnLMxQgSNVJZvdk6qHA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
-   d="scan'208";a="8289915"
+   d="scan'208";a="8290008"
 Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by fmviesa013.fm.intel.com with ESMTP; 03 Nov 2026 06:39:50 -0800
+  by fmviesa013.fm.intel.com with ESMTP; 03 Nov 2026 06:40:02 -0800
 Received: from vecna.igk.intel.com (vecna.igk.intel.com [10.123.220.17])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 4499A312F1;
-	Tue,  3 Nov 2026 14:39:48 +0000 (GMT)
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 6062A312EE;
+	Tue,  3 Nov 2026 14:39:59 +0000 (GMT)
 From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 To: netdev@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -90,9 +90,9 @@ Cc: intel-wired-lan@lists.osuosl.org,
 	Tariq Toukan <tariqt@nvidia.com>,
 	Mark Bloch <mbloch@nvidia.com>,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH iwl-next v4 07/15] iavf: extend iavf_configure_queues() to support more queues
-Date: Tue,  3 Nov 2026 15:14:48 +0100
-Message-ID: <20261103141646.303620-8-przemyslaw.kitszel@intel.com>
+Subject: [PATCH iwl-next v4 12/15] devlink: give user option to allocate resources
+Date: Tue,  3 Nov 2026 15:14:53 +0100
+Message-ID: <20261103141646.303620-13-przemyslaw.kitszel@intel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261103141646.303620-1-przemyslaw.kitszel@intel.com>
 References: <20261103141646.303620-1-przemyslaw.kitszel@intel.com>
@@ -107,151 +107,265 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Extend iavf_configure_queues() to support more queue pairs than fit
-into a single virtchnl message (62).
-Virtchnl opcode used was already generic, but we have just not needed
-more than one message before.
+Current devlink resources are designed as a thing that user could limit,
+but there is not much otherwise that could be done with them.
+Perhaps that's the reason there is not much adoption despite API being
+there for multiple years.
 
-Send one message per call, and keep IAVF_FLAG_AQ_CONFIGURE_QUEUES set
-until all queue pairs are sent, similar to what iavf_add_ether_addrs()
-does for MAC filters. The next message goes out on a later watchdog
-run, once the reply to the previous one has cleared current_op, as for
-any other op. Stop sending on a PF NACK.
+Add new mode of operation, where user could allocate/assign resources
+(from a common pool) to specific devices.
 
-Add helper, iavf_max_vc_entries(), that determines how many entries we
-could fit into virtchnl message (ending by flex array member). Will be
-also used on another op later in this series.
+That requires a new .occ_set() driver callback, called on
+DEVLINK_CMD_RESOURCE_SET with the requested DEVLINK_ATTR_RESOURCE_SIZE,
+instead of staging the size until the next reload. Driver registers it
+together with .occ_get() by devl_resource_occ_set_get_register(). For
+such resources the getter value is reported as DEVLINK_ATTR_RESOURCE_SIZE,
+as opposed to DEVLINK_ATTR_RESOURCE_OCC (current occupation) in the
+"legacy" mode, and there is no DEVLINK_ATTR_RESOURCE_SIZE_NEW.
 
 Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 ---
+RFC, Feb '25
+https://lore.kernel.org/intel-wired-lan/20250219164410.35665-3-przemyslaw.kitszel@intel.com
+
+I have structured code to just choose "the mode" of operation based on
+the presence of .occ_set callback, instead of naming the mode, what,
+even if not the most clear code, avoids the need of naming the modes.
+
 v4:
- * send one message per watchdog run, instead of polling for the reply
-   to each one with a 1s timeout, which could resend the whole config
-   after a late ACK or NACK, and could take a stale reply for the
-   awaited one (Sashiko)
- * stop sending the rest on a PF NACK, in iavf_virtchnl_completion()
+ * return -EMSGSIZE directly on devlink_resource_occ_size_put_legacy()
+   failure (Jakub)
+
+v3:
+ * keep size and size_new of .occ_set() resources in sync with the
+   getter, after a successful set and in devl_resource_size_get() (me)
+ * WARN on registering .occ_set() without .occ_get(), or vice versa
 
 v2:
- * fix typo (Sashiko)
- * abort iavf_configure_queues() at error (Sashiko)
- * report send and poll failures with dev_err(), they are not
-   recoverable here (me)
- * cast via uintptr_t in iavf_match_vc_op_cb(), for clang W=1
-   -Wpointer-to-enum-cast
- * commit message: the limit is the number of queue pairs that fit
-   into a single virtchnl message (62), not 31
- * commit message: describe the switch to a synchronous op (Sashiko)
- * stop at PF NACK (Sashiko)
- * on timeout keep current_op and IAVF_FLAG_AQ_CONFIGURE_QUEUES set
-   until the late reply arrives, instead of resending right away;
-   clear both on other errors (no retry) (Sashiko)
- * fix dev_err() continuation alignment (Sashiko)
+ * avoid setting DEVLINK_ATTR_RESOURCE_SIZE_VALID for leaf resources
+   (Sashiko)
+ * minor kdoc update (Sashiko)
+ * add more WARN_ONs (Sashiko)
+ * document the occ_set mode in devlink-resource.rst
+ * commit message: describe the .occ_set() callback and how the reported
+   attributes differ from the "legacy" mode
 ---
- drivers/net/ethernet/intel/iavf/iavf.h        |  2 ++
- drivers/net/ethernet/intel/iavf/iavf_main.c   |  1 +
- .../net/ethernet/intel/iavf/iavf_virtchnl.c   | 25 ++++++++++++++-----
- 3 files changed, 22 insertions(+), 6 deletions(-)
+ .../networking/devlink/devlink-resource.rst   |  5 +
+ include/net/devlink.h                         |  7 ++
+ net/devlink/resource.c                        | 97 ++++++++++++++++---
+ 3 files changed, 93 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
-index 8c45536fd502..a41d2726ebd8 100644
---- a/drivers/net/ethernet/intel/iavf/iavf.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf.h
-@@ -269,6 +269,8 @@ struct iavf_adapter {
- 	u8 rxdid;
- 	int num_active_queues;
- 	int num_req_queues;
-+	/* queue pairs sent so far, for ops that take more than one message */
-+	int cfg_qps_sent;
+diff --git a/Documentation/networking/devlink/devlink-resource.rst b/Documentation/networking/devlink/devlink-resource.rst
+index b7172d94b2c6..9c48155fcb1e 100644
+--- a/Documentation/networking/devlink/devlink-resource.rst
++++ b/Documentation/networking/devlink/devlink-resource.rst
+@@ -75,6 +75,11 @@ attribute, which represents the pending change in size. For example:
+ Note that changes in resource size may require a device reload to properly
+ take effect.
  
- 	/* TX */
- 	struct iavf_ring *tx_rings;
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 2f8a80a11336..d39737dcd425 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -1258,6 +1258,7 @@ static void iavf_configure(struct iavf_adapter *adapter)
++Resources registered with ``devl_resource_occ_set_get_register()`` behave
++differently: the new size is passed to the driver and applies immediately,
++there is neither ``size_new`` nor ``occ`` reported, and ``size`` is the value
++returned by the driver's getter.
++
+ Port-level Resources and Full Dump
+ ==================================
  
- 	iavf_configure_tx(adapter);
- 	iavf_configure_rx(adapter);
-+	adapter->cfg_qps_sent = 0;
- 	adapter->aq_required |= IAVF_FLAG_AQ_CONFIGURE_QUEUES;
+diff --git a/include/net/devlink.h b/include/net/devlink.h
+index 98bdde4f72ca..d01128ef393d 100644
+--- a/include/net/devlink.h
++++ b/include/net/devlink.h
+@@ -420,6 +420,8 @@ devlink_resource_size_params_init(struct devlink_resource_size_params *size_para
+ }
  
- 	for (i = 0; i < adapter->num_active_queues; i++) {
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-index e6b7e8f82c7c..356565aa41c8 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-@@ -8,6 +8,11 @@
- #include "iavf_ptp.h"
- #include "iavf_prototype.h"
+ typedef u64 devlink_resource_occ_get_t(void *priv);
++typedef int devlink_resource_occ_set_t(u64 size, struct netlink_ext_ack *extack,
++				       void *priv);
  
-+/* how many Flex Array Member entries do fit into VC message of type *ptr */
-+#define iavf_max_vc_entries(ptr, flex_member) \
-+	((IAVF_MAX_AQ_BUF_SIZE - virtchnl_struct_size(ptr, flex_member, 1)) / \
-+	 sizeof(ptr->flex_member[0]) + 1)
+ #define DEVLINK_RESOURCE_ID_PARENT_TOP 0
+ 
+@@ -1959,6 +1961,11 @@ void devl_resource_occ_get_register(struct devlink *devlink,
+ 				    void *occ_get_priv);
+ void devl_resource_occ_get_unregister(struct devlink *devlink,
+ 				      u64 resource_id);
++void devl_resource_occ_set_get_register(struct devlink *devlink,
++					u64 resource_id,
++					devlink_resource_occ_set_t *occ_set,
++					devlink_resource_occ_get_t *occ_get,
++					void *occ_priv);
+ int devl_params_register(struct devlink *devlink,
+ 			 const struct devlink_param *params,
+ 			 size_t params_count);
+diff --git a/net/devlink/resource.c b/net/devlink/resource.c
+index c3cfda7ea070..c4502c480a6b 100644
+--- a/net/devlink/resource.c
++++ b/net/devlink/resource.c
+@@ -19,7 +19,8 @@
+  * @list: parent list
+  * @resource_list: list of child resources
+  * @occ_get: occupancy getter callback
+- * @occ_get_priv: occupancy getter callback priv
++ * @occ_set: occupancy setter callback
++ * @occ_priv: occupancy callbacks priv
+  */
+ struct devlink_resource {
+ 	const char *name;
+@@ -32,7 +33,8 @@ struct devlink_resource {
+ 	struct list_head list;
+ 	struct list_head resource_list;
+ 	devlink_resource_occ_get_t *occ_get;
+-	void *occ_get_priv;
++	devlink_resource_occ_set_t *occ_set;
++	void *occ_priv;
+ };
+ 
+ static struct devlink_resource *
+@@ -137,6 +139,16 @@ int devlink_nl_resource_set_doit(struct sk_buff *skb, struct genl_info *info)
+ 	if (err)
+ 		return err;
+ 
++	if (resource->occ_set) {
++		err = resource->occ_set(size, info->extack, resource->occ_priv);
++		if (err)
++			return err;
++
++		resource->size = resource->occ_get(resource->occ_priv);
++		resource->size_new = resource->size;
++		return 0;
++	}
++
+ 	resource->size_new = size;
+ 	devlink_resource_validate_children(resource);
+ 	if (resource->parent)
+@@ -162,13 +174,31 @@ devlink_resource_size_params_put(struct devlink_resource *resource,
+ 	return 0;
+ }
+ 
+-static int devlink_resource_occ_put(struct devlink_resource *resource,
+-				    struct sk_buff *skb)
++static int
++devlink_resource_occ_size_put_legacy(struct devlink_resource *resource,
++				     struct sk_buff *skb)
+ {
+-	if (!resource->occ_get)
+-		return 0;
+-	return devlink_nl_put_u64(skb, DEVLINK_ATTR_RESOURCE_OCC,
+-				  resource->occ_get(resource->occ_get_priv));
++	if (devlink_nl_put_u64(skb, DEVLINK_ATTR_RESOURCE_SIZE, resource->size))
++		return -EMSGSIZE;
++	if (resource->size != resource->size_new &&
++	    devlink_nl_put_u64(skb, DEVLINK_ATTR_RESOURCE_SIZE_NEW,
++			       resource->size_new))
++		return -EMSGSIZE;
++	if (resource->occ_get &&
++	    devlink_nl_put_u64(skb, DEVLINK_ATTR_RESOURCE_OCC,
++			       resource->occ_get(resource->occ_priv)))
++		return -EMSGSIZE;
++	return 0;
++}
++
++static int devlink_resource_occ_size_put(struct devlink_resource *resource,
++					 struct sk_buff *skb)
++{
++	if (!resource->occ_get || !resource->occ_set)
++		return devlink_resource_occ_size_put_legacy(resource, skb);
++
++	return devlink_nl_put_u64(skb, DEVLINK_ATTR_RESOURCE_SIZE,
++				  resource->occ_get(resource->occ_priv));
+ }
+ 
+ static int devlink_resource_put(struct devlink *devlink, struct sk_buff *skb,
+@@ -183,14 +213,9 @@ static int devlink_resource_put(struct devlink *devlink, struct sk_buff *skb,
+ 		return -EMSGSIZE;
+ 
+ 	if (nla_put_string(skb, DEVLINK_ATTR_RESOURCE_NAME, resource->name) ||
+-	    devlink_nl_put_u64(skb, DEVLINK_ATTR_RESOURCE_SIZE, resource->size) ||
+ 	    devlink_nl_put_u64(skb, DEVLINK_ATTR_RESOURCE_ID, resource->id))
+ 		goto nla_put_failure;
+-	if (resource->size != resource->size_new &&
+-	    devlink_nl_put_u64(skb, DEVLINK_ATTR_RESOURCE_SIZE_NEW,
+-			       resource->size_new))
+-		goto nla_put_failure;
+-	if (devlink_resource_occ_put(resource, skb))
++	if (devlink_resource_occ_size_put(resource, skb))
+ 		goto nla_put_failure;
+ 	if (devlink_resource_size_params_put(resource, skb))
+ 		goto nla_put_failure;
+@@ -634,12 +659,50 @@ int devl_resource_size_get(struct devlink *devlink,
+ 	resource = devlink_resource_find(devlink, NULL, resource_id);
+ 	if (!resource)
+ 		return -EINVAL;
++	if (resource->occ_set)
++		resource->size_new = resource->occ_get(resource->occ_priv);
+ 	*p_resource_size = resource->size_new;
+ 	resource->size = resource->size_new;
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(devl_resource_size_get);
+ 
++/**
++ * devl_resource_occ_set_get_register - register occupancy getter and setter
++ *
++ * @devlink: devlink
++ * @resource_id: resource id
++ * @occ_set: occupancy setter callback
++ * @occ_get: occupancy getter callback
++ * @occ_priv: occupancy callbacks priv
++ *
++ * Setter will be called when the user wants to change the resource size,
++ * getter is called to show the user what is current size of the resource.
++ */
++void devl_resource_occ_set_get_register(struct devlink *devlink,
++					u64 resource_id,
++					devlink_resource_occ_set_t *occ_set,
++					devlink_resource_occ_get_t *occ_get,
++					void *occ_priv)
++{
++	struct devlink_resource *resource;
++
++	lockdep_assert_held(&devlink->lock);
++
++	if (WARN_ON(!occ_set || !occ_get))
++		return;
++
++	resource = devlink_resource_find(devlink, NULL, resource_id);
++	if (WARN_ON(!resource))
++		return;
++	WARN_ON(resource->occ_get || resource->occ_set);
++
++	resource->occ_set = occ_set;
++	resource->occ_get = occ_get;
++	resource->occ_priv = occ_priv;
++}
++EXPORT_SYMBOL_GPL(devl_resource_occ_set_get_register);
 +
  /**
-  * iavf_send_pf_msg
-  * @adapter: adapter structure
-@@ -375,11 +380,12 @@ int iavf_get_vf_ptp_caps(struct iavf_adapter *adapter)
- void iavf_configure_queues(struct iavf_adapter *adapter)
- {
- 	struct virtchnl_vsi_queue_config_info *vqci;
--	int pairs = adapter->num_active_queues;
- 	struct virtchnl_queue_pair_info *vqpi;
-+	int first = adapter->cfg_qps_sent;
- 	u32 i, max_frame;
- 	u8 rx_flags = 0;
- 	size_t len;
-+	int pairs;
- 
- 	max_frame = LIBIE_MAX_RX_FRM_LEN(adapter->rx_rings->pp->p.offset);
- 	max_frame = min_not_zero(adapter->vf_res->max_mtu, max_frame);
-@@ -391,6 +397,8 @@ void iavf_configure_queues(struct iavf_adapter *adapter)
+  * devl_resource_occ_get_register - register occupancy getter
+  *
+@@ -661,9 +724,10 @@ void devl_resource_occ_get_register(struct devlink *devlink,
+ 	if (WARN_ON(!resource))
  		return;
- 	}
- 	adapter->current_op = VIRTCHNL_OP_CONFIG_VSI_QUEUES;
-+	pairs = min_t(int, adapter->num_active_queues - first,
-+		      iavf_max_vc_entries(vqci, qpair));
- 	len = virtchnl_struct_size(vqci, qpair, pairs);
- 	vqci = kzalloc(len, GFP_KERNEL);
- 	if (!vqci)
-@@ -402,10 +410,7 @@ void iavf_configure_queues(struct iavf_adapter *adapter)
- 	vqci->vsi_id = adapter->vsi_res->vsi_id;
- 	vqci->num_queue_pairs = pairs;
- 	vqpi = vqci->qpair;
--	/* Size check is not needed here - HW max is 16 queue pairs, and we
--	 * can fit info for 31 of them into the AQ buffer before it overflows.
--	 */
--	for (i = 0; i < pairs; i++) {
-+	for (i = first; i < first + pairs; i++) {
- 		vqpi->txq.vsi_id = vqci->vsi_id;
- 		vqpi->txq.queue_id = i;
- 		vqpi->txq.ring_len = adapter->tx_rings[i].count;
-@@ -425,7 +430,9 @@ void iavf_configure_queues(struct iavf_adapter *adapter)
- 		vqpi++;
- 	}
+ 	WARN_ON(resource->occ_get);
++	WARN_ON(resource->occ_set);
  
--	adapter->aq_required &= ~IAVF_FLAG_AQ_CONFIGURE_QUEUES;
-+	adapter->cfg_qps_sent += pairs;
-+	if (adapter->cfg_qps_sent == adapter->num_active_queues)
-+		adapter->aq_required &= ~IAVF_FLAG_AQ_CONFIGURE_QUEUES;
- 	iavf_send_pf_msg(adapter, VIRTCHNL_OP_CONFIG_VSI_QUEUES,
- 			 (u8 *)vqci, len);
- 	kfree(vqci);
-@@ -2551,6 +2558,12 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
- 			dev_warn(&adapter->pdev->dev, "Failed to Config Queue BW, error %s\n",
- 				 iavf_stat_str(&adapter->hw, v_retval));
- 			break;
-+		case VIRTCHNL_OP_CONFIG_VSI_QUEUES:
-+			dev_err(&adapter->pdev->dev, "Failed to configure queues, error %s\n",
-+				iavf_stat_str(&adapter->hw, v_retval));
-+			/* don't send the remaining queue pairs */
-+			adapter->aq_required &= ~IAVF_FLAG_AQ_CONFIGURE_QUEUES;
-+			break;
- 		default:
- 			dev_err(&adapter->pdev->dev, "PF returned error %d (%s) to our request %d\n",
- 				v_retval, iavf_stat_str(&adapter->hw, v_retval),
+ 	resource->occ_get = occ_get;
+-	resource->occ_get_priv = occ_get_priv;
++	resource->occ_priv = occ_get_priv;
+ }
+ EXPORT_SYMBOL_GPL(devl_resource_occ_get_register);
+ 
+@@ -684,9 +748,10 @@ void devl_resource_occ_get_unregister(struct devlink *devlink,
+ 	if (WARN_ON(!resource))
+ 		return;
+ 	WARN_ON(!resource->occ_get);
++	WARN_ON(resource->occ_set);
+ 
+ 	resource->occ_get = NULL;
+-	resource->occ_get_priv = NULL;
++	resource->occ_priv = NULL;
+ }
+ EXPORT_SYMBOL_GPL(devl_resource_occ_get_unregister);
+ 
 -- 
 2.54.0
 
