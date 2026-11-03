@@ -1,72 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=35.89.44.39
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793739029;
-	b=AC3eqQyMS5QbkSHc4q1lX7+UMoDKY0evyV8DVKlaiqkjviI/3BzCXiS+q45xqccXE0xp
-	 RH5r5U9z+r31xshYybgfN8UCOg9bBT/NaPsW7kyrNf5hBLruTET/xJpXfSU+7SIQ/66Mz
-	 hajvx73A+sGV67N9ZGmTdUx1mqluzOg3XhfYpPWKNbRdcq7LhlqPP7WFpVl3ndlj4Rkzd
-	 GRE32j9/UeWUDPzCIaWj9e9cKvE5LMoe44+DXWYqsANa0GXkOmZBv+njOoZKmq/p1nysj
-	 eAnTK96sh3aM8a8S1KKceEAJP09lI7O/AyQd1vgGgRfK6UhCK+HfcxD1uM4vfBeEluQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793739029;
-	h=DMARC-Filter:Received:Received:X-Authority-Analysis:DKIM-Signature:
-	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
-	 References:Content-Language:From:Autocrypt:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:
-	 X-AntiAbuse:X-AntiAbuse:X-BWhitelist:X-Source-IP:X-Source-L:X-Exim-ID:
-	 X-Source:X-Source-Args:X-Source-Dir:X-Source-Sender:X-Source-Auth:
-	 X-Email-Count:X-Org:X-Source-Cap:X-Local-Domain:X-CMAE-Envelope;
-	bh=xELWjlpLSei6f90PTVpULHIqJs/YZ9fxtevXdlFEib0=;
-	b=z2ebyxov/vM6lE6HTtiwplSQkcanmLLNhRgt/mMtF8Byyjt3LOu/raCu0+cD3+FFARtj
-	 STMmhgfXbjldvknTD/ZmCD3F18URmgjseFcbdZtzzN0Pd4lgkPai8fQtsCiXOpRYpoKX+
-	 7NpUHyjZVR9imHcqfBVUqbAcc9mgmfL8wd+M33/EXu6mWEZvWu4Yvae7GR5HaM+v01OgS
-	 dZP7+XRRIWC8d8INUDeym40LLkJD5oRpLN6vfMpGTCTdeODj0ZcTjKSejcLmY3wrFII8Z
-	 lgX2nsWBhGMdBn633I+q96384mOzTZB6U27XpuLz0yDxS8qr0+ZFm1uxLNc0rTFmzgg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=roeck-us.net;
-	spf=fail smtp.mailfrom=roeck-us.net;
-	dkim=pass header.d=roeck-us.net header.i=@roeck-us.net header.a=rsa-sha256 header.s=default header.b=3hlB2CED;
-	arc=none smtp.remote-ip=35.89.44.39
-Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.49
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793739226;
+	b=Hfj+JQqPKVprxQELPUVo98V+hd/5hKckSJam7NNWUbxC4aw4g5CY0Yqt4Ld3BIgz9muy
+	 30CJ46+4ob6PA5Td/EJWv55AAgkx+iFrMxUgDXJT4qDjgL+TUA5P21FpTI/2o8tuRIpS+
+	 KWoye7y4FBlMosMyD3hFqm2uWW4u7qFARSsQEbecrPGM7nnPs6XMqS3dGmGnMVQmOZBQ4
+	 O2A6el2IYNakqxQh5aYC3juMNRFuwZ5LFgNMFdntbibyJzQny5tIjuRxDJnGfbVYIC6w/
+	 g77JpkO/s1MstlfELqmuKTsujQnOIlxh12vI7M8AkuiqbHrDt7NITb9/4Ph06BxDOVA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793739226;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=HU0IDlTEWZ/Nq80LY/Y8bonUl8UVtmzIsUjZigKckck=;
+	b=UbRLqk3Yj0N8We5MROJhC9kVlcuBYp2n6v2E7q8uLwSXp6pe8nbqgoVBfSjaLJyncGeW
+	 vkhUyt23E4+orGS1iwWzy6asKNr3FWGAeFk2KVC8gNE19hR99sFG3jdS7uYkcAqouJgni
+	 W0BLLen/64NBj9qJulleJVflDXRa2RamGWw9E4ciDd41GKScC/gH/7fJdnDpJeszi34NX
+	 MsCyhMVEQHm1sjIMle5X1gpFcLDHCtgJ5uSInY+tk5tlRROB+TCPJl3rxbtzWO3JCwDzq
+	 G5rW69ASgw5XnrmXkGddEMbACSDH+Hw7o0OgMMtGJSbUxlGL1UWHCxGrBRFo5dkqoTA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=cloudflare.com;
+	spf=pass smtp.mailfrom=cloudflare.com;
+	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=auyMeNme;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.49
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CBB0606A31B
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 20:50:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9CBB0606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=roeck-us.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E00E606A31B
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 20:53:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E00E606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=roeck-us.net header.i=@roeck-us.net header.a=rsa-sha256 header.s=default header.b=3hlB2CED
-Received: from eig-obgw-5007b.ext.cloudfilter.net ([10.0.29.167])
-	by cmsmtp with ESMTPS
-	id OE7RxmTXwyb4YOLSex2Dsq; Tue, 03 Nov 2026 20:50:28 +0000
-Received: from 162-215-252-36.unifiedlayer.com ([208.91.199.152])
-	by cmsmtp with ESMTPS
-	id OLSdxBzRixqjjOLSdx4jUW; Tue, 03 Nov 2026 20:50:27 +0000
-X-Authority-Analysis: v=2.4 cv=bZxrUPPB c=1 sm=1 tr=0 ts=6aea4914
- a=QNED+QcLUkoL9qulTODnwA==:117 a=2cfIYNtKkjgZNaOwnGXpGw==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=M0FbrtG7MMAA:10 a=zd2uoN0lAAAA:8
- a=_jlGtV7tAAAA:8 a=klRYj2L7PfcOG0d8UPIA:9 a=QEXdDO2ut3YA:10
- a=nlm17XC03S6CtCLSeiRr:22 a=KPbNTLLc3YvdawN95zVk:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=roeck-us.net; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:
-	List-Archive; bh=xELWjlpLSei6f90PTVpULHIqJs/YZ9fxtevXdlFEib0=; b=3hlB2CEDBZwe
-	aiEylSCBEhU+z8JZSKLZp1kftWUvB1Xvm2YsQWW7K+D+A4muhD2MMK6dbIr8W6XpGrgrsm8cuDjz+
-	u7iOz66NDTS0PoifCQogRaESOGC2qlImEHwFes6rmcITgF9lxjNeYs6a4fFZhMyrT0VamrGRArz9Z
-	5AfScOvNqpBU6saJnEDdELPzgfvHSvp81CByYWtAKskoYSLCiKdpTqPorqnQsBYsGnvUrqUNPry87
-	ItyhlIeKD7vpkHGulL12RllEd52Rpq+PmiRFLMSOcHvD9tYGvAYek0k2nmGEZCeTeUvut3ohFQDus
-	3bpSBfPmBVvzEkC8NhkBmQ==;
-Received: from 108-223-40-66.lightspeed.sntcca.sbcglobal.net ([108.223.40.66]:59138)
-	by bh-25.webhostbox.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <linux@roeck-us.net>)
-	id 1xOLSb-00000001ohg-3diX;
-	Wed, 04 Nov 2026 02:20:25 +0530
-Message-ID: <d468fa55-c0fc-471c-9341-b735fb394fa3@roeck-us.net>
-Date: Tue, 3 Nov 2026 12:50:23 -0800
+	dkim=pass (2048-bit key, unprotected) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=auyMeNme
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-483a66818edso54341fac.0
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 12:53:45 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793739224; cv=none;
+        d=google.com; s=arc-20260327;
+        b=e+Ftz4uzr3QEVmnZgFjoMh0MdTSRfCk+9WD8lTC7axRKItdx7l+hhiSdbySOm8FcwQ
+         uM2WbMpQILCoro8VX2zhvySa9IYDJVXuQpQjkD1QAyCjWIUq/LPlp+O4uiVVqK6iY5et
+         3/l60eVPkvcYmSTZh9PYef7j4rlnC3uAPiNblwCcw2umQ525kTrhIux5mN7xExBraSb+
+         6T4ZieiXvlV8X8JMe2ifVhI8nErv4F1gs9gwX/JK4RXSu/tY3o5McONCV7HEqcIx8Ecr
+         13i91wSb21Gk3ZoEw2wkFp3gNj4SkoNl/MCnRnYjwMJa0TDEmI/OYRKI0paquNsieuGB
+         7F6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=HU0IDlTEWZ/Nq80LY/Y8bonUl8UVtmzIsUjZigKckck=;
+        fh=jUbMi8EaVJmaHkbGJE4zFu5etZzQ+6Cjl/vAB23nl2Y=;
+        b=D96onySlqPtB2ukdZuayE+CwEE/wj/J2lrCGmCqxKpdXu14rpa+Q0ntt6BejXZJjFL
+         e7Qr9vopmsvhlLsbXaA31WTZDJ0L+XWd7ZsRweXTqVkFp0BeTj4G6STXTwIB3fjyC8MW
+         4/6ZEr158Sz4EsfYkqv42CdG8SA9lw8RElqlp+CUxjCLYr7cgG5n8ScrKTOcu5RvjkXS
+         5vTNcq8EESJmRwSp/mK5pYYCx5mFd1goE58KuIyCoEugLMo8iaXp2j5vWcFv/UbfBCeU
+         1zULfLHqxJLAb8x2abRAKIyRQKopFsC1Ga9XmDx3RcZ31KwRh4m0ldyb/GE5w+58Bzfd
+         V9Uw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1793739224; x=1794344024; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=HU0IDlTEWZ/Nq80LY/Y8bonUl8UVtmzIsUjZigKckck=;
+        b=auyMeNme4/2d01zzCWqyBDt/BzGNmz1TB0h3Ud+kIp+iV12/l8l+8oSCKuUj676PVq
+         aBVugEhproylVMbxZ7jqq9EoEq0DaylN3bZe83HxC63yinS4CVEx+Fl497C9Hk9Feu5V
+         X7YX0LQsolMtep+IVhOVyBefbxcZQDq3tAga2gRse5wioCQHAteEB2xjOC0Swqmbbq1u
+         7vakZI0vFXnqKTQHHcfgr9Khsq03VzDmMwUASgXd2/k1nJSUEAGbYp4ac+KsSb6xsEvo
+         GL46Z3ltFuZJbQj7hXahyilz5WzR2KwydmZJHQnpDiPtwSX1ANt31TnNEbJVh3nSc95B
+         +ZhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793739224; x=1794344024;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HU0IDlTEWZ/Nq80LY/Y8bonUl8UVtmzIsUjZigKckck=;
+        b=kFfw0TvKSQiP4D7YabD0T7c017akrT20w3fxzbmQIpQ2h/lZz9qXfwDwXop8sdn9hC
+         QgnXCrca+LfbESerVs9sYmtqRsRZc4FieSMjq1xj1ntT3rqgQlnpjqcpn3cqkVvMeg3V
+         EYrbCc1GhWZ8TIG8J9ozSOJwtaqgKM2XnH8XQWDg72HIiEc49ItrJ7aMH7h5mz88Jr6H
+         jrypxYk1FWL29fL9XXsWsB7KZermdZ0IK+Oo+iZUNqOunaBPzgml/XNKUup9qRCfFK8p
+         raWGKkXmX+4hjytn+r3RUGX1FPnr2WLbkcP4EsRic/KXh4C5Kq8YvfainNL+9AJietR6
+         npRg==
+X-Gm-Message-State: APuU4Z9tysVU/bXghQIiqbz3ReMj15IC3kl1SDuA4K0nQ2g2cb5PCdG7
+	bVAQNe7O2ShJMj9cXJpw9BYiY75ddjN/VaF2m4HMYZoAgNnstbpQY2CSMd5TFly5CzoxusHvnI0
+	JrIyIVsFZ1Yn0UlDhxrKcl1msjfXzdYW7GqlNsKfqsA==
+X-Gm-Gg: AYBFou1/A3ypOHruQa6Sgp1VpcBX5EC8/7bx8s4LslOrGUmA68koYql2Gnut3FXEXTq
+	bqH4bbC7Q3SWdPoauP93esNNRzSMSOmdCsJabmBhp2BvpZoVH7XhDW1H/8yRNDB++3rBorI/Xmb
+	4XwfoVElV5d05IJCO1AcHN2GxC2SNu3BJlsKt23ZUP8/buCI/8vfkc8/hWrfVb6EPlKgg/WGg/W
+	04rliU9PF1yeNq3iUgUjoi8f4zL0sUnZdluD8udesv4NS0jXziKMuEM5mcM4y+sRGVFZzbw2Ngl
+	zK5SQDxXz09p1vU/QRJEdOfxgi1n9+Tnb4U3zc3hhzF90ID7oVfi7/pTS8Ab25OdkE06JFiD0i5
+	Xz4i9Go66YOPaRQej6qWirgSJSyAB/r8d7r4jwzTQhiGHhSPWJgo+XDxC8W/FlfuNSyc5qtBYIg
+	7bldGoQosFDdSYuDx4nyScL8nIh7NpXHw=
+X-Received: by 2002:a05:6870:208:b0:497:4b0a:61f5 with SMTP id
+ 586e51a60fabf-4a90777511dmr8964664fac.43.1793739224442; Tue, 03 Nov 2026
+ 12:53:44 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,115 +104,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 4/4] hwmon: add AMD Pensando ionic sensor driver
-To: "Nikhil P. Rao" <nikhil.rao@amd.com>,
- Brett Creeley <brett.creeley@amd.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, Kees Cook <kees@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-hardening@vger.kernel.org, Abhijit Gangurde
- <abhijit.gangurde@amd.com>, Arun Kumar Prakash <ArunKumar.Prakash@amd.com>,
- Eric Joyner <eric.joyner@amd.com>
-References: <20261103-pr46-b4-v1-0-850ab7fbec19@amd.com>
- <20261103-pr46-b4-v1-4-850ab7fbec19@amd.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20261103-pr46-b4-v1-4-850ab7fbec19@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-25.webhostbox.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - roeck-us.net
-X-BWhitelist: no
-X-Source-IP: 108.223.40.66
-X-Source-L: No
-X-Exim-ID: 1xOLSb-00000001ohg-3diX
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 108-223-40-66.lightspeed.sntcca.sbcglobal.net [108.223.40.66]:59138
-X-Source-Auth: guenter@roeck-us.net
-X-Email-Count: 8
-X-Org: HG=direseller_whb_net_legacy;ORG=directi;
-X-Source-Cap: cm9lY2s7YWN0aXZzdG07YmgtMjUud2ViaG9zdGJveC5uZXQ=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfHWGUAm71DVPUxuebQzuhyS8kqnR9cAdUKpPziUFeNf5VuYUX6GOrIb6BloulhgBUFy0IPGT9ESn03QbVVlqLfOvJ/GnGCUalnJLKNJRYvQELy5go+xR
- ramcjaN4Dx8cxL8kf0Uoeplbxi8ZePgHNvMfdSjPJVi275iO3UsTByanZ1ZeX2QMM2lvz8V1Izof0o0gkE/XJRVPIBBdN6TEI41ryFFuO+P83aKffxyWs7VB
+References: <20261103200036.65764-2-tianyi@cloudflare.com> <179373626776.488859.10701424242617832815@kernel.org>
+In-Reply-To: <179373626776.488859.10701424242617832815@kernel.org>
+From: Tianyi Gao <tianyi@cloudflare.com>
+Date: Tue, 3 Nov 2026 20:53:33 +0000
+X-Gm-Features: AclHuK_asYprUqDKWj4NTjMpDW40oUsEV9HAiqmCbg-4s8sP4_dIHmt3NG3pWyI
+Message-ID: <CAG4wq-c32sQ2NiFj=9XVXuc5Eqa+5zHvTKcGRQ3ugAdXWnE9sQ@mail.gmail.com>
+Subject: Re: [PATCH net 0/2] net: fix mac_len of skbs copied by generic XDP
+To: netdev-bot+sinfo@kernel.org
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Lorenzo Bianconi <lorenzo@kernel.org>, 
+	Toke Hoiland-Jorgensen <toke@redhat.com>, linux-kselftest@vger.kernel.org, bpf@vger.kernel.org, 
+	kernel-team@cloudflare.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/3/26 10:14, Nikhil P. Rao wrote:
-> From: Arun Kumar Prakash <ArunKumar.Prakash@amd.com>
-> 
-> Add an auxiliary driver that binds to the "ionic.hwmon" device created
-> by the ionic Ethernet driver and reports the adapter's temperature,
-> voltage and power sensors through hwmon.
-> 
-> The sensor set depends on the board and firmware, so the driver reads
-> it from the device at probe rather than hard-coding it. A sensor type
-> with a channel the driver does not recognise is skipped as a whole,
-> since hwmon channel numbers must match the firmware's.
-> 
-> The hwmon device is parented to the adapter's PCI function rather than
-> to the auxiliary device, so lm-sensors names it by PCI address instead
-> of as a virtual device.
-> 
-> Signed-off-by: Arun Kumar Prakash <ArunKumar.Prakash@amd.com>
-> Signed-off-by: Eric Joyner <eric.joyner@amd.com>
-> Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-> Co-developed-by: Nikhil P. Rao <nikhil.rao@amd.com>
-> Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
+Hi,
 
-Acked-by: Guenter Roeck <linux@roeck-us.net>
+I hit this while benchmarking generic XDP with an xdp.frags program
+that redirects to a cpumap. TCP throughput dropped to almost zero.
 
-Thanks,
-Guenter
+Cheers,
+Tianyi
 
+On Tue, Nov 3, 2026 at 8:04=E2=80=AFPM <netdev-bot+sinfo@kernel.org> wrote:
+>
+> Hi!
+>
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
+>
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
+
+
+
+--=20
+Cheers,
+Tianyi
