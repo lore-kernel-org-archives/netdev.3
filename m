@@ -1,49 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793706006;
-	b=KLttXWi6i/rIE3lAur7MBLQ6JG1DrUgvXrM56Jb5kGFS5aZq49tekfn4ZUKjC/7D4zZN
-	 1JjyvzRX9+QT1GgfHDjuAxEyXnvUQ8nsBy0l5ZTbDdpEuGEgqoH32V03gitqvdQRnpghr
-	 8HSRm1pksIVG88IorN8/yAzgj8ZYyeQ3OYpGk8dE8PAV9VV9gKhLjckffH8D6dqrPCSNc
-	 B3blTv9BfNsdx/wcE8TfOl7uVtFW6Pr3jd9oNrJirmIK7bfWZULba2vS7tUMqq7ThrEQl
-	 MrV8wt1T1DJitfBKE4UKnPXw/TSt+kH0+gT2vwOightZ6SjjyvZgFUFKIb1dG+TrL8w==
+	t=1793706221;
+	b=gzXCAifuj+sV9jnBSQ7jvJXnXStQw/XaSkBah7af6W1eSQ6fD7p1IigdHGup6ELMwyWg
+	 ESYmcXP4gCoG1KOWzS3gLzNeRihw5Gv3Eb4yBqkYRQdv+5kIG92HlWrE4hqtRnc5YSc2G
+	 kD4hWCJ/kE1Cyl2P9DItba+cE5kC5zQ8Rm9iE2PX3JuOPrWt0x1ZF6YTu7LHdvbkG9gxr
+	 9nybjzovwP90xDS+WGBEHozVJD9TaMS6jASBCj8Ui47ru1EPGXd1H5mRabvVp30fyjB0s
+	 MACm//WUAUw9uJF+213l34hKWUmUzoddwwjSeNGPX9WvabIid6qakhvB7FW1JRGCVsQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793706006;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=12/jhcEx6vED9AmFZRyKz8cy7wUlxnleRPH/iIHyTao=;
-	b=m4ZsRnfD+Tibz0nuws4ecR+8vPjE08JM+V8joQK+7RmspuNvNEzUy+CAusxSHop82jX9
-	 TJNE3eEl3aeJxdFuBcL3V72VAY2+QWGejSq6Jb9vUeLiJocuiy0sYZALDQaVTKTpB/mqQ
-	 FTO1nNDLg7olHCJRf8Eu53TGXDWp1iQY6gD0O+LqYvMXfRlGKt4ZPRG3l5vPnJXqXHtVU
-	 ErIAkeuBkO4XFN1IBnJ50ZGzUPOW0+oqRqf5wqyiVvYY/5jIyrbDlq5xdM4rAr3p37n/0
-	 E/dmcISCU2acweXcgzu8sa9+IEXYMH04uTI9dwvvGXzNKt1Dj9sOI42OuhvQWu7CzRQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793706221;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=ZKSEP3+/PcST9o58HFuWpOsPhP57g1jdoiPcpSylqH0=;
+	b=1yuNv+vxSvc7wVFWbNWG45/v1HkXTa1sFbMpkgOjcmVzeXjUn3X6ile05LYvqfjgEBLy
+	 XNlT/hTymH9PlgK9wWIh97az3Pvo+s8Lf9NNuk/6gKkiUExdl74KhETcYNb87/rDSQ5Ya
+	 HG50bpJSU3V5UwLVNEUzOnq1b/t+SAawqEg116udKVVrCJu43kSNYwYSPGtnYuZGYsmQ7
+	 EPde8peIxS2QiciSnIwMrUXsTgZ4SGNvE9jYaLpbf5VOUoSh2SaUGcmEOeqlN7hCHGSbf
+	 Db2A/ajf4Nki1nueOJ5u3KgfiBiQo8f+k4qBw+q+Qc86XyloPd9hDqqvFh+B5hHdq+g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UOvYdDQ+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RZfp1Nvg;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7C9606D82C
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 11:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952F26083608;
+	Tue,  3 Nov 2026 11:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UOvYdDQ+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C8811F000C1;
-	Tue,  3 Nov 2026 11:40:05 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RZfp1Nvg
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C671F000C1;
+	Tue,  3 Nov 2026 11:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793706005;
-	bh=12/jhcEx6vED9AmFZRyKz8cy7wUlxnleRPH/iIHyTao=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=UOvYdDQ+xSQoCmjqBq7LrmWPCaxQeQS0VfPDnfbh9mGQabx8lllq5F8qhTWuTzOnj
-	 eT7P4SrSeVCzlW/XOaYqCTd3vVHcMzMuMc6ZtCtw/HEr7mkdlFKi0uaschHkN9A2ez
-	 wmmYox3UWhje9DzwHXAyLQHG4AVOBlR9BkOEUT9gHBhvRCxPXS5XaQOLGn7E2fTMd0
-	 19JTnCnj7vd45a4NY1RbSTY306SiYT7WJmYcGXlGGDOvIEl4zzBSi8a3IiC6KzyfB6
-	 bB1DJJf1xZmvfHRVHVctMTywuHimTu9n8f/oTUBi14KJzUPkMifNMG9bbdU4YRaIYE
-	 cF/RLo55sAKbQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 401B13805CDA;
-	Tue,  3 Nov 2026 11:40:05 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1793706221;
+	bh=ZKSEP3+/PcST9o58HFuWpOsPhP57g1jdoiPcpSylqH0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=RZfp1NvgntwSxvPaNI+cFq/sI2rMD1VCnCQTTpZmIPiSbkJm3yj/HWbv8TQGPIePI
+	 btnGiLXOvb4gGwItG+UDHZFugtQA2CJeFHbXO99tXq7XX3X52el8BK4TqtBLRkR0hq
+	 i3UH1xdjsy7U2M+d379DSIKrNzSccQ/uSPm46YZnuFXJ5Lg1n3xCYarV69oT4KeHZi
+	 Y/fL7RLvkvuwP7DCBRVjzaZJCDWfNeteLWepasM2sAoJSz1GQHvOftLYfNFnVtQfqI
+	 QdX+On8gH4yf5FL/jt7Wf1005lU1NoFeO7d3dbvhWMvHJDyR6YvcgnAc7qTJUrHbwZ
+	 pEgmCcYDLj5kA==
+Date: Tue, 3 Nov 2026 11:43:35 +0000
+From: Simon Horman <horms@kernel.org>
+To: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Cc: haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+	kuba@kernel.org, pabeni@redhat.com, lkmlabelt@gmail.com,
+	parri.andrea@gmail.com, linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Wei Liu <liuwe@microsoft.com>
+Subject: Re: [PATCH net v2] hv_netvsc: Stop PPI parsing on invalid metadata
+Message-ID: <20261103114335.GI865646@horms.kernel.org>
+References: <20261030093459.4004663-1-ernis@linux.microsoft.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,45 +60,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] xfrm: iptfs: fix skb leak on error in
- __input_process_payload()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179370600414.1068298.8102080811315201623.git-patchwork-notify@kernel.org>
-Date: Tue, 03 Nov 2026 11:40:04 +0000
-References: <20261030083358.2653599-1-edumazet@kernel.org>
-In-Reply-To: <20261030083358.2653599-1-edumazet@kernel.org>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org,
- syzbot+a3f21220cbbb6e14ee2e@syzkaller.appspotmail.com,
- steffen.klassert@secunet.com, herbert@gondor.apana.org.au
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261030093459.4004663-1-ernis@linux.microsoft.com>
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Fri, 30 Oct 2026 09:33:58 +0100 you wrote:
-> syzbot reported a memory leak of the received skb (and its sec_path
-> extension) in the IP-TFS receive path.
+On Fri, Oct 30, 2026 at 02:34:59AM -0700, Erni Sri Satya Vennela wrote:
+> rndis_get_ppi() uses continue when a per-packet information entry has an
+> invalid size or offset, or cannot hold the requested metadata. However,
+> the remaining length and entry pointer are only updated at the bottom
+> of the loop. Each error path therefore retries the same invalid entry
+> indefinitely, repeatedly logging the error and preventing receive
+> processing from completing.
 > 
-> __input_process_payload() parses the inner packets of an IP-TFS payload
-> and queues them on @sublist, which is only sent after the parsing loop.
-> Three error paths inside the loop (skb_copy_seq_read() failure, invalid
-> inner IPv4 header length, unknown IP version) jump to the "done" label,
-> which is placed after the code sending @sublist.
+> Return NULL on these validation failures instead of continuing. This
+> terminates the lookup when malformed metadata is encountered while
+> preserving the existing behavior for valid entries.
 > 
-> [...]
+> The issue was reported through an internal bug-tracking system and
+> confirmed by manual code inspection. The pre-fix hang has not been
+> reproduced locally.
+> 
+> Fixes: 44144185951a ("hv_netvsc: Add validation for untrusted Hyper-V values")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+> Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+> Reviewed-by: Wei Liu <liuwe@microsoft.com>
+> ---
+> Changes in v2:
+> * Add Cc: stable@vger.kernel.org
+> * Clarify how the issue was reported and confirmed in commit message.
 
-Here is the summary with links:
-  - [net] xfrm: iptfs: fix skb leak on error in __input_process_payload()
-    https://git.kernel.org/netdev/net/c/64e45ed926cd
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Reviewed-by: Simon Horman <horms@kernel.org>
 
