@@ -1,69 +1,69 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793716785;
-	b=YIRj/N2bKLi1mu/RgNA/P0xU9SNvCC5BawaIUuv8NUotKbWcAcRmg4/nc7KAhjKwQFWZ
-	 KdNpNFfNVqIP1mQo8+FkEs6Sg8TRT1ORr8RDIGWD3jtm1asr33ff92RyXZK36mIsnyK8e
-	 NilEt2a9m51vITbSAblSHBXfHeivFJeGox9mz7WchzUNn6S+x6pYeQZzVV0KmeAuHsP1W
-	 3zXbYcea38l7jm795ApoXfbtSuwx5Oijp6Zi+isMiRJDqVBErT/TIW8PBYFLfNzy/ZkLC
-	 p8VBlXsekUEiWry2IriWjr/qI7rzX3kaSoBtA+tMkrJqqO0U7573ZnyX7fQXipzMLQA==
+	t=1793716786;
+	b=41bxTwkhpqMIq8sflgTgLPtCIUuIR4lNTGYe1RQ/gBgk54czB+dBAiZoRacL1shTK6Zr
+	 OqS66BXOcM+EFnsfDcrUXTH+vj0ihvDdF/m29H80D23VoT9PF+FEosbGsYSc8RcM8yK5i
+	 6DzzVAVWILxITKiAnKwLNn+RulhGTZfiYVndQd5wn8o9M55STKP2qLFA7EH0RxqaFDs4i
+	 MtnN0iVgcWNObfllaVZnEBXNo0h7su+v/g7IjAd4XpHIx8DDDLfS/N95Dwbreqfa0NQzu
+	 zL+2FKROHe6SiB/Ps+u4F4xx4V/wnTCaD/SBHgW4eM6F/4jsc2mtjb2YBk5DIsVS7xw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793716785;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793716786;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=SHRtTIwSmNkgp15gG3MxPlaeI177A9ASleGLZSw3ylE=;
-	b=Hg+xI5w3P2/VJ/xryFsQy4u5ii2Racv1uueTmEyDjo6cvYkFq4lzUWP9o1dE6PAU5fGd
-	 GYNC1eMW/72nZ8HJgrs29FDIGlXeuH9iUDZVmjYGaY5MkLKOmRIfmZ+Cuokh6izDMa2B+
-	 SiDZKUKJKPFD/YIm1OmIJOq+XfsjMXUiIW+F7udlXCuEiPeF8PATGOqzS66eO8mqYseIO
-	 HHuV2g55B3WaEmDtEd8gOMHQ3VmMwt3tGoEDLMvAleAivXTd3UGZ/R38MVB3VW01eWgEP
-	 Xmi70D+2SapoC+EAEXeOiJ2CoAwzHuXOOymbAPrD4C/tQHrOeqQ1GsjaqrrRJ/dPVNQ==
+	bh=ggAAh3lUhaZ3/7LDgjsYVL5FRljr82Ax4neiRXGRn1c=;
+	b=dZsHxxTFe8CGmz8aNQ4WoI7sRO3U94Fr7JXAVZvUnJvnKX3UfPOIG2hd09tHQlhZVY6Q
+	 V1jm8Wb88t32Wt8Fju8Covv6exGPEtuBmwt576mc+Rf6Gq6nq5oIQiDtqxS/9AsqWLLkg
+	 iAzbgo6ztgk2RhrXqChbUC3jp6MWRsTNktibrQnGqwVohnfQLoYVCdg/rM5cr8eAJIWOm
+	 Jd9caoI6GIjpuZb6kZpWSwITgMlLMvVmZLaZTlC5fDPnkkwq9htV2+u74hcUoMNHLMxZ+
+	 zCu1gxfYTP6+oY3sk09WNSSc42LZ3yT+FFbBN44tfPmOsx9YE+GHwQM4bY6h6PYI6yw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ByS5nWvG;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DgfNG8io;
 	arc=none smtp.remote-ip=198.175.65.12
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D773D606A324
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 14:39:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D773D606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4BC606A333
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 14:39:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B4BC606A333
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ByS5nWvG
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DgfNG8io
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793716783; x=1825252783;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=BnUCkLe6FRlgPEPrB3bX8dlE3/DheYzRxhVA6psip3I=;
-  b=ByS5nWvGh+vqN4JOIIl6i5Ti/8pNKEFPKpuU2t06Q9mx4OZuGMAREQft
-   12bR53mj4ndqnIBmQ4ClSGwxXBNM6XL6/HZzfIC5E9mtTKShwlC32QhYK
-   W1qwdlKaahJgOw14EWTY3cUO9znZ+biBB9c8UhTJ1nyDs+v9UAllVLJSs
-   5Edsz2yO2JzdbaCYMezKX/XVuHuFkamAUxVD7L7sEsD4IsEWSpQSYqZiC
-   KFRx4GSN14XpaseROBZubtRVcxABcFlKPtI2jp0C4AhkFUl6S4pJqzDWW
-   nMNZ67bgByOEwX3No4nGIDM8kufX0O8cA4ZiDQ8tC0uhX8Gay42EiuKIA
-   w==;
-X-CSE-ConnectionGUID: LvN6U2NlQauHSUzAEzAxRA==
-X-CSE-MsgGUID: nWXQ634YQP+FToXI/wRzCw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2323956"
+  t=1793716784; x=1825252784;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=yiM9E5vGMZcpv81MzUhcgO5fTsdfjDMSXQHPkvmc8OI=;
+  b=DgfNG8iowOCZ5ttHw9/zqf0lc1jO+WXc/QlUSOrO2hslyaUj9h5Mr5Ba
+   vNbjXaf815Ee+Xkn0CSTuQ5Ab0X1fNyriXt7Jy0DwwgLfe4Sek0AC5SwP
+   WSzMDEkTx2zvayvpZL2mZ4rI+NBFgaRcR5E/NmF3qCKBg0NTc337aKbh8
+   ajGLU7eDiS4pXDuXz/B8kE5EPI23mXqsxMtLZ9PdcdzWiEcOFpNOCOCEV
+   M+WAS3QkqEsZWve/DWPY0e9pBxFxYJM8C4wpjiygOmFJ2ZbNbOJdQmcoA
+   037kiZ7Av8skJNHQIOhxS8aAgwERsWUlV1IsoKGe4KJ57s6WkKiNAeOee
+   g==;
+X-CSE-ConnectionGUID: 9514WRuxQ/O9Pdrj82wJrA==
+X-CSE-MsgGUID: J+rFdS1tRJ2WMvfDTSmf4g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2323971"
 X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
-   d="scan'208";a="2323956"
+   d="scan'208";a="2323971"
 Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 06:39:42 -0800
-X-CSE-ConnectionGUID: ThPV+OqwRkiy1WgCNB7Glw==
-X-CSE-MsgGUID: DfaHHEhwSHij0nzhvnluUA==
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 06:39:44 -0800
+X-CSE-ConnectionGUID: zfILPtskQYONVji7/EvxmQ==
+X-CSE-MsgGUID: 5UpuyIWlQKyQOqCrNZZLwg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
-   d="scan'208";a="8289830"
+   d="scan'208";a="8289841"
 Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by fmviesa013.fm.intel.com with ESMTP; 03 Nov 2026 06:39:38 -0800
+  by fmviesa013.fm.intel.com with ESMTP; 03 Nov 2026 06:39:40 -0800
 Received: from vecna.igk.intel.com (vecna.igk.intel.com [10.123.220.17])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 5E0FF312E9;
-	Tue,  3 Nov 2026 14:39:35 +0000 (GMT)
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 0C403312EB;
+	Tue,  3 Nov 2026 14:39:36 +0000 (GMT)
 From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 To: netdev@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -90,10 +90,12 @@ Cc: intel-wired-lan@lists.osuosl.org,
 	Tariq Toukan <tariqt@nvidia.com>,
 	Mark Bloch <mbloch@nvidia.com>,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH iwl-next v4 00/15] devlink, mlx5, iavf, ice: XLVF for iavf
-Date: Tue,  3 Nov 2026 15:14:41 +0100
-Message-ID: <20261103141646.303620-1-przemyslaw.kitszel@intel.com>
+Subject: [PATCH iwl-next v4 01/15] devlink, mlx5: add init/fini ops for shared devlink
+Date: Tue,  3 Nov 2026 15:14:42 +0100
+Message-ID: <20261103141646.303620-2-przemyslaw.kitszel@intel.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261103141646.303620-1-przemyslaw.kitszel@intel.com>
+References: <20261103141646.303620-1-przemyslaw.kitszel@intel.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,274 +107,325 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Also available here
-https://github.com/pkitszel/linux/tree/xlvf-v4
+Add .shd_init() and .shd_fini() ops, that will be called for the first
+devlink_shd_get() (to initialize driver's priv data) and on the last
+devlink_shd_put() (to allow for the cleanup). Both ops are optional.
 
-The purpose of this series is to allow iavf to use more than 16 queue
-pairs, in two modes: up to 64 and up to 256 queue pairs.
+.shd_init() could return an error, which will stop creation of shd
+instance. The initializer also gets an additional, optional param,
+that driver could use for any needs.
 
-In order to support more queues for VF, we must give it a bigger RSS
-table (GLOBAL LUT or PF LUT). There are 16 GLOBAL LUTs on E810, and one
-PF LUT for every PF on given card. Both kinds could be (re)assigned to
-a VF, while a PF must hold at least one of them at any given moment.
-GLOBAL LUT allows VF to use up to 64 queues, PF LUT lets it use up to
-256 queues.
+devlink_shd_get() now returns ERR_PTR() on failure instead of NULL, so
+the error from .shd_init() reaches the caller. Adjust mlx5, the only
+user, to that and to the new param.
 
-RSS LUTs are exposed to the user for assignment via devlink resources
-API, which I have extended to make it possible.
+If any of the callbacks will need to get devlink instance, it could
+be accessed by shd_priv_to_devlink().
 
-Devlink changes:
-1. Extend shared devlink by two callbacks, that give the driver
-   a constructor/destructor for the priv data attached to the shared
-   devlink instance. The constructor gets an additional param, used in
-   "ice: represent RSS LUTs as devlink resources". mlx5 is touched only
-   to adjust to the API change.
-   ice uses the shared devlink instance as a "whole device" aggregate
-   over all PFs on given card, instead of its custom xarray.
-2. Extend devlink resources API to allow user to assign resources.
-   Before, only the driver could assign resources, without any way for
-   the user to interact. Now the driver could register an occupancy
-   setter (.occ_set()) for a resource. ice RSS LUTs are exposed that
-   way. It was proposed as an RFC in Feb 2025, link in the patch.
-3. (minor) Add devlink_alloc_drv(), to allocate a devlink instance for
-   a device on behalf of another driver. ice uses it for the VF devlink
-   instance, which has to be owned by ice regardless of the driver bound
-   to the VF device.
+Both callbacks are called with devl_lock held, .shd_init() before
+devlink is registered, .shd_fini() after it is unregistered.
 
-There are also patches for Admin Queue extension, GLOBAL RSS LUT
-alloc/free, and two rather big "new opcodes" patches, by Ahmed (iavf)
-and Brett (ice).
+Next commit will make use of the callbacks, a later one will make use
+also of the additional param.
 
-Finally there is a patch that adds devlink instance for VF and
-registers devlink resources on it, combined with all the glue code to
-make actual use of the whole series and accept the larger number of
-queues for VF. This (the last) patch contains usage examples.
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Acked-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+---
+(v0) first discussed at:
+https://lore.kernel.org/netdev/20260325063143.261806-3-przemyslaw.kitszel@intel.com
 
-There is one resource added that just groups GLOBAL and PF LUTs under
-it, so there are 3 rows of data for each device (PF/VF/whole-dev):
-$ devlink resource show pci/0000:18:00.0
-pci/0000:18:00.0:
-  name rss size 1 unit entry size_min 0 size_max 2 size_gran 1 dpipe_tables none
-    resources:
-      name lut_512 size 0 unit entry size_min 0 size_max 1 size_gran 1 dpipe_tables none
-      name lut_2048 size 1 unit entry size_min 0 size_max 1 size_gran 1 dpipe_tables none
-
-Technically the aggregate "name rss" line could be eliminated, with
-just the two last ones kept (then renamed to "rss_lut_2048" form, from
-the current "rss/lut_2048"). I like it as it is, but this is just an
-opinion, I'm open to discussion.
-
-Things AI reports but I don't want to change:
- * hardening against a malicious or buggy FW: we have to trust the FW
- * hardening of the VF against a malicious or buggy PF: likewise, VF has
-   to trust its PF; in particular, I'm not adding checks for the PF
-   reporting qregion_width so big that BIT(qregion_width) in
-   iavf_fill_rss_lut() overflows and yields a modulo by zero
- * non-atomic updates of iavf adapter->flags: pre-existing pattern in
-   the whole driver, out of scope of this series
- * lock inversion between PF devlink lock and pf->vfs.table_lock:
-   ice_tear_down_devlink_rate_tree() takes them in the opposite order
-   than ice_start_vfs() -> ice_eswitch_attach_vf(); pre-existing, will
-   be fixed separately; this series takes table_lock first
-
-Some of the pre-existing issues reported by AI are fixed in a separate
-series:
-https://lore.kernel.org/netdev/20261102105346.30739-1-przemyslaw.kitszel@intel.com
-
-v4:
- * devlink: return -EMSGSIZE directly on
-   devlink_resource_occ_size_put_legacy() failure (Jakub)
- * devlink: document in devlink-info.rst that an instance created for
-   another device reports the name of the creating driver
- * ice: declare rel_err at function scope, a declaration right after
-   a label does not build with GCC < 11 and breaks sparse (Jakub)
- * ice: take rtnl when devlink changes the RSS LUT of the PF, and tell
-   the ethtool core when the user RSS LUT is dropped, on devlink LUT
-   change and on reset; drop the -EAGAIN checks from get/set_rxfh
- * ice: reject devlink RSS LUT changes while a reset is in progress, drop
-   global RSS LUTs of the PF from the table already in
-   ice_prepare_for_reset(), as FW frees them on reset
- * ice: log when a reset discards a devlink RSS LUT assignment, keep the
-   specific extack message and the real errno when a LUT change fails
- * ice: take the Q_OPT section from vsi->info under rss_lut_lock when
-   toggling the RDMA filter
- * ice: document the devlink resources and the VF devlink instance in
-   ice.rst
- * ice: limit queue chunks of the LARGE VF opcodes to ICE_MAX_QS_PER_VF;
-   set the q_vector and ITR fields in VIRTCHNL_OP_MAP_QUEUE_VECTOR, as
-   VIRTCHNL_OP_CONFIG_IRQ_MAP does
- * ice: after a PF reset, lower the queue count only of VFs that lost
-   a bigger RSS LUT, and only to 16
- * ice: restore the VF RSS LUTs after reset outside of rtnl, cap
-   REQUEST_QUEUES at 16 for VFs without VIRTCHNL_VF_LARGE_NUM_QPAIRS,
-   report ICE_VF_VSI_ID as vport_id in GET_MAX_RSS_QREGION reply
- * ice: do a pending deferred VF reset before handling the next message
-   from that VF, clear ICE_VF_STATE_NEEDS_RESET on every VF reset, and
-   re-run the service task at once if a deferred VF reset was scheduled
-   during its pass
- * ice: don't create VF devlink instance without VF pci_dev, e.g. on s390
- * ice: report the VF queue allocation in num_queue_pairs also with
-   VIRTCHNL_VF_LARGE_NUM_QPAIRS, as in legacy mode
- * ice: use scoped_guard() instead of guard()
- * iavf: send queue configuration and queue to vector map one message per
-   watchdog run, instead of polling for each reply with a 1s timeout;
-   stop sending on a PF NACK
- * iavf: ethtool -L: let the watchdog send the queue request, instead of
-   failing with -EBUSY whenever another op is in flight
- * iavf: init: wait for the outcome of the queue request before other
-   extended caps; ask for up to one queue per CPU, take the request as
-   granted only when PF gives that many, and on a denial go on with what
-   we have; check IAVF_VF_ARQLEN1 while waiting, as the PF reset event
-   could be lost
- * iavf: reset aq_wait_count when init starts over after the PF stopped
-   responding, forget the queue request there
- * iavf: refill the RSS LUT when the RSS region changes across a reset,
-   kzalloc() the RSS key and LUT on reallocation, reject ethtool -X LUT
-   entries outside of the PF RSS region
- * iavf: num_queue_pairs is the VF allocation also with
-   VIRTCHNL_VF_LARGE_NUM_QPAIRS, ethtool -L max is the PF RSS region
- * iavf: limit MSI-X budget to 64 queue vectors, program ITR of vectors
-   16..63 via VFINT_ITRN_64, change ADQ total_qps to u16
- * many smaller fixes after Sashiko review; per-patch changelogs are
-   under "---"
-
-v3:
- * ice: fix rollback of VF queue configuration to disable queues by
-   their IDs, not by qpair index, as the config could be now split into
-   many virtchnl messages
- * ice: register PF devlink resources only in the regular probe path,
-   not in FW recovery mode
- * ice: don't free the user RSS LUT in ice_vsi_decfg(), it was done
-   outside of pf->rss_lut_lock, and ice_vsi_cfg_def() frees it anyway
-   when the LUT size changes
- * iavf: auto-request queues in LARGE mode only at init, not on every
-   reset, and only after VSI and RSS fields are initialized
- * iavf: schedule a VF reset when RSS key/LUT reallocation fails
- * devlink: keep size of .occ_set() resources in sync with the getter;
-   WARN on registering only one of .occ_set()/.occ_get()
- * devlink: add devlink_alloc_drv(), so ice owns the VF devlink
-   instance, regardless of the driver bound to the VF
- * ice: unregister VF devlink on ice_start_vfs() failure
- * ice: reject out of range itr_idx in VIRTCHNL_OP_MAP_QUEUE_VECTOR
- * ice: fill the new RSS LUT under rss_lut_lock, keep the PF LUT zeroed
-   when RXHASH is disabled
- * ice: restore VF aggregator node accounting in ice_vsi_decfg()
- * ice: drop PF RSS LUT ownership also in ice_deinit_pf(), as
-   ice_vsi_decfg() skips it after a NO_INIT VSI rebuild
- * ice: restore default RSS LUT assignment of PF and its VFs after
-   reset, as FW drops it
- * ice: check VF VSI for NULL in ice_vc_request_qs_msg()
- * ice: fix RSS LUT tracking on dual-NAC E825C: each NAC numbers its
-   PFs and global LUTs from 0, so offset secondary NAC PFs by 4, and
-   keep a separate global LUT table for the secondary NAC
- * ice: derive VF rss_size from its queue count and LUT capacity on
-   each VSI config, instead of keeping a stale value
- * ice: wake up service task when scheduling a deferred VF reset
+v1: remove redundant added blank line (Jiri)
 
 v2:
- * drop "ice: simplify ice_vc_dis_qs_msg() a little", already applied
- * devlink: propagate the .shd_init() error to the caller, so
-   devlink_shd_get() returns ERR_PTR() now; register the shared
-   instance only after successful .shd_init(); document the new ops
- * devlink: document the .occ_set() mode of resources
- * ice: prefix the shared devlink id with "ice:", handle errors of
-   devl_nested_devlink_set()
- * iavf: stop multi-message virtchnl ops (queue config, queue-vector
-   mapping) at the first error or PF NACK, keep the op pending on
-   timeout
- * iavf: fix queue and RSS (re)negotiation on init, reset and
-   ethtool -L
- * ice: serialize devlink RSS LUT changes with ethtool -x/-X/-L, RXHASH
-   toggle and VSI (re)configuration, by new pf->rss_lut_lock; make ADQ
-   and devlink RSS LUT reassignment mutually exclusive
- * ice: limit VF queue count and PF RSS size to the capacity of the
-   current RSS LUT
- * ice: create VF devlink together with the VF, rework deferred VF reset
- * many smaller fixes, mostly after Sashiko review; per-patch changelogs
-   are under "---", together with Sashiko suggestions that I decided
-   not to apply, and why
+ * call devl_register() only after .shd_init(), so there is no NEW/DEL
+   notification pair when the init callback fails; adjust the order of
+   devl_unregister() in devlink_shd_destroy() (Sashiko)
+ * return the error from .shd_init() to the caller instead of
+   collapsing every failure into -ENOMEM, devlink_shd_get() returns
+   ERR_PTR() now (Sashiko)
+ * commit message: .shd_init()/.shd_fini() are called outside of
+   devlink registration; the init param is used within this series
+ * kdoc: use @shd_init/@shd_fini member tags, fix the "shd_devlink'
+   priv" wording, document the calling context (locks, before
+   registration/after unregistration) and that a failed .shd_init()
+   is retried on the next devlink_shd_get() (Sashiko)
+ * devlink-shared.rst: document .shd_init()/.shd_fini(), init_param,
+   ERR_PTR() return and shd_priv_to_devlink() (Sashiko)
+---
+ .../networking/devlink/devlink-shared.rst     | 19 ++++++-
+ include/net/devlink.h                         | 30 ++++++++++
+ .../ethernet/mellanox/mlx5/core/sh_devlink.c  |  6 +-
+ net/devlink/sh_dev.c                          | 57 ++++++++++++++++---
+ 4 files changed, 98 insertions(+), 14 deletions(-)
 
-v1:
-https://lore.kernel.org/netdev/20260508124208.11622-1-przemyslaw.kitszel@intel.com
-
-v2:
-https://lore.kernel.org/netdev/20261009121433.30347-1-przemyslaw.kitszel@intel.com
-
-v3:
-https://lore.kernel.org/netdev/20261015185454.6332-1-przemyslaw.kitszel@intel.com
-
-
-Ahmed Zaki (1):
-  iavf: use new opcodes to request more than 16 queues
-
-Brett Creeley (2):
-  ice: add VF queue ena/dis helper functions
-  ice: introduce handling of virtchnl LARGE VF opcodes
-
-Przemek Kitszel (12):
-  devlink, mlx5: add init/fini ops for shared devlink
-  ice: use shared devlink to store ice_adapters instead of custom xarray
-  ice: add helpers for Global RSS LUT alloc, free, vsi_update
-  ice: rename ICE_MAX_RSS_QS_PER_VF to ICE_MAX_QS_PER_VF_VCV1
-  ice: bump to 256qs for VF
-  iavf: extend iavf_configure_queues() to support more queues
-  iavf: temporary rename of IAVF_MAX_REQ_QUEUES to
-    IAVF_MAX_REQ_QUEUES_VCV1
-  iavf: increase max number of queues to 256
-  devlink: give user option to allocate resources
-  ice: represent RSS LUTs as devlink resources
-  devlink: add devlink_alloc_drv()
-  ice: support up to 256 VF queues
-
- .../networking/devlink/devlink-info.rst       |   2 +
- .../networking/devlink/devlink-resource.rst   |   5 +
- .../networking/devlink/devlink-shared.rst     |  19 +-
- Documentation/networking/devlink/ice.rst      |  74 ++
- drivers/net/ethernet/intel/ice/Makefile       |   1 +
- drivers/net/ethernet/intel/iavf/iavf.h        |  35 +-
- .../net/ethernet/intel/iavf/iavf_register.h   |   2 +
- .../net/ethernet/intel/ice/devlink/devlink.h  |   2 +-
- .../net/ethernet/intel/ice/devlink/resource.h |  28 +
- drivers/net/ethernet/intel/ice/ice.h          |   5 +-
- drivers/net/ethernet/intel/ice/ice_adapter.h  |  55 +-
- .../net/ethernet/intel/ice/ice_adminq_cmd.h   |   1 +
- drivers/net/ethernet/intel/ice/ice_common.h   |   1 +
- drivers/net/ethernet/intel/ice/ice_lag.h      |   2 +-
- drivers/net/ethernet/intel/ice/ice_lib.h      |   5 +
- drivers/net/ethernet/intel/ice/ice_switch.h   |   5 +-
- drivers/net/ethernet/intel/ice/ice_vf_lib.h   |  36 +-
- drivers/net/ethernet/intel/ice/virt/queues.h  |   3 +
- drivers/net/ethernet/intel/ice/virt/rss.h     |   1 +
- .../net/ethernet/intel/ice/virt/virtchnl.h    |   4 +
- include/linux/net/intel/virtchnl.h            | 136 ++-
- include/net/devlink.h                         |  41 +
- .../net/ethernet/intel/iavf/iavf_ethtool.c    |  45 +-
- drivers/net/ethernet/intel/iavf/iavf_main.c   | 253 +++++-
- .../net/ethernet/intel/iavf/iavf_virtchnl.c   | 281 +++++-
- .../net/ethernet/intel/ice/devlink/devlink.c  |  11 +-
- .../net/ethernet/intel/ice/devlink/resource.c | 804 ++++++++++++++++++
- drivers/net/ethernet/intel/ice/ice_adapter.c  | 115 +--
- drivers/net/ethernet/intel/ice/ice_common.c   |   2 +-
- drivers/net/ethernet/intel/ice/ice_ethtool.c  |  91 +-
- drivers/net/ethernet/intel/ice/ice_idc.c      |  25 +-
- drivers/net/ethernet/intel/ice/ice_lag.c      |   6 +-
- drivers/net/ethernet/intel/ice/ice_lib.c      | 169 +++-
- drivers/net/ethernet/intel/ice/ice_main.c     |  64 +-
- drivers/net/ethernet/intel/ice/ice_sriov.c    |  19 +-
- drivers/net/ethernet/intel/ice/ice_switch.c   |  52 +-
- drivers/net/ethernet/intel/ice/ice_vf_lib.c   |  79 +-
- .../net/ethernet/intel/ice/virt/allowlist.c   |   8 +
- drivers/net/ethernet/intel/ice/virt/queues.c  | 518 +++++++++--
- drivers/net/ethernet/intel/ice/virt/rss.c     |  38 +-
- .../net/ethernet/intel/ice/virt/virtchnl.c    |  38 +-
- .../ethernet/mellanox/mlx5/core/sh_devlink.c  |   6 +-
- net/devlink/core.c                            |  20 +
- net/devlink/resource.c                        |  97 ++-
- net/devlink/sh_dev.c                          |  57 +-
- 45 files changed, 2946 insertions(+), 315 deletions(-)
- create mode 100644 drivers/net/ethernet/intel/ice/devlink/resource.h
- create mode 100644 drivers/net/ethernet/intel/ice/devlink/resource.c
-
+diff --git a/Documentation/networking/devlink/devlink-shared.rst b/Documentation/networking/devlink/devlink-shared.rst
+index 16bf6a7d25d9..f8b2a3d8aa82 100644
+--- a/Documentation/networking/devlink/devlink-shared.rst
++++ b/Documentation/networking/devlink/devlink-shared.rst
+@@ -45,6 +45,14 @@ The following functions are provided for managing shared devlink instances:
+ * ``devlink_shd_get()``: Get or create a shared devlink instance identified by a string ID
+ * ``devlink_shd_put()``: Release a reference on a shared devlink instance
+ * ``devlink_shd_get_priv()``: Get private data from shared devlink instance
++* ``shd_priv_to_devlink()``: Get shared devlink instance from its private data
++
++``devlink_shd_get()`` returns ``ERR_PTR()`` on failure.
++
++The driver may initialize and clean up its private data of the shared
++instance in the optional ``shd_init()`` and ``shd_fini()`` callbacks of
++``struct devlink_ops``. The ``init_param`` argument of ``devlink_shd_get()``
++is passed to ``shd_init()``.
+ 
+ Initialization Flow
+ -------------------
+@@ -55,7 +63,9 @@ Initialization Flow
+ 
+    * The function looks up existing instance by identifier
+    * If none exists, creates new instance:
+-     - Allocates and registers devlink instance
++     - Allocates devlink instance
++     - Calls ``shd_init()`` (if set), on failure frees it and returns the error
++     - Registers devlink instance
+      - Adds to global shared instances list
+      - Increments reference count
+ 
+@@ -67,7 +77,8 @@ Cleanup Flow
+ 
+ 1. **Cleanup** when PF is removed
+ 2. **Call** ``devlink_shd_put()`` to release reference (decrements reference count)
+-3. **Shared instance is automatically destroyed** when the last PF removes (reference count reaches zero)
++3. **Shared instance is automatically destroyed** when the last PF removes (reference count reaches zero),
++   ``shd_fini()`` (if set) is called after unregistering it
+ 
+ Chip Identification
+ -------------------
+@@ -85,6 +96,10 @@ Locking
+ 
+ A global mutex (``shd_mutex``) protects the shared instances list during registration/deregistration.
+ 
++``shd_init()`` and ``shd_fini()`` are called with ``shd_mutex`` and the devlink
++lock of the shared instance held, thus must not call ``devlink_shd_get()`` nor
++``devlink_shd_put()``, and must use ``devl_*()`` variants of devlink API.
++
+ Similarly to other nested devlink instance relationships, devlink lock of
+ the shared instance should be always taken after the devlink lock of PF.
+ 
+diff --git a/include/net/devlink.h b/include/net/devlink.h
+index 7abd23376319..98bdde4f72ca 100644
+--- a/include/net/devlink.h
++++ b/include/net/devlink.h
+@@ -1607,6 +1607,34 @@ struct devlink_ops {
+ 	 * with other operations.
+ 	 */
+ 	bool supported_cross_device_rate_nodes;
++	/**
++	 * @shd_init: Shared devlink instance initializer.
++	 *
++	 * Gets the driver's priv data of the shared instance (the same as
++	 * devlink_shd_get_priv() returns) and the init_param passed to
++	 * devlink_shd_get(). Should initialize the priv data. May be NULL.
++	 *
++	 * Called when devlink_shd_get() creates the shared instance, before
++	 * it is registered. If it fails, the instance is freed without calling
++	 * @shd_fini, and the next devlink_shd_get() for the same id will try to
++	 * create it (and call @shd_init) again.
++	 *
++	 * Called with the global shared devlink mutex and the devlink lock of
++	 * the shared instance held, thus must not call devlink_shd_get() nor
++	 * devlink_shd_put(), and must use devl_*() variants of devlink API.
++	 *
++	 * Return: 0 on success, negative errno to fail the creation.
++	 */
++	int (*shd_init)(void *priv, void *init_param);
++	/**
++	 * @shd_fini: Shared devlink instance finalizer.
++	 *
++	 * Gets the driver's priv data of the shared instance. Called when the
++	 * last reference is dropped, after the shared instance is unregistered,
++	 * in the same locking context as @shd_init. Should clean up the priv
++	 * data. May be NULL.
++	 */
++	void (*shd_fini)(void *priv);
+ 	/**
+ 	 * selftests_check() - queries if selftest is supported
+ 	 * @devlink: devlink instance
+@@ -1672,9 +1700,11 @@ void devlink_free(struct devlink *devlink);
+ struct devlink *devlink_shd_get(const char *id,
+ 				const struct devlink_ops *ops,
+ 				size_t priv_size,
++				void *init_param,
+ 				const struct device_driver *driver);
+ void devlink_shd_put(struct devlink *devlink);
+ void *devlink_shd_get_priv(struct devlink *devlink);
++struct devlink *shd_priv_to_devlink(void *priv);
+ 
+ /**
+  * struct devlink_port_ops - Port operations
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c
+index b925364765ac..2c58f820b018 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c
+@@ -43,10 +43,10 @@ int mlx5_shd_init(struct mlx5_core_dev *dev)
+ 	*end = '\0';
+ 
+ 	/* Get or create shared devlink instance */
+-	devlink = devlink_shd_get(sn, &mlx5_shd_ops, 0, pdev->dev.driver);
++	devlink = devlink_shd_get(sn, &mlx5_shd_ops, 0, NULL, pdev->dev.driver);
+ 	kfree(sn);
+-	if (!devlink)
+-		return -ENOMEM;
++	if (IS_ERR(devlink))
++		return PTR_ERR(devlink);
+ 
+ 	dev->shd = devlink;
+ 	return 0;
+diff --git a/net/devlink/sh_dev.c b/net/devlink/sh_dev.c
+index 85acce97e788..4f1b2f24b755 100644
+--- a/net/devlink/sh_dev.c
++++ b/net/devlink/sh_dev.c
+@@ -34,43 +34,61 @@ static struct devlink_shd *devlink_shd_lookup(const char *id)
+ static struct devlink_shd *devlink_shd_create(const char *id,
+ 					      const struct devlink_ops *ops,
+ 					      size_t priv_size,
++					      void *init_param,
+ 					      const struct device_driver *driver)
+ {
+ 	struct devlink_shd *shd;
+ 	struct devlink *devlink;
++	int err;
+ 
+ 	devlink = __devlink_alloc(ops, sizeof(struct devlink_shd) + priv_size,
+ 				  &init_net, NULL, driver);
+ 	if (!devlink)
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
+ 	shd = devlink_priv(devlink);
+ 
+ 	shd->id = kstrdup(id, GFP_KERNEL);
+-	if (!shd->id)
++	if (!shd->id) {
++		err = -ENOMEM;
+ 		goto err_devlink_free;
++	}
+ 	shd->priv_size = priv_size;
+-	refcount_set(&shd->refcount, 1);
+ 
+ 	devl_lock(devlink);
++
++	if (ops->shd_init) {
++		err = ops->shd_init(shd->priv, init_param);
++		if (err)
++			goto err_unlock;
++	}
+ 	devl_register(devlink);
+ 	devl_unlock(devlink);
+ 
++	refcount_set(&shd->refcount, 1);
+ 	list_add_tail(&shd->list, &shd_list);
+ 
+ 	return shd;
+ 
++err_unlock:
++	devl_unlock(devlink);
++	kfree(shd->id);
++
+ err_devlink_free:
+ 	devlink_free(devlink);
+-	return NULL;
++	return ERR_PTR(err);
+ }
+ 
+ static void devlink_shd_destroy(struct devlink_shd *shd)
+ {
+ 	struct devlink *devlink = priv_to_devlink(shd);
+ 
+ 	list_del(&shd->list);
+ 	devl_lock(devlink);
+ 	devl_unregister(devlink);
++
++	if (devlink->ops->shd_fini)
++		devlink->ops->shd_fini(shd->priv);
++
+ 	devl_unlock(devlink);
+ 	kfree(shd->id);
+ 	devlink_free(devlink);
+@@ -81,46 +99,53 @@ static void devlink_shd_destroy(struct devlink_shd *shd)
+  * @id: Identifier string (e.g., serial number) for the shared instance
+  * @ops: Devlink operations structure
+  * @priv_size: Size of private data structure
++ * @init_param: Passed to .shd_init() callback alongside driver's priv;
++ *              this value need not match across all users of the shared
++ *              instance
+  * @driver: Driver associated with the shared devlink instance
+  *
+  * Get an existing shared devlink instance identified by @id, or create
+  * a new one if it doesn't exist. Return the devlink instance with a
+  * reference held. The caller must call devlink_shd_put() when done.
+  *
++ * On creation, @ops->shd_init() is called (if set), see its description
++ * for the calling context. Its error is returned to the caller.
++ *
+  * All callers sharing the same @id must pass identical @ops, @priv_size
+- * and @driver. A mismatch triggers a warning and returns NULL.
++ * and @driver. A mismatch triggers a warning and returns ERR_PTR(-EINVAL).
+  *
+  * Return: Pointer to the shared devlink instance on success,
+- *         NULL on failure
++ *         ERR_PTR() on failure
+  */
+ struct devlink *devlink_shd_get(const char *id,
+ 				const struct devlink_ops *ops,
+ 				size_t priv_size,
++				void *init_param,
+ 				const struct device_driver *driver)
+ {
+ 	struct devlink *devlink;
+ 	struct devlink_shd *shd;
+ 
+ 	mutex_lock(&shd_mutex);
+ 
+ 	shd = devlink_shd_lookup(id);
+ 	if (!shd) {
+-		shd = devlink_shd_create(id, ops, priv_size, driver);
++		shd = devlink_shd_create(id, ops, priv_size, init_param, driver);
+ 		goto unlock;
+ 	}
+ 
+ 	devlink = priv_to_devlink(shd);
+ 	if (WARN_ON_ONCE(devlink->ops != ops ||
+ 			 shd->priv_size != priv_size ||
+ 			 devlink->dev_driver != driver)) {
+-		shd = NULL;
++		shd = ERR_PTR(-EINVAL);
+ 		goto unlock;
+ 	}
+ 	refcount_inc(&shd->refcount);
+ 
+ unlock:
+ 	mutex_unlock(&shd_mutex);
+-	return shd ? priv_to_devlink(shd) : NULL;
++	return IS_ERR(shd) ? ERR_CAST(shd) : priv_to_devlink(shd);
+ }
+ EXPORT_SYMBOL_GPL(devlink_shd_get);
+ 
+@@ -159,3 +184,17 @@ void *devlink_shd_get_priv(struct devlink *devlink)
+ 	return shd->priv;
+ }
+ EXPORT_SYMBOL_GPL(devlink_shd_get_priv);
++
++/**
++ * shd_priv_to_devlink - Get shared devlink instance from its priv data
++ * @priv: Driver's priv data, as returned by devlink_shd_get_priv()
++ *
++ * Return: pointer to shared devlink instance the @priv belongs to.
++ */
++struct devlink *shd_priv_to_devlink(void *priv)
++{
++	struct devlink_shd *shd = container_of(priv, struct devlink_shd, priv);
++
++	return priv_to_devlink(shd);
++}
++EXPORT_SYMBOL_GPL(shd_priv_to_devlink);
 -- 
 2.54.0
 
