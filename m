@@ -1,117 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.98
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793709500;
-	b=lIct4s2zhTt4gYPI1QlPVGY0/dQ15oANX+xzpptje9TzBNNmR4LohwSy41OE3fqq/W2+
-	 zsXFQhX1uqGLz/J/sy1985yIgcasDdyqsn3BzM99c6DJ9v635cF9CRNGnI4p6WBc0Mttw
-	 Zn6aFJ8U7mI1VuLIATGhfK73B0V8yDe/Xy6tYT47Gmw8kjeT8+tKPrOpW2tB1aLPbp0y0
-	 3FUPUsBoCoA09tiaXS4U2O4YkIrvDKnPLkKmGRh0rTuul74Xbss30gJPYZuHnTMaQtWxt
-	 yQs6YeZNCV0drVqo5EK63oDWFQL/A0w0nfZKH3oj2LSftFHRVr76yyh/83D3MbqrOiw==
+	t=1793709561;
+	b=ysMRbYDNJwc6NGLOUnClmuJmaj1F+8o0x+zPLvvNjX8cVwufc3wz20Vt4Ntpl65T0SR8
+	 GlBNn2Hkk/CcZ4O1e2puLsr+uAgwvgktOP16eCy+ly5bvbdAvLPWujZlI2UQNhH5GxUSe
+	 VzgnoSRpQkTth4H29Xvu8PgfSciyTDANYdVbcq9u0qHHGoq/MPpvXxDR9NRjVTZjBPOb4
+	 SxTurmfH/7oCSPOSivSgcjdYp7ezkdYVhPG/gP06AAwY5FcWyWWDz8hWngg6aYgYeY5HS
+	 HmszBi0mmW/XULOXHjWzCsORsGSMX7XGIGeRckHvtkUzJepc0HNMppCmFKn+gPTvwTw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793709500;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
-	 X-Gm-Gg:X-Received:Received:X-Relaying-Domain:X-CFilter-Loop:Received:
-	 DKIM-Signature:X-Received:X-Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-DetectorID-Processed;
-	bh=8IDwP9IYS4XmHypL7MGOoMhHcjv7hew6VCrCCf2b2BA=;
-	b=nA/MiWHlEt1X99fFMHWS73GuhebveySPY+k84ojqJSN0Wt9xAdsQLRurO2YeZVyaq8j7
-	 qGrLyc3HmWzabgWJKlmJ1GuMgRj8B8AOrHR19VqPnrEPGadAw8FNVaLgsDJN4/UqaRI7Y
-	 Ymz8hRffrcMT2tAawKt64HWnE9xMnID44Yay1E2lpX2klhyVIa53UTqRpshAsGpxkKA6k
-	 7q319+FIFuLc2S7D9eYFYlbbZpvbMIiqsX5Id1Ft3xoIlu3eGVh9c84/mMgS7dQh2Ga7Y
-	 GW/IpMxi6aunwxWBteuAmMAJHojGjytJwJ1UcWo0ysQ1n/bAULX7RbAYM+HR9/Whjbg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793709561;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=qfhgYc9ZnyDR0V+JU+Iip26bBIuO5bnj/fnxRw088+Y=;
+	b=nUVbOJKtQ9M/lm/KaOkurYomqn1rsR5IAPVAhjSv3xL0dEhnZKG1wJWcI7O0we4PDdUw
+	 VM3cQZohql7agTZMIuD/27tcPFv3a4RzreVjH9T6OofRtszF7qbJBOD8zwkgVOk01yoVT
+	 sAiJZpCjJWqZLnJ1glAPJ+3ASZ4CZ202lqaysFqWAWad1awG+5QGMozET1ow+Ua267Y94
+	 448is4UoCH0ZiJVof6oVZZALri4e8Qiq9KxXZHBvzj7kx3ZQri4AFZBlZmDAQYFbYSJWo
+	 /tzjHteCPbGDdoCBDZxrOolizRT/urTPs+liAD3Yu8dc3iHEP0+nbJMIb4+2bc5Xq2w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=broadcom.com;
-	spf=fail smtp.mailfrom=broadcom.com;
-	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=KkY9dvpP;
-	arc=none smtp.remote-ip=209.85.216.98
-Received: from mail-pj1-f98.google.com (mail-pj1-f98.google.com [209.85.216.98])
+	dmarc=none header.from=mojatatu.com;
+	spf=none smtp.mailfrom=mojatatu.com;
+	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=A6+dP1o7;
+	arc=none smtp.remote-ip=209.85.128.169
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15EF606D827
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 12:38:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B15EF606D827
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCF3606A327
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 12:39:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CBCF3606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=KkY9dvpP
-Received: by mail-pj1-f98.google.com with SMTP id 98e67ed59e1d1-3acb11973c3so3045507a91.3
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 04:38:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793709499; x=1794314299;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8IDwP9IYS4XmHypL7MGOoMhHcjv7hew6VCrCCf2b2BA=;
-        b=0G0HQiRTq6PY8GnQwTv4sfbeL+Ne+IhoAx/VJOEDBsqr5ZUbvEsinIJnTKUbyMlRcA
-         hL2SUE1WKfxcp9LjUvYntNEq8Injk7iVUjxeUd5Jy92/z1y4brQw2fwfHUHwvavdft+I
-         6lq306eXDw7XhvJaYp19S+yWySlBuHWcBO4Ji+42VUNtRbQPJoGtDKOYAwFRqVAsh5uT
-         3wDRti2lhxTBQC9uvFHp+WwqbBkz0vw0HS6UiCHMmh7z1JZ3YXat/K/GzXzvEbhJJDai
-         1YGMPlcsfqKZIuLhOPogMIsuq45/p2gYUQFS557FUzeQsC6H8u4yfY8L8H493BU4aCv1
-         T3lA==
-X-Gm-Message-State: APuU4Z/RyW0oHesAH8EUBygY/gbd7yS8RGYn4T5hm4A/RG7B/8SNmX0V
-	Ejb5/0kr620kROELx418FUxFr0yGNCJ2kQexioCJ1lnhhSuFi2l01LoaeOkhxUiMiQVpgg9xdW9
-	4KEeZLBXq6M+3Bx/NVNEhNzwdW5aePa0TICOE/bRO6CY57IT4rIUcCJc8N7gfKzLTnd3Seov7uF
-	r/G6z24YTHsxwx8OyfdEkfI+wkFGyZkLKuOOEcOCkwKfeB5ZDIuD7YWfgTKp2f98iU88TxrEBPd
-	+TKW9q62g==
-X-Gm-Gg: AYBFou2HmuFZp5s5mxOcwb7+mMlkuwuBjy8vhVhQMKdf+soqAZn0ZpF7LjRqO6Z2b+Z
-	9VofFjFtOCrdSiZ0rQ7GZsGfnrzStNCFasXK6PdjxF+rOUIoIf3R0ER3o+kk1YdsO5/LP6LLBXu
-	3g5EgzSif6+MnlN8War9SA1q2bGDw42mq2J+ZWy2kAPRr3DSs90aghjpIav7NLk0BlMVaJgBn2S
-	82L3N3hC4kUqVyc2oZb4Hi7NKKdc12TWQL0YsJAhznTF8+8Lwrz8YsBDQCEVrjRXmV3YcMlsTHp
-	1Z8k7vGRlxPSDay/NbW7gVPAy+DBAZa/e/mWruA7FTSowzUpBW9A/T9/yVvNdDYNQmNYgawtenN
-	t5hXtCslaCEh1clHVI95s1B+rTwiSu/5MxE2nt08gb+LPe+81FJoHvE/4VPSu6BqXvt8Rh/3PW+
-	9IgdEr7vMHz+dlDn9Vwzb/KafqU4ysoCV13g==
-X-Received: by 2002:a17:90b:2803:b0:3a4:bd4e:6d15 with SMTP id 98e67ed59e1d1-3ae89763070mr10288065a91.34.1793709499011;
-        Tue, 03 Nov 2026 04:38:19 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-28.dlp.protect.broadcom.com. [144.49.247.28])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ae88072814sm4058598a91.3.2026.11.03.04.38.18
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 03 Nov 2026 04:38:18 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3ab7f1efe5dso5658658a91.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 04:38:18 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=A6+dP1o7
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-8b300713befso2456387b3.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 04:39:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1793709497; x=1794314297; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=mojatatu.com; s=google; t=1793709560; x=1794314360; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qfhgYc9ZnyDR0V+JU+Iip26bBIuO5bnj/fnxRw088+Y=;
+        b=A6+dP1o7LKHX53X7NYKDXsomqh+efBMs3YZTGz135RsYdqoktqOF1UJ71Yy511EOtZ
+         VKjD9LYNPt2mpq0+eEnzPrORUfJaB3i1HDakOSM1HFdu3r2bagSYYjR+VlZa0VXBlPoj
+         SWxazgzOYjXPCYnPPDVFqjstVySEoIrn1pXJ4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793709560; x=1794314360;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=8IDwP9IYS4XmHypL7MGOoMhHcjv7hew6VCrCCf2b2BA=;
-        b=KkY9dvpPcK9+wgSxfYeaYFVao4E4EU+N4vmZukMJ57qbXgd3749jbW6LcHTlqoFG1r
-         dAl7kYVAqLJ81IAHEN4bV4vWBbPOxgujRBgVckqI75QN0wXjQqj+M+b3Yha43PDpKS8C
-         3XA5lH2hLPjjXwL4kF1YLpoG27YHgjioD72to=
-X-Received: by 2002:a17:90b:2d0c:b0:3a8:5cab:1009 with SMTP id 98e67ed59e1d1-3ae897ba3b2mr11093952a91.46.1793709497363;
-        Tue, 03 Nov 2026 04:38:17 -0800 (PST)
-X-Received: by 2002:a17:90b:2d0c:b0:3a8:5cab:1009 with SMTP id 98e67ed59e1d1-3ae897ba3b2mr11093923a91.46.1793709496882;
-        Tue, 03 Nov 2026 04:38:16 -0800 (PST)
-Received: from H5-S1 ([192.19.203.250])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b08759344dsm2131567a91.13.2026.11.03.04.38.11
+        bh=qfhgYc9ZnyDR0V+JU+Iip26bBIuO5bnj/fnxRw088+Y=;
+        b=tyfM7O5UtHRDJiaRpJLq3bWmU2DYEf+zyhCyEbUEPH79lAVGB1AikelUcxkFV6nrd2
+         h4FsLV3sarLa8RDCy7AxVcIqW9L/7GVddv+QlOQpDY+k5C3GxsHHoUcvM3rwngk1nUle
+         GFHxj09OZhmVd1eiq2m4Bc6766MFHOUIcsW6IO7MxLnuRp9JAfFcRBmHV2pbcLOEo0ki
+         Sv4I/phzGYtLU3rqHs09+019wdCRLeZDlUPMU+cAJyRXPwvuQvAicTzZYCIDjxgV/ZwT
+         b1CfJONZwfIkr19TpuzLVd1oQnEuZ4LJBws63D54AkyQPDO8y2GSUChJv+uN9FcZm/nO
+         LXAA==
+X-Gm-Message-State: APuU4Z/naW+29yKCAhDiLucYlBRu4q3NofCMu5wJ//FmVMqEXT0fe+/c
+	Hy/VcrhwUtsecRbqnUAVHCa21XmWrWdhzZ0ehxVH7b3qBcF0FjMqR0T0VkuEysaZqXEr3+Oexam
+	g4PA=
+X-Gm-Gg: AYBFou1gC5LcXlgl9O+fHkOHqnyDWN3Le2dRYSMJdKhrkM2EQfLVD3TFWMwy+B4Y+PJ
+	ZEjwKuD3qgVwpNFvGhfcOAWqwv4x5a6ipcPLodwNAMwn4QH2U/zV9RTzE9a1ZXIWWsftSonrDPJ
+	m7pbmsOuOfE7IThJoDEfIC+foBfNQnOAWmcwR3QlDFtcfxZwaw7VyydS18GzPErMTv805X6L6ej
+	3gng/oPmn2T1Wi2JMBjS+8L99+bb4f2jfMl8IlPD9joZKBPLtgZT/CdoB7doLxjFO0wXHvvjZb8
+	Z7qFQvPyUlJWAbF3xtv/qtrGfND2YOcbyAI1PpTDqVNESFDynMu3QFjGpsUsoAawGX8Zd20q4hP
+	ufodYGZbV56ucvAxQezekV2pHQwHRYmMeaaE1sqQVU1j7aFVDPJONHqRATiTtQ/J9rNbxEowT/A
+	w0PEPtKEmRJB0VUumEqXkveGfFMbEl76Wsad3ZI6k8Z/PI1K3MXxPMCiLQ8SvsonJe6hFkV+pZp
+	5DbqNLo/SUyawvwMcONnybotYoZwk6klCI+viMZ5v4PJ6gKMGSdCsVZHobw2J4PMrz0/JfJzCmz
+	mSeDHQ1O5RRAmEYrqz1N4s62zyYyUB8jMRyF9P2qP2UnHiI183+nP/gj7RRmHQMcXNysKQLGEK3
+	JtB0SBtKd8eVFZG0=
+X-Received: by 2002:a05:690c:60c1:b0:8ab:3918:33d9 with SMTP id 00721157ae682-8b2b67ae0a0mr95022047b3.61.1793709559759;
+        Tue, 03 Nov 2026 04:39:19 -0800 (PST)
+Received: from mbili.tail33bf8.ts.net ([64.203.83.2])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b2b716d420sm72011827b3.33.2026.11.03.04.39.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 04:38:16 -0800 (PST)
-From: Vikas Gupta <vikas.gupta@broadcom.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bhargava.marreddy@broadcom.com,
-	rahul-rg.gupta@broadcom.com,
-	vsrama-krishna.nemani@broadcom.com,
-	rajashekar.hudumula@broadcom.com,
-	dharmender.garg@broadcom.com,
-	ajit.khaparde@broadcom.com,
-	Vikas Gupta <vikas.gupta@broadcom.com>
-Subject: [PATCH net-next v5 10/10] bnge: add cpu_rmap support for IRQ affinity
-Date: Tue,  3 Nov 2026 18:06:50 +0530
-Message-ID: <20261103123651.442893-11-vikas.gupta@broadcom.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20261103123651.442893-1-vikas.gupta@broadcom.com>
-References: <20261103123651.442893-1-vikas.gupta@broadcom.com>
+        Tue, 03 Nov 2026 04:39:19 -0800 (PST)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	stable@vger.kernel.org,
+	sashiko-bot@kernel.org
+Subject: [PATCH net v3 0/2] net/sched: sch_teql: fix header-cloned write and retry strip
+Date: Tue,  3 Nov 2026 07:39:14 -0500
+Message-Id: <QDISC-6HS9.v3.r0.20261103062649@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -122,138 +100,51 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-When CONFIG_RFS_ACCEL is enabled, allocate and populate a cpu_rmap
-for the RX IRQ vectors so that the kernel's aRFS infrastructure can
-correctly map flows to the RX queues serviced by the nearest CPU.
+Two pre-existing defects on the teql transmit path, both around
+teql_master_xmit() -> teql_resolve().
 
-This ensures that NTUPLE rules created by the kernel steer packets
-to the optimal queue based on CPU/IRQ affinity.
+Patch 1 makes the headroom private before the slave's header write and
+pulls back only the header that slave added, so a header-cloned skb is not
+corrupted and a userspace-supplied link header survives a retry.
 
-Also, This is the patch that turns aRFS on. Before it dev->rx_cpu_rmap
-was never set, so set_rps_cpu() took its early exit and
-bnge_rx_flow_steer() from the previous patch was never called.
-A failed rmap allocation does not fail the open; aRFS stays off.
-If adding an IRQ to the rmap fails for one ring, aRFS is turned off
-for all rings, because a later ring would otherwise take the free slot
-and map to the wrong RX queue.
+Patch 2 moves skb->dev = slave ahead of teql_resolve() so a skb parked on
+a slave's neighbour arp_queue names the device whose neighbour took it, and
+restores skb->dev at the arp-queue reinjection point so the parked skb goes
+back through the master and leaves with a link header.
 
-Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
-Reviewed-by: Dharmender Garg <dharmender.garg@broadcom.com>
----
- .../net/ethernet/broadcom/bnge/bnge_netdev.c  | 57 ++++++++++++++++++-
- 1 file changed, 56 insertions(+), 1 deletion(-)
+Both are follow-ups to commit dc4b95b8fee9 ("net/sched: sch_teql: restore
+skb->dev on the slave failure path") by Victor Nogueira.
 
-diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-index 835619604dc2..afdd00ff4944 100644
---- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-+++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-@@ -18,6 +18,7 @@
- #include <net/ip.h>
- #include <linux/skbuff.h>
- #include <net/page_pool/helpers.h>
-+#include <linux/cpu_rmap.h>
- 
- #include "bnge.h"
- #include "bnge_hwrm.h"
-@@ -2460,10 +2461,23 @@ static int bnge_setup_interrupts(struct bnge_net *bn)
- {
- 	struct net_device *dev = bn->netdev;
- 	struct bnge_dev *bd = bn->bd;
-+	int rc;
- 
- 	bnge_setup_msix(bn);
- 
--	return netif_set_real_num_queues(dev, bd->tx_nr_rings, bd->rx_nr_rings);
-+	rc = netif_set_real_num_queues(dev, bd->tx_nr_rings, bd->rx_nr_rings);
-+	if (rc)
-+		return rc;
-+
-+#ifdef CONFIG_RFS_ACCEL
-+	if (bn->priv_flags & BNGE_NET_EN_NTUPLE) {
-+		dev->rx_cpu_rmap = alloc_irq_cpu_rmap(bd->rx_nr_rings);
-+		if (!dev->rx_cpu_rmap)
-+			netdev_warn(dev, "Unable to allocate the CPU rmap, aRFS disabled\n");
-+	}
-+#endif
-+
-+	return rc;
- }
- 
- static void bnge_hwrm_resource_free(struct bnge_net *bn, bool close_path)
-@@ -2473,12 +2487,35 @@ static void bnge_hwrm_resource_free(struct bnge_net *bn, bool close_path)
- 	bnge_hwrm_stat_ctx_free(bn);
- }
- 
-+#ifdef CONFIG_RFS_ACCEL
-+/* set_rps_cpu() reads rx_cpu_rmap under rcu_read_lock(). Hide the pointer and
-+ * wait for readers that already loaded it before the rmap is freed.
-+ */
-+static void bnge_free_cpu_rmap(struct bnge_net *bn)
-+{
-+	struct cpu_rmap *rmap = bn->netdev->rx_cpu_rmap;
-+
-+	if (!rmap)
-+		return;
-+
-+	WRITE_ONCE(bn->netdev->rx_cpu_rmap, NULL);
-+	synchronize_net();
-+	free_irq_cpu_rmap(rmap);
-+}
-+#else
-+static inline void bnge_free_cpu_rmap(struct bnge_net *bn)
-+{
-+}
-+#endif
-+
- static void bnge_free_irq(struct bnge_net *bn)
- {
- 	struct bnge_dev *bd = bn->bd;
- 	struct bnge_irq *irq;
- 	int i;
- 
-+	bnge_free_cpu_rmap(bn);
-+
- 	for (i = 0; i < bd->nq_nr_rings; i++) {
- 		int map_idx = bnge_cp_num_to_irq_num(bn, i);
- 
-@@ -2498,6 +2535,7 @@ static void bnge_free_irq(struct bnge_net *bn)
- 
- static int bnge_request_irq(struct bnge_net *bn)
- {
-+	struct cpu_rmap *rmap = NULL;
- 	struct bnge_dev *bd = bn->bd;
- 	int i, rc;
- 
-@@ -2506,10 +2544,27 @@ static int bnge_request_irq(struct bnge_net *bn)
- 		netdev_err(bn->netdev, "bnge_setup_interrupts err: %d\n", rc);
- 		return rc;
- 	}
-+
-+#ifdef CONFIG_RFS_ACCEL
-+	rmap = bn->netdev->rx_cpu_rmap;
-+#endif
-+
- 	for (i = 0; i < bd->nq_nr_rings; i++) {
- 		int map_idx = bnge_cp_num_to_irq_num(bn, i);
- 		struct bnge_irq *irq = &bd->irq_tbl[map_idx];
- 
-+		if (IS_ENABLED(CONFIG_RFS_ACCEL) &&
-+		    rmap && bn->bnapi[i]->rx_ring) {
-+			rc = irq_cpu_rmap_add(rmap, irq->vector);
-+			if (rc) {
-+				netdev_warn(bn->netdev,
-+					    "failed adding irq rmap for ring %d, disabling aRFS\n",
-+					    i);
-+				bnge_free_cpu_rmap(bn);
-+				rmap = NULL;
-+			}
-+		}
-+
- 		rc = request_irq(irq->vector, irq->handler, 0, irq->name,
- 				 bn->bnapi[i]);
- 		if (rc)
+The pre-existing teql issues reported alongside this series are fixed
+separately, not here.  In particular, the lower-qdisc drop use-after-free
+(`NETDEV_TX_OK` vs `dev_xmit_complete()`) is fixed by:
+Link: https://lore.kernel.org/netdev/QDISC-Y0BY.v2.r0.20261024060625-2@mojatatu.com/
+
+Changes v2 -> v3:
+- patch 1, no code changes.
+- patch 2 corrects the conditions to recreate the bug: reaching a freed
+  master needs sch_teql built as a module, the slave qdisc removed and the
+  module unloaded while the skb still waits.  The message now says which
+  part of it reproduces without the unload, and names the neighbour failure
+  path that drains the same parked skb.  Considered comments from
+  Sashiko (nipa).
+
+Changes v1 -> v2:
+- patch 1, no code changes.
+- patch 2 limits the reinjection restore to a top-level neighbour whose
+  device has no header_ops, the shaper/eql/sch_teql class.  Commit message
+  also describes how a master is freed.  Considered comments from
+  Sashiko (nipa) and Sashiko (gemini).
+
+Jamal Hadi Salim (2):
+  net/sched: sch_teql: unshare the header before writing and fix retry
+    strip
+  net/sched: sch_teql: keep skb->dev consistent on the arp-queue path
+
+ net/core/neighbour.c |  3 +++
+ net/sched/sch_teql.c | 26 ++++++++++++++++++++------
+ 2 files changed, 23 insertions(+), 6 deletions(-)
+
 -- 
-2.52.0
-
+2.43.0
