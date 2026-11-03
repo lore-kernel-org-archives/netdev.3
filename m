@@ -1,100 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.52
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793731083;
-	b=NXwBqeYTccmnHhXwG79Wx2eeQbSKmTD4XwJVqaWovnjiP+ZLrVIOd0EU+Nu58BevkSbN
-	 KH9k1atAy3QVLp+ChrLjKlavA+JsE4FCXlMiEVhLUeCIZcT4S+LD8tQV5AsylwChUeOsf
-	 cUV3TJeRw1MK7RUui9r6IYTXEusNoY7Cbqt5paGI15Xn0NzZJgwKWiY6dhhuqFsR+eP2R
-	 cT1UcWNp25JUVpJqbPKpUF+Mv5yg8naxpndPOmUiZu7Wo419GIoRUJ8O46HuKDjlAeU1t
-	 gxdriP8LO/CGU78t5/jDPqCPgmV4rl+ysIZfKPRoukFbilJj8i5nHRsvnqNPk2cL32w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793731083;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=fviwjroG//qntBAn39plNVA6JSIngXI7akYS02td+eA=;
-	b=YFNDaf+ppJkdYzM+gQc+Wg7yc2JVfk4k6fTWnGuvrxQp77vD6aseAy4PR4+AdfLpIiCr
-	 2UU2v2jLCNs0pWmezkmuXF2L0FuCNOHntF80fcBuSVzKbdGXnv41VTuYKHSMngnuMgLc/
-	 9VUJAWnydQehYwA8O3hl2OssZPgtN6CAKNFOQmRp8ZKz5XeIR68PHnDDDxUWyukBW8n4A
-	 TwJLxCgVzjLhTlj06yCbcwsmCktOkUMFfruQ9yloVEycGhvyk9M6nF3/B2aJObAni1vol
-	 ipN+HzLOkYWK7Jh3tzkhCeVIKFtMLw1TIhYRAe7KyyWlC51cI/O8qea6Mx0pYG8rglw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=amacapital.net;
-	spf=pass smtp.mailfrom=amacapital.net;
-	dkim=pass header.d=amacapital-net.20260707.gappssmtp.com header.i=@amacapital-net.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=nVCsNw0y;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.52
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793731088;
+	b=HM/4c6+wdwSf+wuzwXz2MKmw543C1t9E+UDGg5J9qU2UUgOWHviRxUhmdhhdLDJtgJqK
+	 EC8DURDWf2vLBfeH5XKkjFMGF//JWCHRNM1nJ9kJAEEZtrMCGFJ0XBWbh8tdALcJiNqFq
+	 V02YUkh8AKwFEM46Vi6m/eOL/u/bWw+iH9wSFUUF/lJ41oRui4ZTeLPG2c5w7GFKIRU4/
+	 pY+hRuYyo0sXvSifFmHlGP5lbfk5xwwt/3AnU+Xysd6TjhXVHOlilQqvLqFFH2V2kvAIk
+	 Klk3QcK+Qq1tJrwYvl8uZO7kwlQnpG7NOycuzmgJ98TA5kjqRjiU2eU/ZOP8f02c5bg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793731088;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=wocz8r3Z14BmQCtGO1kjwm6YZ/KPutkoxo0QyQ0cCQs=;
+	b=kwBG5+hviuzNDLfeUQ0KMLbfrvK0QLgCxs52tmwdv4N/LTf/CWpRNlVXlL4f0gxB2uOU
+	 nIcQLWnukmMkrLCillPiDNfEvU12pqNakxXV8Cy6s860NGNZWIw5aP1EywBYFiBODQj+x
+	 UotHlg7g5u2lW6nawLkTaEzfdUYn7zH2aGczJGViuRLi9lCdx2pcLypG0Sgnpcq5JpCeP
+	 pEQYTzJ/P3AO46+lson6nfKmfFRq/BRyMfU/krTQlXxkMkv+7Kh8PkRA1Xgqi7SS6TbXk
+	 /EcmN1o9nSKeGY8+85d4U3pkbMwnCDaP2wvYgzqGvh0UB4ioA2MGg3/FY1ea1CGCguA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gAqUqXDI;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D076D606A328
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 18:38:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D076D606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amacapital.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B08606A330
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 18:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=amacapital-net.20260707.gappssmtp.com header.i=@amacapital-net.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=nVCsNw0y
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5be3ed646a5so4779412e87.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 10:38:02 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793731081; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RKlEHxWIQbW55944SuBBjTIZZo3rRMF9HLafFgZYsciCdNvR29Ss2nWxPRnKE7y/iX
-         1r/sUprxdN3qcX241tfDOa4FiJTeijgDrEvT/RBHJQQE22BHm5mQAGNATlw48vQ27GOU
-         uKoe4MDm/n0mtycjQOA2EG0yckY+zP4ErICZeE7pRdFlhGJ+2Zc9Eugdh34jtpPkm/l3
-         b+I/WDo+UgUvw1KZVr+cv4z1mTr8l2himZt2Qub/TOro234eMqpHhZGK34IBu9rvssHq
-         O9FH+Ui9ecoIS3hPTMl5UgTd7Qtl3jwnbAHViz8+VumrAyrGpIZko39cYvV8zQrdLrUC
-         s85Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=fviwjroG//qntBAn39plNVA6JSIngXI7akYS02td+eA=;
-        fh=s4LG9cQE69HhKeEGQIgTrA403F6nSMfrIvoxsX1Mi9Y=;
-        b=LYZ3PPxpN4Qe8uwpEGZHyCUPzPfpT91oVtSRR3ZaFw/bS6rqVgydspsuvG62iy5YnU
-         CqkfCg4Uj0R8Q1QT89XFacu8Y5SRWw16cVq6TXEQe//D6KpEpvZy75GMeKNdmlIR5uUc
-         cnoHXIcHVpR1uHFopu4GJ45JnbFgndTWpemB+9dyEIj18ewVyLqdvGFlMaaDXlzde+ge
-         jdqilSb2BGxwKT63CaF5eXlygnjD5Oq4eK8MkALGmopnsRvZyBoT7WyJAKpQn9UTxvog
-         mxAYUWbXqgF6wBv7AuHfyImvlxq9WsSvLmmvOqEs3tkPppeWmWQkCYdtDHyVHcAiRwaF
-         t6Cw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20260707.gappssmtp.com; s=20260707; t=1793731081; x=1794335881; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=fviwjroG//qntBAn39plNVA6JSIngXI7akYS02td+eA=;
-        b=nVCsNw0y6hskrENSBv8EU3amWuYztT8dLT5p7AwDRfBEJgh5KCH4wcnDy1+4F8oz26
-         mugE2B8LWKKCR0Y9k2Z98xSLZ5eNvcfR272i+te/45lnsb9AWyAtGJcy3D9bL7ir+f71
-         qQpNmsSv7T5esoFkU7QTr7zF74lmigXGg9dzQbwmAGy2M5yd+bQ/6ZIx3r0WugxBJ5RO
-         hJm/oKDuQExrJP3FUtAD2VCpRZdYySsqRCW8MbRDOe9JChKA+5WjiMn7EutjmI1dtjC9
-         TX6PAuZUUq43suQ5ErDcrLsoaFbkM/WfFXDhbG1erayEtyXYdgmMQ2TL7MALbarBBDH6
-         21vw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793731081; x=1794335881;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fviwjroG//qntBAn39plNVA6JSIngXI7akYS02td+eA=;
-        b=hDkHcIKwnwEkc5F7hpto/I/VqanryqYmikUD3nVoGaBmwJvGWQuC7/hRBt5Nb5cvV5
-         0xT2ojB8Rqw+Vu65urDMut25woz6a+/kIrFAlxexVLH0dWeDq9GDYESTbazmZMdfkI+r
-         zJUfTUnRK9Ngi9W+A7QMwroWclCA2CrfMZCP3w9jwRjiBw/iLHQrPTJptcoiu11UfwIZ
-         yFgIAzdwTmgPbIjWIFFSjhxhIewq2YHUe31jbV2nvWH76Dx4ofO9+igSVswO9sbPneHH
-         sUHFtiD21uvbMXupcXz3wpYDZifkLEf/qimQ/qFHmV2TClRxqY3g9dVqhojShE8oxItR
-         bfCw==
-X-Forwarded-Encrypted: i=1; AKwUvBxjviSpgdJmrUKa0YmnF3usn5vs7Lgpi/fgs1+hXz/E1bob6slBPivhCGVUZH8eVdWafQ1yFDA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8QaZS1XTgU+TgeNV/l25SIaxlN97rC2oC2+AZGI/QCXXa3ccyE
-	DCWNtyk6IrLxTlOskXkr9MzOgM2x36+HhFvsBNpTrvC04xBqn/XsSRb6oLlP+5wMyzrnm5nTKGF
-	hgNBhYkoKq2JJi1hpLzxQy7lmM1h1Oz7ax/mqCWSb
-X-Gm-Gg: AYBFou2Vl128m/O0ODgwnADyIQeuemPbskHfO+vj1iDrUXAU1CI40asb6PNlbTlTMi6
-	SHNIb+QaNLmLn23xmuQtfWkIJWJ+gq3vqhk5h/9rFRqr6xPlnaJFkdiESYNypk4Sdcona+OvEPe
-	BoyVrzNoN4AK+OlicrZGaHeOHC7rgr0U54zeX6ujHTPkDJkaz6qTRWUfhB+EwAAk62qEjnTgZi8
-	4hyBHJSDd7aaGxS4+rmh3BvW1j/Mui+MNuUo4qJkLlsIn4ljZiDWiDJ9g5pRl/AdzW41ceA0/MR
-	XgWIEb/zW24kY8on3wusrH/+qTEirp+8eAasipNuiuN1XflRtiGCzgLRWebW4ZHMFo1dM8iMQ89
-	eFn8cFjo/7q4nnKOxAO0pOH+Sw5TjLHFDYw==
-X-Received: by 2002:a05:6512:3ca7:b0:5bc:e8b0:5652 with SMTP id
- 2adb3069b0e04-5bfd9589099mr5147409e87.63.1793731080985; Tue, 03 Nov 2026
- 10:38:00 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gAqUqXDI
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F2C01F00A22
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 18:38:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793731088;
+	bh=wocz8r3Z14BmQCtGO1kjwm6YZ/KPutkoxo0QyQ0cCQs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=gAqUqXDI1KDUJjH/e7eRU5lf1a1ZBsC7CHtEG4ntAmUhcr0do6EtT4kIcP3aIlwEN
+	 l30CHZoHsof36U3GsHtHedNQaShyvvQpxsFnC9ubIRf5nJn6GPyEmeiH4Jb1/RnuK3
+	 9C4R86yIMm9L23h/fRdpFUDkTm5eDQNGiW281/qT5d5lWQ/GTngqBtsjJlJV5i5NOE
+	 dA0uKpxSI5CllX3tgjAsJbzKo84CZkekuXCQK9QOoAdLEuGFw87f3zlKXhzbBQ0oGR
+	 uMpsy4C20/wDlRKHJJi5Xn90sP2gK+PAOLtYbYle4JZ31QbXdaD+sFawYXi2HNKuzY
+	 3gV7pOKWjgaBQ==
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-705cb6ceebaso2897054eaf.3
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 10:38:08 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBxZ2V4cm1Il1TdK9uLv24rT2DOUPKDfoBLMu02bENckk0Fukm4clTolOe7KqbUMrcOrOXLXHiY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+9M528S5gtgZjDnUaWQFBKbS1odhKsh7zclpw3mHFBSlTDYSqL
+	zD+HASpmXjMnDc/++DYL5/oSPDbBukCg1AdbZndMCU6fkmZcuOkZQ+9eOPHRhSbY0FEnYTs0U6P
+	OqvwdsneDV/zXyazmfcVDjxDmCB1lTJM=
+X-Received: by 2002:a05:6820:60f:b0:6df:10cb:4a5f with SMTP id
+ 006d021491bc7-714f278f5f4mr7377950eaf.70.1793731087384; Tue, 03 Nov 2026
+ 10:38:07 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,73 +59,161 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261028221705.3915340-1-halg@google.com> <CALCETrW9ygriu54gxiHFLEd5+hJminQo0r8Jwd63wR69Dj4W7w@mail.gmail.com>
- <auM32mOlBLu6ZUlt@google.com>
-In-Reply-To: <auM32mOlBLu6ZUlt@google.com>
-From: Andy Lutomirski <luto@amacapital.net>
-Date: Tue, 3 Nov 2026 10:37:48 -0800
-X-Gm-Features: AclHuK_sfbKF658HbwyCTsOToNn9cXs0qzXn8uaPUG4vxi_nXA5hXmjvbt4jwHQ
-Message-ID: <CALCETrUD4vh_iSHV7G0bprUFU8=c+ECo701-tXcbQ3UXBWC1ig@mail.gmail.com>
-Subject: Re: [PATCH 0/8] userns: per-namespace capability bounding set and
- opt-in netns loopback
-To: "Hallgrimur H. Gunnarsson" <halg@google.com>
-Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, Kees Cook <kees@kernel.org>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jan Kara <jack@suse.cz>, 
-	James Morris <jmorris@namei.org>, Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Jann Horn <jannh@google.com>, =?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
-	KP Singh <kpsingh@kernel.org>, Jonathan Calmels <jcalmels@3xx0.net>, 
-	Casey Schaufler <casey@schaufler-ca.com>, linux-fsdevel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, 
-	containers@lists.linux.dev, netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261103-napi-timer-cancel-v1-1-55c631ad5286@columbia.edu>
+In-Reply-To: <20261103-napi-timer-cancel-v1-1-55c631ad5286@columbia.edu>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Tue, 3 Nov 2026 19:37:55 +0100
+X-Gmail-Original-Message-ID: <CAL4WiioJuY1L5ji7tVXggp=FDm3eidwekpxqAMdnxWUyiTR3fg@mail.gmail.com>
+X-Gm-Features: AclHuK-5QRfDhVd6PX6rRiLGs5x_KUk2nea94GeuQzRj9GBpfeF3rw83rbf-cDc
+Message-ID: <CAL4WiioJuY1L5ji7tVXggp=FDm3eidwekpxqAMdnxWUyiTR3fg@mail.gmail.com>
+Subject: Re: [PATCH net] net: cancel napi->timer after the grace period in netif_napi_del()
+To: mt4022@columbia.edu
+Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Martin Karsten <mkarsten@uwaterloo.ca>, Joe Damato <joe@dama.to>, 
+	Dragos Tatulea <dtatulea@nvidia.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Stanislav Fomichev <sdf.kernel@gmail.com>, Sridhar Samudrala <sridhar.samudrala@intel.com>, 
+	Cosmin Ratiu <cratiu@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Wang Zhan <wang.zhan@smartx.com>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, tz2294@columbia.edu
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 29, 2026 at 5:11=E2=80=AFAM Hallgrimur H. Gunnarsson
-<halg@google.com> wrote:
+Le mar. 3 nov. 2026 =C3=A0 19:19, Mani Tofigh via B4 Relay
+<devnull+mt4022.columbia.edu@kernel.org> a =C3=A9crit :
 >
-> On Wed, Oct 28, 2026 at 03:56:11PM -0700, Andy Lutomirski wrote:
-
-> >
-> > Why should the task's cap masks affect this?  *Maybe* cap_bset makes
-> > sense, but I'm struggling a bit to see why cap_permitted and
-> > cap_effective should matter.
+> From: Mani Tofigh <mt4022@columbia.edu>
 >
-> Sorry, the phrasing here may have been misleading. Just to clarify:
-> none of the creating task's capability sets (cap_bset, cap_permitted
-> or cap_effective) are used to restrict the new user namespace.
+> A napi can be freed with its timer still queued.  napi_disable()
+> cancels napi->timer, but napi_complete_done(), busy_poll_stop() and
+> napi_suspend_irqs() start it without owning the napi and can do so
+> right after the cancel.  netif_napi_del() only waits for that start to
+> finish:
 >
-> When I wrote "reusing the existing task cap_bset, cap_permitted and
-> cap_effective sets on namespace entry", I was contrasting this with
-> the prior series from 2024 [1], which proposed adding a 6th per-thread
-> capability set to struct cred.
+>   Task A (epoll_wait)                  Task B (queue reset)
+>   napi_suspend_irqs()
+>     rcu_read_lock()
+>     napi =3D napi_by_id(id)
+>                                        napi_disable_locked(napi)
+>                                          hrtimer_cancel(&napi->timer)
+>                                          napi_hash_del(napi)
+>                                        netif_napi_del_locked(napi)
+>                                          synchronize_net()
+>                                          /* waits for Task A */
+>     hrtimer_start(&napi->timer)
+>     rcu_read_unlock()
+>                                        kfree(rq)
+>                                          /* timer still queued */
 >
-> In this series, when a task creates or enters a user namespace, we
-> simply initialize its new cred->cap_{bset,permitted,effective} in
-> that namespace to user_ns->cap_bset instead of CAP_FULL_SET.
+> With netdevsim and debug objects:
 >
+>   [    3.073483] ODEBUG: free active (active state 0) object: 00000000150=
+4358f object type: hrtimer hint: napi_watchdog+0x0/0xa0
+>   [    3.073515] WARNING: lib/debugobjects.c:629 at debug_print_object+0x=
+1a4/0x3b0, CPU#0: napitimer/66
+>   [    3.079603] CPU: 0 UID: 0 PID: 66 Comm: napitimer Tainted: G        =
+W            7.3.0-17087-gd865f2677c44 #1 PREEMPT
+>   [    3.084822] RIP: 0010:debug_print_object+0x1ae/0x3b0
+>   ...
+>   [    3.103822] Call Trace:
+>   [    3.104408]  <TASK>
+>   [    3.105933]  debug_check_no_obj_freed+0x496/0x5f0
+>   [    3.109988]  kfree+0x33a/0x510
+>   [    3.110715]  netdev_rx_queue_reconfig+0x357/0x580
+>   [    3.111780]  netdev_rx_queue_restart+0x8f/0xc0
+>   [    3.113924]  nsim_qreset_write+0x24d/0x350
+>   [    3.117832]  full_proxy_write+0x109/0x1d0
+>   [    3.118741]  vfs_write+0x1e3/0x1250
+>   [    3.124758]  __x64_sys_pwrite64+0x18c/0x250
+>   [    3.129645]  do_syscall_64+0xfb/0x590
+>   [    3.131385]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>
+> Without debug objects, napi_watchdog() later runs on freed memory.
+>
+> After napi_disable() and a grace period none of the three can reach the
+> napi anymore.  Two need SCHED, which napi_disable() keeps, and
+> napi_suspend_irqs() needs the napi hash, which napi_disable() removed it
+> from.  So cancel the timer again after the grace period that
+> netif_napi_del() already waits for, and in free_netdev(), where
+> unregister has already waited for one.  With the fix, debug objects
+> don't report a freed active timer anymore.
+>
+> This bug was identified and confirmed with the help of a deterministic
+> hypervisor currently under development.  The C reproducer below however
+> hits it within about 1s.
+>
+> Fixes: 6f8b12d661d0 ("net: napi: add hard irqs deferral feature")
+> Fixes: 3fcbecbdeb04 ("net: Add control functions for irq suspension")
+> Fixes: 58e2330bd455 ("net: napi: Avoid gro timer misfiring at end of busy=
+poll")
+> Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
+> ---
 
-Okay, this makes *more* sense, but I think it's too weak.
+Bug seems real, but could we prepare something generic (in the core).
 
-I have a sort-of goal of having the creation of unprivileged
-namespaces be allowed in most contexts by default, *even in Docker*
-(which would involve the Docker team changing their default seccomp
-rules, but that bridge can be crossed later).  (In furtherance of this
-goal, I fixed an ancient bug in newuidmap that gets us quite a bit
-closer a couple weeks ago.)
+> Drivers that call __netif_napi_del{,_locked}() and then their own
+> synchronize_net() (eg netdevsim on close, veth, virtio_net, bnxt and
+> gro_cells) need the same cancel.  I can send that separately.
 
-But tying this mitigation to a parent userns means that it's
-completely unusable in the single-deep case.
+The list is longer than that : bnx2x, enic, ixgbe, myri10ge, dpaa and
+bnge also use __netif_napi_del{,_locked}(). I would rather not touch 11
+drivers for a core implementation detail.
 
-I do have a question about this whole scheme, though: are we talking
-*just* about CAP_NET_ADMIN?  That is, is there any other bit that has
-anywhere near enough security relevance to make this kind of thing
-worthwhile?  Because if it's really just a single bit control, maybe
-we can come up with a nicer scheme.
+Also the free_netdev() part assumes napi_disable() was called before
+the synchronize_net() in unregister_netdevice_many_notify(), which is
+not guaranteed (ndo_uninit(), or remove() handlers calling
+napi_disable() between unregister_netdev() and free_netdev()).
 
---=20
-Andy Lutomirski
-AMA Capital Management, LLC
+All callers of __netif_napi_del_locked() must already respect an RCU
+grace period before freeing the napi, and the three hrtimer_start()
+callers run under RCU or with BH disabled.
+
+So I think we can solve this in the core, with a store-buffer
+pairing on NAPI_STATE_LISTED: the arming side re-checks LISTED after
+hrtimer_start(), and __netif_napi_del_locked() cancels the timer after
+clearing LISTED. One of the two must see the other.
+
+Something like (untested):
+
+/* Callers do not own @n, which can be deleted concurrently.
+ * Pairs with test_and_clear_bit(NAPI_STATE_LISTED)
+ * in __netif_napi_del_locked().
+ */
+static void napi_timer_start(struct napi_struct *n, unsigned long timeout)
+{
+        hrtimer_start(&n->timer, ns_to_ktime(timeout),
+                      HRTIMER_MODE_REL_PINNED);
+        smp_mb();
+        if (unlikely(!test_bit(NAPI_STATE_LISTED, &n->state)))
+                hrtimer_try_to_cancel(&n->timer);
+}
+
+And in __netif_napi_del_locked() :
+
+        if (!test_and_clear_bit(NAPI_STATE_LISTED, &napi->state))
+                return;
+
+        /* Full barrier implied by test_and_clear_bit()
+         * pairs with napi_timer_start().
+         */
+        hrtimer_cancel(&napi->timer);
+
+napi_complete_done(), busy_poll_stop() and napi_suspend_irqs() would
+use napi_timer_start().
+
+If hrtimer_try_to_cancel() fails, napi_watchdog() is running, either
+from hard irq or softirq context. It does not rearm the timer, and the
+grace period the caller of __netif_napi_del_locked() has to observe
+before freeing the napi also waits for it.
+
+A timer armed between napi_disable() and __netif_napi_del_locked()
+is harmless : napi_watchdog() can not grab NAPI_STATE_SCHED.
+
+This removes the need for the 'listed' dance in netif_napi_del() and
+the netdev_napi_exit() change, and covers all drivers.
+
+The extra smp_mb() is only paid when the timer is armed, next to
+an hrtimer_start() which is already much more expensive.
+
+Can you give this a try with your reproducer ?
+
+Thanks.
