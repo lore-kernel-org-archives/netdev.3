@@ -1,88 +1,178 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.195
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=198.175.65.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1793705031;
-	b=DlJkoMtGTaRLPBl0P0bIhRfGjepRDQaAwlspTVcFrG7o7byl7cC40NqA6S18uULX6naF
-	 7mqpX48e5l5kt05rSXVpjoJTEInJk/SLDMq9J1oGa01IBJtTRTqo4dtVtbXeHBrd9kwSB
-	 DqnTT4Dvci2XKV1d0zxVXkdhgqNbdbjbGELyfxpJGl5Qu/q1ROkez//ue6FDougR4GgqB
-	 f+hohrwyMW/lTZgsy6WxHUYN+AQQQtyHPdmXIftdVXwni9KIFArx4EXqqGwUr6u9SNy6i
-	 Rdspp5oeO2bTw/zYmizVbl99dMuGP69cJ74dyqNYGhcV3hbg8qnzhqL/yJXY4HVdO/A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	b=qPzfkeT0R6hwzrjDGrXLKl1f+sHy9xWh7Aa8ZN5poZWj2IqVVLVU7EFLZ739/TVkke2t
+	 I82G7rGyMUjq9eNfJ91tlWEOSGYXAsvRRUUVqSpKD+hA8GCrYFuSguHmjDawJCdolwYSq
+	 0X/Mzw8diLboEEZ3C7po9MqHP+BCuOOF3EUQd1uxV7l62C1btHQLs/Ky9FciExw5NkUB2
+	 DYWkCo6tCsWjVBHe02MNEJqyR587KQ52umc+a5g5cQSyyLPTUtJCSbqtyp51HLALmxb6K
+	 oB9XTeWY0/P4SZDEobykyBpNJgYU8u5/NhGbbk1aHwcye97ntULMoV4BqObXJ/VXndg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793705031;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=3isOR4cYwJAxFOsjqP/jTzCRrBz4npHrA3MCjWbtdPs=;
-	b=Ex0WFpUgyOWo4QaeYX1ZamdAVxi2Lq/OYRcMyjTCVGdM1WspKVlp4H5xlx70AIGloa1Q
-	 KC+QM4ruAErzT/ubAs6D4MAs7zX6bHrx45JieoddC4DnKquGJxLfdQFtRC0a4O117dg8b
-	 wm70rDHxNIyYSEd/BZmD/OBsjHdLfghJj460ApZDlEHghn1d/kfw++SGhkJkiO31FNdBI
-	 Z+LzkOVmLP85+HBlwqGxAqKsrGJ0dAli9rOaG6aQW+PgZ2EC8MDiAtKkp27v7nXiNYvP6
-	 svZA3HAfSP2tc+GFM968sQXpLlilBUGvWtODOHL5QMXo1Adym4lcZfqv+cvh3uPWENw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=u7GOmtxM;
-	arc=none smtp.remote-ip=209.85.128.195
-Received: from mail-yw1-f195.google.com (mail-yw1-f195.google.com [209.85.128.195])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:Received:Received:From:To:CC:Subject:Thread-Topic:
+	 Thread-Index:Date:Message-ID:References:In-Reply-To:Accept-Language:
+	 Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ld-processed:
+	 x-ms-exchange-senderadcheck:x-ms-exchange-antispam-relay:
+	 x-microsoft-antispam:x-microsoft-antispam-message-info:
+	 x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:
+	 X-Exchange-RoutingPolicyChecked:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=mq464/chbq1qB8kf6eKS4vDD7zKhIOzCRBOIjpJG+nI=;
+	b=Kvl2/6eZmeJmGsrAnHaK/nm/nYc3MsM9MCR4D10iTFieSIAyGhj+En1RA0BcHvWttW/5
+	 QV2/jzmy7R026qVwRYcIM4lNIFPYUCBoxlpl03Hs7hzNWaW1SySTNzQ1WYRpwk7lMuJ0+
+	 lk5dJUsovziV/UZCMzOppFYeWbfZnhh7MX/guca6g0x+VTNi1+xfSPGFAELk1EzCfwCKE
+	 jABiVzDxZMscagkQ9Inq/IfIihiRI0zSXiMpHnCBAIypngpl7AGFE/xir3kZQu0FeA02E
+	 dXiKvtPlzjnHC1waSFzjdVdN1gz3+LENxaalXqGx8m8pIPktQVuLDq+gcxI7OWx1j9A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Et86I+AQ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=198.175.65.11
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92754606D814
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 11:23:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 92754606D814
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37FD606C59A
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 11:23:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E37FD606C59A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=u7GOmtxM
-Received: by mail-yw1-f195.google.com with SMTP id 00721157ae682-8b125371596so4567137b3.0
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 03:23:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793705029; x=1794309829; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3isOR4cYwJAxFOsjqP/jTzCRrBz4npHrA3MCjWbtdPs=;
-        b=u7GOmtxMAIIctqm6Yp/jpShpYO6ZSxXjRH44r9swpdZQ6sTrwEk4jGg5Ny6uTH0qM2
-         nl9yDsZS7UJ5X1SjouCLkw4tTzVDkqnS1m+MABapV9I0viuELNCjdF4HG1qmWAFGo9B7
-         3szsc/0HCww+MabXRaVnYnWlFeGVAIsoRF2KjS4Y4RcWwbdnsQdCW9vsJ+owdTNAj4t8
-         ciTMNX/cib7bjLGHpTXgc18NHQqkB2R6jUm9puqRs4nMbWUdIZFV/IArj+Mz4b97K9iC
-         uQEHOQILdbFw+Cl3iKFbrWk5X3NWVL/5FEeF3jMGXezL2liXOLpQ4cr71YDAQkPT/hWU
-         A3kQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793705029; x=1794309829;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3isOR4cYwJAxFOsjqP/jTzCRrBz4npHrA3MCjWbtdPs=;
-        b=WhtqgAPTDvzB5QErs/YqUp5XB+8Q7eEzPyf7rgsfhhhX6YUYDZBQAgiDWURDai3NvK
-         fjFPevsLdQ5q5jyVAnjj6Ne7VZ7NMWszVZ0+ASp5kj2qT/DeW3YZf+NG/4eeRAREHW+n
-         1myPty3LDA6sc5O0TD3wRq+XiulNIYOVf11GSMBGd+kZpBNWcf7oBfSqJdsPuiAuSd4A
-         hqpLXk8dWCsM75IQbdZTHm376fPJ1AEVGGZoBIxUxl5YrGYT53BMioFsT5uuBpS56eOa
-         bDbam2xUv4U40SG4H51I8BMwD3bD7agHsT0m8v9ic0O4PXN/TUHQkYNvQHJxhgUt/z2G
-         UcsA==
-X-Forwarded-Encrypted: i=1; AKwUvBzDeTxwx6PP06h6loN8L5H/fUDLxY5JvF2PDcF98mIhOjHT3r7GJhN7qgr02oFTM6TKplIL798=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/8OKxXxHvixtNfTGv5D0KSKqmC9IBTvMg/Zl72S3Z7YVEuMMkL
-	1q59jHNG3dF/NGOsyW6vDaP7pB/M4ZGRS+/zDJjonvAHntx2q7/xrNSc
-X-Gm-Gg: AYBFou1cv+Rmk1qnHwaNXYkhBE71lvrOLWS5NZwcLknRy8zgTmdG4soglX094bqbRhq
-	CtDgK8T8KB9Ga3v9yn+fMishsWpnsa6ElS36h33vebT1vp3UnYaryLc4bLWx24kSF4LPunnzATa
-	M6zVOG5KC9YSjfM2+owBR0h0eVdkhQWsd3TOsm8SMrypz5wC7arWBtj8Kz4RLWfQGcu4y6d5MEK
-	s1zDex1h8ycjEkghFham8rmmcwpLe5pE3Lo/7kg0pqRWneoUOS7XP+EE4Jro26QD9LKfkVsVQQA
-	eV1lT10q00q8orrS/bBR5wRiWIIF4ZnHRQF/4bXQj9s8s/xdj2PQQs0gFYBDHBSBviYPEg86DgS
-	nvuHm2pu0IyOUvSbD43MZRfHfuerdAsODJnLFgRWLdCUa2q+7NzPcel9l3VBrlt5BNt09h35DEM
-	edC35S46m3EwtVRnQA80rBjyD9YQTrR0efyEhVWqbdohU+a7cX+gZsj3hPbOUgJJgq3JRaCYuWK
-	kJGCTZG6Ddmplrlio+aZZPb4ydsnK6ndPfIlGpnSZuE2Ne55MOTMGqSh1nT7NUwsw7e0gEUHrzB
-	eWkFnTOTH/9UIym1U6OqirfPIo/C5iX92q0=
-X-Received: by 2002:a05:690c:2b8e:b0:8b3:392:dc0c with SMTP id 00721157ae682-8b30392e29emr1408757b3.12.1793705029365;
-        Tue, 03 Nov 2026 03:23:49 -0800 (PST)
-Received: from [10.0.0.48] ([71.69.222.122])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b2b7123fd9sm70536037b3.12.2026.11.03.03.23.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Nov 2026 03:23:48 -0800 (PST)
-Message-ID: <46288afa-affe-4262-bd0d-38a16f4608b4@gmail.com>
-Date: Tue, 3 Nov 2026 06:23:47 -0500
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Et86I+AQ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793705030; x=1825241030;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=xcrdBXCAp76DLbUs/5Yqk8mqfgQA09cXU+5bGCtUWf4=;
+  b=Et86I+AQZ9DdkcdLPqtvQdy6PwpAfBNLWb8UNi3TjjJ01w47Hswn6wjZ
+   jd8oI3HwVnOolES49aGjvlVcN6ha+KPKsT59PAQsJN2pzJT4VwnyaBsLn
+   eCOGuqgNxHD7kIBn/ZCNOgHfoDlBfxxtmb4QKbHS5bs3wxrUYQdj3RIk1
+   Co43gf1QxEBiDBzZ9R0faZxdKDoKPt7D11UCvmLj3DPioMN6utQa/8sDj
+   irFM1wDo0IGnzH68pXudmHtY4EhEBf2DYaDpmWt4lsBZPuBUEmvormmt1
+   e0GEpq3rMUckvKzjgRN6wvcOejoeOc7AMoDcupOsZ1z/lX95oAvTtEFSr
+   A==;
+X-CSE-ConnectionGUID: MQlMwEVuQ3+z2iPN88QF9A==
+X-CSE-MsgGUID: hSGVVAVpR4WUuTr8yI31dQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2304457"
+X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
+   d="scan'208";a="2304457"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 03:23:49 -0800
+X-CSE-ConnectionGUID: DlwBcvGeRFmoUj5c/jBdKQ==
+X-CSE-MsgGUID: MNf5+NSFSViradZTiGyjnQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
+   d="scan'208";a="6287399"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 03:23:49 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Tue, 3 Nov 2026 03:23:48 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56 via Frontend Transport; Tue, 3 Nov 2026 03:23:48 -0800
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.13) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Tue, 3 Nov 2026 03:23:47 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=m0nJ7hZ4H9UWJMLbbFB/RLQcDjuryZbvafQBfp04R67wuhVPDnX80RUEIJ2bEp02/Le6BLdbsc7aBRT2lvRc5uyoOl53BlvcS66v25jHecFwFGJ/wVY35ROXkqt25U4Ra8kfxsBHWu9QOScARd1B8vyYxhuQ+JNH5tLXIlPnm6zHQc7hzrrS41TOwzU0+lL3D0vG860+feUXIdy5C8NtzvLshm0AB9TMayQIsrK+hMEj0KJNF1/gSu/A59A38K6nBlB1mEkxZvP5VBPhND9YntkMZopdHSHxRhcivQ5NyuMExs9DxP6jUfRNJHvMDogTnxPRBdZ1Lscx+YmGPw7u8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mq464/chbq1qB8kf6eKS4vDD7zKhIOzCRBOIjpJG+nI=;
+ b=MdxsjzLWcJihRLEdYlIjx/kOgmAQ74RBja4kRgyW7S1FvteWB9twtpmavx1l5iOW36qwmAogzZNc3+sJ2P48ctbT8PI/iNvuTzYuCQgVfESOnymd9GWMg59jCmVM4mQeOgw/hLMKxWmJmc9OEYDzKohmUHsqSOXM1acKJehZVnoHkTMjFtB62VPo/hdj1RwIjOLcULLnJX0etu1V+FqB/vql9pQKvtXi9n1/zOzVER1tISMslBqLXLw1+2Zi2icIl50axUDNL/b2zGo4MMjZOC9HruCGt8X4+SoQH1SE1zFFN+1dGRMjl6nvonj5PYtMW9vkDpLTiTtiUunoOxCICg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CH3PR11MB566895.namprd11.prod.outlook.com
+ (2603:10b6:610:34d::22) by SA2PR11MB5035.namprd11.prod.outlook.com
+ (2603:10b6:806:116::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Tue, 3 Nov
+ 2026 11:23:40 +0000
+Received: from CH3PR11MB566895.namprd11.prod.outlook.com
+ ([fe80::87f5:c8cf:d52:e584]) by CH3PR11MB566895.namprd11.prod.outlook.com
+ ([fe80::87f5:c8cf:d52:e584%7]) with mapi id 15.21.0592.007; Tue, 3 Nov 2026
+ 11:23:39 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: "Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>, "Oros,
+ Petr" <poros@redhat.com>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, Sashiko <sashiko-bot@kernel.org>
+Subject: RE: [PATCH iwl-net 6/6] ice: register LAG event handler last in
+ ice_init_lag()
+Thread-Topic: [PATCH iwl-net 6/6] ice: register LAG event handler last in
+ ice_init_lag()
+Thread-Index: AQHdareSG1g1X14YQEWhrC18BpsNJLccNUIg
+Date: Tue, 3 Nov 2026 11:23:39 +0000
+Message-ID: <CH3PR11MB566895166EFE8B499CA2AA74AFE5692@CH3PR11MB566895.namprd11.prod.outlook.com>
+References: <20261102105346.30739-1-przemyslaw.kitszel@intel.com>
+ <20261102105346.30739-7-przemyslaw.kitszel@intel.com>
+In-Reply-To: <20261102105346.30739-7-przemyslaw.kitszel@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH3PR11MB566895:EE_|SA2PR11MB5035:EE_
+x-ms-office365-filtering-correlation-id: dfdd0658-0ced-4d2b-5476-08df399ce8d7
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|23010399003|38070700021|261026121527099003|261021123027099003|11063799006|4143699003|56012099006|261009223027099003|261028144727099003|261026140227099003|261021121427099003|261022105027099003|10067099003|22082099003|18002099003|261102123227099003;
+x-microsoft-antispam-message-info: R4PSQznRJyUBa7OAL5UocRq7ldHZRxpfACgYbIijAmIubzC0ILZuTluzLSwGoer9h9xJac0AXcwBSk01p13fjK/GoJShzPmNZJHBzYjh7s9Mmgc6uEhstFMb7rdcD/6xIOJwGSoUMGi6wn/i0CezMsU61cY7cr7MTzdljyeZF3oHhgPIlmHLjwQk6WBkgX01+wis20JQhK6W8bX2z9cAcbkt+57eXuPjAk5b6EB8d5scjjLO+J+H1lohl+WC9o6B9J/6mtAhvNemLvF9zGhS85Te26cF1HR4fCXwFtxcN8mVkEg5hwxkFH/M9HlvKjx1xx4yz4PthMwbuBaC+bkg7ZnAUe3A0wxJd6Atucdegh8E3wGz+vmkglxLVqIse6Lw+8HJEE5fTdazRP6fyjLbGzi/7rwqoSgPT1ApbPzYetlfTw+xE52m7C4cTY+s4VCBVf2cwoVeuVc5ShUjLMYkjwgq4rwOX7CYSdxzGmK8g5DgjK5YrDXZm2ITjQFoN1RjrGyjoS9f4YNMZScDsEKBTxQ1eaWZE1SLSoDQvtBu4/Z61gKteXABIfBW1StO07iBNORNsap0JMISIVM8BEy8knhWkX8LwEj98rFdCkoYAIp6jQ+v2skDMFo3mNxU7jO0F0Zi8fI+7aQ3CPhJ8E8lTjgOffybDfSfxPRIZdTKmOw=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB566895.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(23010399003)(38070700021)(261026121527099003)(261021123027099003)(11063799006)(4143699003)(56012099006)(261009223027099003)(261028144727099003)(261026140227099003)(261021121427099003)(261022105027099003)(10067099003)(22082099003)(18002099003)(261102123227099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?JSk1ywq85SbDkQlDONlHGx/ywgyul1nciMvb9fubHnVQHZZVe3Ic2RFnBaS4?=
+ =?us-ascii?Q?0jqIsgC/jDzSz00NAkhxUAgOKcMyMYtgFgH8/eup4GOQSSNY4Oo7LnCdV9QG?=
+ =?us-ascii?Q?a68jejPbQLcjBlX2dOBExeQW6gntKY7zk4VNv4sZWdfGmfbWDcB4vNpwvFV1?=
+ =?us-ascii?Q?GOMy7o70yJ9DoDyE2zicg1tYEzXZinQfhjT6YAggveKQd6RUypeQu2z/eCrq?=
+ =?us-ascii?Q?zFsd2k15i88bI3yQxhCuRMNO1We3xpnHmA+WLg2JvfRxJvsn9kvtH8sGhstK?=
+ =?us-ascii?Q?Gzksr5U3BRGryQPPCtFcEcByB4MWjn4p+p8R8hn+IoNVhubntwj8OzCs4xKO?=
+ =?us-ascii?Q?YjylWDPMQBk4Q6bgUjAZlOhZJR128/pwtJpY+YEWiWXP1zHA0y+ZtBu20AbU?=
+ =?us-ascii?Q?SPtQJ/DrMSckna/6F2xmAEE3fHHxIB3AEEG7bjFBKvvwaI7mGFCnPaBnYCIv?=
+ =?us-ascii?Q?QifhjHoJXUJyQwXgFYOs+0FtJ4LKBxuxHfn2upQeiHlkgC20+DQv9eldXBMc?=
+ =?us-ascii?Q?9dLmDtMeS+pMfqwPoNKiqjaxeaC2EGD+3/ulfUGNR9c4bXSZeZpVHF/aPrA2?=
+ =?us-ascii?Q?so6KheXGw/ycsfEl9vNqQIoz5m3LH7BcJYaMqjGI2m34FCTOz0B2BK9ZJ2jc?=
+ =?us-ascii?Q?NcRdwV/b4KRaLFDlRBDSxZt1ywHFUr5546q53EM/Z3aCdYg2m/6/VRGbdoZI?=
+ =?us-ascii?Q?dy50LV8qEQHuxgUFwrLHQbp1NGs+qOccweHYRL+PoS+ja5IDgXZCYWGNF9Oq?=
+ =?us-ascii?Q?90+X9LyDMuz+AbjxxH1SXYgrmIedkPZiSCES8mhN9h7W1YTAZQt5K49vtO6J?=
+ =?us-ascii?Q?wnt40dx9IFddysFwwu5MahvcIAxn6oavPupxJicind3XYBPFofAlZ3eNaRw4?=
+ =?us-ascii?Q?ZUBkwwjC08HyjVz6rcDaVtjvRR2kg54J/sy77KHvqfh2TIAbiRordoV1Wzaw?=
+ =?us-ascii?Q?4p67tNtU5W7U0RpfWtfVm1MMU7OZvewvgU7LkAwRcvlo+Tpncxr3so1Yw65V?=
+ =?us-ascii?Q?bSWQigqXBkHbqvlD2AE+j1ZPOOD/2xxYb6Lripll9tK0eKqR1BSSAkAQGBN3?=
+ =?us-ascii?Q?R4+lgvZYYgw/4M1ht8dx//mtCOIhnEtIaJCszPIV73j3ue5eE2L4F1egdjP6?=
+ =?us-ascii?Q?RSJWo3bQXBmlqbBWOL6a39evmmzFuZISKcricgjP9P+GNro34J4Cmd3gARba?=
+ =?us-ascii?Q?weVzFAl8DcTSLi5WlKyL+szpbAyJZ/6ya0W8KKJJv2rv9pbawjyQzfWetrwr?=
+ =?us-ascii?Q?5naHLJ0gwGsTyZPBOgAfHgr+kFWx2W1WXvZd3401KxKNhsQ0/iuClbTIIM0o?=
+ =?us-ascii?Q?Ke0HQr/xMOmCtYvuuQFJITGKimqEYO4a38/MlLqjqPE4n9y37ircs3dpQC0K?=
+ =?us-ascii?Q?5Y6y0AtFfgF6TOaNIThaJPVN8H9CmROCFWex+UprL/cAkcJi75U0lzv7WfHB?=
+ =?us-ascii?Q?zJMUPbWW3jI/gSF3vNg/Ki1Wsbrr6vi6pBnHBQnGWSEq3k2yVjasNBlY38X6?=
+ =?us-ascii?Q?e6etJphLQbzPzBOn4amp1Hf1iEUjO2a/B3A+1nuha+/LQIVc+0L1JGGixmx7?=
+ =?us-ascii?Q?DFrZ6x7q2J4xmFV331UbShpGfZWbE/dvt+Hr+MNaOD3u+/kzrcV9luObPQoO?=
+ =?us-ascii?Q?hfz+5M5ddXbfRgPYAoK3wymRTgLBQ13uuv4DbrZGJli4U7P+5OLbmtT6EbSm?=
+ =?us-ascii?Q?T/DQlomdUuN0Hn6bAxlZ4gRdlmRCCNvDxmtQE7PWF/6BGvKQn8YElK5RKIhh?=
+ =?us-ascii?Q?K9qABc7Jnw7ZPMvpqlkHaZFCUR1IlHI=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,385 +182,76 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 3/5] tls: update the RX key when a KeyUpdate
- is received
-To: Hannes Reinecke <hare@suse.de>, John Fastabend
- <john.fastabend@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
- Sabrina Dubroca <sd@queasysnail.net>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, Shuah Khan <shuah@kernel.org>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Hannes Reinecke <hare@kernel.org>, Chuck Lever <cel@kernel.org>,
- kernel-tls-handshake@lists.linux.dev, linux-nvme@lists.infradead.org,
- Alistair Francis <alistair.francis@wdc.com>,
- Martin Belanger <martin.belanger@dell.com>
-References: <20261102-keyupdate-rfc-v4-0-f17419972b9f@gmail.com>
- <20261102-keyupdate-rfc-v4-3-f17419972b9f@gmail.com>
- <dd6d8c92-a96c-4bb3-aee1-a28f2156fb9d@suse.de>
-Content-Language: en-US
-From: Martin Belanger <martin.nvme.dev@gmail.com>
-In-Reply-To: <dd6d8c92-a96c-4bb3-aee1-a28f2156fb9d@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: wuTlen3bQhCkCrOT0+wMR5oISPqFP/1fWK1Uj0VhOYOR7x+c8s4DJ5zUoygMf/r+F+rnPCbyZKUhrbITBajROmIfTobZS2HpVC4iUCz7TkmPr5i7lZut64+LthI8DKLsdbKa0XDf4O4SRtYuKR4kOO+CeBMmX3TEENYd90QyWreqIcBSzy0cOLS4IR8BRML9LBtwGiTstm1cDfHEk+6+4UlK7fIwTn11eB8QackIh2V0s/yjTAu86ZPYja26LPmT5aO0Topuwd/tQ16/k/DR60sz2FSwvhmYEsOuMZOSvrxkmbnOJ445eN9lB87cbMYxAlOGitvcNlEHrYDBtl5ZjA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB566895.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dfdd0658-0ced-4d2b-5476-08df399ce8d7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Nov 2026 11:23:39.3686
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: hT03oQgS16zruvPMu8Ji5dMSoF0tJTm/5LUZJzTwhBzdnaifCAgfe5E+tPDXNUZ5TmTvXpBTfbV4+pakJzF7SHmRPI9o7hwcOtY68DHYCbQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5035
+X-OriginatorOrg: intel.com
 
 
 
-On 11/3/26 02:15, Hannes Reinecke wrote:
-> On 11/2/26 5:58 PM, Martin Belanger via B4 Relay wrote:
->> From: Martin Belanger <martin.belanger@dell.com>
->>
->> When a KeyUpdate arrives, kTLS blocks reads with -EKEYEXPIRED until
->> the user installs the next key. A kernel user such as nvme-tcp or
->> sunrpc never does, so the connection stalls.
->>
->> For a socket with a registered RX secret, derive the next key and
->> install it when the KeyUpdate is decrypted. The record is not passed to
->> the user, so recvmsg(), splice() and read_sock() go on to the next
->> record. Without a registered secret the behavior is unchanged.
->>
->> A KeyUpdate that is not alone in its record, has a wrong length or an
->> invalid request_update value ends the connection, as RFC 9846 section
->> 4.7.3 requires. So does a peer that sends more than 8 KeyUpdates in one
->> second, the same limit as GnuTLS. That case is counted as
->> TlsRxRekeyError and logged, rate limited.
->>
->> Signed-off-by: Martin Belanger <martin.belanger@dell.com>
->> ---
->>   include/net/tls.h       |   7 +++
->>   net/tls/Makefile        |   3 +-
->>   net/tls/tls.h           |   2 +
->>   net/tls/tls_keyupdate.c | 154 ++++++++++++++++++++++++++++++++++++++ 
->> ++++++++++
->>   net/tls/tls_sw.c        |  43 ++++++++++++--
->>   5 files changed, 202 insertions(+), 7 deletions(-)
->>
->> diff --git a/include/net/tls.h b/include/net/tls.h
->> index aacc6d12226e..a5bc28a7d1f5 100644
->> --- a/include/net/tls.h
->> +++ b/include/net/tls.h
->> @@ -63,6 +63,11 @@ struct tls_rec;
->>   #define TLS_HANDSHAKE_KEYUPDATE        24    /* rfc8446 B.3: Key 
->> update */
->> +/* KeyUpdate: msg_type, 24-bit length, request_update (RFC 9846 
->> 4.7.3) */
->> +#define TLS_KEYUPDATE_MSG_SIZE        5
->> +#define TLS_KEY_UPDATE_NOT_REQUESTED    0
->> +#define TLS_KEY_UPDATE_REQUESTED    1
->> +
->>   #define TLS_AAD_SPACE_SIZE        13
->>   /* SHA-384, the longest hash of a TLS 1.3 cipher suite kTLS supports */
->> @@ -142,6 +147,8 @@ struct tls_sw_context_rx {
->>       u8 zc_capable:1;
->>       u8 reader_contended:1;
->>       bool key_update_pending;
->> +    u8 key_update_count;        /* received in this window */
->> +    unsigned long key_update_window;    /* jiffies */
->>       struct tls_strparser strp;
->> diff --git a/net/tls/Makefile b/net/tls/Makefile
->> index 6edcf1271b75..ce8ac6a59f8c 100644
->> --- a/net/tls/Makefile
->> +++ b/net/tls/Makefile
->> @@ -7,6 +7,7 @@ CFLAGS_trace.o := -I$(src)
->>   obj-$(CONFIG_TLS) += tls.o
->> -tls-y := tls_main.o tls_sw.o tls_proc.o trace.o tls_strp.o tls_hkdf.o
->> +tls-y := tls_main.o tls_sw.o tls_proc.o trace.o tls_strp.o tls_hkdf.o \
->> +     tls_keyupdate.o
->>   tls-$(CONFIG_TLS_DEVICE) += tls_device.o tls_device_fallback.o
->> diff --git a/net/tls/tls.h b/net/tls/tls.h
->> index b2061f6bf065..63ece8074985 100644
->> --- a/net/tls/tls.h
->> +++ b/net/tls/tls.h
->> @@ -149,6 +149,8 @@ int init_prot_info(struct tls_prot_info *prot,
->>              const struct tls_cipher_desc *cipher_desc);
->>   int tls_hkdf_expand_label(const u8 *secret, size_t secret_len,
->>                 const char *label, u8 *out, size_t out_len);
->> +int tls_keyupdate_rekey(struct sock *sk, int tx);
->> +int tls_keyupdate_rx(struct sock *sk, struct sk_buff *skb);
->>   int tls_set_sw_offload(struct sock *sk, int tx,
->>                  struct tls_crypto_info *new_crypto_info);
->>   void tls_update_rx_zc_capable(struct tls_context *tls_ctx);
->> diff --git a/net/tls/tls_keyupdate.c b/net/tls/tls_keyupdate.c
->> new file mode 100644
->> index 000000000000..281c7b13eb82
->> --- /dev/null
->> +++ b/net/tls/tls_keyupdate.c
->> @@ -0,0 +1,154 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/* Copyright (c) 2026 Dell Technologies Inc. or its subsidiaries.
->> + *
->> + * TLS 1.3 KeyUpdate, RFC 9846 sections 4.7.3 and 7.2.
->> + *
->> + * A TLS 1.3 peer can change the key of the direction it sends in at any
->> + * time. It sends a KeyUpdate message, then encrypts all later records
->> + * with the next key. A sender must also change its key before the key
->> + * has protected too many records (section 5.5).
->> + *
->> + * The next key is derived from the application traffic secret, not from
->> + * the current key. User space gives the kernel only the key and IV, so
->> + * the kernel cannot derive the next key on its own. Without the secret,
->> + * a received KeyUpdate goes to the application, and the kernel stops
->> + * decrypting until the application installs the next key with TLS_RX.
->> + *
->> + * With TLS_TX_TRAFFIC_SECRET or TLS_RX_TRAFFIC_SECRET, user space also
->> + * gives the kernel the secret of that direction. The kernel then 
->> handles
->> + * KeyUpdate itself. This file derives and installs the next key, and
->> + * processes a received KeyUpdate. tls_sw.c sends KeyUpdate messages.
->> + */
->> +
->> +#include <linux/jiffies.h>
->> +#include <linux/skbuff.h>
->> +#include <net/strparser.h>
->> +#include <net/tls.h>
->> +
->> +#include "tls.h"
->> +
->> +/* A peer that sends more KeyUpdates than this in one second ends the
->> + * connection. Each one costs three HMACs and a new key, and carries no
->> + * data.
->> + */
->> +#define TLS_KEYUPDATE_RX_MAX_PER_SEC    8
->> +
->> +/**
->> + * tls_keyupdate_rekey - install the next key of one direction
->> + * @sk: socket
->> + * @tx: non-zero for the transmit direction
->> + *
->> + * Derive the next application traffic secret from the registered one,
->> + * then its key and IV, and install them. The record sequence number
->> + * restarts at zero.
->> + *
->> + * Return: 0 on success, or a negative errno. On error the installed key
->> + * and the registered secret do not change.
->> + */
->> +int tls_keyupdate_rekey(struct sock *sk, int tx)
->> +{
->> +    struct tls_context *ctx = tls_get_ctx(sk);
->> +    struct tls_traffic_secret *secret;
->> +    const struct tls_cipher_desc *cipher_desc;
->> +    u8 iv[TLS_MAX_SALT_SIZE + TLS_MAX_IV_SIZE];
->> +    u8 next[TLS_MAX_TRAFFIC_SECRET_SIZE];
->> +    union tls_crypto_context tmp = {};
->> +    struct tls_crypto_info *info = &tmp.info;
->> +    int rc;
->> +
->> +    secret = tx ? &ctx->tx_secret : &ctx->rx_secret;
->> +    cipher_desc = get_cipher_desc(ctx->prot_info.cipher_type);
->> +    if (!cipher_desc || !secret->len ||
->> +        cipher_desc->salt + cipher_desc->iv > sizeof(iv))
->> +        return -EINVAL;
->> +
->> +    /* version and cipher_type; the rest of tmp stays zero */
->> +    *info = tx ? ctx->crypto_send.info : ctx->crypto_recv.info;
->> +
->> +    rc = tls_hkdf_expand_label(secret->data, secret->len, "traffic upd",
->> +                   next, secret->len);
->> +    if (rc)
->> +        goto out;
->> +
->> +    rc = tls_hkdf_expand_label(next, secret->len, "key",
->> +                   crypto_info_key(info, cipher_desc),
->> +                   cipher_desc->key);
->> +    if (rc)
->> +        goto out;
->> +
->> +    rc = tls_hkdf_expand_label(next, secret->len, "iv", iv,
->> +                   cipher_desc->salt + cipher_desc->iv);
->> +    if (rc)
->> +        goto out;
->> +
->> +    memcpy(crypto_info_salt(info, cipher_desc), iv, cipher_desc->salt);
->> +    memcpy(crypto_info_iv(info, cipher_desc), iv + cipher_desc->salt,
->> +           cipher_desc->iv);
->> +
->> +    rc = tls_set_sw_offload(sk, tx, info);
->> +    if (rc)
->> +        goto out;
->> +
->> +    memcpy(secret->data, next, secret->len);
->> +
->> +out:
->> +    memzero_explicit(next, sizeof(next));
->> +    memzero_explicit(iv, sizeof(iv));
->> +    memzero_explicit(&tmp, sizeof(tmp));
->> +
->> +    return rc;
->> +}
->> +
->> +/**
->> + * tls_keyupdate_rx - process a received KeyUpdate
->> + * @sk: socket
->> + * @skb: the decrypted record, which starts with a KeyUpdate message
->> + *
->> + * Called with the socket locked, for a direction with a registered
->> + * secret. The caller does not pass the record to the user.
->> + *
->> + * Return: 0 on success, or a negative errno if the connection must end.
->> + */
->> +int tls_keyupdate_rx(struct sock *sk, struct sk_buff *skb)
->> +{
->> +    struct tls_context *ctx = tls_get_ctx(sk);
->> +    struct tls_sw_context_rx *rx_ctx = tls_sw_ctx_rx(ctx);
->> +    const struct strp_msg *rxm = strp_msg(skb);
->> +    u8 msg[TLS_KEYUPDATE_MSG_SIZE];
->> +    int rc;
->> +
->> +    /* A KeyUpdate must end its record (section 5.1). Another message
->> +     * in the same record is not supported.
->> +     */
->> +    if (rxm->full_len != sizeof(msg) ||
->> +        skb_copy_bits(skb, rxm->offset, msg, sizeof(msg)))
->> +        return -EBADMSG;
->> +
->> +    /* msg_type, a 24-bit length of 1, then request_update */
->> +    if (msg[1] || msg[2] || msg[3] != 1)
->> +        return -EBADMSG;
->> +    if (msg[4] != TLS_KEY_UPDATE_NOT_REQUESTED &&
->> +        msg[4] != TLS_KEY_UPDATE_REQUESTED)
->> +        return -EBADMSG;
->> +
->> +    if (!rx_ctx->key_update_count ||
->> +        time_after(jiffies, rx_ctx->key_update_window + HZ)) {
->> +        rx_ctx->key_update_window = jiffies;
->> +        rx_ctx->key_update_count = 0;
->> +    }
->> +    if (++rx_ctx->key_update_count > TLS_KEYUPDATE_RX_MAX_PER_SEC) {
->> +        TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSRXREKEYERROR);
->> +        net_warn_ratelimited("tls: peer sent more than %d KeyUpdates 
->> in one second\n",
->> +                     TLS_KEYUPDATE_RX_MAX_PER_SEC);
->> +        return -EBADMSG;
->> +    }
->> +
->> +    rc = tls_keyupdate_rekey(sk, 0);
->> +    if (rc) {
->> +        TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSRXREKEYERROR);
->> +        return rc;
->> +    }
->> +    TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSRXREKEYOK);
->> +
->> +    return 0;
->> +}
->> diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
->> index 771e02bff519..027c32edaf85 100644
->> --- a/net/tls/tls_sw.c
->> +++ b/net/tls/tls_sw.c
->> @@ -1551,15 +1551,28 @@ static int tls_check_pending_rekey(struct sock 
->> *sk, struct tls_context *ctx,
->>       if (hs_type == TLS_HANDSHAKE_KEYUPDATE) {
->>           struct tls_sw_context_rx *rx_ctx = ctx->priv_ctx_rx;
->> -        WRITE_ONCE(rx_ctx->key_update_pending, true);
->>           TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSRXREKEYRECEIVED);
->> +
->> +        if (ctx->rx_secret.len) {
->> +            err = tls_keyupdate_rx(sk, skb);
->> +            if (err) {
->> +                tls_err_abort(sk, err);
->> +                /* callers free the record only on success */
->> +                consume_skb(skb);
->> +                return err;
->> +            }
->> +            return 1;
->> +        }
->> +
->> +        WRITE_ONCE(rx_ctx->key_update_pending, true);
->>       }
->>       return 0;
->>   }
->>   /* On decrypt failure the connection is aborted (sk_err set) before
->> - * returning a negative errno.
->> + * returning a negative errno. Return 1 for a record the kernel consumed
->> + * (a KeyUpdate): the caller frees it and does not pass it to the user.
->>    */
->>   static int tls_rx_one_record(struct sock *sk, struct msghdr *msg,
->>                    struct tls_decrypt_arg *darg)
->> @@ -1883,6 +1896,11 @@ int tls_sw_recvmsg(struct sock *sk,
->>           err = tls_rx_one_record(sk, msg, &darg);
->>           if (err < 0)
->>               goto recv_end;
->> +        if (err > 0) {
->> +            tls_rx_rec_done(ctx);
->> +            consume_skb(darg.skb);
->> +            continue;
->> +        }
->>           async |= darg.async;
->> @@ -2023,9 +2041,8 @@ ssize_t tls_sw_splice_read(struct socket *sock,  
->> loff_t *ppos,
->>       if (err)
->>           goto splice_read_end;
->> -    if (!skb_queue_empty(&ctx->rx_list)) {
->> -        skb = __skb_dequeue(&ctx->rx_list);
->> -    } else {
->> +    skb = __skb_dequeue(&ctx->rx_list);
->> +    while (!skb) {
->>           struct tls_decrypt_arg darg;
->>           err = tls_rx_rec_wait(sk, nonblock, true, false);
-> 
-> Why this change? Looks a bit out of place here...
+> -----Original Message-----
+> From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+> Sent: Monday, November 2, 2026 11:50 AM
+> To: intel-wired-lan@lists.osuosl.org; Oros, Petr <poros@redhat.com>
+> Cc: netdev@vger.kernel.org; Kitszel, Przemyslaw
+> <przemyslaw.kitszel@intel.com>; Sashiko <sashiko-bot@kernel.org>
+> Subject: [PATCH iwl-net 6/6] ice: register LAG event handler last in
+> ice_init_lag()
+>=20
+> ice_init_lag() registers the netdevice notifier before it creates the
+> LAG recipes, but when creating any of them fails, the error path frees
+> the lag struct without unregistering the notifier. A failure of
+> ice_init_lag() is not fatal to probe, and pf->lag is set to NULL, so
+> ice_deinit_lag() won't unregister it later either. The next netdev event
+> then makes
+> ice_lag_event_handler() use the freed lag struct.
+>=20
+> Register the notifier last, after the recipes are created and associated
+> with the profiles, so the error paths have no handler, nor queued work
+> for it, that could use the lag struct or its recipes. Free the recipes
+> if the registration itself fails.
+>=20
+> Fixes: ec5a6c5f79ed ("ice: process events created by lag netdev event
+> handler")
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/bug/linux-e0559bca-fcfd-4435-96f2-
+> 15f7e3d74184
+> Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+> ---
+>  drivers/net/ethernet/intel/ice/ice_lag.c | 15 +++++++++------
+>  1 file changed, 9 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/intel/ice/ice_lag.c
+> b/drivers/net/ethernet/intel/ice/ice_lag.c
+> index 08a17ded0ad5..c4b8af01e2af 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_lag.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_lag.c
+> @@ -2601,12 +2601,6 @@ int ice_init_lag(struct ice_pf *pf)
+>  	lag->notif_block.notifier_call =3D NULL;
+>  	memset(lag->sec_vf, 0, sizeof(lag->sec_vf));
+>=20
+> -	err =3D ice_register_lag_handler(lag);
+> -	if (err) {
+> -		dev_warn(dev, "INIT LAG: Failed to register event
+> handler\n");
+> -		goto lag_error;
+> -	}
+> -
+>  	err =3D ice_create_lag_recipe(&pf->hw, &lag->pf_recipe,
+>  				    ice_dflt_vsi_rcp, 1);
+I'm afraid act_act_recipe is allocated but never released on the normal tea=
+rdown path.
+See ice_deinit_lag() it has just kfree(lag);=20
 
-splice() handles a single record. With this patch,
-tls_rx_one_record() returns 1 for a KeyUpdate that the kernel
-consumed. splice() then frees that record and has no skb to pass to
-the user, so it must wait for the next record. The loop does that.
-recvmsg() and read_sock() already loop over records, so there a
-"continue" is enough.
 
-The unconditional __skb_dequeue() only sets skb for the loop test.
-It returns NULL on an empty queue, so it does the same as the old
-skb_queue_empty() check.
+...
 
-I can move the restructuring into a separate patch without a
-functional change, if you prefer.
-
-> 
->> @@ -2039,7 +2056,10 @@ ssize_t tls_sw_splice_read(struct socket 
->> *sock,  loff_t *ppos,
->>               goto splice_read_end;
->>           tls_rx_rec_done(ctx);
->> -        skb = darg.skb;
->> +        if (err > 0)
->> +            consume_skb(darg.skb);
->> +        else
->> +            skb = darg.skb;
->>       }
->>       rxm = strp_msg(skb);
->> @@ -2121,6 +2141,11 @@ int tls_sw_read_sock(struct sock *sk, 
->> read_descriptor_t *desc,
->>               err = tls_rx_one_record(sk, NULL, &darg);
->>               if (err < 0)
->>                   goto read_sock_end;
->> +            if (err > 0) {
->> +                tls_rx_rec_done(ctx);
->> +                consume_skb(darg.skb);
->> +                continue;
->> +            }
->>               released = tls_read_flush_backlog(sk, prot, INT_MAX,
->>                                 0, decrypted,
->> @@ -2520,6 +2545,12 @@ static void tls_finish_key_update(struct sock 
->> *sk, struct tls_context *tls_ctx)
->>   {
->>       struct tls_sw_context_rx *ctx = tls_ctx->priv_ctx_rx;
->> +    /* Only a pending KeyUpdate holds poll() back. The in-kernel rekey
->> +     * runs while the KeyUpdate record is still queued.
->> +     */
->> +    if (!READ_ONCE(ctx->key_update_pending))
->> +        return;
->> +
->>       WRITE_ONCE(ctx->key_update_pending, false);
->>       /* wake-up pre-existing poll() */
->>       ctx->saved_data_ready(sk);
->>
-> 
-> Otherwise looks good.
-> 
-> Cheers,
-> 
-> Hannes
-
-Thanks for the review,
-Martin
 
