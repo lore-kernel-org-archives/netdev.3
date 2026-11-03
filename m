@@ -1,60 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793694060;
-	b=y5mcxPZkUxPn3utHox93eVCJ2xsABPzRWm7heD6ioGmo/uUqEFQMPwYn7xBGZQNCe83Y
-	 jGjoeoUXb0knUkKMSD9Y/sCH3jbZlddLv9s4VYz2hDb5dmul6OCpu/nkndCvujzh4Syxx
-	 P21tCCFICPz8FhucFVxGbmng6Pm7R7md5syWfAm70TwqgJ986/oZsUdnIp5wrHi6uDH1v
-	 l3PZjcDlZylm4dYk/nWZIFz7AGM/1KvDMwn69hSgg49i7D/ZZ+LJuo+EOz/2+wro5Bk/L
-	 uPDCWnH8YKBrgNk393kjbFsWkngayHLghJjVrKjCSbikPAn60jxDcjo+LLVA872nkqA==
+	t=1793694151;
+	b=G+uUFSj5o4MramBfdPn+UHde380joAtec/fGExz34RkKIEPY8YTWMH/+qWuNq8FPuqf3
+	 NovfFm5SSY1Lwhap/79i7zPRHbZOZj3xf8SIwwQU006+InvpRKsEWcMWYDKIeYXU13HzM
+	 Y+9RvnMMIBctduS408sVJlCnO2cbB0qg324ckLw+RdCQG13EWjyQHIYGEET1jJu5q0Snr
+	 K1uQAtk6DZrF+M2scbKczPlijrzRSUULtUN3/ZsKpLFcVj6cGPflemf0I4Tb3BHr50rYI
+	 Y8sxR/qckMo+3xj8aVLVhg2omAOv1F/VBBw29EAXQ09FOYATH740+2lMARosHZ+LHgg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793694060;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Aa6+g5OWSxH4lWPH9eU9u8zxr2I/nnHbobAbPenwIPY=;
-	b=wQQyVQUhXpYTowuG1XvpLLakrcVDfSLVXTgDkKWpmacYHFcPtdzwpqTY7eOzFKKOWwIU
-	 z7VAvpYMg5hMF75UxdGliKl/ttpKlQy7HCHequqvTQsCikmOKdJPNAN/BSAyI+P+Vl5Ji
-	 4YtEJ6Q4lg2k4Ls7/QlIRiiJ/pBDhhg0b7R67/0ClDme9gfQoZ+B7eiQkJ8VzNZxradVy
-	 LAtkgTxcK3He1DDbYWbWlB/MJiMVWQta2w26Ef/AgRHGLD3qJREeiLpDLxyKggxWfwNgD
-	 G2/193at6K5N7HqYCNDbDhI77qq6ysjpZqhZkmSu+SrolTpryaYoAcf7DSDhp41OjSQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793694151;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=ywEpiDPK4X4lwtwqfGUxqJF97k3enH7AorttNznK9fM=;
+	b=G1GmlOIqzAlopSXDfaPrbqxYZtepEubZjqRt+iEaEphF0COBEeTfzhS9wjJRjXRmJGcH
+	 nleAR+NOgMrX0aTZ3BxgWDR4xYfkWOM8iNa0PMZWpzf2VBlhSIaP6tVJhbrGXKJHha08Q
+	 G1t+Bx2/YjqxpuXyCDAp0oqro4F11sAAodS250Izmlt/Vvo9maclQooTWWSyfJQNmuPIA
+	 KyzA1IhU3a7VCvTtB5aYJZWYOtgtkDR47+omnAibVDefNUeMNfQvTb++4UrBXssC3T8ha
+	 z1w9lfs+tlkQvheVs+5ZrTT2LcbasDFxAx4ap5Zqt7SO0PdrV6EoWS/aiwyX30uhzdw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GunfXMZn;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=networkplumber.org;
+	spf=pass smtp.mailfrom=networkplumber.org;
+	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=Vb+RDi0Z;
+	arc=none smtp.remote-ip=209.85.221.46
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32728606A324;
-	Tue,  3 Nov 2026 08:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512A9606A329
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 08:22:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 512A9606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GunfXMZn
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A201F000C1;
-	Tue,  3 Nov 2026 08:20:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793694059;
-	bh=Aa6+g5OWSxH4lWPH9eU9u8zxr2I/nnHbobAbPenwIPY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=GunfXMZnebgMC9X7jf24JtJ2f6M1jRiXKUpWHGXBqe/dPCq1w3StQqPcjsVlWbS+r
-	 Xw9Q4bbKKgyIiytFoPHW7Y6uJ36claf1kTOUPUdZnPTEjy1vVyeUlxcuxptVGNkC9I
-	 LUKr2SpfTWiUgBwZqozX+oyUbOQN5dwSEBMJ37ps2HISYE+Kx1Y+VGY3TQzt3ssawG
-	 tFPxXHSEoJZK4/u3kmMhSbfAPZCkXSr9Xi+CFM/5oHycbYd3hnuFyM7DYcI7HsWhs4
-	 jLhs2tbBr/6r5mrLlq1JNmHdh8FicZU7FlIcyBbSa+AkCY7uNBYP9Q5LNtSbMP0Di5
-	 Ub/hR33zgx63A==
-Subject: Re: [PATCH] net: wwan: iosm: fix potential skb leak in MUX DL decode
-From: netdev-bot+sashiko@kernel.org
-To: fangxy@xiaopeng.com
-Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, johannes@sipsolutions.net,
- m.chetan.kumar@intel.com, zhugl3@xiaopeng.com
-Date: Tue, 03 Nov 2026 08:20:58 +0000
-Message-ID: <179369405864.488856.5590338519083448566@kernel.org>
-In-Reply-To: <20261102081920.50288-1-fangxy@xiaopeng.com>
-References: <20261102081920.50288-1-fangxy@xiaopeng.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=Vb+RDi0Z
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-48df4e9d2d4so2049084f8f.3
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 00:22:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1793694149; x=1794298949; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ywEpiDPK4X4lwtwqfGUxqJF97k3enH7AorttNznK9fM=;
+        b=Vb+RDi0ZvJcLQv+YaQuOnDH/hs+afajV0HP9eGbv8wEvjgVDVTEv3v2q6L9+2fjW5i
+         temELTC+iAKXODYvGzIstOgV5u+HWtOy423elq1hrjb5JF5lkma4HToNgh9q5cBHe+Xl
+         CK/3u0l4cl5m9m+d970COeXBSq5CRBcFxhKwSr0JWwZh2VH1sf1UysBi5ReGYIEA7qDA
+         lCcQXbHaSPlQd9Ni3Ch/Q7isklgnAWb9atdpyMWXk1UjCdqB+jwH3sQOJpt2FIE5tffP
+         t2JEHtfuRee6qbIcPeWidsLgHDhn8ZmRruheumVreNsdwBoQwIc1rrY+PWfXzGhbCy75
+         WG5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793694149; x=1794298949;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ywEpiDPK4X4lwtwqfGUxqJF97k3enH7AorttNznK9fM=;
+        b=LB7RSvwxVEUfFhNw+nKjVGv9hhfB8+mg4dJxJ0lVBkwijbzKJMY1ROwf+8jdKes8gR
+         lxFRXiR9VErWyYbQ1a2OjtIxWIzPnMHZCydENCqYzikcgcoNryl/b8q97StGtd3AEPoh
+         9DL4+35QDBSPcrVlZwuVbTkxQVom18Q85EhE6AMcX+6wfGAbQe+s21cNbo5qe8VbIa9d
+         mc+eEbvYGbnrVO8XJm3ryeDqNCevWVPqObAILMjGECy7bizk90m5arZtkkcxGiheTXyj
+         4Lylwsm5/kUWnyafexFZcVhPPpUUcoDBe0GtF4beyClxRAAfaLL78CXn032yqPAEX6IH
+         kiXw==
+X-Gm-Message-State: APuU4Z+Kio2Uiqz+D1fOrF6oGjzTtI0ZHr+BceL9gyR0uXs9SsIgCJYP
+	3PaO2CygglHHkEiO2xWAM9JZJEFDa+P+EO/tYxAWdB7QQG7hZpUh8vzCBEN99/yuxEU=
+X-Gm-Gg: AYBFou2my7rJXSWcJKG5lHUROP5n4XVjSWIkB4zKQ/ailRkLjHYu/CnlF3wdzsO2m1e
+	FQy3/HkT1yn/eQUGJocC4FmNWrHkvDK/N1Pimf4MEnsIeITaAVYCJ81ggHYPROHXLfvTmtM5tSC
+	Z1xB9loyOYAgn1Nzp+Fhs4p9P7CUM4s7v2JU6oVVSCqD0p8gZNALbbN1cqOVMYdMZA42V1pAaYs
+	j20q/xddbB57qwHRQT06q1XjP2EvNln55OSHi6QhUOw0jVai6WiUFIwfRIAILp6A4GpOoK8Zklq
+	PQJmPyj5pdk2C/Od86Ot2SwbDZ3sYHrxu2sjJLCXIWWFKGfpKrOlcifWfsITjzuGpx5AoADa8hP
+	OI6vP/v+NVHkjFf0Dcap2AIeg05Rv+D+JMTlbRWVW5LEPJvLvFE+lxaEVmyigStMxzLxD/kq1jg
+	7Rx5i3ACzgrjHa8l3gKHlMcdwqAtia5/V0ba5TD9JfGM06NWb9kWfwgA/ce6H0ByBQN3ZZDkvtU
+	LFY/FeVAf7dJppP4hFmWt5+admtuEAr5WkIKfhfuf+qNc63UHafeHcsXtS+1PHyMCSC611ix0pW
+	XL3g7SKwNhVcfTCt1k/j0K+MfjN866S+04wp/vMEk9xOnXIYByfW6gsUdAG1puAISjOtQZk0Y15
+	abAyoIEPl6KMjYfY=
+X-Received: by 2002:a05:6000:4312:b0:48d:f36e:fbcb with SMTP id ffacd0b85a97d-48e6e2eb205mr29662965f8f.14.1793694149346;
+        Tue, 03 Nov 2026 00:22:29 -0800 (PST)
+Received: from stephen-xps.local (93.224-78-194.adsl-static.isp.belgacom.be. [194.78.224.93])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b7270asm23867730f8f.11.2026.11.03.00.22.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 00:22:29 -0800 (PST)
+Date: Tue, 3 Nov 2026 09:22:26 +0100
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ bpf@vger.kernel.org, dsahern@kernel.org, Willem de Bruijn
+ <willemb@google.com>
+Subject: Re: [PATCH net-next] docs: netdev: fix iproute2 process
+ documentation
+Message-ID: <20261103092226.2e8ab229@stephen-xps.local>
+In-Reply-To: <20261103033611.949104-1-willemdebruijn.kernel@gmail.com>
+References: <20261103033611.949104-1-willemdebruijn.kernel@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,188 +100,16 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Mon,  2 Nov 2026 22:35:56 -0500
+Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
 
-Critical: 0 · High: 0 (1) · Medium: 1 (2) · Low: 0
+> +
+> +Patches are tracked in patchwork under the netdevbpf project and delegated
+> +to 'shemminger' for further processing:
+> +
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The commit message claims to fix a 'potential skb leak' in
-  ipc_mux_dl_decode()…
-
-Pre-existing issues:
-- [High] ipc_mux_dl_acb_decode()
-  (drivers/net/wwan/iosm/iosm_ipc_mux_codec.c:518-545) follows a chain…
-- [Medium] ipc_mux_dl_decode() reads a 4-byte signature at line 702
-  without checking skb->len >= 4.
-- [Medium] On the MUX (IPC_CTYPE_WWAN) downlink path, the CPU parses the
-  receive buffer and hands skb_clone()s of it to the network stack while…
-
---
-
-net: wwan: iosm: fix potential skb leak in MUX DL decode
-
-This patch adds an ipc_pcie_kfree_skb() call to the early return in
-ipc_mux_dl_decode() that is taken when skb->data is NULL. The intent is to
-release both the DMA mapping and the skb. It carries a Fixes: tag for
-commit 3670970dd8c6.
-
-> diff --git a/drivers/net/wwan/iosm/iosm_ipc_mux_codec.c b/drivers/net/wwan/iosm/iosm_ipc_mux_codec.c
-> index 0bbd41263cc2f..61700688eac96 100644
-> --- a/drivers/net/wwan/iosm/iosm_ipc_mux_codec.c
-> +++ b/drivers/net/wwan/iosm/iosm_ipc_mux_codec.c
-> @@ -693,8 +693,10 @@ void ipc_mux_dl_decode(struct iosm_mux *ipc_mux, struct sk_buff *skb)
->  {
->  	u32 signature;
->  
-> -	if (!skb->data)
-> +	if (!skb->data) {
-> +		ipc_pcie_kfree_skb(ipc_mux->pcie, skb);
->  		return;
-> +	}
-
-[Severity: Medium]
-Can skb->data actually be NULL here? The commit message says:
-
-  However, the early return when skb->data is NULL
-  bypasses the skb cleanup.
-
-The only caller is ipc_imem_dl_skb_process(), which already returns early
-when skb is NULL.
-
-DL ring skbs come only from
-ipc_protocol_dl_td_prepare()->ipc_pcie_alloc_skb()->
-ipc_pcie_alloc_local_skb()->__netdev_alloc_skb(). When the allocation
-succeeds, skb->data points at the head buffer. When it fails, NULL is
-returned and caught before anything is put on the ring:
-
-drivers/net/wwan/iosm/iosm_ipc_protocol_ops.c:ipc_protocol_dl_td_prepare() {
-    ...
-	skb = ipc_pcie_alloc_skb(ipc_protocol->pcie, pipe->buf_size, GFP_ATOMIC,
-				 &mapping, DMA_FROM_DEVICE,
-				 IPC_MEM_DL_ETH_OFFSET);
-	if (!skb)
-		return false;
-    ...
-}
-
-ipc_pcie_alloc_skb() also passes skb->data to ipc_pcie_addr_map() and
-frees the skb if the mapping fails. Nothing between there and the decoder
-(skb_reserve(), skb_put()) can set skb->data to NULL.
-
-If that is right, the new ipc_pcie_kfree_skb() call is dead code and no
-reachable leak gets fixed. Should this be described as hardening and sent
-without the Fixes: tag? Or should the impossible check simply be removed,
-so stable does not pick it up as a leak fix?
-
-Separately, ipc_imem_dl_skb_process() has two branches that drop the skb
-without freeing it: the IPC_CTYPE_WWAN case when if_id is not
-IPC_MEM_MUX_IP_CH_IF_ID, and the default case. Both also look unreachable
-with the current single WWAN channel (if_id 0).
-
->  
->  	/* Decode the MUX header type. */
->  	signature = le32_to_cpup((__le32 *)skb->data);
-
-[Severity: Medium]
-This is a pre-existing issue, not one introduced by this patch. Is
-skb->len checked anywhere before the signature and the headers after it
-are parsed?
-
-skb->len comes from the device-written p_td->scs in
-ipc_protocol_dl_td_process(). It is only bounded by pipe->buf_size, so it
-can be 0.
-
-None of the decoders compare skb->len with their header sizes:
-ipc_mux_dl_cmd_decode() (struct mux_lite_cmdh), ipc_mux_dl_adgh_decode()
-(struct mux_adgh) and ipc_mux_dl_acb_decode(). ipc_mux_dl_fcth_decode()
-gets only skb->data, so it cannot check the length at all. With a short
-transfer, these decoders read stale or uninitialized bytes that lie inside
-the buf_size allocation but beyond the received data.
-
-In ipc_mux_dl_adgh_decode(), the u32 subtraction can underflow when the
-device-supplied length is smaller than packet_offset:
-
-	adgh_len = le16_to_cpu(adgh->length);
-
-	/* Pass the packet to the netif layer */
-	rc = ipc_mux_net_receive(ipc_mux, if_id, wwan, packet_offset,
-				 adgh->service_class, skb,
-				 adgh_len - packet_offset);
-
-ipc_mux_net_receive() ignores a failed skb_pull(), and skb_trim() with a
-huge length does nothing. A wrongly framed clone then reaches
-ipc_wwan_receive().
-
-[Severity: High]
-This is also a pre-existing issue that this patch did not introduce.
-ipc_mux_dl_decode() dispatches IOSM_AGGR_MUX_SIG_ACBH blocks to
-ipc_mux_dl_acb_decode(), which walks the command chain using indices
-written by the modem:
-
-drivers/net/wwan/iosm/iosm_ipc_mux_codec.c:ipc_mux_dl_acb_decode() {
-    ...
-	next_cmd_index = le32_to_cpu(acbh->first_cmd_index);
-	next_cmd_index = array_index_nospec(next_cmd_index,
-					    sizeof(struct mux_cmdh));
-
-	while (next_cmd_index != 0) {
-		cmdh = (struct mux_cmdh *)&block[next_cmd_index];
-		next_cmd_index = le32_to_cpu(cmdh->next_cmd_index);
-    ...
-}
-
-Only the first index is clamped. Is each later next_cmd_index used as an
-offset into skb->data without any check against skb->len? That would let
-the device make the kernel read struct mux_cmdh fields up to 4 GiB past
-skb->data, which page-faults in the DL tasklet path.
-
-The loop also has no forward-progress check, unlike the adth loop in
-mux_dl_adb_decode(). A command whose next_cmd_index points back to itself
-(for example first_cmd_index = 16 with the u32 at offset 24 also set to
-16) looks like it would spin forever. On each pass it could call
-ipc_mux_dl_acb_send_cmds() again.
-
-The out-of-bounds write through link_status_resp.response in
-ipc_mux_dl_acbcmd_decode() does not look reachable.
-ipc_mux_dl_cmds_decode_process() returns -EINVAL for
-IOSM_AGGR_MUX_CMD_LINK_STATUS_REPORT_RESP, so the concern is limited to
-the out-of-bounds read and the endless loop.
-
-[Severity: Medium]
-This is another pre-existing issue that this patch did not introduce. Is
-the CPU reading this DMA_FROM_DEVICE buffer while it is still mapped?
-
-In ipc_imem_dl_skb_process(), only the CTRL case unmaps before using the
-buffer:
-
-	case IPC_CTYPE_CTRL:
-		...
-		ipc_pcie_addr_unmap(ipc_imem->pcie, IPC_CB(skb)->len,
-				    IPC_CB(skb)->mapping,
-				    IPC_CB(skb)->direction);
-	...
-	case IPC_CTYPE_WWAN:
-		if (pipe->channel->if_id == IPC_MEM_MUX_IP_CH_IF_ID)
-			ipc_mux_dl_decode(ipc_imem->mux, skb);
-
-On the WWAN path, ipc_mux_dl_decode() reads the signature and runs the
-ADB/ADGH/FCTH/ACB/CMD decoders. ipc_mux_net_receive() then hands
-skb_clone()s to ipc_wwan_receive(). The unmap only happens in the final
-ipc_pcie_kfree_skb() call. There is no dma_sync_single_for_cpu() anywhere
-in drivers/net/wwan/iosm/.
-
-With SWIOTLB bouncing, or on platforms without cache-coherent DMA, the
-decoder and the network stack would see stale data. The unmap would then
-copy the device data into a buffer that clones already in the stack may
-still be reading. The dead-code exit added by this patch follows the same
-late-unmap pattern.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261102081920.50288-1-fangxy%40xiaopeng.com
+Minor nit. David Ahern (dsa) handles the iproute-next patches.
+I stick to only iproute. 
