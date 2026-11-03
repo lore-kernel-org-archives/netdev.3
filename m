@@ -1,96 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.46
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793694151;
-	b=G+uUFSj5o4MramBfdPn+UHde380joAtec/fGExz34RkKIEPY8YTWMH/+qWuNq8FPuqf3
-	 NovfFm5SSY1Lwhap/79i7zPRHbZOZj3xf8SIwwQU006+InvpRKsEWcMWYDKIeYXU13HzM
-	 Y+9RvnMMIBctduS408sVJlCnO2cbB0qg324ckLw+RdCQG13EWjyQHIYGEET1jJu5q0Snr
-	 K1uQAtk6DZrF+M2scbKczPlijrzRSUULtUN3/ZsKpLFcVj6cGPflemf0I4Tb3BHr50rYI
-	 Y8sxR/qckMo+3xj8aVLVhg2omAOv1F/VBBw29EAXQ09FOYATH740+2lMARosHZ+LHgg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793694151;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.173
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793694811;
+	b=dP8DMBPp5CXbeNMEgpGxkSHAoDG4uLkIz2W5kNF2mduZIC/F2VXXUIOG/wGakc+5ViNQ
+	 l7S6SmVgAENFEEWlhZCtqKSsZ/wHeab2Mi7EeAqSqTpJbbb9Sw3U0u34LdWtY16KcMeQt
+	 iqEFcMsnHwAq7G54YcG+R9qQZkcJ3MsxR7UYLYUOiautGDzMjd0peXoVm8GoFA0RvamWJ
+	 I+cFLHUPNzK3pVZPxdcLAnVpGFD+i7pThhhJYLSKmUoPbZHpT8pRchYlLZ6Z+PobM4Whm
+	 UR0EDVfG0ogrOF+sNOGab55w/N2b9TbBhnOz+trlKyNJlCtTR85qyJzrOoXSnSKOQHA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793694811;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=ywEpiDPK4X4lwtwqfGUxqJF97k3enH7AorttNznK9fM=;
-	b=G1GmlOIqzAlopSXDfaPrbqxYZtepEubZjqRt+iEaEphF0COBEeTfzhS9wjJRjXRmJGcH
-	 nleAR+NOgMrX0aTZ3BxgWDR4xYfkWOM8iNa0PMZWpzf2VBlhSIaP6tVJhbrGXKJHha08Q
-	 G1t+Bx2/YjqxpuXyCDAp0oqro4F11sAAodS250Izmlt/Vvo9maclQooTWWSyfJQNmuPIA
-	 KyzA1IhU3a7VCvTtB5aYJZWYOtgtkDR47+omnAibVDefNUeMNfQvTb++4UrBXssC3T8ha
-	 z1w9lfs+tlkQvheVs+5ZrTT2LcbasDFxAx4ap5Zqt7SO0PdrV6EoWS/aiwyX30uhzdw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=networkplumber.org;
-	spf=pass smtp.mailfrom=networkplumber.org;
-	dkim=pass header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=Vb+RDi0Z;
-	arc=none smtp.remote-ip=209.85.221.46
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=ns5UrpFr+nBqk8VeozAAQ/bQgy/bCK+3qJvpw6jQboQ=;
+	b=3N6vMl4UnrHLflEBArMCNK08tOiY7a7V/KvmZrHYZR2t6KsUcdavlYIiIYzywH1HWhhU
+	 ywZBi/YNAGjVYelbojhINzVe9oWJ7ZtC+KI8QmtGaC7jLkxbdlMuCCCzRVK4pxX+9pCkL
+	 dn+Iy5jJqXOFVG4l0Nxhxau6gdq2AVDRKZpmRkZp10yQQc2Ic34Wn/dgN8t9YfvIrkAVX
+	 nu9kX3gqmeLhWovl8ELpc6xKFxPTUJpmSzIG+bJ6Y7mbL5L3JtaTGc0H6ZfH8fcqj3oN6
+	 Oif2sNXhPlZ8sfk0TzuA50qYHwYlnGobqlxd79I5MihwkxsHwpKFXckHTScRGtiQxEw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=pCg4RMQo;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.173
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512A9606A329
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 08:22:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 512A9606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D50606EE94
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 08:33:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 47D50606EE94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=networkplumber-org.20260707.gappssmtp.com header.i=@networkplumber-org.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=Vb+RDi0Z
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-48df4e9d2d4so2049084f8f.3
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 00:22:30 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=pCg4RMQo
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2e95bd1c14cso35464745ad.2
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 00:33:31 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793694811; cv=none;
+        d=google.com; s=arc-20260327;
+        b=MEoSN05s4GB13azZptOSNXy9qWrha12ZNcVgavJ0WfqY2aLPfkrI6lRvvtpAFoRngx
+         jnWxPL2I52YKdudrRY3H+mx/v+ClhaQyaMusRZeX2IzDMupdn8UJJdpmeDWQQaDQK/Km
+         D09FxJF6nJbeTis8CS6F6utoGQaZA2VQxDPen7TOqTlcqICV8gyyeqwCvLX2WXwaswTu
+         w31MhU4RosumTKUWK9bIXw8M6tIoOLzbAnol6kI1S1Bjbh0XvteTGV8ie8RbMtJuhb8b
+         D0oYI1OFv8LliT1y+b0SS1BPDPg1qYggyxoMYXnwS9Ps8tPHtn51Xog41WhM/Ovm7QcS
+         bDvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ns5UrpFr+nBqk8VeozAAQ/bQgy/bCK+3qJvpw6jQboQ=;
+        fh=TIYJx1dImJddKjAeyZv/A1b9ciOXu+0w0tj5MOHanfk=;
+        b=EBtCC0AI9clL+vbrPRtqTp/PBqaluI+K2r/mH7YX//1iGhUEDAivaG23Qiopg+WJ6/
+         PXNUJMXOZrjargSNz3d3Mk3fd8YFRSA2xw13SpD8ntx9bYmfphMUcEc6iLdU+lc3spkO
+         gDCNxgF+Ucjmb6hRpPrPeQH5HvDqkqBJ+OhNlBUqr1gAARdu2csGDBJkz1uQE4PrFBi4
+         XhovqihwdAPv/fI1xpqtAj7m2YcvXyUgUjeo875P/Vhq2q80QC5t0gciIEaPpVVlgoIe
+         vLWfmhlpOMJmnxqNCGRPvbNXdtDSsfJihaimmRp3Pz9FdjlspjJnmP2PLorJdgwpEHeN
+         noMw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20260707.gappssmtp.com; s=20260707; t=1793694149; x=1794298949; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=google.com; s=20260707; t=1793694811; x=1794299611; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ywEpiDPK4X4lwtwqfGUxqJF97k3enH7AorttNznK9fM=;
-        b=Vb+RDi0ZvJcLQv+YaQuOnDH/hs+afajV0HP9eGbv8wEvjgVDVTEv3v2q6L9+2fjW5i
-         temELTC+iAKXODYvGzIstOgV5u+HWtOy423elq1hrjb5JF5lkma4HToNgh9q5cBHe+Xl
-         CK/3u0l4cl5m9m+d970COeXBSq5CRBcFxhKwSr0JWwZh2VH1sf1UysBi5ReGYIEA7qDA
-         lCcQXbHaSPlQd9Ni3Ch/Q7isklgnAWb9atdpyMWXk1UjCdqB+jwH3sQOJpt2FIE5tffP
-         t2JEHtfuRee6qbIcPeWidsLgHDhn8ZmRruheumVreNsdwBoQwIc1rrY+PWfXzGhbCy75
-         WG5Q==
+        bh=ns5UrpFr+nBqk8VeozAAQ/bQgy/bCK+3qJvpw6jQboQ=;
+        b=pCg4RMQo97Y1LBmF9lm1jx9L1k5JnwwSM15fQw+LIz8alJ19qoAMYYXufZTFjI0Eqy
+         RJv2c+Czx9lyf9RCREUVIUGi+c7vYjBanaq4m4w1AJbkNpL61ZudlF+qUH3ECSEVrVeH
+         d86tSN+PO9tOQl0FAmtqylKYxZJAaWtCohHIvbZCbKi6H9ttb52C/FmIZAU9LidxZueI
+         kz5LF6BwX5bh35hsZEe/ra72Uvrs69TkLf8X75dFGl9ELV+nIn8/7dRaIw8LTz6KaPUt
+         HhQsI9koa7T4MfEMsecjpjhgp3UP7YXQ/TQyJDlihffqbIEDsPUNumCJs/Le0V2+kHce
+         Qi0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793694149; x=1794298949;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793694811; x=1794299611;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ywEpiDPK4X4lwtwqfGUxqJF97k3enH7AorttNznK9fM=;
-        b=LB7RSvwxVEUfFhNw+nKjVGv9hhfB8+mg4dJxJ0lVBkwijbzKJMY1ROwf+8jdKes8gR
-         lxFRXiR9VErWyYbQ1a2OjtIxWIzPnMHZCydENCqYzikcgcoNryl/b8q97StGtd3AEPoh
-         9DL4+35QDBSPcrVlZwuVbTkxQVom18Q85EhE6AMcX+6wfGAbQe+s21cNbo5qe8VbIa9d
-         mc+eEbvYGbnrVO8XJm3ryeDqNCevWVPqObAILMjGECy7bizk90m5arZtkkcxGiheTXyj
-         4Lylwsm5/kUWnyafexFZcVhPPpUUcoDBe0GtF4beyClxRAAfaLL78CXn032yqPAEX6IH
-         kiXw==
-X-Gm-Message-State: APuU4Z+Kio2Uiqz+D1fOrF6oGjzTtI0ZHr+BceL9gyR0uXs9SsIgCJYP
-	3PaO2CygglHHkEiO2xWAM9JZJEFDa+P+EO/tYxAWdB7QQG7hZpUh8vzCBEN99/yuxEU=
-X-Gm-Gg: AYBFou2my7rJXSWcJKG5lHUROP5n4XVjSWIkB4zKQ/ailRkLjHYu/CnlF3wdzsO2m1e
-	FQy3/HkT1yn/eQUGJocC4FmNWrHkvDK/N1Pimf4MEnsIeITaAVYCJ81ggHYPROHXLfvTmtM5tSC
-	Z1xB9loyOYAgn1Nzp+Fhs4p9P7CUM4s7v2JU6oVVSCqD0p8gZNALbbN1cqOVMYdMZA42V1pAaYs
-	j20q/xddbB57qwHRQT06q1XjP2EvNln55OSHi6QhUOw0jVai6WiUFIwfRIAILp6A4GpOoK8Zklq
-	PQJmPyj5pdk2C/Od86Ot2SwbDZ3sYHrxu2sjJLCXIWWFKGfpKrOlcifWfsITjzuGpx5AoADa8hP
-	OI6vP/v+NVHkjFf0Dcap2AIeg05Rv+D+JMTlbRWVW5LEPJvLvFE+lxaEVmyigStMxzLxD/kq1jg
-	7Rx5i3ACzgrjHa8l3gKHlMcdwqAtia5/V0ba5TD9JfGM06NWb9kWfwgA/ce6H0ByBQN3ZZDkvtU
-	LFY/FeVAf7dJppP4hFmWt5+admtuEAr5WkIKfhfuf+qNc63UHafeHcsXtS+1PHyMCSC611ix0pW
-	XL3g7SKwNhVcfTCt1k/j0K+MfjN866S+04wp/vMEk9xOnXIYByfW6gsUdAG1puAISjOtQZk0Y15
-	abAyoIEPl6KMjYfY=
-X-Received: by 2002:a05:6000:4312:b0:48d:f36e:fbcb with SMTP id ffacd0b85a97d-48e6e2eb205mr29662965f8f.14.1793694149346;
-        Tue, 03 Nov 2026 00:22:29 -0800 (PST)
-Received: from stephen-xps.local (93.224-78-194.adsl-static.isp.belgacom.be. [194.78.224.93])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b7270asm23867730f8f.11.2026.11.03.00.22.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 00:22:29 -0800 (PST)
-Date: Tue, 3 Nov 2026 09:22:26 +0100
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- bpf@vger.kernel.org, dsahern@kernel.org, Willem de Bruijn
- <willemb@google.com>
-Subject: Re: [PATCH net-next] docs: netdev: fix iproute2 process
- documentation
-Message-ID: <20261103092226.2e8ab229@stephen-xps.local>
-In-Reply-To: <20261103033611.949104-1-willemdebruijn.kernel@gmail.com>
-References: <20261103033611.949104-1-willemdebruijn.kernel@gmail.com>
+        bh=ns5UrpFr+nBqk8VeozAAQ/bQgy/bCK+3qJvpw6jQboQ=;
+        b=U67HoRCSRsIhEuwY1HRmurzbjG+yDC12W+4VNemrscaSeR8X0QkK/2qg1yW9EvEQOE
+         OLhfQud/6za17hZvSCdcsnKERdsAtekV99YGuH4DpPVtFGNMUYX1uiT9dYCYb8TWqffM
+         i354jpOhp8scvG9CMu38f/SfjuEDu0PsT0PoCWm37BuATTUhr86wmWnAj9HNo/2uxsgZ
+         PVMefDFFjHaFO8c1bhZBbKG5XHU7zOjUYfIwRYNJKrJWkSPVtwfqv5nxkvM8nt+HN01K
+         CTlK9fLk1FToek9VqawteOiXtIX3OtBHWmx06f0CHdGwbqcs4Y4hPwBJzLmPQeA9lD6K
+         +djQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz/Slgfj22tUTz7MrLIP2ZVojyIZrVeRQcAV3k5IUFhBP0qH+8itbfsxPiE+pmodndag34ggTA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+bxJAqNveLDZxeSkZw4j8Mdw+yaDPCXer7xZfji6gH0xxlZ//d
+	+aUkHFPRFYg6IZyDEXkznI//+h0fxF2wet+Pl3CWaklDD4VFbrlzc5HHvaxUNO5MXadQrC90ZlQ
+	PI/+dYdYNknWmvQ4isf3bOQ5lcDGOEdxqnJVNXzy2
+X-Gm-Gg: AYBFou1TyEOregPAqcqmJfIhCRV/9ghxEllbSn/zYDFNq+a3l2WBnzQeJ5gZQrG9iBr
+	AjpFLct1h4OdS5bYOb0eW/Wd2c4Pun9IoR0phR4EQ4j0ApZ9I2nPB18sJUwW8kwmtJONI0Ilik4
+	TycNFS4oqJKgEO+w74YSQFqivQ0Okcd7GoGxddP5hR+F0/orQ1sOD2hxVG6jGLxwyiRN2P9gpFK
+	CPe5n5LqTILRxk7xQn0gxZOJhZ+VZAXim+aVC7s3VzKT2n/KLEusCUVVUicMM550kAom4C21bVx
+	52EVZoVowrm7ptTTbyC5GQK0ty0WOcen0BtViA37uKrJjA/iRO93cctelGyRi+BaiY+xOnMwDxc
+	Xs5FWaU3UUBFUslPYgkIDCsLMHWl/FWNRT8+1
+X-Received: by 2002:a17:903:1c1:b0:2e9:6333:fbb8 with SMTP id
+ d9443c01a7336-2eb364936fcmr122129865ad.12.1793694809842; Tue, 03 Nov 2026
+ 00:33:29 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,16 +104,174 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20261029211634.2232784-2-hramamurthy@google.com> <179365431852.3131.15974768163319773656@kernel.org>
+In-Reply-To: <179365431852.3131.15974768163319773656@kernel.org>
+From: Pin-yen Lin <treapking@google.com>
+Date: Tue, 3 Nov 2026 00:33:18 -0800
+X-Gm-Features: AclHuK822Wf9DTeUoa6mUrIKemK_tfGKzjcfqPnGUM0p_VrNgJWlcfcDSwcas6o
+Message-ID: <CAHwYsirZ8CpNL4QA_ie9EX6WCs=Waq9F3JsPXL+LYPjx=RJ7ZA@mail.gmail.com>
+Subject: Re: [PATCH net v4 1/4] gve: Fix race between stats query and queue reconfig
+To: netdev-bot+sashiko@kernel.org
+Cc: hramamurthy@google.com, netdev@vger.kernel.org, joshwash@google.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, 
+	kuba@kernel.org, pabeni@redhat.com, jordanrhee@google.com, willemb@google.com, 
+	przemyslaw.kitszel@intel.com, nktgrg@google.com, maolson@google.com, 
+	jacob.e.keller@intel.com, pkaligineedi@google.com, yangchun@google.com, 
+	patricion@google.com, awogbemila@google.com, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon,  2 Nov 2026 22:35:56 -0500
-Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
+On Mon, Nov 2, 2026 at 1:18=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wrot=
+e:
+>
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 2 =C2=B7 Low: 0
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [Medium] At this commit, the new priv->stats_lock is not taken by the
+>   single-queue (queue-mgmt API) writers of priv->rx[idx].
+> - [Medium] At this commit, the device-level qstats totals drop to 0 once
+>   the interface is down.
+>
+> --
+>
+> gve: Fix race between stats query and queue reconfig
+>
+> This commit adds priv->stats_lock to serialize the stats readers
+> (gve_get_stats(), gve_handle_report_stats() and the per-queue qstats
+> callbacks) against queue teardown in gve_queues_mem_remove(). Queue
+> pointers are now cleared under the lock before the ring memory is freed.
+> The per-queue callbacks also return early when priv->rx or priv->tx is
+> NULL.
+>
+> > diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/e=
+thernet/google/gve/gve_main.c
+> > index 2437cd8ba6331..26fdd22644f4d 100644
+> > --- a/drivers/net/ethernet/google/gve/gve_main.c
+> > +++ b/drivers/net/ethernet/google/gve/gve_main.c
+> > @@ -69,6 +69,7 @@ static void gve_get_stats(struct net_device *dev, str=
+uct rtnl_link_stats64 *s)
+> >       int num_tx_queues;
+> >       int ring;
+> >
+> > +     spin_lock_bh(&priv->stats_lock);
+> >       num_tx_queues =3D gve_num_tx_queues(priv);
+> >       if (priv->rx) {
+> >               for (ring =3D 0; ring < priv->rx_cfg.num_queues; ring++) =
+{
+>
+> [Severity: Medium]
+> Does stats_lock cover every writer of priv->rx[idx]? The single-queue
+> restart path still rewrites the ring contents without taking the lock,
+> and priv->rx stays non-NULL the whole time:
+>
+> drivers/net/ethernet/google/gve/gve_main.c:gve_rx_queue_stop() {
+>     ...
+>         gve_per_q_mem =3D (struct gve_rx_ring *)per_q_mem;
+>         *gve_per_q_mem =3D priv->rx[idx];
+>         memset(&priv->rx[idx], 0, sizeof(priv->rx[idx]));
+>         return 0;
+> }
+>
+> drivers/net/ethernet/google/gve/gve_main.c:gve_rx_queue_start() {
+>     ...
+>         gve_per_q_mem =3D (struct gve_rx_ring *)per_q_mem;
+>         priv->rx[idx] =3D *gve_per_q_mem;
+>     ...
+> abort:
+>     ...
+>         memset(&priv->rx[idx], 0, sizeof(priv->rx[idx]));
+>         return err;
+> }
+>
+> These run under rtnl and the instance lock. gve_get_stats() (via
+> ndo_get_stats64) and gve_handle_report_stats() (from the stats report
+> worker) hold neither of those. They only take stats_lock.
+>
+> Suppose a devmem, XSK or page-pool queue restart races with a read of
+> /proc/net/dev or with the stats report worker. Could the reader then see
+> a partly copied or zeroed ring, including its statss? It would then
+> report torn rpackets, rbytes, desc.seqno or fill_cnt values.
+>
+> The readers only copy scalar counters, so this looks like wrong
+> statistics, not memory corruption.
+>
+> The later patch in this series, "gve: Fix backward stats when interface
+> goes down or configuration is adjusted", wraps these writes in
+> spin_lock_bh(&priv->stats_lock). This patch is tagged for stable. Would
+> it make sense to move that part into this patch?
 
-> +
-> +Patches are tracked in patchwork under the netdevbpf project and delegated
-> +to 'shemminger' for further processing:
-> +
+Agreed. We will move the spin lock to this patch in v5.
+>
+> [ ... ]
+>
+> > @@ -2786,9 +2796,15 @@ static void gve_get_rx_queue_stats(struct net_de=
+vice *dev, int idx,
+> >                                  struct netdev_queue_stats_rx *rx_stats=
+)
+> >  {
+> >       struct gve_priv *priv =3D netdev_priv(dev);
+> > -     struct gve_rx_ring *rx =3D &priv->rx[idx];
+> > +     struct gve_rx_ring *rx;
+> >       unsigned int start;
+> >
+> > +     spin_lock_bh(&priv->stats_lock);
+> > +     if (!priv->rx)
+> > +             goto unlock;
+> > +
+>
+> [Severity: Medium]
+> When the interface is down, this early return (and the matching one in
+> gve_get_tx_queue_stats()) leaves rx_stats and tx_stats untouched.
+> netdev_nl_stats_add() then skips them as NETDEV_STAT_NOT_SET. At this
+> commit gve_get_base_stats() still reports zero:
+>
+> static void gve_get_base_stats(struct net_device *dev,
+>                                struct netdev_queue_stats_rx *rx,
+>                                struct netdev_queue_stats_tx *tx)
+> {
+>         rx->packets =3D 0;
+>         rx->bytes =3D 0;
+>         rx->alloc_fail =3D 0;
+>
+>         tx->packets =3D 0;
+>         tx->bytes =3D 0;
+> }
+>
+> After some traffic and then ip link set dev down, does the device-level
+> qstats total drop from the live counters to 0? That looks like it would
+> still fail check_down() in tools/testing/selftests/drivers/net/stats.py.
+> That check requires every qstats key to be non-decreasing across ifdown.
+>
+> The NULL dereference is fixed, but the totals now go backwards. The next
+> patch in the series, "gve: Fix backward stats when interface goes down
+> or configuration is adjusted", seems to fix this. It folds the ring
+> counters into priv->base_net_stats and priv->base_ring_err_stats in
+> gve_queues_mem_remove() and reports them from gve_get_base_stats().
+>
+> Given the stable tag, is it intended that this patch alone leaves the
+> qstats totals non-monotonic across ifdown?
 
-Minor nit. David Ahern (dsa) handles the iproute-next patches.
-I stick to only iproute. 
+Yes, this is intended. This patch focuses on fixing the kernel panic
+and the next patch addresses the stats values across ifdown.
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20261029211634.2232784-1-hramamurthy%40google.com
+
+Regards,
+Pin-yen
+
+---
+
+pw-bot: cr
