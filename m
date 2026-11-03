@@ -1,101 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=139.219.17.126
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793697971;
-	b=JNB4MbEkkLIipTNPS+AtrfAnw3psbzjp/ik62hlcgfUq5u4L9R1VS22QLpY8OzLS1BJg
-	 VePlNM3OWqj9vyCOdfckYEDq7ZT9G5hj2eXsUYDqgJBwy9Mxs9Un1TvYPkPAHYCAxwN2B
-	 0Rm7hFUY7t6YCoRrRMJ0dIirp9/uv5TvFSMf2OyUq4SYhOZ1KuB0SMAvodHpUio4V/N52
-	 sGUzHfiI4jGN5KC6Zi+6iOpDkQLHUu3hLaAIZGFXFQz3KeUivRqHD3BfPPcTFQzyx37DN
-	 GUxwexgal36ochsWLzRhkNcSKwTAdzANdlUn2chhveeIJ+d4fco0sG/j0RbUKB3H/iA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793697971;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 Content-Transfer-Encoding:Content-Type:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=8/ac8w0ML3h6ZO7myNngS/092C0glBOWdrbpDSMykVw=;
-	b=Cpb+FpW0vP6AJ+WbUYK/uGMEO9Lu9vqukKU82FzSbvsPqvwTxej7oy0cjZcQgbx4dkkw
-	 72OMUAc5XxlKJS6Z8hO9qTd+cBSEw3Lg+kOiHrKdvonrsVA2yhO1r9/wk3saIC2RyQ4dx
-	 xGqDnMaQ5pX81MO9S5ENkzfVoGTcrYRg1fRa6br/sSvvcj/5Zxf5+SmVrOKsgHGO7Lyp3
-	 ecsfQIuyz0NlBWHkmkM1vaWt5xWU+S44rqvuhp7EgVpgSJDRfC6n1/iXdRdVUCIRgwmhH
-	 xq86Cqcmfc1AQGgAhtip6iVnbabkMn/6NcYhM48zPus01ZZP05A6Kz03jfcSz8FKF7g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=deeproute.ai;
-	spf=pass smtp.mailfrom=deeproute.ai;
-	dkim=pass header.d=deeproute.ai header.i=@deeproute.ai header.a=rsa-sha256 header.s=selector1 header.b=pHnK9zQb;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=139.219.17.126
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2126.outbound.protection.partner.outlook.cn [139.219.17.126])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=212.227.17.12
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793698009;
+	b=ROFnQ6bIHAYIkyhIaZyDud6ZpN9EZWFEqpOyKDM9/FDTUvcfEMzmKK+0QUEYSPHq0DWH
+	 fYgiNr7FOvIdZ+XNHeFexG7aSIqAlBS1VLa0HXF6lUOX9LPR9UERBcM1C87clGo+/ll+H
+	 w5IVq57rFwAsm57hXmHCU2eyJwgVxaYODr69KH6nDqNjtNbNGrvQ7hse3CsZam+AFREu1
+	 AcG/AYyvNDXbY5nf4Cxgc1CfPN8ajprNGPrlFu8tYXhEfV3TXZUlM1DTAVS0hSKagr375
+	 vNwQP/P1lGassWdHCcthe+AFMP7xYJA2i3DAkL/w3BEEJFJlGGCTfYyek5tNtk+NHng==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793698009;
+	h=DMARC-Filter:DKIM-Signature:X-UI-Sender-Class:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:To:Cc:References:Subject:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-Provags-ID:X-Spam-Flag:UI-OutboundReport;
+	bh=TX0r1A49joVg+tee/dzPMOSDz/uT8G1cg7mVYx2cegM=;
+	b=x0D6f/p6GSDC/KmnoYn2dJ5LwlhVAgy0tJxPap8G9YRRmaLb6ZEdGVUXgIA7nZqD9DuK
+	 PhoFaj/xsTvg0IoBKWcJC1KqXnbLNY+KwRTm8FNDGWDBbw7QGdqeBvo0qMhkt3uApBeR5
+	 6y+/Y4X1RLo1KvH1rD/9J74WDip+byHjmIf8DNoXWRb9nW5Qe7VuUzK+iVdJYWNaTuhkC
+	 l9T/V3B8ApQAj7MnseJuxwKPVU/reXASuWLEaIBL8YUEyPHHRjPe7+lPfWpSK2FMb2t+v
+	 JCjKJxEB6vzth/IYVCtXDLUvR96DyQcuB7YmX7Rpoqa0H3/pu8TB5UGHkGmBJUSPxng==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=web.de;
+	spf=pass smtp.mailfrom=web.de;
+	dkim=pass header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=M639CzfH;
+	arc=none smtp.remote-ip=212.227.17.12
+Received: from mout.web.de (mout.web.de [212.227.17.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD896606A331;
-	Tue,  3 Nov 2026 09:26:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD896606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=deeproute.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deeproute.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAA3606A326;
+	Tue,  3 Nov 2026 09:26:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2CAA3606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=deeproute.ai header.i=@deeproute.ai header.a=rsa-sha256 header.s=selector1 header.b=pHnK9zQb
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gX070eQCV9Jhmz7Jt1sGkll8W1cWFYHRoHQuphzb9dc91mtZ50ERH/G2XTP7NcZwviO/tL9py1i3aAIe1lZkDNPdUDO3GH+fYXypMIn9XZwtYSNQU92LlKnfIgMj1lu2Dq9hXnhY+xwukVInJPMmcVuKRxhRn28TkVubylWv00gnY73Q2MwlTP7zq/DqJxnUJZ0sEzOAX2wHLMcVjmItStVHBfbla4OyLJly/DrnM3rYEG+gbCpzh4nPX5PIsrdpkXSwpvWDei9uc5JtBVx1NSCGYimdsD9s5A/0OKXKNnBwKBBSB13cLhjA3hDJ3XQrWBI7VUEs74y/rMqPHRtbFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8/ac8w0ML3h6ZO7myNngS/092C0glBOWdrbpDSMykVw=;
- b=N+i+q5L608yAs8/5tWl9ewkr+6W4unrf9PPKhkCrOWFWD4I14ZDCjjwVUFTgenOJM+8ftmunOR4sEe+A5KAgCKskZSDKPJANI9GguWC55vSF064uW6dKoZfDKKWrMMngYQz6Flac23OP9WUbLjd2NqOY0HpqAsdSvNEZFNNITBmJ2UrkOM1FS9Uwm6Sg0BQg55xYzw8Hl91VIbtZo4o3Yc3X4OzFMjq32BfNFYs88fnDUpoU43fP0ZLXzFXfGccIdduh9cQxbnGCwFUD70L3pwvvaO0pvBns72BPQMzZxzerYroxYWi3wwJaHjKUlTVBbO2LlTuz8zz/JefJUJU93g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=deeproute.ai; dmarc=pass action=none header.from=deeproute.ai;
- dkim=pass header.d=deeproute.ai; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=deeproute.ai;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8/ac8w0ML3h6ZO7myNngS/092C0glBOWdrbpDSMykVw=;
- b=pHnK9zQbqrxYpZpt+Ca7F1KS5evEyQMvxx5YbT+VYFINUW0Nqf5R+xx/eEYmCe+JX5uINHR9MmEVjzQk2DdqMm4DBF+f/RoYs9S/H/GiSGmM4jNPiDWczpZbXH32mXpjdQoW4YD7B3Vxi7GwEvLcWrxGVEn42fvoyArVxbGLebI=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=deeproute.ai;
-Received: from ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:a::9) by ZQZPR01MB1074.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:b::8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Tue, 3 Nov
- 2026 09:25:58 +0000
-Received: from ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn
- ([fe80::2dda:e54d:5a3c:d686]) by
- ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn ([fe80::2dda:e54d:5a3c:d686%7])
- with mapi id 15.21.0592.007; Tue, 3 Nov 2026 09:25:58 +0000
-From: Jingxuan Xie <jingxuanxie@deeproute.ai>
-To: netdev@vger.kernel.org
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: [RFC PATCH net v3 1/1] af_packet: avoid waiting for TPACKET_V3 copies at retirement
-Date: Tue,  3 Nov 2026 09:25:41 +0000
-Message-ID: <20261103092541.273847-2-jingxuanxie@deeproute.ai>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261103092541.273847-1-jingxuanxie@deeproute.ai>
-References: <20261103092541.273847-1-jingxuanxie@deeproute.ai>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-ClientProxiedBy: SH0PR01CA0004.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c311:5::16) To ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:a::9)
+	dkim=pass (2048-bit key, unprotected) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=M639CzfH
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1793697989; x=1794302789; i=markus.elfring@web.de;
+	bh=TX0r1A49joVg+tee/dzPMOSDz/uT8G1cg7mVYx2cegM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=M639CzfHdOeMsL7Z20Bqvw269ogPmc+G/yfqTpVMxkaOOcxlot0+sIHEdjZG01mW
+	 rQcjDzYWKKcqBJL/byfJZS0UO6uSts9+G2GmvHmBBwCzbaxNcwRn+XptPPjA7nRVT
+	 FciJZ8ieHiLNuAELWwqn2EeI5cWqxGR0JPA9YBw4ZuOOkuSYrhEM1GQcLJmpzGraD
+	 VdWSn+bvjFYDm4grwvzRZZ8iChOqdRvrYFqTI6q4gK2zcJ5qCcZIg4dOxnGykDbQG
+	 8sVCYFpq1Zi4mX4Yu5Rhv5AaT6cjcQRJzju6BIBVI3/qRm9a5CD9gg2aBakSVDv4A
+	 WNS1f1RuOX6aSOvzcA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from client.hidden.invalid by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MRk0W-1ww9WQ2Dog-00ND5Q; Tue, 03
+ Nov 2026 10:26:28 +0100
+Message-ID: <225a66e4-e1a7-422b-8546-5cf7a027e063@web.de>
+Date: Tue, 3 Nov 2026 10:26:21 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,171 +62,139 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: ZQZPR01MB0980:EE_|ZQZPR01MB1074:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8ad1c1fe-15d8-4c17-d99d-08df398c7835
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|23010399003|10067099003|261102123227099003|22082099003|18002099003|38350700014|56012099006|261022075727099003|261026121527099003|261026140227099003|261021121427099003|261022105027099003|261028144727099003|261009223027099003|261021123027099003;
-X-Microsoft-Antispam-Message-Info:
-	Px0CXbO2w1EIXLbFg+/V4sMaz85YUdQsKsp/iTlyKUcJxgOkxfbeb/POEujPalhvh8dgvERUgLO1IDHdBgPeKZh7YBFolBmJ6dWfEd/7JhBcowfSOt+9MkshBtIY3nQvEo3Kur8ZT/fhb0cBNVCfi9KwXRmj9KC9bFJqVpFF/aoHSNRDeHCq71gPM2yEGRIxehN4rcfaFx8edC4mihJknAs47I7eSF6yKzOEaQ62sepUdAit+jOvFPJ4QwnB9CyGsYOuuZUJqjlFZ+j+w+L3ho/MFOkgTJYDjy/2Y1vc8lLkBbgD0n6jk95rHn9EcJdO0B+2QOzkCNsBpQGArdus//oHg6i5P5kapV5v01bSEoY7T3ijgfyHqf3/DA4SKlW51MON0wFnWy2x1JFdcHrNJyzloGHzfRUlsgYO/MI42QgVn9ziCDwZ1FE/bQ7EVP3sWRIbx13Ttq589ahsM5NsXP10vev/0k4n1L0Ji6OeRIyWltzOEHJZpYLw/LtOycWtone5Syc9azm6wlHv6CDzDCAf1hRRMl+z4T1gytqgnpKtscf2i1rMtTjaHOEzWhF1
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(23010399003)(10067099003)(261102123227099003)(22082099003)(18002099003)(38350700014)(56012099006)(261022075727099003)(261026121527099003)(261026140227099003)(261021121427099003)(261022105027099003)(261028144727099003)(261009223027099003)(261021123027099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?MNE9Wyx0VlgnCuNeT4NXwZWDjuf9KGCDEikrq38iChBz6esh89Iap6+aWPWR?=
- =?us-ascii?Q?bhrktAcz9ynHTXHA6XIHM2APF6Xc8ELQWyZUlgdRMycVCsjZ7vJfBWclWHud?=
- =?us-ascii?Q?C7smPKj7xJjRvJwLReKgbLuA+ID6cOwWB/OwYrb5Q/LYyaXIllsJ8+MqL2jS?=
- =?us-ascii?Q?/FHo753JKDReOnf+DysiyEomZGv1dkF3FGeEzkt5lpQDylo2bB9A/FhUEZN/?=
- =?us-ascii?Q?66Aa69cFiVtBU8I5ZCNXnGGJIDwme3iwQw1ApQgxmryvvOfLYZXdmaE4pCOt?=
- =?us-ascii?Q?8Z4RR6bqxMdqtWbz7Ez1S4fT26iIdbVClPb5gbWgqx06+A8M6wqKkR34Aa+v?=
- =?us-ascii?Q?dHcdt5m2Us6pr0SZw3q/75O/pu6dtPZaFV096cABvQHGGxn7Xd0bgFIASZBX?=
- =?us-ascii?Q?AprizpBjGEFRUUhKGVMwBDl/46A9dCcL+8DxghOP3IM4x6SMQzDOzlEJoNL0?=
- =?us-ascii?Q?qcPbswy4rcIebIpaOo84iIkO+STCV3DvNWg56EWF8c6zUalJixGNBxEUOvfD?=
- =?us-ascii?Q?N4bRNKBaikwqJgdGjuVFP/aUtAGuw5JCZB9uN4g2OqpmnW8VzfCjPG98DUNl?=
- =?us-ascii?Q?pE6flYARwhiRPeYIdZOQObcbIshzz+iL3PxxOaJnZG6NcYjSihk1RYO4B2IW?=
- =?us-ascii?Q?LgtGD0TN6xFEx2OFkPTL2RvGHm8Y8n96bOzdFiFJbRnkFT+Px6pIi6a+fCYy?=
- =?us-ascii?Q?73elV0r0tDa151smtSaweX5VbOZn8Xx2DMitbyxPVhLQzAGpBBCGOjBOlnO+?=
- =?us-ascii?Q?1LsftBd/7ZLdqpp5WfsII2wFZLQf5G7Gn6PmnP3ioyFlrLPVOF823P0Kzdtm?=
- =?us-ascii?Q?KwV6pqXT8hJnGfv3mqFGWyiwCvTLQPlR7GY/TBI3Vlt0RmcvtY+Wlj0HfNVs?=
- =?us-ascii?Q?Y8Y+dULnF5XSV99DLDIsEMkV6hKbN3xG1nVsr80SMrNZMyufpSTuGGXTlRMs?=
- =?us-ascii?Q?umJtrxRiFdWMafCmdDp4hZSM6ib3Fpso2zlCa7Cs0PIKra8R0NxNrULkqmYk?=
- =?us-ascii?Q?Qvj8m86lumTehiy3QhgdA8znJoWEJo0ijIZDAOEbx4sbGaizU0sqDzB9snS7?=
- =?us-ascii?Q?aoDrxYjjaX7Ieox06FmSC7EzidmEysOp6Rhq+0UhM9ey7iqerg1+kVSihq1T?=
- =?us-ascii?Q?I0RIEU7hpZjHD4LHmxzyytXSPegBuuMwHN2NMquJ0FZ1RIV2G1/tA8GkiF8I?=
- =?us-ascii?Q?A/gC66KfzI/FuD58HPHZ8CFWGvmNHXKbqWUm/3Sc+QPnSvVZpWynbOAjFEmF?=
- =?us-ascii?Q?JmEKrm2ZnV9DyWvkex9+VIm9CA9Wm3IUWouOF7y1aRlYFa8B361N99mPtEdM?=
- =?us-ascii?Q?v8UXjisz2HdB2JwWmNY8myWcvJmtR9Ki4/N+RFHRTwlwaQQdOWcCqw9tdDhS?=
- =?us-ascii?Q?CcoW066PiR8Z7txFa0edAKniiuE4K6qD+oxQwRX1AKd22UHnkG2G/FST3h4t?=
- =?us-ascii?Q?tclskeiyLtT6qkPPpmvQ7IbnhjN45/cAL0TZGu+4EpPE/rhicb1YQcsK2i9p?=
- =?us-ascii?Q?AEwyq/oCvYQx/mR6HkGZL7rMzduDrFN35q1AUUqYv4oN4BfAlUVJbaSMEqnV?=
- =?us-ascii?Q?tMllpzLr9JHSlwspqvmHMCsL6UewTDx3Nulali4TUVUGlhvY0Jyt3OpnnR9f?=
- =?us-ascii?Q?++H26zT4pv4dW/4k05gwBsCIV5tm4vfgizsrwW1XL/3AnHxzsfQ8dMHNuAsD?=
- =?us-ascii?Q?4ovbRDCA22OxpQvS/zrlHR/h9oyF/AdlqHX7J5ZiPbwIRh4oldvNqiX++Qap?=
- =?us-ascii?Q?Aq3SbGwpzg=3D=3D?=
-X-OriginatorOrg: deeproute.ai
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8ad1c1fe-15d8-4c17-d99d-08df398c7835
-X-MS-Exchange-CrossTenant-AuthSource: ZQZPR01MB0980.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 09:25:58.7195
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: df535b4a-68e6-4339-a092-afa4f2c24fcc
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HOZWvaP9ZWvPd2jZIBv6S9/4bo899w0HRIO0kbqmOzxBv7eY+YWdThir3f0AdSFFW7qziIUA0RCfbHdVwVdU+vlwJHjoogzHDoNxeI8PZXs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQZPR01MB1074
+User-Agent: Mozilla Thunderbird
+To: Rosen Penev <rosenp@gmail.com>, netdev@vger.kernel.org,
+ bcm-kernel-feedback-list@broadcom.com
+Cc: linux-kernel@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>
+References: <20261102215806.13723-1-rosenp@gmail.com>
+Subject: Re: [PATCH net-next] net: bgmac: stop advertising TX checksum offload
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20261102215806.13723-1-rosenp@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:4LaIKLJ61CVd1RwlgA3ym3G5DGamcWMVT0WCya5Gx3s8xy0jj6C
+ lh+iwQlAzOc0AXklvbbyaO5yUCuz4R25AxUi9OXBrkVsHNbGhx9OJeeDKZUwDJz6jXQYIvz
+ 7oXR8S7BiDQ5jQVej630HEqW/YTGmI9/iSbSVyUcW+Fp4hU775OKPYyJE+rsLcjhVhAPOXw
+ 52OXKedWPKAH0wKfKFPyg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:VNvdw//uecU=;Xgq1V2lpBoi5bhA10deD3l2KMUQ
+ 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
+ NdOQAmnwSYbd1V2WM39/Y4iJ4215w14=
 
-From: jingxuanxie <jingxuanxie@deeproute.ai>
+=E2=80=A6
+> Remove the feature flags and the fallback. The stack then computes the
+> checksum before handing the skb to the driver.
+=E2=80=A6
 
-TPACKET_V3 retires a full or expired block while holding
-sk_receive_queue.lock. prb_retire_current_block() takes
-blk_fill_in_prog_lock for write to wait for in-flight copy_bits()
-before publishing the block.
+How can a =E2=80=9Cstack=E2=80=9D compute anything?
 
-On PREEMPT_RT a copier can be preempted while holding the read lock.
-The packet path or the retirement timer then blocks on the write lock
-while holding sk_receive_queue.lock, and the receive path resumes only
-after the copier is scheduled again.
-
-Try to take the write lock without blocking. If a copy is still in
-progress, leave the current block and its metadata untouched:
-
-- the retirement timer re-arms itself and retries after the configured
-  interval;
-- packet allocation returns NULL, so tpacket_rcv() drops this capture
-  record and accounts it in tp_drops, while the original packet remains
-  in the network stack;
-- a later packet can retire the block once the copier has finished.
-
-Do not dispatch the next block while the current block is still open.
-The existing lock order and completion ordering are preserved, and no
-new state or worker is introduced. The trade-off is a higher capture
-drop rate while a copier is preempted; original traffic is unaffected.
-
-Fixes: 632ca50f2cbd ("af_packet: TPACKET_V3: replace busy-wait loop")
-Assisted-by: LLM
-Signed-off-by: Jingxuan Xie <jingxuanxie@deeproute.ai>
----
- net/packet/af_packet.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
-
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index cf6429f09477..8fd6372ab59b 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -200,8 +200,8 @@ static void packet_increment_head(struct packet_ring_bu=
-ffer *buff);
- static int prb_curr_blk_in_use(struct tpacket_block_desc *);
- static void *prb_dispatch_next_block(struct tpacket_kbdq_core *,
- 			struct packet_sock *);
--static void prb_retire_current_block(struct tpacket_kbdq_core *,
--		struct packet_sock *, unsigned int status);
-+static bool prb_retire_current_block(struct tpacket_kbdq_core *,
-+				     struct packet_sock *, unsigned int status);
- static int prb_queue_frozen(struct tpacket_kbdq_core *);
- static void prb_open_block(struct tpacket_kbdq_core *,
- 		struct tpacket_block_desc *);
-@@ -711,8 +711,9 @@ static enum hrtimer_restart prb_retire_rx_blk_timer_exp=
-ired(struct hrtimer *t)
- 	 *
- 	 */
- 	if (BLOCK_NUM_PKTS(pbd)) {
--		/* Waiting for skb_copy_bits to finish... */
--		write_lock(&pkc->blk_fill_in_prog_lock);
-+		/* Retry later if a packet copy is still in progress. */
-+		if (!write_trylock(&pkc->blk_fill_in_prog_lock))
-+			goto refresh_timer;
- 		write_unlock(&pkc->blk_fill_in_prog_lock);
- 	}
-=20
-@@ -738,6 +739,7 @@ static enum hrtimer_restart prb_retire_rx_blk_timer_exp=
-ired(struct hrtimer *t)
- 		}
- 	}
-=20
-+refresh_timer:
- 	hrtimer_forward_now(&pkc->retire_blk_timer, pkc->interval_ktime);
- 	spin_unlock(&po->sk.sk_receive_queue.lock);
- 	return HRTIMER_RESTART;
-@@ -946,8 +948,8 @@ static void *prb_dispatch_next_block(struct tpacket_kbd=
-q_core *pkc,
- 	return (void *)pkc->nxt_offset;
- }
-=20
--static void prb_retire_current_block(struct tpacket_kbdq_core *pkc,
--		struct packet_sock *po, unsigned int status)
-+static bool prb_retire_current_block(struct tpacket_kbdq_core *pkc,
-+				     struct packet_sock *po, unsigned int status)
- {
- 	struct tpacket_block_desc *pbd =3D GET_CURR_PBLOCK_DESC_FROM_CORE(pkc);
-=20
-@@ -963,13 +965,14 @@ static void prb_retire_current_block(struct tpacket_k=
-bdq_core *pkc,
- 		 * the timer-handler already handled this case.
- 		 */
- 		if (!(status & TP_STATUS_BLK_TMO)) {
--			/* Waiting for skb_copy_bits to finish... */
--			write_lock(&pkc->blk_fill_in_prog_lock);
-+			/* Do not wait for copies while holding the queue lock. */
-+			if (!write_trylock(&pkc->blk_fill_in_prog_lock))
-+				return false;
- 			write_unlock(&pkc->blk_fill_in_prog_lock);
- 		}
- 		prb_close_block(pkc, pbd, po, status);
--		return;
- 	}
-+	return true;
- }
-=20
- static int prb_curr_blk_in_use(struct tpacket_block_desc *pbd)
-@@ -1097,7 +1100,8 @@ static void *__packet_lookup_frame_in_block(struct pa=
-cket_sock *po,
- 	}
-=20
- 	/* Ok, close the current block */
--	prb_retire_current_block(pkc, po, 0);
-+	if (!prb_retire_current_block(pkc, po, 0))
-+		return NULL;
-=20
- 	/* Now, try to dispatch the next block */
- 	curr =3D (char *)prb_dispatch_next_block(pkc, po);
+Regards,
+Markus
