@@ -1,54 +1,53 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793700339;
-	b=3FcP6OTN1WkwOmCjjOMrndVoZvcYnDp5xIVNpSz/H2aIs8Mxw4HPIGEcqp/76KLZmH9P
-	 wwEuDjBN7avnt0UkG6P8IEq5EIr/6dybf9NAGYjCWMK4z5Vdnu2Vaja+trPbgQARaWbtG
-	 R0UAguCcVhai1XixRM9cfIvgBH48WE48r9yuhlRrUDEgGa+rVywXuVs7dtzWpswwfk237
-	 KeeLfCiN0ZhyrWwBBy3W/DOvbs+WMGHAp33/ETafRy2SVDcJg3RbdlO1ybZdcMq37JWaP
-	 x2Vxg+0z0XoPNW3m7vg+3EL9dq2lCA3rdneVAff54n3E32fbZ2hfrmKRG4Zhn1iNw+w==
+	t=1793700330;
+	b=TdOi4qTQblbTzOkcAyrTP8h4jafjVh1nkWLQMRkJiYD3/An0iA/JRgbx+2o2W9D+kFEZ
+	 WRn8hqTeruBHg8J7sfpuWeot6Gbji4hfjo3ZDr1PCJGq9z5cyWjAhPaQ54U+mkzaENla8
+	 w4R0Eq1WzzmnSHrOh9FLnWq5cLv3zch+3IXY8hDIwf38/B+cxUE+9q2GdXU7ENhbpQufh
+	 ZiP5WGk2L34K5pamx+sSwbww7RNut4i9fUQCFTOXttdGHQps73+poB/879ye6WtvyZPKW
+	 0zYyTKDyb3V8gwedE8j6d18q0C8saduaeBYcE8XMeL+LDstAJoAPHGgErJtNHUmEQxQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793700339;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
-	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=gJbduYY+2MLz7vY8LSMtIk42i7cqHj5q97uCgEORjb8=;
-	b=v7BEwnt7Z4uE5wQJ6m8Zv+T06H+u/KEKoPkD6Hw01RDJAHJ72YhheXlt1bAiSz3Jm/hg
-	 VJ43tBE7g4LyGiQtow8O8snu3Ac2dLBiElhFByZ6f4xgcFM275RpWZ2WOr2iPf3oOgO6L
-	 jJ11dJt9vdS7IMg2j/BUtJ/Rp5UX05SMvRZJN44I5EPxKjLkulnqFn6OpJ3zhgqWs89Ne
-	 qYfwSt5U7MG9g/O3kfQ3Po6OOdlDkUHR8UpadqcRpOdDVqt3xDJmeeCrNPHygXmT7O9vI
-	 Rg4FOfxT4xUrEmCI3b2Qo6PhqX+16E9dlrs4Fdhlm0cvCFnrMtlo7NLq1PkERTqDQ4g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793700330;
+	h=DMARC-Filter:Received:DKIM-Signature:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
+	 In-Reply-To:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
+	bh=9C/X2YQ+/o0IqEAQQc4J0LZ9Oq8K1zfo4He9kP/ME9c=;
+	b=TtGGvkEyPyl9Ye2R4S7WAn58K2ih/GhTf3Vm9HAMpCuODsdHy6EDDEdij9MVHGwHHb1l
+	 yE5+OMQi8wqniKo1eejH9K6+H9fYYxkhgLG3WnLonf/OqOp4rYLZCQqcaZNqh7IeGmSzz
+	 gzZIk+K7dQhb4F4s7lVqeVjXpJ4Llv0oocd5V5rPwxDlCCNBLPESZ8oASKK1QNphItvzF
+	 sQBEkHqZjWeHQA5tnji9mgrGUvsLonyEKI0N2Ph+aGpkTRLeAabKcKwcC8J1kPxGUVo2Y
+	 U5wu4R+xqt0AlizrNsMn1hWtNSUwyhHhWrZ/YoJMQgc9QMWhaLgUU4P6IRMS5qWjjEQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=iscas.ac.cn;
-	spf=pass smtp.mailfrom=iscas.ac.cn;
-	arc=none smtp.remote-ip=159.226.251.81
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=dEQ9j6d4;
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D3460A381C;
-	Tue,  3 Nov 2026 10:05:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 30D3460A381C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowAAXIZLmselqnXs7AA--.2519S2;
-	Tue, 03 Nov 2026 18:05:26 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: Marcin Wojtas <marcin.s.wojtas@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: mvpp2: free pending TX timestamp skbs when the port is stopped
-Date: Tue,  3 Nov 2026 10:05:35 +0000
-Message-Id: <20261103100535.1310088-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9128B606EE9F;
+	Tue,  3 Nov 2026 10:05:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9128B606EE9F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=dEQ9j6d4
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5F816A164D;
+	Tue, 03 Nov 2026 11:05:27 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1793700327; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=9C/X2YQ+/o0IqEAQQc4J0LZ9Oq8K1zfo4He9kP/ME9c=;
+	b=dEQ9j6d4WuVrwbjs1jp7QALQiQ8fSOfh/BfTHhSTLggv9oQSOBFXa4Of/UMrhBRVDuByEa
+	rT3hi6KZ3B4CQBg7GfGlvZEbE+TWbk+BpXkgTWaJgozCB9CI8oTsF31+5+ZeqWU71qnLGH
+	e5a3hpz3wFBM5jNn/ydIpARiYAu+NDFqj/MM/ov/sRr9iDIbx6aOU2xGBp+aUs02evLJP/
+	Z5QVLOOufW2T6eSf7c7CzxETFnHs7DrubIRAhrEBk01O2ndGAmSVnsPmdnHYDGMNaU3YMv
+	ttUVJnlUTFxcdtlexWnZUujPjJ0jHMr/avpGRs5mLLiVvEw+LaJ3Bb0AqWoZsg==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+Date: Tue, 03 Nov 2026 11:04:58 +0100
+Subject: [PATCH net-next v6 4/9] net: bcmgenet: rename ENET_MAX_MTU_SIZE to
+ ENET_MAX_FRAME_LEN
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,79 +57,79 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAAXIZLmselqnXs7AA--.2519S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7KrW3ArW5ZryxGr4fZrW7CFg_yoW8urW7pF
-	WjyryYyFWkXF47Z347Wa1jyr1Fqw1xtF43GFWIk34Yq347Grykur409a90vFW8JrWkXry7
-	AF4xKFsrGr4DXFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9a14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE14v26F4UJVW0owAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
-	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFV
-	Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
-	x4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r4j6r
-	yUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIIF0xvE42xK8VAvwI8IcIk0rVWU
-	JVWUCwCI42IY6I8E87Iv67AKxVWxJVW8Jr1lIxAIcVC2z280aVCY1x0267AKxVWxJr0_Gc
-	JvcSsGvfC2KfnxnUUI43ZEXa7VU8jQ6JUUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAEAA2rpnOFgbAAAs8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261103-nb-genet-mtu-nn-v2-v6-4-61d5631676e5@tipi-net.de>
+References: <20261103-nb-genet-mtu-nn-v2-v6-0-61d5631676e5@tipi-net.de>
+In-Reply-To: <20261103-nb-genet-mtu-nn-v2-v6-0-61d5631676e5@tipi-net.de>
+To: Doug Berger <opendmb@gmail.com>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Nicolai Buchwitz <nb@tipi-net.de>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-mvpp2_tx_hw_tstamp() takes an extra reference on skbs that need a TX
-timestamp and stores them in port->tx_hwtstamp_queue[]. The reference is
-dropped by mvpp2_isr_handle_ptp_queue() when the hardware reports the
-timestamp. Nothing drains the queues when the port is stopped, so skbs
-still waiting for a timestamp keep their reference until their queue
-slot is reused, and are leaked for good when the port is removed.
+ENET_MAX_MTU_SIZE holds a frame length, not an MTU. Both users program it
+into hardware that expects a frame length. The name is wrong once the MTU
+is no longer fixed at ETH_DATA_LEN.
 
-Free the queued skbs in mvpp2_stop(), after the interrupts have been
-released.
+No functional change.
 
-Fixes: f5015a594c50 ("net: mvpp2: ptp: add support for transmit timestamping")
-Cc: stable@vger.kernel.org
-Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 4 ++--
+ drivers/net/ethernet/broadcom/genet/bcmgenet.h | 7 +++----
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index 317af54369cf..fc020b8c8830 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -3419,6 +3419,22 @@ static void mvpp2_isr_handle_ptp(struct mvpp2_port *port)
- 		mvpp2_isr_handle_ptp_queue(port, 1);
- }
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index 9cb0cd7a9a216..a0f170bf35ef5 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -2659,7 +2659,7 @@ static void init_umac(struct bcmgenet_priv *priv)
+ 			     UMAC_MIB_CTRL);
+ 	bcmgenet_umac_writel(priv, 0, UMAC_MIB_CTRL);
  
-+static void mvpp2_tx_hwtstamp_flush(struct mvpp2_port *port)
-+{
-+	struct mvpp2_hwtstamp_queue *queue;
-+	int nq, i;
-+
-+	for (nq = 0; nq < ARRAY_SIZE(port->tx_hwtstamp_queue); nq++) {
-+		queue = &port->tx_hwtstamp_queue[nq];
-+		for (i = 0; i < ARRAY_SIZE(queue->skb); i++) {
-+			if (!queue->skb[i])
-+				continue;
-+			dev_kfree_skb_any(queue->skb[i]);
-+			queue->skb[i] = NULL;
-+		}
-+	}
-+}
-+
- static void mvpp2_isr_handle_link(struct mvpp2_port *port,
- 				  struct phylink_pcs *pcs, bool link)
- {
-@@ -4914,6 +4930,7 @@ static int mvpp2_stop(struct net_device *dev)
- 		free_irq(port->port_irq, port);
+-	bcmgenet_umac_writel(priv, ENET_MAX_MTU_SIZE, UMAC_MAX_FRAME_LEN);
++	bcmgenet_umac_writel(priv, ENET_MAX_FRAME_LEN, UMAC_MAX_FRAME_LEN);
  
- 	mvpp2_irqs_deinit(port);
-+	mvpp2_tx_hwtstamp_flush(port);
- 	if (!port->has_tx_irqs) {
- 		for (thread = 0; thread < port->priv->nthreads; thread++) {
- 			port_pcpu = per_cpu_ptr(port->pcpu, thread);
+ 	/* init tx registers, enable TSB */
+ 	reg = bcmgenet_tbuf_ctrl_get(priv);
+@@ -2765,7 +2765,7 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
+ 
+ 	/* Set flow period for ring != 0 */
+ 	if (index)
+-		flow_period_val = ENET_MAX_MTU_SIZE << 16;
++		flow_period_val = ENET_MAX_FRAME_LEN << 16;
+ 
+ 	bcmgenet_tdma_ring_writel(priv, index, 0, TDMA_PROD_INDEX);
+ 	bcmgenet_tdma_ring_writel(priv, index, 0, TDMA_CONS_INDEX);
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+index e48ce39d3e7c8..6f40be5445e0b 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+@@ -28,12 +28,11 @@
+ /* which ring is descriptor based */
+ #define DESC_INDEX				16
+ 
+-/* Body(1500) + EH_SIZE(14) + VLANTAG(4) + BRCMTAG(6) + FCS(4) = 1528.
+- * 1536 is multiple of 256 bytes
+- */
+ #define ENET_BRCM_TAG_LEN	6
+ #define ENET_PAD		8
+-#define ENET_MAX_MTU_SIZE	(ETH_DATA_LEN + ETH_HLEN + VLAN_HLEN + \
++
++/* Longest frame the MAC must accept for the default MTU */
++#define ENET_MAX_FRAME_LEN	(ETH_DATA_LEN + ETH_HLEN + VLAN_HLEN + \
+ 				 ENET_BRCM_TAG_LEN + ETH_FCS_LEN + ENET_PAD)
+ #define DMA_MAX_BURST_LENGTH    0x10
+ 
+
 -- 
-2.34.1
+2.53.0
 
