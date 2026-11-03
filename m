@@ -1,98 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.138
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793686326;
-	b=NcNaLIyzHrjuBkQgcw8slD4Klsn8Vb+GiIAE0uZH6QBejjrlglzM7BgPJRa9aqZGGlr0
-	 ZusD4BBUuT80pFXs97PML9Tx4iU5IqWLRaJLy1l5pEIFan3B1qvvO/iXYoCpSnKGxdHu5
-	 HzoG+7XCzNsamMMgo1ZMkHmZMfNd32IFabeE4TNLoJFb9eHHvVxG93gE/meWKU5tdO9O1
-	 PXa0s4R7r1+Fd9hXddImypOH7mD7Chamr4vKgMLuD/qHAThDTvf4yZL6+COyZapRRs/zE
-	 x9DtvPutR96+NJGRbFit/1PmpEERk//nAsrTCAkZdq/aKt7xOOgtAR1PLb7u4gIehIQ==
+	t=1793686879;
+	b=WeCF2j3Q66fGu7pwuu7wXN8cTgMC4zf122duKWYiPuCOkw09fCFvqbzHBt8JIoPfUVE4
+	 fX+7PkJSwatJZfPH5dib7vXKntfjWgkwfJ79QnJz8M642yFYJ/JmLjbEumZtX3b7Ak4v6
+	 /8iX6tpZdQpLz+BRw7eCiFMxVb9YW9rNT1Oh5uGcp2SolxealRONIMY/Y6k+jwTHU3JCo
+	 FAj6AqCjoXYAWNYrSnAjuo2SasftW/nPS972oyXSKam5vE3IZwhI/innhQHvSM/nEWVF6
+	 cxwTXPLXHG2vTK9F1ibpWiC70BUYFmbC6zqEh4dJoKYj+vdYm7VTWvxfJJt5bBhOfWQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793686326;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:CC:Subject:User-Agent:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=kbCkmRLiacqgEr0yA1tZg4DGh3TnytEQLj8xoSVFM2w=;
-	b=yx7po+i994+KBOT7sdE5QDcXD2Q2oMYHaT4w5Wdr49AZK50wwDlliVpuBYl7Cv9oDhP1
-	 F5jE6hlGuzDnKyfM3I/fAQsWdfzD8Ru3QeSZ1aG5ZOAdUctr1HB4OoptWojRtgY3zafw0
-	 xIyRv5GZUCaHV2UGvRyENfCmWhKRrwd7GpYsEcFeqrjlcKrNgZ4OpEyzkM4LXy4q2XXc/
-	 +QmBUjlxe5+dfZ8trJsjgEBOEdE3O247LDpbdP/I1g2I0BqsOth63UnhPANdyHZriaY0h
-	 80ZewEsnts8Q3DYyMBHCBle6dXQavUKw8FfADsGFlMbrQmyMcYRm0vMi3hNL1Z91Y5A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793686879;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=AZMSs3FPtw+J5Gxe6EAeLlGkWcWvA9QshD+eDU9odgw=;
+	b=DC4F66OFs0jAQxV/wi92paE4VNU4X3k5+ua6XC31/BKnwLIrLLDWB9E7RvkzYUWtiA0Y
+	 3WnvT5MY0xa0X0T20BcO/7D5aVMJAYJpsE1L1UDUoVMlgYe3AEdV+1xk9QfWpFG2l6LQV
+	 2rONEb5MLcdEc/OtZtLZ/PHqPa7eXRCXRJQ45tCEJUDBCJgkK5/Um6TFIONIO+i/prfRC
+	 K35qx2zKmTcOe+F7TFnEHQMVg/1oj0N8fEtzEmihfkOBVRipRO/oE9ymmKGkeUIO2Q2ok
+	 H/neRY/Zkxk7qfxate57oK3kBSQr/so+dcs3tj7p54EwYjamP9pQnq4NOGRf9/v/szg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hF0OI93F;
-	arc=none smtp.remote-ip=74.125.227.138
-Received: from mail-pj2-f10.google.com (mail-pj2-f10.google.com [74.125.227.138])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hhf5W0l3;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4AEE606A32F
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 06:12:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C4AEE606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054C5606A332
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 06:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hF0OI93F
-Received: by mail-pj2-f10.google.com with SMTP id d9443c01a7336-2e934c6c20aso26160225ad.0
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 22:12:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793686325; x=1794291125; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id
-         :references:in-reply-to:user-agent:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=kbCkmRLiacqgEr0yA1tZg4DGh3TnytEQLj8xoSVFM2w=;
-        b=hF0OI93FiqBYtkocRs2fbIqooTWb6yxS957o/05+Lc5RPe1DPTDXUbEBcYTD6WZgWG
-         6XU69K5ngM5w7gMeTLaAhHYLnXlYfIH47JT1CK4ncXteHj+khNbSGytL9jgJaGmcMyRs
-         yia5d8Gb5vurBZERoPR8xlio1THtuGt1ZYRAgahAK+hqhBetUFydMPi0QDFZDQxC8Rnr
-         jVaI/hytvXutk6z6P4z151g2bgE61eymsPsGij2oovpg6h9tkfQ6B0bBAoGE6qoM1Y5+
-         PoEE8Gxjf+/7wpsVLa6g55MNxsvpXx/wU1nqn3eExd5tVYB+XQJ/d69JYfL6YpFnsPeZ
-         Ot8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793686325; x=1794291125;
-        h=content-transfer-encoding:content-type:mime-version:message-id
-         :references:in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kbCkmRLiacqgEr0yA1tZg4DGh3TnytEQLj8xoSVFM2w=;
-        b=G/PuofSMxRntmiSXW/3Qz09Ywyt6CUq8gNz6Mih/PuCyv2xclfCJ+NXcZEIF0uZHkK
-         RCTKjTlgoPamWlvqNvIrVL5NmqcH/2I1ZlcjeSrbBM6RUpn4igoLq5s44Hf3g42Aebwm
-         jDKtN7fxpoTSYjT+idFpuBGMol3gjNzwIAhWSTg0bYnqzSn4kYnszyz9amxr3yMZ8PIR
-         +yAkztov0dP3k5uZ6ug//QIuT4mO7O9yJl/eUr1LmJTJzQvx2CPm+e7AVyi1TCPd2eye
-         e6/puyMIVfjPe2jGQVUorjcKJ5YyFxUvqQ+Y3Cy8QwwoGHU6sBcqTYSbAgFOHWVyjRFC
-         AclQ==
-X-Forwarded-Encrypted: i=1; AKwUvByzCUujihSughXcTsuFOpZg/YlYpLaSg3l9Odp0rUPId+sjutwgsMHVBZ3M/4Qy2iVrcZEIxNo=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8qagbuQRmF4dGypqQJZ+0AvHSehUfGmWAs+t6JcUZ4K2YwDxL2
-	XdOdbCoAdLubreCVniTG+4SRw37Oo5SQBzb7wBiJclhSu4HiT4nRZlkF
-X-Gm-Gg: AYBFou0c+8fg0QBQbxFd7e0oohSgXGtH9h6So2G1hG/+a+wRD0igGtu6U9krpGHwvML
-	Or/s8YdxfhSUVeBpamRZd2kUtb4+tIbq9Sli40Q+NFbiLokgHdf2rUu6pFhhGsVPWYB6TjksgUc
-	RDxrPAsVgjye9Wz3Du2CzirjhX0XcuRuspoGhdfKUqvsYNCqsHi+aY1SnfNmx1tAH5/lEPa8GX1
-	+gpb5IACxxVHnbRQVZo1H3zteyrhx3cTAUbL8ue6MJ1ooNppD1TsBqceUkDXqTtBvYtQIMNjrkU
-	MCbolbinY4H1ycK4l+A3e3SvVEIeCB+Vl373ZwGe8oIMRCzxDe8x7rkJ0PrxRbnA49k7YPmvk4J
-	JBPB+SsPKOAVDaifFJGzePdw1Xb2MhFV/tYdFB6Ym9oqpM2Xncm5FuPzBlDWx9DRju9GZe5t/Bi
-	jZCF+HiDUc6HZzPhfQy2Swg5lEWjQbbJGbKAVyNJ4gTy2hib/GUF7dOGHKEu7z/MsN1WtxUvSyB
-	P4Umh2mcoE87Zibk4RW0myktr4Ll9K8LldhwBHDf5fkc8LZRaheVB5knlbQ59GfvQbBtLwzU8ln
-	DK6xdz+Z81WP174FdXxzx48Wfa6I3TKtgvqPJww=
-X-Received: by 2002:a17:90b:534b:b0:3ab:4f1:4f76 with SMTP id 98e67ed59e1d1-3ae898127f4mr10100410a91.24.1793686325004;
-        Mon, 02 Nov 2026 22:12:05 -0800 (PST)
-Received: from ehlo.thunderbird.net ([168.138.199.194])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c627260sm2564063a91.8.2026.11.02.22.12.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Nov 2026 22:12:04 -0800 (PST)
-Date: Tue, 03 Nov 2026 14:11:59 +0800
-From: Coia Prant <coiaprant@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Jakub Kicinski <kuba@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: pcs: xpcs-rk: limit advertised interfaces
-User-Agent: K-9 Mail for Android
-In-Reply-To: <48cb8a9d-622f-497c-a13e-bc679c764ce0@lunn.ch>
-References: <20261029094916.3127193-2-coiaprant@gmail.com> <c5fc86f9-3c43-4aee-8d88-92e8f88c6d5d@bootlin.com> <1B8D463D-1295-4BF0-972D-859C342E49F5@gmail.com> <48cb8a9d-622f-497c-a13e-bc679c764ce0@lunn.ch>
-Message-ID: <27E466B0-72FD-47BA-B952-68BF4A817A04@gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hhf5W0l3
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF8D1F000C1;
+	Tue,  3 Nov 2026 06:21:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793686878;
+	bh=AZMSs3FPtw+J5Gxe6EAeLlGkWcWvA9QshD+eDU9odgw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Hhf5W0l32qcFv/aSlFpHsnNpZeK53778awUobN3Qt4EVM0RPXBiU4/O++sjBvhEqs
+	 1v/UyvK1AbCs/vZot9pIM2LkESZK2o0pYeXwcQiiB/y837rNHj38XsG/PcAjyrjCPP
+	 hm/0H/ZoeyKjXbTSByvlg/B1GQTBcOisJEDdLHH1pfCuu4Y+wBxNBXIbffKVh/ze2V
+	 n3PqOZ4WJsDREUC4CDNh84YqeZ45XivZgKKuCTTrOoglj6BBmagMEPTSU4lsuddqky
+	 rjGXamcHB/4Lt53iUAC41K8yIBcmyi3hbwkLEYAlbxeLTu9ZS8M3vXXqCZwd5Fsahz
+	 ntZ+sqULG0/fA==
+Subject:
+ Re: [PATCH net v9 1/2] tun: keep a kernel copy of the socket filter program
+From: netdev-bot+sashiko@kernel.org
+To: clementwei90@163.com
+Cc: netdev@vger.kernel.org, willemdebruijn.kernel@gmail.com,
+ jasowangio@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ kuba@kernel.org, weirongguang@kylinos.cn
+Date: Tue, 03 Nov 2026 06:21:17 +0000
+Message-ID: <179368687768.488856.11634976425449992532@kernel.org>
+In-Reply-To: <20261030060043.94719-2-clementwei90@163.com>
+References: <20261030060043.94719-2-clementwei90@163.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,67 +63,190 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-On November 3, 2026 10:54:57 AM GMT+08:00, Andrew Lunn <andrew@lunn=2Ech> w=
-rote:
->> Hi Maxime,
->>=20
->> You're right that for modes the PCS does implement, the limit belongs
->> on the MAC side=2E The complication is that the compat table describes
->> the whole Synopsys IP set, while a given XPCS instance only implements
->> a subset of it=2E That is a historical design issue in pcs-xpcs: the
->> table mixes C73, C37, 2500BASE-X and 10GBASE-X entries, but different
->> integrations implement different subsets=2E
->>=20
->> On RK3568 the XPCS instance is wired up for the C37 SGMII path only=2E
->> 1000BASE-X is part of the same C37 core, but I don't have a PHY to test
->> it against=2E QSGMII is not implemented in this core=2E 2500BASE-X and
->> 10GBASE-X are separate modes the shared table carries, and neither is
->> implemented on this SoC=2E C73 is not wired up either=2E
->>=20
->> Trimming the mask is not limiting the PCS, it is cutting the shared
->> table down to what this instance actually implements=2E A
->> platform-specific glue is the right place to do that=2E
->
->Are there any registers which describe how the PCS was configured at
->syntheses time?
->
->	Andrew
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Hi Andrew,
+Critical: 0 · High: 0 · Medium: 2 · Low: 0 (1)
 
-Yes, looking at the `xpcs_identity` code, the core does probe different
-MMDs to get the rough type: PMA/PMD MMD for C73 and VEND2 MMD for C37=2E
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-However, even if we determine it's a C37 or C73 block, that only gives
-us the rough family, not the exact feature set=2E For example, a VEND2
-(C37) block might not implement 2500BASE-X, and a PMA/PMD (C73) block
-might not implement 10GBASE-R=2E The MMD ID itself doesn't tell us which
-of these sub-modes were actually synthesized and wired out=2E
+- [Medium] A TUNATTACHFILTER that fails partway through leaves queues
+  0..i-1 with no filter, while the device state still says the old…
+- [Medium] With zero active queues, TUNATTACHFILTER saves a program that
+  has never been built, so a program that bpf_prog_create() rejects is…
 
-Since I only have the Rockchip RK3568 PCS documentation, I don't want
-to blindly touch the global compat[] table in the core, as it could
-easily break other platforms (Intel, NXP, etc=2E)=2E
+Pre-existing issues:
+- [Low] TUNDETACHFILTER does not remove the filter from queues detached
+  with IFF_DETACH_QUEUE.
 
-That's why intersecting the platform mask with the core mask in the
-Rockchip glue is the safest approach for now=2E
+--
 
-As a bit of context on where this is heading: currently, the PMA layers
-for wx, fbnic, and nxp are separate source files but are compiled into
-the generic core module, relying on a shared compat table=2E In a
-follow-up net-next series, I plan to split them into actual independent
-modules using an abstraction layer and their own xpcs_xxx_create()
-functions=2E
+tun: keep a kernel copy of the socket filter program
 
-This will allow other platforms (including Rockchip) to do the same
-mask intersection and PMA-specific setup without bloating the generic
-core with more and more platform quirks=2E Right now, dwmac-intel seems
-to be the only platform that completely relies on the generic core
-without a specific PMA module=2E So keeping the core generic and doing the
-narrowing in the glue is a safe, self-contained step that aligns with
-that future direction=2E
+This keeps a kernel copy of the classic BPF program attached with
+TUNATTACHFILTER in tun->fprog_kern, so that each queue builds its own
+program with the new sk_attach_filter_kern(). It also fixes the inverted
+error check in tun_attach(). Programs are now validated up front with the
+new bpf_prog_validate_classic(), and the saved program is replaced only
+after every queue has accepted the new one.
 
-Coia
+Link: https://lore.kernel.org/netdev/179027275318.2160803.4185895144088175048@kernel.org/
+
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index 439565a264ee7..c121ad50f31bb 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
+
+[ ... ]
+
+> @@ -3070,10 +3141,14 @@ static void tun_detach_filter(struct tun_struct *tun, int n)
+>  		release_sock(tfile->socket.sk);
+>  	}
+>  
+> +	kfree(tun->fprog_kern.filter);
+> +	tun->fprog_kern.filter = NULL;
+> +	tun->fprog_kern.len = 0;
+>  	tun->filter_attached = false;
+>  }
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but does TUNDETACHFILTER miss
+queues that were detached with IFF_DETACH_QUEUE?
+
+tun_detach_filter() only walks tun->tfiles[0..n-1], which are the active
+queues, and then clears filter_attached. Queues on tun->disabled keep
+their sk_filter, because __tun_detach(tfile, false) only calls
+tun_disable_queue().
+
+When such a queue comes back with IFF_ATTACH_QUEUE, tun_attach() only
+touches the filter when filter_attached is true:
+
+	if (!skip_filter && (tun->filter_attached == true)) {
+
+Wouldn't the re-attached queue then keep running the program that was
+removed? TUNGETIFF would also not report IFF_NOFILTER for that queue.
+
+>  
+> -static int tun_attach_filter(struct tun_struct *tun)
+> +static int tun_attach_filter(struct tun_struct *tun,
+> +			     struct sock_fprog_kern *fprog_kern)
+>  {
+>  	int i, ret = 0;
+>  	struct tun_file *tfile;
+> @@ -3081,15 +3156,29 @@ static int tun_attach_filter(struct tun_struct *tun)
+>  	for (i = 0; i < tun->numqueues; i++) {
+>  		tfile = rtnl_dereference(tun->tfiles[i]);
+>  		lock_sock(tfile->socket.sk);
+> -		ret = sk_attach_filter(&tun->fprog, tfile->socket.sk);
+> +		ret = sk_attach_filter_kern(fprog_kern, tfile->socket.sk);
+>  		release_sock(tfile->socket.sk);
+> -		if (ret) {
+> -			tun_detach_filter(tun, i);
+> -			return ret;
+> -		}
+> +		if (ret)
+> +			goto out_detach;
+>  	}
+>  
+>  	tun->filter_attached = true;
+> +	return 0;
+
+[Severity: Medium]
+What happens here when tun->numqueues is 0?
+
+You can detach every queue of a multiqueue TAP with TUNSETQUEUE and
+IFF_DETACH_QUEUE. __tun_detach(tfile, false) leaves tfile->tun set, so
+TUNATTACHFILTER can still be issued on a disabled queue's fd.
+
+In that case the loop never calls sk_attach_filter_kern(), so
+bpf_prog_create() never sees the program. tun_copy_filter() only ran
+bpf_prog_validate_classic(). That skips the s16 jump offset check in
+bpf_convert_filter() and the runtime selection.
+
+tun_attach_filter() still sets filter_attached and returns 0. The ioctl
+then frees the previously saved program and commits the unbuilt one:
+
+	kfree(tun->fprog_kern.filter);
+	tun->fprog_kern = fprog_kern;
+	tun->fprog = fprog;
+
+Here is an example. Take a 4096 instruction program made of JA k=4094,
+then 4094 x LDX|B|MSH k=0, then RET|K. It passes bpf_check_classic(). Each
+LDX|B|MSH expands to roughly 18 eBPF instructions, so the converted JA
+offset is far above S16_MAX, and bpf_convert_filter() returns -EINVAL.
+
+Now that the inverted check in tun_attach() is fixed, wouldn't every
+later IFF_ATTACH_QUEUE fail in sk_attach_filter_kern(&tun->fprog_kern,
+...) until TUNDETACHFILTER is issued? The same goes for every TUNSETIFF
+without IFF_NOFILTER.
+
+The commit message says:
+
+  Such a late failure does not replace the saved program: the copy is
+  committed to tun->fprog and tun->fprog_kern only after
+  tun_attach_filter() installed it on every queue.
+
+That guarantee doesn't seem to hold when there are no active queues.
+
+> +
+> +out_detach:
+> +	/* Drop the copies already installed on queues 0..i-1, which leaves
+> +	 * them without a filter: their previous sk_filter, if any, was
+> +	 * already replaced and released. The caller does not replace the
+> +	 * saved program when this fails, so tun->fprog, tun->fprog_kern and
+> +	 * filter_attached keep their previous values.
+> +	 */
+> +	while (i--) {
+> +		tfile = rtnl_dereference(tun->tfiles[i]);
+> +		lock_sock(tfile->socket.sk);
+> +		sk_detach_filter(tfile->socket.sk);
+> +		release_sock(tfile->socket.sk);
+> +	}
+
+[Severity: Medium]
+Can this rollback leave the device in a self-contradictory state?
+
+Suppose sk_attach_filter_kern() succeeds on queues 0..i-1 and then fails
+on queue i. Each successful call already went through __sk_attach_prog(),
+which released the old filter F through sk_filter_uncharge(). This loop
+then clears sk_filter on queues 0..i-1, while queues i..n-1 keep F.
+
+Before this patch, tun_detach_filter() ran here and cleared
+filter_attached. Now filter_attached stays true, and the ioctl leaves
+tun->fprog and tun->fprog_kern set to F. TUNGETFILTER reports F, and
+tun_attach() installs F on queues attached later.
+
+Queues 0..i-1, however, run no filter at all. tun_net_xmit() only filters
+when sk_filter is set:
+
+	if (tfile->socket.sk->sk_filter) {
+		drop_reason = sk_filter_reason(tfile->socket.sk, skb);
+
+TUNGETIFF also reports IFF_NOFILTER for those queues.
+
+A bad program isn't needed to get here. Once validation has passed, queue
+i can still fail with -ENOMEM from bpf_prog_alloc() (memcg charged) or
+from kmalloc_obj() in __sk_attach_prog(). It can also fail when
+__sk_filter_charge() would exceed optmem_max.
+
+The comment here and the commit message say restoring the previous
+program "would need an extra reference per queue". Since F's
+instructions are still in tun->fprog_kern, couldn't the rollback rebuild
+F with sk_attach_filter_kern(&tun->fprog_kern, sk) instead?
+
+Another option is to build and charge all the new programs before
+swapping any of them in, which would avoid this fail-open window.
+
+> +
+>  	return ret;
+>  }
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261030060043.94719-1-clementwei90%40163.com
