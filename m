@@ -1,61 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793713317;
-	b=xXWmTCgdQPKFNkdNcslzozrVlCyOlDjCw55XxQIuwMiFTf9vVOx9ZALzO4fTd7E2L2mG
-	 QffFZ8BQ5KanpQv9RTrrYs6wVq/7n0Pz9ZZ1yXBS0QIW2JsjRURU4Ak2coPiIe9MSsIrd
-	 W2bLmELCtaeblcVaJVHaiCbJsXGa20SckKeqJXE4Qy9GZxifhrQz7TmRoMV7+rmNvS4Ri
-	 TzmoRoOBFGpNQnCxpEadIsuW/eK4DILa24Oxuf6cs0nMu1+OVUKdUFV43rnGHCSCfmJNf
-	 F2t9fAmxzI14m+FtpDjr0BQvJoTB9F5CG1gldZZVAkYZGuRlFDSpB/khGL1DNzkX9IQ==
+	t=1793713502;
+	b=4+rah1LdaXX2uXc6nhYWqrTzY4xgWxGU/+AOeApwAZHsqQvTUmeTq1SEcAvXTf9WdJq4
+	 oM27WYtRgsKsOUiX8dsUPcL3+oUUmOsQ3bVEBOyXit/U0GwVCWlm7LHqVYv+xVjJ1pQIQ
+	 iAKNNYN0iRQsVQGEOZF+21PCwe1tVpwZrO98KBUsyAy+obkAVMOlLM09eagCrrXQe4dmm
+	 N4Bb2tL3GOtPvEav6q0weQeAbqZpelKrFCl+mYDK9dh77Zwr7+nvgilkJIUUS6dgmvGPN
+	 /4fhJXSZLuGPWWRRSWVi2ZACbFTsi7i0k5rTEJtmS9Wgqav8NbY2/c/f6CSbSq1iYzg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793713317;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793713502;
 	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=AednhgQJnjavLPaTDw85fSfXEn6q/KrQAf7U+CZwFaY=;
-	b=CfuB+I9+sx37zRqtKQvhz60YpuHNpYCco5QU2UD4mCR2TudFWBmGZLkVw+y4ec9bFQF1
-	 s9JtY3BBtLi0fXKSjEu5xFx/yiDaRdE7MlYYroGXYzE997Hz3LJQlBE1znhKa+IWYQH1L
-	 AEeOWTBsEf+PLVi/8R/RO0E3M11zpVQYObMKfGhNDc5/mZ32WLedJPSj//BWFgrVN3rtc
-	 RCvxuuzFJIgws5hF9BA5X+0w3iLWNopf0Y758Y5+K7nDviXNB+Fun383M9zuIGU2Snp7t
-	 uAIVKlH69Q0qcGN/IWA33fbJoFPXsuc2t5GxDl9eEPSAbdkUUBu3Z4yKY+yKgLnUHDg==
+	 Content-Transfer-Encoding:In-Reply-To:X-Spam-Status:
+	 X-Spam-Checker-Version;
+	bh=YYUG0/HYuu3hCbwYk3TWOdmodhVdeh1TclE1MGJkXVg=;
+	b=MV25s8/RSMupgOC392Lg7wybzqNM7fA56IjQzuU6dSYPUtSFZkU/JpCHQP1s6AYdJAMh
+	 Zyw+Ypf7mikTrQRJ+v9X4wmVt0c/EG/Rq8p8BBkMY5TjnEhZlYOZoGQTXw/oRxdbvHWNy
+	 w/QGr5Du+TumORdDp2+onkCSmduYJc9Wc34lfg2B8BflsR+SiIjv62+ZMdQgVlP3bzimB
+	 uAriAklqT0Q4zGUgkDaLmE+JO2m9Nfzs58bFxtIk+h4K8rWHltCP/xPt2lr9fXc05A5H8
+	 7U8+nq1ra8FYXt5VCH+YijhVU4mGnkx5vSsYlqgUPDEbqZ4le/zFyQu8+AwvvP053kQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=LyZ6HfBY;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=hTF1Wzg6;
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5AA606A324;
-	Tue,  3 Nov 2026 13:41:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CA5AA606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 3FD3C606D80E;
+	Tue,  3 Nov 2026 13:44:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3FD3C606D80E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=LyZ6HfBY
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=AednhgQJnjavLPaTDw85fSfXEn6q/KrQAf7U+CZwFaY=; b=LyZ6HfBYpyTcLCrFvCBrJjgU2H
-	HpD+e1kSfGIQF2C45rRgLMbRwZywqiv7PmGA3mN9ko8wL7RWg/souxRV4X/ndDgMgums0GENXrBKJ
-	Oh2FtR2DKNoywkAQPtJAhaaRL6zv2DssikKLdYAxCYsFEPxH3g3+ZgcAtO6V63VsIVNU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xOEll-00E4CV-1i; Tue, 03 Nov 2026 14:41:45 +0100
-Date: Tue, 3 Nov 2026 14:41:45 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: me@marleb.org
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: phy: realtek: register hwmon thermal zones
-Message-ID: <587f01e2-a7b0-4355-9bc1-cbe73b2331f4@lunn.ch>
-References: <20261103-realtek-hwmon-tz-v1-1-e672723c58cb@marleb.org>
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=hTF1Wzg6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1793713497;
+	bh=YYUG0/HYuu3hCbwYk3TWOdmodhVdeh1TclE1MGJkXVg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hTF1Wzg6+QY87G1hKWB0tPOMYzzVD4K+U7QAgyCeSebkpiMLa556p1Uni/HMKxYy6
+	 Pwn4aY2wdWsQj7fIAAEGuz7KoNjh1sqI5NRC0zO2qLU0+ILHFc/BU2VSgR27Q3nGeh
+	 HeF0jwqUpX9PYaXI3yvMLi5HGkKboW4lt0nCNAXOe62rufJghfV8oUVBNK+ig94Luw
+	 spyBx5HJONeJwnFfmMwQsXuEGheK8yePidks4U+O1ZC4BeW8pXgzUOKkw7I+wtX4zz
+	 V0yuIwiMwqbu4SVnjj8rsCYNqqQvwMm51nVXk/cDIhuRuZR6FulboMbfBEcy1T7Uzm
+	 Eu9K6U+om2rXA==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 504F760058;
+	Tue,  3 Nov 2026 14:44:57 +0100 (CET)
+Date: Tue, 3 Nov 2026 14:44:54 +0100
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>, netfilter-devel@vger.kernel.org,
+	davem@davemloft.net, netdev@vger.kernel.org, kuba@kernel.org,
+	edumazet@kernel.org, horms@kernel.org, fw@strlen.de, ja@ssi.bg
+Subject: Re: [PATCH net 00/15] Netfilter/IPVS fixes for net
+Message-ID: <aunlVk2Cn7ocgANE@chamomile>
+References: <20261102005654.532438-1-pablo@netfilter.org>
+ <b452b25b-37fd-48ab-a88c-feec6b82e9ec@redhat.com>
+ <5dc1159d-e577-442f-a7b2-8d5dcc8cfb01@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,33 +67,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261103-realtek-hwmon-tz-v1-1-e672723c58cb@marleb.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5dc1159d-e577-442f-a7b2-8d5dcc8cfb01@kernel.org>
 
-On Tue, Nov 03, 2026 at 12:21:28PM +0100, Hleb Shauchenka via B4 Relay wrote:
-> From: Hleb Shauchenka <me@marleb.org>
+On Tue, Nov 03, 2026 at 01:27:30PM +0100, Matthieu Baerts wrote:
+> Hi Paolo, Pablo,
 > 
-> The Realtek PHY hwmon device exposes the PHY temperature, but its
-> channel info lacks HWMON_C_REGISTER_TZ, so the hwmon core does not
-> register the sensor with the thermal framework and device-tree
-> thermal zones that reference the PHY cannot bind.
+> On 03/11/2026 13:04, Paolo Abeni wrote:
+> > On 11/2/26 01:56, Pablo Neira Ayuso wrote:
+> >> Hi,
+> >>
+> >> The following batch contains Netfilter/IPVS fixes for net:
+> >>
+> >> 1) Add recursion count to nf_reject infrastructure to prevent stack
+> >>     overflow, from Fernando F. Mancera.
+> >>
+> >> 2) Address a infinite loop in RCU list traversal with the TWOS IPVS
+> >>     scheduler, from Darong Lu and Julian Anastasov.
+> >>
+> >> 3) Use kfree_rcu() to release IPVS parent application to fix UaF,
+> >>     from Chengfeng Ye.
+> >>
+> >> 4) Fix UaF in IPVS netns removal path due to releasing per-net protocol
+> >>     data too early, from Chengfeng Ye.
+> >>
+> >> 5) Fix unbounded growth of stale, unmatchable IPVS connection entries,
+> >>     from Julian Anastasov.
+> >>
+> >> 6) Restrict maximum master conntrack chain depth in ctnetlink,
+> >>     from Florian Westphal.
+> >>
+> >> 7) Preserve recursion count on nfqueue reinjection, from Zihan Xi.
+> >>
+> >> 8) Restore GRE timeout in the flowtable, otherwise, WARN_ON_ONCE()
+> >>     is reachable, from Michail Andreas Michalopoulos.
+> >>
+> >> 9) Check non-null gc transaction in nft_rbtree before queuing it for
+> >>     processing, from Xingyuan Mo.
+> >>
+> >> 10) Replace WARN_ON_ONCE() by DEBUG_NET_WARN_ON_ONCE() in
+> >>      nf_conntrack_bridge which is reachable if the protocol of the tag
+> >>      of a frame differs from the vlan_protocol of the bridge.
+> >>      From Laveesh Bansal.
+> >>
+> >> 11) Check x_tables target name is non-null before accessing it when
+> >>      building a new table, from Fernando F. Mancera.
+> >>
+> >> 12) Fix out-of-bound memory read in nf_conntrack_sip, from
+> >>      Joas Antonio Dos Santos.
+> >>
+> >> 13) Fix a memleak in nf_tables hardware offload when double deleting
+> >>      the same rule, in the same batch.
+> >>
+> >> 14) Use a mutex in xt_recent netns exit path instead of spinlock,
+> >>      since proc unregistration might sleep. From Cen Zhang.
+> >>
+> >> 15) Zero the nf_nat_range2 struct before filling it up, to avoid
+> >>      using stale uninitialized stack data to configure NAT with
+> >>      an esoteric NAT flags combination. From Florian Westphal.
+> >>
+> >> Please, pull these changes from:
+> >>
+> >>    git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git
+> >> nf-26-11-02
+> > I'm sorry, but something went very wrong on the nipa side: the tools did
+> > not pick this PR. Do you mind repost it verbatim?
 > 
-> Set the flag, as the Aquantia PHY driver does. This lets the RTL8261N
-> sensors on the Zyxel XGS1250-12 B1 drive the chassis fan through
-> thermal cooling maps.
+> It looks like the patches have not been tested, because of the kdoc
+> issue on patch 6/15:
 > 
-> Tested on a Zyxel XGS1250-12 B1 with OpenWrt's Linux 6.18.55: the
-> three PHY thermal zones register, and an emulated 85 C reading on one
-> of them (CONFIG_THERMAL_EMULATION) switches the fan on through the
-> existing 80 C trip and off again once cleared.
-> 
-> This patch was prepared with AI assistance (Claude Opus 5.5 and Sol
-> 6.1), which also helped investigate the problem and run the tests on
-> my switch.
-> 
-> Signed-off-by: Hleb Shauchenka <me@marleb.org>
+> https://netdev-ctrl.bots.linux.dev/logview.html?f=/logs/build/1198360/14931104/kdoc/stdout
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-
-    Andrew
+I routinely run checkpath.pl, I will re-check what happened here.
