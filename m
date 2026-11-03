@@ -1,66 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793708661;
-	b=gbbSWk60ALSsNGbVed7ws6xEhnVhVra4WxVQjySC24fTroK79DwhEoqlH4/ogSbZJycB
-	 wLj9QaQIr6dZ/7+rbnbeA/ggvNBN/HJK1w+VsabxXMU5booWeNCidiJQvXCXZJ/zoZy3a
-	 hgbgpDcLWT5YvBx73WD5D6YJ2f5jblUrY7pCLzayizOl6YWLmCBQpKsG4xD8UgY5FxCaL
-	 6qW6FJMG4LKfJTN4KE8dnVpsSvX0X+HzoiMIT0goUm07rBCqi/UAPQer8DS/ML1f5fvFJ
-	 KSarEEgRplCw5lKVafNqkVXEI/MfLDCk4UtNIjmvbDKiugT+swg5lbHxpUSoFjtbsDA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793708661;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=SWqdznL5RmpfEQau4NXHZxFj/6fjTDuANXgwfTFdtJ8=;
-	b=IKyc2pFR6hMgnOTcH6I70ZFe1AcpFbF2+JgsDnbjXRPGz8xLuG7d7uxnebmZ91FULS5+
-	 YUThG0cquVwk57et+4loB+yPObwiEUwXT3L59Ychsh5jwQVz9U295Kne3wv+70251s/qu
-	 HwhiGSrCgpMy9I3mBuTc4h7kwRgtpV/bC9+gRXOl7yrwALL5lOrGy4suTPqH1OlJZz4jk
-	 VRKE4eeWUt0IKLz3gsT73zIr+rcIPWk06UVIoPwOq2NcJxMSyQhz1+PjZM62bL1O8pYcY
-	 IT/y63UnXQs+8O8fZusVMoq5/FdFUF9P5v0TKCnP6r7NLZuVkOVT5gSTL1XgzLQGEeQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ehIRfbLj;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.46.33
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793708708;
+	b=COPB5q9Kgv2QcS4OllbA6HpY15H3E0A2GYk8XlAD5emtmMleBIhCjffUKeBI1VWHrTH0
+	 n/0md2+ad1NV0SPp6Mm9/G2RgXxN8qmT0jQQNv5iOys0C6STYwa7w/B7gnGvGFSYUoC12
+	 TNnyoqpbfzHkIDkNP9iKS1wxpPLp5ZeNz9g95lqe1Jur9fugo13HEhuyLt/VsUm9gkkJc
+	 lLF5iJSAf+6dax6szYHv11o+95aV11++RTHwFmiSOaqYd7GJLOrHUVW1WTVeFxH1mvzUt
+	 ZdmtUt9yNV/0CAXi1R86M6/S4hHoOvVLZOWcN0Q9wBKaawijViU+WvJUDe7dGHJ8jKA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793708708;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=L21Q2FlvJVH5AOOr4CIqYxd0xClDXYphtL3AsaD2GYg=;
+	b=O2SQ/8C1OFoAf50DOhUVvH8N0S9yfH/n9RSa5lvnX8udbkyRrVy/HPRbf8j3t3PK+t+v
+	 U081KADYdybe6OoF4umiryzS1BAMZAm/cGfTkWeXOA8FEp2iymMyngAsbEIKA+Af6NpNg
+	 FAjRUzqkUHos1uNYZYInqhwvsIa3XVem/B8Dy0EepwJsOVLT1my97ST5WblB5QPK3AcNl
+	 h8PC5T2XsOxi3wumdbEc2sZy3tlEtOt2aPWAUIaW0f74aR6Cw7o47uAuwMXq6c67qgvew
+	 zvVlBgP6roV6U7SJHB5bS4vD009qd8zWhMxatXNOUjOu3KZPfFPETwIDJoCGVC6EBpw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=XEzCxe9e;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.46.33
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010033.outbound.protection.outlook.com [52.101.46.33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D23606A324;
-	Tue,  3 Nov 2026 12:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85834606A339
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 12:25:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 85834606A339
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ehIRfbLj
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2617E1F000C1;
-	Tue,  3 Nov 2026 12:24:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793708661;
-	bh=SWqdznL5RmpfEQau4NXHZxFj/6fjTDuANXgwfTFdtJ8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ehIRfbLj1Nql300Q1tCL16+1/HXm8mZQuWOPaTmfViNg6apYlZFhLbASpobozH10R
-	 A6GcVgD5T/FW5/mAokdCyYMXWiHS+TIRR/hoMgnWYn7DC5+t5UDLc8cLjh9K7wM7xd
-	 ZbPKwQ2I/ClhVvgZprysj0+/R6kTpLqeg4ofXa5zB7CbCqKbQzdjeiefF/ItEUFefP
-	 9L42k8K9BQYVjRimBVgTfMsImCS96xQKN7KXCLrlnGk8DTJk8rfKA8/AynCI3PzhCO
-	 EayU71QXJhlXc5SGKBCHR8PAErAXAQvjzb8mpc5in1y3YDi+vXJJypVl6j2Iv1lq7c
-	 z1b8XOgPEJmHg==
-Subject: Re: [PATCH net 2/2] net: validate xmit skbs in generic_xdp_tx()
-From: netdev-bot+sashiko@kernel.org
-To: vladimir.oltean@nxp.com
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, andrii@kernel.org,
- eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
- yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
- ihor.solodrai@linux.dev, kuniyu@google.com, wang.zhan@smartx.com,
- mkarsten@uwaterloo.ca, makita.toshiaki@lab.ntt.co.jp,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, mst@redhat.com,
- jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
- virtualization@lists.linux.dev, willemdebruijn.kernel@gmail.com
-Date: Tue, 03 Nov 2026 12:24:18 +0000
-Message-ID: <179370865864.488856.15971001209426521133@kernel.org>
-In-Reply-To: <20261030114753.185281-2-vladimir.oltean@nxp.com>
-References: <20261030114753.185281-2-vladimir.oltean@nxp.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=XEzCxe9e
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Y6e6sCSh8Vbkj7R9S5s59RmF65azurRGzSTaJWQ2jGsvU1+IZBYSQpuDPYf3Q/4nmlU2WI1iWfwgVywQRNPhRyDQEW/K0nVgPmiDAnxVH3y5hCm4p4gLFe7PrPYYfm8Lv1GR1WorY0AIdyida3rrGTBtev2zia/8pA7TcfxEwtsfnUAeEXBCSid4Ow5KYD8aWRyXw5jDpa6S+tzIen+gsng9F8tcedkwOJqsi9laCCHrPdqF1MEFeRUNq6JHWKAyMSzajfA+sUbfSlz7QJWLjgey3vJNc6XBN7o9U51PJWzy3nhs6JRnZ6UK+r/Kk/0yWwGPFMtbRySQFowsWf3w/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=L21Q2FlvJVH5AOOr4CIqYxd0xClDXYphtL3AsaD2GYg=;
+ b=od/HQsEi7Zs0/aEjmcLkrwv6FOEhBwEc2NVNs7WeYtumEM1jVZVW/cS5YMAKvlI3uvGnnRMcrdVVSh4znbh/XxyMil3f6FtWO2/aYZ0DPYXfvsmN0IzS7688GQKtyEwPjDmUV0kN43D2N7jeWvyEqR7prW8hf/GNTBgXpQ2+UZBg9dXfc54y9I2i8yHt1qsWU9jZiVDPH/jy6j/qnDtLLpSiAJG6VF/cqSKp/QYMaFf/IRsukPOmZyaVXtaS9VpBUjQQ4nlDdC9FWNBM6q+aDbDmsL3d2HKeZnH2UmWOAzGbX/nvPW0qycYfaSPsjF/U0QlEL/3EnBs697N1XZ0hiA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=L21Q2FlvJVH5AOOr4CIqYxd0xClDXYphtL3AsaD2GYg=;
+ b=XEzCxe9e7FL39BGq7DWhPrzdd6ebBCo4vD6/jWUoNUPMesAzOvkS+g43ncAY35JhboNob5wW3SInBj2bD5LaZ5KDx0DiPW0zNhPVuTfRDn0ZQKSyiRaAIj79asZ8b91K37i5kpEa+agA8uVILJ3DhDSwNcDm0xraHX1/2zuBp0kNDDMDjLrEWniJfxpPW01M5LEtARorK/eyW0cNNDsppWSAdrBicaRM+og5wi49iZz4yWL0La6d+Xr3X7m/6U9L8HWEE6XgniLlfbSue/WoU7mxdnJ7Qtw/5+qCWuIz0LZ4S24kmQKrL2yGcJApdkgKtgXNu/i4RHErUAifqKlAWA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by CH3PR12MB8755.namprd12.prod.outlook.com (2603:10b6:610:17e::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Tue, 3 Nov
+ 2026 12:25:02 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0569.008; Tue, 3 Nov 2026
+ 12:25:02 +0000
+Date: Tue, 3 Nov 2026 14:24:50 +0200
+From: Ido Schimmel <idosch@nvidia.com>
+To: Vincent Bernat <vincent@bernat.ch>
+Cc: David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
+Subject: Re: [PATCH] net/ipv4: check RTNH_F_LINKDOWN before
+ ip_ignore_linkdown()
+Message-ID: <20261103122450.GA1158309@shredder>
+References: <20261102231456.965943-1-vincent@bernat.ch>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102231456.965943-1-vincent@bernat.ch>
+X-ClientProxiedBy: TLZP290CA0003.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:9::17) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,238 +98,81 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|CH3PR12MB8755:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8cb8df5e-4d9e-4047-3c11-08df39a57c02
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|376014|1800799024|9063799003|10067099003|18002099003|22082099003|261102123227099003|11063799006|261022075727099003|261026121527099003|261009223027099003|261021121427099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	ZaPUpe8H+xpTGHMixW3nlZ1+3nvxZ55o7YzHTr+WI3Py0r2aNWcbqiWlTKTbrdP/te6Cih2CjJErpO4ehFibcHoa1Gzct8wMEPnrljje2oePP6q+VN6i3Q2wBFhXZ7F2vMYvGrgCrT6IfDNfIbml1kcGrL/jp9dWwVYoRKAoFIqmedYSozo4FVX0pNcl1omUh22E/gEe9JCHrdrZAM38G+AIe1T2o7I5fhFJVsWtpazYx9hh+QHzYNr3qZObJBYClpCaefSZt4LFVvw0o1ZjWuVHhpZVvUyxkFWt8wzjpoqcxVnRb42UI0H8xBRAafKMCulq45uxWJfVFIvcGwZFnxjdbeo6eDPmseG2hXwQsUtCBAAt8rQDXclN7uDhJgW7x2cIbP+CnVrL0A+7VG8BAMJde0smeXotNQPwa1awYOyz5tvlGXEDr1Q8FZQ1FEZY9bveLoJxZ1cj9TmQIE2r2TjaaqzbOjrPwPxKLnR+JU2u80A1fikWiOYA8XADIo3dXxUtVnzAETP1DuJ1bxQaakQXEXYvk18t9/lX+mi72dUov4+6/hiV8W+ZTteecxC2GxJP6jI1X1QCcnojRm5IRmL6bdDwoxkuoKEWibjnOHPBwWY4pHVqZnVLX1bRNXK5Pt3mXljRudHyyeS9/IvgkDF3guEGP5wHx2igA4uEMSc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(9063799003)(10067099003)(18002099003)(22082099003)(261102123227099003)(11063799006)(261022075727099003)(261026121527099003)(261009223027099003)(261021121427099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?kMBZA8FMLpeCgXwbS8O+1KfUT6YGd5Jiw3+6STmeekavL4NbrvdtKGEMx216?=
+ =?us-ascii?Q?XRtdrqIRAb4og4zGGaxCtWnfAoRLSuOpnteSYtKNjHPG+zZ7neQDw3CG+Jm3?=
+ =?us-ascii?Q?6wf18LSx6gN1079xNDTuZzEIV6RoRwBIkUV/MYU2SVcEkk8k4J2XuwjJxpNO?=
+ =?us-ascii?Q?3jvrsGguFFA1tgzLtnGgbm9+4FOLJ+LVX04s4+MG83HyWw2hNVEJalEXfzRQ?=
+ =?us-ascii?Q?FFNpJMHxKqZ8wZNIye2f4ShHYAz7Njqv7sn0Hyil6L8qv2JBDx0Feb5T7v/G?=
+ =?us-ascii?Q?r4sfJmzguqoFNu0hXIdO7j2tfpr3RZyPDlStMkOpVESQgoFketK4zcuwpH0m?=
+ =?us-ascii?Q?V3dKNg7U8XD/CjD7hmxzMML2b/e1FcCDx+qx4iHzVkZDkljfqei0yMC0lLfz?=
+ =?us-ascii?Q?VQTxbmuvxxM6OC4cC5VreNOBlK+LT3n5D0SkU/RcqUm5Oi3RWGO/QhozgITS?=
+ =?us-ascii?Q?3GDrrUQnILFA1H4MQGGWy+wiQcznRPQGyurSoKln7bVJY7jCQHuM4f7Nr+QY?=
+ =?us-ascii?Q?58neqRhd5jCh+HoAUEp53FVLQi7JokYZi90L1aGWD2BaZ+m47ao+HZF1G5VU?=
+ =?us-ascii?Q?TeaEBLQ3XzpNpNBE3tP138WBTu8P0QV6IfRuRbNeQfUXRO0SmIrBqDSa/rAL?=
+ =?us-ascii?Q?/iaI5nZ6L7LY9JZui8NXyLzsSIQxJIjFTqPHzVOM1pxJTj5imLav1L/+x2fe?=
+ =?us-ascii?Q?AqGl/59v9iE1jauZZmT+ejLNDSH/HlxBBJQnaih8PhjkYQ8bg+wz7xZdL1Nh?=
+ =?us-ascii?Q?d/cLswRN57JOw9Tar4UOmky9CYdz5cEWCImtXoskJo3KEMCXmSJZEQoLPgr3?=
+ =?us-ascii?Q?m8W5EmAp5GFGhFeFXpDM19rP2KlnHRHEeMAJ7KvWP2G1Zut0eDFEx6qzz3lb?=
+ =?us-ascii?Q?gKAidLEyiMBSBuw7nzmsxpDqhQbG7zDdZMPNGGewu4GJtRG68gyoSMnTWpTK?=
+ =?us-ascii?Q?dGwRbOdL+Yrkwhh0saXJaPrs0DjMNThemdzh/FQmfuDmmny2iZrBHEufdYeX?=
+ =?us-ascii?Q?DcXHt8VQwBhUUkJdpCW3QeZsIhYTLjriEp1Mu7PKz5VAwQB9DrN2pLFnoDPa?=
+ =?us-ascii?Q?orjrsI3iveBRKYPVjp0r9ytD3Geei5Ko5m2Rw4qQT/+bOKUKnZdmCyDDC/EF?=
+ =?us-ascii?Q?r4gcg7B++cRcRPVitSssPrPzBHlhNj/fxcv5OCaVEdFqDqgZRCTGZuCEMs7x?=
+ =?us-ascii?Q?Uq4KH5/6ujh5gpQY75Ktwa+po5SIJ4WNXFe9FNRUUFNpiWdjnFywBjkKouNf?=
+ =?us-ascii?Q?C9YcKgYYAm1kelR/58sP2eU0p31uc9InDEn/fMe1M6TVNl3MszSs5KWkJ6V+?=
+ =?us-ascii?Q?D9sF3As2vPWqf1sUr/Jg+mxPESuAsqxmH8dLsjhkrRdmmEAwpl82LcCVDOWS?=
+ =?us-ascii?Q?dHhj0ML2CxjDJMyeZE1vSsFZIli9MbCaPlkr6dYjqoLWDI+XWI+ZMhGHQbc3?=
+ =?us-ascii?Q?gDtlC2NTNIz5B6sA1KX6QAg1p66ijaPX6EoADQLTY03QfsqS7LEBHbo/hICg?=
+ =?us-ascii?Q?qYxDitZTHhYBqTLrqKba4lafwHF8tfGL4qbLFYFRwdAwYXYz6WpqOKJg/Pue?=
+ =?us-ascii?Q?XNrulGMPLTqq8oXhZ7K4sxlEYCniReVDXxtuRubqMR5cqK2dHMc/nbQLnS8i?=
+ =?us-ascii?Q?RGEqPEQoCfX9l7nPar2w+pbe0FWoeJHoo51ShzaHfpXL52YEWxg9y96fAe04?=
+ =?us-ascii?Q?/NNjUGi3Hr93LDtwlASYij6903iG1QRnbweFXsu0DJ72zfh+?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8cb8df5e-4d9e-4047-3c11-08df39a57c02
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 12:25:02.3957
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +iW1q8rxQ2u4yzpOJSCUT2VOXPnmv8Oq95cuXeESn2WMurmOcIK/CDM1cuE2R9Nm7hDCQHZwaqwJbzuQKcLIRA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8755
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Tue, Nov 03, 2026 at 12:13:30AM +0100, Vincent Bernat wrote:
+> In commit c0c5a60f0f13 ("net: evaluate
+> net.ipvX.conf.all.ignore_routes_with_linkdown"), I introduced a small
+> performance regression of about 5 cycles per lookup by adding several
+> dependent memory loads through `IN_DEV_ORCONF`.
+> 
+> This patch cancels this regression in the most common case where an
+> interface is not down.
+> 
+> Here is the distribution before this fix for lookups in a table with
+> 500k /32 routes:
 
-Critical: 0 · High: 1 · Medium: 0 (2) · Low: 0
+[...]
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> 
+> The median lookup time goes from 132 to 126 cycls. Benchmark were run in
+> a VM pinned to an isolated CPU and running on an AMD EPYC 8024P (Zen
+> 4c).
+> 
+> Signed-off-by: Vincent Bernat <vincent@bernat.ch>
 
-- [High] This patch adds a call to qdisc_pkt_len_segs_init() at the top
-  of generic_xdp_tx() (net/core/dev.c:5863).
+For net-next:
 
-Pre-existing issues:
-- [Medium] The commit message says qdisc_pkt_len_segs_init() must run
-  before validate_xmit_skb().
-- [Medium] The patch now runs generic XDP TX/REDIRECT skbs through
-  validate_xmit_skb().
-
---
-
-net: validate xmit skbs in generic_xdp_tx()
-
-This commit makes generic_xdp_tx() call qdisc_pkt_len_segs_init() and
-validate_xmit_skb_list() before handing the skb to the driver. As a result,
-SKB_GSO_DODGY skbs get their gso_segs recomputed, and offloads the egress
-device lacks are done in software. The resulting list is transmitted one
-skb at a time under the TX lock, and any leftovers are freed with
-kfree_skb_list().
-
-> Generic XDP skips all of this. Instead of calling dev_queue_xmit() or
-> dev_direct_xmit(), the XDP_TX and XDP_REDIRECT actions end up in
-> generic_xdp_tx(), which calls netdev_start_xmit() directly.
-
-[ ... ]
-
-> - Call qdisc_pkt_len_segs_init() first. It recomputes gso_segs for
->   SKB_GSO_DODGY skbs and drops malformed ones. Without it,
->   validate_xmit_skb() would compare the untrusted gso_segs = 0 against
->   dev->gso_max_segs in gso_within_dev_limits(), and the check would
->   always pass.
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but does dev_direct_xmit() have
-the same gso_max_segs problem described here?
-
-__dev_direct_xmit() calls validate_xmit_skb_list() without calling
-qdisc_pkt_len_segs_init() first:
-
-net/core/dev.c:__dev_direct_xmit() {
-    ...
-	skb = validate_xmit_skb_list(skb, dev, &again);
-	if (skb != orig_skb)
-		goto drop;
-    ...
-}
-
-AF_PACKET with PACKET_VNET_HDR builds SKB_GSO_DODGY skbs with gso_segs = 0
-in packet_snd() and tpacket_snd(). setsockopt() doesn't prevent combining
-PACKET_VNET_HDR with PACKET_QDISC_BYPASS, and with that option set,
-packet_xmit() sends these skbs to dev_direct_xmit():
-
-packet_snd()
-  virtio_net_hdr_to_skb()        /* DODGY, gso_segs = 0 */
-  packet_xmit()
-    dev_direct_xmit()
-      __dev_direct_xmit()
-        validate_xmit_skb()
-          gso_within_dev_limits()  /* 0 > gso_max_segs, passes */
-          __skb_gso_segment()
-            tcp_gso_segment()      /* sets gso_segs, returns NULL */
-        netdev_start_xmit()
-
-The skb isn't segmented, so the skb != orig_skb check does not drop it. It
-reaches the driver with gso_segs above the limit the driver set with
-netif_set_tso_max_segs(). Triggering this needs CAP_NET_RAW.
-
-The commit message lists dev_direct_xmit() alongside dev_queue_xmit() as a
-path that generic XDP skips, which suggests it is already validated. Is
-that accurate? Should the commit message be reworded, or should
-__dev_direct_xmit() get the same treatment?
-
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index 88860185f5832..e98d85a539916 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -5855,23 +5855,44 @@ void generic_xdp_tx(struct sk_buff *skb, const struct bpf_prog *xdp_prog,
->  		    u32 act)
->  {
->  	struct net_device *dev = skb->dev;
-> +	enum skb_drop_reason reason;
->  	struct netdev_queue *txq;
-> -	bool free_skb = true;
-> +	bool again = false;
->  	int cpu, rc;
->  
-> +	reason = qdisc_pkt_len_segs_init(skb);
-
-[Severity: High]
-Can this read far outside the skb if the XDP program pulled the head past
-the transport header?
-
-bpf_prog_run_generic_xdp() handles bpf_xdp_adjust_head() by moving the MAC
-and network headers. It does not touch transport_header:
-
-net/core/dev.c:bpf_prog_run_generic_xdp() {
-    ...
-	off = xdp->data - orig_data;
-	if (off) {
-		if (off > 0)
-			__skb_pull(skb, off);
-		else if (off < 0)
-			__skb_push(skb, -off);
-
-		skb->mac_header += off;
-		skb_reset_network_header(skb);
-	}
-    ...
-}
-
-For a tun IFF_VNET_HDR GSO packet with VIRTIO_NET_HDR_F_NEEDS_CSUM,
-__virtio_net_hdr_to_skb() sets transport_header from the user-supplied
-csum_start through skb_partial_csum_set(). The only lower bound is
-nh_min_len (20 bytes past the MAC header), and for TCPV4 the IP protocol
-isn't checked.
-
-Take csum_start = 34 (the outer UDP header of a VXLAN frame). A decap
-program then strips 50 bytes and returns XDP_TX or XDP_REDIRECT. A devmap
-egress program could do the same. In that case skb_transport_offset() is
--16 when this runs:
-
-net/core/dev.c:qdisc_pkt_len_segs_init() {
-    ...
-		hdr_len = skb_transport_offset(skb);
-    ...
-		if (!pskb_may_pull(skb, hdr_len + sizeof(struct tcphdr)))
-			return SKB_DROP_REASON_SKB_BAD_GSO;
-
-		th = (const struct tcphdr *)(skb->data + hdr_len);
-		tlen = __tcp_hdrlen(th);
-    ...
-}
-
-hdr_len is an unsigned int, so it becomes 0xFFFFFFF0.
-skb_transport_header_was_set() is true, so there is no early return.
-
-The size_t sum 0x100000004 is truncated to 4 by the unsigned int len
-parameter of pskb_may_pull(), so the check passes. On 64-bit, th then
-points about 4 GiB past skb->data, and __tcp_hdrlen() reads th->doff
-through it.
-
-Before this patch, generic_xdp_tx() never read transport_header. The rest
-of validation would be fine here, because inet_gso_segment() resets the
-transport header.
-
-The same helper is already reachable through XDP_PASS plus tc ingress in
-sch_handle_ingress(). This patch puts it on the XDP_TX/XDP_REDIRECT path,
-which needs no tc setup. As the commit message notes, an unprivileged
-process can write the packet to a persistent TAP whose owner was set with
-TUNSETOWNER.
-
-Should generic_xdp_tx() reject or reset a negative skb_transport_offset()
-before calling qdisc_pkt_len_segs_init()? Alternatively, should
-qdisc_pkt_len_segs_init() handle that case itself?
-
-[ ... ]
-
->  	txq = netdev_core_pick_tx(dev, skb, NULL);
-> +	skb = validate_xmit_skb_list(skb, dev, &again);
-
-[Severity: Medium]
-This is a pre-existing issue, but can this call now hit the WARN_ONCE() in
-skb_checksum_help() for CHECKSUM_PARTIAL skbs that the XDP program resized?
-
-For tun skbs, csum_start and csum_offset come from user space through
-virtio_net_hdr_to_skb()->skb_partial_csum_set(). They are only checked
-against the layout before the XDP program runs.
-bpf_prog_run_generic_xdp() changes skb->data and skb->len for
-bpf_xdp_adjust_head() and bpf_xdp_adjust_tail(), but never rechecks the
-CHECKSUM_PARTIAL state.
-
-Take a non-GSO skb sent to a device without the matching checksum feature.
-Examples are XDP_TX on a tun device where user space never enabled
-TUN_F_CSUM with TUNSETOFFLOAD, or XDP_REDIRECT to a NIC without the
-matching csum offload. The call chain is:
-
-generic_xdp_tx()
-  validate_xmit_skb_list()
-    validate_xmit_skb()
-      skb_csum_hwoffload_help()
-        skb_checksum_help()
-
-net/core/dev.c:skb_checksum_help() {
-    ...
-	offset = skb_checksum_start_offset(skb);
-	ret = -EINVAL;
-	if (unlikely(offset >= skb_headlen(skb))) {
-		DO_ONCE_LITE(skb_dump, KERN_ERR, skb, false);
-		WARN_ONCE(true, "offset (%d) >= skb_headlen() (%u)\n",
-			  offset, skb_headlen(skb));
-		goto out;
-	}
-    ...
-	offset += skb->csum_offset;
-	if (unlikely(offset + sizeof(__sum16) > skb_headlen(skb))) {
-		DO_ONCE_LITE(skb_dump, KERN_ERR, skb, false);
-		WARN_ONCE(true, "offset+2 (%zu) > skb_headlen() (%u)\n",
-    ...
-}
-
-If the program pulled the head past csum_start, offset is negative. It
-compares as a large unsigned value against skb_headlen(), so the first
-WARN_ONCE() fires. If the tail was shrunk below csum_start + csum_offset
-+ 2, the second one fires.
-
-The packet is dropped, and with panic_on_warn the kernel panics. The commit
-message says validation fixes checksum offload by checksumming in software.
-For packets the program modified this way, though, the WARN fires instead.
-
-The stale checksum metadata comes from bpf_prog_run_generic_xdp() and
-predates this patch. The same WARN can already be reached after XDP_PASS
-when the skb is bridged or forwarded through dev_queue_xmit() to such a
-device. This patch adds another way to reach it.
-
-> +	if (!skb) {
-> +		trace_xdp_exception(dev, xdp_prog, act);
-> +		return;
-> +	}
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261030114753.185281-1-vladimir.oltean%40nxp.com
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
