@@ -1,49 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793693009;
-	b=jRcCw/8cjX/NBV6vVUo+f1J5taCQaD2jB/mYVRu7WKGuT6mgn/JlduOkGaifSk6465aZ
-	 5LECTznxxh48DvzeCx5TCWCJrgWkfQA0ACcMj2XaERoDdYb1UUnjTPTG6S/ALXLZ9HXn0
-	 emrk0Oa4N7CJYtL3cLPIE/2XV/G+Bqg4Ly4V5ilmKeCcCBSW4yG8EUXkBxdXDb1ktTcOD
-	 62FUaA7hLfT1WnfOTp6hCZjjUGrBuLQlyHJZGHZpqsj1K7+E+Mt296p6/lg4NY0WCSnYT
-	 dIvuxU/JZAjwg1+k3eEPtXxT3ECVZkItzSCTcwkW4wJBSYeM8wRajxuP3vL5XOQFGRw==
+	t=1793693073;
+	b=fIcKkOHcjiB43pR9NPFp2Cl1UQsmpY/NpksT2SUBktjYJmprUR0vDlHaloHkgKyTI8CD
+	 LAdcOoirfUpoS8lNM6uXJyDMpc4jzYouq3S1LuBNXIn6Ano4i4tJp3whSTt9GGuvyKwDn
+	 K8GH8bmzTIShLpxnZRelGtPHE0wUUKsEabZTywI1dsV0gTVO9wABkJGBkv4lH6rVjzzwx
+	 GkAUTTQi2GdApOw75/QZwyFQ6q3iQDonqvMK5nCT6GywaKtguHPr2frJdvl+4S9hVSm9S
+	 7iJyx/4v11TAqBlOAWoESuDGRJj6vXuvAwK7Aeys3/DoDnT/p7r48P9kEiYums03N8Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793693009;
-	h=DMARC-Filter:Received:DKIM-Signature:MIME-Version:Date:From:To:Cc:
-	 Subject:In-Reply-To:References:Message-ID:X-Sender:Content-Type:
-	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=enhxf3grehHMDIgvB+Z10c3xYp3FBwv9aKRumc3Y59Y=;
-	b=3EEGYInMu2v9X9CC+TzuzsMil7YijnY+fDETBm3pO1y8wPQ3H1h/2PXtlvYmTT0rckXj
-	 GHpOC/aDFQu1ZMFu9T2FIi4jTjx2cvwuw9BRnyYH5cQAeXY/dl65tPpjzz4NZyGXWDh0V
-	 PO0MiCGK330xSMXe0RvTCxweUBKF6O6t0bcLBrXUdum/FO+uanQo++kFk8P4XjzZEWt55
-	 6jsvzoF4rpja9E2QnwvBpZ0cGUWl+OsKI57YEvJrCjQagXSsIchOKB6yLdSiVAX6wEAoG
-	 XWTk1I+45AjOP5mcjRJnxzR399owERVzi4zn+ZhjnpR0odWx+BHIbBN8X8SCxvaKgaA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793693073;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Message-ID:In-Reply-To:
+	 References:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-Correlation-ID;
+	bh=ESE5C0i8J9UtpPkDUVoRquvfOcWKncLg5Vsd6vV7s8w=;
+	b=joVjeOBb8mybwgHIAHbn8jGYPS/yobVu3nYyRymkKNke0AUFEEq8vSUTzNrE20HhCLif
+	 7mtUqh72EvUWXD6NM/9BFgewbb4nkbZA2b3AfBvjbc0/R6bgrU9+2Ar/W5aCFcwM0etMB
+	 eqMf9mmVdsUrvJeS9aQJnKPzd5Ifg9ZSCSGEeAchYnDcVCV7f3W2hGEWxx44qPcEZ7W6I
+	 qIoW2un0QDmS2JsJ0GMI6hi+gwkBMDCDJjKEcasVGTPUvJn1i+iQUpnX5bykrum5E77dM
+	 53l/8LQjOTxPJjY2RiBkf+7O7xWrzrFi90br45fDzsI14Aq5oPl1IRGQDcDnPTBhxwA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=tipi-net.de;
-	spf=pass smtp.mailfrom=tipi-net.de;
-	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=e1Y7go5R;
-	arc=none smtp.remote-ip=194.13.80.246
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="ADIiPBj/";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64836606A324;
-	Tue,  3 Nov 2026 08:03:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 64836606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57480606A33C;
+	Tue,  3 Nov 2026 08:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=e1Y7go5R
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7F51FA1648;
-	Tue, 03 Nov 2026 09:03:20 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1793693003; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=enhxf3grehHMDIgvB+Z10c3xYp3FBwv9aKRumc3Y59Y=;
-	b=e1Y7go5R9tw/Hv+CwAxGtAPMkX1GSK0Ef79e3aXnasSML74WNdFcCeVL963SnCv3zs5AeZ
-	ePnTYEpDOQWdhmfd5tkGjOALd+B8nniKV+NwIz0ig9g27ycC/IhB3jE4AZ8asOv8BVkpEq
-	Thu6rnRMxb+szt4AKGKFSQvVqMXpTVllGFRIRhUd36nJYmvxucl5Q8ouZ0L3+7P+WPWpkJ
-	rJ1cWg+BeUyHT6H17+GIL4Lh2lqH6hVGIJuGI1YolgE0SUltGdczyr+2+BhKdoBajmkqTi
-	T0zfhxMVhhKOAonZIHzPgqx6vKEEefXLntGwQgNw1Id6vrvuU6hQuGX66cHiDw==
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ADIiPBj/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2187D1F00919;
+	Tue,  3 Nov 2026 08:04:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793693073;
+	bh=ESE5C0i8J9UtpPkDUVoRquvfOcWKncLg5Vsd6vV7s8w=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=ADIiPBj/BpFNGQIO4kEgM79Ej94EnBV1zCmPowIQo9cl97zrL0OLkzbgMS9/4jHtF
+	 Xb9JVQE22EwMnOCJoraZkZ31Dvp+WW6GPzIYSdyUSOfcsU2SfA4ba5unyDWfwT0nVJ
+	 OJoiv4rOVXjT/JRBtHxSgE/6InQkJ8+1m3YWqfAHEcJjLeL4oAxQb84Bx/cSQ/MA9/
+	 mWkQ0qRZ72vGCc0p+D/vSz3JmScgdonTB/O2dMp0NYihVI4mhthidRKIs7R5JRbmAQ
+	 y1DV/hq4/bNzEVBOrarbDT7T2uP7BY1+g88NqmQCFpcsdqABwl3VoPjEUemsyG5kqf
+	 3hyLI3WUEQULg==
+Date: Tue, 3 Nov 2026 09:04:25 +0100
+From: Matthieu Baerts <matttbe@kernel.org>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: martineau@kernel.org, geliang@kernel.org, pabeni@redhat.com,
+	mptcp@lists.linux.dev, netdev@vger.kernel.org
+Message-ID: <abc8a000-caa8-4dd4-9d18-925d1ceda683@kernel.org>
+In-Reply-To: <aumNbD0vtdtLgWN9@v4bel>
+References: <aoWBrkNwebJe-koh@v4bel> <bf25121c-72cf-40a7-bbaf-5db85aee7f59@kernel.org> <aobtmznTdBks0frM@v4bel> <994ecd4f-eaf9-4d2f-95a3-611083207d6c@kernel.org> <aumNbD0vtdtLgWN9@v4bel>
+Subject: Re: [PATCH net] mptcp: fix use-after-free of the subflow context on
+ the delegated list
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,84 +59,100 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Tue, 03 Nov 2026 09:03:20 +0100
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: netdev-bot+sashiko@kernel.org
-Cc: sgoutham@marvell.com, gakula@marvell.com, rkannoth@marvell.com,
- sbhatta@marvell.com, bbhushan2@marvell.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, sumang@marvell.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net] octeontx2-pf: fix XDP frames freed as skbs on
- interface down
-In-Reply-To: <179365033465.3131.17188664588787330051@kernel.org>
-References: <20261030-nb-otx2-xdp-cqe-cleanup-net-v1-1-710635c0f504@tipi-net.de>
- <179365033465.3131.17188664588787330051@kernel.org>
-Message-ID: <61f8b7a5d2b72f05c1b59d46f375eb7c@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Correlation-ID: <abc8a000-caa8-4dd4-9d18-925d1ceda683@kernel.org>
 
-On 2.11.2026 21:12, netdev-bot+sashiko@kernel.org wrote:
+Hi Hyunwoo,
 
-> [...]
+Thank you for your reply.
 
-> [Severity: Medium]
-> The new CQ_XDP branch fills in xsk_frames, but is it ever used after
-> the loop?
+03 Nov 2026 08:29:55 Hyunwoo Kim <imv4bel@gmail.com>:
 
-Daniel already pointed this out. Will fix this in v2.
+> On Tue, Sep 08, 2026 at 07:46:19PM +0200, Matthieu Baerts wrote:
+>> Hi Hyunwoo,
+>>
+>> On 20/08/2026 14:05, Hyunwoo Kim wrote:
+>>> On Wed, Aug 19, 2026 at 12:22:18PM +0200, Matthieu Baerts wrote:
+>>>> Hi Hyunwoo,
+>>>>
+>>>> On 19/08/2026 12:13, Hyunwoo Kim wrote:
+>>>>> mptcp_subflow_delegate() links the subflow context into a per-CPU nap=
+i
+>>>>> list and takes a reference on the subflow socket. The context is a
+>>>>> separate allocation, reached through icsk_ulp_data, and the list hold=
+s
+>>>>> no reference to it.
+>>>>>
+>>>>> inet_csk_destroy_sock() runs sk_prot->destroy() regardless of the
+>>>>> outstanding references. That path ends in tcp_cleanup_ulp(), which ca=
+lls
+>>>>> subflow_ulp_release(). subflow_ulp_release() frees the context with
+>>>>> kfree_rcu() but does not remove it from the list. Once the grace peri=
+od
+>>>>> elapses and the context is actually freed, the next mptcp_napi_poll()
+>>>>> dequeues that entry and mptcp_subflow_delegated_next() writes to the
+>>>>> freed context with list_del_init(). That is the use-after-free.
+>>>>>
+>>>>> The freeing path cannot dequeue the entry itself: the list is per-CPU
+>>>>> and only the CPU that queued the subflow may touch it, as
+>>>>> tcp_release_cb_override() already notes.
+>>>>>
+>>>>> Delay the free instead. Add MPTCP_DELEGATE_DEAD.
+>>>>> mptcp_subflow_free_ctx() sets it and frees the context only if the
+>>>>> subflow is not scheduled, while mptcp_napi_poll() frees it if the dea=
+d
+>>>>> bit is set when it clears the scheduled bit. Either
+>>>>> mptcp_subflow_free_ctx() gets there first, sees the scheduled bit and
+>>>>> leaves the free to mptcp_napi_poll(), or mptcp_napi_poll() gets there
+>>>>> first, does not see the dead bit and mptcp_subflow_free_ctx() does th=
+e
+>>>>> free.
+>>>>>
+>>>>> Also skip mptcp_subflow_process_delegated() once the dead bit is set.
+>>>>> subflow_ulp_release() has already dropped the msk reference by then, =
+so
+>>>>> the pending actions must not run.
+>>>>>
+>>>>> Finally, move delegated_status out of struct_group(reset).
+>>>>> mptcp_subflow_ctx_reset() clears that group on disconnect, and cleari=
+ng
+>>>>> the scheduled bit while the entry is still queued would let
+>>>>> mptcp_subflow_free_ctx() free a context the napi list still points to=
+.
+>>>>> delegated_node is already outside the group.
+>>>> Thank you for looking at this. Do you have more context about how the
+>>>> bug was discovered? Do you have a reproducer and/or a KASAN calltrace =
+or
+>>>> similar?
+>>>>
+>>>> Having this would help the reviewers.
+>>>
+>>> Sorry for the late reply. The poc was extremely unstable, so I wanted
+>>> to improve its reproduction rate a bit before sending it.
+>>
+>> No delay at all when compared to my reply, sorry!
+>>> Attached are the poc, the KASAN log, and the mdelay diff used for
+>>> reproduction.
+>>
+>> By chance, do you have a decoded stack trace? e.g. using the following
+>> script with the vmlinux and modules used to generate the KASAN trace:
+>>
+>> =C2=A0 ./scripts/decode_stacktrace.sh
+>>
+>> Note that we are still looking at a possible simpler fix, but no luck so
+>> far. In any cases, we will take this patch in our tree first, then send
+>> it to netdev.
+>
+> Ah.. I had missed this mail.
+>
+> It seems this issue has not been resolved in netdev yet. May I ask how
+> you plan to handle it?
 
-> [...]
+We didn't find a less "intrusive" way to fix that, and it went down the TOD=
+O list, sorry.
+Do you mind rebasing it, and send a new version including the
+decoded trace (without the timestamps), please?
 
-> [Severity: Medium]
-> Should xsk_frames be reported back to the XSK pool after this loop?
-
-Same. Will fix this in v2.
-
-> [...]
-
-> [Severity: Medium]
-> This is a pre-existing issue, but it is on the same XDP teardown path.
-> otx2_free_pending_sqe() only walks the regular TX SQs:
-> [...]
-> [Severity: High]
-> This isn't a bug introduced by this patch. The commit message mentions
-> "when the XDP program is replaced". On that path, is ndo_xdp_xmit kept
-> away from the XDP SQ teardown?
-> [...]
-> [Severity: High]
-> This is a pre-existing issue, but can NAPI run at the same time as this
-> cleanup loop? otx2_stop() does:
-
-All three pre-existing issues will probably need to change the teardown 
-ordering.
-As I don't have any hardware to test, this is probably better done by 
-the maintainers.
-
-> [...]
-
-> [Severity: High]
-> This isn't a bug introduced by this patch. However, the new branch adds
-> another consumer of sg->skb values that may be bogus in AF_XDP 
-> zero-copy
-> mode.
-
-Also pre-existing and this seems worth fixing in another patch. AFAIU 
-the zero
-copy branch can jump past the buffer init, so XDP_TX and _PASS would 
-work with
-an uninitialized xdp_buff. The fix is probably to switch to
-xdp_convert_buff_to_frame(xsk_buff) for TX and xdp_build_skb_from_zc for 
-PASS.
-
-Ideally someone with hardware would fix this ... Marvell?
-
-> [...]
-
---
-pw-bot: cr
-
+Cheers,
+Matt
