@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793714608;
-	b=a7sEWgr4vE0opM9Ge/iE5VSMm85970xeAZrFbGwngIVisbflJpLW+/V8oEMMB17vImg0
-	 QZkgLzo4VGCY0B+MxbIhQhxfZ0q80DlCUhQQME/JQLpKOJcuZw3L+d2aJ9OHT+YKuhDZ5
-	 9s755omGKeRClTEmAhKm00MxnttPMQkrow2lCND2Qm1Izl5Sx11cW5Y/XQRepn4OUlPc1
-	 JjVzf3SnzBMhiBGk7Yujzv9aJ1m1aEhhFt23APXv0u+N3FCfjNUEQE3Fi/YD/w+x5B1OH
-	 5iXF2NPwkFIe/+DfkAGbm7uT+KWYoALICh/d+LD/oS0Jzv6lr8C70pCxOMl2NYTWxwg==
+	t=1793714606;
+	b=yN0aPR2H1/ScuOnyvj8jBAniDF//CNeZrNygHYoSLFHI9lHo7IdQ8OBTbMnLym5VSmbU
+	 T8apFSpslax4NsCIgllkmtIBpPQ+jnrTYHpedrZGbIJDHCwaIKrR8i19ej86WL22uYwFN
+	 WKoU+uMVqmbmaGMkKKHcq3ftYHq6a520sGgSha6lBCtON6lvsZBsBdmUtWbOq+LDHAKR2
+	 fdYJ5qzctffhNr7O9QL0wl7gxuVPqgnUfQ6EwYq2tC8wR0zyycs6tCWC9rq7up1ITsTFS
+	 gPtyL1vBV/C8c6iI4CORS+j/Vd3o0gpW6nMPYtphWK9hmpakR28eD57J77a2R6PSy3Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793714608;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793714606;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
-	bh=kuc0tSs2t8YhL7Z9z30YhIe5qV0tfMkKwJx3EJPkeDo=;
-	b=f0A3ycbHdN8NrTrkkT3PCCXq9gwaGSP/PuQOfJBxPYu4ihKsVC2y69ha1FIeXPh5Powu
-	 L1pZzkLUJmMrlp7869aUqGASl9lsyAhvepvWptRrc2tmVxSvG7zHsC7WmAjSH9SDKvTpY
-	 zEnYO0wkq2O9D8JgFKlemA0kRZqqCV44PZQubFOvUOoJi4hlevaLcZvkAWbcpVf/fLFML
-	 mMxFX9RFHtFpKQ6yFlnfRjvC/7c1XocMsEcxb7wg89Z6pQMPCcvcprcaZg3iHHfYOao3s
-	 g+vO8O96D48VVZq0jHDNmbWnNdISSALF8IKoYobiQ9zydSmkQEduQxGLKnCadJKmKKg==
+	bh=rtTKULpTnN+Nv7hj6YAwU1fNR5t0PXlCdJ7mWoX/Fc0=;
+	b=JYId2FZrbkhg5MznFTSYFmw5x0a/ZFR9rEADNngCV01EIkfP/NW+UCJEXIHxo9zc3E6V
+	 9DEa86iiRoFwGbQLsaX78jvo+7PKaxlEYb83vJHLRa1A84a3X6lRAM/NJI3QqU2wg91jD
+	 1jif48Iy2pBG3/7AfWe5fGPiliVvxOb468TctmFmdeDVZwn3ZFokm7EevCAKquQMNKuV6
+	 xV4TUBHrjnoGtxRk3VnTNvL/Dgx0hUvwnpVr9Ww0JP7Bumd4z3XsMQo+9G0Kap0H+dYJn
+	 FJ+HqjHQnGEevIVAU48HIf3CPboplJnfNByi9YuqjkVkCf82dzVyInWehOQwaKlJ19w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=netfilter.org;
 	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=Kyz59pTO;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=U1snme5x;
 	arc=none smtp.remote-ip=217.70.190.124
 Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8F06083615;
-	Tue,  3 Nov 2026 14:03:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1D8F06083615
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700296082BF8;
+	Tue,  3 Nov 2026 14:03:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 700296082BF8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=Kyz59pTO
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=U1snme5x
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793714606;
-	bh=kuc0tSs2t8YhL7Z9z30YhIe5qV0tfMkKwJx3EJPkeDo=;
+	s=2025; t=1793714603;
+	bh=rtTKULpTnN+Nv7hj6YAwU1fNR5t0PXlCdJ7mWoX/Fc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kyz59pTONpbJF/KmuCcZVdpg0g537efKmDcYZ2Svrtg4A4ns6xkcG+7Qu5dCClGzd
-	 q0oRFMJAnNCix5dXtQZ6MKrbiyeO3aJt5+2+cVNwi7lzDM2DJdTYVy1EWlPpjwhDGs
-	 4tRlv3BNufeAM30Ik7meVhIb8xr9fQ+oR5TPK6FIuSHU4a+Kl8Krv67KMilsJWsS2U
-	 /jzO7zP9sjYBZjdi3adL6VdS6jHguISAFGiNLPnEOuE4sgpNVclAvWmVKmi/3+K7WQ
-	 wXGdxp0FcqJj7t7OCW6B0Roy2PBEx8fFAVXkCR/Mb4vcrBAF0hAQ6K+2sAKc2dgAe7
-	 uxgV7YiL/WYeg==
+	b=U1snme5x6ljIXy0RP5IdwIGkRBY3p7xYILTE0iCc4xO1Tt10Fg1EcEacglu+LzsIs
+	 bTtvM3Hbj5nN2X4wJlrIFXzC1bZUWjuxLAY1sHpCyczvtBMoSO4+mLkA4H44rDmR31
+	 /jnmL+B2Dg5NFJf1qswDPzxOMMkscQ40uujrY7mEs5XAmE81b+euPPVFe74wg/Rrjw
+	 4UI+6rbF6XPKF+bx0TBajzAScJ9OI5cnguryEJZ8Sl2Ey5MvclOuVJt9rccUIVy4KB
+	 d3sSp+3cjUIFihvblQxNAqivec4yBZLYWJ29npHNKZbBFT/O6OVF774tVqyNtJ3MSS
+	 hkbXvQ2YaqCPg==
 Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id DEEA060092;
-	Tue,  3 Nov 2026 15:03:25 +0100 (CET)
+	by mail.netfilter.org (Postfix) with ESMTPSA id D2DCF60085;
+	Tue,  3 Nov 2026 15:03:22 +0100 (CET)
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 To: netfilter-devel@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -56,9 +56,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	fw@strlen.de,
 	ja@ssi.bg
-Subject: [PATCH net 07/15] netfilter: nf_dup: preserve guard across NFQUEUE reinjection
-Date: Tue,  3 Nov 2026 15:03:00 +0100
-Message-ID: <20261103140308.591690-9-pablo@netfilter.org>
+Subject: [PATCH net 05/15] ipvs: do not create conns from packets with port 0
+Date: Tue,  3 Nov 2026 15:02:58 +0100
+Message-ID: <20261103140308.591690-7-pablo@netfilter.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261103140308.591690-1-pablo@netfilter.org>
 References: <20261103140308.591690-1-pablo@netfilter.org>
@@ -73,118 +73,108 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Zihan Xi <zihanx@nebusec.ai>
+From: Julian Anastasov <ja@ssi.bg>
 
-NFQUEUE can suspend traversal of a duplicated packet while the task-local
-duplication guard is set. The output call then returns and clears the guard
-before a later verdict resumes hook traversal.
+We should disallow normal connections with cport 0 to be
+created from packets by the scheduler (from clients) or
+by ip_vs_new_conn_out (from real servers) because later
+such traffic can not hit the connection due to the
+NO_CPORT requirement. As result, it can lead to duplicate
+connection for every packet. Do the same for vport 0.
 
-Save the guard in the queue entry and restore it while reinjection
-continues hook traversal. Preserve and restore the verdict task's prior
-state, including nested synchronous reinjection.
-
-Fixes: cd58bcd9787e ("netfilter: xt_TEE: have cloned packet travel through Xtables too")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Co-developed-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260925141115.16126-1-axel.mierczuk%401password.com
+Signed-off-by: Julian Anastasov <ja@ssi.bg>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
- include/net/netfilter/nf_queue.h |  1 +
- net/netfilter/nf_queue.c         |  1 +
- net/netfilter/nfnetlink_queue.c  | 17 ++++++++++++++---
- 3 files changed, 16 insertions(+), 3 deletions(-)
+ net/netfilter/ipvs/ip_vs_core.c       | 3 ++-
+ net/netfilter/ipvs/ip_vs_proto_sctp.c | 5 +++++
+ net/netfilter/ipvs/ip_vs_proto_tcp.c  | 5 +++++
+ net/netfilter/ipvs/ip_vs_proto_udp.c  | 4 ++++
+ 4 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/netfilter/nf_queue.h b/include/net/netfilter/nf_queue.h
-index 86021c55ba3c..4a8cefd8398d 100644
---- a/include/net/netfilter/nf_queue.h
-+++ b/include/net/netfilter/nf_queue.h
-@@ -23,6 +23,7 @@ struct nf_queue_entry {
- 	struct net_device	*physout;
- #endif
- 	struct nf_hook_state	state;
-+	bool			in_nf_duplicate;
- 	bool			nf_ct_is_unconfirmed;
- 	u16			size; /* sizeof(entry) + saved route keys */
+diff --git a/net/netfilter/ipvs/ip_vs_core.c b/net/netfilter/ipvs/ip_vs_core.c
+index 8a3c880fdb26..f3eb72e95024 100644
+--- a/net/netfilter/ipvs/ip_vs_core.c
++++ b/net/netfilter/ipvs/ip_vs_core.c
+@@ -1305,6 +1305,7 @@ static inline bool is_new_conn_expected(const struct ip_vs_conn *cp,
+  *    In fwmark-VS actual vaddr and vport are unknown to IPVS
+  * 2) Real Server and Virtual Service were NOT configured without port:
+  *    This is to allow match of different VS to the same RS ip-addr
++ * 3) Client port is not 0
+  */
+ struct ip_vs_conn *ip_vs_new_conn_out(struct ip_vs_service *svc,
+ 				      struct ip_vs_dest *dest,
+@@ -1328,7 +1329,7 @@ struct ip_vs_conn *ip_vs_new_conn_out(struct ip_vs_service *svc,
+ 	/* check pre-requisites are satisfied */
+ 	if (svc->fwmark)
+ 		return NULL;
+-	if (!vport || !dport)
++	if (!vport || !dport || !cport)
+ 		return NULL;
  
-diff --git a/net/netfilter/nf_queue.c b/net/netfilter/nf_queue.c
-index 166d05e994ac..bd603e3a99a5 100644
---- a/net/netfilter/nf_queue.c
-+++ b/net/netfilter/nf_queue.c
-@@ -219,6 +219,7 @@ static int __nf_queue(struct sk_buff *skb, const struct nf_hook_state *state,
- 	*entry = (struct nf_queue_entry) {
- 		.skb	= skb,
- 		.skb_dev = skb->dev,
-+		.in_nf_duplicate = current->in_nf_duplicate,
- 		.state	= *state,
- 		.hook_index = index,
- 		.size	= sizeof(*entry) + route_key_size,
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index 90d887546f7d..a8aa7ad832c3 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -44,6 +44,7 @@
- #include <net/sock.h>
- #include <net/tcp_states.h>
- #include <net/netfilter/nf_queue.h>
-+#include <net/net_debug.h>
- #include <net/netns/generic.h>
+ 	/* for persistent service first create connection template */
+diff --git a/net/netfilter/ipvs/ip_vs_proto_sctp.c b/net/netfilter/ipvs/ip_vs_proto_sctp.c
+index fb8af6b15a39..83d1443ebe01 100644
+--- a/net/netfilter/ipvs/ip_vs_proto_sctp.c
++++ b/net/netfilter/ipvs/ip_vs_proto_sctp.c
+@@ -30,6 +30,7 @@ sctp_conn_schedule(struct netns_ipvs *ipvs, int af, struct sk_buff *skb,
+ 			sch = skb_header_pointer(skb, iph->len + sizeof(_sctph),
+ 						 sizeof(_schunkh), &_schunkh);
+ 			if (sch) {
++				/* Accept packet without scheduling? */
+ 				if (sch->type == SCTP_CID_ABORT ||
+ 				    !(sysctl_sloppy_sctp(ipvs) ||
+ 				      sch->type == SCTP_CID_INIT))
+@@ -47,6 +48,10 @@ sctp_conn_schedule(struct netns_ipvs *ipvs, int af, struct sk_buff *skb,
+ 		return 0;
+ 	}
  
- #include <linux/atomic.h>
-@@ -365,21 +366,30 @@ static void nf_reinject(struct nf_queue_entry *entry, unsigned int verdict)
- 	const struct nf_hook_entry *hook_entry;
- 	const struct nf_hook_entries *hooks;
- 	struct sk_buff *skb = entry->skb;
-+	bool old_in_nf_duplicate;
- 	const struct net *net;
- 	unsigned int i;
- 	int err;
- 	u8 pf;
- 
-+	DEBUG_NET_WARN_ONCE(current->in_nf_duplicate &&
-+			    !entry->in_nf_duplicate,
-+			    "%s called with unexpected duplication guard",
-+			    __func__);
-+	local_bh_disable();
-+	old_in_nf_duplicate = current->in_nf_duplicate;
++	/* Do not create connection for port 0, skip the packet */
++	if (!ports[0] || !ports[1])
++		return 1;
 +
- 	net = entry->state.net;
- 	pf = entry->state.pf;
- 
-+	current->in_nf_duplicate = entry->in_nf_duplicate;
- 	hooks = nf_hook_entries_head(net, pf, entry->state.hook);
- 
- 	i = entry->hook_index;
- 	if (!hooks || i >= hooks->num_hook_entries) {
- 		kfree_skb_reason(skb, SKB_DROP_REASON_NETFILTER_DROP);
- 		nf_queue_entry_free(entry);
--		return;
-+		goto out;
+ 	if (likely(!ip_vs_iph_inverse(iph)))
+ 		svc = ip_vs_service_find(ipvs, af, skb->mark, iph->protocol,
+ 					 &iph->daddr, ports[1]);
+diff --git a/net/netfilter/ipvs/ip_vs_proto_tcp.c b/net/netfilter/ipvs/ip_vs_proto_tcp.c
+index fec0e8b47b71..2e55b62445c6 100644
+--- a/net/netfilter/ipvs/ip_vs_proto_tcp.c
++++ b/net/netfilter/ipvs/ip_vs_proto_tcp.c
+@@ -48,6 +48,7 @@ tcp_conn_schedule(struct netns_ipvs *ipvs, int af, struct sk_buff *skb,
+ 	if (likely(!ip_vs_iph_icmp(iph))) {
+ 		th = skb_header_pointer(skb, iph->len, sizeof(_tcph), &_tcph);
+ 		if (th) {
++			/* Accept packet without scheduling? */
+ 			if (th->rst || !(sysctl_sloppy_tcp(ipvs) || th->syn))
+ 				return 1;
+ 			ports = &th->source;
+@@ -62,6 +63,10 @@ tcp_conn_schedule(struct netns_ipvs *ipvs, int af, struct sk_buff *skb,
+ 		return 0;
  	}
  
- 	hook_entry = &hooks->hooks[i];
-@@ -402,9 +412,7 @@ static void nf_reinject(struct nf_queue_entry *entry, unsigned int verdict)
- 	switch (verdict & NF_VERDICT_MASK) {
- 	case NF_ACCEPT:
- 	case NF_STOP:
--		local_bh_disable();
- 		entry->state.okfn(entry->state.net, entry->state.sk, skb);
--		local_bh_enable();
- 		break;
- 	case NF_QUEUE:
- 		err = nf_queue(skb, &entry->state, i, verdict);
-@@ -418,6 +426,9 @@ static void nf_reinject(struct nf_queue_entry *entry, unsigned int verdict)
++	/* Do not create connection for port 0, skip the packet */
++	if (!ports[0] || !ports[1])
++		return 1;
++
+ 	/* No !th->ack check to allow scheduling on SYN+ACK for Active FTP */
+ 
+ 	if (likely(!ip_vs_iph_inverse(iph)))
+diff --git a/net/netfilter/ipvs/ip_vs_proto_udp.c b/net/netfilter/ipvs/ip_vs_proto_udp.c
+index f32785682402..92c0b76c1a02 100644
+--- a/net/netfilter/ipvs/ip_vs_proto_udp.c
++++ b/net/netfilter/ipvs/ip_vs_proto_udp.c
+@@ -52,6 +52,10 @@ udp_conn_schedule(struct netns_ipvs *ipvs, int af, struct sk_buff *skb,
+ 		return 0;
  	}
  
- 	nf_queue_entry_free(entry);
-+out:
-+	current->in_nf_duplicate = old_in_nf_duplicate;
-+	local_bh_enable();
- }
- 
- /* return true if the entry has an unconfirmed conntrack attached that isn't owned by us
++	/* Do not create connection for port 0, skip the packet */
++	if (!ports[0] || !ports[1])
++		return 1;
++
+ 	if (likely(!ip_vs_iph_inverse(iph)))
+ 		svc = ip_vs_service_find(ipvs, af, skb->mark, iph->protocol,
+ 					 &iph->daddr, ports[1]);
 -- 
 2.47.3
 
