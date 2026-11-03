@@ -1,69 +1,69 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793716796;
-	b=padEpWvkLTHFgNE4CReUTTOrcGlhyDfINtJil9cHfiJ5yROrQiy61k9v62WBuH9d3uPo
-	 9dDPQrtepoh4Imb7KXbNzK+ck01FpYHnJ9N+81AaBrePYWSSsDE9NzbZpxucwIHwY4u9b
-	 lA5aLtr56V+gIQ+vdb/y1Jw7/VMY7+qbKAG4ljbCfxkk4K+0QkhqWHGSTnzANB4WElFwz
-	 yvZcsdGAIMIC0syTcjIwqNfFzayp1FGPq8WZs1KKEOoqsb0yFXGaztPyrlkDXZkR2+8qQ
-	 iZkJM74Vw+PGzkslTP0T8RFSLy6duBfGed3XGItuCYTckc7qC7Swr/hCRysd221PcdQ==
+	t=1793716797;
+	b=aGLI+GNiaeKRPWjRwRZClDgGhsfDwZiS1UP5AyVFjzL682Xsi5mPnXdO3eIDCW6iPBYl
+	 Lz+jyS2WPEBSpgqbXz+ApmneTeCqUzvK9OmJseAZB/PSrZmHDN0mPrg1Q16gLMsUYltWs
+	 xByLqeWhZSsTy4U+XlB9qxn4/aGBawCIgRahD9qu92ueMrmGlUB5HBQ/7BCJAPl9sXn1Z
+	 mgDvOonfDnuM+xCyskTSUuXkBHOZr2LxtFK7yxepY0x0wB/NlPJCKnL5Uw3jqERp3ZORQ
+	 3a7xlNkDeokif3CinYtPRNku3FBbKmlVQj98BHOj2TQiOoYv/gIJZRPoLjXgzoeTuYw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793716796;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793716797;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:From:To:Cc:
 	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=KNzQRlqQm5MpoUtIBb/pVv9eXGoBbxC+11RPAIam9fk=;
-	b=qVdCo27D/LV6pqDmyM/mNwX0Hl1pbg5rTkrq/ZkOUIpsWlE116Zg2QBfnGqOiRG6vNQT
-	 5sI4NoGTu26MoVA7u2qn9KWaxukbvZhj0wAX+U/fEtlkD406QssAYjsn610M4SryB1WWy
-	 2Xx09eHYsqI9gEAHx2pi+J2fEQUTymSd5/vikfO1utyPbsxDrsURPc8C1RbSSskvmF+ji
-	 eLTid4GH84Tmo70hA5Cyzr7SOmZ0gRkq++30Nwj8pcUfdA4F/wJlxX+DPIbrQBmR3ziJC
-	 YQmBL+tu79HjqWqA2JJ4+OEf5MTZUL5IS1okSbg73m9pryno+pvpSe5ME2b624tCiFg==
+	bh=VvGYg4RKOcZoCIDjAJMuLObnilI7z0KtFsIeC3rNVvU=;
+	b=Jvex9gwwtvUC8XyT8223P4HtHDNUCtwvOyH0PkyLZRgj1imU4ery7uIyix66rc4kitiV
+	 phGp8qIvdaJNd9ocSuHEiaPKbk30e57W+ws/h+uk3B2K/orqrYciaePNS3L5Cysx6GJ9S
+	 91qFNelmbCWBkocXccmMqt9Gza8s3dlRSQwiV99WW6ZSAFrK/2sSeSi4Vi8ck1YSY6nwo
+	 DkN/jUNdR4PYwxNKn10rf5vzMrCkvDuffVPdknYy9Ro5yf4SjGbc7DkyA5TL3YSdtZS/8
+	 DGmBsMg3DIk5DF+azY7MgKYSUELjQGg9KiECmqBkQv22hMMSFwdFsl0RyXKG1Pdi3Ww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QWYi0C9G;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="E9ricl/l";
 	arc=none smtp.remote-ip=198.175.65.12
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9183D606A337
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 14:39:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9183D606A337
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434C3606A32F
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 14:39:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 434C3606A32F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QWYi0C9G
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=E9ricl/l
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793716790; x=1825252790;
+  t=1793716797; x=1825252797;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=UCQ/iBpx7rr25JaoOqKtihqOvNZtNeX2zAy5GzhxztY=;
-  b=QWYi0C9GIDDX8qPp3ocUSCnM7aYBhnwI8AY1cWpmA+k0w9GvERWEeesQ
-   ccoEW8reyOVlL1IqoLh+VPJ8AZHGh7EHi2wECFCLniGjWpdP3iPjfNF4r
-   /kKQbUJhc8zWQuo7CFseFNAzrUIX+LB/4ncKbC1ADhNMHMnPKLo+tShgO
-   lnDGPQ0/WJx216bSyl3+f0b7/QUQ4DGzsJPFs5wcCdwZ060kQ0zSbsOLa
-   9ypBMX5BkesJ/c7GMDIDhWdang3nMNA8jI3RA4Z9wZ7gPIVlp+9JPM5vK
-   f0tzBnA4el0Trsj2XbWfOR62QtorReWB50jY8lZ7vDAPudJqs7dt4LZ9y
-   g==;
-X-CSE-ConnectionGUID: wswW6w5rRKuKe1RKda/5PQ==
-X-CSE-MsgGUID: fRACLtlyR6WibtG/yiMOyw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2323997"
+  bh=ha6+beWen/HzF3HGCwu4M8XZKad/MO6jy85k6q7op0E=;
+  b=E9ricl/lm4EgPLFa629q0d9Z274m/giixSmsm+Ci7lsmCAJaOohIokTr
+   i4lu7EAINq1QQLZW1eenGfEGlZ8FuK1p0YZpmYDEUs1QixgQk7dnI/BIy
+   SbdTtZ81J9nUsmGWVQHi+Rg/E/OPOwvnp3ufGbY+14LPcHfmK4MsabUo+
+   5uQrVbIA9HajsS5t8p0Jt2lC2QAVBA/0ynsTrv7WlGOk2/zEXiIXhQXj7
+   TaQb2JXSQLtgbtXq8Uh5uuJzhk3NGewUmlAIa7KgJrYRWM3Uei4WpJ8v5
+   vKcJbOEp4iXI54reKcMBMCAc7XJ9X6HoamExnlpiYDyMxlnwAnbQ18hP5
+   Q==;
+X-CSE-ConnectionGUID: K174Lrr0RlGptaABZY0HiA==
+X-CSE-MsgGUID: K77VTV66SBmCqCQ9hsnvGA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2324052"
 X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
-   d="scan'208";a="2323997"
+   d="scan'208";a="2324052"
 Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 06:39:49 -0800
-X-CSE-ConnectionGUID: LU864/xPQECCQEKcmbn9Qg==
-X-CSE-MsgGUID: vKKE43I3TIacxtdzmSOqDg==
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 06:39:57 -0800
+X-CSE-ConnectionGUID: z7N/AhrPRmCxNVeZAUOubA==
+X-CSE-MsgGUID: VPGlCdThR+ebnnU/j65/eg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
-   d="scan'208";a="8289856"
+   d="scan'208";a="8289938"
 Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by fmviesa013.fm.intel.com with ESMTP; 03 Nov 2026 06:39:43 -0800
+  by fmviesa013.fm.intel.com with ESMTP; 03 Nov 2026 06:39:52 -0800
 Received: from vecna.igk.intel.com (vecna.igk.intel.com [10.123.220.17])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 3D8E6312EA;
-	Tue,  3 Nov 2026 14:39:39 +0000 (GMT)
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id E013F312EA;
+	Tue,  3 Nov 2026 14:39:49 +0000 (GMT)
 From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 To: netdev@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -90,12 +90,10 @@ Cc: intel-wired-lan@lists.osuosl.org,
 	Tariq Toukan <tariqt@nvidia.com>,
 	Mark Bloch <mbloch@nvidia.com>,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Sergey Temerkhanov <sergey.temerkhanov@intel.com>,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>
-Subject: [PATCH iwl-next v4 02/15] ice: use shared devlink to store ice_adapters instead of custom xarray
-Date: Tue,  3 Nov 2026 15:14:43 +0100
-Message-ID: <20261103141646.303620-3-przemyslaw.kitszel@intel.com>
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Subject: [PATCH iwl-next v4 08/15] iavf: temporary rename of IAVF_MAX_REQ_QUEUES to IAVF_MAX_REQ_QUEUES_VCV1
+Date: Tue,  3 Nov 2026 15:14:49 +0100
+Message-ID: <20261103141646.303620-9-przemyslaw.kitszel@intel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261103141646.303620-1-przemyslaw.kitszel@intel.com>
 References: <20261103141646.303620-1-przemyslaw.kitszel@intel.com>
@@ -110,342 +108,76 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Refactor our storage and deduplication logic of ice_adapters by moving
-it to be handled by shared devlink instance, recently added by
-Jiri Pirko [1].
+Rename IAVF_MAX_REQ_QUEUES to IAVF_MAX_REQ_QUEUES_VCV1, in preparation for
+the next patch that will extend the max to 256, using old value of 16 for
+the "v1" variant of virtchnl opcodes.
 
-We wanted the devlink instance for whole device anyway - later in the
-series I will add devlink resources under it.
-
-Make the shared devlink a parent (wrt. nesting) of the actual PF devices.
-
-[1] commit 411ad0605875 ("Merge branch 'devlink-introduce-shared-devlink-instance-for-pfs-on-same-chip'")
-[1] https://lore.kernel.org/all/20260312100407.551173-1-jiri@resnulli.us
-
-Reviewed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Suggested-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Suggested-by: Jacob Keller <jacob.e.keller@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 ---
-CC: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
-CC: Grzegorz Nitka <grzegorz.nitka@intel.com>
+ drivers/net/ethernet/intel/iavf/iavf.h          |  3 ++-
+ drivers/net/ethernet/intel/iavf/iavf_main.c     |  2 +-
+ drivers/net/ethernet/intel/iavf/iavf_virtchnl.c | 10 +++++-----
+ 3 files changed, 8 insertions(+), 7 deletions(-)
 
-v2:
- * propagate the error from devlink_shd_get() with ERR_CAST()
- * minor kdoc updates
- * check devl_nested_devlink_set() return value, ice_devlink_register()
-   returns int now (Sashiko)
- * prefix the shared devlink id with "ice:", to avoid collisions with
-   ids used by other drivers (Sashiko)
-
-Sashiko suggestions I don't want to apply:
- S: all PFs without DSN get index 0, and so share one instance
- me: pre-existing, and DSN 0 is only on pre-production samples
----
- .../net/ethernet/intel/ice/devlink/devlink.h  |   2 +-
- drivers/net/ethernet/intel/ice/ice_adapter.h  |  12 +-
- .../net/ethernet/intel/ice/devlink/devlink.c  |  11 +-
- drivers/net/ethernet/intel/ice/ice_adapter.c  | 106 ++++++------------
- drivers/net/ethernet/intel/ice/ice_main.c     |  11 +-
- 5 files changed, 57 insertions(+), 85 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.h b/drivers/net/ethernet/intel/ice/devlink/devlink.h
-index 1af3b0763fbb..62af38d11fd9 100644
---- a/drivers/net/ethernet/intel/ice/devlink/devlink.h
-+++ b/drivers/net/ethernet/intel/ice/devlink/devlink.h
-@@ -7,7 +7,7 @@
- struct ice_pf *ice_allocate_pf(struct device *dev);
- struct ice_sf_priv *ice_allocate_sf(struct device *dev, struct ice_pf *pf);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
+index a41d2726ebd8..053f34c4f710 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf.h
++++ b/drivers/net/ethernet/intel/iavf/iavf.h
+@@ -87,7 +87,8 @@ struct iavf_vsi {
+ #define IAVF_TX_DESC(R, i) (&(((struct iavf_tx_desc *)((R)->desc))[i]))
+ #define IAVF_TX_CTXTDESC(R, i) \
+ 	(&(((struct iavf_tx_context_desc *)((R)->desc))[i]))
+-#define IAVF_MAX_REQ_QUEUES 16
++/* for "old" virtchnl opcodes that accept up to 16 queues */
++#define IAVF_MAX_REQ_QUEUES_VCV1	16
  
--void ice_devlink_register(struct ice_pf *pf);
-+int ice_devlink_register(struct ice_pf *pf);
- void ice_devlink_unregister(struct ice_pf *pf);
- int ice_devlink_register_params(struct ice_pf *pf);
- void ice_devlink_unregister_params(struct ice_pf *pf);
-diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.h b/drivers/net/ethernet/intel/ice/ice_adapter.h
-index c61bd645e460..cdad45e8e81b 100644
---- a/drivers/net/ethernet/intel/ice/ice_adapter.h
-+++ b/drivers/net/ethernet/intel/ice/ice_adapter.h
-@@ -8,7 +8,8 @@
- #include <linux/mutex.h>
- #include <linux/srcu.h>
- #include <linux/spinlock_types.h>
--#include <linux/refcount_types.h>
-+
-+#include <net/devlink.h>
+ #define IAVF_HKEY_ARRAY_SIZE ((IAVF_VFQF_HKEY_MAX_INDEX + 1) * 4)
+ #define IAVF_HLUT_ARRAY_SIZE ((IAVF_VFQF_HLUT_MAX_INDEX + 1) * 4)
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index d39737dcd425..822d6e692d49 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -5371,7 +5371,7 @@ static int iavf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	pci_set_master(pdev);
  
- #include "ice_type.h"
- 
-@@ -35,31 +36,30 @@ struct ice_port_list {
- 
- /**
-  * struct ice_adapter - PCI adapter resources shared across PFs
-- * @refcount: Reference count. struct ice_pf objects hold the references.
-+ * @devlink: ice adapter's devlink (whole dev devlink)
-  * @ptp_gltsyn_time_lock: Spinlock protecting access to the GLTSYN_TIME
-  *                        register of the PTP clock.
-  * @txq_ctx_lock: Spinlock protecting access to the GLCOMM_QTX_CNTX_CTL register
-  * @cpi_phy_lock: Per-PHY mutex serializing CPI REQ/ACK transactions.
-  *               Index 0 = PHY0, index 1 = PHY1. Used on E825C devices.
-  * @ctrl_pf: Control PF of the adapter
-  * @ports: Ports list
-- * @index: 64-bit index cached for collision detection on 32bit systems
-  */
- struct ice_adapter {
--	refcount_t refcount;
-+	struct devlink *devlink;
-+
- 	/* For access to the GLTSYN_TIME register */
- 	spinlock_t ptp_gltsyn_time_lock;
- 	/* For access to GLCOMM_QTX_CNTX_CTL register */
- 	spinlock_t txq_ctx_lock;
- 	/* Serialize CPI REQ/ACK transactions per PHY (E825C only) */
- 	struct mutex cpi_phy_lock[ICE_E825_MAX_PHYS];
- 
- 	struct ice_pf *ctrl_pf;
- 	struct ice_port_list ports;
--	u64 index;
- };
- 
- struct ice_adapter *ice_adapter_get(struct pci_dev *pdev);
--void ice_adapter_put(struct pci_dev *pdev);
-+void ice_adapter_put(struct ice_adapter *adapter);
- 
- #endif /* _ICE_ADAPTER_H */
-diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.c b/drivers/net/ethernet/intel/ice/devlink/devlink.c
-index 8c2b63eef82b..fa64b9744779 100644
---- a/drivers/net/ethernet/intel/ice/devlink/devlink.c
-+++ b/drivers/net/ethernet/intel/ice/devlink/devlink.c
-@@ -1747,11 +1747,20 @@ struct ice_sf_priv *ice_allocate_sf(struct device *dev, struct ice_pf *pf)
-  *
-  * Return: zero on success or an error code on failure.
-  */
--void ice_devlink_register(struct ice_pf *pf)
-+int ice_devlink_register(struct ice_pf *pf)
+ 	netdev = alloc_etherdev_mq(sizeof(struct iavf_adapter),
+-				   IAVF_MAX_REQ_QUEUES);
++				   IAVF_MAX_REQ_QUEUES_VCV1);
+ 	if (!netdev) {
+ 		err = -ENOMEM;
+ 		goto err_alloc_etherdev;
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+index 356565aa41c8..69241cb146e0 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+@@ -260,19 +260,19 @@ int iavf_send_vf_ptp_caps_msg(struct iavf_adapter *adapter)
+  **/
+ static void iavf_validate_num_queues(struct iavf_adapter *adapter)
  {
- 	struct devlink *devlink = priv_to_devlink(pf);
-+	struct ice_adapter *adapter = pf->adapter;
-+	int err;
+-	if (adapter->vf_res->num_queue_pairs > IAVF_MAX_REQ_QUEUES) {
++	if (adapter->vf_res->num_queue_pairs > IAVF_MAX_REQ_QUEUES_VCV1) {
+ 		struct virtchnl_vsi_resource *vsi_res;
+ 		int i;
  
-+	if (adapter) {
-+		err = devl_nested_devlink_set(adapter->devlink, devlink);
-+		if (err)
-+			return err;
-+	}
- 	devl_register(devlink);
-+
-+	return 0;
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.c b/drivers/net/ethernet/intel/ice/ice_adapter.c
-index 536923b6ae97..0cdb13e7bd89 100644
---- a/drivers/net/ethernet/intel/ice/ice_adapter.c
-+++ b/drivers/net/ethernet/intel/ice/ice_adapter.c
-@@ -1,19 +1,14 @@
- // SPDX-License-Identifier: GPL-2.0-only
- // SPDX-FileCopyrightText: Copyright Red Hat
- 
--#include <linux/cleanup.h>
--#include <linux/mutex.h>
- #include <linux/pci.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
- #include <linux/srcu.h>
--#include <linux/xarray.h>
-+
- #include "ice_adapter.h"
- #include "ice.h"
- 
--static DEFINE_XARRAY(ice_adapters);
--static DEFINE_MUTEX(ice_adapters_mutex);
--
- #define ICE_ADAPTER_FIXED_INDEX	BIT_ULL(63)
- 
- #define ICE_ADAPTER_INDEX_E825C	\
-@@ -41,56 +36,41 @@ static u64 ice_adapter_index(struct pci_dev *pdev)
+ 		dev_info(&adapter->pdev->dev, "Received %d queues, but can only have a max of %d\n",
+ 			 adapter->vf_res->num_queue_pairs,
+-			 IAVF_MAX_REQ_QUEUES);
++			 IAVF_MAX_REQ_QUEUES_VCV1);
+ 		dev_info(&adapter->pdev->dev, "Fixing by reducing queues to %d\n",
+-			 IAVF_MAX_REQ_QUEUES);
+-		adapter->vf_res->num_queue_pairs = IAVF_MAX_REQ_QUEUES;
++			 IAVF_MAX_REQ_QUEUES_VCV1);
++		adapter->vf_res->num_queue_pairs = IAVF_MAX_REQ_QUEUES_VCV1;
+ 		for (i = 0; i < adapter->vf_res->num_vsis; i++) {
+ 			vsi_res = &adapter->vf_res->vsi_res[i];
+-			vsi_res->num_queue_pairs = IAVF_MAX_REQ_QUEUES;
++			vsi_res->num_queue_pairs = IAVF_MAX_REQ_QUEUES_VCV1;
+ 		}
  	}
  }
- 
--static unsigned long ice_adapter_xa_index(struct pci_dev *pdev)
-+static int ice_adapter_init(void *priv, void *init_param)
- {
--	u64 index = ice_adapter_index(pdev);
--
--#if BITS_PER_LONG == 64
--	return index;
--#else
--	return (u32)index ^ (u32)(index >> 32);
--#endif
--}
-+	struct ice_adapter *adapter = priv;
-+	struct devlink *devlink;
- 
--static struct ice_adapter *ice_adapter_new(struct pci_dev *pdev)
--{
--	struct ice_adapter *adapter;
--	int err;
-+	devlink = shd_priv_to_devlink(adapter);
-+	adapter->devlink = devlink;
- 
--	adapter = kzalloc_obj(*adapter);
--	if (!adapter)
--		return NULL;
--
--	err = init_srcu_struct(&adapter->ports.srcu);
--	if (err) {
--		kfree(adapter);
--		return NULL;
--	}
--
--	adapter->index = ice_adapter_index(pdev);
- 	spin_lock_init(&adapter->ptp_gltsyn_time_lock);
- 	spin_lock_init(&adapter->txq_ctx_lock);
- 	for (int i = 0; i < ARRAY_SIZE(adapter->cpi_phy_lock); i++)
- 		mutex_init(&adapter->cpi_phy_lock[i]);
--	refcount_set(&adapter->refcount, 1);
- 
- 	spin_lock_init(&adapter->ports.lock);
- 	INIT_LIST_HEAD(&adapter->ports.list);
- 
--	return adapter;
-+	return init_srcu_struct(&adapter->ports.srcu);
- }
- 
--static void ice_adapter_free(struct ice_adapter *adapter)
-+static void ice_adapter_fini(void *priv)
- {
-+	struct ice_adapter *adapter = priv;
-+
- 	WARN_ON(!list_empty(&adapter->ports.list));
- 	for (int i = 0; i < ARRAY_SIZE(adapter->cpi_phy_lock); i++)
- 		mutex_destroy(&adapter->cpi_phy_lock[i]);
- 
- 	cleanup_srcu_struct(&adapter->ports.srcu);
--
--	kfree(adapter);
- }
- 
-+static const struct devlink_ops ice_adapter_devlink_ops = {
-+	.shd_init = ice_adapter_init,
-+	.shd_fini = ice_adapter_fini,
-+};
-+
- /**
-  * ice_adapter_get - Get a shared ice_adapter structure.
-  * @pdev: Pointer to the pci_dev whose driver is getting the ice_adapter.
-@@ -102,59 +82,37 @@ static void ice_adapter_free(struct ice_adapter *adapter)
-  *
-  * Context: Process, may sleep.
-  * Return:  Pointer to ice_adapter on success.
-- *          ERR_PTR() on error. -ENOMEM is the only possible error.
-+ *          ERR_PTR() on error.
-  */
- struct ice_adapter *ice_adapter_get(struct pci_dev *pdev)
- {
- 	struct ice_adapter *adapter;
--	unsigned long index;
--	int err;
--
--	index = ice_adapter_xa_index(pdev);
--	scoped_guard(mutex, &ice_adapters_mutex) {
--		adapter = xa_load(&ice_adapters, index);
--		if (adapter) {
--			refcount_inc(&adapter->refcount);
--			WARN_ON_ONCE(adapter->index != ice_adapter_index(pdev));
--			return adapter;
--		}
--		err = xa_reserve(&ice_adapters, index, GFP_KERNEL);
--		if (err)
--			return ERR_PTR(err);
--
--		adapter = ice_adapter_new(pdev);
--		if (!adapter) {
--			xa_release(&ice_adapters, index);
--			return ERR_PTR(-ENOMEM);
--		}
--		xa_store(&ice_adapters, index, adapter, GFP_KERNEL);
--	}
-+	struct devlink *devlink;
-+	char devlink_id[32];
-+	u64 index;
-+
-+	index = ice_adapter_index(pdev);
-+	snprintf(devlink_id, sizeof(devlink_id), "ice:%llx", index);
-+	devlink = devlink_shd_get(devlink_id, &ice_adapter_devlink_ops,
-+				  sizeof(*adapter), NULL, pdev->dev.driver);
-+	if (IS_ERR(devlink))
-+		return ERR_CAST(devlink);
-+
-+	adapter = devlink_shd_get_priv(devlink);
-+
- 	return adapter;
- }
- 
- /**
-  * ice_adapter_put - Release a reference to the shared ice_adapter structure.
-- * @pdev: Pointer to the pci_dev whose driver is releasing the ice_adapter.
-+ * @adapter: the ice_adapter to release reference to
-  *
-  * Releases the reference to ice_adapter previously obtained with
-  * ice_adapter_get.
-  *
-  * Context: Process, may sleep.
-  */
--void ice_adapter_put(struct pci_dev *pdev)
-+void ice_adapter_put(struct ice_adapter *adapter)
- {
--	struct ice_adapter *adapter;
--	unsigned long index;
--
--	index = ice_adapter_xa_index(pdev);
--	scoped_guard(mutex, &ice_adapters_mutex) {
--		adapter = xa_load(&ice_adapters, index);
--		if (WARN_ON(!adapter))
--			return;
--		if (!refcount_dec_and_test(&adapter->refcount))
--			return;
--
--		WARN_ON(xa_erase(&ice_adapters, index) != adapter);
--	}
--	ice_adapter_free(adapter);
-+	devlink_shd_put(adapter->devlink);
- }
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 454fba07d4ec..6373cd5ac288 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -4946,7 +4946,12 @@ static int ice_init_devlink(struct ice_pf *pf)
- 		return err;
- 
- 	ice_devlink_init_regions(pf);
--	ice_devlink_register(pf);
-+	err = ice_devlink_register(pf);
-+	if (err) {
-+		ice_devlink_destroy_regions(pf);
-+		ice_devlink_unregister_params(pf);
-+		return err;
-+	}
- 	ice_health_init(pf);
- 
- 	return 0;
-@@ -5291,7 +5296,7 @@ ice_probe(struct pci_dev *pdev, const struct pci_device_id __always_unused *ent)
- unroll_dev_init:
- 	need_dev_deinit = true;
- unroll_adapter:
--	ice_adapter_put(pdev);
-+	ice_adapter_put(adapter);
- unroll_hw_init:
- 	ice_deinit_hw(hw);
- 	if (need_dev_deinit)
-@@ -5404,7 +5409,7 @@ static void ice_remove(struct pci_dev *pdev)
- 	ice_setup_mc_magic_wake(pf);
- 	ice_set_wake(pf);
- 
--	ice_adapter_put(pdev);
-+	ice_adapter_put(pf->adapter);
- 	ice_deinit_hw(&pf->hw);
- 
- 	ice_deinit_dev(pf);
 -- 
 2.54.0
 
