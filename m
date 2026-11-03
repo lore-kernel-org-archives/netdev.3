@@ -1,55 +1,174 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793720967;
-	b=fGUBVy5J4BccVoQNSf3/tg9YVM8cEMJCHrK+CjdidyfkfeiMAY9z0rdjqzpv+3f+4U+h
-	 w4SU9Y35/wBKA1aYtV6OxTUVEetTy0KdlS558Xr4C54sBBqRD61fRis66PsKACGsX9euw
-	 7KJGeM5NZ1vQjf8Z1URTCTvacJPE0fyaaYz5OvQGMbzvdkGUVU9rolcQdJcquqsXBlSPO
-	 zqnEQvLALjBU0hvjydoPGu8Carir/C0CBcCUxSTWx5uWaUp3ZkKGJPbJt1xJJqYqol01S
-	 9w0s9Ruvrop+RCyL/Gp/plTUTduMwoyzQcogEFUhP+2asTJgir3n55u6KHyX1Lx3DBg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793720967;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=yBVvkEycBHDzcqtk64wG1ZxAfNP7O82hXAvWkVI1BMY=;
-	b=LB0om5BlqS61/aZmGjPFtilpxdwbEcBrkJwzzym3I7qZrg5cXQbC8977uutGDw8snTvk
-	 CzytQDiK1cD2zuxOTNjpVUWVEJyW2Qs2jSvfsrT+ChHLLwqqMXkjxYAZwxE4sLYL1mmgD
-	 SXfuZyGUglsCNDkZFYdWQ2nLvYfnA/Zk/vKvKiFVydWk4LRwktF8Uj+1Zdjnh7VcgmnOS
-	 LHE1Nx911HYG7LlFvtFb1WMOsJKcZjQP1ttDkwBLM5eGux9jmZ/gaeCFw4p6LM10CwMPH
-	 BhphZJIup5MEOlXsdFlOfoherU/L40sV2lF5gmR9mQZnW/LCU6ZA/CUxEzYbyyXXecQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Flj/gEvw";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.51.0
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793721296;
+	b=M9IUV/LYAb849C9pggfVEjuZimC0wIWHVC5gWRoYZ/1u4p32tW1K4e/Fgkn+tL3zdAw3
+	 W5Yeu6R7hJGWKdDDwh8K+uKia9jYNr1HB+/rh3rN33gjBiEVuN57jZjXlTQdKXmlEpS5o
+	 RWbos4OMo4CJi0i91TlnPVtWvKzpMfI8nSjkNUMHbkPHHZXKuOrNzOmDGKFpqfPfLqBDa
+	 jvsMhuyzMx8kAKg7DB9tmpDFcCqDaQxo57cQkmLbeiFpVv0wVnkAnK727H8I5HPkKqCeA
+	 7NeJngMBZKHD3WujL/8liEsdlR5xVy5eebBmN2eqwo5ejBW0LBytjOgJOhqOMxNX6Rg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793721296;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 user-agent:x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:
+	 x-ms-exchange-atpmessageproperties:x-ld-processed:
+	 x-ms-exchange-senderadcheck:x-ms-exchange-antispam-relay:
+	 x-microsoft-antispam:x-microsoft-antispam-message-info:
+	 x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:
+	 x-ms-exchange-antispam-messagedata-1:Content-Type:Content-ID:
+	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=9D4hksLS+PZx03Hnje+xCR3p0I2WJ0We7+TrjuJtEbY=;
+	b=vuOIIXZYSskFRtBMbZgKjsTrNbTyNnTjAsUWEXFdl6kjoHFeBlvhywi3LW9CguAKYecK
+	 bfFZ1PxzAFCESo84G2yDdfERUK37PFtr3ocB4cZImwiXgkpdTO/W7pCzR9nkBOF1JIpX9
+	 p6adeDaGHHRbxonvLFx2OfUbdW+knccXnfiK4bmMv5ArFpvypHfe4RDV5BqqKLNYor+aJ
+	 FDC0YCPFItPgeI63cBmugWeJQI+frXxuF9ulvm5phEF6mFtCfD6A7EMmdPFy/p3oGIK5s
+	 1/mYclREEg5fNRzXIoUCuH6914cAbjaZ7B10eNP1jyJHjyJk9nlT//X0E5Oony1KFmw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=pnnl.gov;
+	spf=pass smtp.mailfrom=pnnl.gov;
+	dkim=pass header.d=pnnl.gov header.i=@pnnl.gov header.a=rsa-sha256 header.s=selector1 header.b=cRztFPYT;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.51.0
+Received: from BL0PR0901CU002.outbound.protection.outlook.com (mail-eastusazon11010000.outbound.protection.outlook.com [52.101.51.0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81784606A329
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 15:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44B2606D835
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 15:54:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B44B2606D835
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=pnnl.gov
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pnnl.gov
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Flj/gEvw
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B0F81F00A02
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 15:49:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793720967;
-	bh=yBVvkEycBHDzcqtk64wG1ZxAfNP7O82hXAvWkVI1BMY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Flj/gEvwZypjbqAT2i1vuTfp5IOXUKYT8EjKGdi7LN3DHt4HYMnZORez80eHDd1Fm
-	 HAyPvUudcDmOAEOo9lywAAV8ddmcz1jT9qfebWnZnDPgwpjEKXkNyZSxqPC9gj40zh
-	 ZdDyehkiL6JMFReGiCTUCibEwt/fMH3pCkT2frvcduMWbugKOnbYI13lA3eAjRTTeK
-	 mrMPfWC8MmjGJRisRPHKpgo6c82qjTS82+i0cs9eTro7PTaghgQBENLso0VI2RLrl9
-	 LcDuANSHauUuJNLFMTtBPMAVC+tS9P7Tugi5gVupqkrWgPaoe/KfTqtSYYLwwU4OtH
-	 o9fHOKWUt6XqQ==
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-4a89b4a59a1so626601fac.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 07:49:27 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBzERVeNSHuU2dHSa1tGt7yb5XWbSX/MAN/VprAAkCmDYp2/R5H8/ZpAZcUzOntXvy3pT+pH7i4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8NJYYBBufhdfWaZybW4syG/e6h/oJLBm84xBePg8dupx8Y0ZW7
-	o8yTUH/tyt4nD47W8qQF6n8brxhmrWNGoVOGHnCEwrgG+o6RubP41cqo8Yv+5S7DymbE+obe9KD
-	C/hOnoNGffo1kmplH/5I0S7dYgN8QNf0=
-X-Received: by 2002:a05:6871:81e:b0:490:d828:a7e5 with SMTP id
- 586e51a60fabf-4a8e0a550bcmr7291633fac.30.1793720966471; Tue, 03 Nov 2026
- 07:49:26 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=pnnl.gov header.i=@pnnl.gov header.a=rsa-sha256 header.s=selector1 header.b=cRztFPYT
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KHCPChtVkQwuLzB5HSRjB5M4mpnSsv65u+W4WjgU6GnJfROHhhxKNxaCfbPNylPquxcphzeRwNMSbZSB3icq8z6M/+IVMjJnpugxbtn5nHaGn5CDp7ks8YYw03PPaUq2I+cJW6KHtiE/XQ/DrxrMvLA1gdHKi89waLGf7SXT1FSO32A9kQVz3zwogYX8hk0QnSx/VkV7CMA+9Z8ddMjPIfQ/DxTJyNCtVO8nRtfgAmZn2Jlrtlp+H+HypdhU5yMpbK6nywiTgLMDc+ZV6jt13yhs1d9qkNzZMK9mAsoTlwHZfVKMg+9vVBk+9S0LlmK+DfRwVdfTDUingIG8TrVADw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9D4hksLS+PZx03Hnje+xCR3p0I2WJ0We7+TrjuJtEbY=;
+ b=OHgpyVG/2Xb4UR+NdY7MY8IAIMfD6goaGB1pldTaumUGNNE+GprgXfaYBm1wvANI1iJjUVfwk1PcbnRMtkAYBFZo/AEKX0LCKHcKYa8XN2nJryZLRFQoJNJ2f5JwYAccRbZgZUSa3sbYC7OsJt3eObgGtEp6Mr3pr9e4LDLG9mFpphZQb7MHrw8hBZcntpqgaPrslXKd/7vHnCwUNhRLzQXpKPdzvuu/ekuKAp+kAn9cll5ebVrLxepoTubKcWZOw9L3vFjYx+kot5UZLGBoSXvbAZvsS9pKsFF4T8ROaUZlVnoTh1qN3GEJIxkdtWuk61rqvgJfbcTXs6+0O4mInw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=pnnl.gov; dmarc=pass action=none header.from=pnnl.gov;
+ dkim=pass header.d=pnnl.gov; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pnnl.gov; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9D4hksLS+PZx03Hnje+xCR3p0I2WJ0We7+TrjuJtEbY=;
+ b=cRztFPYTVr/pOe14mfX9kT1z5ycIYKSUeSq6xGPzr3RNyzZrAonvXUiaoASPFyO/C66KVZ4wMPXGYbOuiis7su+GYQTuDo1MTrB+Ewo/rlfxOI37+swkIvSXHQp+bxHDAqcrR4JRUxcbULnQkwT3LfjKX4xzInClMAqbLqWq0Mg=
+Received: from PH0PR09MB11456.namprd09.prod.outlook.com
+ (2603:10b6:510:2c3::12) by MW4PR09MB9864.namprd09.prod.outlook.com
+ (2603:10b6:303:1e4::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Tue, 3 Nov 2026
+ 15:54:44 +0000
+Received: from PH0PR09MB11456.namprd09.prod.outlook.com
+ ([fe80::855f:d47c:28ba:4821]) by PH0PR09MB11456.namprd09.prod.outlook.com
+ ([fe80::855f:d47c:28ba:4821%6]) with mapi id 15.21.0592.007; Tue, 3 Nov 2026
+ 15:54:41 +0000
+From: "Smith, Cameron T" <cameron.smith@pnnl.gov>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"horms@kernel.org" <horms@kernel.org>, "ojeda@kernel.org" <ojeda@kernel.org>,
+	"boqun@kernel.org" <boqun@kernel.org>, "gary@garyguo.net" <gary@garyguo.net>,
+	"bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>, "lossin@kernel.org"
+	<lossin@kernel.org>, "a.hindborg@kernel.org" <a.hindborg@kernel.org>,
+	"aliceryhl@google.com" <aliceryhl@google.com>, "tmgross@umich.edu"
+	<tmgross@umich.edu>, "dakr@kernel.org" <dakr@kernel.org>,
+	"daniel.almeida@collabora.com" <daniel.almeida@collabora.com>,
+	"tamird@kernel.org" <tamird@kernel.org>, "acourbot@nvidia.com"
+	<acourbot@nvidia.com>, "work@onurozkan.dev" <work@onurozkan.dev>, Sabrina
+ Dubroca <sd@queasysnail.net>, "Griswold, Richard L"
+	<richard.griswold@pnnl.gov>, "Phillips, Aaron R" <Aaron.Phillips@pnnl.gov>
+Subject: Re: MAC Privacy Protection Protocol Driver Announcement
+Thread-Topic: MAC Privacy Protection Protocol Driver Announcement
+Thread-Index:
+ AQHdYYdZ8RJuNPBMiUOi2J1usWg9T7cIXLWAgAFb44CAAJgcgIAFsNQAgAFl+wCACqaYgA==
+Date: Tue, 3 Nov 2026 15:54:41 +0000
+Message-ID: <B37414A6-E9FB-41AB-9056-D0E63AC9A100@pnnl.gov>
+References:
+ <PH0PR09MB114568347F3E0622F9102AF628A662@PH0PR09MB11456.namprd09.prod.outlook.com>
+ <c9f7ba83-ab92-4b2a-915a-1513c90a49a4@lunn.ch>
+ <B0D3346C-ACAD-4938-8B3A-501F9CD52C64@pnnl.gov>
+ <8546582a-e5be-471f-87e5-5eb68433083f@lunn.ch>
+ <8D2A251F-C6BB-49AE-84DB-459FD7532306@pnnl.gov>
+ <364891b2-88ee-45d0-899a-cb2e919eae6c@lunn.ch>
+In-Reply-To: <364891b2-88ee-45d0-899a-cb2e919eae6c@lunn.ch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Microsoft-MacOutlook/16.114.26102720
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=pnnl.gov;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH0PR09MB11456:EE_|MW4PR09MB9864:EE_
+x-ms-office365-filtering-correlation-id: 5cd0f46c-20eb-4df2-2ad8-08df39c2c5f6
+x-ms-exchange-atpmessageproperties: SA
+x-ld-processed: d6faa5f9-0ae2-4033-8c01-30048a38deeb,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|7416014|1800799024|10070799003|366016|19092799006|38070700021|4143699003|5023799004|56012099006|261028144727099003|261022105027099003|261102123227099003|261009223027099003|261021121427099003|261021135927099003|261022075727099003|261026121527099003|261026140227099003|10067099003|55112099003|22082099003|18002099003|3023799007;
+x-microsoft-antispam-message-info:
+ 70Qvne9Bgrnlc6SrkU2QEi1JCZXKJ8qnHQLmdtDsmDceW3kWX/i6F2V/reD0pJ0W3Uf2Y1+XoSPJyXClF2WYQzqwKmtFRGgo7dG3xi/q0p0vp+MtWQkEtbNrjS9KxqlT7LoYjUuvoZmr4SR1BNXvwjlDKDJiicqUYH770ipCrZZKJoP5XaPdmISOebrQjdW3MvmiUIPKPgpMywsgcfJHOB4NRlgH4BckST3D1u83dr1qHnoM6O3YU49P3aJyxy9e70/lzUT5RErxMhJ1SkiozcwaG0TD0PYsN34/O9KCQDY8Yt7g6BIu7B9LU276mCXaloszlj5Cw9ItDCdvw1wyXG1POO/xD3fIgGdD9xlf+UXYL6vYa05Fhg+HepA9WgoujmCFwnG5uzEzWKIK8EiHafB+Qx902O9Jpc9sk669YP4rSWXuAnXZYiPfEG99pFNMYvTxM0Y3ShzPNQEjamaDDraiatZEvoFf9ZvimUZP42O7yyT4FugeAhZwxXtWSgbCtE6iyndsf89+CSHIOJyLK2KWCNtlvQQygfzUoFAG+VwwUWIcd51z/l4YhmW/OdMsMgVNnh1MXCIrOYW74kh7nqOljr/JkorG+fYQjlRCcvTvHDUAqw3UtKJcSvaLkTFkkHOXG4irHRYPunX9o7LfTZ8Rk/2oYk0cIQqq7XVAig0oXt47jMstKrvlWCfwl08PjYvjtF5ZoimakqkRDIFRlbfKk1dYu7NT+xX0UVFcHtQ=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR09MB11456.namprd09.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(1800799024)(10070799003)(366016)(19092799006)(38070700021)(4143699003)(5023799004)(56012099006)(261028144727099003)(261022105027099003)(261102123227099003)(261009223027099003)(261021121427099003)(261021135927099003)(261022075727099003)(261026121527099003)(261026140227099003)(10067099003)(55112099003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 2
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?MmVXTHRHdmQ3QVc1MFhmOVo3QjBuZDliRnNiaHpJdTlHbThyK3B4ZjNDREZw?=
+ =?utf-8?B?OU10aThEVjZHT3dZU2YvaTVyOGhmeVZ1dEl5amtMUnVvYlQvNmVZVHF1ckJq?=
+ =?utf-8?B?SHRxUk9kZVdHYjhPNHF0S2lBSEFONGRyVzlFWW5xYm9Yb1JuTWkrV1NZS1dk?=
+ =?utf-8?B?dWd4SkxiOFUrSWIrcW5DWFphU291SkdFay92TGlKbXNkelkzTHVrM0NHdmdw?=
+ =?utf-8?B?RmYyRmhZNk00RW9VbzIxUThQSHZlclJ3YWZ6ZW1ZOEZNbk9QbWZHNWw4WkdS?=
+ =?utf-8?B?TkkzOGw5ZE5tUlc2cmtrdkNQMCttbjdCT0t1QXVIemZ3ZERicmFWQURzZGRs?=
+ =?utf-8?B?dXFxUW00Y1kyL3k0emFGRDNLdHJXZndLaXBYMWxxYzd5NC9kbEoyRFdlSDdj?=
+ =?utf-8?B?TElZaXpJcWtoQ2VqcU9rbkFOUzNNT1hVMDJKZzVsVUVVYmo3TXFWZmMvQ2tC?=
+ =?utf-8?B?VTlqSWtQaXlJR09FeHZoK0phTTBJWndLRUNaZE5jbDNYV1EwOWt4aWR3eWRq?=
+ =?utf-8?B?dXhyRGpVZXRrK1ZFQUgzMEk4L05DSFdWRGdVNkllZWNKOUJSaUFEaXAxM1A4?=
+ =?utf-8?B?dnFKSXVEWUJGOGpqdXB2cUl0RSt2bFhKU0l3YnA3eDA1bS9PM1R5MlZzeGNo?=
+ =?utf-8?B?TzM4WGdJMU5aL0pVU3dvbXNDZ1ZYb3F5Z2Fva2YwNlNVdFlJUHpJQzNxT3pS?=
+ =?utf-8?B?WWt4L0ZqcFVyazl5aDN1ejZINmpMTG5LZERKcm5jZ2cwSEMzUzZHRDdGUFpo?=
+ =?utf-8?B?NjR3cklra2xQcGpxV1VjR214MEhZY284UEN5aGg0VFFWYlV1ZWpmbGhrdzBq?=
+ =?utf-8?B?Kzc3SGhESVQvMGl1OHVUKzhWamFWanRuaVFFQzE4cWdvd25RUEhHYTNzWm1G?=
+ =?utf-8?B?RTNsRjNDM2lGTWZyL09YakZvdnhRYklTK0ZFOFlESVpkVGpmQWJJOHFIcS9N?=
+ =?utf-8?B?eGVtcUJCSXljdG1nQnVaREVNdU9QYUxRcFJUdGpTMDhsZmJWSmJyL2EwZkVu?=
+ =?utf-8?B?MHJzS0dZb2RQNkp0QTNKUnkvMXdVSDFGNENOWWhpc0UxcFB3TGtocERkRFFI?=
+ =?utf-8?B?eG9uMlFBTmRyOUwvSlBxVXo1dVRnMnVxOGR1TVdqNDlHdUFwa0swTnVpY1JC?=
+ =?utf-8?B?T1BTdWJqNlJRR1gySUpuK3VITHhuYndhMG41RitSSnpVdmxmRStGVml3V3dz?=
+ =?utf-8?B?azBiL1JwTnB2RnZ4SDdXM054ZzdSZmp2bFJSR1U3VmlwNU5hQ0diUE5XMnpW?=
+ =?utf-8?B?VG1zcStjT0pPekIyTFhNVk83UEF6c0ZxU2xKSXBsYUtrMW55cHhJMFBsZlZu?=
+ =?utf-8?B?K2hqUGZnRUhYZDFFVlp3RzZhcjJCZ0NhUkNhMzRlREJYMm5RRm83RDBnOUpO?=
+ =?utf-8?B?dkRON3JGd0dzdUxmV0EvN1hsMmdZRzA0QUdwY3BIZHhUTE9iZy92TCswWTFX?=
+ =?utf-8?B?RWRsanVRZEZBMHJjVms1K3RYSjc1bnBMdGtsc2ZWdDhsdzluL3JSajlHcnZx?=
+ =?utf-8?B?d1lXTVFQcnlqYms5VGljMVp3VXZGd2dON0ZYNk05NUJuTEovbkkvMVRITmhp?=
+ =?utf-8?B?b2tsYThsSUVxV3M2Z3lSV3dDSHJ1QTM1OVV3LzRLQ2RFOERiaEZYaWtlc2JL?=
+ =?utf-8?B?S2pFa1ZaTjVvWlppc0tLeXhTWXlYVVRVQ2pvK1BSRGs1QVhkNTdvc3ZzSzlq?=
+ =?utf-8?B?YkhQRU8rcHU2RXdPdFRqK2lwOWlTNGRsOHpRUitvZG5WckVMYzF1elFHZHdS?=
+ =?utf-8?B?K2FSN1BBTm1ROTZkOHpEQWtyVERrMFlKZmkyVkhESkNBVitMd2tHajR2aWN4?=
+ =?utf-8?B?aUczQ0hmRHdWMTV6Zm52Z2hESjNlZDhmajY0aUhUMXQ3Tko5R2xpdE1zOENL?=
+ =?utf-8?B?dVA5SnpLVTd5VjFONkJaajArS3dYd1RaQzZMQnhCTHNaMXQvTWlNZkVORFUw?=
+ =?utf-8?B?Nkw5MlFJUzJpVnhvKzY1NUMreFQzVStJY3BicmFyblJuSUcwemNxZWc2NDRv?=
+ =?utf-8?B?MmFMdGQwYVlKNFVHcHIrYWNkMGFwYkp6WlBPMUpPTk5NTVVyQzJqZUJ3Z3Fh?=
+ =?utf-8?B?UWhWUzRES2RBelJwVkNSeG1QTjU4MnN6cjU2SGRRTGttMTU1ZUMwRGZkQ0NF?=
+ =?utf-8?B?cTRNWkp4bDZxdWdONjRlS2tCYTdtSldvNWk0R05aSG9yS0Zpd2pnY24rS2dV?=
+ =?utf-8?B?VERxSDFsTWJVQ0VFN1h6S2pmcWVWeFZEeW1QZWE2bUd6dEZpSjlFOHdKSUhY?=
+ =?utf-8?B?TFRIaVQ3dG1kUXdydzJlSlN4eHhVYWI5SUJYbzRUdVhBanJoZGdGRkEvbWYw?=
+ =?utf-8?B?alR1TTcvUG9rQXNPSEhrRy9tRmFyTUxBZERuam96SWVXdmN3dXR5TFRLTi9R?=
+ =?utf-8?Q?DjP+TcxyfkL6fyl40Jk53BjGst7LX2N57TPS/axgqn6Dv?=
+x-ms-exchange-antispam-messagedata-1: 4oYMpAGXWthH0g==
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <CF5775AD2E19434BBD6E8A2DD49C54F5@namprd09.prod.outlook.com>
+Content-Transfer-Encoding: base64
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,109 +178,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <4c7f9772.192e1.1a17d5c2ed5.Coremail.xuhx@hust.edu.cn>
- <2026102727-data-sequel-ce41@gregkh> <42fe949f.1d67d.1a1a145bcf0.Coremail.xuhx@hust.edu.cn>
-In-Reply-To: <42fe949f.1d67d.1a1a145bcf0.Coremail.xuhx@hust.edu.cn>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Tue, 3 Nov 2026 16:49:14 +0100
-X-Gmail-Original-Message-ID: <CAL4WiiqeBmBZjmzXAqQB3rzBz_ew72euAs2uuvV2icnQ2RCc+w@mail.gmail.com>
-X-Gm-Features: AclHuK9zoFVvLkrFhmzzNCmXBvvs2C3RSpC5VfgBv-CSUvJgAvXjLkZlmpxUO7k
-Message-ID: <CAL4WiiqeBmBZjmzXAqQB3rzBz_ew72euAs2uuvV2icnQ2RCc+w@mail.gmail.com>
-Subject: Re: net: rtnetlink: rtnl_link_unregister() vs in-flight RTM_GETLINK
- dump readers -- v7.3 lacks the synchronize_rcu() fix (Fixes: 6b57ff21a310
- family); A/B reproduction on stock 7.3
-To: =?UTF-8?B?5b6Q5pmX57+U?= <xuhx@hust.edu.cn>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: pnnl.gov
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR09MB11456.namprd09.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5cd0f46c-20eb-4df2-2ad8-08df39c2c5f6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Nov 2026 15:54:41.6519
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d6faa5f9-0ae2-4033-8c01-30048a38deeb
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR09MB9864
 
-Le mar. 3 nov. 2026 =C3=A0 12:57, =E5=BE=90=E6=99=97=E7=BF=94 <xuhx@hust.ed=
-u.cn> a =C3=A9crit :
->
-> On v7.3, rtnl_link_unregister() removes the rtnl_link_ops from the
-> global list and immediately destroys the embedded srcu_struct and
-> frees the ops memory -- a concurrent RTM_GETLINK dump that already
-> found the ops (rtnl_link_ops_get(), rtnetlink.c:599 hand-off inside
-> an RCU read critical section at :595) but has not yet taken
-> ops->srcu will, after the free, execute __srcu_read_lock() /
-> __srcu_read_unlock() on freed memory: two reads of the destroyed
-> object (ssp->srcu_ctrp, ssp->sda) whose subsequent percpu counter
-> writes land wherever the freed percpu pointers point -- for a module
-> rtnl_link_ops, the ops (and its srcu) live in module memory, so
-> module_memfree() is the freeing side.  Upstream already fixed this
-> with a synchronize_rcu() in rtnl_link_unregister() (the patch with
-> Fixes: 6b57ff21a310; its own comment: "Wait for rtnl_link_ops_get()
-> readers that found ops but have not yet taken ops->srcu").  v7.3
-> does not contain it.  I verified both sides on a stock 7.3 KASAN
-> kernel: parking a real dump reader (driven by an ordinary
-> RTM_GETLINK + IFLA_LINKINFO dump request) exactly at the :599
-> hand-off and unregistering+freeing underneath produces three KASAN
-> slab-use-after-free reports (__srcu_read_lock+0xe, +0x25,
-> __srcu_read_unlock+0x1a; bad address =3D ops+0x10 =3D ops->srcu); and
-> rebuilding the SAME kernel with ONLY the upstream one-line fix
-> flips the outcome to zero reports, with the kfree demonstrably
-> delayed until the parked reader left its RCU section.  Natural
-> hammering did not hit (the hand-off window is ~100 ns against a
-> ~4 ms unregister -- it needs a preempted/preemptible-RCU reader),
-> which matches the fix's own reasoning; the controlled run models
-> exactly that preemption.  The purpose of this mail is to support
-> the fix's propagation: trees still carrying the unfixed
-> rtnl_link_unregister() keep a cross-CPU UAF (write) plus potential
-> freed-module execution reachable by unprivileged netlink dumps
-> racing a module unload.
->
->
-> The detailed description:
->
-> * The gap (v7.3, net/core/rtnetlink.c)
->   rtnl_dump_ifinfo() runs lockless for dumps
->   (RTNL_FLAG_DUMP_UNLOCKED), takes rcu_read_lock() at :595, calls
->   linkinfo_to_kind_ops() -> rtnl_link_ops_get() which returns the
->   ops pointer at :599, and only then takes ops->srcu
->   (srcu_read_lock) to call ops->dumpit.  rtnl_link_unregister()
->   holds rtnl_mutex, removes the ops from the list, calls
->   cleanup_srcu_struct(&ops->srcu) and returns to the module, whose
->   exit then frees the module memory.  Nothing between the :599
->   hand-off and the srcu_read_lock is waited for on the unregister
->   side in 7.3 -- hence the fix's synchronize_rcu().
->
-> * Evidence (stock 7.3 KASAN, QEMU; A/B on the one-line fix;
->   reproducers attached)
->   rtnlrace.c registers a kzalloc'd rtnl_link_ops (kind "rtnlrace"),
->   parks a dump reader by kprobe at the exact hand-off (return
->   address rtnl_dump_ifinfo+0x374, ENDBR-adjusted), and unregisters
->   + kfrees from another thread (modeling module_exit ->
->   module_memfree).  nlr (userspace) sends the IFLA_LINKINFO dump
->   request that drives the reader path.
->   Defect kernel (stock 7.3):
->     park t=3D127041 (1004 ms) -> unregister+kfree at t=3D127249 (park
->     +208 ms, reader still parked 792 ms) -> park ends t=3D128045:
->     BUG: KASAN: slab-use-after-free in __srcu_read_lock+0xe
->     BUG: KASAN: slab-use-after-free in __srcu_read_lock+0x25
->     BUG: KASAN: slab-use-after-free in __srcu_read_unlock+0x1a
->       read stack: __srcu_read_lock <- rtnl_dump_ifinfo+0x374 <-
->         rtnl_dumpit <- netlink_dump <- rtnetlink_rcv_msg (task nlr)
->       bad address =3D object+0x10 =3D=3D ops->srcu (matches the
->       disassembly lea 0x10(%rbx))
->       alloc: insmod kzalloc;  free: unregister thread kfree
->   Fixed kernel (same sources, ONLY the upstream synchronize_rcu()
->   added to rtnl_link_unregister()):
->     park t=3D191305 -> park ENDS t=3D192306 -> unregister+kfree
->     t=3D192307 -- the order literally inverts -- zero KASAN reports,
->     dump completes with zero errors.  Same module, same parking.
->   Natural runs (three samplings, up to ~267k dumps/reader plus
->   6-CPU preemption spinners): zero hits; the window arithmetic
->   (~100 ns hand-off vs ~4 ms unregister) explains it, and the
->   controlled park models precisely the preemption the upstream
->   fix's comment describes.
->
-
-What is the point of this email ? This looks like LLM slope to me.
-
-I think we have far more serious bugs to fix.
-
-3b70edea393d was tagged stable+noautosel on purpose: the race needs
-a module unload (CAP_SYS_MODULE in init_user_ns) to line up with a
-~100ns window, which your report also shows you could not hit
-without a kprobe. It is not reachable by an unprivileged user alone.
+T24gVHVlcywgT2N0IDI3LCAyMDI2IGF0IDE0OjE1OjUwICswMTAwLCBBbmRyZXcgTHVubiB3cm90
+ZToNCj4gRnJvbSBhbiBhcmNoaXRlY3R1cmUgcGVyc3BlY3RpdmUsIGknbSB3b25kZXJpbmcgaWYg
+aXQgc2hvdWxkIGJlIGEgdGhpbg0KPiBzdWJsYXllciBpbiBkcml2ZXJzL25ldC9tYWNzZWMuYy4g
+VGhhdCB0aGVuIGZvcmNlcyB5b3UgdG8gdXNlIGl0IGluDQo+IHRoZSBjb3JyZWN0IHdheSwgaXQg
+ZG9lcyBhY3R1YWxseSBnaXZlIHlvdSBwcml2YWN5Lg0KPg0KPiBEb2VzIGxpbnV4IHN1cHBvcnQg
+dGhpcz8gQW5kIHNpbmNlIHRoaXMgaXMgODAyLjFBRSwgaSBhc3N1bWUgaXQgaXMgYW4NCj4gZXh0
+ZW5zaW9uIHRvIE1BQ1NFQz8gU28gd291bGQgaXQgYmUgaW1wbGVtZW50ZWQgaW4NCj4gZHJpdmVy
+cy9uZXQvbWFjc2VjLmMgPw0KDQpFdmVuIHRob3VnaCBpdCB3YXMgc3RhbmRhcmRpemVkIHVuZGVy
+IDgwMi4xQUUsIE1BQyBQcml2YWN5IGlzIG5vdA0KcmVhbGx5IGFuIGV4dGVuc2lvbiB0byBNQUNz
+ZWMuIEluc3RlYWQsIGl0J3MgYSBuZXcgTGF5ZXIgMiBwcm90b2NvbA0KdGhhdCdzIGRlc2lnbmVk
+IHRvIGNvbXBsZW1lbnQgTUFDc2VjLiBGb3IgZXhhbXBsZSwgTUFDIFByaXZhY3kgaGFzIGENCmRl
+ZGljYXRlZCBldGhlcnR5cGUgYW5kIGluZGVwZW5kZW50IGRhdGEgdW5pdCBlbmNvZGluZ3MuIFdo
+ZW4NCmNvbmZpZ3VyZWQgd2l0aCBNQUNzZWMsIGEgTUFDIFByaXZhY3kgbGluayBtdXN0IGtub3cg
+dGhlIGRlc3RpbmF0aW9uDQpNQUMgYWRkcmVzcyBvZiBpdHMgTUFDc2VjIGxpbmssIGJ1dCBubyBv
+dGhlciBzZXR0aW5ncyBhcmUgc2hhcmVkDQpiZXR3ZWVuIHRoZSB0d28gbGlua3MgKHNlZSA4MDIu
+MUFFZGstMjAyNSA1LjEwIGl0ZW1zIG4tcCkuDQoNCk9uZSBvZiBvdXIga2V5IGJ1c2luZXNzIG9i
+amVjdGl2ZXMgaXMgdG8gc3VwcG9ydCB1c2luZyBhbiBleGlzdGluZw0KRXRoZXJuZXQgRGF0YSBF
+bmNyeXB0b3IgKEVERSkgKHN1Y2ggYXMgdGhvc2UgbWFkZSBieSBHZW5lcmFsIER5bmFtaWNzDQph
+bmQgVmlhc2F0IChodHRwczovL3d3dy52aWFzYXQuY29tL3Byb2R1Y3RzL2N5YmVyc2VjdXJpdHkv
+a2ctMTQyLykpDQp3aXRoIGEgTGludXggaG9zdCB3aGlsZSBhbHNvIGJlbmVmaXR0aW5nIGZyb20g
+TUFDIFByaXZhY3kuIElmIE1BQw0KUHJpdmFjeSBpcyBpbnRlZ3JhdGVkIGludG8gZHJpdmVycy9u
+ZXQvbWFjc2VjLmMsIHRoZW4gd2Ugd291bGQgYmUNCmZvcmNlZCB0byBjcmVhdGUgYSBNQUNzZWMg
+ZGV2aWNlIG9uIHRoZSBob3N0IGluc3RlYWQgb2YgdXNpbmcgdGhlIEVERSwNCndoaWNoIG1heSBy
+ZWR1Y2UgdGhyb3VnaHB1dC4gSWYgaW1wbGVtZW50ZWQgYXMgYSBzZXBhcmF0ZSBkcml2ZXIsIGFu
+eQ0KRURFIGNvdWxkIGJlIHVzZWQgd2l0aG91dCBhbnkgbW9kaWZpY2F0aW9ucy4gQXMgSSBtZW50
+aW9uZWQgYWJvdmUsDQp0aGlzIHNldHVwIGlzIHNwZWNpZmljYWxseSBlbmRvcnNlZCBieSB0aGUg
+c3RhbmRhcmQuDQoNClRoZSBNQUMgUHJpdmFjeSBwcm90b2NvbCBpcyBub3QgdHJpdmlhbCwgYW5k
+IG1vcmUgdGhhbiBhICJ0aGluDQpzdWJsYXllciIgd291bGQgYmUgcmVxdWlyZWQgdG8gYWRkIHN1
+cHBvcnQgdG8gZHJpdmVycy9uZXQvbWFjc2VjLmMuDQpJdHMgYWRkaXRpb24gd291bGQgYWRkIHNp
+Z25pZmljYW50IGNvbXBsZXhpdHkgdG8gdGhlIGV4aXN0aW5nIE1BQ3NlYw0KZHJpdmVyIGFuZCBt
+YXkgaW50cm9kdWNlIGJ1Z3MgaW4gdGhlIE1BQ3NlYyBpbXBsZW1lbnRhdGlvbiBhbmQNCmNvbXBs
+aWNhdGUgaXRzIG1haW50ZW5hbmNlLiBJIGxhY2sgYWNjZXNzIHRvIGEgbGFyZ2Ugc2VsZWN0aW9u
+IG9mIE5JQw0Kb2ZmbG9hZCBlbmdpbmVzIHRvIHRlc3QgYSBtb2RpZmllZCBNQUNzZWMgZHJpdmVy
+IGZvciBidWdzIGFuZA0KcGVyZm9ybWFuY2UgcmVncmVzc2lvbnMuDQoNCn4gQ2FtZXJvbg0KDQo=
