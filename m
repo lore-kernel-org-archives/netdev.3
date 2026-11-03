@@ -1,60 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793704122;
-	b=YeB2esthRwaPBRFFlRV9O1Ctlt7WTrEh+VMGr11cCeldYwpGvLAGazOdIqQasrpZsHMV
-	 lyLbS+j7R2TZIz6slz+w6gwAs5Bbp1Z1cOwqvGbOYY3EbqCFwSy/PPs0nVuDf4CU41hbT
-	 tMYbRXsj2tvOEJcchV5z7mtu0j7ICJifA3tOxYuYykPRpD2CPmlXzCM3knjdnLrs1KmM3
-	 O+6L31WFupjnWv8bjI1e1B4xikrjotlqc59Lu0hWULaj0qs1+DQrJGUXrsVt1ypVKWddc
-	 n+VJGRr1yWIXI/0ApkNOC3prSX7gEbBCVvyt4p+swwREbAr/CbwJS4XKCjCmpFwk9KA==
+	t=1793704219;
+	b=M9K2r4LqlrcvTXYleY/xkUXCbgX3VRWYc/vZ99GNgERKcsd7GBovjBJ/YEOCJ421lqCO
+	 6gTuwYHhiFD3CA7/vfweotLxslwtSbvvK0n/u8uXlHyZewAHbPyEsH4k5npTu9xh5OltG
+	 FXZir4z8DoHMDAYFkhm0+CALNSn+H9sivUiN6E5K8WCc3JQUTGD/fZD0LlgOaAGgFA5uI
+	 1frL2xgxqtL6hcGtcAkWy4gAULguBG6QVHCtc5aBOOsxedaKpXQVPqQtEFlQvVVbtW8Sd
+	 1rl5ibcJyovKT1SMfnrQXdNkqMKjD9sQsvLRbaRxj+Bq6149A8Aic6y75js8SmX6F0g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793704122;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793704219;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=aYL/i0YuscUEzD0VCErR+Tz3KdHDJR7ZwPlCYlD62po=;
-	b=tIWFUXM6goONnBM5M73BgbxSXVHfywKLclImN+DnZ+o+9cHpttqyvdyDJQiOtJWo15bt
-	 w8vsdIT6sMp0IQsoF9Qa9vtpTxY8iaGufBZZHWloP31VYE8ruUO8ojAUv6+WMh/SvYCmI
-	 A4ii49bpJVQFzVbIBFyO2BOibiCq5pN4DFbtPojNf5pOycds8DZcrmhf3wSS4F+GdS2sL
-	 sjtblxipFoi4FJ4vJoP/c0j5Rd+8il5TXvxiGOw4Pwn2SYiYSJcPwVgCzlzEiFHgYFiP8
-	 rnofIeuaoocwNlUy8s54flgyVpgXiWhmdqNmuIuDAziuwTtpVTYz8Z3XAUFDdNUvQ6A==
+	bh=NcMf+ZVLmz04u/HN3Wxip9DQ9rG8PD3kxPva+jU7U8U=;
+	b=GYyW39/AK7tfsfapnt/gTZvRA2DtZUxN6KOstW6pIWFivoy4o7C5pAzTJIKmuOyIdG4s
+	 oxFODd7sFU1ZCq6NDvOS2Xu6gPzgeENOwFdEZ9uvlzU5xZZih3Zon8i6L8xK8IrQJShAm
+	 vHmwZweRUodEYH6NKZWGKJJsw3tMkYaeC5S9KLEPxM4z9xgdCT+jvfZELtewoR8aT4TIH
+	 vdEqHiOJr7rd0DXfzcXuxg52RWM+ZZp/FvKHeeLH0Rr+dmD8Tk8IZ9fVnKk98DZlL1vWH
+	 ovULAgCTPg2VHgYfykfqQlXr37vjPsPguyn6t3nLE6HmkbrMi4VpYoVNcSI+Mu/rrJg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ib3z5+Md;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="mdlyZ/Y6";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48F4606A32E;
-	Tue,  3 Nov 2026 11:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99F7606C567;
+	Tue,  3 Nov 2026 11:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ib3z5+Md
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF051F000C1;
-	Tue,  3 Nov 2026 11:08:40 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mdlyZ/Y6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B348E1F000C1;
+	Tue,  3 Nov 2026 11:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793704121;
-	bh=aYL/i0YuscUEzD0VCErR+Tz3KdHDJR7ZwPlCYlD62po=;
+	s=k20260515; t=1793704218;
+	bh=NcMf+ZVLmz04u/HN3Wxip9DQ9rG8PD3kxPva+jU7U8U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ib3z5+MdhkonNdwMiArvyjWg6RnzTYHc2pP/M44kZZ+O5Vr8BoPLiJPCfQFqyxVHW
-	 N1YYjgkSE9RJ5mkBYWF/Wkv2WqEyM8LwFzDLHiZyZXRwW9+lo5WtALZ12TX+bsotmk
-	 VYq5I9K/9tJovZW+Gaef777aWtvI04kR29BgdVYEOhbbEhxZcAYKpr7klaqi+IlgbX
-	 oVMX/g0apanLPeSaSllUbJBAuluobnHJgzD8bgoakxClpdDEdjGc+8oUhyweJURGZj
-	 59hulPiSobqluqW2m8XOZyAG+/hl6V9VWBDKI/B95hDZyuLjpSuLjprzGFeSH5r4V5
-	 lT7XCpm47J4/A==
-Date: Tue, 3 Nov 2026 12:08:38 +0100
+	b=mdlyZ/Y6k0sbdKbPikMDKXgsUtOAz5HrJRPAoVFXjshi76nsuMvVkkNHl84B39eLt
+	 mylrl8mWmKM2EClq6buoqHPVskn/HH+gGTbb4zYZkydPBBaG4OhhTvpUVrSChfZPQw
+	 wc0nYOhZbdHjk5953sL3BwLrcZzaeN1Tzir+BqaLaTNmwvl3Y9FqA5jyIbdpZvU4z8
+	 cyacM2376J6s3vZMEcviRg5GpWEPOQKC93qLHBlorrwsozfkQl/m00ZSnL4rzhAxjZ
+	 dRxtNnkk/4oSqbMt4iEGK0fK9XmmAXGlgKl/iEQTZsK6oPvi2WIZzF4EMTBXD7JF6O
+	 vK+JeO3lmMKKw==
+Date: Tue, 3 Nov 2026 12:10:16 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Caleb James DeLisle <cjd@cjdns.fr>
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, matthias.bgg@gmail.com, 
-	angelogioacchino.delregno@collabora.com, chester.a.unal@arinc9.com, daniel@makrotopia.org, 
-	linux@armlinux.org.uk, arinc.unal@arinc9.com, Landen.Chao@mediatek.com, 
-	dqfext@gmail.com, sean.wang@mediatek.com, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, naseefkm@gmail.com, b.larsson@gmx.com
-Subject: Re: [PATCH v4 6/7] dt-bindings: net: dsa: mediatek,mt7530: add
- EcoNet EN751221 switches
-Message-ID: <20261103-soft-lyrical-squid-c5a108@quoll>
-References: <20261029184202.1859843-1-cjd@cjdns.fr>
- <20261029184202.1859843-7-cjd@cjdns.fr>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: Eric Dumazet <edumazet@kernel.org>, netdev@vger.kernel.org, 
+	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	linuxppc-dev@lists.ozlabs.org, Jakub Kicinski <kuba@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Zhao Qiang <qiang.zhao@nxp.com>
+Subject: Re: [PATCH] net: wan: fsl_ucc_hdlc: release the net device on remove
+Message-ID: <20261103-psychedelic-malamute-of-health-ce7f30@quoll>
+References: <20261103104237.1373675-1-vulab@iscas.ac.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -66,65 +61,67 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261029184202.1859843-7-cjd@cjdns.fr>
+In-Reply-To: <20261103104237.1373675-1-vulab@iscas.ac.cn>
 
-On Thu, Oct 29, 2026 at 06:42:01PM +0000, Caleb James DeLisle wrote:
-> The EcoNet EN751221 MIPS SoC integrates an MT7530 switch memory-mapped
-> in the SoC register space. It is similar to the econet,en7528-switch
-> except that ports 0..3 are 10/100 only, port 4 has a gigabit PHY, and
-> port 5 has no PHY, but is in some implementations connected to a
-> downstream MT7530 multi-chip module via a TRGMII link.
+
+On Tue, 03 Nov 2026 10:42:37 +0000, Wentao Liang wrote:
+> ucc_hdlc_probe() allocates the net device with alloc_hdlcdev() and
+> registers it with register_hdlc_device(), but ucc_hdlc_remove() only
+> tears down the QE resources and frees the private data.  The net device
+> is never unregistered or freed, so after the platform device is removed
+> or the module is unloaded it stays registered, keeps its reference to
+> the module and is left pointing at the freed private data.
 > 
-> The downstream MT7530 is similar to the MT7621 multi-chip module and
-> has all gigabit ports.
+> Unregister and free the net device in ucc_hdlc_remove(), before the
+> private data is released, as fsl_qmc_hdlc does.
 > 
-> Add the econet,en751221-switch compatible with the same constraints as
-> the other built-in switches and also add the econet,en751221-gswitch
-> multi-chip-module switch whose port 6 is configured as a DSA link port.
-> 
-> Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
+> Fixes: c19b6d246a35 ("drivers/net: support hdlc function for QE-UCC")
+> Cc: stable@vger.kernel.org
+> Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 > ---
->  .../bindings/net/dsa/mediatek,mt7530.yaml     | 43 ++++++++++++++++++-
->  1 file changed, 41 insertions(+), 2 deletions(-)
+>  drivers/net/wan/fsl_ucc_hdlc.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml b/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
-> index f98b9113ad12..011c94ef9554 100644
-> --- a/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
-> +++ b/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
-> @@ -29,6 +29,12 @@ description: |
->    and the switch registers are directly mapped into SoC's memory map rather than
->    using MDIO. The DSA driver currently doesn't support MT7620 variants.
->  
-> +  EcoNet EN751221 SoCs have a memory mapped MT7530 with 3x 10/100 PHYs and 1x
-> +  gigabit PHY. Some EN751221 chips such as EN7513G and EN7526G have a multi-chip
-> +  module implementation of the MT7530 as well as the on-die switch. In these
-> +  packages, the multi-chip module is connected to port 5 of the on-die switch
-> +  via a TRGMII link and allows for 5 gigabit ports.
-> +
->    There is only the standalone version of MT7531.
->  
->    Port 5 on MT7530 supports various configurations:
-> @@ -109,6 +115,14 @@ properties:
->            Built-in switch of the EcoNet EN7528 SoC
->          const: econet,en7528-switch
->  
-> +      - description:
-> +          Built-in switch of EcoNet EN751221 SoC
 
-You can drop, pointless description, repeats the compatible.
+Multiple things here:
+1. Your team ignored completely previous feedback. Multiple times.
 
-> +        const: econet,en751221-switch
-> +
-> +      - description:
-> +          Multi-chip module gigabit MT7530 in EN751221 SoC
+2. You use multiple identities with this email address, thus I doubt that we
+   speak with an actual person.
 
-Keep it in one line with description. No need to inflate it even more.
+3. Your bot does not even bother running checkpatch, right?
 
-> +        const: econet,en751221-gswitch
+4. Nothing of this was reproduced nor tested.
 
-That's almost the same compatible, which makes me wonder if you describe
-the same device twice. Same device, same compatible.
+5. Finally, the same feedback:
+You sent multiple independent patches, to multiple independent
+subsystems. The amount of these patches clearly suggest this was
+AI generated and most likely not tested.
+
+More importantly, you sent all this work without properly organizing
+relevant patches into patchsets. This makes reviewing difficult
+and might cause multiple reviewers to address the same issue.
+Replying to the entire set is impossible and requires handling each
+patch independently, instead of applying or discarding the set.
+Maintainers also won't see the bigger picture of your work. Quite
+worrying.
+
+This is on the verge of hostile patch: bomb us with so many
+contributions, we won't be able to handle them in efficient manner,
+like responding ONCE to ask you to slow down.  Considering all this
+is untested and LLM generated, I have even more doubts whether this
+should be considered for review.
+
+Please read kernel documentation BEFORE posting more work. It will
+explain you how to identify subsystems, how to organize your work per
+subsystem (so a patchset grouping multiple patches with a short cover
+letter), how to document the issue discovery method and what was
+or was not tested.
 
 Best regards,
 Krzysztof
+
+
+
 
