@@ -1,49 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793713676;
-	b=sKfCh2Gvx1V/ipd0Gmi81veNhX5TvMu/DOmIkgEdIfR8n5XrT+Vx7aRzS5ObmVj1Z/EW
-	 3EeDfEXWQu1pyE6ulenj4BldT8jJlcwj8nD12r7ESSnu1Xv0/cykmbKu8L+AZKn4ZoVkC
-	 nv8j3MpBeg8kn09UngL+E1TVkVP005zjFEpoU9QdrXNJOCMKq26menIpTRIij3VDYFt1j
-	 5bshmKeHYVWHPtkoJdlBJ9gAAqHmBhkLLMs80D6jxuI3i544VEpPdVBA/RxopZ+6aou6B
-	 Bn+72CnreYlYy/ko9wuCIWz5HBJN7L+6EH8/p/2Ti5C5xOtNnQgpqjOc4BptBB6B8lg==
+	t=1793713672;
+	b=YGmtOPGTMFdJjiCbRqW5FUecSU2Wrt0P+DzTYt4p+fW5v/PORl2CxF+EIPcK9rOcBVvo
+	 WSoiwUZa+Nnw1xUbvN1A3NSwyGyZ1/qmX8N9pQ7PEJtgI/ztm39nW9OUQwTjYO/FR+1Zx
+	 nWQsseCRPU+TgGZ0xvEVe9k+kpgiioo4wiLxqtVjfX5mzdS3PzL/esA56YhnKVy5UODTe
+	 X/DCzxT/eaGR/ad/PsXIQlIJNnzvqsGQe0kd5YTbtzaO1l8hbSBYse4NG92sw91p2EDUi
+	 8fudQTTo8Dv5/aV7PXwSSsc9KRcNkawyxJXbzZulP8eAC58GnMZFhGvju6o1mxMk+1A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793713676;
-	h=DMARC-Filter:Received:DKIM-Signature:MIME-Version:Date:From:To:Cc:
-	 Subject:In-Reply-To:References:Message-ID:X-Sender:Content-Type:
-	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=bUoP3KIGCAm0xwt3Z15aBvbUhr08siqGySkpr9jx0II=;
-	b=nx3Nxl3QmHMQf7UR1xpB5OkeuRc64LTUJii58Rsv2gDj/X4CSJ011xCdz4Zbn/shwrI5
-	 VfKwxsHp7SNONITj+NWhA5koSmBsipL1f0CZJAcWrpFV2sRzCE5U64X1uYvcwQyAUdI3k
-	 u6zOqg2ZoHcAYdfSsWC7dP88r8qkrHGCDRCvVGSNhpmBYD4SN8AdQc9qe+l8nJ5ePWcTt
-	 2uu2ioauKEqvC56s88DiOu98vVRNxBdD0IDHnqBaTl0DkMeiZS5r7KGw81/YV0BGErpeh
-	 uEoB9aqECXgvmOkVaN033t372ZZePkjJRnvjCNWlqILUCAOAuGJopYHFLCKot54aMUg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793713672;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To:X-Spam-Status:
+	 X-Spam-Checker-Version;
+	bh=oUpZSCTSGUR8K6xjzzgjipiK2QKubzIftsQfjyW8SMc=;
+	b=p0yyFnVnj5Py9dT7OpnF3IdViXkNY1JFZifkWuA0p6qTb0BX8q6v8j6JAkVJDiloBr+5
+	 eLqM2U3yt3QQGmVrt71FrmcyeMu23rsVjch/nIguJ1gvzhQzuntN3D/Ak1gfCij3HGMTZ
+	 F6nqdQBpxbYaMbYth+1GuHIZe05MKAD2mBPysHwMtZ5vySMDq6/b7P5oaEeNrsFJ1t0ed
+	 2yCv3QSBgdKP7f6pwG03vkKRZLy8CxoKDdPqq8aEPqRVGoz438qwX8MyqZjyz/tWdFkdY
+	 k0DM5VgCy1xFrJZkQ7FEPdCuu66Z+teRu221bfrSzuySX0OejMDy1v6VqlProE6Zjcw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=tipi-net.de;
-	spf=pass smtp.mailfrom=tipi-net.de;
-	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b="ESvA4/Jp";
-	arc=none smtp.remote-ip=194.13.80.246
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=sbRtRzVx;
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D44606A328;
-	Tue,  3 Nov 2026 13:47:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D3D44606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id A9DD5606A324;
+	Tue,  3 Nov 2026 13:47:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A9DD5606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=ESvA4/Jp
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EBAC4A1608;
-	Tue, 03 Nov 2026 14:47:49 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1793713672; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=bUoP3KIGCAm0xwt3Z15aBvbUhr08siqGySkpr9jx0II=;
-	b=ESvA4/JpvRFHG1JdoykgCugdbYm2RqvacQyesF9UtwALRjJK9UsmqSJKKPng/fXpkA5tt5
-	dwyd6hA4Lr2O2uL17PlQChGLg8ORfppfVQubGTSxEUJt8FxTzB6zZbpJwuxKCeaim/nSk4
-	KkD+G5+2vtL+mhOhH3f3/20sqPQCfn4iy6wbrSSgwpP8sDFwxlYe6c2akd15/EYmEOmWLC
-	gBBtbzU/HOGOq2rSx/agRyjI8t+TKK2nU3jCujchVpckU/coQibIQhQYA9kaivyj2jDPT7
-	9TEAWipqDjxvl9PzfR1D2TsIzuBf3sD9Exu05zWlsyiz8HVZ5H9E7JKwODBuwA==
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=sbRtRzVx
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1793713668;
+	bh=oUpZSCTSGUR8K6xjzzgjipiK2QKubzIftsQfjyW8SMc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sbRtRzVxYzv9EyzqGWkVgzo1TOErBXNx6QAAhDHUAJrC+3vc5unfnqJEGHzo+S/Qo
+	 ghYNVwlK6Kc46lGTA34qHeDdkZY3hqxv6NhIWoyrH3EtOLJ1TFWUhm42xW3HsjSqV8
+	 1Z6XQ1fBc1FcyzAEG4fvXhODyK3WYrZXfXDtx/LtxoMrzOYFcni/1ccxTNl44ErS+4
+	 liKVAAsr76t8pxMDR1NHlHoXMA2djs68lg1nS0Dl+bTsV118ddEkUN/eeEDKH37cBl
+	 FGAEx1dARRnOvqm9VrP/fax9ySczDhCvinqTyYQrhDgMQy3uc+dZ9SJDVvKwRteKkl
+	 th7bvp9I5Gu2w==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id E9EC460052;
+	Tue,  3 Nov 2026 14:47:47 +0100 (CET)
+Date: Tue, 3 Nov 2026 14:47:44 +0100
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>, netfilter-devel@vger.kernel.org,
+	davem@davemloft.net, netdev@vger.kernel.org, kuba@kernel.org,
+	edumazet@kernel.org, horms@kernel.org, fw@strlen.de, ja@ssi.bg
+Subject: Re: [PATCH net 00/15] Netfilter/IPVS fixes for net
+Message-ID: <aunmABdLpFILZvGt@chamomile>
+References: <20261102005654.532438-1-pablo@netfilter.org>
+ <b452b25b-37fd-48ab-a88c-feec6b82e9ec@redhat.com>
+ <5dc1159d-e577-442f-a7b2-8d5dcc8cfb01@kernel.org>
+ <aunlVk2Cn7ocgANE@chamomile>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -53,65 +68,85 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Tue, 03 Nov 2026 14:47:49 +0100
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre
- Torgue <alexandre.torgue@foss.st.com>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer
- <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Stanislav
- Fomichev <sdf@fomichev.me>, Song Yoong Siang <yoong.siang.song@intel.com>,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- bpf@vger.kernel.org
-Subject: Re: [PATCH net] net: stmmac: set XDP metadata length on the page_pool
- RX path
-In-Reply-To: <20261102-stmmac_meatada_pp_path-v1-1-d93cc4f9a864@oss.qualcomm.com>
-References: <20261102-stmmac_meatada_pp_path-v1-1-d93cc4f9a864@oss.qualcomm.com>
-Message-ID: <3ab1926864137534eac81371ccadf3e9@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aunlVk2Cn7ocgANE@chamomile>
 
-Hi Lorenzo
-
-On 2.11.2026 12:46, Lorenzo Bianconi wrote:
-> stmmac_rx() initializes the XDP buffer with the metadata area valid, so
-> an XDP program can reserve metadata with bpf_xdp_adjust_meta() and 
-> write
-> it in [xdp->data_meta, xdp->data), for example to export the RX 
-> hardware
-> timestamp obtained from the metadata kfunc. When such a frame is passed
-> to the stack, the skb is built in place around the same page with
-> napi_build_skb(), but skb_metadata_set() is never called.
+On Tue, Nov 03, 2026 at 02:44:57PM +0100, Pablo Neira Ayuso wrote:
+> On Tue, Nov 03, 2026 at 01:27:30PM +0100, Matthieu Baerts wrote:
+> > Hi Paolo, Pablo,
+> > 
+> > On 03/11/2026 13:04, Paolo Abeni wrote:
+> > > On 11/2/26 01:56, Pablo Neira Ayuso wrote:
+> > >> Hi,
+> > >>
+> > >> The following batch contains Netfilter/IPVS fixes for net:
+> > >>
+> > >> 1) Add recursion count to nf_reject infrastructure to prevent stack
+> > >>     overflow, from Fernando F. Mancera.
+> > >>
+> > >> 2) Address a infinite loop in RCU list traversal with the TWOS IPVS
+> > >>     scheduler, from Darong Lu and Julian Anastasov.
+> > >>
+> > >> 3) Use kfree_rcu() to release IPVS parent application to fix UaF,
+> > >>     from Chengfeng Ye.
+> > >>
+> > >> 4) Fix UaF in IPVS netns removal path due to releasing per-net protocol
+> > >>     data too early, from Chengfeng Ye.
+> > >>
+> > >> 5) Fix unbounded growth of stale, unmatchable IPVS connection entries,
+> > >>     from Julian Anastasov.
+> > >>
+> > >> 6) Restrict maximum master conntrack chain depth in ctnetlink,
+> > >>     from Florian Westphal.
+> > >>
+> > >> 7) Preserve recursion count on nfqueue reinjection, from Zihan Xi.
+> > >>
+> > >> 8) Restore GRE timeout in the flowtable, otherwise, WARN_ON_ONCE()
+> > >>     is reachable, from Michail Andreas Michalopoulos.
+> > >>
+> > >> 9) Check non-null gc transaction in nft_rbtree before queuing it for
+> > >>     processing, from Xingyuan Mo.
+> > >>
+> > >> 10) Replace WARN_ON_ONCE() by DEBUG_NET_WARN_ON_ONCE() in
+> > >>      nf_conntrack_bridge which is reachable if the protocol of the tag
+> > >>      of a frame differs from the vlan_protocol of the bridge.
+> > >>      From Laveesh Bansal.
+> > >>
+> > >> 11) Check x_tables target name is non-null before accessing it when
+> > >>      building a new table, from Fernando F. Mancera.
+> > >>
+> > >> 12) Fix out-of-bound memory read in nf_conntrack_sip, from
+> > >>      Joas Antonio Dos Santos.
+> > >>
+> > >> 13) Fix a memleak in nf_tables hardware offload when double deleting
+> > >>      the same rule, in the same batch.
+> > >>
+> > >> 14) Use a mutex in xt_recent netns exit path instead of spinlock,
+> > >>      since proc unregistration might sleep. From Cen Zhang.
+> > >>
+> > >> 15) Zero the nf_nat_range2 struct before filling it up, to avoid
+> > >>      using stale uninitialized stack data to configure NAT with
+> > >>      an esoteric NAT flags combination. From Florian Westphal.
+> > >>
+> > >> Please, pull these changes from:
+> > >>
+> > >>    git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git
+> > >> nf-26-11-02
+> > > I'm sorry, but something went very wrong on the nipa side: the tools did
+> > > not pick this PR. Do you mind repost it verbatim?
+> > 
+> > It looks like the patches have not been tested, because of the kdoc
+> > issue on patch 6/15:
+> > 
+> > https://netdev-ctrl.bots.linux.dev/logview.html?f=/logs/build/1198360/14931104/kdoc/stdout
 > 
-> napi_build_skb() clears skb_shared_info up to dataref, which includes
-> meta_len, so skb_metadata_len() stays zero. The stack and TC BPF then 
-> see
-> an empty metadata range even though the bytes are present in the skb
-> headroom. The AF_XDP zero-copy path already records the length in
-> stmmac_construct_skb_zc().
-> 
-> Record the metadata length after reserving the headroom and adding the
-> frame data. No copy is needed because the skb is built over the buffer 
-> the
-> XDP program wrote to. With the length recorded, the software VLAN
-> stripping path can move the metadata together with the MAC header, as 
-> it
-> already does for zero-copy frames.
-> 
-> Fixes: e3f9c3e34840 ("net: stmmac: add Rx HWTS metadata to XDP receive 
-> pkt")
-> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-> ---
+> I routinely run checkpath.pl, I will re-check what happened here.
 
-> [...]
+Well, here I have a script that contains checkpatch.pl and the
+following call as well:
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+$ scripts/kernel-doc -none net/netfilter/nf_conntrack_expect.c
 
-Thanks,
-Nicolai
+but it shows nothing here.
