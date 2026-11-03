@@ -1,101 +1,114 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.144
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793663519;
-	b=mZyREhMzVlUA8aYHGAfNiNZckZ/tRxA7rDdu5cEMTUm0K+b7lwlaRrGRKRu6cyf6z3fK
-	 XsQdtzGox/tQTWZaQ7KRcQMle69pGHnGRBRQMwWA7hmoY9e9vJ4uCSX354/9kxSZxffDo
-	 VjHOJ5Wd7cyRNvG+ui2ZVhHsJDqXYtCNrbkH8wO8oVahDQdYxdHoidWZIh1RGjzAVvcFR
-	 wuiHA8L0bRGiAuPjUBs1JPW++A/agX9Jmh4ozfmIBLrYXCt/ZHdPqEbMo+OoiUyAdcgrC
-	 GZCB/4E6MIIkSktWh+5/ERgwfQS/blYhaHHexKdwq9Ll1+EuGjSBsVatkpCESfFkPlA==
+	t=1793664390;
+	b=3SaAUgEUk94bhZpVuSI78spkuh4qIGaG2IG3NwpGSKTivXogiVDpX/2Ht2HuMyliTSKF
+	 ss8//dGHAlmKzxX4vR2PKd8zbvqxs+ESJf08bwrL/Kr1D2Pt6D7P4nw3zRAic58DyZExi
+	 nhTz3C87Ixkl7/Xy/7AWw0dAU4fB7Ci9MNEpw2gXYaP4sA9jIxnimigGdnV7+kYEoADGi
+	 ayveNLg0rRkE2O6bs6eYZoWi8+lHK3wireD5lvtJX+fcqjqtTFt2CX7wgdSU2Xz1C6l77
+	 OzIl61696c0aQhgwqE0/DIqub0DZOXiOPfyIu2Us4xWoaWNC8U+nOHnzjWBuBwL+Shw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793663519;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=0b6CWUpDDg7nvX4yAW5I5URG5gPxBouEYD/8SJ9ABv0=;
-	b=3ipW/g3p+9r9j3QlNXRM6CA71JOHzpM4unYOl2j67yrYVe+sQHtx0ID+FWtrbskyoVop
-	 VR58KZMdC49jV2rB715T8KNtu1P3nNS+M/VjuahLEhlavJ2YT8t35xa+kZdgRysdRYft/
-	 WWZaeOdloC/2oZbFFGkP3xDKQjJENrSitqiNrZDKYZ/BPBwa6lNPFRzkTDD/rjndemI0B
-	 veMp8CJfAXafbZ2aHGgv2E76wiTddjt3JAV4pBnwwkxNubyL5Kog78Cxb+nyuphgJLhZz
-	 O9snHOCMBmfustcAsRZkfjtb6ESOUpNK66whmjKhq8v0FFVXU9a7S8oAtsGTloCHeuw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793664390;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Content-Type:Content-Transfer-Encoding:MIME-Version:From:To:
+	 Cc:Subject:In-reply-to:References:Date:Message-id:Reply-To;
+	bh=yyaofbO1LBA3jJXlLCq+QmfJxp+UmzYZ0d2Ds1aVJSs=;
+	b=w/Daq2zuVT6/rep+jfl/uHXBjDYoF2SQPU+SsRqeg+3XuyoKJJZn52U5BiQ3aKEQzS96
+	 JmT955GYOcAIe0OIF081uZcz24nsh+I9F5XO8n9rOUSlaoK/AKzBzmo21W1C6u1LbI0cb
+	 d56TblXOuhgVvHnT70g/S7jG829/fqqrOkdwWy1khAyU6zgI/E1miHOt+Np6NWvfgH0WG
+	 kpJxrjzVPAAQ8vfpb8c0h+nSfYENqtzqwCvxWSkLYh7WvYPgOvmVJy8XyVjd1jq7eAFYs
+	 rQ3WKpULpldAHB6DEJn+mL1lOjA0gCuNCUfe++/+moi5eMHlA9lN64rYw/ZE6s39sfw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HzRtkl5q;
-	arc=none smtp.remote-ip=209.85.128.42
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=ownmail.net;
+	spf=pass smtp.mailfrom=ownmail.net;
+	dkim=pass header.d=ownmail.net header.i=@ownmail.net header.a=rsa-sha256 header.s=fm2 header.b=Jf5xPeAE;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=htfp+WoF;
+	arc=none smtp.remote-ip=202.12.124.144
+Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D88606A329
-	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 23:51:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 35D88606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142B0606A326
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 00:06:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 142B0606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=HzRtkl5q
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a207b02a2cso23611085e9.1
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 15:51:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793663517; x=1794268317; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0b6CWUpDDg7nvX4yAW5I5URG5gPxBouEYD/8SJ9ABv0=;
-        b=HzRtkl5q72gjo44f57XNzxpUe0stksYOSmwi631m7w0A8oDDscBabfvEAVxKzqIDEj
-         QI5zK4sFB+7uFhrWo4rL6qlJX7xIYm1To89/52v3nvOKu003plA0iINlSx/InF5eezIC
-         +uVa4bbzk9pV5TzrpolsJSyE5gj0b0DeE2C0SgjrVuthVjK/CaNfRCzhiJSg4FXwgKL7
-         fBnV5YSFiQDlmHBpZwvXgt4WSqKzlhSVwQMMAWa5suh8p/9kjxDit9oTOVmiziCM8HBK
-         IhwJpst+KDKtFvk5ZuFucALXyqqRiIwC1CwyIq4IXzpHcgs4i1HaHpF3rEar8E3yRGBG
-         WyAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793663517; x=1794268317;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0b6CWUpDDg7nvX4yAW5I5URG5gPxBouEYD/8SJ9ABv0=;
-        b=O+XKPc3o6KPgO1HSNG8VUjcZZ4CU/JKgtxP2Zl7YgGt+5gW7xYgxrnf0L5okOLRFuW
-         mCi6/CXseEhRF9ersoZU924K4sAf5gkzXrLKeAtu8WD47R859BO2d0y37qjyhgXaJhfE
-         0xbjpk2GEITNGTkQRACXdwTkotdwIX/KzZjdNY9YCtBhhbzrgWefexjuL11Yr89yRacS
-         DEJd+T596JGf7Uw4ip7J0qXlb60P16yEv6J4AKoMYDC4jo9PjpLtiveMQzQPn1/4BhMi
-         D7D/vbiAzV0+sEQsbfSZx7xbwE1ujbEDyniJBOniocSyKQxSqimJPXRKB49f4MBeUl0X
-         Yqwg==
-X-Forwarded-Encrypted: i=1; AKwUvBzt8f6SxqLFyj/cqQq+mktzQ4lhboT89/2BRKMVsa/81I16B+xdReuG6CCtXURTpga8JAfoAGg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKk+7I17qIeL/sYPY6x+sYAiEeBPpQelXAiS0LPAVDFWSMvmfmP
-	/I6x6NbXDOKbG4k7dgASTbG7lq3bHQKx7jNB7I4S+Fq0dlcEs0VcdNfm
-X-Gm-Gg: AYBFou1etoU/ozHX9/gMT8U9x/v5BRe71uTqkaa5s2y0Vp+KLjC9ORjduXZzfQNpp4X
-	APd2b6EZndIsx8uyWM6OVrmQUHwug/yeAAUh523Q3nxxh1enWd1FzCP9+h7C4f15RayPS8uvgEB
-	ylu8NSg91roVGxBDrnkpt1hiyLGtCAThA8oKrMqXxNh5BaR1ccEIuoY2y1uMeFOz9T8lxHB3l+l
-	URJntOFon9Bc3NSEd4MBNs8DlZz3sNQHbe+wIcjXkhrO6NLnOVzuGt+oztp11l1zbIbWJF1As37
-	12GC8ea1jskPtbL1fL4ABcUJ/uw4gC4aMtEqJLyNPZMRAjY7hK4Z+8REpJKCvZ2bFevBIKgzFgc
-	nmtWsy62ag5h7VRStyMdkAz3ynmVtIU/lRxSKAMmob7C93x1XKW+xC1j8dgvQtMWnEU2WOQOVyV
-	vJ62t8rnVCTJJbYToJjc/IRczVf5ncbkKhx3pvpMx4tKanFfICrlle5zV5qRoiPdQ6oBCp4Htiq
-	IHW7I12jUTztUf7CaYxcimrvOHLoJUXc64wELOwM0cvCZU+Thn4uzPPC48jhSJIXnclSDhYktlm
-	CNnPL2vWLCosU66gNO91j96kB2fXAOPPvbX4PYu6qXMHET+4UtTMnGPYJbgqrrTOA8inoGRoSw=
-	=
-X-Received: by 2002:a05:600c:6212:b0:4a4:de70:2ad4 with SMTP id 5b1f17b1804b1-4ac17ffa395mr248989255e9.22.1793663517545;
-        Mon, 02 Nov 2026 15:51:57 -0800 (PST)
-Received: from fedora.fritz.box ([93.93.22.191])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ac09ad5ff8sm210203745e9.4.2026.11.02.15.51.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 15:51:57 -0800 (PST)
-From: Stefano Munari <stefanomunari.sm@gmail.com>
-To: Thangaraj Samynathan <Thangaraj.S@microchip.com>
-Cc: UNGLinuxDriver@microchip.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: usb: lan78xx: resume phylink on non-reset USB resume
-Date: Tue,  3 Nov 2026 00:51:33 +0100
-Message-ID: <20261102235133.23011-1-stefanomunari.sm@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key, unprotected) header.d=ownmail.net header.i=@ownmail.net header.a=rsa-sha256 header.s=fm2 header.b=Jf5xPeAE;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=htfp+WoF
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.stl.internal (Postfix) with ESMTP id 3A8D61D00176
+	for <netdev@vger.kernel.org>; Mon,  2 Nov 2026 19:06:28 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Mon, 02 Nov 2026 19:06:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm2; t=
+	1793664388; x=1793750788; bh=yyaofbO1LBA3jJXlLCq+QmfJxp+UmzYZ0d2
+	Ds1aVJSs=; b=Jf5xPeAEATC99T1P4pJqixYKKUPabJwcd6BsY0D8BuTdxx3FMuQ
+	rRDXTiJE1q/vuAFA7LRPdylvH4xm/Xw5SylKFuYSqqsOZhDM2JArg6KhqXNtZ83+
+	kApsrl0tqFdjgS+dWZ9hhbb/Y+99iQOvhaPa7ph3LSpjRopBQS7fZCOtEtOB+cpp
+	jJqP+IQwZHr7QqWXQgGxj+V5vYBjFRKP47jXqPq5LgZzB2w8UgrTydlkp2Sjr/Aj
+	E3JblkDKImRGrLXj3UEZX3y/rk9z99g1nVIQDBKmotgO9puJJtlmEB83qhkSt4lJ
+	onOyxkwJOlzN49mIYkG2pqUUPreX3WM5opA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1793664388; x=
+	1793750788; bh=yyaofbO1LBA3jJXlLCq+QmfJxp+UmzYZ0d2Ds1aVJSs=; b=h
+	tfp+WoF11SnDxt/Gxp5SpFFiAHk/VuEiwvrTDAVRHf5K18oqLiJGxhgpPWAcJBYy
+	rWmDo5uHnMU79+znHPqIYRXUXvX0rX2IzBapcnlLwzmEw/e4TFM1lmOHVMeEgaOR
+	+Ol2NOZ/pZ0DtP6nqnJV9kuIj1ZTApo58+z0m5v6mkfYbtwQOoOgIKUuupedfwU+
+	fRAY9NlxtduQ/+tSqotXTPEpPQzqGDKDzhhm2VCFfp3JHT+UlCIXZrJZthRT61la
+	rOrv4TxXSere4zEqxBVUcRszhe+pN+RLZQBeAvqzC6rc7lLFyIoIGpNeT1ZUeiem
+	7v8cXqA3oWrPxfSBorR5w==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=sign d=ownmail.net a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793664388; d=ownmail.net;
+	mf=PG5laWxiQG93bm1haWwubmV0Pg==;
+	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:j54+gq6Pd8xl+uE7ioYT2jypiSi100+jAxEm9xMZznm9OME
+	6Pp9JBJ6TwTw942F98agI7vJu/MhDmosd204RRR1+90KWuD/4UkJATNbYVVBKbZB
+	x8g0DeN4juzi3olIGGHwV19HbuJCTOoNu0Cj6aswDeXn7EugAdAGj3MKh/9y5IR4
+	AOCjrKKc5dT7xn/JtaCjdOzS8MB6DDBkC0AfuhHVEulmr2wJvwhFMYNCF3jz9XQb
+	mDR9i0ZYpMn3zmAiqVo3U+uN5mbNne1d7cqRbLPGdYhuD3pI473u5Z5cGaOWgz7l
+	I4+oWHqbPyrUZJ1nsn71tgI2ys1yl4DNrbBJc5w==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=mi-m=1; hc=13;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,reply-to,
+	subject,to;
+Message-Instance: m=1; h=sha256:dklhOffOaQJTuxqDCFFWJLMt1T+v+cevOGkLkR7nowY=:/g0Zcv3T6QmHaJPUgUetWS/VnF75sGdG4jLoaFGbuBk=;
+X-ME-Sender: <xms:gyXpar6y8sFvZSCALH3z2pcuIY7rZFrk243v9oPB2HYMVvciaiba8g>
+    <xme:gyXpastWZkDW2p0NVXhE0FIEY8y8NaGmlZDUjCQiqnNwzmU18yxG0R-RnKOc2ywro
+    Qkrw904-C4flVQK6WSVMLutHlRP8fSwlmb7Als2VK6U32ws3cc>
+X-ME-Received: <xmr:gyXpan-UN0r7AD4287uuhbUwR2Z_b9ok-NZwjX-1VmO9nYkEJHzUcmtedjb-Q5yXPoKKez07BxZjlq-xnqG580AQ7XEejOY>
+X-ME-Proxy-Cause: dmFkZTGAvNPpkdBmLL2NbMWgsBGLNi9qwJiWELuyUZizI+Ie5naw16C56PCB1rX4OVGAZ+
+    hUyb0II0WxOKlOJkUSsLka6a7tiSTLIMdGbW69c300mKt/urXg/t6hVFeeHjOZlSrUn8y0
+    swt8/sXRYTw5aAMyuPorISsWjvLhgbdovRVnur1wAuuRxnLAujFzUzJ4mke9Da6TAJYsfa
+    7yKjNDkZxUNDALSib0WP6+HtVlL0TPxbhEMlfkEbCiwfiERk9p2ziyZVq+ZxrCMOKD/vEX
+    H60Lr0am98W3njnEPZgGpYRmtttxmzVx8DLhPXJgL6RMSBdeT04c0Qd3UFCpP3fWo0DSjs
+    9Fgvx/HTnpGI2AVde92OjJV0KLonWwdWOAenTMq7c1jRjIqI/vg9g0eclsYe503Wk3cmyw
+    m5a8gz0EVznJRtBI3f1F/WH6XIuUjq/+/saOz+Iqa7iCtAWudz7gdxiMTl1/AGczmF8ui+
+    zhr3yJIhzwwKZAlqB3MIGjEtqs7KZr43FJkuwQbdVDhyS+okfr5d0HPVdopwBZBVlWzIF4
+    yWuT1jB6ymswGkYNvniJJH2oU2prlxJOWrr8ecVBD0nRPYPFsVJatEP3haVIvPqBoqfApC
+    6SL6ARf72yD9HuqF4VAOUPBk+u4/XRZHXxUW4egBc4nQosnjfo89uCciYcPw
+X-ME-Proxy: <xmx:gyXpaulvJAZDSLB899qgG_-nVM_-s3bk1I4PV0gmj_VBi-tzWtlcgQ>
+    <xmx:gyXpavNHQWSiQroWrohRk6Mjt8ziRp0L_acssh-pWD23IBs2oWwSdw>
+    <xmx:gyXpalIyczRnoxuW6m-1J15YTjIF0OruFtjjBecfjrpKTgIyvljE5g>
+    <xmx:gyXpaiGXEpA5e0NwFCSQETs0yGkmrWMf3az7DPaPZsDU19sIakS72A>
+    <xmx:hCXpaqr4_fWw-r8VXrYMSR1vis0xnNCctoGZ2d3k4CzwsBdQPaDEuhV7>
+Feedback-ID: i9d664b8f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 2 Nov 2026 19:06:23 -0500 (EST)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,87 +118,120 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: NeilBrown <neilb@ownmail.net>
+To: "Kal Cutter Conley" <kalcutterc@nvidia.com>
+Cc: "Trond Myklebust" <trondmy@kernel.org>, "Anna Schumaker" <anna@kernel.org>,
+ "Chuck Lever" <cel@kernel.org>, "Jeff Layton" <jlayton@kernel.org>,
+ "Olga Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
+ "Tom Talpey" <tom@talpey.com>, "David S. Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
+ "Kal Cutter Conley" <kalcutterc@nvidia.com>, linux-nfs@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] sunrpc: fix lost wakeups when stopping service threads
+In-reply-to: <20261102225358.414367-1-kalcutterc@nvidia.com>
+References: <20261030130629.103716-1-kalcutterc@nvidia.com>
+  <20261102225358.414367-1-kalcutterc@nvidia.com>
+Date: Tue, 03 Nov 2026 11:06:19 +1100
+Message-id: <179366437930.1728055.15983070911544727032@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
 
-lan78xx_suspend() calls phylink_suspend(dev->phylink, false) on an open
-interface, which always stops phylink and halts the PHY. The matching
-phylink_resume() is only called from lan78xx_reset_resume().
-When the USB device stays powered across system sleep (e.g. s2idle) and
-the USB core calls .resume instead, the link stays down until the interface
-is brought down and up by hand. The ifdown triggers:
+On Tue, 03 Nov 2026, Kal Cutter Conley wrote:
+> Stopping NFS can leave rpc.nfsd 0 in an uninterruptible wait with
+> this stack:
+>=20
+>   svc_stop_kthreads [sunrpc]
+>   svc_set_num_threads [sunrpc]
+>   nfsd_svc [nfsd]
+>   write_threads [nfsd]
+>   nfsctl_transaction_write [nfsd]
+>=20
+> SP_NEED_VICTIM and SP_VICTIM_REMAINS remain set while all remaining
+> nfsd threads sleep in svc_recv() and none has RQ_VICTIM set.
+>=20
+> The stop request is published with unordered set_bit() operations.
+> svc_pool_wake_idle_thread() checks the idle list and task state before
+> calling wake_up_process(). If it sees an empty list or TASK_RUNNING,
+> it skips the wakeup and its memory barrier. The requester can therefore
+> miss a sleeping worker while that worker misses the stop request.
+>=20
+> Use smp_mb__after_atomic() after the flag updates in
+> svc_stop_kthreads() and svc_wake_up() to order work publication before
+> both lockless checks, even when no wakeup occurs. Pair with
+> set_current_state() and llist_add() in svc_thread_wait_for_work(), so
+> the worker observes the pending work or the requester observes the
+> idle worker and wakes it.
+>=20
+> Fixes: 60749cbe3d8a ("sunrpc: change sp_nrthreads from atomic_t to unsigned=
+ int.")
+> Signed-off-by: Kal Cutter Conley <kalcutterc@nvidia.com>
+> ---
+> Changes in v2:
+> - Move the barrier into svc_stop_kthreads() and svc_wake_up(), using
+>   smp_mb__after_atomic(). This avoids adding a redundant barrier on the
+>   transport enqueue path.
+>=20
+> v1: https://lore.kernel.org/r/20261030130629.103716-1-kalcutterc@nvidia.com
+>=20
+>  net/sunrpc/svc.c      | 7 +++++++
+>  net/sunrpc/svc_xprt.c | 5 +++++
+>  2 files changed, 12 insertions(+)
+>=20
+> diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
+> index af8d87c1de83..76232774646c 100644
+> --- a/net/sunrpc/svc.c
+> +++ b/net/sunrpc/svc.c
+> @@ -29,6 +29,8 @@
+>  #include <linux/sunrpc/clnt.h>
+>  #include <linux/sunrpc/bc_xprt.h>
+> =20
+> +#include <asm/barrier.h>
 
-  WARNING: drivers/net/phy/phy.c:1670 at phy_stop+0x44/0xc8
-  called from state HALTED
+I doubt this include is really needed, but I'm not sure that matters.
 
-Move phylink_resume() to the end of lan78xx_resume(), which both resume
-paths go through, and call it only if the resume succeeded and the
-interface was open, mirroring lan78xx_suspend(). As a side effect,
-lan78xx_reset_resume() no longer starts phylink on a closed interface.
+> +
+>  #include <trace/events/sunrpc.h>
+> =20
+>  #include "fail.h"
+> @@ -784,6 +786,11 @@ svc_stop_kthreads(struct svc_serv *serv, struct svc_po=
+ol *pool, int nrservs)
+>  	do {
+>  		set_bit(SP_VICTIM_REMAINS, &pool->sp_flags);
+>  		set_bit(SP_NEED_VICTIM, &pool->sp_flags);
+> +		/*
+> +		 * Order flag updates before the idle list and task state checks.
+> +		 * Pairs with the barriers in svc_thread_wait_for_work().
+> +		 */
+> +		smp_mb__after_atomic();
+>  		svc_pool_wake_idle_thread(pool);
+>  		wait_on_bit(&pool->sp_flags, SP_VICTIM_REMAINS, TASK_IDLE);
+>  		nrservs++;
+> diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
+> index 076c624fe675..868e3da57b6c 100644
+> --- a/net/sunrpc/svc_xprt.c
+> +++ b/net/sunrpc/svc_xprt.c
+> @@ -632,6 +632,11 @@ void svc_wake_up(struct svc_serv *serv)
+>  	struct svc_pool *pool =3D &serv->sv_pools[0];
+> =20
+>  	set_bit(SP_TASK_PENDING, &pool->sp_flags);
+> +	/*
+> +	 * Order flag updates before the idle list and task state checks.
+> +	 * Pairs with the barriers in svc_thread_wait_for_work().
+> +	 */
+> +	smp_mb__after_atomic();
+>  	svc_pool_wake_idle_thread(pool);
 
-Tested on a Raspberry Pi 3B+ (LAN7515) with s2idle: the link now comes
-back up on its own after resume and ifdown no longer warns.
+Reviewed-by: NeilBrown <neil@brown.name>
 
-Fixes: e110bc825897 ("net: usb: lan78xx: Convert to PHYLINK for improved PHY and MAC management")
-Signed-off-by: Stefano Munari <stefanomunari.sm@gmail.com>
----
-ftrace on unpatched kernel (s2idle, woken from PL011 UART IRQ):
+Thanks,
+NeilBrown
 
-  lan78xx_suspend <- usb_suspend_both
-  phylink_suspend <- lan78xx_suspend
-  phylink_stop    <- phylink_suspend
-  phy_stop        <- phylink_stop
-  lan78xx_resume  <- usb_resume_interface
-
-No lan78xx_reset_resume() or phylink_resume() on the resume path.
-
-ftrace on patched kernel:
-
-  lan78xx_resume <- usb_resume_interface
-  phylink_resume <- lan78xx_resume
-  phylink_start <- lan78xx_resume
-  phy_start <- lan78xx_resume
-
-phylink_start + phy_start report lan78xx_resume as parent
-since both are tail calls. On tested kernel phylink_start is tail call
-optimized since with CONFIG_SFP=n sfp_upstream_start() is an empty stub.
----
- drivers/net/usb/lan78xx.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 181e8c087655..0136818e8cb0 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -5371,6 +5371,12 @@ static int lan78xx_resume(struct usb_interface *intf)
- out:
- 	mutex_unlock(&dev->dev_mutex);
- 
-+	if (!ret && dev_open) {
-+		rtnl_lock();
-+		phylink_resume(dev->phylink);
-+		rtnl_unlock();
-+	}
-+
- 	return ret;
- }
- 
-@@ -5385,15 +5391,7 @@ static int lan78xx_reset_resume(struct usb_interface *intf)
- 	if (ret < 0)
- 		return ret;
- 
--	ret = lan78xx_resume(intf);
--	if (ret < 0)
--		return ret;
--
--	rtnl_lock();
--	phylink_resume(dev->phylink);
--	rtnl_unlock();
--
--	return 0;
-+	return lan78xx_resume(intf);
- }
- 
- static const struct usb_device_id products[] = {
--- 
-2.55.0
+>  }
+>  EXPORT_SYMBOL_GPL(svc_wake_up);
+>=20
+> base-commit: 2d3259f652bb0f1d137ccabecac6763da05064ec
+> --=20
+> 2.53.0
+>=20
+>=20
 
