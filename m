@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793712753;
-	b=VMBZcbbbQLvtwrDfRUxPY+RYMochuBBdnRyP1Nhd10hCFuajwEIQ+go6HHGbq8MMCab0
-	 KUHD4VUhMYuLeTZIlxGzRnwI+ZS9mStCgmEICLdyRBOvuP94/bshi2y1qwBX8HsSCOw8+
-	 BLA6QrxMn16Y/fZYE7hgdXBQjQReeFdgolSwyoo5SBM5pSjoimQ06B8sRPXCxl+o7JR6D
-	 uOC3oe/7yUfVyCr5BviuDookB8ZF5WVBAqpFm3NjCHDqfXmp4SaWMKJQG78C/gKGOB8fV
-	 69EqITKfNmLNbxcNW9Q1EcSNdDZctKKtldvj5u4osFO4FUcnXO5LoTGwk+SdIkOGzsQ==
+	t=1793712754;
+	b=Nkh8U7lE9sGd/Mz9aMHw9owzoUFTP88Fh4dFldLQAKJeCdYNRWMph1Sjxx0HQgwm1W1g
+	 7UTa+yTQEOhe/cI3Uw1G8FOcFU96S5CBw1yUx/kyKnlFViATaRSyYhprnrAPz3InsQKo3
+	 Bx5qMd8jwxr9ywG+K31BZPJrDi0w4wtVIjmJl/aRsSlXt4O6YFqswUHe//My/Mcm1Jz3q
+	 kc4CK/391olzwKidPPca0+VbpZDaTeotfTc6VUlpDi3pmJ98I9NHtFojN6PPQHcuX79/U
+	 5qp1W6rXP94KHUMOv1k4S5kOwaA/u15ZhlMCTZcgMla24YCNZ8Y9Adycd1ula+IME4A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793712753;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793712754;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=3IAjmr/zmbR2S1eHfVi3upxEsNfRTP6Y4OyASEJgk+M=;
-	b=YUCe9QN1JgPSEJFsg25ovFx6sSsbX5Mt/LlkDrQu/vyo24h2koNKE7rEHYv81ox1o1ed
-	 7vtt+mwGQh4EX2Pbg2mhw280V4CGwe56Ym+kpGsT4DTCYd1xbJQjf8NfvYSNIazcB0lSW
-	 svo6REAjNrzPVU5dn6U7sxZw+gw469hEvoLRoUcRgR9mo3CcQrISNatf+hhsGnG/GlTaa
-	 lpfHXG59XOM0lmqclX2363Ur4YMW/eJLO/1MAypw0rR7ZlMGp0QpVJh2pv/+lP8lrFPmu
-	 IRy4glFRW9fXS5pOwujTYRO0eDliXdk+qrpaWMzkXriMWXz8sGuIpw0FLaOLwseXcgQ==
+	bh=8tDggdVuMPLu0Nm/86h9JleWgGpstPouwzTKbHD6oYw=;
+	b=DrfxYs0V3oRA92BnveN2xlaksQxUcpjrDb7xcoPr3BmTnNH1y8OkLWGO6+Tb2MKmlMxZ
+	 nadTttfWPykPgfLppff6BYozV1olVDCvmPbBtJtgsZZu47bKCeIJhBVotxEtWZFYAvFB+
+	 r6hJZbdnheqKaV1UWngfNfuYHffY/dkmNzAIImkxvLgyeXIKQ+e7Yk9WqbVu3AhcFQ2PE
+	 U09DRza2GU6IJwcftkbBDngOVTJEgEEE8pNFn2vgFs7j6pOp85DSLei3JDet4InI+9GFa
+	 OO3SgL4CnSjr7OFclyzd8XLRnKUreKzloUZMkEy9leLuGLoo6YvZfyfAuvhBjHjKpVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GNQyc3Cc;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BlahXMfV;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53A5606A338
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 13:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1EB606D805
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 13:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GNQyc3Cc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E88C11F0093A;
-	Tue,  3 Nov 2026 13:32:31 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BlahXMfV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 051A01F000C1;
+	Tue,  3 Nov 2026 13:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793712752;
-	bh=3IAjmr/zmbR2S1eHfVi3upxEsNfRTP6Y4OyASEJgk+M=;
+	s=k20260515; t=1793712753;
+	bh=8tDggdVuMPLu0Nm/86h9JleWgGpstPouwzTKbHD6oYw=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=GNQyc3CcxIUNXgsvX/Tn85rtouR52rYkKMiuH0jdzYRZYnm3keRcMRKvd5eD2fHkc
-	 HA8AF7cR5/as7vbDvrpynszM2sFGT/4x7B5zfkdmCZ9r8oXe1daoMLLVMe+08W/wPb
-	 l/Bb8/lE87om8jQx6hyK77rvcIkjObYTFx6YBJQ8FsFoy2xBgFjTFz9K5Dlg3gVIHX
-	 ijEM6RO8uoIZ8vaYrVtM9/HU4yYCf6ZDmrj/SOZJVaGADdHQVEVX3TBcNcpRsOvkvY
-	 wkJ0SkLflW9Y8se+kjcqJVmu0co1zTerDOchiR65wN7CVP2izeggM8d6UqkBHufezz
-	 IWyZ1QnvEP0iA==
-Subject:
- Re: [PATCH net 3/9] ice: xsk: fix leaking Rx buffers in multi-buffer path
+	b=BlahXMfVYF59CH/HvDvTllQ/rRRp/qVDEyp/VbWi7KiYjEwKkntLcjGbDCjWvLRGM
+	 wafVsTaZ1O/plBcmLBZipYjeGBGx+tqqqAyYzp/k6VRJX4ir5ITWOTrUwr0knotv2H
+	 vo4p1v0EQ3f7I21pkVqFDbPklDq1VJMFbNnFNiH35lF8OnrCQea2wxeUu2Xf4iKzZL
+	 H9AhIf5FpnLcJKAxOdmdiKm8uYq0UoH+sDs5mSE/xE6uOa89bpZrbA29zOoXESQQna
+	 +cDMQr3Xa43Xg93rJCvXGYVKm2SIQdIDHAzgnj/3NJGtb9MlDuMvD2hc3PDHDOkq0e
+	 cEua3TZRsAYDw==
+Subject: Re: [PATCH net 5/9] libeth: xsk: do not free in-flight frags on
+ XDP_TX completion
 From: netdev-bot+sashiko@kernel.org
 To: maciej.fijalkowski@intel.com
 Cc: netdev@vger.kernel.org, magnus.karlsson@intel.com, stfomichev@gmail.com,
  kuba@kernel.org, pabeni@redhat.com, tushar.vyavahare@intel.com,
  kerneljasonxing@gmail.com, bjorn@kernel.org, zuomao338@gmail.com
-Date: Tue, 03 Nov 2026 13:32:31 +0000
-Message-ID: <179371275153.488856.16170220434241626063@kernel.org>
-In-Reply-To: <20261102124950.958345-4-maciej.fijalkowski@intel.com>
-References: <20261102124950.958345-4-maciej.fijalkowski@intel.com>
+Date: Tue, 03 Nov 2026 13:32:32 +0000
+Message-ID: <179371275260.488856.17148021732889510022@kernel.org>
+In-Reply-To: <20261102124950.958345-6-maciej.fijalkowski@intel.com>
+References: <20261102124950.958345-6-maciej.fijalkowski@intel.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -64,10 +64,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 2 · Medium: 1 · Low: 0 (1)
+Critical: 0 · High: 1 (1) · Medium: 1 (1) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -75,188 +75,195 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The new zero-length branch in ice_clean_rx_irq_zc()
-  (drivers/net/ethernet/intel/ice/ice_xsk.c) is `else if…
-- [High] ice: xsk: 0-length buffer assigned to first in
-  ice_clean_rx_irq_zc()
-- [Medium] As of this commit, if xsk_buff_add_frag() fails in
-  ice_clean_rx_irq_zc() because `xdp == first` (aligned-mode duplicate…
+- [High] The fix is incomplete: when the flush inside the frag loop
+  fails, XDP_FLAGS_HAS_FRAGS is never cleared.
+- [Medium] With a shared XDPSQ, the late flag clear still leaves a window
+  in which the current frame's own head can be completed while its frags…
 
 Pre-existing issues:
-- [Low] When xsk_buff_add_frag() fails on a non-EOP descriptor in
-  ice_clean_rx_irq_zc(), `first` is set to NULL and the loop continues.
+- [High] This problem wasn't introduced by this patch, but it sits on the
+  same error path the patch changes.
+- [Medium] This problem wasn't introduced by this patch, but
+  libeth_xdp_tx_xmit_bulk() (include/net/libeth/xdp.h) trims the number…
 
 --
 
-ice: xsk: fix leaking Rx buffers in multi-buffer path
+libeth: xsk: do not free in-flight frags on XDP_TX completion
 
-This commit changes ice_clean_rx_irq_zc() to free the xsk buffer of a
-zero-length frag. When xsk_buff_add_frag() fails, it now also frees the
-current descriptor's buffer in addition to the frame head. It relies on
-xp_free() skipping a duplicate buffer that was already freed with the
-frame.
+This patch clears XDP_FLAGS_HAS_FRAGS on the head of a multi-buffer XSk
+XDP_TX frame in libeth_xsk_tx_queue_bulk(), once all of the frame's frags
+are queued. Completing the head then no longer frees whatever is on
+pool->xskb_list at that moment, such as frags of a frame still being
+queued or of a stashed partial Rx frame.
 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
-> index 0643017541c35..ea8ac0fcdf6ef 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_xsk.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
-> @@ -618,8 +618,11 @@ int ice_clean_rx_irq_zc(struct ice_rx_ring *rx_ring,
+> diff --git a/include/net/libeth/xsk.h b/include/net/libeth/xsk.h
+> index a452b7828ce4e..249b1c7407881 100644
+> --- a/include/net/libeth/xsk.h
+> +++ b/include/net/libeth/xsk.h
+> @@ -77,11 +77,17 @@ libeth_xsk_tx_queue_bulk(struct libeth_xdp_tx_bulk *bq,
+>  	if (!libeth_xsk_tx_queue_head(bq, xdp))
+>  		goto out;
 >  
->  		if (!first) {
->  			first = xdp;
-> -		} else if (likely(size) && !xsk_buff_add_frag(first, xdp)) {
-> +		} else if (unlikely(!size)) {
-> +			xsk_buff_free(xdp);
-
-[Severity: High]
-Does the zero-length check need to come before the !first check?
-
-With the current ordering, a descriptor with pkt_len 0 is only freed
-when a frame is already in progress. If first is NULL, the zero-length
-buffer becomes the head of a new frame. If that descriptor is also EOP,
-the unlikely(!first) test further down no longer skips it.
-
-One way to get there is the xsk_buff_add_frag() failure path just
-below. When xsk_buff_add_frag() fails on a non-EOP descriptor, first is
-reset to NULL and the loop moves on. Suppose the next descriptor is the
-EOP of the same packet and carries no data. That can happen when the
-hardware strips the FCS and the last buffer held only FCS bytes. The
-empty buffer is then assigned to first with data_end == data, and
-ice_run_xdp_zc() runs on an empty frame.
-
-What happens next depends on the verdict:
-
-- XDP_TX: ice_xmit_xdp_tx_zc() would post a Tx descriptor with a zero
-  buffer size and the EOP bit set. E810 may treat that as a malicious
-  driver event and stop the queue.
-
-- XDP_PASS: xdp_build_skb_from_zc() builds an skb with len 0, so
-  eth_type_trans() has no header to work with. When
-  ICE_RX_FLAGS_MULTIDEV is set, ice_process_skb_fields() may also
-  __skb_push() ETH_HLEN, which moves skb->data in front of the frame.
-
-- XDP_REDIRECT: the user socket gets a spurious empty descriptor.
-
-libeth_xsk_process_buff() checks the length before anything else:
-
-    if (unlikely(!len)) {
-        libeth_xsk_buff_free_slow(xdp);
-        return head;
-    }
-
-This ordering predates this patch. Since this hunk already adds a
-dedicated zero-length branch, would it make sense to test size before
-first here?
-
-Then a zero-length buffer would be freed when no frame is in progress,
-and first would stay NULL so the descriptor is skipped. There is also
-the duplicate fill ring case where xdp aliases first. Given that, the
-zero-length branch would presumably still need to avoid freeing the
-buffer when it is the current head.
-
-[Severity: High]
-Can this free the live head of the frame when xdp == first?
-
-In aligned mode, a duplicate fill ring address maps to the same
-pool->heads[] xskb. xsk_buff_add_frag() guards against this explicitly:
-
-    /* Duplicate fill ring entries map to the same xskb in aligned mode */
-    if (unlikely(xdp == head || !list_empty(&frag->list_node)))
-        return false;
-
-The new zero-size branch has no such check. Suppose the descriptor after
-the head comes back with pkt_len 0 and aliases first. Then
-xsk_buff_set_size() resets the head's flags, and xsk_buff_free() goes
-straight to xp_free(). The head is not on any list, so this:
-
-    void xp_free(struct xdp_buff_xsk *xskb)
-    {
-        if (!list_empty(&xskb->list_node))
-            return;
-
-        xskb->pool->free_list_cnt++;
-        list_add(&xskb->list_node, &xskb->pool->free_list);
-    }
-
-puts it on pool->free_list while first still points at it.
-
-The frame then either goes on to ice_run_xdp_zc() (TX, REDIRECT or PASS)
-or is stashed in rx_ring->xsk. In the same poll,
-ice_alloc_rx_bufs_zc()->xp_alloc_batch()->xp_alloc_reused() can take the
-buffer off free_list with list_del_init() and post it to the hardware Rx
-ring again.
-
-Could the NIC then DMA a later packet into a buffer that is still in use?
-That buffer could be the head of the frame being built, sit on the XDP_TX
-ring, or be on the user Rx ring.
-
-Also, list_del_init() leaves list_node empty again. A later
-xsk_buff_free(first) or XDP_TX completion would then put the buffer back
-on free_list while it is still posted to hardware.
-
-The commit message says "xp_free() skips a duplicate already freed with
-the frame". Here, though, the duplicate is the live head and has not been
-freed yet. Before this patch, the zero-length case did not touch the
-buffer.
-
-Would skipping the free when xdp == first avoid this? That would match the
-guard in xsk_buff_add_frag(). For comparison, i40e_clean_rx_irq_zc() in
-this series does not free a zero-length buffer by itself.
-
-> +		} else if (!xsk_buff_add_frag(first, xdp)) {
->  			xsk_buff_free(first);
-> +			xsk_buff_free(xdp);
+> -	for (const struct libeth_xdp_buff *head = xdp; ; ) {
+> +	for (struct libeth_xdp_buff *head = xdp; ; ) {
+>  		xdp = container_of(xsk_buff_get_frag(&head->base),
+>  				   typeof(*xdp), base);
+> -		if (!xdp)
+> +		if (!xdp) {
+> +			/* Each frag is now freed via its own SQE. Freeing
+> +			 * the head must not release what is on the pool's
+> +			 * frag list at that time.
+> +			 */
+> +			xdp_buff_clear_frags_flag(&head->base);
 
 [Severity: Medium]
-Suppose xsk_buff_add_frag() fails because xdp == first, and the head
-already has frags attached. Are those frags freed here?
+With a shared XDPSQ, is the flag cleared too late here, leaving a window
+open?
 
-xsk_buff_set_size() has just run on the aliased head:
+If the frame doesn't fit in the remaining bulk space, the in-loop
+flush_bulk() writes the head into the SQ through libeth_xsk_tx_fill_buf()
+(sqe->xsk = xdp; sqe->type = LIBETH_SQE_XSK_TX). It then drops the xdpsq
+lock in libeth_xdp_tx_xmit_bulk() while HAS_FRAGS is still set.
 
-    xdp->flags = 0;
+After that, this CPU keeps calling xsk_buff_get_frag() without a lock, and
+it clears the flag only once the list is empty.
 
-This clears XDP_FLAGS_HAS_FRAGS, so xsk_buff_free(first) takes the early
-exit:
+libeth_xdpsq_id() can map several CPUs to one XDPSQ (ret %= num). In that
+case the other sharer could do this:
 
-    if (likely(!xdp_buff_has_frags(xdp)))
-        goto out;
+CPU A                                  CPU B (same XDPSQ)
+libeth_xsk_tx_queue_bulk()
+  flush_bulk() publishes head
+  xsk_buff_get_frag()                  idpf_xdp_tx_finalize()
+                                         set RS, bump tail
+                                       idpf_xsk_tx_prep()
+                                         idpf_xsksq_complete()
+                                           xsk_buff_free(head)
+                                             walks pool->xskb_list
+  xsk_buff_get_frag()
+  xdp_buff_clear_frags_flag()
 
-It then only calls xp_free() on the head. The earlier frags seem to stay
-on pool->xskb_list with no owner. They are either lost, or xsk_rcv_zc()
-later picks them up as part of another frame. The new zero-size branch
-above has the same flag clearing when xdp == first.
+The cleanup timer could run the same completion in place of CPU B.
 
-This looks to be resolved later in the series by "xsk: do not clear frags
-flag when acquiring a buffer". That patch changes xsk_buff_set_size() to
-preserve XDP_FLAGS_HAS_FRAGS, and makes xsk_buff_free() clear the flag
-after draining.
+Could this corrupt pool->xskb_list, or free frags that CPU A then queues?
 
-At this commit, though, the duplicate fill ring case named in the commit
-message still strands frag buffers. The stranding also happened before
-this patch.
+It needs the HW to complete the head before CPU A has posted the frame's
+EOP descriptor, so it may be hard to hit. Still, it matches the "XDPSQ can
+be completed by a bulk flush while the frags of a frame are being queued"
+case in the commit message.
 
->  			first = NULL;
->  		}
+Would clearing the flag before the head can be published close this
+window? One option is to clear it when the head is queued with
+LIBETH_XDP_TX_MULTI.
 
-[Severity: Low]
-This isn't a bug introduced by this patch, but there is a related
-behavior. When xsk_buff_add_frag() fails on a non-EOP descriptor, first is
-set to NULL and the loop continues. The next descriptor of the dropped
-packet then starts a new frame through:
+>  			break;
+> +		}
+>  
+>  		if (unlikely(bq->count == LIBETH_XDP_TX_BULK) &&
+>  		    unlikely(!flush_bulk(bq, LIBETH_XDP_TX_XSK))) {
 
-    if (!first) {
-        first = xdp;
+[Severity: High]
+Is the flag still left set when this in-loop flush fails? The new
+xdp_buff_clear_frags_flag() runs only when xsk_buff_get_frag() returns
+NULL, and the failure exit skips it:
 
-So the rest of the dropped frame is assembled and run through XDP as a
-standalone packet that starts mid-frame.
+	if (unlikely(bq->count == LIBETH_XDP_TX_BULK) &&
+	    unlikely(!flush_bulk(bq, LIBETH_XDP_TX_XSK))) {
+		ret = false;
+		break;
+	}
 
-The i40e companion patch in this series says this is intended ("Remaining
-buffers of this packet, if any, will be processed as a new packet.").
+flush_bulk() returns false here when prep() reports no free descriptors
+in libeth_xdp_tx_xmit_bulk():
 
-Is that also the intended behavior for ice, rather than discarding
-descriptors until EOP?
+	n = min(n, prep(xdpsq, &sq));
+	if (unlikely(!n))
+		goto unlock;
 
->
+This flush has no LIBETH_XDP_TX_DROP, so libeth_xdp_tx_exception() keeps
+the unsent entries in bq->bulk. The head therefore stays queued with
+XDP_FLAGS_HAS_FRAGS set.
+
+The frame's remaining frags stay on pool->xskb_list, and the out: label
+sets LIBETH_XDP_TX_LAST on a middle frag.
+
+At the end of the poll, __libeth_xdp_finalize_rx() calls
+flush_bulk(bq, flags | LIBETH_XDP_TX_DROP). One of two things follows:
+
+(a) The head is sent as LIBETH_SQE_XSK_TX. When it completes later (next
+prep or the cleanup timer), xsk_buff_free() sees HAS_FRAGS and frees
+everything on pool->xskb_list at that point. That can include the frags
+of a partial Rx frame stashed in rxq->xsk. The frame is also sent
+truncated, with EOP on a middle frag.
+
+(b) The send fails and libeth_xsk_tx_return_bulk() frees the head right
+away. In idpf_xskrq_poll(), idpf_xsk_finalize_rx() runs before
+rxq->xsk = xdp. The frags of the frame still being assembled are on
+pool->xskb_list and get freed while that frame still references them.
+
+Isn't this the same "frags are then freed while in use ... while a
+partial Rx frame is stashed" case from the commit message, still
+reachable whenever the XDPSQ is full?
+
+The orphaned frags left on pool->xskb_list would also be picked up by the
+next multi-buffer frame. On XDP_TX, xsk_buff_get_frag() pops them first.
+On redirect, xsk_rcv_zc() walks the list. Either way, that frame would
+carry another frame's data.
+
+Later patches in the series don't seem to touch this function.
+
+Does this error path also need to clear the flag and free or return the
+frags of this frame that were not queued?
+
+[Severity: High]
+This is a pre-existing issue, but it sits on the same error path. Each
+iteration first pops a frag with xsk_buff_get_frag(), which does
+list_del_init(&frag->list_node). Only then does it check whether the bulk
+needs flushing.
+
+If that flush fails, the code runs ret = false; break;. The frag that was
+just popped is never passed to libeth_xsk_tx_queue_frag(), never freed,
+and never put back on pool->xskb_list.
+
+xsk_buff_free() on the head walks only pool->xskb_list, so nothing
+reclaims this frag.
+
+Does this leak one UMEM buffer each time the XDPSQ is full mid-frame?
+
+Under sustained TX congestion with XDP_TX, the leaks would add up. That
+could exhaust the buffers of the AF_XDP queue and stall Rx. A fix for the
+flag handling above would probably need to cover this frag as well.
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but there is a related one in
+libeth_xdp_tx_xmit_bulk(). It cuts the number of descriptors written to
+the free count without rounding down to a frame boundary:
+
+	n = min(n, prep(xdpsq, &sq));
+	if (unlikely(!n))
+		goto unlock;
+
+libeth_xsk_tx_fill_buf() writes one descriptor per bulk entry, and
+idpf_xdp_tx_xmit() sets EOP only on the LIBETH_XDP_TX_LAST entry:
+
+	if (desc.flags & LIBETH_XDP_TX_LAST)
+		cmd |= FIELD_PREP(IDPF_FLEX_TXD_QW1_CMD_M,
+				  IDPF_TX_DESC_CMD_EOP);
+
+Suppose the cut falls inside a multi-buffer frame during the DROP flush
+in __libeth_xdp_finalize_rx(). The head and earlier frags are then left
+on the ring without EOP.
+
+libeth_xdp_tx_exception() frees the rest of the frame, including the LAST
+frag, through libeth_xsk_tx_return_bulk(). idpf_xdp_tx_finalize() then
+sets RS and bumps the tail.
+
+Can this hand the device an unterminated descriptor chain, with the next
+frame's descriptors appended to it?
+
+Without DROP, the frame is split across releases of the xdpsq lock. With
+shared XDPSQs, another CPU could insert its own descriptors or bump the
+tail in between.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261102124950.958345-1-maciej.fijalkowski%40intel.com
