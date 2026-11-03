@@ -1,101 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793692488;
-	b=XUy+zMPku8XMvMRv6TjS14xsjcnF25SvFY6Ax+xy+9+r5inV0uybiNwpyUPtZ1OWpkU2
-	 YfNpVLp4TnzgypccGNJdXwquS5deVb9x/WkCvlqz6LCw7IoYksFKVoepo/XnToDTKHLT/
-	 eFUSlJk5VHn6cymN8enV+8ESbWTxrDW4zvKtSkqv5DXPAQukx/+06o8Iv4aPuniLlYh1n
-	 IVTSQDgfAQTnbIN/poa+lCZ16DXgoQV60KtNjmiufd/C72tElEA6xD443yveNmMLq5cJW
-	 HhwsAyX2HDI/rgezqJXnvdkN7qtERK+3lHP8iM74G72vs0EZhHZmPLkVUBsQfwFT4sg==
+	t=1793692526;
+	b=aqG/gcB3OWbeKeb/kxSRqVlDi/ihjNrAqEN6Yq28XSDce0jeX8GRlDxg4ImmU3yB6I5/
+	 6NqBQx+LQuruuCLlneCKlUIP5kFKr5Nf5ATF8DeWj7qcSXkQ8DgjOEVIYH1i79Jmdy8lp
+	 Zsl0QsOAe4EiHZb1vKH4fSTyrvhz7USweKAF5RS7SB7YDatUs4qiiaGpGuZocEt+2nKYb
+	 FiAkKMaJ/dEEHj+8O3TZUO3rCfwXZORr+LJBqZ9oaXQgcR2/rinmVI4loR6b7VKUPj6Vk
+	 k6WjsNUs3jUDpS57Bc8oLkxv5F3hc3jUuhh2BG0LSrv0T+A4vld49xszp61jOJiUgOQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793692488;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=LrPtbrewofDNM9Dsgj1ZDWN+FRXhLMYsDsPjwvet0xk=;
-	b=nxrXrXSRm137HRRWJ+BgrAzU/gI4nMaRwOV7SonU+4r3cvOpAoO9fg2dc6XazwPh83UV
-	 V860LxLLEHYLt0JyrOQInS36arsAJ9W+VxWt5mqM20wrrc2vofBGEA40DrJ/9jE41eVZT
-	 cFRkrLRGV0w5Pr6edHZmu6vzGpI3GuWPPf6zXP84lNls33gimcXrsOTN6DGcZzW3KGH8I
-	 VF66KGUjCgjVyz9xRIVxZrCRuCdiQfthXPnHBHW+G/WDYkThFX1Y1hzYnzPfIqtZtTyam
-	 u5HAUlfFRLu55zEKmcGvQCWzt/bOFweOO5iWDZdWb8uNrs2u1ZLrdW/Zdk9ID0ZdgJQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793692526;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=bb6BgZSBzPk54W//sDNNb8p0kiKtn/n37kN4ZJY96f8=;
+	b=tGB3B8qP0mUS97XR89ztUtidFQVxmwrqbeWRRj0bvGNqo7PwpCQQqhq9SA52br1d3mxP
+	 h9VD+I4eJnNSX9p/4VepmsDrVhVMD9J6SjmjT98TV7i6xnUE79Fgdb0b1zzL7SPvgrtBD
+	 x7EHn0q6GB7FTGmPWcOcI0u2GWpUr65He6V4jbRHUvbzfhmuIaSloDC7wv+SNbLiemdDw
+	 Zx+Yh/rYxE0v/9maKyrPxQ2u2hu0+yR6PScqaha/+h+4YadOZ6ftLjx2jDeekEuNQ5snB
+	 VCsGpBcC9hgiS2dTyhbU8KaXzTHE1P5LbtMHq4etkWF04vYhkBgHWgIa2q/BmFcWOiA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="A+NltS/+";
-	arc=none smtp.remote-ip=209.85.216.49
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dMfDg5n5;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458CB606A33C
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 07:54:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 458CB606A33C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254C3606A329;
+	Tue,  3 Nov 2026 07:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=A+NltS/+
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3b08a162d4bso33446a91.3
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 23:54:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793692488; x=1794297288; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LrPtbrewofDNM9Dsgj1ZDWN+FRXhLMYsDsPjwvet0xk=;
-        b=A+NltS/+jPhAYvvzarKlry0yMkwBCxwa5kIiJmNYRVfMUngWtga347Sh8yJbbeLhYz
-         Yq6HxUTN4+Ws4hREwp7gh1vXMppzNkZLi+DzTdSUWvwiN2P9Sp1lzabDirQQl/92UWMO
-         61yHAIrkcjPdkpglu5bpucX7EGSte0IomLKOBqCREBy31wTF11897YtsMegroXZiDkdb
-         ZT7BIXcNUjEsEp0tQdO2B4Gb/WRIhh+KIaKLA73fAOWeGIMZ+NINi2xd9XDzsZfwYlP2
-         xIo1A39252rPXDudjX5MjVg6pdfi1TRyg7TLVvA7Bk+ZJG9Tu8wJOfMnQM0FS1sog/IY
-         dh3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793692488; x=1794297288;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LrPtbrewofDNM9Dsgj1ZDWN+FRXhLMYsDsPjwvet0xk=;
-        b=TP9EgLsHNZbwbfXYTejPMpQYnrqrX/R7Oa60QZh2vcrP4WCukLFSy1qzf9vo5gknHf
-         M/3Bf896iaIZh0IkEjm2wTFROzR5SgiveztF9G6KLHyk1K9x52CfTslbCmYYVBHdM4Ai
-         iWCtu2fBB8DFTQx60UXyWfqY1gf9K8noPR3gp6Qh632UmqY353FPQggpsP8f2c+pOfp1
-         V3juqP1xNvS7PBtHPoRKwO/3L+CV909cb3SSP4ntpsSC8hdgQ9g71W0ikxH/VHK2U4S9
-         bTqsD6lHpjZZb+HWB11NuZsig0lMFhE+Bwg/YiUZ/mQSrIV5rPD+0lrMgK8LaQieClda
-         SLWA==
-X-Forwarded-Encrypted: i=1; AKwUvBywM6jHlf//QzAuR+lMJ8n8LXCQk/S6bWBh7gvcO9XyS1YQ3OqBy992Ce1DZVdjTKe3wSenQe8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9N/rSKOYzDKjBxBAmTf4ZTAXtomn8D8bKBppiPKRYZ+52SpkSV
-	WnRdq2pJnAOuTYzHMkPDXYPVmP3dU0JhazpPm7yNhTqNGYyqHNIu+kpY
-X-Gm-Gg: AYBFou3TwUFxjG2T2KzQ5z+6IbGg2HKNNIs7T1jKdjuBWg030663eqbW5j1IZDAKFFu
-	nlXQZkLguFhat4MGIiEvm9N3AFqtSqQBrwXE+vspJcssoLHM11HfUvzNkoRmhj98WKAITVWI4ao
-	qO+jKObnQ7MQAE03DoOaVCPU7tAXvT3/E8d5UA2ES4AxmvU2cFdZg0Qn1di6ri8wA4MxkHu5Jxy
-	5EgKoltRyK/GQ3WBxLDYQFOhMNhVroDQ/gjKyy3K81G2KZv94xo8CWFkeEQmJIjEGFYFUWXhH8l
-	aEAd9dolmWw+4v+9O/ZpHL1TuiNzbQi6xC3TBb0akbqM6DIL/JkWLh7ihzQxdP9IrQboVSYviBm
-	rs9CWQShUZ/xZ8yc8zUIfxdlHzTpkqGVknC4bv15eVfMekmCpTMw93JypilsMFgrElPNYnyzhwM
-	qGDL5PZtMLAzqD1CHkNSR9ZwinCBlRxkf6MrS6kwCM56yViu+lfSX08Vdf2Gs7MqrdE8Pd/Gn+/
-	EHuAR6Wv7E5htPvMZKf7ueZuITOS8SBd5EmyQy8BA2ZAzHa6bphKNPoGdDvyYV6j7CZNqmQjEnz
-	GjcfI5o3MKgfefEdYe473kGmv1V6eevVshShcNoY+bHNxjo6DvhmN8HkKpjHr4EZkq+7Xd72J+u
-	Yzs+w/KaFoI64aw==
-X-Received: by 2002:a17:90b:57cb:b0:39e:4c81:6c5f with SMTP id 98e67ed59e1d1-3ae897f6192mr10394588a91.26.1793692487076;
-        Mon, 02 Nov 2026 23:54:47 -0800 (PST)
-Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb364a987esm829086a12.22.2026.11.02.23.54.42
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 02 Nov 2026 23:54:46 -0800 (PST)
-From: Jun Yang <juny24602@gmail.com>
-To: razor@blackwall.org,
-	idosch@nvidia.com
-Cc: davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	roopa@cumulusnetworks.com,
-	bridge@lists.linux.dev,
-	netdev@vger.kernel.org,
-	Jun Yang <junvyyang@tencent.com>,
-	stable@kernel.org,
-	TencentOS Corvus AI <corvus@tencent.com>
-Subject: [PATCH net] net: bridge: use one headroom snapshot for ND replies
-Date: Tue,  3 Nov 2026 15:54:37 +0800
-Message-ID: <20261103075439.43644-1-juny24602@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dMfDg5n5
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B251F000C1;
+	Tue,  3 Nov 2026 07:55:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793692526;
+	bh=bb6BgZSBzPk54W//sDNNb8p0kiKtn/n37kN4ZJY96f8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=dMfDg5n5ZpSq9zWJs/Z3rxKBJtLSmEL1qvhU8Oa5ge0xDb8QHtK9NYBMfzywS+awC
+	 ij3hiL1YwHx/yHYBWBLYHpTwT94CpD0OTLYaPaec3EBLtZoZ7Opl4EyJvUJ0SbvBHF
+	 Rkd8EJTRw9Pn1vwrIj2Q+u2ET+ICKU6HW8h5gNad1Xgf9c3MeI0/hVd5cZsyfCqASs
+	 425ed0id3H3lRYA3bSiaTt7chrYYcPoMvLOG2cVd4Dr4/WSwtt3qIm9YzwmzBMpXLR
+	 OlF9oPamKs04CCxEcrYNFmH9g86xOU1Ga5MtM/v//pBD/o6GjLOSYsic5RYKyfjP+B
+	 2C8Qy2fkJuEnQ==
+Subject: Re: [PATCH net 2/4] net: dsa: motorcomm: Fix IPv4/IPv6 address key
+ dispatch in flower
+From: netdev-bot+sashiko@kernel.org
+To: mmyangfl@gmail.com
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org
+Date: Tue, 03 Nov 2026 07:55:25 +0000
+Message-ID: <179369252510.488856.6603340329074881644@kernel.org>
+In-Reply-To: <20261102071119.3435180-3-mmyangfl@gmail.com>
+References: <20261102071119.3435180-3-mmyangfl@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,63 +63,167 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Jun Yang <junvyyang@tencent.com>
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-br_nd_send() calls LL_RESERVED_SPACE(dev) once to size the reply skb and
-again to reserve its headroom. When a port requiring more headroom is
-added to the bridge, br_add_if() can increase dev->needed_headroom
-between the two calls. The reserved headroom can then exceed the space
-accounted for by alloc_skb().
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-Take one headroom snapshot and use it for both the allocation size and
-skb_reserve().
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
-Cc: stable@kernel.org
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Assisted-by: tencentos-corvus-ai:hy4-preview
-Signed-off-by: Jun Yang <junvyyang@tencent.com>
----
-A KASAN reproducer for this issue is available if requested.
+- [High] The commit replaces the used_keys presence checks with a
+  control.addr_type check, and this introduces a regression.
+- [Medium] The commit message describes a bug that does not exist in this
+  tree.
 
- net/bridge/br_arp_nd_proxy.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+--
 
-diff --git a/net/bridge/br_arp_nd_proxy.c b/net/bridge/br_arp_nd_proxy.c
-index 87a40e2f1c50..985ed43f7e30 100644
---- a/net/bridge/br_arp_nd_proxy.c
-+++ b/net/bridge/br_arp_nd_proxy.c
-@@ -262,6 +262,7 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
- 	struct sk_buff *reply;
- 	struct ipv6hdr *pip6;
- 	int na_olen = 8; /* opt hdr + ETH_ALEN for target */
-+	int headroom;
- 	int ns_olen;
- 	u8 *daddr;
- 	bool dad;
-@@ -271,7 +272,8 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
- 	if (!dev)
- 		return;
- 
--	len = LL_RESERVED_SPACE(dev) + sizeof(struct ipv6hdr) +
-+	headroom = LL_RESERVED_SPACE(dev);
-+	len = headroom + sizeof(struct ipv6hdr) +
- 		sizeof(*na) + na_olen + dev->needed_tailroom;
- 
- 	reply = alloc_skb(len, GFP_ATOMIC);
-@@ -280,7 +282,7 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
- 
- 	reply->protocol = htons(ETH_P_IPV6);
- 	reply->dev = dev;
--	skb_reserve(reply, LL_RESERVED_SPACE(dev));
-+	skb_reserve(reply, headroom);
- 	skb_push(reply, sizeof(struct ethhdr));
- 	skb_set_mac_header(reply, 0);
- 
+net: dsa: motorcomm: Fix IPv4/IPv6 address key dispatch in flower
 
-base-commit: ffdf678dd16610e3f006dac904bd37c09684673c
+This patch changes yt921x_acl_rule_ext_parse_flow_entries() so that it
+chooses the IPv4 or IPv6 address block from control.addr_type. Before,
+it checked whether the matching address key was set in used_keys. The
+commit message says flow_rule_match_key() reports both address keys
+when only one of them is used.
+
+> The IPv4 and IPv6 address keys share the same storage in struct
+> flow_rule, so flow_rule_match_key() reports both as present whenever
+> either one is. As a result, IPv4 address rule may generated bogus IPv6
+> address bins, and vice versa.
+
+[Severity: Medium]
+Is this description accurate? flow_rule_match_key() is just
+dissector_uses_key(), which tests one bit in used_keys:
+
+include/net/flow_dissector.h:dissector_uses_key() {
+	return flow_dissector->used_keys & (1ULL << key_id);
+}
+
+FLOW_DISSECTOR_KEY_IPV4_ADDRS and FLOW_DISSECTOR_KEY_IPV6_ADDRS are
+separate bits.
+
+In flower, struct fl_flow_key has separate ipv4 and ipv6 members (not a
+union). fl_set_key() fills in only one family. fl_init_dissector()
+registers each key on its own, based on that key's own mask:
+
+net/sched/cls_flower.c:fl_init_dissector() {
+    ...
+	FL_KEY_SET_IF_MASKED(mask, keys, cnt,
+			     FLOW_DISSECTOR_KEY_IPV4_ADDRS, ipv4);
+	FL_KEY_SET_IF_MASKED(mask, keys, cnt,
+			     FLOW_DISSECTOR_KEY_IPV6_ADDRS, ipv6);
+    ...
+}
+
+fl_hw_replace_filter() then passes that dissector to the driver
+unchanged.
+
+In nftables offload, nft_flow_key does put ipv4 and ipv6 in a union.
+However, nft_payload_offload_ip() and nft_payload_offload_ip6() only
+set the bit for the family being matched.
+
+Is there a path where both bits end up set? If not, the old code looks
+correct for these inputs. The patch has a Fixes: tag and will be
+backported, so could the commit message be corrected, or could it
+include a reproducer?
+
+> diff --git a/drivers/net/dsa/motorcomm/tc.c b/drivers/net/dsa/motorcomm/tc.c
+> index 8835907366bf7..5a4459507582d 100644
+> --- a/drivers/net/dsa/motorcomm/tc.c
+> +++ b/drivers/net/dsa/motorcomm/tc.c
+
+[ ... ]
+
+> @@ -603,8 +604,15 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
+>  		return -EOPNOTSUPP;
+>  	}
+>  
+> +	if (flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_CONTROL)) {
+> +		struct flow_match_control match;
+> +
+> +		flow_rule_match_control(rule, &match);
+> +		addr_type = match.key->addr_type;
+> +	}
+> +
+>  	/* Entries */
+> -	if (flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_IPV4_ADDRS)) {
+> +	if (addr_type == FLOW_DISSECTOR_KEY_IPV4_ADDRS) {
+>  		struct flow_match_ipv4_addrs match;
+>  
+>  		flow_rule_match_ipv4_addrs(rule, &match);
+> @@ -630,7 +638,7 @@ yt921x_acl_rule_ext_parse_flow_entries(struct yt921x_acl_rule_ext *ruleext,
+>  		}
+>  	}
+>  
+> -	if (flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_IPV6_ADDRS)) {
+> +	if (addr_type == FLOW_DISSECTOR_KEY_IPV6_ADDRS) {
+>  		struct flow_match_ipv6_addrs match;
+>  
+>  		flow_rule_match_ipv6_addrs(rule, &match);
+
+[Severity: High]
+Can this program bogus IPv6 bins when the IPv6 address mask is all
+zero?
+
+fl_set_key() sets addr_type whenever an IPv6 src or dst attribute is
+present, whatever the mask is:
+
+	} else if (tb[TCA_FLOWER_KEY_IPV6_SRC] || tb[TCA_FLOWER_KEY_IPV6_DST]) {
+		key->control.addr_type = FLOW_DISSECTOR_KEY_IPV6_ADDRS;
+		mask->control.addr_type = ~0;
+
+fl_init_dissector() only registers FLOW_DISSECTOR_KEY_IPV6_ADDRS through
+FL_KEY_SET_IF_MASKED. Take a rule like this:
+
+  tc filter add dev swp0 ingress protocol ipv6 flower skip_sw \
+      src_ip ::/0 action drop
+
+It ends up with addr_type == FLOW_DISSECTOR_KEY_IPV6_ADDRS, but with no
+IPV6_ADDRS bit in used_keys.
+
+skb_flow_dissector_init() memsets the dissector, so
+offset[FLOW_DISSECTOR_KEY_IPV6_ADDRS] stays 0. skb_flow_dissector_target()
+adds that offset without checking whether the key is present. As a
+result, flow_rule_match_ipv6_addrs() returns key and mask pointers to
+the start of struct fl_flow_key (meta, control, enc_control, basic, ...).
+
+With that layout, mask->src.s6_addr32[2] overlays control.thoff and
+control.addr_type, and the addr_type mask is 0xffff. mask->dst.s6_addr32[2]
+overlays basic.n_proto and basic.ip_proto, and the n_proto mask is 0xffff
+when a protocol is given.
+
+Wouldn't the loops then create YT921X_ACL_TYPE_IPV6_SA2 and
+YT921X_ACL_TYPE_IPV6_DA2 entries keyed on addr_type and the 0x86dd
+EtherType? The hardware rule would then match only IPv6 packets whose
+address words happen to equal those values, not all IPv6 traffic.
+
+Other matches such as ip_flags or dst_mac can add SA3/DA3 bins in the
+same way. The extra bins can also push an otherwise valid rule into the
+"Rule too complex" error path.
+
+Before this patch, flow_rule_match_key(rule,
+FLOW_DISSECTOR_KEY_IPV6_ADDRS) returned false here and the block was
+skipped.
+
+The IPv4 branch has the same structure. It is harmless today only
+because offset 0 hits the meta key, and the meta mask is zero since META
+is rejected in used_keys.
+
+This also looks to be still present at the end of the series. The
+commit "net: dsa: motorcomm: Delete the ACL rule of the port being
+unbound" keeps the addr_type-only conditions.
+
+Would it work to keep the presence check and add the addr_type check on
+top of it? For example:
+
+	if (addr_type == FLOW_DISSECTOR_KEY_IPV6_ADDRS &&
+	    flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_IPV6_ADDRS)) {
+
+and the same for the IPv4 branch.
+
 -- 
-2.54.0 (Apple Git-157)
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261102071119.3435180-1-mmyangfl%40gmail.com
