@@ -1,57 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.13.80.246
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793700338;
-	b=NJEiRCC/MvH5queNgw5dn0uhcJNv0rQm1RGMsK+bVDzOzi8bk+/xNeC+AwZRhn+cosZo
-	 /YE41SRhwUJlNwmhvba1vRNTEYQVZK2EwFs3fnlcE9MeVezxeduQsQ1WuO5xaf+ecQY2C
-	 hZbZ6OozL+6CbQgs/6GNg9Qw7DaK4+VgGLbtsr1GR7hNAWZTr6uXiESVYixKZ+cLJyqFh
-	 8pXOFXspOwX9xN1TZvQE/H2xRVLt+/m4dwUUYUUcQL6Dg7k0EVSSs7QCBksUk6drGHIjD
-	 RL2k8UPEZytag9UzNRqqhClgFE12S3Mi1dNoD5T2ElNI5AGyAqJWartkGnR5fplJDBQ==
+	t=1793700329;
+	b=jnUrvCi0fAwbszAjLrwH6g8HwRlWMSUQwnC2Ym4dOrasFenrNu8SxyHgOVu4WtUtN4PM
+	 MPRLx6AV0K6LtHAphCw4nIkhAQl3xHGuZxpycV9sjHK579dvdzAJA2W1W8+QtCi2zStp0
+	 UbAVMsbtfoW95x1hsUXEW+GHuHqrs6VNhaEcBV1z81TLiFm4JXCdrlwmVsf2aS/keVSKa
+	 ljNP0uJ4wgepjD+AVE0cprgvM7OdJywFnr+FbhEoZRWi6+ErgUWNC+pn0hWhqOcJCl3I9
+	 uRsXKX0qnMvHlfd1J9xoqbOqabc5J02NtT4QEP7y2M2B5juweOPNEoFVcH5euuAWEEw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793700338;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
-	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=Oh/m/hg+bzvxxYBT2T2fdKMkhIaukkQ/MVnjb8MgjsY=;
-	b=m1jb2XQh6dInPRqDc88B94FlOO8IJhWZ6RXqdkrnrkpvwoqb0FuibbYMm+aJX4DS9T/O
-	 t2rAYfqLWkyub09wIfck5FV6ub9xnG13MHa2ItLuoDkd6v01xKjmtuGrBdafA6ah1tF9T
-	 n9WCRjFMx+eQtiAVUQU55YTe7EXfXl+692oXTbWNBFMHBt1uc77t78IHzirmIzBlJiiqB
-	 lV5N4q1Re7XME5tDEguS3kKtT9BxcmemCQ5Gas6mj8fuRXraeykfNxRvi0q/1TL0bztkR
-	 1oDk/OmY+5s0jRa3As+JGcxc5v6gHtELls+oGYE+EtBPrJmZ3/RjdiJDwLUddjTpBkg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793700329;
+	h=DMARC-Filter:Received:DKIM-Signature:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
+	bh=3kfM3mR2/9PMnJxa7HtUJSMymaoUCqKqMwpdhQvx6VE=;
+	b=RTXXrE4wpKTIEvdIKm2U3mIvHvDi80IP4MJ/rxDu++vo8uhHwt7oq+AQkANxUF69kPA9
+	 CZM48Y5Ny0/v25U8kgrhrGGg1eEuFL3oDW1ttPRUVZLh4h3YbVAfORRvZdEpLq82Kfg/1
+	 JIF98cosR+aKqNwBFqajRiDsYCaDt/gZfi/5bOdG4Sw2CtYoEVqKz8jl5JZkpDlby+Jy/
+	 EFrpXiK0kVW9yUeKN69XRJ4dDA7g3odKO7CdPfEh6t0DrO4VdggwjAu2wAOr/R5WYPO8x
+	 e2bfT7ncx8t2Ftybid8tqdqdkWI3zdrqXa1eJyIKk3ANxOSOe8XQT4RLUP8ENorMp6g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=iscas.ac.cn;
-	spf=pass smtp.mailfrom=iscas.ac.cn;
-	arc=none smtp.remote-ip=159.226.251.81
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	dmarc=none header.from=tipi-net.de;
+	spf=pass smtp.mailfrom=tipi-net.de;
+	dkim=pass header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=MKyqOY0v;
+	arc=none smtp.remote-ip=194.13.80.246
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB3C60850B3;
-	Tue,  3 Nov 2026 10:05:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CDB3C60850B3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowACnt5jnselqoXs7AA--.2514S2;
-	Tue, 03 Nov 2026 18:05:27 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: Sunil Goutham <sgoutham@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Ratheesh Kannoth <rkannoth@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: octeontx2-pf: drop the TC mark reference when adding a flow fails
-Date: Tue,  3 Nov 2026 10:05:36 +0000
-Message-Id: <20261103100536.1310108-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A8C606A801;
+	Tue,  3 Nov 2026 10:05:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B8A8C606A801
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=tipi-net.de header.i=@tipi-net.de header.a=rsa-sha256 header.s=dkim header.b=MKyqOY0v
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 75416A1644;
+	Tue, 03 Nov 2026 11:05:22 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1793700324; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=3kfM3mR2/9PMnJxa7HtUJSMymaoUCqKqMwpdhQvx6VE=;
+	b=MKyqOY0vL7/BwHCCmNig2SZD00ViNVruWagfpoQowWQRPauBn2NFFOUcMyUCDoP3oxDnTW
+	9HraLlqZemAnHuWe2su9P6HYuVcce341s/p4g9stE84d0IRKyIKff4CVKhelgOv0U4Gu3S
+	55x2FS0DxkakVmkCcU9rEttgPIjVezHwvn5J5/DUwbjSoALvai2/ZtDFQrXnPXfNuKgwfq
+	4B2JxSlaggzfb0QXKsIwa+XeCh6l2J62eakh9wqEzdB3w+11LnL9H+zqZ5e/TRbNfmAPfX
+	R3OEfngQOoiCqxpGroRalTa0071yEqABcf0SXIZUwecuOTuSrzwh17Deo39UoQ==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+Subject: [PATCH net-next v6 0/9] net: bcmgenet: support larger MTUs
+Date: Tue, 03 Nov 2026 11:04:54 +0100
+Message-Id: <20261103-nb-genet-mtu-nn-v2-v6-0-61d5631676e5@tipi-net.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,88 +56,109 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACnt5jnselqoXs7AA--.2514S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7uw4UWw15uFy7JF4fAF4kXrb_yoW5JrW3pr
-	48u3429F1rAr17Wrn7Ja15Ary5Gw4jqFy5Gay8Cw1Sgw13Arn7Za4DK3y09348KrZ3Ga9I
-	qFyjyws5Ca1DAaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9a14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE14v26F4UJVW0owAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
-	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFV
-	Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
-	x4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r4j6r
-	yUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIIF0xvE42xK8VAvwI8IcIk0rVWU
-	JVWUCwCI42IY6I8E87Iv67AKxVWxJVW8Jr1lIxAIcVC2z280aVCY1x0267AKxVWxJr0_Gc
-	JvcSsGvfC2KfnxnUUI43ZEXa7VU8jQ6JUUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRIAA2rpnIBiCQAAss
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33PwW7DIAwG4FepOI/KGHCWnfYeUw+BmJZDaZUw1
+ KrKu4/lFLWoR8v2598PMfMUeRZfu4eYuMQ5XlIt6GMn/GlIR5ZxrLVAQFIAKJOTR06c5Tn/ypR
+ kQWkAnWUKGiiIunidOMTbiv6I/9HEtywOtXOKc75M9/VaUWv/HVyUBNnT6Gm0xjvm7xyvsXJ5P
+ /IKFtwi1ESwIt44RqWs6hW+InqLdE1EV6QzQ9eTB9X7RhKzQVT7HVMRZGTtwhA+vX9F7BbRTcR
+ WBDpyFDwacE9JlmX5AzHc7lfUAQAA
+X-Change-ID: 20261002-nb-genet-mtu-nn-v2-402b5e6f306f
+To: Doug Berger <opendmb@gmail.com>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Nicolai Buchwitz <nb@tipi-net.de>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Pierre-Marin Leclercq <pierremarinleclercq88@gmail.com>, 
+ Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+ Justin Chen <justin.chen@broadcom.com>
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-otx2_tc_parse_actions() increments flow_cfg->mark_flows when it finds a
-FLOW_ACTION_MARK action. The reference is meant to be dropped again by
-otx2_tc_del_flow() when the flow is removed, so a flow that fails to
-install after its actions were parsed leaks it: the checks for the MCAM
-entry, the insertion into the flow list, the mailbox allocation and the
-mailbox reply all free the new flow node without touching the counter.
-The same happens when parsing the actions itself fails after the mark
-action was processed.
+This is v6 of my genet series which adds larger MTU / jumbo packet support.
 
-Release the reference on the error paths of otx2_tc_add_flow(), using
-the match id of the parsed request to tell whether it was taken.
+Larger MTU aka. jumbo frames are requested often by Raspberry Pi users, but
+the hardware has its quirks with larger frames. Dave Stevenson's PoC [1] had
+the receive side working, and thanks to Justin, who checked the RTL for what
+the hardware does with long frames, I could add the missing puzzle pieces.
 
-Fixes: 6a57f091622a ("octeontx2-pf: Add support for offload tc with skbedit mark action")
-Cc: stable@vger.kernel.org
-Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+GENET never sets dev->max_mtu and the packet ready thresholds stay at their
+2048 byte reset default, so long frames were dropped on receive and never
+sent on transmit.
+
+Patches 1 to 5 prepare the driver, patch 8 sets the MTU, as far as one
+descriptor reaches (3564 bytes with 4K pages). Patch 9 reassembles what the
+hardware hands up above that, which gets the ceiling to 16347 [2]. Patch 6
+splits a frame ending just past the packet ready threshold, which otherwise
+stops the transmitter [3]. Patch 7 builds the new rings before dropping the
+old ones, so a failed MTU change leaves the interface alone.
+
+Patch 8 needs bcmgenet_fini_dma() to clear rx_cbs and tx_cbs, which landed
+in net as 1c1f51c3ee9c.
+
+Tested on a Raspberry Pi CM4 (GENET v5), peer at the same MTU:
+- MTU 1500: iperf3 TCP 941/941 Mbit/s, UDP 956 Mbit/s, unchanged
+- MTU 9000: iperf3 TCP 990/989 Mbit/s, UDP 993 Mbit/s, no loss
+- MTU 1500 to 16347 with traffic and ifdown/ifup's
+- pktgen at line rate, 3858/3872/3886 byte frames mixed with 64 byte ones
+
+Pierre-Marin Leclercq tested v5 on a Raspberry Pi 4.
+
+[1] https://github.com/raspberrypi/linux/pull/7614
+[2] https://github.com/raspberrypi/linux/pull/7617#issuecomment-5669564355
+[3] https://github.com/raspberrypi/linux/pull/7617#issuecomment-5735557324
+
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Changes in v6:
+- Patch 6 splits the frame instead of padding it (Jakub)
+- New patch 7 builds the rings before freeing the running ones (Jakub)
+- Patch 8 drops the rollback and the datapath_up flag (Jakub)
+- Dropped Pierre-Marin's Tested-by on patches 6 and 8, both changed
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-index dee38d5c7f65..c3726d9f455a 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-@@ -1237,6 +1237,13 @@ static int otx2_tc_del_flow(struct otx2_nic *nic,
- 	return 0;
- }
- 
-+static void otx2_tc_put_mark_flow(struct otx2_nic *nic,
-+				  struct npc_install_flow_req *req)
-+{
-+	if (req->match_id)
-+		refcount_dec(&nic->flow_cfg->mark_flows);
-+}
-+
- static int otx2_tc_add_flow(struct otx2_nic *nic,
- 			    struct flow_cls_offload *tc_flow_cmd)
- {
-@@ -1273,6 +1280,7 @@ static int otx2_tc_add_flow(struct otx2_nic *nic,
- 
- 	rc = otx2_tc_prepare_flow(nic, new_node, tc_flow_cmd, &dummy);
- 	if (rc) {
-+		otx2_tc_put_mark_flow(nic, &dummy);
- 		kfree_rcu(new_node, rcu);
- 		return rc;
- 	}
-@@ -1287,6 +1295,7 @@ static int otx2_tc_add_flow(struct otx2_nic *nic,
- 		if (rc) {
- 			NL_SET_ERR_MSG_MOD(extack,
- 					   "MCAM rule allocation failed");
-+			otx2_tc_put_mark_flow(nic, &dummy);
- 			kfree_rcu(new_node, rcu);
- 			return rc;
- 		}
-@@ -1331,6 +1340,7 @@ static int otx2_tc_add_flow(struct otx2_nic *nic,
- 	return 0;
- 
- free_leaf:
-+	otx2_tc_put_mark_flow(nic, &dummy);
- 	if (is_cn20k(nic->pdev))
- 		cn20k_tc_free_mcam_entry(nic, new_node->entry);
- 	otx2_tc_del_from_flow_list(flow_cfg, new_node);
--- 
-2.34.1
+v5: https://patch.msgid.link/20261013-nb-genet-mtu-nn-v2-v5-0-076b6fc240be@tipi-net.de
+v4: https://patch.msgid.link/20261012-nb-genet-mtu-nn-v2-v4-0-2e2e3bfaf8cc@tipi-net.de
+v3: https://patch.msgid.link/20261007-nb-genet-mtu-nn-v2-v3-0-74a796c019ce@tipi-net.de
+v2: https://patch.msgid.link/20261006-nb-genet-mtu-nn-v2-v2-0-c4be21151912@tipi-net.de
+v1: https://patch.msgid.link/20261002-nb-genet-mtu-nn-v2-v1-0-96dc6d54cbee@tipi-net.de
+
+To: Doug Berger <opendmb@gmail.com>
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+To: Nicolai Buchwitz <nb@tipi-net.de>
+To: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+---
+Nicolai Buchwitz (9):
+      net: bcmgenet: ring the doorbell when the last frame of a batch is dropped
+      net: bcmgenet: let the caller decide whether to start the PHY
+      net: bcmgenet: allow a continuation descriptor without the alignment pad
+      net: bcmgenet: rename ENET_MAX_MTU_SIZE to ENET_MAX_FRAME_LEN
+      net: bcmgenet: derive the receive buffer length from the MTU
+      net: bcmgenet: split frames that end just past the transmit threshold
+      net: bcmgenet: build the DMA rings before giving up the running ones
+      net: bcmgenet: allow the MTU to be changed
+      net: bcmgenet: reassemble jumbo frames from status block fragments
+
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 727 +++++++++++++++++++------
+ drivers/net/ethernet/broadcom/genet/bcmgenet.h |  34 +-
+ 2 files changed, 585 insertions(+), 176 deletions(-)
+---
+base-commit: 4dd16e31135ea8437a720222df34e8745f385d6d
+change-id: 20261002-nb-genet-mtu-nn-v2-402b5e6f306f
+
+Best regards,
+--  
+Nicolai Buchwitz <nb@tipi-net.de>
 
