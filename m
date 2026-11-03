@@ -1,59 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793705351;
-	b=WPdRgSUyOIHq+16kBHKStEqEamlb9af+s0gZzMBsxN/a8NxUV6CL4FMjiM+14Dm6rmrD
-	 fU/rNWYYicn6bB+vpsPPXeOUUTjjrv0htviqItXHskPAvzU5UMerweNqr1lYyygadTJc1
-	 3QxUg5Cpo7S/6gLXNiR9nN3GJiHbWB/CZSF5g+62LC5Kteehhjxma3BpwMZLigG11KSeX
-	 asa8bJh95wF6PZkTk1FfJMcqyuiq4Sz4aPJbM/IF4KWutLdeeHGw2H3u+MGc9X+SIDMwQ
-	 NS1HQjYXpiPcCY90TeBM117uNN6qYUA8Y2DIj7J+ElNFtNs6nhSf6HTylFX9VYZ0rLw==
+	t=1793705765;
+	b=tWKZvy0MYtTynfZqkEGdk3uvejwBq1jJS1dxS2LxIgclhhYdU6cDw4isWI0we1WHmwKh
+	 X6fbaQriJgaYeoyLXU2KGkncUBTd3dy2TbLymJCdnfVrn4TCsisOEsoJa+BCz1f0KDVWW
+	 wZGbvv9yFTsivYpH6GCob0enLMTkynyr3WeAArjQZPMNKu1iakxkSZFMm29j3WwCnA0hp
+	 mUGV/EPYpmE/t+kMKdCcehJKqMDsihcXrcrvql+KsV/qwpFG/tSBEgb5ZlkvoVLHg5qiN
+	 v6HRVRz5ZBy8H+9G77pMfdKw2+gITHyveXenZ926hXtn+quzOe0MGJVTPCZn9zjVYhA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793705351;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=dWaEvAk5n6dyTmdK8oBdw/e0DOhzHuEIwwmY2X8xsdQ=;
-	b=EnpKL+1loxVCm7d0SUc6/eJdFY2117xmuDbgx6AzjSJMfWpuJPsmIl2wQxloECxns+xd
-	 dkOLJvr++XqV4cLuWyAYmsCeRSKy1738EKxoUd4qGjy9eNOvybDVhtR5MN6U8Pr1+HojZ
-	 WN020TSgcje9PRBGjCsYS56D1inh2jaMl6fnRl3Zc2HHJP1pYIHy3gJDNz44Igf/4WrAk
-	 zGiw5ZabSCx49OmXev9NhyJuSvKSfrlKWhQ4Rcb1UNlwFXwhqbmSnlRSmkS8HoBdjY0oG
-	 f8R8x+HE1KAQaSfBMsR43ww6TwyvA2Bj6P4ASdOyPyqZj/nbFwcYF4taRMezcUPyJLg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793705765;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=GAY7T9NQ/2byBz25PRaY9dnQ/M+bRZtNm/ceVen4yX8=;
+	b=r5OMsgQqKW21+EOHJpk/AqECpPudc7joDjElx4DIDCIUy9fcTZJYRGKHCMYpH/XzI4aK
+	 Gy3JKHud0xY+TK/tzZ1kzqM/mxRY3InimFfWrfcS5uX2mXkuqb/hqQzivfmlAsGvBEAEf
+	 NGneTy9Yt05rSLdvsepNpdfOFN2MV+x4cbtMmUumvwdwstbRvo/d2HS3nc9RxplA3yySa
+	 Rjg1EoMmg7f5wJEwwJEM15tUkJFNwHGeWqe2pRhF76LZbx1OItw7XYyijHiZm28xLPmK2
+	 Dou24e+AdaeuFpacU4mIWqai3InLsAerS2bnjaTJlS7TsaH78solamqJYJPDhy2OjOg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U8xyHbZw;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nA3OMBqW;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C05606A819;
-	Tue,  3 Nov 2026 11:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A02606A326;
+	Tue,  3 Nov 2026 11:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U8xyHbZw
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD2B1F00ADC;
-	Tue,  3 Nov 2026 11:29:10 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nA3OMBqW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC561F000C1;
+	Tue,  3 Nov 2026 11:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793705350;
-	bh=dWaEvAk5n6dyTmdK8oBdw/e0DOhzHuEIwwmY2X8xsdQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=U8xyHbZw1v6Io0vyp9fqViphsvkB49tN2c9jbeQwOp0fyVm7Q7TP61p7DTfVR8kVl
-	 DvYILhgLIjYpSx+cm1hdw1zACz6KvLzD8KTu8PLIN8Um2CE3PJJTgySf6lc86tfPf1
-	 0N6sXkiOWfAT4vA0Ls146QieA8LOELHSHXkawNzdZ5oG61JX3r2nIjq8ZExthKV+bU
-	 9sOVUwYMoT3+IZj+XZSfgeQtmfFdZfi3jGFxxRjebf/ruFb4/USJiZIutV7PEt1LAG
-	 9/J1OO6oZ9/5sMSo+KQ1QJJbW22RrUcyxvyzLPriCVBPRAJ6e/TMSfdComa9XKui0t
-	 a4CmS0a/JmG/A==
-Subject: Re: [PATCH net 2/3] nfc: rawsock: free the response skb when the data
- exchange fails
-From: netdev-bot+sashiko@kernel.org
-To: joasantonio108@gmail.com
-Cc: david@ixit.cz, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, oe-linux-nfc@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 03 Nov 2026 11:29:09 +0000
-Message-ID: <179370534977.488856.16044091995627562650@kernel.org>
-In-Reply-To: <179335864272.64596.4931238314416806197@gmail.com>
-References: <179335864272.64596.4931238314416806197@gmail.com>
-X-sashiko-severity: Critical
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1793705764;
+	bh=GAY7T9NQ/2byBz25PRaY9dnQ/M+bRZtNm/ceVen4yX8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nA3OMBqWR3BQKf86wg06Nkoydxsho4x5uDILtm0Wr4EW2r2fdhXIP5OCdlAW4ZDaq
+	 0BJft8wJVNe5odsp9CN31xIr5c8PkYsezfZitLD659jFaV6L6smQxMcklu+aX5lZEO
+	 Vb3cUdHRZdLiVVpoqlbqTXZ8h+APFIqpnQdOJ+TfmL8+wpGtKrgBR1osymsimxZCkI
+	 QkBLZg9Y+v/+Hvut5kBk0l0a9WTRfC/j5DSnPW5ywu0eCHNv0JnPpAf/Ma6d/otvBo
+	 d9LlnSqLIAEx1PLOfF5lKfUFFyv/ejU7ssVijiIBTWOTCrm3VYJxZNPJRnt1SHOJaI
+	 GFS1LbeJoZoVw==
+Date: Tue, 3 Nov 2026 11:35:59 +0000
+From: Simon Horman <horms@kernel.org>
+To: Alexander Goodkind <alex@goodkind.io>
+Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+	kuba@kernel.org, pabeni@redhat.com, matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Tarick Bedeir <tarick@bedeir.com>
+Subject: Re: [PATCH net v2] net: ethernet: mediatek: preserve sibling PPE
+ bindings
+Message-ID: <20261103113559.GH865646@horms.kernel.org>
+References: <20261030010517.45639-1-alex@goodkind.io>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,106 +62,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261030010517.45639-1-alex@goodkind.io>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Thu, Oct 29, 2026 at 06:05:17PM -0700, Alexander Goodkind wrote:
+> __mtk_ppe_check_skb() clears entry->hash for flows bound to other
+> hardware slots in the same software hash bucket. mtk_flow_offload_stats()
+> then skips their hardware counter updates. L2 cleanup also frees sibling
+> subflows without invalidating their hardware rules.
+> 
+> Restrict both cleanup paths to entries assigned to the inspected slot.
+> 
+> Two UDP trials reproduced the counter failure on a GL-MT3000/MT7981
+> running unmodified OpenWrt 25.12.5 with Linux 6.12.94:
+> 
+> 1. Start a UDP connection.
+> 2. Add a control connection in a different hash bucket.
+> 3. Add a connection in the first connection's hash bucket.
+> 
+> AI code review of the original patch identified the cleanup problem
+> in L2 subflows.
+> 
+> Full ARM64 builds with allmodconfig and allyesconfig passed before
+> and after the patch using GCC 14.2.0 and W=1, without new warnings.
+> The builds used CONFIG_WERROR=n because the unmodified ARM64 kernel
+> already emits warnings. Hardware testing has not run for this revision.
+> 
+> Fixes: c4f033d9e03e ("net: ethernet: mtk_eth_soc: rework hardware flow table management")
+> Fixes: 33fc42de3327 ("net: ethernet: mtk_eth_soc: support creating mac address based offload entries")
+> Link: https://github.com/openwrt/openwrt/pull/26107
+> Assisted-by: LLM
+> Signed-off-by: Alexander Goodkind <alex@goodkind.io>
+> ---
+> Changes in v2:
+> - Apply the slot check to L2 subflow cleanup as well.
+> - Add the Fixes tag for L2 offload support.
+> 
+> V1: https://lore.kernel.org/netdev/20261023012529.5994-1-alex@goodkind.io/
+> 
+> Codex assisted with investigating the counters and preparing the patch.
 
-Critical: 1 · High: 0 · Medium: 0 · Low: 0
+Thanks for the updates.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-- [Critical] Double free of the NFC-DEP response skb in
-  rawsock_data_exchange_complete() (net/nfc/rawsock.c), added by this…
-
---
-
-nfc: rawsock: free the response skb when the data exchange fails
-
-This patch makes rawsock_data_exchange_complete() free the response skb
-on the error path as well as on success. According to the commit message,
-HCI and NCI pass a response skb to the callback together with a non-zero
-err, so that skb leaks on every failed exchange.
-
-> diff --git a/net/nfc/rawsock.c b/net/nfc/rawsock.c
-> index f7d7a599fade7..74ef3906c2eda 100644
-> --- a/net/nfc/rawsock.c
-> +++ b/net/nfc/rawsock.c
-> @@ -156,8 +156,9 @@ static void rawsock_data_exchange_complete(void *context, struct sk_buff *skb,
->  
->  	pr_debug("sk=%p err=%d\n", sk, err);
->  
-> +	/* skb may carry the response even when the exchange failed */
->  	if (err)
-> -		goto error;
-> +		goto error_skb;
-
-[Severity: Critical]
-Can this double free the NFC-DEP response skb on the digital stack?
-
-The commit message says:
-
-  Free the skb on the error path too; it is NULL when the error does not
-  come with a response (digital, timeouts, device close)
-
-That is true for digital_in_send_complete() in net/nfc/digital_core.c,
-which frees the skb and passes NULL. It is not true for
-digital_in_recv_dep_res() in net/nfc/digital_dep.c. Several of its error
-branches jump to exit while resp is still a live skb, for example:
-
-	if (DIGITAL_NFC_DEP_NAD_BIT_SET(pfb)) {
-		rc = -EIO;
-		goto exit;
-	}
-
-The other such branches are the digital_skb_pull_dep_sod() failure, the
--EMSGSIZE check on resp->len, a NACK PDU, an ACK PNI mismatch, and an ACK
-with no chaining_skb.
-
-At exit, the function calls the callback and then frees resp itself:
-
-exit:
-	data_exch->cb(data_exch->cb_context, resp, rc);
-
-error:
-	kfree(data_exch);
-	...
-	if (rc)
-		kfree_skb(resp);
-
-With this change, rawsock_data_exchange_complete() frees resp first.
-digital_in_recv_dep_res() then frees it a second time.
-
-A raw socket can reach this path. rawsock_connect() passes
-NFC_PROTO_NFC_DEP through nfc_activate_target() to
-digital_activate_target(), which sets ddev->curr_protocol. After that,
-digital_in_send() sends the exchange through digital_in_send_dep_req(),
-with rawsock_data_exchange_complete() as the callback. The remote peer
-controls the PFB bits and length of the DEP_RES frame, so it can trigger
-any of these error branches.
-
-The data_exchange_cb_t kernel-doc in include/net/nfc/nfc.h doesn't say
-who owns @skb when @err is non-zero, and the producers handle it
-differently:
-
-  - HCI and NCI hand ownership to the callback.
-  - digital_core frees the skb and passes NULL.
-  - digital_dep passes the skb and frees it afterwards.
-
-Would it make sense to fix the ownership rule in the producers as well?
-For example, digital_in_recv_dep_res() could pass NULL on error, or stop
-freeing resp after the callback. The rule could then be documented in
-the kernel-doc.
-
-The later patch in this series, "nfc: llcp: free the response skb when
-the data exchange fails", only changes nfc_llcp_recv() and does not touch
-digital_dep.c. So the double free is still there at the end of the
-series.
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179335864271.64596.805818095553030218%40gmail.com
