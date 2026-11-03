@@ -1,67 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.153.30
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793664714;
-	b=XMiAP4RIZU6Ennt1AbfS014vU9pGidlAMdPTYnDGb4iAAGLOw+qIGbUh2UARgzcyXCwc
-	 75hOWlMFI+FmQ6I29Xb7YSmG/YPZSEGkP4nuSbt5ddtEGNIYnKS+44Cj3WTnW00dQTJXx
-	 mtU8lUqMak3DuDP54V0Ig+CWYAwXkSyLsIU4glaoTJinLmygwXGSPyI724JOH/ut0PS1R
-	 drghGWT5nf/atKHP50bcqhO2OoMW3eFPwrg047/ziYXBWTq3F+cMieHXqIgF3+U+i99v4
-	 R96HL97mq0m5r2anBQh6xZJybkgjIQP/IWZ+wwKurzb/9p/iMsuioHfIYX1fnp4mKsA==
+	t=1793664733;
+	b=oP/Hqhtl5lBMeZZcnqtPMWl9aIXTpLHpFvHEoLYyw8pSv45jvBf05GoOomrjhfqRqZIR
+	 19jAXVt73CVPXyqImynbFA9zMonZeoGvyv9OX8SzSFtHZ+BASLrzQpLdgn89h/tLALcim
+	 TZsf+s0C3Rg3SCZwq4i/hgFhbdPWuCCK9OzsSJyD5VHbZVz5vjAV2Hhkkco9Ey2dm2/jU
+	 HAa4TXCL166I9G4BrxGZMAGfwmfogCA3XoGd8/ZADNmdg9+jKlzZU1eWh6mw3vA59VxgE
+	 GW41LmIElbtrm0ZUJPQEq/urdaq7JKevrNZkyFOmRympxn0e7PHJdr2w8OnotJR2C5A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793664714;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793664733;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:To:CC:
-	 Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Originating-IP:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-GUID:X-Proofpoint-Spam-Info:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version;
-	bh=uEdJZuEv+71ZJNyRFUsTQlDm4iAneiepeaY/wo4w+Xc=;
-	b=qIo2acdQ2yOZO8pG+6O/vkzX7pXjbFHhU1oZmyrcONXKaLeUGBhkMCosQyByxhgKQ6pc
-	 WVT5nL5AOnvxBN4YLoJdlPJBKYvKFKqn08Oc6OWZLU0FiSzUPZC4852vWtr0awhav1Epg
-	 SOlVKlzZWgZLoEWdpe5n8G6XaCVxYYQm6LvEhbOPYT/m8kfLoYKWWuIMidDTrVc+dkMJ5
-	 09451vEbO1Ivb/Jq9fabmdzf3s5ueuqh1pLYVqC9IRmu7wMAhk19pQherxcMMoOc2T6/H
-	 JHTdoDSi1qr5vI4aFguzUZd006u4I8zpWP+TrbTYHP4D9ARMzUZz0aPuHHmbU1uIAxw==
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-Originating-IP:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:X-Authority-Analysis:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Virus-Version;
+	bh=PQKPlxJF/F8lJXwtq1+kcOM/VMpu859BrVkvVZALXRY=;
+	b=sxhVUcm434kFG7M9WzwbRtXJJ5+pJCDjKGYRQz90riihv50Tf8gMNUXvgCQt/DE3rHcz
+	 SsHRTYpByeOwlxamP+Gtcb3qQ4a2eD2JyFROUK0vXqT8tIhcAzNAtMbb++GgJvUe1+Xa3
+	 RTJfFmPwpOgaKfpgdEsqy4IfISPm1TSkzE42+uT9Y6LT2VA526EhuQkDkibscP5IzDmm5
+	 dYaog1Hd6MYMl8fpdQAPF6o0BXcYS9AZGmQq7zKbhb4FYYAxish+XeSbj03ZAoTBQ1puK
+	 dr6HiflGshDKMP/5E4BerZ9D6pylb7bDHwWiy1KmluiFNx2y45L/ZqekbPxVUdK8NPg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=meta.com;
 	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=BL+TYsC3;
-	arc=none smtp.remote-ip=67.231.145.42
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=KaeN2MHl;
+	arc=none smtp.remote-ip=67.231.153.30
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBAF606D80B;
-	Tue,  3 Nov 2026 00:11:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6BBAF606D80B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2A7606A329;
+	Tue,  3 Nov 2026 00:12:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A2A7606A329
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=BL+TYsC3
-Received: from pps.filterd (m0148461.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A2K6EZ7168672;
-	Mon, 2 Nov 2026 16:11:52 -0800
+	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=KaeN2MHl
+Received: from pps.filterd (m0109332.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A2K6PsM4127813;
+	Mon, 2 Nov 2026 16:12:09 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pps82601-s2048-2026-q3; bh=uEdJZuEv+
-	71ZJNyRFUsTQlDm4iAneiepeaY/wo4w+Xc=; b=BL+TYsC3qdatBOu8xN+TwrEPZ
-	Bx5G9uHPM8yIoUF1KaXNktEVeEWOhMTO3CRf2yKCOqb3VEX3Yopx2bdJpbSrO9Kt
-	apjA3bH2Hp8QuHvShHcSTxInEoq1XIA7X29kCy6ZaHvmaJ8DlubyBqwkW6A5X7HG
-	0YpSopZCGdfs3QcYylN8ykU2AbdYVUCWeopBlVdb9OQLVNFhxCCF5lWL+tWGb/db
-	gIo+HcSdxCWmgHq/iYNUz+t49qUKDIgCUauxh/ZO3B0B0rXx0U1IV/uujUGIBBan
-	ufKwmQms+AY0xG+oFHV40TvYYRJ8qrc+q7k9G3hwdk8ZxoJoHz4d8J7GPEotA==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hnde7f5ss-2
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	pps82601-s2048-2026-q3; bh=PQKPlxJF/F8lJXwtq1+kcOM/VMpu859BrVkvV
+	ZALXRY=; b=KaeN2MHlAvOWUeEcTvCUConQ9C6WotkZ60RwiS5KFSuVTU75xgIf5
+	4KTQ15q5ncEz4rTyCRmwtCiPMVr34jDqb0biL3xyB5t1+JIdV9noSY0/7A1sl8+r
+	XhES6wQ2yos6F0cpsyDHEOSarfnu5Jo6WQ3ju4arHeMARWo6wOw/78hG6tfbtC+d
+	BbwMokNlNmLCLEnoVPGXGiaNs9rahMnnNg2Azw0fkEog5lRr86FD1ruq0U3G2C9J
+	Dr5lEQ4IouZBLRjU4KS+9TyYBOaaDVE9OfbvX7O3L/zRvk41QdbcZlRB8d+nQX3V
+	1N0ECjMoNqfnpT85h++HltkyoPYsUK6rw==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hne2d65xp-4
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 02 Nov 2026 16:11:52 -0800 (PST)
-Received: from localhost (2620:10d:c085:208::f) by mail.thefacebook.com
- (2620:10d:c08b:78::c78f) with Microsoft SMTP Server (version=TLS1_2,
+	Mon, 02 Nov 2026 16:12:09 -0800 (PST)
+Received: from localhost (2620:10d:c0a8:1b::30) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Tue, 3 Nov
- 2026 00:11:51 +0000
+ 2026 00:12:08 +0000
 From: Todd Freed <toddfreed@meta.com>
 To: <netdev@vger.kernel.org>, <toddfreed@meta.com>
-CC: <linux-kselftest@vger.kernel.org>
-Subject: [PATCH net v4 0/7] psp, tls: don't send offloaded contents in cleartext
-Date: Mon, 2 Nov 2026 16:11:36 -0800
-Message-ID: <20261103001143.246081-1-toddfreed@meta.com>
+CC: <linux-kselftest@vger.kernel.org>, Sashiko <sashiko-bot@kernel.org>,
+        "Jakub Kicinski" <kuba@kernel.org>,
+        =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?=
+	<bjorn@kernel.org>
+Subject: [PATCH net v4 3/7] ipv4: icmp: don't quote decrypted payload in icmp errors
+Date: Mon, 2 Nov 2026 16:11:39 -0800
+Message-ID: <20261103001143.246081-4-toddfreed@meta.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261103001143.246081-1-toddfreed@meta.com>
+References: <20261103001143.246081-1-toddfreed@meta.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -73,123 +80,183 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: vjivpWtr9xn9rNKPyx5dy-QSh5PEau05
-X-Proofpoint-GUID: vjivpWtr9xn9rNKPyx5dy-QSh5PEau05
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAzMDAwMCBTYWx0ZWRfX36RJhpVf0DFi
- r6jSSEXEbDKVj1OTAnlEKx+KMqEkfx4H2H9MbydgfEtQiD/YitZukw+kla4i+C+TEu7XohvNX/e
- Vji4GInzWAAkSZFSOCmbHG/PGrGL6Dg=
-X-Authority-Analysis: v=2.4 cv=W6+txhWk c=1 sm=1 tr=0 ts=6ae926c8 cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAzMDAwMCBTYWx0ZWRfX3q5BK5rvZrR7
+ bI4xfQlbuX6wuOA8uN7BrYSWY4Ofu2xbliywmoXWGCzHBw+2peEGzJ7o4fc+kQ2e2mpF8UgoinT
+ VvzvfJEE4o4F/HXQCQ09yFqlnW/LbGVG9rwSWAEB4EosVWGY9zFY5Pc85OynzsF3wa4xszexlh5
+ mqrOcZlFgwOzqW2rcJrljfeoShE2zxxQgy0u0aKbAXtdwEKc8LW4TFg8vPc7dDKhXtJBEFxKE0w
+ Omk+byu93jSqqiLlCSJM6O/YatIi1XnQ872h+Isi+rc/5qVZmK1i3BTRXQv3L3IgY6t7X9MYbEa
+ SPmmeJ4u4fKAm2YYzR26cVvDozVsQCtEwxuVXFD+FX+aIx6z+6oEkv9182pVWdZx6LFzwE+kiif
+ 7Xd74sdpzUhTdklAI4OAmoKGbOZFrglReBvtH60vsx7ju/mPdCMttsuJy/CN6vUFq+I1NypLWGq
+ KD0NzfX/7sKiP3aEaSw==
+X-Proofpoint-GUID: bl5aJfSKkOCe45CfXYUFrFM6TBXAXa5m
+X-Authority-Analysis: v=2.4 cv=QJ791QLL c=1 sm=1 tr=0 ts=6ae926d9 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
  a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=03ozwUkBphtHgyqjj1sw:22 a=VwQbUJbxAAAA:8
- a=VabnemYjAAAA:8 a=lmvCLA915dBuvYjvTxIA:9 a=QEXdDO2ut3YA:10
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAzMDAwMCBTYWx0ZWRfX8ibHkltqsB8N
- oUMpEs+q+aExVhTUEIPpbzN0UUOrzX7UqhGfurdi3g+7j83N6Cfi6ZQYMNBnyrY3LMFu/BQjyAm
- uJKWUj6x2xdkxIvf9bKlZHhu9RwaL8Pi0Uf/0Pr9n3wWDEXfPCR0UHTdqRuRQhx3U1FiRdvqpe5
- HARVar1fn62Pvzoy+f+d53uuRsgG/Z5NufNChGKYmrdUoQ91LvAtsegOLV9BZeivX/hT/TISEP/
- Ioq2KT1hrlAhdzh6meRLkVm1Qrv8ItznMvoC3Zy7qM4vtcnkxvawBTjN51tu9U4tutiiceAKjhA
- zTTJbaNn7jF0BYw8DGZLS/bdwVyYYhochYRa/x3htYEjaYdeOwEHN/F2LKPDX9x8Xz8SGGuBTY2
- GjmcHAQvT+JY7RD4ssSAThbRQlXFxhyhExhc5WNUds7IlG95CJwELl/0na8V/e8NXkglmHEpuw+
- gJ16Wu2jm5TmRKjuOrA==
+ a=7x6HtfJdh03M6CCDgxCd:22 a=xtH7KyWI9dI7BmFOsl-x:22 a=9R54UkLUAAAA:8
+ a=VabnemYjAAAA:8 a=VwQbUJbxAAAA:8 a=-z2kMTAr2hpZfj2momEA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=YTcpBFlVQWkNscrzJ_Dz:22 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-ORIG-GUID: bl5aJfSKkOCe45CfXYUFrFM6TBXAXa5m
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAzMDAwMCBTYWx0ZWRfXx+7i+YR1OXuB
+ 34QPr9OKDp+8eMFqCsIF1IINCjHaLe0ltvA3twTNu0o6+iHYmC27k5uXTsaEQ0TRXAjkiThXruJ
+ 8+gJpnd3zNNv4KPtcO51oZrBfPXr0kc=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-02_06,2026-11-02_03,2025-10-01_01
 
-While working on adding support for socket-less psp associations, I
-noticed the case of ipv6 extension headers was not being handled
-properly for psp packets. It will be relevant with that series, because
-it adds udp support, for which the psp nexthdr needs to look at the
-inner packet.
+an icmp error quotes as much of the invoking packet as fits in 576
+bytes. if the device had decrypted the packet (as indicated by
+skb->decrypted) then the icmp error is sending part of it back out onto
+the network in cleartext.
 
-That led me to various other ways where packets on the crypto offload
-path could be transmitted unencrypted.
+the two offloads encrypt different parts of the packet:
 
-Since the tx/tls association encodes intent to send encrypted packets,
-but these various cases circumvent that, sending these as fixes.
+- ktls rx device offload decrypts the tls records in the tcp payload.
+  the tcp header was in the clear on the wire, so quote the ip header
+  and the tcp header, options included, and leave out the rfc 4884
+  extension, which would carry the payload too.
 
-The cases are,
+- psp encryption also covers the tcp header. the quote could include just
+  the ip header, but that's not really useful. linux receivers want to
+  look at the l4 layer on the quoted packet, so such a truncated icmp
+  error packet is just dropped (icmp_socket_deliver()). don't send the
+  error at all for psp.
 
- 1/ ipv6 extension headers,
- 2/ ipv4 fragments,
- 3/ icmp errors,
- 4/ icmpv6 errors,
+a decrypted psp skb has SKB_EXT_PSP, which is used to distinguish the
+two cases. note though that if an inner tunnel is decapsulated,
+skb_scrub_packet() drops the extension but keeps skb->decrypted, so an
+error about the inner packet takes the ktls path in this case (quote
+includes the l4 header), which is less than before.
 
-Cases 2, 3 and 4 are relevant for ktls as well as psp.
+on tx, skb->decrypted is also set. an error about a locally originated
+skb (skb_iif is 0) is sent in full as before, if it goes to a local
+address, as determined by the packet's source address.
 
-The last patch fixes an mlx5e bug in tso checksum calculation for psp
-packets when the l3 dest is an intermediate hop (ipv4 source routing).
-It's not about preventing unencrypted tx, so could be considered
-separate.
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261023234640.1459291-1-toddfreed%40meta.com
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: Björn Töpel <bjorn@kernel.org>
+Fixes: 784abe24c903 ("net: Add decrypted field to skb")
+Signed-off-by: Todd Freed <toddfreed@meta.com>
+---
+ include/net/psp/functions.h | 11 ++++++++
+ net/ipv4/icmp.c             | 54 +++++++++++++++++++++++++++++++++----
+ 2 files changed, 60 insertions(+), 5 deletions(-)
 
-Testing:
-
-all hardware testing was done on connectx-7 (fw 28.48), between two x86
-hosts, plus netdevsim.
-
- - tso checksum seed: a psp tcp socket with an ipv4 loose source route,
-   the peer checking tcp checksums in software. hundreds of checksum
-   errors before the fix, none after.
-
- - tls offload, with a kernel built with CONFIG_TLS_DEVICE and
-   CONFIG_MLX5_EN_TLS:
-   - tx offload, ipv4 fragments (route mtu above the device mtu,
-     IP_PMTUDISC_OMIT): without the fix, some fragments after the first
-     go out in cleartext. with it they're dropped.
-   - rx offload, an iptables REJECT rule on the receiver: the icmp and
-     icmpv6 errors about device decrypted packets quote the ip(v6) and
-     tcp headers only (52 and 72 bytes). errors about locally generated
-     tx offload packets, rejected in OUTPUT, are still quoted in full.
-
- - net/icmp.sh and net/pmtu.sh pass.
-
-v4:
- - new subject, since the series grew beyond ipv6 extension headers
-   (v1-v3: "psp: fix transport mode with ipv6 extension headers")
- - back to dropping ipv6 packets with extension headers, but moved into
-   mlx5e instead of psp_dev_encapsulate()
- - drop the psp core changes to rx and tx ipv6 extension headers
- - new patch 2 to drop decrypted skbs instead of fragmenting
- - new patches 3 and 4 to prevent quoting just-decrypted packet contents
-   in icmp errors, v4 and v6 respectively (Jakub, Bjorn, Sashiko)
- - new selftest: ipv4 fragments of a psp tcp socket
-
-v3: https://lore.kernel.org/netdev/20261023234640.1459291-1-toddfreed@meta.com
- - new patch 1 to fix tso checksum seed calculation in mlx5e (Daniel)
- - accept routing headers and reject ah (Daniel)
- - split the psp_dev_rcv() change into its own patch (Daniel)
- - return -EINVAL instead of -1 (Daniel)
- - selftest: one variant per extension header type (Daniel)
-
-v2: https://lore.kernel.org/netdev/20261022223014.556388-1-toddfreed@meta.com
- - walk the extension headers instead of dropping (Daniel)
- - reject fragment headers (Bjorn, Daniel)
- - reject routing headers
- - psp_dev_rcv() handle the rx case as well
-
-v1: https://lore.kernel.org/netdev/20261021210200.788191-1-toddfreed@meta.com
-
-
-Todd Freed (7):
-  net/mlx5e: psp: drop ipv6 packets with extension headers
-  net: don't fragment decrypted skbs
-  ipv4: icmp: don't quote decrypted payload in icmp errors
-  ipv6: icmpv6: don't quote decrypted payload in icmpv6 errors
-  selftests: drv-net: psp: test ipv6 tcp socket with extension headers
-  selftests: drv-net: psp: test that ipv4 psp packets aren't fragmented
-  net/mlx5e: psp: tso: replace only the length in checksum seed
-
- .../mellanox/mlx5/core/en_accel/psp_rxtx.c    |  39 +--
- include/net/psp/functions.h                   |  11 +
- net/ipv4/icmp.c                               |  54 ++++-
- net/ipv4/ip_output.c                          |   8 +
- net/ipv6/icmp.c                               |  61 ++++-
- net/psp/psp_main.c                            |   1 +
- tools/testing/selftests/drivers/net/config    |   1 +
- tools/testing/selftests/drivers/net/psp.py    | 229 +++++++++++++++++-
- 8 files changed, 378 insertions(+), 26 deletions(-)
-
-
-base-commit: abeacca61eea4f6803df4a595b656ea45c2d3249
+diff --git a/include/net/psp/functions.h b/include/net/psp/functions.h
+index c5c23a54774e..b263b573ae4c 100644
+--- a/include/net/psp/functions.h
++++ b/include/net/psp/functions.h
+@@ -51,6 +51,12 @@ psp_enqueue_set_decrypted(struct sock *sk, struct sk_buff *skb)
+ 		skb->decrypted = 1;
+ }
+ 
++/* The device decrypted @skb with psp, on receive */
++static inline bool psp_skb_is_decrypted(const struct sk_buff *skb)
++{
++	return skb_ext_find(skb, SKB_EXT_PSP);
++}
++
+ static inline unsigned long
+ __psp_skb_coalesce_diff(const struct sk_buff *one, const struct sk_buff *two,
+ 			unsigned long diffs)
+@@ -170,6 +176,11 @@ static inline struct psp_assoc *psp_sk_assoc(const struct sock *sk)
+ static inline void
+ psp_enqueue_set_decrypted(struct sock *sk, struct sk_buff *skb) { }
+ 
++static inline bool psp_skb_is_decrypted(const struct sk_buff *skb)
++{
++	return false;
++}
++
+ static inline unsigned long
+ __psp_skb_coalesce_diff(const struct sk_buff *one, const struct sk_buff *two,
+ 			unsigned long diffs)
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 90c0e22c29be..d522488475b6 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -78,6 +78,7 @@
+ #include <net/ip.h>
+ #include <net/route.h>
+ #include <net/protocol.h>
++#include <net/psp/functions.h>
+ #include <net/icmp.h>
+ #include <net/tcp.h>
+ #include <net/udp.h>
+@@ -823,7 +824,8 @@ void __icmp_send(struct sk_buff *skb_in, int type, int code, __be32 info,
+ 	int room;
+ 	struct rtable *rt = skb_rtable(skb_in);
+ 	bool apply_ratelimit = false;
+-	struct sk_buff *ext_skb;
++	struct sk_buff *ext_skb = NULL;
++	bool decrypted = false;
+ 	struct ipcm_cookie ipc;
+ 	struct flowi4 fl4;
+ 	__be32 saddr;
+@@ -979,6 +981,32 @@ void __icmp_send(struct sk_buff *skb_in, int type, int code, __be32 info,
+ 	if (rt->rt_flags & (RTCF_BROADCAST | RTCF_MULTICAST))
+ 		goto ende;
+ 
++	/* Don't send the decrypted part of an skb onto the network */
++	if (unlikely(skb_is_decrypted(skb_in))) {
++		if (!skb_in->skb_iif) {
++			/* A locally originated skb to be encrypted. Permit
++			 * the packet to be quoted, if its source address is
++			 * local. otherwise skip.
++			 */
++			if (!(rt->rt_flags & RTCF_LOCAL))
++				goto ende;
++		} else if (psp_skb_is_decrypted(skb_in)) {
++			/* PSP encrypts the transport header too, so it should
++			 * not be quoted. But an error whose quote is truncated
++			 * to fewer than 8 bytes of the transport header won't
++			 * be processed, so just skip it.
++			 */
++			goto ende;
++		} else {
++			/* TLS offload leaves the tcp header in the clear and
++			 * so can be quoted up to its end. A psp skb whose inner
++			 * tunnel was decapsulated also ends up here, since
++			 * skb_scrub_packet() drops SKB_EXT_PSP.
++			 */
++			decrypted = true;
++		}
++	}
++
+ 	/* peer icmp_ratelimit */
+ 	if (!icmpv4_xrlim_allow(net, rt, &fl4, type, code, apply_ratelimit))
+ 		goto ende;
+@@ -996,10 +1024,26 @@ void __icmp_send(struct sk_buff *skb_in, int type, int code, __be32 info,
+ 	if (room <= (int)sizeof(struct iphdr))
+ 		goto ende;
+ 
+-	ext_skb = icmp_ext_append(net, skb_in, &icmp_param->data.icmph, room,
+-				  parm->iif);
+-	if (ext_skb)
+-		icmp_param->skb = ext_skb;
++	if (unlikely(decrypted)) {
++		/* Quote up to the end of the tcp header. The RFC 4884
++		 * extension would carry the payload too.
++		 */
++		int len = iph->ihl * 4 + 8;
++		const struct tcphdr *th;
++		struct tcphdr _th;
++
++		th = skb_header_pointer(skb_in, skb_network_offset(skb_in) +
++					iph->ihl * 4, sizeof(_th), &_th);
++		if (th && iph->protocol == IPPROTO_TCP)
++			len = iph->ihl * 4 + max_t(int, th->doff * 4, 8);
++		room = min_t(int, room, len);
++	} else {
++		ext_skb = icmp_ext_append(net, skb_in,
++					  &icmp_param->data.icmph, room,
++					  parm->iif);
++		if (ext_skb)
++			icmp_param->skb = ext_skb;
++	}
+ 
+ 	icmp_param->data_len = icmp_param->skb->len - icmp_param->offset;
+ 	if (icmp_param->data_len > room)
 -- 
 2.53.0-Meta
+
