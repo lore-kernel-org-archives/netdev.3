@@ -1,95 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793706646;
-	b=gZBDheM9yV80fcaOz1WkkKyo7wPSQpnvSzIx2/QP8+FLtn69ChaXGuCIgbwsCQMQHQJA
-	 YR5TS5DNC2HisTPqzipxa0SwQnjc3BgxOseK2RFqVRhfidhYc1VU/OY47whQsinTVq6cP
-	 rUNiLBwt7l4ALH/C72h64H66aLfYQhh+ngvVEjeNDQHiaDzi/QLFsUsEhGzeUrcBG0RMb
-	 v6OFtsbrixK2hqQ+XgkJbE4YN5PpY/9NaqHuymR3jN6+wardC4+aMy+N126b59BAm0LsV
-	 iQ1vJad4x5nDrwAl0HFaKsNILMC1FYSmlHt2VCPd51VouIsodtKAU6yiPIeQeS3zMCg==
+	t=1793706820;
+	b=I8BNhZm/r5B6GzDqCrbdCWhmqPt2SS4SvdJ+AdmfUWgrZzVemNxvjexqwwA9oT1drmVJ
+	 5ZJH7IgC557YPiKfumwhs0XgEe9+pHIODnLhc1YQ4JiQMfD1d1VaWUbrC5wU9Wp9HGfKN
+	 DZ4VN8DZ4r1Ulj0+yrvbVdvS++qP5j6XSpvROO0v/LpMQaKTUteNwy9LSyo2QmZT4vqio
+	 xKdAmk4jAVvbdoTMxVoxe3Qv+sO2r3/45Hl+RVpTwUv+/kL9ACwtXnkfdKZtK4r3pzF6U
+	 CbSSG2YKrTssrnIAl8GAQmiUJyAZApsEGuV/ev861cNCN4Qrcyrm5ByPAFfdjcdgLUQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793706646;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793706820;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=nThnRv+tQWDotBuaHZ0Ov/cwqSLDBqK3gIAiHpLtLQI=;
-	b=TZMe997HfngXfLXp/oUn9g1drour7SOh0Q4xiqTymGo3gQOzNqxBUKNjz7o6k/GkIyBr
-	 4bAVcKArqZz8tWWO5vn60P61gWXSA5ZaS5mSG+wcHhy6I2tmbeviyTwt8JGnPxhj2IXLA
-	 vZqncqKTFwZ9bvpcP9hbW/wOMc6iY6F1jhq+CG3a8Y5xBOPWxyRrMMU3AmrvOOVGVVgSc
-	 R5YhsE9uib6cP4+kB0Id5oJAYIERHN2sIWRBJJExG2s9U9A0tfvFgE0GPQTz4ERllnR3/
-	 NrgIjmg971toBqr/O+yoMW2hp5QHcWyRQiLm3WKklLJl5TKKaurJZE5pe/ZeBndtgdg==
+	bh=J1VZgX116yiDi0nv9m0RSUyvLqFAqnWDdWQwCFN1ndQ=;
+	b=ztcsFK3XTTKSC/MLoODIOgTIVXYqeT+qnERgOfcHPso09RTDNwX9P/J1mMctl1ToFS+K
+	 6GsP8M/hh9mAb3PqUPxPBkIW8f7ALPAMfNDpoNjDG2jQBoUhf8/DstAixLykZ19EyYJaA
+	 Fe/w178aUbXOOp3QKHz86TeJVYfbsznXYd2IbI1aNZuO77ewikP7UBPS1f05ezp82X4Ep
+	 PTCgwsMCemyxFZKjmP5J7l/0SR4CRvI58UuvZ36RO7LF5jV38QHAzSwSRCgMg96T2hnph
+	 9TuicyJWZ/sHr8siV4LcuI6d+epKRhvJKRZkrF3yRR1kCL+Dbo8YbpsiGcSJZedxSbQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=fT6ZHcbN;
-	arc=none smtp.remote-ip=209.85.128.176
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RCrZ5VBk;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=pxkb3M5+;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32B56082BD9
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 11:50:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A32B56082BD9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ACA2606A32D
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 11:53:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9ACA2606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=fT6ZHcbN
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-8b300713befso2043627b3.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 03:50:45 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RCrZ5VBk;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=pxkb3M5+
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793706818;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J1VZgX116yiDi0nv9m0RSUyvLqFAqnWDdWQwCFN1ndQ=;
+	b=RCrZ5VBkeJrEI3zpbneAS3YtxrvnJPz6jqN9FRXDVhfmLLcvfaSD23oTZTkgtK3jYosBNp
+	EpAyzD2gXDZbssS7VwbzQq1WwdmvqGkLPfMAMixeF5l1effholsv0LTKsYmYX7C495MF4E
+	xp50fcQyPwS5EKnGcvOp41O1SAp9Ilk=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-474-mnvWa_zMMKCAwnvBjUGzHg-1; Tue, 03 Nov 2026 06:53:37 -0500
+X-MC-Unique: mnvWa_zMMKCAwnvBjUGzHg-1
+X-Mimecast-MFC-AGG-ID: mnvWa_zMMKCAwnvBjUGzHg_1793706816
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a204ac318aso13573545e9.2
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 03:53:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1793706644; x=1794311444; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nThnRv+tQWDotBuaHZ0Ov/cwqSLDBqK3gIAiHpLtLQI=;
-        b=fT6ZHcbNxQ0nvZypckGeEvAuNUWNmRFthPNA/j2/pDDVWlc5tTUTQl5h/KHya6UHPY
-         yt5h7DrFMFYk1ImiMExJRjqyAbZ3U7PWwZf9Ld5O8a75Hsn0IXmRODj6yfr6NiKHWVi5
-         EnOaYjAYFpiLwsscj9h6KEhEWSZy8lUeiqD1o=
+        d=redhat.com; s=google; t=1793706816; x=1794311616; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=J1VZgX116yiDi0nv9m0RSUyvLqFAqnWDdWQwCFN1ndQ=;
+        b=pxkb3M5+jKJ5wbs7oU3smOLAJR0B6GAGF9VJp0Mw5ip2B3kaMRwLgjDffBTnG2qcUf
+         ANIa5eg2SRqOJETfufTBcJX9VTQaNkW3IGztKG66tFWAMTnDwcppPhNfzU4ZoL3YDlJj
+         tZEaoeJ+fH0CHa4PF7RoIgk7kTPU5PIHeCTtMoNI7+8qwTm2pKMXdrjTveTCE1f5ZcLI
+         XUhUzHC6mLCYmeVA8fiqsNYtSbMrgNaC0fZZ7XDNQDhp39Mc8BrbOBjYXDuydC5+I7Vs
+         aKkuTmCNJzm9b93gICtBr+0b81E2MeB0eSuliOJOuV94rvAzLZdR6O2IrrF3vQOO+dSh
+         d6oA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793706645; x=1794311445;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nThnRv+tQWDotBuaHZ0Ov/cwqSLDBqK3gIAiHpLtLQI=;
-        b=eyjRwba+NExDyJHUuW6N6QokQ2EKObMAD/GzqT8ksjptQ883s4EuxqVOVdUPEpKfQs
-         /SUPm/L8DZlnsVDTg5GVzkOswZ3GsukD+UkJu9+lo/IUAD1nqiBWHwv8AwHTmDDiPHYe
-         vYj71yPKU/Ljim+KAeNehoWoI0/b+8ibRJ8FJ7cHbg60pXbdc/GLPq1ILEwHWQ9f91Qg
-         zT8tZZ3cgadXouua4Ld5JbxZ+E7ZnOyiWIjOy60qjMYAxBiuOcP3ApMDOIGN/V8L6jVQ
-         nQaAGO1bZdfKbCNvn6wgZpCxfaLbuHRGg9Y+adN/oZqOb+SVOT/NUS+da1X/U8PvNirc
-         e7gw==
-X-Gm-Message-State: APuU4Z/8n8zHFUXtG6VAJr4NmpNUfs9nzYMkC90A+eFr/j4WgPiX6NKV
-	31l6oUXORs9FCQcQ4PD6hJzchH1J9s6DkrZqcLklDfVWXZdpPLdMH9/npEdMBUAoMebyiBEBrhQ
-	FH/I=
-X-Gm-Gg: AYBFou0MpQ2eUM7vuKEJa1cX8l4Noy0cgp3OuJC5+Mpdx2fVNQX8bCXlPx17Ow/gltZ
-	4uPJaXGoT7ZEY8uyltrPxK+7EJKO0/cVIu1tmKN0lriwtBAuKxULXWkP8lN9mhkIRHfoqynYREZ
-	AHfnZAD5WPJ2oyE2uJ02qtVnRmba9kpmLXVDGLbN/vMyHV9v2Co0x3Or8z99LWr1BfnhuM9ZRzQ
-	SwSiIxLOZTWPnxRzFQ6/Q59zVWW/n8kZ3A9HR+Ky4+mXoSIIClZbhMJN7NUPo86RC3zWCxtnlyj
-	vXnYQ70q3qPi9dfa1xH45JK+Nqt0BPA8uyZ1KukM8Ck6+neqNmTgh5afFqtdi+CUfP18FQ4hZJg
-	lJXlCcql3LBczUA3E+uVOiYsYDMYcw9/ZIbYsHmp47DeWwURawicekwVc2WGkAPD/BP9Tay4P8h
-	0etVq86lyBB75VSm4iMb0fk6jbhrsS1+f2UqU85B9jJkrs7WE2xj5SQNpl5KGy7NU0U0vQFo2NN
-	PVLBjwO59fJvZ3D5jJJ/0vmd+B4GkQgwUuT6RI2bgkOcUTQ1ta584lY0mMVNa7xi+yMWlKlay6Z
-	fcELiDrUt3C2lEJTjgPX8JnZyluDQL+QsA9U0vpdXe6jb36aV/r2JRjVjYzmd0JBz9jObr78zQ6
-	v/RdoOqRKBj50h9RgZuPQQEwLbDX6Chn9QFxm
-X-Received: by 2002:a05:690c:f90:b0:8b1:9c2:87d6 with SMTP id 00721157ae682-8b2b66d0066mr98565757b3.17.1793706644511;
-        Tue, 03 Nov 2026 03:50:44 -0800 (PST)
-Received: from mbili.tail33bf8.ts.net ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b2b704d699sm70016857b3.5.2026.11.03.03.50.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 03:50:43 -0800 (PST)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Sashiko <sashiko-bot@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net v3 4/4] selftests: tc-testing: teql: cover each attach rejection on its own
-Date: Tue,  3 Nov 2026 06:50:32 -0500
-Message-Id: <SER-NSBD.v3.r0.20261103064310-4@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <SER-NSBD.v3.r0.20261103064310@mojatatu.com>
-References: <SER-NSBD.v3.r0.20261103064310@mojatatu.com>
+        d=1e100.net; s=20260707; t=1793706816; x=1794311616;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=J1VZgX116yiDi0nv9m0RSUyvLqFAqnWDdWQwCFN1ndQ=;
+        b=jNNvycCvfE0AM8cNf2211IDuS/ZkFjXo9HKTm5xEE6CDMdzOPQehoyskQf+/m3MSjk
+         1yZvWjg4sw6mAxiHZVXDEczCZ32vwyt9tXN0s5YLddn+lS9ZZ0N4Ajg5g5WLGtugd3Ir
+         JoekX5lyY/Intl6vHtQMFwX6t/1sUFOzC9veB92bJ/FptZwKxOmERGokcBvQp8BqjnCo
+         ygejqGd3FCSxYe9Tq4zS/QE1S3xrirLCF5QoLtFiSNQ0pkPBJXsIcJfQLB5FUG+7y3FP
+         YkR+rQeTJgboXh4PxbsDychd5Kg7P0pSQTBnUoLyX7KoQa1voGPrjdSX/2yq6XPWNUm/
+         4UeA==
+X-Forwarded-Encrypted: i=1; AKwUvByF+x2CqVG4Cc6B6VaaGaTSyNQAfxqSrSPuBYMqYlp3CJ9+DkiaOEE9nci7AgNpA3s6JaKZp20=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/RsEuo8cnez4uMu5cfLhob6TdJvYROXsNWqe652jcmo7CJkKnc
+	oGKfixYr6bYBoNNpIBKl7GJa/0GXjeAOrkTBJuqTK/118P8UvanF3OOzCE3pOXRdgyDY6MGUU4y
+	H5xmBxbdd+XqvywwGG3oEvPn4WHn/v5Yq33oUsGBduJaJuEINZcyBs9k4HSdfR3LlRg==
+X-Gm-Gg: AYBFou1ydE3+0Cr++YMkxvFpWlAFf9A3pwEktNEUMotD82NF+WyeV3nVD90AmsKi9Dx
+	CahTHT+lbxxPZhNPmsPWxZJmkhZAbLlcADyTryjSM3RUmU74AXwoqE2rGqPh5I5qSMBuJiCHfj6
+	r9z71Z/cjDakVlMH8uyYE8lNF1e+69zVeKXWVw93ie9kmss4hzaXKWuTkaEE6xZ88gozssuV7/m
+	CbmVwqSsWnkCmFRVBS9w3C84wXgN8+selMcc+GwPr7RxnNS0SIsjPxQAERrCXI+51amSi1IbOT5
+	nu39sDU4WOdq5PN4mvHC+wnI1t8oft0VjsqcVtzM0KGbhoZV0jeLUf/wj6zF5GXW1VUrWQOCENY
+	DzS72CQ4A2kNPnkvB+UVVzZGQAKbNmKVL/ID7wYdY8BaIva/QF37xG78YBJCy+s9O1fGRMQZZ+U
+	izhG6KezCxDGyG6XJmxBfHsu8gAUe+a/h6Ie3yVeBMj80=
+X-Received: by 2002:a05:600d:8082:b0:4ad:181a:4348 with SMTP id 5b1f17b1804b1-4ad181a442cmr198293735e9.18.1793706816219;
+        Tue, 03 Nov 2026 03:53:36 -0800 (PST)
+X-Received: by 2002:a05:600d:8082:b0:4ad:181a:4348 with SMTP id 5b1f17b1804b1-4ad181a442cmr198293465e9.18.1793706815812;
+        Tue, 03 Nov 2026 03:53:35 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4abeb77af8csm446661025e9.1.2026.11.03.03.53.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Nov 2026 03:53:35 -0800 (PST)
+Message-ID: <02113612-0c7d-40af-8eca-043f5801d7ad@redhat.com>
+Date: Tue, 3 Nov 2026 12:53:34 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,102 +112,69 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] docs: netdev: try to force agents to disclose info
+ for fixes
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+ Nicolai Buchwitz <nb@tipi-net.de>, netdev@vger.kernel.org,
+ davem@davemloft.net, edumazet@google.com, andrew+netdev@lunn.ch,
+ horms@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
+ rdunlap@infradead.org, workflows@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20261029153459.2257998-1-kuba@kernel.org>
+ <9A74CA14-D4C0-4252-A3E7-256F9626B513@tipi-net.de>
+ <CAMuHMdVJVxpX6OLVpE9K9CDY5q61A2rFGf7FpUjs7xpFwReEzA@mail.gmail.com>
+ <20261030093418.2fbf0999@kernel.org>
+ <20261030164758.GD2673734@killaraus.ideasonboard.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261030164758.GD2673734@killaraus.ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Found by Sashiko (nipa) while reviewing the previous posting of this
-series:
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/SER-NSBD.v2.r0.20261101171325-4%40mojatatu.com
+On 10/30/26 17:47, Laurent Pinchart wrote:
+> On Fri, Oct 30, 2026 at 09:34:18AM -0700, Jakub Kicinski wrote:
+>> On Fri, 30 Oct 2026 11:58:17 +0100 Geert Uytterhoeven wrote:
+>>>>> +Coding agents must refuse to write the commit message unless they know
+>>>>> +what discovery method to include.
+>>>>
+>>>> Maybe make it more explicit, as the sinfo bot will ask it anyway:
+>>>>
+>>>> ... and whether it was reproduced or tested?
+>>
+>> That's already in the existing text?
+>>
+>>> Which is true for anyone, not limited to bots...
+>>>
+>>> Do we really need "different" guidelines for humans and bots?
+>>
+>> Looks like at least a half of the commit messages today are
+>> bot-written. With the existing guidance the bots don't add
+>> the requested info by default (presumably since they don't
+>> know the information). If this patch doesn't help we may
+>> need to add our requirement to coding-agents guide.
+>> They seem to be reading that one fairly reliably.
+> 
+> Is there no way this can be tested without being merged upstream ?
+> Tweaking documentation in semi-random ways in the hope that some of the
+> changes will have an impact doesn't seem to be a good process,
+> especially if it's to work around defect of tools.
+> 
+> And unless I missed something, I thought there was a general consensus
+> that documentation should be written in a way that doesn't reference
+> agents specifically, as the same behaviour is expected for all
+> submissions regardless of how they're generated. Has that changed ?
 
-The issue:
-Case 124e attaches teql as a child qdisc and expects the attach to be
-refused. It requires nsPlugin, so its device sits in the test network
-namespace while the teql0 master is in init_net. Both the root-only
-check and the namespace check refuse the attach with -EOPNOTSUPP, and
-the case checks the exit code and an empty dump only, so it passes
-whichever check answers it. It no longer proves that a child attach is
-refused as such, and the case added in the previous posting covers the
-namespace check alone.
+Please note that the networking subsystem is consistently overloaded with
+AI generated contents. Just to give a randomexample we just received ~60
+patches from a single 'newish' contributor all violating the above prescription.
 
-The Fix:
-Run 124e in the initial namespace, creating its own device the way the
-other teql cases do, so that only the root-only check can refuse it.
-Attach a root qdisc from the test namespace in the second case, so that
-only the namespace check can refuse that one.
+We need extreme measures to keep the ML somewhat manageable.
 
-Link: https://lore.kernel.org/netdev/179366641863.488856.17368571591466000274@kernel.org/
-Link: https://lore.kernel.org/netdev/179366641986.488856.2193313144081673076@kernel.org/
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
-v2 -> v3: considers comments from Sashiko (nipa) on the v2 posting:
-https://lore.kernel.org/netdev/179366641986.488856.2193313144081673076@kernel.org/
+I'm going to apply this one.
 
-Case 124e now runs in the initial namespace and creates its own device, so
-only the root-only rejection can answer it.  The case added in v2 keeps the
-namespace rejection covered.  Each case now witnesses exactly one check.
+Thanks,
 
-v1 -> v2: new case covering the cross-netns attach rejection, following a
-Sashiko (nipa) review of the v2 posting of 3/4:
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/SER-NSBD.v1.r2.20261031160050-3%40mojatatu.com
-
- .../tc-testing/tc-tests/qdiscs/teql.json      | 36 +++++++++++++++----
- 1 file changed, 30 insertions(+), 6 deletions(-)
-
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json
-index 0179c57104ad..ab5d0881c007 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/teql.json
-@@ -90,12 +90,8 @@
-             "ets",
-             "tbf"
-         ],
--        "plugins": {
--            "requires": [
--                "nsPlugin"
--            ]
--        },
-         "setup": [
-+            "$IP link add dev $DUMMY type dummy",
-             "$TC qdisc add dev $DUMMY root handle 1: qfq",
-             "$TC class add dev $DUMMY parent 1: classid 1:1 qfq weight 15 maxpkt 16384"
-         ],
-@@ -104,7 +100,35 @@
-         "verifyCmd": "$TC -s -j qdisc ls dev $DUMMY parent 1:1",
-         "matchJSON": [],
-         "teardown": [
--            "$TC qdisc del dev $DUMMY root handle 1:"
-+            "$TC qdisc del dev $DUMMY root handle 1:",
-+            "$IP link del dev $DUMMY"
-+        ]
-+    },
-+    {
-+        "id": "6a06",
-+        "name": "Reject TEQL attach from a different network namespace",
-+        "category": [
-+            "qdisc",
-+            "teql"
-+        ],
-+        "plugins": {
-+            "requires": [
-+                "nsPlugin"
-+            ]
-+        },
-+        "setup": [],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY root handle 3: teql0",
-+        "expExitCode": "2",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc teql0 3: root",
-+        "matchCount": "0",
-+        "teardown": [
-+            [
-+                "$TC qdisc del dev $DUMMY root handle 3:",
-+                0,
-+                1,
-+                2
-+            ]
-         ]
-     }
- ]
--- 
-2.43.0
+Paolo
 
