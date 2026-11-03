@@ -1,89 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793672953;
-	b=3bonKxELwXnG6SaMFOGVRvBK2/ArsAbtaEnlDOqoeViEOq4Mb25UPHHjDDJTV7NS2GgZ
-	 0gNz7GKhLSYNIkj913YoNBN8n54EEJ8z2Fey9TTq04z+lmn8oXPs7LicLCk5YIrvb/cD1
-	 3d9CVHdclkdKzbsowLCq3h4D0V1bdSvEDKQ1p99/Ssu4yN5T46CxdiHin7iyHUj/RPKuC
-	 u0+LL7uO3qB7ORQ9pfHdDAYUYwYesyrsLKSj9vO9K8AciVOy5Eml55XkggYTE6WgMxqBD
-	 zgNR3Pg8pLnZ9C98L/XO+n25jFwMeTPxLrBwpX2kEX3z85gxyZNINUdrpsyBO5sgDtg==
+	t=1793672955;
+	b=kPLa3hsHDuzvxTL7tmFlPyce+S82C9OJYMb9TWjkd4q9ibhWy22DLB+DMj7HETXvoLbX
+	 GWT5MG7QYXfvznuepu79XfgG3QLZcSRNpYhGBgxgyNkDOENN6sLqDDrTDMo40282NqDX2
+	 8Zp8r9dBE5EDgY75rGjHhboWaDz+PeHIuBJ48Ckgqh9J/+pjoa7vdV2Y3Ps7PRHcdhh13
+	 PEBd0NrVRCfpqdiITlaupxHqILbHEIdhd2zzKV2K1BxQ0f/9C1XYrpyvdecMNB7DPLtE+
+	 akDXp5mWfEBcFcb4wIkbEeAEFgwaqsJwofju0P5dX3nSVFLQQVgzWNgvGvymkRLsTxg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793672953;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793672955;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key;
-	bh=vm4X83cKQV2cViXLrBy8CdaLxj8kNgfl4SZFvLru4UA=;
-	b=KplyEc/9KLMsC3c+zqrpO07VSgwWQ0NG8ZWyrR+DUlQtwuk3ARqIiBX5PX77+ZBAQBvs
-	 BKFYIfX/A/bipxSQdb3VP0HzZoXUz01T5NhY05SqqrhycPibzLGa5NOgArmzhUFK25j7l
-	 iJjomSvS/oYtJKv+cDZm4+3NyFKdyB6A2p3Nyq2DPAqSyWRWHpa+cOjEqIeMWCKGeL+4p
-	 dzFK65mzXo88M7+++86G2IPcXwX3qPfTxzXttXHisYpuS8eV7IMdXF4Jq0kkuuPs1L+bw
-	 uhc2pdVjoAOQZTCHEqKLLyDHbDXcrKlmM3e21t15i3WB9OvArV+P4Y6bdCNPXfsWqRQ==
+	bh=a+hFTEOFR15xhICqJoC3sInecNo3QCMXYhk+gm+DR0k=;
+	b=p2RB7qpaPCroN8+jZzFfRFhVg6fiPfMRgyfSrjZb9T6CHhckStvN4AgIZDzt6lIZroLB
+	 SnNBCeL/NnM4KSH0EXXld+V4PkKskfFuEoICh25Ou5vf4KtlCUSx00uAfl8bv8RBRkvRp
+	 /PIlHxxInLCy7GljdbtCmwEou03fUAzfHuRdnLViWFzUw9sxJKx0PI1YEkhPJoM0E+nUd
+	 N5g1V3Yrn4Nq+dul+QJdWcv4liJM+YjeQWAZYM8jVOBAKpdRJFp7Sx238YdfLIHrGOExO
+	 PMANQyucoO0AvYlN/S+xAgFyvXbe46Unh2Bp9jJN/aInMshE31KzFQfyh0+MvKFsZhg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=toxicpanda.com;
 	spf=pass smtp.mailfrom=toxicpanda.com;
-	dkim=pass header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=cVCvVFAT;
-	arc=none smtp.remote-ip=209.85.219.46
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	dkim=pass header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=NmgotOK9;
+	arc=none smtp.remote-ip=209.85.160.182
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A577606A327
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 02:29:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7A577606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C64606A33E
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 02:29:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 68C64606A33E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=cVCvVFAT
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-91c79f306e9so41141126d6.3
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 18:29:13 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=NmgotOK9
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-53fdd2fb171so46767331cf.2
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 18:29:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1793672952; x=1794277752; darn=vger.kernel.org;
+        d=toxicpanda.com; s=google; t=1793672954; x=1794277754; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=vm4X83cKQV2cViXLrBy8CdaLxj8kNgfl4SZFvLru4UA=;
-        b=cVCvVFATvdScw245CyKvTmebYWLuxo711JncUEkQxKeg+Hm/sz18Kv+VF28V3pa2s+
-         B7ojHUfI7xqJY3q+hCjhiaORNbyUcpYgDxGNCX2c5ClpIYD0PKZuE/iy67GTO1kTfrYz
-         olOUx8AS3BcI7Xwbb93M8vvm53IkAadp314ke1mCsE0E5n5DWnHbWb4ifaBj2WrvLscR
-         M7XrGqSU8K3kzKyAecn7ZfyJx+OhfCC1YcJjAPj6KKDGYreZolT9xPHaDgORXIkJ2hQr
-         X6bWo50HtX/8U4XjeIgWN5rnyGZ33k4n9DwYnZS9ucm9mmfZTqe5tjs4tOr8EyOmloR9
-         oj+Q==
+        bh=a+hFTEOFR15xhICqJoC3sInecNo3QCMXYhk+gm+DR0k=;
+        b=NmgotOK9wZQpjJpIpp8kwoqVUFcmilKE10lnihHeqFKmTJevZ1PfkLyxp+jqKB9jgu
+         TzSzm+cJoRZnKznMdO4+TY0S+Gx7PuPdQBxt78e6S8oGCwy3kaZaSsZj59ZwQ3bAmvRS
+         8/hDO8Q+E5VG5kBNvzeSSGV/WKMkFHLaVBntSLokRBSblTKG0dd9bUStN44G81PN1MAM
+         ez4/gdFvq41RABq1l3iEqlAMTOW6sHCd4VkpEFyE92oZ8S+dVuIrhaTrH9smXr0gZ5Wc
+         RdWI8Rz6J1OF1hVmqxrahAB+ElPXBzEbpdCKfCWNnP65+SUUgPLJWOP9eICP9KVr3Hc9
+         QeYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793672952; x=1794277752;
+        d=1e100.net; s=20260707; t=1793672954; x=1794277754;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=vm4X83cKQV2cViXLrBy8CdaLxj8kNgfl4SZFvLru4UA=;
-        b=tPat41RBtgG7rSL+gaRj1PiGbv67W47k1dZ4gPWxDyGLNVKbgGrZ1A7sQcEGLN/Hjy
-         t+F1t9UWfqcn8Cn9LxF3nTqwTCW9bh59r8Y8W/oOCCIop+6YPlhtd0P85/FpIc6A82CP
-         otnFj9nH+YLgA0X2WsS7EopqeketEPugRvJmUJq4JRG7p0xwecFwqMxsUJRFRVkeqYct
-         EiiXClgNhBXLdhu5777Bkef89EFmNwfMM6ccA99qQ2HrZMYK1NwysICDZva8q+5Dlr+t
-         ZNGWNsjUbGLkD70/q9C/kC6MX+7TrKcQOxwQt0aAiNNW5T6zUvEHeL2qNyIez2L70B0X
-         8QMg==
-X-Forwarded-Encrypted: i=1; AKwUvBxaa0hyMmKG+p2xe0i7dv//hSEgUVXf+jnq3Dp5DlSDapa/DcMUwVyqrTzXQNLpvS/fyX38hpw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9+DLbP5w+4mkAGZ91A6bF7E+1HJsiVYv0eMIdWH67AWgQ0bqAX
-	UdUHxUkI1R8Ey3yKo5lTXcbyq4q6CoaAo/bXBA7UznuBW+FaJ2c6QitoWe2PitGdxGg=
-X-Gm-Gg: AYBFou1KJKYR2nWoW6w3lCwIPLsypMgvoXDhxfzO6dJX72xYtPxRq6nTQEG/lLrce88
-	lcmxHji2qM4RBY9thdA7VojIL/+wvLxNcbHfZGkjG/y2d7lIVwN40FWv6i6hnzxpyXOgNNEEfz2
-	QDC/8muDHg3wJu3PZ8v90MI8SjyUmWtK5BTK0YGiVPhLe5H4epKMVGmFK5eL9lloAcqm9RKpw6x
-	+wUsysx1nkxWS0IKNiGcKlOG0NKHGIyTqV3e5Y+2RxvsA/j67kRFlaLQDxLdyidFZpETVA0TKF6
-	6xF7jYwFljVRecThE6JziFFq2u28/66DxNeoVnewruPurzbw8+7WyYc1xOIM53gQz7nBxZEo3Xg
-	OYjF17nPa6aSJRkg3xupk2ENxpeK2ASs1+Q6khNkbNdve8Hv4IkbmL6drIMfDVxJ/9/nDR/5++l
-	Efv9lVYTsiNjdL37xG5UUXrDbTYzxMUmTsGHN2oMbAc9PMZF1v01i23HTpULFOwW0Ev3dNZRaXH
-	lFfVRhYJ83DSj4sjzI1bSN4c3bH1nnnuh3xH2n3qxFK3VLR1RvD2XcVefK3o4PJAU6WqSKrsCut
-	ghZH5e3cDNJd2sA/rv0ef/35WB6KBJvODw88CnwCnsRLHQ==
-X-Received: by 2002:a05:6214:8588:10b0:91d:35ff:cb53 with SMTP id 6a1803df08f44-91d35ffcdc9mr8100016d6.37.1793672952196;
-        Mon, 02 Nov 2026 18:29:12 -0800 (PST)
+        bh=a+hFTEOFR15xhICqJoC3sInecNo3QCMXYhk+gm+DR0k=;
+        b=BmNdRmq0wMuavQRWPVcXI8dgRqmseWeWm0+w1OwF7tHnsbTLWFcj126tAybrDcSdtc
+         aWEHaQl7SRuP3Y4KsqWvGsSEJBuqopzA7qr4fKVJWwrfeoLNOqt3iUcJixr8GUCzVMXz
+         BwIlzodjRt4f0JVicTWQBUKJ6j/3ttRtEPZ/8RC68eelAKrDUbd601tAp7ToGpC3ccDc
+         rbXPLkxkdUAcN0/OlSGmZP+VSyZNYDKG+hbIRwHqiCqMqKcLmBLwsRUqjrOp632ivA4T
+         LpdPFeCm7YgIOg//1ck3ZxJovVxHK6MFeWlUtpoWWc69PKz5P3j4XReYYXGbZsUgM4Ei
+         HrJA==
+X-Forwarded-Encrypted: i=1; AKwUvBxiA2KmKLwk3zCh6gAAfA18N8u5W/ThfCh5OfZW0ZIWFhwV0RKq/s58lAQnlIflzGkK0tPshxo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLJp73E3+Fp1e+Kgsq5Z88PBuybd+dNOfIOXd2uAyZJQWGGz8dX
+	VIMzXKT+R1wJpp4WxrzgvABfcQc3ZqWWst2heYno2jfSfvmo31LEm3D6sqM1gAIndrM=
+X-Gm-Gg: AYBFou3NmhGtteH9MmMtv4Ql38Y12WNvWsaCz6/REDh0I1nR1wj/AFmlTH54ydxwxZt
+	Gp2/UJ3zPx+Gm7WFK8xNO0oAaMQ5QPnKE7vyFKplQq43FsGzB2N3uuG4DpikW1ivDSwuuesEUB9
+	XKdlHQm32oe+lDpstXsUwI6XrIdc0MOafi6q7CDzmFpJ2AnD2GgMByZQivzABOH8ZQNXUdEhVXn
+	D6GrgD1GrSanvwN+8l+7ik+tM/Fqqf0vLIhANUaaUqf+tFdt+oVTVxgaNWouziGZG2XXcd/IUxw
+	rRL8vxzbldFPNxyYpouzxUzmlMHPcbuc1TqJuLyJeIUijr95/AcOVE0O8D92Za419sTwKNYARPy
+	lSJOfkWP5qnVBOvGDqby79PZEtQM+ucMLnvinS1cmPbKB1AFRI0PRsNRlVPfP9ep+9DkPYAgF4Z
+	e7pKw72xQMIK1O3aXES46hc8vDeNE63LJOgbKA6nEI3D1mcFLyNZmwTZ+2oCN2/fTkAnOtI6wfy
+	aw4r4TI3j8XzOT0pZ2/0zHX0kfSFkp0V6fub+5WsLwG0ijt5esSn4qv8cBohOkNxUGtQtL5umDg
+	U61+7cOrmt1IPqJyQkazVHanXb69DCw4m2+6WxMZE7++uQ==
+X-Received: by 2002:ac8:5a84:0:b0:53e:35dc:9bd7 with SMTP id d75a77b69052e-542b7cfff77mr195623591cf.61.1793672954512;
+        Mon, 02 Nov 2026 18:29:14 -0800 (PST)
 Received: from toxicpanda.com ([153.61.196.255])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ca7f401f5sm106359816d6.19.2026.11.02.18.29.11
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5498ba831ecsm13704131cf.12.2026.11.02.18.29.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 18:29:11 -0800 (PST)
+        Mon, 02 Nov 2026 18:29:13 -0800 (PST)
 From: Josef Bacik <josef@toxicpanda.com>
-Date: Tue, 03 Nov 2026 02:28:40 +0000
-Subject: [PATCH net-next v3 14/15] net/tls: don't BUG() on leftover length
- in __skb_nsg()
+Date: Tue, 03 Nov 2026 02:28:41 +0000
+Subject: [PATCH net-next v3 15/15] net: update comments that still describe
+ the skb BUG_ON()s
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -95,7 +95,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261103-b4-skbuff-bug-on-followups-v3-14-54ad0ab57614@toxicpanda.com>
+Message-Id: <20261103-b4-skbuff-bug-on-followups-v3-15-54ad0ab57614@toxicpanda.com>
 References: <20261103-b4-skbuff-bug-on-followups-v3-0-54ad0ab57614@toxicpanda.com>
 In-Reply-To: <20261103-b4-skbuff-bug-on-followups-v3-0-54ad0ab57614@toxicpanda.com>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -110,55 +110,82 @@ Cc: Juergen Gross <jgross@suse.com>,
  David Laight <david.laight.linux@gmail.com>, netdev@vger.kernel.org, 
  xen-devel@lists.xenproject.org, Josef Bacik <josef@toxicpanda.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openssh-sha256; t=1793672923; l=1573;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1793672923; l=2967;
  i=josef@toxicpanda.com; h=from:subject:message-id;
- bh=jtewRftckK13p/nQalxWcrhfGpFqhqstsSARsz5AoHI=;
+ bh=WCTT9uC4bs2258XiDJAzFc52TKyNHZGhkrwOY27WXg4=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
  JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QKU+bYXkf9YXXl1oclL2Gvz2UVI2gtqcPepXaQA2KpnhXr1hun6qZ+lqT2IAQi6KyF0liU25rYL
- 0WlL33F1eag4=
+ QE8kdpAIr4r/3KnRyoQejERf3bZuv462xd61M/4SF+RLGK/b0ul1CKeaOQhtpoJOgJfKTHf9Nhb
+ J8aQzKvI8igI=
 X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
  fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
 
-__skb_nsg() counts the scatterlist entries for a range of an skb with a
-copy of the __skb_to_sgvec() walk, including its BUG_ON(len) when the
-skb runs out before the range does.  tls_decrypt_sg() calls it on the
-same range it then passes to skb_to_sgvec(), so a bad range would BUG()
-here before it got to skb_to_sgvec()'s error return.
+The skbuff BUG_ON() conversions left a few comments behind:
 
-__skb_nsg() already returns -EMSGSIZE for a frag_list nested too deep,
-and tls_decrypt_sg() fails the record on any return below 1.  Return
--EINVAL for the leftover length too, with a DEBUG_NET_WARN_ON_ONCE() for
-debug kernels, and say so in the comment above skb_nsg().
+ - bpf_skb_net_grow() says skb_segment() BUG()s on a frag_list with
+   head_frag set at the downgraded MSS.  It fails the segmentation and
+   the packet is dropped, which is still why the skb gets linearized.
+ - The skb_to_sgvec() kernel-doc doesn't list the -EINVAL that
+   __skb_to_sgvec() returns when @offset and @len run past the end of
+   the skb.
+ - A comment in the netmem KUnit test names BUG_ON(i >= nfrags) in
+   skb_segment(), which is a check that fails the segmentation now.
+
+No functional change.
 
 Acked-by: Mina Almasry <almasrymina@google.com>
 Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 ---
- net/tls/tls_sw.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/core/filter.c   | 6 +++---
+ net/core/net_test.c | 2 +-
+ net/core/skbuff.c   | 5 +++--
+ 3 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 771e02bff519..748ae27f2b88 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -142,12 +142,16 @@ static int __skb_nsg(struct sk_buff *skb, int offset, int len,
-                         start = end;
-                 }
-         }
--        BUG_ON(len);
-+	if (unlikely(len)) {
-+		DEBUG_NET_WARN_ON_ONCE(1);
-+		return -EINVAL;
-+	}
-         return elt;
- }
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 09c60a58c82a..9881ac89e94c 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -3723,9 +3723,9 @@ static int bpf_skb_net_grow(struct sk_buff *skb, u32 off, u32 len_diff,
+ 		shinfo->gso_segs = 0;
  
- /* Return the number of scatterlist elements required to completely map the
-- * skb, or -EMSGSIZE if the recursion depth is exceeded.
-+ * skb, -EMSGSIZE if the recursion depth is exceeded, or -EINVAL if the skb
-+ * runs out before @len does.
+ 		/* Due to header growth, MSS needs to be downgraded.
+-		 * There is a BUG_ON() when segmenting the frag_list with
+-		 * head_frag true, so linearize the skb after downgrading
+-		 * the MSS.
++		 * Segmenting a frag_list with head_frag true at the new MSS
++		 * fails and the packet gets dropped, so linearize the skb
++		 * after downgrading the MSS.
+ 		 */
+ 		if (!(flags & BPF_F_ADJ_ROOM_FIXED_GSO)) {
+ 			skb_decrease_gso_size(shinfo, len_diff);
+diff --git a/net/core/net_test.c b/net/core/net_test.c
+index 298ca240104c..7bfafc826b14 100644
+--- a/net/core/net_test.c
++++ b/net/core/net_test.c
+@@ -1466,7 +1466,7 @@ static void netmem_ref_test_skb_segment(struct kunit *test)
+ 	/* 5. Linear head_skb (nr_frags=0) + mixed pp_recycle frag_list where
+ 	 * member A has linear + frag (pp_recycle=1) and tail member B has
+ 	 * linear len == skb_headlen(A) (pp_recycle=0): keeps SG clone path
+-	 * synchronized without hitting BUG_ON(i >= nfrags).
++	 * synchronized without failing the i >= nfrags check.
+ 	 */
+ 	head = alloc_skb(64, GFP_KERNEL);
+ 	list = alloc_skb(64, GFP_KERNEL);
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index b2c44a58db23..bca69e8b3582 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -5639,8 +5639,9 @@ __skb_to_sgvec(struct sk_buff *skb, struct scatterlist *sg, int offset, int len,
+  *
+  *	Fill the specified scatter-gather list with mappings/pointers into a
+  *	region of the buffer space attached to a socket buffer. Returns either
+- *	the number of scatterlist items used, or -EMSGSIZE if the contents
+- *	could not fit.
++ *	the number of scatterlist items used, -EMSGSIZE if the contents
++ *	could not fit, or -EINVAL if @offset and @len run past the end of
++ *	the skb.
   */
- static int skb_nsg(struct sk_buff *skb, int offset, int len)
+ int skb_to_sgvec(struct sk_buff *skb, struct scatterlist *sg, int offset, int len)
  {
 
 -- 
