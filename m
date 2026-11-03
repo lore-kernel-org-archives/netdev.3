@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793701548;
-	b=kJgDyt/OfksNKfQWyTWQP3Iib2WTdmGzMclJON35Is7NDBdwhdbT4L6HdmQFrmsvDkmU
-	 6ZSxY+Hpvf3p+aPBIAWcoFdMsS6OoucQYnK/KohmniXUofND1K1WiGOzqdJgsmcvqDjnN
-	 6OuJKbNOF1qWv0mMubvYj4xx+z5Fc0V+FxP0RzJB+ZKPKUw77PS+7zmLAa7tSqMJGhWEB
-	 SwUe1ztucasy1xVbTPh9zwFFMoxufz7aj7NI0/xxk4wDhzx3vB/j9E30t8MYCbYrRAyGy
-	 ppC3YlGXSB8CtKxOiWxxqS6xherCZgrizSNhuMU7tN+p7Q8uLxDxIIAQUXJFrqUyLpw==
+	t=1793701551;
+	b=gCUdXNH8wcQEAX9nYHmKZpGXVbP9V6ZrRvQAP7jtZNQql3LhbnCFrom1UP4gmJWYdCwK
+	 REAJUZQDo8XSkfjj+6T3uI9cfbJ0UtJ2XaOxU6VCIespBb5PjUUhySQ2bbNtbsdneynzg
+	 jzEzKe2xL3AlpLi2zCM3HmZiNUJKOa55L79RsbuT3xEL8aIyPjTcv0gcOZsMpK66TyHMa
+	 ArUUptzY2S4nF3W20qA44P4omoX1l7w9eEZ8pDl+cul7lZqW5KpkG5cs+9f7u0FHjtpiZ
+	 AorlEpP2qUH6E79LYoMYduTBwkCqHNgw0x9Gjqnk9qmIH2oq26FIwTVNIZj/4tvhKMQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793701548;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793701551;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=eVBfRz3fVnCcRJSsVqH9DYQP76908hbJkwajsue4xn4=;
-	b=TGyuVTtCcs4MKLJiHc6bCyFmwi6Pqi3MG+vn7B5jFkyS2BAG6GZxo/7o8rl+BoJAWso/
-	 2x+ogNppWNvbUL8+2tBlIW6XfQWmXPxi3L9GggTMOQpsliBvuOgiH9UuewXm5Jn4IRIeD
-	 of7Aard0/1V0XZBrY/Na1TPkhGtVkzPTQUtdxwgkme85REg4wE776s6nnJj+J6Y3qVMo4
-	 T8keqAu3hC3HTrvU2YgIH0IWyU0GWzbbBkPblUK7SLDrtDdnh3r9E0N5fC/X0LPl8Op3b
-	 Xb+FyR/NEHqTrJRd//v/OYMRP1a86RyCh5Z8sJl7ci2s9Uhqrdw/Rxeqy7+RdWkqmVA==
+	bh=ZiDCgXI7NCcafNDZdpmexImXqmfoIhQjo1qsG0Dzdno=;
+	b=RBomrJL2yOqQBxQjwUwrR6JMqLdxiunURTXwktFZFjT4pXezPVA+QXOGRrs5ea3AMVPj
+	 sJx2CnUlUZ98DA/fqOQcvbmH7OjacnjU6w945JMpSm0EMAk3Om/K2lUtKCMAF4tPVBPR4
+	 13G+IiOAxTo2OhvhBMEKcjKrRtIhe30VHyFLB8ZLlkgGiSj7CoJgveAtqcuge8oP2Cevu
+	 66wfmzZ242tdvBP8JjksAhYhDBMgm7vcTqLf3ZGdOSStb+IxMqg4OazJN7gupPZDGEvOP
+	 jMRITfJEBVJCqY5yOuHy3p264dRKabAqcS6oQ/UXznpbdnxwo1879KeXqN81yCcAAdg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OOr+PLEa;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P2ys5KTF;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA748606A32E;
-	Tue,  3 Nov 2026 10:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044F7606BFBE;
+	Tue,  3 Nov 2026 10:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OOr+PLEa
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37031F00919;
-	Tue,  3 Nov 2026 10:25:46 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P2ys5KTF
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B7C1F00919;
+	Tue,  3 Nov 2026 10:25:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793701547;
-	bh=eVBfRz3fVnCcRJSsVqH9DYQP76908hbJkwajsue4xn4=;
+	s=k20260515; t=1793701550;
+	bh=ZiDCgXI7NCcafNDZdpmexImXqmfoIhQjo1qsG0Dzdno=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OOr+PLEan+GgFITMCObTWVGJcHeupjMJKX6wkkhl6yq8KJYZ1qRR0p2OjbdThK05y
-	 uNQ+H6wZNWOJMQU95+3NfBEFbjuCX/+6iOzLxAE+ZHKEpG7lD4uuA+DoyBFv0caF3X
-	 FPgL/c96MRtxhPcnTObVzPthB0Yk9WVsg970YAAAXqtOL2t2cU3AyDUed1BxV9CZrH
-	 nzd11OoHLxjCiua/k0ByAFjIfqx6jMb862TCwm4VHWURWY9kRayEFHzCSGKZyKLLih
-	 /EfqsoNioud1XBmlNlvGDRPzOWWe4e6Gzam0s4WQcvjp81BV2mvk5AojwJ5oxK01sk
-	 g6dJMjTTel5wg==
-Date: Tue, 3 Nov 2026 11:25:45 +0100
+	b=P2ys5KTFDKlK2yz+di5tTpouQWufDnbAzeDL0y73Y8bo6Vq/QZlfXVuupyaysdggh
+	 4NayCQ7NJSPvtrGE04mH2FlToF+upZ6TKd0EYS4gPYHNeEcks0CnlApEVMxsul4Rbg
+	 MyBoPta3v3IxvYCLUszqczCpOkDqkLjuGVoXY0smnWu+KUuus377BrZJSSYQWLVRfI
+	 nogofXJZsSsdRPuy8tdiDjE7AK1b4slU4ScVK36NghcZ2kTbrfcr8hO7SKkz+NpkD+
+	 YQ2cWGlUXcxM96zNAbTnkw+6eAXNyr2hW2vq9Lw0pblA49db0ND0CCHAEZa/AXzP2g
+	 APRHTINuxC2mA==
+Date: Tue, 3 Nov 2026 11:25:48 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	intel-wired-lan@lists.osuosl.org, Eric Dumazet <edumazet@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, stable@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: Re: [PATCH] ice: release the VF reference in the switchdev trust path
-Message-ID: <20261103-gigantic-vulture-of-support-ffffa4@quoll>
-References: <20261103100530.1309907-1-vulab@iscas.ac.cn>
+Cc: Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	"David S. Miller" <davem@davemloft.net>, Woojung Huh <woojung.huh@microchip.com>, 
+	Vladimir Oltean <olteanv@gmail.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+	UNGLinuxDriver@microchip.com
+Subject: Re: [PATCH] net: dsa: microchip: drop the parent MDIO bus reference
+Message-ID: <20261103-fierce-handsome-bullfinch-df2e70@quoll>
+References: <20261103100531.1309946-1-vulab@iscas.ac.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,24 +61,28 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261103100530.1309907-1-vulab@iscas.ac.cn>
+In-Reply-To: <20261103100531.1309946-1-vulab@iscas.ac.cn>
 
 
-On Tue, 03 Nov 2026 10:05:30 +0000, Wentao Liang wrote:
-> ice_set_vf_trust() takes a reference on the VF with ice_get_vf_by_id()
-> and then rejects the request when the PF is in switchdev mode without
-> dropping that reference.
+On Tue, 03 Nov 2026 10:05:31 +0000, Wentao Liang wrote:
+> ksz_mdio_register() obtains the parent MDIO bus with of_mdio_find_bus(),
+> which takes a reference on the embedded struct device, and stores it in
+> dev->parent_mdio_bus for the side MDIO accessors.  Nothing ever drops
+> that reference, so it is leaked on the probe error paths and when the
+> switch device is torn down.
 > 
-> Return through the existing out_put_vf label so the VF reference is
-> released on this path too.
+> Register a devres action to put the device when the DSA switch device
+> is released.  The child MDIO bus is unregistered before the action
+> runs, so the parent bus stays valid for the whole lifetime of the
+> switch.
 > 
-> Fixes: 1281b7459657 ("ice: Forbid trusted VFs in switchdev mode")
+> Fixes: 9afaf0eec2ab ("net: dsa: microchip: Refactor MDIO handling for side MDIO access")
 > Cc: stable@vger.kernel.org
 > Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
 > Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 > ---
->  drivers/net/ethernet/intel/ice/ice_sriov.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  drivers/net/dsa/microchip/ksz_common.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
 > 
 
 
