@@ -1,22 +1,22 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793700337;
-	b=d5Rz3m7MGVNVomD8HglJvL7xJ+YJrncDb/iDd3EU0UslpDuHD2nUjm6F0bTyzrVH/xZ2
-	 yxRmCg299wkFiQjPA4mDIWSWRoZzX3bMOTvmSn5QV02FowPjvc/cFf+4BXQS2xBgNe5N9
-	 7VB2wcicrtZ0uE6wYbP8Fddg/bNsw//5N1gkQjZmW8Nq/vs4M4JeOOgMJFzywwpzwTpl8
-	 ea0chwYxGDmQ2enHRrOnDVOcL9/xlE1o0Yolm3XPxOCctnlHSUOkPZahlKGzAQwCxFQII
-	 qDfsmDsWizBG/Jl/uwTjryhY8hzCKjdaQPzRD8OZYICdn1s6XKCp0IUv3Z3fG/FWHAw==
+	t=1793700339;
+	b=3FcP6OTN1WkwOmCjjOMrndVoZvcYnDp5xIVNpSz/H2aIs8Mxw4HPIGEcqp/76KLZmH9P
+	 wwEuDjBN7avnt0UkG6P8IEq5EIr/6dybf9NAGYjCWMK4z5Vdnu2Vaja+trPbgQARaWbtG
+	 R0UAguCcVhai1XixRM9cfIvgBH48WE48r9yuhlRrUDEgGa+rVywXuVs7dtzWpswwfk237
+	 KeeLfCiN0ZhyrWwBBy3W/DOvbs+WMGHAp33/ETafRy2SVDcJg3RbdlO1ybZdcMq37JWaP
+	 x2Vxg+0z0XoPNW3m7vg+3EL9dq2lCA3rdneVAff54n3E32fbZ2hfrmKRG4Zhn1iNw+w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793700337;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793700339;
 	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
 	 MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
 	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=pHILoWh8cXh4Ja4FuwvyiXCXnwvyYnbih+aBsUhTx5M=;
-	b=JnxRVp5u320dv+GQtEzu6+4JA68/wb54ogte6yUeRc96vWh9RQ8j3m4TIKZ6nUoFd7lF
-	 4ph2SjXemGAfQQXD81IpRZoXG/E+6yBgvRQLffoo2I2Q3XeEst/dKFMDdQRj0xF4KpXQt
-	 Pq8gaFaz+tcmK7FdbTK400TaAj9nwApOwNRETrNw1LB1QJmp0Iagi4TT6omIMky2z2QYu
-	 E2ocjS72hUT0vz93ItsCn4jtxwS3+QSMRacGVY5zZhcRQe245aCTAtbov7KESROMJ2Vn1
-	 zJJ5oglGI55NS5rnzepTMh0b44VKK5F6PXwOHQbKjMI5QOlhKtiCzf20QrHgihJVx3g==
+	bh=gJbduYY+2MLz7vY8LSMtIk42i7cqHj5q97uCgEORjb8=;
+	b=v7BEwnt7Z4uE5wQJ6m8Zv+T06H+u/KEKoPkD6Hw01RDJAHJ72YhheXlt1bAiSz3Jm/hg
+	 VJ43tBE7g4LyGiQtow8O8snu3Ac2dLBiElhFByZ6f4xgcFM275RpWZ2WOr2iPf3oOgO6L
+	 jJ11dJt9vdS7IMg2j/BUtJ/Rp5UX05SMvRZJN44I5EPxKjLkulnqFn6OpJ3zhgqWs89Ne
+	 qYfwSt5U7MG9g/O3kfQ3Po6OOdlDkUHR8UpadqcRpOdDVqt3xDJmeeCrNPHygXmT7O9vI
+	 Rg4FOfxT4xUrEmCI3b2Qo6PhqX+16E9dlrs4Fdhlm0cvCFnrMtlo7NLq1PkERTqDQ4g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=iscas.ac.cn;
 	spf=pass smtp.mailfrom=iscas.ac.cn;
@@ -25,30 +25,29 @@ Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F576085094;
-	Tue,  3 Nov 2026 10:05:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E3F576085094
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D3460A381C;
+	Tue,  3 Nov 2026 10:05:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 30D3460A381C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowACHkpPlselql3s7AA--.2932S2;
-	Tue, 03 Nov 2026 18:05:25 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowAAXIZLmselqnXs7AA--.2519S2;
+	Tue, 03 Nov 2026 18:05:26 +0800 (CST)
 From: Wentao Liang <vulab@iscas.ac.cn>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+To: Marcin Wojtas <marcin.s.wojtas@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>
-Cc: intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
+Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Wentao Liang <vulab@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] net: ixgbevf: drop the SA reference if secpath_set() fails
-Date: Tue,  3 Nov 2026 10:05:34 +0000
-Message-Id: <20261103100534.1310071-1-vulab@iscas.ac.cn>
+Subject: [PATCH] net: mvpp2: free pending TX timestamp skbs when the port is stopped
+Date: Tue,  3 Nov 2026 10:05:35 +0000
+Message-Id: <20261103100535.1310088-1-vulab@iscas.ac.cn>
 X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,10 +59,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACHkpPlselql3s7AA--.2932S2
-X-Coremail-Antispam: 1UD129KBjvJXoWrtw17Wr17tF4kGr13try3XFb_yoW8Jryfpa
-	n8CFyj9ryrXw4jga4DXa1kuF9akayxtrW5GryFkwnavwn8Ary5CFnYvrWj9ry0yrWrGF13
-	tr1jyFsxuwnxZ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:rQCowAAXIZLmselqnXs7AA--.2519S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7KrW3ArW5ZryxGr4fZrW7CFg_yoW8urW7pF
+	WjyryYyFWkXF47Z347Wa1jyr1Fqw1xtF43GFWIk34Yq347Grykur409a90vFW8JrWkXry7
+	AF4xKFsrGr4DXFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUU9a14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
 	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
@@ -77,41 +76,61 @@ X-Coremail-Antispam: 1UD129KBjvJXoWrtw17Wr17tF4kGr13try3XFb_yoW8Jryfpa
 	yUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIIF0xvE42xK8VAvwI8IcIk0rVWU
 	JVWUCwCI42IY6I8E87Iv67AKxVWxJVW8Jr1lIxAIcVC2z280aVCY1x0267AKxVWxJr0_Gc
 	JvcSsGvfC2KfnxnUUI43ZEXa7VU8jQ6JUUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAQAA2rpnOFgZgAAsz
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAEAA2rpnOFgbAAAs8
 
-ixgbevf_ipsec_rx() takes a reference on the xfrm_state returned by
-ixgbevf_ipsec_find_rx_state(). On success that reference is handed over
-to the skb's security path, which releases it when the skb is freed.
-When secpath_set() cannot allocate the extension it returns NULL, but
-the function returns without releasing the xfrm_state, so the SA
-reference is leaked.
+mvpp2_tx_hw_tstamp() takes an extra reference on skbs that need a TX
+timestamp and stores them in port->tx_hwtstamp_queue[]. The reference is
+dropped by mvpp2_isr_handle_ptp_queue() when the hardware reports the
+timestamp. Nothing drains the queues when the port is stopped, so skbs
+still waiting for a timestamp keep their reference until their queue
+slot is reused, and are leaked for good when the port is removed.
 
-Put the reference before bailing out.
+Free the queued skbs in mvpp2_stop(), after the interrupts have been
+released.
 
-Fixes: 0062e7cc955e ("ixgbevf: add VF IPsec offload code")
+Fixes: f5015a594c50 ("net: mvpp2: ptp: add support for transmit timestamping")
 Cc: stable@vger.kernel.org
 Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
 Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- drivers/net/ethernet/intel/ixgbevf/ipsec.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ixgbevf/ipsec.c b/drivers/net/ethernet/intel/ixgbevf/ipsec.c
-index 076fd0a24858..bf3fcab3bd57 100644
---- a/drivers/net/ethernet/intel/ixgbevf/ipsec.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/ipsec.c
-@@ -596,8 +596,10 @@ void ixgbevf_ipsec_rx(struct ixgbevf_ring *rx_ring,
- 		return;
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index 317af54369cf..fc020b8c8830 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -3419,6 +3419,22 @@ static void mvpp2_isr_handle_ptp(struct mvpp2_port *port)
+ 		mvpp2_isr_handle_ptp_queue(port, 1);
+ }
  
- 	sp = secpath_set(skb);
--	if (unlikely(!sp))
-+	if (unlikely(!sp)) {
-+		xfrm_state_put(xs);
- 		return;
++static void mvpp2_tx_hwtstamp_flush(struct mvpp2_port *port)
++{
++	struct mvpp2_hwtstamp_queue *queue;
++	int nq, i;
++
++	for (nq = 0; nq < ARRAY_SIZE(port->tx_hwtstamp_queue); nq++) {
++		queue = &port->tx_hwtstamp_queue[nq];
++		for (i = 0; i < ARRAY_SIZE(queue->skb); i++) {
++			if (!queue->skb[i])
++				continue;
++			dev_kfree_skb_any(queue->skb[i]);
++			queue->skb[i] = NULL;
++		}
 +	}
++}
++
+ static void mvpp2_isr_handle_link(struct mvpp2_port *port,
+ 				  struct phylink_pcs *pcs, bool link)
+ {
+@@ -4914,6 +4930,7 @@ static int mvpp2_stop(struct net_device *dev)
+ 		free_irq(port->port_irq, port);
  
- 	sp->xvec[sp->len++] = xs;
- 	sp->olen++;
+ 	mvpp2_irqs_deinit(port);
++	mvpp2_tx_hwtstamp_flush(port);
+ 	if (!port->has_tx_irqs) {
+ 		for (thread = 0; thread < port->priv->nthreads; thread++) {
+ 			port_pcpu = per_cpu_ptr(port->pcpu, thread);
 -- 
 2.34.1
 
