@@ -1,66 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=117.135.210.8
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793695438;
-	b=k1aSDLkXOAKBsnaf6AbnmSur0vi+iHcrR3HT5EptOjnS8bBah3VCJgOz6oPUxDscaoGP
-	 3ltSOAFvgKNFENDgFjcj+j81lzE01dSTpb05BsWA+Sd11M1KBmY9uvhfMUMLY2G+Lznq4
-	 ySlmKfHgabd1e2j0s0FTuil2dEvkvX9Kk/RbhG5fJ91yuCGZ6RzQgOJ8TLhV3kUwKEpHW
-	 hG3uand/D2cE+PG/eLZ6I0NxO1rXZztshvN3MYrY57UZgSbrxLB2wJjFhlbMa+4+L5453
-	 6QWp9tJbu2cATOuIbZbJMIeNzyuI7b5gvxw14fk+KjucxVqaX3eZbAT4+wWwtD8vETQ==
+	t=1793695535;
+	b=qAX6pDwHw+yhm2Vuyh2SBrXJvpkPjlOZepRX1r9I5JT7nxY4+yFLhutzzqVtE/yvsgEJ
+	 tX+thVm7BuLpLTq9wGK63ooHCVjgHGnfUVzjiKsfNR9/eCGKuJSTZphWRECToYXfuBl7a
+	 uZg7n5VNsIG8zZ8pevPPngGtbGC8OTjLhtUcL5BhMrBEKqYQTa4jX5kQNJ6ObHZ92McjT
+	 92ElthGTN6fSrbyYVSgMzFgTWni6rjX4SWMMoDareG7OkEwTHCbpocAOmgllwSvYvQbuL
+	 1EutMlQ20Pyq/flTiFE+woQ694cu7OhhtOjJ/TAjhLyZdSj5WYiowt40dDb+ztB198w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793695438;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
-	bh=dwUVwHlLq9+4ar10B3+uww2PxgckiO6ewtLyyeNYiio=;
-	b=4uFruGZLkTy0LuS9i+F049e8vOg1cKDMtL95uK9VzB2HVe2RLTvk1A63bO+QNm9sQbPz
-	 m9xqSksml3YiTHwkkRYpALVwIX3EPFAVs5Vk1/AuO3rUPRkcQ6J16Zn1/pgj1bewgvVFH
-	 /Zm8QQzMd8HLySWROkMwuzDfUKocMgNn3JjhiCZDlpXxOW8hILJ3uVAOJynlxEbsrGeu8
-	 DG/Lj7OzMFo08broelZ2hvYRv05MRTxsoF98ibfMXffX3H3Rr/yw9esBW8V1mnNVTqJ63
-	 Crumffh+Z9ruky5lvwSavJMkCAaziMZbdAA8Wj1QipklRTjGUv0SV1GqmjLBEU6s4Wg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793695535;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=P7rCNAJa0SWC+hedMuiPmRIZFFBJmYbJAcz9BWucrSA=;
+	b=mHMf+NRr3k9CSZh3LfjQBWNtAENUnN7taqy680xI8LtwNjgaudjjjYf5U2NINzyU45+O
+	 bXtYLSzV2iAAsO8AJqVqPOfAv3K+kRuXYbdy7tqZ/3199Bwd1WRv3gH9R+O5kef5Kw4oA
+	 mcztf0qyR0eaQRvUulUy8nDil32Aa2TczlGcJkKVqUDMTNssRLgu3jnhTj3t7HEXUMmBC
+	 fi4TtQOq4YUyzzAuwmWGwBsG/fkEfR+IAVxkAKlPXI7P+BuSIXdCGLgEgyU/G0tKhFb+q
+	 jPGuHH2azQSw20VL3f44433/eMoAFqp/gKK1c4xC9d9gbRSaIchn19A3giPN9PmRLqg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=126.com;
-	spf=pass smtp.mailfrom=126.com;
-	dkim=pass header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b="RZp/ZV91";
-	arc=none smtp.remote-ip=117.135.210.8
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NLOZjClD;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=aM+8xW2K;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A82606A940;
-	Tue,  3 Nov 2026 08:43:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 04A82606A940
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE01606A337
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 08:45:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5CE01606A337
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=RZp/ZV91
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=dw
-	UVwHlLq9+4ar10B3+uww2PxgckiO6ewtLyyeNYiio=; b=RZp/ZV91pw+7iro0Ga
-	9Mdar6EmvNWVqdfAbgZwB8+WwPvjbgXnmjyFJ1VyuGL4sYhJshZyZW5UpFjNqoPD
-	hn5bKeIbUVc9i8/KSIGl3QTLKPJpnFr6FcD7xcDdJ/47gQREkEaqyPjgVoe2lb3y
-	FM32cjLeEfZ2uwerdzsj1AT+Y=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD394uLnulqIw9mCg--.27301S2;
-	Tue, 03 Nov 2026 16:42:52 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	michael.bommarito@gmail.com,
-	gnault@redhat.com,
-	alice.kernel@fastmail.im,
-	kuniyu@google.com,
-	nicoyip.dev@gmail.com,
-	mail@david-bauer.net
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>
-Subject: [PATCH net-next v2] l2tp: bump tunnel stats before dropping the session reference
-Date: Tue,  3 Nov 2026 16:42:49 +0800
-Message-Id: <20261103084249.1337657-1-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NLOZjClD;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=aM+8xW2K
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793695533;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P7rCNAJa0SWC+hedMuiPmRIZFFBJmYbJAcz9BWucrSA=;
+	b=NLOZjClDve2mmwZBsIwFYoFARtbrFsPeDPJqrppP331zvDZ/KA9J8hMxhraIGTYkBZDRzv
+	IENgaVRuOX3vF6t9MsUOSrXZ+KRf1LNN8+VWFtWC7RAK5tfci25OT3gbmo9byq1UZJ4+X3
+	xmcWT8ZomQ+6yW+p4zSZnhhVqTeD5nQ=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-564-4TxlqfXdMSysbiOSH-zaYA-1; Tue, 03 Nov 2026 03:45:32 -0500
+X-MC-Unique: 4TxlqfXdMSysbiOSH-zaYA-1
+X-Mimecast-MFC-AGG-ID: 4TxlqfXdMSysbiOSH-zaYA_1793695531
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a1fdde384cso27418755e9.3
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 00:45:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1793695531; x=1794300331; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=P7rCNAJa0SWC+hedMuiPmRIZFFBJmYbJAcz9BWucrSA=;
+        b=aM+8xW2Kk09QNdXmYlQjsGlRKgc++s76zsgfZ+s4mtC0A4PMK9ST5XEscdQWjKUwEl
+         PT3acO1oxauPz48qiDv1Sy9eJC+HOEXE/Dz9/yylfSRQobDrgfkBRggJKISjF3RNqmx3
+         6wKNtYIrGLfp2KYRhJegyWBNzCQAKr0sAe8i8JkUXhmXtwod8t70QV08u8//+b/MJ5sC
+         MkXjRP3USqahi3EpFs+tgBKL1UzYQVhCIfohj2LywJVv2/KlzJBNBmvPnqKrPC1LzZMx
+         7cKJYu8Lf0k8LYrai1xb5dK0fWcTacrFL4aksRIyKSXG4CxbeAndW8jcBZdLWT80iEo+
+         p+vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793695531; x=1794300331;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=P7rCNAJa0SWC+hedMuiPmRIZFFBJmYbJAcz9BWucrSA=;
+        b=it+i5QbJ3Jc1CY9dZ5xcQZKKrVpSYqIZhhyvUva9rgT7rZjbwOjZaEO3m3IjJzPrQj
+         kMHBaD/bxDnvUB/kKFSC4kwkhJMuiOLiM0EcWodEn4+DynTCOJJQjCYOKtHTsjh6Mwi5
+         wUwzygPZAKr1jyTWsJHPcOyaPXhCme4pi/gb+FtttLgU0WvzNQZLh96jm1vr2VxE5Wn0
+         10dDS+F+pN6Gx2w8lbHOWZ0KnZvIhSKH4bXnLkgTOfRUBOpoPL8B7i7iF/cvFBNkYdjK
+         g9chKS08eIy07Zdr1F5mVMiur+Uuxqg8uXBl1YBOhXCUkE/K7++pqIpXBi4M5NvKlQYN
+         RO/w==
+X-Forwarded-Encrypted: i=1; AKwUvBzfo905XggTgSx4PQapuhT5aGrABtJsyM4F2XLnje1CKAKxR01qpqNZF3sGPzQPK1KF8VX+/j0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+Hg4EK3in5ZDwO+DaqEcgpZnMWZ1mM34rkbV+1YGeJl8XB8i+2
+	Y2699+xI3MR0mRa+S/1ler5aGanPYIz8YCGCqAisGAslB6rA2VxAFA7pe2Lnt0/W9iMP1QJKda3
+	R/2P+s69NY9NxsfzTITzfHCnovOguNTZEeuTCTQ8/wceL2ioF6riFy0kmOQ==
+X-Gm-Gg: AYBFou1hKo0uFUZxnjN+tX9mklOp9GSgUe0tGjiwfPtvD5MJqeo3emVnOKbDFL0gLDu
+	q9bV3CfkAaHS/03otLYjtxSYjhMotqaq/Tqk9kVmQYTVcqtVvs8WaKQafO9zAvNsSoivr+szz/e
+	fiPrXuBUwEHy7T8VMqb5mZnrOvvimUqsxdAyJGALV9CJdJ/ivvip/ZwQLm43jmtGcM7Nk6UBfKd
+	NdnIwgL9ew1wk8eGrnLqi7U2wLt/HkuprhoBTERSK3nAekbpuKyrujYmoaYgknNvbAF3cisQSJG
+	rvCQkiru5ezzu32xEciihxCIFhuar2JbcmVAWwbdh2teD9JEGyo1OVn/gEC84wUw5dCGETgNtFD
+	DGgH7KQZWciIDjplahfZJRbxMCCKzItkdTTMdRrSnXkOBZ7CpNXu2uOMIcrBdER6TGOErLz9m3C
+	zrseHuvCkllODa2LmBsx2kqptFm759EGoSb/eCXn++8o0=
+X-Received: by 2002:a05:600c:a00b:b0:4a2:180b:3153 with SMTP id 5b1f17b1804b1-4ac185bcc7dmr295995815e9.14.1793695530790;
+        Tue, 03 Nov 2026 00:45:30 -0800 (PST)
+X-Received: by 2002:a05:600c:a00b:b0:4a2:180b:3153 with SMTP id 5b1f17b1804b1-4ac185bcc7dmr295995365e9.14.1793695530383;
+        Tue, 03 Nov 2026 00:45:30 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b2ab00ff3dsm81653245e9.14.2026.11.03.00.45.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Nov 2026 00:45:29 -0800 (PST)
+Message-ID: <a555f856-0e74-4579-b35f-9e9c3ed5e8eb@redhat.com>
+Date: Tue, 3 Nov 2026 09:45:28 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,102 +112,80 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD394uLnulqIw9mCg--.27301S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXrWfAr1DtF4rXr1fKr4DJwb_yoW5ZrW3pF
-	WUG3yDKr4DKr1UAr18Jay8X3W5CrWSvayrCF90k34SywsxZa4kJa90yr1Fqa4DCrWvka1Y
-	vF1vqw15XF4qyFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UA9N3UUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlAzftmrpnoz9NwAA3q
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] xfrm: iptfs: fix skb leak on error in
+ __input_process_payload()
+To: Eric Dumazet <edumazet@kernel.org>,
+ Steffen Klassert <steffen.klassert@secunet.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ syzbot+a3f21220cbbb6e14ee2e@syzkaller.appspotmail.com,
+ "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+References: <20261030083358.2653599-1-edumazet@kernel.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261030083358.2653599-1-edumazet@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+On 10/30/26 09:33, Eric Dumazet wrote:
+> syzbot reported a memory leak of the received skb (and its sec_path
+> extension) in the IP-TFS receive path.
+> 
+> __input_process_payload() parses the inner packets of an IP-TFS payload
+> and queues them on @sublist, which is only sent after the parsing loop.
+> Three error paths inside the loop (skb_copy_seq_read() failure, invalid
+> inner IPv4 header length, unknown IP version) jump to the "done" label,
+> which is placed after the code sending @sublist.
+> 
+> Any skb already queued on @sublist is then neither delivered nor freed.
+> This includes skbs added by iptfs_reassem_cont() before the call, newly
+> allocated inner packets, and, since the received skb can be reused for
+> the first inner packet, the received skb itself.
+> 
+> Move the "done" label before the trim/send code, so that inner packets
+> parsed before the error are delivered as on the normal exit path. The
+> received skb is then still freed (or consumed) as before when it was
+> not reused.
+> 
+> Fixes: 6c82d2433671 ("xfrm: iptfs: add basic receive packet (tunnel egress) handling")
+> Reported-by: syzbot+a3f21220cbbb6e14ee2e@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/netdev/6ae4102e.9c6421ad.36baac.0005.GAE@google.com/
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> ---
+> Cc: Steffen Klassert <steffen.klassert@secunet.com>
+> Cc: Herbert Xu <herbert@gondor.apana.org.au>
 
-l2tp_udp_encap_recv() derives the tunnel pointer from the session it
-has just looked up, so the session reference is the only thing keeping
-the tunnel alive.  Both error paths of the function drop the reference
-before jumping to the invalid label, which still dereferences the
-tunnel:
+@Steffen, do you prefer to take this one via your tree? Otherwise, would you mind
+acking it?
 
-	tunnel = session->tunnel;
+Thanks,
 
-	if (version != tunnel->version) {
-		l2tp_session_put(session);
-		goto invalid;
-	}
-	...
-invalid:
-	atomic_long_inc(&tunnel->stats.rx_invalid);
+Paolo
 
-Reorder the error paths so the statistics are updated before the
-reference is dropped, removing the dependency on the tunnel staying
-allocated after its last reference is gone.
-
-Currently this is safe by accident: the only live entry point is the
-UDP encap_rcv hook, which is invoked under rcu_read_lock(), and the
-tunnel is freed by kfree_rcu(), so the tunnel memory outlives the
-dereference.  Making the order explicitly correct keeps the function
-safe regardless of the calling context, instead of relying on every
-future caller holding an RCU read-side reference.
-
-The put on the version mismatch path came later, with commit
-4d10edfd1475 ("l2tp: Fix memleak in l2tp_udp_encap_recv()."), which
-plugged a session leak.
-
-Found by inspection.
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
----
-Changes in v2:
-- Describe the change as hardening instead of a reachable
-  use-after-free: the socket backlog path pointed at by the v1 commit
-  message cannot be reached, and the live receive path always holds an
-  RCU read-side reference, so the old ordering is currently safe
-  (Sashiko AI review).
-- Drop the backport tags (the Fixes tag and the Cc to stable)
-  accordingly and retitle the patch.
-- Correct the index line: the v1 patch carried the blob hashes of an
-  earlier draft of this change, so its new hash did not match the file
-  the diff actually produces.
-v1:
-- Link: https://lore.kernel.org/all/20261027063657.1359170-1-xiaolinkui@126.com/
-
- net/l2tp/l2tp_core.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
-index 7e042a3e648c..b7183b527fc4 100644
---- a/net/l2tp/l2tp_core.c
-+++ b/net/l2tp/l2tp_core.c
-@@ -1083,16 +1083,12 @@ int l2tp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 	tunnel = session->tunnel;
- 
- 	/* Check protocol version */
--	if (version != tunnel->version) {
--		l2tp_session_put(session);
-+	if (version != tunnel->version)
- 		goto invalid;
--	}
- 
- 	if (version == L2TP_HDR_VER_3 &&
--	    l2tp_v3_ensure_opt_in_linear(session, skb, &ptr, &optr)) {
--		l2tp_session_put(session);
-+	    l2tp_v3_ensure_opt_in_linear(session, skb, &ptr, &optr))
- 		goto invalid;
--	}
- 
- 	l2tp_recv_common(session, skb, ptr, optr, hdrflags, length);
- 	l2tp_session_put(session);
-@@ -1100,7 +1096,11 @@ int l2tp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 	return 0;
- 
- invalid:
-+	/* The session reference is the only thing keeping the tunnel alive
-+	 * here, so account the invalid packet before dropping it.
-+	 */
- 	atomic_long_inc(&tunnel->stats.rx_invalid);
-+	l2tp_session_put(session);
- 
- pass:
- 	/* Put UDP header back */
--- 
-2.25.1
+> ---
+>   net/xfrm/xfrm_iptfs.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+> index 103cf7c5dbfb..0313a43aa8a9 100644
+> --- a/net/xfrm/xfrm_iptfs.c
+> +++ b/net/xfrm/xfrm_iptfs.c
+> @@ -1182,6 +1182,7 @@ static bool __input_process_payload(struct xfrm_state *x, u32 data,
+>   		/* this should not happen from the above code */
+>   		XFRM_INC_STATS(net, LINUX_MIB_XFRMINIPTFSERROR);
+>   
+> +done:
+>   	if (first_skb && first_iplen && !defer && !first_skb_partial) {
+>   		/* first_skb is queued b/c !defer and not partial */
+>   		if (pskb_trim(first_skb, first_iplen)) {
+> @@ -1198,7 +1199,7 @@ static bool __input_process_payload(struct xfrm_state *x, u32 data,
+>   		if (xfrm_input(skb, 0, 0, -2))
+>   			kfree_skb(skb);
+>   	}
+> -done:
+> +
+>   	skb = skbseq->root_skb;
+>   	skb_abort_seq_read(skbseq);
+>   
 
