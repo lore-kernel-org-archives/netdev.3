@@ -1,58 +1,132 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793732224;
-	b=c1mTPl/N/VB9Sj6kVYDngO0+xBSj2V9ElVJNjexAjjs8hJX+wJZfcf6wNTmzc1Rd/SqY
-	 8jKhtMUWSsjyaYIjdQPBqiUL82a69DhXN9lDwZFVB3e7L+sDybMQ52LDg7mNeui3xS2nH
-	 N3c/fgSub/YJyaFf19q3/cn7yldc8uH8HR5XHtpSyzDB4ssyfWXuClLivAGhUicHCs9Sz
-	 FARRPYrE1WSeLnr6o4X3jBtSMTm8X3nMTEXcO+eHBM2zPt06QOmWXj1+lw1bD4WsenEcd
-	 VaJux1H29J9sI4GfQiQTltNysDhqO9gS/h2U4kM/zawenFcwYE31wNwSkSf2wGVeMIg==
+	t=1793732348;
+	b=W8aaj3OVJcrCjr6WtERknEwJmTDbBdBDkW9Fhp2oAVBA5JCn9Bqk5vM7xvD5Jq2mmfuQ
+	 bCDtAu0hlHZ5QHfGkHlKh00Bzigru2whek17RO1n7e8wO4oTBWufvXDs+4NzBh5Q648kh
+	 PHS9lHPfEadkkRq5QQMTdPO8C28sZyZKb2DN9A6q4ETHppmXWOmwVgc7LMldcioqipEYD
+	 IOlQHxBx6CxasbUdQgpv+JxaYRAopS9rPJ8iAHX6ju2ubG4f8UZXKnVQsZKq9F7D7DwyH
+	 HdKi6157GDI/QRKaT854DhQCDYJeI2p3ptMioipKIXrMCAFwzXDYLj6UCWAoPva4OeA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793732224;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=74r72HRpRA559V/nquUDmiH0Ij5L9Tuuw/PXNIqNzX0=;
-	b=H1TBSYusEjaQIuoXWWOLzLnXtNEvV/Niu65MB89swdcLWyq0O67rQwThW5DFowyTFkkv
-	 aK3JXjMtOgphDRFHjY9IzRml8B/xRmaPWr7r7OiUL28GEsdaCENWOqBBoPNwlqTb7ap+2
-	 fuWIgCpJrW1b9+A7MPlxS6IvsFVT5/WMjD61DCzl9G1tiDAg64judNY2+sbKWA2O8MQvb
-	 8xEB/fMZmNl1iJb17NfiHKMviDDZrQEMp0TG1+uMxl4Atk+4vw5+qphT1QeiKegsAu3m8
-	 Was4hJ02RflIvIxC2PFc1BZotjcXsXpf3B63bTh9kk9DbQY1X5q5UdEwI/ycwyZHbsQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793732348;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=J7X+N3b/Iozr8Iw7Q9vLqcq+wqZH/CWnHiKVeMbKEmo=;
+	b=P8NTa+rVq/750hVGMfcFqsrCn7cFGOe/TTA9WBsEtC7VmQFsKZCJIEn9YtrijbkfOdHj
+	 H/FM1NnR47Q8cT5DPEGf9TVfyQWy3N5MRwUhQ3Tvtltavx4MQcqNf9c6HcVh3CLuQr30V
+	 oHVEn3O00I59rp8AWwM1ZTbVe5UWgPez8r07QCn0gcQCHa469yDm27RR3u7jHUIfDTNld
+	 t3LTOtTrE9nh6jo6hPlfeptDHN6N9wvsJDeaW5zGmJkwwvKh4CBFWpWDljDtTWSkBgv7O
+	 TTvBkZccz6q0ZwA1ZpQuQ4c36wMmhOyrHlqDb5KFDlfBmuCYWEtTB//LA4wSXMPDsrA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=wJ+kGEGB;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MUGv2Kdq;
+	arc=none smtp.remote-ip=74.125.82.174
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BE1606A328
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 18:57:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E3BE1606A328
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A93606A336
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 18:59:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28A93606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=wJ+kGEGB
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 737291A143C;
-	Tue,  3 Nov 2026 18:57:01 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 40D226046C;
-	Tue,  3 Nov 2026 18:57:01 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6204A103291D1;
-	Tue,  3 Nov 2026 19:56:53 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793732215; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=74r72HRpRA559V/nquUDmiH0Ij5L9Tuuw/PXNIqNzX0=;
-	b=wJ+kGEGBNVZ89WuIxN3rnWCuCDQDU3XXjku/sCN/Ae+9+ekADeymkPJ2P8gPXkDjynwT43
-	P7kNuPannoFLtJ/ZI7sgqbUZ23Ayk5Xkm3vPescXb7//nrek1uoVvQhWtl34D50L/NuduK
-	olNBXdQLuPF8tDrOpOY89rJcnT6T4ohu7WPbDocXlbHD3MhejxB0ubsb3BiaM9X8pyyxsT
-	KXDXjxtjoNUJEY5Eb0LNZDmlNop8VKRn9t8MnTzYwWzuYUam2hICvRkDMQ8NMpjMVzC3er
-	fkiTTc4If7meLPfK86Sqz63ZhG++dOnyEl0d/Nnfsk0WI/07WxC4rKS3Y20v1g==
-Message-ID: <750783ff-37d0-4b91-beaf-d36c8080a4d3@bootlin.com>
-Date: Tue, 3 Nov 2026 19:56:52 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MUGv2Kdq
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-3645f0f3fcdso7522346eec.0
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 10:59:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793732347; x=1794337147; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=J7X+N3b/Iozr8Iw7Q9vLqcq+wqZH/CWnHiKVeMbKEmo=;
+        b=MUGv2KdqugwUjwtDn+5TEs87XsBH6SLTKU2VnuO7MeKo6hr4G5WH4O55wxRf43JXjq
+         s4GLbtJziYvCL8aJeaRkPvbVSJRuYcD79RqLOhm3K8WcuWsYcB6Ziudrzsv1CrC07u0F
+         eeK0IGODbK1MBN0NyElMx/axzRgFDpbY/f4N1s0bQx8OzhaCbM4C77eijEtz2tK6avwd
+         jIuK+W4ysYUA0fCY/zhjI3sP/rkF9QL4GSrBo5192CeRPPyJlisVudQsAqBsfuVbx201
+         8WfWRhga3xBSMnG6+AMLIpCzka4/V3h3bqBZnqQBBngmWmeWgvYnwglc9N9f6vswPPA4
+         4s2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793732347; x=1794337147;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=J7X+N3b/Iozr8Iw7Q9vLqcq+wqZH/CWnHiKVeMbKEmo=;
+        b=NX8wT4+r/b4/ShmJKzuW3+/KctUcfkuL5CLVqg6LRIXHnTvzsqi8WQ1KLXiuTmqhDJ
+         nGXsdTXoUVRabDNCUpI46mn+TWl7A0U6oZ+oN64gcGviSB5yKWLX3ErIVrSjzSV2S9aK
+         SAjjX3aOj2mtJLJ3jKZBpLCTUiG41N+SnMLxbo7glP3P7IX5VNj+TQZr5fAHGxv5LShc
+         6y95NFZUqPb/dFGY0Mor0LA3DreWZ+FbWR/kiXWAPDbSra+Kec34u4ho4WFeV4nPXXI0
+         7E1gHYP9r9WJJmuPJk7nymCwAq7yL1dH/QA7YI1MD4wjS30pXOehGQx3nlwEghHX7lWU
+         lfhg==
+X-Forwarded-Encrypted: i=1; AKwUvBypEWbY+nLQb56BgfjSAMfCdvXG/7Zbd9kBamSRaFYqR2qJ+7r+sMvGbd0iDtvdQiaoSWWA8BY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9qp4cc71bYdM8d4FNX4jFuSFt6UufIQxmb9qKZdqWhWkLPCicX
+	eROYcU+CUxrJM0j3TAjjtFXO5EMf9mZec7yLHWaIbKYx52gYiRBX5jUG
+X-Gm-Gg: AYBFou1hB75xgaFUAiwiEEVN/gYTcNOAZybVU0XzlE7xOYzmM4orLxNbtyWqrnGcXKy
+	g+KeIhbyLQK9haM5M9fRvBdowpjTR0Ai8XBipfTTmdpjuUz//GGo6SNQeW4JMHoFceezn37/G0u
+	NcETU6wwezt1mkbj63aRdugVpS5guk8kjaE4R5K7xXkn8LYqjpQWZPsW3ZkJbSpV/TNWNBCfwhs
+	jbrOlkD4QwUATVjUFSZFw5D2BJxAWoljPPy6XoHZZzyrPl8YrDTgKAxOjqHoUq6SSvS6Jgb4FVB
+	j540bDO40rdXKh1HlRr+7xeIY/gBle3kXPZh7rqa7e54uxpPVWRloXLPyTrOg+8EiM2WcfaLjLs
+	GbuuRtAq+79k6ygVswX7lbAnhd3DDCcsXKGfYr2sKJPFMHZv8OSb8jQQh/ihOkJtZ79nrUTGzm0
+	3UXnyvfXIU5pTOepftYh/NMYNt6cj37Yss5W0CztoJ7VgNfycuiHjBQfMDcDT9kdSHBcb1FBDRP
+	9NFnyxZk03DifxJIK2qNezE1eej22LTSCJxIXXxTwV/a1iIDFO++l9Z0+lrvBfaNPvpsFr26wDo
+	PvxFDZqK4hddc50fqapCZJSYAi7kvz/qV2e8VSuWSasr940uWIHpAsI389YJi439tSE5
+X-Received: by 2002:a05:7300:7b81:b0:351:7ec1:a92c with SMTP id 5a478bee46e88-36a42431768mr30787340eec.28.1793732346941;
+        Tue, 03 Nov 2026 10:59:06 -0800 (PST)
+Received: from google.com ([2a00:79e0:2ebe:8:88b4:22ec:d621:c1b])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca39b3b7esm49159eec.28.2026.11.03.10.59.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 10:59:06 -0800 (PST)
+Date: Tue, 3 Nov 2026 10:58:59 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>, Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, 
+	Jiri Pirko <jiri@resnulli.us>, Ivan Vecera <ivecera@redhat.com>, 
+	Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
+	Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Olivier Moysan <olivier.moysan@foss.st.com>, Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, 
+	Thierry Reding <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Lee Jones <lee@kernel.org>, 
+	Srinivas Kandagatla <srini@kernel.org>, Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>, 
+	Ulf Hansson <ulfh@kernel.org>, Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Manivannan Sadhasivam <mani@kernel.org>, 
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>, 
+	Lukasz Luba <lukasz.luba@arm.com>, Orson Zhai <orsonzhai@gmail.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>, 
+	Paul Kocialkowski <paul.kocialkowski@bootlin.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Chanh Nguyen <chanh@os.amperecomputing.com>, Alistair Francis <alistair@alistair23.me>, 
+	Julius Werner <jwerner@chromium.org>, Paul Cercueil <paul@crapouillou.net>, 
+	Dmitry Osipenko <digetx@gmail.com>, Florian Fainelli <f.fainelli@gmail.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, Ray Jui <ray.jui@broadcom.com>, 
+	Scott Branden <scott.branden@broadcom.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, chrome-platform@lists.linux.dev, linux-gpio@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-sound@vger.kernel.org, linux-input@vger.kernel.org, 
+	linux-tegra@vger.kernel.org, mfd@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, linux-phy@lists.infradead.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Use hex unit address patterns
+Message-ID: <auou2CBiiR6zA0G0@google.com>
+References: <20261102135330.2493332-1-robh@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,73 +136,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 1/5] net: mvneta: lift the per-queue TX rate limits
-To: Josef Schlehofer <pepe.schlehofer@gmail.com>, netdev@vger.kernel.org
-Cc: marcin.s.wojtas@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, w@1wt.eu,
- linux-kernel@vger.kernel.org
-References: <20261103125021.70845-1-pepe.schlehofer@gmail.com>
- <20261103125021.70845-2-pepe.schlehofer@gmail.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20261103125021.70845-2-pepe.schlehofer@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102135330.2493332-1-robh@kernel.org>
 
-Hi,
-
-On 11/3/26 13:50, Josef Schlehofer wrote:
-> The per-queue rate limits set by mqprio stay in effect after the
-> shaper is turned off.
+On Mon, Nov 02, 2026 at 07:53:22AM -0600, Rob Herring (Arm) wrote:
+> Unit-addresses by default (and most commonly) are hexadecimal. There's a
+> number of cases using decimal patterns. Fix all of them, limiting the
+> pattern to match the 'reg' limits if there are any.
 > 
-> mvneta_disable_per_queue_rate_limit() only changes the mode bits in
-> MVNETA_TXQ_CMD1_REG. The token buckets keep limiting the TX queues
-> with that mode as well, and their refill rate still holds the old
-> limit.
-> 
-> Refill the token buckets of all TX queues at full rate when the rate
-> limit is disabled. Deleting the qdisc reaches this code only with the
-> next patch.
-> 
-> Tested on a Turris Omnia (Armada 385) with 10 Mbit/s limits on a
-> 100 Mbit/s link. When mqprio was set up again without a shaper, each
-> TX queue stayed at 10 Mbit/s. With this patch the link reaches
-> 94 Mbit/s.
-> 
-> Fixes: 2551dc9e398c ("net: mvneta: Add TC traffic shaping offload")
-> Signed-off-by: Josef Schlehofer <pepe.schlehofer@gmail.com>
-
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-Thanks for addressing this,
-
-Maxime
-
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 > ---
->  drivers/net/ethernet/marvell/mvneta.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
-> index ea755cf05b9e..9b9efac2846e 100644
-> --- a/drivers/net/ethernet/marvell/mvneta.c
-> +++ b/drivers/net/ethernet/marvell/mvneta.c
-> @@ -5204,9 +5204,16 @@ static int mvneta_enable_per_queue_rate_limit(struct mvneta_port *pp)
->  static void mvneta_disable_per_queue_rate_limit(struct mvneta_port *pp)
->  {
->  	u32 val = mvreg_read(pp, MVNETA_TXQ_CMD1_REG);
-> +	int queue;
->  
->  	val |= (MVNETA_TXQ_CMD1_BW_LIM_SEL_V1 | MVNETA_TXQ_CMD1_BW_LIM_EN);
->  	mvreg_write(pp, MVNETA_TXQ_CMD1_REG, val);
-> +
-> +	/* The token buckets still limit the queues, refill them at full rate */
-> +	val = (1 << MVNETA_TXQ_BUCKET_REFILL_PERIOD_SHIFT) |
-> +	      MVNETA_TXQ_BUCKET_REFILL_VALUE_MAX;
-> +	for (queue = 0; queue < txq_number; queue++)
-> +		mvreg_write(pp, MVNETA_TXQ_BUCKET_REFILL_REG(queue), val);
->  }
->  
->  static int mvneta_setup_queue_rates(struct mvneta_port *pp, int queue,
+>  .../bindings/display/xylon,logicvc-display.yaml      |  2 +-
+>  .../devicetree/bindings/dpll/dpll-device.yaml        |  2 +-
+>  .../bindings/embedded-controller/google,cros-ec.yaml |  4 ++--
+>  .../intel,ixp4xx-network-processing-engine.yaml      |  2 +-
+>  Documentation/devicetree/bindings/gpio/gpio-mxs.yaml |  4 ++--
+>  .../devicetree/bindings/hwmon/maxim,max31790.yaml    |  2 +-
+>  .../devicetree/bindings/iio/adc/st,stm32-adc.yaml    |  2 +-
+>  .../bindings/iio/adc/st,stm32-dfsdm-adc.yaml         |  6 +++---
+>  .../bindings/input/touchscreen/cypress,tt21000.yaml  |  2 +-
 
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com> # for input
+
+Thanks.
+
+-- 
+Dmitry
