@@ -1,101 +1,113 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.52
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793708477;
-	b=a1gYY/rrc4/vwJ0ZOqI/UumfH/CTn5H6Mje5E/2uEAduq4gyM5HGuokCkn+jEN32kh7O
-	 CApvRu4QSTYX42KFipJmPNJLDLoCRM4qqoPzp8TTPejIY7Kk4BL6NLWQMDKPq4DeP65lZ
-	 O/kVPzc4OxrkNiz8hII8UCE6OhOLO0YrrEBVssMsHNYrI7xTx0PgW7uO6OILb2yArAik4
-	 9jmVbKodxDL5mG+PCuHCHieh/FYay1xSfVv3eR13VDtjLLDfom7OpJVuyj8J2eDS+OnHI
-	 BoriiC18PhZ+WIXeRU4/0OmQbgbULo7cVM2UwZRv8hQ3r3ymTkBK8zpgFahIG0Vn/7A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793708477;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=ftzGpP0ulPi0xGwIl3ZzcJGVoGV7Otzfx0qZQUNaagQ=;
-	b=CnjK6+TOm+lwk7ZEML1VDonTv0tSR4fRP3hpLlcgzT+0OsTV6/YldPCsOftnZnZoTkd4
-	 jp9e+w//n6fntUVm+ht109sZZv/0tQrbSQLd0Sa4J4ikkeT9+NqwO1hvCl7oyMm+5Jyen
-	 J58i43HtyCeZZXa2YPY2HNylfYOGHIyC7s1CeFvfQgnl2PaR87/bX3j785CMXas42vjL+
-	 TOmmoOU6qILzcTyvrM9Bpv5GOkwtn5U2FU8m6Jaumjr+Em3kunOVMOClMFVcAktOOk0qH
-	 14NCKxE4Se7QvNOPnDCo7lJCukmxBK9k0QIcJZnLnQqycPJ1QNuu3qC4jfptpn/cbOg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fvh2JQpB;
-	arc=none smtp.remote-ip=209.85.128.52
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.36
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793708522;
+	b=r6pfcsfKlbVCrvha4BbmGPNY8OIY7cs3cbE72w56P9PVfQafsGBm1dc8MefvypyX4iFP
+	 BOHEBHQnVB99kU8ymgZ36PspuDRnxPoST9kX75s5BrT6qgaYIswH1ouPG8Ss56iPxJtlZ
+	 I9Jtf0qudYsxZUQDKiZkJMrWg3qnoE7pIOfUAXVRU9YTKE8/RVVXb3sdFVQ6EvVros8uk
+	 MquvCSDhYU3Ye8FUvWwTFFpcjGt2p8s1q/ug8hXuDzWEXvj90+QQgwVMdo0eICCzDhFsS
+	 t+0CalXb6j8ZxJBG5jMqGR2v1pInbeoY6EOyQLGi83GRVT3eV0N6IxvkECpEoYvRpiA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793708522;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:Content-Type:
+	 X-Originating-IP:X-ClientProxiedBy:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=t2tofVoe8B8mUbr/wtrIQF+84z4ck8y3u5VEqeaIanQ=;
+	b=30O+mzdPNo+5PHbqO6aCvVySQw7wyTFvWwceLjOamJcuIFqpsfdAeIzARK4CCqDgrepe
+	 tbsE/Tbl4HgKlMr3yYBXR74AlBw3LZpuBE4Xgnt1wXkKFpt0O7DvsNq/NvTbLg6EcFZjw
+	 B3koCf42NPC9EEtzswrWTe41Ouvd5xcdmu5Pg/yuF1Qz2KqbFC8qB+5XREAvmkRpDF3Hn
+	 BAa/+Ma/cAMJvmJ1FvCYiWbZ9qwV0mL1bEOHwn3zCYqMEWOR+GnHn7yXCPaPBO6xIVYVc
+	 FVZTm7u7wApXBZjx2H25NeH+R9cTgGB13bE5GeUJmfsZ6QGzagsJ9d3uw2J1D6eAdWw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pTbzzDb8;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.36
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010036.outbound.protection.outlook.com [52.101.61.36])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864FE606A324
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 12:21:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 864FE606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780C2606A32C;
+	Tue,  3 Nov 2026 12:22:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 780C2606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fvh2JQpB
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a2069b9710so34848025e9.2
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 04:21:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793708476; x=1794313276; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ftzGpP0ulPi0xGwIl3ZzcJGVoGV7Otzfx0qZQUNaagQ=;
-        b=fvh2JQpBOu6cM29Ph7fUxFpEYbdaym81ejC6CL8VJiAP7BOyDllLvM8BGNfB44Hfx9
-         Ozi4LlYF8HzffdDY8ExE4TxcuiTSfS+woc4hiVBfCp9+LnI4HjfhgrQ3aIqqaTspn6Oi
-         In6aaRZG8QYujzoip+UPV5MJ1pSQ8dAKxjoNgE+G3aFeskF6jnD9WJI0mpMgRvFj/9D/
-         ZlXMDuYgtMOVCcKICTfFYDprdp5J9/N8wJ+I9YOMZDJkvzEF/pKjgSy+p5hykfYcMGKI
-         8VJQL8q3/BUTBpEeuGK49JPTRbUs6eIOrHEss+F+BtHJX0sCez5Q49zVvnB1fpwkWsnQ
-         F4hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793708476; x=1794313276;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ftzGpP0ulPi0xGwIl3ZzcJGVoGV7Otzfx0qZQUNaagQ=;
-        b=RycrD0Cy5H/xKAwso4KxdtuXE+wf1pzsKDaPNd64XiJiKv4/Ne5OHAEuhTjr3fJ6Su
-         ifX3p139v8+cXYfrB+qvD4Gf30eYWS644bmKpTJL82aFxXjjiU/hH2oDhtCsBe6sKHzk
-         7IJQbtr7IRjmHh4b4cGu0eGliyFWUpl3y8g+s62ekTGip7ob3n2efiOBxRX8jtsPfxts
-         7BypZlyv3j0OJsgJyvLBPaD39vR3BgxFBlGGwSr0z/Rq5vOX1b5Ykuu2wJ+97Sj6n+99
-         BZ+5OAW5JCf+TFU3RYHXPkXURYd9ToaiFf1/+4/hYCkqnUq6/rnTGZr33UeXA60kTePO
-         0fmA==
-X-Forwarded-Encrypted: i=1; AKwUvBw+21itAndGwYzxUvT/5avYHe6GOuYCQdcMzLTppgnhxtmApTCeqgk+WBwLS4cSOT8RKuDe5+k=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+AnaGUy4WQGs1OaeLr3WemSNgY3XFTWwdbv7qhm5y8B90vP00J
-	3Woy2Zr5xk4FDEQMWdfyNqvn1fKyaR4f/efY3KhzLotfhMorCimXKFuu
-X-Gm-Gg: AYBFou0eNzZ1tDTJNtlBcGjB2bPa2CHyXVb7Hkdydq3QD3+9G5psdaOtoFyJxDVkmgp
-	bpl2Kl8OFSAs9KkbacLvEkrxXYNnvUt/a9VkKJ4lVWdCunu3KVBeOvPZ/ZZjpBf2yHCkhWcdMht
-	VHjSHPP6NtYx+P3tbpk80N+1ePIdirifRD94PcHx3jJh162guoPkQdI0RmaSAaI8aWGzzQi+OgE
-	rPw61+M8cK5mLX7aBvKBvtlbyXq0Zi+mrdI292NkeLygitbc/hYMxoPBeo447zRlPnpqP96Mkl1
-	eIRsP5ewAl4QMS0HCefC5adVK5uzu/HV/gLeTtKaQLtgGYgSq4WU1md17NtTLJBwRi4ds5TKK2q
-	HD8ug7T2RmzD9bhfVBP5iZlx8maRWBSjw99TaI+swB0H53Oc8pFAERIkmug2Ezvxsj2Z4NGkxD+
-	o7Ve9AZxi4wAggGTMbMNFF3uNyCZoerA990LpKc7hOJUVG1LGqnrCCHc8WcsdUEOd8L8ZGPY3kt
-	VYyGHU4Zby7L2cp0SgeFC8SUYVzaOsQzwdpcXpYdymZaF5R9bey0Jf3XF9z1k7syTazPga83G5u
-	MeCi8jHOuvKNNGkoZ/Aq7N7grSfj+kXU37fTf8G9YFvt3AEdFMpEr8QLKOIGbO/NYQVp4DPdavZ
-	ztzjLXwii/4vpKkosDkqFvPcsFIpmHOuSo4caWyi7Ac73WXTI6W3Or8xlaR+qqLXfE2HPiM8pa9
-	AxwhxoYB1YoJTkU5Sv2Ode2tQ=
-X-Received: by 2002:a05:600c:a00a:b0:4a2:190f:cf6a with SMTP id 5b1f17b1804b1-4ac19802310mr295970745e9.35.1793708475722;
-        Tue, 03 Nov 2026 04:21:15 -0800 (PST)
-Received: from uk-shared-4.. ([62.89.143.68])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b2ab00ff3dsm105111815e9.14.2026.11.03.04.21.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 04:21:14 -0800 (PST)
-From: Peter Morrow <pdmorrow@gmail.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Peter Morrow <pdmorrow@gmail.com>
-Subject: [PATCH net-next] net/mlx4: drop the unused is_supported callback
-Date: Tue,  3 Nov 2026 12:21:08 +0000
-Message-ID: <20261103122109.1798144-1-pdmorrow@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pTbzzDb8
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qCHv8sWM0wDnxV7vKviYFoOqbCVftGbCcxeqjOIaTaSYvuRBa7Pn7Z/lSBEB2HjDZg1D6ho6eLUl02iR/+SbqCiL5FalCrApE0GNkfugl31wZ+6RqtBLfjrMfKFKVApjd1BwimUg1NNSGpLDplbeq+5jTiQmD0fSccVEXvtzOuL12sCHPWPvUOJvQ5LiShp5t4EoAh7efmcXoOO2XEhQCRU+a2XEwTT3Mrk2DEDHfkH4je6z6nP5SOYjVCr4hRTy8gUcFil5hgxEHvcBU10p8vrF6HECjO3eWGZvKUDmIV4L2OwbVptx5otkG3+oZ9YoUXrSyXbCYFivIuvwNWFCCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=t2tofVoe8B8mUbr/wtrIQF+84z4ck8y3u5VEqeaIanQ=;
+ b=ca5wtCbUFLcyWxaIEMHBskuQLdu3FQPMafUyJ4hZtov47K8CelBY0Q/On7l1ENA+/8UFPAe+EkuH8uoXX2khAO2+3akT7E9WgMT2regy2ucD/16Uc7HlFgpgoikSlNuVSf7Drh0tvcqZFE743gZ+dFG97ICSrvyDF+AVldiNu92v23EDeUOltVZFHJlGVrh/A6wSp87zKnYC1HTG4CZKQ5BfdJYsfPJ3c3fgUPwFz9cO7Xa+wZWPQr+QJeCpq7U1fBNL+2nMZq+9n2Q1gKeZNBgQSia04OvjqbMAtIqtFsJPdMrmvxiGdgT0YtfPSQFudevSJ5hY536W+JF3rZVf4Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=t2tofVoe8B8mUbr/wtrIQF+84z4ck8y3u5VEqeaIanQ=;
+ b=pTbzzDb8FBY7qvThErENhhDWN71bsr6E60diYOTwl6XyW3SW/r0RmRs19jLZeUI0Y2yS5JCLKyUTv5qFBjhkVaJEe/NvpaORS5+BUzHA1i6pF4DmCjJD5qLXrFbJOInHuAKSsTwYvtduZd+YdY6Q8oNpbtQZSiY3uYAdHykyNftgrGJo7xTazxLcOhTzZWqN7E6GJ0QgQfLRinz1MgX3kOtakbaJqqr4qZhM2/pzVo868JpNC4lm0DkzOM2plibxj/KzwJ9GkaFFNEiFi6UPNRLZsUsRiMuqsgGSCPCVaGuH0EP34j5I161DTlhGbJZJvWhW/o9Smj9XVuC3Ua1buA==
+Received: from SJ0PR05CA0180.namprd05.prod.outlook.com (2603:10b6:a03:339::35)
+ by SA1PR12MB7248.namprd12.prod.outlook.com (2603:10b6:806:2be::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Tue, 3 Nov 2026
+ 12:19:48 +0000
+Received: from SJ1PEPF000026C6.namprd04.prod.outlook.com
+ (2603:10b6:a03:339:cafe::27) by SJ0PR05CA0180.outlook.office365.com
+ (2603:10b6:a03:339::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.8 via Frontend Transport; Tue, 3
+ Nov 2026 12:19:48 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SJ1PEPF000026C6.mail.protection.outlook.com (10.167.244.103) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.592.5 via Frontend Transport; Tue, 3 Nov 2026 12:19:48 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Tue, 3 Nov
+ 2026 04:19:33 -0800
+Received: from 8e48b22-lcelt.nvidia.com (10.126.231.37) by
+ rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Tue, 3 Nov 2026 04:19:29 -0800
+From: Kal Cutter Conley <kalcutterc@nvidia.com>
+To: Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown
+	<neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo
+	<Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, Trond Myklebust
+	<trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>
+CC: Kal Cutter Conley <kalcutterc@nvidia.com>, <linux-nfs@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v3] sunrpc: fix lost wakeups when stopping service threads
+Date: Tue, 3 Nov 2026 13:19:14 +0100
+Message-ID: <20261103121915.25298-1-kalcutterc@nvidia.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261030130629.103716-1-kalcutterc@nvidia.com>
+References: <20261030130629.103716-1-kalcutterc@nvidia.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,120 +118,112 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000026C6:EE_|SA1PR12MB7248:EE_
+X-MS-Office365-Filtering-Correlation-Id: 376f1c83-5a7a-4790-a47c-08df39a4c12e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|82310400026|23010399003|7416014|376014|1800799024|10067099003|22082099003|18002099003|13003099007|921020|56012099006|11063799006|261022075727099003|261102123227099003|261102130727099003|261028144727099003|261026121527099003|261021121427099003|261026140227099003|261022105027099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info:
+	D8yDjFv0ZK/ZPe3mfJ7jIqe2HBeLmi32c53v+G4H7x0HAQlJoJaQWc8ARjYUDzWS95saJCupHdITdKppsNi33ko4sV/JG8Syz7RSr4Zx8thb7mNq9fIxfTTBzqE4Z04038jUsuK6tgk1G/DzvRS1zApwbM4NoFFW3xekvoDeZzUd5UIsgcT4epcquutXq5e3YO2A5UIVAGKsMvLC7s/Te+NUq8qPzSQk+MX5bas3XkdDlur86AulXAcV9ecqX3LIr7v3plHJExjqWWOtQyV+7m898FEoPPywnhBLrgmTEcPQS0oIzBX++Ek7ZqEz11P9SEKWgZIYdfBubIJumBokTeokZrHsbL59v1LXjUSVfBcWAH7ayU3yAQp3h2iQqtEPicG5z6sTxB3E1YSM28LQFyYxytD8nI5p9Rw+3N5KXD0Sp+8Os9Ichrwj8pgLPkZLOgXWCwR0vBI+V86HTaM1odnfPXQrGdj2TvbFLRWqiwBkziNDULwffd6qig/dtXUYSgsTr8yhiq+uLfTjNH+ZgjAHVphBvswiroO9J2Qjl3dwaMrLBW6iSYsRj0Od9/+oJhZYVL0M4AlN/4/xyZdcWhSkKaFIzgWNte5YOnjPhj6PXkeXrPX9zCC4XDx1NtEWgGLiv9j+QyrN5+Z6NW+c6L/US66FaZAGZnplGXTWXv4hrfg5yZC92gz1lDoH4EQedF4mv0eBvoGEVl3yzq0J0Y7dHe+L9u+gCnZJnJ3OrBI2Ox40NPuEPVw8HFpyxVY/
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(23010399003)(7416014)(376014)(1800799024)(10067099003)(22082099003)(18002099003)(13003099007)(921020)(56012099006)(11063799006)(261022075727099003)(261102123227099003)(261102130727099003)(261028144727099003)(261026121527099003)(261021121427099003)(261026140227099003)(261022105027099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	bez5dUwHojQjtWKqRbUlyoP6L/m7NjE1dnaVPgBZYRjXQuKXXd/ZOC2kNFpC5K14eNvQz/5LY0bm16UkB4RS+W7xYIJNRn8U6+qfX9yahYHGKHGkAMYHHn1cxt47gbgD+8BRkVsqxFYqQo9FF8EzMn5cHOJMPHqEbdkBbiIN1loZrvNV4p6ok+JyJospIfjBCQjEprjaUD2umDFliUTF6OHgMRgbxV1kS2bY+Yj8use0EiF8me0GzZFNL2NQxkcif6iOJK8ZhzDE1IUaN7bFS80ygKNYL65dsaOJguDmbCCeIwtogQnf3M3CBHASarpkTHzGf+r4vqqyfWqArFjPG8r8M6wR2RC4CQewMa307WRriQa9ntQpAR+qxInd6mhObNclOvkvSSe1DneXD06CNaYCNFgkCWDcPWaAvPQzcus/J4kklGaxGLQiPo2XlEUL
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 12:19:48.7054
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 376f1c83-5a7a-4790-a47c-08df39a4c12e
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000026C6.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7248
 
-Since commit 557d80138618 ("net/mlx4: always create the eth and ib
-auxiliary devices"), both is_supported callbacks return true, so the
-checks in add_drivers() and delete_drivers() no longer decide
-anything. Drop the callbacks and keep the aux device table as an array
-of suffixes.
+Stopping NFS can leave rpc.nfsd 0 in an uninterruptible wait with
+this stack:
 
-Tested with this change applied to 6.12.113 on an Azure VM with two
-ConnectX-3 VFs: both auxiliary devices are created at boot, and
-removing mlx4_ib, mlx4_en and mlx4_core deletes them cleanly.
+  svc_stop_kthreads [sunrpc]
+  svc_set_num_threads [sunrpc]
+  nfsd_svc [nfsd]
+  write_threads [nfsd]
+  nfsctl_transaction_write [nfsd]
 
-Suggested-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Peter Morrow <pdmorrow@gmail.com>
+SP_NEED_VICTIM and SP_VICTIM_REMAINS remain set while all remaining
+nfsd threads sleep in svc_recv() and none has RQ_VICTIM set.
+
+The stop request is published with unordered set_bit() operations.
+svc_pool_wake_idle_thread() checks the idle list and task state before
+calling wake_up_process(). If it sees an empty list or TASK_RUNNING,
+it skips the wakeup and its memory barrier. The requester can therefore
+miss a sleeping worker while that worker misses the stop request.
+
+Use smp_mb__after_atomic() after the flag updates in
+svc_stop_kthreads() and svc_wake_up() to order work publication before
+both lockless checks, even when no wakeup occurs. Pair with
+set_current_state() and llist_add() in svc_thread_wait_for_work(), so
+the worker observes the pending work or the requester observes the
+idle worker and wakes it.
+
+Fixes: 60749cbe3d8a ("sunrpc: change sp_nrthreads from atomic_t to unsigned int.")
+Signed-off-by: Kal Cutter Conley <kalcutterc@nvidia.com>
 ---
- drivers/net/ethernet/mellanox/mlx4/intf.c | 44 ++++-------------------
- 1 file changed, 6 insertions(+), 38 deletions(-)
+Changes in v3:
+- Drop the redundant <asm/barrier.h> include from svc.c.
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/intf.c b/drivers/net/ethernet/mellanox/mlx4/intf.c
-index 31860b4ab..1e136203b 100644
---- a/drivers/net/ethernet/mellanox/mlx4/intf.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/intf.c
-@@ -41,23 +41,7 @@
- static DEFINE_MUTEX(intf_mutex);
- static DEFINE_IDA(mlx4_adev_ida);
+Changes in v2:
+- Move the barrier into svc_stop_kthreads() and svc_wake_up(), using
+  smp_mb__after_atomic(). This avoids adding a redundant barrier on the
+  transport enqueue path.
+
+v1: https://lore.kernel.org/r/20261030130629.103716-1-kalcutterc@nvidia.com
+
+ net/sunrpc/svc.c      | 5 +++++
+ net/sunrpc/svc_xprt.c | 5 +++++
+ 2 files changed, 10 insertions(+)
+
+diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
+index af8d87c1de83..6100603e0a34 100644
+--- a/net/sunrpc/svc.c
++++ b/net/sunrpc/svc.c
+@@ -784,6 +784,11 @@ svc_stop_kthreads(struct svc_serv *serv, struct svc_pool *pool, int nrservs)
+ 	do {
+ 		set_bit(SP_VICTIM_REMAINS, &pool->sp_flags);
+ 		set_bit(SP_NEED_VICTIM, &pool->sp_flags);
++		/*
++		 * Order flag updates before the idle list and task state checks.
++		 * Pairs with the barriers in svc_thread_wait_for_work().
++		 */
++		smp_mb__after_atomic();
+ 		svc_pool_wake_idle_thread(pool);
+ 		wait_on_bit(&pool->sp_flags, SP_VICTIM_REMAINS, TASK_IDLE);
+ 		nrservs++;
+diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
+index 076c624fe675..868e3da57b6c 100644
+--- a/net/sunrpc/svc_xprt.c
++++ b/net/sunrpc/svc_xprt.c
+@@ -632,6 +632,11 @@ void svc_wake_up(struct svc_serv *serv)
+ 	struct svc_pool *pool = &serv->sv_pools[0];
  
--static bool is_eth_supported(struct mlx4_dev *dev)
--{
--	return true;
--}
--
--static bool is_ib_supported(struct mlx4_dev *dev)
--{
--	return true;
--}
--
--static const struct mlx4_adev_device {
--	const char *suffix;
--	bool (*is_supported)(struct mlx4_dev *dev);
--} mlx4_adev_devices[] = {
--	{ "eth", is_eth_supported },
--	{ "ib", is_ib_supported },
--};
-+static const char *const mlx4_adev_devices[] = { "eth", "ib" };
- 
- int mlx4_adev_init(struct mlx4_dev *dev)
- {
-@@ -98,8 +82,8 @@ static void adev_release(struct device *dev)
- 
- static struct mlx4_adev *add_adev(struct mlx4_dev *dev, int idx)
- {
-+	const char *suffix = mlx4_adev_devices[idx];
- 	struct mlx4_priv *priv = mlx4_priv(dev);
--	const char *suffix = mlx4_adev_devices[idx].suffix;
- 	struct auxiliary_device *adev;
- 	struct mlx4_adev *madev;
- 	int ret;
-@@ -211,7 +195,7 @@ int mlx4_do_bond(struct mlx4_dev *dev, bool enable)
- 		priv->adev[i] = add_adev(dev, i);
- 		if (IS_ERR(priv->adev[i])) {
- 			mlx4_warn(dev, "Device[%d] (%s) failed to load\n", i,
--				  mlx4_adev_devices[i].suffix);
-+				  mlx4_adev_devices[i]);
- 			priv->adev[i] = NULL;
- 			continue;
- 		}
-@@ -258,21 +242,13 @@ static int add_drivers(struct mlx4_dev *dev)
- 	int i, ret = 0;
- 
- 	for (i = 0; i < ARRAY_SIZE(mlx4_adev_devices); i++) {
--		bool is_supported = false;
--
- 		if (priv->adev[i])
- 			continue;
- 
--		if (mlx4_adev_devices[i].is_supported)
--			is_supported = mlx4_adev_devices[i].is_supported(dev);
--
--		if (!is_supported)
--			continue;
--
- 		priv->adev[i] = add_adev(dev, i);
- 		if (IS_ERR(priv->adev[i])) {
- 			mlx4_warn(dev, "Device[%d] (%s) failed to load\n", i,
--				  mlx4_adev_devices[i].suffix);
-+				  mlx4_adev_devices[i]);
- 			/* We continue to rescan drivers and leave to the caller
- 			 * to make decision if to release everything or
- 			 * continue. */
-@@ -286,23 +262,15 @@ static int add_drivers(struct mlx4_dev *dev)
- static void delete_drivers(struct mlx4_dev *dev)
- {
- 	struct mlx4_priv *priv = mlx4_priv(dev);
--	bool delete_all;
- 	int i;
- 
--	delete_all = !(dev->persist->interface_state & MLX4_INTERFACE_STATE_UP);
-+	if (dev->persist->interface_state & MLX4_INTERFACE_STATE_UP)
-+		return;
- 
- 	for (i = ARRAY_SIZE(mlx4_adev_devices) - 1; i >= 0; i--) {
--		bool is_supported = false;
--
- 		if (!priv->adev[i])
- 			continue;
- 
--		if (mlx4_adev_devices[i].is_supported && !delete_all)
--			is_supported = mlx4_adev_devices[i].is_supported(dev);
--
--		if (is_supported)
--			continue;
--
- 		del_adev(&priv->adev[i]->adev);
- 		priv->adev[i] = NULL;
- 	}
+ 	set_bit(SP_TASK_PENDING, &pool->sp_flags);
++	/*
++	 * Order flag updates before the idle list and task state checks.
++	 * Pairs with the barriers in svc_thread_wait_for_work().
++	 */
++	smp_mb__after_atomic();
+ 	svc_pool_wake_idle_thread(pool);
+ }
+ EXPORT_SYMBOL_GPL(svc_wake_up);
+
+base-commit: 2d3259f652bb0f1d137ccabecac6763da05064ec
 -- 
-2.47.3
+2.53.0
 
