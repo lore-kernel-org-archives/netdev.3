@@ -1,101 +1,101 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793738600;
-	b=RZES1TsoFWQL6q8nhevYuv00xIjxyUtg6zOLmVw/UcmhMrOrvkA2gbyKWgash8P4W0E9
-	 7SPALbcVbq4/QzbcihndJZO2uNWBLx3DSLHXEiobBhLrp0TcIVvIpWieFH8OUjd1C19Va
-	 zjzkhgShw73NsxAXlU2FovTCGIzdmcaUswvVio3ml/4cdMRkZXDe5RSiNp5g4c4KTcAvw
-	 eyFtePNpFxqqdWW+HMu5DevLzL5Nxpusqj538A/+qo8C/yEgMgMprmtcl+3A5IIV6NUNE
-	 FcIAbhCUzrZqrSUJHr5SMJlhOSI32mft6Cg8WLRG21qRVc4Jugco3+bIUN/mqOi3hjg==
+	t=1793738604;
+	b=RlDMGdzZbfRalxfjxcfvqqrRXOqyv7Bvp6/ncddRubDgCHzACumhAJk441b5BzvO5+wB
+	 /FSKP1aMXjJw1ThFCriDBJdf25z5mPkN7Kf1iXU+/ejRcYhQMykE+a70xgifnVIBfnxIS
+	 BpJpOL4UlfgBdgH6QL2nnoUQg1QNTPsTjH3Wh1bQQoPKP4sFrAlJf4wNoNMeM1N4+2cug
+	 WwKVV3jQznN3NchMjR3INoNFpxxtM8y3gSiZH6q8AQsqTnPNCpKib18qbjift7nvWFN9v
+	 jEoedZ3CrTuWnci9GAK13H+iD+qMv/6P1NIMDDy8EJu4rVvkhevyhyUdfw4UOFPab7w==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793738600;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793738604;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:To:Cc:
 	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=AlrfPzT5jQTLXkKxox6WIsAY0BepfJdkXAFH0ccIzwY=;
-	b=Lh34ztPxq6EWkrmMCRot21M3dDou0d6vbS+Kv5uYZm2WyH43VHJurZ8AHeL6Z7plkl4p
-	 e0R800LZsJE6PfUVtrpo+S5qGB2fB94q12x2GmAneuomP2KDaeeLzzk4wH5RurL9vx9PJ
-	 K42ceKMCNErqsyJ/Ep0N/7w7ubIVcYshYtlxRtqUZQue8fxoRvBk+p8NiKx4XU3DPQ+/N
-	 HRbAWPm4xuIPAIxPZ1W2/T1NNdwzyb6yIQ5jU96W5TH+RudzxBButcwvRi3VJZC+yp27g
-	 uPUGNDZetcIRwpo3j0aZPvEB7xPbL6B50nFK/fwptttAP3jAzsg4AMKM4Df9aB2nlUw==
+	bh=iXBDFNkgLi1OBwy3Jvp2GyEuECCn6BuOzEhmZb+Xr6E=;
+	b=C/RRriTlRVQbq2PZxg3abzofIlsQTBzBEe0hqAUKrMawjOEnpEAiC5q6Q38s/uB+Fl8J
+	 13/5ZrusappRWKTUfkdy8NdKbCzcY/nzVzRttszfQRSbOfSAMD1RzHijuXQWukNtpiufU
+	 6SkC7at9FTSUYdrej6VmvVxek9KkY5PMpKwFjKM8EYS4uK6NJGi42zG+clgshlZJBDBGp
+	 x+obpOjtr5X3IGWyvv1skc2zp0ni8GFTDkzji8t2JffCmMYO1U34xr6G23h24g01QEIns
+	 BCP1hrDYKBK/iKVPVMqf1vIOOIbnk13BjYu3K2ZaKMmVS+Sa61Xe6TBEOOcJaGJfNQg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=none header.from=pengutronix.de;
 	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=URs2o7qC;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b="cj0/m3bM";
 	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F70C606A330;
-	Tue,  3 Nov 2026 20:43:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7F70C606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02328606A338;
+	Tue,  3 Nov 2026 20:43:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 02328606A338
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=URs2o7qC
+	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=cj0/m3bM
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id DFAA7201BAB;
-	Tue, 03 Nov 2026 21:43:13 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 4884820282F;
+	Tue, 03 Nov 2026 21:43:18 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793738593;
+	s=20260414; t=1793738598;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AlrfPzT5jQTLXkKxox6WIsAY0BepfJdkXAFH0ccIzwY=;
-	b=URs2o7qCuzxoVzokgJq182oaU0spHcyoXQjaGWwACFgXGcyWtx3S5JXR2awzimcz43A7Hp
-	F4qjRz5qksPSIIb9JefQqZL/FLmAMmqi8J15Yx3bNlbH6KbxhtSsYAPS6YH0n89TtWNm59
-	dS4QXQmPk3hGpf137rSkn3ZmgLzTU8FehxT2PsTNtqUrjABSNWUMRvasSTN6fuFqhPQpPO
-	o0FoWWB01Bv78GpijlLVZB4mX64yxmpTpNrA90rIgbDQ/AbQ19evmVhWzduus4fp4M1+b1
-	z9IDm+HrvC7oQigIXMrCkBSgYOKhNVaFpQ7SgwzgioXi4AeoClgFs8GMyXMH4Q==
+	bh=iXBDFNkgLi1OBwy3Jvp2GyEuECCn6BuOzEhmZb+Xr6E=;
+	b=cj0/m3bMIxcN0RDXdgnlSuOgFKmFEcDH2Y2Rj+AoymUu+YxRihFJrrVcURWCCQzv9xJ1YR
+	6h+SK1yi8KvllXyTdU9O939vJv2z2AhogiobjsSeU5BKvKL4O3f6UUdsU9LyHx92tkhoxC
+	EnbK0e2rEsslcj8TJ94l/Tr9kfux8hcPb/l/S+iQE9x9iiLI8CzOJuP9xaOym0+xlx706k
+	O2GBkREGdy5chV5tO83u6tEMhgELIGg93dK/cwybWv3SLifCjFKApeEsV3McTguOfj0jGv
+	7Udp0HcChqU46DSeRlIDj4d4AuF/oxhD/hbFjUmXLdVUAJv1/vuGQ1vnOBw6OQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793738593;
+	s=20260414; t=1793738598;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AlrfPzT5jQTLXkKxox6WIsAY0BepfJdkXAFH0ccIzwY=;
-	b=VmWG9Mtr61bKjG2z2R/JgfpqfGv/wC535JSavUEBz+SU7HFJKOtq2QkZS55apLH83NBzvE
-	eBBmuiDQ5/OQlZVHqykjBaaoMgq6i4XxZvZYacbsefpFgNgPXq+aRQ9mWH//cOfOnS26G2
-	C1Gop+qT0aK89mMweK/TGZMlgznZkmgjbpL2oD7+Edv42rI23chp2pKDVtqWRh9FM/w5QE
-	6Sufr5kOuAuuzYduIt2Knzvzq5C5f7l4ywMmkgBbxZ3LN4XkWR/9sSv0Uq3Hi1vlIy9x+O
-	LzwEvF8odYYv9r2ogpSrkDMbUY4Je9ww6Ba4697sk6vkpzuF95YgGw5IsaCCcQ==
+	bh=iXBDFNkgLi1OBwy3Jvp2GyEuECCn6BuOzEhmZb+Xr6E=;
+	b=N7MYOodlCwcAyIS7yOA2h/AnxenvvCUX1I2pXV4eqJUM2w4xtljoAKpaPrO2ljlnaysN7Y
+	GU8841q2DgDgHKd12AqPiqCGSzKqhFjC6gyLejxUnhL7T1Vp8FcOTsYWkg2iKhVQgYmfBb
+	Dyj74gjQ3+KAITzqZSEEh1U3Oz2cxtGB8jRGqUBBkG9PruEVMiKjDXhoBoYj2Lvd4NQBPl
+	QewyjiLnULwi7pR5FcLVai8nFBTBcqCBfwBIC0UeX0kZtWuPkvgYgVnn8HeIGEA9dHjCeh
+	gJGSif5ARqDeKTqhv6q4EHn2lbs5U6C85C8oQOqAJSlTbBHieYHfR0HTJztJog==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793738593; a=rsa-sha256;
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793738598; a=rsa-sha256;
 	cv=none;
-	b=DO425sJobCvFHecIK4ZoVyCU3VlZiFbyX7BQWTF0CeS9rCFy9J5YXZFZVKPnF4N0F0+Ihq
-	jk1BIR8YPU4CNEJ3lFx2lIAl2U21HqOee21ah3NJ6SE6FTOut0Ets9IBrTum0kwJPQban+
-	mVFoHg2TpWd1+KLA4r4PkyoEwJX8cWOO4xvN6PD7WprJ84C95pDwxO3ulRnebLDOCRkz2K
-	bsnrqNDy4FkRaVYm0uvIs0Ar9wuP/R1u4GW//3Qiwe1NXAy+dHm8bGrFg3rw8PCM8fkR/O
-	4drqqFqw+Z6bmPnwqugtrGo5uXNL3bEvvk9CZ8BGA2n4GGPdjwCtaPo9jfRfZQ==
+	b=Iah61Bhcea8TiHjyeOORhBmquUIP84wxq/qMJPHoJJQhNRas8QTCKmdFMqImsc0QPihbKs
+	R41WzbRNFaxHAmJ+keC/YF15xf5IGBK1R5ViFpeGUGxguIDmEB8STkWhKcDPZruEr++tol
+	snXIHDYk1H02djnxK6AdaufmxqVyUhoajnOGEtgLcm6RrlLNU7ZkuaY3qnMmDazoS6FBQ+
+	4dyb+ctSa0J8mvIUyB+2ZOmnOutdz+nh4cpDdLmMbQWGAGS3jaYYRlaIud8se8673ixAfW
+	LSrILS049FZTZhQlIllXLGBOQBpYr+Pnrr9mbb1ZnE98Drfzy95nXTTlsqMY4w==
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1xOLLd-002V8M-2V;
-	Tue, 03 Nov 2026 21:43:13 +0100
+	id 1xOLLi-002V8b-0Z;
+	Tue, 03 Nov 2026 21:43:18 +0100
 Received: from blackshift.org (unknown [IPv6:2a00:20:73c1:227f:2cd5:5d72:938f:f03c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 792DC5DDEBA;
-	Tue, 03 Nov 2026 20:43:12 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 0102A5DDEC0;
+	Tue, 03 Nov 2026 20:43:16 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Cunhao Lu <1579567540@qq.com>,
-	stable@kernel.org,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	stable@vger.kernel.org,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 03/15] can: skb: make echo skb freeing safe in any IRQ context
-Date: Tue,  3 Nov 2026 21:30:24 +0100
-Message-ID: <20261103204305.3211144-4-mkl@pengutronix.de>
+Subject: [PATCH net 07/15] can: isotp: check the return values of can_rx_register() in isotp_bind()
+Date: Tue,  3 Nov 2026 21:30:28 +0100
+Message-ID: <20261103204305.3211144-8-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261103204305.3211144-1-mkl@pengutronix.de>
 References: <20261103204305.3211144-1-mkl@pengutronix.de>
@@ -110,109 +110,117 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Cunhao Lu <1579567540@qq.com>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-can_put_echo_skb() can be called with hardware interrupts disabled. Its
-direct drop paths use kfree_skb(), while can_create_echo_skb() uses
-kfree_skb() when cloning fails and consume_skb() after a successful clone.
-None of these helpers is safe in every IRQ context.
+isotp_bind() ignores the return values of can_rx_register() for the RX
+and the echo receiver and binds the socket anyway. When a receiver can
+not be allocated, bind() succeeds without this receiver, so the socket
+does not receive frames or its transmissions time out. isotp_release()
+and isotp_notify() later try to remove the missing receiver, which
+triggers the "receive list entry not found" warning in
+can_rx_unregister().
 
-Use dev_kfree_skb_any() for all drop paths and dev_consume_skb_any() when
-consuming a successfully cloned skb. This preserves the respective skb drop
-and consumed semantics regardless of the caller IRQ context.
+As the device has been checked before and RTNL prevents a namespace
+change during bind(), only -ENOMEM can be returned here.
 
-Signed-off-by: Cunhao Lu <1579567540@qq.com>
-Link: https://patch.msgid.link/tencent_E84809CF236D0137885E7E4E4D58340B3208@qq.com
-Cc: stable@kernel.org
-Fixes: ae64438be192 ("can: dev: fix skb drop check")
-Fixes: 0ae89beb283a ("can: add destructor for self generated skbs")
-Fixes: 3ccd4c6167d3 ("can: Unify droping of invalid tx skbs and netdev stats")
-Fixes: 39549eef3587 ("can: CAN Network device driver and Netlink interface")
-[mkl: also convert can_dropped_invalid_skb(), can_dev_dropped_skb()]
-[mkl: add stable on Cc + add Fixes tags]
+Check the return values and register the RX receiver as the last step.
+The echo receiver is registered first, as it only handles the socket's
+own echo frames and does nothing while no transmission is in progress.
+So a failed RX registration only needs to remove the echo receiver, and
+isotp_rcv() has never processed a frame for this socket.
+
+Set so->ifindex before the registrations, so that a First Frame received
+before so->bound is set can be answered with a Flow Control frame and
+the RX timeout is started as usual. As the RX receiver is registered
+last, this can only happen for a bind() that succeeds. Reset so->ifindex
+when bind() fails.
+
+Check IFF_UP only after the receivers have been registered, so that a
+bind() that fails on a down device does not report ENETDOWN. As bind()
+holds RTNL, the device state can not change in between.
+
+Fixes: e057dd3fc20f ("can: add ISO 15765-2:2016 transport protocol")
+Cc: stable@vger.kernel.org
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20261027-can-rx-lock-v12-2-eb5afc2d8b9b@hartkopp.net
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-
 ---
+ net/can/isotp.c | 42 +++++++++++++++++++++++++++---------------
+ 1 file changed, 27 insertions(+), 15 deletions(-)
 
-FAQ:
-
-Q: What about the comment in drivers/net/can/virtio_can.c
-   virtio_can_start_xmit()? The error handling for virtqueue_add_sgs()
-   mentions that can_put_echo_skb() consumes the skb via consume_skb().
-
-A: The comment in virtio_can.c will be updated in a separate series, to
-   ease backporting of this patch.
-
-[mkl: add FAQ section]
----
- drivers/net/can/dev/skb.c | 6 +++---
- include/linux/can/dev.h   | 2 +-
- include/linux/can/skb.h   | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/can/dev/skb.c b/drivers/net/can/dev/skb.c
-index bc0787535b52..46c151eece8f 100644
---- a/drivers/net/can/dev/skb.c
-+++ b/drivers/net/can/dev/skb.c
-@@ -63,7 +63,7 @@ int can_put_echo_skb(struct sk_buff *skb, struct net_device *dev,
- 	    (skb->protocol != htons(ETH_P_CAN) &&
- 	     skb->protocol != htons(ETH_P_CANFD) &&
- 	     skb->protocol != htons(ETH_P_CANXL))) {
--		kfree_skb(skb);
-+		dev_kfree_skb_any(skb);
- 		return 0;
+diff --git a/net/can/isotp.c b/net/can/isotp.c
+index e4957855829e..28e9d22772fa 100644
+--- a/net/can/isotp.c
++++ b/net/can/isotp.c
+@@ -1550,7 +1550,6 @@ static int isotp_bind(struct socket *sock, struct sockaddr_unsized *uaddr, int l
+ 	struct sock *sk = sock->sk;
+ 	struct isotp_sock *so = isotp_sk(sk);
+ 	struct net *net = sock_net(sk);
+-	int ifindex;
+ 	struct net_device *dev;
+ 	canid_t tx_id = addr->can_addr.tp.tx_id;
+ 	canid_t rx_id = addr->can_addr.tp.rx_id;
+@@ -1627,26 +1626,36 @@ static int isotp_bind(struct socket *sock, struct sockaddr_unsized *uaddr, int l
+ 		err = -EINVAL;
+ 		goto out_put_dev;
  	}
+-	if (!(dev->flags & IFF_UP))
+-		notify_enetdown = 1;
  
-@@ -91,7 +91,7 @@ int can_put_echo_skb(struct sk_buff *skb, struct net_device *dev,
- 	} else {
- 		/* locking problem with netif_stop_queue() ?? */
- 		netdev_err(dev, "%s: BUG! echo_skb %d is occupied!\n", __func__, idx);
--		kfree_skb(skb);
-+		dev_kfree_skb_any(skb);
- 		return -EBUSY;
- 	}
+-	ifindex = dev->ifindex;
+-
+-	if (isotp_register_rxid(so))
+-		can_rx_register(net, dev, rx_id, SINGLE_MASK(rx_id),
+-				isotp_rcv, sk, "isotp", sk);
++	/* switch to new settings */
++	so->ifindex = dev->ifindex;
++	so->rxid = rx_id;
++	so->txid = tx_id;
  
-@@ -403,7 +403,7 @@ bool can_dropped_invalid_skb(struct net_device *dev, struct sk_buff *skb)
- 	return false;
+ 	/* no consecutive frame echo skb in flight */
+ 	WRITE_ONCE(so->cfecho, 0);
  
- inval_skb:
--	kfree_skb(skb);
-+	dev_kfree_skb_any(skb);
- 	dev->stats.tx_dropped++;
- 	return true;
- }
-diff --git a/include/linux/can/dev.h b/include/linux/can/dev.h
-index 6d0710d6f571..346faddee02e 100644
---- a/include/linux/can/dev.h
-+++ b/include/linux/can/dev.h
-@@ -176,7 +176,7 @@ static inline bool can_dev_dropped_skb(struct net_device *dev, struct sk_buff *s
- 	return can_dropped_invalid_skb(dev, skb);
+-	/* register for echo skb's */
+-	can_rx_register(net, dev, tx_id, SINGLE_MASK(tx_id),
+-			isotp_rcv_echo, sk, "isotpe", sk);
++	/* register for echo skb's first (no echo traffic at this point) */
++	err = can_rx_register(net, dev, tx_id, SINGLE_MASK(tx_id),
++			      isotp_rcv_echo, sk, "isotpe", sk);
++	if (err)
++		goto out_put_dev;
++
++	if (isotp_register_rxid(so)) {
++		err = can_rx_register(net, dev, rx_id, SINGLE_MASK(rx_id),
++				      isotp_rcv, sk, "isotp", sk);
++		if (err) {
++			/* unregister echo skb subscription */
++			can_rx_unregister(net, dev, tx_id, SINGLE_MASK(tx_id),
++					  isotp_rcv_echo, sk);
++			goto out_put_dev;
++		}
++	}
++
++	/* report a down device only for a successful bind() */
++	if (!(dev->flags & IFF_UP))
++		notify_enetdown = 1;
  
- invalid_skb:
--	kfree_skb(skb);
-+	dev_kfree_skb_any(skb);
- 	dev->stats.tx_dropped++;
- 	return true;
- }
-diff --git a/include/linux/can/skb.h b/include/linux/can/skb.h
-index 5d27843862fc..87ace09c0d8b 100644
---- a/include/linux/can/skb.h
-+++ b/include/linux/can/skb.h
-@@ -78,12 +78,12 @@ static inline struct sk_buff *can_create_echo_skb(struct sk_buff *skb)
+-	/* switch to new settings */
+-	so->ifindex = ifindex;
+-	so->rxid = rx_id;
+-	so->txid = tx_id;
+ 	so->bound = 1;
  
- 	nskb = skb_clone(skb, GFP_ATOMIC);
- 	if (unlikely(!nskb)) {
--		kfree_skb(skb);
-+		dev_kfree_skb_any(skb);
- 		return NULL;
- 	}
+ 	/* bind() ok -> hold a reference for so->dev so that isotp_release()
+@@ -1657,6 +1666,9 @@ static int isotp_bind(struct socket *sock, struct sockaddr_unsized *uaddr, int l
+ 	netdev_hold(so->dev, &so->dev_tracker, GFP_KERNEL);
  
- 	can_skb_set_owner(nskb, skb->sk);
--	consume_skb(skb);
-+	dev_consume_skb_any(skb);
- 	return nskb;
- }
- 
+ out_put_dev:
++	if (err)
++		so->ifindex = 0; /* reset on failed bind() */
++
+ 	/* remove potential reference from dev_get_by_index() */
+ 	dev_put(dev);
+ out:
 -- 
 2.53.0
 
