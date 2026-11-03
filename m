@@ -1,99 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793674741;
-	b=4Yh6uxTtXax7kOTNYmwnLesO5EERrsLZvOpXoBBsMb8l8Xo/V8RBoPOBbB8sbCb48fHX
-	 KzDDstflNtQiIp5LwcrT/MtXXII6Bj6BjeHbIHJz3vL80qXLRn+PfXOzpqw4p7vSP+NZx
-	 v7rdknKknteHBim/B4O0mnrceIT+IZN5COzilpIwy173b7ahqD69sRodwIONQ95J6k4jx
-	 NjQJ5N8LXb0+A+siVl8EArj9YPgFbWAqB5ukRs+ffb3JYgVglqPR3ZMwGSJv1RfXLMCRr
-	 WTnMLu9fwNVvYced+BRF/GUIJCLyQrsNXj0IpIqI1nFOgtnIQps3iE7TNrdENPwoOWg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793674741;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=UeAgzZLdotti0IHP6YHs9fQ/pnjZZ1tIB55pQGz1Z2g=;
-	b=TrqZ1Z22NSaqGeNcHCObVFOUbnS+pP6Cq8c8Oam2VoR3nU5NfhtShWT0Ry5hb92XivAY
-	 jGLzNo2g8Ev3IDCTudKYDRcULI/9iYL+N6PhS9kepPpcadwpfXDlbLiE7tgOLR7MkvlAG
-	 0LGUOME0U45GBDTGfEmufkhFFk51c+AI+yHZMIUNA/eQO7Bg1fbX0faW8yOjiOGxL2WOU
-	 zpHUIUe2vajfRfFGbb6AlYtoUnfVQfuaCSCAn1ead/wkGB1vi3z7xPajuftYl9kE+51/l
-	 Z/PwYhUGrXJXg4BtSwkrnd2XvtHovqRs5TZUP6c03QZPif7Ctxz1/aot5ovdHoMbj/Q==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SWftFRzf;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.50
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793674971;
+	b=W5e5dSwnIaxV4JJ7H5IR2WTjojS4te0Rtc9U74Yq6tnXaGnHzwvbmpI5mNjm3zBV+R7/
+	 6nX6MoQl6MdHDwjdB6CML+mcaZRnGn8NtGY07SwovcJd9wH6XQAKS4PfxwakP9hMgo2C6
+	 FAOtG8XCdWOLbCnaEXHRtKHVd3wRjVb1OXlFxi7Llr/JEm4W/aYBLWTBGAQMdmjET+xiQ
+	 6cdMpBVtZc4Dj0WDi68jLUviISsY+SqyKoQbGLk+07DEeOjAuFWRL0cxBDAqQDab8GYq7
+	 jcWOCRITt0vDAcTjkDon7FnY6O11ag/U8YKRIwr4sm4o5QpVA73alinZpmv5YiNG7nQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793674971;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=6uWrHIdQA4/I/nNEbaoqtIpWv2r/6R+u8p9kDzTlgDQ=;
+	b=AfT0QEri0aaZjuF73vr3f+K7DM0pcWdb4wFgUnxvSQOcXAKxIEw9JuGWSdAuvU/ckNLE
+	 D8/lg8Ly38WV0IRwrYpQAk0y+EQG6NoVO/PsyduWtEcSm4MVRRuHAVB0WAErjSjFIWMVr
+	 aQMhR0bbAuvDzoUYCgc+HWwixHO6y1zq6svptyHtjnguJG5R5BZZtmTybrqWe6QeuIOGZ
+	 MOwJowdl/cnUWKpIv1kfTj1nJA0rEs4aYLtf4TKiabb5L0HWNZt81BByQmePeo1biZf70
+	 2g5/1shjnmIvHJ57v4Es7CS7b40RbL3WkjDTLhzHEbf5lqC32ei6w2pXGV/SSmIWu+A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oimnZTFG;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CB6606A327
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 02:59:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 85CB6606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF25606A33B;
+	Tue,  3 Nov 2026 03:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SWftFRzf
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso2849a12.1
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 18:59:01 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793674740; cv=none;
-        d=google.com; s=arc-20260327;
-        b=IALgtszq+qMJYw8vytfwUFW9M3M8PPAl6DrK+uBr1scI3PzMe5cy+rcqXlZNU1dbnv
-         VgIWmqEedf/Qybr2IHN7ehvG76bMRrB23sq3i7OValkS3jaLA8EX+MUn8uhqSBCNz2O1
-         LaK/QbCi8F/W1vzWql6uUeZJuaU+LlQqa2DDOPADXZqnYFmbCrWX13i3LuSP8K6cw2um
-         KvSBH8/kf/U/iuafZnPD0+sr2Ubu8HtSQ3wLBw9TUpxsJ9gFM1WNmk/yC++3icHL0c00
-         vNU2O94roCV4YmtLcvvUF/ROKnQM2pUO9udYIJ4ZVes/6/M8DWfJkXV7ffs6fWQmnkLn
-         uQVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=UeAgzZLdotti0IHP6YHs9fQ/pnjZZ1tIB55pQGz1Z2g=;
-        fh=rHhMJW1n6ei3x1OHTNkC63ikr42QCKERzDHZXYfMy74=;
-        b=HCq9kL2wjBUMKCXdEmCyzoqCT7pVYe4oVSdXZKhPPoFADLuwqLlI2631b+VtPPQCVR
-         8l573Kme7IwJkoTS5wsNDaN082gkm0r5/ydSQ/hdn8xGrh3ynCD9yrln73h27QbM8axP
-         6yV6jZ8kFv4qWdxYKTywWShalkMeMPnglN2bl7Rja7h8zSnvI6QVpHRvkw43z+KDz9rM
-         fcDcGJwm8FN6fD0XSrXRsDDQ5W1iQ3DwKBOl+kDtcSdMyNlzNdOhD/ODn5cv1OBHR/q1
-         8sDYTil+tFXgnDtXp6ULOx36wt8fn3bE/xl7cNbexntYI6S7WvuGmGIxe34bEzkfMDng
-         0oZw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793674740; x=1794279540; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UeAgzZLdotti0IHP6YHs9fQ/pnjZZ1tIB55pQGz1Z2g=;
-        b=SWftFRzfsr6HRx4mZ7jlKL9NBy880MECjOX0cGycb8yBgGDCdwhmaMudA5uCPfnCsr
-         12rC+qqqvmSvKFG7NqLjNYRVUZE34khfj2SjffiiS8W5B5WZr/ZYboQR6rm2ybo5agl6
-         KXtEvNcgHqwKMkLMR95tW4NLAlMHOmoqEX0mXlVeJqVOqHwpQ7u/x7oYcJcbK6Whw0Yv
-         SxHXuClHnSuLcYRwTHj9cfFqZT5eWfkatAmjmPJy9ZR93RGnD24qRv3ORgNWVvy0TSYi
-         DHvVQHYtwo4qQKosyCBDfYGYqALpH+v6Yh7R/cORV1TV7J7hYBYNhA+WlDn9ASn3KBGH
-         lUHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793674740; x=1794279540;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UeAgzZLdotti0IHP6YHs9fQ/pnjZZ1tIB55pQGz1Z2g=;
-        b=YzC52KlqVQz3b4P85vBc/8bWBeiUbcvgNtk+GN3vtZwPSu8ct9FdVQHMoCEkoU6tUI
-         CLPVmtGyRGqfzxth+GZL1qaoXLz8enNTN/f8NRJTOMIQ04bXCDnoHdYyGdFm9+2+JiR6
-         IE+xS5/XxDIciS8b4ipnsi/SMrOdHuR4bnG1bMdT/hLPeQT1Xk50aOOP4fIVVTq9aXob
-         7nyHlHw1dJ6xuvXE48lNKEia2KXigs/joBTV8/4naLHcrkeBmqgwYulKqQ+MdEZ+zdR8
-         GtoD6sOAFxCmQ5pbzHUGh5stXpB5XxscWm0F7UrDkTzqQFxTPFpueaB7XehxhOYits/P
-         2S0g==
-X-Gm-Message-State: APuU4Z95KdQUSN7AB8GumMf0V75PmHDylfA4x5lmYeLRJKde8OINQnkN
-	pdgfiZqMKjNTZWdBvZO/2QcHBuR1uOTgvhxcJwKYnw2v35LOC+1B58XQBII9Dxnbyd/jmsd+Nx5
-	cdlnreI6UfpxQ7d3Sibsdl5fm6vuWSOyBrLtjGtNl
-X-Gm-Gg: AYBFou1JbJcte5FS+DM8hOJ7UdpCp1Dn8XIzwgtDkVlNsAZU4q5ltH8njLvc6AjnXwv
-	zKOq+M9+NgctLhjkZz/WKdyBEh5wzVzRcBykP+JLn04OYsoWei/SdLk7gmrWnrH8R8GlXBrV3e9
-	MJU8nw3sjVUb7KqXNf5HR4Au3+ZSUAgRrU3nyX+h1JOU/BoIBzXOqpwUuE1JbQLiIvxvHIDZWF0
-	HbIcpvVG8vtt6WTiTjVlNXGe1j4Srm+5Htpxl9UpccsAHgzunH7sWN3zJHQUEi25Vaq9I/HNdX+
-	k86MZXkBzSFKhBTBdeAyiyH2jS7/O0CmbU3aHQ+GqWyzFIZHldEJUNetEf2jVMMXobkV69am58o
-	jSbmLdD+lADA+qt32VqU2Y8Pui49DDnq9SXTbjAs=
-X-Received: by 2002:a05:6402:438d:b0:6b3:f12d:7405 with SMTP id
- 4fb4d7f45d1cf-6b53e778d41mr32077a12.14.1793674739712; Mon, 02 Nov 2026
- 18:58:59 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oimnZTFG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AA61F00A18;
+	Tue,  3 Nov 2026 03:02:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793674970;
+	bh=6uWrHIdQA4/I/nNEbaoqtIpWv2r/6R+u8p9kDzTlgDQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=oimnZTFGTeJE43fq6q+zP9zhnnO569FfyCYBDdMi/QUj+r8PCev/2tGuRQVgJFyi1
+	 zNn14mwrvWqixU2DGDV9iwX8h4ArR0F/sHQ55MnbFRBseHFWtbO8YSGCiLMK6F0kOT
+	 lsVgCgkYevp8m5X5EnIDj9/XrO3+ARFuwJqjhrTYoEvbzowm1UpQ5yNuZMuBw0FYHL
+	 Z8hN9XmbCKL7t/FEeqTeHmeoBQMTXdYcLspH2sCuPv0OnjVTFpPWNw4v2X7lQn6M+m
+	 SojdJtXleZQd0k3P6KPhdySSYA3MdqRCsKFQJ/3tYVfc1TeFXbM8p3cV/I6aUiYcnh
+	 xt65wV6HMoMjg==
+Subject: Re: [PATCH net] nfc: s3fwrn5: validate the firmware image size
+ against the firmware file
+From: netdev-bot+sashiko@kernel.org
+To: joasantonio108@gmail.com
+Cc: david@ixit.cz, krzk@kernel.org, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Tue, 03 Nov 2026 03:02:49 +0000
+Message-ID: <179367496942.488856.4052477180493084885@kernel.org>
+In-Reply-To: <179332800288.52644.4206885352837613064@gmail.com>
+References: <179332800288.52644.4206885352837613064@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,39 +64,133 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261102191438.1059771-1-sdf@fomichev.me> <20261102191438.1059771-8-sdf@fomichev.me>
-In-Reply-To: <20261102191438.1059771-8-sdf@fomichev.me>
-From: Mina Almasry <almasrymina@google.com>
-Date: Mon, 2 Nov 2026 18:58:48 -0800
-X-Gm-Features: AclHuK9Z5oWBbhWwMCS_z-DuUMSaT3p8QPAgg8n9KeMCHplfWy0Bv6rYsGa7af8
-Message-ID: <CAHS8izMyGmLC0yg+WT7eAZ0tkSoJ5K80t-J8-WfYegvjDXonMA@mail.gmail.com>
-Subject: Re: [PATCH net-next 7/7] selftests: drv-net: devmem: TX from a
- hugepage-backed dmabuf
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch, 
-	edumazet@kernel.org, horms@kernel.org, corbet@lwn.net, 
-	skhan@linuxfoundation.org, rdunlap@infradead.org, michael.chan@broadcom.com, 
-	pavan.chebbi@broadcom.com, sdf@fomichev.me, bobbyeshleman@meta.com, 
-	asml.silence@gmail.com, daniel@iogearbox.net, razor@blackwall.org, 
-	leitao@debian.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 2, 2026 at 11:14=E2=80=AFAM Stanislav Fomichev <sdf.kernel@gmai=
-l.com> wrote:
->
-> TX net_iovs are now sized from the dmabuf layout, but the TX tests
-> use a regular memfd, which usually keeps them small. Add -H to ncdevmem
-> to back the udmabuf with 2MB hugepages and a TX test which sends a 3MB
-> buffer from it, so that frags end at and continue past the 2MB net_iov
-> boundary. The payload has a 7 byte period to catch offset errors.
->
-> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Acked-by: Mina Almasry <almasrymina@google.com>
+Critical: 0 · High: 1 · Medium: 0 · Low: 0 (1)
 
---=20
-Thanks,
-Mina
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] The fix is incomplete because the signature offsets and sizes in
+  the firmware header are still not checked.
+
+Pre-existing issues:
+- [Low] struct s3fwrn5_fw_cmd_get_bootinfo_rsp is 12 bytes
+  (hw_version[4], sector_size, page_size, frame_max_size,…
+
+--
+
+nfc: s3fwrn5: validate the firmware image size against the firmware file
+
+This patch adds bounds checks to the s3fwrn5 firmware download path. It
+checks the GET_BOOTINFO response length and rejects an image offset past
+the end of the firmware file. It also checks that sector_size *
+image_sectors, plus the 4 KiB sent per sector, fits in the firmware image
+before the image is hashed and flashed.
+
+> diff --git a/drivers/nfc/s3fwrn5/firmware.c b/drivers/nfc/s3fwrn5/firmware.c
+> index 9145deec7f6c1..159afb8de7491 100644
+> --- a/drivers/nfc/s3fwrn5/firmware.c
+> +++ b/drivers/nfc/s3fwrn5/firmware.c
+> @@ -93,7 +93,8 @@ static int s3fwrn5_fw_get_bootinfo(struct s3fwrn5_fw_info *fw_info,
+>  		return ret;
+>  
+>  	hdr = (struct s3fwrn5_fw_header *) rsp->data;
+> -	if (hdr->code != S3FWRN5_FW_RET_SUCCESS) {
+> +	if (hdr->code != S3FWRN5_FW_RET_SUCCESS ||
+> +	    rsp->len < S3FWRN5_FW_HDR_SIZE + 10) {
+
+[Severity: Low]
+This is a pre-existing issue, but struct s3fwrn5_fw_cmd_get_bootinfo_rsp
+is 12 bytes:
+
+struct s3fwrn5_fw_cmd_get_bootinfo_rsp {
+	__u8 hw_version[4];
+	__u16 sector_size;
+	__u16 page_size;
+	__u16 frame_max_size;
+	__u16 hw_buffer_size;
+};
+
+The new length check and the existing memcpy() in
+s3fwrn5_fw_get_bootinfo() both use the literal 10. That means
+hw_buffer_size in the on-stack bootinfo in s3fwrn5_fw_setup() is never
+filled in.
+
+Nothing in drivers/nfc/s3fwrn5/ reads hw_buffer_size today, so this has
+no functional effect.
+
+Would it be cleaner to use sizeof(*bootinfo) here? Or a named constant
+that documents a 10-byte wire format?
+
+>  		ret = -EINVAL;
+>  		goto out;
+>  	}
+
+[ ... ]
+
+> @@ -307,6 +308,10 @@ int s3fwrn5_fw_request_firmware(struct s3fwrn5_fw_info *fw_info)
+>  	memcpy(&fw->sig_size, fw->fw->data + 0x18, 4);
+>  
+>  	memcpy(&image_off, fw->fw->data + 0x1C, 4);
+> +	if (image_off > fw->fw->size) {
+> +		release_firmware(fw->fw);
+> +		return -EINVAL;
+> +	}
+>  	fw->image = fw->fw->data + image_off;
+>  	memcpy(&fw->image_sectors, fw->fw->data + 0x20, 4);
+>  
+
+[Severity: High]
+image_off is now checked against fw->fw->size. The signature fields from
+the same header are still used without any range check:
+
+drivers/nfc/s3fwrn5/firmware.c:s3fwrn5_fw_request_firmware() {
+	...
+	memcpy(&sig_off, fw->fw->data + 0x14, 4);
+	fw->sig = fw->fw->data + sig_off;
+	memcpy(&fw->sig_size, fw->fw->data + 0x18, 4);
+	...
+	memcpy(&custom_sig_off, fw->fw->data + 0x24, 4);
+	fw->custom_sig = fw->fw->data + custom_sig_off;
+	memcpy(&fw->custom_sig_size, fw->fw->data + 0x28, 4);
+	...
+}
+
+s3fwrn5_fw_setup() then picks one of the two pairs based on
+s3fwrn5_fw_is_custom(&bootinfo). That depends on hw_version[2], which the
+controller reports in GET_BOOTINFO.
+
+The chosen pointer and size (truncated to u16) are then sent to the
+controller:
+
+s3fwrn5_fw_download()
+  s3fwrn5_fw_enter_update_mode(fw_info, hash_data, SHA1_DIGEST_SIZE,
+                               fw_info->sig, fw_info->sig_size)
+    s3fwrn5_fw_prep_msg(fw_info, &msg, S3FWRN5_FW_MSG_DATA, 0,
+                        sig_data, sig_size)
+      skb_put_data(skb, data, len)
+
+What happens if sig_off + sig_size, or custom_sig_off + custom_sig_size,
+runs past fw->fw->size? Can skb_put_data() then read up to 64 KiB beyond
+the firmware buffer?
+
+Depending on how far the read goes, it would either oops on a guard page
+or unmapped address, or copy nearby kernel memory into the DATA packet
+sent to the controller.
+
+The commit message says:
+
+    Check that everything that is hashed and sent lies within the image,
+
+The signature is sent in the same update sequence. Should both signature
+extents also be checked against fw->fw->size here, for example with
+check_add_overflow()?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179332800288.52644.4206885352837613064%40gmail.com
