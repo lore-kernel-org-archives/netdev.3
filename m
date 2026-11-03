@@ -1,81 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.176
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793725159;
-	b=Vra8li041MwTQiQhiCFFuClAKLB8CfQOYt0/N9k/ChCjpARc3LurxRZ80nUzyO4W224g
-	 mqh6ziOb+xw9SHkRuyEltELKUbc0A4i3wmOTk8IRXAXh84VsZXA+1lim9FJaAqW1E/Cj7
-	 0Uh7BgkLHP91zHzy4qqolPK/wtMlXvb+XQ+Hu7OLXhMCpETMmOAsaKucKh20X+pDZxQe6
-	 mlaf6KMlZ9VOneA4c6NTVN64gUR53lRe8h71KKGAC03Ln+6xp2TLIeL2bnuDrLxphGwjU
-	 xw30ikTo7cZTJGiIb+vd8WeL1Tf1xVIygmq1APDG8HubbIBWIoEE84Js6FUhDe9gWMg==
+	t=1793725153;
+	b=EZZfJBiOvCTehNd0zZr85wRbpmshlKKMM7foMZB/DBPJx8Gz6mC/yfZ4ZX5mztMUzQwf
+	 pYZO5EMUJcCfAztrf3v4XtiQe0DnXSlnCezF1kLaY/i6AAITp4sWHLja4T8JAa6JTP0tK
+	 qkphom2i57KH+pLE70kpYZtu4VBuselkeAAMF/PJK9vWxMVegIjr9UrnvfkLUlQAKtec3
+	 1koT7otDlMEQj0fyH0Au4XQdi+b5BVEOcUe/XvyXE2olkh/ClfIQQPJUC1Pj1xtDcxW6k
+	 L4vhWhIsvG30G7QcYQc+QpFCWr30JJVRCN4fPAQhK79vLA+AbONq4LiEGhVpwgAgtow==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793725159;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793725153;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=qyie3lp94voMetIz4ZK0UyMQldPElbkTK8vbvrxDQEs=;
-	b=Wos7v8MBU7iFNMsANIJWUVAo+Y4/eltvRdMqc6a0Tqas4p3ZST+syAPXEkQHeeriwxek
-	 w0rok6QytMSOc5bMx57ZDw/cfU3sY3tZY02Ehq5bRTkEMh8v3DhnoYpAIGMQ1sicm6a/I
-	 nQeej901ksycY8UMSeQVazY43I0VrdA90HABV6zKFx75wI1JaSihttYVFaWRfgUsHzZHS
-	 z3Xphs8rdpTLZj0cyijZ1S637RQiseXUujfTzzrMXYTCBkwJCIjf9RzXU44+R1AUipSFH
-	 ZpCvIsyWLPEqYF1EhK3MVu+KWJYT4L5Pfyjrxeflk+meAdLq+fmsHekg1S+f+YZJ6UQ==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=N2nmgAkk9tKVW9ZZZ6y0Nm3a3F6PCdPuD8mrqugKq5U=;
+	b=MLdINILCjeg7iuBIxhKaa0zsvkB3+wAp28MoL77KbggFlprvJKd8zUrwvg2BDFNpMDP6
+	 mMRmIJ0Y8wesTcK3GkIHgiYn4KwnPOeciHoQDdWoOBP1Ee/tB8Ji5Et2rnuAXNaxLl7sC
+	 0J89UYgFVqXQEPxARnz1bo7uszAPF4Ia48OWemNv6Xd4QkmFxavtA/brxmgTD8e8ZTHIO
+	 +Ibe/94ZR7/ZIR+RoD1dMeoV0okjaGGXynn5EeF1gw3AqmMoaLesrjhUKXBF8FlnlIpQK
+	 mFeBgkHXA5JFf0/Axd/ZVvx0UvslJlAG6TUDO5NHAhljKAj8zhGfnyNfxbRRg6jzE0A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=1password.com;
 	spf=pass smtp.mailfrom=agilebits.com;
-	dkim=pass header.d=1password.com header.i=@1password.com header.a=rsa-sha256 header.s=google header.b=e2u4H5ji;
-	arc=none smtp.remote-ip=209.85.222.180
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	dkim=pass header.d=1password.com header.i=@1password.com header.a=rsa-sha256 header.s=google header.b=Z2SC43w2;
+	arc=none smtp.remote-ip=209.85.160.176
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0571606A32E
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 16:59:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C0571606A32E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26585606A32F
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 16:59:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 26585606A32F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1password.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=agilebits.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=1password.com header.i=@1password.com header.a=rsa-sha256 header.s=google header.b=e2u4H5ji
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-93a40a9a01aso114643485a.0
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 08:59:18 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=1password.com header.i=@1password.com header.a=rsa-sha256 header.s=google header.b=Z2SC43w2
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-53634b8328eso39406931cf.0
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 08:59:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1password.com; s=google; t=1793725158; x=1794329958; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=qyie3lp94voMetIz4ZK0UyMQldPElbkTK8vbvrxDQEs=;
-        b=e2u4H5jiGKGo9r6gEd2se4tGTZwmdU5p9nRdnHtOCSYXWlvFZj83tcGAwxxRpJ9zAV
-         Mro8wC0WTq2rpRb1Ji8FduryNwdXihHaxmOaRYFBF1Tw8cmDMDaeaikwpbhBcj0Ovq4t
-         1zp7PeTOuJVNUfTKrkm+Y2EsfuDAtAvurwlTY=
+        d=1password.com; s=google; t=1793725152; x=1794329952; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=N2nmgAkk9tKVW9ZZZ6y0Nm3a3F6PCdPuD8mrqugKq5U=;
+        b=Z2SC43w2Jegfalwfgu+2q/1oAUA+RXjVC6sKz/YdcFg4UC2x+XgGUs+2ttfIx/923/
+         TdyxACU2F8UKQcE2sl3mLgvVVw/hKOoEYrDeQPuRcLkBkRsFm3B2i/KtCPrBTIQNu3tH
+         T540yzoo+oQoP7XQHaclkUpQQ1a5vIlF4Pc28=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793725158; x=1794329958;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qyie3lp94voMetIz4ZK0UyMQldPElbkTK8vbvrxDQEs=;
-        b=Yt+D4aDnDQci8T2MIHpJ8iBSe46CubGnGIC94aP8HOL99Av+fHy0wJdGwKbhQ9OHCK
-         Xh9zTRun8Jklgl5gsFYAteRsFJMeVAaeiLez/7I3V/109GJgfoowiX7IWSgJDXiLYEZ9
-         ZySVFLJqI4ofObHIeCYB7XmiJJJJwXTZlxY+Jkx3s5LBkWjyjALUrXqkYIkfxsHlpnrx
-         se6CItnqNF6O2773UFf11KGqyoRCj1iecRS1ZPUVaBvAK1Nb7KhJzwC6WYUtqfiakbtl
-         JJF2WwZcxFqtsQMUWIcXIFtOaYLLDk4f7dbQ7z80aG0um6pxq7ls/N7RbsflkIbjNQRK
-         D42g==
-X-Forwarded-Encrypted: i=1; AKwUvBykZA8FByKSjd3/vF7P8C+IJhHjGJTOl77F6pzml2gInw9lWr01XFNrXAOF3iMXzmKN4imG2gg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/l6tlTBft4ie9KdhnL8YJtMigARITS83uqFeyDCXvFgqOsuq2o
-	tvdKFduxuTpC1PDjgtkzMODCkuuCYf96MZwgY4pcwqanoQA9u9KUBplfEoohmVVGPCc=
-X-Gm-Gg: AYBFou1ylavaNSbkhJHs2cr033Ai55hy+batoRq7Z6h4Bn4MTV8pfjRkWxU03ORR4WO
-	BFx+v8mjME+w22KRnmA5TEyHzezMLNpOKEOmy4bgmCJY8tO+O7gdy9mneY26L0sY1J7cpVYp5ab
-	YKyQGx56MpQCs5lIS/DCwxFNtt8jbMIuH2GX5FG7Q1LVCrKNzJY1Piz2/+2BjPyERHA0AIRrXmt
-	R4a+RIbJtbfHt/ozrx9jBMWV3T0JLrnfmRAuO2tjaXVfvJNkIuGbHHKTpLH4HcrmGwq47mOhU9n
-	4GGV9pZLjvJ2JHejG2wFCOdKmNfNHDs05bfF2ciWt/8ccHs5z8J4Oj6EEQKynEHcVZjKyepoNKi
-	3M9Y9Jdyo1lP+98RQfGrohrNKUV3vhypInPBqLTsr1od2y4YZk6tCuDMz527TRS2TYdqXI06iWU
-	mTwWbrRUDYnaLNJyEOXkuJbOGCv5J+2Ck9mpljyYMeTsw1qBXacFK+eDqc+HkBQhDTasvnXJ45q
-	HJCGXhZ+bypgQWyKMJgIU6YwMZyYAu5Qr9E8UYbYyRBUA6/gUyOzIpp+R9CVIO3gV4X/1NbozOI
-	qV9oVqJUZ6lQ95fuMTml5vWhAvAyJyXwX/Oys6Rc3ZpJ5Tplm6ORUdvBaD2qV4JCBte7GX20Cdc
-	DHxMojQ==
-X-Received: by 2002:a05:620a:4613:b0:93f:1789:8359 with SMTP id af79cd13be357-944133bf945mr2719600885a.31.1793725157802;
-        Tue, 03 Nov 2026 08:59:17 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793725152; x=1794329952;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=N2nmgAkk9tKVW9ZZZ6y0Nm3a3F6PCdPuD8mrqugKq5U=;
+        b=T6NBcVUDu3/1ogWlevQ7wlc2BPm5xTD0Ytux5zmtNDvrKW7T0isI6+ng/EEImGsS7V
+         +0xL5/Bzy0nmlJOXNbACGVR93PUBrmErY7AHYiVd56SIcGdtZtt8UNEBmsuC2ITe6dAf
+         IblDhTR9B52bXGoNT4TsIkUBNVcNdLBq0NCLy03We5ZhD0szSKepXA5CRbhCMB4btVa8
+         TxU/28L3XYLcGcE3D04ye0m8o9m3cik+N1LsSlS0gmVgzsHEiu9An0nfAQ297LlDAYc7
+         HvZTzHoClChquq0OdsxORTQNt6dJmvZqtCKJiLpaQvPfzGs4PIglfuxspyqAO75nfLip
+         /c3w==
+X-Forwarded-Encrypted: i=1; AKwUvBwypA4sOwR+dP/ursjuB6TBtAk+oyYFlNld6zflmiYCCFXQ1gSn7iP0505gdHEJ/iDJGCiCIe8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8Kep1ZWEO7uKw6Su73VMzXtNLipdv9B1IWgxRLplOGkRnB6eV9
+	9Ah83lWuUpdVMM0/70+V1yfTjWvfXNBoPld7Paxzol1WchQnebnwhp7ZdvPlm5Yh35O5EV5r3hc
+	FAkLTTPg=
+X-Gm-Gg: AYBFou0Z7Urv63PhAtSQ9vqa6gjhitDRNik5okBSX2JR7Da+sCbEHdSxAIzQPGk1l/R
+	t5gXHmBjkCwnk5yMcuoSWDhBYOrQ6n2Ac9/4iPiIsO9+Jrlha7exegYFodzKF1Jw1xBb3F9KjX6
+	4D6vnbMz4gtsTF+FXtbYKOw/jwJiXCfmzxQ6N5At9GPMoPOAGw37e/Ui0I75p1TYfjACupgM27y
+	YP/HOrgmqBfiRBq0sdZvhdPEUK4lGhrnyDFB9wzgX29aY6mOGmccW1IdqZjyKbLqeFKucnq3YjK
+	hQIg/2+dBAgdxY/WebQ85BQzJPLoCt3DkcMN0Ju8oO9NKtNgZNI1398o/Z5J8MgeB5AjLQhdu0b
+	sKUQGgRoBpmQUw2QWKWs6SQ/akkBefgHGhqS/yTRkxkudcIKiXuPOu/vCAJVK0Db3chBJBEA5kW
+	b3x6pTn4WhITtl7iKQh0C1Yz8+KxN0r8qynVdfc24tXQ+NFW9hhP9T2MWRi+5eTQBj7zCJwsD0A
+	8Dg2/XXXTjtlf6XY1F7UkRmZL29a5+PvlDOrerCClSqusCx5/sDq/C1q7zQRS6E2rVUtljLdGtB
+	KxAksU2E9QsJF89tJzzKLgMQiOnP7xfghFrS2X6z+ZSZcA8vhKoZjPVGHJkae29Mu/IKhTQfIZv
+	nAjctAw==
+X-Received: by 2002:a05:622a:a584:b0:536:6ae9:f581 with SMTP id d75a77b69052e-542b8ad94a8mr237532011cf.67.1793725151850;
+        Tue, 03 Nov 2026 08:59:11 -0800 (PST)
 Received: from localhost ([2600:4041:59c3:300:a850:2af1:eb93:4121])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-945d3410ae4sm5514285a.26.2026.11.03.08.59.17
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ca95caf90sm118485686d6.30.2026.11.03.08.59.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 08:59:17 -0800 (PST)
+        Tue, 03 Nov 2026 08:59:10 -0800 (PST)
 From: Axel Mierczuk <axel.mierczuk@1password.com>
 To: ja@ssi.bg,
 	horms@verge.net.au,
@@ -87,14 +87,11 @@ Cc: fw@strlen.de,
 	coreteam@netfilter.org,
 	netdev@vger.kernel.org,
 	w@1wt.eu,
-	Axel Mierczuk <axel.mierczuk@1password.com>,
-	stable@vger.kernel.org
-Subject: [PATCH nf v2 1/2] ipvs: validate cport in received sync records
-Date: Tue,  3 Nov 2026 11:57:45 -0500
-Message-ID: <20261103165746.39516-2-axel.mierczuk@1password.com>
+	Axel Mierczuk <axel.mierczuk@1password.com>
+Subject: [PATCH nf v2 0/2] ipvs: keep templates and cport 0 conns away from packet lookups
+Date: Tue,  3 Nov 2026 11:57:44 -0500
+Message-ID: <20261103165746.39516-1-axel.mierczuk@1password.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20261103165746.39516-1-axel.mierczuk@1password.com>
-References: <20261103165746.39516-1-axel.mierczuk@1password.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,61 +103,46 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Local templates have cport 0 and IP_VS_CONN_F_NO_CPORT clear, so
-ip_vs_conn_in_get() cannot match them. A template received over the
-unauthenticated sync protocol with a nonzero cport can reach the
-protocol state machine. Before template state validation, this
-could cause out-of-bounds reads, crashes and kernel data leaks.
+A template received over the unauthenticated sync protocol with a
+nonzero cport is matched by data packets in ip_vs_conn_in_get() and
+the protocol state machine runs on it. Patch 1 rejects sync records
+with inconsistent cport and IP_VS_CONN_F_NO_CPORT combinations on
+the backup.
 
-Ordinary records with cport 0 and IP_VS_CONN_F_NO_CPORT clear, or
-with a nonzero cport and IP_VS_CONN_F_NO_CPORT set, create connections
-that incoming lookups cannot match. The latter also keeps the
-cport-zero fallback in ip_vs_conn_in_get() enabled.
+Patch 2 applies the cport rule of __ip_vs_conn_in_get() to
+ip_vs_conn_out_get(): a lookup for client port 0 matches only
+connections flagged IP_VS_CONN_F_NO_CPORT, so templates and cport 0
+connections cannot be matched through the out hook, while the
+"update or create" lookup in ip_vs_ftp_out() keeps working.
 
-Reject all three cases. Continue accepting ordinary connections
-with cport 0 and IP_VS_CONN_F_NO_CPORT. The companion patch
-"ipvs: filter some flags received in the backup server" rejects
-template records carrying IP_VS_CONN_F_NO_CPORT.
+The companion patch "ipvs: filter some flags received in the backup
+server" is already applied and rejects template records carrying
+IP_VS_CONN_F_NO_CPORT.
 
-Fixes: 87375ab47cd0 ("[IPVS]: ip_vs_ftp breaks connections using persistence")
-Cc: stable@vger.kernel.org
-Suggested-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Axel Mierczuk <axel.mierczuk@1password.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
----
+Packets with port 0 are handled separately by Julian's patch "ipvs: do
+not create conns from packets with port 0".
+
+Changes since v1:
+- Patch 1: unchanged, added Acked-by from Julian.
+- Patch 2: test p->vport against IP_VS_CONN_F_NO_CPORT instead of
+  requiring a nonzero cp->cport. The v1 check made the
+  ip_vs_conn_out_get() lookup in ip_vs_ftp_out() always miss, so a
+  duplicate data connection was created for every PASV/EPSV reply,
+  and it read cp->cport twice. Reported by the Sashiko review and
+  Julian. Commit message rewritten.
+
+v1: https://lore.kernel.org/netfilter-devel/20260925141115.16126-1-axel.mierczuk@1password.com/
+
+Axel Mierczuk (2):
+  ipvs: validate cport in received sync records
+  ipvs: skip cport 0 connections in ip_vs_conn_out_get()
+
+ net/netfilter/ipvs/ip_vs_conn.c |  2 ++
  net/netfilter/ipvs/ip_vs_sync.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ 2 files changed, 21 insertions(+)
 
-diff --git a/net/netfilter/ipvs/ip_vs_sync.c b/net/netfilter/ipvs/ip_vs_sync.c
-index 157f5c8361ab..a85dc95e29cc 100644
---- a/net/netfilter/ipvs/ip_vs_sync.c
-+++ b/net/netfilter/ipvs/ip_vs_sync.c
-@@ -853,6 +853,25 @@ static void ip_vs_proc_conn(struct netns_ipvs *ipvs, struct ip_vs_conn_param *pa
- 	struct ip_vs_dest *dest;
- 	struct ip_vs_conn *cp;
- 
-+	/* Templates require cport 0. Ordinary connections require
-+	 * NO_CPORT exactly when cport is 0.
-+	 */
-+	if (flags & IP_VS_CONN_F_TEMPLATE) {
-+		if (param->cport) {
-+			IP_VS_DBG(2, "BACKUP, template with cport dropped\n");
-+			kfree(param->pe_data);
-+			return;
-+		}
-+	} else if (!param->cport && !(flags & IP_VS_CONN_F_NO_CPORT)) {
-+		IP_VS_DBG(2, "BACKUP, conn without cport dropped\n");
-+		kfree(param->pe_data);
-+		return;
-+	} else if (param->cport && (flags & IP_VS_CONN_F_NO_CPORT)) {
-+		IP_VS_DBG(2, "BACKUP, conn with cport and NO_CPORT dropped\n");
-+		kfree(param->pe_data);
-+		return;
-+	}
-+
- 	if (!(flags & IP_VS_CONN_F_TEMPLATE)) {
- 		cp = ip_vs_conn_in_get(param);
- 		if (cp && ((cp->dport != dport) ||
+
+base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
 -- 
 2.50.1 (Apple Git-155)
 
