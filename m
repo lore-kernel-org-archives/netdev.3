@@ -1,68 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793723844;
-	b=K3YiHdp8MdcRQu1kHtbZjyrYXbILkGlCxKlrW/lry44v2kA44SvZ5dxD9GNN5cE257mw
-	 JA8Bu2mpY1gdQch43+Hpt593bWT/YnC0sFuxfr1aFpFERarKjzaXjxsKT2KkV44p+iKhR
-	 0tm3ZP7poqKoGhRutV5NZA4cvL//p3EdqLjhCFZ4EX4xwjwZiPHA0qm6F5F0ScElSFJzE
-	 iKKeuVaYhLpt1CQiF3bkD9NmzAkvTp+tazYenn+08Kf6AhABd82q+rIeccGyK8+EApb7M
-	 mngVvUKZQLdVmSMPlv3WGluVdbOJi3w7tHY7Y3zN9LRxDRqynNflYWVOrdbf7dMuFsA==
+	t=1793723840;
+	b=zjMC5ikFMqxQs9mWEyySojaiu5OkN1mnhQ0yT6nc65m4M+Ng49OBFc/RbEcxht3t4RA0
+	 mb2TKEXpROd2B5IL8j7ADgshlRZw2tid+LW0gnZ0TWfpIUA1x7f4sW0yBnp9n5RHEcN9+
+	 i7r7zH6IGZx/5kuHboei+pJOBJw0iJsWpa9Gvbl6iY/IfRA7p7b42BhsT2+KZpAksBuDs
+	 KYAjbZwB1En7ecFLJmaYoCmX3QcY/1W4Lx1FSKE3oo1IVFbnmz1IhPxNPDtVawPnUrPK7
+	 TnNgPQBNzlG4SaqdO2fedbCgnh8i+YhPQ2ZJzxepKrUaeFzLRLVxagHbFZaNPOI7K8Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793723844;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793723840;
 	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
 	 X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=v5CqxcBKvAvHjHHPxB9ySYgie/HwK72kF8ZKF5b74+M=;
-	b=YcKzYErGbQU+cM90xzgL+u1dKvTSqq/8eM3uetPXrKeIl5RkfrL4Xof5EMFYGAOXZ0b9
-	 reo25rI0cRgMIQsif2MfVjYiihyfSKFZc8S24ubuHHp2iZrVSHG4cHtsMg64FmiJCuH0e
-	 W1QopyUlC3Tf1KxU84YJwka+bwrJd4SsE0GQCUsErK9n5ckdZJr+RvxeXauS9MZGvFQHx
-	 3fwqSD20pYa4fCavLjG2U++W0gqGR2FcKzmljuXJyRTeqyF46T5HUTf46oTN/JF1693IB
-	 DoRbCj3NaPQsTH9gIFnNSOsATsACgfUMIhD4j6Fy2uOfjZhzLIef6Hdeae5KfGmAAIg==
+	bh=xaLsM5U5ulazZmmMZOUrbsqFBf8E5Hd+TLCd3a7zUQs=;
+	b=Hu73sJ4iGHvdDmGK237zOrpGcSQdaEww7np44FgwfV61iMJKSwOVOHHqpwG+kSTbSHWm
+	 m/7YeC0aw50S8UaFii/X1xB+/3b0zyzo+r+QlEKogGEJfTNAp2c9KZWpU35SWRDY3VUOP
+	 JZeWKjCT074CqpKEacCI6RLONF3bQ5LVmYlg9aiGLxJAMwILVGGiMaKEvUcFtuAkbi9S/
+	 t1BJ3iIEdhiNrzE7+QGrkQOtNuoO56hjvoGXpum4qu74bYqnXiKCIJsgZKKjfxJC5rxaV
+	 RXNqJZr2nUf/nw6VMMXfRszNsa9q2DGQhJ4uZukq+h/w9UYTN4EBeC4StOgxwAKWH+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=fail header.from=linux.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	arc=none smtp.remote-ip=209.85.221.50
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	arc=none smtp.remote-ip=209.85.221.43
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1F0606EEBC
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 16:37:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B1F0606EEBC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D74606A332
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 16:37:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28D74606A332
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-48dfaa3fa12so599798f8f.0
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 08:37:24 -0800 (PST)
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-48e0d1da913so759903f8f.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 08:37:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793723843; x=1794328643;
+        d=1e100.net; s=20260707; t=1793723838; x=1794328638;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=v5CqxcBKvAvHjHHPxB9ySYgie/HwK72kF8ZKF5b74+M=;
-        b=TvHzwHMLer4gXJIABlx3OcDc7cA9dXnkhVN02x15BgUIeegdqKQrYfUcUrDzrXHIDx
-         YrtgSggox0DuxFUe4+/uqLt6L+C9jSbZ2sIRU1NdsBYIe/aDbHIdrGsCIS63rbtaadYU
-         DxylhHbWlL0Lk3JD1hJAzMOvdQwJvZ17D6ojxP0Ogk513OkMtTh5hJiHeZl1VOlm/l3l
-         z6GdniZOut222RsB+FCKTeRiWIX4KmfJeaoKStnJednHyaJaWq1NvLKNVupq4h6nHjyF
-         uF6+FBOulNhtPMq5QCy5HgtWMvKlIwdj7WMuaqq8xLjGIFLU3rqN/2noxdXL9f83y6H7
-         lkzA==
-X-Gm-Message-State: APuU4Z8gsRUM2LSYGbwdY21MT3x+RYwIUfpCMl6RwyUuHj8cGCndeLq5
-	/i++deHmkpJfXaDFuZ4Calnt5hyo07ATac2iQ/NhFOYvJ2VBJa6iZln0
-X-Gm-Gg: AYBFou1HB4qd5f8VST4lOHWatVZhjEyvwrwPfxYQBIRsf9g+wZW8DwRDCfs6pCwgF/r
-	nIXYUDvkBL31rBB8c8XQbi/SvzgR9GZepRPUDeKhUqXMRTYL9KohrkLPDbmVmHwmgMkbwwFDahh
-	ib+fay9h67vX2Pz84rGZiMTV+x6cNpXYlGExdcLi420wGzwoUIfTazWsBknmGm+UcIiU87gvJjQ
-	N0WgqXIMtMQRNb1RLxloU0PjUP4Cykvff1pzZwtXkXrHX/N0lugn6crMS5AzzHbE3D6Tzlhd9OO
-	HaknfnZ769YJIwK5MViqATbt9P1txEgSBINTJ94gDw8Co2x2+i7J8mn//zu4zgoJPVHjR2cqbqi
-	P9/xPDz4zDU//tTmI2nHcb+YvSxtBUAeav6D2qFbQV+lXmHZlL309u3cSDsmLgpTvNexG6Ia+7I
-	cGo/orlnY79SqTLolY7HPncuX+sz5xwsruGLev04CWz9cUA61Uh8m+WqXRYLtnqyHWN8H4+6Z0z
-	3aaaA9NY2ZzJ5n1TB130jTGIIGZyq/F4UWDECrv2R6pX0oMUHHVh6wggQxNN3xelGMSJfFa3/gA
-	BwbCKoYJPPy9n/PHCClzlT3KNotw6TuiOyqvdfouI2RgG6FCBqnbB+rFwfYCDLefRbCHjzRHyM/
-	sZhP2Tp6SvTqz5m6ew2ikqDFHHg==
-X-Received: by 2002:a05:6000:2c0d:b0:48e:661e:8766 with SMTP id ffacd0b85a97d-48e661e88c5mr40422568f8f.17.1793723842657;
-        Tue, 03 Nov 2026 08:37:22 -0800 (PST)
+        bh=xaLsM5U5ulazZmmMZOUrbsqFBf8E5Hd+TLCd3a7zUQs=;
+        b=lljq6mfn6Z2PI3mLfiax7iDzq93/85UZv+aJfVasxAONIIvFuc6CQ9Vt/w0ckYwwAF
+         kAdF6q+QNXTShORB+okDbLzEYcq7YMo2udqytwQKrBEFyMopZmtovBWyDRSbSPPMdOOC
+         Ui+jEEwPQl6F5emDRPsWnlA5HsUX8/6PPpNFeQXeJHBVkO1md5ARm6IhuWR2JoeEkHhu
+         CM7ezokMz3BN98xRWUt5HcGdq4WoOxGV98GVPL+MikmaZPte1NdvkIv8l4PecmunJCed
+         Nyox8cptqkDsmY4QRMSggtKXkMoI67fQR3jAY9dpfzHAkDXCZiNhEPSe7i/k4zh4u4Lh
+         KPoQ==
+X-Gm-Message-State: APuU4Z+uNFUlVqHNzJD4Xz5COrSxJcGDld/PBLyye4bWxjfGmPJndIr2
+	z/xtRSD7Mx2UjyeZQkgpaciAL0FZyyp9p58gLTyUjUCFv5tecPCiqj8U
+X-Gm-Gg: AYBFou2Bjct7XdSyI5QNfXa/ZxMhvKCl5IyrbMHjaNSLUMELQADhzMadhAaQVpTTHlZ
+	kTGAq6fgf5arSF6p+NqfkKHvJgVERS68pGTZTYd0h4tWxWUS8bOYOQ7gjSEMw5dsmFMtHrs6bLx
+	6kftuB2UiCpCy7HoObCRYdReSltKsM82EFWCaiIEvN+0lOjTo6ISXpusNt56ZnBU4m2nahys/X9
+	P0ow4XLVU5dsNtVcjQo+xL+fBmFMR7TxJFhC6aWgk2pK6k5PIGyHmpa1VdMObbr/yXIJSRHF5pu
+	cYoLMDx2/hMjO0i0LFhrDmeb+YPH3U0AMfXqF4pq/UiviXJR5bX+z3m8u8ksm53nRzl877gYwfb
+	+NLKeYgfseFJVxkhYnONyNeIyB1KLzF2hGi9RM42CEq32tdvpqRVnvkHTDgjVh0k3T+iuZMHgxi
+	sj0hNtoA3djmFMjWQqyq+UwnfFj9uICtmUystomfzyisv7+E8ktTNfeS2qCyelfsNWgq34cXogB
+	OWGemmu0KR6k6R64mj9z34F8UzuGL1R1dvrfg+YjO7N+oq4zZJI36ANcmoGqTbzvv6UkFu+zY1Z
+	MtIdUqAdK8l4WpZz9S0B9AuWQpq8m5gN0ynVivICLhpfGlhA5pv4kmOW998EUvS/HA845fSRHvB
+	cflBnp9oRPR96ry55rCKHvqZ+a3WB1G0SS/Mu74ZunVGiFNw=
+X-Received: by 2002:a5d:59c3:0:b0:48e:76ab:78f3 with SMTP id ffacd0b85a97d-48e76ab7f04mr25543431f8f.15.1793723838237;
+        Tue, 03 Nov 2026 08:37:18 -0800 (PST)
 Received: from threads.localdomain ([90.254.187.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71a4d3e9sm29044772f8f.6.2026.11.03.08.37.21
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71a4d3e9sm29044772f8f.6.2026.11.03.08.37.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 08:37:21 -0800 (PST)
+        Tue, 03 Nov 2026 08:37:17 -0800 (PST)
 From: Lucas Tanure <tanure@linux.com>
 To: xianwei.zhao@amlogic.com,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -84,10 +84,11 @@ Cc: netdev@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-amlogic@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 5/7] arm64: dts: amlogic: t7: add the ethernet pinctrl nodes
-Date: Tue,  3 Nov 2026 16:37:13 +0000
-Message-ID: <20261103163715.385394-6-tanure@linux.com>
+	linux-kernel@vger.kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH v5 1/7] dt-bindings: net: amlogic,meson-dwmac: list the compatible combinations
+Date: Tue,  3 Nov 2026 16:37:09 +0000
+Message-ID: <20261103163715.385394-2-tanure@linux.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261103163715.385394-1-tanure@linux.com>
 References: <20261103163715.385394-1-tanure@linux.com>
@@ -102,62 +103,73 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The SoC brings its ethernet interface out on bank Z, but no pin groups
-were described, so a board had no way to hand those pins over to the
-MAC.
+The compatible property only checks that the first entry is an Amlogic
+name and that "snps,dwmac" or "snps,dwmac-3.70a" appears somewhere in
+the list. It cannot express which fallbacks each SoC takes, so a SoC
+built on a different Synopsys core cannot be added without loosening
+the check for every other one.
 
-Describe them as the two sets a board actually needs: the nine pins the
-interface always uses, and the five extra ones RGMII adds for its wider
-data path.
+List the combinations the device trees use: Meson6 falls back to
+"snps,dwmac" alone, the others also name the 3.70a core. The Meson8m2
+reports a 3.70a core too, so it joins that list; its dtsi gets the
+missing entry in a separate patch. The example used a two-entry form no
+device tree has, so give it the Meson GXBB combination.
 
 Assisted-by: LLM
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Suggested-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Lucas Tanure <tanure@linux.com>
 ---
- arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi | 30 +++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ .../bindings/net/amlogic,meson-dwmac.yaml     | 29 +++++++++----------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
-index 6894c06a836b..7bd53ec16607 100644
---- a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
-@@ -376,6 +376,36 @@ mux {
- 					};
- 				};
+diff --git a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
+index 9c9cc3ef384d..e769c9bb70d8 100644
+--- a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
+@@ -129,20 +129,19 @@ allOf:
  
-+				eth_pins: eth {
-+					mux {
-+						groups = "eth_mdio",
-+							 "eth_mdc",
-+							 "eth_rgmii_rx_clk",
-+							 "eth_rx_dv",
-+							 "eth_rxd0",
-+							 "eth_rxd1",
-+							 "eth_txen",
-+							 "eth_txd0",
-+							 "eth_txd1";
-+						function = "eth";
-+						drive-strength-microamp = <4000>;
-+						bias-disable;
-+					};
-+				};
-+
-+				eth_rgmii_pins: eth-rgmii {
-+					mux {
-+						groups = "eth_rxd2_rgmii",
-+							 "eth_rxd3_rgmii",
-+							 "eth_rgmii_tx_clk",
-+							 "eth_txd2_rgmii",
-+							 "eth_txd3_rgmii";
-+						function = "eth";
-+						drive-strength-microamp = <4000>;
-+						bias-disable;
-+					};
-+				};
-+
- 				i2c0_ao_d_pins: i2c0-ao-d {
- 					mux {
- 						groups = "i2c0_ao_sck_d",
+ properties:
+   compatible:
+-    additionalItems: true
+-    maxItems: 3
+-    items:
+-      - enum:
+-          - amlogic,meson6-dwmac
+-          - amlogic,meson8b-dwmac
+-          - amlogic,meson8m2-dwmac
+-          - amlogic,meson-gxbb-dwmac
+-          - amlogic,meson-axg-dwmac
+-          - amlogic,meson-g12a-dwmac
+-    contains:
+-      enum:
+-        - snps,dwmac-3.70a
+-        - snps,dwmac
++    oneOf:
++      - items:
++          - enum:
++              - amlogic,meson8b-dwmac
++              - amlogic,meson8m2-dwmac
++              - amlogic,meson-gxbb-dwmac
++              - amlogic,meson-axg-dwmac
++              - amlogic,meson-g12a-dwmac
++          - const: snps,dwmac-3.70a
++          - const: snps,dwmac
++      - items:
++          - const: amlogic,meson6-dwmac
++          - const: snps,dwmac
+ 
+   reg:
+     items:
+@@ -175,7 +174,7 @@ unevaluatedProperties: false
+ examples:
+   - |
+     ethmac: ethernet@c9410000 {
+-        compatible = "amlogic,meson-gxbb-dwmac", "snps,dwmac";
++        compatible = "amlogic,meson-gxbb-dwmac", "snps,dwmac-3.70a", "snps,dwmac";
+         reg = <0xc9410000 0x10000>, <0xc8834540 0x8>;
+         interrupts = <8>;
+         interrupt-names = "macirq";
 -- 
 2.56.0
 
