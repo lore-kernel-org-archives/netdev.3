@@ -1,58 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.154.123
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793711789;
-	b=E7SZBaRbdPBFAKXy/rFZ0ZTNgMThaqOTDEg4Oo0i0a2WITmmZKRdtIyVo5qv3Iy1/eTq
-	 LQf3GYFVlVlD7wfyoXz/tuWkcapkYD8bw3qUr8I6yO0pN0IecT9yT+Y2CuaA237O7N/lN
-	 zLhCOmXm/kJAzedkYjageci32Z1dJfHHqG7o0JucWJzqVDMzVA68nd/Bi6cejgkx988d4
-	 dksXQaD4RsFeH7etOu3swOADdRhZrB01W5+RTMifin3exHxVWKzIYyueJcMwA+s9fLCT+
-	 xj2xzppfw/8tvJ1PsGuGzXTjdDDEJfcg8YVzNZrgKgl6XcP/3Lup0HADOimLcPu0gwg==
+	t=1793711857;
+	b=jAQlyRXdmBMjxDilL4dSUkBUzQxmCQYCVGGGM1/fekisbiHfIxueAXGvh668jU+Sxwvc
+	 lYDK2vhvgjKFFTIGEjGJCwgX1J0e7Vm4UAYisymeVzKJZAnM1aUSQgqzqbtGI1rtPPrZt
+	 w1V2l80ygG1LeG4/AM9m5QDZO1mWNzmhIEuGmFckXE3OJSulGXAg4F5Uedr1x8+kk5a61
+	 7qToOO7GgY9kJZfEcOqP32/CBBi1oYF6a9ClHRrWop/VjxQAbzA1+eO/Ed1NSkve5ZyK/
+	 lBVXW1qJqq5B6bsCwiPtppjyF8BlRiLpg05I2F8qVofN+2pRKTZK/c9yP0i12PvOz0w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793711789;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=GsPwaAJ+3z8o8BnV2wOdvjXMREOGtn5+ZtLYKDDMC3Q=;
-	b=acYs1fWBBBWKu2OPSrI/hLgg4e5Dn/k1GP9shKBz4FjOoySfaoKQ/w0DMPqVSubzJpWX
-	 jT4IToAOsNl3RTbgIZ9JlPPuc3HhX2HTb018NzrLzpYoWY6hdt+Flxw0fv/KRHY2vyVvi
-	 4z0FGopZdfYddh13tomGIqdFmXVnH8VHCd66b7C6J9moGNBfwvoHrJUir7hHPxA/SkwnJ
-	 R4EPWXYje6FJWCY3vGjRYQWidBVOVVnoFTibyK3TBpzGyv50oCjM9cp/tCjB/U8s1lnCc
-	 sQHa2IVNr5oF3rqL758r2+uy+BL1DsGoXMvLEuVjLG3hnr0dU4EZwLPN+rytaz2jj+Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793711857;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:Date:From:To:CC:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=8jNxLKZJ0+Ujjqcgm7O6G2p5yvTyzeq9NAf4nQDsOak=;
+	b=d/w9DUM065ZoattX13MCOB6Yp1imK2EGKJc5/K45M77aLaRUc2YCy5u7Ls8Wv8skOQK2
+	 yxaPw3SC15XRWIHbiP8jCrBDTEfGsn3MnJl07yBPPV4QNsPqkaWpqyaYFBv7OU1DFSgBG
+	 ovm0RsHPOpHhIMPs339u9bEOt4P32VqQLGEmPniDLgtMjsRcIiHeVRYC13kZ3IkKKOEDM
+	 Zh6kLCeu5PvT1iKbHqtbvtM2Dn+OA4UhVaczqrTJ+/GaFgpLjVcjjfAq0240FZd0VZjLl
+	 ErCCq22GKdrloFvD/6ZC8PxFVE8sQrvt25Dr5415u3UxkAvbB4BIdPL/fOZI5BjVvqA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=aqHIYONc;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dmarc=pass header.from=microchip.com;
+	spf=pass smtp.mailfrom=microchip.com;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=TxhUMdX4;
+	arc=none smtp.remote-ip=68.232.154.123
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4324F606A33E
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 13:16:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4324F606A33E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3016F606A328;
+	Tue,  3 Nov 2026 13:17:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3016F606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=aqHIYONc
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=GsPwaAJ+3z8o8BnV2wOdvjXMREOGtn5+ZtLYKDDMC3Q=; b=aqHIYONcxEavUlvcrAMQb5ZP5h
-	HRENH0+0OD8PaMcB2d2Ee7fRAwhwsct4f4LBV+C18i8bvx1LwaQQ31IMZOn+klfze9XnzXtiilVSK
-	OoFq0rLd/SZ+iVpOhEiIDy+50/O+exlE6euLx1trhlxhqRe3+sgYEGU16ojStobjjAiQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xOENF-00E3XF-Kr; Tue, 03 Nov 2026 14:16:25 +0100
-Date: Tue, 3 Nov 2026 14:16:25 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Zhineng Lim <limzhineng2@gmail.com>
-Cc: "jiri@resnulli.us" <jiri@resnulli.us>, netdev@vger.kernel.org
-Subject: Re: Netdev devlink A/B firmware bank selection feature
-Message-ID: <c31e3852-11f1-4c5b-b110-226e6cc00305@lunn.ch>
-References: <CAOr6SmEW8ZLjMzqCWdQL3W0DKwZCVaRL+DbhrSEZu7SeZRiVpg@mail.gmail.com>
- <34a6dde6-7a4e-4291-9f13-22d56793c866@lunn.ch>
- <CAOr6SmHqg5mH9W7LvruknDDohTAUwQTTxSsUN5mCCu9WV=5WJg@mail.gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=TxhUMdX4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1793711857; x=1825247857;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=qg8Xxxvy/Qj+8i2OmfTlCLXN559/BTN2nQA+TRADqKE=;
+  b=TxhUMdX4RFuEJqC2GixwtZy7dKchb8pXjrJLLdG2+vzWG2Gv47dOt+N1
+   c2XQUD11CZOAdkC8+xvZKpNj6BdNV7a/pGvMISVA5kdWqkqKonOSuzpq6
+   Wh5bx7mAkXXfAb7qT7sUT/gRToxsndx0lm0soMSLVijSCo02myM8UoeRA
+   7oAxxQ/EW5t3HV899aAUy+Wk9mrn513XlGG0uD5ZEC+BWeRnLf7R81azK
+   CjmmvnBbYskI0D3pQOBrukIimYqI2LxUeyvD7LUbMFki20Xo9gm4n4gBp
+   pCOLT+jkAoWpZxfo2t1T0+kETG7O4sghctn5+FcrmkVwadr7sRgOeNSVF
+   A==;
+X-CSE-ConnectionGUID: ivVIAx7WQoekeZRNTi+1ZQ==
+X-CSE-MsgGUID: d/ZbvNGEQBmNQIcSRRskqw==
+X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
+   d="scan'208";a="64982494"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 06:17:36 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
+ chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.56; Tue, 3 Nov 2026 06:17:35 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Tue, 3 Nov 2026 06:17:32 -0700
+Date: Tue, 3 Nov 2026 14:17:32 +0100
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+CC: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre
+ Torgue <alexandre.torgue@foss.st.com>, Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer
+	<hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Stanislav
+ Fomichev <sdf@fomichev.me>, Song Yoong Siang <yoong.siang.song@intel.com>,
+	<netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<bpf@vger.kernel.org>
+Subject: Re: [PATCH net] net: stmmac: set XDP metadata length on the
+ page_pool RX path
+Message-ID: <20261103131732.5wdtyhk7o6fa6iol@DEN-DL-M70577.microsemi.net>
+References: <20261102-stmmac_meatada_pp_path-v1-1-d93cc4f9a864@oss.qualcomm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,31 +87,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <CAOr6SmHqg5mH9W7LvruknDDohTAUwQTTxSsUN5mCCu9WV=5WJg@mail.gmail.com>
+In-Reply-To: <20261102-stmmac_meatada_pp_path-v1-1-d93cc4f9a864@oss.qualcomm.com>
 
-On Fri, Oct 30, 2026 at 02:18:32PM -0700, Zhineng Lim wrote:
-> Hi Andrew,
+> stmmac_rx() initializes the XDP buffer with the metadata area valid, so
+> an XDP program can reserve metadata with bpf_xdp_adjust_meta() and write
+> it in [xdp->data_meta, xdp->data), for example to export the RX hardware
+> timestamp obtained from the metadata kfunc. When such a frame is passed
+> to the stack, the skb is built in place around the same page with
+> napi_build_skb(), but skb_metadata_set() is never called.
 > 
-> devlink dev info+flash are implemented to handle 2 banks only. For
-> instance 'devlink dev info' shows a "running" and "stored" field to
-> represent the current FW that's running and the inactive FW on the
-> other bank respectively. There are a few architectures out there with
-> >2 banks but as far I can tell, devlink core only handles 2 bank
-> cases.
+> napi_build_skb() clears skb_shared_info up to dataref, which includes
+> meta_len, so skb_metadata_len() stays zero. The stack and TC BPF then see
+> an empty metadata range even though the bytes are present in the skb
+> headroom. The AF_XDP zero-copy path already records the length in
+> stmmac_construct_skb_zc().
 > 
-> Currently, devlink dev flash does not select the flash bank, it just
-> passes the image to the driver's flash_update callback and the
-> driver/firmware then determines where to write it to. I don't intend
-> on modifying it.
+> Record the metadata length after reserving the headroom and adding the
+> frame data. No copy is needed because the skb is built over the buffer the
+> XDP program wrote to. With the length recorded, the software VLAN
+> stripping path can move the metadata together with the MAC header, as it
+> already does for zero-copy frames.
+> 
+> Fixes: e3f9c3e34840 ("net: stmmac: add Rx HWTS metadata to XDP receive pkt")
+> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 
-Maybe you should? As a firmware developer, i would probably keep one
-bank holding a known good image, and the second holding whatever i'm
-developing. If my development image crashes and burns, i would swap to
-the known good image. If the development image works sufficiently well
-it can do a firmware upgrade, i would use it to overwrite itself with
-the next iteration. That saves me a power cycle or whatever is needed
-to swap to the known good image.
-
-	Andrew
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
