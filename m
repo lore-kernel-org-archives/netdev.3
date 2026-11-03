@@ -1,96 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.182
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793730821;
-	b=Xb3uWJX4bBT8dbgOXfK2auntUZA3S+8050prww350GT53BvzmaClKQ8lcs6A9mR0d9qj
-	 2y/XQYhObfYuiy1beIbtdRK+fqAGoko7H2li7OcPAOI8ZfOXtKJ2akwy4YVVUg9DmF+TW
-	 sxZNkFAdz68a/J3+Lvw/qryrXQcW/OzWrhGg/k4XjqpUTU2Hkp0qRo7ZSrYBZz/Vfjn4X
-	 fZkf/Y3eEt1pe3V7gubEAPPyFQnnqdzrFpohu8RqcfE3dp3eID18ReTge+pHw0ft4O7lC
-	 vffrV6T7dcbKBLCZJnEOQpcavuGxbljk94bAozSo7uebc9i0DD3sNRys5BZllbvqZXg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793730821;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.52
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793731083;
+	b=NXwBqeYTccmnHhXwG79Wx2eeQbSKmTD4XwJVqaWovnjiP+ZLrVIOd0EU+Nu58BevkSbN
+	 KH9k1atAy3QVLp+ChrLjKlavA+JsE4FCXlMiEVhLUeCIZcT4S+LD8tQV5AsylwChUeOsf
+	 cUV3TJeRw1MK7RUui9r6IYTXEusNoY7Cbqt5paGI15Xn0NzZJgwKWiY6dhhuqFsR+eP2R
+	 cT1UcWNp25JUVpJqbPKpUF+Mv5yg8naxpndPOmUiZu7Wo419GIoRUJ8O46HuKDjlAeU1t
+	 gxdriP8LO/CGU78t5/jDPqCPgmV4rl+ysIZfKPRoukFbilJj8i5nHRsvnqNPk2cL32w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793731083;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=deCUmomb53WAE18wkw9/aqLCnkJ8waH6qvWSys2hmGU=;
-	b=lUBYHGoo9MpBvS0yNac5VRRhkOGgRZYsX3gMD5Jd6+t/GzApQw4vS1cWT3jWGUxnCjS9
-	 bl1DmNWSmwQlb0RzYTCowdTK15aoAiLxrpqaORDyz93Fgsu+SsE4VPY/gNKAUxAy88Iwi
-	 N7pOzqGSL//sKi7tozbLfIpt64xXX7bZJWiVMulEyiu1iYFexioVnnQnZyrIUr8BpOKk3
-	 ZgWRdjOPy40BjJdBItOOP47LzKrB3eVw0Oc3lle6KuXTwgW1EwCy42vJK6pf2WVGgMdQY
-	 ostKjhjfF6A5DUtQAUL+tik55CYCCkHWCi9MVEqezSDxRQBAJZ7nNIXV6PCLpd1Twbw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aGQ1srqZ;
-	arc=none smtp.remote-ip=209.85.222.182
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=fviwjroG//qntBAn39plNVA6JSIngXI7akYS02td+eA=;
+	b=YFNDaf+ppJkdYzM+gQc+Wg7yc2JVfk4k6fTWnGuvrxQp77vD6aseAy4PR4+AdfLpIiCr
+	 2UU2v2jLCNs0pWmezkmuXF2L0FuCNOHntF80fcBuSVzKbdGXnv41VTuYKHSMngnuMgLc/
+	 9VUJAWnydQehYwA8O3hl2OssZPgtN6CAKNFOQmRp8ZKz5XeIR68PHnDDDxUWyukBW8n4A
+	 TwJLxCgVzjLhTlj06yCbcwsmCktOkUMFfruQ9yloVEycGhvyk9M6nF3/B2aJObAni1vol
+	 ipN+HzLOkYWK7Jh3tzkhCeVIKFtMLw1TIhYRAe7KyyWlC51cI/O8qea6Mx0pYG8rglw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=amacapital.net;
+	spf=pass smtp.mailfrom=amacapital.net;
+	dkim=pass header.d=amacapital-net.20260707.gappssmtp.com header.i=@amacapital-net.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=nVCsNw0y;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.52
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B301606A332
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 18:33:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8B301606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D076D606A328
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 18:38:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D076D606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amacapital.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aGQ1srqZ
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-93cb9e9405fso235311085a.2
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 10:33:40 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=amacapital-net.20260707.gappssmtp.com header.i=@amacapital-net.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=nVCsNw0y
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5be3ed646a5so4779412e87.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 10:38:02 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793731081; cv=none;
+        d=google.com; s=arc-20260327;
+        b=RKlEHxWIQbW55944SuBBjTIZZo3rRMF9HLafFgZYsciCdNvR29Ss2nWxPRnKE7y/iX
+         1r/sUprxdN3qcX241tfDOa4FiJTeijgDrEvT/RBHJQQE22BHm5mQAGNATlw48vQ27GOU
+         uKoe4MDm/n0mtycjQOA2EG0yckY+zP4ErICZeE7pRdFlhGJ+2Zc9Eugdh34jtpPkm/l3
+         b+I/WDo+UgUvw1KZVr+cv4z1mTr8l2himZt2Qub/TOro234eMqpHhZGK34IBu9rvssHq
+         O9FH+Ui9ecoIS3hPTMl5UgTd7Qtl3jwnbAHViz8+VumrAyrGpIZko39cYvV8zQrdLrUC
+         s85Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fviwjroG//qntBAn39plNVA6JSIngXI7akYS02td+eA=;
+        fh=s4LG9cQE69HhKeEGQIgTrA403F6nSMfrIvoxsX1Mi9Y=;
+        b=LYZ3PPxpN4Qe8uwpEGZHyCUPzPfpT91oVtSRR3ZaFw/bS6rqVgydspsuvG62iy5YnU
+         CqkfCg4Uj0R8Q1QT89XFacu8Y5SRWw16cVq6TXEQe//D6KpEpvZy75GMeKNdmlIR5uUc
+         cnoHXIcHVpR1uHFopu4GJ45JnbFgndTWpemB+9dyEIj18ewVyLqdvGFlMaaDXlzde+ge
+         jdqilSb2BGxwKT63CaF5eXlygnjD5Oq4eK8MkALGmopnsRvZyBoT7WyJAKpQn9UTxvog
+         mxAYUWbXqgF6wBv7AuHfyImvlxq9WsSvLmmvOqEs3tkPppeWmWQkCYdtDHyVHcAiRwaF
+         t6Cw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793730819; x=1794335619; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=deCUmomb53WAE18wkw9/aqLCnkJ8waH6qvWSys2hmGU=;
-        b=aGQ1srqZ7O5av2G/ajuN8h4tP79BcVgvh4jkFvekSlG6AzXDIZbPxBc4R7nkR77JYm
-         ct6H4qnu5aNnNDTOMfwPM908mlgaHdSORC/rXOiKlVCLk4q6eLX7wsWoQMmyd16s0ikM
-         rAS00MEiSVnUW5P4mi7pob8alXy1HIT3jqggUM4wZz38MWJDkplC/iGrgkt691yjwnMA
-         aLasRKwv7PdKTdVMImiw53hlXuVZ18XIkD3Y8vUWBAPxTy0CruddXWzXCq1tNzubHfDx
-         VGW9/H2yymXuqyiIZ847wnfjx9XFnHc3P3oKT+/3ItR5O05qla+mx/Yx/RagOlKBsbJP
-         XSXA==
+        d=amacapital-net.20260707.gappssmtp.com; s=20260707; t=1793731081; x=1794335881; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fviwjroG//qntBAn39plNVA6JSIngXI7akYS02td+eA=;
+        b=nVCsNw0y6hskrENSBv8EU3amWuYztT8dLT5p7AwDRfBEJgh5KCH4wcnDy1+4F8oz26
+         mugE2B8LWKKCR0Y9k2Z98xSLZ5eNvcfR272i+te/45lnsb9AWyAtGJcy3D9bL7ir+f71
+         qQpNmsSv7T5esoFkU7QTr7zF74lmigXGg9dzQbwmAGy2M5yd+bQ/6ZIx3r0WugxBJ5RO
+         hJm/oKDuQExrJP3FUtAD2VCpRZdYySsqRCW8MbRDOe9JChKA+5WjiMn7EutjmI1dtjC9
+         TX6PAuZUUq43suQ5ErDcrLsoaFbkM/WfFXDhbG1erayEtyXYdgmMQ2TL7MALbarBBDH6
+         21vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793730819; x=1794335619;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=deCUmomb53WAE18wkw9/aqLCnkJ8waH6qvWSys2hmGU=;
-        b=B0ho5v5EFkj+6xXkNnbSiUlIob56oVpPlhKu7n2cGGBD2YBqMJ4GdNl1dk5eCLYjLt
-         M1GZNOUc4dul0304rCppjXP3TzInDr1TPlQKJubUHB6rxxbRNFGsDSQfDtKW3v3Pn61p
-         9xWkg+62TIpu2zGvBdh+sVwAvmtMPJF6SF+xeetuiIjaaF6QfocfpQ75D2Ac1cwvhZwo
-         5U4uZ8clhdEMnwtS0MnMZyYPmVr3qKlAlEglIe7vh/BEpnBgeFuApqT/WHLp23w08wBf
-         jb9AxRIVzuFchMFjrU82NqxiF73HVPhrjDjjHffXuBICShtB23I/PqhWoS0dDa7RBwc8
-         KNMQ==
-X-Gm-Message-State: APuU4Z9z40svmdxVI2ks5Tffhvy9VENvxs96ItM+RM68afsqvdI4bXVm
-	rci2hF/TPLgwgoM9xXfyFktE8RZCr2GtxcOwcl5jOekSxDQDlz5ndmyykBW0AIU/
-X-Gm-Gg: AYBFou0h7jbnL9G2pVruDnmZjyCh7jNjo0G7FxkoeZOVxrJY+UETWskcxuLNb5MhXac
-	+GXTBbuL0SRbSY8CR31MjLyyXPewI1ogRzS7N5g2PeL5QmraToGAEE54hDtwHjMP52+oqC0h0/e
-	45wpzh6+NsTxx4I6qNIVsTO1NcHWuatlzHviYsedImbdXDVzAtv8R1HyS+CXvGZllyQPUDtl73Y
-	IJBCDxDyoZ6DyExwG4Cii8r931ZcDpTOV/tQTOYFeIXrvxDV+b/9Fm5B/tSBLn/FD0CNlnoLt6R
-	sZI4lsVJWYb2s2r7zhRF10UVXyDhhpejoHoK6ucUvTdhMxFTaLfJuXe9wCQO8q5tKP/2rAlPa8t
-	CEm+7sflYuUV4EZ9Lxjhd/hn2ASUmuyhQRUlUN31hi7npMeta+Lr5dQBUe2NSdZSGQjVDJYFzB+
-	c4fT/1DguatxABaSh/Ko4WhWURw74enbc7BTQvjSDy6oxWylblQlo7/WLmT1SSbs4jnakZgtZZD
-	MAWmDBOrZ3dzoSs+WuJLY/X4ia0EPng962t4qm2vr7I9uMUv1k3+UDreKcwbDjxIKfF8+nUpJzm
-	u81Rvu+ReE6vMnRH5mEnB+g4
-X-Received: by 2002:a05:620a:2989:b0:93f:5e6d:880f with SMTP id af79cd13be357-944217a1992mr2455156385a.74.1793730819424;
-        Tue, 03 Nov 2026 10:33:39 -0800 (PST)
-Received: from houminxi ([61.170.225.237])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-945d468fbe9sm1912585a.3.2026.11.03.10.33.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 10:33:39 -0800 (PST)
-From: Minxi Hou <houminxi@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH net-next v5 2/2] netlink: specs: add ovs datapath and vport set operations
-Date: Tue,  3 Nov 2026 13:33:19 -0500
-Message-ID: <20261103183319.2730567-3-houminxi@gmail.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261103183319.2730567-1-houminxi@gmail.com>
-References: <20261103183319.2730567-1-houminxi@gmail.com>
+        d=1e100.net; s=20260707; t=1793731081; x=1794335881;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fviwjroG//qntBAn39plNVA6JSIngXI7akYS02td+eA=;
+        b=hDkHcIKwnwEkc5F7hpto/I/VqanryqYmikUD3nVoGaBmwJvGWQuC7/hRBt5Nb5cvV5
+         0xT2ojB8Rqw+Vu65urDMut25woz6a+/kIrFAlxexVLH0dWeDq9GDYESTbazmZMdfkI+r
+         zJUfTUnRK9Ngi9W+A7QMwroWclCA2CrfMZCP3w9jwRjiBw/iLHQrPTJptcoiu11UfwIZ
+         yFgIAzdwTmgPbIjWIFFSjhxhIewq2YHUe31jbV2nvWH76Dx4ofO9+igSVswO9sbPneHH
+         sUHFtiD21uvbMXupcXz3wpYDZifkLEf/qimQ/qFHmV2TClRxqY3g9dVqhojShE8oxItR
+         bfCw==
+X-Forwarded-Encrypted: i=1; AKwUvBxjviSpgdJmrUKa0YmnF3usn5vs7Lgpi/fgs1+hXz/E1bob6slBPivhCGVUZH8eVdWafQ1yFDA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8QaZS1XTgU+TgeNV/l25SIaxlN97rC2oC2+AZGI/QCXXa3ccyE
+	DCWNtyk6IrLxTlOskXkr9MzOgM2x36+HhFvsBNpTrvC04xBqn/XsSRb6oLlP+5wMyzrnm5nTKGF
+	hgNBhYkoKq2JJi1hpLzxQy7lmM1h1Oz7ax/mqCWSb
+X-Gm-Gg: AYBFou2Vl128m/O0ODgwnADyIQeuemPbskHfO+vj1iDrUXAU1CI40asb6PNlbTlTMi6
+	SHNIb+QaNLmLn23xmuQtfWkIJWJ+gq3vqhk5h/9rFRqr6xPlnaJFkdiESYNypk4Sdcona+OvEPe
+	BoyVrzNoN4AK+OlicrZGaHeOHC7rgr0U54zeX6ujHTPkDJkaz6qTRWUfhB+EwAAk62qEjnTgZi8
+	4hyBHJSDd7aaGxS4+rmh3BvW1j/Mui+MNuUo4qJkLlsIn4ljZiDWiDJ9g5pRl/AdzW41ceA0/MR
+	XgWIEb/zW24kY8on3wusrH/+qTEirp+8eAasipNuiuN1XflRtiGCzgLRWebW4ZHMFo1dM8iMQ89
+	eFn8cFjo/7q4nnKOxAO0pOH+Sw5TjLHFDYw==
+X-Received: by 2002:a05:6512:3ca7:b0:5bc:e8b0:5652 with SMTP id
+ 2adb3069b0e04-5bfd9589099mr5147409e87.63.1793731080985; Tue, 03 Nov 2026
+ 10:38:00 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,135 +104,73 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261028221705.3915340-1-halg@google.com> <CALCETrW9ygriu54gxiHFLEd5+hJminQo0r8Jwd63wR69Dj4W7w@mail.gmail.com>
+ <auM32mOlBLu6ZUlt@google.com>
+In-Reply-To: <auM32mOlBLu6ZUlt@google.com>
+From: Andy Lutomirski <luto@amacapital.net>
+Date: Tue, 3 Nov 2026 10:37:48 -0800
+X-Gm-Features: AclHuK_sfbKF658HbwyCTsOToNn9cXs0qzXn8uaPUG4vxi_nXA5hXmjvbt4jwHQ
+Message-ID: <CALCETrUD4vh_iSHV7G0bprUFU8=c+ECo701-tXcbQ3UXBWC1ig@mail.gmail.com>
+Subject: Re: [PATCH 0/8] userns: per-namespace capability bounding set and
+ opt-in netns loopback
+To: "Hallgrimur H. Gunnarsson" <halg@google.com>
+Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jan Kara <jack@suse.cz>, 
+	James Morris <jmorris@namei.org>, Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Jann Horn <jannh@google.com>, =?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
+	KP Singh <kpsingh@kernel.org>, Jonathan Calmels <jcalmels@3xx0.net>, 
+	Casey Schaufler <casey@schaufler-ca.com>, linux-fsdevel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, 
+	containers@lists.linux.dev, netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Both families register a SET command that the spec never described, so a
-YNL client could not change an existing datapath or vport. The datapath
-NEW command also gains the masks cache size, the per-cpu upcall pids and
-the ifindex, which its handler reads. new, del and set take
-CAP_NET_ADMIN, which is GENL_UNS_ADMIN_PERM in the kernel.
+On Thu, Oct 29, 2026 at 5:11=E2=80=AFAM Hallgrimur H. Gunnarsson
+<halg@google.com> wrote:
+>
+> On Wed, Oct 28, 2026 at 03:56:11PM -0700, Andy Lutomirski wrote:
 
-The datapath SET command changes the user features, the masks cache size
-and the per-cpu upcall pids. A request that leaves out user-features is
-read as zero, which clears the features set earlier. per-cpu-pids takes
-effect only when the same request sets OVS_DP_F_DISPATCH_UPCALL_PER_CPU
-in user-features; without that bit the pids are dropped and the request
-still succeeds. The new operation reads per-cpu-pids the same way, so its
-doc says so too.
+> >
+> > Why should the task's cap masks affect this?  *Maybe* cap_bset makes
+> > sense, but I'm struggling a bit to see why cap_permitted and
+> > cap_effective should matter.
+>
+> Sorry, the phrasing here may have been misleading. Just to clarify:
+> none of the creating task's capability sets (cap_bset, cap_permitted
+> or cap_effective) are used to restrict the new user namespace.
+>
+> When I wrote "reusing the existing task cap_bset, cap_permitted and
+> cap_effective sets on namespace entry", I was contrasting this with
+> the prior series from 2024 [1], which proposed adding a 6th per-thread
+> capability set to struct cred.
+>
+> In this series, when a task creates or enters a user namespace, we
+> simply initialize its new cred->cap_{bset,permitted,effective} in
+> that namespace to user_ns->cap_bset instead of CAP_FULL_SET.
+>
 
-The vport SET command changes the upcall pid. It finds the vport by name
-or by port number, and rejects an ifindex with -EOPNOTSUPP before it
-looks at the type or the options. A type that differs from the vport's
-type is rejected with -EINVAL, and options with -EOPNOTSUPP.
+Okay, this makes *more* sense, but I think it's too weak.
 
-Signed-off-by: Minxi Hou <houminxi@gmail.com>
----
- Documentation/netlink/specs/ovs_datapath.yaml | 27 ++++++++++++++++++-
- Documentation/netlink/specs/ovs_vport.yaml    | 22 +++++++++++++++
- 2 files changed, 48 insertions(+), 1 deletion(-)
+I have a sort-of goal of having the creation of unprivileged
+namespaces be allowed in most contexts by default, *even in Docker*
+(which would involve the Docker team changing their default seccomp
+rules, but that bridge can be crossed later).  (In furtherance of this
+goal, I fixed an ancient bug in newuidmap that gets us quite a bit
+closer a couple weeks ago.)
 
-diff --git a/Documentation/netlink/specs/ovs_datapath.yaml b/Documentation/netlink/specs/ovs_datapath.yaml
-index f7b3671991e6..8a8adf3820e6 100644
---- a/Documentation/netlink/specs/ovs_datapath.yaml
-+++ b/Documentation/netlink/specs/ovs_datapath.yaml
-@@ -135,24 +135,49 @@ operations:
-       dump: *dp-get-op
-     -
-       name: new
--      doc: Create new OVS data path
-+      doc: |
-+        Create new OVS data path. per-cpu-pids takes effect only when
-+        user-features in the same request sets
-+        OVS_DP_F_DISPATCH_UPCALL_PER_CPU.
-       value: 1
-       attribute-set: datapath
-+      flags: [uns-admin-perm]
-       do:
-         request:
-           attributes:
-             - name
-             - upcall-pid
-             - user-features
-+            - masks-cache-size
-+            - per-cpu-pids
-+            - ifindex
-     -
-       name: del
-       doc: Delete existing OVS data path
-       value: 2
-       attribute-set: datapath
-+      flags: [uns-admin-perm]
-       do:
-         request:
-           attributes:
-             - name
-+    -
-+      name: set
-+      doc: |
-+        Modify an existing OVS data path. The kernel treats a missing
-+        user-features attribute as zero and clears the previously set
-+        features. per-cpu-pids takes effect only when the same request
-+        sets OVS_DP_F_DISPATCH_UPCALL_PER_CPU in user-features.
-+      value: 4
-+      attribute-set: datapath
-+      flags: [uns-admin-perm]
-+      do:
-+        request:
-+          attributes:
-+            - name
-+            - user-features
-+            - masks-cache-size
-+            - per-cpu-pids
- 
- mcast-groups:
-   list:
-diff --git a/Documentation/netlink/specs/ovs_vport.yaml b/Documentation/netlink/specs/ovs_vport.yaml
-index fa975f8821b6..e3971bbab4c5 100644
---- a/Documentation/netlink/specs/ovs_vport.yaml
-+++ b/Documentation/netlink/specs/ovs_vport.yaml
-@@ -128,6 +128,7 @@ operations:
-       name: new
-       doc: Create a new OVS vport
-       attribute-set: vport
-+      flags: [uns-admin-perm]
-       do:
-         request:
-           attributes:
-@@ -140,6 +141,7 @@ operations:
-       name: del
-       doc: Delete existing OVS vport from a data path
-       attribute-set: vport
-+      flags: [uns-admin-perm]
-       do:
-         request:
-           attributes:
-@@ -165,6 +167,26 @@ operations:
-             - netnsid
-             - upcall-stats
-       dump: *vport-get-op
-+    -
-+      name: set
-+      doc: |
-+        Modify an existing OVS vport. The vport is picked by name or by
-+        port number. The kernel rejects an ifindex with -EOPNOTSUPP, before
-+        it looks at the type or the options. It rejects a type that differs
-+        from the vport's type with -EINVAL, and rejects options with
-+        -EOPNOTSUPP. The only attribute that changes state is upcall-pid.
-+      value: 4
-+      attribute-set: vport
-+      flags: [uns-admin-perm]
-+      do:
-+        request:
-+          attributes:
-+            - name
-+            - type
-+            - options
-+            - upcall-pid
-+            - port-no
-+            - ifindex
- 
- mcast-groups:
-   list:
--- 
-2.56.0
+But tying this mitigation to a parent userns means that it's
+completely unusable in the single-deep case.
 
+I do have a question about this whole scheme, though: are we talking
+*just* about CAP_NET_ADMIN?  That is, is there any other bit that has
+anywhere near enough security relevance to make this kind of thing
+worthwhile?  Because if it's really just a single bit control, maybe
+we can come up with a nicer scheme.
+
+--=20
+Andy Lutomirski
+AMA Capital Management, LLC
