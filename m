@@ -1,91 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793715629;
-	b=glWg+JRTxdBXAshxxCIYm0i4I8ONX4DbpYgoltMN8/V+Bumklrtz+2NbuqqB4Pv3+k+Z
-	 +i5Q4JS9MspJ/1STULU5BR7291QHI4LIOHTf+iX17H7EapSG7bG0CHTGNQV2wDeU8DhAI
-	 Ty8CBSUlSpYpiuLNXf5GyPNJiAXux+dvMYrzMXSpu8UEPwzTZ5q23691H31VGholPuAw4
-	 18nTaOE2LskK+78yWmuahfXuVoF2gpyNOHoIFT6b4tTn+oGnFaXbeWRbhQD6j5jEPt4xF
-	 cwyUqOym6xsa6m2nE8OYIOiSfmw7O8ADMfkX+fLCOWCe/XNWU0wIzzf0bMcOjbWKsCg==
+	t=1793715632;
+	b=WgqZdbyDfCJHUt/dOhFlog4fkvAFRzf5Rywm+G9oH5qA2z1OgMO/xcBA7ED/UGq6pNtT
+	 SDSDuFE4DFiuMNJ0eMCHFSATEt1OcQXzxQsJQTWFcF1Xa9GudKZswFJk1/sHE67kd+/hc
+	 W4RVR01F8qKmNCMAzw2jQoTuTJp5YJQyVM884NJwse4izy/ghu4vvCzkqZ9yEIVkbBmOr
+	 yt6dibn0jG2NMDFjOrqTpxubYI23OkQ+s/UH1JDBjKzy+KabNgRJpc617oCgea3K9ZOci
+	 VU1C9Wjm+Q7sLqbXgdGeZYznm5TkdlelNhnWeGQdyR2XLHUe8fD/RzOOZV8Tl+BcA/A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793715629;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793715632;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=LQSJ1MoRuywQlY0tB2jmAqJ+yOElpGeNOkB2OxmHhkg=;
-	b=EoQlLC8tDX80K4d2PRuwPFmLP/pJVMQn5vCnk3iIVIdRsHtOnW80fR0mGz6+wBd+5U5+
-	 mRnrHYWXX8kYi0QO0itWAf9UjqGzULJEBmMK6bk82T/7MdR0ZF6jJwBvp5QabEnJ0Gxxp
-	 cJmjwl1cVqyGBNtZ8irRUvqn/wLpWorYQrgjL/nG08wmhAx8sz4dnGJZnU6jDC+MnqsOj
-	 pGbd6gfDdD364m5A/l/0mBAXffRnueMLHkaR/6TOaYZdN2R1zSGv8ygGcgGz33r+BXaJK
-	 RQmCDJyumIfeLNHPDxwkultbKy0AcY5HdwgclrKhZBIUsCGDXiSp8Ck1AX/l6CtGUvw==
+	bh=VpMYzPu6u1D1BTikiHVAhLBIAMWB7XVJJHTCsw6VgIU=;
+	b=dlxLG6Xyb02ZZjZJzFRLRhOyRibgIb1nnrCP8NpM1dPypeAyJ4zc5A2NSlprxSW+bGsC
+	 qLeOneVhX4RMDqmUa9JltWt/SUjqsVW+du8dvOrQDj4hbKaHLTXKWFUZQIJYoisZpVSrs
+	 8xETCme1ycsMF1FAYLUKBZ8l676CZF+Y2NFy+nc0/Dw33Buc5psn9O3CJhVoNCDoWVrCD
+	 Gei9yhPR5DfwY8dhWaOxE5UfPv2gdcCMBvaYPL73r3lRHwWIB+6Kbv07fGx26euQBkJXf
+	 9rW+ebC6EdobdJkBzbE1p2JGiIIzsHxEV0yAknae98P2CpHyjWt90Jp8Aeyb+z9tHMA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XJHoO2cX;
-	arc=none smtp.remote-ip=209.85.210.177
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=chAInqkO;
+	arc=none smtp.remote-ip=209.85.216.45
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF982606A331
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 14:20:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF982606A331
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D856606A331
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 14:20:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2D856606A331
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XJHoO2cX
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8a091e4eea2so442550b3a.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 06:20:28 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=chAInqkO
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3ab2cb02816so606639a91.0
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 06:20:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793715628; x=1794320428; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793715631; x=1794320431; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LQSJ1MoRuywQlY0tB2jmAqJ+yOElpGeNOkB2OxmHhkg=;
-        b=XJHoO2cXhO8+zds3bQze/gISOa8oq6P2VrkKhTHJkrgcbr06eaEHVkD7NTZRQEq8MC
-         KKv0HMe0qhz6MkQ8NGGc+COgp0kpSHedpB6MW5v2Z9i3we1EADMABfRQLBdzvo/7HENn
-         +W6NqXKTulg07Wd/jdnIJZu+g72IFgbBF2A6KsmtTTc5v2XNnmQGrDj4QmfQ22mvWyhB
-         Jt1CKx5/87kNCIEZgv2U/hp7QTZJKF78mY4zEYgov7HB7QQ1Q5cnNCo9j2mGUSj7+Eo9
-         S40vXG3h7sFJRfF0FuVIy42gzUapNjwQFI9POwBEauQaotY9z6TjF3ICo1vLH29toTV0
-         DQug==
+        bh=VpMYzPu6u1D1BTikiHVAhLBIAMWB7XVJJHTCsw6VgIU=;
+        b=chAInqkOHc/Y6EPjxq63RIyXfndpv1NSsFcYqT3l27zg9Y8ezSvmsjanVOTU6y6W5Q
+         PLIYQFNv78Gv5TAkN7/tmoXI/i2MrTIMh5f/YAxON5CxJq/TsvgybMbFX/Z3gU/kEpHk
+         uu2FUxqYyfTM6v6v+4k1vMCChg7f3WMPHRuTgE7hEyGlJfPc1ezPITLKDETEog1YXsqf
+         pMLjbhaGLuM8810Q9Hep0IY6Ow+xJDBsPRHcx0FjJmAzAPfCXNqAlYM3lKArwFQbgbDt
+         uNq7U80gsbTcDu9X41K2Yn1de66OuXthsw0xcbmiMRhETKxK/wxPVaHgF7kj3p80pJfe
+         U0WQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793715628; x=1794320428;
+        d=1e100.net; s=20260707; t=1793715631; x=1794320431;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LQSJ1MoRuywQlY0tB2jmAqJ+yOElpGeNOkB2OxmHhkg=;
-        b=L8j9Gj4PA+ttgejKF2UTR3DEsMTUYq48fH64pMGAGzFaFz7ROgUJBtKmTTG4wjfXqw
-         TSGlchWj/DQOUvxbRE/li2vQjo6k5J6jclmKn9/LIZXXb4ZbF/qoMj2lqPX3p8KbL4iM
-         7Iaq6FyVOdOpAdWN3DaJ0fZYvlSq3PiaCNmsgY7CEvkazs2zLWDOpuPbSBmMbq3fkrI+
-         Mpi220T81ZenNRM1z8vr8hOao1ldxp+7z+2gmsoAHdKBmVx743gYwE2RQj+ALLxZSYXB
-         4A+O/bo8H19cG0xLZSx+P0Ln4yOyE2J1TubPlF6CDh7ap1MR9/D+yN3vxmfiR5c92WAF
-         cNUw==
-X-Gm-Message-State: APuU4Z/Fz6B1yjXUm+XA89fFnrBVW2MD6y6EFSY9XNZJ3M/73qI4d4Do
-	o+A4lQAE5fJ0lGCk6CUASbOY7fAXkXZibU2+Gn7J3z2H2py4HExu4OnDcN6I7k+8XvU=
-X-Gm-Gg: AYBFou1fAkObOYroWhgHq5bv7VNlHmmPhHzyX1y2MmOppW8OBwUoE8+3ZVE4wMglqSN
-	fvHXna+efnoM22b1mFyhamOCfthzXXOg5fGSistYodjuazkPzJcV+Xm9ZLG4FD7AHH3bQJOTVEO
-	9RFyH2h3LhE1Zj5lpFRlWlkfU2EVzPsc50zHOTh0dCLs15TavxTgNeZGS5rKlBCDJ/9TfypOR5s
-	8E4jmMeqQykw3jNX4zidOp+ZzE+rXwr3eJRB7AbdE84gVNj3pW1LHK0ep4996qN3VauMTdquiBp
-	arwk29VDp2hmLRnq4RgrnFAttRoO8yXHI/IjL+X1d3hiLUEelEWRZgZmYV6XY0YKpUDN/LvEf2b
-	m3AZa9L2/NJC8Dz39y5h5iWpoz3xUqYcA2bgoWjpHWSX+NyvYe7yD1hDM3DYWL5hDVaPrVLx/8l
-	RK5h/D/z1KcVxqZPqgYB2rs0qIyIP8oz5ow2cKnh3m2ZWxde0+Lu2xFegjNCtsKfW1b03Fr/rPL
-	Vgldx4xdzDqnjJsQLrJCk9eVUkQGnNIHFefUfFMx6WCuzHG/0O7C7FDW5pgG1nTUCDo20e8YuDF
-	Am026koclx5uAl6gQiLa8gb23SgVwUPNHTdA9uvwUprXAU3HXMlruRIUwlpZQhdu
-X-Received: by 2002:a17:90b:53c4:b0:3ac:9e5e:d1a5 with SMTP id 98e67ed59e1d1-3ae8988339dmr20233260a91.6.1793715627896;
-        Tue, 03 Nov 2026 06:20:27 -0800 (PST)
+        bh=VpMYzPu6u1D1BTikiHVAhLBIAMWB7XVJJHTCsw6VgIU=;
+        b=hgwPMVb48MR2wFcx7QH2wXNC/lsTHobqLw3FA3J9Z2nBIN5Er7EFwmyRqVgpW6WDeQ
+         pE4CVaFjlF6fm0wQc92lmkTMicWiCZI9qQQZ+fIm4ezV40nf6tHQj/RKIn+QCSWGknC7
+         qxVusXYMqtM1eFHFg3KOpG5gce7yKoak+50XnyBuqqpDqp+kmBf2BRqUMxz25ebFi84g
+         sPZZkPpNkJK27jhH8X5Pf6DXl6oBZHN3vOx2NBC/MwNffM9ZBubnbFeJV9x+aXbPUIYR
+         KL6NbqpjvwGJE3qaaKe+aYl1lNHFX7WHZ3FdPGWuxBpkMCl2T41YhMRFh85HHUKAcivu
+         NQBw==
+X-Gm-Message-State: APuU4Z/n+Pif853NGPAJaZLqN46HyRNwyeEieUpaEOmZk0Cw7Ku3pluv
+	LL6TDq3P+iIVvolzse5GdpXX1wtoEBXVqtipRbVSFRj13VG+KQtyzdKhdoUyJw2QPyY=
+X-Gm-Gg: AYBFou3eXoR69CQgqKLDyQ0rwCgB00VRBiCUU1GHj3JPEx8ZzhoaScZJGt0P3J1CN9h
+	VFDtz54D+HLY71l8NHqMpOXcH5Uch2istQFnMFr0vcSpcK5OW1Pt+cKX3CJQ7Fk4RvfKzgbn4TH
+	/lMGBRzjhWWf+YZQXm2Ne/7Me8LdVz1dZXG900noh8ky1WI3+2SU4tL/v7rWw1AbihkrB2IUeZp
+	39zsJvl0gNuradXIv6EkflglC0lrrxSjINtGbeemWZnpYQMNR+nIvZQfPYpam/Xzm4jwSKsjtf6
+	BJ2/eRGcOoHpnprkmapGQloZHeUfUTJrtffHyd/73ptD8QZh00ZkM6+xo8os2e0QWbLT9CzA0ws
+	dGDm1jPNaKkoumcgar+ClLBq72WowGqWNg43zM7V6G+ag69KM6OdIDJZyB3jZ1zEwx2PwO72kVA
+	MmNT/IifcTFIxSx3F2B1YVJf1dq66QgklPNB7VDKBNbqjYFTI7GWGalKludk7r6i+4RlVuEjZH0
+	YWIrznSLaAMamJ73nW+QWnKt7uHTeOhjlXIJZEZ+AMXdQ3TzBIrhqQ7zQaJbcm98EGWeJW9RsUE
+	S1FaN9dNcUr88BKacTqaX6tl/9w3ID3L3UEchfUKZA==
+X-Received: by 2002:a17:90b:46:b0:3ad:a84b:df1e with SMTP id 98e67ed59e1d1-3ae895b53cemr18794831a91.1.1793715631347;
+        Tue, 03 Nov 2026 06:20:31 -0800 (PST)
 Received: from CRASHEDROM.localdomain ([142.249.36.161])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c666cdcsm4536310a91.11.2026.11.03.06.20.25
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c666cdcsm4536310a91.11.2026.11.03.06.20.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 06:20:27 -0800 (PST)
+        Tue, 03 Nov 2026 06:20:30 -0800 (PST)
 From: Chengyu Liu <lui2012qwq@gmail.com>
 To: netdev@vger.kernel.org
 Cc: pabeni@redhat.com,
 	horms@kernel.org,
 	khc@pm.waw.pl,
 	Chengyu Liu <lui2012qwq@gmail.com>
-Subject: [PATCH net-next v3 1/2] hdlc_cisco: shut down the keepalive timer on ->detach
-Date: Tue,  3 Nov 2026 22:20:14 +0800
-Message-Id: <20261103142015.1588144-2-lui2012qwq@gmail.com>
+Subject: [PATCH net-next v3 2/2] hdlc_fr: shut down the LMI timer in fr_destroy()
+Date: Tue,  3 Nov 2026 22:20:15 +0800
+Message-Id: <20261103142015.1588144-3-lui2012qwq@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20261103142015.1588144-1-lui2012qwq@gmail.com>
 References: <20261103142015.1588144-1-lui2012qwq@gmail.com>
@@ -100,30 +100,28 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-cisco_start() arms st->timer unconditionally and cisco_timer() re-arms
-itself on every fire.  The only deletion lives in cisco_stop(), which is
-unreachable on the protocol-detach path: detach_hdlc_protocol() calls
-only ->detach() (never ->stop()) and then kfree()s hdlc->state.  The
-cisco hdlc_proto has no ->detach at all, so unregistering an up cisco
-device leaves the keepalive timer armed on top of freed memory; it fires
-within one keepalive interval and cisco_timer() writes through the dead
-cisco_state (st->lock, st->txseq++, cisco_keepalive_send()).
+fr_start() arms state(hdlc)->timer when LMI is enabled
+(settings.lmi != LMI_NONE).  The only deletion lives in fr_stop(), which
+is unreachable on the protocol-detach path: detach_hdlc_protocol() calls
+only ->detach() (never ->stop()) and then kfree()s hdlc->state.  FR's
+->detach, fr_destroy(), tears down the PVC list but never touches the
+timer, so unregistering an up FR device with LMI enabled leaves the timer
+armed on top of freed memory; fr_timer() then fires into the dead
+frad_state.
 
-Add a ->detach callback that shuts the timer down permanently before the
-state is freed, mirroring the CVE-2026-63803 ppp fix
-(timer_shutdown_sync() in ppp_timer_release()).
+Shut the timer down at the top of fr_destroy().  Use
+timer_shutdown_sync() so the timer cannot be re-armed afterwards,
+matching the CVE-2026-63803 ppp fix (ppp_timer_release()).
 
-Initialize the timer in cisco_ioctl() when the protocol is attached and
-drop the timer_setup() from cisco_start(), so the timer is initialized
-exactly once at attach time: attach_hdlc_protocol() uses kmalloc() (not
-kzalloc), so st->timer is uninitialized garbage until the first
-timer_setup() and ->detach() must never run timer_shutdown_sync() on it.
+Initialize the timer in fr_ioctl() when the protocol is attached and
+drop the timer_setup() from fr_start(): attach_hdlc_protocol() uses
+kmalloc() (not kzalloc), so state(hdlc)->timer is uninitialized garbage
+until the first timer_setup() and fr_destroy() must never run
+timer_shutdown_sync() on it.
 
 This bug was found by static analysis and confirmed with a KASAN
-reproducer: slab-use-after-free write in __run_timer_base() within one
-keepalive interval after rmmod of an up cisco HDLC device (allocated by
-attach_hdlc_protocol() via cisco_ioctl(), freed by
-detach_hdlc_protocol() via unregister_hdlc_device()).
+reproducer: slab-use-after-free in the timer softirq after rmmod of an
+up Frame Relay HDLC device with LMI enabled.
 
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Signed-off-by: Chengyu Liu <lui2012qwq@gmail.com>
@@ -131,47 +129,39 @@ Reviewed-by: Simon Horman <horms@kernel.org>
 ---
 v2: retarget to net-next and drop Cc: stable per maintainer guidance;
     no code change.  v1: https://lore.kernel.org/netdev/
- drivers/net/wan/hdlc_cisco.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/wan/hdlc_fr.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wan/hdlc_cisco.c b/drivers/net/wan/hdlc_cisco.c
-index bfc978b15b..2173d5c6d6 100644
---- a/drivers/net/wan/hdlc_cisco.c
-+++ b/drivers/net/wan/hdlc_cisco.c
-@@ -274,7 +274,6 @@ static void cisco_start(struct net_device *dev)
- 	spin_unlock_irqrestore(&st->lock, flags);
+diff --git a/drivers/net/wan/hdlc_fr.c b/drivers/net/wan/hdlc_fr.c
+index 5f0e54ed1e..2086ff85b5 100644
+--- a/drivers/net/wan/hdlc_fr.c
++++ b/drivers/net/wan/hdlc_fr.c
+@@ -1009,7 +1009,6 @@ static void fr_start(struct net_device *dev)
+ 		state(hdlc)->txseq = state(hdlc)->rxseq = 0;
  
- 	st->dev = dev;
--	timer_setup(&st->timer, cisco_timer, 0);
- 	st->timer.expires = jiffies + HZ; /* First poll after 1 s */
- 	add_timer(&st->timer);
- }
-@@ -293,9 +292,17 @@ static void cisco_stop(struct net_device *dev)
- 	spin_unlock_irqrestore(&st->lock, flags);
- }
+ 		state(hdlc)->dev = dev;
+-		timer_setup(&state(hdlc)->timer, fr_timer, 0);
+ 		/* First poll after 1 s */
+ 		state(hdlc)->timer.expires = jiffies + HZ;
+ 		add_timer(&state(hdlc)->timer);
+@@ -1153,6 +1152,9 @@ static void fr_destroy(struct net_device *frad)
+ 	hdlc_device *hdlc = dev_to_hdlc(frad);
+ 	struct pvc_device *pvc = state(hdlc)->first_pvc;
  
-+static void cisco_detach(struct net_device *dev)
-+{
-+	struct cisco_state *st = state(dev_to_hdlc(dev));
++	/* The LMI timer must not outlive the state being torn down. */
++	timer_shutdown_sync(&state(hdlc)->timer);
 +
-+	timer_shutdown_sync(&st->timer);
-+}
-+
- static struct hdlc_proto proto = {
- 	.start		= cisco_start,
- 	.stop		= cisco_stop,
-+	.detach		= cisco_detach,
- 	.type_trans	= cisco_type_trans,
- 	.ioctl		= cisco_ioctl,
- 	.netif_rx	= cisco_rx,
-@@ -353,6 +360,7 @@ static int cisco_ioctl(struct net_device *dev, struct if_settings *ifs)
- 
+ 	state(hdlc)->first_pvc = NULL; /* All PVCs destroyed */
+ 	state(hdlc)->dce_pvc_count = 0;
+ 	state(hdlc)->dce_changed = 1;
+@@ -1242,6 +1244,7 @@ static int fr_ioctl(struct net_device *dev, struct if_settings *ifs)
+ 				return result;
+ 			state(hdlc)->first_pvc = NULL;
+ 			state(hdlc)->dce_pvc_count = 0;
++			timer_setup(&state(hdlc)->timer, fr_timer, 0);
+ 		}
  		memcpy(&state(hdlc)->settings, &new_settings, size);
- 		spin_lock_init(&state(hdlc)->lock);
-+		timer_setup(&state(hdlc)->timer, cisco_timer, 0);
- 		dev->header_ops = &cisco_header_ops;
- 		dev->hard_header_len = sizeof(struct hdlc_header);
- 		dev->type = ARPHRD_CISCO;
+ 		dev->type = ARPHRD_FRAD;
 -- 
 2.25.1
 
