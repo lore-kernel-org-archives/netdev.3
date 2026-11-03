@@ -1,55 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793701565;
-	b=vmq8FgYm/hZno44hnbevApJQLl7oE8ntuQRfESOxGw9DdDIrUclgUjyd3xT9QjcF6LNv
-	 +Xj3f5R88+3TyaDyXUjRolRSGbodo2zDi7qKzTqU3gJbnqwaqraGGL3OUK9n76zmvg+WE
-	 XvAZB7YBNVEJHJQvgqllo9OUbkQUnplaYhrx21q0WxLUknP6SxODCz76sQ0g1VQiVtQbP
-	 0fr98D/56WTOJgC8qdb8d/70iTaY1Kngp9tvdlOUB3e4UIaMOXT2PJAuTzoUfdaZ+z8k5
-	 gHO/FeIpALhECv0uOsDELK8enIRtheUFxC/V4x2S1VV38gGrNJDTVSEBoE9BP8Jen5A==
+	t=1793701561;
+	b=muXmTLm8jfyClY+cKFPCIpUMN6inIgePkO/LPqWgZrYZxBDZNcnUPyyhvU5jI+rVF++a
+	 18m9opIgEHoU9tls+fVrRW65WwyCq/5R/NbuDOyjiIn1Bfxaesz10YBBxTnvfvgNJ4UUq
+	 pGjCrGQPnZHboe3k4Rype07r89N49YzDtkJTLAaxGP7TeJ+oEPgRUF3WaGOCEm32EX9ss
+	 TSYWZ88Uqev+uJiIyCxl0ZYJPlyDy3NiyqM3PT/VDvsjnlg8T4uSPqFFsQqtthciYrQ+z
+	 QvcOgjucs4BFnX78K7XRjA6c8h5QU/4wptJF+e3O47klw0Td/6S/zR4V+iPv+JVpZnw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793701565;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793701561;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=jGzIIOY4BFl8qf/2SZUl/Z8oABMX8e8gCsMY/rilcXg=;
-	b=pP8RaftnjNvHOtCyXELrvBElky70o2d6kgfovR4dsxmi1cGiD1Etq8+fxXpsqZaMkdgI
-	 B55f/7KhfdfawkLJ04tYbTUX7fUos6ZehnWJENPFuoVq+4NDCixB1UHQBBEnpr7DYWocA
-	 PscDvt2kZWYLg1E1gjVdjIsslt5y5Kil96YvQFlnlbIlItEC309RjAuYtFLacnkNFppok
-	 fsRZ5zTlhB4QmMvRKhbZhdzhk50nhf2O1V6qxrGiiF62zuNtmWU5mJCeNcSejgNO/y4xd
-	 7jSMZDg3noABirW9exvt73dArXuoz5kk4Ck9ULCW4T+iVggRe5cLn9iF2KYMZbxe6sA==
+	bh=LVepNa8MBgnxzOIR4Tx+W3uy/yFi60gYxq1FZlSu/kQ=;
+	b=kMvpr9JE6wjkvB/xj+SeOP3rc46tEI2thOB3BOc8gBOZaX5k9JjHLEZiRV4Ky4vGTlpa
+	 eXMgSBflukhdzljxA9gueEdtGaeRoxSXqcLay66yJNk6cx5nq+1Q4NjbVMtRcnxRFIuQL
+	 Mp8REypgmLUrl/ZKSj70/q2gel4tmJG9msGdGgo6NOnSvc4pu+RISothjConbXbNoeHdW
+	 CNJD2mQCq/zeja243T6xTWPaZY6fdIKixEwTK+EKq5XAPmXFbLuYHhKJo30RcFFl5QWcm
+	 P9E5M0Q/Xg4lVww30eW4xBdowLeip4H00troXcL+eDWUBi4bgZg+5q7UI4xuYllIqyQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BS+lyWEt;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="YKjrBA/m";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF58606D81A;
-	Tue,  3 Nov 2026 10:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6CD606D80D;
+	Tue,  3 Nov 2026 10:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BS+lyWEt
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D33231F000C1;
-	Tue,  3 Nov 2026 10:26:03 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YKjrBA/m
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957E21F000C1;
+	Tue,  3 Nov 2026 10:26:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793701564;
-	bh=jGzIIOY4BFl8qf/2SZUl/Z8oABMX8e8gCsMY/rilcXg=;
+	s=k20260515; t=1793701561;
+	bh=LVepNa8MBgnxzOIR4Tx+W3uy/yFi60gYxq1FZlSu/kQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BS+lyWEt7n3tadznwP0sZc4HKRay2BzPOdE0Q5AvqaoufOqIqXEoZwzRF16B11TRO
-	 wV0nVN0iKhuBh5tHsygc7PkXR2gW7dRXwIo2XC5Qx1fnu6r6WZqVTSyqADOixZuz2s
-	 ey97QkjQhig6Q1u0d9pCdFQA7mtsY+sOdyPBIH220aGNgjMb+olYPhRTcd0xol98zk
-	 CKzZQTwso+YBPDkHIEdA3wSjx7MJ50I34VerHcJPaSq058qipgnlxfDIsZkFbAPD9d
-	 T4JtkWlCqTJATfeJfgEfC/gtJRvBtqibwfErZU+PKM2+LgqlBcnbzWSruwQNyD86p9
-	 iGiIVpmjP5RXw==
-Date: Tue, 3 Nov 2026 11:26:01 +0100
+	b=YKjrBA/mej4tTGzq0T8wexaUUvNDO1PFLajq/VyjYTc8bTtvyYP5brGpAOeaT6YFX
+	 dyi3WDtz15/cPCJOfI1SBe1oS4pAHGoYDXl1Y2aMOZx1hBs2Za8+T2U8j7Vuwm8r22
+	 S4NJPmIN+VLIIM0fB3kG/9e0RUaPu8gN/8nGHK/IEMmm31fjGD4G/1R3ejXgCsDYEH
+	 WPww9c/E68B4mbK+0ocCC9SrhhY2M0JAKHW4qC/PsPOAp6uBOmdXR5y6Cqmiz0dNMc
+	 N9WYEUWtyhn4uoWTG84NsEEzZBDxYBmi2+FSeV7Gn6MLo12p4FWCq3KJyQB9Dqi1rM
+	 kfu+QknFBny6A==
+Date: Tue, 3 Nov 2026 11:25:58 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	intel-wired-lan@lists.osuosl.org, Andrew Lunn <andrew+netdev@lunn.ch>
-Subject: Re: [PATCH] net: ixgbe: drop the SA reference if secpath_set() fails
-Message-ID: <20261103-arrogant-competent-jaguarundi-3c9472@quoll>
-References: <20261103100534.1310039-1-vulab@iscas.ac.cn>
+Cc: Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, Sean Anderson <sean.anderson@linux.dev>, stable@vger.kernel.org, 
+	Madalin Bucur <madalin.bucur@nxp.com>, "David S. Miller" <davem@davemloft.net>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, 
+	Eric Dumazet <edumazet@kernel.org>
+Subject: Re: [PATCH] net: fman: drop the FMan device reference after port
+ probe
+Message-ID: <20261103-magnificent-happy-cuttlefish-adbaad@quoll>
+References: <20261103100532.1309969-1-vulab@iscas.ac.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,26 +62,27 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261103100534.1310039-1-vulab@iscas.ac.cn>
+In-Reply-To: <20261103100532.1309969-1-vulab@iscas.ac.cn>
 
 
-On Tue, 03 Nov 2026 10:05:34 +0000, Wentao Liang wrote:
-> ixgbe_ipsec_rx() takes a reference on the xfrm_state returned by
-> ixgbe_ipsec_find_rx_state(). On success that reference is handed over
-> to the skb's security path, which releases it when the skb is freed.
-> When secpath_set() cannot allocate the extension it returns NULL, but
-> the function returns without releasing the xfrm_state, so the SA
-> reference is leaked.
+On Tue, 03 Nov 2026 10:05:32 +0000, Wentao Liang wrote:
+> fman_port_probe() looks up the parent FMan platform device with
+> of_find_device_by_node(), which takes a reference on the embedded
+> struct device.  The reference is released on the error paths, but not
+> after a successful probe, and the __devm_request_region() failure path
+> jumps directly to freeing the port.
 > 
-> Put the reference before bailing out.
+> As a result the reference is never dropped.  Put the FMan device and
+> the port node before returning success, and route the failed region
+> request through the existing cleanup labels as well.
 > 
-> Fixes: 92103199f10a ("ixgbe: process the Rx ipsec offload")
+> Fixes: 18a6c85fcc78 ("fsl/fman: Add FMan Port Support")
 > Cc: stable@vger.kernel.org
 > Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
 > Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 > ---
->  drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+>  drivers/net/ethernet/freescale/fman/fman_port.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
 > 
 
 
