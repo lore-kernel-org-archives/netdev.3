@@ -1,55 +1,141 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793731088;
-	b=HM/4c6+wdwSf+wuzwXz2MKmw543C1t9E+UDGg5J9qU2UUgOWHviRxUhmdhhdLDJtgJqK
-	 EC8DURDWf2vLBfeH5XKkjFMGF//JWCHRNM1nJ9kJAEEZtrMCGFJ0XBWbh8tdALcJiNqFq
-	 V02YUkh8AKwFEM46Vi6m/eOL/u/bWw+iH9wSFUUF/lJ41oRui4ZTeLPG2c5w7GFKIRU4/
-	 pY+hRuYyo0sXvSifFmHlGP5lbfk5xwwt/3AnU+Xysd6TjhXVHOlilQqvLqFFH2V2kvAIk
-	 Klk3QcK+Qq1tJrwYvl8uZO7kwlQnpG7NOycuzmgJ98TA5kjqRjiU2eU/ZOP8f02c5bg==
+	t=1793731742;
+	b=V1utNa0oP9iMxGzvOB84WoddiUIO9Vu/mOq2JPl51ve1sglc/vafqSZHEeQH5lBX3bfa
+	 3euETIAAg6O+20hEalgPGoJcIwFEd/NfiyHbEDobMNPXaYg4CP4SgKMgdYfv+Tn0Nt/N6
+	 bY3gUIfsftikbDQ9CK6y/CdMjhyEktHitA9jf8EphHTBNYMnS73PeTE26GUwtIL3WbP1t
+	 XxTIPnRPzxvKsTP34dNPe3RBYpqw3hVIrb6NU5dg+MxKmkvpGyK5E6EgRPYOYKK/L+JvF
+	 UEsdoTADuf/qjmTt9suJwb7tKIr/ZTqztoAw3leHbh5bsFfvYVeWURFvss8lArbbcZw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793731088;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=wocz8r3Z14BmQCtGO1kjwm6YZ/KPutkoxo0QyQ0cCQs=;
-	b=kwBG5+hviuzNDLfeUQ0KMLbfrvK0QLgCxs52tmwdv4N/LTf/CWpRNlVXlL4f0gxB2uOU
-	 nIcQLWnukmMkrLCillPiDNfEvU12pqNakxXV8Cy6s860NGNZWIw5aP1EywBYFiBODQj+x
-	 UotHlg7g5u2lW6nawLkTaEzfdUYn7zH2aGczJGViuRLi9lCdx2pcLypG0Sgnpcq5JpCeP
-	 pEQYTzJ/P3AO46+lson6nfKmfFRq/BRyMfU/krTQlXxkMkv+7Kh8PkRA1Xgqi7SS6TbXk
-	 /EcmN1o9nSKeGY8+85d4U3pkbMwnCDaP2wvYgzqGvh0UB4ioA2MGg3/FY1ea1CGCguA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793731742;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:Mail-Followup-To:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=gZOM3Lc0bVWMBjTHBnWLKucS3KUPQN4gjQNABudBe20=;
+	b=DcK2EplyNJ02r9ARhCuQDIj7yzH6V/q5jTQzbiZKRymxDFiHvLSiedqES74bpszf/WF/
+	 l7iKerjR00/3xP+i1CePtYk/n+g6u7CEheXhoQDuUndo8K2B8czwJ9YrOX85nV5jFGHFQ
+	 sOK4sHrT13P4/tS0I4Ml/FhfliPqBwX65q/7nGKlzJ82x8taE9Yn4T9ngBPQ5FSHFN2Jp
+	 dfTWy7lxEkNdreRt+9FYRk15Hq8FxAmFuzbThfFCD7uCcvdPZc1k1sHIEHtsGSyF1N3Ij
+	 OwoxdV3IzH0HA/TfblKnVvdwVs6AqPSRlLSYp4P4M5BxS/JiD33vTmZIEVA62YgPSyQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gAqUqXDI;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=dama.to;
+	spf=none smtp.mailfrom=dama.to;
+	dkim=pass header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=l2wyXFYq;
+	arc=none smtp.remote-ip=209.85.216.54
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B08606A330
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 18:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644CF606A335
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 18:49:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 644CF606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gAqUqXDI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F2C01F00A22
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 18:38:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793731088;
-	bh=wocz8r3Z14BmQCtGO1kjwm6YZ/KPutkoxo0QyQ0cCQs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=gAqUqXDI1KDUJjH/e7eRU5lf1a1ZBsC7CHtEG4ntAmUhcr0do6EtT4kIcP3aIlwEN
-	 l30CHZoHsof36U3GsHtHedNQaShyvvQpxsFnC9ubIRf5nJn6GPyEmeiH4Jb1/RnuK3
-	 9C4R86yIMm9L23h/fRdpFUDkTm5eDQNGiW281/qT5d5lWQ/GTngqBtsjJlJV5i5NOE
-	 dA0uKpxSI5CllX3tgjAsJbzKo84CZkekuXCQK9QOoAdLEuGFw87f3zlKXhzbBQ0oGR
-	 uMpsy4C20/wDlRKHJJi5Xn90sP2gK+PAOLtYbYle4JZ31QbXdaD+sFawYXi2HNKuzY
-	 3gV7pOKWjgaBQ==
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-705cb6ceebaso2897054eaf.3
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 10:38:08 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBxZ2V4cm1Il1TdK9uLv24rT2DOUPKDfoBLMu02bENckk0Fukm4clTolOe7KqbUMrcOrOXLXHiY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+9M528S5gtgZjDnUaWQFBKbS1odhKsh7zclpw3mHFBSlTDYSqL
-	zD+HASpmXjMnDc/++DYL5/oSPDbBukCg1AdbZndMCU6fkmZcuOkZQ+9eOPHRhSbY0FEnYTs0U6P
-	OqvwdsneDV/zXyazmfcVDjxDmCB1lTJM=
-X-Received: by 2002:a05:6820:60f:b0:6df:10cb:4a5f with SMTP id
- 006d021491bc7-714f278f5f4mr7377950eaf.70.1793731087384; Tue, 03 Nov 2026
- 10:38:07 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=dama-to.20260707.gappssmtp.com header.i=@dama-to.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=l2wyXFYq
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3ab2cb8d577so3331293a91.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 10:49:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20260707.gappssmtp.com; s=20260707; t=1793731741; x=1794336541; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gZOM3Lc0bVWMBjTHBnWLKucS3KUPQN4gjQNABudBe20=;
+        b=l2wyXFYqZ38HdD8weK/KapS0MavCwUQNm5m8p8EfD+xcRcfXIyTrWWCNYRgp+/vQ0i
+         ksJeEnZRdauMXUDBIZc/C71nEF+uDmJu0b2vpkgdxljq1Llv0dVefDe8tt/GoIUKxdDi
+         3xRF0zFO9MWrdxdNUCyRSdqrWItJMZuhGMr20/CjBv3vMHjFjcO3YJ4KB2UcGkjbav0W
+         m1relR/fPR+6ZF2d2H70rXUjyAYD34Uf84QZMC23/6a0tilojHf/umSUEE2/WXKUOb8Z
+         NKpSimujPUoPOAcbNR09PhouGBvrnhvrxiWmGn8meE7bZMxPXPfKrnVl4uhWDJVGvnIm
+         iNDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793731741; x=1794336541;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=gZOM3Lc0bVWMBjTHBnWLKucS3KUPQN4gjQNABudBe20=;
+        b=X+z26rwx8IHVmXi0YLgI00Ll91jWCXMTWIwxhXKuZp2ktHA2YhcScfaCMSdxJdw267
+         LazzhuXLIhqgshwCoCAU0niuxZTRIv/mHdpa1YKtKNCH31KuCLO/zxdtXcG8xPYW1R1n
+         taP+wS1nSd30czj1TMqV/ceGGevwo3/GFDlC2Ih/WEWWkYZrri7gT5+WFvIJavL+nzII
+         799hGTZsQ6bd2SkMfXkJWzTpj2dsNr04CmvTvM8G7JwEAXM/2EH6x5vWNFBAFj1XBC8l
+         mboeoWuJh8HN6RyP7HbHFuYMUNm3QBqM7WYeqNSoY75GOheeFYN9Rbvbjf+iknZPojTl
+         S3Ng==
+X-Forwarded-Encrypted: i=1; AKwUvBzxZHyKCCTSoAc3PIlulOWRX61qSR4Y8mctIwdjxdPCDnBvfJN0JdwIkbpMz1k90sJP2eruhxk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+W6NRFrD9WubvNdQm0Y1SdGO1IEdf+04JbMWxkmNeq/ZoF5Kze
+	EJNn+0PIPj0XZ4e6DrHWH3Veag4Mc7tCryFjcrQs1JouatRXTnEdwKpFASbFt4atU8M=
+X-Gm-Gg: AYBFou2thATcm2/IPfZw6wsGZyhIWLdY2fm97XXIkjojWcXQsRFj4+iKEMrqL9SO5bo
+	0rOcxo4mQPTR43/2K8BdP/felEndxHIjKMiE2G9E5nlXZM3eaxIS131SYKNWD5W33UL5JpU3SUR
+	5Z8HK3W9d0LihR6yud84ws1hMvkzFEehNPtHQ0DXAQsmTRy1jyJQS9kHXdknHARbbkDDNiclsDC
+	6ah4D2XZgbl7bxCRyHGXPHDpfS6VEX++/wZ0vzFw2XCQ12Cf1ZGEsKuE4CWJDiLpk+CxIGQ/EUC
+	Zhf0Aw7OaCyeyn7nG7/O/TcQ6FHHmbRr4S4QVMwJJWz+xmJ9vZmhSEhLrDqQO1bVrQJ/PTDnY4d
+	HrOKrX0yoDcyI6wx65STF0chO0TfZj9iwHW9qyiSj6RTR3JQZqbrwAjxGhmCmmKQHGg83eqJpHK
+	5atMM0BtzXVv/l3VBLYmEgpnR0seXrLoxUJLxrSs3gZUAxbIRkbDQ/3VB/2n8exvvK7FBslxSVV
+	jh54KxHQCiQMMzDQRJss+V5vJWBnJGjGv3z6PgGpV0nDGi0scBk0BCv1+UWiARPDHzQnnWF/LLm
+	4yFasweHzm1szzSFg0kSEkMqHaMv1BchJgaujcEezg==
+X-Received: by 2002:a17:90b:1d03:b0:3a8:49f2:8ddb with SMTP id 98e67ed59e1d1-3ae8984de33mr11985967a91.60.1793731740597;
+        Tue, 03 Nov 2026 10:49:00 -0800 (PST)
+Received: from localhost ([2a03:2880:2ff:49::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0944bd88bsm210133a91.12.2026.11.03.10.48.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 10:49:00 -0800 (PST)
+Date: Tue, 3 Nov 2026 10:48:59 -0800
+From: Joe Damato <joe@dama.to>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Stephan Gerhold <stephan@gerhold.net>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Frank Li <Frank.Li@nxp.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Li Youhong <liyouhong@kylinos.cn>, Arnd Bergmann <arnd@arndb.de>,
+	bui duc phuc <phucduc.bui@gmail.com>,
+	Yicong Hui <yiconghui@gmail.com>, Simon Horman <horms@kernel.org>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+	"moderated list:ARM/Allwinner sunXi SoC support" <linux-arm-kernel@lists.infradead.org>,
+	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
+	imx@lists.linux.dev, vkoul@kernel.org
+Subject: Re: [PATCH] net: dma: use dmaengine_desc_set_callback()
+Message-ID: <auosm8mCULyafyny@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>, Frank Li <Frank.li@oss.nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Stephan Gerhold <stephan@gerhold.net>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Frank Li <Frank.Li@nxp.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Li Youhong <liyouhong@kylinos.cn>, Arnd Bergmann <arnd@arndb.de>,
+	bui duc phuc <phucduc.bui@gmail.com>,
+	Yicong Hui <yiconghui@gmail.com>, Simon Horman <horms@kernel.org>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+	"moderated list:ARM/Allwinner sunXi SoC support" <linux-arm-kernel@lists.infradead.org>,
+	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
+	imx@lists.linux.dev, vkoul@kernel.org
+References: <20261102191922.4044912-1-Frank.Li@oss.nxp.com>
+ <aukcoWLVvSorX5a9@devvm20253.cco0.facebook.com>
+ <aun4W3dvmfWRDFeQ@SMW015318>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,161 +145,72 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261103-napi-timer-cancel-v1-1-55c631ad5286@columbia.edu>
-In-Reply-To: <20261103-napi-timer-cancel-v1-1-55c631ad5286@columbia.edu>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Tue, 3 Nov 2026 19:37:55 +0100
-X-Gmail-Original-Message-ID: <CAL4WiioJuY1L5ji7tVXggp=FDm3eidwekpxqAMdnxWUyiTR3fg@mail.gmail.com>
-X-Gm-Features: AclHuK-5QRfDhVd6PX6rRiLGs5x_KUk2nea94GeuQzRj9GBpfeF3rw83rbf-cDc
-Message-ID: <CAL4WiioJuY1L5ji7tVXggp=FDm3eidwekpxqAMdnxWUyiTR3fg@mail.gmail.com>
-Subject: Re: [PATCH net] net: cancel napi->timer after the grace period in netif_napi_del()
-To: mt4022@columbia.edu
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Martin Karsten <mkarsten@uwaterloo.ca>, Joe Damato <joe@dama.to>, 
-	Dragos Tatulea <dtatulea@nvidia.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Stanislav Fomichev <sdf.kernel@gmail.com>, Sridhar Samudrala <sridhar.samudrala@intel.com>, 
-	Cosmin Ratiu <cratiu@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Wang Zhan <wang.zhan@smartx.com>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, tz2294@columbia.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aun4W3dvmfWRDFeQ@SMW015318>
 
-Le mar. 3 nov. 2026 =C3=A0 19:19, Mani Tofigh via B4 Relay
-<devnull+mt4022.columbia.edu@kernel.org> a =C3=A9crit :
->
-> From: Mani Tofigh <mt4022@columbia.edu>
->
-> A napi can be freed with its timer still queued.  napi_disable()
-> cancels napi->timer, but napi_complete_done(), busy_poll_stop() and
-> napi_suspend_irqs() start it without owning the napi and can do so
-> right after the cancel.  netif_napi_del() only waits for that start to
-> finish:
->
->   Task A (epoll_wait)                  Task B (queue reset)
->   napi_suspend_irqs()
->     rcu_read_lock()
->     napi =3D napi_by_id(id)
->                                        napi_disable_locked(napi)
->                                          hrtimer_cancel(&napi->timer)
->                                          napi_hash_del(napi)
->                                        netif_napi_del_locked(napi)
->                                          synchronize_net()
->                                          /* waits for Task A */
->     hrtimer_start(&napi->timer)
->     rcu_read_unlock()
->                                        kfree(rq)
->                                          /* timer still queued */
->
-> With netdevsim and debug objects:
->
->   [    3.073483] ODEBUG: free active (active state 0) object: 00000000150=
-4358f object type: hrtimer hint: napi_watchdog+0x0/0xa0
->   [    3.073515] WARNING: lib/debugobjects.c:629 at debug_print_object+0x=
-1a4/0x3b0, CPU#0: napitimer/66
->   [    3.079603] CPU: 0 UID: 0 PID: 66 Comm: napitimer Tainted: G        =
-W            7.3.0-17087-gd865f2677c44 #1 PREEMPT
->   [    3.084822] RIP: 0010:debug_print_object+0x1ae/0x3b0
->   ...
->   [    3.103822] Call Trace:
->   [    3.104408]  <TASK>
->   [    3.105933]  debug_check_no_obj_freed+0x496/0x5f0
->   [    3.109988]  kfree+0x33a/0x510
->   [    3.110715]  netdev_rx_queue_reconfig+0x357/0x580
->   [    3.111780]  netdev_rx_queue_restart+0x8f/0xc0
->   [    3.113924]  nsim_qreset_write+0x24d/0x350
->   [    3.117832]  full_proxy_write+0x109/0x1d0
->   [    3.118741]  vfs_write+0x1e3/0x1250
->   [    3.124758]  __x64_sys_pwrite64+0x18c/0x250
->   [    3.129645]  do_syscall_64+0xfb/0x590
->   [    3.131385]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
->
-> Without debug objects, napi_watchdog() later runs on freed memory.
->
-> After napi_disable() and a grace period none of the three can reach the
-> napi anymore.  Two need SCHED, which napi_disable() keeps, and
-> napi_suspend_irqs() needs the napi hash, which napi_disable() removed it
-> from.  So cancel the timer again after the grace period that
-> netif_napi_del() already waits for, and in free_netdev(), where
-> unregister has already waited for one.  With the fix, debug objects
-> don't report a freed active timer anymore.
->
-> This bug was identified and confirmed with the help of a deterministic
-> hypervisor currently under development.  The C reproducer below however
-> hits it within about 1s.
->
-> Fixes: 6f8b12d661d0 ("net: napi: add hard irqs deferral feature")
-> Fixes: 3fcbecbdeb04 ("net: Add control functions for irq suspension")
-> Fixes: 58e2330bd455 ("net: napi: Avoid gro timer misfiring at end of busy=
-poll")
-> Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
-> ---
+On Tue, Nov 03, 2026 at 09:06:03AM -0600, Frank Li wrote:
+> On Mon, Nov 02, 2026 at 03:28:33PM -0800, Joe Damato wrote:
+> > On Mon, Nov 02, 2026 at 02:19:16PM -0500, Frank.Li@oss.nxp.com wrote:
+> > > From: Frank Li <Frank.Li@nxp.com>
+> > >
+> > > Replace open-coded assignments to callback and callback_param fields
+> > > of struct dma_async_tx_descriptor with calls to the
+> > > dmaengine_desc_set_callback() helper across net drivers.
+> > >
+> > > No functional change intended. Prepare to make struct
+> > > dma_async_tx_descriptor private to the DMA engine.
+> > >
+> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > >  drivers/net/ethernet/allwinner/sun4i-emac.c       |  3 +--
+> > >  drivers/net/ethernet/micrel/ks8842.c              |  6 ++----
+> > >  drivers/net/ethernet/xilinx/xilinx_axienet_main.c |  6 ++----
+> > >  drivers/net/wwan/qcom_bam_dmux.c                  | 10 ++++------
+> > >  4 files changed, 9 insertions(+), 16 deletions(-)
+> >
+> > [...]
+> >
+> > > diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
+> > > index cc6ace8d64371..1479f8362e04e 100644
+> > > --- a/drivers/net/wwan/qcom_bam_dmux.c
+> > > +++ b/drivers/net/wwan/qcom_bam_dmux.c
+> > > @@ -195,9 +195,8 @@ static bool bam_dmux_skb_dma_submit_tx(struct bam_dmux_skb_dma *skb_dma)
+> > >  		return false;
+> > >  	}
+> > >
+> > > -	desc->callback = bam_dmux_tx_callback;
+> > > -	desc->callback_param = skb_dma;
+> > > -	desc->cookie = dmaengine_submit(desc);
+> > > +	dmaengine_desc_set_callback(desc, bam_dmux_tx_callback, NULL, skb_dma);
+> > > +	dmaengine_submit(desc);
+> > >  	return true;
+> > >  }
+> > >
+> > > @@ -477,9 +476,8 @@ static bool bam_dmux_skb_dma_submit_rx(struct bam_dmux_skb_dma *skb_dma)
+> > >  		return false;
+> > >  	}
+> > >
+> > > -	desc->callback = bam_dmux_rx_callback;
+> > > -	desc->callback_param = skb_dma;
+> > > -	desc->cookie = dmaengine_submit(desc);
+> > > +	dmaengine_desc_set_callback(desc, bam_dmux_rx_callback, NULL, skb_dma);
+> > > +	dmaengine_submit(desc);
+> >
+> > I noticed in the above that the return value of dmaengine_submit is discarded
+> > instead of stored.
+> >
+> > Is that intentional? I suppose it might be because AFAICT cookie is never
+> > used and the commit message says "no functional change intended".
+> 
+> dma_cookie_assign() already set desc->cookie in dmaengine_submit(). Of couse
+> it is not obvious. Do you need me update commit message to descript it.
 
-Bug seems real, but could we prepare something generic (in the core).
+Ah, I see it now. In the tx_submit callback it looks like dma drivers set the
+cookie.
 
-> Drivers that call __netif_napi_del{,_locked}() and then their own
-> synchronize_net() (eg netdevsim on close, veth, virtio_net, bnxt and
-> gro_cells) need the same cancel.  I can send that separately.
+So removing it here really is a no-op since it was getting set, as you said,
+during submit.
 
-The list is longer than that : bnx2x, enic, ixgbe, myri10ge, dpaa and
-bnge also use __netif_napi_del{,_locked}(). I would rather not touch 11
-drivers for a core implementation detail.
-
-Also the free_netdev() part assumes napi_disable() was called before
-the synchronize_net() in unregister_netdevice_many_notify(), which is
-not guaranteed (ndo_uninit(), or remove() handlers calling
-napi_disable() between unregister_netdev() and free_netdev()).
-
-All callers of __netif_napi_del_locked() must already respect an RCU
-grace period before freeing the napi, and the three hrtimer_start()
-callers run under RCU or with BH disabled.
-
-So I think we can solve this in the core, with a store-buffer
-pairing on NAPI_STATE_LISTED: the arming side re-checks LISTED after
-hrtimer_start(), and __netif_napi_del_locked() cancels the timer after
-clearing LISTED. One of the two must see the other.
-
-Something like (untested):
-
-/* Callers do not own @n, which can be deleted concurrently.
- * Pairs with test_and_clear_bit(NAPI_STATE_LISTED)
- * in __netif_napi_del_locked().
- */
-static void napi_timer_start(struct napi_struct *n, unsigned long timeout)
-{
-        hrtimer_start(&n->timer, ns_to_ktime(timeout),
-                      HRTIMER_MODE_REL_PINNED);
-        smp_mb();
-        if (unlikely(!test_bit(NAPI_STATE_LISTED, &n->state)))
-                hrtimer_try_to_cancel(&n->timer);
-}
-
-And in __netif_napi_del_locked() :
-
-        if (!test_and_clear_bit(NAPI_STATE_LISTED, &napi->state))
-                return;
-
-        /* Full barrier implied by test_and_clear_bit()
-         * pairs with napi_timer_start().
-         */
-        hrtimer_cancel(&napi->timer);
-
-napi_complete_done(), busy_poll_stop() and napi_suspend_irqs() would
-use napi_timer_start().
-
-If hrtimer_try_to_cancel() fails, napi_watchdog() is running, either
-from hard irq or softirq context. It does not rearm the timer, and the
-grace period the caller of __netif_napi_del_locked() has to observe
-before freeing the napi also waits for it.
-
-A timer armed between napi_disable() and __netif_napi_del_locked()
-is harmless : napi_watchdog() can not grab NAPI_STATE_SCHED.
-
-This removes the need for the 'listed' dance in netif_napi_del() and
-the netdev_napi_exit() change, and covers all drivers.
-
-The extra smp_mb() is only paid when the timer is armed, next to
-an hrtimer_start() which is already much more expensive.
-
-Can you give this a try with your reproducer ?
-
-Thanks.
+My mistake. I don't think it's worth respinning just to fix the commit
+message just because I didn't dig deep enough :)
