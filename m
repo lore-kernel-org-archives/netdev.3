@@ -1,97 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.181
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793703667;
-	b=lAMdW93LIuUKtY7mheJoDCyigwQjGiH4BwzoaCdTzJ+fSD5zdYN97rQ2rT+tcT5ZVvgd
-	 0y0+kZQX4oqhRMRG9vkgNLbgdgGGhopE4e1Pv330Bqw/4uiNnTr1uzWFKGvEbk/3vtJdL
-	 xEEYqE9GyzUmU0xsNva7VG+HGZxLvd34WJHrnTtKbgkW1buEsJieOM3SRbl2ZdpHpx6vg
-	 KgiLFk8lASSV+zXvuVAnZc4cPGH4r4hdp4+yKmGW7GgRLW2vpSgpBU4KiXkWj/JN4MY3p
-	 7DiipnnzzG6miCjsWM9iniK5Py72H79Gp/PxAnpfL197cyEm605udaqqNJhc1LCeN4Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793703667;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=TmVfvTR81IST7Xj5rUGxeZIFqpc6YuhM88NFz7MYCz8=;
-	b=l+uo3qo3rMKhNjPJ3O0UT3mNptZ26vZryTMQyQ4XInlV/FcSFCVAYigiR3Ra+NIoWH4z
-	 mp0qTrHbTFJouBGAosfofys+2Pd/tBia7jzlcG/8UzbZaAzrderxIye8dRfz1bGIP3QFH
-	 PE5iZQ1ZIQrfUNH+10HT44WmUi4huRbuDjRsUYruuoU1nOz3KubVKhPvXDS6weQ4oMvKN
-	 0wv6Ry3qkr5GJiDDC2ccYfyQraybjhqqhEfLuSvgpl6C5tWReKYCEqFW87ZJh5Ci6DsDT
-	 LG7Axgqy1iXq3QiH10XfUW/D7imFCNONGtjtuNjQH2l2/Qkf5dN7byeD94Tiec4+4MQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mojatatu.com;
-	spf=none smtp.mailfrom=mojatatu.com;
-	dkim=pass header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=OEkkSti7;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.181
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793703822;
+	b=Np+oCKkf6q7uEfvSD4efVt7M21lmB+hQrs8oIQb0N8jlWFmFg+Ar66q+JM7DTQ98eoEh
+	 j7/tYM/zPC8zH2Pbz6bAo5sc2bjSJZwiQPMMqg+mp9tMLNdzXaX8owWDGL7Unsa7NtTQ9
+	 hpWxeJRh+MwtmJ758vUgNLI4aSX+RK57S8/R/aRGdyvVpXBvu2DnTSrlvzD2dXcQo64AR
+	 hArY1FKbayM7fZHQGAp3IhzZUt663n5JIYvHjH71/l8o3BVrfCBQ3WsBnEb6MeXR0J6+x
+	 tVW5kQqo7d3yqQ7gmpTrmF8074jFtHe+rVduuoUZVMWZ7Uo7l1ZO1Wgb6NLL1rw5yXA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793703822;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=JyM24O+rf+svFmAkF/rQOfx0k+ek4EwDrMXxgQ5Nhow=;
+	b=vAiqY1nbcHv46NT6R0YI+bTt5HCP6wAV10XybBdrf72RM6zQYO3pUqyG4vulUeS2YXF7
+	 WM/sI3DoOdtx1dUq7VZQ2ya64kjRRGWyyD6j0xHdi7eXczmdB5Dp6Rf64l13bgV/WT+5+
+	 3naUs+o4jzyD4cktSR5JniWKy5XwR872wRxYRiRXWBJx+GWrYU/ENuTXcwEk3p81qqt0f
+	 Ql+5Ma/w8K5k6tuk4us0RYLgg+n+zv13cN33/OaUJiPfuvLHtEI1NwEzFEiFv0yzW8xNe
+	 sM27uCRcjkBhOBU+mr0S/EXo9YWxXvK0dVmIdpkgd5OWVWMOogJWG90P0SeOpr2UATQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fxQ2tZEZ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2E5606A324
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 11:01:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0D2E5606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04C9606BA4F
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 11:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=mojatatu.com header.i=@mojatatu.com header.a=rsa-sha256 header.s=google header.b=OEkkSti7
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8a06c60065fso2815132b3a.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 03:01:06 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793703666; cv=none;
-        d=google.com; s=arc-20260327;
-        b=oPnJvIC2b4YQjoIjCXzujge0Xwljjoy70R9matmz1PvsMKdtkY4d7tTDGYQqIjZjY+
-         aMjk2ChCClun9eqoDsK6dYcbhSNRx113GRi5Pp/qlQgPikWpX/GS37s+s5T+CQsGWVXP
-         A5BjWJ+SpXivn2K3EaOfxjvD+BrtQmvjiHsKIZmok4ojgLIduttG11IdJZl8M1W/LD1J
-         6Z2agJpOTlEybJubqXZzYAm9fL/LmPIUNz51jKNB+AwfUscz1VU9WWRya4EG91yhhYDW
-         4fRKWyHLsiZs7IJCpeErkW2rKf9zVLV6CRnJ2/hbbZ8xw7Mu3dL0rZut9BMK8qOTkkla
-         pMtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=TmVfvTR81IST7Xj5rUGxeZIFqpc6YuhM88NFz7MYCz8=;
-        fh=XmUWgqJbvhJpv7tDAvIzyBZ4Yh4j+/sGDSMETYCK/80=;
-        b=D53Q3Plgvrs2CQpPQweiqpHYVkk5SSnqZmLc7JFHF0LqUHqjFp0qN0OfpdVNDtutxc
-         tArjUm3onF77IPbe2VvqhZQGDIzf5on965WBry5LvXxLkUwm2Qtv+R+9KW+zYL+l8Uas
-         /7MpClJDaQPFKtXaCbZC/2PwGFxmy8U44UAX61+s10FYDuBXzJZtSC58bXC0aJl4lgWI
-         oZKiLfssbt1nnTbr68E/mm12Lz88D+i+wpPV5mQS4amLpC1ODoJasrhOzMtJrWOIfrNN
-         DcRhBgzNmD/BIxrJ5WBmoiTur+3TTV1GYf+wg5gxDGeuXfLzXXhwi1e4noYUQ2XgQ3R8
-         zBiw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1793703666; x=1794308466; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=TmVfvTR81IST7Xj5rUGxeZIFqpc6YuhM88NFz7MYCz8=;
-        b=OEkkSti7REBckSR4eLqMDcEmZU7+49vy1OjjFuVu9gdVSy3vhVTS+/FGN5ZrDv/HHN
-         G5T+ozYvOEspZ9ZS2/MoffilRmdSgOPSo8IDbwsIKiybL6xyhNBDWg2vGNMYXKR1JOn9
-         TcXJFB4Hzd7tchUQOEnhAMPMa75W+HGThgn2E=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793703666; x=1794308466;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TmVfvTR81IST7Xj5rUGxeZIFqpc6YuhM88NFz7MYCz8=;
-        b=AN+Cswzc214w2kE+pH7LTquvwnfPub906NdgXVHOKFBW21oJu4OZXriWBNjUFbrwHK
-         jTp3UB3zJK3N9zVndsBiKYxWt5SLW3t+XPebmQ/LDe9Jw4r6a+iymQ9EjEmqGjW77GBV
-         DTNlbS50PxaLjK2eAa8GRcfvw8XLXpT8SuMAyWii7iMRUs8uKOaPxzfmtmbLZlxmMrJK
-         vYdFbs0XhP0jhxzZclPlXkP31F79W4ibML+aHQXYDm5HYVnfNBeYd18y0jnGmf/zhUtr
-         WDOV4XRSBiJbEDMR5ysAlE7BwRYk7OAyf84q2ArI0TUU4RHddrJtGnCF9gNiknwTMdje
-         C1UA==
-X-Gm-Message-State: APuU4Z/w1oxGxnJemJFqiUbKQKoVUN9JXEcLcrnMTkWuIVJbKH4uaMYD
-	4BGKVeFIdB0Fw7EfKO65/PbMO8UTz9bwQKHOVxn/bl8JQADfynDip9ONQcYo/kFEm6SthQYNvUs
-	93w6HQ7Q/PtzP7uisvvcbe24Wp7j2NyBt7sIv4nxl
-X-Gm-Gg: AYBFou2J0yf9CC8u1ZkcCT7oNq6eK501mdCk8Pu8aDTCBJ/6/0fkMZG/Pn+ii3r5vOd
-	csvJpL6RWReK6vKsfRPFY/dJGcdy58uPfLRJfABQQqg4gh2NN41BtWP30bnhm7U/NMI8T2VTCcI
-	nw90vp9vKU9is78tjC28WBo9VHF55aThSskaXZkbd6TfM1H/UFWYzgwUUP+H+RB45Ix7aQbktXd
-	yRGHxeuaAy3T30GBleZUg/HQo10NjCQRQT9GvtX78MoKDv6pY5fXlZpURPDD2XpYF5+1+faXkvK
-	q07km+uPUVggLTvBlTgpIAukUEqcntS/47GxHv0XbyUmtoAU9np+YHOhuJlO4P8j1hXs3p05OoM
-	NVV4xGFwkXZtQvGDtaYiIkGINNq82Jr5XXQsaEot4/8JXvgx1UXkthxp2/SBg4g3LI7qIujoviG
-	mlIs1ORIoz295JvN0e
-X-Received: by 2002:a05:6a21:7988:b0:3e1:9071:acdd with SMTP id
- adf61e73a8af0-3e928dc3cc9mr8644686637.35.1793703666263; Tue, 03 Nov 2026
- 03:01:06 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fxQ2tZEZ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17691F00A17
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 11:03:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793703821;
+	bh=JyM24O+rf+svFmAkF/rQOfx0k+ek4EwDrMXxgQ5Nhow=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=fxQ2tZEZz+PbVM3Z4auQyCMbdO7aGrzjU5Xveb23ELRrVyCn6TcXGZuT7DR2SdngH
+	 8ddSwT5ZeGYqFze5MgT3jazyU+cDMSvKa4Dvl1/HmKhpyQnxI4cLauY2Exi+9i+RjH
+	 J+353L6LEjmTbU2juCF9fPVHOfd1XB0LpEVRyEFe/eDh8XGfepd7scv7hLoNIAaGtD
+	 bS3E349yU2nqW5OTQXPavCB3+5Qkk2JHyJvb9LEm/uvT2yLkSIw/kvf+HFaZhBix0i
+	 5PHEAZ0+sVv1uw4wM23R+KiuIeiQKpDGXL3AhQr/5IJlXw5JF8jl7HMO6ZLUjDP3yg
+	 VTMgS+B9KYHFw==
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-49e1251674cso1799489fac.2
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 03:03:41 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvByAI/o+hdpiVxi9nFJrDsGnjHWtkm7bsSRU7uW+FV8A3U0+9pGyoyC4RXlHU+QELtm8k3QUPH0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+F1S9TFEdEefuRjHQXmfcVddrYk9DNZyo9PuJpKIatDYIobqwT
+	6JBcLgsKBObeDYwO7+Qkf3VysZ5oDaiHzi3C1xV4WTumaCqjf6tnRozbDfM4jgMxzNY40Hjv1jn
+	niu5DW7reovblNZTw7jRYvI/3xM7Q/Us=
+X-Received: by 2002:a05:6870:d614:b0:494:117b:81d7 with SMTP id
+ 586e51a60fabf-4a9077981a6mr8442786fac.54.1793703820673; Tue, 03 Nov 2026
+ 03:03:40 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -101,305 +59,246 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <bpf_redirect_neigh_short_linear.v2.r0.20261028080316-1@mojatatu.com>
- <179361314430.3131.5109011406127069679@kernel.org>
-In-Reply-To: <179361314430.3131.5109011406127069679@kernel.org>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Tue, 3 Nov 2026 06:00:53 -0500
-X-Gm-Features: AclHuK9G_adbeCGQMxvU47Uy5oZQf1wBAndJ2KfzBpSyXTQDKW5ekQnv2o6iOPY
-Message-ID: <CAM0EoMkngAjZCZ9TKhn+bpC7zDJi3Vue1u-iYO2aCtE+bz++=A@mail.gmail.com>
-Subject: Re: [PATCH net v2] bpf: Fix skb_pull() BUG in __bpf_redirect_neigh()
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, edumazet@kernel.org, bpf@vger.kernel.org, 
-	bot+bpf-ci@kernel.org, daniel@iogearbox.net, ast@kernel.org, 
-	dsahern@gmail.com, kafai@fb.com, martin.lau@linux.dev, 
-	john.fastabend@gmail.com, sdf@fomichev.me, andrii@kernel.org, 
-	eddyz87@gmail.com, memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
-	jolsa@kernel.org, emil@etsalapatis.com, ihor.solodrai@linux.dev, 
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	jiri@resnulli.us, victor@mojatatu.com, linux-kselftest@vger.kernel.org, 
-	shuah@kernel.org, stable@vger.kernel.org
+References: <20261103103633.2707416-1-zhiyuzhang999@gmail.com>
+In-Reply-To: <20261103103633.2707416-1-zhiyuzhang999@gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Tue, 3 Nov 2026 12:03:29 +0100
+X-Gmail-Original-Message-ID: <CAL4Wiip0RPZkfrwHeuNp6ntVWarpkL=wJ-wW6sUvNzYWS68s3Q@mail.gmail.com>
+X-Gm-Features: AclHuK9W0Wv5Y05dpi8H0OgE8o30SKR3SptbPMVtNuc87b7hbFA_4UpDoxGktls
+Message-ID: <CAL4Wiip0RPZkfrwHeuNp6ntVWarpkL=wJ-wW6sUvNzYWS68s3Q@mail.gmail.com>
+Subject: Re: [PATCH net v3] tcp: prevent cross-family skb processing after disconnect
+To: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>, Neal Cardwell <ncardwell@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Matthieu Baerts <matttbe@kernel.org>, 
+	Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, netdev@vger.kernel.org, 
+	mptcp@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Tong Liu <lyutoon@gmail.com>, Qi Tang <tpluszz77@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 2, 2026 at 4:52=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wrot=
-e:
+Le mar. 3 nov. 2026 =C3=A0 11:40, Zhiyu Zhang <zhiyuzhang999@gmail.com> a =
+=C3=A9crit :
 >
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
+> From: Eric Dumazet <edumazet@kernel.org>
 >
-> Critical: 0 =C2=B7 High: 0 (1) =C2=B7 Medium: 1 (1) =C2=B7 Low: 1
+> A successful connect() of an IPv6 socket to a v4-mapped address switches
+> icsk_af_ops, sk_backlog_rcv and af_specific to their IPv4-mapped
+> variants. A later connect(AF_UNSPEC) calls tcp_disconnect(), which does
+> not restore them.
 >
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
+> The socket can then be reused for a native IPv6 connection while
+> tcp_v4_do_rcv() remains installed. IPv6 packets drained from its backlog
+> are consequently passed to the IPv4 receive path.
 >
-> - [Medium] The new netns_load_egress_bpf() calls inside
->   test_tc_redirect_neigh() leave the test thread in the test runner's=E2=
-=80=A6
-> - [Low] No selftest runs the new rejection branch in
->   __bpf_redirect_neigh() (skb_mac_header_len(skb) < ETH_HLEN ||=E2=80=A6
+> There is also a race in the opposite direction. tcp_v6_rcv() can look up
+> the socket and initialize TCP_SKB_CB(skb)->header.h6 before taking the
+> socket lock. If the socket is disconnected and reconnected to a
+> v4-mapped peer in that window, release_sock() can drain the queued IPv6
+> skb through the newly installed tcp_v4_do_rcv().
 >
-> Pre-existing issues:
-> - [High] The patch closes the ETH_HLEN pull BUG only in
->   __bpf_redirect_neigh().
-> - [Medium] __bpf_redirect_neigh() now linearizes only ETH_HLEN bytes,
->   then does skb_pull(ETH_HLEN) and skb_reset_network_header(), and=E2=80=
-=A6
+> tcp_v4_send_reset() and tcp_v4_send_ack() then interpret header.h6 as
+> IPv4 options. __ip_options_echo() can consequently overflow its 40-byte
+> destination buffer.
 >
+> Commit 8cc3aef0cb19 ("tcp: Do not allow buggy transitions between ehash
+> and lhash2.") prevents listen() after connect(AF_UNSPEC), but a native
+> IPv6 connect is still allowed.
+>
+> Add tcp_v6_disconnect() to restore the IPv6 handlers after disconnecting
+> a v4-mapped socket, and use the same helper in the connect error path.
+> Reject non-IPv4 skbs in tcp_v4_do_rcv() before accessing IPv4
+> control-block data. In the reverse race, the skb belongs to the
+> disconnected connection, so drop it instead of redirecting it to the
+> IPv6 receive path.
+>
+> MPTCP subflows override sk_prot, while two teardown paths call
+> tcp_disconnect() directly. Route them through the protocol-specific
+> disconnect operation so IPv6 MPTCP subflows receive the same
+> restoration.
+>
+> Tested with TCP and MPTCP by reconnecting an AF_INET6 socket in both
+> directions after connect(AF_UNSPEC). A socket filter was used to widen
+> the native-to-mapped race window and verify that the stale IPv6 skb did
+> not reach tcp_v4_send_reset().
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: Tong Liu <lyutoon@gmail.com>
+> Reported-by: Qi Tang <tpluszz77@gmail.com>
+> Closes: https://lore.kernel.org/netdev/CALf2hKvp0NPVLwr=3Da3+jUHtPohxbra8=
+gox+aYAfWathJnn-J+Q@mail.gmail.com/
+> Link: https://lore.kernel.org/netdev/CAL4WiiqFJpmcV4=3DTWRpukCq6q=3D-7296=
+58FwGvieNcPXe97kLvQ@mail.gmail.com/
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> Co-developed-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+> Signed-off-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+> ---
+> Changes in v3:
+> - Reject non-IPv4 skbs in tcp_v4_do_rcv() to cover packets queued
+>   across a native IPv6 to v4-mapped reconnect.
+> - Drop Kuniyuki's Reviewed-by tag due to the code change.
+>
+> v2: https://lore.kernel.org/netdev/20261101182736.430733-1-zhiyuzhang999@=
+gmail.com/
+> v1: https://lore.kernel.org/netdev/20261030032314.1978575-1-zhiyuzhang999=
+@gmail.com/
+>
+>  net/ipv4/tcp_ipv4.c  |  5 +++++
+>  net/ipv6/tcp_ipv6.c  | 37 ++++++++++++++++++++++++++++---------
+>  net/mptcp/protocol.c |  4 ++--
+>  3 files changed, 35 insertions(+), 11 deletions(-)
+>
+> diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+> index a7f9242f1e42..8fa6564d2b60 100644
+> --- a/net/ipv4/tcp_ipv4.c
+> +++ b/net/ipv4/tcp_ipv4.c
+> @@ -1836,6 +1836,11 @@ int tcp_v4_do_rcv(struct sock *sk, struct sk_buff =
+*skb)
+>  {
+>         enum skb_drop_reason reason;
+>
+> +       if (unlikely(skb->protocol !=3D htons(ETH_P_IP))) {
+> +               reason =3D SKB_DROP_REASON_INVALID_PROTO;
+> +               goto err_discard;
+> +       }
+> +
 
-Most of this is stale material that the BPF Sashiko review already
-exposed and we fixed it in a patch that has already been merged in the
-bpf tree.
-One of the follow-ups hadn't been captured yet until you pointed it
-out; hank you for your service
+We do not want to add yet another check in TCP IPv4 fast path,
+for a problem that only exists for IPv6 sockets.
 
-cheers,
-jamal
-> --
->
-> bpf: Fix skb_pull() BUG in __bpf_redirect_neigh()
->
-> This commit hardens __bpf_redirect_neigh() before it reads and pulls the
-> Ethernet header. The MAC header length (network_header - mac_header) must
-> now be at least ETH_HLEN, and pskb_may_pull() must make the header linear=
-.
-> It also adds tc egress coverage to the tc_redirect_neigh selftest.
->
-> Link: https://lore.kernel.org/all/2a0f5ff1d8db81b07fc4b344b8e68e3505fcbf3=
-6f72a471d1678b2f1cecd881b@mail.kernel.org/
-> Link: https://lore.kernel.org/netdev/20261027082604.1485903-1-edumazet@ke=
-rnel.org/
->
-> > diff --git a/net/core/filter.c b/net/core/filter.c
-> > index 70dc621672f2e..4925f3e355d46 100644
-> > --- a/net/core/filter.c
-> > +++ b/net/core/filter.c
-> > @@ -2432,10 +2432,14 @@ static int __bpf_redirect_neigh_v4(struct sk_bu=
-ff *skb, struct net_device *dev,
-> >  static int __bpf_redirect_neigh(struct sk_buff *skb, struct net_device=
- *dev,
-> >                               struct bpf_nh_params *nh)
-> >  {
-> > -     struct ethhdr *ethh =3D eth_hdr(skb);
-> > +     struct ethhdr *ethh;
-> >
-> >       if (unlikely(skb->mac_header >=3D skb->network_header))
-> >               goto out;
-> > +     if (unlikely(skb_mac_header_len(skb) < ETH_HLEN ||
-> > +                  !pskb_may_pull(skb, ETH_HLEN)))
-> > +             goto out;
->
-> [Severity: High]
-> This is a pre-existing issue and was not introduced by this patch. Still,
-> the skb from the commit message's own reproducer looks like it can BUG
-> through the sibling redirect paths. Is that expected?
->
-> After vlan pop_eth and bpf_skb_change_head(skb, 1, 0) on the nonlinear
-> AF_PACKET skb, len is 8193, data_len is 8192, and one L2 byte is linear.
-> __bpf_redirect_common() only checks:
->
-> net/core/filter.c:__bpf_redirect_common() {
->     ...
->         if (unlikely(skb->mac_header >=3D skb->network_header || skb->len=
- =3D=3D 0)) {
->     ...
-> }
->
-> so the 1-byte MAC header gets through there. With BPF_F_INGRESS:
->
-> bpf_redirect(BPF_F_INGRESS)
->   __bpf_rx_skb()
->     dev_forward_skb_nomtu()
->       __dev_forward_skb2()
->         eth_type_trans()
->           eth_skb_pull_mac()
->             skb_pull_inline(skb, ETH_HLEN)
->               __skb_pull() -> BUG()
->
-> Without BPF_F_INGRESS the path is:
->
-> __bpf_tx_skb()
->   dev_queue_xmit(lo)
->     loopback_xmit()
->       eth_type_trans()
->
-> veth goes through __dev_forward_skb() and ends the same way.
-> bpf_clone_redirect() takes the same __bpf_redirect() path. On lo, a plain
-> TC_ACT_OK instead of bpf_redirect_neigh() also reaches
-> loopback_xmit()->eth_type_trans().
->
-> In each case the 14 <=3D 8193 length check passes. __skb_pull() then leav=
-es
-> len at 8179, which is below data_len (8192), and hits BUG().
->
-> The commit message calls this a follow-up to Eric's short link-layer
-> header fixes. This tree has no pskb_may_pull() in eth_type_trans() or
-> eth_skb_pull_mac(), and bpf_skb_change_head() still accepts a header
-> shorter than ETH_HLEN.
->
-> Should one of those two places be hardened as well? Otherwise stable
-> backporters may assume this change fully closes the reproducer.
->
-> > +     ethh =3D eth_hdr(skb);
-> >       bpf_push_mac_rcsum(skb);
-> >       if (is_multicast_ether_addr(ethh->h_dest))
-> >               goto out;
->
-> [Severity: Medium]
-> This isn't a bug introduced by this patch, but only ETH_HLEN bytes are
-> made linear here. After skb_pull(skb, sizeof(*ethh)) and
-> skb_reset_network_header(), can the L3 header sit entirely in frags?
->
-> __bpf_redirect_neigh_v4() reads the header directly from skb->data:
->
-> net/core/filter.c:__bpf_redirect_neigh_v4() {
->         const struct iphdr *ip4h =3D ip_hdr(skb);
->     ...
->                         .flowi4_dscp  =3D ip4h_dscp(ip4h),
->                         .flowi4_oif   =3D dev->ifindex,
->                         .flowi4_proto =3D ip4h->protocol,
->                         .daddr        =3D ip4h->daddr,
->                         .saddr        =3D ip4h->saddr,
->     ...
-> }
->
-> __bpf_redirect_neigh_v6() does the same with ipv6_hdr(skb) for flowinfo,
-> nexthdr, saddr and daddr. When the route has no gateway,
-> bpf_out_neigh_v4()->ip_neigh_for_gw() reads ip_hdr(skb)->daddr again.
->
-> Take an AF_PACKET SOCK_RAW frame where prepad + len >=3D PAGE_SIZE.
-> packet_snd() and packet_alloc_skb() make only hard_header_len (14) bytes
-> linear. The frame passes both new checks, and skb_pull(14) leaves
-> skb_headlen() =3D=3D 0.
->
-> Wouldn't the 20 or 40 byte L3 reads then come from past skb->tail, from
-> the tailroom or skb_shared_info? Those bytes would become the flowi4 or
-> flowi6 keys and drive the neighbour lookup. No pop_eth or change_head is
-> needed, just bpf_redirect_neigh() on such a packet.
->
-> Would a pskb_may_pull() of sizeof(struct iphdr) or sizeof(struct ipv6hdr)
-> before calling the v4/v6 helpers be appropriate?
->
-> > diff --git a/tools/testing/selftests/bpf/prog_tests/tc_redirect.c b/too=
-ls/testing/selftests/bpf/prog_tests/tc_redirect.c
-> > index af8968b89ad7c..829f84fb64a30 100644
-> > --- a/tools/testing/selftests/bpf/prog_tests/tc_redirect.c
-> > +++ b/tools/testing/selftests/bpf/prog_tests/tc_redirect.c
-> > @@ -407,6 +407,26 @@ static int netns_load_bpf(const struct bpf_program=
- *src_prog,
-> >       return -1;
-> >  }
-> >
-> > +static int netns_load_egress_bpf(const struct bpf_program *prog,
-> > +                              const char *ns, int ifindex)
-> > +{
-> > +     LIBBPF_OPTS(bpf_tc_hook, qdisc);
-> > +     struct nstoken *nstoken;
-> > +     int err;
-> > +
-> > +     nstoken =3D open_netns(ns);
-> > +     if (!ASSERT_OK_PTR(nstoken, "setns egress"))
-> > +             return -1;
-> > +
-> > +     QDISC_CLSACT_CREATE(&qdisc, ifindex);
-> > +     XGRESS_FILTER_ADD(&qdisc, BPF_TC_EGRESS, prog, 0);
-> > +     close_netns(nstoken);
-> > +     return 0;
->
-> [ ... ]
->
-> > @@ -1055,6 +1075,12 @@ static void test_tc_redirect_neigh(struct netns_=
-setup_result *setup_result)
-> >                          skel->progs.tc_chk, setup_result))
-> >               goto done;
-> >
-> > +     if (netns_load_egress_bpf(skel->progs.tc_egress, NS_SRC,
-> > +                               setup_result->ifindex_src) ||
-> > +         netns_load_egress_bpf(skel->progs.tc_egress, NS_DST,
-> > +                               setup_result->ifindex_dst))
-> > +             goto done;
-> > +
-> >       if (!ASSERT_OK(set_forwarding(false), "disable forwarding"))
-> >               goto done;
->
-> [Severity: Medium]
-> Is the test thread still in NS_FWD when set_forwarding(false) runs here?
->
-> test_tc_redirect() runs the tests in a separate pthread. open_netns()
-> saves the original namespace with:
->
-> tools/testing/selftests/bpf/network_helpers.c:open_netns() {
->     ...
->         token->orig_netns_fd =3D open("/proc/self/ns/net", O_RDONLY);
->     ...
-> }
->
-> /proc/self resolves to the thread-group leader. So the saved fd points to
-> the runner's root netns, not NS_FWD, which the worker entered at the top
-> of test_tc_redirect_neigh().
->
-> The close_netns() calls in netns_load_egress_bpf() therefore setns() the
-> worker back into the root netns. set_forwarding(false) then writes the
-> ipv4 and ipv6 forwarding sysctls, and those resolve through
-> current->nsproxy->net_ns.
->
-> Would this turn off forwarding in the host namespace and leave NS_FWD
-> unchanged? Nothing restores the setting afterwards. The test would also n=
-o
-> longer check redirect_neigh with forwarding disabled in NS_FWD.
->
-> test_tc_redirect_peer_ing() already has the same pattern via
-> netns_attach_nk(). Any of these would avoid it:
->
-> - attach the egress programs before entering NS_FWD
-> - re-enter NS_FWD before calling set_forwarding()
-> - have open_netns() save /proc/thread-self/ns/net
->
-> > diff --git a/tools/testing/selftests/bpf/progs/test_tc_neigh.c b/tools/=
-testing/selftests/bpf/progs/test_tc_neigh.c
-> > index de15155f2609f..e0b6c14a3935e 100644
-> > --- a/tools/testing/selftests/bpf/progs/test_tc_neigh.c
-> > +++ b/tools/testing/selftests/bpf/progs/test_tc_neigh.c
-> > @@ -133,4 +133,14 @@ int tc_src(struct __sk_buff *skb)
-> >       return bpf_redirect_neigh(IFINDEX_DST, NULL, 0, 0);
-> >  }
-> >
-> > +SEC("tc")
-> > +int tc_egress(struct __sk_buff *skb)
-> > +{
-> > +     if (skb->mark)
-> > +             return TC_ACT_OK;
-> > +
-> > +     skb->mark =3D 1;
-> > +     return bpf_redirect_neigh(skb->ifindex, NULL, 0, 0);
-> > +}
->
-> [Severity: Low]
-> This isn't a bug, but does any packet in this test reach the new rejectio=
-n
-> branch in __bpf_redirect_neigh()?
->
-> This program sees ordinary locally generated TCP/ICMP packets at veth
-> egress. __dev_queue_xmit() has already reset mac_header there, so
-> skb_mac_header_len() is 14 and the header is linear. These packets pass
-> both the old and the new checks, so removing the new check would go
-> unnoticed.
->
-> tc_redirect_neigh is also registered only for veth:
->
->         RUN_TEST(tc_redirect_neigh, MODE_VETH);
->
-> so the netkit case mentioned in the changelog is not exercised.
->
-> Would a negative test be worth adding? For example,
-> bpf_skb_change_head(skb, 1, 0) on a nonlinear skb followed by
-> bpf_redirect_neigh(), expecting a drop.
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/bpf_redirect_neigh_short_linear.v2.r0.20261028080316-1%40mojatatu.com
+tcp_v6_do_rcv() already dispatches IPv4 skbs to tcp_v4_do_rcv().
+
+Simply stop changing sk->sk_backlog_rcv for v4-mapped sockets
+(tcp_v6_connect() and tcp_v6_mapped_child_init()),
+so that skbs found in the backlog are always handled by the correct path.
+
+tcp_v6_disconnect() can then test
+inet_csk(sk)->icsk_af_ops->net_header_len =3D=3D sizeof(struct iphdr)
+(this also covers subflow_v6m_specific).
+
+Thanks.
+
+Untested patch:
+
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index e006a30360eae1b43a4d53173b46b931ae668825..74358bed6ba210074f0534dff61=
+247de34a56727
+100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -130,6 +130,18 @@ static int tcp_v6_pre_connect(struct sock *sk,
+struct sockaddr_unsized *uaddr,
+        return BPF_CGROUP_RUN_PROG_INET6_CONNECT(sk, uaddr, &addr_len);
+ }
+
++/* Undo the v4-mapped setup done by tcp_v6_connect(). */
++static void tcp_v6_restore_af_ops(struct sock *sk)
++{
++       /* Paired with READ_ONCE() in tcp_(get|set)sockopt() */
++       WRITE_ONCE(inet_csk(sk)->icsk_af_ops, &ipv6_specific);
++       if (sk_is_mptcp(sk))
++               mptcpv6_handle_mapped(sk, false);
++#if defined(CONFIG_TCP_MD5SIG) || defined(CONFIG_TCP_AO)
++       tcp_sk(sk)->af_specific =3D &tcp_sock_ipv6_specific;
++#endif
++}
++
+ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
+                          int addr_len)
+ {
+@@ -234,7 +246,6 @@ static int tcp_v6_connect(struct sock *sk, struct
+sockaddr_unsized *uaddr,
+                WRITE_ONCE(icsk->icsk_af_ops, &ipv6_mapped);
+                if (sk_is_mptcp(sk))
+                        mptcpv6_handle_mapped(sk, true);
+-               sk->sk_backlog_rcv =3D tcp_v4_do_rcv;
+ #if defined(CONFIG_TCP_MD5SIG) || defined(CONFIG_TCP_AO)
+                tp->af_specific =3D &tcp_sock_ipv6_mapped_specific;
+ #endif
+@@ -243,14 +254,7 @@ static int tcp_v6_connect(struct sock *sk, struct
+sockaddr_unsized *uaddr,
+
+                if (err) {
+                        icsk->icsk_ext_hdr_len =3D exthdrlen;
+-                       /* Paired with READ_ONCE() in tcp_(get|set)sockopt(=
+) */
+-                       WRITE_ONCE(icsk->icsk_af_ops, &ipv6_specific);
+-                       if (sk_is_mptcp(sk))
+-                               mptcpv6_handle_mapped(sk, false);
+-                       sk->sk_backlog_rcv =3D tcp_v6_do_rcv;
+-#if defined(CONFIG_TCP_MD5SIG) || defined(CONFIG_TCP_AO)
+-                       tp->af_specific =3D &tcp_sock_ipv6_specific;
+-#endif
++                       tcp_v6_restore_af_ops(sk);
+                        goto failure;
+                }
+                np->saddr =3D sk->sk_v6_rcv_saddr;
+@@ -1363,7 +1367,6 @@ static void tcp_v6_mapped_child_init(struct sock
+*newsk, const struct sock *sk)
+        inet_csk(newsk)->icsk_af_ops =3D &ipv6_mapped;
+        if (sk_is_mptcp(newsk))
+                mptcpv6_handle_mapped(newsk, true);
+-       newsk->sk_backlog_rcv =3D tcp_v4_do_rcv;
+ #if defined(CONFIG_TCP_MD5SIG) || defined(CONFIG_TCP_AO)
+        tcp_sk(newsk)->af_specific =3D &tcp_sock_ipv6_mapped_specific;
+ #endif
+@@ -2093,6 +2096,21 @@ static int tcp_v6_init_sock(struct sock *sk)
+        return 0;
+ }
+
++static int tcp_v6_disconnect(struct sock *sk, int flags)
++{
++       int ret =3D tcp_disconnect(sk, flags);
++
++       /* A socket used for a v4-mapped connection must not keep IPv4
++        * handlers when it is reused for listen() or a native IPv6 connect=
+().
++        * Note that ipv6_mapped and subflow_v6m_specific both use an IPv4
++        * network header.
++        */
++       if (inet_csk(sk)->icsk_af_ops->net_header_len =3D=3D sizeof(struct =
+iphdr))
++               tcp_v6_restore_af_ops(sk);
++
++       return ret;
++}
++
+ #ifdef CONFIG_PROC_FS
+ /* Proc filesystem TCPv6 sock list dumping. */
+ static void get_openreq6(struct seq_file *seq,
+@@ -2283,7 +2301,7 @@ struct proto tcpv6_prot =3D {
+        .close                  =3D tcp_close,
+        .pre_connect            =3D tcp_v6_pre_connect,
+        .connect                =3D tcp_v6_connect,
+-       .disconnect             =3D tcp_disconnect,
++       .disconnect             =3D tcp_v6_disconnect,
+        .accept                 =3D inet_csk_accept,
+        .ioctl                  =3D tcp_ioctl,
+        .init                   =3D tcp_v6_init_sock,
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 7a22e9388e0e9a8b1bd6fe27d04245a1db6950b1..fdfbc7de2ec03612bc49d0a337a=
+80fe1089a7d81
+100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2608,7 +2608,7 @@ static void __mptcp_subflow_disconnect(struct sock *s=
+sk,
+                /* The MPTCP code never wait on the subflow sockets, TCP-le=
+vel
+                 * disconnect should never fail
+                 */
+-               WARN_ON_ONCE(tcp_disconnect(ssk, 0));
++               WARN_ON_ONCE(ssk->sk_prot->disconnect(ssk, 0));
+                mptcp_subflow_ctx_reset(subflow);
+        } else {
+                tcp_shutdown(ssk, SEND_SHUTDOWN);
+@@ -3287,7 +3287,7 @@ void mptcp_subflow_shutdown(struct sock *sk,
+struct sock *ssk, int how)
+                        break;
+                fallthrough;
+        case TCP_SYN_SENT:
+-               WARN_ON_ONCE(tcp_disconnect(ssk, O_NONBLOCK));
++               WARN_ON_ONCE(ssk->sk_prot->disconnect(ssk, O_NONBLOCK));
+                break;
+        default:
+                if (__mptcp_check_fallback(mptcp_sk(sk))) {
