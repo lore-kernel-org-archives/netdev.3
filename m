@@ -1,98 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793692063;
-	b=vih9tl2A7LtOcFyQ4RpCzqwvbpQ6/wB3kbvv09mqzEwoxKvtAns4uOc/qBtVzy1iBJ3d
-	 KWtOXlvEdrSi298UBeLZp0XliTcXd02h/2klYJG2Tn+JTsYH47cy7isEiwIfkpfNrvY2Q
-	 nj3r/AUvRXQ7dsNNcXcN6j9+IR0mFP0foR73AECWUbmU05KMnTQH80I84KNgladP6I8j5
-	 JWHqmGeSjzQXGQWMyTrxBayKvg5xpAkTng3/LbD7bD/ASW1dOwzQSgjuoAiiGPVQ/0vEn
-	 KJgczUR7lVM9BYShjAx03MF+Q6GAEB/DKPWT5G2P9eN1L+UMMEHrars7wE2WMtUzkbg==
+	t=1793692488;
+	b=XUy+zMPku8XMvMRv6TjS14xsjcnF25SvFY6Ax+xy+9+r5inV0uybiNwpyUPtZ1OWpkU2
+	 YfNpVLp4TnzgypccGNJdXwquS5deVb9x/WkCvlqz6LCw7IoYksFKVoepo/XnToDTKHLT/
+	 eFUSlJk5VHn6cymN8enV+8ESbWTxrDW4zvKtSkqv5DXPAQukx/+06o8Iv4aPuniLlYh1n
+	 IVTSQDgfAQTnbIN/poa+lCZ16DXgoQV60KtNjmiufd/C72tElEA6xD443yveNmMLq5cJW
+	 HhwsAyX2HDI/rgezqJXnvdkN7qtERK+3lHP8iM74G72vs0EZhHZmPLkVUBsQfwFT4sg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793692063;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793692488;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=SiS3bHGXKer+FG4HYVMft9Z05AkVrzfkAsqiHFppr9E=;
-	b=RnVWmWBywW3btM6PuTui5Y/20rRss1cN5z7odAwipKrppD7TYZ0WxS7pySjy81PFadS1
-	 LNEw1+YpDLRdreNmONMiShCuQztBT5baooJZla5UMI/UPjxRu9lykVmnmwqHg8pLJ8YHw
-	 Vu2FNVxbY/eY/265VrzyXap+P1bjQ7v3pp7PKXxlKkTzX7l7s9ViRhAJNH6iTRhDA7YpQ
-	 Xw21Lv+Lw6GllKdAJv+vdl4zhE4EyYvoup05W0Os5yDswFrLW/Ege0U6ZgTidVZDcWYGW
-	 6htqbMZng14VcUxGr1C8FJcZWBJJbcr2MCgGZfF1aym/zOXbb+TcdcoD5Hg0kgQZqUw==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=LrPtbrewofDNM9Dsgj1ZDWN+FRXhLMYsDsPjwvet0xk=;
+	b=nxrXrXSRm137HRRWJ+BgrAzU/gI4nMaRwOV7SonU+4r3cvOpAoO9fg2dc6XazwPh83UV
+	 V860LxLLEHYLt0JyrOQInS36arsAJ9W+VxWt5mqM20wrrc2vofBGEA40DrJ/9jE41eVZT
+	 cFRkrLRGV0w5Pr6edHZmu6vzGpI3GuWPPf6zXP84lNls33gimcXrsOTN6DGcZzW3KGH8I
+	 VF66KGUjCgjVyz9xRIVxZrCRuCdiQfthXPnHBHW+G/WDYkThFX1Y1hzYnzPfIqtZtTyam
+	 u5HAUlfFRLu55zEKmcGvQCWzt/bOFweOO5iWDZdWb8uNrs2u1ZLrdW/Zdk9ID0ZdgJQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uLflxTNm;
-	arc=none smtp.remote-ip=209.85.216.48
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="A+NltS/+";
+	arc=none smtp.remote-ip=209.85.216.49
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB2F606A329
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 07:47:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8FB2F606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458CB606A33C
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 07:54:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 458CB606A33C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uLflxTNm
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3acdcfa2bd3so3021151a91.3
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 23:47:42 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=A+NltS/+
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3b08a162d4bso33446a91.3
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 23:54:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793692062; x=1794296862; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SiS3bHGXKer+FG4HYVMft9Z05AkVrzfkAsqiHFppr9E=;
-        b=uLflxTNmDCQjk0mxG+MJu8qA+DDnGZnWlIxaijNp1Ja4P9LOWNENStOXpv3DEJKUzW
-         VoenYY3KC67voxwUJq/os5zvaoGwyV0Zkrn5YeJiD48joUBIdGXUB8rv//0bxINqGZI/
-         9uVB6MCAnCDAZLxSdT0fOSPMN0Qre4NAKgSY9dfQIlKj+7AqzGOeSk2qDNKRmbFVCK4L
-         25JSy/ks3M7cqLAp43cwiUg6YFr7fRodlMV5Vlrx+NiReAPLE/CN3Lg9dtGnB6A9Os/N
-         vj2dcAE23s18ZUZh4NeeldJoavcJK25ffmu2Gzz+A0riO1OJVmsNXNqRtqFVNuDRxh1+
-         Fphw==
+        d=gmail.com; s=20260707; t=1793692488; x=1794297288; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LrPtbrewofDNM9Dsgj1ZDWN+FRXhLMYsDsPjwvet0xk=;
+        b=A+NltS/+jPhAYvvzarKlry0yMkwBCxwa5kIiJmNYRVfMUngWtga347Sh8yJbbeLhYz
+         Yq6HxUTN4+Ws4hREwp7gh1vXMppzNkZLi+DzTdSUWvwiN2P9Sp1lzabDirQQl/92UWMO
+         61yHAIrkcjPdkpglu5bpucX7EGSte0IomLKOBqCREBy31wTF11897YtsMegroXZiDkdb
+         ZT7BIXcNUjEsEp0tQdO2B4Gb/WRIhh+KIaKLA73fAOWeGIMZ+NINi2xd9XDzsZfwYlP2
+         xIo1A39252rPXDudjX5MjVg6pdfi1TRyg7TLVvA7Bk+ZJG9Tu8wJOfMnQM0FS1sog/IY
+         dh3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793692062; x=1794296862;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=SiS3bHGXKer+FG4HYVMft9Z05AkVrzfkAsqiHFppr9E=;
-        b=uRgKBox74PnMNyEp2x6OdxREA5O/5Euhs4xzPxQCDBjZKhMg2G0Z2Pq2wGegF3oBEF
-         W6DdtNHC3agBRIar63P/+n0rBDMWpe9M0j5DpxNWYFWhb9/f7OMzUSQw8GLn+cLZWXIO
-         HenDYS8LTPkezVT1czY0li7F7cXa1GQXsRg/zQ31in0hNOQxfY3D2yI3s8vz+5bggjFE
-         wyQV73CKyUtHbnEUDFIYqgX7AgIb31FMt/HScIdRXb5q6CLAeOoJ1lSDYUaQ3QE5LPPD
-         AWX4oOPvlMTUl7CaI1uk4gmI1YKhySpbtZRhUQKdMy7gIIjYjn2E1wslRNoUuYE5RO9P
-         iujQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwsXvRmzcT8QM8ndTsLAPma75QZBDmgUEasUW7Ibf0H718rJtrgd3iYyOGZU00iWgLgoCxJ6sw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/6y2caRDwvNPxi3SUY102baHml9VlEnyMxL+Dm6ne8T/D+7KIv
-	zel724ooT1ww+nnP+koORzdowBmZJjmT3mvkdm9PlJVwkJx/1rLqN+/y
-X-Gm-Gg: AYBFou0rFCBUuZAbvJXJET6bEC3w9zZSyTXu5XYYRDghJrrAvT8jlA5bs1q7dKCKI9n
-	F+b4LXQEBFZGsIwKHAu/D10BgjOru4Zq4GqkcTgJaPSXmeXEIsJK1wZZq3w+IZI2ypI/rvxo0cw
-	32qZijqX2XpiQ2kc60fc39AvMaRS1QOTpwiT4sADgtMcXEro3zPa7wtu4y976PhXGMTPHsbzTMi
-	/IwM9SxFuAlPrVdlvccLx3stryfBcfzNxOVQVx/AZ2LostkTfyzWM/notQHSp+cesZ2Wp1DB/PZ
-	zBa+T5OPwrN7cGzWUWH6my9wrEoPbOAFvSBcW81Hs95myaBG4+G2MVmD+JqEHUmu57+aer+dqbB
-	dxLayAD9jbYE3+NR4w10ug/iR3EU3OsJtNtzzbAsFqHBJCTKEkYqYHkPacIxcDBfNp8yTLRr/Gg
-	8fQ53CLKAPQwmqp4inPlyHMIcRgMTaR3uoChAt6Ye8SnoiS7kXmU7HIky0jP4z9AbcAovEZkOm6
-	yF40KAshnSPubn6aGV0ZjVpGtC+4m45yOu9LIJ7MmfaoEVzRdjRjgK0mj3oVQa7q8mpiyLgzkYQ
-	M2Sh7ClasYTpl1W/DC3scyhDPid4ql08gnhlBRW5ZYWUXcE=
-X-Received: by 2002:a17:90b:2882:b0:3ac:8897:7b9d with SMTP id 98e67ed59e1d1-3ae89574cd6mr10822931a91.1.1793692061739;
-        Mon, 02 Nov 2026 23:47:41 -0800 (PST)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb364a04b8sm874530a12.21.2026.11.02.23.47.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 23:47:41 -0800 (PST)
-Date: Tue, 3 Nov 2026 16:47:36 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: edumazet@kernel.org, ncardwell@google.com, kuniyu@google.com,
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, martin.lau@linux.dev, john.fastabend@gmail.com,
-	weiwan@google.com, sd@queasysnail.net, jiayuan.chen@linux.dev,
-	netdev@vger.kernel.org, stable@vger.kernel.org, imv4bel@gmail.com
-Subject: Re: [PATCH net v5 2/2] net: restore refcount ordering for lockless
- socket access
-Message-ID: <aumRmClW0OQ3iJzz@v4bel>
-References: <20261029214219.1035176-3-imv4bel@gmail.com>
- <179365718192.3131.3817815695107204474@kernel.org>
+        d=1e100.net; s=20260707; t=1793692488; x=1794297288;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LrPtbrewofDNM9Dsgj1ZDWN+FRXhLMYsDsPjwvet0xk=;
+        b=TP9EgLsHNZbwbfXYTejPMpQYnrqrX/R7Oa60QZh2vcrP4WCukLFSy1qzf9vo5gknHf
+         M/3Bf896iaIZh0IkEjm2wTFROzR5SgiveztF9G6KLHyk1K9x52CfTslbCmYYVBHdM4Ai
+         iWCtu2fBB8DFTQx60UXyWfqY1gf9K8noPR3gp6Qh632UmqY353FPQggpsP8f2c+pOfp1
+         V3juqP1xNvS7PBtHPoRKwO/3L+CV909cb3SSP4ntpsSC8hdgQ9g71W0ikxH/VHK2U4S9
+         bTqsD6lHpjZZb+HWB11NuZsig0lMFhE+Bwg/YiUZ/mQSrIV5rPD+0lrMgK8LaQieClda
+         SLWA==
+X-Forwarded-Encrypted: i=1; AKwUvBywM6jHlf//QzAuR+lMJ8n8LXCQk/S6bWBh7gvcO9XyS1YQ3OqBy992Ce1DZVdjTKe3wSenQe8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9N/rSKOYzDKjBxBAmTf4ZTAXtomn8D8bKBppiPKRYZ+52SpkSV
+	WnRdq2pJnAOuTYzHMkPDXYPVmP3dU0JhazpPm7yNhTqNGYyqHNIu+kpY
+X-Gm-Gg: AYBFou3TwUFxjG2T2KzQ5z+6IbGg2HKNNIs7T1jKdjuBWg030663eqbW5j1IZDAKFFu
+	nlXQZkLguFhat4MGIiEvm9N3AFqtSqQBrwXE+vspJcssoLHM11HfUvzNkoRmhj98WKAITVWI4ao
+	qO+jKObnQ7MQAE03DoOaVCPU7tAXvT3/E8d5UA2ES4AxmvU2cFdZg0Qn1di6ri8wA4MxkHu5Jxy
+	5EgKoltRyK/GQ3WBxLDYQFOhMNhVroDQ/gjKyy3K81G2KZv94xo8CWFkeEQmJIjEGFYFUWXhH8l
+	aEAd9dolmWw+4v+9O/ZpHL1TuiNzbQi6xC3TBb0akbqM6DIL/JkWLh7ihzQxdP9IrQboVSYviBm
+	rs9CWQShUZ/xZ8yc8zUIfxdlHzTpkqGVknC4bv15eVfMekmCpTMw93JypilsMFgrElPNYnyzhwM
+	qGDL5PZtMLAzqD1CHkNSR9ZwinCBlRxkf6MrS6kwCM56yViu+lfSX08Vdf2Gs7MqrdE8Pd/Gn+/
+	EHuAR6Wv7E5htPvMZKf7ueZuITOS8SBd5EmyQy8BA2ZAzHa6bphKNPoGdDvyYV6j7CZNqmQjEnz
+	GjcfI5o3MKgfefEdYe473kGmv1V6eevVshShcNoY+bHNxjo6DvhmN8HkKpjHr4EZkq+7Xd72J+u
+	Yzs+w/KaFoI64aw==
+X-Received: by 2002:a17:90b:57cb:b0:39e:4c81:6c5f with SMTP id 98e67ed59e1d1-3ae897f6192mr10394588a91.26.1793692487076;
+        Mon, 02 Nov 2026 23:54:47 -0800 (PST)
+Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.21])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb364a987esm829086a12.22.2026.11.02.23.54.42
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 02 Nov 2026 23:54:46 -0800 (PST)
+From: Jun Yang <juny24602@gmail.com>
+To: razor@blackwall.org,
+	idosch@nvidia.com
+Cc: davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	roopa@cumulusnetworks.com,
+	bridge@lists.linux.dev,
+	netdev@vger.kernel.org,
+	Jun Yang <junvyyang@tencent.com>,
+	stable@kernel.org,
+	TencentOS Corvus AI <corvus@tencent.com>
+Subject: [PATCH net] net: bridge: use one headroom snapshot for ND replies
+Date: Tue,  3 Nov 2026 15:54:37 +0800
+Message-ID: <20261103075439.43644-1-juny24602@gmail.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,162 +105,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <179365718192.3131.3817815695107204474@kernel.org>
 
-On Mon, Nov 02, 2026 at 10:06:21PM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 2 · Medium: 0 · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [High] The bpf_sk_assign() change in net/core/filter.c does not fix the
->   problem that its Fixes: 27e5203bd9c5 tag points at.
-> - [High] The patch is titled "restore refcount ordering for lockless
->   socket access" and converts lockless lookups "where the socket is…
-> 
-> --
-> 
-> net: restore refcount ordering for lockless socket access
-> 
-> This patch switches the IPv4/IPv6 established lookups, inet_twsk_purge()
-> and bpf_sk_assign() to refcount_inc_not_zero_acquire(). It also uses
-> refcount_set_release() when setting refcounts in the SYN cookie, TCP Fast
-> Open, request migration and TIME_WAIT paths.
-> 
-> > diff --git a/net/core/filter.c b/net/core/filter.c
-> > index 09c60a58c82ab..d832d3332c6f9 100644
-> > --- a/net/core/filter.c
-> > +++ b/net/core/filter.c
-> > @@ -8022,7 +8022,7 @@ BPF_CALL_3(bpf_sk_assign, struct sk_buff *, skb, struct sock *, sk, u64, flags)
-> >  	if (sk_unhashed(sk))
-> >  		return -EOPNOTSUPP;
-> >  	if (sk_is_refcounted(sk) &&
-> > -	    unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
-> > +	    unlikely(!refcount_inc_not_zero_acquire(&sk->sk_refcnt)))
-> >  		return -ENOENT;
-> >  
-> >  	skb_orphan(skb);
-> 
-> [Severity: High]
-> Does acquire ordering here fix the unreferenced BTF pointer case that the
-> Fixes: 27e5203bd9c5 tag refers to?
-> 
-> Acquire only orders the accesses that come after the increment. In
-> bpf_sk_assign(), every check on the socket runs before it:
-> 
->     if (unlikely(dev_net(skb->dev) != sock_net(sk)))
->         return -ENETUNREACH;
->     if (sk_unhashed(sk))
->         return -EOPNOTSUPP;
->     if (sk_is_refcounted(sk) &&
->         unlikely(!refcount_inc_not_zero_acquire(&sk->sk_refcnt)))
->         return -ENOENT;
-> 
->     skb_orphan(skb);
->     skb->sk = sk;
->     skb->destructor = sock_pfree;
-> 
-> After the increment there are only stores. Nothing is checked again.
-> 
-> The verifier's btf_id_sock_common_types accepts plain, untrusted
-> PTR_TO_BTF_ID. tcp_prot and tcpv6_prot use SLAB_TYPESAFE_BY_RCU, and
-> sk_destruct() frees sockets without SOCK_RCU_FREE right away through
-> __sk_destruct().
-> 
-> Given that, can this sequence happen?
-> 
->   - socket A passes the netns, hashed and sk_is_refcounted() checks
->   - A is freed and its slot is reused as socket B (maybe in another
->     netns, or not hashed yet), and B's refcount is set
->   - refcount_inc_not_zero_acquire() succeeds on B
->   - B is attached to the skb without being checked
-> 
-> inet_steal_sock()/skb_steal_sock() then deliver to the prefetched socket
-> without checking the netns. That would get around the -ENETUNREACH check.
-> 
-> sock_pfree() and skb_steal_sock() also call sk_is_refcounted() again
-> later. If the reused object's result differs, could the reference taken
-> here leak?
-> 
-> This race doesn't depend on memory ordering, and it existed even when the
-> increment was fully ordered. The established lookups changed by this
-> patch re-check with inet_match()/inet6_match() and
-> hlist_nulls_unhashed_lockless() after the increment, then call
-> sock_gen_put() and retry. bpf_sk_assign() has no such step.
-> 
-> Would it work better to redo the netns, hashed and refcounted checks after
-> taking the reference and call sock_gen_put() on a mismatch? Rejecting
-> unreferenced pointers here would be another option.
+From: Jun Yang <junvyyang@tencent.com>
 
-This is beyond the ordering fix and would complicate the patch. I'll 
-address it in a follow-up patch.
+br_nd_send() calls LL_RESERVED_SPACE(dev) once to size the reply skb and
+again to reserve its headroom. When a port requiring more headroom is
+added to the bridge, br_add_if() can increase dev->needed_headroom
+between the two calls. The reserved headroom can then exceed the space
+accounted for by alloc_skb().
 
-> 
-> > diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-> > index b0239d203f045..860145d810ed4 100644
-> > --- a/net/ipv4/inet_hashtables.c
-> > +++ b/net/ipv4/inet_hashtables.c
-> > @@ -550,7 +550,7 @@ struct sock *__inet_lookup_established(const struct net *net,
-> >  		if (sk->sk_hash != hash)
-> >  			continue;
-> >  		if (likely(inet_match(net, sk, acookie, ports, dif, sdif))) {
-> > -			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
-> > +			if (unlikely(!refcount_inc_not_zero_acquire(&sk->sk_refcnt)))
-> >  				goto out;
-> >  			if (unlikely(hlist_nulls_unhashed_lockless(&sk->sk_nulls_node) ||
-> >  				     !inet_match(net, sk, acookie, ports, dif,
-> 
-> [Severity: High]
-> The commit message says the change targets lookups "where the socket is
-> validated again after taking a reference". Should the MPTCP token lookups
-> be converted too? They follow the same pattern but still use plain
-> refcount_inc_not_zero():
-> 
-> net/mptcp/token.c:mptcp_token_get_sock() {
->     ...
-> 		if (!refcount_inc_not_zero(&sk->sk_refcnt))
-> 			goto not_found;
-> 
-> 		if (READ_ONCE(msk->token) != token ||
-> 		    !net_eq(sock_net(sk), net)) {
-> 			sock_put(sk);
-> 			goto again;
-> 		}
->     ...
-> }
-> 
-> mptcp_token_iter_next() does the same thing: it increments and then checks
-> net_eq() again.
-> 
-> mptcp_prot uses SLAB_TYPESAFE_BY_RCU, and mptcp_sk_clone_init() clears
-> SOCK_RCU_FREE on established msks:
-> 
->     sock_reset_flag(nsk, SOCK_RCU_FREE);
-> 
-> So an msk can be freed and its slot reused while an RCU reader still holds
-> the address.
-> 
-> On weakly ordered CPUs, can the token and sk_net loads in the re-check run
-> before the increment? If so, they could see the old object's values, and
-> the lookup would return a referenced msk for a different connection or
-> netns.
-> 
-> Callers include the userspace PM netlink operations that look up by
-> token, MP_JOIN handling in subflow.c and syncookies.c, and the diag and PM
-> iterators. HMAC validation would probably reject most of the MP_JOIN
-> cases.
-> 
-> mptcp_subflow_reqsk_clone() already uses refcount_inc_not_zero_acquire()
-> on the same msk objects.
-> 
-> -- 
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261029214219.1035176-1-imv4bel%40gmail.com
+Take one headroom snapshot and use it for both the allocation size and
+skb_reserve().
+
+Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
+Cc: stable@kernel.org
+Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+Assisted-by: tencentos-corvus-ai:hy4-preview
+Signed-off-by: Jun Yang <junvyyang@tencent.com>
+---
+A KASAN reproducer for this issue is available if requested.
+
+ net/bridge/br_arp_nd_proxy.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/net/bridge/br_arp_nd_proxy.c b/net/bridge/br_arp_nd_proxy.c
+index 87a40e2f1c50..985ed43f7e30 100644
+--- a/net/bridge/br_arp_nd_proxy.c
++++ b/net/bridge/br_arp_nd_proxy.c
+@@ -262,6 +262,7 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+ 	struct sk_buff *reply;
+ 	struct ipv6hdr *pip6;
+ 	int na_olen = 8; /* opt hdr + ETH_ALEN for target */
++	int headroom;
+ 	int ns_olen;
+ 	u8 *daddr;
+ 	bool dad;
+@@ -271,7 +272,8 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+ 	if (!dev)
+ 		return;
+ 
+-	len = LL_RESERVED_SPACE(dev) + sizeof(struct ipv6hdr) +
++	headroom = LL_RESERVED_SPACE(dev);
++	len = headroom + sizeof(struct ipv6hdr) +
+ 		sizeof(*na) + na_olen + dev->needed_tailroom;
+ 
+ 	reply = alloc_skb(len, GFP_ATOMIC);
+@@ -280,7 +282,7 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+ 
+ 	reply->protocol = htons(ETH_P_IPV6);
+ 	reply->dev = dev;
+-	skb_reserve(reply, LL_RESERVED_SPACE(dev));
++	skb_reserve(reply, headroom);
+ 	skb_push(reply, sizeof(struct ethhdr));
+ 	skb_set_mac_header(reply, 0);
+ 
+
+base-commit: ffdf678dd16610e3f006dac904bd37c09684673c
+-- 
+2.54.0 (Apple Git-157)
+
