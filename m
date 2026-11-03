@@ -1,101 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.178
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793735023;
-	b=im0UxoKZJcvx5lEimjeqnl6DKm0JJakMlXqEto1osKHJSoqYop4oJshke7tCXvZIM7Xx
-	 utG73domlUdcVcOfGYRUcX1KuMNThhy8POHuIfzWsP5bunNaM7m3Z831/FAv2yL7BVa7e
-	 Ue7i9pIy5yBoLxcHggnPhm1y12KPnHxa4I1Vr/PkCH7wx1jLGPo04/wtEQaDBAkDyr+2r
-	 k9mzty+TcnT4JUwgurSrdrumYNy1/uhS2tIqbdFTCkS1VKkckmoG9tbj93kK8lBwkwA3a
-	 VO87fINlo22TB9VkgqZBrg30CGwWUjVsdlp2pTfl6aXhgiNyT6lOkhCB1CT05FjYhDw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793735023;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.45
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793735191;
+	b=QgLQNUimBqwpk0lhe75uvVZCj/KCux7JJpVkDyuB4geyzFXsEIoDN7zoHv1RxILnRqkG
+	 oCla6cCV+5buXyiFHV1y7Yr5yumY32pespgb3EgHp8QzQjFgEXMvbwkuk3jTioqIa91FQ
+	 6W6tmg2wtAfUF225yhWi6RvTGAtRHYNOIA9gZ1kIb2NZOreUKvGuOIXUHzKTlViZR5IqJ
+	 TO02TkNJRQ9WTet5Hkec1kANS0B1y16ZjvRBtxechm+cRty1/jeAJTsph/G2bugx/Ekgd
+	 xsnOv46OSeRZyoCmzd0Fd0gSUnKtQQQUt8oIYDphlAAjaxPWBKBj8W4T8mBy4Sng1tg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793735191;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=HXiF5Hkq0HzdjVstuqtN1MMqL7UJCviIzr82cLK6HWc=;
-	b=eADkNKo4n1u6grkJJdPkJRC7OIkw+ackTxiPa3OxGRP1JYt2HnmOYiIktbW3ECZ8xv/s
-	 mDN84CV9YMOzuAplffQAuU6XSmq+0SXghnCrABh4MQmHvDAFxt8+Hfq1yAymtkyuEwxBU
-	 uM82DhidNF1Zv8jtSIhTQBURv1i9TNoHTEgGF1C8phh/2RsxWSJJK4IoSjh25+P/414EI
-	 FQZQqvzWl1cxWv1Cea48xdT0cKouuRjWCkNnJTHnUvWPwd33v0VgmJRbe3TTTWNGgez7f
-	 5fyWmtFuRgvN4tgRVuZvPpnla8skKayU8GyMBml9ne0J6nUxlToSBCeTu3QWs8Q9VsA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=m5KNnufLayOc033TTzK3HbAnBHy31BwDE7It1VguZvU=;
+	b=w13KPzZHvw78v1hD9IxXz1YiWdJpxDP9/AfjPF7T7xKlfw0/MspS4cUnEXjHDSJgngE8
+	 hE3oMPLhRLq0MA9g+3JS0VZVJkexziux0MIUS9qsGJVdznABI2qnxg/UijfwJfy9vN38M
+	 5aWo8L0zoTy+oMyxbR4AsVTntXYs+lWj6DX+TsFXFEBRwI8szyYZEEAuHr7QBvXRjPqTX
+	 c5l1J24LWe0stJ01xkQr/dAXrSV4+FQZ1fgvr8JcVyqddIkUB+Wsdv4CZnEtmUqKZrUmt
+	 BmbS9W5KT9cf9mJyCy8ckGa7ALNXsMtmE3ZnGDTkdbB9ORqazEB/+ucdzdHu6D8k/XA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BxKVG8Jo;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.178
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=d2UNharF;
+	arc=none smtp.remote-ip=209.85.217.45
+Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD659606A332
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 19:43:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD659606A332
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79D7606A324
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 19:46:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B79D7606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BxKVG8Jo
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8ac1f2ff78dso548368b3a.0
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 11:43:42 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793735022; cv=none;
-        d=google.com; s=arc-20260327;
-        b=SpWRunoua2FEL/b0DutHA3tc5/ZxvN2Llqo7DZrCkuGMjH1eStNJERSKHMOsVGX1+M
-         vJvO0cVMfrRyGnolOPf3PSRVTsICw/Wpnbuq1i0aSPBztG0y4IhzTt7kTzpqOUYxve2Q
-         ZDh5iRP5CGZk+jtdokL9pZOig0inFXxGPv+lxZiTdw7/7ROp6+IOpcdSYvTAa6rXfznm
-         ci9KZWV+7EBnEahlMCemEypR3Y6dA6EUp5BM1ccJIpyBdq8C1DOGSHp7s8KKnlmkzG0e
-         B8UCBL6xJlNv9v9247QapLiQVuPMCONrsKI8jZHEsej52TIIzh9FAUyNEg4HMbT444nK
-         pdqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HXiF5Hkq0HzdjVstuqtN1MMqL7UJCviIzr82cLK6HWc=;
-        fh=6Qcd+Wk8nlR9vD3YvEqDT/bvHKG7RTLZXtgJAI2OCH8=;
-        b=cKKJm1zqYI11MuMbygTy/wy1zucROPOuGKo6dr7dvqj8M/f0Skzik+Sbh97f5U4Ik8
-         IKb/+A0MEhERWeAfCD/7Y0ullEIL/icSQuxhgCb0wAwQvFNc0dAXmq5B2kYsYr/lJE/2
-         plicl1skO3lE8Xuf/P3Rb3I+ry+GLiPlBAKzumSn5U2aEDhFuuRqweg/DE7I3OEWaK1w
-         qCpK1QRWhlW4ehpPeg2Xu59rZTOmDGcIovA3t04xld7hQnzvqoSKjZKPDu6JyEqrk4m4
-         NIlPUYHoYxCPFUeBYRc96W/M+7FLMRSXF7YwEbB//zfSA+K61wfwJydyep1yUa3XptKc
-         hlfg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=d2UNharF
+Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-7cc53938a8fso2644229137.2
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 11:46:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793735022; x=1794339822; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=HXiF5Hkq0HzdjVstuqtN1MMqL7UJCviIzr82cLK6HWc=;
-        b=BxKVG8JoCv/iLQwtckK7tTHB16bZFUqtRztlGqJbBM/qwXqrVU8gxVckUULIHgtRwe
-         eAVu1569YSe66F2TCCr8LjC4QzC3JhASOec0GtGkb5ebpm1Qo2E++YCHjminyHPTdK5X
-         wBE5RwowM8xsbD56ydU7k8LxUZ2B8rHVPg8n5t+3wYFEyXrdY9qGu52DT1t41PnSPXvE
-         Uc9gCXRa1ZtUGFzNSbajQgIHcrbpYASURIPtYKhmtssCGSbc9ZpOio6dC0e88MKez5kF
-         2DjxVghz+PDpBd2UmSRKvYzOfk/PP197DE87udZ5Sd087x6FyCvp30CyaxCbFsLLcBZP
-         CeIg==
+        d=gmail.com; s=20260707; t=1793735189; x=1794339989; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=m5KNnufLayOc033TTzK3HbAnBHy31BwDE7It1VguZvU=;
+        b=d2UNharF5o5NCMoH+tqtlE4wR9i/bS0pYXnPGrwDrJeRWDBf/10j0I7FDR6vLeczvd
+         6W9RYlF/oFXn9MUx7SDN1cydNFw5Xt/Fq0NYOAazBJPNw9WA2tOczu25886Eh+Qw5X6v
+         fEIwdS4MwDNrKbF3qBSJwgBQCUHnZRpfWHGOcJOw8fosV+HfPLkDyFWvnrHTcv7SmK4B
+         msH1jnpJGEgWKEsTEidjFlP4WLQYodoHs6H3gvF8xa2l34CmU3dGbK29Nxv5v1Vr1NwT
+         0Chv4DmKHZq6ydvsWLVlQ3mfWm7J9r5YAFnsevqHt1U2r3M9RHm+dy7uxdDt9Rc6nkbT
+         xBkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793735022; x=1794339822;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HXiF5Hkq0HzdjVstuqtN1MMqL7UJCviIzr82cLK6HWc=;
-        b=UaSvzrnc6KfrCUTYYtaXZUF2kVSUipOBE/Ye9v+Fk4TCc+UamXn9U0Gn1ABw1jPVvO
-         5Z6p0itg7qc/kGcf0IOfRweO+LK8OKTOKsND02jYY+phWSeDuL2AgkUgRCDC8UFvDoQi
-         fXypnKHVG2VfLMcCyrwtjJqRSbgLm54hEJWCO5X6755aAb6ltzKzyYNEzPXzJ0Mf0Bbo
-         xaQxzxRmm8SQCzeeffTR5TckJKr8jXk7GAZdtRhPCFdfZat99ATlth0dMfPhPpEofuZ2
-         Jup0I0vxoY1tqFOAht4TjMwWF8EeF7VLxRhmWouoeQuAwzNZLdZizeqcKkkg5MW7ExA1
-         FsHw==
-X-Forwarded-Encrypted: i=1; AKwUvBytIRHuJZeXfNH2POlycRCX0xjG+TIEsgcR7fQ9AyOctlkC4uHvgcMLV39xXTUbsRrqsROc9vg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+pV0sBDpycoRoZU9WlW0/jl176n9yOnsFwr2BdhVSjfSf252yV
-	+98Y+/4dKO/7q1wvUjLLqJ81cCjYJOWQHqA6rJUaqSsQ46K50XXU9/ysFigIBjF4X4YmUB7Qwbd
-	nf/q85pKkPpmKRsFcR5oXKuxu/+G9Ahc=
-X-Gm-Gg: AYBFou1d4tiLjiu1bhLmcGFB9tcbl5qpfPdAXCzZCLrcE+7lJ+Dhze63GgW87AhuMHl
-	NF5Z3MLziM8oC8DkaHHmabyjfhLzSI3D/HNjnDE/2rqlR/TPoWYRH9OeBhTKMtlOyvnNH2hntmk
-	h/HHRkf88XidFX26aocTSNvM+omi7cWxru6GSM/a+g8tqTp0IDZIU1QHzDUPbZueslU6cJbRYv4
-	12wZjXy90LoWmyS0o+EkrHCrLU1wuuxJWfEcoMIde1xLq3/w2yz1JOM8Gd6aNmRnS/jIhwcX5Ct
-	4D8MTulUGUUKQSvIUIWD/xdNlu9s2d/6BDx0KfyPtPOPqgi+BLNRLi5CZrXhLdr20lqvt9hEI7V
-	MokWtXdz9p5Jtf7iKZ6GQLxS5C1Y9PgjG3/CXDcrPVGtaR7Cu/BsXY/t5Ufc5QfeMcK8icJpjeE
-	mCHSToLas5BMt9myM5voATBVzecKPwJU7UrCygmrmAZeHGbkwH62APOxfdog==
-X-Received: by 2002:a05:6a21:9105:b0:3e2:2459:b774 with SMTP id
- adf61e73a8af0-3e928914359mr7729030637.16.1793735022129; Tue, 03 Nov 2026
- 11:43:42 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793735189; x=1794339989;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=m5KNnufLayOc033TTzK3HbAnBHy31BwDE7It1VguZvU=;
+        b=wRDvVWEctUfQZOQ+GT4gXGBgiwAyUoNOPXj8087jCc+5xsLs3p4mseuWP3LwQP6mxZ
+         0q/JnNn5mGFznUW6iUVPtawZqprVvZvy2CBBNmHaGDQcd6DpFSlcZzcvFLpEu5+rWrMb
+         yaXhxg6TIvXfiRLYdUpwK3n8sFHmwGZVpgNujHvM2h+cfyFlZmo42AfD1TPL6T5QWaNU
+         UFB0KxecUAY+NxtfLmwQRIwvAsAaMizWlX6NLK9/nO750f8Y7ywZK/KR3YQTXzz4EFsE
+         fbmhuCWOqxdymMlY3Vx7iVipfjREJvE63/K0fUZl71DDI4jmUM6jqocLyxIctaMhexMJ
+         DnuA==
+X-Gm-Message-State: APuU4Z+1SRhs21rXsTndmncxHH3Z4SMAS7keq3DJxnat7ZUKtPvMKJDb
+	ndjw2M2W4Q8Oouxci0Lx7+5Dv3OhC1WU6w4l4nbX80uPDNY5pySg4exvht/NEg==
+X-Gm-Gg: AYBFou0cRnPJCOw06Ib4bPuC5t4HntK4kvo+QrhTV67WwsTOnn5TCVKVj/4Lo/kcaDL
+	5T381gLnWtV0r3vkPQzp1BKRIz7LKgkEoQv/wyXXiGJl66HoNBp35RZwucXdVwZqJx3Ljwd2MBY
+	ewPUGrpH9wDWcfnqDVf94f6OV+xoKo1AbEJhXJQMpxUsqtxKqVIV0zX5WR1wtg7QFf/2zCjdKJ2
+	W5LrA83UY+AlOLcFp1DZkNXEHk9IE9txOEWTJ3HnOUvRSX6GltfdY/k4rg3T3MpYU3bgA44jt4G
+	2xbhcn6JNbrE7IDaOwlE92gT33S96E/bG8mswbukcSSCEmckTXjkubHkN9esPtiBx+Z2kH2IpP6
+	WFdkmOAhgZPYNzZE1DgAhbpMXbIcwqwaV1CZ5qypwCONeb84x2OdGX566LMv1syaTXgavepXFUY
+	8/iqBVsU1u/o8Ny1/pjfbiPLQX7ARkTv7LqJP5jbGoqWrMnFID7B2jj5xUx8QxahFVuSdZPkihS
+	qPYg0yK4LWnbiRmOcRsGnfW89vAP1tM1R63MqYIMlxXonhz5E4oxEmG8IbGTNOdQQOAnhEt7bQY
+	EKVdho/cTFBRxLsfyqOOm2u1ZJKU3l+WieZTsI9Y4xB1isTcH49DsXngrEzDrb8RJqfWC1XAqno
+	fO2DooSIpE4dxQayXuDRVwH6SCkhmivba2gPcn+eOYOG7RV57WSpdpC0QsjPRg2Xe1PUjoGfMsN
+	mjVaB7dW7irsyoAQJdrV0=
+X-Received: by 2002:a67:e109:0:b0:7d0:6cf3:d8f6 with SMTP id ada2fe7eead31-7d072ce1bbemr4818581137.28.1793735189040;
+        Tue, 03 Nov 2026 11:46:29 -0800 (PST)
+Received: from willemb.c.googlers.com.com (223.230.150.34.bc.googleusercontent.com. [34.150.230.223])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d26feb4c57sm53253137.10.2026.11.03.11.46.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 11:46:28 -0800 (PST)
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	paul@xen.org,
+	wei.liu@kernel.org,
+	mst@redhat.com,
+	axboe@kernel.dk,
+	josef@toxicpanda.com,
+	Willem de Bruijn <willemb@google.com>
+Subject: [PATCH net-next] net: skbuff: replace ubuf_info ops ptr with type id
+Date: Tue,  3 Nov 2026 14:46:20 -0500
+Message-ID: <20261103194625.1628600-1-willemdebruijn.kernel@gmail.com>
+X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,156 +103,579 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261103192606.92502-1-kylebot@openai.com>
-In-Reply-To: <20261103192606.92502-1-kylebot@openai.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Tue, 3 Nov 2026 14:43:30 -0500
-X-Gm-Features: AclHuK-Ntnjfy2V4XSDVEY_hZLHadBX9iYXfJBbZvbiqYzD0aYF-YvCMv_txPg8
-Message-ID: <CADvbK_d3k8GsgjdHUZ0a2LDs-Y0jd3mxoFvLSnnz3WqCTbBbHA@mail.gmail.com>
-Subject: Re: [PATCH net v2] sctp: avoid requeueing pending control chunks
-To: Kyle Zeng <kylebot@openai.com>
-Cc: linux-sctp@vger.kernel.org, marcelo.leitner@gmail.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 3, 2026 at 2:26=E2=80=AFPM Kyle Zeng <kylebot@openai.com> wrote=
-:
->
-> The T4 and RE-CONFIG timeout handlers take a reference to their cached
-> control chunk and submit it through SCTP_CMD_REPLY. A previous
-> transmission can still be on the control outqueue when output is corked
-> or suppressed, or when sctp_packet_transmit_chunk() could not append the
-> chunk.
->
-> sctp_outq_tail() then adds the same list node a second time. Re-adding a
-> non-tail entry can corrupt the list without being caught by the
-> insertion-time list checks. A subsequent flush or association teardown
-> can access an already freed chunk. The ASCONF path is reproducible by an
-> unprivileged SCTP socket owner in a user/network namespace, with KASAN
-> reporting a use-after-free in __sctp_outq_teardown().
->
-> Check sctp_chunk_pending() in both timeout handlers before taking the
-> extra reference and issuing SCTP_CMD_REPLY. When the chunk is already
-> linked, request a deferred outqueue flush instead. Simply omitting the
-> reply would also omit its uncork at the end of the timeout event. T4
-> would no longer retry the queued ASCONF, and a migrated, pending
-> RE-CONFIG could lose its timer until unrelated output flushes the queue.
->
-> The flush command acquires a local cork only when the caller has not
-> already corked the queue. This preserves the existing flush ordering,
-> transport/error accounting and timer handling without changing the
-> common enqueue path.
->
-> The issue was found by an LLM.
->
-> Fixes: 2e3216cd54b1 ("sctp: Follow security requirement of responding wit=
-h 1 packet")
-> Fixes: 7b9438de0cd4 ("sctp: add stream reconf timer")
-> Cc: stable@kernel.org
-> Suggested-by: Xin Long <lucien.xin@gmail.com>
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
-> ---
-> v1: https://lore.kernel.org/netdev/20261030042321.74407-1-kylebot@openai.=
-com/
-> v2: Check pending chunks in the T4 and RE-CONFIG timeout handlers, as
-> requested. Preserve their deferred output flush with a state-machine
-> command so pending requests can progress without unrelated traffic.
-> The common sctp_outq_tail() path is unchanged.
->
-> I have a reproducer for this issue and can share by DM.
->
->  include/net/sctp/command.h |  1 +
->  net/sctp/sm_sideeffect.c   |  8 ++++++++
->  net/sctp/sm_statefuns.c    | 20 ++++++++++++++------
->  3 files changed, 23 insertions(+), 6 deletions(-)
->
-> diff --git a/include/net/sctp/command.h b/include/net/sctp/command.h
-> index 2058fabffbf6..abd6cc509183 100644
-> --- a/include/net/sctp/command.h
-> +++ b/include/net/sctp/command.h
-> @@ -39,6 +39,7 @@ enum sctp_verb {
->         SCTP_CMD_CHUNK_ULP,     /* Send a chunk to the sockets layer.  */
->         SCTP_CMD_EVENT_ULP,     /* Send a notification to the sockets lay=
-er. */
->         SCTP_CMD_REPLY,         /* Send a chunk to our peer.  */
-> +       SCTP_CMD_OUTQ_FLUSH,    /* Flush pending output when uncorked. */
->         SCTP_CMD_SEND_PKT,      /* Send a full packet to our peer.  */
->         SCTP_CMD_RETRAN,        /* Mark a transport for retransmission.  =
-*/
->         SCTP_CMD_ECN_CE,        /* Do delayed CE processing.   */
-> diff --git a/net/sctp/sm_sideeffect.c b/net/sctp/sm_sideeffect.c
-> index 35f540fb15fc..6f19ac78749d 100644
-> --- a/net/sctp/sm_sideeffect.c
-> +++ b/net/sctp/sm_sideeffect.c
-> @@ -1498,6 +1498,14 @@ static int sctp_cmd_interpreter(enum sctp_event_ty=
-pe event_type,
->                         sctp_outq_tail(&asoc->outqueue, cmd->obj.chunk, g=
-fp);
->                         break;
->
-> +               case SCTP_CMD_OUTQ_FLUSH:
-> +                       /* Request a flush without taking over an outer c=
-ork. */
-> +                       if (!asoc->outqueue.cork) {
-> +                               sctp_outq_cork(&asoc->outqueue);
-> +                               local_cork =3D 1;
-> +                       }
-> +                       break;
-> +
->                 case SCTP_CMD_SEND_PKT:
->                         /* Send a full packet to our peer.  */
->                         packet =3D cmd->obj.packet;
-> diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-> index b2f609f177fb..8b76b7e28504 100644
-> --- a/net/sctp/sm_statefuns.c
-> +++ b/net/sctp/sm_statefuns.c
-> @@ -1122,9 +1122,13 @@ enum sctp_disposition sctp_sf_send_reconf(struct n=
-et *net,
->                 return SCTP_DISPOSITION_DELETE_TCB;
->         }
->
-> -       sctp_chunk_hold(asoc->strreset_chunk);
-> -       sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
-> -                       SCTP_CHUNK(asoc->strreset_chunk));
-> +       if (!sctp_chunk_pending(asoc->strreset_chunk)) {
-> +               sctp_chunk_hold(asoc->strreset_chunk);
-> +               sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
-> +                               SCTP_CHUNK(asoc->strreset_chunk));
-> +       } else {
-> +               sctp_add_cmd_sf(commands, SCTP_CMD_OUTQ_FLUSH, SCTP_NULL(=
-));
-> +       }
->         sctp_add_cmd_sf(commands, SCTP_CMD_STRIKE, SCTP_TRANSPORT(transpo=
-rt));
->
->         return SCTP_DISPOSITION_CONSUME;
-> @@ -6197,9 +6201,13 @@ enum sctp_disposition sctp_sf_t4_timer_expire(
->          * chunk, it MUST be the same (including its serial number) as th=
-e last
->          * ASCONF sent.
->          */
-> -       sctp_chunk_hold(asoc->addip_last_asconf);
-> -       sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
-> -                       SCTP_CHUNK(asoc->addip_last_asconf));
-> +       if (!sctp_chunk_pending(asoc->addip_last_asconf)) {
-> +               sctp_chunk_hold(asoc->addip_last_asconf);
-> +               sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
-> +                               SCTP_CHUNK(asoc->addip_last_asconf));
-> +       } else {
-> +               sctp_add_cmd_sf(commands, SCTP_CMD_OUTQ_FLUSH, SCTP_NULL(=
-));
-> +       }
->
->         /* ADDIP 4.1 B5) Restart the T-4 RTO timer. Note that if a differ=
-ent
->          * destination is selected, then the RTO used will be that of the=
- new
->
-I don't really understand why OUTQ_FLUSH is needed if the chunk
-was not enqueued by this timeout.
+From: Willem de Bruijn <willemb@google.com>
 
-Can you share the reproducer to help understand what caused the
-chunk to not be transmitted on time?
+Avoid an easily corruptible callback pointer on skb linear
+out-of-bounds write bugs.
 
-Thanks.
+skb_shinfo(skb)->destructor_arg points to a struct ubuf_info, whose
+first member is a ubuf_info_ops vtable pointer. Corrupting
+skb_shared_info gives a trivial one-hop indirect call primitive via
+uarg->ops->complete.
+
+Replace ubuf_info_ops with a u8 type ID and dispatch to the known
+completion callbacks in net_zcopy_complete(). Aside from removing the
+vtable pointer, this shrinks struct ubuf_info from 16 to 8 bytes and
+avoids an indirect call in the hot path.
+
+A few callback implementations can reside in modules, so require
+dynamic registration. Add a concise registration helper and use
+static_call to avoid indirect calls where supported.
+
+The .link_skb callback is only used by io_uring. Convert that into a
+direct call.
+
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+
+---
+
+This patch touches tun, tap, xen, vhost-net, io_uring. If preferred,
+I can split it into a series.
+
+msg_zerocopy_complete is so simple that it can conceivably be inlined,
+along with part of net_zcopy_complete, but chose simplicity over that
+additional optimization.
+---
+ drivers/net/tap.c                   |  8 ++-
+ drivers/net/tun.c                   |  8 ++-
+ drivers/net/xen-netback/common.h    |  3 --
+ drivers/net/xen-netback/interface.c |  2 +-
+ drivers/net/xen-netback/netback.c   | 10 ++--
+ drivers/vhost/net.c                 | 18 ++++---
+ include/linux/io_uring/net.h        | 20 ++++++++
+ include/linux/skbuff.h              | 27 ++++++----
+ io_uring/notif.c                    | 13 ++---
+ io_uring/notif.h                    |  3 +-
+ net/core/skbuff.c                   | 80 ++++++++++++++++++++++++++---
+ net/packet/af_packet.c              | 10 ++--
+ 12 files changed, 142 insertions(+), 60 deletions(-)
+
+diff --git a/drivers/net/tap.c b/drivers/net/tap.c
+index 2f19fb07bb2d..0f3ad8fd6ab6 100644
+--- a/drivers/net/tap.c
++++ b/drivers/net/tap.c
+@@ -665,12 +665,10 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
+ 		skb_set_network_header(skb, depth);
+ 
+ 	/* copy skb_ubuf_info for callback when skb has no error */
+-	if (zerocopy) {
++	if (zerocopy)
+ 		skb_zcopy_init(skb, msg_control);
+-	} else if (msg_control) {
+-		struct ubuf_info *uarg = msg_control;
+-		uarg->ops->complete(NULL, uarg, false);
+-	}
++	else if (msg_control)
++		net_zcopy_complete(NULL, msg_control, false);
+ 
+ 	dev_queue_xmit(skb);
+ 	rcu_read_unlock();
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index dcec7311e601..8920c797acfd 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -1954,12 +1954,10 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+ 		skb->protocol = eth_type_trans(skb, tun->dev);
+ 
+ 	/* copy skb_ubuf_info for callback when skb has no error */
+-	if (zerocopy) {
++	if (zerocopy)
+ 		skb_zcopy_init(skb, msg_control);
+-	} else if (msg_control) {
+-		struct ubuf_info *uarg = msg_control;
+-		uarg->ops->complete(NULL, uarg, false);
+-	}
++	else if (msg_control)
++		net_zcopy_complete(NULL, msg_control, false);
+ 
+ 	skb_reset_network_header(skb);
+ 	skb_probe_transport_header(skb);
+diff --git a/drivers/net/xen-netback/common.h b/drivers/net/xen-netback/common.h
+index 17421da139f2..78cc4365dd13 100644
+--- a/drivers/net/xen-netback/common.h
++++ b/drivers/net/xen-netback/common.h
+@@ -390,9 +390,6 @@ bool xenvif_rx_queue_tail(struct xenvif_queue *queue, struct sk_buff *skb);
+ 
+ void xenvif_carrier_on(struct xenvif *vif);
+ 
+-/* Callbacks from stack when TX packet can be released */
+-extern const struct ubuf_info_ops xenvif_ubuf_ops;
+-
+ static inline pending_ring_idx_t nr_pending_reqs(struct xenvif_queue *queue)
+ {
+ 	return MAX_PENDING_REQS -
+diff --git a/drivers/net/xen-netback/interface.c b/drivers/net/xen-netback/interface.c
+index a0a438881388..068ff15282e0 100644
+--- a/drivers/net/xen-netback/interface.c
++++ b/drivers/net/xen-netback/interface.c
+@@ -593,7 +593,7 @@ int xenvif_init_queue(struct xenvif_queue *queue)
+ 
+ 	for (i = 0; i < MAX_PENDING_REQS; i++) {
+ 		queue->pending_tx_info[i].callback_struct = (struct ubuf_info_msgzc)
+-			{ { .ops = &xenvif_ubuf_ops },
++			{ { .type = UBUF_TYPE_XENVIF },
+ 			  { { .ctx = NULL,
+ 			      .desc = i } } };
+ 		queue->grant_tx_handle[i] = NETBACK_INVALID_HANDLE;
+diff --git a/drivers/net/xen-netback/netback.c b/drivers/net/xen-netback/netback.c
+index 3cdb7fd659db..176642363153 100644
+--- a/drivers/net/xen-netback/netback.c
++++ b/drivers/net/xen-netback/netback.c
+@@ -1158,7 +1158,7 @@ static int xenvif_handle_frag_list(struct xenvif_queue *queue, struct sk_buff *s
+ 	uarg = skb_shinfo(skb)->destructor_arg;
+ 	/* increase inflight counter to offset decrement in callback */
+ 	atomic_inc(&queue->inflight_packets);
+-	uarg->ops->complete(NULL, uarg, true);
++	net_zcopy_complete(NULL, uarg, true);
+ 	skb_shinfo(skb)->destructor_arg = NULL;
+ 
+ 	/* Fill the skb with the new (local) frags. */
+@@ -1315,10 +1315,6 @@ static void xenvif_zerocopy_callback(struct sk_buff *skb,
+ 	xenvif_skb_zerocopy_complete(queue);
+ }
+ 
+-const struct ubuf_info_ops xenvif_ubuf_ops = {
+-	.complete = xenvif_zerocopy_callback,
+-};
+-
+ static inline void xenvif_tx_dealloc_action(struct xenvif_queue *queue)
+ {
+ 	struct gnttab_unmap_grant_ref *gop;
+@@ -1760,6 +1756,8 @@ static int __init netback_init(void)
+ 		fatal_skb_slots = XEN_NETBK_LEGACY_SLOTS_MAX;
+ 	}
+ 
++	net_zcopy_register(UBUF_TYPE_XENVIF, xenvif_zerocopy_callback);
++
+ 	rc = xenvif_xenbus_init();
+ 	if (rc)
+ 		goto failed_init;
+@@ -1771,6 +1769,7 @@ static int __init netback_init(void)
+ 	return 0;
+ 
+ failed_init:
++	net_zcopy_register(UBUF_TYPE_XENVIF, NULL);
+ 	return rc;
+ }
+ 
+@@ -1782,6 +1781,7 @@ static void __exit netback_fini(void)
+ 	debugfs_remove_recursive(xen_netback_dbg_root);
+ #endif /* CONFIG_DEBUG_FS */
+ 	xenvif_xenbus_fini();
++	net_zcopy_register(UBUF_TYPE_XENVIF, NULL);
+ }
+ module_exit(netback_fini);
+ 
+diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+index 4570a4ffbab2..435d8ed3851f 100644
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -431,10 +431,6 @@ static void vhost_zerocopy_complete(struct sk_buff *skb,
+ 	rcu_read_unlock_bh();
+ }
+ 
+-static const struct ubuf_info_ops vhost_ubuf_ops = {
+-	.complete = vhost_zerocopy_complete,
+-};
+-
+ static inline unsigned long busy_clock(void)
+ {
+ 	return local_clock() >> 10;
+@@ -926,7 +922,7 @@ static void handle_tx_zerocopy(struct vhost_net *net, struct socket *sock)
+ 			vq->heads[nvq->upend_idx].len = VHOST_DMA_IN_PROGRESS;
+ 			ubuf->ctx = nvq->ubufs;
+ 			ubuf->desc = nvq->upend_idx;
+-			ubuf->ubuf.ops = &vhost_ubuf_ops;
++			ubuf->ubuf.type = UBUF_TYPE_VHOST;
+ 			ubuf->ubuf.flags = SKBFL_ZEROCOPY_FRAG;
+ 			refcount_set(&ubuf->ubuf.refcnt, 1);
+ 			msg.msg_control = &ctl;
+@@ -1895,15 +1891,25 @@ static struct miscdevice vhost_net_misc = {
+ 
+ static int __init vhost_net_init(void)
+ {
++	int rc;
++
+ 	if (experimental_zcopytx)
+ 		vhost_net_enable_zcopy(VHOST_NET_VQ_TX);
+-	return misc_register(&vhost_net_misc);
++
++	net_zcopy_register(UBUF_TYPE_VHOST, vhost_zerocopy_complete);
++
++	rc = misc_register(&vhost_net_misc);
++	if (rc)
++		net_zcopy_register(UBUF_TYPE_VHOST, NULL);
++
++	return rc;
+ }
+ module_init(vhost_net_init);
+ 
+ static void __exit vhost_net_exit(void)
+ {
+ 	misc_deregister(&vhost_net_misc);
++	net_zcopy_register(UBUF_TYPE_VHOST, NULL);
+ }
+ module_exit(vhost_net_exit);
+ 
+diff --git a/include/linux/io_uring/net.h b/include/linux/io_uring/net.h
+index b58f39fed4d5..1759b1c22597 100644
+--- a/include/linux/io_uring/net.h
++++ b/include/linux/io_uring/net.h
+@@ -2,10 +2,19 @@
+ #ifndef _LINUX_IO_URING_NET_H
+ #define _LINUX_IO_URING_NET_H
+ 
++#include <linux/errno.h>
++#include <linux/types.h>
++#include <net/net_debug.h>
++
+ struct io_uring_cmd;
++struct sk_buff;
++struct ubuf_info;
+ 
+ #if defined(CONFIG_IO_URING)
+ int io_uring_cmd_sock(struct io_uring_cmd *cmd, unsigned int issue_flags);
++void io_tx_ubuf_complete(struct sk_buff *skb, struct ubuf_info *uarg,
++			 bool success);
++int io_link_skb(struct sk_buff *skb, struct ubuf_info *uarg);
+ 
+ #else
+ static inline int io_uring_cmd_sock(struct io_uring_cmd *cmd,
+@@ -13,6 +22,17 @@ static inline int io_uring_cmd_sock(struct io_uring_cmd *cmd,
+ {
+ 	return -EOPNOTSUPP;
+ }
++
++static inline void io_tx_ubuf_complete(struct sk_buff *skb,
++				       struct ubuf_info *uarg, bool success)
++{
++	DEBUG_NET_WARN_ON_ONCE(1);
++}
++
++static inline int io_link_skb(struct sk_buff *skb, struct ubuf_info *uarg)
++{
++	return -EOPNOTSUPP;
++}
+ #endif
+ 
+ #endif
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 6787fcf6ac3e..73365c5de6f9 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -534,13 +534,18 @@ enum {
+ #define SKBFL_ALL_ZEROCOPY	(SKBFL_ZEROCOPY_FRAG | SKBFL_PURE_ZEROCOPY | \
+ 				 SKBFL_DONT_ORPHAN | SKBFL_MANAGED_FRAG_REFS)
+ 
+-struct ubuf_info_ops {
+-	void (*complete)(struct sk_buff *, struct ubuf_info *,
+-			 bool zerocopy_success);
+-	/* has to be compatible with skb_zcopy_set() */
+-	int (*link_skb)(struct sk_buff *skb, struct ubuf_info *uarg);
++enum ubuf_info_type {
++	UBUF_TYPE_NONE = 0,
++	UBUF_TYPE_MSG_ZEROCOPY,
++	UBUF_TYPE_IO_URING,
++	UBUF_TYPE_TPACKET,
++	UBUF_TYPE_VHOST,
++	UBUF_TYPE_XENVIF,
+ };
+ 
++typedef void (*ubuf_complete_fn)(struct sk_buff *skb, struct ubuf_info *uarg,
++				 bool zerocopy_success);
++
+ /*
+  * The callback notifies userspace to release buffers when skb DMA is done in
+  * lower device, the skb last reference should be 0 when calling this.
+@@ -550,8 +555,8 @@ struct ubuf_info_ops {
+  * The desc field is used to track userspace buffer index.
+  */
+ struct ubuf_info {
+-	const struct ubuf_info_ops *ops;
+ 	refcount_t refcnt;
++	u8 type;
+ 	u8 flags;
+ };
+ 
+@@ -1757,7 +1762,9 @@ static inline void skb_set_end_offset(struct sk_buff *skb, unsigned int offset)
+ }
+ #endif
+ 
+-extern const struct ubuf_info_ops msg_zerocopy_ubuf_ops;
++void net_zcopy_register(enum ubuf_info_type type, ubuf_complete_fn fn);
++void net_zcopy_complete(struct sk_buff *skb, struct ubuf_info *uarg,
++			bool zerocopy_success);
+ 
+ struct ubuf_info *msg_zerocopy_realloc(struct sock *sk, size_t size,
+ 				       struct ubuf_info *uarg, bool devmem);
+@@ -1843,13 +1850,13 @@ static inline void skb_zcopy_set(struct sk_buff *skb, struct ubuf_info *uarg,
+ static inline void net_zcopy_put(struct ubuf_info *uarg)
+ {
+ 	if (uarg)
+-		uarg->ops->complete(NULL, uarg, true);
++		net_zcopy_complete(NULL, uarg, true);
+ }
+ 
+ static inline void net_zcopy_put_abort(struct ubuf_info *uarg, bool have_uref)
+ {
+ 	if (uarg) {
+-		if (uarg->ops == &msg_zerocopy_ubuf_ops)
++		if (uarg->type == UBUF_TYPE_MSG_ZEROCOPY)
+ 			msg_zerocopy_put_abort(uarg, have_uref);
+ 		else if (have_uref)
+ 			net_zcopy_put(uarg);
+@@ -1862,7 +1869,7 @@ static inline void skb_zcopy_clear(struct sk_buff *skb, bool zerocopy_success)
+ 	struct ubuf_info *uarg = skb_zcopy(skb);
+ 
+ 	if (uarg) {
+-		uarg->ops->complete(skb, uarg, zerocopy_success);
++		net_zcopy_complete(skb, uarg, zerocopy_success);
+ 
+ 		skb_shinfo(skb)->flags &= ~SKBFL_ALL_ZEROCOPY;
+ 	}
+diff --git a/io_uring/notif.c b/io_uring/notif.c
+index 6c49aff515df..cb2b8afd400c 100644
+--- a/io_uring/notif.c
++++ b/io_uring/notif.c
+@@ -10,8 +10,6 @@
+ #include "notif.h"
+ #include "rsrc.h"
+ 
+-static const struct ubuf_info_ops io_ubuf_ops;
+-
+ static void io_notif_tw_complete(struct io_tw_req tw_req, io_tw_token_t tw)
+ {
+ 	struct io_kiocb *notif = tw_req.req;
+@@ -68,7 +66,7 @@ void io_tx_ubuf_complete(struct sk_buff *skb, struct ubuf_info *uarg,
+ 	__io_req_task_work_add(notif, tw_flags);
+ }
+ 
+-static int io_link_skb(struct sk_buff *skb, struct ubuf_info *uarg)
++int io_link_skb(struct sk_buff *skb, struct ubuf_info *uarg)
+ {
+ 	struct io_notif_data *nd, *prev_nd;
+ 	struct io_kiocb *prev_notif, *notif;
+@@ -89,7 +87,7 @@ static int io_link_skb(struct sk_buff *skb, struct ubuf_info *uarg)
+ 	if (unlikely(nd->head != nd || nd->next))
+ 		return -EEXIST;
+ 	/* don't mix zc providers */
+-	if (unlikely(prev_uarg->ops != &io_ubuf_ops))
++	if (unlikely(prev_uarg->type != UBUF_TYPE_IO_URING))
+ 		return -EEXIST;
+ 
+ 	prev_nd = container_of(prev_uarg, struct io_notif_data, uarg);
+@@ -107,11 +105,6 @@ static int io_link_skb(struct sk_buff *skb, struct ubuf_info *uarg)
+ 	return 0;
+ }
+ 
+-static const struct ubuf_info_ops io_ubuf_ops = {
+-	.complete = io_tx_ubuf_complete,
+-	.link_skb = io_link_skb,
+-};
+-
+ struct io_kiocb *io_alloc_notif(struct io_ring_ctx *ctx)
+ 	__must_hold(&ctx->uring_lock)
+ {
+@@ -137,7 +130,7 @@ struct io_kiocb *io_alloc_notif(struct io_ring_ctx *ctx)
+ 	nd->head = nd;
+ 
+ 	nd->uarg.flags = IO_NOTIF_UBUF_FLAGS;
+-	nd->uarg.ops = &io_ubuf_ops;
++	nd->uarg.type = UBUF_TYPE_IO_URING;
+ 	refcount_set(&nd->uarg.refcnt, 1);
+ 	return notif;
+ }
+diff --git a/io_uring/notif.h b/io_uring/notif.h
+index f3589cfef4a9..b0e0e179a80f 100644
+--- a/io_uring/notif.h
++++ b/io_uring/notif.h
+@@ -4,6 +4,7 @@
+ #include <linux/uio.h>
+ #include <net/sock.h>
+ #include <linux/nospec.h>
++#include <linux/io_uring/net.h>
+ 
+ #include "rsrc.h"
+ 
+@@ -24,8 +25,6 @@ struct io_notif_data {
+ };
+ 
+ struct io_kiocb *io_alloc_notif(struct io_ring_ctx *ctx);
+-void io_tx_ubuf_complete(struct sk_buff *skb, struct ubuf_info *uarg,
+-			 bool success);
+ 
+ static inline struct io_notif_data *io_notif_to_data(struct io_kiocb *notif)
+ {
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 48f676411724..3ec9851d0a10 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -92,6 +92,8 @@
+ #include <linux/capability.h>
+ #include <linux/user_namespace.h>
+ #include <linux/indirect_call_wrapper.h>
++#include <linux/io_uring/net.h>
++#include <linux/static_call.h>
+ #include <linux/textsearch.h>
+ 
+ #include "dev.h"
+@@ -1737,7 +1739,7 @@ static struct ubuf_info *msg_zerocopy_alloc(struct sock *sk, size_t size,
+ 		return NULL;
+ 	}
+ 
+-	uarg->ubuf.ops = &msg_zerocopy_ubuf_ops;
++	uarg->ubuf.type = UBUF_TYPE_MSG_ZEROCOPY;
+ 	uarg->id = ((u32)atomic_inc_return(&sk->sk_zckey)) - 1;
+ 	uarg->len = 1;
+ 	uarg->bytelen = size;
+@@ -1763,7 +1765,7 @@ struct ubuf_info *msg_zerocopy_realloc(struct sock *sk, size_t size,
+ 		u32 bytelen, next;
+ 
+ 		/* there might be non MSG_ZEROCOPY users */
+-		if (uarg->ops != &msg_zerocopy_ubuf_ops)
++		if (uarg->type != UBUF_TYPE_MSG_ZEROCOPY)
+ 			return NULL;
+ 
+ 		/* realloc only when socket is locked (TCP, UDP cork),
+@@ -1898,10 +1900,72 @@ void msg_zerocopy_put_abort(struct ubuf_info *uarg, bool have_uref)
+ }
+ EXPORT_SYMBOL_GPL(msg_zerocopy_put_abort);
+ 
+-const struct ubuf_info_ops msg_zerocopy_ubuf_ops = {
+-	.complete = msg_zerocopy_complete,
+-};
+-EXPORT_SYMBOL_GPL(msg_zerocopy_ubuf_ops);
++static void net_zcopy_unregistered(struct sk_buff *skb, struct ubuf_info *uarg,
++				   bool zerocopy_success)
++{
++	DEBUG_NET_WARN_ON_ONCE(1);
++}
++
++DEFINE_STATIC_CALL(ubuf_complete_tpacket, net_zcopy_unregistered);
++DEFINE_STATIC_CALL(ubuf_complete_vhost, net_zcopy_unregistered);
++DEFINE_STATIC_CALL(ubuf_complete_xenvif, net_zcopy_unregistered);
++
++void net_zcopy_register(enum ubuf_info_type type, ubuf_complete_fn fn)
++{
++	ubuf_complete_fn cur;
++	bool reg = fn;
++
++	if (!fn)
++		fn = net_zcopy_unregistered;
++
++	switch (type) {
++	case UBUF_TYPE_TPACKET:
++		cur = static_call_query(ubuf_complete_tpacket);
++		static_call_update(ubuf_complete_tpacket, fn);
++		break;
++	case UBUF_TYPE_VHOST:
++		cur = static_call_query(ubuf_complete_vhost);
++		static_call_update(ubuf_complete_vhost, fn);
++		break;
++	case UBUF_TYPE_XENVIF:
++		cur = static_call_query(ubuf_complete_xenvif);
++		static_call_update(ubuf_complete_xenvif, fn);
++		break;
++	default:
++		WARN_ON_ONCE(1);
++		return;
++	}
++
++	WARN_ON_ONCE(reg ? cur != net_zcopy_unregistered :
++			   cur == net_zcopy_unregistered);
++}
++EXPORT_SYMBOL_GPL(net_zcopy_register);
++
++void net_zcopy_complete(struct sk_buff *skb, struct ubuf_info *uarg,
++			bool zerocopy_success)
++{
++	switch (uarg->type) {
++	case UBUF_TYPE_MSG_ZEROCOPY:
++		msg_zerocopy_complete(skb, uarg, zerocopy_success);
++		break;
++	case UBUF_TYPE_IO_URING:
++		io_tx_ubuf_complete(skb, uarg, zerocopy_success);
++		break;
++	case UBUF_TYPE_TPACKET:
++		static_call(ubuf_complete_tpacket)(skb, uarg, zerocopy_success);
++		break;
++	case UBUF_TYPE_VHOST:
++		static_call(ubuf_complete_vhost)(skb, uarg, zerocopy_success);
++		break;
++	case UBUF_TYPE_XENVIF:
++		static_call(ubuf_complete_xenvif)(skb, uarg, zerocopy_success);
++		break;
++	default:
++		DEBUG_NET_WARN_ON_ONCE(1);
++		break;
++	}
++}
++EXPORT_SYMBOL_GPL(net_zcopy_complete);
+ 
+ int skb_zerocopy_iter_stream(struct sock *sk, struct sk_buff *skb,
+ 			     struct msghdr *msg, int len,
+@@ -1910,8 +1974,8 @@ int skb_zerocopy_iter_stream(struct sock *sk, struct sk_buff *skb,
+ {
+ 	int err, orig_len = skb->len;
+ 
+-	if (uarg->ops->link_skb) {
+-		err = uarg->ops->link_skb(skb, uarg);
++	if (uarg->type == UBUF_TYPE_IO_URING) {
++		err = io_link_skb(skb, uarg);
+ 		if (err)
+ 			return err;
+ 	} else {
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index cf6429f09477..e08d5e315b65 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2606,10 +2606,6 @@ static void tpacket_ubuf_complete(struct sk_buff *skb, struct ubuf_info *uarg,
+ 	sk_free(&po->sk);
+ }
+ 
+-static const struct ubuf_info_ops tpacket_ubuf_ops = {
+-	.complete = tpacket_ubuf_complete,
+-};
+-
+ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
+ 		struct net_device *dev, void *data, int tp_len,
+ 		__be16 proto, unsigned char *addr, int hlen, int copylen,
+@@ -2942,7 +2938,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 		}
+ 		uarg->po = po;
+ 		uarg->ph = ph;
+-		uarg->ubuf.ops = &tpacket_ubuf_ops;
++		uarg->ubuf.type = UBUF_TYPE_TPACKET;
+ 		uarg->ubuf.flags = SKBFL_ZEROCOPY_FRAG;
+ 		refcount_set(&uarg->ubuf.refcnt, 1);
+ 
+@@ -4931,6 +4927,7 @@ static void __exit packet_exit(void)
+ 	proto_unregister(&packet_proto);
+ 	unregister_netdevice_notifier(&packet_netdev_notifier);
+ 	unregister_pernet_subsys(&packet_net_ops);
++	net_zcopy_register(UBUF_TYPE_TPACKET, NULL);
+ }
+ 
+ static int __init packet_init(void)
+@@ -4946,6 +4943,8 @@ static int __init packet_init(void)
+ 	rc = proto_register(&packet_proto, 0);
+ 	if (rc)
+ 		goto out_notifier;
++
++	net_zcopy_register(UBUF_TYPE_TPACKET, tpacket_ubuf_complete);
+ 	rc = sock_register(&packet_family_ops);
+ 	if (rc)
+ 		goto out_proto;
+@@ -4953,6 +4952,7 @@ static int __init packet_init(void)
+ 	return 0;
+ 
+ out_proto:
++	net_zcopy_register(UBUF_TYPE_TPACKET, NULL);
+ 	proto_unregister(&packet_proto);
+ out_notifier:
+ 	unregister_netdevice_notifier(&packet_netdev_notifier);
+-- 
+2.56.0.385.gac671c819a-goog
+
