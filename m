@@ -1,52 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.73
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793669152;
-	b=sKR24t8EfhfPGHz64ICfu961CwrHon2Rg2MdDPqq6eNbBEnBXbvCDuo4/kligaSfCXLE
-	 Yf/uwkK3OZPUrr4xTrkWYar/JIJjrmW0ub9xiPuNj1TM72kGAfJhljzNQ9w9f0vpZpqm7
-	 QXXju+TSmmitnrZ2T4epTrUggxayo+1TmzH5xS1h9mkL96BmdknKDRPeZCtIbJhIme2oG
-	 Odgi5PWNwC4ha7D7thyNNlfYjjzQ5ohtO+u90xjsEvFQTr4ZqyxYVNuljISExLOQcMUEG
-	 VkbBjYWancdMy0jqKWi/fM0Fqsnc5+Y4sWhtMfG3+2Y5DlhwPCMYge/sKwNxB8GU1SQ==
+	t=1793669242;
+	b=Yr4M7BgFfYStl/kvdq3xOERmMjTTarUXSZ4/a0i6Ktwj3Enm5dxW5SY3ETuIMQGGean7
+	 ++VoG2w3+2Ugh5cP8izh3fWcsESU85mPfyj7nrZb1e0Ovk2MQoV5MqMJDEq7HsJeEaKuT
+	 due3yYIVThabf0Jqo5XAO2zaKG20beV/In+JFZF5Dd8zQLfYc9y7shv9jk4Sz60vi+KRT
+	 qdye5TUpFwIMuIAgsAiVsMw9/mpdDjTzO5SzUMEaS7gFHs3A7o8NQYy9m4c2VS20Mzcib
+	 44Cgn3Dyd7UglxrNW8L9FUYa6Hs2OQu/vzBkVRAIq7IKGaXo7F96t3tfk9148Hfuc9Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793669152;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793669242;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=GQtsOse1qaHHpOot+MsPd8LDVEFm4Ow2k3IZR+G/F4o=;
-	b=fSqWqJe08JKngZV6ZtidtP2ziumI9Sn8cQhJPF0/DOzUozuRUkyBY7VgouNdPh10b8AS
-	 d7v3xpLj+fV4JlqYZvXz9e6Hy/ayZx9PBByB/PbU5LlAhuhUAg4kP0C3+VaJIsyVwPfI0
-	 DsY7H91tDUG9zTTTeL1tm8SHSxm87rrSKhOHKVuzxKEmiAFE/Tnvr5RezLfzV/wwAyaGg
-	 uHZdAB2Bnu2T4rFugWsbG9aq8fH6xf/GEi/S/ZV819lDGg3mzkOBucDiq2LGofenrFXI6
-	 gD89PUqEYi5RFCMnydt1PIEOxrP8emHrf2itoSZTotfOT+kNCgtqNUCEquB3krwpIYw==
+	bh=xwrigN4hHrfQ0pdJAvaDQuroSa/OQ6XUSfC/4kh1PgE=;
+	b=Sj7fETkdbmmvJIHRkpTvio2/rUUWKyD16/i0RL9jIHguT2OOakTiqj8ZqC0+J2BwC/TZ
+	 r+QiXFSUkSP2pBOW1ldaIbn0MSdeucVA/W4HSjblHPMFr0auzckt/1r8hO416rjoGVpzn
+	 Dy8k7vIb4ogm5MxqDkCzPf9INWYH6Di6HmEay3phYIY/SjFUblxDU4a/2SkdLHXDReOGK
+	 rW7LExXSDIIvwTnlfybwI2RdykPSalrXeRH6kWqB4r6L6NMp0Kwy6ImhPgRt0APo6kVJ0
+	 LiY4KKaOb+4v1Cw8wI3lOUXcUynY25V42fqQPdImIxiChqHwPE7CV2a3ORq3i+/rZsA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lgCB80zu;
-	arc=none smtp.remote-ip=95.215.58.48
-Received: from mta1.migadu.com (out-48.mta1.migadu.com [95.215.58.48])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=PB7soUHQ;
+	arc=none smtp.remote-ip=91.218.175.73
+Received: from mta0.migadu.com (out-73.mta0.migadu.com [91.218.175.73])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA5E606A327
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 01:25:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DCA5E606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8965606A331
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 01:27:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8965606A331
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lgCB80zu
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=PB7soUHQ
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=zAP4af6W/8M6VGTZwGRKoUek7DR1Y9SfEGiGrMO6wuQ=;
+DKIM-Signature: a=rsa-sha256; bh=D+/gw0Ztw4cZkf3WTT5E7vaQ4EK3jAqSPRQxFCWd8ok=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793669148; v=1; x=1794273948;
- b=lgCB80zuW4tSswDe6VDPJYBRdZHEMaJCq0U/2ybazv3A4PqyFLJTEySM8nnYfgeg2OmLVx+F
- NzXxNLlpUkfrhEOaUc9ou7XlQPSOGJrIxvD6pmIIbLdx1ians2B+KXR8xd8+x15kTlnlihsEi9Z
- N313ndmnalXWRiF+gLxw/nUA=
+ t=1793669238; v=1; x=1794274038;
+ b=PB7soUHQZzgbmZjXh/fH9csK3Ied1/V+gZxo/SFEdSc1Zj3L2pmU2rSYLsgY2FEKuXAAHXcD
+ ZM+yjE7osqIRQ6zEkD9hs1ySTqGPIroojC92NhjBfhUne0f36ayjAAXujQ0g87JjcHBf9wZK5Gl
+ Mb8KKgNNX9fRjWUiCl/eteBI=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by mta11.migadu.com with ESMTPS id 86b764d73d51d8da;
-	Tue, 03 Nov 2026 01:25:47 +0000
-X-Mizu-Trace-ID: 86b764d73d51d8da
+Received: by mta11.migadu.com with ESMTPS id 53184aca2c7ad085;
+	Tue, 03 Nov 2026 01:27:18 +0000
+X-Mizu-Trace-ID: 53184aca2c7ad085
 X-Migadu-Flow: FLOW_OUT
-Date: Tue, 3 Nov 2026 09:25:28 +0800
+Date: Tue, 3 Nov 2026 09:27:03 +0800
 From: Hangbin Liu <hangbin.liu@linux.dev>
 To: Andrea Mayer <andrea.mayer@uniroma2.it>
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -62,10 +62,11 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	David Lebrun <dlebrun@google.com>,
 	Stefano Salsano <stefano.salsano@uniroma2.it>,
 	Andrea Mayer <andrea@common-net.org>
-Subject: Re: [PATCH net 1/6] seg6: fix skb checksum update helpers
-Message-ID: <auk4COJzzhbGK-3g@fedora>
+Subject: Re: [PATCH net 2/6] seg6: update skb checksum when ipv6_srh_rcv()
+ decrements the Hop Limit
+Message-ID: <auk4Z3DM4up7qVqu@fedora>
 References: <20261031225033.64-1-andrea.mayer@uniroma2.it>
- <20261031225033.64-2-andrea.mayer@uniroma2.it>
+ <20261031225033.64-3-andrea.mayer@uniroma2.it>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -77,61 +78,62 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261031225033.64-2-andrea.mayer@uniroma2.it>
+In-Reply-To: <20261031225033.64-3-andrea.mayer@uniroma2.it>
 
-On Sat, Oct 31, 2026 at 11:50:28PM +0100, Andrea Mayer wrote:
-> With CHECKSUM_COMPLETE, ipv6_srh_rcv() updates skb->csum for the new
-> Segments Left and destination address through seg6_update_csum().
-> Replacing "from" with "to" in the packet must change skb->csum (C) to
-> C - from + to, but update_csum_diff4() and update_csum_diff16() compute:
+On Sat, Oct 31, 2026 at 11:50:29PM +0100, Andrea Mayer wrote:
+> When the next segment is a local address, ipv6_srh_rcv() processes it
+> directly and also decrements the Hop Limit. With CHECKSUM_COMPLETE,
+> skb->csum is not updated for this change. If the packet is then delivered
+> on the same node and skb->csum was computed in software, for instance by
+> conntrack, UDP can drop the packet as a checksum error. With skb->csum
+> computed by the device, TCP can instead log a "hw csum failure", as if the
+> device had computed a wrong skb->csum.
 > 
->   ~csum_partial({ ~from, to }, ~C) = ~(~C + ~from + to) = C + from - to
+> Update skb->csum for the Hop Limit decrement with update_csum_diff4().
 > 
-> This does not affect packets forwarded by ip6_forward(), which sets
-> ip_summed to CHECKSUM_NONE. But when the packet is delivered on the same
-> node and skb->csum was computed in software, for instance by conntrack, UDP
-> can drop the packet as a checksum error. With skb->csum computed by the
-> device, TCP can instead log a "hw csum failure", as if the device had
-> computed a wrong skb->csum.
+> Depends on patch "seg6: fix skb checksum update helpers".
 > 
-> Fix update_csum_diff4() and update_csum_diff16() to compute C - from + to.
-> 
-> Found by manual code inspection, while checking that the skb->csum updates
-> in the SRv6 receive path are consistent. A following commit adds a selftest
-> that reproduces the problem with a tc ct action. The issue was confirmed in
-> a VM without kernel changes or error injection: with the rest of this
-> series and without this patch, that selftest fails, as UDP drops datagrams
-> as checksum errors. Also tested against the srv6 selftests, and with a
-> ConnectX-6 Lx NIC (mlx5) that provides CHECKSUM_COMPLETE.
+> Found by manual code inspection, and reproduced in a VM without kernel
+> changes or error injection. A following commit adds a selftest that
+> reproduces the problem with a tc ct action. With this patch, the selftest
+> passes for the path with local SRH segments. Also tested against the srv6
+> selftests, and with a ConnectX-6 Lx NIC (mlx5) that provides
+> CHECKSUM_COMPLETE.
 > 
 > Fixes: 1ababeba4a21 ("ipv6: implement dataplane support for rthdr type 4 (Segment Routing Header)")
 > Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
 > ---
->  include/net/seg6.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  net/ipv6/exthdrs.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
-> diff --git a/include/net/seg6.h b/include/net/seg6.h
-> index 82b3fbbcbb93..01d8034e48fc 100644
-> --- a/include/net/seg6.h
-> +++ b/include/net/seg6.h
-> @@ -19,7 +19,7 @@ static inline void update_csum_diff4(struct sk_buff *skb, __be32 from,
->  {
->  	__be32 diff[] = { ~from, to };
+> diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
+> index 96c8402a27a5..9d3ba310065a 100644
+> --- a/net/ipv6/exthdrs.c
+> +++ b/net/ipv6/exthdrs.c
+> @@ -460,6 +460,10 @@ static int ipv6_srh_rcv(struct sk_buff *skb, struct inet6_dev *idev)
+>  	}
 >  
-> -	skb->csum = ~csum_partial((char *)diff, sizeof(diff), ~skb->csum);
-> +	skb->csum = csum_partial(diff, sizeof(diff), skb->csum);
->  }
+>  	if (skb_dst_dev(skb)->flags & IFF_LOOPBACK) {
+> +		/* payload_len, nexthdr and hop_limit */
+> +		__be32 *hlim_word = (__be32 *)ipv6_hdr(skb) + 1;
+> +		__be32 old;
+> +
+>  		if (ipv6_hdr(skb)->hop_limit <= 1) {
+>  			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
+>  			icmpv6_send(skb, ICMPV6_TIME_EXCEED,
+> @@ -467,8 +471,12 @@ static int ipv6_srh_rcv(struct sk_buff *skb, struct inet6_dev *idev)
+>  			kfree_skb_reason(skb, SKB_DROP_REASON_IP_TTL_EXCEEDED);
+>  			return -1;
+>  		}
+> +		old = *hlim_word;
+>  		ipv6_hdr(skb)->hop_limit--;
 >  
->  static inline void update_csum_diff16(struct sk_buff *skb, __be32 *from,
-> @@ -30,7 +30,7 @@ static inline void update_csum_diff16(struct sk_buff *skb, __be32 *from,
->  		to[0], to[1], to[2], to[3],
->  	};
->  
-> -	skb->csum = ~csum_partial((char *)diff, sizeof(diff), ~skb->csum);
-> +	skb->csum = csum_partial(diff, sizeof(diff), skb->csum);
->  }
->  
->  struct seg6_pernet_data {
+> +		if (skb->ip_summed == CHECKSUM_COMPLETE)
+> +			update_csum_diff4(skb, old, *hlim_word);
+> +
+>  		skb_pull(skb, skb_transport_offset(skb));
+>  		goto looped_back;
+>  	}
 > -- 
 > 2.43.0
 > 
