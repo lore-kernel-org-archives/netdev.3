@@ -1,60 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.181
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793725579;
-	b=uSKTF0T/GepljffADRSAA9+0m06kpmitCVLhMbM48Ni9ZmGab8i0XXLzOTd5SP13Edlm
-	 dnEp592OPvrtmvdTljLEyoDN6vIpu5fERnUn621dM7TzgD47jZuJIQlzlMBO5QDPvLqk5
-	 40Uwva72B8i0JeRHLPs624KgaG7UTqve3zSklkVInnASPM7PggxNA0NB/cqpgasX5BrX1
-	 JFUjB3tqSMajSMBBcDPa9VUU4+ow5fngPGICH/ACkeKUfDZJUBviJdT2KMpGQ1bs561lx
-	 H523BQ2M1QinW+pwAv6loQSUhRL/myQHu5Spy+Toeyr+I1PYE1e/wYopAPNzG3DqxIQ==
+	t=1793725781;
+	b=Zak97LGQkzewMx6zXeuZtK75DnYMUVoFMs7CkkR0tjtKxbNgJeYqeT1gUj4f4Fv/krFp
+	 BY9SfYLwjyL5z9yPRHIdSxAdvjg1XJuxFY7x6COorlkR2KxdzYrJ3uauSE5vwazBC4Tgx
+	 fVAL8MVAw9xesm1s8atr4wOSwEKO7nkXGOm1N87A9BYSWzXAmxtLOmco6P24sIzsMKWAy
+	 w21LCMA4GvNqUPyWQDQI9EeB0nsHXe1e2I61gbxi8AHjjkdnbzrbHNiQaBJ17ccL1rbdq
+	 tlgyuM9EFD/96EtU6Voqnyzo0YhMEcpja0csvVYNiOlmtK/VyFkWMFIpXAz48rpywvA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793725579;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
-	bh=VxDUGgqpmuwjhaz2tpt1jbM+g+Mh/icM7bqfI0dRVZs=;
-	b=tAUIQYIuTrBhaama19q6kBhaWYu5sDPEvW5DGcgXBB2cDrCaTq+qwVpPq5jb+8wyBZ8K
-	 w2DzWl7JvvhdqjYzDpLyV1Hx7SV1sS5vjqFwulAWcqg1nuAqonLWo21xFJJLQ03ocy0pR
-	 /G50so3gwTUoQjWgeu4mzvksHQTct29cE5yBT+ikFw/UicZDBmArvpip4wFZj49GEea9W
-	 pZSre6FsoYHbrQ6MPE6RQw+FEmRpq9Y4G5jaEDRO8C5fCec08m6FNregmjwpjFxUvj6mC
-	 2xdtrLYcHWR7/r8ecFauOATYqI8PVeIovasj3NKbGqmcu8nsQfxmVZjFkfEq/BKNKZw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793725781;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Subject:From:To:Cc:
+	 Date:Message-ID:User-Agent:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=BmASpXXwPNu0Mm15CUdYzIJM1zVTMbWZjlzlptieXNM=;
+	b=SycaXcC34tHSyAacmLCsPobM064S6Tl8cnsY4TAFX4vi9s+WaCwsptI0duUHhh6litYh
+	 vSFbxkOEueO813RhuqeIP+nlrQTjLvuRnKRJWBlHLnp4K9Z6O7wNqdZL8OyEr/AO5QXbn
+	 oLEgjc74OHXuky9zlAKarS+pviAvEUAl1KguXfiBIJSm2fkPLHKXfHBPhu2S+I20QHKTA
+	 QZ9J5Rs0ghcyCzGMuF7lIgzcNwokwfGY+3uPlaQqoZXi2xu+AxC6sgn9W9XYNkOGX33xc
+	 SBgOFEuTZlhsPopdBfvLSsUIqmG4MJXSedmD6jFEM0eZNs6MkmrsgeDlyafE4LjS+hQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=netfilter.org;
-	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=OAmxmets;
-	arc=none smtp.remote-ip=217.70.190.124
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kZCKL1lK;
+	arc=none smtp.remote-ip=74.125.82.181
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 411DA606A338;
-	Tue,  3 Nov 2026 17:06:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 411DA606A338
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A48606A324
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 17:09:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A7A48606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=OAmxmets
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793725574;
-	bh=VxDUGgqpmuwjhaz2tpt1jbM+g+Mh/icM7bqfI0dRVZs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OAmxmetshGAIYBJRfy/d2LH+ONOWvjhHICwDHoGwVBfQ/x8b8lvC8bpImqvejym/y
-	 PFMKBc4mRoO0slfNHxtGcq0N0Zb/OqcUFgt5flv0GxMiv0JgKV9KOOC9+Hej5rcXEA
-	 14HsGz0goua3VOasIO5cQTtXtU6ZH3vWwwbr7zzHUXU8lWlhFRkV+xtoXXbB/KaZL+
-	 GpVoo2vT1BjYsbRivSV4s2wfHPkTCWoZ8v3F9OGIKK1F+n4b8AcOB50P4FE/qWj24w
-	 eg4nk+lLiH84QiI+eugbh2Uls9UItjmyM4522zk6y+1J6TqIggiN1aI++SIPN3i2WH
-	 SuqQgI6eGuCWQ==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id A7B6F6005C;
-	Tue,  3 Nov 2026 18:06:14 +0100 (CET)
-Date: Tue, 3 Nov 2026 18:06:12 +0100
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: davem@davemloft.net, netdev@vger.kernel.org, kuba@kernel.org,
-	pabeni@redhat.com, edumazet@kernel.org, horms@kernel.org,
-	fw@strlen.de, ja@ssi.bg
-Subject: Re: [PATCH net,v2 00/15] Netfilter/IPVS fixes for net
-Message-ID: <auoUhCBDxquEG1ij@chamomile>
-References: <20261103140308.591690-1-pablo@netfilter.org>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kZCKL1lK
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-36a2551d7b5so1001309eec.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 09:09:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793725780; x=1794330580; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :message-id:date:cc:to:from:subject:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=BmASpXXwPNu0Mm15CUdYzIJM1zVTMbWZjlzlptieXNM=;
+        b=kZCKL1lKfOY2G5eS81vdoAZBH3XD6hz3ifxVKcalpGR3YPjO//zoS3QDJPjszMBjhO
+         8a+7q+uQvg+n74ZeahZj7YWyk4KjHZiTNeNIKHt53Avaqto7d1W0cO957U8aXwx0m33l
+         k0OEh79lcNBNe0Y7tUasWF3eKFW/aQSL3IPXob+X7tpbAgynYZwv7DBpyoB7NSQjqp1q
+         NN5nkw0dunHa0QP6hPXIV/OIc2wBej6b4CIQ3ay5JQnBMvyeBTaga38sJAX0O2BLQeRz
+         phvihf+X9fRpxxUO1m24wMDhqsZQFvve7TFHpRT5KBaDJNDR3CyM/KD9xe3FPmW0TRWQ
+         Nj4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793725780; x=1794330580;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :message-id:date:cc:to:from:subject:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=BmASpXXwPNu0Mm15CUdYzIJM1zVTMbWZjlzlptieXNM=;
+        b=v7UBHqqAfdFLz8a1udZw1xqC5NPp+/l395Tk4+kixzFw4a1LbvCycJeGG9Za6EwOMj
+         Zm6ThoXRB/ausF1dLZZFefZyLgXPy+81paULQNlGLj1rL3jl9vuakLs8vrelMClG2Njj
+         GdbyDxlCHUGPmwa/tWbtQ+NSzgmH2fZC5faRU8eh+yTW32U7QofusQSe9xtqeG8hmcn4
+         hXEfbU94FyWM+W01x/hB9zETKi19pqnyK8imoKDK0I3RwoSAgDtpyw1DR3PkSOtk3w8x
+         /u0wKywwMHBEa+Mmlzma5nW2z3MwoPbEtu6oCH9vOwYKSyB31JPeYLctU3BdbNGBInGv
+         oDJA==
+X-Gm-Message-State: APuU4Z+h9QJvaBuOyyKQl0eSnwCRb9Cbj9JJIoCRRa13X75TYbWfr1W2
+	tP3ISJaSpaD09gVF7RpYpLaUw28gzNdPpE+pDIxtOnVY0lo5H1D9ZeCJ
+X-Gm-Gg: AYBFou37D5ybMzveYTeNEaeEfmPD9hjN3N3Q09ErJxRlKTIwVvOSM32k07EW/CS5oXR
+	HrTYmfISDhZm4BQcma6WBPA9Mb+ypdGDDWa7K1sbMWrR/Pi4vzJRTCIaQpvoZ4ANdhLAfKzP34H
+	RXlD/n3lWlhazsgtqF8qs7sO7Av4Sjg0Mf+R3n0hSDdeVXOvAoPAC8/EAEeR3A8PkrKmriw4d4D
+	L8ppucJspKp03Dg8J2bPxl580s4zJ83/7MKBlzxc13liLaXUx4wTK0vGgOmutk7PldVqPCr3qEu
+	KIqTBcDYTRo5l688NwOk31Rqz3RevvurvfD6uSBUKTYcjTnm44B6vEGuL1EYSurJtlxWhbL6UC5
+	98tz2kBiONyn4+VtmZU3IJ+Uj5kbaqIUgL1XP0IPP9PwimnODelwHUEI8KSFPR/EVxJlNiMerZb
+	orZAn8+ykFWdfkszKehBzPfUG/pjE4lOcTJBqEM49CSUVix3ikMsGq5B7YDM+FY8Y+YIUWzgSez
+	TW9XnxO03oJQAWkun2blsdlZdBN1TPumpQSs2gBx4cKq70TKZHxSCDVXD70cBlDKz4+o3Uwyy64
+	d7Pvh21qfnYYg5+B64X4BYrBJHprRd2h5gDHnuIIvXC0HlCYa1fLVGOzWcOL5EcIyphwGSp7thW
+	vIa+XYIvC36wCc5+6QmH1eoPoNJe4osFbRDGQZmDgTqI0eg==
+X-Received: by 2002:a05:693c:4152:20b0:358:c5c9:2661 with SMTP id 5a478bee46e88-36a423c6383mr22043436eec.10.1793725779615;
+        Tue, 03 Nov 2026 09:09:39 -0800 (PST)
+Received: from ahduyck-xeon-server.home.arpa ([2605:59c1:38c:400:22f5:2de:b9c3:f27c])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a4291e38fsm57059650eec.15.2026.11.03.09.09.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 09:09:39 -0800 (PST)
+Subject: [net PATCH] net: Segment CHECKSUM_UNNECESSARY GSO skbs other than
+ fraglist
+From: Alexander Duyck <alexander.duyck@gmail.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ horms@kernel.org, kernel-team@meta.com, kuba@kernel.org, pabeni@redhat.com,
+ tactii@gmail.com
+Date: Tue, 03 Nov 2026 09:09:36 -0800
+Message-ID: 
+ <179372577673.49909.11253315483074546903.stgit@ahduyck-xeon-server.home.arpa>
+User-Agent: StGit/1.5
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,173 +98,69 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261103140308.591690-1-pablo@netfilter.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Hi,
+From: Alexander Duyck <alexanderduyck@fb.com>
 
-On Tue, Nov 03, 2026 at 03:02:52PM +0100, Pablo Neira Ayuso wrote:
-> v2: remove kdoc update in nf_conntrack_expect.
->     anything else, just like v1.
+The netif_needs_gso function lets a GSO skb reach the device unsegmented
+when it is CHECKSUM_PARTIAL or CHECKSUM_UNNECESSARY. The second case was
+added for FCoE, whose transmit path marked CRC offload that way at the
+time. Commit 253aab0597d9 ("fcoe: Use CHECKSUM_PARTIAL to indicate CRC
+offload") moved FCoE back to CHECKSUM_PARTIAL but left the exemption in
+place, with nothing left that needed it. Fraglist GSO, added later, is
+its only user today, as its segments already carry valid checksums.
 
-There is an issue with patch 6/15 which needs a bit more work.
+A TCP GSO skb can still arrive as CHECKSUM_UNNECESSARY without being
+fraglist. Hardware LRO builds its aggregates that way, for example mlx5
+sets SKB_GSO_TCPV4 or SKB_GSO_TCPV6 and CHECKSUM_UNNECESSARY, without
+SKB_GSO_DODGY. IP forwarding and bridging turn LRO off, but a tc mirred
+redirect does not, so such an skb can be sent out another device. It
+has no csum_start and its TCP checksum field is whatever the aggregate
+left there. Drivers that only set up TSO for CHECKSUM_PARTIAL, such as
+fbnic, i40e and ice, then send the whole skb as one oversized frame
+with a bad checksum.
 
-I will resubmit v3 without 6/15. IPVS patch 2/15 might also need a
-second spin.
+Have the validate_xmit_skb function mark any CHECKSUM_UNNECESSARY GSO
+skb other than fraglist as CHECKSUM_NONE, which means the same on
+transmit. The netif_needs_gso function then segments it in software,
+and the __skb_gso_segment function unshares the header before the
+protocol code rewrites the L4 checksum field. The callers of the
+netif_needs_gso function that decide on segmentation for themselves,
+such as tap, are left as they are.
 
-Preparing v3 here...
+Found by code inspection. In QEMU with an emulated fbnic, TCPv4 and
+TCPv6 GSO skbs built this way each went out as a single 11 KB frame
+with a bad TCP checksum. With this change they are segmented into
+MSS-sized frames with valid checksums.
 
-> -o-
-> 
-> Hi,
-> 
-> The following batch contains Netfilter/IPVS fixes for net, this batch
-> addresses LLM findings, several of these fixes has been reproduced by
-> syzbot:
->  
-> 1) Add recursion count to nf_reject infrastructure to prevent stack
->    overflow, from Fernando F. Mancera.
->  
-> 2) Address a infinite loop in RCU list traversal with the TWOS IPVS
->    scheduler, from Darong Lu and Julian Anastasov.
->  
-> 3) Use kfree_rcu() to release IPVS parent application to fix UaF,
->    from Chengfeng Ye.
->  
-> 4) Fix UaF in IPVS netns removal path due to releasing per-net protocol
->    data too early, from Chengfeng Ye.
->  
-> 5) Fix unbounded growth of stale, unmatchable IPVS connection entries,
->    from Julian Anastasov.
->  
-> 6) Restrict maximum master conntrack chain depth in ctnetlink,
->    from Florian Westphal.
->  
-> 7) Preserve recursion count on nfqueue reinjection, from Zihan Xi.
->  
-> 8) Restore GRE timeout in the flowtable, otherwise, WARN_ON_ONCE()
->    is reachable, from Michail Andreas Michalopoulos.
->  
-> 9) Check non-null gc transaction in nft_rbtree before queuing it for
->    processing, from Xingyuan Mo.
->  
-> 10) Replace WARN_ON_ONCE() by DEBUG_NET_WARN_ON_ONCE() in
->     nf_conntrack_bridge which is reachable if the protocol of the tag
->     of a frame differs from the vlan_protocol of the bridge.
->     From Laveesh Bansal.
-> 
-> 11) Check x_tables target name is non-null before accessing it when
->     building a new table, from Fernando F. Mancera.
->  
-> 12) Fix out-of-bound memory read in nf_conntrack_sip, from
->     Joas Antonio Dos Santos.
->  
-> 13) Fix a memleak in nf_tables hardware offload when double deleting
->     the same rule, in the same batch.
->  
-> 14) Use a mutex in xt_recent netns exit path instead of spinlock,
->     since proc unregistration might sleep. From Cen Zhang.
->  
-> 15) Zero the nf_nat_range2 struct before filling it up, to avoid
->     using stale uninitialized stack data to configure NAT with
->     an esoteric NAT flags combination. From Florian Westphal.
-> 
-> Please, pull these changes from:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-26-11-03
-> 
-> Thanks.
-> 
-> ----------------------------------------------------------------
-> 
-> The following changes since commit cb284914e749388eef402938bdb3115fe1f6d337:
-> 
->   net: ipa: Fix double free of the interrupt structure on config error (2026-10-30 19:04:37 -0700)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-26-11-03
-> 
-> for you to fetch changes up to 3d234337bbb1e32fab38e4e30da72edc5ddc241f:
-> 
->   netfilter: nat: zero newrange before filling it in (2026-11-03 14:50:15 +0100)
-> 
-> ----------------------------------------------------------------
-> netfilter pull request 26-11-03
-> 
-> ----------------------------------------------------------------
-> Cen Zhang (Microsoft) (1):
->       netfilter: xt_recent: do not call remove_proc_entry() under recent_lock
-> 
-> Chengfeng Ye (2):
->       ipvs: Defer application parent freeing until after RCU readers
->       ipvs: fix protocol data lifetime during namespace teardown
-> 
-> Darong Lu (1):
->       ipvs: wait grace period while reusing dest from trash
-> 
-> Fernando Fernandez Mancera (2):
->       netfilter: nft_reject: prevent unbounded recursion in output hooks
->       netfilter: x_tables: check target name before accessing verdict
-> 
-> Florian Westphal (2):
->       netfilter: nf_conntrack: limit expectation master chain depth
->       netfilter: nat: zero newrange before filling it in
-> 
-> Joas Antonio dos Santos (1):
->       netfilter: nf_conntrack_sip: fix OOB read in ct_sip_parse_transport()
-> 
-> Julian Anastasov (1):
->       ipvs: do not create conns from packets with port 0
-> 
-> Laveesh Bansal (1):
->       netfilter: bridge: use DEBUG_NET_WARN_ON_ONCE in nf_ct_bridge_refrag()
-> 
-> Michail Andreas Michalopoulos (1):
->       netfilter: flowtable: extend ct timeout of offloaded GRE flows
-> 
-> Pablo Neira Ayuso (1):
->       netfilter: nf_tables: fix memleak when rule deletion fails with hardware offload
-> 
-> Xingyuan Mo (1):
->       netfilter: nft_set_rbtree: check catchall_sync return before queue_done
-> 
-> Zihan Xi (1):
->       netfilter: nf_dup: preserve guard across NFQUEUE reinjection
-> 
->  include/linux/netdevice_xmit.h              |   4 +-
->  include/net/ip_vs.h                         |   4 +-
->  include/net/netfilter/nf_conntrack_helper.h |  15 ++++
->  include/net/netfilter/nf_dup_netdev.h       |  35 ---------
->  include/net/netfilter/nf_queue.h            |   1 +
->  include/net/netfilter/nf_recursion.h        |  42 +++++++++++
->  net/bridge/netfilter/nf_conntrack_bridge.c  |   2 +-
->  net/ipv4/netfilter/arp_tables.c             |   5 +-
->  net/ipv4/netfilter/ip_tables.c              |   5 +-
->  net/ipv4/netfilter/nf_reject_ipv4.c         |  12 +++
->  net/ipv6/netfilter/ip6_tables.c             |   5 +-
->  net/ipv6/netfilter/nf_reject_ipv6.c         |  13 ++++
->  net/netfilter/ipvs/ip_vs_app.c              |   2 +-
->  net/netfilter/ipvs/ip_vs_core.c             |  15 ++--
->  net/netfilter/ipvs/ip_vs_ctl.c              | 109 ++++++++++++++++++++++------
->  net/netfilter/ipvs/ip_vs_proto_sctp.c       |   5 ++
->  net/netfilter/ipvs/ip_vs_proto_tcp.c        |   5 ++
->  net/netfilter/ipvs/ip_vs_proto_udp.c        |   4 +
->  net/netfilter/nf_conntrack_expect.c         |   3 +
->  net/netfilter/nf_conntrack_netlink.c        |  36 ++++++---
->  net/netfilter/nf_conntrack_sip.c            |   4 +-
->  net/netfilter/nf_dup_netdev.c               |   1 +
->  net/netfilter/nf_flow_table_core.c          |   1 +
->  net/netfilter/nf_nat_masquerade.c           |   4 +-
->  net/netfilter/nf_queue.c                    |   1 +
->  net/netfilter/nf_tables_api.c               |  21 +++---
->  net/netfilter/nf_tables_offload.c           |   3 +
->  net/netfilter/nfnetlink_queue.c             |  17 ++++-
->  net/netfilter/nft_fwd_netdev.c              |   1 +
->  net/netfilter/nft_set_rbtree.c              |   3 +-
->  net/netfilter/xt_NETMAP.c                   |   4 +-
->  net/netfilter/xt_recent.c                   |   7 +-
->  32 files changed, 279 insertions(+), 110 deletions(-)
->  create mode 100644 include/net/netfilter/nf_recursion.h
-> 
+Fixes: 253aab0597d9 ("fcoe: Use CHECKSUM_PARTIAL to indicate CRC offload")
+Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
+---
+ net/core/dev.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/net/core/dev.c b/net/core/dev.c
+index f32353b0467c..28b4a652d037 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4207,6 +4207,17 @@ static struct sk_buff *validate_xmit_skb(struct sk_buff *skb, struct net_device
+ 	if (unlikely(!skb))
+ 		goto out_null;
+ 
++	/* Only fraglist GSO, whose segments already carry valid checksums,
++	 * can be handed to a device as CHECKSUM_UNNECESSARY. Any other GSO
++	 * skb has no csum_start for the device to segment from. NONE means
++	 * the same on transmit, and has netif_needs_gso() segment it in
++	 * software.
++	 */
++	if (unlikely(skb->ip_summed == CHECKSUM_UNNECESSARY &&
++		     skb_is_gso(skb) &&
++		     !(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST)))
++		skb->ip_summed = CHECKSUM_NONE;
++
+ 	features = netif_skb_features(skb);
+ 	skb = validate_xmit_vlan(skb, features);
+ 	if (unlikely(!skb))
+
+
