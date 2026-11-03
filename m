@@ -1,108 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.238.174.39
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793715236;
-	b=WF95aFM3956BRDmNdxSsBtPGax6QuRLr0pDJUdyUXAvmF26GtNXNcAu52ZN1BJB6sO0Z
-	 Gzmc3phJUIRHmt20UmlhD9+0WojpBPrRKFhQW4Nn40ESLudgy1yz2I6Uigvx2lt8+EjKw
-	 GoE2qN0hUIgAaiBgjHKsPnoW5XRGS7ltU2KN80NOZcv+mIyVtR34i8rr+P7GL2rRjsQFG
-	 DeXKku3n5o5wXNDE5d38SyBQUxSRhJ2FL71b+DT2WJAmUn8x4vSfB2vJLekChWXcVtd1K
-	 i8JCS1oQa/aiXPwwFunUJwQNs48a2LUsyUTX+q2ScNun/l29QfMtqsdcI23FDC+Fm9Q==
+	t=1793715504;
+	b=S8nfjILBkwxsHJyNczf5/ABo25dmmiVZOtVyq88k9fub90a3lhJAjbywz4oJ3s8kIprZ
+	 TPWf9uPvPoVC8sZcuT5q4I0iTwFdJLJhGzaLuKJ14ttMZDBBUgtZhtFYtUB7vNXULE8aQ
+	 g3HjSNTX8IwJ7l24ivJTeewEFzgsaGLvW6EHieyenvpVXikq4UXpkKPDOZF9n98Pze1Fc
+	 e8ROO9GaWkCcbJUHdlfenK3DVGIoJYp/Wvanzyv0s5lzElG87Jbu+lNy1useSf8Lou+kj
+	 +1hfMSNCFdNHW0nhHpplSXqSbCb/xemNgSjvyGdSHaqW7nVgliGXTXyzk8FqG86yAbw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793715236;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=XVx1I1BAZHH28iV5zivj82AtwmqyL72xeO8t00SbIII=;
-	b=xjRjYABz2P5xEJ+o2GDpyw93KcpIfAcKGkecmRxSL50+JWtddVsv790e3LypmwZThHv9
-	 dDPSzJp+Z2IzQ7VUN4CnOPhucdwFxPca0XYT1h/S0HDSxKH7bvOSyD+EBuw4ntCQsPQqJ
-	 x1IepAjZ9bqEfL3Rye+NyzC8PIZmA/pOwgX8uesAFEU7sFSdzVb83wFsl3g12pGsAoXsg
-	 SAHsL4DAv+Dj0f3STrTv27WRfzsVF6TqRIHp6GtnquEHTtcRiGaSdx7dWURRXQj8lX0rY
-	 CQrRancmqNDaVuhAKSxtqwTsxCsa6NJ8a6jdmORvVi0/1CDnvOtYjejimRZysOqX3cg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793715504;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:Date:
+	 From:To:cc:Subject:In-Reply-To:Message-ID:References:MIME-Version:
+	 Content-Type;
+	bh=cwhdyeGYqOmeDqITF9IFDP3190bhKSp0djlCibxuHcM=;
+	b=XjoZqGdWFAk8v78ko78aXD8i4Xt60npiPmOMflnhR+QBWbqQDdfNtGnhF+Qrl0mIKPr3
+	 PF1x30bqaUva8Ut5JlY09fQNatNr806yd7ovojC+NmhxGCwtO2vMMirH0DJ5YwzHaCqTt
+	 mVPSpuIxi2DgU7xKH0VQqchKWIuasWXLqUBx6XTKnkBn3gGcRqITQLsJaSM8f2o58GQQk
+	 TeJML6u15U5VH6VsOFFTEDWpbSWu6KGeOKbuLyEKPH6++FEL2Ft51iao7lrCcLq/UxS24
+	 hxM4Y1OId1GGa2aDAdNAzWfw+NWm0dIv86dI94OHjs3tvrFteMSZFCcIinOTRgVpcVA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TtqHjydb;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=AVQjKBA1;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dmarc=pass header.from=ssi.bg;
+	spf=pass smtp.mailfrom=ssi.bg;
+	dkim=pass header.d=ssi.bg header.i=@ssi.bg header.a=rsa-sha256 header.s=ssi header.b=JE82KpPK;
+	arc=none smtp.remote-ip=193.238.174.39
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34319606A326
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 14:13:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 34319606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A27A606A32D;
+	Tue,  3 Nov 2026 14:18:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A27A606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TtqHjydb;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=AVQjKBA1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793715230;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XVx1I1BAZHH28iV5zivj82AtwmqyL72xeO8t00SbIII=;
-	b=TtqHjydbmamDVjJ1zrJuz99NaZtZkIBTnf+TLS5dwN1ZVqQCN3iUiq+2jYgSt82kZC214e
-	xrvI7XnR3Jc/wb6lSWrSYGjNGwH5F8YuGNf+Rij7jmpW0PzMEsV3X3nSlKt9C15auluPSw
-	2AJlM2NZkpurOqM6hVyKNQug4zA2tRs=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-400-Ru2Uhh5ZNdedr8BUyPZmlw-1; Tue, 03 Nov 2026 09:13:49 -0500
-X-MC-Unique: Ru2Uhh5ZNdedr8BUyPZmlw-1
-X-Mimecast-MFC-AGG-ID: Ru2Uhh5ZNdedr8BUyPZmlw_1793715228
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48e0ef019a4so3593408f8f.3
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 06:13:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1793715228; x=1794320028; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XVx1I1BAZHH28iV5zivj82AtwmqyL72xeO8t00SbIII=;
-        b=AVQjKBA169gUofMYoGO/GaCNAEe/QzKNwVBrNO7GBtMqBtvImftjx1cbGwTyNvWBql
-         mWUaMvK/O4H7J1Kn85BnLrXYLiElLeqT1dxNj/YacPyiyOXBoDdEqIcRcuiclkPuvKG3
-         P9IfR0q9rCuY355Hi9vQPeXpQpxm1tkk6YnrYM+H4KdvYXvt8E9Cw3Et2B1CzojdR4DT
-         /B2AvFQE0MW0GZpgIdrFLe0qagDY4wAz6GULGhwcFRJkJ1KAOwuv+Mbf+ggscTj3hEk/
-         hH2W6ZbT1nhrZkdS1C2vW2SES4pLxjBSMfZ8h7amydZvPJs6WijkAgO5LMqpjmQZFfKF
-         u8Uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793715228; x=1794320028;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XVx1I1BAZHH28iV5zivj82AtwmqyL72xeO8t00SbIII=;
-        b=BA5DheeEFdo2OoQlQuTosAJJZJSUx1hOUI2sM2oi05iEW05M3wGEziUEqHigtO6EtQ
-         h/2AIs8xdJ/Kxl+ulAEQ/urIdHNVq+w1bbttCKvjnKYBV6So0y3x/5tiXlAH3BsG7lw7
-         pumhw2/lJ0zZ4AoxFgbNm7kCdRj+FijWfjF/JOXfEYVKScPP/r7NvHJ+fgWY4IbT17vh
-         x0cxlc9V0fUHf2Qh1MQGxFdJeWFL3x/0Ha1Zih0OuQNwqr/BkgoMvQLpSloxZB8mkzYk
-         msRx/pZAcDrXzaiZ2kiHjnDAv/8tpJVxfDSkpCXIrDyR2zr/tcUCCmuIDMKVCUMVOFRV
-         /j1A==
-X-Forwarded-Encrypted: i=1; AKwUvByXViIvwo3845tj+kexrF6VpXgBV8Av3n620BgBTt3yocDCUZ39nlyAclKeXN7jzGtHChE7gs4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8mvJ+9j2qkdwIy9SPKpi5ITij3hZj+C+ao0Vjq2RtThy5D9Gtm
-	pY4IXBEC37eAoCwJUP89IXfC0xhQAFnw0hHQud2Mqr3D46sugdMGX20Y1lufDN1dR6O6Xl7OmQP
-	q1nvhBn6kwSx7AhvwcktltKctgiUK+FY7TFSsNJgmLeKVPoFeUwolVsCmdg==
-X-Gm-Gg: AYBFou28RsdNbQIaJ0gyuNClWFlZ2e67OTno/iqdzgZUZEpV2rR/xG4/kkDEQ3t+ueS
-	PNUQAM41fn0VSSUqSa2tlL7ujIMzPXehEANqNOblNHVi+80mJ9d0BjtZueNLHrjGu02bVLVbx4N
-	dYhA4zWC0WXD5VUieUfYjlVROVkEEoZtEoru5avBhzs9FYJyTHS9ks8RySxYz5Kvk+JDdwytrXd
-	46R2YYC8g+qfTpZFIZZfY/257KnQUotEjU95NPcduw8wb2fSDQp2I+Wi4oQePDDRkH5S5/8NFBg
-	obI/uZuEJtwt6ODAFfOM6Z09NVmSly0IRdvCRujqFZIJDE/ZlgkihVTs7WStFABoD0C/YvriE9U
-	GRzKYXB/BjQAGu99x5VoJH+2VDND984l2vz2AGFRvGnWcOVlnrTD56TcSILqyAGHl+cH7ooGUAa
-	srjhHGyW36EIQFVcTjAHZ9y8I9d9eP4h9GS6tXEeFrjGA=
-X-Received: by 2002:a05:6000:40c7:b0:48d:f1b3:c02e with SMTP id ffacd0b85a97d-48e6e5016f1mr30505643f8f.25.1793715227744;
-        Tue, 03 Nov 2026 06:13:47 -0800 (PST)
-X-Received: by 2002:a05:6000:40c7:b0:48d:f1b3:c02e with SMTP id ffacd0b85a97d-48e6e5016f1mr30505585f8f.25.1793715227337;
-        Tue, 03 Nov 2026 06:13:47 -0800 (PST)
-Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b9a3b1sm27222574f8f.44.2026.11.03.06.13.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Nov 2026 06:13:46 -0800 (PST)
-Message-ID: <d0b6c2ba-34f2-4750-92c3-fb65c82cbc9e@redhat.com>
-Date: Tue, 3 Nov 2026 15:13:45 +0100
+	dkim=pass (4096-bit key, unprotected) header.d=ssi.bg header.i=@ssi.bg header.a=rsa-sha256 header.s=ssi header.b=JE82KpPK
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id 6A0F021F8C;
+	Tue, 03 Nov 2026 16:18:13 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=cwhdyeGYqOmeDqITF9IFDP3190bhKSp0djlCibxuHcM=; b=JE82KpPKXrNC
+	dOjPi13LLWsSZTcODSq65jFd7ktUXhAhF7N4c0NgNzUEIYVDVvlfBnN60DntmhjV
+	xx1DkEPeNj9EL1O1AIu8UqWvjqwGAL1fUNj11gJg5sG4gF4Vq/NKRzfsBB40hBK+
+	qpeZ7EGkqtpSw51fr5sL9f04b1BH7XV1khgyJnr0U7RA5UZk8OI5Bs0UTujtuBiw
+	zbWTk3Ii7NFuvVIIoqlv+uK7fAxQbS+WXlqDUu0AX3c4Kybn3XvEeI3dUCmb6+Z/
+	7NUsejQqxSXum3EPu95/6SmSENANT9QgqVJVREcl80ijATnPIf4jiD/y1sON8Zn0
+	Cp8h0fUouiSW/77fK0W/3LqOx70bBggPWEa7Gz/0mwBzev/+7zO8uvJg2tdhSQDZ
+	qIgdlhWyms0XK8/FLcSiX9WUkA0WzTcUnIvPDnpAk8qsx/kZdvkS7Qn569MHvhMq
+	uJRBWaM0vGU16DfkTx41nXYZko7WG4Sd3sdHj2ihSIxpit9fDEnyM8K3weA7UG39
+	AviqoNStmBDojIn20+wjKXnYaevkNGd1K/PhmWlEjlEO1QflO+euCIzUyvay95H4
+	4Rv9tKE1dHz3x2B5S1x/I+qnl0O/gnp8ZoQ2PAH3TfNHtBH/G2oTITqv9OfyC0AN
+	4UVTfKe7BNgfBV/pCTbHb1vbtpNokPY=
+Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Tue, 03 Nov 2026 16:18:13 +0200 (EET)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by box.ssi.bg (Potsfix) with ESMTPSA id CDE7460F6A;
+	Tue,  3 Nov 2026 16:18:12 +0200 (EET)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 6A3EI5MS050363;
+	Tue, 3 Nov 2026 16:18:05 +0200
+Date: Tue, 3 Nov 2026 16:18:05 +0200 (EET)
+From: Julian Anastasov <ja@ssi.bg>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+cc: netfilter-devel@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+        netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+        edumazet@kernel.org, horms@kernel.org, fw@strlen.de
+Subject: Re: [PATCH net 02/15] ipvs: wait grace period while reusing dest
+ from trash
+In-Reply-To: <20261103140308.591690-4-pablo@netfilter.org>
+Message-ID: <15ccbaa8-170c-d920-866f-ece97d6def13@ssi.bg>
+References: <20261103140308.591690-1-pablo@netfilter.org> <20261103140308.591690-4-pablo@netfilter.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -112,40 +80,91 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vsock: reject negative tv_usec in
- SO_VM_SOCKETS_CONNECT_TIMEOUT
-To: Stefano Garzarella <sgarzare@redhat.com>, phind.uet@gmail.com
-Cc: Bobby Eshleman <bobbyeshleman@meta.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
- George Zhang <georgezhang@vmware.com>, Andy King <acking@vmware.com>,
- Dmitry Torokhov <dtor@vmware.com>, virtualization@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261030064428.73930-1-phind.uet@gmail.com>
- <auSIGIZctLp1oOhf@sgarzare-redhat>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <auSIGIZctLp1oOhf@sgarzare-redhat>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 
-On 10/30/26 13:09, Stefano Garzarella wrote:
-> On Fri, Oct 30, 2026 at 02:43:50PM +0800, phind.uet@gmail.com wrote:
->> From: Nguyen Dinh Phi <phind.uet@gmail.com>
->>
->> The timeval validation checks tv_usec < USEC_PER_SEC but not
->> tv_usec >= 0, so a negative tv_usec makes the timeout computation
->> wrap into a bogus value, later tripping "schedule_timeout: wrong
->> timeout value" instead of being rejected.
->>
->> Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
->>
+
+	Hello,
+
+On Tue, 3 Nov 2026, Pablo Neira Ayuso wrote:
+
+> From: Darong Lu <zzyy19904204639@163.com>
 > 
-> This blank line shouldn't be there, maybe it can be fixed when the net
- > maintainers apply this patch, so please wait their comments before sending a v2.
+> Darong Lu and the VEGA team report a problem with the TWOS scheduler
+> that manifests as a loop while traversing the list of destinations. The
+> problem occurs if destinations are removed and re-added through the
+> destination trash before an RCU grace period has elapsed. As destinations
+> are re-added to a new service, CPUs traversing the old destination list
+> may never reach the old list head and fail to terminate.
+> 
+> As the problem is not specific to the TWOS scheduler, use a general
+> solution. Jiayuan Chen provided an initial solution based on
+> get_state_synchronize_rcu() and cond_synchronize_rcu(), where the grace
+> period cookie is saved after a destination is unlinked and moved into the
+> destination trash. cond_synchronize_rcu() then ensures the grace period
+> before the destination is reused.
+> 
+> Use a temporary list for destinations removed together from a service or
+> during a flush. A single get_state_synchronize_rcu() call records the
+> cookie for all destinations before the temporary list is spliced into the
+> public destination trash. This also limits destination-trash locking to
+> one acquisition for bulk removal.
+> 
+> Destination edits that remove and re-add an entry to the real-server hash
+> table use the same grace-period mechanism. Destinations returned to the
+> trash after an estimator failure are put back without recording a new
+> cookie.
+> 
+> Fixes: ceec4c381681 ("ipvs: convert services to rcu")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Reported-by: Darong Lu <zzyy19904204639@163.com>
+> Link: https://patch.msgid.link/cover.1789117690.git.zzyy19904204639@163.com/
+> Co-developed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> Signed-off-by: Darong Lu <zzyy19904204639@163.com>
+> Signed-off-by: Ren Wei <weir@nebusec.ai>
+> Signed-off-by: Julian Anastasov <ja@ssi.bg>
+> Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+> ---
+>  include/net/ip_vs.h            |   4 +-
+>  net/netfilter/ipvs/ip_vs_ctl.c | 109 ++++++++++++++++++++++++++-------
+>  2 files changed, 90 insertions(+), 23 deletions(-)
+> 
 
-No need to repost: I fixed it while applying the patch.
+> diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
+> index ce9fe20d6106..7f10cf5b48c7 100644
+> --- a/net/netfilter/ipvs/ip_vs_ctl.c
+> +++ b/net/netfilter/ipvs/ip_vs_ctl.c
 
-/P
+> @@ -1566,11 +1615,18 @@ ip_vs_add_dest(struct ip_vs_service *svc, struct ip_vs_dest_user_kern *udest)
+>  
+>  		ret = ip_vs_start_estimator(svc->ipvs, &dest->stats);
+>  		/* On error put back dest into the trash */
+> -		if (ret < 0)
+> -			ip_vs_trash_put_dest(svc->ipvs, dest, dest->idle_start,
+> -					     false);
+> -		else
+> +		if (ret < 0) {
+> +			ip_vs_trash_put_back(svc->ipvs, dest);
+> +		} else {
+> +			/* Readers may still follow the n_list/d_list of the
+> +			 * unlinked dest, wait before linking it again.
+> +			 */
+> +			cond_synchronize_rcu(dest->rcu_state);
+> +			/* need_gp matters only on dest edit, reinit it */
+> +			dest->need_gp = 0;
+> +
+>  			__ip_vs_update_dest(svc, dest, udest, 1);
+> +		}
+
+	BTW, this patch needs a little fix above:
+
+https://sashiko.dev/#/patchset/20261102005654.532438-1-pablo%40netfilter.org
+
+	I'll post more info soon.
+
+Regards
+
+--
+Julian Anastasov <ja@ssi.bg>
 
