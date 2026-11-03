@@ -1,102 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793741708;
-	b=UTJoiRTTSRO76gna7rpbWrn1IO1joJOVg0Vs89rf7+ZWB6fkz3J/i8UY1+0yvsNXBori
-	 uKBY4DMwB61wt2kkn+eIo/+NGEuk8HpockBu7gYZiGcFR+OR5E3Ed4+atTj0wo4kRULJy
-	 R1Mt7ADu0dHu0GLIkYPPfc1Wj0Ihz4GcrFwTFPTHZDHpojJdYQFakkLkOC9DhCx6nKpM+
-	 x8djritXfkNr0d+H9T5/wPLngZM7LyUdsjVli5EREw/HrOc+osPuWK4rEC8EkqNLqgKTT
-	 eOaR3rQW18PAwxqHZYlNvIJxEgyirrDH+zMAq+oQgKUXf65qogr07jiga9W8To87cGA==
+	t=1793741794;
+	b=rU5O2HVFyF9qCCw4+niqqnhI1ut2TFUCaPcAq9HeODTfkNpcR5EeltOf1u5zffCUkyeI
+	 MqGocdaA/8hOIoG1YfuQhDG4SxkL0iIk2YfdsX/gTZ4ovJfgSZ5CdJY2KwbaOvKf2GLbg
+	 6gGaG3877K62G50e4EZSP4ha12zOliTutHUW5ZIr50twE/bL08oCIakV7qcFUlW92nU/G
+	 D4PEJo6H/A4pYV4fdTJpx5u+4wrugUa56dEq5DH5dN7i6+1Iq3o20uIPPCOUtVZQoui8Y
+	 otpbsU9RJMpF09nAW0ZD8cdEwdyO671BFsLci58TGJL49mMrtvMlpfwA3jMkmsbE8UA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793741708;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=2/Oq2yxr5c36O2jrWUkxKvnaxXC/ugdrj8Dp7ILTXKU=;
-	b=NealTsJXgbRfV7x29A86Fip4WSftoc5wKDsvka3BMzMX5CSEeViJWC8MHk/rC6oMqJ5+
-	 1XNGpeXU1YwnaRzThtVMRTthvpcsbiQGeLBNWpP+334CvlzIU7UTNTms9eU+hCneC10+c
-	 1XDdHJz83SFNOMdBrgRI8zBiluX3FRVnd99qgdCLiuP45BxWzE7uKoG4NinrHuby4uS8/
-	 +U5ZAc1l41920+Mq/SmyI8g/g5TlPSBBARMjK/Dc67VNywKS2ZfuSdo2CJwDpUP/681ED
-	 xhdySR5Y+GukEhBdIxYjvQstcHDmxNZolUUh8ggQD9WlbDb5Y0JyCSAn3hjEUetbqIg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793741794;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=4cXd1VFBgIfOAD+61rGAZDsr+QKv24JXaxEhYtMOIKc=;
+	b=AYWoimSBUNbanoBihxi1yt1weDINcP1Abm3aLYaUvZyv9Ow1yytpgnQhiWKYXKEO/2CP
+	 gh6sq/37mxCLxlpVDkbA1srXUJpEW6iH0AjZ4/QHyDbLrRze/AFLZVj4EyOMdB7ifGT05
+	 rIiMZdpi4+xLSnzruZXP1iD+B+HnRgmfUKsnHFufx9WnYkO95Ew3Rzzh9o4kqTF7K3W6H
+	 3XJheUrjrIoQkGDBvH45BoLIcForBNjBf8DnLFgif+arEMJNsrC/Q2ogKtijthUa0KA2m
+	 EcJefgNZ6SNOUEwS6kF9g5I9AN/y7OG3nYYpcbOCUnwQp3BHaSVxpq4sS37e8Y8n4Jw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=lysk.ai;
-	spf=pass smtp.mailfrom=lysk.ai;
-	dkim=pass header.d=lysk.ai header.i=@lysk.ai header.a=rsa-sha256 header.s=google header.b=SujUWrcy;
-	arc=none smtp.remote-ip=209.85.218.43
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=blhASesy;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=AGuMrkCv;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0BF606A31B
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 21:35:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DA0BF606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lysk.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lysk.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A20606A31B
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 21:36:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 10A20606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=lysk.ai header.i=@lysk.ai header.a=rsa-sha256 header.s=google header.b=SujUWrcy
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c445c95d553so8339866b.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 13:35:07 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=blhASesy;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=AGuMrkCv
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793741793;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4cXd1VFBgIfOAD+61rGAZDsr+QKv24JXaxEhYtMOIKc=;
+	b=blhASesy+XYbb9cPdzLCO04w7KBLRj9BqzF6f/C/mCGfWiLVOsSTbaKmpT9+eCU8s7+GK3
+	2DXot23cj08OMz636rcclxG/A8WVo2f8vbmI11Amd5lm1bLzV+YM7ZrPZHw7AsHzb+wURo
+	RtSQ5keuKE6ruDOJMimpj1UQ93Svok0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-561-Xm5erbd9Ns6jfqLyNMFcxA-1; Tue, 03 Nov 2026 16:36:31 -0500
+X-MC-Unique: Xm5erbd9Ns6jfqLyNMFcxA-1
+X-Mimecast-MFC-AGG-ID: Xm5erbd9Ns6jfqLyNMFcxA_1793741791
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49953abe51fso165395e9.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 13:36:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lysk.ai; s=google; t=1793741706; x=1794346506; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2/Oq2yxr5c36O2jrWUkxKvnaxXC/ugdrj8Dp7ILTXKU=;
-        b=SujUWrcyDIB78G9Ozq452zDuE/vNNQ0L+EvDHuP97QxnmqaVgqUJxaftfA5bXLdw9V
-         jen9UVfmbKSuCXux5S10rKPyWAHWlB3F7cAKcN+WfkyDHzjUdaVHdDNfu34lkljpTr4B
-         A8LWur6Q4HbENP4vMYSsW00CI0LprtvhzTnQfMFHu8AO1WVbbTG6625aebOepiggqBvR
-         0OT5wublgFG6JLbRrciz+bJwM9/OwpHAn9RIiFIc6utz5ai0IK/dx99fKlvXbNpB4HQm
-         4Fj+nK9awyGJMhLQttYxO19my2qLxj7gmXhxJRZfZ5AFsBmtIE7V7xUHCjDhz/ElvPMo
-         wMkw==
+        d=redhat.com; s=google; t=1793741791; x=1794346591; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4cXd1VFBgIfOAD+61rGAZDsr+QKv24JXaxEhYtMOIKc=;
+        b=AGuMrkCveJCCzbR3cE/rqmYY9+HNuHapKjxoOvKDixv6sDWY0JSuAiYGAUFxUZPGSc
+         tlEsjU90aZlzjBjTU3PC2lBTDkJ6bbAYxzxwwTQ8vPwF/gU6OWNnHMhMbiXUn5ac6uvJ
+         MLvsUq+oSCJN28BOJpodQ9hmvKU71IuypHt6NNd3CyJNfrkypA2vT+fT9EvSeVt1jv2o
+         vN6JWqPnc6SyRye5GFRAKA7Jdm6ePMTx6EbXPDsYxs2tvkeFY0S9DCVUkMtzYGuCVLQd
+         Zuef3Yx2OttE4UxqMTNt6GoUAubqLA7S8JkWEhpP6ne62hUE0OTGp4Uu2HvQa6/pg0t+
+         rWSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793741706; x=1794346506;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2/Oq2yxr5c36O2jrWUkxKvnaxXC/ugdrj8Dp7ILTXKU=;
-        b=q722nbfDMZuBU/JkqHscIQuyjt/2jaTZhIV5JAzBe/bsXbV/B2nvD2gTGYA0F773ie
-         zXi8I/WgM84yb40bjWOlTEQZCXoBnS/ONwfQ65KBP0owJC4Hu0JAN+1RxoFPcSzaU9sE
-         9lreEG3sVgGDdBrccoJEoiIWRpA6O30t+y/ilQY2IWFo1SH9ksnpLm4We3W53iz7+dNJ
-         fPcycg7tsoZLgJ2KyFhT1MEJb6OmmO03feZe+M/RsIb6xVQKbN5/3PdrjicnDspqv/9v
-         K8UbVTLtLBTsBZQT00vWLIh80m1c+ri771c5M74tZYTELLtrPE7zz8fCUCVdueamap/K
-         L8Sg==
-X-Forwarded-Encrypted: i=1; AKwUvBzDH4dYpNnepFV/CzZ7okoEUQj4Rs/DXLazs1sUha1R0BuCgHTi41f2LQdQE6/6VMr+deFa51Q=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9uzfUPYQkBC6z4QCNcaBjxZtmT0IZYyr0SvPeV7uMLUGtvWekc
-	Fqcg0h8OY5XiUlZapyr9Z4phG70Zv1cvzv8mHt5MpxHW9JWz90INzS48pT94Z/i0tHko
-X-Gm-Gg: AYBFou3KAs5IE+Yi/z+8fZSC24nM8KF5a+2DBHXbOxA/8VbSEDVLeKYwquKX3pt0BAP
-	gBI1AXLG6YL1kEsPETh503nPap3WqZZKJ1YZyk+SluZWW162e7wzRAnI4zLJicBO2a17wOZgt61
-	rgQO5nFfiUn+v62S1bgMXobgrtZuZ1tWWTG6HWUB+8ksmfsQ54puAce+SztTcX3wB4AqUyZgMW1
-	yawc7v2Ya+o9d2fLvH7zsUfjnAMrNJcjV97DNCDR/VQZOlfy77b3KNul1AIf/HGsKemNrlIxkrU
-	e0kvV1YIyBFnHciCZrp0J+096KuwisbU1g6weknUy9i92c/aJPXHnxMunRHzbZGoQk74DL+ISeg
-	9Z/Yq6zsVF1aFrXWu5oCZCKrZbZFUCSGN6MGTZY4SxhQpNR59GFQ0P+wsbmMcDXDdYzQEIrZWMM
-	yjBvdfG7Rac2CZK/6SaouxhGyhYxdpRxgVTEdemUY4hUjWUl0/CjBSM1If72ZlX2FMi+/Nz6+zl
-	RuFopidQ2WOQx+OhcxWcCsQhZnbf79ALNrNkIjPVFOTWSSt3S9UqqA2HXH/KJAuisq6bMovLtLs
-	qfBq8ZroxIrIJYrbbnYLlQ1ke2LtdzOV85bk1gsh/HkrLhXzDwma/GmEabknlDDiPjigQxKV9+2
-	srqsiT28rFsZziUroeOAi3yzVz7XB+Q7dq644fMjV/ibc67dkNxBRMRv2/LTZ0Dwnd2OoVpwXcA
-	z4I9R/nV2jpfthrgS+2yfeSofn1zTKeDP8GaFx8r7mx2daZmWX1KDUMrpSFnbwZcM2uTuxiH3AH
-	NCvwuxVDVyhU+D0YiXMaNc7mnaAPjGRX4lbJg==
-X-Received: by 2002:a17:907:724a:b0:c46:645f:cee1 with SMTP id a640c23a62f3a-c4ca7ae41ebmr1308021766b.42.1793741706083;
-        Tue, 03 Nov 2026 13:35:06 -0800 (PST)
-Received: from turris.internal.popcount.org (2a01-110f-4328-c400-0000-0000-0000-0001.aa.ipv6.supernova.orange.pl. [2a01:110f:4328:c400::1])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d0e46a465sm2548766b.58.2026.11.03.13.35.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 13:35:05 -0800 (PST)
-From: Marek Majkowski <marek@lysk.ai>
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>
-Cc: Marek Majkowski <marek@lysk.ai>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	Phil Sutter <phil@nwl.cc>
-Subject: [PATCH nf-next] netfilter: flowtable: tunnel device poisons h_source of fast-path frames
-Date: Tue,  3 Nov 2026 21:34:29 +0000
-Message-ID: <20261103213430.2850-1-marek@lysk.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261101-flowtable-sw-accel-ip6ip-sit-v2-0-c6c282cab5cb@oss.qualcomm.com>
-References: <20261101-flowtable-sw-accel-ip6ip-sit-v2-0-c6c282cab5cb@oss.qualcomm.com>
+        d=1e100.net; s=20260707; t=1793741791; x=1794346591;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4cXd1VFBgIfOAD+61rGAZDsr+QKv24JXaxEhYtMOIKc=;
+        b=x/f1I1/P7xh0kA2HjOITrGh6v1anGjQBuRCJIC6RI71JskCXZDE4/HH2RQ4i4TJmoS
+         FW+I7p0MVkdaUVaSoH5sszWz4OOF1Hl9Vl6MscEl3CpbgX1cP1xwNu8Vc6QNVdAb2A52
+         ch/SJJokf6uHjKjhNyahtvye6n8GjrE6GszmvY/6Y/UsjOnOo0A1qErs8Slo6/zpgIiT
+         LcNzUANCDuPOomGscNng030YsAr11XjxbFT8+J/nu6tjpsWkeNhdX9wXUo/h4HxiaOkb
+         WCsorVLOJkhAYGBuGU2lRFZ7b2sRaE2Uwl8UbA/UwYFKwjubTpggeavBBwsm9suughkx
+         X4EQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz4vCGKVHansNV7fAVRRdO+x9ceOnsm0NZiYsz6f96l0RlYNRB6lOMAbH1jw7XZsfM0BvbLp2s=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+uPFPbUqmmDdznNAMt8ru7uuNTqRcWF7hknNTTQAWYem7VnYLu
+	u1IOe5cwmO0yplO1O3NhAQ+NN4TYIIHVEPk/OcOFEVMdlamH6NbpseyNFMnCFfn0ZQ6LX9ncfP4
+	iwUabkB+OBNRS9bLN5zWmY+OLL4pZs086STFHX6sh7OwdpRyzm1uMDEQMNg==
+X-Gm-Gg: AYBFou0Eu1Zc/W+TDDo4cDnLEvadXmF4IVKnXAubcd2AKSsd+8t7JA/S25Bm7TurCcD
+	A6qsxy/igolUKVJ+eBLth0NIk7zFVQX/uES4sfNa/j4NClUz54tKy+cQbRGR8Z6JfJiENehHdAC
+	rrGnF95yEZTafK7v+lYcia7onzfrsbK1DPfKpqWqs5fm97NdUkVlYe8fBxp3JOVYmcTyXXth9ko
+	V9dTumH5qLogDjyOcq9nOuh5hSMmpVh1eBHd6DveqbbC3dw4wO1ZtCMFYluBKnrz9ubFJRc1hfr
+	cYgKmZ/ry1FnO9tX6vf0+vFF+yqniXRv4xQyogBRjVD4aqJyGSVdoxKzT24KLR2j7zUeJ41NsI6
+	AAB9Z3/8qz34gN8xRrIA1BITMywX625WmyVklnVAvLnBYZOmzKYEan8kroAwKHXBVOpUMVFNMnW
+	fkNjQmCg+URNSbzB/t6iUHIwztdahI2K3BteGhupX4ROE=
+X-Received: by 2002:a05:600c:e41a:b0:4b2:406b:f3bd with SMTP id 5b1f17b1804b1-4b2406bf3d2mr93216295e9.23.1793741790512;
+        Tue, 03 Nov 2026 13:36:30 -0800 (PST)
+X-Received: by 2002:a05:600c:e41a:b0:4b2:406b:f3bd with SMTP id 5b1f17b1804b1-4b2406bf3d2mr93215975e9.23.1793741789994;
+        Tue, 03 Nov 2026 13:36:29 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fecac1caesm153067f8f.17.2026.11.03.13.36.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Nov 2026 13:36:29 -0800 (PST)
+Message-ID: <7accf8fa-105a-4059-a1c8-7f416d06703a@redhat.com>
+Date: Tue, 3 Nov 2026 22:36:28 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,76 +112,76 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] ipmr, ip6mr: queue netlink route queries out of band
+To: Eric Dumazet <edumazet@kernel.org>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ Katherine Leaver <kleaver@janestreet.com>
+References: <20261030092303.2749386-1-edumazet@kernel.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261030092303.2749386-1-edumazet@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-When a flow enters an IP tunnel, the forward path discovered by
-dev_fill_forward_path() starts with a DEV_PATH_TUN entry for the tunnel
-device, followed by whatever carries the outer packet.
-nft_dev_path_info() handles DEV_PATH_TUN in the same switch case as the
-Ethernet-like path types and copies path->dev->dev_addr into
-info->h_source if it is still unset. For a tunnel device dev_addr is not
-an Ethernet address: ip6_tunnel stores the 16-byte local IPv6 there and
-ip_tunnel the 4-byte local IPv4. The tunnel entry is the first one on
-the path, so its "address" wins and poisons h_source: every fast-path
-frame is transmitted with the first bytes of the tunnel local IP address
-as the Ethernet source MAC.
+On 10/30/26 10:23, Eric Dumazet wrote:
+> ipmr_get_route() and ip6mr_get_route() queue synthetic skbs on the
+> unresolved MFC entry to answer RTM_GETROUTE requests once the route
+> is resolved. These skbs carry a fake IP header with version 0, and
+> ipmr_cache_resolve(), ipmr_destroy_unres(), ip6mr_cache_resolve()
+> and ip6mr_destroy_unres() rely on this in-band tag to tell them
+> apart from regular packets queued by the input and output paths.
+> 
+> The IP version is only validated once, in ip_rcv_core() and
+> ip6_rcv_core(). A netfilter hook running later, for instance an
+> nftables payload statement in a PREROUTING chain owned by an
+> unprivileged user namespace, can rewrite the first header byte to
+> zero. The SRv6 End.DX6 action also passes the decapsulated packet
+> to ip6_mr_input() without checking that the inner header version
+> is 6. If no MFC entry exists, the packet is queued and later handled
+> as a netlink request: its payload is treated as an nlmsghdr and
+> written to, mr_fill_mroute() may call skb_put() on a nonlinear skb
+> (hitting SKB_LINEAR_ASSERT()), and the skb is unicast to a netlink
+> portid taken from stale IPCB/IP6CB bytes in skb->cb[].
+> 
+> ipmr_cache_report() also relies on the same tag since
+> commit 94a6736bb5ab ("ipmr: only copy pktinfo to cache reports").
+> 
+> Stop trusting packet contents: queue route queries on a dedicated
+> nl_queries list in the unresolved MFC entry, and pass an explicit
+> nl_query flag from the callers.
+> 
+> The per-entry limit of four queued skbs now applies to both lists
+> combined, as before. The synthetic header keeps version 0, since it
+> is copied into the NOCACHE report delivered to the mroute socket.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Fixes: 7bc570c8b4f7 ("[IPV6] MROUTE: Support multicast forwarding.")
+> Reported-by: Katherine Leaver <kleaver@janestreet.com>
+> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> ---
+>   include/linux/mroute_base.h |   2 +
+>   net/ipv4/ipmr.c             | 104 +++++++++++++++++++-----------------
+>   net/ipv6/ip6mr.c            |  76 +++++++++++++-------------
+>   3 files changed, 94 insertions(+), 88 deletions(-)
+> 
+> diff --git a/include/linux/mroute_base.h b/include/linux/mroute_base.h
+> index 4d55827e970537aff6938503a39ee3306c8fde6d..2d506966357b2591af4eadef88b27e236a2fe9cf 100644
+> --- a/include/linux/mroute_base.h
+> +++ b/include/linux/mroute_base.h
+> @@ -119,6 +119,7 @@ enum {
+>    * @mfc_flags: entry flags
+>    * @expires: unresolved entry expire time
+>    * @unresolved: unresolved cached skbs
+> + * @nl_queries: queued RTM_GETROUTE requests waiting for resolution
 
-Seen on a DS-Lite setup, LAN -> ip6tnl (IPv4 inside IPv6) -> PPPoE ->
-802.1Q VLAN -> Ethernet, with conntrack flows offloaded through an
-nftables flowtable ('flow add @ft'). The first packets of a flow, still
-on the slow path, and the fast-path packets of the same flow differ only
-in the Ethernet source address:
+FTR: the above causes kdoc warning, but fixing it would be so ugly:
 
-  slow path:  d8:58:d7:00:2e:bd > 80:ac:ac:39:ef:c2, 802.1Q vlan 35,
-              PPPoE [ses 0x454] IP6 2a01:110f:4328:c400::1 >
-              2a01:1000:0:1::2216 next-header IPIP, 192.0.0.2.40010 >
-              1.1.1.1.53
-  fast path:  2a:01:11:0f:43:28 > 80:ac:ac:39:ef:c2, same frame otherwise
+   * @mfc_un.unres.nl_queries: ...
 
-As you can see 2a:01:11:0f:43:28 is the start of 2a01:110f:4328:c400::1,
-the tunnel local address. The PPPoE endpoint binds the session to the
-subscriber MAC and silently drops the frames, the effect is that every
-TCP/UDP flow dies the moment it is offloaded, while ICMP, which is never
-offloaded, keeps working. Received traffic is unaffected.
+I really think we are better of this way.
 
-Do not let DEV_PATH_TUN poison h_source: skip the assignment for it. The
-real link-layer device appears later on the same path and provides the
-correct address; for a path with no Ethernet device the address stays
-zero as before.
-
-Fixes: ab427db17885 ("netfilter: flowtable: Add IPIP rx sw acceleration")
-Signed-off-by: Marek Majkowski <marek@lysk.ai>
----
-Found while testing this series on a Turris Omnia (Debian, armhf) behind
-a DS-Lite ISP: with the series applied, IPv4 flows through the ip6tnl
-were offloaded but no fast-path frame ever got past the PPPoE
-concentrator. The problem is in the existing DEV_PATH_TUN handling, so
-it applies to net-next with or without this series; with the fix the
-series works here (tested: UDP flows with a fixed source port, TCP, bulk
-downloads through the tunnel). Without the series the same wrong MAC
-should affect ipip and ip6ip6 tunnels in front of PPPoE.
-
- net/netfilter/nf_flow_table_path.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/net/netfilter/nf_flow_table_path.c b/net/netfilter/nf_flow_table_path.c
-index 841f09943..4ca6e09c7 100644
---- a/net/netfilter/nf_flow_table_path.c
-+++ b/net/netfilter/nf_flow_table_path.c
-@@ -121,7 +121,12 @@ static int nft_dev_path_info(struct net_device_path_stack *stack,
- 		case DEV_PATH_PPPOE:
- 		case DEV_PATH_TUN:
- 			info->dev = path->dev;
--			if (is_zero_ether_addr(info->h_source))
-+			/* A tunnel device has no Ethernet address: its dev_addr
-+			 * is the tunnel local IP address. Take h_source from the
-+			 * real link-layer device further down the path.
-+			 */
-+			if (path->type != DEV_PATH_TUN &&
-+			    is_zero_ether_addr(info->h_source))
- 				memcpy(info->h_source, path->dev->dev_addr, ETH_ALEN);
- 
- 			if (path->type == DEV_PATH_ETHERNET ||
--- 
-2.39.5
+/P
 
