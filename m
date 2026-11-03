@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793700617;
-	b=rh10NslWP1BCm9O360AJw/GTnaBlH0csesZAJJb5DD/Q5cJGdIAH6mHbiqwopgLQVeQp
-	 E/VMGtQ6k2O0Ja9HIuXs4nkuIP1HcN6iyUY29i7Ji6c0ZtZKg0K6JVvXnGiEdW5oR0Ybw
-	 Fu895882FMzcc0Gv5EEVtWHJQejWlVY3EcPagqXCUdPfYaeqSM9E2GNPZ0A0nQfkdYW+b
-	 LsNdPnvsnzDW2IpMxU89roNjlyRWuQ3RZEULEstuDqKGZ5fdCka0JDt+oCqPWSK5NqgHu
-	 lZ8Osen1k8Xk70JZE5ROkufD2l3AjG7WGWDe/zZzt3ARa918/Fgd8HZ0NWu7XHB1oqw==
+	t=1793700624;
+	b=ONIaHsb3wdKU0EkJl1eVvFi6CWzQESfTZ8kvD5y90+3L1HN06JU5JaEgq0PPvEGfcSci
+	 6ZQ6EPPBk17F1v98r/xSZihz5BdZFU728e11Vjp0udtNzwCntvrkPXPw1KPkuY3k67Iwk
+	 tUXtjhDVHr2BLRKs37L7y4b7imbgGgcYqbm8aauYEwZRV35Gzs9Z7MYHoE6Wf93BR4ijV
+	 IATmofayOjqUNSP0XBYTEWgNFSl3jx9ek9q0X/K9zsPyBVuu4qZWWODlD3lRcrYjPdXGB
+	 s08mT8laBAR3pyizfeO3k4yDNqj1/kgOJiS0GGJYwmIrfJqqu75CVYdHcWn3vuYsFrg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793700617;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793700624;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:Auto-Submitted:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
 	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	b=P3PNQ3gLqMD5pdAVtkAuwIc2miHLMpcTnqqAZno27+ZSWQfFFwFtpgoxGCBeUgIGu23u
-	 m3PIFbray2UniD0fWXsKKayu6WwpwvA1QTFz99Nzlsuhr3kusuvfWKnKLCHUSTE8aedCH
-	 HqhpwULOGYZsS+BxonliJLF2dU9zk37dGzpIH0vCXaQmr7MFzIZ4dgpo97mIWeVnsoc8k
-	 7MdnJSebEZRxfaLr9kSpZ6thDXz2XwQIVFkxY5/rQyTT9INMGtr4+pAIXDR5gqA9I3ixn
-	 h7ppGpmWYzkPyn9cVCUdHg0FKn+tPhynXIpAnD0vrw2PY553fNAimaqzcLHVuRtd6LA==
+	b=Se9VnSLz074iSAXFSEvDfGm8BxpK3eBBy0PQtSOd2g33tWi98ckykkhgrJ3UoIHLUdxv
+	 O8gKdkCBCC8dmWDC9tECm/V6HLdp0DUmtvTBaWX7cjY2yIz9BkdGnaxRgtmZSuudcB+DO
+	 XDpn3kjE29jI/3LJEizvBRLJNUZ5aqY1R+XFtKyL7NJn84yAlOutizLWYUiRgLJsjCukP
+	 5iuDuJNLJqDuJP1MnRNmq4tKS2BpMd5JDjKhOj3cUxOyTnDk3bwvRVTw/8Z1COzjMhMGe
+	 e3Vdx5G9JH/8PkkLgnmti+SWJaXUt1o+BCnVXaljoP5LN2T1ELBoOCrZPQ4VT5ns5Og==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QZUIArnY;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QzRXHrX9;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5665C608363A;
-	Tue,  3 Nov 2026 10:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B9C60A3802;
+	Tue,  3 Nov 2026 10:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QZUIArnY
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491371F00A1B;
-	Tue,  3 Nov 2026 10:10:16 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QzRXHrX9
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D55D01F0093A;
+	Tue,  3 Nov 2026 10:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793700617;
+	s=k20260515; t=1793700623;
 	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QZUIArnY5+hUTUWcnXtLxF8u0oA+xiayejYX5MIG0WfCavOhWOs9kITZFHKvqYxHq
-	 mWYZEvditWgCZMizICpen7ipc5+tYwTC8g1g7K9Pt6MrB8RA6qZzPAcborUGJBHZ+w
-	 SgYzPxFeST8sYgu2WMww9lwxhrgU3QKQ304k+tbHDGNSVKFEbWBQDUtvO+sfyQWLGu
-	 9XmvlJigcxVnGIZ8J/jKFLKecy+kDQBR4nT4/wmx0ZibGtPpVcUnjWAmHMqPP9ypiY
-	 6swSTDEAVMK1nmogPLAj9V7eE6Z6RBYkuf4Ny44L+9PoEAxtA6QSNJM96wiMuS9wLz
-	 fs93If4Qw+H0Q==
+	b=QzRXHrX9ufeaXz0LR2RDzdX8pA+pRgZ06SF3ZyCm7wsOLtwd7fGBh9sueSEAKybaK
+	 ThfwjztZr3au5myV8I5TNTudKoypRJ/EpO3qwMhIqsqEj0elRSwkQCsD6h+/dQzItP
+	 ZuZyckzgQ20/YbM5I/Aw/ULOel8Xa2nGwPXmEcdNF3jjFC9gGHJCIfqmutJLBReoY1
+	 OqgGh9Vo6TwISjHk3R/Y6IUF0Rhk8dnBdZeIWtH45papu9kMjojzufMPzcQumoffK1
+	 /CTzrGver/lvTQjhaaudOuqnSvESdbyjE0ZHnfVgNAB7w5lPo+IQsmN0TF1xw0AD36
+	 ivJZzhK9h2sag==
 From: netdev-bot+sinfo@kernel.org
 To: Wentao Liang <vulab@iscas.ac.cn>
 Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
@@ -48,11 +48,12 @@ Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
  Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
  Paolo Abeni <pabeni@redhat.com>, intel-wired-lan@lists.osuosl.org,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] ice: release the VF reference in the switchdev trust path
-Date: Tue, 03 Nov 2026 10:10:15 +0000
-Message-ID: <179370061582.488859.13591313498954037306@kernel.org>
-In-Reply-To: <20261103100530.1309907-1-vulab@iscas.ac.cn>
-References: <20261103100530.1309907-1-vulab@iscas.ac.cn>
+Subject: 
+ Re: [PATCH] net: ixgbevf: drop the SA reference if secpath_set() fails
+Date: Tue, 03 Nov 2026 10:10:22 +0000
+Message-ID: <179370062239.488859.17760478051473372751@kernel.org>
+In-Reply-To: <20261103100534.1310071-1-vulab@iscas.ac.cn>
+References: <20261103100534.1310071-1-vulab@iscas.ac.cn>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
