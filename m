@@ -1,47 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793688876;
-	b=hzgqnxm3zgzuf0aUiAo+TwbFOHepCXmvsaus4+O16k1bbnO3tlMmS7GNAK/SQbdP73Wx
-	 xzOwuyw17pzLskYehOZKR01L4HyqMkAwrhloAtnQYaLWRgX5Rs/yrtIHrweYslhVn6IcK
-	 5eqreAaTkJs7AG6hEGnM44Bx1G2OzTfXuk+OMdgcjYlJEbhMEwrN+GEiyDeuvQrQThuPC
-	 Ouk0Qu8+orBy7D4vdsbuDAohgoazM3TDZGQOq89zItMIirS0tNttMsfXc/Dh5VDgdO4mg
-	 13lD5Y/t/jfmnd6XcL+jeZEx6/Imiv0ZTsk8HzaRaTu+LUKiTj28eRMK++TurW7lIWQ==
+	t=1793689134;
+	b=4IE0M9xbc8i1FCp+ecz1zrsQ5pOchtGSNuzYJ6ZMqhZuHw/3EWd1izfdLCWn2xKcCzU+
+	 qG5GGPw9APQYQx6JUh/7oZIDBupM7tBRZ0m16aCh9CMK53xb7n3X0fBGhE0LbgsC8gzEf
+	 UztAFQXkF3Rlk6PEgPMvrCGIrkSqVjymO49a5cxiN34lJ/2pSSBZT90LM1hppJcp6lzg5
+	 9O3AwMkDebYdzQmSq4M4J0bz8OlIiQnqpzhcs9qXp+3Aa9GpzLDwvxoOmzDCW/9DdHxiO
+	 AgqHqUCzwqh4Hp73Bvgcx1z2rGLQUp5lk1w27KAg/q4WAAcH+IkIZsR4e1mtBcf6bXg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793688876;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:Autocrypt:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=pI+R0vssS3+rBEwGlEmrhAJtAWwC+K6R2fL7Q2wxluc=;
-	b=kHpHcYPZNySrVpcXOaZLKz7xVjV1Av85dZ82VFATW6ctQdNLvHkXM8xPm8vTEwpgtxuC
-	 PzvUVZcMmuK4xW9wuQUrRhISAEDM/i2eLIbmqaHah1ydPBfvqtdCLKxILkTz/bClasLEb
-	 02/LAN95Mz+aVP9ZIR9IYM7nDdFt7t1Zl+JJIuoupoibtIcnfINE5AVg7WrJGidH1jGI4
-	 829cycOww4c4If2fp9RJAZeSjSVW50H8YBv7rAHGwNexqAYmGBxmtJ1E4ZwXseO87faFy
-	 jrFAKpILH896Zgxs8XETeVpx2YPPDQbndp4cA+JCgBmecLIy2XG4qj3v57PsvEJEw6g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793689134;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=FbNwIIesd35gMyMCitT3Boc7Pz0ffUauO/QG4IAyeQ8=;
+	b=Btko0Nm9Cy2vDQRe/ZjNbmEYWF5sUBs+zQpK20ww4qdjDFyi7JQ9kj/0wn5CsjT65gyy
+	 1G9zrckNNOd5rfNknawLVSR1V3c+0PzaQ8o675C7eAXozd3YgcHbCDbp+hMlVPl9u3WV9
+	 ZRHROkCCvXeCYE0MiXNWaH1ay542c+P4FZK/FS6LW43MaA47wvLPlpZUakedXN3whksJ8
+	 c9isngnEn+kXhOJDRcPDLY7VjB6eK66PpwHAUJ08qiUTCIEAt5ADTzKuo84CW5OIsSAQR
+	 AMNUmGX9xWV+6r35YUZrbo5ZOpZSOJrTnnuoRfoC/YZ6BhlPiKyOzSrFghM5zh+HceQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HVwwGpgK;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UYYxCUm3;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3EAD606A334;
-	Tue,  3 Nov 2026 06:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0517606A330;
+	Tue,  3 Nov 2026 06:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HVwwGpgK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D471F000C1;
-	Tue,  3 Nov 2026 06:54:24 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UYYxCUm3
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00CE51F00919;
+	Tue,  3 Nov 2026 06:58:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793688875;
-	bh=pI+R0vssS3+rBEwGlEmrhAJtAWwC+K6R2fL7Q2wxluc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HVwwGpgKph2PTCR3kNBpzgeJl9Fiv96ILTSVlqr7otzEN5KOe+3Oq36TZyy3FWiTn
-	 B5JC9rU3ADl82tq64bDRGFlV2NLyjhAO9fPnLejhbwzeG1Z9dc6ee0GVq9fDWJMr9G
-	 uEn9b1MhNhFVniqfmxfA0bqOs/QBhcC6kPjZ8hJFtdA34IHlyTNGGcCj68Y62ICtjk
-	 Ouq+kpEpWGx9PHR9MkFKZswgqiZXimSJHDR7+eldSuTYGotHgFLXgZCx0dKYEpIAcw
-	 6pYXyTE/pVVs21IvMkWqyQ4k+6ZNZ7Rqbrs3FA5NB7/Klj97W0Huza14rR1CDkHC3E
-	 tLDaFtIRr3wRA==
-Message-ID: <a0736b1b-707e-4f24-8249-c7363c673a43@kernel.org>
-Date: Tue, 3 Nov 2026 07:54:21 +0100
+	s=k20260515; t=1793689133;
+	bh=FbNwIIesd35gMyMCitT3Boc7Pz0ffUauO/QG4IAyeQ8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=UYYxCUm32vPRI4rnUBdMiKrdFsWgyMkMumRWqL0BQ6gOFy33JSj6tUkRafXZoR7+r
+	 WgTaEBvhbDJe0LjC1tpxrgJMGCrUyvkW5k7OohFiWTIHo2prxlVssqjr670GnSYRWm
+	 uiFxRVLZCvRsBmkEZJb6RhtNWPuvI7Ut2mUk5eY2giIO+X1FG+dOipya14yLP/fU4c
+	 00qzA0QhMKgE9IWC9OUwe8T+FE4a9arkfIztNube36SRawhvHzP8V+0NnATczJaKa6
+	 74+4qwrqLwJSuUZODnITIwGHCUtdbuIjV1/fCl6EUSIau6T9kQlNhjtE3BVP9iNv2/
+	 XMrsQcZ8mb6OQ==
+Subject: Re: [PATCH net] tcp: ipv6: keep request pktopts alive until request
+ destruction
+From: netdev-bot+sashiko@kernel.org
+To: x-professor@outlook.com
+Cc: netdev@vger.kernel.org, edumazet@kernel.org, ncardwell@google.com,
+ kuniyu@google.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, daniel@iogearbox.net, martin.lau@linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Tue, 03 Nov 2026 06:58:52 +0000
+Message-ID: <179368913254.488856.18385504892768875446@kernel.org>
+In-Reply-To: <82c31e4d5043f3dbd11b44177cfba779d335aae3.1793599929.git.x-professor@outlook.com>
+References: <82c31e4d5043f3dbd11b44177cfba779d335aae3.1793599929.git.x-professor@outlook.com>
+X-sashiko-severity: Critical
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,140 +64,197 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 19/23] tty: sysrq: let procfs copy in writes to
- /proc/sysrq-trigger
-To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>,
- Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>,
- NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
- Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>,
- Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados
- <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>,
- Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>,
- linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
- linux-um@lists.infradead.org, linux-wireless@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
- ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org,
- coreteam@netfilter.org, kexec@lists.infradead.org,
- linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
- netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net,
- linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org,
- linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org,
- linux-usb@vger.kernel.org, samba-technical@lists.samba.org,
- sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-doc@vger.kernel.org, linux-serial@vger.kernel.org,
- linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>,
- linux-input@vger.kernel.org, linux-raid@vger.kernel.org,
- linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org,
- linux-debuggers@vger.kernel.org, Chuck Lever <cel@kernel.org>
-References: <20261102-work-procfs-drivers-v1-0-a994bd4d3b1a@kernel.org>
- <20261102-work-procfs-drivers-v1-19-a994bd4d3b1a@kernel.org>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20261102-work-procfs-drivers-v1-19-a994bd4d3b1a@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 02. 11. 26, 16:07, Christian Brauner wrote:
-> Implement ->proc_write_buf() so procfs copies in what is written before
-> it pins the entry, and handle the keys from that copy. Writes larger
-> than PAGE_SIZE - 1 bytes fail with -EINVAL now. They used to trigger the
-> first key, or all of them in bulk mode. procfs allocates the copy, which
-> is as small as the write, opening the file allocated as much already.
-> 
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Critical: 1 · High: 0 (1) · Medium: 0 · Low: 0
 
-> ---
->   drivers/tty/sysrq.c | 9 +++------
->   1 file changed, 3 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/tty/sysrq.c b/drivers/tty/sysrq.c
-> index f4571d05b496..99363e1b59ed 100644
-> --- a/drivers/tty/sysrq.c
-> +++ b/drivers/tty/sysrq.c
-> @@ -1200,17 +1200,14 @@ EXPORT_SYMBOL(unregister_sysrq_key);
->    * However, if the first character is an underscore,
->    * all characters are processed.
->    */
-> -static ssize_t write_sysrq_trigger(struct file *file, const char __user *buf,
-> +static ssize_t write_sysrq_trigger(struct file *file, char *buf,
->   				   size_t count, loff_t *ppos)
->   {
->   	bool bulk = false;
->   	size_t i;
->   
->   	for (i = 0; i < count; i++) {
-> -		char c;
-> -
-> -		if (get_user(c, buf + i))
-> -			return -EFAULT;
-> +		char c = buf[i];
->   
->   		if (c == '_')
->   			bulk = true;
-> @@ -1225,7 +1222,7 @@ static ssize_t write_sysrq_trigger(struct file *file, const char __user *buf,
->   }
->   
->   static const struct proc_ops sysrq_trigger_proc_ops = {
-> -	.proc_write	= write_sysrq_trigger,
-> +	.proc_write_buf	= write_sysrq_trigger,
->   	.proc_lseek	= noop_llseek,
->   };
->   
-> 
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
+- [Critical] This patch adds a remote-triggerable use-after-free on the
+  IPv6 syncookie path.
+
+Pre-existing issues:
+- [High] The patch fixes the request-migration ownership race for
+  ireq->pktopts but leaves the same race open for the other request…
+
+--
+
+tcp: ipv6: keep request pktopts alive until request destruction
+
+This patch removes the code in tcp_v6_syn_recv_sock() that dropped the
+request's ireq->pktopts reference when the child was created. It also
+makes inet_reqsk_clone() take its own skb reference for migrated requests,
+so every request now releases pktopts from tcp_v6_reqsk_destructor(). The
+aim is to close a use-after-free where a concurrent SYNACK retransmit
+reads ireq->pktopts after it has been freed.
+
+> diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+> index 93b306d91b6dc..66f8ce25aa383 100644
+> --- a/net/ipv4/inet_connection_sock.c
+> +++ b/net/ipv4/inet_connection_sock.c
+> @@ -936,6 +936,11 @@ static struct request_sock *inet_reqsk_clone(struct request_sock *req,
+>  		      req->rsk_ops->obj_size - offsetof(struct sock, sk_dontcopy_end),
+>  		      /* alloc is larger than struct, see above */);
+>  
+> +#if IS_ENABLED(CONFIG_IPV6)
+> +	if (inet_rsk(nreq)->pktopts)
+> +		skb_get(inet_rsk(nreq)->pktopts);
+> +#endif
+> +
+>  	sk_node_init(&nreq_sk->sk_node);
+>  	nreq_sk->sk_tx_queue_mapping = req_sk->sk_tx_queue_mapping;
+>  #ifdef CONFIG_SOCK_RX_QUEUE_MAPPING
+> @@ -982,7 +987,6 @@ static void reqsk_migrate_reset(struct request_sock *req)
+>  	req->saved_syn = NULL;
+>  #if IS_ENABLED(CONFIG_IPV6)
+>  	inet_rsk(req)->ipv6_opt = NULL;
+> -	inet_rsk(req)->pktopts = NULL;
+>  #else
+>  	inet_rsk(req)->ireq_opt = NULL;
+>  #endif
+
+[Severity: High]
+This is a pre-existing issue, not one introduced by this patch. The same
+migration race still seems to be open for ireq->ipv6_opt, which is the
+other request field that tcp_v6_send_synack() reads.
+
+inet_reqsk_clone() copies the ipv6_opt pointer into nreq with memcpy. It
+takes no reference and makes no copy. reqsk_migrate_reset(oreq) then
+clears the pointer on the old request, which leaves nreq as the only
+owner. Both reqsk_timer_handler() and inet_csk_complete_hashdance() go
+through this path.
+
+Another CPU may still hold oreq. It found oreq through ehash, migrated it
+via reuseport_migrate_sock(), and then got a retransmitted SYN:
+
+tcp_check_req()
+  inet_rtx_syn_ack()
+    tcp_v6_send_synack()
+
+That CPU can be in:
+
+net/ipv6/tcp_ipv6.c:tcp_v6_send_synack() {
+    ...
+		rcu_read_lock();
+		opt = ireq->ipv6_opt;
+		if (!opt)
+			opt = rcu_dereference(np->opt);
+		err = ip6_xmit(sk, skb, fl6, skb->mark ? : READ_ONCE(sk->sk_mark),
+			       opt, tclass, READ_ONCE(sk->sk_priority));
+		rcu_read_unlock();
+    ...
+}
+
+Meanwhile nreq is released (after accept(), on listener close, or on
+expiry) and runs:
+
+static void tcp_v6_reqsk_destructor(struct request_sock *req)
+{
+	kfree(inet_rsk(req)->ipv6_opt);
+	consume_skb(inet_rsk(req)->pktopts);
+}
+
+This kfree() is not deferred through RCU, so the reader's rcu_read_lock()
+does not protect opt. Can ip6_xmit() then read a freed struct
+ipv6_txoptions while it pushes the extension headers?
+
+ipv6_opt is only non-NULL with CALIPSO labelling (calipso_req_setattr()).
+The race also needs SO_REUSEPORT, net.ipv4.tcp_migrate_req=1 and a
+listener that is closing.
+
+This patch already reworks pktopts ownership in inet_reqsk_clone() and
+reqsk_migrate_reset(). Should ipv6_opt be handled the same way there?
+
+> diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+> index e006a30360eae..0b51cb4ad9604 100644
+> --- a/net/ipv6/tcp_ipv6.c
+> +++ b/net/ipv6/tcp_ipv6.c
+> @@ -1522,11 +1522,12 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
+>  	if (*own_req) {
+>  		tcp_move_syn(newtp, req);
+>  
+> -		/* Clone pktoptions received with SYN, if we own the req */
+> +		/* Clone pktoptions received with SYN. Keep the request's
+> +		 * reference until the request is destroyed, as a concurrent
+> +		 * SYN retransmit may still read it.
+> +		 */
+>  		if (ireq->pktopts) {
+>  			newnp->pktoptions = skb_clone_and_charge_r(ireq->pktopts, newsk);
+> -			consume_skb(ireq->pktopts);
+> -			ireq->pktopts = NULL;
+>  			if (newnp->pktoptions)
+>  				tcp_v6_restore_cb(newnp->pktoptions);
+>  		}
+
+[Severity: Critical]
+Does removing this consume_skb() create a use-after-free on the IPv6
+syncookie path?
+
+On that path ireq->pktopts does not hold the SYN. cookie_v6_check()
+stores the final ACK skb, which is still being processed, by bumping the
+refcount directly:
+
+net/ipv6/syncookies.c:cookie_v6_check() {
+    ...
+	if (ipv6_opt_accepted(sk, skb, &TCP_SKB_CB(skb)->header.h6) ||
+	    np->rxopt.bits.rxinfo || np->rxopt.bits.rxoinfo ||
+	    np->rxopt.bits.rxhlim || np->rxopt.bits.rxohlim) {
+		refcount_inc(&skb->users);
+		ireq->pktopts = skb;
+	}
+    ...
+}
+
+Before this patch, the consume_skb() above dropped skb->users back to 1
+before the child processed the skb.
+
+Now tcp_get_cookie_sock() calls inet_csk_reqsk_queue_add(sk, req, child).
+The request on the accept queue still points at the in-flight ACK, and
+skb->users is 2.
+
+The same skb is then passed to the child:
+
+tcp_v6_do_rcv()
+  tcp_child_process(sk, nsk, skb)
+    tcp_rcv_state_process()
+      tcp_data_queue()
+
+For a pure ACK, tcp_data_queue() frees the skb without checking
+skb->users:
+
+	if (TCP_SKB_CB(skb)->seq == TCP_SKB_CB(skb)->end_seq) {
+		__kfree_skb(skb);
+		return;
+	}
+
+The consume label in tcp_rcv_state_process() and tcp_collapse_one() also
+use __kfree_skb() in the same way.
+
+When the request is released later, either by reqsk_put() from accept()
+or by inet_csk_listen_stop(), the destructor runs:
+
+tcp_v6_reqsk_destructor()
+    consume_skb(inet_rsk(req)->pktopts);
+
+Wouldn't this decrement the refcount of, and possibly free again, an skb
+that has already been freed?
+
+The trigger needs a remote peer that gets syncookies sent (SYN queue
+overflow with the default tcp_syncookies=1, or tcp_syncookies=2) and then
+completes the handshake with a pure ACK. The only local requirement is a
+common IPv6 rx option on the listener, such as IPV6_RECVPKTINFO or
+IPV6_RECVHOPLIMIT.
+
+Syncookie requests are never hashed and never retransmit SYNACKs, so the
+race this patch fixes cannot happen for them. Could the cookie path keep
+dropping the request's pktopts reference here, or could cookie_v6_check()
+store a separate clone instead of the in-flight skb?
 
 -- 
-js
-suse labs
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/82c31e4d5043f3dbd11b44177cfba779d335aae3.1793599929.git.x-professor%40outlook.com
