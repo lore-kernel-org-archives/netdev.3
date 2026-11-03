@@ -1,112 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793683373;
-	b=eKczAh3xFceVZ/MGhO1ZWVqnXMKK7hbq5nhIpaIpsi26qp+lL+OH+qN9vuI5+xoTi4U7
-	 bqDq/8/9r3uzobzzjFYnLTe5tOSA5nH0PK2gywWEbM0KIzJXba5YUADfm4xdeMpU4tyko
-	 6dwL3K0Ccpul7NbUPOiARdcJNqs5Itq+tq6TGMEEERKHlXqqpft1TCh1hMmKzisRXqISS
-	 Sp0Nw5TsfbKL44N5ao8j4Aq7K/1jJyLaVAfpL81UNVOR1PGKkBXSP6Ol27WjGIRXkaOHe
-	 QSDOoyISESOGdG45uRXlW7eiwndxFEzMkpmRVfc6qf7PYjJ1sroBPWqmB4i70z2u6dw==
+	t=1793683707;
+	b=TUm06tMU7p/YA6f+68eHvyK4myWHvx1ZILvgStaHx7VDe/bkSG9Ews7jeaXKyFH8StEF
+	 JP3fx0wh0hU2H0X8HjT9Ov86Rr0ZSApLIlIGjMf3Dq8DhGVyMLc59z794RlV9hOctYZmX
+	 mTRWD+GbJTnnt+vSa7REoGU8gspejirZW/2QjVb26knhZdDFw6PV6mLmEq3/hDGZi7W3F
+	 qFnyXW8CDAhFfOEMx49rNnILnw67TbzqColWPum/8EEZwEEtSjLUhusoyLxr14M18S49j
+	 ajAy2M+uSKpjc27ISrSmWXYYKfREriPubt6mJUJZM2jtkFY3TjOOwz9f+bk1WlWs5FQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793683373;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Proofpoint-Spam-Info:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=BR98tkQVks6AJwD3RBrsYEU/yAAvutTQVgyJLvDwq1c=;
-	b=iZ1Q3GyWkaQU+vi+G5hVXLFW49dnVe9NixGDd9nssUgc3rr2YC1jnLu/qhBcI9WJeJJ5
-	 Rtt7NzotHYZMLANMAcAmEWNfUDLSLZJcZEbiSaF9aiCIIoflga5Gm/FsocPB+Lqi+Kew/
-	 CsezIuq1EwID7+2Kb+r5KbSztR5C7nZERtHs1aWpo21tcfuZtnkOkKW0A2dYThZzV0aE1
-	 6GQUFfu4w/Xw5ak1Y85Icl43rqVWXzXMK5BJzGAGk7Rg0/nUG2BpbLRid/X0+ANHoe1DT
-	 wskVT57UxRritho/iE9grAKPHRZRBb/Z59VXn+fQgUDkzDFR2MA7S4uJ8Up/2or7xZg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793683707;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=aMipWiH6il94+oUwDW54rQDx5szuOcXlyk5T4hyKyg4=;
+	b=hcAz4dC7yRPamr/PK/M+SNbolkJRl0H0IVZh8uW8lMnvHNeSh3wKIn1v1Z3a3mQb4xGm
+	 sxX/aejUHmlptg9sK1Qh2KggIAcO8RlBiJ1jOhGyrwGS8byULl5Fzy9w0RHJSki/HLmNn
+	 +IDvCSLRFGuDWg+GPUCelNxZQ0Fj4YjPSl9WzmAWcrm0UWORksypeUDGF1hvxKgMWXlXv
+	 jGqGbtwJEo30bNSXx3qziRQTblky1ZDmr1tHiYelSvMGZ5ICW+/tnfVyOl40/CWRqodBe
+	 Csu1Okz/TfOyvipyGI2vP07tn7L1800wHhOd/i2dvA10kl9Els2s9+EiVphbWESRc4Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=LkbyEAQI;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=GiSQvBxc;
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=D67W3iim;
+	arc=none smtp.remote-ip=209.85.216.70
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70CE4606A32C
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 05:22:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 70CE4606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DAB606A324
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 05:28:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A5DAB606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=LkbyEAQI;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=GiSQvBxc
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A31eOI31431380
-	for <netdev@vger.kernel.org>; Tue, 3 Nov 2026 05:22:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	BR98tkQVks6AJwD3RBrsYEU/yAAvutTQVgyJLvDwq1c=; b=LkbyEAQIuZ1FuxcC
-	E+js3EmF9O8e6tCqEO7ccWe1jjgqM6gtp4s9G8kKbHnpO7DjwL3ejMcUy1a2BoH0
-	pAvN4fvOVdiIkA4OQ5dsBF5YIs5IdeBwt1ScdgeuMsJaR+jGffOhFtm7MhoBPHZJ
-	H9zMcQUdRrTfKGu9gWxR4sf7ybWUoHIBmQqlV6NcMafUOPxUuGZX+lyBdUVIDzJo
-	oR7frJPUD8jpVHmCqT/tlM0OwmJ9cpPptwGcf9dU+nvyM2/ulcGSn/g5IN7zrtqk
-	Io1+qFixD0t0WTE8U7LRM5KiqvTQkpJ1c9pwCh0DkDqFhp8cOdU/kazPsLMJ1Mr7
-	1vKp/Q==
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hq087228x-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 05:22:51 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ae19907a31so292763a91.0
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 21:22:51 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=D67W3iim
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3aca98f01c1so3559887a91.2
+        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 21:28:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1793683370; x=1794288170; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1793683706; x=1794288506; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=BR98tkQVks6AJwD3RBrsYEU/yAAvutTQVgyJLvDwq1c=;
-        b=GiSQvBxcB7BgUobbQdfi3JXdzCdxibGo988G86roq4WYUHSld3TZYLocamJ0rFl0TQ
-         pgvnO8q7XpNs33VWAQCg3o+ELJeUYEKl5ttnvBIebcNngECNyYpJOjbPchAIjpRckQKc
-         DIhL0+M13Liv1Gks4Imsf212iK4JVx+jhnhUj+Pc/Nz3lTd8E9/1hTZNZxWBAConRP11
-         0u0xKaUc0hO4FBuM7mRErVV49QdiLJzNbV3kMu3Ogf8QJLe1Ks5b+VaDkAJLslqkQAC3
-         r+7N2HBk9Th1d34CkMw7Uzx3+aW+0ervrvGd2PhA+ck4XIP1xhWjNp+vFLspVIKICOoH
-         fi4g==
+        bh=aMipWiH6il94+oUwDW54rQDx5szuOcXlyk5T4hyKyg4=;
+        b=D67W3iimOk/17qGhxaN/Eawx3Q2tNpJFK0LUWfdETtro3W5sr5EGCkDtygYnrx3UvE
+         PtO/AIFMUKKybxavy0wGnv3amrfM6FJIKFNt14XbVqG0vopML4NPoL4HXIaCQW8Wo25E
+         m2r85wLt0I2rv+glgxFJsvLAtqMWBPZm278yijwrr8OG4wgS5Pk5vLexAebxkOOIkd+L
+         j1PGpV1WORgkgY/3DRz+2HvMER6SxBjqqsYdj2xoJJ5Str90PpCGDgAspN7XxAxO4Rwk
+         B5ZNQ8zEg8uFh14BuOQ693MX1cwsra3iI5VUMDItTILNsN1s9vRhRN9gUHrngxfZ4+SC
+         nAgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793683370; x=1794288170;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1793683706; x=1794288506;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=BR98tkQVks6AJwD3RBrsYEU/yAAvutTQVgyJLvDwq1c=;
-        b=OJ3pfCgnai5dDzj/TsfdEctIKrSDpjn3/OU6/TKM36WEl944xEgOxFBZYQnM9ERmNC
-         CFJD6OcxtzRXtcMLEJmt0FYgEH6Qz6BczN7XMep3TdNNtjw65Fc2zAXnRHzPtt8aMMsY
-         S4BOUHZs0GlkLFwxrjx9YRV5HJ+6Ww13R55WUR6cfa3xVYhvz4UM6IFdAcES0RIjlyJA
-         AzV2dI8pQUXMjzHzUaQKvsQOFqBZcNjlWWkqT7tmUBvJo/qYSkiCe1y4L/ztwDUYZtqj
-         jBkIjpkhMBtZOZ6jU+zpO/uOld8twn9n5yvI+xcz1aHY7WA/MtsVFwCRXTZqFmw2v+IU
-         XCSw==
-X-Forwarded-Encrypted: i=1; AKwUvByVmpVZTclNwhSlvu4ryjGxUpSUrsq2+5GApJkdEHcSXy7O6RosWYt+FdZ4GR7V7wSazdTVabs=@vger.kernel.org
-X-Gm-Message-State: APuU4Z89zBs6DozPpaQ62PqVufqSDWyZHt5XeYFZjz5O4HGP3pjtaVNM
-	qhsIQrKza7jB22Ge/0/RkD5vcDRw9zQyRWFOMH/9fo75Zi6jZjmcC0D+DA2eM5ngVbGdJn8Sfc1
-	WmRASOfffLkFerydoATw1CiDLvoMOPZFMoACTDNq4/vdZnc67YQLRy1odnd3HUr+dWNU=
-X-Gm-Gg: AYBFou1lXKAhH49jUWrSfRpyJw/DlIaEHA3X47zhXTP9LWbRWDpeQLrX3C+F4psG5iZ
-	vVulhjAw23P6GaxDCEYlsF8otql6dQk7v00OpmxMzVkjoCzmKe0ZxnSv2yY28hrqdFMEGDqCl3Q
-	2fRRMEnJPZ78YAphIbibUVwVRjrxANgUWQLGmpVwFgYyO+gu0rWUSl57ujgzO9DHkgH7dKYK9XT
-	AWBaID1BaiVGdpYBfu1U+jV8EWINdn3w9tIr1c7NYVoI1EqRbBjuu4PSvbxkfRou708NHXErtf8
-	yfJ3gDcSpv/1FPBpcnPbtAHVXAJe7uup/9mMjBwNYXGWZ/K9zOdqvcW9vx1Ytrobg4d7Yl7eisv
-	YYTu5BUcG4oxWdPVtXfYNp6UO1vtSDrmgOfeKIowlM8H5uB2HDyiZDI6UiJENFAU+Nd6jqwbUly
-	1ZA3ku
-X-Received: by 2002:a17:90a:d887:b0:3ac:7a5f:2cee with SMTP id 98e67ed59e1d1-3ae6f015b72mr10962229a91.39.1793683370094;
-        Mon, 02 Nov 2026 21:22:50 -0800 (PST)
-X-Received: by 2002:a17:90a:d887:b0:3ac:7a5f:2cee with SMTP id 98e67ed59e1d1-3ae6f015b72mr10962216a91.39.1793683369533;
-        Mon, 02 Nov 2026 21:22:49 -0800 (PST)
-Received: from [10.218.31.237] ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb363a62e3sm688502a12.4.2026.11.02.21.22.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Nov 2026 21:22:49 -0800 (PST)
-Message-ID: <3a8bf3ff-bd02-47b7-98f8-e568d39cd086@oss.qualcomm.com>
-Date: Tue, 3 Nov 2026 10:52:41 +0530
+        bh=aMipWiH6il94+oUwDW54rQDx5szuOcXlyk5T4hyKyg4=;
+        b=g08lW8A8OCCyrF+rceCaYuTlcraakh2HbJ8pP18cZ0tDQvZJzkFk3WVzYE6GFlv+Y6
+         PGQ++8ac9VdeTNVNXhf9Lc6WJW2YaFCr4FnN6DM639w/IhWKP8ZIAtMSe8rgyjJDROw6
+         cC7HZ2iolr/aFXSCpkM8EXWwI3EauypMmVY/XBOXbqu0YKa9wkkOQSK6whpQ8Xf+a9jH
+         PhMo7v5i/TTuJGK/wGEb2fLkM5yB/zd+ClKp+R3n5G6PbCjFH6k1ZAIgulDfTQahx5vj
+         hQBLqAmIV12x0rsvU+gBWJbw30JGc8yBdIipFNUvDkpnqCeoa+7riyE3MRa756NsQn4b
+         hthw==
+X-Gm-Message-State: APuU4Z+wl9/yWO5IZP8wr4ylR2Q9T1oJDM3+atbYQgPrCTeAKSn1wyxn
+	ktTyTsukeYBSbUnFxof7vfi1PPlLt5XJGWlvEnqyHP0tQ2+9b403jPvk3mAwqyIO/gbCTtCsfQB
+	qfZBV8Q==
+X-Received: from pjbpj10.prod.google.com ([2002:a17:90b:4f4a:b0:3ad:6c5f:feb0])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4d83:b0:3ad:85fd:711c
+ with SMTP id 98e67ed59e1d1-3ae89736495mr10727525a91.28.1793683705855; Mon, 02
+ Nov 2026 21:28:25 -0800 (PST)
+Date: Tue, 3 Nov 2026 05:28:25 +0000
+In-Reply-To: <20261101061331.286404-3-jiayuan.chen@linux.dev>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -115,199 +76,78 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 1/2] dt-bindings: net: qcom,bam-dmux: Add
- memory-region and qcom,vmid properties
-To: netdev-bot+sashiko@kernel.org
-Cc: stephan@gerhold.net, andrew+netdev@lunn.ch, davem@davemloft.net,
-        kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
-        krzk+dt@kernel.org, conor+dt@kernel.org, loic.poulain@oss.qualcomm.com,
-        ryazanov.s.a@gmail.com, johannes@sipsolutions.net, edumazet@kernel.org,
-        linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        deepak.singh@oss.qualcomm.com
-References: <20261021-qcom-bam-dmux-vmid-ext-v3-1-cedd1f681102@oss.qualcomm.com>
- <179292379798.3134.3640182983987741764@kernel.org>
-Content-Language: en-US
-From: Vishnu Santhosh <vishnu.santhosh@oss.qualcomm.com>
-In-Reply-To: <179292379798.3134.3640182983987741764@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAzMDAyMSBTYWx0ZWRfXzF7tgTtORqRx
- 2opzNgJYzFTYH1Fm07pI5yL2E7Pbx0NR2sA5aikyQSX6Lp2GOnUk8ehiUb4wWYYYkXwYFCYhUxn
- Fad/T1eaLCrCX5vRuizhEwQz8Bchb4Q=
-X-Authority-Analysis: v=2.4 cv=K9m3jCWI c=1 sm=1 tr=0 ts=6ae96fab cx=c_pps
- a=vVfyC5vLCtgYJKYeQD43oA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=0nVg4KMEP9fHxcKd-jEA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=rl5im9kqc5Lf4LNbBjHf:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAzMDAyMSBTYWx0ZWRfX0YjO4/6q5yPT
- FVteCFbZMj4Exo5tQtRaObqx77phh6frxHcuT8IoP8XnfrDKNYopxW3vJtxVDfRWEMxjMQTXn5Y
- ub6xhto4+EZ0bSgAbrxmNNQ1OLaPPGLEMoz5RVlUWg/25447osJDwBUuYMv/HW14F07+y9r5ThX
- nNx4BRAGWBbf/VQV/FHD+RVgInyARVE8FJGkuEVNt74tv8oADcbs0GXfnGtZye983HIx8vpnuTx
- TKVkdy8UFyhdwoWxNlWkWsOwpt22eKi3tzSyLvvWY7r/S4hupdHd/fqNCbgcvwPTGeGUdXfiRri
- 4OVGUZbyayM35cY7uU/k4VF2qg811pHD0Ty0s7anvhmHQJ5OM2rZ2gn1IGzSNiIutIvDI5xznHi
- Wzzucraw9QmaT6LO8XqOKY09+nzmPDAR6y/bbhDWpqup9SK531/ZxZfua8ANh2bIIKiroE3N8a9
- XYM1vHFxvu0sB/kht9A==
-X-Proofpoint-ORIG-GUID: RmSx7oI_8vNbObbyARIRAcMH7oRIwGgp
-X-Proofpoint-GUID: RmSx7oI_8vNbObbyARIRAcMH7oRIwGgp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-03_01,2026-11-02_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 lowpriorityscore=0 clxscore=1015 malwarescore=0
- bulkscore=0 adultscore=0 spamscore=0 suspectscore=0 phishscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610300000
- definitions=main-2611030021
+Mime-Version: 1.0
+References: <20261101061331.286404-1-jiayuan.chen@linux.dev> <20261101061331.286404-3-jiayuan.chen@linux.dev>
+Message-ID: <aulw7Bfq65l738px@google.com>
+Subject: Re: [PATCH net v3 2/5] ipv4: fix shift-out-of-bounds in ip_rt_send_redirect()
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, 
+	Fernando Fernandez Mancera <fmancera@suse.de>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	Joel Granados <joel.granados@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Willem de Bruijn <willemb@google.com>, 
+	Maoyi Xie <maoyi.xie@ntu.edu.sg>, Jiri Wiesner <jwiesner@suse.de>, 
+	Zhan Xusheng <zhanxusheng1024@gmail.com>, Gerd Rausch <gerd.rausch@oracle.com>, 
+	Oleg Nesterov <oleg@redhat.com>, Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>, 
+	Wyatt Feng <bronzed_45_vested@icloud.com>, Yung Chih Su <yuuchihsu@gmail.com>, 
+	Hannes Frederic Sowa <hannes@stressinduktion.org>, Flavio Leitner <fbl@redhat.com>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Petr Mladek <pmladek@suse.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
+On Sun, 01 Nov 2026 14:12:00 +0800, Jiayuan Chen wrote:
+> ip_rt_redirect_number is the max number of ICMP Redirects we send to one
+> endpoint; once we hit it we stop. Before that, ip_rt_redirect_load gives
+> the redirects an exponential backoff:
+> 
+> 	if (peer->n_redirects == 0 ||
+> 	    time_after(jiffies,
+> 		       (peer->rate_last +
+> 			(ip_rt_redirect_load << peer->n_redirects)))) {
+> 
+> n_redirects grows until it reaches ip_rt_redirect_number, and both
+> redirect_number and redirect_load are plain proc_dointvec sysctls with
+> no upper bound. Set redirect_number past 32 and n_redirects climbs past
+> 31, so "ip_rt_redirect_load << peer->n_redirects" shifts a 32-bit int by
+> >= 32 bits, which is UB:
+> 
+>   UBSAN: shift-out-of-bounds in net/ipv4/route.c:949:6
+>   shift exponent 32 is too large for 32-bit type 'int'
+>   CPU: 1 UID: 0 PID: 1845 Comm: ping Not tainted 7.3.0-rc7+ #364 PREEMPT
+>   Call Trace:
+>    <IRQ>
+>    dump_stack_lvl+0xc1/0xf0
+>    dump_stack+0x10/0x20
+>    __ubsan_handle_shift_out_of_bounds+0x1d1/0x390
+>    ip_rt_send_redirect.cold+0x2c/0x146
+>    ip_forward+0x1ddc/0x2430
+>    ip_rcv+0x2b1/0x320
+>    __netif_receive_skb_one_core+0x16b/0x1c0
+>    __netif_receive_skb+0x21/0x150
+>    process_backlog+0x37e/0x1200
+>    __napi_poll.constprop.0+0xa5/0x5e0
+>    net_rx_action+0x4c0/0xf70
+> 
+> Bounding redirect_number instead is not an option: 0 disables redirects
+> and -1 removes the cap. Compute the backoff in u64 with the shift count
+> capped at 31, which cannot overflow once ip_rt_redirect_load is
+> non-negative, and clamp the result to MAX_JIFFY_OFFSET: on 32-bit a
+> backoff of 2^31 or more is read by time_after() as already expired. This
+> keeps redirect_number as the limit on how many ICMP redirects are sent,
+> and the shift can no longer go out of bounds.
+> 
+> redirect_load on the other hand gets a lower bound of 0. A negative
+> backoff never meant anything, the old code only happened to treat it as
+> no backoff, and once converted to u64 it would turn into the maximum
+> backoff instead.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-On 25-10-2026 03:53 pm, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
->
-> Critical: 0 · High: 0 · Medium: 1 · Low: 2
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
->
-> - [Medium] The new memory-region/qcom,vmid properties only cover the bam-
->    dmux client node.
-> - [Low] Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml still
->    says (lines 18-21): "Note that this schema does not directly describe…
-> - [Low] Baseline decision: false (resolved later in the series).
->
-> --
->
-> dt-bindings: net: qcom,bam-dmux: Add memory-region and qcom,vmid properties
->
-> This adds two optional properties to the qcom,bam-dmux binding,
-> memory-region and qcom,vmid. They confine BAM-DMUX DMA mappings to a
-> restricted DMA pool that is shared with the modem through SCM. It also
-> adds a qcom,shikra-bam-dmux compatible, with qcom,bam-dmux as fallback,
-> which requires both properties.
->
->> diff --git a/Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml b/Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml
->> index 33746c238513d..f7388d24c8612 100644
->> --- a/Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml
->> +++ b/Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml
->> @@ -22,7 +22,11 @@ description: |
->>   
->>   properties:
->>     compatible:
->> -    const: qcom,bam-dmux
->> +    oneOf:
->> +      - const: qcom,bam-dmux
->> +      - items:
->> +          - const: qcom,shikra-bam-dmux
->> +          - const: qcom,bam-dmux
-> [Severity: Low]
-> The description at the top of this binding still says:
->
->    Note that this schema does not directly describe a hardware block but rather
->    a firmware convention that combines several other hardware blocks (such as the
->    DMA engine). As such it is specific to a firmware version, not a particular
->    SoC or hardware version.
->
-> This patch adds the first SoC-specific compatible. Should that text be
-> updated too?
->
-> The commit message also doesn't explain why the no-SoC-compatible design
-> is being dropped. The only effect of qcom,shikra-bam-dmux is the allOf/if
-> block that makes memory-region and qcom,vmid required. The driver's
-> of_match table only lists the generic "qcom,bam-dmux".
->
-> Separately, the subject line only says "Add memory-region and qcom,vmid
-> properties". Could it also mention the new compatible, since that adds to
-> the DT ABI?
-
-The compatible was requested by the DT maintainers so the schema can
-enforce the properties required by the Shikra firmware configuration.
-The note about a firmware convention therefore still holds.
-
->
-> [ ... ]
->
->> @@ -72,6 +76,22 @@ properties:
->>         - const: tx
->>         - const: rx
->>   
->> +  memory-region:
->> +    maxItems: 1
->> +    description:
->> +      Phandle to a reserved-memory node compatible with restricted-dma-pool.
->> +      The BAM-DMUX device uses the pool for DMA mappings.
-> [Severity: Medium]
-> Does a pool on the bam-dmux node cover everything the BAM accesses on
-> Shikra?
->
-> The pool only affects dma_map_single(dmux->dev, ...) in
-> bam_dmux_skb_dma_map(). The BAM descriptor FIFOs are allocated on the BAM
-> controller's own device in drivers/dma/qcom/bam_dma.c:
->
-> bam_alloc_chan() {
->      ...
-> 	bchan->fifo_virt = dma_alloc_wc(bdev->dev, BAM_DESC_FIFO_SIZE,
-> 					&bchan->fifo_phys, GFP_KERNEL);
->      ...
-> }
->
-> bam_chan_init_hw() then programs that address into the hardware:
->
-> 	writel_relaxed(ALIGN(bchan->fifo_phys, sizeof(struct bam_desc_hw)),
-> 			bam_addr(bdev, bchan->id, BAM_P_DESC_FIFO_ADDR));
->
-> The companion patch "net: wwan: qcom_bam_dmux: Assign restricted DMA pool
-> to remote processor" says that "BAM-DMUX DMA mappings and BAM descriptor
-> FIFOs must therefore be constrained to a designated memory region", and
-> that accesses outside that region "can trigger an XPU violation". It also
-> says the FIFOs are covered only "When the BAM DMA controller references
-> the same pool".
->
-> However, Documentation/devicetree/bindings/dma/qcom,bam-dma.yaml defines
-> no memory-region property and has additionalProperties: false. Nothing in
-> the series changes that.
->
-> So a schema-valid Shikra DT would leave the descriptor FIFOs outside the
-> shared pool, and a DT that works would fail dtbs_check. Should
-> qcom,bam-dma.yaml get a memory-region property as part of this series?
-
-This is covered by a separate binding change for the BAM DMA controller,
-which goes through the dmaengine tree:
-https://lore.kernel.org/all/20261021-qcom-bam-dma-vmid-ext-v3-1-299355e8dd3b@oss.qualcomm.com/
-
-Vishnu
-
->
->> +
->> +  qcom,vmid:
->> +    $ref: /schemas/types.yaml#/definitions/uint32-array
->> +    maxItems: 1
->> +    items:
->> +      minimum: 1
->> +      maximum: 63
->> +    description:
->> +      VMID of the remote execution environment that is granted access to the
->> +      restricted DMA pool through SCM.
-> [Severity: Low]
-> Nothing reads qcom,vmid or does the SCM assignment at this point in the
-> series. A Shikra DT that binds through the qcom,bam-dmux fallback would
-> bounce buffers into a pool the modem has not been given access to. Is
-> that gap between this patch and the next one acceptable?
->
-> The next patch in the series, "net: wwan: qcom_bam_dmux: Assign
-> restricted DMA pool to remote processor", appears to resolve it. It adds
-> bam_dmux_assign_dma_pool() to bam_dmux_probe(). That function reads
-> qcom,vmid and calls qcom_scm_assign_mem() with HLOS and the remote VMID
-> before the DMA channels are requested. The patch also adds
-> bam_dmux_reclaim_dma_pool(), which runs on remove and on probe error.
->
-> The driver matches the fallback compatible and handles the property
-> whenever it is present. So the fallback semantics look correct by the
-> end of the series, and this is noted only for completeness.
->
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
