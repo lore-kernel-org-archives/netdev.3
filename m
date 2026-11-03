@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793714613;
-	b=A8dn6nPvWzvh0s8K/txHuXQvPLBLLkiHLvTRbTT29GPYDbEE9fUUA8oMO+K+8/1/K6oq
-	 Aqp63fMFiKzIYMUayA4yrwnk/QT3EFw2Kbn7THedVngmox4MbibwBqrI4j+n/G/eaYJ86
-	 JirV9WNSmN0fSceVYCmiNe8V5u5m746bfKvu8VpXa/5uloCrUh6/6WmlaQUNshwSnNZJn
-	 3oQS79PhZss7DUMpbwLq+bsjZtGGOfWtzWxfyEeKWQWFkAZpVQe8W/MvwtXb+NMV4/bGQ
-	 vg3g20ySxq1/DBdfjHjPj4LKjJipRNTxlS2jT1WH1/SoTcdc+e0RmEu30iMCAYRbRQQ==
+	t=1793714618;
+	b=UwT7EBHVPHPHlKBRUbmBsPlMwlNGOFgoDBf2TLC5T1JPcXiBZvvvvZxdTh/X87uATXnz
+	 1hDQgPn+9qrLAjFnUQ+ddwvTWWB21nQrvStBmREvtNessiOra1VgF3K5WUTxv+LsGUlZp
+	 hFPV6q1q6Q+fnbGjEanxFbfG4iEfc76HoCv7DDLx4KLOtNuKTKHuNgxERMbUpyqVnGRJd
+	 6tfIOC1ybdc0wJKK0xxUKMCkVwd4K6k46se8tQbAc/bAe9/YTz+WQc+C27lfgJLFsu7k+
+	 v/SifG3wn9jWA0kVmRHL2eBgDtkjj3rAgUXMbfMBo+gMfjiv3/EafNvXjwKX1d5oSBA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793714613;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793714618;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
-	bh=bRwI7uwCHVVt6T7DMLyhA8VEKQ0FrttDo22yhPZt5LE=;
-	b=kY2phQgBRjuQISunFI4Mpo31DrKLmrXOCmapJx21ELmY5lQGVzi8WvaQVFKCFsWhD+FI
-	 cwxZiItwf8VMaY/9iHS7qkegJJpaXRbxNmQ6Me1thjeqeSQ7z+LtE9GSh4VwLjhw6Dwi7
-	 BGxOlgUnwJr7Nr3YwVxT2s0uNKakf8C8V0JWLY9pM0cMjEUwDDdTcENZMvEz0iiU4/pR9
-	 kjRwM6YjJbpIusLBDJbXcUra7L0jfVTBKKL1XpiqLPTQb++FsIHHHS1XPIHwZR2O80EA8
-	 lpudmRG34O8FzZyv70vvfRpAYAw9MUtnbj33dumuNW9SNz4Mi9lIOPoADSk9rWuuOtg==
+	bh=TaFMJ0UW3LigUoc0s6WNECoAhHhD44ITTyoS2M06BTs=;
+	b=IIaBSC8KZykw+hiiPIPpKSh1TDq/03Ye3DC3JEjmigLo6/eqS4BPFcGZwtNuEzZj9CKP
+	 OYWGTanW9b7rEV3sycX0JA0pa5VXf/lhgzXHltcTm3f/I2LxfWtW1mqhf6ez5iBNcdMQR
+	 upEw0OkcoSA4y43PqTwwGxeRH1bkWDJDVTcK1R/Rdckd9Ja5jUoA3EJP37lwRKZHWBgWt
+	 XW86YCozQyzNK8pg0CERcl78eq/BkvOWwjdImYNC9Q+geYs3VCTs+I0o5j/+IoxtchPuW
+	 ExsBuDphm5czovtSWvsx/CO7l+4EhDT+N/X3LG7FSdHh90yclhQ8h9EOuVQSKNIeAcQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=netfilter.org;
 	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b="t+IPB2/W";
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b="P/+lB6EP";
 	arc=none smtp.remote-ip=217.70.190.124
 Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2E0608508F;
-	Tue,  3 Nov 2026 14:03:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A2E0608508F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B176085083;
+	Tue,  3 Nov 2026 14:03:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 49B176085083
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=t+IPB2/W
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=P/+lB6EP
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793714610;
-	bh=bRwI7uwCHVVt6T7DMLyhA8VEKQ0FrttDo22yhPZt5LE=;
+	s=2025; t=1793714616;
+	bh=TaFMJ0UW3LigUoc0s6WNECoAhHhD44ITTyoS2M06BTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+IPB2/WjsIjOKAhcCnC/eahsoFe5I4In69z6sWjqvlgHjLusRnYczDkIG2R5ouGD
-	 J5kJwFrz/LKIG6TP+ZjJWnfQMz/5I+Xhnk9XEcSG4Phq9E7u6hJAwslIAbuSYyKesU
-	 ht9la6SpZAnclaJaaJgnVbHB13u1rYdvni33mqqJvOtcMEBBoT+OOXtQnm+W55CvjM
-	 PYNMvK1s8280c2thy7Usmdd+nlzXMSUYG3vN8Oe8PppyyFZeSYvimoZidL0jaYoJDT
-	 eBDZ0YBm/7qeeQriIPY2zb3+SjNO3vFBQvIXP6jUcufLrLlriY5V7nX2wCVLUOgScv
-	 iQMGl6KQuxLKA==
+	b=P/+lB6EPgJCOlaqb6UOn4HaTUVagijQgzxohYYguhaTyqbMcV3opOfwD3jRHq/4Xe
+	 tLrQ88rVIc+KVAHZ5D1r73dDv3L2FrbzPu1Thvl4g4O7+rmqBtFICQ4bNbIPNW2ZEj
+	 qfhLB38q0F1LnvKBFM9waj3XjObJrLoYrAJEP8R4XX3da4UaWDU72oF1OnxvH9BcLA
+	 qvYHiMuJY0psph5UyGU819eJDGwFDQ8IiPJzuLdwfcEjk8XSYotew0pNHqeUhdqVdt
+	 a5aDseMS20VMXuwoUimN3vK77AKDJcHgHqmx+dcsFuSmd1A7d/DsGv68JSvOE0Yr5n
+	 MaY/W5seTiS1A==
 Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 49ABF60092;
-	Tue,  3 Nov 2026 15:03:30 +0100 (CET)
+	by mail.netfilter.org (Postfix) with ESMTPSA id 252A260085;
+	Tue,  3 Nov 2026 15:03:36 +0100 (CET)
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 To: netfilter-devel@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -56,9 +56,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	fw@strlen.de,
 	ja@ssi.bg
-Subject: [PATCH net 10/15] netfilter: bridge: use DEBUG_NET_WARN_ON_ONCE in nf_ct_bridge_refrag()
-Date: Tue,  3 Nov 2026 15:03:03 +0100
-Message-ID: <20261103140308.591690-12-pablo@netfilter.org>
+Subject: [PATCH net 14/15] netfilter: xt_recent: do not call remove_proc_entry() under recent_lock
+Date: Tue,  3 Nov 2026 15:03:07 +0100
+Message-ID: <20261103140308.591690-16-pablo@netfilter.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261103140308.591690-1-pablo@netfilter.org>
 References: <20261103140308.591690-1-pablo@netfilter.org>
@@ -73,45 +73,80 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Laveesh Bansal <laveeshb@laveeshbansal.com>
+From: "Cen Zhang (Microsoft)" <cenzhang@linux.microsoft.com>
 
-nf_ct_bridge_refrag() warns when skb->protocol is neither IPv4 nor IPv6.
-A vlan filtering bridge can get there with a vlan ethertype: if the
-protocol of the tag of a frame differs from the vlan_protocol of the
-bridge, br_allowed_ingress() moves the tag back into the packet after
-NF_BR_PRE_ROUTING, where bridge conntrack has already defragmented it.
+recent_proc_net_exit() removes the /proc/net/xt_recent/<name> entries of
+a dying network namespace while holding spin_lock_bh(&recent_lock).
+remove_proc_entry() may sleep: proc_entry_rundown() waits until every
+task that is still inside the entry's file operations has left. A reader
+of such an entry is counted in by proc_reg_read() before
+recent_seq_start() takes recent_lock. So if a read is in flight when the
+namespace is torn down, cleanup_net() sleeps in atomic context holding
+the spinlock that the reader is spinning on, and neither side can ever
+make progress.
 
-Anyone who can send fragments into a port of such a bridge can trigger the
-warning, which takes the machine down with panic_on_warn. The packet is
-dropped either way, so only warn on kernels built with CONFIG_DEBUG_NET.
+An unprivileged user can trigger this from a user namespace by adding a
+rule with the "recent" match and reading its proc file while the
+namespace is being destroyed. As recent_lock is global, every later
+attempt to take it spins forever too: the spinning can spread to all
+CPUs, and network namespace teardown stops system-wide.
 
-This only avoids the warning. Such fragmented packets are still dropped.
-syzbot reported the warning. It keeps triggering on CONFIG_DEBUG_NET
-kernels until the vlan tag is handled, which is left for a follow-up:
+  BUG: sleeping function called from invalid context at
+    kernel/sched/completion.c:116
+   #3: (recent_lock){+...}-{3:3}, at: recent_net_exit+0x2b/0x140
+  Workqueue: netns cleanup_net
+  Call Trace:
+   proc_entry_rundown+0x185/0x1b0
+   remove_proc_entry+0x21a/0x520
+   recent_net_exit+0x7f/0x140
+   cleanup_net+0x414/0x8f0
+  ...
+  rcu: INFO: rcu_preempt self-detected stall on CPU
+  Call Trace:
+   queued_spin_lock_slowpath+0x313/0xc20
+   recent_seq_start+0x87/0x1b0
+   seq_read_iter+0x265/0x11e0
+   proc_reg_read+0x1ab/0x270
 
-  https://syzkaller.appspot.com/bug?extid=a8ba738fe2db6b4bb27f
+Fix by taking recent_mutex instead of recent_lock. According to
+commit a0e889bb1bdc ("[NETFILTER]: recent match: fix "sleeping function
+called from invalid context""), recent_mutex is the lock to use here: it
+protects recent_net->tables and was introduced so that proc entries are
+created and removed without recent_lock held, because those calls may
+sleep. hashlimit_proc_net_exit() does the same for xt_hashlimit.
 
-Fixes: 3c171f496ef5 ("netfilter: bridge: add connection tracking system")
-Assisted-by: LLM
-Signed-off-by: Laveesh Bansal <laveeshb@laveeshbansal.com>
+Fixes: 665e205c16c1 ("netfilter: xt_recent: fix namespace destroy path")
+Cc: stable@vger.kernel.org
+Cc: AutonomousCodeSecurity@microsoft.com
+Signed-off-by: Cen Zhang (Microsoft) <cenzhang@linux.microsoft.com>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
- net/bridge/netfilter/nf_conntrack_bridge.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/xt_recent.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/bridge/netfilter/nf_conntrack_bridge.c b/net/bridge/netfilter/nf_conntrack_bridge.c
-index b5444335b86f..8c83dc05114b 100644
---- a/net/bridge/netfilter/nf_conntrack_bridge.c
-+++ b/net/bridge/netfilter/nf_conntrack_bridge.c
-@@ -358,7 +358,7 @@ nf_ct_bridge_refrag(struct sk_buff *skb, const struct nf_hook_state *state,
- 		nf_br_ip6_fragment(state->net, state->sk, skb, &data, output);
- 		break;
- 	default:
--		WARN_ON_ONCE(1);
-+		DEBUG_NET_WARN_ON_ONCE(1);
- 		return NF_DROP;
- 	}
+diff --git a/net/netfilter/xt_recent.c b/net/netfilter/xt_recent.c
+index 55f1f2d89952..00cccf003cff 100644
+--- a/net/netfilter/xt_recent.c
++++ b/net/netfilter/xt_recent.c
+@@ -650,14 +650,15 @@ static void __net_exit recent_proc_net_exit(struct net *net)
  
+ 	/* recent_net_exit() is called before recent_mt_destroy(). Make sure
+ 	 * that the parent xt_recent proc entry is empty before trying to
+-	 * remove it.
++	 * remove it. Use recent_mutex instead of recent_lock since
++	 * remove_proc_entry() may sleep.
+ 	 */
+-	spin_lock_bh(&recent_lock);
++	mutex_lock(&recent_mutex);
+ 	list_for_each_entry(t, &recent_net->tables, list)
+ 	        remove_proc_entry(t->name, recent_net->xt_recent);
+ 
+ 	recent_net->xt_recent = NULL;
+-	spin_unlock_bh(&recent_lock);
++	mutex_unlock(&recent_mutex);
+ 
+ 	remove_proc_entry("xt_recent", net->proc_net);
+ }
 -- 
 2.47.3
 
