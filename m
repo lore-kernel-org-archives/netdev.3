@@ -1,22 +1,22 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793701738;
-	b=CMl2o2WvnsHE/Ic1hfhUCi9jRi4LZIW2IEVvP1GYM5SfhFzuWknQ77eozF5IprAiEw1o
-	 5B+NmQ4x2m5W8VoijAMi/J74mv1lWALXMfvar5Z4lvIFcdAOQkn+JYitcvHMDIfa3TEyF
-	 TGY+EdoanP3/F9R5t6evfrIxy8E0RcsM0BrcvooJgx/ga+1OjVbYWxfw2Q5RypMWeoJex
-	 z6DTRg0PoxsR2Ot3w1rHT0cUAnNep8yrRCPTC5kEYXIr/aWWl4BbrSc2EaadhYexC+vNO
-	 YPc+o5yFuztCABLbO3iKRu+AtFHod3EpavVZUnaCtKI2k8PiIen+OuHXPIKzUMh29hw==
+	t=1793701734;
+	b=XrJI36EBvTYQiXg7Ox5PZ1VG5K4RafO4cxlidP73OSXnAs8pX9L1GOYAyr/IlM1J23uf
+	 hw1jA+eIX/SyXQimmTOEqzYC00aL/MgD3vmYppqXwCnTAEwFPD2+d6zY9ZK+LZBt7K6I/
+	 TM4yyRDKLxYf43QUk0gxX6vknfX9NZgTSu2cCoiz4ifpC8DJ4zUj0wQNd46KW9AbK6Qfh
+	 WrJ5jhtgdzWsnqSTqipc+Q34mdtLyghfUXtcPM7yWtp7lxpe5LvdDYEOoRmIXNrWu7BXO
+	 yeVI1hUjc3/n9yRbxeQOTemGLk2fOOQsn0SalUIswgIPS0Y4hrKUaJebhOF51S/Qd+A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793701738;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793701734;
 	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
 	 MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
 	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=atR9w/LIKXlCxoZMtunWQfcgxsIkELEPvu7ajRcHDaM=;
-	b=rPiXixtM73A0bAj2F4JIDgZrAb6c+0yBFvqpPuSH6SGqPdCam9nJD7MkL3sclrF4EPvK
-	 mHiwi+14zpSH4yoxNQ6ZGR1sAAusbScIbtzMeeRCH4LaVV1QvkthFMZGL25739laCNRXY
-	 SXKR/cZ4XJHPcWwSvZ0LO2tox8T3VCAy5sdPABA08UCH+ANsR6sWmVBZf9SW/eIvvhTmz
-	 lbzhMOW1JZfa2ZOa6bxa5dyGiPyVvgYsEQzH/sBMSjJdF0JErC+khxjGPLo9o3AR4Xr8E
-	 YggU15KKU627SuKSCwQ0Y2zLvN0PXNnE1NxABdrlEOLCmXlX6MIdRp29zk0bcSUDLNg==
+	bh=390o3YbRhnmm390quMy8CCMR9NiMxLhl4RRsXOSIFdI=;
+	b=l3OGN87mndCEM5xCy31aXqmZ1YjrVfI4rKPILdMDG5QeTuqA/+VehDXSjS7A7ccBHrc2
+	 ytLTeCcvkRoqSyrTr3qRobKK4/gDPY+0YcOg21bwFpffpEIvvBsBnTpuzaqwkYECBon7U
+	 FcFGgJxDEYJw37q4t1hWITepzI8rBDq1hRY2zMSvxYrH9Rucqz2uMB7J0RTWuK3194rT8
+	 prmcKksnI/He1KtCkZNb9ejS+xp1RwtNjPM6l/tYsbKdm+OCAQsNZff4QrwClfLFm9Mqo
+	 BEtN4b6mAYptkOfVe87S1hLSuy90aTI+973D/nkm8nkEdDD3AiJN3zrA9iyP7dX8UKg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=iscas.ac.cn;
 	spf=pass smtp.mailfrom=iscas.ac.cn;
@@ -25,28 +25,32 @@ Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243CA60752F0;
-	Tue,  3 Nov 2026 10:28:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 243CA60752F0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7061060A3824;
+	Tue,  3 Nov 2026 10:28:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7061060A3824
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowAAnN5hjt+lq0qk7AA--.49100S2;
-	Tue, 03 Nov 2026 18:28:51 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowABHWJlft+lqoqk7AA--.3119S2;
+	Tue, 03 Nov 2026 18:28:47 +0800 (CST)
 From: Wentao Liang <vulab@iscas.ac.cn>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
+To: Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>
-Cc: linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Wentao Liang <vulab@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] net: usb: hso: free an unused shared interrupt state on probe failure
-Date: Tue,  3 Nov 2026 10:29:00 +0000
-Message-Id: <20261103102900.1340894-1-vulab@iscas.ac.cn>
+Subject: [PATCH] net/mlx5e: TC, release meter if rule offload fails
+Date: Tue,  3 Nov 2026 10:28:56 +0000
+Message-Id: <20261103102856.1340672-1-vulab@iscas.ac.cn>
 X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,10 +62,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAAnN5hjt+lq0qk7AA--.49100S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxAF1xury5XFWftw1UJFW8Zwb_yoW5Aw43pF
-	4vgFW5JrWDJrs8J3y3Xr4rGFWF9r4kGa4UCF9xK393G3sxtrySv34UKFy5tF45CrykJFWr
-	tF9ruFyq9ay29rJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:rQCowABHWJlft+lqoqk7AA--.3119S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CFy8WryfJFy5Zw4ftw47Arb_yoW8Cry7pa
+	y8t347Gr97Za4UWw47Ca1rWw15uws3tF45CF1Sy3yavr1DtFWUWr95W3yUur1UCr1UWrZx
+	tr97uw13A3Z5AFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUU9a14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
 	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
@@ -75,93 +79,54 @@ X-Coremail-Antispam: 1UD129KBjvJXoWxAF1xury5XFWftw1UJFW8Zwb_yoW5Aw43pF
 	yUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIIF0xvE42xK8VAvwI8IcIk0rVWU
 	JVWUCwCI42IY6I8E87Iv67AKxVWxJVW8Jr1lIxAIcVC2z280aVCY1x0267AKxVWxJr0_Gc
 	JvcSsGvfC2KfnxnUUI43ZEXa7VU8jQ6JUUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBggAA2rpnIR0AwAAsh
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwIAA2rpnO5vUgAEsO
 
-hso_probe() allocates the shared interrupt state with
-hso_create_shared_int() for a multiplexed interface and then creates one
-muxed serial device per port advertised by the device. A muxed serial
-device takes ownership of the shared interrupt state by incrementing its
-ref_count, and hso_free_serial_device() releases the state together with
-the last reference.
+mlx5e_tc_rule_offload() adds the flow meter to the attribute and then
+adds the offloaded rule. If mlx5_eswitch_add_offloaded_rule() fails, the
+meter reference taken by mlx5e_tc_add_flow_meter() is not dropped.
 
-There are two paths where the state is allocated but no serial device
-ever takes a reference to it: the port mask read from the device contains
-no port that can be muxed (including a port mask of zero), and the
-creation of the first muxed serial device fails. In both cases
-hso_probe() leaves through a path that only frees the registered serial
-and network devices, so the URB, the buffer, the mutex and the state
-itself are leaked.
+The error propagates to mlx5e_tc_add_fdb_flow() and the flow is freed
+without the OFFLOADED flag, so mlx5e_tc_rule_unoffload() and
+mlx5e_tc_del_flow_meter() are never called. Release the meter and the
+post meter state in the failure path of mlx5e_tc_rule_offload() itself.
 
-Release the state in both places when no serial device took it over.
-hso_free_shared_int() still has to be called with the state's mutex held,
-so add a small helper which takes the lock first.
-
-Fixes: 72dc1c096c70 ("HSO: add option hso driver")
+Fixes: a8d52b024d6d ("net/mlx5e: TC, Support offloading police action")
 Cc: stable@vger.kernel.org
 Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
 Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- drivers/net/usb/hso.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/hso.c b/drivers/net/usb/hso.c
-index 71caa3764b23..818444830072 100644
---- a/drivers/net/usb/hso.c
-+++ b/drivers/net/usb/hso.c
-@@ -2736,6 +2736,13 @@ static void hso_free_shared_int(struct hso_shared_int *mux)
- 	kfree(mux);
- }
- 
-+/* Release a shared interrupt state which no muxed serial device took over */
-+static void hso_free_unused_shared_int(struct hso_shared_int *shared_int)
-+{
-+	mutex_lock(&shared_int->shared_int_lock);
-+	hso_free_shared_int(shared_int);
-+}
-+
- static
- struct hso_shared_int *hso_create_shared_int(struct usb_interface *interface)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+index 708b7987ea4c..17bd92529a44 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+@@ -491,6 +491,8 @@ mlx5e_tc_rule_offload(struct mlx5e_priv *priv,
+ 		      struct mlx5_flow_attr *attr)
  {
-@@ -2853,8 +2860,9 @@ static int hso_probe(struct usb_interface *interface,
- 	int mux, i, if_num, port_spec;
- 	unsigned char port_mask;
- 	struct hso_device *hso_dev = NULL;
--	struct hso_shared_int *shared_int;
-+	struct hso_shared_int *shared_int = NULL;
- 	struct hso_device *tmp_dev = NULL;
-+	int mux_count = 0;
+ 	struct mlx5_eswitch *esw = priv->mdev->priv.eswitch;
++	struct mlx5_flow_handle *rule;
++	bool meter_added = false;
+ 	int err;
  
- 	if (interface->cur_altsetting->desc.bInterfaceClass != 0xFF) {
- 		dev_err(&interface->dev, "Not our interface\n");
-@@ -2912,11 +2920,16 @@ static int hso_probe(struct usb_interface *interface,
- 						interface, i, shared_int);
- 				if (!hso_dev)
- 					goto exit;
-+				mux_count++;
- 			}
- 		}
+ 	if (!is_mdev_switchdev_mode(priv->mdev))
+@@ -503,9 +505,14 @@ mlx5e_tc_rule_offload(struct mlx5e_priv *priv,
+ 		err = mlx5e_tc_add_flow_meter(priv, attr);
+ 		if (err)
+ 			return ERR_PTR(err);
++		meter_added = true;
+ 	}
  
- 		if (tmp_dev)
- 			hso_dev = tmp_dev;
+-	return mlx5_eswitch_add_offloaded_rule(esw, spec, attr);
++	rule = mlx5_eswitch_add_offloaded_rule(esw, spec, attr);
++	if (IS_ERR(rule) && meter_added)
++		mlx5e_tc_del_flow_meter(esw, attr);
 +
-+		/* No muxed port took over the shared interrupt state */
-+		if (!mux_count)
-+			hso_free_unused_shared_int(shared_int);
- 		break;
- 
- 	case HSO_INTF_BULK:
-@@ -2943,6 +2956,11 @@ static int hso_probe(struct usb_interface *interface,
- 	return 0;
- exit:
- 	hso_free_interface(interface);
-+
-+	/* No muxed port took over the shared interrupt state */
-+	if (shared_int && !mux_count)
-+		hso_free_unused_shared_int(shared_int);
-+
- 	return -ENODEV;
++	return rule;
  }
  
+ void
 -- 
 2.34.1
 
