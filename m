@@ -1,87 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793697534;
-	b=xoEDjhHbHGMje3JfP7peCS8OuOacdv0c3dKBeP1fdYPvRFL/RIW72qeET3iQKAuUI838
-	 H6vRd0ZwdREpHOYJw7Qk08RKGc03cz/X++M5LwvFcmx2moPS5MB6t21o0kVI6gCa/loto
-	 8QgwOZTRFCZlc1UYoTcX7NFfMV9Co/h2Hr2BtAxozgnrJymyKMsnbb+jL4m7fb4nQ1It+
-	 5GAjo0CkEjs/ES0aoYAjtuDCzlUil+9dnZ+9OkcqnMrmifBvqZOHxCOeAXaXqHE1hSXqO
-	 /G+33u6olPAoGK3ogcgaOdOp/8hXthvxzDB9c06j6y2lAFOFIer/7ILENoa9BqCYxwg==
+	t=1793697678;
+	b=KazXWSgQLwxinBkGr2HpE4xTFugLIWBLjUH+5CQUVmynYNZEtjiXGsAKdeiceAU2hzbp
+	 MaQnAwCOAWRbyV9dhuy2QX9KE0zqFMSb6fJJiCHzxWlluARcgHLQy74+FEs8BrUB/C2jU
+	 sxWA/Zt1bq+C9qAi55q1XeamO8f6/Hdr7Tpj1AXWh3jVHYBtdBt8WAcntk1mEYwPhXw0m
+	 lRbXWjNr+gCFGoQGJ22Sa9ExqBs2SYn1Nhy3IxnaQchYRVhk5MgJmfDseixKIdj7sn5Rb
+	 ErTmj8a1AHDjXDaIyPPngCB5Ixr39vyK1wWsw5iv7iDU8oNp1+9c4KKSnmdOLePRmcQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793697534;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-Proofpoint-Virus-Version;
-	bh=xISkQ4ggutqNW0wtvAUTTAZu+ZP915uGUTRDp/jxhx8=;
-	b=pJL8YMcPq6WCJy3qLCvKK89BNe6Y7Sa3nfBxGUrwdyFwlayRLKOV2dWwtA6wGdnXNfvG
-	 tGOT9xO3hCEpR2EZCzB6ggEL9z95bOgk7DlQSx9vWtkxVgzPFv77VyrtzbYriNKfDK4rg
-	 ZGfF7jxJMsqcYHoVIXdNns/KmimRpZgLQUGBGws74XfJMr3fuxtrfwprG6BtA1QJVsoWP
-	 4imR2h2mDH4SYR0FKjn9MV16b7WiiNcwDEmJB+e0Z59ryCa96HRPzfPYhEcH/rO+FTKHl
-	 JAvsmAFNNqNiFX7YuQBuN8NVkPDnv53Kve5IeeEdgqRnjA/3A8fOmvkKmzWox/OWPAQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793697678;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer;
+	bh=9seIfKUb5mL9/pRiltJe+WDkz9VAJT3ACyumajU4uZs=;
+	b=kUirAHFv8myLjoCllo12TDXQz2wqweIiG4JPTEQlld7VB4n0qDvzC58tpLtuwSGHx07g
+	 stPrUsq946VLRbqlu7/9Y/NT9L8p5B4Ye+14B/IvrtIci5TdTLRDnLCbAAcQYi5tP5Kif
+	 RQaWYYsqVu5TVVLHUWhDBK4nRXiKe4eLYLAwQJJ9Ay0sJ/oSPB+FBOZ+z9Mqwo0ym6euw
+	 Jbn6F+S1QxU1tmbFx/+ZYWASUVvMT2esDglGFzC9/MAKDVxS+VC8o+uMqOcEIA+saH7ha
+	 wJ8I8r+WY46gQ20J/Nk1K7PJPlFBssnljqnl6s78ATiBVcYMQyovUijbIN2gfnj9FFQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=marvell.com;
-	spf=pass smtp.mailfrom=marvell.com;
-	dkim=pass header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=FjeTVyAd;
-	arc=none smtp.remote-ip=67.231.148.174
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=I0mgW61i;
+	arc=none smtp.remote-ip=95.215.58.46
+Received: from mta1.migadu.com (out-46.mta1.migadu.com [95.215.58.46])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75271606A324;
-	Tue,  3 Nov 2026 09:18:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 75271606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38274606A327
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 09:21:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 38274606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=pfpt0220 header.b=FjeTVyAd
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A31hhj53853946;
-	Tue, 3 Nov 2026 01:18:40 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=xISkQ4ggutqNW0wtvAUTTAZ
-	u+ZP915uGUTRDp/jxhx8=; b=FjeTVyAdwlcvP+dGOvNPtaPZstgLlxwEi/IpV6S
-	awC2q+k+C0us999qdZV8q3HDFV99bd9SVvr6dWwmyvM/+zSTd1wwN6XfVPT3YX3p
-	dZdTn/2nJOqmgnDO/VcCDJEqLlN3kr8q5P+BAKuN+V7LZ1i+veRdR/3DhyZ7Vs90
-	K9Ab8GWqJxhOh6yyEeF46zwK0MOagGEfIH4+JPl3OfFcbzuP+my2PI2ZxZ2VV850
-	/ukS/6eGFFQtMZpItd6t/vp5dHJllyDnTzS6l/1TO1z4KBVCpbp0DfGGGf2PLhG4
-	KWDH5fbVoq8W3LG0xiOqwa0gbe9xHXrsinHR0zV8W4eswQA==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4hq58y9kru-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Nov 2026 01:18:40 -0800 (PST)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 3 Nov 2026 01:18:38 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 3 Nov 2026 01:18:38 -0800
-Received: from localhost.localdomain (unknown [10.110.24.192])
-	by maili.marvell.com (Postfix) with ESMTP id 466263F7053;
-	Tue,  3 Nov 2026 01:18:38 -0800 (PST)
-From: Vadluri Mukunda <vmukunda@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Sunil Goutham <sgoutham@marvell.com>,
-        Ratheesh Kannoth
-	<rkannoth@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        "Subbaraya
- Sundeep" <sbhatta@marvell.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S
- . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>,
-        "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Suman Ghosh
-	<sumang@marvell.com>,
-        Vadluri Mukunda <vmukunda@marvell.com>
-Subject: [PATCH net v2] octeontx2-af: skip NPC_AF_MATCH_STATX access on cn20k
-Date: Tue, 3 Nov 2026 09:18:31 +0000
-Message-ID: <20261103091831.914393-1-vmukunda@marvell.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=I0mgW61i
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=Dogg26upRcYPteVZYsSyT1265sb9gcafjUHnbvF97og=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793697675; v=1; x=1794302475;
+ b=I0mgW61inAYftsexWS2+OTxq41aS9OM4setyUhQfKYaBmWfTJytrcMqojQ0HODeozLwBPc8B
+ F2sx/UdNm9jEmk4u1B8Ym+o8SjPVTsrOktNVM0L/K66HIL7G9pqJIfOc53Pz+vjek0BaOQevYR5
+ dfLHkzjveKcQhLRg/Iyy8nb4=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id 6dbf83cf33588557;
+	Tue, 03 Nov 2026 09:21:15 +0000
+X-Mizu-Trace-ID: 6dbf83cf33588557
+X-Migadu-Flow: FLOW_OUT
+From: Hangbin Liu <hangbin.liu@linux.dev>
+Subject: [PATCH net v2 0/3] net: ioam6: makes IOAM insertion transparent to
+ IPv6 ECMP
+Date: Tue, 03 Nov 2026 17:20:49 +0800
+Message-Id: <20261103-ipv6_ioam_ecmp-v2-0-6ef0318bdb5e@kylinos.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -91,87 +61,100 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=Vfpir1p9 c=1 sm=1 tr=0 ts=6ae9a6f0 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=EAYMVhzMl8SCOHhVQcBL:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8
- a=dWBa20jgcZIKP2ppMNMA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAzMDAzNiBTYWx0ZWRfX+3gZ07W0Ombm
- nkL/akySkhu3TeL2oxVZphsXwScn+p8kJVFij55rUoDEuT/UECsWXR3+kUOuo5XTx8z5NUHNko4
- T9dqdkoMvxTwwzyxL3PC4w181OCZsHQ=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAzMDAzNiBTYWx0ZWRfX3VgVbc/DDk/6
- YTbNNFQCDSOiIjDcMKCno2OGU0EcX2hx9paZjt3tCf8gs5UeamET2dn/883wr5Bxwkp2oxFhrJm
- YT6ysSZO/XdCCv1jeGksdLNlBiLq5ry7wgO7jNo7MzhFH9l3VxpEPfSK94WX8QP7yk+17b9P+26
- 4vie4cb+dlIHhI5/y7sgFExkl4LogooQBtCj85cOcnrOFH417HAFWByTPVohImqBtFxpEPRKCBz
- 5JVPS0J8vUui/ZoZfVVgOEXdVsJXO6x5RJqOG9B+vcZUd3vmxVjLJR6QZNQ0n2fb46EVBB9uro6
- 6DSYvjDgdX86ki3bFSESVnU+LtTKlHaIuIeoQYMnG+TkxTKdnbSHYrqlLN0zmWit5pvN/jVCC3R
- LveAPWPvttKQnvdpyiv0d7B7Z5nwFizXEhlfTXOt7d4nMmD6rrlvnShblKSsWr6RTTe6tc5ljVB
- /gzojdj5HOCQgxzFwqA==
-X-Proofpoint-ORIG-GUID: Hu2nBntPGLFx3EGqut3ht6466VzEVama
-X-Proofpoint-GUID: Hu2nBntPGLFx3EGqut3ht6466VzEVama
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-03_01,2026-11-02_03,2025-10-01_01
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/12Nyw6CMBREf4XctTVtg/Wx4j8MIW25yFVpSYuNh
+ PDvArpyeSYzcyaIGAgjXLIJAiaK5N0CcpeBbbW7IaN6YZBcKsElZ9QnVZHXXYW265nGHBuuc1N
+ rhGXUB2zovR1eweEA5TeML3NHO6xXa62lOPgwbtoktvLPcPo3JME4Oxt1FAejmtzy4jE+yfm4t
+ w7KeZ4/uK+fcMQAAAA=
+X-Change-ID: 20261020-ipv6_ioam_ecmp-ae4ef0a4bdae
+To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Justin Iurman <justin.iurman@gmail.com>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Hangbin Liu <liuhangbin@kylinos.cn>
+X-Mailer: b4 0.16.0
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+This series makes IOAM insertion transparent to IPv6 ECMP, as required
+by RFC 9486 (C2): a packet carrying IOAM options must be forwarded
+along the same path as the identical packet without them.
 
-NPC_AF_MATCH_STATX is not present on cn20k silicon, and cn20k does
-not set up an RX miss action counter. Two paths still access it:
-the npc_delete_flow mailbox, which reads the counter of the deleted
-rule, and the rx_miss_act_stats debugfs file, which would read
-counter 0. Avoid the access on cn20k. Counter support for cn20k is
-left for later.
+Patch 1 fixes the transit side: hash policy 0 hashed the raw IPv6
+nexthdr, which becomes NEXTHDR_HOP once an IOAM Hop-by-Hop header is
+inserted. The policy-0 key (and the ICMPv6-error flow selection) now
+uses the nexthdr the packet would have had if the Hop-by-Hop header
+carried only IOAM options and padding.
 
-Found by code inspection. The issue was not triggered on hardware.
-Compile tested only; not tested on real hardware.
+Patch 2 fixes the injecting node: on an ioam6 output destination-cache
+miss, inline mode now reuses orig_dst so the ECMP sibling from the
+original socket lookup is kept (the destination does not change).
+Encapsulation may switch the destination to tundst, so it still
+re-looks up the transformed packet, using the Hop-by-Hop nexthdr for
+flowi6_proto (IPPROTO_IPV6 after encap) and precomputing fl6.mp_hash
+from the packet so ICMPv6 quoted-flow and L4 keys are not lost when
+ip6_route_output() runs with no skb.
 
-Fixes: 4e527f1e5c15 ("octeontx2-af: npc: cn20k: Add new mailboxes for CN20K silicon")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: Vadluri Mukunda <vmukunda@marvell.com>
+Patch 3 adds selftests/net/ioam6_ecmp.sh, covering both places: a
+transit forwarder with a multipath route, and an encapsulating node
+compared against a plain ip6ip6 baseline.
+
+The issue was found while reviewing RFC9486. It can be reproduced and
+verified by the newly added ioam6_ecmp.sh test.
+
+Tested with:
+ecmp_rehash.sh
+fib_nexthops.sh
+ioam6_ecmp.sh
+tcp_ecmp_failover.sh
+forwarding/gre_inner_v4_multipath.sh
+forwarding/gre_inner_v6_multipath.sh
+forwarding/gre_multipath_nh_res.sh
+forwarding/gre_multipath_nh.sh
+forwarding/gre_multipath.sh
+forwarding/ip6gre_inner_v4_multipath.sh
+forwarding/ip6gre_inner_v6_multipath.sh
+forwarding/router_mpath_nh_res.sh
+forwarding/router_mpath_nh.sh
+forwarding/router_multipath.sh
+
 ---
-v2:
-  - Fixes tag now points to the upstream commit
-  - Also skip creating the rx_miss_act_stats debugfs file on cn20k
-  - Use full name in Signed-off-by
-  - Add how the issue was found and what testing was done
-v1: https://lore.kernel.org/netdev/20261026035140.666684-1-vmukunda@marvell.com/
+Changes in v2:
+- patch 01:
+  * use skb_network_offset() as the start of offset.
+  * try get inner next header for ICMPv6 errors.
+- patch 02:
+  * use origin dst for inline mode, as dst is not changed.
+  * use HBH nexthdr for encap mode, as dst may change to tundst.
+- patch 03:
+  * remove `-w` to prevent ping from ignoring `-c` and continuing to send
+    packets before receiving replies.
+  * remove beta_tnl warm up since the tunnel will be re-create every time.
+  * move trap cleanup before setup
+  * update some comments
+  * remove tunsrc in ioam encap setup
+- Link to v1: https://patch.msgid.link/20261028-ipv6_ioam_ecmp-v1-0-9b6715b6f4c0@kylinos.cn
 
- drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c | 6 ++++--
- drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c  | 2 +-
- 2 files changed, 5 insertions(+), 3 deletions(-)
+---
+Hangbin Liu (3):
+      ipv6: route: consider IOAM options in ECMP hash policy 0
+      ipv6: ioam6: use transformed packet nexthdr for ECMP re-lookup
+      selftests: net: add ioam6 ECMP test (RFC 9486 C2)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-index 2927633465d9..119426beb946 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-@@ -3740,8 +3740,10 @@ static void rvu_dbg_npc_init(struct rvu *rvu)
- 	debugfs_create_file("mcam_rules", 0444, rvu->rvu_dbg.npc, rvu,
- 			    &rvu_dbg_npc_mcam_rules_fops);
- 
--	debugfs_create_file("rx_miss_act_stats", 0444, rvu->rvu_dbg.npc, rvu,
--			    &rvu_dbg_npc_rx_miss_act_fops);
-+	/* RX miss action counter is not available on cn20k */
-+	if (!is_cn20k(rvu->pdev))
-+		debugfs_create_file("rx_miss_act_stats", 0444, rvu->rvu_dbg.npc,
-+				    rvu, &rvu_dbg_npc_rx_miss_act_fops);
- 
- 	if (is_cn20k(rvu->pdev))
- 		npc_cn20k_debugfs_init(rvu);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-index ea5d462a66ee..f3b0b082443b 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-@@ -1960,7 +1960,7 @@ int rvu_mbox_handler_npc_delete_flow(struct rvu *rvu,
- 			/* single rule */
- 			} else if (req->entry == iter->entry) {
- 				blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
--				if (blkaddr)
-+				if (blkaddr && !is_cn20k(rvu->pdev))
- 					rsp->cntr_val = rvu_read64(rvu, blkaddr,
- 								   NPC_AF_MATCH_STATX(iter->cntr));
- 				list_move_tail(&iter->list, &del_list);
--- 
-2.25.1
+ include/uapi/linux/in6.h                  |   1 +
+ net/ipv6/ioam6_iptunnel.c                 |  79 ++++---
+ net/ipv6/route.c                          |  95 +++++++-
+ tools/testing/selftests/net/Makefile      |   1 +
+ tools/testing/selftests/net/config        |   2 +
+ tools/testing/selftests/net/ioam6_ecmp.sh | 348 ++++++++++++++++++++++++++++++
+ 6 files changed, 495 insertions(+), 31 deletions(-)
+---
+base-commit: c3e67bd82b9b9b1a5118f09a429ccefe2aab0741
+change-id: 20261020-ipv6_ioam_ecmp-ae4ef0a4bdae
+
+Best regards,
+--  
+Hangbin Liu <liuhangbin@kylinos.cn>
 
