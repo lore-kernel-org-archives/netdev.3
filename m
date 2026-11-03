@@ -1,94 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793725781;
-	b=Zak97LGQkzewMx6zXeuZtK75DnYMUVoFMs7CkkR0tjtKxbNgJeYqeT1gUj4f4Fv/krFp
-	 BY9SfYLwjyL5z9yPRHIdSxAdvjg1XJuxFY7x6COorlkR2KxdzYrJ3uauSE5vwazBC4Tgx
-	 fVAL8MVAw9xesm1s8atr4wOSwEKO7nkXGOm1N87A9BYSWzXAmxtLOmco6P24sIzsMKWAy
-	 w21LCMA4GvNqUPyWQDQI9EeB0nsHXe1e2I61gbxi8AHjjkdnbzrbHNiQaBJ17ccL1rbdq
-	 tlgyuM9EFD/96EtU6Voqnyzo0YhMEcpja0csvVYNiOlmtK/VyFkWMFIpXAz48rpywvA==
+	t=1793725829;
+	b=bjLnXAvNOfOm6eYxc6TCjGy52Gcg0dux4+dW5M3JTbmXKcqMl2L0f3o4uall0guhMDPW
+	 yinNfr7qv22JN+AsAopIZuVHVxUcErynEVVPePyeaMuslnCvOuYxrZ1odJ7vf2d55g1gr
+	 q3O77XrYUSgYZHmZZhT/tmrjHyGRwHJTTLSFf+S/HsOmGPbpZYYSVSXTbWQmKn9Tf2MzG
+	 Gs54cja1B/UxPl0uyJnRes/R4keOjED4ndLzYnwIYv6ZGSnuBtI9CobE8THU562hHSvqf
+	 16D2OoNESJSyrXMD7VP+06rseFXC7Ri5oh2mW3nTtjHWWfp2pDWPwelWtRJ1NvcnEag==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793725781;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Subject:From:To:Cc:
-	 Date:Message-ID:User-Agent:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=BmASpXXwPNu0Mm15CUdYzIJM1zVTMbWZjlzlptieXNM=;
-	b=SycaXcC34tHSyAacmLCsPobM064S6Tl8cnsY4TAFX4vi9s+WaCwsptI0duUHhh6litYh
-	 vSFbxkOEueO813RhuqeIP+nlrQTjLvuRnKRJWBlHLnp4K9Z6O7wNqdZL8OyEr/AO5QXbn
-	 oLEgjc74OHXuky9zlAKarS+pviAvEUAl1KguXfiBIJSm2fkPLHKXfHBPhu2S+I20QHKTA
-	 QZ9J5Rs0ghcyCzGMuF7lIgzcNwokwfGY+3uPlaQqoZXi2xu+AxC6sgn9W9XYNkOGX33xc
-	 SBgOFEuTZlhsPopdBfvLSsUIqmG4MJXSedmD6jFEM0eZNs6MkmrsgeDlyafE4LjS+hQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793725829;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:Content-Language:To:Cc:References:From:Autocrypt:Organization:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=Ip/T2QHMM1U7PlZWA82V3rfXa8D3fyu28S4r/+LgVzM=;
+	b=k29uOszd8lFpi67Y3Eo9PsbaCr3fESSCMReuKuNDCvEcOGn5BaRtM6WwkGNWn9k2hOvr
+	 Ne/QM6fH4OL2vRzVvz38cxn4GQE1wffA382rYokuKU6OurQwCBitmCIhOFC0a8ab1ooVk
+	 BX5s60hadWMhGm3Ih6NwAYd82TGdrtzRPQ0QjPSddZ9S02/Cl8P1Vsmzb0TcR9r1q0KGs
+	 E/juU2BHm0V9UhLOnue58+qn14xlspHGBOuIBBNtlniYMQvvkxaWcoXFldzu0B2yxHnbc
+	 E9KfGX1vYbZzvBfRGvxLcBL+bzYDlxg+ENaTvZ/q8gFJ/+9abavCBh6JiUqEji0W1iQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kZCKL1lK;
-	arc=none smtp.remote-ip=74.125.82.181
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FFkRmAG6;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A48606A324
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 17:09:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A7A48606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2A4606A332;
+	Tue,  3 Nov 2026 17:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kZCKL1lK
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-36a2551d7b5so1001309eec.1
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 09:09:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793725780; x=1794330580; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:user-agent
-         :message-id:date:cc:to:from:subject:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BmASpXXwPNu0Mm15CUdYzIJM1zVTMbWZjlzlptieXNM=;
-        b=kZCKL1lKfOY2G5eS81vdoAZBH3XD6hz3ifxVKcalpGR3YPjO//zoS3QDJPjszMBjhO
-         8a+7q+uQvg+n74ZeahZj7YWyk4KjHZiTNeNIKHt53Avaqto7d1W0cO957U8aXwx0m33l
-         k0OEh79lcNBNe0Y7tUasWF3eKFW/aQSL3IPXob+X7tpbAgynYZwv7DBpyoB7NSQjqp1q
-         NN5nkw0dunHa0QP6hPXIV/OIc2wBej6b4CIQ3ay5JQnBMvyeBTaga38sJAX0O2BLQeRz
-         phvihf+X9fRpxxUO1m24wMDhqsZQFvve7TFHpRT5KBaDJNDR3CyM/KD9xe3FPmW0TRWQ
-         Nj4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793725780; x=1794330580;
-        h=content-transfer-encoding:content-type:mime-version:user-agent
-         :message-id:date:cc:to:from:subject:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BmASpXXwPNu0Mm15CUdYzIJM1zVTMbWZjlzlptieXNM=;
-        b=v7UBHqqAfdFLz8a1udZw1xqC5NPp+/l395Tk4+kixzFw4a1LbvCycJeGG9Za6EwOMj
-         Zm6ThoXRB/ausF1dLZZFefZyLgXPy+81paULQNlGLj1rL3jl9vuakLs8vrelMClG2Njj
-         GdbyDxlCHUGPmwa/tWbtQ+NSzgmH2fZC5faRU8eh+yTW32U7QofusQSe9xtqeG8hmcn4
-         hXEfbU94FyWM+W01x/hB9zETKi19pqnyK8imoKDK0I3RwoSAgDtpyw1DR3PkSOtk3w8x
-         /u0wKywwMHBEa+Mmlzma5nW2z3MwoPbEtu6oCH9vOwYKSyB31JPeYLctU3BdbNGBInGv
-         oDJA==
-X-Gm-Message-State: APuU4Z+h9QJvaBuOyyKQl0eSnwCRb9Cbj9JJIoCRRa13X75TYbWfr1W2
-	tP3ISJaSpaD09gVF7RpYpLaUw28gzNdPpE+pDIxtOnVY0lo5H1D9ZeCJ
-X-Gm-Gg: AYBFou37D5ybMzveYTeNEaeEfmPD9hjN3N3Q09ErJxRlKTIwVvOSM32k07EW/CS5oXR
-	HrTYmfISDhZm4BQcma6WBPA9Mb+ypdGDDWa7K1sbMWrR/Pi4vzJRTCIaQpvoZ4ANdhLAfKzP34H
-	RXlD/n3lWlhazsgtqF8qs7sO7Av4Sjg0Mf+R3n0hSDdeVXOvAoPAC8/EAEeR3A8PkrKmriw4d4D
-	L8ppucJspKp03Dg8J2bPxl580s4zJ83/7MKBlzxc13liLaXUx4wTK0vGgOmutk7PldVqPCr3qEu
-	KIqTBcDYTRo5l688NwOk31Rqz3RevvurvfD6uSBUKTYcjTnm44B6vEGuL1EYSurJtlxWhbL6UC5
-	98tz2kBiONyn4+VtmZU3IJ+Uj5kbaqIUgL1XP0IPP9PwimnODelwHUEI8KSFPR/EVxJlNiMerZb
-	orZAn8+ykFWdfkszKehBzPfUG/pjE4lOcTJBqEM49CSUVix3ikMsGq5B7YDM+FY8Y+YIUWzgSez
-	TW9XnxO03oJQAWkun2blsdlZdBN1TPumpQSs2gBx4cKq70TKZHxSCDVXD70cBlDKz4+o3Uwyy64
-	d7Pvh21qfnYYg5+B64X4BYrBJHprRd2h5gDHnuIIvXC0HlCYa1fLVGOzWcOL5EcIyphwGSp7thW
-	vIa+XYIvC36wCc5+6QmH1eoPoNJe4osFbRDGQZmDgTqI0eg==
-X-Received: by 2002:a05:693c:4152:20b0:358:c5c9:2661 with SMTP id 5a478bee46e88-36a423c6383mr22043436eec.10.1793725779615;
-        Tue, 03 Nov 2026 09:09:39 -0800 (PST)
-Received: from ahduyck-xeon-server.home.arpa ([2605:59c1:38c:400:22f5:2de:b9c3:f27c])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a4291e38fsm57059650eec.15.2026.11.03.09.09.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 09:09:39 -0800 (PST)
-Subject: [net PATCH] net: Segment CHECKSUM_UNNECESSARY GSO skbs other than
- fraglist
-From: Alexander Duyck <alexander.duyck@gmail.com>
-To: netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- horms@kernel.org, kernel-team@meta.com, kuba@kernel.org, pabeni@redhat.com,
- tactii@gmail.com
-Date: Tue, 03 Nov 2026 09:09:36 -0800
-Message-ID: 
- <179372577673.49909.11253315483074546903.stgit@ahduyck-xeon-server.home.arpa>
-User-Agent: StGit/1.5
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FFkRmAG6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279A71F0093A;
+	Tue,  3 Nov 2026 17:10:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793725828;
+	bh=Ip/T2QHMM1U7PlZWA82V3rfXa8D3fyu28S4r/+LgVzM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=FFkRmAG6LkkqN0fW62sNlkPULJy+l7owdtI62XDAYAYLNCQb9jFm3WYPu7t1IHikJ
+	 ChbiNyC5dqw5wzgjb1LQ9ylj5jzfeud3M/nH4xF7eM703wLiHhxTW3sT2x61CQaR9e
+	 phxUKqZMYtS72O6mcg6ITVwhFkLK8SQGxvUNL8UrhADz13c0+eCCdIStZfGsCYpJZu
+	 RwIHzHcAyF842gRK7H2MsoS95EULovEG1RO62N6aWjLtevxGxnXElXWegWJOc2llww
+	 wdnV/MT9Rz0VfZ4jy8lNqhJmbpwCVLopK8tcGYeJr7V+9OhfTof1VHpEWrII4n4ZHP
+	 Y3MHC92O58DBw==
+Message-ID: <58a5f4aa-0410-455b-9e3b-f1a4676a5359@kernel.org>
+Date: Tue, 3 Nov 2026 18:10:22 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,69 +51,85 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH] selftests: mptcp: pm_nl_ctl: print sizeof() with %zu
+Content-Language: fr
+To: Sasha Levin <sashal@kernel.org>
+Cc: Mat Martineau <martineau@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Geliang Tang <geliang@kernel.org>, Simon Horman <horms@kernel.org>,
+ Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
+ mptcp@lists.linux.dev, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261103155506.534973-1-sashal@kernel.org>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20261103155506.534973-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-From: Alexander Duyck <alexanderduyck@fb.com>
+Hi Sasha,
 
-The netif_needs_gso function lets a GSO skb reach the device unsegmented
-when it is CHECKSUM_PARTIAL or CHECKSUM_UNNECESSARY. The second case was
-added for FCoE, whose transmit path marked CRC offload that way at the
-time. Commit 253aab0597d9 ("fcoe: Use CHECKSUM_PARTIAL to indicate CRC
-offload") moved FCoE back to CHECKSUM_PARTIAL but left the exemption in
-place, with nothing left that needed it. Fraglist GSO, added later, is
-its only user today, as its segments already carry valid checksums.
+On 03/11/2026 16:55, Sasha Levin wrote:
+> On 32-bit architectures size_t is an unsigned int, and printing
+> sizeof(struct nlmsgerr) with %ld warns:
+> 
+>   pm_nl_ctl.c:73:71: warning: format '%ld' expects argument of type 'long int', but argument 5 has type 'unsigned int' [-Wformat=]
+> 
+> Use %zu.
 
-A TCP GSO skb can still arrive as CHECKSUM_UNNECESSARY without being
-fraglist. Hardware LRO builds its aggregates that way, for example mlx5
-sets SKB_GSO_TCPV4 or SKB_GSO_TCPV6 and CHECKSUM_UNNECESSARY, without
-SKB_GSO_DODGY. IP forwarding and bridging turn LRO off, but a tc mirred
-redirect does not, so such an skb can be sent out another device. It
-has no csum_start and its TCP checksum field is whatever the aggregate
-left there. Drivers that only set up TSO for CHECKSUM_PARTIAL, such as
-fbnic, i40e and ice, then send the whole skb as one oversized frame
-with a bad checksum.
+Thank you for the fix, it looks good to me:
 
-Have the validate_xmit_skb function mark any CHECKSUM_UNNECESSARY GSO
-skb other than fraglist as CHECKSUM_NONE, which means the same on
-transmit. The netif_needs_gso function then segments it in software,
-and the __skb_gso_segment function unshares the header before the
-protocol code rewrites the L4 checksum field. The callers of the
-netif_needs_gso function that decide on segmentation for themselves,
-such as tap, are left as they are.
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-Found by code inspection. In QEMU with an emulated fbnic, TCPv4 and
-TCPv6 GSO skbs built this way each went out as a single 11 KB frame
-with a bad TCP checksum. With this change they are segmented into
-MSS-sized frames with valid checksums.
+@Net maintainers: please apply this patch to net-next directly.
 
-Fixes: 253aab0597d9 ("fcoe: Use CHECKSUM_PARTIAL to indicate CRC offload")
-Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
----
- net/core/dev.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/net/core/dev.c b/net/core/dev.c
-index f32353b0467c..28b4a652d037 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -4207,6 +4207,17 @@ static struct sk_buff *validate_xmit_skb(struct sk_buff *skb, struct net_device
- 	if (unlikely(!skb))
- 		goto out_null;
- 
-+	/* Only fraglist GSO, whose segments already carry valid checksums,
-+	 * can be handed to a device as CHECKSUM_UNNECESSARY. Any other GSO
-+	 * skb has no csum_start for the device to segment from. NONE means
-+	 * the same on transmit, and has netif_needs_gso() segment it in
-+	 * software.
-+	 */
-+	if (unlikely(skb->ip_summed == CHECKSUM_UNNECESSARY &&
-+		     skb_is_gso(skb) &&
-+		     !(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST)))
-+		skb->ip_summed = CHECKSUM_NONE;
-+
- 	features = netif_skb_features(skb);
- 	skb = validate_xmit_vlan(skb, features);
- 	if (unlikely(!skb))
-
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
