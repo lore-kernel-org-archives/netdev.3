@@ -1,77 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793710489;
-	b=L5erfiye2N0p/S1ID1LFqpXbTrYjVtQ5iDFyPLURIF2uVftTAifIiIVkLo52jkqMG3jv
-	 g8J+y1iCs46/xKcdyI8BgqjcLnQYxp+X6eo9FQgCwqSuihAMKeEewa3sGL2IrZK/Lk2qL
-	 EYAIraOm9PSKjTT7a4Ah/sWbEGo3/hBPaWIoTs10EAa6CIR9WGT1PZhgo+KBH+Y7gAkHj
-	 Ua24tx78MdryWnMHX1YB/exXn7huU+Smk7jZFCLi3U4F5fkf5Nv8Qnvh5L84AIdYkONgk
-	 uWn04xNl1TT2tT/YNIAYWf/a37vPaMw+klu2IMOdGXCUv/BPGzwMw++jwr/dzEoEM8w==
+	t=1793710585;
+	b=hs/5l4Fgq2zwJ8eJ8lgVudptAty61L4CJ0Z0xOo5mXtPvIWMpRgsqhqMkkCqu6jnyw3G
+	 9Np9ejQWJ9xu9XJ49XRlmA+F1FgL4IolombuYxLFAky6VaTimLV0qgvZ1l3uQvCfvewJz
+	 +nEzBznfol2E10QZIbSYHCIqU8qMjtkxCRRuf67S2tOb4HVrTBzxJv31lMEkUtrRvbJEO
+	 O6OoyswG/l4VpL9+vlIkb+RoRkgu9lmILnotxZRB5GPisvApGBpDvnC6z1tD0rGBWU9m/
+	 y2HNzYQ9n5CI0sYYC2EhY/tcuP26j0K3t3D47uKCW0+EMPpo1A+avF6ZhV7GPxsBRIw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793710489;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	a=rsa-sha256; c=relaxed/relaxed; t=1793710585;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:From:To:Cc:
 	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
-	bh=SdD3JViuLyebMZNfF0ybXy7U5RuZHTvrIy6Iv8uugos=;
-	b=08gVLV/eOIPamNTDXLCZkrLj8cII/n/0I5gOl4gI6lp+uMViMsbt1YH83inw0VDVoe2l
-	 aamegkuKvnwqYIO6OjeLxo2GsYsVYQBZy9vXdNgjeWXP1ePW77Ijs57yKWQAT/GpnyV6z
-	 vKRacN+KQ2tRp5ABKz+C/qL0meV+4UOTq2IyhKFYpBmnbFPYsA+48ZPNmORcd7dFUG08U
-	 WTh/OCow7Wwbn0yB/CLYUgTkL1dwTtv6Fg+z2d4dgoAwfnovf8Ms5/5MUnGT71/H3k93z
-	 YH2WLHRTY1aOfhD/ShWgGQFNRz7uvB8CCVIlOY6WkCDS+6atbVNrH3l8kO94yOe5DvA==
+	 Content-Transfer-Encoding;
+	bh=kusgFLicJ8cDxCoSPNLD9mTVoDoE6a8bHmah47xgC2w=;
+	b=glqfja39PW2muCU0mZmv/hpHJVwnn2WNPdin5q3mAVxbZnp9LIxexia9Prt35PyTFOsh
+	 Cu20ulKq+n0oasZ8b9ZDp7RRzkq+d4i0RcMcs6coiZapxaqVGMP+AhqTNuGZ38/uIb6FW
+	 OHmixaeUOtIXn+tOorvj9PLbQ2MsXdpN/b5a4LyOsRCxDlStVQCvWr8XMOYHyjW3c4eVK
+	 brl+w9HjPrZhdnQwE8DcruL4k9xFSGMVfz1EDUK5GpwNljvySg+8kGYYo5uIAI13nc5Q7
+	 DQMrnlniyddOSRa2+j4d5K8KLPqVKaw3nZPEbhff05ioKQBLBwU3BDSx3Rw9g1zkHOw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=x2TJVwRr;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=i7J4sI68;
+	arc=none smtp.remote-ip=192.198.163.18
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B36F606A326
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 12:54:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5B36F606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C8E606A326
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 12:56:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 00C8E606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=x2TJVwRr
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id A27081A1438;
-	Tue,  3 Nov 2026 12:54:45 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 608486046C;
-	Tue,  3 Nov 2026 12:54:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F2F571032919A;
-	Tue,  3 Nov 2026 13:54:31 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793710480; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=SdD3JViuLyebMZNfF0ybXy7U5RuZHTvrIy6Iv8uugos=;
-	b=x2TJVwRrLqBUh/xG8SzQmquVkjJvSBFEpYMJWEwUzpeWWGYBRZw8RWw7QJopMbnQsXYn6/
-	1RV2VulSbNAbqLGTcaOshiHYcwaK6mJytKsVg0bOVQ/EIUawWtA78vfnzkBIX3h035VRix
-	nWgMx0bY8fLUXbJwnFIrMEwn8UessDClXNwkF+JL64woNbJSjgfkqnEJW64LudWEFpul2I
-	h9+8YIHBvcrNa3PJicQnIqx/L3EzlpJjvvz+DclHnsv84PgpcUMJPn9p+PtR/C/Cp/5/Te
-	chdNPagkXPkqd9tzv2GZLrdlh5FSKvWJDLH7wksEru6JxaZHm4/RAtdTXcGKgw==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=i7J4sI68
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793710585; x=1825246585;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=g0Rq2YlcXtBHweKI7SYSJ1GRA/vbFkHhtvPw6vNsF8I=;
+  b=i7J4sI68EAzt8jauCzXmdJoDjPlQxa8CJ/pO1hqkgqvicJybppTheMji
+   /SjrlJ+E4S7CaOc/0C1DvNGiSZXBFbrlwtPWN/9s48+EyTXLc6qmn1UDA
+   52R7Kg/jFtlpNuqdXuS4YN0VXdh7deHzKfzCVxFmH4yLT63fRNqHZh6cL
+   NSE4Al2QMXstZ52d3WBAjPXVi8RufpHwBEsxF6mWLWyPaXfz1ovM2PVh5
+   1XcS2CKn6lnSxAxEaPdhN41y21x3VEDSsINT0237sFo5t3Mzofcd90UaD
+   TEU9uXwq07kOS00gQ1P3lqDDeSmSMSb2Jexl9pTzgY6FlRlZLJfNQT0wv
+   w==;
+X-CSE-ConnectionGUID: lor49FX/RHyQUXkmOjcN/g==
+X-CSE-MsgGUID: ITTu6KNiRnuVI5rInKIEsw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2460801"
+X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
+   d="scan'208";a="2460801"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2026 04:56:24 -0800
+X-CSE-ConnectionGUID: FYyOU7IWQj2v7NDdEjShEQ==
+X-CSE-MsgGUID: zWJmx/9XSm2upOZX33I/3A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
+   d="scan'208";a="6316906"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa004.jf.intel.com with ESMTP; 03 Nov 2026 04:56:22 -0800
+Received: by black.igk.intel.com (Postfix, from userid 1001)
+	id 0E7AC99; Tue, 03 Nov 2026 13:56:21 +0100 (CET)
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: netdev@vger.kernel.org
+Cc: Yehezkel Bernat <YehezkelShB@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Magnus Leatti <magnusleatti@kernelriot.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	thomas.petazzoni@bootlin.com,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH net v2] net: stmmac: Clear DMA errors for multi-channel interrupts
-Date: Tue,  3 Nov 2026 13:54:28 +0100
-Message-ID: <20261103125430.962715-1-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.56.0
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 1/2] net: thunderbolt: Stop queueing Rx buffers if allocation fails
+Date: Tue,  3 Nov 2026 13:56:19 +0100
+Message-ID: <20261103125621.1111198-1-mika.westerberg@linux.intel.com>
+X-Mailer: git-send-email 2.50.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -82,131 +86,152 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-The Multi-MSI interrupt handler doesn't clear the DMA error interrupts,
-and this leads to interrupt storms when one of these interrupts starts
-firing :
+Sashiko pointed out that there is a bug in the driver when Rx buffer
+allocation fails, we silently release the memory but leave the
+descriptor in the hardware ring. This could cause all kinds of memory
+corruption to happen. Fix this by making tbnet_alloc_rx_buffers() not
+release the buffers already queued and modify the call sites accordingly.
 
- - The RBU (rx buff unav) which triggers under high traffic load
-
-   This triggers easily with iperf3 and small udp packets, and shows
-   when running the netpoll kselftest
-
- - The RPS (rx process stop) which triggers when we stop the DMA RX.
-
-   This one shows when restarting the RX logic without doing a down/up
-   cycle, like when attaching an XDP program. The XSK kselftests
-   triggers it.
-
-Let's make sure we clear these interrupts for multi-MSI cases, and call
-stmmac_global_err() upon tx_hard_error to avoid possible races with
-other interrupts/napi.
-
-For that introduce an "ERR" DMA dir, as we don't want to touch the
-RI/TI bits when handling these interrupts.
-
-Both of the above storms have been found on dwmac-motorcomm (YT6801),
-and are triggered by the xdp.py, xsk_reconfig.py, xdp_features.py,
-ring_reconfig.py and netpoll_basic kernel selftests.
-
-This seems to only affect dwmac4, there's no multi-msi mode on
-dwmac1000, and on dwxgmac these interrupts are masked as of today.
-
-Fixes: 6ccf12ae111e ("net: stmmac: use interrupt mode INTM=1 for multi-MSI")
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Fixes: e69b6c02b4c3 ("net: Add support for networking over Thunderbolt cable")
+Closes: https://sashiko.dev/#/patchset/20260902082128.1148463-1-mika.westerberg%40linux.intel.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 ---
-V2:
- - Dropped reviews/tested tags as the implementation has substantially
-   changed, sorry :(
- - Discarded the helper, call directly stmmac_dma_interrupt_status on
-   all chans and use stmmac_global_err() for TX hard errors, following
-   sashiko's review.
+ drivers/net/thunderbolt/main.c | 49 +++++++++++++++++++++-------------
+ 1 file changed, 31 insertions(+), 18 deletions(-)
 
- drivers/net/ethernet/stmicro/stmmac/common.h  |  1 +
- .../net/ethernet/stmicro/stmmac/dwmac4_dma.h  |  5 +++++
- .../net/ethernet/stmicro/stmmac/dwmac4_lib.c  |  2 ++
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 19 +++++++++++++++++++
- 4 files changed, 27 insertions(+)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
-index c74bc7c9750e..a972bee66504 100644
---- a/drivers/net/ethernet/stmicro/stmmac/common.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/common.h
-@@ -382,6 +382,7 @@ enum dma_irq_dir {
- 	DMA_DIR_RX = 0x1,
- 	DMA_DIR_TX = 0x2,
- 	DMA_DIR_RXTX = 0x3,
-+	DMA_DIR_ERR = 0x4,
- };
+diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
+index cf51b9c39f4e..30b3568a83fc 100644
+--- a/drivers/net/thunderbolt/main.c
++++ b/drivers/net/thunderbolt/main.c
+@@ -506,7 +506,7 @@ static unsigned int tbnet_available_buffers(const struct tbnet_ring *ring)
+ static int tbnet_alloc_rx_buffers(struct tbnet *net, unsigned int nbuffers)
+ {
+ 	struct tbnet_ring *ring = &net->rx_ring;
+-	int ret;
++	int ret = 0;
  
- enum request_irq_err {
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h
-index 43b036d4e95b..a7caac3c98e6 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.h
-@@ -173,6 +173,11 @@ static inline u32 dma_chanx_base_addr(const struct dwmac4_addrs *addrs,
- 					 DMA_CHAN_STATUS_TI | \
- 					 DMA_CHAN_STATUS_MSK_COMMON)
+ 	while (nbuffers--) {
+ 		struct device *dma_dev = tb_ring_dma_device(ring->ring);
+@@ -524,14 +524,16 @@ static int tbnet_alloc_rx_buffers(struct tbnet *net, unsigned int nbuffers)
+ 		tf->page = dev_alloc_pages(TBNET_RX_PAGE_ORDER);
+ 		if (!tf->page) {
+ 			ret = -ENOMEM;
+-			goto err_free;
++			break;
+ 		}
  
-+#define DMA_CHAN_STATUS_MSK_ERR		(DMA_CHAN_STATUS_AIS | \
-+					 DMA_CHAN_STATUS_FBE | \
-+					 DMA_CHAN_STATUS_RPS | \
-+					 DMA_CHAN_STATUS_RBU)
-+
- int dwmac4_dma_reset(void __iomem *ioaddr);
- void dwmac4_enable_dma_irq(struct stmmac_priv *priv, void __iomem *ioaddr,
- 			   u32 chan, bool rx, bool tx);
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
-index a0249715fafa..02aa1a3dd1e2 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c
-@@ -150,6 +150,8 @@ int dwmac4_dma_interrupt(struct stmmac_priv *priv, void __iomem *ioaddr,
- 		intr_status &= DMA_CHAN_STATUS_MSK_RX;
- 	else if (dir == DMA_DIR_TX)
- 		intr_status &= DMA_CHAN_STATUS_MSK_TX;
-+	else if (dir == DMA_DIR_ERR)
-+		intr_status &= DMA_CHAN_STATUS_MSK_ERR;
+ 		dma_addr = dma_map_page(dma_dev, tf->page, 0,
+ 					TBNET_RX_PAGE_SIZE, DMA_FROM_DEVICE);
+ 		if (dma_mapping_error(dma_dev, dma_addr)) {
++			__free_pages(tf->page, TBNET_RX_PAGE_ORDER);
++			tf->page = NULL;
+ 			ret = -ENOMEM;
+-			goto err_free;
++			break;
+ 		}
  
- 	/* ABNORMAL interrupts */
- 	if (unlikely(intr_status & DMA_CHAN_STATUS_AIS)) {
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 7ffed295eb14..6360605ef5ea 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3145,6 +3145,22 @@ static int stmmac_napi_check(struct stmmac_priv *priv, u32 chan, u32 dir)
- 	return status;
+ 		tf->frame.buffer_phy = dma_addr;
+@@ -546,10 +548,6 @@ static int tbnet_alloc_rx_buffers(struct tbnet *net, unsigned int nbuffers)
+ 	}
+ 
+ 	tb_ring_notify(ring->ring);
+-	return 0;
+-
+-err_free:
+-	tbnet_free_buffers(ring);
+ 	return ret;
  }
  
-+static void stmmac_dma_err_interrupt(struct stmmac_priv *priv)
-+{
-+	u8 channels_to_check = max(priv->plat->rx_queues_to_use,
-+				   priv->plat->tx_queues_to_use);
-+	int status;
-+	u8 chan;
-+
-+	for (chan = 0; chan < channels_to_check; chan++) {
-+		status = stmmac_dma_interrupt_status(priv, priv->ioaddr,
-+						     &priv->xstats, chan,
-+						     DMA_DIR_ERR);
-+		if (unlikely(status & tx_hard_error))
-+			stmmac_global_err(priv);
-+	}
-+}
-+
- /**
-  * stmmac_dma_interrupt - DMA ISR
-  * @priv: driver private structure
-@@ -6494,6 +6510,9 @@ static irqreturn_t stmmac_mac_interrupt(int irq, void *dev_id)
- 	/* To handle Common interrupts */
- 	stmmac_common_interrupt(priv);
+@@ -678,7 +676,7 @@ static void tbnet_connected_work(struct work_struct *work)
  
-+	if (priv->plat->core_type == DWMAC_CORE_GMAC4)
-+		stmmac_dma_err_interrupt(priv);
-+
- 	return IRQ_HANDLED;
+ 	ret = tbnet_alloc_tx_buffers(net);
+ 	if (ret)
+-		goto err_free_rx_buffers;
++		goto err_stop_rings;
+ 
+ 	ret = tb_xdomain_enable_paths(net->xd, net->local_transmit_path,
+ 				      net->tx_ring.ring->hop,
+@@ -686,7 +684,7 @@ static void tbnet_connected_work(struct work_struct *work)
+ 				      net->rx_ring.ring->hop);
+ 	if (ret) {
+ 		netdev_err(net->dev, "failed to enable DMA paths\n");
+-		goto err_free_tx_buffers;
++		goto err_stop_rings;
+ 	}
+ 
+ 	netif_carrier_on(net->dev);
+@@ -695,13 +693,11 @@ static void tbnet_connected_work(struct work_struct *work)
+ 	netdev_dbg(net->dev, "network traffic started\n");
+ 	return;
+ 
+-err_free_tx_buffers:
+-	tbnet_free_buffers(&net->tx_ring);
+-err_free_rx_buffers:
+-	tbnet_free_buffers(&net->rx_ring);
+ err_stop_rings:
+ 	tb_ring_stop(net->rx_ring.ring);
+ 	tb_ring_stop(net->tx_ring.ring);
++	tbnet_free_buffers(&net->rx_ring);
++	tbnet_free_buffers(&net->tx_ring);
+ 	tb_xdomain_release_in_hopid(net->xd, net->remote_transmit_path);
+ 	tbnet_connect_failed(net);
  }
+@@ -826,9 +822,13 @@ static bool tbnet_check_frame(struct tbnet *net, const struct tbnet_frame *tf,
+ static int tbnet_poll(struct napi_struct *napi, int budget)
+ {
+ 	struct tbnet *net = container_of(napi, struct tbnet, napi);
+-	unsigned int cleaned_count = tbnet_available_buffers(&net->rx_ring);
+ 	struct device *dma_dev = tb_ring_dma_device(net->rx_ring.ring);
+-	unsigned int rx_packets = 0;
++	unsigned int cleaned_count, rx_packets = 0;
++	bool no_buffers = false;
++
++	/* Buffers a previous run was not able to return to the ring */
++	cleaned_count = tb_ring_size(net->rx_ring.ring) -
++			tbnet_available_buffers(&net->rx_ring);
  
+ 	while (rx_packets < budget) {
+ 		const struct thunderbolt_ip_frame_header *hdr;
+@@ -845,8 +845,14 @@ static int tbnet_poll(struct napi_struct *napi, int budget)
+ 		 * time.
+ 		 */
+ 		if (cleaned_count >= MAX_SKB_FRAGS) {
+-			tbnet_alloc_rx_buffers(net, cleaned_count);
++			int ret;
++
++			ret = tbnet_alloc_rx_buffers(net, cleaned_count);
+ 			cleaned_count = 0;
++			if (ret) {
++				no_buffers = true;
++				break;
++			}
+ 		}
+ 
+ 		frame = tb_ring_poll(net->rx_ring.ring);
+@@ -917,12 +923,19 @@ static int tbnet_poll(struct napi_struct *napi, int budget)
+ 		}
+ 	}
+ 
+-	if (cleaned_count)
+-		tbnet_alloc_rx_buffers(net, cleaned_count);
++	if (cleaned_count && tbnet_alloc_rx_buffers(net, cleaned_count))
++		no_buffers = true;
+ 
+ 	if (rx_packets >= budget)
+ 		return budget;
+ 
++	/*
++	 * We were not able to fill the RX ring for more buffers on this
++	 * run. Keep the polling enabled to retry the allocation.
++	 */
++	if (no_buffers && !tbnet_available_buffers(&net->rx_ring))
++		return budget;
++
+ 	napi_complete_done(napi, rx_packets);
+ 	/* Re-enable the ring interrupt */
+ 	tb_ring_poll_complete(net->rx_ring.ring);
 -- 
-2.56.0
+2.50.1
 
