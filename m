@@ -1,59 +1,160 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793717210;
-	b=EKklKKRNQF/yGTXuvRhvwcsHcFg85JDaX9MOwMSB6kybXLiiR7c4NPY4BqxBoE4tu105
-	 pVSLSfZK8UytnmNK22jyW1xVTrlC2AsMmI9oqRS5kPfGBpCfGA0Yptc4xo7iWWRFTh1uc
-	 JZckujiopLeqZear1X7uoOzN1tNHps9jzEw4ks6aUMI5FfrlA4Ap6ycA35MUWlpBr5ql4
-	 sM5DWxqRgQgIMJ8tO+lVbk0ZB7JmltInQlWsq7sFcUzh+4YryWfxHDqjEdtAtM9CflqaX
-	 i6epkYadxLL4CqjRrWx1ob0kUS4M6IT01jmKN4RdHe1QeZCMCQLPJ/BPT6bETikqzSw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793717210;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Tjz9g6dlvmvCD0CXPiOmI6DhgTWluUgooEw5+wZVo1I=;
-	b=cmsLsmpVKND4ATul19TuiBxlaNAtS9W+tBm/QVi1sjNCtucOkcGMpyZc/EfeBUgI3k3+
-	 ex+V+peq5etnwA2VSi7ugqScCY3m24twdw8wCUwZ/aE2KHAbFTf6qMRNUS3E2uO4kx7zK
-	 Gmz0V+6IkoQ4wBZqKdpZshI4wBSCbeoThK3pjGHYtq1c13VR72x7U+DWH2KVIp+B+ChCS
-	 Ur3c7Bq0DY0dIcREb0zP3mB35GUZgc/X3Jmb8ez+ZUJ196N6B9dxP5FKRHQ2DlFiQU/mF
-	 Wna5QdY4NkQqPGA13scyOsbGc79tTsbsw00YevlNQw2EZglzDKRdFycdipMgy6GF0yQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=avW3TzCz;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.7
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793717252;
+	b=v+gfXpEum+2VE3VLqXPNlK0173U5pvuNgfTN+fCuZ2qiPGkXbqp81nPrTzADOAZiouTh
+	 R1npUHxvq25+IsN4lCKHr8aN6/ylK4fHHuk+VO1LYg8kt4a4qEYk6Iygw5PFzHSLiAWtc
+	 eUwm3JfNEWqon+CENH6g9lgYeQPvjy5tihwknVJmm3Pkb/mdvp0RSA184eYIQEWiEJOWK
+	 Yq3+nME1BudY/cWixK2HVzAzy5jeZvwIRW8ThnYXvFdHg4lS4G+ZruDiQ7+kEkQBgn8gr
+	 CdyTZB+gYjMg6xVqEUdF7fSxh++SO2yo80WqvE1JZe7meNLra5tbwTQd0C5KPrRwlyQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793717252;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=VBhJnOJdjKJJzSw4kiDE8aKSp2iNIZxkkNlWCNr5Z0A=;
+	b=To//7iwCE9M0buZ5EZR2zBdy8Xt7phFOU6ZBwiLwbw7sav7cEO/i4cn9uDWfUYCJKwDd
+	 jgOT7nc/d4af4Le8F6EH3g9+8Hsu96i9Jw1BN2fw7PPeJjT2Tw5L01sV4LYJx/8mdzXVU
+	 R2iCeOS9LsoQr4m3czcRTpmgwg8cJuB77qBi8EZqCiODmfgF+uLbPbWJ9vWGKGSQlx2f2
+	 tYUNoF5COT661kjZblxbQ2Irofuzw91KSqNG5UcrXRyXOIykCqmFKq+pPEI+pEWqBvIeu
+	 uFkwoHXjHsb9GBdiT0Mo8glSntEv+G8j4tQqUICCh3aBLsHITE3O8EiXYZU0zwY0xDg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=jabil.com;
+	spf=pass smtp.mailfrom=jabil.com;
+	dkim=pass header.d=jabil.com header.i=@jabil.com header.a=rsa-sha256 header.s=selector1 header.b=nycEMIRc;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.201.7
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013007.outbound.protection.outlook.com [40.107.201.7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA831606A33F;
-	Tue,  3 Nov 2026 14:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C8E606A33B;
+	Tue,  3 Nov 2026 14:47:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7C8E606A33B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jabil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jabil.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=avW3TzCz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C1E1F0093A;
-	Tue,  3 Nov 2026 14:46:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793717209;
-	bh=Tjz9g6dlvmvCD0CXPiOmI6DhgTWluUgooEw5+wZVo1I=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=avW3TzCz3PAiG/+VWMT/vtQDlt+F3jZ61IUJRZGn6K9vA8tINxGWd0kCF/+pj3EEQ
-	 DcLVANBDfujXQW3KTvUc7NpaSwnwY9GBaTdUoTRvF74TR5Gt1ToGOqyinC2iehazLt
-	 DNc63w6+7VTK5+byLTuXGum7tBkE7b44Jyi+XGord3FYDGTeCp8lXuvwkNIzVgO7xj
-	 6otk+7hXTSB5v5jQSDFxiVLWKM5u0+AzHBRHWuTcIn1OEc3klK4sdQg4mfFX4wGMHk
-	 0Q3VYTDFX6l1fE3u4CS2BEJHXc63bVMriQ6haXkjw5tNGsraEEeYNTIk2w38m3bxly
-	 bgQs/EdJpBEMg==
-Subject:
- Re: [PATCH] net: validate checksum start before software fallback on transmit
-From: netdev-bot+sashiko@kernel.org
-To: zeil@nebius.com
-Cc: linux-kernel@vger.kernel.org, NB-CoreTeam@nebius.com,
- netdev@vger.kernel.org, mst@redhat.com, davem@davemloft.net,
- willemb@google.com, kuba@kernel.org, pabeni@redhat.com
-Date: Tue, 03 Nov 2026 14:46:48 +0000
-Message-ID: <179371720845.488856.8096850971861020807@kernel.org>
-In-Reply-To: <20261102140633.42564-1-zeil@nebius.com>
-References: <20261102140633.42564-1-zeil@nebius.com>
-X-sashiko-severity: High
+	dkim=pass (2048-bit key, unprotected) header.d=jabil.com header.i=@jabil.com header.a=rsa-sha256 header.s=selector1 header.b=nycEMIRc
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WR8h2s0LbbdO3OdLujI+E0I0LJKTxT5/yUv+n8Q/2Ngc2/PrswInwjtS2DWMbQEPP2m0bYDyYFcF3djV1bAZOfSfoYHBbern6SmnRxCX5VhhZ/iqa3AprWwlwXEoIj6uRIvhLluNdEHTHo9lIysjn9TQgejU7TmmbKW6areIavwGCLr0kWGj2XS09xg6IEKl4cMey/PDU6RquXvaOtLXSVAaAoNsd0F8IqYONkkW3nFbO6QEp8SvpfnRlZIX02BipAq4d1M5y0wx3XJN0Tb3JWUZG9hhqs9eL7mQIKlYvPjqqRs6l28bb2KWAvmuWT3L3KE7hwplTQR2UfO0zO3MUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VBhJnOJdjKJJzSw4kiDE8aKSp2iNIZxkkNlWCNr5Z0A=;
+ b=aHBTSKeJtrY5V3EKnPUoeBw00vL7IjL5O4pR8C89ByjOzuf2K28N46YDOH4vnDXIhwwwNC+bgK1rVAliwSMJ+kIA4LrXbdQVtWx5iMH+plEHNyu2k1Qebnjaq/jHxoXT3dR0RmBqbUDp6N6TqZnmo4LTs5Jij0KAV76F3nWmAWCGCy7wxCAnpPluT3/P2ayFgILJX0trErdu+yaJUkqtyHYaF2vkVYl+W5ARwFATUF1tyA8IPiIEDzwfljJxMIhoM6RiSKU4cSVfmkZIVwuKAiLnijg14sAPEJLU//NL22eC1tTrY4HK/Jatnn7iLGpwmwLWAaQs3ZqLStt+VX7GQw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=jabil.com; dmarc=pass action=none header.from=jabil.com;
+ dkim=pass header.d=jabil.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jabil.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VBhJnOJdjKJJzSw4kiDE8aKSp2iNIZxkkNlWCNr5Z0A=;
+ b=nycEMIRc3g/+QH77TmtzpLyj0SdJd8+qlDWxU9wlHDWgZkpI4ikM+Vzb9CUCcmlGv3Wqp6xZ4z4UD2YOfHxDm5vAannTJF9A4/9oPZtuuJoWSY0cexPD+ogU7MsR7OLyC/7aipv1iEAMLG8T5nmQ6ol4uLiSFRJ7BD8aANKzBtvM1rWijpZpMkFNxpuD0qIsNb8zMGMbPn2GxFjM3z0rWOwGoiWRLa+joszbErDx2ViHk+ZZKidTW/IsSMi8/FEo6a3J82v2YXWQaCft3ol9TRBkH1T3wIjttqF3GLqXwc9DZcAxSE/70cS4uSpIRF4xKsMToVCqT+b9muYSgpN/Yw==
+Received: from DM8PR02MB8087.namprd02.prod.outlook.com (2603:10b6:8:1b::11) by
+ CH3PR02MB10278.namprd02.prod.outlook.com (2603:10b6:610:1c5::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Tue, 3 Nov 2026
+ 14:47:29 +0000
+Received: from DM8PR02MB8087.namprd02.prod.outlook.com
+ ([fe80::6e40:b3cf:7280:6497]) by DM8PR02MB8087.namprd02.prod.outlook.com
+ ([fe80::6e40:b3cf:7280:6497%7]) with mapi id 15.21.0569.011; Tue, 3 Nov 2026
+ 14:47:29 +0000
+From: Kenny Hsieh <kenny_hsieh@jabil.com>
+To: Matt Johnston <matt@codeconstruct.com.au>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"jk@codeconstruct.com.au" <jk@codeconstruct.com.au>, "andi.shyti@kernel.org"
+	<andi.shyti@kernel.org>, "peda@lysator.liu.se" <peda@lysator.liu.se>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@kernel.org" <edumazet@kernel.org>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next v2] mctp i2c: add sysfs control for mux child
+ netdevs
+Thread-Topic: [PATCH net-next v2] mctp i2c: add sysfs control for mux child
+ netdevs
+Thread-Index: AQHdXH0gJEQaa7DeYESRNm+vhnedSrcEkYgAgAyNxfCACXoQgIABm7iQ
+Date: Tue, 3 Nov 2026 14:47:29 +0000
+Message-ID:
+ <DM8PR02MB80878075D2520A9CAD7DF0928E692@DM8PR02MB8087.namprd02.prod.outlook.com>
+References: <20261015081341.1262695-1-kenny_hsieh@jabil.com>
+	 <179239912623.3135.11352652156626817288@kernel.org>
+	 <DM8PR02MB808768B7D02FF12777B7777E8E602@DM8PR02MB8087.namprd02.prod.outlook.com>
+ <7486b1fc4dbcca755dd2f6b6de54d17919af873a.camel@codeconstruct.com.au>
+In-Reply-To:
+ <7486b1fc4dbcca755dd2f6b6de54d17919af873a.camel@codeconstruct.com.au>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=jabil.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM8PR02MB8087:EE_|CH3PR02MB10278:EE_
+x-ms-office365-filtering-correlation-id: d98411f8-fbf5-4873-bf0e-08df39b96272
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|38070700021|4143699003|11063799006|56012099006|261009223027099003|261026121527099003|10067099003|22082099003|18002099003|7136999003;
+x-microsoft-antispam-message-info:
+ L56Q3jUe4a44HOjpgtfsnevQUyNHv7pGltsvO0uYDpJ1RQRLMMeLWAjZfWi/HpBy48dumqWCGhe0vDW8O5WW3Bxs/WBFR0AbLIDMPxBZiaUGbm4n9/0jSRO2YvjnEPTq8aNIRaGzqq1R5xu4+vnvMZt0ouM1b2tkOvr+GYNqCoTUrcijcqEO0hw7eajQG8RJlIraVqtoH1BzfoEPp3125IrhuGaFl/ziq/XJMhEu3Tk+OpUP7LvINOULdQ2vuvmMQV6m8rhe6zEEtkmuAAPKG+8engPoLlBYZnk2yBS2mj05G+earjCJFgv49J8W2M8ryHf0bG6HR1rMStbhJ1Fwfi4IepPzYuj8ssFK37kTAqk6lfcE7jIfBDm809v9Uu+l/dDep6KhmI55PXe51nUK1iosMQ7RZoTjqGMvKltQLwEwzRdJXppzRL7ufGJFJbSo9EQ53T6bkNFX5asmHROsOXleF/2uMCYvxvoORP85jjh1yi76xM6qEyvmMjfsD+BAxYa0YiB1IXy7MA84GXWIglLohrLSwJ4xSS9WEbu3CyVlvVsuT2mLA+GgkE4+W6+sf4cT+xL3Y3kxEsin2HmzpUKiRTZiws+blZxptDla8TCTTQ5h1URr95axCDK8zjAErqUIiw6EznrdDEGGQIoGwXNsda6B7wwYiSf4xs33mDTzhb7uTYJjoFyxxvUScAXlTrrO1qx4ByxZ/O9jXeMI0M3Rjt131D06izUlVg9sR9U=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:zh-tw;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM8PR02MB8087.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(38070700021)(4143699003)(11063799006)(56012099006)(261009223027099003)(261026121527099003)(10067099003)(22082099003)(18002099003)(7136999003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?b2VBaW5SS01kblFQb0xyemhRdFk4b1BUUzdhbDRHY3V4VXBNQXJjbWJTVWpm?=
+ =?utf-8?B?M0xPbDk4YWkwcmtPc3FZTDVMSFkzMU5ob2FyT1diOTk3c2RYN0x1NFg3cit1?=
+ =?utf-8?B?UEc3R0VTOUNSTnc5cmJJVXgwRVN1UWYyUklvWU43MXBzcmVuYm5xTjFmOVZp?=
+ =?utf-8?B?YzV0ZUtXQWZYMWFaVTdaZW1XMWRzODkxV2trcUIrNVpzZ2NlcUdxZkllbkdS?=
+ =?utf-8?B?d0RXS2dzMjJrQ3cyK3VMT3l0cW85cUE1UGkyRTFmOXBpb2lEZjFlNGgyUGdw?=
+ =?utf-8?B?aGZaYm9VdEhIUzRXT1JTRFNJbHJlb0drY2xHcStKa0V3bHg4MGV2d1BDblpn?=
+ =?utf-8?B?MStud3lqNGk0WDVUNDlTWjlaVEMvaDdBcUh4VkU5ay9ETEc2SU43cHByb1dC?=
+ =?utf-8?B?UlJqUjNxZ0xnQWYyaGx4ekhwNUV4UUdpOHRQenR2bk1vL1BGbDl6WHRjL0Na?=
+ =?utf-8?B?OS9HQUthSlZwVnJTeklDNVZCdUFyV0JqZndhLzlmOVRJeTVPOGxLdXpKMWtz?=
+ =?utf-8?B?NlhJRVhCRmJHTHp3S2h5bVZtYkQ2N3lPMTR6bUlSNUQ1WkFhaXVpM0VuMklY?=
+ =?utf-8?B?Z3ZoaFN2STFqTHd5d0pvWUlMYXRveTFOTlRVT3VWejduWW81WTgvL1ovMUkv?=
+ =?utf-8?B?UUhLR1FQZEEyT0xSNlE4eWFOaUF6blo3Tk4rcEExWFlPaTlDdVUrL3JacWpW?=
+ =?utf-8?B?ZUN2b3BmalRkNE1zd1d3MjhlSTB2emtyNFRZa1FsY1ZtcXkxVVJZVklVUS8v?=
+ =?utf-8?B?Q0EwdGpkSDlmNU51VGgwMUlaekFtZ1puZ0RvdWJwMy96RzJqcTNPTDdZSmlE?=
+ =?utf-8?B?dS9OYU53bkNSVmc2R3p4Y2VrSTgyTUsxc1pFclJlRDYzc1J1ZXpKYWw0QWx1?=
+ =?utf-8?B?dEFUMjFpdmdTZFpqK0ZLRm9vUVlVN09BODJkUHZINE5NNTJOZFJVMStRc3JM?=
+ =?utf-8?B?Y0d1ZU50TTVlUzdrZ3BWK1lIRk1CcWFJc1ZUeGhsSFBaVlJBYXJud1FQZDM0?=
+ =?utf-8?B?QlRJWUZVYUxmYnMreWxxSzBXTjN4REtqd2lwb1l5Q1hCRWhtNm4xclpjTktZ?=
+ =?utf-8?B?cGM2TnBFME5SdlZ0bnNMKy82Y0l4VjREZ3h5ZmFWNXU5d0pWb3gvWVFBVWYw?=
+ =?utf-8?B?SHdjUFVaUitoTzFhd0hsZ2hMRTh0YTgxRnJCTWpsSW1UQ1NudUkxVU5EZ3A5?=
+ =?utf-8?B?ZWFOZUV6VGE2WnJJTzBQbWp6NE0yVTUzaGZtTXBwb2tKNERWY2RycnpsSHNt?=
+ =?utf-8?B?djZpMVRYbUluSDZ0ODh0Ly8vUmRPV1EwVFdWVXhtc1Bodi9VaFZtdUNpQkJN?=
+ =?utf-8?B?OXB6enRWdVFnMzJ4aWdaUmRvcGtTRjFKSEFvUkhlenk4VmQ5ZTVJa0dESjE5?=
+ =?utf-8?B?RzlaRnc0WS9IbkNhNUNjOWNxM2JxOWVlV2J3RmZRNlBRcyt4RnRnVnZEZ3Zn?=
+ =?utf-8?B?UjZ6a0ZkT2Foam80c1F0Q1dON0ZoYVIzSkJpS013S2ljOXdyQ2VDdFFuYXRy?=
+ =?utf-8?B?NUZSVWlBSTQ1MTVlSVg5V09LcGpJT0cvSEdYYlhoUzBKREFZN2thWC8xdGdq?=
+ =?utf-8?B?VytqMWJxQ3llUUl6WUVrTzhRMG90UGhtdEFBTnFRUXpEdjV4NnZLRXJONXJ4?=
+ =?utf-8?B?T2Rlblh2SFVxQ29manpILzBxOE1IbEJ1NnpmV2NvMm5sY2ZNOTJ4Z0hnZjVL?=
+ =?utf-8?B?Z2czcjQyRmVvSGVjQWVPSjVOa1dVQ0QwVFBUZ2pvRU1wWTRjOVlud05Vb2NK?=
+ =?utf-8?B?OGRtbGpFUm50aXMxd2NXQ2NPMnlUVERKVWptMWxzSFFsUEk1YkVzTXVIdWFI?=
+ =?utf-8?B?UENLcVUvem1vaVFoeS9XdlhzdVFTRGU4aE1XVWJ0QlVyR3YvN1lSRUNMN1Z1?=
+ =?utf-8?B?QVZGMkV1eEF5V2liRVVCYUsxWWlRb0tZNWpXK3NiQUJhampkZHF3RGtqVnNt?=
+ =?utf-8?B?dXJLcG5BbjVXcTVnQU1teHRvNkkxdEszYTNONE0rZSt6bXd6Q3BBU1g4NWFy?=
+ =?utf-8?B?T1VrYTNiN0pHdG9SdHFwMDlDd3VGZitPK3lYSGlqU3BBVUozVkRXdy9HMkpm?=
+ =?utf-8?B?U1VLcWdFVzMrNCtQTis4S3JSRUN1UVF3VzhPcWY5QWo5SnZCUGxwaFBrSE5l?=
+ =?utf-8?B?cDhaeVdPdWtCZncvT2pVM1A4bkVHRFhYOVBNQ0lvNkZ6enZaNjY5aGVzYWRK?=
+ =?utf-8?B?bDgyaFM4T21QQk4xYXZzR3p3Z0szTExDQzN0TXpQa2ZaeGtoelBXNjFsLzlE?=
+ =?utf-8?B?NmZlNjRZazRRNFk5RWdxVXBVbjJIa0oyZDBSZ05lYStzYVBGcXBBQkVsL1ZW?=
+ =?utf-8?B?QWJWUXRlbnA0N3pNdUlNNGtueDROSmVLdEUrYnNhWVc4YmUwUVpFdz09?=
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: base64
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,238 +164,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+X-OriginatorOrg: jabil.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM8PR02MB8087.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d98411f8-fbf5-4873-bf0e-08df39b96272
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Nov 2026 14:47:29.2299
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: bc876b21-f134-4c12-a265-8ed26b7f0f3b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: qRSh90NBIGw0qFZ2GhV8WRbPT7zLw7V+6CjW+nuHVMjJN9eSY08xEvU6mIJsUpLnpiXcePufLzwGlyPUYhBbjg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR02MB10278
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
-
-Critical: 0 · High: 2 · Medium: 2 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The new check reads the IPv4 header from a different place than
-  the one it used to decide the packet is IPv4.
-- [High] net: missing iph->ihl >= 5 check in skb_csum_hwoffload_help()
-- [Medium] The patch is narrower than its subject.
-- [Medium] On the PPP channel-bridge path, the new guard drops packets
-  that used to be forwarded.
-
---
-
-net: validate checksum start before software fallback on transmit
-
-This patch extends the IPv4 csum_start validation from 6785011f8b16 to the
-sw_checksum path of skb_csum_hwoffload_help(). For IPv4 packets it pulls
-the fixed IPv4 header and calls ip_check_csum_start(). On failure it
-returns -EINVAL so the caller drops the packet.
-
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index f32353b0467cd..3e737ba094968 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -4130,6 +4130,11 @@ int skb_csum_hwoffload_help(struct sk_buff *skb,
->  	}
->  
->  sw_checksum:
-> +	if (vlan_get_protocol(skb) == htons(ETH_P_IP)) {
-
-[Severity: High]
-
-Can the protocol check and the header read disagree here?
-
-vlan_get_protocol() walks every in-band 802.1Q/802.1AD tag and returns the
-innermost EtherType. pskb_network_may_pull() and ip_check_csum_start()
-both read at skb->network_header instead:
-
-include/net/ip.h:ip_check_csum_start() {
-	if (unlikely(skb->csum_start < skb->network_header + ip_hdrlen(skb)))
-		return -EINVAL;
-	...
-}
-
-The sites added by 6785011f8b16 gate on skb->protocol or on the netfilter
-family. For example, nf_queue_checksum_help() checks
-entskb->protocol == htons(ETH_P_IP). With those checks, the protocol and
-network_header always agree.
-
-They seem to diverge for a QinQ frame that arrives with CHECKSUM_PARTIAL
-(from a tap/virtio guest with NEEDS_CSUM, or from a veth peer) and is then
-redirected by tc mirred or bpf_redirect:
-
-__netif_receive_skb_core()
-  skb_vlan_untag()
-    pops only the outer tag
-    skb_reset_network_header()   <- now points at the inner vlan_hdr
-  sch_handle_ingress()
-    tcf_mirred_to_dev() or bpf_redirect   <- pushes mac_len only
-      __dev_queue_xmit()
-        validate_xmit_skb()
-          vlan_features_check()   <- drops NETIF_F_IP_CSUM, multi-tagged
-          skb_csum_hwoffload_help()
-            sw_checksum:
-              vlan_get_protocol() == ETH_P_IP
-              ip_check_csum_start()   <- ihl read from the inner TCI
-
-At that point ip_hdr(skb)->ihl is the low nibble of the first byte of the
-inner TCI, which is VID bits 11..8.
-
-Take a correctly formed TCP packet with csum_start == network_header + 24.
-If the inner VID is 0x700 or higher, ihl is 7 or more. ip_check_csum_start()
-then fails and validate_xmit_skb() drops a packet that skb_checksum_help()
-used to complete correctly. Was this drop intended?
-
-The reverse also seems possible. With an inner VID that gives ihl 0 or 1,
-a csum_start pointing into the real IPv4 header passes the check, and the
-header overwrite still happens.
-
-The bridge path looks unaffected, because br_dev_queue_push_xmit() resets
-network_header to the VLAN depth for CHECKSUM_PARTIAL frames. The tc and
-bpf redirect paths have no such fix-up.
-
-Would it help to gate on skb->protocol like the other sites? Another
-option is to locate the IPv4 header at the depth returned by
-vlan_get_protocol_and_depth().
-
-> +		if (!pskb_network_may_pull(skb, sizeof(struct iphdr)) ||
-
-[Severity: Medium]
-
-What happens here when skb_network_offset() is negative?
-
-Take L2TP over UDP/IPv4 on the PPP channel-bridge path. ip_rcv() sets
-skb->protocol to ETH_P_IP and points network_header at the outer IPv4
-header. The outer IPv4, UDP and L2TP headers (and optionally FF03) are
-then pulled, and nothing resets network_header or protocol:
-
-l2tp_udp_encap_recv()
-  __skb_pull(skb, sizeof(struct udphdr))
-  l2tp_recv_common()
-    pppol2tp_recv()
-      ppp_input()
-        ppp_channel_bridge_input()   <- keeps CHECKSUM_PARTIAL when
-                                        csum_start >= skb->data
-          ppp_bridge_xmit()
-            skb_csum_hwoffload_help(skb, 0)   <- !chan->xmit_offload
-
-With features set to 0 this reaches sw_checksum, and vlan_get_protocol()
-returns ETH_P_IP.
-
-pskb_network_may_pull_reason() then does:
-
-	return pskb_may_pull_reason(skb, skb_network_offset(skb) + len);
-
-With an offset of -34 or less and len of 20, the unsigned sum wraps to
-about 0xFFFFFFF2. On CONFIG_DEBUG_NET kernels this trips
-DEBUG_NET_WARN_ON_ONCE(len > INT_MAX) in pskb_may_pull_reason(). The
-function returns PKT_TOO_SMALL either way, so this path returns -EINVAL
-and ppp_bridge_xmit() frees the skb.
-
-Before this patch, skb_checksum_help() completed the inner checksum and
-the packet was forwarded. Is dropping these packets expected?
-
-Even if the pull succeeded, ip_hdr() would point at the outer header that
-was already stripped, not at the header of the packet being checksummed.
-PPTP-received packets bridged to L2TP or PPTP channels look affected in
-the same way.
-
-> +		    ip_check_csum_start(skb))
-> +			return -EINVAL;
-> +	}
->  	return skb_checksum_help(skb);
->  }
->  EXPORT_SYMBOL(skb_csum_hwoffload_help);
-
-[Severity: High]
-Does ip_check_csum_start() protect the header here when ihl itself has
-not been validated?
-
-ip_check_csum_start() takes its lower bound from the packet:
-
-	skb->csum_start < skb->network_header + ip_hdrlen(skb)
-
-ip_hdrlen() is ip_hdr(skb)->ihl * 4. The sites added by 6785011f8b16,
-ip_do_fragment() and xfrm_output(), only see headers that ip_rcv_core()
-or the IPv4 output path already checked for ihl >= 5. Nothing on the
-paths into skb_csum_hwoffload_help() does that. pskb_network_may_pull()
-only makes 20 bytes readable and does not look at ihl.
-
-Packets built by AF_PACKET with PACKET_VNET_HDR (packet_snd(),
-tpacket_snd()) or by tap_get_user() with VIRTIO_NET_HDR_F_NEEDS_CSUM
-reach this helper with an ihl chosen by the sender. They can arrive via
-validate_xmit_skb(), ieee80211_tx_skb_fixup() or the openvswitch
-queue_userspace_packet() path.
-
-For VIRTIO_NET_HDR_GSO_NONE, __virtio_net_hdr_to_skb() only requires
-
-	skb_transport_offset(skb) >= sizeof(struct iphdr)
-
-That is measured from skb->data, which still points at the L2 header.
-The lowest accepted csum_start therefore depends on the tagging:
-
-  - untagged Ethernet: 6 bytes into the IPv4 header
-  - one 802.1Q tag: 2 bytes in
-  - QinQ: the network header itself
-
-With ihl between 0 and 4, ip_hdrlen() is 0 to 16. A csum_start inside
-the fixed 20-byte header then passes ip_check_csum_start().
-skb_checksum_help() writes the folded checksum at
-csum_start + csum_offset, which still lands inside struct iphdr.
-
-In the QinQ case, csum_start == network_header with csum_offset == 0
-overwrites the version/ihl byte itself. That is the header overwrite
-the commit message says this change prevents.
-
-Should this path reject ihl < 5 the way ip_rcv_core() does? Another
-option is to compare against max(ip_hdrlen(skb), sizeof(struct iphdr)).
-If the helper in include/net/ip.h were changed instead, the existing
-callers should not notice, since they already guarantee ihl >= 5.
-
-[Severity: Medium]
-
-The subject says:
-
-  net: validate checksum start before software fallback on transmit
-
-However, the only new check is at the sw_checksum label of
-skb_csum_hwoffload_help(). Are the other transmit-side software
-completion sites meant to stay unvalidated?
-
-skb_csum_hwoffload_help() returns 0 before sw_checksum, without looking
-at csum_start, when the device has NETIF_F_HW_CSUM:
-
-	if (features & NETIF_F_HW_CSUM)
-		return 0;
-
-The same early return happens when the device has NETIF_F_IP_CSUM and
-csum_offset is 16 or 6.
-
-Several drivers then fall back to software anyway:
-
-  - wireguard encrypt_packet() calls skb_checksum_help() for
-    CHECKSUM_PARTIAL skbs.
-  - igb_tx_csum() calls skb_checksum_help() in its default case. Other
-    Intel drivers follow the same pattern.
-  - tg3_start_xmit() calls skb_checksum_help() for frames whose
-    skb->protocol is ETH_P_8021Q or ETH_P_8021AD. That is the in-band
-    VLAN case this patch handles with vlan_get_protocol().
-
-Some core-stack callers also complete the checksum directly and set
-CHECKSUM_NONE, so the skb never reaches this helper afterwards:
-
-  - xsk_skb_metadata() with tx_sw_csum only checks
-    csum_start + csum_offset + 2 <= desc->len, which is an upper bound.
-  - netem_enqueue() on the corruption path.
-
-On each of these paths, skb_checksum_help() can still write the folded
-checksum into the IPv4 header when csum_start points inside it.
-6785011f8b16 itself names input-side validation as the eventual complete
-fix.
-
-Should these sites be covered too? Otherwise, could the subject and commit
-message say the change only covers skb_csum_hwoffload_help()?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261102140633.42564-1-zeil%40nebius.com
+SGkgTWF0dCwNCg0KT24gTW9uLCAyMDI2LTExLTAyIGF0IDE3OjA0ICswODAwLCBNYXR0IEpvaG5z
+dG9uIHdyb3RlOg0KPiBBbiBhbHRlcm5hdGl2ZSBjb3VsZCBiZSB0byBjcmVhdGUgc3lzZnMgYXR0
+cmlidXRlcyB1bmRlciB0aGUgbWN0cC1pMmMgZGV2aWNlDQo+IGluc3RhbmNlIGl0c2VsZiAodGhl
+IGkyYyBzbGF2ZSkuDQo+DQo+IE11eCBidXNlcyBjb3VsZCBoYXZlIG1jdHAtaTJjIG5ldGRldnMg
+aW5zdGFudGlhdGVkIHdpdGgNCj4NCj4gZWNobyAiaTJjLTYiID4gL3N5cy9idXMvaTJjL2Rldmlj
+ZXMvMi0xMDYwL2FkZF9tY3RwX2NvbnRyb2xsZXINCj4NCj4gKHdoZXJlIGkyYy02IGlzIGEgY2hp
+bGQgbXV4IGJ1cyBvZiBpMmMtMiwgYW5kIGkyYy0yIDB4NjAgaXMgYSBtY3RwLWkyYyBpMmMNCj4g
+ZGV2aWNlKS4NCj4NCj4gImVjaG8gaTJjLTYgPiAuLi4vMi0xMDYwL3JlbW92ZV9tY3RwX2NvbnRy
+b2xsZXIiIHdvdWxkIHJlbW92ZSB0aGUgbWN0cC1pMmMNCj4gbmV0ZGV2Lg0KPiBTZXR0aW5nIGEg
+cm9vdCBub2RlIGFzIGFuIG1jdHAgY29udHJvbGxlciB3b3VsZCBpbnZvbHZlIHdyaXRpbmcgaXRz
+IG93biBuYW1lDQo+IHRvIHRoZSBhdHRyaWJ1dGUgZmlsZS4NCj4NCj4gSG93IGRvZXMgdGhhdCBs
+b29rIHRvIHlvdT8NCg0KSSBsaWtlIHRoYXQgYSBsb3QgYmV0dGVyLiBTaW5jZSB0aGUgYXR0cmli
+dXRlcyBsaXZlIG9uIHRoZSBtY3RwLWkyYw0KZGV2aWNlLCB0aGV5IGNhbiBqdXN0IGdvIGluIGRl
+dl9ncm91cHMgYW5kIHRoZSBkcml2ZXIgY29yZSBjcmVhdGVzIGFuZA0KcmVtb3ZlcyB0aGVtIGZv
+ciB1cy4gU28gSSBjYW4gZHJvcCB0aGUgcGVyLWFkYXB0ZXIgdHJhY2tpbmcgbGlzdCwgYW5kDQp0
+aGUgcmVtb3ZlIG9yZGVyaW5nIGFuZCBwcm9iZSB3YWxrIHJhY2VzIFNhc2hpa28gZm91bmQgZ28g
+YXdheSB3aXRoIGl0Lg0KDQpMZXQgbWUga25vdyBpZiB5b3UnZCByYXRoZXIgaGF2ZSBhbnkgb2Yg
+dGhlc2UgZGlmZmVyZW50bHk6DQoNCiAgLSBhZGRpbmcgYSBidXMgdGhhdCBhbHJlYWR5IGhhcyBh
+IG5ldGRldiwgb3IgcmVtb3Zpbmcgb25lIHRoYXQNCiAgICBkb2Vzbid0LCBqdXN0IHJldHVybnMg
+c3VjY2Vzcw0KICAtIGEgYnVzIHRoYXQgaXNuJ3QgaW4gdGhpcyBjb250cm9sbGVyJ3MgbXV4IHRy
+ZWUgZ2V0cyAtRUlOVkFMDQogIC0gYSBidXMgbmFtZSB0aGF0IGRvZXNuJ3QgZXhpc3QsIGUuZy4g
+aTJjLTk5OTksIGdldHMgLUVOT0RFVg0KDQpCUiwNCktlbm55DQo=
