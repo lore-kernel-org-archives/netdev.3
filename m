@@ -1,89 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.177
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793672951;
-	b=RS3/lPhSqfKygnmQ42eI+BE9yj7+XrP4if7ehU+SCmFPvou45Ffx5B7s8veFK2ogLfV3
-	 BWyglAgMTcoDE8ps4kR5aWTCyEXdvhdlslOHGWO1JzsPtmCLUQgPummIASwpwuGiZ8I7f
-	 AkAgUDvPnMWszukssyvMPeSsEdhIC+oZMDrxeWkKAJf+spyfuUDuJiDlXSWPsVV10rJx7
-	 l7Wy5Xgn7zIHuPDmus/yQq6Ch8Jp3hkzn7Akxxfugym5rAnuUaTglqTvPuhdb/w11JcKc
-	 OUNjgXnJMIua6oHHvvf1lDgWa0NqKbQLNAn67Q6JXl6trIAeg2zc6vfjFGdKsTrN2IQ==
+	t=1793672957;
+	b=qQtGv5hYNEdmrWhz8TRA3fImpgkdVaMi7+cs33Wnr4dSMTy5ypYAtNRRhKA9FeLzoN5L
+	 k500Q8BWyzjI86b63KovcuiW8dJj0MOQGK+NngqEmBfKUCsKzD+L88gXL7SGeZO9CMA38
+	 +wNkZxgQFk699AdUE1whwwMX4gYwTxMngevI8QY8PIbAjP3lmNYMVp5L1DNZXtM4WLRgK
+	 x+SQv+H3P5fQ0fSHI914eOfc6COhMFf98jEODikdtVRBvsXkAP3xyFXbuB6LABPeGS90F
+	 nckMgOmXuYEKpMSdJbc5zpAI69A2bKoLn+T/RX3bKI/99um46cTHhrGNVM934u9umFg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793672951;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key;
-	bh=EA63ABVwcLs3h/JxipVqiXIy94JHS7osXg+Mm97gaVg=;
-	b=U5L9kx1P+U7SMKuy0y15hNul441JBB+qTiRQVQnfoZb1wMdL7HkRJI+2iy07Dk/+RLAY
-	 dfF7yl7ri/+HUUK65UngRO/ScPRxoV7r2NqBYgSkWaAmEPu4BG8ND+xYQhKAOAV2585ZO
-	 haYLOBjUMXjundYutVZbTtJOgh4imDtdu3wGzNxHCmUTwge5oIo5uYLsYcc2UUgWkbyif
-	 Hhsno1qYHwGLscoSJYiYUOELMzSRfKjbkWGIgqxFjxqDvYAfMxmYbx6/v1W3ZcaulgQZ/
-	 NTEJX/qYsuW5cO93oj7KOoovFLdpOK2gcNn8E8VY3esw9K4VMe6YkXMXHK9apM0PUKQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793672957;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=+Odq/nWUXS9jHPYJFLtSPbg5YmanbMJct1bOQuLz9a0=;
+	b=Eu4quB3gK1ATNSuEF1v3XIyfseM1j0Nz5kbO8GLCRcApKcjC953TF6XAq+UOCu55pB4o
+	 AwxNRPLIeB8sej9OUzDTBUpyVLLUSgtkPPpVaMU2Kb/pUo2t9uDPoIXjgfhscijJUb9UR
+	 Au/o6AgruEqxvDx6Hctcz2JkPom4Wfm5LQZi2VZYqkpVoGYPTtgM3lGvEXdXTpmT4eteW
+	 hKazL2HLIZYCmP0RoLrW6aQQHPK4L2ALPJqVTozbvvMZMeLg9KzYdGYipMwJkhDhDJYa0
+	 EfQPxvxyAp6N8HUCuIP19BGg+p2CCouBVGfZRR3xiBq/7aTVf+C39vD7xQeRBxfbSbg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=toxicpanda.com;
-	spf=pass smtp.mailfrom=toxicpanda.com;
-	dkim=pass header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=bfMerUn9;
-	arc=none smtp.remote-ip=209.85.222.169
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=gbaU8Ezm;
+	arc=none smtp.remote-ip=91.218.175.177
+Received: from mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744D6606A332
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 02:29:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 744D6606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4B8606D803
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 02:29:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CE4B8606D803
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=bfMerUn9
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-9441591aa5cso27425185a.1
-        for <netdev@vger.kernel.org>; Mon, 02 Nov 2026 18:29:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1793672950; x=1794277750; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EA63ABVwcLs3h/JxipVqiXIy94JHS7osXg+Mm97gaVg=;
-        b=bfMerUn9HoBVFsYzAqNI7qQpcQyNwjGSN2axSAsHu3CVYVi2AxWKjL0/q7/z9jPqQA
-         tRkHoEr+SG7KSFiFmIKTomnB/tc/E57hoU5P3Fx286fgRI7m/rDdZAJAga8//Fo52X5J
-         qpH+30siiz1K6aer27OW6I27M2nN5nRv+6imMMgHerlYixUZXX7VRTO5axHBwPKt0bfs
-         RfszUU+M2GfhbwGVflG4cJg0Y2ee6CzB/gEpsN+D4GGt5F/Mxc70URvTWZV9Dvyq3D/e
-         GKEjkWGcz3FOk+pV7F46Vk1z4nGUrj7B5dxIN5KSZMktCGg/wvDpV9hJQ+Ad09ntBEnt
-         ZjCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793672950; x=1794277750;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EA63ABVwcLs3h/JxipVqiXIy94JHS7osXg+Mm97gaVg=;
-        b=MJDwahTSx7jxRoA54eZfJMBsIaFMNRltLTsYHbFHVNK3OEdAHnunLNA+5UbWv1sziM
-         8yYVozUHSrVwtRrJ9Yr9EtRw082T5u//N69gYmpuh4x43urLluZM7JLmtJzojCzEZDB3
-         q1/GBXnqC3yUoKJ206xFZMGP8zTDbqpIQ7o872jU5+BEpJbJyfJQWinMC/bam0cE0pat
-         HazhYowi7jovhvTPb1WE6depwlz4nxfiYJAOVRAH+QKD+VFvmbpZ2cnKtgIVwJ7mKjcL
-         4n0PAfoX0Y/M9SBDkOHo/4H68KFqGdW8wUV77bz9a5o7qCvbm01dTk1R/rh5BIkkwgcY
-         JeNA==
-X-Forwarded-Encrypted: i=1; AKwUvBz3vSnkUxA6EXqJjiEI1nYZS7Bi6mCZ6wTPfr/MAfM/IHUmb8ZhpqVqNn6EMrwGSPcsWDBVVwM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKwyKQQXzRYI7x4TdurWlRXZv1DxxV/VtHCP4W94pDQB+xasLoa
-	bo/DMW/KRsRigsQU58pxt+qecGho4qXlasIREzlL43I1+PkofcwmpZ4XkHJteQ/Db9c=
-X-Gm-Gg: AYBFou1SpU7ZKwAFoTxlCQceBaeF3FXpG7z4DvabYnN0QDG3Jo/l08fHF3ZXD4WFMCE
-	bO/BG5Mdo8GMMjV2k17jpBckyOAbxnJod8QCrQs7zYrv5Cwl9HDvbm1KxUGj+f+6ztR/2WMayRs
-	6de0O1EK7IYIm96inqakBxtr8UzrMu27rP6aDUiPbnMRVPQY6phjpFO3q9BY78nMm7kzX7iuo8b
-	j6evfilxyJR1ZNOkf5bJekKXEbUhIM2n+lhLotS/DczN91HFMFAjhV8AMo3bkXnoP9Zca4/m12I
-	zNoT+gOK7JdzTGWgYQb3mMn9jLY7CDsaSF157O9SDWxz7Y2AHDgOKLrZDeARbJP+kW4+w3oR5by
-	NjsioFDMr/lVRNuFy0Ks2Q/lkfia2ll4NNfZMlH2PawnbmNwjixJfvYAt9inic3XZHWVJK8zGN0
-	m4txgqui50STS16G6Ed62aMxkd0H5dNIvuIFozFaDOHB27W7hJgvgY4t7anrbczSrvvmjryfsL4
-	Z07gi/Z1eoI8mgHzjbZMoVovXdj6U8KzOk9A6Wkk785u2/eMP0l9NGTxRxZTHcoIp+LwS2jNvzk
-	s992T+Dlw2Zr3kQXzS8/n76iEnLTYzLbniyoIUTHa7sxng==
-X-Received: by 2002:a05:620a:17a9:b0:93e:5ff9:a8f4 with SMTP id af79cd13be357-9442135f4e4mr1720591185a.0.1793672950127;
-        Mon, 02 Nov 2026 18:29:10 -0800 (PST)
-Received: from toxicpanda.com ([153.61.196.255])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-94425ae63fesm971577285a.42.2026.11.02.18.29.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 18:29:09 -0800 (PST)
-From: Josef Bacik <josef@toxicpanda.com>
-Date: Tue, 03 Nov 2026 02:28:39 +0000
-Subject: [PATCH net-next v3 13/15] xen-netfront: don't BUG() when
- skb_copy_bits() fails in bounce_skb()
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=gbaU8Ezm
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=K7tUnBieg+x8yoMHcEYMmFpmpR2noKDKE9apnAPDyxQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793672954; v=1; x=1794277754;
+ b=gbaU8EzmhpM70F02M6NZuxqiGA/M3RfyTnyhoPLdG9UkR7FnGJTkry7QY/EqGuMe7bIAgj1Z
+ KCXu0+nAecYzRtMRB5LzLh/9OyK5zrcgRCYGFGb5nxq673/stw5ehoyCU3iWPtaG6vGDaJ2iay3
+ 5+GI147Y7BVdk4EZ7unaIvlo=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta11.migadu.com with ESMTPS id 406c5c1624b3d690;
+	Tue, 03 Nov 2026 02:29:14 +0000
+X-Mizu-Trace-ID: 406c5c1624b3d690
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 3 Nov 2026 10:28:52 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Andrea Mayer <andrea.mayer@uniroma2.it>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>, Shuah Khan <shuah@kernel.org>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, bpf@vger.kernel.org,
+	David Lebrun <david.lebrun@uclouvain.be>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Mathieu Xhonneux <m.xhonneux@gmail.com>,
+	David Lebrun <dlebrun@google.com>,
+	Stefano Salsano <stefano.salsano@uniroma2.it>,
+	Andrea Mayer <andrea@common-net.org>
+Subject: Re: [PATCH net 4/6] seg6: discard CHECKSUM_COMPLETE after the
+ End.BPF program
+Message-ID: <aulG5DJroKs6BuzS@fedora>
+References: <20261031225033.64-1-andrea.mayer@uniroma2.it>
+ <20261031225033.64-5-andrea.mayer@uniroma2.it>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -93,66 +76,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261103-b4-skbuff-bug-on-followups-v3-13-54ad0ab57614@toxicpanda.com>
-References: <20261103-b4-skbuff-bug-on-followups-v3-0-54ad0ab57614@toxicpanda.com>
-In-Reply-To: <20261103-b4-skbuff-bug-on-followups-v3-0-54ad0ab57614@toxicpanda.com>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Juergen Gross <jgross@suse.com>, 
- Stefano Stabellini <sstabellini@kernel.org>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Fernando Fernandez Mancera <fmancera@suse.de>, 
- Mina Almasry <almasrymina@google.com>, 
- David Laight <david.laight.linux@gmail.com>, netdev@vger.kernel.org, 
- xen-devel@lists.xenproject.org, Josef Bacik <josef@toxicpanda.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openssh-sha256; t=1793672923; l=1213;
- i=josef@toxicpanda.com; h=from:subject:message-id;
- bh=m7OgokcwaZHLGjQXMpKbgpowrvI9FQDluMyHz8mi3Ig=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
- JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QG6bjet0JqDvVFJtGL5dr8aWS2Y1CrqqPkeXYvW304JvA/+zhQI48mUWQjXqe9iWtZ3dd/1Xbtp
- dxeEcxZi/5gk=
-X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
- fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261031225033.64-5-andrea.mayer@uniroma2.it>
 
-bounce_skb() is an open-coded skb_copy() into a page-aligned buffer, and
-it has the same BUG_ON(skb_copy_bits()).  skb_copy_bits() fails when the
-skb's lengths don't add up or its frags are unreadable.
+Hi Andrea,
+On Sat, Oct 31, 2026 at 11:50:31PM +0100, Andrea Mayer wrote:
+> The End.BPF program can change the packet through the seg6 BPF helpers,
+> for instance the SRH Tag with bpf_lwt_seg6_store_bytes(). After the
+> program, seg6_bpf_has_valid_srh() can also rewrite the SRH Hdr Ext Len.
+> 
+> With CHECKSUM_COMPLETE, the program does not always update skb->csum for
+> the bytes it writes, and seg6_bpf_has_valid_srh() does not either. If the
+> packet is then delivered on the same node and skb->csum was computed in
+> software, for instance by conntrack, UDP can drop the packet as a checksum
+> error. With skb->csum computed by the device, TCP can instead log a
+> "hw csum failure", as if the device had computed a wrong skb->csum.
+> 
+> Discard CHECKSUM_COMPLETE with skb_checksum_complete_unset() after the
+> program, since input_action_end_bpf() does not know which bytes the program
+> changed. The checksum is then verified in software.
+> 
+> Found by manual code inspection and reproduced in a VM without kernel
+> changes or error injection: with skb->csum computed by a tc ct action, an
+> End.BPF program that writes the SRH Tag, followed by End.B6.Encaps and a
+> local End.DT6 SID, makes UDP drop the packet. With this patch, the packet
+> is delivered. Also tested against the lwt_seg6local BPF selftest, and with
+> a ConnectX-6 Lx NIC (mlx5) that provides CHECKSUM_COMPLETE.
+> 
+> Fixes: 004d4b274e2a ("ipv6: sr: Add seg6local action End.BPF")
+> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+> ---
+>  net/ipv6/seg6_local.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+> index 57a82477ce3f..3045a351f4e9 100644
+> --- a/net/ipv6/seg6_local.c
+> +++ b/net/ipv6/seg6_local.c
+> @@ -1582,6 +1582,12 @@ static int input_action_end_bpf(struct sk_buff *skb,
+>  		goto drop;
+>  	}
+>  
+> +	/* The program may have changed the packet and seg6_bpf_has_valid_srh()
+> +	 * may rewrite the SRH Hdr Ext Len below.
+> +	 * skb->csum may then no longer be the checksum of the full packet.
+> +	 */
+> +	skb_checksum_complete_unset(skb);
+> +
 
-bounce_skb() already frees the new skb and returns NULL when the
-allocation comes back misaligned, and xennet_start_xmit() drops the
-packet in that case.  Take the same path, with a
-DEBUG_NET_WARN_ON_ONCE() for debug kernels.
+Should we move this a bit later?
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
----
- drivers/net/xen-netfront.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+>  	if (srh_state->srh && !seg6_bpf_has_valid_srh(skb))
+>  		goto drop;
+>  	local_unlock_nested_bh(&seg6_bpf_srh_states.bh_lock);
+> -- 
 
-diff --git a/drivers/net/xen-netfront.c b/drivers/net/xen-netfront.c
-index fdcb91042f29..17811d81937c 100644
---- a/drivers/net/xen-netfront.c
-+++ b/drivers/net/xen-netfront.c
-@@ -695,7 +695,12 @@ static struct sk_buff *bounce_skb(const struct sk_buff *skb)
- 	/* Set the tail pointer and length */
- 	skb_put(n, skb->len);
- 
--	BUG_ON(skb_copy_bits(skb, -headerlen, n->head, headerlen + skb->len));
-+	if (unlikely(skb_copy_bits(skb, -headerlen, n->head,
-+				   headerlen + skb->len))) {
-+		DEBUG_NET_WARN_ON_ONCE(1);
-+		kfree_skb(n);
-+		return NULL;
-+	}
- 
- 	skb_copy_header(n, skb);
- 	return n;
+e.g. after this. As there is not need to do the setting if the skb is dropped.
 
--- 
-2.55.0
-
+Thanks
+Hangbin
