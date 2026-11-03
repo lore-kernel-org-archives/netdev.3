@@ -1,61 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.171
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793703020;
-	b=rVxQPQJfIuNrBLHR6F6xseAF3ZoEfFBOLFlae2LZJ5/78TQea3AICLpfIvNhoI9McOds
-	 NUC78qhAhfST7RQpSLn7yDoYjIB8vGOzxGPJ9xljvFCQH31Ltcc6Z32ZgOTtHFOjNi7gr
-	 nLyKU9FosbQV93z4cJX4vpwftIxDnezZ1VQQBwfEbAgFBX4aZVwiEEaLlenraiuf+qBjZ
-	 AOol58TvERY84FLgyHAIJr/N2LdKwgXBvFQNlfD8EK9B3Ep9TKHn4K8IkfqACbLq8/EgS
-	 4BIA+OU4rhoqEXwVIK3hFGvwgFNa2Npkv+iUNkdeISUYaCsXL94CXiIgimFDTEIOIrQ==
+	t=1793703112;
+	b=Ars2FBLjVBZGvShQD/Mbov8SGl65ysFqdwqwoPzoLDU7V1NVy23SIeKML8juitaWiwfY
+	 XXdwsmw4n26rwURGUa1iOwALoDkHJlAb1UCYf0I79LQSGeBfU1zpse2aGQtZWWk/0irBf
+	 27qWQppx3au7hzbprMvLCUBHm030BOZ3Qc+LdgSycSwhsQ8tN51gxB+mlHovH9C5+KvT1
+	 DsZ0ZJK85+cvYr3Mn54Ra6zgWJwvZUYQk6/crpg7+3OJyLwxmDqp2Yry8bLwSrTHAc8xX
+	 c8KnUGOwLHhCydi1BbcRc5ieNpvEZu73bZjRExtmxsY+wDEsckZxqGCEvk+Ebaeem8A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793703020;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=vP9cXnhN/CQHkOZZzeFccngbm6E+rmE1zRkFYmLZHQU=;
-	b=HV4jRh1inHGCO1pktWkRv4KaClvIlYrUg7UnBycNfMzXK2aKIKas/cOTn6dWr46c5YT8
-	 bZ470bVy2RpYbGoN3ypS7+TaXyV4h/R9QRNVZ2G3d5tVSSjeogeskaQ7j+W7I5scaAOss
-	 NyhLUfW4pKxkNornvDL9nrYlKxXkyMBgyqgX5tR9JmDmLpQxiyVsakuuLZYoF4etLxHIV
-	 rbjmgr9GzoSLnUkRbhl82r8aXFYB+LEczy+stAIyRGg0tkccbnEZnz6/80tshIsyoI7r3
-	 LbSTMCEKLr16B1/Edi347u1Qd4vQI03lSA6+rtYMmYGYM3PYd7OqOLzIr/OrWqv6J4Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793703112;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=yve30OsJK2xindd1FBXy9Xv7cVmfGR9bOzhjL1cRnLI=;
+	b=DDMzK1UBPCT9Pt6vPRsUP0/UMtKkKrLE1qcqv2a9Vae0OKRBYm/c4KJVPyMwRLuAijv8
+	 QTfz+EOJeJa0BVai3YKN2/EFqZd2i+Hgb/wrp+1ly+163m/qa5zUmENUzVf4UBcCziKBr
+	 3/X5F78C1JlM6JtKVK58Aee/6Bv8c+9JCtkRRqQtMvBZm94FJY9MCV0luUu9YZkxIgEkl
+	 mnO61SB1wzmthiHcI7a5VnL32sgx4HrhsEDA3mssxflfzOr4CraoqP+8NzaU/rCSwOelU
+	 s8smsEfqsQsZOGch9orCVDq5ygOyk3glEans9EAElJ0muL1BQpRQlFKwBnx90R+hiNw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e44FoDIq;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=xiaopeng.com;
+	spf=pass smtp.mailfrom=xiaopeng.com;
+	dkim=pass header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=dXIUWkvu;
+	arc=none smtp.remote-ip=115.124.28.171
+Received: from out28-171.mail.aliyun.com (out28-171.mail.aliyun.com [115.124.28.171])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5A5606C5F5;
-	Tue,  3 Nov 2026 10:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5614A606A82E
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 10:51:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5614A606A82E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e44FoDIq
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5DC1F000C1;
-	Tue,  3 Nov 2026 10:50:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793703019;
-	bh=vP9cXnhN/CQHkOZZzeFccngbm6E+rmE1zRkFYmLZHQU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=e44FoDIqjEN0sw2YQY7FMP9FFKKgbkmy2U1yGu0prTZDqpOh/9iCOD5CYFT8oUaww
-	 8R7b/RKW1rZRLh9u0TjAYD1S9t5M6rHqsCHGwah1WwRgnYTTMUPXI3AczeAkJotV5I
-	 Ql6O0S4dOZiCUDFBcxGZAdpIYgd2+thxM40cUJEJLORsxOtrgcbEpAC2TX40AjkKAY
-	 UxeGnNyWAX8CcnqjVLGqBobb1OB5iZ2eoBTxxcPvMShcylHJmH+xCx/zuDbyin7Gpl
-	 iO2yaJvm27vPLsjRRo7Ahz/9U43yoOAplATd57mSK7aZ4LpWKaazbDyz8YeHa0UYpZ
-	 U2NiDHuzUrCUg==
-Date: Tue, 3 Nov 2026 10:50:15 +0000
-From: Simon Horman <horms@kernel.org>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, Victor Nogueira <victor@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Sashiko <sashiko-bot@kernel.org>, bpf@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v6] net/sched: clamp skb->queue_mapping before
- indexing the tx queue
-Message-ID: <20261103105015.GE865646@horms.kernel.org>
-References: <QDISC-MD1X.v6.r0.20261029162633-1@mojatatu.com>
+	dkim=pass (1024-bit key, unprotected) header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=dXIUWkvu
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xiaopeng.com; s=default;
+	t=1793703108; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=yve30OsJK2xindd1FBXy9Xv7cVmfGR9bOzhjL1cRnLI=;
+	b=dXIUWkvu9CjDJA8H5kqUlRVnSlPu5vwoHlaZBK/bpFvIeL3LwtL760WlPecLxDHGiqGALsao/PTeLZJwxsDM1H/RLHzEF/6xUOdQhN4heHm5gmnx9CcmG0/JO0I/3ITYENj3eBFULGtIYMje/a7SbgqztPc/t8k7kSyIBUvLelI=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.136758|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00690489-0.000466603-0.992629;FP=17182226299554687800|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037026024;MF=fangxy@xiaopeng.com;NM=1;PH=DS;RN=5;RT=5;SR=0;TI=SMTPD_---.jvivrQZ_1793703106;
+Received: from localhost.localdomain(mailfrom:fangxy@xiaopeng.com fp:SMTPD_---.jvivrQZ_1793703106 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Tue, 03 Nov 2026 18:51:47 +0800
+From: Fang Xieyan <fangxy@xiaopeng.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+	netdev@vger.kernel.org,
+	Guanglei Zhu <zhugl3@xiaopeng.com>
+Subject: Re: [PATCH] net: wwan: iosm: fix potential skb leak in MUX DL decode
+Date: Tue,  3 Nov 2026 18:51:46 +0800
+Message-ID: <20261103105146.34477-1-fangxy@xiaopeng.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <179369405864.488856.5590338519083448566@kernel.org>
+References: <179369405864.488856.5590338519083448566@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,20 +63,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <QDISC-MD1X.v6.r0.20261029162633-1@mojatatu.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Jamal,
+Hi,
 
-I think this one looks good to be merged.
+Agreed on the main finding - skb->data cannot be NULL there. Same
+conclusion as in the thread with Loic:
 
-NIPA-Sashiko did of course have something to say [1].
-I don't think it should block progress.
-But maybe it is follow-up material.
+https://lore.kernel.org/netdev/20261102105307.11263-1-fangxy@xiaopeng.com/
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+I'll drop this version and send a cleanup that removes the
+unreachable check instead, without a Fixes: tag so stable does not
+pick it up as a leak fix.
 
-[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-MD1X.v6.r0.20261029162633-1%40mojatatu.com
+The pre-existing findings on the missing skb->len checks and the
+unchecked next_cmd_index walk in ipc_mux_dl_acb_decode() are being
+addressed in a series I'm preparing.
 
-...
+pw-bot: cr
