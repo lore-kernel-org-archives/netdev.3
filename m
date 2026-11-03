@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793705355;
-	b=cR9wvZNMoZR1BMSjmac6XGtQaMErXnEh+sm0GKRDDxnyibbzErrJquvk7uQpfhcHCvsj
-	 23KiCslt4RGTUe/wXzndZbn9tOkgsWBG7Xb4Vae9bmolEXnKK+GgJuoMycNDh+s+Kbtz7
-	 ib+wrH7l4Hi1Q4n23CP+ouUqqnm8b0hBwm5MlxxBCyg7kg2Vz0F1YalzVJpyaRXClbuwC
-	 d7qqycFB9qWuY5JeiWxtQOwNKGeD0z5pmDYxMmcF55eLi8sAhU8Wtl9w+be9ZDf7MPm8l
-	 GGG0IZ0pKbDuZxU/FlxEba0CI1HVt1rdoWvCgbNfG+3KcRWbxhzc/5lVF2a4ysCnU9w==
+	t=1793705351;
+	b=WPdRgSUyOIHq+16kBHKStEqEamlb9af+s0gZzMBsxN/a8NxUV6CL4FMjiM+14Dm6rmrD
+	 fU/rNWYYicn6bB+vpsPPXeOUUTjjrv0htviqItXHskPAvzU5UMerweNqr1lYyygadTJc1
+	 3QxUg5Cpo7S/6gLXNiR9nN3GJiHbWB/CZSF5g+62LC5Kteehhjxma3BpwMZLigG11KSeX
+	 asa8bJh95wF6PZkTk1FfJMcqyuiq4Sz4aPJbM/IF4KWutLdeeHGw2H3u+MGc9X+SIDMwQ
+	 NS1HQjYXpiPcCY90TeBM117uNN6qYUA8Y2DIj7J+ElNFtNs6nhSf6HTylFX9VYZ0rLw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793705355;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793705351;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=pVkpz5nFPTNysaK+OObBoCi45oeQOOEdraJNg5dmE9w=;
-	b=ykYf0JGBO1x00TgX3LQddhnuxdLZjdvplM/PvUB8NWBtUgrrRz5RrTSJm5MFKoDWIMrS
-	 jhzEzZVA44kdVyDB8USEd3ClQKbXRaK4hYOFTKRMUJ+V2nw2I0RundBySoRImz40uPN+r
-	 lPHd63v0TCM518jhVl6JSrmtPavHBa/WlTomvh1hM4cP5NhH00jvm8NHw3QX5sns8XVDI
-	 R0ToYjfdOs/JsmwS2my5dwHgCWlhjXpenZDzfpR1HFQfZAYYVM3orlJfA/IG0KkgAjsBz
-	 C2sFDnLX7VHx8Mc9TYyANGABI4gxjycfKxxVseS6ikBgePZE3DxBW69lKy/MUz1zYQw==
+	bh=dWaEvAk5n6dyTmdK8oBdw/e0DOhzHuEIwwmY2X8xsdQ=;
+	b=EnpKL+1loxVCm7d0SUc6/eJdFY2117xmuDbgx6AzjSJMfWpuJPsmIl2wQxloECxns+xd
+	 dkOLJvr++XqV4cLuWyAYmsCeRSKy1738EKxoUd4qGjy9eNOvybDVhtR5MN6U8Pr1+HojZ
+	 WN020TSgcje9PRBGjCsYS56D1inh2jaMl6fnRl3Zc2HHJP1pYIHy3gJDNz44Igf/4WrAk
+	 zGiw5ZabSCx49OmXev9NhyJuSvKSfrlKWhQ4Rcb1UNlwFXwhqbmSnlRSmkS8HoBdjY0oG
+	 f8R8x+HE1KAQaSfBMsR43ww6TwyvA2Bj6P4ASdOyPyqZj/nbFwcYF4taRMezcUPyJLg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nkYq6iNK;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U8xyHbZw;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFC7606A838;
-	Tue,  3 Nov 2026 11:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C05606A819;
+	Tue,  3 Nov 2026 11:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nkYq6iNK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75ADB1F000C1;
-	Tue,  3 Nov 2026 11:29:14 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U8xyHbZw
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD2B1F00ADC;
+	Tue,  3 Nov 2026 11:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793705355;
-	bh=pVkpz5nFPTNysaK+OObBoCi45oeQOOEdraJNg5dmE9w=;
+	s=k20260515; t=1793705350;
+	bh=dWaEvAk5n6dyTmdK8oBdw/e0DOhzHuEIwwmY2X8xsdQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=nkYq6iNKr1G4WekUK019gDyH9o2iMu/MeYMCX6v+YzxO96ScEHf78kh12oT2JMkbj
-	 KUoJ/gNIxjD9vuP9if5lMhMOKh44B8SkvW/uU7e8Bnl8B80ZDBwVP8bwj5jDYf6Jte
-	 Sd1wBfdbP2WWqek89H+W/iDIdjYh+mSUgMP9Qfm/Jt8ydSMQiXT/IIJ88MOADPNmhC
-	 Bc2TsK7kWz6tT+XChBKSMT8SQMYju+o5KKtkytmh2KiNZHzI1c6CZ05yup1/57wcsn
-	 6J9xbx/de8c5hLpTpF/pXoQdhpGXTIedT2FnqMAGHeF7DeVw2BhPii8PX12bT+tDDu
-	 i6Ham2VT2c/fA==
-Subject:
- Re: [PATCH net 2/3] net: mvneta: fix the removal of the mqprio offload
+	b=U8xyHbZw1v6Io0vyp9fqViphsvkB49tN2c9jbeQwOp0fyVm7Q7TP61p7DTfVR8kVl
+	 DvYILhgLIjYpSx+cm1hdw1zACz6KvLzD8KTu8PLIN8Um2CE3PJJTgySf6lc86tfPf1
+	 0N6sXkiOWfAT4vA0Ls146QieA8LOELHSHXkawNzdZ5oG61JX3r2nIjq8ZExthKV+bU
+	 9sOVUwYMoT3+IZj+XZSfgeQtmfFdZfi3jGFxxRjebf/ruFb4/USJiZIutV7PEt1LAG
+	 9/J1OO6oZ9/5sMSo+KQ1QJJbW22RrUcyxvyzLPriCVBPRAJ6e/TMSfdComa9XKui0t
+	 a4CmS0a/JmG/A==
+Subject: Re: [PATCH net 2/3] nfc: rawsock: free the response skb when the data
+ exchange fails
 From: netdev-bot+sashiko@kernel.org
-To: pepe.schlehofer@gmail.com
-Cc: netdev@vger.kernel.org, marcin.s.wojtas@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- maxime.chevallier@bootlin.com, w@1wt.eu, linux-kernel@vger.kernel.org
-Date: Tue, 03 Nov 2026 11:29:14 +0000
-Message-ID: <179370535406.488856.16925865823756698618@kernel.org>
-In-Reply-To: <20261102112816.12322-3-pepe.schlehofer@gmail.com>
-References: <20261102112816.12322-3-pepe.schlehofer@gmail.com>
-X-sashiko-severity: Medium
+To: joasantonio108@gmail.com
+Cc: david@ixit.cz, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, oe-linux-nfc@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 03 Nov 2026 11:29:09 +0000
+Message-ID: <179370534977.488856.16044091995627562650@kernel.org>
+In-Reply-To: <179335864272.64596.4931238314416806197@gmail.com>
+References: <179335864272.64596.4931238314416806197@gmail.com>
+X-sashiko-severity: Critical
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -67,7 +67,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 1 · High: 0 · Medium: 0 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -75,96 +75,94 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] After this patch, an mqprio teardown request (all-zero qopt,
-  num_tc == 0) always reaches the device-wide reset in…
+- [Critical] Double free of the NFC-DEP response skb in
+  rawsock_data_exchange_complete() (net/nfc/rawsock.c), added by this…
 
 --
 
-net: mvneta: fix the removal of the mqprio offload
+nfc: rawsock: free the response skb when the data exchange fails
 
-When an offloaded mqprio qdisc is deleted, mqprio_disable_offload()
-passes an all-zero qopt with hw set to 0. As a result,
-mvneta_setup_mqprio() used to return before reaching its teardown code.
-This patch checks qopt.hw only when num_tc is non-zero, so the teardown
-path is reached on removal.
+This patch makes rawsock_data_exchange_complete() free the response skb
+on the error path as well as on success. According to the commit message,
+HCI and NCI pass a response skb to the callback together with a non-zero
+err, so that skb leaks on every failed exchange.
 
-> diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
-> index 9b9efac2846ef..79711a117c39c 100644
-> --- a/drivers/net/ethernet/marvell/mvneta.c
-> +++ b/drivers/net/ethernet/marvell/mvneta.c
-> @@ -5251,11 +5251,12 @@ static int mvneta_setup_mqprio(struct net_device *dev,
->  	int rxq, txq, tc, ret;
->  	u8 num_tc;
+> diff --git a/net/nfc/rawsock.c b/net/nfc/rawsock.c
+> index f7d7a599fade7..74ef3906c2eda 100644
+> --- a/net/nfc/rawsock.c
+> +++ b/net/nfc/rawsock.c
+> @@ -156,8 +156,9 @@ static void rawsock_data_exchange_complete(void *context, struct sk_buff *skb,
 >  
-> -	if (mqprio->qopt.hw != TC_MQPRIO_HW_OFFLOAD_TCS)
-> -		return 0;
-> -
->  	num_tc = mqprio->qopt.num_tc;
+>  	pr_debug("sk=%p err=%d\n", sk, err);
 >  
-> +	/* On removal the qdisc passes an all-zero qopt, with hw 0 */
-> +	if (num_tc && mqprio->qopt.hw != TC_MQPRIO_HW_OFFLOAD_TCS)
-> +		return 0;
-> +
+> +	/* skb may carry the response even when the exchange failed */
+>  	if (err)
+> -		goto error;
+> +		goto error_skb;
 
-[Severity: Medium]
-Can a root qdisc replace now wipe out the configuration that the new
-mqprio qdisc has just offloaded?
+[Severity: Critical]
+Can this double free the NFC-DEP response skb on the digital stack?
 
-With this change, every all-zero teardown request reaches the reset that
-covers the whole device, further down in mvneta_setup_mqprio():
+The commit message says:
 
-	mvneta_clear_rx_prio_map(pp);
+  Free the skb on the error path too; it is NULL when the error does not
+  come with a response (digital, timeouts, device close)
 
-	if (!num_tc) {
-		mvneta_disable_per_queue_rate_limit(pp);
-		netdev_reset_tc(dev);
-		return 0;
+That is true for digital_in_send_complete() in net/nfc/digital_core.c,
+which frees the skb and passes NULL. It is not true for
+digital_in_recv_dep_res() in net/nfc/digital_dep.c. Several of its error
+branches jump to exit while resp is still a live skb, for example:
+
+	if (DIGITAL_NFC_DEP_NAD_BIT_SET(pfb)) {
+		rc = -EIO;
+		goto exit;
 	}
 
-Take the case where offloaded mqprio 1: is installed and the admin runs
-something like "tc qdisc replace dev X root handle 2: mqprio ... hw 1".
-__tc_modify_qdisc() does not find handle 2:, so it goes to create_n_graft.
-The new qdisc is then initialised before the old one is destroyed:
+The other such branches are the digital_skb_pull_dep_sod() failure, the
+-EMSGSIZE check on resp->len, a NACK PDU, an ACK PNI mismatch, and an ACK
+with no chaining_skb.
 
-__tc_modify_qdisc()
-  qdisc_create()
-    mqprio_init()
-      mqprio_enable_offload()
-        mvneta_setup_mqprio(num_tc = N, hw = 1)
-          programs TC map, VLAN prio to RXQ map, per-queue rate limits
-  qdisc_graft()
-    notify_and_destroy(old)
-      qdisc_put(old)
-        mqprio_destroy(old)
-          mqprio_disable_offload()
-            mvneta_setup_mqprio(num_tc = 0)
-              clears RX prio map, rate limits, netdev TC state
-    new->ops->attach(new)
-      mqprio_attach()
+At exit, the function calls the callback and then frees resp itself:
 
-mqprio_destroy() takes this path because the old qdisc has hw_offload
-set:
+exit:
+	data_exch->cb(data_exch->cb_context, resp, rc);
 
-	if (priv->hw_offload && dev->netdev_ops->ndo_setup_tc)
-		mqprio_disable_offload(sch);
+error:
+	kfree(data_exch);
+	...
+	if (rc)
+		kfree_skb(resp);
 
-mqprio_attach() only grafts the child qdiscs and does not reapply the
-configuration. The replace returns success and the new qdisc still
-reports hw_offload, but its rate limits, RX steering and netdev TC
-mapping are gone.
+With this change, rawsock_data_exchange_complete() frees resp first.
+digital_in_recv_dep_res() then frees it a second time.
 
-Before this patch, the hw != TC_MQPRIO_HW_OFFLOAD_TCS check turned the old
-qdisc's teardown into a no-op, so the new qdisc's configuration was kept.
+A raw socket can reach this path. rawsock_connect() passes
+NFC_PROTO_NFC_DEP through nfc_activate_target() to
+digital_activate_target(), which sets ddev->curr_protocol. After that,
+digital_in_send() sends the exchange through digital_in_send_dep_req(),
+with rawsock_data_exchange_complete() as the callback. The remote peer
+controls the PFB bits and length of the DEP_RES frame, so it can trigger
+any of these error branches.
 
-The same init-before-destroy ordering already resets state in software
-mode, since mqprio_destroy() calls netdev_set_num_tc(dev, 0). It also
-affects other drivers that reset on num_tc == 0, and mvneta behaved this
-way before e7ca75fe6662. On mvneta, though, this patch is what makes the
-case reachable again.
+The data_exchange_cb_t kernel-doc in include/net/nfc/nfc.h doesn't say
+who owns @skb when @err is non-zero, and the producers handle it
+differently:
 
->  	if (num_tc > rxq_number)
->  		return -EINVAL;
->
+  - HCI and NCI hand ownership to the callback.
+  - digital_core frees the skb and passes NULL.
+  - digital_dep passes the skb and frees it afterwards.
+
+Would it make sense to fix the ownership rule in the producers as well?
+For example, digital_in_recv_dep_res() could pass NULL on error, or stop
+freeing resp after the callback. The rule could then be documented in
+the kernel-doc.
+
+The later patch in this series, "nfc: llcp: free the response skb when
+the data exchange fails", only changes nfc_llcp_recv() and does not touch
+digital_dep.c. So the double free is still there at the end of the
+series.
+
+[ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261102112816.12322-1-pepe.schlehofer%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179335864271.64596.805818095553030218%40gmail.com
