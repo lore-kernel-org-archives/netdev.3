@@ -1,79 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793699587;
-	b=oFGbJ16F5G2jzQAf7zriX3oNQuk90NFHqVZVHu9NBNwp0Y7EVlcwsmHjPeV7N5BnpwiR
-	 T9qb2E8A9pgXp6oimMPChAiXCk3dBzXNYIq4QxufuuD7dg+AAGi/+jQ+PYsviROQR8OBh
-	 JW4LT/YmQCYCbU6ScWncWhpG0tgAoS7WcKjOAuhCljr7KSwF0EqjUYT6nok2MkkGbGjHC
-	 wnMYsRcHB+fllErAUM11fhw8WLPgqZvAzNwvd11TIkecPPUDH+4LuK0nxoAx1GTE883xL
-	 RLMTDMcX+AaChs0/gL2nXj1kF9qP4HeYXzMRGpsO0v8Jc+0uqX6CQ9xHg65s454857Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793699587;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=FpuQRSe26poIQS4tvUq80P6B8OW0P07tubX87zAYZVs=;
-	b=qS8afb5or+RRrU5b4t94tA2JijgkVbIsWsxSBdrD/5tCXdlMX8KVPzLFGHEcm/9rYUPa
-	 8AlF+dVawnBibmZxEN8sFc/jd5gtouZacYcTryTOkuOq3/GYjML+u1yt6cYj6xYrp55HW
-	 Hul2hfQ5N5KO8eUknNBA9Rc60MrIFpSBr4jgrxVAONiZsITBz4jUtZxrI0JuZqUu0heCQ
-	 6TeVQW4WQoofJ5r8Pr66Rq8nWQmxzAq7dJ60SHRR0MvINvRKOfEeRBNEYcpi7Lglc+QeX
-	 w81KVkRkRzedSdydCkT48ux3sjjNqYf3YWDdA7RIuvTfxsNFEp6xE9vgZOtARyjms/g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RJ6hk963;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B21C606D823;
-	Tue,  3 Nov 2026 09:53:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RJ6hk963
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1793699586;
-	b=b6cZ49s+DyWI3oJYQDHSpomOx8xM6mXPcCT3AqxltRWKgrGd2Y901X0H0uahkly5J+FJ
-	 AAD4nEjV5FftJztqkyDVmdCBy7Y4ER+kzitpACuWSzNB+po/B77esazTeGdjCGB5fCKQI
-	 mG7Mohb+BsBAqJqVWhFGzLCYtuFfnAE4mLUJGbiNxg0dRQ3tYWTatAdaciPZTZ9VSnpfd
-	 KsJ6rWmymerMyBupzjrXIdrI03jn3xuxrbCylcWYsa3r3mANtr2StVJ58HRrGaNqjgVv1
-	 yL/io/3ooG5so4syLZnsgRpsTmxAxAJpP7oYfzY3nSxTNtC1aFrDb4kBIT9+MasvSsg==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1793699586;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=FpuQRSe26poIQS4tvUq80P6B8OW0P07tubX87zAYZVs=;
-	b=bU2JiEaCNGz8JcsjeqRFEQuwfD9S656fmKrbR5WdT7jyklw7eFmEZyhw1sz6/n9pUmSj
-	 wUX+i356zudffFeeHJVrWgFzhfNu9sn7JwE+fxNGYpBOfprEwKQ2YJffVw9urxOSY2UUG
-	 cGo+WoKKUQ1rGPOEfWlL/eQ6ytUK20UDh96LSVVwILmI9JYPX3yYyd5OEQs0xH33N51w+
-	 NjzZ3HCAp5oMdegZUSYoj3FcKXjRHy5EeKE0v+LFrfGXXsHjcKykVf55vqWSGW9HnxSup
-	 hh2BJExVPL6R9Re2jxYKfGSuh9SX8pg2m7MIs6im3cfaKN61vnZJw7ofOh8+t0dVMgg==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.169
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793699762;
+	b=Ws8QXZxTrR5DlQKZEgZEKqKsgsOcpxLqz7CJtxW+QHVY4W0viqvruoMwLM1sYDFQzq46
+	 bMk6V3gm/As2B6h/BnJ/UnFBIc6S8si2lX5yew3+IrRdHLvPb1yi12Px7K/tJ0siz1AG8
+	 p/hzVBKELni2B4O+6x7iRdQTBtuYaH7rPFOEaw9qG17/yVusUJV0o/6W/L9lj1tsZzAX9
+	 D+Opc7e+egHQ7o0DiQrMkEdCKDz8TFVEVGbB7UhNuFK5CrVwupEPG19ekxoqtbFeUo4QW
+	 mVmV7mVKZdAkvJhHz9OfCfqqYKmAvW/wj1Dwd4NROfYnYgpGRWbu46QvB1zTC6AP9BA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793699762;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=ZhlFvLGCrbcs8sxORBaYOZNo8wD7mjZ19zKxzr41P9w=;
+	b=Bk07pLoZ7fPlF+SOP2hOBt6aC5qLMpjh3k3rUf5pNKHSLluSqV+Q7+xgiYRC916JxmFI
+	 VfPHHhPf2omlnXvI/7x2tQzW+ue/3qzFCmcmsGazgLbVdp2QjwcRsalTRTFpq0IP5mm6T
+	 Az4p1ZRu78Yhyw3BDPZbv7wGdN2g+tumsI1yNHWog2+OfXFCPRKC2fzZ7GUYJin8PE6D9
+	 Tq5YMdvwU5wJAdKp9V42cKMLX4rfEyRwiJinEUVXMiGyHoUxbuMGvhJ7MsdTTwEvXHlzk
+	 9VXIGesgeDvWopkyx7NpC6wqOXbreM7iPgThtWmktQHo/dEWQfiO+QRARzVU5qvTk0g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Tw4mSAaT;
+	arc=none smtp.remote-ip=209.85.215.169
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 725101F000C1;
-	Tue,  3 Nov 2026 09:53:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793699586;
-	bh=FpuQRSe26poIQS4tvUq80P6B8OW0P07tubX87zAYZVs=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=RJ6hk963A+ZOmNcVqWuWe3vzTJ+652sfHTAsjGVXYyfPm31jzbJMgozL1cJCE5DR+
-	 adNhvCx7nvC9chCivTc8+yPiKqTiPDGP1cXoDPCSv2K47RYK0LKZWt1gDxZ5yURVyY
-	 3Fyk0PH9AeR4mav3IZ1MWz+RBEFmlbTJs0vbQ66Mx9gIxWCz4M1fSieOYQ/H3jyjUW
-	 dMMlojhmxmpy5e2cCRVS7REAnimQY15EeW4cjp59SeFFoPOLk0xh1ZYSsOUPJC3NVB
-	 AV5VXqERkmZf0pH1X3IKXO9kgR161NgaB8R2HuQu7LdkRAHLlLIaE0L97Ha1Wqsc85
-	 Ex3pmH0mM7+0w==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 027F146866;
-	Tue,  3 Nov 2026 09:53:06 +0000 (UTC)
-From: =?utf-8?q?Jo=C3=A3o_Silva_via_B4_Relay?= <devnull+jgc3silva.gmail.com@kernel.org>
-Date: Tue, 03 Nov 2026 09:52:56 +0000
-Subject: [PATCH nf] netfilter: flowtable: do not clear the offload bit
- twice
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA716083631
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 09:56:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8DA716083631
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Tw4mSAaT
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cc4dbda1e5dso1350804a12.2
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 01:56:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793699762; x=1794304562; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZhlFvLGCrbcs8sxORBaYOZNo8wD7mjZ19zKxzr41P9w=;
+        b=Tw4mSAaTJL/2ywfIbTue4iPx4IgxQ435oPnXw7BCDXHJ2QE/HojChsK7gaHZ7ufDI2
+         fNdvTKtrK4uqhVXpwVphJKASz5sc2PXTWtyASAx/olcqX5hlCTgp/kSDSxSLAJ7x9y0f
+         UX2zgC4l7W7M2PGP+guSo95w8HVq+FU+NqJvk29/8t/1K2p/Ne/KmqBVuvPowZknqixJ
+         aH/UQLkAaJezo7x7zJYucsMt00w00mjSjNrjLKqYlhtwsegCfFnEHmIGdDrLdKRfrO3K
+         kjn7pBdFhlJLXSxr7Hyi+gD0uUmCs1JaWLIqWlwMHiY41Qqqfe9KwfsfE7lxZrus4H2x
+         RBKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793699762; x=1794304562;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZhlFvLGCrbcs8sxORBaYOZNo8wD7mjZ19zKxzr41P9w=;
+        b=0Kxzj3lOkZyBcuK6HLoavu315pb9IFAHf9KkrZqA70J78wdYlEhP7HuBqC2cFCp2GU
+         TRuHbrooX8OCfv4Wae0ycOuKcArptED8oEqiF8Z5uNdlLw/rw2yrCshsfEYWJ+I9/1sW
+         mm63vRVpAUsqKdOQg06FFML+39pMc8rsi5xi9ZbWZ3tWyiF2OT3Xl089Q4MYcK7PT2w/
+         xmY3rySPA8/qJYnXdwYqPvwtJp5lTOLNe+EXMfPGOEZY1z+n0+HM/N1/afTu1vcU8dCr
+         5PAuxB6ZiB52I9C0Htk908pPYshF/Z52xHElhL3b6j5QtQmfJ1xKJ2vwyVI5w18zaphS
+         uN1w==
+X-Gm-Message-State: APuU4Z8DwhiDYbaEy6DamN1685CPoW+58YoidYZzk8JinzHpeb46cixi
+	2AyV/h3Kp1K64AuAPv2O/lLBKn9W5U2UZhI5l4bH6abADrC3IlLSa3dFpNtkIQ==
+X-Gm-Gg: AYBFou2TxLLNj/TmflwMbDBjwCmED87Vje4e/k+iWO6paGNMQDZSsdfccPYzu30ctAZ
+	RZLhuPTL7gtc1D+8+U+AXFDGSQc0q3XsKmzgdNnXq3NGNnyjNKhsCiHtcboUAkhpPe1yz4jZ+eV
+	Z3cH6FLLCxHkUv1IfQm0PiAh8nQKgM1Q5BhnscOFfh3GOzf1X7ljlSeTf2MTKZeXHzaciE7Q7d1
+	MG0fFx/TcCrcdONEeBS339qL2svL/vTwu2xXGf4IUMFUuIx2vBbPVpQRmtN56EGxAHA40fTKFsl
+	eJzbelA1pCkh05s34yVZDtbEmdCAtau1P9j/w0bdif0FzKEFWJ2UdiHevsgPzgngAnbOyIkHAHn
+	U07hz3uxNcabpyQDm3mlLsHOpe2LvEO2CD+n7qEfHox8ZfisjfJ4NIvPxOvaIdZBzhZL7donFm8
+	EDbG9r1l5kZebtKDZXMCQrgyd/J+gIJhuStm8aXFr2zOSYa+JAa2gmfu0rgo9Dvvw3UFVLj4FrH
+	8HcciXZTG84+rQjOYJu1EHZJA5h6NoXvf2Kr0+NxLbBtv5KxST3oq924o/5pVqF2T8LIpbyAX69
+	6FWg/v4HwBQDiLYtynJkhCwdcBxsdMmK4TLoxM3zzcnzfAgUBH/q
+X-Received: by 2002:a17:90b:2741:b0:3a0:e4ce:31fd with SMTP id 98e67ed59e1d1-3ae896f8304mr10589297a91.10.1793699761834;
+        Tue, 03 Nov 2026 01:56:01 -0800 (PST)
+Received: from d.home.yangfl.dn42 ([2a09:bac1:7680:28::4:396])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c666cdcsm3488954a91.11.2026.11.03.01.55.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 01:56:01 -0800 (PST)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2 0/3] net: dsa: motorcomm: ACL fixup
+Date: Tue,  3 Nov 2026 17:55:07 +0800
+Message-ID: <20261103095514.338700-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,97 +98,23 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261103-flowtable-offload-bit-v1-1-20f5952c00a1@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqDMBAAvyJ77kJWUYpfKT0k7q5dkEQSaQuSv
- xu8zRxmTiiSTQrM3QlZvlYsxSb06GD5+LgKGjeH3vUTkRtQt/Q7fNgEkzb2jMEOVBqDMvHwFIb
- W7lnU/vf3BVHhXesFPBZVSmsAAAA=
-X-Change-ID: 20261103-flowtable-offload-bit-f15bfd1d38ed
-To: Pablo Neira Ayuso <pablo@netfilter.org>, 
- Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Sven Auhagen <sven.auhagen@voleatech.de>, 
- Oz Shlomo <ozsh@nvidia.com>
-Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Jo=C3=A3o_Silva?= <jgc3silva@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2100;
- i=jgc3silva@gmail.com; h=from:subject:message-id;
- bh=Dqh+hiNjtTLDhc1tQ1I4cJIXp18+vbRya6xJ6r5BvN4=;
- b=owEBbQKS/ZANAwAKAfy6ZkDxTpFsAcsmYgBq6a8B/LyRbqX7acF1fsF5gvc8q49GwOjhfgNpz
- fi9/9p/9NmJAjMEAAEKAB0WIQROyCimFhnPgEUkNBX8umZA8U6RbAUCaumvAQAKCRD8umZA8U6R
- bDQjEADIUBI6EVVK5bTcxUq4pZ4jJqoTbvOqdomL/NYoYddHaBmpG+kdqfsyoGnhYDrpGVfgble
- ifEIjjOzp3LfrpgOJR4ItmuUuku6LAVExR1kAHIkJMM4+4brdDI7Qdoij9RdUOUoJaeaU4qIhDe
- U4bx4aUtt3J+vI0yLqpTJUkR5lIbKLYZQMS0V9r08kUFkrb2W3Y1vLpTjcXc8M4XGv2Rzc/s9J2
- 0ZX30hPIKk3NJK0JZc+5G9LUNfJjoDJYftkkx9s1PjUN/HO1gfDvOgDf/8Rmc3WJfY+YUaxJTbB
- erJ2IbEiWtHRbl5vjFA4hVa/KHcvQcijOM0GsaPOJhI6TTso0X6FOpwjCUFhmVZNkCKYqCgUoRw
- QUjgkb+OhdeTQeS2vPxGJxCSXSTszJ6UBFwG6cjSlbSpCHczYldr4ByclcV6H/5/0K/EBDAJtXV
- RKDkb7PGmgC33igdk4BeQxSNdLghRL41MlhsadJ/Lo8uOKHS77lqIWQOwcZlkTKvqOcOwxg8k4U
- 5U6x2JziJVH/4MMpDOtZaxiFj7IX7TNg3/X7gSUmvAk4KBA3H5AXd1RzfVaZ9sSfrpc+cSZznzW
- yQYvqTB3Q0pHUn+/JyBq80uBFqaCqUEuJppyL4THxLx8N6krbQnpDtpHotWw3Gk2H5STK+t+5JB
- vpIjiuTmuiawWwg==
-X-Developer-Key: i=jgc3silva@gmail.com; a=openpgp;
- fpr=4EC828A61619CF8045243415FCBA6640F14E916C
-X-Endpoint-Received: by B4 Relay for jgc3silva@gmail.com/default with
- auth_id=1392
-X-Original-From: =?utf-8?q?Jo=C3=A3o_Silva?= <jgc3silva@gmail.com>
-Reply-To: jgc3silva@gmail.com
 Content-Transfer-Encoding: 8bit
 
-From: João Silva <jgc3silva@gmail.com>
+Various ACL defects. Found by LLM and manually verified (on YT9215).
 
-An expired hardware flow remains in the flowtable until its asynchronous
-hardware deletion completes. Teardown clears IPS_OFFLOAD_BIT, so a packet
-can create a replacement flow referencing the same conntrack entry while
-the old flow is still waiting for deletion.
+v2:
+ - withdraw patch 2 as it needs another test run on the device
+ - fix patch 3 to align with software behavior
+v1: https://lore.kernel.org/r/20261102071119.3435180-1-mmyangfl@gmail.com
 
-The next GC pass calls flow_offload_teardown() on the expired old flow
-again, clearing the replacement's offload bit. More packets can then
-create additional flows for the same conntrack entry. A pending hardware
-work item can also delay deletion and expose the same repeated teardown.
+David Yang (3):
+  net: dsa: motorcomm: Fix extack message on unsupported TC actions
+  net: dsa: motorcomm: Resolve the flower action list to one ACL verdict
+  net: dsa: motorcomm: Delete the ACL rule of the port being unbound
 
-Commit d2d31ea8cd80 ("netfilter: conntrack: fix erronous removal of
-offload bit") closed this window for software flows by unlinking them in
-the same GC pass and made the conntrack state fixup one-shot, but
-hardware flows stay linked until NF_FLOW_HW_DEAD is set.
+ drivers/net/dsa/motorcomm/tc.c | 86 ++++++++++++++++++----------------
+ 1 file changed, 46 insertions(+), 40 deletions(-)
 
-Make clearing IPS_OFFLOAD_BIT part of the existing one-time teardown
-transition, alongside the conntrack state fixup. Subsequent teardown calls
-must not alter the offload state now owned by a replacement flow.
-
-Fixes: e5eaac2beb54 ("netfilter: flowtable: fix TCP flow teardown")
-Signed-off-by: João Silva <jgc3silva@gmail.com>
----
- net/netfilter/nf_flow_table_core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
-index 0d72dc8ae47a..709b55b74cc7 100644
---- a/net/netfilter/nf_flow_table_core.c
-+++ b/net/netfilter/nf_flow_table_core.c
-@@ -398,9 +398,11 @@ static void flow_offload_del(struct nf_flowtable *flow_table,
- 
- void flow_offload_teardown(struct flow_offload *flow)
- {
-+	if (test_and_set_bit(NF_FLOW_TEARDOWN, &flow->flags))
-+		return;
-+
- 	clear_bit(IPS_OFFLOAD_BIT, &flow->ct->status);
--	if (!test_and_set_bit(NF_FLOW_TEARDOWN, &flow->flags))
--		flow_offload_fixup_ct(flow);
-+	flow_offload_fixup_ct(flow);
- }
- EXPORT_SYMBOL_GPL(flow_offload_teardown);
- 
-
----
-base-commit: 734bef548a96e8774d6eef5dfa2026c6edc4e80b
-change-id: 20261103-flowtable-offload-bit-f15bfd1d38ed
-
-Best regards,
 -- 
-João Silva <jgc3silva@gmail.com>
-
+2.53.0
 
