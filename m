@@ -1,93 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.6
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793717357;
-	b=s9EnywRmS6BbZrkLm3qNJa3XTfLLGzK61vrMUSB7YGGUJRBWgEvZpGnFyRpZ+8h/IXa1
-	 M1IHiYq+ZqdxmBPhTrEobLmfWb5lQJxoyQaTqV0nML5rx/kLbnfeWXHZ8ZITsLkQNxVEE
-	 O1ZOmHYXgZljr8H6ItnUaK9EKX5R7WR+XdgjI0fto9Y9qTryu++aw672NAXyXRqhZ8JkX
-	 7Xn2tj1RKfIF/amDLykybqZcWwxjE5203laztRCIJWgFoWfZkkyH0098qTbyVjKgHnyVM
-	 JnXxDkqmKFr+r/2JUTAyh7A3widvKKYU5bydexqHcIQFikaTFAKztzaea3M3wELi0aQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793717357;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=HCfY/JCS7lnmkyTjx32RALhxvuEYEcZ7jBMapam718w=;
-	b=hB/zEUo28BKZZQyTlKMduRGcSUKb+FvqAqRMAIPYh4atP4Ei4OXfXf+QlDsOgrscdLga
-	 UTvCAmWTqXVHLtPlBPJo1vGv/yBMNKb7/st7dr3qBdSmhKRT473Tka/AbRMmx9RmejHrO
-	 ROmfAplBaXX/0b/T+h3cN0bI60hDKdlXjKLw+L6NDy7oKM0OANeqX4S0w9skJPqMEeZeq
-	 4LzYCbrugbvd5hDBWrAYSQcMgfSzTXSj0ATR3afe6uooMZHZWZ+1bHNuTeI/KoI/Mw+FM
-	 Nbd3u63Ddwu2D1h+VbT6LaJYMZehYH4rwAp7FQLWC8j5EnMkEs2RSoost2skfPWCzvA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=XOLpSRLi;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.6
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011006.outbound.protection.outlook.com [52.101.62.6])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793717393;
+	b=n9HDrBv9i93Sh0hyqJEtH4aNo267Or7IWqu9aqvHwwXYpjasC3lEeMOf85zWlKBtubxP
+	 EAheidneKi0qEKoBonXConvZkByT53YXyIr9/3GYdVWEXbqxsE6V7PRGVy/vwIUpAmd76
+	 qJxPHrzoD1xUt7GF2rIV55Wgap1cBn0Eb6IZcybsCjIFCTZSs/XXxQkN7pNYALb232WZ3
+	 XinXAXUiyLAJ2PKcnTsB6dbxhO8UZL2IIhBVTF/Er1oWVWghoKgt/pbejlW2CM9irjxwT
+	 xqu51XpGYc1vzHyWYk47jEbyBCIQQMoQ8J/qXzjZuk4xqBaVPgyFP6cT0ZI5Kj2JfaA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793717393;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=27qD6Pz/Glh9kkpJIUr3/I4AZLpTM9yA9jtQ1ZwO82Y=;
+	b=WXbCBGuqhCjgBPH+FpdCY6ZQ6IfpD9C57sz8/cvcBqY0UKsZU3YmxSbI5QeDmF6tHnpZ
+	 Nd4/u3oGr2TO1qrq0ctBQWrecR3Ex+Hk0dD72ybZywLUAkTAtoWcmCvPXdGbnjsul9eOf
+	 FK3r7drYoW0BHkJZdN0SqleD8m44aPaCtfo1YTuXPODqfxSLIf+J8X2/DQN2HT3AT79Z8
+	 MQpCZq2/UrTbZlhRtujVBsJ0Ex9jIT0CW2k6/u4fv5pd5ZpZ+vH92B2QR6ANe3dI2hme+
+	 7Djb3cyJdfMV2+LOxp6f0ceEZGmneoVUkq02FY3XKPUg5x+klJR9GJAuNzPjwHSjqKA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kIGpP7aR;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BEE6606A332;
-	Tue,  3 Nov 2026 14:49:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4BEE6606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D716083602
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 14:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=XOLpSRLi
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tIBWfOiyrULu9IGcJXo5fQPjKNXcwQmuTdNW8aZ9ypezJkQDblqjC+aLukLKl21Iy9WYSvt1++4mogh2Mb9du44Kfc41xoecCB/SjP3mO2QYcaWgl8fxEiw+dw4JZBEMRmDMStPsmUWGqr+EwTl96u2YcYOMZRmJXZnepvaH0ImBRfu3FkfmgG0wJ0SZ3celZ65W2YFcR4UM7qYVui3oK5GTa1nWrc9qRa5AH5Na97TTCe11a16O2rXjuchVWm6VVmW1KQMrG2gJsz0is1bjCqRXqIIq/+DqVI69yN4XCPJbpunW5jGzj1D9yLIbGx9R7CRWLWlwYHO9hi/gyhPMuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HCfY/JCS7lnmkyTjx32RALhxvuEYEcZ7jBMapam718w=;
- b=ZTmvNOkWxeqe15AxFrsxr7F1JrJVduvLw04Pmlzz1O0zvBYTjRxjILOzBLPV//aIAgz4DhpimJHpnMUb26W13Ie8nt2YcGNOhH6YEtS+Lqft99Id9dLpWuyWXgbmMaZMLcTnT4+4fwiZftoqbwPq/gsnsl+Y2tRez9LP4nmjWXuebyLtTtkomd+AyCc0pD+mGemVx1BJ5eIcC2XFtqAXUhjIaHtU3SS/vejBenroQBmWfdBtRM2ewOhO6He1mFsyYkOSzFe6UhiA0CUfH82ialbJjVcyWb4x/h9nUdpUyuR+H5fIvxoKu8BMlIPxwTfR0buKUqxcOEUY5z6vzomy2g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HCfY/JCS7lnmkyTjx32RALhxvuEYEcZ7jBMapam718w=;
- b=XOLpSRLi3UMpYluL9S+2Xkc/UeZ+u/qDl/gIylxVjaBnsCPpL4bUii1Hdsz43zbHcYb0QV3tG/gfjACzFOZweXE1+4RwImhWf820RX1kmkVVwlYQkklpcr0zuSa2rHOktfYOUaYmElPkQ5Of+mNH/ycSvfEP3hoxPXnOgtyRLexSpTfO0TmwGKPgOUcYAak7uOkflhzOvgCewNpNjimOtzEH0c8yjvtuE7M44EpZkuKWQgLKHbovJNENnPDUrKaSOSEi1IIkYiG/JU6TML3PortLFzawNjlobv9KjCiYjDqbpIQgT9RTX8mWP6qU9luUt5xs5X/nNG8jYcp/92H0QQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB7954.namprd12.prod.outlook.com (2603:10b6:806:344::7)
- by BL1PR12MB5780.namprd12.prod.outlook.com (2603:10b6:208:393::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Tue, 3 Nov
- 2026 14:49:07 +0000
-Received: from SN7PR12MB7954.namprd12.prod.outlook.com
- ([fe80::2567:531c:cdb8:f544]) by SN7PR12MB7954.namprd12.prod.outlook.com
- ([fe80::2567:531c:cdb8:f544%3]) with mapi id 15.21.0569.011; Tue, 3 Nov 2026
- 14:49:07 +0000
-Date: Tue, 3 Nov 2026 16:48:57 +0200
-From: Ido Schimmel <idosch@nvidia.com>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	dsahern@kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net] ipv6: Check the Home Address option again before its
- address is used
-Message-ID: <20261103144857.GA1215661@shredder>
-References: <20261102064922.2636027-1-alexei.starovoitov@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261102064922.2636027-1-alexei.starovoitov@gmail.com>
-X-ClientProxiedBy: TL0P290CA0008.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:5::19) To SN7PR12MB7954.namprd12.prod.outlook.com
- (2603:10b6:806:344::7)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kIGpP7aR
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289AA1F00919
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 14:49:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793717393;
+	bh=27qD6Pz/Glh9kkpJIUr3/I4AZLpTM9yA9jtQ1ZwO82Y=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=kIGpP7aR1scUpNqCFWVyvqhbrG/s9k0ZdkJR1J8ckr4werPo8N7S+1tPRuPNdQFUD
+	 S2mnA5AqFPe1HAd+zP2JYrtXwIUwCn9gjRuBBVMJJDvA4Gzox/Mww6czHdYdFh1hCd
+	 XLHRgRYM993qy1/tGMyVR3tvKgGZ6DNU5nXVziqSkJF0SWCUdrFtl0r2nGu6rnGQH7
+	 Ir6Wdei4nXB8Ce9rCSQjcQTaO5UUFWOWkAOheJ9QFY2fULmkdYYj2zTmRVoIoPIKeu
+	 tcKp5zfJAUZoqF6kKbNWNHONOU06KmjLwsJTd5xXnfzATKI3WDldEJzkaCFYuE3iUn
+	 NwrQP67uMQPuw==
+Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-4f488ba6e90so1574082b6e.3
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 06:49:53 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBwtXWJfQswG1yOZtpxWAEPe4LHXE1UC/B1MlHWDY8eAzB7R7+5mtPqid3LnebWuDS5ueTe3/OM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9Eo0LCPNpfcXEzK1OaqZ9vwOb9aK7rgNFgm8QWC77pN09lR+a2
+	bUot8BpyjoxZoHArTG89TixCRmq3c+lpSOZHGCwpYfvVqAvSVt/4XextKiSdApSoccHDfr3lqY2
+	OKFaR5Nq0RxkJecUGX+hKdeMHtCSo2tY=
+X-Received: by 2002:a05:6808:11c7:b0:539:dfe8:9960 with SMTP id
+ 5614622812f47-5640de0f2bamr8850934b6e.56.1793717392538; Tue, 03 Nov 2026
+ 06:49:52 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -97,101 +59,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB7954:EE_|BL1PR12MB5780:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5134582d-1461-484f-4e39-08df39b99c91
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|23010399003|18002099003|22082099003|56012099006|261102123227099003|10067099003|261022105027099003|261021123027099003|261021121427099003|11063799006|5023799004|261026121527099003|261028144727099003|261026140227099003;
-X-Microsoft-Antispam-Message-Info:
-	x/0RJcB33HanLOWr3C/q8PqK1i75RTvSUYIPmTzS0qdcmhgT4eaffPvJ63XzuOy7wSIsDIvoeBWRI92UTfDj8Y+tq5vxhZIfxPwlTHD52kbrvZv6g5CnuDY+LgKwy9BAsFLZVzSWlfZjpu5GeB/SriFvxgzDKMb5pMdR1p+bkRSY5fSIl2LjbjyugcqySZnh1UOht+BjR9WLpn+HBo3MMqQEzXI/MHk7JRakzoNh7/ejJz1co3G1ftyEAmeU9tg6a5qr6VMBD9BK3Ble4gkULJofGxYqG0h4X5KwyZSmWRPd1BFqvs5wuvUcqUQSdpFpzUF8uGY5nuJYfJA/iuyh9lHvB5CVCjUtX+gQqQAsU4iom/II4aZNGbIgdp9+N8ICuLwQP34aQtmEB2hDlgkEKCI0iBrn5lb0BZ/ElLAovh9/XFKFICQC8TRiKDP9WpDkl4eKn3jQay35TAx8Sb7+u+S4yHK9Zc3cKQpZ3M15LLgFh591CUSycu7j/cWhD51ArrjZgtwke1hfZdoVeztqSFdUCwTcFzc0NCIZhfDFyhgPexfOAPkoXqEivvrROK7mGKVB0ZLQ2/ZQ03N1zym9/zN2xsLjXOUTHeoqkyaFnw6pgB1yrCHK+RlUdKjZL+MbOtTn/GAubsu3SsnCmYgmtlm9xwlFpwWuaExs4MmnPm8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB7954.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(23010399003)(18002099003)(22082099003)(56012099006)(261102123227099003)(10067099003)(261022105027099003)(261021123027099003)(261021121427099003)(11063799006)(5023799004)(261026121527099003)(261028144727099003)(261026140227099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?TGofVyEiKGYWFzAkB2RrgTn0cvmrRGHYpVTQqru4CrvuznwbU4/nzehzIQ/c?=
- =?us-ascii?Q?p+kqtBgtiyzuCcG9KqDYdtAHKUUFeSyXzFcJHHJ4giJRHGs1FCeUMK8TBNEl?=
- =?us-ascii?Q?kDH4V8b4HM+qfSGdHqGZVsADeaJaECYiWjYeOkajGgrSvzJxdBUnt16f1XQW?=
- =?us-ascii?Q?DdK9gNcig/lOfn+gY1x1zxVKlajvnECPR7wWRf4jO0MzDxMYAur1ISOaLvbx?=
- =?us-ascii?Q?tpMlGrzokafYcyUDbaQid6npqUULWG3Cq6a7UUcM1Oo2LZGMpPw1SG2It/42?=
- =?us-ascii?Q?RoZDVjX6YG64wNoMadd+jSgpZXsm0c1yXS8K/fAYtHsk+K97/WgFB9MmvT8d?=
- =?us-ascii?Q?8Y4IvCO0cSe2hS/r9EieoP+Il6NVt0erPrB/WylAg9B806hpdfLsN+y56spw?=
- =?us-ascii?Q?9VkMyd+ehW3xj2dNCWkeHpzdYIH7mcPrniES0gdKI0eOd33yzsYzvU3eLQem?=
- =?us-ascii?Q?Cdv7Tk5xytNqPKUTVOrOutrzxz4mshdWDYIkVOwUdmiuxBqk5oW2xeIIUCHs?=
- =?us-ascii?Q?TInfFV3L/8xgCBN5XfxMBGqmtvTsUHUF8Rml4eVumBFUpcvDV+fVAhu+CwEY?=
- =?us-ascii?Q?E57Nh0Uuo1kM4oEJhSs04lKPM6r+u2QIhWkVfpuzJIK5UIYNbSsg80iSA7EA?=
- =?us-ascii?Q?phdPJdFsPAz9WkM3Uh8AnV792l5t4vZB4HHGEmrY5dfTEdFATWWWXqMQS1np?=
- =?us-ascii?Q?NyyhMuvDoXTTWyWp+IhAKarAUX8m7hVm9Fe8BjkAUWO4KmOnZoAliJ+wtSip?=
- =?us-ascii?Q?ywG0k6O0wa9pRmz1mNhJJc3YLjCy5HwZtWV3szSphmLNayZI7g2t7PLPnUYE?=
- =?us-ascii?Q?hxdL4/dPvMT8Riwv8ohtPbrY3VPo+WywDSRMVqWdapJu9z6LXR0JJBrZKBT8?=
- =?us-ascii?Q?k5O76pq8huJfyJE9icbwocrhV/GcJfIokKHLJZ8ejhVG9WcnLwwn7uLlgC3N?=
- =?us-ascii?Q?uossIGutVQr7QLyVoDrEhB9UeNE38bY7iHnSz76HyHC4wTe/68hfts49tiGb?=
- =?us-ascii?Q?V+5DR4Z8Jm/8brlBar7c8eT7xP7EMQuVyW+OKVIi+elsdyWROGKUq+FPBAi/?=
- =?us-ascii?Q?t4o6He9mHKGqMVwU5nbYIQWVH7KOAEGxD+HwC0ZVqBdFMoRjcsKLmyCePRv9?=
- =?us-ascii?Q?ezk+StN6tYvmlrww1U9OHaTrl6/o4tHQeW2TuD5Tqg7yx/5pp8EIv5xKs3Nc?=
- =?us-ascii?Q?Apj3GOjcWLnrBGFiSmNN8/VacbJxzZ8K+6BEuAnP06Ta2Wj5BaPhKJ/NrTCs?=
- =?us-ascii?Q?q+QjOIzPZF5VLTY6x4Fz/32mJU4o228o2g8HXIhtvonPzFf94Vk5Wf78Zvq9?=
- =?us-ascii?Q?CrJ1WfkcLJcJddeYP5uqtPCEARmOhY7yqzJpHKXJunek5i26xY1GDVtnnkv0?=
- =?us-ascii?Q?sjCwqX2ClKZvzIOCAzD8IRurbN2c/oF0PmvPqmQ7wDDpt+xTdbZs7H7i1fu8?=
- =?us-ascii?Q?mrUJUeQXC7F440QAZg7iwODNLA2WodtzmuuAUw9LeXz9CXzmkpsyTXnXBgGj?=
- =?us-ascii?Q?1QHrSGZZ4BPjqszL68kSkHd7kRH3GdSC50uhaIlhW4j3H1yrfMutnc3mHtYt?=
- =?us-ascii?Q?FTRF8jcbK6ksToPLWaLb+8H2xaOP5xjmQFozvksqchwW1J6g3q6vKboZWmsK?=
- =?us-ascii?Q?igSRqFr3v5148+i5jhgdjZDZhl+jqsDeqM2KdFbDG8Kvl62xDGjYoNmDpoFf?=
- =?us-ascii?Q?RkLUwQz4Rh1GfvQS75t84HTFYD+8P0bd1oBv+4Fvj1ITpl1l?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5134582d-1461-484f-4e39-08df39b99c91
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB7954.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 14:49:07.0758
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NtZ9Z9Q1ACTplPVmdKEyoWBRJsSRWGMp/MiXOwVfe3wDLHI5AYuSYaLXYPLrmSuccU0hW+0hPt8AWsN0qn6pGg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5780
+References: <20261029214219.1035176-1-imv4bel@gmail.com> <20261029214219.1035176-3-imv4bel@gmail.com>
+In-Reply-To: <20261029214219.1035176-3-imv4bel@gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Tue, 3 Nov 2026 15:49:40 +0100
+X-Gmail-Original-Message-ID: <CAL4WiioDoAT-50wStYDOy0b7f972QivB=Zk_7TCDrVPfOY665A@mail.gmail.com>
+X-Gm-Features: AclHuK8zhh9M8Ej8AYQXAAw1VHdM8fimcEAeuD8qgg1yWG-Nxe-lIMO_Y4uRs9Y
+Message-ID: <CAL4WiioDoAT-50wStYDOy0b7f972QivB=Zk_7TCDrVPfOY665A@mail.gmail.com>
+Subject: Re: [PATCH net v5 2/2] net: restore refcount ordering for lockless
+ socket access
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: ncardwell@google.com, kuniyu@google.com, davem@davemloft.net, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, martin.lau@linux.dev, 
+	john.fastabend@gmail.com, weiwan@google.com, sd@queasysnail.net, 
+	jiayuan.chen@linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 02, 2026 at 06:49:22AM +0000, Alexei Starovoitov wrote:
-> From: Alexei Starovoitov <ast@kernel.org>
-> 
-> ipv6_dest_hao() checks the Home Address option and sets IP6CB(skb)->dsthao
-> to the offset of the destination options header. Later mip6_addr_swap() and
-> mip6_destopt_reject() call ipv6_find_tlv() with that offset and use the 16
-> address bytes. They assume that the same header is still there.
-> 
-> But the seg6 and ioam6 lwtunnels, the End.B6 actions, ipv6_rpl_srh_rcv()
-> and BPF lwt progs move or rewrite the IPv6 headers and keep IP6CB(skb).
-> Then ipv6_find_tlv() parses other bytes. It returns when the type matches,
-> before it checks that the option is inside the header. Nobody checks the
-> length of the option again. Thus mip6_addr_swap() can write after the data
-> of the skb. mip6_destopt_reject() can copy that memory to an xfrm report.
-> 
-> In ipv6_find_tlv(), check the length of an option before its type. The
-> returned option is then inside the header, and the header is inside the
-> linear data. In both callers, ignore an option with a length other than 16,
-> as if ipv6_find_tlv() found none. Then the ICMPv6 error goes to the source
-> address of the IPv6 header, and the xfrm report has no XFRMA_COADDR
-> attribute. Nothing changes for a header that ip6_parse_tlv() accepted and
-> that is still in its place. For the other callers an incomplete option is
-> now absent:
-> 
->  - ip6_find_1stfragopt() and mip6_rthdr_offset() can return another offset
->    for the fragment header or the xfrm header, also in a forwarded packet.
->  - calipso_skbuff_optptr() returns NULL. netlbl_skbuff_getattr() and
->    netlbl_cache_add() then see no option. calipso_skbuff_delattr() returns
->    0 and the packet continues unchanged. Today it returns -EINVAL and
->    SELinux drops the packet. It already returns 0 when an earlier option is
->    incomplete. The receiver drops such a header in ip6_parse_tlv().
-> 
-> The code that moves the headers still does not reset the offset or the
-> other fields of IP6CB(skb). If the bytes there look like a header with a
-> Home Address option of length 16, both callers still use its address.
-> 
-> The first tag also covers ipv6_find_tlv(), because its early return did no
-> harm before mip6_addr_swap(). The second tag is for mip6_destopt_reject().
-> 
-> Fixes: 793832361fe7 ("[IPV6] MIP6: Revert address to send ICMPv6 error.")
-> Fixes: 70182ed23d25 ("[IPV6] MIP6: Report to user-space when home address option is rejected.")
-> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Le jeu. 29 oct. 2026 =C3=A0 22:42, Hyunwoo Kim <imv4bel@gmail.com> a =C3=A9=
+crit :
+>
+> Before commit fb041bb7c0a9 ("locking/refcount: Consolidate implementation=
+s
+> of refcount_t"), default builds implemented refcount_inc_not_zero() using
+> atomic_add_unless(), which provided full memory ordering on success. The
+> commit removed that ordering on weakly ordered architectures, allowing
+> accesses after a successful reference acquisition to be reordered before
+> it.
+>
+> Use refcount_inc_not_zero_acquire() in the IPv4 and IPv6 established
+> lookups and in inet_twsk_purge(), where the socket is validated again
+> after taking a reference.
+>
+> bpf_sk_assign() can receive a socket pointer obtained through BTF
+> without a reference. Use acquire ordering when it takes its own reference
+> for a refcounted socket.
+>
+> Use refcount_set_release() when setting refcounts in the SYN cookie,
+> TCP Fast Open, request migration, and TIME_WAIT paths. Keep the existing
+> TIME_WAIT smp_wmb(), which separately orders the refcount store before
+> ehash publication.
+>
+> Fixes: fb041bb7c0a9 ("locking/refcount: Consolidate implementations of re=
+fcount_t")
+> Fixes: 27e5203bd9c5 ("bpf: Change bpf_sk_assign to accept ARG_PTR_TO_BTF_=
+ID_SOCK_COMMON")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> ---
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Lack of links to prior versions is rather annoying.
