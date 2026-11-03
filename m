@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793701568;
-	b=NlgmRxDittllU1RLnbEbZejDOVuc3AkMbH0+jYqtD6NQfzfP3ynBzB3Gxco5D9WCckDg
-	 kUvo5vib4jDCHwLWpyQwrchYxS+lAjY3WmIDOZ8Hs+ByeksijJjCUo3aOjMI/RHLcBMI2
-	 cYlKDaj9czY8q+mgV+sRIlIzFlSOMfEl+5RmKKLH++LLjFMMDeirxfE3UyFua40CA+Wvb
-	 7Zt1xshyIJMRYrPJQidySOchT8a21UbET8DZnUTrOVA/yKPRU6aM/mqFfUieGQd0Gi0x8
-	 beStTpUXKSWZqlIbPxxC3H6cG/dRBwK2IYdGBFKkbEgzZOQIC4oj0kfRezcCSkO23Mg==
+	t=1793701574;
+	b=iBJ36cedFqoq18xrnIMu6EkkLrM0H53ggzRYMK485rXqpuyg1fx0nPrFXISZA+LK8kqR
+	 kCRW9xaBXmy4v68Iu67hYCTJWFtyyzpUdeeSUEOBNYe8XMtNgmnFcNpp5B72PkmsKBLA1
+	 sfNRD2EVkr8X5xpP3w7DliLiWVStpisqnDIbBCEvKNHxbmns+GNe7m94vNa/C0p7f3oHs
+	 dlSy7FbRQxcgc8/Hp21tEBDkYwgg5jped4e3ImOvNm+Iz9TXBqHGpP9TR6HvWzJDpuJQi
+	 vNvZCsOMSioAoaCT6CiB3UXARX4d+4DoQaR9aaF4avhz7VmTFPEJZKmnw2vu0fUZ92A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793701568;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793701574;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=ZuF7fJYmTTru6AFzam/kZmRQYRbtMt5mtJ5Bhl2O7Ns=;
-	b=xqqpZD0GCeNP0eb2A1bNqqCuH4ZBLfVuOkgqPD8EbarIScrFGzGeXkmZsW1NNL9mC8Zn
-	 vTE5+nkIZfefK9J1T9uMNmBmms4njbglvCFfDxyRTXihjccV4mL1NweEefyqcSsLu3Kdq
-	 WRGF+kROLYYCVqg0fNJMuVsPu7VZSf1sZ147oNB5Uv821+bJHOr/PefQ7ilmP/2B1EDSf
-	 z15UQYZYUBhfeuAPVan1k1mfMa1p8lJ67XHBEN91Uq+CvbUMb6ikEOuxCzZxmYAljnSsM
-	 /ZePICU1PTnirzA9vkjVWLkfXBHQR71ZIiCBRGLncC4SWNrinfPdz1STU3+S14cX27Q==
+	bh=qUyoZGjFGQOPeeRO9E3lTpQ1eLM4d6d6tlvrm+8kxb0=;
+	b=G0tQoo0CBaxeXlNZNPCtahpXCBcnQpjjNhWJhSnbELpvakhL4MSSZqgYsI9JcMld1F0A
+	 AcfC3pNki9RksaallOdNCP6HZvnRK33coTkYnAtMmncLVgD4mL/z4PiQIVSt52TPPXacO
+	 3RE10HjHpq0OmWMxKeE18RhPIvCROOvhhFkuY/+56va+KyFeVN+Iw9VJzOpJO5OF5PZ+v
+	 icudJ7G4huPaxAiHIBYpPoFNplc2aqP/PLeoGAxDp+i3Mcx2ukETX76rorGJKBCdO8QXU
+	 coaEYHk0eOsGzcyXzjUbsQ9Ud6uO1TUsdIIQxyp+7mC+b3DktVE/DpwnPxC/GbzgypQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kr5GWY8B;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lFkSfzCh;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3773606D837;
-	Tue,  3 Nov 2026 10:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1FB606EEB0;
+	Tue,  3 Nov 2026 10:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kr5GWY8B
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA4D1F000C1;
-	Tue,  3 Nov 2026 10:26:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lFkSfzCh
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70EB91F000C1;
+	Tue,  3 Nov 2026 10:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793701567;
-	bh=ZuF7fJYmTTru6AFzam/kZmRQYRbtMt5mtJ5Bhl2O7Ns=;
+	s=k20260515; t=1793701574;
+	bh=qUyoZGjFGQOPeeRO9E3lTpQ1eLM4d6d6tlvrm+8kxb0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kr5GWY8B8k9A2Xlh6UV8JUw4/lNOHG5KFxHXewAh+SkTH5QgBoNDrB8KBI/ie6LK0
-	 giaAY3iV9RjcMEkbFnr2p51A/K5476YCgnDARCKFQkdlM8FHMXygP39Rt3oZeduLYm
-	 RILuMBXVjLAIxEMA82qC88imdvvxwC29yl3OCSXw2TNrIbhyS0HoSC9STa4BTLFkD8
-	 Vibih8Xkv39rclW4dNAJvHNwOruq9rZFlRIlZ0Gb7Ora9bE8oTL/42Fk3VOitL2bNW
-	 6njUttuBIbfU5lyY/qME+Xbjby2Q99tghrl2GwMDJsRyLosNKNC9IN8Z2zPMqOZU6Z
-	 KYnVMV4Xx0Adw==
-Date: Tue, 3 Nov 2026 11:26:04 +0100
+	b=lFkSfzChsyncS1wMeU3n9VEwiz8x0Fo71a/5ra/ytsLVU3hRGSo0FJJE3YkCF3kxq
+	 jPKnCfLlTzXsUG9QHLidsVMZDz6erG/Bb76JeTIPea/xX0uRA01of4Ta7VdDYvjCsE
+	 0qDbmSmzQtM/tDZzqtAwuUbEyuIHP1sLp5fsh+2gYs7zGrYJeBBlEgxdio27DSBSMF
+	 sllaNWPGI1dcjZlB8jelkOC3jHksyXRxWC32VZYdvfQ0gk8+IBFoUlRQ1t4Z3/kXRq
+	 xrnc/BbfCmags8Dk47dr1Cc++p/BjUgHeGJ+sRzi/TnnfAye3DDqg5eqP3QVCPFF8j
+	 2C6tQk1hjCkPA==
+Date: Tue, 3 Nov 2026 11:26:11 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni <pabeni@redhat.com>, 
-	Eric Dumazet <edumazet@kernel.org>, Elad Nachman <enachman@marvell.com>, 
-	linux-kernel@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] net: prestera: release the ruleset in
- prestera_flower_prio_get
-Message-ID: <20261103-fine-blond-donkey-b4cda2@quoll>
-References: <20261103100532.1309990-1-vulab@iscas.ac.cn>
+Cc: Vladimir Oltean <olteanv@gmail.com>, stable@vger.kernel.org, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+	netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org, 
+	Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH] net: dsa: loop: release netdev reference on registration
+ failure
+Message-ID: <20261103-subtle-private-dinosaur-e0effb@quoll>
+References: <20261103100529.1309887-1-vulab@iscas.ac.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -61,23 +61,24 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261103100532.1309990-1-vulab@iscas.ac.cn>
+In-Reply-To: <20261103100529.1309887-1-vulab@iscas.ac.cn>
 
 
-On Tue, 03 Nov 2026 10:05:32 +0000, Wentao Liang wrote:
-> prestera_flower_prio_get() looks up the ruleset with
-> prestera_acl_ruleset_lookup(), which increments its reference count,
-> but returns without calling prestera_acl_ruleset_put().
+On Tue, 03 Nov 2026 10:05:29 +0000, Wentao Liang wrote:
+> dsa_loop_drv_probe() takes a reference on the CPU net_device with
+> dev_get_by_name() before calling dsa_register_switch(). The matching
+> dev_put() is only done in dsa_loop_drv_remove(), which the driver core
+> does not call after a failed probe, so every failed registration leaks
+> the reference.
 > 
-> The ruleset reference is leaked on every successful priority query.
-> Release it after the priority range has been copied out.
+> Drop the reference when dsa_register_switch() fails.
 > 
-> Fixes: 44af95718fed ("net: prestera: manage matchall and flower priorities")
+> Fixes: 98cd1552ea27 ("net: dsa: Mock-up driver")
 > Cc: stable@vger.kernel.org
 > Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
 > Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 > ---
->  drivers/net/ethernet/marvell/prestera/prestera_flower.c | 2 ++
+>  drivers/net/dsa/dsa_loop.c | 2 ++
 >  1 file changed, 2 insertions(+)
 > 
 
