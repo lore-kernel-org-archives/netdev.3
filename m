@@ -1,61 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793734717;
-	b=yVtFMXyfkbeSibFoYtNljs1BzBiiS42SU2PApfW5CcDUiZw5NuLr9tJZhO8vlCVh0sOj
-	 Uw8INLiXm0cv1urj0nBLC1n4q3dK2hP/LZgw21r1c/LRAXjfFJEQaq4Rq462RUFjawlxg
-	 H9g8CNMe2Ygg1DJy8XBwQ3H8wT4S2n+OGRQYEAoSlKADjXUL32gBr6UAE7GfSNjGREFix
-	 1Q5elWeSjTlZ4mSXZMgl6Lrv5uNjcS/gOiP8kmHUkgMyopFgty4jDwjPO9k6cAx2ZDU8S
-	 kE/po/dDhfCCc/0AhAIZ/FQQ/YcH0Yw0C0e3jRbvMiKwRoFpm8SbGaD1P2B6xQYUM4w==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793734717;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=gjbIoKggA3ZB4AoecBWT6FbzxdHr7kpCEu66Kpd7ryc=;
-	b=CsxQX3kEfHhE3mVWoxf0d8sl8Skfv9dQN3LakENySfBrZlPRSGdYH98sPbNszsOg8nDV
-	 +CjKz84+viGSNZ+6uYMD9nNbSn5oiGWMv0IkMJ7BvxHObNq8TMjZsjMwkDQpKBLprER1W
-	 xlf0y+KLtIdd2WqUfqikNDrYaI+x8vqjPlPJVqJk2GRbv6vj6sFLh2zpxrNW1AM4pgioY
-	 KXmIHt3nNFOjfL/FfkkSz+bscOUIZnj8bqp2+f+ea63RykB/u8bixwo74SSF6IvTWsWei
-	 TBeaSOUljPobY1nKRY6mIUMKFSqaxP8OJZejtoxRAWegsybtkmZfNVxxyXHI/Quspkw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J9Pa4ssf;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.178
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793735023;
+	b=im0UxoKZJcvx5lEimjeqnl6DKm0JJakMlXqEto1osKHJSoqYop4oJshke7tCXvZIM7Xx
+	 utG73domlUdcVcOfGYRUcX1KuMNThhy8POHuIfzWsP5bunNaM7m3Z831/FAv2yL7BVa7e
+	 Ue7i9pIy5yBoLxcHggnPhm1y12KPnHxa4I1Vr/PkCH7wx1jLGPo04/wtEQaDBAkDyr+2r
+	 k9mzty+TcnT4JUwgurSrdrumYNy1/uhS2tIqbdFTCkS1VKkckmoG9tbj93kK8lBwkwA3a
+	 VO87fINlo22TB9VkgqZBrg30CGwWUjVsdlp2pTfl6aXhgiNyT6lOkhCB1CT05FjYhDw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793735023;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=HXiF5Hkq0HzdjVstuqtN1MMqL7UJCviIzr82cLK6HWc=;
+	b=eADkNKo4n1u6grkJJdPkJRC7OIkw+ackTxiPa3OxGRP1JYt2HnmOYiIktbW3ECZ8xv/s
+	 mDN84CV9YMOzuAplffQAuU6XSmq+0SXghnCrABh4MQmHvDAFxt8+Hfq1yAymtkyuEwxBU
+	 uM82DhidNF1Zv8jtSIhTQBURv1i9TNoHTEgGF1C8phh/2RsxWSJJK4IoSjh25+P/414EI
+	 FQZQqvzWl1cxWv1Cea48xdT0cKouuRjWCkNnJTHnUvWPwd33v0VgmJRbe3TTTWNGgez7f
+	 5fyWmtFuRgvN4tgRVuZvPpnla8skKayU8GyMBml9ne0J6nUxlToSBCeTu3QWs8Q9VsA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BxKVG8Jo;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.178
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3297606A324;
-	Tue,  3 Nov 2026 19:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD659606A332
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 19:43:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD659606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J9Pa4ssf
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D1951F000C1;
-	Tue,  3 Nov 2026 19:38:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793734716;
-	bh=gjbIoKggA3ZB4AoecBWT6FbzxdHr7kpCEu66Kpd7ryc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=J9Pa4ssffdth4yMj2y8l9OYDobyqKq7UDkJVQNhlBmmneHHTuEGA7Dql4t9zawMN2
-	 ZOsz226ckgvlfCq0/Z+IIMQHWOmuAEREm9tkWhwceL1CxgEePRvI7dh50rTgqtq2JP
-	 lAU87zp1Nx/7Aq9CoNFwYbZkFqp9a5bF2yDEKMAxfDPsgFdrRyjah6euWIN1Liz1PL
-	 V78vkkpxsaB33WUmXAv/HcNTvsU4WYR2PhQUvW9xbb2oU8B1a/Z8YqB1emQbIXSKci
-	 AU4EBhDh6Glx3VagNeXNABaPcWa2PrJQKexTH/5TvxgeHek1DQmjrNGKpawTEOMdXt
-	 BZhASPo+c/bXg==
-Subject: Re: [PATCH net] ieee802154: reject ARPHRD_IEEE802154 devices without
- ieee802154_ptr
-From: netdev-bot+sashiko@kernel.org
-To: joasantonio108@gmail.com
-Cc: alex.aring@gmail.com, stefan@datenfreihafen.org, miquel.raynal@bootlin.com,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, syzbot+9ea34da5ca6100593c90@syzkaller.appspotmail.com,
- linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Tue, 03 Nov 2026 19:38:35 +0000
-Message-ID: <179373471506.488856.5288914841220832792@kernel.org>
-In-Reply-To: <179338834213.72059.10411262981778676981@gmail.com>
-References: <179338834213.72059.10411262981778676981@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BxKVG8Jo
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8ac1f2ff78dso548368b3a.0
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 11:43:42 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793735022; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SpWRunoua2FEL/b0DutHA3tc5/ZxvN2Llqo7DZrCkuGMjH1eStNJERSKHMOsVGX1+M
+         vJvO0cVMfrRyGnolOPf3PSRVTsICw/Wpnbuq1i0aSPBztG0y4IhzTt7kTzpqOUYxve2Q
+         ZDh5iRP5CGZk+jtdokL9pZOig0inFXxGPv+lxZiTdw7/7ROp6+IOpcdSYvTAa6rXfznm
+         ci9KZWV+7EBnEahlMCemEypR3Y6dA6EUp5BM1ccJIpyBdq8C1DOGSHp7s8KKnlmkzG0e
+         B8UCBL6xJlNv9v9247QapLiQVuPMCONrsKI8jZHEsej52TIIzh9FAUyNEg4HMbT444nK
+         pdqg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=HXiF5Hkq0HzdjVstuqtN1MMqL7UJCviIzr82cLK6HWc=;
+        fh=6Qcd+Wk8nlR9vD3YvEqDT/bvHKG7RTLZXtgJAI2OCH8=;
+        b=cKKJm1zqYI11MuMbygTy/wy1zucROPOuGKo6dr7dvqj8M/f0Skzik+Sbh97f5U4Ik8
+         IKb/+A0MEhERWeAfCD/7Y0ullEIL/icSQuxhgCb0wAwQvFNc0dAXmq5B2kYsYr/lJE/2
+         plicl1skO3lE8Xuf/P3Rb3I+ry+GLiPlBAKzumSn5U2aEDhFuuRqweg/DE7I3OEWaK1w
+         qCpK1QRWhlW4ehpPeg2Xu59rZTOmDGcIovA3t04xld7hQnzvqoSKjZKPDu6JyEqrk4m4
+         NIlPUYHoYxCPFUeBYRc96W/M+7FLMRSXF7YwEbB//zfSA+K61wfwJydyep1yUa3XptKc
+         hlfg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793735022; x=1794339822; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=HXiF5Hkq0HzdjVstuqtN1MMqL7UJCviIzr82cLK6HWc=;
+        b=BxKVG8JoCv/iLQwtckK7tTHB16bZFUqtRztlGqJbBM/qwXqrVU8gxVckUULIHgtRwe
+         eAVu1569YSe66F2TCCr8LjC4QzC3JhASOec0GtGkb5ebpm1Qo2E++YCHjminyHPTdK5X
+         wBE5RwowM8xsbD56ydU7k8LxUZ2B8rHVPg8n5t+3wYFEyXrdY9qGu52DT1t41PnSPXvE
+         Uc9gCXRa1ZtUGFzNSbajQgIHcrbpYASURIPtYKhmtssCGSbc9ZpOio6dC0e88MKez5kF
+         2DjxVghz+PDpBd2UmSRKvYzOfk/PP197DE87udZ5Sd087x6FyCvp30CyaxCbFsLLcBZP
+         CeIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793735022; x=1794339822;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HXiF5Hkq0HzdjVstuqtN1MMqL7UJCviIzr82cLK6HWc=;
+        b=UaSvzrnc6KfrCUTYYtaXZUF2kVSUipOBE/Ye9v+Fk4TCc+UamXn9U0Gn1ABw1jPVvO
+         5Z6p0itg7qc/kGcf0IOfRweO+LK8OKTOKsND02jYY+phWSeDuL2AgkUgRCDC8UFvDoQi
+         fXypnKHVG2VfLMcCyrwtjJqRSbgLm54hEJWCO5X6755aAb6ltzKzyYNEzPXzJ0Mf0Bbo
+         xaQxzxRmm8SQCzeeffTR5TckJKr8jXk7GAZdtRhPCFdfZat99ATlth0dMfPhPpEofuZ2
+         Jup0I0vxoY1tqFOAht4TjMwWF8EeF7VLxRhmWouoeQuAwzNZLdZizeqcKkkg5MW7ExA1
+         FsHw==
+X-Forwarded-Encrypted: i=1; AKwUvBytIRHuJZeXfNH2POlycRCX0xjG+TIEsgcR7fQ9AyOctlkC4uHvgcMLV39xXTUbsRrqsROc9vg=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+pV0sBDpycoRoZU9WlW0/jl176n9yOnsFwr2BdhVSjfSf252yV
+	+98Y+/4dKO/7q1wvUjLLqJ81cCjYJOWQHqA6rJUaqSsQ46K50XXU9/ysFigIBjF4X4YmUB7Qwbd
+	nf/q85pKkPpmKRsFcR5oXKuxu/+G9Ahc=
+X-Gm-Gg: AYBFou1d4tiLjiu1bhLmcGFB9tcbl5qpfPdAXCzZCLrcE+7lJ+Dhze63GgW87AhuMHl
+	NF5Z3MLziM8oC8DkaHHmabyjfhLzSI3D/HNjnDE/2rqlR/TPoWYRH9OeBhTKMtlOyvnNH2hntmk
+	h/HHRkf88XidFX26aocTSNvM+omi7cWxru6GSM/a+g8tqTp0IDZIU1QHzDUPbZueslU6cJbRYv4
+	12wZjXy90LoWmyS0o+EkrHCrLU1wuuxJWfEcoMIde1xLq3/w2yz1JOM8Gd6aNmRnS/jIhwcX5Ct
+	4D8MTulUGUUKQSvIUIWD/xdNlu9s2d/6BDx0KfyPtPOPqgi+BLNRLi5CZrXhLdr20lqvt9hEI7V
+	MokWtXdz9p5Jtf7iKZ6GQLxS5C1Y9PgjG3/CXDcrPVGtaR7Cu/BsXY/t5Ufc5QfeMcK8icJpjeE
+	mCHSToLas5BMt9myM5voATBVzecKPwJU7UrCygmrmAZeHGbkwH62APOxfdog==
+X-Received: by 2002:a05:6a21:9105:b0:3e2:2459:b774 with SMTP id
+ adf61e73a8af0-3e928914359mr7729030637.16.1793735022129; Tue, 03 Nov 2026
+ 11:43:42 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,231 +105,156 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+References: <20261103192606.92502-1-kylebot@openai.com>
+In-Reply-To: <20261103192606.92502-1-kylebot@openai.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Tue, 3 Nov 2026 14:43:30 -0500
+X-Gm-Features: AclHuK-Ntnjfy2V4XSDVEY_hZLHadBX9iYXfJBbZvbiqYzD0aYF-YvCMv_txPg8
+Message-ID: <CADvbK_d3k8GsgjdHUZ0a2LDs-Y0jd3mxoFvLSnnz3WqCTbBbHA@mail.gmail.com>
+Subject: Re: [PATCH net v2] sctp: avoid requeueing pending control chunks
+To: Kyle Zeng <kylebot@openai.com>
+Cc: linux-sctp@vger.kernel.org, marcelo.leitner@gmail.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
-
-Critical: 0 · High: 1 (1) · Medium: 1 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The fix misses one place.
-- [Medium] The patch rejects a non-WPAN device after a first-match lookup
-  has returned it, instead of skipping it during the lookup.
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but
-  ieee802154_dump_iface() and ieee802154_llsec_dump_table()…
-
---
-
-ieee802154: reject ARPHRD_IEEE802154 devices without ieee802154_ptr
-
-This patch adds !dev->ieee802154_ptr checks to the legacy 802.15.4 netlink
-code and to the AF_IEEE802154 socket code, wherever a device is picked by
-dev->type == ARPHRD_IEEE802154. It fixes NULL pointer dereferences caused
-by TUN devices that TUNSETLINK switched to ARPHRD_IEEE802154 and that
-have no wpan_dev.
-
-Closes: https://syzkaller.appspot.com/bug?extid=9ea34da5ca6100593c90
-
-> diff --git a/net/ieee802154/nl-mac.c b/net/ieee802154/nl-mac.c
-> index 74ef0a310afbb..5bf6725eb55dd 100644
-> --- a/net/ieee802154/nl-mac.c
-> +++ b/net/ieee802154/nl-mac.c
-
-[ ... ]
-
-> @@ -437,7 +437,8 @@ int ieee802154_dump_iface(struct sk_buff *skb, struct netlink_callback *cb)
->  
->  	idx = 0;
->  	for_each_netdev(net, dev) {
-> -		if (idx < s_idx || dev->type != ARPHRD_IEEE802154)
-> +		if (idx < s_idx || dev->type != ARPHRD_IEEE802154 ||
-> +		    !dev->ieee802154_ptr)
->  			goto cont;
->  
->  		if (ieee802154_nl_fill_iface(skb, NETLINK_CB(cb->skb).portid,
-
-[Severity: High]
-This is a pre-existing issue and not something this patch introduced, but
-is this for_each_netdev() walk safe if a device is unregistered at the
-same time?
-
-ieee802154_dump_iface() and ieee802154_llsec_dump_table() walk
-net->dev_base_head without RTNL or rcu_read_lock(). They also take no
-dev_hold() on the current device. The legacy family has no parallel_ops,
-so genl_dumpit() only holds genl_mutex around the callback:
-
-net/netlink/genetlink.c:genl_dumpit() {
-    ...
-	genl_op_lock(info->family);
-	rc = ops->dumpit(skb, cb);
-	genl_op_unlock(info->family);
-    ...
-}
-
-The loop body also sleeps while holding the raw dev pointer.
-ieee802154_nl_fill_iface() does:
-
-	rtnl_lock();
-	short_addr = dev->ieee802154_ptr->short_addr;
-	pan_id = dev->ieee802154_ptr->pan_id;
-	rtnl_unlock();
-
-ieee802154_llsec_dump_table() calls llsec->lock_table(dev), which takes a
-mutex.
-
-At the same time, ieee802154_unregister_hw() can take RTNL without
-genl_mutex. It runs on driver unbind, module unload and atusb unplug:
-
-	rtnl_lock();
-
-	ieee802154_remove_interfaces(local);
-
-	rtnl_unlock();
-
-This can unregister the device being dumped and then free it with
-free_netdev().
-
-When the dump thread resumes, does it use freed memory? It reads
-dev->name, calls ops->get_mac_params(dev) on the freed sdata, and follows
-dev->dev_list.next to the next entry.
-
-IEEE802154_LIST_IFACE needs no privileges. The new !dev->ieee802154_ptr
-checks read the same unprotected pointer inside these loops.
-
-[ ... ]
-
-> diff --git a/net/ieee802154/socket.c b/net/ieee802154/socket.c
-> index be8ca1f053a2b..f87c9ccbc8488 100644
-> --- a/net/ieee802154/socket.c
-> +++ b/net/ieee802154/socket.c
-
-[ ... ]
-
-> @@ -74,6 +75,14 @@ ieee802154_get_dev(struct net *net, const struct ieee802154_addr *addr)
->  		break;
->  	}
->  
-> +	/* A TUN device can have its type set to ARPHRD_IEEE802154 without
-> +	 * being a WPAN device.
-> +	 */
-> +	if (dev && !dev->ieee802154_ptr) {
-> +		dev_put(dev);
-> +		dev = NULL;
-> +	}
+On Tue, Nov 3, 2026 at 2:26=E2=80=AFPM Kyle Zeng <kylebot@openai.com> wrote=
+:
+>
+> The T4 and RE-CONFIG timeout handlers take a reference to their cached
+> control chunk and submit it through SCTP_CMD_REPLY. A previous
+> transmission can still be on the control outqueue when output is corked
+> or suppressed, or when sctp_packet_transmit_chunk() could not append the
+> chunk.
+>
+> sctp_outq_tail() then adds the same list node a second time. Re-adding a
+> non-tail entry can corrupt the list without being caught by the
+> insertion-time list checks. A subsequent flush or association teardown
+> can access an already freed chunk. The ASCONF path is reproducible by an
+> unprivileged SCTP socket owner in a user/network namespace, with KASAN
+> reporting a use-after-free in __sctp_outq_teardown().
+>
+> Check sctp_chunk_pending() in both timeout handlers before taking the
+> extra reference and issuing SCTP_CMD_REPLY. When the chunk is already
+> linked, request a deferred outqueue flush instead. Simply omitting the
+> reply would also omit its uncork at the end of the timeout event. T4
+> would no longer retry the queued ASCONF, and a migrated, pending
+> RE-CONFIG could lose its timer until unrelated output flushes the queue.
+>
+> The flush command acquires a local cork only when the caller has not
+> already corked the queue. This preserves the existing flush ordering,
+> transport/error accounting and timer handling without changing the
+> common enqueue path.
+>
+> The issue was found by an LLM.
+>
+> Fixes: 2e3216cd54b1 ("sctp: Follow security requirement of responding wit=
+h 1 packet")
+> Fixes: 7b9438de0cd4 ("sctp: add stream reconf timer")
+> Cc: stable@kernel.org
+> Suggested-by: Xin Long <lucien.xin@gmail.com>
+> Signed-off-by: Kyle Zeng <kylebot@openai.com>
+> ---
+> v1: https://lore.kernel.org/netdev/20261030042321.74407-1-kylebot@openai.=
+com/
+> v2: Check pending chunks in the T4 and RE-CONFIG timeout handlers, as
+> requested. Preserve their deferred output flush with a state-machine
+> command so pending requests can progress without unrelated traffic.
+> The common sctp_outq_tail() path is unchanged.
+>
+> I have a reproducer for this issue and can share by DM.
+>
+>  include/net/sctp/command.h |  1 +
+>  net/sctp/sm_sideeffect.c   |  8 ++++++++
+>  net/sctp/sm_statefuns.c    | 20 ++++++++++++++------
+>  3 files changed, 23 insertions(+), 6 deletions(-)
+>
+> diff --git a/include/net/sctp/command.h b/include/net/sctp/command.h
+> index 2058fabffbf6..abd6cc509183 100644
+> --- a/include/net/sctp/command.h
+> +++ b/include/net/sctp/command.h
+> @@ -39,6 +39,7 @@ enum sctp_verb {
+>         SCTP_CMD_CHUNK_ULP,     /* Send a chunk to the sockets layer.  */
+>         SCTP_CMD_EVENT_ULP,     /* Send a notification to the sockets lay=
+er. */
+>         SCTP_CMD_REPLY,         /* Send a chunk to our peer.  */
+> +       SCTP_CMD_OUTQ_FLUSH,    /* Flush pending output when uncorked. */
+>         SCTP_CMD_SEND_PKT,      /* Send a full packet to our peer.  */
+>         SCTP_CMD_RETRAN,        /* Mark a transport for retransmission.  =
+*/
+>         SCTP_CMD_ECN_CE,        /* Do delayed CE processing.   */
+> diff --git a/net/sctp/sm_sideeffect.c b/net/sctp/sm_sideeffect.c
+> index 35f540fb15fc..6f19ac78749d 100644
+> --- a/net/sctp/sm_sideeffect.c
+> +++ b/net/sctp/sm_sideeffect.c
+> @@ -1498,6 +1498,14 @@ static int sctp_cmd_interpreter(enum sctp_event_ty=
+pe event_type,
+>                         sctp_outq_tail(&asoc->outqueue, cmd->obj.chunk, g=
+fp);
+>                         break;
+>
+> +               case SCTP_CMD_OUTQ_FLUSH:
+> +                       /* Request a flush without taking over an outer c=
+ork. */
+> +                       if (!asoc->outqueue.cork) {
+> +                               sctp_outq_cork(&asoc->outqueue);
+> +                               local_cork =3D 1;
+> +                       }
+> +                       break;
 > +
->  	return dev;
->  }
->  
-> @@ -641,6 +650,11 @@ static int dgram_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
->  	else
->  		dev = ieee802154_get_dev(sock_net(sk), &ro->src_addr);
->  
-> +	if (dev && !dev->ieee802154_ptr) {
-> +		dev_put(dev);
-> +		dev = NULL;
-> +	}
-> +
->  	if (!dev) {
->  		pr_debug("no dev\n");
->  		err = -ENXIO;
+>                 case SCTP_CMD_SEND_PKT:
+>                         /* Send a full packet to our peer.  */
+>                         packet =3D cmd->obj.packet;
+> diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+> index b2f609f177fb..8b76b7e28504 100644
+> --- a/net/sctp/sm_statefuns.c
+> +++ b/net/sctp/sm_statefuns.c
+> @@ -1122,9 +1122,13 @@ enum sctp_disposition sctp_sf_send_reconf(struct n=
+et *net,
+>                 return SCTP_DISPOSITION_DELETE_TCB;
+>         }
+>
+> -       sctp_chunk_hold(asoc->strreset_chunk);
+> -       sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
+> -                       SCTP_CHUNK(asoc->strreset_chunk));
+> +       if (!sctp_chunk_pending(asoc->strreset_chunk)) {
+> +               sctp_chunk_hold(asoc->strreset_chunk);
+> +               sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
+> +                               SCTP_CHUNK(asoc->strreset_chunk));
+> +       } else {
+> +               sctp_add_cmd_sf(commands, SCTP_CMD_OUTQ_FLUSH, SCTP_NULL(=
+));
+> +       }
+>         sctp_add_cmd_sf(commands, SCTP_CMD_STRIKE, SCTP_TRANSPORT(transpo=
+rt));
+>
+>         return SCTP_DISPOSITION_CONSUME;
+> @@ -6197,9 +6201,13 @@ enum sctp_disposition sctp_sf_t4_timer_expire(
+>          * chunk, it MUST be the same (including its serial number) as th=
+e last
+>          * ASCONF sent.
+>          */
+> -       sctp_chunk_hold(asoc->addip_last_asconf);
+> -       sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
+> -                       SCTP_CHUNK(asoc->addip_last_asconf));
+> +       if (!sctp_chunk_pending(asoc->addip_last_asconf)) {
+> +               sctp_chunk_hold(asoc->addip_last_asconf);
+> +               sctp_add_cmd_sf(commands, SCTP_CMD_REPLY,
+> +                               SCTP_CHUNK(asoc->addip_last_asconf));
+> +       } else {
+> +               sctp_add_cmd_sf(commands, SCTP_CMD_OUTQ_FLUSH, SCTP_NULL(=
+));
+> +       }
+>
+>         /* ADDIP 4.1 B5) Restart the T-4 RTO timer. Note that if a differ=
+ent
+>          * destination is selected, then the RTO used will be that of the=
+ new
+>
+I don't really understand why OUTQ_FLUSH is needed if the chunk
+was not enqueued by this timeout.
 
-[Severity: Medium]
-These checks reject the device only after a first-match lookup has
-returned it. Can that hide a real WPAN device that comes later in the
-list?
+Can you share the reproducer to help understand what caused the
+chunk to not be transmitted on time?
 
-For an unbound socket, dev_getfirstbyhwtype() stops at the first
-ARPHRD_IEEE802154 device:
-
-net/core/dev.c:dev_getfirstbyhwtype() {
-    ...
-	for_each_netdev_rcu(net, dev)
-		if (dev->type == type) {
-			dev_hold(dev);
-			ret = dev;
-			break;
-		}
-    ...
-}
-
-A TUN device set to ARPHRD_IEEE802154 can sit ahead of the real WPAN
-interface in dev_base_head. For example, the WPAN interface or a hwsim
-radio may be created after the TUN device. Would every unbound
-AF_IEEE802154 datagram send in init_net then fail with -ENXIO?
-
-The IEEE802154_ADDR_LONG branch of ieee802154_get_dev() has the same
-pattern. dev_getbyhwaddr_rcu() returns the first type/hwaddr match. The
-new post-filter in ieee802154_get_dev() turns an earlier non-WPAN match
-into NULL. That match could be a bond that copied its slave's address, or
-a TAP device switched with TUNSETLINK whose MAC was then set. In that case
-bind() returns -ENODEV even though a real WPAN device has the address.
-
-The short address branch already skips non-WPAN devices inside its loop.
-Could the other two lookups work the same way?
-
-The test note says unbound sendto() "keeps working (it picks a hwsim
-interface)". That only holds when the hwsim devices come first in the
-list.
-
-[ ... ]
-
-> @@ -1097,7 +1111,7 @@ static int ieee802154_rcv(struct sk_buff *skb, struct net_device *dev,
->  
->  	ieee802154_raw_deliver(dev, skb);
->  
-> -	if (dev->type != ARPHRD_IEEE802154)
-> +	if (dev->type != ARPHRD_IEEE802154 || !dev->ieee802154_ptr)
->  		goto drop;
->  
->  	if (skb->pkt_type != PACKET_OTHERHOST)
-
-[Severity: High]
-Does lowpan_rcv() in net/ieee802154/6lowpan/rx.c need the same check? It
-handles the same ethertype, and it still checks only the type before it
-dereferences ieee802154_ptr:
-
-net/ieee802154/6lowpan/rx.c:lowpan_rcv() {
-    ...
-	if (wdev->type != ARPHRD_IEEE802154 ||
-	    skb->pkt_type == PACKET_OTHERHOST ||
-	    !lowpan_rx_h_check(skb))
-		goto drop;
-
-	ldev = wdev->ieee802154_ptr->lowpan_dev;
-    ...
-}
-
-lowpan_packet_type is a global ETH_P_IEEE802154 handler with no device or
-netns filter. lowpan_open() registers it through lowpan_rx_init() as soon
-as any lowpan interface is up. lowpan_rx_h_check() only looks at frame
-bytes that the sender controls.
-
-There seem to be two ways to reach this.
-
-The first is a bond whose first slave is a mac802154 interface.
-bond_setup_by_slave() copies slave_dev->type into the bond, and
-bond_enslave() rejects only ARPHRD_CAN slaves. Received frames can then
-reach lowpan_rcv(skb, bond_dev) with ieee802154_ptr == NULL.
-
-The second is a TUN device switched to ARPHRD_IEEE802154 with TUNSETLINK,
-plus a tc mirred egress-to-ingress redirect. __dev_queue_xmit() sets the
-mac header, mirred leaves pkt_type unchanged, and a frame starting with FC
-0x41 0x88 passes lowpan_rx_h_check(). lowpan_rcv() has no init_net check,
-so this also works from a netns owned by an unprivileged user namespace.
-Writing to the TUN fd directly does not work: the mac header stays unset,
-so ieee802154_get_fc_from_skb() hits its WARN_ON and the frame is dropped.
-
-lowpan_newlink() and lowpan_device_event() in the same module already
-check ieee802154_ptr after checking the type. The commit message says
-such devices are rejected "wherever a device is picked by its type".
-Should lowpan_rcv() also get || !wdev->ieee802154_ptr to complete the fix?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/179338834213.72059.10411262981778676981%40gmail.com
+Thanks.
