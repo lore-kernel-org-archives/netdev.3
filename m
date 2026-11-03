@@ -1,55 +1,124 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793695942;
-	b=ypQ2z3/4hdH9l7NKOp6xR8Y560EVXIbKoqOYHfjR9MWH9hqElhmhRgiy+NqIE8y++qFt
-	 CYFDEDXFmUs8g9piWti98iP7GtJyw7pwD8pJwHYlyf4Do3j3hovaJZ47L4D01A3teQu+f
-	 B3UbZGiSDidHxi7VxX4sS/dbQ+I2678IQfm1tbwjf95JPwKwBWCYGm0yZv8oexY0dZ4E5
-	 EjIhwvWoCR+86AlZBlRaSAQcp7pZQ+ApqAEtcZgs+fRzU4D1MpvAUVVDpa1mBcMjC66Sy
-	 zu9sX6kzxwTu8Qy7xvk3aqECZTV4ZB274Hpbghd3GNHQZKCWzXkAR36Ey/r2wp+RI9A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793695942;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=TdSJawfHJlt2CEvQuG6uB67CcZ37ivbLLLF//zSQtxs=;
-	b=hDjhs4Z+CztKXAz7n/9v8C5vq6QS1cNVyXcheWfC+uvvBZrzYrHZmZOHnZNezctSi1MA
-	 LHY9WaOubGAvdac96jSs0sn9otKy5J1JTndubN/9sxaeUKGraAj+WUs+ALe5yYhxSOEYc
-	 tue0AwGiz8kyrqSN3m0fVQGnvFMcPDz5KV1GnFH579HazpmYtlDilaZOBu6JxE9GPN3/V
-	 O2xXZU0pCxdq1QlcI+eAgHh0vm/+EX7dK8iJ1loBd4jWn9/359U1UfUk1oIa7bDe5HvAO
-	 knpVaSSYPVImrToYucDsoxcl8VYjtdoDazvgbpFhDubiNkBwK+m6SGYmhMcaDPdYzrA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mxx7cF4s;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.168.131
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1793696136;
+	b=Nv9tPaiYGe7ygFGGGr16tjmfuTWvl/0K32N+8EuRDyBNd6Zgo2TPtat6McMboPHg3/R1
+	 UnjE+GuLXUGGXf0voYVqWIzpSd+TSDWkf3vleIjqqN30D59/5yuqpn2mkmrkF0GjU8i5j
+	 dq9qZ4nXCJvdVhw2VQj96CiWFKC4ZbNN8U63P97JFXrJZGTzYTo2ThMsIGUFwqEByTv/A
+	 5xpTAU8d7BiFwj1h9SJKEoh4oq7pUZm23l/CDaRDfQ9GatI1d3zZ1oZzSxDQ3bvSjw7c8
+	 2pTovZ4QutG83IFnVaEf7fAMi1T1ERcF386NQvCenXTxvt2jNeV1t7suGVjEphedBUA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793696136;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:MIME-Version:
+	 References:In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:
+	 Cc:Content-Type:Content-Transfer-Encoding:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Info:X-Authority-Analysis:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=qbsOpFiwDX2dELfvfvGwSVoz/OIQAceMk9d+tt4Lk5I=;
+	b=keL2EPQELOyZnP8uaRprlI8A4evtF9ZfU/iau0E+RFQ7UlNl4NlCaCY7TtwP4ZjhvXhm
+	 i84zXOzid2wV0hY8dYPwBWxXH9Lei3ch2J7PmBY9C2HHC6/XuD5+HTvRYs8wtbUrZNbFH
+	 snTx3kZSVWH/4l+H1GO+noLcv55aUCg7cKe03PgNBLJOrAmTi6WaXaKfsBKcMGe0UuO2/
+	 7AGPGpYGWRMMNIH4hXuQKZQbnCIOKMCtHvQgP1rIN1GetQajtqonx8Rp3EZdQTrn9bpEA
+	 7o2ps9WkRJSVFARls/ZJEhFPue/LNMnB48qjxYqC37za6+pQISyrn8P/MGe104+CE3A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=OWmJBZ9g;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=HQBJlRfR;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.168.131
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F729606A326
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 08:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E036606A337
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 08:55:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2E036606A337
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mxx7cF4s
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4904F1F00A15
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 08:52:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793695942;
-	bh=TdSJawfHJlt2CEvQuG6uB67CcZ37ivbLLLF//zSQtxs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Mxx7cF4sE3b5qXRX6s3hkMclpAWK0FGdd8M46TDcj8qZtN3XeFNK+xNWs8zyTwGxD
-	 biQINWud5AzOz9SYdqinS8cpnbl8V0P7PQmcHeaznOflhzylFM3jn0INcRpHcvuzKS
-	 4TjMpMbGKFp45I+xN86MPFHT2VrtEC5PEADCYmtAEDLDt8VEL78q0qJoMaeeRe0jQE
-	 2kN/75FdxPEcaSZ1gHH0ZWV1kz309DZjlx/wDb7u8LILkcQxKzb1/Qsqj3h7Le4zDe
-	 glbAIMURuHJt39T3yhLG+XJgbarJFeiYGBkyj9X7e0d9DmVi3uJyv4blM9f21H1aSq
-	 BTxTK6zvKrLUg==
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-4932b13c4ccso2539699fac.3
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 00:52:22 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvByBJVqyDjmHypU4IrZT9GgxqrdVMg+20R6woXKEhbd/ZVt/R3A0ZgnYjLryFi3aFYaOKby5Ews=@vger.kernel.org
-X-Gm-Message-State: APuU4Z89GXSPjDbAMqDIY0e3i3tBYNhxMOlr3k3IT1lpv6ycZII9w6Z+
-	/q3vKlLMvKeh8HXvg3UL6WK6GrKrPw7N48i/SR9o0npjzYWFoWRbslZciFcelLNfMkDbgavhO3h
-	j+GynIlzJsKhYoJX1leyIsyKwKukQX7c=
-X-Received: by 2002:a05:6871:4410:b0:494:73e0:eeb9 with SMTP id
- 586e51a60fabf-4a907744ae4mr8244206fac.47.1793695941578; Tue, 03 Nov 2026
- 00:52:21 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=OWmJBZ9g;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=HQBJlRfR
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A37tXgT1397190
+	for <netdev@vger.kernel.org>; Tue, 3 Nov 2026 08:55:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	qbsOpFiwDX2dELfvfvGwSVoz/OIQAceMk9d+tt4Lk5I=; b=OWmJBZ9gc8nkZerz
+	b1HG3TUo8MIzBBrnc4dE088yesRqksaRibt7o2ejR7EMPKLM7Sd+wr+prPDIZVwl
+	Pv49uXdDmq2HLJMXKLwIKsL+mhOo8lJkCv4lGoLBRzEmzEeUP581zuX9q0KUlZD2
+	zo+oKNv1sqaLORWJq1VbGjXIHmE0UTS4R5/AsES2rA4KftwMi6NcmdQUyurgGFaA
+	2S8lf/Gz0dBh9bpxXBZbI/0Z+PTYEbDOvuEeu0QNPDDmxmfyp6lVSyXRCQd6+QMi
+	cYe5cxo52UItq7Yv/2hPxg3PiCga9BvqtFeDnqs7EUGIkRbi6O9tX/WQvKQYPeS5
+	CNW8/g==
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hq4v5hss3-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 08:55:35 +0000 (GMT)
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-91c7cb9e267so46377526d6.2
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 00:55:35 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793696134; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZEEIlj39DToyShuT1auHDSc7IGCyilnieR4Mp0WG4fo/5l6XJQf5TRxPiDMgODhDTF
+         dWCOcI0J6fXP2WaHeRuvqTktqpiOFGzR/KmY3P0RB6okCNwqMDORwH8fhCXyzTHnQrDz
+         E/S/7+FUUfaZZE4HU5vsKbE+taUOShvjYQDc5XJ3WhLxrU0gGLGl5eH+t9hqAj/M2SiQ
+         ZczAXviTiLHvdbZYhXqfe1wApSim3XIk/StXMyG/D/qdwN+P2io2RdYrpLykbLYA8Phe
+         a0I1XDJbKpFgTNOMqAnB86L41g9GaXue3zkFDR+BCAFaIN2mA8erOV3pVgtEn12YVNKp
+         iRiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=qbsOpFiwDX2dELfvfvGwSVoz/OIQAceMk9d+tt4Lk5I=;
+        fh=93HCxGVseL5JN/Ll70fpN2fBy36qYDlXaAzE3OSzsgI=;
+        b=b2/XPTxEJZ8A2OnKqdRSH7P0fXQGYLsCWY7y532WtzDgt3bwtuNVflC13dK2GDaCxI
+         42U31zDpRzmgGyoJWvwZYfn0HQaNuRYc0BL12TOozAgLVFJ5RKAVCKZe0wSMPGszzv1n
+         RS/diiHfJrBOv+RX2ojlx91FT/KNoKbK72DpSbeL4hXNg3mdDGgGQVnaTfftw3Btb+wU
+         IDLrfOeE+aUgvpqUyeWH5BsbCtwd8CIWgB9H84mfwzy+CxZdrUylAP5ac+SGhwlFn8jy
+         we7/n7vrdqo3c3r0uGJ84q9QXbedNYa9W0JPDP/6xKH76uS9Wcft9SEc+XZUl1xrZQTN
+         Jj7g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1793696134; x=1794300934; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qbsOpFiwDX2dELfvfvGwSVoz/OIQAceMk9d+tt4Lk5I=;
+        b=HQBJlRfRC+4iLMd73Erbza31dHAaBeBRf1r6hDddFdZ93Xri3jZ4/KbuH9SbLZ1s3W
+         UfW7WYqAybK3Qqo9QJoyenFBbCIIuwApCDIrxFzJgSz1Re47+eBz6Pq9pF7QITETDOl2
+         aBfCnDZHEJb9zhTJX0oqf0rgPgtjKmBtsO5gDoQ5UOsazp6m4YxEkJfRM4w8zjsdhbdm
+         GnixX7m65YBH8SB9EnJbFY9KuGEeFHQg0O/MFPM1N0fvUCfXaUrDUK6+5k/BrKcRy4q6
+         Ov2pHvojv2Dkr1ql77Fq034QWJL0jfnM1wlaha0m3eDrCAehkXTU6Uo8I+3NAltzPcCK
+         EcvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793696134; x=1794300934;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qbsOpFiwDX2dELfvfvGwSVoz/OIQAceMk9d+tt4Lk5I=;
+        b=jMGKXu7jXWgfcOhbvl2lM2smchbtX3C5JOJjwI+sm1PJIowoiXJMMO7nEukaqjVU+m
+         dlQsrXLo+dhxC3b5GQdeKIH0yvp/SOayhjSqrnW7CGcuhVdpScrN4JzlotgzxE6zvO8t
+         R0EjvjGq3NK1zypbTnfMa616fcwETIuXcJGzmLC6PhNsT9JhHG5L5u5DfvhTEUo0ubA9
+         OaffOB+7hd+xz2UHq3NjhOs1nP+pL/9WLe99oZylS2dphOMaLYmoa59s7DCHphA6mWrn
+         /wF8f4JcG+wcTDrEK+sXZdNs9kbFzyKT5YTmTQg7GzjURnsdS/r2AeLnjf3KPZcKKbGF
+         U0lQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwgeDKS6Muf6i/nChPiBS35CAnQc+0usEIGVuKmf1gtssqyDgxJ/wyiOpQhYVeBqKArdYf/iGE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+NTya1aJ0fKnB8FPP27shwz2vx85AShjkpD5GbH0vvv1g2rw2L
+	FRG2cseuMHTusAEQbg1+fCpaPIxbSy/YPimHUK8GDlba/gHE1BebhP6pZsrdEehASpCIsUeBo1v
+	hwf5JyWp4SNMfd98mo+544gvQKGcX7H0UC3NWQRSrFn+4sHnZpBTV2xN9IVNyT/TensoDKAtZJ9
+	TppbDYSl4TBByepBRGY8Ru+6F+sltFsuPe6rCHmc9oR13b
+X-Gm-Gg: AYBFou3Y67tldyMCp5i+N1cnj0YxqnCkODE70pyLZBpfWF/lHFUOUrOGVUVXFfytQGY
+	Bx6zajfQrXa86n+ytUMCQfMp5QXe8NkUJMhKo1PoQOhGLggjHZVT9LeIQ6kToTStiidjhWGT+ee
+	hWgwbJbLXVQ/aJ6lt1wc8+4XN42B/ZjNci4mP/kN4TGa6FguFfpazd9jZU8XiRWBKuvOjQntLLb
+	0+SEYmlNb5UHUvbajuNunzZ6iFYp+iMbBKkf7bmxYU5s47hbYF/elsbVvlJM9z+IAGpE995mwU=
+X-Received: by 2002:a05:620a:4044:b0:93f:3163:3e37 with SMTP id af79cd13be357-944216b1af2mr2157957185a.28.1793696134226;
+        Tue, 03 Nov 2026 00:55:34 -0800 (PST)
+X-Received: by 2002:a05:620a:4044:b0:93f:3163:3e37 with SMTP id
+ af79cd13be357-944216b1af2mr2157954685a.28.1793696133721; Tue, 03 Nov 2026
+ 00:55:33 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,198 +128,196 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261102075441.3771550-1-edumazet@kernel.org> <179369559062.488856.15441115725436277776@kernel.org>
-In-Reply-To: <179369559062.488856.15441115725436277776@kernel.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Tue, 3 Nov 2026 09:52:10 +0100
-X-Gmail-Original-Message-ID: <CAL4WiiqU1bT+83m+fkJEftQE9iv+AgcBbFFMsGhw+s3qD-jDEw@mail.gmail.com>
-X-Gm-Features: AclHuK_kWzjzr69EGKyEj_0N1KGhlKfklKatO3J29aWnxfwgG_MaiUZSuN-pe-c
-Message-ID: <CAL4WiiqU1bT+83m+fkJEftQE9iv+AgcBbFFMsGhw+s3qD-jDEw@mail.gmail.com>
-Subject: Re: [PATCH net] tcp: ipv6: do not read ireq->pktopts from tcp_v6_send_synack()
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	ncardwell@google.com, kuniyu@google.com, horms@kernel.org, 
-	netdev@vger.kernel.org, permissiontogallop@gmail.com, x-professor@outlook.com
+References: <20261102191922.4044912-1-Frank.Li@oss.nxp.com>
+In-Reply-To: <20261102191922.4044912-1-Frank.Li@oss.nxp.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Date: Tue, 3 Nov 2026 09:55:22 +0100
+X-Gm-Features: AclHuK8MJq-s56wdtunEmLoEql-aTRrOrw2wQVU5g0yE5nW0xqWZNoiPrAFZCeY
+Message-ID: <CAFEp6-0CkkoT_xP+zvJ-ffVQnn2E-9AuiC0=cer-Cm1_s1dZ4A@mail.gmail.com>
+Subject: Re: [PATCH] net: dma: use dmaengine_desc_set_callback()
+To: Frank.Li@oss.nxp.com
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Chen-Yu Tsai <wens@kernel.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+        Michal Simek <michal.simek@amd.com>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>, Frank Li <Frank.Li@nxp.com>,
+        Andre Przywara <andre.przywara@arm.com>,
+        Li Youhong <liyouhong@kylinos.cn>, Joe Damato <joe@dama.to>,
+        Arnd Bergmann <arnd@arndb.de>, bui duc phuc <phucduc.bui@gmail.com>,
+        Yicong Hui <yiconghui@gmail.com>, Simon Horman <horms@kernel.org>,
+        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+        "moderated list:ARM/Allwinner sunXi SoC support" <linux-arm-kernel@lists.infradead.org>,
+        "open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
+        imx@lists.linux.dev, vkoul@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-ORIG-GUID: k3R8W7zd5wZP0p0WkjvNbWy7tRGx7g4k
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTAzMDAzNSBTYWx0ZWRfXySGEYIHHFahg
+ 6BAE9ak7BzoW5q69znHOoRzDC6yVvR5bKdHzbStEjrELz2Bx4nJrssgbmNq4T1XwwA6h1H6E/mA
+ PUfpbpcq8pXkEBHvxkgj7/firL5Z7v9r8ZeFwJyu6u+8WX79JONHx/ezvnYfFl+SCUlqclkmM8G
+ b2sE0tEVZhCSEDjLU+0u7rXryj0rNa4iOVptpPtJrgNxKvPDhXSDx+VI7oX94cNny8zSIVkc0+B
+ xk7l5EMIQ+UhDrdd62m1h2pyGs8TaL0e838poZhVYbrtkKMVzod4kji6CCLNiZ6s0PRhVGZNSzz
+ 7mD3OcSRxamDSS0qTQU3OxuPpX+x35eH8LjV09hWAsHFjrdZEhwEOXYk3i4+Z8i/PVJ6O3NZK5L
+ vku+Vup35hAT1yD28/+9J1JGLGmrWLlcEFUM8xWEDI1JNo9Y8ZHDbRgiP0G5GtBkyig5kPNnHDh
+ YWsUBZ2YVAk4iI3FS8g==
+X-Proofpoint-GUID: k3R8W7zd5wZP0p0WkjvNbWy7tRGx7g4k
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTAzMDAzNSBTYWx0ZWRfXzkfud9mFrWXb
+ RS9ZfDTnj31pJDAu0b4xF+FZ9HvrJL5nlqbcHw13mS//bY56xyoCaXjiarBc68GrphJuX5GUD5H
+ FVsg11aGR1As2wI+Xi3u2Hyk+6EVLaI=
+X-Authority-Analysis: v=2.4 cv=NeZzRGD4 c=1 sm=1 tr=0 ts=6ae9a187 cx=c_pps
+ a=wEM5vcRIz55oU/E2lInRtA==:117 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=yOCtJkima9RkubShWh1s:22 a=8AirrxEcAAAA:8 a=EUspDBNiAAAA:8
+ a=OV43vvX7PjCfZyRFssgA:9 a=QEXdDO2ut3YA:10 a=OIgjcC2v60KrkQgK7BGD:22
+ a=ST-jHhOKWsTCqRlWije3:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-03_01,2026-11-02_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0 priorityscore=1501
+ adultscore=0 suspectscore=0 clxscore=1015 spamscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610300000 definitions=main-2611030035
 
-Le mar. 3 nov. 2026 =C3=A0 09:46, <netdev-bot+sashiko@kernel.org> a =C3=A9c=
-rit :
+On Mon, Nov 2, 2026 at 8:19=E2=80=AFPM <Frank.Li@oss.nxp.com> wrote:
 >
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
+> From: Frank Li <Frank.Li@nxp.com>
 >
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 1
+> Replace open-coded assignments to callback and callback_param fields
+> of struct dma_async_tx_descriptor with calls to the
+> dmaengine_desc_set_callback() helper across net drivers.
 >
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
+> No functional change intended. Prepare to make struct
+> dma_async_tx_descriptor private to the DMA engine.
 >
-> - [High] The patch fixes only half of the migration use-after-free (UAF)
->   it describes.
-> - [Low] Leftover from this patch: tcp_v6_init_req()
->   (net/ipv6/tcp_ipv6.c:799-806) still keeps a reference to the SYN skb=E2=
-=80=A6
->
-> --
->
-> tcp: ipv6: do not read ireq->pktopts from tcp_v6_send_synack()
->
-> This commit adds a syn_flowlabel field to tcp_request_sock. The field is
-> filled from the SYN in tcp_v6_init_req(), and tcp_v6_send_synack() now
-> uses it instead of reading ireq->pktopts. The old read could hit a freed
-> skb when another cpu completed the 3WHS or migrated the request socket.
->
-> Closes: https://lore.kernel.org/netdev/82c31e4d5043f3dbd11b44177cfba779d3=
-35aae3.1793599929.git.x-professor@outlook.com/
->
-> > diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-> > index e006a30360eae..d406cd3c8ceab 100644
-> > --- a/net/ipv6/tcp_ipv6.c
-> > +++ b/net/ipv6/tcp_ipv6.c
-> > @@ -578,8 +578,8 @@ static int tcp_v6_send_synack(const struct sock *sk=
-, struct dst_entry *dst,
-> >                                   &ireq->ir_v6_rmt_addr);
-> >
-> >               fl6->daddr =3D ireq->ir_v6_rmt_addr;
-> > -             if (inet6_test_bit(REPFLOW, sk) && ireq->pktopts)
-> > -                     fl6->flowlabel =3D ip6_flowlabel(ipv6_hdr(ireq->p=
-ktopts));
-> > +             if (inet6_test_bit(REPFLOW, sk))
-> > +                     fl6->flowlabel =3D tcp_rsk(req)->syn_flowlabel;
->
-> [Severity: High]
-> This removes the pktopts read. Does the migration race described in the
-> commit message still apply to ireq->ipv6_opt, a few lines further down in
-> the same function?
->
-> net/ipv6/tcp_ipv6.c:tcp_v6_send_synack() {
->     ...
->                 rcu_read_lock();
->                 opt =3D ireq->ipv6_opt;
->                 if (!opt)
->                         opt =3D rcu_dereference(np->opt);
->                 err =3D ip6_xmit(sk, skb, fl6, skb->mark ? : READ_ONCE(sk=
-->sk_mark),
->                                opt, tclass, READ_ONCE(sk->sk_priority));
->     ...
-> }
->
-> reqsk_migrate_reset() hands ipv6_opt over to the clone along with pktopts=
-:
->
-> net/ipv4/inet_connection_sock.c:reqsk_migrate_reset() {
->         req->saved_syn =3D NULL;
-> #if IS_ENABLED(CONFIG_IPV6)
->         inet_rsk(req)->ipv6_opt =3D NULL;
->         inet_rsk(req)->pktopts =3D NULL;
->     ...
-> }
->
-> inet_reqsk_clone() memcpy()s the request socket. Until the reset runs, nr=
-eq
-> and oreq both point at the same ipv6_txoptions. After the reset, nreq own=
-s
-> it. When nreq is freed, the destructor releases it without waiting for an
-> RCU grace period:
->
-> net/ipv6/tcp_ipv6.c:tcp_v6_reqsk_destructor() {
->         kfree(inet_rsk(req)->ipv6_opt);
->         consume_skb(inet_rsk(req)->pktopts);
-> }
->
-> So the rcu_read_lock() in tcp_v6_send_synack() does not protect opt. IPv4
-> does this differently: tcp_v4_reqsk_destructor() frees ireq_opt with
-> kfree_rcu().
->
-> Could this sequence happen?
->
-> CPU0 (holds a reference on oreq)
-> tcp_v6_rcv()->tcp_check_req()->tcp_rtx_synack()->tcp_v6_send_synack()
->     opt =3D ireq->ipv6_opt;     /* still non-NULL */
->
-> CPU1
-> inet_csk_complete_hashdance() or reqsk_timer_handler()
->     reqsk_migrate_reset(oreq);
-> ...
-> nreq is freed, on accept() of the child or after an RST leads to
-> inet_csk_reqsk_queue_drop() and the last reqsk_put():
->     tcp_v6_reqsk_destructor()
->         kfree(inet_rsk(req)->ipv6_opt);
->
-> CPU0
->     ip6_xmit(..., opt, ...)
->         /* reads opt->opt_nflen/opt_flen, pushes opt->hopopt etc. */
->
-> Only calipso_req_setattr() sets ireq->ipv6_opt. It is reached through
-> security_inet_conn_request()->netlbl_req_setattr() when a CALIPSO NetLabe=
-l
-> mapping is configured. The race also needs:
->
-> - SO_REUSEPORT listeners with request migration enabled
->   (net.ipv4.tcp_migrate_req or a BPF sk_reuseport migrate program)
-> - a listener being closed
->
-> The patch carries Fixes: c905dee62232, and the commit message names
-> reqsk_migrate_reset() as one of the causes. Should ipv6_opt be handled
-> here too?
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-This is a different issue, which exists independently of this patch.
-It is CALIPSO-only (ipv6_opt is only set by calipso_req_setattr()),
-and was mentioned in the changelog of e3f33b0a1d89 ("ipv4: free
-inet_opt and ireq_opt after an RCU grace period").
+Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
 
-Both readers (tcp_v6_send_synack() and tcp_v6_syn_recv_sock()) already
-run under RCU,
-so freeing ipv6_opt with kfree_rcu() in tcp_v6_reqsk_destructor() is enough=
-.
-
-I will send a separate patch.
-
+> ---
+>  drivers/net/ethernet/allwinner/sun4i-emac.c       |  3 +--
+>  drivers/net/ethernet/micrel/ks8842.c              |  6 ++----
+>  drivers/net/ethernet/xilinx/xilinx_axienet_main.c |  6 ++----
+>  drivers/net/wwan/qcom_bam_dmux.c                  | 10 ++++------
+>  4 files changed, 9 insertions(+), 16 deletions(-)
 >
-> [ ... ]
->
-> > @@ -789,6 +789,7 @@ static void tcp_v6_init_req(struct request_sock *re=
-q,
-> >       ireq->ir_v6_loc_addr =3D ipv6_hdr(skb)->daddr;
-> >       ireq->ir_rmt_addr =3D LOOPBACK4_IPV6;
-> >       ireq->ir_loc_addr =3D LOOPBACK4_IPV6;
-> > +     tcp_rsk(req)->syn_flowlabel =3D ip6_flowlabel(ipv6_hdr(skb));
-> >
-> >       /* So that link locals have meaning */
-> >       if ((!sk_listener->sk_bound_dev_if || l3_slave) &&
->
-> [Severity: Low]
-> This isn't a bug, but now that the flowlabel comes from syn_flowlabel, is
-> the REPFLOW term still needed in the pktopts condition further down in
-> tcp_v6_init_req()?
->
->         if (!tw_isn &&
->             (ipv6_opt_accepted(sk_listener, skb, &TCP_SKB_CB(skb)->header=
-.h6) ||
->              np->rxopt.bits.rxinfo ||
->              np->rxopt.bits.rxoinfo || np->rxopt.bits.rxhlim ||
->              np->rxopt.bits.rxohlim || inet6_test_bit(REPFLOW, sk_listene=
-r))) {
->                 refcount_inc(&skb->users);
->                 ireq->pktopts =3D skb;
+> diff --git a/drivers/net/ethernet/allwinner/sun4i-emac.c b/drivers/net/et=
+hernet/allwinner/sun4i-emac.c
+> index 09b2abdfc9e84..d7ee42b2c1976 100644
+> --- a/drivers/net/ethernet/allwinner/sun4i-emac.c
+> +++ b/drivers/net/ethernet/allwinner/sun4i-emac.c
+> @@ -303,8 +303,7 @@ static int emac_dma_inblk_32bit(struct emac_board_inf=
+o *db,
+>                 goto prepare_err;
 >         }
 >
-> On a REPFLOW listener with no rxopt bits set, every request socket still
-> holds a reference to its SYN skb. cookie_v6_check() uses the same conditi=
-on
-> without the REPFLOW term, so the two places now differ.
+> -       desc->callback_param =3D req;
+> -       desc->callback =3D emac_dma_done_callback;
+> +       dmaengine_desc_set_callback(desc, emac_dma_done_callback, NULL, r=
+eq);
 >
-> One reader is left: IPV6_2292PKTOPTIONS in do_ipv6_getsockopt(), through
-> np->pktoptions on the child. It only produces cmsgs if rxopt bits are set
-> on the child after accept(). Dropping the term would change behaviour
-> slightly in that case.
+>         cookie =3D dmaengine_submit(desc);
+>         ret =3D dma_submit_error(cookie);
+> diff --git a/drivers/net/ethernet/micrel/ks8842.c b/drivers/net/ethernet/=
+micrel/ks8842.c
+> index f0d6bfc6025ca..c68abd4643e72 100644
+> --- a/drivers/net/ethernet/micrel/ks8842.c
+> +++ b/drivers/net/ethernet/micrel/ks8842.c
+> @@ -453,8 +453,7 @@ static int ks8842_tx_frame_dma(struct sk_buff *skb, s=
+truct net_device *netdev)
+>         if (!ctl->adesc)
+>                 return NETDEV_TX_BUSY;
 >
-> Could a follow-up remove the term so that tcp_v6_init_req() matches
-> cookie_v6_check()?
-
-Yes, I already mentioned this. I have a net-next patch for this.
+> -       ctl->adesc->callback_param =3D netdev;
+> -       ctl->adesc->callback =3D ks8842_dma_tx_cb;
+> +       dmaengine_desc_set_callback(ctl->adesc, ks8842_dma_tx_cb, NULL, n=
+etdev);
+>         dmaengine_submit(ctl->adesc);
+>
+>         netdev->stats.tx_bytes +=3D skb->len;
+> @@ -567,8 +566,7 @@ static int __ks8842_start_new_rx_dma(struct net_devic=
+e *netdev)
+>                         goto out;
+>                 }
+>
+> -               ctl->adesc->callback_param =3D netdev;
+> -               ctl->adesc->callback =3D ks8842_dma_rx_cb;
+> +               dmaengine_desc_set_callback(ctl->adesc, ks8842_dma_rx_cb,=
+ NULL, netdev);
+>                 dmaengine_submit(ctl->adesc);
+>         } else {
+>                 err =3D -ENOMEM;
+> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/=
+net/ethernet/xilinx/xilinx_axienet_main.c
+> index 8a50cad1c104f..7e83c4b5f1931 100644
+> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> @@ -1014,8 +1014,7 @@ axienet_start_xmit_dmaengine(struct sk_buff *skb, s=
+truct net_device *ndev)
+>
+>         skbuf_dma->skb =3D skb;
+>         skbuf_dma->sg_len =3D sg_len;
+> -       dma_tx_desc->callback_param =3D lp;
+> -       dma_tx_desc->callback_result =3D axienet_dma_tx_cb;
+> +       dmaengine_desc_set_callback(dma_tx_desc, NULL, axienet_dma_tx_cb,=
+ lp);
+>         /* Claim the ring slot only after the steps above that can fail. =
+ The
+>          * completion callback can't run before dmaengine_submit().
+>          */
+> @@ -1565,8 +1564,7 @@ static void axienet_rx_submit_desc(struct net_devic=
+e *ndev)
+>         skbuf_dma->skb =3D skb;
+>         skbuf_dma->dma_address =3D sg_dma_address(skbuf_dma->sgl);
+>         skbuf_dma->desc =3D dma_rx_desc;
+> -       dma_rx_desc->callback_param =3D lp;
+> -       dma_rx_desc->callback_result =3D axienet_dma_rx_cb;
+> +       dmaengine_desc_set_callback(dma_rx_desc, NULL, axienet_dma_rx_cb,=
+ lp);
+>         lp->rx_ring_head++;
+>         dmaengine_submit(dma_rx_desc);
+>
+> diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam=
+_dmux.c
+> index cc6ace8d64371..1479f8362e04e 100644
+> --- a/drivers/net/wwan/qcom_bam_dmux.c
+> +++ b/drivers/net/wwan/qcom_bam_dmux.c
+> @@ -195,9 +195,8 @@ static bool bam_dmux_skb_dma_submit_tx(struct bam_dmu=
+x_skb_dma *skb_dma)
+>                 return false;
+>         }
+>
+> -       desc->callback =3D bam_dmux_tx_callback;
+> -       desc->callback_param =3D skb_dma;
+> -       desc->cookie =3D dmaengine_submit(desc);
+> +       dmaengine_desc_set_callback(desc, bam_dmux_tx_callback, NULL, skb=
+_dma);
+> +       dmaengine_submit(desc);
+>         return true;
+>  }
+>
+> @@ -477,9 +476,8 @@ static bool bam_dmux_skb_dma_submit_rx(struct bam_dmu=
+x_skb_dma *skb_dma)
+>                 return false;
+>         }
+>
+> -       desc->callback =3D bam_dmux_rx_callback;
+> -       desc->callback_param =3D skb_dma;
+> -       desc->cookie =3D dmaengine_submit(desc);
+> +       dmaengine_desc_set_callback(desc, bam_dmux_rx_callback, NULL, skb=
+_dma);
+> +       dmaengine_submit(desc);
+>         return true;
+>  }
+>
+> --
+> 2.43.0
+>
