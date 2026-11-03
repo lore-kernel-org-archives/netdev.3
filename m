@@ -1,58 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793701108;
-	b=40oIPioN9vumHNOHuFJI+ObVKTLlGVN6B4xlJqPViULchfhVCPbvFiySbaSX5KG5VpRk
-	 pAuSCTTg4ulzUIx4fS600nv5Yo0zezROuh7fnXcDwkzzSf5J9e+rLxtTJddz7LkuvY2mq
-	 0WoAiYhG8UKwLeO1Zk9QSR6JYoME1qpGs10Kcs4GjddDocv6hXJR0pdGU1HptlzhVraHb
-	 NceaLff3/5oXZ+BY6elVLRjPIabiHza3wdMT2sx89o6iPXjsrSxSLRTGq1zoMeFHHDLq6
-	 GLFB7FqbeboEO1uuo/B7+XD3A61iUnySPDVN1iW/LIrbf5jKAAmLHUxtz7tCTdUTn6A==
+	t=1793701301;
+	b=iCmledR+UDnZ0nhuld5u+GiiuCVZ3YPWiHVa966Ji9sI6L1smhXIDfxbLGncfTY4CU+N
+	 7MLgT28uNLED0iwYNvyV7zvQA/taSoxVUiAmLxflA17tLIwzlOK/1eGfTNZRBWCo89NRr
+	 3LLfwDeOB1JUQon1NZUOzUaqEWt0oyaXctdsc3grjZI/wLISeL4PbqchAZMIm2qA2th2L
+	 WLuMIAplO7J8jyFjJWJAUmAeNowcNItKYf5pY1sBrCRNdWhf+FAyA+ee/VqihaR6QyAmE
+	 9QTqZKqPaTrja6NQPi13/OphdV0uMP0WLizkvZ8Qr5M6GAgd2qrGSMTEiL4Te0MHW4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793701108;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793701301;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=UxgM8P2HIxypNQyiwe8DVm3Lb91bk//Dpc4QBTFjK+c=;
-	b=VRBHQ4MO2PZot4igWdqZ3uGWRajJaYDroE7HR/TSfcFaOQWQrVnUBLc2YMfFiLHXmG4V
-	 ItxglZIXzKwuaPIhUqRxqgVBz5TSRYfBE/K/FQxWNlccDKWmBxW15tdv0umGCPNTZ8x0k
-	 TjlORFgDUnhCFdex64okcHcxb/V1v9FoxsNdYszkkenng5WhKl57bYcSghXGRy1/y5tyy
-	 yABilBf+ozF7+7z0nvAsd3xR/K3/bqHCbnR9zuxg3nrB0oDh/uVNwOOmgbQbC8Zb2EHti
-	 zG7iUVUnYNxJlTBeDXSuAsrjEb/JXNOIsdp6uSBLS/Nnow2g2oXUJ4399oCHMuAOjbA==
+	bh=S5he5q7MjF9c5T8hA//T+bmi6stTqMHL9VXH/td4Bfg=;
+	b=njq4SQtdWRqIPAVC38IGUN6IE3DnNEBn4fPl62n4yMRSYJ0t5TPETSgVemi7SDxO+Ovl
+	 03G1p8r14qDivzaxE39l9d7FypRoJTOKSPR/eE9vWOAjpWZtlna6P/6HOSsu1BpBjyTg1
+	 DlZMz+HtaOVAmUOQfVVRJ0WwEQ5mSht2J2fYExS6jh3CKqblVc8HyCY8Sn+74/BqdnIT4
+	 vPPfVbjGwWB5vFBOZmwlr5QwuzoBL6HBcBsc/KB6WwH1cP7OLITZgxyLLIYCzsDt/iOqs
+	 xMjBOoB6CIytWTOzWjWIImipMuUGZSHvWdBpipdIQjbvtu5vkGmsyxzsxOUPaSj7Scw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ya3uMW4w;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y2CcVi1M;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862B96082BCE;
-	Tue,  3 Nov 2026 10:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D537606B10E;
+	Tue,  3 Nov 2026 10:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ya3uMW4w
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 904CC1F00A02;
-	Tue,  3 Nov 2026 10:18:27 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Y2CcVi1M
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6670F1F00A02;
+	Tue,  3 Nov 2026 10:21:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793701108;
-	bh=UxgM8P2HIxypNQyiwe8DVm3Lb91bk//Dpc4QBTFjK+c=;
+	s=k20260515; t=1793701301;
+	bh=S5he5q7MjF9c5T8hA//T+bmi6stTqMHL9VXH/td4Bfg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Ya3uMW4wDXlXMFg/bXBytmGLOGr/sIri79M9Z/a9eG+aP60Qr2yze9HgFkw5rsk2E
-	 0XNq2Evz3DaZte2ivb8FwKeV12TJT9MlDuKRtKDGmxTGVwjlcpux5VngKErNbMhwD1
-	 +ebsNrJybTD0vs3WdBVEs8F+udovpCkq6Zz1upDiwtT3cE5If7k8K3mcieSRTYZ8lR
-	 tEjqjI+klT1u10ZAFvIubCLIifpDDTc05rJxbYa8f2Eic23efBWQbwy9oYWamFxC2N
-	 m3nbAMD2SFt2+US/DNp42jHSVNg3aqL5J2x1XRZmxkVFlQoT21W9Nj1ld/KGDnu4q1
-	 yuQ2FLM8k8jjA==
-Subject: Re: [PATCH v3 net 2/4] net: hns3: fix page_pool leak in
- hns3_alloc_ring_memory error path
+	b=Y2CcVi1MSlIwyvTc3aBX66wqFCzvjRb9x3ymZooPal6blsTfZOpGGQVYHiqnitX7V
+	 j/Sj6XOHIDIy+4+D7KIvh2+pW1FNQyBT/zGCAj/P5Xu0L1DgIX4hKLRQkmytsrdoMF
+	 K6Gt9FClhTVe4p6EPqYnwtwZFv4BjOH/7o8TjZUp4mCdKC1jCO1vagOwha82/rsVHV
+	 yWbqYwaYmSxml84uWAw+o94naLlwzJGMv8zzYzagmfRVRCt04b8lt1+SG2AMxO/W2f
+	 DGWO0qwMyoCx57NVLBbKoLRq3frFlLCQhNhYmFMDu4T95G1y7CuODKrmJD5YaPtBB4
+	 EpBKuJE3rT8fw==
+Subject:
+ Re: [PATCH net v2] net/packet: account user-triggered allocations to memcg
 From: netdev-bot+sashiko@kernel.org
-To: shaojijie@huawei.com
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, shenjian15@huawei.com,
- liuyonglong@huawei.com, chenhao418@huawei.com, yangshuaisong@h-partners.com,
- ningwei15@huawei.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 03 Nov 2026 10:18:27 +0000
-Message-ID: <179370110712.488856.17112299707405359724@kernel.org>
-In-Reply-To: <20261030095633.377289-3-shaojijie@huawei.com>
-References: <20261030095633.377289-3-shaojijie@huawei.com>
-X-sashiko-severity: Low
+To: ahmadag1001@gmail.com
+Cc: willemdebruijn.kernel@gmail.com, kuba@kernel.org, davem@davemloft.net,
+ edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Tue, 03 Nov 2026 10:21:39 +0000
+Message-ID: <179370129992.488856.770584041201834715@kernel.org>
+In-Reply-To: <20261030100504.23498-1-ahmadag1001@gmail.com>
+References: <20261030100504.23498-1-ahmadag1001@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,55 +64,99 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] The commit message says the new cleanup in
-  hns3_alloc_ring_memory()…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The patch says it charges the per-socket memory a packet
+  socket allocates for its user.
 
 --
 
-net: hns3: fix page_pool leak in hns3_alloc_ring_memory error path
+net/packet: account user-triggered allocations to memcg
 
-When hns3_alloc_ring_buffers() fails for an RX ring, the out_with_desc
-error path in hns3_alloc_ring_memory() frees the descriptor ring. It does
-not destroy the page_pool that hns3_alloc_page_pool() just created. This
-patch adds a guarded page_pool_destroy() to that error path.
+This patch changes the allocations a packet socket makes for its user to
+GFP_KERNEL_ACCOUNT, so the caller's memory cgroup is charged for them.
+These are the ring blocks and block arrays, the fanout groups and rollover
+state, the mclist entries and the per-CPU pending counter. The vmalloc
+fallback for ring blocks becomes __vmalloc() with __GFP_ZERO.
 
-> Add page_pool_destroy() to the out_with_desc error path, guarded by
-> a NULL check, mirroring the cleanup done in hns3_free_ring_memory().
+> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+> index 823e0911c910f..06386db4c8e8c 100644
+> --- a/net/packet/af_packet.c
+> +++ b/net/packet/af_packet.c
+> @@ -1233,7 +1233,8 @@ static int packet_alloc_pending(struct packet_sock *po)
+>  {
+>  	po->rx_ring.pending_refcnt = NULL;
+>  
+> -	po->tx_ring.pending_refcnt = alloc_percpu(unsigned int);
+> +	po->tx_ring.pending_refcnt = alloc_percpu_gfp(unsigned int,
+> +						      GFP_KERNEL_ACCOUNT);
+>  	if (unlikely(po->tx_ring.pending_refcnt == NULL))
+>  		return -ENOBUFS;
+>  
 
-[Severity: Low]
-This isn't a bug, but is hns3_free_ring_memory() the right name here? I
-can't find a function with that name under
-drivers/net/ethernet/hisilicon/hns3/.
+[Severity: Medium]
 
-The only other RX page_pool_destroy() is in hns3_fini_ring(). That function
-calls hns3_free_desc() first and destroys the pool last:
+The pending counter on the socket() path is now charged. Is struct
+packet_sock, allocated on the same path, still left uncharged?
 
-drivers/net/ethernet/hisilicon/hns3/hns3_enet.c:hns3_fini_ring() {
-	hns3_free_desc(ring);
-	devm_kfree(ring_to_dev(ring), ring->desc_cb);
+The commit message says:
+
+    struct packet_sock itself comes from sk_alloc(), and the
+    netdev_hw_addr entries that PACKET_MR_MULTICAST and PACKET_MR_UNICAST
+    add through dev_mc_add() and dev_uc_add() live in net/core; neither
+    is changed here.
+
+The v2 note also says the patch covers "every user-triggered allocation in
+net/packet".
+
+>From the code, af_packet itself seems to cause the missing charge, not
+net/core. packet_init() registers the proto without a slab:
+
+net/packet/af_packet.c:packet_init() {
     ...
-	if (!HNAE3_IS_TX_RING(ring) && ring->page_pool) {
-		page_pool_destroy(ring->page_pool);
-		ring->page_pool = NULL;
-	}
+	rc = proto_register(&packet_proto, 0);
+    ...
 }
 
-The new out_with_desc path does it in the opposite order. It destroys the
-pool and sets ring->page_pool to NULL, then calls hns3_free_desc().
+So proto_register() never creates the SLAB_ACCOUNT kmem_cache for
+packet_proto. packet_create() then passes plain GFP_KERNEL:
 
-That order looks harmless today. By the time hns3_alloc_ring_buffers()
-returns an error, it has already detached every buffer it attached. Each
-desc_cb[i].dma is zero, so hns3_free_buffer_detach() returns early and
-never hands a page back to the NULL pool.
+	sk = sk_alloc(net, PF_PACKET, GFP_KERNEL, &packet_proto, kern);
 
-Could the commit message name hns3_fini_ring() instead? It could also drop
-the word "mirroring", since the order differs.
+Because prot->slab is NULL, sk_prot_alloc() falls back to a plain kmalloc
+with those flags:
+
+net/core/sock.c:sk_prot_alloc() {
+    ...
+	} else
+		sk = kmalloc(prot->obj_size, priority);
+    ...
+}
+
+mem_cgroup_sk_alloc() runs afterwards. It only sets sk->sk_memcg and does
+not charge the object itself.
+
+packet_sock holds a struct sock, two packet_ring_buffer structs and a
+cacheline-aligned prot_hook. That probably makes it the largest
+per-socket allocation here.
+
+A user with CAP_NET_RAW in its own user namespace can create one per fd.
+The total is limited only by RLIMIT_NOFILE and process limits, not by
+memory.max.
+
+Would either proto_register(&packet_proto, 1) or GFP_KERNEL_ACCOUNT in the
+sk_alloc() call in packet_create() close this gap? If packet_sock is left
+out on purpose, could the commit message give the actual reason instead of
+pointing to sk_alloc()?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261030095633.377289-1-shaojijie%40huawei.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261030100504.23498-1-ahmadag1001%40gmail.com
