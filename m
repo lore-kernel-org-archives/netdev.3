@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793714607;
-	b=shATzxag8KvAW19SI9l86vMwdDue6nopKyUqwIjzXefepyE3EM8r0plgLUAuDMkOHQFW
-	 vEsw+rb7cvfnSYPga58wmbZu6bKlFGhgSWbeMil5TYdyDutQKrIXkcp8bDy3zPh0sbCUW
-	 xUAR95XMBYdR9q29xno3T6f7N+XGOOp0E+T16Tbcf0KxlmerKQBjEvGTaPIhOIne4dPRa
-	 5C1h3GbvEUN07wzdw84exGroM7+8w5y4NO1m/YEz+FMCjBVNFK3PMQtFTlzj3gLme6B8V
-	 mV9doGnS8L04ZRwX6YDePT0T2yNPIL9HgHcs75TYB0K0vIqSWBXmRqxZLLpHqACduUw==
+	t=1793714610;
+	b=jjcFJEPjr9HbcDUBLZT4iLA6bYYDBPLlWlafbciCO0vR39mXWVqmDbgBQEZaoxassaqD
+	 5qyVUnjgUy0A18PBWwugmwmszOj/qg4Ck9aa7HebmADFsvxgfoqitOFJdAacmhKosbA9u
+	 u/Jt63zsD74OaID7yxNRVZun9M3DJ9YGgBDJ/NAzzoo6RcNGIv0OmRB29pfkzEvzb+0dH
+	 XLB+qGRAtymVsjr4Zcb5w8U5Z0wN/yyJOzjcy012rmzzB6GOYAIURmln7fT+2CgDtrjlu
+	 064SPjj2JbxOxbch5aJP7dPKLIplggcarHnoOU0bo/8s/xB+wJzg8hHf60Rf0qn/EqA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793714607;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793714610;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
-	bh=7Ntrx+LlfYSxv86cRPNpj6p/MA3HXhyARlMmyZ8YFhA=;
-	b=STlsQrYtWncIUva3NlnWYKXTGHa24lt8Ev+sQHVNiVfQ6PIXAl7hk84Lt/Cw2hJj1HE+
-	 H5n/ktUwUi4cf2OMbGWWmfyOE4q1tKxOBFr512X2sPYkgJWw1Cuxmvp3IfWkepUGTK5eQ
-	 URhBXZsKfzTZQHoytI00HgpMTKTznAjc5Yb91IF9Rt66k1A3tu7XXcZl6Sfsg8WaBlJvU
-	 qZAyECmKk9cm5ihxl3IDMfgO8BAO+vuQAE7N8QEt7cnTeuUDcde6lvlKa0p3LrFjPN2FN
-	 JXSo943g6U+sTCUn3uPahvFyO6O2WJ02SiAy1XGhUY1uum+OKd0ECHMZy5+gE7+624Q==
+	bh=fo470PP63+10tqzrhqq++24kquyeboFFql2psSvwEeM=;
+	b=Gapji+jccrGCxXqCv9chpcY0HDjfBQNWX6NQ/JK5Np/SKmD3QyihtHVscxfGkInzEYFc
+	 nz+b/eLCQ1HqxbZzFUJBBxlptvD4mIpBqWSsEzqlGWXt+LZ1hJTMEq5ttLPXnGBBf9oLI
+	 rjD1ygOA+xWr0+9zQ5hYacmxrqb/07Sh3//pfIycPiyIcKOdQpedvukVDWL2k2FLxV/sm
+	 ycz74ikZCBgoR+WKNZcgD5Bt/bAzFIY26RGUg6G2zzyo8ZquKxyz6RAkN3U1vetGEGN2d
+	 SbyV30wp1w0RrvwNKSpulYT6BAJOtHJ6XfgT7aaoFvQty/6VcUyPAva5LlsVsPpVqSg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=netfilter.org;
 	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=JrXSx27D;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=tXIME0Bj;
 	arc=none smtp.remote-ip=217.70.190.124
 Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8306083602;
-	Tue,  3 Nov 2026 14:03:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DD8306083602
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B016083638;
+	Tue,  3 Nov 2026 14:03:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 91B016083638
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=JrXSx27D
+	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=tXIME0Bj
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1793714605;
-	bh=7Ntrx+LlfYSxv86cRPNpj6p/MA3HXhyARlMmyZ8YFhA=;
+	s=2025; t=1793714608;
+	bh=fo470PP63+10tqzrhqq++24kquyeboFFql2psSvwEeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JrXSx27DNsaJitwk0qQ+FwBtyaB6tIpkuUxIsWFrtV0YfmnkzphxeKC3s5R+Nlktx
-	 wFOqs19Wjmxf5IWiEhEnOu9oR5JMjV7J0lBaN2bhJzFa/dHAiHuPzshMT1pBbCLnse
-	 /4/yCfnBTpLiVU4mpaYlX61wjZq7cRJBrwBLlxY7uRpygB5Cx43ES7rary6zP0bMVX
-	 lYRfbHMxgUe60sy15ze4wKPrBE7mUiLZ6sY/0LHREsaTXT9ukjY16f13v8PS8v5CCM
-	 KGBMDTOPGxxy8bUD1h+2t8ZlKro9np9FOJp/W48n9Y9RKe43kL236xf/E/0OmtUjUK
-	 ANISirPAG6/OA==
+	b=tXIME0Bjp+4xYzyToycyoUIOI9xCtalvjRntTiLIb6XNaKa28bTP0Csqpo4xnU4ZA
+	 PzX6cbQuowGPPBysv3aVpOPt67dxHODSebJ8z6B4apRL0YXZ8izFYBawGCMJr+O1QJ
+	 vk7SBV7ToM3S0JKlsLM0NpFdmONEATOkpgbqIrQ4bJ3AvXKdA9Q8kGoPX+r/hc4idC
+	 jFkkqnEFwfLQ+Jp2PLtj60L4iZieirRS9bVFuw4Gz3aDmsVQg5N6/lurHvWdJdf5Aq
+	 pu/Q1NXQjyKs25rBMJiHWOBJ5vKRmCA9hEVstwQrgUl+XH3ENXaH9QI+tV6YERQLEA
+	 6yMaRISqmn7TQ==
 Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 6510160090;
-	Tue,  3 Nov 2026 15:03:24 +0100 (CET)
+	by mail.netfilter.org (Postfix) with ESMTPSA id 5FBB460085;
+	Tue,  3 Nov 2026 15:03:27 +0100 (CET)
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 To: netfilter-devel@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -56,9 +56,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	fw@strlen.de,
 	ja@ssi.bg
-Subject: [PATCH net 06/15] netfilter: nf_conntrack: limit expectation master chain depth
-Date: Tue,  3 Nov 2026 15:02:59 +0100
-Message-ID: <20261103140308.591690-8-pablo@netfilter.org>
+Subject: [PATCH net 08/15] netfilter: flowtable: extend ct timeout of offloaded GRE flows
+Date: Tue,  3 Nov 2026 15:03:01 +0100
+Message-ID: <20261103140308.591690-10-pablo@netfilter.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261103140308.591690-1-pablo@netfilter.org>
 References: <20261103140308.591690-1-pablo@netfilter.org>
@@ -73,155 +73,70 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Florian Westphal <fw@strlen.de>
+From: Michail Andreas Michalopoulos <mike.michalo@gmail.com>
 
-A conntrack can point to a master conntrack, which itself may point to
-another master, and so on.  There is currently no bound on how deep this
-chain can grow.
+Since commit 03428ca5cee9 ("netfilter: conntrack: rework offload nf_conn
+timeout extension logic"), the flowtable gc worker extends the timeout
+of an offloaded conntrack entry from nf_flow_table_extend_ct_timeout()
+once it falls below 5 minutes. That function only knows about TCP and
+UDP and hits WARN_ON_ONCE() for any other layer 4 protocol. However,
+GRE flows can be offloaded too, both via nft_flow_offload and act_ct,
+since commit 4e8d9584d154 ("netfilter: flowtable: Support GRE").
 
-Force a max depth in nf_ct_expect_alloc(): walk the master chain and
-reject allocation if it would exceed 2 levels of nesting.
+The timeout of an offloaded GRE entry drops below that threshold as soon
+as a packet of the flow still goes through conntrack. With ip6gre
+tunnels using the default encapsulation limit this is ordinary traffic:
+the flowtable does not parse the Destination Options header in front of
+GRE, so every packet of the flow takes the classic forwarding path. It
+also happens for a packet with ttl <= 1, which the flowtable fast path
+passes up to the classic forwarding path. nf_conntrack_gre_packet() then
+refreshes ct->timeout to the GRE stream timeout (180 seconds by default),
+and the next gc run triggers, as reported by syzbot:
 
-Also add ctnetlink_find_get_master and use it so that ctnetlink create
-paths return -EMLINK instead of falling through to nf_ct_expect_alloc()
-and returning a misleading -ENOMEM.
+  WARNING: net/netfilter/nf_flow_table_core.c:553 at nf_flow_table_extend_ct_timeout+0x1ee/0x2f0
+  Workqueue: events_power_efficient nf_flow_offload_work_gc
+  Call Trace:
+   nf_flow_offload_gc_step+0x545/0x7b0
+   nf_flow_table_iterate+0x13c/0x1f0
+   nf_flow_offload_work_gc+0x22/0x70
+   process_scheduled_works+0xc3d/0x1630
+   worker_thread+0xa47/0xfb0
+   kthread+0x38b/0x480
 
-This prevents unbounded ct->master->master->... chains.
+Besides the splat, which panics the machine with panic_on_warn, the
+default branch sets the new timeout to 1 jiffy, so the conntrack entry
+expires right away and the offloaded flow is torn down.
 
+Handle GRE like UDP and extend the timeout to NF_CT_DAY. GRE conntrack
+has no protocol state to take into account, and NF_CT_DAY is also what
+flow_offload_add() already sets for every offloaded entry, GRE included.
+This also restores the behaviour from before commit 03428ca5cee9, when
+the conntrack gc worker extended offloaded entries of any protocol to
+NF_CT_DAY.
+
+Fixes: 03428ca5cee9 ("netfilter: conntrack: rework offload nf_conn timeout extension logic")
+Reported-by: syzbot+521f7e7e2b974abde99a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=521f7e7e2b974abde99a
+Cc: stable@vger.kernel.org
 Assisted-by: LLM
-Reported-by: Daehyeon Ko <4ncienth@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Michail Andreas Michalopoulos <mike.michalo@gmail.com>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
- include/net/netfilter/nf_conntrack_helper.h | 15 +++++++++
- net/netfilter/nf_conntrack_expect.c         |  3 ++
- net/netfilter/nf_conntrack_netlink.c        | 36 +++++++++++++++------
- 3 files changed, 44 insertions(+), 10 deletions(-)
+ net/netfilter/nf_flow_table_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/netfilter/nf_conntrack_helper.h b/include/net/netfilter/nf_conntrack_helper.h
-index 335b8c43694f..617178fd4d8b 100644
---- a/include/net/netfilter/nf_conntrack_helper.h
-+++ b/include/net/netfilter/nf_conntrack_helper.h
-@@ -29,6 +29,8 @@ enum nf_ct_helper_flags {
+diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
+index 0d72dc8ae47a..2aa2647ed9df 100644
+--- a/net/netfilter/nf_flow_table_core.c
++++ b/net/netfilter/nf_flow_table_core.c
+@@ -544,6 +544,7 @@ static void nf_flow_table_extend_ct_timeout(struct nf_conn *ct)
  
- #define NF_CT_HELPER_NAME_LEN	16
- 
-+#define NF_CT_MAX_EXPECT_CHAIN_LEN	2
-+
- /* Must be kept in sync with the classes defined by helpers */
- #define NF_CT_MAX_EXPECT_CLASSES	4
- 
-@@ -159,6 +161,19 @@ static inline void nf_ct_help_put(const struct nf_conn *ct)
- 		kfree_rcu(helper, rcu);
- }
- 
-+static inline bool nf_ct_master_acceptable(const struct nf_conn *m)
-+{
-+	unsigned int depth = 0;
-+
-+	while (m->master) {
-+		if (++depth >= NF_CT_MAX_EXPECT_CHAIN_LEN)
-+			return false;
-+		m = m->master;
-+	}
-+
-+	return true;
-+}
-+
- int nf_conntrack_helper_init(void);
- void nf_conntrack_helper_fini(void);
- 
-diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
-index 06242c86e1dc..65c9964ea6ff 100644
---- a/net/netfilter/nf_conntrack_expect.c
-+++ b/net/netfilter/nf_conntrack_expect.c
-@@ -306,6 +306,9 @@ struct nf_conntrack_expect *nf_ct_expect_alloc(struct nf_conn *me)
- {
- 	struct nf_conntrack_expect *new;
- 
-+	if (!nf_ct_master_acceptable(me))
-+		return NULL;
-+
- 	new = kmem_cache_zalloc(nf_ct_expect_cachep, GFP_ATOMIC);
- 	if (!new)
- 		return NULL;
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 1f8d94a05240..30428d520e43 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -2231,6 +2231,26 @@ ctnetlink_change_conntrack(struct nf_conn *ct,
- 	return 0;
- }
- 
-+static struct nf_conn *
-+ctnetlink_find_get_master(struct net *net, const struct nf_conntrack_zone *zone,
-+			  const struct nf_conntrack_tuple *tuple)
-+{
-+	struct nf_conntrack_tuple_hash *master_h;
-+	struct nf_conn *master_ct;
-+
-+	master_h = nf_conntrack_find_get(net, zone, tuple);
-+	if (!master_h)
-+		return ERR_PTR(-ENOENT);
-+
-+	master_ct = nf_ct_tuplehash_to_ctrack(master_h);
-+	if (!nf_ct_master_acceptable(master_ct)) {
-+		nf_ct_put(master_ct);
-+		return ERR_PTR(-EMLINK);
-+	}
-+
-+	return master_ct;
-+}
-+
- static struct nf_conn *
- ctnetlink_create_conntrack(struct net *net,
- 			   const struct nf_conntrack_zone *zone,
-@@ -2356,7 +2376,6 @@ ctnetlink_create_conntrack(struct net *net,
- 	/* setup master conntrack: this is a confirmed expectation */
- 	if (cda[CTA_TUPLE_MASTER]) {
- 		struct nf_conntrack_tuple master;
--		struct nf_conntrack_tuple_hash *master_h;
- 		struct nf_conn *master_ct;
- 
- 		err = ctnetlink_parse_tuple(cda, &master, CTA_TUPLE_MASTER,
-@@ -2364,12 +2383,11 @@ ctnetlink_create_conntrack(struct net *net,
- 		if (err < 0)
- 			goto err2;
- 
--		master_h = nf_conntrack_find_get(net, zone, &master);
--		if (master_h == NULL) {
--			err = -ENOENT;
-+		master_ct = ctnetlink_find_get_master(net, zone, &master);
-+		if (IS_ERR(master_ct)) {
-+			err = PTR_ERR(master_ct);
- 			goto err2;
- 		}
--		master_ct = nf_ct_tuplehash_to_ctrack(master_h);
- 		__set_bit(IPS_EXPECTED_BIT, &ct->status);
- 		ct->master = master_ct;
- 	}
-@@ -3613,7 +3631,6 @@ ctnetlink_create_expect(struct net *net,
- 			u_int8_t u3, u32 portid, int report)
- {
- 	struct nf_conntrack_tuple tuple, mask, master_tuple;
--	struct nf_conntrack_tuple_hash *h = NULL;
- 	struct nf_conntrack_expect *exp;
- 	struct nf_conn *ct;
- 	int err;
-@@ -3633,10 +3650,9 @@ ctnetlink_create_expect(struct net *net,
- 		return err;
- 
- 	/* Look for master conntrack of this expectation */
--	h = nf_conntrack_find_get(net, zone, &master_tuple);
--	if (!h)
--		return -ENOENT;
--	ct = nf_ct_tuplehash_to_ctrack(h);
-+	ct = ctnetlink_find_get_master(net, zone, &master_tuple);
-+	if (IS_ERR(ct))
-+		return PTR_ERR(ct);
- 
- 	rcu_read_lock();
- 	exp = ctnetlink_alloc_expect(cda, ct, NULL, &tuple, &mask);
+ 		switch (l4proto) {
+ 		case IPPROTO_UDP:
++		case IPPROTO_GRE:
+ 			new_timeout = NF_CT_DAY;
+ 			break;
+ 		case IPPROTO_TCP:
 -- 
 2.47.3
 
