@@ -1,61 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793721309;
-	b=BamjSip+7+RS4b7D78bxcHD34JsxMV9efVHsE9QzOJSD5zpCLThuIOaJxTvIdxkjTKp7
-	 DlQj2JZH6u2h5nE27+47vWN1GVzS/+NEIziYUd7XEDr/Fz3zlZXO6BhwUU8HzRxdisOsY
-	 BEb+coEowybvzS43Bfv97JSeh1u7zlxYXRLQQnV3Kr0kjI8TYNIIaY2DXEGvE4QNW2y3b
-	 EZlhpsKQbayWTV4HK0RVC4aT9pEj9CVSgS6aShH5MNq+iezq++yiUnukzc9VGAfivw0tz
-	 XNui7OHtOWji1GihfyKpknebYLqmGFXpgEDXvz56blaYd7eAE2OyvChtv2tfhOawJ9g==
+	t=1793721306;
+	b=U1IwRdyWMyGVN+rhFGjZSAScLtTdywPN4/ElcmmQRPouPx4es0ZF4Zt2uYpwkwZ8TUJd
+	 DxpQ4IcGUOo1fpuoTniiawTVL451xmXRPbaQppLxWIfXQq+o5UiJxDRnUH6BvHm9vUYGE
+	 2sZlluxZnfLDS7YNQo1kFiGkW4olIjJzmZ4HA56FC4eJKq0d6gFJR/OFNrieDxMhL6Wm/
+	 4vtN/dmNa0mX6vvsTRy/aFZP9RUTCvQee7e27KgPvi9zS1rmeVm432JRHyS6dAhuSltif
+	 /qztDEZdLb4kKsLGi4OZM1q3ls2kNRQ22Cwgjr2+1VZdNOagYbv+00qGsj3oyqI7jTA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793721309;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793721306;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=yaC7RemHrCY0ZTmPbLRW/qDx17GtrNAPuzVu4bchE2s=;
-	b=yAcHH5N8SvjDFxpvfjaLahOIOgrP5xWPTliUe/vCn3HIagex08nQtutDiTes9Ifl+LhB
-	 xE+8t1K5+T9m9ADSE5zPjOWDpoAFFyQRBldgtZ7ry8Ayoi7XPlA77E5/maIrZbZd+ncdQ
-	 SNZQJqqJ5kpDyZZeplKIUScFYGn/INp/MofNi0rQSh3T6js95px7/JgxhkMO7R/PAO+Vd
-	 d1k1+3AUmrFpGmYUjRT5HrNQtG7a4VjNOTs7HZ8dclqe9Z4igLXFAtjU5WuE5ZpFxj6sO
-	 Ub1tVZ6EsregjaScTk5djkaoNQzhGN1Y9Q3h09nHzjn/XOwAPqWsRboHHnQuk5yWgzQ==
+	bh=XREKEeftscoz1Hi8GedJ6sHaQ24A+16k7dbdppJWu+c=;
+	b=ch+LeL3988ZNRxRCclZuXVcvUUFkvVe6F9x6F5J8UBdGPXxyjYs4Avi4Yypskep2VFD/
+	 FSPpy/QQLXdayX6eSp+eS40d18b/kiYA6VdGrMclhgOhz69KQZPqFVEH74EkROB5zB9XZ
+	 yAABHlg370iUvLb0XFFigogI8yVpEJcvewg+bDc5pWXPSC4qjLJtACiHORT7vys2OeQ8b
+	 ta44dkRlNwh2jGYEvmL6U7nS2SfYGUm0pyb3WSw9zMMXbqnX209fCv4RjHq1T7px8uCm8
+	 PKAnDHcBjR/ksschu5xz7rzi3eo1Yg4uJUU7xMu0RUFv4kNOK9+ZYpf7o5iz/H2wtmg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hLXgIEv2;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c94PUqed;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12F9606EEB6;
-	Tue,  3 Nov 2026 15:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C031606A332;
+	Tue,  3 Nov 2026 15:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hLXgIEv2
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 028791F00A28;
-	Tue,  3 Nov 2026 15:55:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c94PUqed
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775281F00A1D;
+	Tue,  3 Nov 2026 15:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793721308;
-	bh=yaC7RemHrCY0ZTmPbLRW/qDx17GtrNAPuzVu4bchE2s=;
+	s=k20260515; t=1793721305;
+	bh=XREKEeftscoz1Hi8GedJ6sHaQ24A+16k7dbdppJWu+c=;
 	h=From:To:Cc:Subject:Date;
-	b=hLXgIEv20wc45g5EP92/nbkUmcT8jSo/ey6cPa3pZL6+CRTUSwhTO3h+5/Jn2y3np
-	 AAxaBZXOgQ8M9HZzxQlw6kZlQMep09bYP3TA2dE8micrX78ffs+6OXswRW3A0SDOwh
-	 viU2bTDftxu5pJhWYV0iCTIaKRN778XFwJBGE2UHjs5Jz6Pch0qgzbhzlT1QsyxOTq
-	 /62GxXwMEMN4HC2ZXzruD4sLfM7JWvKnAqYPQlxwHQb1TdOl+oNQI1FA3YbVsJgOIh
-	 kz0z9Xo8+nhJe4hmWx7rRG7U+wB67m9UN12Vk0w0jcxNuKjPg3PjjtWwB57NYAA7GW
-	 ItouEshxcpb5w==
+	b=c94PUqeddn/1T6sh1Ph5uX9dXjXrVhLiuzaw8PGT8I5Bndy7Fuv5EokDK6a00EUUw
+	 QPqp8XBih9PeVEHP+DQhZfEQfByb885n4IvpeuejxQftb+nRjCy7QgLEL5QUdaaHDD
+	 dTZDcnMVTVbC1wojEFcroWovwRbZsOCw6jVMXtgpGS6vuwyy4zRp1QCDkDXN7lve5P
+	 B7NCmtr074deIEYEQQ3py3459q9ooTwF2AWjSMQmSyaPSHAmqL4I8gZAtdjb1u8UIr
+	 UhGNDPu6N58ccxPz73CAj2j7u9CM0JLDYJIfQ/digYaiqNf2fC91xeScgSOcHvatrS
+	 30AHc4Fr9Wdbg==
 From: Sasha Levin <sashal@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
+To: Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Geliang Tang <geliang@kernel.org>,
-	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: Simon Horman <horms@kernel.org>,
 	Shuah Khan <shuah@kernel.org>,
+	Jason Xing <kerneljasonxing@gmail.com>,
 	netdev@vger.kernel.org,
-	mptcp@lists.linux.dev,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] selftests: mptcp: pm_nl_ctl: print sizeof() with %zu
-Date: Tue,  3 Nov 2026 10:55:06 -0500
-Message-ID: <20261103155506.534973-1-sashal@kernel.org>
+Subject: [PATCH] selftests: net: fix format warnings on 32-bit architectures
+Date: Tue,  3 Nov 2026 10:55:03 -0500
+Message-ID: <20261103155503.534876-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,12 +68,16 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On 32-bit architectures size_t is an unsigned int, and printing
-sizeof(struct nlmsgerr) with %ld warns:
+On 32-bit architectures ssize_t is an int, tv_sec is a long long with a
+64-bit time_t, and uint64_t is not a size_t, so ipsec, txtimestamp and
+the tcp_ao library warn when printing them with %ld, %lu and %zu:
 
-  pm_nl_ctl.c:73:71: warning: format '%ld' expects argument of type 'long int', but argument 5 has type 'unsigned int' [-Wformat=]
+  txtimestamp.c:191:42: warning: format '%lu' expects argument of type 'long unsigned int', but argument 4 has type '__time64_t' {aka 'long long int'} [-Wformat=]
 
-Use %zu.
+Print ssize_t with %zd, tv_sec as long long, and the net namespace
+cookies with PRIu64 as the rest of ftrace-tcp.c already does. While at
+it, print tv_nsec, a long, with %ld instead of %lu, and cast it to long,
+as it is a long long on x32.
 
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
@@ -84,22 +88,59 @@ build without format warnings there now, and the x86_64 builds don't
 change. The other selftests get the same kind of fix in separate
 patches.
 
- tools/testing/selftests/net/mptcp/pm_nl_ctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/ipsec.c                 | 2 +-
+ tools/testing/selftests/net/tcp_ao/lib/ftrace-tcp.c | 2 +-
+ tools/testing/selftests/net/txtimestamp.c           | 9 +++++----
+ 3 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-index 78180da1efcc5..36a6d39b31bbf 100644
---- a/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-+++ b/tools/testing/selftests/net/mptcp/pm_nl_ctl.c
-@@ -70,7 +70,7 @@ static int nl_error(struct nlmsghdr *nh)
- 	uint32_t off;
+diff --git a/tools/testing/selftests/net/ipsec.c b/tools/testing/selftests/net/ipsec.c
+index 89c32c354c008..ba8c36a93f176 100644
+--- a/tools/testing/selftests/net/ipsec.c
++++ b/tools/testing/selftests/net/ipsec.c
+@@ -2030,7 +2030,7 @@ static int __write_desc(int test_desc_fd, struct xfrm_desc *desc)
+ 	if (ret == sizeof(*desc))
+ 		return 0;
  
- 	if (len < sizeof(struct nlmsgerr)) {
--		error(1, 0, "netlink error message truncated %d min %ld", len,
-+		error(1, 0, "netlink error message truncated %d min %zu", len,
- 		      sizeof(struct nlmsgerr));
- 		return -1;
- 	}
+-	pr_err("Writing test's desc failed %ld", ret);
++	pr_err("Writing test's desc failed %zd", ret);
+ 
+ 	return -1;
+ }
+diff --git a/tools/testing/selftests/net/tcp_ao/lib/ftrace-tcp.c b/tools/testing/selftests/net/tcp_ao/lib/ftrace-tcp.c
+index 27403f8750547..cd93ff8965dda 100644
+--- a/tools/testing/selftests/net/tcp_ao/lib/ftrace-tcp.c
++++ b/tools/testing/selftests/net/tcp_ao/lib/ftrace-tcp.c
+@@ -504,7 +504,7 @@ static int setup_tcp_trace_events(struct test_ftracer *tracer)
+ 	size_t i;
+ 	int ret;
+ 
+-	filter = test_sprintf("net_cookie == %zu || net_cookie == %zu",
++	filter = test_sprintf("net_cookie == %" PRIu64 " || net_cookie == %" PRIu64,
+ 			      ns_cookie1, ns_cookie2);
+ 	if (!filter)
+ 		return -ENOMEM;
+diff --git a/tools/testing/selftests/net/txtimestamp.c b/tools/testing/selftests/net/txtimestamp.c
+index f7bdf30b78d9f..be1452d73b303 100644
+--- a/tools/testing/selftests/net/txtimestamp.c
++++ b/tools/testing/selftests/net/txtimestamp.c
+@@ -188,12 +188,13 @@ static void __print_timestamp(const char *name, struct timespec *cur,
+ 		return;
+ 
+ 	if (cfg_print_nsec)
+-		fprintf(stderr, "  %s: %lu s %lu ns (seq=%u, len=%u)",
+-				name, cur->tv_sec, cur->tv_nsec,
++		fprintf(stderr, "  %s: %lld s %ld ns (seq=%u, len=%u)",
++				name, (long long)cur->tv_sec, (long)cur->tv_nsec,
+ 				key, payload_len);
+ 	else
+-		fprintf(stderr, "  %s: %lu s %lu us (seq=%u, len=%u)",
+-				name, cur->tv_sec, cur->tv_nsec / NSEC_PER_USEC,
++		fprintf(stderr, "  %s: %lld s %ld us (seq=%u, len=%u)",
++				name, (long long)cur->tv_sec,
++				(long)(cur->tv_nsec / NSEC_PER_USEC),
+ 				key, payload_len);
+ 
+ 	if (cur != &ts_usr) {
 -- 
 2.53.0
 
