@@ -1,98 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.39.30
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793703288;
-	b=ntsY6EtsrieJ3AQYZ4MUEdUGxIPFhekqiUtIDbGRAptNOcke8hhyq8y59b0gkewHH/3+
-	 9sRRiXYlEBVGom/sSB9P4kh6/wIzBdZqd/3b79FbM+eSS0R4i8rXFZyKIkVoB+XeAj3Rp
-	 Va4yAR5q4dn+dxaTJy5iY836a9IsCSKbgGmhgvhIGEb43K4i576J4N48jceQNHa7skR2P
-	 cvOOxkwne0quT56PLVOberINGofDXngLp7Sxm49ZIkG9NDMRuHgQ+s3gOrXmwcrFmWHuk
-	 L/EnOSyUrB9V+2lJQhJvoVc3qWOnJB5hSGAl9rAA95oBO4c3a6JDaZdva4jQ46e9CCA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793703288;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
-	 X-ClientProxiedBy:X-Microsoft-Original-Message-ID:MIME-Version:
-	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=HxnYJdkI/LkidTPK0wZKlrXpcgyWDOY5sDKRwEUsxcQ=;
-	b=XBqdaUJcTNfJrbaFPkUA+ELLWo0ff/CKZg0tXZm/0DwNiRvcqYA97lh23mORJZpKcsBu
-	 0+V7M8GaF+yEoiU5DIHdJHYJPObVExBCPpTgGRnlIXm1v0nB3OxWwMZ85cNh4BMEk7kHk
-	 r6gvC2CSrLtqMvrggpBy8n4w41YHCRt5p28mK17ZRQZ2lrRHjfGqM4eipoO+qD423cIei
-	 qrT6tWwtJPGwZKg/ymH3DZr2EQ+suyAjSWb5RQi9apdq8UWoM8ds+xosTjaiQVwFx2SVM
-	 voFOHw4kkdJxhhfAGgTo8DBx/V7+ekDcEJoAU/lR9tHkWvKNDDmCmXMo5EmffCZaukQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=hotmail.co.uk;
-	spf=pass smtp.mailfrom=hotmail.co.uk;
-	dkim=pass header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.a=rsa-sha256 header.s=selector1 header.b=rL6nr1EU;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.39.30
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazolkn19011030.outbound.protection.outlook.com [52.103.39.30])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793703405;
+	b=ScLmvDUIL1c9hu1hFrWxF7EJprlTt1S6wv43hggVehaUU/3Gc18Xm3e0DgA9rDDn63Si
+	 WdVbwSTMuVm0KxBv6w9vqAnw4mbmNk1nBpGzCX3IdK8/d3Bqs4x6kk8vzS6vD/YHK0uTc
+	 B3xt07ADZ7qMe+H7nHBtcQFigei+cHRWsq0m6ZTFrurVzZrqDiKeU5yl10buPgluoyRCi
+	 b8Z2eys/sxyDGeKmnTELKkT0wZw0GwMOGiO0S5UpW+wj2OrD6CqP9HMgeA+SAknWsRl+g
+	 aYcLPMmhwfOtSRhvkb+UuO9Gre3Z/jPGXWoUxBwGjaXx548eORIwtfG7J81Q7j+5JzQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793703405;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=gwvypKjsF1fhDblmkT/fwH2BxnhVOTpgZ0KAoZnMfsc=;
+	b=HtTjUfdA4re1RDGxaX2kJ3IrwgTBHiiWPEHEy3w80aj6i6q8e5Q/DTX/YU6iEKuK1xVz
+	 Fnmxc0IENxRj/eBoEqBl+7tKpXAwUPMaGui0qD9Q2MVZqpU89I/oe6NFdDIY3hqrsxgIJ
+	 jHzCv/5eBxTviOtuhIEZ0VAC9HVofnnryGi7k3ByNwkKTU4J/WxPqSEweevjYy0MkL4Fp
+	 S1oAVcDYpOytKnoLCyM3EMYr1Z9YpeFp6wUEPbFyBT7JkNuf6nT1EbqK023IBFmISicDy
+	 bYddt2erbPThZhUjOaZZY+RLJSSF2NCIspP4d4/M+S/c0tiUhTSvhSHPKkiE7NS60YA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BoULIsqr;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD198606D811;
-	Tue,  3 Nov 2026 10:54:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD198606D811
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.co.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D893A606BF94;
+	Tue,  3 Nov 2026 10:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.a=rsa-sha256 header.s=selector1 header.b=rL6nr1EU
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vMxVKpgmuLg75CQgn8Z6CeC236T+4wsX8+TwAVKNPX63Kz+KmHi3gM1ZjXDVI8AS4Pw1SjS6+YYDzF9BTSqiFowID9/UosaBXvlwJV9f1OcbvAI6BkGiGXKiemc4fcKchbVLsL74/0c6ANn0YRST50pJYYVzlm4p3Dr+uk4YZEBVCJHvNrC1RBzEDo64ADsZ7jMvpkNW3PkYYuG1KKQt9MEiHM+z/COpjJIoFVuHAH3Tq4MPc3zgLfkdULoAlgK/GNUuRGUfZlGeDvKjJQu3wN/zO3BqWlBNcncuV48aq07rML/KttQVdXZfyWQgMOmQ38nRJxjOXb3jNwJLxxZJZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HxnYJdkI/LkidTPK0wZKlrXpcgyWDOY5sDKRwEUsxcQ=;
- b=rWiynT1gYOeR1ZfBpxlRShZWUCGBFWwX5ZAsvdWgQZcO1RwCt0fnEAt1HYFP0M37FJhz08Lg8N4EZHzV5m70F8kW3FDWVzxOECEJIxXusu1Y/fmdAglBNdZjrTAEwRUlWxdMhHOCM8qLRl4JQzAHYAqnONPs1q5tYruT3W+4ZqtM/TyomarTILnFans4G9G5wtfSB+0HhiG7zXeWlRB92FdWIIh4wBqlN1flB7H9MnPV3xyJ5UTXTl2X+wyiSEn5JDQgi5s8H2GOMjvRwT4OJrB7tT6HT4aOeabvsb0eFIO6EHu7i1K/c84QKUtKWKKkkr/568DdFJUfx+/iWAa8YQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.CO.UK;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HxnYJdkI/LkidTPK0wZKlrXpcgyWDOY5sDKRwEUsxcQ=;
- b=rL6nr1EUnZex/JoatO9Ln9cVYVMZZ4fu73ZYrZzQOxJ39PQ61pAowoYsGgntt65/CPgR5ydlhOhDpsjd2g9QsqwTwScvQmJH5Lu3nmJyfR1m/VoYOWltEhjIeDPJU5YM4hboyC3QKXlUZmgyrarckC4KRbpYpeD/AAehfbug6JskImnsNqB+nb/NVs5z1ZaCSrR2T7VlGW/1bSrieveVls7FNkUXEfZ6XFAP0RQA8qR5eLbXgAthWsTHe6B4d4Aryj9nuy4bBoBzM/KqQQIrO1g1TRfxvjMumEkIkz0jWgVxcPnemYcPOxRnlYUbN0OFnKsldSykozdbBNvdz4OJyQ==
-Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:344::22)
- by MIWP251MB810810.EURP251.PROD.OUTLOOK.COM (2603:10a6:290:aa::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Tue, 3 Nov
- 2026 10:54:42 +0000
-Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- ([fe80::2952:d4d0:4ba:8352]) by AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- ([fe80::2952:d4d0:4ba:8352%3]) with mapi id 15.21.0592.007; Tue, 3 Nov 2026
- 10:54:42 +0000
-From: Aamir Ahmed <elb12345@hotmail.co.uk>
-To: "Michael S . Tsirkin" <mst@redhat.com>
-Cc: shakeel.butt@linux.dev,
-	jasowangio@gmail.com,
-	eperezma@redhat.com,
-	vschneid@redhat.com,
-	ziqianlu@bytedance.com,
-	peterz@infradead.org,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] vhost: Run TIF_NOTIFY_RESUME work in the vhost_task loop
-Date: Tue,  3 Nov 2026 10:54:40 +0000
-Message-ID:
- <AS8P251MB0001F1EACBED6E7A2AFA8A96C8692@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BoULIsqr
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488FB1F00A02;
+	Tue,  3 Nov 2026 10:56:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793703404;
+	bh=gwvypKjsF1fhDblmkT/fwH2BxnhVOTpgZ0KAoZnMfsc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=BoULIsqrLoy1ZGaBehqp1SGkKKMeT2FyyOdvaFyLz4sbwignpGAR2XngvsHTnnL2S
+	 6DQBWTzoe/XgpWIcrj9LGXXICc1/4/PY6pYFMuSu5OiN0RRPbnijQqtydAA2MjxrF9
+	 lzMQMexXyErpcul849TdZckJE141QGMfyJ/lndwQZz4iXAOKoLuYdyJH/o7p+ywfER
+	 j/lXJT6qUy55aFDyTK78UKtOt+/bOvwFriVLjv1zy9I64OSJyRAMOnJ18JyK7uMr4e
+	 UxlOEIzecozbl/svRSa+1LYEoIHD7ySDtF5Ojn/v5aX2K1/W8VFMJa6YRIgVV9oNMO
+	 nNWmXHN1oiMhw==
+Subject:
+ Re: [PATCH net] net: dsa: motorcomm: Clear the MIB buffer on chip reset
+From: netdev-bot+sashiko@kernel.org
+To: mmyangfl@gmail.com
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org
+Date: Tue, 03 Nov 2026 10:56:43 +0000
+Message-ID: <179370340383.488856.629848665261682901@kernel.org>
+In-Reply-To: <20261102101125.3523835-1-mmyangfl@gmail.com>
+References: <20261102101125.3523835-1-mmyangfl@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO4P123CA0412.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:189::21) To AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20b:344::22)
-X-Microsoft-Original-Message-ID:
- <20261103105440.43028-1-elb12345@hotmail.co.uk>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,138 +63,165 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8P251MB0001:EE_|MIWP251MB810810:EE_
-X-MS-Office365-Filtering-Correlation-Id: 84a396da-cb30-467f-a13e-08df3998dd3d
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|8060799015|25010399006|260925184616899003|19110799012|15080799012|5072599009|25031999004|37011999003|5062599005|23021999003|24021099003|55001999006|51005399006|41001999006|1602099012|10035399007|40105399003|26104999009|3412199025|4302099013|440099028;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?QXFWINgzTSl3xsIAyY2z79kWIy+BUtBPO2dbOGDevjR1rAEHQUzvAC2RV8f+?=
- =?us-ascii?Q?CSB6XyZZu9M/VEucxulgbZgAhVCLyZ4iz+OTwYUrNeEMhNzh4RHcq9vaoAKM?=
- =?us-ascii?Q?9IK8Qd/MUJLvF+kJ6MYN+br2WHi0hqk78hjlfdo++dyjEiEen3NEkEe2wm5I?=
- =?us-ascii?Q?d9CwOVXu70PilTFdopFVwpxms+EWLP8gLk+VFvk+E1X+nfWfglGKVXpCmful?=
- =?us-ascii?Q?r29y6Uw+qIj2pCHoS9N++/ZV9ndG5uGkw8sopYANPY4WEtMzkasN/hfAV43y?=
- =?us-ascii?Q?ILaWQzuvdUAPkX5MkW3QF/wa4xHsMQwn4i4aa1DAc+G6Ze5g2VfMSOIuidIO?=
- =?us-ascii?Q?B6W2jnofso5BCpAGkqjkmF9yPZDc2EAbt4sC4M8XhTCB3QjrXfdPpVKtrE6w?=
- =?us-ascii?Q?+ndpfMiB53UkpA7mQ9Q7xk5FV1yM+SX6S70G+9QjK71/6yQa/9DEC+18r2k2?=
- =?us-ascii?Q?6QDfhh5L1iJ+ka365WlGa+IQ6GZwBbl1waE5SJS3x3QjgY2lYkNj2PDXrrgx?=
- =?us-ascii?Q?lmvokv7bz4EhExLTTMTqJZBEzl2+0/jAGa4kQ67WGFR23cixS5apApO8T4bm?=
- =?us-ascii?Q?jEluxgSh2ARXBHWiie/jgfPyxHnqaCisfv/kvoinZYBz8OOrLpWct0EUfvWe?=
- =?us-ascii?Q?yHwtkBAWJINY7DV6k4y3Od9EMCfCpL9K3oWxYshAKK5+Z/3U4OvfWbrD/lnt?=
- =?us-ascii?Q?u9WCw42vabDCdb6l/pjFq2iVoC0FRuJj9ZAGbwqbF5IUxUa2sb+Mq7843JX3?=
- =?us-ascii?Q?gG5UEim7+IhdtDgtemoc6HzfY10xC43Yn0fYYXXv9aME/OVnWVmlp6RvlZFW?=
- =?us-ascii?Q?VeVWT9m9m5hhXyhH1PDTw2Mzpes1Bpqopm58SN9p13ZzxlbgZ22wpJd+g9p2?=
- =?us-ascii?Q?D022HMAS6qRacUDuII5PPKrIEHVYYeFxtkJtgsCEn8BwWMbkLD4G9BC81fXm?=
- =?us-ascii?Q?wDPEHdAQsKJrNxWf/KmS8cOdmg0VPQlpzG5UAnNpjJrbZfDvzwCeiSFXVTcN?=
- =?us-ascii?Q?/dGVAdNjv3kDDDxmS9I/6WAT0oloc5xD+qgkRfZ72LsW3TOgUUQKbOJPSuF6?=
- =?us-ascii?Q?sByH2m6nXJ8Z9wQ/BXIFAW0Dtccx7U3gTR9HodQX5V5DjjXFByG3dmgP/JDW?=
- =?us-ascii?Q?aHzgbrG9DSLo?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?He3TDZgL6sdYTEgDMLVT1FL+FK+ck9MlGJcMjYUHfzgSSIMKX695yw/bvr78?=
- =?us-ascii?Q?mJ0n6ExWZkVqVigY6vhRseYpf7Qs7tCMYCqFf3or0yN7i4wD+oiMi2PB73bi?=
- =?us-ascii?Q?f0CkMSSHFD4rWByBhHHJi9jChIRIdoo/susTUImv4H7Rts/6ahfClnKyHb6a?=
- =?us-ascii?Q?4o+ST34qeJO+wMOw4ReGwJCZSJ4XK7cp4rFOdGn8s3c4cJ6yr2VP0voT8Z9q?=
- =?us-ascii?Q?UWqrycu5hTyPqo0pHCgs/xdXaJtOdzZw7+4JedaII/im9FdgiKBT/rlJtt/t?=
- =?us-ascii?Q?0z7gm/vkgtqTjd/SLDXEAYUvAYDoxeAhs42GBJUV6MlPz0VDqEJQauzJJzwN?=
- =?us-ascii?Q?qTiQ7O9GBAVuuwJaKsON4AmM9bXk+n4V4qttfeIgQlIU2l2MM3Ge2k6/dsX4?=
- =?us-ascii?Q?++GYx9wspnZ21oRv60aTH/aAiEgidLr7EnCoUQnPCEGThiGcNbrHeVGcpBV7?=
- =?us-ascii?Q?vT9x5oHMvPOK4pEUri7ZQmV7Dvtpx2GAqrbRxz1p7lfh3iYafzhXTW1bp9/u?=
- =?us-ascii?Q?cZOgHoxkf/zy4MhRbva7NkFjdd3ziQqkSe7jsQck21wzOkF5DDWsFSDfyjeK?=
- =?us-ascii?Q?71rgfY/tE12J28KYrx8RJcevM7fxYCTtm40jrHMzBHdq83izva8oD88mcv5H?=
- =?us-ascii?Q?q2CSZRjfosBltRX9Wl5R0fowUnTFHnffcavuS1M5A24Be2Q80O0HTWj7/iEa?=
- =?us-ascii?Q?PG9N7+BwmT0p4DX9hQ/Rf6kO6v2Y3bgcUUk4OUicP4adfXJs9c2MqKPGCU3e?=
- =?us-ascii?Q?vh8I15lPBYdPYTx8p0UxyxdF9cTx68ci6bhhzkubu0cFJqtHyI/jiN9Kkfk9?=
- =?us-ascii?Q?0XMdq6j4SxwE4WYqOCFywCX0ftDguiXsu6G7LRvCM+lqs/hwzUerbHOi0Uz2?=
- =?us-ascii?Q?fZdPx1iOgNeEfYa8LD9cqLruQ1dLu8gU7P+Dk/SAhEyo9b8r62Ovh9bpOho8?=
- =?us-ascii?Q?CTdlNOVnhs4wiOxAsif4H4Vco+TqM0/euIVa9c3e/JH+0OL+a74CwRlNTKWn?=
- =?us-ascii?Q?mv7iWQy3gfjT/ybZpcGKroDp7mIPUaTMhj7F8+VhOmg+eB0qztkCZzXkL8iK?=
- =?us-ascii?Q?9+LjSE/umdFmm0I7wYYeZuso96vOqGBkSiilJfliL8sujEpmXz46QT9D05wU?=
- =?us-ascii?Q?gKdCP738HAaPJijIOhHesTCHqT2WjDe+hMRn68GzlXyFOXwd04A5oI0gxXED?=
- =?us-ascii?Q?LltmZj8eBjrGTKYA1QpKOacvuEl39bstXuUe+qkU0dptDmDvlTM4UDUwKpov?=
- =?us-ascii?Q?0ZyyefNYjVqkKC//HLBlOegVeZdSPf2B20STu+RBlHaKhvjvXhNaRdkfgd5e?=
- =?us-ascii?Q?DIdsmB5Xbg7E71/ASistye+AZJNJr8QotCdICA285GmG2v2U/mItfuMf0FtC?=
- =?us-ascii?Q?P3ey6w7TfdD0E3OU6a9IuNrlkkQFr88e/CEEmsfK3Di9/Dwe/8IJbjltnbbX?=
- =?us-ascii?Q?jerZ1QrqFKKqoVd8D0f4MRaKAax1At0o?=
-X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 84a396da-cb30-467f-a13e-08df3998dd3d
-X-MS-Exchange-CrossTenant-AuthSource: AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 10:54:42.2645
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MIWP251MB810810
 
-Since commit e1fad12dcb66 ("sched/fair: Switch to task based throttle
-model"), a throttled task is only dequeued when TWA_RESUME task_work
-runs on its way back to user mode.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-vhost workers never return to user mode, and vhost_task_fn() only runs
-task_work via get_signal() when a signal is pending. A busy vhost worker
-therefore ignores its cgroup's cpu.max, while its runtime is still
-charged to the group, throttling the group's other tasks (typically the
-VM's vCPUs) harder.
+Critical: 0 · High: 0 (1) · Medium: 1 · Low: 1
 
-This also fixes memory.high and block cgroup throttling for vhost
-workers, which are handled in resume_user_mode_work() as well.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Run pending notify-resume work at the top of the worker loop, as io-wq
-does in io_run_task_work(). Commit 12013e3d4695 ("KVM: powerpc: Use
-generic xfer to guest work function") fixed the same problem for KVM.
+- [Medium] The commit message says "The published stats need no handling;
+  every entry is republished from the buffer".
+- [Low] net: dsa: motorcomm: port variable shadowing in
+  yt921x_dsa_setup()
 
-Fixes: e1fad12dcb66 ("sched/fair: Switch to task based throttle model")
-Cc: stable@vger.kernel.org # 6.18+
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-Tested-by: Shakeel Butt <shakeel.butt@linux.dev>
-Assisted-by: LLM
-Signed-off-by: Aamir Ahmed <elb12345@hotmail.co.uk>
----
-v2:
-- Also describe the memory.high and block cgroup throttling fixes
-  (Shakeel)
-- Add Shakeel's Reviewed-by and Tested-by
-- Update the code comment to match
-- v1: https://lore.kernel.org/AS8P251MB00012469E6ECBEA2B7D87BB0C86C2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but it blocks the
+  re-setup path the patch is meant to fix.
 
-Tested on x86_64 with a vhost_task-based reproducer: in a 0.2-CPU cgroup
-a busy worker drops from 100% to 19% of a CPU. Reproducer available on
-request.
+--
 
- kernel/vhost_task.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+net: dsa: motorcomm: Clear the MIB buffer on chip reset
 
-diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
-index 3717885a599..f63ac005214 100644
---- a/kernel/vhost_task.c
-+++ b/kernel/vhost_task.c
-@@ -6,6 +6,7 @@
- #include <linux/completion.h>
- #include <linux/sched/task.h>
- #include <linux/sched/vhost_task.h>
-+#include <linux/resume_user_mode.h>
- #include <linux/sched/signal.h>
- 
- enum vhost_task_flags {
-@@ -31,6 +32,14 @@ static int vhost_task_fn(void *data)
- 	for (;;) {
- 		bool did_work;
- 
-+		/*
-+		 * We never return to user mode, so TWA_RESUME task_work and
-+		 * memory.high/blkcg throttling would otherwise never run. Run
-+		 * them here, where no locks are held, like io-wq workers do.
-+		 */
-+		if (test_thread_flag(TIF_NOTIFY_RESUME))
-+			resume_user_mode_work(NULL);
-+
- 		if (signal_pending(current)) {
- 			struct ksignal ksig;
- 
+This patch clears the per-port software MIB buffer (pm->data) in
+yt921x_dsa_setup() after the chip reset. Without it, a re-setup of the
+DSA tree leaves the buffer holding old values, and the next
+yt921x_mib_read() reads the reset counters as a 32-bit wrap.
 
-base-commit: c03c1a14507dfaf8b856c2608f9ac216021fc222
+> diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
+> index 33e5fc127244d..ff17233848a80 100644
+> --- a/drivers/net/dsa/motorcomm/chip.c
+> +++ b/drivers/net/dsa/motorcomm/chip.c
+> @@ -2458,6 +2458,16 @@ static int yt921x_dsa_setup(struct dsa_switch *ds)
+>  		return -ENODEV;
+>  	}
+>  
+
+[Severity: High]
+This is a pre-existing issue, but can yt921x_dsa_setup() reach the new
+loop on the re-setup path from the commit message? The question applies
+when the switch node has an "mdio" child, as in the motorcomm,yt921x.yaml
+example.
+
+Earlier in yt921x_dsa_setup(), every .setup() call does this:
+
+	child = of_get_child_by_name(np, "mdio");
+	if (child) {
+		res = yt921x_mbus_int_init(priv, child);
+		...
+
+yt921x_mbus_int_init() registers a devm managed bus with the same id
+each time:
+
+	snprintf(mbus->id, MII_BUS_ID_SIZE, "%s", dev_name(dev));
+	...
+	mbus->parent = dev;
+	...
+	res = devm_of_mdiobus_register(dev, mbus, mnp);
+
+devm only releases the bus when the yt921x device unbinds.
+yt921x_dsa_teardown() only calls yt921x_leds_remove(). So the first bus
+is still registered when the tree is set up again, for example after
+another member switch is removed and re-probed.
+
+The second registration would then hit this in __mdiobus_register(),
+with a duplicate name under the same parent:
+
+	dev_set_name(&bus->dev, "%s", bus->id);
+	...
+	err = device_register(&bus->dev);
+	if (err) {
+		pr_err("mii_bus %s failed to register\n", bus->id);
+		return -EINVAL;
+	}
+
+In that case yt921x_dsa_setup() returns before the MIB clear and before
+yt921x_chip_setup(). dsa_switch_setup() then fails, and the whole tree
+is torn down.
+
+Would the tree then stay down until the yt921x driver is unbound, so
+that this fix never runs? Should the internal MDIO bus be registered
+outside .setup(), or unregistered in .teardown()?
+
+> +	for (int port = 0; port < YT921X_PORT_NUM; port++) {
+> +		struct yt921x_port *pp = &priv->ports[port];
+> +		struct yt921x_mib *pm = pp->mib;
+> +
+> +		if (!pm)
+> +			continue;
+> +
+> +		memset(&pm->data, 0, sizeof(pm->data));
+> +	}
+
+[Severity: Low]
+This loop declares its own int port, but yt921x_dsa_setup() already
+has an int port at function scope. The serdes_mask for_each_set_bit()
+loop just below uses that outer variable.
+
+The inner declaration shadows the outer one. A W=2 build, which
+enables -Wshadow, warns about this. With W=e or CONFIG_WERROR=y the
+warning becomes a build failure in chip.c.
+
+There is no runtime problem, because for_each_set_bit() assigns the
+outer port before reading it. Could the new loop reuse the existing
+variable instead of declaring a new one, as in:
+
+	for (port = 0; port < YT921X_PORT_NUM; port++) {
+
+That would also match how the rest of yt921x_dsa_setup() walks the
+ports.
+
+[Severity: Medium]
+This loop only clears pm->data. What happens to the published copies in
+the same MIB block (pm->stats, pm->rx_frames and pm->tx_frames)?
+
+The commit message says:
+
+  The published stats need no handling; every entry is republished from
+  the buffer.
+
+That seems true only after yt921x_mib_read() runs again. On re-setup,
+yt921x_dsa_port_setup() keeps the existing pm and only does this, which
+does not queue the poll:
+
+	if (pm)
+		enable_delayed_work(&pm->work);
+
+The only place that queues the poll is yt921x_phylink_mac_link_up():
+
+	pm = priv->ports[port].mib;
+	if (pm)
+		schedule_delayed_work(&pm->work, 0);
+
+Meanwhile, yt921x_dsa_get_stats64() in mib.c reads the published copies
+under syncp and never calls yt921x_mib_read():
+
+		stats->rx_packets = u64_stats_read(&pm->rx_frames);
+		stats->tx_packets = u64_stats_read(&pm->tx_frames);
+		stats->rx_bytes = u64_stats_read(&mib->rx_good_bytes) -
+				  ETH_FCS_LEN * stats->rx_packets;
+
+Take a port whose link stays down after the tree is set up again. Would
+its new user netdev keep reporting the old packet, byte and error
+counters in ip -s link and /proc/net/dev indefinitely?
+
+The next mib_read could come from the link-up poll or from an ethtool
+-S, eth-mac, eth-ctrl, rmon or pause query. At that point every counter
+would drop to the small post-reset value, so the counters would go
+backwards.
+
+Could this loop also clear or republish the syncp-protected copies,
+inside u64_stats_update_begin_irqsave() and
+u64_stats_update_end_irqrestore()?
+
+>  	mask = priv->info->serdes_mask;
+>  	for_each_set_bit(port, &mask, YT921X_PORT_NUM) {
+>  		struct yt921x_port *pp = &priv->ports[port];
+
 -- 
-2.55.0
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261102101125.3523835-1-mmyangfl%40gmail.com
