@@ -1,89 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=85.214.127.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793743346;
-	b=mTo2ZqClQgTNmrufuSjqCtMFizpKg5R30SDRnYfLCY09FAKXug1H5TySgM0ThW2uJuPN
-	 +3GGw1Cr7CYeAXG3B3cSJ4xDg6Z851XZInFAuCy1O/zlyvzlQ1Pfpavw7IhX0T8EEKhSu
-	 kUL9QklIU7e2FPQ4V1Hn2dBZINUWipK2gNA8dwSsWecd1U1PH4YVKojeu/bBqBdAi5CLq
-	 GwKP9EddGK3RYuNFX2OqlId7Ql7iXGrOKBieJ/GA6HmjLCpTiug3SypyH2LZY7jm8BszP
-	 oILZbM5Vq0GlS3Uk7MFkfBz190TIKffiFGbOCjnZQipZbe+yXWbcEvtZYaIYnj2OLZw==
+	t=1793743366;
+	b=lBFFn94//Y8Rk1XMdheexg1HmYy4Nm4fDanhzbOjV6POtciWKmIxbyQHJQB2s7LOXnpj
+	 mUjOWJI/z40Ruf8nUa8RRBukb/cy6xT+eC2mwqkscSYE0lFXuUmgZTDKIa332CXAm8HGf
+	 cXLEL+OchLsUaO7Dcg8NfdiWsf+B4fS+ayoKtTNiugm38osP5dgDvg3rGBpsmoBUypMwE
+	 idLLJq4tUv7wDzuH+d3eMvMWBtz0fIDjneVZqpA/p/DzhULXCKvhVXO59q0GDKupFRxYJ
+	 G12WNSIrtGbkm9wzbfe6UrYbX7KiRqBTX+CsC+QC1HAO6/QeFyZOpBq0w2VCjY3UhfQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793743346;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=0Q996RswduMpIhVsoVyPA2VHGPwwWWrs+cfGJMYGH0w=;
-	b=Mg2XuOzfD6eX/42wNj3kjeWiCyqIr5igaIBLTE1wfbc87yWtMThszk0DmzIlaoNfd265
-	 PsQon4LuvU97WqqLl8AZMgxm0b+Fw/ZXMiyWen2Xjst6/n1U9ueATqWPOshwVamBjNbe/
-	 CcHbVkRYGpAJqDnudsifImFo9d1yQve7jp+ahK1fkphJUbIKfqlt1ha4XE1tJqhyVVl3u
-	 KSdEnJMGcwA4mg9PaP+wH2u7PoewQifuFgIIfvhcyXQYiRFcTT8BGVPitnzWUZAdsnoVq
-	 6JykfDs1iIu8uv+j1kLDeycADEBI+/xdc4K789vwfYpFb7tNCFB2ccuXHzMf1yzBmuw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793743366;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Virus-Scanned:Received:
+	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding;
+	bh=U/s9WpBgSFZmxHOtI1J+3lfhCl7kgEjOZgarv9f/rWY=;
+	b=3k5h2tgg/oFx6Gs7S7JdZkOmGdCzJes7RleSQhB+OHlQo/9COs5cv0qmTpoOIdMpH9Gu
+	 qmYYGkjvRPE7CExf91yxdl7HxOvxlB+1e88gXTXnwWIj8LrgA5sw7nUtjNC16OvT3cRo8
+	 JXRpH69lCNboXZdMH4MKuTwcGyA4BhFQ3auZYoiC8Kf8xfhAzfA3m4i7W8d+yjLTBpHFh
+	 C74OnZcRx7+xe/XIq+WKi7Wjzxv4UWb3W0LGZ4xfKcroDnT79KbJkzHWk5rC7DvXU9nKV
+	 j7B+6dgVKCKw3Nh/FCUtOZ8DB3Nwln9PhtTefQ8cY15YWqRwANVTRgApZ+FfjYyJeuQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Aog6qtnP;
-	arc=none smtp.remote-ip=74.125.82.176
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=szelinsky.de;
+	spf=pass smtp.mailfrom=szelinsky.de;
+	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=eQtPyY1y;
+	arc=none smtp.remote-ip=85.214.127.56
+Received: from szelinsky.de (szelinsky.de [85.214.127.56])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4487E606A31B
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 22:02:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4487E606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E95C606A331;
+	Tue,  3 Nov 2026 22:02:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3E95C606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Aog6qtnP
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-369f33df08eso18848eec.0
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 14:02:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793743345; x=1794348145; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0Q996RswduMpIhVsoVyPA2VHGPwwWWrs+cfGJMYGH0w=;
-        b=Aog6qtnP0tAl7RfxxsRY+nhBR8Om1wLA7yqodbUGaCnryP65x8QfNoYRuRPx/0/8tH
-         n4hz/yfQlbBKdM6+NlsGtakiC3RDeAJ9JQfG8/xJKTWamfBlCIpWTj4PvwddrmR+JYv+
-         PgN41rauk0EjgMmaQdxlM77EKsiHubLZJsfwXbYVcTYAZLQ8WBi1aaoRGRlOW3h9Wlnd
-         1qVOmUI3ZjZWutQ7MzGSjevagkxa00Qje6nwdRpzeVv9ut9oXmeK567npp1Z3CwOmVWq
-         JDfrXXtSk1GVcuqJagWmtLZnFo/MxyiIu1FItEMYZH9NXdGsL4GxAXK+/ioe3zYl1vtQ
-         J+VA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793743345; x=1794348145;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0Q996RswduMpIhVsoVyPA2VHGPwwWWrs+cfGJMYGH0w=;
-        b=kMpVMmj0dFX5YfqmCbrt7T3Lnb4yK/W82SGycrzwih2Vsj2GPLjoVD1SBQYh4BqN+w
-         9GxPncR6YPi9NXMiRqFNMo7Yk8VIWGa93/JLoFHjed6E4LlSSKfHQ8p8zGj5tz7CNpWF
-         +vuZ3y3YJmJzSvDnazMMefmOvArkuFHmS7tKRqt21ScQ7eGb7CYBvF2OrqJuY+/sqCrh
-         EThu02UWVAQh53bvSojuAZpsSqZsLkzKSBs6Q98gF8Al9QrPiXzM8rzCZ9rXEjTavRr2
-         HaH+pseRq+tOC3BMeRm8YIlrtoYZdHjdt381HHorAuS4IaptlnfCPGR/39wuqPxT0Fmb
-         Z2lA==
-X-Gm-Message-State: APuU4Z9uMTIobjpq3UtXa80759qqK5hWdKl1Rj5JkGWLtnwMPigVxwby
-	ThOempL6LrBpXjb/HgvOjpowwWCTk9jpfcxU7reroW+HU/CpBtiFpQIZ4kjMfg==
-X-Gm-Gg: AYBFou0agiPwoutIl4RZmN9aCgZufMrlbT9SfPd6q329lxF+iETHItMCldqUw3ti/cZ
-	EjY10W62L2c9xRqtfBZFgMCSaYXEIXUHnxVf+JULv1af+CsH0E/IQEBvCjXmIPfev/Is/vjMFTY
-	pKIUoSEevixpzRTzAaIT7g48JuTYFRK1WWER9nTDins3F+hbO4ShrkVlWEnsOb+yVT5xQk6Yg70
-	bjYK+MYR788bXm4B4bHn85K6oMlHhk+pKHwabCvSwBVBDwHdKpmz/Dq9UTSNYsPTD32uZZayPBl
-	bNqdRgkqbXhbbochHYBU3rwGeSWOa2TAauoLc0zj5ynhAnDfZ5z0NxpMPNBFE7ti0O7JvrOe9bM
-	IjbMbOiU1JOo0pXH9TEAMC9u1uzBJAGfWnkYmQPDxecvqApwBhxX/4GIhV1yD/ruE+QzK/X9KlY
-	Tao5TbMSN2kVZGXfHSBQGTVrxa1JNIQttGBqH7/5EKq48tNd3kcofxek99/MBpF8WN4W5k11AG9
-	5xQa5gKsdRnPr5Ig7cY6nceQ7Iq1OTkX4HqTEul/e3RN0y+w6wM1FOZy9NjVWx0VEIYYR4zT/v3
-	oXWNPo+2wB3PgVwsQU9uJmNSg2dR+A==
-X-Received: by 2002:a05:7300:3b0c:b0:36a:238:1485 with SMTP id 5a478bee46e88-36a4244276cmr30366729eec.37.1793743345194;
-        Tue, 03 Nov 2026 14:02:25 -0800 (PST)
-Received: from eldorado ([2600:8802:b00:1f88::287])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca39c5f0csm808541eec.29.2026.11.03.14.02.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 14:02:24 -0800 (PST)
-From: Florian Fainelli <f.fainelli@gmail.com>
-To: netdev@vger.kernel.org
-Cc: stephen@networkplumber.org,
-	dsahern@kernel.org,
-	Florian Fainelli <f.fainelli@gmail.com>
-Subject: [PATCH iproute2-main] libnetlink: handle failed time seeds and sequence wrap
-Date: Tue,  3 Nov 2026 13:59:32 -0800
-Message-ID: <20261103215932.1191741-1-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=temperror header.d=szelinsky.de header.i=@szelinsky.de header.a=rsa-sha256 header.s=mail header.b=eQtPyY1y
+Received: from localhost (localhost [127.0.0.1])
+	by szelinsky.de (Postfix) with ESMTP id 5A3B3E836C6;
+	Tue, 03 Nov 2026 23:02:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
+	s=mail; t=1793743358;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=U/s9WpBgSFZmxHOtI1J+3lfhCl7kgEjOZgarv9f/rWY=;
+	b=eQtPyY1yQQhSB69+LsQaRoqz5pHB6y4sKXlRWlNDc6t2uwVOXsd/L3N7R5/+2i5sNdOwxT
+	FN+sPq6WY1VxGc941Ku6OAQzdw6J8LMY2QoLaEhAlxOuIeNrgQCt+n8bnpJuP1vHxPq+XA
+	9JH3PC1ks6ueoa4ugpGSKwrYW1qVJVBJBhDUgF9iNuSJFeQ2ndgAFMxhvO8H/UPrc2DeCk
+	6col8HtWaDuvzR2GyeZUdvneAq5txYhenYqFTHBsJx1YhO3Kc1QpJllyOQiwvGCwh85RVc
+	HYYsegvCBr7YcwRhMqDyaaIyI1vp+0+iupdQbcAe+NfkAZzinB4e/8uvSnGXTw==
+X-Virus-Scanned: Debian amavis at szelinsky.de
+Received: from szelinsky.de ([127.0.0.1])
+ by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
+ id cbFrVMf9u6l3; Tue,  3 Nov 2026 23:02:38 +0100 (CET)
+Received: from p14sgen5.lanhh (dslb-088-070-183-026.088.070.pools.vodafone-ip.de [88.70.183.26])
+	by szelinsky.de (Postfix) with ESMTPSA;
+	Tue, 03 Nov 2026 23:02:37 +0100 (CET)
+From: Carlo Szelinsky <github@szelinsky.de>
+To: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Kyle Swenson <kyle.swenson@est.tech>,
+	Ross Cawston <ross@r-sc.ca>,
+	netdev-bot+sashiko@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Carlo Szelinsky <github@szelinsky.de>
+Subject: [PATCH net v3 03/14] net: pse-pd: fix module refcount leak in pse_control_get_internal()
+Date: Tue,  3 Nov 2026 23:02:06 +0100
+Message-ID: <20261103220217.1131971-4-github@szelinsky.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261103220217.1131971-1-github@szelinsky.de>
+References: <20261103220217.1131971-1-github@szelinsky.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -95,51 +90,37 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A 32-bit time_t overflows when the board clock is beyond 2038. time()
-returns -1, and the first request then has sequence zero. The sequence
-range check underflows and discards the valid reply, leaving ip blocked
-in recvmsg(). The same range check also fails on a normal counter wrap.
+pse_control_get_internal() takes a module reference, but when
+pse_pi_is_hw_enabled() fails, it skips module_put(). This happens on
+any I2C or UART error. Each time, one more reference leaks, and the
+PSE driver can no longer be unloaded.
 
-Use zero as a fallback seed when time() fails. Compare the unsigned
-sequence distance against the number of requests, allowing wraparound
-and rejecting the sequence immediately before the first request.
+Send this error path to put_module, like the regulator_get_exclusive()
+error path.
 
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Found by code inspection. Not reproduced.
+
+Fixes: ffef61d6d273 ("net: pse-pd: Add support for budget evaluation strategies")
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
 ---
- lib/libnetlink.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/pse-pd/pse_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/libnetlink.c b/lib/libnetlink.c
-index edf3a8ba7ce0..5bc7c43245fb 100644
---- a/lib/libnetlink.c
-+++ b/lib/libnetlink.c
-@@ -194,6 +194,7 @@ int rtnl_open_byproto(struct rtnl_handle *rth, unsigned int subscriptions,
- 		      int protocol)
- {
- 	socklen_t addr_len;
-+	time_t now;
- 	int sndbuf = 32768;
- 	int one = 1;
+diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+index 03da633c6382..c6612232b820 100644
+--- a/drivers/net/pse-pd/pse_core.c
++++ b/drivers/net/pse-pd/pse_core.c
+@@ -1426,7 +1426,7 @@ pse_control_get_internal(struct pse_controller_dev *pcdev, unsigned int index,
+ 	 */
+ 	ret = pse_pi_is_hw_enabled(pcdev, index);
+ 	if (ret < 0)
+-		goto free_psec;
++		goto put_module;
  
-@@ -246,7 +247,8 @@ int rtnl_open_byproto(struct rtnl_handle *rth, unsigned int subscriptions,
- 			rth->local.nl_family);
- 		goto err;
- 	}
--	rth->seq = time(NULL);
-+	now = time(NULL);
-+	rth->seq = now == (time_t)-1 ? 0 : (__u32)now;
- 	return 0;
- err:
- 	rtnl_close(rth);
-@@ -1092,7 +1094,7 @@ next:
- 
- 			if (nladdr.nl_pid != 0 ||
- 			    h->nlmsg_pid != rtnl->local.nl_pid ||
--			    h->nlmsg_seq > seq || h->nlmsg_seq < seq - iovlen) {
-+			    (unsigned int)(seq - h->nlmsg_seq) >= iovlen) {
- 				/* Don't forget to skip that message. */
- 				status -= NLMSG_ALIGN(len);
- 				h = (struct nlmsghdr *)((char *)h + NLMSG_ALIGN(len));
+ 	pcdev->pi[index].admin_state_enabled = ret;
+ 	psec->ps = regulator_get_exclusive(pcdev->dev,
 -- 
-2.53.0
+2.43.0
 
