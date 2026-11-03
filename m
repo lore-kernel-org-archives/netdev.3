@@ -1,47 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.176
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793702396;
-	b=ZaDLAy29W6raOJbw+it014qFMapx4/jls27pRZNxbR3Ugpg3aL2dULsavKAwxUrvT0os
-	 huYEJRD5CUqzPJHnvPPjI/OnbFvZ8Qbv8QQloJubQl6orBwfQ9DnNRAzluKHSh7htAOeb
-	 YzDxBWbNDVKxTLbihXEKOb/SPJvBnFKDSf+XhxbKzdb88kpm9FP9C9x65q1qH6xOmUPn0
-	 2GL8Xk6xsBCnfVpH4x63rfd+V98pQZy5Hnd0RmPnTy7mVrp5u3NU5TFsSWpv43a8tpwcq
-	 5NPz9XlcC3caIt/tXkRvVXpxR5dOUP+UnR9+fw2uiysmKHFrIYQcn6H5Kj0MrPXD/Vw==
+	t=1793702430;
+	b=eCU+ghhfn1clJqDlmLnd1wDCj+767jlJSuOhIRVKM5ze6f6ROnU+Fkx+7viSn0/1BxzY
+	 A/r9Sj1Rx8XcXmbtQ0pWTi4pj4IjBDYfy39veAsK/gq2UOgdYJNnG3Cc/J7nrCNqdEd2J
+	 +UyckUDGFBfKX2jn92O0uwF5LiZTICUFsQgqOxRyszy/8UEsrgBMNXp0Y51AnURnltnBi
+	 +XXhvm7eL+pjnjKX1KzSipH+vYAFWU6TeirwlqLlBzzAbcTgJ8OJbMaDQnEW8dSK8r4Ez
+	 EdpJ9zcjJnqOSLX6cumJ9dW7Ry3zWGaYfU1shDl0lmeoZ5jR9P4Zt9Dl75QXIMMtZ4Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793702396;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=cfHt9usOTpMxzTBQMtoIT6JRw7NlORXJmRCK2v0hpLI=;
-	b=ekK1g+7TczwdxgPELkJpmA3ZidBxpqv67gClMtVMYHr6+OYRPqsdqSr5jdEQ6Zaacrrj
-	 HquHm01n5v94NzqExGnq5szZ0MLnt0Zaar/xm97Jls9hxjjPfB4a1ZtAJiKwaTdikBxrV
-	 MT1zA7PY/iZwnfQNnx8sEuWn5x02ROi7C035bdEo+17lL5vzv3mJSRLbXrWKSEaR3K/6I
-	 QEWjW9kD966fUmDCP/FOnMryleHikBoR50c0vZGKL9Y2plB+a14d5wOKl+MgfzNumVImV
-	 +MZSj8QDFmNU3dxE957yQG1St+1tOdPzqwPXH9P+ilcWyaZ9tykvqZ2xam4injGGgjQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793702430;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=WwDr7AR3Yel0vmHw532J1yhKIdIYegdDoVEAcqR8ZcY=;
+	b=EKFFNAOMMf0ijOwHL7M/ZIeK9/6toFHUz580cQjPPZDcDT+qbpBWV/d7LsKIhZf4OIs/
+	 LKVrT338Y4TzwaHo417b9srk2+YO4uJvNBTildEX6jQp7SWpoWuy6JAlb9/qnGGqQhDEF
+	 0zX3zOzklgbBGzL1Uk8r8DZvZrtNgTWa4wYptlF2GDZlDOnN9J7A5EmBq+DIjoUP5GJYK
+	 rgVB+eKDGcS3P6vNT+Ax/z77WNh0q1ItofNqnVDTC7CiybTl5mXY2pmf/0pNsjVEnuBuC
+	 f9YuqZ6XeNx8+ANDqC/oliLqIGnWtD1cZEXzruVEplMQ+3rWEZyf9KpW8p/FJEj5FjA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AV4rbzDF;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BSwbOtXA;
+	arc=none smtp.remote-ip=74.125.82.176
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0FC606C5E2;
-	Tue,  3 Nov 2026 10:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1FB606A334
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 10:40:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6B1FB606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AV4rbzDF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D0BD1F000C1;
-	Tue,  3 Nov 2026 10:39:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793702396;
-	bh=cfHt9usOTpMxzTBQMtoIT6JRw7NlORXJmRCK2v0hpLI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=AV4rbzDFg5xXV5EDHj4z8P/dx5R9Nfij2ZuuQU74DrXMNaAXyvc6vXsQPO4nTg4NG
-	 UGV3X9KzcvmsYt/YX7dTsW4g+DYnIPfJv6JOL8kbEpl5UCAYaVLjCCs2Fyo1v/ue3a
-	 cOTx0MeJ8vEtpImTp3kx7ceqHs7TJTQ0kBUwa2+kgviZ71VfFvMstdfZoooJEGyNhK
-	 WEHOuJTDIICzEmesDvtfR65q56vRXMYFya/MokJm9Z+2VENEiGv13V8MhktHK/yrw5
-	 0EJjnWz0UDMUUkvrXts6EWe9aM7nKqkYaSgWf542CIBEXhrjQ73vKdSoXVz/8JCesb
-	 yY/mj3iEXNJSw==
-Message-ID: <b38f9573-4674-4766-9a16-799888f865e9@kernel.org>
-Date: Tue, 3 Nov 2026 11:39:50 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BSwbOtXA
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-36a1947498bso3934851eec.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 02:40:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793702429; x=1794307229; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=WwDr7AR3Yel0vmHw532J1yhKIdIYegdDoVEAcqR8ZcY=;
+        b=BSwbOtXASJL5MpWs18FHADRwIStEW0fcE4XYA8I3sUUookk9VeJrSNK/Tx1w6wCd7S
+         LMgLVeEj6e4oYNbfvSZh7VlQWVJc05ofSEyrcpp/lSGIdAZbbu5s5S2kHm3vHp1qgScK
+         4rjzENtjj3+d+g1sGPosnipYwCNUbo9O63OdIQ0qbnsaLnLq++mc/iOZGb7U6lXAxeWH
+         SgmzWjcykl/s8m9ZbTsVniygLfJ8uGqsOkuGtY8r+Pi1xYj703wFQdyKRIIeggFGH0+w
+         wBxPAucgw1vpIVTjl7UiDT1roxagLQ1EGTErr7BwHoC0vcdyHmI3PGk1tqbec2r7wm15
+         o9eA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793702429; x=1794307229;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=WwDr7AR3Yel0vmHw532J1yhKIdIYegdDoVEAcqR8ZcY=;
+        b=QqnWlQreYBR9Os8Beya8fyH9nZ0JpBqZyCZmSpASa/l1nt3iMOR2qsY2nzUQAr6QQ9
+         sv9PC1H0UY525mzNwDLgWQvp79gtJ1MS+TDOoK8Y1BowFjGYV+na91RGr+vhxcg3b0Hm
+         xyw+7mz3CEBmKJplmKVu98maaJkI7Dok6Q70u/TLWvszrWjM2V4dWRlo+MjDR9XFKOut
+         ypyBEm+w+3ViNToWdt8Z5hHYcaaHbEEfQ99MB4UynW2wXHcHgCZkLOYCJo+5nZ1sFX7W
+         iijlelIChZJOktNazmtYNzrUERSLNS3K3GCHXecdjrgdyAH0K9lKkrlQsXLCAH/B6s5r
+         M4Dg==
+X-Forwarded-Encrypted: i=1; AKwUvBzjqTGG1PNWJNzrhqPlfxx4lSYjrs4dKEn/vWq0gjpkZDwHx169fs6OM8PDZZHK9R7ayg66/7M=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+CFNLsqmoFmmjxKbSuGGxZxOSARyX9xyfr953IdQpFYzQC5wOQ
+	seXQc79FyUPwjZi1vPI0+9lRJ8V9E1giS4YfIqa6kn7KcndyMuGZ1Q23
+X-Gm-Gg: AYBFou3toNA9RYkTSU+zBp6EhGKDjKUxL0XnOeTmfvtnmRwSRaW4wjw4GvcnL0NLZ/Y
+	TXYUhUmBj9v3LW9s8K4EXlmOqWTA41esaXV3bojwb+1i+1UB2eD9Gc5vIkUpAEgO4ltacYVq0HE
+	V/Sw3jshTPbki+u3FkLgpjvo0KQ3vzliGSkSQ+hioR9qnZMVCyhlp4wtR6dUAOx+5qgk5AGgwf6
+	Nz1E7diEhYVh2nJd6ICJJDPCWBrbn5NP9EM6+szbCZ4mpHJDDClAbJeAVf+yBFLyEAWobpNbLXj
+	Yki67PyB6cxPlmtsSM0goqiYlW5YAP+R44dWkGPbPzAcSoA5rgPG6lPcBLZobAT4ic6kS2RLrd8
+	YFAx27jbGsGDwDQ03SnkBoJv712hOGA6xXbmbPOv+o8RURLrhJRf6brkDAVNmIpXD7XuAtC3RDj
+	MT18kLQbur6Vci4JOfbcYkkOU+HFP99j9LzR5J0WLsbq6jRGeH0khSdQfzxuC0U1fu70hEPAc0P
+	Ga7cLOl7vsVv8Zt6z4q3SUxZ+Z4OxRZfx3iRgXDNieDVhUY5rwte3oyPiZjTJA/WDbSF/KZvTcn
+	pQ0Y7WcS3BtT797zkq+6Rw==
+X-Received: by 2002:a05:7301:2710:b0:351:207d:bff4 with SMTP id 5a478bee46e88-36a42203e2bmr20325803eec.4.1793702429355;
+        Tue, 03 Nov 2026 02:40:29 -0800 (PST)
+Received: from lion.. ([104.192.92.238])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36b13bd87b2sm6024447eec.28.2026.11.03.02.40.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 02:40:28 -0800 (PST)
+From: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+To: Eric Dumazet <edumazet@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Neal Cardwell <ncardwell@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	netdev@vger.kernel.org,
+	mptcp@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Tong Liu <lyutoon@gmail.com>,
+	Qi Tang <tpluszz77@gmail.com>
+Subject: [PATCH net v3] tcp: prevent cross-family skb processing after disconnect
+Date: Tue,  3 Nov 2026 05:36:33 -0500
+Message-Id: <20261103103633.2707416-1-zhiyuzhang999@gmail.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -51,86 +106,181 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND] net: stmmac: drop the runtime PM reference on
- probe failure
-To: Wentao Liang <vulab@iscas.ac.cn>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20261103102914.1341121-1-vulab@iscas.ac.cn>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <20261103102914.1341121-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 03/11/2026 11:29, Wentao Liang wrote:
-> __stmmac_dvr_probe() takes a runtime PM reference with
-> pm_runtime_get_noresume() and enables runtime PM before registering the
-> MDIO bus.  The reference is only dropped on the success path, so a
-> failure of the MDIO, PCS, phylink, devlink or netdev registration leaves
-> the usage counter elevated.  The device is never bound in that case, so
-> stmmac_dvr_remove() never runs to release it.
-> 
-> Drop the reference and disable runtime PM again on the common error path.
-> Only disable runtime PM if this driver enabled it, because PCI devices
-> already have it enabled by the PCI core.
-> 
-> Fixes: 5ec55823438e ("net: stmmac: add clocks management for gmac driver")
-> Cc: stable@vger.kernel.org
-> Assisted-by: DeepSeek-V4.1-Flash and OpenAI Codex
+From: Eric Dumazet <edumazet@kernel.org>
 
-Implement comments you received, instead of resending.
+A successful connect() of an IPv6 socket to a v4-mapped address switches
+icsk_af_ops, sk_backlog_rcv and af_specific to their IPv4-mapped
+variants. A later connect(AF_UNSPEC) calls tcp_disconnect(), which does
+not restore them.
 
-Best regards,
-Krzysztof
+The socket can then be reused for a native IPv6 connection while
+tcp_v4_do_rcv() remains installed. IPv6 packets drained from its backlog
+are consequently passed to the IPv4 receive path.
+
+There is also a race in the opposite direction. tcp_v6_rcv() can look up
+the socket and initialize TCP_SKB_CB(skb)->header.h6 before taking the
+socket lock. If the socket is disconnected and reconnected to a
+v4-mapped peer in that window, release_sock() can drain the queued IPv6
+skb through the newly installed tcp_v4_do_rcv().
+
+tcp_v4_send_reset() and tcp_v4_send_ack() then interpret header.h6 as
+IPv4 options. __ip_options_echo() can consequently overflow its 40-byte
+destination buffer.
+
+Commit 8cc3aef0cb19 ("tcp: Do not allow buggy transitions between ehash
+and lhash2.") prevents listen() after connect(AF_UNSPEC), but a native
+IPv6 connect is still allowed.
+
+Add tcp_v6_disconnect() to restore the IPv6 handlers after disconnecting
+a v4-mapped socket, and use the same helper in the connect error path.
+Reject non-IPv4 skbs in tcp_v4_do_rcv() before accessing IPv4
+control-block data. In the reverse race, the skb belongs to the
+disconnected connection, so drop it instead of redirecting it to the
+IPv6 receive path.
+
+MPTCP subflows override sk_prot, while two teardown paths call
+tcp_disconnect() directly. Route them through the protocol-specific
+disconnect operation so IPv6 MPTCP subflows receive the same
+restoration.
+
+Tested with TCP and MPTCP by reconnecting an AF_INET6 socket in both
+directions after connect(AF_UNSPEC). A socket filter was used to widen
+the native-to-mapped race window and verify that the stale IPv6 skb did
+not reach tcp_v4_send_reset().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Tong Liu <lyutoon@gmail.com>
+Reported-by: Qi Tang <tpluszz77@gmail.com>
+Closes: https://lore.kernel.org/netdev/CALf2hKvp0NPVLwr=a3+jUHtPohxbra8gox+aYAfWathJnn-J+Q@mail.gmail.com/
+Link: https://lore.kernel.org/netdev/CAL4WiiqFJpmcV4=TWRpukCq6q=-729658FwGvieNcPXe97kLvQ@mail.gmail.com/
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+Co-developed-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+Signed-off-by: Zhiyu Zhang <zhiyuzhang999@gmail.com>
+---
+Changes in v3:
+- Reject non-IPv4 skbs in tcp_v4_do_rcv() to cover packets queued
+  across a native IPv6 to v4-mapped reconnect.
+- Drop Kuniyuki's Reviewed-by tag due to the code change.
+
+v2: https://lore.kernel.org/netdev/20261101182736.430733-1-zhiyuzhang999@gmail.com/
+v1: https://lore.kernel.org/netdev/20261030032314.1978575-1-zhiyuzhang999@gmail.com/
+
+ net/ipv4/tcp_ipv4.c  |  5 +++++
+ net/ipv6/tcp_ipv6.c  | 37 ++++++++++++++++++++++++++++---------
+ net/mptcp/protocol.c |  4 ++--
+ 3 files changed, 35 insertions(+), 11 deletions(-)
+
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index a7f9242f1e42..8fa6564d2b60 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -1836,6 +1836,11 @@ int tcp_v4_do_rcv(struct sock *sk, struct sk_buff *skb)
+ {
+ 	enum skb_drop_reason reason;
+ 
++	if (unlikely(skb->protocol != htons(ETH_P_IP))) {
++		reason = SKB_DROP_REASON_INVALID_PROTO;
++		goto err_discard;
++	}
++
+ 	reason = psp_sk_rx_policy_check(sk, skb);
+ 	if (reason)
+ 		goto err_discard;
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index e006a30360ea..a93410aab66e 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -130,6 +130,19 @@ static int tcp_v6_pre_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
+ 	return BPF_CGROUP_RUN_PROG_INET6_CONNECT(sk, uaddr, &addr_len);
+ }
+ 
++/* Undo the v4-mapped setup done by tcp_v6_connect(). */
++static void tcp_v6_restore_af_ops(struct sock *sk)
++{
++	/* Paired with READ_ONCE() in tcp_(get|set)sockopt() */
++	WRITE_ONCE(inet_csk(sk)->icsk_af_ops, &ipv6_specific);
++	if (sk_is_mptcp(sk))
++		mptcpv6_handle_mapped(sk, false);
++	sk->sk_backlog_rcv = tcp_v6_do_rcv;
++#if defined(CONFIG_TCP_MD5SIG) || defined(CONFIG_TCP_AO)
++	tcp_sk(sk)->af_specific = &tcp_sock_ipv6_specific;
++#endif
++}
++
+ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
+ 			  int addr_len)
+ {
+@@ -243,14 +256,7 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
+ 
+ 		if (err) {
+ 			icsk->icsk_ext_hdr_len = exthdrlen;
+-			/* Paired with READ_ONCE() in tcp_(get|set)sockopt() */
+-			WRITE_ONCE(icsk->icsk_af_ops, &ipv6_specific);
+-			if (sk_is_mptcp(sk))
+-				mptcpv6_handle_mapped(sk, false);
+-			sk->sk_backlog_rcv = tcp_v6_do_rcv;
+-#if defined(CONFIG_TCP_MD5SIG) || defined(CONFIG_TCP_AO)
+-			tp->af_specific = &tcp_sock_ipv6_specific;
+-#endif
++			tcp_v6_restore_af_ops(sk);
+ 			goto failure;
+ 		}
+ 		np->saddr = sk->sk_v6_rcv_saddr;
+@@ -2093,6 +2099,19 @@ static int tcp_v6_init_sock(struct sock *sk)
+ 	return 0;
+ }
+ 
++static int tcp_v6_disconnect(struct sock *sk, int flags)
++{
++	int ret = tcp_disconnect(sk, flags);
++
++	/* A socket used for a v4-mapped connection must not keep IPv4
++	 * handlers when it is reused for listen() or a native IPv6 connect().
++	 */
++	if (sk->sk_backlog_rcv == tcp_v4_do_rcv)
++		tcp_v6_restore_af_ops(sk);
++
++	return ret;
++}
++
+ #ifdef CONFIG_PROC_FS
+ /* Proc filesystem TCPv6 sock list dumping. */
+ static void get_openreq6(struct seq_file *seq,
+@@ -2283,7 +2302,7 @@ struct proto tcpv6_prot = {
+ 	.close			= tcp_close,
+ 	.pre_connect		= tcp_v6_pre_connect,
+ 	.connect		= tcp_v6_connect,
+-	.disconnect		= tcp_disconnect,
++	.disconnect		= tcp_v6_disconnect,
+ 	.accept			= inet_csk_accept,
+ 	.ioctl			= tcp_ioctl,
+ 	.init			= tcp_v6_init_sock,
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 7a22e9388e0e..fdfbc7de2ec0 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2608,7 +2608,7 @@ static void __mptcp_subflow_disconnect(struct sock *ssk,
+ 		/* The MPTCP code never wait on the subflow sockets, TCP-level
+ 		 * disconnect should never fail
+ 		 */
+-		WARN_ON_ONCE(tcp_disconnect(ssk, 0));
++		WARN_ON_ONCE(ssk->sk_prot->disconnect(ssk, 0));
+ 		mptcp_subflow_ctx_reset(subflow);
+ 	} else {
+ 		tcp_shutdown(ssk, SEND_SHUTDOWN);
+@@ -3287,7 +3287,7 @@ void mptcp_subflow_shutdown(struct sock *sk, struct sock *ssk, int how)
+ 			break;
+ 		fallthrough;
+ 	case TCP_SYN_SENT:
+-		WARN_ON_ONCE(tcp_disconnect(ssk, O_NONBLOCK));
++		WARN_ON_ONCE(ssk->sk_prot->disconnect(ssk, O_NONBLOCK));
+ 		break;
+ 	default:
+ 		if (__mptcp_check_fallback(mptcp_sk(sk))) {
+
+base-commit: 5838f10563d58afca6711edb5e4eda968ca181d9
+-- 
+2.34.1
+
