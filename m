@@ -1,85 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.193
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793734403;
-	b=YMkp/TFJ9p3Ep+tvs5q68wr8Y5nF3iq18M3ZsR5rX/PRbHM4DHfMGLCsLeEuNrI5P1lO
-	 1i8tBJgQP9g+4IBLvKPHDOIEsmiTcaawiTKlEAKlmUB/NRG4tm1Gy4T1z4vjp9hx5gl4P
-	 eM3K50pBSrea+law/lW4l0EB1rbrxBjQcalDUaW5xKm/a3A7s2FO61jdlfYf4AcZz7RN4
-	 LwaYyMWQ3D7zrpAM28Tj7ZGJKbpdZBnLo5MX/L2FnAL/a8cR7YV87r9C9qw7kHo950aoM
-	 FsAXX92IdXn0Z4Iv7PIQBoczLW4Z2O4Vp+JEe7RQsRNProIlzQnHLl2e5pv42C1lU4g==
+	t=1793734405;
+	b=gLe6BE8Mx0jqWTXYNyr8b0GBtvnQicX1Ty0P2O6iUIefqZK1Z0jEXRrxfKxshGa3XaEx
+	 qUtetIU7/p735+VmDx+LAExGpG0hpU2lQNFtY6vHAJEtqWCmWwUV6WWj/mIKiM8EeHnze
+	 dqiMAUGWcpOaIK4epDECaNWEmK0Dic6mi83Dk+V2ZFpIwOkZQkGBRFO7fFi2WFQZtMcGD
+	 jmBGtO65sKVNahNvg1UBS7++kET7u3kK5WeauWUGdg0fxmcBMnuDFk4fxB0xVaV0dsmLy
+	 t9ZM7E3zsNyICMUC32ihRu5k9ft4RwiVw9mov73WzBoaZuCu1rOsfpTj/udVo6W7LBA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793734403;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793734405;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
 	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=+/+IILrbOopOCnLme60t9BvjxsRF8IeSCPeaXgfCLpA=;
-	b=SSKuBhujyMoEZ04WdkdKJECsZpas4Y8WrNXcZ67hwRJGQw192d4TXaqsOsjFIbl1tF9r
-	 E21Q56Q4Hajd5I87v4pO71jlf/0YIEGy75YHRdUwt9K++3x5xfTY4W9FtkSM4Hh2ttSVo
-	 jH3h5fs6YNw+yC9vAeUQABG4OOXggUIeR4j51qoAcTCvdm9aRXx8X4JWgVYrHGnLaCRN1
-	 j6IXxBl9ZPtxFKRw62FmkdWSjmeFs1DeKtmbOp6rTGhI2x4lZksRkbahVEkUMR11X+wkJ
-	 pfqtQWZtHBpM0avQ5kBn7gHLUDUCXSqO65Ajij5fN5hmHWmqGYzPO1XwlKj2urzr2Ug==
+	bh=15RJraNkt4G9imlgns/mzHRKCrlWGmqvpmr2tllrIBY=;
+	b=KasRXpAll46cRW2EKfbDjiclJIl+LOAhfbYhHJoHxEaeSPm+q5QIaa1uEyJSnKBihVaw
+	 4Ati9gpoZ+ZGkgAvPo8mS0d+T+NXdZaLLdY6gCm9AX0lrH30pbnSQMtmUS+2mi/tw5PM6
+	 sHnebTqWVfd0v6c7VbQQ/D7UIyLm52iJPFkLcEHhYWTnvtB1otp4iI84BLT6RbyMnojr6
+	 EaH2SXLgbx3T5bVAc9+bQeigIb41NMPzMyrIvRvmb3Jn3nYb4oXFAYZLFUlqkmA01E7wE
+	 gQUlOsDP6HfuMF1Z2OcUD0a7JFs6Yek5TV2jgrTQcpVINSua2BQFD/1ppqPpdwoVwdg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RLOlwJ3e;
-	arc=none smtp.remote-ip=74.125.82.193
-Received: from mail-dy1-f193.google.com (mail-dy1-f193.google.com [74.125.82.193])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wV02aST+;
+	arc=none smtp.remote-ip=74.125.229.8
+Received: from mail-dy2-f8.google.com (mail-dy2-f8.google.com [74.125.229.8])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F8C606A32E
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 19:33:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41F8C606A32E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98381606D80A
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 19:33:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 98381606D80A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RLOlwJ3e
-Received: by mail-dy1-f193.google.com with SMTP id 5a478bee46e88-35829219da8so1188146eec.0
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 11:33:23 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wV02aST+
+Received: by mail-dy2-f8.google.com with SMTP id 5a478bee46e88-36a6ce64b95so1346308eec.1
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 11:33:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793734402; x=1794339202; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793734404; x=1794339204; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=+/+IILrbOopOCnLme60t9BvjxsRF8IeSCPeaXgfCLpA=;
-        b=RLOlwJ3eELPPVZT985+ArtXPGXIAXSmgMhCqBjHZxWtFb81U4qfxqdHKO7E/nNFVxw
-         +dWZuJUojEVNTMMSr5KEdRvo7Cu9/yOSG6ezN/5Mux3zoIBZJRn7HuQhmQO8cjEWuFcn
-         7B+dr0mHGcivIrJbc2TbAHxL6fnVSWKdiqpw3dR1Ai+Z00xelMsZB+8oiopozrvxY48s
-         NxMmo6tT1bUUPZsnVT3DXrh3kOutM6RWm/fJDNUWJLQl4zWtaRmAEs7cYVFHP1j6QNIw
-         2TF9jiU4d9i/1vFgoS5Bbd1I/kcGnNAvVjYWdmt006xBeclMmbCc/J5GiG579Fx7M1wQ
-         BcLw==
+        bh=15RJraNkt4G9imlgns/mzHRKCrlWGmqvpmr2tllrIBY=;
+        b=wV02aST+LnFuxBvV4bpYViFOafiBAI18U+cmy1u7/O8lBLjisx42g0f7VqlS7j6qWi
+         fzZdeH2AtavuBEinDao1789fn1sBOJr3JreFzWRfnqHWIS3MgMOBh+kCvVGAjlYJmkjp
+         QgfY3aVLjOO27toy9Do9VDZOcgWKHeLvUXUJt9+QhVCfgJ8B4pweYXZ1VRn20ajx22In
+         N4rtQdS+6e7xZeweLYsATcu/Kuk3bCtZw5GIGxJKzMd7MVsi0m5Otgs1Yi62uqzl21Oz
+         tUF7KmL6ccLm27Tb19Y4GTxqG+Oyz0lqfrSYtZL/ELJWt//50dFblUY+uRpGpFRRPic4
+         ZEOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793734402; x=1794339202;
+        d=1e100.net; s=20260707; t=1793734404; x=1794339204;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=+/+IILrbOopOCnLme60t9BvjxsRF8IeSCPeaXgfCLpA=;
-        b=LpSYfAKYHhYlB1ruRHI1UyF9Ujzosta4tUVOjpRYeqB2fWK4mU31z6Xh7eRVqgUemZ
-         Vke6bdCtEztfSIE9uUy91PhB6GjLxeZ9WYzCw1ENhPWCIbynrFPTTbYwHZcNAwLtwzR7
-         o8PxplXJawsdaJLdIO0cbodBXmDvR/5+8rEfvrwb9YuOk7DPD5fK1pXW5ZaqYkv45+X9
-         nbBwY8a1HfROpWvsw9+iwgMQgfiLs0xULbSQ4g4JpqlArTBmfOWLzqX9u0D0T3XdCOFB
-         CgVhGTHU4Mkb5LNhQlz674cIew0u8etAgr6sSqqLlMX8yJXbyQx9PLqP18Ot0SrzHoP6
-         WmtQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxovWZ3cXVEjtrA/pdUawPaOrdkY1WhNmF71p5DVgTVXkmRzA56d+3P00JKaRm+UoVong1UhoI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/Zagf12YePBUQsgVRuWWju4+2hQ412baB8K+AuJs6suPnFcsKI
-	/QfN4aFFinWQ8DTEcvolcR9WRi/29OPFnNkqI2GfL00mDboNSa7AV5j1
-X-Gm-Gg: AYBFou0ofLoKBC8ogfmNNqEN+d6+oSKmgFUm1SNKhcuiHIO1Vyh7qVmpwnRIJM9lvfg
-	zj2Itxp9ms1y3a8SAI0GJL6ei9zwNv3e/nZqyaCZEcli2qtPuKt6BOrQOHIngn8e6Jov8u7GBEJ
-	Ays66Sb8lRATRfr470E4hbosYgS9qkyYas5kVC+/gVSFSR8CDVpfU+aIjsSvjOQQEcq2SJEB1Ar
-	tF5v79h4wSr7yckAj3AEJ0oJ1DSdNo1bj7U+namGDwH896nrTmc2MmzIz7CmDhbunhyePgExyAQ
-	vlCbNBos+FNpCA96tQkXaA3XFtsVaXi87qAVI5Zz6qRkgzU4PHtqbP4/wUaZ6oWkje8wjmtd+wE
-	gWOrUKFd9JMft9aQ13aP2eFl1lzRwdF63Uz9VadsQ/m3HrJTh1FRaplhQ8lTpRwc7lgfbgqwR9o
-	kUbo0T2axsjYutwqNMoWE3RxRGxI3NXSuFuxhqodVhIeee4NE8zrX6DnSAqimcGMKO9ombQJ+L4
-	1XudWV0nrQ3VaE9ssfBUy/Dus3FTQjUEIYa8Oyzo0n5P+i+1jqcIZ8rJXLqUelnfdyuWvakg/Ch
-	avjH2u6fFISteemB+P59Xw==
-X-Received: by 2002:a05:7300:f293:b0:361:a195:c46e with SMTP id 5a478bee46e88-36a2fd4c964mr24744916eec.1.1793734402208;
-        Tue, 03 Nov 2026 11:33:22 -0800 (PST)
-Received: from localhost ([2a03:2880:9ff:6f::])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca38a6160sm238153eec.9.2026.11.03.11.33.21
+        bh=15RJraNkt4G9imlgns/mzHRKCrlWGmqvpmr2tllrIBY=;
+        b=f5lwTy+WOhf5OS2pk7Zinze10/idIYUB8j/qtcea1kiAx6yhwlofU+SxY9IMGOCKcN
+         v705oO6lDfVZDNMn0Mz9JxqXvm6B+QkKf6qMIqSyJD4YMmRhANLIRC2DFlA7X0kDVKhW
+         8q758WkHFU7lRWCkHwL+/EHjB8N1QNmlrcLP7S+hWIzsHcmrml8rmAiapJnVqJjZ7Gaw
+         8D5nodYPWHZwi3oLgTwCMhBg0TcpSWvN0LsXc4rW6za6L0Ogc55E3LDh1Y9SaNdW+pqx
+         OaJgeoblpcSxRmp93ARAl51jHpcLhnRB5rJAcHv40d4ypREln25KJOj1fFBDH9gg1nKT
+         UjUQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx84wTdUnQhkN2W+ZPYgwN1kfcksPVorxGE/1jqYEwv/8BJUNKMWAS0z3h0NvzyTXbVzhxm5CA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z89KH2p5wryen72vEDUIjWYpf42D5ZhIBdt3QK3qmXAAngfSjQJ
+	yB3wasWBCoY+ESfJPQFLO8kEzc+O5wqnromITt/fsHfWYUZHrF6Kj/j/
+X-Gm-Gg: AYBFou0Y7hqUW/H1XbgD6okyZ2LL2EV2pnOW8QSUsdE0PtYdWhFAhxhfzkMk+Ev7Atb
+	aCCc/6sCzbQGYkP+MGgMul5I38gXot2XTY1oS1RL45GL7zCZblygJAeHl0d3U2ov54APYxw9P9E
+	u7+fFzPQC56iGSIQTFAoSr4SoVe1qORgTgH1PoomrdlnjB/YldR2PbyIIDf6wtyiPt/xH2MEEUj
+	BJ/D8g1EX65H6pqQJRinqFKMmhz8UJ3EGsW//cUzyNUR3TLYkT5hxWAs7vIMQn+CZzWic/W1Lh5
+	EIlcTnQWkFXaQJ1JvkuQIG7uSUlwKsKntQUQ3cpVRau2/U4bCz8CrK6vz9T5Trv/t2OHzEl8bpu
+	rEhgSoYAm7IX4NfAHaWgN/nlt5z+0wV47nB6Np76+wHsD53Q/nWS73C0WpJnULnu2YZPSLb4jcT
+	8GkqRsCx1XbznNgJVhbqOTqdbahvRIba6lXwPotbu5Kohol0t/Dv+N9KKjLQEGcjCSAVBkdFzip
+	fIbtx626LBeTjWgcZdShdvWhQEDW4cHOXDeMsJsYrWzPdpvJWaldOUe8F3lMNeEat6QFvWsV8kZ
+	sD66hbCwsdReY7OZO3QSFw==
+X-Received: by 2002:a05:7301:103:b0:36c:9af3:22eb with SMTP id 5a478bee46e88-36c9af32cb0mr2691600eec.34.1793734403660;
+        Tue, 03 Nov 2026 11:33:23 -0800 (PST)
+Received: from localhost ([2a03:2880:9ff:6b::])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca3785430sm527244eec.3.2026.11.03.11.33.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 11:33:21 -0800 (PST)
-Date: Tue, 3 Nov 2026 11:32:10 -0800
+        Tue, 03 Nov 2026 11:33:23 -0800 (PST)
+Date: Tue, 3 Nov 2026 11:32:44 -0800
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 To: Breno Leitao <leitao@debian.org>
 Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
@@ -95,11 +95,11 @@ Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
 	Eric Dumazet <edumazet@kernel.org>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
 	bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, david.laight.linux@gmail.com, 
 	kernel-team@meta.com
-Subject: Re: [PATCH net-next v4 2/7] net: cap sockopt_expand_out() at
- MAX_RW_COUNT
-Message-ID: <auo2s-G1DHiLK-hH@devvm16445.scu0.facebook.com>
+Subject: Re: [PATCH net-next v4 6/7] ipv6: convert do_ipv6_getsockopt() to
+ sockopt_t
+Message-ID: <auo21mFFkL2zH2MT@devvm16445.scu0.facebook.com>
 References: <20261103-sockopt_expand_out_v2-v4-0-2d36da923578@debian.org>
- <20261103-sockopt_expand_out_v2-v4-2-2d36da923578@debian.org>
+ <20261103-sockopt_expand_out_v2-v4-6-2d36da923578@debian.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -111,27 +111,41 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261103-sockopt_expand_out_v2-v4-2-2d36da923578@debian.org>
+In-Reply-To: <20261103-sockopt_expand_out_v2-v4-6-2d36da923578@debian.org>
 
 On 11/03, Breno Leitao wrote:
-> sockopt_expand_out() grows the output iterator up to INT_MAX, but the
-> MCAST_MSFILTER getters converted by the next two patches rewind it with
-> iov_iter_revert() once they know the real reply size. iov_iter_revert()
-> refuses to unroll past MAX_RW_COUNT:
+> Convert the SOL_IPV6 switch and its two remaining sockptr_t leaves,
+> ip6_mroute_getsockopt() and ipv6_getsockopt_sticky().
 > 
-> 	if (WARN_ON(unroll > MAX_RW_COUNT))
-> 		return;
+> ipv6_getsockopt() writes optlen back unconditionally, and
+> sol_ipv6_sockopt() builds the sockopt_t with sockptr_to_sockopt() and
+> stores optlen back as well.
 > 
-> MAX_RW_COUNT is INT_MAX rounded down to a page boundary, so a caller
-> that expands into the (MAX_RW_COUNT, INT_MAX] range and then reverts
-> hits that WARN_ON, and the iterator is left where it was instead of
-> rewound. So does a caller whose optlen already covers such a size.
+> ipv6_getsockopt() cannot use sockopt_init_user() as its IPv4 sibling
+> does, since that rejects a negative optlen and this level answers it as
+> 4. See "ipv6: treat a negative optlen as 4 in do_ipv6_getsockopt()".
 > 
-> Cap the size at MAX_RW_COUNT instead, before the early return for an
-> optlen that already covers it, so a size that could never be reverted
-> later is rejected up front.
+> Instead ipv6_getsockopt() applies that rule itself and builds the
+> sockopt_t with the new sockopt_set_user(), which sockopt_init_user() now
+> shares. MRT6_* is the exception: it has always rejected a negative
+> optlen, and still does.
 > 
-> Sashiko found this while reviewing the conversions.
+> The write-back also happens before the netfilter fallback, so an
+> unwritable optlen turns any error into -EFAULT and skips the fallback.
+> Likewise optlen is now read before the MRT6_* dispatch, so an unreadable
+> or negative one wins over -EOPNOTSUPP.
+> 
+> For the other options, a failing call that passed a negative optlen now
+> leaves it as 4 instead of untouched, and the netfilter fallback sees that
+> 4 too.
+> 
+> IPV6_2292PKTOPTIONS and the sticky options used to return the result of
+> copy_to_sockptr(), the number of bytes not copied, so an unwritable
+> optlen made getsockopt() return 4. They now return -EFAULT.
+> 
+> The extra code in sol_ipv6_sockopt() will go away when
+> sol_ipv6_sockopt() receives sockopt_t, but, for now, it only moves the
+> leaves.
 > 
 > Acked-by: Ido Schimmel <idosch@nvidia.com>
 > Signed-off-by: Breno Leitao <leitao@debian.org>
