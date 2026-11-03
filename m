@@ -1,57 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793702015;
-	b=YBy4gpg8Hz7iIbTqUBlfZqOtKytt6gC6yq9lpUqajgB7azr5OkjsuER0aJKBqUnZng5H
-	 awu62Qxn+5FsIxZdDrnuBvJJNZFOpZby+DhKq7TLv3wuwuY32USJDmxX4CPAemNRdCRpp
-	 79o/KxGfNU9ns+s+VrAPnK3GtwdHGhS9g41xJccM6i1pAlB9RJldx6L12ZxQ/tV7dRhF3
-	 AdY5lsWCvCR4/EGyfNBAuFVb6md0L+9IzyQQ0Xy+ZC1lmrzJc5tQCB4dA8n/C0T/ltLWA
-	 ewFEMKWS+Da5Vt7ebm7hSFLonM9a6aBdzlZK43BFwhq+wXbC1oW+8e31fGoD8tvBdVA==
+	t=1793702029;
+	b=j7w9ksninY8bcx//q/Il5lsvK1GCLc7VuZQ+qb4RJGATPZ7ITATC7zHth05DrH03suc8
+	 7Jj13ZtmFgpO4cxw+RjMiUdzAPkR/uahUspanmAXCHTCmllpbXHw0SVqvs6pqORHFPz6z
+	 lR4/lxTzG6dFev0kMBtdQf57t+2vuLofbyR5WMgiGW32kJs5WmWrgs8hOYVZkTm7MtYUK
+	 5nPt8LmOyN6GhPpTwjpepD8PnUHhK7awEzR/rGi5dfducdfEa73Kjj0bBZmdaqDA6uObz
+	 OVVtsnwOM6mr2XiMW1iRH33MMZGPE+Fp4pOUysSvy0pXJrHp8A2ft4OjdJ6Fo+4Sr3g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793702015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793702029;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 In-Reply-To:References:Auto-Submitted:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	b=azBKLNB44DnxH59fA3pwnfTw33zR2GMc2HQbe2vB9wqcCxW81gQfvGySp/7Fs5/7mYJH
-	 Kd29/DXEziN7AaibCUfHgXUz2H588Q3pAFHcFJIUJ5DvS4d0ybaYLXRFBsinhhLPZZrFp
-	 +07gvszniBGD1HxIlibDBHwdDxvXrOmr4vClt74R32dNdT9I1bKjgjJYxluQx0MwYZ+yw
-	 ef9q+Besmg3s4ajzS6PnDmZk43ke1iE0HE68t0Fj9RlOasAquTyFWuWMiV6pe9lZqw+LC
-	 IF24ubBmwKolLfmrKUuNXNcUCmPUs2hBdWrymagXp/FDhH8uU3QrdRWO+1Bpx7AHpqg==
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	b=0RTDTlzCg/rBgp3pm8XRGUNB3Gfae67aYoX/olqv1CrFvW2qjwCZlc9iISCCB2hULCZ6
+	 6tMS8zl2sPS61/fItqhGM5g5BKOavYbSY55QgBTiazOIyYdkHheh5Du7dbmo1az4IPryW
+	 Cu6VjcO7GZDQN2toN9aV3sPzBX2PgGYr/4rwt9l2ubTnFScLgegWgNrP6U6De8+4QTW7x
+	 BsEzFlLIANGhmvrZJFUJh25jgpbFdqBG78DhI41LXo8uI0dKN/j2/qnwhxNrUXaTqz6Dr
+	 dYbJFqF61JT9dedb/Vqe7Z9Lie3Y6SVh5AewRgRSeV1AMI5Kq8PJ57mApTnpXoq0Pyw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=COdMJRxV;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DkeSnErc;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F7460711F4;
-	Tue,  3 Nov 2026 10:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FE060711C3;
+	Tue,  3 Nov 2026 10:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=COdMJRxV
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF3A1F0093A;
-	Tue,  3 Nov 2026 10:33:34 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DkeSnErc
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1689C1F00919;
+	Tue,  3 Nov 2026 10:33:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793702015;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	s=k20260515; t=1793702028;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=COdMJRxVRMNBPJ2eLUzvpQ2oK+tHXZ/h0LVNcWYOa/PBmXamdAOWXKkFDghFyycOG
-	 7w+ec7jFVaA8z2ihY9HIedjOTLH5d67ongye+FgVM1ym19VO8dHD9w6Hm3gklNiDNx
-	 mCs+Z6uKmuxOFpdv2K9Pv9guevn2Tr1IJZNHMdpsb5B1mSAMC4zvgAfZ9v4IurXoWu
-	 qZjNDLUZckVEvDN92xq+MXr0UwNUFwLzPiKRwJOBEnvoIovxGFhY/hV8aKaAauTeKT
-	 njAHMLNn7wECTThIm4ycsajPnnJA5reJPzfJCe2uPgBVfMnw6XWfTFbhBhQUVgW9W0
-	 fGAtOHu4AIbuQ==
+	b=DkeSnErcN8V5IjQdx8qDnZy5rv9ydNUpG4dp81QYzlI634014mZ92h4UEZpbnomxM
+	 3Jy4Dsel/u5g62wxRx3He3uSLWTlrW3HE8vPa0rFaTeel+rpk/PWAJLRDJACtFC/pm
+	 fbSyA8GHTXLH1Ps3Mnu2aLu8latpnmnD5cnmvH12cnxGIAcH68wMuzGNRZtchK+OiI
+	 GZTqwjD1xqy0nyRPnf4nLAkWtJ8iEwS77A0A2NNKRA8KsDHRsE4YGkpIU96EJ33dDq
+	 4fibLDzrBzzuTtHup6CeiRg2wOwDykXt/ulaJnfxzMiA7BdGmiQTJ09S6R56X09zxP
+	 ArpCl0VQ9hqXw==
 From: netdev-bot+sinfo@kernel.org
 To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+Cc: Alexander Aring <alex.aring@gmail.com>,
+ Stefan Schmidt <stefan@datenfreihafen.org>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, linux-wpan@vger.kernel.org,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: 
- Re: [PATCH] net: ethernet: sunplus: spl2sw: release the port node in probe
-Date: Tue, 03 Nov 2026 10:33:34 +0000
-Message-ID: <179370201418.488859.14883668724268761020@kernel.org>
-In-Reply-To: <20261103102852.1340500-1-vulab@iscas.ac.cn>
-References: <20261103102852.1340500-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH] ieee802154: fakelb: release platform device if driver
+ registration fails
+Date: Tue, 03 Nov 2026 10:33:47 +0000
+Message-ID: <179370202766.488859.9817846542273017775@kernel.org>
+In-Reply-To: <20261103102854.1340581-1-vulab@iscas.ac.cn>
+References: <20261103102854.1340581-1-vulab@iscas.ac.cn>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -77,10 +80,6 @@ commit messages seem to be missing some information:
  - Whether the issue was actually triggered, or is only theoretical
    (e.g. found by code inspection). If it was triggered please include
    the symptoms, like the stack trace or error messages.
-
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
 
 Please do not repost the series just to address the above. Instead,
 reply to this email with the missing information, so that reviewers
