@@ -1,61 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.251.105.195
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793700630;
-	b=Dm32sfWSTKP3EsP/dTx182i54iOEchXxvcX1l7D8SocUq+BXJJz6aWz5Fe8JeCCN3gTF
-	 HNR93v/k0n3oPAZVhv4v/sFsnYPnoa63DuY8X8hc+4fpLK+NHGAWTYqx8Nmn9W48EEVmm
-	 hVURdemA1mhi8bI444HrD7rh0HaGQe+aNVJN792XXr9+1dLqZdDY6y57BteFere/yoedx
-	 cEZTjzR56q8cPzRkiksyNiiiIiHg/Il3ZkW8usuxAV9I7kGlrLrx7ZCWCiS5hNHCqxMZm
-	 TNAjXJ/bi1AuSCRvA61YiNzNZVxaW+MrjlOlE41frRb2GfzRot1FKPHVIF7K/y/05tg==
+	t=1793700758;
+	b=3BHe19BqW95CAjAiSlq9A8lTidcJD1tbqXsamK3iTDn/S8xoducslV4TqeS7MrK5zaGh
+	 SvTf8E+1JuEOzoe2lFY5SY7Xy/71wX9QKZPz9M/gTVIVBrRAKR+sGrDGLrEQsAUh8LkEI
+	 aALNJMljd6XTxSeIiOsu0TzI2OVOj+c+6pw8ABarRIk7C9f2WVuEL/nAGaoa3mFRTOV8X
+	 /MyGlYYdZRx8iadVfomVGA81vl1vI4xxZc/MyHuM5fWV32ZkN/wOLh/LAjK/U7bwymw3V
+	 bCEMNsequQ0yVaV9YoJ/f7CAD7i/Qt2qQfYQyLgncdxh0SgFtvOCvWVTQ4t8k0+9aoQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793700630;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	b=zJUyjmQmBKyrXLXLxmgjcJJvM2eAHnqoUJZ1x8ZpfS4/mzynnvICK27LL9B1/6Zh8kGU
-	 jQSN0bTd/fl86YRBUUJ8wqpPVBEKEfE1oETkEFWxusB5vyJ0WriL7S4WuB30MUDW0xR2s
-	 I/5vZOgyu52nq5KCwXuSUU7qU9B6x9Q+gQkPUHwu0xJsdcWWsPGV9Eab0ggc+M6XVC2XL
-	 c6kkdgFckyY3o6cBiCL1YPlwQCWTNpREKImLWbLX5MOfaph1Z9EiAPZNH4q00e9JXnkU/
-	 8DI+AqnRi9X+eXZhlIyS+GhO3xBPHe8I1hP6+LoTStH9vb9cQF0SRyC51yDhtQAddVA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793700758;
+	h=DMARC-Filter:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=4i3sIx5PFmi/QA+2lJ9qhcTbIsOgOaLUsN1CPUxpHWI=;
+	b=4DJTqDa/h5RgPJZ+DF0cO1/NCFn1pOvORlXTU3Bfn8sbvZyVllMMQwm1kQZbDsjDPXtF
+	 7tPXOqHltES83ZJKvUXFMil5OAyFDdbpTI+ILgADJ18RtjEk791QWEhwEw2jKQ6rk73TZ
+	 s11Fntq71gE5zqfAsZ10Rn/zrTNRNrBOv6rN4t2HNnsDFqvwDRG34ad+vScwJhe8mS2XA
+	 BZj01fkyaA3Iamny4QckRZgDMEqr36vtAPNNzVxFlc17rrDMV27ZuyuddHuCDcDLsZwEF
+	 8RcF5kEsROZa7SBNRtrYGx+INf9xFmbQ5uXpgyUEp22BsQRRpcrUQjtKUtAkMnmsHkw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="QP+RRhC/";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=jLwi4hn1;
+	arc=none smtp.remote-ip=148.251.105.195
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D36606B122;
-	Tue,  3 Nov 2026 10:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CEF606BFA7;
+	Tue,  3 Nov 2026 10:12:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 34CEF606BFA7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QP+RRhC/
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C1781F00A18;
-	Tue,  3 Nov 2026 10:10:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793700629;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QP+RRhC/W4UZqSY4PiK1IEXOdqtTx70G+GFGuip7b+PtltMIYimWqcBOhH7eoqSzP
-	 JyGGvo7wDHmPdewJTbZDT6WDb/aNNv7PvqxOKCaKKnkpWjKrVQK2FhK3WC13gPvrNH
-	 Nf0QtCAFwwxX5GtKhUqSI4WgDLOO7WhgOTQUXJav94UtbKlEw71X92miXGRPfilsMM
-	 YtjFLqwjGjnq91s224Edw6I1FN0N/C/914u8dxl8uokkspw24lMPPWKcFoWj5AbyDo
-	 Kychd6JKF+YoGZBqLbHLQiZjlW/8yBjiEeXQcJBQ/48a8FpeS5W74Iol3ezkvp5MrE
-	 Dlu4+KHKpBI8g==
-From: netdev-bot+sinfo@kernel.org
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: Marcin Wojtas <marcin.s.wojtas@gmail.com>,
- Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] net: mvpp2: free pending TX timestamp skbs when the port
- is stopped
-Date: Tue, 03 Nov 2026 10:10:28 +0000
-Message-ID: <179370062811.488859.14852630470087836565@kernel.org>
-In-Reply-To: <20261103100535.1310088-1-vulab@iscas.ac.cn>
-References: <20261103100535.1310088-1-vulab@iscas.ac.cn>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=jLwi4hn1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1793700756;
+	bh=0TzXPCqhnAZdv1lntTYvhZMEiSWTRD2NSeGZbyDZDJQ=;
+	h=From:Subject:Date:To:Cc:From;
+	b=jLwi4hn1VF7BN+ljLF2VUJe+bnvlRAOjxPMqm7BC5MN9mr2xUsglKV4TITZVqTQx0
+	 OVSsJIOBawzP/NcXSlfdEXbbrZqgQSOVd4e/5MjfgBKaDuQr8BBsgBBEV0wm9EPHz+
+	 wHfK22nt0yXMjvuTHP8q2bIt7coUni009fLnMNy0nBcjlAGeXLhCCDeOrMTWt8fGuT
+	 qt0BKJ1x+w6pzw+gTHmk4l7O4frn27Utam9Dz0md+7EOEBq1w/VdQ4FwSolIS+7EG1
+	 NHzucvArAFq8gaCITtyTYUzBLx4MY0hLRiEEFZvaaHIPPOQjlBrGjG6gpuQ7XmdFMj
+	 KvksCDQ22fMMQ==
+Received: from yukiji.home (unknown [100.64.0.131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: laeyraud)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 351AD17E0564;
+	Tue, 03 Nov 2026 11:12:35 +0100 (CET)
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Subject: [PATCH net-next v4 00/10] net/stmmac: Add Mediatek MT8189 support
+Date: Tue, 03 Nov 2026 11:12:05 +0100
+Message-Id: <20261103-dwmac-mediatek-mt8189-v4-0-c86c14fc50f4@collabora.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,29 +63,155 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XQzU7DMAwH8FepciYon02zE++BdnASh0WsLaRZG
+ Zr67kRhAgnRo2X75798IwvmhAs5dDeScU1LmqdaqIeO+BNML0hTqDURTPTMMEnDxwiejhgSFHy
+ lYxn4YKkNEFHaQVnNSd19yxjTtbnPZMJCJ7wWcvzuZHy/1EPl3nawIPXzOKZy6IzrwangPNd9m
+ z+lpcz5swVceVu4ZzE7WVZOGeUmSqURwIN88vP5DG7O8FjPNHUVv5IVak8SVVKSuWBU0Bjtf5L
+ 8kTjj/Z4kqyR0/ZJwzkep/0rbtn0Bsy6ctowBAAA=
+X-Change-ID: 20260703-dwmac-mediatek-mt8189-9dafe3984951
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Biao Huang <biao.huang@mediatek.com>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Eric Dumazet <edumazet@kernel.org>, Eric Dumazet <edumazet@kernel.org>
+Cc: kernel@collabora.com, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+ Andrew Lunn <andrew@lunn.ch>, 
+ Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793700755; l=5597;
+ i=louisalexis.eyraud@collabora.com; s=20250113; h=from:subject:message-id;
+ bh=0TzXPCqhnAZdv1lntTYvhZMEiSWTRD2NSeGZbyDZDJQ=;
+ b=j5i+d75ricLzUd8rrv57THjEU0yDR1kthxZORFcAxxqwSioD3LOuB+bIf4ycV8XT/OHlgXeaz
+ toaRLsHFjC8C8k7eZKzPjIBH7KRIh8lqR17fRStihJQTwpWTlL2kII3
+X-Developer-Key: i=louisalexis.eyraud@collabora.com; a=ed25519;
+ pk=CHFBDB2Kqh4EHc6JIqFn69GhxJJAzc0Zr4e8QxtumuM=
 
-Hi!
+This series adds the Ethernet support for Mediatek MT8189 SoC and its
+variants (MT8371, MT8391). These SoC integrate a Gigabit Ethernet MAC
+with RGMII/RMII/MII interface, with a similar design than previous SoCs
+such MT8188 or MT8195.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+This series is based on net-next tree (sha1: 7b6ab4dbc156).
+It has been tested on Mediatek Genio 520-EVK (MT8371) and 720-EVK
+(MT8391) boards, which both integrate an Airoha AN8801R Ethernet
+PHY, with hardware enablement series ([1]).
+It has been also tested on Mediatek Genio 510-EVK (MT8370, variant of
+MT8188) and 1200-EVK (MT8395, variant of MT8195).
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+[1]: https://lore.kernel.org/linux-mediatek/20260924-add-mediatek-genio-520-720-evk-v3-0-2ec5c80677d4@collabora.com/
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+---
+Changes in v4:
+- Rebased on net-next (sha1: 7b6ab4dbc156)
+- Added Reviewed-By and Acked-by trailers in patch 1
+- Added patch 2 to add deprecated flag in the mediatek,tx/rx-delay-ps
+  vendor property and update their description (A. Lunn)
+- Dropped in patch 3 mediatek,tx/rx-delay-ps description changes
+  in bindings and patch description (A. Lunn)
+- Patch 4:
+  - Used single delay stage divider define for both RX and TX case
+    to simplify implementation
+  - Added MII delay definitions 
+  - Dropped Reviewed-By trailer due to changes
+- Patch 5:
+  - Fixed MII/RGMII delay stage divider inversion (Sashiko) 
+  - Used single delay stage divider define for both RX and TX case
+    to simplify implementation
+- Added patch 6 to add the standard internal delay properties use
+- Patch 7:
+  - Renamed delay stage divider fields in variant struct (M. Chevallier)
+  - Simplified patch implementation by using one delay stage divider
+    per mode in variant structure and commonizing delay computation
+    in new single private function
+- Dropped "net: stmac: mediatek: use TX clock phase shift in RGMII mode
+  with 1Gbps speed" previously present in v2 and v3, as suggested by A.
+  Lunn
+- Rebased patches 8 to 10 over previous patches modifications
+- Link to v3: https://lore.kernel.org/r/20261016-dwmac-mediatek-mt8189-v3-0-25daf2bbcf35@collabora.com
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+Changes in v3:
+- Rebased on net-next (sha1: 6b3e73774815)
+- Added Reviewed-By trailers in patch 3 and 5
+- Added patch 1 to fix unit in rx/tx delay property description
+  (Sashiko)
+- Patch 2:
+  - Reworded patch description to add clock list details
+  - Removed the specific MT8189 clocks list so the axi and apb clocks
+    are also described for this compatible too and reworked the clock
+    list and number check
+  - Added mediatek,rmii-clk-from-mac as not allowed for MT8189 (Sashiko)
+- Added patch 4 to simplify TX/RX delay handling in mt2712_set_delay,
+  as suggested by M. Chevallier and modified following patches
+  accordingly
+- Fixed in patch 7 tx_rgmii_delay_stage_div null case and register value
+  in mt8195_fix_mac_speed (Sashiko)
+- Added in patch 9 the axi and apb clocks to MT8189 clock lists 
+- Link to v2: https://lore.kernel.org/r/20260924-dwmac-mediatek-mt8189-v2-0-430bd74d5ef9@collabora.com
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Changes in v2:
+- Rebased on net-next (sha1: 528de6832b21)
+- Dropped "net: stmmac: mediatek: rename MT2712 and MT8195 variant
+  methods" and "net: stmmac: mediatek: add support for TX deallocation
+   adjustment feature" patches, present in v1 (M. Chevallier)
+- Patch 1:
+  - Removed rmii_internal clock from required clock list (A. Lunn)
+  - Added MT8189 stage delay divider values in "mediatek,rx-delay-ps" and
+    "mediatek,rx-delay-ps" property description (Sashiko)
+  - Updated commit description
+- Added patch 2 to simplify TX/RX delay handling in mt8195_set_delay
+- Added patch 3 to add RX/TX delay stage divider in platform data
+- Patch 4:
+  - Replace MT8195_PERI_ETH_CTRL_BASE by MT8195_PERI_ETH_CTRL_OFFSET to
+    harmonize the variable and definition naming (A. Lunn)
+  - Added Reviewed-By tag
+- Added patch 5 to add the TX Clock phase shift use in
+  RGMII and in 1G speed
+- Patch 6:
+  - Reworded flag and define names to explicit a bit more what the
+    feature does
+  - Updated commit description
+- Patch 7:
+  - Added the new definitions and needed fields in platform data
+  - Updated commit description to add the info about MT8189 RX/TX delay
+    stage divider and maximum values, and remove reference about 
+    stage fine feature 
+- Link to v1: https://lore.kernel.org/r/20260707-dwmac-mediatek-mt8189-v1-0-17f345eaaca3@collabora.com
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+---
+Louis-Alexis Eyraud (10):
+      dt-bindings: net: mediatek-dwmac: fix unit in rx/tx delay property description
+      dt-bindings: net: mediatek-dwmac: deprecate rx/tx delay vendor properties
+      dt-bindings: net: mediatek-dwmac: add support for MT8189 SoC
+      net: stmmac: mediatek: simplify TX/RX delay handling in mt8195_set_delay
+      net: stmmac: mediatek: simplify TX/RX delay handling in mt2712_set_delay
+      net: stmmac: mediatek: use standard internal delay properties
+      net: stmmac: mediatek: add RX/TX delay stage divider in platform data
+      net: stmmac: mediatek: add PERI_ETH_CTRLx register offset in platform data
+      net: stmmac: mediatek: add support for TX clock output enable feature
+      net: stmmac: mediatek: add support for MT8189 SoC
+
+ .../devicetree/bindings/net/mediatek-dwmac.yaml    |  52 ++-
+ .../net/ethernet/stmicro/stmmac/dwmac-mediatek.c   | 374 +++++++++++++--------
+ 2 files changed, 278 insertions(+), 148 deletions(-)
+---
+base-commit: 7b6ab4dbc156e2f96419715130b3d5738a306c93
+change-id: 20260703-dwmac-mediatek-mt8189-9dafe3984951
+
+Best regards,
+-- 
+Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+
