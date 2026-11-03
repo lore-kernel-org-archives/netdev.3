@@ -1,110 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793744093;
-	b=M0eCpR2pLF0pmypN9jkHd9FZeRmLA1i4T8klxFSrSjR5GKPM94p4lsAfpDbiqTRPBGQp
-	 cHrTkBxyFEMmwM0NbyU+QBKaRO8iz+QQdLlrOM95jlIqLKIgvDpgho5RYRdB9yYoRqm/f
-	 970mA0SbYGhCyA1QL/rfwnpbRbrspERZCLu6THBZmEdY1RrJbolRPe4NlXhiZ3R+42rKi
-	 09H+61UE7BCwWsYQDZkNncM1fqvZi20+gkL+nWzD9XkauWF1uGXyFogyjgP8rxRZEMYCu
-	 91/QI0g7MtTvMNWp5fFuHB+aKGoS6onxPtR1WHWFf3PoVtmbakDZN6yqwFdBcF0vx5A==
+	t=1793744599;
+	b=lZZPVX+YYd+hdyVRFIB73+ow5PdcyzTcurBfUDof9X3tXgtiI5eEeY+5/CD6zVh1sjok
+	 +T7xYEHavuqvfmNnSC4JII2E9f7Iv8SDXST9800y4eneBhgfxy9Dycn6VVNLNNXKAVj0n
+	 YuUtuhweyQsUwlfg/kCDv/65XGvTPbagbhaR+IDTvEYmXuzkjiv5Tl0gOGxPcNig0fAl6
+	 z8FOB4F0Ye9zLmRwf+4aXsPfLULuTqn6XxZZ3dP6tKejuvtSF0Y1ftzOoU+cJUTX+9vWS
+	 QdYySBIlVgZIJZ2PcG3vCA4SyCbx9GQDol8OVVz6Qje3DAtjoiB+FISLPqip/hB84tg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793744093;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793744599;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=+Gr5bWZcYgumQbnVFUL+12XP1Z/UJrPiizeHxuglwVk=;
-	b=HgryekwMSQp7RQ6+TfpWAR8ZSzxB6OfcE0oZDhULwSwXGvPV1dWBNRXK1Q+RfbjTg3uF
-	 9ZmzUaIAtvjcna+1Yf5dB5yD5Yh7by7P/d3AdX282zp+3JB4TcxwvkJoLuUeO+H81DrYd
-	 QdGtLUkiVcnRCUlIyGam7WHEVftJ3ie0RkLaW1zrd1h81RFx2Q2gw2rihaolgUNATAcW8
-	 zWOBDmwmnuBc0KiC15PyX5k833Zyc+sU3oej/K4BY/jSyxWLdA6n6GBbsqANBe+8si81R
-	 BuejbfNMXs1NU1EaLAA5W9Ps7hJ6TUD/Qac9ofuvCkyknMoKPJGgrwzSeGirwCK8h3Q==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=iGr4yuTjefH8ZNfeidLmCflxZz4RxW5d0w05fPgAcqY=;
+	b=02OSL4Gv/KONPhNKR7Squ2aBDWFn1LSr7i7uiYw5u8o7B71pYwjwBL4+73rp/T2iEqJX
+	 z/g5/+b+j12FKdFfzkADICvEgL52hhiT9MuI0TE+PwLKAEA2IR9JUptAVrI7ESNPLX3iL
+	 fIaqukzz4/atQ3AEkGIo66hWSrrAb4NetMOjXVVVjVZnmU2oglAl/G0QSDvhleII0+Ap2
+	 PZ2qwUKzXK7X/03R/e85dpwp5SU22ccRyYvmULFVVeHFxykcffbSAmUdlryBvzykRx49M
+	 95y+PHSDSpS5yft3Lof1u6flI/EeSwIoNp2glH2rNQ87AnJzwzUiSJ48cQXV/Ez6jcA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Nc3fbsAF;
-	arc=none smtp.remote-ip=209.85.221.52
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=c1a4sCHR;
+	arc=none smtp.remote-ip=209.85.221.49
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F610606D813
-	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 22:14:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F610606D813
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BEF4606D82E
+	for <netdev@vger.kernel.org>; Tue,  3 Nov 2026 22:23:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3BEF4606D82E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Nc3fbsAF
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48fd2e38825so48622f8f.2
-        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 14:14:52 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=c1a4sCHR
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48df8fe8513so75003f8f.0
+        for <netdev@vger.kernel.org>; Tue, 03 Nov 2026 14:23:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793744091; x=1794348891; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=+Gr5bWZcYgumQbnVFUL+12XP1Z/UJrPiizeHxuglwVk=;
-        b=Nc3fbsAFwQLcZ+tb7po6KLX6VdqQ+Q6fQLjoTUXMMwFjDeKa28sKPm6Ji9A/N+75Nl
-         jgWylAHe57MoMhsCSYmX9/g9xE5ctQZtZqXTXVyEDthM0Xaw95kMgF0Rnr41U+4xToBu
-         9oveUtKAeRyVgFmYvUFW84WYknTA1FCmEKlQDT1S2SnxbNSpbo0v3pOI6VAy0fuupiD0
-         1HnldulSer/eS52AbkIYCrIcsGLnIyzhCRMnLoNX57PTOBl3/1NN6a/UWLo7+G0NKhKJ
-         j6rSCfNt/qMScvorIMP6m9DAhhevIBh930aF02E2DtBSPFlZhPDcHZRjMIKP9dt0UAP/
-         yD3w==
+        d=gmail.com; s=20260707; t=1793744598; x=1794349398; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=iGr4yuTjefH8ZNfeidLmCflxZz4RxW5d0w05fPgAcqY=;
+        b=c1a4sCHRs1R+HVGA0+smgfHw8U77MLHfiDhHaSSDZM0rMyYJM6NJ7y/aLc9PMYvMVE
+         aEImCURBIakHt1zdqXNFUDlV84a+zq9LpoM/Ew4Ftv/eOqVx8RM3fsncbkztSwk0HToa
+         qmHe5uB8FlQrv3tM9B0mYp9yro7N2iJaDYVtBUcGeFYvnatIZpoz4H7ofchRtbc1FeQ6
+         HmUTIn4o6jUP2sEpSnVxWb4t8Bynx1S+XGYDDBPYxgJN8MIenxD88qEmzlw2EgKYjbrH
+         J8ntbQ+3vS64o+r+cxZC3TgvBHdZ620m577ridfNOYiwXfFxvLYn0iqRsn6swLbP0Q0m
+         RuyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793744091; x=1794348891;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=+Gr5bWZcYgumQbnVFUL+12XP1Z/UJrPiizeHxuglwVk=;
-        b=JR/Ngi6TVjzexa8eyEzLnBzq7rbSz6AL/MeLVua3auM/vNZkGcbRMpyjiMDypANNAa
-         QFXptmU8SxRe3QvQVtcaT2OMpMejt4uMt5QeeP40U7CrPQpbjGrdbug9j738evsmEY+N
-         Ogxz4bviC8eonLZP0fe6fhCj1Lktp4VWmNXpKMc1VLbeJ/j5H7rLOQkwJiDl8Z7PCHZs
-         njuuYxqtFAza2lFwoHOTmxSrww0x9JCrYWUsk3hyx7z/WCzRsM5Wn1hHX9V2trAf+Hrc
-         ZZb78BmZK6mh9MOOjFHwdvnB0Tm8VIwemp2jILPt9FoMF5wYSNlmhoESgJPeTeeV5mnk
-         Nlrw==
-X-Forwarded-Encrypted: i=1; AKwUvByAfjprQjx/SyXuxFNCzAizHOJKmZm3NRtxObMRaKijDa49+h7m5N92QtcHr43qStmK5FnD+u4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9Kj0AM0cd49KW29d4iIe8bn/Gco4/ZcE6paIT0y+hfX9pyuNFA
-	nDS7mZwBwANRiNlph2UH2GfLqPSh4eRRozP9sXiAOs+EV8ILZxdzbdzkCsvVAA==
-X-Gm-Gg: AYBFou0qF+PYY+7EmNHUCxTv46QtracZUF/3M2HqBmYYSGVlsIom/+Xr/9g86/QxegY
-	SIuwCZ5W0gxxzLR97t7Oo8B8qpEC1vboDt27uvEFiffo3e74cz91ISJp1plpuPkoH1iCWU7PBsP
-	fh4tjGRLyiIiZmdweH6zO39dLgTVMDBJf3zILmTY2/alLRGgSXiZWTJVEmSSwjgTN8/Mg2VPQaR
-	VWfdbMoIy1M2dPLXTVk3hslWlZel8+zeVlUsgrWHqcOKNUd8vzTOJVC8nlCJZhJaOf8zBTtKWfL
-	xaeZe4eT06k6JDtI1y8DfqJ0U9Mfbkct5cQSE8mGzkva+gvytvZBJJXmWvazZpNhuvCgNzCWp9q
-	kw+6Ib1SyWEnwE6yhu9S7y4GaofouSKTIwGwSKy4mKdR29F+VnSEgdVF5a7dWm4Suryvjp22G3k
-	69dAythoIVAi9LAP2sGWEiBFhu2ex07oNHkjfSO6vXOzykE3/2MU6gzm3hXppOHP1RWk3l9CbSi
-	xidEwgfhFxYfqMXyz/MRziyV0hPDa4AYI6gxBWQ5Y5Yat5Rl375Ig2eQAlFgpzvDHILLxvRCC+C
-	O9gMt4sYDdJE/vcxG2eo8BPTB+5RMMwlwRMVS4K8jLF0bH1S4rBZXGlI5xJfT51l5nOcQBIYjaG
-	NL1LNyk5sF6GtFdR5x0aB9KctWhYXXgWmSQ==
-X-Received: by 2002:a5d:5d06:0:b0:48d:ff71:dd87 with SMTP id ffacd0b85a97d-48e6e303f29mr32359299f8f.17.1793744091527;
-        Tue, 03 Nov 2026 14:14:51 -0800 (PST)
-Received: from Ansuel-XPS24.localdomain (93-34-90-148.ip49.fastwebnet.it. [93.34.90.148])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-48fec9cd43bsm328556f8f.14.2026.11.03.14.14.50
+        d=1e100.net; s=20260707; t=1793744598; x=1794349398;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iGr4yuTjefH8ZNfeidLmCflxZz4RxW5d0w05fPgAcqY=;
+        b=MBRkaddDKIIlRxEueIlkNa1iOE8nkY40qArV5IXc7je0XQO+cW0NT52R4dbvQPgjz/
+         nlpDmFfI6cIaQiGk400UDqqSFC5BkaeDdR8Mdluaik7uET1XgnQinvt7TDAvf8z6ZnV4
+         NVfrPLiysP48tXfN6rMnqXYL8lTwPwS9LXHHoLnuGZoHmQsFeek3PAmjF5wQldYXuLxj
+         yTVswvotN0cMdqBp7aaLIMWnOyAuSTQfdvFY1eW0ISz68KFIfPfuQtCjrodj3aDzOl1R
+         J1AlPij00KIFRTmPZ1WFuZkGdCEszD2ecGLGmJrZ23RMJBaFehZ9gpUQ1Phq0/XIanlp
+         c7Mg==
+X-Forwarded-Encrypted: i=1; AKwUvBz1aMhChWLD4TOcRisE/0AuSUR7MmPsYzdkWizeZ+FxPmtUEokNOF8sNfJ6+ciltviYVuIW6LM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8EqyCvZgWkIE5cKWUfg+eFq7h3ANeZLwUfPtYjzEK1uVIX7Mc9
+	TJzjRcvekHjSGGVgcr120qTYw/qlDIQrEEUW37qpWjVnT7Q9HkLsVi0=
+X-Gm-Gg: AYBFou3m5eHqfI9iEwX7HP3H6rNRhK1Duh1KU4HHV730Rhv2DfTbFEyMCX0r5Ks4ytT
+	FYTz+gULcTFs5zPDgo+JFdzZLMPii7mjtZ5/NfbQfPvuQZ/X8YFjZcfVQn4W97ndTknhDM58/vL
+	oKAne9LDujITgZLH6ZcGi0YJCJCKo0kw98WpcW+SASWa6aoexwbwXYxYOFww/L1v1zLy3yXrmgh
+	ljSFrayvwP2qZRjMZrd2napSJNic2nOTw8bP4vZTgj2ph7SrDc8gR7sIjjOBxFCHLR9gVE6NF/2
+	mU3A2STZ3KmDHPCCS12LgezPcBfwgWGncrFA5u+GT8Fwbxb0wy1UemkSBgmWkwRo/b2pCpkupva
+	Pz7SzFxWb2zMuDuD8GdTgLVkTJn6svshwVvja7qLrgY6T/85zRLroYsUnc7bb8Fo247uUtDEzXl
+	L6CUfgw3OeENHMf0AwktJiFYLH3IEIjbPlnxbYxLljhFMXYSfo055RHEHoc+suvvuSeEurKZuaP
+	EOj/khzVoSxKw1Sqz3HLpSOnsCbS256sQP83v+wmcZJAInlR/Cxa3xlVrEkVs4ZfNZ5uRdt+q/b
+	LvuWKD2KfLSBqdh8HfTIOBY3qwHOHWyusDDXhcy43YkmOrw+7ifxKEKm0g==
+X-Received: by 2002:a05:6000:26c5:b0:48b:e50:714e with SMTP id ffacd0b85a97d-48e6e50d8a5mr30353676f8f.36.1793744597651;
+        Tue, 03 Nov 2026 14:23:17 -0800 (PST)
+Received: from ps42.lan.pis.avalls.dev ([2a0c:5a83:540e:7d02::ed7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fed551dc5sm279312f8f.34.2026.11.03.14.23.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 14:14:50 -0800 (PST)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Qingfang Deng <dqfext@gmail.com>,
-	SkyLake Huang <SkyLake.Huang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Joris Vaisvila <joey@tinyisr.com>,
-	Ahmed Naseef <naseefkm@gmail.com>,
-	linux-kernel@vger.kernel.org,
+        Tue, 03 Nov 2026 14:23:17 -0800 (PST)
+From: Arnau Valls <vallsfustearnau@gmail.com>
+To: netfilter-devel@vger.kernel.org
+Cc: pablo@netfilter.org,
+	fw@strlen.de,
+	phil@nwl.cc,
+	coreteam@netfilter.org,
 	netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH net-next v4 1/6] net: phy: mediatek: export __mtk_tr_write
-Date: Tue,  3 Nov 2026 23:14:32 +0100
-Message-ID: <20261103221439.30502-2-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261103221439.30502-1-ansuelsmth@gmail.com>
-References: <20261103221439.30502-1-ansuelsmth@gmail.com>
+	Arnau Valls <vallsfustearnau@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH nf] netfilter: flowtable: remove hw flows before unbinding the flow block
+Date: Tue,  3 Nov 2026 23:22:43 +0100
+Message-ID: <20261103222243.445644-1-vallsfustearnau@gmail.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -116,50 +101,65 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Export __mtk_tr_write to directly write to debug register.
+Since commit 13210fc63f35 ("netfilter: nf_tables: imbalance in flowtable
+binding"), deleting a flowtable unbinds the driver callbacks at commit
+time, before nf_flow_table_free() queues FLOW_CLS_DESTROY for the
+remaining flows. The destroy requests find an empty cb_list and the
+flows stay in hardware.
 
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Conntrack then times the entries out while the hardware keeps forwarding
+them. Once one direction ages out of the hardware table, its packets hit
+the stack without a conntrack entry and get rejected. This breaks
+long-lived UDP flows such as WireGuard whenever the flowtable is
+recreated, for example on every firewall reload in OpenWrt.
+
+Remove the device's flows on FLOW_BLOCK_UNBIND while the driver is still
+bound, as nf_flow_table_indr_cleanup() does for indirect blocks. The gc
+skips flows with pending offload work, so run one more pass and flush.
+
+Tested on MT7981 (mtk_eth_soc PPE) with v7.4-rc1 and 6.12.74. Found and
+fixed with help from an AI assistant (Claude).
+
+Fixes: 13210fc63f35 ("netfilter: nf_tables: imbalance in flowtable binding")
+Cc: stable@vger.kernel.org
+Link: https://github.com/openwrt/openwrt/issues/17915
+Signed-off-by: Arnau Valls <vallsfustearnau@gmail.com>
 ---
- drivers/net/phy/mediatek/mtk-phy-lib.c | 5 +++--
- drivers/net/phy/mediatek/mtk.h         | 2 ++
- 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/mediatek/mtk-phy-lib.c b/drivers/net/phy/mediatek/mtk-phy-lib.c
-index 4c4eca870bde..3e4fb899a85b 100644
---- a/drivers/net/phy/mediatek/mtk-phy-lib.c
-+++ b/drivers/net/phy/mediatek/mtk-phy-lib.c
-@@ -36,8 +36,8 @@ static void __mtk_tr_read(struct phy_device *phydev, u8 ch_addr, u8 node_addr,
- 		*tr_high, *tr_low);
- }
+Notes:
+    Reproducer: hw-offloaded UDP flow through NAT, then delete and recreate
+    the flowtable in one transaction (fw4 reload). Without the patch the
+    conntrack entry gets a timeout and the PPE entries stay bound. With it
+    the PPE entries are removed and the flow is offloaded again within a
+    second, no packet loss over six reloads.
+    
+    Not tested: lockdep, other drivers, the indirect block path.
+
+ net/netfilter/nf_flow_table_offload.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
+index 4365859220e6..68654d243bae 100644
+--- a/net/netfilter/nf_flow_table_offload.c
++++ b/net/netfilter/nf_flow_table_offload.c
+@@ -1279,6 +1279,15 @@ int nf_flow_table_offload_setup(struct nf_flowtable *flowtable,
+ 	if (!nf_flowtable_hw_offload(flowtable))
+ 		return nf_flow_offload_xdp_setup(flowtable, dev, cmd);
  
--static void __mtk_tr_write(struct phy_device *phydev, u8 ch_addr, u8 node_addr,
--			   u8 data_addr, u32 tr_data)
-+void __mtk_tr_write(struct phy_device *phydev, u8 ch_addr, u8 node_addr,
-+		    u8 data_addr, u32 tr_data)
- {
- 	__phy_write(phydev, 0x11, tr_data & 0xffff);
- 	__phy_write(phydev, 0x12, tr_data >> 16);
-@@ -45,6 +45,7 @@ static void __mtk_tr_write(struct phy_device *phydev, u8 ch_addr, u8 node_addr,
- 		tr_data >> 16, tr_data & 0xffff);
- 	__mtk_tr_access(phydev, false, ch_addr, node_addr, data_addr);
- }
-+EXPORT_SYMBOL_GPL(__mtk_tr_write);
- 
- void __mtk_tr_modify(struct phy_device *phydev, u8 ch_addr, u8 node_addr,
- 		     u8 data_addr, u32 mask, u32 set)
-diff --git a/drivers/net/phy/mediatek/mtk.h b/drivers/net/phy/mediatek/mtk.h
-index 79e09727b81b..3565e39b96a8 100644
---- a/drivers/net/phy/mediatek/mtk.h
-+++ b/drivers/net/phy/mediatek/mtk.h
-@@ -72,6 +72,8 @@ struct mtk_socphy_priv {
- 	unsigned long		led_state;
- };
- 
-+void __mtk_tr_write(struct phy_device *phydev, u8 ch_addr, u8 node_addr,
-+		    u8 data_addr, u32 tr_data);
- void __mtk_tr_modify(struct phy_device *phydev, u8 ch_addr, u8 node_addr,
- 		     u8 data_addr, u32 mask, u32 set);
- void mtk_tr_modify(struct phy_device *phydev, u8 ch_addr, u8 node_addr,
++	/* Flush this device's hw flows while the driver is still bound. The
++	 * second gc pass catches flows skipped due to pending offload work.
++	 */
++	if (cmd == FLOW_BLOCK_UNBIND) {
++		nf_flow_table_gc_cleanup(flowtable, dev);
++		nf_flow_table_gc_run(flowtable);
++		nf_flow_table_offload_flush(flowtable);
++	}
++
+ 	if (dev->netdev_ops->ndo_setup_tc)
+ 		err = nf_flow_table_offload_cmd(&bo, flowtable, dev, cmd,
+ 						&extack);
+
+base-commit: 05441d697f7f9a927264f4058cbbc6a03dfcac9d
 -- 
-2.55.0
+2.54.0
 
